@@ -1,0 +1,37 @@
+<!doctype html>
+
+<title>code golf</title>
+
+<script src=/js/codemirror.js></script>
+<script src=/js/codemirror-perl.js></script>
+
+<link rel=stylesheet href=/css/codemirror.css>
+<link rel=stylesheet href="//fonts.googleapis.com/css?family=Roboto">
+<link rel=stylesheet href="//fonts.googleapis.com/css?family=Roboto+Mono">
+<style>
+    article {
+        margin: auto;
+        width: 980px;
+    }
+
+    body {
+        font-family: Roboto, sans-serif;
+        margin: 0;
+    }
+
+    header {
+        background: LightGrey;
+        height: 50px;
+        width: 100%;
+    }
+
+    .CodeMirror {
+        border: 1px solid #000;
+        font-family: 'Roboto Mono', monospace;
+        width: 100%;
+    }
+</style>
+
+<header></header>
+
+<article>{{ template "content" . }}</article>
