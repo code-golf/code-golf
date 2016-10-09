@@ -49,7 +49,7 @@ func handler(ctx *fasthttp.RequestCtx) {
 
 			// TODO Need better IDs
 			// TODO Use github.com/opencontainers/runc/libcontainer
-			cmd := &exec.Cmd{
+			cmd := exec.Cmd{
 				Args:   []string{"runc", "start", "id"},
 				Dir:    "containers/perl",
 				Path:   "/usr/bin/runc",
@@ -58,9 +58,7 @@ func handler(ctx *fasthttp.RequestCtx) {
 				Stdout: &stdout,
 			}
 
-			if err := cmd.Run(); err != nil {
-				vars["died"] = true
-			}
+			vars["died"] = cmd.Run() != nil
 
 			vars["stderr"] = string(stderr.Bytes())
 			vars["stdout"] = string(bytes.TrimSpace(stdout.Bytes()))
