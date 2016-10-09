@@ -1,6 +1,6 @@
 #!/bin/sh -e
 
-docker build -f docker/app-build -t app-build .
+docker build -t codegolf .
 
 dir=/go/src/github.com/jraspass/codegolf
-docker run --rm -v `pwd`:$dir -w $dir app-build go build -ldflags '-s' -o app
+docker run --rm -v `pwd`:$dir -w $dir codegolf go build -ldflags '-s' -o app

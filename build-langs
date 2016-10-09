@@ -1,0 +1,19 @@
+#!/bin/sh -e
+
+cd containers/perl
+
+docker build -t perl-build .
+
+id=`docker run -d perl-build true`
+
+mkdir -p rootfs/lib rootfs/usr/{bin,lib}
+
+docker cp $id:/lib/ld-musl-x86_64.so.1 rootfs/lib
+docker cp $id:/usr/bin/perl            rootfs/usr/bin
+docker cp $id:/usr/lib/perl5           rootfs/usr/lib
+docker rm $id
+
+sudo chown -R $USER: rootfs
+
+find rootfs/usr/lib -name '*.h'   -delete
+find rootfs/usr/lib -name '*.pod' -delete

@@ -47,9 +47,12 @@ func handler(ctx *fasthttp.RequestCtx) {
 
 			var stderr, stdout bytes.Buffer
 
+			// TODO Need better IDs
+			// TODO Use github.com/opencontainers/runc/libcontainer
 			cmd := &exec.Cmd{
-				Args:   []string{"perl"},
-				Path:   "/usr/bin/perl",
+				Args:   []string{"runc", "start", "id"},
+				Dir:    "containers/perl",
+				Path:   "/usr/bin/runc",
 				Stderr: &stderr,
 				Stdin:  bytes.NewReader(code),
 				Stdout: &stdout,
