@@ -7,9 +7,11 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"os/exec"
 	"strings"
 
+	"github.com/gorilla/handlers"
 	"github.com/tdewolff/minify"
 	"github.com/tdewolff/minify/html"
 )
@@ -23,8 +25,6 @@ var index = template.Must(template.ParseFiles(base, "views/index.html"))
 var minfy = minify.New()
 
 func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	println(r.Method, r.URL.Path)
-
 	vars := map[string]interface{}{"r": r}
 
 	if hole, ok := holes[r.URL.Path]; ok {
@@ -111,7 +111,10 @@ func main() {
 		template.ParseFiles(base, "views/fizz-buzz.html"))
 
 	server := &http.Server{
-		Handler: &handler{},
+		Handler: handlers.CombinedLoggingHandler(
+			os.Stdout,
+			handlers.CompressHandler(&handler{}),
+		),
 		TLSConfig: &tls.Config{
 			Certificates: []tls.Certificate{
 				mustLoadX509KeyPair(
