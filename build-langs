@@ -1,5 +1,7 @@
 #!/bin/sh -e
 
+docker pull alpine:edge
+
 cd containers/perl
 
 docker build -t perl-build .
