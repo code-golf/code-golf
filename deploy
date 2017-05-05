@@ -1,0 +1,3 @@
+#!/bin/sh -e
+
+rsync -ahP --delete . raspass.me:code-golf
