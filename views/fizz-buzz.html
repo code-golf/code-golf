@@ -11,7 +11,7 @@ onload = function() {
 }
 </script>
 
-{{ if .ctx.IsPost }}
+{{ if eq .r.Method "POST" }}
     {{ if .died }}
         <div>Died: {{ .stderr }}</div>
     {{ end }}
