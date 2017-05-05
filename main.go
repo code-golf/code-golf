@@ -30,7 +30,7 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "POST" {
 			code := r.FormValue("code")
 
-			var stderr, stdout bytes.Buffer
+			var out bytes.Buffer
 
 			// TODO Need better IDs
 			// TODO Use github.com/opencontainers/runc/libcontainer
@@ -38,21 +38,18 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				Args:   []string{"runc", "start", "id"},
 				Dir:    "containers/perl",
 				Path:   "/usr/bin/runc",
-				Stderr: &stderr,
 				Stdin:  strings.NewReader(code),
-				Stdout: &stdout,
+				Stdout: &out,
 			}
 
 			if err := cmd.Run(); err != nil {
 				println(err.Error())
-				vars["died"] = true
 			}
 
-			vars["stderr"] = string(stderr.Bytes())
-			vars["stdout"] = string(bytes.TrimSpace(stdout.Bytes()))
-
-			// TODO Move this logic into the template?
-			// vars["Pass"] = string(vars["stdout"]) == fizzBuzzAnswer
+			vars["code"] = code
+			vars["pass"] = fizzBuzzAnswer == string(bytes.TrimSpace(out.Bytes()))
+		} else {
+			vars["code"] = fizzBuzzExample
 		}
 
 		render(w, hole, vars)

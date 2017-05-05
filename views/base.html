@@ -1,6 +1,6 @@
 <!doctype html>
 
-<title>code golf</title>
+<title>code-golf</title>
 
 <script src=/js/codemirror.js></script>
 <script src=/js/codemirror-perl.js></script>
@@ -21,8 +21,18 @@
 
     header {
         background: LightGrey;
-        height: 50px;
         width: 100%;
+    }
+
+    nav {
+        height: 40px;
+        line-height: 40px;
+        margin: auto;
+        width: 980px;
+    }
+
+    nav a {
+        text-decoration: none;
     }
 
     .CodeMirror {
@@ -30,8 +40,30 @@
         font-family: 'Roboto Mono', monospace;
         width: 100%;
     }
+
+    #failure {
+        background: #fdf3fa;
+        border-bottom: 1px solid #e01a22;
+        color: #e01a22;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+    }
+
+    #success {
+        background: #e8f5e5;
+        border-bottom: 1px solid #219a00;
+        color: #219a00;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+    }
 </style>
 
-<header></header>
+<header>
+    <nav>
+        <a href=/>code-golf</a>
+    </nav>
+</header>
 
-<article>{{ template "content" . }}</article>
+{{ template "content" . }}
