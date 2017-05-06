@@ -1,16 +1,5 @@
 {{ define "content" }}
 
-<script>
-'use strict';
-
-onload = function() {
-    CodeMirror.fromTextArea(
-        document.getElementsByTagName('textarea')[0],
-        { lineNumbers: true, mode: 'perl' }
-    );
-}
-</script>
-
 {{ if eq .r.Method "POST" }}
     {{ if .pass }}
         <div id=success>Success</div>

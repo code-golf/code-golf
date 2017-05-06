@@ -26,15 +26,22 @@ func init() {
 }
 
 func codeGolf(w http.ResponseWriter, r *http.Request) {
+	vars := map[string]interface{}{"cssHash": cssHash, "jsHash": jsHash, "r": r}
+
 	// Skip over the initial forward slash.
-	path := r.URL.Path[1:]
-
-	vars := map[string]interface{}{"r": r}
-
-	if path == "" {
+	switch path := r.URL.Path[1:]; path {
+	case "":
 		w.Header().Set("Strict-Transport-Security", headerHSTS)
 		render(w, index, vars)
-	} else {
+	case cssHash:
+		w.Header().Set("Content-Encoding", "gzip")
+		w.Header().Set("Content-Type", "text/css")
+		w.Write(cssGzip)
+	case jsHash:
+		w.Header().Set("Content-Encoding", "gzip")
+		w.Header().Set("Content-Type", "application/javascript")
+		w.Write(jsGzip)
+	default:
 		var hole, lang string
 
 		if i := strings.IndexByte(path, '/'); i != -1 {

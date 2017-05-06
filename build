@@ -3,4 +3,4 @@
 docker build -t codegolf .
 
 dir=/go/src/github.com/jraspass/codegolf
-docker run --rm -v `pwd`:$dir -w $dir codegolf go build -ldflags '-s' -o app
+docker run --rm -v `pwd`:$dir -w $dir codegolf

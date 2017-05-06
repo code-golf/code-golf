@@ -15,9 +15,7 @@ type handler struct{}
 func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.Host {
 	case "code-golf.io":
-		if !asset(w, r) {
-			codeGolf(w, r)
-		}
+		codeGolf(w, r)
 	case "raspass.me":
 		raspass(w, r)
 	case "www.code-golf.io", "www.raspass.me":
@@ -35,10 +33,7 @@ func mustLoadX509KeyPair(certFile, keyFile string) tls.Certificate {
 
 func main() {
 	server := &http.Server{
-		Handler: handlers.CombinedLoggingHandler(
-			os.Stdout,
-			handlers.CompressHandler(&handler{}),
-		),
+		Handler: handlers.CombinedLoggingHandler(os.Stdout, &handler{}),
 		TLSConfig: &tls.Config{
 			Certificates: []tls.Certificate{
 				mustLoadX509KeyPair(

@@ -1,0 +1,93 @@
+article {
+    margin: auto;
+    width: 980px;
+}
+
+body {
+    font-family: Roboto, sans-serif;
+    margin: 0;
+}
+
+header {
+    background: LightGrey;
+    width: 100%;
+}
+
+input,
+.lang {
+    border: 0 solid #fff;
+    border-bottom-width: 3px;
+    border-radius: 6px;
+    box-shadow: 0 -1px 0 rgba(255, 255, 255, .1) inset;
+    color: #fff;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 13px 27px 12px;
+    transition: all 200ms ease-in-out 0s;
+}
+
+input {
+    background: #3f8abf;
+    border-color: #326e99;
+}
+
+input:hover {
+    background: #397cac;
+}
+
+nav {
+    height: 40px;
+    line-height: 40px;
+    margin: auto;
+    width: 980px;
+}
+
+nav a {
+    text-decoration: none;
+}
+
+.CodeMirror {
+    border: 1px solid #000;
+    font-family: 'Roboto Mono', monospace;
+    margin: 10px 0;
+    width: 100%;
+}
+
+.lang {
+    background: #c6ccd2;
+    border-color: #aab3bb;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.lang:hover {
+    background: #b8bfC7;
+}
+
+.lang.on {
+    background: #5fcf80;
+    border-color: #3ac162;
+}
+
+.lang.on:hover {
+    background: #4bc970;
+}
+
+#failure {
+    background: #fdf3fa;
+    border-bottom: 1px solid #e01a22;
+    color: #e01a22;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+}
+
+#success {
+    background: #e8f5e5;
+    border-bottom: 1px solid #219a00;
+    color: #219a00;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+}
