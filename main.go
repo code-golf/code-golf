@@ -12,7 +12,7 @@ type handler struct{}
 
 func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.Host {
-	case "code-golf":
+	case "code-golf.io":
 		codeGolf(w, r)
 	case "raspass.me":
 		raspass(w, r)
