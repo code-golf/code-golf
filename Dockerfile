@@ -19,7 +19,7 @@ RUN npm install -g csso-cli@1.0.0 csso@3.1.1
 RUN ln -snf /bin/bash /bin/sh
 
 CMD css=`cat static/*.css | csso /dev/stdin`                \
- &&  js=`cat static/{codemirror{,-perl},script}.js`         \
+ &&  js=`cat static/{codemirror{,-*},script}.js`            \
  && echo -e "package main                                 \n\
     const cssHash = \"`md5sum <<< "$css" | tr -d ' -'`\"  \n\
     const  jsHash = \"`md5sum <<< "$js"  | tr -d ' -'`\"  \n\

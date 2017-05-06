@@ -60,7 +60,7 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 					vars["code"] = r.FormValue("code")
 					vars["pass"] = fizzBuzzAnswer == runCode(lang, r.FormValue("code"))
 				} else {
-					vars["code"] = fizzBuzzExample
+					vars["code"] = examples[lang]
 				}
 
 				render(w, tmpl, vars)
