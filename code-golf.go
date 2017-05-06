@@ -62,6 +62,7 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 	// TODO Use a real asset pipeline.
 	switch r.URL.Path {
 	case "/":
+		w.Header().Set("Strict-Transport-Security", headerHSTS)
 		render(w, index, vars)
 	case "/css/codemirror.css":
 		bytes, _ := ioutil.ReadFile("css/codemirror.css")

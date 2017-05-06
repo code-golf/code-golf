@@ -10,6 +10,7 @@ func raspass(w http.ResponseWriter, r *http.Request) {
 	case "/":
 		bytes, _ := ioutil.ReadFile("raspass.me/index.html")
 		w.Header().Set("Content-Type", "text/html;charset=utf8")
+		w.Header().Set("Strict-Transport-Security", headerHSTS)
 		w.Write(bytes)
 	case "/bg.png":
 		bytes, _ := ioutil.ReadFile("raspass.me/bg.png")
