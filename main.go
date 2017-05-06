@@ -15,7 +15,9 @@ type handler struct{}
 func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.Host {
 	case "code-golf.io":
-		codeGolf(w, r)
+		if !asset(w, r) {
+			codeGolf(w, r)
+		}
 	case "raspass.me":
 		raspass(w, r)
 	case "www.code-golf.io", "www.raspass.me":

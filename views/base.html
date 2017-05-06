@@ -24,23 +24,27 @@
         width: 100%;
     }
 
-    input {
-        background: #3f8abf;
-        border: 0 solid #326e99;
+    input,
+    .lang {
+        border: 0 solid #fff;
         border-bottom-width: 3px;
         border-radius: 6px;
-        box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.1) inset;
+        box-shadow: 0 -1px 0 rgba(255, 255, 255, .1) inset;
         color: #fff;
         cursor: pointer;
         font-size: 18px;
         font-weight: bold;
-        padding: 16px 30px 15px;
+        padding: 13px 27px 12px;
         transition: all 200ms ease-in-out 0s;
+    }
+
+    input {
+        background: #3f8abf;
+        border-color: #326e99;
     }
 
     input:hover {
         background: #397cac;
-        border-color: #326e99;
     }
 
     nav {
@@ -57,7 +61,28 @@
     .CodeMirror {
         border: 1px solid #000;
         font-family: 'Roboto Mono', monospace;
+        margin: 10px 0;
         width: 100%;
+    }
+
+    .lang {
+        background: #c6ccd2;
+        border-color: #aab3bb;
+        display: inline-block;
+        text-decoration: none;
+    }
+
+    .lang:hover {
+        background: #b8bfC7;
+    }
+
+    .lang.on {
+        background: #5fcf80;
+        border-color: #3ac162;
+    }
+
+    .lang.on:hover {
+        background: #4bc970;
     }
 
     #failure {
