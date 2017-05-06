@@ -15,16 +15,26 @@ RUN apt-get update \
 
 RUN npm install -g csso-cli@1.0.0 csso@3.1.1
 
+RUN curl -L https://github.com/google/brotli/archive/v0.6.0.tar.gz \
+  | tar xzf -                                                      \
+ && cd brotli-0.6.0                                                \
+ && make                                                           \
+ && mv bin/bro /usr/local/bin
+
 # Bashisms FTW.
 RUN ln -snf /bin/bash /bin/sh
 
-CMD css=`cat static/*.css | csso /dev/stdin`                \
- &&  js=`cat static/{codemirror{,-*},script}.js`            \
- && echo -e "package main                                 \n\
-    const cssHash = \"`md5sum <<< "$css" | tr -d ' -'`\"  \n\
-    const  jsHash = \"`md5sum <<< "$js"  | tr -d ' -'`\"  \n\
-                                                          \n\
-    var cssGzip = []byte{`echo "$css" | gzip -9 | xxd -i`}\n\
-    var  jsGzip = []byte{`echo "$js"  | gzip -9 | xxd -i`}\n\
-    " > static.go                                           \
+CMD css=`cat static/*.css | csso /dev/stdin`              \
+ &&  js=`cat static/{codemirror{,-*},script}.js`          \
+ && echo -e "package main                               \n\
+                                                        \n\
+    const cssHash = \"`md5sum <<< "$css" | tr -d ' -'`\"\n\
+    const  jsHash = \"`md5sum <<< "$js"  | tr -d ' -'`\"\n\
+                                                        \n\
+    var cssBr   = []byte{`bro     <<< "$css" | xxd -i`} \n\
+    var cssGzip = []byte{`gzip -9 <<< "$css" | xxd -i`} \n\
+    var  jsBr   = []byte{`bro     <<< "$js"  | xxd -i`} \n\
+    var  jsGzip = []byte{`gzip -9 <<< "$js"  | xxd -i`} \n\
+                                                        \n\
+    " > static.go                                         \
  && go build -ldflags '-s' -o app

@@ -33,20 +33,32 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 	case "":
 		w.Header().Set("Strict-Transport-Security", headerHSTS)
 		render(w, index, vars)
-	case cssHash:
-		w.Header().Set("Content-Encoding", "gzip")
-		w.Header().Set("Content-Type", "text/css")
-		w.Write(cssGzip)
-	case jsHash:
-		w.Header().Set("Content-Encoding", "gzip")
-		w.Header().Set("Content-Type", "application/javascript")
-		w.Write(jsGzip)
 	case "roboto-v16":
 		w.Header().Set("Content-Type", "font/woff2")
 		w.Write(roboto)
 	case "roboto-mono-v4":
 		w.Header().Set("Content-Type", "font/woff2")
 		w.Write(robotoMono)
+	case cssHash:
+		w.Header().Set("Content-Type", "text/css")
+
+		if strings.Contains(r.Header.Get("Accept-Encoding"), "br") {
+			w.Header().Set("Content-Encoding", "br")
+			w.Write(cssBr)
+		} else {
+			w.Header().Set("Content-Encoding", "gzip")
+			w.Write(cssGzip)
+		}
+	case jsHash:
+		w.Header().Set("Content-Type", "application/javascript")
+
+		if strings.Contains(r.Header.Get("Accept-Encoding"), "br") {
+			w.Header().Set("Content-Encoding", "br")
+			w.Write(jsBr)
+		} else {
+			w.Header().Set("Content-Encoding", "gzip")
+			w.Write(jsGzip)
+		}
 	default:
 		var hole, lang string
 
