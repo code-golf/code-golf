@@ -41,6 +41,12 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Encoding", "gzip")
 		w.Header().Set("Content-Type", "application/javascript")
 		w.Write(jsGzip)
+	case "roboto-v16":
+		w.Header().Set("Content-Type", "font/woff2")
+		w.Write(roboto)
+	case "roboto-mono-v4":
+		w.Header().Set("Content-Type", "font/woff2")
+		w.Write(robotoMono)
 	default:
 		var hole, lang string
 

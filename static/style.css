@@ -1,3 +1,17 @@
+@font-face {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 400;
+    src: url('/roboto-v16') format('woff2');
+}
+
+@font-face {
+    font-family: 'Roboto Mono';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/roboto-mono-v4') format('woff2');
+}
+
 article {
     margin: auto;
     width: 980px;
