@@ -1,0 +1,10 @@
+[Unit]
+Description=code-golf
+
+[Service]
+ExecStart=/home/jraspass/code-golf/app
+Type=simple
+WorkingDirectory=/home/jraspass/code-golf
+
+[Install]
+WantedBy=multi-user.target
