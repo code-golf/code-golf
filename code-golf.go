@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"html/template"
 	"io"
 	"net/http"
@@ -26,13 +27,18 @@ func init() {
 }
 
 func codeGolf(w http.ResponseWriter, r *http.Request) {
-	vars := map[string]interface{}{"cssHash": cssHash, "jsHash": jsHash, "r": r}
-
 	// Skip over the initial forward slash.
 	switch path := r.URL.Path[1:]; path {
 	case "":
 		w.Header().Set("Strict-Transport-Security", headerHSTS)
-		render(w, index, vars)
+		render(w, index, map[string]interface{}{})
+	case "callback":
+		user := githubAuth(r.FormValue("code"))
+
+		// TODO Set a session cookie if user.ID != 0
+		fmt.Printf("%v\n", user)
+
+		http.Redirect(w, r, "/", 302)
 	case "roboto-v16":
 		w.Header().Set("Cache-Control", "max-age=9999999,public")
 		w.Header().Set("Content-Type", "font/woff2")
@@ -76,6 +82,8 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 		if tmpl, ok := holes[hole]; ok {
 			switch lang {
 			case "javascript", "perl", "perl6", "php", "python", "ruby":
+				vars := map[string]interface{}{"r": r}
+
 				vars["lang"] = lang
 
 				if r.Method == http.MethodPost {
@@ -95,7 +103,10 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func render(w http.ResponseWriter, tmpl *template.Template, args interface{}) {
+func render(w http.ResponseWriter, tmpl *template.Template, vars map[string]interface{}) {
+	vars["cssHash"] = cssHash
+	vars["jsHash"] = jsHash
+
 	w.Header().Set("Content-Type", "text/html;charset=utf8")
 
 	pipeR, pipeW := io.Pipe()
@@ -103,7 +114,7 @@ func render(w http.ResponseWriter, tmpl *template.Template, args interface{}) {
 	go func() {
 		defer pipeW.Close()
 
-		if err := tmpl.Execute(pipeW, args); err != nil {
+		if err := tmpl.Execute(pipeW, vars); err != nil {
 			panic(err)
 		}
 	}()

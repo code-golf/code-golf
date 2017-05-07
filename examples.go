@@ -1,7 +1,7 @@
 package main
 
 var examples = map[string]string{
-    "javascript": `for ( var number = 1; number <= 100; number += 1 ) {
+	"javascript": `for ( var number = 1; number <= 100; number += 1 ) {
     if ( number % 15 == 0 ) {
         console.log('FizzBuzz');
     }
@@ -15,7 +15,7 @@ var examples = map[string]string{
         console.log(number);
     }
 }`,
-    "perl": `foreach my $number ( 1 .. 100 ) {
+	"perl": `foreach my $number ( 1 .. 100 ) {
     if ( $number % 15 == 0 ) {
         print("FizzBuzz\n");
     }
@@ -29,7 +29,7 @@ var examples = map[string]string{
         print("$number\n");
     }
 }`,
-    "perl6": `for 1 .. 100 -> $number {
+	"perl6": `for 1 .. 100 -> $number {
     if ( $number % 15 == 0 ) {
         print("FizzBuzz\n");
     }
@@ -43,7 +43,7 @@ var examples = map[string]string{
         print("$number\n");
     }
 }`,
-    "php": `for ( $number = 1; $number <= 100; $number += 1 ) {
+	"php": `for ( $number = 1; $number <= 100; $number += 1 ) {
     if ( $number % 15 == 0 ) {
         print("FizzBuzz\n");
     }
@@ -57,7 +57,7 @@ var examples = map[string]string{
         print("$number\n");
     }
 }`,
-    "python": `for number in range(1, 100):
+	"python": `for number in range(1, 100):
     if number % 15 == 0:
         print("FizzBuzz\n")
     elif number % 5 === 0:
@@ -66,7 +66,7 @@ var examples = map[string]string{
         print("Fizz\n")
     else:
         print(number)`,
-    "ruby": `(1..100).each do |number|
+	"ruby": `(1..100).each do |number|
     if number % 15 == 0
         print("FizzBuzz\n")
     elsif number % 5 == 0
