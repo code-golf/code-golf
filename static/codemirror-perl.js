@@ -5,11 +5,6 @@
 // This is a part of CodeMirror from https://github.com/sabaca/CodeMirror_mode_perl (mail@sabaca.com)
 
 (function(mod) {
-  if (typeof exports == "object" && typeof module == "object") // CommonJS
-    mod(require("../../lib/codemirror"));
-  else if (typeof define == "function" && define.amd) // AMD
-    define(["../../lib/codemirror"], mod);
-  else // Plain browser env
     mod(CodeMirror);
 })(function(CodeMirror) {
 "use strict";
@@ -797,8 +792,6 @@ CodeMirror.defineMode("perl",function(){
 });
 
 CodeMirror.registerHelper("wordChars", "perl", /[\w$]/);
-
-CodeMirror.defineMIME("text/x-perl", "perl");
 
 // it's like "peek", but need for look-ahead or look-behind if index < 0
 function look(stream, c){

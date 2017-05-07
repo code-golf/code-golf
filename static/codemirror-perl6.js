@@ -655,8 +655,6 @@ CodeMirror.defineMode("perl6",function(config,parserConfig){
 			return (state.tokenize||tokenPerl)(stream,state);},
 		electricChars:"{}"};});
 
-CodeMirror.defineMIME("text/x-perl6", "perl6");
-
 // it's like "peek", but need for look-ahead or look-behind if index < 0
 CodeMirror.StringStream.prototype.look=function(c){
 	return this.string.charAt(this.pos+(c||0));};

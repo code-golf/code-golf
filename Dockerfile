@@ -27,17 +27,17 @@ RUN curl http://dl.google.com/closure-compiler/compiler-20170423.tar.gz \
 # Bashisms FTW.
 RUN ln -snf /bin/bash /bin/sh
 
-CMD css=`cat static/*.css | csso /dev/stdin`                  \
- &&  js=`java -jar /*.jar static/{codemirror{,-*},script}.js` \
- && echo -e "package main                                   \n\
-                                                            \n\
-    const cssHash = \"`md5sum <<< "$css" | tr -d ' -'`\"    \n\
-    const  jsHash = \"`md5sum <<< "$js"  | tr -d ' -'`\"    \n\
-                                                            \n\
-    var cssBr   = []byte{`bro     <<< "$css" | xxd -i`}     \n\
-    var cssGzip = []byte{`gzip -9 <<< "$css" | xxd -i`}     \n\
-    var  jsBr   = []byte{`bro     <<< "$js"  | xxd -i`}     \n\
-    var  jsGzip = []byte{`gzip -9 <<< "$js"  | xxd -i`}     \n\
-                                                            \n\
-    " > static.go                                             \
+CMD css=`cat static/*.css | csso /dev/stdin`                                            \
+ &&  js=`java -jar /*.jar --assume_function_wrapper static/{codemirror{,-*},script}.js` \
+ && echo -e "package main                                                             \n\
+                                                                                      \n\
+    const cssHash = \"`md5sum <<< "$css" | tr -d ' -'`\"                              \n\
+    const  jsHash = \"`md5sum <<< "$js"  | tr -d ' -'`\"                              \n\
+                                                                                      \n\
+    var cssBr   = []byte{`bro     <<< "$css" | xxd -i`}                               \n\
+    var cssGzip = []byte{`gzip -9 <<< "$css" | xxd -i`}                               \n\
+    var  jsBr   = []byte{`bro     <<< "$js"  | xxd -i`}                               \n\
+    var  jsGzip = []byte{`gzip -9 <<< "$js"  | xxd -i`}                               \n\
+                                                                                      \n\
+    " > static.go                                                                       \
  && go build -ldflags '-s' -o app

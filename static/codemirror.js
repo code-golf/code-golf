@@ -7,10 +7,10 @@
 // You can find some technical background for some of the code below
 // at http://marijnhaverbeke.nl/blog/#cm-internals .
 
+var CodeMirror;
+
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-  typeof define === 'function' && define.amd ? define(factory) :
-  (global.CodeMirror = factory());
+  (CodeMirror = factory());
 }(this, (function () { 'use strict';
 
 // Kludges for bugs and behavior differences that can't be feature
@@ -1403,10 +1403,6 @@ function defineMode(name, mode) {
   if (arguments.length > 2)
     { mode.dependencies = Array.prototype.slice.call(arguments, 2) }
   modes[name] = mode
-}
-
-function defineMIME(mime, spec) {
-  mimeModes[mime] = spec
 }
 
 // Given a MIME type, a {name, ...options} config object, or a name
@@ -9304,12 +9300,6 @@ CodeMirror.defineMode = function(name/*, mode, …*/) {
   if (!CodeMirror.defaults.mode && name != "null") { CodeMirror.defaults.mode = name }
   defineMode.apply(this, arguments)
 }
-
-CodeMirror.defineMIME = defineMIME
-
-// Minimal default mode.
-CodeMirror.defineMode("null", function () { return ({token: function (stream) { return stream.skipToEnd(); }}); })
-CodeMirror.defineMIME("text/plain", "null")
 
 // EXTENSIONS
 
