@@ -34,12 +34,15 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Strict-Transport-Security", headerHSTS)
 		render(w, index, vars)
 	case "roboto-v16":
+		w.Header().Set("Cache-Control", "max-age=9999999,public")
 		w.Header().Set("Content-Type", "font/woff2")
 		w.Write(roboto)
 	case "roboto-mono-v4":
+		w.Header().Set("Cache-Control", "max-age=9999999,public")
 		w.Header().Set("Content-Type", "font/woff2")
 		w.Write(robotoMono)
 	case cssHash:
+		w.Header().Set("Cache-Control", "max-age=9999999,public")
 		w.Header().Set("Content-Type", "text/css")
 
 		if strings.Contains(r.Header.Get("Accept-Encoding"), "br") {
@@ -50,6 +53,7 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 			w.Write(cssGzip)
 		}
 	case jsHash:
+		w.Header().Set("Cache-Control", "max-age=9999999,public")
 		w.Header().Set("Content-Type", "application/javascript")
 
 		if strings.Contains(r.Header.Get("Accept-Encoding"), "br") {
