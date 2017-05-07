@@ -130,6 +130,10 @@ func render(w http.ResponseWriter, tmpl *template.Template, vars map[string]inte
 	vars["cssHash"] = cssHash
 	vars["jsHash"] = jsHash
 
+	w.Header().Set(
+		"Content-Security-Policy",
+		"default-src 'none';font-src 'self';script-src 'self';style-src 'self'",
+	)
 	w.Header().Set("Content-Type", "text/html;charset=utf8")
 
 	pipeR, pipeW := io.Pipe()
