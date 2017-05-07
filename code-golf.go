@@ -2,11 +2,15 @@ package main
 
 import (
 	"bytes"
-	"fmt"
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/base64"
 	"html/template"
 	"io"
 	"net/http"
+	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 
 	"github.com/tdewolff/minify"
@@ -15,6 +19,7 @@ import (
 
 const base = "views/base.html"
 
+var hmacKey []byte
 var holes = make(map[string]*template.Template)
 var index = template.Must(template.ParseFiles(base, "views/index.html"))
 var minfy = minify.New()
@@ -24,6 +29,11 @@ func init() {
 
 	holes["fizz-buzz"] = template.Must(
 		template.ParseFiles(base, "views/fizz-buzz.html"))
+
+	var err error
+	if hmacKey, err = base64.RawURLEncoding.DecodeString(os.Getenv("HMAC_KEY")); err != nil {
+		panic(err)
+	}
 }
 
 func codeGolf(w http.ResponseWriter, r *http.Request) {
@@ -33,10 +43,23 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Strict-Transport-Security", headerHSTS)
 		render(w, index, map[string]interface{}{})
 	case "callback":
-		user := githubAuth(r.FormValue("code"))
+		if user := githubAuth(r.FormValue("code")); user.ID != 0 {
+			data := strconv.Itoa(user.ID) + ":" + user.Login
 
-		// TODO Set a session cookie if user.ID != 0
-		fmt.Printf("%v\n", user)
+			mac := hmac.New(sha256.New, hmacKey)
+			mac.Write([]byte(data))
+
+			cookie := http.Cookie{
+				HttpOnly: true,
+				Name:     "__Host-user",
+				Path:     "/",
+				Secure:   true,
+				Value:    data + ":" + base64.RawURLEncoding.EncodeToString(mac.Sum(nil)),
+			}
+
+			// https://github.com/golang/go/issues/15867
+			w.Header().Set("Set-Cookie", cookie.String()+";SameSite=Lax")
+		}
 
 		http.Redirect(w, r, "/", 302)
 	case "roboto-v16":

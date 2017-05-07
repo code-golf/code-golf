@@ -11,7 +11,7 @@ import (
 var clientSecret = os.Getenv("CLIENT_SECRET")
 
 type user struct {
-	ID    uint   `json:id`
+	ID    int    `json:id`
 	Login string `json:login`
 }
 
