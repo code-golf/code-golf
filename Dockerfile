@@ -10,8 +10,8 @@ RUN go get -d github.com/tdewolff/minify  \
  && cd /go/src/github.com/tdewolff/minify \
  && git checkout -q 18372f3
 
-RUN apt-get update \
- && apt-get install -y --no-install-recommends nodejs-legacy npm vim-common
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    nodejs-legacy npm openjdk-7-jre-headless vim-common
 
 RUN npm install -g csso-cli@1.0.0 csso@3.1.1
 
@@ -21,20 +21,23 @@ RUN curl -L https://github.com/google/brotli/archive/v0.6.0.tar.gz \
  && make                                                           \
  && mv bin/bro /usr/local/bin
 
+RUN curl http://dl.google.com/closure-compiler/compiler-20170423.tar.gz \
+  | tar -zxf - -C /
+
 # Bashisms FTW.
 RUN ln -snf /bin/bash /bin/sh
 
-CMD css=`cat static/*.css | csso /dev/stdin`              \
- &&  js=`cat static/{codemirror{,-*},script}.js`          \
- && echo -e "package main                               \n\
-                                                        \n\
-    const cssHash = \"`md5sum <<< "$css" | tr -d ' -'`\"\n\
-    const  jsHash = \"`md5sum <<< "$js"  | tr -d ' -'`\"\n\
-                                                        \n\
-    var cssBr   = []byte{`bro     <<< "$css" | xxd -i`} \n\
-    var cssGzip = []byte{`gzip -9 <<< "$css" | xxd -i`} \n\
-    var  jsBr   = []byte{`bro     <<< "$js"  | xxd -i`} \n\
-    var  jsGzip = []byte{`gzip -9 <<< "$js"  | xxd -i`} \n\
-                                                        \n\
-    " > static.go                                         \
+CMD css=`cat static/*.css | csso /dev/stdin`                  \
+ &&  js=`java -jar /*.jar static/{codemirror{,-*},script}.js` \
+ && echo -e "package main                                   \n\
+                                                            \n\
+    const cssHash = \"`md5sum <<< "$css" | tr -d ' -'`\"    \n\
+    const  jsHash = \"`md5sum <<< "$js"  | tr -d ' -'`\"    \n\
+                                                            \n\
+    var cssBr   = []byte{`bro     <<< "$css" | xxd -i`}     \n\
+    var cssGzip = []byte{`gzip -9 <<< "$css" | xxd -i`}     \n\
+    var  jsBr   = []byte{`bro     <<< "$js"  | xxd -i`}     \n\
+    var  jsGzip = []byte{`gzip -9 <<< "$js"  | xxd -i`}     \n\
+                                                            \n\
+    " > static.go                                             \
  && go build -ldflags '-s' -o app
