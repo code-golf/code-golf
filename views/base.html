@@ -12,6 +12,7 @@
     {{ if .login }}
         {{ .login }}
         <img src="//avatars.githubusercontent.com/{{ .login }}?size=20">
+        <a href=/logout>Logout</a>
     {{ else }}
         <a href="//github.com/login/oauth/authorize?client_id=7f6709819023e9215205&scope=user:email">
             Login with GitHub

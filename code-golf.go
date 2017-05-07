@@ -89,6 +89,9 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 		}
 
 		http.Redirect(w, r, "/", 302)
+	case "logout":
+		w.Header().Set("Set-Cookie", "__Host-user=;MaxAge=0;Path=/;Secure")
+		http.Redirect(w, r, "/", 302)
 	case "roboto-v16":
 		w.Header().Set("Cache-Control", "max-age=9999999,public")
 		w.Header().Set("Content-Type", "font/woff2")
