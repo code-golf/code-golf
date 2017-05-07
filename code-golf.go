@@ -78,9 +78,9 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 
 			w.Header().Set(
 				"Set-Cookie",
-				"__Host-user=" + data + ":" +
-				base64.RawURLEncoding.EncodeToString(mac.Sum(nil)) +
-				";HttpOnly;Path=/;SameSite=Lax;Secure",
+				"__Host-user="+data+":"+
+					base64.RawURLEncoding.EncodeToString(mac.Sum(nil))+
+					";HttpOnly;Path=/;SameSite=Lax;Secure",
 			)
 		}
 
