@@ -76,16 +76,12 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 			mac := hmac.New(sha256.New, hmacKey)
 			mac.Write([]byte(data))
 
-			cookie := http.Cookie{
-				HttpOnly: true,
-				Name:     "__Host-user",
-				Path:     "/",
-				Secure:   true,
-				Value:    data + ":" + base64.RawURLEncoding.EncodeToString(mac.Sum(nil)),
-			}
-
-			// https://github.com/golang/go/issues/15867
-			w.Header().Set("Set-Cookie", cookie.String()+";SameSite=Lax")
+			w.Header().Set(
+				"Set-Cookie",
+				"__Host-user=" + data + ":" +
+				base64.RawURLEncoding.EncodeToString(mac.Sum(nil)) +
+				";HttpOnly;Path=/;SameSite=Lax;Secure",
+			)
 		}
 
 		http.Redirect(w, r, "/", 302)
