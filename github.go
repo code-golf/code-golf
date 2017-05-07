@@ -2,13 +2,17 @@ package main
 
 import (
 	"bytes"
+	"database/sql"
 	"encoding/json"
 	"net/http"
 	"net/url"
 	"os"
+
+	_ "github.com/lib/pq"
 )
 
 var clientSecret = os.Getenv("CLIENT_SECRET")
+var dbDSN = os.Getenv("DB_DSN")
 
 type user struct {
 	ID    int    `json:id`
@@ -42,7 +46,16 @@ func githubAuth(code string) user {
 
 	var u user
 
-	json.NewDecoder(res.Body).Decode(&u)
+	if json.NewDecoder(res.Body).Decode(&u) == nil {
+		if db, err := sql.Open("postgres", dbDSN); err != nil {
+			panic(err)
+		} else if _, err := db.Exec(
+			"INSERT INTO users VALUES($1, $2) ON CONFLICT(id) DO UPDATE SET login = $2",
+			u.ID, u.Login,
+		); err != nil {
+			panic(err)
+		}
+	}
 
 	return u
 }
