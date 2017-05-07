@@ -47,10 +47,10 @@ var examples = map[string]string{
     if ( $number % 15 == 0 ) {
         print("FizzBuzz\n");
     }
-    elsif ( $number % 5 == 0 ) {
+    elseif ( $number % 5 == 0 ) {
         print("Buzz\n");
     }
-    elsif ( $number % 3 == 0 ) {
+    elseif ( $number % 3 == 0 ) {
         print("Fizz\n");
     }
     else {

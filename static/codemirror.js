@@ -1405,6 +1405,10 @@ function defineMode(name, mode) {
   modes[name] = mode
 }
 
+function defineMIME(mime, spec) {
+  mimeModes[mime] = spec
+}
+
 // Given a MIME type, a {name, ...options} config object, or a name
 // string, return a mode config object.
 function resolveMode(spec) {
@@ -9300,6 +9304,12 @@ CodeMirror.defineMode = function(name/*, mode, …*/) {
   if (!CodeMirror.defaults.mode && name != "null") { CodeMirror.defaults.mode = name }
   defineMode.apply(this, arguments)
 }
+
+CodeMirror.defineMIME = defineMIME
+
+// Minimal default mode.
+CodeMirror.defineMode("null", function () { return ({token: function (stream) { return stream.skipToEnd(); }}); })
+CodeMirror.defineMIME("text/plain", "null")
 
 // EXTENSIONS
 
