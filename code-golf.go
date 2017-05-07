@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/hmac"
 	"crypto/sha256"
+	"crypto/subtle"
 	"encoding/base64"
 	"html/template"
 	"io"
@@ -36,12 +37,38 @@ func init() {
 	}
 }
 
+func readCookie(r *http.Request) (id int, login string) {
+	if cookie, err := r.Cookie("__Host-user"); err == nil {
+		if i := strings.LastIndexByte(cookie.Value, ':'); i != -1 {
+			mac := hmac.New(sha256.New, hmacKey)
+			mac.Write([]byte(cookie.Value[:i]))
+
+			if subtle.ConstantTimeCompare(
+				[]byte(cookie.Value[i+1:]),
+				[]byte(base64.RawURLEncoding.EncodeToString(mac.Sum(nil))),
+			) == 1 {
+				j := strings.IndexByte(cookie.Value, ':')
+
+				id, _ = strconv.Atoi(cookie.Value[:j])
+				login = cookie.Value[j+1 : i]
+			}
+		}
+	}
+
+	return
+}
+
 func codeGolf(w http.ResponseWriter, r *http.Request) {
 	// Skip over the initial forward slash.
 	switch path := r.URL.Path[1:]; path {
 	case "":
 		w.Header().Set("Strict-Transport-Security", headerHSTS)
-		render(w, index, map[string]interface{}{})
+
+		vars := map[string]interface{}{"r": r}
+
+		_, vars["login"] = readCookie(r)
+
+		render(w, index, vars)
 	case "callback":
 		if user := githubAuth(r.FormValue("code")); user.ID != 0 {
 			data := strconv.Itoa(user.ID) + ":" + user.Login
@@ -105,9 +132,9 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 		if tmpl, ok := holes[hole]; ok {
 			switch lang {
 			case "javascript", "perl", "perl6", "php", "python", "ruby":
-				vars := map[string]interface{}{"r": r}
+				vars := map[string]interface{}{"lang": lang, "r": r}
 
-				vars["lang"] = lang
+				_, vars["login"] = readCookie(r)
 
 				if r.Method == http.MethodPost {
 					vars["code"] = r.FormValue("code")
@@ -127,14 +154,14 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 }
 
 func render(w http.ResponseWriter, tmpl *template.Template, vars map[string]interface{}) {
-	vars["cssHash"] = cssHash
-	vars["jsHash"] = jsHash
-
 	w.Header().Set(
 		"Content-Security-Policy",
-		"default-src 'none';font-src 'self';script-src 'self';style-src 'self'",
+		"default-src 'none';font-src 'self';img-src https://avatars.githubusercontent.com;script-src 'self';style-src 'self'",
 	)
 	w.Header().Set("Content-Type", "text/html;charset=utf8")
+
+	vars["cssHash"] = cssHash
+	vars["jsHash"] = jsHash
 
 	pipeR, pipeW := io.Pipe()
 

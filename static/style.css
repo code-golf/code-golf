@@ -54,11 +54,16 @@ nav {
     height: 40px;
     line-height: 40px;
     margin: auto;
+    text-align: right;
     width: 980px;
 }
 
 nav a {
     text-decoration: none;
+}
+
+nav a:first-child {
+    float: left;
 }
 
 .CodeMirror {
