@@ -66,6 +66,11 @@ nav a:first-child {
     float: left;
 }
 
+nav img {
+    height: 20px;
+    width: 20px;
+}
+
 .CodeMirror {
     border: 1px solid #000;
     font-family: 'Roboto Mono', monospace;

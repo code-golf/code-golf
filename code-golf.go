@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"compress/gzip"
 	"crypto/hmac"
 	"crypto/sha256"
 	"crypto/subtle"
@@ -153,11 +154,12 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 }
 
 func render(w http.ResponseWriter, tmpl *template.Template, vars map[string]interface{}) {
+	w.Header().Set("Content-Encoding", "gzip")
+	w.Header().Set("Content-Type", "text/html;charset=utf8")
 	w.Header().Set(
 		"Content-Security-Policy",
 		"default-src 'none';font-src 'self';img-src https://avatars.githubusercontent.com;script-src 'self';style-src 'self'",
 	)
-	w.Header().Set("Content-Type", "text/html;charset=utf8")
 
 	vars["cssHash"] = cssHash
 	vars["jsHash"] = jsHash
@@ -172,9 +174,15 @@ func render(w http.ResponseWriter, tmpl *template.Template, vars map[string]inte
 		}
 	}()
 
-	if err := minfy.Minify("text/html", w, pipeR); err != nil {
+	var buf bytes.Buffer
+
+	if err := minfy.Minify("text/html", &buf, pipeR); err != nil {
 		panic(err)
 	}
+
+	writer := gzip.NewWriter(w)
+	writer.Write(buf.Bytes())
+	writer.Close()
 }
 
 func runCode(lang, code string) string {
