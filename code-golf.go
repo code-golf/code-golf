@@ -194,6 +194,7 @@ func runCode(lang, code string) string {
 		Args:   []string{"runc", "start", "id"},
 		Dir:    "containers/" + lang,
 		Path:   "/usr/bin/runc",
+		Stderr: os.Stdout,
 		Stdin:  strings.NewReader(code),
 		Stdout: &out,
 	}

@@ -2,6 +2,7 @@
 
 docker pull alpine:edge
 
+# Perl
 cd containers/perl
 
 docker build -t perl-build .
@@ -19,3 +20,19 @@ sudo chown -R $USER: rootfs
 
 find rootfs/usr/lib -name '*.h'   -delete
 find rootfs/usr/lib -name '*.pod' -delete
+
+# Ruby
+cd containers/ruby
+
+docker build -t ruby-build .
+
+id=`docker run -d ruby-build true`
+
+mkdir -p rootfs/lib rootfs/usr/{bin,lib}
+
+docker cp $id:/lib/ld-musl-x86_64.so.1 rootfs/lib
+docker cp $id:/usr/bin/ruby            rootfs/usr/bin
+docker cp $id:/usr/lib/ruby            rootfs/usr/lib
+docker rm $id
+
+sudo chown -R $USER: rootfs

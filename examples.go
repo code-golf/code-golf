@@ -75,5 +75,6 @@ var examples = map[string]string{
         print("Fizz\n")
     else
         print("#{number}\n")
+    end
 end`,
 }
