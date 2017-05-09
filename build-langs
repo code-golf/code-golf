@@ -2,37 +2,34 @@
 
 docker pull alpine:edge
 
-# Perl
-cd containers/perl
+pwd=`pwd`
 
-docker build -t perl-build .
+# Perl & Ruby
+for lang in perl ruby; do
+    cd $pwd/containers/$lang
 
-id=`docker run -d perl-build true`
+    docker build -t $lang-build .
 
-mkdir -p rootfs/lib rootfs/usr/{bin,lib}
+    id=`docker run -d $lang-build true`
 
-docker cp $id:/lib/ld-musl-x86_64.so.1 rootfs/lib
-docker cp $id:/usr/bin/perl            rootfs/usr/bin
-docker cp $id:/usr/lib/perl5           rootfs/usr/lib
-docker rm $id
+    rm -fr rootfs
+    mkdir -p rootfs/lib rootfs/usr/{bin,lib}
 
-sudo chown -R $USER: rootfs
+    docker cp $id:/lib/ld-musl-x86_64.so.1 rootfs/lib
+    docker cp $id:/usr/bin/$lang           rootfs/usr/bin
 
-find rootfs/usr/lib -name '*.h'   -delete
-find rootfs/usr/lib -name '*.pod' -delete
+    if [ $lang = 'perl' ]; then
+        docker cp $id:/usr/lib/perl5 rootfs/usr/lib
+    else
+        docker cp $id:/usr/lib/$lang rootfs/usr/lib
+    fi
 
-# Ruby
-cd containers/ruby
+    docker rm $id
+done
 
-docker build -t ruby-build .
+# Cleanup
+cd ..
 
-id=`docker run -d ruby-build true`
+sudo chown -R $USER: */rootfs
 
-mkdir -p rootfs/lib rootfs/usr/{bin,lib}
-
-docker cp $id:/lib/ld-musl-x86_64.so.1 rootfs/lib
-docker cp $id:/usr/bin/ruby            rootfs/usr/bin
-docker cp $id:/usr/lib/ruby            rootfs/usr/lib
-docker rm $id
-
-sudo chown -R $USER: rootfs
+find */rootfs/usr/lib -regex '.*\.\(h\|md\|pod\)' -delete

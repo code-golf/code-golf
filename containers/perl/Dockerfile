@@ -11,7 +11,3 @@ RUN cd perl-5.24.1                              \
     -des                                        \
  && make                                        \
  && make install-strip
-
-RUN ls -l /usr/bin/perl # 1847656
-RUN ldd /usr/bin/perl
-RUN ls -l /lib/ld-musl-x86_64.so.1
