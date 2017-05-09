@@ -1,5 +1,8 @@
 #!/bin/sh -e
 
-rsync -ahP --delete . raspass.me:code-golf
+rsync -ahP --delete                                   \
+    app code-golf.service containers raspass.me views \
+    raspass.me:code-golf
 
-ssh raspass.me 'sudo systemctl daemon-reload && sudo systemctl restart code-golf'
+ssh raspass.me \
+    'sudo systemctl daemon-reload && sudo systemctl restart code-golf'
