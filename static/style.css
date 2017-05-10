@@ -2,14 +2,14 @@
     font-family: Roboto;
     font-style: normal;
     font-weight: 400;
-    src: url('/roboto-v16') format('woff2');
+    src: url(roboto-v16) format(woff2);
 }
 
 @font-face {
     font-family: 'Roboto Mono';
     font-style: normal;
     font-weight: 400;
-    src: url('/roboto-mono-v4') format('woff2');
+    src: url(roboto-mono-v4) format(woff2);
 }
 
 article {
@@ -38,7 +38,7 @@ input,
     font-size: 18px;
     font-weight: bold;
     padding: 13px 27px 12px;
-    transition: background 200ms ease-in-out 0s;
+    transition: background .2s ease-in-out 0s;
 }
 
 input {

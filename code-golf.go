@@ -67,7 +67,7 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 	case "":
 		header["Strict-Transport-Security"] = []string{headerHSTS}
 		header["Link"] =
-			[]string{"</roboto-v16>;as=font;crossorigin;rel=preload"}
+			[]string{"<roboto-v16>;as=font;crossorigin;rel=preload"}
 
 		vars := map[string]interface{}{"r": r}
 
