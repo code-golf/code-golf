@@ -60,11 +60,14 @@ func readCookie(r *http.Request) (id int, login string) {
 }
 
 func codeGolf(w http.ResponseWriter, r *http.Request) {
+	header := w.Header()
+
 	// Skip over the initial forward slash.
 	switch path := r.URL.Path[1:]; path {
 	case "":
-		w.Header().Set("Link","</roboto-v16>;as=font;crossorigin;rel=preload")
-		w.Header().Set("Strict-Transport-Security", headerHSTS)
+		header["Strict-Transport-Security"] = []string{headerHSTS}
+		header["Link"] =
+			[]string{"</roboto-v16>;as=font;crossorigin;rel=preload"}
 
 		vars := map[string]interface{}{"r": r}
 
@@ -78,46 +81,45 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 			mac := hmac.New(sha256.New, hmacKey)
 			mac.Write([]byte(data))
 
-			w.Header().Set(
-				"Set-Cookie",
-				"__Host-user="+data+":"+
-					base64.RawURLEncoding.EncodeToString(mac.Sum(nil))+
+			header["Set-Cookie"] = []string{
+				"__Host-user=" + data + ":" +
+					base64.RawURLEncoding.EncodeToString(mac.Sum(nil)) +
 					";HttpOnly;Path=/;SameSite=Lax;Secure",
-			)
+			}
 		}
 
 		http.Redirect(w, r, "/", 302)
 	case "logout":
-		w.Header().Set("Set-Cookie", "__Host-user=;MaxAge=0;Path=/;Secure")
+		header["Set-Cookie"] = []string{"__Host-user=;MaxAge=0;Path=/;Secure"}
 		http.Redirect(w, r, "/", 302)
 	case "roboto-v16":
-		w.Header().Set("Cache-Control", "max-age=9999999,public")
-		w.Header().Set("Content-Type", "font/woff2")
+		header["Cache-Control"] = []string{"max-age=9999999,public"}
+		header["Content-Type"] = []string{"font/woff2"}
 		w.Write(roboto)
 	case "roboto-mono-v4":
-		w.Header().Set("Cache-Control", "max-age=9999999,public")
-		w.Header().Set("Content-Type", "font/woff2")
+		header["Cache-Control"] = []string{"max-age=9999999,public"}
+		header["Content-Type"] = []string{"font/woff2"}
 		w.Write(robotoMono)
 	case cssHash:
-		w.Header().Set("Cache-Control", "max-age=9999999,public")
-		w.Header().Set("Content-Type", "text/css")
+		header["Cache-Control"] = []string{"max-age=9999999,public"}
+		header["Content-Type"] = []string{"text/css"}
 
 		if strings.Contains(r.Header.Get("Accept-Encoding"), "br") {
-			w.Header().Set("Content-Encoding", "br")
+			header["Content-Encoding"] = []string{"br"}
 			w.Write(cssBr)
 		} else {
-			w.Header().Set("Content-Encoding", "gzip")
+			header["Content-Encoding"] = []string{"gzip"}
 			w.Write(cssGzip)
 		}
 	case jsHash:
-		w.Header().Set("Cache-Control", "max-age=9999999,public")
-		w.Header().Set("Content-Type", "application/javascript")
+		header["Cache-Control"] = []string{"max-age=9999999,public"}
+		header["Content-Type"] = []string{"application/javascript"}
 
 		if strings.Contains(r.Header.Get("Accept-Encoding"), "br") {
-			w.Header().Set("Content-Encoding", "br")
+			header["Content-Encoding"] = []string{"br"}
 			w.Write(jsBr)
 		} else {
-			w.Header().Set("Content-Encoding", "gzip")
+			header["Content-Encoding"] = []string{"gzip"}
 			w.Write(jsGzip)
 		}
 	default:
@@ -133,10 +135,10 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 		if tmpl, ok := holes[hole]; ok {
 			switch lang {
 			case "javascript", "perl", "perl6", "php", "python", "ruby":
-				w.Header().Set("Link",
-					"</roboto-v16>;as=font;crossorigin;rel=preload")
-				w.Header().Set("Link",
-					"</roboto-mono-v4>;as=font;crossorigin;rel=preload")
+				header["Link"] = []string{
+					"</roboto-v16>;as=font;crossorigin;rel=preload",
+					"</roboto-mono-v4>;as=font;crossorigin;rel=preload",
+				}
 
 				vars := map[string]interface{}{"lang": lang, "r": r}
 
@@ -160,12 +162,13 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 }
 
 func render(w http.ResponseWriter, tmpl *template.Template, vars map[string]interface{}) {
-	w.Header().Set("Content-Encoding", "gzip")
-	w.Header().Set("Content-Type", "text/html;charset=utf8")
-	w.Header().Set(
-		"Content-Security-Policy",
+	header := w.Header()
+
+	header["Content-Encoding"] = []string{"gzip"}
+	header["Content-Type"] = []string{"text/html;charset=utf8"}
+	header["Content-Security-Policy"] = []string{
 		"default-src 'none';font-src 'self';img-src https://avatars.githubusercontent.com;script-src 'self';style-src 'self'",
-	)
+	}
 
 	vars["cssHash"] = cssHash
 	vars["jsHash"] = jsHash
