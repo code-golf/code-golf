@@ -63,6 +63,7 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 	// Skip over the initial forward slash.
 	switch path := r.URL.Path[1:]; path {
 	case "":
+		w.Header().Set("Link","</roboto-v16>;as=font;crossorigin;rel=preload")
 		w.Header().Set("Strict-Transport-Security", headerHSTS)
 
 		vars := map[string]interface{}{"r": r}
@@ -132,6 +133,11 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 		if tmpl, ok := holes[hole]; ok {
 			switch lang {
 			case "javascript", "perl", "perl6", "php", "python", "ruby":
+				w.Header().Set("Link",
+					"</roboto-v16>;as=font;crossorigin;rel=preload")
+				w.Header().Set("Link",
+					"</roboto-mono-v4>;as=font;crossorigin;rel=preload")
+
 				vars := map[string]interface{}{"lang": lang, "r": r}
 
 				_, vars["login"] = readCookie(r)
