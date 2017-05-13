@@ -142,11 +142,16 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 
 				vars := map[string]interface{}{"lang": lang, "r": r}
 
-				_, vars["login"] = readCookie(r)
+				var userID int
+				userID, vars["login"] = readCookie(r)
 
 				if r.Method == http.MethodPost {
 					vars["code"] = r.FormValue("code")
-					vars["pass"] = fizzBuzzAnswer == runCode(lang, r.FormValue("code"))
+					if fizzBuzzAnswer == runCode(lang, r.FormValue("code")) {
+						vars["pass"] = true
+
+						addSolution(userID, lang, r.FormValue("code"))
+					}
 				} else {
 					vars["code"] = examples[lang]
 				}
