@@ -67,7 +67,7 @@ func printLeaderboards(w http.ResponseWriter) {
 		i++
 
 		w.Write([]byte(
-			"<tr><td>" + strconv.Itoa(i)
+			"<tr><td>" + strconv.Itoa(i) +
 			"<td>" + strconv.Itoa(length) +
 			"<td>" + lang +
 			"<td>" + login,
