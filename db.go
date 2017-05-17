@@ -29,6 +29,15 @@ func addSolution(userID int, lang, code string) {
 	}
 }
 
+func getSolutionCode(userID int, lang string) (code string) {
+	db.QueryRow(
+		"SELECT code FROM solutions WHERE user_id = $1 AND lang = $2",
+		userID, lang,
+	).Scan(&code)
+
+	return
+}
+
 func addUser(id int, login string) {
 	if _, err := db.Exec(
 		`INSERT INTO users VALUES($1, $2)

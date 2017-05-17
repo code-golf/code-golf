@@ -155,6 +155,8 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 
 						addSolution(userID, lang, code)
 					}
+				} else if code := getSolutionCode(userID, lang); code != "" {
+					vars["code"] = code
 				} else {
 					vars["code"] = examples[lang]
 				}
