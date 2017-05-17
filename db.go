@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 
 	_ "github.com/lib/pq"
 )
@@ -48,6 +49,25 @@ func addUser(id int, login string) {
 	}
 }
 
+func ordinal(x int) string {
+	suffix := "th"
+	switch x % 10 {
+	case 1:
+		if x%100 != 11 {
+			suffix = "st"
+		}
+	case 2:
+		if x%100 != 12 {
+			suffix = "nd"
+		}
+	case 3:
+		if x%100 != 13 {
+			suffix = "rd"
+		}
+	}
+	return strconv.Itoa(x) + "<sup>" + suffix + "</sup>"
+}
+
 func printLeaderboards(w http.ResponseWriter) {
 	rows, err := db.Query(
 		`SELECT login, lang, LENGTH(code)
@@ -62,7 +82,7 @@ func printLeaderboards(w http.ResponseWriter) {
 
 	defer rows.Close()
 
-	w.Write([]byte("<table>"))
+	w.Write([]byte("<article><table><tr><th>Rank<th>Strokes<th>Lang<th>User"))
 
 	i := 0
 
@@ -77,14 +97,15 @@ func printLeaderboards(w http.ResponseWriter) {
 		i++
 
 		w.Write([]byte(
-			"<tr><td>" + strconv.Itoa(i) +
+			"<tr><td>" + ordinal(i) +
 			"<td>" + strconv.Itoa(length) +
-			"<td>" + lang +
-			"<td>" + login,
+			"<td>" + strings.Title(lang) +
+			`<td><img src="//avatars.githubusercontent.com/` + login +
+			`?size=20"> ` + login,
 		))
 	}
 
-	w.Write([]byte("</table>"))
+	w.Write([]byte("</table></article>"))
 
 	if err := rows.Err(); err != nil {
 		panic(err)

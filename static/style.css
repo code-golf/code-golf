@@ -71,6 +71,35 @@ nav img {
     width: 20px;
 }
 
+table {
+    border-collapse: collapse;
+}
+
+td, th {
+    padding: 10px;
+}
+
+td {
+    border-top: 1px solid #ddd;
+    line-height: 20px;
+}
+
+td img {
+    vertical-align: middle;
+}
+
+td:nth-child(2) {
+    text-align: right;
+}
+
+th {
+    border-bottom: 2px solid #ddd;
+}
+
+tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
 .CodeMirror {
     border: 1px solid #000;
     font-family: 'Roboto Mono', monospace;
