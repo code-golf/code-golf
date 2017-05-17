@@ -50,9 +50,10 @@ func addUser(id int, login string) {
 
 func printLeaderboards(w http.ResponseWriter) {
 	rows, err := db.Query(
-		`SELECT login, lang, length(code)
+		`SELECT login, lang, LENGTH(code)
 		   FROM solutions
-		   JOIN users on user_id = id`,
+		   JOIN users on user_id = id
+		  ORDER BY LENGTH(code)`,
 	)
 
 	if err != nil {
