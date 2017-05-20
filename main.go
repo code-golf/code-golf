@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/tls"
+	"fmt"
 	"net/http"
 	"os"
 
@@ -13,6 +14,13 @@ const headerHSTS = "max-age=31536000;includeSubDomains;preload"
 type handler struct{}
 
 func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println(r)
+			http.Error(w, "500: It's Dead, Jim.", 500)
+		}
+	}()
+
 	switch r.Host {
 	case "code-golf.io":
 		codeGolf(w, r)
