@@ -16,7 +16,7 @@ type handler struct{}
 func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	defer func() {
 		if r := recover(); r != nil {
-			fmt.Println(r)
+			fmt.Fprint(os.Stderr, "<1>", r, "\n")
 			http.Error(w, "500: It's Dead, Jim.", 500)
 		}
 	}()
