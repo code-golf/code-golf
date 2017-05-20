@@ -21,11 +21,24 @@ func init() {
 }
 
 func addSolution(userID int, lang, code string) {
-	if _, err := db.Exec(
-		`INSERT INTO solutions(user_id, lang, code) VALUES($1, $2, $3)
-		 ON CONFLICT ON CONSTRAINT solutions_pkey DO UPDATE SET code = $3`,
-		userID, lang, code,
-	); err != nil {
+	// Update the code if it's the same characters or less, but only update
+	// the submitted time if the solution is shorter. This avoids a user
+	// moving down the leaderboard by matching their personal best.
+	if _, err := db.Exec(`
+	    INSERT INTO solutions
+	         VALUES (NOW(), $1, $2, $3)
+	    ON CONFLICT ON CONSTRAINT solutions_pkey
+	  DO UPDATE SET submitted = CASE
+	                    WHEN LENGTH($3) < LENGTH(solutions.code)
+	                    THEN NOW()
+	                    ELSE solutions.submitted
+	                END,
+	                code = CASE
+	                    WHEN LENGTH($3) > LENGTH(solutions.code)
+	                    THEN solutions.code
+	                    ELSE $3
+	                END
+	`, userID, lang, code); err != nil {
 		panic(err)
 	}
 }
@@ -73,7 +86,7 @@ func printLeaderboards(w http.ResponseWriter) {
 		`SELECT login, lang, LENGTH(code)
 		   FROM solutions
 		   JOIN users on user_id = id
-		  ORDER BY LENGTH(code)`,
+		  ORDER BY LENGTH(code), submitted`,
 	)
 
 	if err != nil {
