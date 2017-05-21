@@ -17,6 +17,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/sergi/go-diff/diffmatchpatch"
 	"github.com/tdewolff/minify"
 	"github.com/tdewolff/minify/html"
 )
@@ -152,10 +153,29 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 					code := strings.Replace(r.FormValue("code"), "\r", "", -1)
 					vars["code"] = code
 
-					if fizzBuzzAnswer == runCode(lang, code) {
+					output := runCode(lang, code)
+
+					if fizzBuzzAnswer == output {
 						vars["pass"] = true
 
 						addSolution(userID, lang, code)
+					} else {
+						var diffString string
+
+						for _, diff := range diffmatchpatch.New().DiffMain(
+							fizzBuzzAnswer, output, false,
+						) {
+							switch diff.Type {
+							case diffmatchpatch.DiffInsert:
+								diffString += "<ins>" + diff.Text + "</ins>"
+							case diffmatchpatch.DiffDelete:
+								diffString += "<del>" + diff.Text + "</del>"
+							case diffmatchpatch.DiffEqual:
+								diffString += diff.Text
+							}
+						}
+
+						vars["diff"] = template.HTML(diffString)
 					}
 				} else if code := getSolutionCode(userID, lang); code != "" {
 					vars["code"] = code

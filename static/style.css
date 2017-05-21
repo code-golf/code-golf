@@ -22,6 +22,12 @@ body {
     margin: 0;
 }
 
+del {
+    background: #fdf3fa;
+    color: #e01a22;
+    text-decoration: none;
+}
+
 header {
     background: LightGrey;
     width: 100%;
@@ -50,6 +56,12 @@ input:hover {
     background: #397cac;
 }
 
+ins {
+    background: #e8f5e5;
+    color: #219a00;
+    text-decoration: none;
+}
+
 nav {
     height: 40px;
     line-height: 40px;
@@ -69,6 +81,10 @@ nav a:first-child {
 nav img {
     height: 20px;
     width: 20px;
+}
+
+pre {
+    font-family: 'Roboto Mono';
 }
 
 table {
@@ -102,7 +118,7 @@ tr:nth-child(even) {
 
 .CodeMirror {
     border: 1px solid #000;
-    font-family: 'Roboto Mono', monospace;
+    font-family: 'Roboto Mono';
     margin: 10px 0;
     width: 100%;
 }
