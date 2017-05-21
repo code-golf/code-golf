@@ -37,9 +37,7 @@ void main (int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    char *newargv[] = {argv[0], NULL};
-
-    execv(argv[1], newargv);
-    perror("execv");
+    execve(argv[1], (char *const[]){argv[0], NULL}, (char *const[]){NULL});
+    perror("execve");
     exit(EXIT_FAILURE);
 }
