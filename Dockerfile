@@ -47,6 +47,16 @@ CMD css=`cat static/*.css | csso /dev/stdin`                                    
     var  jsBr   = []byte{`bro     <<< "$js"  | xxd -i`}                               \n\
     var  jsGzip = []byte{`gzip -9 <<< "$js"  | xxd -i`}                               \n\
                                                                                       \n\
-    " > static.go                                                                       \
- && go build -ldflags '-s' -o app                                                       \
- && gcc -s -o run-container run-container.c
+    " > static.go                   \
+ && go build -ldflags '-s' -o app   \
+ && gcc                             \
+    -fno-asynchronous-unwind-tables \
+    -nostdlib                       \
+    -O2                             \
+    -o run-container                \
+    -s                              \
+    -Wall                           \
+    -Werror                         \
+    -Wl,--build-id=none             \
+    run-container.S run-container.c \
+ && strip -R .comment run-container
