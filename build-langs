@@ -13,7 +13,7 @@ for lang in perl ruby; do
     id=`docker run -d $lang-build true`
 
     rm -fr rootfs
-    mkdir -p rootfs/lib rootfs/usr/{bin,lib}
+    mkdir -p rootfs/lib rootfs/old-root rootfs/usr/{bin,lib}
 
     docker cp $id:/lib/ld-musl-x86_64.so.1 rootfs/lib
     docker cp $id:/usr/bin/$lang           rootfs/usr/bin

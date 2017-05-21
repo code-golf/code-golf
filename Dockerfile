@@ -44,4 +44,5 @@ CMD css=`cat static/*.css | csso /dev/stdin`                                    
     var  jsGzip = []byte{`gzip -9 <<< "$js"  | xxd -i`}                               \n\
                                                                                       \n\
     " > static.go                                                                       \
- && go build -ldflags '-s' -o app
+ && go build -ldflags '-s' -o app                                                       \
+ && gcc -o run-container run-container.c

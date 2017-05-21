@@ -1,7 +1,7 @@
 #!/bin/sh -e
 
-rsync -ahP --delete                                   \
-    app code-golf.service containers raspass.me views \
+rsync -ahP --delete                                                 \
+    app code-golf.service containers raspass.me run-container views \
     raspass.me:code-golf
 
 ssh raspass.me \

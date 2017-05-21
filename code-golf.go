@@ -14,6 +14,8 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
+	"syscall"
+	"time"
 
 	"github.com/tdewolff/minify"
 	"github.com/tdewolff/minify/html"
@@ -207,20 +209,29 @@ func render(w http.ResponseWriter, tmpl *template.Template, vars map[string]inte
 func runCode(lang, code string) string {
 	var out bytes.Buffer
 
-	// TODO Need better IDs
-	// TODO Use github.com/opencontainers/runc/libcontainer
 	cmd := exec.Cmd{
-		Args:   []string{"runc", "start", "id"},
+		Args:   []string{"perl", "/usr/bin/" + lang},
 		Dir:    "containers/" + lang,
-		Path:   "/usr/bin/runc",
+		Path:   "../../run-container",
 		Stderr: os.Stdout,
 		Stdin:  strings.NewReader(code),
 		Stdout: &out,
+		SysProcAttr: &syscall.SysProcAttr{
+			Cloneflags: syscall.CLONE_NEWIPC | syscall.CLONE_NEWNET | syscall.CLONE_NEWNS | syscall.CLONE_NEWPID | syscall.CLONE_NEWUTS,
+		},
 	}
 
-	if err := cmd.Run(); err != nil {
+	if err := cmd.Start(); err != nil {
+		panic(err)
+	}
+
+	timer := time.AfterFunc(100*time.Millisecond, func() { cmd.Process.Kill() })
+
+	if err := cmd.Wait(); err != nil {
 		println(err.Error())
 	}
+
+	timer.Stop()
 
 	return string(bytes.TrimSpace(out.Bytes()))
 }
