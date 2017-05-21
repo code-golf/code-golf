@@ -45,4 +45,4 @@ CMD css=`cat static/*.css | csso /dev/stdin`                                    
                                                                                       \n\
     " > static.go                                                                       \
  && go build -ldflags '-s' -o app                                                       \
- && gcc -o run-container run-container.c
+ && gcc -s -o run-container run-container.c
