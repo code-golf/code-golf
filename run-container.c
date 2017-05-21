@@ -1,4 +1,4 @@
-// 1040 bytes
+// 1152 bytes
 
 long _call(int, void*, void*, void*, void*);
 
@@ -8,6 +8,9 @@ long _call(int, void*, void*, void*, void*);
 #define call4(n,a,b,c,d) _call(n,(void*)(a),(void*)(b),(void*)(c),(void*)(d))
 
 #define EXIT_FAILURE 1
+
+#define GID_nobody 99
+#define UID_nobody 99
 
 #define MNT_DETACH 2
 
@@ -21,6 +24,8 @@ long _call(int, void*, void*, void*, void*);
 #define SYS_execve      59
 #define SYS_exit        60
 #define SYS_chdir       80
+#define SYS_setuid      105
+#define SYS_setgid      106
 #define SYS_pivot_root  155
 #define SYS_mount       165
 #define SYS_umount2     166
@@ -57,6 +62,12 @@ int main(int argc, char const* const argv[]) {
 
     if (call2(SYS_sethostname, argv[0], strlen(argv[0])) < 0)
         die("host");
+
+    if (call1(SYS_setgid, GID_nobody) < 0)
+        die("setgid");
+
+    if (call1(SYS_setuid, UID_nobody) < 0)
+        die("setuid");
 
     call1(SYS_execve, argv[1]);
     die("exec");
