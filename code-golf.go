@@ -225,7 +225,7 @@ func runCode(lang, code string) string {
 		panic(err)
 	}
 
-	timer := time.AfterFunc(100*time.Millisecond, func() { cmd.Process.Kill() })
+	timer := time.AfterFunc(500*time.Millisecond, func() { cmd.Process.Kill() })
 
 	if err := cmd.Wait(); err != nil {
 		println(err.Error())
