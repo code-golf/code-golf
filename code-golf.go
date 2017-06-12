@@ -230,7 +230,6 @@ func runCode(lang, code string) string {
 	var out bytes.Buffer
 
 	cmd := exec.Cmd{
-		Args:   []string{"perl", "/usr/bin/" + lang},
 		Dir:    "containers/" + lang,
 		Path:   "../../run-container",
 		Stderr: os.Stdout,
@@ -239,6 +238,22 @@ func runCode(lang, code string) string {
 		SysProcAttr: &syscall.SysProcAttr{
 			Cloneflags: syscall.CLONE_NEWIPC | syscall.CLONE_NEWNET | syscall.CLONE_NEWNS | syscall.CLONE_NEWPID | syscall.CLONE_NEWUTS,
 		},
+	}
+
+	// $binary, @new_argv where $new_argv[0] is used for hostname too.
+	switch lang {
+	case "perl6":
+		cmd.Args = []string{
+			"/usr/bin/moar",
+			"perl6",
+			"--execname=perl6",
+			"--libpath=/usr/share/nqp/lib",
+			"--libpath=/usr/share/perl6/runtime",
+			"/usr/share/perl6/runtime/perl6.moarvm",
+			"-",
+		}
+	default:
+		cmd.Args = []string{"/usr/bin/" + lang, lang}
 	}
 
 	if err := cmd.Start(); err != nil {

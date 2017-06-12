@@ -11,3 +11,13 @@ RUN cd perl-5.26.0                              \
     -des                                        \
  && make                                        \
  && make install-strip
+
+RUN find /usr/lib/perl5 -regex '.*\.\(h\|pod\)' -delete
+
+FROM scratch
+
+COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
+COPY --from=0 /usr/bin/perl            /usr/bin/
+COPY --from=0 /usr/lib/perl5           /usr/lib/perl5
+
+ENTRYPOINT ["/usr/bin/perl"]

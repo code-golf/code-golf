@@ -60,7 +60,7 @@ int main(int argc, char const* const argv[]) {
     if (call2(SYS_umount2, "/old-root", MNT_DETACH) < 0)
         die("umount");
 
-    if (call2(SYS_sethostname, argv[0], strlen(argv[0])) < 0)
+    if (call2(SYS_sethostname, argv[1], strlen(argv[1])) < 0)
         die("host");
 
     if (call1(SYS_setgid, GID_nobody) < 0)
@@ -69,7 +69,7 @@ int main(int argc, char const* const argv[]) {
     if (call1(SYS_setuid, UID_nobody) < 0)
         die("setuid");
 
-    call1(SYS_execve, argv[1]);
+    call2(SYS_execve, argv[0], argv + 1);
     die("exec");
 
     return 0;
