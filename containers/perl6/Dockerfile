@@ -1,11 +1,11 @@
 FROM alpine:edge
 
-RUN apk add --no-cache curl gcc linux-headers make musl-dev perl
+RUN apk add --no-cache curl gcc git linux-headers make musl-dev perl
 
-RUN curl http://rakudo.org/downloads/star/rakudo-star-2017.04.tar.gz \
+RUN curl -L https://github.com/rakudo/rakudo/archive/2017.05.tar.gz \
   | tar xzf -
 
-RUN cd rakudo-star-2017.04                                    \
+RUN cd rakudo-2017.05                                         \
  && perl Configure.pl --backend=moar --gen-moar --prefix=/usr \
  && make install
 
