@@ -185,7 +185,7 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 
 				render(w, tmpl, vars)
 			default:
-				http.Redirect(w, r, "/"+hole+"/perl", 302)
+				http.Redirect(w, r, "/"+hole+"/perl6", 302)
 			}
 		} else {
 			w.WriteHeader(http.StatusNotFound)
