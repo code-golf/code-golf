@@ -229,6 +229,10 @@ func render(w http.ResponseWriter, tmpl *template.Template, vars map[string]inte
 func runCode(lang, code string) string {
 	var out bytes.Buffer
 
+	if lang == "php" {
+		code = "<?php " + code + " ?>"
+	}
+
 	cmd := exec.Cmd{
 		Dir:    "containers/" + lang,
 		Path:   "../../run-container",

@@ -109,10 +109,16 @@ func printLeaderboards(w http.ResponseWriter) {
 
 		i++
 
+		if lang == "php" {
+			lang = "PHP"
+		} else {
+			lang = strings.Title(lang)
+		}
+
 		w.Write([]byte(
 			"<tr><td>" + ordinal(i) +
 			"<td>" + strconv.Itoa(length) +
-			"<td>" + strings.Title(lang) +
+			"<td>" + lang +
 			`<td><img src="//avatars.githubusercontent.com/` + login +
 			`?size=20"> ` + login,
 		))
