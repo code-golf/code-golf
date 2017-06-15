@@ -1,6 +1,14 @@
-FROM golang:1.8.1
+FROM debian:jessie
 
-ENV CGO_ENABLED 0
+ENV CGO_ENABLED=0 GOPATH=/go PATH=/usr/local/go/bin:$PATH
+
+WORKDIR /go
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl gcc git make nodejs-legacy npm openjdk-7-jre-headless vim-common
+
+# https://golang.org/dl/
+RUN curl -sSL https://storage.googleapis.com/golang/go1.9beta1.linux-amd64.tar.gz | tar -xzC /usr/local
 
 RUN go get -d github.com/gorilla/handlers  \
  && cd /go/src/github.com/gorilla/handlers \
@@ -17,9 +25,6 @@ RUN go get -d github.com/sergi/go-diff/... \
 RUN go get -d github.com/tdewolff/minify  \
  && cd /go/src/github.com/tdewolff/minify \
  && git checkout -q 18372f3
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    nodejs-legacy npm openjdk-7-jre-headless vim-common
 
 RUN npm install -g csso-cli@1.0.0 csso@3.1.1
 
