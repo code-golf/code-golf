@@ -1,5 +1,7 @@
 #!/bin/sh -e
 
+docker pull debian:stretch
+
 docker build -t codegolf .
 
 dir=/go/src/github.com/jraspass/codegolf

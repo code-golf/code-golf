@@ -1,22 +1,22 @@
-FROM debian:jessie
+FROM debian:stretch
 
 ENV CGO_ENABLED=0 GOPATH=/go PATH=/usr/local/go/bin:$PATH
 
 WORKDIR /go
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl gcc git make nodejs-legacy npm openjdk-7-jre-headless vim-common
+    curl gcc git gnupg libc6-dev make openjdk-8-jre-headless vim-common
 
 # https://golang.org/dl/
-RUN curl -sSL https://storage.googleapis.com/golang/go1.9beta1.linux-amd64.tar.gz | tar -xzC /usr/local
+RUN curl -sSL https://storage.googleapis.com/golang/go1.9beta2.linux-amd64.tar.gz | tar -xzC /usr/local
 
 RUN go get -d github.com/gorilla/handlers  \
  && cd /go/src/github.com/gorilla/handlers \
- && git checkout -q 13d7309
+ && git checkout -q a4d79d4
 
 RUN go get -d github.com/lib/pq  \
  && cd /go/src/github.com/lib/pq \
- && git checkout -q 2704adc
+ && git checkout -q 8837942
 
 RUN go get -d github.com/sergi/go-diff/... \
  && cd /go/src/github.com/sergi/go-diff    \
@@ -24,7 +24,11 @@ RUN go get -d github.com/sergi/go-diff/... \
 
 RUN go get -d github.com/tdewolff/minify  \
  && cd /go/src/github.com/tdewolff/minify \
- && git checkout -q 18372f3
+ && git checkout -q 2d28d6e
+
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
+
+RUN apt-get update && apt-get install -y --no-install-recommends nodejs
 
 RUN npm install -g csso-cli@1.0.0 csso@3.1.1
 
@@ -34,7 +38,7 @@ RUN curl -L https://github.com/google/brotli/archive/v0.6.0.tar.gz \
  && make                                                           \
  && mv bin/bro /usr/local/bin
 
-RUN curl http://dl.google.com/closure-compiler/compiler-20170423.tar.gz \
+RUN curl http://dl.google.com/closure-compiler/compiler-20170521.tar.gz \
   | tar -zxf - -C /
 
 # Bashisms FTW.
