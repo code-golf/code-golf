@@ -1,20 +1,22 @@
 <!doctype html>
 
-<title>Code-Golf</title>
-
 <link rel=stylesheet href="/{{ .cssHash }}">
-
-<script src="/{{ .jsHash }}"></script>
+<meta name=viewport content="width=device-width">
+<title>Code-Golf</title>
 
 <header>
     <nav>
-        <a href=/>Code-Golf</a>
+        <a href=/>Home</a>
+        <a href=/about>About</a>
+        <a href=/leaderboards>Leaderboards</a>
     {{ if .login }}
-        {{ .login }}
-        <img src="//avatars.githubusercontent.com/{{ .login }}?size=20">
-        <a href=/logout>Logout</a>
+        <a href=/logout id=logout title=Logout></a>
+        <div>
+            <img src="//avatars.githubusercontent.com/{{ .login }}?size=30">
+            {{ .login }}
+        </div>
     {{ else }}
-        <a href="//github.com/login/oauth/authorize?client_id=7f6709819023e9215205&scope=user:email">
+        <a href="//github.com/login/oauth/authorize?client_id=7f6709819023e9215205&scope=user:email" id=login>
             Login with GitHub
         </a>
     {{ end }}
@@ -22,3 +24,5 @@
 </header>
 
 {{ template "content" . }}
+
+<script src="/{{ .jsHash }}"></script>

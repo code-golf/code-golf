@@ -77,7 +77,7 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 		_, vars["login"] = readCookie(r)
 
 		render(w, index, vars)
-		printLeaderboards(w)
+		//printLeaderboards(w)
 	case "callback":
 		if user := githubAuth(r.FormValue("code")); user.ID != 0 {
 			data := strconv.Itoa(user.ID) + ":" + user.Login
@@ -199,7 +199,7 @@ func render(w http.ResponseWriter, tmpl *template.Template, vars map[string]inte
 	header["Content-Encoding"] = []string{"gzip"}
 	header["Content-Type"] = []string{"text/html;charset=utf8"}
 	header["Content-Security-Policy"] = []string{
-		"default-src 'none';font-src 'self';img-src https://avatars.githubusercontent.com;script-src 'self';style-src 'self'",
+		"default-src 'none';font-src 'self';img-src data: https://avatars.githubusercontent.com;script-src 'self';style-src 'self'",
 	}
 
 	vars["cssHash"] = cssHash
