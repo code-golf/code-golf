@@ -14,6 +14,8 @@ const headerHSTS = "max-age=31536000;includeSubDomains;preload"
 type handler struct{}
 
 func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	w.Header()["Date"] = nil
+
 	defer func() {
 		if r := recover(); r != nil {
 			fmt.Fprint(os.Stderr, "<1>", r, "\n")
