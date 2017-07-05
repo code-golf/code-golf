@@ -69,8 +69,6 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 	switch path := r.URL.Path[1:]; path {
 	case "":
 		header["Strict-Transport-Security"] = []string{headerHSTS}
-		header["Link"] =
-			[]string{"<roboto-v16>;as=font;crossorigin;rel=preload"}
 
 		vars := map[string]interface{}{"r": r}
 
@@ -96,14 +94,6 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 	case "logout":
 		header["Set-Cookie"] = []string{"__Host-user=;MaxAge=0;Path=/;Secure"}
 		http.Redirect(w, r, "/", 302)
-	case "roboto-v16":
-		header["Cache-Control"] = []string{"max-age=9999999,public"}
-		header["Content-Type"] = []string{"font/woff2"}
-		w.Write(roboto)
-	case "roboto-mono-v4":
-		header["Cache-Control"] = []string{"max-age=9999999,public"}
-		header["Content-Type"] = []string{"font/woff2"}
-		w.Write(robotoMono)
 	case cssHash:
 		header["Cache-Control"] = []string{"max-age=9999999,public"}
 		header["Content-Type"] = []string{"text/css"}
@@ -139,11 +129,6 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 		if tmpl, ok := holes[hole]; ok {
 			switch lang {
 			case "javascript", "perl", "perl6", "php", "python", "ruby":
-				header["Link"] = []string{
-					"</roboto-v16>;as=font;crossorigin;rel=preload",
-					"</roboto-mono-v4>;as=font;crossorigin;rel=preload",
-				}
-
 				vars := map[string]interface{}{"lang": lang, "r": r}
 
 				var userID int
@@ -199,7 +184,7 @@ func render(w http.ResponseWriter, tmpl *template.Template, vars map[string]inte
 	header["Content-Encoding"] = []string{"gzip"}
 	header["Content-Type"] = []string{"text/html;charset=utf8"}
 	header["Content-Security-Policy"] = []string{
-		"default-src 'none';font-src 'self';img-src data: https://avatars.githubusercontent.com;script-src 'self';style-src 'self'",
+		"default-src 'none';img-src data: https://avatars.githubusercontent.com;script-src 'self';style-src 'self'",
 	}
 
 	vars["cssHash"] = cssHash
