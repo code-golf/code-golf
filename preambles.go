@@ -1,6 +1,7 @@
 package main
 
 var preambles = map[string]string{
+	"99-bottles-of-beer":"",
 	"fizz-buzz": `<h1>Fizz Buzz</h1>
 
     <p>Write a program that prints the numbers from <b>1</b> to <b>100</b> (inclusive), each on their own line.</p>

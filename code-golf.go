@@ -124,7 +124,7 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 		}
 
 		switch hole {
-		case "fizz-buzz", "π":
+		case "99-bottles-of-beer", "fizz-buzz", "π":
 			switch lang {
 			case "javascript", "perl", "perl6", "php", "python", "ruby":
 				vars := map[string]interface{}{
