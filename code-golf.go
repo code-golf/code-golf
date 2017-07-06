@@ -72,7 +72,7 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 		_, vars["login"] = readCookie(r)
 
 		render(w, index, vars)
-		//printLeaderboards(w)
+		printLeaderboards(w)
 	case "callback":
 		if user := githubAuth(r.FormValue("code")); user.ID != 0 {
 			data := strconv.Itoa(user.ID) + ":" + user.Login
