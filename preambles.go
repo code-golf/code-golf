@@ -8,5 +8,7 @@ var preambles = map[string]string{
     <p>If, however, the number is a multiple of <b>three</b> then print <b>Fizz</b> instead, and if the number is a multiple of <b>five</b> then print <b>Buzz</b>.</p>
 
     <p>For numbers which are multiples of <b>both three and five</b> then print <b>FizzBuzz</b>.</p>`,
-	"π": "",
+	"π": `<h1>π</h1>
+
+    <p>Print π (Pi) to the first 1,000 decimal places.</p>`,
 }
