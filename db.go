@@ -20,34 +20,38 @@ func init() {
 	}
 }
 
-func addSolution(userID int, lang, code string) {
+func addSolution(userID int, hole, lang, code string) {
 	// Update the code if it's the same characters or less, but only update
 	// the submitted time if the solution is shorter. This avoids a user
 	// moving down the leaderboard by matching their personal best.
 	if _, err := db.Exec(`
 	    INSERT INTO solutions
-	         VALUES (NOW(), $1, $2, $3)
+	         VALUES (NOW(), $1, $2, $3, $4)
 	    ON CONFLICT ON CONSTRAINT solutions_pkey
 	  DO UPDATE SET submitted = CASE
-	                    WHEN LENGTH($3) < LENGTH(solutions.code)
+	                    WHEN LENGTH($4) < LENGTH(solutions.code)
 	                    THEN NOW()
 	                    ELSE solutions.submitted
 	                END,
 	                code = CASE
-	                    WHEN LENGTH($3) > LENGTH(solutions.code)
+	                    WHEN LENGTH($4) > LENGTH(solutions.code)
 	                    THEN solutions.code
-	                    ELSE $3
+	                    ELSE $4
 	                END
-	`, userID, lang, code); err != nil {
+	`, userID, hole, lang, code); err != nil {
 		panic(err)
 	}
 }
 
-func getSolutionCode(userID int, lang string) (code string) {
-	db.QueryRow(
-		"SELECT code FROM solutions WHERE user_id = $1 AND lang = $2",
-		userID, lang,
-	).Scan(&code)
+func getSolutionCode(userID int, hole, lang string) (code string) {
+	if err := db.QueryRow(
+		`SELECT code
+		   FROM solutions
+		  WHERE user_id = $1 AND hole = $2 AND lang = $3`,
+		userID, hole, lang,
+	).Scan(&code); err != nil && err != sql.ErrNoRows {
+		panic(err)
+	}
 
 	return
 }

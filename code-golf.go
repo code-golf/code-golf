@@ -25,15 +25,12 @@ import (
 const base = "views/base.html"
 
 var hmacKey []byte
-var holes = make(map[string]*template.Template)
+var holeTmpl = template.Must(template.ParseFiles(base, "views/hole.html"))
 var index = template.Must(template.ParseFiles(base, "views/index.html"))
 var minfy = minify.New()
 
 func init() {
 	minfy.AddFunc("text/html", html.Minify)
-
-	holes["fizz-buzz"] = template.Must(
-		template.ParseFiles(base, "views/fizz-buzz.html"))
 
 	var err error
 	if hmacKey, err = base64.RawURLEncoding.DecodeString(os.Getenv("HMAC_KEY")); err != nil {
@@ -126,10 +123,15 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 			hole = path
 		}
 
-		if tmpl, ok := holes[hole]; ok {
+		switch hole {
+		case "fizz-buzz", "π":
 			switch lang {
 			case "javascript", "perl", "perl6", "php", "python", "ruby":
-				vars := map[string]interface{}{"lang": lang, "r": r}
+				vars := map[string]interface{}{
+					"lang":     lang,
+					"preamble": template.HTML(preambles[hole]),
+					"r":        r,
+				}
 
 				var userID int
 				userID, vars["login"] = readCookie(r)
@@ -138,17 +140,18 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 					code := strings.Replace(r.FormValue("code"), "\r", "", -1)
 					vars["code"] = code
 
+					answer := answers[hole]
 					output := runCode(lang, code)
 
-					if fizzBuzzAnswer == output {
+					if answer == output {
 						vars["pass"] = true
 
-						addSolution(userID, lang, code)
+						addSolution(userID, hole, lang, code)
 					} else {
 						var diffString string
 
 						for _, diff := range diffmatchpatch.New().DiffMain(
-							fizzBuzzAnswer, output, false,
+							answer, output, false,
 						) {
 							switch diff.Type {
 							case diffmatchpatch.DiffInsert:
@@ -162,17 +165,17 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 
 						vars["diff"] = template.HTML(diffString)
 					}
-				} else if code := getSolutionCode(userID, lang); code != "" {
+				} else if code := getSolutionCode(userID, hole, lang); code != "" {
 					vars["code"] = code
-				} else {
+				} else if lang == "fizz-buzz" {
 					vars["code"] = examples[lang]
 				}
 
-				render(w, tmpl, vars)
+				render(w, holeTmpl, vars)
 			default:
 				http.Redirect(w, r, "/"+hole+"/perl6", 302)
 			}
-		} else {
+		default:
 			w.WriteHeader(http.StatusNotFound)
 		}
 	}
