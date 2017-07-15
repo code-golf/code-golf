@@ -167,7 +167,7 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 					}
 				} else if code := getSolutionCode(userID, hole, lang); code != "" {
 					vars["code"] = code
-				} else if lang == "fizz-buzz" {
+				} else if hole == "fizz-buzz" {
 					vars["code"] = examples[lang]
 				}
 

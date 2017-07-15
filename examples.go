@@ -59,11 +59,11 @@ var examples = map[string]string{
 }`,
 	"python": `for number in range(1, 100):
     if number % 15 == 0:
-        print("FizzBuzz\n")
-    elif number % 5 === 0:
-        print("Buzz\n")
+        print("FizzBuzz")
+    elif number % 5 == 0:
+        print("Buzz")
     elif number % 3 == 0:
-        print("Fizz\n")
+        print("Fizz")
     else:
         print(number)`,
 	"ruby": `(1..100).each do |number|
