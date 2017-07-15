@@ -17,4 +17,8 @@ for lang in *; do
 
     # Remove the crap we gained from running the container, this is hacky.
     rm -r $lang/rootfs/{.dockerenv,dev,etc,proc,sys}
+
+    # Python needs UIDs to actually resolve, madness!
+    mkdir $lang/rootfs/etc
+    echo nobody:x:99:99:nobody:/:/bin/false > $lang/rootfs/etc/passwd
 done
