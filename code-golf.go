@@ -234,6 +234,8 @@ func runCode(lang, code string) string {
 
 	// $binary, @new_argv where $new_argv[0] is used for hostname too.
 	switch lang {
+	case "javascript":
+		cmd.Args = []string{"/usr/bin/js", "javascript", "-f", "-"}
 	case "perl6":
 		cmd.Args = []string{
 			"/usr/bin/moar",

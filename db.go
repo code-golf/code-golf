@@ -74,8 +74,9 @@ func printLeaderboards(w http.ResponseWriter) {
 		            strokes,
 		            '<td>',
 		            CASE lang
-		            WHEN 'perl6' THEN 'Perl 6'
-		            WHEN 'php'   THEN 'PHP'
+		            WHEN 'javascript' THEN 'JavaScript'
+		            WHEN 'perl6'      THEN 'Perl 6'
+		            WHEN 'php'        THEN 'PHP'
 		            ELSE INITCAP(CAST(lang AS TEXT))
 		            END,
 		            '<td><img src="//avatars.githubusercontent.com/',

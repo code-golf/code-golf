@@ -3,16 +3,16 @@ package main
 var examples = map[string]string{
 	"javascript": `for ( var number = 1; number <= 100; number += 1 ) {
     if ( number % 15 == 0 ) {
-        console.log('FizzBuzz');
+        print('FizzBuzz');
     }
     else if ( number % 5 == 0 ) {
-        console.log('Buzz');
+        print('Buzz');
     }
     else if ( number % 3 == 0 ) {
-        console.log('Fizz');
+        print('Fizz');
     }
     else {
-        console.log(number);
+        print(number);
     }
 }`,
 	"perl": `foreach my $number ( 1 .. 100 ) {
