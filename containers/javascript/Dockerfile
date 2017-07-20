@@ -1,13 +1,16 @@
 FROM alpine:edge
 
-RUN apk add --no-cache curl g++ gcc make musl-dev perl python2
+ENV SHELL /bin/sh
 
-RUN curl https://ftp.mozilla.org/pub/firefox/releases/45.0.2esr/source/firefox-45.0.2esr.source.tar.xz \
+RUN apk add --no-cache \
+    autoconf2.13 curl g++ gcc linux-headers make musl-dev python2
+
+RUN curl https://ftp.mozilla.org/pub/firefox/releases/54.0.1/source/firefox-54.0.1.source.tar.xz \
   | tar xJf -
 
-RUN cd /firefox-45.0.2esr/js/src                               \
- && SHELL=/bin/sh ./configure --disable-jemalloc --prefix=/usr \
- && make -j4                                                   \
+RUN cd /firefox-54.0.1/js/src                    \
+ && ./configure --disable-jemalloc --prefix=/usr \
+ && make -j4                                     \
  && make install
 
 FROM scratch
