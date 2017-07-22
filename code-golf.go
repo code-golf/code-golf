@@ -9,6 +9,7 @@ import (
 	"encoding/base64"
 	"html/template"
 	"io"
+	"math/rand"
 	"net/http"
 	"os"
 	"os/exec"
@@ -125,13 +126,12 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 			hole = path
 		}
 
-		switch hole {
-		case "99-bottles-of-beer", "fizz-buzz", "pascals-triangle", "π":
+		if preamble, ok := preambles[hole]; ok {
 			switch lang {
 			case "javascript", "perl", "perl6", "php", "python", "ruby":
 				vars := map[string]interface{}{
 					"lang":     lang,
-					"preamble": template.HTML(preambles[hole]),
+					"preamble": template.HTML(preamble),
 					"r":        r,
 				}
 
@@ -142,8 +142,24 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 					code := strings.Replace(r.FormValue("code"), "\r", "", -1)
 					vars["code"] = code
 
-					answer := answers[hole]
-					output := runCode(lang, code)
+					var answer string
+					var args []string
+
+					if hole == "arabic-to-roman-numerals" {
+						for i := 0; i < 20; i++ {
+							i := rand.Intn(3998) + 1 // 1 - 3999 inclusive.
+
+							answer += arabicToRoman(i) + "\n"
+							args = append(args, strconv.Itoa(i))
+						}
+
+						// Drop the trailing newline.
+						answer = answer[:len(answer)-1]
+					} else {
+						answer = answers[hole]
+					}
+
+					output := runCode(lang, code, args)
 
 					if answer == output {
 						vars["pass"] = true
@@ -177,7 +193,7 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 			default:
 				http.Redirect(w, r, "/"+hole+"/perl6", 302)
 			}
-		default:
+		} else {
 			w.WriteHeader(http.StatusNotFound)
 		}
 	}
@@ -216,7 +232,7 @@ func render(w http.ResponseWriter, tmpl *template.Template, vars map[string]inte
 	writer.Close()
 }
 
-func runCode(lang, code string) string {
+func runCode(lang, code string, args []string) string {
 	var out bytes.Buffer
 
 	if lang == "php" {
@@ -237,7 +253,7 @@ func runCode(lang, code string) string {
 	// $binary, @new_argv where $new_argv[0] is used for hostname too.
 	switch lang {
 	case "javascript":
-		cmd.Args = []string{"/usr/bin/js", "javascript", "-f", "-"}
+		cmd.Args = []string{"/usr/bin/js", "javascript", "-f"}
 	case "perl6":
 		cmd.Args = []string{
 			"/usr/bin/moar",
@@ -253,6 +269,8 @@ func runCode(lang, code string) string {
 	default:
 		cmd.Args = []string{"/usr/bin/" + lang, lang}
 	}
+
+	cmd.Args = append(cmd.Args, append([]string{"-"}, args...)...)
 
 	if err := cmd.Start(); err != nil {
 		panic(err)
