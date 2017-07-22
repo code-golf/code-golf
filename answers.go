@@ -400,7 +400,7 @@ Fizz
 98
 Fizz
 Buzz`,
-	"pascals-triangle":`1
+	"pascals-triangle": `1
 1 1
 1 2 1
 1 3 3 1
