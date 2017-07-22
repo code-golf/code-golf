@@ -53,6 +53,7 @@ CMD css=`cat static/*.css | csso /dev/stdin`                                    
                                                                                       \n\
     var cssBr   = []byte{`bro     <<< "$css" | xxd -i`}                               \n\
     var cssGzip = []byte{`gzip -9 <<< "$css" | xxd -i`}                               \n\
+    var favicon = []byte{`xxd -i < static/favicon.ico`}                               \n\
     var  jsBr   = []byte{`bro     <<< "$js"  | xxd -i`}                               \n\
     var  jsGzip = []byte{`gzip -9 <<< "$js"  | xxd -i`}                               \n\
                                                                                       \n\

@@ -88,6 +88,8 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 		}
 
 		http.Redirect(w, r, "/", 302)
+	case "favicon.ico":
+		w.Write(favicon)
 	case "logout":
 		header["Set-Cookie"] = []string{"__Host-user=;MaxAge=0;Path=/;Secure"}
 		http.Redirect(w, r, "/", 302)
@@ -187,7 +189,7 @@ func render(w http.ResponseWriter, tmpl *template.Template, vars map[string]inte
 	header["Content-Encoding"] = []string{"gzip"}
 	header["Content-Type"] = []string{"text/html;charset=utf8"}
 	header["Content-Security-Policy"] = []string{
-		"default-src 'none';img-src data: https://avatars.githubusercontent.com;script-src 'self';style-src 'self'",
+		"default-src 'none';img-src data: https://avatars.githubusercontent.com https://code-golf.io/favicon.ico;script-src 'self';style-src 'self'",
 	}
 
 	vars["cssHash"] = cssHash
