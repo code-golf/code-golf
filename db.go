@@ -70,18 +70,13 @@ func printLeaderboards(w http.ResponseWriter) {
 		        CONCAT(
 		            '<tr><td>',
 		            row_number,
-		            '<td>',
+		            '<td class=',
+		            lang,
+		            '>',
 		            strokes,
-		            '<td>',
-		            CASE lang
-		            WHEN 'javascript' THEN 'JavaScript'
-		            WHEN 'perl6'      THEN 'Perl 6'
-		            WHEN 'php'        THEN 'PHP'
-		            ELSE INITCAP(CAST(lang AS TEXT))
-		            END,
 		            '<td><img src="//avatars.githubusercontent.com/',
 		            login,
-		            '?size=20"><a href="u/',
+		            '?size=26"><a href="u/',
 		            login,
 		            '">',
 		            login,
