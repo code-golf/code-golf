@@ -2,7 +2,7 @@ package main
 
 import (
 	"database/sql"
-	"net/http"
+	"io"
 	"os"
 
 	_ "github.com/lib/pq"
@@ -64,7 +64,7 @@ func addUser(id int, login string) {
 	}
 }
 
-func printLeaderboards(w http.ResponseWriter) {
+func printLeaderboards(w io.WriteCloser) {
 	rows, err := db.Query(
 		`SELECT hole,
 		        CONCAT(

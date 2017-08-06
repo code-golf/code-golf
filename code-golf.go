@@ -7,7 +7,7 @@ import (
 	"crypto/sha256"
 	"crypto/subtle"
 	"encoding/base64"
-	"html/template"
+	"html"
 	"io"
 	"math/rand"
 	"net/http"
@@ -19,20 +19,13 @@ import (
 	"time"
 
 	"github.com/sergi/go-diff/diffmatchpatch"
-	"github.com/tdewolff/minify"
-	"github.com/tdewolff/minify/html"
 )
 
 const base = "views/base.html"
 
 var hmacKey []byte
-var holeTmpl = template.Must(template.ParseFiles(base, "views/hole.html"))
-var index = template.Must(template.ParseFiles(base, "views/index.html"))
-var minfy = minify.New()
 
 func init() {
-	minfy.AddFunc("text/html", html.Minify)
-
 	var err error
 	if hmacKey, err = base64.RawURLEncoding.DecodeString(os.Getenv("HMAC_KEY")); err != nil {
 		panic(err)
@@ -60,21 +53,37 @@ func readCookie(r *http.Request) (id int, login string) {
 	return
 }
 
+func printHeader(w io.WriteCloser, login string) {
+	var logInOrOut string
+
+	if login == "" {
+		logInOrOut = `<a href="//github.com/login/oauth/authorize?client_id=7f6709819023e9215205&scope=user:email" id=login>Login with GitHub</a>`
+	} else {
+		logInOrOut = `<a href=/logout id=logout title=Logout></a><div><img src="//avatars.githubusercontent.com/` + login + `?size=30">` + login + "</div>"
+	}
+
+	w.Write([]byte(
+		"<!doctype html>" +
+			"<link rel=stylesheet href=" + cssPath + ">" +
+			"<script async src=" + jsPath + "></script>" +
+			"<meta name=theme-color content=#222>" +
+			`<meta name=viewport content="width=device-width">` +
+			"<title>Code-Golf</title>" +
+			"<header><nav>" +
+			"<a href=/>Home</a>" +
+			"<a href=/about>About</a>" +
+			"<a href=/leaderboards>Leaderboards</a>" +
+			logInOrOut +
+			"</nav></header>",
+	))
+}
+
 func codeGolf(w http.ResponseWriter, r *http.Request) {
 	header := w.Header()
 
-	// Skip over the initial forward slash.
-	switch path := r.URL.Path[1:]; path {
-	case "":
-		header["Strict-Transport-Security"] = []string{headerHSTS}
-
-		vars := map[string]interface{}{"r": r}
-
-		_, vars["login"] = readCookie(r)
-
-		render(w, index, vars)
-		printLeaderboards(w)
-	case "callback":
+	// Routes that don't return HTML.
+	switch r.URL.Path {
+	case "/callback":
 		if user := githubAuth(r.FormValue("code")); user.ID != 0 {
 			data := strconv.Itoa(user.ID) + ":" + user.Login
 
@@ -89,12 +98,12 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 		}
 
 		http.Redirect(w, r, "/", 302)
-	case "favicon.ico":
+	case "/favicon.ico":
 		w.Write(favicon)
-	case "logout":
+	case "/logout":
 		header["Set-Cookie"] = []string{"__Host-user=;MaxAge=0;Path=/;Secure"}
 		http.Redirect(w, r, "/", 302)
-	case cssHash:
+	case cssPath:
 		header["Cache-Control"] = []string{"max-age=9999999,public"}
 		header["Content-Type"] = []string{"text/css"}
 
@@ -105,7 +114,7 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 			header["Content-Encoding"] = []string{"gzip"}
 			w.Write(cssGzip)
 		}
-	case jsHash:
+	case jsPath:
 		header["Cache-Control"] = []string{"max-age=9999999,public"}
 		header["Content-Type"] = []string{"application/javascript"}
 
@@ -116,8 +125,31 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 			header["Content-Encoding"] = []string{"gzip"}
 			w.Write(jsGzip)
 		}
+	}
+
+	header["Content-Encoding"] = []string{"gzip"}
+	header["Content-Type"] = []string{"text/html;charset=utf8"}
+	header["Content-Security-Policy"] = []string{
+		"default-src 'none';img-src data: https://avatars.githubusercontent.com https://code-golf.io/favicon.ico;script-src 'self';style-src 'self'",
+	}
+
+	userID, login := readCookie(r)
+
+	// Routes that do return HTML.
+	switch r.URL.Path {
+	case "/":
+		header["Strict-Transport-Security"] = []string{headerHSTS}
+
+		gzipWriter := gzip.NewWriter(w)
+		defer gzipWriter.Close()
+
+		printHeader(gzipWriter, login)
+		printLeaderboards(gzipWriter)
 	default:
 		var hole, lang string
+
+		// FIXME
+		path := r.URL.Path[1:]
 
 		if i := strings.IndexByte(path, '/'); i != -1 {
 			hole = path[:i]
@@ -129,18 +161,15 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 		if preamble, ok := preambles[hole]; ok {
 			switch lang {
 			case "javascript", "perl", "perl6", "php", "python", "ruby":
-				vars := map[string]interface{}{
-					"lang":     lang,
-					"preamble": template.HTML(preamble),
-					"r":        r,
-				}
+				var code, diffString string
 
-				var userID int
-				userID, vars["login"] = readCookie(r)
+				gzipWriter := gzip.NewWriter(w)
+				defer gzipWriter.Close()
+
+				printHeader(gzipWriter, login)
 
 				if r.Method == http.MethodPost {
-					code := strings.Replace(r.FormValue("code"), "\r", "", -1)
-					vars["code"] = code
+					code = strings.Replace(r.FormValue("code"), "\r", "", -1)
 
 					var answer string
 					var args []string
@@ -162,11 +191,11 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 					output := runCode(lang, code, args)
 
 					if answer == output {
-						vars["pass"] = true
+						gzipWriter.Write([]byte("<div id=success>Success</div>"))
 
 						addSolution(userID, hole, lang, code)
 					} else {
-						var diffString string
+						gzipWriter.Write([]byte("<div id=failure>Failure</div>"))
 
 						for _, diff := range diffmatchpatch.New().DiffMain(
 							answer, output, false,
@@ -181,55 +210,45 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 							}
 						}
 
-						vars["diff"] = template.HTML(diffString)
+						diffString = "<pre>" + diffString + "</pre>"
 					}
-				} else if code := getSolutionCode(userID, hole, lang); code != "" {
-					vars["code"] = code
-				} else if hole == "fizz-buzz" {
-					vars["code"] = examples[lang]
+				} else {
+					code = getSolutionCode(userID, hole, lang)
 				}
 
-				render(w, holeTmpl, vars)
+				// TODO Only Fizz Buzz has example code ATM.
+				if hole == "fizz-buzz" && code == ""  {
+					code = examples[lang]
+				}
+
+				gzipWriter.Write([]byte(
+					"<article>" + diffString + preamble +
+						"<a class=lang href=javascript>JavaScript</a> " +
+						"<a class=lang href=perl>Perl</a> " +
+						"<a class=lang href=perl6>Perl 6</a> " +
+						"<a class=lang href=php>PHP</a> " +
+						"<a class=lang href=python>Python</a> " +
+						"<a class=lang href=ruby>Ruby</a>" +
+						"<form method=post>" +
+						"<textarea name=code>" +
+						html.EscapeString(code) +
+						"</textarea>" +
+						"<input type=submit value=Run>" +
+						"</form>",
+				))
 			default:
 				http.Redirect(w, r, "/"+hole+"/perl6", 302)
 			}
 		} else {
 			w.WriteHeader(http.StatusNotFound)
+
+			gzipWriter := gzip.NewWriter(w)
+			defer gzipWriter.Close()
+
+			printHeader(gzipWriter, login)
+			gzipWriter.Write([]byte("<article><h1>404 Not Found"))
 		}
 	}
-}
-
-func render(w http.ResponseWriter, tmpl *template.Template, vars map[string]interface{}) {
-	header := w.Header()
-
-	header["Content-Encoding"] = []string{"gzip"}
-	header["Content-Type"] = []string{"text/html;charset=utf8"}
-	header["Content-Security-Policy"] = []string{
-		"default-src 'none';img-src data: https://avatars.githubusercontent.com https://code-golf.io/favicon.ico;script-src 'self';style-src 'self'",
-	}
-
-	vars["cssHash"] = cssHash
-	vars["jsHash"] = jsHash
-
-	pipeR, pipeW := io.Pipe()
-
-	go func() {
-		defer pipeW.Close()
-
-		if err := tmpl.Execute(pipeW, vars); err != nil {
-			panic(err)
-		}
-	}()
-
-	var buf bytes.Buffer
-
-	if err := minfy.Minify("text/html", &buf, pipeR); err != nil {
-		panic(err)
-	}
-
-	writer := gzip.NewWriter(w)
-	writer.Write(buf.Bytes())
-	writer.Close()
 }
 
 func runCode(lang, code string, args []string) string {

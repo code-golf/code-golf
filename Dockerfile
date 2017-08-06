@@ -18,10 +18,6 @@ RUN go get -d github.com/sergi/go-diff/... \
  && cd /go/src/github.com/sergi/go-diff    \
  && git checkout -q feef008
 
-RUN go get -d github.com/tdewolff/minify  \
- && cd /go/src/github.com/tdewolff/minify \
- && git checkout -q 2d28d6e
-
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 
 RUN apt-get update && apt-get install -y --no-install-recommends nodejs
@@ -44,8 +40,8 @@ CMD css=`cat static/*.css | csso /dev/stdin`                                    
  &&  js=`java -jar /*.jar --assume_function_wrapper static/{codemirror{,-*},script}.js` \
  && echo -e "package main                                                             \n\
                                                                                       \n\
-    const cssHash = \"`md5sum <<< "$css" | tr -d ' -'`\"                              \n\
-    const  jsHash = \"`md5sum <<< "$js"  | tr -d ' -'`\"                              \n\
+    const cssPath = \"/`md5sum <<< "$css" | tr -d ' -'`\"                             \n\
+    const  jsPath = \"/`md5sum <<< "$js"  | tr -d ' -'`\"                             \n\
                                                                                       \n\
     var cssBr   = []byte{`bro     <<< "$css" | xxd -i`}                               \n\
     var cssGzip = []byte{`gzip -9 <<< "$css" | xxd -i`}                               \n\
