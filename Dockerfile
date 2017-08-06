@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl gcc git gnupg libc6-dev make openjdk-8-jre-headless vim-common
 
 # https://golang.org/dl/
-RUN curl -sSL https://storage.googleapis.com/golang/go1.9beta2.linux-amd64.tar.gz | tar -xzC /usr/local
+RUN curl -sSL https://storage.googleapis.com/golang/go1.9rc1.linux-amd64.tar.gz | tar -xzC /usr/local
 
 RUN go get -d github.com/gorilla/handlers  \
  && cd /go/src/github.com/gorilla/handlers \
@@ -38,7 +38,7 @@ RUN curl -L https://github.com/google/brotli/archive/v0.6.0.tar.gz \
  && make                                                           \
  && mv bin/bro /usr/local/bin
 
-RUN curl http://dl.google.com/closure-compiler/compiler-20170521.tar.gz \
+RUN curl http://dl.google.com/closure-compiler/compiler-20170626.tar.gz \
   | tar -zxf - -C /
 
 # Bashisms FTW.
