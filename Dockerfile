@@ -10,10 +10,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # https://golang.org/dl/
 RUN curl -sSL https://storage.googleapis.com/golang/go1.9rc1.linux-amd64.tar.gz | tar -xzC /usr/local
 
-RUN go get -d github.com/gorilla/handlers  \
- && cd /go/src/github.com/gorilla/handlers \
- && git checkout -q a4d79d4
-
 RUN go get -d github.com/lib/pq  \
  && cd /go/src/github.com/lib/pq \
  && git checkout -q 8837942

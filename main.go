@@ -5,8 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-
-	"github.com/gorilla/handlers"
+	"time"
 )
 
 const headerHSTS = "max-age=31536000;includeSubDomains;preload"
@@ -17,12 +16,14 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header()["Content-Language"] = []string{"en"}
 	w.Header()["Date"] = nil
 
-	defer func() {
+	defer func(start time.Time) {
+		fmt.Printf("%s %s %s\n", r.Method, r.URL.Path, time.Since(start))
+
 		if r := recover(); r != nil {
 			fmt.Fprint(os.Stderr, "<1>", r, "\n")
 			http.Error(w, "500: It's Dead, Jim.", 500)
 		}
-	}()
+	}(time.Now())
 
 	switch r.Host {
 	case "code-golf.io":
@@ -44,7 +45,7 @@ func mustLoadX509KeyPair(certFile, keyFile string) tls.Certificate {
 
 func main() {
 	server := &http.Server{
-		Handler: handlers.CombinedLoggingHandler(os.Stdout, &handler{}),
+		Handler: &handler{},
 		TLSConfig: &tls.Config{
 			Certificates: []tls.Certificate{
 				mustLoadX509KeyPair(
