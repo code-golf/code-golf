@@ -271,7 +271,6 @@ func runCode(lang, code string, args []string) (string, string) {
 			"--libpath=/usr/share/nqp/lib",
 			"--libpath=/usr/share/perl6/runtime",
 			"/usr/share/perl6/runtime/perl6.moarvm",
-			"-",
 		}
 	case "python":
 		cmd.Args = []string{"/usr/bin/python3.6", "python"}
@@ -279,7 +278,12 @@ func runCode(lang, code string, args []string) (string, string) {
 		cmd.Args = []string{"/usr/bin/" + lang, lang}
 	}
 
-	cmd.Args = append(cmd.Args, append([]string{"-"}, args...)...)
+	// PHP Doesn't understand "-" to be Stdin, WTF.
+	if lang != "php" {
+		cmd.Args = append(cmd.Args, "-")
+	}
+
+	cmd.Args = append(cmd.Args, append([]string{"--"}, args...)...)
 
 	if err := cmd.Start(); err != nil {
 		panic(err)
