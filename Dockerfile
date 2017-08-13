@@ -8,11 +8,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl gcc git gnupg libc6-dev make openjdk-8-jre-headless vim-common
 
 # https://golang.org/dl/
-RUN curl -sSL https://storage.googleapis.com/golang/go1.9rc1.linux-amd64.tar.gz | tar -xzC /usr/local
+RUN curl -sSL https://storage.googleapis.com/golang/go1.9rc2.linux-amd64.tar.gz | tar -xzC /usr/local
 
 RUN go get -d github.com/lib/pq  \
  && cd /go/src/github.com/lib/pq \
- && git checkout -q 8837942
+ && git checkout -q e422674
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 
@@ -26,7 +26,7 @@ RUN curl -L https://github.com/google/brotli/archive/v0.6.0.tar.gz \
  && make                                                           \
  && mv bin/bro /usr/local/bin
 
-RUN curl http://dl.google.com/closure-compiler/compiler-20170626.tar.gz \
+RUN curl http://dl.google.com/closure-compiler/compiler-20170806.tar.gz \
   | tar -zxf - -C /
 
 # Bashisms FTW.
