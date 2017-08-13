@@ -7,7 +7,7 @@ import (
 	"crypto/sha256"
 	"crypto/subtle"
 	"encoding/base64"
-	"html"
+	"encoding/json"
 	"io"
 	"math/rand"
 	"net/http"
@@ -17,8 +17,6 @@ import (
 	"strings"
 	"syscall"
 	"time"
-
-	"github.com/sergi/go-diff/diffmatchpatch"
 )
 
 const base = "views/base.html"
@@ -65,7 +63,6 @@ func printHeader(w io.WriteCloser, login string) {
 	w.Write([]byte(
 		"<!doctype html>" +
 			"<link rel=stylesheet href=" + cssPath + ">" +
-			"<script async src=" + jsPath + "></script>" +
 			"<meta name=theme-color content=#222>" +
 			`<meta name=viewport content="width=device-width">` +
 			"<title>Code-Golf</title>" +
@@ -98,11 +95,66 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 		}
 
 		http.Redirect(w, r, "/", 302)
+		return
 	case "/favicon.ico":
 		w.Write(favicon)
+		return
 	case "/logout":
 		header["Set-Cookie"] = []string{"__Host-user=;MaxAge=0;Path=/;Secure"}
 		http.Redirect(w, r, "/", 302)
+		return
+	case "/solution":
+		if r.Method == http.MethodPost {
+			type In struct {
+				Code, Hole, Lang string
+			}
+
+			type Out struct {
+				Arg, Err, Exp, Out string
+			}
+
+			var in In
+
+			if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
+				panic(err)
+			}
+			defer r.Body.Close()
+
+			var args []string
+			var out Out
+
+			if in.Hole == "arabic-to-roman-numerals" {
+				for i := 0; i < 20; i++ {
+					i := rand.Intn(3998) + 1 // 1 - 3999 inclusive.
+
+					out.Exp += arabicToRoman(i) + "\n"
+					args = append(args, strconv.Itoa(i))
+				}
+
+				// Drop the trailing newline.
+				out.Exp = out.Exp[:len(out.Exp)-1]
+			} else {
+				out.Exp = answers[in.Hole]
+			}
+
+			out.Err, out.Out = runCode(in.Lang, in.Code, args)
+			out.Arg = strings.Join(args, " ")
+
+			// Save the solution if it passes.
+			if out.Exp == out.Out {
+				userID, _ := readCookie(r)
+				addSolution(userID, in.Hole, in.Lang, in.Code)
+			}
+
+			header["Content-Encoding"] = []string{"gzip"}
+			gzipWriter := gzip.NewWriter(w)
+			defer gzipWriter.Close()
+
+			if err := json.NewEncoder(gzipWriter).Encode(&out); err != nil {
+				panic(err)
+			}
+			return
+		}
 	case cssPath:
 		header["Cache-Control"] = []string{"max-age=9999999,public"}
 		header["Content-Type"] = []string{"text/css"}
@@ -114,6 +166,7 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 			header["Content-Encoding"] = []string{"gzip"}
 			w.Write(cssGzip)
 		}
+		return
 	case jsPath:
 		header["Cache-Control"] = []string{"max-age=9999999,public"}
 		header["Content-Type"] = []string{"application/javascript"}
@@ -125,134 +178,71 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 			header["Content-Encoding"] = []string{"gzip"}
 			w.Write(jsGzip)
 		}
+		return
 	}
 
 	header["Content-Encoding"] = []string{"gzip"}
 	header["Content-Type"] = []string{"text/html;charset=utf8"}
 	header["Content-Security-Policy"] = []string{
-		"default-src 'none';img-src data: https://avatars.githubusercontent.com https://code-golf.io/favicon.ico;script-src 'self';style-src 'self'",
+		"connect-src 'self';" +
+			"default-src 'none';" +
+			"img-src 'self' data: https://avatars.githubusercontent.com;" +
+			"script-src 'self';" +
+			"style-src 'self'",
 	}
 
 	userID, login := readCookie(r)
 
-	// Routes that do return HTML.
-	switch r.URL.Path {
-	case "/":
-		header["Strict-Transport-Security"] = []string{headerHSTS}
+	gzipWriter := gzip.NewWriter(w)
+	defer gzipWriter.Close()
 
-		gzipWriter := gzip.NewWriter(w)
-		defer gzipWriter.Close()
+	// Routes that do return HTML.
+	if r.URL.Path == "/" {
+		header["Strict-Transport-Security"] = []string{headerHSTS}
 
 		printHeader(gzipWriter, login)
 		printLeaderboards(gzipWriter)
-	default:
-		var hole, lang string
+	} else if preamble, ok := preambles[r.URL.Path[1:]]; ok {
+		printHeader(gzipWriter, login)
 
-		// FIXME
-		path := r.URL.Path[1:]
+		gzipWriter.Write([]byte(
+			"<script async src=" + jsPath + "></script><div id=status><div>" +
+				"<h2>Program Arguments</h2>" +
+				"<textarea id=Arg readonly rows=1></textarea>" +
+				"<h2>Standard Error</h2>" +
+				"<textarea id=Err readonly rows=1></textarea>" +
+				"<h2>Expected Output</h2>" +
+				"<textarea id=Exp readonly rows=5></textarea>" +
+				"<h2>Standard Output</h2>" +
+				"<textarea id=Out preamble rows=5></textarea>" +
+				"</div></div><article",
+		))
 
-		if i := strings.IndexByte(path, '/'); i != -1 {
-			hole = path[:i]
-			lang = path[i+1:]
-		} else {
-			hole = path
+		for lang, solution := range getUserSolutions(userID, r.URL.Path[1:]) {
+			gzipWriter.Write([]byte(
+				" data-" + lang + `="` + strings.Replace(solution, `"`, "&#34;", -1) + `"`))
 		}
 
-		if preamble, ok := preambles[hole]; ok {
-			switch lang {
-			case "javascript", "perl", "perl6", "php", "python", "ruby":
-				var code, diffString string
+		gzipWriter.Write([]byte(
+			">" + preamble +
+				"<a class=tab href=#javascript>JavaScript</a> " +
+				"<a class=tab href=#perl>Perl</a> " +
+				"<a class=tab href=#perl6>Perl 6</a> " +
+				"<a class=tab href=#php>PHP</a> " +
+				"<a class=tab href=#python>Python</a> " +
+				"<a class=tab href=#ruby>Ruby</a>" +
+				"<input type=submit value=Run>",
+		))
+	} else {
+		w.WriteHeader(http.StatusNotFound)
 
-				gzipWriter := gzip.NewWriter(w)
-				defer gzipWriter.Close()
-
-				printHeader(gzipWriter, login)
-
-				if r.Method == http.MethodPost {
-					code = strings.Replace(r.FormValue("code"), "\r", "", -1)
-
-					var answer string
-					var args []string
-
-					if hole == "arabic-to-roman-numerals" {
-						for i := 0; i < 20; i++ {
-							i := rand.Intn(3998) + 1 // 1 - 3999 inclusive.
-
-							answer += arabicToRoman(i) + "\n"
-							args = append(args, strconv.Itoa(i))
-						}
-
-						// Drop the trailing newline.
-						answer = answer[:len(answer)-1]
-					} else {
-						answer = answers[hole]
-					}
-
-					output := runCode(lang, code, args)
-
-					if answer == output {
-						gzipWriter.Write([]byte("<div id=success>Success</div>"))
-
-						addSolution(userID, hole, lang, code)
-					} else {
-						gzipWriter.Write([]byte("<div id=failure>Failure</div>"))
-
-						for _, diff := range diffmatchpatch.New().DiffMain(
-							answer, output, false,
-						) {
-							switch diff.Type {
-							case diffmatchpatch.DiffInsert:
-								diffString += "<ins>" + diff.Text + "</ins>"
-							case diffmatchpatch.DiffDelete:
-								diffString += "<del>" + diff.Text + "</del>"
-							case diffmatchpatch.DiffEqual:
-								diffString += diff.Text
-							}
-						}
-
-						diffString = "<pre>" + diffString + "</pre>"
-					}
-				} else {
-					code = getSolutionCode(userID, hole, lang)
-				}
-
-				// TODO Only Fizz Buzz has example code ATM.
-				if hole == "fizz-buzz" && code == ""  {
-					code = examples[lang]
-				}
-
-				gzipWriter.Write([]byte(
-					"<article>" + diffString + preamble +
-						"<a class=lang href=javascript>JavaScript</a> " +
-						"<a class=lang href=perl>Perl</a> " +
-						"<a class=lang href=perl6>Perl 6</a> " +
-						"<a class=lang href=php>PHP</a> " +
-						"<a class=lang href=python>Python</a> " +
-						"<a class=lang href=ruby>Ruby</a>" +
-						"<form method=post>" +
-						"<textarea name=code>" +
-						html.EscapeString(code) +
-						"</textarea>" +
-						"<input type=submit value=Run>" +
-						"</form>",
-				))
-			default:
-				http.Redirect(w, r, "/"+hole+"/perl6", 302)
-			}
-		} else {
-			w.WriteHeader(http.StatusNotFound)
-
-			gzipWriter := gzip.NewWriter(w)
-			defer gzipWriter.Close()
-
-			printHeader(gzipWriter, login)
-			gzipWriter.Write([]byte("<article><h1>404 Not Found"))
-		}
+		printHeader(gzipWriter, login)
+		gzipWriter.Write([]byte("<article><h1>404 Not Found"))
 	}
 }
 
-func runCode(lang, code string, args []string) string {
-	var out bytes.Buffer
+func runCode(lang, code string, args []string) (string, string) {
+	var err, out bytes.Buffer
 
 	if lang == "php" {
 		code = "<?php " + code + " ?>"
@@ -261,7 +251,7 @@ func runCode(lang, code string, args []string) string {
 	cmd := exec.Cmd{
 		Dir:    "containers/" + lang,
 		Path:   "../../run-container",
-		Stderr: os.Stdout,
+		Stderr: &err,
 		Stdin:  strings.NewReader(code),
 		Stdout: &out,
 		SysProcAttr: &syscall.SysProcAttr{
@@ -303,5 +293,5 @@ func runCode(lang, code string, args []string) string {
 
 	timer.Stop()
 
-	return string(bytes.TrimSpace(out.Bytes()))
+	return string(bytes.TrimSpace(err.Bytes())), string(bytes.TrimSpace(out.Bytes()))
 }

@@ -41,17 +41,33 @@ func addSolution(userID int, hole, lang, code string) {
 	}
 }
 
-func getSolutionCode(userID int, hole, lang string) (code string) {
-	if err := db.QueryRow(
-		`SELECT code
+func getUserSolutions(userID int, hole string) map[string]string {
+	rows, err := db.Query(
+		`SELECT code, lang
 		   FROM solutions
-		  WHERE user_id = $1 AND hole = $2 AND lang = $3`,
-		userID, hole, lang,
-	).Scan(&code); err != nil && err != sql.ErrNoRows {
+		  WHERE user_id = $1 AND hole = $2`,
+		userID, hole,
+	)
+
+	if err != nil {
 		panic(err)
 	}
 
-	return
+	defer rows.Close()
+
+	solutions := make(map[string]string)
+
+	for rows.Next() {
+		var code, lang string
+
+		if err := rows.Scan(&code, &lang); err != nil {
+			panic(err)
+		}
+
+		solutions[lang] = code
+	}
+
+	return solutions
 }
 
 func addUser(id int, login string) {

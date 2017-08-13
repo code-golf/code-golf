@@ -14,10 +14,6 @@ RUN go get -d github.com/lib/pq  \
  && cd /go/src/github.com/lib/pq \
  && git checkout -q 8837942
 
-RUN go get -d github.com/sergi/go-diff/... \
- && cd /go/src/github.com/sergi/go-diff    \
- && git checkout -q feef008
-
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 
 RUN apt-get update && apt-get install -y --no-install-recommends nodejs
