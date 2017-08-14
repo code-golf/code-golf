@@ -30,6 +30,7 @@ onload = function() {
 
     document.getElementsByTagName('input')[0].onclick = function() {
         fetch('/solution', {
+            credentials: 'include',
             method: 'POST',
             body: JSON.stringify({
                 Code: activeEditor.getValue(),
