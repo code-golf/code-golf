@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl gcc git gnupg libc6-dev make nasm openjdk-8-jre-headless vim-common
 
 # https://golang.org/dl/
-RUN curl -sSL https://storage.googleapis.com/golang/go1.9rc2.linux-amd64.tar.gz | tar -xzC /usr/local
+RUN curl -sSL https://storage.googleapis.com/golang/go1.9.linux-amd64.tar.gz | tar -xzC /usr/local
 
 RUN go get -d github.com/lib/pq  \
  && cd /go/src/github.com/lib/pq \
