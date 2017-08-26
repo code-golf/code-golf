@@ -259,23 +259,22 @@ func runCode(lang, code string, args []string) (string, string) {
 		},
 	}
 
-	// $binary, @new_argv where $new_argv[0] is used for hostname too.
 	switch lang {
 	case "javascript":
-		cmd.Args = []string{"/usr/bin/js", "javascript", "-f"}
+		cmd.Args = []string{"/usr/bin/js", "-f"}
 	case "perl6":
 		cmd.Args = []string{
 			"/usr/bin/moar",
-			"perl6",
 			"--execname=perl6",
 			"--libpath=/usr/share/nqp/lib",
 			"--libpath=/usr/share/perl6/runtime",
 			"/usr/share/perl6/runtime/perl6.moarvm",
+			"-",
 		}
 	case "python":
-		cmd.Args = []string{"/usr/bin/python3.6", "python"}
+		cmd.Args = []string{"/usr/bin/python3.6"}
 	default:
-		cmd.Args = []string{"/usr/bin/" + lang, lang}
+		cmd.Args = []string{"/usr/bin/" + lang}
 	}
 
 	// PHP Doesn't understand "-" to be Stdin, WTF.
@@ -283,7 +282,12 @@ func runCode(lang, code string, args []string) (string, string) {
 		cmd.Args = append(cmd.Args, "-")
 	}
 
-	cmd.Args = append(cmd.Args, append([]string{"--"}, args...)...)
+	// Avoid "--" showing up in @*ARGS.
+	if lang != "perl6" {
+		cmd.Args = append(cmd.Args, "--")
+	}
+
+	cmd.Args = append(cmd.Args, args...)
 
 	if err := cmd.Start(); err != nil {
 		panic(err)

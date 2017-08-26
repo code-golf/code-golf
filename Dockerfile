@@ -5,7 +5,7 @@ ENV CGO_ENABLED=0 GOPATH=/go PATH=/usr/local/go/bin:$PATH
 WORKDIR /go
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl gcc git gnupg libc6-dev make openjdk-8-jre-headless vim-common
+    curl gcc git gnupg libc6-dev make nasm openjdk-8-jre-headless vim-common
 
 # https://golang.org/dl/
 RUN curl -sSL https://storage.googleapis.com/golang/go1.9rc2.linux-amd64.tar.gz | tar -xzC /usr/local
@@ -45,16 +45,7 @@ CMD css=`cat static/*.css | csso /dev/stdin`                                    
     var  jsBr   = []byte{`bro     <<< "$js"  | xxd -i`}                               \n\
     var  jsGzip = []byte{`gzip -9 <<< "$js"  | xxd -i`}                               \n\
                                                                                       \n\
-    " > static.go                   \
- && go build -ldflags '-s' -o app   \
- && gcc                             \
-    -fno-asynchronous-unwind-tables \
-    -nostdlib                       \
-    -O2                             \
-    -o run-container                \
-    -s                              \
-    -Wall                           \
-    -Werror                         \
-    -Wl,--build-id=none             \
-    run-container.S run-container.c \
- && strip -R .comment run-container
+    " > static.go                                  \
+ && go build -ldflags '-s' -o app                  \
+ && nasm -f bin -o run-container run-container.asm \
+ && chmod +x run-container
