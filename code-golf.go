@@ -17,6 +17,7 @@ import (
 	"strings"
 	"syscall"
 	"time"
+	"unicode"
 )
 
 const base = "views/base.html"
@@ -133,6 +134,9 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 
 				// Drop the trailing newline.
 				out.Exp = out.Exp[:len(out.Exp)-1]
+			} else if in.Hole == "seven-segment" {
+				args = make([]string, 1)
+				args[0], out.Exp = sevenSegment()
 			} else {
 				out.Exp = answers[in.Hole]
 			}
@@ -265,6 +269,9 @@ func runCode(lang, code string, args []string) (string, string) {
 	switch lang {
 	case "javascript":
 		cmd.Args = []string{"/usr/bin/js", "-f", "-", "--"}
+	// The perls seems to show -- in @ARGV :-(
+	case "perl":
+		cmd.Args = []string{"/usr/bin/perl", "-"}
 	case "perl6":
 		cmd.Args = []string{
 			"/usr/bin/moar",
@@ -294,5 +301,6 @@ func runCode(lang, code string, args []string) (string, string) {
 
 	timer.Stop()
 
-	return string(bytes.TrimSpace(err.Bytes())), string(bytes.TrimSpace(out.Bytes()))
+	return string(bytes.TrimRightFunc(err.Bytes(), unicode.IsSpace)),
+		string(bytes.TrimRightFunc(out.Bytes(), unicode.IsSpace))
 }
