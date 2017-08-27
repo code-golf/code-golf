@@ -12,7 +12,7 @@ RUN cd Python-3.6.1           \
 FROM scratch
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /usr/bin/python3.6       /usr/bin/
+COPY --from=0 /usr/bin/python3.6       /usr/bin/python
 COPY --from=0 /usr/lib/python3.6       /usr/lib/python3.6
 
-ENTRYPOINT ["/usr/bin/python3.6", "-c", "import platform;print(platform.python_version())"]
+ENTRYPOINT ["/usr/bin/python", "-c", "import platform;print(platform.python_version())"]

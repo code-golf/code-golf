@@ -274,8 +274,6 @@ func runCode(lang, code string, args []string) (string, string) {
 			"/usr/share/perl6/runtime/perl6.moarvm",
 			"-",
 		}
-	case "python":
-		cmd.Args = []string{"/usr/bin/python3.6"}
 	default:
 		cmd.Args = []string{"/usr/bin/" + lang}
 	}
