@@ -264,7 +264,7 @@ func runCode(lang, code string, args []string) (string, string) {
 
 	switch lang {
 	case "javascript":
-		cmd.Args = []string{"/usr/bin/js", "-f"}
+		cmd.Args = []string{"/usr/bin/js", "-f", "-", "--"}
 	case "perl6":
 		cmd.Args = []string{
 			"/usr/bin/moar",
@@ -274,18 +274,10 @@ func runCode(lang, code string, args []string) (string, string) {
 			"/usr/share/perl6/runtime/perl6.moarvm",
 			"-",
 		}
+	case "php":
+		cmd.Args = []string{"/usr/bin/php", "--"}
 	default:
-		cmd.Args = []string{"/usr/bin/" + lang}
-	}
-
-	// PHP Doesn't understand "-" to be Stdin, WTF.
-	if lang != "php" {
-		cmd.Args = append(cmd.Args, "-")
-	}
-
-	// Avoid "--" showing up in @*ARGS.
-	if lang != "perl6" {
-		cmd.Args = append(cmd.Args, "--")
+		cmd.Args = []string{"/usr/bin/" + lang, "-", "--"}
 	}
 
 	cmd.Args = append(cmd.Args, args...)
