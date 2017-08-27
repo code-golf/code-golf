@@ -17,4 +17,4 @@ FROM scratch
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
 COPY --from=0 /usr/bin/php             /usr/bin/
 
-ENTRYPOINT ["/usr/bin/php"]
+ENTRYPOINT ["/usr/bin/php", "-r", "echo phpversion();"]

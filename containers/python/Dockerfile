@@ -15,4 +15,4 @@ COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
 COPY --from=0 /usr/bin/python3.6       /usr/bin/
 COPY --from=0 /usr/lib/python3.6       /usr/lib/python3.6
 
-ENTRYPOINT ["/usr/bin/python3.6"]
+ENTRYPOINT ["/usr/bin/python3.6", "-c", "import platform;print(platform.python_version())"]

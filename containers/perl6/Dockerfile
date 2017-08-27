@@ -17,4 +17,11 @@ COPY --from=0 /usr/lib/libmoar.so      /usr/lib/
 COPY --from=0 /usr/share/nqp           /usr/share/nqp
 COPY --from=0 /usr/share/perl6         /usr/share/perl6
 
-ENTRYPOINT ["/usr/bin/moar"]
+ENTRYPOINT [                                 \
+    "/usr/bin/moar",                         \
+    "--execname=perl6",                      \
+    "--libpath=/usr/share/nqp/lib",          \
+    "--libpath=/usr/share/perl6/runtime",    \
+    "/usr/share/perl6/runtime/perl6.moarvm", \
+    "-v"                                     \
+]

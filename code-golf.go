@@ -202,6 +202,9 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 
 		printHeader(gzipWriter, login)
 		printLeaderboards(gzipWriter)
+	} else if r.URL.Path == "/about" {
+		printHeader(gzipWriter, login)
+		gzipWriter.Write([]byte(about))
 	} else if preamble, ok := preambles[r.URL.Path[1:]]; ok {
 		printHeader(gzipWriter, login)
 

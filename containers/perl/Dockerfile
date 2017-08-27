@@ -20,4 +20,4 @@ COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
 COPY --from=0 /usr/bin/perl            /usr/bin/
 COPY --from=0 /usr/lib/perl5           /usr/lib/perl5
 
-ENTRYPOINT ["/usr/bin/perl"]
+ENTRYPOINT ["/usr/bin/perl", "-E", "say $^V =~y/v//dr"]

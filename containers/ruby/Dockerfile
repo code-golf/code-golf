@@ -20,4 +20,4 @@ COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
 COPY --from=0 /usr/bin/ruby            /usr/bin/
 COPY --from=0 /usr/lib/ruby            /usr/lib/ruby
 
-ENTRYPOINT ["/usr/bin/ruby"]
+ENTRYPOINT ["/usr/bin/ruby", "-e", "puts RUBY_VERSION"]

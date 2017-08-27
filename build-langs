@@ -1,13 +1,20 @@
-#!/bin/sh -e
+#!/bin/bash -e
 
 docker pull alpine:edge
 
 cd containers
 
-for lang in *; do
+for name in JavaScript Perl Perl\ 6 PHP Python Ruby; do
+    lang=${name,,}      # lowercase
+    lang=${lang// /}    # trim space
+
     mkdir -p $lang/rootfs/old-root
 
     docker build -t $lang $lang
+
+    ver=`docker run --rm $lang`
+
+    html+="<tr><th>$name<td>$ver"
 
     id=`docker run -d $lang -v`
 
@@ -22,3 +29,9 @@ for lang in *; do
     mkdir $lang/rootfs/etc
     echo nobody:x:99:99:nobody:/:/bin/false > $lang/rootfs/etc/passwd
 done
+
+echo "
+    package main
+
+    const about = \`<article><h1>About</h1><h2>Versions</h2><table>$html\`
+" > ../about.go

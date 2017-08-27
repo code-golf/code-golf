@@ -20,4 +20,4 @@ COPY --from=0 /usr/bin/js              /usr/bin/
 COPY --from=0 /usr/lib/libgcc_s.so.1   /usr/lib/
 COPY --from=0 /usr/lib/libstdc++.so.6  /usr/lib/
 
-ENTRYPOINT ["/usr/bin/js"]
+ENTRYPOINT ["/usr/bin/js", "-v"]

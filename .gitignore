@@ -1,3 +1,4 @@
+/about.go
 /app
 /containers/*/rootfs/
 /run-container

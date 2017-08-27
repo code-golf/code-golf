@@ -135,50 +135,22 @@ table {
     width: 100%;
 }
 
-td {
+td, th {
     border-top: 1px solid #ddd;
     height: 20px;
     line-height: 20px;
     padding: 10px;
 }
 
-td:first-child {
-    text-align: center;
-    width: 20px;
-}
-
-td:last-child {
-    padding-left: 45px;
-    position: relative;
-    white-space: nowrap;
-}
-
-td:nth-child(2) {
-    padding-left: 45px;
-    width: 40px;
-}
-
-td a {
-    color: #000;
-}
-
-td a:hover {
-    text-decoration: underline;
-}
-
-td img {
-    border-radius: 50%;
-    height: 26px;
-    left: 7px;
-    position: absolute;
-    top: 7px;
-    width: 26px;
-}
-
 textarea {
     border-radius: 5px;
     resize: none;
     width: 100%;
+}
+
+th {
+    text-align: right;
+    width: 150px;
 }
 
 tr:nth-child(even) {
@@ -227,9 +199,42 @@ tr:nth-child(odd) {
     padding: 10px;
 }
 
+.hole img {
+    border-radius: 50%;
+    height: 26px;
+    left: 7px;
+    position: absolute;
+    top: 7px;
+    width: 26px;
+}
+
 .hole p {
     font-size: 16px;
     margin: 10px 0 0;
+}
+
+.hole td:first-child {
+    text-align: center;
+    width: 20px;
+}
+
+.hole td:last-child {
+    padding-left: 45px;
+    position: relative;
+    white-space: nowrap;
+}
+
+.hole td:nth-child(2) {
+    padding-left: 45px;
+    width: 40px;
+}
+
+.hole td a {
+    color: #000;
+}
+
+.hole td a:hover {
+    text-decoration: underline;
 }
 
 .int {
