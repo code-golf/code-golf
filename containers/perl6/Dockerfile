@@ -1,13 +1,12 @@
 FROM alpine:edge
 
-RUN apk add --no-cache curl gcc git linux-headers make musl-dev perl
+RUN apk add --no-cache gcc git linux-headers make musl-dev perl
 
-RUN curl -L https://github.com/rakudo/rakudo/archive/2017.07.tar.gz \
-  | tar xzf -
-
-RUN cd rakudo-2017.07                                         \
- && perl Configure.pl --backend=moar --gen-moar --prefix=/usr \
- && make install
+RUN git clone git://github.com/rakudo/rakudo               \
+ && cd rakudo                                              \
+ && git checkout 1761f95                                   \
+ && ./Configure.pl --backend=moar --gen-moar --prefix=/usr \
+ && make -j`nproc` install
 
 FROM scratch
 
