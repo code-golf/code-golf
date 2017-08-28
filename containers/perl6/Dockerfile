@@ -2,10 +2,25 @@ FROM alpine:edge
 
 RUN apk add --no-cache gcc git linux-headers make musl-dev perl
 
-RUN git clone git://github.com/rakudo/rakudo               \
- && cd rakudo                                              \
- && git checkout 1761f95                                   \
- && ./Configure.pl --backend=moar --gen-moar --prefix=/usr \
+# MoarVM
+RUN git clone git://github.com/MoarVM/MoarVM \
+ && cd MoarVM                                \
+ && git checkout 75f9ac3                     \
+ && ./Configure.pl --prefix=/usr             \
+ && make -j`nproc` install
+
+# NQP
+RUN git clone git://github.com/perl6/nqp \
+ && cd nqp                               \
+ && git checkout f6c2458                 \
+ && ./Configure.pl --prefix=/usr         \
+ && make -j`nproc` install
+
+# Rakudo
+RUN git clone git://github.com/rakudo/rakudo \
+ && cd rakudo                                \
+ && git checkout 1761f95                     \
+ && ./Configure.pl --prefix=/usr             \
  && make -j`nproc` install
 
 FROM scratch
