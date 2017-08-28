@@ -78,9 +78,10 @@ func printHeader(w io.WriteCloser, login string) {
 
 func codeGolf(w http.ResponseWriter, r *http.Request) {
 	header := w.Header()
+	path := r.URL.Path
 
 	// Routes that don't return HTML.
-	switch r.URL.Path {
+	switch path {
 	case "/callback":
 		if user := githubAuth(r.FormValue("code")); user.ID != 0 {
 			data := strconv.Itoa(user.ID) + ":" + user.Login
@@ -201,15 +202,18 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 	defer gzipWriter.Close()
 
 	// Routes that do return HTML.
-	if r.URL.Path == "/" {
+	if path == "/" {
 		header["Strict-Transport-Security"] = []string{headerHSTS}
 
 		printHeader(gzipWriter, login)
 		printLeaderboards(gzipWriter)
-	} else if r.URL.Path == "/about" {
+	} else if path == "/about" {
 		printHeader(gzipWriter, login)
 		gzipWriter.Write([]byte(about))
-	} else if preamble, ok := preambles[r.URL.Path[1:]]; ok {
+	} else if strings.HasPrefix(path, "/u/") && getUser(path[3:]) {
+		printHeader(gzipWriter, login)
+		gzipWriter.Write([]byte("<article><h1>" + path[3:] + "</h1>"))
+	} else if preamble, ok := preambles[path[1:]]; ok {
 		printHeader(gzipWriter, login)
 
 		gzipWriter.Write([]byte(
@@ -225,7 +229,7 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 				"</div></div><article",
 		))
 
-		for lang, solution := range getUserSolutions(userID, r.URL.Path[1:]) {
+		for lang, solution := range getUserSolutions(userID, path[1:]) {
 			gzipWriter.Write([]byte(
 				" data-" + lang + `="` + strings.Replace(solution, `"`, "&#34;", -1) + `"`))
 		}

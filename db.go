@@ -41,6 +41,18 @@ func addSolution(userID int, hole, lang, code string) {
 	}
 }
 
+func getUser(login string) bool {
+	var one int
+
+	if err := db.QueryRow(
+		"SELECT 1 FROM users WHERE login = $1", login,
+	).Scan(&one); err != nil && err != sql.ErrNoRows {
+		panic(err)
+	} else {
+		return err != sql.ErrNoRows
+	}
+}
+
 func getUserSolutions(userID int, hole string) map[string]string {
 	rows, err := db.Query(
 		`SELECT code, lang
