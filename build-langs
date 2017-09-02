@@ -8,6 +8,7 @@ for name in JavaScript Perl Perl\ 6 PHP Python Ruby; do
     lang=${name,,}      # lowercase
     lang=${lang// /}    # trim space
 
+    rm -rf $lang/rootfs
     mkdir -p $lang/rootfs/old-root
 
     docker build -t $lang $lang
