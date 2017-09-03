@@ -15,7 +15,7 @@ for name in JavaScript Perl Perl\ 6 PHP Python Ruby; do
 
     ver=`docker run --rm $lang`
 
-    html+="<tr><th>$name<td>$ver"
+    html+="<tr><th>$name<td>${ver//$'\n'/ }"
 
     id=`docker run -d $lang -v`
 
