@@ -145,10 +145,11 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 			out.Err, out.Out = runCode(in.Lang, in.Code, args)
 			out.Arg = strings.Join(args, " ")
 
-			// Save the solution if it passes.
+			// Save the solution if it passes and the user is logged in.
 			if out.Exp == out.Out {
-				userID, _ := readCookie(r)
-				addSolution(userID, in.Hole, in.Lang, in.Code)
+				if userID, _ := readCookie(r); userID != 0 {
+					addSolution(userID, in.Hole, in.Lang, in.Code)
+				}
 			}
 
 			header["Content-Encoding"] = []string{"gzip"}
@@ -229,9 +230,13 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 				"</div></div><article",
 		))
 
-		for lang, solution := range getUserSolutions(userID, path[1:]) {
-			gzipWriter.Write([]byte(
-				" data-" + lang + `="` + strings.Replace(solution, `"`, "&#34;", -1) + `"`))
+		if userID != 0 {
+			for lang, solution := range getUserSolutions(userID, path[1:]) {
+				gzipWriter.Write([]byte(
+					" data-" + lang + `="` +
+					strings.Replace(solution, `"`, "&#34;", -1) + `"`,
+				))
+			}
 		}
 
 		gzipWriter.Write([]byte(
