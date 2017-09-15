@@ -97,7 +97,7 @@ func printLeaderboards(w io.WriteCloser) {
 		`SELECT hole,
 		        CONCAT(
 		            '<tr><td>',
-		            row_number,
+		            place,
 		            '<td class=',
 		            lang,
 		            '>',
@@ -110,18 +110,9 @@ func printLeaderboards(w io.WriteCloser) {
 		            login,
 		            '</a>'
 		        )
-		   FROM (
-		     SELECT ROW_NUMBER() OVER (
-		                PARTITION BY hole ORDER BY LENGTH(code), submitted
-		            ),
-		            hole,
-		            login,
-		            lang,
-		            LENGTH(code) strokes
-		       FROM solutions
-		       JOIN users ON user_id = id
-		        ) x
-		  WHERE row_number < 6`,
+		   FROM leaderboard
+		   JOIN users ON user_id = id
+		  WHERE place < 4`,
 	)
 
 	if err != nil {
