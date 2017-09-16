@@ -1,4 +1,5 @@
 a {
+    color: #000;
     text-decoration: none;
 }
 
@@ -27,6 +28,11 @@ header {
     top: 0;
     width: 100%;
     z-index: 1;
+}
+
+i {
+    color: #999;
+    font-size: 12px;
 }
 
 input,
@@ -142,6 +148,15 @@ td, th {
     padding: 10px;
 }
 
+td img {
+    border-radius: 50%;
+    height: 26px;
+    left: 7px;
+    position: absolute;
+    top: 7px;
+    width: 26px;
+}
+
 textarea {
     border-radius: 5px;
     resize: none;
@@ -199,15 +214,6 @@ tr:nth-child(odd) {
     padding: 10px;
 }
 
-.hole img {
-    border-radius: 50%;
-    height: 26px;
-    left: 7px;
-    position: absolute;
-    top: 7px;
-    width: 26px;
-}
-
 .hole p {
     font-size: 16px;
     margin: 10px 0 0;
@@ -227,10 +233,6 @@ tr:nth-child(odd) {
 .hole td:nth-child(2) {
     padding-left: 45px;
     width: 40px;
-}
-
-.hole td a {
-    color: #000;
 }
 
 .hole td a:hover {
@@ -294,6 +296,11 @@ tr:nth-child(odd) {
     display: grid;
     grid-gap: 10px;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+#leaderboard td:nth-child(2) {
+    padding-left: 45px;
+    position: relative;
 }
 
 #login {

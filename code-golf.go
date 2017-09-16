@@ -211,6 +211,9 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 	} else if path == "/about" {
 		printHeader(gzipWriter, login)
 		gzipWriter.Write([]byte(about))
+	} else if path == "/leaderboards" {
+		printHeader(gzipWriter, login)
+		printOverallLeaderboards(gzipWriter)
 	} else if strings.HasPrefix(path, "/u/") && getUser(path[3:]) {
 		printHeader(gzipWriter, login)
 		gzipWriter.Write([]byte("<article><h1>" + path[3:] + "</h1>"))
@@ -234,7 +237,7 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 			for lang, solution := range getUserSolutions(userID, path[1:]) {
 				gzipWriter.Write([]byte(
 					" data-" + lang + `="` +
-					strings.Replace(solution, `"`, "&#34;", -1) + `"`,
+						strings.Replace(solution, `"`, "&#34;", -1) + `"`,
 				))
 			}
 		}
