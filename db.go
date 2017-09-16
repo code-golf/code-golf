@@ -3,7 +3,6 @@ package main
 import (
 	"database/sql"
 	"io"
-	"os"
 
 	_ "github.com/lib/pq"
 )
@@ -13,7 +12,7 @@ var db *sql.DB
 func init() {
 	var err error
 
-	if db, err = sql.Open("postgres", os.Getenv("DB_DSN")); err != nil {
+	if db, err = sql.Open("postgres", ""); err != nil {
 		panic(err)
 	}
 }
