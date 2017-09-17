@@ -114,7 +114,7 @@ func printLeaderboards(w io.WriteCloser) {
 		        )
 		   FROM leaderboard
 		   JOIN users ON user_id = id
-		  WHERE place < 4`,
+		  WHERE place < 6`,
 	)
 
 	if err != nil {
