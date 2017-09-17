@@ -17,7 +17,13 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header()["Date"] = nil
 
 	defer func(start time.Time) {
-		fmt.Printf("%s %s %s %s\n", r.Method, r.URL.Path, time.Since(start), r.UserAgent())
+		fmt.Printf(
+			"%3dms %s %s %s\n",
+			time.Since(start).Nanoseconds() / 1e6,
+			r.Method,
+			r.URL.Path,
+			r.UserAgent(),
+		)
 
 		if r := recover(); r != nil {
 			fmt.Fprint(os.Stderr, "<1>", r, "\n")
