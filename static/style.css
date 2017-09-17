@@ -122,7 +122,6 @@ nav img {
 }
 
 pre,
-textarea,
 .CodeMirror {
     font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
 }
@@ -148,12 +147,6 @@ td img {
     position: absolute;
     top: 7px;
     width: 26px;
-}
-
-textarea {
-    border-radius: 5px;
-    resize: none;
-    width: 100%;
 }
 
 th {
@@ -339,6 +332,17 @@ tr.me {
     background: #fdf3fa;
     border-bottom: 1px solid #e01a22;
     display: none;
+}
+
+#status pre {
+    background: #fff;
+    border: 1px solid #000;
+    border-radius: 5px;
+    font-size: 14px;
+    max-height: 150px;
+    overflow: auto;
+    padding: 5px;
+    width: 100%;
 }
 
 #status.pass {
