@@ -8,7 +8,6 @@ import (
 	"crypto/subtle"
 	"encoding/base64"
 	"encoding/json"
-	"html"
 	"io"
 	"math/rand"
 	"net/http"
@@ -19,6 +18,8 @@ import (
 	"syscall"
 	"time"
 	"unicode"
+
+	"github.com/buildkite/terminal"
 )
 
 const base = "views/base.html"
@@ -314,14 +315,16 @@ func runCode(lang, code string, args []string) (string, string) {
 
 	timer.Stop()
 
-	errStr := html.EscapeString(string(bytes.TrimRightFunc(err.Bytes(), unicode.IsSpace)))
-	outStr := html.EscapeString(string(bytes.TrimRightFunc(out.Bytes(), unicode.IsSpace)))
+	// Trim trailing whitespace.
+	errBytes := bytes.TrimRightFunc(err.Bytes(), unicode.IsSpace)
+	outBytes := bytes.TrimRightFunc(out.Bytes(), unicode.IsSpace)
 
-	// Very crude ANSI parser to make pretty Perl 6 error messages.
-	errStr = strings.Replace(errStr, "\033[31m", "<span class=red>", -1)
-	errStr = strings.Replace(errStr, "\033[32m", "<span class=green>", -1)
-	errStr = strings.Replace(errStr, "\033[33m", "<span class=yellow>", -1)
-	errStr = strings.Replace(errStr, "\033[0m", "</span>", -1)
+	// Escape HTML & convert ANSI to HTML in stderr.
+	errBytes = terminal.Render(errBytes)
 
-	return errStr, outStr
+	// Escape HTML in stdout
+	outBytes = bytes.Replace(outBytes, []byte{'<'}, []byte("&lt;"), -1)
+	outBytes = bytes.Replace(outBytes, []byte{'>'}, []byte("&gt;"), -1)
+
+	return string(errBytes), string(outBytes)
 }

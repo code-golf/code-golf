@@ -194,10 +194,6 @@ tr.me {
     width: 100%;
 }
 
-.green  { color: green }
-.red    { color: red }
-.yellow { color: #fd0 }
-
 .hole {
     border-radius: 10px;
     overflow: hidden;
@@ -293,6 +289,11 @@ tr.me {
 .tab.on:hover {
     background: #4bc970;
 }
+
+/* https://github.com/buildkite/terminal/blob/master/assets/terminal.css */
+.term-fg31 { color: #e10c02 } /* red */
+.term-fg32 { color: #99ff5e } /* green */
+.term-fg33 { color: #c6c502 } /* yellow */
 
 #home {
     display: grid;
