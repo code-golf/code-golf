@@ -8,6 +8,7 @@ import (
 	"crypto/subtle"
 	"encoding/base64"
 	"encoding/json"
+	"html"
 	"io"
 	"math/rand"
 	"net/http"
@@ -153,10 +154,14 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 			}
 
 			header["Content-Encoding"] = []string{"gzip"}
+			header["Content-Type"] = []string{"application/json"}
 			gzipWriter := gzip.NewWriter(w)
 			defer gzipWriter.Close()
 
-			if err := json.NewEncoder(gzipWriter).Encode(&out); err != nil {
+			enc := json.NewEncoder(gzipWriter)
+			enc.SetEscapeHTML(false)
+
+			if err := enc.Encode(&out); err != nil {
 				panic(err)
 			}
 			return
@@ -222,14 +227,10 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 
 		gzipWriter.Write([]byte(
 			"<script async src=" + jsPath + "></script><div id=status><div>" +
-				"<h2>Program Arguments</h2>" +
-				"<textarea id=Arg readonly rows=1></textarea>" +
-				"<h2>Standard Error</h2>" +
-				"<textarea id=Err readonly rows=1></textarea>" +
-				"<h2>Expected Output</h2>" +
-				"<textarea id=Exp readonly rows=5></textarea>" +
-				"<h2>Standard Output</h2>" +
-				"<textarea id=Out preamble rows=5></textarea>" +
+				"<h2>Program Arguments</h2><pre id=Arg></pre>" +
+				"<h2>Standard Error</h2><pre id=Err></pre>" +
+				"<h2>Expected Output</h2><pre id=Exp></pre>" +
+				"<h2>Standard Output</h2><pre id=Out></pre>" +
 				"</div></div><article",
 		))
 
@@ -313,6 +314,14 @@ func runCode(lang, code string, args []string) (string, string) {
 
 	timer.Stop()
 
-	return string(bytes.TrimRightFunc(err.Bytes(), unicode.IsSpace)),
-		string(bytes.TrimRightFunc(out.Bytes(), unicode.IsSpace))
+	errStr := html.EscapeString(string(bytes.TrimRightFunc(err.Bytes(), unicode.IsSpace)))
+	outStr := html.EscapeString(string(bytes.TrimRightFunc(out.Bytes(), unicode.IsSpace)))
+
+	// Very crude ANSI parser to make pretty Perl 6 error messages.
+	errStr = strings.Replace(errStr, "\033[31m", "<span class=red>", -1)
+	errStr = strings.Replace(errStr, "\033[32m", "<span class=green>", -1)
+	errStr = strings.Replace(errStr, "\033[33m", "<span class=yellow>", -1)
+	errStr = strings.Replace(errStr, "\033[0m", "</span>", -1)
+
+	return errStr, outStr
 }

@@ -201,6 +201,10 @@ tr.me {
     width: 100%;
 }
 
+.green  { color: green }
+.red    { color: red }
+.yellow { color: #fd0 }
+
 .hole {
     border-radius: 10px;
     overflow: hidden;

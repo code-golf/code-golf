@@ -42,14 +42,13 @@ onload = function() {
                 .toggle('pass', data.Exp === data.Out);
 
             for (let prop in data) {
-                let textarea = document.getElementById(prop);
+                let pre = document.getElementById(prop);
 
-                textarea.value = data[prop];
+                pre.innerHTML = data[prop];
 
                 // Only show Arg & Err if they contain something.
                 if (prop === 'Arg' || prop === 'Err')
-                    textarea.style.display
-                        = textarea.previousSibling.style.display
+                    pre.style.display = pre.previousSibling.style.display
                         = data[prop] ? '' : 'none';
             }
 
