@@ -41,8 +41,17 @@ onload = function() {
             document.getElementById('status').classList
                 .toggle('pass', data.Exp === data.Out);
 
-            for (let prop in data)
-                document.getElementById(prop).value = data[prop];
+            for (let prop in data) {
+                let textarea = document.getElementById(prop);
+
+                textarea.value = data[prop];
+
+                // Only show Arg & Err if they contain something.
+                if (prop === 'Arg' || prop === 'Err')
+                    textarea.style.display
+                        = textarea.previousSibling.style.display
+                        = data[prop] ? '' : 'none';
+            }
 
             document.getElementById('status').style.display = 'block';
         });
