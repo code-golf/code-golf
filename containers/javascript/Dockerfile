@@ -5,10 +5,10 @@ ENV SHELL /bin/sh
 RUN apk add --no-cache \
     autoconf2.13 curl g++ gcc linux-headers make musl-dev python2
 
-RUN curl https://ftp.mozilla.org/pub/firefox/releases/54.0.1/source/firefox-54.0.1.source.tar.xz \
+RUN curl https://ftp.mozilla.org/pub/firefox/releases/55.0.3/source/firefox-55.0.3.source.tar.xz \
   | tar xJf -
 
-RUN cd /firefox-54.0.1/js/src                    \
+RUN cd /firefox-55.0.3/js/src                    \
  && ./configure --disable-jemalloc --prefix=/usr \
  && make -j4                                     \
  && make install

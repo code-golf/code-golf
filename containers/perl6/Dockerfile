@@ -8,7 +8,7 @@ RUN git config --global user.email 'foo@bar.com' \
 # MoarVM
 RUN git clone git://github.com/MoarVM/MoarVM \
  && cd MoarVM                                \
- && git checkout 1e005d2                     \
+ && git checkout 2017.09                     \
  && ./Configure.pl --prefix=/usr             \
  && make -j`nproc` install
 
