@@ -98,7 +98,9 @@ func printLeaderboards(w io.WriteCloser, id int) {
 	rows, err := db.Query(
 		`SELECT hole,
 		        CONCAT(
-		            '<tr',
+		            '<tr title="Submitted ',
+		            TO_CHAR(submitted, 'YYYY-MM-DD HH24:MI:SS'),
+		            '"',
 		            CASE WHEN user_id = $1 THEN ' class=me' END,
 		            '><td>',
 		            place,
