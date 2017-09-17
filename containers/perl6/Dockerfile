@@ -8,22 +8,21 @@ RUN git config --global user.email 'foo@bar.com' \
 # MoarVM
 RUN git clone git://github.com/MoarVM/MoarVM \
  && cd MoarVM                                \
- && git checkout f59ac65                     \
- && git revert 4ce52ef                       \
+ && git checkout 1e005d2                     \
  && ./Configure.pl --prefix=/usr             \
  && make -j`nproc` install
 
 # NQP
 RUN git clone git://github.com/perl6/nqp \
  && cd nqp                               \
- && git checkout a1efba5                 \
+ && git checkout 3b1858d                 \
  && ./Configure.pl --prefix=/usr         \
  && make -j`nproc` install
 
 # Rakudo
 RUN git clone git://github.com/rakudo/rakudo \
  && cd rakudo                                \
- && git checkout 8019c15                     \
+ && git checkout b76f7cc                     \
  && ./Configure.pl --prefix=/usr             \
  && make -j`nproc` install
 
