@@ -207,13 +207,13 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 		header["Strict-Transport-Security"] = []string{headerHSTS}
 
 		printHeader(gzipWriter, login)
-		printLeaderboards(gzipWriter)
+		printLeaderboards(gzipWriter, userID)
 	} else if path == "/about" {
 		printHeader(gzipWriter, login)
 		gzipWriter.Write([]byte(about))
 	} else if path == "/leaderboards" {
 		printHeader(gzipWriter, login)
-		printOverallLeaderboards(gzipWriter)
+		printOverallLeaderboards(gzipWriter, login)
 	} else if strings.HasPrefix(path, "/u/") && getUser(path[3:]) {
 		printHeader(gzipWriter, login)
 		gzipWriter.Write([]byte("<article><h1>" + path[3:] + "</h1>"))

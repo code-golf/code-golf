@@ -128,6 +128,7 @@ textarea,
 }
 
 table {
+    border: 1px solid #ddd;
     border-collapse: collapse;
     table-layout: fixed;
     width: 100%;
@@ -160,12 +161,20 @@ th {
     width: 150px;
 }
 
+tr:first-child td {
+    border: 0;
+}
+
 tr:nth-child(even) {
     background: #eee;
 }
 
 tr:nth-child(odd) {
     background: #fff;
+}
+
+tr.me {
+    background: #5cf;
 }
 
 .adv {
@@ -209,6 +218,10 @@ tr:nth-child(odd) {
 .hole p {
     font-size: 16px;
     margin: 10px 0 0;
+}
+
+.hole table {
+    border: 0;
 }
 
 .hole td:first-child {

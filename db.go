@@ -94,11 +94,13 @@ func addUser(id int, login string) {
 	}
 }
 
-func printLeaderboards(w io.WriteCloser) {
+func printLeaderboards(w io.WriteCloser, id int) {
 	rows, err := db.Query(
 		`SELECT hole,
 		        CONCAT(
-		            '<tr><td>',
+		            '<tr',
+		            CASE WHEN user_id = $1 THEN ' class=me' END,
+		            '><td>',
 		            place,
 		            '<td class=',
 		            lang,
@@ -115,6 +117,7 @@ func printLeaderboards(w io.WriteCloser) {
 		   FROM leaderboard
 		   JOIN users ON user_id = id
 		  WHERE place < 6`,
+		id,
 	)
 
 	if err != nil {
@@ -149,7 +152,7 @@ func printLeaderboards(w io.WriteCloser) {
 	}
 }
 
-func printOverallLeaderboards(w io.WriteCloser) {
+func printOverallLeaderboards(w io.WriteCloser, login string) {
 	rows, err := db.Query(
 		`SELECT login,
 		        place,
@@ -209,8 +212,14 @@ func printOverallLeaderboards(w io.WriteCloser) {
 	w.Write([]byte("<article><table id=leaderboard>"))
 
 	for i, v := range totals {
+		w.Write([]byte("<tr"))
+
+		if login == v.login {
+			w.Write([]byte(" class=me"))
+		}
+
 		w.Write([]byte(
-			"<tr><td>" + strconv.Itoa(i+1) +
+			"><td>" + strconv.Itoa(i+1) +
 				`<td><img src="//avatars.githubusercontent.com/` + v.login +
 				`?size=26"><a href="u/` + v.login + `">` + v.login + "</a>" +
 				"<td>" + strconv.Itoa(v.iScore) +
