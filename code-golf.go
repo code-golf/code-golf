@@ -332,5 +332,23 @@ func runCode(lang, code string, args []string) (string, string) {
 	outBytes = bytes.Replace(outBytes, []byte{'<'}, []byte("&lt;"), -1)
 	outBytes = bytes.Replace(outBytes, []byte{'>'}, []byte("&gt;"), -1)
 
+	// ASCII-ify roman numerals
+	outBytes = bytes.Replace(outBytes, []byte("Ⅰ"), []byte("I"), -1)
+	outBytes = bytes.Replace(outBytes, []byte("Ⅱ"), []byte("II"), -1)
+	outBytes = bytes.Replace(outBytes, []byte("Ⅲ"), []byte("III"), -1)
+	outBytes = bytes.Replace(outBytes, []byte("Ⅳ"), []byte("IV"), -1)
+	outBytes = bytes.Replace(outBytes, []byte("Ⅴ"), []byte("V"), -1)
+	outBytes = bytes.Replace(outBytes, []byte("Ⅵ"), []byte("VI"), -1)
+	outBytes = bytes.Replace(outBytes, []byte("Ⅶ"), []byte("VII"), -1)
+	outBytes = bytes.Replace(outBytes, []byte("Ⅷ"), []byte("VIII"), -1)
+	outBytes = bytes.Replace(outBytes, []byte("Ⅸ"), []byte("IX"), -1)
+	outBytes = bytes.Replace(outBytes, []byte("Ⅹ"), []byte("X"), -1)
+	outBytes = bytes.Replace(outBytes, []byte("Ⅺ"), []byte("XI"), -1)
+	outBytes = bytes.Replace(outBytes, []byte("Ⅻ"), []byte("XII"), -1)
+	outBytes = bytes.Replace(outBytes, []byte("Ⅼ"), []byte("L"), -1)
+	outBytes = bytes.Replace(outBytes, []byte("Ⅽ"), []byte("C"), -1)
+	outBytes = bytes.Replace(outBytes, []byte("Ⅾ"), []byte("D"), -1)
+	outBytes = bytes.Replace(outBytes, []byte("Ⅿ"), []byte("M"), -1)
+
 	return string(errBytes), string(outBytes)
 }
