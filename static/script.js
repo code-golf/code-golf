@@ -3,13 +3,20 @@ onload = function() {
     let article = document.getElementsByTagName('article')[0];
     let editors = [];
 
-    for (let lang of ['javascript', 'perl', 'perl6', 'php', 'python', 'ruby'])
-        editors.push(CodeMirror(article, {
+    for (let lang of ['javascript', 'perl', 'perl6', 'php', 'python', 'ruby']) {
+        let editor = CodeMirror(article, {
             lineNumbers: true,
             lineWrapping: true,
             mode: { name: lang, startOpen: true },
             value: article.dataset.hasOwnProperty(lang) ? article.dataset[lang] : '',
-        }));
+        });
+
+        editor.on('change', function(cm) {
+            console.log([...cm.getValue()].length);
+        });
+
+        editors.push(editor);
+    }
 
     ( onhashchange = function() {
         // Kick 'em to Perl 6 if we don't know the chosen language.
