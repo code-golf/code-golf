@@ -246,12 +246,12 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 
 		gzipWriter.Write([]byte(
 			">" + preamble +
-				"<a class=tab href=#javascript>JavaScript</a> " +
-				"<a class=tab href=#perl>Perl</a> " +
-				"<a class=tab href=#perl6>Perl 6</a> " +
-				"<a class=tab href=#php>PHP</a> " +
-				"<a class=tab href=#python>Python</a> " +
-				"<a class=tab href=#ruby>Ruby</a>" +
+				"<a class=tab href=#javascript>JavaScript<span></span></a>" +
+				"<a class=tab href=#perl>Perl<span></span></a>" +
+				"<a class=tab href=#perl6>Perl 6<span></span></a>" +
+				"<a class=tab href=#php>PHP<span></span></a>" +
+				"<a class=tab href=#python>Python<span></span></a>" +
+				"<a class=tab href=#ruby>Ruby<span></span></a>" +
 				"<input type=submit value=Run>",
 		))
 	} else {

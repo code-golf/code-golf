@@ -4,16 +4,26 @@ onload = function() {
     let editors = [];
 
     for (let lang of ['javascript', 'perl', 'perl6', 'php', 'python', 'ruby']) {
+        let code = article.dataset.hasOwnProperty(lang) ? article.dataset[lang] : '';
+
         let editor = CodeMirror(article, {
             lineNumbers: true,
             lineWrapping: true,
             mode: { name: lang, startOpen: true },
-            value: article.dataset.hasOwnProperty(lang) ? article.dataset[lang] : '',
+            value: code,
         });
 
-        editor.on('change', function(cm) {
-            console.log([...cm.getValue()].length);
-        });
+        let span = document.querySelector('[href="#' + lang + '"] span');
+
+        let callback = function(editor) {
+            let len = [...editor.getValue()].length;
+
+            span.innerText = len ? len + ' characters' : 'not attempted';
+        };
+
+        callback(editor);
+
+        editor.on('change', callback);
 
         editors.push(editor);
     }
