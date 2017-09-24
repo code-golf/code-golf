@@ -1,0 +1,53 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use Digest::MD5 'md5_base64';
+use IPC::Open2 'open2';
+
+undef $/;
+
+my $css = `cat assets/*.css | csso /dev/stdin`;
+
+my $js = `java -jar /*.jar --assume_function_wrapper assets/{codemirror{,-*},script}.js`;
+
+my $cssPath = md5_base64($css) =~ y|+/|-_|r;
+my $jsPath  = md5_base64($js)  =~ y|+/|-_|r;
+
+my $favicon = hexify( do { @ARGV = 'assets/favicon.ico', scalar <> } );
+
+my $cssBr = compress($css, qw/brotli/);
+my $cssGz = compress($css, qw/gzip -9/);
+my  $jsBr = compress($js,  qw/brotli/);
+my  $jsGz = compress($js,  qw/gzip -9/);
+
+open my $fh, '>', 'assets.go';
+print $fh <<EOF;
+package main
+
+const cssPath = "/$cssPath"
+const  jsPath = "/$jsPath"
+
+var favicon = []byte{$favicon}
+
+var cssBr = []byte{$cssBr}
+var cssGz = []byte{$cssGz}
+var  jsBr = []byte{$jsBr}
+var  jsGz = []byte{$jsGz}
+EOF
+
+sub compress {
+    my ( $data, @cmd ) = @_;
+
+    open2( my $out, my $in, @cmd );
+    print $in $data;
+    close $in;
+
+    hexify( scalar <$out> );
+}
+
+sub hexify {
+    my $i = 0;
+    join ',', map +( "\n" x !($i++ % 15) ) . "0x$_", unpack '(H2)*', pop;
+}

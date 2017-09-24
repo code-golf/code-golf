@@ -1,8 +1,12 @@
-#!/bin/sh -e
+#!/bin/bash -e
 
+# Assets
+docker pull alpine:edge
+docker build -t code-golf-assets assets
+docker run -v `pwd`:/work code-golf-assets
+
+# Code
 docker pull debian:stretch
-
-docker build -t codegolf .
-
+docker build -t code-golf .
 dir=/go/src/github.com/jraspass/codegolf
-docker run --rm -v `pwd`:$dir -w $dir codegolf
+docker run --rm -v `pwd`:$dir -w $dir code-golf

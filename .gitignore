@@ -1,5 +1,5 @@
 /about.go
+/assets.go
 /app
 /containers/*/rootfs/
 /run-container
-/static.go

@@ -176,7 +176,7 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 			w.Write(cssBr)
 		} else {
 			header["Content-Encoding"] = []string{"gzip"}
-			w.Write(cssGzip)
+			w.Write(cssGz)
 		}
 		return
 	case jsPath:
@@ -188,7 +188,7 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 			w.Write(jsBr)
 		} else {
 			header["Content-Encoding"] = []string{"gzip"}
-			w.Write(jsGzip)
+			w.Write(jsGz)
 		}
 		return
 	}
