@@ -6,21 +6,31 @@ use warnings;
 use Digest::MD5 'md5_base64';
 use IPC::Open2 'open2';
 
-undef $/;
+system qw(svgo -q -f assets);
 
-my $css = `cat assets/*.css | csso /dev/stdin`;
+my $css = slurp('assets/codemirror.css')
+    . slurp('assets/style.css') =~ s|svg\(([^#]+)(.+)\)|svg($1, $2)|egr;
+
+$css = run($css, qw(csso /dev/stdin));
 
 my $js = `java -jar /*.jar --assume_function_wrapper assets/{codemirror{,-*},script}.js`;
 
 my $cssPath = md5_base64($css) =~ y|+/|-_|r;
 my $jsPath  = md5_base64($js)  =~ y|+/|-_|r;
 
-my $favicon = hexify( do { @ARGV = 'assets/favicon.ico', scalar <> } );
+my $favicon = hexify(slurp('assets/favicon.ico'));
 
-my $cssBr = compress($css, qw/brotli/);
-my $cssGz = compress($css, qw/gzip -9/);
-my  $jsBr = compress($js,  qw/brotli/);
-my  $jsGz = compress($js,  qw/gzip -9/);
+my $cssBr = run($css, qw/brotli/);
+my $cssGz = run($css, qw/gzip -9/);
+my  $jsBr = run($js,  qw/brotli/);
+my  $jsGz = run($js,  qw/gzip -9/);
+
+printf "cssBr = %d bytes\n", length $cssBr;
+printf "cssGz = %d bytes\n", length $cssGz;
+printf " jsBr = %d bytes\n", length  $jsBr;
+printf " jsGz = %d bytes\n", length  $jsGz;
+
+$_ = hexify($_) for $cssBr, $cssGz, $jsBr, $jsGz;
 
 open my $fh, '>', 'assets.go';
 print $fh <<EOF;
@@ -37,17 +47,33 @@ var  jsBr = []byte{$jsBr}
 var  jsGz = []byte{$jsGz}
 EOF
 
-sub compress {
+sub hexify {
+    my $i = 0;
+    join ',', map +( "\n" x !($i++ % 15) ) . "0x$_", unpack '(H2)*', pop;
+}
+
+sub run {
     my ( $data, @cmd ) = @_;
+
+    local $/;
 
     open2( my $out, my $in, @cmd );
     print $in $data;
     close $in;
 
-    hexify( scalar <$out> );
+    scalar <$out>;
 }
 
-sub hexify {
-    my $i = 0;
-    join ',', map +( "\n" x !($i++ % 15) ) . "0x$_", unpack '(H2)*', pop;
+sub slurp { local ( @ARGV, $/ ) = @_; scalar <> }
+
+sub svg {
+    my ( $file, $fill ) = @_;
+
+    $_ = slurp("assets/$file.svg");
+
+    s/FILL/$fill/g;
+    s/#/%23/g;
+    s/"/'/g;
+
+    qq(url("data:image/svg+xml,$_"));
 }

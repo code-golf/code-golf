@@ -11,10 +11,11 @@ RUN curl -L https://github.com/google/brotli/archive/v1.0.1.tar.gz \
 
 # Closure Compiler
 RUN curl http://dl.google.com/closure-compiler/compiler-20170910.tar.gz \
-  | tar -zxf - -C /
+  | tar -zxf - -C /                                                     \
+ && chmod o+r /*.jar
 
-# CSSO
-RUN npm install -g csso-cli@1.0.0 csso@3.1.1
+# CSSO & SVGO
+RUN npm install -g csso-cli@1.1.0 csso@3.2.0 svgo@0.7.2
 
 # Bashisms FTW.
 RUN ln -snf /bin/bash /bin/sh
