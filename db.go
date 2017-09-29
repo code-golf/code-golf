@@ -158,6 +158,7 @@ func printLeaderboards(w io.WriteCloser, id int) {
 func printOverallLeaderboards(w io.WriteCloser, login string) {
 	rows, err := db.Query(
 		`SELECT login,
+		        TO_CHAR(submitted, 'YYYY-MM-DD<span> HH24:MI:SS</span>'),
 		        place,
 		        (SELECT COUNT(*) FROM leaderboard WHERE hole = l.hole)
 		   FROM leaderboard l
@@ -171,19 +172,20 @@ func printOverallLeaderboards(w io.WriteCloser, login string) {
 	defer rows.Close()
 
 	type total struct {
-		login  string
-		score  *big.Rat
-		iScore int
-		holes  int
+		login     string
+		submitted string
+		score     *big.Rat
+		iScore    int
+		holes     int
 	}
 
 	var totals []total
 
 	for rows.Next() {
-		var login string
+		var login, submitted string
 		var place, count int64
 
-		if err := rows.Scan(&login, &place, &count); err != nil {
+		if err := rows.Scan(&login, &submitted, &place, &count); err != nil {
 			panic(err)
 		}
 
@@ -193,10 +195,14 @@ func printOverallLeaderboards(w io.WriteCloser, login string) {
 		l := len(totals)
 
 		if l == 0 || totals[l-1].login != login {
-			totals = append(totals, total{login, score, 0, 1})
+			totals = append(totals, total{login, submitted, score, 0, 1})
 		} else {
 			totals[l-1].holes++
 			totals[l-1].score = score.Add(score, totals[l-1].score)
+
+			if submitted > totals[l-1].submitted {
+				totals[l-1].submitted = submitted
+			}
 		}
 	}
 
@@ -226,7 +232,8 @@ func printOverallLeaderboards(w io.WriteCloser, login string) {
 				`<td><img src="//avatars.githubusercontent.com/` + v.login +
 				`?s=26"><a href="u/` + v.login + `">` + v.login + "</a>" +
 				"<td>" + strconv.Itoa(v.iScore) +
-				" <i>(" + strconv.Itoa(v.holes) + " holes)</i>",
+				" <i>(" + strconv.Itoa(v.holes) + " holes)</i>" +
+				"<td>" + v.submitted,
 		))
 	}
 }

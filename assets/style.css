@@ -97,8 +97,6 @@ pre,
 table {
     border: 1px solid #ddd;
     border-collapse: collapse;
-    table-layout: fixed;
-    width: 100%;
 }
 
 td, th {
@@ -184,6 +182,8 @@ tr.me {
 
 .hole table {
     border: 0;
+    table-layout: fixed;
+    width: 100%;
 }
 
 .hole td:first-child {
@@ -262,9 +262,22 @@ tr.me {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 
+#leaderboard {
+    margin: auto;
+    max-width: 560px;
+}
+
+#leaderboard td {
+    white-space: nowrap;
+}
+
 #leaderboard td:nth-child(2) {
+    max-width: 0;
+    overflow: hidden;
     padding-left: 45px;
     position: relative;
+    text-overflow: ellipsis;
+    width: 100%;
 }
 
 #login       { background-image: svg(sign-in#999) }
@@ -320,5 +333,9 @@ tr.me {
         padding-right: 0;
         vertical-align: bottom;
         width: 0;
+    }
+
+    #leaderboard span {
+        display: none;
     }
 }
