@@ -110,7 +110,7 @@ func printLeaderboards(w io.WriteCloser, id int) {
 		            strokes,
 		            '<td><img src="//avatars.githubusercontent.com/',
 		            login,
-		            '?size=26"><a href="u/',
+		            '?s=26"><a href="u/',
 		            login,
 		            '">',
 		            login,
@@ -224,7 +224,7 @@ func printOverallLeaderboards(w io.WriteCloser, login string) {
 		w.Write([]byte(
 			"><td>" + strconv.Itoa(i+1) +
 				`<td><img src="//avatars.githubusercontent.com/` + v.login +
-				`?size=26"><a href="u/` + v.login + `">` + v.login + "</a>" +
+				`?s=26"><a href="u/` + v.login + `">` + v.login + "</a>" +
 				"<td>" + strconv.Itoa(v.iScore) +
 				" <i>(" + strconv.Itoa(v.holes) + " holes)</i>",
 		))

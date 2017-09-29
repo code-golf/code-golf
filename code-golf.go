@@ -60,7 +60,7 @@ func printHeader(w io.WriteCloser, login string) {
 	if login == "" {
 		logInOrOut = `<a href="//github.com/login/oauth/authorize?client_id=7f6709819023e9215205&scope=user:email" id=login>Login with GitHub</a>`
 	} else {
-		logInOrOut = `<a href=/logout id=logout title=Logout></a><a href="/u/` + login + `" id=me><img src="//avatars.githubusercontent.com/` + login + `?size=30">` + login + "</a>"
+		logInOrOut = `<a href=/logout id=logout title=Logout></a><a href="/u/` + login + `" id=me><img src="//avatars.githubusercontent.com/` + login + `?s=30">` + login + "</a>"
 	}
 
 	w.Write([]byte(
