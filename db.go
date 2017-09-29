@@ -220,6 +220,9 @@ func printOverallLeaderboards(w io.WriteCloser, login string) {
 
 	w.Write([]byte("<article><table id=leaderboard>"))
 
+	place     := 0
+	prevScore := 0
+
 	for i, v := range totals {
 		w.Write([]byte("<tr"))
 
@@ -227,8 +230,14 @@ func printOverallLeaderboards(w io.WriteCloser, login string) {
 			w.Write([]byte(" class=me"))
 		}
 
+		// Allow people to share the same rank.
+		if v.iScore != prevScore {
+			place = i + 1
+			prevScore = v.iScore
+		}
+
 		w.Write([]byte(
-			"><td>" + strconv.Itoa(i+1) +
+			"><td>" + strconv.Itoa(place) +
 				`<td><img src="//avatars.githubusercontent.com/` + v.login +
 				`?s=26"><a href="u/` + v.login + `">` + v.login + "</a>" +
 				"<td>" + strconv.Itoa(v.iScore) +
