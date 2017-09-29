@@ -140,6 +140,8 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 			} else if in.Hole == "seven-segment" {
 				args = make([]string, 1)
 				args[0], out.Exp = sevenSegment()
+			} else if in.Hole == "spelling-numbers" {
+				args, out.Exp = spellingNumbers()
 			} else {
 				out.Exp = answers[in.Hole]
 			}
