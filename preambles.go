@@ -19,7 +19,7 @@ var preambles = map[string]string{
 	"fizz-buzz":                `<h1>Fizz Buzz</h1><p>Print the numbers from <b>1</b> to <b>100</b> (inclusive), each on their own line.</p><p>If, however, the number is a multiple of <b>three</b> then print <b>Fizz</b> instead, and if the number is a multiple of <b>five</b> then print <b>Buzz</b>.</p><p>For numbers which are multiples of <b>both three and five</b> then print <b>FizzBuzz</b>.</p>`,
 	"pascals-triangle":         `<h1>Pascal's Triangle</h1><p>Print the first <b>20 rows</b> of Pascal's triangle.</p>`,
 	"seven-segment":            `<h1>Seven Segment</h1>`,
-	"spelling-numbers":         `<h1>Spelling Numbers</h1><p>For each number argument print the same number spelled out in english.<p>The numbers will be in the range of <b>0</b> to <b>1,000</b> inclusive.</p>`,
+	"spelling-numbers":         `<h1>Spelling Numbers</h1><p>For each number argument print the same number spelled out in English.<p>The numbers will be in the range of <b>0</b> to <b>1,000</b> inclusive.</p>`,
 	"e":                        `<h1>e</h1><p>Print e (Euler's number) to the first 1,000 decimal places.</p>`,
 	"π":                        `<h1>π</h1><p>Print π (Pi) to the first 1,000 decimal places.</p>`,
 }
