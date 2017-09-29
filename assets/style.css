@@ -83,8 +83,10 @@ nav a:hover {
 
 nav img {
     border-radius: 50%;
+    height: 30px;
     left: 10px;
     position: absolute;
+    width: 30px;
 }
 
 pre,
