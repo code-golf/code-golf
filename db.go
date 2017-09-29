@@ -119,7 +119,7 @@ func printLeaderboards(w io.WriteCloser, id int) {
 		   FROM leaderboard
 		   JOIN users ON user_id = id
 		  WHERE place < 6
-		  ORDER BY hole, place`,
+		  ORDER BY hole, place, submitted`,
 		id,
 	)
 

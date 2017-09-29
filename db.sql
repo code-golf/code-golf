@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.3
+-- Dumped from database version 9.6.5
 -- Dumped by pg_dump version 9.6.5
 
 SET statement_timeout = 0;
@@ -36,10 +36,13 @@ SET search_path = public, pg_catalog;
 
 CREATE TYPE hole AS ENUM (
     '99-bottles-of-beer',
+    'fibonacci',
     'fizz-buzz',
     'arabic-to-roman-numerals',
     'pascals-triangle',
     'seven-segment',
+    'spelling-numbers',
+    'e',
     'π'
 );
 
@@ -86,7 +89,7 @@ ALTER TABLE solutions OWNER TO jraspass;
 --
 
 CREATE VIEW leaderboard AS
- SELECT row_number() OVER (PARTITION BY x.hole ORDER BY x.strokes, x.submitted) AS place,
+ SELECT rank() OVER (PARTITION BY x.hole ORDER BY x.strokes) AS place,
     x.hole,
     x.user_id,
     x.lang,
@@ -98,7 +101,8 @@ CREATE VIEW leaderboard AS
             length(solutions.code) AS strokes,
             solutions.submitted
            FROM solutions
-          ORDER BY solutions.hole, solutions.user_id, (length(solutions.code))) x;
+          ORDER BY solutions.hole, solutions.user_id, (length(solutions.code)), solutions.submitted) x
+  ORDER BY x.hole, (rank() OVER (PARTITION BY x.hole ORDER BY x.strokes)), x.submitted;
 
 
 ALTER TABLE leaderboard OWNER TO jraspass;
