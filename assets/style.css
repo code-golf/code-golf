@@ -256,6 +256,18 @@ tr.me {
 .term-fg32 { color: #99ff5e } /* green */
 .term-fg33 { color: #c6c502 } /* yellow */
 
+#alert {
+    background: #5cf;
+    padding: 5px;
+    border: 1px solid #222;
+    color: #222;
+    text-align: center;
+}
+
+#alert a {
+    text-decoration: underline;
+}
+
 #home {
     display: grid;
     grid-gap: 10px;

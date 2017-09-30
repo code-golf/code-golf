@@ -237,7 +237,15 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 				"</div></div><article",
 		))
 
-		if userID != 0 {
+		if userID == 0 {
+			gzipWriter.Write([]byte(
+				"><div id=alert>Please " +
+					`<a href="//github.com/login/oauth/authorize?` +
+					`client_id=7f6709819023e9215205&scope=user:email">` +
+					"Login with GitHub</a> in order to save solutions " +
+					"and appear on the leaderboards.</div",
+			))
+		} else {
 			for lang, solution := range getUserSolutions(userID, path[1:]) {
 				gzipWriter.Write([]byte(
 					" data-" + lang + `="` +
