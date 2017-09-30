@@ -18,9 +18,9 @@ onload = function() {
         let callback = function(editor) {
             let len = [...editor.getValue()].length;
 
-            span.innerText = len === 1 ? '1 character'
-                           : len       ? len + ' characters'
-                           :             'not attempted';
+            span.innerText = len === 1 ? '1 char'
+                           : len       ? len + ' chars'
+                           :             'not tried';
         };
 
         callback(editor);

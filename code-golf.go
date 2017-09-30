@@ -256,7 +256,7 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 
 		gzipWriter.Write([]byte(
 			">" + preamble +
-				"<a class=tab href=#javascript>JavaScript<span></span></a>" +
+				"<a class=tab href=#javascript>JS<span></span></a>" +
 				"<a class=tab href=#perl>Perl<span></span></a>" +
 				"<a class=tab href=#perl6>Perl 6<span></span></a>" +
 				"<a class=tab href=#php>PHP<span></span></a>" +
