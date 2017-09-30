@@ -7,7 +7,7 @@ var intros = map[string]string{
 	"fizz-buzz":                `<div class="beg hole"><a href=fizz-buzz>Fizz Buzz<p>Write a program that prints the numbers from 1 to 100…</p></a><table>`,
 	"pascals-triangle":         `<div class="int hole"><a href=pascals-triangle>Pascal's Triangle<p>Blaise Pascal's arithmetic and geometric figure…</p></a><table>`,
 	"seven-segment":            `<div class="int hole"><a href=seven-segment>Seven Segment<p>Using pipes and underscores print a seven segment display…</p></a><table>`,
-	"spelling-numbers":         `<div class="int hole"><a href=spelling-numbers>Spelling Numbers</a><table>`,
+	"spelling-numbers":         `<div class="int hole"><a href=spelling-numbers>Spelling Numbers<p>Print a series of random numbers in English…</p></a><table>`,
 	"e":                        `<div class="adv hole"><a href=e>e<p>The unique number whose natural logarithm is equal to one…</p></a><table>`,
 	"π":                        `<div class="adv hole"><a href=π>π<p>The ratio of a circle's circumference to its diameter…</p></a><table>`,
 }
