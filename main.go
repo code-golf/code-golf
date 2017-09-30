@@ -19,7 +19,7 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	defer func(start time.Time) {
 		fmt.Printf(
 			"%3dms %s %s %s\n",
-			time.Since(start).Nanoseconds() / 1e6,
+			time.Since(start).Nanoseconds()/1e6,
 			r.Method,
 			r.URL.Path,
 			r.UserAgent(),

@@ -87,7 +87,7 @@ func spellingNumbers() (args []string, out string) {
 
 	// Round the set up to a nice 35 with some random high numbers.
 	for i := 0; i < 6; i++ {
-		numbers = append(numbers, 100 + uint16(rand.Intn(899)))
+		numbers = append(numbers, 100+uint16(rand.Intn(899)))
 	}
 
 	// Shuffle the whole set.

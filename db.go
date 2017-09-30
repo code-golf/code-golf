@@ -220,7 +220,7 @@ func printOverallLeaderboards(w io.WriteCloser, login string) {
 
 	w.Write([]byte("<article><table id=leaderboard>"))
 
-	place     := 0
+	place := 0
 	prevScore := 0
 
 	for i, v := range totals {
