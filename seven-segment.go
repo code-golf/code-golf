@@ -3,7 +3,6 @@ package main
 import (
 	"math/rand"
 	"strings"
-	"time"
 	"unicode"
 )
 
@@ -14,13 +13,11 @@ var segments = [][]string{
 }
 
 func sevenSegment() (input, output string) {
-	random := rand.New(rand.NewSource(time.Now().UnixNano()))
-
 	digits := []byte{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
 
 	// Shuffle the digits
 	for i := range digits {
-		j := random.Intn(i + 1)
+		j := rand.Intn(i + 1)
 		digits[i], digits[j] = digits[j], digits[i]
 	}
 

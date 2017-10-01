@@ -3,6 +3,7 @@ package main
 import (
 	"crypto/tls"
 	"fmt"
+	"math/rand"
 	"net/http"
 	"os"
 	"time"
@@ -50,6 +51,8 @@ func mustLoadX509KeyPair(certFile, keyFile string) tls.Certificate {
 }
 
 func main() {
+	rand.Seed(time.Now().UTC().UnixNano())
+
 	server := &http.Server{
 		Handler: &handler{},
 		TLSConfig: &tls.Config{

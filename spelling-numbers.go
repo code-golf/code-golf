@@ -3,7 +3,6 @@ package main
 import (
 	"math/rand"
 	"strconv"
-	"time"
 )
 
 var teens = [][]byte{
@@ -65,8 +64,6 @@ func wordify(i uint16) []byte {
 }
 
 func spellingNumbers() (args []string, out string) {
-	random := rand.New(rand.NewSource(time.Now().UnixNano()))
-
 	// Always test the teens & 1,000.
 	numbers := []uint16{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 1000}
 
@@ -74,7 +71,7 @@ func spellingNumbers() (args []string, out string) {
 
 	// Shuffle the tens.
 	for i := range tens {
-		j := random.Intn(i + 1)
+		j := rand.Intn(i + 1)
 		tens[i], tens[j] = tens[j], tens[i]
 	}
 
@@ -92,7 +89,7 @@ func spellingNumbers() (args []string, out string) {
 
 	// Shuffle the whole set.
 	for i := range numbers {
-		j := random.Intn(i + 1)
+		j := rand.Intn(i + 1)
 		numbers[i], numbers[j] = numbers[j], numbers[i]
 	}
 
