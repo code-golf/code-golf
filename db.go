@@ -3,9 +3,6 @@ package main
 import (
 	"database/sql"
 	"io"
-	"math/big"
-	"sort"
-	"strconv"
 
 	_ "github.com/lib/pq"
 )
@@ -96,30 +93,47 @@ func addUser(id int, login string) {
 
 func printLeaderboards(w io.WriteCloser, id int) {
 	rows, err := db.Query(
-		`SELECT hole,
-		        CONCAT(
-		            '<tr title="Submitted ',
-		            TO_CHAR(submitted, 'YYYY-MM-DD HH24:MI:SS'),
-		            '"',
-		            CASE WHEN user_id = $1 THEN ' class=me' END,
-		            '><td>',
-		            place,
-		            '<td class=',
-		            lang,
-		            '>',
-		            strokes,
-		            '<td><img src="//avatars.githubusercontent.com/',
-		            login,
-		            '?s=26"><a href="u/',
-		            login,
-		            '">',
-		            login,
-		            '</a>'
-		        )
-		   FROM leaderboard
-		   JOIN users ON user_id = id
-		  WHERE place < 6
-		  ORDER BY hole, place, submitted`,
+		`WITH leaderboard AS (
+		  SELECT DISTINCT ON (hole, user_id)
+		         hole,
+		         lang,
+		         LENGTH(code) strokes,
+		         submitted,
+		         user_id
+		    FROM solutions
+		ORDER BY hole, user_id, LENGTH(code), submitted
+		), ranked_leaderboard AS (
+		  SELECT hole,
+		         lang,
+		         RANK() OVER (PARTITION BY hole ORDER BY strokes),
+		         strokes,
+		         submitted,
+		         user_id
+		    FROM leaderboard
+		) SELECT hole,
+		         CONCAT(
+		             '<tr title="Submitted ',
+		             TO_CHAR(submitted, 'YYYY-MM-DD HH24:MI:SS'),
+		             '"',
+		             CASE WHEN user_id = $1 THEN ' class=me' END,
+		             '><td>',
+		             rank,
+		             '<td class=',
+		             lang,
+		             '>',
+		             strokes,
+		             '<td><img src="//avatars.githubusercontent.com/',
+		             login,
+		             '?s=26"><a href="u/',
+		             login,
+		             '">',
+		             login,
+		             '</a>'
+		         )
+		    FROM ranked_leaderboard
+		    JOIN users on user_id = id
+		   WHERE rank < 6
+		ORDER BY hole, rank, submitted`,
 		id,
 	)
 
@@ -155,14 +169,123 @@ func printLeaderboards(w io.WriteCloser, id int) {
 	}
 }
 
-func printOverallLeaderboards(w io.WriteCloser, login string) {
+func printScores(w io.WriteCloser, hole, lang string, userID int) {
+	w.Write([]byte(
+		"<script async src=" + jsScoresPath +
+			"></script><article id=scores><select id=hole>",
+	))
+
+	for _, v := range [][]string{
+		{"all", "All Holes"},
+		{"99-bottles-of-beer", "99 Bottles of Beer"},
+		{"arabic-to-roman-numerals", "Arabic to Roman"},
+		{"e", "e"},
+		{"fibonacci", "Fibonacci"},
+		{"fizz-buzz", "Fizz Buzz"},
+		{"pascals-triangle", "Pascal's Triangle"},
+		{"seven-segment", "Seven Segment"},
+		{"spelling-numbers", "Spelling Numbers"},
+		{"π", "π"},
+	} {
+		w.Write([]byte("<option "))
+		if hole == v[0] {
+			w.Write([]byte("selected "))
+		}
+		w.Write([]byte("value=" + v[0] + ">" + v[1]))
+	}
+
+	w.Write([]byte("</select><select id=lang>"))
+
+	for _, v := range [][]string{
+		{"all", "All Langs"},
+		{"javascript", "JavaScript"},
+		{"perl", "Perl"},
+		{"perl6", "Perl 6"},
+		{"php", "PHP"},
+		{"python", "Python"},
+		{"ruby", "Ruby"},
+	} {
+		w.Write([]byte("<option "))
+		if lang == v[0] {
+			w.Write([]byte("selected "))
+		}
+		w.Write([]byte("value=" + v[0] + ">" + v[1]))
+	}
+
+	w.Write([]byte("</select><table>"))
+
+	where := ""
+
+	if hole != "" {
+		where += " AND hole = '" + hole + "'"
+	}
+
+	if lang != "" {
+		where += " AND lang = '" + lang + "'"
+	}
+
 	rows, err := db.Query(
-		`SELECT login,
-		        TO_CHAR(submitted, 'YYYY-MM-DD<span> HH24:MI:SS</span>'),
-		        place,
-		        (SELECT COUNT(DISTINCT user_id) FROM solutions WHERE hole = l.hole)
-		   FROM leaderboard l
-		   JOIN users ON user_id = id`,
+		`WITH leaderboard AS (
+		  SELECT DISTINCT ON (hole, user_id)
+		         hole,
+		         submitted,
+		         LENGTH(code) strokes,
+		         user_id
+		    FROM solutions
+		   WHERE true`+where+`
+		ORDER BY hole, user_id, LENGTH(code), submitted
+		), scored_leaderboard AS (
+		  SELECT hole,
+		         ROUND(
+		             (
+		                 (SELECT COUNT(distinct user_id) FROM solutions WHERE hole = l.hole`+where+`)
+		                 -
+		                 RANK() OVER (PARTITION BY hole ORDER BY strokes)
+		                 +
+		                 1
+		             )
+		             *
+		             (
+		                 100.0
+		                 /
+		                 (SELECT COUNT(distinct user_id) FROM solutions WHERE hole = l.hole`+where+`)
+		             )
+		         ) score,
+		         strokes,
+		         submitted,
+		         user_id
+		    FROM leaderboard l
+		), summed_leaderboard AS (
+		  SELECT user_id,
+		         SUM(score),
+		         COUNT(*),
+		         MAX(submitted)
+		    FROM scored_leaderboard
+		GROUP BY user_id
+		) SELECT CONCAT(
+		             '<tr',
+		             CASE WHEN user_id = $1 THEN ' class=me' END,
+		             '><td>',
+		             RANK() OVER (ORDER BY sum DESC),
+		             '<td><img src="//avatars.githubusercontent.com/',
+		             login,
+		             '?s=26"><a href="u/',
+		             login,
+		             '">',
+		             login,
+		             '</a><td>',
+		             sum,
+		             '<td>(',
+		             count,
+		             ' hole',
+		             CASE WHEN count > 1 THEN 's' END,
+		             ')<td>',
+		             TO_CHAR(max, 'YYYY-MM-DD<span> HH24:MI:SS</span>')
+		         )
+		    FROM summed_leaderboard
+		    JOIN users on user_id = id
+		ORDER BY sum DESC, max`,
+		userID,
 	)
 
 	if err != nil {
@@ -171,78 +294,17 @@ func printOverallLeaderboards(w io.WriteCloser, login string) {
 
 	defer rows.Close()
 
-	type total struct {
-		login     string
-		submitted string
-		score     *big.Rat
-		iScore    int
-		holes     int
-	}
-
-	var totals []total
-
 	for rows.Next() {
-		var login, submitted string
-		var place, count int64
+		var row sql.RawBytes
 
-		if err := rows.Scan(&login, &submitted, &place, &count); err != nil {
+		if err := rows.Scan(&row); err != nil {
 			panic(err)
 		}
 
-		score := big.NewRat(100, count)
-		score.Mul(score, new(big.Rat).SetInt64(count-place+1))
-
-		l := len(totals)
-
-		if l == 0 || totals[l-1].login != login {
-			totals = append(totals, total{login, submitted, score, 0, 1})
-		} else {
-			totals[l-1].holes++
-			totals[l-1].score = score.Add(score, totals[l-1].score)
-
-			if submitted > totals[l-1].submitted {
-				totals[l-1].submitted = submitted
-			}
-		}
+		w.Write(row)
 	}
 
 	if err := rows.Err(); err != nil {
 		panic(err)
-	}
-
-	// Convert the rational numbers to integers.
-	for i, v := range totals {
-		score, _ := v.score.Float64()
-		totals[i].iScore = int(score)
-	}
-
-	sort.Slice(totals, func(i, j int) bool { return totals[i].iScore > totals[j].iScore })
-
-	w.Write([]byte("<article><table id=leaderboard>"))
-
-	place := 0
-	prevScore := 0
-
-	for i, v := range totals {
-		w.Write([]byte("<tr"))
-
-		if login == v.login {
-			w.Write([]byte(" class=me"))
-		}
-
-		// Allow people to share the same rank.
-		if v.iScore != prevScore {
-			place = i + 1
-			prevScore = v.iScore
-		}
-
-		w.Write([]byte(
-			"><td>" + strconv.Itoa(place) +
-				`<td><img src="//avatars.githubusercontent.com/` + v.login +
-				`?s=26"><a href="u/` + v.login + `">` + v.login + "</a>" +
-				"<td>" + strconv.Itoa(v.iScore) +
-				" <i>(" + strconv.Itoa(v.holes) + " holes)</i>" +
-				"<td>" + v.submitted,
-		))
 	}
 }

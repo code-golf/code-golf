@@ -85,29 +85,6 @@ CREATE TABLE solutions (
 ALTER TABLE solutions OWNER TO jraspass;
 
 --
--- Name: leaderboard; Type: VIEW; Schema: public; Owner: jraspass
---
-
-CREATE VIEW leaderboard AS
- SELECT rank() OVER (PARTITION BY x.hole ORDER BY x.strokes) AS place,
-    x.hole,
-    x.user_id,
-    x.lang,
-    x.strokes,
-    x.submitted
-   FROM ( SELECT DISTINCT ON (solutions.hole, solutions.user_id) solutions.hole,
-            solutions.user_id,
-            solutions.lang,
-            length(solutions.code) AS strokes,
-            solutions.submitted
-           FROM solutions
-          ORDER BY solutions.hole, solutions.user_id, (length(solutions.code)), solutions.submitted) x
-  ORDER BY x.hole, (rank() OVER (PARTITION BY x.hole ORDER BY x.strokes)), x.submitted;
-
-
-ALTER TABLE leaderboard OWNER TO jraspass;
-
---
 -- Name: users; Type: TABLE; Schema: public; Owner: jraspass
 --
 
@@ -140,13 +117,6 @@ ALTER TABLE ONLY users
 --
 
 GRANT SELECT,INSERT,UPDATE ON TABLE solutions TO code_golf;
-
-
---
--- Name: leaderboard; Type: ACL; Schema: public; Owner: jraspass
---
-
-GRANT SELECT ON TABLE leaderboard TO code_golf;
 
 
 --

@@ -72,7 +72,7 @@ func printHeader(w io.WriteCloser, login string) {
 			"<header><nav>" +
 			"<a href=/>Home</a>" +
 			"<a href=/about>About</a>" +
-			"<a href=/leaderboards>Leaderboards</a>" +
+			"<a href=/scores/all/all>Scores</a>" +
 			logInOrOut +
 			"</nav></header>",
 	))
@@ -181,16 +181,28 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 			w.Write(cssGz)
 		}
 		return
-	case jsPath:
+	case jsHolePath:
 		header["Cache-Control"] = []string{"max-age=9999999,public"}
 		header["Content-Type"] = []string{"application/javascript"}
 
 		if strings.Contains(r.Header.Get("Accept-Encoding"), "br") {
 			header["Content-Encoding"] = []string{"br"}
-			w.Write(jsBr)
+			w.Write(jsHoleBr)
 		} else {
 			header["Content-Encoding"] = []string{"gzip"}
-			w.Write(jsGz)
+			w.Write(jsHoleGz)
+		}
+		return
+	case jsScoresPath:
+		header["Cache-Control"] = []string{"max-age=9999999,public"}
+		header["Content-Type"] = []string{"application/javascript"}
+
+		if strings.Contains(r.Header.Get("Accept-Encoding"), "br") {
+			header["Content-Encoding"] = []string{"br"}
+			w.Write(jsScoresBr)
+		} else {
+			header["Content-Encoding"] = []string{"gzip"}
+			w.Write(jsScoresGz)
 		}
 		return
 	}
@@ -219,9 +231,44 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 	} else if path == "/about" {
 		printHeader(gzipWriter, login)
 		gzipWriter.Write([]byte(about))
-	} else if path == "/leaderboards" {
+	} else if strings.HasPrefix(path, "/scores/") {
+		parts := strings.Split(path[8:], "/")
+
+		if len(parts) != 2 {
+			http.Redirect(w, r, "/scores/all/all", 301)
+			return
+		}
+
+		var hole, lang string
+
+		switch parts[0] {
+		case "all":
+		case "99-bottles-of-beer",
+			"arabic-to-roman-numerals",
+			"e",
+			"fibonacci",
+			"fizz-buzz",
+			"pascals-triangle",
+			"seven-segment",
+			"spelling-numbers",
+			"π":
+			hole = parts[0]
+		default:
+			http.Redirect(w, r, "/scores/all/all", 301)
+			return
+		}
+
+		switch parts[1] {
+		case "all":
+		case "javascript", "perl", "perl6", "php", "python", "ruby":
+			lang = parts[1]
+		default:
+			http.Redirect(w, r, "/scores/all/all", 301)
+			return
+		}
+
 		printHeader(gzipWriter, login)
-		printOverallLeaderboards(gzipWriter, login)
+		printScores(gzipWriter, hole, lang, userID)
 	} else if strings.HasPrefix(path, "/u/") && getUser(path[3:]) {
 		printHeader(gzipWriter, login)
 		gzipWriter.Write([]byte("<article><h1>" + path[3:] + "</h1>"))
@@ -229,7 +276,7 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 		printHeader(gzipWriter, login)
 
 		gzipWriter.Write([]byte(
-			"<script async src=" + jsPath + "></script><div id=status><div>" +
+			"<script async src=" + jsHolePath + "></script><div id=status><div>" +
 				"<h2>Program Arguments</h2><pre id=Arg></pre>" +
 				"<h2>Standard Error</h2><pre id=Err></pre>" +
 				"<h2>Expected Output</h2><pre id=Exp></pre>" +

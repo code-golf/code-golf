@@ -24,11 +24,6 @@ header {
     z-index: 1;
 }
 
-i {
-    color: #999;
-    font-size: 12px;
-}
-
 input {
     background: #3f8abf;
     border: 0 solid #326e99;
@@ -92,6 +87,18 @@ nav img {
 pre,
 .CodeMirror {
     font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+}
+
+select {
+    background: #eee;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding: 10px;
+    width: calc(50% - 5px);
+}
+
+select:first-child {
+    margin-right: 10px;
 }
 
 table {
@@ -274,24 +281,6 @@ tr.me {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 
-#leaderboard {
-    margin: auto;
-    max-width: 560px;
-}
-
-#leaderboard td {
-    white-space: nowrap;
-}
-
-#leaderboard td:nth-child(2) {
-    max-width: 0;
-    overflow: hidden;
-    padding-left: 45px;
-    position: relative;
-    text-overflow: ellipsis;
-    width: 100%;
-}
-
 #login       { background-image: svg(sign-in#999) }
 #login:hover { background-image: svg(sign-in#fff) }
 
@@ -306,6 +295,35 @@ tr.me {
 #me {
     padding-left: 50px;
     position: relative;
+}
+
+#scores {
+    max-width: 560px;
+}
+
+#scores td {
+    white-space: nowrap;
+}
+
+#scores td:nth-child(2) {
+    max-width: 0;
+    overflow: hidden;
+    padding-left: 45px;
+    position: relative;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+#scores td:nth-child(3) {
+    padding-right: 5px;
+    text-align: right;
+}
+
+#scores td:nth-child(4) {
+    color: #999;
+    font-size: 12px;
+    font-style: italic;
+    padding-left: 0;
 }
 
 #status {
@@ -347,7 +365,7 @@ tr.me {
         width: 0;
     }
 
-    #leaderboard span {
+    #scores span {
         display: none;
     }
 }
