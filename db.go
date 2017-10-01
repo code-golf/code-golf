@@ -160,7 +160,7 @@ func printOverallLeaderboards(w io.WriteCloser, login string) {
 		`SELECT login,
 		        TO_CHAR(submitted, 'YYYY-MM-DD<span> HH24:MI:SS</span>'),
 		        place,
-		        (SELECT COUNT(*) FROM leaderboard WHERE hole = l.hole)
+		        (SELECT COUNT(DISTINCT user_id) FROM solutions WHERE hole = l.hole)
 		   FROM leaderboard l
 		   JOIN users ON user_id = id`,
 	)
