@@ -249,6 +249,7 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 			"fibonacci",
 			"fizz-buzz",
 			"pascals-triangle",
+			"prime-numbers",
 			"seven-segment",
 			"spelling-numbers",
 			"π":
