@@ -133,7 +133,20 @@ func printLeaderboards(w io.WriteCloser, id int) {
 		    FROM ranked_leaderboard
 		    JOIN users on user_id = id
 		   WHERE rank < 6
-		ORDER BY hole, rank, submitted`,
+		ORDER BY CASE hole
+		         WHEN 'emirp-numbers'            THEN 0
+		         WHEN 'fibonacci'                THEN 1
+		         WHEN 'fizz-buzz'                THEN 2
+		         WHEN 'pascals-triangle'         THEN 3
+		         WHEN 'prime-numbers'            THEN 4
+		         WHEN '99-bottles-of-beer'       THEN 5
+		         WHEN 'seven-segment'            THEN 6
+		         WHEN 'sierpiński-triangle'      THEN 7
+		         WHEN 'π'                        THEN 8
+		         WHEN 'e'                        THEN 9
+		         WHEN 'arabic-to-roman-numerals' THEN 10
+		         WHEN 'spelling-numbers'         THEN 11
+		         END, rank, submitted`,
 		id,
 	)
 
@@ -143,14 +156,12 @@ func printLeaderboards(w io.WriteCloser, id int) {
 
 	defer rows.Close()
 
-	w.Write([]byte("<article id=home>"))
+	w.Write([]byte("<ul><li>Fast<li>Medium<li>Slow</ul><article id=home>"))
 
 	var i uint8
 	var prevHole string
 
 	for rows.Next() {
-		i++
-
 		var hole string
 		var row sql.RawBytes
 
@@ -175,11 +186,11 @@ func printLeaderboards(w io.WriteCloser, id int) {
 
 			switch hole {
 			case "99-bottles-of-beer":
-				w.Write([]byte(`beg><a href=99-bottles-of-beer>99 Bottles of Beer`))
+				w.Write([]byte(`int><a href=99-bottles-of-beer>99 Bottles of Beer`))
 			case "arabic-to-roman-numerals":
-				w.Write([]byte(`int><a href=arabic-to-roman-numerals>Arabic to Roman`))
+				w.Write([]byte(`adv><a href=arabic-to-roman-numerals>Arabic to Roman`))
 			case "e":
-				w.Write([]byte(`adv><a href=e>e`))
+				w.Write([]byte(`int><a href=e>e`))
 			case "emirp-numbers":
 				w.Write([]byte(`beg><a href=emirp-numbers>Emirp Numbers`))
 			case "fibonacci":
@@ -187,17 +198,17 @@ func printLeaderboards(w io.WriteCloser, id int) {
 			case "fizz-buzz":
 				w.Write([]byte(`beg><a href=fizz-buzz>Fizz Buzz`))
 			case "pascals-triangle":
-				w.Write([]byte(`int><a href=pascals-triangle>Pascal's Triangle`))
+				w.Write([]byte(`beg><a href=pascals-triangle>Pascal's Triangle`))
 			case "prime-numbers":
 				w.Write([]byte(`beg><a href=prime-numbers>Prime Numbers`))
 			case "seven-segment":
 				w.Write([]byte(`int><a href=seven-segment>Seven Segment`))
 			case "sierpiński-triangle":
-				w.Write([]byte(`beg><a href=sierpiński-triangle>Sierpiński Triangle`))
+				w.Write([]byte(`int><a href=sierpiński-triangle>Sierpiński Triangle`))
 			case "spelling-numbers":
-				w.Write([]byte(`int><a href=spelling-numbers>Spelling Numbers`))
+				w.Write([]byte(`adv><a href=spelling-numbers>Spelling Numbers`))
 			case "π":
-				w.Write([]byte(`adv><a href=π>π`))
+				w.Write([]byte(`int><a href=π>π`))
 			}
 
 			w.Write([]byte(`</a><table>`))
@@ -206,6 +217,7 @@ func printLeaderboards(w io.WriteCloser, id int) {
 		}
 
 		w.Write(row)
+		i++
 	}
 
 	w.Write([]byte("</table><a href=scores/"))

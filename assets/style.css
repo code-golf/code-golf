@@ -43,6 +43,30 @@ input:hover {
     background: #397cac;
 }
 
+li {
+    display: inline;
+}
+
+li::before {
+    content: '■';
+    font-size: 24px;
+    line-height: 24px;
+    margin: 0 5px;
+}
+
+li:nth-child(1)::before {
+    color: #3d8b3d;
+    margin-left: 0;
+}
+
+li:nth-child(2)::before {
+    color: #df8a13;
+}
+
+li:nth-child(3)::before {
+    color: #b52b27;
+}
+
 nav {
     font-size: 16px;
     margin: auto;
@@ -143,13 +167,19 @@ tr.me {
     background: #5cf;
 }
 
+ul {
+    display: table;
+    margin: auto;
+    padding: 7px 0 0;
+}
+
 .adv {
     background: #b52b27;
     border: 1px solid #b52b27;
 }
 
 .adv > a:hover {
-    background-color: #d9534f;
+    background-color: #d9534f !important;
 }
 
 .beg {
@@ -158,7 +188,7 @@ tr.me {
 }
 
 .beg > a:hover {
-    background-color: #5cb85c;
+    background-color: #5cb85c !important;
 }
 
 .CodeMirror {
@@ -174,7 +204,7 @@ tr.me {
 }
 
 .int > a:hover {
-    background-color: #f0ad4e;
+    background-color: #f0ad4e !important;
 }
 
 .javascript { background: svg(javascript#000) 7px / 26px no-repeat }
