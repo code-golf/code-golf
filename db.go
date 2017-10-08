@@ -185,6 +185,7 @@ func printScores(w io.WriteCloser, hole, lang string, userID int) {
 		{"fizz-buzz", "Fizz Buzz"},
 		{"pascals-triangle", "Pascal's Triangle"},
 		{"prime-numbers", "Prime Numbers"},
+		{"sierpiński-triangle", "Sierpiński Triangle"},
 		{"seven-segment", "Seven Segment"},
 		{"spelling-numbers", "Spelling Numbers"},
 		{"π", "π"},

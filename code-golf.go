@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
 	"compress/gzip"
 	"crypto/hmac"
@@ -252,6 +253,7 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 			"pascals-triangle",
 			"prime-numbers",
 			"seven-segment",
+			"sierpiński-triangle",
 			"spelling-numbers",
 			"π":
 			hole = parts[0]
@@ -380,9 +382,23 @@ func runCode(lang, code string, args []string) (string, string) {
 
 	timer.Stop()
 
+	var outBytes []byte
+
+	// Trim trailing spaces per line.
+	// FIXME This is all very hacky, but needed for Sierpiński.
+	scanner := bufio.NewScanner(bytes.NewReader(out.Bytes()))
+	for scanner.Scan() {
+		outBytes = append(outBytes, bytes.TrimRightFunc(scanner.Bytes(), unicode.IsSpace)...)
+		outBytes = append(outBytes, '\n')
+	}
+
+	if err := scanner.Err(); err != nil {
+		panic(err)
+	}
+
 	// Trim trailing whitespace.
 	errBytes := bytes.TrimRightFunc(err.Bytes(), unicode.IsSpace)
-	outBytes := bytes.TrimRightFunc(out.Bytes(), unicode.IsSpace)
+	outBytes = bytes.TrimRightFunc(outBytes, unicode.IsSpace)
 
 	// Escape HTML & convert ANSI to HTML in stderr.
 	errBytes = terminal.Render(errBytes)
