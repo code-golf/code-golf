@@ -272,7 +272,7 @@ func printScores(w io.WriteCloser, hole, lang string, userID int) {
 		             RANK() OVER (ORDER BY sum DESC),
 		             '<td><img src="//avatars.githubusercontent.com/',
 		             login,
-		             '?s=26"><a href="u/',
+		             '?s=26"><a href="/u/',
 		             login,
 		             '">',
 		             login,
