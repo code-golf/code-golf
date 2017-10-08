@@ -143,11 +143,16 @@ func printLeaderboards(w io.WriteCloser, id int) {
 
 	defer rows.Close()
 
-	prevHole := ""
 	w.Write([]byte("<article id=home>"))
 
+	var i uint8
+	var prevHole string
+
 	for rows.Next() {
-		var hole, row string
+		i++
+
+		var hole string
+		var row sql.RawBytes
 
 		if err := rows.Scan(&hole, &row); err != nil {
 			panic(err)
@@ -155,14 +160,57 @@ func printLeaderboards(w io.WriteCloser, id int) {
 
 		if hole != prevHole {
 			if prevHole != "" {
-				w.Write([]byte("</table></div>"))
+				for j := i; j < 5; j++ {
+					w.Write([]byte("<tr><td><td><td>"))
+				}
+
+				i = 0
+
+				w.Write([]byte("</table><a href=scores/"))
+				w.Write([]byte(prevHole))
+				w.Write([]byte("/all>FULL LEADERBOARD</a></div>"))
 			}
-			w.Write([]byte(intros[hole]))
+
+			w.Write([]byte(`<div class=`))
+
+			switch hole {
+			case "99-bottles-of-beer":
+				w.Write([]byte(`beg><a href=99-bottles-of-beer>99 Bottles of Beer`))
+			case "arabic-to-roman-numerals":
+				w.Write([]byte(`int><a href=arabic-to-roman-numerals>Arabic to Roman`))
+			case "e":
+				w.Write([]byte(`adv><a href=e>e`))
+			case "emirp-numbers":
+				w.Write([]byte(`beg><a href=emirp-numbers>Emirp Numbers`))
+			case "fibonacci":
+				w.Write([]byte(`beg><a href=fibonacci>Fibonacci`))
+			case "fizz-buzz":
+				w.Write([]byte(`beg><a href=fizz-buzz>Fizz Buzz`))
+			case "pascals-triangle":
+				w.Write([]byte(`int><a href=pascals-triangle>Pascal's Triangle`))
+			case "prime-numbers":
+				w.Write([]byte(`beg><a href=prime-numbers>Prime Numbers`))
+			case "seven-segment":
+				w.Write([]byte(`int><a href=seven-segment>Seven Segment`))
+			case "sierpiński-triangle":
+				w.Write([]byte(`beg><a href=sierpiński-triangle>Sierpiński Triangle`))
+			case "spelling-numbers":
+				w.Write([]byte(`int><a href=spelling-numbers>Spelling Numbers`))
+			case "π":
+				w.Write([]byte(`adv><a href=π>π`))
+			}
+
+			w.Write([]byte(`</a><table>`))
+
 			prevHole = hole
 		}
 
-		w.Write([]byte(row))
+		w.Write(row)
 	}
+
+	w.Write([]byte("</table><a href=scores/"))
+	w.Write([]byte(prevHole))
+	w.Write([]byte("/all>FULL LEADERBOARD</a></div>"))
 
 	if err := rows.Err(); err != nil {
 		panic(err)

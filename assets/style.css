@@ -168,51 +168,6 @@ tr.me {
     width: 100%;
 }
 
-.hole {
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.hole > a {
-    background: svg(external-link-square#fff) top 6px right 6px / 15px no-repeat;
-    color: #fff;
-    display: block;
-    font-size: 26px;
-    height: 76px;
-    padding: 10px;
-}
-
-.hole p {
-    font-size: 16px;
-    margin: 10px 0 0;
-}
-
-.hole table {
-    border: 0;
-    table-layout: fixed;
-    width: 100%;
-}
-
-.hole td:first-child {
-    text-align: center;
-    width: 20px;
-}
-
-.hole td:last-child {
-    padding-left: 45px;
-    position: relative;
-    white-space: nowrap;
-}
-
-.hole td:nth-child(2) {
-    padding-left: 45px;
-    width: 40px;
-}
-
-.hole td a:hover {
-    text-decoration: underline;
-}
-
 .int {
     background: #df8a13;
     border: 1px solid #df8a13;
@@ -279,6 +234,53 @@ tr.me {
     display: grid;
     grid-gap: 10px;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+#home div {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#home div > a {
+    background: svg(external-link-square#fff) top 6px right 6px / 15px no-repeat;
+    color: #fff;
+    display: block;
+    font-size: 26px;
+    padding: 10px;
+}
+
+#home div > a:last-child {
+    background: none;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 5px;
+    text-align: center;
+}
+
+#home table {
+    border: 0;
+    table-layout: fixed;
+    width: 100%;
+}
+
+#home td:nth-child(1) {
+    text-align: center;
+    width: 20px;
+}
+
+#home td:nth-child(2) {
+    padding-left: 45px;
+    width: 40px;
+}
+
+#home td:nth-child(3) {
+    padding-left: 45px;
+    position: relative;
+    white-space: nowrap;
+}
+
+#home td a:hover {
+    text-decoration: underline;
 }
 
 #login       { background-image: svg(sign-in#999) }
