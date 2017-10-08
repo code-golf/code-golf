@@ -246,6 +246,7 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 		case "99-bottles-of-beer",
 			"arabic-to-roman-numerals",
 			"e",
+			"emirp-numbers",
 			"fibonacci",
 			"fizz-buzz",
 			"pascals-triangle",

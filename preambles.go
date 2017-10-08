@@ -2,6 +2,7 @@ package main
 
 var intros = map[string]string{
 	"99-bottles-of-beer":       `<div class="beg hole"><a href=99-bottles-of-beer>99 Bottles of Beer<p>99 bottles of beer on the wall, 99 bottles of beer…</p></a><table>`,
+	"emirp-numbers":            `<div class="beg hole"><a href=emirp-numbers>Emirp Numbers</a><table>`,
 	"fibonacci":                `<div class="beg hole"><a href=fibonacci>Fibonacci<p>Each number is the sum of the two preceding numbers…</p></a><table>`,
 	"fizz-buzz":                `<div class="beg hole"><a href=fizz-buzz>Fizz Buzz<p>Write a program that prints the numbers from 1 to 100…</p></a><table>`,
 	"prime-numbers":            `<div class="beg hole"><a href=prime-numbers>Prime Numbers</a><table>`,
@@ -15,6 +16,7 @@ var intros = map[string]string{
 
 var preambles = map[string]string{
 	"99-bottles-of-beer":       `<h1>99 Bottles of Beer</h1><p>Print the lyrics to the song 99 Bottles of Beer.</p>`,
+	"emirp-numbers":            `<h1>Emirp Numbers</h1><p>An emirp (prime spelled backwards) is a prime number that results in a different prime when its decimal digits are reversed. For example both <b>13</b> and <b>31</b> are emirps.</p><p>Print all the emirps between <b>1</b> and <b>500</b></p>`,
 	"fibonacci":                `<h1>Fibonacci</h1><p>Print the first <b>31</b> Fibonacci numbers from <b>F<sub>0</sub> = 0</b> to <b>F<sub>30</sub> = 832040</b> (inclusive), each on a separate line.</p>`,
 	"fizz-buzz":                `<h1>Fizz Buzz</h1><p>Print the numbers from <b>1</b> to <b>100</b> (inclusive), each on their own line.</p><p>If, however, the number is a multiple of <b>three</b> then print <b>Fizz</b> instead, and if the number is a multiple of <b>five</b> then print <b>Buzz</b>.</p><p>For numbers which are multiples of <b>both three and five</b> then print <b>FizzBuzz</b>.</p>`,
 	"prime-numbers":            `<h1>Prime Numbers</h1><p>Print all the prime numbers between <b>1</b> and <b>100</b></p>`,

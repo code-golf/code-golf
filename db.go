@@ -180,6 +180,7 @@ func printScores(w io.WriteCloser, hole, lang string, userID int) {
 		{"99-bottles-of-beer", "99 Bottles of Beer"},
 		{"arabic-to-roman-numerals", "Arabic to Roman"},
 		{"e", "e"},
+		{"emirp-numbers", "Emirp Numbers"},
 		{"fibonacci", "Fibonacci"},
 		{"fizz-buzz", "Fizz Buzz"},
 		{"pascals-triangle", "Pascal's Triangle"},

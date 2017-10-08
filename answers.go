@@ -300,6 +300,35 @@ Take one down and pass it around, no more bottles of beer on the wall.
 
 No more bottles of beer on the wall, no more bottles of beer.
 Go to the store and buy some more, 99 bottles of beer on the wall.`,
+	"emirp-numbers": `13
+17
+31
+37
+71
+73
+79
+97
+101
+107
+113
+131
+149
+151
+157
+167
+179
+181
+191
+199
+311
+313
+337
+347
+353
+359
+373
+383
+389`,
 	"fibonacci": `0
 1
 1
