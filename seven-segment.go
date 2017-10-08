@@ -28,7 +28,7 @@ func sevenSegment() (input, output string) {
 			output += segments[row][digit-'0']
 		}
 
-		output += "\n"
+		output = strings.TrimRightFunc(output, unicode.IsSpace) + "\n"
 	}
 
 	output = strings.TrimRightFunc(output, unicode.IsSpace)
