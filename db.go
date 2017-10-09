@@ -186,29 +186,29 @@ func printLeaderboards(w io.WriteCloser, id int) {
 
 			switch hole {
 			case "99-bottles-of-beer":
-				w.Write([]byte(`int><a href=99-bottles-of-beer>99 Bottles of Beer`))
+				w.Write([]byte(`Medium><a href=99-bottles-of-beer>99 Bottles of Beer`))
 			case "arabic-to-roman-numerals":
-				w.Write([]byte(`adv><a href=arabic-to-roman-numerals>Arabic to Roman`))
+				w.Write([]byte(`Slow><a href=arabic-to-roman-numerals>Arabic to Roman`))
 			case "e":
-				w.Write([]byte(`int><a href=e>e`))
+				w.Write([]byte(`Medium><a href=e>e`))
 			case "emirp-numbers":
-				w.Write([]byte(`beg><a href=emirp-numbers>Emirp Numbers`))
+				w.Write([]byte(`Fast><a href=emirp-numbers>Emirp Numbers`))
 			case "fibonacci":
-				w.Write([]byte(`beg><a href=fibonacci>Fibonacci`))
+				w.Write([]byte(`Fast><a href=fibonacci>Fibonacci`))
 			case "fizz-buzz":
-				w.Write([]byte(`beg><a href=fizz-buzz>Fizz Buzz`))
+				w.Write([]byte(`Fast><a href=fizz-buzz>Fizz Buzz`))
 			case "pascals-triangle":
-				w.Write([]byte(`beg><a href=pascals-triangle>Pascal's Triangle`))
+				w.Write([]byte(`Fast><a href=pascals-triangle>Pascal's Triangle`))
 			case "prime-numbers":
-				w.Write([]byte(`beg><a href=prime-numbers>Prime Numbers`))
+				w.Write([]byte(`Fast><a href=prime-numbers>Prime Numbers`))
 			case "seven-segment":
-				w.Write([]byte(`int><a href=seven-segment>Seven Segment`))
+				w.Write([]byte(`Medium><a href=seven-segment>Seven Segment`))
 			case "sierpiński-triangle":
-				w.Write([]byte(`int><a href=sierpiński-triangle>Sierpiński Triangle`))
+				w.Write([]byte(`Medium><a href=sierpiński-triangle>Sierpiński Triangle`))
 			case "spelling-numbers":
-				w.Write([]byte(`adv><a href=spelling-numbers>Spelling Numbers`))
+				w.Write([]byte(`Slow><a href=spelling-numbers>Spelling Numbers`))
 			case "π":
-				w.Write([]byte(`int><a href=π>π`))
+				w.Write([]byte(`Medium><a href=π>π`))
 			}
 
 			w.Write([]byte(`</a><table>`))

@@ -173,24 +173,6 @@ ul {
     padding: 7px 0 0;
 }
 
-.adv {
-    background: #b52b27;
-    border: 1px solid #b52b27;
-}
-
-.adv > a:hover {
-    background-color: #d9534f !important;
-}
-
-.beg {
-    background: #3d8b3d;
-    border: 1px solid #3d8b3d;
-}
-
-.beg > a:hover {
-    background-color: #5cb85c !important;
-}
-
 .CodeMirror {
     border: 1px solid #ddd;
     border-top: 0;
@@ -198,13 +180,31 @@ ul {
     width: 100%;
 }
 
-.int {
+.Fast {
+    background: #3d8b3d;
+    border: 1px solid #3d8b3d;
+}
+
+.Fast > a:hover {
+    background-color: #5cb85c !important;
+}
+
+.Medium {
     background: #df8a13;
     border: 1px solid #df8a13;
 }
 
-.int > a:hover {
+.Medium > a:hover {
     background-color: #f0ad4e !important;
+}
+
+.Slow {
+    background: #b52b27;
+    border: 1px solid #b52b27;
+}
+
+.Slow > a:hover {
+    background-color: #d9534f !important;
 }
 
 .javascript { background: svg(javascript#000) 7px / 26px no-repeat }
