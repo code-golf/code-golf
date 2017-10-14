@@ -280,10 +280,13 @@ func printScores(w io.WriteCloser, hole, lang string, userID int) {
 
 	w.Write([]byte("</select><table>"))
 
-	where := ""
+	var concat, where string
 
 	if hole != "" {
 		where += " AND hole = '" + hole + "'"
+		concat = "strokes, '<td>(', score, ' point', CASE WHEN score"
+	} else {
+		concat = "score, '<td>(', count, ' hole', CASE WHEN count"
 	}
 
 	if lang != "" {
@@ -323,7 +326,8 @@ func printScores(w io.WriteCloser, hole, lang string, userID int) {
 		    FROM leaderboard l
 		), summed_leaderboard AS (
 		  SELECT user_id,
-		         SUM(score),
+		         SUM(strokes) strokes,
+		         SUM(score)   score,
 		         COUNT(*),
 		         MAX(submitted)
 		    FROM scored_leaderboard
@@ -332,7 +336,7 @@ func printScores(w io.WriteCloser, hole, lang string, userID int) {
 		             '<tr',
 		             CASE WHEN user_id = $1 THEN ' class=me' END,
 		             '><td>',
-		             RANK() OVER (ORDER BY sum DESC),
+		             RANK() OVER (ORDER BY score DESC),
 		             '<td><img src="//avatars.githubusercontent.com/',
 		             login,
 		             '?s=26"><a href="/u/',
@@ -340,17 +344,13 @@ func printScores(w io.WriteCloser, hole, lang string, userID int) {
 		             '">',
 		             login,
 		             '</a><td>',
-		             sum,
-		             '<td>(',
-		             count,
-		             ' hole',
-		             CASE WHEN count > 1 THEN 's' END,
+		             `+concat+` > 1 THEN 's' END,
 		             ')<td>',
 		             TO_CHAR(max, 'YYYY-MM-DD<span> HH24:MI:SS</span>')
 		         )
 		    FROM summed_leaderboard
 		    JOIN users on user_id = id
-		ORDER BY sum DESC, max`,
+		ORDER BY score DESC, max`,
 		userID,
 	)
 
