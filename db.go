@@ -216,7 +216,10 @@ func printLeaderboards(w io.WriteCloser, id int) {
 			prevHole = hole
 		}
 
-		w.Write(row)
+		if i < 5 {
+			w.Write(row)
+		}
+
 		i++
 	}
 
