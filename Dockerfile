@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates curl gcc git make nasm
 
 # https://golang.org/dl/
-RUN curl -sSL https://storage.googleapis.com/golang/go1.9.linux-amd64.tar.gz \
+RUN curl -sSL https://storage.googleapis.com/golang/go1.9.1.linux-amd64.tar.gz \
   | tar -xzC /usr/local
 
 RUN go get -d github.com/buildkite/terminal  \
