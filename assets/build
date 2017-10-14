@@ -42,9 +42,9 @@ open my $fh, '>', 'assets.go';
 print $fh <<EOF;
 package main
 
-const      cssPath = "/$cssPath"
-const   jsHolePath = "/$jsHolePath"
-const jsScoresPath = "/$jsScoresPath"
+const      cssPath = "/assets/$cssPath"
+const   jsHolePath = "/assets/$jsHolePath"
+const jsScoresPath = "/assets/$jsScoresPath"
 
 var favicon = []byte{$favicon}
 
