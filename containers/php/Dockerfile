@@ -2,15 +2,15 @@ FROM alpine:edge
 
 RUN apk add --no-cache curl gcc make musl-dev
 
-RUN curl -L https://php.net/distributions/php-7.1.9.tar.xz | tar xJf -
+RUN curl -L https://php.net/distributions/php-7.1.10.tar.xz | tar xJf -
 
-RUN cd php-7.1.9   \
+RUN cd php-7.1.10  \
  && ./configure    \
     --disable-all  \
-    --disable-cgi  \
+    --disable-ipv6 \
+    --enable-cli   \
     --prefix=/usr  \
-    --without-pear \
- && make install
+ && make -j`nproc` install
 
 FROM scratch
 
