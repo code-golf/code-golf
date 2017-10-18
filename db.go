@@ -135,17 +135,19 @@ func printLeaderboards(w io.WriteCloser, id int) {
 		   WHERE rank < 6
 		ORDER BY CASE hole
 		         WHEN 'emirp-numbers'            THEN 0
-		         WHEN 'fibonacci'                THEN 1
-		         WHEN 'fizz-buzz'                THEN 2
-		         WHEN 'pascals-triangle'         THEN 3
-		         WHEN 'prime-numbers'            THEN 4
-		         WHEN '99-bottles-of-beer'       THEN 5
-		         WHEN 'seven-segment'            THEN 6
-		         WHEN 'sierpiński-triangle'      THEN 7
-		         WHEN 'π'                        THEN 8
-		         WHEN 'e'                        THEN 9
-		         WHEN 'arabic-to-roman-numerals' THEN 10
-		         WHEN 'spelling-numbers'         THEN 11
+		         WHEN 'evil-numbers'             THEN 1
+		         WHEN 'fibonacci'                THEN 2
+		         WHEN 'fizz-buzz'                THEN 3
+		         WHEN 'odious-numbers'           THEN 4
+		         WHEN 'pascals-triangle'         THEN 5
+		         WHEN 'prime-numbers'            THEN 6
+		         WHEN '99-bottles-of-beer'       THEN 7
+		         WHEN 'seven-segment'            THEN 8
+		         WHEN 'sierpiński-triangle'      THEN 9
+		         WHEN 'π'                        THEN 10
+		         WHEN 'e'                        THEN 11
+		         WHEN 'arabic-to-roman-numerals' THEN 12
+		         WHEN 'spelling-numbers'         THEN 13
 		         END, rank, submitted`,
 		id,
 	)
@@ -193,10 +195,14 @@ func printLeaderboards(w io.WriteCloser, id int) {
 				w.Write([]byte(`Medium><a href=e>e`))
 			case "emirp-numbers":
 				w.Write([]byte(`Fast><a href=emirp-numbers>Emirp Numbers`))
+			case "evil-numbers":
+				w.Write([]byte(`Fast><a href=evil-numbers>Evil Numbers`))
 			case "fibonacci":
 				w.Write([]byte(`Fast><a href=fibonacci>Fibonacci`))
 			case "fizz-buzz":
 				w.Write([]byte(`Fast><a href=fizz-buzz>Fizz Buzz`))
+			case "odious-numbers":
+				w.Write([]byte(`Fast><a href=odious-numbers>Odious Numbers`))
 			case "pascals-triangle":
 				w.Write([]byte(`Fast><a href=pascals-triangle>Pascal's Triangle`))
 			case "prime-numbers":
@@ -244,8 +250,10 @@ func printScores(w io.WriteCloser, hole, lang string, userID int) {
 		{"arabic-to-roman-numerals", "Arabic to Roman"},
 		{"e", "e"},
 		{"emirp-numbers", "Emirp Numbers"},
+		{"evil-numbers", "Evil Numbers"},
 		{"fibonacci", "Fibonacci"},
 		{"fizz-buzz", "Fizz Buzz"},
+		{"odious-numbers", "Odious Numbers"},
 		{"pascals-triangle", "Pascal's Triangle"},
 		{"prime-numbers", "Prime Numbers"},
 		{"sierpiński-triangle", "Sierpiński Triangle"},

@@ -336,6 +336,31 @@ Go to the store and buy some more, 99 bottles of beer on the wall.`,
 971
 983
 991`,
+	"evil-numbers": `0
+3
+5
+6
+9
+10
+12
+15
+17
+18
+20
+23
+24
+27
+29
+30
+33
+34
+36
+39
+40
+43
+45
+46
+48`,
 	"fibonacci": `0
 1
 1
@@ -467,6 +492,32 @@ Fizz
 98
 Fizz
 Buzz`,
+	"odious-numbers": `1
+2
+4
+7
+8
+11
+13
+14
+16
+19
+21
+22
+25
+26
+28
+31
+32
+35
+37
+38
+41
+42
+44
+47
+49
+50`,
 	"prime-numbers": `2
 3
 5
