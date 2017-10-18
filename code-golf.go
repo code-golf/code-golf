@@ -253,6 +253,7 @@ func codeGolf(w http.ResponseWriter, r *http.Request) {
 			"fizz-buzz",
 			"odious-numbers",
 			"pascals-triangle",
+			"pernicious-numbers",
 			"prime-numbers",
 			"seven-segment",
 			"sierpiński-triangle",

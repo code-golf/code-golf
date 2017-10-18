@@ -140,14 +140,15 @@ func printLeaderboards(w io.WriteCloser, id int) {
 		         WHEN 'fizz-buzz'                THEN 3
 		         WHEN 'odious-numbers'           THEN 4
 		         WHEN 'pascals-triangle'         THEN 5
-		         WHEN 'prime-numbers'            THEN 6
-		         WHEN '99-bottles-of-beer'       THEN 7
-		         WHEN 'seven-segment'            THEN 8
-		         WHEN 'sierpiński-triangle'      THEN 9
-		         WHEN 'π'                        THEN 10
-		         WHEN 'e'                        THEN 11
-		         WHEN 'arabic-to-roman-numerals' THEN 12
-		         WHEN 'spelling-numbers'         THEN 13
+		         WHEN 'pernicious-numbers'       THEN 6
+		         WHEN 'prime-numbers'            THEN 7
+		         WHEN '99-bottles-of-beer'       THEN 8
+		         WHEN 'seven-segment'            THEN 9
+		         WHEN 'sierpiński-triangle'      THEN 10
+		         WHEN 'π'                        THEN 11
+		         WHEN 'e'                        THEN 12
+		         WHEN 'arabic-to-roman-numerals' THEN 13
+		         WHEN 'spelling-numbers'         THEN 14
 		         END, rank, submitted`,
 		id,
 	)
@@ -205,6 +206,8 @@ func printLeaderboards(w io.WriteCloser, id int) {
 				w.Write([]byte(`Fast><a href=odious-numbers>Odious Numbers`))
 			case "pascals-triangle":
 				w.Write([]byte(`Fast><a href=pascals-triangle>Pascal's Triangle`))
+			case "pernicious-numbers":
+				w.Write([]byte(`Fast><a href=pernicious-numbers>Pernicious Numbers`))
 			case "prime-numbers":
 				w.Write([]byte(`Fast><a href=prime-numbers>Prime Numbers`))
 			case "seven-segment":
@@ -255,6 +258,7 @@ func printScores(w io.WriteCloser, hole, lang string, userID int) {
 		{"fizz-buzz", "Fizz Buzz"},
 		{"odious-numbers", "Odious Numbers"},
 		{"pascals-triangle", "Pascal's Triangle"},
+		{"pernicious-numbers", "Pernicious Numbers"},
 		{"prime-numbers", "Prime Numbers"},
 		{"sierpiński-triangle", "Sierpiński Triangle"},
 		{"seven-segment", "Seven Segment"},
