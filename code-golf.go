@@ -372,10 +372,10 @@ func runCode(lang, code string, args []string) (string, string) {
 	}
 
 	timer := time.AfterFunc(
-		2*time.Second,
+		5*time.Second,
 		func() {
 			cmd.Process.Kill()
-			err.WriteString("Killed for exceeding 2s timeout.")
+			err.WriteString("Killed for exceeding the 5s timeout.")
 		},
 	)
 
