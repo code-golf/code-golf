@@ -38,9 +38,9 @@ printf "jsScoresGz = %d bytes\n", length $jsScoresGz;
 
 $_ = hexify($_) for $cssBr, $cssGz, $jsHoleBr, $jsHoleGz, $jsScoresBr, $jsScoresGz;
 
-open my $fh, '>', 'assets.go';
+open my $fh, '>', 'routes/assets.go';
 print $fh <<EOF;
-package main
+package routes
 
 const      cssPath = "/assets/$cssPath"
 const   jsHolePath = "/assets/$jsHolePath"

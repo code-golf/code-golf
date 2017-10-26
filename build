@@ -3,7 +3,7 @@
 user=-u`id -u`:`id -g`
 
 # Assets - only re-run if assets.go is stale.
-if (( $(stat -c %Y `ls -t assets/* | head -1`) > `stat -c %Y assets.go` )); then
+if (( $(stat -c %Y `ls -t assets/* | head -1`) > `stat -c %Y routes/assets.go` )); then
     docker pull alpine:edge
     docker build -t code-golf-assets assets
     docker run $user -v `pwd`:/work code-golf-assets

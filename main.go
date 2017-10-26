@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"os"
 	"time"
-)
 
-const headerHSTS = "max-age=31536000;includeSubDomains;preload"
+	"github.com/jraspass/code-golf/routes"
+)
 
 type handler struct{}
 
@@ -17,6 +17,7 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header()["Content-Language"] = []string{"en"}
 	w.Header()["Date"] = nil
 
+	// Catch panics and turn them into 500s.
 	defer func(start time.Time) {
 		fmt.Printf(
 			"%3dms %4s %s %s\n",
@@ -34,7 +35,7 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Host {
 	case "code-golf.io":
-		codeGolf(w, r)
+		routes.Router.ServeHTTP(w, r)
 	case "raspass.me":
 		raspass(w, r)
 	case "www.code-golf.io", "www.raspass.me":

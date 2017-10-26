@@ -15,6 +15,10 @@ RUN go get -d github.com/buildkite/terminal  \
  && cd /go/src/github.com/buildkite/terminal \
  && git checkout -q c8b6c2b
 
+RUN go get -d github.com/julienschmidt/httprouter  \
+ && cd /go/src/github.com/julienschmidt/httprouter \
+ && git checkout -q 975b5c4
+
 RUN go get -d github.com/lib/pq  \
  && cd /go/src/github.com/lib/pq \
  && git checkout -q e422674

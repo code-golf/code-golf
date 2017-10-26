@@ -1,4 +1,11 @@
-package main
+package routes
+
+import (
+	"net/http"
+	"strings"
+
+	"github.com/julienschmidt/httprouter"
+)
 
 var preambles = map[string]string{
 	"99-bottles-of-beer":       `<h1>99 Bottles of Beer</h1><p>Print the lyrics to the song 99 Bottles of Beer.</p>`,
@@ -11,11 +18,11 @@ var preambles = map[string]string{
 	"pascals-triangle":         `<h1>Pascal's Triangle</h1><p>Print the first <b>20 rows</b> of Pascal's triangle.</p>`,
 	"pernicious-numbers":       `<h1>Pernicious Numbers</h1><p>A pernicious number is a positive number where the sum of its binary expansion is a <a href=prime-numbers>prime number</a>.<p>For example, <b>5</b> is a pernicious number since <b>5 = 101<sub>2</sub></b> and <b>1 + 1 = 2</b>, which is prime.<p>Print all the pernicious numbers from <b>0</b> to <b>50</b> inclusive, each on their own line.</p>`,
 	"prime-numbers":            `<h1>Prime Numbers</h1><p>Print all the prime numbers from <b>1</b> to <b>100</b> inclusive, each on their own line.</p>`,
-	"seven-segment":            `<h1>Seven Segment</h1><p>Using pipes and underscores print the argument as if it were displayed on a seven segment display.<p>For example the number <b>0123456789</b> should be displayed as:<pre> _     _  _     _  _  _  _  _
+	"seven-segment": `<h1>Seven Segment</h1><p>Using pipes and underscores print the argument as if it were displayed on a seven segment display.<p>For example the number <b>0123456789</b> should be displayed as:<pre> _     _  _     _  _  _  _  _
 | |  | _| _||_||_ |_   ||_||_|
 |_|  ||_  _|  | _||_|  ||_| _|</pre>`,
-	"spelling-numbers":         `<h1>Spelling Numbers</h1><p>For each number argument print the same number spelled out in English.<p>The numbers will be in the range of <b>0</b> to <b>1,000</b> inclusive.</p>`,
-	"sierpiński-triangle":      `<h1>Sierpiński Triangle</h1><p>The Sierpiński triangle is a fractal and attractive fixed set with the overall shape of an equilateral triangle, subdivided recursively into smaller equilateral triangles.<p>A Sierpiński triangle of order 4 should look like this, print such an output:<pre>               ▲
+	"spelling-numbers": `<h1>Spelling Numbers</h1><p>For each number argument print the same number spelled out in English.<p>The numbers will be in the range of <b>0</b> to <b>1,000</b> inclusive.</p>`,
+	"sierpiński-triangle": `<h1>Sierpiński Triangle</h1><p>The Sierpiński triangle is a fractal and attractive fixed set with the overall shape of an equilateral triangle, subdivided recursively into smaller equilateral triangles.<p>A Sierpiński triangle of order 4 should look like this, print such an output:<pre>               ▲
               ▲ ▲
              ▲   ▲
             ▲ ▲ ▲ ▲
@@ -31,6 +38,78 @@ var preambles = map[string]string{
   ▲ ▲     ▲ ▲     ▲ ▲     ▲ ▲
  ▲   ▲   ▲   ▲   ▲   ▲   ▲   ▲
 ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲</pre>`,
-	"e":                        `<h1>e</h1><p>Print e (Euler's number) to the first 1,000 decimal places.</p>`,
-	"π":                        `<h1>π</h1><p>Print π (Pi) to the first 1,000 decimal places.</p>`,
+	"e": `<h1>e</h1><p>Print e (Euler's number) to the first 1,000 decimal places.</p>`,
+	"π": `<h1>π</h1><p>Print π (Pi) to the first 1,000 decimal places.</p>`,
+}
+
+func hole(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	hole := r.URL.Path[1:]
+
+	userID := printHeader(w, r, 200)
+
+	w.Write([]byte(
+		"<script async src=" + jsHolePath + "></script><div id=status><div>" +
+			"<h2>Program Arguments</h2><pre id=Arg></pre>" +
+			"<h2>Standard Error</h2><pre id=Err></pre>" +
+			"<h2>Expected Output</h2><pre id=Exp></pre>" +
+			"<h2>Standard Output</h2><pre id=Out></pre>" +
+			"</div></div><article",
+	))
+
+	if userID == 0 {
+		w.Write([]byte(
+			"><div id=alert>Please " +
+				`<a href="//github.com/login/oauth/authorize?` +
+				`client_id=7f6709819023e9215205&scope=user:email">` +
+				"Login with GitHub</a> in order to save solutions " +
+				"and appear on the leaderboards.</div",
+		))
+	} else {
+		for lang, solution := range getUserSolutions(userID, hole) {
+			w.Write([]byte(
+				" data-" + lang + `="` +
+					strings.Replace(solution, `"`, "&#34;", -1) + `"`,
+			))
+		}
+	}
+
+	w.Write([]byte(
+		">" + preambles[hole] +
+			"<a class=tab href=#javascript>JS<span></span></a>" +
+			"<a class=tab href=#perl>Perl<span></span></a>" +
+			"<a class=tab href=#perl6>Perl 6<span></span></a>" +
+			"<a class=tab href=#php>PHP<span></span></a>" +
+			"<a class=tab href=#python>Python<span></span></a>" +
+			"<a class=tab href=#ruby>Ruby<span></span></a>" +
+			"<input type=submit value=Run>",
+	))
+}
+
+func getUserSolutions(userID int, hole string) map[string]string {
+	rows, err := db.Query(
+		`SELECT code, lang
+		   FROM solutions
+		  WHERE user_id = $1 AND hole = $2`,
+		userID, hole,
+	)
+
+	if err != nil {
+		panic(err)
+	}
+
+	defer rows.Close()
+
+	solutions := make(map[string]string)
+
+	for rows.Next() {
+		var code, lang string
+
+		if err := rows.Scan(&code, &lang); err != nil {
+			panic(err)
+		}
+
+		solutions[lang] = code
+	}
+
+	return solutions
 }

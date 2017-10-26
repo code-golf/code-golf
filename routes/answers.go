@@ -1,4 +1,4 @@
-package main
+package routes
 
 var answers = map[string]string{
 	"99-bottles-of-beer": `99 bottles of beer on the wall, 99 bottles of beer.
