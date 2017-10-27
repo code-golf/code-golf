@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates curl gcc git make nasm
 
 # https://golang.org/dl/
-RUN curl -sSL https://storage.googleapis.com/golang/go1.9.1.linux-amd64.tar.gz \
+RUN curl -sSL https://storage.googleapis.com/golang/go1.9.2.linux-amd64.tar.gz \
   | tar -xzC /usr/local
 
 RUN go get -d github.com/buildkite/terminal  \
@@ -17,11 +17,11 @@ RUN go get -d github.com/buildkite/terminal  \
 
 RUN go get -d github.com/julienschmidt/httprouter  \
  && cd /go/src/github.com/julienschmidt/httprouter \
- && git checkout -q 975b5c4
+ && git checkout -q e1b9828
 
 RUN go get -d github.com/lib/pq  \
  && cd /go/src/github.com/lib/pq \
- && git checkout -q e422674
+ && git checkout -q b609790
 
 CMD go build -ldflags '-s' -o app                  \
  && nasm -f bin -o run-container run-container.asm \

@@ -15,7 +15,7 @@ RUN curl http://dl.google.com/closure-compiler/compiler-20171023.tar.gz \
  && mv closure-compiler-v20171023.jar closure-compiler.jar
 
 # CSSO & SVGO
-RUN npm install -g csso-cli@1.1.0 csso@3.2.0 svgo@0.7.2
+RUN npm install -g csso-cli@1.1.0 csso@3.3.1 svgo@0.7.2
 
 # Bashisms FTW.
 RUN ln -snf /bin/bash /bin/sh
