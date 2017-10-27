@@ -1,29 +1,12 @@
 FROM alpine:edge
 
-RUN apk add --no-cache gcc git linux-headers make musl-dev perl
+RUN apk add --no-cache curl gcc git linux-headers make musl-dev perl
 
-RUN git config --global user.email 'foo@bar.com' \
- && git config --global user.name  'foo bar'
+RUN curl -L https://github.com/rakudo/rakudo/archive/2017.10.tar.gz \
+   | tar xzf -
 
-# MoarVM
-RUN git clone git://github.com/MoarVM/MoarVM \
- && cd MoarVM                                \
- && git checkout 2017.09.1                   \
- && ./Configure.pl --prefix=/usr             \
- && make -j`nproc` install
-
-# NQP
-RUN git clone git://github.com/perl6/nqp \
- && cd nqp                               \
- && git checkout 2017.09                 \
- && ./Configure.pl --prefix=/usr         \
- && make -j`nproc` install
-
-# Rakudo
-RUN git clone git://github.com/rakudo/rakudo \
- && cd rakudo                                \
- && git checkout 2017.09                     \
- && ./Configure.pl --prefix=/usr             \
+RUN cd rakudo-2017.10                                         \
+ && perl Configure.pl --backend=moar --gen-moar --prefix=/usr \
  && make -j`nproc` install
 
 FROM scratch
