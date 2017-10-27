@@ -48,7 +48,7 @@ func hole(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	userID := printHeader(w, r, 200)
 
 	w.Write([]byte(
-		"<script async src=" + jsHolePath + "></script><div id=status><div>" +
+		"<script async src=" + holeJsPath + "></script><div id=status><div>" +
 			"<h2>Program Arguments</h2><pre id=Arg></pre>" +
 			"<h2>Standard Error</h2><pre id=Err></pre>" +
 			"<h2>Expected Output</h2><pre id=Exp></pre>" +

@@ -30,7 +30,7 @@ func printHeader(w http.ResponseWriter, r *http.Request, status int) int {
 
 	w.Write([]byte(
 		"<!doctype html>" +
-			"<link rel=stylesheet href=" + cssPath + ">" +
+			"<link rel=stylesheet href=" + commonCssPath + ">" +
 			"<meta name=theme-color content=#222>" +
 			`<meta name=viewport content="width=device-width">` +
 			"<title>Code-Golf</title>" +

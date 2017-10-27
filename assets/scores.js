@@ -1,5 +1,7 @@
+'use strict';
+
 onload = function() {
-    let selects = document.getElementsByTagName('select');
+    let selects = document.querySelectorAll('select');
 
     for (let select of selects)
         select.onchange = function() {

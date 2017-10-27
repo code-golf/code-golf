@@ -1,3 +1,12 @@
+/* include codemirror.js            */
+/* include codemirror-clike.js      */
+/* include codemirror-javascript.js */
+/* include codemirror-perl6.js      */
+/* include codemirror-perl.js       */
+/* include codemirror-php.js        */
+/* include codemirror-python.js     */
+/* include codemirror-ruby.js       */
+
 onload = function() {
     let activeEditor;
     let article = document.getElementsByTagName('article')[0];

@@ -6,61 +6,90 @@ use warnings;
 use Digest::MD5 'md5_base64';
 use IPC::Open2 'open2';
 
-system qw(svgo -q -f assets);
-
-my $css = slurp('assets/codemirror.css')
-    . slurp('assets/style.css') =~ s|svg\(([^#]+)(.+)\)|svg($1, $2)|egr;
-
-$css = run($css, qw(csso /dev/stdin));
-
-my $jsHole   = `java -jar /*.jar --assume_function_wrapper assets/{codemirror{,-*},hole}.js`;
-my $jsScores = `java -jar /*.jar assets/scores.js`;
-
-my $cssPath      = md5_base64($css)      =~ y|+/|-_|r;
-my $jsHolePath   = md5_base64($jsHole)   =~ y|+/|-_|r;
-my $jsScoresPath = md5_base64($jsScores) =~ y|+/|-_|r;
-
-my $favicon = hexify(slurp('assets/favicon.ico'));
-
-my      $cssBr = run($css,      qw/brotli/);
-my      $cssGz = run($css,      qw/gzip -9/);
-my   $jsHoleBr = run($jsHole,   qw/brotli/);
-my   $jsHoleGz = run($jsHole,   qw/gzip -9/);
-my $jsScoresBr = run($jsScores, qw/brotli/);
-my $jsScoresGz = run($jsScores, qw/gzip -9/);
-
-printf "     cssBr = %d bytes\n", length      $cssBr;
-printf "     cssGz = %d bytes\n", length      $cssGz;
-printf "  jsHoleBr = %d bytes\n", length   $jsHoleBr;
-printf "  jsHoleGz = %d bytes\n", length   $jsHoleGz;
-printf "jsScoresBr = %d bytes\n", length $jsScoresBr;
-printf "jsScoresGz = %d bytes\n", length $jsScoresGz;
-
-$_ = hexify($_) for $cssBr, $cssGz, $jsHoleBr, $jsHoleGz, $jsScoresBr, $jsScoresGz;
-
 open my $fh, '>', 'routes/assets.go';
-print $fh <<EOF;
+
+print $fh <<GO;
 package routes
 
-const      cssPath = "/assets/$cssPath"
-const   jsHolePath = "/assets/$jsHolePath"
-const jsScoresPath = "/assets/$jsScoresPath"
+import (
+	"net/http"
+	"strings"
 
-var favicon = []byte{$favicon}
+	"github.com/julienschmidt/httprouter"
+)
 
-var cssBr = []byte{$cssBr}
-var cssGz = []byte{$cssGz}
+func asset(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	switch r.URL.Path {
+GO
 
-var jsHoleBr = []byte{$jsHoleBr}
-var jsHoleGz = []byte{$jsHoleGz}
+my ( %data, %paths );
 
-var jsScoresBr = []byte{$jsScoresBr}
-var jsScoresGz = []byte{$jsScoresGz}
-EOF
+for (<assets/*.{css,ico,js}>) {
+    my $data = slurp($_);
 
-sub hexify {
+    s|^assets/||;
+
+    my $name = s/\.(\w)/\U$1/r;
+
+    if ( $_ eq 'favicon.ico' ) {
+        $data{$name} = $data;
+
+        print $fh <<'GO';
+	case "/favicon.ico":
+		w.Write(faviconIco)
+GO
+
+        next;
+    }
+
+    $data =~ s|/\* include ([^ ]+) +\*/|slurp("assets/includes/$1")|eg;
+
+    if (/\.css$/) {
+        $data =~ s|svg\(([^#]+)(.+)\)|svg($1, $2)|eg;
+
+        $data = run($data, qw(csso /dev/stdin));
+    }
+    else {
+        $data = run(
+            $data,
+            qw(java -jar /closure-compiler.jar),
+            qw(--assume_function_wrapper --language_out ECMASCRIPT_2017),
+        );
+    }
+
+    $data{"${name}Br"} = run($data, qw/brotli/);
+    $data{"${name}Gz"} = run($data, qw/gzip -9/);
+
+    my $mime = /\.css$/ ? 'text/css' : 'application/javascript';
+    my $path = $paths{$name} = '/assets/' . md5_base64($data) =~ y|+/|-_|r;
+
+    print $fh <<GO;
+	case ${name}Path:
+		w.Header()["Cache-Control"] = []string{"max-age=9999999,public"}
+		w.Header()["Content-Type"] = []string{"$mime"}
+
+		if strings.Contains(r.Header.Get("Accept-Encoding"), "br") {
+			w.Header()["Content-Encoding"] = []string{"br"}
+			w.Write(${name}Br)
+		} else {
+			w.Header()["Content-Encoding"] = []string{"gzip"}
+			w.Write(${name}Gz)
+		}
+GO
+}
+
+print $fh "\t}\n}\n\n";
+print $fh qq/const ${_}Path = "$paths{$_}"\n/ for sort keys %paths;
+print $fh "\n";
+
+for ( sort keys %data ) {
+    printf "%12s = %5d bytes\n", $_, length $data{$_};
+
     my $i = 0;
-    join ',', map +( "\n" x !($i++ % 15) ) . "0x$_", unpack '(H2)*', pop;
+    my $data = join ',',
+        map +( "\n" x !($i++ % 15) ) . "0x$_", unpack '(H2)*', $data{$_};
+
+    print $fh "var $_ = []byte{$data}\n\n";
 }
 
 sub run {
@@ -80,7 +109,7 @@ sub slurp { local ( @ARGV, $/ ) = @_; scalar <> }
 sub svg {
     my ( $file, $fill ) = @_;
 
-    $_ = slurp("assets/$file.svg");
+    local $_ = slurp("assets/includes/$file.svg");
 
     s/FILL/$fill/g;
     s/#/%23/g;
