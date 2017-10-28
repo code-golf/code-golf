@@ -16,6 +16,7 @@ import (
 	"github.com/buildkite/terminal"
 	"github.com/jraspass/code-golf/cookie"
 	"github.com/julienschmidt/httprouter"
+	"github.com/pmezard/go-difflib/difflib"
 )
 
 func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
@@ -24,7 +25,7 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 
 	type Out struct {
-		Arg, Err, Exp, Out string
+		Arg, Diff, Err, Exp, Out string
 	}
 
 	var in In
@@ -58,6 +59,14 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	out.Err, out.Out = runCode(in.Lang, in.Code, args)
 	out.Arg = strings.Join(args, " ")
+
+	out.Diff, _ = difflib.GetUnifiedDiffString(difflib.UnifiedDiff{
+		A:        difflib.SplitLines(out.Exp),
+		B:        difflib.SplitLines(out.Out),
+		Context:  3,
+		FromFile: "Exp",
+		ToFile:   "Out",
+	})
 
 	// Save the solution if the user is logged in and it passes.
 	if userID, _ := cookie.Read(r); userID != 0 && out.Exp == out.Out {

@@ -23,6 +23,10 @@ RUN go get -d github.com/lib/pq  \
  && cd /go/src/github.com/lib/pq \
  && git checkout -q b609790
 
+RUN go get -d github.com/pmezard/go-difflib/difflib  \
+ && cd /go/src/github.com/pmezard/go-difflib/difflib \
+ && git checkout -q 792786c
+
 CMD go build -ldflags '-s' -o app                  \
  && nasm -f bin -o run-container run-container.asm \
  && chmod +x run-container

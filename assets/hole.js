@@ -69,7 +69,12 @@ onload = function() {
             document.getElementById('status').classList
                 .toggle('pass', data.Exp === data.Out);
 
+            console.log(data.Diff);
+
             for (let prop in data) {
+                if (prop === 'Diff')
+                    continue;
+
                 let pre = document.getElementById(prop);
 
                 pre.innerHTML = data[prop];
