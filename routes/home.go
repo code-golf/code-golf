@@ -56,17 +56,18 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		         WHEN 'evil-numbers'             THEN 1
 		         WHEN 'fibonacci'                THEN 2
 		         WHEN 'fizz-buzz'                THEN 3
-		         WHEN 'odious-numbers'           THEN 4
-		         WHEN 'pascals-triangle'         THEN 5
-		         WHEN 'pernicious-numbers'       THEN 6
-		         WHEN 'prime-numbers'            THEN 7
-		         WHEN '99-bottles-of-beer'       THEN 8
-		         WHEN 'seven-segment'            THEN 9
-		         WHEN 'sierpiński-triangle'      THEN 10
-		         WHEN 'π'                        THEN 11
-		         WHEN 'e'                        THEN 12
-		         WHEN 'arabic-to-roman-numerals' THEN 13
-		         WHEN 'spelling-numbers'         THEN 14
+		         WHEN 'happy-numbers'            THEN 4
+		         WHEN 'odious-numbers'           THEN 5
+		         WHEN 'pascals-triangle'         THEN 6
+		         WHEN 'pernicious-numbers'       THEN 7
+		         WHEN 'prime-numbers'            THEN 8
+		         WHEN '99-bottles-of-beer'       THEN 9
+		         WHEN 'seven-segment'            THEN 10
+		         WHEN 'sierpiński-triangle'      THEN 11
+		         WHEN 'π'                        THEN 12
+		         WHEN 'e'                        THEN 13
+		         WHEN 'arabic-to-roman-numerals' THEN 14
+		         WHEN 'spelling-numbers'         THEN 15
 		         END, rank, submitted`,
 		printHeader(w, r, 200),
 	)
@@ -120,6 +121,8 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 				w.Write([]byte(`Fast><a href=fibonacci>Fibonacci`))
 			case "fizz-buzz":
 				w.Write([]byte(`Fast><a href=fizz-buzz>Fizz Buzz`))
+			case "happy-numbers":
+				w.Write([]byte(`Fast><a href=happy-numbers>Happy Numbers`))
 			case "odious-numbers":
 				w.Write([]byte(`Fast><a href=odious-numbers>Odious Numbers`))
 			case "pascals-triangle":
