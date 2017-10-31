@@ -127,6 +127,10 @@ select:first-child {
     margin-right: 10px;
 }
 
+sup {
+    line-height: 0;
+}
+
 table {
     border: 1px solid #ddd;
     border-collapse: collapse;

@@ -153,7 +153,10 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		             '<tr',
 		             CASE WHEN user_id = $1 THEN ' class=me' END,
 		             '><td>',
-		             RANK() OVER (ORDER BY score DESC),
+		             TO_CHAR(
+		                 RANK() OVER (ORDER BY score DESC),
+		                 'FM99"<sup>"th"</sup>"'
+		             ),
 		             '<td><img src="//avatars.githubusercontent.com/',
 		             login,
 		             '?s=26"><a href="/users/',

@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"database/sql"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
@@ -23,7 +22,8 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		), ranked_leaderboard AS (
 		  SELECT hole,
 		         lang,
-		         RANK() OVER (PARTITION BY hole ORDER BY strokes),
+		         RANK()       OVER (PARTITION BY hole ORDER BY strokes),
+		         ROW_NUMBER() OVER (PARTITION BY hole ORDER BY strokes, submitted),
 		         strokes,
 		         submitted,
 		         user_id
@@ -35,7 +35,7 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		             '"',
 		             CASE WHEN user_id = $1 THEN ' class=me' END,
 		             '><td>',
-		             rank,
+		             TO_CHAR(rank, 'FM99"<sup>"th"</sup>"'),
 		             '<td class=',
 		             lang,
 		             '>',
@@ -50,7 +50,8 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		         )
 		    FROM ranked_leaderboard
 		    JOIN users on user_id = id
-		   WHERE rank < 6
+		   WHERE row_number < 6
+		      OR user_id = $1
 		ORDER BY CASE hole
 		         WHEN 'emirp-numbers'            THEN 0
 		         WHEN 'evil-numbers'             THEN 1
@@ -68,7 +69,7 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		         WHEN 'e'                        THEN 13
 		         WHEN 'arabic-to-roman-numerals' THEN 14
 		         WHEN 'spelling-numbers'         THEN 15
-		         END, rank, submitted`,
+		         END, row_number`,
 		printHeader(w, r, 200),
 	)
 
@@ -83,9 +84,32 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	var i uint8
 	var prevHole string
 
+	holeRows := make([][]byte, 6)
+
+	printHole := func() {
+		if i == 6 {
+			holeRows[3] = []byte("<tr><td colspan=3>…")
+			holeRows[4] = holeRows[5]
+			i = 5
+		}
+
+		for j := uint8(0); j < i; j++ {
+			w.Write(holeRows[j])
+		}
+
+		// Fill in blank rows if we have too few rows.
+		for j := i; j < 5; j++ {
+			w.Write([]byte("<tr><td><td><td>"))
+		}
+
+		w.Write([]byte("</table><a href=scores/"))
+		w.Write([]byte(prevHole))
+		w.Write([]byte("/all>FULL LEADERBOARD</a></div>"))
+	}
+
 	for rows.Next() {
 		var hole string
-		var row sql.RawBytes
+		var row []byte
 
 		if err := rows.Scan(&hole, &row); err != nil {
 			panic(err)
@@ -93,15 +117,8 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 		if hole != prevHole {
 			if prevHole != "" {
-				for j := i; j < 5; j++ {
-					w.Write([]byte("<tr><td><td><td>"))
-				}
-
+				printHole()
 				i = 0
-
-				w.Write([]byte("</table><a href=scores/"))
-				w.Write([]byte(prevHole))
-				w.Write([]byte("/all>FULL LEADERBOARD</a></div>"))
 			}
 
 			w.Write([]byte(`<div class=`))
@@ -146,16 +163,11 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 			prevHole = hole
 		}
 
-		if i < 5 {
-			w.Write(row)
-		}
-
+		holeRows[i] = row
 		i++
 	}
 
-	w.Write([]byte("</table><a href=scores/"))
-	w.Write([]byte(prevHole))
-	w.Write([]byte("/all>FULL LEADERBOARD</a></div>"))
+	printHole()
 
 	if err := rows.Err(); err != nil {
 		panic(err)
