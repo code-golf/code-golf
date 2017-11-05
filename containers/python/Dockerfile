@@ -2,10 +2,10 @@ FROM alpine:edge
 
 RUN apk add --no-cache curl gcc linux-headers make musl-dev zlib-dev
 
-RUN curl https://www.python.org/ftp/python/3.6.2/Python-3.6.2.tar.xz \
+RUN curl https://www.python.org/ftp/python/3.6.3/Python-3.6.3.tar.xz \
   | tar xJf -
 
-RUN cd Python-3.6.2           \
+RUN cd Python-3.6.3           \
  && ./configure --prefix=/usr \
  && make install
 
