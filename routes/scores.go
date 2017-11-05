@@ -124,7 +124,7 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		  SELECT hole,
 		         ROUND(
 		             (
-		                 (SELECT COUNT(distinct user_id) FROM solutions WHERE hole = l.hole`+where+`)
+		                 COUNT(*) OVER (PARTITION BY hole)
 		                 -
 		                 RANK() OVER (PARTITION BY hole ORDER BY strokes)
 		                 +
@@ -134,13 +134,13 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		             (
 		                 100.0
 		                 /
-		                 (SELECT COUNT(distinct user_id) FROM solutions WHERE hole = l.hole`+where+`)
+		                 COUNT(*) OVER (PARTITION BY hole)
 		             )
 		         ) score,
 		         strokes,
 		         submitted,
 		         user_id
-		    FROM leaderboard l
+		    FROM leaderboard
 		), summed_leaderboard AS (
 		  SELECT user_id,
 		         SUM(strokes) strokes,
