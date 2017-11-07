@@ -41,6 +41,7 @@ func init() {
 	Router.GET("/pascals-triangle", middleware.Gzip(hole))
 	Router.GET("/pernicious-numbers", middleware.Gzip(hole))
 	Router.GET("/prime-numbers", middleware.Gzip(hole))
+	Router.GET("/quine", middleware.Gzip(hole))
 	Router.GET("/seven-segment", middleware.Gzip(hole))
 	Router.GET("/sierpiński-triangle", middleware.Gzip(hole))
 	Router.GET("/spelling-numbers", middleware.Gzip(hole))

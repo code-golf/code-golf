@@ -62,13 +62,14 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		         WHEN 'pascals-triangle'         THEN 6
 		         WHEN 'pernicious-numbers'       THEN 7
 		         WHEN 'prime-numbers'            THEN 8
-		         WHEN '99-bottles-of-beer'       THEN 9
-		         WHEN 'seven-segment'            THEN 10
-		         WHEN 'sierpiński-triangle'      THEN 11
-		         WHEN 'π'                        THEN 12
-		         WHEN 'e'                        THEN 13
-		         WHEN 'arabic-to-roman-numerals' THEN 14
-		         WHEN 'spelling-numbers'         THEN 15
+		         WHEN 'quine'                    THEN 9
+		         WHEN '99-bottles-of-beer'       THEN 10
+		         WHEN 'seven-segment'            THEN 11
+		         WHEN 'sierpiński-triangle'      THEN 12
+		         WHEN 'π'                        THEN 13
+		         WHEN 'e'                        THEN 14
+		         WHEN 'arabic-to-roman-numerals' THEN 15
+		         WHEN 'spelling-numbers'         THEN 16
 		         END, row_number`,
 		printHeader(w, r, 200),
 	)
@@ -148,6 +149,8 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 				w.Write([]byte(`Fast><a href=pernicious-numbers>Pernicious Numbers`))
 			case "prime-numbers":
 				w.Write([]byte(`Fast><a href=prime-numbers>Prime Numbers`))
+			case "quine":
+				w.Write([]byte(`Fast><a href=quine>Quine`))
 			case "seven-segment":
 				w.Write([]byte(`Medium><a href=seven-segment>Seven Segment`))
 			case "sierpiński-triangle":

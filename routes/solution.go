@@ -48,6 +48,8 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 		// Drop the trailing newline.
 		out.Exp = out.Exp[:len(out.Exp)-1]
+	} else if in.Hole == "quine" {
+		out.Exp = in.Code
 	} else if in.Hole == "seven-segment" {
 		args = make([]string, 1)
 		args[0], out.Exp = sevenSegment()
@@ -57,7 +59,7 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		out.Exp = answers[in.Hole]
 	}
 
-	out.Err, out.Out = runCode(in.Lang, in.Code, args)
+	out.Err, out.Out = runCode(in.Hole, in.Lang, in.Code, args)
 	out.Arg = strings.Join(args, " ")
 
 	out.Diff, _ = difflib.GetUnifiedDiffString(difflib.UnifiedDiff{
@@ -102,7 +104,7 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 }
 
-func runCode(lang, code string, args []string) (string, string) {
+func runCode(hole, lang, code string, args []string) (string, string) {
 	var err, out bytes.Buffer
 
 	if lang == "php" {
@@ -177,32 +179,33 @@ func runCode(lang, code string, args []string) (string, string) {
 
 	// Trim trailing whitespace.
 	errBytes := bytes.TrimRightFunc(err.Bytes(), unicode.IsSpace)
-	outBytes = bytes.TrimRightFunc(outBytes, unicode.IsSpace)
+
+	if hole != "quine" {
+		outBytes = bytes.TrimRightFunc(outBytes, unicode.IsSpace)
+	}
 
 	// Escape HTML & convert ANSI to HTML in stderr.
 	errBytes = terminal.Render(errBytes)
 
-	// Escape HTML in stdout
-	outBytes = bytes.Replace(outBytes, []byte{'<'}, []byte("&lt;"), -1)
-	outBytes = bytes.Replace(outBytes, []byte{'>'}, []byte("&gt;"), -1)
-
 	// ASCII-ify roman numerals
-	outBytes = bytes.Replace(outBytes, []byte("Ⅰ"), []byte("I"), -1)
-	outBytes = bytes.Replace(outBytes, []byte("Ⅱ"), []byte("II"), -1)
-	outBytes = bytes.Replace(outBytes, []byte("Ⅲ"), []byte("III"), -1)
-	outBytes = bytes.Replace(outBytes, []byte("Ⅳ"), []byte("IV"), -1)
-	outBytes = bytes.Replace(outBytes, []byte("Ⅴ"), []byte("V"), -1)
-	outBytes = bytes.Replace(outBytes, []byte("Ⅵ"), []byte("VI"), -1)
-	outBytes = bytes.Replace(outBytes, []byte("Ⅶ"), []byte("VII"), -1)
-	outBytes = bytes.Replace(outBytes, []byte("Ⅷ"), []byte("VIII"), -1)
-	outBytes = bytes.Replace(outBytes, []byte("Ⅸ"), []byte("IX"), -1)
-	outBytes = bytes.Replace(outBytes, []byte("Ⅹ"), []byte("X"), -1)
-	outBytes = bytes.Replace(outBytes, []byte("Ⅺ"), []byte("XI"), -1)
-	outBytes = bytes.Replace(outBytes, []byte("Ⅻ"), []byte("XII"), -1)
-	outBytes = bytes.Replace(outBytes, []byte("Ⅼ"), []byte("L"), -1)
-	outBytes = bytes.Replace(outBytes, []byte("Ⅽ"), []byte("C"), -1)
-	outBytes = bytes.Replace(outBytes, []byte("Ⅾ"), []byte("D"), -1)
-	outBytes = bytes.Replace(outBytes, []byte("Ⅿ"), []byte("M"), -1)
+	if hole == "arabic-to-roman-numerals" {
+		outBytes = bytes.Replace(outBytes, []byte("Ⅰ"), []byte("I"), -1)
+		outBytes = bytes.Replace(outBytes, []byte("Ⅱ"), []byte("II"), -1)
+		outBytes = bytes.Replace(outBytes, []byte("Ⅲ"), []byte("III"), -1)
+		outBytes = bytes.Replace(outBytes, []byte("Ⅳ"), []byte("IV"), -1)
+		outBytes = bytes.Replace(outBytes, []byte("Ⅴ"), []byte("V"), -1)
+		outBytes = bytes.Replace(outBytes, []byte("Ⅵ"), []byte("VI"), -1)
+		outBytes = bytes.Replace(outBytes, []byte("Ⅶ"), []byte("VII"), -1)
+		outBytes = bytes.Replace(outBytes, []byte("Ⅷ"), []byte("VIII"), -1)
+		outBytes = bytes.Replace(outBytes, []byte("Ⅸ"), []byte("IX"), -1)
+		outBytes = bytes.Replace(outBytes, []byte("Ⅹ"), []byte("X"), -1)
+		outBytes = bytes.Replace(outBytes, []byte("Ⅺ"), []byte("XI"), -1)
+		outBytes = bytes.Replace(outBytes, []byte("Ⅻ"), []byte("XII"), -1)
+		outBytes = bytes.Replace(outBytes, []byte("Ⅼ"), []byte("L"), -1)
+		outBytes = bytes.Replace(outBytes, []byte("Ⅽ"), []byte("C"), -1)
+		outBytes = bytes.Replace(outBytes, []byte("Ⅾ"), []byte("D"), -1)
+		outBytes = bytes.Replace(outBytes, []byte("Ⅿ"), []byte("M"), -1)
+	}
 
 	return string(errBytes), string(outBytes)
 }

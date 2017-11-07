@@ -77,7 +77,11 @@ onload = function() {
 
                 let pre = document.getElementById(prop);
 
-                pre.innerHTML = data[prop];
+                // Err can be ANSI coloured via HTML.
+                if (prop == Err)
+                    pre.innerHTML = data[prop];
+                else
+                    pre.innerText = data[prop];
 
                 // Only show Arg & Err if they contain something.
                 if (prop === 'Arg' || prop === 'Err')
