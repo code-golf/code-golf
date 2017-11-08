@@ -67,7 +67,7 @@ onload = function() {
             }),
         }).then( res => res.json() ).then( data => {
             document.getElementById('status').classList
-                .toggle('pass', data.Exp === data.Out);
+                .toggle('pass', data.Exp === data.Out && data.Out !== '');
 
             console.log(data.Diff);
 

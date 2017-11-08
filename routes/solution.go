@@ -71,7 +71,7 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	})
 
 	// Save the solution if the user is logged in and it passes.
-	if userID, _ := cookie.Read(r); userID != 0 && out.Exp == out.Out {
+	if userID, _ := cookie.Read(r); userID != 0 && out.Exp == out.Out && out.Out != "" {
 		// Update the code if it's the same length or less, but only update
 		// the submitted time if the solution is shorter. This avoids a user
 		// moving down the leaderboard by matching their personal best.
