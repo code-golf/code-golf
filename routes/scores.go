@@ -16,7 +16,7 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	switch hole {
 	case "all",
 		"99-bottles-of-beer",
-		"arabic-to-roman-numerals",
+		"arabic-to-roman",
 		"e",
 		"emirp-numbers",
 		"evil-numbers",
@@ -28,6 +28,7 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		"pernicious-numbers",
 		"prime-numbers",
 		"quine",
+		"roman-to-arabic",
 		"seven-segment",
 		"sierpiński-triangle",
 		"spelling-numbers",
@@ -55,7 +56,7 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	for _, v := range [][]string{
 		{"all", "All Holes"},
 		{"99-bottles-of-beer", "99 Bottles of Beer"},
-		{"arabic-to-roman-numerals", "Arabic to Roman"},
+		{"arabic-to-roman", "Arabic to Roman"},
 		{"e", "e"},
 		{"emirp-numbers", "Emirp Numbers"},
 		{"evil-numbers", "Evil Numbers"},
@@ -67,6 +68,7 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		{"pernicious-numbers", "Pernicious Numbers"},
 		{"prime-numbers", "Prime Numbers"},
 		{"quine", "Quine"},
+		{"roman-to-arabic", "Roman to Arabic"},
 		{"sierpiński-triangle", "Sierpiński Triangle"},
 		{"seven-segment", "Seven Segment"},
 		{"spelling-numbers", "Spelling Numbers"},

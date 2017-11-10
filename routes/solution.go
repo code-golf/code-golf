@@ -38,7 +38,8 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	var args []string
 	var out Out
 
-	if in.Hole == "arabic-to-roman-numerals" {
+	switch in.Hole {
+	case "arabic-to-roman":
 		for i := 0; i < 20; i++ {
 			i := rand.Intn(3998) + 1 // 1 - 3999 inclusive.
 
@@ -48,14 +49,24 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 		// Drop the trailing newline.
 		out.Exp = out.Exp[:len(out.Exp)-1]
-	} else if in.Hole == "quine" {
+	case "quine":
 		out.Exp = in.Code
-	} else if in.Hole == "seven-segment" {
+	case "roman-to-arabic":
+		for i := 0; i < 20; i++ {
+			i := rand.Intn(3998) + 1 // 1 - 3999 inclusive.
+
+			out.Exp += strconv.Itoa(i) + "\n"
+			args = append(args, arabicToRoman(i))
+		}
+
+		// Drop the trailing newline.
+		out.Exp = out.Exp[:len(out.Exp)-1]
+	case "seven-segment":
 		args = make([]string, 1)
 		args[0], out.Exp = sevenSegment()
-	} else if in.Hole == "spelling-numbers" {
+	case "spelling-numbers":
 		args, out.Exp = spellingNumbers()
-	} else {
+	default:
 		out.Exp = answers[in.Hole]
 	}
 
@@ -192,7 +203,7 @@ func runCode(hole, lang, code string, args []string) (string, string) {
 	errBytes = terminal.Render(errBytes)
 
 	// ASCII-ify roman numerals
-	if hole == "arabic-to-roman-numerals" {
+	if hole == "arabic-to-roman" {
 		outBytes = bytes.Replace(outBytes, []byte("Ⅰ"), []byte("I"), -1)
 		outBytes = bytes.Replace(outBytes, []byte("Ⅱ"), []byte("II"), -1)
 		outBytes = bytes.Replace(outBytes, []byte("Ⅲ"), []byte("III"), -1)

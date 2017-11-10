@@ -53,23 +53,24 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		   WHERE row_number < 6
 		      OR user_id = $1
 		ORDER BY CASE hole
-		         WHEN 'emirp-numbers'            THEN 0
-		         WHEN 'evil-numbers'             THEN 1
-		         WHEN 'fibonacci'                THEN 2
-		         WHEN 'fizz-buzz'                THEN 3
-		         WHEN 'happy-numbers'            THEN 4
-		         WHEN 'odious-numbers'           THEN 5
-		         WHEN 'pascals-triangle'         THEN 6
-		         WHEN 'pernicious-numbers'       THEN 7
-		         WHEN 'prime-numbers'            THEN 8
-		         WHEN 'quine'                    THEN 9
-		         WHEN '99-bottles-of-beer'       THEN 10
-		         WHEN 'seven-segment'            THEN 11
-		         WHEN 'sierpiński-triangle'      THEN 12
-		         WHEN 'π'                        THEN 13
-		         WHEN 'e'                        THEN 14
-		         WHEN 'arabic-to-roman-numerals' THEN 15
-		         WHEN 'spelling-numbers'         THEN 16
+		         WHEN 'emirp-numbers'       THEN 0
+		         WHEN 'evil-numbers'        THEN 1
+		         WHEN 'fibonacci'           THEN 2
+		         WHEN 'fizz-buzz'           THEN 3
+		         WHEN 'happy-numbers'       THEN 4
+		         WHEN 'odious-numbers'      THEN 5
+		         WHEN 'pascals-triangle'    THEN 6
+		         WHEN 'pernicious-numbers'  THEN 7
+		         WHEN 'prime-numbers'       THEN 8
+		         WHEN 'quine'               THEN 9
+		         WHEN '99-bottles-of-beer'  THEN 10
+		         WHEN 'seven-segment'       THEN 11
+		         WHEN 'sierpiński-triangle' THEN 12
+		         WHEN 'π'                   THEN 13
+		         WHEN 'e'                   THEN 14
+		         WHEN 'arabic-to-roman'     THEN 15
+		         WHEN 'roman-to-arabic'     THEN 16
+		         WHEN 'spelling-numbers'    THEN 17
 		         END, row_number`,
 		printHeader(w, r, 200),
 	)
@@ -127,8 +128,8 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 			switch hole {
 			case "99-bottles-of-beer":
 				w.Write([]byte(`Medium><a href=99-bottles-of-beer>99 Bottles of Beer`))
-			case "arabic-to-roman-numerals":
-				w.Write([]byte(`Slow><a href=arabic-to-roman-numerals>Arabic to Roman`))
+			case "arabic-to-roman":
+				w.Write([]byte(`Slow><a href=arabic-to-roman>Arabic to Roman`))
 			case "e":
 				w.Write([]byte(`Medium><a href=e>e`))
 			case "emirp-numbers":
@@ -151,6 +152,8 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 				w.Write([]byte(`Fast><a href=prime-numbers>Prime Numbers`))
 			case "quine":
 				w.Write([]byte(`Fast><a href=quine>Quine`))
+			case "roman-to-arabic":
+				w.Write([]byte(`Slow><a href=roman-to-arabic>Roman to Arabic`))
 			case "seven-segment":
 				w.Write([]byte(`Medium><a href=seven-segment>Seven Segment`))
 			case "sierpiński-triangle":
