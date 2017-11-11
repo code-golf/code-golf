@@ -67,10 +67,11 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		         WHEN 'seven-segment'       THEN 11
 		         WHEN 'sierpiński-triangle' THEN 12
 		         WHEN 'π'                   THEN 13
-		         WHEN 'e'                   THEN 14
-		         WHEN 'arabic-to-roman'     THEN 15
-		         WHEN 'roman-to-arabic'     THEN 16
-		         WHEN 'spelling-numbers'    THEN 17
+		         WHEN 'φ'                   THEN 14
+		         WHEN '𝑒'                   THEN 15
+		         WHEN 'arabic-to-roman'     THEN 16
+		         WHEN 'roman-to-arabic'     THEN 17
+		         WHEN 'spelling-numbers'    THEN 18
 		         END, row_number`,
 		printHeader(w, r, 200),
 	)
@@ -130,8 +131,6 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 				w.Write([]byte(`Medium><a href=99-bottles-of-beer>99 Bottles of Beer`))
 			case "arabic-to-roman":
 				w.Write([]byte(`Slow><a href=arabic-to-roman>Arabic to Roman`))
-			case "e":
-				w.Write([]byte(`Medium><a href=e>e`))
 			case "emirp-numbers":
 				w.Write([]byte(`Fast><a href=emirp-numbers>Emirp Numbers`))
 			case "evil-numbers":
@@ -162,6 +161,10 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 				w.Write([]byte(`Slow><a href=spelling-numbers>Spelling Numbers`))
 			case "π":
 				w.Write([]byte(`Medium><a href=π>π`))
+			case "φ":
+				w.Write([]byte(`Medium><a href=φ>φ`))
+			case "𝑒":
+				w.Write([]byte(`Medium><a href=𝑒>𝑒`))
 			}
 
 			w.Write([]byte(`</a><table>`))

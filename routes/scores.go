@@ -17,7 +17,6 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	case "all",
 		"99-bottles-of-beer",
 		"arabic-to-roman",
-		"e",
 		"emirp-numbers",
 		"evil-numbers",
 		"fibonacci",
@@ -32,7 +31,9 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		"seven-segment",
 		"sierpiński-triangle",
 		"spelling-numbers",
-		"π":
+		"π",
+		"φ",
+		"𝑒":
 	default:
 		print404(w, r)
 		return
@@ -57,7 +58,6 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		{"all", "All Holes"},
 		{"99-bottles-of-beer", "99 Bottles of Beer"},
 		{"arabic-to-roman", "Arabic to Roman"},
-		{"e", "e"},
 		{"emirp-numbers", "Emirp Numbers"},
 		{"evil-numbers", "Evil Numbers"},
 		{"fibonacci", "Fibonacci"},
@@ -73,6 +73,8 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		{"seven-segment", "Seven Segment"},
 		{"spelling-numbers", "Spelling Numbers"},
 		{"π", "π"},
+		{"φ","φ"},
+		{"𝑒", "𝑒"},
 	} {
 		w.Write([]byte("<option "))
 		if hole == v[0] {

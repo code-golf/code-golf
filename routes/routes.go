@@ -31,7 +31,6 @@ func init() {
 	// TODO Create this with a loop.
 	Router.GET("/99-bottles-of-beer", middleware.Gzip(hole))
 	Router.GET("/arabic-to-roman", middleware.Gzip(hole))
-	Router.GET("/e", middleware.Gzip(hole))
 	Router.GET("/emirp-numbers", middleware.Gzip(hole))
 	Router.GET("/evil-numbers", middleware.Gzip(hole))
 	Router.GET("/fibonacci", middleware.Gzip(hole))
@@ -47,6 +46,8 @@ func init() {
 	Router.GET("/sierpiński-triangle", middleware.Gzip(hole))
 	Router.GET("/spelling-numbers", middleware.Gzip(hole))
 	Router.GET("/π", middleware.Gzip(hole))
+	Router.GET("/φ", middleware.Gzip(hole))
+	Router.GET("/𝑒", middleware.Gzip(hole))
 
 	Router.POST("/solution", middleware.Gzip(solution))
 

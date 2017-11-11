@@ -41,8 +41,10 @@ var preambles = map[string]string{
   ▲ ▲     ▲ ▲     ▲ ▲     ▲ ▲
  ▲   ▲   ▲   ▲   ▲   ▲   ▲   ▲
 ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲</pre>`,
-	"e": `<h1>e</h1><p>Print e (Euler's number) to the first 1,000 decimal places.</p>`,
 	"π": `<h1>π</h1><p>Print π (Pi) to the first 1,000 decimal places.</p>`,
+	"φ": `<h1>φ</h1><p>Print φ (Phi) to the first 1,000 decimal places.</p>`,
+	"𝑒": `<h1>e</h1><p>Print 𝑒 (Euler's number) to the first 1,000 decimal places.</p>`,
+
 }
 
 func hole(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
