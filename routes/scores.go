@@ -73,7 +73,7 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		{"seven-segment", "Seven Segment"},
 		{"spelling-numbers", "Spelling Numbers"},
 		{"π", "π"},
-		{"φ","φ"},
+		{"φ", "φ"},
 		{"𝑒", "𝑒"},
 	} {
 		w.Write([]byte("<option "))

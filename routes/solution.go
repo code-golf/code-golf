@@ -152,7 +152,7 @@ func runCode(hole, lang, code string, args []string) (string, string) {
 		cmd.Args = []string{"/usr/bin/php", "--"}
 	// Ruby also seem to show -- in ARGV :-(
 	// TODO Try special casing just the langs that need --
-	case  "ruby":
+	case "ruby":
 		cmd.Args = []string{"/usr/bin/ruby", "-"}
 	default:
 		cmd.Args = []string{"/usr/bin/" + lang, "-", "--"}
