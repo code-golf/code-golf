@@ -134,6 +134,8 @@ func runCode(hole, lang, code string, args []string) (string, string) {
 	}
 
 	switch lang {
+	case "bash":
+		cmd.Args = []string{"/usr/bin/bash", "-s", "-"}
 	case "javascript":
 		cmd.Args = []string{"/usr/bin/js", "-f", "-", "--"}
 	// The perls seems to show -- in @ARGV :-(

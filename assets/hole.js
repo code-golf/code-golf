@@ -1,4 +1,5 @@
 /* include codemirror.js            */
+/* include codemirror-bash.js       */
 /* include codemirror-clike.js      */
 /* include codemirror-javascript.js */
 /* include codemirror-perl6.js      */
@@ -12,7 +13,7 @@ onload = function() {
     let article = document.getElementsByTagName('article')[0];
     let editors = [];
 
-    for (let lang of ['javascript', 'perl', 'perl6', 'php', 'python', 'ruby']) {
+    for (let lang of ['bash', 'javascript', 'perl', 'perl6', 'php', 'python', 'ruby']) {
         let code = article.dataset.hasOwnProperty(lang) ? article.dataset[lang] : '';
 
         let editor = CodeMirror(article, {
@@ -41,7 +42,7 @@ onload = function() {
 
     ( onhashchange = function() {
         // Kick 'em to Perl 6 if we don't know the chosen language.
-        if (!/^#(?:javascript|perl6?|php|python|ruby)$/.exec(location.hash))
+        if (!/^#(?:bash|javascript|perl6?|php|python|ruby)$/.exec(location.hash))
             location.hash = 'perl6';
 
         let lang = location.hash.slice(1);

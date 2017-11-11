@@ -41,7 +41,7 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	// TODO Find a better way to do this.
 	switch lang {
-	case "all", "javascript", "perl", "perl6", "php", "python", "ruby":
+	case "all", "bash", "javascript", "perl", "perl6", "php", "python", "ruby":
 	default:
 		print404(w, r)
 		return
@@ -87,6 +87,7 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	for _, v := range [][]string{
 		{"all", "All Langs"},
+		{"bash", "Bash"},
 		{"javascript", "JavaScript"},
 		{"perl", "Perl"},
 		{"perl6", "Perl 6"},

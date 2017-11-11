@@ -213,6 +213,7 @@ ul {
     background-color: #d9534f !important;
 }
 
+.bash       { background: svg(bash#000)       7px / 26px no-repeat }
 .javascript { background: svg(javascript#000) 7px / 26px no-repeat }
 .perl       { background: svg(perl#000)       7px / 26px no-repeat }
 .perl6      { background: svg(perl6#000)      7px / 26px no-repeat }
@@ -386,6 +387,7 @@ ul {
     border-bottom: 1px solid #219a00;
 }
 
+[href="#bash"]       { background: #ccc svg(bash#fff)       7px / 26px no-repeat }
 [href="#javascript"] { background: #ccc svg(javascript#fff) 7px / 26px no-repeat }
 [href="#perl"]       { background: #ccc svg(perl#fff)       7px / 26px no-repeat }
 [href="#perl6"]      { background: #ccc svg(perl6#fff)      7px / 26px no-repeat }

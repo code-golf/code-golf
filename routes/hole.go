@@ -79,6 +79,7 @@ func hole(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	w.Write([]byte(
 		">" + preambles[hole] +
+			"<a class=tab href=#bash>Bash<span></span></a>" +
 			"<a class=tab href=#javascript>JS<span></span></a>" +
 			"<a class=tab href=#perl>Perl<span></span></a>" +
 			"<a class=tab href=#perl6>Perl 6<span></span></a>" +
