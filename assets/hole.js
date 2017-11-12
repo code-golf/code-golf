@@ -79,7 +79,7 @@ onload = function() {
                 let pre = document.getElementById(prop);
 
                 // Err can be ANSI coloured via HTML.
-                if (prop == Err)
+                if (prop === 'Err')
                     pre.innerHTML = data[prop];
                 else
                     pre.innerText = data[prop];
