@@ -162,7 +162,7 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		             '><td>',
 		             TO_CHAR(
 		                 RANK() OVER (ORDER BY score DESC),
-		                 'FM99"<sup>"th"</sup>"'
+		                 'FM999"<sup>"th"</sup>"'
 		             ),
 		             '<td><img src="//avatars.githubusercontent.com/',
 		             login,

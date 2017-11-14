@@ -35,7 +35,7 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		             '"',
 		             CASE WHEN user_id = $1 THEN ' class=me' END,
 		             '><td>',
-		             TO_CHAR(rank, 'FM99"<sup>"th"</sup>"'),
+		             TO_CHAR(rank, 'FM999"<sup>"th"</sup>"'),
 		             '<td class=',
 		             lang,
 		             '>',
