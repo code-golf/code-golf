@@ -35,6 +35,8 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 	defer r.Body.Close()
 
+	println(in.Code)
+
 	var args []string
 	var out Out
 
