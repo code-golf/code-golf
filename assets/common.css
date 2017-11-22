@@ -270,7 +270,7 @@ ul {
 #home {
     display: grid;
     grid-gap: 10px;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(32ch, 1fr));
 }
 
 #home div {
@@ -314,6 +314,8 @@ ul {
     padding-left: 45px;
     position: relative;
     white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 #home td a:hover {
