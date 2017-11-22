@@ -28,7 +28,7 @@ func init() {
 	Router.GET("/scores/:hole/:lang", middleware.Gzip(scores))
 	Router.GET("/users/:user", middleware.Gzip(user))
 
-	for _, holeName := range preambles {
+	for holeName := range preambles {
 		Router.GET("/"+holeName, middleware.Gzip(hole))
 	}
 

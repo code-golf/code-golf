@@ -7,7 +7,6 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-// FIXME Handle 404
 func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	hole := ps[0].Value
 	lang := ps[1].Value
