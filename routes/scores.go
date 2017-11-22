@@ -3,48 +3,50 @@ package routes
 import (
 	"database/sql"
 	"net/http"
+	"strings"
 
 	"github.com/julienschmidt/httprouter"
 )
 
+var holes = [][]string{
+	{"all", "All Holes"},
+	{"99-bottles-of-beer", "99 Bottles of Beer"},
+	{"arabic-to-roman", "Arabic to Roman"},
+	{"emirp-numbers", "Emirp Numbers"},
+	{"evil-numbers", "Evil Numbers"},
+	{"fibonacci", "Fibonacci"},
+	{"fizz-buzz", "Fizz Buzz"},
+	{"happy-numbers", "Happy Numbers"},
+	{"odious-numbers", "Odious Numbers"},
+	{"pascals-triangle", "Pascal's Triangle"},
+	{"pernicious-numbers", "Pernicious Numbers"},
+	{"prime-numbers", "Prime Numbers"},
+	{"quine", "Quine"},
+	{"roman-to-arabic", "Roman to Arabic"},
+	{"sierpiński-triangle", "Sierpiński Triangle"},
+	{"seven-segment", "Seven Segment"},
+	{"spelling-numbers", "Spelling Numbers"},
+	{"π", "π"},
+	{"φ", "φ"},
+	{"𝑒", "𝑒"},
+}
+
+var langs = [][]string{
+	{"all", "All Langs"},
+	{"bash", "Bash"},
+	{"javascript", "JavaScript"},
+	{"perl", "Perl"},
+	{"perl6", "Perl 6"},
+	{"php", "PHP"},
+	{"python", "Python"},
+	{"ruby", "Ruby"},
+}
+
 func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	hole := ps[0].Value
-	lang := ps[1].Value
+	parts := strings.Split(r.URL.Path, "/")
 
-	// TODO Find a better way to do this.
-	switch hole {
-	case "all",
-		"99-bottles-of-beer",
-		"arabic-to-roman",
-		"emirp-numbers",
-		"evil-numbers",
-		"fibonacci",
-		"fizz-buzz",
-		"happy-numbers",
-		"odious-numbers",
-		"pascals-triangle",
-		"pernicious-numbers",
-		"prime-numbers",
-		"quine",
-		"roman-to-arabic",
-		"seven-segment",
-		"sierpiński-triangle",
-		"spelling-numbers",
-		"π",
-		"φ",
-		"𝑒":
-	default:
-		print404(w, r)
-		return
-	}
-
-	// TODO Find a better way to do this.
-	switch lang {
-	case "all", "bash", "javascript", "perl", "perl6", "php", "python", "ruby":
-	default:
-		print404(w, r)
-		return
-	}
+	hole := parts[2]
+	lang := parts[3]
 
 	userID := printHeader(w, r, 200)
 
@@ -53,28 +55,7 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 			"></script><article id=scores><select id=hole>",
 	))
 
-	for _, v := range [][]string{
-		{"all", "All Holes"},
-		{"99-bottles-of-beer", "99 Bottles of Beer"},
-		{"arabic-to-roman", "Arabic to Roman"},
-		{"emirp-numbers", "Emirp Numbers"},
-		{"evil-numbers", "Evil Numbers"},
-		{"fibonacci", "Fibonacci"},
-		{"fizz-buzz", "Fizz Buzz"},
-		{"happy-numbers", "Happy Numbers"},
-		{"odious-numbers", "Odious Numbers"},
-		{"pascals-triangle", "Pascal's Triangle"},
-		{"pernicious-numbers", "Pernicious Numbers"},
-		{"prime-numbers", "Prime Numbers"},
-		{"quine", "Quine"},
-		{"roman-to-arabic", "Roman to Arabic"},
-		{"sierpiński-triangle", "Sierpiński Triangle"},
-		{"seven-segment", "Seven Segment"},
-		{"spelling-numbers", "Spelling Numbers"},
-		{"π", "π"},
-		{"φ", "φ"},
-		{"𝑒", "𝑒"},
-	} {
+	for _, v := range holes {
 		w.Write([]byte("<option "))
 		if hole == v[0] {
 			w.Write([]byte("selected "))
@@ -84,16 +65,7 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	w.Write([]byte("</select><select id=lang>"))
 
-	for _, v := range [][]string{
-		{"all", "All Langs"},
-		{"bash", "Bash"},
-		{"javascript", "JavaScript"},
-		{"perl", "Perl"},
-		{"perl6", "Perl 6"},
-		{"php", "PHP"},
-		{"python", "Python"},
-		{"ruby", "Ruby"},
-	} {
+	for _, v := range langs {
 		w.Write([]byte("<option "))
 		if lang == v[0] {
 			w.Write([]byte("selected "))
