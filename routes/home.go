@@ -82,7 +82,7 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	defer rows.Close()
 
-	w.Write([]byte("<ul><li>Fast<li>Medium<li>Slow</ul><article id=home>"))
+	w.Write([]byte("<ul><li>Fast<li>Medium<li>Slow</ul><main id=home>"))
 
 	var i uint8
 	var prevHole string

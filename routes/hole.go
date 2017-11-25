@@ -57,7 +57,7 @@ func hole(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 			"<h2>Standard Error</h2><pre id=Err></pre>" +
 			"<h2>Expected Output</h2><pre id=Exp></pre>" +
 			"<h2>Standard Output</h2><pre id=Out></pre>" +
-			"</div></div><article",
+			"</div></div><main",
 	))
 
 	if userID == 0 {

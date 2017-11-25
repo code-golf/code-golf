@@ -52,7 +52,7 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	w.Write([]byte(
 		"<script async src=" + scoresJsPath +
-			"></script><article id=scores><select id=hole>",
+			"></script><main id=scores><select id=hole>",
 	))
 
 	for _, v := range holes {

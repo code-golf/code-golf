@@ -10,13 +10,13 @@
 
 onload = function() {
     let activeEditor;
-    let article = document.getElementsByTagName('article')[0];
     let editors = [];
+    let main = document.getElementsByTagName('main')[0];
 
     for (let lang of ['bash', 'javascript', 'perl', 'perl6', 'php', 'python', 'ruby']) {
-        let code = article.dataset.hasOwnProperty(lang) ? article.dataset[lang] : '';
+        let code = main.dataset.hasOwnProperty(lang) ? main.dataset[lang] : '';
 
-        let editor = CodeMirror(article, {
+        let editor = CodeMirror(main, {
             lineNumbers: true,
             lineWrapping: true,
             mode: { name: lang, startOpen: true },

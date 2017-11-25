@@ -1,12 +1,5 @@
 /* include codemirror.css */
 
-article,
-#status > div {
-    margin: auto;
-    max-width: 80%;
-    padding: 10px;
-}
-
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     font-size: 16px;
@@ -67,6 +60,13 @@ li:nth-child(2)::before {
 
 li:nth-child(3)::before {
     color: #b52b27;
+}
+
+main,
+#status > div {
+    margin: auto;
+    max-width: 80%;
+    padding: 10px;
 }
 
 nav {
@@ -402,7 +402,7 @@ ul {
 [href="#ruby"]       { background: #ccc svg(ruby#fff)       7px / 26px no-repeat }
 
 @media(max-width: 580px) {
-    article,
+    main,
     #status > div {
         max-width: unset;
     }

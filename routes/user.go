@@ -68,7 +68,7 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		print404(w, r)
 	case nil:
 		printHeader(w, r, 200)
-		w.Write([]byte("<link rel=stylesheet href=" + userCssPath + `><article><img src="//avatars.githubusercontent.com/`))
+		w.Write([]byte("<link rel=stylesheet href=" + userCssPath + `><main><img src="//avatars.githubusercontent.com/`))
 		w.Write(html)
 	default:
 		panic(err)
