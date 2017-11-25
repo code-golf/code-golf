@@ -153,8 +153,8 @@ td img {
 }
 
 th {
+    padding-left: 20px;
     text-align: right;
-    width: 150px;
 }
 
 tr:first-child td {
@@ -254,6 +254,10 @@ ul {
 .term-fg31 { color: #e10c02 } /* red */
 .term-fg32 { color: #99ff5e } /* green */
 .term-fg33 { color: #c6c502 } /* yellow */
+
+#about {
+    max-width: 840px;
+}
 
 #alert {
     background: #5cf;
