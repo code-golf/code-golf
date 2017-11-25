@@ -11,7 +11,7 @@
 onload = function() {
     let activeEditor;
     let editors = [];
-    let main = document.getElementsByTagName('main')[0];
+    let main = document.querySelector('main');
 
     for (let lang of ['bash', 'javascript', 'perl', 'perl6', 'php', 'python', 'ruby']) {
         let code = main.dataset.hasOwnProperty(lang) ? main.dataset[lang] : '';
@@ -53,11 +53,11 @@ onload = function() {
             else
                 editor.display.wrapper.style.display = 'none';
 
-        for (let tab of document.getElementsByClassName('tab'))
+        for (let tab of document.querySelectorAll('.tab'))
             tab.classList.toggle('on', tab.href === location.href);
     } )();
 
-    document.getElementsByTagName('input')[0].onclick = function() {
+    document.querySelector('input').onclick = function() {
         fetch('/solution', {
             credentials: 'include',
             method: 'POST',
@@ -67,7 +67,7 @@ onload = function() {
                 Lang: activeEditor.options.mode.name,
             }),
         }).then( res => res.json() ).then( data => {
-            document.getElementById('status').classList
+            document.querySelector('#status').classList
                 .toggle('pass', data.Exp === data.Out && data.Out !== '');
 
             console.log(data.Diff);
@@ -90,7 +90,7 @@ onload = function() {
                         = data[prop] ? '' : 'none';
             }
 
-            document.getElementById('status').style.display = 'block';
+            document.querySelector('#status').style.display = 'block';
         });
     };
 };
