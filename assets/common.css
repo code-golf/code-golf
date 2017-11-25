@@ -398,6 +398,11 @@ ul {
 [href="#ruby"]       { background: #ccc svg(ruby#fff)       7px / 26px no-repeat }
 
 @media(max-width: 580px) {
+    article,
+    #status > div {
+        max-width: unset;
+    }
+
     nav a:nth-child(1),
     nav a:nth-child(2),
     nav a:nth-child(3) {
