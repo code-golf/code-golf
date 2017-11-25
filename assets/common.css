@@ -315,11 +315,11 @@ ul {
 }
 
 #home td:nth-child(3) {
+    overflow: hidden;
     padding-left: 45px;
     position: relative;
-    white-space: nowrap;
     text-overflow: ellipsis;
-    overflow: hidden;
+    white-space: nowrap;
 }
 
 #home td a:hover {
