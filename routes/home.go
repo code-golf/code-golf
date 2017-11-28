@@ -69,9 +69,10 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		         WHEN 'π'                   THEN 13
 		         WHEN 'φ'                   THEN 14
 		         WHEN '𝑒'                   THEN 15
-		         WHEN 'arabic-to-roman'     THEN 16
-		         WHEN 'roman-to-arabic'     THEN 17
-		         WHEN 'spelling-numbers'    THEN 18
+		         WHEN 'τ'                   THEN 16
+		         WHEN 'arabic-to-roman'     THEN 17
+		         WHEN 'roman-to-arabic'     THEN 18
+		         WHEN 'spelling-numbers'    THEN 19
 		         END, row_number`,
 		printHeader(w, r, 200),
 	)
@@ -165,6 +166,8 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 				w.Write([]byte(`Medium><a href=φ>φ`))
 			case "𝑒":
 				w.Write([]byte(`Medium><a href=𝑒>𝑒`))
+			case "τ":
+				w.Write([]byte(`Medium><a href=τ>τ`))
 			}
 
 			w.Write([]byte(`</a><table>`))
