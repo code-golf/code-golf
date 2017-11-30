@@ -51,6 +51,8 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 		// Drop the trailing newline.
 		out.Exp = out.Exp[:len(out.Exp)-1]
+	case "pangram-grep":
+		args, out.Exp = pangramGrep()
 	case "quine":
 		out.Exp = in.Code
 	case "roman-to-arabic":

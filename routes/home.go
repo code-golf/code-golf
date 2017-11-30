@@ -64,15 +64,16 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		         WHEN 'prime-numbers'       THEN 8
 		         WHEN 'quine'               THEN 9
 		         WHEN '99-bottles-of-beer'  THEN 10
-		         WHEN 'seven-segment'       THEN 11
-		         WHEN 'sierpiński-triangle' THEN 12
-		         WHEN 'π'                   THEN 13
-		         WHEN 'φ'                   THEN 14
-		         WHEN '𝑒'                   THEN 15
-		         WHEN 'τ'                   THEN 16
-		         WHEN 'arabic-to-roman'     THEN 17
-		         WHEN 'roman-to-arabic'     THEN 18
-		         WHEN 'spelling-numbers'    THEN 19
+		         WHEN 'pangram-grep'        THEN 11
+		         WHEN 'seven-segment'       THEN 12
+		         WHEN 'sierpiński-triangle' THEN 13
+		         WHEN 'π'                   THEN 14
+		         WHEN 'φ'                   THEN 15
+		         WHEN '𝑒'                   THEN 16
+		         WHEN 'τ'                   THEN 17
+		         WHEN 'arabic-to-roman'     THEN 18
+		         WHEN 'roman-to-arabic'     THEN 19
+		         WHEN 'spelling-numbers'    THEN 20
 		         END, row_number`,
 		printHeader(w, r, 200),
 	)
@@ -144,6 +145,8 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 				w.Write([]byte(`Fast><a href=happy-numbers>Happy Numbers`))
 			case "odious-numbers":
 				w.Write([]byte(`Fast><a href=odious-numbers>Odious Numbers`))
+			case "pangram-grep":
+				w.Write([]byte(`Medium><a href=pangram-grep>Pangram Grep`))
 			case "pascals-triangle":
 				w.Write([]byte(`Fast><a href=pascals-triangle>Pascal's Triangle`))
 			case "pernicious-numbers":

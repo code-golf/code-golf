@@ -18,6 +18,7 @@ var holes = [][]string{
 	{"fizz-buzz", "Fizz Buzz"},
 	{"happy-numbers", "Happy Numbers"},
 	{"odious-numbers", "Odious Numbers"},
+	{"pangram-grep", "Pangram Grep"},
 	{"pascals-triangle", "Pascal's Triangle"},
 	{"pernicious-numbers", "Pernicious Numbers"},
 	{"prime-numbers", "Prime Numbers"},
