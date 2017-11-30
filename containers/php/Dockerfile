@@ -2,9 +2,9 @@ FROM alpine:edge
 
 RUN apk add --no-cache curl gcc make musl-dev
 
-RUN curl -L https://php.net/distributions/php-7.1.11.tar.xz | tar xJf -
+RUN curl -L https://php.net/distributions/php-7.1.12.tar.xz | tar xJf -
 
-RUN cd php-7.1.11  \
+RUN cd php-7.1.12  \
  && ./configure    \
     --disable-all  \
     --disable-ipv6 \
