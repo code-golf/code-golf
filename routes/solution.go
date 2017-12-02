@@ -4,10 +4,8 @@ import (
 	"bufio"
 	"bytes"
 	"encoding/json"
-	"math/rand"
 	"net/http"
 	"os/exec"
-	"strconv"
 	"strings"
 	"syscall"
 	"time"
@@ -42,29 +40,13 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	switch in.Hole {
 	case "arabic-to-roman":
-		for i := 0; i < 20; i++ {
-			i := rand.Intn(3998) + 1 // 1 - 3999 inclusive.
-
-			out.Exp += arabicToRoman(i) + "\n"
-			args = append(args, strconv.Itoa(i))
-		}
-
-		// Drop the trailing newline.
-		out.Exp = out.Exp[:len(out.Exp)-1]
+		args, out.Exp = arabicToRoman(false)
 	case "pangram-grep":
 		args, out.Exp = pangramGrep()
 	case "quine":
 		out.Exp = in.Code
 	case "roman-to-arabic":
-		for i := 0; i < 20; i++ {
-			i := rand.Intn(3998) + 1 // 1 - 3999 inclusive.
-
-			out.Exp += strconv.Itoa(i) + "\n"
-			args = append(args, arabicToRoman(i))
-		}
-
-		// Drop the trailing newline.
-		out.Exp = out.Exp[:len(out.Exp)-1]
+		args, out.Exp = arabicToRoman(true)
 	case "seven-segment":
 		args = make([]string, 1)
 		args[0], out.Exp = sevenSegment()
