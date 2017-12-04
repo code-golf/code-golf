@@ -31,7 +31,9 @@ func printHeader(w http.ResponseWriter, r *http.Request, status int) int {
 	w.Write([]byte(
 		"<!doctype html>" +
 			"<link rel=stylesheet href=" + commonCssPath + ">" +
-			`<meta name=description content="Code golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.">` +
+			`<meta name=description content="` +
+			"Code Golf is a game designed to let you show off your code-fu " +
+			`by solving problems in the least number of characters.">` +
 			"<meta name=theme-color content=#222>" +
 			`<meta name=viewport content="width=device-width">` +
 			"<title>Code-Golf</title>" +

@@ -11,6 +11,14 @@ div a, table a {
     text-decoration: none;
 }
 
+dd {
+    margin: 20px;
+}
+
+dt {
+    font-weight: bold;
+}
+
 header {
     background: #222;
     position: fixed;
