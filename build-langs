@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-#docker pull alpine:edge
+docker pull alpine:edge
 
 cd containers
 
