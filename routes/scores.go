@@ -12,6 +12,7 @@ var holes = [][]string{
 	{"all", "All Holes"},
 	{"99-bottles-of-beer", "99 Bottles of Beer"},
 	{"arabic-to-roman", "Arabic to Roman"},
+	{"christmas-trees", "Christmas Trees"},
 	{"emirp-numbers", "Emirp Numbers"},
 	{"evil-numbers", "Evil Numbers"},
 	{"fibonacci", "Fibonacci"},

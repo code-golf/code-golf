@@ -64,16 +64,17 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		         WHEN 'prime-numbers'       THEN 8
 		         WHEN 'quine'               THEN 9
 		         WHEN '99-bottles-of-beer'  THEN 10
-		         WHEN 'pangram-grep'        THEN 11
-		         WHEN 'seven-segment'       THEN 12
-		         WHEN 'sierpiński-triangle' THEN 13
-		         WHEN 'π'                   THEN 14
-		         WHEN 'φ'                   THEN 15
-		         WHEN '𝑒'                   THEN 16
-		         WHEN 'τ'                   THEN 17
-		         WHEN 'arabic-to-roman'     THEN 18
-		         WHEN 'roman-to-arabic'     THEN 19
-		         WHEN 'spelling-numbers'    THEN 20
+		         WHEN 'christmas-trees'     THEN 11
+		         WHEN 'pangram-grep'        THEN 12
+		         WHEN 'seven-segment'       THEN 13
+		         WHEN 'sierpiński-triangle' THEN 14
+		         WHEN 'π'                   THEN 15
+		         WHEN 'φ'                   THEN 16
+		         WHEN '𝑒'                   THEN 17
+		         WHEN 'τ'                   THEN 18
+		         WHEN 'arabic-to-roman'     THEN 19
+		         WHEN 'roman-to-arabic'     THEN 20
+		         WHEN 'spelling-numbers'    THEN 21
 		         END, row_number`,
 		printHeader(w, r, 200),
 	)
@@ -133,6 +134,8 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 				w.Write([]byte(`Medium><a href=99-bottles-of-beer>99 Bottles of Beer`))
 			case "arabic-to-roman":
 				w.Write([]byte(`Slow><a href=arabic-to-roman>Arabic to Roman`))
+			case "christmas-trees":
+				w.Write([]byte(`Medium><a href=christmas-trees>Christmas Trees`))
 			case "emirp-numbers":
 				w.Write([]byte(`Fast><a href=emirp-numbers>Emirp Numbers`))
 			case "evil-numbers":
