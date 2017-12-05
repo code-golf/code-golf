@@ -86,6 +86,19 @@ func hole(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	} else {
 		var html []byte
 
+		// Fetch the latest successful lang.
+		if err := db.QueryRow(
+			`SELECT CONCAT(' data-lang=', lang)
+			   FROM solutions
+			  WHERE user_id = $1 AND hole = $2`,
+			userID, hole,
+		).Scan(&html); err == nil {
+			w.Write(html)
+		} else if err != sql.ErrNoRows {
+			panic(err)
+		}
+
+		// Fetch all the code per lang.
 		if err := db.QueryRow(
 			`SELECT STRING_AGG(CONCAT(
 			            ' data-',

@@ -9,18 +9,19 @@
 /* include codemirror-ruby.js       */
 
 onload = function() {
+    const hole = decodeURI(location.pathname.slice(1));
+    const main = document.querySelector('main');
+    const data = main.dataset;
+
     let activeEditor;
     let editors = [];
-    let main = document.querySelector('main');
 
     for (let lang of ['bash', 'javascript', 'perl', 'perl6', 'php', 'python', 'ruby']) {
-        let code = main.dataset.hasOwnProperty(lang) ? main.dataset[lang] : '';
-
         let editor = CodeMirror(main, {
             lineNumbers: true,
             lineWrapping: true,
             mode: { name: lang, startOpen: true },
-            value: code,
+            value: data.hasOwnProperty(lang) ? data[lang] : '',
         });
 
         let span = document.querySelector('[href="#' + lang + '"] span');
@@ -40,12 +41,17 @@ onload = function() {
         editors.push(editor);
     }
 
+    // Get the tab from either the URL, local storage, or the latest code.
+    location.hash = location.hash.slice(1) || localStorage.getItem(hole) || data.lang;
+
     ( onhashchange = function() {
         // Kick 'em to Perl 6 if we don't know the chosen language.
         if (!/^#(?:bash|javascript|perl6?|php|python|ruby)$/.exec(location.hash))
             location.hash = 'perl6';
 
         let lang = location.hash.slice(1);
+
+        localStorage.setItem(hole, lang);
 
         for (let editor of editors)
             if (editor.options.mode.name === lang)
@@ -63,7 +69,7 @@ onload = function() {
             method: 'POST',
             body: JSON.stringify({
                 Code: activeEditor.getValue(),
-                Hole: decodeURI(location.pathname.slice(1)),
+                Hole: hole,
                 Lang: activeEditor.options.mode.name,
             }),
         }).then( res => res.json() ).then( data => {
