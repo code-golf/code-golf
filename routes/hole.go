@@ -1,8 +1,8 @@
 package routes
 
 import (
+	"database/sql"
 	"net/http"
-	"strings"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -84,11 +84,23 @@ func hole(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 				"and appear on the leaderboards.</div",
 		))
 	} else {
-		for lang, solution := range getUserSolutions(userID, hole) {
-			w.Write([]byte(
-				" data-" + lang + `="` +
-					strings.Replace(solution, `"`, "&#34;", -1) + `"`,
-			))
+		var html []byte
+
+		if err := db.QueryRow(
+			`SELECT STRING_AGG(CONCAT(
+			            ' data-',
+			            lang,
+			            '="',
+			            REPLACE(code, '"', '&#34;'),
+			            '"'
+			        ), '')
+			   FROM solutions
+			  WHERE user_id = $1 AND hole = $2`,
+			userID, hole,
+		).Scan(&html); err == nil {
+			w.Write(html)
+		} else if err != sql.ErrNoRows {
+			panic(err)
 		}
 	}
 
@@ -103,33 +115,4 @@ func hole(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 			"<a class=tab href=#ruby>Ruby<span></span></a>" +
 			"<input type=submit value=Run>",
 	))
-}
-
-func getUserSolutions(userID int, hole string) map[string]string {
-	rows, err := db.Query(
-		`SELECT code, lang
-		   FROM solutions
-		  WHERE user_id = $1 AND hole = $2`,
-		userID, hole,
-	)
-
-	if err != nil {
-		panic(err)
-	}
-
-	defer rows.Close()
-
-	solutions := make(map[string]string)
-
-	for rows.Next() {
-		var code, lang string
-
-		if err := rows.Scan(&code, &lang); err != nil {
-			panic(err)
-		}
-
-		solutions[lang] = code
-	}
-
-	return solutions
 }
