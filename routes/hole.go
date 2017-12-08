@@ -8,6 +8,26 @@ import (
 )
 
 var preambles = map[string]string{
+	"12-days-of-christmas": `<h1>12 Days of Christmas</h1><p>Print the lyrics to the song <b>The 12 Days of Christmas</b>:</p><blockquote>On the first day of Christmas
+My true love sent to me
+A Partridge in a Pear Tree.
+
+…
+
+On the twelfth day of Christmas
+My true love sent to me
+Twelve Drummers Drumming,
+Eleven Pipers Piping,
+Ten Lords-a-Leaping,
+Nine Ladies Dancing,
+Eight Maids-a-Milking,
+Seven Swans-a-Swimming,
+Six Geese-a-Laying,
+Five Gold Rings,
+Four Calling Birds,
+Three French Hens,
+Two Turtle Doves, and
+A Partridge in a Pear Tree.</blockquote>`,
 	"99-bottles-of-beer": `<h1>99 Bottles of Beer</h1><p>Print the lyrics to the song 99 Bottles of Beer.</p>`,
 	"arabic-to-roman":    `<h1>Arabic to Roman</h1><p>For each arabic numeral argument print the same number in roman numerals.</p>`,
 	"christmas-trees": `<h1>Christmas Trees</h1><p>Print a size ascending range of Christmas trees using asterisks, ranging from size <b>3</b> to size <b>9</b>, each tree separated by a blank line.<p>A size <b>3</b> tree should look like this, with a single centered asterisk for the trunk:<pre>   *

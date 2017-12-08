@@ -10,6 +10,7 @@ import (
 
 var holes = [][]string{
 	{"all", "All Holes"},
+	{"12-days-of-christmas", "12 Days of Christmas"},
 	{"99-bottles-of-beer", "99 Bottles of Beer"},
 	{"arabic-to-roman", "Arabic to Roman"},
 	{"christmas-trees", "Christmas Trees"},
