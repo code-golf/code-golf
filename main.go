@@ -14,8 +14,6 @@ import (
 type handler struct{}
 
 func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	w.Header()["Date"] = nil
-
 	// Catch panics and turn them into 500s.
 	defer func(start time.Time) {
 		fmt.Printf(
