@@ -14,7 +14,6 @@ import (
 type handler struct{}
 
 func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	w.Header()["Content-Language"] = []string{"en"}
 	w.Header()["Date"] = nil
 
 	// Catch panics and turn them into 500s.
@@ -35,6 +34,8 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Host {
 	case "code-golf.io":
+		w.Header()["Content-Language"] = []string{"en"}
+
 		routes.Router.ServeHTTP(w, r)
 	case "raspass.me":
 		raspass(w, r)
