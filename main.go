@@ -38,7 +38,7 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case "raspass.me":
 		raspass(w, r)
 	case "www.code-golf.io", "www.raspass.me":
-		http.Redirect(w, r, "https://"+r.Host[4:]+r.URL.String(), 301)
+		http.Redirect(w, r, "//"+r.Host[4:]+r.URL.String(), 301)
 	}
 }
 
