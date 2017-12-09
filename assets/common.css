@@ -61,7 +61,7 @@ li::before {
     margin: 0 5px;
 }
 
-li:nth-child(1)::before {
+li:first-child::before {
     color: #3d8b3d;
     margin-left: 0;
 }
@@ -98,8 +98,8 @@ nav a {
     text-decoration: none;
 }
 
-nav a:nth-child(1)       { background-image: svg(home#999) }
-nav a:nth-child(1):hover { background-image: svg(home#fff) }
+nav a:first-child        { background-image: svg(home#999) }
+nav a:first-child:hover  { background-image: svg(home#fff) }
 nav a:nth-child(2)       { background-image: svg(question-circle#999) }
 nav a:nth-child(2):hover { background-image: svg(question-circle#fff) }
 nav a:nth-child(3)       { background-image: svg(list-ol#999) }
@@ -140,6 +140,7 @@ select:first-child {
 }
 
 sup {
+    font-size: 10px;
     line-height: 0;
 }
 
@@ -153,6 +154,14 @@ td, th {
     height: 20px;
     line-height: 20px;
     padding: 10px;
+}
+
+td[colspan] {
+    text-align: center;
+}
+
+td a:hover {
+    text-decoration: underline;
 }
 
 td img {
@@ -173,17 +182,9 @@ tr:first-child td {
     border: 0;
 }
 
-tr:nth-child(even) {
-    background: #eee;
-}
-
-tr:nth-child(odd) {
-    background: #fff;
-}
-
-tr.me {
-    background: #5cf;
-}
+tr:nth-child(even) { background: #eee }
+tr:nth-child(odd)  { background: #fff }
+tr.me              { background: #5cf }
 
 ul {
     display: table;
@@ -225,13 +226,45 @@ ul {
     background-color: #d9534f !important;
 }
 
-.bash       { background: svg(bash#000)       7px / 26px no-repeat }
-.javascript { background: svg(javascript#000) 7px / 26px no-repeat }
-.perl       { background: svg(perl#000)       7px / 26px no-repeat }
-.perl6      { background: svg(perl6#000)      7px / 26px no-repeat }
-.php        { background: svg(php#000)        7px / 26px no-repeat }
-.python     { background: svg(python#000)     7px / 26px no-repeat }
-.ruby       { background: svg(ruby#000)       7px / 26px no-repeat }
+.bash       { background: svg(bash#000)       center right 7px / 26px no-repeat }
+.javascript { background: svg(javascript#000) center right 7px / 26px no-repeat }
+.perl       { background: svg(perl#000)       center right 7px / 26px no-repeat }
+.perl6      { background: svg(perl6#000)      center right 7px / 26px no-repeat }
+.php        { background: svg(php#000)        center right 7px / 26px no-repeat }
+.python     { background: svg(python#000)     center right 7px / 26px no-repeat }
+.ruby       { background: svg(ruby#000)       center right 7px / 26px no-repeat }
+
+.scores td {
+    white-space: nowrap;
+}
+
+.scores td:nth-child(2) {
+    overflow: hidden;
+    padding-left: 45px;
+    position: relative;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+.scores td:nth-child(3) {
+    padding-right: 40px;
+    text-align: right;
+}
+
+.scores td:nth-child(3):not([class]) {
+    padding-right: 5px;
+}
+
+.scores td:nth-child(4) {
+    color: #999;
+    font-size: 12px;
+    font-style: italic;
+    padding-left: 0;
+}
+
+.scores td:nth-child(5) {
+    text-align: right;
+}
 
 .tab {
     color: #fff;
@@ -312,30 +345,6 @@ ul {
 
 #home table {
     border: 0;
-    table-layout: fixed;
-    width: 100%;
-}
-
-#home td:nth-child(1) {
-    text-align: center;
-    width: 20px;
-}
-
-#home td:nth-child(2) {
-    padding-left: 45px;
-    width: 40px;
-}
-
-#home td:nth-child(3) {
-    overflow: hidden;
-    padding-left: 45px;
-    position: relative;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-#home td a:hover {
-    text-decoration: underline;
 }
 
 #login       { background-image: svg(sign-in#999) }
@@ -356,31 +365,6 @@ ul {
 
 #scores {
     max-width: 600px;
-}
-
-#scores td {
-    white-space: nowrap;
-}
-
-#scores td:nth-child(2) {
-    max-width: 0;
-    overflow: hidden;
-    padding-left: 45px;
-    position: relative;
-    text-overflow: ellipsis;
-    width: 100%;
-}
-
-#scores td:nth-child(3) {
-    padding-right: 5px;
-    text-align: right;
-}
-
-#scores td:nth-child(4) {
-    color: #999;
-    font-size: 12px;
-    font-style: italic;
-    padding-left: 0;
 }
 
 #status {
@@ -419,7 +403,7 @@ ul {
         max-width: unset;
     }
 
-    nav a:nth-child(1),
+    nav a:first-child,
     nav a:nth-child(2),
     nav a:nth-child(3) {
         overflow: hidden;
@@ -428,7 +412,7 @@ ul {
         width: 0;
     }
 
-    #scores span {
+    .scores td:nth-child(5) {
         display: none;
     }
 }

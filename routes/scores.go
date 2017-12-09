@@ -77,15 +77,15 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		w.Write([]byte("value=" + v[0] + ">" + v[1]))
 	}
 
-	w.Write([]byte("</select><table>"))
+	w.Write([]byte("</select><table class=scores>"))
 
 	var concat, where string
 
 	if hole != "all" {
 		where += " AND hole = '" + hole + "'"
-		concat = "strokes, '<td>(', score, ' point', CASE WHEN score"
+		concat = "' class=', lang, '>', TO_CHAR(strokes, 'FM99,999'), '<td>(', TO_CHAR(score, 'FM9,999'), ' point', CASE WHEN score"
 	} else {
-		concat = "score, '<td>(', count, ' hole', CASE WHEN count"
+		concat = "'>', TO_CHAR(score, 'FM9,999'), '<td>(', count, ' hole', CASE WHEN count"
 	}
 
 	if lang != "all" {
@@ -98,7 +98,8 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		         hole,
 		         submitted,
 		         LENGTH(code) strokes,
-		         user_id
+		         user_id,
+		         lang
 		    FROM solutions
 		   WHERE true`+where+`
 		ORDER BY hole, user_id, LENGTH(code), submitted
@@ -121,14 +122,16 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		         ) score,
 		         strokes,
 		         submitted,
-		         user_id
+		         user_id,
+		         lang
 		    FROM leaderboard
 		), summed_leaderboard AS (
 		  SELECT user_id,
 		         SUM(strokes) strokes,
 		         SUM(score)   score,
 		         COUNT(*),
-		         MAX(submitted)
+		         MAX(submitted),
+		         STRING_AGG(CONCAT(lang), '') lang
 		    FROM scored_leaderboard
 		GROUP BY user_id
 		) SELECT CONCAT(
@@ -145,10 +148,11 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		             login,
 		             '">',
 		             login,
-		             '</a><td>',
+		             '</a><td',
 		             `+concat+` > 1 THEN 's' END,
-		             ')<td>',
-		             TO_CHAR(max, 'YYYY-MM-DD<span> HH24:MI:SS</span>')
+		             ')<td><time datetime=',
+		             TO_CHAR(max, 'YYYY-MM-DD"T"HH24:MI:SS"Z>"FMDD Mon'),
+		             '</time>'
 		         )
 		    FROM summed_leaderboard
 		    JOIN users on user_id = id

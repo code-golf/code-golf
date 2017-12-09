@@ -8,8 +8,9 @@
 /* include codemirror-python.js     */
 /* include codemirror-ruby.js       */
 
+const hole = decodeURI(location.pathname.slice(1));
+
 onload = function() {
-    const hole = decodeURI(location.pathname.slice(1));
     const main = document.querySelector('main');
     const data = main.dataset;
 

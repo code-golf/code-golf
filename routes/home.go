@@ -36,17 +36,16 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		             CASE WHEN user_id = $1 THEN ' class=me' END,
 		             '><td>',
 		             TO_CHAR(rank, 'FM999"<sup>"th"</sup>"'),
-		             '<td class=',
-		             lang,
-		             '>',
-		             strokes,
 		             '<td><img src="//avatars.githubusercontent.com/',
 		             login,
 		             '?s=26"><a href="users/',
 		             login,
 		             '">',
 		             login,
-		             '</a>'
+		             '</a><td class=',
+		             lang,
+		             '>',
+		             strokes
 		         )
 		    FROM ranked_leaderboard
 		    JOIN users on user_id = id
@@ -179,7 +178,7 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 				w.Write([]byte(`Medium><a href=τ>τ`))
 			}
 
-			w.Write([]byte(`</a><table>`))
+			w.Write([]byte(`</a><table class=scores>`))
 
 			prevHole = hole
 		}
