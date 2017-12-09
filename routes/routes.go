@@ -25,16 +25,12 @@ func init() {
 	Router.GET("/callback", callback)
 	Router.GET("/favicon.ico", asset)
 	Router.GET("/logout", middleware.Gzip(logout))
+	Router.GET("/scores", middleware.Gzip(scores))
+	Router.GET("/scores/*criteria", middleware.Gzip(scores))
 	Router.GET("/users/:user", middleware.Gzip(user))
 
-	for _, h := range holes {
-		if h[0] != "all" {
-			Router.GET("/"+h[0], middleware.Gzip(hole))
-		}
-
-		for _, l := range langs {
-			Router.GET("/scores/"+h[0]+"/"+l[0], middleware.Gzip(scores))
-		}
+	for name := range preambles {
+		Router.GET("/" + name, middleware.Gzip(hole))
 	}
 
 	Router.POST("/solution", middleware.Gzip(solution))

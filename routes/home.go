@@ -110,7 +110,7 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 		w.Write([]byte("</table><a href=scores/"))
 		w.Write([]byte(prevHole))
-		w.Write([]byte("/all>FULL LEADERBOARD</a></div>"))
+		w.Write([]byte(">FULL LEADERBOARD</a></div>"))
 	}
 
 	for rows.Next() {

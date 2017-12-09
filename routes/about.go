@@ -19,7 +19,7 @@ func about(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		"<dt>Do I Need to Login to Play?" +
 		"<dd>No. Submitted solutions will be executed and checked without " +
 		"logging in, but nothing will be saved and you won't appear on the " +
-		"<a href=scores/all/all>leaderboards</a>." +
+		"<a href=scores>leaderboards</a>." +
 		"<dt>Which Languages Are Supported?" +
 		"<dd>Currently <a href=//www.gnu.org/software/bash/>Bash</a>, " +
 		"<a href=//developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Introduction_to_the_JavaScript_shell>JavaScript</a>, " +

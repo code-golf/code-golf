@@ -17,10 +17,25 @@ onload = function() {
                        : date.getDate() + ' ' + months[date.getMonth()];
     }
 
+    let checkbox = document.querySelector('input');
     let selects = document.querySelectorAll('select');
 
     for (let select of selects)
         select.onchange = function() {
-            location = '/scores/' + selects[0].value + '/' + selects[1].value;
+            let url = '/scores';
+
+            if (selects[0].value)
+                url += '/' + selects[0].value;
+
+            if (selects[1].value)
+                url += '/' + selects[1].value;
+
+            if (checkbox && checkbox.checked)
+                url += '/show-duplicates';
+
+            location = url;
         };
+
+    if (checkbox)
+        checkbox.onchange = selects[0].onchange;
 };

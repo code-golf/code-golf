@@ -40,7 +40,7 @@ func printHeader(w http.ResponseWriter, r *http.Request, status int) int {
 			"<header><nav>" +
 			"<a href=/>Home</a>" +
 			"<a href=/about>About</a>" +
-			"<a href=/scores/all/all>Scores</a>" +
+			"<a href=/scores>Scores</a>" +
 			logInOrOut +
 			"</nav></header>",
 	))
