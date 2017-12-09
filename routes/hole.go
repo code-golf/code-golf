@@ -8,13 +8,13 @@ import (
 )
 
 var preambles = map[string]string{
-	"12-days-of-christmas": `<h1>12 Days of Christmas</h1><p>Print the lyrics to the song <b>The 12 Days of Christmas</b>:</p><blockquote>On the first day of Christmas
+	"12-days-of-christmas": `<h1>12 Days of Christmas</h1><p>Print the lyrics to the song <b>The 12 Days of Christmas</b>:</p><blockquote>On the First day of Christmas
 My true love sent to me
 A Partridge in a Pear Tree.
 
 …
 
-On the twelfth day of Christmas
+On the Twelfth day of Christmas
 My true love sent to me
 Twelve Drummers Drumming,
 Eleven Pipers Piping,
