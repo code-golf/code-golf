@@ -23,9 +23,9 @@ func printHeader(w http.ResponseWriter, r *http.Request, status int) int {
 	userID, login := cookie.Read(r)
 
 	if userID == 0 {
-		logInOrOut = `<a href="//github.com/login/oauth/authorize?client_id=7f6709819023e9215205&scope=user:email" id=login>Login with GitHub</a>`
+		logInOrOut = `"//github.com/login/oauth/authorize?client_id=7f6709819023e9215205&scope=user:email" id=login>Login with GitHub`
 	} else {
-		logInOrOut = `<a href=/logout id=logout title=Logout></a><a href="/users/` + login + `" id=me><img src="//avatars.githubusercontent.com/` + login + `?s=30">` + login + "</a>"
+		logInOrOut = `/logout id=logout title=Logout></a><a href="/users/` + login + `" id=me><img src="//avatars.githubusercontent.com/` + login + `?s=30">` + login
 	}
 
 	w.Write([]byte(
@@ -41,7 +41,7 @@ func printHeader(w http.ResponseWriter, r *http.Request, status int) int {
 			"<a href=/>Home</a>" +
 			"<a href=/about>About</a>" +
 			"<a href=/scores>Scores</a>" +
-			logInOrOut +
+			"<a href=" + logInOrOut + "</a>" +
 			"</nav></header>",
 	))
 
