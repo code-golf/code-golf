@@ -30,7 +30,7 @@ func init() {
 	Router.GET("/users/:user", middleware.Gzip(user))
 
 	for name := range preambles {
-		Router.GET("/" + name, middleware.Gzip(hole))
+		Router.GET("/"+name, middleware.Gzip(hole))
 	}
 
 	Router.POST("/solution", middleware.Gzip(solution))

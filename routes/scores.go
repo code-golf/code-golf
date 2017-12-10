@@ -10,13 +10,13 @@ import (
 )
 
 var validLangs = map[string]bool{
-	"bash": true,
+	"bash":       true,
 	"javascript": true,
-	"perl": true,
-	"perl6": true,
-	"php": true,
-	"python": true,
-	"ruby": true,
+	"perl":       true,
+	"perl6":      true,
+	"php":        true,
+	"python":     true,
+	"ruby":       true,
 }
 
 func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
@@ -32,7 +32,7 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 		// Shift the first "lang" off if it's actually a hole.
 		if len(langs) > 0 {
-			if _, ok := preambles[ langs[0] ]; ok {
+			if _, ok := preambles[langs[0]]; ok {
 				hole, langs = langs[0], langs[1:]
 
 				url += "/" + hole
@@ -158,7 +158,7 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		table = "scored_leaderboard"
 	} else {
 		distinct = "DISTINCT ON (hole, user_id)"
-		table    = "summed_leaderboard"
+		table = "summed_leaderboard"
 	}
 
 	if len(langs) > 0 {
