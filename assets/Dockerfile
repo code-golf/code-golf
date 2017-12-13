@@ -3,9 +3,9 @@ FROM alpine:edge
 RUN apk add --no-cache bash curl gcc make musl-dev nodejs-npm openjdk8-jre perl
 
 # Brotli
-RUN curl -L https://github.com/google/brotli/archive/v1.0.1.tar.gz \
+RUN curl -L https://github.com/google/brotli/archive/v1.0.2.tar.gz \
   | tar xzf -                                                      \
- && cd brotli-1.0.1                                                \
+ && cd brotli-1.0.2                                                \
  && make -j`nproc`                                                 \
  && mv bin/brotli /usr/bin
 
@@ -16,7 +16,7 @@ RUN curl http://dl.google.com/closure-compiler/compiler-20171203.tar.gz \
  && chmod +r closure-compiler.jar
 
 # CSSO & SVGO
-RUN npm install -g csso-cli@1.1.0 csso@3.3.1 svgo@0.7.2
+RUN npm install -g csso-cli@1.1.0 csso@3.4.0 svgo@1.0.3
 
 # Bashisms FTW.
 RUN ln -snf /bin/bash /bin/sh

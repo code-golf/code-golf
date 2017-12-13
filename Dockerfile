@@ -1,4 +1,4 @@
-FROM debian:stretch
+FROM debian:stretch-slim
 
 ENV CGO_ENABLED=0 GOROOT_BOOTSTRAP=/usr/local/go
 
@@ -11,7 +11,7 @@ RUN curl -sSL https://storage.googleapis.com/golang/go1.10beta1.linux-amd64.tar.
 
 RUN git clone https://go.googlesource.com/go \
  && cd go                                    \
- && git checkout b3a1088                     \
+ && git checkout e7f95b3                     \
  && git config user.email a@b.c              \
  && git fetch https://go.googlesource.com/go refs/changes/97/82997/1 \
  && git cherry-pick FETCH_HEAD               \
@@ -23,7 +23,7 @@ ENV GOCACHE=/tmp GOPATH=/root/go PATH=/go/bin:$PATH
 
 RUN go get -d github.com/buildkite/terminal       \
  && cd /root/go/src/github.com/buildkite/terminal \
- && git checkout -q c8b6c2b
+ && git checkout -q b0f19a1
 
 RUN go get -d github.com/julienschmidt/httprouter       \
  && cd /root/go/src/github.com/julienschmidt/httprouter \
