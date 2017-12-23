@@ -11,7 +11,7 @@ RUN curl -sSL https://storage.googleapis.com/golang/go1.10beta1.linux-amd64.tar.
 
 RUN git clone https://go.googlesource.com/go \
  && cd go                                    \
- && git checkout e7f95b3                     \
+ && git checkout f3f507b                     \
  && git config user.email a@b.c              \
  && git fetch https://go.googlesource.com/go refs/changes/97/82997/1 \
  && git cherry-pick FETCH_HEAD               \
