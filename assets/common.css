@@ -304,10 +304,9 @@ ul {
     top: 28px;
 }
 
-/* https://github.com/buildkite/terminal/blob/master/assets/terminal.css */
-.term-fg31 { color: #e10c02 } /* red */
-.term-fg32 { color: #99ff5e } /* green */
-.term-fg33 { color: #c6c502 } /* yellow */
+.term-fg31 { color: #c00 } /* red */
+.term-fg32 { color: #490 } /* green */
+.term-fg33 { color: #ca0 } /* yellow */
 
 #about {
     max-width: 840px;
