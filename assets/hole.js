@@ -11,8 +11,9 @@
 const hole = decodeURI(location.pathname.slice(1));
 
 onload = function() {
-    const main = document.querySelector('main');
-    const data = main.dataset;
+    const main   = document.querySelector('main');
+    const data   = main.dataset;
+    const status = document.querySelector('#status');
 
     let activeEditor;
     let editors = [];
@@ -25,14 +26,14 @@ onload = function() {
             value: data.hasOwnProperty(lang) ? data[lang] : '',
         });
 
-        let span = document.querySelector('[href="#' + lang + '"] span');
+        let div = document.querySelector('[href="#' + lang + '"] div:nth-child(2)');
 
         let callback = function(editor) {
             let len = [...editor.getValue()].length;
 
-            span.innerText = len === 1 ? '1 char'
-                           : len       ? len + ' chars'
-                           :             'not tried';
+            div.innerText = len === 1 ? '1 char'
+                          : len       ? len + ' chars'
+                          :             'not tried';
         };
 
         callback(editor);
@@ -60,11 +61,14 @@ onload = function() {
             else
                 editor.display.wrapper.style.display = 'none';
 
-        for (let tab of document.querySelectorAll('.tab'))
+        for (let tab of document.querySelectorAll('#tabs a'))
             tab.classList.toggle('on', tab.href === location.href);
     } )();
 
-    document.querySelector('input').onclick = function() {
+    document.querySelector('button').onclick = function() {
+        status.style.display = 'none';
+        this.classList.add('on');
+
         fetch('/solution', {
             credentials: 'include',
             method: 'POST',
@@ -74,8 +78,7 @@ onload = function() {
                 Lang: activeEditor.options.mode.name,
             }),
         }).then( res => res.json() ).then( data => {
-            document.querySelector('#status').classList
-                .toggle('pass', data.Exp === data.Out && data.Out !== '');
+            status.classList.toggle('pass', data.Exp === data.Out && data.Out !== '');
 
             console.log(data.Diff);
 
@@ -97,7 +100,8 @@ onload = function() {
                         = data[prop] ? '' : 'none';
             }
 
-            document.querySelector('#status').style.display = 'block';
+            status.style.display = 'block';
+            this.classList.remove('on');
         });
     };
 };

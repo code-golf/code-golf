@@ -87,6 +87,7 @@ func hole(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	userID := printHeader(w, r, 200)
 
 	w.Write([]byte(
+		"<link rel=stylesheet href=" + holeCssPath + ">" +
 		"<script async src=" + holeJsPath + "></script><div id=status><div>" +
 			"<h2>Program Arguments</h2><pre id=Arg></pre>" +
 			"<h2>Standard Error</h2><pre id=Err></pre>" +
@@ -138,14 +139,14 @@ func hole(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 
 	w.Write([]byte(
-		">" + preambles[hole] +
-			"<a class=tab href=#bash>Bash<span></span></a>" +
-			"<a class=tab href=#javascript>JS<span></span></a>" +
-			"<a class=tab href=#perl>Perl<span></span></a>" +
-			"<a class=tab href=#perl6>Perl 6<span></span></a>" +
-			"<a class=tab href=#php>PHP<span></span></a>" +
-			"<a class=tab href=#python>Python<span></span></a>" +
-			"<a class=tab href=#ruby>Ruby<span></span></a>" +
-			"<input type=submit value=Run>",
+		">" + preambles[hole] + "<button>Run</button><div id=tabs>" +
+			"<a href=#bash><div>Bash</div><div>not tried</div></a>" +
+			"<a href=#javascript><div>JS</div><div>not tried</div></a>" +
+			"<a href=#perl><div>Perl</div><div>not tried</div></a>" +
+			"<a href=#perl6><div>Perl 6</div><div>not tried</div></a>" +
+			"<a href=#php><div>PHP</div><div>not tried</div></a>" +
+			"<a href=#python><div>Python</div><div>not tried</div></a>" +
+			"<a href=#ruby><div>Ruby</div><div>not tried</div></a>" +
+			"</div>",
 	))
 }

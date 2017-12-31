@@ -1,0 +1,146 @@
+/* include codemirror.css */
+
+blockquote {
+    white-space: pre;
+}
+
+button {
+    background: #7c9;
+    border: 1px solid transparent;
+    color: #fff;
+    cursor: pointer;
+    float: right;
+    font-size: 18px;
+    height: 40px;
+    margin-bottom: 10px;
+    padding: 0 9px 0 39px;
+    position: relative;
+}
+
+button:before {
+    background: svg(play#fff) no-repeat;
+    content: '';
+    height: 20px;
+    left: 9px;
+    position: absolute;
+    top: 9px;
+    width: 20px;
+}
+
+button.on:before {
+    animation: spin 2s linear infinite;
+    background-image: svg(spinner#fff);
+}
+
+button:focus {
+    outline: none;
+}
+
+button:hover {
+    background: #2c4;
+}
+
+.CodeMirror {
+    border: 1px solid #ddd;
+    border-top: 0;
+    box-shadow: 0 -4px 0 #222;
+}
+
+.term-fg31 { color: #c00 } /* red */
+.term-fg32 { color: #490 } /* green */
+.term-fg33 { color: #ca0 } /* yellow */
+
+#alert {
+    background: #5cf;
+    padding: 5px;
+    border: 1px solid #222;
+    color: #222;
+    text-align: center;
+}
+
+#alert a {
+    text-decoration: underline;
+}
+
+#status {
+    background: #fdf3fa;
+    border-bottom: 1px solid #e01a22;
+    display: none;
+}
+
+#status pre {
+    background: #fff;
+    border: 1px solid #000;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 14px;
+    margin: 0;
+    max-height: 150px;
+    overflow: auto;
+    padding: 5px;
+    width: 100%;
+}
+
+#status.pass {
+    background: #e8f5e5;
+    border-bottom: 1px solid #219a00;
+}
+
+#tabs {
+    clear: both;
+    display: grid;
+    grid-gap: 6px;
+    grid-template-columns: repeat(7, 1fr);
+    position: relative;
+       -moz-user-select: none;
+        -ms-user-select: none;
+    -webkit-user-select: none;
+            user-select: none;
+}
+
+#tabs a {
+    background: #ccc 9px / 26px no-repeat;
+    font-size: 18px;
+    height: 36px;
+    overflow: hidden;
+    padding: 4px;
+    padding-left: 44px;
+}
+
+#tabs a.on {
+    cursor: default;
+}
+
+#tabs a.on,
+#tabs a:hover {
+    background-color: #222 !important;
+}
+
+#tabs div {
+    color: #fff;
+    white-space: nowrap;
+}
+
+#tabs div:nth-child(2) {
+    font-size: 10px;
+}
+
+#tabs a[href="#bash"]       { background-image: svg(bash#fff)       }
+#tabs a[href="#javascript"] { background-image: svg(javascript#fff) }
+#tabs a[href="#perl"]       { background-image: svg(perl#fff)       }
+#tabs a[href="#perl6"]      { background-image: svg(perl6#fff)      }
+#tabs a[href="#php"]        { background-image: svg(php#fff)        }
+#tabs a[href="#python"]     { background-image: svg(python#fff)     }
+#tabs a[href="#ruby"]       { background-image: svg(ruby#fff)       }
+
+@keyframes spin { 100% { transform: rotate(1turn) } }
+
+@media(max-width: 830px) {
+    #tabs a {
+        background-position: center;
+    }
+
+    #tabs div {
+        display: none;
+    }
+}

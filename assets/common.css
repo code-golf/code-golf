@@ -1,9 +1,3 @@
-/* include codemirror.css */
-
-blockquote {
-    white-space: pre;
-}
-
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     font-size: 16px;
@@ -29,29 +23,6 @@ header {
     top: 0;
     width: 100%;
     z-index: 1;
-}
-
-input {
-    background: #3f8abf;
-    border: 0 solid #326e99;
-    border-bottom-width: 3px;
-    border-radius: 6px;
-    box-shadow: 0 -1px 0 rgba(255, 255, 255, .1) inset;
-    color: #fff;
-    cursor: pointer;
-    float: right;
-    font-size: 18px;
-    font-weight: bold;
-    padding: 7px;
-    transition: background .2s ease-in-out 0s;
-}
-
-input[type=checkbox] {
-    float: left;
-}
-
-input:hover {
-    background: #397cac;
 }
 
 label {
@@ -201,13 +172,6 @@ ul {
     padding: 7px 0 0;
 }
 
-.CodeMirror {
-    border: 1px solid #ddd;
-    border-top: 0;
-    box-shadow: 0 -4px 0 #222;
-    width: 100%;
-}
-
 .Fast {
     background: #3d8b3d;
     border: 1px solid #3d8b3d;
@@ -275,51 +239,6 @@ ul {
     text-align: right;
 }
 
-.tab {
-    color: #fff;
-    display: inline-block;
-    font-size: 18px;
-    height: 40px;
-    margin-right: 4px;
-    padding: 4px;
-    padding-left: 42px;
-    position: relative;
-    text-decoration: none;
-    width: 70px;
-}
-
-.tab.on {
-    cursor: default;
-}
-
-.tab.on,
-.tab:hover {
-    background-color: #222 !important;
-}
-
-.tab span {
-    font-size: 10px;
-    left: 42px;
-    position: absolute;
-    top: 28px;
-}
-
-.term-fg31 { color: #c00 } /* red */
-.term-fg32 { color: #490 } /* green */
-.term-fg33 { color: #ca0 } /* yellow */
-
-#alert {
-    background: #5cf;
-    padding: 5px;
-    border: 1px solid #222;
-    color: #222;
-    text-align: center;
-}
-
-#alert a {
-    text-decoration: underline;
-}
-
 #home {
     display: grid;
     grid-gap: 10px;
@@ -371,38 +290,6 @@ ul {
 #scores {
     max-width: 600px;
 }
-
-#status {
-    background: #fdf3fa;
-    border-bottom: 1px solid #e01a22;
-    display: none;
-}
-
-#status pre {
-    background: #fff;
-    border: 1px solid #000;
-    border-radius: 5px;
-    box-sizing: border-box;
-    font-size: 14px;
-    margin: 0;
-    max-height: 150px;
-    overflow: auto;
-    padding: 5px;
-    width: 100%;
-}
-
-#status.pass {
-    background: #e8f5e5;
-    border-bottom: 1px solid #219a00;
-}
-
-[href="#bash"]       { background: #ccc svg(bash#fff)       7px / 26px no-repeat }
-[href="#javascript"] { background: #ccc svg(javascript#fff) 7px / 26px no-repeat }
-[href="#perl"]       { background: #ccc svg(perl#fff)       7px / 26px no-repeat }
-[href="#perl6"]      { background: #ccc svg(perl6#fff)      7px / 26px no-repeat }
-[href="#php"]        { background: #ccc svg(php#fff)        7px / 26px no-repeat }
-[href="#python"]     { background: #ccc svg(python#fff)     7px / 26px no-repeat }
-[href="#ruby"]       { background: #ccc svg(ruby#fff)       7px / 26px no-repeat }
 
 @media(max-width: 580px) {
     nav a:first-child,
