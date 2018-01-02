@@ -5,7 +5,7 @@ import "math/rand"
 func pangramGrep() (args []string, out string) {
 	all := [][]string{
 		{"1", "A large fawn jumped quickly over white zinc boxes."},
-		{"1", "A wizard’s job is to vex chumps quickly in fog."},
+		{"1", "A wizard's job is to vex chumps quickly in fog."},
 		{"1", "Bright vixens jump; dozy fowl quack."},
 		{"0", "Five or six big jet planes zoomed past the tower."},
 		{"1", "Fix problem quickly with galvanized jets."},
