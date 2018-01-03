@@ -1,20 +1,28 @@
 'use strict';
 
-const thisYear = new Date().getFullYear();
-const today    = new Date().toDateString();
+const nowDate  = new Date().toDateString();
+const nowMonth = new Date().getMonth();
+const nowYear  = new Date().getFullYear();
 const months   = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 onload = function() {
     for (let time of document.querySelectorAll('time')) {
         let date = new Date(time.getAttribute('datetime'));
 
-        time.setAttribute('title', date.toString());
+        time.setAttribute('title', date);
 
-        time.innerText = date.getFullYear() != thisYear
-                       ? date.getFullYear()
-                       : date.toDateString() == today
-                       ? ('0'+date.getHours()).slice(-2) + ':' + ('0'+date.getMinutes()).slice(-2)
-                       : date.getDate() + ' ' + months[date.getMonth()];
+        // If it happened today, show the time, zero padded.
+        if (date.toDateString() == nowDate)
+            time.innerText =
+                ('0'+date.getHours()  ).slice(-2) + ':' +
+                ('0'+date.getMinutes()).slice(-2);
+        // Else show the date if it's within 11 months, otherwise the year.
+        else {
+            let diff =
+                (nowYear - date.getFullYear()) * 12 + nowMonth - date.getMonth();
+
+            time.innerText = diff < 11 ? date.getDate() + ' ' + months[date.getMonth()] : date.getFullYear();
+        }
     }
 
     let checkbox = document.querySelector('input');
