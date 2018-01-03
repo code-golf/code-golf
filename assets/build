@@ -6,6 +6,8 @@ use warnings;
 use Digest::MD5 'md5_base64';
 use IPC::Open2 'open2';
 
+system qw(svgo -q -f assets/includes);
+
 open my $fh, '>', 'routes/assets.go';
 
 print $fh <<GO;
@@ -111,7 +113,6 @@ sub svg {
 
     local $_ = slurp("assets/includes/$file.svg");
 
-    chomp;
     s/FILL/$fill/g;
     s/#/%23/g;
     s/"/'/g;
