@@ -90,7 +90,7 @@ button:hover {
     clear: both;
     display: grid;
     grid-gap: 6px;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(8, 1fr);
     position: relative;
        -moz-user-select: none;
         -ms-user-select: none;
@@ -127,6 +127,7 @@ button:hover {
 
 #tabs a[href="#bash"]       { background-image: svg(bash#fff)       }
 #tabs a[href="#javascript"] { background-image: svg(javascript#fff) }
+#tabs a[href="#lua"]        { background-image: svg(lua#fff)        }
 #tabs a[href="#perl"]       { background-image: svg(perl#fff)       }
 #tabs a[href="#perl6"]      { background-image: svg(perl6#fff)      }
 #tabs a[href="#php"]        { background-image: svg(php#fff)        }
@@ -135,7 +136,9 @@ button:hover {
 
 @keyframes spin { 100% { transform: rotate(1turn) } }
 
-@media(max-width: 830px) {
+@media(max-width: 450px) { #tabs { grid-template-columns: repeat(4, 1fr) } }
+
+@media(max-width: 970px) {
     #tabs a {
         background-position: center;
     }

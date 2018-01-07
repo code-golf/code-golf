@@ -12,6 +12,7 @@ import (
 var validLangs = map[string]bool{
 	"bash":       true,
 	"javascript": true,
+	"lua":        true,
 	"perl":       true,
 	"perl6":      true,
 	"php":        true,
@@ -120,6 +121,7 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	for _, v := range [][]string{
 		{"bash", "Bash"},
 		{"javascript", "JavaScript"},
+		{"lua", "Lua"},
 		{"perl", "Perl"},
 		{"perl6", "Perl 6"},
 		{"php", "PHP"},

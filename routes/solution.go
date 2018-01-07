@@ -124,9 +124,6 @@ func runCode(hole, lang, code string, args []string) (string, string) {
 		cmd.Args = []string{"/usr/bin/bash", "-s", "-"}
 	case "javascript":
 		cmd.Args = []string{"/usr/bin/js", "-f", "-", "--"}
-	// The perls seems to show -- in @ARGV :-(
-	case "perl":
-		cmd.Args = []string{"/usr/bin/perl", "-"}
 	case "perl6":
 		cmd.Args = []string{
 			"/usr/bin/moar",
@@ -138,12 +135,9 @@ func runCode(hole, lang, code string, args []string) (string, string) {
 		}
 	case "php":
 		cmd.Args = []string{"/usr/bin/php", "--"}
-	// Ruby also seem to show -- in ARGV :-(
-	// TODO Try special casing just the langs that need --
-	case "ruby":
-		cmd.Args = []string{"/usr/bin/ruby", "-"}
+	// Lua, Perl, Python, and Ruby are all sane.
 	default:
-		cmd.Args = []string{"/usr/bin/" + lang, "-", "--"}
+		cmd.Args = []string{"/usr/bin/" + lang, "-"}
 	}
 
 	cmd.Args = append(cmd.Args, args...)

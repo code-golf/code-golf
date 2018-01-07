@@ -201,6 +201,7 @@ ul {
 
 .bash       { background: svg(bash#000)       center right 7px / 26px no-repeat }
 .javascript { background: svg(javascript#000) center right 7px / 26px no-repeat }
+.lua        { background: svg(lua#000)        center right 7px / 26px no-repeat }
 .perl       { background: svg(perl#000)       center right 7px / 26px no-repeat }
 .perl6      { background: svg(perl6#000)      center right 7px / 26px no-repeat }
 .php        { background: svg(php#000)        center right 7px / 26px no-repeat }

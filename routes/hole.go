@@ -142,6 +142,7 @@ func hole(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		">" + preambles[hole] + "<button>Run</button><div id=tabs>" +
 			"<a href=#bash><div>Bash</div><div>not tried</div></a>" +
 			"<a href=#javascript><div>JS</div><div>not tried</div></a>" +
+			"<a href=#lua><div>Lua</div><div>not tried</div></a>" +
 			"<a href=#perl><div>Perl</div><div>not tried</div></a>" +
 			"<a href=#perl6><div>Perl 6</div><div>not tried</div></a>" +
 			"<a href=#php><div>PHP</div><div>not tried</div></a>" +
