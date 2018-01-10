@@ -52,29 +52,30 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		   WHERE row_number < 6
 		      OR user_id = $1
 		ORDER BY CASE hole
-		         WHEN 'emirp-numbers'        THEN 0
-		         WHEN 'evil-numbers'         THEN 1
-		         WHEN 'fibonacci'            THEN 2
-		         WHEN 'fizz-buzz'            THEN 3
-		         WHEN 'happy-numbers'        THEN 4
-		         WHEN 'odious-numbers'       THEN 5
-		         WHEN 'pascals-triangle'     THEN 6
-		         WHEN 'pernicious-numbers'   THEN 7
-		         WHEN 'prime-numbers'        THEN 8
-		         WHEN 'quine'                THEN 9
-		         WHEN '12-days-of-christmas' THEN 10
-		         WHEN '99-bottles-of-beer'   THEN 11
-		         WHEN 'christmas-trees'      THEN 12
-		         WHEN 'pangram-grep'         THEN 13
-		         WHEN 'seven-segment'        THEN 14
-		         WHEN 'sierpiński-triangle'  THEN 15
-		         WHEN 'π'                    THEN 16
-		         WHEN 'φ'                    THEN 17
-		         WHEN '𝑒'                    THEN 18
-		         WHEN 'τ'                    THEN 19
-		         WHEN 'arabic-to-roman'      THEN 20
-		         WHEN 'roman-to-arabic'      THEN 21
-		         WHEN 'spelling-numbers'     THEN 22
+		         WHEN 'divisors'             THEN 0
+		         WHEN 'emirp-numbers'        THEN 1
+		         WHEN 'evil-numbers'         THEN 2
+		         WHEN 'fibonacci'            THEN 3
+		         WHEN 'fizz-buzz'            THEN 4
+		         WHEN 'happy-numbers'        THEN 5
+		         WHEN 'odious-numbers'       THEN 6
+		         WHEN 'pascals-triangle'     THEN 7
+		         WHEN 'pernicious-numbers'   THEN 8
+		         WHEN 'prime-numbers'        THEN 9
+		         WHEN 'quine'                THEN 10
+		         WHEN '12-days-of-christmas' THEN 11
+		         WHEN '99-bottles-of-beer'   THEN 12
+		         WHEN 'christmas-trees'      THEN 13
+		         WHEN 'pangram-grep'         THEN 14
+		         WHEN 'seven-segment'        THEN 15
+		         WHEN 'sierpiński-triangle'  THEN 16
+		         WHEN 'π'                    THEN 17
+		         WHEN 'φ'                    THEN 18
+		         WHEN '𝑒'                    THEN 19
+		         WHEN 'τ'                    THEN 20
+		         WHEN 'arabic-to-roman'      THEN 21
+		         WHEN 'roman-to-arabic'      THEN 22
+		         WHEN 'spelling-numbers'     THEN 23
 		         END, row_number`,
 		printHeader(w, r, 200),
 	)
@@ -138,6 +139,8 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 				w.Write([]byte(`Slow><a href=arabic-to-roman>Arabic to Roman`))
 			case "christmas-trees":
 				w.Write([]byte(`Medium><a href=christmas-trees>Christmas Trees`))
+			case "divisors":
+				w.Write([]byte(`Fast><a href=divisors>Divisors`))
 			case "emirp-numbers":
 				w.Write([]byte(`Fast><a href=emirp-numbers>Emirp Numbers`))
 			case "evil-numbers":

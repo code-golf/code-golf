@@ -89,6 +89,7 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		{"99-bottles-of-beer", "99 Bottles of Beer"},
 		{"arabic-to-roman", "Arabic to Roman"},
 		{"christmas-trees", "Christmas Trees"},
+		{"divisors", "Divisors"},
 		{"emirp-numbers", "Emirp Numbers"},
 		{"evil-numbers", "Evil Numbers"},
 		{"fibonacci", "Fibonacci"},
