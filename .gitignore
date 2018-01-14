@@ -1,5 +1,1 @@
-/app
-/containers/*/rootfs/
-/routes/assets.go
-/routes/versions.go
-/run-container
+*
