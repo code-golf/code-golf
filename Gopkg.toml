@@ -1,0 +1,15 @@
+[[constraint]]
+  branch = "master"
+  name = "github.com/buildkite/terminal"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/julienschmidt/httprouter"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/lib/pq"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/pmezard/go-difflib"
