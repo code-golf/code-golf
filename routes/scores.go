@@ -9,6 +9,33 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
+var holes = [][]string{
+	{"𝑒", "𝑒"},
+	{"12-days-of-christmas", "12 Days of Christmas"},
+	{"99-bottles-of-beer", "99 Bottles of Beer"},
+	{"arabic-to-roman", "Arabic to Roman"},
+	{"christmas-trees", "Christmas Trees"},
+	{"divisors", "Divisors"},
+	{"emirp-numbers", "Emirp Numbers"},
+	{"evil-numbers", "Evil Numbers"},
+	{"fibonacci", "Fibonacci"},
+	{"fizz-buzz", "Fizz Buzz"},
+	{"happy-numbers", "Happy Numbers"},
+	{"odious-numbers", "Odious Numbers"},
+	{"pangram-grep", "Pangram Grep"},
+	{"pascals-triangle", "Pascal's Triangle"},
+	{"pernicious-numbers", "Pernicious Numbers"},
+	{"prime-numbers", "Prime Numbers"},
+	{"quine", "Quine"},
+	{"roman-to-arabic", "Roman to Arabic"},
+	{"seven-segment", "Seven Segment"},
+	{"sierpiński-triangle", "Sierpiński Triangle"},
+	{"spelling-numbers", "Spelling Numbers"},
+	{"π", "π"},
+	{"τ", "τ"},
+	{"φ", "φ"},
+}
+
 var validLangs = map[string]bool{
 	"bash":       true,
 	"javascript": true,
@@ -84,32 +111,7 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 			"></script><main id=scores><select id=hole><option value>All Holes",
 	))
 
-	for _, v := range [][]string{
-		{"12-days-of-christmas", "12 Days of Christmas"},
-		{"99-bottles-of-beer", "99 Bottles of Beer"},
-		{"arabic-to-roman", "Arabic to Roman"},
-		{"christmas-trees", "Christmas Trees"},
-		{"divisors", "Divisors"},
-		{"emirp-numbers", "Emirp Numbers"},
-		{"evil-numbers", "Evil Numbers"},
-		{"fibonacci", "Fibonacci"},
-		{"fizz-buzz", "Fizz Buzz"},
-		{"happy-numbers", "Happy Numbers"},
-		{"odious-numbers", "Odious Numbers"},
-		{"pangram-grep", "Pangram Grep"},
-		{"pascals-triangle", "Pascal's Triangle"},
-		{"pernicious-numbers", "Pernicious Numbers"},
-		{"prime-numbers", "Prime Numbers"},
-		{"quine", "Quine"},
-		{"roman-to-arabic", "Roman to Arabic"},
-		{"sierpiński-triangle", "Sierpiński Triangle"},
-		{"seven-segment", "Seven Segment"},
-		{"spelling-numbers", "Spelling Numbers"},
-		{"π", "π"},
-		{"φ", "φ"},
-		{"𝑒", "𝑒"},
-		{"τ", "τ"},
-	} {
+	for _, v := range holes {
 		w.Write([]byte("<option "))
 		if hole == v[0] {
 			w.Write([]byte("selected "))
