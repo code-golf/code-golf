@@ -18,6 +18,7 @@ for name in Bash JavaScript Lua Perl Perl\ 6 PHP Python Ruby; do
     # Remove some crap from version strings.
     ver=${ver#Lua }
     ver=${ver#This is }
+    ver=${ver#JavaScript-C}
     ver=${ver//$'\n'/ }
     ver=${ver%.}
     ver=${ver%  Copyright (C) 1994-2017 Lua.org, PUC-Rio}
