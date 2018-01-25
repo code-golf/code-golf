@@ -1,15 +1,20 @@
-[[constraint]]
-  branch = "master"
-  name = "github.com/buildkite/terminal"
+[prune]
+  go-tests        = true
+  non-go          = true
+  unused-packages = true
 
 [[constraint]]
   branch = "master"
-  name = "github.com/julienschmidt/httprouter"
+  name   = "github.com/buildkite/terminal"
 
 [[constraint]]
   branch = "master"
-  name = "github.com/lib/pq"
+  name   = "github.com/julienschmidt/httprouter"
 
 [[constraint]]
   branch = "master"
-  name = "github.com/pmezard/go-difflib"
+  name   = "github.com/lib/pq"
+
+[[constraint]]
+  branch = "master"
+  name   = "github.com/pmezard/go-difflib"
