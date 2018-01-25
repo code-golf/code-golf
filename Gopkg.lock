@@ -20,7 +20,7 @@
     ".",
     "oid"
   ]
-  revision = "83612a56d3dd153a94a629cd64925371c9adad78"
+  revision = "19c8e9ad00952ce0c64489b60e8df88bb16dd514"
 
 [[projects]]
   name = "github.com/pmezard/go-difflib"
