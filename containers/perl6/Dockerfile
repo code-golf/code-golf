@@ -2,7 +2,7 @@ FROM alpine:edge
 
 RUN apk add --no-cache curl gcc git linux-headers make musl-dev perl
 
-RUN curl -L https://github.com/rakudo/rakudo/archive/5c22833.tar.gz \
+RUN curl -L https://github.com/rakudo/rakudo/archive/2018.01.tar.gz \
    | tar xzf -
 
 RUN cd rakudo-*                                               \
