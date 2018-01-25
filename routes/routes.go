@@ -25,6 +25,7 @@ func init() {
 	Router.GET("/callback", callback)
 	Router.GET("/favicon.ico", asset)
 	Router.GET("/logout", middleware.Gzip(logout))
+	Router.GET("/robots.txt", robots)
 	Router.GET("/scores", middleware.Gzip(scores))
 	Router.GET("/scores/*criteria", middleware.Gzip(scores))
 	Router.GET("/users/:user", middleware.Gzip(user))
@@ -36,4 +37,8 @@ func init() {
 	Router.POST("/solution", middleware.Gzip(solution))
 
 	Router.NotFound = http.HandlerFunc(print404)
+}
+
+func robots(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
+	w.WriteHeader(http.StatusNoContent)
 }
