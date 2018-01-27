@@ -14,6 +14,7 @@ var holes = [][]string{
 	{"12-days-of-christmas", "12 Days of Christmas"},
 	{"99-bottles-of-beer", "99 Bottles of Beer"},
 	{"arabic-to-roman", "Arabic to Roman"},
+	{"brainfuck", "Brainfuck"},
 	{"christmas-trees", "Christmas Trees"},
 	{"divisors", "Divisors"},
 	{"emirp-numbers", "Emirp Numbers"},

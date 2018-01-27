@@ -41,6 +41,8 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	switch in.Hole {
 	case "arabic-to-roman":
 		args, out.Exp = arabicToRoman(false)
+	case "brainfuck":
+		args, out.Exp = brainfuck()
 	case "pangram-grep":
 		args, out.Exp = pangramGrep()
 	case "quine":

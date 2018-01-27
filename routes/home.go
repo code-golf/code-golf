@@ -74,8 +74,9 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		         WHEN '𝑒'                    THEN 19
 		         WHEN 'τ'                    THEN 20
 		         WHEN 'arabic-to-roman'      THEN 21
-		         WHEN 'roman-to-arabic'      THEN 22
-		         WHEN 'spelling-numbers'     THEN 23
+		         WHEN 'brainfuck'            THEN 22
+		         WHEN 'roman-to-arabic'      THEN 23
+		         WHEN 'spelling-numbers'     THEN 24
 		         END, row_number`,
 		printHeader(w, r, 200),
 	)
@@ -137,6 +138,8 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 				w.Write([]byte(`Medium><a href=99-bottles-of-beer>99 Bottles of Beer`))
 			case "arabic-to-roman":
 				w.Write([]byte(`Slow><a href=arabic-to-roman>Arabic to Roman`))
+			case "brainfuck":
+				w.Write([]byte(`Slow><a href=brainfuck>Brainfuck`))
 			case "christmas-trees":
 				w.Write([]byte(`Medium><a href=christmas-trees>Christmas Trees`))
 			case "divisors":

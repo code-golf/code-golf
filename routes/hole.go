@@ -30,6 +30,7 @@ Two Turtle Doves, and
 A Partridge in a Pear Tree.</blockquote>`,
 	"99-bottles-of-beer": `<h1>99 Bottles of Beer</h1><p>Print the lyrics to the song 99 Bottles of Beer.</p>`,
 	"arabic-to-roman":    `<h1>Arabic to Roman</h1><p>For each arabic numeral argument print the same number in roman numerals.</p>`,
+	"brainfuck":          `<h1>Brainfuck</h1><p>Brainfuck is a minimalistic esoteric programming language created by Urban Müller in 1993.<p>Assuming an infinitely large array, the entire Brainfuck alphabet matches the following pseudocode:<table><tr><th>&gt;<td>ptr++<tr><th>&lt;<td>ptr--<tr><th>+<td>array[ptr]++<tr><th>-<td>array[ptr]--<tr><th>.<td>print(chr(array[ptr]))<tr><th>[<td>while(array[ptr]){<tr><th>]<td>}</table><p>Write a program that will receive various Brainfuck programs as arguments and execute each program in turn.</p>`,
 	"christmas-trees": `<h1>Christmas Trees</h1><p>Print a size ascending range of Christmas trees using asterisks, ranging from size <b>3</b> to size <b>9</b>, each tree separated by a blank line.<p>A size <b>3</b> tree should look like this, with a single centered asterisk for the trunk:<pre>   *
   ***
  *****
