@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/jraspass/code-golf/routes"
+	"golang.org/x/crypto/acme/autocert"
 )
 
 type handler struct{}
@@ -42,30 +43,20 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func mustLoadX509KeyPair(certFile, keyFile string) tls.Certificate {
-	if cert, err := tls.LoadX509KeyPair(certFile, keyFile); err != nil {
-		panic(err)
-	} else {
-		return cert
-	}
-}
-
 func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
+
+	certManager := autocert.Manager{
+		Cache:      autocert.DirCache("certs"),
+		Prompt:     autocert.AcceptTOS,
+		HostPolicy: autocert.HostWhitelist(
+			"code-golf.io", "raspass.me", "www.code-golf.io", "www.raspass.me",
+		),
+	}
 
 	server := &http.Server{
 		Handler: &handler{},
 		TLSConfig: &tls.Config{
-			Certificates: []tls.Certificate{
-				mustLoadX509KeyPair(
-					"/home/jraspass/dehydrated/certs/code-golf.io/fullchain.pem",
-					"/home/jraspass/dehydrated/certs/code-golf.io/privkey.pem",
-				),
-				mustLoadX509KeyPair(
-					"/home/jraspass/dehydrated/certs/raspass.me/fullchain.pem",
-					"/home/jraspass/dehydrated/certs/raspass.me/privkey.pem",
-				),
-			},
 			CipherSuites: []uint16{
 				tls.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
 				tls.TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,
@@ -73,6 +64,7 @@ func main() {
 				tls.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, // HTTP/2-required.
 			},
 			CurvePreferences:         []tls.CurveID{tls.CurveP256, tls.X25519},
+			GetCertificate:           certManager.GetCertificate,
 			MinVersion:               tls.VersionTLS12,
 			PreferServerCipherSuites: true,
 		},
@@ -82,15 +74,8 @@ func main() {
 
 	println("Listening…")
 
-	// Redirect HTTP to HTTPS.
-	go func() {
-		panic(http.ListenAndServe(
-			":80",
-			http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				http.Redirect(w, r, "https://"+r.Host+r.URL.String(), 301)
-			}),
-		))
-	}()
+	// Redirect HTTP to HTTPS and handle ACME challenges.
+	go func() { panic(http.ListenAndServe(":80", certManager.HTTPHandler(nil))) }()
 
 	// Serve HTTPS.
 	panic(server.ListenAndServeTLS("", ""))
