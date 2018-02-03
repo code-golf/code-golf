@@ -20,7 +20,7 @@
     ".",
     "oid"
   ]
-  revision = "19c8e9ad00952ce0c64489b60e8df88bb16dd514"
+  revision = "88edab0803230a3898347e77b474f8c1820a1f20"
 
 [[projects]]
   name = "github.com/pmezard/go-difflib"
@@ -40,6 +40,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "1d8ebd457231d4392e2a5564fd0bb430b4593d785341ad51ac936f3b90b2acc4"
+  inputs-digest = "9abeb0d020e2270ca351b9b310948ac843fd001d42f4cd58ae7e69a57eeea11e"
   solver-name = "gps-cdcl"
   solver-version = 1
