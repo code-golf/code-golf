@@ -1,0 +1,48 @@
+main {
+    display: grid;
+    font-size: 21px;
+    grid-gap: 10px;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+main > div {
+    background: #eee;
+    border-radius: 10px;
+    position: relative;
+    text-align: center;
+}
+
+/* Small Oblongs */
+main > div:nth-child(1),
+main > div:nth-child(2),
+main > div:nth-child(3),
+main > div:nth-child(4) {
+    padding-bottom: 50%;
+}
+
+/* Squares */
+main > div:nth-child(5),
+main > div:nth-child(6) {
+    grid-row-end: span 2;
+    padding-bottom: 100%;
+}
+
+/* Big Oblongs */
+main > div:nth-child(7) {
+    grid-column-end: span 2;
+    grid-row-end: span 2;
+    padding-bottom: 50%;
+}
+
+main > div > div {
+    bottom: 0;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+@media(max-width: 580px) { main { grid-template-columns: 1fr 1fr } }

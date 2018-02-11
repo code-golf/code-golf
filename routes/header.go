@@ -8,12 +8,16 @@ import (
 
 func printHeader(w http.ResponseWriter, r *http.Request, status int) int {
 	w.Header()["Content-Type"] = []string{"text/html;charset=utf8"}
-	w.Header()["Content-Security-Policy"] = []string{
-		"connect-src 'self';" +
-			"default-src 'none';" +
-			"img-src 'self' data: https://avatars.githubusercontent.com;" +
-			"script-src 'self';" +
-			"style-src 'self'",
+
+	// FIXME
+	if r.URL.Path != "/stats" {
+		w.Header()["Content-Security-Policy"] = []string{
+			"connect-src 'self';" +
+				"default-src 'none';" +
+				"img-src 'self' data: https://avatars.githubusercontent.com;" +
+				"script-src 'self';" +
+				"style-src 'self'",
+		}
 	}
 
 	w.WriteHeader(status)
@@ -41,6 +45,7 @@ func printHeader(w http.ResponseWriter, r *http.Request, status int) int {
 			"<a href=/>Home</a>" +
 			"<a href=/about>About</a>" +
 			"<a href=/scores>Scores</a>" +
+			"<a href=/stats>Stats</a>" +
 			"<a href=" + logInOrOut + "</a>" +
 			"</nav></header>",
 	))

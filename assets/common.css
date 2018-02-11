@@ -84,8 +84,10 @@ nav a:nth-child(2)       { background-image: svg(question-circle#999) }
 nav a:nth-child(2):hover { background-image: svg(question-circle#fff) }
 nav a:nth-child(3)       { background-image: svg(list-ol#999) }
 nav a:nth-child(3):hover { background-image: svg(list-ol#fff) }
+nav a:nth-child(4)       { background-image: svg(chart-area#999) }
+nav a:nth-child(4):hover { background-image: svg(chart-area#fff) }
 
-nav a:nth-child(4), nav a:nth-child(5) {
+nav a:nth-child(5), nav a:nth-child(6) {
     float: right;
 }
 
@@ -293,9 +295,10 @@ ul {
 }
 
 @media(max-width: 580px) {
-    nav a:first-child,
+    nav a:nth-child(1),
     nav a:nth-child(2),
-    nav a:nth-child(3) {
+    nav a:nth-child(3),
+    nav a:nth-child(4) {
         overflow: hidden;
         padding-right: 0;
         vertical-align: bottom;

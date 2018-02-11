@@ -28,6 +28,7 @@ func init() {
 	Router.GET("/robots.txt", robots)
 	Router.GET("/scores", middleware.Gzip(scores))
 	Router.GET("/scores/*criteria", middleware.Gzip(scores))
+	Router.GET("/stats", middleware.Gzip(stats))
 	Router.GET("/users/:user", middleware.Gzip(user))
 
 	for name := range preambles {
