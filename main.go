@@ -47,8 +47,8 @@ func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
 
 	certManager := autocert.Manager{
-		Cache:      autocert.DirCache("certs"),
-		Prompt:     autocert.AcceptTOS,
+		Cache:  autocert.DirCache("certs"),
+		Prompt: autocert.AcceptTOS,
 		HostPolicy: autocert.HostWhitelist(
 			"code-golf.io", "raspass.me", "www.code-golf.io", "www.raspass.me",
 		),
