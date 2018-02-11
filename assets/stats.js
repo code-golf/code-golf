@@ -69,11 +69,13 @@ onload = function() {
             tooltips: {
                 callbacks: {
                     label: function(item) {
-                        // HACK https://stackoverflow.com/questions/46856815
-                        if (item.xLabel == 1.05)
-                            item.xLabel = 1;
+                        let { xLabel: x, yLabel: y } = item;
 
-                        return item.yLabel + ' golfers have passed ' + item.xLabel + ' holes';
+                        // HACK https://stackoverflow.com/questions/46856815
+                        if (x == 1.05)
+                            x = 1;
+
+                        return `${y} golfer${y == 1 ? ' has' : 's have'} passed ${x} hole${x == 1 ? '' : 's'}`;
                     },
                     title: function() {},
                 },
