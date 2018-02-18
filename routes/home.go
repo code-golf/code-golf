@@ -66,17 +66,19 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		         WHEN '12-days-of-christmas' THEN 11
 		         WHEN '99-bottles-of-beer'   THEN 12
 		         WHEN 'christmas-trees'      THEN 13
-		         WHEN 'pangram-grep'         THEN 14
-		         WHEN 'seven-segment'        THEN 15
-		         WHEN 'sierpiński-triangle'  THEN 16
-		         WHEN 'π'                    THEN 17
-		         WHEN 'φ'                    THEN 18
-		         WHEN '𝑒'                    THEN 19
-		         WHEN 'τ'                    THEN 20
-		         WHEN 'arabic-to-roman'      THEN 21
-		         WHEN 'brainfuck'            THEN 22
-		         WHEN 'roman-to-arabic'      THEN 23
-		         WHEN 'spelling-numbers'     THEN 24
+		         WHEN 'morse-decoder'        THEN 14
+		         WHEN 'morse-encoder'        THEN 15
+		         WHEN 'pangram-grep'         THEN 16
+		         WHEN 'seven-segment'        THEN 17
+		         WHEN 'sierpiński-triangle'  THEN 18
+		         WHEN 'π'                    THEN 19
+		         WHEN 'φ'                    THEN 20
+		         WHEN '𝑒'                    THEN 21
+		         WHEN 'τ'                    THEN 22
+		         WHEN 'arabic-to-roman'      THEN 23
+		         WHEN 'brainfuck'            THEN 24
+		         WHEN 'roman-to-arabic'      THEN 25
+		         WHEN 'spelling-numbers'     THEN 26
 		         END, row_number`,
 		printHeader(w, r, 200),
 	)
@@ -142,6 +144,10 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 				w.Write([]byte(`Slow><a href=brainfuck>Brainfuck`))
 			case "christmas-trees":
 				w.Write([]byte(`Medium><a href=christmas-trees>Christmas Trees`))
+			case "morse-decoder":
+				w.Write([]byte(`Medium><a href=morse-decoder>Morse Decoder`))
+			case "morse-encoder":
+				w.Write([]byte(`Medium><a href=morse-encoder>Morse Encoder`))
 			case "divisors":
 				w.Write([]byte(`Fast><a href=divisors>Divisors`))
 			case "emirp-numbers":

@@ -22,6 +22,8 @@ var holes = [][]string{
 	{"fibonacci", "Fibonacci"},
 	{"fizz-buzz", "Fizz Buzz"},
 	{"happy-numbers", "Happy Numbers"},
+	{"morse-decoder", "Morse Decoder"},
+	{"morse-encoder", "Morse Encoder"},
 	{"odious-numbers", "Odious Numbers"},
 	{"pangram-grep", "Pangram Grep"},
 	{"pascals-triangle", "Pascal's Triangle"},

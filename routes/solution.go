@@ -43,6 +43,8 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		args, out.Exp = arabicToRoman(false)
 	case "brainfuck":
 		args, out.Exp = brainfuck()
+	case "morse-decoder", "morse-encoder":
+		args, out.Exp = morse(in.Hole == "morse-decoder")
 	case "pangram-grep":
 		args, out.Exp = pangramGrep()
 	case "quine":

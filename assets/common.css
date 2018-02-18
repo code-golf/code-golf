@@ -30,27 +30,27 @@ label {
     margin-bottom: 10px;
 }
 
-li {
+ul li {
     display: inline;
 }
 
-li::before {
+ul li::before {
     content: '■';
     font-size: 24px;
     line-height: 24px;
     margin: 0 5px;
 }
 
-li:first-child::before {
+ul li:first-child::before {
     color: #3d8b3d;
     margin-left: 0;
 }
 
-li:nth-child(2)::before {
+ul li:nth-child(2)::before {
     color: #df8a13;
 }
 
-li:nth-child(3)::before {
+ul li:nth-child(3)::before {
     color: #b52b27;
 }
 
@@ -105,7 +105,8 @@ nav img {
 }
 
 pre,
-.CodeMirror {
+.CodeMirror,
+#hole table {
     font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
 }
 
