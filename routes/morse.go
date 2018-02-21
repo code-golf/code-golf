@@ -64,7 +64,7 @@ func morse(reverse bool) (args []string, out string) {
 		args[0] += string(digit)
 	}
 
-	args[0] += " BROWN FOXES JUMP OVER THE "
+	args[0] += " QUICK BROWN FOXES JUMP OVER THE "
 
 	for _, digit := range digits[5:] {
 		args[0] += string(digit)
