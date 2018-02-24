@@ -34,7 +34,7 @@ tr {
     background: none !important;
 }
 
-#matrix a {
+#matrix td a {
     align-items: center;
     color: #222;
     display: flex;
@@ -43,7 +43,7 @@ tr {
     width: 100%;
 }
 
-#matrix a:hover {
+#matrix td a:hover {
     background: #222;
     color: #fff;
     text-decoration: none;
@@ -53,6 +53,16 @@ tr {
     border: 1px solid #222;
     padding: 0;
     width: 40px;
+}
+
+#matrix th a {
+    color: #fff;
+}
+
+#matrix th a:hover {
+    color: #222;
+    background: #fff;
+    text-decoration: none;
 }
 
 #matrix th {

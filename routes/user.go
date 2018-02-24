@@ -107,7 +107,7 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	}
 
 	for _, h := range holes {
-		w.Write([]byte("<tr><th>" + h[1]))
+		w.Write([]byte("<tr><th><a href=/" + hole + ">" + h[1] + "</a>"))
 
 		for _, l := range []string{
 			"bash", "javascript", "lua", "perl", "perl6", "php", "python", "ruby",
