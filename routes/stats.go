@@ -17,7 +17,9 @@ func stats(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	w.Write([]byte(
 		"<link rel=stylesheet href=" + statsCssPath + "><script async src=" +
-			statsJsPath + "></script><main><div><div><span>",
+			statsJsPath + "></script><main><div><div><span>" + noLangs +
+			"</span>Languages</div></div><div><div><span>" + noHoles +
+			"</span>Holes</div></div><div><div><span>",
 	))
 
 	if err := db.QueryRow("SELECT COUNT(DISTINCT user_id) FROM solutions").Scan(&data); err != nil {
@@ -26,11 +28,7 @@ func stats(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		w.Write(data)
 	}
 
-	w.Write([]byte(
-		"</span>Golfers</div></div><div><div><span>" + noHoles +
-			"</span>Holes</div></div><div><div><span>" + noLangs +
-			"</span>Languages</div></div><div><div><span>",
-	))
+	w.Write([]byte("</span>Golfers</div></div><div><div><span>"))
 
 	if err := db.QueryRow("SELECT TO_CHAR(COUNT(*), 'FM9,999') FROM solutions").Scan(&data); err != nil {
 		panic(err)
