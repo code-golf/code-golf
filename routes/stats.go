@@ -39,7 +39,7 @@ func stats(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 
 	// FIXME Make "Holes by Difficulty" data dynamic.
-	w.Write([]byte("</span>Solutions</div></div><div><div><canvas data-data=[11,10,4]></canvas></div></div><div><div><canvas data-data="))
+	w.Write([]byte("</span>Solutions</div></div><div><div><canvas data-data=[11,12,4]></canvas></div></div><div><div><canvas data-data="))
 
 	if err := db.QueryRow(
 		`SELECT ARRAY_TO_JSON(ARRAY_AGG(count))
