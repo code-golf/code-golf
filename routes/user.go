@@ -123,7 +123,7 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 					}
 				}
 			} else {
-				w.Write([]byte("<a href=/" + h[0] + "#" + l + ">▶</a>"))
+				w.Write([]byte("<a href=/" + h[0] + "#" + l + "></a>"))
 			}
 		}
 	}

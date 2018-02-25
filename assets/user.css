@@ -34,7 +34,12 @@ tr {
     background: none !important;
 }
 
-#matrix td a {
+#matrix {
+    table-layout: fixed;
+    width: 100%;
+}
+
+#matrix a {
     align-items: center;
     color: #222;
     display: flex;
@@ -43,40 +48,62 @@ tr {
     width: 100%;
 }
 
+#matrix td {
+    border: 1px solid #222;
+    height: 40px;
+    padding: 0;
+    width: 40px;
+}
+
+#matrix td a {
+    background: #b4ecb4;
+}
+
+#matrix td a:empty {
+    background: #ff6961;
+}
+
+#matrix td a:empty::before {
+    content: "▶";
+}
+
 #matrix td a:hover {
     background: #222;
     color: #fff;
     text-decoration: none;
 }
 
-#matrix td {
+#matrix th {
+    background: #ddd center / 30px no-repeat;
     border: 1px solid #222;
+    color: #fff;
+    height: 40px;
     padding: 0;
-    width: 40px;
 }
 
 #matrix th a {
-    color: #fff;
-}
-
-#matrix th a:hover {
-    color: #222;
-    background: #fff;
-    text-decoration: none;
-}
-
-#matrix th {
-    background: #222 center / 30px no-repeat;
-    border: 1px solid #222;
-    color: #fff;
+    box-sizing: border-box;
+    justify-content: flex-end;
     padding: 10px;
 }
 
-#matrix tr:first-child th:nth-child(2) { background-image: svg(bash#fff)       }
-#matrix tr:first-child th:nth-child(3) { background-image: svg(javascript#fff) }
-#matrix tr:first-child th:nth-child(4) { background-image: svg(lua#fff)        }
-#matrix tr:first-child th:nth-child(5) { background-image: svg(perl#fff)       }
-#matrix tr:first-child th:nth-child(6) { background-image: svg(perl6#fff)      }
-#matrix tr:first-child th:nth-child(7) { background-image: svg(php#fff)        }
-#matrix tr:first-child th:nth-child(8) { background-image: svg(python#fff)     }
-#matrix tr:first-child th:nth-child(9) { background-image: svg(ruby#fff)       }
+#matrix th a:hover {
+    background: #222;
+    color: #fff;
+    text-decoration: none;
+}
+
+#matrix tr:first-child th:first-child {
+    border: 0;
+    visibility: hidden;
+    width: 220px;
+}
+
+#matrix tr:first-child th:nth-child(2) { background-image: svg(bash#222)       }
+#matrix tr:first-child th:nth-child(3) { background-image: svg(javascript#222) }
+#matrix tr:first-child th:nth-child(4) { background-image: svg(lua#222)        }
+#matrix tr:first-child th:nth-child(5) { background-image: svg(perl#222)       }
+#matrix tr:first-child th:nth-child(6) { background-image: svg(perl6#222)      }
+#matrix tr:first-child th:nth-child(7) { background-image: svg(php#222)        }
+#matrix tr:first-child th:nth-child(8) { background-image: svg(python#222)     }
+#matrix tr:first-child th:nth-child(9) { background-image: svg(ruby#222)       }
