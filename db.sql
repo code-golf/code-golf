@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.5
--- Dumped by pg_dump version 9.6.5
+-- Dumped from database version 10.2
+-- Dumped by pg_dump version 10.2
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -35,15 +35,33 @@ SET search_path = public, pg_catalog;
 --
 
 CREATE TYPE hole AS ENUM (
+    '12-days-of-christmas',
     '99-bottles-of-beer',
+    'arabic-to-roman',
+    'brainfuck',
+    'christmas-trees',
+    'divisors',
+    'emirp-numbers',
+    'evil-numbers',
     'fibonacci',
     'fizz-buzz',
-    'arabic-to-roman-numerals',
+    'happy-numbers',
+    'morse-decoder',
+    'morse-encoder',
+    'odious-numbers',
+    'pangram-grep',
     'pascals-triangle',
+    'pernicious-numbers',
+    'prime-numbers',
+    'quine',
+    'roman-to-arabic',
     'seven-segment',
+    'sierpiński-triangle',
     'spelling-numbers',
-    'e',
-    'π'
+    'π',
+    'τ',
+    'φ',
+    '𝑒'
 );
 
 
@@ -54,7 +72,9 @@ ALTER TYPE hole OWNER TO jraspass;
 --
 
 CREATE TYPE lang AS ENUM (
+    'bash',
     'javascript',
+    'lua',
     'perl',
     'perl6',
     'php',
@@ -113,14 +133,14 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: solutions; Type: ACL; Schema: public; Owner: jraspass
+-- Name: TABLE solutions; Type: ACL; Schema: public; Owner: jraspass
 --
 
 GRANT SELECT,INSERT,UPDATE ON TABLE solutions TO code_golf;
 
 
 --
--- Name: users; Type: ACL; Schema: public; Owner: jraspass
+-- Name: TABLE users; Type: ACL; Schema: public; Owner: jraspass
 --
 
 GRANT SELECT,INSERT,UPDATE ON TABLE users TO code_golf;

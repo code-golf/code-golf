@@ -10,7 +10,6 @@ import (
 )
 
 var holes = [][]string{
-	{"𝑒", "𝑒"},
 	{"12-days-of-christmas", "12 Days of Christmas"},
 	{"99-bottles-of-beer", "99 Bottles of Beer"},
 	{"arabic-to-roman", "Arabic to Roman"},
@@ -37,6 +36,7 @@ var holes = [][]string{
 	{"π", "π"},
 	{"τ", "τ"},
 	{"φ", "φ"},
+	{"𝑒", "𝑒"},
 }
 
 var validLangs = map[string]bool{

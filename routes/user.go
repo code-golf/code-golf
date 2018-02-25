@@ -86,7 +86,7 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		    FROM matrix
 		    JOIN users ON id = user_id
 		   WHERE login = $1
-		ORDER BY CAST(hole AS text), lang`,
+		ORDER BY hole, lang`,
 		user,
 	)
 
