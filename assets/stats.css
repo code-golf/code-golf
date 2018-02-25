@@ -12,11 +12,16 @@ main > div {
     text-align: center;
 }
 
+main > div::before {
+    content: '';
+    display: block;
+}
+
 /* Small Oblongs */
-main > div:nth-child(1),
-main > div:nth-child(2),
-main > div:nth-child(3),
-main > div:nth-child(4) {
+main > div:nth-child(1)::before,
+main > div:nth-child(2)::before,
+main > div:nth-child(3)::before,
+main > div:nth-child(4)::before {
     padding-bottom: 50%;
 }
 
@@ -24,6 +29,10 @@ main > div:nth-child(4) {
 main > div:nth-child(5),
 main > div:nth-child(6) {
     grid-row-end: span 2;
+}
+
+main > div:nth-child(5)::before,
+main > div:nth-child(6)::before {
     padding-bottom: 100%;
 }
 
@@ -31,6 +40,9 @@ main > div:nth-child(6) {
 main > div:nth-child(7) {
     grid-column-end: span 2;
     grid-row-end: span 2;
+}
+
+main > div:nth-child(7)::before {
     padding-bottom: 50%;
 }
 
