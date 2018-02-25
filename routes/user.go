@@ -56,9 +56,13 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		             login,
 		             '</h1><table><tr><td>',
 		             TO_CHAR(sum, 'FM9,999'),
-		             '<td>points<tr><td>',
+		             '<td>point',
+		             CASE WHEN sum > 1 THEN 's' END,
+		             '<tr><td>',
 		             count,
-		             '<td>holes</table><hr>'
+		             '<td>hole',
+		             CASE WHEN count > 1 THEN 's' END,
+		             '</table><hr>'
 		         )
 		    FROM summed_leaderboard
 		    JOIN users ON id = user_id
