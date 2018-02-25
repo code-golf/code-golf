@@ -98,7 +98,8 @@ CREATE TABLE solutions (
     user_id integer NOT NULL,
     hole hole NOT NULL,
     lang lang NOT NULL,
-    code text NOT NULL
+    code text NOT NULL,
+    failing boolean DEFAULT false NOT NULL
 );
 
 

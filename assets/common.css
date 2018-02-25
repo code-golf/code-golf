@@ -4,6 +4,36 @@ body {
     margin: 50px 0 0;
 }
 
+body > ul {
+    display: table;
+    margin: auto;
+    padding: 7px 0 0;
+}
+
+body > ul li {
+    display: inline;
+}
+
+body > ul li::before {
+    content: '■';
+    font-size: 24px;
+    line-height: 24px;
+    margin: 0 5px;
+}
+
+body > ul li:first-child::before {
+    color: #3d8b3d;
+    margin-left: 0;
+}
+
+body > ul li:nth-child(2)::before {
+    color: #df8a13;
+}
+
+body > ul li:nth-child(3)::before {
+    color: #b52b27;
+}
+
 div a, table a {
     color: #000;
     text-decoration: none;
@@ -28,30 +58,6 @@ header {
 label {
     display: block;
     margin-bottom: 10px;
-}
-
-ul li {
-    display: inline;
-}
-
-ul li::before {
-    content: '■';
-    font-size: 24px;
-    line-height: 24px;
-    margin: 0 5px;
-}
-
-ul li:first-child::before {
-    color: #3d8b3d;
-    margin-left: 0;
-}
-
-ul li:nth-child(2)::before {
-    color: #df8a13;
-}
-
-ul li:nth-child(3)::before {
-    color: #b52b27;
 }
 
 main,
@@ -169,12 +175,6 @@ tr:nth-child(even) { background: #eee }
 tr:nth-child(odd)  { background: #fff }
 tr.me              { background: #5cf }
 
-ul {
-    display: table;
-    margin: auto;
-    padding: 7px 0 0;
-}
-
 .Fast {
     background: #3d8b3d;
     border: 1px solid #3d8b3d;
@@ -241,6 +241,17 @@ ul {
 
 .scores td:nth-child(5) {
     text-align: right;
+}
+
+#failing {
+    background: #ff6961;
+    border: 1px solid #b52b27;
+    margin: 60px 10px 0;
+    padding: 10px;
+}
+
+#failing a:hover {
+    text-decoration: underline;
 }
 
 #home {

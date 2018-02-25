@@ -9,6 +9,49 @@ import (
 func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	w.Header()["Strict-Transport-Security"] = []string{"max-age=31536000;includeSubDomains;preload"}
 
+	userID := printHeader(w, r, 200)
+
+	if userID != 0 {
+		rows, err := db.Query(
+			"SELECT hole, lang FROM solutions WHERE failing AND user_id = $1",
+			userID,
+		)
+
+		if err != nil {
+			panic(err)
+		}
+
+		defer rows.Close()
+
+		looped := false
+
+		for rows.Next() {
+			if !looped {
+				w.Write([]byte("<div id=failing>The following of your solutions have been marked as failing and no longer contribute to scoring, please update them to pass:<ul>"))
+				looped = true
+			}
+
+			var hole, lang string
+
+			if err := rows.Scan(&hole, &lang); err != nil {
+				panic(err)
+			}
+
+			w.Write([]byte(
+				"<li><a href=" + hole + "#" + lang + ">" + holeMap[hole] +
+					" (" + langMap[lang] + ")</a>",
+			))
+		}
+
+		if looped {
+			w.Write([]byte("</ul></div>"))
+		}
+
+		if err := rows.Err(); err != nil {
+			panic(err)
+		}
+	}
+
 	rows, err := db.Query(
 		`WITH leaderboard AS (
 		  SELECT DISTINCT ON (hole, user_id)
@@ -18,6 +61,7 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		         submitted,
 		         user_id
 		    FROM solutions
+		   WHERE NOT failing
 		ORDER BY hole, user_id, LENGTH(code), submitted
 		), ranked_leaderboard AS (
 		  SELECT hole,
@@ -80,7 +124,7 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		         WHEN 'roman-to-arabic'      THEN 25
 		         WHEN 'spelling-numbers'     THEN 26
 		         END, row_number`,
-		printHeader(w, r, 200),
+		userID,
 	)
 
 	if err != nil {

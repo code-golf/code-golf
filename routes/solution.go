@@ -80,13 +80,14 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		    INSERT INTO solutions
 		         VALUES (NOW(), $1, $2, $3, $4)
 		    ON CONFLICT ON CONSTRAINT solutions_pkey
-		  DO UPDATE SET submitted = CASE
-		                    WHEN LENGTH($4) < LENGTH(solutions.code)
+		  DO UPDATE SET failing = false,
+		                submitted = CASE
+		                    WHEN solutions.failing OR LENGTH($4) < LENGTH(solutions.code)
 		                    THEN NOW()
 		                    ELSE solutions.submitted
 		                END,
 		                code = CASE
-		                    WHEN LENGTH($4) > LENGTH(solutions.code)
+		                    WHEN LENGTH($4) > LENGTH(solutions.code) AND NOT solutions.failing
 		                    THEN solutions.code
 		                    ELSE $4
 		                END

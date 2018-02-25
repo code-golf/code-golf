@@ -9,6 +9,48 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
+// TODO I really need to move all the hole stuff into one map struct
+var holeMap = map[string]string{
+	"12-days-of-christmas": "12 Days of Christmas",
+	"99-bottles-of-beer":   "99 Bottles of Beer",
+	"arabic-to-roman":      "Arabic to Roman",
+	"brainfuck":            "Brainfuck",
+	"christmas-trees":      "Christmas Trees",
+	"divisors":             "Divisors",
+	"emirp-numbers":        "Emirp Numbers",
+	"evil-numbers":         "Evil Numbers",
+	"fibonacci":            "Fibonacci",
+	"fizz-buzz":            "Fizz Buzz",
+	"happy-numbers":        "Happy Numbers",
+	"morse-decoder":        "Morse Decoder",
+	"morse-encoder":        "Morse Encoder",
+	"odious-numbers":       "Odious Numbers",
+	"pangram-grep":         "Pangram Grep",
+	"pascals-triangle":     "Pascal's Triangle",
+	"pernicious-numbers":   "Pernicious Numbers",
+	"prime-numbers":        "Prime Numbers",
+	"quine":                "Quine",
+	"roman-to-arabic":      "Roman to Arabic",
+	"seven-segment":        "Seven Segment",
+	"sierpiński-triangle":  "Sierpiński Triangle",
+	"spelling-numbers":     "Spelling Numbers",
+	"π":                    "π",
+	"τ":                    "τ",
+	"φ":                    "φ",
+	"𝑒":                    "𝑒",
+}
+
+var langMap = map[string]string{
+	"bash":       "Bash",
+	"javascript": "JavaScipt",
+	"lua":        "Lua",
+	"perl":       "Perl",
+	"perl6":      "Perl 6",
+	"php":        "PHP",
+	"python":     "Python",
+	"ruby":       "Ruby",
+}
+
 var holes = [][]string{
 	{"12-days-of-christmas", "12 Days of Christmas"},
 	{"99-bottles-of-beer", "99 Bottles of Beer"},
@@ -182,7 +224,7 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		         user_id,
 		         lang
 		    FROM solutions
-		   WHERE true`+where+`
+		   WHERE NOT failing`+where+`
 		ORDER BY hole, user_id, LENGTH(code), submitted
 		), scored_leaderboard AS (
 		  SELECT hole,

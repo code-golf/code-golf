@@ -20,6 +20,7 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		         LENGTH(code) strokes,
 		         user_id
 		    FROM solutions
+		   WHERE NOT failing
 		ORDER BY hole, user_id, LENGTH(code), submitted
 		), scored_leaderboard AS (
 		  SELECT hole,
