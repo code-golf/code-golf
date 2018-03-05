@@ -11,7 +11,7 @@ RUN curl -SSL https://dl.google.com/go/go1.10.linux-amd64.tar.gz \
 
 RUN git clone https://go.googlesource.com/go \
  && cd go                                    \
- && git checkout f356e83                     \
+ && git checkout d3946f7                     \
  && cd src                                   \
  && ./make.bash                              \
  && chmod +rx /root
