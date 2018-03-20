@@ -1,8 +1,8 @@
 #!/bin/sh -e
 
-rsync -achP --delete                                          \
+rsync -achPe 'ssh -p 1988' --delete                           \
     app code-golf.service containers raspass.me run-container \
-    raspass.me:code-golf
+    code-golf.io:code-golf
 
-ssh raspass.me \
+ssh -p 1988 code-golf.io \
     'sudo systemctl daemon-reload && sudo systemctl restart code-golf'
