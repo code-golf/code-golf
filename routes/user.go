@@ -101,7 +101,7 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	defer rows.Close()
 
-	w.Write([]byte("<table id=matrix><tr><th><th><th><th><th><th><th><th><th>"))
+	w.Write([]byte("<table id=matrix><tr><th><th><th><th><th><th><th><th><th><th>"))
 
 	var hole, lang, rank string
 
@@ -115,7 +115,7 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		w.Write([]byte("<tr><th><a href=/" + h[0] + ">" + h[1] + "</a>"))
 
 		for _, l := range []string{
-			"bash", "javascript", "lua", "perl", "perl6", "php", "python", "ruby",
+			"bash", "javascript", "lisp", "lua", "perl", "perl6", "php", "python", "ruby",
 		} {
 			w.Write([]byte("<td>"))
 

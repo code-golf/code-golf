@@ -4,7 +4,7 @@ docker pull alpine:edge
 
 cd containers
 
-for name in Bash JavaScript Lua Perl Perl\ 6 PHP Python Ruby; do
+for name in Bash JavaScript Lisp Lua Perl Perl\ 6 PHP Python Ruby; do
     lang=${name,,}      # lowercase
     lang=${lang// /}    # trim space
 
@@ -22,6 +22,7 @@ for name in Bash JavaScript Lua Perl Perl\ 6 PHP Python Ruby; do
     ver=${ver//$'\n'/ }
     ver=${ver%.}
     ver=${ver%  Copyright (C) 1994-2017 Lua.org, PUC-Rio}
+    ver=${ver/ (built on*/}
 
     html+="<tr><th>$name<td>$ver"
 

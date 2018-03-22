@@ -18,7 +18,7 @@ onload = function() {
     let activeEditor;
     let editors = [];
 
-    for (let lang of ['bash', 'javascript', 'lua', 'perl', 'perl6', 'php', 'python', 'ruby']) {
+    for (let lang of ['bash', 'javascript', 'lisp', 'lua', 'perl', 'perl6', 'php', 'python', 'ruby']) {
         let editor = CodeMirror(main, {
             lineNumbers: true,
             lineWrapping: true,
@@ -48,7 +48,7 @@ onload = function() {
 
     ( onhashchange = function() {
         // Kick 'em to Perl 6 if we don't know the chosen language.
-        if (!/^#(?:bash|javascript|lua|perl6?|php|python|ruby)$/.exec(location.hash))
+        if (!/^#(?:bash|javascript|lisp|lua|perl6?|php|python|ruby)$/.exec(location.hash))
             location.hash = 'perl6';
 
         let lang = location.hash.slice(1);

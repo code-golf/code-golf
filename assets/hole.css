@@ -89,8 +89,7 @@ button:hover {
 #tabs {
     clear: both;
     display: grid;
-    grid-gap: 6px;
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(9, 1fr);
     position: relative;
        -moz-user-select: none;
         -ms-user-select: none;
@@ -127,6 +126,7 @@ button:hover {
 
 #tabs a[href="#bash"]       { background-image: svg(bash#fff)       }
 #tabs a[href="#javascript"] { background-image: svg(javascript#fff) }
+#tabs a[href="#lisp"]       { background-image: svg(lisp#fff)       }
 #tabs a[href="#lua"]        { background-image: svg(lua#fff)        }
 #tabs a[href="#perl"]       { background-image: svg(perl#fff)       }
 #tabs a[href="#perl6"]      { background-image: svg(perl6#fff)      }
