@@ -87,6 +87,7 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		           lang,
 		           RANK() OVER (PARTITION BY hole, lang ORDER BY LENGTH(code))
 		     FROM solutions
+		    WHERE NOT failing
 		) SELECT hole, lang, TO_CHAR(rank, 'FM999"<sup>"th"</sup>"')
 		    FROM matrix
 		    JOIN users ON id = user_id
