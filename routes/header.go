@@ -7,14 +7,23 @@ import (
 )
 
 func printHeader(w http.ResponseWriter, r *http.Request, status int) int {
-	w.Header()["Content-Type"] = []string{"text/html;charset=utf8"}
+	header := w.Header()
+
+	header["Content-Language"] = []string{"en"}
+	header["Content-Type"] = []string{"text/html;charset=utf8"}
+	header["Referrer-Policy"] = []string{"no-referrer"}
+	header["X-Content-Type-Options"] = []string{"nosniff"}
+	header["X-Frame-Options"] = []string{"DENY"}
 
 	// FIXME
 	if r.URL.Path != "/stats" {
-		w.Header()["Content-Security-Policy"] = []string{
-			"connect-src 'self';" +
+		header["Content-Security-Policy"] = []string{
+			"base-uri 'none';" +
+				"connect-src 'self';" +
 				"default-src 'none';" +
-				"img-src 'self' data: https://avatars.githubusercontent.com;" +
+				"form-action 'none';" +
+				"frame-ancestors 'none';" +
+				"img-src 'self' data: avatars.githubusercontent.com;" +
 				"script-src 'self';" +
 				"style-src 'self'",
 		}

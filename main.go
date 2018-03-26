@@ -33,8 +33,6 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Host {
 	case "code-golf.io":
-		w.Header()["Content-Language"] = []string{"en"}
-
 		routes.Router.ServeHTTP(w, r)
 	case "raspass.me":
 		raspass(w, r)
