@@ -26,7 +26,7 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		  SELECT hole,
 		         ROUND(
 		             (
-		                 (SELECT COUNT(distinct user_id) FROM solutions WHERE hole = l.hole)
+		                 COUNT(*) OVER (PARTITION BY hole)
 		                 -
 		                 RANK() OVER (PARTITION BY hole ORDER BY strokes)
 		                 +
@@ -36,7 +36,7 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		             (
 		                 100.0
 		                 /
-		                 (SELECT COUNT(distinct user_id) FROM solutions WHERE hole = l.hole)
+		                 COUNT(*) OVER (PARTITION BY hole)
 		             )
 		         ) score,
 		         strokes,
