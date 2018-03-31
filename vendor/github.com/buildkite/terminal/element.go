@@ -2,6 +2,7 @@ package terminal
 
 import (
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"mime"
 	"strings"
@@ -22,6 +23,8 @@ type element struct {
 	width       string
 	elementType int
 }
+
+var errUnsupportedElementSequence = errors.New("Unsupported element sequence")
 
 func (i *element) asHTML() string {
 	if i.elementType == ELEMENT_LINK {
@@ -59,6 +62,9 @@ func parseElementSequence(sequence string) (*element, error) {
 
 	arguments, elementType, content, err := splitAndVerifyElementSequence(sequence)
 	if err != nil {
+		if err == errUnsupportedElementSequence {
+			err = nil
+		}
 		return nil, err
 	}
 
@@ -157,10 +163,7 @@ func splitAndVerifyElementSequence(s string) (arguments string, elementType int,
 
 	prefixLen := len("1337;File=")
 	if !strings.HasPrefix(s, "1337;File=") {
-		if len(s) > prefixLen {
-			s = s[:prefixLen] // Don't blow out our error output
-		}
-		return "", 0, "", fmt.Errorf("expected sequence to start with 1337;File=, 1338; or 1339;, got %q instead", s)
+		return "", 0, "", errUnsupportedElementSequence
 	}
 	s = s[prefixLen:]
 

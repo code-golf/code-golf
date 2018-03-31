@@ -2,16 +2,16 @@
 
 
 [[projects]]
-  branch = "master"
   name = "github.com/buildkite/terminal"
   packages = ["."]
-  revision = "b0f19a112a86c759d1c0469516a6377a8e634558"
+  revision = "05a77905c468b9150cac41298fdb8a0735024d42"
+  version = "v3.1.0"
 
 [[projects]]
   branch = "master"
   name = "github.com/julienschmidt/httprouter"
   packages = ["."]
-  revision = "e1b9828bc9e5904baec057a154c09ca40fe7fae0"
+  revision = "d1898390779332322e6b5ca5011da4bf249bb056"
 
 [[projects]]
   branch = "master"
@@ -20,7 +20,7 @@
     ".",
     "oid"
   ]
-  revision = "88edab0803230a3898347e77b474f8c1820a1f20"
+  revision = "d34b9ff171c21ad295489235aec8b6626023cd04"
 
 [[projects]]
   name = "github.com/pmezard/go-difflib"
@@ -35,7 +35,7 @@
     "acme",
     "acme/autocert"
   ]
-  revision = "1875d0a70c90e57f11972aefd42276df65e895b9"
+  revision = "b2aa35443fbc700ab74c586ae79b81c171851023"
 
 [solve-meta]
   analyzer-name = "dep"
