@@ -104,32 +104,30 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	w.Write([]byte("<table id=matrix><tr><th><th><th><th><th><th><th><th><th><th>"))
 
-	var hole, lang, rank string
+	var holeID, langID, rank string
 
 	if rows.Next() {
-		if err := rows.Scan(&hole, &lang, &rank); err != nil {
+		if err := rows.Scan(&holeID, &langID, &rank); err != nil {
 			panic(err)
 		}
 	}
 
-	for _, h := range holes {
-		w.Write([]byte("<tr><th><a href=/" + h[0] + ">" + h[1] + "</a>"))
+	for _, hole := range holes {
+		w.Write([]byte("<tr><th><a href=/" + hole.ID + ">" + hole.Name + "</a>"))
 
-		for _, l := range []string{
-			"bash", "javascript", "lisp", "lua", "perl", "perl6", "php", "python", "ruby",
-		} {
+		for _, lang := range langs {
 			w.Write([]byte("<td>"))
 
-			if h[0] == hole && l == lang {
-				w.Write([]byte("<a href=/scores/" + hole + "/" + lang + ">" + rank + "</a>"))
+			if holeID == hole.ID && langID == lang.ID {
+				w.Write([]byte("<a href=/scores/" + holeID + "/" + langID + ">" + rank + "</a>"))
 
 				if rows.Next() {
-					if err := rows.Scan(&hole, &lang, &rank); err != nil {
+					if err := rows.Scan(&holeID, &langID, &rank); err != nil {
 						panic(err)
 					}
 				}
 			} else {
-				w.Write([]byte("<a href=/" + h[0] + "#" + l + "></a>"))
+				w.Write([]byte("<a href=/" + hole.ID + "#" + lang.ID + "></a>"))
 			}
 		}
 	}

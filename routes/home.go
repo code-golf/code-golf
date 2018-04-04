@@ -31,15 +31,16 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 				looped = true
 			}
 
-			var hole, lang string
+			var holeID, langID string
 
-			if err := rows.Scan(&hole, &lang); err != nil {
+			if err := rows.Scan(&holeID, &langID); err != nil {
 				panic(err)
 			}
 
 			w.Write([]byte(
-				"<li><a href=" + hole + "#" + lang + ">" + holeMap[hole] +
-					" (" + langMap[lang] + ")</a>",
+				"<li><a href=" + holeID + "#" + langID + ">" +
+					holeByID[holeID].Name + " (" + langByID[langID].Name +
+					")</a>",
 			))
 		}
 
@@ -136,7 +137,7 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	w.Write([]byte("<ul><li>Fast<li>Medium<li>Slow</ul><main id=home>"))
 
 	var i uint8
-	var prevHole string
+	var prevHoleID string
 
 	holeRows := make([][]byte, 6)
 
@@ -157,86 +158,32 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		}
 
 		w.Write([]byte("</table><a href=scores/"))
-		w.Write([]byte(prevHole))
+		w.Write([]byte(prevHoleID))
 		w.Write([]byte(">FULL LEADERBOARD</a></div>"))
 	}
 
 	for rows.Next() {
-		var hole string
+		var holeID string
 		var row []byte
 
-		if err := rows.Scan(&hole, &row); err != nil {
+		if err := rows.Scan(&holeID, &row); err != nil {
 			panic(err)
 		}
 
-		if hole != prevHole {
-			if prevHole != "" {
+		if holeID != prevHoleID {
+			if prevHoleID != "" {
 				printHole()
 				i = 0
 			}
 
-			w.Write([]byte(`<div class=`))
+			hole := holeByID[holeID]
 
-			switch hole {
-			case "12-days-of-christmas":
-				w.Write([]byte(`Medium><a href=12-days-of-christmas>12 Days of Christmas`))
-			case "99-bottles-of-beer":
-				w.Write([]byte(`Medium><a href=99-bottles-of-beer>99 Bottles of Beer`))
-			case "arabic-to-roman":
-				w.Write([]byte(`Slow><a href=arabic-to-roman>Arabic to Roman`))
-			case "brainfuck":
-				w.Write([]byte(`Slow><a href=brainfuck>Brainfuck`))
-			case "christmas-trees":
-				w.Write([]byte(`Medium><a href=christmas-trees>Christmas Trees`))
-			case "morse-decoder":
-				w.Write([]byte(`Medium><a href=morse-decoder>Morse Decoder`))
-			case "morse-encoder":
-				w.Write([]byte(`Medium><a href=morse-encoder>Morse Encoder`))
-			case "divisors":
-				w.Write([]byte(`Fast><a href=divisors>Divisors`))
-			case "emirp-numbers":
-				w.Write([]byte(`Fast><a href=emirp-numbers>Emirp Numbers`))
-			case "evil-numbers":
-				w.Write([]byte(`Fast><a href=evil-numbers>Evil Numbers`))
-			case "fibonacci":
-				w.Write([]byte(`Fast><a href=fibonacci>Fibonacci`))
-			case "fizz-buzz":
-				w.Write([]byte(`Fast><a href=fizz-buzz>Fizz Buzz`))
-			case "happy-numbers":
-				w.Write([]byte(`Fast><a href=happy-numbers>Happy Numbers`))
-			case "odious-numbers":
-				w.Write([]byte(`Fast><a href=odious-numbers>Odious Numbers`))
-			case "pangram-grep":
-				w.Write([]byte(`Medium><a href=pangram-grep>Pangram Grep`))
-			case "pascals-triangle":
-				w.Write([]byte(`Fast><a href=pascals-triangle>Pascal's Triangle`))
-			case "pernicious-numbers":
-				w.Write([]byte(`Fast><a href=pernicious-numbers>Pernicious Numbers`))
-			case "prime-numbers":
-				w.Write([]byte(`Fast><a href=prime-numbers>Prime Numbers`))
-			case "quine":
-				w.Write([]byte(`Fast><a href=quine>Quine`))
-			case "roman-to-arabic":
-				w.Write([]byte(`Slow><a href=roman-to-arabic>Roman to Arabic`))
-			case "seven-segment":
-				w.Write([]byte(`Medium><a href=seven-segment>Seven Segment`))
-			case "sierpiński-triangle":
-				w.Write([]byte(`Medium><a href=sierpiński-triangle>Sierpiński Triangle`))
-			case "spelling-numbers":
-				w.Write([]byte(`Slow><a href=spelling-numbers>Spelling Numbers`))
-			case "π":
-				w.Write([]byte(`Medium><a href=π>π`))
-			case "φ":
-				w.Write([]byte(`Medium><a href=φ>φ`))
-			case "𝑒":
-				w.Write([]byte(`Medium><a href=𝑒>𝑒`))
-			case "τ":
-				w.Write([]byte(`Medium><a href=τ>τ`))
-			}
+			w.Write([]byte(
+				"<div class=" + hole.Difficulty + "><a href=" + holeID + ">" +
+					hole.Name + "</a><table class=scores>",
+			))
 
-			w.Write([]byte(`</a><table class=scores>`))
-
-			prevHole = hole
+			prevHoleID = holeID
 		}
 
 		holeRows[i] = row

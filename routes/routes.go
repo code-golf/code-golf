@@ -31,8 +31,8 @@ func init() {
 	Router.GET("/stats", middleware.Gzip(stats))
 	Router.GET("/users/:user", middleware.Gzip(user))
 
-	for name := range preambles {
-		Router.GET("/"+name, middleware.Gzip(hole))
+	for _, h := range holes {
+		Router.GET("/"+h.ID, middleware.Gzip(hole))
 	}
 
 	Router.POST("/solution", middleware.Gzip(solution))

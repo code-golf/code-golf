@@ -8,7 +8,7 @@ import (
 )
 
 var noHoles = strconv.Itoa(len(holes))
-var noLangs = strconv.Itoa(len(langMap))
+var noLangs = strconv.Itoa(len(langs))
 
 func stats(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	printHeader(w, r, 200)

@@ -9,127 +9,54 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-// TODO I really need to move all the hole stuff into one map struct
-var holeMap = map[string]string{
-	"12-days-of-christmas": "12 Days of Christmas",
-	"99-bottles-of-beer":   "99 Bottles of Beer",
-	"arabic-to-roman":      "Arabic to Roman",
-	"brainfuck":            "Brainfuck",
-	"christmas-trees":      "Christmas Trees",
-	"divisors":             "Divisors",
-	"emirp-numbers":        "Emirp Numbers",
-	"evil-numbers":         "Evil Numbers",
-	"fibonacci":            "Fibonacci",
-	"fizz-buzz":            "Fizz Buzz",
-	"happy-numbers":        "Happy Numbers",
-	"morse-decoder":        "Morse Decoder",
-	"morse-encoder":        "Morse Encoder",
-	"odious-numbers":       "Odious Numbers",
-	"pangram-grep":         "Pangram Grep",
-	"pascals-triangle":     "Pascal's Triangle",
-	"pernicious-numbers":   "Pernicious Numbers",
-	"prime-numbers":        "Prime Numbers",
-	"quine":                "Quine",
-	"roman-to-arabic":      "Roman to Arabic",
-	"seven-segment":        "Seven Segment",
-	"sierpiński-triangle":  "Sierpiński Triangle",
-	"spelling-numbers":     "Spelling Numbers",
-	"π":                    "π",
-	"τ":                    "τ",
-	"φ":                    "φ",
-	"𝑒":                    "𝑒",
-}
-
-var langMap = map[string]string{
-	"bash":       "Bash",
-	"javascript": "JavaScipt",
-	"lisp":       "Lisp",
-	"lua":        "Lua",
-	"perl":       "Perl",
-	"perl6":      "Perl 6",
-	"php":        "PHP",
-	"python":     "Python",
-	"ruby":       "Ruby",
-}
-
-var holes = [][]string{
-	{"12-days-of-christmas", "12 Days of Christmas"},
-	{"99-bottles-of-beer", "99 Bottles of Beer"},
-	{"arabic-to-roman", "Arabic to Roman"},
-	{"brainfuck", "Brainfuck"},
-	{"christmas-trees", "Christmas Trees"},
-	{"divisors", "Divisors"},
-	{"emirp-numbers", "Emirp Numbers"},
-	{"evil-numbers", "Evil Numbers"},
-	{"fibonacci", "Fibonacci"},
-	{"fizz-buzz", "Fizz Buzz"},
-	{"happy-numbers", "Happy Numbers"},
-	{"morse-decoder", "Morse Decoder"},
-	{"morse-encoder", "Morse Encoder"},
-	{"odious-numbers", "Odious Numbers"},
-	{"pangram-grep", "Pangram Grep"},
-	{"pascals-triangle", "Pascal's Triangle"},
-	{"pernicious-numbers", "Pernicious Numbers"},
-	{"prime-numbers", "Prime Numbers"},
-	{"quine", "Quine"},
-	{"roman-to-arabic", "Roman to Arabic"},
-	{"seven-segment", "Seven Segment"},
-	{"sierpiński-triangle", "Sierpiński Triangle"},
-	{"spelling-numbers", "Spelling Numbers"},
-	{"π", "π"},
-	{"τ", "τ"},
-	{"φ", "φ"},
-	{"𝑒", "𝑒"},
-}
-
 func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	var hole string
-	var langs []string
+	var holeID string
+	var langIDs []string
 	var showDuplicates bool
 
 	// Unless we have "/scores", tear apart the URL, and redirect if invalid.
 	if strings.HasPrefix(r.URL.Path, "/scores/") {
-		langs = strings.Split(r.URL.Path[8:], "/")
+		langIDs = strings.Split(r.URL.Path[8:], "/")
 
 		url := "/scores"
 
 		// Shift the first "lang" off if it's actually a hole.
-		if len(langs) > 0 {
-			if _, ok := preambles[langs[0]]; ok {
-				hole, langs = langs[0], langs[1:]
+		if len(langIDs) > 0 {
+			if _, ok := holeByID[langIDs[0]]; ok {
+				holeID, langIDs = langIDs[0], langIDs[1:]
 
-				url += "/" + hole
+				url += "/" + holeID
 			}
 		}
 
 		// Pop the last "lang" off if it's actually the showDuplicates flag.
-		if len(langs) > 0 && langs[len(langs)-1] == "show-duplicates" {
+		if len(langIDs) > 0 && langIDs[len(langIDs)-1] == "show-duplicates" {
 			showDuplicates = true
-			langs = langs[:len(langs)-1]
+			langIDs = langIDs[:len(langIDs)-1]
 		}
 
-		sort.Slice(langs, func(i, j int) bool { return langs[i] < langs[j] })
+		sort.Slice(langIDs, func(i, j int) bool { return langIDs[i] < langIDs[j] })
 
-		// Avoid duplicate langs.
+		// Avoid duplicate langIDs.
 		seen := map[string]bool{}
 
-		for _, lang := range langs {
-			if _, ok := langMap[lang]; ok && !seen[lang] {
+		for _, lang := range langIDs {
+			if _, ok := langByID[lang]; ok && !seen[lang] {
 				url += "/" + lang
 				seen[lang] = true
 			}
 		}
 
 		// No point in listing EVERY lang.
-		if len(seen) == len(langMap) {
+		if len(seen) == len(langs) {
 			url = "/scores"
 
-			if hole != "" {
-				url += "/" + hole
+			if holeID != "" {
+				url += "/" + holeID
 			}
 		}
 
-		if showDuplicates && hole != "" {
+		if showDuplicates && holeID != "" {
 			url += "/show-duplicates"
 		}
 
@@ -146,37 +73,27 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 			"></script><main id=scores><select id=hole><option value>All Holes",
 	))
 
-	for _, v := range holes {
+	for _, hole := range holes {
 		w.Write([]byte("<option "))
-		if hole == v[0] {
+		if holeID == hole.ID {
 			w.Write([]byte("selected "))
 		}
-		w.Write([]byte("value=" + v[0] + ">" + v[1]))
+		w.Write([]byte("value=" + hole.ID + ">" + hole.Name))
 	}
 
-	w.Write([]byte("</select><select id=lang><option value>All Langs"))
+	w.Write([]byte("</select><select id=lang><option value>All langs"))
 
-	for _, v := range [][]string{
-		{"bash", "Bash"},
-		{"javascript", "JavaScript"},
-		{"lisp", "Lisp"},
-		{"lua", "Lua"},
-		{"perl", "Perl"},
-		{"perl6", "Perl 6"},
-		{"php", "PHP"},
-		{"python", "Python"},
-		{"ruby", "Ruby"},
-	} {
+	for _, lang := range langs {
 		w.Write([]byte("<option "))
-		if len(langs) > 0 && langs[0] == v[0] {
+		if len(langIDs) > 0 && langIDs[0] == lang.ID {
 			w.Write([]byte("selected "))
 		}
-		w.Write([]byte("value=" + v[0] + ">" + v[1]))
+		w.Write([]byte("value=" + lang.ID + ">" + lang.Name))
 	}
 
 	w.Write([]byte("</select>"))
 
-	if hole != "" {
+	if holeID != "" {
 		w.Write([]byte("<label><input type=checkbox"))
 		if showDuplicates {
 			w.Write([]byte(" checked"))
@@ -188,8 +105,8 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	var concat, distinct, table, where string
 
-	if hole != "" {
-		where += " AND hole = '" + hole + "'"
+	if holeID != "" {
+		where += " AND hole = '" + holeID + "'"
 		concat = "' class=', lang, '>', TO_CHAR(strokes, 'FM99,999'), '<td>(', TO_CHAR(score, 'FM9,999'), ' point', CASE WHEN score"
 	} else {
 		concat = "'>', TO_CHAR(score, 'FM9,999'), '<td>(', count, ' hole', CASE WHEN count"
@@ -202,8 +119,8 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		table = "summed_leaderboard"
 	}
 
-	if len(langs) > 0 {
-		where += " AND lang IN('" + strings.Join(langs, "','") + "')"
+	if len(langIDs) > 0 {
+		where += " AND lang IN('" + strings.Join(langIDs, "','") + "')"
 	}
 
 	rows, err := db.Query(
