@@ -2,6 +2,7 @@ package routes
 
 import (
 	"database/sql"
+	"math/rand"
 	"net/http"
 
 	"github.com/jraspass/code-golf/middleware"
@@ -25,6 +26,7 @@ func init() {
 	Router.GET("/callback", callback)
 	Router.GET("/favicon.ico", asset)
 	Router.GET("/logout", middleware.Gzip(logout))
+	Router.GET("/random", random)
 	Router.GET("/robots.txt", robots)
 	Router.GET("/scores", middleware.Gzip(scores))
 	Router.GET("/scores/*criteria", middleware.Gzip(scores))
@@ -38,6 +40,10 @@ func init() {
 	Router.POST("/solution", middleware.Gzip(solution))
 
 	Router.NotFound = http.HandlerFunc(print404)
+}
+
+func random(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	http.Redirect(w, r, holes[rand.Intn(len(holes))].ID, 302)
 }
 
 func robots(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
