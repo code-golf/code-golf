@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-use strict;
+use v5.26;
 use warnings;
 
 use Digest::MD5 'md5_base64';
@@ -27,6 +27,8 @@ GO
 my ( %data, %paths );
 
 for (<assets/*.{css,ico,js}>) {
+    say;
+
     my $data = slurp($_);
 
     s|^assets/||;
@@ -49,7 +51,7 @@ GO
     if (/\.css$/) {
         $data =~ s|svg\(([^#]+)(.+)\)|svg($1, $2)|eg;
 
-        $data = run($data, qw(csso /dev/stdin));
+        $data = run($data, 'csso');
     }
     else {
         $data = run(
