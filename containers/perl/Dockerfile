@@ -2,9 +2,9 @@ FROM alpine:edge
 
 RUN apk add --no-cache curl gcc make musl-dev perl
 
-RUN curl http://www.cpan.org/src/5.0/perl-5.26.1.tar.xz | tar xJf -
+RUN curl http://www.cpan.org/src/5.0/perl-5.26.2.tar.xz | tar xJf -
 
-RUN cd perl-5.26.1                                                        \
+RUN cd perl-5.26.2                                                        \
  && sed -i -E 's/\(array_base/(array_base say state/' regen/feature.pl    \
  && perl regen/feature.pl                                                 \
  && ./Configure                                                           \
@@ -16,6 +16,6 @@ RUN cd perl-5.26.1                                                        \
 
 FROM scratch
 
-COPY --from=0 /perl-5.26.1/miniperl /usr/bin/perl
+COPY --from=0 /perl-5.26.2/miniperl /usr/bin/perl
 
 ENTRYPOINT ["/usr/bin/perl", "-e", "say substr $^V, 1"]
