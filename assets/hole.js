@@ -83,7 +83,7 @@ onload = function() {
             console.log(data.Diff);
 
             for (let prop in data) {
-                if (prop === 'Diff')
+                if (prop === 'Argv' || prop === 'Diff')
                     continue;
 
                 let pre = document.getElementById(prop);

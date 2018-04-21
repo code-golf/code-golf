@@ -24,6 +24,7 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	type Out struct {
 		Arg, Diff, Err, Exp, Out string
+		Argv []string
 	}
 
 	var in In
@@ -62,6 +63,7 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	out.Err, out.Out = runCode(in.Hole, in.Lang, in.Code, args)
 	out.Arg = strings.Join(args, " ")
+	out.Argv = args
 
 	out.Diff, _ = difflib.GetUnifiedDiffString(difflib.UnifiedDiff{
 		A:        difflib.SplitLines(out.Exp),

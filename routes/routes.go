@@ -35,6 +35,7 @@ func init() {
 
 	for _, h := range holes {
 		Router.GET("/"+h.ID, middleware.Gzip(hole))
+		Router.GET("/ng/"+h.ID, middleware.Gzip(holeNg))
 	}
 
 	Router.POST("/solution", middleware.Gzip(solution))
