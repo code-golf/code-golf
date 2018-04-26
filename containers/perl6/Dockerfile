@@ -2,10 +2,10 @@ FROM alpine:edge
 
 RUN apk add --no-cache curl gcc git linux-headers make musl-dev perl
 
-RUN curl -L https://github.com/rakudo/rakudo/archive/2018.03.tar.gz \
+RUN curl -L https://github.com/rakudo/rakudo/archive/2018.04.tar.gz \
    | tar xzf -
 
-RUN cd rakudo-2018.03                                         \
+RUN cd rakudo-2018.04                                         \
  && perl Configure.pl --backend=moar --gen-moar --prefix=/usr \
  && make -j`nproc` install
 
