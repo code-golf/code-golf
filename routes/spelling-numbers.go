@@ -76,16 +76,26 @@ func spellingNumbers() (args []string, out string) {
 	}
 
 	// Add on random numbers to each ten except the first, to ensure at least one non hyphen answer.
-	for i := 1; i < 8; i++ {
-		tens[i] += uint16(rand.Intn(9))
+	for i := 1; i < len(tens); i++ {
+		tens[i] += 1 + uint16(rand.Intn(8))
 	}
 
 	numbers = append(numbers, tens...)
 
-	// Round the set up to a nice 35 with some random high numbers.
-	for i := 0; i < 6; i++ {
-		numbers = append(numbers, 100+uint16(rand.Intn(899)))
+	hundreds := []uint16{100, 200, 300, 400, 500, 600, 700, 800, 900}
+
+	// Shuffle the hundreds.
+	for i := range hundreds {
+		j := rand.Intn(i + 1)
+		hundreds[i], hundreds[j] = hundreds[j], hundreds[i]
 	}
+
+	// Add on random numbers to each hundred except the first, to ensure at least one non and answer.
+	for i := 1; i < len(hundreds); i++ {
+		hundreds[i] += 1 + uint16(rand.Intn(98))
+	}
+
+	numbers = append(numbers, hundreds...)
 
 	// Shuffle the whole set.
 	for i := range numbers {
