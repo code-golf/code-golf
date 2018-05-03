@@ -28,13 +28,11 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
-SET search_path = public, pg_catalog;
-
 --
 -- Name: hole; Type: TYPE; Schema: public; Owner: jraspass
 --
 
-CREATE TYPE hole AS ENUM (
+CREATE TYPE public.hole AS ENUM (
     '12-days-of-christmas',
     '99-bottles-of-beer',
     'arabic-to-roman',
@@ -48,6 +46,7 @@ CREATE TYPE hole AS ENUM (
     'happy-numbers',
     'morse-decoder',
     'morse-encoder',
+    'niven-numbers',
     'odious-numbers',
     'pangram-grep',
     'pascals-triangle',
@@ -65,13 +64,13 @@ CREATE TYPE hole AS ENUM (
 );
 
 
-ALTER TYPE hole OWNER TO jraspass;
+ALTER TYPE public.hole OWNER TO jraspass;
 
 --
 -- Name: lang; Type: TYPE; Schema: public; Owner: jraspass
 --
 
-CREATE TYPE lang AS ENUM (
+CREATE TYPE public.lang AS ENUM (
     'bash',
     'javascript',
     'lisp',
@@ -84,7 +83,7 @@ CREATE TYPE lang AS ENUM (
 );
 
 
-ALTER TYPE lang OWNER TO jraspass;
+ALTER TYPE public.lang OWNER TO jraspass;
 
 SET default_tablespace = '';
 
@@ -94,35 +93,35 @@ SET default_with_oids = false;
 -- Name: solutions; Type: TABLE; Schema: public; Owner: jraspass
 --
 
-CREATE TABLE solutions (
+CREATE TABLE public.solutions (
     submitted timestamp without time zone NOT NULL,
     user_id integer NOT NULL,
-    hole hole NOT NULL,
-    lang lang NOT NULL,
+    hole public.hole NOT NULL,
+    lang public.lang NOT NULL,
     code text NOT NULL,
     failing boolean DEFAULT false NOT NULL
 );
 
 
-ALTER TABLE solutions OWNER TO jraspass;
+ALTER TABLE public.solutions OWNER TO jraspass;
 
 --
 -- Name: users; Type: TABLE; Schema: public; Owner: jraspass
 --
 
-CREATE TABLE users (
+CREATE TABLE public.users (
     id integer NOT NULL,
     login text NOT NULL
 );
 
 
-ALTER TABLE users OWNER TO jraspass;
+ALTER TABLE public.users OWNER TO jraspass;
 
 --
 -- Name: solutions solutions_pkey; Type: CONSTRAINT; Schema: public; Owner: jraspass
 --
 
-ALTER TABLE ONLY solutions
+ALTER TABLE ONLY public.solutions
     ADD CONSTRAINT solutions_pkey PRIMARY KEY (user_id, hole, lang);
 
 
@@ -130,7 +129,7 @@ ALTER TABLE ONLY solutions
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: jraspass
 --
 
-ALTER TABLE ONLY users
+ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
 
 
@@ -138,14 +137,14 @@ ALTER TABLE ONLY users
 -- Name: TABLE solutions; Type: ACL; Schema: public; Owner: jraspass
 --
 
-GRANT SELECT,INSERT,UPDATE ON TABLE solutions TO code_golf;
+GRANT SELECT,INSERT,UPDATE ON TABLE public.solutions TO code_golf;
 
 
 --
 -- Name: TABLE users; Type: ACL; Schema: public; Owner: jraspass
 --
 
-GRANT SELECT,INSERT,UPDATE ON TABLE users TO code_golf;
+GRANT SELECT,INSERT,UPDATE ON TABLE public.users TO code_golf;
 
 
 --

@@ -89,6 +89,9 @@ A Partridge in a Pear Tree.</blockquote>`,
 		"morse-encoder", "Morse Encoder", "Medium",
 		"Using ▄ (U+2584 Lower Half Block) to represent a dot, decode the argument into" + morseTable,
 	}, {
+		"niven-numbers", "Niven Numbers", "Fast",
+		"A niven number is a non-negative number that is divisible by the sum of its digits.<p>Print all the niven numbers from <b>0</b> to <b>100</b> inclusive, each on their own line.</p>",
+	}, {
 		"odious-numbers", "Odious Numbers", "Fast",
 		"An odious number is a non-negative number that has an odd number of 1s in its binary expansion.<p>Print all the odious numbers from <b>0</b> to <b>50</b> inclusive, each on their own line.<p>Numbers that are not odious are called <a href=evil-numbers>evil numbers</a>.</p>",
 	}, {

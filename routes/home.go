@@ -103,27 +103,28 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		         WHEN 'fibonacci'            THEN 3
 		         WHEN 'fizz-buzz'            THEN 4
 		         WHEN 'happy-numbers'        THEN 5
-		         WHEN 'odious-numbers'       THEN 6
-		         WHEN 'pascals-triangle'     THEN 7
-		         WHEN 'pernicious-numbers'   THEN 8
-		         WHEN 'prime-numbers'        THEN 9
-		         WHEN 'quine'                THEN 10
-		         WHEN '12-days-of-christmas' THEN 11
-		         WHEN '99-bottles-of-beer'   THEN 12
-		         WHEN 'christmas-trees'      THEN 13
-		         WHEN 'morse-decoder'        THEN 14
-		         WHEN 'morse-encoder'        THEN 15
-		         WHEN 'pangram-grep'         THEN 16
-		         WHEN 'seven-segment'        THEN 17
-		         WHEN 'sierpiński-triangle'  THEN 18
-		         WHEN 'π'                    THEN 19
-		         WHEN 'φ'                    THEN 20
-		         WHEN '𝑒'                    THEN 21
-		         WHEN 'τ'                    THEN 22
-		         WHEN 'arabic-to-roman'      THEN 23
-		         WHEN 'brainfuck'            THEN 24
-		         WHEN 'roman-to-arabic'      THEN 25
-		         WHEN 'spelling-numbers'     THEN 26
+		         WHEN 'niven-numbers'        THEN 6
+		         WHEN 'odious-numbers'       THEN 7
+		         WHEN 'pascals-triangle'     THEN 8
+		         WHEN 'pernicious-numbers'   THEN 9
+		         WHEN 'prime-numbers'        THEN 10
+		         WHEN 'quine'                THEN 11
+		         WHEN '12-days-of-christmas' THEN 12
+		         WHEN '99-bottles-of-beer'   THEN 13
+		         WHEN 'christmas-trees'      THEN 14
+		         WHEN 'morse-decoder'        THEN 15
+		         WHEN 'morse-encoder'        THEN 16
+		         WHEN 'pangram-grep'         THEN 17
+		         WHEN 'seven-segment'        THEN 18
+		         WHEN 'sierpiński-triangle'  THEN 19
+		         WHEN 'π'                    THEN 20
+		         WHEN 'φ'                    THEN 21
+		         WHEN '𝑒'                    THEN 22
+		         WHEN 'τ'                    THEN 23
+		         WHEN 'arabic-to-roman'      THEN 24
+		         WHEN 'brainfuck'            THEN 25
+		         WHEN 'roman-to-arabic'      THEN 26
+		         WHEN 'spelling-numbers'     THEN 27
 		         END, row_number`,
 		userID,
 	)
