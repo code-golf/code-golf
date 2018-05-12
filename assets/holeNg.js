@@ -2,12 +2,22 @@
 
 const hole = decodeURI(location.pathname.slice(4));
 
-let activeTextarea;
+let activeTextarea, activeStrokes;
+
+function calcStrokes(textarea) {
+    const len = [...textarea.value].length;
+
+    return len === 1 ? '1 char'
+         : len       ? len + ' chars'
+         :             'not tried';
+}
 
 function render() {
     let code = activeTextarea.nextSibling.children[0];
 
     code.textContent = activeTextarea.value + "\n";
+
+    activeStrokes.textContent = calcStrokes(activeTextarea);
 
     Prism.highlightElement(code);
 }
@@ -29,6 +39,9 @@ onload = function() {
         textarea.setAttribute('autocorrect', 'off');
         textarea.setAttribute('spellcheck', 'false');
         textarea.value = div.textContent;
+
+        document.querySelector('[href="#' + div.dataset.lang + '"] div:nth-child(2)')
+                .textContent = calcStrokes(textarea);
 
         // Fixing iOS "drunk-text" issue
         if(/iPad|iPhone|iPod/.test(navigator.platform))
@@ -84,7 +97,12 @@ onload = function() {
                 div.style.display = '';
 
         for (let tab of document.querySelectorAll('#tabs a'))
-            tab.classList.toggle('on', tab.href === location.href);
+            if (tab.href === location.href) {
+                tab.classList.add('on');
+                activeStrokes = tab.children[1];
+            }
+            else
+                tab.classList.remove('on');
 
         render();
     } )();
