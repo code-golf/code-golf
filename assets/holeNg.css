@@ -126,6 +126,18 @@ button:hover {
     position: relative;
 }
 
+.code:before {
+    background: #f7f7f7;
+    border-right: 1px solid #ddd;
+    content: '';
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 3em;
+    z-index: 1;
+}
+
 code, pre, textarea {
     font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
     font-size: 16px;
@@ -140,38 +152,37 @@ pre, textarea {
     width:100%;
     padding:0;
     border:none;
-
     background:transparent;
     white-space:pre-wrap;
-
     word-wrap: break-word;
 }
 
 textarea {
-    border:none;
-    background:transparent;
-    outline:none;
+    background: transparent;
+    border: none;
+    outline: none;
     padding-left: 3.8em;
-    resize:none;
-    opacity:0.4;
-    margin:0;
-    z-index:1;
-    height:100%;
+    resize: none;
+    opacity: 0.4;
+    margin: 0;
+    z-index: 1;
+    height: 100%;
     -webkit-overflow-scrolling: touch;
 }
 
 pre {
-    z-index:2;
-    pointer-events:none;
-    overflow-y:auto;
-    margin:0;
+    z-index: 2;
+    pointer-events: none;
+    overflow-y: auto;
+    margin: 0;
 }
 
 code, pre {
-    word-spacing: normal;
-    word-break: normal;
-    word-wrap: normal;
+    overflow-wrap: break-word;
 }
+
+/* FIXME Our php class collides with Prism's */
+.token.php { background: none }
 
 .token.comment,
 .token.prolog,
@@ -308,7 +319,7 @@ pre.line-numbers > code {
     top: 0;
     font-size: 100%;
     left: -3.8em;
-    width: 3em; /* works for line-numbers below 1000 lines */
+    width: 3em;
     letter-spacing: -1px;
 
     -webkit-user-select: none;
@@ -317,7 +328,6 @@ pre.line-numbers > code {
     user-select: none;
 
     background: #f7f7f7;
-    border-right: 1px solid #ddd;
     color: #000;
 }
 

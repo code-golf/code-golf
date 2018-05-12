@@ -7,9 +7,7 @@ let activeTextarea;
 function render() {
     let code = activeTextarea.nextSibling.children[0];
 
-    code.innerHTML = activeTextarea.value.replace(/&/g, '&amp;')
-                                         .replace(/</g, '&lt;')
-                                         .replace(/>/g, '&gt;') + "\n";
+    code.textContent = activeTextarea.value + "\n";
 
     Prism.highlightElement(code);
 }
@@ -26,6 +24,10 @@ onload = function() {
 
         code.classList.add('lang-' + div.dataset.lang);
         pre.classList.add('line-numbers');
+        textarea.setAttribute('autocapitalize', 'off');
+        textarea.setAttribute('autocomplete', 'off');
+        textarea.setAttribute('autocorrect', 'off');
+        textarea.setAttribute('spellcheck', 'false');
         textarea.value = div.textContent;
 
         // Fixing iOS "drunk-text" issue
