@@ -56,8 +56,12 @@ hostsize    equ $ - host
 fullroot    db "rootfs/old-root", 0
 oldroot     db "old-root", 0
 rootfs      db "rootfs", 0
-slash       db  "/", 0
-stage       db "ABCDEFGHI"
+slash       db "/", 0
+slash_proc  db "/proc", 0
+slash_tmp   db "/tmp", 0
+proc        db "proc", 0
+tmpfs       db "tmpfs", 0
+stage       db "ABCDEFGHIJK"
 
 start:
         ; [A] mount / as private
@@ -113,7 +117,33 @@ start:
             test eax, eax
             jnz exit
 
-        ; [F] set the hostname
+        ; [F] mount /proc as proc
+            mov rax, SYS_mount
+            mov rdi, slash_proc
+            mov rsi, rdi
+            mov edx, proc
+            xor r10, r10
+            xor r8, r8
+            syscall
+            mov r12, stage
+
+            test eax, eax
+            jnz exit
+
+        ; [G] mount /tmp as tmpfs
+            mov rax, SYS_mount
+            mov rdi, slash_tmp
+            mov rsi, rdi
+            mov edx, tmpfs
+            xor r10, r10
+            xor r8, r8
+            syscall
+            mov r12, stage
+
+            test eax, eax
+            jnz exit
+
+        ; [H] set the hostname
             mov rax, SYS_sethostname
             mov rdi, host
             mov rsi, hostsize
@@ -123,7 +153,7 @@ start:
             test eax, eax
             jnz exit
 
-        ; [G] set the group
+        ; [I] set the group
             mov rax, SYS_setgid
             mov rdi, GID_nobody
             syscall
@@ -132,7 +162,7 @@ start:
             test eax, eax
             jnz exit
 
-        ; [H] set the user
+        ; [J] set the user
             mov rax, SYS_setuid
             mov rdi, UID_nobody
             syscall
@@ -141,7 +171,7 @@ start:
             test eax, eax
             jnz exit
 
-        ; [I] syscall(SYS_execve, argv[0], argv, 0);
+        ; [K] syscall(SYS_execve, argv[0], argv, 0);
             mov rax, SYS_execve
             lea rsi, [rsp + 8] ; argv
             mov rdi, [rsi]     ; argv[0]

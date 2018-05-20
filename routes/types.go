@@ -5,6 +5,7 @@ type Hole struct{ ID, Name, Difficulty, Preamble string }
 
 var langs = []Lang{
 	{"bash", "Bash"},
+	{"haskell", "Haskell"},
 	{"javascript", "JavaScript"},
 	{"lisp", "Lisp"},
 	{"lua", "Lua"},

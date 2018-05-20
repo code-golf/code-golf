@@ -4,7 +4,7 @@ docker pull alpine:edge
 
 cd containers
 
-for name in Bash JavaScript Lisp Lua Perl Perl\ 6 PHP Python Ruby; do
+for name in Bash Haskell JavaScript Lisp Lua Perl Perl\ 6 PHP Python Ruby; do
     lang=${name,,}      # lowercase
     lang=${lang// /}    # trim space
 
@@ -33,10 +33,11 @@ for name in Bash JavaScript Lisp Lua Perl Perl\ 6 PHP Python Ruby; do
     docker rm -f $id
 
     # Remove the crap we gained from running the container, this is hacky.
-    rm -r $lang/rootfs/{.dockerenv,dev,etc,proc,sys}
+    rm -fr $lang/rootfs/{.dockerenv,dev,etc,proc,sys}
+
+    mkdir -p $lang/rootfs/{etc,proc,tmp}
 
     # Python needs UIDs to actually resolve, madness!
-    mkdir $lang/rootfs/etc
     echo nobody:x:99:99:nobody:/:/bin/false > $lang/rootfs/etc/passwd
 done
 
