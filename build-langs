@@ -11,9 +11,9 @@ for name in Bash Haskell JavaScript Lisp Lua Perl Perl\ 6 PHP Python Ruby; do
     rm -rf $lang/rootfs
     mkdir -p $lang/rootfs/old-root
 
-    docker build -t $lang $lang
+    docker build -t code-golf-$lang $lang
 
-    ver=`docker run --rm $lang`
+    ver=`docker run --rm code-golf-$lang`
 
     # Remove some crap from version strings.
     ver=${ver#Lua }
@@ -26,7 +26,7 @@ for name in Bash Haskell JavaScript Lisp Lua Perl Perl\ 6 PHP Python Ruby; do
 
     html+="<tr><th>$name<td>$ver"
 
-    id=`docker run -d $lang -v`
+    id=`docker run -d code-golf-$lang`
 
     docker export $id | tar -C $lang/rootfs -xf -
 
