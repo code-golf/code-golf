@@ -8,8 +8,7 @@ for name in Bash Haskell JavaScript Lisp Lua Perl Perl\ 6 PHP Python Ruby; do
     lang=${name,,}      # lowercase
     lang=${lang// /}    # trim space
 
-    rm -rf $lang/rootfs
-    mkdir -p $lang/rootfs/old-root
+    rm -rf $lang/rootfs/*
 
     docker build -t code-golf-$lang $lang
 
@@ -17,12 +16,17 @@ for name in Bash Haskell JavaScript Lisp Lua Perl Perl\ 6 PHP Python Ruby; do
 
     # Remove some crap from version strings.
     ver=${ver#Lua }
+    ver=${ver#The Glorious }
     ver=${ver#This is }
     ver=${ver#JavaScript-C}
+    ver=${ver/ation/er}
+    ver=${ver/built /}
+    ver=${ver/System, /}
     ver=${ver//$'\n'/ }
+    ver=${ver//version /}
     ver=${ver%.}
     ver=${ver%  Copyright (C) 1994-2017 Lua.org, PUC-Rio}
-    ver=${ver/ (built on*/}
+    ver=${ver/ (*/}
 
     html+="<tr><th>$name<td>$ver"
 
@@ -35,10 +39,14 @@ for name in Bash Haskell JavaScript Lisp Lua Perl Perl\ 6 PHP Python Ruby; do
     # Remove the crap we gained from running the container, this is hacky.
     rm -fr $lang/rootfs/{.dockerenv,dev,etc,proc,sys}
 
-    mkdir -p $lang/rootfs/{etc,proc,tmp}
+    mkdir -p $lang/rootfs/{old-root,proc,tmp}
 
-    # Python needs UIDs to actually resolve, madness!
-    echo nobody:x:99:99:nobody:/:/bin/false > $lang/rootfs/etc/passwd
+    # Lisp & Python need UIDs to actually resolve, madness!
+    if [ $lang = lisp -o $lang = python ]; then
+        mkdir $lang/rootfs/etc
+
+        echo nobody:x:99:99::/: > $lang/rootfs/etc/passwd
+    fi
 done
 
 echo "package routes
