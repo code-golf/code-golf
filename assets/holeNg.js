@@ -17,7 +17,7 @@ function render() {
 
     code.textContent = activeTextarea.value + "\n";
 
-    activeTab.textContent = calcStrokes(activeTextArea);
+    activeTab.textContent = calcStrokes(activeTextarea);
 
     Prism.highlightElement(code);
 }
