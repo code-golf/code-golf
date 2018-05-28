@@ -28,18 +28,16 @@ func holeNg(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	hole := holeByID[holeID]
 
 	w.Write([]byte(
-		"><h1>" + hole.Name + "</h1><p>" + hole.Preamble + "<div id=tabs>" +
-			"<a href=#bash title=Bash>not tried</a>" +
-			"<a href=#haskell title=Haskell>not tried</a>" +
-			"<a href=#javascript title=JavaScript>not tried</a>" +
-			"<a href=#lisp title=Lisp>not tried</a>" +
-			"<a href=#lua title=Lua>not tried</a>" +
-			"<a href=#perl title=Perl>not tried</a>" +
-			`<a href=#perl6 title="Perl 6">not tried</a>` +
-			"<a href=#php title=PHP>not tried</a>" +
-			"<a href=#python title=Python>not tried</a>" +
-			"<a href=#ruby title=Ruby>not tried</a></div>",
-	))
+		"><h1>" + hole.Name + "</h1><p>" + hole.Preamble + "<div id=tabs>"))
+
+	for _, lang := range langs {
+		w.Write([]byte(
+			"<a href=#" + lang.ID + ` title="` +
+				lang.Name + `">not tried</a>`,
+		))
+	}
+
+	w.Write([]byte("</div>"))
 
 	var html []byte
 
