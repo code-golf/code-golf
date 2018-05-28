@@ -102,7 +102,11 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	defer rows.Close()
 
-	w.Write([]byte("<table id=matrix><tr><th><th><th><th><th><th><th><th><th><th><th>"))
+	w.Write([]byte("<table id=matrix><tr><th>"))
+
+	for _, lang := range langs {
+		w.Write([]byte(`<th title="` + lang.Name + `">`))
+	}
 
 	var holeID, langID, rank string
 
