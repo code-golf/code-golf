@@ -99,7 +99,8 @@ button:hover {
 
 #tabs a {
     background: #ccc 9px / 26px no-repeat;
-    font-size: 18px;
+    color: #fff;
+    font-size: 14px;
     height: 36px;
     overflow: hidden;
     padding: 4px;
@@ -115,15 +116,6 @@ button:hover {
     background-color: #222 !important;
 }
 
-#tabs div {
-    color: #fff;
-    white-space: nowrap;
-}
-
-#tabs div:nth-child(2) {
-    font-size: 10px;
-}
-
 #tabs a[href="#bash"]       { background-image: svg(bash#fff)       }
 #tabs a[href="#haskell"]    { background-image: svg(haskell#fff) }
 #tabs a[href="#javascript"] { background-image: svg(javascript#fff) }
@@ -137,14 +129,11 @@ button:hover {
 
 @keyframes spin { 100% { transform: rotate(1turn) } }
 
-@media(max-width: 450px) { #tabs { grid-template-columns: repeat(4, 1fr) } }
+@media(max-width: 450px) { #tabs { grid-template-columns: repeat(5, 1fr) } }
 
 @media(max-width: 970px) {
     #tabs a {
         background-position: center;
-    }
-
-    #tabs div {
-        display: none;
+        font-size: 0;
     }
 }

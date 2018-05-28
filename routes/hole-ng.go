@@ -29,16 +29,16 @@ func holeNg(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	w.Write([]byte(
 		"><h1>" + hole.Name + "</h1><p>" + hole.Preamble + "<div id=tabs>" +
-			"<a href=#bash><div>Bash</div><div>not tried</div></a>" +
-			"<a href=#haskell><div>Haskell</div><div>not tried</div></a>" +
-			"<a href=#javascript><div>JS</div><div>not tried</div></a>" +
-			"<a href=#lisp><div>Lisp</div><div>not tried</div></a>" +
-			"<a href=#lua><div>Lua</div><div>not tried</div></a>" +
-			"<a href=#perl><div>Perl</div><div>not tried</div></a>" +
-			"<a href=#perl6><div>Perl 6</div><div>not tried</div></a>" +
-			"<a href=#php><div>PHP</div><div>not tried</div></a>" +
-			"<a href=#python><div>Python</div><div>not tried</div></a>" +
-			"<a href=#ruby><div>Ruby</div><div>not tried</div></a></div>",
+			"<a href=#bash title=Bash>not tried</a>" +
+			"<a href=#haskell title=Haskell>not tried</a>" +
+			"<a href=#javascript title=JavaScript>not tried</a>" +
+			"<a href=#lisp title=Lisp>not tried</a>" +
+			"<a href=#lua title=Lua>not tried</a>" +
+			"<a href=#perl title=Perl>not tried</a>" +
+			`<a href=#perl6 title="Perl 6">not tried</a>` +
+			"<a href=#php title=PHP>not tried</a>" +
+			"<a href=#python title=Python>not tried</a>" +
+			"<a href=#ruby title=Ruby>not tried</a></div>",
 	))
 
 	var html []byte

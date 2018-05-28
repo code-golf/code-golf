@@ -2,7 +2,7 @@
 
 const hole = decodeURI(location.pathname.slice(4));
 
-let activeTextarea, activeStrokes;
+let activeTab, activeTextarea;
 
 function calcStrokes(textarea) {
     const len = [...textarea.value].length;
@@ -17,7 +17,7 @@ function render() {
 
     code.textContent = activeTextarea.value + "\n";
 
-    activeStrokes.textContent = calcStrokes(activeTextarea);
+    activeTab.textContent = calcStrokes(activeTextArea);
 
     Prism.highlightElement(code);
 }
@@ -40,7 +40,7 @@ onload = function() {
         textarea.setAttribute('spellcheck', 'false');
         textarea.value = div.textContent;
 
-        document.querySelector('[href="#' + div.dataset.lang + '"] div:nth-child(2)')
+        document.querySelector('[href="#' + div.dataset.lang + '"]')
                 .textContent = calcStrokes(textarea);
 
         // Fixing iOS "drunk-text" issue
@@ -99,7 +99,7 @@ onload = function() {
         for (let tab of document.querySelectorAll('#tabs a'))
             if (tab.href === location.href) {
                 tab.classList.add('on');
-                activeStrokes = tab.children[1];
+                activeTab = tab;
             }
             else
                 tab.classList.remove('on');

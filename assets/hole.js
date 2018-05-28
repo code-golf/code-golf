@@ -27,12 +27,12 @@ onload = function() {
             value: data.hasOwnProperty(lang) ? data[lang] : '',
         });
 
-        let div = document.querySelector('[href="#' + lang + '"] div:nth-child(2)');
+        let tab = document.querySelector('[href="#' + lang + '"]');
 
         let callback = function(editor) {
             let len = [...editor.getValue()].length;
 
-            div.innerText = len === 1 ? '1 char'
+            tab.innerText = len === 1 ? '1 char'
                           : len       ? len + ' chars'
                           :             'not tried';
         };
