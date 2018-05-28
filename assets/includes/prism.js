@@ -1,5 +1,5 @@
 /* PrismJS 1.14.0
-http://prismjs.com/download.html#themes=prism-okaidia&languages=markup+clike+javascript+bash+ruby+markup-templating+lua+perl+php+python&plugins=line-numbers */
+http://prismjs.com/download.html#themes=prism-okaidia&languages=markup+clike+javascript+bash+ruby+markup-templating+haskell+lisp+lua+perl+php+python */
 var _self = window;
 
 /**
@@ -616,23 +616,24 @@ Prism.languages.insertBefore('javascript', 'keyword', {
 
 Prism.languages.insertBefore('javascript', 'string', {
 	'template-string': {
-		pattern: /`(?:\\[\s\S]|[^\\`])*`/,
+		pattern: /`(?:\\[\s\S]|\${[^}]+}|[^\\`])*`/,
 		greedy: true,
 		inside: {
 			'interpolation': {
-				pattern: /\$\{[^}]+\}/,
+				pattern: /\${[^}]+}/,
 				inside: {
 					'interpolation-punctuation': {
-						pattern: /^\$\{|\}$/,
+						pattern: /^\${|}$/,
 						alias: 'punctuation'
 					},
-					rest: Prism.languages.javascript
+					rest: null // See below
 				}
 			},
 			'string': /[\s\S]+/
 		}
 	}
 });
+Prism.languages.javascript['template-string'].inside['interpolation'].inside.rest = Prism.languages.javascript;
 
 if (Prism.languages.markup) {
 	Prism.languages.insertBefore('markup', 'tag', {
@@ -726,7 +727,7 @@ Prism.languages.js = Prism.languages.javascript;
 	inside.string = Prism.languages.bash.string;
 	inside['function'] = Prism.languages.bash['function'];
 	inside.keyword = Prism.languages.bash.keyword;
-	inside.boolean = Prism.languages.bash.boolean;
+	inside['boolean'] = Prism.languages.bash['boolean'];
 	inside.operator = Prism.languages.bash.operator;
 	inside.punctuation = Prism.languages.bash.punctuation;
 	
@@ -953,6 +954,237 @@ Object.defineProperties(Prism.languages['markup-templating'], {
 		}
 	}
 });
+Prism.languages.haskell= {
+	'comment': {
+		pattern: /(^|[^-!#$%*+=?&@|~.:<>^\\\/])(?:--[^-!#$%*+=?&@|~.:<>^\\\/].*|{-[\s\S]*?-})/m,
+		lookbehind: true
+	},
+	'char': /'(?:[^\\']|\\(?:[abfnrtv\\"'&]|\^[A-Z@[\]^_]|NUL|SOH|STX|ETX|EOT|ENQ|ACK|BEL|BS|HT|LF|VT|FF|CR|SO|SI|DLE|DC1|DC2|DC3|DC4|NAK|SYN|ETB|CAN|EM|SUB|ESC|FS|GS|RS|US|SP|DEL|\d+|o[0-7]+|x[0-9a-fA-F]+))'/,
+	'string': {
+		pattern: /"(?:[^\\"]|\\(?:[abfnrtv\\"'&]|\^[A-Z@[\]^_]|NUL|SOH|STX|ETX|EOT|ENQ|ACK|BEL|BS|HT|LF|VT|FF|CR|SO|SI|DLE|DC1|DC2|DC3|DC4|NAK|SYN|ETB|CAN|EM|SUB|ESC|FS|GS|RS|US|SP|DEL|\d+|o[0-7]+|x[0-9a-fA-F]+)|\\\s+\\)*"/,
+		greedy: true
+	},
+	'keyword' : /\b(?:case|class|data|deriving|do|else|if|in|infixl|infixr|instance|let|module|newtype|of|primitive|then|type|where)\b/,
+	'import_statement' : {
+		// The imported or hidden names are not included in this import
+		// statement. This is because we want to highlight those exactly like
+		// we do for the names in the program.
+		pattern: /((?:\r?\n|\r|^)\s*)import\s+(?:qualified\s+)?(?:[A-Z][\w']*)(?:\.[A-Z][\w']*)*(?:\s+as\s+(?:[A-Z][_a-zA-Z0-9']*)(?:\.[A-Z][\w']*)*)?(?:\s+hiding\b)?/m,
+		lookbehind: true,
+		inside: {
+			'keyword': /\b(?:import|qualified|as|hiding)\b/
+		}
+	},
+	// These are builtin variables only. Constructors are highlighted later as a constant.
+	'builtin': /\b(?:abs|acos|acosh|all|and|any|appendFile|approxRational|asTypeOf|asin|asinh|atan|atan2|atanh|basicIORun|break|catch|ceiling|chr|compare|concat|concatMap|const|cos|cosh|curry|cycle|decodeFloat|denominator|digitToInt|div|divMod|drop|dropWhile|either|elem|encodeFloat|enumFrom|enumFromThen|enumFromThenTo|enumFromTo|error|even|exp|exponent|fail|filter|flip|floatDigits|floatRadix|floatRange|floor|fmap|foldl|foldl1|foldr|foldr1|fromDouble|fromEnum|fromInt|fromInteger|fromIntegral|fromRational|fst|gcd|getChar|getContents|getLine|group|head|id|inRange|index|init|intToDigit|interact|ioError|isAlpha|isAlphaNum|isAscii|isControl|isDenormalized|isDigit|isHexDigit|isIEEE|isInfinite|isLower|isNaN|isNegativeZero|isOctDigit|isPrint|isSpace|isUpper|iterate|last|lcm|length|lex|lexDigits|lexLitChar|lines|log|logBase|lookup|map|mapM|mapM_|max|maxBound|maximum|maybe|min|minBound|minimum|mod|negate|not|notElem|null|numerator|odd|or|ord|otherwise|pack|pi|pred|primExitWith|print|product|properFraction|putChar|putStr|putStrLn|quot|quotRem|range|rangeSize|read|readDec|readFile|readFloat|readHex|readIO|readInt|readList|readLitChar|readLn|readOct|readParen|readSigned|reads|readsPrec|realToFrac|recip|rem|repeat|replicate|return|reverse|round|scaleFloat|scanl|scanl1|scanr|scanr1|seq|sequence|sequence_|show|showChar|showInt|showList|showLitChar|showParen|showSigned|showString|shows|showsPrec|significand|signum|sin|sinh|snd|sort|span|splitAt|sqrt|subtract|succ|sum|tail|take|takeWhile|tan|tanh|threadToIOResult|toEnum|toInt|toInteger|toLower|toRational|toUpper|truncate|uncurry|undefined|unlines|until|unwords|unzip|unzip3|userError|words|writeFile|zip|zip3|zipWith|zipWith3)\b/,
+	// decimal integers and floating point numbers | octal integers | hexadecimal integers
+	'number' : /\b(?:\d+(?:\.\d+)?(?:e[+-]?\d+)?|0o[0-7]+|0x[0-9a-f]+)\b/i,
+	// Most of this is needed because of the meaning of a single '.'.
+	// If it stands alone freely, it is the function composition.
+	// It may also be a separator between a module name and an identifier => no
+	// operator. If it comes together with other special characters it is an
+	// operator too.
+	'operator' : /\s\.\s|[-!#$%*+=?&@|~.:<>^\\\/]*\.[-!#$%*+=?&@|~.:<>^\\\/]+|[-!#$%*+=?&@|~.:<>^\\\/]+\.[-!#$%*+=?&@|~.:<>^\\\/]*|[-!#$%*+=?&@|~:<>^\\\/]+|`([A-Z][\w']*\.)*[_a-z][\w']*`/,
+	// In Haskell, nearly everything is a variable, do not highlight these.
+	'hvariable': /\b(?:[A-Z][\w']*\.)*[_a-z][\w']*\b/,
+	'constant': /\b(?:[A-Z][\w']*\.)*[A-Z][\w']*\b/,
+	'punctuation' : /[{}[\];(),.:]/
+};
+
+(function (Prism) {
+	// Functions to construct regular expressions
+	// simple form
+	// e.g. (interactive ... or (interactive)
+	function simple_form(name) {
+		return new RegExp('(\\()' + name + '(?=[\\s\\)])');
+	}
+	// booleans and numbers
+	function primitive(pattern) {
+		return new RegExp('([\\s([])' + pattern + '(?=[\\s)])');
+	}
+
+	// Patterns in regular expressions
+
+	// Symbol name. See https://www.gnu.org/software/emacs/manual/html_node/elisp/Symbol-Type.html
+	// & and : are excluded as they are usually used for special purposes
+	var symbol = '[-+*/_~!@$%^=<>{}\\w]+';
+	// symbol starting with & used in function arguments
+	var marker = '&' + symbol;
+	// Open parenthesis for look-behind
+	var par = '(\\()';
+	var endpar = '(?=\\))';
+	// End the pattern with look-ahead space
+	var space = '(?=\\s)';
+
+	var language = {
+		// Three or four semicolons are considered a heading.
+		// See https://www.gnu.org/software/emacs/manual/html_node/elisp/Comment-Tips.html
+		heading: {
+			pattern: /;;;.*/,
+			alias: ['comment', 'title']
+		},
+		comment: /;.*/,
+		string: {
+			pattern: /"(?:[^"\\]*|\\.)*"/,
+			greedy: true,
+			inside: {
+				argument: /[-A-Z]+(?=[.,\s])/,
+				symbol: new RegExp('`' + symbol + "'")
+			}
+		},
+		'quoted-symbol': {
+			pattern: new RegExp("#?'" + symbol),
+			alias: ['variable', 'symbol']
+		},
+		'lisp-property': {
+			pattern: new RegExp(':' + symbol),
+			alias: 'property'
+		},
+		splice: {
+			pattern: new RegExp(',@?' + symbol),
+			alias: ['symbol', 'variable']
+		},
+		keyword: [
+			{
+				pattern: new RegExp(
+					par +
+						'(?:(?:lexical-)?let\\*?|(?:cl-)?letf|if|when|while|unless|cons|cl-loop|and|or|not|cond|setq|error|message|null|require|provide|use-package)' +
+						space
+				),
+				lookbehind: true
+			},
+			{
+				pattern: new RegExp(
+					par + '(?:for|do|collect|return|finally|append|concat|in|by)' + space
+				),
+				lookbehind: true
+			},
+		],
+		declare: {
+			pattern: simple_form('declare'),
+			lookbehind: true,
+			alias: 'keyword'
+		},
+		interactive: {
+			pattern: simple_form('interactive'),
+			lookbehind: true,
+			alias: 'keyword'
+		},
+		boolean: {
+			pattern: primitive('(?:t|nil)'),
+			lookbehind: true
+		},
+		number: {
+			pattern: primitive('[-+]?\\d+(?:\\.\\d*)?'),
+			lookbehind: true
+		},
+		defvar: {
+			pattern: new RegExp(par + 'def(?:var|const|custom|group)\\s+' + symbol),
+			lookbehind: true,
+			inside: {
+				keyword: /^def[a-z]+/,
+				variable: new RegExp(symbol)
+			}
+		},
+		defun: {
+			pattern: new RegExp(
+				par +
+					'(?:cl-)?(?:defun\\*?|defmacro)\\s+' +
+					symbol +
+					'\\s+\\([\\s\\S]*?\\)'
+			),
+			lookbehind: true,
+			inside: {
+				keyword: /^(?:cl-)?def\S+/,
+				// See below, this property needs to be defined later so that it can
+				// reference the language object.
+				arguments: null,
+				function: {
+					pattern: new RegExp('(^\\s)' + symbol),
+					lookbehind: true
+				},
+				punctuation: /[()]/
+			}
+		},
+		lambda: {
+			pattern: new RegExp(par + 'lambda\\s+\\((?:&?' + symbol + '\\s*)*\\)'),
+			lookbehind: true,
+			inside: {
+				keyword: /^lambda/,
+				// See below, this property needs to be defined later so that it can
+				// reference the language object.
+				arguments: null,
+				punctuation: /[()]/
+			}
+		},
+		car: {
+			pattern: new RegExp(par + symbol),
+			lookbehind: true
+		},
+		punctuation: [
+			// open paren, brackets, and close paren
+			/(['`,]?\(|[)\[\]])/,
+			// cons
+			{
+				pattern: /(\s)\.(?=\s)/,
+				lookbehind: true
+			},
+		]
+	};
+
+	var arg = {
+		'lisp-marker': new RegExp(marker),
+		rest: {
+			argument: {
+				pattern: new RegExp(symbol),
+				alias: 'variable'
+			},
+			varform: {
+				pattern: new RegExp(par + symbol + '\\s+\\S[\\s\\S]*' + endpar),
+				lookbehind: true,
+				inside: {
+					string: language.string,
+					boolean: language.boolean,
+					number: language.number,
+					symbol: language.symbol,
+					punctuation: /[()]/
+				}
+			}
+		}
+	};
+
+	var forms = '\\S+(?:\\s+\\S+)*';
+
+	var arglist = {
+		pattern: new RegExp(par + '[\\s\\S]*' + endpar),
+		lookbehind: true,
+		inside: {
+			'rest-vars': {
+				pattern: new RegExp('&(?:rest|body)\\s+' + forms),
+				inside: arg
+			},
+			'other-marker-vars': {
+				pattern: new RegExp('&(?:optional|aux)\\s+' + forms),
+				inside: arg
+			},
+			keys: {
+				pattern: new RegExp('&key\\s+' + forms + '(?:\\s+&allow-other-keys)?'),
+				inside: arg
+			},
+			argument: {
+				pattern: new RegExp(symbol),
+				alias: 'variable'
+			},
+			punctuation: /[()]/
+		}
+	};
+
+	language['lambda'].inside.arguments = arglist;
+	language['defun'].inside.arguments = Prism.util.clone(arglist);
+	language['defun'].inside.arguments.inside.sublist = arglist;
+
+	Prism.languages.lisp = language;
+}(Prism));
 Prism.languages.lua = {
 	'comment': /^#!.+|--(?:\[(=*)\[[\s\S]*?\]\1\]|.*)/m,
 	// \z may be used to skip the following space
@@ -1318,158 +1550,3 @@ Prism.languages.python = {
 	'operator': /[-+%=]=?|!=|\*\*?=?|\/\/?=?|<[<=>]?|>[=>]?|[&|^~]|\b(?:or|and|not)\b/,
 	'punctuation': /[{}[\];(),.:]/
 };
-
-(function () {
-	/**
-	 * Plugin name which is used as a class name for <pre> which is activating the plugin
-	 * @type {String}
-	 */
-	var PLUGIN_NAME = 'line-numbers';
-	
-	/**
-	 * Regular expression used for determining line breaks
-	 * @type {RegExp}
-	 */
-	var NEW_LINE_EXP = /\n(?!$)/g;
-
-	/**
-	 * Resizes line numbers spans according to height of line of code
-	 * @param {Element} element <pre> element
-	 */
-	var _resizeElement = function (element) {
-		var codeStyles = getStyles(element);
-		var whiteSpace = codeStyles['white-space'];
-
-		if (whiteSpace === 'pre-wrap' || whiteSpace === 'pre-line') {
-			var codeElement = element.querySelector('code');
-			var lineNumbersWrapper = element.querySelector('.line-numbers-rows');
-			var lineNumberSizer = element.querySelector('.line-numbers-sizer');
-			var codeLines = codeElement.textContent.split(NEW_LINE_EXP);
-
-			if (!lineNumberSizer) {
-				lineNumberSizer = document.createElement('span');
-				lineNumberSizer.className = 'line-numbers-sizer';
-
-				codeElement.appendChild(lineNumberSizer);
-			}
-
-			lineNumberSizer.style.display = 'block';
-
-			codeLines.forEach(function (line, lineNumber) {
-				lineNumberSizer.textContent = line || '\n';
-				var lineSize = lineNumberSizer.getBoundingClientRect().height;
-				lineNumbersWrapper.children[lineNumber].style.height = lineSize + 'px';
-			});
-
-			lineNumberSizer.textContent = '';
-			lineNumberSizer.style.display = 'none';
-		}
-	};
-
-	/**
-	 * Returns style declarations for the element
-	 * @param {Element} element
-	 */
-	var getStyles = function (element) {
-		if (!element) {
-			return null;
-		}
-
-		return window.getComputedStyle ? getComputedStyle(element) : (element.currentStyle || null);
-	};
-
-	window.addEventListener('resize', function () {
-		Array.prototype.forEach.call(document.querySelectorAll('pre.' + PLUGIN_NAME), _resizeElement);
-	});
-
-	Prism.hooks.add('complete', function (env) {
-		if (!env.code) {
-			return;
-		}
-
-		// works only for <code> wrapped inside <pre> (not inline)
-		var pre = env.element.parentNode;
-		var clsReg = /\s*\bline-numbers\b\s*/;
-		if (
-			!pre || !/pre/i.test(pre.nodeName) ||
-			// Abort only if nor the <pre> nor the <code> have the class
-			(!clsReg.test(pre.className) && !clsReg.test(env.element.className))
-		) {
-			return;
-		}
-
-		if (env.element.querySelector('.line-numbers-rows')) {
-			// Abort if line numbers already exists
-			return;
-		}
-
-		if (clsReg.test(env.element.className)) {
-			// Remove the class 'line-numbers' from the <code>
-			env.element.className = env.element.className.replace(clsReg, ' ');
-		}
-		if (!clsReg.test(pre.className)) {
-			// Add the class 'line-numbers' to the <pre>
-			pre.className += ' line-numbers';
-		}
-
-		var match = env.code.match(NEW_LINE_EXP);
-		var linesNum = match ? match.length + 1 : 1;
-		var lineNumbersWrapper;
-
-		var lines = new Array(linesNum + 1);
-		lines = lines.join('<span></span>');
-
-		lineNumbersWrapper = document.createElement('span');
-		lineNumbersWrapper.setAttribute('aria-hidden', 'true');
-		lineNumbersWrapper.className = 'line-numbers-rows';
-		lineNumbersWrapper.innerHTML = lines;
-
-		if (pre.hasAttribute('data-start')) {
-			pre.style.counterReset = 'linenumber ' + (parseInt(pre.getAttribute('data-start'), 10) - 1);
-		}
-
-		env.element.appendChild(lineNumbersWrapper);
-
-		_resizeElement(pre);
-
-		Prism.hooks.run('line-numbers', env);
-	});
-
-	Prism.hooks.add('line-numbers', function (env) {
-		env.plugins = env.plugins || {};
-		env.plugins.lineNumbers = true;
-	});
-	
-	/**
-	 * Global exports
-	 */
-	Prism.plugins.lineNumbers = {
-		/**
-		 * Get node for provided line number
-		 * @param {Element} element pre element
-		 * @param {Number} number line number
-		 * @return {Element|undefined}
-		 */
-		getLine: function (element, number) {
-			if (element.tagName !== 'PRE' || !element.classList.contains(PLUGIN_NAME)) {
-				return;
-			}
-
-			var lineNumberRows = element.querySelector('.line-numbers-rows');
-			var lineNumberStart = parseInt(element.getAttribute('data-start'), 10) || 1;
-			var lineNumberEnd = lineNumberStart + (lineNumberRows.children.length - 1);
-
-			if (number < lineNumberStart) {
-				number = lineNumberStart;
-			}
-			if (number > lineNumberEnd) {
-				number = lineNumberEnd;
-			}
-
-			var lineIndex = number - lineNumberStart;
-
-			return lineNumberRows.children[lineIndex];
-		}
-	};
-
-}());
