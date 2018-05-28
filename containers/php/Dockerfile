@@ -2,15 +2,16 @@ FROM alpine:edge
 
 RUN apk add --no-cache curl gcc make musl-dev
 
-RUN curl -L https://php.net/distributions/php-7.2.5.tar.xz | tar xJf -
+RUN curl -L https://php.net/distributions/php-7.2.6.tar.xz | tar xJf -
 
-RUN cd php-7.2.5   \
- && ./configure    \
-    --disable-all  \
-    --disable-ipv6 \
-    --enable-cli   \
-    --prefix=/usr  \
- && make -j`nproc` install
+RUN cd php-7.2.6           \
+ && ./configure            \
+    --disable-all          \
+    --disable-ipv6         \
+    --enable-cli           \
+    --prefix=/usr          \
+ && make -j`nproc` install \
+ && strip /usr/bin/php
 
 FROM scratch
 
