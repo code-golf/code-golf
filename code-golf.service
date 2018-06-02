@@ -4,6 +4,7 @@ Description=code-golf
 [Service]
 EnvironmentFile=/home/jraspass/code-golf.env
 ExecStart=/home/jraspass/code-golf/app
+Restart=always
 Type=simple
 WorkingDirectory=/home/jraspass/code-golf
 
