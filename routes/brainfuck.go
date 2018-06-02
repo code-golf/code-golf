@@ -31,7 +31,7 @@ func brainfuck() ([]string, string) {
 		"Ruby",
 		"Code Golf",
 		"abcdefghijklmnopqrstuvwxyz",
-		"eL34NfeOL454KdeJ44JOdefePK55gQ67ShfTL787KegJ77JTeghfUK88iV9:XjgYL:;:KfiJ::JYfijgZK;;k[<=]lh^L=>=KgkJ==J^gklh_K>>m`?@bnicl@A@KhmJ@@jchmnidkaa",
+		"eL34NfeOL454KdeJ44JOdefePK55gQ67ShfTL787KegJ77JTeghfUK88iV9:XjgYL:;:KfiJ::JYfijgZK;;k[<=]lh^L=>=KgkJ==J^gklh_K>>m`?@bnicL@A@KhmJ@@JchmnidKAA",
 	}
 
 	// Shuffle
