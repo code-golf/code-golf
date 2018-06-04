@@ -22,6 +22,7 @@ func about(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		"<a href=scores>leaderboards</a>." +
 		"<dt>Which Languages Are Supported?" +
 		"<dd>Currently <a href=//www.gnu.org/software/bash/>Bash</a>, " +
+		"<a href=//www.haskell.org/ghc/>Haskell</a>, " +
 		"<a href=//developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Introduction_to_the_JavaScript_shell>JavaScript</a>, " +
 		"<a href=//clisp.sourceforge.io>Lisp</a>, " +
 		"<a href=//www.lua.org/>Lua</a>, " +
