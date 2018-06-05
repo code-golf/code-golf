@@ -170,7 +170,7 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		             CASE WHEN user_id = $1 THEN ' class=me' END,
 		             '><td>',
 		             TO_CHAR(
-		                 RANK() OVER (ORDER BY strokes),
+		                 RANK() OVER (ORDER BY score DESC, strokes),
 		                 'FM999"<sup>"th"</sup>"'
 		             ),
 		             '<td><img src="//avatars.githubusercontent.com/',
@@ -187,7 +187,7 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		         )
 		    FROM `+table+`
 		    JOIN users on user_id = id
-		ORDER BY strokes, submitted`,
+		ORDER BY score DESC, strokes, submitted`,
 		userID,
 	)
 
