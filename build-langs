@@ -8,7 +8,9 @@ for name in Bash Haskell JavaScript Lisp Lua Perl Perl\ 6 PHP Python Ruby; do
     lang=${name,,}      # lowercase
     lang=${lang// /}    # trim space
 
-    rm -rf $lang/rootfs/*
+    # Start with a clean rootfs.
+    rm -rf $lang/rootfs
+    mkdir $lang/rootfs
 
     docker build -t code-golf-$lang $lang
 
@@ -37,9 +39,9 @@ for name in Bash Haskell JavaScript Lisp Lua Perl Perl\ 6 PHP Python Ruby; do
     docker rm -f $id
 
     # Remove the crap we gained from running the container, this is hacky.
-    rm -fr $lang/rootfs/{.dockerenv,dev,etc,proc,sys}
+    rm -fr $lang/rootfs/{.dockerenv,dev,etc,proc,sys,tmp}
 
-    mkdir -p $lang/rootfs/{old-root,proc,tmp}
+    mkdir $lang/rootfs/{old-root,proc,tmp}
 
     # Lisp & Python need UIDs to actually resolve, madness!
     if [ $lang = lisp -o $lang = python ]; then
