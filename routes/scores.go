@@ -81,7 +81,7 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		w.Write([]byte("value=" + hole.ID + ">" + hole.Name))
 	}
 
-	w.Write([]byte("</select><select id=lang><option value>All langs"))
+	w.Write([]byte("</select><select id=lang><option value>All Langs"))
 
 	for _, lang := range langs {
 		w.Write([]byte("<option "))

@@ -37,7 +37,7 @@ func about(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		"<dd>Code Golf ties to track upstream closely, manually amending " +
 		"solutions if they cease to work on newer versions, the current " +
 		"version matrix is as follows:<br><br><table>" + versionTable + "</table>" +
-		"<dt>Is Perl customized in any way?" +
+		"<dt>Is Perl Customized in Any Way?" +
 		"<dd>Yes. Code Golf uses miniperl with no ability to load modules, " +
 		`but modern features like "say" and "state" enabled by default. ` +
 		"For full details read the <a href=//github.com/JRaspass/code-golf/blob/master/containers/perl/Dockerfile>dockerfile</a>." +
@@ -63,7 +63,7 @@ func about(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		"<dt>Are Submissions Resource Constrained?" +
 		"<dd>Yes. Execution time is limited to 5 seconds, CPU & RAM usage " +
 		"is unbounded but this will probably change soon." +
-		"<dt>Can I See Other Peoples Solutions?" +
+		"<dt>Can I See Other People's Solutions?" +
 		"<dd>Currently no, but a feature is in development to allow you to " +
 		"see any solution that you already beaten in score." +
 		"</dt>"

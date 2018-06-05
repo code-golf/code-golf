@@ -26,7 +26,7 @@ func hole(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 			"><div id=alert>Please " +
 				`<a href="//github.com/login/oauth/authorize?` +
 				`client_id=7f6709819023e9215205&scope=user:email">` +
-				"Login with GitHub</a> in order to save solutions " +
+				"login with GitHub</a> in order to save solutions " +
 				"and appear on the leaderboards.</div",
 		))
 	} else {
