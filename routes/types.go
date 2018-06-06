@@ -170,6 +170,9 @@ A Partridge in a Pear Tree.</blockquote>`,
 	}, {
 		"𝑒", "𝑒", "Medium",
 		"Print 𝑒 (Euler's number) to the first 1,000 decimal places.</p>",
+	}, {
+		"λ", "λ", "Medium",
+		"Print λ (Conway's constant) to the first 1,000 decimal places.</p>",
 	},
 }
 
