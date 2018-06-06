@@ -66,6 +66,25 @@ A Partridge in a Pear Tree.</blockquote>`,
  *****************
          *</pre>`,
 	}, {
+		"diamonds", "Diamonds", "Medium",
+		`Print a size ascending range of Diamonds using the numbers <b>1</b> to <b>9</b>, ranging from size <b>1</b> to size <b>9</b>, each diamond separated by a blank line.<p>A size <b>1</b> diamond should look like this, a single centered <b>1</b>:<pre>         1</pre><p>With the largest size <b>9</b> diamond looking like this:<pre>         1
+        121
+       12321
+      1234321
+     123454321
+    12345654321
+   1234567654321
+  123456787654321
+ 12345678987654321
+  123456787654321
+   1234567654321
+    12345654321
+     123454321
+      1234321
+       12321
+        121
+         1</pre>`,
+	}, {
 		"divisors", "Divisors", "Fast",
 		"A number is a divisor of another number if it can divide into it with no remainder.<p>Print the positive divisors of each number from <b>1</b> to <b>100</b> inclusive, on their own line, with each divisor separated by a space.</p>",
 	}, {

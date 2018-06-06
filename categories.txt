@@ -3,7 +3,7 @@
 12 Days of Christmas
 99 Bottles of Beer
 Christmas Trees
-Diamonds *todo*
+Diamonds
 Sierpiński Triangle
 Swallowed a Fly *todo*
 
@@ -32,6 +32,7 @@ Evil Numbers
 Fibonacci
 Fizz Buzz
 Happy Numbers
+Niven Numbers
 Odious Numbers
 Pascal's Triangle
 Pernicious Numbers

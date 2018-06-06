@@ -38,6 +38,7 @@ CREATE TYPE public.hole AS ENUM (
     'arabic-to-roman',
     'brainfuck',
     'christmas-trees',
+    'diamonds',
     'divisors',
     'emirp-numbers',
     'evil-numbers',

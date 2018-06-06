@@ -112,19 +112,20 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		         WHEN '12-days-of-christmas' THEN 12
 		         WHEN '99-bottles-of-beer'   THEN 13
 		         WHEN 'christmas-trees'      THEN 14
-		         WHEN 'morse-decoder'        THEN 15
-		         WHEN 'morse-encoder'        THEN 16
-		         WHEN 'pangram-grep'         THEN 17
-		         WHEN 'seven-segment'        THEN 18
-		         WHEN 'sierpiński-triangle'  THEN 19
-		         WHEN 'π'                    THEN 20
-		         WHEN 'φ'                    THEN 21
-		         WHEN '𝑒'                    THEN 22
-		         WHEN 'τ'                    THEN 23
-		         WHEN 'arabic-to-roman'      THEN 24
-		         WHEN 'brainfuck'            THEN 25
-		         WHEN 'roman-to-arabic'      THEN 26
-		         WHEN 'spelling-numbers'     THEN 27
+		         WHEN 'diamonds'             THEN 15
+		         WHEN 'morse-decoder'        THEN 16
+		         WHEN 'morse-encoder'        THEN 17
+		         WHEN 'pangram-grep'         THEN 18
+		         WHEN 'seven-segment'        THEN 19
+		         WHEN 'sierpiński-triangle'  THEN 20
+		         WHEN 'π'                    THEN 21
+		         WHEN 'φ'                    THEN 22
+		         WHEN '𝑒'                    THEN 23
+		         WHEN 'τ'                    THEN 24
+		         WHEN 'arabic-to-roman'      THEN 25
+		         WHEN 'brainfuck'            THEN 26
+		         WHEN 'roman-to-arabic'      THEN 27
+		         WHEN 'spelling-numbers'     THEN 28
 		         END, row_number`,
 		userID,
 	)
