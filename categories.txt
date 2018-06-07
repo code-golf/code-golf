@@ -19,9 +19,9 @@ Quine
 τ
 φ
 𝑒
+λ  (aka Conway's constant)
 √2 *todo* (aka Pythagoras' constant)
 γ  *todo* (aka Euler–Mascheroni constant)
-λ  *todo* (aka Conway's constant)
 K  *todo* (aka Khinchin's constant)
 
 = Sequence =
