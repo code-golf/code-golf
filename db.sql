@@ -57,12 +57,12 @@ CREATE TYPE public.hole AS ENUM (
     'roman-to-arabic',
     'seven-segment',
     'sierpiński-triangle',
+    'λ',
     'spelling-numbers',
     'π',
     'τ',
     'φ',
-    '𝑒',
-    'λ',
+    '𝑒'
 );
 
 

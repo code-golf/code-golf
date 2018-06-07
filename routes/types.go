@@ -159,6 +159,9 @@ A Partridge in a Pear Tree.</blockquote>`,
 		"spelling-numbers", "Spelling Numbers", "Slow",
 		"For each number argument print the same number spelled out in English.<p>The numbers will be in the range of <b>0</b> to <b>1,000</b> inclusive.</p>",
 	}, {
+		"λ", "λ", "Medium",
+		"Print λ (Conway's constant) to the first 1,000 decimal places.</p>",
+	}, {
 		"π", "π", "Medium",
 		"Print π (Pi) to the first 1,000 decimal places.</p>",
 	}, {
@@ -170,9 +173,6 @@ A Partridge in a Pear Tree.</blockquote>`,
 	}, {
 		"𝑒", "𝑒", "Medium",
 		"Print 𝑒 (Euler's number) to the first 1,000 decimal places.</p>",
-	}, {
-		"λ", "λ", "Medium",
-		"Print λ (Conway's constant) to the first 1,000 decimal places.</p>",
 	},
 }
 

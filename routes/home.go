@@ -118,11 +118,11 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		         WHEN 'pangram-grep'         THEN 18
 		         WHEN 'seven-segment'        THEN 19
 		         WHEN 'sierpiński-triangle'  THEN 20
-		         WHEN 'π'                    THEN 21
-		         WHEN 'φ'                    THEN 22
-		         WHEN '𝑒'                    THEN 23
-		         WHEN 'τ'                    THEN 24
-		         WHEN 'λ'                    THEN 25
+		         WHEN 'λ'                    THEN 21
+		         WHEN 'π'                    THEN 22
+		         WHEN 'φ'                    THEN 23
+		         WHEN '𝑒'                    THEN 24
+		         WHEN 'τ'                    THEN 25
 		         WHEN 'arabic-to-roman'      THEN 26
 		         WHEN 'brainfuck'            THEN 27
 		         WHEN 'roman-to-arabic'      THEN 28

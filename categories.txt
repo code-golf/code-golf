@@ -15,14 +15,14 @@ Quine
 
 = Math =
 
-π
-τ
-φ
-𝑒
-λ  (aka Conway's constant)
-√2 *todo* (aka Pythagoras' constant)
-γ  *todo* (aka Euler–Mascheroni constant)
-K  *todo* (aka Khinchin's constant)
+λ  (Conway's constant)
+π  (Pi)
+τ  (Tau)
+φ  (Phi)
+𝑒  (Euler's number)
+√2 (Pythagoras' constant) *todo*
+γ  (Euler–Mascheroni constant) *todo*
+K  (Khinchin's constant) *todo*
 
 = Sequence =
 
