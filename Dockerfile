@@ -6,12 +6,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates curl git make nasm
 
 # https://golang.org/dl/
-RUN curl -SSL https://dl.google.com/go/go1.10.2.linux-amd64.tar.gz \
+RUN curl -SSL https://dl.google.com/go/go1.10.3.linux-amd64.tar.gz \
   | tar -xzC /usr/local
 
 RUN git clone https://go.googlesource.com/go \
  && cd go                                    \
- && git checkout 9428023                     \
+ && git checkout c06f027                     \
  && cd src                                   \
  && ./make.bash                              \
  && chmod +rx /root
