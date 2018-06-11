@@ -9,6 +9,13 @@ RUN curl -L https://github.com/google/brotli/archive/v1.0.4.tar.gz \
  && make -j`nproc`                                                 \
  && mv bin/brotli /usr/bin
 
+# Zopfli
+RUN curl -L https://github.com/google/zopfli/archive/zopfli-1.0.2.tar.gz \
+  | tar xzf -                                                            \
+ && cd zopfli-zopfli-1.0.2                                               \
+ && make -j`nproc`                                                       \
+ && mv zopfli /usr/bin
+
 # Closure Compiler
 RUN curl http://dl.google.com/closure-compiler/compiler-20180506.tar.gz \
   | tar -zxf - -C /                                                     \

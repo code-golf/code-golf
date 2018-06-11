@@ -62,7 +62,13 @@ GO
     }
 
     $data{"${name}Br"} = run($data, qw/brotli/);
-    $data{"${name}Gz"} = run($data, qw/gzip -9/);
+
+    # Zopfli can't stream https://github.com/google/zopfli/issues/17
+    open my $tmp, '>', '/tmp/zopfli';
+    print $tmp $data;
+    close $tmp;
+
+    $data{"${name}Gz"} = `zopfli -c /tmp/zopfli`;
 
     my $mime = /\.css$/ ? 'text/css' : 'application/javascript';
     my $path = $paths{$name} = '/assets/' . md5_base64($data) =~ y|+/|-_|r;
