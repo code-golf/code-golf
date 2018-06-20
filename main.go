@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"syscall"
 	"time"
 
 	"github.com/jraspass/code-golf/routes"
@@ -32,7 +33,7 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}(time.Now())
 
 	switch r.Host {
-	case "code-golf.io":
+	case "code-golf.io", "localhost":
 		routes.Router.ServeHTTP(w, r)
 	case "raspass.me":
 		raspass(w, r)
@@ -62,10 +63,15 @@ func main() {
 				tls.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, // HTTP/2-required.
 			},
 			CurvePreferences:         []tls.CurveID{tls.CurveP256, tls.X25519},
-			GetCertificate:           certManager.GetCertificate,
 			MinVersion:               tls.VersionTLS12,
 			PreferServerCipherSuites: true,
 		},
+	}
+
+	_, dev := syscall.Getenv("DEV")
+
+	if !dev {
+		server.TLSConfig.GetCertificate = certManager.GetCertificate
 	}
 
 	server.TLSConfig.BuildNameToCertificate()
@@ -76,5 +82,9 @@ func main() {
 	go func() { panic(http.ListenAndServe(":80", certManager.HTTPHandler(nil))) }()
 
 	// Serve HTTPS.
-	panic(server.ListenAndServeTLS("", ""))
+	if dev {
+		panic(server.ListenAndServeTLS("server.crt", "server.key"))
+	} else {
+		panic(server.ListenAndServeTLS("", ""))
+	}
 }

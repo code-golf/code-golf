@@ -1,0 +1,24 @@
+version: '2'
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile.app
+        environment:
+            DEV:       1
+            PGHOST:    db
+            PGSSLMODE: disable
+            PGUSER:    code_golf
+        ports:
+            - 80:80
+            - 443:443
+        privileged: true
+        volumes:
+            - .:/code-golf
+        working_dir: /code-golf
+    db:
+        build:
+            context: .
+            dockerfile: Dockerfile.db
+        environment:
+            POSTGRES_USER: code_golf

@@ -66,8 +66,6 @@ CREATE TYPE public.hole AS ENUM (
 );
 
 
-ALTER TYPE public.hole OWNER TO jraspass;
-
 --
 -- Name: lang; Type: TYPE; Schema: public; Owner: jraspass
 --
@@ -85,8 +83,6 @@ CREATE TYPE public.lang AS ENUM (
     'ruby'
 );
 
-
-ALTER TYPE public.lang OWNER TO jraspass;
 
 SET default_tablespace = '';
 
@@ -106,8 +102,6 @@ CREATE TABLE public.solutions (
 );
 
 
-ALTER TABLE public.solutions OWNER TO jraspass;
-
 --
 -- Name: users; Type: TABLE; Schema: public; Owner: jraspass
 --
@@ -117,8 +111,6 @@ CREATE TABLE public.users (
     login text NOT NULL
 );
 
-
-ALTER TABLE public.users OWNER TO jraspass;
 
 --
 -- Name: solutions solutions_pkey; Type: CONSTRAINT; Schema: public; Owner: jraspass
