@@ -1,9 +1,9 @@
 'use strict';
 
-const nowDate  = new Date().toDateString();
-const nowMonth = new Date().getMonth();
-const nowYear  = new Date().getFullYear();
-const months   = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+let nowDate  = new Date().toDateString();
+let nowMonth = new Date().getMonth();
+let nowYear  = new Date().getFullYear();
+let months   = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 onload = function() {
     for (let time of document.querySelectorAll('time')) {

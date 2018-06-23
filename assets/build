@@ -54,11 +54,15 @@ GO
         $data = run($data, 'csso');
     }
     else {
-        $data = run(
-            $data,
+        my @cmd = (
             qw(java -jar /closure-compiler.jar),
             qw(--assume_function_wrapper --language_out ECMASCRIPT_2017),
         );
+
+        push @cmd, qw(--externs assets/includes/externs.js -O ADVANCED)
+            if $_ eq 'scores.js';
+
+        $data = run( $data, @cmd );
     }
 
     $data{"${name}Br"} = run($data, qw/brotli/);
