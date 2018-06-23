@@ -281,7 +281,8 @@ CodeMirror.defineMode("ruby", function(config) {
     },
 
     electricInput: /^\s*(?:end|rescue|elsif|else|\})$/,
-    lineComment: "#"
+    lineComment: "#",
+    fold: "indent"
   };
 });
 });

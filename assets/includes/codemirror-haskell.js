@@ -257,7 +257,4 @@ CodeMirror.defineMode("haskell", function(_config, modeConfig) {
   };
 
 });
-
-CodeMirror.defineMIME("text/x-haskell", "haskell");
-
 });
