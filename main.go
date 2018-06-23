@@ -32,14 +32,7 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}(time.Now())
 
-	switch r.Host {
-	case "code-golf.io", "localhost":
-		routes.Router.ServeHTTP(w, r)
-	case "raspass.me":
-		raspass(w, r)
-	case "www.code-golf.io", "www.raspass.me":
-		http.Redirect(w, r, "//"+r.Host[4:]+r.URL.String(), 301)
-	}
+	routes.Router.ServeHTTP(w, r)
 }
 
 func main() {
@@ -49,7 +42,7 @@ func main() {
 		Cache:  autocert.DirCache("certs"),
 		Prompt: autocert.AcceptTOS,
 		HostPolicy: autocert.HostWhitelist(
-			"code-golf.io", "raspass.me", "www.code-golf.io", "www.raspass.me",
+			"code-golf.io", "www.code-golf.io",
 		),
 	}
 
