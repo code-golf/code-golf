@@ -17,9 +17,9 @@ func stats(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	w.Write([]byte(
 		"<link rel=stylesheet href=" + statsCssPath + "><script async src=" +
-			statsJsPath + "></script><main><div><div><span>" + noLangs +
-			"</span>Languages</div></div><div><div><span>" + noHoles +
-			"</span>Holes</div></div><div><div><span>",
+			statsJsPath + "></script><main><div><div><span data-x=" + noLangs +
+			">0</span>Languages</div></div><div><div><span data-x=" + noHoles +
+			">0</span>Holes</div></div><div><div><span data-x=",
 	))
 
 	if err := db.QueryRow("SELECT COUNT(DISTINCT user_id) FROM solutions").Scan(&data); err != nil {
@@ -28,16 +28,16 @@ func stats(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		w.Write(data)
 	}
 
-	w.Write([]byte("</span>Golfers</div></div><div><div><span>"))
+	w.Write([]byte(">0</span>Golfers</div></div><div><div><span data-x="))
 
-	if err := db.QueryRow("SELECT TO_CHAR(COUNT(*), 'FM9,999') FROM solutions").Scan(&data); err != nil {
+	if err := db.QueryRow("SELECT COUNT(*) FROM solutions").Scan(&data); err != nil {
 		panic(err)
 	} else {
 		w.Write(data)
 	}
 
 	// FIXME Make "Holes by Difficulty" data dynamic.
-	w.Write([]byte("</span>Solutions</div></div><div><div><canvas data-data=[11,12,4]></canvas></div></div><div><div><canvas data-data="))
+	w.Write([]byte(">0</span>Solutions</div></div><div><div><canvas data-data=[11,12,4]></canvas></div></div><div><div><canvas data-data="))
 
 	if err := db.QueryRow(
 		`SELECT ARRAY_TO_JSON(ARRAY_AGG(count))

@@ -1,14 +1,31 @@
 'use strict';
 
-/* include chart.js   */
-/* include countUp.js */
+/* include chart.js */
 
 Chart.defaults.global.layout.padding = 10;
 Chart.defaults.global.legend.display = false;
 
 onload = function() {
-    for (let span of document.querySelectorAll("span"))
-        new CountUp(span, 0, span.innerText.replace(/,/, '')).start();
+    for (let span of document.querySelectorAll("span")) {
+        let count, end = Number(span.dataset.x), start;
+
+        count = function(timestamp) {
+            if (!start)
+                start = timestamp;
+
+            let progress = timestamp - start;
+
+            let val = Math.floor(end * (progress / 2000));
+
+            span.textContent =
+                Math.min(val, end).toString().replace(/(\d)(\d{3})$/, '$1,$2');
+
+            if (progress < 2000)
+                requestAnimationFrame(count);
+        };
+
+        requestAnimationFrame(count);
+    }
 
     let canvases = document.querySelectorAll("canvas");
 
