@@ -10502,7 +10502,14 @@ function createResizer(handler) {
 	var resizer = document.createElement('div');
 	var cls = CSS_PREFIX + 'size-monitor';
 	var maxSize = 1000000;
-	var style =
+
+	resizer.className = cls;
+	resizer.innerHTML = '<div><div></div></div><div><div></div></div>';
+
+	var expand = resizer.childNodes[0];
+	var shrink = resizer.childNodes[1];
+
+	expand.style.cssText = resizer.style.cssText = shrink.style.cssText =
 		'position:absolute;' +
 		'left:0;' +
 		'top:0;' +
@@ -10511,32 +10518,21 @@ function createResizer(handler) {
 		'overflow:hidden;' +
 		'pointer-events:none;' +
 		'visibility:hidden;' +
-		'z-index:-1;';
+		'z-index:-1';
 
-	resizer.style.cssText = style;
-	resizer.className = cls;
-	resizer.innerHTML =
-		'<div class="' + cls + '-expand" style="' + style + '">' +
-			'<div style="' +
-				'position:absolute;' +
-				'width:' + maxSize + 'px;' +
-				'height:' + maxSize + 'px;' +
-				'left:0;' +
-				'top:0">' +
-			'</div>' +
-		'</div>' +
-		'<div class="' + cls + '-shrink" style="' + style + '">' +
-			'<div style="' +
-				'position:absolute;' +
-				'width:200%;' +
-				'height:200%;' +
-				'left:0; ' +
-				'top:0">' +
-			'</div>' +
-		'</div>';
+	expand.childNodes[0].style.cssText =
+		'position:absolute;' +
+		'width:' + maxSize + 'px;' +
+		'height:' + maxSize + 'px;' +
+		'left:0;' +
+		'top:0';
 
-	var expand = resizer.childNodes[0];
-	var shrink = resizer.childNodes[1];
+	shrink.childNodes[0].style.cssText =
+		'position:absolute;' +
+		'width:200%;' +
+		'height:200%;' +
+		'left:0; ' +
+		'top:0';
 
 	resizer._reset = function() {
 		expand.scrollLeft = maxSize;

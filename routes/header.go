@@ -14,19 +14,15 @@ func printHeader(w http.ResponseWriter, r *http.Request, status int) int {
 	header["Referrer-Policy"] = []string{"no-referrer"}
 	header["X-Content-Type-Options"] = []string{"nosniff"}
 	header["X-Frame-Options"] = []string{"DENY"}
-
-	// FIXME
-	if r.URL.Path != "/stats" {
-		header["Content-Security-Policy"] = []string{
-			"base-uri 'none';" +
-				"connect-src 'self';" +
-				"default-src 'none';" +
-				"form-action 'none';" +
-				"frame-ancestors 'none';" +
-				"img-src 'self' data: avatars.githubusercontent.com;" +
-				"script-src 'self';" +
-				"style-src 'self'",
-		}
+	header["Content-Security-Policy"] = []string{
+		"base-uri 'none';" +
+			"connect-src 'self';" +
+			"default-src 'none';" +
+			"form-action 'none';" +
+			"frame-ancestors 'none';" +
+			"img-src 'self' data: avatars.githubusercontent.com;" +
+			"script-src 'self';" +
+			"style-src 'self'",
 	}
 
 	w.WriteHeader(status)
