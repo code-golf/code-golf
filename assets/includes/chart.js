@@ -3707,7 +3707,7 @@ module.exports = {
 			// Skip animation frame requests until the active one is executed.
 			// This can happen when processing mouse events, e.g. 'mousemove'
 			// and 'mouseout' events will trigger multiple renders.
-			me.request = helpers.requestAnimFrame.call(window, function() {
+			me.request = requestAnimationFrame(function() {
 				me.request = null;
 				me.startDigest();
 			});
@@ -5528,22 +5528,6 @@ module.exports = function() {
 
 		return niceFraction * Math.pow(10, exponent);
 	};
-	// Request animation polyfill - http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
-	helpers.requestAnimFrame = (function() {
-		if (typeof window === 'undefined') {
-			return function(callback) {
-				callback();
-			};
-		}
-		return window.requestAnimationFrame ||
-			window.webkitRequestAnimationFrame ||
-			window.mozRequestAnimationFrame ||
-			window.oRequestAnimationFrame ||
-			window.msRequestAnimationFrame ||
-			function(callback) {
-				return window.setTimeout(callback, 1000 / 60);
-			};
-	}());
 	// -- DOM methods
 	helpers.getRelativePosition = function(evt, chart) {
 		var mouseX, mouseY;
@@ -10522,7 +10506,7 @@ function throttled(fn, thisArg) {
 
 		if (!ticking) {
 			ticking = true;
-			helpers.requestAnimFrame.call(window, function() {
+			requestAnimationFrame(function() {
 				ticking = false;
 				fn.apply(thisArg, args);
 			});
