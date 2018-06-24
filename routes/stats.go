@@ -52,7 +52,7 @@ func stats(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	if err := db.QueryRow(
 		`SELECT ARRAY_TO_JSON(ARRAY_AGG(ROW_TO_JSON(t)))
-		   FROM (SELECT CASE WHEN x = 1 THEN 1.05 ELSE x END, COUNT(*) y
+		   FROM (SELECT x, COUNT(*) y
 		   FROM (SELECT COUNT(DISTINCT hole) x FROM solutions GROUP BY user_id) z
 		GROUP BY x ORDER BY x) t`,
 	).Scan(&data); err != nil {

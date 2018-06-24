@@ -72,10 +72,6 @@ onload = function() {
                     label: function(item) {
                         let { xLabel: x, yLabel: y } = item;
 
-                        // HACK https://stackoverflow.com/questions/46856815
-                        if (x == 1.05)
-                            x = 1;
-
                         return `${y} golfer${y == 1 ? ' has' : 's have'} passed ${x} hole${x == 1 ? '' : 's'}`;
                     },
                     title: function() {},
