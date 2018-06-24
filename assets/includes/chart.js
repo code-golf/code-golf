@@ -10630,34 +10630,8 @@ function removeResizeListener(node) {
 	}
 }
 
-function injectCSS(platform, css) {
-	// http://stackoverflow.com/q/3922139
-	var style = platform._style || document.createElement('style');
-	if (!platform._style) {
-		platform._style = style;
-		css = '/* Chart.js */\n' + css;
-		style.setAttribute('type', 'text/css');
-		document.getElementsByTagName('head')[0].appendChild(style);
-	}
-
-	style.appendChild(document.createTextNode(css));
-}
-
 module.exports = {
-	initialize: function() {
-		var keyframes = 'from{opacity:0.99}to{opacity:1}';
-
-		injectCSS(this,
-			// DOM rendering detection
-			// https://davidwalsh.name/detect-node-insertion
-			'@-webkit-keyframes ' + CSS_RENDER_ANIMATION + '{' + keyframes + '}' +
-			'@keyframes ' + CSS_RENDER_ANIMATION + '{' + keyframes + '}' +
-			'.' + CSS_RENDER_MONITOR + '{' +
-				'-webkit-animation:' + CSS_RENDER_ANIMATION + ' 0.001s;' +
-				'animation:' + CSS_RENDER_ANIMATION + ' 0.001s;' +
-			'}'
-		);
-	},
+	initialize: function() {},
 
 	acquireContext: function(item, config) {
 		if (typeof item === 'string') {
