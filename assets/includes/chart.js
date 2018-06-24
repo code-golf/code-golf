@@ -10329,24 +10329,7 @@ module.exports.easing = require(44);
 module.exports.canvas = require(42);
 module.exports.options = require(45);
 
-},{"42":42,"43":43,"44":44,"45":45}],47:[function(require,module,exports){
-/**
- * Platform fallback implementation (minimal).
- * @see https://github.com/chartjs/Chart.js/pull/4591#issuecomment-319575939
- */
-
-module.exports = {
-	acquireContext: function(item) {
-		if (item && item.canvas) {
-			// Support for any object associated to a canvas (including a context2d)
-			item = item.canvas;
-		}
-
-		return item && item.getContext('2d') || null;
-	}
-};
-
-},{}],48:[function(require,module,exports){
+},{"42":42,"43":43,"44":44,"45":45}],48:[function(require,module,exports){
 /**
  * Chart.Platform implementation for targeting a web browser
  */
@@ -10661,13 +10644,6 @@ function injectCSS(platform, css) {
 }
 
 module.exports = {
-	/**
-	 * This property holds whether this platform is enabled for the current environment.
-	 * Currently used by platform.js to select the proper implementation.
-	 * @private
-	 */
-	_enabled: typeof window !== 'undefined' && typeof document !== 'undefined',
-
 	initialize: function() {
 		var keyframes = 'from{opacity:0.99}to{opacity:1}';
 
@@ -10785,11 +10761,10 @@ module.exports = {
 'use strict';
 
 var helpers = require(46);
-var basic = require(47);
 var dom = require(48);
 
 // @TODO Make possible to select another platform at build time.
-var implementation = dom._enabled ? dom : basic;
+var implementation = dom;
 
 /**
  * @namespace Chart.platform
@@ -10857,7 +10832,7 @@ module.exports = helpers.extend({
  * @prop {Number} y - The mouse y position, relative to the canvas (null for incompatible events)
  */
 
-},{"46":46,"47":47,"48":48}],50:[function(require,module,exports){
+},{"46":46,"48":48}],50:[function(require,module,exports){
 'use strict';
 
 module.exports = {};
