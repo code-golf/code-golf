@@ -1,4 +1,4 @@
-FROM alpine:edge
+FROM alpine:edge as builder
 
 ENV SHELL /bin/sh
 
