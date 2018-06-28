@@ -9,15 +9,14 @@ RUN cd ruby-2.5.1         \
  && ./configure           \
     --disable-install-doc \
     --prefix=/usr         \
- && make                  \
- && make install
-
-RUN find /usr/lib/ruby -name '*.md' -delete
+ && make install          \
+ && strip -s /usr/bin/ruby
 
 FROM scratch
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
 COPY --from=0 /usr/bin/ruby            /usr/bin/
-COPY --from=0 /usr/lib/ruby            /usr/lib/ruby
+COPY --from=0 /usr/lib/ruby/2.5.0      /usr/lib/ruby/2.5.0
+
 
 ENTRYPOINT ["/usr/bin/ruby", "-e", "puts RUBY_VERSION"]
