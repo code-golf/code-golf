@@ -2,7 +2,6 @@ FROM alpine:edge as builder
 
 RUN apk add --no-cache curl gcc libffi-dev linux-headers make musl-dev zlib-dev
 
-
 RUN curl https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz \
   | tar xJf -
 
