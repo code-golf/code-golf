@@ -3,9 +3,9 @@ FROM alpine:edge
 RUN apk add --no-cache bash curl gcc make musl-dev nodejs-npm openjdk8-jre perl
 
 # Brotli
-RUN curl -L https://github.com/google/brotli/archive/v1.0.4.tar.gz \
+RUN curl -L https://github.com/google/brotli/archive/v1.0.5.tar.gz \
   | tar xzf -                                                      \
- && cd brotli-1.0.4                                                \
+ && cd brotli-1.0.5                                                \
  && make -j`nproc`                                                 \
  && mv bin/brotli /usr/bin
 
