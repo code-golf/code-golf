@@ -13,12 +13,7 @@ func hole(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	w.Write([]byte(
 		"<link rel=stylesheet href=" + holeCssPath + ">" +
-			"<script async src=" + holeJsPath + "></script><div id=status><div>" +
-			"<h2>Program Arguments</h2><pre id=Arg></pre>" +
-			"<h2>Standard Error</h2><pre id=Err></pre>" +
-			"<h2>Expected Output</h2><pre id=Exp></pre>" +
-			"<h2>Standard Output</h2><pre id=Out></pre>" +
-			"</div></div><main id=hole",
+			"<script async src=" + holeJsPath + "></script><main id=hole",
 	))
 
 	if userID == 0 {
@@ -66,9 +61,7 @@ func hole(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	hole := holeByID[holeID]
 
 	w.Write([]byte(
-		"><h1>" + hole.Name + "</h1><p>" + hole.Preamble +
-			"<button>Run</button><div id=tabs>",
-	))
+		"><h1>" + hole.Name + "</h1><p>" + hole.Preamble + "<div id=tabs>"))
 
 	for _, lang := range langs {
 		w.Write([]byte(
@@ -77,5 +70,13 @@ func hole(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		))
 	}
 
-	w.Write([]byte("</div>"))
+	w.Write([]byte(
+		"</div><div id=wrapper></div><button>Run</button><div id=status>" +
+			"<h2></h2>" +
+			"<aside id=err><h3>Errors</h3><div></div></aside>" +
+			"<aside id=arg><h3>Arguments</h3><div></div></aside>" +
+			"<aside id=exp><h3>Expected</h3><div></div></aside>" +
+			"<aside id=out><h3>Output</h3><div></div></aside>" +
+			"</div>",
+	))
 }

@@ -14,15 +14,15 @@
 const hole = decodeURI(location.pathname.slice(1));
 
 onload = function() {
-    const main   = document.querySelector('main');
-    const data   = main.dataset;
-    const status = document.querySelector('#status');
+    const data    = document.querySelector('main').dataset;
+    const status  = document.querySelector('#status');
+    const wrapper = document.querySelector('#wrapper');
 
     let activeEditor;
     let editors = [];
 
     for (let lang of ['bash', 'haskell', 'javascript', 'lisp', 'lua', 'perl', 'perl6', 'php', 'python', 'ruby']) {
-        let editor = CodeMirror(main, {
+        let editor = CodeMirror(wrapper, {
             lineNumbers: true,
             lineWrapping: true,
             mode: { name: lang, startOpen: true },
@@ -81,28 +81,33 @@ onload = function() {
                 Lang: activeEditor.options.mode.name,
             }),
         }).then( res => res.json() ).then( data => {
-            status.classList.toggle('pass', data.Exp === data.Out && data.Out !== '');
+            const pass = data.Exp === data.Out && data.Out !== '';
 
-            console.log(data.Diff);
+            document.querySelector('h2').innerText
+                = pass ? 'Pass 😊️' : 'Fail ☹️';
 
-            for (let prop in data) {
-                if (prop === 'Argv' || prop === 'Diff')
-                    continue;
-
-                let pre = document.getElementById(prop);
-
-                // Err can be ANSI coloured via HTML.
-                if (prop === 'Err')
-                    pre.innerHTML = data[prop];
-                else
-                    pre.innerText = data[prop];
-
-                // Only show Arg & Err if they contain something.
-                if (prop === 'Arg' || prop === 'Err')
-                    pre.style.display = pre.previousSibling.style.display
-                        = data[prop] ? '' : 'none';
+            // Show args if we have 'em.
+            if (data.Argv) {
+                document.querySelector('#arg').style.display = 'block';
+                document.querySelector('#arg div').innerHTML
+                    = '<span>' + data.Argv.join('</span> <span>') + '</span>';
             }
+            else
+                document.querySelector('#arg').style.display = '';
 
+            // Show err if we have some and we're not passing.
+            if (data.Err && !pass) {
+                document.querySelector('#err').style.display = 'block';
+                document.querySelector('#err div').innerHTML = data.Err;
+            }
+            else
+                document.querySelector('#err').style.display = '';
+
+            // Always show exp & out.
+            document.querySelector('#exp div').innerText = data.Exp;
+            document.querySelector('#out div').innerText = data.Out;
+
+            status.classList.toggle('pass', pass);
             status.style.display = 'block';
             this.classList.remove('on');
         });

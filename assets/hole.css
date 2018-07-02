@@ -1,5 +1,21 @@
 /* include codemirror.css */
 
+aside {
+    border-left: 30px solid #369;
+    margin-top: 10px;
+    position: relative;
+}
+
+aside > div {
+    background: #fff;
+    border: 2px solid #369;
+    border-left: 0;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+    height: 140px;
+    overflow: auto;
+    padding: 5px;
+}
+
 blockquote {
     white-space: pre;
 }
@@ -12,7 +28,7 @@ button {
     float: right;
     font-size: 18px;
     height: 40px;
-    margin-bottom: 10px;
+    margin: 10px 0;
     padding: 0 9px 0 39px;
     position: relative;
 }
@@ -40,6 +56,18 @@ button:hover {
     background: #2c4;
 }
 
+h3 {
+    bottom: -20px;
+    color: #fff;
+    font-size: 20px;
+    left: -30px;
+    line-height: 30px;
+    margin: 0;
+    position: absolute;
+    transform-origin: 0 0;
+    transform: rotate(-90deg);
+}
+
 .CodeMirror {
     border: 1px solid #ddd;
     border-top: 0;
@@ -62,34 +90,54 @@ button:hover {
     text-decoration: underline;
 }
 
-#status {
-    background: #fdf3fa;
-    border-bottom: 1px solid #e01a22;
+#arg, #err {
     display: none;
 }
 
-#status pre {
-    background: #fff;
-    border: 1px solid #000;
-    border-radius: 5px;
-    box-sizing: border-box;
-    font-size: 14px;
-    margin: 0;
-    max-height: 150px;
-    overflow: auto;
-    padding: 5px;
-    width: 100%;
+#exp, #out {
+    white-space: pre;
+}
+
+#arg span {
+    background: #ddd;
+    border-radius: 10px;
+    line-height: 30px;
+    padding: 3px 7px;
+    white-space: nowrap;
+}
+
+#status {
+    background: #fdd;
+    display: none;
+    margin-top: 75px;
+    padding: 10px;
+    position: relative;
+}
+
+#status:after {
+    content: '';
+    position: absolute;
+    top: -20px;
+    right: 32px;
+    border: 20px solid transparent;
+    border-bottom-color: #fdd;
+    border-top: 0;
+    border-right: 0;
 }
 
 #status.pass {
-    background: #e8f5e5;
-    border-bottom: 1px solid #219a00;
+    background: #7c9;
+}
+
+#status.pass:after {
+    border-bottom-color: #7c9;
 }
 
 #tabs {
     clear: both;
     display: grid;
     grid-template-columns: repeat(10, 1fr);
+    margin-top: 10px;
     position: relative;
        -moz-user-select: none;
         -ms-user-select: none;
@@ -117,7 +165,7 @@ button:hover {
 }
 
 #tabs a[href="#bash"]       { background-image: svg(bash#fff)       }
-#tabs a[href="#haskell"]    { background-image: svg(haskell#fff) }
+#tabs a[href="#haskell"]    { background-image: svg(haskell#fff)    }
 #tabs a[href="#javascript"] { background-image: svg(javascript#fff) }
 #tabs a[href="#lisp"]       { background-image: svg(lisp#fff)       }
 #tabs a[href="#lua"]        { background-image: svg(lua#fff)        }
