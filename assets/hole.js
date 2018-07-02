@@ -2,6 +2,7 @@
 /* include codemirror-bash.js       */
 /* include codemirror-clike.js      */
 /* include codemirror-haskell.js    */
+/* include codemirror-htmlmixed.js  */
 /* include codemirror-javascript.js */
 /* include codemirror-lisp.js       */
 /* include codemirror-lua.js        */
@@ -10,6 +11,7 @@
 /* include codemirror-php.js        */
 /* include codemirror-python.js     */
 /* include codemirror-ruby.js       */
+/* include codemirror-xml.js        */
 
 const hole = decodeURI(location.pathname.slice(1));
 
