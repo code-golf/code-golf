@@ -55,6 +55,7 @@ CREATE TYPE public.hole AS ENUM (
     'prime-numbers',
     'quine',
     'roman-to-arabic',
+    'rule-110',
     'seven-segment',
     'sierpiński-triangle',
     'spelling-numbers',
