@@ -74,6 +74,15 @@ h3 {
     box-shadow: 0 -4px 0 #222;
 }
 
+.info {
+    background: #fffbdd;
+    display: none;
+    padding: 5px;
+    border: 1px solid #222;
+    color: #222;
+    margin-top: 10px;
+}
+
 .term-fg31 { color: #c00 } /* red */
 .term-fg32 { color: #490 } /* green */
 .term-fg33 { color: #ca0 } /* yellow */

@@ -23,7 +23,7 @@ func about(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		"<dt>Which Languages Are Supported?" +
 		"<dd>Currently <a href=//www.gnu.org/software/bash/>Bash</a>, " +
 		"<a href=//www.haskell.org/ghc/>Haskell</a>, " +
-		"<a href=//developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Introduction_to_the_JavaScript_shell>JavaScript</a>, " +
+		"<a href=//developers.google.com/v8/>JavaScript</a>, " +
 		"<a href=//clisp.sourceforge.io>Lisp</a>, " +
 		"<a href=//www.lua.org/>Lua</a>, " +
 		"<a href=//www.perl.org>Perl</a>, " +
@@ -37,20 +37,12 @@ func about(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		"<dd>Code Golf ties to track upstream closely, manually amending " +
 		"solutions if they cease to work on newer versions, the current " +
 		"version matrix is as follows:<br><br><table>" + versionTable + "</table>" +
-		"<dt>Is Perl Customized in Any Way?" +
-		"<dd>Yes. Code Golf uses miniperl with no ability to load modules, " +
-		`but modern features like "say" and "state" enabled by default. ` +
-		"For full details read the <a href=//github.com/JRaspass/code-golf/blob/master/containers/perl/Dockerfile>dockerfile</a>." +
 		"<dt>Are Warnings Ignored?" +
 		"<dd>Yes. Only STDOUT is checked against the solution, STDERR is " +
 		"however shown back to you to ease debugging." +
 		"<dt>How Are Arguments Passed to My Program?" +
 		"<dd>Some holes pass arguments, for those your program should read " +
 		"them from ARGV." +
-		"<dt>How Do I Access ARGV in JavaScript?" +
-		"<dd>Code Golf uses Mozilla's <a href=//developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Introduction_to_the_JavaScript_shell>JavaScript Shell</a>, " +
-		`they extend the language to have a global variable "scriptArgs" ` +
-		"which will contain ARGV. For more details read the <a href=//developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Shell_global_objects>full docs</a>." +
 		"<dt>How Are Solutions Scored?" +
 		"<dd>The score of your solution is the sum of the UTF-8 characters " +
 		"in your source code. This means both " +

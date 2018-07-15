@@ -66,6 +66,9 @@ onload = function() {
             else
                 editor.display.wrapper.style.display = 'none';
 
+        for (let info of document.querySelectorAll('.info'))
+            info.style.display = info.classList.contains(lang) ? 'block' : '';
+
         for (let tab of document.querySelectorAll('#tabs a'))
             tab.classList.toggle('on', tab.href === location.href);
     } )();

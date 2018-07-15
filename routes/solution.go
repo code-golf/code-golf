@@ -129,10 +129,8 @@ func runCode(hole, lang, code string, args []string) (string, string) {
 	switch lang {
 	case "bash":
 		cmd.Args = []string{"/usr/bin/bash", "-s", "-"}
-	case "haskell":
-		cmd.Args = []string{"/usr/bin/haskell"}
-	case "javascript":
-		cmd.Args = []string{"/usr/bin/js", "-f", "-", "--"}
+	case "haskell", "javascript", "php":
+		cmd.Args = []string{"/usr/bin/" + lang, "--"}
 	case "perl6":
 		cmd.Args = []string{
 			"/usr/bin/moar",
@@ -142,8 +140,6 @@ func runCode(hole, lang, code string, args []string) (string, string) {
 			"/usr/share/perl6/runtime/perl6.moarvm",
 			"-",
 		}
-	case "php":
-		cmd.Args = []string{"/usr/bin/php", "--"}
 	// Lua, Perl, Python, and Ruby are all sane.
 	default:
 		cmd.Args = []string{"/usr/bin/" + lang, "-"}
