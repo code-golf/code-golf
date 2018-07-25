@@ -24,7 +24,7 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	type Out struct {
 		Arg, Diff, Err, Exp, Out string
-		Argv []string
+		Argv                     []string
 	}
 
 	var in In
@@ -48,6 +48,8 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		args, out.Exp = morse(in.Hole == "morse-decoder")
 	case "pangram-grep":
 		args, out.Exp = pangramGrep()
+	case "poker":
+		args, out.Exp = poker()
 	case "quine":
 		out.Exp = in.Code
 	case "roman-to-arabic":

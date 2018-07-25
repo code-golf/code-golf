@@ -83,6 +83,8 @@ h3 {
     margin-top: 10px;
 }
 
+.red { color: red }
+
 .term-fg31 { color: #c00 } /* red */
 .term-fg32 { color: #490 } /* green */
 .term-fg33 { color: #ca0 } /* yellow */

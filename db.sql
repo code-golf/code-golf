@@ -52,6 +52,7 @@ CREATE TYPE public.hole AS ENUM (
     'pangram-grep',
     'pascals-triangle',
     'pernicious-numbers',
+    'poker',
     'prime-numbers',
     'quine',
     'roman-to-arabic',
