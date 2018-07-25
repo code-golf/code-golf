@@ -124,14 +124,14 @@ A Partridge in a Pear Tree.</blockquote>`,
 		"pernicious-numbers", "Pernicious Numbers", "Fast",
 		"A pernicious number is a positive number where the sum of its binary expansion is a <a href=prime-numbers>prime number</a>.<p>For example, <b>5</b> is a pernicious number since <b>5 = 101<sub>2</sub></b> and <b>1 + 1 = 2</b>, which is prime.<p>Print all the pernicious numbers from <b>0</b> to <b>50</b> inclusive, each on their own line.</p>",
 	}, {
+		"poker", "Poker", "Slow",
+		"Given various poker hands as arguments, print what type of hand each argument is.<p>The list of hands in ranking order are as follows:<table><tr><th>Royal Flush<td class=red>🃁🃎🃍🃋🃊<tr><th>Straight Flush<td>🃛🃚🃙🃘🃗<tr><th>Four of a Kind<td>🃕<span class=red>🃅🂵</span>🂥<span class=red>🃂</span><tr><th>Full House<td>🂦<span class=red>🂶🃆</span>🃞<span class=red>🂾</span><tr><th>Flush<td class=red>🃋🃉🃈🃄🃃<tr><th>Straight<td><span class=red>🃊</span>🂩<span class=red>🂸🃇</span>🃖<tr><th>Three of a Kind<td>🃝🂭<span class=red>🂽🂹</span>🂢<tr><th>Two Pair<td><span class=red>🂻</span>🂫🃓🂣<span class=red>🂲</span><tr><th>Pair<td>🂪<span class=red>🂺</span>🂨<span class=red>🂷</span>🃔<tr><th>High Card<td><span class=red>🃎🃍</span>🂧🂤<span class=red>🂳</span></table>",
+	}, {
 		"prime-numbers", "Prime Numbers", "Fast",
 		"Print all the prime numbers from <b>1</b> to <b>100</b> inclusive, each on their own line.</p>",
 	}, {
 		"quine", "Quine", "Fast",
 		"A <b>quine</b> is a non-empty computer program which takes no input and produces a copy of its own source code as its only output, produce such a program.<p>Trailing whitespace is <b>NOT</b> stripped from the output for this hole.</p>",
-	}, {
-		"poker", "Poker", "Slow",
-		"Given various poker hands as arguments, print what type of hand each argument is.<p>The list of hands in ranking order are as follows:<table><tr><th>Royal Flush<td class=red>🃁🃎🃍🃋🃊<tr><th>Straight Flush<td>🃛🃚🃙🃘🃗<tr><th>Four of a Kind<td>🃕<span class=red>🃅🂵</span>🂥<span class=red>🃂</span><tr><th>Full House<td>🂦<span class=red>🂶🃆</span>🃞<span class=red>🂾</span><tr><th>Flush<td class=red>🃋🃉🃈🃄🃃<tr><th>Straight<td><span class=red>🃊</span>🂩<span class=red>🂸🃇</span>🃖<tr><th>Three of a Kind<td>🃝🂭<span class=red>🂽🂹</span>🂢<tr><th>Two Pair<td><span class=red>🂻</span>🂫🃓🂣<span class=red>🂲</span><tr><th>Pair<td>🂪<span class=red>🂺</span>🂨<span class=red>🂷</span>🃔<tr><th>High Card<td><span class=red>🃎🃍</span>🂧🂤<span class=red>🂳</span></table>",
 	}, {
 		"roman-to-arabic", "Roman to Arabic", "Slow",
 		"For each roman numeral argument print the same number in arabic numerals.</p>",
