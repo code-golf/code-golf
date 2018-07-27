@@ -22,7 +22,7 @@ func stats(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 			">0</span>Holes</div></div><div><div><span data-x=",
 	))
 
-	if err := db.QueryRow("SELECT COUNT(DISTINCT user_id) FROM solutions").Scan(&data); err != nil {
+	if err := db.QueryRow("SELECT COUNT(DISTINCT user_id) FROM solutions WHERE NOT failing").Scan(&data); err != nil {
 		panic(err)
 	} else {
 		w.Write(data)
@@ -30,7 +30,7 @@ func stats(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	w.Write([]byte(">0</span>Golfers</div></div><div><div><span data-x="))
 
-	if err := db.QueryRow("SELECT COUNT(*) FROM solutions").Scan(&data); err != nil {
+	if err := db.QueryRow("SELECT COUNT(*) FROM solutions WHERE NOT failing").Scan(&data); err != nil {
 		panic(err)
 	} else {
 		w.Write(data)
@@ -41,7 +41,7 @@ func stats(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	if err := db.QueryRow(
 		`SELECT ARRAY_TO_JSON(ARRAY_AGG(count))
-		   FROM (SELECT COUNT(*) FROM solutions GROUP BY lang ORDER BY lang) a`,
+		   FROM (SELECT COUNT(*) FROM solutions WHERE NOT failing GROUP BY lang ORDER BY lang) a`,
 	).Scan(&data); err != nil {
 		panic(err)
 	} else {
@@ -53,7 +53,7 @@ func stats(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	if err := db.QueryRow(
 		`SELECT ARRAY_TO_JSON(ARRAY_AGG(ROW_TO_JSON(t)))
 		   FROM (SELECT x, COUNT(*) y
-		   FROM (SELECT COUNT(DISTINCT hole) x FROM solutions GROUP BY user_id) z
+		   FROM (SELECT COUNT(DISTINCT hole) x FROM solutions WHERE NOT failing GROUP BY user_id) z
 		GROUP BY x ORDER BY x) t`,
 	).Scan(&data); err != nil {
 		panic(err)
