@@ -39,7 +39,14 @@ onload = function() {
             tab.innerText = len === 1 ? '1 char'
                           : len       ? len + ' chars'
                           :             'not tried';
+
+            localStorage.setItem("code_"+hole+"_"+lang, editor.getValue())
         };
+
+        let previousCode = localStorage.getItem("code_"+hole+"_"+lang);
+        if (previousCode && previousCode != editor.getValue())
+            if (confirm("Your local copy of the code is different than the remote one. Do you want to restore the local version?"))
+                editor.setValue(previousCode);
 
         callback(editor);
 
