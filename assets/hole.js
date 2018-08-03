@@ -23,7 +23,12 @@ onload = function() {
     let activeEditor;
     let editors = [];
 
-    for (let lang of ['bash', 'haskell', 'javascript', 'lisp', 'lua', 'perl', 'perl6', 'php', 'python', 'ruby']) {
+    for (let langName of [
+        'Bash', 'Haskell', 'JavaScript', 'Lisp', 'Lua',
+        'Perl', 'Perl 6', 'PHP', 'Python', 'Ruby',
+    ]) {
+        let lang = langName.replace(/ /, '').toLowerCase();
+
         let editor = CodeMirror(wrapper, {
             lineNumbers: true,
             lineWrapping: true,
@@ -31,22 +36,27 @@ onload = function() {
             value: data.hasOwnProperty(lang) ? data[lang] : '',
         });
 
+        let key = hole + '-' + lang;
         let tab = document.querySelector('[href="#' + lang + '"]');
 
         let callback = function(editor) {
-            let len = [...editor.getValue()].length;
+            let val = editor.getValue();
+            let len = [...val].length;
 
             tab.innerText = len === 1 ? '1 char'
                           : len       ? len + ' chars'
                           :             'not tried';
 
-            localStorage.setItem("code_"+hole+"_"+lang, editor.getValue())
+            if (len)
+                localStorage.setItem(key, val);
+            else
+                localStorage.removeItem(key);
         };
 
-        let previousCode = localStorage.getItem("code_"+hole+"_"+lang);
-        if (previousCode && previousCode != editor.getValue())
-            if (confirm("Your local copy of the code is different than the remote one. Do you want to restore the local version?"))
-                editor.setValue(previousCode);
+        let localCode = localStorage.getItem(key);
+        if (localCode != null && localCode != editor.getValue())
+            if (confirm('Restore your local ' + langName + ' solution?'))
+                editor.setValue(localCode);
 
         callback(editor);
 
