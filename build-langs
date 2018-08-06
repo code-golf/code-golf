@@ -33,7 +33,7 @@ for name in Bash Haskell JavaScript Lisp Lua Perl Perl\ 6 PHP Python Ruby; do
     ver=${ver//version /}
     ver=${ver%.}
     ver=${ver% d8> }
-    ver=${ver%  Copyright (C) 1994-2017 Lua.org, PUC-Rio}
+    ver=${ver%  Copyright (C) 1994-2018 Lua.org, PUC-Rio}
     ver=${ver/ (*/}
 
     html+="<tr><th>$name<td>$ver"
