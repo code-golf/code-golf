@@ -147,7 +147,7 @@ h3 {
 #tabs {
     clear: both;
     display: grid;
-    grid-template-columns: repeat(10, 1fr);
+    grid-template-columns: repeat(11, 1fr);
     margin-top: 10px;
     position: relative;
        -moz-user-select: none;
@@ -188,7 +188,7 @@ h3 {
 
 @keyframes spin { 100% { transform: rotate(1turn) } }
 
-@media(max-width: 450px) { #tabs { grid-template-columns: repeat(5, 1fr) } }
+@media(max-width: 450px) { #tabs { grid-template-columns: repeat(6, 1fr) } }
 
 @media(max-width: 970px) {
     #tabs a {

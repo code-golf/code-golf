@@ -24,8 +24,8 @@ onload = function() {
     let editors = [];
 
     for (let langName of [
-        'Bash', 'Haskell', 'JavaScript', 'Lisp', 'Lua',
-        'Perl', 'Perl 6', 'PHP', 'Python', 'Ruby',
+        'Bash', 'Haskell', 'J', 'JavaScript', 'Lisp',
+        'Lua', 'Perl', 'Perl 6', 'PHP', 'Python', 'Ruby',
     ]) {
         let lang = langName.replace(/ /, '').toLowerCase();
 
@@ -70,7 +70,7 @@ onload = function() {
 
     ( onhashchange = function() {
         // Kick 'em to Perl 6 if we don't know the chosen language.
-        if (!/^#(?:bash|haskell|javascript|lisp|lua|perl6?|php|python|ruby)$/.exec(location.hash))
+        if (!/^#(?:bash|haskell|j|javascript|lisp|lua|perl6?|php|python|ruby)$/.exec(location.hash))
             location.hash = 'perl6';
 
         let lang = location.hash.slice(1);

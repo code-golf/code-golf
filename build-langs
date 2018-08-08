@@ -13,7 +13,7 @@ for name in Bash Haskell JavaScript Lisp Lua Perl Perl\ 6 PHP Python Ruby; do
     mkdir $lang/rootfs
 
     # Tag the builder stage so "docker system prune" won't remove it.
-    if [ $lang != haskell ]; then
+    if [ $lang != haskell -a $lang != j ]; then
         docker build --target builder -t code-golf-$lang-builder $lang
     fi
 
