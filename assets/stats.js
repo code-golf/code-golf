@@ -49,7 +49,7 @@ onload = function() {
     new Chart(canvases[1].getContext('2d'), {
         type: 'pie',
         data: {
-            labels: ['Bash', 'Haskell', 'JavaScript', 'Lisp', 'Lua', 'Perl', 'Perl 6', 'PHP', 'Python', 'Ruby'],
+            labels: ['Bash', 'Haskell', 'J', 'JavaScript', 'Lisp', 'Lua', 'Perl', 'Perl 6', 'PHP', 'Python', 'Ruby'],
             datasets: [{
                 data: JSON.parse(canvases[1].dataset.data),
                 backgroundColor: [
@@ -63,6 +63,7 @@ onload = function() {
                     '#58595b',
                     '#8549ba',
                     '#3d8b3d',
+                    '#cdcd00',
                 ],
             }],
         },

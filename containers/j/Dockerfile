@@ -1,31 +1,32 @@
 FROM alpine:edge
 
-RUN apk add --no-cache bash binutils clang-dev curl fts-dev gcc libedit-dev make musl-dev
+RUN apk add --no-cache curl fts-dev gcc make musl-dev
 
 RUN curl -L https://github.com/jsoftware/jsource/archive/90adff2.tar.gz | tar xzf -
 
-RUN mkdir -p ~/git ~/jbld/j64/bin                                  \
- && mv jsource-* ~/git/jsource                                     \
- && cd ~/git/jsource                                               \
- && echo '#define jversion "807"'                > jsrc/jversion.h \
- && echo '#define jplatform "linux"'            >> jsrc/jversion.h \
- && echo '#define jtype "build"'                >> jsrc/jversion.h \
- && echo '#define jlicense "GPL3"'              >> jsrc/jversion.h \
- && echo '#define jbuilder "www.jsoftware.com"' >> jsrc/jversion.h \
- && . make/jvars.sh                                                \
- && make/build_jconsole.sh j64                                     \
- && make/build_libj.sh j64
+COPY patch /
 
-RUN apk del --no-cache bash binutils clang-dev curl fts-dev gcc make musl-dev
+RUN mv jsource-* jsource                                       \
+ && patch -p0 <patch                                           \
+ && rm -r /jsource/jlibrary/system/config/version.txt          \
+          /jsource/jlibrary/system/defs                        \
+          /jsource/jlibrary/system/main/socket.ijs             \
+ && cd jsource/jsrc                                            \
+ && echo '#define jbuilder  "code-golf.io"' >> jversion.h      \
+ && echo '#define jlicense  "GPL3"'         >> jversion.h      \
+ && echo '#define jplatform "linux"'        >> jversion.h      \
+ && echo '#define jtype     "release"'      >> jversion.h      \
+ && echo '#define jversion  "807"'          >> jversion.h      \
+ && gcc -s -O2 -o j jconsole.c jeload.c                        \
+ && rm andjnative.c fnmatch.c jconsole.c jeload.c jep.c jfex.c \
+ && gcc -s -O2 -fPIC -fwrapv -fno-strict-aliasing -shared -o libj.so *.c blis/*.c
 
-RUN mkdir /j                       \
- && mv ~/git/jsource/jlibrary/* /j \
- && mv /root/jbld/j64/bin/* /j/bin
+FROM scratch
 
-RUN echo -e "#!/bin/sh -e\n\
-\n\
-/bin/cat - > /tmp/code.ijs\n\
-\n\
-exec /j/bin/jconsole /tmp/code.ijs \"\$@\"" > /usr/bin/j && chmod +x /usr/bin/j
+COPY --from=0 /lib/ld-musl-x86_64.so.1          /lib/
+COPY --from=0 /jsource/jlibrary/bin/profile.ijs /usr/bin/profile.ijs
+COPY --from=0 /jsource/jlibrary/system          /usr/system
+COPY --from=0 /jsource/jsrc/j                   \
+              /jsource/jsrc/libj.so             /usr/bin/
 
-ENTRYPOINT ["echo", "807"]
+ENTRYPOINT ["/usr/bin/j", ""]
