@@ -102,6 +102,7 @@ tr {
 
 #matrix tr:first-child th:nth-child(2)  { background-image: svg(bash#222)       }
 #matrix tr:first-child th:nth-child(3)  { background-image: svg(haskell#222)    }
+#matrix tr:first-child th:nth-child(4)  { background-image: svg(j#222)          }
 #matrix tr:first-child th:nth-child(5)  { background-image: svg(javascript#222) }
 #matrix tr:first-child th:nth-child(6)  { background-image: svg(lisp#222)       }
 #matrix tr:first-child th:nth-child(7)  { background-image: svg(lua#222)        }
