@@ -17,16 +17,21 @@ RUN mv jsource-* jsource                                       \
  && echo '#define jplatform "linux"'        >> jversion.h      \
  && echo '#define jtype     "release"'      >> jversion.h      \
  && echo '#define jversion  "807"'          >> jversion.h      \
- && gcc -s -O2 -o j jconsole.c jeload.c                        \
+ && gcc -s -O2 -o jconsole jconsole.c jeload.c                 \
  && rm andjnative.c fnmatch.c jconsole.c jeload.c jep.c jfex.c \
  && gcc -s -O2 -fPIC -fwrapv -fno-strict-aliasing -shared -o libj.so *.c blis/*.c
+
+COPY j.c /
+
+RUN gcc -s -o j j.c
 
 FROM scratch
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1          /lib/
 COPY --from=0 /jsource/jlibrary/bin/profile.ijs /usr/bin/profile.ijs
 COPY --from=0 /jsource/jlibrary/system          /usr/system
-COPY --from=0 /jsource/jsrc/j                   \
+COPY --from=0 /j                                \
+              /jsource/jsrc/jconsole            \
               /jsource/jsrc/libj.so             /usr/bin/
 
-ENTRYPOINT ["/usr/bin/j", ""]
+ENTRYPOINT ["/usr/bin/j", "/tmp/code.ijs"]

@@ -134,7 +134,7 @@ func runCode(hole, lang, code string, args []string) (string, string) {
 	case "haskell", "javascript", "php":
 		cmd.Args = []string{"/usr/bin/" + lang, "--"}
 	case "j":
-		cmd.Args = []string{"/usr/bin/j", ""}
+		cmd.Args = []string{"/usr/bin/j", "/tmp/code.ijs"}
 	case "perl6":
 		cmd.Args = []string{
 			"/usr/bin/moar",

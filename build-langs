@@ -20,7 +20,7 @@ for name in Bash Haskell J JavaScript Lisp Lua Perl Perl\ 6 PHP Python Ruby; do
     docker build -t code-golf-$lang $lang
 
     if [ $lang = j ]; then
-        ver=`echo echo JLIB | docker run --rm -i code-golf-$lang`
+        ver=`echo echo JLIB | docker run --rm --tmpfs /tmp -i code-golf-$lang`
     else
         ver=`docker run --rm code-golf-$lang`
     fi
