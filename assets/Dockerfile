@@ -17,9 +17,9 @@ RUN curl -L https://github.com/google/zopfli/archive/zopfli-1.0.2.tar.gz \
  && mv zopfli /usr/bin
 
 # Closure Compiler
-RUN curl http://dl.google.com/closure-compiler/compiler-20180610.tar.gz \
+RUN curl http://dl.google.com/closure-compiler/compiler-20180805.tar.gz \
   | tar -zxf - -C /                                                     \
- && mv closure-compiler-v20180610.jar closure-compiler.jar              \
+ && mv closure-compiler-v20180805.jar closure-compiler.jar              \
  && chmod +r closure-compiler.jar
 
 # CSSO & SVGO

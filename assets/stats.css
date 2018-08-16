@@ -15,35 +15,15 @@ main > div {
 main > div::before {
     content: '';
     display: block;
-}
-
-/* Small Oblongs */
-main > div:nth-child(1)::before,
-main > div:nth-child(2)::before,
-main > div:nth-child(3)::before,
-main > div:nth-child(4)::before {
     padding-bottom: 50%;
 }
 
-/* Squares */
 main > div:nth-child(5),
-main > div:nth-child(6) {
-    grid-row-end: span 2;
-}
-
-main > div:nth-child(5)::before,
-main > div:nth-child(6)::before {
-    padding-bottom: 100%;
-}
-
-/* Big Oblongs */
-main > div:nth-child(7) {
+main > div:nth-child(6),
+main > div:nth-child(7),
+main > div:nth-child(8) {
     grid-column-end: span 2;
     grid-row-end: span 2;
-}
-
-main > div:nth-child(7)::before {
-    padding-bottom: 50%;
 }
 
 main > div > div {
@@ -57,8 +37,12 @@ main > div > div {
     top: 0;
 }
 
-@media(max-width: 580px) { main { grid-template-columns: 1fr 1fr } }
+@media(max-width: 580px) {
+    main {
+        grid-template-columns: 1fr 1fr;
+    }
+}
 
 /* https://davidwalsh.name/detect-node-insertion */
-@keyframes chartjs-render-animation { from { opacity: .99 } to { opacity: 1 } }
-.chartjs-render-monitor { animation: chartjs-render-animation .001s }
+@keyframes chartjs { from { opacity: .99 } to { opacity: 1 } }
+.chartjs-render-monitor { animation: chartjs .001s }

@@ -1,5 +1,7 @@
 package routes
 
+import "strconv"
+
 type Lang struct{ ID, Name string }
 type Hole struct{ ID, Name, Difficulty, Preamble string }
 
@@ -194,13 +196,27 @@ A Partridge in a Pear Tree.</blockquote>`,
 
 var langByID = map[string]Lang{}
 var holeByID = map[string]Hole{}
+var HolesByDifficulty string
 
 func init() {
 	for _, lang := range langs {
 		langByID[lang.ID] = lang
 	}
 
+	var fast, medium, slow int
+
 	for _, hole := range holes {
 		holeByID[hole.ID] = hole
+
+		switch hole.Difficulty {
+			case "Fast":
+				fast++
+			case "Medium":
+				medium++
+			case "Slow":
+				slow++
+		}
 	}
+
+	HolesByDifficulty = strconv.Itoa(fast) + "," + strconv.Itoa(medium) + "," + strconv.Itoa(slow)
 }
