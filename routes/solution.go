@@ -82,12 +82,12 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		// moving down the leaderboard by matching their personal best.
 		if _, err := db.Exec(`
 		    INSERT INTO solutions
-		         VALUES (NOW(), $1, $2, $3, $4)
+		         VALUES (NOW() AT TIME ZONE 'UTC', $1, $2, $3, $4)
 		    ON CONFLICT ON CONSTRAINT solutions_pkey
 		  DO UPDATE SET failing = false,
 		                submitted = CASE
 		                    WHEN solutions.failing OR LENGTH($4) < LENGTH(solutions.code)
-		                    THEN NOW()
+		                    THEN NOW() AT TIME ZONE 'UTC'
 		                    ELSE solutions.submitted
 		                END,
 		                code = CASE
