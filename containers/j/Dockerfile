@@ -1,4 +1,4 @@
-FROM alpine:edge
+FROM alpine:edge as builder
 
 RUN apk add --no-cache curl fts-dev gcc make musl-dev
 
