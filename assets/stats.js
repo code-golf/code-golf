@@ -63,7 +63,7 @@ onload = function() {
         data: {
             // FIXME Maybe the DB enums should be in the correct case?
             labels: data[0].map(
-                lang => lang[0].toUpperCase() + lang.slice(1).replace('hp', 'HP').replace('s', 'S').replace(6, ' 6'),
+                lang => lang[0].toUpperCase() + lang.slice(1).replace('hp', 'HP').replace('sc', 'Sc').replace(6, ' 6'),
             ),
             datasets: [{
                 data: data[1],
