@@ -77,6 +77,7 @@ CREATE TYPE public.lang AS ENUM (
     'haskell',
     'j',
     'javascript',
+    'julia',
     'lisp',
     'lua',
     'perl',

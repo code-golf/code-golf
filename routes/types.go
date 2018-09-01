@@ -10,6 +10,7 @@ var langs = []Lang{
 	{"haskell", "Haskell"},
 	{"j", "J"},
 	{"javascript", "JavaScript"},
+	{"julia", "Julia"},
 	{"lisp", "Lisp"},
 	{"lua", "Lua"},
 	{"perl", "Perl"},

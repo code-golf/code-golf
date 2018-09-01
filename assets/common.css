@@ -206,6 +206,7 @@ tr.me              { background: #5cf }
 .haskell    { background: svg(haskell#000)    center right 7px / 26px no-repeat }
 .j          { background: svg(j#000)          center right 7px / 26px no-repeat }
 .javascript { background: svg(javascript#000) center right 7px / 26px no-repeat }
+.julia      { background: svg(julia#000)      center right 7px / 26px no-repeat }
 .lisp       { background: svg(lisp#000)       center right 7px / 26px no-repeat }
 .lua        { background: svg(lua#000)        center right 7px / 26px no-repeat }
 .perl       { background: svg(perl#000)       center right 7px / 26px no-repeat }

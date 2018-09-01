@@ -4,7 +4,7 @@ docker pull alpine:edge
 
 cd containers
 
-for name in Bash Haskell J JavaScript Lisp Lua Perl Perl\ 6 PHP Python Ruby; do
+for name in Bash Haskell J JavaScript Julia Lisp Lua Perl Perl\ 6 PHP Python Ruby; do
     lang=${name,,}      # lowercase
     lang=${lang// /}    # trim space
 
@@ -20,7 +20,7 @@ for name in Bash Haskell J JavaScript Lisp Lua Perl Perl\ 6 PHP Python Ruby; do
     docker build -t code-golf-$lang $lang
 
     if [ $lang = j ]; then
-        ver=`echo echo JLIB | docker run --rm --tmpfs /tmp -i code-golf-$lang`
+        ver=`echo echo JLIB | docker run --rm --tmpfs /tmp -i code-golf-j`
     else
         ver=`docker run --rm code-golf-$lang`
     fi
