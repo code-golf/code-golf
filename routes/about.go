@@ -23,7 +23,9 @@ func about(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		"<dt>Which Languages Are Supported?" +
 		"<dd>Currently <a href=//www.gnu.org/software/bash/>Bash</a>, " +
 		"<a href=//www.haskell.org/ghc/>Haskell</a>, " +
+		"<a href=http://jsoftware.com>J</a>, " +
 		"<a href=//developers.google.com/v8/>JavaScript</a>, " +
+		"<a href=//julialang.org>Julia</a>, " +
 		"<a href=//clisp.sourceforge.io>Lisp</a>, " +
 		"<a href=//www.lua.org/>Lua</a>, " +
 		"<a href=//www.perl.org>Perl</a>, " +
