@@ -2,12 +2,12 @@ FROM alpine:edge as builder
 
 RUN apk add --no-cache curl gcc make musl-dev
 
-RUN curl -L https://php.net/distributions/php-7.2.8.tar.xz | tar xJf -
+RUN curl -L https://php.net/distributions/php-7.2.10.tar.xz | tar xJf -
 
 ENV CFLAGS='-O2 -flto' \
    LDFLAGS='-O2 -flto'
 
-RUN cd php-7.2.8                                              \
+RUN cd php-7.2.10                                             \
  && ./configure                                               \
     --disable-all                                             \
     --disable-gcc-global-regs                                 \
