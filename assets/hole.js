@@ -43,9 +43,7 @@ onload = function() {
             let val = editor.getValue();
             let len = [...val].length;
 
-            tab.innerText = len === 1 ? '1 char'
-                          : len       ? len + ' chars'
-                          :             'not tried';
+            tab.innerText = len || '';
 
             if (len)
                 localStorage.setItem(key, val);

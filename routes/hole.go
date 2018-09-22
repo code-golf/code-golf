@@ -63,11 +63,8 @@ func hole(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	w.Write([]byte(
 		"><h1>" + hole.Name + "</h1><p>" + hole.Preamble + "<div id=tabs>"))
 
-	for _, lang := range langs {
-		w.Write([]byte(
-			"<a href=#" + lang.ID + ` title="` +
-				lang.Name + `">not tried</a>`,
-		))
+	for _, l := range langs {
+		w.Write([]byte("<a href=#" + l.ID + ` title="` + l.Name + `"></a>`))
 	}
 
 	w.Write([]byte(

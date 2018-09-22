@@ -157,13 +157,14 @@ h3 {
 }
 
 #tabs a {
-    background: #ccc 9px / 26px no-repeat;
-    color: #fff;
-    font-size: 14px;
+    background: #ccc center / 26px no-repeat;
+    color: #3498DB;
+    font-size: 10px;
+    font-weight: bold;
     height: 36px;
     overflow: hidden;
     padding: 4px;
-    padding-left: 44px;
+    text-align: right;
 }
 
 #tabs a.on {
