@@ -4,6 +4,7 @@
 /* include codemirror-haskell.js    */
 /* include codemirror-htmlmixed.js  */
 /* include codemirror-javascript.js */
+/* include codemirror-julia.js      */
 /* include codemirror-lisp.js       */
 /* include codemirror-lua.js        */
 /* include codemirror-perl.js       */
