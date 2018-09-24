@@ -2,10 +2,10 @@ FROM alpine:edge as builder
 
 RUN apk add --no-cache curl gcc git linux-headers make musl-dev perl
 
-RUN curl -L https://github.com/rakudo/rakudo/archive/2018.08.tar.gz \
+RUN curl -L https://github.com/rakudo/rakudo/archive/2018.09.tar.gz \
    | tar xzf -
 
-RUN cd rakudo-2018.08           \
+RUN cd rakudo-2018.09           \
  && CFLAGS=-flto ./Configure.pl \
     --backend=moar              \ 
     --gen-moar                  \
