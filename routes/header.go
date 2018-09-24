@@ -2,6 +2,7 @@ package routes
 
 import (
 	"net/http"
+	"net/url"
 
 	"github.com/jraspass/code-golf/cookie"
 )
@@ -32,7 +33,7 @@ func printHeader(w http.ResponseWriter, r *http.Request, status int) int {
 	userID, login := cookie.Read(r)
 
 	if userID == 0 {
-		logInOrOut = `"//github.com/login/oauth/authorize?client_id=7f6709819023e9215205&scope=user:email" id=login>Login with GitHub`
+		logInOrOut = `"//github.com/login/oauth/authorize?client_id=7f6709819023e9215205&scope=user:email&redirect_uri=https://code-golf.io/callback?redirect_uri%3D` + url.QueryEscape(url.QueryEscape(r.RequestURI)) + `" id=login>Login with GitHub`
 	} else {
 		logInOrOut = `/logout id=logout title=Logout></a><a href="/users/` + login + `" id=me><img src="//avatars.githubusercontent.com/` + login + `?s=30">` + login
 	}

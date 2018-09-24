@@ -69,6 +69,11 @@ func callback(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		}
 	}
 
-	w.Header().Set("Location", "/")
+	if uri := r.FormValue("redirect_uri"); uri != "" {
+		w.Header().Set("Location", uri)
+	} else {
+		w.Header().Set("Location", "/")
+	}
+
 	w.WriteHeader(302)
 }
