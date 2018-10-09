@@ -60,8 +60,10 @@ func hole(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	hole := holeByID[holeID]
 
+	w.Write([]byte("><nav><a href=" + hole.Prev + ">Previous Hole</a><a href=random>Random Hole</a><a href=" + hole.Next + ">Next Hole</a></nav"))
+
 	w.Write([]byte(
-		"><h1>" + hole.Name + "</h1><p>" + hole.Preamble + "<div id=tabs>"))
+		"><h1>" + hole.Name + "</h1><div><p>" + hole.Preamble + "</div><div id=tabs>"))
 
 	for _, l := range langs {
 		w.Write([]byte("<a href=#" + l.ID + ` title="` + l.Name + `"></a>`))

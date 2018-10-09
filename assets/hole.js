@@ -133,4 +133,16 @@ onload = function() {
             this.classList.remove('on');
         });
     };
+
+    const h1 = document.querySelector('h1');
+
+    if (localStorage.getItem(hole+'-collapsed'))
+        h1.className = 'collapsed';
+
+    h1.onclick = function() {
+        if (h1.classList.toggle('collapsed'))
+            localStorage.setItem(hole+'-collapsed', 1);
+        else
+            localStorage.removeItem(hole+'-collapsed');
+    };
 };

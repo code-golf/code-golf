@@ -67,13 +67,13 @@ main,
     padding: 10px;
 }
 
-nav {
+header nav {
     font-size: 16px;
     margin: auto;
     max-width: 980px;
 }
 
-nav a {
+header nav a {
     background: 10px / 30px no-repeat;
     color: #999;
     display: inline-block;
@@ -84,25 +84,25 @@ nav a {
     text-decoration: none;
 }
 
-nav a:first-child        { background-image: svg(home#999) }
-nav a:first-child:hover  { background-image: svg(home#fff) }
-nav a:nth-child(2)       { background-image: svg(question-circle#999) }
-nav a:nth-child(2):hover { background-image: svg(question-circle#fff) }
-nav a:nth-child(3)       { background-image: svg(list-ol#999) }
-nav a:nth-child(3):hover { background-image: svg(list-ol#fff) }
-nav a:nth-child(4)       { background-image: svg(chart-area#999) }
-nav a:nth-child(4):hover { background-image: svg(chart-area#fff) }
+header nav a:first-child        { background-image: svg(home#999) }
+header nav a:first-child:hover  { background-image: svg(home#fff) }
+header nav a:nth-child(2)       { background-image: svg(question-circle#999) }
+header nav a:nth-child(2):hover { background-image: svg(question-circle#fff) }
+header nav a:nth-child(3)       { background-image: svg(list-ol#999) }
+header nav a:nth-child(3):hover { background-image: svg(list-ol#fff) }
+header nav a:nth-child(4)       { background-image: svg(chart-area#999) }
+header nav a:nth-child(4):hover { background-image: svg(chart-area#fff) }
 
-nav a:nth-child(5), nav a:nth-child(6) {
+header nav a:nth-child(5), header nav a:nth-child(6) {
     float: right;
 }
 
-nav a:hover {
+header nav a:hover {
     background-color: #000;
     color: #fff;
 }
 
-nav img {
+header nav img {
     border-radius: 50%;
     height: 30px;
     left: 10px;
@@ -311,10 +311,10 @@ tr.me              { background: #5cf }
 }
 
 @media(max-width: 580px) {
-    nav a:nth-child(1),
-    nav a:nth-child(2),
-    nav a:nth-child(3),
-    nav a:nth-child(4) {
+    header nav a:nth-child(1),
+    header nav a:nth-child(2),
+    header nav a:nth-child(3),
+    header nav a:nth-child(4) {
         overflow: hidden;
         padding-right: 0;
         vertical-align: bottom;
