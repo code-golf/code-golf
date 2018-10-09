@@ -210,12 +210,12 @@ func init() {
 		holeByID[hole.ID] = hole
 
 		switch hole.Difficulty {
-			case "Fast":
-				fast++
-			case "Medium":
-				medium++
-			case "Slow":
-				slow++
+		case "Fast":
+			fast++
+		case "Medium":
+			medium++
+		case "Slow":
+			slow++
 		}
 	}
 
