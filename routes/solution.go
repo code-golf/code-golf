@@ -12,7 +12,7 @@ import (
 	"unicode"
 
 	"github.com/buildkite/terminal"
-	"github.com/jraspass/code-golf/cookie"
+	"github.com/JRaspass/code-golf/cookie"
 	"github.com/julienschmidt/httprouter"
 	"github.com/pmezard/go-difflib/difflib"
 )

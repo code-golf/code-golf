@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/jraspass/code-golf/cookie"
+	"github.com/JRaspass/code-golf/cookie"
 )
 
 func printHeader(w http.ResponseWriter, r *http.Request, status int) int {

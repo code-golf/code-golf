@@ -5,7 +5,7 @@ import (
 	"math/rand"
 	"net/http"
 
-	"github.com/jraspass/code-golf/middleware"
+	"github.com/JRaspass/code-golf/middleware"
 	"github.com/julienschmidt/httprouter"
 	_ "github.com/lib/pq"
 )

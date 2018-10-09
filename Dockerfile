@@ -11,13 +11,17 @@ RUN curl -SSL https://dl.google.com/go/go1.11.linux-amd64.tar.gz \
 
 RUN git clone https://go.googlesource.com/go \
  && cd go                                    \
- && git checkout c06f027                     \
+ && git checkout 45e6688                     \
  && cd src                                   \
  && ./make.bash                              \
  && chmod +rx /root
 
-ENV GOCACHE=/tmp GOPATH=/root/go PATH=/go/bin:$PATH
+ENV GOCACHE=/code-golf/.cache GOPATH=/root/go PATH=/go/bin:$PATH
 
-CMD go build -ldflags -s -o app                    \
+COPY go.mod go.sum /
+
+RUN go mod download && chmod -R o+w /root/go
+
+CMD go build -ldflags -s                           \
  && nasm -f bin -o run-container run-container.asm \
  && chmod +x run-container

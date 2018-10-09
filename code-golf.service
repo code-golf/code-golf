@@ -3,7 +3,7 @@ Description=code-golf
 
 [Service]
 EnvironmentFile=/home/jraspass/code-golf.env
-ExecStart=/home/jraspass/code-golf/app
+ExecStart=/home/jraspass/code-golf/code-golf
 Restart=always
 Type=simple
 WorkingDirectory=/home/jraspass/code-golf

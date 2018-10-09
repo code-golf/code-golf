@@ -1,2 +1,4 @@
 *
 !db.sql
+!go.mod
+!go.sum

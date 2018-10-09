@@ -10,5 +10,4 @@ fi
 # Code
 docker pull debian:stretch-slim
 docker build -t code-golf .
-dir=/root/go/src/github.com/jraspass/code-golf
-docker run --rm -u $UID:$GROUPS -v $PWD:$dir -w $dir code-golf
+docker run --rm -u $UID:$GROUPS -v $PWD:/code-golf -w /code-golf code-golf

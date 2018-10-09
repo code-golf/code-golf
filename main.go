@@ -9,7 +9,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/jraspass/code-golf/routes"
+	"github.com/JRaspass/code-golf/routes"
 	"golang.org/x/crypto/acme/autocert"
 )
 

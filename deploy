@@ -1,7 +1,7 @@
 #!/bin/sh -e
 
-rsync -achPe 'ssh -p 1988' --delete                \
-    app code-golf.service containers run-container \
+rsync -achPe 'ssh -p 1988' --delete                      \
+    code-golf code-golf.service containers run-container \
     code-golf.io:code-golf
 
 ssh -p 1988 code-golf.io \

@@ -1,3 +1,3 @@
 FROM scratch
 
-CMD ["/code-golf/app"]
+CMD ["/code-golf/code-golf"]
