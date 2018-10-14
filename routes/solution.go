@@ -11,8 +11,8 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/buildkite/terminal"
 	"github.com/JRaspass/code-golf/cookie"
+	"github.com/buildkite/terminal"
 	"github.com/julienschmidt/httprouter"
 	"github.com/pmezard/go-difflib/difflib"
 )
