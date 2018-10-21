@@ -6,5 +6,5 @@ require (
 	github.com/julienschmidt/httprouter v1.2.0
 	github.com/lib/pq v1.0.0
 	github.com/pmezard/go-difflib v1.0.0
-	golang.org/x/crypto v0.0.0-20181012144002-a92615f3c490
+	golang.org/x/crypto v0.0.0-20181015023909-0c41d7ab0a0e
 )
