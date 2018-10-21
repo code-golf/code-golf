@@ -18,16 +18,9 @@ import (
 )
 
 func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	type In struct {
+	var in struct {
 		Code, Hole, Lang string
 	}
-
-	type Out struct {
-		Arg, Diff, Err, Exp, Out string
-		Argv                     []string
-	}
-
-	var in In
 
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
 		panic(err)
@@ -37,7 +30,10 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	println(in.Code)
 
 	var args []string
-	var out Out
+	var out struct {
+		Arg, Diff, Err, Exp, Out string
+		Argv                     []string
+	}
 
 	switch in.Hole {
 	case "arabic-to-roman":
