@@ -15,7 +15,9 @@ import (
 var clientSecret = os.Getenv("CLIENT_SECRET")
 
 func callback(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	if code := r.FormValue("code"); code != "" {
+	query := r.URL.Query()
+
+	if code := query.Get("code"); code != "" {
 		req, err := http.NewRequest(
 			"POST",
 			"https://github.com/login/oauth/access_token",
@@ -77,7 +79,7 @@ func callback(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		)
 	}
 
-	if uri := r.FormValue("redirect_uri"); uri != "" {
+	if uri := query.Get("redirect_uri"); uri != "" {
 		w.Header().Set("Location", uri)
 	} else {
 		w.Header().Set("Location", "/")
