@@ -1,3 +1,5 @@
+github.com/SeerUK/assert v1.0.0 h1:UuhBwrK3UxJ3xT+3+k8qfriUEqfgiOCerFKE746TqEI=
+github.com/SeerUK/assert v1.0.0/go.mod h1:gYQnFIWikwvM2F3SoZpBdnbwf/XKaUSeG+Lx1GzSS9E=
 github.com/buildkite/terminal v3.1.0+incompatible h1:DSjZqpghUwmMHrKkcH+IOCtIVBbV9lcE3UxXV2vRNfQ=
 github.com/buildkite/terminal v3.1.0+incompatible/go.mod h1:iQavkS6X0wlozOmO2rxHYt/9mE5Ij2XTk6yGcclx6hk=
 github.com/julienschmidt/httprouter v1.2.0 h1:TDTW5Yz1mjftljbcKqRcrYhd4XeOoI98t+9HbQbYf7g=
