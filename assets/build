@@ -6,9 +6,7 @@ use warnings;
 use Digest::MD5 'md5_base64';
 use IPC::Open2 'open2';
 
-use constant PROD => $ENV{PROD} eq 'true';
-
-system qw(svgo -q -f assets/includes) if PROD;
+system qw(svgo -q -f assets/includes);
 
 open my $fh, '>', 'routes/assets.go';
 
@@ -53,9 +51,9 @@ GO
     if (/\.css$/) {
         $data =~ s|svg\(([^#]+)(.+)\)|svg($1, $2)|eg;
 
-        $data = run($data, 'csso') if PROD;
+        $data = run($data, 'csso');
     }
-    elsif(PROD) {
+    else {
         my @cmd = (
             qw(java -jar /closure-compiler.jar),
             qw(--assume_function_wrapper --language_out ES_2017),
@@ -67,16 +65,14 @@ GO
         $data = run( $data, @cmd );
     }
 
-    my @q = PROD ? () : '-0';
-    $data{"${name}Br"} = run($data, 'brotli', @q);
+    $data{"${name}Br"} = run($data, 'brotli');
 
     # Zopfli can't stream https://github.com/google/zopfli/issues/17
     open my $tmp, '>', '/tmp/zopfli';
     print $tmp $data;
     close $tmp;
 
-    my $i = PROD ? '' : '--i1';
-    $data{"${name}Gz"} = `zopfli -c $i /tmp/zopfli`;
+    $data{"${name}Gz"} = `zopfli -c /tmp/zopfli`;
 
     my $mime = /\.css$/ ? 'text/css' : 'application/javascript';
     my $path = $paths{$name} = '/assets/' . md5_base64($data) =~ y|+/|-_|r;
@@ -101,7 +97,7 @@ print $fh qq/const ${_}Path = "$paths{$_}"\n/ for sort keys %paths;
 print $fh "\n";
 
 for ( sort keys %data ) {
-    printf "%12s = %6d bytes\n", $_, length $data{$_};
+    printf "%12s = %5d bytes\n", $_, length $data{$_};
 
     my $i = 0;
     my $data = join ',',
