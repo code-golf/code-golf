@@ -69,7 +69,7 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	userID := printHeader(w, r, 200)
 
 	w.Write([]byte(
-		"<script async src=" + scoresJsPath +
+		"<script defer src=" + scoresJsPath +
 			"></script><main id=scores><select id=hole><option value>All Holes",
 	))
 
