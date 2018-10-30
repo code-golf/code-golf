@@ -11,7 +11,7 @@ import (
 func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	var holeID, langID string
 
-	showDuplicates := strings.HasSuffix(r.URL.Path, "/show-duplicates")
+	showDuplicates := strings.HasSuffix(r.URL.Path, "/all")
 
 	if len(ps) == 1 {
 		param := ps[0].Value
@@ -33,7 +33,7 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 			return
 		}
 
-		if langID == "show-duplicates" {
+		if langID == "all" {
 			langID = ""
 		} else if _, ok := langByID[langID]; !ok {
 			print404(w, r)
@@ -68,12 +68,12 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	w.Write([]byte("</select>"))
 
-	if holeID != "" {
+	if holeID != "" && langID == "" {
 		w.Write([]byte("<label><input type=checkbox"))
 		if showDuplicates {
 			w.Write([]byte(" checked"))
 		}
-		w.Write([]byte(">Show duplicate entries per person</label>"))
+		w.Write([]byte(">Allow multiple entries per player</label>"))
 	}
 
 	w.Write([]byte("<table class=scores>"))

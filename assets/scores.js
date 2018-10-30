@@ -38,7 +38,7 @@ for (let select of selects)
             url += '/' + selects[1].value;
 
         if (checkbox && checkbox.checked)
-            url += '/show-duplicates';
+            url += '/all';
 
         location = url;
     };

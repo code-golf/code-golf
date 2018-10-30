@@ -31,7 +31,7 @@ func init() {
 	Router.GET("/scores", middleware.Gzip(scores))
 	Router.GET("/scores/:0", middleware.Gzip(scores))
 	Router.GET("/scores/:0/:1", middleware.Gzip(scores))
-	Router.GET("/scores/:0/:1/show-duplicates", middleware.Gzip(scores))
+	Router.GET("/scores/:0/:1/all", middleware.Gzip(scores))
 	Router.GET("/stats", middleware.Gzip(stats))
 	Router.GET("/users/:0", middleware.Gzip(user))
 
