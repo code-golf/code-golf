@@ -3,65 +3,40 @@ package routes
 import (
 	"database/sql"
 	"net/http"
-	"sort"
 	"strings"
 
 	"github.com/julienschmidt/httprouter"
 )
 
 func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	var holeID string
-	var langIDs []string
-	var showDuplicates bool
+	var holeID, langID string
 
-	// Unless we have "/scores", tear apart the URL, and redirect if invalid.
-	if strings.HasPrefix(r.URL.Path, "/scores/") {
-		langIDs = strings.Split(r.URL.Path[8:], "/")
+	showDuplicates := strings.HasSuffix(r.URL.Path, "/show-duplicates")
 
-		url := "/scores"
+	if len(ps) == 1 {
+		param := ps[0].Value
 
-		// Shift the first "lang" off if it's actually a hole.
-		if len(langIDs) > 0 {
-			if _, ok := holeByID[langIDs[0]]; ok {
-				holeID, langIDs = langIDs[0], langIDs[1:]
+		if _, ok := holeByID[param]; ok {
+			holeID = param
+		} else if _, ok = langByID[param]; ok {
+			langID = param
+		} else {
+			print404(w, r)
+			return
+		}
+	} else if len(ps) == 2 {
+		holeID = ps[0].Value
+		langID = ps[1].Value
 
-				url += "/" + holeID
-			}
+		if _, ok := holeByID[holeID]; !ok {
+			print404(w, r)
+			return
 		}
 
-		// Pop the last "lang" off if it's actually the showDuplicates flag.
-		if len(langIDs) > 0 && langIDs[len(langIDs)-1] == "show-duplicates" {
-			showDuplicates = true
-			langIDs = langIDs[:len(langIDs)-1]
-		}
-
-		sort.Slice(langIDs, func(i, j int) bool { return langIDs[i] < langIDs[j] })
-
-		// Avoid duplicate langIDs.
-		seen := map[string]bool{}
-
-		for _, lang := range langIDs {
-			if _, ok := langByID[lang]; ok && !seen[lang] {
-				url += "/" + lang
-				seen[lang] = true
-			}
-		}
-
-		// No point in listing EVERY lang.
-		if len(seen) == len(langs) {
-			url = "/scores"
-
-			if holeID != "" {
-				url += "/" + holeID
-			}
-		}
-
-		if showDuplicates && holeID != "" {
-			url += "/show-duplicates"
-		}
-
-		if r.URL.Path != url {
-			http.Redirect(w, r, url, 301)
+		if langID == "show-duplicates" {
+			langID = ""
+		} else if _, ok := langByID[langID]; !ok {
+			print404(w, r)
 			return
 		}
 	}
@@ -85,7 +60,7 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	for _, lang := range langs {
 		w.Write([]byte("<option "))
-		if len(langIDs) > 0 && langIDs[0] == lang.ID {
+		if langID == lang.ID {
 			w.Write([]byte("selected "))
 		}
 		w.Write([]byte("value=" + lang.ID + ">" + lang.Name))
@@ -119,8 +94,8 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		table = "summed_leaderboard"
 	}
 
-	if len(langIDs) > 0 {
-		where += " AND lang IN('" + strings.Join(langIDs, "','") + "')"
+	if langID != "" {
+		where += " AND lang IN('" + langID + "')"
 	}
 
 	rows, err := db.Query(
