@@ -1,6 +1,8 @@
 language: go
 go:
   - "1.11"
+env:
+  - GO111MODULE=on
 before_install: go get github.com/mattn/goveralls
 before_script: ./build
 after_success: goveralls
