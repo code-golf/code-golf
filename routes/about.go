@@ -20,25 +20,10 @@ func about(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		"<dd>No. Submitted solutions will be executed and checked without " +
 		"logging in, but nothing will be saved and you won't appear on the " +
 		"<a href=scores>leaderboards</a>." +
-		"<dt>Which Languages Are Supported?" +
-		"<dd>Currently <a href=//www.gnu.org/software/bash/>Bash</a>, " +
-		"<a href=//www.haskell.org/ghc/>Haskell</a>, " +
-		"<a href=http://jsoftware.com>J</a>, " +
-		"<a href=//developers.google.com/v8/>JavaScript</a>, " +
-		"<a href=//julialang.org>Julia</a>, " +
-		"<a href=//clisp.sourceforge.io>Lisp</a>, " +
-		"<a href=//www.lua.org/>Lua</a>, " +
-		"<a href=//www.perl.org>Perl</a>, " +
-		"<a href=//perl6.org>Perl 6</a>, " +
-		"<a href=http://www.php.net>PHP</a>, " +
-		"<a href=//www.python.org>Python</a>, " +
-		"and <a href=//www.ruby-lang.org>Ruby</a>. " +
-		"If you'd like to see another language added then raise an " +
+		"<dt>What Languages Are Supported?" +
+		"<dd><table id=versions>" + versionTable + "</table>" +
+		"<p>If you'd like to see another language added then raise an " +
 		"<a href=//github.com/JRaspass/code-golf/issues/new>issue</a>." +
-		"<dt>What Version Is Each Language At?" +
-		"<dd>Code Golf ties to track upstream closely, manually amending " +
-		"solutions if they cease to work on newer versions, the current " +
-		"version matrix is as follows:<br><br><table>" + versionTable + "</table>" +
 		"<dt>Are Warnings Ignored?" +
 		"<dd>Yes. Only STDOUT is checked against the solution, STDERR is " +
 		"however shown back to you to ease debugging." +

@@ -1,5 +1,20 @@
 #!/bin/bash -e
 
+declare -A urls=(
+    ["bash"]="//www.gnu.org/software/bash/"
+    ["haskell"]="//www.haskell.org/ghc/"
+    ["j"]="http://jsoftware.com"
+    ["javascript"]="//v8.dev"
+    ["julia"]="//julialang.org"
+    ["lisp"]="//clisp.sourceforge.io"
+    ["lua"]="//www.lua.org"
+    ["perl"]="//www.perl.org"
+    ["perl6"]="//perl6.org"
+    ["php"]="//secure.php.net"
+    ["python"]="//www.python.org"
+    ["ruby"]="//www.ruby-lang.org"
+)
+
 docker pull alpine:edge
 
 cd containers
@@ -40,7 +55,7 @@ for name in Bash Haskell J JavaScript Julia Lisp Lua Perl Perl\ 6 PHP Python Rub
     ver=${ver%  Copyright (C) 1994-2018 Lua.org, PUC-Rio}
     ver=${ver/ (*/}
 
-    html+="<tr><th>$name<td>$ver"
+    html+="<tr><th class=$lang>$name<td>$ver<td><a href=${urls[$lang]}></a>"
 
     id=`docker run -d code-golf-$lang`
 

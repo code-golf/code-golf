@@ -163,7 +163,6 @@ td img {
 }
 
 th {
-    padding-left: 20px;
     text-align: right;
 }
 
@@ -308,6 +307,21 @@ tr.me              { background: #5cf }
 
 #scores {
     max-width: 600px;
+}
+
+#versions a {
+    background: svg(globe#000) center / 26px no-repeat;
+    display: block;
+    height: 26px;
+    width: 26px;
+}
+
+#versions a:hover {
+    background-image: svg(globe#3498db);
+}
+
+#versions th {
+    padding-right: 50px;
 }
 
 @media(max-width: 580px) {
