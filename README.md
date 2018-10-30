@@ -23,3 +23,9 @@ $ docker-compose up --build
 ```
 
 Then visit https://localhost and accept the scary security warning.
+
+## Thanks
+
+[![BrowserStack](browserstack.png)](https://www.browserstack.com)
+
+Cross browser testing powered by [BrowserStack](https://www.browserstack.com)
