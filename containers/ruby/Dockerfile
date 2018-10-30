@@ -2,10 +2,10 @@ FROM alpine:edge as builder
 
 RUN apk add --no-cache curl gcc linux-headers make musl-dev
 
-RUN curl https://cache.ruby-lang.org/pub/ruby/2.5/ruby-2.5.1.tar.xz \
+RUN curl https://cache.ruby-lang.org/pub/ruby/2.5/ruby-2.5.3.tar.xz \
   | tar xJf -
 
-RUN cd ruby-2.5.1         \
+RUN cd ruby-2.5.3         \
  && ./configure           \
     --disable-install-doc \
     --prefix=/usr         \
