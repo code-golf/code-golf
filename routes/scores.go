@@ -5,8 +5,74 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/JRaspass/code-golf/cookie"
 	"github.com/julienschmidt/httprouter"
 )
+
+func scoresMini(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	userID, _ := cookie.Read(r)
+
+	rows, err := db.Query(
+		`WITH leaderboard AS (
+		    SELECT ROW_NUMBER() OVER (ORDER BY LENGTH(code), submitted),
+		           RANK()       OVER (ORDER BY LENGTH(code)),
+		           user_id,
+		           LENGTH(code) strokes,
+		           user_id = $1 me
+		      FROM solutions
+		     WHERE hole = $2
+		       AND lang = $3
+		       AND NOT failing
+		), mini_leaderboard AS (
+		    SELECT rank,
+		           login,
+		           strokes,
+		           me
+		      FROM leaderboard
+		      JOIN users on user_id = id
+		     WHERE row_number >
+		           (SELECT row_number FROM leaderboard WHERE me) - 4
+		  ORDER BY row_number
+		     LIMIT 7
+		) SELECT CONCAT(
+		    '<tr',
+		    CASE WHEN me THEN ' class=me' END,
+		    '><td>',
+		    TO_CHAR(rank, 'FM999"<sup>"th"</sup>"'),
+		    '<td><img src="//avatars.githubusercontent.com/',
+		    login,
+		    '?s=26">',
+		    '<td>',
+		    strokes
+		) FROM mini_leaderboard`,
+		userID,
+		ps[0].Value,
+		ps[1].Value,
+	)
+
+	if err != nil {
+		panic(err)
+	}
+
+	defer rows.Close()
+
+	w.Header().Set("Content-Type", "text/html;charset=utf8")
+	w.Write([]byte("<table>"))
+
+	for rows.Next() {
+		var row sql.RawBytes
+
+		if err := rows.Scan(&row); err != nil {
+			panic(err)
+		}
+
+		w.Write(row)
+	}
+
+	if err := rows.Err(); err != nil {
+		panic(err)
+	}
+}
 
 func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	var holeID, langID string
