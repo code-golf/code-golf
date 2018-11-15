@@ -55,6 +55,8 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		args[0], out.Exp = sevenSegment()
 	case "spelling-numbers":
 		args, out.Exp = spellingNumbers()
+	case "sudoku":
+		args, out.Exp = sudoku()
 	default:
 		out.Exp = answers[in.Hole]
 	}

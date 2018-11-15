@@ -47,6 +47,7 @@ CREATE TYPE public.hole AS ENUM (
     'seven-segment',
     'sierpiński-triangle',
     'spelling-numbers',
+    'sudoku',
     'λ',
     'π',
     'τ',

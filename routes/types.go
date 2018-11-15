@@ -206,6 +206,28 @@ A Partridge in a Pear Tree.</blockquote>`,
 		"For each number argument print the same number spelled out in English.<p>The numbers will be in the range of <b>0</b> to <b>1,000</b> inclusive.</p>",
 	}, {
 		"", "",
+		"sudoku", "Sudoku", "Slow",
+		`Sudoku is a number puzzle where a grid of 81 digits (9x9) is filled by the digits 1-9 such that no row, column, or 3x3 subregion contains duplicate digits.<p>Write a program that given an incomplete Sudoku board as 9 arguments of 9 digits, with blanks respresented by an underscore, print a solved Sudoku grid using unicode box-drawing characters like so:<pre>┏━━━┯━━━┯━━━┳━━━┯━━━┯━━━┳━━━┯━━━┯━━━┓
+┃ 2 │ 5 │ 8 ┃ 4 │ 1 │ 7 ┃ 6 │ 9 │ 3 ┃
+┠───┼───┼───╂───┼───┼───╂───┼───┼───┨
+┃ 6 │ 1 │ 7 ┃ 9 │ 2 │ 3 ┃ 8 │ 5 │ 4 ┃
+┠───┼───┼───╂───┼───┼───╂───┼───┼───┨
+┃ 9 │ 3 │ 4 ┃ 8 │ 6 │ 5 ┃ 1 │ 7 │ 2 ┃
+┣━━━┿━━━┿━━━╋━━━┿━━━┿━━━╋━━━┿━━━┿━━━┫
+┃ 3 │ 2 │ 5 ┃ 7 │ 8 │ 1 ┃ 4 │ 6 │ 9 ┃
+┠───┼───┼───╂───┼───┼───╂───┼───┼───┨
+┃ 8 │ 9 │ 6 ┃ 3 │ 5 │ 4 ┃ 2 │ 1 │ 7 ┃
+┠───┼───┼───╂───┼───┼───╂───┼───┼───┨
+┃ 7 │ 4 │ 1 ┃ 6 │ 9 │ 2 ┃ 5 │ 3 │ 8 ┃
+┣━━━┿━━━┿━━━╋━━━┿━━━┿━━━╋━━━┿━━━┿━━━┫
+┃ 4 │ 6 │ 9 ┃ 1 │ 3 │ 8 ┃ 7 │ 2 │ 5 ┃
+┠───┼───┼───╂───┼───┼───╂───┼───┼───┨
+┃ 5 │ 7 │ 3 ┃ 2 │ 4 │ 6 ┃ 9 │ 8 │ 1 ┃
+┠───┼───┼───╂───┼───┼───╂───┼───┼───┨
+┃ 1 │ 8 │ 2 ┃ 5 │ 7 │ 9 ┃ 3 │ 4 │ 6 ┃
+┗━━━┷━━━┷━━━┻━━━┷━━━┷━━━┻━━━┷━━━┷━━━┛</pre>`,
+	}, {
+		"", "",
 		"λ", "λ", "Medium",
 		"Print λ (Conway's constant) to the first 1,000 decimal places.</p>",
 	}, {

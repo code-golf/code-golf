@@ -129,6 +129,7 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		         WHEN 'roman-to-arabic'      THEN 29
 		         WHEN 'rule-110'             THEN 30
 		         WHEN 'spelling-numbers'     THEN 31
+		         WHEN 'sudoku'               THEN 32
 		         END, row_number`,
 		userID,
 	)
