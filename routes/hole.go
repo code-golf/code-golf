@@ -72,7 +72,7 @@ func hole(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	w.Write([]byte(
 		"</div><div id=wrapper></div>" +
 			`<div class="info javascript"><b>arguments</b> holds ARGV, <b>print()</b> to output with a newline, <b>write()</b> to output without a newline.</div>` +
-			`<div class="info perl"><b>say</b> and <b>state</b> are available without any import.</div>` +
+			`<div class="info perl"><b>say</b>, <b>signatures</b>, and <b>state</b> are available without any import.</div>` +
 			"<button>Run</button>" +
 			"<div id=status>" +
 			"<h2></h2>" +
