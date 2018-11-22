@@ -156,7 +156,7 @@ func runCode(hole, lang, code string, args []string) (string, string) {
 	}
 
 	timer := time.AfterFunc(
-		5*time.Second,
+		7*time.Second,
 		func() {
 			cmd.Process.Kill()
 			err.WriteString("Killed for exceeding the 5s timeout.")
