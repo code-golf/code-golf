@@ -3,7 +3,7 @@ FROM alpine:edge as builder
 RUN apk add --no-cache cmake curl g++ gfortran libexecinfo-dev \
     linux-headers m4 make musl-dev patch perl python3 tar xz
 
-RUN curl -L https://github.com/JuliaLang/julia/releases/download/v1.0.0/julia-1.0.0.tar.gz | tar xzf -
+RUN curl -L https://github.com/JuliaLang/julia/releases/download/v1.0.2/julia-1.0.2.tar.gz | tar xzf -
 
 RUN make -C julia prefix=/usr MARCH=x86-64 install \
  && strip -s /usr/bin/julia /usr/lib/julia/*.so    \
@@ -35,7 +35,7 @@ COPY --from=0 /usr/lib/julia/libamd.so                 \
               /usr/lib/julia/libsuitesparseconfig.so   \
               /usr/lib/libexecinfo.so.1                \
               /usr/lib/libgcc_s.so.1                   \
-              /usr/lib/libgfortran.so.3                \
+              /usr/lib/libgfortran.so.5                \
               /usr/lib/libjulia.so.1                   \
               /usr/lib/libquadmath.so.0                \
               /usr/lib/libstdc++.so.6                  /usr/lib/
