@@ -103,33 +103,34 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		         WHEN 'fibonacci'            THEN 3
 		         WHEN 'fizz-buzz'            THEN 4
 		         WHEN 'happy-numbers'        THEN 5
-		         WHEN 'niven-numbers'        THEN 6
-		         WHEN 'odious-numbers'       THEN 7
-		         WHEN 'pascals-triangle'     THEN 8
-		         WHEN 'pernicious-numbers'   THEN 9
-		         WHEN 'prime-numbers'        THEN 10
-		         WHEN 'quine'                THEN 11
-		         WHEN '12-days-of-christmas' THEN 12
-		         WHEN '99-bottles-of-beer'   THEN 13
-		         WHEN 'christmas-trees'      THEN 14
-		         WHEN 'diamonds'             THEN 15
-		         WHEN 'morse-decoder'        THEN 16
-		         WHEN 'morse-encoder'        THEN 17
-		         WHEN 'pangram-grep'         THEN 18
-		         WHEN 'seven-segment'        THEN 19
-		         WHEN 'sierpiński-triangle'  THEN 20
-		         WHEN 'λ'                    THEN 21
-		         WHEN 'π'                    THEN 22
-		         WHEN 'φ'                    THEN 23
-		         WHEN '𝑒'                    THEN 24
-		         WHEN 'τ'                    THEN 25
-		         WHEN 'arabic-to-roman'      THEN 26
-		         WHEN 'brainfuck'            THEN 27
-		         WHEN 'poker'                THEN 28
-		         WHEN 'roman-to-arabic'      THEN 29
-		         WHEN 'rule-110'             THEN 30
-		         WHEN 'spelling-numbers'     THEN 31
-		         WHEN 'sudoku'               THEN 32
+		         WHEN 'leap-years'           THEN 6
+		         WHEN 'niven-numbers'        THEN 7
+		         WHEN 'odious-numbers'       THEN 8
+		         WHEN 'pascals-triangle'     THEN 9
+		         WHEN 'pernicious-numbers'   THEN 10
+		         WHEN 'prime-numbers'        THEN 11
+		         WHEN 'quine'                THEN 12
+		         WHEN '12-days-of-christmas' THEN 13
+		         WHEN '99-bottles-of-beer'   THEN 14
+		         WHEN 'christmas-trees'      THEN 15
+		         WHEN 'diamonds'             THEN 16
+		         WHEN 'morse-decoder'        THEN 17
+		         WHEN 'morse-encoder'        THEN 18
+		         WHEN 'pangram-grep'         THEN 19
+		         WHEN 'seven-segment'        THEN 20
+		         WHEN 'sierpiński-triangle'  THEN 21
+		         WHEN 'λ'                    THEN 22
+		         WHEN 'π'                    THEN 23
+		         WHEN 'φ'                    THEN 24
+		         WHEN '𝑒'                    THEN 25
+		         WHEN 'τ'                    THEN 26
+		         WHEN 'arabic-to-roman'      THEN 27
+		         WHEN 'brainfuck'            THEN 28
+		         WHEN 'poker'                THEN 29
+		         WHEN 'roman-to-arabic'      THEN 30
+		         WHEN 'rule-110'             THEN 31
+		         WHEN 'spelling-numbers'     THEN 32
+		         WHEN 'sudoku'               THEN 33
 		         END, row_number`,
 		userID,
 	)

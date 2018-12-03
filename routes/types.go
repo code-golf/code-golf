@@ -120,6 +120,10 @@ A Partridge in a Pear Tree.</blockquote>`,
 		"A happy number is defined by the following sequence: Starting with any positive integer, replace the number by the sum of the squares of its digits in base-ten, and repeat the process until the number either equals 1 (where it will stay), or it loops endlessly in a cycle that does not include 1. Those numbers for which this process ends in 1 are happy numbers, while those that do not end in 1 are sad numbers.<p>For example, 19 is happy, as the associated sequence is:</p><dl><dd>1<sup>2</sup> + 9<sup>2</sup> = 82<dd>8<sup>2</sup> + 2<sup>2</sup> = 68<dd>6<sup>2</sup> + 8<sup>2</sup> = 100<dd>1<sup>2</sup> + 0<sup>2</sup> + 0<sup>2</sup> = 1.</dl><p>Print all the happy numbers from <b>1</b> to <b>200</b> inclusive, each on their own line.</p>",
 	}, {
 		"", "",
+		"leap-years", "Leap Years", "Fast",
+		"In the Gregorian calendar, a leap year is created by extending Februrary to 29 days in order to keep the calendar year synchronized with the astronomical year. These longer years occur in years which are multiples of <b>4</b> but not multiples of <b>400</b>.<p>Write a progream to print all the leap years between the year <b>1800</b> and <b>2400</b>.</p>",
+	}, {
+		"", "",
 		"morse-decoder", "Morse Decoder", "Medium",
 		"Using ▄ (U+2584 Lower Half Block) to represent a dot, encode the argument from" + morseTable,
 	}, {

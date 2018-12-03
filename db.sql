@@ -32,6 +32,7 @@ CREATE TYPE public.hole AS ENUM (
     'fibonacci',
     'fizz-buzz',
     'happy-numbers',
+    'leap-years',
     'morse-decoder',
     'morse-encoder',
     'niven-numbers',
