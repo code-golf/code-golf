@@ -121,7 +121,7 @@ A Partridge in a Pear Tree.</blockquote>`,
 	}, {
 		"", "",
 		"leap-years", "Leap Years", "Fast",
-		"In the Gregorian calendar, a leap year is created by extending Februrary to 29 days in order to keep the calendar year synchronized with the astronomical year. These longer years occur in years which are multiples of <b>4</b> but not multiples of <b>400</b>.<p>Write a progream to print all the leap years between the year <b>1800</b> and <b>2400</b>.</p>",
+		"In the Gregorian calendar, a leap year is created by extending Februrary to 29 days in order to keep the calendar year synchronized with the astronomical year. These longer years occur in years which are multiples of <b>4</b>, with the exception of centennial years that aren't multiples of <b>400</b>.<p>Write a progream to print all the leap years from the year <b>1800</b> up to and including <b>2400</b>.</p>",
 	}, {
 		"", "",
 		"morse-decoder", "Morse Decoder", "Medium",
