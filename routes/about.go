@@ -31,10 +31,10 @@ func about(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		"<dd>Some holes pass arguments, for those your program should read " +
 		"them from ARGV." +
 		"<dt>How Are Solutions Scored?" +
-		"<dd>The score of your solution is the sum of the UTF-8 characters " +
+		"<dd>The score of your solution is the count of the Unicode characters " +
 		"in your source code. This means both " +
 		`"A" (U+0041 Latin Capital Letter A) and "😉" (U+1F609 Winking Face) ` +
-		"cost the same despite the 1:4 ratio in byte count." +
+		"cost the same despite the 1:4 ratio in byte count in UTF-8." +
 		"<dt>How Is My Overall Score Computed?" +
 		"<dd>For each hole, the shortest solution is awarded 100 points, " +
 		"with the points descreasing in uniform decrements per rank. " +
