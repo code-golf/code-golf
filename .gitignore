@@ -1,4 +1,5 @@
 /.cache/
+/.path/
 /code-golf
 /containers/*/rootfs/
 /routes/assets.go
