@@ -30,6 +30,7 @@ COPY --from=0 /usr/lib/julia/libamd.so                 \
               /usr/lib/julia/libmpfr.so                \
               /usr/lib/julia/libopenblas64_.so         \
               /usr/lib/julia/libopenblas64_.so.0       \
+              /usr/lib/julia/libopenlibm.so            \
               /usr/lib/julia/libpcre2-8.so             \
               /usr/lib/julia/libsuitesparse_wrapper.so \
               /usr/lib/julia/libsuitesparseconfig.so   \
