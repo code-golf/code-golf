@@ -3,11 +3,11 @@ FROM alpine:edge as builder
 RUN apk add --no-cache cmake curl g++ gfortran libexecinfo-dev \
     linux-headers m4 make musl-dev patch perl python3 tar xz
 
-RUN curl -L https://github.com/JuliaLang/julia/releases/download/v1.0.2/julia-1.0.2.tar.gz | tar xzf -
+RUN curl -L https://github.com/JuliaLang/julia/releases/download/v1.0.3/julia-1.0.3.tar.gz | tar xzf -
 
-RUN make -C julia prefix=/usr MARCH=x86-64 install \
- && strip -s /usr/bin/julia /usr/lib/julia/*.so    \
- && rm -r julia
+RUN make -C julia-1.0.3 prefix=/usr MARCH=x86-64 install \
+ && strip -s /usr/bin/julia /usr/lib/julia/*.so          \
+ && rm -r julia-1.0.3
 
 COPY julia.c /
 

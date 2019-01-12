@@ -1,23 +1,24 @@
 FROM alpine:edge as builder
 
-# Copied from https://github.com/AlexMasterov/dockerfiles/blob/master/alpine-libv8/7.0/Dockerfile
+# Copied from https://github.com/AlexMasterov/dockerfiles/blob/master/alpine-libv8/7.3/Dockerfile
 # I can't thank @AlexMasterov++ enough! V8 is a pig to build :-(
 
-ARG BUILD_COMMIT=03bbc870bf80775a21c613a19b041e78eb334c65
-ARG BUILDTOOLS_COMMIT=2dff9c9c74e9d732e6fe57c84ef7fd044cc45d96
-ARG ICU_COMMIT=a191af9d025859e8368b8b469120d78006e9f5f6
-ARG GTEST_COMMIT=d5266326752f0a1dadbd310932d8f4fd8c3c5e7d
+ARG BUILD_COMMIT=f686dfc6d92d0e2fa9d238a78f266739f0a921c4
+ARG BUILDTOOLS_COMMIT=04161ec8d7c781e4498c699254c69ba0dd959fde
+ARG ICU_COMMIT=407b39301e71006b68bd38e770f35d32398a7b14
+ARG GTEST_COMMIT=879ac092fde0a19e1b3a61b2546b2a422b1528bc
 ARG TRACE_EVENT_COMMIT=211b3ed9d0481b4caddbee1322321b86a483ca1f
-ARG GYP_COMMIT=d61a9397e668fa9843c4aa7da9e79460fe590bfb
-ARG CLANG_COMMIT=bb4146fb8a9dde405b71914657bb461dc93912ab
+ARG CLANG_COMMIT=558f684ffbadcf6c4e1e89c6792c801f1f84ce3d
 ARG JINJA2_COMMIT=b41863e42637544c2941b574c7877d3e1f663e25
 ARG MARKUPSAFE_COMMIT=8f45f5cfa0009d2a70589bcda0349b8cb2b72783
+ARG CATAPULT_COMMIT=4feee5840de24533ab336d366cf632c2f5210510
 
 ARG GN_SOURCE=https://www.dropbox.com/s/3ublwqh4h9dit9t/alpine-gn-80e00be.tar.gz
-ARG V8_SOURCE=https://chromium.googlesource.com/v8/v8/+archive/7.0.272.tar.gz
+ARG V8_SOURCE=https://chromium.googlesource.com/v8/v8/+archive/7.3.24.tar.gz
 
 RUN set -x \
   && apk add --update --virtual .v8-build-dependencies \
+    at-spi2-core-dev \
     curl \
     g++ \
     gcc \
@@ -76,7 +77,6 @@ RUN set -x \
       target_cpu=\"x64\" \
       v8_target_cpu=\"x64\" \
       v8_use_external_startup_data=false \
-      v8_enable_future=true \
       is_official_build=true \
       is_component_build=true \
       is_cfi=false \
