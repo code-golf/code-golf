@@ -29,7 +29,7 @@ for name in Bash Haskell J JavaScript Julia Lisp Lua Perl Perl\ 6 PHP Python Rub
 
     # Tag the builder stage so "docker system prune" won't remove it.
     if [ $lang != haskell ]; then
-        docker build --target builder -t code-golf-$lang-builder $lang
+        docker build --target builder -t quay.io/jraspass/$lang-builder $lang
     fi
 
     docker build -t code-golf-$lang $lang
