@@ -113,24 +113,25 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		         WHEN '12-days-of-christmas' THEN 13
 		         WHEN '99-bottles-of-beer'   THEN 14
 		         WHEN 'christmas-trees'      THEN 15
-		         WHEN 'diamonds'             THEN 16
-		         WHEN 'morse-decoder'        THEN 17
-		         WHEN 'morse-encoder'        THEN 18
-		         WHEN 'pangram-grep'         THEN 19
-		         WHEN 'seven-segment'        THEN 20
-		         WHEN 'sierpiński-triangle'  THEN 21
-		         WHEN 'λ'                    THEN 22
-		         WHEN 'π'                    THEN 23
-		         WHEN 'φ'                    THEN 24
-		         WHEN '𝑒'                    THEN 25
-		         WHEN 'τ'                    THEN 26
-		         WHEN 'arabic-to-roman'      THEN 27
-		         WHEN 'brainfuck'            THEN 28
-		         WHEN 'poker'                THEN 29
-		         WHEN 'roman-to-arabic'      THEN 30
-		         WHEN 'rule-110'             THEN 31
-		         WHEN 'spelling-numbers'     THEN 32
-		         WHEN 'sudoku'               THEN 33
+		         WHEN 'cubes'                THEN 16
+		         WHEN 'diamonds'             THEN 17
+		         WHEN 'morse-decoder'        THEN 18
+		         WHEN 'morse-encoder'        THEN 19
+		         WHEN 'pangram-grep'         THEN 20
+		         WHEN 'seven-segment'        THEN 21
+		         WHEN 'sierpiński-triangle'  THEN 22
+		         WHEN 'λ'                    THEN 23
+		         WHEN 'π'                    THEN 24
+		         WHEN 'φ'                    THEN 25
+		         WHEN '𝑒'                    THEN 26
+		         WHEN 'τ'                    THEN 27
+		         WHEN 'arabic-to-roman'      THEN 28
+		         WHEN 'brainfuck'            THEN 29
+		         WHEN 'poker'                THEN 30
+		         WHEN 'roman-to-arabic'      THEN 31
+		         WHEN 'rule-110'             THEN 32
+		         WHEN 'spelling-numbers'     THEN 33
+		         WHEN 'sudoku'               THEN 34
 		         END, row_number`,
 		userID,
 	)

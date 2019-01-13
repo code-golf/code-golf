@@ -25,6 +25,7 @@ CREATE TYPE public.hole AS ENUM (
     'arabic-to-roman',
     'brainfuck',
     'christmas-trees',
+    'cubes',
     'diamonds',
     'divisors',
     'emirp-numbers',
@@ -138,4 +139,3 @@ GRANT SELECT,INSERT,UPDATE ON TABLE public.users TO code_golf;
 --
 -- PostgreSQL database dump complete
 --
-

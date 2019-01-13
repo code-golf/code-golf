@@ -76,6 +76,38 @@ A Partridge in a Pear Tree.</blockquote>`,
          *</pre>`,
 	}, {
 		"", "",
+		"cubes", "Cubes", "Medium",
+		`Draw <b>7</b> cubes in increasing size using "╱" (U+2571) for the diagonal edges, "│" (U+2502) for the vertical edges, "─" (U+2500) for the horizontal edges, and "█" (U+2588) for the vertices. The cubes should range from size <b>1</b> to size <b>7</b> with a blank line between each cube. A size <b>1</b> cube should look like:<pre>  █────█
+ ╱    ╱│
+█────█ │
+│    │ █
+│    │╱
+█────█</pre>And a size <b>7</b> cube should look like:<pre>        █────────────────────────────█
+       ╱                            ╱│
+      ╱                            ╱ │
+     ╱                            ╱  │
+    ╱                            ╱   │
+   ╱                            ╱    │
+  ╱                            ╱     │
+ ╱                            ╱      │
+█────────────────────────────█       │
+│                            │       │
+│                            │       │
+│                            │       │
+│                            │       │
+│                            │       │
+│                            │       │
+│                            │       █
+│                            │      ╱
+│                            │     ╱
+│                            │    ╱
+│                            │   ╱
+│                            │  ╱
+│                            │ ╱
+│                            │╱
+█────────────────────────────█</pre>`,
+	}, {
+		"", "",
 		"diamonds", "Diamonds", "Medium",
 		`Print a size ascending range of Diamonds using the numbers <b>1</b> to <b>9</b>, ranging from size <b>1</b> to size <b>9</b>, each diamond separated by a blank line.<p>A size <b>1</b> diamond should look like this, a single centered <b>1</b>:<pre>         1</pre><p>With the largest size <b>9</b> diamond looking like this:<pre>         1
         121
