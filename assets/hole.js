@@ -16,6 +16,31 @@
 
 const hole = decodeURI(location.pathname.slice(1));
 
+// Adapted from https://mths.be/punycode
+function ucs2decode(string) {
+    let chars = 0;
+    let counter = 0;
+    const length = string.length;
+    while (counter < length) {
+        const value = string.charCodeAt(counter++);
+        if (value >= 0xD800 && value <= 0xDBFF && counter < length) {
+            // It's a high surrogate, and there is a next character.
+            const extra = string.charCodeAt(counter++);
+            if ((extra & 0xFC00) == 0xDC00) { // Low surrogate.
+                chars++;
+            } else {
+                // It's an unmatched surrogate; only append this code unit, in case the
+                // next code unit is the high surrogate of a surrogate pair.
+                chars++;
+                counter--;
+            }
+        } else {
+            chars++;
+        }
+    }
+    return chars;
+}
+
 onload = function() {
     const data    = document.querySelector('main').dataset;
     const status  = document.querySelector('#status');
@@ -41,8 +66,8 @@ onload = function() {
         let tab = document.querySelector('[href="#' + lang + '"]');
 
         let callback = function(editor) {
-            let val = editor.getValue();
-            let len = [...val].length;
+            const val = editor.getValue();
+            const len = ucs2decode(val);
 
             tab.innerText = len || '';
 
