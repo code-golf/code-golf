@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"context"
+	"database/sql"
 	"encoding/json"
 	"net/http"
 	"os/exec"
@@ -97,6 +98,34 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		`, userID, in.Hole, in.Lang, in.Code); err != nil {
 			panic(err)
 		}
+
+		awardTrophy(db, userID, "hello-world")
+
+		if in.Hole == "fizz-buzz" {
+			awardTrophy(db, userID, "interview-ready")
+		}
+
+		switch in.Lang {
+		case "perl", "perl6":
+			if queryBool(
+				db,
+				`SELECT COUNT(*) = 2
+				   FROM solutions
+				  WHERE NOT failing
+				    AND hole = $1
+				    AND lang IN ('perl', 'perl6')
+				    AND user_id = $2`,
+				in.Hole,
+				userID,
+			) {
+				awardTrophy(db, userID, "tim-toady")
+			}
+		case "python":
+			if in.Hole == "quine" {
+				awardTrophy(db, userID, "ouroboros")
+			}
+		}
+
 	}
 
 	w.Header()["Content-Type"] = []string{"application/json"}
@@ -107,6 +136,24 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	if err := enc.Encode(&out); err != nil {
 		panic(err)
 	}
+}
+
+func awardTrophy(db *sql.DB, userID int, trophy string) {
+	if _, err := db.Exec(
+		"INSERT INTO trophies VALUES(NOW() AT TIME ZONE 'UTC', $1, $2) ON CONFLICT DO NOTHING",
+		userID,
+		trophy,
+	); err != nil {
+		panic(err)
+	}
+}
+
+func queryBool(db *sql.DB, query string, args ...interface{}) (b bool) {
+	if err := db.QueryRow(query, args...).Scan(&b); err != nil {
+		panic(err)
+	}
+
+	return
 }
 
 func runCode(hole, lang, code string, args []string) (string, string) {

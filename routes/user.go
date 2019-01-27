@@ -11,6 +11,7 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	user := ps[0].Value
 
 	var html []byte
+	var userID int
 
 	switch err := db.QueryRow(
 		`WITH leaderboard AS (
@@ -63,24 +64,71 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		             '<td>hole',
 		             CASE WHEN count > 1 THEN 's' END,
 		             '</table><hr>'
-		         )
+		         ),
+		         id
 		    FROM summed_leaderboard
 		    JOIN users ON id = user_id
 		   WHERE login = $1`,
 		user,
-	).Scan(&html); err {
+	).Scan(&html, &userID); err {
 	case sql.ErrNoRows:
 		print404(w, r)
 		return
 	case nil:
 		printHeader(w, r, 200)
-		w.Write([]byte("<link rel=stylesheet href=" + userCssPath + `><main><img src="//avatars.githubusercontent.com/`))
+		w.Write([]byte("<link rel=stylesheet href=" + userCssPath + "><script defer src=" +
+			timeJsPath + `></script><main><img src="//avatars.githubusercontent.com/`))
 		w.Write(html)
+		w.Write([]byte("<div id=trophies>"))
 	default:
 		panic(err)
 	}
 
 	rows, err := db.Query(
+		`  SELECT CONCAT(
+		              '<div',
+		              CASE WHEN user_id IS NOT NULL THEN ' class=earned' END,
+		              '><h2>',
+		              name,
+		              '</h2><p>',
+		              description,
+		              '<p>',
+		              CASE WHEN user_id IS NULL
+		                  THEN 'Not yet earned.'
+		                  ELSE CONCAT(
+		                      'Earned <time datetime=',
+		                      TO_CHAR(earned, 'YYYY-MM-DD"T"HH24:MI:SS"Z>"FMDD Mon'),
+		                      '</time>.'
+		                  )
+		              END,
+		              '</div>'
+		          )
+		     FROM trophy_info i
+		LEFT JOIN trophies    t ON i.trophy = t.trophy AND user_id = $1
+		 ORDER BY name`,
+		userID,
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var row sql.RawBytes
+
+		if err := rows.Scan(&row); err != nil {
+			panic(err)
+		}
+
+		w.Write(row)
+	}
+
+	if err := rows.Err(); err != nil {
+		panic(err)
+	}
+
+	rows, err = db.Query(
 		`WITH matrix AS (
 		    SELECT user_id,
 		           hole,
@@ -95,14 +143,13 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		ORDER BY hole, lang`,
 		user,
 	)
-
 	if err != nil {
 		panic(err)
 	}
 
 	defer rows.Close()
 
-	w.Write([]byte("<table id=matrix><tr><th>"))
+	w.Write([]byte("</div><table id=matrix><tr><th>"))
 
 	for _, lang := range langs {
 		w.Write([]byte(`<th title="` + lang.Name + `">`))

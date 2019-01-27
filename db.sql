@@ -78,6 +78,18 @@ CREATE TYPE public.lang AS ENUM (
 );
 
 
+--
+-- Name: trophy; Type: TYPE; Schema: public; Owner: jraspass
+--
+
+CREATE TYPE public.trophy AS ENUM (
+    'hello-world',
+    'interview-ready',
+    'ouroboros',
+    'tim-toady'
+);
+
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -93,6 +105,28 @@ CREATE TABLE public.solutions (
     lang public.lang NOT NULL,
     code text NOT NULL,
     failing boolean DEFAULT false NOT NULL
+);
+
+
+--
+-- Name: trophies; Type: TABLE; Schema: public; Owner: jraspass
+--
+
+CREATE TABLE public.trophies (
+    earned timestamp without time zone NOT NULL,
+    user_id integer NOT NULL,
+    trophy public.trophy NOT NULL
+);
+
+
+--
+-- Name: trophy_info; Type: TABLE; Schema: public; Owner: jraspass
+--
+
+CREATE TABLE public.trophy_info (
+    trophy public.trophy NOT NULL,
+    name text NOT NULL,
+    description text NOT NULL
 );
 
 
@@ -115,6 +149,22 @@ ALTER TABLE ONLY public.solutions
 
 
 --
+-- Name: trophies trophies_user_id_trophy_key; Type: CONSTRAINT; Schema: public; Owner: jraspass
+--
+
+ALTER TABLE ONLY public.trophies
+    ADD CONSTRAINT trophies_user_id_trophy_key UNIQUE (user_id, trophy);
+
+
+--
+-- Name: trophy_info trophy_info_trophy_key; Type: CONSTRAINT; Schema: public; Owner: jraspass
+--
+
+ALTER TABLE ONLY public.trophy_info
+    ADD CONSTRAINT trophy_info_trophy_key UNIQUE (trophy);
+
+
+--
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: jraspass
 --
 
@@ -123,10 +173,32 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: trophies trophies_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: jraspass
+--
+
+ALTER TABLE ONLY public.trophies
+    ADD CONSTRAINT trophies_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: TABLE solutions; Type: ACL; Schema: public; Owner: jraspass
 --
 
 GRANT SELECT,INSERT,UPDATE ON TABLE public.solutions TO code_golf;
+
+
+--
+-- Name: TABLE trophies; Type: ACL; Schema: public; Owner: jraspass
+--
+
+GRANT SELECT,INSERT,UPDATE ON TABLE public.trophies TO code_golf;
+
+
+--
+-- Name: TABLE trophy_info; Type: ACL; Schema: public; Owner: jraspass
+--
+
+GRANT SELECT,INSERT,UPDATE ON TABLE public.trophy_info TO code_golf;
 
 
 --

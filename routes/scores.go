@@ -110,8 +110,8 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	userID := printHeader(w, r, 200)
 
 	w.Write([]byte(
-		"<script defer src=" + scoresJsPath +
-			"></script><main id=scores><select id=hole><option value>All Holes",
+		"<script defer src=" + scoresJsPath + "></script><script defer src=" +
+			timeJsPath + "></script><main id=scores><select id=hole><option value>All Holes",
 	))
 
 	for _, hole := range holes {
