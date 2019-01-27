@@ -61,8 +61,13 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		             CASE WHEN sum > 1 THEN 's' END,
 		             '<tr><td>',
 		             count,
-		             '<td>hole',
-		             CASE WHEN count > 1 THEN 's' END,
+		             '/',
+		             ARRAY_LENGTH(ENUM_RANGE(NULL::hole), 1),
+		             '<td>holes<tr><td>',
+		             (SELECT COUNT(*) FROM trophies WHERE user_id = id),
+		             '/',
+		             ARRAY_LENGTH(ENUM_RANGE(NULL::trophy), 1),
+		             '<td>trophies',
 		             '</table><hr>'
 		         ),
 		         id
