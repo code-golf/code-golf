@@ -3,6 +3,7 @@ package routes
 import (
 	"bufio"
 	"bytes"
+	"context"
 	"encoding/json"
 	"net/http"
 	"os/exec"
@@ -109,21 +110,22 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 }
 
 func runCode(hole, lang, code string, args []string) (string, string) {
-	var err, out bytes.Buffer
+	var stderr, stdout bytes.Buffer
 
 	if lang == "php" {
 		code = "<?php " + code + " ?>"
 	}
 
-	cmd := exec.Cmd{
-		Dir:    "containers/" + lang,
-		Path:   "../../run-container",
-		Stderr: &err,
-		Stdin:  strings.NewReader(code),
-		Stdout: &out,
-		SysProcAttr: &syscall.SysProcAttr{
-			Cloneflags: syscall.CLONE_NEWIPC | syscall.CLONE_NEWNET | syscall.CLONE_NEWNS | syscall.CLONE_NEWPID | syscall.CLONE_NEWUTS,
-		},
+	ctx, cancel := context.WithTimeout(context.Background(), 7*time.Second)
+	defer cancel()
+
+	cmd := exec.CommandContext(ctx, "../../run-container")
+	cmd.Dir = "containers/" + lang
+	cmd.Stderr = &stderr
+	cmd.Stdin = strings.NewReader(code)
+	cmd.Stdout = &stdout
+	cmd.SysProcAttr = &syscall.SysProcAttr{
+		Cloneflags: syscall.CLONE_NEWIPC | syscall.CLONE_NEWNET | syscall.CLONE_NEWNS | syscall.CLONE_NEWPID | syscall.CLONE_NEWUTS,
 	}
 
 	switch lang {
@@ -151,29 +153,19 @@ func runCode(hole, lang, code string, args []string) (string, string) {
 
 	cmd.Args = append(cmd.Args, args...)
 
-	if err := cmd.Start(); err != nil {
-		panic(err)
+	if err := cmd.Run(); err != nil {
+		if ctx.Err() == context.DeadlineExceeded {
+			stderr.WriteString("Killed for exceeding the 7s timeout.")
+		} else {
+			println(err.Error())
+		}
 	}
-
-	timer := time.AfterFunc(
-		7*time.Second,
-		func() {
-			cmd.Process.Kill()
-			err.WriteString("Killed for exceeding the 5s timeout.")
-		},
-	)
-
-	if err := cmd.Wait(); err != nil {
-		println(err.Error())
-	}
-
-	timer.Stop()
 
 	var outBytes []byte
 
 	// Trim trailing spaces per line.
 	// FIXME This is all very hacky, but needed for Sierpiński.
-	scanner := bufio.NewScanner(bytes.NewReader(out.Bytes()))
+	scanner := bufio.NewScanner(bytes.NewReader(stdout.Bytes()))
 	for scanner.Scan() {
 		outBytes = append(outBytes, bytes.TrimRightFunc(scanner.Bytes(), unicode.IsSpace)...)
 		outBytes = append(outBytes, '\n')
@@ -184,7 +176,7 @@ func runCode(hole, lang, code string, args []string) (string, string) {
 	}
 
 	// Trim trailing whitespace.
-	errBytes := bytes.TrimRightFunc(err.Bytes(), unicode.IsSpace)
+	errBytes := bytes.TrimRightFunc(stderr.Bytes(), unicode.IsSpace)
 
 	if hole != "quine" {
 		outBytes = bytes.TrimRightFunc(outBytes, unicode.IsSpace)
