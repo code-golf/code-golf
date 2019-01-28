@@ -116,7 +116,7 @@ tr {
 #trophies {
     display: grid;
     grid-gap: 10px;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
     margin: 10px 0;
 }
 

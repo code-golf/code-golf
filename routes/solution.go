@@ -106,6 +106,8 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		}
 
 		switch in.Lang {
+		case "php":
+			awardTrophy(db, userID, "elephpant-in-the-room")
 		case "perl", "perl6":
 			if queryBool(
 				db,
