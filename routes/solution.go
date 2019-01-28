@@ -105,6 +105,16 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 			awardTrophy(db, userID, "interview-ready")
 		}
 
+		if queryBool(
+			db,
+			`SELECT COUNT(DISTINCT lang) = ARRAY_LENGTH(ENUM_RANGE(NULL::lang), 1)
+			   FROM solutions
+			  WHERE NOT failing AND user_id = $1`,
+			userID,
+		) {
+			awardTrophy(db, userID, "polyglot")
+		}
+
 		switch in.Lang {
 		case "php":
 			awardTrophy(db, userID, "elephpant-in-the-room")

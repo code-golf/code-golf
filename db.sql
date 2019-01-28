@@ -87,6 +87,7 @@ CREATE TYPE public.trophy AS ENUM (
     'hello-world',
     'interview-ready',
     'ouroboros',
+    'polyglot',
     'tim-toady'
 );
 
