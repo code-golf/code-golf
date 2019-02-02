@@ -417,6 +417,7 @@ CodeMirror.defineMode("julia", function(config, parserConf) {
     blockCommentStart: "#=",
     blockCommentEnd: "=#",
     lineComment: "#",
+    closeBrackets: "()[]{}\"\"",
     fold: "indent"
   };
   return external;
