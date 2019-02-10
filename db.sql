@@ -89,7 +89,8 @@ CREATE TYPE public.trophy AS ENUM (
     'my-god-its-full-of-stars',
     'ouroboros',
     'polyglot',
-    'tim-toady'
+    'tim-toady',
+    'the-watering-hole'
 );
 
 

@@ -110,7 +110,7 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		          )
 		     FROM trophy_info i
 		LEFT JOIN trophies    t ON i.trophy = t.trophy AND user_id = $1
-		 ORDER BY name`,
+		 ORDER BY i.trophy`,
 		userID,
 	)
 	if err != nil {

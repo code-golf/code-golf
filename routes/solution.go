@@ -107,6 +107,16 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 		if queryBool(
 			db,
+			`SELECT COUNT(DISTINCT hole) > 18
+			   FROM solutions
+			  WHERE NOT failing AND user_id = $1`,
+			userID,
+		) {
+			awardTrophy(db, userID, "the-watering-hole")
+		}
+
+		if queryBool(
+			db,
 			`SELECT COUNT(DISTINCT lang) = ARRAY_LENGTH(ENUM_RANGE(NULL::lang), 1)
 			   FROM solutions
 			  WHERE NOT failing AND user_id = $1`,
