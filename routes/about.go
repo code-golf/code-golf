@@ -36,7 +36,7 @@ func about(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		`"A" (U+0041 Latin Capital Letter A) and "😉" (U+1F609 Winking Face) ` +
 		"cost the same despite the 1:4 ratio in byte count in UTF-8." +
 		"<dt>How Is My Overall Score Computed?" +
-		"<dd>For each hole, the shortest solution is awarded 100 points, " +
+		"<dd>For each hole, the shortest solution is awarded 1,000 points, " +
 		"with the points descreasing in uniform decrements per rank. " +
 		"Your overall score is simply the sum of your points in each hole." +
 		"<dt>Are Submissions Resource Constrained?" +

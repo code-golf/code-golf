@@ -147,9 +147,9 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	if holeID != "" {
 		where += " AND hole = '" + holeID + "'"
-		concat = "' class=', lang, '>', TO_CHAR(strokes, 'FM99,999'), '<td>(', TO_CHAR(score, 'FM9,999'), ' point', CASE WHEN score"
+		concat = "' class=', lang, '>', TO_CHAR(strokes, 'FM99,999'), '<td>(', TO_CHAR(score, 'FM99,999'), ' point', CASE WHEN score"
 	} else {
-		concat = "'>', TO_CHAR(score, 'FM9,999'), '<td>(', count, ' hole', CASE WHEN count"
+		concat = "'>', TO_CHAR(score, 'FM99,999'), '<td>(', count, ' hole', CASE WHEN count"
 	}
 
 	if showDuplicates {
@@ -186,7 +186,7 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		             )
 		             *
 		             (
-		                 100.0
+		                 1000.0
 		                 /
 		                 COUNT(*) OVER (PARTITION BY hole)
 		             )

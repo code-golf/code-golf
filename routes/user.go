@@ -35,7 +35,7 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		             )
 		             *
 		             (
-		                 100.0
+		                 1000.0
 		                 /
 		                 COUNT(*) OVER (PARTITION BY hole)
 		             )
@@ -56,7 +56,7 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		             '?s=100"><h1>',
 		             login,
 		             '</h1><table><tr><td>',
-		             TO_CHAR(sum, 'FM9,999'),
+		             TO_CHAR(sum, 'FM99,999'),
 		             '<td>point',
 		             CASE WHEN sum > 1 THEN 's' END,
 		             '<tr><td>',
