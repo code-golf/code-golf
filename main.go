@@ -69,6 +69,15 @@ func main() {
 
 	server.TLSConfig.BuildNameToCertificate()
 
+	go func() {
+		ticker := time.NewTicker(time.Minute)
+
+		for {
+			<-ticker.C
+			routes.Stars()
+		}
+	}()
+
 	println("Listening…")
 
 	// Redirect HTTP to HTTPS and handle ACME challenges.

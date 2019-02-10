@@ -15,6 +15,7 @@ services:
         privileged: true
         volumes:
             - .:/code-golf
+            - /etc:/etc # For CA certs
         working_dir: /code-golf
     db:
         build:
