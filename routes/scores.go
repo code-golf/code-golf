@@ -41,8 +41,7 @@ func scoresMini(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		    TO_CHAR(rank, 'FM999"<sup>"th"</sup>"'),
 		    '<td><img src="//avatars.githubusercontent.com/',
 		    login,
-		    '?s=26">',
-		    '<td>',
+		    '?s=26"><td>',
 		    strokes
 		) FROM mini_leaderboard`,
 		userID,
