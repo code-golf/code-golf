@@ -14,66 +14,29 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	var userID int
 
 	switch err := db.QueryRow(
-		`WITH leaderboard AS (
-		  SELECT DISTINCT ON (hole, user_id)
-		         hole,
-		         submitted,
-		         LENGTH(code) strokes,
-		         user_id
-		    FROM solutions
-		   WHERE NOT failing
-		ORDER BY hole, user_id, LENGTH(code), submitted
-		), scored_leaderboard AS (
-		  SELECT hole,
-		         ROUND(
-		             (
-		                 COUNT(*) OVER (PARTITION BY hole)
-		                 -
-		                 RANK() OVER (PARTITION BY hole ORDER BY strokes)
-		                 +
-		                 1
-		             )
-		             *
-		             (
-		                 1000.0
-		                 /
-		                 COUNT(*) OVER (PARTITION BY hole)
-		             )
-		         ) score,
-		         strokes,
-		         submitted,
-		         user_id
-		    FROM leaderboard l
-		), summed_leaderboard AS (
-		  SELECT user_id,
-		         SUM(score),
-		         COUNT(*),
-		         MAX(submitted)
-		    FROM scored_leaderboard
-		GROUP BY user_id
-		) SELECT CONCAT(
-		             login,
-		             '?s=100"><h1>',
-		             login,
-		             '</h1><table><tr><td>',
-		             TO_CHAR(sum, 'FM99,999'),
-		             '<td>point',
-		             CASE WHEN sum > 1 THEN 's' END,
-		             '<tr><td>',
-		             count,
-		             '/',
-		             ARRAY_LENGTH(ENUM_RANGE(NULL::hole), 1),
-		             '<td>holes<tr><td>',
-		             (SELECT COUNT(*) FROM trophies WHERE user_id = id),
-		             '/',
-		             ARRAY_LENGTH(ENUM_RANGE(NULL::trophy), 1),
-		             '<td>trophies',
-		             '</table><hr>'
-		         ),
-		         id
-		    FROM summed_leaderboard
-		    JOIN users ON id = user_id
-		   WHERE login = $1`,
+		`SELECT CONCAT(
+		            login,
+		            '?s=100"><h1>',
+		            login,
+		            '</h1><table><tr><td>',
+		            TO_CHAR(points, 'FM99,999'),
+		            '<td>point',
+		            CASE WHEN points > 1 THEN 's' END,
+		            '<tr><td>',
+		            holes,
+		            '/',
+		            ARRAY_LENGTH(ENUM_RANGE(NULL::hole), 1),
+		            '<td>holes<tr><td>',
+		            (SELECT COUNT(*) FROM trophies WHERE user_id = id),
+		            '/',
+		            ARRAY_LENGTH(ENUM_RANGE(NULL::trophy), 1),
+		            '<td>trophies',
+		            '</table><hr>'
+		        ),
+		        id
+		   FROM points
+		   JOIN users ON id = user_id
+		  WHERE login = $1`,
 		user,
 	).Scan(&html, &userID); err {
 	case sql.ErrNoRows:

@@ -86,6 +86,7 @@ CREATE TYPE public.trophy AS ENUM (
     'elephpant-in-the-room',
     'hello-world',
     'interview-ready',
+    'its-over-9000',
     'my-god-its-full-of-stars',
     'ouroboros',
     'polyglot',
@@ -110,6 +111,31 @@ CREATE TABLE public.solutions (
     code text NOT NULL,
     failing boolean DEFAULT false NOT NULL
 );
+
+
+--
+-- Name: points; Type: VIEW; Schema: public; Owner: jraspass
+--
+
+CREATE VIEW public.points AS
+ WITH leaderboard AS (
+         SELECT DISTINCT ON (solutions.hole, solutions.user_id) solutions.hole,
+            length(solutions.code) AS strokes,
+            solutions.user_id
+           FROM public.solutions
+          WHERE (NOT solutions.failing)
+          ORDER BY solutions.hole, solutions.user_id, (length(solutions.code)), solutions.submitted
+        ), scored_leaderboard AS (
+         SELECT l.hole,
+            round(((((count(*) OVER (PARTITION BY l.hole) - rank() OVER (PARTITION BY l.hole ORDER BY l.strokes)) + 1))::numeric * (1000.0 / (count(*) OVER (PARTITION BY l.hole))::numeric))) AS score,
+            l.user_id
+           FROM leaderboard l
+        )
+ SELECT scored_leaderboard.user_id,
+    sum(scored_leaderboard.score) AS points,
+    count(*) AS holes
+   FROM scored_leaderboard
+  GROUP BY scored_leaderboard.user_id;
 
 
 --
@@ -189,6 +215,13 @@ ALTER TABLE ONLY public.trophies
 --
 
 GRANT SELECT,INSERT,UPDATE ON TABLE public.solutions TO code_golf;
+
+
+--
+-- Name: TABLE points; Type: ACL; Schema: public; Owner: jraspass
+--
+
+GRANT SELECT ON TABLE public.points TO code_golf;
 
 
 --

@@ -125,6 +125,14 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 			awardTrophy(db, userID, "polyglot")
 		}
 
+		if queryBool(
+			db,
+			"SELECT points > 9000 FROM points WHERE user_id = $1",
+			userID,
+		) {
+			awardTrophy(db, userID, "its-over-9000")
+		}
+
 		switch in.Lang {
 		case "php":
 			awardTrophy(db, userID, "elephpant-in-the-room")
