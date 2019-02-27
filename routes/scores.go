@@ -38,7 +38,7 @@ func scoresMini(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		    '<tr',
 		    CASE WHEN me THEN ' class=me' END,
 		    '><td>',
-		    TO_CHAR(rank, 'FM999"<sup>"th"</sup>"'),
+		    TO_CHAR(rank, 'FM9,999"<sup>"th"</sup>"'),
 		    '<td><img src="//avatars.githubusercontent.com/',
 		    login,
 		    '?s=26"><td>',
@@ -211,7 +211,7 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		             '><td>',
 		             TO_CHAR(
 		                 RANK() OVER (ORDER BY score DESC, strokes),
-		                 'FM999"<sup>"th"</sup>"'
+		                 'FM9,999"<sup>"th"</sup>"'
 		             ),
 		             '<td><img src="//avatars.githubusercontent.com/',
 		             login,

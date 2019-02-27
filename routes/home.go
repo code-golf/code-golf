@@ -80,7 +80,7 @@ func home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		             '"',
 		             CASE WHEN user_id = $1 THEN ' class=me' END,
 		             '><td>',
-		             TO_CHAR(rank, 'FM999"<sup>"th"</sup>"'),
+		             TO_CHAR(rank, 'FM9,999"<sup>"th"</sup>"'),
 		             '<td><img src="//avatars.githubusercontent.com/',
 		             login,
 		             '?s=26"><a href="users/',
