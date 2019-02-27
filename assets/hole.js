@@ -114,11 +114,11 @@ onload = function() {
             tab.classList.toggle('on', tab.href === location.href);
     } )();
 
-    document.querySelector('button').onclick = function() {
+    document.querySelector('button').onclick = async function() {
         status.style.display = 'none';
         this.classList.add('on');
 
-        fetch('/solution', {
+        const res = await fetch('/solution', {
             credentials: 'include',
             method: 'POST',
             body: JSON.stringify({
@@ -126,37 +126,38 @@ onload = function() {
                 Hole: hole,
                 Lang: activeEditor.options.mode.name,
             }),
-        }).then( res => res.json() ).then( data => {
-            const pass = data.Exp === data.Out && data.Out !== '';
-
-            document.querySelector('h2').innerText
-                = pass ? 'Pass 😊️' : 'Fail ☹️';
-
-            // Show args if we have 'em.
-            if (data.Argv) {
-                document.querySelector('#arg').style.display = 'block';
-                document.querySelector('#arg div').innerHTML
-                    = '<span>' + data.Argv.join('</span> <span>') + '</span>';
-            }
-            else
-                document.querySelector('#arg').style.display = '';
-
-            // Show err if we have some and we're not passing.
-            if (data.Err && !pass) {
-                document.querySelector('#err').style.display = 'block';
-                document.querySelector('#err div').innerHTML = data.Err;
-            }
-            else
-                document.querySelector('#err').style.display = '';
-
-            // Always show exp & out.
-            document.querySelector('#exp div').innerText = data.Exp;
-            document.querySelector('#out div').innerText = data.Out;
-
-            status.classList.toggle('pass', pass);
-            status.style.display = 'block';
-            this.classList.remove('on');
         });
+
+        const data = await res.json();
+        const pass = data.Exp === data.Out && data.Out !== '';
+
+        document.querySelector('h2').innerText
+            = pass ? 'Pass 😊️' : 'Fail ☹️';
+
+        // Show args if we have 'em.
+        if (data.Argv) {
+            document.querySelector('#arg').style.display = 'block';
+            document.querySelector('#arg div').innerHTML
+                = '<span>' + data.Argv.join('</span> <span>') + '</span>';
+        }
+        else
+            document.querySelector('#arg').style.display = '';
+
+        // Show err if we have some and we're not passing.
+        if (data.Err && !pass) {
+            document.querySelector('#err').style.display = 'block';
+            document.querySelector('#err div').innerHTML = data.Err;
+        }
+        else
+            document.querySelector('#err').style.display = '';
+
+        // Always show exp & out.
+        document.querySelector('#exp div').innerText = data.Exp;
+        document.querySelector('#out div').innerText = data.Out;
+
+        status.classList.toggle('pass', pass);
+        status.style.display = 'block';
+        this.classList.remove('on');
     };
 
     const h1 = document.querySelector('h1');
