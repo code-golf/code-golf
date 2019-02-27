@@ -113,11 +113,15 @@ tr {
 #matrix tr:first-child th:nth-child(12) { background-image: svg(python#222)     }
 #matrix tr:first-child th:nth-child(13) { background-image: svg(ruby#222)       }
 
+#matrix,
+#trophies {
+    margin-top: 10px;
+}
+
 #trophies {
     display: grid;
     grid-gap: 10px;
     grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
-    margin: 10px 0;
 }
 
 #trophies a {

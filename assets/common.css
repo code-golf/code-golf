@@ -335,7 +335,8 @@ tr.me              { background: #5cf }
         width: 0;
     }
 
-    .scores td:nth-child(5) {
+    #matrix,
+    .scores td:nth-child(n+4) {
         display: none;
     }
 }

@@ -45,7 +45,7 @@ func printHeader(w http.ResponseWriter, r *http.Request, status int) int {
 			"Code Golf is a game designed to let you show off your code-fu " +
 			`by solving problems in the least number of characters.">` +
 			"<meta name=theme-color content=#222>" +
-			`<meta name=viewport content="width=device-width">` +
+			`<meta name=viewport content="maximum-scale=1,user-scalable=0,width=device-width">` +
 			"<title>Code-Golf</title>" +
 			"<header><nav>" +
 			"<a href=/>Home</a>" +
