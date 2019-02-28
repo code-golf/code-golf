@@ -202,6 +202,7 @@ tr.me              { background: #5cf }
 }
 
 .bash       { background: svg(bash#000)       center right 7px / 26px no-repeat }
+.c          { background: svg(c#000)          center right 7px / 26px no-repeat }
 .haskell    { background: svg(haskell#000)    center right 7px / 26px no-repeat }
 .j          { background: svg(j#000)          center right 7px / 26px no-repeat }
 .javascript { background: svg(javascript#000) center right 7px / 26px no-repeat }

@@ -64,6 +64,7 @@ CREATE TYPE public.hole AS ENUM (
 
 CREATE TYPE public.lang AS ENUM (
     'bash',
+    'c',
     'haskell',
     'j',
     'javascript',

@@ -50,15 +50,15 @@ onload = function() {
     let editors = [];
 
     for (let langName of [
-        'Bash', 'Haskell', 'J', 'JavaScript', 'Julia', 'Lisp',
-        'Lua', 'Perl', 'Perl 6', 'PHP', 'Python', 'Ruby',
+        'Bash', 'C', 'Haskell', 'J', 'JavaScript', 'Julia', 'Lisp', 'Lua',
+        'Perl', 'Perl 6', 'PHP', 'Python', 'Ruby',
     ]) {
         let lang = langName.replace(/ /, '').toLowerCase();
 
         let editor = CodeMirror(wrapper, {
             lineNumbers: true,
             lineWrapping: true,
-            mode: { name: lang, startOpen: true },
+            mode: { name: lang === 'c' ? 'clike' : lang, startOpen: true },
             value: data.hasOwnProperty(lang) ? data[lang] : '',
         });
 
@@ -94,18 +94,24 @@ onload = function() {
 
     ( onhashchange = function() {
         // Kick 'em to Perl 6 if we don't know the chosen language.
-        if (!/^#(?:bash|haskell|j|javascript|julia|lisp|lua|perl6?|php|python|ruby)$/.exec(location.hash))
+        if (!/^#(?:bash|c|haskell|j|javascript|julia|lisp|lua|perl6?|php|python|ruby)$/.exec(location.hash))
             location.hash = 'perl6';
 
         let lang = location.hash.slice(1);
 
         localStorage.setItem(hole, lang);
 
-        for (let editor of editors)
-            if (editor.options.mode.name === lang)
+        for (let editor of editors) {
+            let mode = editor.options.mode.name;
+
+            if (mode === 'clike')
+                mode = 'c';
+
+            if (mode === lang)
                 ( activeEditor = editor ).display.wrapper.style.display = '';
             else
                 editor.display.wrapper.style.display = 'none';
+        }
 
         for (let info of document.querySelectorAll('.info'))
             info.style.display = info.classList.contains(lang) ? 'block' : '';
@@ -118,13 +124,14 @@ onload = function() {
         status.style.display = 'none';
         this.classList.add('on');
 
-        const res = await fetch('/solution', {
+        const mode = activeEditor.options.mode.name;
+        const res  = await fetch('/solution', {
             credentials: 'include',
             method: 'POST',
             body: JSON.stringify({
                 Code: activeEditor.getValue(),
                 Hole: hole,
-                Lang: activeEditor.options.mode.name,
+                Lang: mode === 'clike' ? 'c' : mode,
             }),
         });
 

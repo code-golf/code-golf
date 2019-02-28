@@ -208,6 +208,8 @@ func runCode(hole, lang, code string, args []string) (string, string) {
 	switch lang {
 	case "bash":
 		cmd.Args = []string{"/usr/bin/bash", "-s", "-"}
+	case "c":
+		cmd.Args = []string{"/usr/bin/tcc", "-run", "-"}
 	case "haskell", "javascript", "php":
 		cmd.Args = []string{"/usr/bin/" + lang, "--"}
 	case "j":

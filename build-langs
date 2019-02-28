@@ -2,6 +2,7 @@
 
 declare -A urls=(
     ["bash"]="//www.gnu.org/software/bash/"
+    ["c"]="//bellard.org/tcc/"
     ["haskell"]="//www.haskell.org/ghc/"
     ["j"]="http://jsoftware.com"
     ["javascript"]="//v8.dev"
@@ -19,7 +20,7 @@ docker pull alpine:edge
 
 cd containers
 
-for name in Bash Haskell J JavaScript Julia Lisp Lua Perl Perl\ 6 PHP Python Ruby; do
+for name in Bash C Haskell J JavaScript Julia Lisp Lua Perl Perl\ 6 PHP Python Ruby; do
     lang=${name,,}      # lowercase
     lang=${lang// /}    # trim space
 
@@ -48,6 +49,7 @@ for name in Bash Haskell J JavaScript Julia Lisp Lua Perl Perl\ 6 PHP Python Rub
     ver=${ver/ation/er}
     ver=${ver/built /}
     ver=${ver/System, /}
+    ver=${ver/tcc /Tiny C Compiler }
     ver=${ver//$'\n'/ }
     ver=${ver//version /}
     ver=${ver%.}
