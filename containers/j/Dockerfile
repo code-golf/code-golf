@@ -2,7 +2,7 @@ FROM alpine:edge as builder
 
 RUN apk add --no-cache curl fts-dev gcc make musl-dev
 
-RUN curl -L https://github.com/jsoftware/jsource/archive/90adff2.tar.gz | tar xzf -
+RUN curl -L https://github.com/jsoftware/jsource/archive/6a42dbc.tar.gz | tar xzf -
 
 COPY patch /
 
