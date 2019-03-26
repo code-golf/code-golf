@@ -1,5 +1,4 @@
 GID_nobody      equ 99
-UID_nobody      equ 99
 
 MNT_DETACH      equ 2
 
@@ -57,135 +56,116 @@ fullroot    db "rootfs/old-root", 0
 oldroot     db "old-root", 0
 rootfs      db "rootfs", 0
 slash       db "/", 0
-slash_proc  db "/proc", 0
-slash_tmp   db "/tmp", 0
 proc        db "proc", 0
+tmp         db "tmp", 0
 tmpfs       db "tmpfs", 0
-stage       db "ABCDEFGHIJK"
 
 start:
-        ; [A] mount / as private
+        ; mount / as private
             mov rax, SYS_mount
             ; rdi starts as 0
             mov rsi, slash
             mov r10, MS_PRIVATE|MS_REC
             ; r8 starts as 0
             syscall
-            mov r12, stage
 
             test eax, eax
             jnz exit
 
-        ; [B] bind mount rootfs
+        ; bind mount rootfs
             mov rax, SYS_mount
             mov rdi, rootfs
             mov rsi, rdi
-            xor edx, edx
+            ; edx starts as 0
             mov r10, MS_BIND|MS_REC
             syscall
-            inc r12
 
             test eax, eax
             jnz exit
 
-        ; [C] pivot to rootfs
+        ; pivot to rootfs
             mov rax, SYS_pivot_root
             ; rdi is still rootfs
             mov rsi, fullroot
             syscall
-            inc r12
 
             test eax, eax
             jnz exit
 
-        ; [D] change directory to /
+        ; change directory to /
             mov rax, SYS_chdir
             mov rdi, slash
             syscall
-            inc r12
 
             test eax, eax
             jnz exit
 
-        ; [E] unmount the old root
+        ; unmount the old root
             mov rax, SYS_umount2
             mov rdi, oldroot
             mov rsi, MNT_DETACH
             syscall
-            inc r12
 
             test eax, eax
             jnz exit
 
-        ; [F] mount /proc as proc
+        ; mount /proc as proc
             mov rax, SYS_mount
-            mov rdi, slash_proc
+            mov rdi, proc
             mov rsi, rdi
-            mov edx, proc
+            mov rdx, rdi
             xor r10, r10
-            xor r8, r8
+            ; r8 is still 0
             syscall
-            mov r12, stage
 
             test eax, eax
             jnz exit
 
-        ; [G] mount /tmp as tmpfs
+        ; mount /tmp as tmpfs
             mov rax, SYS_mount
-            mov rdi, slash_tmp
+            mov rdi, tmp
             mov rsi, rdi
             mov edx, tmpfs
-            xor r10, r10
-            xor r8, r8
+            ; r10 is still 0
+            ; r8  is still 0
             syscall
-            mov r12, stage
 
             test eax, eax
             jnz exit
 
-        ; [H] set the hostname
+        ; set the hostname
             mov rax, SYS_sethostname
             mov rdi, host
             mov rsi, hostsize
             syscall
-            inc r12
 
             test eax, eax
             jnz exit
 
-        ; [I] set the group
+        ; set the group
             mov rax, SYS_setgid
             mov rdi, GID_nobody
             syscall
-            inc r12
 
             test eax, eax
             jnz exit
 
-        ; [J] set the user
+        ; set the user
             mov rax, SYS_setuid
-            mov rdi, UID_nobody
+            ; rdi is still GID_nobody which is identical to UID_nobody
             syscall
-            inc r12
 
             test eax, eax
             jnz exit
 
-        ; [K] syscall(SYS_execve, argv[0], argv, 0);
+        ; syscall(SYS_execve, argv[0], argv, 0);
             mov rax, SYS_execve
             lea rsi, [rsp + 8] ; argv
             mov rdi, [rsi]     ; argv[0]
             xor edx, edx
             syscall
-            inc r12
 
 exit:
-            mov rax, SYS_write
-            mov rdi, 1
-            mov rsi, r12
-            mov rdx, 1
-            syscall
-
             mov rax, SYS_exit
             mov rdi, 1
             syscall
