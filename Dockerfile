@@ -6,15 +6,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates curl git make nasm
 
 # https://golang.org/dl/
-RUN curl -SSL https://dl.google.com/go/go1.12.linux-amd64.tar.gz \
+RUN curl -SSL https://dl.google.com/go/go1.12.1.linux-amd64.tar.gz \
   | tar -xzC /usr/local
 
 RUN git clone https://go.googlesource.com/go \
  && cd go                                    \
- && git checkout 4373281                     \
- && git config user.email a@b.c              \
- && git fetch https://go.googlesource.com/go refs/changes/37/161337/3 \
- && git cherry-pick FETCH_HEAD               \
+ && git checkout 0ec302c                     \
  && cd src                                   \
  && ./make.bash                              \
  && chmod +rx /root
