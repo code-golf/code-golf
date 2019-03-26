@@ -85,7 +85,7 @@ func main() {
 
 	// Serve HTTPS.
 	if dev {
-		panic(server.ListenAndServeTLS("server.crt", "server.key"))
+		panic(server.ListenAndServeTLS("localhost.pem", "localhost-key.pem"))
 	} else {
 		panic(server.ListenAndServeTLS("", ""))
 	}

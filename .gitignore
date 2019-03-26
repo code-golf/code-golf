@@ -2,5 +2,7 @@
 /.path/
 /code-golf
 /containers/*/rootfs/
+/localhost-key.pem
+/localhost.pem
 /routes/assets.go
 /run-container
