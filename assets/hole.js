@@ -144,8 +144,17 @@ onload = function() {
         // Show args if we have 'em.
         if (data.Argv) {
             document.querySelector('#arg').style.display = 'block';
-            document.querySelector('#arg div').innerHTML
-                = '<span>' + data.Argv.join('</span> <span>') + '</span>';
+            const argDiv = document.querySelector('#arg div');
+            // Remove all arg spans
+            while (argDiv.firstChild) {
+                argDiv.removeChild(argDiv.firstChild);
+            }
+            // Add a span for each arg
+            for (const arg of data.Argv) {
+                argDiv.appendChild(document.createElement('span'));
+                argDiv.lastChild.innerText = arg;
+                argDiv.appendChild(document.createTextNode(' '));
+            }
         }
         else
             document.querySelector('#arg').style.display = '';
