@@ -258,7 +258,7 @@ main nav a:nth-child(3):before {
 #tabs {
     clear: both;
     display: grid;
-    grid-template-columns: repeat(13, 1fr);
+    grid-template-columns: repeat(14, 1fr);
     position: relative;
        -moz-user-select: none;
         -ms-user-select: none;
@@ -287,6 +287,7 @@ main nav a:nth-child(3):before {
 }
 
 #tabs a[href="#bash"]       { background-image: svg(bash#fff)       }
+#tabs a[href="#brainfuck"]  { background-image: svg(brainfuck#fff)  }
 #tabs a[href="#c"]          { background-image: svg(c#fff)          }
 #tabs a[href="#haskell"]    { background-image: svg(haskell#fff)    }
 #tabs a[href="#j"]          { background-image: svg(j#fff)          }
