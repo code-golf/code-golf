@@ -16,35 +16,46 @@ int main(int argc, char *argv[]) {
         "int main(){\n"
         "uint8_t t[65536] = {0};\n"
         "uint16_t p = 0;\n"
-        "int i;",
+        "size_t i;\n",
         fp);
+
+    // char in[] = "arg2\0arg3\0argN\0";
+    fputs("char in[] = \"", fp);
+    for (int i = 2; i < argc; i++) {
+        // Write each character of argv[i] using \xNN escape
+        for (char *a = argv[i]; *a; a++)
+            fprintf(fp, "\\x%02x", *a & 255);
+        fputs("\\0",fp);
+    }
+    fputs("\";\n", fp);
 
     int ch;
     while ((ch = getchar()) != EOF)
         switch (ch) {
             case '>':
-                fputs("++p;", fp);
+                fputs("++p;\n", fp);
                 break;
             case '<':
-                fputs("--p;", fp);
+                fputs("--p;\n", fp);
                 break;
             case '+':
-                fputs("++t[p];", fp);
+                fputs("++t[p];\n", fp);
                 break;
             case '-':
-                fputs("--t[p];", fp);
+                fputs("--t[p];\n", fp);
                 break;
             case ',':
-                // Not yet implemented
+                // Cell is unchanged when trying to read past the end of stdin
+                fputs("if(i<sizeof(in)-1)t[p]=in[i++];\n", fp);
                 break;
             case '.':
-                fputs("putchar(t[p]);", fp);
+                fputs("putchar(t[p]);\n", fp);
                 break;
             case '[':
-                fputs("while(t[p]){", fp);
+                fputs("while(t[p]){\n", fp);
                 break;
             case ']':
-                fputs("}", fp);
+                fputs("}\n", fp);
                 break;
         }
 
