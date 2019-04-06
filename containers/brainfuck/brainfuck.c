@@ -1,10 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 // Adapted from https://github.com/TryItOnline/brainfuck
 
 int main(int argc, char *argv[]) {
+    if (argc > 1 && strcmp(argv[1], "-v") == 0) {
+        puts("1.0.0");
+        return 0;
+    }
+
     FILE *fp = fopen("/tmp/code.c", "w");
 
     if (fp == 0)
