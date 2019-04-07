@@ -147,7 +147,7 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	if holeID != "" {
 		where += " AND hole = '" + holeID + "'"
-		concat = "' class=', lang, '>', TO_CHAR(strokes, 'FM99,999'), '<td>(', TO_CHAR(score, 'FM99,999'), ' point', CASE WHEN score"
+		concat = "' class=', lang, '>', TO_CHAR(strokes, 'FM999,999'), '<td>(', TO_CHAR(score, 'FM99,999'), ' point', CASE WHEN score"
 	} else {
 		concat = "'>', TO_CHAR(score, 'FM99,999'), '<td>(', count, ' hole', CASE WHEN count"
 	}
