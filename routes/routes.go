@@ -22,19 +22,16 @@ func init() {
 
 	Router.GET("/", middleware.Gzip(home))
 	Router.GET("/about", middleware.Gzip(about))
-	Router.GET("/assets/:0", asset)
+	Router.GET("/assets/:asset", asset)
 	Router.GET("/callback", callback)
 	Router.GET("/favicon.ico", asset)
 	Router.GET("/logout", middleware.Gzip(logout))
 	Router.GET("/random", random)
 	Router.GET("/robots.txt", robots)
-	Router.GET("/scores", middleware.Gzip(scores))
-	Router.GET("/scores/:0", middleware.Gzip(scores))
-	Router.GET("/scores/:0/:1", middleware.Gzip(scores))
-	Router.GET("/scores/:0/:1/all", middleware.Gzip(scores))
-	Router.GET("/scores/:0/:1/mini", middleware.Gzip(scoresMini))
+	Router.GET("/scores/:hole/:lang", middleware.Gzip(scores))
+	Router.GET("/scores/:hole/:lang/mini", middleware.Gzip(scoresMini))
 	Router.GET("/stats", middleware.Gzip(stats))
-	Router.GET("/users/:0", middleware.Gzip(user))
+	Router.GET("/users/:user", middleware.Gzip(user))
 
 	for _, h := range holes {
 		Router.GET("/"+h.ID, middleware.Gzip(hole))
