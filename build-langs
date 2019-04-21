@@ -58,7 +58,8 @@ for name in Bash Brainfuck C Haskell J JavaScript Julia Lisp Lua Perl Perl\ 6 PH
     ver=${ver%  Copyright (C) 1994-2018 Lua.org, PUC-Rio}
     ver=${ver/ (*/}
 
-    html+="<tr><th class=$lang>$name<td>$ver<td><a href=${urls[$lang]}></a>"
+    html+="+
+        \"<tr><th class=$lang>$name<td>$ver<td><a href=${urls[$lang]}></a>\""
 
     id=`docker run -d code-golf-$lang`
 
@@ -81,4 +82,6 @@ done
 
 echo "package routes
 
-const versionTable = \"$html\"" > ../routes/versions.go
+const versionTable = \"\"$html" > ../routes/versions.go
+
+gofmt -s -w ../routes/versions.go
