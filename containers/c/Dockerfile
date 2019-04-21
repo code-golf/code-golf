@@ -4,12 +4,16 @@ RUN apk add --no-cache curl gcc make musl-dev
 
 RUN curl -L https://download.savannah.nongnu.org/releases/tinycc/tcc-0.9.27.tar.bz2 | tar xjf -
 
-RUN cd tcc-0.9.27    \
- && ./configure      \
-    --config-musl    \
-    --prefix=/usr    \
-    --strip-binaries \
- && make             \
+COPY setvbuf.patch /
+
+RUN mv tcc-* tcc             \
+ && patch -p0 <setvbuf.patch \
+ && cd tcc                   \
+ && ./configure              \
+    --config-musl            \
+    --prefix=/usr            \
+    --strip-binaries         \
+ && make                     \
  && make install
 
 FROM scratch
