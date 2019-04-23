@@ -2,7 +2,7 @@ package main
 
 import (
 	"crypto/tls"
-	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
 	"os"
@@ -10,29 +10,14 @@ import (
 	"time"
 
 	"github.com/JRaspass/code-golf/routes"
+	"github.com/urfave/negroni"
 	"golang.org/x/crypto/acme/autocert"
 )
 
-type handler struct{}
+type err500 struct{}
 
-func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	// Catch panics and turn them into 500s.
-	defer func(start time.Time) {
-		fmt.Printf(
-			"%3dms %4s %s %s\n",
-			time.Since(start).Nanoseconds()/1e6,
-			r.Method,
-			r.URL.Path,
-			r.UserAgent(),
-		)
-
-		if r := recover(); r != nil {
-			fmt.Fprint(os.Stderr, "<1>", r, "\n")
-			http.Error(w, "500: It's Dead, Jim.", 500)
-		}
-	}(time.Now())
-
-	routes.Router.ServeHTTP(w, r)
+func (*err500) FormatPanicError(w http.ResponseWriter, r *http.Request, _ *negroni.PanicInformation) {
+	http.Error(w, "500: It's Dead, Jim.", 500)
 }
 
 func main() {
@@ -46,8 +31,20 @@ func main() {
 		),
 	}
 
+	logger := negroni.NewLogger()
+	logger.ALogger = log.New(os.Stdout, "", 0)
+	logger.SetFormat("{{.StartTime}} {{.Status}} {{.Method}} {{.Request.URL}} {{.Request.UserAgent}}")
+
+	recovery := negroni.NewRecovery()
+	recovery.Formatter = &err500{}
+	recovery.Logger = log.New(os.Stderr, "<1>", 0)
+
 	server := &http.Server{
-		Handler: &handler{},
+		Handler: negroni.New(
+			logger,
+			recovery,
+			negroni.Wrap(routes.Router),
+		),
 		TLSConfig: &tls.Config{
 			CipherSuites: []uint16{
 				tls.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
