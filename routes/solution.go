@@ -236,6 +236,7 @@ func runCode(hole, lang, code string, args []string) (string, string) {
 		if ctx.Err() == context.DeadlineExceeded {
 			stderr.WriteString("Killed for exceeding the 7s timeout.")
 		} else {
+			stderr.WriteString(err.Error())
 			println(err.Error())
 		}
 	}
