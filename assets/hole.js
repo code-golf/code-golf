@@ -162,7 +162,7 @@ onload = function() {
         // Show err if we have some and we're not passing.
         if (data.Err && !pass) {
             document.querySelector('#err').style.display = 'block';
-            document.querySelector('#err div').innerHTML = data.Err;
+            document.querySelector('#err div').innerHTML = data.Err.replace(/\n/g, '<br>');
         }
         else
             document.querySelector('#err').style.display = '';
