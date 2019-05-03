@@ -196,8 +196,8 @@ func runCode(hole, lang, code string, args []string) (string, string) {
 	ctx, cancel := context.WithTimeout(context.Background(), 7*time.Second)
 	defer cancel()
 
-	cmd := exec.CommandContext(ctx, "../../run-container")
-	cmd.Dir = "containers/" + lang
+	cmd := exec.CommandContext(ctx, "../../run-lang")
+	cmd.Dir = "langs/" + lang
 	cmd.Stderr = &stderr
 	cmd.Stdin = strings.NewReader(code)
 	cmd.Stdout = &stdout

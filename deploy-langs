@@ -1,3 +1,3 @@
 #!/bin/sh -e
 
-rsync -achPe 'ssh -p 1988' --delete containers code-golf.io:code-golf
+rsync -achPe 'ssh -p 1988' --delete langs code-golf.io:code-golf

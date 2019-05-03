@@ -1,3 +1,5 @@
+; nasm -f bin -o run-lang run-lang.asm && chmod +x run-lang
+
 GID_nobody      equ 99
 
 MNT_DETACH      equ 2

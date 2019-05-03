@@ -2,7 +2,7 @@
 
 declare -A urls=(
     ["bash"]="//www.gnu.org/software/bash/"
-    ["brainfuck"]="//github.com/JRaspass/code-golf/tree/master/containers/brainfuck/"
+    ["brainfuck"]="//github.com/JRaspass/code-golf/tree/master/langs/brainfuck/"
     ["c"]="//bellard.org/tcc/"
     ["haskell"]="//www.haskell.org/ghc/"
     ["j"]="http://jsoftware.com"
@@ -19,7 +19,7 @@ declare -A urls=(
 
 docker pull alpine:edge
 
-cd containers
+cd langs
 
 for name in Bash Brainfuck C Haskell J JavaScript Julia Lisp Lua Perl Perl\ 6 PHP Python Ruby; do
     lang=${name,,}      # lowercase
