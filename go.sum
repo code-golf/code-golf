@@ -2,6 +2,8 @@ github.com/SeerUK/assert v1.0.0 h1:UuhBwrK3UxJ3xT+3+k8qfriUEqfgiOCerFKE746TqEI=
 github.com/SeerUK/assert v1.0.0/go.mod h1:gYQnFIWikwvM2F3SoZpBdnbwf/XKaUSeG+Lx1GzSS9E=
 github.com/buildkite/terminal v3.2.0+incompatible h1:08p6611HADinUwK0oyxCaAsnFXVDU4GlTW1TdXVP+5s=
 github.com/buildkite/terminal v3.2.0+incompatible/go.mod h1:iQavkS6X0wlozOmO2rxHYt/9mE5Ij2XTk6yGcclx6hk=
+github.com/cv-library/negroni-brotli v0.1.0 h1:XHp5az3a/+S/E0y9QgzvAQ6iKHwcaKfvMO83VKmH6o0=
+github.com/cv-library/negroni-brotli v0.1.0/go.mod h1:trJIsbpAH+Rex8NJCyemf2jEVucd7lcS8LTjvS2k6wY=
 github.com/julienschmidt/httprouter v1.2.0 h1:TDTW5Yz1mjftljbcKqRcrYhd4XeOoI98t+9HbQbYf7g=
 github.com/julienschmidt/httprouter v1.2.0/go.mod h1:SYymIcj16QtmaHHD7aYtjjsJG7VTCxuUUipMqKk8s4w=
 github.com/lib/pq v1.1.0 h1:/5u4a+KGJptBRqGzPvYQL9p0d/tPR4S31+Tnzj9lEO4=
@@ -13,3 +15,5 @@ github.com/urfave/negroni v1.0.0/go.mod h1:Meg73S6kFm/4PpbYdq35yYWoCZ9mS/YSx+lKn
 golang.org/x/crypto v0.0.0-20190418165655-df01cb2cc480 h1:O5YqonU5IWby+w98jVUG9h7zlCWCcH4RHyPVReBmhzk=
 golang.org/x/crypto v0.0.0-20190418165655-df01cb2cc480/go.mod h1:WFFai1msRO1wXaEeE5yQxYXgSfI8pQAWXbQop6sCtWE=
 golang.org/x/sys v0.0.0-20190403152447-81d4e9dc473e/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
+gopkg.in/kothar/brotli-go.v0 v0.0.0-20170728081549-771231d473d6 h1:M8GdJL0oESXVmjOOT3upJyFkKs5o1jJERiKYOZjVes0=
+gopkg.in/kothar/brotli-go.v0 v0.0.0-20170728081549-771231d473d6/go.mod h1:nVee4zUY+UoXjOfM57w44w2XjsoIqIKd4A9vktFSQ6I=

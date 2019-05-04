@@ -1,21 +1,7 @@
-FROM debian:stretch-slim
+FROM golang:1.12.4-alpine
 
-ENV CGO_ENABLED=0 GOROOT_BOOTSTRAP=/usr/local/go
+ENV GOCACHE=/go/.go/cache GOPATH=/go/.go/path
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates curl git make
+RUN apk --no-cache add g++ git musl-dev
 
-# https://golang.org/dl/
-RUN curl -SSL https://dl.google.com/go/go1.12.4.linux-amd64.tar.gz \
-  | tar -xzC /usr/local
-
-RUN git clone https://go.googlesource.com/go \
- && cd go                                    \
- && git checkout 68d4b12                     \
- && cd src                                   \
- && ./make.bash                              \
- && chmod +rx /root
-
-ENV GOCACHE=/code-golf/.cache GOPATH=/code-golf/.path PATH=/go/bin:$PATH
-
-CMD go build -ldflags -s
+CMD ["go", "build", "-ldflags", "-extldflags -static -linkmode external -s"]

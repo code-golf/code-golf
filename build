@@ -8,6 +8,5 @@ if (( $(stat -c %Y `ls -t assets/{,*/}* | head -1`) > `stat -c %Y routes/assets.
 fi
 
 # Code
-docker pull debian:stretch-slim
 docker build -t code-golf .
-docker run --rm -u $UID:$GROUPS -v $PWD:/code-golf -w /code-golf code-golf
+docker run --rm -u $UID:$GROUPS -v $PWD:/go code-golf

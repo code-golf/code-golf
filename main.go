@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/JRaspass/code-golf/routes"
+	brotli "github.com/cv-library/negroni-brotli"
 	"github.com/urfave/negroni"
 	"golang.org/x/crypto/acme/autocert"
 )
@@ -42,6 +43,7 @@ func main() {
 	server := &http.Server{
 		Handler: negroni.New(
 			logger,
+			brotli.New(5),
 			recovery,
 			negroni.Wrap(routes.Router),
 		),

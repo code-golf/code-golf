@@ -5,7 +5,6 @@ import (
 	"math/rand"
 	"net/http"
 
-	"github.com/JRaspass/code-golf/middleware"
 	"github.com/julienschmidt/httprouter"
 	_ "github.com/lib/pq"
 )
@@ -20,24 +19,24 @@ func init() {
 		panic(err)
 	}
 
-	Router.GET("/", middleware.Gzip(home))
-	Router.GET("/about", middleware.Gzip(about))
+	Router.GET("/", home)
+	Router.GET("/about", about)
 	Router.GET("/assets/:asset", asset)
 	Router.GET("/callback", callback)
 	Router.GET("/favicon.ico", asset)
-	Router.GET("/logout", middleware.Gzip(logout))
+	Router.GET("/logout", logout)
 	Router.GET("/random", random)
 	Router.GET("/robots.txt", robots)
-	Router.GET("/scores/:hole/:lang", middleware.Gzip(scores))
-	Router.GET("/scores/:hole/:lang/mini", middleware.Gzip(scoresMini))
-	Router.GET("/stats", middleware.Gzip(stats))
-	Router.GET("/users/:user", middleware.Gzip(user))
+	Router.GET("/scores/:hole/:lang", scores)
+	Router.GET("/scores/:hole/:lang/mini", scoresMini)
+	Router.GET("/stats", stats)
+	Router.GET("/users/:user", user)
 
 	for _, h := range holes {
-		Router.GET("/"+h.ID, middleware.Gzip(hole))
+		Router.GET("/"+h.ID, hole)
 	}
 
-	Router.POST("/solution", middleware.Gzip(solution))
+	Router.POST("/solution", solution)
 
 	Router.NotFound = http.HandlerFunc(print404)
 }

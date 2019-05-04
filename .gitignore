@@ -1,5 +1,4 @@
-/.cache/
-/.path/
+/.go/
 /code-golf
 /langs/*/rootfs/
 /localhost-key.pem
