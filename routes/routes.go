@@ -38,7 +38,9 @@ func init() {
 
 	Router.POST("/solution", solution)
 
-	Router.NotFound = http.HandlerFunc(print404)
+	Router.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		Render(w, r, http.StatusNotFound, "404", nil)
+	})
 }
 
 func random(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {

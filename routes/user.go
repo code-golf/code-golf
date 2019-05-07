@@ -40,7 +40,7 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		user,
 	).Scan(&html, &userID); err {
 	case sql.ErrNoRows:
-		print404(w, r)
+		Render(w, r, http.StatusNotFound, "404", nil)
 		return
 	case nil:
 		printHeader(w, r, 200)
