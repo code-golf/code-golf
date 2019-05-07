@@ -24,10 +24,6 @@ func (*err500) FormatPanicError(w http.ResponseWriter, r *http.Request, _ *negro
 func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
 
-	if err := routes.ParseViews(); err != nil {
-		panic(err)
-	}
-
 	certManager := autocert.Manager{
 		Cache:  autocert.DirCache("certs"),
 		Prompt: autocert.AcceptTOS,

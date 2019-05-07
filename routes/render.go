@@ -14,8 +14,17 @@ import (
 
 var tmpl = template.New("")
 
-func ParseViews() error {
-	return filepath.Walk("views", func(path string, _ os.FileInfo, err error) error {
+func init() {
+	// Tests run from the package directory, walk upwards until we find views.
+	for {
+		if _, err := os.Stat("views"); os.IsNotExist(err) {
+			os.Chdir("..")
+		} else {
+			break
+		}
+	}
+
+	if err := filepath.Walk("views", func(path string, _ os.FileInfo, err error) error {
 		if strings.HasSuffix(path, ".html") {
 			if b, err := ioutil.ReadFile(path); err != nil {
 				return err
@@ -26,7 +35,9 @@ func ParseViews() error {
 		}
 
 		return err
-	})
+	}); err != nil {
+		panic(err)
+	}
 }
 
 // Render wraps common logic required for rendering a view to the user.
