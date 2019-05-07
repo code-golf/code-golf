@@ -1,0 +1,34 @@
+<!doctype html>
+
+<html lang=en>
+
+<link rel=stylesheet href={{ .CommonCssPath }}>
+
+<meta name=theme-color content=#222>
+<meta name=viewport content="maximum-scale=1,user-scalable=0,width=device-width">
+<meta name=description content="Code Golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.">
+
+<title>Code-Golf</title>
+
+<header>
+    <nav>
+        {{- /**/ -}}
+        <a href=/>Home</a>
+        {{- /**/ -}}
+        <a href=/about>About</a>
+        {{- /**/ -}}
+        <a href=/scores/all-holes/all-langs>Scores</a>
+        {{- /**/ -}}
+        <a href=/stats>Stats</a>
+        {{- /**/ -}}
+    {{ if .Login }}
+        <a href=/logout id=logout title=Logout></a>
+        <a href="/users/{{ .Login }}" id=me>
+            <img src="//avatars.githubusercontent.com/{{ .Login }}?s=30">
+            {{ .Login }}
+        </a>
+    {{ else }}
+        <a href="{{ .LoginURL }}" id=login>Login with GitHub</a>
+    {{ end }}
+    </nav>
+</header>
