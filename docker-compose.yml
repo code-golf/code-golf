@@ -3,7 +3,21 @@ services:
     app:
         build:
             context: .
-            dockerfile: Dockerfile.app
+            dockerfile: Dockerfile
+        command:
+            - reflex
+            - -sd
+            - none
+            - -r
+            - \.(go|html)$$
+            - -R
+            - ^\.go/|_test\.go$$
+            - --
+            - go
+            - run
+            - -tags
+            - dev
+            - .
         environment:
             DEV:       1
             PGHOST:    db
@@ -14,9 +28,7 @@ services:
             - 443:443
         privileged: true
         volumes:
-            - .:/code-golf
-            - /etc:/etc # For CA certs
-        working_dir: /code-golf
+            - .:/go
     db:
         build:
             context: .

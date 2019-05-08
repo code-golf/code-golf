@@ -1,12 +1,8 @@
 #!/bin/bash -e
 
-# Assets - only re-run if assets.go is stale.
+# Only re-run if assets.go is stale.
 if (( $(stat -c %Y `ls -t assets/{,*/}* | head -1`) > `stat -c %Y routes/assets.go || echo 0` )); then
     docker pull alpine:edge
     docker build -t code-golf-assets assets
     docker run --rm -u $UID:$GROUPS -v $PWD:/work code-golf-assets
 fi
-
-# Code
-docker build -t code-golf .
-docker run --rm -u $UID:$GROUPS -v $PWD:/go code-golf

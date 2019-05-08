@@ -4,5 +4,5 @@ go:
 env:
   - GO111MODULE=on
 before_install: go get github.com/mattn/goveralls
-install: ./build
+install: ./build-assets
 after_success: goveralls
