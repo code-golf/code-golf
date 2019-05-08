@@ -1,37 +1,37 @@
 version: '2'
 services:
-    app:
-        build:
-            context: .
-            dockerfile: Dockerfile
-        command:
-            - reflex
-            - -sd
-            - none
-            - -r
-            - \.(go|html)$$
-            - -R
-            - ^\.go/|_test\.go$$
-            - --
-            - go
-            - run
-            - -tags
-            - dev
-            - .
-        environment:
-            DEV:       1
-            PGHOST:    db
-            PGSSLMODE: disable
-            PGUSER:    code_golf
-        ports:
-            - 80:80
-            - 443:443
-        privileged: true
-        volumes:
-            - .:/go
-    db:
-        build:
-            context: .
-            dockerfile: Dockerfile.db
-        environment:
-            POSTGRES_USER: code_golf
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command:
+      - reflex
+      - -sd
+      - none
+      - -r
+      - \.(go|html)$$
+      - -R
+      - ^\.go/|_test\.go$$
+      - --
+      - go
+      - run
+      - -tags
+      - dev
+      - .
+    environment:
+      DEV:       1
+      PGHOST:    db
+      PGSSLMODE: disable
+      PGUSER:    code_golf
+    ports:
+      - 80:80
+      - 443:443
+    privileged: true
+    volumes:
+      - .:/go
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile.db
+    environment:
+      POSTGRES_USER: code_golf
