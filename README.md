@@ -1,4 +1,6 @@
-# Code Golf [![Travis](https://travis-ci.org/JRaspass/code-golf.svg)](https://travis-ci.org/JRaspass/code-golf) [![Coveralls](https://coveralls.io/repos/github/JRaspass/code-golf/badge.svg)](https://coveralls.io/github/JRaspass/code-golf)
+# Code Golf
+
+[![Travis](https://travis-ci.org/JRaspass/code-golf.svg)](https://travis-ci.org/JRaspass/code-golf) [![Coveralls](https://coveralls.io/repos/github/JRaspass/code-golf/badge.svg)](https://coveralls.io/github/JRaspass/code-golf)
 
 This is the repository behind https://code-golf.io
 
