@@ -86,33 +86,18 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		return
 	}
 
-	userID := printHeader(w, r, 200)
-
-	w.Write([]byte(
-		"<script defer src=" + scoresJsPath + "></script><script defer src=" +
-			timeJsPath + "></script><main id=scores><select id=hole>" +
-			"<option value=all-holes>All Holes",
-	))
-
-	for _, hole := range holes {
-		w.Write([]byte("<option "))
-		if holeID == hole.ID {
-			w.Write([]byte("selected "))
-		}
-		w.Write([]byte("value=" + hole.ID + ">" + hole.Name))
+	data := struct {
+		HoleID, LangID, ScoresJsPath, Table, TimeJsPath string
+		Holes                                           []Hole
+		Langs                                           []Lang
+	}{
+		HoleID:       holeID,
+		Holes:        holes,
+		LangID:       langID,
+		Langs:        langs,
+		ScoresJsPath: scoresJsPath,
+		TimeJsPath:   timeJsPath,
 	}
-
-	w.Write([]byte("</select><select id=lang><option value=all-langs>All Langs"))
-
-	for _, lang := range langs {
-		w.Write([]byte("<option "))
-		if langID == lang.ID {
-			w.Write([]byte("selected "))
-		}
-		w.Write([]byte("value=" + lang.ID + ">" + lang.Name))
-	}
-
-	w.Write([]byte("</select><table class=scores>"))
 
 	var concat, distinct, table string
 
@@ -124,6 +109,8 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		table = "scored_leaderboard"
 		concat = "' class=', lang, '>', TO_CHAR(strokes, 'FM999,999'), '<td>(', TO_CHAR(score, 'FM99,999'), ' point', CASE WHEN score"
 	}
+
+	userID, _ := cookie.Read(r)
 
 	rows, err := db.Query(
 		`WITH leaderboard AS (
@@ -204,16 +191,18 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var row sql.RawBytes
+		var row string
 
 		if err := rows.Scan(&row); err != nil {
 			panic(err)
 		}
 
-		w.Write(row)
+		data.Table += row
 	}
 
 	if err := rows.Err(); err != nil {
 		panic(err)
 	}
+
+	Render(w, r, http.StatusOK, "scores", data)
 }

@@ -1,0 +1,27 @@
+{{ template "header" . }}
+
+<script defer src={{ .Data.ScoresJsPath }}></script>
+<script defer src={{ .Data.TimeJsPath   }}></script>
+
+{{ $holeID := .Data.HoleID }}
+{{ $langID := .Data.LangID }}
+
+<main id=score>
+    <select id=hole>
+        <option value=all-holes>All Holes
+    {{ range .Data.Holes }}
+        <option {{ if eq .ID $holeID }}selected{{ end }} value={{ .ID }}>{{ .Name }}
+    {{ end }}
+    </select>
+    {{- /* FIXME Use grid not margin & width */ -}}
+    <select id=lang>
+        <option value=all-langs>All Langs
+    {{ range .Data.Langs }}
+        <option {{ if eq .ID $langID }}selected{{ end }} value={{ .ID }}>{{ .Name }}
+    {{ end }}
+    </select>
+
+    <table class=scores>
+        {{ .Data.Table }}
+    </table>
+</main>
