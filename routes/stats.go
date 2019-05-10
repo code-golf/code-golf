@@ -1,46 +1,34 @@
 package routes
 
 import (
+	"html/template"
 	"net/http"
-	"strconv"
 
 	"github.com/julienschmidt/httprouter"
 )
 
-var noHoles = strconv.Itoa(len(holes))
-var noLangs = strconv.Itoa(len(langs))
-
 func stats(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	printHeader(w, r, 200)
-
-	var data []byte
-
-	w.Write([]byte(
-		"<link rel=stylesheet href=" + statsCssPath + "><script async src=" +
-			statsJsPath + "></script><main><div><div><span data-x=" + noLangs +
-			">0</span>Languages</div></div><div><div><span data-x=" + noHoles +
-			">0</span>Holes</div></div><div><div><span data-x=",
-	))
-
-	if err := db.QueryRow("SELECT COUNT(DISTINCT user_id) FROM solutions WHERE NOT failing").Scan(&data); err != nil {
-		panic(err)
-	} else {
-		w.Write(data)
+	data := struct {
+		DistributionOfHoles, DistributionOfLangs, HolesByDifficulty, SolutionsByLang template.JS
+		Golfers, Holes, Langs, Solutions                                             int
+		StatsCssPath, StatsJsPath                                                    string
+	}{
+		Holes:             len(holes),
+		HolesByDifficulty: template.JS(HolesByDifficulty),
+		Langs:             len(langs),
+		StatsCssPath:      statsCssPath,
+		StatsJsPath:       statsJsPath,
 	}
 
-	w.Write([]byte(">0</span>Golfers</div></div><div><div><span data-x="))
-
-	if err := db.QueryRow("SELECT COUNT(*) FROM solutions WHERE NOT failing").Scan(&data); err != nil {
+	if err := db.QueryRow(
+		"SELECT COUNT(DISTINCT user_id), COUNT(*) FROM solutions WHERE NOT failing",
+	).Scan(&data.Golfers, &data.Solutions); err != nil {
 		panic(err)
-	} else {
-		w.Write(data)
 	}
-
-	w.Write([]byte(">0</span>Solutions</div></div><div><div><canvas data-data=[" + HolesByDifficulty + "]></canvas></div></div><div><div><canvas data-data='["))
 
 	if err := db.QueryRow(
 		`WITH top AS (
-		    SELECT lang, CAST(lang AS text) lang_text, COUNT(*)
+		    SELECT lang, lang::text lang_text, COUNT(*)
 		      FROM solutions
 		     WHERE NOT failing
 		  GROUP BY lang
@@ -55,41 +43,33 @@ func stats(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		     WHERE NOT FAILING
 		       AND lang NOT IN (SELECT lang FROM top)
 		)
-		SELECT ARRAY_TO_JSON(ARRAY_AGG(lang_text))
+		SELECT '[' ||
+		       ARRAY_TO_JSON(ARRAY_AGG(lang_text))
 		       || ',' ||
 		       ARRAY_TO_JSON(ARRAY_AGG(count))
+		       || ']'
 		  FROM data`,
-	).Scan(&data); err != nil {
+	).Scan(&data.SolutionsByLang); err != nil {
 		panic(err)
-	} else {
-		w.Write(data)
 	}
-
-	w.Write([]byte("]'></canvas></div></div><div><div><canvas data-data='"))
 
 	if err := db.QueryRow(
 		`SELECT ARRAY_TO_JSON(ARRAY_AGG(ROW_TO_JSON(t)))
 		   FROM (SELECT x, COUNT(*) y
 		   FROM (SELECT COUNT(DISTINCT hole) x FROM solutions WHERE NOT failing GROUP BY user_id) z
 		GROUP BY x ORDER BY x) t`,
-	).Scan(&data); err != nil {
+	).Scan(&data.DistributionOfHoles); err != nil {
 		panic(err)
-	} else {
-		w.Write(data)
 	}
-
-	w.Write([]byte("'></canvas></div></div><div><div><canvas data-data='"))
 
 	if err := db.QueryRow(
 		`SELECT ARRAY_TO_JSON(ARRAY_AGG(ROW_TO_JSON(t)))
 		   FROM (SELECT x, COUNT(*) y
 		   FROM (SELECT COUNT(DISTINCT lang) x FROM solutions WHERE NOT failing GROUP BY user_id) z
 		GROUP BY x ORDER BY x) t`,
-	).Scan(&data); err != nil {
+	).Scan(&data.DistributionOfLangs); err != nil {
 		panic(err)
-	} else {
-		w.Write(data)
 	}
 
-	w.Write([]byte("'></canvas></div></div>"))
+	Render(w, r, http.StatusOK, "stats", data)
 }

@@ -1,6 +1,6 @@
 package routes
 
-import "strconv"
+import "fmt"
 
 type Lang struct{ ID, Name string }
 type Hole struct{ Prev, Next, ID, Name, Difficulty, Preamble string }
@@ -323,5 +323,5 @@ func init() {
 		}
 	}
 
-	HolesByDifficulty = strconv.Itoa(fast) + "," + strconv.Itoa(medium) + "," + strconv.Itoa(slow)
+	HolesByDifficulty = fmt.Sprintf("[%d,%d,%d]", fast, medium, slow)
 }

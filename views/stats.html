@@ -1,0 +1,40 @@
+{{ template "header" . }}
+
+<link rel=stylesheet href={{ .Data.StatsCssPath }}>
+<script defer src={{ .Data.StatsJsPath }}></script>
+
+<main>
+    <div>
+        <div>
+            <span data-x={{ .Data.Langs }}>0</span>
+            Languages
+        </div>
+    </div>
+    <div>
+        <div>
+            <span data-x={{ .Data.Holes }}>0</span>
+            Holes
+        </div>
+    </div>
+    <div>
+        <div>
+            <span data-x={{ .Data.Golfers }}>0</span>
+            Golfers
+        </div>
+    </div>
+    <div>
+        <div>
+            <span data-x={{ .Data.Solutions }}>0</span>
+            Solutions
+        </div>
+    </div>
+    <div><div><canvas></canvas></div></div>
+    <div><div><canvas></canvas></div></div>
+    <div><div><canvas></canvas></div></div>
+    <div><div><canvas></canvas></div></div>
+</main>
+
+<script id=distributionOfHoles type=application/json>{{ .Data.DistributionOfHoles }}</script>
+<script id=distributionOfLangs type=application/json>{{ .Data.DistributionOfLangs }}</script>
+<script id=holesByDifficulty   type=application/json>{{ .Data.HolesByDifficulty   }}</script>
+<script id=solutionsByLang     type=application/json>{{ .Data.SolutionsByLang     }}</script>
