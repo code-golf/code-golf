@@ -2,6 +2,7 @@ package routes
 
 import (
 	"database/sql"
+	"html/template"
 	"net/http"
 
 	"github.com/JRaspass/code-golf/cookie"
@@ -87,9 +88,10 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	}
 
 	data := struct {
-		HoleID, LangID, ScoresJsPath, Table, TimeJsPath string
-		Holes                                           []Hole
-		Langs                                           []Lang
+		HoleID, LangID, ScoresJsPath, TimeJsPath string
+		Holes                                    []Hole
+		Langs                                    []Lang
+		Table                                    template.HTML
 	}{
 		HoleID:       holeID,
 		Holes:        holes,
@@ -191,7 +193,7 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var row string
+		var row template.HTML
 
 		if err := rows.Scan(&row); err != nil {
 			panic(err)

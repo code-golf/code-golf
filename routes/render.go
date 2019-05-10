@@ -1,13 +1,13 @@
 package routes
 
 import (
+	"html/template"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
-	"text/template"
 
 	"github.com/JRaspass/code-golf/cookie"
 )
