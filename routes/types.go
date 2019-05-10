@@ -1,9 +1,15 @@
 package routes
 
-import "fmt"
+import (
+	"fmt"
+	"html/template"
+)
 
 type Lang struct{ ID, Name string }
-type Hole struct{ Prev, Next, ID, Name, Difficulty, Preamble string }
+type Hole struct {
+	Prev, Next, ID, Name, Difficulty string
+	Preamble                         template.HTML
+}
 
 var langs = []Lang{
 	{"bash", "Bash"},
