@@ -63,7 +63,9 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		out.Exp = answers[in.Hole]
 	}
 
-	out.Err, out.Out = runCode(in.Hole, in.Lang, in.Code, args)
+	userID, _ := cookie.Read(r)
+
+	out.Err, out.Out = runCode(in.Hole, in.Lang, in.Code, args, userID)
 	out.Arg = strings.Join(args, " ")
 	out.Argv = args
 
@@ -76,7 +78,7 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	})
 
 	// Save the solution if the user is logged in and it passes.
-	if userID, _ := cookie.Read(r); userID != 0 && out.Exp == out.Out && out.Out != "" {
+	if userID != 0 && out.Exp == out.Out && out.Out != "" {
 		// Update the code if it's the same length or less, but only update
 		// the submitted time if the solution is shorter. This avoids a user
 		// moving down the leaderboard by matching their personal best.
@@ -190,7 +192,7 @@ func queryBool(db *sql.DB, query string, args ...interface{}) (b bool) {
 	return
 }
 
-func runCode(hole, lang, code string, args []string) (string, string) {
+func runCode(hole, lang, code string, args []string, userID int) (string, string) {
 	var stderr, stdout bytes.Buffer
 
 	if lang == "php" {
@@ -239,6 +241,10 @@ func runCode(hole, lang, code string, args []string) (string, string) {
 	if err := cmd.Run(); err != nil {
 		if ctx.Err() == context.DeadlineExceeded {
 			stderr.WriteString("Killed for exceeding the 7s timeout.")
+
+			if userID != 0 {
+				awardTrophy(db, userID, "slowcoach")
+			}
 		} else {
 			stderr.WriteString(err.Error())
 			println(err.Error())
