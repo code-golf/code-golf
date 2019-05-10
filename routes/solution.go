@@ -134,6 +134,10 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		}
 
 		switch in.Lang {
+		case "brainfuck":
+			if in.Hole == "brainfuck" {
+				awardTrophy(db, userID, "inception")
+			}
 		case "php":
 			awardTrophy(db, userID, "elephpant-in-the-room")
 		case "perl", "perl6":
