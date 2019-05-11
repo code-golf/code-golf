@@ -1,5 +1,7 @@
 #!/bin/sh -e
 
+./build-assets
+
 docker build -t code-golf .
 docker run --rm -u $UID:$GROUPS -v $PWD:/go code-golf
 
