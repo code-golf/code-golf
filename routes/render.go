@@ -12,7 +12,25 @@ import (
 	"github.com/JRaspass/code-golf/cookie"
 )
 
-var tmpl = template.New("")
+var tmpl = template.New("").Funcs(template.FuncMap{
+	"ord": func(i int) string {
+		switch i % 10 {
+		case 1:
+			if i%100 != 11 {
+				return "st"
+			}
+		case 2:
+			if i%100 != 12 {
+				return "nd"
+			}
+		case 3:
+			if i%100 != 13 {
+				return "rd"
+			}
+		}
+		return "th"
+	},
+})
 
 func init() {
 	// Tests run from the package directory, walk upwards until we find views.

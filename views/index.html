@@ -1,0 +1,40 @@
+{{ template "header" . }}
+
+{{ $rows := .Data.Rows }}
+
+{{ with .Data.Fails }}
+    <div id=failing>
+        The following of your solutions have been marked as failing and no
+        longer contribute to scoring, please update them to pass:
+        <ul>
+        {{ range . }}
+            <li><a href={{ .Hole.ID }}#{{ .Lang.ID }}>{{ .Hole.Name }} ({{ .Lang.Name }})</a>
+        {{ end }}
+        </ul>
+    </div>
+{{ end }}
+
+<ul><li>Fast<li>Medium<li>Slow</ul>
+
+<main id=home>
+{{ range .Data.Holes }}
+    <div class={{ .Difficulty }}>
+        <a href={{ .ID }}>{{ .Name }}</a>
+        <table class=scores>
+    {{ range index $rows .ID }}
+        {{ with . }}
+            <tr {{ if .Me }}class="me"{{ end }}>
+                <td>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
+                <td>
+                    <img src="//avatars.githubusercontent.com/{{ .Login }}?s=26">
+                    <a href=users/{{ .Login }}>{{ .Login }}</a>
+                <td class={{ .LangID }}>{{ .Strokes }}
+        {{ else }}
+            <tr><td colspan=3>…
+        {{ end }}
+    {{ end }}
+        </table>
+        <a href=scores/{{ .ID }}/all-langs>FULL LEADERBOARD</a>
+    </div>
+{{ end }}
+</main>

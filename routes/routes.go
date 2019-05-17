@@ -19,7 +19,7 @@ func init() {
 		panic(err)
 	}
 
-	Router.GET("/", home)
+	Router.GET("/", index)
 	Router.GET("/about", about)
 	Router.GET("/assets/:asset", asset)
 	Router.GET("/callback", callback)
