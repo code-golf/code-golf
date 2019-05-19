@@ -258,7 +258,7 @@ main nav a:nth-child(3):before {
 #tabs {
     clear: both;
     display: grid;
-    grid-template-columns: repeat(14, 1fr);
+    grid-template-columns: repeat(15, 1fr);
     position: relative;
        -moz-user-select: none;
         -ms-user-select: none;
@@ -295,6 +295,7 @@ main nav a:nth-child(3):before {
 #tabs a[href="#julia"]      { background-image: svg(julia#fff)      }
 #tabs a[href="#lisp"]       { background-image: svg(lisp#fff)       }
 #tabs a[href="#lua"]        { background-image: svg(lua#fff)        }
+#tabs a[href="#nim"]        { background-image: svg(nim#fff)        }
 #tabs a[href="#perl"]       { background-image: svg(perl#fff)       }
 #tabs a[href="#perl6"]      { background-image: svg(perl6#fff)      }
 #tabs a[href="#php"]        { background-image: svg(php#fff)        }
@@ -303,4 +304,4 @@ main nav a:nth-child(3):before {
 
 @keyframes spin { 100% { transform: rotate(1turn) } }
 
-@media(max-width: 450px) { #tabs { grid-template-columns: repeat(7, 1fr) } }
+@media(max-width: 500px) { #tabs { grid-template-columns: repeat(5, 1fr) } }

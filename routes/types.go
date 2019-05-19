@@ -21,6 +21,7 @@ var langs = []Lang{
 	{"julia", "Julia"},
 	{"lisp", "Lisp"},
 	{"lua", "Lua"},
+	{"nim", "Nim"},
 	{"perl", "Perl"},
 	{"perl6", "Perl 6"},
 	{"php", "PHP"},

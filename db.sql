@@ -72,6 +72,7 @@ CREATE TYPE public.lang AS ENUM (
     'julia',
     'lisp',
     'lua',
+    'nim',
     'perl',
     'perl6',
     'php',

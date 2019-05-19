@@ -109,11 +109,12 @@ tr {
 #matrix tr:first-child th:nth-child(8)  { background-image: svg(julia#222)      }
 #matrix tr:first-child th:nth-child(9)  { background-image: svg(lisp#222)       }
 #matrix tr:first-child th:nth-child(10) { background-image: svg(lua#222)        }
-#matrix tr:first-child th:nth-child(11) { background-image: svg(perl#222)       }
-#matrix tr:first-child th:nth-child(12) { background-image: svg(perl6#222)      }
-#matrix tr:first-child th:nth-child(13) { background-image: svg(php#222)        }
-#matrix tr:first-child th:nth-child(14) { background-image: svg(python#222)     }
-#matrix tr:first-child th:nth-child(15) { background-image: svg(ruby#222)       }
+#matrix tr:first-child th:nth-child(11) { background-image: svg(nim#222)        }
+#matrix tr:first-child th:nth-child(12) { background-image: svg(perl#222)       }
+#matrix tr:first-child th:nth-child(13) { background-image: svg(perl6#222)      }
+#matrix tr:first-child th:nth-child(14) { background-image: svg(php#222)        }
+#matrix tr:first-child th:nth-child(15) { background-image: svg(python#222)     }
+#matrix tr:first-child th:nth-child(16) { background-image: svg(ruby#222)       }
 
 #matrix,
 #trophies {

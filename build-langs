@@ -10,6 +10,7 @@ declare -A urls=(
     ["julia"]="//julialang.org"
     ["lisp"]="//clisp.sourceforge.io"
     ["lua"]="//www.lua.org"
+    ["nim"]="//nim-lang.org"
     ["perl"]="//www.perl.org"
     ["perl6"]="//perl6.org"
     ["php"]="//secure.php.net"
@@ -21,7 +22,7 @@ docker pull alpine:edge
 
 cd langs
 
-for name in Bash Brainfuck C Haskell J JavaScript Julia Lisp Lua Perl Perl\ 6 PHP Python Ruby; do
+for name in Bash Brainfuck C Haskell J JavaScript Julia Lisp Lua Nim Perl Perl\ 6 PHP Python Ruby; do
     lang=${name,,}      # lowercase
     lang=${lang// /}    # trim space
 
@@ -30,7 +31,7 @@ for name in Bash Brainfuck C Haskell J JavaScript Julia Lisp Lua Perl Perl\ 6 PH
     mkdir $lang/rootfs
 
     # Tag the builder stage so "docker system prune" won't remove it.
-    if [ $lang != haskell ]; then
+    if [ $lang != haskell -a $lang != nim ]; then
         docker build --target builder -t quay.io/jraspass/$lang-builder $lang
     fi
 
@@ -38,6 +39,8 @@ for name in Bash Brainfuck C Haskell J JavaScript Julia Lisp Lua Perl Perl\ 6 PH
 
     if [ $lang = j ]; then
         ver=`echo echo JLIB | docker run --rm --tmpfs /tmp -i code-golf-j`
+    elif [ $lang = nim ]; then
+        ver=`echo echo NimVersion | docker run --rm --tmpfs /tmp -i code-golf-nim`
     else
         ver=`docker run --rm code-golf-$lang`
     fi
