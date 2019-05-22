@@ -259,8 +259,6 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #a22;}
   padding: 0.1px; /* Force widget margins to stay inside of the container */
 }
 
-.CodeMirror-widget {}
-
 .CodeMirror-rtl pre { direction: rtl; }
 
 .CodeMirror-code {

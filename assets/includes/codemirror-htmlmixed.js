@@ -141,5 +141,5 @@
         return {state: state.localState || state.htmlState, mode: state.localMode || htmlMode};
       }
     };
-  }, "xml", "javascript", "css");
+  }, "xml", "javascript");
 });

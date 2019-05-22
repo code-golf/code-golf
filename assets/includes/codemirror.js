@@ -7,10 +7,10 @@
 // You can find some technical background for some of the code below
 // at http://marijnhaverbeke.nl/blog/#cm-internals .
 
-var CodeMirror;
+let CodeMirror;
 
 (function (global, factory) {
-  (CodeMirror = factory());
+  CodeMirror = factory();
 }(this, (function () { 'use strict';
 
   // Kludges for bugs and behavior differences that can't be feature
@@ -30,7 +30,6 @@ var CodeMirror;
   var presto = /Opera\//.test(userAgent);
   var safari = /Apple Computer/.test(navigator.vendor);
   var mac_geMountainLion = /Mac OS X 1\d\D([8-9]|\d\d)\D/.test(userAgent);
-  var phantom = /PhantomJS/.test(userAgent);
 
   var ios = !edge && /AppleWebKit/.test(userAgent) && /Mobile\/\w+/.test(userAgent);
   var android = /Android/.test(userAgent);
@@ -292,108 +291,580 @@ var CodeMirror;
     }
   }
 
-  // The display handles the DOM integration, both for input reading
-  // and content drawing. It holds references to DOM nodes and
-  // display-related state.
+  // BIDI HELPERS
 
-  function Display(place, doc, input) {
-    var d = this;
-    this.input = input;
+  function iterateBidiSections(order, from, to, f) {
+    if (!order) { return f(from, to, "ltr", 0) }
+    var found = false;
+    for (var i = 0; i < order.length; ++i) {
+      var part = order[i];
+      if (part.from < to && part.to > from || from == to && part.to == from) {
+        f(Math.max(part.from, from), Math.min(part.to, to), part.level == 1 ? "rtl" : "ltr", i);
+        found = true;
+      }
+    }
+    if (!found) { f(from, to, "ltr"); }
+  }
 
-    // Covers bottom-right square when both scrollbars are present.
-    d.scrollbarFiller = elt("div", null, "CodeMirror-scrollbar-filler");
-    d.scrollbarFiller.setAttribute("cm-not-content", "true");
-    // Covers bottom of gutter when coverGutterNextToScrollbar is on
-    // and h scrollbar is present.
-    d.gutterFiller = elt("div", null, "CodeMirror-gutter-filler");
-    d.gutterFiller.setAttribute("cm-not-content", "true");
-    // Will contain the actual code, positioned to cover the viewport.
-    d.lineDiv = eltP("div", null, "CodeMirror-code");
-    // Elements are added to these to represent selection and cursors.
-    d.selectionDiv = elt("div", null, null, "position: relative; z-index: 1");
-    d.cursorDiv = elt("div", null, "CodeMirror-cursors");
-    // A visibility: hidden element used to find the size of things.
-    d.measure = elt("div", null, "CodeMirror-measure");
-    // When lines outside of the viewport are measured, they are drawn in this.
-    d.lineMeasure = elt("div", null, "CodeMirror-measure");
-    // Wraps everything that needs to exist inside the vertically-padded coordinate system
-    d.lineSpace = eltP("div", [d.measure, d.lineMeasure, d.selectionDiv, d.cursorDiv, d.lineDiv],
-                      null, "position: relative; outline: none");
-    var lines = eltP("div", [d.lineSpace], "CodeMirror-lines");
-    // Moved around its parent to cover visible view.
-    d.mover = elt("div", [lines], null, "position: relative");
-    // Set to the height of the document, allowing scrolling.
-    d.sizer = elt("div", [d.mover], "CodeMirror-sizer");
-    d.sizerWidth = null;
-    // Behavior of elts with overflow: auto and padding is
-    // inconsistent across browsers. This is used to ensure the
-    // scrollable area is big enough.
-    d.heightForcer = elt("div", null, null, "position: absolute; height: " + scrollerGap + "px; width: 1px;");
-    // Will contain the gutters, if any.
-    d.gutters = elt("div", null, "CodeMirror-gutters");
-    d.lineGutter = null;
-    // Actual scrollable element.
-    d.scroller = elt("div", [d.sizer, d.heightForcer, d.gutters], "CodeMirror-scroll");
-    d.scroller.setAttribute("tabIndex", "-1");
-    // The element in which the editor lives.
-    d.wrapper = elt("div", [d.scrollbarFiller, d.gutterFiller, d.scroller], "CodeMirror");
+  var bidiOther = null;
+  function getBidiPartAt(order, ch, sticky) {
+    var found;
+    bidiOther = null;
+    for (var i = 0; i < order.length; ++i) {
+      var cur = order[i];
+      if (cur.from < ch && cur.to > ch) { return i }
+      if (cur.to == ch) {
+        if (cur.from != cur.to && sticky == "before") { found = i; }
+        else { bidiOther = i; }
+      }
+      if (cur.from == ch) {
+        if (cur.from != cur.to && sticky != "before") { found = i; }
+        else { bidiOther = i; }
+      }
+    }
+    return found != null ? found : bidiOther
+  }
 
-    // Work around IE7 z-index bug (not perfect, hence IE7 not really being supported)
-    if (ie && ie_version < 8) { d.gutters.style.zIndex = -1; d.scroller.style.paddingRight = 0; }
-    if (!webkit && !(gecko && mobile)) { d.scroller.draggable = true; }
+  // Bidirectional ordering algorithm
+  // See http://unicode.org/reports/tr9/tr9-13.html for the algorithm
+  // that this (partially) implements.
 
-    if (place) {
-      if (place.appendChild) { place.appendChild(d.wrapper); }
-      else { place(d.wrapper); }
+  // One-char codes used for character types:
+  // L (L):   Left-to-Right
+  // R (R):   Right-to-Left
+  // r (AL):  Right-to-Left Arabic
+  // 1 (EN):  European Number
+  // + (ES):  European Number Separator
+  // % (ET):  European Number Terminator
+  // n (AN):  Arabic Number
+  // , (CS):  Common Number Separator
+  // m (NSM): Non-Spacing Mark
+  // b (BN):  Boundary Neutral
+  // s (B):   Paragraph Separator
+  // t (S):   Segment Separator
+  // w (WS):  Whitespace
+  // N (ON):  Other Neutrals
+
+  // Returns null if characters are ordered as they appear
+  // (left-to-right), or an array of sections ({from, to, level}
+  // objects) in the order in which they occur visually.
+  var bidiOrdering = (function() {
+    // Character types for codepoints 0 to 0xff
+    var lowTypes = "bbbbbbbbbtstwsbbbbbbbbbbbbbbssstwNN%%%NNNNNN,N,N1111111111NNNNNNNLLLLLLLLLLLLLLLLLLLLLLLLLLNNNNNNLLLLLLLLLLLLLLLLLLLLLLLLLLNNNNbbbbbbsbbbbbbbbbbbbbbbbbbbbbbbbbb,N%%%%NNNNLNNNNN%%11NLNNN1LNNNNNLLLLLLLLLLLLLLLLLLLLLLLNLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLN";
+    // Character types for codepoints 0x600 to 0x6f9
+    var arabicTypes = "nnnnnnNNr%%r,rNNmmmmmmmmmmmrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrmmmmmmmmmmmmmmmmmmmmmnnnnnnnnnn%nnrrrmrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrmmmmmmmnNmmmmmmrrmmNmmmmrr1111111111";
+    function charType(code) {
+      if (code <= 0xf7) { return lowTypes.charAt(code) }
+      else if (0x590 <= code && code <= 0x5f4) { return "R" }
+      else if (0x600 <= code && code <= 0x6f9) { return arabicTypes.charAt(code - 0x600) }
+      else if (0x6ee <= code && code <= 0x8ac) { return "r" }
+      else if (0x2000 <= code && code <= 0x200b) { return "w" }
+      else if (code == 0x200c) { return "b" }
+      else { return "L" }
     }
 
-    // Current rendered range (may be bigger than the view window).
-    d.viewFrom = d.viewTo = doc.first;
-    d.reportedViewFrom = d.reportedViewTo = doc.first;
-    // Information about the rendered lines.
-    d.view = [];
-    d.renderedView = null;
-    // Holds info about a single rendered line when it was rendered
-    // for measurement, while not in view.
-    d.externalMeasured = null;
-    // Empty space (in pixels) above the view
-    d.viewOffset = 0;
-    d.lastWrapHeight = d.lastWrapWidth = 0;
-    d.updateLineNumbers = null;
+    var bidiRE = /[\u0590-\u05f4\u0600-\u06ff\u0700-\u08ac]/;
+    var isNeutral = /[stwN]/, isStrong = /[LRr]/, countsAsLeft = /[Lb1n]/, countsAsNum = /[1n]/;
 
-    d.nativeBarWidth = d.barHeight = d.barWidth = 0;
-    d.scrollbarsClipped = false;
+    function BidiSpan(level, from, to) {
+      this.level = level;
+      this.from = from; this.to = to;
+    }
 
-    // Used to only resize the line number gutter when necessary (when
-    // the amount of lines crosses a boundary that makes its width change)
-    d.lineNumWidth = d.lineNumInnerWidth = d.lineNumChars = null;
-    // Set to true when a non-horizontal-scrolling line widget is
-    // added. As an optimization, line widget aligning is skipped when
-    // this is false.
-    d.alignWidgets = false;
+    return function(str, direction) {
+      var outerType = direction == "ltr" ? "L" : "R";
 
-    d.cachedCharWidth = d.cachedTextHeight = d.cachedPaddingH = null;
+      if (str.length == 0 || direction == "ltr" && !bidiRE.test(str)) { return false }
+      var len = str.length, types = [];
+      for (var i = 0; i < len; ++i)
+        { types.push(charType(str.charCodeAt(i))); }
 
-    // Tracks the maximum line length so that the horizontal scrollbar
-    // can be kept static when scrolling.
-    d.maxLine = null;
-    d.maxLineLength = 0;
-    d.maxLineChanged = false;
+      // W1. Examine each non-spacing mark (NSM) in the level run, and
+      // change the type of the NSM to the type of the previous
+      // character. If the NSM is at the start of the level run, it will
+      // get the type of sor.
+      for (var i$1 = 0, prev = outerType; i$1 < len; ++i$1) {
+        var type = types[i$1];
+        if (type == "m") { types[i$1] = prev; }
+        else { prev = type; }
+      }
 
-    // Used for measuring wheel scrolling granularity
-    d.wheelDX = d.wheelDY = d.wheelStartX = d.wheelStartY = null;
+      // W2. Search backwards from each instance of a European number
+      // until the first strong type (R, L, AL, or sor) is found. If an
+      // AL is found, change the type of the European number to Arabic
+      // number.
+      // W3. Change all ALs to R.
+      for (var i$2 = 0, cur = outerType; i$2 < len; ++i$2) {
+        var type$1 = types[i$2];
+        if (type$1 == "1" && cur == "r") { types[i$2] = "n"; }
+        else if (isStrong.test(type$1)) { cur = type$1; if (type$1 == "r") { types[i$2] = "R"; } }
+      }
 
-    // True when shift is held down.
-    d.shift = false;
+      // W4. A single European separator between two European numbers
+      // changes to a European number. A single common separator between
+      // two numbers of the same type changes to that type.
+      for (var i$3 = 1, prev$1 = types[0]; i$3 < len - 1; ++i$3) {
+        var type$2 = types[i$3];
+        if (type$2 == "+" && prev$1 == "1" && types[i$3+1] == "1") { types[i$3] = "1"; }
+        else if (type$2 == "," && prev$1 == types[i$3+1] &&
+                 (prev$1 == "1" || prev$1 == "n")) { types[i$3] = prev$1; }
+        prev$1 = type$2;
+      }
 
-    // Used to track whether anything happened since the context menu
-    // was opened.
-    d.selForContextMenu = null;
+      // W5. A sequence of European terminators adjacent to European
+      // numbers changes to all European numbers.
+      // W6. Otherwise, separators and terminators change to Other
+      // Neutral.
+      for (var i$4 = 0; i$4 < len; ++i$4) {
+        var type$3 = types[i$4];
+        if (type$3 == ",") { types[i$4] = "N"; }
+        else if (type$3 == "%") {
+          var end = (void 0);
+          for (end = i$4 + 1; end < len && types[end] == "%"; ++end) {}
+          var replace = (i$4 && types[i$4-1] == "!") || (end < len && types[end] == "1") ? "1" : "N";
+          for (var j = i$4; j < end; ++j) { types[j] = replace; }
+          i$4 = end - 1;
+        }
+      }
 
-    d.activeTouch = null;
+      // W7. Search backwards from each instance of a European number
+      // until the first strong type (R, L, or sor) is found. If an L is
+      // found, then change the type of the European number to L.
+      for (var i$5 = 0, cur$1 = outerType; i$5 < len; ++i$5) {
+        var type$4 = types[i$5];
+        if (cur$1 == "L" && type$4 == "1") { types[i$5] = "L"; }
+        else if (isStrong.test(type$4)) { cur$1 = type$4; }
+      }
 
-    input.init(d);
+      // N1. A sequence of neutrals takes the direction of the
+      // surrounding strong text if the text on both sides has the same
+      // direction. European and Arabic numbers act as if they were R in
+      // terms of their influence on neutrals. Start-of-level-run (sor)
+      // and end-of-level-run (eor) are used at level run boundaries.
+      // N2. Any remaining neutrals take the embedding direction.
+      for (var i$6 = 0; i$6 < len; ++i$6) {
+        if (isNeutral.test(types[i$6])) {
+          var end$1 = (void 0);
+          for (end$1 = i$6 + 1; end$1 < len && isNeutral.test(types[end$1]); ++end$1) {}
+          var before = (i$6 ? types[i$6-1] : outerType) == "L";
+          var after = (end$1 < len ? types[end$1] : outerType) == "L";
+          var replace$1 = before == after ? (before ? "L" : "R") : outerType;
+          for (var j$1 = i$6; j$1 < end$1; ++j$1) { types[j$1] = replace$1; }
+          i$6 = end$1 - 1;
+        }
+      }
+
+      // Here we depart from the documented algorithm, in order to avoid
+      // building up an actual levels array. Since there are only three
+      // levels (0, 1, 2) in an implementation that doesn't take
+      // explicit embedding into account, we can build up the order on
+      // the fly, without following the level-based algorithm.
+      var order = [], m;
+      for (var i$7 = 0; i$7 < len;) {
+        if (countsAsLeft.test(types[i$7])) {
+          var start = i$7;
+          for (++i$7; i$7 < len && countsAsLeft.test(types[i$7]); ++i$7) {}
+          order.push(new BidiSpan(0, start, i$7));
+        } else {
+          var pos = i$7, at = order.length;
+          for (++i$7; i$7 < len && types[i$7] != "L"; ++i$7) {}
+          for (var j$2 = pos; j$2 < i$7;) {
+            if (countsAsNum.test(types[j$2])) {
+              if (pos < j$2) { order.splice(at, 0, new BidiSpan(1, pos, j$2)); }
+              var nstart = j$2;
+              for (++j$2; j$2 < i$7 && countsAsNum.test(types[j$2]); ++j$2) {}
+              order.splice(at, 0, new BidiSpan(2, nstart, j$2));
+              pos = j$2;
+            } else { ++j$2; }
+          }
+          if (pos < i$7) { order.splice(at, 0, new BidiSpan(1, pos, i$7)); }
+        }
+      }
+      if (direction == "ltr") {
+        if (order[0].level == 1 && (m = str.match(/^\s+/))) {
+          order[0].from = m[0].length;
+          order.unshift(new BidiSpan(0, 0, m[0].length));
+        }
+        if (lst(order).level == 1 && (m = str.match(/\s+$/))) {
+          lst(order).to -= m[0].length;
+          order.push(new BidiSpan(0, len - m[0].length, len));
+        }
+      }
+
+      return direction == "rtl" ? order.reverse() : order
+    }
+  })();
+
+  // Get the bidi ordering for the given line (and cache it). Returns
+  // false for lines that are fully left-to-right, and an array of
+  // BidiSpan objects otherwise.
+  function getOrder(line, direction) {
+    var order = line.order;
+    if (order == null) { order = line.order = bidiOrdering(line.text, direction); }
+    return order
   }
+
+  // EVENT HANDLING
+
+  // Lightweight event framework. on/off also work on DOM nodes,
+  // registering native DOM handlers.
+
+  var noHandlers = [];
+
+  var on = function(emitter, type, f) {
+    if (emitter.addEventListener) {
+      emitter.addEventListener(type, f, false);
+    } else if (emitter.attachEvent) {
+      emitter.attachEvent("on" + type, f);
+    } else {
+      var map$$1 = emitter._handlers || (emitter._handlers = {});
+      map$$1[type] = (map$$1[type] || noHandlers).concat(f);
+    }
+  };
+
+  function getHandlers(emitter, type) {
+    return emitter._handlers && emitter._handlers[type] || noHandlers
+  }
+
+  function off(emitter, type, f) {
+    if (emitter.removeEventListener) {
+      emitter.removeEventListener(type, f, false);
+    } else if (emitter.detachEvent) {
+      emitter.detachEvent("on" + type, f);
+    } else {
+      var map$$1 = emitter._handlers, arr = map$$1 && map$$1[type];
+      if (arr) {
+        var index = indexOf(arr, f);
+        if (index > -1)
+          { map$$1[type] = arr.slice(0, index).concat(arr.slice(index + 1)); }
+      }
+    }
+  }
+
+  function signal(emitter, type /*, values...*/) {
+    var handlers = getHandlers(emitter, type);
+    if (!handlers.length) { return }
+    var args = Array.prototype.slice.call(arguments, 2);
+    for (var i = 0; i < handlers.length; ++i) { handlers[i].apply(null, args); }
+  }
+
+  // The DOM events that CodeMirror handles can be overridden by
+  // registering a (non-DOM) handler on the editor for the event name,
+  // and preventDefault-ing the event in that handler.
+  function signalDOMEvent(cm, e, override) {
+    if (typeof e == "string")
+      { e = {type: e, preventDefault: function() { this.defaultPrevented = true; }}; }
+    signal(cm, override || e.type, cm, e);
+    return e_defaultPrevented(e) || e.codemirrorIgnore
+  }
+
+  function signalCursorActivity(cm) {
+    var arr = cm._handlers && cm._handlers.cursorActivity;
+    if (!arr) { return }
+    var set = cm.curOp.cursorActivityHandlers || (cm.curOp.cursorActivityHandlers = []);
+    for (var i = 0; i < arr.length; ++i) { if (indexOf(set, arr[i]) == -1)
+      { set.push(arr[i]); } }
+  }
+
+  function hasHandler(emitter, type) {
+    return getHandlers(emitter, type).length > 0
+  }
+
+  // Add on and off methods to a constructor's prototype, to make
+  // registering events on such objects more convenient.
+  function eventMixin(ctor) {
+    ctor.prototype.on = function(type, f) {on(this, type, f);};
+    ctor.prototype.off = function(type, f) {off(this, type, f);};
+  }
+
+  // Due to the fact that we still support jurassic IE versions, some
+  // compatibility wrappers are needed.
+
+  function e_preventDefault(e) {
+    if (e.preventDefault) { e.preventDefault(); }
+    else { e.returnValue = false; }
+  }
+  function e_stopPropagation(e) {
+    if (e.stopPropagation) { e.stopPropagation(); }
+    else { e.cancelBubble = true; }
+  }
+  function e_defaultPrevented(e) {
+    return e.defaultPrevented != null ? e.defaultPrevented : e.returnValue == false
+  }
+  function e_stop(e) {e_preventDefault(e); e_stopPropagation(e);}
+
+  function e_target(e) {return e.target || e.srcElement}
+  function e_button(e) {
+    var b = e.which;
+    if (b == null) {
+      if (e.button & 1) { b = 1; }
+      else if (e.button & 2) { b = 3; }
+      else if (e.button & 4) { b = 2; }
+    }
+    if (mac && e.ctrlKey && b == 1) { b = 3; }
+    return b
+  }
+
+  // Detect drag-and-drop
+  var dragAndDrop = function() {
+    var div = elt('div');
+    return "draggable" in div || "dragDrop" in div
+  }();
+
+  var zwspSupported;
+  function zeroWidthElement(measure) {
+    if (zwspSupported == null) {
+      var test = elt("span", "\u200b");
+      removeChildrenAndAdd(measure, elt("span", [test, document.createTextNode("x")]));
+      if (measure.firstChild.offsetHeight != 0)
+        { zwspSupported = test.offsetWidth <= 1 && test.offsetHeight > 2; }
+    }
+    var node = zwspSupported ? elt("span", "\u200b") :
+      elt("span", "\u00a0", null, "display: inline-block; width: 1px; margin-right: -1px");
+    node.setAttribute("cm-text", "");
+    return node
+  }
+
+  // Feature-detect IE's crummy client rect reporting for bidi text
+  var badBidiRects;
+  function hasBadBidiRects(measure) {
+    if (badBidiRects != null) { return badBidiRects }
+    var txt = removeChildrenAndAdd(measure, document.createTextNode("A\u062eA"));
+    var r0 = range(txt, 0, 1).getBoundingClientRect();
+    var r1 = range(txt, 1, 2).getBoundingClientRect();
+    removeChildren(measure);
+    if (!r0 || r0.left == r0.right) { return false } // Safari returns null in some cases (#2780)
+    return badBidiRects = (r1.right - r0.right < 3)
+  }
+
+  // See if "".split is the broken IE version, if so, provide an
+  // alternative way to split lines.
+  var splitLinesAuto = "\n\nb".split(/\n/).length != 3 ? function (string) {
+    var pos = 0, result = [], l = string.length;
+    while (pos <= l) {
+      var nl = string.indexOf("\n", pos);
+      if (nl == -1) { nl = string.length; }
+      var line = string.slice(pos, string.charAt(nl - 1) == "\r" ? nl - 1 : nl);
+      var rt = line.indexOf("\r");
+      if (rt != -1) {
+        result.push(line.slice(0, rt));
+        pos += rt + 1;
+      } else {
+        result.push(line);
+        pos = nl + 1;
+      }
+    }
+    return result
+  } : function (string) { return string.split(/\r\n?|\n/); };
+
+  var hasSelection = window.getSelection ? function (te) {
+    try { return te.selectionStart != te.selectionEnd }
+    catch(e) { return false }
+  } : function (te) {
+    var range$$1;
+    try {range$$1 = te.ownerDocument.selection.createRange();}
+    catch(e) {}
+    if (!range$$1 || range$$1.parentElement() != te) { return false }
+    return range$$1.compareEndPoints("StartToEnd", range$$1) != 0
+  };
+
+  var hasCopyEvent = (function () {
+    var e = elt("div");
+    if ("oncopy" in e) { return true }
+    e.setAttribute("oncopy", "return;");
+    return typeof e.oncopy == "function"
+  })();
+
+  var badZoomedRects = null;
+  function hasBadZoomedRects(measure) {
+    if (badZoomedRects != null) { return badZoomedRects }
+    var node = removeChildrenAndAdd(measure, elt("span", "x"));
+    var normal = node.getBoundingClientRect();
+    var fromRange = range(node, 0, 1).getBoundingClientRect();
+    return badZoomedRects = Math.abs(normal.left - fromRange.left) > 1
+  }
+
+  // Known modes, by name and by MIME
+  var modes = {}, mimeModes = {};
+
+  // Extra arguments are stored as the mode's dependencies, which is
+  // used by (legacy) mechanisms like loadmode.js to automatically
+  // load a mode. (Preferred mechanism is the require/define calls.)
+  function defineMode(name, mode) {
+    if (arguments.length > 2)
+      { mode.dependencies = Array.prototype.slice.call(arguments, 2); }
+    modes[name] = mode;
+  }
+
+  function defineMIME(mime, spec) {
+    mimeModes[mime] = spec;
+  }
+
+  // Given a MIME type, a {name, ...options} config object, or a name
+  // string, return a mode config object.
+  function resolveMode(spec) {
+    if (typeof spec == "string" && mimeModes.hasOwnProperty(spec)) {
+      spec = mimeModes[spec];
+    } else if (spec && typeof spec.name == "string" && mimeModes.hasOwnProperty(spec.name)) {
+      var found = mimeModes[spec.name];
+      if (typeof found == "string") { found = {name: found}; }
+      spec = createObj(found, spec);
+      spec.name = found.name;
+    } else if (typeof spec == "string" && /^[\w\-]+\/[\w\-]+\+xml$/.test(spec)) {
+      return resolveMode("application/xml")
+    } else if (typeof spec == "string" && /^[\w\-]+\/[\w\-]+\+json$/.test(spec)) {
+      return resolveMode("application/json")
+    }
+    if (typeof spec == "string") { return {name: spec} }
+    else { return spec || {name: "null"} }
+  }
+
+  // Given a mode spec (anything that resolveMode accepts), find and
+  // initialize an actual mode object.
+  function getMode(options, spec) {
+    spec = resolveMode(spec);
+    var mfactory = modes[spec.name];
+    if (!mfactory) { return getMode(options, "text/plain") }
+    var modeObj = mfactory(options, spec);
+    if (modeExtensions.hasOwnProperty(spec.name)) {
+      var exts = modeExtensions[spec.name];
+      for (var prop in exts) {
+        if (!exts.hasOwnProperty(prop)) { continue }
+        if (modeObj.hasOwnProperty(prop)) { modeObj["_" + prop] = modeObj[prop]; }
+        modeObj[prop] = exts[prop];
+      }
+    }
+    modeObj.name = spec.name;
+    if (spec.helperType) { modeObj.helperType = spec.helperType; }
+    if (spec.modeProps) { for (var prop$1 in spec.modeProps)
+      { modeObj[prop$1] = spec.modeProps[prop$1]; } }
+
+    return modeObj
+  }
+
+  // This can be used to attach properties to mode objects from
+  // outside the actual mode definition.
+  var modeExtensions = {};
+  function extendMode(mode, properties) {
+    var exts = modeExtensions.hasOwnProperty(mode) ? modeExtensions[mode] : (modeExtensions[mode] = {});
+    copyObj(properties, exts);
+  }
+
+  function copyState(mode, state) {
+    if (state === true) { return state }
+    if (mode.copyState) { return mode.copyState(state) }
+    var nstate = {};
+    for (var n in state) {
+      var val = state[n];
+      if (val instanceof Array) { val = val.concat([]); }
+      nstate[n] = val;
+    }
+    return nstate
+  }
+
+  // Given a mode and a state (for that mode), find the inner mode and
+  // state at the position that the state refers to.
+  function innerMode(mode, state) {
+    var info;
+    while (mode.innerMode) {
+      info = mode.innerMode(state);
+      if (!info || info.mode == mode) { break }
+      state = info.state;
+      mode = info.mode;
+    }
+    return info || {mode: mode, state: state}
+  }
+
+  function startState(mode, a1, a2) {
+    return mode.startState ? mode.startState(a1, a2) : true
+  }
+
+  // STRING STREAM
+
+  // Fed to the mode parsers, provides helper functions to make
+  // parsers more succinct.
+
+  var StringStream = function(string, tabSize, lineOracle) {
+    this.pos = this.start = 0;
+    this.string = string;
+    this.tabSize = tabSize || 8;
+    this.lastColumnPos = this.lastColumnValue = 0;
+    this.lineStart = 0;
+    this.lineOracle = lineOracle;
+  };
+
+  StringStream.prototype.eol = function () {return this.pos >= this.string.length};
+  StringStream.prototype.sol = function () {return this.pos == this.lineStart};
+  StringStream.prototype.peek = function () {return this.string.charAt(this.pos) || undefined};
+  StringStream.prototype.next = function () {
+    if (this.pos < this.string.length)
+      { return this.string.charAt(this.pos++) }
+  };
+  StringStream.prototype.eat = function (match) {
+    var ch = this.string.charAt(this.pos);
+    var ok;
+    if (typeof match == "string") { ok = ch == match; }
+    else { ok = ch && (match.test ? match.test(ch) : match(ch)); }
+    if (ok) {++this.pos; return ch}
+  };
+  StringStream.prototype.eatWhile = function (match) {
+    var start = this.pos;
+    while (this.eat(match)){}
+    return this.pos > start
+  };
+  StringStream.prototype.eatSpace = function () {
+      var this$1 = this;
+
+    var start = this.pos;
+    while (/[\s\u00a0]/.test(this.string.charAt(this.pos))) { ++this$1.pos; }
+    return this.pos > start
+  };
+  StringStream.prototype.skipToEnd = function () {this.pos = this.string.length;};
+  StringStream.prototype.skipTo = function (ch) {
+    var found = this.string.indexOf(ch, this.pos);
+    if (found > -1) {this.pos = found; return true}
+  };
+  StringStream.prototype.backUp = function (n) {this.pos -= n;};
+  StringStream.prototype.column = function () {
+    if (this.lastColumnPos < this.start) {
+      this.lastColumnValue = countColumn(this.string, this.start, this.tabSize, this.lastColumnPos, this.lastColumnValue);
+      this.lastColumnPos = this.start;
+    }
+    return this.lastColumnValue - (this.lineStart ? countColumn(this.string, this.lineStart, this.tabSize) : 0)
+  };
+  StringStream.prototype.indentation = function () {
+    return countColumn(this.string, null, this.tabSize) -
+      (this.lineStart ? countColumn(this.string, this.lineStart, this.tabSize) : 0)
+  };
+  StringStream.prototype.match = function (pattern, consume, caseInsensitive) {
+    if (typeof pattern == "string") {
+      var cased = function (str) { return caseInsensitive ? str.toLowerCase() : str; };
+      var substr = this.string.substr(this.pos, pattern.length);
+      if (cased(substr) == cased(pattern)) {
+        if (consume !== false) { this.pos += pattern.length; }
+        return true
+      }
+    } else {
+      var match = this.string.slice(this.pos).match(pattern);
+      if (match && match.index > 0) { return null }
+      if (match && consume !== false) { this.pos += match[0].length; }
+      return match
+    }
+  };
+  StringStream.prototype.current = function (){return this.string.slice(this.start, this.pos)};
+  StringStream.prototype.hideFirstChars = function (n, inner) {
+    this.lineStart += n;
+    try { return inner() }
+    finally { this.lineStart -= n; }
+  };
+  StringStream.prototype.lookAhead = function (n) {
+    var oracle = this.lineOracle;
+    return oracle && oracle.lookAhead(n)
+  };
+  StringStream.prototype.baseToken = function () {
+    var oracle = this.lineOracle;
+    return oracle && oracle.baseToken(this.pos)
+  };
 
   // Find the line object corresponding to the given line number.
   function getLine(doc, n) {
@@ -518,6 +989,282 @@ var CodeMirror;
     var out = [];
     for (var i = 0; i < array.length; i++) { out[i] = clipPos(doc, array[i]); }
     return out
+  }
+
+  var SavedContext = function(state, lookAhead) {
+    this.state = state;
+    this.lookAhead = lookAhead;
+  };
+
+  var Context = function(doc, state, line, lookAhead) {
+    this.state = state;
+    this.doc = doc;
+    this.line = line;
+    this.maxLookAhead = lookAhead || 0;
+    this.baseTokens = null;
+    this.baseTokenPos = 1;
+  };
+
+  Context.prototype.lookAhead = function (n) {
+    var line = this.doc.getLine(this.line + n);
+    if (line != null && n > this.maxLookAhead) { this.maxLookAhead = n; }
+    return line
+  };
+
+  Context.prototype.baseToken = function (n) {
+      var this$1 = this;
+
+    if (!this.baseTokens) { return null }
+    while (this.baseTokens[this.baseTokenPos] <= n)
+      { this$1.baseTokenPos += 2; }
+    var type = this.baseTokens[this.baseTokenPos + 1];
+    return {type: type && type.replace(/( |^)overlay .*/, ""),
+            size: this.baseTokens[this.baseTokenPos] - n}
+  };
+
+  Context.prototype.nextLine = function () {
+    this.line++;
+    if (this.maxLookAhead > 0) { this.maxLookAhead--; }
+  };
+
+  Context.fromSaved = function (doc, saved, line) {
+    if (saved instanceof SavedContext)
+      { return new Context(doc, copyState(doc.mode, saved.state), line, saved.lookAhead) }
+    else
+      { return new Context(doc, copyState(doc.mode, saved), line) }
+  };
+
+  Context.prototype.save = function (copy) {
+    var state = copy !== false ? copyState(this.doc.mode, this.state) : this.state;
+    return this.maxLookAhead > 0 ? new SavedContext(state, this.maxLookAhead) : state
+  };
+
+
+  // Compute a style array (an array starting with a mode generation
+  // -- for invalidation -- followed by pairs of end positions and
+  // style strings), which is used to highlight the tokens on the
+  // line.
+  function highlightLine(cm, line, context, forceToEnd) {
+    // A styles array always starts with a number identifying the
+    // mode/overlays that it is based on (for easy invalidation).
+    var st = [cm.state.modeGen], lineClasses = {};
+    // Compute the base array of styles
+    runMode(cm, line.text, cm.doc.mode, context, function (end, style) { return st.push(end, style); },
+            lineClasses, forceToEnd);
+    var state = context.state;
+
+    // Run overlays, adjust style array.
+    var loop = function ( o ) {
+      context.baseTokens = st;
+      var overlay = cm.state.overlays[o], i = 1, at = 0;
+      context.state = true;
+      runMode(cm, line.text, overlay.mode, context, function (end, style) {
+        var start = i;
+        // Ensure there's a token end at the current position, and that i points at it
+        while (at < end) {
+          var i_end = st[i];
+          if (i_end > end)
+            { st.splice(i, 1, end, st[i+1], i_end); }
+          i += 2;
+          at = Math.min(end, i_end);
+        }
+        if (!style) { return }
+        if (overlay.opaque) {
+          st.splice(start, i - start, end, "overlay " + style);
+          i = start + 2;
+        } else {
+          for (; start < i; start += 2) {
+            var cur = st[start+1];
+            st[start+1] = (cur ? cur + " " : "") + "overlay " + style;
+          }
+        }
+      }, lineClasses);
+      context.state = state;
+      context.baseTokens = null;
+      context.baseTokenPos = 1;
+    };
+
+    for (var o = 0; o < cm.state.overlays.length; ++o) loop( o );
+
+    return {styles: st, classes: lineClasses.bgClass || lineClasses.textClass ? lineClasses : null}
+  }
+
+  function getLineStyles(cm, line, updateFrontier) {
+    if (!line.styles || line.styles[0] != cm.state.modeGen) {
+      var context = getContextBefore(cm, lineNo(line));
+      var resetState = line.text.length > cm.options.maxHighlightLength && copyState(cm.doc.mode, context.state);
+      var result = highlightLine(cm, line, context);
+      if (resetState) { context.state = resetState; }
+      line.stateAfter = context.save(!resetState);
+      line.styles = result.styles;
+      if (result.classes) { line.styleClasses = result.classes; }
+      else if (line.styleClasses) { line.styleClasses = null; }
+      if (updateFrontier === cm.doc.highlightFrontier)
+        { cm.doc.modeFrontier = Math.max(cm.doc.modeFrontier, ++cm.doc.highlightFrontier); }
+    }
+    return line.styles
+  }
+
+  function getContextBefore(cm, n, precise) {
+    var doc = cm.doc, display = cm.display;
+    if (!doc.mode.startState) { return new Context(doc, true, n) }
+    var start = findStartLine(cm, n, precise);
+    var saved = start > doc.first && getLine(doc, start - 1).stateAfter;
+    var context = saved ? Context.fromSaved(doc, saved, start) : new Context(doc, startState(doc.mode), start);
+
+    doc.iter(start, n, function (line) {
+      processLine(cm, line.text, context);
+      var pos = context.line;
+      line.stateAfter = pos == n - 1 || pos % 5 == 0 || pos >= display.viewFrom && pos < display.viewTo ? context.save() : null;
+      context.nextLine();
+    });
+    if (precise) { doc.modeFrontier = context.line; }
+    return context
+  }
+
+  // Lightweight form of highlight -- proceed over this line and
+  // update state, but don't save a style array. Used for lines that
+  // aren't currently visible.
+  function processLine(cm, text, context, startAt) {
+    var mode = cm.doc.mode;
+    var stream = new StringStream(text, cm.options.tabSize, context);
+    stream.start = stream.pos = startAt || 0;
+    if (text == "") { callBlankLine(mode, context.state); }
+    while (!stream.eol()) {
+      readToken(mode, stream, context.state);
+      stream.start = stream.pos;
+    }
+  }
+
+  function callBlankLine(mode, state) {
+    if (mode.blankLine) { return mode.blankLine(state) }
+    if (!mode.innerMode) { return }
+    var inner = innerMode(mode, state);
+    if (inner.mode.blankLine) { return inner.mode.blankLine(inner.state) }
+  }
+
+  function readToken(mode, stream, state, inner) {
+    for (var i = 0; i < 10; i++) {
+      if (inner) { inner[0] = innerMode(mode, state).mode; }
+      var style = mode.token(stream, state);
+      if (stream.pos > stream.start) { return style }
+    }
+    throw new Error("Mode " + mode.name + " failed to advance stream.")
+  }
+
+  var Token = function(stream, type, state) {
+    this.start = stream.start; this.end = stream.pos;
+    this.string = stream.current();
+    this.type = type || null;
+    this.state = state;
+  };
+
+  // Utility for getTokenAt and getLineTokens
+  function takeToken(cm, pos, precise, asArray) {
+    var doc = cm.doc, mode = doc.mode, style;
+    pos = clipPos(doc, pos);
+    var line = getLine(doc, pos.line), context = getContextBefore(cm, pos.line, precise);
+    var stream = new StringStream(line.text, cm.options.tabSize, context), tokens;
+    if (asArray) { tokens = []; }
+    while ((asArray || stream.pos < pos.ch) && !stream.eol()) {
+      stream.start = stream.pos;
+      style = readToken(mode, stream, context.state);
+      if (asArray) { tokens.push(new Token(stream, style, copyState(doc.mode, context.state))); }
+    }
+    return asArray ? tokens : new Token(stream, style, context.state)
+  }
+
+  function extractLineClasses(type, output) {
+    if (type) { for (;;) {
+      var lineClass = type.match(/(?:^|\s+)line-(background-)?(\S+)/);
+      if (!lineClass) { break }
+      type = type.slice(0, lineClass.index) + type.slice(lineClass.index + lineClass[0].length);
+      var prop = lineClass[1] ? "bgClass" : "textClass";
+      if (output[prop] == null)
+        { output[prop] = lineClass[2]; }
+      else if (!(new RegExp("(?:^|\s)" + lineClass[2] + "(?:$|\s)")).test(output[prop]))
+        { output[prop] += " " + lineClass[2]; }
+    } }
+    return type
+  }
+
+  // Run the given mode's parser over a line, calling f for each token.
+  function runMode(cm, text, mode, context, f, lineClasses, forceToEnd) {
+    var flattenSpans = mode.flattenSpans;
+    if (flattenSpans == null) { flattenSpans = cm.options.flattenSpans; }
+    var curStart = 0, curStyle = null;
+    var stream = new StringStream(text, cm.options.tabSize, context), style;
+    var inner = cm.options.addModeClass && [null];
+    if (text == "") { extractLineClasses(callBlankLine(mode, context.state), lineClasses); }
+    while (!stream.eol()) {
+      if (stream.pos > cm.options.maxHighlightLength) {
+        flattenSpans = false;
+        if (forceToEnd) { processLine(cm, text, context, stream.pos); }
+        stream.pos = text.length;
+        style = null;
+      } else {
+        style = extractLineClasses(readToken(mode, stream, context.state, inner), lineClasses);
+      }
+      if (inner) {
+        var mName = inner[0].name;
+        if (mName) { style = "m-" + (style ? mName + " " + style : mName); }
+      }
+      if (!flattenSpans || curStyle != style) {
+        while (curStart < stream.start) {
+          curStart = Math.min(stream.start, curStart + 5000);
+          f(curStart, curStyle);
+        }
+        curStyle = style;
+      }
+      stream.start = stream.pos;
+    }
+    while (curStart < stream.pos) {
+      // Webkit seems to refuse to render text nodes longer than 57444
+      // characters, and returns inaccurate measurements in nodes
+      // starting around 5000 chars.
+      var pos = Math.min(stream.pos, curStart + 5000);
+      f(pos, curStyle);
+      curStart = pos;
+    }
+  }
+
+  // Finds the line to start with when starting a parse. Tries to
+  // find a line with a stateAfter, so that it can start with a
+  // valid state. If that fails, it returns the line with the
+  // smallest indentation, which tends to need the least context to
+  // parse correctly.
+  function findStartLine(cm, n, precise) {
+    var minindent, minline, doc = cm.doc;
+    var lim = precise ? -1 : n - (cm.doc.mode.innerMode ? 1000 : 100);
+    for (var search = n; search > lim; --search) {
+      if (search <= doc.first) { return doc.first }
+      var line = getLine(doc, search - 1), after = line.stateAfter;
+      if (after && (!precise || search + (after instanceof SavedContext ? after.lookAhead : 0) <= doc.modeFrontier))
+        { return search }
+      var indented = countColumn(line.text, null, cm.options.tabSize);
+      if (minline == null || minindent > indented) {
+        minline = search - 1;
+        minindent = indented;
+      }
+    }
+    return minline
+  }
+
+  function retreatFrontier(doc, n) {
+    doc.modeFrontier = Math.min(doc.modeFrontier, n);
+    if (doc.highlightFrontier < n - 10) { return }
+    var start = doc.first;
+    for (var line = n - 1; line > start; line--) {
+      var saved = getLine(doc, line).stateAfter;
+      // change is on 3
+      // state on line 1 looked ahead 2 -- so saw 3
+      // test 1 + 2 < 3 should cover this
+      if (saved && (!(saved instanceof SavedContext) || line + saved.lookAhead < n)) {
+        start = line + 1;
+        break
+      }
+    }
+    doc.highlightFrontier = Math.min(doc.highlightFrontier, start);
   }
 
   // Optimize some code when these features are not used.
@@ -908,856 +1655,6 @@ var CodeMirror;
     });
   }
 
-  // BIDI HELPERS
-
-  function iterateBidiSections(order, from, to, f) {
-    if (!order) { return f(from, to, "ltr", 0) }
-    var found = false;
-    for (var i = 0; i < order.length; ++i) {
-      var part = order[i];
-      if (part.from < to && part.to > from || from == to && part.to == from) {
-        f(Math.max(part.from, from), Math.min(part.to, to), part.level == 1 ? "rtl" : "ltr", i);
-        found = true;
-      }
-    }
-    if (!found) { f(from, to, "ltr"); }
-  }
-
-  var bidiOther = null;
-  function getBidiPartAt(order, ch, sticky) {
-    var found;
-    bidiOther = null;
-    for (var i = 0; i < order.length; ++i) {
-      var cur = order[i];
-      if (cur.from < ch && cur.to > ch) { return i }
-      if (cur.to == ch) {
-        if (cur.from != cur.to && sticky == "before") { found = i; }
-        else { bidiOther = i; }
-      }
-      if (cur.from == ch) {
-        if (cur.from != cur.to && sticky != "before") { found = i; }
-        else { bidiOther = i; }
-      }
-    }
-    return found != null ? found : bidiOther
-  }
-
-  // Bidirectional ordering algorithm
-  // See http://unicode.org/reports/tr9/tr9-13.html for the algorithm
-  // that this (partially) implements.
-
-  // One-char codes used for character types:
-  // L (L):   Left-to-Right
-  // R (R):   Right-to-Left
-  // r (AL):  Right-to-Left Arabic
-  // 1 (EN):  European Number
-  // + (ES):  European Number Separator
-  // % (ET):  European Number Terminator
-  // n (AN):  Arabic Number
-  // , (CS):  Common Number Separator
-  // m (NSM): Non-Spacing Mark
-  // b (BN):  Boundary Neutral
-  // s (B):   Paragraph Separator
-  // t (S):   Segment Separator
-  // w (WS):  Whitespace
-  // N (ON):  Other Neutrals
-
-  // Returns null if characters are ordered as they appear
-  // (left-to-right), or an array of sections ({from, to, level}
-  // objects) in the order in which they occur visually.
-  var bidiOrdering = (function() {
-    // Character types for codepoints 0 to 0xff
-    var lowTypes = "bbbbbbbbbtstwsbbbbbbbbbbbbbbssstwNN%%%NNNNNN,N,N1111111111NNNNNNNLLLLLLLLLLLLLLLLLLLLLLLLLLNNNNNNLLLLLLLLLLLLLLLLLLLLLLLLLLNNNNbbbbbbsbbbbbbbbbbbbbbbbbbbbbbbbbb,N%%%%NNNNLNNNNN%%11NLNNN1LNNNNNLLLLLLLLLLLLLLLLLLLLLLLNLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLN";
-    // Character types for codepoints 0x600 to 0x6f9
-    var arabicTypes = "nnnnnnNNr%%r,rNNmmmmmmmmmmmrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrmmmmmmmmmmmmmmmmmmmmmnnnnnnnnnn%nnrrrmrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrmmmmmmmnNmmmmmmrrmmNmmmmrr1111111111";
-    function charType(code) {
-      if (code <= 0xf7) { return lowTypes.charAt(code) }
-      else if (0x590 <= code && code <= 0x5f4) { return "R" }
-      else if (0x600 <= code && code <= 0x6f9) { return arabicTypes.charAt(code - 0x600) }
-      else if (0x6ee <= code && code <= 0x8ac) { return "r" }
-      else if (0x2000 <= code && code <= 0x200b) { return "w" }
-      else if (code == 0x200c) { return "b" }
-      else { return "L" }
-    }
-
-    var bidiRE = /[\u0590-\u05f4\u0600-\u06ff\u0700-\u08ac]/;
-    var isNeutral = /[stwN]/, isStrong = /[LRr]/, countsAsLeft = /[Lb1n]/, countsAsNum = /[1n]/;
-
-    function BidiSpan(level, from, to) {
-      this.level = level;
-      this.from = from; this.to = to;
-    }
-
-    return function(str, direction) {
-      var outerType = direction == "ltr" ? "L" : "R";
-
-      if (str.length == 0 || direction == "ltr" && !bidiRE.test(str)) { return false }
-      var len = str.length, types = [];
-      for (var i = 0; i < len; ++i)
-        { types.push(charType(str.charCodeAt(i))); }
-
-      // W1. Examine each non-spacing mark (NSM) in the level run, and
-      // change the type of the NSM to the type of the previous
-      // character. If the NSM is at the start of the level run, it will
-      // get the type of sor.
-      for (var i$1 = 0, prev = outerType; i$1 < len; ++i$1) {
-        var type = types[i$1];
-        if (type == "m") { types[i$1] = prev; }
-        else { prev = type; }
-      }
-
-      // W2. Search backwards from each instance of a European number
-      // until the first strong type (R, L, AL, or sor) is found. If an
-      // AL is found, change the type of the European number to Arabic
-      // number.
-      // W3. Change all ALs to R.
-      for (var i$2 = 0, cur = outerType; i$2 < len; ++i$2) {
-        var type$1 = types[i$2];
-        if (type$1 == "1" && cur == "r") { types[i$2] = "n"; }
-        else if (isStrong.test(type$1)) { cur = type$1; if (type$1 == "r") { types[i$2] = "R"; } }
-      }
-
-      // W4. A single European separator between two European numbers
-      // changes to a European number. A single common separator between
-      // two numbers of the same type changes to that type.
-      for (var i$3 = 1, prev$1 = types[0]; i$3 < len - 1; ++i$3) {
-        var type$2 = types[i$3];
-        if (type$2 == "+" && prev$1 == "1" && types[i$3+1] == "1") { types[i$3] = "1"; }
-        else if (type$2 == "," && prev$1 == types[i$3+1] &&
-                 (prev$1 == "1" || prev$1 == "n")) { types[i$3] = prev$1; }
-        prev$1 = type$2;
-      }
-
-      // W5. A sequence of European terminators adjacent to European
-      // numbers changes to all European numbers.
-      // W6. Otherwise, separators and terminators change to Other
-      // Neutral.
-      for (var i$4 = 0; i$4 < len; ++i$4) {
-        var type$3 = types[i$4];
-        if (type$3 == ",") { types[i$4] = "N"; }
-        else if (type$3 == "%") {
-          var end = (void 0);
-          for (end = i$4 + 1; end < len && types[end] == "%"; ++end) {}
-          var replace = (i$4 && types[i$4-1] == "!") || (end < len && types[end] == "1") ? "1" : "N";
-          for (var j = i$4; j < end; ++j) { types[j] = replace; }
-          i$4 = end - 1;
-        }
-      }
-
-      // W7. Search backwards from each instance of a European number
-      // until the first strong type (R, L, or sor) is found. If an L is
-      // found, then change the type of the European number to L.
-      for (var i$5 = 0, cur$1 = outerType; i$5 < len; ++i$5) {
-        var type$4 = types[i$5];
-        if (cur$1 == "L" && type$4 == "1") { types[i$5] = "L"; }
-        else if (isStrong.test(type$4)) { cur$1 = type$4; }
-      }
-
-      // N1. A sequence of neutrals takes the direction of the
-      // surrounding strong text if the text on both sides has the same
-      // direction. European and Arabic numbers act as if they were R in
-      // terms of their influence on neutrals. Start-of-level-run (sor)
-      // and end-of-level-run (eor) are used at level run boundaries.
-      // N2. Any remaining neutrals take the embedding direction.
-      for (var i$6 = 0; i$6 < len; ++i$6) {
-        if (isNeutral.test(types[i$6])) {
-          var end$1 = (void 0);
-          for (end$1 = i$6 + 1; end$1 < len && isNeutral.test(types[end$1]); ++end$1) {}
-          var before = (i$6 ? types[i$6-1] : outerType) == "L";
-          var after = (end$1 < len ? types[end$1] : outerType) == "L";
-          var replace$1 = before == after ? (before ? "L" : "R") : outerType;
-          for (var j$1 = i$6; j$1 < end$1; ++j$1) { types[j$1] = replace$1; }
-          i$6 = end$1 - 1;
-        }
-      }
-
-      // Here we depart from the documented algorithm, in order to avoid
-      // building up an actual levels array. Since there are only three
-      // levels (0, 1, 2) in an implementation that doesn't take
-      // explicit embedding into account, we can build up the order on
-      // the fly, without following the level-based algorithm.
-      var order = [], m;
-      for (var i$7 = 0; i$7 < len;) {
-        if (countsAsLeft.test(types[i$7])) {
-          var start = i$7;
-          for (++i$7; i$7 < len && countsAsLeft.test(types[i$7]); ++i$7) {}
-          order.push(new BidiSpan(0, start, i$7));
-        } else {
-          var pos = i$7, at = order.length;
-          for (++i$7; i$7 < len && types[i$7] != "L"; ++i$7) {}
-          for (var j$2 = pos; j$2 < i$7;) {
-            if (countsAsNum.test(types[j$2])) {
-              if (pos < j$2) { order.splice(at, 0, new BidiSpan(1, pos, j$2)); }
-              var nstart = j$2;
-              for (++j$2; j$2 < i$7 && countsAsNum.test(types[j$2]); ++j$2) {}
-              order.splice(at, 0, new BidiSpan(2, nstart, j$2));
-              pos = j$2;
-            } else { ++j$2; }
-          }
-          if (pos < i$7) { order.splice(at, 0, new BidiSpan(1, pos, i$7)); }
-        }
-      }
-      if (direction == "ltr") {
-        if (order[0].level == 1 && (m = str.match(/^\s+/))) {
-          order[0].from = m[0].length;
-          order.unshift(new BidiSpan(0, 0, m[0].length));
-        }
-        if (lst(order).level == 1 && (m = str.match(/\s+$/))) {
-          lst(order).to -= m[0].length;
-          order.push(new BidiSpan(0, len - m[0].length, len));
-        }
-      }
-
-      return direction == "rtl" ? order.reverse() : order
-    }
-  })();
-
-  // Get the bidi ordering for the given line (and cache it). Returns
-  // false for lines that are fully left-to-right, and an array of
-  // BidiSpan objects otherwise.
-  function getOrder(line, direction) {
-    var order = line.order;
-    if (order == null) { order = line.order = bidiOrdering(line.text, direction); }
-    return order
-  }
-
-  // EVENT HANDLING
-
-  // Lightweight event framework. on/off also work on DOM nodes,
-  // registering native DOM handlers.
-
-  var noHandlers = [];
-
-  var on = function(emitter, type, f) {
-    if (emitter.addEventListener) {
-      emitter.addEventListener(type, f, false);
-    } else if (emitter.attachEvent) {
-      emitter.attachEvent("on" + type, f);
-    } else {
-      var map$$1 = emitter._handlers || (emitter._handlers = {});
-      map$$1[type] = (map$$1[type] || noHandlers).concat(f);
-    }
-  };
-
-  function getHandlers(emitter, type) {
-    return emitter._handlers && emitter._handlers[type] || noHandlers
-  }
-
-  function off(emitter, type, f) {
-    if (emitter.removeEventListener) {
-      emitter.removeEventListener(type, f, false);
-    } else if (emitter.detachEvent) {
-      emitter.detachEvent("on" + type, f);
-    } else {
-      var map$$1 = emitter._handlers, arr = map$$1 && map$$1[type];
-      if (arr) {
-        var index = indexOf(arr, f);
-        if (index > -1)
-          { map$$1[type] = arr.slice(0, index).concat(arr.slice(index + 1)); }
-      }
-    }
-  }
-
-  function signal(emitter, type /*, values...*/) {
-    var handlers = getHandlers(emitter, type);
-    if (!handlers.length) { return }
-    var args = Array.prototype.slice.call(arguments, 2);
-    for (var i = 0; i < handlers.length; ++i) { handlers[i].apply(null, args); }
-  }
-
-  // The DOM events that CodeMirror handles can be overridden by
-  // registering a (non-DOM) handler on the editor for the event name,
-  // and preventDefault-ing the event in that handler.
-  function signalDOMEvent(cm, e, override) {
-    if (typeof e == "string")
-      { e = {type: e, preventDefault: function() { this.defaultPrevented = true; }}; }
-    signal(cm, override || e.type, cm, e);
-    return e_defaultPrevented(e) || e.codemirrorIgnore
-  }
-
-  function signalCursorActivity(cm) {
-    var arr = cm._handlers && cm._handlers.cursorActivity;
-    if (!arr) { return }
-    var set = cm.curOp.cursorActivityHandlers || (cm.curOp.cursorActivityHandlers = []);
-    for (var i = 0; i < arr.length; ++i) { if (indexOf(set, arr[i]) == -1)
-      { set.push(arr[i]); } }
-  }
-
-  function hasHandler(emitter, type) {
-    return getHandlers(emitter, type).length > 0
-  }
-
-  // Add on and off methods to a constructor's prototype, to make
-  // registering events on such objects more convenient.
-  function eventMixin(ctor) {
-    ctor.prototype.on = function(type, f) {on(this, type, f);};
-    ctor.prototype.off = function(type, f) {off(this, type, f);};
-  }
-
-  // Due to the fact that we still support jurassic IE versions, some
-  // compatibility wrappers are needed.
-
-  function e_preventDefault(e) {
-    if (e.preventDefault) { e.preventDefault(); }
-    else { e.returnValue = false; }
-  }
-  function e_stopPropagation(e) {
-    if (e.stopPropagation) { e.stopPropagation(); }
-    else { e.cancelBubble = true; }
-  }
-  function e_defaultPrevented(e) {
-    return e.defaultPrevented != null ? e.defaultPrevented : e.returnValue == false
-  }
-  function e_stop(e) {e_preventDefault(e); e_stopPropagation(e);}
-
-  function e_target(e) {return e.target || e.srcElement}
-  function e_button(e) {
-    var b = e.which;
-    if (b == null) {
-      if (e.button & 1) { b = 1; }
-      else if (e.button & 2) { b = 3; }
-      else if (e.button & 4) { b = 2; }
-    }
-    if (mac && e.ctrlKey && b == 1) { b = 3; }
-    return b
-  }
-
-  // Detect drag-and-drop
-  var dragAndDrop = function() {
-    // There is *some* kind of drag-and-drop support in IE6-8, but I
-    // couldn't get it to work yet.
-    if (ie && ie_version < 9) { return false }
-    var div = elt('div');
-    return "draggable" in div || "dragDrop" in div
-  }();
-
-  var zwspSupported;
-  function zeroWidthElement(measure) {
-    if (zwspSupported == null) {
-      var test = elt("span", "\u200b");
-      removeChildrenAndAdd(measure, elt("span", [test, document.createTextNode("x")]));
-      if (measure.firstChild.offsetHeight != 0)
-        { zwspSupported = test.offsetWidth <= 1 && test.offsetHeight > 2 && !(ie && ie_version < 8); }
-    }
-    var node = zwspSupported ? elt("span", "\u200b") :
-      elt("span", "\u00a0", null, "display: inline-block; width: 1px; margin-right: -1px");
-    node.setAttribute("cm-text", "");
-    return node
-  }
-
-  // Feature-detect IE's crummy client rect reporting for bidi text
-  var badBidiRects;
-  function hasBadBidiRects(measure) {
-    if (badBidiRects != null) { return badBidiRects }
-    var txt = removeChildrenAndAdd(measure, document.createTextNode("A\u062eA"));
-    var r0 = range(txt, 0, 1).getBoundingClientRect();
-    var r1 = range(txt, 1, 2).getBoundingClientRect();
-    removeChildren(measure);
-    if (!r0 || r0.left == r0.right) { return false } // Safari returns null in some cases (#2780)
-    return badBidiRects = (r1.right - r0.right < 3)
-  }
-
-  // See if "".split is the broken IE version, if so, provide an
-  // alternative way to split lines.
-  var splitLinesAuto = "\n\nb".split(/\n/).length != 3 ? function (string) {
-    var pos = 0, result = [], l = string.length;
-    while (pos <= l) {
-      var nl = string.indexOf("\n", pos);
-      if (nl == -1) { nl = string.length; }
-      var line = string.slice(pos, string.charAt(nl - 1) == "\r" ? nl - 1 : nl);
-      var rt = line.indexOf("\r");
-      if (rt != -1) {
-        result.push(line.slice(0, rt));
-        pos += rt + 1;
-      } else {
-        result.push(line);
-        pos = nl + 1;
-      }
-    }
-    return result
-  } : function (string) { return string.split(/\r\n?|\n/); };
-
-  var hasSelection = window.getSelection ? function (te) {
-    try { return te.selectionStart != te.selectionEnd }
-    catch(e) { return false }
-  } : function (te) {
-    var range$$1;
-    try {range$$1 = te.ownerDocument.selection.createRange();}
-    catch(e) {}
-    if (!range$$1 || range$$1.parentElement() != te) { return false }
-    return range$$1.compareEndPoints("StartToEnd", range$$1) != 0
-  };
-
-  var hasCopyEvent = (function () {
-    var e = elt("div");
-    if ("oncopy" in e) { return true }
-    e.setAttribute("oncopy", "return;");
-    return typeof e.oncopy == "function"
-  })();
-
-  var badZoomedRects = null;
-  function hasBadZoomedRects(measure) {
-    if (badZoomedRects != null) { return badZoomedRects }
-    var node = removeChildrenAndAdd(measure, elt("span", "x"));
-    var normal = node.getBoundingClientRect();
-    var fromRange = range(node, 0, 1).getBoundingClientRect();
-    return badZoomedRects = Math.abs(normal.left - fromRange.left) > 1
-  }
-
-  // Known modes, by name and by MIME
-  var modes = {}, mimeModes = {"text/plain": "null"};
-
-  // Extra arguments are stored as the mode's dependencies, which is
-  // used by (legacy) mechanisms like loadmode.js to automatically
-  // load a mode. (Preferred mechanism is the require/define calls.)
-  function defineMode(name, mode) {
-    if (arguments.length > 2)
-      { mode.dependencies = Array.prototype.slice.call(arguments, 2); }
-    modes[name] = mode;
-  }
-
-  // Given a MIME type, a {name, ...options} config object, or a name
-  // string, return a mode config object.
-  function resolveMode(spec) {
-    if (typeof spec == "string" && mimeModes.hasOwnProperty(spec)) {
-      spec = mimeModes[spec];
-    } else if (spec && typeof spec.name == "string" && mimeModes.hasOwnProperty(spec.name)) {
-      var found = mimeModes[spec.name];
-      if (typeof found == "string") { found = {name: found}; }
-      spec = createObj(found, spec);
-      spec.name = found.name;
-    } else if (typeof spec == "string" && /^[\w\-]+\/[\w\-]+\+xml$/.test(spec)) {
-      return resolveMode("application/xml")
-    } else if (typeof spec == "string" && /^[\w\-]+\/[\w\-]+\+json$/.test(spec)) {
-      return resolveMode("application/json")
-    }
-    if (typeof spec == "string") { return {name: spec} }
-    else { return spec || {name: "null"} }
-  }
-
-  // Given a mode spec (anything that resolveMode accepts), find and
-  // initialize an actual mode object.
-  function getMode(options, spec) {
-    spec = resolveMode(spec);
-    var mfactory = modes[spec.name];
-    if (!mfactory) { return getMode(options, "text/plain") }
-    var modeObj = mfactory(options, spec);
-    if (modeExtensions.hasOwnProperty(spec.name)) {
-      var exts = modeExtensions[spec.name];
-      for (var prop in exts) {
-        if (!exts.hasOwnProperty(prop)) { continue }
-        if (modeObj.hasOwnProperty(prop)) { modeObj["_" + prop] = modeObj[prop]; }
-        modeObj[prop] = exts[prop];
-      }
-    }
-    modeObj.name = spec.name;
-    if (spec.helperType) { modeObj.helperType = spec.helperType; }
-    if (spec.modeProps) { for (var prop$1 in spec.modeProps)
-      { modeObj[prop$1] = spec.modeProps[prop$1]; } }
-
-    return modeObj
-  }
-
-  // This can be used to attach properties to mode objects from
-  // outside the actual mode definition.
-  var modeExtensions = {};
-  function extendMode(mode, properties) {
-    var exts = modeExtensions.hasOwnProperty(mode) ? modeExtensions[mode] : (modeExtensions[mode] = {});
-    copyObj(properties, exts);
-  }
-
-  function copyState(mode, state) {
-    if (state === true) { return state }
-    if (mode.copyState) { return mode.copyState(state) }
-    var nstate = {};
-    for (var n in state) {
-      var val = state[n];
-      if (val instanceof Array) { val = val.concat([]); }
-      nstate[n] = val;
-    }
-    return nstate
-  }
-
-  // Given a mode and a state (for that mode), find the inner mode and
-  // state at the position that the state refers to.
-  function innerMode(mode, state) {
-    var info;
-    while (mode.innerMode) {
-      info = mode.innerMode(state);
-      if (!info || info.mode == mode) { break }
-      state = info.state;
-      mode = info.mode;
-    }
-    return info || {mode: mode, state: state}
-  }
-
-  function startState(mode, a1, a2) {
-    return mode.startState ? mode.startState(a1, a2) : true
-  }
-
-  // STRING STREAM
-
-  // Fed to the mode parsers, provides helper functions to make
-  // parsers more succinct.
-
-  var StringStream = function(string, tabSize, lineOracle) {
-    this.pos = this.start = 0;
-    this.string = string;
-    this.tabSize = tabSize || 8;
-    this.lastColumnPos = this.lastColumnValue = 0;
-    this.lineStart = 0;
-    this.lineOracle = lineOracle;
-  };
-
-  StringStream.prototype.eol = function () {return this.pos >= this.string.length};
-  StringStream.prototype.sol = function () {return this.pos == this.lineStart};
-  StringStream.prototype.peek = function () {return this.string.charAt(this.pos) || undefined};
-  StringStream.prototype.next = function () {
-    if (this.pos < this.string.length)
-      { return this.string.charAt(this.pos++) }
-  };
-  StringStream.prototype.eat = function (match) {
-    var ch = this.string.charAt(this.pos);
-    var ok;
-    if (typeof match == "string") { ok = ch == match; }
-    else { ok = ch && (match.test ? match.test(ch) : match(ch)); }
-    if (ok) {++this.pos; return ch}
-  };
-  StringStream.prototype.eatWhile = function (match) {
-    var start = this.pos;
-    while (this.eat(match)){}
-    return this.pos > start
-  };
-  StringStream.prototype.eatSpace = function () {
-      var this$1 = this;
-
-    var start = this.pos;
-    while (/[\s\u00a0]/.test(this.string.charAt(this.pos))) { ++this$1.pos; }
-    return this.pos > start
-  };
-  StringStream.prototype.skipToEnd = function () {this.pos = this.string.length;};
-  StringStream.prototype.skipTo = function (ch) {
-    var found = this.string.indexOf(ch, this.pos);
-    if (found > -1) {this.pos = found; return true}
-  };
-  StringStream.prototype.backUp = function (n) {this.pos -= n;};
-  StringStream.prototype.column = function () {
-    if (this.lastColumnPos < this.start) {
-      this.lastColumnValue = countColumn(this.string, this.start, this.tabSize, this.lastColumnPos, this.lastColumnValue);
-      this.lastColumnPos = this.start;
-    }
-    return this.lastColumnValue - (this.lineStart ? countColumn(this.string, this.lineStart, this.tabSize) : 0)
-  };
-  StringStream.prototype.indentation = function () {
-    return countColumn(this.string, null, this.tabSize) -
-      (this.lineStart ? countColumn(this.string, this.lineStart, this.tabSize) : 0)
-  };
-  StringStream.prototype.match = function (pattern, consume, caseInsensitive) {
-    if (typeof pattern == "string") {
-      var cased = function (str) { return caseInsensitive ? str.toLowerCase() : str; };
-      var substr = this.string.substr(this.pos, pattern.length);
-      if (cased(substr) == cased(pattern)) {
-        if (consume !== false) { this.pos += pattern.length; }
-        return true
-      }
-    } else {
-      var match = this.string.slice(this.pos).match(pattern);
-      if (match && match.index > 0) { return null }
-      if (match && consume !== false) { this.pos += match[0].length; }
-      return match
-    }
-  };
-  StringStream.prototype.current = function (){return this.string.slice(this.start, this.pos)};
-  StringStream.prototype.hideFirstChars = function (n, inner) {
-    this.lineStart += n;
-    try { return inner() }
-    finally { this.lineStart -= n; }
-  };
-  StringStream.prototype.lookAhead = function (n) {
-    var oracle = this.lineOracle;
-    return oracle && oracle.lookAhead(n)
-  };
-  StringStream.prototype.baseToken = function () {
-    var oracle = this.lineOracle;
-    return oracle && oracle.baseToken(this.pos)
-  };
-
-  var SavedContext = function(state, lookAhead) {
-    this.state = state;
-    this.lookAhead = lookAhead;
-  };
-
-  var Context = function(doc, state, line, lookAhead) {
-    this.state = state;
-    this.doc = doc;
-    this.line = line;
-    this.maxLookAhead = lookAhead || 0;
-    this.baseTokens = null;
-    this.baseTokenPos = 1;
-  };
-
-  Context.prototype.lookAhead = function (n) {
-    var line = this.doc.getLine(this.line + n);
-    if (line != null && n > this.maxLookAhead) { this.maxLookAhead = n; }
-    return line
-  };
-
-  Context.prototype.baseToken = function (n) {
-      var this$1 = this;
-
-    if (!this.baseTokens) { return null }
-    while (this.baseTokens[this.baseTokenPos] <= n)
-      { this$1.baseTokenPos += 2; }
-    var type = this.baseTokens[this.baseTokenPos + 1];
-    return {type: type && type.replace(/( |^)overlay .*/, ""),
-            size: this.baseTokens[this.baseTokenPos] - n}
-  };
-
-  Context.prototype.nextLine = function () {
-    this.line++;
-    if (this.maxLookAhead > 0) { this.maxLookAhead--; }
-  };
-
-  Context.fromSaved = function (doc, saved, line) {
-    if (saved instanceof SavedContext)
-      { return new Context(doc, copyState(doc.mode, saved.state), line, saved.lookAhead) }
-    else
-      { return new Context(doc, copyState(doc.mode, saved), line) }
-  };
-
-  Context.prototype.save = function (copy) {
-    var state = copy !== false ? copyState(this.doc.mode, this.state) : this.state;
-    return this.maxLookAhead > 0 ? new SavedContext(state, this.maxLookAhead) : state
-  };
-
-
-  // Compute a style array (an array starting with a mode generation
-  // -- for invalidation -- followed by pairs of end positions and
-  // style strings), which is used to highlight the tokens on the
-  // line.
-  function highlightLine(cm, line, context, forceToEnd) {
-    // A styles array always starts with a number identifying the
-    // mode/overlays that it is based on (for easy invalidation).
-    var st = [cm.state.modeGen], lineClasses = {};
-    // Compute the base array of styles
-    runMode(cm, line.text, cm.doc.mode, context, function (end, style) { return st.push(end, style); },
-            lineClasses, forceToEnd);
-    var state = context.state;
-
-    // Run overlays, adjust style array.
-    var loop = function ( o ) {
-      context.baseTokens = st;
-      var overlay = cm.state.overlays[o], i = 1, at = 0;
-      context.state = true;
-      runMode(cm, line.text, overlay.mode, context, function (end, style) {
-        var start = i;
-        // Ensure there's a token end at the current position, and that i points at it
-        while (at < end) {
-          var i_end = st[i];
-          if (i_end > end)
-            { st.splice(i, 1, end, st[i+1], i_end); }
-          i += 2;
-          at = Math.min(end, i_end);
-        }
-        if (!style) { return }
-        if (overlay.opaque) {
-          st.splice(start, i - start, end, "overlay " + style);
-          i = start + 2;
-        } else {
-          for (; start < i; start += 2) {
-            var cur = st[start+1];
-            st[start+1] = (cur ? cur + " " : "") + "overlay " + style;
-          }
-        }
-      }, lineClasses);
-      context.state = state;
-      context.baseTokens = null;
-      context.baseTokenPos = 1;
-    };
-
-    for (var o = 0; o < cm.state.overlays.length; ++o) loop( o );
-
-    return {styles: st, classes: lineClasses.bgClass || lineClasses.textClass ? lineClasses : null}
-  }
-
-  function getLineStyles(cm, line, updateFrontier) {
-    if (!line.styles || line.styles[0] != cm.state.modeGen) {
-      var context = getContextBefore(cm, lineNo(line));
-      var resetState = line.text.length > cm.options.maxHighlightLength && copyState(cm.doc.mode, context.state);
-      var result = highlightLine(cm, line, context);
-      if (resetState) { context.state = resetState; }
-      line.stateAfter = context.save(!resetState);
-      line.styles = result.styles;
-      if (result.classes) { line.styleClasses = result.classes; }
-      else if (line.styleClasses) { line.styleClasses = null; }
-      if (updateFrontier === cm.doc.highlightFrontier)
-        { cm.doc.modeFrontier = Math.max(cm.doc.modeFrontier, ++cm.doc.highlightFrontier); }
-    }
-    return line.styles
-  }
-
-  function getContextBefore(cm, n, precise) {
-    var doc = cm.doc, display = cm.display;
-    if (!doc.mode.startState) { return new Context(doc, true, n) }
-    var start = findStartLine(cm, n, precise);
-    var saved = start > doc.first && getLine(doc, start - 1).stateAfter;
-    var context = saved ? Context.fromSaved(doc, saved, start) : new Context(doc, startState(doc.mode), start);
-
-    doc.iter(start, n, function (line) {
-      processLine(cm, line.text, context);
-      var pos = context.line;
-      line.stateAfter = pos == n - 1 || pos % 5 == 0 || pos >= display.viewFrom && pos < display.viewTo ? context.save() : null;
-      context.nextLine();
-    });
-    if (precise) { doc.modeFrontier = context.line; }
-    return context
-  }
-
-  // Lightweight form of highlight -- proceed over this line and
-  // update state, but don't save a style array. Used for lines that
-  // aren't currently visible.
-  function processLine(cm, text, context, startAt) {
-    var mode = cm.doc.mode;
-    var stream = new StringStream(text, cm.options.tabSize, context);
-    stream.start = stream.pos = startAt || 0;
-    if (text == "") { callBlankLine(mode, context.state); }
-    while (!stream.eol()) {
-      readToken(mode, stream, context.state);
-      stream.start = stream.pos;
-    }
-  }
-
-  function callBlankLine(mode, state) {
-    if (mode.blankLine) { return mode.blankLine(state) }
-    if (!mode.innerMode) { return }
-    var inner = innerMode(mode, state);
-    if (inner.mode.blankLine) { return inner.mode.blankLine(inner.state) }
-  }
-
-  function readToken(mode, stream, state, inner) {
-    for (var i = 0; i < 10; i++) {
-      if (inner) { inner[0] = innerMode(mode, state).mode; }
-      var style = mode.token(stream, state);
-      if (stream.pos > stream.start) { return style }
-    }
-    throw new Error("Mode " + mode.name + " failed to advance stream.")
-  }
-
-  var Token = function(stream, type, state) {
-    this.start = stream.start; this.end = stream.pos;
-    this.string = stream.current();
-    this.type = type || null;
-    this.state = state;
-  };
-
-  // Utility for getTokenAt and getLineTokens
-  function takeToken(cm, pos, precise, asArray) {
-    var doc = cm.doc, mode = doc.mode, style;
-    pos = clipPos(doc, pos);
-    var line = getLine(doc, pos.line), context = getContextBefore(cm, pos.line, precise);
-    var stream = new StringStream(line.text, cm.options.tabSize, context), tokens;
-    if (asArray) { tokens = []; }
-    while ((asArray || stream.pos < pos.ch) && !stream.eol()) {
-      stream.start = stream.pos;
-      style = readToken(mode, stream, context.state);
-      if (asArray) { tokens.push(new Token(stream, style, copyState(doc.mode, context.state))); }
-    }
-    return asArray ? tokens : new Token(stream, style, context.state)
-  }
-
-  function extractLineClasses(type, output) {
-    if (type) { for (;;) {
-      var lineClass = type.match(/(?:^|\s+)line-(background-)?(\S+)/);
-      if (!lineClass) { break }
-      type = type.slice(0, lineClass.index) + type.slice(lineClass.index + lineClass[0].length);
-      var prop = lineClass[1] ? "bgClass" : "textClass";
-      if (output[prop] == null)
-        { output[prop] = lineClass[2]; }
-      else if (!(new RegExp("(?:^|\s)" + lineClass[2] + "(?:$|\s)")).test(output[prop]))
-        { output[prop] += " " + lineClass[2]; }
-    } }
-    return type
-  }
-
-  // Run the given mode's parser over a line, calling f for each token.
-  function runMode(cm, text, mode, context, f, lineClasses, forceToEnd) {
-    var flattenSpans = mode.flattenSpans;
-    if (flattenSpans == null) { flattenSpans = cm.options.flattenSpans; }
-    var curStart = 0, curStyle = null;
-    var stream = new StringStream(text, cm.options.tabSize, context), style;
-    var inner = cm.options.addModeClass && [null];
-    if (text == "") { extractLineClasses(callBlankLine(mode, context.state), lineClasses); }
-    while (!stream.eol()) {
-      if (stream.pos > cm.options.maxHighlightLength) {
-        flattenSpans = false;
-        if (forceToEnd) { processLine(cm, text, context, stream.pos); }
-        stream.pos = text.length;
-        style = null;
-      } else {
-        style = extractLineClasses(readToken(mode, stream, context.state, inner), lineClasses);
-      }
-      if (inner) {
-        var mName = inner[0].name;
-        if (mName) { style = "m-" + (style ? mName + " " + style : mName); }
-      }
-      if (!flattenSpans || curStyle != style) {
-        while (curStart < stream.start) {
-          curStart = Math.min(stream.start, curStart + 5000);
-          f(curStart, curStyle);
-        }
-        curStyle = style;
-      }
-      stream.start = stream.pos;
-    }
-    while (curStart < stream.pos) {
-      // Webkit seems to refuse to render text nodes longer than 57444
-      // characters, and returns inaccurate measurements in nodes
-      // starting around 5000 chars.
-      var pos = Math.min(stream.pos, curStart + 5000);
-      f(pos, curStyle);
-      curStart = pos;
-    }
-  }
-
-  // Finds the line to start with when starting a parse. Tries to
-  // find a line with a stateAfter, so that it can start with a
-  // valid state. If that fails, it returns the line with the
-  // smallest indentation, which tends to need the least context to
-  // parse correctly.
-  function findStartLine(cm, n, precise) {
-    var minindent, minline, doc = cm.doc;
-    var lim = precise ? -1 : n - (cm.doc.mode.innerMode ? 1000 : 100);
-    for (var search = n; search > lim; --search) {
-      if (search <= doc.first) { return doc.first }
-      var line = getLine(doc, search - 1), after = line.stateAfter;
-      if (after && (!precise || search + (after instanceof SavedContext ? after.lookAhead : 0) <= doc.modeFrontier))
-        { return search }
-      var indented = countColumn(line.text, null, cm.options.tabSize);
-      if (minline == null || minindent > indented) {
-        minline = search - 1;
-        minindent = indented;
-      }
-    }
-    return minline
-  }
-
-  function retreatFrontier(doc, n) {
-    doc.modeFrontier = Math.min(doc.modeFrontier, n);
-    if (doc.highlightFrontier < n - 10) { return }
-    var start = doc.first;
-    for (var line = n - 1; line > start; line--) {
-      var saved = getLine(doc, line).stateAfter;
-      // change is on 3
-      // state on line 1 looked ahead 2 -- so saw 3
-      // test 1 + 2 < 3 should cover this
-      if (saved && (!(saved instanceof SavedContext) || line + saved.lookAhead < n)) {
-        start = line + 1;
-        break
-      }
-    }
-    doc.highlightFrontier = Math.min(doc.highlightFrontier, start);
-  }
-
   // LINE DATA STRUCTURE
 
   // Line objects. These hold state related to a line, including
@@ -1883,7 +1780,6 @@ var CodeMirror;
       builder.col += text.length;
       content = document.createTextNode(displayText);
       builder.map.push(builder.pos, builder.pos + text.length, content);
-      if (ie && ie_version < 9) { mustWrap = true; }
       builder.pos += text.length;
     } else {
       content = document.createDocumentFragment();
@@ -1894,8 +1790,7 @@ var CodeMirror;
         var skipped = m ? m.index - pos : text.length - pos;
         if (skipped) {
           var txt = document.createTextNode(displayText.slice(pos, pos + skipped));
-          if (ie && ie_version < 9) { content.appendChild(elt("span", [txt])); }
-          else { content.appendChild(txt); }
+          content.appendChild(txt);
           builder.map.push(builder.pos, builder.pos + skipped, txt);
           builder.col += skipped;
           builder.pos += skipped;
@@ -1916,8 +1811,7 @@ var CodeMirror;
         } else {
           txt$1 = builder.cm.options.specialCharPlaceholder(m[0]);
           txt$1.setAttribute("cm-text", m[0]);
-          if (ie && ie_version < 9) { content.appendChild(elt("span", [txt$1])); }
-          else { content.appendChild(txt$1); }
+          content.appendChild(txt$1);
           builder.col += 1;
         }
         builder.map.push(builder.pos, builder.pos + 1, txt$1);
@@ -2192,7 +2086,6 @@ var CodeMirror;
       if (lineView.text.parentNode)
         { lineView.text.parentNode.replaceChild(lineView.node, lineView.text); }
       lineView.node.appendChild(lineView.text);
-      if (ie && ie_version < 8) { lineView.node.style.zIndex = 2; }
     }
     return lineView.node
   }
@@ -2279,8 +2172,8 @@ var CodeMirror;
           elt("div", lineNumberFor(cm.options, lineN),
               "CodeMirror-linenumber CodeMirror-gutter-elt",
               ("left: " + (dims.gutterLeft["CodeMirror-linenumbers"]) + "px; width: " + (cm.display.lineNumInnerWidth) + "px"))); }
-      if (markers) { for (var k = 0; k < cm.options.gutters.length; ++k) {
-        var id = cm.options.gutters[k], found = markers.hasOwnProperty(id) && markers[id];
+      if (markers) { for (var k = 0; k < cm.display.gutterSpecs.length; ++k) {
+        var id = cm.display.gutterSpecs[k].className, found = markers.hasOwnProperty(id) && markers[id];
         if (found)
           { gutterWrap.appendChild(elt("div", [found], "CodeMirror-gutter-elt",
                                      ("left: " + (dims.gutterLeft[id]) + "px; width: " + (dims.gutterWidth[id]) + "px"))); }
@@ -2985,8 +2878,9 @@ var CodeMirror;
     var d = cm.display, left = {}, width = {};
     var gutterLeft = d.gutters.clientLeft;
     for (var n = d.gutters.firstChild, i = 0; n; n = n.nextSibling, ++i) {
-      left[cm.options.gutters[i]] = n.offsetLeft + n.clientLeft + gutterLeft;
-      width[cm.options.gutters[i]] = n.clientWidth;
+      var id = cm.display.gutterSpecs[i].className;
+      left[id] = n.offsetLeft + n.clientLeft + gutterLeft;
+      width[id] = n.clientWidth;
     }
     return {fixedPos: compensateForHScroll(d),
             gutterTotalWidth: d.gutters.offsetWidth,
@@ -3063,6 +2957,154 @@ var CodeMirror;
       n -= view[i].size;
       if (n < 0) { return i }
     }
+  }
+
+  // Updates the display.view data structure for a given change to the
+  // document. From and to are in pre-change coordinates. Lendiff is
+  // the amount of lines added or subtracted by the change. This is
+  // used for changes that span multiple lines, or change the way
+  // lines are divided into visual lines. regLineChange (below)
+  // registers single-line changes.
+  function regChange(cm, from, to, lendiff) {
+    if (from == null) { from = cm.doc.first; }
+    if (to == null) { to = cm.doc.first + cm.doc.size; }
+    if (!lendiff) { lendiff = 0; }
+
+    var display = cm.display;
+    if (lendiff && to < display.viewTo &&
+        (display.updateLineNumbers == null || display.updateLineNumbers > from))
+      { display.updateLineNumbers = from; }
+
+    cm.curOp.viewChanged = true;
+
+    if (from >= display.viewTo) { // Change after
+      if (sawCollapsedSpans && visualLineNo(cm.doc, from) < display.viewTo)
+        { resetView(cm); }
+    } else if (to <= display.viewFrom) { // Change before
+      if (sawCollapsedSpans && visualLineEndNo(cm.doc, to + lendiff) > display.viewFrom) {
+        resetView(cm);
+      } else {
+        display.viewFrom += lendiff;
+        display.viewTo += lendiff;
+      }
+    } else if (from <= display.viewFrom && to >= display.viewTo) { // Full overlap
+      resetView(cm);
+    } else if (from <= display.viewFrom) { // Top overlap
+      var cut = viewCuttingPoint(cm, to, to + lendiff, 1);
+      if (cut) {
+        display.view = display.view.slice(cut.index);
+        display.viewFrom = cut.lineN;
+        display.viewTo += lendiff;
+      } else {
+        resetView(cm);
+      }
+    } else if (to >= display.viewTo) { // Bottom overlap
+      var cut$1 = viewCuttingPoint(cm, from, from, -1);
+      if (cut$1) {
+        display.view = display.view.slice(0, cut$1.index);
+        display.viewTo = cut$1.lineN;
+      } else {
+        resetView(cm);
+      }
+    } else { // Gap in the middle
+      var cutTop = viewCuttingPoint(cm, from, from, -1);
+      var cutBot = viewCuttingPoint(cm, to, to + lendiff, 1);
+      if (cutTop && cutBot) {
+        display.view = display.view.slice(0, cutTop.index)
+          .concat(buildViewArray(cm, cutTop.lineN, cutBot.lineN))
+          .concat(display.view.slice(cutBot.index));
+        display.viewTo += lendiff;
+      } else {
+        resetView(cm);
+      }
+    }
+
+    var ext = display.externalMeasured;
+    if (ext) {
+      if (to < ext.lineN)
+        { ext.lineN += lendiff; }
+      else if (from < ext.lineN + ext.size)
+        { display.externalMeasured = null; }
+    }
+  }
+
+  // Register a change to a single line. Type must be one of "text",
+  // "gutter", "class", "widget"
+  function regLineChange(cm, line, type) {
+    cm.curOp.viewChanged = true;
+    var display = cm.display, ext = cm.display.externalMeasured;
+    if (ext && line >= ext.lineN && line < ext.lineN + ext.size)
+      { display.externalMeasured = null; }
+
+    if (line < display.viewFrom || line >= display.viewTo) { return }
+    var lineView = display.view[findViewIndex(cm, line)];
+    if (lineView.node == null) { return }
+    var arr = lineView.changes || (lineView.changes = []);
+    if (indexOf(arr, type) == -1) { arr.push(type); }
+  }
+
+  // Clear the view.
+  function resetView(cm) {
+    cm.display.viewFrom = cm.display.viewTo = cm.doc.first;
+    cm.display.view = [];
+    cm.display.viewOffset = 0;
+  }
+
+  function viewCuttingPoint(cm, oldN, newN, dir) {
+    var index = findViewIndex(cm, oldN), diff, view = cm.display.view;
+    if (!sawCollapsedSpans || newN == cm.doc.first + cm.doc.size)
+      { return {index: index, lineN: newN} }
+    var n = cm.display.viewFrom;
+    for (var i = 0; i < index; i++)
+      { n += view[i].size; }
+    if (n != oldN) {
+      if (dir > 0) {
+        if (index == view.length - 1) { return null }
+        diff = (n + view[index].size) - oldN;
+        index++;
+      } else {
+        diff = n - oldN;
+      }
+      oldN += diff; newN += diff;
+    }
+    while (visualLineNo(cm.doc, newN) != newN) {
+      if (index == (dir < 0 ? 0 : view.length - 1)) { return null }
+      newN += dir * view[index - (dir < 0 ? 1 : 0)].size;
+      index += dir;
+    }
+    return {index: index, lineN: newN}
+  }
+
+  // Force the view to cover a given range, adding empty view element
+  // or clipping off existing ones as needed.
+  function adjustView(cm, from, to) {
+    var display = cm.display, view = display.view;
+    if (view.length == 0 || from >= display.viewTo || to <= display.viewFrom) {
+      display.view = buildViewArray(cm, from, to);
+      display.viewFrom = from;
+    } else {
+      if (display.viewFrom > from)
+        { display.view = buildViewArray(cm, from, display.viewFrom).concat(display.view); }
+      else if (display.viewFrom < from)
+        { display.view = display.view.slice(findViewIndex(cm, from)); }
+      display.viewFrom = from;
+      if (display.viewTo < to)
+        { display.view = display.view.concat(buildViewArray(cm, display.viewTo, to)); }
+      else if (display.viewTo > to)
+        { display.view = display.view.slice(0, findViewIndex(cm, to)); }
+    }
+    display.viewTo = to;
+  }
+
+  // Count the number of lines in the view whose DOM representation is
+  // out of date (or nonexistent).
+  function countDirtyView(cm) {
+    var view = cm.display.view, dirty = 0;
+    for (var i = 0; i < view.length; i++) {
+      var lineView = view[i];
+      if (!lineView.hidden && (!lineView.node || lineView.changes)) { ++dirty; }
+    }
+    return dirty
   }
 
   function updateSelection(cm) {
@@ -3282,7 +3324,6 @@ var CodeMirror;
           { width = cur.text.firstChild.getBoundingClientRect().right - box.left - 1; }
       }
       var diff = cur.line.height - height;
-      if (height < 2) { height = textHeight(display); }
       if (diff > .005 || diff < -.005) {
         updateLineHeight(cur.line, height);
         updateWidgetHeight(cur.line);
@@ -3333,49 +3374,6 @@ var CodeMirror;
     return {from: from, to: Math.max(to, from + 1)}
   }
 
-  // Re-align line numbers and gutter marks to compensate for
-  // horizontal scrolling.
-  function alignHorizontally(cm) {
-    var display = cm.display, view = display.view;
-    if (!display.alignWidgets && (!display.gutters.firstChild || !cm.options.fixedGutter)) { return }
-    var comp = compensateForHScroll(display) - display.scroller.scrollLeft + cm.doc.scrollLeft;
-    var gutterW = display.gutters.offsetWidth, left = comp + "px";
-    for (var i = 0; i < view.length; i++) { if (!view[i].hidden) {
-      if (cm.options.fixedGutter) {
-        if (view[i].gutter)
-          { view[i].gutter.style.left = left; }
-        if (view[i].gutterBackground)
-          { view[i].gutterBackground.style.left = left; }
-      }
-      var align = view[i].alignable;
-      if (align) { for (var j = 0; j < align.length; j++)
-        { align[j].style.left = left; } }
-    } }
-    if (cm.options.fixedGutter)
-      { display.gutters.style.left = (comp + gutterW) + "px"; }
-  }
-
-  // Used to ensure that the line number gutter is still the right
-  // size for the current document size. Returns true when an update
-  // is needed.
-  function maybeUpdateLineNumberWidth(cm) {
-    if (!cm.options.lineNumbers) { return false }
-    var doc = cm.doc, last = lineNumberFor(cm.options, doc.first + doc.size - 1), display = cm.display;
-    if (last.length != display.lineNumChars) {
-      var test = display.measure.appendChild(elt("div", [elt("div", last)],
-                                                 "CodeMirror-linenumber CodeMirror-gutter-elt"));
-      var innerW = test.firstChild.offsetWidth, padding = test.offsetWidth - innerW;
-      display.lineGutter.style.width = "";
-      display.lineNumInnerWidth = Math.max(innerW, display.lineGutter.offsetWidth - padding) + 1;
-      display.lineNumWidth = display.lineNumInnerWidth + padding;
-      display.lineNumChars = display.lineNumInnerWidth ? last.length : -1;
-      display.lineGutter.style.width = display.lineNumWidth + "px";
-      updateGutterSpace(cm);
-      return true
-    }
-    return false
-  }
-
   // SCROLLING THINGS INTO VIEW
 
   // If an editor sits on the top or bottom of the window, partially
@@ -3386,7 +3384,7 @@ var CodeMirror;
     var display = cm.display, box = display.sizer.getBoundingClientRect(), doScroll = null;
     if (rect.top + box.top < 0) { doScroll = true; }
     else if (rect.bottom + box.top > (window.innerHeight || document.documentElement.clientHeight)) { doScroll = false; }
-    if (doScroll != null && !phantom) {
+    if (doScroll != null) {
       var scrollNode = elt("div", "\u200b", null, ("position: absolute;\n                         top: " + (rect.top - display.viewOffset - paddingTop(cm.display)) + "px;\n                         height: " + (rect.bottom - rect.top + scrollGap(cm) + display.barHeight) + "px;\n                         left: " + (rect.left) + "px; width: " + (Math.max(2, rect.right - rect.left)) + "px;"));
       cm.display.lineSpace.appendChild(scrollNode);
       scrollNode.scrollIntoView(doScroll);
@@ -3583,8 +3581,6 @@ var CodeMirror;
     });
 
     this.checkedZeroWidth = false;
-    // Need to set a minimum width to see the scrollbar on IE7 (but must not set it on IE8).
-    if (ie && ie_version < 8) { this.horiz.style.minHeight = this.vert.style.minWidth = "18px"; }
   };
 
   NativeScrollbars.prototype.update = function (measure) {
@@ -3923,154 +3919,6 @@ var CodeMirror;
     }
   }
 
-  // Updates the display.view data structure for a given change to the
-  // document. From and to are in pre-change coordinates. Lendiff is
-  // the amount of lines added or subtracted by the change. This is
-  // used for changes that span multiple lines, or change the way
-  // lines are divided into visual lines. regLineChange (below)
-  // registers single-line changes.
-  function regChange(cm, from, to, lendiff) {
-    if (from == null) { from = cm.doc.first; }
-    if (to == null) { to = cm.doc.first + cm.doc.size; }
-    if (!lendiff) { lendiff = 0; }
-
-    var display = cm.display;
-    if (lendiff && to < display.viewTo &&
-        (display.updateLineNumbers == null || display.updateLineNumbers > from))
-      { display.updateLineNumbers = from; }
-
-    cm.curOp.viewChanged = true;
-
-    if (from >= display.viewTo) { // Change after
-      if (sawCollapsedSpans && visualLineNo(cm.doc, from) < display.viewTo)
-        { resetView(cm); }
-    } else if (to <= display.viewFrom) { // Change before
-      if (sawCollapsedSpans && visualLineEndNo(cm.doc, to + lendiff) > display.viewFrom) {
-        resetView(cm);
-      } else {
-        display.viewFrom += lendiff;
-        display.viewTo += lendiff;
-      }
-    } else if (from <= display.viewFrom && to >= display.viewTo) { // Full overlap
-      resetView(cm);
-    } else if (from <= display.viewFrom) { // Top overlap
-      var cut = viewCuttingPoint(cm, to, to + lendiff, 1);
-      if (cut) {
-        display.view = display.view.slice(cut.index);
-        display.viewFrom = cut.lineN;
-        display.viewTo += lendiff;
-      } else {
-        resetView(cm);
-      }
-    } else if (to >= display.viewTo) { // Bottom overlap
-      var cut$1 = viewCuttingPoint(cm, from, from, -1);
-      if (cut$1) {
-        display.view = display.view.slice(0, cut$1.index);
-        display.viewTo = cut$1.lineN;
-      } else {
-        resetView(cm);
-      }
-    } else { // Gap in the middle
-      var cutTop = viewCuttingPoint(cm, from, from, -1);
-      var cutBot = viewCuttingPoint(cm, to, to + lendiff, 1);
-      if (cutTop && cutBot) {
-        display.view = display.view.slice(0, cutTop.index)
-          .concat(buildViewArray(cm, cutTop.lineN, cutBot.lineN))
-          .concat(display.view.slice(cutBot.index));
-        display.viewTo += lendiff;
-      } else {
-        resetView(cm);
-      }
-    }
-
-    var ext = display.externalMeasured;
-    if (ext) {
-      if (to < ext.lineN)
-        { ext.lineN += lendiff; }
-      else if (from < ext.lineN + ext.size)
-        { display.externalMeasured = null; }
-    }
-  }
-
-  // Register a change to a single line. Type must be one of "text",
-  // "gutter", "class", "widget"
-  function regLineChange(cm, line, type) {
-    cm.curOp.viewChanged = true;
-    var display = cm.display, ext = cm.display.externalMeasured;
-    if (ext && line >= ext.lineN && line < ext.lineN + ext.size)
-      { display.externalMeasured = null; }
-
-    if (line < display.viewFrom || line >= display.viewTo) { return }
-    var lineView = display.view[findViewIndex(cm, line)];
-    if (lineView.node == null) { return }
-    var arr = lineView.changes || (lineView.changes = []);
-    if (indexOf(arr, type) == -1) { arr.push(type); }
-  }
-
-  // Clear the view.
-  function resetView(cm) {
-    cm.display.viewFrom = cm.display.viewTo = cm.doc.first;
-    cm.display.view = [];
-    cm.display.viewOffset = 0;
-  }
-
-  function viewCuttingPoint(cm, oldN, newN, dir) {
-    var index = findViewIndex(cm, oldN), diff, view = cm.display.view;
-    if (!sawCollapsedSpans || newN == cm.doc.first + cm.doc.size)
-      { return {index: index, lineN: newN} }
-    var n = cm.display.viewFrom;
-    for (var i = 0; i < index; i++)
-      { n += view[i].size; }
-    if (n != oldN) {
-      if (dir > 0) {
-        if (index == view.length - 1) { return null }
-        diff = (n + view[index].size) - oldN;
-        index++;
-      } else {
-        diff = n - oldN;
-      }
-      oldN += diff; newN += diff;
-    }
-    while (visualLineNo(cm.doc, newN) != newN) {
-      if (index == (dir < 0 ? 0 : view.length - 1)) { return null }
-      newN += dir * view[index - (dir < 0 ? 1 : 0)].size;
-      index += dir;
-    }
-    return {index: index, lineN: newN}
-  }
-
-  // Force the view to cover a given range, adding empty view element
-  // or clipping off existing ones as needed.
-  function adjustView(cm, from, to) {
-    var display = cm.display, view = display.view;
-    if (view.length == 0 || from >= display.viewTo || to <= display.viewFrom) {
-      display.view = buildViewArray(cm, from, to);
-      display.viewFrom = from;
-    } else {
-      if (display.viewFrom > from)
-        { display.view = buildViewArray(cm, from, display.viewFrom).concat(display.view); }
-      else if (display.viewFrom < from)
-        { display.view = display.view.slice(findViewIndex(cm, from)); }
-      display.viewFrom = from;
-      if (display.viewTo < to)
-        { display.view = display.view.concat(buildViewArray(cm, display.viewTo, to)); }
-      else if (display.viewTo > to)
-        { display.view = display.view.slice(0, findViewIndex(cm, to)); }
-    }
-    display.viewTo = to;
-  }
-
-  // Count the number of lines in the view whose DOM representation is
-  // out of date (or nonexistent).
-  function countDirtyView(cm) {
-    var view = cm.display.view, dirty = 0;
-    for (var i = 0; i < view.length; i++) {
-      var lineView = view[i];
-      if (!lineView.hidden && (!lineView.node || lineView.changes)) { ++dirty; }
-    }
-    return dirty
-  }
-
   // HIGHLIGHT WORKER
 
   function startWorker(cm, time) {
@@ -4352,9 +4200,9 @@ var CodeMirror;
     while (cur) { cur = rm(cur); }
   }
 
-  function updateGutterSpace(cm) {
-    var width = cm.display.gutters.offsetWidth;
-    cm.display.sizer.style.marginLeft = width + "px";
+  function updateGutterSpace(display) {
+    var width = display.gutters.offsetWidth;
+    display.sizer.style.marginLeft = width + "px";
   }
 
   function setDocumentHeight(cm, measure) {
@@ -4363,34 +4211,193 @@ var CodeMirror;
     cm.display.gutters.style.height = (measure.docHeight + cm.display.barHeight + scrollGap(cm)) + "px";
   }
 
-  // Rebuild the gutter elements, ensure the margin to the left of the
-  // code matches their width.
-  function updateGutters(cm) {
-    var gutters = cm.display.gutters, specs = cm.options.gutters;
-    removeChildren(gutters);
-    var i = 0;
-    for (; i < specs.length; ++i) {
-      var gutterClass = specs[i];
-      var gElt = gutters.appendChild(elt("div", null, "CodeMirror-gutter " + gutterClass));
-      if (gutterClass == "CodeMirror-linenumbers") {
-        cm.display.lineGutter = gElt;
-        gElt.style.width = (cm.display.lineNumWidth || 1) + "px";
+  // Re-align line numbers and gutter marks to compensate for
+  // horizontal scrolling.
+  function alignHorizontally(cm) {
+    var display = cm.display, view = display.view;
+    if (!display.alignWidgets && (!display.gutters.firstChild || !cm.options.fixedGutter)) { return }
+    var comp = compensateForHScroll(display) - display.scroller.scrollLeft + cm.doc.scrollLeft;
+    var gutterW = display.gutters.offsetWidth, left = comp + "px";
+    for (var i = 0; i < view.length; i++) { if (!view[i].hidden) {
+      if (cm.options.fixedGutter) {
+        if (view[i].gutter)
+          { view[i].gutter.style.left = left; }
+        if (view[i].gutterBackground)
+          { view[i].gutterBackground.style.left = left; }
       }
-    }
-    gutters.style.display = i ? "" : "none";
-    updateGutterSpace(cm);
+      var align = view[i].alignable;
+      if (align) { for (var j = 0; j < align.length; j++)
+        { align[j].style.left = left; } }
+    } }
+    if (cm.options.fixedGutter)
+      { display.gutters.style.left = (comp + gutterW) + "px"; }
   }
 
-  // Make sure the gutters options contains the element
-  // "CodeMirror-linenumbers" when the lineNumbers option is true.
-  function setGuttersForLineNumbers(options) {
-    var found = indexOf(options.gutters, "CodeMirror-linenumbers");
-    if (found == -1 && options.lineNumbers) {
-      options.gutters = options.gutters.concat(["CodeMirror-linenumbers"]);
-    } else if (found > -1 && !options.lineNumbers) {
-      options.gutters = options.gutters.slice(0);
-      options.gutters.splice(found, 1);
+  // Used to ensure that the line number gutter is still the right
+  // size for the current document size. Returns true when an update
+  // is needed.
+  function maybeUpdateLineNumberWidth(cm) {
+    if (!cm.options.lineNumbers) { return false }
+    var doc = cm.doc, last = lineNumberFor(cm.options, doc.first + doc.size - 1), display = cm.display;
+    if (last.length != display.lineNumChars) {
+      var test = display.measure.appendChild(elt("div", [elt("div", last)],
+                                                 "CodeMirror-linenumber CodeMirror-gutter-elt"));
+      var innerW = test.firstChild.offsetWidth, padding = test.offsetWidth - innerW;
+      display.lineGutter.style.width = "";
+      display.lineNumInnerWidth = Math.max(innerW, display.lineGutter.offsetWidth - padding) + 1;
+      display.lineNumWidth = display.lineNumInnerWidth + padding;
+      display.lineNumChars = display.lineNumInnerWidth ? last.length : -1;
+      display.lineGutter.style.width = display.lineNumWidth + "px";
+      updateGutterSpace(cm.display);
+      return true
     }
+    return false
+  }
+
+  function getGutters(gutters, lineNumbers) {
+    var result = [], sawLineNumbers = false;
+    for (var i = 0; i < gutters.length; i++) {
+      var name = gutters[i], style = null;
+      if (typeof name != "string") { style = name.style; name = name.className; }
+      if (name == "CodeMirror-linenumbers") {
+        if (!lineNumbers) { continue }
+        else { sawLineNumbers = true; }
+      }
+      result.push({className: name, style: style});
+    }
+    if (lineNumbers && !sawLineNumbers) { result.push({className: "CodeMirror-linenumbers", style: null}); }
+    return result
+  }
+
+  // Rebuild the gutter elements, ensure the margin to the left of the
+  // code matches their width.
+  function renderGutters(display) {
+    var gutters = display.gutters, specs = display.gutterSpecs;
+    removeChildren(gutters);
+    display.lineGutter = null;
+    for (var i = 0; i < specs.length; ++i) {
+      var ref = specs[i];
+      var className = ref.className;
+      var style = ref.style;
+      var gElt = gutters.appendChild(elt("div", null, "CodeMirror-gutter " + className));
+      if (style) { gElt.style.cssText = style; }
+      if (className == "CodeMirror-linenumbers") {
+        display.lineGutter = gElt;
+        gElt.style.width = (display.lineNumWidth || 1) + "px";
+      }
+    }
+    gutters.style.display = specs.length ? "" : "none";
+    updateGutterSpace(display);
+  }
+
+  function updateGutters(cm) {
+    renderGutters(cm.display);
+    regChange(cm);
+    alignHorizontally(cm);
+  }
+
+  // The display handles the DOM integration, both for input reading
+  // and content drawing. It holds references to DOM nodes and
+  // display-related state.
+
+  function Display(place, doc, input, options) {
+    var d = this;
+    this.input = input;
+
+    // Covers bottom-right square when both scrollbars are present.
+    d.scrollbarFiller = elt("div", null, "CodeMirror-scrollbar-filler");
+    d.scrollbarFiller.setAttribute("cm-not-content", "true");
+    // Covers bottom of gutter when coverGutterNextToScrollbar is on
+    // and h scrollbar is present.
+    d.gutterFiller = elt("div", null, "CodeMirror-gutter-filler");
+    d.gutterFiller.setAttribute("cm-not-content", "true");
+    // Will contain the actual code, positioned to cover the viewport.
+    d.lineDiv = eltP("div", null, "CodeMirror-code");
+    // Elements are added to these to represent selection and cursors.
+    d.selectionDiv = elt("div", null, null, "position: relative; z-index: 1");
+    d.cursorDiv = elt("div", null, "CodeMirror-cursors");
+    // A visibility: hidden element used to find the size of things.
+    d.measure = elt("div", null, "CodeMirror-measure");
+    // When lines outside of the viewport are measured, they are drawn in this.
+    d.lineMeasure = elt("div", null, "CodeMirror-measure");
+    // Wraps everything that needs to exist inside the vertically-padded coordinate system
+    d.lineSpace = eltP("div", [d.measure, d.lineMeasure, d.selectionDiv, d.cursorDiv, d.lineDiv],
+                      null, "position: relative; outline: none");
+    var lines = eltP("div", [d.lineSpace], "CodeMirror-lines");
+    // Moved around its parent to cover visible view.
+    d.mover = elt("div", [lines], null, "position: relative");
+    // Set to the height of the document, allowing scrolling.
+    d.sizer = elt("div", [d.mover], "CodeMirror-sizer");
+    d.sizerWidth = null;
+    // Behavior of elts with overflow: auto and padding is
+    // inconsistent across browsers. This is used to ensure the
+    // scrollable area is big enough.
+    d.heightForcer = elt("div", null, null, "position: absolute; height: " + scrollerGap + "px; width: 1px;");
+    // Will contain the gutters, if any.
+    d.gutters = elt("div", null, "CodeMirror-gutters");
+    d.lineGutter = null;
+    // Actual scrollable element.
+    d.scroller = elt("div", [d.sizer, d.heightForcer, d.gutters], "CodeMirror-scroll");
+    d.scroller.setAttribute("tabIndex", "-1");
+    // The element in which the editor lives.
+    d.wrapper = elt("div", [d.scrollbarFiller, d.gutterFiller, d.scroller], "CodeMirror");
+
+    if (!webkit && !(gecko && mobile)) { d.scroller.draggable = true; }
+
+    if (place) {
+      if (place.appendChild) { place.appendChild(d.wrapper); }
+      else { place(d.wrapper); }
+    }
+
+    // Current rendered range (may be bigger than the view window).
+    d.viewFrom = d.viewTo = doc.first;
+    d.reportedViewFrom = d.reportedViewTo = doc.first;
+    // Information about the rendered lines.
+    d.view = [];
+    d.renderedView = null;
+    // Holds info about a single rendered line when it was rendered
+    // for measurement, while not in view.
+    d.externalMeasured = null;
+    // Empty space (in pixels) above the view
+    d.viewOffset = 0;
+    d.lastWrapHeight = d.lastWrapWidth = 0;
+    d.updateLineNumbers = null;
+
+    d.nativeBarWidth = d.barHeight = d.barWidth = 0;
+    d.scrollbarsClipped = false;
+
+    // Used to only resize the line number gutter when necessary (when
+    // the amount of lines crosses a boundary that makes its width change)
+    d.lineNumWidth = d.lineNumInnerWidth = d.lineNumChars = null;
+    // Set to true when a non-horizontal-scrolling line widget is
+    // added. As an optimization, line widget aligning is skipped when
+    // this is false.
+    d.alignWidgets = false;
+
+    d.cachedCharWidth = d.cachedTextHeight = d.cachedPaddingH = null;
+
+    // Tracks the maximum line length so that the horizontal scrollbar
+    // can be kept static when scrolling.
+    d.maxLine = null;
+    d.maxLineLength = 0;
+    d.maxLineChanged = false;
+
+    // Used for measuring wheel scrolling granularity
+    d.wheelDX = d.wheelDY = d.wheelStartX = d.wheelStartY = null;
+
+    // True when shift is held down.
+    d.shift = false;
+
+    // Used to track whether anything happened since the context menu
+    // was opened.
+    d.selForContextMenu = null;
+
+    d.activeTouch = null;
+
+    d.gutterSpecs = getGutters(options.gutters, options.lineNumbers);
+    renderGutters(d);
+
+    input.init(d);
   }
 
   // Since the delta values reported on mouse wheel events are
@@ -6628,7 +6635,7 @@ var CodeMirror;
     19: "Pause", 20: "CapsLock", 27: "Esc", 32: "Space", 33: "PageUp", 34: "PageDown", 35: "End",
     36: "Home", 37: "Left", 38: "Up", 39: "Right", 40: "Down", 44: "PrintScrn", 45: "Insert",
     46: "Delete", 59: ";", 61: "=", 91: "Mod", 92: "Mod", 93: "Mod",
-    106: "*", 107: "=", 109: "-", 110: ".", 111: "/", 127: "Delete", 145: "ScrollLock",
+    106: "*", 107: "=", 109: "-", 110: ".", 111: "/", 145: "ScrollLock",
     173: "-", 186: ";", 187: "=", 188: ",", 189: "-", 190: ".", 191: "/", 192: "`", 219: "[", 220: "\\",
     221: "]", 222: "'", 63232: "Up", 63233: "Down", 63234: "Left", 63235: "Right", 63272: "Delete",
     63273: "Home", 63275: "End", 63276: "PageUp", 63277: "PageDown", 63302: "Insert"
@@ -7515,8 +7522,13 @@ var CodeMirror;
     function done(e) {
       cm.state.selectingText = false;
       counter = Infinity;
-      e_preventDefault(e);
-      display.input.focus();
+      // If e is null or undefined we interpret this as someone trying
+      // to explicitly cancel the selection rather than the user
+      // letting go of the mouse button.
+      if (e) {
+        e_preventDefault(e);
+        display.input.focus();
+      }
       off(display.wrapper.ownerDocument, "mousemove", move);
       off(display.wrapper.ownerDocument, "mouseup", up);
       doc.history.lastSelOrigin = null;
@@ -7587,12 +7599,12 @@ var CodeMirror;
     if (mY > lineBox.bottom || !hasHandler(cm, type)) { return e_defaultPrevented(e) }
     mY -= lineBox.top - display.viewOffset;
 
-    for (var i = 0; i < cm.options.gutters.length; ++i) {
+    for (var i = 0; i < cm.display.gutterSpecs.length; ++i) {
       var g = display.gutters.childNodes[i];
       if (g && g.getBoundingClientRect().right >= mX) {
         var line = lineAtHeight(cm.doc, mY);
-        var gutter = cm.options.gutters[i];
-        signal(cm, type, cm, line, gutter, e);
+        var gutter = cm.display.gutterSpecs[i];
+        signal(cm, type, cm, line, gutter.className, e);
         return e_defaultPrevented(e)
       }
     }
@@ -7693,7 +7705,7 @@ var CodeMirror;
 
     option("theme", "default", function (cm) {
       themeChanged(cm);
-      guttersChanged(cm);
+      updateGutters(cm);
     }, true);
     option("keyMap", "default", function (cm, val, old) {
       var next = getKeyMap(val);
@@ -7705,9 +7717,9 @@ var CodeMirror;
     option("configureMouse", null);
 
     option("lineWrapping", false, wrappingChanged, true);
-    option("gutters", [], function (cm) {
-      setGuttersForLineNumbers(cm.options);
-      guttersChanged(cm);
+    option("gutters", [], function (cm, val) {
+      cm.display.gutterSpecs = getGutters(val, cm.options.lineNumbers);
+      updateGutters(cm);
     }, true);
     option("fixedGutter", true, function (cm, val) {
       cm.display.gutters.style.left = val ? compensateForHScroll(cm.display) + "px" : "0";
@@ -7720,12 +7732,12 @@ var CodeMirror;
       cm.display.scrollbars.setScrollTop(cm.doc.scrollTop);
       cm.display.scrollbars.setScrollLeft(cm.doc.scrollLeft);
     }, true);
-    option("lineNumbers", false, function (cm) {
-      setGuttersForLineNumbers(cm.options);
-      guttersChanged(cm);
+    option("lineNumbers", false, function (cm, val) {
+      cm.display.gutterSpecs = getGutters(cm.options.gutters, val);
+      updateGutters(cm);
     }, true);
-    option("firstLineNumber", 1, guttersChanged, true);
-    option("lineNumberFormatter", function (integer) { return integer; }, guttersChanged, true);
+    option("firstLineNumber", 1, updateGutters, true);
+    option("lineNumberFormatter", function (integer) { return integer; }, updateGutters, true);
     option("showCursorWhenSelecting", false, updateSelection, true);
 
     option("resetSelectionOnContextMenu", true);
@@ -7767,12 +7779,6 @@ var CodeMirror;
     option("phrases", null);
   }
 
-  function guttersChanged(cm) {
-    updateGutters(cm);
-    regChange(cm);
-    alignHorizontally(cm);
-  }
-
   function dragDropChanged(cm, value, old) {
     var wasOn = old && old != Init;
     if (!value != !wasOn) {
@@ -7812,7 +7818,6 @@ var CodeMirror;
     this.options = options = options ? copyObj(options) : {};
     // Determine effective options based on given values and defaults.
     copyObj(defaults, options, false);
-    setGuttersForLineNumbers(options);
 
     var doc = options.value;
     if (typeof doc == "string") { doc = new Doc(doc, options.mode, null, options.lineSeparator, options.direction); }
@@ -7820,9 +7825,8 @@ var CodeMirror;
     this.doc = doc;
 
     var input = new CodeMirror.inputStyles[options.inputStyle](this);
-    var display = this.display = new Display(place, doc, input);
+    var display = this.display = new Display(place, doc, input, options);
     display.wrapper.CodeMirror = this;
-    updateGutters(this);
     themeChanged(this);
     if (options.lineWrapping)
       { this.display.wrapper.className += " CodeMirror-wrap"; }
@@ -7836,7 +7840,7 @@ var CodeMirror;
       delayingBlurEvent: false,
       focused: false,
       suppressEdits: false, // used to disable editing during key handlers when in readOnly mode
-      pasteIncoming: false, cutIncoming: false, // help recognize paste/cut edits in input.poll
+      pasteIncoming: -1, cutIncoming: -1, // help recognize paste/cut edits in input.poll
       selectingText: false,
       draggingText: false,
       highlight: new Delayed(), // stores highlight worker timeout
@@ -8069,7 +8073,8 @@ var CodeMirror;
     cm.display.shift = false;
     if (!sel) { sel = doc.sel; }
 
-    var paste = cm.state.pasteIncoming || origin == "paste";
+    var recent = +new Date - 200;
+    var paste = origin == "paste" || cm.state.pasteIncoming > recent;
     var textLines = splitLinesAuto(inserted), multiPaste = null;
     // When pasting N lines into N selections, insert one line per selection
     if (paste && sel.ranges.length > 1) {
@@ -8098,7 +8103,7 @@ var CodeMirror;
           { from = to = Pos(from.line, 0); }
       }
       var changeEvent = {from: from, to: to, text: multiPaste ? multiPaste[i$1 % multiPaste.length] : textLines,
-                         origin: origin || (paste ? "paste" : cm.state.cutIncoming ? "cut" : "+input")};
+                         origin: origin || (paste ? "paste" : cm.state.cutIncoming > recent ? "cut" : "+input")};
       makeChange(cm.doc, changeEvent);
       signalLater(cm, "inputRead", cm, changeEvent);
     }
@@ -8108,7 +8113,7 @@ var CodeMirror;
     ensureCursorVisible(cm);
     if (cm.curOp.updateInput < 2) { cm.curOp.updateInput = updateInput; }
     cm.curOp.typing = true;
-    cm.state.pasteIncoming = cm.state.cutIncoming = false;
+    cm.state.pasteIncoming = cm.state.cutIncoming = -1;
   }
 
   function handlePaste(e, cm) {
@@ -8157,8 +8162,8 @@ var CodeMirror;
   }
 
   function disableBrowserMagic(field, spellcheck, autocorrect, autocapitalize) {
-    field.setAttribute("autocorrect", !!autocorrect);
-    field.setAttribute("autocapitalize", !!autocapitalize);
+    field.setAttribute("autocorrect", autocorrect ? "" : "off");
+    field.setAttribute("autocapitalize", autocapitalize ? "" : "off");
     field.setAttribute("spellcheck", !!spellcheck);
   }
 
@@ -8584,7 +8589,7 @@ var CodeMirror;
         this.curOp.forceUpdate = true;
         clearCaches(this);
         scrollToCoords(this, this.doc.scrollLeft, this.doc.scrollTop);
-        updateGutterSpace(this);
+        updateGutterSpace(this.display);
         if (oldHeight == null || Math.abs(oldHeight - textHeight(this.display)) > .5)
           { estimateLineHeights(this); }
         signal(this, "refresh", this);
@@ -8593,6 +8598,8 @@ var CodeMirror;
       swapDoc: methodOp(function(doc) {
         var old = this.doc;
         old.cm = null;
+        // Cancel the current text selection if any (#5821)
+        if (this.state.selectingText) { this.state.selectingText(); }
         attachDoc(this, doc);
         clearCaches(this);
         this.display.input.reset();
@@ -8938,7 +8945,7 @@ var CodeMirror;
     // Because Android doesn't allow us to actually detect backspace
     // presses in a sane way, this code checks for when that happens
     // and simulates a backspace press in this case.
-    if (android && chrome && this.cm.options.gutters.length && isInGutter(sel.anchorNode)) {
+    if (android && chrome && this.cm.display.gutterSpecs.length && isInGutter(sel.anchorNode)) {
       this.cm.triggerOnKeyDown({type: "keydown", keyCode: 8, preventDefault: Math.abs});
       this.blur();
       this.focus();
@@ -9269,7 +9276,7 @@ var CodeMirror;
     on(te, "paste", function (e) {
       if (signalDOMEvent(cm, e) || handlePaste(e, cm)) { return }
 
-      cm.state.pasteIncoming = true;
+      cm.state.pasteIncoming = +new Date;
       input.fastPoll();
     });
 
@@ -9290,15 +9297,23 @@ var CodeMirror;
           selectInput(te);
         }
       }
-      if (e.type == "cut") { cm.state.cutIncoming = true; }
+      if (e.type == "cut") { cm.state.cutIncoming = +new Date; }
     }
     on(te, "cut", prepareCopyCut);
     on(te, "copy", prepareCopyCut);
 
     on(display.scroller, "paste", function (e) {
       if (eventInWidget(display, e) || signalDOMEvent(cm, e)) { return }
-      cm.state.pasteIncoming = true;
-      input.focus();
+      if (!te.dispatchEvent) {
+        cm.state.pasteIncoming = +new Date;
+        input.focus();
+        return
+      }
+
+      // Pass the `paste` event to the textarea so it's handled by its event listener.
+      var event = new Event("paste");
+      event.clipboardData = e.clipboardData;
+      te.dispatchEvent(event);
     });
 
     // Prevent normal selection in the editor (we handle our own)
@@ -9535,7 +9550,6 @@ var CodeMirror;
       input.contextMenuPending = false;
       input.wrapper.style.cssText = oldWrapperCSS;
       te.style.cssText = oldCSS;
-      if (ie && ie_version < 9) { display.scrollbars.setScrollTop(display.scroller.scrollTop = scrollPos); }
 
       // Try to detect the user choosing select-all
       if (te.selectionStart != null) {
@@ -9702,8 +9716,11 @@ var CodeMirror;
     defineMode.apply(this, arguments);
   };
 
+  CodeMirror.defineMIME = defineMIME;
+
   // Minimal default mode.
   CodeMirror.defineMode("null", function () { return ({token: function (stream) { return stream.skipToEnd(); }}); });
+  CodeMirror.defineMIME("text/plain", "null");
 
   // EXTENSIONS
 
@@ -9718,7 +9735,7 @@ var CodeMirror;
 
   addLegacyProps(CodeMirror);
 
-  CodeMirror.version = "5.43.0";
+  CodeMirror.version = "5.47.0";
 
   return CodeMirror;
 
