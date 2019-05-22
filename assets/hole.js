@@ -7,6 +7,7 @@
 /* include codemirror-julia.js      */
 /* include codemirror-lisp.js       */
 /* include codemirror-lua.js        */
+/* include codemirror-nim.js        */
 /* include codemirror-perl.js       */
 /* include codemirror-perl6.js      */
 /* include codemirror-php.js        */
