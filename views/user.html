@@ -1,0 +1,66 @@
+{{ template "header" . }}
+
+<link rel=stylesheet href={{ .Data.UserCssPath }}>
+<script defer src={{ .Data.TimeJsPath }}></script>
+
+{{ $trophiesEarned := .Data.TrophiesEarned }}
+
+<main>
+    <img src="//avatars.githubusercontent.com/{{ .Data.Login }}?s=100">
+    <h1>{{ .Data.Login }}</h1>
+    <table>
+        <tr>
+            <td>{{ comma .Data.Points }}
+            <td>point{{ if .Data.Points }}s{{ end }}
+        <tr>
+            <td>{{ len .Data.Ranks }}/{{ len .Data.Holes }}
+            <td>holes
+        <tr>
+            <td>{{ len $trophiesEarned }}/{{ len .Data.Trophies }}
+            <td>trophies
+    </table>
+    <hr>
+    <div id=trophies>
+    {{ range .Data.Trophies }}
+        {{ $earned := index $trophiesEarned .ID }}
+
+        <div {{ if $earned }}class="earned"{{ end }}>
+            <h2>{{ .Name }}</h2>
+            <p>{{ .Description }}
+            <p>
+                {{ with $earned }}
+                    Earned <time datetime={{ .Format "2006-01-02T15:04:05Z" }}>
+                        {{ .Format "2 Jan" }}
+                    </time>
+                {{ else }}
+                    Not yet earned.
+                {{ end }}
+        </div>
+    {{ end }}
+    </div>
+
+    {{ $langs := .Data.Langs }}
+    {{ $ranks := .Data.Ranks }}
+
+    <table id=matrix>
+        <tr>
+            <th>
+        {{ range $langs }}
+            <th title={{ .Name }}>
+        {{ end }}
+    {{ range $i, $hole := .Data.Holes }}
+        <tr>
+            <th><a href=/{{ .ID }}>{{ .Name }}</a>
+        {{ range $j, $lang := $langs }}
+            <td>
+            {{ with index (index $ranks $hole.ID) $lang.ID }}
+                <a href=/scores/{{ $hole.ID }}/{{ $lang.ID }}>
+                    {{ . }}<sup>{{ ord . }}</sup>
+                </a>
+            {{ else }}
+                <a href=/{{ $hole.ID }}#{{ $lang.ID }}></a>
+            {{ end }}
+        {{ end }}
+    {{ end }}
+    </table>
+</main>

@@ -3,77 +3,51 @@ package routes
 import (
 	"database/sql"
 	"net/http"
+	"time"
 
 	"github.com/julienschmidt/httprouter"
 )
 
 func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	user := ps[0].Value
+	userID := 0
+	data := struct {
+		Holes                          []Hole
+		Langs                          []Lang
+		Login, TimeJsPath, UserCssPath string
+		Points                         int
+		Ranks                          map[string]map[string]int
+		Trophies                       []Trophy
+		TrophiesEarned                 map[string]*time.Time
+	}{
+		Holes:          holes,
+		Langs:          langs,
+		Login:          ps[0].Value,
+		Ranks:          map[string]map[string]int{},
+		TimeJsPath:     timeJsPath,
+		Trophies:       trophies,
+		TrophiesEarned: map[string]*time.Time{},
+		UserCssPath:    userCssPath,
+	}
 
-	var html []byte
-	var userID int
-
-	switch err := db.QueryRow(
-		`SELECT CONCAT(
-		            login,
-		            '?s=100"><h1>',
-		            login,
-		            '</h1><table><tr><td>',
-		            TO_CHAR(points, 'FM99,999'),
-		            '<td>point',
-		            CASE WHEN points > 1 THEN 's' END,
-		            '<tr><td>',
-		            holes,
-		            '/',
-		            ARRAY_LENGTH(ENUM_RANGE(NULL::hole), 1),
-		            '<td>holes<tr><td>',
-		            (SELECT COUNT(*) FROM trophies WHERE user_id = id),
-		            '/',
-		            ARRAY_LENGTH(ENUM_RANGE(NULL::trophy), 1),
-		            '<td>trophies',
-		            '</table><hr>'
-		        ),
-		        id
-		   FROM points
-		   JOIN users ON id = user_id
-		  WHERE login = $1`,
-		user,
-	).Scan(&html, &userID); err {
-	case sql.ErrNoRows:
+	if err := db.QueryRow(
+		"SELECT id FROM users WHERE login = $1",
+		data.Login,
+	).Scan(&userID); err == sql.ErrNoRows {
 		Render(w, r, http.StatusNotFound, "404", nil)
 		return
-	case nil:
-		printHeader(w, r, 200)
-		w.Write([]byte("<link rel=stylesheet href=" + userCssPath + "><script defer src=" +
-			timeJsPath + `></script><main><img src="//avatars.githubusercontent.com/`))
-		w.Write(html)
-		w.Write([]byte("<div id=trophies>"))
-	default:
+	} else if err != nil {
+		panic(err)
+	}
+
+	if err := db.QueryRow(
+		"SELECT points FROM points WHERE user_id = $1",
+		userID,
+	).Scan(&data.Points); err != nil && err != sql.ErrNoRows {
 		panic(err)
 	}
 
 	rows, err := db.Query(
-		`  SELECT CONCAT(
-		              '<div',
-		              CASE WHEN user_id IS NOT NULL THEN ' class=earned' END,
-		              '><h2>',
-		              name,
-		              '</h2><p>',
-		              description,
-		              '<p>',
-		              CASE WHEN user_id IS NULL
-		                  THEN 'Not yet earned.'
-		                  ELSE CONCAT(
-		                      'Earned <time datetime=',
-		                      TO_CHAR(earned, 'YYYY-MM-DD"T"HH24:MI:SS"Z>"FMDD Mon'),
-		                      '</time>.'
-		                  )
-		              END,
-		              '</div>'
-		          )
-		     FROM trophy_info i
-		LEFT JOIN trophies    t ON i.trophy = t.trophy AND user_id = $1
-		 ORDER BY i.trophy`,
+		"SELECT earned, trophy FROM trophies WHERE user_id = $1",
 		userID,
 	)
 	if err != nil {
@@ -83,13 +57,14 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var row sql.RawBytes
+		var earned time.Time
+		var trophy string
 
-		if err := rows.Scan(&row); err != nil {
+		if err := rows.Scan(&earned, &trophy); err != nil {
 			panic(err)
 		}
 
-		w.Write(row)
+		data.TrophiesEarned[trophy] = &earned
 	}
 
 	if err := rows.Err(); err != nil {
@@ -98,18 +73,16 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	rows, err = db.Query(
 		`WITH matrix AS (
-		    SELECT user_id,
-		           hole,
-		           lang,
-		           RANK() OVER (PARTITION BY hole, lang ORDER BY LENGTH(code))
-		     FROM solutions
-		    WHERE NOT failing
-		) SELECT hole, lang, TO_CHAR(rank, 'FM9,999"<sup>"th"</sup>"')
+		  SELECT user_id,
+		         hole,
+		         lang,
+		         RANK() OVER (PARTITION BY hole, lang ORDER BY LENGTH(code))
+		    FROM solutions
+		   WHERE NOT failing
+		) SELECT hole, lang, rank
 		    FROM matrix
-		    JOIN users ON id = user_id
-		   WHERE login = $1
-		ORDER BY hole, lang`,
-		user,
+		   WHERE user_id = $1`,
+		userID,
 	)
 	if err != nil {
 		panic(err)
@@ -117,37 +90,24 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	defer rows.Close()
 
-	w.Write([]byte("</div><table id=matrix><tr><th>"))
+	for rows.Next() {
+		var hole, lang string
+		var rank int
 
-	for _, lang := range langs {
-		w.Write([]byte(`<th title="` + lang.Name + `">`))
-	}
-
-	var holeID, langID, rank string
-
-	if rows.Next() {
-		if err := rows.Scan(&holeID, &langID, &rank); err != nil {
+		if err := rows.Scan(&hole, &lang, &rank); err != nil {
 			panic(err)
 		}
-	}
 
-	for _, hole := range holes {
-		w.Write([]byte("<tr><th><a href=/" + hole.ID + ">" + hole.Name + "</a>"))
-
-		for _, lang := range langs {
-			w.Write([]byte("<td>"))
-
-			if holeID == hole.ID && langID == lang.ID {
-				w.Write([]byte("<a href=/scores/" + holeID + "/" + langID + ">" + rank + "</a>"))
-
-				if rows.Next() {
-					if err := rows.Scan(&holeID, &langID, &rank); err != nil {
-						panic(err)
-					}
-				}
-			} else {
-				w.Write([]byte("<a href=/" + hole.ID + "#" + lang.ID + "></a>"))
-			}
+		if data.Ranks[hole] == nil {
+			data.Ranks[hole] = map[string]int{}
 		}
+
+		data.Ranks[hole][lang] = rank
 	}
+
+	if err := rows.Err(); err != nil {
+		panic(err)
+	}
+
+	Render(w, r, http.StatusOK, "user", data)
 }

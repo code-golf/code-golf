@@ -1,18 +1,28 @@
 package routes
 
 import (
+	"fmt"
 	"html/template"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/JRaspass/code-golf/cookie"
 )
 
 var tmpl = template.New("").Funcs(template.FuncMap{
+	// NOTE Only handles 0 - 999,999
+	"comma": func(i int) string {
+		if i > 999 {
+			return fmt.Sprintf("%d,%03d", i/1000, i%1000)
+		}
+
+		return strconv.Itoa(i)
+	},
 	"ord": func(i int) string {
 		switch i % 10 {
 		case 1:

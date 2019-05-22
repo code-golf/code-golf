@@ -6,9 +6,15 @@ import (
 )
 
 type Lang struct{ ID, Name string }
+
 type Hole struct {
 	Prev, Next, ID, Name, Difficulty string
 	Preamble                         template.HTML
+}
+
+type Trophy struct {
+	ID, Name    string
+	Description template.HTML
 }
 
 var langs = []Lang{
@@ -27,6 +33,64 @@ var langs = []Lang{
 	{"php", "PHP"},
 	{"python", "Python"},
 	{"ruby", "Ruby"},
+}
+
+var trophies = []Trophy{
+	{
+		"elephpant-in-the-room",
+		"ElePHPant in the Room",
+		"Solve any hole in PHP.",
+	},
+	{
+		"hello-world",
+		"Hello, World!",
+		"Solve any hole in any language.",
+	},
+	{
+		"inception",
+		"Inception",
+		"Solve <a href=/brainfuck#brainfuck>Brainfuck in Brainfuck</a>.",
+	},
+	{
+		"interview-ready",
+		"Interview Ready",
+		"Solve <a href=/fizz-buzz>Fizz Buzz</a> in any language.",
+	},
+	{
+		"its-over-9000",
+		"It’s Over 9000!",
+		"Earn over 9,000 points.",
+	},
+	{
+		"my-god-its-full-of-stars",
+		"My God, It’s Full of Stars",
+		"Star <a href=//github.com/JRaspass/code-golf>the Code Golf repository</a>.",
+	},
+	{
+		"ouroboros",
+		"Ouroboros",
+		"Solve <a href=/quine#python>Quine in Python</a>.",
+	},
+	{
+		"polyglot",
+		"Polyglot",
+		"Solve the same hole in every language.",
+	},
+	{
+		"slowcoach",
+		"Slowcoach",
+		"Fail an attempt by exceeding the time limit.",
+	},
+	{
+		"tim-toady",
+		"Tim Toady",
+		"Solve the same hole in both Perl and Perl 6.",
+	},
+	{
+		"the-watering-hole",
+		"The Watering Hole",
+		"Solve your nineteenth hole.",
+	},
 }
 
 const morseTable = " International Morse Code.<ol><li>The length of a dot is one unit.<li>A dash is three units.<li>The space between parts of the same letter is one unit.<li>The space between letters is three units<li>The space between words is ten units</ol><table><tr><th>A<td>▄ ▄▄▄<tr><th>B<td>▄▄▄ ▄ ▄ ▄<tr><th>C<td>▄▄▄ ▄ ▄▄▄ ▄<tr><th>D<td>▄▄▄ ▄ ▄<tr><th>E<td>▄<tr><th>F<td>▄ ▄ ▄▄▄ ▄<tr><th>G<td>▄▄▄ ▄▄▄ ▄<tr><th>H<td>▄ ▄ ▄ ▄<tr><th>I<td>▄ ▄<tr><th>J<td>▄ ▄▄▄ ▄▄▄ ▄▄▄<tr><th>K<td>▄▄▄ ▄ ▄▄▄<tr><th>L<td>▄ ▄▄▄ ▄ ▄<tr><th>M<td>▄▄▄ ▄▄▄<tr><th>N<td>▄▄▄ ▄<tr><th>O<td>▄▄▄ ▄▄▄ ▄▄▄<tr><th>P<td>▄ ▄▄▄ ▄▄▄ ▄<tr><th>Q<td>▄▄▄ ▄▄▄ ▄ ▄▄▄<tr><th>R<td>▄ ▄▄▄ ▄<tr><th>S<td>▄ ▄ ▄<tr><th>T<td>▄▄▄<tr><th>U<td>▄ ▄ ▄▄▄<tr><th>V<td>▄ ▄ ▄ ▄▄▄<tr><th>W<td>▄ ▄▄▄ ▄▄▄<tr><th>X<td>▄▄▄ ▄ ▄ ▄▄▄<tr><th>Y<td>▄▄▄ ▄ ▄▄▄ ▄▄▄<tr><th>Z<td>▄▄▄ ▄▄▄ ▄ ▄<tr><th>0<td>▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄<tr><th>1<td>▄ ▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄<tr><th>2<td>▄ ▄ ▄▄▄ ▄▄▄ ▄▄▄<tr><th>3<td>▄ ▄ ▄ ▄▄▄ ▄▄▄<tr><th>4<td>▄ ▄ ▄ ▄ ▄▄▄<tr><th>5<td>▄ ▄ ▄ ▄ ▄<tr><th>6<td>▄▄▄ ▄ ▄ ▄ ▄<tr><th>7<td>▄▄▄ ▄▄▄ ▄ ▄ ▄<tr><th>8<td>▄▄▄ ▄▄▄ ▄▄▄ ▄ ▄<tr><th>9<td>▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄ ▄</table>"

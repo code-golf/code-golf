@@ -155,17 +155,6 @@ CREATE TABLE public.trophies (
 
 
 --
--- Name: trophy_info; Type: TABLE; Schema: public; Owner: jraspass
---
-
-CREATE TABLE public.trophy_info (
-    trophy public.trophy NOT NULL,
-    name text NOT NULL,
-    description text NOT NULL
-);
-
-
---
 -- Name: users; Type: TABLE; Schema: public; Owner: jraspass
 --
 
@@ -189,14 +178,6 @@ ALTER TABLE ONLY public.solutions
 
 ALTER TABLE ONLY public.trophies
     ADD CONSTRAINT trophies_user_id_trophy_key UNIQUE (user_id, trophy);
-
-
---
--- Name: trophy_info trophy_info_trophy_key; Type: CONSTRAINT; Schema: public; Owner: jraspass
---
-
-ALTER TABLE ONLY public.trophy_info
-    ADD CONSTRAINT trophy_info_trophy_key UNIQUE (trophy);
 
 
 --
@@ -234,13 +215,6 @@ GRANT SELECT ON TABLE public.points TO code_golf;
 --
 
 GRANT SELECT,INSERT,UPDATE ON TABLE public.trophies TO code_golf;
-
-
---
--- Name: TABLE trophy_info; Type: ACL; Schema: public; Owner: jraspass
---
-
-GRANT SELECT,INSERT,UPDATE ON TABLE public.trophy_info TO code_golf;
 
 
 --
