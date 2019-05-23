@@ -87,6 +87,7 @@ CREATE TYPE public.lang AS ENUM (
 
 CREATE TYPE public.trophy AS ENUM (
     'elephpant-in-the-room',
+    'happy-birthday-code-golf',
     'hello-world',
     'inception',
     'interview-ready',

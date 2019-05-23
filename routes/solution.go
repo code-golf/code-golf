@@ -103,6 +103,10 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 		awardTrophy(db, userID, "hello-world")
 
+		if now := time.Now().UTC(); now.Day() == 2 && now.Month() == time.October {
+			awardTrophy(db, userID, "happy-birthday-code-golf")
+		}
+
 		if in.Hole == "fizz-buzz" {
 			awardTrophy(db, userID, "interview-ready")
 		}

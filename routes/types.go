@@ -42,6 +42,11 @@ var trophies = []Trophy{
 		"Solve any hole in PHP.",
 	},
 	{
+		"happy-birthday-code-golf",
+		"Happy Birthday, Code Golf",
+		"Solve any hole in any language on <a href=//github.com/JRaspass/code-golf/commit/4b44>2 Oct</a>.",
+	},
+	{
 		"hello-world",
 		"Hello, World!",
 		"Solve any hole in any language.",
