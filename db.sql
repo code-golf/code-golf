@@ -54,6 +54,7 @@ CREATE TYPE public.hole AS ENUM (
     'π',
     'τ',
     'φ',
+    '√2',
     '𝑒'
 );
 

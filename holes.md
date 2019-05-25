@@ -30,12 +30,12 @@ Gaming
 Math
 ====
 
-* λ  (Conway's constant)
+* λ  (Conway’s constant)
 * π  (Pi)
 * τ  (Tau)
 * φ  (Phi)
-* 𝑒  (Euler's number)
-* √2 (Pythagoras' constant) **TODO**
+* √2 (Pythagoras’ constant)
+* 𝑒  (Euler’s number)
 * γ  (Euler–Mascheroni constant) **TODO**
 * K  (Khinchin's constant) **TODO**
 

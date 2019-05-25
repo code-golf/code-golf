@@ -231,7 +231,7 @@ A Partridge in a Pear Tree.</blockquote>`,
 	}, {
 		"", "",
 		"leap-years", "Leap Years", "Fast",
-		"In the Gregorian calendar, a leap year is created by extending Februrary to 29 days in order to keep the calendar year synchronized with the astronomical year. These longer years occur in years which are multiples of <b>4</b>, with the exception of centennial years that aren't multiples of <b>400</b>.<p>Write a program to print all the leap years from the year <b>1800</b> up to and including <b>2400</b>.</p>",
+		"In the Gregorian calendar, a leap year is created by extending Februrary to 29 days in order to keep the calendar year synchronized with the astronomical year. These longer years occur in years which are multiples of <b>4</b>, with the exception of centennial years that aren’t multiples of <b>400</b>.<p>Write a program to print all the leap years from the year <b>1800</b> up to and including <b>2400</b>.</p>",
 	}, {
 		"", "",
 		"morse-decoder", "Morse Decoder", "Medium",
@@ -254,8 +254,8 @@ A Partridge in a Pear Tree.</blockquote>`,
 		"A pangram is a sentence that uses every letter of a given alphabet.<p>Write a program that will receive various sentences as arguments and print those that are valid pangrams.</p>",
 	}, {
 		"", "",
-		"pascals-triangle", "Pascal's Triangle", "Fast",
-		"Print the first <b>20 rows</b> of Pascal's triangle.</p>",
+		"pascals-triangle", "Pascal’s Triangle", "Fast",
+		"Print the first <b>20 rows</b> of Pascal’s triangle.</p>",
 	}, {
 		"", "",
 		"pernicious-numbers", "Pernicious Numbers", "Fast",
@@ -343,7 +343,7 @@ A Partridge in a Pear Tree.</blockquote>`,
 	}, {
 		"", "",
 		"λ", "λ", "Medium",
-		"Print λ (Conway's constant) to the first 1,000 decimal places.</p>",
+		"Print λ (Conway’s constant) to the first 1,000 decimal places.</p>",
 	}, {
 		"", "",
 		"π", "π", "Medium",
@@ -358,8 +358,12 @@ A Partridge in a Pear Tree.</blockquote>`,
 		"Print φ (Phi) to the first 1,000 decimal places.</p>",
 	}, {
 		"", "",
+		"√2", "√2", "Medium",
+		"Print √2 (Pythagoras’ constant) to the first 1,000 decimal places.</p>",
+	}, {
+		"", "",
 		"𝑒", "𝑒", "Medium",
-		"Print 𝑒 (Euler's number) to the first 1,000 decimal places.</p>",
+		"Print 𝑒 (Euler’s number) to the first 1,000 decimal places.</p>",
 	},
 }
 
