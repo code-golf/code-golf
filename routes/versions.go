@@ -11,7 +11,7 @@ const versionTable = "" +
 	"<tr><th class=lisp>Lisp<td>GNU CLISP 2.49.92<td><a href=//clisp.sourceforge.io></a>" +
 	"<tr><th class=lua>Lua<td>5.3.5<td><a href=//www.lua.org></a>" +
 	"<tr><th class=nim>Nim<td>0.18.0<td><a href=//nim-lang.org></a>" +
-	"<tr><th class=perl>Perl<td>5.28.2<td><a href=//www.perl.org></a>" +
+	"<tr><th class=perl>Perl<td>5.30.0<td><a href=//www.perl.org></a>" +
 	"<tr><th class=perl6>Perl 6<td>Rakudo 2019.03 on MoarVM 2019.03 implementing Perl 6.d<td><a href=//perl6.org></a>" +
 	"<tr><th class=php>PHP<td>7.3.5<td><a href=//secure.php.net></a>" +
 	"<tr><th class=python>Python<td>3.7.3<td><a href=//www.python.org></a>" +
