@@ -228,7 +228,7 @@ func runCode(hole, lang, code string, args []string, userID int) (string, string
 		cmd.Args = []string{"/usr/bin/run-julia", "/tmp/code.jl"}
 	case "nim":
 		cmd.Args = []string{
-			"/usr/bin/nim", "--cc:tcc", "--hint[Processing]:off",
+			"/usr/bin/nim", "--cc:tcc", "--hint.Processing:off",
 			"--nimcache:/tmp", "--verbosity:0", "-o:/tmp/code", "-r", "c", "-",
 		}
 	case "perl6":
