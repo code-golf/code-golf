@@ -230,6 +230,7 @@ main nav a:nth-child(3):before {
 
 #status {
     background: #fdd;
+    color: black;
     display: none;
     margin-top: 75px;
     padding: 10px;
