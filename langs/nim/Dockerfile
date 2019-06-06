@@ -3,10 +3,10 @@ FROM alpine:edge
 RUN apk add -X http://dl-cdn.alpinelinux.org/alpine/edge/testing --no-cache \
     curl gcc musl-dev nim tcc
 
-RUN curl -L https://github.com/nim-lang/Nim/archive/16aa10d.tar.gz | tar xzf - \
- && curl -L https://github.com/nim-lang/csources/archive/v0.19.0.tar.gz | tar xzf -
+RUN curl -L https://github.com/nim-lang/Nim/archive/v0.20.0.tar.gz | tar xzf - \
+ && curl -L https://github.com/nim-lang/csources/archive/v0.20.0.tar.gz | tar xzf -
 
-RUN mv csources-0.19.0 Nim-16aa10dfe101da99c402657a420dbf2785ca4a2a/csources \
+RUN mv csources-0.20.0 Nim-0.20.0/csources \
  && cd Nim-*/csources                      \
  && ./build.sh                             \
  && cd ..                                  \
