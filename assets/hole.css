@@ -223,9 +223,9 @@ main nav a:nth-child(3):before {
 #arg span {
     background: #ddd;
     border-radius: 10px;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
     line-height: 30px;
     padding: 3px 7px;
-    white-space: nowrap;
 }
 
 #status {

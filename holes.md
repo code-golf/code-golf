@@ -21,11 +21,7 @@ Gaming
 
 * Poker
 * Sudoku
-* Ten-pin Bowling **TODO**
-
-  `X 7/ 9- X -8 ⑧/ F6 X X X81` = `167`
-
-  `X X X X X X X X X XXX` = `300`
+* Ten-pin Bowling
 
 Math
 ====

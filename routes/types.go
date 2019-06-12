@@ -342,6 +342,10 @@ A Partridge in a Pear Tree.</blockquote>`,
 ┗━━━┷━━━┷━━━┻━━━┷━━━┷━━━┻━━━┷━━━┷━━━┛</pre>`,
 	}, {
 		"", "",
+		"ten-pin-bowling", "Ten-pin Bowling", "Slow",
+		"WIP Writing descriptions is hard, patches very welcome!",
+	}, {
+		"", "",
 		"λ", "λ", "Medium",
 		"Print λ (Conway’s constant) to the first 1,000 decimal places.</p>",
 	}, {

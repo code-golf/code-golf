@@ -38,8 +38,8 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 
 	switch in.Hole {
-	case "arabic-to-roman":
-		args, out.Exp = arabicToRoman(false)
+	case "arabic-to-roman", "roman-to-arabic":
+		args, out.Exp = arabicToRoman(in.Hole == "roman-to-arabic")
 	case "brainfuck":
 		args, out.Exp = brainfuck()
 	case "morse-decoder", "morse-encoder":
@@ -50,8 +50,6 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		args, out.Exp = poker()
 	case "quine":
 		out.Exp = in.Code
-	case "roman-to-arabic":
-		args, out.Exp = arabicToRoman(true)
 	case "seven-segment":
 		args = make([]string, 1)
 		args[0], out.Exp = sevenSegment()
@@ -59,6 +57,8 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		args, out.Exp = spellingNumbers()
 	case "sudoku":
 		args, out.Exp = sudoku()
+	case "ten-pin-bowling":
+		args, out.Exp = tenPinBowling()
 	default:
 		out.Exp = answers[in.Hole]
 	}
