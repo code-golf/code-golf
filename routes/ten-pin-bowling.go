@@ -43,7 +43,7 @@ func tenPinBowling() ([]string, string) {
 			case '-':
 				replacement = 'F'
 			case '5', '6', '7', '8':
-				if (j%3==0) { // Only split on the first ball of the frame
+				if j % 3 == 0 { // Only split on the first ball of the frame
 					replacement = '①' - '1' + char
 				} else {
 					continue
