@@ -16,7 +16,7 @@ var games = [...]struct {
 	{[]rune("-- -- -- -- -- -- -- -- -- -- "), "0"},
 	{[]rune("-9 5- 35 31 61 43 6- 63 6- 71 "), "69"},
 	{[]rune("32 3/  X  X  X  X 43 33 33 36 "), "154"},
-	{[]rune("43 44 56 45  X  X  X  X 43 23 "), "148"},
+	{[]rune("43 44 54 45  X  X  X  X 43 23 "), "146"},
 	{[]rune("53 33 34  X  X  X 53 3/  X X43"), "163"},
 	{[]rune("7/ 4- 36 81 8- 54 44 53 31 8- "), "81"},
 	{[]rune("71 33 45 45  X  X  X  X 5/ 23 "), "154"},
@@ -24,6 +24,7 @@ var games = [...]struct {
 	{[]rune("72 9- 81  X 9- 8/  X  X  X 9- "), "162"},
 	{[]rune("81 16 8/ 33  X 7- -7 9- 8- -- "), "83"},
 	{[]rune("9- -2 35  X  X  X  X 62 22 62 "), "143"},
+    {[]rune("32 3/  X  X  X  X 43 33 33 3/6"), "161"},
 }
 
 func tenPinBowling() ([]string, string) {
@@ -42,7 +43,11 @@ func tenPinBowling() ([]string, string) {
 			case '-':
 				replacement = 'F'
 			case '5', '6', '7', '8':
-				replacement = '①' - '1' + char
+				if j % 3 == 0 { // Only split on the first ball of the frame
+					replacement = '①' - '1' + char
+				} else {
+					continue
+				}
 			default:
 				continue
 			}
