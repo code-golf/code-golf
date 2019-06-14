@@ -343,7 +343,8 @@ A Partridge in a Pear Tree.</blockquote>`,
 	}, {
 		"", "",
 		"ten-pin-bowling", "Ten-pin Bowling", "Slow",
-		"WIP Writing descriptions is hard, patches very welcome!",
+		`Given a ten-pin bowling scoreboard determine the final score based on the traditional scoring method.</p>
+		Traditional scoring method: <a href="https://en.wikipedia.org/wiki/Ten-pin_bowling#Traditional_scoring">https://en.wikipedia.org/wiki/Ten-pin_bowling#Traditional_scoring</a>`,
 	}, {
 		"", "",
 		"λ", "λ", "Medium",
