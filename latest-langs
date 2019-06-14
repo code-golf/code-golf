@@ -1,0 +1,47 @@
+#!/usr/bin/env perl6
+
+use Cro::HTTP::Client;
+
+constant @langs = (
+    'Haskell',
+    'https://www.haskell.org/ghc/download.html',
+    /"download_ghc".+?">"(.+?)"<"/,
+
+    'Julia',
+    'https://julialang.org/downloads/',
+    /"stable release: v"(.+?)"<"/,
+
+    'Lua',
+    'https://www.lua.org',
+    /"versions.html".+?">Lua "(.+?)"<"/,
+
+    'Nim',
+    'https://nim-lang.org',
+    /"Version "(\S+)" released"/,
+
+    'Perl',
+    'https://www.perl.org',
+    /'"version-highlight">'(.+?)"<"/,
+
+    'PHP',
+    'https://www.php.net/downloads.php',
+    /"Stable</span>"\s*"PHP "(\S+)/,
+
+    'Python',
+    'https://www.python.org',
+    /"Latest: <".+?">Python "(.+?)"<"/,
+
+    'Ruby',
+    'https://www.ruby-lang.org/en/downloads/',
+    /"stable version is "(\S+)"."/,
+);
+
+constant $len = @langs[0, 3 … *]».chars.max;
+
+constant $client = Cro::HTTP::Client.new(:!follow :http<1.1>);
+
+for @langs -> $lang, $url, $re {
+    my $res = await $client.get($url);
+
+    printf " %*s %s\n", $len, $lang, (await $res.body) ~~ $re ?? ~$0 !! Nil;
+}
