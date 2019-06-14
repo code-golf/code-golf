@@ -288,7 +288,7 @@ A Partridge in a Pear Tree.</blockquote>`,
    ███  ██
   ██ █ ███
  ███████ █
-██     ███</pre><p>You can read more about on it and on its Turing-Completeness here: <a href="https://en.wikipedia.org/wiki/Rule_110">https://en.wikipedia.org/wiki/Rule_110</a>.`,
+██     ███</pre><p>You can read more about on it and on its Turing-Completeness here: <a href=//en.wikipedia.org/wiki/Rule_110>https://en.wikipedia.org/wiki/Rule_110</a>.`,
 	}, {
 		"", "",
 		"seven-segment", "Seven Segment", "Medium",
@@ -343,8 +343,7 @@ A Partridge in a Pear Tree.</blockquote>`,
 	}, {
 		"", "",
 		"ten-pin-bowling", "Ten-pin Bowling", "Slow",
-		`Given a ten-pin bowling scoreboard determine the final score based on the traditional scoring method.</p>
-		Traditional scoring method: <a href="https://en.wikipedia.org/wiki/Ten-pin_bowling#Traditional_scoring">https://en.wikipedia.org/wiki/Ten-pin_bowling#Traditional_scoring</a>`,
+		"Given a series of ten-pin bowling scoreboards, determine the final scores based on the traditional scoring method.</p><p>Traditional scoring method: <a href=//en.wikipedia.org/wiki/Ten-pin_bowling#Traditional_scoring>https://en.wikipedia.org/wiki/Ten-pin_bowling#Traditional_scoring</a></p>",
 	}, {
 		"", "",
 		"λ", "λ", "Medium",
