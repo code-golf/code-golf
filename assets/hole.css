@@ -226,6 +226,7 @@ main nav a:nth-child(3):before {
     font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
     line-height: 30px;
     padding: 3px 7px;
+	white-space: pre;
 }
 
 #status {
