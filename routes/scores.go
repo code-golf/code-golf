@@ -78,12 +78,12 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	langID := ps[1].Value
 
 	if _, ok := holeByID[holeID]; holeID != "all-holes" && !ok {
-		Render(w, r, http.StatusNotFound, "404", nil)
+		Render(w, r, http.StatusNotFound, "404", "", nil)
 		return
 	}
 
 	if _, ok := langByID[langID]; langID != "all-langs" && !ok {
-		Render(w, r, http.StatusNotFound, "404", nil)
+		Render(w, r, http.StatusNotFound, "404", "", nil)
 		return
 	}
 
@@ -206,5 +206,5 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		panic(err)
 	}
 
-	Render(w, r, http.StatusOK, "scores", data)
+	Render(w, r, http.StatusOK, "scores", "Scores", data)
 }

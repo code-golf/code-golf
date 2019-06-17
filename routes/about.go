@@ -8,5 +8,5 @@ import (
 )
 
 func about(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	Render(w, r, http.StatusOK, "about", template.HTML(versionTable))
+	Render(w, r, http.StatusOK, "about", "About", template.HTML(versionTable))
 }

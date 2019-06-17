@@ -33,7 +33,7 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		"SELECT id FROM users WHERE login = $1",
 		data.Login,
 	).Scan(&userID); err == sql.ErrNoRows {
-		Render(w, r, http.StatusNotFound, "404", nil)
+		Render(w, r, http.StatusNotFound, "404", "", nil)
 		return
 	} else if err != nil {
 		panic(err)
@@ -109,5 +109,5 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		panic(err)
 	}
 
-	Render(w, r, http.StatusOK, "user", data)
+	Render(w, r, http.StatusOK, "user", data.Login, data)
 }

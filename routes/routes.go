@@ -39,7 +39,7 @@ func init() {
 	Router.POST("/solution", solution)
 
 	Router.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		Render(w, r, http.StatusNotFound, "404", nil)
+		Render(w, r, http.StatusNotFound, "404", "", nil)
 	})
 }
 

@@ -69,7 +69,13 @@ func init() {
 }
 
 // Render wraps common logic required for rendering a view to the user.
-func Render(w http.ResponseWriter, r *http.Request, code int, name string, data interface{}) {
+func Render(
+	w http.ResponseWriter,
+	r *http.Request,
+	code int,
+	name, title string,
+	data interface{},
+) {
 	header := w.Header()
 
 	header["Content-Language"] = []string{"en"}
@@ -90,11 +96,12 @@ func Render(w http.ResponseWriter, r *http.Request, code int, name string, data 
 	}
 
 	args := struct {
-		CommonCssPath, Login, LoginURL string
-		Data                           interface{}
+		CommonCssPath, Login, LoginURL, Title string
+		Data                                  interface{}
 	}{
 		CommonCssPath: commonCssPath,
 		Data:          data,
+		Title:         title,
 	}
 
 	if _, args.Login = cookie.Read(r); args.Login == "" {

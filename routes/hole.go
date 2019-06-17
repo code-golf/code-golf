@@ -60,5 +60,5 @@ func hole(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		}
 	}
 
-	Render(w, r, http.StatusOK, "hole", data)
+	Render(w, r, http.StatusOK, "hole", data.Hole.Name, data)
 }

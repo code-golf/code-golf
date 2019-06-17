@@ -142,5 +142,5 @@ func index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		"Strict-Transport-Security",
 		"max-age=31536000;includeSubDomains;preload",
 	)
-	Render(w, r, http.StatusOK, "index", data)
+	Render(w, r, http.StatusOK, "index", "", data)
 }

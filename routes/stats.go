@@ -71,5 +71,5 @@ func stats(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		panic(err)
 	}
 
-	Render(w, r, http.StatusOK, "stats", data)
+	Render(w, r, http.StatusOK, "stats", "Stats", data)
 }
