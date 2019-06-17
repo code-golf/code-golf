@@ -8,7 +8,7 @@ require (
 	github.com/lib/pq v1.1.1
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/urfave/negroni v1.0.0
-	golang.org/x/crypto v0.0.0-20190611184440-5c40567a22f8
-	golang.org/x/net v0.0.0-20190611141213-3f473d35a33a // indirect
+	golang.org/x/crypto v0.0.0-20190617133340-57b3e21c3d56
+	golang.org/x/net v0.0.0-20190613194153-d28f0bde5980 // indirect
 	golang.org/x/text v0.3.2 // indirect
 )
