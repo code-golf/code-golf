@@ -274,6 +274,10 @@ A Partridge in a Pear Tree.</blockquote>`,
 		"A <b>quine</b> is a non-empty computer program which takes no input and produces a copy of its own source code as its only output, produce such a program.<p>Trailing whitespace is <b>NOT</b> stripped from the output for this hole.</p>",
 	}, {
 		"", "",
+		"rock-paper-scissors-spock-lizard", "Rock-paper-scissors-Spock-lizard", "Slow",
+		"✂ cuts 📄 covers 💎 crushes 🦎 poisons 🖖 smashes ✂ decapitates 🦎 eats 📄 disproves 🖖 vaporizes 💎 crushes ✂.</p><p><a href=http://www.samkass.com/theories/RPSSL.html>http://www.samkass.com/theories/RPSSL.html</a></p><ul><li>Rock is represented by <a href=//emojipedia.org/gem-stone/>“💎” (U+1F48E Gem Stone)</a>, though may be replaced by <a href=//emojipedia.org/rock/>“Rock” when Unicode 13.0 ships in 2020</a>.<li>Paper is represented by <a href=//emojipedia.org/page-facing-up/>“📄” (U+1F4C4 Page Facing Up)</a>.<li>Scissors are represented by <a href=//emojipedia.org/black-scissors/>“✂” (U+2702 Black Scissors)</a>, note <b>without</b> the U+FE0F variation selector.<li>Spock is represented by <a href=//emojipedia.org/raised-hand-with-part-between-middle-and-ring-fingers/>“🖖” (U+1F596 Raised Hand With Part Between Middle and Ring Fingers)</a>.<li>Lizard is represented by <a href=//emojipedia.org/lizard/>“🦎” (U+1F98E Lizard)</a>.</ul>",
+	}, {
+		"", "",
 		"roman-to-arabic", "Roman to Arabic", "Slow",
 		"For each roman numeral argument print the same number in arabic numerals.</p>",
 	}, {

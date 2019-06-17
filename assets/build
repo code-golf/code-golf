@@ -26,7 +26,7 @@ GO
 
 my ( %data, %paths );
 
-for (<assets/*.{css,ico,js}>) {
+for ( (my $w = 'assets/twemoji.woff2'), <assets/*.{css,ico,js}> ) {
     say;
 
     my $data = slurp($_);
@@ -45,11 +45,23 @@ GO
 
         next;
     }
+    elsif ( $_ eq 'twemoji.woff2' ) {
+        $data{$name} = $data;
+        my $path = $paths{$name} = '/assets/' . md5_base64($data) =~ y|+/|-_|r;
+
+        print $fh <<GO;
+	case "$path":
+		w.Write($name)
+GO
+
+        next;
+    }
 
     $data =~ s|/\* include ([^ ]+) +\*/|slurp("assets/includes/$1")|eg;
 
     if (/\.css$/) {
         $data =~ s|svg\(([^#]+)(.+)\)|svg($1, $2)|eg;
+        $data =~ s|twemojiWoff2|$paths{twemojiWoff2}|;
 
         $data = run($data, 'csso');
     }

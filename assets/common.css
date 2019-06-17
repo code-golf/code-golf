@@ -1,5 +1,11 @@
+@font-face {
+    font-family: emoji;
+    src: url('twemojiWoff2');
+    unicode-range: U+2702, U+1F48E, U+1F4C4, U+1F596, U+1F98E;
+}
+
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-family: emoji, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     font-size: 16px;
     margin: 50px 0 0;
 }
@@ -108,7 +114,7 @@ header nav img {
 pre,
 .CodeMirror,
 #hole table {
-    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+    font-family: emoji, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
 }
 
 select {
@@ -272,7 +278,10 @@ tr.me              { background: #5cf }
     color: #fff;
     display: block;
     font-size: 26px;
+    overflow: hidden;
     padding: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 #home div > a:last-child {

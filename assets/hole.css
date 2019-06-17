@@ -10,7 +10,7 @@ aside > div {
     background: #fff;
     border: 2px solid #369;
     border-left: 0;
-    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+    font-family: emoji, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
     height: 140px;
     overflow: auto;
     padding: 5px;
@@ -208,7 +208,8 @@ main nav a:nth-child(3):before {
     text-align: center;
 }
 
-#alert a {
+#alert a,
+#preamble a {
     text-decoration: underline;
 }
 
@@ -223,7 +224,7 @@ main nav a:nth-child(3):before {
 #arg span {
     background: #ddd;
     border-radius: 10px;
-    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+    font-family: emoji, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
     line-height: 30px;
     padding: 3px 7px;
     white-space: pre;

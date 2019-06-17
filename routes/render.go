@@ -82,6 +82,7 @@ func Render(w http.ResponseWriter, r *http.Request, code int, name string, data 
 			"connect-src 'self';" +
 			"default-src 'none';" +
 			"form-action 'none';" +
+			"font-src 'self';" +
 			"frame-ancestors 'none';" +
 			"img-src 'self' data: avatars.githubusercontent.com;" +
 			"script-src 'self';" +

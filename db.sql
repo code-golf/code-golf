@@ -44,6 +44,7 @@ CREATE TYPE public.hole AS ENUM (
     'poker',
     'prime-numbers',
     'quine',
+    'rock-paper-scissors-spock-lizard',
     'roman-to-arabic',
     'rule-110',
     'seven-segment',

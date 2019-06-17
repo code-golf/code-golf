@@ -50,6 +50,8 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		args, out.Exp = poker()
 	case "quine":
 		out.Exp = in.Code
+	case "rock-paper-scissors-spock-lizard":
+		args, out.Exp = rockPaperScissorsSpockLizard()
 	case "seven-segment":
 		args = make([]string, 1)
 		args[0], out.Exp = sevenSegment()

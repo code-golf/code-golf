@@ -20,6 +20,7 @@ Gaming
 ======
 
 * Poker
+* Rock-paper-scissors-Spock-lizard
 * Sudoku
 * Ten-pin Bowling
 
