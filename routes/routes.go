@@ -2,6 +2,7 @@ package routes
 
 import (
 	"database/sql"
+	"html/template"
 	"math/rand"
 	"net/http"
 
@@ -43,8 +44,18 @@ func init() {
 	})
 }
 
+func about(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	Render(w, r, http.StatusOK, "about", "About", template.HTML(versionTable))
+}
+
+func logout(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	w.Header().Set("Set-Cookie", "__Host-user=;MaxAge=0;Path=/;Secure")
+
+	http.Redirect(w, r, "/", http.StatusFound)
+}
+
 func random(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	http.Redirect(w, r, holes[rand.Intn(len(holes))].ID, 302)
+	http.Redirect(w, r, holes[rand.Intn(len(holes))].ID, http.StatusFound)
 }
 
 func robots(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
