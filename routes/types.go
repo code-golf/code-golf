@@ -79,7 +79,7 @@ var trophies = []Trophy{
 	{
 		"polyglot",
 		"Polyglot",
-		"Solve the same hole in every language.",
+		"Solve at least one hole in every language.",
 	},
 	{
 		"slowcoach",
