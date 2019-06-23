@@ -1,14 +1,24 @@
 /* include codemirror.css */
 
+@font-face {
+    font-family: emoji;
+    src: url(twemojiWoff2);
+    unicode-range: U+2702, U+1F48E, U+1F4C4, U+1F596, U+1F98E;
+}
+
+.term-fg31 { color: #c00 }
+.term-fg32 { color: #490 }
+.term-fg33 { color: #ca0 }
+
 aside {
-    border-left: 30px solid #369;
-    margin-top: 10px;
+    border-left: 2rem solid var(--color);
+    margin-top: 1rem;
     position: relative;
 }
 
 aside > div {
-    background: #fff;
-    border: 2px solid #369;
+    background: var(--background);
+    border: 1px solid var(--color);
     border-left: 0;
     font-family: emoji, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
     height: 140px;
@@ -16,213 +26,24 @@ aside > div {
     padding: 5px;
 }
 
-blockquote {
-    white-space: pre;
-}
-
-button {
-    background: #7c9;
-    border: 1px solid transparent;
-    color: #fff;
-    cursor: pointer;
-    float: right;
-    font-size: 18px;
-    height: 40px;
-    margin: 10px 0;
-    padding: 0 9px 0 39px;
-    position: relative;
-}
-
-button:before {
-    background: svg(play#fff) no-repeat;
-    content: '';
-    height: 20px;
-    left: 9px;
-    position: absolute;
-    top: 9px;
-    width: 20px;
-}
-
-button.on:before {
-    animation: spin 2s linear infinite;
-    background-image: svg(spinner#fff);
-}
-
-button:focus {
-    outline: none;
-}
-
-button:hover {
-    background: #2c4;
-}
-
-h1 {
-    cursor: pointer;
-    height: 40px;
-    line-height: 40px;
-    padding-left: 50px;
-    position: relative;
-}
-
-h1:before {
-    background: svg(chevron#000) no-repeat center;
-    content: '';
-    height: 40px;
-    left: 0;
-    position: absolute;
-    width: 40px;
-}
-
-h1 + div {
-    margin-bottom: 10px;
-    overflow: hidden;
-}
-
-h1 + div > *:first-child {
-    margin-top: 0;
-}
-
-h1.collapsed:before {
-    transform: rotate(-90deg);
-}
-
-h1.collapsed + div {
-    height: 0;
-    margin: 0;
-}
+body { font-family: emoji, font, system-ui, -apple-system, sans-serif }
 
 h3 {
-    bottom: -20px;
-    color: #fff;
-    font-size: 20px;
-    left: -30px;
-    line-height: 30px;
-    margin: 0;
+    bottom: -1.5rem;
+    color: var(--background);
+    left: -2rem;
+    line-height: 2rem;
     position: absolute;
     transform-origin: 0 0;
     transform: rotate(-90deg);
 }
 
-main nav {
-    display: grid;
-    grid-gap: 10px;
-    grid-template-columns: repeat(3, 1fr);
-    margin: 10px 20px;
-}
+#arg, #err { display: none }
 
-main nav a {
-    background: #ccc;
-    color: #fff;
-    display: block;
-    font-size: 18px;
-    height: 40px;
-    line-height: 40px;
-    position: relative;
-    text-align: center;
-    text-decoration: none;
-}
-
-main nav a:after,
-main nav a:before {
-    border-bottom: 20px solid transparent;
-    border-top: 20px solid transparent;
-    content: "";
-    position: absolute;
-    top: 0;
-}
-
-main nav a:hover {
-    background: #222;
-}
-
-main nav a:nth-child(1) {
-    padding-right: 20px;
-}
-
-main nav a:nth-child(2) {
-    z-index: 1;
-}
-
-main nav a:nth-child(3) {
-    padding-left: 20px;
-}
-
-main nav a:nth-child(1):after {
-    border-right: 20px solid #fff;
-    right: 0;
-}
-
-main nav a:nth-child(2):after,
-main nav a:nth-child(3):after {
-    border-left: 20px solid #ccc;
-    right: -20px;
-}
-
-main nav a:nth-child(2):hover:after,
-main nav a:nth-child(3):hover:after {
-    border-left-color: #222;
-}
-
-main nav a:nth-child(1):before,
-main nav a:nth-child(2):before {
-    border-right: 20px solid #ccc;
-    left: -20px;
-}
-
-main nav a:nth-child(1):hover:before,
-main nav a:nth-child(2):hover:before {
-    border-right-color: #222;
-}
-
-main nav a:nth-child(3):before {
-    border-left: 20px solid #fff;
-    left: 0;
-}
-
-.CodeMirror {
-    border: 1px solid #ddd;
-    border-top: 0;
-    box-shadow: 0 -4px 0 #222;
-}
-
-.info {
-    background: #fffbdd;
-    display: none;
-    padding: 5px;
-    border: 1px solid #222;
-    color: #222;
-    margin-top: 10px;
-}
-
-.red { color: red }
-
-.term-fg31 { color: #c00 } /* red */
-.term-fg32 { color: #490 } /* green */
-.term-fg33 { color: #ca0 } /* yellow */
-
-#alert {
-    background: #5cf;
-    padding: 5px;
-    border: 1px solid #222;
-    color: #222;
-    text-align: center;
-}
-
-#alert a,
-#preamble a {
-    text-decoration: underline;
-}
-
-#arg, #err {
-    display: none;
-}
-
-#exp, #out {
-    white-space: pre;
-}
+#exp, #out { white-space: pre }
 
 #arg span {
-    background: #ddd;
+    background: #eee;
     border-radius: 10px;
     font-family: emoji, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
     line-height: 30px;
@@ -230,81 +51,13 @@ main nav a:nth-child(3):before {
     white-space: pre;
 }
 
+#editor {
+    border: 1px solid var(--color);
+    min-height: 200px;
+    overflow-x: hidden;
+}
+
 #status {
-    background: #fdd;
-    color: black;
     display: none;
-    margin-top: 75px;
-    padding: 10px;
-    position: relative;
+    padding: 1rem;
 }
-
-#status:after {
-    content: '';
-    position: absolute;
-    top: -20px;
-    right: 32px;
-    border: 20px solid transparent;
-    border-bottom-color: #fdd;
-    border-top: 0;
-    border-right: 0;
-}
-
-#status.pass {
-    background: #7c9;
-}
-
-#status.pass:after {
-    border-bottom-color: #7c9;
-}
-
-#tabs {
-    clear: both;
-    display: grid;
-    grid-template-columns: repeat(15, 1fr);
-    position: relative;
-       -moz-user-select: none;
-        -ms-user-select: none;
-    -webkit-user-select: none;
-            user-select: none;
-}
-
-#tabs a {
-    background: #ccc center / 26px no-repeat;
-    color: #3498DB;
-    font-size: 10px;
-    font-weight: bold;
-    height: 36px;
-    overflow: hidden;
-    padding: 4px;
-    text-align: right;
-}
-
-#tabs a.on {
-    cursor: default;
-}
-
-#tabs a.on,
-#tabs a:hover {
-    background-color: #222 !important;
-}
-
-#tabs a[href="#bash"]       { background-image: svg(bash#fff)       }
-#tabs a[href="#brainfuck"]  { background-image: svg(brainfuck#fff)  }
-#tabs a[href="#c"]          { background-image: svg(c#fff)          }
-#tabs a[href="#haskell"]    { background-image: svg(haskell#fff)    }
-#tabs a[href="#j"]          { background-image: svg(j#fff)          }
-#tabs a[href="#javascript"] { background-image: svg(javascript#fff) }
-#tabs a[href="#julia"]      { background-image: svg(julia#fff)      }
-#tabs a[href="#lisp"]       { background-image: svg(lisp#fff)       }
-#tabs a[href="#lua"]        { background-image: svg(lua#fff)        }
-#tabs a[href="#nim"]        { background-image: svg(nim#fff)        }
-#tabs a[href="#perl"]       { background-image: svg(perl#fff)       }
-#tabs a[href="#perl6"]      { background-image: svg(perl6#fff)      }
-#tabs a[href="#php"]        { background-image: svg(php#fff)        }
-#tabs a[href="#python"]     { background-image: svg(python#fff)     }
-#tabs a[href="#ruby"]       { background-image: svg(ruby#fff)       }
-
-@keyframes spin { 100% { transform: rotate(1turn) } }
-
-@media(max-width: 500px) { #tabs { grid-template-columns: repeat(5, 1fr) } }

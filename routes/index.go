@@ -9,35 +9,42 @@ import (
 )
 
 func index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	if sort := r.URL.Query().Get("sort"); sort != "" {
+		http.SetCookie(w, &http.Cookie{
+			HttpOnly: true,
+			Name:     "__Host-sort",
+			Path:     "/",
+			SameSite: http.SameSiteLaxMode,
+			Secure:   true,
+			Value:    sort,
+		})
+
+		http.Redirect(w, r, "/", http.StatusFound)
+		return
+	}
+
+	type Card struct {
+		Golfers, Rank int
+		Hole          Hole
+	}
+
 	type Fail struct {
 		Hole Hole
 		Lang Lang
 	}
 
-	type Row struct {
-		LangID, Login string
-		Me            bool
-		Rank, Strokes int
-	}
-
 	data := struct {
+		Cards []Card
 		Fails []Fail
-		Holes []Hole
-		Rows  map[string][]*Row
+		Sort  string
+		Sorts []string
 	}{
-		Holes: make([]Hole, len(holes)),
-		Rows:  make(map[string][]*Row),
+		Sorts: []string{"alphabetical", "golfers", "rank"},
 	}
 
-	// Sort by difficulty, then name. FIXME Seems to disagree wrt τ.
-	copy(data.Holes, holes)
-	sort.Slice(data.Holes, func(i, j int) bool {
-		if data.Holes[i].Difficulty == data.Holes[j].Difficulty {
-			return data.Holes[i].Name < data.Holes[j].Name
-		}
-
-		return data.Holes[i].Difficulty < data.Holes[j].Difficulty
-	})
+	if sort, err := r.Cookie("__Host-sort"); err == nil {
+		data.Sort = sort.Value
+	}
 
 	userID, _ := cookie.Read(r)
 
@@ -71,36 +78,15 @@ func index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 
 	rows, err := db.Query(
-		`WITH leaderboard AS (
-		  SELECT DISTINCT ON (hole, user_id)
-		         hole,
-		         lang,
-		         LENGTH(code) strokes,
-		         submitted,
-		         user_id
-		    FROM solutions
-		   WHERE NOT failing
-		ORDER BY hole, user_id, LENGTH(code), submitted
-		), ranked_leaderboard AS (
-		  SELECT hole,
-		         lang,
-		         RANK()       OVER (PARTITION BY hole ORDER BY strokes),
-		         ROW_NUMBER() OVER (PARTITION BY hole ORDER BY strokes, submitted),
-		         strokes,
-		         submitted,
-		         user_id
-		    FROM leaderboard
-		) SELECT hole,
-		         lang,
-		         login,
-		         user_id = $1,
-		         rank,
-		         row_number,
-		         strokes
-		    FROM ranked_leaderboard
-		    JOIN users on user_id = id
-		   WHERE row_number < 6 OR user_id = $1
-		ORDER BY row_number`,
+		`WITH ranks AS (
+		    SELECT hole, RANK() OVER (PARTITION BY hole ORDER BY LENGTH(code)), user_id
+		      FROM solutions
+		     WHERE NOT failing
+		) SELECT COUNT(*),
+		         (SELECT COALESCE(MIN(rank), 0) FROM ranks WHERE hole = r.hole AND user_id = $1),
+		         hole
+		    FROM ranks r
+		GROUP BY hole;`,
 		userID,
 	)
 	if err != nil {
@@ -110,32 +96,61 @@ func index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	defer rows.Close()
 
 	for rows.Next() {
+		var card Card
 		var holeID string
-		var row Row
-		var rowNumber int
 
-		if err := rows.Scan(
-			&holeID,
-			&row.LangID,
-			&row.Login,
-			&row.Me,
-			&row.Rank,
-			&rowNumber,
-			&row.Strokes,
-		); err != nil {
+		if err := rows.Scan(&card.Golfers, &card.Rank, &holeID); err != nil {
 			panic(err)
 		}
 
-		if rowNumber < 6 {
-			data.Rows[holeID] = append(data.Rows[holeID], &row)
-		} else {
-			data.Rows[holeID][3] = nil
-			data.Rows[holeID][4] = &row
-		}
+		card.Hole = holeByID[holeID]
+
+		data.Cards = append(data.Cards, card)
 	}
 
 	if err := rows.Err(); err != nil {
 		panic(err)
+	}
+
+	switch data.Sort {
+	case "alphabetical-desc":
+		sort.Slice(data.Cards, func(i, j int) bool {
+			return data.Cards[i].Hole.Name > data.Cards[j].Hole.Name
+		})
+	case "golfers-asc":
+		sort.Slice(data.Cards, func(i, j int) bool {
+			if data.Cards[i].Golfers == data.Cards[j].Golfers {
+				return data.Cards[i].Hole.Name < data.Cards[j].Hole.Name
+			}
+			return data.Cards[i].Golfers < data.Cards[j].Golfers
+		})
+	case "golfers-desc":
+		sort.Slice(data.Cards, func(i, j int) bool {
+			if data.Cards[i].Golfers == data.Cards[j].Golfers {
+				return data.Cards[i].Hole.Name < data.Cards[j].Hole.Name
+			}
+			return data.Cards[i].Golfers > data.Cards[j].Golfers
+		})
+	case "rank-asc":
+		sort.Slice(data.Cards, func(i, j int) bool {
+			if data.Cards[i].Rank == data.Cards[j].Rank {
+				return data.Cards[i].Hole.Name < data.Cards[j].Hole.Name
+			}
+			return data.Cards[i].Rank < data.Cards[j].Rank
+		})
+	case "rank-desc":
+		sort.Slice(data.Cards, func(i, j int) bool {
+			if data.Cards[i].Rank == data.Cards[j].Rank {
+				return data.Cards[i].Hole.Name < data.Cards[j].Hole.Name
+			}
+			return data.Cards[i].Rank > data.Cards[j].Rank
+		})
+	default:
+		data.Sort = "alphabetical-asc"
+
+		sort.Slice(data.Cards, func(i, j int) bool {
+			return data.Cards[i].Hole.Name < data.Cards[j].Hole.Name
+		})
 	}
 
 	w.Header().Set(

@@ -109,6 +109,18 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: ideas; Type: TABLE; Schema: public; Owner: jraspass
+--
+
+CREATE TABLE public.ideas (
+    id          integer primary key,
+    thumbs_down integer not null,
+    thumbs_up   integer not null,
+    title       text    not null
+);
+
+
+--
 -- Name: solutions; Type: TABLE; Schema: public; Owner: jraspass
 --
 
@@ -198,6 +210,12 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.trophies
     ADD CONSTRAINT trophies_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+--
+-- Name: TABLE ideas; Type: ACL; Schema: public; Owner: jraspass
+--
+
+GRANT SELECT,INSERT,TRUNCATE ON TABLE public.ideas TO code_golf;
 
 
 --

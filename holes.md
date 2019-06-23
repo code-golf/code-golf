@@ -24,7 +24,7 @@ Gaming
 * Sudoku
 * Ten-pin Bowling
 
-Math
+Mathematics
 ====
 
 * λ  (Conway’s constant)

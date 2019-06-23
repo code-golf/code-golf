@@ -1,14 +1,7 @@
 {{ template "header" . }}
 
 <main id=about>
-    <p>
-        Code Golf is a game designed to let you show off your code-fu by
-        solving problems in the least number of characters. It is written in
-        <a href=//golang.org>Go</a> and is
-        <a href=//github.com/JRaspass/code-golf>open source</a>, patches
-        welcome!
-    </p>
-    <h2>Frequently Asked Questions</h2>
+    <h1>About</h1>
     <dl>
         <dt>Do I Need to Login to Play?
         <dd>
@@ -16,13 +9,26 @@
             logging in, but nothing will be saved and you won't appear on the
             <a href=scores/all-holes/all-langs>leaderboards</a>.
 
+        <dt>Is the Project Open Source?
+        <dd>
+            Yes. It is written in <a href=//golang.org>Go</a> and available on
+            <a href=//github.com/JRaspass/code-golf>GitHub</a>; patches welcome!
+
         <dt>What Languages Are Supported?
         <dd>
-            <table id=versions>{{ .Data }}</table>
-            <p>
-                If you'd like to see another language added then raise an
-                <a href=//github.com/JRaspass/code-golf/issues/new>issue</a>.
-
+            <table id=versions>
+                <caption class=right>
+                    If you'd like to see another language added then raise an
+                    <a href=//github.com/JRaspass/code-golf/issues/new>issue</a>.
+                </caption>
+                <thead>
+                    <tr>
+                        <th>Language
+                        <th>Version
+                        <th class=wide>Website
+                <tbody>
+                    {{ .Data }}
+            </table>
         <dt>Are Warnings Ignored?
         <dd>
             Yes. Only STDOUT is checked against the solution, STDERR is

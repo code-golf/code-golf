@@ -14,13 +14,13 @@ func TestAbout(t *testing.T) {
 	Router.ServeHTTP(w, httptest.NewRequest("", "/about", nil))
 
 	assert.Equal(t, w.Code, http.StatusOK)
-	assert.Equal(t, w.Header().Get("Content-Type"), "text/html;charset=utf-8")
+	assert.Equal(t, w.Header().Get("Content-Type"), "text/html; charset=utf-8")
 }
 
-func TestLogout(t *testing.T) {
+func TestLogOut(t *testing.T) {
 	w := httptest.NewRecorder()
 
-	Router.ServeHTTP(w, httptest.NewRequest("", "/logout", nil))
+	Router.ServeHTTP(w, httptest.NewRequest("", "/log-out", nil))
 
 	assert.Equal(t, w.Code, http.StatusFound)
 	assert.Equal(t, w.Header().Get("Location"), "/")
@@ -33,7 +33,7 @@ func TestNotFound(t *testing.T) {
 	Router.ServeHTTP(w, httptest.NewRequest("", "/foo", nil))
 
 	assert.Equal(t, w.Code, http.StatusNotFound)
-	assert.Equal(t, w.Header().Get("Content-Type"), "text/html;charset=utf-8")
+	assert.Equal(t, w.Header().Get("Content-Type"), "text/html; charset=utf-8")
 }
 
 func TestRandom(t *testing.T) {

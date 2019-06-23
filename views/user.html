@@ -1,40 +1,29 @@
 {{ template "header" . }}
 
-<link rel=stylesheet href={{ .Data.UserCssPath }}>
-<script defer src={{ .Data.TimeJsPath }}></script>
-
 {{ $trophiesEarned := .Data.TrophiesEarned }}
 
 <main>
-    <img src="//avatars.githubusercontent.com/{{ .Data.Login }}?s=100">
-    <h1>{{ .Data.Login }}</h1>
-    <table>
-        <tr>
-            <td>{{ comma .Data.Points }}
-            <td>point{{ if .Data.Points }}s{{ end }}
-        <tr>
-            <td>{{ len .Data.Ranks }}/{{ len .Data.Holes }}
-            <td>holes
-        <tr>
-            <td>{{ len $trophiesEarned }}/{{ len .Data.Trophies }}
-            <td>trophies
-    </table>
+    <div class=grid id=profile>
+        <img src="//avatars.githubusercontent.com/{{ .Data.Login }}?s=96">
+        <h1>{{ .Data.Login }}</h1>
+        <p>{{ comma .Data.Points }} point{{ if .Data.Points }}s{{ end }}
+        <p>{{ len .Data.Ranks }}/{{ len .Data.Holes }} holes
+        <p>{{ len $trophiesEarned }}/{{ len .Data.Trophies }} trophies
+    </div>
     <hr>
-    <div id=trophies>
+    <h2>Trophies</h2>
+    <div class=grid id=trophies>
     {{ range .Data.Trophies }}
         {{ $earned := index $trophiesEarned .ID }}
 
-        <div {{ if $earned }}class="earned"{{ end }}>
+        <div class="card {{ if $earned }}green{{ else }}red{{ end }}">
             <h2>{{ .Name }}</h2>
-            <p>{{ .Description }}
-            <p>
-                {{ with $earned }}
-                    Earned <time datetime={{ .Format "2006-01-02T15:04:05Z" }}>
-                        {{ .Format "2 Jan" }}
-                    </time>
-                {{ else }}
-                    Not yet earned.
-                {{ end }}
+            <p>{{ .Description }}</p>
+        {{ with $earned }}
+            <time class=right datetime={{ .Format "2006-01-02T15:04:05Z" }}>
+                {{ .Format "2 Jan" }}
+            </time>
+        {{ end }}
         </div>
     {{ end }}
     </div>
@@ -42,7 +31,8 @@
     {{ $langs := .Data.Langs }}
     {{ $ranks := .Data.Ranks }}
 
-    <table id=matrix>
+    <h2 class=wide>Overview</h2>
+    <table class=wide id=matrix>
         <tr>
             <th>
         {{ range $langs }}
@@ -58,7 +48,7 @@
                     {{ . }}<sup>{{ ord . }}</sup>
                 </a>
             {{ else }}
-                <a href=/{{ $hole.ID }}#{{ $lang.ID }}></a>
+                <a href=/{{ $hole.ID }}#{{ $lang.ID }}></a>
             {{ end }}
         {{ end }}
     {{ end }}

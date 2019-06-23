@@ -26,7 +26,10 @@ GO
 
 my ( %data, %paths );
 
-for ( (my $w = 'assets/twemoji.woff2'), <assets/*.{css,ico,js}> ) {
+for (
+    sort { $b =~ /\.woff2$/ <=> $a =~ /\.woff2$/ or $a cmp $b }
+    <assets/*.{css,ico,js,woff2}>
+) {
     say;
 
     my $data = slurp($_);
@@ -46,7 +49,7 @@ GO
 
         next;
     }
-    elsif ( $_ eq 'twemoji.woff2' ) {
+    elsif (/\.woff2$/) {
         $data{$name} = $data;
         my $path = $paths{$name} = '/assets/' . md5_base64($data) =~ y|+/|-_|r;
 
@@ -64,18 +67,13 @@ GO
 
     if (/\.css$/) {
         $data =~ s|svg\(([^#]+)(.+)\)|svg($1, $2)|eg;
+        $data =~ s|fontWoff2|$paths{fontWoff2}|;
         $data =~ s|twemojiWoff2|$paths{twemojiWoff2}|;
 
         $data = run($data, 'csso');
     }
     else {
-        my @cmd = (
-            qw(java -jar /closure-compiler.jar),
-            qw(--assume_function_wrapper --language_out ES_2017),
-        );
-
-        push @cmd, qw(--externs assets/includes/externs.js -O ADVANCED)
-            if $_ eq 'scores.js';
+        my @cmd = qw(java -jar /closure-compiler.jar --language_out ES_2017);
 
         $data = run( $data, @cmd );
     }

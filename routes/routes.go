@@ -25,11 +25,13 @@ func init() {
 	Router.GET("/assets/:asset", asset)
 	Router.GET("/callback", callback)
 	Router.GET("/favicon.ico", asset)
-	Router.GET("/logout", logout)
+	Router.GET("/ideas", ideas)
+	Router.GET("/log-out", logOut)
 	Router.GET("/random", random)
+	Router.GET("/recent", recent)
 	Router.GET("/robots.txt", robots)
 	Router.GET("/scores/:hole/:lang", scores)
-	Router.GET("/scores/:hole/:lang/mini", scoresMini)
+	Router.GET("/scores/:hole/:lang/:page", scores)
 	Router.GET("/stats", stats)
 	Router.GET("/users/:user", user)
 
@@ -48,7 +50,7 @@ func about(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	Render(w, r, http.StatusOK, "about", "About", template.HTML(versionTable))
 }
 
-func logout(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func logOut(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	w.Header().Set("Set-Cookie", "__Host-user=;MaxAge=0;Path=/;Secure")
 
 	http.Redirect(w, r, "/", http.StatusFound)

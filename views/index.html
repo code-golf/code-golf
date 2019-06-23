@@ -1,40 +1,50 @@
 {{ template "header" . }}
 
-{{ $rows := .Data.Rows }}
-
+<main id=index>
 {{ with .Data.Fails }}
-    <div id=failing>
-        The following of your solutions have been marked as failing and no
-        longer contribute to scoring, please update them to pass:
-        <ul>
-        {{ range . }}
-            <li><a href={{ .Hole.ID }}#{{ .Lang.ID }}>{{ .Hole.Name }} ({{ .Lang.Name }})</a>
-        {{ end }}
-        </ul>
+    <div class="grid span" id=alert>
+        <div class=grid>
+            The following solutions of yours have been marked as failing and
+            no longer contribute to scoring; please update them to pass:
+            <ul>
+            {{ range . }}
+                <li><a href={{ .Hole.ID }}#{{ .Lang.ID }}>{{ .Hole.Name }} ({{ .Lang.Name }})</a>
+            {{ end }}
+            </ul>
+        </div>
     </div>
 {{ end }}
-
-<ul><li>Fast<li>Medium<li>Slow</ul>
-
-<main id=home>
-{{ range .Data.Holes }}
-    <div class={{ .Difficulty }}>
-        <a href={{ .ID }}>{{ .Name }}</a>
-        <table class=scores>
-    {{ range index $rows .ID }}
-        {{ with . }}
-            <tr {{ if .Me }}class="me"{{ end }}>
-                <td>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
-                <td>
-                    <img src="//avatars.githubusercontent.com/{{ .Login }}?s=26">
-                    <a href=users/{{ .Login }}>{{ .Login }}</a>
-                <td class={{ .LangID }}>{{ .Strokes }}
-        {{ else }}
-            <tr><td colspan=3>…
-        {{ end }}
-    {{ end }}
-        </table>
-        <a href=scores/{{ .ID }}/all-langs>FULL LEADERBOARD</a>
+{{ if not .Login }}
+    <div class="grid span">
+        <p>
+            Code Golf is a game designed to let you show off your code-fu by
+            solving problems in the least number of characters.
+        <p>
+            Since this is your first time here, I suggest starting with
+            something simple like <a href=fizz-buzz>Fizz Buzz</a>.
     </div>
+{{ end }}
+    <nav class="nav span">
+    {{ $sort := .Data.Sort }}
+
+    {{ range .Data.Sorts }}
+        {{ $asc := hasSuffix $sort "asc" }}
+        {{ $on  := hasPrefix $sort . }}
+
+        <a {{ if $on }} class=on {{ end }} href="?sort={{ . }}-{{ if and $on $asc }}desc{{ else }}asc{{ end }}">
+            {{ if and $on (not $asc) }}{{ else }}{{ end }}
+            {{ title . }}
+        </a>
+    {{ end }}
+    </nav>
+{{ range .Data.Cards }}
+    <a class="card {{ .Hole.CategoryColor }}" href={{ .Hole.ID }} title="{{ .Hole.Name }} ({{ .Hole.Category }})">
+        <h2>{{ .Hole.Name }}</h2>
+        <span>{{ .Hole.CategoryIcon }}</span>
+        <span class=right>
+            {{ with .Rank }}{{ comma . }}<sup>{{ ord . }}</sup> of{{ end }}
+            {{ comma .Golfers }}
+        </span>
+    </a>
 {{ end }}
 </main>

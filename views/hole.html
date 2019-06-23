@@ -3,39 +3,46 @@
 <link rel=stylesheet href={{ .Data.HoleCssPath }}>
 <script defer src={{ .Data.HoleJsPath }}></script>
 
-<main id=hole data-lang={{ .Data.Lang }}
-{{ range .Data.Solutions }}
-    data-{{ .Lang }}="{{ .Code }}"
-{{ end }}
->
+<main id=hole>
 {{ if not .Login }}
-    <div id=alert>
-        Please <a href={{ .LoginURL }}>login with GitHub</a> in order to save
-        solutions and appear on the leaderboards.
+    <div class=grid id=alert>
+        <p>
+            Please <a href={{ .LogInURL }}>log in with GitHub</a> in order to
+            save solutions and appear on the leaderboards.
     </div>
 {{ end }}
-    <nav>
-        <a href={{ .Data.Hole.Prev }}>Previous Hole</a>
-        <a href=random>Random Hole</a>
-        <a href={{ .Data.Hole.Next }}>Next Hole</a>
-    </nav>
-    <h1>{{ .Data.Hole.Name }}</h1>
-    <div id=preamble>
-        <p>{{ .Data.Hole.Preamble }}
+    <div class=grid id=header>
+        <h1>{{ .Data.Hole.Name }}</h1>
+        <a class="btn orange" href={{ .Data.Hole.Prev }}> <span class=wide>Prev</span></a>
+        <a class="btn purple" href=random> <span class=wide>Random</span></a>
+        <a class="btn orange" href={{ .Data.Hole.Next }}> <span class=wide>Next</span></a>
     </div>
-    <div id=tabs>
-    {{ range .Data.Langs }}
-        <a href=#{{ .ID }} title={{ .Name }}></a>
-    {{ end }}
+    <details id=details {{ if not .Data.HideDetails }}open{{ end }}>
+        <summary>Details</summary>
+        <div class=grid><p>{{ .Data.Hole.Preamble }}</div>
+    </details>
+    <div class=nav id=picker></div>
+    <div id=wrapper>
+        <div id=chars>0 characters</div>
+        <table class="scores wide">
+            <thead>
+                <tr><th>&nbsp;
+            <tbody>
+                <tr><td>&nbsp;
+                <tr><td>&nbsp;
+                <tr><td>&nbsp;
+                <tr><td>&nbsp;
+                <tr><td>&nbsp;
+                <tr><td>&nbsp;
+                <tr><td>&nbsp;
+        </table>
+        <div id=editor></div>
     </div>
-    <div id=wrapper></div>
-    <div class="info javascript">
-        <b>arguments</b> holds ARGV, <b>print()</b> to output with a newline, <b>write()</b> to output without a newline.
+    <div class=right id=run>
+        ctrl + enter
+        <span>or</span>
+        <a class="btn blue"> Run</a>
     </div>
-    <div class="info perl">
-        <b>say()</b> is available without any import.
-    </div>
-    <button>Run</button>
     <div id=status>
         <h2></h2>
         <aside id=err><h3>Errors</h3><div></div></aside>
@@ -44,3 +51,6 @@
         <aside id=out><h3>Output</h3><div></div></aside>
     </div>
 </main>
+
+<script id=langs     type=application/json>{{ .Data.Langs     }}</script>
+<script id=solutions type=application/json>{{ .Data.Solutions }}</script>

@@ -4,7 +4,8 @@
 
 <link rel=stylesheet href={{ .CommonCssPath }}>
 
-<meta name=theme-color content=#222>
+{{/* FIXME This won't change for dark themes :-( */}}
+<meta name=theme-color content=#343A40>
 <meta name=viewport content="maximum-scale=1,user-scalable=0,width=device-width">
 <meta name=description content="Code Golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.">
 
@@ -12,23 +13,21 @@
 
 <header>
     <nav>
-        {{- /**/ -}}
-        <a href=/>Home</a>
-        {{- /**/ -}}
-        <a href=/about>About</a>
-        {{- /**/ -}}
-        <a href=/scores/all-holes/all-langs>Scores</a>
-        {{- /**/ -}}
-        <a href=/stats>Stats</a>
-        {{- /**/ -}}
+        <a {{ if ne             .Path "/"         }} href=/       title=Home                       {{ end }}></a>
+        <a {{ if ne             .Path "/about"    }} href=/about  title=About                      {{ end }}></a>
+        <a {{ if ne             .Path "/ideas"    }} href=/ideas  title=Ideas                      {{ end }}></a>
+        <a {{ if ne             .Path "/recent"   }} href=/recent title="Recent Solutions"         {{ end }}></a>
+        <a {{ if not (hasPrefix .Path "/scores/") }} href=/scores/all-holes/all-langs title=Scores {{ end }}></a>
+        <a {{ if ne             .Path "/stats"    }} href=/stats  title=Statistics                 {{ end }}></a>
+        <div></div>
     {{ if .Login }}
-        <a href=/logout id=logout title=Logout></a>
-        <a href="/users/{{ .Login }}" id=me>
-            <img src="//avatars.githubusercontent.com/{{ .Login }}?s=30">
-            {{ .Login }}
+        {{ $profile := (print "/users/" .Login) }}
+        <a {{ if ne .Path $profile }} href={{ $profile }} title=Profile {{ end }}>
+            <img src="//avatars.githubusercontent.com/{{ .Login }}?s=28">
         </a>
+        <a href=/log-out title="Log Out"></a>
     {{ else }}
-        <a href="{{ .LoginURL }}" id=login>Login with GitHub</a>
+        <a href="{{ .LogInURL }}" title="Log In"></a>
     {{ end }}
     </nav>
 </header>

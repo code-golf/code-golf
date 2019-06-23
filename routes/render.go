@@ -8,10 +8,17 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
-	"strconv"
 	"strings"
+	"time"
 
 	"github.com/JRaspass/code-golf/cookie"
+	"github.com/JRaspass/code-golf/pretty"
+)
+
+const (
+	day   = 24 * time.Hour
+	week  = 7 * day
+	month = 4 * week
 )
 
 func ord(i int) string {
@@ -33,15 +40,41 @@ func ord(i int) string {
 }
 
 var tmpl = template.New("").Funcs(template.FuncMap{
-	// NOTE Only handles 0 - 999,999
-	"comma": func(i int) string {
-		if i > 999 {
-			return fmt.Sprintf("%d,%03d", i/1000, i%1000)
+	"comma":     pretty.Comma,
+	"hasPrefix": strings.HasPrefix,
+	"hasSuffix": strings.HasSuffix,
+	"ord":       ord,
+	"title":     strings.Title,
+	"time": func(t time.Time) template.HTML {
+		var sb strings.Builder
+
+		rfc := t.Format(time.RFC3339)
+
+		sb.WriteString("<time datetime=")
+		sb.WriteString(rfc)
+		sb.WriteString(" title=")
+		sb.WriteString(rfc)
+		sb.WriteRune('>')
+
+		switch diff := time.Now().Sub(t); true {
+		case diff < 2*time.Minute:
+			sb.WriteString("1 min ago")
+		case diff < 2*time.Hour:
+			fmt.Fprintf(&sb, "%d mins ago", diff/time.Minute)
+		case diff < 2*day:
+			fmt.Fprintf(&sb, "%d hours ago", diff/time.Hour)
+		case diff < 2*week:
+			fmt.Fprintf(&sb, "%d days ago", diff/day)
+		case diff < 2*month:
+			fmt.Fprintf(&sb, "%d weeks ago", diff/week)
+		default:
+			fmt.Fprintf(&sb, "%d months ago", diff/month)
 		}
 
-		return strconv.Itoa(i)
+		sb.WriteString("</time>")
+
+		return template.HTML(sb.String())
 	},
-	"ord": ord,
 })
 
 func init() {
@@ -98,16 +131,17 @@ func Render(
 	)
 
 	args := struct {
-		CommonCssPath, Login, LoginURL, Title string
-		Data                                  interface{}
+		CommonCssPath, Login, LogInURL, Path, Title string
+		Data                                        interface{}
 	}{
 		CommonCssPath: commonCssPath,
 		Data:          data,
+		Path:          r.URL.Path,
 		Title:         title,
 	}
 
 	if _, args.Login = cookie.Read(r); args.Login == "" {
-		args.LoginURL = "//github.com/login/oauth/authorize?client_id=7f6709819023e9215205&scope=user:email&redirect_uri=https://code-golf.io/callback?redirect_uri%3D" + url.QueryEscape(url.QueryEscape(r.RequestURI))
+		args.LogInURL = "//github.com/login/oauth/authorize?client_id=7f6709819023e9215205&scope=user:email&redirect_uri=https://code-golf.io/callback?redirect_uri%3D" + url.QueryEscape(url.QueryEscape(r.RequestURI))
 	}
 
 	w.WriteHeader(code)

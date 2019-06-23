@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"database/sql"
 	"net/http"
 
 	"github.com/JRaspass/code-golf/cookie"
@@ -9,29 +8,25 @@ import (
 )
 
 func hole(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	type solution struct{ Code, Lang string }
-
 	data := struct {
-		Hole                          Hole
-		HoleCssPath, HoleJsPath, Lang string
-		Langs                         []Lang
-		Solutions                     []solution
+		HideDetails             bool
+		Hole                    Hole
+		HoleCssPath, HoleJsPath string
+		Langs                   []Lang
+		Solutions               map[string]string
 	}{
 		Hole:        holeByID[r.URL.Path[1:]],
 		HoleCssPath: holeCssPath,
 		HoleJsPath:  holeJsPath,
 		Langs:       langs,
+		Solutions:   map[string]string{},
+	}
+
+	if c, _ := r.Cookie("hide-details"); c != nil {
+		data.HideDetails = true
 	}
 
 	if userID, _ := cookie.Read(r); userID != 0 {
-		// Fetch the latest successful lang.
-		if err := db.QueryRow(
-			"SELECT lang FROM solutions WHERE user_id = $1 AND hole = $2",
-			userID, data.Hole.ID,
-		).Scan(&data.Lang); err != nil && err != sql.ErrNoRows {
-			panic(err)
-		}
-
 		// Fetch all the code per lang.
 		rows, err := db.Query(
 			`SELECT code, lang
@@ -46,13 +41,13 @@ func hole(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		defer rows.Close()
 
 		for rows.Next() {
-			var solution solution
+			var code, lang string
 
-			if err := rows.Scan(&solution.Code, &solution.Lang); err != nil {
+			if err := rows.Scan(&code, &lang); err != nil {
 				panic(err)
 			}
 
-			data.Solutions = append(data.Solutions, solution)
+			data.Solutions[lang] = code
 		}
 
 		if err := rows.Err(); err != nil {

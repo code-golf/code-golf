@@ -60,7 +60,7 @@ for name in Bash Brainfuck C Haskell J JavaScript Julia Lisp Lua Nim Perl Perl\ 
     ver=${ver/ (*/}
 
     html+="+
-        \"<tr><th class=$lang>$name<td>$ver<td><a href=${urls[$lang]}></a>\""
+        \"<tr><th class=$lang>$name<td>$ver<td class=wide><a href=${urls[$lang]}>website</a>\""
 
     id=`docker create code-golf-$lang`
 

@@ -1,349 +1,457 @@
 @font-face {
-    font-family: emoji;
-    src: url('twemojiWoff2');
-    unicode-range: U+2702, U+1F48E, U+1F4C4, U+1F596, U+1F98E;
+    font-family: font;
+    src: url(fontWoff2);
+    unicode-range: U+F???;
+}
+
+:root {
+    --background: #FDFDFD;
+    --color:      #343A40;
+    /* https://flatuicolors.com */
+    --red:        #FC5C65BB;
+    --orange:     #FD9644BB;
+    --yellow:     #FED330BB;
+    --green:      #26DE81BB;
+    --blue:       #45AAF2BB;
+    --purple:     #8C7AE6BB;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+a { color: #0366d6 }
+
+a:not(:hover) { text-decoration: none }
+a:not([href]) { cursor: auto }
+
+blockquote {
+    margin-left: 1rem;
+    white-space: pre;
 }
 
 body {
-    font-family: emoji, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    font-size: 16px;
-    margin: 50px 0 0;
+    background: var(--background);
+    color: var(--color);
+    font: 16px font, system-ui, -apple-system, sans-serif;
 }
 
-body > ul {
-    display: table;
-    margin: auto;
-    padding: 7px 0 0;
-}
+caption { caption-side: bottom }
 
-body > ul li {
-    display: inline;
-}
+dd { margin: 1rem }
+dt { font-weight: bold }
 
-body > ul li::before {
-    content: '■';
-    font-size: 24px;
-    line-height: 24px;
-    margin: 0 5px;
-}
+details .grid { padding-top: 1rem }
 
-body > ul li:first-child::before {
-    color: #3d8b3d;
-    margin-left: 0;
-}
+h1 { font-size: 1.75rem }
 
-body > ul li:nth-child(2)::before {
-    color: #df8a13;
-}
-
-body > ul li:nth-child(3)::before {
-    color: #b52b27;
-}
-
-div a, table a {
-    color: #000;
-    text-decoration: none;
-}
-
-dd {
-    margin: 20px;
-}
-
-dt {
-    font-weight: bold;
+h1 a {
+    float: right;
+    margin-left: 1rem;
 }
 
 header {
-    background: #222;
-    position: fixed;
+    background: var(--color);
+    position: sticky;
     top: 0;
-    width: 100%;
-    z-index: 5;
+    z-index: 9;
 }
 
-main,
-#status > div {
-    margin: auto;
-    max-width: 980px;
-    padding: 10px;
-}
-
-header nav {
-    font-size: 16px;
-    margin: auto;
-    max-width: 980px;
-}
-
-header nav a {
-    background: 10px / 30px no-repeat;
-    color: #999;
+header a {
+    color: var(--background);
     display: inline-block;
-    height: 30px;
-    line-height: 30px;
-    padding: 10px;
-    padding-left: 50px;
+    font-size: 1.5rem;
+    height: 2.75rem;
+    line-height: 2.75rem;
+    position: relative;
+    text-align: center;
     text-decoration: none;
+    width: 2.75rem;
 }
 
-header nav a:first-child        { background-image: svg(home#999) }
-header nav a:first-child:hover  { background-image: svg(home#fff) }
-header nav a:nth-child(2)       { background-image: svg(question-circle#999) }
-header nav a:nth-child(2):hover { background-image: svg(question-circle#fff) }
-header nav a:nth-child(3)       { background-image: svg(list-ol#999) }
-header nav a:nth-child(3):hover { background-image: svg(list-ol#fff) }
-header nav a:nth-child(4)       { background-image: svg(chart-area#999) }
-header nav a:nth-child(4):hover { background-image: svg(chart-area#fff) }
-
-header nav a:nth-child(5), header nav a:nth-child(6) {
-    float: right;
+header a:hover,
+header a:not([href]) {
+    background: var(--background);
+    color: var(--color);
 }
 
-header nav a:hover {
-    background-color: #000;
-    color: #fff;
-}
-
-header nav img {
+header img {
     border-radius: 50%;
-    height: 30px;
-    left: 10px;
+    bottom: 0;
+    height: 1.75rem;
+    left: 0;
+    margin: auto;
     position: absolute;
-    width: 30px;
+    right: 0;
+    top: 0;
+    width: 1.75rem;
 }
 
-pre,
-.CodeMirror,
-#hole table {
-    font-family: emoji, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+header div { flex: 1 }
+header nav { display: flex }
+
+header nav, main {
+    margin: auto;
+    max-width: 1000px;
+    width: 100%;
 }
 
-select {
-    background: #eee;
-    border: 1px solid #ddd;
-    margin-bottom: 10px;
-    padding: 10px;
-    width: calc(50% - 5px);
+main {
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: minmax(0, 1fr);
+    padding: 1rem;
 }
 
-select:first-child {
-    margin-right: 10px;
+path:nth-child(1) { fill: var(--red)    }
+path:nth-child(2) { fill: var(--orange) }
+path:nth-child(3) { fill: var(--yellow) }
+path:nth-child(4) { fill: var(--green)  }
+path:nth-child(5) { fill: var(--blue)   }
+path:nth-child(6) { fill: var(--purple) }
+
+summary {
+    background: var(--color);
+    border: 1px solid var(--color);
+    color: var(--background);
+    cursor: pointer;
+    display: block !important;
+    line-height: 2rem;
+    padding: 0 .5rem;
 }
+
+summary:before {
+    content: '';
+    margin-right: .5rem;
+}
+
+summary:focus { outline: none }
+
+summary:hover {
+    background: inherit !important;
+    color: inherit !important;
+}
+
+details[open] summary:before { content: '' }
+
+summary::-webkit-details-marker { display: none }
 
 sup {
-    font-size: 10px;
+    font-size: .75em;
     line-height: 0;
 }
 
-table {
-    border: 1px solid #ddd;
-    border-collapse: collapse;
-}
+svg { transform: rotate(-90deg) }
+
+table { border-spacing: 0 }
+
+tbody > :nth-child(even) { background: #eee }
+
+tbody th { text-align: right }
+
+tbody tr > :first-child { border-left: 1px solid var(--color) }
+tbody tr > :last-child { border-right: 1px solid var(--color) }
 
 td, th {
-    border-top: 1px solid #ddd;
-    height: 20px;
-    line-height: 20px;
-    padding: 10px;
-}
-
-td[colspan] {
-    text-align: center;
-}
-
-td a:hover {
-    text-decoration: underline;
+    border-bottom: 1px solid var(--color);
+    line-height: 2rem;
+    padding: 0 .5rem;
+    text-align: left;
 }
 
 td img {
     border-radius: 50%;
-    height: 26px;
-    left: 7px;
-    position: absolute;
-    top: 7px;
-    width: 26px;
+    height: 1.5rem;
+    margin-right: .5rem;
+    vertical-align: middle;
+    width: 1.5rem !important;
 }
 
-th {
-    text-align: right;
+thead th {
+    background: var(--background);
+    border-bottom-width: 2px;
 }
 
-tr:first-child td {
-    border: 0;
-}
-
-tr:nth-child(even) { background: #eee }
-tr:nth-child(odd)  { background: #fff }
-tr.me              { background: #5cf }
-
-.Fast {
-    background: #3d8b3d;
-    border: 1px solid #3d8b3d;
-}
-
-.Fast > a:hover {
-    background-color: #5cb85c !important;
-}
-
-.Medium {
-    background: #df8a13;
-    border: 1px solid #df8a13;
-}
-
-.Medium > a:hover {
-    background-color: #f0ad4e !important;
-}
-
-.Slow {
-    background: #b52b27;
-    border: 1px solid #b52b27;
-}
-
-.Slow > a:hover {
-    background-color: #d9534f !important;
-}
-
-.bash       { background: svg(bash#000)       center right 7px / 26px no-repeat }
-.brainfuck  { background: svg(brainfuck#000)  center right 7px / 26px no-repeat }
-.c          { background: svg(c#000)          center right 7px / 26px no-repeat }
-.haskell    { background: svg(haskell#000)    center right 7px / 26px no-repeat }
-.j          { background: svg(j#000)          center right 7px / 26px no-repeat }
-.javascript { background: svg(javascript#000) center right 7px / 26px no-repeat }
-.julia      { background: svg(julia#000)      center right 7px / 26px no-repeat }
-.lisp       { background: svg(lisp#000)       center right 7px / 26px no-repeat }
-.lua        { background: svg(lua#000)        center right 7px / 26px no-repeat }
-.nim        { background: svg(nim#000)        center right 7px / 26px no-repeat }
-.perl       { background: svg(perl#000)       center right 7px / 26px no-repeat }
-.perl6      { background: svg(perl6#000)      center right 7px / 26px no-repeat }
-.php        { background: svg(php#000)        center right 7px / 26px no-repeat }
-.python     { background: svg(python#000)     center right 7px / 26px no-repeat }
-.ruby       { background: svg(ruby#000)       center right 7px / 26px no-repeat }
-
-.scores td {
+.btn {
+    border: solid 1px var(--color);
+    color: var(--color);
+    display: inline-block;
+    font-size: 1rem;
+    font-weight: bold;
+    line-height: 1;
+    padding: .5rem;
+    user-select: none;
     white-space: nowrap;
 }
 
-.scores td:nth-child(2) {
+.btn:hover {
+    background: none;
+    color: var(--color);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.card {
+    align-items: end;
+    border: solid 2px var(--color);
+    color: #343a40;
+    cursor: pointer;
+    display: grid;
+    grid-gap: .5rem;
+    grid-template-columns: 1fr min-content;
+    padding: .5rem;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.card:hover {
+    background: none !important;
+    color: var(--color);
+}
+
+.card h2 {
+    font-size: 1.25rem;
+    grid-column: span 2;
+    line-height: 1.25;
     overflow: hidden;
-    padding-left: 45px;
-    position: relative;
     text-overflow: ellipsis;
+}
+
+.card p { white-space: normal }
+
+.color:nth-of-type(6n+1), .red    { background: var(--red)    }
+.color:nth-of-type(6n+2), .orange { background: var(--orange) }
+.color:nth-of-type(6n+3), .yellow { background: var(--yellow) }
+.color:nth-of-type(6n+4), .green  { background: var(--green)  }
+.color:nth-of-type(6n+5), .blue   { background: var(--blue)   }
+.color:nth-of-type(6n+6), .purple { background: var(--purple) }
+
+.grid {
+    align-items: center;
+    display: grid;
+    grid-gap: 1rem;
+}
+
+/* TODO Need a dark version */
+.me { background: var(--blue) !important }
+
+.nav > * {
+    color: inherit;
+    display: inline-block;
+    height: 2rem;
+    line-height: 2rem;
+    padding: 0 .5rem;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.nav > .on,
+.nav > :hover,
+.nav > :not([href]) {
+    background: var(--color);
+    color: var(--background);
+}
+
+.pie {
+    grid-column: span 2;
+    grid-gap: 1rem !important;
+    grid-template-columns: 2fr 1fr;
+}
+
+.pie h2 { text-align: center }
+
+.pie li {
+    align-items: center;
+    display: grid;
+    font-weight: bold;
+    padding: .5rem;
+    white-space: nowrap;
+}
+
+.pie span {
+    display: block;
+    font-size: .75rem;
+    font-weight: normal;
+}
+
+.pie svg {
+    align-self: center;
+}
+
+.pie ul {
+    display: grid;
+    list-style: none;
+    padding: 0;
+}
+
+.right { text-align: right }
+
+.scores a { color: var(--color) }
+
+.scores td { white-space: nowrap }
+
+.scores tr :nth-child(2) {
+    max-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     width: 100%;
 }
 
-.scores td:nth-child(3) {
-    padding-right: 40px;
-    text-align: right;
+.span { grid-column: 1 / -1 }
+
+.sticky th {
+    position: sticky;
+    top: 2.75rem;
 }
 
-.scores td:nth-child(3):not([class]) {
-    padding-right: 5px;
-}
+.text-red { color: var(--red) }
 
-.scores td:nth-child(4) {
-    color: #999;
-    font-size: 12px;
-    font-style: italic;
-    padding-left: 0;
-}
-
-.scores td:nth-child(5) {
-    text-align: right;
-}
-
-#failing {
-    background: #ff6961;
-    border: 1px solid #b52b27;
-    margin: 60px 10px 0;
-    padding: 10px;
-}
-
-#failing a:hover {
-    text-decoration: underline;
-}
-
-#home {
+#alert {
+    background: var(--yellow);
+    border: solid 1px var(--color);
     display: grid;
-    grid-gap: 10px;
-    grid-template-columns: repeat(auto-fill, minmax(32ch, 1fr));
-    max-width: unset;
+    grid-template-columns: min-content 1fr;
+    padding: 1rem;
 }
 
-#home div {
-    border-radius: 10px;
-    overflow: hidden;
-}
+#alert:before { content: '' }
 
-#home div > a {
-    background: svg(external-link-square#fff) top 6px right 6px / 15px no-repeat;
-    color: #fff;
-    display: block;
-    font-size: 26px;
-    overflow: hidden;
-    padding: 10px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-#home div > a:last-child {
-    background: none;
-    font-size: 10px;
+#chars {
+    border-bottom: 1px solid var(--color);
     font-weight: bold;
-    padding: 5px;
-    text-align: center;
+    line-height: 2rem;
 }
 
-#home table {
-    border: 0;
+#header                { grid-template-columns: 1fr min-content min-content min-content }
+#ideas, #index         { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
+#scores > :first-child { grid-template-columns: 1fr min-content }
+#trophies              { grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)) }
+
+#hole thead a { float: right }
+
+#hole .scores td { border-left: 0 }
+
+#index > .grid {
+    border: 2px solid var(--color);
+    padding: 1rem;
 }
 
-#login       { background-image: svg(sign-in#999) }
-#login:hover { background-image: svg(sign-in#fff) }
-
-#logout {
-    background-image: svg(sign-out#999);
-    padding: 10px;
-    width: 30px;
+#index .nav {
+    display: flex;
+    justify-content: flex-end;
 }
 
-#logout:hover { background-image: svg(sign-out#fff) }
+#matrix {
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+#matrix a {
+    align-items: center;
+    color: var(--color);
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    width: 100%;
+}
+
+#matrix a:hover {
+    background: var(--color);
+    color: var(--background);
+    text-decoration: none;
+}
+
+#matrix td {
+    border: 1px solid var(--color);
+}
+
+#matrix td,
+#matrix th {
+    height: 2rem;
+    line-height: 1rem;
+    padding: 0;
+    width: 2rem;
+}
+
+#matrix th a {
+    box-sizing: border-box;
+    justify-content: flex-end;
+    padding: 1rem;
+}
+
+#matrix tr:first-child th:first-child {
+    width: 220px;
+}
 
 #me {
-    padding-left: 50px;
     position: relative;
+    top: -50vh;
 }
 
-#scores {
-    max-width: 600px;
+#profile {
+    grid-row-gap: 0;
+    grid-template-columns: min-content 1fr;
 }
 
-#versions a {
-    background: svg(globe#000) center / 26px no-repeat;
-    display: block;
-    height: 26px;
-    width: 26px;
+#profile img {
+    border-radius: 2rem;
+    grid-row: span 4;
+    height: 6rem;
+    width: 6rem;
 }
 
-#versions a:hover {
-    background-image: svg(globe#3498db);
+#recent, #scores { max-width: 40rem }
+
+#recent tr :nth-child(1),
+#recent tr :nth-child(2) {
+    max-width: 1.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 50%;
 }
 
-#versions th {
-    padding-right: 50px;
+#run > span { margin: 1rem }
+
+#stats { grid-template-columns: repeat(4, 1fr) }
+
+#stats div {
+    border: 2px solid var(--color);
+    display: grid;
+    grid-gap: .5rem;
+    padding: 1rem;
 }
 
-@media(max-width: 580px) {
-    header nav a:nth-child(1),
-    header nav a:nth-child(2),
-    header nav a:nth-child(3),
-    header nav a:nth-child(4) {
-        overflow: hidden;
-        padding-right: 0;
-        vertical-align: bottom;
-        width: 0;
+#wrapper {
+    display: grid;
+    grid-template-columns: 1fr 15rem;
+    grid-template-rows: min-content 1fr;
+}
+
+#wrapper .scores { grid-row: span 2 }
+
+@media (max-width: 34rem) {
+    .wide { display: none }
+
+    #about  td:nth-child(2),
+    #scores td:nth-child(4) {
+        border-right: 1px solid var(--color);
     }
 
-    #matrix,
-    .scores td:nth-child(n+4) {
-        display: none;
+    #stats { grid-template-columns: 1fr 1fr }
+
+    #trophies, #wrapper { grid-template-columns: 1fr }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background: #343a40;
+        --color: #fdfdfd;
     }
+
+    a { color: #45aaf2 }
+
+    tbody > :nth-child(even) { background: #444a50 }
 }

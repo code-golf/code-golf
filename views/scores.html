@@ -1,27 +1,96 @@
 {{ template "header" . }}
 
-<script defer src={{ .Data.ScoresJsPath }}></script>
-<script defer src={{ .Data.TimeJsPath   }}></script>
-
 {{ $holeID := .Data.HoleID }}
 {{ $langID := .Data.LangID }}
+{{ $login  := .Login }}
+
+{{ $allHoles := eq $holeID "all-holes" }}
 
 <main id=scores>
-    <select id=hole>
-        <option value=all-holes>All Holes
-    {{ range .Data.Holes }}
-        <option {{ if eq .ID $holeID }}selected{{ end }} value={{ .ID }}>{{ .Name }}
-    {{ end }}
-    </select>
-    {{- /* FIXME Use grid not margin & width */ -}}
-    <select id=lang>
-        <option value=all-langs>All Langs
-    {{ range .Data.Langs }}
-        <option {{ if eq .ID $langID }}selected{{ end }} value={{ .ID }}>{{ .Name }}
-    {{ end }}
-    </select>
+    <h1>
+        Scores
 
-    <table class=scores>
-        {{ .Data.Table }}
+    {{ if .Data.Next }}
+        <a class="btn blue" href="/scores/{{ $holeID }}/{{ $langID }}/{{ .Data.Next }}">
+             <span class=wide>Next</span>
+        </a>
+    {{ end }}
+
+{{ if .Data.Prev }}
+    {{ if eq .Data.Prev 1 }}
+        <a class="btn blue" href="/scores/{{ $holeID }}/{{ $langID }}">
+             <span class=wide>Prev</span>
+        </a>
+    {{ else }}
+        <a class="btn blue" href="/scores/{{ $holeID }}/{{ $langID }}/{{ .Data.Prev }}">
+             <span class=wide>Prev</span>
+        </a>
+    {{ end }}
+{{ end }}
+
+    {{ if not $allHoles }}
+        <a class="btn green" href='/{{ $holeID }}{{ if ne $langID "all-langs" }}#{{ $langID }}{{ end }}'>
+             Play Hole
+        </a>
+    {{ end }}
+
+        {{/* TODO <a class="btn blue" href=#me> Find Me</a> */}}
+    </h1>
+    <details class=nav>
+        {{ if eq $holeID "all-holes" }}
+            <summary>All Holes</summary>
+        {{ else }}
+            <a href="/scores/all-holes/{{ $langID }}">All Holes</a>
+        {{ end }}
+
+        {{ range .Data.Holes }}
+            {{ if eq $holeID .ID }}
+                <summary>{{ .Name }}</summary>
+            {{ else }}
+                <a href="/scores/{{ .ID }}/{{ $langID }}">{{ .Name }}</a>
+            {{ end }}
+        {{ end }}
+    </details>
+
+    <details class=nav>
+        {{ if eq $langID "all-langs" }}
+            <summary>All Langs</summary>
+        {{ else }}
+            <a href="/scores/{{ $holeID }}/all-langs">All Langs</a>
+        {{ end }}
+
+        {{ range .Data.Langs }}
+            {{ if eq $langID .ID }}
+                <summary>{{ .Name }}</summary>
+            {{ else }}
+                <a href="/scores/{{ $holeID }}/{{ .ID }}">{{ .Name }}</a>
+            {{ end }}
+        {{ end }}
+    </details>
+
+    <table class="scores sticky">
+        <thead>
+            <tr>
+                <th>Rank
+                <th>Golfer
+                <th class=right>{{ if $allHoles }}Holes{{ else }}Lang{{ end }}
+                <th class=right>Points
+                <th class="right wide">Strokes
+                <th class="right wide">Submitted
+        <tbody>
+        {{- range .Data.Scores -}}
+            {{ $me := eq $login .Login }}
+            <tr{{ if $me }} class=me {{ end }}>
+                <td>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup>{{ if $me }}<p id=me>{{ end }}
+                <td>
+                    <a href="/users/{{ .Login }}">
+                        <img src="//avatars.githubusercontent.com/{{ .Login }}?s=24">
+                        {{- .Login -}}
+                    </a>
+                <td class=right>{{ if $allHoles }}{{ .Holes }}{{ else }}{{ .Lang.Name }}{{ end }}
+                <td class=right>{{ comma .Points }}
+                <td class="right wide">{{ comma .Strokes }}
+                <td class="right wide">{{ time .Submitted }}
+        {{- end -}}
     </table>
 </main>

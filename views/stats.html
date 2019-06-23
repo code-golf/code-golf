@@ -1,40 +1,29 @@
 {{ template "header" . }}
 
-<link rel=stylesheet href={{ .Data.StatsCssPath }}>
-<script defer src={{ .Data.StatsJsPath }}></script>
-
-<main>
+<main id=stats>
+    <h1 class=span>Statistics</h1>
     <div>
-        <div>
-            <span data-x={{ .Data.Langs }}>0</span>
-            Languages
-        </div>
+        <h2>Langs</h2>
+        {{ .Data.Langs }}
     </div>
     <div>
-        <div>
-            <span data-x={{ .Data.Holes }}>0</span>
-            Holes
-        </div>
+        <h2>Holes</h2>
+        {{ .Data.Holes }}
     </div>
     <div>
-        <div>
-            <span data-x={{ .Data.Golfers }}>0</span>
-            Golfers
-        </div>
+        <h2>Golfers</h2>
+        {{ comma .Data.Golfers }}
     </div>
     <div>
-        <div>
-            <span data-x={{ .Data.Solutions }}>0</span>
-            Solutions
-        </div>
+        <h2>Solutions</h2>
+        {{ comma .Data.Solutions }}
     </div>
-    <div><div><canvas></canvas></div></div>
-    <div><div><canvas></canvas></div></div>
-    <div><div><canvas></canvas></div></div>
-    <div><div><canvas></canvas></div></div>
+    <div class=pie>
+        <h2 class=span>Solutions by Holes</h2>
+        {{ .Data.SolutionsByHole.HTML }}
+    </div>
+    <div class=pie>
+        <h2 class=span>Solutions by Langs</h2>
+        {{ .Data.SolutionsByLang.HTML }}
+    </div>
 </main>
-
-<script id=distributionOfHoles type=application/json>{{ .Data.DistributionOfHoles }}</script>
-<script id=distributionOfLangs type=application/json>{{ .Data.DistributionOfLangs }}</script>
-<script id=holesByDifficulty   type=application/json>{{ .Data.HolesByDifficulty   }}</script>
-<script id=solutionsByLang     type=application/json>{{ .Data.SolutionsByLang     }}</script>

@@ -7813,8 +7813,6 @@ let CodeMirror;
   function CodeMirror(place, options) {
     var this$1 = this;
 
-    if (!(this instanceof CodeMirror)) { return new CodeMirror(place, options) }
-
     this.options = options = options ? copyObj(options) : {};
     // Determine effective options based on given values and defaults.
     copyObj(defaults, options, false);

@@ -5,8 +5,6 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
-	"net/http/httputil"
-	"net/url"
 	"os"
 	"syscall"
 	"time"
@@ -46,13 +44,7 @@ func main() {
 		Handler: negroni.New(
 			negroni.HandlerFunc(func(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 				if r.Host == "ng.code-golf.io" {
-					url, _ := url.Parse("http://localhost:1337")
-
-					r.URL.Host = url.Host
-					r.URL.Scheme = url.Scheme
-					r.Host = url.Host
-
-					httputil.NewSingleHostReverseProxy(url).ServeHTTP(w, r)
+					http.Redirect(w, r, "https://code-golf.io", http.StatusPermanentRedirect)
 				} else {
 					next(w, r)
 				}
@@ -88,6 +80,7 @@ func main() {
 
 		for {
 			<-ticker.C
+			routes.Ideas()
 			routes.Stars()
 		}
 	}()

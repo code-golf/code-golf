@@ -11,22 +11,20 @@ import (
 func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	userID := 0
 	data := struct {
-		Holes                          []Hole
-		Langs                          []Lang
-		Login, TimeJsPath, UserCssPath string
-		Points                         int
-		Ranks                          map[string]map[string]int
-		Trophies                       []Trophy
-		TrophiesEarned                 map[string]*time.Time
+		Holes          []Hole
+		Langs          []Lang
+		Login          string
+		Points         int
+		Ranks          map[string]map[string]int
+		Trophies       []Trophy
+		TrophiesEarned map[string]*time.Time
 	}{
 		Holes:          holes,
 		Langs:          langs,
 		Login:          ps[0].Value,
 		Ranks:          map[string]map[string]int{},
-		TimeJsPath:     timeJsPath,
 		Trophies:       trophies,
 		TrophiesEarned: map[string]*time.Time{},
-		UserCssPath:    userCssPath,
 	}
 
 	if err := db.QueryRow(

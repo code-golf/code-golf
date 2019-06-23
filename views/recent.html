@@ -1,0 +1,29 @@
+{{ template "header" . }}
+
+{{ $login  := .Login }}
+
+<main id=recent>
+    <h1>Recent Solutions</h1>
+    <table class="scores sticky">
+        <thead>
+            <tr>
+                <th>Hole
+                <th>Golfer
+                <th class=wide>Lang
+                <th class="right wide">Strokes
+                <th class=right>Submitted
+        <tbody>
+        {{- range .Data -}}
+            <tr{{ if eq $login .Login }} class="me"{{ end }}>
+                <td><a href={{ .Hole.ID }}#{{ .Lang.ID }}>{{ .Hole.Name }}</a>
+                <td>
+                    <a href="/users/{{ .Login }}">
+                        <img src="//avatars.githubusercontent.com/{{ .Login }}?s=24">
+                        {{- .Login -}}
+                    </a>
+                <td class=wide>{{ .Lang.Name }}
+                <td class="right wide">{{ comma .Strokes }}
+                <td class=right>{{ time .Submitted }}
+        {{- end -}}
+    </table>
+</main>
