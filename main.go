@@ -5,6 +5,8 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"net/http/httputil"
+	"net/url"
 	"os"
 	"syscall"
 	"time"
@@ -30,7 +32,7 @@ func main() {
 		Cache:  autocert.DirCache("certs"),
 		Prompt: autocert.AcceptTOS,
 		HostPolicy: autocert.HostWhitelist(
-			"code-golf.io", "www.code-golf.io",
+			"code-golf.io", "ng.code-golf.io", "www.code-golf.io",
 		),
 	}
 
@@ -44,6 +46,19 @@ func main() {
 
 	server := &http.Server{
 		Handler: negroni.New(
+			negroni.HandlerFunc(func(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
+				if r.Host == "ng.code-golf.io" {
+					url, _ := url.Parse("http://localhost:1337")
+
+					r.URL.Host = url.Host
+					r.URL.Scheme = url.Scheme
+					r.Host = url.Host
+
+					httputil.NewSingleHostReverseProxy(url).ServeHTTP(w, r)
+				} else {
+					next(w, r)
+				}
+			}),
 			logger,
 			brotli.New(5),
 			recovery,
