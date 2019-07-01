@@ -24,8 +24,6 @@ func (*err500) FormatPanicError(w http.ResponseWriter, r *http.Request, _ *negro
 }
 
 func main() {
-	os.Setenv("GODEBUG", "tls13=1")
-
 	rand.Seed(time.Now().UTC().UnixNano())
 
 	certManager := autocert.Manager{
