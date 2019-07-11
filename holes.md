@@ -66,6 +66,7 @@ Transform
 * ISBN Check Digit **TODO**
 * Morse Decoder
 * Morse Encoder
+* Ordinal Numbers
 * Pangram Grep
 * Roman to Arabic
 * Seven Segment

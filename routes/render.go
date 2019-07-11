@@ -14,6 +14,24 @@ import (
 	"github.com/JRaspass/code-golf/cookie"
 )
 
+func ord(i int) string {
+	switch i % 10 {
+	case 1:
+		if i%100 != 11 {
+			return "st"
+		}
+	case 2:
+		if i%100 != 12 {
+			return "nd"
+		}
+	case 3:
+		if i%100 != 13 {
+			return "rd"
+		}
+	}
+	return "th"
+}
+
 var tmpl = template.New("").Funcs(template.FuncMap{
 	// NOTE Only handles 0 - 999,999
 	"comma": func(i int) string {
@@ -23,23 +41,7 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 
 		return strconv.Itoa(i)
 	},
-	"ord": func(i int) string {
-		switch i % 10 {
-		case 1:
-			if i%100 != 11 {
-				return "st"
-			}
-		case 2:
-			if i%100 != 12 {
-				return "nd"
-			}
-		case 3:
-			if i%100 != 13 {
-				return "rd"
-			}
-		}
-		return "th"
-	},
+	"ord": ord,
 })
 
 func init() {

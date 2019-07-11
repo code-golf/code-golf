@@ -250,6 +250,10 @@ A Partridge in a Pear Tree.</blockquote>`,
 		"An odious number is a non-negative number that has an odd number of 1s in its binary expansion.<p>Print all the odious numbers from <b>0</b> to <b>50</b> inclusive, each on their own line.<p>Numbers that are not odious are called <a href=evil-numbers>evil numbers</a>.</p>",
 	}, {
 		"", "",
+		"ordinal-numbers", "Ordinal Numbers", "Fast",
+		"Given various integers as arguments, print the argument and its <a href=//en.wikipedia.org/wiki/Ordinal_number_%28linguistics%29>ordinal suffix</a>.",
+	}, {
+		"", "",
 		"pangram-grep", "Pangram Grep", "Medium",
 		"A pangram is a sentence that uses every letter of a given alphabet.<p>Write a program that will receive various sentences as arguments and print those that are valid pangrams.</p>",
 	}, {

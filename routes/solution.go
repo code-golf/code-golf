@@ -44,6 +44,8 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		args, out.Exp = brainfuck()
 	case "morse-decoder", "morse-encoder":
 		args, out.Exp = morse(in.Hole == "morse-decoder")
+	case "ordinal-numbers":
+		args, out.Exp = ordinalNumbers()
 	case "pangram-grep":
 		args, out.Exp = pangramGrep()
 	case "poker":
