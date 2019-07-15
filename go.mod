@@ -1,5 +1,7 @@
 module github.com/JRaspass/code-golf
 
+go 1.13
+
 require (
 	github.com/SeerUK/assert v1.0.0
 	github.com/buildkite/terminal v3.2.0+incompatible
