@@ -1,11 +1,11 @@
-FROM alpine:edge as builder
+FROM alpine:3.10 as builder
 
 RUN apk add --no-cache curl gcc libffi-dev linux-headers make musl-dev zlib-dev
 
-RUN curl https://www.python.org/ftp/python/3.7.3/Python-3.7.3.tar.xz \
+RUN curl https://www.python.org/ftp/python/3.7.4/Python-3.7.4.tar.xz \
   | tar xJf -
 
-RUN cd Python-3.7.3       \
+RUN cd Python-3.7.4       \
  && ./configure           \
     --prefix=/usr         \
     --with-lto            \

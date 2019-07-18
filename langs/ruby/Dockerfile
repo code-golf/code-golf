@@ -1,4 +1,4 @@
-FROM alpine:edge as builder
+FROM alpine:3.10 as builder
 
 RUN apk add --no-cache curl gcc linux-headers make musl-dev
 
@@ -17,6 +17,5 @@ FROM scratch
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
 COPY --from=0 /usr/bin/ruby            /usr/bin/
 COPY --from=0 /usr/lib/ruby/2.6.0      /usr/lib/ruby/2.6.0
-
 
 ENTRYPOINT ["/usr/bin/ruby", "-e", "puts RUBY_VERSION"]

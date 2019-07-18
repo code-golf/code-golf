@@ -1,4 +1,4 @@
-FROM alpine:edge as builder
+FROM alpine:3.10 as builder
 
 RUN apk add --no-cache cmake curl g++ gfortran libexecinfo-dev \
     linux-headers m4 make musl-dev patch perl python3 tar xz

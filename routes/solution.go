@@ -235,16 +235,7 @@ func runCode(hole, lang, code string, args []string, userID int) (string, string
 			"/usr/bin/nim", "--cc:tcc", "--hint.Processing:off",
 			"--nimcache:/tmp", "--verbosity:0", "-o:/tmp/code", "-r", "c", "-",
 		}
-	case "perl6":
-		cmd.Args = []string{
-			"/usr/bin/moar",
-			"--execname=perl6",
-			"--libpath=/usr/share/nqp/lib",
-			"--libpath=/usr/share/perl6/runtime",
-			"/usr/share/perl6/runtime/perl6.moarvm",
-			"-",
-		}
-	// Lua, Perl, Python, and Ruby are all sane.
+	// Lua, Perl, Perl 6, Python, and Ruby are all sane.
 	default:
 		cmd.Args = []string{"/usr/bin/" + lang, "-"}
 	}

@@ -18,7 +18,7 @@ declare -A urls=(
     ["ruby"]="//www.ruby-lang.org"
 )
 
-docker pull alpine:edge
+docker pull alpine:3.10
 
 cd langs
 
@@ -31,9 +31,7 @@ for name in Bash Brainfuck C Haskell J JavaScript Julia Lisp Lua Nim Perl Perl\ 
     mkdir $lang/rootfs
 
     # Tag the builder stage so "docker system prune" won't remove it.
-    if [ $lang != haskell -a $lang != nim ]; then
-        docker build --target builder -t quay.io/jraspass/$lang-builder $lang
-    fi
+    docker build --target builder -t code-golf-$lang-builder $lang
 
     docker build -t code-golf-$lang $lang
 
@@ -64,23 +62,18 @@ for name in Bash Brainfuck C Haskell J JavaScript Julia Lisp Lua Nim Perl Perl\ 
     html+="+
         \"<tr><th class=$lang>$name<td>$ver<td><a href=${urls[$lang]}></a>\""
 
-    id=`docker run -d code-golf-$lang`
+    id=`docker create code-golf-$lang`
 
     docker export $id | tar -C $lang/rootfs -xf -
 
-    docker rm -f $id
+    docker rm $id >/dev/null
 
-    # Remove the crap we gained from running the container, this is hacky.
-    rm -fr $lang/rootfs/{.dockerenv,dev,etc,proc,sys,tmp}
+    # Remove the crap we gained from creating the container, this is hacky.
+    rm -fr $lang/rootfs/{dev,etc,proc,sys,tmp}
 
-    mkdir $lang/rootfs/{old-root,proc,tmp}
+    mkdir $lang/rootfs/{etc,old-root,proc,tmp}
 
-    # Lisp & Python need UIDs to actually resolve, madness!
-    if [ $lang = lisp -o $lang = python ]; then
-        mkdir $lang/rootfs/etc
-
-        echo nobody:x:99:99::/: > $lang/rootfs/etc/passwd
-    fi
+    echo nobody:x:99:99::/: > $lang/rootfs/etc/passwd
 done
 
 echo "package routes
