@@ -204,7 +204,7 @@ func runCode(hole, lang, code string, args []string, userID int) (string, string
 	var stderr, stdout bytes.Buffer
 
 	if lang == "php" {
-		code = "<?php " + code + " ?>"
+		code = "<?php " + code + " ;"
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 7*time.Second)
