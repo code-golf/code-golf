@@ -2,14 +2,13 @@ FROM alpine:3.10 as builder
 
 RUN apk add --no-cache gcc git linux-headers make musl-dev perl
 
-RUN git clone git://github.com/rakudo/rakudo \
- && cd rakudo                                \
- && git checkout 2019.07                     \
- && CFLAGS=-flto ./Configure.pl              \
-    --gen-moar=f1b26bb                       \
-    --moar-option=--ar=gcc-ar                \
-    --prefix=/usr                            \
- && make -j`nproc` install                   \
+RUN git clone -b 2019.07.1 git://github.com/rakudo/rakudo \
+ && cd rakudo                                             \
+ && CFLAGS=-flto ./Configure.pl                           \
+    --gen-moar                                            \
+    --moar-option=--ar=gcc-ar                             \
+    --prefix=/usr                                         \
+ && make -j`nproc` install                                \
  && strip /usr/bin/perl6
 
 RUN rm -r /usr/share/nqp/lib/profiler \
