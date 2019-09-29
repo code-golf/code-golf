@@ -69,9 +69,14 @@ for name in Bash Brainfuck C Haskell J JavaScript Julia Lisp Lua Nim Perl Perl\ 
     docker rm $id >/dev/null
 
     # Remove the crap we gained from creating the container, this is hacky.
-    rm -fr $lang/rootfs/{dev,etc,proc,sys,tmp}
+    rm -fr $lang/rootfs/{dev,proc,sys,tmp}
 
-    mkdir $lang/rootfs/{etc,old-root,proc,tmp}
+    # Nim needs /etc/nim/nim.cfg to exist.
+    if [ $lang != nim ]; then
+        rm -fr $lang/rootfs/etc
+    fi
+
+    mkdir -p $lang/rootfs/{etc,old-root,proc,tmp}
 
     echo nobody:x:99:99::/: > $lang/rootfs/etc/passwd
 done
