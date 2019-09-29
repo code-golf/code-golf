@@ -2,10 +2,10 @@ FROM alpine:3.10 as builder
 
 RUN apk add --no-cache curl gcc linux-headers make musl-dev
 
-RUN curl https://cache.ruby-lang.org/pub/ruby/2.6/ruby-2.6.3.tar.xz \
+RUN curl https://cache.ruby-lang.org/pub/ruby/2.6/ruby-2.6.4.tar.xz \
   | tar xJf -
 
-RUN cd ruby-2.6.3         \
+RUN cd ruby-2.6.4         \
  && ./configure           \
     --disable-install-doc \
     --prefix=/usr         \
