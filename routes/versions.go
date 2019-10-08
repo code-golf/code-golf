@@ -15,4 +15,5 @@ const versionTable = "" +
 	"<tr><th class=perl6>Perl 6<td>Rakudo 2019.07.1 on MoarVM 2019.07.1 implementing Perl 6.d<td class=wide><a href=//perl6.org>website</a>" +
 	"<tr><th class=php>PHP<td>7.3.11<td class=wide><a href=//secure.php.net>website</a>" +
 	"<tr><th class=python>Python<td>3.8.0<td class=wide><a href=//www.python.org>website</a>" +
-	"<tr><th class=ruby>Ruby<td>2.6.5<td class=wide><a href=//www.ruby-lang.org>website</a>"
+	"<tr><th class=ruby>Ruby<td>2.6.5<td class=wide><a href=//www.ruby-lang.org>website</a>" +
+	"<tr><th class=x86>x86<td>NASM 2.14.02<td class=wide><a href=//www.nasm.us>website</a>"

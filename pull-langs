@@ -1,5 +1,5 @@
 #!/bin/sh
 
-for lang in bash brainfuck c haskell j javascript julia lisp lua perl perl6 php python ruby; do
+for lang in bash brainfuck c haskell j javascript julia lisp lua perl perl6 php python ruby x86; do
     docker pull quay.io/jraspass/$lang-builder
 done

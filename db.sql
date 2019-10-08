@@ -80,7 +80,8 @@ CREATE TYPE public.lang AS ENUM (
     'perl6',
     'php',
     'python',
-    'ruby'
+    'ruby',
+    'x86'
 );
 
 

@@ -16,13 +16,14 @@ declare -A urls=(
     ["php"]="//secure.php.net"
     ["python"]="//www.python.org"
     ["ruby"]="//www.ruby-lang.org"
+    ["x86"]="//www.nasm.us"
 )
 
 docker pull alpine:3.10
 
 cd langs
 
-for name in Bash Brainfuck C Haskell J JavaScript Julia Lisp Lua Nim Perl Perl\ 6 PHP Python Ruby; do
+for name in Bash Brainfuck C Haskell J JavaScript Julia Lisp Lua Nim Perl Perl\ 6 PHP Python Ruby x86; do
     lang=${name,,}      # lowercase
     lang=${lang// /}    # trim space
 
@@ -58,6 +59,7 @@ for name in Bash Brainfuck C Haskell J JavaScript Julia Lisp Lua Nim Perl Perl\ 
     ver=${ver% d8> }
     ver=${ver%  Copyright (C) 1994-2018 Lua.org, PUC-Rio}
     ver=${ver/ (*/}
+    ver=${ver/ compiled*/}
 
     html+="+
         \"<tr><th class=$lang>$name<td>$ver<td class=wide><a href=${urls[$lang]}>website</a>\""
