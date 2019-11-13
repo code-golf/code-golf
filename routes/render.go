@@ -80,22 +80,22 @@ func Render(
 ) {
 	header := w.Header()
 
-	header["Content-Language"] = []string{"en"}
-	header["Content-Type"] = []string{"text/html;charset=utf-8"}
-	header["Referrer-Policy"] = []string{"no-referrer"}
-	header["X-Content-Type-Options"] = []string{"nosniff"}
-	header["X-Frame-Options"] = []string{"DENY"}
-	header["Content-Security-Policy"] = []string{
-		"base-uri 'none';" +
-			"connect-src 'self';" +
-			"default-src 'none';" +
-			"form-action 'none';" +
-			"font-src 'self';" +
-			"frame-ancestors 'none';" +
-			"img-src 'self' data: avatars.githubusercontent.com;" +
-			"script-src 'self';" +
+	header.Set("Content-Language", "en")
+	header.Set("Content-Type", "text/html; charset=utf-8")
+	header.Set("Referrer-Policy", "no-referrer")
+	header.Set("X-Content-Type-Options", "nosniff")
+	header.Set("X-Frame-Options", "DENY")
+	header.Set("Content-Security-Policy",
+		"base-uri 'none';"+
+			"connect-src 'self';"+
+			"default-src 'none';"+
+			"form-action 'none';"+
+			"font-src 'self';"+
+			"frame-ancestors 'none';"+
+			"img-src 'self' data: avatars.githubusercontent.com;"+
+			"script-src 'self';"+
 			"style-src 'self'",
-	}
+	)
 
 	args := struct {
 		CommonCssPath, Login, LoginURL, Title string
