@@ -40,6 +40,7 @@ for ( (my $w = 'assets/twemoji.woff2'), <assets/*.{css,ico,js}> ) {
 
         print $fh <<'GO';
 	case "/favicon.ico":
+		w.Header().Set("Content-Type", "image/x-icon")
 		w.Write(faviconIco)
 GO
 
@@ -51,6 +52,8 @@ GO
 
         print $fh <<GO;
 	case "$path":
+		w.Header().Set("Cache-Control", "max-age=9999999,public")
+		w.Header().Set("Content-Type", "font/woff2")
 		w.Write($name)
 GO
 
@@ -91,14 +94,14 @@ GO
 
     print $fh <<GO;
 	case ${name}Path:
-		w.Header()["Cache-Control"] = []string{"max-age=9999999,public"}
-		w.Header()["Content-Type"] = []string{"$mime"}
+		w.Header().Set("Cache-Control", "max-age=9999999,public")
+		w.Header().Set("Content-Type", "$mime")
 
 		if strings.Contains(r.Header.Get("Accept-Encoding"), "br") {
-			w.Header()["Content-Encoding"] = []string{"br"}
+			w.Header().Set("Content-Encoding", "br")
 			w.Write(${name}Br)
 		} else {
-			w.Header()["Content-Encoding"] = []string{"gzip"}
+			w.Header().Set("Content-Encoding", "gzip")
 			w.Write(${name}Gz)
 		}
 GO
