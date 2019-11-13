@@ -1,4 +1,4 @@
-FROM golang:1.13.3-alpine
+FROM golang:1.13.4-alpine
 
 ENV GOBIN=/go GOCACHE=/go/.go/cache GOPATH=/go/.go/path TZ=Europe/London
 
