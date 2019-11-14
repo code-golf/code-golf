@@ -445,6 +445,8 @@ thead th {
     #trophies, #wrapper { grid-template-columns: 1fr }
 }
 
+/* TODO https://github.com/JRaspass/code-golf/issues/119
+
 @media (prefers-color-scheme: dark) {
     :root {
         --background: #343a40;
@@ -454,4 +456,4 @@ thead th {
     a { color: #45aaf2 }
 
     tbody > :nth-child(even) { background: #444a50 }
-}
+}*/
