@@ -25,6 +25,8 @@ const solutions = JSON.parse(document.querySelector('#solutions').innerText);
 const status    = document.querySelector('#status');
 const table     = document.querySelector('.scores');
 
+let lang;
+
 onload = () => {
     // Lock the editor's height in so we scroll.
     editor.style.height = `${editor.offsetHeight}px`;
@@ -40,8 +42,6 @@ onload = () => {
 
     details.ontoggle = () =>
         document.cookie = 'hide-details=' + (details.open ? ';Max-Age=0' : '');
-
-    let lang;
 
     (onhashchange = () => {
         lang = location.hash.slice(1);
