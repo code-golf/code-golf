@@ -48,6 +48,32 @@ func scoresMini(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	w.Write(json)
 }
 
+func scoresAll(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	var json []byte
+
+	if err := db.QueryRow(
+		`WITH solution_lengths AS (
+		    SELECT hole,
+		           lang,
+		           login,
+		           LENGTH(code) strokes,
+		           submitted
+		      FROM solutions
+		      JOIN users on user_id = id
+		      WHERE NOT failing
+		        AND $1 IN ('all-holes', hole::text)
+		        AND $2 IN ('all-langs', lang::text)
+		) SELECT COALESCE(JSON_AGG(solution_lengths), '[]') FROM solution_lengths`,
+		ps[0].Value,
+		ps[1].Value,
+	).Scan(&json); err != nil {
+		panic(err)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(json)
+}
+
 func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	holeID := ps[0].Value
 	langID := ps[1].Value
@@ -87,6 +113,11 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	if len(ps) == 3 {
 		if ps[2].Value == "mini" {
 			scoresMini(w, r, ps)
+			return
+		}
+
+		if ps[2].Value == "all" {
+			scoresAll(w, r, ps)
 			return
 		}
 
