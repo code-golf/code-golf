@@ -25,102 +25,104 @@ const solutions = JSON.parse(document.querySelector('#solutions').innerText);
 const status    = document.querySelector('#status');
 const table     = document.querySelector('.scores');
 
-// Lock the editor's height in so we scroll.
-editor.style.height = `${editor.offsetHeight}px`;
+onload = () => {
+    // Lock the editor's height in so we scroll.
+    editor.style.height = `${editor.offsetHeight}px`;
 
-const cm = new CodeMirror(editor, {autofocus: true, lineNumbers: true, lineWrapping: true});
+    const cm = new CodeMirror(editor, {autofocus: true, lineNumbers: true, lineWrapping: true});
 
-cm.on('change', () => {
-    const val = cm.getValue();
-    const len = strlen(val);
+    cm.on('change', () => {
+        const val = cm.getValue();
+        const len = strlen(val);
 
-    chars.innerText = `${len.toLocaleString('en')} character${len - 1 ? 's' : ''}`;
-});
-
-details.ontoggle = () =>
-    document.cookie = 'hide-details=' + (details.open ? ';Max-Age=0' : '');
-
-let lang;
-
-(onhashchange = () => {
-    lang = location.hash.slice(1);
-
-    // Kick 'em to Python if we don't know the chosen language.
-    if (!langs.find(l => l.id == lang))
-        location.hash = lang = 'python';
-
-    cm.setOption('mode', {name: lang == 'c' ? 'clike' : lang, startOpen: true});
-    cm.setValue(lang in solutions ? solutions[lang] : '');
-
-    picker.innerHTML = '';
-    picker.open = false;
-
-    for (const l of langs) {
-        let name = l.name;
-
-        if (l.id in solutions)
-            name += ` <sup>${strlen(solutions[l.id]).toLocaleString('en')}</sup>`;
-
-        picker.innerHTML += l.id == lang
-            ? `<a>${name}</a>` : `<a href=#${l.id}>${name}</a>`;
-    }
-
-    refreshScores();
-})();
-
-const submit = document.querySelector('#run a').onclick = async () => {
-    const res  = await fetch('/solution', {
-        method: 'POST',
-        body: JSON.stringify({
-            Code: cm.getValue(),
-            Hole: hole,
-            Lang: lang,
-        }),
+        chars.innerText = `${len.toLocaleString('en')} character${len - 1 ? 's' : ''}`;
     });
 
-    const data = await res.json();
-    const pass = data.Exp === data.Out && data.Out !== '';
+    details.ontoggle = () =>
+        document.cookie = 'hide-details=' + (details.open ? ';Max-Age=0' : '');
 
-    document.querySelector('h2').innerText
-        = pass ? 'Pass 😊️' : 'Fail ☹️';
+    let lang;
 
-    // Show args if we have 'em.
-    if (data.Argv) {
-        document.querySelector('#arg').style.display = 'block';
-        const argDiv = document.querySelector('#arg div');
-        // Remove all arg spans
-        while (argDiv.firstChild) {
-            argDiv.removeChild(argDiv.firstChild);
+    (onhashchange = () => {
+        lang = location.hash.slice(1);
+
+        // Kick 'em to Python if we don't know the chosen language.
+        if (!langs.find(l => l.id == lang))
+            location.hash = lang = 'python';
+
+        cm.setOption('mode', {name: lang == 'c' ? 'clike' : lang, startOpen: true});
+        cm.setValue(lang in solutions ? solutions[lang] : '');
+
+        picker.innerHTML = '';
+        picker.open = false;
+
+        for (const l of langs) {
+            let name = l.name;
+
+            if (l.id in solutions)
+                name += ` <sup>${strlen(solutions[l.id]).toLocaleString('en')}</sup>`;
+
+            picker.innerHTML += l.id == lang
+                ? `<a>${name}</a>` : `<a href=#${l.id}>${name}</a>`;
         }
-        // Add a span for each arg
-        for (const arg of data.Argv) {
-            argDiv.appendChild(document.createElement('span'));
-            argDiv.lastChild.innerText = arg;
-            argDiv.appendChild(document.createTextNode(' '));
+
+        refreshScores();
+    })();
+
+    const submit = document.querySelector('#run a').onclick = async () => {
+        const res  = await fetch('/solution', {
+            method: 'POST',
+            body: JSON.stringify({
+                Code: cm.getValue(),
+                Hole: hole,
+                Lang: lang,
+            }),
+        });
+
+        const data = await res.json();
+        const pass = data.Exp === data.Out && data.Out !== '';
+
+        document.querySelector('h2').innerText
+            = pass ? 'Pass 😊️' : 'Fail ☹️';
+
+        // Show args if we have 'em.
+        if (data.Argv) {
+            document.querySelector('#arg').style.display = 'block';
+            const argDiv = document.querySelector('#arg div');
+            // Remove all arg spans
+            while (argDiv.firstChild) {
+                argDiv.removeChild(argDiv.firstChild);
+            }
+            // Add a span for each arg
+            for (const arg of data.Argv) {
+                argDiv.appendChild(document.createElement('span'));
+                argDiv.lastChild.innerText = arg;
+                argDiv.appendChild(document.createTextNode(' '));
+            }
         }
-    }
-    else
-        document.querySelector('#arg').style.display = '';
+        else
+            document.querySelector('#arg').style.display = '';
 
-    // Show err if we have some and we're not passing.
-    if (data.Err && !pass) {
-        document.querySelector('#err').style.display = 'block';
-        document.querySelector('#err div').innerHTML = data.Err.replace(/\n/g, '<br>');
-    }
-    else
-        document.querySelector('#err').style.display = '';
+        // Show err if we have some and we're not passing.
+        if (data.Err && !pass) {
+            document.querySelector('#err').style.display = 'block';
+            document.querySelector('#err div').innerHTML = data.Err.replace(/\n/g, '<br>');
+        }
+        else
+            document.querySelector('#err').style.display = '';
 
-    // Always show exp & out.
-    document.querySelector('#exp div').innerText = data.Exp;
-    document.querySelector('#out div').innerText = data.Out;
+        // Always show exp & out.
+        document.querySelector('#exp div').innerText = data.Exp;
+        document.querySelector('#out div').innerText = data.Out;
 
-    status.className = pass ? 'green' : 'red';
-    status.style.display = 'block';
+        status.className = pass ? 'green' : 'red';
+        status.style.display = 'block';
 
-    refreshScores();
+        refreshScores();
+    };
+
+    onkeydown = e => e.ctrlKey && e.key == 'Enter' ? submit() : undefined;
 };
-
-onkeydown = e => e.ctrlKey && e.key == 'Enter' ? submit() : undefined;
 
 async function refreshScores() {
     const url    = `/scores/${hole}/${lang}`;
