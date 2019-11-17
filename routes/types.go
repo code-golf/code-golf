@@ -132,6 +132,10 @@ A Partridge in a Pear Tree.</blockquote>`,
 		"Print the lyrics to the song 99 Bottles of Beer.</p>",
 	}, {
 		"", "",
+		"abundant-numbers", "Abundant Numbers", "Sequence", "", "",
+		"An abundant number is a number for which the sum of its proper divisors (divisors not including the number itself) is greater than the number itself. For example <b>12</b> is abundant because its proper divisors are <b>1</b>, <b>2</b>, <b>3</b>, <b>4</b>, and <b>6</b> which add up to <b>16</b>.<p>Print all the abundant numbers from <b>1</b> to <b>200</b> inclusive, each on their own line.</p>",
+	}, {
+		"", "",
 		"arabic-to-roman", "Arabic to Roman", "Transform", "", "",
 		"For each arabic numeral argument print the same number in roman numerals.</p>",
 	}, {

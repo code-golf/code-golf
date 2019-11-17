@@ -22,6 +22,7 @@ SET row_security = off;
 CREATE TYPE public.hole AS ENUM (
     '12-days-of-christmas',
     '99-bottles-of-beer',
+    'abundant-numbers',
     'arabic-to-roman',
     'brainfuck',
     'christmas-trees',

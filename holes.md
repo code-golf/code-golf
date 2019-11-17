@@ -39,6 +39,7 @@ Mathematics
 Sequence
 ========
 
+* Abundant Numbers
 * Divisors
 * Emirp Numbers
 * Evil Numbers
