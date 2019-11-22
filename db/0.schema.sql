@@ -2,21 +2,22 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 11.1
--- Dumped by pg_dump version 11.1
+-- Dumped from database version 11.5
+-- Dumped by pg_dump version 11.5
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
+SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
-
 --
--- Name: hole; Type: TYPE; Schema: public; Owner: jraspass
+-- Name: hole; Type: TYPE; Schema: public; Owner: -
 --
 
 CREATE TYPE public.hole AS ENUM (
@@ -39,6 +40,7 @@ CREATE TYPE public.hole AS ENUM (
     'morse-encoder',
     'niven-numbers',
     'odious-numbers',
+    'ordinal-numbers',
     'pangram-grep',
     'pascals-triangle',
     'pernicious-numbers',
@@ -63,7 +65,7 @@ CREATE TYPE public.hole AS ENUM (
 
 
 --
--- Name: lang; Type: TYPE; Schema: public; Owner: jraspass
+-- Name: lang; Type: TYPE; Schema: public; Owner: -
 --
 
 CREATE TYPE public.lang AS ENUM (
@@ -86,7 +88,7 @@ CREATE TYPE public.lang AS ENUM (
 
 
 --
--- Name: trophy; Type: TYPE; Schema: public; Owner: jraspass
+-- Name: trophy; Type: TYPE; Schema: public; Owner: -
 --
 
 CREATE TYPE public.trophy AS ENUM (
@@ -110,19 +112,19 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: ideas; Type: TABLE; Schema: public; Owner: jraspass
+-- Name: ideas; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.ideas (
-    id          integer primary key,
-    thumbs_down integer not null,
-    thumbs_up   integer not null,
-    title       text    not null
+    id integer NOT NULL,
+    thumbs_down integer NOT NULL,
+    thumbs_up integer NOT NULL,
+    title text NOT NULL
 );
 
 
 --
--- Name: solutions; Type: TABLE; Schema: public; Owner: jraspass
+-- Name: solutions; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.solutions (
@@ -136,7 +138,7 @@ CREATE TABLE public.solutions (
 
 
 --
--- Name: points; Type: VIEW; Schema: public; Owner: jraspass
+-- Name: points; Type: VIEW; Schema: public; Owner: -
 --
 
 CREATE VIEW public.points AS
@@ -161,7 +163,7 @@ CREATE VIEW public.points AS
 
 
 --
--- Name: trophies; Type: TABLE; Schema: public; Owner: jraspass
+-- Name: trophies; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.trophies (
@@ -172,7 +174,7 @@ CREATE TABLE public.trophies (
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: jraspass
+-- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.users (
@@ -182,7 +184,15 @@ CREATE TABLE public.users (
 
 
 --
--- Name: solutions solutions_pkey; Type: CONSTRAINT; Schema: public; Owner: jraspass
+-- Name: ideas ideas_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ideas
+    ADD CONSTRAINT ideas_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: solutions solutions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.solutions
@@ -190,7 +200,7 @@ ALTER TABLE ONLY public.solutions
 
 
 --
--- Name: trophies trophies_user_id_trophy_key; Type: CONSTRAINT; Schema: public; Owner: jraspass
+-- Name: trophies trophies_user_id_trophy_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.trophies
@@ -198,7 +208,7 @@ ALTER TABLE ONLY public.trophies
 
 
 --
--- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: jraspass
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.users
@@ -206,42 +216,43 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: trophies trophies_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: jraspass
+-- Name: trophies trophies_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.trophies
     ADD CONSTRAINT trophies_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
 
+
 --
--- Name: TABLE ideas; Type: ACL; Schema: public; Owner: jraspass
+-- Name: TABLE ideas; Type: ACL; Schema: public; Owner: -
 --
 
 GRANT SELECT,INSERT,TRUNCATE ON TABLE public.ideas TO code_golf;
 
 
 --
--- Name: TABLE solutions; Type: ACL; Schema: public; Owner: jraspass
+-- Name: TABLE solutions; Type: ACL; Schema: public; Owner: -
 --
 
 GRANT SELECT,INSERT,UPDATE ON TABLE public.solutions TO code_golf;
 
 
 --
--- Name: TABLE points; Type: ACL; Schema: public; Owner: jraspass
+-- Name: TABLE points; Type: ACL; Schema: public; Owner: -
 --
 
 GRANT SELECT ON TABLE public.points TO code_golf;
 
 
 --
--- Name: TABLE trophies; Type: ACL; Schema: public; Owner: jraspass
+-- Name: TABLE trophies; Type: ACL; Schema: public; Owner: -
 --
 
-GRANT SELECT,INSERT,UPDATE ON TABLE public.trophies TO code_golf;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.trophies TO code_golf;
 
 
 --
--- Name: TABLE users; Type: ACL; Schema: public; Owner: jraspass
+-- Name: TABLE users; Type: ACL; Schema: public; Owner: -
 --
 
 GRANT SELECT,INSERT,UPDATE ON TABLE public.users TO code_golf;

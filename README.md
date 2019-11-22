@@ -32,7 +32,7 @@ $ ./build-assets
 
 4. Bring up the website:
 ```
-$ docker-compose up --build
+$ make dev
 ```
 
 5. Navigate to https://localhost

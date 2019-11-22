@@ -30,8 +30,8 @@ services:
     volumes:
       - .:/go
   db:
-    build:
-      context: .
-      dockerfile: Dockerfile.db
+    image: postgres:11.5-alpine
     environment:
       POSTGRES_USER: code_golf
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
