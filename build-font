@@ -1,7 +1,0 @@
-#!/bin/sh -e
-
-pyftsubset ~/Downloads/fontawesome-pro-5.10.1-web/webfonts/fa-light-300.ttf \
-    --flavor=woff2                                                          \
-    --no-hinting                                                            \
-    --output-file=assets/font.woff2                                         \
-    --unicodes-file=font-subset.txt
