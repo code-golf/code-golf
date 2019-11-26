@@ -3,45 +3,57 @@
 use Cro::HTTP::Client;
 
 constant @langs = (
+    'C',
+    'http://download.savannah.gnu.org/releases/tinycc/?C=M&O=D',
+    / 'tcc-' (<[\d.]>+) '.tar.bz2' /,
+
     'Haskell',
     'https://www.haskell.org/ghc/download.html',
-    /"download_ghc".+?">"(.+?)"<"/,
+    / 'download_ghc' .+? ">" (<[\d.]>+) /,
 
     'Julia',
     'https://julialang.org/downloads/',
-    /"stable release: v"(.+?)"<"/,
+    / 'stable release: v' (<[\d.]>+) /,
 
     'Lua',
     'https://www.lua.org',
-    /"versions.html".+?">Lua "(.+?)"<"/,
+    / 'versions.html' .+? '>Lua ' (<[\d.]>+) /,
 
     'Nim',
     'https://nim-lang.org',
-    /"Version "(\S+)" released"/,
+    / 'Version ' (<[\d.]>+) /,
 
     'Perl',
     'https://www.perl.org',
-    /'"version-highlight">'(.+?)"<"/,
+    / '"version-highlight">' (<[\d.]>+) /,
 
     'PHP',
     'https://www.php.net/downloads.php',
-    /"Stable</span>"\s*"PHP "(\S+)/,
+    / 'Stable</span>' \s* 'PHP ' (<[\d.]>+) /,
 
     'Python',
     'https://www.python.org',
-    /"Latest: <".+?">Python "(.+?)"<"/,
+    / 'Latest: <' .+? '>Python ' (<[\d.]>+) /,
 
     'Ruby',
     'https://www.ruby-lang.org/en/downloads/',
-    /"stable version is "(\S+)"."/,
+    / 'stable version is ' (<[\d.]>+) '.' /,
 );
 
 constant $len = @langs[0, 3 … *]».chars.max;
 
-constant $client = Cro::HTTP::Client.new(:!follow :http<1.1>);
+my %current = (get('https://code-golf.io/about') ~~ m:g/
+    '<tr><th' .+? '>' (.+?) '<' .*? (<[\d.]> ** 2..*)
+/)».list.flat».Str.Hash;
 
 for @langs -> $lang, $url, $re {
-    my $res = await $client.get($url);
+    my $ver = get($url) ~~ $re ?? ~$0 !! '';
 
-    printf " %*s %s\n", $len, $lang, (await $res.body) ~~ $re ?? ~$0 !! Nil;
+    printf " %*s %s\n", $len, $lang, $ver if $ver ne %current{$lang};
+}
+
+sub get ($url) {
+    state $client = Cro::HTTP::Client.new(:!follow :http<1.1>);
+
+    await (await $client.get($url)).body;
 }
