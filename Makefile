@@ -21,7 +21,7 @@ fmt:
 	@goimports -w $(GOFILES)
 
 font:
-	@pyftsubset ~/Downloads/fontawesome-pro-5.11.2-web/webfonts/fa-light-300.ttf \
+	@pyftsubset ~/Downloads/fontawesome-pro-5.12.0-web/webfonts/fa-light-300.ttf \
 		--flavor=woff2                                                           \
 		--no-hinting                                                             \
 		--output-file=assets/font.woff2                                          \
