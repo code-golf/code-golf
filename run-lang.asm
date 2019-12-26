@@ -57,6 +57,8 @@ hostsize    equ $ - host
 fullroot    db "rootfs/old-root", 0
 oldroot     db "old-root", 0
 rootfs      db "rootfs", 0
+newdev      db "rootfs/dev", 0
+dev         db "/dev", 0
 slash       db "/", 0
 proc        db "proc", 0
 tmp         db "tmp", 0
@@ -74,12 +76,23 @@ start:
             test eax, eax
             jnz exit
 
+        ; bind mount /dev to rootfs/dev
+            mov rax, SYS_mount
+            mov rdi, dev
+            mov rsi, newdev
+            ; edx starts as 0
+            mov r10, MS_BIND|MS_REC
+            syscall
+
+            test eax, eax
+            jnz exit
+
         ; bind mount rootfs
             mov rax, SYS_mount
             mov rdi, rootfs
             mov rsi, rdi
             ; edx starts as 0
-            mov r10, MS_BIND|MS_REC
+            ; r10 is still MS_BIND|MS_REC
             syscall
 
             test eax, eax
