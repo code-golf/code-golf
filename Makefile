@@ -1,4 +1,4 @@
-GOFILES := $(shell find -name '*.go' ! -path './.go*')
+GOFILES := $(shell find . -name '*.go' ! -path './.go*')
 SHELL   := /bin/bash
 
 bump:

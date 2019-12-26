@@ -1,5 +1,12 @@
 #!/bin/bash -e
 
+if [ -z "${BASH_VERSINFO}" ] \
+        || [ -z "${BASH_VERSINFO[0]}" ] \
+        || [ ${BASH_VERSINFO[0]} -lt 4 ]; then
+    echo "This script requires Bash version >= 4"
+    exit 1
+fi
+
 declare -A urls=(
     ["bash"]="//www.gnu.org/software/bash/"
     ["brainfuck"]="//github.com/JRaspass/code-golf/tree/master/langs/brainfuck/"
