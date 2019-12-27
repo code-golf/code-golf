@@ -1,4 +1,6 @@
 /* include vendor/codemirror.js            */
+/* include vendor/codemirror-simple.js     */
+
 /* include vendor/codemirror-bash.js       */
 /* include vendor/codemirror-clike.js      */
 /* include vendor/codemirror-haskell.js    */
@@ -13,6 +15,7 @@
 /* include vendor/codemirror-php.js        */
 /* include vendor/codemirror-python.js     */
 /* include vendor/codemirror-ruby.js       */
+/* include vendor/codemirror-rust.js       */
 /* include vendor/codemirror-xml.js        */
 
 const chars     = document.querySelector('#chars');
