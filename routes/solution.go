@@ -235,7 +235,7 @@ func runCode(hole, lang, code string, args []string, userID int) (string, string
 			"/usr/bin/nim", "--cc:tcc", "--hint.Processing:off",
 			"--nimcache:/tmp", "--verbosity:0", "-o:/tmp/code", "-r", "c", "-",
 		}
-	// Lua, Perl, Perl 6, Python, and Ruby are all sane.
+	// Lua, Perl, Perl 6, Python, Ruby, and our rustc wrapper are all sane.
 	default:
 		cmd.Args = []string{"/usr/bin/" + lang, "-"}
 	}

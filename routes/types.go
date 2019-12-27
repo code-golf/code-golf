@@ -35,6 +35,7 @@ var langs = []Lang{
 	{"php", "PHP"},
 	{"python", "Python"},
 	{"ruby", "Ruby"},
+	{"rust", "Rust"},
 }
 
 var trophies = []Trophy{
