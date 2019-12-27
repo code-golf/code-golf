@@ -8,28 +8,33 @@ if [ -z "${BASH_VERSINFO}" ] \
 fi
 
 declare -A urls=(
-    ["bash"]="//www.gnu.org/software/bash/"
-    ["brainfuck"]="//github.com/JRaspass/code-golf/tree/master/langs/brainfuck/"
-    ["c"]="//bellard.org/tcc/"
-    ["haskell"]="//www.haskell.org/ghc/"
-    ["j"]="http://jsoftware.com"
-    ["javascript"]="//v8.dev"
-    ["julia"]="//julialang.org"
-    ["lisp"]="//clisp.sourceforge.io"
-    ["lua"]="//www.lua.org"
-    ["nim"]="//nim-lang.org"
-    ["perl"]="//www.perl.org"
-    ["perl6"]="//perl6.org"
-    ["php"]="//secure.php.net"
-    ["python"]="//www.python.org"
-    ["ruby"]="//www.ruby-lang.org"
+    ["Bash"]="//www.gnu.org/software/bash/"
+    ["Brainfuck"]="//github.com/JRaspass/code-golf/tree/master/langs/brainfuck/"
+    ["C"]="//bellard.org/tcc/"
+    ["Haskell"]="//www.haskell.org/ghc/"
+    ["J"]="http://jsoftware.com"
+    ["JavaScript"]="//v8.dev"
+    ["Julia"]="//julialang.org"
+    ["Lisp"]="//clisp.sourceforge.io"
+    ["Lua"]="//www.lua.org"
+    ["Nim"]="//nim-lang.org"
+    ["Perl"]="//www.perl.org"
+    ["Perl 6"]="//perl6.org"
+    ["PHP"]="//secure.php.net"
+    ["Python"]="//www.python.org"
+    ["Ruby"]="//www.ruby-lang.org"
+    ["Rust"]="//www.rust-lang.org"
 )
+
+IFS=$'\n'
+sorted_names=( $(sort --ignore-case <<<"${!urls[*]}") )
+unset IFS
 
 docker pull alpine:3.10
 
 cd langs
 
-for name in Bash Brainfuck C Haskell J JavaScript Julia Lisp Lua Nim Perl Perl\ 6 PHP Python Ruby; do
+for name in "${sorted_names[@]}"; do
     lang=${name,,}      # lowercase
     lang=${lang// /}    # trim space
 
@@ -55,6 +60,7 @@ for name in Bash Brainfuck C Haskell J JavaScript Julia Lisp Lua Nim Perl Perl\ 
     ver=${ver#The Glorious }
     ver=${ver#This is }
     ver=${ver#JavaScript-C}
+    ver=${ver#rustc }
     ver=${ver/ation/er}
     ver=${ver/built /}
     ver=${ver/System, /}
@@ -67,7 +73,7 @@ for name in Bash Brainfuck C Haskell J JavaScript Julia Lisp Lua Nim Perl Perl\ 
     ver=${ver/ (*/}
 
     html+="+
-        \"<tr><th class=$lang>$name<td>$ver<td class=wide><a href=${urls[$lang]}>website</a>\""
+        \"<tr><th class=$lang>$name<td>$ver<td class=wide><a href=${urls[$name]}>website</a>\""
 
     id=`docker create code-golf-$lang`
 
