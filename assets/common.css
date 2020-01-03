@@ -144,7 +144,10 @@ sup {
 
 svg { transform: rotate(-90deg) }
 
-table { border-spacing: 0 }
+table {
+    border-spacing: 0;
+    font-variant: tabular-nums;
+}
 
 tbody > :nth-child(even) { background: #eee }
 

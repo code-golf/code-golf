@@ -20,9 +20,7 @@ import (
 )
 
 func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	var in struct {
-		Code, Hole, Lang string
-	}
+	var in struct{ Code, Hole, Lang string }
 
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
 		panic(err)
@@ -31,47 +29,44 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	println(in.Code)
 
-	var args []string
 	var out struct {
-		Arg, Diff, Err, Exp, Out string
-		Argv                     []string
+		Argv                []string
+		Diff, Err, Exp, Out string
+		Took                time.Duration
 	}
 
 	switch in.Hole {
 	case "arabic-to-roman", "roman-to-arabic":
-		args, out.Exp = arabicToRoman(in.Hole == "roman-to-arabic")
+		out.Argv, out.Exp = arabicToRoman(in.Hole == "roman-to-arabic")
 	case "brainfuck":
-		args, out.Exp = brainfuck()
+		out.Argv, out.Exp = brainfuck()
 	case "morse-decoder", "morse-encoder":
-		args, out.Exp = morse(in.Hole == "morse-decoder")
+		out.Argv, out.Exp = morse(in.Hole == "morse-decoder")
 	case "ordinal-numbers":
-		args, out.Exp = ordinalNumbers()
+		out.Argv, out.Exp = ordinalNumbers()
 	case "pangram-grep":
-		args, out.Exp = pangramGrep()
+		out.Argv, out.Exp = pangramGrep()
 	case "poker":
-		args, out.Exp = poker()
+		out.Argv, out.Exp = poker()
 	case "quine":
 		out.Exp = in.Code
 	case "rock-paper-scissors-spock-lizard":
-		args, out.Exp = rockPaperScissorsSpockLizard()
+		out.Argv, out.Exp = rockPaperScissorsSpockLizard()
 	case "seven-segment":
-		args = make([]string, 1)
-		args[0], out.Exp = sevenSegment()
+		out.Argv, out.Exp = sevenSegment()
 	case "spelling-numbers":
-		args, out.Exp = spellingNumbers()
+		out.Argv, out.Exp = spellingNumbers()
 	case "sudoku":
-		args, out.Exp = sudoku()
+		out.Argv, out.Exp = sudoku()
 	case "ten-pin-bowling":
-		args, out.Exp = tenPinBowling()
+		out.Argv, out.Exp = tenPinBowling()
 	default:
 		out.Exp = answers[in.Hole]
 	}
 
 	userID, _ := cookie.Read(r)
 
-	out.Err, out.Out = runCode(in.Hole, in.Lang, in.Code, args, userID)
-	out.Arg = strings.Join(args, " ")
-	out.Argv = args
+	out.Err, out.Out, out.Took = runCode(in.Hole, in.Lang, in.Code, out.Argv, userID)
 
 	out.Diff, _ = difflib.GetUnifiedDiffString(difflib.UnifiedDiff{
 		A:        difflib.SplitLines(out.Exp),
@@ -200,14 +195,16 @@ func queryBool(db *sql.DB, query string, args ...interface{}) (b bool) {
 	return
 }
 
-func runCode(hole, lang, code string, args []string, userID int) (string, string) {
+func runCode(hole, lang, code string, args []string, userID int) (string, string, time.Duration) {
 	var stderr, stdout bytes.Buffer
 
 	if lang == "php" {
 		code = "<?php " + code + " ;"
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 7*time.Second)
+	start := time.Now()
+
+	ctx, cancel := context.WithDeadline(context.Background(), start.Add(7*time.Second))
 	defer cancel()
 
 	cmd := exec.CommandContext(ctx, "../../run-lang")
@@ -235,8 +232,6 @@ func runCode(hole, lang, code string, args []string, userID int) (string, string
 			"/usr/bin/nim", "--cc:tcc", "--hint.Processing:off",
 			"--nimcache:/tmp", "--verbosity:0", "-o:/tmp/code", "-r", "c", "-",
 		}
-	case "raku":
-		cmd.Args = []string{"/usr/bin/perl6", "-"}
 	// Common case.
 	default:
 		cmd.Args = []string{"/usr/bin/" + lang, "-"}
@@ -244,7 +239,10 @@ func runCode(hole, lang, code string, args []string, userID int) (string, string
 
 	cmd.Args = append(cmd.Args, args...)
 
-	if err := cmd.Run(); err != nil {
+	err := cmd.Run()
+	took := time.Since(start)
+
+	if err != nil {
 		if ctx.Err() == context.DeadlineExceeded {
 			stderr.WriteString("Killed for exceeding the 7s timeout.")
 
@@ -301,5 +299,5 @@ func runCode(hole, lang, code string, args []string, userID int) (string, string
 		outBytes = bytes.Replace(outBytes, []byte("Ⅿ"), []byte("M"), -1)
 	}
 
-	return string(errBytes), string(outBytes)
+	return string(errBytes), string(outBytes), took
 }
