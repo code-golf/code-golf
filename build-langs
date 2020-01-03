@@ -20,7 +20,6 @@ declare -A urls=(
     ["Nim"]="//nim-lang.org"
     ["Perl"]="//www.perl.org"
     ["PHP"]="//secure.php.net"
-    ["Raku"]="//raku.org"
     ["Python"]="//www.python.org"
     ["Raku"]="//raku.org"
     ["Ruby"]="//www.ruby-lang.org"
