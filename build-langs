@@ -22,6 +22,7 @@ declare -A urls=(
     ["PHP"]="//secure.php.net"
     ["Raku"]="//raku.org"
     ["Python"]="//www.python.org"
+    ["Raku"]="//raku.org"
     ["Ruby"]="//www.ruby-lang.org"
     ["Rust"]="//www.rust-lang.org"
 )
