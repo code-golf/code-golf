@@ -19,8 +19,8 @@ declare -A urls=(
     ["Lua"]="//www.lua.org"
     ["Nim"]="//nim-lang.org"
     ["Perl"]="//www.perl.org"
-    ["Perl 6"]="//perl6.org"
     ["PHP"]="//secure.php.net"
+    ["Raku"]="//raku.org"
     ["Python"]="//www.python.org"
     ["Ruby"]="//www.ruby-lang.org"
     ["Rust"]="//www.rust-lang.org"
@@ -36,7 +36,6 @@ cd langs
 
 for name in "${sorted_names[@]}"; do
     lang=${name,,}      # lowercase
-    lang=${lang// /}    # trim space
 
     # Start with a clean rootfs.
     rm -rf $lang/rootfs

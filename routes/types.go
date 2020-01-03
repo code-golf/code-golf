@@ -31,9 +31,9 @@ var langs = []Lang{
 	{"lua", "Lua"},
 	{"nim", "Nim"},
 	{"perl", "Perl"},
-	{"perl6", "Perl 6"},
 	{"php", "PHP"},
 	{"python", "Python"},
+	{"raku", "Raku"},
 	{"ruby", "Ruby"},
 	{"rust", "Rust"},
 }
@@ -92,7 +92,7 @@ var trophies = []Trophy{
 	{
 		"tim-toady",
 		"Tim Toady",
-		"Solve the same hole in both Perl and Perl 6.",
+		"Solve the same hole in both Perl and Raku.",
 	},
 	{
 		"the-watering-hole",
