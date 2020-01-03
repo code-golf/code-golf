@@ -1,28 +1,40 @@
 #!/bin/bash -e
 
+if [ -z "${BASH_VERSINFO}" ] \
+        || [ -z "${BASH_VERSINFO[0]}" ] \
+        || [ ${BASH_VERSINFO[0]} -lt 4 ]; then
+    echo "This script requires Bash version >= 4"
+    exit 1
+fi
+
 declare -A urls=(
-    ["bash"]="//www.gnu.org/software/bash/"
-    ["brainfuck"]="//github.com/JRaspass/code-golf/tree/master/langs/brainfuck/"
-    ["c"]="//bellard.org/tcc/"
-    ["haskell"]="//www.haskell.org/ghc/"
-    ["j"]="http://jsoftware.com"
-    ["javascript"]="//v8.dev"
-    ["julia"]="//julialang.org"
-    ["lisp"]="//clisp.sourceforge.io"
-    ["lua"]="//www.lua.org"
-    ["nim"]="//nim-lang.org"
-    ["perl"]="//www.perl.org"
-    ["php"]="//secure.php.net"
-    ["python"]="//www.python.org"
-    ["raku"]="//raku.org"
-    ["ruby"]="//www.ruby-lang.org"
+    ["Bash"]="//www.gnu.org/software/bash/"
+    ["Brainfuck"]="//github.com/JRaspass/code-golf/tree/master/langs/brainfuck/"
+    ["C"]="//bellard.org/tcc/"
+    ["Haskell"]="//www.haskell.org/ghc/"
+    ["J"]="http://jsoftware.com"
+    ["JavaScript"]="//v8.dev"
+    ["Julia"]="//julialang.org"
+    ["Lisp"]="//clisp.sourceforge.io"
+    ["Lua"]="//www.lua.org"
+    ["Nim"]="//nim-lang.org"
+    ["Perl"]="//www.perl.org"
+    ["PHP"]="//secure.php.net"
+    ["Python"]="//www.python.org"
+    ["Raku"]="//raku.org"
+    ["Ruby"]="//www.ruby-lang.org"
+    ["Rust"]="//www.rust-lang.org"
 )
+
+IFS=$'\n'
+sorted_names=( $(sort --ignore-case <<<"${!urls[*]}") )
+unset IFS
 
 docker pull alpine:3.10
 
 cd langs
 
-for name in Bash Brainfuck C Haskell J JavaScript Julia Lisp Lua Nim Perl PHP Python Raku Ruby; do
+for name in "${sorted_names[@]}"; do
     lang=${name,,}      # lowercase
 
     # Start with a clean rootfs.
@@ -47,6 +59,7 @@ for name in Bash Brainfuck C Haskell J JavaScript Julia Lisp Lua Nim Perl PHP Py
     ver=${ver#The Glorious }
     ver=${ver#This is }
     ver=${ver#JavaScript-C}
+    ver=${ver#rustc }
     ver=${ver/ation/er}
     ver=${ver/built /}
     ver=${ver/System, /}
@@ -59,7 +72,7 @@ for name in Bash Brainfuck C Haskell J JavaScript Julia Lisp Lua Nim Perl PHP Py
     ver=${ver/ (*/}
 
     html+="+
-        \"<tr><th class=$lang>$name<td>$ver<td class=wide><a href=${urls[$lang]}>website</a>\""
+        \"<tr><th class=$lang>$name<td>$ver<td class=wide><a href=${urls[$name]}>website</a>\""
 
     id=`docker create code-golf-$lang`
 
@@ -75,7 +88,7 @@ for name in Bash Brainfuck C Haskell J JavaScript Julia Lisp Lua Nim Perl PHP Py
         rm -fr $lang/rootfs/etc
     fi
 
-    mkdir -p $lang/rootfs/{etc,old-root,proc,tmp}
+    mkdir -p $lang/rootfs/{dev,etc,old-root,proc,tmp}
 
     echo nobody:x:99:99::/: > $lang/rootfs/etc/passwd
 done

@@ -1,7 +1,8 @@
 #!/bin/bash -e
 
 # Only re-run if assets.go is stale.
-if (( $(stat -c %Y `ls -t assets/{,*/}* | head -1`) > `stat -c %Y routes/assets.go || echo 0` )); then
+newest_file=$(ls -t assets/{,*/}* | head -1)
+if [[ routes/assets.go -ot $newest_file ]]; then
     docker build --pull -t code-golf-assets assets
     docker run --rm -u $UID:$GROUPS -v $PWD:/work code-golf-assets
 fi

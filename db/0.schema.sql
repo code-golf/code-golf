@@ -83,7 +83,8 @@ CREATE TYPE public.lang AS ENUM (
     'php',
     'python',
     'raku',
-    'ruby'
+    'ruby',
+    'rust'
 );
 
 
