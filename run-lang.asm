@@ -8,12 +8,17 @@ MS_BIND         equ 1 << 12
 MS_REC          equ 1 << 14
 MS_PRIVATE      equ 1 << 18
 
+DEV_URANDOM     equ (1 << 8) | 9  ; makedev(1, 9)
+
+S_IFCHR         equ 0x6000
+
 SYS_write       equ 1
 SYS_execve      equ 59
 SYS_exit        equ 60
 SYS_chdir       equ 80
 SYS_setuid      equ 105
 SYS_setgid      equ 106
+SYS_mknod       equ 133
 SYS_pivot_root  equ 155
 SYS_mount       equ 165
 SYS_umount2     equ 166
@@ -62,7 +67,7 @@ proc        db "proc", 0
 tmp         db "tmp", 0
 tmpfs       db "tmpfs", 0
 dev         db "dev", 0
-devtmpfs    db "devtmpfs", 0
+urandom     db "dev/urandom", 0
 
 start:
         ; mount / as private
@@ -137,13 +142,23 @@ start:
             test eax, eax
             jnz exit
 
-        ; mount /dev as devtmpfs
+        ; mount /dev as tmpfs
             mov rax, SYS_mount
             mov rdi, dev
             mov rsi, rdi
-            mov edx, devtmpfs
+            mov edx, tmpfs
             ; r10 is still 0
-            ; r8 is still 0
+            ; r8  is still 0
+            syscall
+
+            test eax, eax
+            jnz exit
+
+        ; mount /dev/urandom as block character device
+            mov rax, SYS_mknod
+            mov rdi, urandom
+            mov rsi, S_IFCHR
+            mov edx, DEV_URANDOM
             syscall
 
             test eax, eax
