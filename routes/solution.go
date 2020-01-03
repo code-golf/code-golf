@@ -20,9 +20,7 @@ import (
 )
 
 func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	var in struct {
-		Code, Hole, Lang string
-	}
+	var in struct{ Code, Hole, Lang string }
 
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
 		panic(err)
@@ -31,47 +29,43 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	println(in.Code)
 
-	var args []string
 	var out struct {
-		Arg, Diff, Err, Exp, Out string
-		Argv                     []string
+		Argv                []string
+		Diff, Err, Exp, Out string
 	}
 
 	switch in.Hole {
 	case "arabic-to-roman", "roman-to-arabic":
-		args, out.Exp = arabicToRoman(in.Hole == "roman-to-arabic")
+		out.Argv, out.Exp = arabicToRoman(in.Hole == "roman-to-arabic")
 	case "brainfuck":
-		args, out.Exp = brainfuck()
+		out.Argv, out.Exp = brainfuck()
 	case "morse-decoder", "morse-encoder":
-		args, out.Exp = morse(in.Hole == "morse-decoder")
+		out.Argv, out.Exp = morse(in.Hole == "morse-decoder")
 	case "ordinal-numbers":
-		args, out.Exp = ordinalNumbers()
+		out.Argv, out.Exp = ordinalNumbers()
 	case "pangram-grep":
-		args, out.Exp = pangramGrep()
+		out.Argv, out.Exp = pangramGrep()
 	case "poker":
-		args, out.Exp = poker()
+		out.Argv, out.Exp = poker()
 	case "quine":
 		out.Exp = in.Code
 	case "rock-paper-scissors-spock-lizard":
-		args, out.Exp = rockPaperScissorsSpockLizard()
+		out.Argv, out.Exp = rockPaperScissorsSpockLizard()
 	case "seven-segment":
-		args = make([]string, 1)
-		args[0], out.Exp = sevenSegment()
+		out.Argv, out.Exp = sevenSegment()
 	case "spelling-numbers":
-		args, out.Exp = spellingNumbers()
+		out.Argv, out.Exp = spellingNumbers()
 	case "sudoku":
-		args, out.Exp = sudoku()
+		out.Argv, out.Exp = sudoku()
 	case "ten-pin-bowling":
-		args, out.Exp = tenPinBowling()
+		out.Argv, out.Exp = tenPinBowling()
 	default:
 		out.Exp = answers[in.Hole]
 	}
 
 	userID, _ := cookie.Read(r)
 
-	out.Err, out.Out = runCode(in.Hole, in.Lang, in.Code, args, userID)
-	out.Arg = strings.Join(args, " ")
-	out.Argv = args
+	out.Err, out.Out = runCode(in.Hole, in.Lang, in.Code, out.Argv, userID)
 
 	out.Diff, _ = difflib.GetUnifiedDiffString(difflib.UnifiedDiff{
 		A:        difflib.SplitLines(out.Exp),
