@@ -235,8 +235,6 @@ func runCode(hole, lang, code string, args []string, userID int) (string, string
 			"/usr/bin/nim", "--cc:tcc", "--hint.Processing:off",
 			"--nimcache:/tmp", "--verbosity:0", "-o:/tmp/code", "-r", "c", "-",
 		}
-	case "raku":
-		cmd.Args = []string{"/usr/bin/perl6", "-"}
 	// Common case.
 	default:
 		cmd.Args = []string{"/usr/bin/" + lang, "-"}
