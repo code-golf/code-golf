@@ -12,9 +12,9 @@ declare -A urls=(
     ["lua"]="//www.lua.org"
     ["nim"]="//nim-lang.org"
     ["perl"]="//www.perl.org"
-    ["perl6"]="//perl6.org"
     ["php"]="//secure.php.net"
     ["python"]="//www.python.org"
+    ["raku"]="//raku.org"
     ["ruby"]="//www.ruby-lang.org"
 )
 
@@ -22,9 +22,8 @@ docker pull alpine:3.10
 
 cd langs
 
-for name in Bash Brainfuck C Haskell J JavaScript Julia Lisp Lua Nim Perl Perl\ 6 PHP Python Ruby; do
+for name in Bash Brainfuck C Haskell J JavaScript Julia Lisp Lua Nim Perl PHP Python Raku Ruby; do
     lang=${name,,}      # lowercase
-    lang=${lang// /}    # trim space
 
     # Start with a clean rootfs.
     rm -rf $lang/rootfs

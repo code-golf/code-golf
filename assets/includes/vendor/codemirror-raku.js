@@ -2,7 +2,7 @@
 // This is a part of CodeMirror from https://github.com/azawawi/farabi6 (ahmad.zawawi@gmail.com)
 // This work is based on the perl.js mode by (TODO give credit)
 // and perl6.vim (TODO give credit)
-CodeMirror.defineMode("perl6",function(config,parserConfig){
+CodeMirror.defineMode("raku",function(config,parserConfig){
 	
 	var PERL = {				
 		// null - magic touch	

@@ -150,14 +150,14 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 			}
 		case "php":
 			awardTrophy(db, userID, "elephpant-in-the-room")
-		case "perl", "perl6":
+		case "perl", "raku":
 			if queryBool(
 				db,
 				`SELECT COUNT(*) = 2
 				   FROM solutions
 				  WHERE NOT failing
 				    AND hole = $1
-				    AND lang IN ('perl', 'perl6')
+				    AND lang IN ('perl', 'raku')
 				    AND user_id = $2`,
 				in.Hole,
 				userID,
@@ -235,7 +235,9 @@ func runCode(hole, lang, code string, args []string, userID int) (string, string
 			"/usr/bin/nim", "--cc:tcc", "--hint.Processing:off",
 			"--nimcache:/tmp", "--verbosity:0", "-o:/tmp/code", "-r", "c", "-",
 		}
-	// Lua, Perl, Perl 6, Python, and Ruby are all sane.
+	case "raku":
+		cmd.Args = []string{"/usr/bin/perl6", "-"}
+	// Common case.
 	default:
 		cmd.Args = []string{"/usr/bin/" + lang, "-"}
 	}
