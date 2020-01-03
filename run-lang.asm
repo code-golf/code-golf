@@ -9,13 +9,19 @@ MS_REC          equ 1 << 14
 MS_PRIVATE      equ 1 << 18
 
 DEV_URANDOM     equ (1 << 8) | 9  ; makedev(1, 9)
+DEV_RANDOM      equ (1 << 8) | 8  ; makedev(1, 9)
 
-S_IFCHR         equ 0x6000
+S_IFCHR         equ 0o60000
+
+S_IRUSR         equ 0o0400
+S_IRGRP         equ 0o0040
+S_IROTH         equ 0o0004
 
 SYS_write       equ 1
 SYS_execve      equ 59
 SYS_exit        equ 60
 SYS_chdir       equ 80
+SYS_chmod       equ 90
 SYS_setuid      equ 105
 SYS_setgid      equ 106
 SYS_mknod       equ 133
@@ -68,6 +74,7 @@ tmp         db "tmp", 0
 tmpfs       db "tmpfs", 0
 dev         db "dev", 0
 urandom     db "dev/urandom", 0
+random      db "dev/random", 0
 
 start:
         ; mount / as private
@@ -159,6 +166,34 @@ start:
             mov rdi, urandom
             mov rsi, S_IFCHR
             mov edx, DEV_URANDOM
+            syscall
+
+            test eax, eax
+            jnz exit
+
+        ; make /dev/urandom universally readable
+            mov rax, SYS_chmod
+            mov rdi, urandom
+            mov rsi, S_IRUSR|S_IRGRP|S_IROTH
+            syscall
+
+            test eax, eax
+            jnz exit
+
+        ; mount /dev/random as block character device
+            mov rax, SYS_mknod
+            mov rdi, random
+            mov rsi, S_IFCHR
+            mov edx, DEV_RANDOM
+            syscall
+
+            test eax, eax
+            jnz exit
+
+        ; make /dev/random universally readable
+            mov rax, SYS_chmod
+            mov rdi, random
+            mov rsi, S_IRUSR|S_IRGRP|S_IROTH
             syscall
 
             test eax, eax
