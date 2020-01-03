@@ -9,7 +9,7 @@ MS_REC          equ 1 << 14
 MS_PRIVATE      equ 1 << 18
 
 DEV_URANDOM     equ (1 << 8) | 9  ; makedev(1, 9)
-DEV_RANDOM      equ (1 << 8) | 8  ; makedev(1, 9)
+DEV_RANDOM      equ (1 << 8) | 8  ; makedev(1, 8)
 
 S_IFCHR         equ 0o60000
 
