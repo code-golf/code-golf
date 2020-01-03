@@ -32,6 +32,7 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	var out struct {
 		Argv                []string
 		Diff, Err, Exp, Out string
+		Took                time.Duration
 	}
 
 	switch in.Hole {
@@ -65,7 +66,7 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	userID, _ := cookie.Read(r)
 
-	out.Err, out.Out = runCode(in.Hole, in.Lang, in.Code, out.Argv, userID)
+	out.Err, out.Out, out.Took = runCode(in.Hole, in.Lang, in.Code, out.Argv, userID)
 
 	out.Diff, _ = difflib.GetUnifiedDiffString(difflib.UnifiedDiff{
 		A:        difflib.SplitLines(out.Exp),
@@ -194,14 +195,16 @@ func queryBool(db *sql.DB, query string, args ...interface{}) (b bool) {
 	return
 }
 
-func runCode(hole, lang, code string, args []string, userID int) (string, string) {
+func runCode(hole, lang, code string, args []string, userID int) (string, string, time.Duration) {
 	var stderr, stdout bytes.Buffer
 
 	if lang == "php" {
 		code = "<?php " + code + " ;"
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 7*time.Second)
+	start := time.Now()
+
+	ctx, cancel := context.WithDeadline(context.Background(), start.Add(7*time.Second))
 	defer cancel()
 
 	cmd := exec.CommandContext(ctx, "../../run-lang")
@@ -236,7 +239,10 @@ func runCode(hole, lang, code string, args []string, userID int) (string, string
 
 	cmd.Args = append(cmd.Args, args...)
 
-	if err := cmd.Run(); err != nil {
+	err := cmd.Run()
+	took := time.Since(start)
+
+	if err != nil {
 		if ctx.Err() == context.DeadlineExceeded {
 			stderr.WriteString("Killed for exceeding the 7s timeout.")
 
@@ -293,5 +299,5 @@ func runCode(hole, lang, code string, args []string, userID int) (string, string
 		outBytes = bytes.Replace(outBytes, []byte("Ⅿ"), []byte("M"), -1)
 	}
 
-	return string(errBytes), string(outBytes)
+	return string(errBytes), string(outBytes), took
 }
