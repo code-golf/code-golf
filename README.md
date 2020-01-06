@@ -30,19 +30,28 @@ The certificate is at "./localhost.pem" and the key at "./localhost-key.pem" ✅
 $ ./build-assets
 ```
 
-4. Bring up the website:
+4. Build the languages:
+```
+$ ./build-langs
+```
+
+5. Bring up the website:
 ```
 $ make dev
 ```
 
-5. Navigate to https://localhost
+6. Navigate to https://localhost
 
-## Other
+## Testing
 
-To build the various languages:
-
+1. Run the unit tests:
 ```
-$ ./build-langs
+$ go test ./...
+```
+
+2. Run the e2e tests:
+```
+$ prove
 ```
 
 ## Thanks
