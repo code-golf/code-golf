@@ -38,6 +38,10 @@ constant @langs = (
     'Ruby',
     'https://www.ruby-lang.org/en/downloads/',
     / 'stable version is ' (<[\d.]>+) '.' /,
+
+    'Rust',
+    'https://www.rust-lang.org',
+    / 'Version ' (<[\d.]>+) /,
 );
 
 constant $len = @langs[0, 3 … *]».chars.max;
