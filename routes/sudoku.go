@@ -61,7 +61,7 @@ Numbers:
 		}
 
 		// number is already in the block.
-		for _, row := range board[i0:i] {
+		for _, row := range board[i0 : i0+blockSize] {
 			for _, numberInRow := range row[j0 : j0+blockSize] {
 				if number == numberInRow {
 					continue Numbers
