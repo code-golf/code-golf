@@ -36,6 +36,7 @@ var langs = []Lang{
 	{"raku", "Raku"},
 	{"ruby", "Ruby"},
 	{"rust", "Rust"},
+	{"swift", "Swift"},
 }
 
 var trophies = []Trophy{

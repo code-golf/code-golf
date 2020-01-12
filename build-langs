@@ -14,7 +14,7 @@ declare -A urls=(
     ["Haskell"]="//www.haskell.org/ghc/"
     ["J"]="http://jsoftware.com"
     ["JavaScript"]="//v8.dev"
-    ["Julia"]="//julialang.org"
+    #["Julia"]="//julialang.org"
     ["Lisp"]="//clisp.sourceforge.io"
     ["Lua"]="//www.lua.org"
     ["Nim"]="//nim-lang.org"
@@ -24,6 +24,7 @@ declare -A urls=(
     ["Raku"]="//raku.org"
     ["Ruby"]="//www.ruby-lang.org"
     ["Rust"]="//www.rust-lang.org"
+    ["Swift"]="//swift.org"
 )
 
 IFS=$'\n'
@@ -55,10 +56,11 @@ for name in "${sorted_names[@]}"; do
     fi
 
     # Remove some crap from version strings.
+    ver=${ver#JavaScript-C}
     ver=${ver#Lua }
+    ver=${ver#Swift }
     ver=${ver#The Glorious }
     ver=${ver#This is }
-    ver=${ver#JavaScript-C}
     ver=${ver#rustc }
     ver=${ver/ation/er}
     ver=${ver/built /}

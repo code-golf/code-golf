@@ -7,7 +7,6 @@ const versionTable = "" +
 	"<tr><th class=haskell>Haskell<td>Glasgow Haskell Compiler 8.4.3<td class=wide><a href=//www.haskell.org/ghc/>website</a>" +
 	"<tr><th class=j>J<td>8.07.07<td class=wide><a href=http://jsoftware.com>website</a>" +
 	"<tr><th class=javascript>JavaScript<td>V8 7.4.51<td class=wide><a href=//v8.dev>website</a>" +
-	"<tr><th class=julia>Julia<td>1.3.0<td class=wide><a href=//julialang.org>website</a>" +
 	"<tr><th class=lisp>Lisp<td>GNU CLISP 2.49.92<td class=wide><a href=//clisp.sourceforge.io>website</a>" +
 	"<tr><th class=lua>Lua<td>5.3.5<td class=wide><a href=//www.lua.org>website</a>" +
 	"<tr><th class=nim>Nim<td>1.0.4<td class=wide><a href=//nim-lang.org>website</a>" +
@@ -16,4 +15,5 @@ const versionTable = "" +
 	"<tr><th class=python>Python<td>3.8.1<td class=wide><a href=//www.python.org>website</a>" +
 	"<tr><th class=raku>Raku<td>Rakudo 2019.11 on MoarVM 2019.11 implementing Perl 6.d<td class=wide><a href=//raku.org>website</a>" +
 	"<tr><th class=ruby>Ruby<td>2.7.0<td class=wide><a href=//www.ruby-lang.org>website</a>" +
-	"<tr><th class=rust>Rust<td>1.40.0<td class=wide><a href=//www.rust-lang.org>website</a>"
+	"<tr><th class=rust>Rust<td>1.40.0<td class=wide><a href=//www.rust-lang.org>website</a>" +
+	"<tr><th class=swift>Swift<td>5.1.3<td class=wide><a href=//swift.org>website</a>"

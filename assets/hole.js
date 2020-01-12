@@ -16,6 +16,7 @@
 /* include vendor/codemirror-raku.js       */
 /* include vendor/codemirror-ruby.js       */
 /* include vendor/codemirror-rust.js       */
+/* include vendor/codemirror-swift.js      */
 /* include vendor/codemirror-xml.js        */
 
 const chars     = document.querySelector('#chars');

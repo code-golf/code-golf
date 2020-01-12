@@ -42,6 +42,10 @@ constant @langs = (
     'Rust',
     'https://www.rust-lang.org',
     / 'Version ' (<[\d.]>+) /,
+
+    'Swift',
+    'https://swift.org/download/',
+    / 'Swift ' (<[\d.]>+) /,
 );
 
 constant $len = @langs[0, 3 … *]».chars.max;

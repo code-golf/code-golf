@@ -350,7 +350,7 @@ thead th {
 #matrix {
     display: grid;
     grid-gap: .25rem;
-    grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
 }
 
 #matrix a {
@@ -378,7 +378,8 @@ thead th {
 #matrix input.python:not(:checked)     ~ .python,
 #matrix input.raku:not(:checked)       ~ .raku,
 #matrix input.ruby:not(:checked)       ~ .ruby,
-#matrix input.rust:not(:checked)       ~ .rust { display: none }
+#matrix input.rust:not(:checked)       ~ .rust,
+#matrix input.swift:not(:checked)      ~ .swift { display: none }
 
 #matrix input:checked + label,
 #matrix label:hover {
