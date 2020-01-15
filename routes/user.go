@@ -9,7 +9,6 @@ import (
 )
 
 func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	userID := 0
 	data := struct {
 		Holes          []Hole
 		Langs          []Lang
@@ -27,14 +26,21 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		TrophiesEarned: map[string]*time.Time{},
 	}
 
+	var login string
+	var userID int
+
 	if err := db.QueryRow(
-		"SELECT id FROM users WHERE login = $1",
+		"SELECT id, login FROM users WHERE login = $1",
 		data.Login,
-	).Scan(&userID); err == sql.ErrNoRows {
+	).Scan(&userID, &login); err == sql.ErrNoRows {
 		Render(w, r, http.StatusNotFound, "404", "", nil)
 		return
 	} else if err != nil {
 		panic(err)
+	} else if data.Login != login {
+		println(http.StatusPermanentRedirect)
+		http.Redirect(w, r, "/users/"+login, http.StatusPermanentRedirect)
+		return
 	}
 
 	if err := db.QueryRow(

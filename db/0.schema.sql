@@ -1,3 +1,5 @@
+CREATE EXTENSION citext;
+
 CREATE TYPE hole AS ENUM (
     '12-days-of-christmas', '99-bottles-of-beer', 'abundant-numbers',
     'arabic-to-roman', 'brainfuck', 'christmas-trees', 'cubes', 'diamonds',
@@ -31,7 +33,7 @@ CREATE TABLE ideas (
 
 CREATE TABLE users (
     id    integer NOT NULL PRIMARY KEY,
-    login text    NOT NULL UNIQUE
+    login citext  NOT NULL UNIQUE
 );
 
 CREATE TABLE solutions (
