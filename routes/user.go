@@ -38,7 +38,6 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	} else if err != nil {
 		panic(err)
 	} else if data.Login != login {
-		println(http.StatusPermanentRedirect)
 		http.Redirect(w, r, "/users/"+login, http.StatusPermanentRedirect)
 		return
 	}
