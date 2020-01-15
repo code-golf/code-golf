@@ -176,6 +176,8 @@ thead th {
     border-bottom-width: 2px;
 }
 
+.bold { font-weight: bold }
+
 .btn {
     border: solid 1px var(--color);
     color: var(--color);

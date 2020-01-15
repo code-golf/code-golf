@@ -25,6 +25,7 @@ func init() {
 	Router.GET("/assets/:asset", asset)
 	Router.GET("/callback", callback)
 	Router.GET("/favicon.ico", asset)
+	Router.GET("/feeds/:feed", Feeds)
 	Router.GET("/ideas", ideas)
 	Router.GET("/log-out", logOut)
 	Router.GET("/random", random)
