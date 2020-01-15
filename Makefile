@@ -12,9 +12,10 @@ dev:
 	@docker-compose rm -f
 	@docker-compose up --build
 
-dump-db:
-	@ssh kino pg_dump -Os code_golf > db/0.schema.sql
-	@perl -pi -e 'chomp if eof' db/0.schema.sql
+diff-db:
+	@diff --color --label live --label dev --strip-trailing-cr -su \
+		<(ssh -p 1988 code-golf.io pg_dump -Os code_golf)          \
+		<(docker-compose exec db pg_dump -OsU postgres code_golf)
 
 fmt:
 	@gofmt -s  -w $(GOFILES)

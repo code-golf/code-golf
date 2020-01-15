@@ -32,6 +32,6 @@ services:
   db:
     image: postgres:12.1-alpine
     environment:
-      POSTGRES_USER: code_golf
+      POSTGRES_DB: code_golf
     volumes:
       - ./db:/docker-entrypoint-initdb.d
