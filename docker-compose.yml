@@ -9,7 +9,7 @@ services:
       - -sd
       - none
       - -r
-      - \.(go|html)$$
+      - \.(go|html|svg)$$
       - -R
       - ^\.go/|_test\.go$$
       - --

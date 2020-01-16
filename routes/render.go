@@ -1,12 +1,14 @@
 package routes
 
 import (
+	"bytes"
 	"fmt"
 	"html/template"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
+	"path"
 	"path/filepath"
 	"strings"
 	"time"
@@ -44,7 +46,14 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 	"hasPrefix": strings.HasPrefix,
 	"hasSuffix": strings.HasSuffix,
 	"ord":       ord,
-	"title":     strings.Title,
+	"symbol": func(name string) template.HTML {
+		if svg, err := ioutil.ReadFile("views/" + name + ".svg"); err != nil {
+			panic(err)
+		} else {
+			return template.HTML(bytes.ReplaceAll(svg, []byte("svg"), []byte("symbol")))
+		}
+	},
+	"title": strings.Title,
 	"time": func(t time.Time) template.HTML {
 		var sb strings.Builder
 
@@ -87,12 +96,12 @@ func init() {
 		}
 	}
 
-	if err := filepath.Walk("views", func(path string, _ os.FileInfo, err error) error {
-		if strings.HasSuffix(path, ".html") {
-			if b, err := ioutil.ReadFile(path); err != nil {
+	if err := filepath.Walk("views", func(file string, _ os.FileInfo, err error) error {
+		if ext := path.Ext(file); ext == ".html" || ext == ".svg" {
+			if b, err := ioutil.ReadFile(file); err != nil {
 				return err
 			} else {
-				name := path[len("views/") : len(path)-len(".html")]
+				name := file[len("views/") : len(file)-len(ext)]
 				tmpl = template.Must(tmpl.New(name).Parse(string(b)))
 			}
 		}

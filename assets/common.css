@@ -104,13 +104,6 @@ main {
     padding: 1rem;
 }
 
-path:nth-child(1) { fill: var(--red)    }
-path:nth-child(2) { fill: var(--orange) }
-path:nth-child(3) { fill: var(--yellow) }
-path:nth-child(4) { fill: var(--green)  }
-path:nth-child(5) { fill: var(--blue)   }
-path:nth-child(6) { fill: var(--purple) }
-
 summary {
     background: var(--color);
     border: 1px solid var(--color);
@@ -135,14 +128,12 @@ summary:hover {
 
 details[open] summary:before { content: '' }
 
-summary::-webkit-details-marker { display: none }
+summary::-webkit-details-marker, #symbols { display: none }
 
 sup {
     font-size: .75em;
     line-height: 0;
 }
-
-svg { transform: rotate(-90deg) }
 
 table {
     border-spacing: 0;
@@ -274,6 +265,13 @@ thead th {
     white-space: nowrap;
 }
 
+.pie path:nth-child(1) { fill: var(--red)    }
+.pie path:nth-child(2) { fill: var(--orange) }
+.pie path:nth-child(3) { fill: var(--yellow) }
+.pie path:nth-child(4) { fill: var(--green)  }
+.pie path:nth-child(5) { fill: var(--blue)   }
+.pie path:nth-child(6) { fill: var(--purple) }
+
 .pie span {
     display: block;
     font-size: .75rem;
@@ -282,6 +280,7 @@ thead th {
 
 .pie svg {
     align-self: center;
+    transform: rotate(-90deg);
 }
 
 .pie ul {
@@ -349,45 +348,58 @@ thead th {
 }
 
 #matrix {
-    border-collapse: collapse;
-    table-layout: fixed;
+    display: grid;
+    grid-gap: .25rem;
+    grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
 }
 
 #matrix a {
     align-items: center;
+    border: 1px solid var(--color);
     color: var(--color);
     display: flex;
-    height: 100%;
-    justify-content: center;
-    width: 100%;
-}
-
-#matrix a:hover {
-    background: var(--color);
-    color: var(--background);
+    padding: .25rem;
     text-decoration: none;
 }
 
-#matrix td {
-    border: 1px solid var(--color);
+#matrix input,
+#matrix input.bash:not(:checked)       ~ .bash,
+#matrix input.brainfuck:not(:checked)  ~ .brainfuck,
+#matrix input.c:not(:checked)          ~ .c,
+#matrix input.haskell:not(:checked)    ~ .haskell,
+#matrix input.j:not(:checked)          ~ .j,
+#matrix input.javascript:not(:checked) ~ .javascript,
+#matrix input.julia:not(:checked)      ~ .julia,
+#matrix input.lisp:not(:checked)       ~ .lisp,
+#matrix input.lua:not(:checked)        ~ .lua,
+#matrix input.nim:not(:checked)        ~ .nim,
+#matrix input.perl:not(:checked)       ~ .perl,
+#matrix input.php:not(:checked)        ~ .php,
+#matrix input.python:not(:checked)     ~ .python,
+#matrix input.raku:not(:checked)       ~ .raku,
+#matrix input.ruby:not(:checked)       ~ .ruby,
+#matrix input.rust:not(:checked)       ~ .rust { display: none }
+
+#matrix input:checked + label,
+#matrix label:hover {
+    background: var(--color);
+    color: var(--background);
 }
 
-#matrix td,
-#matrix th {
-    height: 2rem;
-    line-height: 1rem;
-    padding: 0;
-    width: 2rem;
+#matrix label {
+    cursor: pointer;
+    padding: .25rem;
+    text-align: center;
 }
 
-#matrix th a {
-    box-sizing: border-box;
-    justify-content: flex-end;
-    padding: 1rem;
-}
+#matrix a:hover { background: var(--background) }
 
-#matrix tr:first-child th:first-child {
-    width: 220px;
+#matrix h3 { padding: .25rem 0 }
+
+#matrix svg {
+    height: 1.5rem;
+    margin-right: .5rem;
+    width: 1.5rem;
 }
 
 #me {
