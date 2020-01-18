@@ -21,7 +21,8 @@
                         <img src="//avatars.githubusercontent.com/{{ .Login }}?s=24">
                         {{- .Login -}}
                     </a>
-                <td class=wide>{{ .Lang.Name }}
+                <td class=wide>
+                    <a href="/scores/all-holes/{{ .Lang.ID }}">{{ .Lang.Name }}</a>
                 <td class="right wide">{{ comma .Strokes }}
                 <td class=right>{{ time .Submitted }}
         {{- end -}}
