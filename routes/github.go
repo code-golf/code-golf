@@ -17,77 +17,22 @@ func Ideas() {
 		return
 	}
 
-	query := struct {
-		Query     string `json:"query"`
-		Variables struct {
-			Cursor string `json:"cursor,omitempty"`
-		} `json:"variables"`
-	}{
-		Query: `query($cursor: String) {
-			rateLimit { cost limit remaining resetAt }
-			repository(name: "code-golf" owner: "JRaspass") {
-				issues(after: $cursor first: 100 labels: "idea" states: OPEN) {
-					edges {
-						node {
-							number
-							thumbsDown: reactions(content: THUMBS_DOWN) { totalCount }
-							thumbsUp:   reactions(content: THUMBS_UP  ) { totalCount }
-							title
-						}
-					}
-					pageInfo { endCursor hasNextPage }
+	edges, err := graphQL("issues", `
+		issues(after: $cursor first: 100 labels: "idea" states: OPEN) {
+			edges {
+				node {
+					number
+					thumbsDown: reactions(content: THUMBS_DOWN) { totalCount }
+					thumbsUp:   reactions(content: THUMBS_UP  ) { totalCount }
+					title
 				}
 			}
-		}`,
-	}
-
-	type thumbs struct {
-		TotalCount int `json:"totalCount"`
-	}
-
-	var data struct {
-		Data struct {
-			RateLimit struct {
-				Cost      int       `json:"cost"`
-				Limit     int       `json:"limit"`
-				Remaining int       `json:"remaining"`
-				ResetAt   time.Time `json:"resetAt"`
-			}
-			Repository struct {
-				Issues struct {
-					Edges []struct {
-						Node struct {
-							Number     int    `json:"number"`
-							ThumbsDown thumbs `json:"thumbsDown"`
-							ThumbsUp   thumbs `json:"thumbsUp"`
-							Title      string `json:"title"`
-						} `json:"node"`
-					} `json:"edges"`
-					PageInfo struct {
-						EndCursor   string `json:"endCursor"`
-						HasNextPage bool   `json:"hasNextPage"`
-					} `json:"pageInfo"`
-				} `json:"issues"`
-			} `json:"repository"`
-		} `json:"data"`
-		Errors []interface{} `json:"errors"`
-	}
-
-	if err := graphQL(query, &data); err != nil {
+			pageInfo { endCursor hasNextPage }
+		}
+	`)
+	if err != nil {
 		panic(err)
 	}
-
-	if len(data.Errors) != 0 {
-		panic(fmt.Sprint(data.Errors))
-	}
-
-	fmt.Printf(
-		"GitHub API: Spent %d, %d/%d left, resets in %v\n",
-		data.Data.RateLimit.Cost,
-		data.Data.RateLimit.Remaining,
-		data.Data.RateLimit.Limit,
-		time.Until(data.Data.RateLimit.ResetAt).Round(time.Second),
-	)
 
 	tx, err := db.Begin()
 	if err != nil {
@@ -100,7 +45,22 @@ func Ideas() {
 		panic(err)
 	}
 
-	for _, edge := range data.Data.Repository.Issues.Edges {
+	for _, e := range edges {
+		type thumbs struct{ TotalCount int }
+
+		var edge struct {
+			Node struct {
+				Number     int
+				ThumbsDown thumbs
+				ThumbsUp   thumbs
+				Title      string
+			}
+		}
+
+		if err := json.Unmarshal(e, &edge); err != nil {
+			panic(err)
+		}
+
 		if _, err := tx.Exec(
 			"INSERT INTO ideas VALUES ($1, $2, $3, $4)",
 			edge.Node.Number,
@@ -125,76 +85,27 @@ func Stars() {
 
 	stargazers := map[int]time.Time{}
 
-	query := struct {
-		Query     string `json:"query"`
-		Variables struct {
-			Cursor string `json:"cursor,omitempty"`
-		} `json:"variables"`
-	}{
-		Query: `query($cursor: String) {
-			rateLimit { cost limit remaining resetAt }
-			repository(name: "code-golf" owner: "JRaspass") {
-				stargazers(after: $cursor first: 100) {
-					edges { node { databaseId } starredAt }
-					pageInfo { endCursor hasNextPage }
-				}
-			}
-		}`,
+	edges, err := graphQL("stargazers", `
+		stargazers(after: $cursor first: 100) {
+			edges { node { databaseId } starredAt }
+			pageInfo { endCursor hasNextPage }
+		}
+	`)
+	if err != nil {
+		panic(err)
 	}
 
-	for {
-		var data struct {
-			Data struct {
-				RateLimit struct {
-					Cost      int       `json:"cost"`
-					Limit     int       `json:"limit"`
-					Remaining int       `json:"remaining"`
-					ResetAt   time.Time `json:"resetAt"`
-				}
-				Repository struct {
-					Stargazers struct {
-						Edges []struct {
-							Node struct {
-								DatabaseID int `json:"databaseId"`
-							} `json:"node"`
-							StarredAt time.Time `json:"starredAt"`
-						} `json:"edges"`
-						PageInfo struct {
-							EndCursor   string `json:"endCursor"`
-							HasNextPage bool   `json:"hasNextPage"`
-						} `json:"pageInfo"`
-					} `json:"stargazers"`
-				} `json:"repository"`
-			} `json:"data"`
-			Errors []interface{} `json:"errors"`
+	for _, e := range edges {
+		var edge struct {
+			Node      struct{ DatabaseID int }
+			StarredAt time.Time
 		}
 
-		if err := graphQL(query, &data); err != nil {
+		if err := json.Unmarshal(e, &edge); err != nil {
 			panic(err)
 		}
 
-		if len(data.Errors) != 0 {
-			panic(fmt.Sprint(data.Errors))
-		}
-
-		fmt.Printf(
-			"GitHub API: Spent %d, %d/%d left, resets in %v\n",
-			data.Data.RateLimit.Cost,
-			data.Data.RateLimit.Remaining,
-			data.Data.RateLimit.Limit,
-			time.Until(data.Data.RateLimit.ResetAt).Round(time.Second),
-		)
-
-		for _, edge := range data.Data.Repository.Stargazers.Edges {
-			stargazers[edge.Node.DatabaseID] = edge.StarredAt
-		}
-
-		if data.Data.Repository.Stargazers.PageInfo.HasNextPage {
-			query.Variables.Cursor =
-				data.Data.Repository.Stargazers.PageInfo.EndCursor
-		} else {
-			break
-		}
+		stargazers[edge.Node.DatabaseID] = edge.StarredAt
 	}
 
 	rows, err := db.Query(`
@@ -257,26 +168,85 @@ func Stars() {
 	}
 }
 
-func graphQL(query, data interface{}) error {
-	var body bytes.Buffer
-
-	if err := json.NewEncoder(&body).Encode(query); err != nil {
-		return err
+func graphQL(key, query string) ([]json.RawMessage, error) {
+	payload := struct {
+		Query     string `json:"query"`
+		Variables struct {
+			Cursor string `json:"cursor,omitempty"`
+		} `json:"variables"`
+	}{
+		Query: `query($cursor: String) {
+			rateLimit { cost limit remaining resetAt }
+			repository(name: "code-golf" owner: "JRaspass") {` + query + `}
+		}`,
 	}
 
-	req, err := http.NewRequest("POST", "https://api.github.com/graphql", &body)
-	if err != nil {
-		return err
+	var edges []json.RawMessage
+
+	for {
+		var body bytes.Buffer
+
+		if err := json.NewEncoder(&body).Encode(payload); err != nil {
+			return nil, err
+		}
+
+		req, err := http.NewRequest("POST", "https://api.github.com/graphql", &body)
+		if err != nil {
+			return nil, err
+		}
+
+		req.Header.Add("Authorization", "bearer "+accessToken)
+
+		res, err := http.DefaultClient.Do(req)
+		if err != nil {
+			return nil, err
+		}
+
+		defer res.Body.Close()
+
+		var data struct {
+			Data struct {
+				RateLimit struct {
+					Cost      int
+					Limit     int
+					Remaining int
+					ResetAt   time.Time
+				}
+				Repository map[string]struct {
+					Edges    []json.RawMessage
+					PageInfo struct {
+						EndCursor   string
+						HasNextPage bool
+					}
+				}
+			}
+			Errors []interface{}
+		}
+
+		if err := json.NewDecoder(res.Body).Decode(&data); err != nil {
+			return nil, err
+		}
+
+		if len(data.Errors) != 0 {
+			return nil, fmt.Errorf("%v", data.Errors)
+		}
+
+		fmt.Printf(
+			"GitHub API: Spent %d, %d/%d left, resets in %v\n",
+			data.Data.RateLimit.Cost,
+			data.Data.RateLimit.Remaining,
+			data.Data.RateLimit.Limit,
+			time.Until(data.Data.RateLimit.ResetAt).Round(time.Second),
+		)
+
+		edges = append(edges, data.Data.Repository[key].Edges...)
+
+		if data.Data.Repository[key].PageInfo.HasNextPage {
+			payload.Variables.Cursor = data.Data.Repository[key].PageInfo.EndCursor
+		} else {
+			break
+		}
 	}
 
-	req.Header.Add("Authorization", "bearer "+accessToken)
-
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return err
-	}
-
-	defer res.Body.Close()
-
-	return json.NewDecoder(res.Body).Decode(&data)
+	return edges, nil
 }
