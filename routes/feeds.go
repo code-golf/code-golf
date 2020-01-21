@@ -111,7 +111,7 @@ func init() {
 			item.Description += "language"
 		}
 
-		item.Description += " via <a href=https://github.com/JRaspass/code-golf/commit/" +
+		item.Description += " via <a href=https://github.com/code-golf/code-golf/commit/" +
 			i.sha + ">" + i.sha + "</a>."
 
 		var err error

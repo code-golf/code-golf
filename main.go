@@ -9,7 +9,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/JRaspass/code-golf/routes"
+	"github.com/code-golf/code-golf/routes"
 	brotli "github.com/cv-library/negroni-brotli"
 	"github.com/urfave/negroni"
 	"golang.org/x/crypto/acme/autocert"

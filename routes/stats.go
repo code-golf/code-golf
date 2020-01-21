@@ -3,7 +3,7 @@ package routes
 import (
 	"net/http"
 
-	"github.com/JRaspass/code-golf/pie"
+	"github.com/code-golf/code-golf/pie"
 	"github.com/julienschmidt/httprouter"
 )
 

@@ -6,7 +6,7 @@ import (
 	"math"
 	"strings"
 
-	"github.com/JRaspass/code-golf/pretty"
+	"github.com/code-golf/code-golf/pretty"
 )
 
 type Slice struct {

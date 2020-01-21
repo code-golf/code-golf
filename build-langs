@@ -9,7 +9,7 @@ fi
 
 declare -A urls=(
     ["Bash"]="//www.gnu.org/software/bash/"
-    ["Brainfuck"]="//github.com/JRaspass/code-golf/tree/master/langs/brainfuck/"
+    ["Brainfuck"]="//github.com/code-golf/code-golf/tree/master/langs/brainfuck/"
     ["C"]="//bellard.org/tcc/"
     ["Haskell"]="//www.haskell.org/ghc/"
     ["J"]="http://jsoftware.com"

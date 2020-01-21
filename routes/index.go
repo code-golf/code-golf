@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"sort"
 
-	"github.com/JRaspass/code-golf/cookie"
+	"github.com/code-golf/code-golf/cookie"
 	"github.com/julienschmidt/httprouter"
 )
 

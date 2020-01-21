@@ -463,7 +463,7 @@ thead th {
     #trophies, #wrapper { grid-template-columns: 1fr }
 }
 
-/* TODO https://github.com/JRaspass/code-golf/issues/119
+/* TODO https://github.com/code-golf/code-golf/issues/119
 
 @media (prefers-color-scheme: dark) {
     :root {

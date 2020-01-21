@@ -2,7 +2,7 @@ package routes
 
 const versionTable = "" +
 	"<tr><th class=bash>Bash<td>5.0.0<td class=wide><a href=//www.gnu.org/software/bash/>website</a>" +
-	"<tr><th class=brainfuck>Brainfuck<td>1.0.0<td class=wide><a href=//github.com/JRaspass/code-golf/tree/master/langs/brainfuck/>website</a>" +
+	"<tr><th class=brainfuck>Brainfuck<td>1.0.0<td class=wide><a href=//github.com/code-golf/code-golf/tree/master/langs/brainfuck/>website</a>" +
 	"<tr><th class=c>C<td>Tiny C Compiler 0.9.27<td class=wide><a href=//bellard.org/tcc/>website</a>" +
 	"<tr><th class=haskell>Haskell<td>Glasgow Haskell Compiler 8.4.3<td class=wide><a href=//www.haskell.org/ghc/>website</a>" +
 	"<tr><th class=j>J<td>8.07.07<td class=wide><a href=http://jsoftware.com>website</a>" +

@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/JRaspass/code-golf/cookie"
+	"github.com/code-golf/code-golf/cookie"
 	"github.com/julienschmidt/httprouter"
 )
 

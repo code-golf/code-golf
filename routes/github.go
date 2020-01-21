@@ -177,7 +177,7 @@ func graphQL(key, query string) ([]json.RawMessage, error) {
 	}{
 		Query: `query($cursor: String) {
 			rateLimit { cost limit remaining resetAt }
-			repository(name: "code-golf" owner: "JRaspass") {` + query + `}
+			repository(name: "code-golf" owner: "code-golf") {` + query + `}
 		}`,
 	}
 

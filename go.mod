@@ -1,4 +1,4 @@
-module github.com/JRaspass/code-golf
+module github.com/code-golf/code-golf
 
 go 1.14
 

@@ -48,7 +48,7 @@ var trophies = []Trophy{
 	{
 		"happy-birthday-code-golf",
 		"Happy Birthday, Code Golf",
-		"Solve any hole in any language on <a href=//github.com/JRaspass/code-golf/commit/4b44>2 Oct</a>.",
+		"Solve any hole in any language on <a href=//github.com/code-golf/code-golf/commit/4b44>2 Oct</a>.",
 	},
 	{
 		"hello-world",
@@ -73,7 +73,7 @@ var trophies = []Trophy{
 	{
 		"my-god-its-full-of-stars",
 		"My God, It’s Full of Stars",
-		"Star <a href=//github.com/JRaspass/code-golf>the Code Golf repository</a>.",
+		"Star <a href=//github.com/code-golf/code-golf>the Code Golf repository</a>.",
 	},
 	{
 		"ouroboros",
