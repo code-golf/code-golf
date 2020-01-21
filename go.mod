@@ -8,10 +8,11 @@ require (
 	github.com/cv-library/negroni-brotli v0.1.0
 	github.com/gorilla/feeds v1.1.1
 	github.com/julienschmidt/httprouter v1.3.0
+	github.com/kr/pretty v0.2.0 // indirect
 	github.com/lib/pq v1.3.0
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/urfave/negroni v1.0.0
-	golang.org/x/crypto v0.0.0-20191206172530-e9b2fee46413
-	golang.org/x/net v0.0.0-20191209160850-c0dbc17a3553 // indirect
+	golang.org/x/crypto v0.0.0-20200117160349-530e935923ad
+	golang.org/x/net v0.0.0-20200114155413-6afb5195e5aa // indirect
 	golang.org/x/text v0.3.2 // indirect
 )
