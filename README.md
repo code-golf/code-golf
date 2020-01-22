@@ -1,7 +1,5 @@
 # Code Golf
 
-[![Travis](https://travis-ci.org/code-golf/code-golf.svg)](https://travis-ci.org/code-golf/code-golf) [![Coveralls](https://coveralls.io/repos/github/code-golf/code-golf/badge.svg)](https://coveralls.io/github/code-golf/code-golf)
-
 This is the repository behind https://code-golf.io
 
 ## Quickstart

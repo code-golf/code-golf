@@ -1,6 +1,24 @@
 GOFILES := $(shell find . -name '*.go' ! -path './.go*')
 SHELL   := /bin/bash
 
+define STUB
+package routes
+
+import (
+	"net/http"
+
+	"github.com/julienschmidt/httprouter"
+)
+
+const (
+	commonCssPath = ""
+	holeCssPath   = ""
+	holeJsPath    = ""
+)
+
+func asset(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {}
+endef
+
 bump:
 	@go get -u
 	@go mod tidy
@@ -27,3 +45,11 @@ font:
 		--no-hinting                                                             \
 		--output-file=assets/font.woff2                                          \
 		--unicodes-file=font-subset.txt
+
+test:
+# FIXME Stub out assets if it doesn't yet exist.
+ifeq ($(wildcard routes/assets.go),)
+	$(file > routes/assets.go, $(STUB))
+endif
+
+	@go test ./...
