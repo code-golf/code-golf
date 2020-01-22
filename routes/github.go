@@ -78,6 +78,45 @@ func Ideas() {
 }
 
 // FIXME Not a route, but only routes have access to the DB.
+func PullRequests() {
+	if accessToken == "" {
+		return
+	}
+
+	pullRequests := map[int]time.Time{}
+
+	edges, err := graphQL("pullRequests", `
+		pullRequests(after: $cursor first: 100 states: MERGED) {
+			edges { node { author { ...on User { databaseId } } mergedAt } }
+			pageInfo { endCursor hasNextPage }
+		}
+	`)
+	if err != nil {
+		panic(err)
+	}
+
+	for _, e := range edges {
+		var edge struct {
+			Node struct {
+				Author   struct{ DatabaseID int }
+				MergedAt time.Time
+			}
+		}
+
+		if err := json.Unmarshal(e, &edge); err != nil {
+			panic(err)
+		}
+
+		mergedAt, ok := pullRequests[edge.Node.Author.DatabaseID]
+		if !ok || edge.Node.MergedAt.Before(mergedAt) {
+			pullRequests[edge.Node.Author.DatabaseID] = edge.Node.MergedAt
+		}
+	}
+
+	awardTrophies(pullRequests, "patches-welcome")
+}
+
+// FIXME Not a route, but only routes have access to the DB.
 func Stars() {
 	if accessToken == "" {
 		return
@@ -108,11 +147,14 @@ func Stars() {
 		stargazers[edge.Node.DatabaseID] = edge.StarredAt
 	}
 
-	rows, err := db.Query(`
-		SELECT earned, user_id
-		  FROM trophies
-		 WHERE trophy = 'my-god-its-full-of-stars'
-	`)
+	awardTrophies(stargazers, "my-god-its-full-of-stars")
+}
+
+func awardTrophies(earnedUsers map[int]time.Time, trophy string) {
+	rows, err := db.Query(
+		"SELECT earned, user_id FROM trophies WHERE trophy = $1",
+		trophy,
+	)
 	if err != nil {
 		panic(err)
 	}
@@ -126,25 +168,25 @@ func Stars() {
 			panic(err)
 		}
 
-		if newEarned, ok := stargazers[userID]; ok {
-			delete(stargazers, userID)
+		if newEarned, ok := earnedUsers[userID]; ok {
+			delete(earnedUsers, userID)
 
 			if earned != newEarned {
 				if _, err := db.Exec(
 					`UPDATE trophies
-					    SET earned = $1
-					  WHERE trophy = 'my-god-its-full-of-stars'
-					    AND user_id = $2`,
+					    SET earned  = $1
+					  WHERE trophy  = $2
+					    AND user_id = $3`,
 					newEarned,
+					trophy,
 					userID,
 				); err != nil {
 					panic(err)
 				}
 			}
 		} else if _, err := db.Exec(
-			`DELETE FROM trophies
-			  WHERE trophy = 'my-god-its-full-of-stars'
-			    AND user_id = $1`,
+			"DELETE FROM trophies WHERE trophy = $1 AND user_id = $2",
+			trophy,
 			userID,
 		); err != nil {
 			panic(err)
@@ -155,13 +197,13 @@ func Stars() {
 		panic(err)
 	}
 
-	for userID, earned := range stargazers {
+	for userID, earned := range earnedUsers {
 		if _, err := db.Exec(
-			`INSERT INTO trophies
-				  SELECT $1, $2, 'my-god-its-full-of-stars'
+			`INSERT INTO trophies SELECT $1, $2, $3
 			WHERE EXISTS (SELECT * FROM users WHERE id = $2)`,
 			earned,
 			userID,
+			trophy,
 		); err != nil {
 			panic(err)
 		}

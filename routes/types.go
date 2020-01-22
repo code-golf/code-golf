@@ -81,6 +81,11 @@ var trophies = []Trophy{
 		"Solve <a href=/quine#python>Quine in Python</a>.",
 	},
 	{
+		"patches-welcome",
+		"Patches Welcome",
+		"Contribute a merged PR to <a href=//github.com/code-golf/code-golf>the Code Golf repository</a>.",
+	},
+	{
 		"polyglot",
 		"Polyglot",
 		"Solve at least one hole in every language.",

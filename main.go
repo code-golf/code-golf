@@ -76,11 +76,12 @@ func main() {
 	server.TLSConfig.BuildNameToCertificate()
 
 	go func() {
-		ticker := time.NewTicker(time.Minute)
+		ticker := time.NewTicker(5 * time.Minute)
 
 		for {
 			<-ticker.C
 			routes.Ideas()
+			routes.PullRequests()
 			routes.Stars()
 		}
 	}()
