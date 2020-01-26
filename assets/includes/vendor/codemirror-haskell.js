@@ -1,11 +1,6 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: https://codemirror.net/LICENSE
 
-(function(mod) {
-    mod(CodeMirror);
-})(function(CodeMirror) {
-"use strict";
-
 CodeMirror.defineMode("haskell", function(_config, modeConfig) {
 
   function switchState(source, setState, f) {
@@ -256,5 +251,4 @@ CodeMirror.defineMode("haskell", function(_config, modeConfig) {
     lineComment: "--"
   };
 
-});
 });

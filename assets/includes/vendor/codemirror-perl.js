@@ -793,8 +793,6 @@ CodeMirror.defineMode("perl",function(){
 
 CodeMirror.registerHelper("wordChars", "perl", /[\w$]/);
 
-CodeMirror.defineMIME("text/x-perl", "perl");
-
 // it's like "peek", but need for look-ahead or look-behind if index < 0
 function look(stream, c){
   return stream.string.charAt(stream.pos+(c||0));

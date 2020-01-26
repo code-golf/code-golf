@@ -7,10 +7,8 @@
 // You can find some technical background for some of the code below
 // at http://marijnhaverbeke.nl/blog/#cm-internals .
 
-let CodeMirror;
-
 (function (global, factory) {
-  CodeMirror = factory();
+  global.CodeMirror = factory();
 }(this, (function () { 'use strict';
 
   // Kludges for bugs and behavior differences that can't be feature
@@ -23,11 +21,8 @@ let CodeMirror;
   var ie_11up = /Trident\/(?:[7-9]|\d{2,})\..*rv:(\d+)/.exec(userAgent);
   var edge = /Edge\/(\d+)/.exec(userAgent);
   var ie = ie_upto10 || ie_11up || edge;
-  var ie_version = ie && (ie_upto10 ? document.documentMode || 6 : +(edge || ie_11up)[1]);
   var webkit = !edge && /WebKit\//.test(userAgent);
-  var qtwebkit = webkit && /Qt\/\d+\.\d+/.test(userAgent);
   var chrome = !edge && /Chrome\//.test(userAgent);
-  var presto = /Opera\//.test(userAgent);
   var safari = /Apple Computer/.test(navigator.vendor);
   var mac_geMountainLion = /Mac OS X 1\d\D([8-9]|\d\d)\D/.test(userAgent);
 
@@ -39,12 +34,8 @@ let CodeMirror;
   var chromeOS = /\bCrOS\b/.test(userAgent);
   var windows = /win/i.test(platform);
 
-  var presto_version = presto && userAgent.match(/Version\/(\d*\.\d*)/);
-  if (presto_version) { presto_version = Number(presto_version[1]); }
-  if (presto_version && presto_version >= 15) { presto = false; webkit = true; }
-  // Some browsers use the wrong event properties to signal cmd/ctrl on OS X
-  var flipCtrlCmd = mac && (qtwebkit || presto && (presto_version == null || presto_version < 12.11));
-  var captureRightClick = gecko || (ie && ie_version >= 9);
+  var flipCtrlCmd = false;
+  var captureRightClick = gecko || ie;
 
   function classTest(cls) { return new RegExp("(^|\\s)" + cls + "(?:$|\\s)\\s*") }
 
@@ -172,10 +163,28 @@ let CodeMirror;
     }
   }
 
-  var Delayed = function() {this.id = null;};
+  var Delayed = function() {
+    this.id = null;
+    this.f = null;
+    this.time = 0;
+    this.handler = bind(this.onTimeout, this);
+  };
+  Delayed.prototype.onTimeout = function (self) {
+    self.id = 0;
+    if (self.time <= +new Date) {
+      self.f();
+    } else {
+      setTimeout(self.handler, self.time - +new Date);
+    }
+  };
   Delayed.prototype.set = function (ms, f) {
-    clearTimeout(this.id);
-    this.id = setTimeout(f, ms);
+    this.f = f;
+    var time = +new Date + ms;
+    if (!this.id || time < this.time) {
+      clearTimeout(this.id);
+      this.id = setTimeout(this.handler, ms);
+      this.time = time;
+    }
   };
 
   function indexOf(array, elt) {
@@ -581,15 +590,13 @@ let CodeMirror;
   // compatibility wrappers are needed.
 
   function e_preventDefault(e) {
-    if (e.preventDefault) { e.preventDefault(); }
-    else { e.returnValue = false; }
+    e.preventDefault();
   }
   function e_stopPropagation(e) {
-    if (e.stopPropagation) { e.stopPropagation(); }
-    else { e.cancelBubble = true; }
+    e.stopPropagation();
   }
   function e_defaultPrevented(e) {
-    return e.defaultPrevented != null ? e.defaultPrevented : e.returnValue == false
+    return e.defaultPrevented;
   }
   function e_stop(e) {e_preventDefault(e); e_stopPropagation(e);}
 
@@ -2183,10 +2190,10 @@ let CodeMirror;
 
   function updateLineWidgets(cm, lineView, dims) {
     if (lineView.alignable) { lineView.alignable = null; }
+    var isWidget = classTest("CodeMirror-linewidget");
     for (var node = lineView.node.firstChild, next = (void 0); node; node = next) {
       next = node.nextSibling;
-      if (node.className == "CodeMirror-linewidget")
-        { lineView.node.removeChild(node); }
+      if (isWidget.test(node.className)) { lineView.node.removeChild(node); }
     }
     insertLineWidgets(cm, lineView, dims);
   }
@@ -2216,7 +2223,7 @@ let CodeMirror;
     if (!line.widgets) { return }
     var wrap = ensureLineWrapped(lineView);
     for (var i = 0, ws = line.widgets; i < ws.length; ++i) {
-      var widget = ws[i], node = elt("div", [widget.node], "CodeMirror-linewidget");
+      var widget = ws[i], node = elt("div", [widget.node], "CodeMirror-linewidget" + (widget.className ? " " + widget.className : ""));
       if (!widget.handleMouseEvents) { node.setAttribute("cm-ignore-events", "true"); }
       positionLineWidget(widget, node, lineView, dims);
       cm.display.input.setUneditable(node);
@@ -2276,7 +2283,7 @@ let CodeMirror;
   function paddingVert(display) {return display.mover.offsetHeight - display.lineSpace.offsetHeight}
   function paddingH(display) {
     if (display.cachedPaddingH) { return display.cachedPaddingH }
-    var e = removeChildrenAndAdd(display.measure, elt("pre", "x"));
+    var e = removeChildrenAndAdd(display.measure, elt("pre", "x", "CodeMirror-line-like"));
     var style = window.getComputedStyle ? window.getComputedStyle(e) : e.currentStyle;
     var data = {left: parseInt(style.paddingLeft), right: parseInt(style.paddingRight)};
     if (!isNaN(data.left) && !isNaN(data.right)) { display.cachedPaddingH = data; }
@@ -2461,16 +2468,12 @@ let CodeMirror;
       for (var i$1 = 0; i$1 < 4; i$1++) { // Retry a maximum of 4 times when nonsense rectangles are returned
         while (start && isExtendingChar(prepared.line.text.charAt(place.coverStart + start))) { --start; }
         while (place.coverStart + end < place.coverEnd && isExtendingChar(prepared.line.text.charAt(place.coverStart + end))) { ++end; }
-        if (ie && ie_version < 9 && start == 0 && end == place.coverEnd - place.coverStart)
-          { rect = node.parentNode.getBoundingClientRect(); }
-        else
-          { rect = getUsefulRect(range(node, start, end).getClientRects(), bias); }
+        rect = getUsefulRect(range(node, start, end).getClientRects(), bias);
         if (rect.left || rect.right || start == 0) { break }
         end = start;
         start = start - 1;
         collapse = "right";
       }
-      if (ie && ie_version < 11) { rect = maybeUpdateRectForZooming(cm.display.measure, rect); }
     } else { // If it is a widget, simply get the box for the whole widget.
       if (start > 0) { collapse = bias = "right"; }
       var rects;
@@ -2478,13 +2481,6 @@ let CodeMirror;
         { rect = rects[bias == "right" ? rects.length - 1 : 0]; }
       else
         { rect = node.getBoundingClientRect(); }
-    }
-    if (ie && ie_version < 9 && !start && (!rect || !rect.left && !rect.right)) {
-      var rSpan = node.parentNode.getClientRects()[0];
-      if (rSpan)
-        { rect = {left: rSpan.left, right: rSpan.left + charWidth(cm.display), top: rSpan.top, bottom: rSpan.bottom}; }
-      else
-        { rect = nullRect; }
     }
 
     var rtop = rect.top - prepared.rect.top, rbot = rect.bottom - prepared.rect.top;
@@ -2670,7 +2666,7 @@ let CodeMirror;
   function PosWithInfo(line, ch, sticky, outside, xRel) {
     var pos = Pos(line, ch, sticky);
     pos.xRel = xRel;
-    if (outside) { pos.outside = true; }
+    if (outside) { pos.outside = outside; }
     return pos
   }
 
@@ -2679,16 +2675,16 @@ let CodeMirror;
   function coordsChar(cm, x, y) {
     var doc = cm.doc;
     y += cm.display.viewOffset;
-    if (y < 0) { return PosWithInfo(doc.first, 0, null, true, -1) }
+    if (y < 0) { return PosWithInfo(doc.first, 0, null, -1, -1) }
     var lineN = lineAtHeight(doc, y), last = doc.first + doc.size - 1;
     if (lineN > last)
-      { return PosWithInfo(doc.first + doc.size - 1, getLine(doc, last).text.length, null, true, 1) }
+      { return PosWithInfo(doc.first + doc.size - 1, getLine(doc, last).text.length, null, 1, 1) }
     if (x < 0) { x = 0; }
 
     var lineObj = getLine(doc, lineN);
     for (;;) {
       var found = coordsCharInner(cm, lineObj, lineN, x, y);
-      var collapsed = collapsedSpanAround(lineObj, found.ch + (found.xRel > 0 ? 1 : 0));
+      var collapsed = collapsedSpanAround(lineObj, found.ch + (found.xRel > 0 || found.outside > 0 ? 1 : 0));
       if (!collapsed) { return found }
       var rangeEnd = collapsed.find(1);
       if (rangeEnd.line == lineN) { return rangeEnd }
@@ -2776,7 +2772,7 @@ let CodeMirror;
       // base X position
       var coords = cursorCoords(cm, Pos(lineNo$$1, ch, sticky), "line", lineObj, preparedMeasure);
       baseX = coords.left;
-      outside = y < coords.top || y >= coords.bottom;
+      outside = y < coords.top ? -1 : y >= coords.bottom ? 1 : 0;
     }
 
     ch = skipExtendingChars(lineObj.text, ch, 1);
@@ -2845,7 +2841,7 @@ let CodeMirror;
   function textHeight(display) {
     if (display.cachedTextHeight != null) { return display.cachedTextHeight }
     if (measureText == null) {
-      measureText = elt("pre");
+      measureText = elt("pre", null, "CodeMirror-line-like");
       // Measure a bunch of lines, for browsers that compute
       // fractional heights.
       for (var i = 0; i < 49; ++i) {
@@ -2865,7 +2861,7 @@ let CodeMirror;
   function charWidth(display) {
     if (display.cachedCharWidth != null) { return display.cachedCharWidth }
     var anchor = elt("span", "xxxxxxxxxx");
-    var pre = elt("pre", [anchor]);
+    var pre = elt("pre", [anchor], "CodeMirror-line-like");
     removeChildrenAndAdd(display.measure, pre);
     var rect = anchor.getBoundingClientRect(), width = (rect.right - rect.left) / 10;
     if (width > 2) { display.cachedCharWidth = width; }
@@ -2939,7 +2935,7 @@ let CodeMirror;
     try { x = e.clientX - space.left; y = e.clientY - space.top; }
     catch (e) { return null }
     var coords = coordsChar(cm, x, y), line;
-    if (forRect && coords.xRel == 1 && (line = getLine(cm.doc, coords.line).text).length == coords.ch) {
+    if (forRect && coords.xRel > 0 && (line = getLine(cm.doc, coords.line).text).length == coords.ch) {
       var colDiff = countColumn(line, line.length, cm.options.tabSize) - line.length;
       coords = Pos(coords.line, Math.max(0, Math.round((x - paddingH(cm.display).left) / charWidth(cm.display)) - colDiff));
     }
@@ -3311,18 +3307,12 @@ let CodeMirror;
       var cur = display.view[i], wrapping = cm.options.lineWrapping;
       var height = (void 0), width = 0;
       if (cur.hidden) { continue }
-      if (ie && ie_version < 8) {
-        var bot = cur.node.offsetTop + cur.node.offsetHeight;
-        height = bot - prevBottom;
-        prevBottom = bot;
-      } else {
-        var box = cur.node.getBoundingClientRect();
-        height = box.bottom - box.top;
-        // Check that lines don't extend past the right of the current
-        // editor width
-        if (!wrapping && cur.text.firstChild)
-          { width = cur.text.firstChild.getBoundingClientRect().right - box.left - 1; }
-      }
+      var box = cur.node.getBoundingClientRect();
+      height = box.bottom - box.top;
+      // Check that lines don't extend past the right of the current
+      // editor width
+      if (!wrapping && cur.text.firstChild)
+        { width = cur.text.firstChild.getBoundingClientRect().right - box.left - 1; }
       var diff = cur.line.height - height;
       if (diff > .005 || diff < -.005) {
         updateLineHeight(cur.line, height);
@@ -4465,7 +4455,7 @@ let CodeMirror;
     // estimated pixels/delta value, we just handle horizontal
     // scrolling entirely here. It'll be slightly off from native, but
     // better than glitching out.
-    if (dx && !gecko && !presto && wheelPixelsPerUnit != null) {
+    if (dx && !gecko && wheelPixelsPerUnit != null) {
       if (dy && canScrollY)
         { updateScrollTop(cm, Math.max(0, scroll.scrollTop + dy * wheelPixelsPerUnit)); }
       setScrollLeft(cm, Math.max(0, scroll.scrollLeft + dx * wheelPixelsPerUnit));
@@ -5135,8 +5125,15 @@ let CodeMirror;
     var line = getLine(doc, pos.line);
     if (line.markedSpans) { for (var i = 0; i < line.markedSpans.length; ++i) {
       var sp = line.markedSpans[i], m = sp.marker;
-      if ((sp.from == null || (m.inclusiveLeft ? sp.from <= pos.ch : sp.from < pos.ch)) &&
-          (sp.to == null || (m.inclusiveRight ? sp.to >= pos.ch : sp.to > pos.ch))) {
+
+      // Determine if we should prevent the cursor being placed to the left/right of an atomic marker
+      // Historically this was determined using the inclusiveLeft/Right option, but the new way to control it
+      // is with selectLeft/Right
+      var preventCursorLeft = ("selectLeft" in m) ? !m.selectLeft : m.inclusiveLeft;
+      var preventCursorRight = ("selectRight" in m) ? !m.selectRight : m.inclusiveRight;
+
+      if ((sp.from == null || (preventCursorLeft ? sp.from <= pos.ch : sp.from < pos.ch)) &&
+          (sp.to == null || (preventCursorRight ? sp.to >= pos.ch : sp.to > pos.ch))) {
         if (mayClear) {
           signal(m, "beforeCursorEnter");
           if (m.explicitlyCleared) {
@@ -5148,14 +5145,14 @@ let CodeMirror;
 
         if (oldPos) {
           var near = m.find(dir < 0 ? 1 : -1), diff = (void 0);
-          if (dir < 0 ? m.inclusiveRight : m.inclusiveLeft)
+          if (dir < 0 ? preventCursorRight : preventCursorLeft)
             { near = movePos(doc, near, -dir, near && near.line == pos.line ? line : null); }
           if (near && near.line == pos.line && (diff = cmp(near, oldPos)) && (dir < 0 ? diff < 0 : diff > 0))
             { return skipAtomicInner(doc, near, pos, dir, mayClear) }
         }
 
         var far = m.find(dir < 0 ? -1 : 1);
-        if (dir < 0 ? m.inclusiveLeft : m.inclusiveRight)
+        if (dir < 0 ? preventCursorLeft : preventCursorRight)
           { far = movePos(doc, far, dir, far.line == pos.line ? line : null); }
         return far ? skipAtomicInner(doc, far, pos, dir, mayClear) : null
       }
@@ -5384,6 +5381,9 @@ let CodeMirror;
     if (doc.cm) { makeChangeSingleDocInEditor(doc.cm, change, spans); }
     else { updateDoc(doc, change, spans); }
     setSelectionNoUndo(doc, selAfter, sel_dontScroll);
+
+    if (doc.cantEdit && skipAtomic(doc, Pos(doc.firstLine(), 0)))
+      { doc.cantEdit = false; }
   }
 
   // Handle the interaction of a change to a document with the editor
@@ -6557,14 +6557,7 @@ let CodeMirror;
     if (e.dataTransfer.setDragImage && !safari) {
       var img = elt("img", null, null, "position: fixed; left: 0; top: 0;");
       img.src = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
-      if (presto) {
-        img.width = img.height = 1;
-        cm.display.wrapper.appendChild(img);
-        // Force a relayout, or Opera won't use our image for some obscure reason
-        img._top = img.offsetTop;
-      }
       e.dataTransfer.setDragImage(img, 0, 0);
-      if (presto) { img.parentNode.removeChild(img); }
     }
   }
 
@@ -6779,7 +6772,6 @@ let CodeMirror;
 
   // Look up the name of a key as indicated by an event object.
   function keyName(event, noShift) {
-    if (presto && event.keyCode == 34 && event["char"]) { return false }
     var name = keyNames[event.keyCode];
     if (name == null || event.altGraphKey) { return false }
     // Ctrl-ScrollLock has keyCode 3, same as Ctrl-Pause,
@@ -7188,17 +7180,11 @@ let CodeMirror;
     var cm = this;
     cm.curOp.focus = activeElt();
     if (signalDOMEvent(cm, e)) { return }
-    // IE does strange things with escape.
-    if (ie && ie_version < 11 && e.keyCode == 27) { e.returnValue = false; }
     var code = e.keyCode;
     cm.display.shift = code == 16 || e.shiftKey;
     var handled = handleKeyBinding(cm, e);
-    if (presto) {
-      lastStoppedKey = handled ? code : null;
-      // Opera has no cut event... we try to at least catch the key combo
-      if (!handled && code == 88 && !hasCopyEvent && (mac ? e.metaKey : e.ctrlKey))
-        { cm.replaceSelection("", null, "cut"); }
-    }
+    if (gecko && !mac && !handled && code == 46 && e.shiftKey && !e.ctrlKey && document.execCommand)
+      { document.execCommand("cut"); }
 
     // Turn mouse into crosshair when Alt is held on Mac.
     if (code == 18 && !/\bCodeMirror-crosshair\b/.test(cm.display.lineDiv.className))
@@ -7229,8 +7215,6 @@ let CodeMirror;
     var cm = this;
     if (eventInWidget(cm.display, e) || signalDOMEvent(cm, e) || e.ctrlKey && !e.altKey || mac && e.metaKey) { return }
     var keyCode = e.keyCode, charCode = e.charCode;
-    if (presto && keyCode == lastStoppedKey) {lastStoppedKey = null; e_preventDefault(e); return}
-    if ((presto && (!e.which || e.which < 10)) && handleKeyBinding(cm, e)) { return }
     var ch = String.fromCharCode(charCode == null ? keyCode : charCode);
     // Some browsers fire keypress events for backspace
     if (ch == "\x08") { return }
@@ -7374,8 +7358,8 @@ let CodeMirror;
         e_preventDefault(e);
         if (!behavior.addNew)
           { extendSelection(cm.doc, pos, null, null, behavior.extend); }
-        // Work around unexplainable focus problem in IE9 (#2127) and Chrome (#3081)
-        if (webkit || ie && ie_version == 9)
+        // Work around unexplainable focus problem in Chrome (#3081)
+        if (webkit)
           { setTimeout(function () {display.wrapper.ownerDocument.body.focus(); display.input.focus();}, 20); }
         else
           { display.input.focus(); }
@@ -7688,7 +7672,7 @@ let CodeMirror;
       for (var i = newBreaks.length - 1; i >= 0; i--)
         { replaceRange(cm.doc, val, newBreaks[i], Pos(newBreaks[i].line, newBreaks[i].ch + val.length)); }
     });
-    option("specialChars", /[\u0000-\u001f\u007f-\u009f\u00ad\u061c\u200b-\u200f\u2028\u2029\ufeff]/g, function (cm, val, old) {
+    option("specialChars", /[\u0000-\u001f\u007f-\u009f\u00ad\u061c\u200b-\u200f\u2028\u2029\ufeff\ufff9-\ufffc]/g, function (cm, val, old) {
       cm.state.specialChars = new RegExp(val.source + (val.test("\t") ? "" : "|\t"), "g");
       if (old != Init) { cm.refresh(); }
     });
@@ -7848,10 +7832,6 @@ let CodeMirror;
 
     if (options.autofocus && !mobile) { display.input.focus(); }
 
-    // Override magic textarea content restore that IE sometimes does
-    // on our hidden textarea on reload
-    if (ie && ie_version < 11) { setTimeout(function () { return this$1.display.input.reset(true); }, 20); }
-
     registerEventHandlers(this);
     ensureGlobalHandlers();
 
@@ -7886,18 +7866,7 @@ let CodeMirror;
   function registerEventHandlers(cm) {
     var d = cm.display;
     on(d.scroller, "mousedown", operation(cm, onMouseDown));
-    // Older IE's will not fire a second mousedown for a double click
-    if (ie && ie_version < 11)
-      { on(d.scroller, "dblclick", operation(cm, function (e) {
-        if (signalDOMEvent(cm, e)) { return }
-        var pos = posFromMouse(cm, e);
-        if (!pos || clickInGutter(cm, e) || eventInWidget(cm.display, e)) { return }
-        e_preventDefault(e);
-        var word = cm.findWordAt(pos);
-        extendSelection(cm.doc, word.anchor, word.head);
-      })); }
-    else
-      { on(d.scroller, "dblclick", function (e) { return signalDOMEvent(cm, e) || e_preventDefault(e); }); }
+    on(d.scroller, "dblclick", function (e) { return signalDOMEvent(cm, e) || e_preventDefault(e); });
     // Some browsers fire contextmenu *after* opening the menu, at
     // which point we can't mess with it anymore. Context menu is
     // handled in onMouseDown for these browsers.
@@ -8738,8 +8707,6 @@ let CodeMirror;
 
     on(div, "paste", function (e) {
       if (signalDOMEvent(cm, e) || handlePaste(e, cm)) { return }
-      // IE doesn't fire input events, so we schedule a read for the pasted content in this way
-      if (ie_version <= 11) { setTimeout(operation(cm, function () { return this$1.updateFromDOM(); }), 20); }
     });
 
     on(div, "compositionstart", function (e) {
@@ -9267,7 +9234,7 @@ let CodeMirror;
     if (ios) { te.style.width = "0px"; }
 
     on(te, "input", function () {
-      if (ie && ie_version >= 9 && this$1.hasSelection) { this$1.hasSelection = null; }
+      if (ie && this$1.hasSelection) { this$1.hasSelection = null; }
       input.poll();
     });
 
@@ -9382,10 +9349,10 @@ let CodeMirror;
       var content = cm.getSelection();
       this.textarea.value = content;
       if (cm.state.focused) { selectInput(this.textarea); }
-      if (ie && ie_version >= 9) { this.hasSelection = content; }
+      if (ie) { this.hasSelection = content; }
     } else if (!typing) {
       this.prevInput = this.textarea.value = "";
-      if (ie && ie_version >= 9) { this.hasSelection = null; }
+      if (ie) { this.hasSelection = null; }
     }
   };
 
@@ -9459,7 +9426,7 @@ let CodeMirror;
     // Work around nonsensical selection resetting in IE9/10, and
     // inexplicable appearance of private area unicode characters on
     // some key combos in Mac (#2689).
-    if (ie && ie_version >= 9 && this.hasSelection === text ||
+    if (ie && this.hasSelection === text ||
         mac && /[\uf700-\uf7ff]/.test(text)) {
       cm.display.input.reset();
       return false
@@ -9496,7 +9463,7 @@ let CodeMirror;
   };
 
   TextareaInput.prototype.onKeyPress = function () {
-    if (ie && ie_version >= 9) { this.hasSelection = null; }
+    if (ie) { this.hasSelection = null; }
     this.fastPoll();
   };
 
@@ -9504,7 +9471,7 @@ let CodeMirror;
     var input = this, cm = input.cm, display = cm.display, te = input.textarea;
     if (input.contextMenuPending) { input.contextMenuPending(); }
     var pos = posFromMouse(cm, e), scrollPos = display.scroller.scrollTop;
-    if (!pos || presto) { return } // Opera is difficult.
+    if (!pos) { return }
 
     // Reset the current text selection only if the click is done outside of the selection
     // and 'resetSelectionOnContextMenu' option is true.
@@ -9551,7 +9518,7 @@ let CodeMirror;
 
       // Try to detect the user choosing select-all
       if (te.selectionStart != null) {
-        if (!ie || (ie && ie_version < 9)) { prepareSelectAllHack(); }
+        if (!ie) { prepareSelectAllHack(); }
         var i = 0, poll = function () {
           if (display.selForContextMenu == cm.doc.sel && te.selectionStart == 0 &&
               te.selectionEnd > 0 && input.prevInput == "\u200b") {
@@ -9567,7 +9534,7 @@ let CodeMirror;
       }
     }
 
-    if (ie && ie_version >= 9) { prepareSelectAllHack(); }
+    if (ie) { prepareSelectAllHack(); }
     if (captureRightClick) {
       e_stop(e);
       var mouseup = function () {
@@ -9634,7 +9601,7 @@ let CodeMirror;
         textarea.style.display = "";
         if (textarea.form) {
           off(textarea.form, "submit", save);
-          if (typeof textarea.form.submit == "function")
+          if (!options.leaveSubmitMethodAlone && typeof textarea.form.submit == "function")
             { textarea.form.submit = realSubmit; }
         }
       };
@@ -9733,7 +9700,7 @@ let CodeMirror;
 
   addLegacyProps(CodeMirror);
 
-  CodeMirror.version = "5.47.0";
+  CodeMirror.version = "5.50.2";
 
   return CodeMirror;
 

@@ -1,10 +1,12 @@
 /* include vendor/codemirror.js            */
+/* include vendor/codemirror-clike.js      */
+/* include vendor/codemirror-htmlmixed.js  */
 /* include vendor/codemirror-simple.js     */
+/* include vendor/codemirror-xml.js        */
 
 /* include vendor/codemirror-bash.js       */
-/* include vendor/codemirror-clike.js      */
+/* include vendor/codemirror-brainfuck.js  */
 /* include vendor/codemirror-haskell.js    */
-/* include vendor/codemirror-htmlmixed.js  */
 /* include vendor/codemirror-javascript.js */
 /* include vendor/codemirror-julia.js      */
 /* include vendor/codemirror-lisp.js       */
@@ -17,7 +19,6 @@
 /* include vendor/codemirror-ruby.js       */
 /* include vendor/codemirror-rust.js       */
 /* include vendor/codemirror-swift.js      */
-/* include vendor/codemirror-xml.js        */
 
 const chars     = document.querySelector('#chars');
 const details   = document.querySelector('#details');

@@ -1,6 +1,6 @@
-FROM alpine:edge
+FROM alpine:3.11
 
-RUN apk add --no-cache bash curl gcc make musl-dev nodejs-npm openjdk8-jre perl
+RUN apk add --no-cache bash curl g++ make musl-dev nodejs-npm openjdk8-jre perl
 
 # Brotli
 RUN curl -L https://github.com/google/brotli/archive/v1.0.7.tar.gz \
@@ -10,20 +10,20 @@ RUN curl -L https://github.com/google/brotli/archive/v1.0.7.tar.gz \
  && mv bin/brotli /usr/bin
 
 # Zopfli
-RUN curl -L https://github.com/google/zopfli/archive/zopfli-1.0.2.tar.gz \
+RUN curl -L https://github.com/google/zopfli/archive/zopfli-1.0.3.tar.gz \
   | tar xzf -                                                            \
- && cd zopfli-zopfli-1.0.2                                               \
+ && cd zopfli-zopfli-1.0.3                                               \
  && make -j`nproc`                                                       \
  && mv zopfli /usr/bin
 
 # Closure Compiler
-RUN curl http://dl.google.com/closure-compiler/compiler-20190618.tar.gz \
+RUN curl http://dl.google.com/closure-compiler/compiler-20200112.tar.gz \
   | tar -zxf - -C /                                                     \
- && mv closure-compiler-v20190618.jar closure-compiler.jar              \
+ && mv closure-compiler-v20200112.jar closure-compiler.jar              \
  && chmod +r closure-compiler.jar
 
 # CSSO & SVGO
-RUN npm install -g csso-cli@2.0.2 csso@3.5.1 svgo@1.3.0
+RUN npm install -g csso-cli@3.0.0 csso@4.0.2 svgo@1.3.2
 
 # Bashisms FTW.
 RUN ln -snf /bin/bash /bin/sh
