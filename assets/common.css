@@ -14,6 +14,7 @@
     --green:      #26DE81BB;
     --blue:       #45AAF2BB;
     --purple:     #8C7AE6BB;
+    --grey:       #ECF0F1BB;
 }
 
 * {
@@ -223,6 +224,8 @@ thead th {
 .color:nth-of-type(6n+5), .blue   { background: var(--blue)   }
 .color:nth-of-type(6n+6), .purple { background: var(--purple) }
 
+.grey { background: var(--grey) }
+
 .grid {
     align-items: center;
     display: grid;
@@ -401,6 +404,42 @@ thead th {
     height: 1.5rem;
     margin-right: .5rem;
     width: 1.5rem;
+}
+
+@media (min-width: 1280px) {
+    header nav, main {
+        max-width: 1280px;
+    }
+    #matrix {
+        grid-template-columns: 3fr repeat(17,1fr);
+    }
+    #matrix a {
+        display: initial;
+        text-align: center;
+    }
+    #matrix a svg {
+        display: none;
+    }
+    #matrix .span {
+        grid-column: 1/2;
+        text-align: right;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    #matrix input:checked+label {
+        grid-column: 2/3;
+    }
+    #matrix input:checked+label~input:checked+label {
+        grid-column: auto;
+    }
+    #matrix input:not(:checked)+label {
+        order: -1;
+        grid-column: 2/3;
+    }
+    #matrix input:not(:checked)+label~input:not(:checked)+label {
+        grid-column: auto;
+    }
 }
 
 #me {

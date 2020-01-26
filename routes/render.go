@@ -41,7 +41,27 @@ func ord(i int) string {
 	return "th"
 }
 
+func colour(i int) string {
+	if i <= 1 {
+		return "yellow"
+	}
+	if i <= 2 {
+		return "orange"
+	}
+	if i <= 3 {
+		return "red"
+	}
+	if i <= 10 {
+		return "purple"
+	}
+	if i <= 100 {
+		return "blue"
+	}
+	return "green"
+}
+
 var tmpl = template.New("").Funcs(template.FuncMap{
+	"colour":    colour,
 	"comma":     pretty.Comma,
 	"hasPrefix": strings.HasPrefix,
 	"hasSuffix": strings.HasSuffix,
