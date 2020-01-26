@@ -1,4 +1,4 @@
-FROM alpine:3.10 as builder
+FROM alpine:3.11 as builder
 
 RUN apk add --no-cache gcc git linux-headers make musl-dev perl
 

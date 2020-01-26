@@ -1,13 +1,13 @@
-FROM alpine:3.10 as builder
+FROM alpine:3.11 as builder
 
 RUN apk add --no-cache cmake curl g++ gfortran libexecinfo-dev \
     linux-headers m4 make musl-dev patch perl python3 tar xz
 
-RUN curl -L https://github.com/JuliaLang/julia/releases/download/v1.3.0/julia-1.3.0.tar.gz | tar xzf -
+RUN curl -L https://github.com/JuliaLang/julia/releases/download/v1.3.1/julia-1.3.1.tar.gz | tar xzf -
 
-RUN make -C julia-1.3.0 -j`nproc` prefix=/usr MARCH=x86-64 install \
+RUN make -C julia-1.3.1 -j`nproc` prefix=/usr MARCH=x86-64 install \
  && strip -s /usr/bin/julia /usr/lib/julia/*.so                    \
- && rm -r julia-1.3.0
+ && rm -r julia-1.3.1
 
 COPY julia.c /
 

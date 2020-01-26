@@ -14,7 +14,7 @@ declare -A urls=(
     ["Haskell"]="//www.haskell.org/ghc/"
     ["J"]="http://jsoftware.com"
     ["JavaScript"]="//v8.dev"
-    #["Julia"]="//julialang.org"
+    ["Julia"]="//julialang.org"
     ["Lisp"]="//clisp.sourceforge.io"
     ["Lua"]="//www.lua.org"
     ["Nim"]="//nim-lang.org"
@@ -31,7 +31,7 @@ IFS=$'\n'
 sorted_names=( $(sort --ignore-case <<<"${!urls[*]}") )
 unset IFS
 
-docker pull alpine:3.10
+docker pull alpine:3.11
 
 cd langs
 

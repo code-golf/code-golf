@@ -1,4 +1,4 @@
-FROM alpine:3.10 as builder
+FROM alpine:3.11 as builder
 
 # Copied from https://github.com/AlexMasterov/dockerfiles/blob/master/alpine-libv8/7.4/Dockerfile
 # I can't thank @AlexMasterov++ enough! V8 is a pig to build :-(

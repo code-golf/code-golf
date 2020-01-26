@@ -1,13 +1,13 @@
-FROM alpine:3.10 as builder
+FROM alpine:3.11 as builder
 
 RUN apk add --no-cache curl gcc make musl-dev
 
-RUN curl -L https://php.net/distributions/php-7.4.1.tar.xz | tar xJf -
+RUN curl -L https://php.net/distributions/php-7.4.2.tar.xz | tar xJf -
 
 ENV CFLAGS='-O2 -flto -ffat-lto-objects' \
    LDFLAGS='-O2 -flto -ffat-lto-objects'
 
-RUN cd php-7.4.1                                              \
+RUN cd php-7.4.2                                              \
  && ./configure                                               \
     --disable-all                                             \
     --disable-gcc-global-regs                                 \
