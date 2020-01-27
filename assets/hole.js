@@ -58,27 +58,17 @@ onload = () => {
         cm.setOption('mode', {name: lang == 'c' ? 'clike' : lang, startOpen: true});
         cm.setValue(lang in solutions ? solutions[lang] : '');
 
-        picker.innerHTML = '';
-        picker.open = false;
-
-        for (const l of langs) {
-            let name = l.name;
-
-            if (l.id in solutions)
-                name += ` <sup>${strlen(solutions[l.id]).toLocaleString('en')}</sup>`;
-
-            picker.innerHTML += l.id == lang
-                ? `<a>${name}</a>` : `<a href=#${l.id}>${name}</a>`;
-        }
-
         refreshScores();
     })();
 
     const submit = document.querySelector('#run a').onclick = async () => {
+        document.querySelector('h2').innerText = '...';
+
+        const code = cm.getValue();
         const res  = await fetch('/solution', {
             method: 'POST',
             body: JSON.stringify({
-                Code: cm.getValue(),
+                Code: code,
                 Hole: hole,
                 Lang: lang,
             }),
@@ -86,6 +76,9 @@ onload = () => {
 
         const data = await res.json();
         const pass = data.Exp === data.Out && data.Out !== '';
+
+        if (pass && (!(lang in solutions) || strlen(code) <= strlen(solutions[lang])))
+            solutions[lang] = code;
 
         document.querySelector('h2').innerText
             = pass ? 'Pass 😊️' : 'Fail ☹️';
@@ -130,6 +123,19 @@ onload = () => {
 };
 
 async function refreshScores() {
+    picker.innerHTML = '';
+    picker.open = false;
+
+    for (const l of langs) {
+        let name = l.name;
+
+        if (l.id in solutions)
+            name += ` <sup>${strlen(solutions[l.id]).toLocaleString('en')}</sup>`;
+
+        picker.innerHTML += l.id == lang
+            ? `<a>${name}</a>` : `<a href=#${l.id}>${name}</a>`;
+    }
+
     const url    = `/scores/${hole}/${lang}`;
     const scores = await (await fetch(`${url}/mini`)).json();
 
