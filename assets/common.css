@@ -413,9 +413,13 @@ thead th {
     #matrix {
         grid-template-columns: 3fr repeat(17,1fr);
     }
+    #matrix svg {
+        margin-right: 0;
+    }
     #matrix a {
         display: initial;
         text-align: center;
+        height: 1.9rem;
     }
     #matrix a svg {
         display: none;
