@@ -402,8 +402,11 @@ thead th {
 
 #matrix svg {
     height: 1.5rem;
-    margin-right: .5rem;
     width: 1.5rem;
+}
+
+#matrix a svg {
+    margin-right: .5rem;
 }
 
 @media (min-width: 1280px) {
@@ -412,9 +415,6 @@ thead th {
     }
     #matrix {
         grid-template-columns: 3fr repeat(17,1fr);
-    }
-    #matrix svg {
-        margin-right: 0;
     }
     #matrix a {
         display: initial;
