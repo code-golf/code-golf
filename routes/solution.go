@@ -13,8 +13,8 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/code-golf/code-golf/cookie"
 	"github.com/buildkite/terminal"
+	"github.com/code-golf/code-golf/cookie"
 	"github.com/julienschmidt/httprouter"
 	"github.com/pmezard/go-difflib/difflib"
 )
@@ -60,6 +60,8 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		out.Argv, out.Exp = sudoku()
 	case "ten-pin-bowling":
 		out.Argv, out.Exp = tenPinBowling()
+	case "united-states":
+		out.Argv, out.Exp = unitedStates()
 	default:
 		out.Exp = answers[in.Hole]
 	}
