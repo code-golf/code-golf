@@ -433,6 +433,14 @@ thead th {
 
 #run > span { margin: 1rem }
 
+                            #states { columns: 4 }
+@media (max-width: 54rem) { #states { columns: 2 } }
+@media (max-width: 30rem) { #states { columns: 1 } }
+
+#states table { break-inside: avoid-column }
+
+#states td:first-child { width: 100% }
+
 #stats { grid-template-columns: repeat(4, 1fr) }
 
 #stats div {
