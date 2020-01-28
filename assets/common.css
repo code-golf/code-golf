@@ -384,8 +384,7 @@ thead th {
 #matrix input.rust:not(:checked)       ~ .rust,
 #matrix input.swift:not(:checked)      ~ .swift { display: none }
 
-#matrix input:checked + label,
-#matrix label:hover {
+#matrix input:checked + label {
     background: var(--color);
     color: var(--background);
 }
