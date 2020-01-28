@@ -58,6 +58,8 @@ onload = () => {
         cm.setOption('mode', {name: lang == 'c' ? 'clike' : lang, startOpen: true});
         cm.setValue(lang in solutions ? solutions[lang] : '');
 
+        document.querySelectorAll('#header a').forEach(a => a.hash = lang);
+
         picker.innerHTML = '';
         picker.open = false;
 
