@@ -150,7 +150,7 @@ func Render(
 	}
 
 	if _, args.Login = cookie.Read(r); args.Login == "" {
-		args.LogInURL = "//github.com/login/oauth/authorize?client_id=7f6709819023e9215205&scope=user:email&redirect_uri=https://code-golf.io/callback?redirect_uri%3D" + url.QueryEscape(url.QueryEscape(r.RequestURI))
+		args.LogInURL = "//github.com/login/oauth/authorize?client_id=7f6709819023e9215205&redirect_uri=https://code-golf.io/callback?redirect_uri%3D" + url.QueryEscape(url.QueryEscape(r.RequestURI))
 	}
 
 	w.WriteHeader(code)
