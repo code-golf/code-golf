@@ -5,10 +5,9 @@ import (
 	"sort"
 
 	"github.com/code-golf/code-golf/cookie"
-	"github.com/julienschmidt/httprouter"
 )
 
-func index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func index(w http.ResponseWriter, r *http.Request) {
 	if sort := r.URL.Query().Get("sort"); sort != "" {
 		http.SetCookie(w, &http.Cookie{
 			HttpOnly: true,

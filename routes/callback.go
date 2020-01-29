@@ -9,12 +9,11 @@ import (
 	"strings"
 
 	"github.com/code-golf/code-golf/cookie"
-	"github.com/julienschmidt/httprouter"
 )
 
 var clientSecret = os.Getenv("CLIENT_SECRET")
 
-func callback(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func callback(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 
 	if code := query.Get("code"); code != "" {

@@ -15,11 +15,10 @@ import (
 
 	"github.com/buildkite/terminal"
 	"github.com/code-golf/code-golf/cookie"
-	"github.com/julienschmidt/httprouter"
 	"github.com/pmezard/go-difflib/difflib"
 )
 
-func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func solution(w http.ResponseWriter, r *http.Request) {
 	var in struct{ Code, Hole, Lang string }
 
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {

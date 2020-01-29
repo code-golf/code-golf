@@ -6,10 +6,10 @@ import (
 	"time"
 
 	"github.com/code-golf/code-golf/cookie"
-	"github.com/julienschmidt/httprouter"
+	"github.com/go-chi/chi"
 )
 
-func scoresMini(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+func scoresMini(w http.ResponseWriter, r *http.Request) {
 	userID, _ := cookie.Read(r)
 
 	var json []byte
@@ -38,8 +38,8 @@ func scoresMini(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		     LIMIT 7
 		) SELECT COALESCE(JSON_AGG(mini_leaderboard), '[]') FROM mini_leaderboard`,
 		userID,
-		ps[0].Value,
-		ps[1].Value,
+		chi.URLParam(r, "hole"),
+		chi.URLParam(r, "lang"),
 	).Scan(&json); err != nil {
 		panic(err)
 	}
@@ -48,7 +48,7 @@ func scoresMini(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	w.Write(json)
 }
 
-func scoresAll(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+func scoresAll(w http.ResponseWriter, r *http.Request) {
 	var json []byte
 
 	if err := db.QueryRow(
@@ -64,8 +64,8 @@ func scoresAll(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		        AND $1 IN ('all-holes', hole::text)
 		        AND $2 IN ('all-langs', lang::text)
 		) SELECT COALESCE(JSON_AGG(solution_lengths), '[]') FROM solution_lengths`,
-		ps[0].Value,
-		ps[1].Value,
+		chi.URLParam(r, "hole"),
+		chi.URLParam(r, "lang"),
 	).Scan(&json); err != nil {
 		panic(err)
 	}
@@ -74,9 +74,9 @@ func scoresAll(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	w.Write(json)
 }
 
-func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	holeID := ps[0].Value
-	langID := ps[1].Value
+func scores(w http.ResponseWriter, r *http.Request) {
+	holeID := chi.URLParam(r, "hole")
+	langID := chi.URLParam(r, "lang")
 
 	if _, ok := holeByID[holeID]; holeID != "all-holes" && !ok {
 		Render(w, r, http.StatusNotFound, "404", "", nil)
@@ -110,18 +110,18 @@ func scores(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	page := 1
 
-	if len(ps) == 3 {
-		if ps[2].Value == "mini" {
-			scoresMini(w, r, ps)
+	if suffix := chi.URLParam(r, "suffix"); suffix != "" {
+		if suffix == "mini" {
+			scoresMini(w, r)
 			return
 		}
 
-		if ps[2].Value == "all" {
-			scoresAll(w, r, ps)
+		if suffix == "all" {
+			scoresAll(w, r)
 			return
 		}
 
-		page, _ = strconv.Atoi(ps[2].Value)
+		page, _ = strconv.Atoi(suffix)
 
 		if page < 1 {
 			Render(w, r, http.StatusNotFound, "404", "", nil)

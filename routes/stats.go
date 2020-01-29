@@ -4,10 +4,9 @@ import (
 	"net/http"
 
 	"github.com/code-golf/code-golf/pie"
-	"github.com/julienschmidt/httprouter"
 )
 
-func stats(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func stats(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Golfers, Holes, Langs, Solutions int
 		SolutionsByHole, SolutionsByLang pie.Pie

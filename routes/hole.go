@@ -4,10 +4,10 @@ import (
 	"net/http"
 
 	"github.com/code-golf/code-golf/cookie"
-	"github.com/julienschmidt/httprouter"
+	"github.com/go-chi/chi"
 )
 
-func hole(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func hole(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		HideDetails             bool
 		Hole                    Hole
@@ -15,11 +15,16 @@ func hole(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		Langs                   []Lang
 		Solutions               map[string]string
 	}{
-		Hole:        holeByID[r.URL.Path[1:]],
 		HoleCssPath: holeCssPath,
 		HoleJsPath:  holeJsPath,
 		Langs:       langs,
 		Solutions:   map[string]string{},
+	}
+
+	var ok bool
+	if data.Hole, ok = holeByID[chi.URLParam(r, "hole")]; !ok {
+		Render(w, r, http.StatusNotFound, "404", "", nil)
+		return
 	}
 
 	if c, _ := r.Cookie("hide-details"); c != nil {

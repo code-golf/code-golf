@@ -1,12 +1,8 @@
 package routes
 
-import (
-	"net/http"
+import "net/http"
 
-	"github.com/julienschmidt/httprouter"
-)
-
-func ideas(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func ideas(w http.ResponseWriter, r *http.Request) {
 	type idea struct {
 		ID, ThumbsDown, ThumbsUp int
 		Title                    string

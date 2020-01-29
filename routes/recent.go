@@ -3,8 +3,6 @@ package routes
 import (
 	"net/http"
 	"time"
-
-	"github.com/julienschmidt/httprouter"
 )
 
 type Recent struct {
@@ -15,7 +13,7 @@ type Recent struct {
 	Submitted time.Time
 }
 
-func recent(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func recent(w http.ResponseWriter, r *http.Request) {
 	rows, err := db.Query(
 		` SELECT hole, lang, login, LENGTH(code), submitted
 		    FROM solutions JOIN users ON id = user_id

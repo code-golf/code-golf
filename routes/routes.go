@@ -6,12 +6,13 @@ import (
 	"math/rand"
 	"net/http"
 
-	"github.com/julienschmidt/httprouter"
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 	_ "github.com/lib/pq"
 )
 
 var db *sql.DB
-var Router = httprouter.New()
+var Router = chi.NewRouter()
 
 func init() {
 	var err error
@@ -20,47 +21,45 @@ func init() {
 		panic(err)
 	}
 
-	Router.GET("/", index)
-	Router.GET("/about", about)
-	Router.GET("/assets/:asset", asset)
-	Router.GET("/callback", callback)
-	Router.GET("/favicon.ico", asset)
-	Router.GET("/feeds/:feed", Feeds)
-	Router.GET("/ideas", ideas)
-	Router.GET("/log-out", logOut)
-	Router.GET("/random", random)
-	Router.GET("/recent", recent)
-	Router.GET("/robots.txt", robots)
-	Router.GET("/scores/:hole/:lang", scores)
-	Router.GET("/scores/:hole/:lang/:page", scores)
-	Router.GET("/stats", stats)
-	Router.GET("/users/:user", user)
+	Router.Use(middleware.RedirectSlashes)
 
-	for _, h := range holes {
-		Router.GET("/"+h.ID, hole)
-	}
-
-	Router.POST("/solution", solution)
-
-	Router.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	Router.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		Render(w, r, http.StatusNotFound, "404", "", nil)
 	})
+
+	Router.Get("/", index)
+	Router.Get("/{hole}", hole)
+	Router.Get("/about", about)
+	Router.Get("/assets/{asset}", asset)
+	Router.Get("/callback", callback)
+	Router.Get("/favicon.ico", asset)
+	Router.Get("/feeds/{feed}", Feeds)
+	Router.Get("/ideas", ideas)
+	Router.Get("/log-out", logOut)
+	Router.Get("/random", random)
+	Router.Get("/recent", recent)
+	Router.Get("/robots.txt", robots)
+	Router.Get("/scores/{hole}/{lang}", scores)
+	Router.Get("/scores/{hole}/{lang}/{suffix}", scores)
+	Router.Post("/solution", solution)
+	Router.Get("/stats", stats)
+	Router.Get("/users/{user}", user)
 }
 
-func about(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func about(w http.ResponseWriter, r *http.Request) {
 	Render(w, r, http.StatusOK, "about", "About", template.HTML(versionTable))
 }
 
-func logOut(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func logOut(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Set-Cookie", "__Host-user=;MaxAge=0;Path=/;Secure")
 
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
-func random(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func random(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, holes[rand.Intn(len(holes))].ID, http.StatusFound)
 }
 
-func robots(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
+func robots(w http.ResponseWriter, _ *http.Request) {
 	w.WriteHeader(http.StatusNoContent)
 }

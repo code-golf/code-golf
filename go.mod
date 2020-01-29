@@ -6,8 +6,8 @@ require (
 	github.com/SeerUK/assert v1.0.0
 	github.com/buildkite/terminal v3.2.0+incompatible
 	github.com/cv-library/negroni-brotli v0.1.0
+	github.com/go-chi/chi v4.0.3+incompatible
 	github.com/gorilla/feeds v1.1.1
-	github.com/julienschmidt/httprouter v1.3.0
 	github.com/kr/pretty v0.2.0 // indirect
 	github.com/lib/pq v1.3.0
 	github.com/pmezard/go-difflib v1.0.0

@@ -4,11 +4,7 @@ SHELL   := /bin/bash
 define STUB
 package routes
 
-import (
-	"net/http"
-
-	"github.com/julienschmidt/httprouter"
-)
+import "net/http"
 
 const (
 	commonCssPath = ""
@@ -16,7 +12,7 @@ const (
 	holeJsPath    = ""
 )
 
-func asset(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {}
+func asset(w http.ResponseWriter, r *http.Request) {}
 endef
 
 bump:

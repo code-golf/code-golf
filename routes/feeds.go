@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/go-chi/chi"
 	"github.com/gorilla/feeds"
-	"github.com/julienschmidt/httprouter"
 )
 
 var atomFeed, jsonFeed, rssFeed []byte
@@ -153,8 +153,8 @@ func init() {
 }
 
 // Feeds serves /feeds/:feed
-func Feeds(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	switch ps.ByName("feed") {
+func Feeds(w http.ResponseWriter, r *http.Request) {
+	switch chi.URLParam(r, "feed") {
 	case "atom":
 		w.Header().Set("Content-Type", "application/atom+xml; charset=utf-8")
 		w.Write(atomFeed)

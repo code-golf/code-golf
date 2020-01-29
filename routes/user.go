@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/julienschmidt/httprouter"
+	"github.com/go-chi/chi"
 )
 
-func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+func user(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Holes          []Hole
 		Langs          []Lang
@@ -20,7 +20,7 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	}{
 		Holes:          holes,
 		Langs:          langs,
-		Login:          ps[0].Value,
+		Login:          chi.URLParam(r, "user"),
 		Ranks:          map[string]map[string]int{},
 		Trophies:       trophies,
 		TrophiesEarned: map[string]*time.Time{},
