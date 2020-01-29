@@ -6,7 +6,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/go-chi/chi"
 	"github.com/gorilla/feeds"
 )
 
@@ -154,7 +153,7 @@ func init() {
 
 // Feeds serves /feeds/:feed
 func Feeds(w http.ResponseWriter, r *http.Request) {
-	switch chi.URLParam(r, "feed") {
+	switch param(r, "feed") {
 	case "atom":
 		w.Header().Set("Content-Type", "application/atom+xml; charset=utf-8")
 		w.Write(atomFeed)

@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/code-golf/code-golf/cookie"
-	"github.com/go-chi/chi"
 )
 
 func hole(w http.ResponseWriter, r *http.Request) {
@@ -22,7 +21,7 @@ func hole(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var ok bool
-	if data.Hole, ok = holeByID[chi.URLParam(r, "hole")]; !ok {
+	if data.Hole, ok = holeByID[param(r, "hole")]; !ok {
 		Render(w, r, http.StatusNotFound, "404", "", nil)
 		return
 	}

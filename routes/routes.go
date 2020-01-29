@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"math/rand"
 	"net/http"
+	"net/url"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
@@ -44,6 +45,11 @@ func init() {
 	Router.Post("/solution", solution)
 	Router.Get("/stats", stats)
 	Router.Get("/users/{user}", user)
+}
+
+func param(r *http.Request, key string) string {
+	value, _ := url.QueryUnescape(chi.URLParam(r, key))
+	return value
 }
 
 func about(w http.ResponseWriter, r *http.Request) {

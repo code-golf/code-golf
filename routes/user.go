@@ -4,8 +4,6 @@ import (
 	"database/sql"
 	"net/http"
 	"time"
-
-	"github.com/go-chi/chi"
 )
 
 func user(w http.ResponseWriter, r *http.Request) {
@@ -20,7 +18,7 @@ func user(w http.ResponseWriter, r *http.Request) {
 	}{
 		Holes:          holes,
 		Langs:          langs,
-		Login:          chi.URLParam(r, "user"),
+		Login:          param(r, "user"),
 		Ranks:          map[string]map[string]int{},
 		Trophies:       trophies,
 		TrophiesEarned: map[string]*time.Time{},

@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/code-golf/code-golf/cookie"
-	"github.com/go-chi/chi"
 )
 
 func scoresMini(w http.ResponseWriter, r *http.Request) {
@@ -38,8 +37,8 @@ func scoresMini(w http.ResponseWriter, r *http.Request) {
 		     LIMIT 7
 		) SELECT COALESCE(JSON_AGG(mini_leaderboard), '[]') FROM mini_leaderboard`,
 		userID,
-		chi.URLParam(r, "hole"),
-		chi.URLParam(r, "lang"),
+		param(r, "hole"),
+		param(r, "lang"),
 	).Scan(&json); err != nil {
 		panic(err)
 	}
@@ -64,8 +63,8 @@ func scoresAll(w http.ResponseWriter, r *http.Request) {
 		        AND $1 IN ('all-holes', hole::text)
 		        AND $2 IN ('all-langs', lang::text)
 		) SELECT COALESCE(JSON_AGG(solution_lengths), '[]') FROM solution_lengths`,
-		chi.URLParam(r, "hole"),
-		chi.URLParam(r, "lang"),
+		param(r, "hole"),
+		param(r, "lang"),
 	).Scan(&json); err != nil {
 		panic(err)
 	}
@@ -75,8 +74,8 @@ func scoresAll(w http.ResponseWriter, r *http.Request) {
 }
 
 func scores(w http.ResponseWriter, r *http.Request) {
-	holeID := chi.URLParam(r, "hole")
-	langID := chi.URLParam(r, "lang")
+	holeID := param(r, "hole")
+	langID := param(r, "lang")
 
 	if _, ok := holeByID[holeID]; holeID != "all-holes" && !ok {
 		Render(w, r, http.StatusNotFound, "404", "", nil)
@@ -110,7 +109,7 @@ func scores(w http.ResponseWriter, r *http.Request) {
 
 	page := 1
 
-	if suffix := chi.URLParam(r, "suffix"); suffix != "" {
+	if suffix := param(r, "suffix"); suffix != "" {
 		if suffix == "mini" {
 			scoresMini(w, r)
 			return
