@@ -13,6 +13,5 @@ func TestCallbackNoCode(t *testing.T) {
 
 	Router.ServeHTTP(w, httptest.NewRequest("", "/callback", nil))
 
-	assert.Equal(t, w.Code, http.StatusFound)
-	assert.Equal(t, w.Header().Get("Location"), "/")
+	assert.Equal(t, w.Code, http.StatusBadRequest)
 }

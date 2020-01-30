@@ -150,7 +150,14 @@ func Render(
 	}
 
 	if _, args.Login = cookie.Read(r); args.Login == "" {
-		args.LogInURL = "//github.com/login/oauth/authorize?client_id=7f6709819023e9215205&redirect_uri=https://code-golf.io/callback?redirect_uri%3D" + url.QueryEscape(url.QueryEscape(r.RequestURI))
+		// Shallow copy becasue we want to modify a string.
+		config := config
+
+		config.RedirectURL = "https://code-golf.io/callback?redirect_uri=" +
+			url.QueryEscape(r.RequestURI)
+
+		// TODO State is a token to protect the user from CSRF attacks.
+		args.LogInURL = config.AuthCodeURL("")
 	}
 
 	w.WriteHeader(code)
