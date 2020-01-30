@@ -2,7 +2,6 @@ package routes
 
 import (
 	"bytes"
-	"fmt"
 	"html/template"
 	"io/ioutil"
 	"net/http"
@@ -11,41 +10,16 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
-	"time"
 
 	"github.com/code-golf/code-golf/cookie"
 	"github.com/code-golf/code-golf/pretty"
 )
 
-const (
-	day   = 24 * time.Hour
-	week  = 7 * day
-	month = 4 * week
-)
-
-func ord(i int) string {
-	switch i % 10 {
-	case 1:
-		if i%100 != 11 {
-			return "st"
-		}
-	case 2:
-		if i%100 != 12 {
-			return "nd"
-		}
-	case 3:
-		if i%100 != 13 {
-			return "rd"
-		}
-	}
-	return "th"
-}
-
 var tmpl = template.New("").Funcs(template.FuncMap{
 	"comma":     pretty.Comma,
 	"hasPrefix": strings.HasPrefix,
 	"hasSuffix": strings.HasSuffix,
-	"ord":       ord,
+	"ord":       pretty.Ordinal,
 	"symbol": func(name string) template.HTML {
 		if svg, err := ioutil.ReadFile("views/" + name + ".svg"); err != nil {
 			panic(err)
@@ -54,36 +28,7 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 		}
 	},
 	"title": strings.Title,
-	"time": func(t time.Time) template.HTML {
-		var sb strings.Builder
-
-		rfc := t.Format(time.RFC3339)
-
-		sb.WriteString("<time datetime=")
-		sb.WriteString(rfc)
-		sb.WriteString(" title=")
-		sb.WriteString(rfc)
-		sb.WriteRune('>')
-
-		switch diff := time.Now().Sub(t); true {
-		case diff < 2*time.Minute:
-			sb.WriteString("1 min ago")
-		case diff < 2*time.Hour:
-			fmt.Fprintf(&sb, "%d mins ago", diff/time.Minute)
-		case diff < 2*day:
-			fmt.Fprintf(&sb, "%d hours ago", diff/time.Hour)
-		case diff < 2*week:
-			fmt.Fprintf(&sb, "%d days ago", diff/day)
-		case diff < 2*month:
-			fmt.Fprintf(&sb, "%d weeks ago", diff/week)
-		default:
-			fmt.Fprintf(&sb, "%d months ago", diff/month)
-		}
-
-		sb.WriteString("</time>")
-
-		return template.HTML(sb.String())
-	},
+	"time":  pretty.Time,
 })
 
 func init() {

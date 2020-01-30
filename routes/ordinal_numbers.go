@@ -3,6 +3,8 @@ package routes
 import (
 	"math/rand"
 	"strconv"
+
+	"github.com/code-golf/code-golf/pretty"
 )
 
 func ordinalNumbers() (args []string, out string) {
@@ -10,7 +12,7 @@ func ordinalNumbers() (args []string, out string) {
 		s := strconv.Itoa(i)
 
 		args = append(args, s)
-		out += s + ord(i) + "\n"
+		out += s + pretty.Ordinal(i) + "\n"
 	}
 
 	// Drop the trailing newline.
