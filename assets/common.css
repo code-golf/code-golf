@@ -280,6 +280,7 @@ thead th {
 
 .pie svg {
     align-self: center;
+    max-width: 100%;
     transform: rotate(-90deg);
 }
 
