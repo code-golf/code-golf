@@ -165,7 +165,6 @@ func solution(w http.ResponseWriter, r *http.Request) {
 				awardTrophy(db, userID, "ouroboros")
 			}
 		}
-
 	}
 
 	w.Header()["Content-Type"] = []string{"application/json"}

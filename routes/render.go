@@ -95,7 +95,7 @@ func Render(
 	}
 
 	if _, args.Login = cookie.Read(r); args.Login == "" {
-		// Shallow copy becasue we want to modify a string.
+		// Shallow copy because we want to modify a string.
 		config := config
 
 		config.RedirectURL = "https://code-golf.io/callback?redirect_uri=" +
