@@ -1,3 +1,5 @@
+github.com/BurntSushi/toml v0.3.1 h1:WXkYYl6Yr3qBf1K79EBnL4mak0OimBfB0XUf9Vl28OQ=
+github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/SeerUK/assert v1.0.0 h1:UuhBwrK3UxJ3xT+3+k8qfriUEqfgiOCerFKE746TqEI=
 github.com/SeerUK/assert v1.0.0/go.mod h1:gYQnFIWikwvM2F3SoZpBdnbwf/XKaUSeG+Lx1GzSS9E=
 github.com/buildkite/terminal v3.2.0+incompatible h1:08p6611HADinUwK0oyxCaAsnFXVDU4GlTW1TdXVP+5s=
