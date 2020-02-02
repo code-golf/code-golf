@@ -6,7 +6,9 @@ import (
 	"github.com/code-golf/code-golf/cookie"
 )
 
-func hole(w http.ResponseWriter, r *http.Request) {
+// GETHole serves GET /{hole}
+// TODO Rename when Hole isn't defined in routes
+func GETHole(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		HideDetails             bool
 		Hole                    Hole
@@ -22,7 +24,7 @@ func hole(w http.ResponseWriter, r *http.Request) {
 
 	var ok bool
 	if data.Hole, ok = holeByID[param(r, "hole")]; !ok {
-		Render(w, r, http.StatusNotFound, "404", "", nil)
+		render(w, r, http.StatusNotFound, "404", "", nil)
 		return
 	}
 
@@ -59,5 +61,5 @@ func hole(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	Render(w, r, http.StatusOK, "hole", data.Hole.Name, data)
+	render(w, r, http.StatusOK, "hole", data.Hole.Name, data)
 }

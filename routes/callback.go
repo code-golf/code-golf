@@ -17,7 +17,8 @@ var config = oauth2.Config{
 	Endpoint:     github.Endpoint,
 }
 
-func callback(w http.ResponseWriter, r *http.Request) {
+// Callback serves GET /callback
+func Callback(w http.ResponseWriter, r *http.Request) {
 	if r.FormValue("code") == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		return

@@ -11,7 +11,7 @@ import (
 func TestCallbackNoCode(t *testing.T) {
 	w := httptest.NewRecorder()
 
-	Router.ServeHTTP(w, httptest.NewRequest("", "/callback", nil))
+	Callback(w, httptest.NewRequest("", "/callback", nil))
 
 	assert.Equal(t, w.Code, http.StatusBadRequest)
 }

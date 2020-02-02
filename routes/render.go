@@ -57,8 +57,7 @@ func init() {
 	}
 }
 
-// Render wraps common logic required for rendering a view to the user.
-func Render(
+func render(
 	w http.ResponseWriter,
 	r *http.Request,
 	code int,

@@ -6,7 +6,8 @@ import (
 	"github.com/code-golf/code-golf/pie"
 )
 
-func stats(w http.ResponseWriter, r *http.Request) {
+// Stats serves GET /stats
+func Stats(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Golfers, Holes, Langs, Solutions int
 		SolutionsByHole, SolutionsByLang pie.Pie
@@ -71,5 +72,5 @@ func stats(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	Render(w, r, http.StatusOK, "stats", "Stats", data)
+	render(w, r, http.StatusOK, "stats", "Stats", data)
 }

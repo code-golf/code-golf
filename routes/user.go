@@ -6,7 +6,8 @@ import (
 	"time"
 )
 
-func user(w http.ResponseWriter, r *http.Request) {
+// User serves GET /users/{user}
+func User(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Holes          []Hole
 		Langs          []Lang
@@ -31,7 +32,7 @@ func user(w http.ResponseWriter, r *http.Request) {
 		"SELECT id, login FROM users WHERE login = $1",
 		data.Login,
 	).Scan(&userID, &login); err == sql.ErrNoRows {
-		Render(w, r, http.StatusNotFound, "404", "", nil)
+		render(w, r, http.StatusNotFound, "404", "", nil)
 		return
 	} else if err != nil {
 		panic(err)
@@ -110,5 +111,5 @@ func user(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	Render(w, r, http.StatusOK, "user", data.Login, data)
+	render(w, r, http.StatusOK, "user", data.Login, data)
 }

@@ -12,7 +12,7 @@ const (
 	holeJsPath    = ""
 )
 
-func asset(w http.ResponseWriter, r *http.Request) {}
+func Asset(w http.ResponseWriter, r *http.Request) {}
 endef
 
 bump:

@@ -73,17 +73,18 @@ func scoresAll(w http.ResponseWriter, r *http.Request) {
 	w.Write(json)
 }
 
-func scores(w http.ResponseWriter, r *http.Request) {
+// Scores serves GET /scores/{hole}/{lang}/{suffix}
+func Scores(w http.ResponseWriter, r *http.Request) {
 	holeID := param(r, "hole")
 	langID := param(r, "lang")
 
 	if _, ok := holeByID[holeID]; holeID != "all-holes" && !ok {
-		Render(w, r, http.StatusNotFound, "404", "", nil)
+		render(w, r, http.StatusNotFound, "404", "", nil)
 		return
 	}
 
 	if _, ok := langByID[langID]; langID != "all-langs" && !ok {
-		Render(w, r, http.StatusNotFound, "404", "", nil)
+		render(w, r, http.StatusNotFound, "404", "", nil)
 		return
 	}
 
@@ -123,7 +124,7 @@ func scores(w http.ResponseWriter, r *http.Request) {
 		page, _ = strconv.Atoi(suffix)
 
 		if page < 1 {
-			Render(w, r, http.StatusNotFound, "404", "", nil)
+			render(w, r, http.StatusNotFound, "404", "", nil)
 			return
 		}
 
@@ -249,5 +250,5 @@ func scores(w http.ResponseWriter, r *http.Request) {
 		title += langByID[langID].Name
 	}
 
-	Render(w, r, http.StatusOK, "scores", title, data)
+	render(w, r, http.StatusOK, "scores", title, data)
 }

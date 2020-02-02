@@ -18,7 +18,8 @@ import (
 	"github.com/pmezard/go-difflib/difflib"
 )
 
-func solution(w http.ResponseWriter, r *http.Request) {
+// Solution serves POST /solution
+func Solution(w http.ResponseWriter, r *http.Request) {
 	var in struct{ Code, Hole, Lang string }
 
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {

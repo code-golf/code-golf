@@ -7,7 +7,8 @@ import (
 	"github.com/code-golf/code-golf/cookie"
 )
 
-func index(w http.ResponseWriter, r *http.Request) {
+// Index serves GET /
+func Index(w http.ResponseWriter, r *http.Request) {
 	if sort := r.URL.Query().Get("sort"); sort != "" {
 		http.SetCookie(w, &http.Cookie{
 			HttpOnly: true,
@@ -156,5 +157,5 @@ func index(w http.ResponseWriter, r *http.Request) {
 		"Strict-Transport-Security",
 		"max-age=31536000;includeSubDomains;preload",
 	)
-	Render(w, r, http.StatusOK, "index", "", data)
+	render(w, r, http.StatusOK, "index", "", data)
 }

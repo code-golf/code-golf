@@ -151,8 +151,8 @@ func init() {
 	}
 }
 
-// Feeds serves /feeds/:feed
-func Feeds(w http.ResponseWriter, r *http.Request) {
+// Feed serves /feeds/{feed}
+func Feed(w http.ResponseWriter, r *http.Request) {
 	switch param(r, "feed") {
 	case "atom":
 		w.Header().Set("Content-Type", "application/atom+xml; charset=utf-8")
@@ -164,6 +164,6 @@ func Feeds(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/rss+xml; charset=utf-8")
 		w.Write(rssFeed)
 	default:
-		Render(w, r, http.StatusNotFound, "404", "", nil)
+		render(w, r, http.StatusNotFound, "404", "", nil)
 	}
 }

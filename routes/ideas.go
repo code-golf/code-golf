@@ -2,7 +2,8 @@ package routes
 
 import "net/http"
 
-func ideas(w http.ResponseWriter, r *http.Request) {
+// Ideas serves GET /ideas
+func Ideas(w http.ResponseWriter, r *http.Request) {
 	type idea struct {
 		ID, ThumbsDown, ThumbsUp int
 		Title                    string
@@ -27,5 +28,5 @@ func ideas(w http.ResponseWriter, r *http.Request) {
 		ideas = append(ideas, i)
 	}
 
-	Render(w, r, http.StatusOK, "ideas", "Ideas", ideas)
+	render(w, r, http.StatusOK, "ideas", "Ideas", ideas)
 }

@@ -11,6 +11,8 @@ import (
 
 	"github.com/code-golf/code-golf/routes"
 	brotli "github.com/cv-library/negroni-brotli"
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 	"github.com/urfave/negroni"
 	"golang.org/x/crypto/acme/autocert"
 )
@@ -23,6 +25,30 @@ func (*err500) FormatPanicError(w http.ResponseWriter, r *http.Request, _ *negro
 
 func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
+
+	var r = chi.NewRouter()
+
+	r.Use(middleware.RedirectSlashes)
+
+	r.NotFound(routes.NotFound)
+
+	r.Get("/", routes.Index)
+	r.Get("/{hole}", routes.GETHole)
+	r.Get("/about", routes.About)
+	r.Get("/assets/{asset}", routes.Asset)
+	r.Get("/callback", routes.Callback)
+	r.Get("/favicon.ico", routes.Asset)
+	r.Get("/feeds/{feed}", routes.Feed)
+	r.Get("/ideas", routes.Ideas)
+	r.Get("/log-out", routes.LogOut)
+	r.Get("/random", routes.Random)
+	r.Get("/recent", routes.Recent)
+	r.Get("/robots.txt", routes.Robots)
+	r.Get("/scores/{hole}/{lang}", routes.Scores)
+	r.Get("/scores/{hole}/{lang}/{suffix}", routes.Scores)
+	r.Post("/solution", routes.Solution)
+	r.Get("/stats", routes.Stats)
+	r.Get("/users/{user}", routes.User)
 
 	certManager := autocert.Manager{
 		Cache:      autocert.DirCache("certs"),
@@ -43,7 +69,7 @@ func main() {
 			logger,
 			brotli.New(5),
 			recovery,
-			negroni.Wrap(routes.Router),
+			negroni.Wrap(r),
 		),
 		TLSConfig: &tls.Config{
 			CipherSuites: []uint16{
@@ -71,7 +97,7 @@ func main() {
 
 		for {
 			<-ticker.C
-			routes.Ideas()
+			routes.GetIdeas()
 			routes.PullRequests()
 			routes.Stars()
 		}
