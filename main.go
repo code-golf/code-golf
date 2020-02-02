@@ -25,11 +25,9 @@ func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
 
 	certManager := autocert.Manager{
-		Cache:  autocert.DirCache("certs"),
-		Prompt: autocert.AcceptTOS,
-		HostPolicy: autocert.HostWhitelist(
-			"code-golf.io", "ng.code-golf.io", "www.code-golf.io",
-		),
+		Cache:      autocert.DirCache("certs"),
+		Prompt:     autocert.AcceptTOS,
+		HostPolicy: autocert.HostWhitelist("code-golf.io", "www.code-golf.io"),
 	}
 
 	logger := negroni.NewLogger()
@@ -42,13 +40,6 @@ func main() {
 
 	server := &http.Server{
 		Handler: negroni.New(
-			negroni.HandlerFunc(func(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
-				if r.Host == "ng.code-golf.io" {
-					http.Redirect(w, r, "https://code-golf.io", http.StatusPermanentRedirect)
-				} else {
-					next(w, r)
-				}
-			}),
 			logger,
 			brotli.New(5),
 			recovery,
