@@ -2,33 +2,26 @@ package main
 
 import (
 	"crypto/tls"
-	"log"
 	"math/rand"
 	"net/http"
-	"os"
 	"syscall"
 	"time"
 
 	"github.com/code-golf/code-golf/routes"
-	brotli "github.com/cv-library/negroni-brotli"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"github.com/urfave/negroni"
 	"golang.org/x/crypto/acme/autocert"
 )
-
-type err500 struct{}
-
-func (*err500) FormatPanicError(w http.ResponseWriter, r *http.Request, _ *negroni.PanicInformation) {
-	http.Error(w, "500: It's Dead, Jim.", 500)
-}
 
 func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
 
 	var r = chi.NewRouter()
 
+	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
 	r.Use(middleware.RedirectSlashes)
+	r.Use(middleware.Compress(5))
 
 	r.NotFound(routes.NotFound)
 
@@ -56,21 +49,8 @@ func main() {
 		HostPolicy: autocert.HostWhitelist("code-golf.io", "www.code-golf.io"),
 	}
 
-	logger := negroni.NewLogger()
-	logger.ALogger = log.New(os.Stdout, "", 0)
-	logger.SetFormat("{{.StartTime}} {{.Status}} {{.Method}} {{.Request.URL}} {{.Request.UserAgent}}")
-
-	recovery := negroni.NewRecovery()
-	recovery.Formatter = &err500{}
-	recovery.Logger = log.New(os.Stderr, "<1>", 0)
-
 	server := &http.Server{
-		Handler: negroni.New(
-			logger,
-			brotli.New(5),
-			recovery,
-			negroni.Wrap(r),
-		),
+		Handler: r,
 		TLSConfig: &tls.Config{
 			CipherSuites: []uint16{
 				tls.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
