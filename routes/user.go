@@ -4,11 +4,10 @@ import (
 	"database/sql"
 	"net/http"
 	"time"
-
-	"github.com/julienschmidt/httprouter"
 )
 
-func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+// User serves GET /users/{user}
+func User(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Holes          []Hole
 		Langs          []Lang
@@ -20,7 +19,7 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	}{
 		Holes:          holes,
 		Langs:          langs,
-		Login:          ps[0].Value,
+		Login:          param(r, "user"),
 		Ranks:          map[string]map[string]int{},
 		Trophies:       trophies,
 		TrophiesEarned: map[string]*time.Time{},
@@ -33,7 +32,7 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		"SELECT id, login FROM users WHERE login = $1",
 		data.Login,
 	).Scan(&userID, &login); err == sql.ErrNoRows {
-		Render(w, r, http.StatusNotFound, "404", "", nil)
+		render(w, r, http.StatusNotFound, "404", "", nil)
 		return
 	} else if err != nil {
 		panic(err)
@@ -112,5 +111,5 @@ func user(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		panic(err)
 	}
 
-	Render(w, r, http.StatusOK, "user", data.Login, data)
+	render(w, r, http.StatusOK, "user", data.Login, data)
 }

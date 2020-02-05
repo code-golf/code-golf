@@ -1,4 +1,4 @@
-name: Test
+name: Lint & Test
 on:
   - pull_request
   - push
@@ -16,5 +16,7 @@ jobs:
         with:
           path: ~/go/pkg/mod
           key: ${{ runner.os }}-go-${{ hashFiles('go.sum') }}
+
+      - run: make lint
 
       - run: make test

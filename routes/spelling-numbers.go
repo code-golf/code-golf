@@ -49,9 +49,9 @@ func wordify(i uint16) []byte {
 	} else if i < 100 {
 		if j := i % 10; j > 0 {
 			return append(append(append([]byte(nil), tens[i/10]...), '-'), teens[j]...)
-		} else {
-			return tens[i/10]
 		}
+
+		return tens[i/10]
 	}
 
 	hundred := append(append([]byte(nil), teens[i/100]...), []byte(" hundred")...)

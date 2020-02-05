@@ -1,11 +1,6 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: https://codemirror.net/LICENSE
 
-(function(mod) {
-    mod(CodeMirror);
-})(function(CodeMirror) {
-"use strict";
-
 CodeMirror.defineMode('bash', function() {
 
   var words = {};
@@ -137,5 +132,4 @@ CodeMirror.defineMode('bash', function() {
     lineComment: '#',
     fold: "brace"
   };
-});
 });

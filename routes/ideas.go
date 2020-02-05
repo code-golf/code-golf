@@ -1,12 +1,9 @@
 package routes
 
-import (
-	"net/http"
+import "net/http"
 
-	"github.com/julienschmidt/httprouter"
-)
-
-func ideas(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+// Ideas serves GET /ideas
+func Ideas(w http.ResponseWriter, r *http.Request) {
 	type idea struct {
 		ID, ThumbsDown, ThumbsUp int
 		Title                    string
@@ -31,5 +28,5 @@ func ideas(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		ideas = append(ideas, i)
 	}
 
-	Render(w, r, http.StatusOK, "ideas", "Ideas", ideas)
+	render(w, r, http.StatusOK, "ideas", "Ideas", ideas)
 }

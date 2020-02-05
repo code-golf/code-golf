@@ -4,11 +4,7 @@ SHELL   := /bin/bash
 define STUB
 package routes
 
-import (
-	"net/http"
-
-	"github.com/julienschmidt/httprouter"
-)
+import "net/http"
 
 const (
 	commonCssPath = ""
@@ -16,7 +12,7 @@ const (
 	holeJsPath    = ""
 )
 
-func asset(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {}
+func Asset(w http.ResponseWriter, r *http.Request) {}
 endef
 
 bump:
@@ -45,6 +41,14 @@ font:
 		--no-hinting                                                             \
 		--output-file=assets/font.woff2                                          \
 		--unicodes-file=font-subset.txt
+
+lint:
+# FIXME Stub out assets if it doesn't yet exist.
+ifeq ($(wildcard routes/assets.go),)
+	$(file > routes/assets.go, $(STUB))
+endif
+
+	@docker run --rm -v $(CURDIR):/app -w /app golangci/golangci-lint:v1.23.1 golangci-lint run
 
 test:
 # FIXME Stub out assets if it doesn't yet exist.

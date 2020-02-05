@@ -9,7 +9,8 @@ CREATE TYPE hole AS ENUM (
     'pascals-triangle', 'pernicious-numbers', 'poker', 'prime-numbers',
     'quine', 'rock-paper-scissors-spock-lizard', 'roman-to-arabic',
     'rule-110', 'seven-segment', 'sierpiński-triangle', 'spelling-numbers',
-    'sudoku', 'ten-pin-bowling', 'λ', 'π', 'τ', 'φ', '√2', '𝑒'
+    'sudoku', 'ten-pin-bowling', 'united-states', 'λ', 'π', 'τ', 'φ', '√2',
+    '𝑒'
 );
 
 CREATE TYPE lang AS ENUM (

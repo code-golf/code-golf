@@ -25,12 +25,12 @@ func straightCheck(numbers []int) bool {
 		numbers[4]-numbers[3] == 1
 }
 
-type Hand struct {
-	Type  string
-	Cards []rune
-}
-
 func poker() (args []string, out string) {
+	type Hand struct {
+		Type  string
+		Cards []rune
+	}
+
 	var hands []Hand
 	const handCount = 3
 

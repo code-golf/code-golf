@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/gorilla/feeds"
-	"github.com/julienschmidt/httprouter"
 )
 
 var atomFeed, jsonFeed, rssFeed []byte
@@ -32,6 +31,7 @@ func init() {
 		sha, created, name string
 		hole               bool
 	}{
+		{"08e4756", "2020-01-28 13:38:00", "United States", true},
 		{"93d765b", "2020-01-12 13:26:11", "Swift", false},
 		{"a9bbba9", "2020-01-03 19:05:17", "Rust", false},
 		{"fb227ed", "2019-11-17 17:32:14", "Abundant Numbers", true},
@@ -151,9 +151,9 @@ func init() {
 	}
 }
 
-// Feeds serves /feeds/:feed
-func Feeds(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	switch ps.ByName("feed") {
+// Feed serves /feeds/{feed}
+func Feed(w http.ResponseWriter, r *http.Request) {
+	switch param(r, "feed") {
 	case "atom":
 		w.Header().Set("Content-Type", "application/atom+xml; charset=utf-8")
 		w.Write(atomFeed)
@@ -164,6 +164,6 @@ func Feeds(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		w.Header().Set("Content-Type", "application/rss+xml; charset=utf-8")
 		w.Write(rssFeed)
 	default:
-		Render(w, r, http.StatusNotFound, "404", "", nil)
+		render(w, r, http.StatusNotFound, "404", "", nil)
 	}
 }

@@ -3,19 +3,10 @@ package routes
 import (
 	"net/http"
 	"time"
-
-	"github.com/julienschmidt/httprouter"
 )
 
-type Recent struct {
-	Hole      Hole
-	Lang      Lang
-	Login     string
-	Strokes   int
-	Submitted time.Time
-}
-
-func recent(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+// Recent serves GET /recent
+func Recent(w http.ResponseWriter, r *http.Request) {
 	rows, err := db.Query(
 		` SELECT hole, lang, login, LENGTH(code), submitted
 		    FROM solutions JOIN users ON id = user_id
@@ -27,31 +18,39 @@ func recent(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	defer rows.Close()
 
-	var recents []Recent
+	type recent struct {
+		Hole      Hole
+		Lang      Lang
+		Login     string
+		Strokes   int
+		Submitted time.Time
+	}
+
+	var recents []recent
 
 	for rows.Next() {
 		var holeID, langID string
-		var recent Recent
+		var r recent
 
 		if err := rows.Scan(
 			&holeID,
 			&langID,
-			&recent.Login,
-			&recent.Strokes,
-			&recent.Submitted,
+			&r.Login,
+			&r.Strokes,
+			&r.Submitted,
 		); err != nil {
 			panic(err)
 		}
 
-		recent.Hole = holeByID[holeID]
-		recent.Lang = langByID[langID]
+		r.Hole = holeByID[holeID]
+		r.Lang = langByID[langID]
 
-		recents = append(recents, recent)
+		recents = append(recents, r)
 	}
 
 	if err := rows.Err(); err != nil {
 		panic(err)
 	}
 
-	Render(w, r, http.StatusOK, "recent", "Recent Solutions", recents)
+	render(w, r, http.StatusOK, "recent", "Recent Solutions", recents)
 }

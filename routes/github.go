@@ -12,7 +12,7 @@ import (
 var accessToken = os.Getenv("GITHUB_ACCESS_TOKEN")
 
 // FIXME Not a route, but only routes have access to the DB.
-func Ideas() {
+func GetIdeas() {
 	if accessToken == "" {
 		return
 	}
