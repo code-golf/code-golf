@@ -29,7 +29,14 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	res, err := http.Get("https://api.github.com/user?access_token=" + token.AccessToken)
+	req, err := http.NewRequest("GET", "https://api.github.com/user", nil)
+	if err != nil {
+		panic(err)
+	}
+
+	req.Header.Add("Authorization", "Bearer "+token.AccessToken)
+
+	res, err := http.DefaultClient.Do(req)
 	if err != nil {
 		panic(err)
 	}
