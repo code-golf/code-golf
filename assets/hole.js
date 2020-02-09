@@ -31,6 +31,7 @@ const status    = document.querySelector('#status');
 const table     = document.querySelector('.scores');
 
 let lang;
+let latestSubmissionID = 0;
 
 onload = () => {
     // Lock the editor's height in so we scroll.
@@ -65,8 +66,11 @@ onload = () => {
 
     const submit = document.querySelector('#run a').onclick = async () => {
         document.querySelector('h2').innerText = '...';
+        status.className = 'grey';
 
         const code = cm.getValue();
+        const submissionID = ++latestSubmissionID;
+
         const res  = await fetch('/solution', {
             method: 'POST',
             body: JSON.stringify({
@@ -77,6 +81,9 @@ onload = () => {
         });
 
         const data = await res.json();
+        if (submissionID != latestSubmissionID)
+            return;
+
         const pass = data.Exp === data.Out && data.Out !== '';
 
         if (pass && (!(lang in solutions) || strlen(code) <= strlen(solutions[lang])))
