@@ -65,7 +65,7 @@ onload = () => {
     })();
 
     const submit = document.querySelector('#run a').onclick = async () => {
-        document.querySelector('h2').innerText = '...';
+        document.querySelector('h2').innerText = '…';
         status.className = 'grey';
 
         const code = cm.getValue();
