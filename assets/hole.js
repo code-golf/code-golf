@@ -31,6 +31,7 @@ const status    = document.querySelector('#status');
 const table     = document.querySelector('.scores');
 
 let lang;
+let latestSubmissionID = 0;
 
 onload = () => {
     // Lock the editor's height in so we scroll.
@@ -60,34 +61,33 @@ onload = () => {
 
         document.querySelectorAll('#header a').forEach(a => a.hash = lang);
 
-        picker.innerHTML = '';
-        picker.open = false;
-
-        for (const l of langs) {
-            let name = l.name;
-
-            if (l.id in solutions)
-                name += ` <sup>${strlen(solutions[l.id]).toLocaleString('en')}</sup>`;
-
-            picker.innerHTML += l.id == lang
-                ? `<a>${name}</a>` : `<a href=#${l.id}>${name}</a>`;
-        }
-
         refreshScores();
     })();
 
     const submit = document.querySelector('#run a').onclick = async () => {
+        document.querySelector('h2').innerText = '...';
+        status.className = 'grey';
+
+        const code = cm.getValue();
+        const submissionID = ++latestSubmissionID;
+
         const res  = await fetch('/solution', {
             method: 'POST',
             body: JSON.stringify({
-                Code: cm.getValue(),
+                Code: code,
                 Hole: hole,
                 Lang: lang,
             }),
         });
 
         const data = await res.json();
+        if (submissionID != latestSubmissionID)
+            return;
+
         const pass = data.Exp === data.Out && data.Out !== '';
+
+        if (pass && (!(lang in solutions) || strlen(code) <= strlen(solutions[lang])))
+            solutions[lang] = code;
 
         document.querySelector('h2').innerText
             = pass ? 'Pass 😊️' : 'Fail ☹️';
@@ -132,6 +132,19 @@ onload = () => {
 };
 
 async function refreshScores() {
+    picker.innerHTML = '';
+    picker.open = false;
+
+    for (const l of langs) {
+        let name = l.name;
+
+        if (l.id in solutions)
+            name += ` <sup>${strlen(solutions[l.id]).toLocaleString('en')}</sup>`;
+
+        picker.innerHTML += l.id == lang
+            ? `<a>${name}</a>` : `<a href=#${l.id}>${name}</a>`;
+    }
+
     const url    = `/scores/${hole}/${lang}`;
     const scores = await (await fetch(`${url}/mini`)).json();
 
