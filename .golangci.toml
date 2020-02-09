@@ -1,0 +1,32 @@
+[run]
+skip-files = ['routes/assets.go']
+
+# TODO stylecheck once assets is annihilated.
+[linters]
+disable-all = true
+enable = [
+    'bodyclose',
+    'deadcode',
+    'depguard',
+    'dogsled',
+    'dupl',
+    'gofmt',
+    'goimports',
+    'goprintffuncname',
+    'gosimple',
+    'govet',
+    'ineffassign',
+    'interfacer',
+    'maligned',
+    'misspell',
+    'rowserrcheck',
+    'scopelint',
+    'staticcheck',
+    'structcheck',
+    'typecheck',
+    'unconvert',
+    'unparam',
+    'unused',
+    'varcheck',
+    'whitespace',
+]

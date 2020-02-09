@@ -2,7 +2,7 @@ FROM alpine:3.11 as builder
 
 RUN apk add --no-cache gcc git linux-headers make musl-dev perl
 
-RUN git clone -b 2019.11 git://github.com/rakudo/rakudo \
+RUN git clone -b 2020.01 git://github.com/rakudo/rakudo \
  && cd rakudo                                           \
  && CFLAGS=-flto ./Configure.pl                         \
     --gen-moar                                          \

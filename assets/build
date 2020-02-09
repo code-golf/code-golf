@@ -16,11 +16,9 @@ package routes
 import (
 	"net/http"
 	"strings"
-
-	"github.com/julienschmidt/httprouter"
 )
 
-func asset(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func Asset(w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Path {
 GO
 

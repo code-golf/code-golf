@@ -13,13 +13,13 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/code-golf/code-golf/cookie"
 	"github.com/buildkite/terminal"
-	"github.com/julienschmidt/httprouter"
+	"github.com/code-golf/code-golf/cookie"
 	"github.com/pmezard/go-difflib/difflib"
 )
 
-func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+// Solution serves POST /solution
+func Solution(w http.ResponseWriter, r *http.Request) {
 	var in struct{ Code, Hole, Lang string }
 
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
@@ -60,6 +60,8 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		out.Argv, out.Exp = sudoku()
 	case "ten-pin-bowling":
 		out.Argv, out.Exp = tenPinBowling()
+	case "united-states":
+		out.Argv, out.Exp = unitedStates()
 	default:
 		out.Exp = answers[in.Hole]
 	}
@@ -164,7 +166,6 @@ func solution(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 				awardTrophy(db, userID, "ouroboros")
 			}
 		}
-
 	}
 
 	w.Header()["Content-Type"] = []string{"application/json"}

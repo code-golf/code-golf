@@ -2,7 +2,6 @@ package routes
 
 import (
 	"bytes"
-	"fmt"
 	"html/template"
 	"io/ioutil"
 	"net/http"
@@ -11,41 +10,36 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
-	"time"
 
 	"github.com/code-golf/code-golf/cookie"
 	"github.com/code-golf/code-golf/pretty"
 )
 
-const (
-	day   = 24 * time.Hour
-	week  = 7 * day
-	month = 4 * week
-)
-
-func ord(i int) string {
-	switch i % 10 {
-	case 1:
-		if i%100 != 11 {
-			return "st"
-		}
-	case 2:
-		if i%100 != 12 {
-			return "nd"
-		}
-	case 3:
-		if i%100 != 13 {
-			return "rd"
-		}
+func colour(i int) string {
+	if i <= 1 {
+		return "yellow"
 	}
-	return "th"
+	if i <= 2 {
+		return "orange"
+	}
+	if i <= 3 {
+		return "red"
+	}
+	if i <= 10 {
+		return "purple"
+	}
+	if i <= 100 {
+		return "blue"
+	}
+	return "green"
 }
 
 var tmpl = template.New("").Funcs(template.FuncMap{
+	"colour":    colour,
 	"comma":     pretty.Comma,
 	"hasPrefix": strings.HasPrefix,
 	"hasSuffix": strings.HasSuffix,
-	"ord":       ord,
+	"ord":       pretty.Ordinal,
 	"symbol": func(name string) template.HTML {
 		if svg, err := ioutil.ReadFile("views/" + name + ".svg"); err != nil {
 			panic(err)
@@ -54,36 +48,7 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 		}
 	},
 	"title": strings.Title,
-	"time": func(t time.Time) template.HTML {
-		var sb strings.Builder
-
-		rfc := t.Format(time.RFC3339)
-
-		sb.WriteString("<time datetime=")
-		sb.WriteString(rfc)
-		sb.WriteString(" title=")
-		sb.WriteString(rfc)
-		sb.WriteRune('>')
-
-		switch diff := time.Now().Sub(t); true {
-		case diff < 2*time.Minute:
-			sb.WriteString("1 min ago")
-		case diff < 2*time.Hour:
-			fmt.Fprintf(&sb, "%d mins ago", diff/time.Minute)
-		case diff < 2*day:
-			fmt.Fprintf(&sb, "%d hours ago", diff/time.Hour)
-		case diff < 2*week:
-			fmt.Fprintf(&sb, "%d days ago", diff/day)
-		case diff < 2*month:
-			fmt.Fprintf(&sb, "%d weeks ago", diff/week)
-		default:
-			fmt.Fprintf(&sb, "%d months ago", diff/month)
-		}
-
-		sb.WriteString("</time>")
-
-		return template.HTML(sb.String())
-	},
+	"time":  pretty.Time,
 })
 
 func init() {
@@ -112,8 +77,7 @@ func init() {
 	}
 }
 
-// Render wraps common logic required for rendering a view to the user.
-func Render(
+func render(
 	w http.ResponseWriter,
 	r *http.Request,
 	code int,
@@ -150,7 +114,14 @@ func Render(
 	}
 
 	if _, args.Login = cookie.Read(r); args.Login == "" {
-		args.LogInURL = "//github.com/login/oauth/authorize?client_id=7f6709819023e9215205&scope=user:email&redirect_uri=https://code-golf.io/callback?redirect_uri%3D" + url.QueryEscape(url.QueryEscape(r.RequestURI))
+		// Shallow copy because we want to modify a string.
+		config := config
+
+		config.RedirectURL = "https://code-golf.io/callback?redirect_uri=" +
+			url.QueryEscape(r.RequestURI)
+
+		// TODO State is a token to protect the user from CSRF attacks.
+		args.LogInURL = config.AuthCodeURL("")
 	}
 
 	w.WriteHeader(code)

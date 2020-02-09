@@ -2,58 +2,55 @@ package main
 
 import (
 	"crypto/tls"
-	"log"
 	"math/rand"
 	"net/http"
-	"os"
 	"syscall"
 	"time"
 
 	"github.com/code-golf/code-golf/routes"
-	brotli "github.com/cv-library/negroni-brotli"
-	"github.com/urfave/negroni"
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 	"golang.org/x/crypto/acme/autocert"
 )
-
-type err500 struct{}
-
-func (*err500) FormatPanicError(w http.ResponseWriter, r *http.Request, _ *negroni.PanicInformation) {
-	http.Error(w, "500: It's Dead, Jim.", 500)
-}
 
 func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
 
+	var r = chi.NewRouter()
+
+	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
+	r.Use(middleware.RedirectSlashes)
+	r.Use(middleware.Compress(5))
+
+	r.NotFound(routes.NotFound)
+
+	r.Get("/", routes.Index)
+	r.Get("/{hole}", routes.GETHole)
+	r.Get("/about", routes.About)
+	r.Get("/assets/{asset}", routes.Asset)
+	r.Get("/callback", routes.Callback)
+	r.Get("/favicon.ico", routes.Asset)
+	r.Get("/feeds/{feed}", routes.Feed)
+	r.Get("/ideas", routes.Ideas)
+	r.Get("/log-out", routes.LogOut)
+	r.Get("/random", routes.Random)
+	r.Get("/recent", routes.Recent)
+	r.Get("/robots.txt", routes.Robots)
+	r.Get("/scores/{hole}/{lang}", routes.Scores)
+	r.Get("/scores/{hole}/{lang}/{suffix}", routes.Scores)
+	r.Post("/solution", routes.Solution)
+	r.Get("/stats", routes.Stats)
+	r.Get("/users/{user}", routes.User)
+
 	certManager := autocert.Manager{
-		Cache:  autocert.DirCache("certs"),
-		Prompt: autocert.AcceptTOS,
-		HostPolicy: autocert.HostWhitelist(
-			"code-golf.io", "ng.code-golf.io", "www.code-golf.io",
-		),
+		Cache:      autocert.DirCache("certs"),
+		Prompt:     autocert.AcceptTOS,
+		HostPolicy: autocert.HostWhitelist("code-golf.io", "www.code-golf.io"),
 	}
 
-	logger := negroni.NewLogger()
-	logger.ALogger = log.New(os.Stdout, "", 0)
-	logger.SetFormat("{{.StartTime}} {{.Status}} {{.Method}} {{.Request.URL}} {{.Request.UserAgent}}")
-
-	recovery := negroni.NewRecovery()
-	recovery.Formatter = &err500{}
-	recovery.Logger = log.New(os.Stderr, "<1>", 0)
-
 	server := &http.Server{
-		Handler: negroni.New(
-			negroni.HandlerFunc(func(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
-				if r.Host == "ng.code-golf.io" {
-					http.Redirect(w, r, "https://code-golf.io", http.StatusPermanentRedirect)
-				} else {
-					next(w, r)
-				}
-			}),
-			logger,
-			brotli.New(5),
-			recovery,
-			negroni.Wrap(routes.Router),
-		),
+		Handler: r,
 		TLSConfig: &tls.Config{
 			CipherSuites: []uint16{
 				tls.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
@@ -80,7 +77,7 @@ func main() {
 
 		for {
 			<-ticker.C
-			routes.Ideas()
+			routes.GetIdeas()
 			routes.PullRequests()
 			routes.Stars()
 		}
