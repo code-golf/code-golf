@@ -68,7 +68,9 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 
 	userID, _ := cookie.Read(r)
 
-	out.Err, out.Out, out.Took = runCode(in.Hole, in.Lang, in.Code, out.Argv, userID)
+	db := db(r)
+
+	out.Err, out.Out, out.Took = runCode(db, in.Hole, in.Lang, in.Code, out.Argv, userID)
 
 	out.Diff, _ = difflib.GetUnifiedDiffString(difflib.UnifiedDiff{
 		A:        difflib.SplitLines(out.Exp),
@@ -196,7 +198,7 @@ func queryBool(db *sql.DB, query string, args ...interface{}) (b bool) {
 	return
 }
 
-func runCode(hole, lang, code string, args []string, userID int) (string, string, time.Duration) {
+func runCode(db *sql.DB, hole, lang, code string, args []string, userID int) (string, string, time.Duration) {
 	var stderr, stdout bytes.Buffer
 
 	if lang == "php" {

@@ -34,7 +34,7 @@ func GETHole(w http.ResponseWriter, r *http.Request) {
 
 	if userID, _ := cookie.Read(r); userID != 0 {
 		// Fetch all the code per lang.
-		rows, err := db.Query(
+		rows, err := db(r).Query(
 			`SELECT code, lang
 			   FROM solutions
 			  WHERE hole = $1 AND user_id = $2`,

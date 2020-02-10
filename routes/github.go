@@ -2,6 +2,7 @@ package routes
 
 import (
 	"bytes"
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -12,7 +13,7 @@ import (
 var accessToken = os.Getenv("GITHUB_ACCESS_TOKEN")
 
 // FIXME Not a route, but only routes have access to the DB.
-func GetIdeas() {
+func GetIdeas(db *sql.DB) {
 	if accessToken == "" {
 		return
 	}
@@ -78,7 +79,7 @@ func GetIdeas() {
 }
 
 // FIXME Not a route, but only routes have access to the DB.
-func PullRequests() {
+func PullRequests(db *sql.DB) {
 	if accessToken == "" {
 		return
 	}
@@ -113,11 +114,11 @@ func PullRequests() {
 		}
 	}
 
-	awardTrophies(pullRequests, "patches-welcome")
+	awardTrophies(db, pullRequests, "patches-welcome")
 }
 
 // FIXME Not a route, but only routes have access to the DB.
-func Stars() {
+func Stars(db *sql.DB) {
 	if accessToken == "" {
 		return
 	}
@@ -147,10 +148,10 @@ func Stars() {
 		stargazers[edge.Node.DatabaseID] = edge.StarredAt
 	}
 
-	awardTrophies(stargazers, "my-god-its-full-of-stars")
+	awardTrophies(db, stargazers, "my-god-its-full-of-stars")
 }
 
-func awardTrophies(earnedUsers map[int]time.Time, trophy string) {
+func awardTrophies(db *sql.DB, earnedUsers map[int]time.Time, trophy string) {
 	rows, err := db.Query(
 		"SELECT earned, user_id FROM trophies WHERE trophy = $1",
 		trophy,

@@ -13,7 +13,7 @@ func scoresMini(w http.ResponseWriter, r *http.Request) {
 
 	var json []byte
 
-	if err := db.QueryRow(
+	if err := db(r).QueryRow(
 		`WITH leaderboard AS (
 		    SELECT ROW_NUMBER() OVER (ORDER BY LENGTH(code), submitted),
 		           RANK()       OVER (ORDER BY LENGTH(code)),
@@ -50,7 +50,7 @@ func scoresMini(w http.ResponseWriter, r *http.Request) {
 func scoresAll(w http.ResponseWriter, r *http.Request) {
 	var json []byte
 
-	if err := db.QueryRow(
+	if err := db(r).QueryRow(
 		`WITH solution_lengths AS (
 		    SELECT hole,
 		           lang,
@@ -147,7 +147,7 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 		table = "scored_leaderboard"
 	}
 
-	rows, err := db.Query(
+	rows, err := db(r).Query(
 		`WITH leaderboard AS (
 		  SELECT `+distinct+`
 		         hole,

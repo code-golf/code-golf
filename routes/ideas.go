@@ -9,7 +9,8 @@ func Ideas(w http.ResponseWriter, r *http.Request) {
 		Title                    string
 	}
 
-	rows, err := db.Query("SELECT * FROM ideas ORDER BY thumbs_up - thumbs_down DESC, title")
+	rows, err := db(r).Query(
+		"SELECT * FROM ideas ORDER BY thumbs_up - thumbs_down DESC, title")
 	if err != nil {
 		panic(err)
 	}

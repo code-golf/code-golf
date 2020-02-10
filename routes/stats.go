@@ -16,6 +16,8 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 		Langs: len(langs),
 	}
 
+	db := db(r)
+
 	if err := db.QueryRow(
 		"SELECT COUNT(DISTINCT user_id), COUNT(*) FROM solutions WHERE NOT failing",
 	).Scan(&data.Golfers, &data.Solutions); err != nil {

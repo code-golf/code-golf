@@ -51,7 +51,7 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	if _, err := db.Exec(
+	if _, err := db(r).Exec(
 		`INSERT INTO users VALUES($1, $2)
 		     ON CONFLICT(id) DO UPDATE SET login = excluded.login`,
 		user.ID, user.Login,

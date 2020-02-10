@@ -28,6 +28,8 @@ func User(w http.ResponseWriter, r *http.Request) {
 	var login string
 	var userID int
 
+	db := db(r)
+
 	if err := db.QueryRow(
 		"SELECT id, login FROM users WHERE login = $1",
 		data.Login,

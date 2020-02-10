@@ -48,6 +48,8 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 	userID, _ := cookie.Read(r)
 
+	db := db(r)
+
 	if userID != 0 {
 		rows, err := db.Query(
 			` SELECT hole, lang

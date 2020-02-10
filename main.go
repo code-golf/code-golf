@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/tls"
+	"database/sql"
 	"math/rand"
 	"net/http"
 	"syscall"
@@ -10,11 +11,17 @@ import (
 	"github.com/code-golf/code-golf/routes"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
+	_ "github.com/lib/pq"
 	"golang.org/x/crypto/acme/autocert"
 )
 
 func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
+
+	db, err := sql.Open("postgres", "")
+	if err != nil {
+		panic(err)
+	}
 
 	var r = chi.NewRouter()
 
@@ -22,6 +29,7 @@ func main() {
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.RedirectSlashes)
 	r.Use(middleware.Compress(5))
+	r.Use(middleware.WithValue("db", db))
 
 	r.NotFound(routes.NotFound)
 
@@ -77,9 +85,9 @@ func main() {
 
 		for {
 			<-ticker.C
-			routes.GetIdeas()
-			routes.PullRequests()
-			routes.Stars()
+			routes.GetIdeas(db)
+			routes.PullRequests(db)
+			routes.Stars(db)
 		}
 	}()
 

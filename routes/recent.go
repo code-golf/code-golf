@@ -7,7 +7,7 @@ import (
 
 // Recent serves GET /recent
 func Recent(w http.ResponseWriter, r *http.Request) {
-	rows, err := db.Query(
+	rows, err := db(r).Query(
 		` SELECT hole, lang, login, LENGTH(code), submitted
 		    FROM solutions JOIN users ON id = user_id
 		ORDER BY submitted DESC LIMIT 100`,
