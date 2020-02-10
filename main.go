@@ -8,6 +8,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/code-golf/code-golf/github"
 	"github.com/code-golf/code-golf/routes"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
@@ -85,9 +86,9 @@ func main() {
 
 		for {
 			<-ticker.C
-			routes.GetIdeas(db)
-			routes.PullRequests(db)
-			routes.Stars(db)
+			github.Ideas(db)
+			github.PullRequests(db)
+			github.Stars(db)
 		}
 	}()
 
