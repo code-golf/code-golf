@@ -8,11 +8,7 @@ import (
 	"time"
 )
 
-const (
-	day   = 24 * time.Hour
-	week  = 7 * day
-	month = 4 * week
-)
+const day = 24 * time.Hour
 
 // Comma returns a string of a int with thousand separators. Only 0 - 999,999.
 func Comma(i int) string {
@@ -43,6 +39,22 @@ func Ordinal(i int) string {
 }
 
 // Time returns a fuzzy HTML <time> tag of a time.Time.
+//
+//    a min ago
+//   2 mins ago
+//          ...
+//  59 mins ago
+//  an hour ago
+//  2 hours ago
+//          ...
+// 23 hours ago
+//    a day ago
+//   2 days ago
+//          ...
+//  28 days ago
+//   1 Jan 2020
+//          ...
+//  31 Dec 2020
 func Time(t time.Time) template.HTML {
 	var sb strings.Builder
 
@@ -56,17 +68,19 @@ func Time(t time.Time) template.HTML {
 
 	switch diff := time.Since(t); true {
 	case diff < 2*time.Minute:
-		sb.WriteString("1 min ago")
-	case diff < 2*time.Hour:
+		sb.WriteString("a min ago")
+	case diff < time.Hour:
 		fmt.Fprintf(&sb, "%d mins ago", diff/time.Minute)
-	case diff < 2*day:
+	case diff < 2*time.Hour:
+		sb.WriteString("an hour ago")
+	case diff < day:
 		fmt.Fprintf(&sb, "%d hours ago", diff/time.Hour)
-	case diff < 2*week:
+	case diff < 2*day:
+		sb.WriteString("a day ago")
+	case diff < 28*day:
 		fmt.Fprintf(&sb, "%d days ago", diff/day)
-	case diff < 2*month:
-		fmt.Fprintf(&sb, "%d weeks ago", diff/week)
 	default:
-		fmt.Fprintf(&sb, "%d months ago", diff/month)
+		sb.WriteString(t.Format("2 Jan 2006"))
 	}
 
 	sb.WriteString("</time>")

@@ -27,11 +27,7 @@
         <div class="card {{ if $earned }}green{{ else }}red{{ end }}">
             <h2>{{ .Name }}</h2>
             <p>{{ .Description }}</p>
-        {{ with $earned }}
-            <time class=right datetime={{ .Format "2006-01-02T15:04:05Z" }}>
-                {{ .Format "2 Jan" }}
-            </time>
-        {{ end }}
+            {{ with $earned }}{{ time . }}{{ end }}
         </div>
     {{ end }}
     </div>

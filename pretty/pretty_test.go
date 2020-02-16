@@ -1,6 +1,10 @@
 package pretty
 
-import "testing"
+import (
+	"html/template"
+	"testing"
+	"time"
+)
 
 func TestComma(t *testing.T) {
 	for _, tt := range []struct {
@@ -41,6 +45,21 @@ func TestOrdinal(t *testing.T) {
 	} {
 		if got := Ordinal(tt.i); got != tt.want {
 			t.Errorf("Ordinal(%v) = %v; want %v", tt.i, got, tt.want)
+		}
+	}
+}
+
+func TestTime(t *testing.T) {
+	for _, tt := range []struct {
+		want template.HTML
+		t    time.Time
+	}{
+		{"a min ago", time.Now()},
+		{"7 Jun 1989", time.Date(1989, time.June, 7, 0, 0, 0, 0, time.UTC)},
+	} {
+		got := Time(tt.t)
+		if got = got[63 : len(got)-len("</time>")]; got != tt.want {
+			t.Errorf("Ordinal(%v) = %v; want %v", tt.t, got, tt.want)
 		}
 	}
 }
