@@ -81,6 +81,7 @@ func main() {
 	}
 
 	server := &http.Server{
+		Addr:    ":1443",
 		Handler: r,
 		TLSConfig: &tls.Config{
 			CipherSuites: []uint16{
@@ -120,7 +121,7 @@ func main() {
 
 	// Redirect HTTP to HTTPS and handle ACME challenges.
 	go func() {
-		panic(http.ListenAndServe(":80", certManager.HTTPHandler(redirDomain)))
+		panic(http.ListenAndServe(":1080", certManager.HTTPHandler(redirDomain)))
 	}()
 
 	// Serve HTTPS.

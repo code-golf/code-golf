@@ -6,7 +6,7 @@ use constant PATH => '/foo?bar=baz';
 my $ua = HTTP::Tiny->new( max_redirect => 0 );
 
 for (qw(
-          http://86.8.162.46
+          http://64.227.38.124
          http://code-golf.io
      http://www.code-golf.io
     https://www.code-golf.io

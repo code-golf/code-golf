@@ -79,10 +79,10 @@ CREATE VIEW points AS WITH leaderboard AS (
     FROM scored_leaderboard
 GROUP BY user_id;
 
-CREATE ROLE code_golf WITH LOGIN;
+CREATE ROLE "code-golf" WITH LOGIN;
 
-GRANT SELECT, INSERT, TRUNCATE       ON TABLE ideas     TO code_golf;
-GRANT SELECT                         ON TABLE points    TO code_golf;
-GRANT SELECT, INSERT, UPDATE         ON TABLE solutions TO code_golf;
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE trophies  TO code_golf;
-GRANT SELECT, INSERT, UPDATE         ON TABLE users     TO code_golf;
+GRANT SELECT, INSERT, TRUNCATE       ON TABLE ideas     TO "code-golf";
+GRANT SELECT                         ON TABLE points    TO "code-golf";
+GRANT SELECT, INSERT, UPDATE         ON TABLE solutions TO "code-golf";
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE trophies  TO "code-golf";
+GRANT SELECT, INSERT, UPDATE         ON TABLE users     TO "code-golf";

@@ -21,11 +21,13 @@ bump:
 
 cert:
 	@mkcert -install localhost
+	@chmod +r localhost-key.pem
 
 deps:
 	@yay -S mkcert python-brotli python-fonttools
 
 dev:
+	@gcc -Wall -Werror -Wextra -o run-lang run-lang.c
 	@docker-compose rm -f
 	@docker-compose up --build
 
@@ -52,6 +54,35 @@ ifeq ($(wildcard routes/assets.go),)
 endif
 
 	@docker run --rm -v $(CURDIR):/app -w /app golangci/golangci-lint:v1.23.7 golangci-lint run
+
+live:
+	@./build-assets
+
+	@docker build --pull -t codegolf/code-golf .
+
+	@docker push codegolf/code-golf
+
+	@ssh rancher@code-golf.io "           \
+	    docker pull codegolf/code-golf && \
+	    docker stop code-golf;            \
+	    docker rm code-golf;              \
+	    docker run                        \
+	    --cap-add      CAP_KILL           \
+	    --cap-add      CAP_SETGID         \
+	    --cap-add      CAP_SETUID         \
+	    --cap-add      CAP_SYS_ADMIN      \
+	    --cap-drop     ALL                \
+	    --detach                          \
+	    --env-file     /etc/code-golf.env \
+	    --init                            \
+	    --name         code-golf          \
+	    --publish       80:1080           \
+	    --publish      443:1443           \
+	    --read-only                       \
+	    --restart      always             \
+	    --security-opt seccomp:unconfined \
+	    --volume       certs:/certs       \
+	    codegolf/code-golf"
 
 test:
 # FIXME Stub out assets if it doesn't yet exist.

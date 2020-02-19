@@ -1,0 +1,7 @@
+FROM golang:1.14.0-alpine
+
+ENV CGO_ENABLED=0 GOPATH= TZ=Europe/London
+
+RUN apk --no-cache add git && GOBIN=/bin go get github.com/cespare/reflex
+
+CMD reflex -sd none -r '\.(go|html|pem|svg|toml)$' -R '_test\.go$' -- go run -tags dev .

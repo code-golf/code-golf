@@ -3,36 +3,30 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile
-    command:
-      - reflex
-      - -sd
-      - none
-      - -r
-      - \.(go|html|pem|svg|toml)$$
-      - -R
-      - ^\.go/|_test\.go$$
-      - --
-      - go
-      - run
-      - -tags
-      - dev
-      - .
+      dockerfile: Dockerfile.dev
+    cap_add:
+      - CAP_KILL
+      - CAP_SETGID
+      - CAP_SETUID
+      - CAP_SYS_ADMIN
+    cap_drop:
+      - ALL
     environment:
       DEV:       1
       PGHOST:    db
       PGSSLMODE: disable
-      PGUSER:    code_golf
+      PGUSER:    code-golf
     ports:
-      - 80:80
-      - 443:443
-    privileged: true
+      - 80:1080
+      - 443:1443
+    security_opt:
+      - seccomp:unconfined
     volumes:
       - .:/go
   db:
-    image: postgres:12.2-alpine
+    image: postgres:11.7-alpine
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
-      POSTGRES_DB: code_golf
+      POSTGRES_DB: code-golf
     volumes:
       - ./db:/docker-entrypoint-initdb.d

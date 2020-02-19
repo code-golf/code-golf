@@ -1,7 +1,7 @@
-/.go/
 /code-golf
 /db/
 /langs/*/rootfs/
 /localhost-key.pem
 /localhost.pem
 /routes/assets.go
+/run-lang
