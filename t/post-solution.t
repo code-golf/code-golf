@@ -9,7 +9,7 @@ subtest $_->[0] => sub {
     @run{qw/Lang Code Hole/} = ( @$_, 'rock-paper-scissors-spock-lizard' );
 
     my $res = ( state $ua = HTTP::Tiny->new )->post(
-        'https://localhost/solution', { content => encode_json \%run } );
+        'https://code-golf.io/solution', { content => encode_json \%run } );
 
     die $res->{content} unless $res->{success};
 

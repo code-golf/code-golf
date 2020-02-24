@@ -19,6 +19,8 @@ import (
 func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
 
+	_, dev := syscall.Getenv("DEV")
+
 	db, err := sql.Open("postgres", "")
 	if err != nil {
 		panic(err)
@@ -31,6 +33,26 @@ func main() {
 	r.Use(middleware.RedirectSlashes)
 	r.Use(middleware.Compress(5))
 	r.Use(middleware.WithValue("db", db))
+
+	host := "code-golf.io"
+	if dev {
+		host = "localhost"
+	}
+	redirDomain := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		url := "https://" + host + r.RequestURI
+		http.Redirect(w, r, url, http.StatusPermanentRedirect)
+	})
+
+	// Redirect www (or any incorrect domain) to apex.
+	r.Use(func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if r.Host == host {
+				next.ServeHTTP(w, r)
+			} else {
+				redirDomain.ServeHTTP(w, r)
+			}
+		})
+	})
 
 	r.NotFound(routes.NotFound)
 
@@ -73,9 +95,11 @@ func main() {
 		},
 	}
 
-	_, dev := syscall.Getenv("DEV")
-
-	if !dev {
+	var crt, key string
+	if dev {
+		crt = "localhost.pem"
+		key = "localhost-key.pem"
+	} else {
 		server.TLSConfig.GetCertificate = certManager.GetCertificate
 	}
 
@@ -95,12 +119,10 @@ func main() {
 	println("Listening…")
 
 	// Redirect HTTP to HTTPS and handle ACME challenges.
-	go func() { panic(http.ListenAndServe(":80", certManager.HTTPHandler(nil))) }()
+	go func() {
+		panic(http.ListenAndServe(":80", certManager.HTTPHandler(redirDomain)))
+	}()
 
 	// Serve HTTPS.
-	if dev {
-		panic(server.ListenAndServeTLS("localhost.pem", "localhost-key.pem"))
-	} else {
-		panic(server.ListenAndServeTLS("", ""))
-	}
+	panic(server.ListenAndServeTLS(crt, key))
 }
