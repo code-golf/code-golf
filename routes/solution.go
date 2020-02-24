@@ -231,10 +231,7 @@ func runCode(db *sql.DB, hole, lang, code string, args []string, userID int) (st
 	case "julia":
 		cmd.Args = []string{"/usr/bin/run-julia", "/tmp/code.jl"}
 	case "nim":
-		cmd.Args = []string{
-			"/usr/bin/nim", "--cc:tcc", "--hints:off", "--nimcache:/tmp",
-			"--verbosity:0", "-o:/tmp/code", "-r", "c", "-",
-		}
+		cmd.Args = []string{"/usr/bin/run_nim"}
 	// Common case.
 	default:
 		cmd.Args = []string{"/usr/bin/" + lang, "-"}
