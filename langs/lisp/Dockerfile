@@ -2,7 +2,7 @@ FROM alpine:3.11 as builder
 
 ENV FORCE_UNSAFE_CONFIGURE 1
 
-RUN apk add --no-cache curl gcc make musl-dev
+RUN apk add --no-cache build-base curl
 
 RUN curl https://haible.de/bruno/gnu/clisp-2.49.92.tar.bz2 | tar xjf -
 

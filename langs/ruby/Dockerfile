@@ -1,6 +1,6 @@
 FROM alpine:3.11 as builder
 
-RUN apk add --no-cache curl gcc linux-headers make musl-dev openssl-dev
+RUN apk add --no-cache build-base curl openssl-dev
 
 RUN curl https://cache.ruby-lang.org/pub/ruby/2.7/ruby-2.7.0.tar.xz \
   | tar xJf -

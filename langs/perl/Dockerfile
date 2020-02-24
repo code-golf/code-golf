@@ -1,6 +1,6 @@
 FROM alpine:3.11 as builder
 
-RUN apk add --no-cache curl gcc make musl-dev perl
+RUN apk add --no-cache build-base curl perl
 
 RUN curl http://www.cpan.org/src/5.0/perl-5.30.1.tar.xz | tar xJf -
 

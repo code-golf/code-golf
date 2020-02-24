@@ -1,6 +1,6 @@
 FROM alpine:3.11 as builder
 
-RUN apk add --no-cache curl fts-dev gcc make musl-dev
+RUN apk add --no-cache build-base curl fts-dev
 
 RUN curl -L https://github.com/jsoftware/jsource/archive/6a42dbc.tar.gz | tar xzf -
 

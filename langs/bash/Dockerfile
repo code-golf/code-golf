@@ -1,6 +1,6 @@
 FROM alpine:3.11 as builder
 
-RUN apk add --no-cache curl gcc make musl-dev
+RUN apk add --no-cache build-base curl
 
 RUN curl https://ftp.gnu.org/gnu/bash/bash-5.0.tar.gz | tar xzf -
 

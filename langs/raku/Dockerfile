@@ -1,6 +1,6 @@
 FROM alpine:3.11 as builder
 
-RUN apk add --no-cache gcc git linux-headers make musl-dev perl
+RUN apk add --no-cache build-base git perl
 
 RUN git clone -b 2020.01 git://github.com/rakudo/rakudo \
  && cd rakudo                                           \
@@ -11,8 +11,10 @@ RUN git clone -b 2020.01 git://github.com/rakudo/rakudo \
  && make -j`nproc` install                              \
  && strip /usr/bin/rakudo
 
-RUN rm -r /usr/share/nqp/lib/profiler \
-   /usr/share/perl6/runtime/perl6-debug.moarvm
+RUN rm -r /usr/share/nqp/lib/profiler            \
+    /usr/share/perl6/runtime/rakudo-debug.moarvm \
+    /usr/share/perl6/runtime/rakudo.moarvm       \
+    /usr/share/perl6/runtime/perl6-debug.moarvm
 
 FROM scratch
 

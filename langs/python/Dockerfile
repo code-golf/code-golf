@@ -1,6 +1,6 @@
 FROM alpine:3.11 as builder
 
-RUN apk add --no-cache curl gcc libffi-dev linux-headers make musl-dev zlib-dev
+RUN apk add --no-cache build-base curl libffi-dev zlib-dev
 
 RUN curl https://www.python.org/ftp/python/3.8.1/Python-3.8.1.tar.xz \
   | tar xJf -
