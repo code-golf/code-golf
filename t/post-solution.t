@@ -4,7 +4,9 @@ use HTTP::Tiny;
 use JSON::PP;
 use Test2::V0;
 
-subtest $_->[0] => sub {
+local $/ = "\n\n";
+
+for ( map [ split /\n/, $_, 2 ], <DATA> ) {
     my %run;    # Pick a hole that will definitely have unicode.
     @run{qw/Lang Code Hole/} = ( @$_, 'rock-paper-scissors-spock-lizard' );
 
@@ -15,9 +17,8 @@ subtest $_->[0] => sub {
 
     $res = decode_json $res->{content};
 
-    is $res->{Err}, '', 'Err';
-    is $res->{Out}, join( "\n", $res->{Argv}->@* ), 'Out';
-} for do { local $/ = "\n\n"; map [ split /\n/, $_, 2 ], <DATA> };
+    is $res->{Out}, join( "\n", $res->{Argv}->@* ), $_->[0];
+}
 
 done_testing;
 
@@ -41,10 +42,6 @@ lua
 for i=1, #arg do
     print(arg[i])
 end
-
-nim
-import os
-for i in 1 .. paramCount(): echo paramStr(i)
 
 nim
 import os
