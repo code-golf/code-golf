@@ -1,4 +1,4 @@
-FROM golang:1.14rc1-alpine
+FROM golang:1.14.0-alpine
 
 ENV CGO_ENABLED=0 GOBIN=/go GOCACHE=/go/.go/cache GOPATH=/go/.go/path TZ=Europe/London
 
