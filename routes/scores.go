@@ -3,6 +3,7 @@ package routes
 import (
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/code-golf/code-golf/cookie"
@@ -83,6 +84,16 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Redirect legacy name for Raku.
+	if langID == "perl6" {
+		http.Redirect(
+			w, r,
+			strings.Replace(r.RequestURI, "perl6", "raku", 1),
+			http.StatusPermanentRedirect,
+		)
+		return
+	}
+
 	if _, ok := langByID[langID]; langID != "all-langs" && !ok {
 		render(w, r, http.StatusNotFound, "404", "", nil)
 		return
@@ -129,7 +140,7 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if page == 1 {
-			http.Redirect(w, r, "/scores/"+holeID+"/"+langID, http.StatusMovedPermanently)
+			http.Redirect(w, r, "/scores/"+holeID+"/"+langID, http.StatusPermanentRedirect)
 			return
 		}
 	}
