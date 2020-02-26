@@ -1,7 +1,7 @@
 package routes
 
 const versionTable = "" +
-	"<tr><th class=bash>Bash<td>5.0.0<td class=wide><a href=//www.gnu.org/software/bash/>website</a>" +
+	"<tr><th class=bash>Bash<td>5.0.16<td class=wide><a href=//www.gnu.org/software/bash/>website</a>" +
 	"<tr><th class=brainfuck>Brainfuck<td>1.0.0<td class=wide><a href=//github.com/code-golf/code-golf/tree/master/langs/brainfuck/>website</a>" +
 	"<tr><th class=c>C<td>Tiny C Compiler 0.9.27<td class=wide><a href=//bellard.org/tcc/>website</a>" +
 	"<tr><th class=haskell>Haskell<td>Glasgow Haskell Compiler 8.6.5<td class=wide><a href=//www.haskell.org/ghc/>website</a>" +
@@ -13,7 +13,7 @@ const versionTable = "" +
 	"<tr><th class=nim>Nim<td>1.0.6<td class=wide><a href=//nim-lang.org>website</a>" +
 	"<tr><th class=perl>Perl<td>5.30.1<td class=wide><a href=//www.perl.org>website</a>" +
 	"<tr><th class=php>PHP<td>7.4.3<td class=wide><a href=//secure.php.net>website</a>" +
-	"<tr><th class=python>Python<td>3.8.1<td class=wide><a href=//www.python.org>website</a>" +
+	"<tr><th class=python>Python<td>3.8.2<td class=wide><a href=//www.python.org>website</a>" +
 	"<tr><th class=raku>Raku<td>Rakudo 2020.01 on MoarVM 2020.01.1 implementing Perl 6.d<td class=wide><a href=//raku.org>website</a>" +
 	"<tr><th class=ruby>Ruby<td>2.7.0<td class=wide><a href=//www.ruby-lang.org>website</a>" +
 	"<tr><th class=rust>Rust<td>1.41.0<td class=wide><a href=//www.rust-lang.org>website</a>" +
