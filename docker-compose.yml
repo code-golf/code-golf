@@ -30,8 +30,9 @@ services:
     volumes:
       - .:/go
   db:
-    image: postgres:12.1-alpine
+    image: postgres:12.2-alpine
     environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
       POSTGRES_DB: code_golf
     volumes:
       - ./db:/docker-entrypoint-initdb.d
