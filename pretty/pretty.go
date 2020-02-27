@@ -66,7 +66,7 @@ func Time(t time.Time) template.HTML {
 	sb.WriteString(rfc)
 	sb.WriteRune('>')
 
-	switch diff := time.Since(t); true {
+	switch diff := time.Since(t); {
 	case diff < 2*time.Minute:
 		sb.WriteString("a min ago")
 	case diff < time.Hour:

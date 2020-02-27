@@ -48,7 +48,7 @@ ifeq ($(wildcard routes/assets.go),)
 	$(file > routes/assets.go, $(STUB))
 endif
 
-	@docker run --rm -v $(CURDIR):/app -w /app golangci/golangci-lint:v1.23.1 golangci-lint run
+	@docker run --rm -v $(CURDIR):/app -w /app golangci/golangci-lint:v1.23.7 golangci-lint run
 
 test:
 # FIXME Stub out assets if it doesn't yet exist.
