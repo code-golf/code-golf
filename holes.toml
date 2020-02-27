@@ -190,7 +190,7 @@ preamble = '''
 █────█
 </pre>
 
-And a size <b>7</b> cube should look like:
+<p>And a size <b>7</b> cube should look like:
 
 <pre>        █────────────────────────────█
        ╱                            ╱│
