@@ -2,8 +2,10 @@ package routes
 
 import (
 	"bytes"
+	"encoding/base64"
 	"html/template"
 	"io/ioutil"
+	"math/rand"
 	"net/http"
 	"net/url"
 	"os"
@@ -84,6 +86,25 @@ func render(
 	name, title string,
 	data interface{},
 ) {
+	// The generated value SHOULD be at least 128 bits long (before encoding),
+	// and SHOULD be generated via a cryptographically secure random number
+	// generator - https://w3c.github.io/webappsec-csp/#security-nonces
+	nonce := make([]byte, 16)
+	if _, err := rand.Read(nonce); err != nil {
+		panic(err)
+	}
+
+	args := struct {
+		CommonCssPath, Login, LogInURL, Nonce, Path, Title string
+		Data                                               interface{}
+	}{
+		CommonCssPath: commonCssPath,
+		Data:          data,
+		Nonce:         base64.StdEncoding.EncodeToString(nonce),
+		Path:          r.URL.Path,
+		Title:         title,
+	}
+
 	header := w.Header()
 
 	header.Set("Content-Language", "en")
@@ -99,19 +120,9 @@ func render(
 			"font-src 'self';"+
 			"frame-ancestors 'none';"+
 			"img-src 'self' data: avatars.githubusercontent.com;"+
-			"script-src 'self';"+
-			"style-src 'self'",
+			"script-src 'self' 'nonce-"+args.Nonce+"';"+
+			"style-src 'self' 'nonce-"+args.Nonce+"'",
 	)
-
-	args := struct {
-		CommonCssPath, Login, LogInURL, Path, Title string
-		Data                                        interface{}
-	}{
-		CommonCssPath: commonCssPath,
-		Data:          data,
-		Path:          r.URL.Path,
-		Title:         title,
-	}
 
 	if _, args.Login = cookie.Read(r); args.Login == "" {
 		// Shallow copy because we want to modify a string.
