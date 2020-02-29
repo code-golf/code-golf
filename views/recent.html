@@ -1,9 +1,27 @@
 {{ template "header" . }}
 
+{{ $langID := .Data.LangID }}
 {{ $login  := .Login }}
 
 <main id=recent>
     <h1>Recent Solutions</h1>
+
+    <details class=nav>
+        {{ if eq $langID "all-langs" }}
+            <summary>All Langs</summary>
+        {{ else }}
+            <a href="/recent/all-langs">All Langs</a>
+        {{ end }}
+
+        {{ range .Data.Langs }}
+            {{ if eq $langID .ID }}
+                <summary>{{ .Name }}</summary>
+            {{ else }}
+                <a href="/recent/{{ .ID }}">{{ .Name }}</a>
+            {{ end }}
+        {{ end }}
+    </details>
+
     <table class="scores sticky">
         <thead>
             <tr>
@@ -14,7 +32,7 @@
                 <th class="wide">
                 <th class=right>Submitted
         <tbody>
-        {{- range .Data -}}
+        {{- range .Data.Recents -}}
             <tr{{ if eq $login .Login }} class="me"{{ end }}>
                 <td><a href={{ .Hole.ID }}#{{ .Lang.ID }}>{{ .Hole.Name }}</a>
                 <td>
@@ -24,7 +42,7 @@
                     </a>
                 <td class=wide>
                     <a href="/scores/all-holes/{{ .Lang.ID }}">{{ .Lang.Name }}</a>
-                <td class="right wide" title="{{ .Rank }}{{ ord .Rank }}">{{ comma .Strokes }}
+                <td class="right wide" title="Rank: {{ .Rank }}{{ ord .Rank }}">{{ comma .Strokes }}
                 <td class="wide"
                     {{if not .TieCount}}
                         {{if eq .Rank 1}}title="Shorter than previous 1st place solutions"
