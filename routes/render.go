@@ -2,10 +2,10 @@ package routes
 
 import (
 	"bytes"
+	"crypto/rand"
 	"encoding/base64"
 	"html/template"
 	"io/ioutil"
-	"math/rand"
 	"net/http"
 	"net/url"
 	"os"
