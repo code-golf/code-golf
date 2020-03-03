@@ -29,27 +29,30 @@
                 <th>Golfer
                 <th class=wide>Lang
                 <th class="right wide">Strokes
-                <th class="wide">
+                <th class=wide>
                 <th class=right>Submitted
         <tbody>
         {{- range .Data.Recents -}}
             <tr{{ if eq $login .Login }} class="me"{{ end }}>
-                <td><a href={{ .Hole.ID }}#{{ .Lang.ID }}>{{ .Hole.Name }}</a>
+                <td>
+                    <a href="/{{ .Hole.ID }}#{{ .Lang.ID }}">
+                        {{ .Hole.Name }}
+                    </a>
                 <td>
                     <a href="/users/{{ .Login }}">
                         <img src="//avatars.githubusercontent.com/{{ .Login }}?s=24">
                         {{- .Login -}}
                     </a>
                 <td class=wide>
-                    <a href="/scores/all-holes/{{ .Lang.ID }}">{{ .Lang.Name }}</a>
-                <td class="right wide" title="Rank: {{ .Rank }}{{ ord .Rank }}">{{ comma .Strokes }}
-                <td class="wide"
-                    {{if not .TieCount}}
-                        {{if eq .Rank 1}}title="Shorter than previous 1st place solutions"
-                        {{else if eq .Rank 2}}title="Shorter than previous 2nd place solutions"
-                        {{else if eq .Rank 3}}title="Shorter than previous 3rd place solutions"
-                        {{end}}
-                    {{end}}>
+                    <a href="/scores/all-holes/{{ .Lang.ID }}">
+                        {{ .Lang.Name }}
+                    </a>
+                <td class="right wide" title="Rank: {{ .Rank }}{{ ord .Rank }}">
+                    {{ comma .Strokes }}
+                <td class=wide
+                    {{ if not .TieCount }}
+                        title="Shorter than previous {{ .Rank }}{{ ord .Rank }} place solutions"
+                    {{ end }}>
                     {{if eq .Rank 1}}🥇
                     {{else if eq .Rank 2}}🥈
                     {{else if eq .Rank 3}}🥉
