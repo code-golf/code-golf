@@ -19,6 +19,9 @@ bump:
 	@go get -u
 	@go mod tidy
 
+cert:
+	@mkcert -install localhost
+
 deps:
 	@yay -S mkcert python-brotli python-fonttools
 

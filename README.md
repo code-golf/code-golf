@@ -11,7 +11,7 @@ $ yay mkcert
 
 2. Install the local CA:
 ```
-$ mkcert -install localhost
+$ make cert
 Using the local CA at "~/.local/share/mkcert" ✨
 The local CA is now installed in the system trust store! ⚡️
 The local CA is now installed in the Firefox and/or Chrome/Chromium trust store (requires browser restart)! 🦊
