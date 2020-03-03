@@ -92,7 +92,7 @@ for name in "${sorted_names[@]}"; do
         rm -fr $lang/rootfs/etc
     fi
 
-    mkdir -p $lang/rootfs/{dev,etc,old-root,proc,tmp}
+    mkdir -p $lang/rootfs/{etc,tmp}
 
     echo nobody:x:99:99::/: > $lang/rootfs/etc/passwd
 
