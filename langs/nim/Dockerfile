@@ -31,6 +31,10 @@ RUN apk del --no-cache curl gcc \
     /usr/share                  \
     /var
 
+FROM scratch
+
+COPY --from=0 / /
+
 COPY run_nim.sh /usr/bin/run_nim
 
 ENTRYPOINT ["/usr/bin/nim", "--cc:tcc", "--verbosity:0", "-r", "c", "-"]

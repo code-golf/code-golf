@@ -31,4 +31,8 @@ RUN find /usr/lib -name '*.a' -delete \
     /usr/share/perl5                  \
     /var
 
+FROM scratch
+
+COPY --from=0 / /
+
 ENTRYPOINT ["/usr/bin/ghc", "--version"]
