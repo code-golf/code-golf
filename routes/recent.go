@@ -10,7 +10,8 @@ func Recent(w http.ResponseWriter, r *http.Request) {
 	langID := param(r, "lang")
 
 	if langID == "" {
-		langID = "all-langs"
+		http.Redirect(w, r, "/recent/all-langs", http.StatusPermanentRedirect)
+		return
 	}
 
 	if _, ok := langByID[langID]; langID != "all-langs" && !ok {
