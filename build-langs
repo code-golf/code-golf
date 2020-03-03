@@ -42,17 +42,19 @@ for name in "${sorted_names[@]}"; do
     rm -rf $lang/rootfs
     mkdir $lang/rootfs
 
-    # Tag the builder stage so "docker system prune" won't remove it.
-    docker build --target builder -t code-golf-$lang-builder $lang
+    img=codegolf/lang-$lang
 
-    docker build -t code-golf-$lang $lang
+    # Tag the builder stage so "docker system prune" won't remove it.
+    docker build --target builder -t $img-builder $lang
+
+    docker build -t $img $lang
 
     if [ $lang = j ]; then
-        ver=`echo echo JLIB | docker run --rm --tmpfs /tmp -i code-golf-j`
+        ver=`echo echo JLIB | docker run --rm --tmpfs /tmp -i $img`
     elif [ $lang = nim ]; then
-        ver=`echo echo NimVersion | docker run --rm --tmpfs /tmp -i code-golf-nim`
+        ver=`echo echo NimVersion | docker run --rm --tmpfs /tmp -i $img`
     else
-        ver=`docker run --rm code-golf-$lang`
+        ver=`docker run --rm $img`
     fi
 
     # Remove some crap from version strings.
@@ -76,7 +78,7 @@ for name in "${sorted_names[@]}"; do
     html+="+
         \"<tr><th class=$lang>$name<td>$ver<td class=wide><a href=${urls[$name]}>website</a>\""
 
-    id=`docker create code-golf-$lang`
+    id=`docker create $img`
 
     docker export $id | tar -C $lang/rootfs -xf -
 
@@ -93,6 +95,8 @@ for name in "${sorted_names[@]}"; do
     mkdir -p $lang/rootfs/{dev,etc,old-root,proc,tmp}
 
     echo nobody:x:99:99::/: > $lang/rootfs/etc/passwd
+
+    docker push $img
 done
 
 echo "package routes
