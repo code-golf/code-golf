@@ -1,9 +1,27 @@
 {{ template "header" . }}
 
+{{ $langID := .Data.LangID }}
 {{ $login  := .Login }}
 
 <main id=recent>
     <h1>Recent Solutions</h1>
+
+    <details class=nav>
+        {{ if eq $langID "all-langs" }}
+            <summary>All Langs</summary>
+        {{ else }}
+            <a href="/recent/all-langs">All Langs</a>
+        {{ end }}
+
+        {{ range .Data.Langs }}
+            {{ if eq $langID .ID }}
+                <summary>{{ .Name }}</summary>
+            {{ else }}
+                <a href="/recent/{{ .ID }}">{{ .Name }}</a>
+            {{ end }}
+        {{ end }}
+    </details>
+
     <table class="scores sticky">
         <thead>
             <tr>
@@ -11,9 +29,10 @@
                 <th>Golfer
                 <th class=wide>Lang
                 <th class="right wide">Strokes
+                <th class="wide">
                 <th class=right>Submitted
         <tbody>
-        {{- range .Data -}}
+        {{- range .Data.Recents -}}
             <tr{{ if eq $login .Login }} class="me"{{ end }}>
                 <td><a href={{ .Hole.ID }}#{{ .Lang.ID }}>{{ .Hole.Name }}</a>
                 <td>
@@ -23,7 +42,19 @@
                     </a>
                 <td class=wide>
                     <a href="/scores/all-holes/{{ .Lang.ID }}">{{ .Lang.Name }}</a>
-                <td class="right wide">{{ comma .Strokes }}
+                <td class="right wide" title="Rank: {{ .Rank }}{{ ord .Rank }}">{{ comma .Strokes }}
+                <td class="wide"
+                    {{if not .TieCount}}
+                        {{if eq .Rank 1}}title="Shorter than previous 1st place solutions"
+                        {{else if eq .Rank 2}}title="Shorter than previous 2nd place solutions"
+                        {{else if eq .Rank 3}}title="Shorter than previous 3rd place solutions"
+                        {{end}}
+                    {{end}}>
+                    {{if eq .Rank 1}}🥇
+                    {{else if eq .Rank 2}}🥈
+                    {{else if eq .Rank 3}}🥉
+                    {{end}}
+                    {{if and (not .TieCount) (le .Rank 3)}}📉{{end}}
                 <td class=right>{{ time .Submitted }}
         {{- end -}}
     </table>

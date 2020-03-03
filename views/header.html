@@ -16,12 +16,12 @@
 
 <header>
     <nav>
-        <a {{ if ne             .Path "/"         }} href=/       title=Home                       {{ end }}></a>
-        <a {{ if ne             .Path "/about"    }} href=/about  title=About                      {{ end }}></a>
-        <a {{ if ne             .Path "/ideas"    }} href=/ideas  title=Ideas                      {{ end }}></a>
-        <a {{ if ne             .Path "/recent"   }} href=/recent title="Recent Solutions"         {{ end }}></a>
-        <a {{ if not (hasPrefix .Path "/scores/") }} href=/scores/all-holes/all-langs title=Scores {{ end }}></a>
-        <a {{ if ne             .Path "/stats"    }} href=/stats  title=Statistics                 {{ end }}></a>
+        <a {{ if ne             .Path "/"         }} href=/       title=Home                         {{ end }}></a>
+        <a {{ if ne             .Path "/about"    }} href=/about  title=About                        {{ end }}></a>
+        <a {{ if ne             .Path "/ideas"    }} href=/ideas  title=Ideas                        {{ end }}></a>
+        <a {{ if ne             .Path "/recent"   }} href=/recent/all-langs title="Recent Solutions" {{ end }}></a>
+        <a {{ if not (hasPrefix .Path "/scores/") }} href=/scores/all-holes/all-langs title=Scores   {{ end }}></a>
+        <a {{ if ne             .Path "/stats"    }} href=/stats  title=Statistics                   {{ end }}></a>
         <div></div>
     {{ if .Login }}
         {{ $profile := (print "/users/" .Login) }}

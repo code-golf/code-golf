@@ -67,6 +67,7 @@ func main() {
 	r.Get("/log-out", routes.LogOut)
 	r.Get("/random", routes.Random)
 	r.Get("/recent", routes.Recent)
+	r.Get("/recent/{lang}", routes.Recent)
 	r.Get("/robots.txt", routes.Robots)
 	r.Get("/scores/{hole}/{lang}", routes.Scores)
 	r.Get("/scores/{hole}/{lang}/{suffix}", routes.Scores)
