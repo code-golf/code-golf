@@ -28,8 +28,8 @@ dev:
 
 diff-db:
 	@diff --color --label live --label dev --strip-trailing-cr -su \
-		<(ssh -p 1988 code-golf.io pg_dump -Os code_golf)          \
-		<(docker-compose exec db pg_dump -OsU postgres code_golf)
+	    <(ssh -p 1988 code-golf.io pg_dump -Os code_golf)          \
+	    <(docker-compose exec db pg_dump -OsU postgres code_golf)
 
 fmt:
 	@gofmt -s  -w $(GOFILES)
@@ -37,10 +37,10 @@ fmt:
 
 font:
 	@pyftsubset ~/Downloads/fontawesome-pro-5.12.0-web/webfonts/fa-light-300.ttf \
-		--flavor=woff2                                                           \
-		--no-hinting                                                             \
-		--output-file=assets/font.woff2                                          \
-		--unicodes-file=font-subset.txt
+	    --flavor=woff2                                                           \
+	    --no-hinting                                                             \
+	    --output-file=assets/font.woff2                                          \
+	    --unicodes-file=font-subset.txt
 
 lint:
 # FIXME Stub out assets if it doesn't yet exist.
