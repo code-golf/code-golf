@@ -1,14 +1,6 @@
 {{ template "header" . }}
 
 <main id=index>
-    <div class="grid span" id=alert>
-        <div class=grid>
-            <p>
-                Due to a failure of the previous host, the site is currently
-                being migrated, not everything is working, follow along at this
-                <a href=//github.com/code-golf/code-golf/issues/162>issue</a>.
-        </div>
-    </div>
 {{ with .Data.Fails }}
     <div class="grid span" id=alert>
         <div class=grid>
