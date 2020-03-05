@@ -22,7 +22,7 @@ for ( map [ split /\n/, $_, 2 ], <DATA> ) {
 
 done_testing;
 
-# lua, python, rust all have - as the first arg :-(
+# lua, python, rust, and swift all have - as the first arg :-(
 # https://rosettacode.org/wiki/Command-line_arguments
 __DATA__
 bash
@@ -55,7 +55,7 @@ while($a = next($argv)) echo "$a\n"
 
 python
 import sys
-[print(a)for a in sys.argv[1:]]
+[print(a) for a in sys.argv[1:]]
 
 raku
 @*ARGS».say
@@ -71,4 +71,9 @@ fn main() {
             println!("{}", arg);
         }
     }
+}
+
+swift
+for a in CommandLine.arguments[1...] {
+    print(a)
 }
