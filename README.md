@@ -51,9 +51,3 @@ $ go test ./...
 ```
 $ prove
 ```
-
-## Thanks
-
-[![BrowserStack](browserstack.png)](https://www.browserstack.com)
-
-Cross browser testing powered by [BrowserStack](https://www.browserstack.com)
