@@ -16,7 +16,7 @@ enable = [
   # 'gocognit',
   # 'goconst',
   # 'gocritic',
-  # 'gocyclo',
+    'gocyclo',
   # 'godox',
     'gofmt',
     'goimports',

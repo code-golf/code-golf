@@ -1,4 +1,4 @@
-package routes
+package hole
 
 var answers = map[string]string{
 	"12-days-of-christmas": `On the First day of Christmas

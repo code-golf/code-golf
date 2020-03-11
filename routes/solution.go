@@ -1,20 +1,14 @@
 package routes
 
 import (
-	"bufio"
-	"bytes"
-	"context"
 	"database/sql"
 	"encoding/json"
 	"net/http"
-	"os/exec"
-	"strings"
-	"syscall"
 	"time"
-	"unicode"
 
 	"github.com/buildkite/terminal"
 	"github.com/code-golf/code-golf/cookie"
+	"github.com/code-golf/code-golf/hole"
 	"github.com/pmezard/go-difflib/difflib"
 )
 
@@ -29,48 +23,29 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 
 	println(in.Code)
 
-	var out struct {
-		Argv                []string
-		Diff, Err, Exp, Out string
-		Took                time.Duration
-	}
-
-	switch in.Hole {
-	case "arabic-to-roman", "roman-to-arabic":
-		out.Argv, out.Exp = arabicToRoman(in.Hole == "roman-to-arabic")
-	case "brainfuck":
-		out.Argv, out.Exp = brainfuck()
-	case "morse-decoder", "morse-encoder":
-		out.Argv, out.Exp = morse(in.Hole == "morse-decoder")
-	case "ordinal-numbers":
-		out.Argv, out.Exp = ordinalNumbers()
-	case "pangram-grep":
-		out.Argv, out.Exp = pangramGrep()
-	case "poker":
-		out.Argv, out.Exp = poker()
-	case "quine":
-		out.Exp = in.Code
-	case "rock-paper-scissors-spock-lizard":
-		out.Argv, out.Exp = rockPaperScissorsSpockLizard()
-	case "seven-segment":
-		out.Argv, out.Exp = sevenSegment()
-	case "spelling-numbers":
-		out.Argv, out.Exp = spellingNumbers()
-	case "sudoku":
-		out.Argv, out.Exp = sudoku()
-	case "ten-pin-bowling":
-		out.Argv, out.Exp = tenPinBowling()
-	case "united-states":
-		out.Argv, out.Exp = unitedStates()
-	default:
-		out.Exp = answers[in.Hole]
-	}
-
 	userID, _ := cookie.Read(r)
 
 	db := db(r)
 
-	out.Err, out.Out, out.Took = runCode(db, in.Hole, in.Lang, in.Code, out.Argv, userID)
+	score := hole.Play(r.Context(), in.Hole, in.Lang, in.Code)
+
+	if score.Timeout && userID != 0 {
+		awardTrophy(db, userID, "slowcoach")
+	}
+
+	out := struct {
+		Argv                []string
+		Diff, Err, Exp, Out string
+		Pass                bool
+		Took                time.Duration
+	}{
+		Argv: score.Args,
+		Err:  string(terminal.Render(score.Stderr)),
+		Exp:  score.Answer,
+		Out:  string(score.Stdout),
+		Pass: score.Pass,
+		Took: score.Took,
+	}
 
 	out.Diff, _ = difflib.GetUnifiedDiffString(difflib.UnifiedDiff{
 		A:        difflib.SplitLines(out.Exp),
@@ -80,8 +55,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		ToFile:   "Out",
 	})
 
-	// Save the solution if the user is logged in and it passes.
-	if userID != 0 && out.Exp == out.Out && out.Out != "" {
+	if out.Pass && userID != 0 {
 		// Update the code if it's the same length or less, but only update
 		// the submitted time if the solution is shorter. This avoids a user
 		// moving down the leaderboard by matching their personal best.
@@ -170,7 +144,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	w.Header()["Content-Type"] = []string{"application/json"}
+	w.Header().Set("Content-Type", "application/json")
 
 	enc := json.NewEncoder(w)
 	enc.SetEscapeHTML(false)
@@ -196,108 +170,4 @@ func queryBool(db *sql.DB, query string, args ...interface{}) (b bool) {
 	}
 
 	return
-}
-
-func runCode(db *sql.DB, hole, lang, code string, args []string, userID int) (string, string, time.Duration) {
-	var stderr, stdout bytes.Buffer
-
-	if lang == "php" {
-		code = "<?php " + code + " ;"
-	}
-
-	start := time.Now()
-
-	ctx, cancel := context.WithDeadline(context.Background(), start.Add(7*time.Second))
-	defer cancel()
-
-	cmd := exec.CommandContext(ctx, "../../run-lang")
-	cmd.Dir = "langs/" + lang
-	cmd.Stderr = &stderr
-	cmd.Stdin = strings.NewReader(code)
-	cmd.Stdout = &stdout
-	cmd.SysProcAttr = &syscall.SysProcAttr{
-		Cloneflags: syscall.CLONE_NEWIPC | syscall.CLONE_NEWNET | syscall.CLONE_NEWNS | syscall.CLONE_NEWPID | syscall.CLONE_NEWUTS,
-	}
-
-	switch lang {
-	case "bash":
-		cmd.Args = []string{"/usr/bin/bash", "-s", "-"}
-	case "c":
-		cmd.Args = []string{"/usr/bin/tcc", "-run", "-"}
-	case "haskell", "javascript", "php":
-		cmd.Args = []string{"/usr/bin/" + lang, "--"}
-	case "j":
-		cmd.Args = []string{"/usr/bin/j", "/tmp/code.ijs"}
-	case "julia":
-		cmd.Args = []string{"/usr/bin/run-julia", "/tmp/code.jl"}
-	case "nim":
-		cmd.Args = []string{"/usr/bin/run_nim"}
-	// Common case.
-	default:
-		cmd.Args = []string{"/usr/bin/" + lang, "-"}
-	}
-
-	cmd.Args = append(cmd.Args, args...)
-
-	err := cmd.Run()
-	took := time.Since(start)
-
-	if err != nil {
-		if ctx.Err() == context.DeadlineExceeded {
-			stderr.WriteString("Killed for exceeding the 7s timeout.")
-
-			if userID != 0 {
-				awardTrophy(db, userID, "slowcoach")
-			}
-		} else {
-			stderr.WriteString(err.Error())
-			println(err.Error())
-		}
-	}
-
-	var outBytes []byte
-
-	// Trim trailing spaces per line.
-	// FIXME This is all very hacky, but needed for Sierpiński.
-	scanner := bufio.NewScanner(bytes.NewReader(stdout.Bytes()))
-	for scanner.Scan() {
-		outBytes = append(outBytes, bytes.TrimRightFunc(scanner.Bytes(), unicode.IsSpace)...)
-		outBytes = append(outBytes, '\n')
-	}
-
-	if err := scanner.Err(); err != nil {
-		panic(err)
-	}
-
-	// Trim trailing whitespace.
-	errBytes := bytes.TrimRightFunc(stderr.Bytes(), unicode.IsSpace)
-
-	if hole != "quine" {
-		outBytes = bytes.TrimRightFunc(outBytes, unicode.IsSpace)
-	}
-
-	// Escape HTML & convert ANSI to HTML in stderr.
-	errBytes = terminal.Render(errBytes)
-
-	// ASCII-ify roman numerals
-	if hole == "arabic-to-roman" {
-		outBytes = bytes.Replace(outBytes, []byte("Ⅰ"), []byte("I"), -1)
-		outBytes = bytes.Replace(outBytes, []byte("Ⅱ"), []byte("II"), -1)
-		outBytes = bytes.Replace(outBytes, []byte("Ⅲ"), []byte("III"), -1)
-		outBytes = bytes.Replace(outBytes, []byte("Ⅳ"), []byte("IV"), -1)
-		outBytes = bytes.Replace(outBytes, []byte("Ⅴ"), []byte("V"), -1)
-		outBytes = bytes.Replace(outBytes, []byte("Ⅵ"), []byte("VI"), -1)
-		outBytes = bytes.Replace(outBytes, []byte("Ⅶ"), []byte("VII"), -1)
-		outBytes = bytes.Replace(outBytes, []byte("Ⅷ"), []byte("VIII"), -1)
-		outBytes = bytes.Replace(outBytes, []byte("Ⅸ"), []byte("IX"), -1)
-		outBytes = bytes.Replace(outBytes, []byte("Ⅹ"), []byte("X"), -1)
-		outBytes = bytes.Replace(outBytes, []byte("Ⅺ"), []byte("XI"), -1)
-		outBytes = bytes.Replace(outBytes, []byte("Ⅻ"), []byte("XII"), -1)
-		outBytes = bytes.Replace(outBytes, []byte("Ⅼ"), []byte("L"), -1)
-		outBytes = bytes.Replace(outBytes, []byte("Ⅽ"), []byte("C"), -1)
-		outBytes = bytes.Replace(outBytes, []byte("Ⅾ"), []byte("D"), -1)
-		outBytes = bytes.Replace(outBytes, []byte("Ⅿ"), []byte("M"), -1)
-	}
-
-	return string(errBytes), string(outBytes), took
 }

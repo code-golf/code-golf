@@ -1,4 +1,4 @@
-package routes
+package hole
 
 import (
 	"math/rand"
