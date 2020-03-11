@@ -53,7 +53,7 @@ ifeq ($(wildcard routes/assets.go),)
 	$(file > routes/assets.go, $(STUB))
 endif
 
-	@docker run --rm -v $(CURDIR):/app -w /app golangci/golangci-lint:v1.23.7 golangci-lint run
+	@docker run --rm -v $(CURDIR):/app -w /app golangci/golangci-lint:v1.23.8 golangci-lint run
 
 live:
 	@./build-assets

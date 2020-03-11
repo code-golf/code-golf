@@ -105,8 +105,6 @@ func main() {
 		server.TLSConfig.GetCertificate = certManager.GetCertificate
 	}
 
-	server.TLSConfig.BuildNameToCertificate()
-
 	go func() {
 		ticker := time.NewTicker(5 * time.Minute)
 
