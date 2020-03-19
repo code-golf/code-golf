@@ -105,24 +105,25 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		}
 	}
 
-	// Trim trailing spaces per line.
-	// FIXME This is all very hacky, but needed for Sierpiński.
-	scanner := bufio.NewScanner(bytes.NewReader(stdout.Bytes()))
-	for scanner.Scan() {
-		score.Stdout = append(
-			score.Stdout, bytes.TrimRightFunc(scanner.Bytes(), unicode.IsSpace)...)
-		// FIXME This is a bug, all quines will have a trailing newline.
-		score.Stdout = append(score.Stdout, '\n')
-	}
-
-	if err := scanner.Err(); err != nil {
-		panic(err)
-	}
-
 	// Trim trailing whitespace.
 	score.Stderr = bytes.TrimRightFunc(stderr.Bytes(), unicode.IsSpace)
 
-	if holeID != "quine" {
+	if holeID == "quine" {
+		score.Stdout = stdout.Bytes()
+	} else {
+		// Trim trailing spaces per line.
+		// FIXME This is all very hacky, but needed for Sierpiński.
+		scanner := bufio.NewScanner(bytes.NewReader(stdout.Bytes()))
+		for scanner.Scan() {
+			score.Stdout = append(
+				score.Stdout, bytes.TrimRightFunc(scanner.Bytes(), unicode.IsSpace)...)
+			score.Stdout = append(score.Stdout, '\n')
+		}
+
+		if err := scanner.Err(); err != nil {
+			panic(err)
+		}
+
 		score.Stdout = bytes.TrimRightFunc(score.Stdout, unicode.IsSpace)
 	}
 
