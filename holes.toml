@@ -362,8 +362,8 @@ preamble = '''
 category = 'Transform'
 preamble = '''
 <p>
-    Using ▄ (U+2584 Lower Half Block) to represent a dot, encode the argument
-    from International Morse Code.
+    Using ▄ (U+2584 Lower Half Block) to represent a dot, decode the argument
+    from International Morse Code to alphanumeric.
 
 <ol>
     <li>The length of a dot is one unit.
@@ -424,8 +424,8 @@ preamble = '''
 category = 'Transform'
 preamble = '''
 <p>
-    Using ▄ (U+2584 Lower Half Block) to represent a dot, decode the argument
-    into International Morse Code.
+    Using ▄ (U+2584 Lower Half Block) to represent a dot, encode the argument
+    from alphanumeric into International Morse Code.
 
 <ol>
     <li>The length of a dot is one unit.
