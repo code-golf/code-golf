@@ -12,7 +12,7 @@ const versionTable = "" +
 	"<tr><th class=lua>Lua<td>5.4.0<td class=wide><a href=//www.lua.org>website</a>" +
 	"<tr><th class=nim>Nim<td>1.0.6<td class=wide><a href=//nim-lang.org>website</a>" +
 	"<tr><th class=perl>Perl<td>5.30.2<td class=wide><a href=//www.perl.org>website</a>" +
-	"<tr><th class=php>PHP<td>7.4.3<td class=wide><a href=//secure.php.net>website</a>" +
+	"<tr><th class=php>PHP<td>7.4.4<td class=wide><a href=//secure.php.net>website</a>" +
 	"<tr><th class=python>Python<td>3.8.2<td class=wide><a href=//www.python.org>website</a>" +
 	"<tr><th class=raku>Raku<td>Rakudo 2020.02.1 on MoarVM 2020.02.1 implementing Raku 6.d<td class=wide><a href=//raku.org>website</a>" +
 	"<tr><th class=ruby>Ruby<td>2.7.0<td class=wide><a href=//www.ruby-lang.org>website</a>" +
