@@ -373,49 +373,70 @@ preamble = '''
     <li>The space between words is ten units.
 </ol>
 
-<div>
+<div id=morse>
     <table>
         <thead>
             <tr>
-                <th>Char
+                <th>Chr.
                 <th>Code
         <tbody>
-            <tr><th>A<td>▄ ▄▄▄
-            <tr><th>B<td>▄▄▄ ▄ ▄ ▄
-            <tr><th>C<td>▄▄▄ ▄ ▄▄▄ ▄
-            <tr><th>D<td>▄▄▄ ▄ ▄
-            <tr><th>E<td>▄
-            <tr><th>F<td>▄ ▄ ▄▄▄ ▄
-            <tr><th>G<td>▄▄▄ ▄▄▄ ▄
-            <tr><th>H<td>▄ ▄ ▄ ▄
-            <tr><th>I<td>▄ ▄
-            <tr><th>J<td>▄ ▄▄▄ ▄▄▄ ▄▄▄
-            <tr><th>K<td>▄▄▄ ▄ ▄▄▄
-            <tr><th>L<td>▄ ▄▄▄ ▄ ▄
-            <tr><th>M<td>▄▄▄ ▄▄▄
-            <tr><th>N<td>▄▄▄ ▄
-            <tr><th>O<td>▄▄▄ ▄▄▄ ▄▄▄
-            <tr><th>P<td>▄ ▄▄▄ ▄▄▄ ▄
-            <tr><th>Q<td>▄▄▄ ▄▄▄ ▄ ▄▄▄
-            <tr><th>R<td>▄ ▄▄▄ ▄
-            <tr><th>S<td>▄ ▄ ▄
-            <tr><th>T<td>▄▄▄
-            <tr><th>U<td>▄ ▄ ▄▄▄
-            <tr><th>V<td>▄ ▄ ▄ ▄▄▄
-            <tr><th>W<td>▄ ▄▄▄ ▄▄▄
-            <tr><th>X<td>▄▄▄ ▄ ▄ ▄▄▄
-            <tr><th>Y<td>▄▄▄ ▄ ▄▄▄ ▄▄▄
-            <tr><th>Z<td>▄▄▄ ▄▄▄ ▄ ▄
-            <tr><th>0<td>▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄
-            <tr><th>1<td>▄ ▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄
-            <tr><th>2<td>▄ ▄ ▄▄▄ ▄▄▄ ▄▄▄
-            <tr><th>3<td>▄ ▄ ▄ ▄▄▄ ▄▄▄
-            <tr><th>4<td>▄ ▄ ▄ ▄ ▄▄▄
-            <tr><th>5<td>▄ ▄ ▄ ▄ ▄
-            <tr><th>6<td>▄▄▄ ▄ ▄ ▄ ▄
-            <tr><th>7<td>▄▄▄ ▄▄▄ ▄ ▄ ▄
-            <tr><th>8<td>▄▄▄ ▄▄▄ ▄▄▄ ▄ ▄
-            <tr><th>9<td>▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄ ▄
+            <tr><td>A<td>▄ ▄▄▄
+            <tr><td>B<td>▄▄▄ ▄ ▄ ▄
+            <tr><td>C<td>▄▄▄ ▄ ▄▄▄ ▄
+            <tr><td>D<td>▄▄▄ ▄ ▄
+            <tr><td>E<td>▄
+            <tr><td>F<td>▄ ▄ ▄▄▄ ▄
+            <tr><td>G<td>▄▄▄ ▄▄▄ ▄
+            <tr><td>H<td>▄ ▄ ▄ ▄
+            <tr><td>I<td>▄ ▄
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Chr.
+                <th>Code
+        <tbody>
+            <tr><td>J<td>▄ ▄▄▄ ▄▄▄ ▄▄▄
+            <tr><td>K<td>▄▄▄ ▄ ▄▄▄
+            <tr><td>L<td>▄ ▄▄▄ ▄ ▄
+            <tr><td>M<td>▄▄▄ ▄▄▄
+            <tr><td>N<td>▄▄▄ ▄
+            <tr><td>O<td>▄▄▄ ▄▄▄ ▄▄▄
+            <tr><td>P<td>▄ ▄▄▄ ▄▄▄ ▄
+            <tr><td>Q<td>▄▄▄ ▄▄▄ ▄ ▄▄▄
+            <tr><td>R<td>▄ ▄▄▄ ▄
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Chr.
+                <th>Code
+        <tbody>
+            <tr><td>S<td>▄ ▄ ▄
+            <tr><td>T<td>▄▄▄
+            <tr><td>U<td>▄ ▄ ▄▄▄
+            <tr><td>V<td>▄ ▄ ▄ ▄▄▄
+            <tr><td>W<td>▄ ▄▄▄ ▄▄▄
+            <tr><td>X<td>▄▄▄ ▄ ▄ ▄▄▄
+            <tr><td>Y<td>▄▄▄ ▄ ▄▄▄ ▄▄▄
+            <tr><td>Z<td>▄▄▄ ▄▄▄ ▄ ▄
+            <tr><td>0<td>▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Chr.
+                <th>Code
+        <tbody>
+            <tr><td>1<td>▄ ▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄
+            <tr><td>2<td>▄ ▄ ▄▄▄ ▄▄▄ ▄▄▄
+            <tr><td>3<td>▄ ▄ ▄ ▄▄▄ ▄▄▄
+            <tr><td>4<td>▄ ▄ ▄ ▄ ▄▄▄
+            <tr><td>5<td>▄ ▄ ▄ ▄ ▄
+            <tr><td>6<td>▄▄▄ ▄ ▄ ▄ ▄
+            <tr><td>7<td>▄▄▄ ▄▄▄ ▄ ▄ ▄
+            <tr><td>8<td>▄▄▄ ▄▄▄ ▄▄▄ ▄ ▄
+            <tr><td>9<td>▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄ ▄
     </table>
 </div>
 '''
@@ -435,49 +456,70 @@ preamble = '''
     <li>The space between words is ten units.
 </ol>
 
-<div>
+<div id=morse>
     <table>
         <thead>
             <tr>
-                <th>Char
+                <th>Chr.
                 <th>Code
         <tbody>
-            <tr><th>A<td>▄ ▄▄▄
-            <tr><th>B<td>▄▄▄ ▄ ▄ ▄
-            <tr><th>C<td>▄▄▄ ▄ ▄▄▄ ▄
-            <tr><th>D<td>▄▄▄ ▄ ▄
-            <tr><th>E<td>▄
-            <tr><th>F<td>▄ ▄ ▄▄▄ ▄
-            <tr><th>G<td>▄▄▄ ▄▄▄ ▄
-            <tr><th>H<td>▄ ▄ ▄ ▄
-            <tr><th>I<td>▄ ▄
-            <tr><th>J<td>▄ ▄▄▄ ▄▄▄ ▄▄▄
-            <tr><th>K<td>▄▄▄ ▄ ▄▄▄
-            <tr><th>L<td>▄ ▄▄▄ ▄ ▄
-            <tr><th>M<td>▄▄▄ ▄▄▄
-            <tr><th>N<td>▄▄▄ ▄
-            <tr><th>O<td>▄▄▄ ▄▄▄ ▄▄▄
-            <tr><th>P<td>▄ ▄▄▄ ▄▄▄ ▄
-            <tr><th>Q<td>▄▄▄ ▄▄▄ ▄ ▄▄▄
-            <tr><th>R<td>▄ ▄▄▄ ▄
-            <tr><th>S<td>▄ ▄ ▄
-            <tr><th>T<td>▄▄▄
-            <tr><th>U<td>▄ ▄ ▄▄▄
-            <tr><th>V<td>▄ ▄ ▄ ▄▄▄
-            <tr><th>W<td>▄ ▄▄▄ ▄▄▄
-            <tr><th>X<td>▄▄▄ ▄ ▄ ▄▄▄
-            <tr><th>Y<td>▄▄▄ ▄ ▄▄▄ ▄▄▄
-            <tr><th>Z<td>▄▄▄ ▄▄▄ ▄ ▄
-            <tr><th>0<td>▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄
-            <tr><th>1<td>▄ ▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄
-            <tr><th>2<td>▄ ▄ ▄▄▄ ▄▄▄ ▄▄▄
-            <tr><th>3<td>▄ ▄ ▄ ▄▄▄ ▄▄▄
-            <tr><th>4<td>▄ ▄ ▄ ▄ ▄▄▄
-            <tr><th>5<td>▄ ▄ ▄ ▄ ▄
-            <tr><th>6<td>▄▄▄ ▄ ▄ ▄ ▄
-            <tr><th>7<td>▄▄▄ ▄▄▄ ▄ ▄ ▄
-            <tr><th>8<td>▄▄▄ ▄▄▄ ▄▄▄ ▄ ▄
-            <tr><th>9<td>▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄ ▄
+            <tr><td>A<td>▄ ▄▄▄
+            <tr><td>B<td>▄▄▄ ▄ ▄ ▄
+            <tr><td>C<td>▄▄▄ ▄ ▄▄▄ ▄
+            <tr><td>D<td>▄▄▄ ▄ ▄
+            <tr><td>E<td>▄
+            <tr><td>F<td>▄ ▄ ▄▄▄ ▄
+            <tr><td>G<td>▄▄▄ ▄▄▄ ▄
+            <tr><td>H<td>▄ ▄ ▄ ▄
+            <tr><td>I<td>▄ ▄
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Chr.
+                <th>Code
+        <tbody>
+            <tr><td>J<td>▄ ▄▄▄ ▄▄▄ ▄▄▄
+            <tr><td>K<td>▄▄▄ ▄ ▄▄▄
+            <tr><td>L<td>▄ ▄▄▄ ▄ ▄
+            <tr><td>M<td>▄▄▄ ▄▄▄
+            <tr><td>N<td>▄▄▄ ▄
+            <tr><td>O<td>▄▄▄ ▄▄▄ ▄▄▄
+            <tr><td>P<td>▄ ▄▄▄ ▄▄▄ ▄
+            <tr><td>Q<td>▄▄▄ ▄▄▄ ▄ ▄▄▄
+            <tr><td>R<td>▄ ▄▄▄ ▄
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Chr.
+                <th>Code
+        <tbody>
+            <tr><td>S<td>▄ ▄ ▄
+            <tr><td>T<td>▄▄▄
+            <tr><td>U<td>▄ ▄ ▄▄▄
+            <tr><td>V<td>▄ ▄ ▄ ▄▄▄
+            <tr><td>W<td>▄ ▄▄▄ ▄▄▄
+            <tr><td>X<td>▄▄▄ ▄ ▄ ▄▄▄
+            <tr><td>Y<td>▄▄▄ ▄ ▄▄▄ ▄▄▄
+            <tr><td>Z<td>▄▄▄ ▄▄▄ ▄ ▄
+            <tr><td>0<td>▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Chr.
+                <th>Code
+        <tbody>
+            <tr><td>1<td>▄ ▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄
+            <tr><td>2<td>▄ ▄ ▄▄▄ ▄▄▄ ▄▄▄
+            <tr><td>3<td>▄ ▄ ▄ ▄▄▄ ▄▄▄
+            <tr><td>4<td>▄ ▄ ▄ ▄ ▄▄▄
+            <tr><td>5<td>▄ ▄ ▄ ▄ ▄
+            <tr><td>6<td>▄▄▄ ▄ ▄ ▄ ▄
+            <tr><td>7<td>▄▄▄ ▄▄▄ ▄ ▄ ▄
+            <tr><td>8<td>▄▄▄ ▄▄▄ ▄▄▄ ▄ ▄
+            <tr><td>9<td>▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄ ▄
     </table>
 </div>
 '''
