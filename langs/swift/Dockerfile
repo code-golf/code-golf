@@ -2,7 +2,7 @@ FROM ubuntu:18.04 as builder
 
 RUN apt-get update && apt-get install -y curl libatomic1 libedit2 libc6-dev
 
-RUN curl https://swift.org/builds/swift-5.1.5-release/ubuntu1804/swift-5.1.5-RELEASE/swift-5.1.5-RELEASE-ubuntu18.04.tar.gz \
+RUN curl https://swift.org/builds/swift-5.2-release/ubuntu1804/swift-5.2-RELEASE/swift-5.2-RELEASE-ubuntu18.04.tar.gz \
   | tar --directory / --strip-components 1 -xzf -
 
 RUN rm                     \
