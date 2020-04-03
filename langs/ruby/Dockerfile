@@ -2,10 +2,10 @@ FROM alpine:3.11 as builder
 
 RUN apk add --no-cache build-base curl openssl-dev
 
-RUN curl https://cache.ruby-lang.org/pub/ruby/2.7/ruby-2.7.0.tar.xz \
+RUN curl https://cache.ruby-lang.org/pub/ruby/2.7/ruby-2.7.1.tar.xz \
   | tar xJf -
 
-RUN cd ruby-2.7.0         \
+RUN cd ruby-2.7.1         \
  && ./configure           \
     --disable-install-doc \
     --prefix=/usr         \
