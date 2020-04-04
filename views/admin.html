@@ -1,0 +1,180 @@
+{{ template "header" . }}
+
+<main>
+    <form>
+        <label for=golfer>Golfer</label>
+        <input id=golfer name=golfer value='{{ .Request.FormValue "golfer" }}'>
+
+        <label for=hole>Hole</label>
+        <select id=hole name=hole>
+            <option value>All
+        {{ $hole := .Request.FormValue "hole" }}
+        {{ range .Data.Holes }}
+            <option value={{ .ID }} {{ if eq .ID $hole }}selected{{ end }}>
+                {{ .Name }}
+        {{ end }}
+        </select>
+
+        <label for=lang>Lang</label>
+        <select id=lang name=lang>
+            <option value>All
+        {{ $lang := .Request.FormValue "lang" }}
+        {{ range .Data.Langs }}
+            <option value={{ .ID }} {{ if eq .ID $lang }}selected{{ end }}>
+                {{ .Name }}
+        {{ end }}
+        </select>
+
+        <div>
+            <div id=status></div>
+            <button class="btn blue" id=run>Run</button>
+            <button class="btn yellow" id=stop type=button>Stop</button>
+        </div>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Hole
+                <th>Lang
+                <th>Golfer
+                <th>Took
+                <th>Status
+                <th>Failing
+        <tbody>
+    </table>
+</main>
+
+<style nonce="{{ .Nonce }}">
+form {
+    align-items: center;
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: min-content 1fr;
+    margin: auto;
+}
+
+form > div {
+    align-items: center;
+    display: flex;
+    grid-column: span 2;
+    justify-content: flex-end;
+}
+
+label { font-weight: bold }
+
+table {
+    display: none;
+    margin: auto;
+}
+
+td span {
+    border: 1px solid var(--color);
+    font-family: monospace;
+    font-size: .75rem;
+    font-weight: bold;
+    padding: .2rem .35rem;
+}
+
+tr > :nth-child(4) { text-align: right }
+
+#status {
+    font-variant: tabular-nums;
+    margin-right: 1rem;
+}
+
+#stop { display: none }
+</style>
+
+<script nonce="{{ .Nonce }}">
+const form   = document.forms[0];
+const run    = document.querySelector('#run');
+const status = document.querySelector('#status');
+const stop   = document.querySelector('#stop');
+const table  = document.querySelector('table');
+const tbody  = document.querySelector('tbody');
+
+const reduce = (acc, cur) => ({ ...acc, [cur.value]: cur.label });
+const holes  = [...form.hole.options].reduce(reduce, {});
+const langs  = [...form.lang.options].reduce(reduce, {});
+
+const pass = document.createElement('span');
+pass.className = 'green';
+pass.innerText = 'PASS';
+
+const fail = document.createElement('span');
+fail.className = 'red';
+fail.innerText = 'FAIL';
+
+function make(tag, ...children) {
+    const node = document.createElement(tag);
+    node.append(...children);
+    return node;
+}
+
+stop.onclick = () => alert('TODO');
+
+form.onchange = () => history.replaceState(
+    '', '', '/admin?' + new URLSearchParams(new FormData(form)));
+
+form.onsubmit = async e => {
+    e.preventDefault();
+
+    const start = Date.now();
+    tbody.innerHTML = '';
+
+    const res = await fetch('/admin/solutions?' +
+        new URLSearchParams(new FormData(form)));
+
+    if (!res.ok) return;
+
+    run.style.display   = 'none';
+    stop.style.display  = 'block';
+    table.style.display = 'table';
+
+    let buffer     = '';
+    let failing   = 0;
+    let solutions = 0;
+
+    const decoder = new TextDecoder();
+    const reader  = res.body.getReader();
+    const append  = line => {
+        line = JSON.parse(line);
+
+        if (!line.pass) failing++;
+
+        status.innerText = (++solutions).toLocaleString('en') +
+            ` solutions (${failing} failing) in ` +
+            new Date(Date.now() - start).toISOString().substr(14, 8).replace(/^00:/, '');
+
+        tbody.append(
+            make(
+                'tr',
+                make('td', holes[line.hole]),
+                make('td', langs[line.lang]),
+                make('td', line.golfer),
+                make('td', Math.round(line.took / 1e6).toLocaleString('en') + 'ms'),
+                make('td', (line.pass ? pass : fail).cloneNode(true)),
+                make('td', line.failing ? 'failing' : ''),
+            ),
+        );
+    };
+
+    reader.read().then(function process({ done, value }) {
+        if (done) {
+            if (buffer)
+                append(buffer);
+
+            run.style.display  = 'block';
+            stop.style.display = 'none';
+
+            return;
+        }
+
+        const lines = (buffer += decoder.decode(value)).split(/\n(?=.)/);
+        buffer = lines.pop();
+        lines.forEach(append);
+
+        reader.read().then(process);
+    });
+};
+</script>

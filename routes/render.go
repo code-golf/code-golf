@@ -97,11 +97,13 @@ func render(
 	args := struct {
 		CommonCssPath, Login, LogInURL, Nonce, Path, Title string
 		Data                                               interface{}
+		Request                                            *http.Request
 	}{
 		CommonCssPath: commonCssPath,
 		Data:          data,
 		Nonce:         base64.StdEncoding.EncodeToString(nonce),
 		Path:          r.URL.Path,
+		Request:       r,
 		Title:         title,
 	}
 

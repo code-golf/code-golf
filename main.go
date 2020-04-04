@@ -8,6 +8,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/code-golf/code-golf/cookie"
 	"github.com/code-golf/code-golf/github"
 	"github.com/code-golf/code-golf/routes"
 	"github.com/go-chi/chi"
@@ -74,6 +75,23 @@ func main() {
 	r.Post("/solution", routes.Solution)
 	r.Get("/stats", routes.Stats)
 	r.Get("/users/{user}", routes.User)
+
+	r.Route("/admin", func(r chi.Router) {
+		// TODO Have previous middleware put Golfer into the context.
+		// TODO Have an admin boolean on said Golfer.
+		r.Use(func(next http.Handler) http.Handler {
+			return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				if _, login := cookie.Read(r); login == "JRaspass" {
+					next.ServeHTTP(w, r)
+				} else {
+					w.WriteHeader(http.StatusForbidden)
+				}
+			})
+		})
+
+		r.Get("/", routes.Admin)
+		r.Get("/solutions", routes.AdminSolutions)
+	})
 
 	certManager := autocert.Manager{
 		Cache:      autocert.DirCache("certs"),
