@@ -13,10 +13,10 @@ import (
 
 type solution struct {
 	code    string
-	Failing bool          `json:"failing"`
 	Golfer  string        `json:"golfer"`
 	HoleID  string        `json:"hole"`
 	LangID  string        `json:"lang"`
+	Failing bool          `json:"failing"`
 	Pass    bool          `json:"pass"`
 	Took    time.Duration `json:"took"`
 }
@@ -74,27 +74,28 @@ func AdminSolutions(w http.ResponseWriter, r *http.Request) {
 }
 
 func getSolutions(ctx context.Context, golfer, holeID, langID string) chan solution {
-	rows, err := ctx.Value("db").(*sql.DB).QueryContext(
-		ctx,
-		` SELECT code, failing, login, hole, lang
-		    FROM solutions
-		    JOIN users ON id = user_id
-		   WHERE (login = $1 OR $1 = '')
-		     AND (hole  = $2 OR $2 IS NULL)
-		     AND (lang  = $3 OR $3 IS NULL)
-		ORDER BY hole, lang, login`,
-		golfer,
-		sql.NullString{String: holeID, Valid: holeID != ""},
-		sql.NullString{String: langID, Valid: langID != ""},
-	)
-	if err != nil {
-		panic(err)
-	}
-
 	solutions := make(chan solution)
 
 	go func() {
 		defer close(solutions)
+
+		rows, err := ctx.Value("db").(*sql.DB).QueryContext(
+			ctx,
+			` SELECT code, failing, login, hole, lang
+				FROM solutions
+				JOIN users ON id = user_id
+			   WHERE (login = $1 OR $1 = '')
+				 AND (hole  = $2 OR $2 IS NULL)
+				 AND (lang  = $3 OR $3 IS NULL)
+			ORDER BY hole, lang, login`,
+			golfer,
+			sql.NullString{String: holeID, Valid: holeID != ""},
+			sql.NullString{String: langID, Valid: langID != ""},
+		)
+		if err != nil {
+			panic(err)
+		}
+
 		defer rows.Close()
 
 		for rows.Next() {
