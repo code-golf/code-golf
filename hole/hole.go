@@ -27,6 +27,8 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		score.Args, score.Answer = arabicToRoman(holeID == "roman-to-arabic")
 	case "brainfuck":
 		score.Args, score.Answer = brainfuck()
+	case "lucky-tickets":
+		score.Args, score.Answer = luckyTickets()
 	case "morse-decoder", "morse-encoder":
 		score.Args, score.Answer = morse(holeID == "morse-decoder")
 	case "ordinal-numbers":
