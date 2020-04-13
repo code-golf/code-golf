@@ -21,39 +21,46 @@ type Scorecard struct {
 	Took           time.Duration
 }
 
-func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
+func getAnswer(holeID, code string) ([]string, string) {
+	var answer string
+	var args []string
 	switch holeID {
 	case "arabic-to-roman", "roman-to-arabic":
-		score.Args, score.Answer = arabicToRoman(holeID == "roman-to-arabic")
+		args, answer = arabicToRoman(holeID == "roman-to-arabic")
 	case "brainfuck":
-		score.Args, score.Answer = brainfuck()
+		args, answer = brainfuck()
 	case "lucky-tickets":
-		score.Args, score.Answer = luckyTickets()
+		args, answer = luckyTickets()
 	case "morse-decoder", "morse-encoder":
-		score.Args, score.Answer = morse(holeID == "morse-decoder")
+		args, answer = morse(holeID == "morse-decoder")
 	case "ordinal-numbers":
-		score.Args, score.Answer = ordinalNumbers()
+		args, answer = ordinalNumbers()
 	case "pangram-grep":
-		score.Args, score.Answer = pangramGrep()
+		args, answer = pangramGrep()
 	case "poker":
-		score.Args, score.Answer = poker()
+		args, answer = poker()
 	case "quine":
-		score.Answer = code
+		answer = code
 	case "rock-paper-scissors-spock-lizard":
-		score.Args, score.Answer = rockPaperScissorsSpockLizard()
+		args, answer = rockPaperScissorsSpockLizard()
 	case "seven-segment":
-		score.Args, score.Answer = sevenSegment()
+		args, answer = sevenSegment()
 	case "spelling-numbers":
-		score.Args, score.Answer = spellingNumbers()
+		args, answer = spellingNumbers()
 	case "sudoku":
-		score.Args, score.Answer = sudoku()
+		args, answer = sudoku()
 	case "ten-pin-bowling":
-		score.Args, score.Answer = tenPinBowling()
+		args, answer = tenPinBowling()
 	case "united-states":
-		score.Args, score.Answer = unitedStates()
+		args, answer = unitedStates()
 	default:
-		score.Answer = answers[holeID]
+		answer = answers[holeID]
 	}
+	return args, answer
+}
+
+func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
+	score.Args, score.Answer = getAnswer(holeID, code)
 
 	var stderr, stdout bytes.Buffer
 
