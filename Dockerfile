@@ -17,7 +17,7 @@ COPY pretty             ./pretty/
 COPY routes             ./routes/
 
 RUN go build -ldflags -s \
- && gcc -Wall -Werror -Wextra -o run-lang -s -static run-lang.c
+ && gcc -Wall -Werror -Wextra -o /usr/bin/run-lang -s -static run-lang.c
 
 RUN mkdir /empty
 
@@ -76,7 +76,8 @@ COPY --from=0 /empty       /langs/rust/rootfs/tmp/
 COPY --from=0 /empty      /langs/swift/rootfs/proc/
 COPY --from=0 /empty      /langs/swift/rootfs/tmp/
 
-COPY --from=0 /go/code-golf /go/run-lang         /
+COPY --from=0 /go/code-golf                      /
+COPY --from=0 /usr/bin/run-lang                  /usr/bin/
 COPY          holes.toml                         /
 COPY --from=0 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY          views                              /views/
