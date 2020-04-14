@@ -23,6 +23,15 @@ cert:
 	@mkcert -install localhost
 	@chmod +r localhost-key.pem
 
+.PHONY: db
+db:
+	@ssh -t rancher@code-golf.io \
+	docker run -it --entrypoint psql --env-file /etc/code-golf.env --rm postgres
+
+db-admin:
+	@ssh -t rancher@code-golf.io \
+	docker run -it --entrypoint psql --env-file /etc/code-golf.env --rm postgres -WU doadmin
+
 deps:
 	@yay -S mkcert python-brotli python-fonttools
 
