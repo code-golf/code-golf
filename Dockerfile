@@ -27,6 +27,7 @@ FROM scratch
 COPY --from=codegolf/lang-bash       /       /langs/bash/rootfs/
 COPY --from=codegolf/lang-brainfuck  /  /langs/brainfuck/rootfs/
 COPY --from=codegolf/lang-c          /          /langs/c/rootfs/
+COPY --from=codegolf/lang-go         /         /langs/go/rootfs/
 COPY --from=codegolf/lang-haskell    /    /langs/haskell/rootfs/
 COPY --from=codegolf/lang-j          /          /langs/j/rootfs/
 COPY --from=codegolf/lang-javascript / /langs/javascript/rootfs/
@@ -48,6 +49,8 @@ COPY --from=0 /empty  /langs/brainfuck/rootfs/proc/
 COPY --from=0 /empty  /langs/brainfuck/rootfs/tmp/
 COPY --from=0 /empty          /langs/c/rootfs/proc/
 COPY --from=0 /empty          /langs/c/rootfs/tmp/
+COPY --from=0 /empty         /langs/go/rootfs/proc/
+COPY --from=0 /empty         /langs/go/rootfs/tmp/
 COPY --from=0 /empty    /langs/haskell/rootfs/proc/
 COPY --from=0 /empty    /langs/haskell/rootfs/tmp/
 COPY --from=0 /empty          /langs/j/rootfs/proc/

@@ -366,10 +366,12 @@ thead th {
     text-decoration: none;
 }
 
+/* When adding a new language, update grid-template-columns for #matrix below. */
 #matrix input,
 #matrix input.bash:not(:checked)       ~ .bash,
 #matrix input.brainfuck:not(:checked)  ~ .brainfuck,
 #matrix input.c:not(:checked)          ~ .c,
+#matrix input.go:not(:checked)         ~ .go,
 #matrix input.haskell:not(:checked)    ~ .haskell,
 #matrix input.j:not(:checked)          ~ .j,
 #matrix input.javascript:not(:checked) ~ .javascript,
@@ -414,7 +416,8 @@ thead th {
         max-width: 1280px;
     }
     #matrix {
-        grid-template-columns: 3fr repeat(17,1fr);
+        /* Increase this number when adding a language. */
+        grid-template-columns: 3fr repeat(18,1fr);
     }
     #matrix a {
         display: initial;

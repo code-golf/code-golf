@@ -1,0 +1,9 @@
+#!/bin/sh -e
+
+# Separate compile and link relies on environment variables less than "go run" does.
+# "go run" also doesn't support reading the file from stdin.
+cat - > /tmp/code.go
+/usr/local/go/bin/go tool compile -o /tmp/code.o /tmp/code.go
+/usr/local/go/bin/go tool link -o /tmp/code /tmp/code.o
+rm /tmp/code.go /tmp/code.o
+/tmp/code "$@"
