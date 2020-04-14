@@ -12,13 +12,14 @@ import (
 )
 
 type solution struct {
-	code    string
-	Golfer  string        `json:"golfer"`
-	HoleID  string        `json:"hole"`
-	LangID  string        `json:"lang"`
-	Failing bool          `json:"failing"`
-	Pass    bool          `json:"pass"`
-	Took    time.Duration `json:"took"`
+	code     string
+	Golfer   string        `json:"golfer"`
+	GolferID int           `json:"golfer_id"`
+	HoleID   string        `json:"hole"`
+	LangID   string        `json:"lang"`
+	Failing  bool          `json:"failing"`
+	Pass     bool          `json:"pass"`
+	Took     time.Duration `json:"took"`
 }
 
 // Admin serves GET /admin
@@ -81,7 +82,7 @@ func getSolutions(ctx context.Context, golfer, holeID, langID string) chan solut
 
 		rows, err := ctx.Value("db").(*sql.DB).QueryContext(
 			ctx,
-			` SELECT code, failing, login, hole, lang
+			` SELECT code, failing, login, id, hole, lang
 				FROM solutions
 				JOIN users ON id = user_id
 			   WHERE (login = $1 OR $1 = '')
@@ -105,6 +106,7 @@ func getSolutions(ctx context.Context, golfer, holeID, langID string) chan solut
 				&s.code,
 				&s.Failing,
 				&s.Golfer,
+				&s.GolferID,
 				&s.HoleID,
 				&s.LangID,
 			); err != nil {

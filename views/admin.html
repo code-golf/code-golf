@@ -151,7 +151,7 @@ form.onsubmit = async e => {
                 'tr',
                 make('td', holes[line.hole]),
                 make('td', langs[line.lang]),
-                make('td', line.golfer),
+                make('td', `${line.golfer} (${line.golfer_id})`),
                 make('td', Math.round(line.took / 1e6).toLocaleString('en') + 'ms'),
                 make('td', (line.pass ? pass : fail).cloneNode(true)),
                 make('td', line.failing ? 'failing' : ''),
