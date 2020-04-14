@@ -27,7 +27,6 @@ deps:
 	@yay -S mkcert python-brotli python-fonttools
 
 dev:
-	@gcc -Wall -Werror -Wextra -o run-lang run-lang.c
 	@docker-compose rm -f
 	@docker-compose up --build
 

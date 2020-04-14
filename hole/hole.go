@@ -62,7 +62,7 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	ctx, cancel := context.WithTimeout(ctx, timeout)
 	defer cancel()
 
-	cmd := exec.CommandContext(ctx, "../../run-lang")
+	cmd := exec.CommandContext(ctx, "/usr/bin/run-lang")
 	cmd.Dir = "langs/" + langID
 	cmd.Stderr = &stderr
 	cmd.Stdin = strings.NewReader(code)
