@@ -6,13 +6,13 @@ require (
 	github.com/BurntSushi/toml v0.3.1
 	github.com/SeerUK/assert v1.0.0
 	github.com/buildkite/terminal v3.2.0+incompatible
-	github.com/go-chi/chi v4.0.3+incompatible
+	github.com/go-chi/chi v4.1.0+incompatible
 	github.com/gorilla/feeds v1.1.1
 	github.com/kr/pretty v0.2.0 // indirect
 	github.com/lib/pq v1.3.0
 	github.com/pmezard/go-difflib v1.0.0
-	golang.org/x/crypto v0.0.0-20200320181102-891825fb96df
-	golang.org/x/net v0.0.0-20200320220750-118fecf932d8 // indirect
+	golang.org/x/crypto v0.0.0-20200406173513-056763e48d71
+	golang.org/x/net v0.0.0-20200324143707-d3edc9973b7e // indirect
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
 	golang.org/x/text v0.3.2 // indirect
 )
