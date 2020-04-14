@@ -4,7 +4,7 @@ CREATE TYPE hole AS ENUM (
     '12-days-of-christmas', '99-bottles-of-beer', 'abundant-numbers',
     'arabic-to-roman', 'brainfuck', 'christmas-trees', 'cubes', 'diamonds',
     'divisors', 'emirp-numbers', 'evil-numbers', 'fibonacci', 'fizz-buzz',
-    'happy-numbers', 'leap-years', 'morse-decoder', 'morse-encoder',
+    'happy-numbers', 'leap-years', 'lucky-tickets', 'morse-decoder', 'morse-encoder',
     'niven-numbers', 'odious-numbers', 'ordinal-numbers', 'pangram-grep',
     'pascals-triangle', 'pernicious-numbers', 'poker', 'prime-numbers',
     'quine', 'rock-paper-scissors-spock-lizard', 'roman-to-arabic',
