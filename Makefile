@@ -93,6 +93,9 @@ live:
 	    --volume       certs:/certs       \
 	    codegolf/code-golf"
 
+logs:
+	@ssh rancher@code-golf.io docker logs -f code-golf
+
 test:
 # FIXME Stub out assets if it doesn't yet exist.
 ifeq ($(wildcard routes/assets.go),)
