@@ -10,17 +10,15 @@ import (
 
 	"github.com/code-golf/code-golf/cookie"
 	"github.com/code-golf/code-golf/github"
+	"github.com/code-golf/code-golf/middleware"
 	"github.com/code-golf/code-golf/routes"
 	"github.com/go-chi/chi"
-	"github.com/go-chi/chi/middleware"
 	_ "github.com/lib/pq"
 	"golang.org/x/crypto/acme/autocert"
 )
 
 func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
-
-	_, dev := syscall.Getenv("DEV")
 
 	db, err := sql.Open("postgres", "")
 	if err != nil {
@@ -31,29 +29,10 @@ func main() {
 
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
+	r.Use(middleware.RedirectHost)
 	r.Use(middleware.RedirectSlashes)
 	r.Use(middleware.Compress(5))
 	r.Use(middleware.WithValue("db", db))
-
-	host := "code-golf.io"
-	if dev {
-		host = "localhost"
-	}
-	redirDomain := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		url := "https://" + host + r.RequestURI
-		http.Redirect(w, r, url, http.StatusPermanentRedirect)
-	})
-
-	// Redirect www (or any incorrect domain) to apex.
-	r.Use(func(next http.Handler) http.Handler {
-		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			if r.Host == host {
-				next.ServeHTTP(w, r)
-			} else {
-				redirDomain.ServeHTTP(w, r)
-			}
-		})
-	})
 
 	r.NotFound(routes.NotFound)
 
@@ -116,7 +95,7 @@ func main() {
 	}
 
 	var crt, key string
-	if dev {
+	if _, dev := syscall.Getenv("DEV"); dev {
 		crt = "localhost.pem"
 		key = "localhost-key.pem"
 	} else {
@@ -138,7 +117,7 @@ func main() {
 
 	// Redirect HTTP to HTTPS and handle ACME challenges.
 	go func() {
-		panic(http.ListenAndServe(":1080", certManager.HTTPHandler(redirDomain)))
+		panic(http.ListenAndServe(":1080", certManager.HTTPHandler(nil)))
 	}()
 
 	// Serve HTTPS.

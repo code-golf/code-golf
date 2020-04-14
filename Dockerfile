@@ -12,6 +12,7 @@ COPY main.go run-lang.c ./
 COPY cookie             ./cookie/
 COPY github             ./github/
 COPY hole               ./hole/
+COPY middleware         ./middleware/
 COPY pie                ./pie/
 COPY pretty             ./pretty/
 COPY routes             ./routes/

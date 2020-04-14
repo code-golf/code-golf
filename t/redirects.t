@@ -3,18 +3,9 @@ use Test2::V0;
 
 use constant PATH => '/foo?bar=baz';
 
-my $ua = HTTP::Tiny->new( max_redirect => 0 );
+my $ua = HTTP::Tiny->new;
 
-for (qw(
-          http://64.227.38.124
-         http://code-golf.io
-     http://www.code-golf.io
-    https://www.code-golf.io
-)) {
-    like $ua->get( $_ . PATH ) => {
-        headers => { location => 'https://code-golf.io' . PATH },
-        status  => 308,
-    } => $_;
-}
+is $ua->get( $_ . PATH )->{url}, 'https://code-golf.io' . PATH, $_
+    for <http{,s}://{,www.}code-golf.io>;
 
 done_testing;
