@@ -11,6 +11,7 @@ declare -A urls=(
     ["Bash"]="//www.gnu.org/software/bash/"
     ["Brainfuck"]="//github.com/code-golf/code-golf/tree/master/langs/brainfuck/"
     ["C"]="//bellard.org/tcc/"
+    ["Go"]="//golang.org"
     ["Haskell"]="//www.haskell.org/ghc/"
     ["J"]="http://jsoftware.com"
     ["JavaScript"]="//v8.dev"
@@ -64,6 +65,8 @@ for name in "${sorted_names[@]}"; do
     ver=${ver#The Glorious }
     ver=${ver#This is }
     ver=${ver#rustc }
+    ver=${ver/go version go/}
+    ver=${ver/ linux\/amd64/}
     ver=${ver/ation/er}
     ver=${ver/built /}
     ver=${ver/System, /}

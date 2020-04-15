@@ -7,6 +7,10 @@ constant @langs = (
     'http://download.savannah.gnu.org/releases/tinycc/?C=M&O=D',
     / 'tcc-' (<[\d.]>+) '.tar.bz2' /,
 
+    'Go',
+    'https://golang.org/project/',
+    / 'var goVersion = "go' (<[\d.]>+) '"' /,
+
     'Haskell',
     'https://www.haskell.org/ghc/download.html',
     / 'download_ghc' .+? ">" (<[\d.]>+) /,
