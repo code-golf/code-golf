@@ -38,7 +38,7 @@ onload = () => {
     // Lock the editor's height in so we scroll.
     editor.style.height = `${editor.offsetHeight}px`;
 
-    const cm = new CodeMirror(editor, {autofocus: true, lineNumbers: true, lineWrapping: true});
+    const cm = new CodeMirror(editor, {autofocus: true, lineNumbers: true, lineWrapping: true, smartIndent: false});
 
     cm.on('change', () => {
         const val = cm.getValue();
