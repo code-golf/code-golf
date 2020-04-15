@@ -50,7 +50,7 @@ onload = () => {
         document.cookie = 'hide-details=' + (details.open ? ';Max-Age=0' : '');
 
     (onhashchange = () => {
-        lang = location.hash.slice(1);
+        lang = location.hash.slice(1) || localStorage.getItem('lang');
 
         // Kick 'em to Python if we don't know the chosen language.
         if (!langs.find(l => l.id == lang))
@@ -59,7 +59,7 @@ onload = () => {
         cm.setOption('mode', {name: lang == 'c' ? 'clike' : lang, startOpen: true});
         cm.setValue(lang in solutions ? solutions[lang] : '');
 
-        document.querySelectorAll('#header a').forEach(a => a.hash = lang);
+        localStorage.setItem('lang', lang);
 
         refreshScores();
     })();
