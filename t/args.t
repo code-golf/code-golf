@@ -32,6 +32,12 @@ c
 #include <stdio.h>
 i; main(int n, char **a) { while(++i < n) puts(a[i]); }
 
+go
+package main
+import "fmt"
+import "os"
+func main() { for _, a := range os.Args[1:] { fmt.Println(a) } }
+
 javascript
 arguments.forEach(a => print(a))
 
