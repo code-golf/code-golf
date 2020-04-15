@@ -59,7 +59,7 @@ onload = () => {
         cm.setOption('mode', {name: lang == 'c' ? 'clike' : lang, startOpen: true});
         cm.setValue(lang in solutions ? solutions[lang] : '');
 
-        localStorage.setItem('lang', lang);
+        localStorage.setItem('lang', location.hash = lang);
 
         refreshScores();
     })();
