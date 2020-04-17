@@ -54,8 +54,16 @@ RUN mkdir /empty
 
 FROM scratch
 
-COPY --from=0 /fortran/                /fortran/
-COPY --from=0 /usr/                    /usr/
+COPY --from=0 /fortran/bin/            /fortran/bin/
+COPY --from=0 /fortran/libexec/gcc/x86_64-pc-linux-musl/9.3.0/f951                   \
+              /fortran/libexec/gcc/x86_64-pc-linux-musl/9.3.0/liblto_plugin.la       \
+              /fortran/libexec/gcc/x86_64-pc-linux-musl/9.3.0/liblto_plugin.so       \
+              /fortran/libexec/gcc/x86_64-pc-linux-musl/9.3.0/liblto_plugin.so.0     \
+              /fortran/libexec/gcc/x86_64-pc-linux-musl/9.3.0/liblto_plugin.so.0.0.0 /fortran/libexec/gcc/x86_64-pc-linux-musl/9.3.0/
+COPY --from=0 /fortran/lib/            /fortran/lib/
+COPY --from=0 /fortran/lib64/          /fortran/lib64/
+COPY --from=0 /usr/bin/                /usr/bin/
+COPY --from=0 /usr/lib/                /usr/lib/
 COPY --from=0 /bin/cat                 \
               /bin/sh                  \
               /bin/rm                  /bin/
