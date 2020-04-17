@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+export PATH
+cat - > /tmp/code.f90
+/fortran/bin/gfortran /tmp/code.f90 -o /tmp/code
+rm /tmp/code.f90
+shift
+/tmp/code "$@"

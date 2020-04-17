@@ -1,0 +1,68 @@
+FROM alpine:3.11 as builder
+
+RUN apk add --no-cache curl g++ libexecinfo-dev \
+    linux-headers m4 make patch tar xz
+
+WORKDIR /src
+
+RUN curl -L ftp://ftp.gnu.org/gnu/gcc/gcc-9.3.0/gcc-9.3.0.tar.gz | tar xzf -
+RUN curl -L ftp://gcc.gnu.org/pub/gcc/infrastructure/gmp-4.3.2.tar.bz2 | tar xjf -
+RUN curl -L ftp://gcc.gnu.org/pub/gcc/infrastructure/mpfr-2.4.2.tar.bz2 | tar xjf -
+RUN curl -L ftp://gcc.gnu.org/pub/gcc/infrastructure/mpc-0.8.1.tar.gz | tar xzf -
+
+WORKDIR /src/gmp-4.3.2
+
+RUN ./configure --disable-shared --enable-static --prefix=/tmp/gcc
+RUN make
+RUN make install
+
+WORKDIR /src/mpfr-2.4.2
+
+RUN ./configure --disable-shared --enable-static --prefix=/tmp/gcc --with-gmp=/tmp/gcc
+RUN make
+RUN make install
+
+WORKDIR /src/mpc-0.8.1
+
+RUN ./configure --disable-shared --enable-static --prefix=/tmp/gcc --with-gmp=/tmp/gcc --with-mpfr=/tmp/gcc
+RUN make
+RUN make install
+
+WORKDIR /scratch
+
+RUN /src/gcc-9.3.0/configure \
+  --disable-shared           \
+  --disable-bootstrap        \
+  --disable-libstdcxx-pch    \
+  --disable-multilib         \
+  --enable-languages=fortran \
+  --enable-libgomp           \
+  --enable-lto               \
+  --enable-static            \
+  --enable-threads=posix     \
+  --enable-tls               \
+  --with-gmp=/tmp/gcc        \
+  --with-mpfr=/tmp/gcc       \
+  --with-mpc=/tmp/gcc        \
+  --with-fpmath=sse          \
+  --prefix=/fortran
+
+RUN make
+RUN make install
+
+RUN mkdir /empty
+
+FROM scratch
+
+COPY --from=0 /fortran/                /fortran/
+COPY --from=0 /usr/                    /usr/
+COPY --from=0 /bin/cat                 \
+              /bin/sh                  \
+              /bin/rm                  /bin/
+COPY --from=0 /lib/ld-musl-x86_64.so.1 \
+              /lib/libz.so.1           /lib/
+COPY --from=0 /empty                   /tmp/
+
+COPY fortran                           /usr/bin/
+
+ENTRYPOINT ["/fortran/bin/gfortran", "--version"]
