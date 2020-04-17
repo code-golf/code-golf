@@ -4,6 +4,7 @@ const versionTable = "" +
 	"<tr><th class=bash>Bash<td>5.0.16<td class=wide><a href=//www.gnu.org/software/bash/>website</a>" +
 	"<tr><th class=brainfuck>Brainfuck<td>1.0.0<td class=wide><a href=//github.com/code-golf/code-golf/tree/master/langs/brainfuck/>website</a>" +
 	"<tr><th class=c>C<td>Tiny C Compiler 0.9.27<td class=wide><a href=//bellard.org/tcc/>website</a>" +
+	"<tr><th class=fortran>Fortran<td>9.3.0<td class=wide><a href=https://gcc.gnu.org/fortran/>website</a>" +
 	"<tr><th class=go>Go<td>1.14.2<td class=wide><a href=//golang.org>website</a>" +
 	"<tr><th class=haskell>Haskell<td>Glasgow Haskell Compiler 8.6.5<td class=wide><a href=//www.haskell.org/ghc/>website</a>" +
 	"<tr><th class=j>J<td>8.07.07<td class=wide><a href=http://jsoftware.com>website</a>" +

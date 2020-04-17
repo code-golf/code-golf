@@ -12,8 +12,9 @@ declare -A urls=(
     ["Brainfuck"]="//github.com/code-golf/code-golf/tree/master/langs/brainfuck/"
     ["C"]="//bellard.org/tcc/"
     ["Go"]="//golang.org"
+    ["Fortran"]="//gcc.gnu.org/fortran/"
     ["Haskell"]="//www.haskell.org/ghc/"
-    ["J"]="http://jsoftware.com"
+    ["J"]="//www.jsoftware.com"
     ["JavaScript"]="//v8.dev"
     ["Julia"]="//julialang.org"
     ["Lisp"]="//clisp.sourceforge.io"
@@ -67,6 +68,7 @@ for name in "${sorted_names[@]}"; do
     ver=${ver#rustc }
     ver=${ver/go version go/}
     ver=${ver/ linux\/amd64/}
+    ver=${ver/GNU Fortran \(GCC\) /}
     ver=${ver/ation/er}
     ver=${ver/built /}
     ver=${ver/System, /}
@@ -77,6 +79,7 @@ for name in "${sorted_names[@]}"; do
     ver=${ver% d8> }
     ver=${ver%  Copyright (C) 1994-2019 Lua.org, PUC-Rio}
     ver=${ver/ (*/}
+    ver=${ver/ Copyright/}
 
     html+="+
         \"<tr><th class=$lang>$name<td>$ver<td class=wide><a href=${urls[$name]}>website</a>\""

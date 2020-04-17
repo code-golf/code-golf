@@ -14,7 +14,7 @@ CREATE TYPE hole AS ENUM (
 );
 
 CREATE TYPE lang AS ENUM (
-    'bash', 'brainfuck', 'c', 'go', 'haskell', 'j', 'javascript', 'julia', 'lisp',
+    'bash', 'brainfuck', 'c', 'fortran', 'go', 'haskell', 'j', 'javascript', 'julia', 'lisp',
     'lua', 'nim', 'perl', 'php', 'python', 'raku', 'ruby', 'rust', 'swift'
 );
 

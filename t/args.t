@@ -22,15 +22,26 @@ for ( map [ split /\n/, $_, 2 ], <DATA> ) {
 
 done_testing;
 
-# lua, python, rust, and swift all have - as the first arg :-(
+# haskell, lua, python, rust, and swift all have - as the first arg :-(
 # https://rosettacode.org/wiki/Command-line_arguments
 __DATA__
 bash
 for a; do echo $a; done
 
+brainfuck
+++++++++++>,[[.,]<.>,]
+
 c
 #include <stdio.h>
 i; main(int n, char **a) { while(++i < n) puts(a[i]); }
+
+fortran
+character(10)::a
+do i=1,iargc()
+call getarg(i,a)
+write(*,'(a)')a
+enddo
+end
 
 go
 package main
@@ -38,11 +49,20 @@ import "fmt"
 import "os"
 func main() { for _, a := range os.Args[1:] { fmt.Println(a) } }
 
+haskell
+import System.Environment;main=do x<-getArgs;mapM putStrLn$drop 1 x
+
+j
+echo>2}.ARGV
+
 javascript
 arguments.forEach(a => print(a))
 
 julia
 for a in ARGS; println(a); end
+
+lisp
+(dolist(x *args*)(format t "~A~&" x))
 
 lua
 for i=1, #arg do
