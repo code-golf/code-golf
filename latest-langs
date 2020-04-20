@@ -19,6 +19,11 @@ constant @langs = (
     'https://www.haskell.org/ghc/download.html',
     / 'download_ghc' .+? ">" (<[\d.]>+) /,
 
+    'Java',
+    # Note: need to manually change the number in this url for major releases.
+    'https://raw.githubusercontent.com/AdoptOpenJDK/openjdk-docker/master/14/jdk/alpine/Dockerfile.hotspot.releases.slim',
+    / 'ENV JAVA_VERSION jdk-' (<[\d+.]>+) /,
+
     'Julia',
     'https://julialang.org/downloads/',
     / 'stable release: v' (<[\d.]>+) /,
@@ -59,13 +64,15 @@ constant @langs = (
 constant $len = @langs[0, 3 … *]».chars.max;
 
 my %current = (get('https://code-golf.io/about') ~~ m:g/
-    '<tr><th' .+? '>' (.+?) '<' .*? (<[\d.]> ** 2..*)
+    '<tr><th' .+? '>' (.+?) '<' .*? (<[\d+.]> ** 2..*)
 /)».list.flat».Str.Hash;
 
 for @langs -> $lang, $url, $re {
     my $ver = get($url) ~~ $re ?? ~$0 !! '';
-
-    printf " %*s %s\n", $len, $lang, $ver if $ver ne %current{$lang};
+    my $current = %current{$lang};
+    if $ver ne $current && "$ver.0" ne $current {
+        printf " %*s %s\n", $len, $lang, $ver;
+    }
 }
 
 sub get ($url) {

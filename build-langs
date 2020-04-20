@@ -15,6 +15,7 @@ declare -A urls=(
     ["Fortran"]="//gcc.gnu.org/fortran/"
     ["Haskell"]="//www.haskell.org/ghc/"
     ["J"]="//www.jsoftware.com"
+    ["Java"]="//openjdk.java.net/"
     ["JavaScript"]="//v8.dev"
     ["Julia"]="//julialang.org"
     ["Lisp"]="//clisp.sourceforge.io"
@@ -78,6 +79,8 @@ for name in "${sorted_names[@]}"; do
     ver=${ver%.}
     ver=${ver% d8> }
     ver=${ver%  Copyright (C) 1994-2019 Lua.org, PUC-Rio}
+    ver=${ver/) OpenJDK*/}
+    ver=${ver/*AdoptOpenJDK (build /}
     ver=${ver/ (*/}
     ver=${ver/ Copyright/}
 

@@ -31,6 +31,7 @@ var langs = []Lang{
 	{"go", "Go"},
 	{"haskell", "Haskell"},
 	{"j", "J"},
+	{"java", "Java"},
 	{"javascript", "JavaScript"},
 	{"julia", "Julia"},
 	{"lisp", "Lisp"},

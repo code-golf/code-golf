@@ -55,6 +55,9 @@ import System.Environment;main=do x<-getArgs;mapM putStrLn$drop 1 x
 j
 echo>2}.ARGV
 
+java
+class A{public static void main(String[] args){for (var s:args){System.out.println(s);}}}
+
 javascript
 arguments.forEach(a => print(a))
 
