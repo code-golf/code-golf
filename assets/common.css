@@ -375,6 +375,7 @@ thead th {
 #matrix input.go:not(:checked)         ~ .go,
 #matrix input.haskell:not(:checked)    ~ .haskell,
 #matrix input.j:not(:checked)          ~ .j,
+#matrix input.java:not(:checked)       ~ .java,
 #matrix input.javascript:not(:checked) ~ .javascript,
 #matrix input.julia:not(:checked)      ~ .julia,
 #matrix input.lisp:not(:checked)       ~ .lisp,
@@ -418,7 +419,7 @@ thead th {
     }
     #matrix {
         /* Increase this number when adding a language. */
-        grid-template-columns: 3fr repeat(19,1fr);
+        grid-template-columns: 3fr repeat(20,1fr);
     }
     #matrix a {
         display: initial;

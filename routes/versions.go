@@ -8,6 +8,7 @@ const versionTable = "" +
 	"<tr><th class=go>Go<td>1.14.2<td class=wide><a href=//golang.org>website</a>" +
 	"<tr><th class=haskell>Haskell<td>Glasgow Haskell Compiler 8.6.5<td class=wide><a href=//www.haskell.org/ghc/>website</a>" +
 	"<tr><th class=j>J<td>8.07.07<td class=wide><a href=//www.jsoftware.com>website</a>" +
+	"<tr><th class=java>Java<td>14+36<td class=wide><a href=//openjdk.java.net/>website</a>" +
 	"<tr><th class=javascript>JavaScript<td>V8 7.4.51<td class=wide><a href=//v8.dev>website</a>" +
 	"<tr><th class=julia>Julia<td>1.4.1<td class=wide><a href=//julialang.org>website</a>" +
 	"<tr><th class=lisp>Lisp<td>GNU CLISP 2.49.92<td class=wide><a href=//clisp.sourceforge.io>website</a>" +
