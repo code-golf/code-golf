@@ -1,11 +1,6 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: https://codemirror.net/LICENSE
 
-(function(mod) {
-    mod(CodeMirror);
-})(function(CodeMirror) {
-"use strict";
-
 CodeMirror.defineMode("fortran", function() {
   function words(array) {
     var keys = {};
@@ -176,5 +171,4 @@ CodeMirror.defineMode("fortran", function() {
       return style;
     }
   };
-});
 });
