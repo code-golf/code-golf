@@ -29,8 +29,9 @@ $ ./build-assets
 ```
 
 4. Build the languages:
+Using the pull option pulls images from Docker Hub, instead of building them locally, which saves a large amount of time (possibly hours).
 ```
-$ ./build-langs
+$ ./build-langs --pull
 ```
 
 5. Bring up the website:
