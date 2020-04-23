@@ -38,7 +38,14 @@ $ ./build-langs
 $ make dev
 ```
 
-6. Navigate to https://localhost
+6. Optionally, load information from the code-golf.io database.
+```
+pip install -r utils/requirements.txt
+utils/update_sql_from_api.py
+```
+
+7. Navigate to https://localhost
+
 
 ## Testing
 
