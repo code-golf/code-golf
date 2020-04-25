@@ -171,3 +171,5 @@ CodeMirror.defineMode("go", function(config) {
     lineComment: "//"
   };
 });
+
+CodeMirror.defineMIME("text/x-go", "go");

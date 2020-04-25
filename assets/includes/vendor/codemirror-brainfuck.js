@@ -73,3 +73,5 @@
       }
     };
   });
+
+CodeMirror.defineMIME("text/x-brainfuck", "brainfuck");

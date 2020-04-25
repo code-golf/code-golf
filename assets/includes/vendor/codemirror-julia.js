@@ -1,11 +1,6 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: https://codemirror.net/LICENSE
 
-(function(mod) {
-    mod(CodeMirror);
-})(function(CodeMirror) {
-"use strict";
-
 CodeMirror.defineMode("julia", function(config, parserConf) {
   function wordRegexp(words, end) {
     if (typeof end === "undefined") { end = "\\b"; }
@@ -413,4 +408,5 @@ CodeMirror.defineMode("julia", function(config, parserConf) {
   };
   return external;
 });
-});
+
+CodeMirror.defineMIME("text/x-julia", "julia");

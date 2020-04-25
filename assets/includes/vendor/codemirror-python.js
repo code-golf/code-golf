@@ -379,4 +379,6 @@
     };
     return external;
   });
+
+  CodeMirror.defineMIME("text/x-python", "python");
 });

@@ -690,3 +690,5 @@ CodeMirror.StringStream.prototype.eatSuffix=function(c){
 		this.pos=y;
 	else
 		this.pos=x;};
+
+CodeMirror.defineMIME("text/x-raku", "raku");

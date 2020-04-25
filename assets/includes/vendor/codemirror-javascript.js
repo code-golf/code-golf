@@ -1,11 +1,6 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: https://codemirror.net/LICENSE
 
-(function(mod) {
-    mod(CodeMirror);
-})(function(CodeMirror) {
-"use strict";
-
 CodeMirror.defineMode("javascript", function(config, parserConfig) {
   var indentUnit = config.indentUnit;
   var statementIndent = parserConfig.statementIndent;
@@ -910,5 +905,4 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
 });
 
 CodeMirror.registerHelper("wordChars", "javascript", /[\w$]/);
-
-});
+CodeMirror.defineMIME("text/x-javascript", "javascript");

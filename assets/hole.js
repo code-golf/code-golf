@@ -58,11 +58,7 @@ onload = () => {
         if (!langs.find(l => l.id == lang))
             location.hash = lang = 'python';
 
-        if (lang == 'c' || lang == 'java')
-            cm.setOption('mode', {name: 'text/x-' + lang, startOpen: true});
-        else
-            cm.setOption('mode', {name: lang, startOpen: true});
-
+        cm.setOption('mode', {name: 'text/x-' + lang, startOpen: true});
         cm.setValue(lang in solutions ? solutions[lang] : '');
 
         localStorage.setItem('lang', location.hash = lang);

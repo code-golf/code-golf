@@ -370,3 +370,5 @@ CodeMirror.defineMode("nim", function(conf, parserConf) {
 
   return external;
 });
+
+CodeMirror.defineMIME("text/x-nim", "nim");

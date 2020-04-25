@@ -133,3 +133,5 @@ CodeMirror.defineMode('bash', function() {
     fold: "brace"
   };
 });
+
+CodeMirror.defineMIME('text/x-bash', 'bash');

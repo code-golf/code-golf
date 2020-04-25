@@ -55,3 +55,5 @@ CodeMirror.defineSimpleMode("rust",{
     fold: "brace"
   }
 });
+
+CodeMirror.defineMIME("text/x-rust", "rust");
