@@ -2,6 +2,11 @@
 
 use Cro::HTTP::Client;
 
+# For C# and F#, see:
+# https://hub.docker.com/_/microsoft-dotnet-core-sdk/
+# https://mcr.microsoft.com/v2/dotnet/core/sdk/tags/list
+# The version string from code-golf contains the SDK version.
+
 constant @langs = (
     'C',
     'http://download.savannah.gnu.org/releases/tinycc/?C=M&O=D',

@@ -11,8 +11,10 @@ declare -A urls=(
     ["Bash"]="//www.gnu.org/software/bash/"
     ["Brainfuck"]="//github.com/code-golf/code-golf/tree/master/langs/brainfuck/"
     ["C"]="//bellard.org/tcc/"
-    ["Go"]="//golang.org"
+    ["CSharp"]="//docs.microsoft.com/en-us/dotnet/csharp/"
     ["Fortran"]="//gcc.gnu.org/fortran/"
+    ["FSharp"]="//fsharp.org/"
+    ["Go"]="//golang.org"
     ["Haskell"]="//www.haskell.org/ghc/"
     ["J"]="//www.jsoftware.com"
     ["Java"]="//openjdk.java.net"
@@ -83,11 +85,14 @@ for name in "${sorted_names[@]}"; do
     ver=${ver%  Copyright (C) 1994-2019 Lua.org, PUC-Rio}
     ver=${ver/) OpenJDK*/}
     ver=${ver/*AdoptOpenJDK (build /}
+    ver=${ver/Microsoft (R) /}
     ver=${ver/ (*/}
     ver=${ver/ Copyright/}
 
+    display=${name/Sharp/#}    
+
     html+="+
-        \"<tr><th class=$lang>$name<td>$ver<td class=wide><a href=${urls[$name]}>website</a>\""
+        \"<tr><th class=$lang>$display<td>$ver<td class=wide><a href=${urls[$name]}>website</a>\""
 
     id=`docker create $img`
 

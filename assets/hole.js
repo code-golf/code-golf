@@ -13,6 +13,7 @@
 /* include vendor/codemirror-julia.js      */
 /* include vendor/codemirror-lisp.js       */
 /* include vendor/codemirror-lua.js        */
+/* include vendor/codemirror-mllike.js     */
 /* include vendor/codemirror-nim.js        */
 /* include vendor/codemirror-perl.js       */
 /* include vendor/codemirror-php.js        */
