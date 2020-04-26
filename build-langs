@@ -47,10 +47,12 @@ for name in "${sorted_names[@]}"; do
 
     img=codegolf/lang-$lang
 
+    if [ $lang != ruby ]; then
     # Tag the builder stage so "docker system prune" won't remove it.
     docker build --target builder -t $img-builder $lang
 
     docker build -t $img $lang
+    fi
 
     if [ $lang = j ]; then
         ver=`echo echo JLIB | docker run --rm --tmpfs /tmp -i $img`
