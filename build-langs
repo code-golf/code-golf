@@ -1,5 +1,7 @@
-#!/usr/bin/env bash -e
+#!/usr/bin/env bash
 # The optional --pull command line argument pulls images from Docker Hub, instead of building them locally.
+
+set -e
 
 if [ -z "${BASH_VERSINFO}" ] \
         || [ -z "${BASH_VERSINFO[0]}" ] \
