@@ -2,7 +2,7 @@
 
 export PATH
 cat - > /tmp/code.f90
-/fortran/bin/gfortran -fbackslash -ffree-line-length-0 /tmp/code.f90 -o /tmp/code
+/fortran/bin/gfortran -fbackslash /tmp/code.f90 -o /tmp/code
 rm /tmp/code.f90
 shift
 /tmp/code "$@"
