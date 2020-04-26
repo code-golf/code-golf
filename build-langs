@@ -8,6 +8,8 @@ if [ -z "${BASH_VERSINFO}" ] \
     exit 1
 fi
 
+cd "$(dirname "${BASH_SOURCE[0]}")"
+
 declare -A urls=(
     ["Bash"]="//www.gnu.org/software/bash/"
     ["Brainfuck"]="//github.com/code-golf/code-golf/tree/master/langs/brainfuck/"
