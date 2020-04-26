@@ -213,4 +213,6 @@
       closeBrackets: "()[]{}''\"\"``"
     }
   })
+
+  CodeMirror.defineMIME("text/x-swift", "swift")
 });

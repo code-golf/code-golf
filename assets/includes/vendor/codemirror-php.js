@@ -222,4 +222,6 @@
       innerMode: function(state) { return {state: state.curState, mode: state.curMode}; }
     };
   }, "htmlmixed", "clike");
+
+  CodeMirror.defineMIME("text/x-php", phpConfig);
 });

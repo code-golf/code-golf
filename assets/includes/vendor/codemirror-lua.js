@@ -5,11 +5,6 @@
 // CodeMirror 1 mode.
 // highlights keywords, strings, comments (no leveling supported! ("[==[")), tokens, basic indenting
 
-(function(mod) {
-    mod(CodeMirror);
-})(function(CodeMirror) {
-"use strict";
-
 CodeMirror.defineMode("lua", function(config, parserConfig) {
   var indentUnit = config.indentUnit;
 
@@ -148,4 +143,5 @@ CodeMirror.defineMode("lua", function(config, parserConfig) {
     blockCommentEnd: "]]"
   };
 });
-});
+
+CodeMirror.defineMIME("text/x-lua", "lua");

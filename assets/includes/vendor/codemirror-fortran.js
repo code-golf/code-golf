@@ -172,3 +172,5 @@ CodeMirror.defineMode("fortran", function() {
     }
   };
 });
+
+CodeMirror.defineMIME("text/x-fortran", "fortran");

@@ -1,11 +1,6 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: https://codemirror.net/LICENSE
 
-(function(mod) {
-    mod(CodeMirror);
-})(function(CodeMirror) {
-"use strict";
-
 CodeMirror.defineMode("lisp", function (config) {
   var specialForm = /^(block|let*|return-from|catch|load-time-value|setq|eval-when|locally|symbol-macrolet|flet|macrolet|tagbody|function|multiple-value-call|the|go|multiple-value-prog1|throw|if|progn|unwind-protect|labels|progv|let|quote)$/;
   var assumeBody = /^with|^def|^do|^prog|case$|^cond$|bind$|when$|unless$/;
@@ -113,4 +108,5 @@ CodeMirror.defineMode("lisp", function (config) {
     blockCommentEnd: "|#"
   };
 });
-});
+
+CodeMirror.defineMIME("text/x-lisp", "lisp");
