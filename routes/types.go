@@ -48,6 +48,11 @@ var langs = []Lang{
 
 var trophies = []Trophy{
 	{
+		"caffeinated",
+		"Caffeinated",
+		"Solve the same hole in both Java and JavaScript.",
+	},
+	{
 		"elephpant-in-the-room",
 		"ElePHPant in the Room",
 		"Solve any hole in PHP.",

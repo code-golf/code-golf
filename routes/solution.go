@@ -121,6 +121,20 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			if in.Hole == "brainfuck" {
 				awardTrophy(db, userID, "inception")
 			}
+		case "java", "javascript":
+			if queryBool(
+				db,
+				`SELECT COUNT(*) = 2
+				   FROM solutions
+				  WHERE NOT failing
+				    AND hole = $1
+				    AND lang IN ('java', 'javascript')
+				    AND user_id = $2`,
+				in.Hole,
+				userID,
+			) {
+				awardTrophy(db, userID, "caffeinated")
+			}
 		case "php":
 			awardTrophy(db, userID, "elephpant-in-the-room")
 		case "perl", "raku":
