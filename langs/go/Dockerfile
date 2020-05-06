@@ -10,6 +10,6 @@ COPY --from=0 /usr/local/go/pkg/linux_amd64              /usr/local/go/pkg/linux
 COPY --from=0 /usr/local/go/pkg/tool/linux_amd64/compile \
               /usr/local/go/pkg/tool/linux_amd64/link    /usr/local/go/pkg/tool/linux_amd64/
 
-COPY run-go /usr/bin/run-go
+COPY go /usr/bin/go
 
 ENTRYPOINT ["/usr/local/go/bin/go", "version"]
