@@ -50,17 +50,16 @@ let compile(checker: FSharpChecker) =
 let main args =
     if args.Length < 1 then
         fprintfn stderr "Arguments required."
-        Environment.Exit 0
-
-    if args.[0] = "--version" then
+        1
+    elif args.[0] = "--version" then
         let info = File.ReadAllText "/compiler/version.txt"
         let framework = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription
         printfn "%s on %s" (info.Trim()) framework
-        Environment.Exit 0
-
-    let codeFile = "/tmp/Code.fs"
-    File.WriteAllText(codeFile, stdin.ReadToEnd())
-    let checker = FSharpChecker.Create()
-    let assembly = compile checker
-    File.Delete codeFile
-    runCode assembly args.[1..]
+        0
+    else
+        let codeFile = "/tmp/Code.fs"
+        File.WriteAllText(codeFile, stdin.ReadToEnd())
+        let checker = FSharpChecker.Create()
+        let assembly = compile checker
+        File.Delete codeFile
+        runCode assembly args.[1..]

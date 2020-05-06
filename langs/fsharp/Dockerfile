@@ -17,8 +17,6 @@ RUN mkdir /empty
 
 RUN /usr/bin/dotnet exec /usr/share/dotnet/sdk/$SDK_VERSION/FSharp/fsc.exe --help | head -1 > /compiler/version.txt
 
-RUN cp /usr/share/dotnet/sdk/$SDK_VERSION/FSharp/default.win32manifest /compiler/
-
 FROM scratch
 COPY --from=0 /bin/ln                  \
               /bin/sh                  /bin/
