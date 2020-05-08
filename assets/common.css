@@ -196,7 +196,8 @@ thead th {
     cursor: pointer;
     display: grid;
     grid-gap: .5rem;
-    grid-template-columns: 1fr min-content;
+    grid-template: min-content / 1fr min-content;
+    height: 100%;
     padding: .5rem;
     text-decoration: none;
     white-space: nowrap;
@@ -215,7 +216,10 @@ thead th {
     text-overflow: ellipsis;
 }
 
-.card p { white-space: normal }
+.card p {
+    align-self: start;
+    white-space: normal;
+}
 
 .color:nth-of-type(6n+1), .red    { background: var(--red)    }
 .color:nth-of-type(6n+2), .orange { background: var(--orange) }
