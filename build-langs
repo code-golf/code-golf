@@ -1,4 +1,7 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+# The optional --pull command line argument pulls images from Docker Hub, instead of building them locally.
+
+set -e
 
 if [ -z "${BASH_VERSINFO}" ] \
         || [ -z "${BASH_VERSINFO[0]}" ] \
@@ -6,6 +9,8 @@ if [ -z "${BASH_VERSINFO}" ] \
     echo "This script requires Bash version >= 4"
     exit 1
 fi
+
+cd "$(dirname "${BASH_SOURCE[0]}")"
 
 declare -A urls=(
     ["Bash"]="//www.gnu.org/software/bash/"
@@ -47,10 +52,14 @@ for name in "${sorted_names[@]}"; do
 
     img=codegolf/lang-$lang
 
-    # Tag the builder stage so "docker system prune" won't remove it.
-    docker build --target builder -t $img-builder $lang
+    if [ "$1" = --pull ]; then
+        docker pull $img
+    else
+        # Tag the builder stage so "docker system prune" won't remove it.
+        docker build --target builder -t $img-builder $lang
 
-    docker build -t $img $lang
+        docker build -t $img $lang
+    fi
 
     if [ $lang = j ]; then
         ver=`echo echo JLIB | docker run --rm --tmpfs /tmp -i $img`
@@ -103,7 +112,12 @@ for name in "${sorted_names[@]}"; do
 
     mkdir -p $lang/rootfs/{proc,tmp}
 
-    docker push $img
+    if [ "$1" != --pull ]; then
+        # Pushing the image only works for some users.
+        set +e
+        docker push $img
+        set -e
+    fi
 done
 
 echo "package routes

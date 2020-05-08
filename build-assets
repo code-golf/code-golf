@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+cd "$(dirname "${BASH_SOURCE[0]}")"
+
 # Only re-run if assets.go is stale.
 newest_file=$(ls -t assets/{,*/,*/*/}* | head -1)
 if [[ routes/assets.go -ot $newest_file ]]; then
