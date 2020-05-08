@@ -9,10 +9,10 @@ require (
 	github.com/go-chi/chi v4.1.1+incompatible
 	github.com/gorilla/feeds v1.1.1
 	github.com/kr/pretty v0.2.0 // indirect
-	github.com/lib/pq v1.4.0
+	github.com/lib/pq v1.5.2
 	github.com/pmezard/go-difflib v1.0.0
-	golang.org/x/crypto v0.0.0-20200420201142-3c4aac89819a
-	golang.org/x/net v0.0.0-20200324143707-d3edc9973b7e // indirect
+	golang.org/x/crypto v0.0.0-20200429183012-4b2356b1ed79
+	golang.org/x/net v0.0.0-20200506145744-7e3656a0809f // indirect
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
 	golang.org/x/text v0.3.2 // indirect
 )
