@@ -42,10 +42,11 @@ onload = () => {
     const cm = new CodeMirror(editor, {autofocus: true, lineNumbers: true, lineWrapping: true, smartIndent: false});
 
     cm.on('change', () => {
-        const val = cm.getValue();
-        const len = strlen(val);
+        const code = cm.getValue();
+        const len = strlen(code);
 
         chars.innerText = `${len.toLocaleString('en')} character${len - 1 ? 's' : ''}`;
+        localStorage.setItem('code_' + hole + '_' + lang, code);
     });
 
     details.ontoggle = () =>
@@ -58,12 +59,19 @@ onload = () => {
         if (!langs.find(l => l.id == lang))
             location.hash = lang = 'python';
 
+        const code = lang in solutions ? solutions[lang] : '';
+        const previousCode = localStorage.getItem('code_' + hole + '_' + lang);
+
         cm.setOption('mode', {name: 'text/x-' + lang, startOpen: true});
-        cm.setValue(lang in solutions ? solutions[lang] : '');
+        cm.setValue(code);
 
         localStorage.setItem('lang', location.hash = lang);
 
         refreshScores();
+
+        if (previousCode && code != previousCode && (!code ||
+            confirm('Your local copy of the code is different than the remote one. Do you want to restore the local version?')))
+            cm.setValue(previousCode);
     })();
 
     const submit = document.querySelector('#run a').onclick = async () => {
