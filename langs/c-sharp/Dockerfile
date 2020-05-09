@@ -15,8 +15,7 @@ RUN mkdir /empty
 
 FROM scratch
 
-COPY --from=0 /bin/ln                  \
-              /bin/sh                  /bin/
+COPY --from=0 /bin/sh                  /bin/
 COPY --from=0 /lib/ld-musl-x86_64.so.1 \
               /lib/libcrypto.so.1.1    \
               /lib/libssl.so.1.1       /lib/
@@ -25,6 +24,4 @@ COPY --from=0 /compiler                /compiler/
 COPY --from=0 /empty                   /tmp/
 COPY --from=0 /empty                   /usr/bin/
 
-RUN ln -s /compiler/Compiler /usr/bin/c-sharp
-
-ENTRYPOINT /usr/bin/c-sharp --version
+ENTRYPOINT /compiler/Compiler --version
