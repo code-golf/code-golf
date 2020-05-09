@@ -375,6 +375,8 @@ thead th {
 #matrix input.bash:not(:checked)       ~ .bash,
 #matrix input.brainfuck:not(:checked)  ~ .brainfuck,
 #matrix input.c:not(:checked)          ~ .c,
+#matrix input.c-sharp:not(:checked)    ~ .c-sharp,
+#matrix input.f-sharp:not(:checked)    ~ .f-sharp,
 #matrix input.fortran:not(:checked)    ~ .fortran,
 #matrix input.go:not(:checked)         ~ .go,
 #matrix input.haskell:not(:checked)    ~ .haskell,
@@ -423,7 +425,7 @@ thead th {
     }
     #matrix {
         /* Increase this number when adding a language. */
-        grid-template-columns: 3fr repeat(20,1fr);
+        grid-template-columns: 4fr repeat(22,1fr);
     }
     #matrix a {
         display: initial;

@@ -24,6 +24,11 @@ done_testing;
 
 # haskell, lua, python, rust, and swift all have - as the first arg :-(
 # https://rosettacode.org/wiki/Command-line_arguments
+
+# Note that there are two ways to write an F# program - with and without an EntryPoint.
+# Make sure they both work. The version without an EntryPoint is more useful when there
+# are no arguments. Ideally it wouldn't be necessary to skip two arguments in that version,
+# but it doesn't really matter since the other form should be used.
 __DATA__
 bash
 for a; do echo $a; done
@@ -34,6 +39,18 @@ brainfuck
 c
 #include <stdio.h>
 i; main(int n, char **a) { while(++i < n) puts(a[i]); }
+
+c-sharp
+class A {static void Main(string[] args){foreach(var a in args)System.Console.WriteLine(a);}}
+
+f-sharp
+[<EntryPoint>]
+let main args =
+    args |> Array.iter (printfn "%s")
+    0
+
+f-sharp
+System.Environment.GetCommandLineArgs() |> Array.skip 2 |> Array.iter (printfn "%s")
 
 fortran
 character(10)::a

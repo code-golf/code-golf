@@ -27,6 +27,8 @@ var langs = []Lang{
 	{"bash", "Bash"},
 	{"brainfuck", "Brainfuck"},
 	{"c", "C"},
+	{"c-sharp", "C#"},
+	{"f-sharp", "F#"},
 	{"fortran", "Fortran"},
 	{"go", "Go"},
 	{"haskell", "Haskell"},
