@@ -18,8 +18,7 @@ RUN mkdir /empty
 RUN /usr/bin/dotnet exec /usr/share/dotnet/sdk/$SDK_VERSION/FSharp/fsc.exe --help | head -1 > /compiler/version.txt
 
 FROM scratch
-COPY --from=0 /bin/ln                  \
-              /bin/sh                  /bin/
+COPY --from=0 /bin/sh                  /bin/
 COPY --from=0 /lib/ld-musl-x86_64.so.1 \
               /lib/libcrypto.so.1.1    \
               /lib/libssl.so.1.1       /lib/
@@ -28,6 +27,4 @@ COPY --from=0 /compiler                /compiler/
 COPY --from=0 /empty                   /tmp/
 COPY --from=0 /empty                   /usr/bin/
 
-RUN ln -s /compiler/Compiler /usr/bin/f-sharp
-
-ENTRYPOINT /usr/bin/f-sharp --version
+ENTRYPOINT /compiler/Compiler --version
