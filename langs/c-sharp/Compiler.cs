@@ -31,6 +31,8 @@ namespace Compiler
 				MetadataReference.CreateFromFile(Assembly.Load("System.Runtime").Location),
 				MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
 				MetadataReference.CreateFromFile(typeof(Console).Assembly.Location),
+				MetadataReference.CreateFromFile(typeof(System.Collections.Generic.HashSet<>).Assembly.Location),
+				MetadataReference.CreateFromFile(typeof(System.Collections.Generic.List<>).Assembly.Location),
 				MetadataReference.CreateFromFile(typeof(System.Linq.Enumerable).Assembly.Location),
 				MetadataReference.CreateFromFile(typeof(System.Numerics.BigInteger).Assembly.Location),
 				MetadataReference.CreateFromFile(typeof(System.Text.RegularExpressions.Regex).Assembly.Location),
