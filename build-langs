@@ -11,9 +11,9 @@ declare -A urls=(
     ["Bash"]="//www.gnu.org/software/bash/"
     ["Brainfuck"]="//github.com/code-golf/code-golf/tree/master/langs/brainfuck/"
     ["C"]="//bellard.org/tcc/"
-    ["CSharp"]="//docs.microsoft.com/en-us/dotnet/csharp/"
+    ["C-Sharp"]="//docs.microsoft.com/en-us/dotnet/csharp/"
+    ["F-Sharp"]="//fsharp.org/"
     ["Fortran"]="//gcc.gnu.org/fortran/"
-    ["FSharp"]="//fsharp.org/"
     ["Go"]="//golang.org"
     ["Haskell"]="//www.haskell.org/ghc/"
     ["J"]="//www.jsoftware.com"
@@ -89,7 +89,7 @@ for name in "${sorted_names[@]}"; do
     ver=${ver/ (*/}
     ver=${ver/ Copyright/}
 
-    display=${name/Sharp/#}    
+    display=${name/-Sharp/#}    
 
     html+="+
         \"<tr><th class=$lang>$display<td>$ver<td class=wide><a href=${urls[$name]}>website</a>\""

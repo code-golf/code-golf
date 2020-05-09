@@ -25,6 +25,6 @@ COPY --from=0 /compiler                /compiler/
 COPY --from=0 /empty                   /tmp/
 COPY --from=0 /empty                   /usr/bin/
 
-RUN ln -s /compiler/Compiler /usr/bin/csharp
+RUN ln -s /compiler/Compiler /usr/bin/c-sharp
 
-ENTRYPOINT /usr/bin/csharp --version
+ENTRYPOINT /usr/bin/c-sharp --version

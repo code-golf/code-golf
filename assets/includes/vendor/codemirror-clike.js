@@ -383,7 +383,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
     modeProps: {fold: ["brace", "import"]}
   });
 
-  def("text/x-csharp", {
+  def("text/x-c-sharp", {
     name: "clike",
     keywords: words("abstract as async await base break case catch checked class const continue" +
                     " default delegate do else enum event explicit extern finally fixed for" +

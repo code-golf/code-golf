@@ -28,6 +28,6 @@ COPY --from=0 /compiler                /compiler/
 COPY --from=0 /empty                   /tmp/
 COPY --from=0 /empty                   /usr/bin/
 
-RUN ln -s /compiler/Compiler /usr/bin/fsharp
+RUN ln -s /compiler/Compiler /usr/bin/f-sharp
 
-ENTRYPOINT /usr/bin/fsharp --version
+ENTRYPOINT /usr/bin/f-sharp --version

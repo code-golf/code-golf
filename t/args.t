@@ -40,8 +40,17 @@ c
 #include <stdio.h>
 i; main(int n, char **a) { while(++i < n) puts(a[i]); }
 
-csharp
+c-sharp
 class A {static void Main(string[] args){foreach(var a in args)System.Console.WriteLine(a);}}
+
+f-sharp
+[<EntryPoint>]
+let main args =
+    args |> Array.iter (printfn "%s")
+    0
+
+f-sharp
+System.Environment.GetCommandLineArgs() |> Array.skip 2 |> Array.iter (printfn "%s")
 
 fortran
 character(10)::a
@@ -50,15 +59,6 @@ call getarg(i,a)
 write(*,'(a)')a
 enddo
 end
-
-fsharp
-[<EntryPoint>]
-let main args =
-    args |> Array.iter (printfn "%s")
-    0
-
-fsharp
-System.Environment.GetCommandLineArgs() |> Array.skip 2 |> Array.iter (printfn "%s")
 
 go
 package main

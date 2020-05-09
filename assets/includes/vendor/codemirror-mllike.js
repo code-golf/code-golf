@@ -150,7 +150,7 @@ CodeMirror.defineMode('mllike', function(_config, parserConfig) {
   };
 });
 
-CodeMirror.defineMIME('text/x-fsharp', {
+CodeMirror.defineMIME('text/x-f-sharp', {
   name: 'mllike',
   extraWords: {
     'abstract': 'keyword',
