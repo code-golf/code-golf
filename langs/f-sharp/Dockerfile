@@ -25,6 +25,5 @@ COPY --from=0 /lib/ld-musl-x86_64.so.1 \
 COPY --from=0 /usr/lib                 /usr/lib/
 COPY --from=0 /compiler                /compiler/
 COPY --from=0 /empty                   /tmp/
-COPY --from=0 /empty                   /usr/bin/
 
 ENTRYPOINT /compiler/Compiler --version
