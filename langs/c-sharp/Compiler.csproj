@@ -8,4 +8,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <TrimmerRootAssembly Include="netstandard" />
+  </ItemGroup>
 </Project>
