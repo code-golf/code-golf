@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -28,11 +27,14 @@ namespace Compiler
 
 			var references = new MetadataReference[]
 			{
+				MetadataReference.CreateFromFile(Assembly.Load("netstandard").Location),
 				MetadataReference.CreateFromFile(Assembly.Load("System.Runtime").Location),
 				MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
 				MetadataReference.CreateFromFile(typeof(Console).Assembly.Location),
+				MetadataReference.CreateFromFile(typeof(Microsoft.CSharp.RuntimeBinder.Binder).Assembly.Location),
 				MetadataReference.CreateFromFile(typeof(System.Collections.Generic.HashSet<>).Assembly.Location),
 				MetadataReference.CreateFromFile(typeof(System.Collections.Generic.List<>).Assembly.Location),
+				MetadataReference.CreateFromFile(typeof(System.Dynamic.ExpandoObject).Assembly.Location),
 				MetadataReference.CreateFromFile(typeof(System.Linq.Enumerable).Assembly.Location),
 				MetadataReference.CreateFromFile(typeof(System.Numerics.BigInteger).Assembly.Location),
 				MetadataReference.CreateFromFile(typeof(System.Text.RegularExpressions.Regex).Assembly.Location),
