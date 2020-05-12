@@ -116,15 +116,17 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		}
 	}
 
+	const maxLength = 128 * 1024 // 128 KiB
+
 	// Trim trailing whitespace.
-	score.Stderr = bytes.TrimRightFunc(stderr.Bytes(), unicode.IsSpace)
+	score.Stderr = bytes.TrimRightFunc(stderr.Next(maxLength), unicode.IsSpace)
 
 	if holeID == "quine" {
-		score.Stdout = stdout.Bytes()
+		score.Stdout = stdout.Next(maxLength)
 	} else {
 		// Trim trailing spaces per line.
 		// FIXME This is all very hacky, but needed for Sierpiński.
-		scanner := bufio.NewScanner(bytes.NewReader(stdout.Bytes()))
+		scanner := bufio.NewScanner(bytes.NewReader(stdout.Next(maxLength)))
 		for scanner.Scan() {
 			score.Stdout = append(
 				score.Stdout, bytes.TrimRightFunc(scanner.Bytes(), unicode.IsSpace)...)
