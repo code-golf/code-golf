@@ -170,18 +170,46 @@ func poker() (args []string, out string) {
 		hands = append(hands, Hand{"Royal Flush", hand})
 	}
 
-	// Shuffle the hands.
-	for i := range hands {
-		j := rand.Intn(i + 1)
-		hands[i], hands[j] = hands[j], hands[i]
+	// For a flush, the highest minus lowest codepoint is at most 13, but this is not sufficient
+	// for detecting a flush. Generate hands that meet this criteria that aren't flushes.
+	for suit := 0; suit < 3; suit++ {
+		// Start near the top of the range on one of the lower three suits.
+		// The hand will have cards with two different suits and five different face values.
+		// The start card is at least 10 to avoid a straight.
+		startCard := 12 - rand.Intn(3)
+		// The offset of the end card from the start card must be at least 4.
+		// It should be at most 11 to ensure that the range in codepoints doesn't exceed 13.
+		endOffset := 4 + rand.Intn(7)
+		offsets := rand.Perm(endOffset)
+		hand := []rune{cardRune(startCard, suit)}
+		for _, offset := range offsets[:4] {
+			card := startCard + offset + 1
+			hand = append(hand, cardRune(card%13, suit+card/13))
+		}
+		hands = append(hands, Hand{"High Card", hand})
 	}
+
+	// High Card, but could be mistaken for a straight.
+	for suit := 0; suit < 3; suit++ {
+		hands = append(hands, Hand{"High Card", []rune{
+			cardRune(12, suit),
+			cardRune(0, suit+1),
+			cardRune(1, suit+1),
+			cardRune(2, suit+1),
+			cardRune(3, suit+1),
+		}})
+	}
+
+	// Shuffle the hands.
+	rand.Shuffle(len(hands), func(i, j int) {
+		hands[i], hands[j] = hands[j], hands[i]
+	})
 
 	for _, hand := range hands {
 		// Shuffle the cards in the hand.
-		for i := range hand.Cards {
-			j := rand.Intn(i + 1)
+		rand.Shuffle(5, func(i, j int) {
 			hand.Cards[i], hand.Cards[j] = hand.Cards[j], hand.Cards[i]
-		}
+		})
 
 		args = append(args, string(hand.Cards))
 
