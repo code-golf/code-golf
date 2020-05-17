@@ -56,6 +56,31 @@ func AdminSolutions(w http.ResponseWriter, r *http.Request) {
 				s.Pass = score.Pass
 				s.Took = score.Took
 
+				// If we pass when we should be failing or vice versa, re-run.
+				// If we still get the wrong outcome, update the database.
+				//
+				// NOTE It's a little confusing that present is called pass
+				//      but past is called failing, so == is a mismatch.
+				if s.Pass == s.Failing && hole.Play(r.Context(), s.HoleID, s.LangID, s.code).Pass == s.Pass {
+					s.Failing = !s.Pass
+
+					if _, err := r.Context().Value("db").(*sql.DB).Exec(
+						`UPDATE solutions
+						    SET failing = $1
+						  WHERE code    = $2
+						    AND hole    = $3
+						    AND lang    = $4
+						    AND user_id = $5`,
+						s.Failing,
+						s.code,
+						s.HoleID,
+						s.LangID,
+						s.GolferID,
+					); err != nil {
+						panic(err)
+					}
+				}
+
 				b, err := json.Marshal(s)
 				if err != nil {
 					panic(err)
