@@ -152,6 +152,7 @@ func poker() (args []string, out string) {
 	// Straight Flush
 	lowCards = rand.Perm(9)
 	lowCards[0] = 0 // Ensure at least one low ace
+	lowCards[1] = 8 // Ensure at least one 9 through king, because it could be mistaken for a royal flush.
 	for _, lowCard := range lowCards[:handCount] {
 		suit := rand.Intn(4)
 		var hand []rune
