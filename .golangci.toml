@@ -34,7 +34,7 @@ enable = [
   # 'nakedret',
   # 'prealloc',
     'rowserrcheck',
-    'scopelint',
+  # 'scopelint',
     'staticcheck',
     'structcheck',
   # 'stylecheck',
