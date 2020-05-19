@@ -6,20 +6,18 @@ import (
 	"encoding/json"
 	"net/http"
 	"sync"
-	"time"
 
 	"github.com/code-golf/code-golf/hole"
 )
 
 type solution struct {
 	code     string
-	Golfer   string        `json:"golfer"`
-	GolferID int           `json:"golfer_id"`
-	HoleID   string        `json:"hole"`
-	LangID   string        `json:"lang"`
-	Failing  bool          `json:"failing"`
-	Pass     bool          `json:"pass"`
-	Took     time.Duration `json:"took"`
+	Golfer   string           `json:"golfer"`
+	GolferID int              `json:"golfer_id"`
+	HoleID   string           `json:"hole"`
+	LangID   string           `json:"lang"`
+	Failing  bool             `json:"failing"`
+	Scores   []hole.Scorecard `json:"scores"`
 }
 
 // Admin serves GET /admin
@@ -51,18 +49,24 @@ func AdminSolutions(w http.ResponseWriter, r *http.Request) {
 			defer wg.Done()
 
 			for s := range solutions {
-				score := hole.Play(r.Context(), s.HoleID, s.LangID, s.code)
+				// Run the solution upto three times, bail early if it passes.
+				for j := 0; j < 3; j++ {
+					s.Scores = append(
+						s.Scores,
+						hole.Play(r.Context(), s.HoleID, s.LangID, s.code),
+					)
 
-				s.Pass = score.Pass
-				s.Took = score.Took
+					if s.Scores[j].Pass {
+						break
+					}
+				}
 
-				// If we pass when we should be failing or vice versa, re-run.
-				// If we still get the wrong outcome, update the database.
+				// If the last run differs from the DB, update the database.
 				//
 				// NOTE It's a little confusing that present is called pass
 				//      but past is called failing, so == is a mismatch.
-				if s.Pass == s.Failing && hole.Play(r.Context(), s.HoleID, s.LangID, s.code).Pass == s.Pass {
-					s.Failing = !s.Pass
+				if pass := s.Scores[len(s.Scores)-1].Pass; pass == s.Failing {
+					s.Failing = !pass
 
 					if _, err := r.Context().Value("db").(*sql.DB).Exec(
 						`UPDATE solutions
