@@ -15,7 +15,7 @@ const versionTable = "" +
 	"<tr><th class=julia>Julia<td>1.4.1<td class=wide><a href=//julialang.org>website</a>" +
 	"<tr><th class=lisp>Lisp<td>GNU CLISP 2.49.92<td class=wide><a href=//clisp.sourceforge.io>website</a>" +
 	"<tr><th class=lua>Lua<td>5.4.0<td class=wide><a href=//www.lua.org>website</a>" +
-	"<tr><th class=nim>Nim<td>1.0.6<td class=wide><a href=//nim-lang.org>website</a>" +
+	"<tr><th class=nim>Nim<td>1.2.0<td class=wide><a href=//nim-lang.org>website</a>" +
 	"<tr><th class=perl>Perl<td>5.30.2<td class=wide><a href=//www.perl.org>website</a>" +
 	"<tr><th class=php>PHP<td>7.4.5<td class=wide><a href=//secure.php.net>website</a>" +
 	"<tr><th class=python>Python<td>3.8.2<td class=wide><a href=//www.python.org>website</a>" +
