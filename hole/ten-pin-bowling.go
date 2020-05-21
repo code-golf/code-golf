@@ -63,12 +63,10 @@ func tenPinBowling() ([]string, string) {
 		outs[i] = game.score
 	}
 
-	// Shuffle
-	for i := range args {
-		j := rand.Intn(i + 1)
+	rand.Shuffle(len(args), func(i, j int) {
 		args[i], args[j] = args[j], args[i]
 		outs[i], outs[j] = outs[j], outs[i]
-	}
+	})
 
 	return args, strings.Join(outs, "\n")
 }

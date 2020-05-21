@@ -34,12 +34,10 @@ func brainfuck() ([]string, string) {
 		"eL34NfeOL454KdeJ44JOdefePK55gQ67ShfTL787KegJ77JTeghfUK88iV9:XjgYL:;:KfiJ::JYfijgZK;;k[<=]lh^L=>=KgkJ==J^gklh_K>>m`?@bnicL@A@KhmJ@@JchmnidKAA",
 	}
 
-	// Shuffle
-	for i := range args {
-		j := rand.Intn(i + 1)
+	rand.Shuffle(len(args), func(i, j int) {
 		args[i], args[j] = args[j], args[i]
 		outs[i], outs[j] = outs[j], outs[i]
-	}
+	})
 
 	return args, strings.Join(outs, "\n")
 }

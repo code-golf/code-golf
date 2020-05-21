@@ -36,11 +36,9 @@ func pangramGrep() (args []string, out string) {
 		[]byte(`"who am taking the ebonics quiz?", the prof jovially axed.`),
 	}
 
-	// Shuffle the whole set.
-	for i := range pangrams {
-		j := rand.Intn(i + 1)
+	rand.Shuffle(len(pangrams), func(i, j int) {
 		pangrams[i], pangrams[j] = pangrams[j], pangrams[i]
-	}
+	})
 
 	for i, pangram := range pangrams {
 		clone := make([]byte, len(pangram))
@@ -67,11 +65,9 @@ func pangramGrep() (args []string, out string) {
 		}
 	}
 
-	// Shuffle the whole set.
-	for i := range pangrams {
-		j := rand.Intn(i + 1)
+	rand.Shuffle(len(pangrams), func(i, j int) {
 		pangrams[i], pangrams[j] = pangrams[j], pangrams[i]
-	}
+	})
 
 outer:
 	for _, pangram := range pangrams {

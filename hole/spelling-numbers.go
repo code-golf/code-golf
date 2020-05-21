@@ -69,13 +69,12 @@ func spellingNumbers() (args []string, out string) {
 
 	tens := []uint16{20, 30, 40, 50, 60, 70, 80, 90}
 
-	// Shuffle the tens.
-	for i := range tens {
-		j := rand.Intn(i + 1)
+	rand.Shuffle(len(tens), func(i, j int) {
 		tens[i], tens[j] = tens[j], tens[i]
-	}
+	})
 
-	// Add on random numbers to each ten except the first, to ensure at least one non hyphen answer.
+	// Add on random numbers to each ten except the first, to ensure at least
+	// one non hyphen answer.
 	for i := 1; i < len(tens); i++ {
 		tens[i] += 1 + uint16(rand.Intn(8))
 	}
@@ -84,24 +83,21 @@ func spellingNumbers() (args []string, out string) {
 
 	hundreds := []uint16{100, 200, 300, 400, 500, 600, 700, 800, 900}
 
-	// Shuffle the hundreds.
-	for i := range hundreds {
-		j := rand.Intn(i + 1)
+	rand.Shuffle(len(hundreds), func(i, j int) {
 		hundreds[i], hundreds[j] = hundreds[j], hundreds[i]
-	}
+	})
 
-	// Add on random numbers to each hundred except the first, to ensure at least one non and answer.
+	// Add on random numbers to each hundred except the first, to ensure at
+	// least one non and answer.
 	for i := 1; i < len(hundreds); i++ {
 		hundreds[i] += 1 + uint16(rand.Intn(98))
 	}
 
 	numbers = append(numbers, hundreds...)
 
-	// Shuffle the whole set.
-	for i := range numbers {
-		j := rand.Intn(i + 1)
+	rand.Shuffle(len(numbers), func(i, j int) {
 		numbers[i], numbers[j] = numbers[j], numbers[i]
-	}
+	})
 
 	for _, n := range numbers {
 		args = append(args, strconv.Itoa(int(n)))

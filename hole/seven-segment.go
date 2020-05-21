@@ -15,11 +15,9 @@ var segments = [][]string{
 func sevenSegment() (args []string, out string) {
 	digits := []byte{'0', '0', '1', '1', '2', '2', '3', '3', '4', '4', '5', '5', '6', '6', '7', '7', '8', '8', '9', '9'}
 
-	// Shuffle the digits
-	for i := range digits {
-		j := rand.Intn(i + 1)
+	rand.Shuffle(len(digits), func(i, j int) {
 		digits[i], digits[j] = digits[j], digits[i]
-	}
+	})
 
 	args = append(args, string(digits))
 
