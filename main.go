@@ -45,6 +45,7 @@ func main() {
 	r.Get("/feeds/{feed}", routes.Feed)
 	r.Get("/ideas", routes.Ideas)
 	r.Get("/log-out", routes.LogOut)
+	r.Get("/prefs", routes.Prefs)
 	r.Get("/random", routes.Random)
 	r.Get("/recent", routes.Recent)
 	r.Get("/recent/{lang}", routes.Recent)

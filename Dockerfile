@@ -2,20 +2,13 @@ FROM golang:1.14.3-alpine
 
 ENV CGO_ENABLED=0 GOPATH=
 
-RUN apk add --no-cache build-base linux-headers
+RUN apk add --no-cache build-base linux-headers tzdata
 
-COPY go.* ./
+COPY go.mod go.sum ./
 
 RUN go mod download
 
-COPY main.go run-lang.c ./
-COPY cookie             ./cookie/
-COPY github             ./github/
-COPY hole               ./hole/
-COPY middleware         ./middleware/
-COPY pie                ./pie/
-COPY pretty             ./pretty/
-COPY routes             ./routes/
+COPY . ./
 
 RUN go build -ldflags -s \
  && gcc -Wall -Werror -Wextra -o /usr/bin/run-lang -s -static run-lang.c
@@ -93,9 +86,10 @@ COPY --from=0 /empty      /langs/swift/rootfs/proc/
 COPY --from=0 /empty      /langs/swift/rootfs/tmp/
 
 COPY --from=0 /go/code-golf                      /
-COPY --from=0 /usr/bin/run-lang                  /usr/bin/
-COPY          holes.toml                         /
+COPY          /holes.toml                        /
 COPY --from=0 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-COPY          views                              /views/
+COPY --from=0 /usr/bin/run-lang                  /usr/bin/
+COPY --from=0 /usr/share/zoneinfo                /usr/share/zoneinfo/
+COPY          /views                             /views/
 
 CMD ["/code-golf"]
