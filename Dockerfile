@@ -13,7 +13,7 @@ COPY . ./
 RUN go build -ldflags -s \
  && gcc -Wall -Werror -Wextra -o /usr/bin/run-lang -s -static run-lang.c
 
-RUN mkdir /empty
+RUN mkdir -p /rootfs/proc /rootfs/tmp
 
 FROM scratch
 
@@ -40,50 +40,28 @@ COPY --from=codegolf/lang-ruby       /       /langs/ruby/rootfs/
 COPY --from=codegolf/lang-rust       /       /langs/rust/rootfs/
 COPY --from=codegolf/lang-swift      /      /langs/swift/rootfs/
 
-COPY --from=0 /empty       /langs/bash/rootfs/proc/
-COPY --from=0 /empty       /langs/bash/rootfs/tmp/
-COPY --from=0 /empty  /langs/brainfuck/rootfs/proc/
-COPY --from=0 /empty  /langs/brainfuck/rootfs/tmp/
-COPY --from=0 /empty          /langs/c/rootfs/proc/
-COPY --from=0 /empty          /langs/c/rootfs/tmp/
-COPY --from=0 /empty    /langs/c-sharp/rootfs/proc/
-COPY --from=0 /empty    /langs/c-sharp/rootfs/tmp/
-COPY --from=0 /empty    /langs/f-sharp/rootfs/proc/
-COPY --from=0 /empty    /langs/f-sharp/rootfs/tmp/
-COPY --from=0 /empty    /langs/fortran/rootfs/proc/
-COPY --from=0 /empty    /langs/fortran/rootfs/tmp/
-COPY --from=0 /empty         /langs/go/rootfs/proc/
-COPY --from=0 /empty         /langs/go/rootfs/tmp/
-COPY --from=0 /empty    /langs/haskell/rootfs/proc/
-COPY --from=0 /empty    /langs/haskell/rootfs/tmp/
-COPY --from=0 /empty          /langs/j/rootfs/proc/
-COPY --from=0 /empty          /langs/j/rootfs/tmp/
-COPY --from=0 /empty       /langs/java/rootfs/proc/
-COPY --from=0 /empty       /langs/java/rootfs/tmp/
-COPY --from=0 /empty /langs/javascript/rootfs/proc/
-COPY --from=0 /empty /langs/javascript/rootfs/tmp/
-COPY --from=0 /empty      /langs/julia/rootfs/proc/
-COPY --from=0 /empty      /langs/julia/rootfs/tmp/
-COPY --from=0 /empty       /langs/lisp/rootfs/proc/
-COPY --from=0 /empty       /langs/lisp/rootfs/tmp/
-COPY --from=0 /empty        /langs/lua/rootfs/proc/
-COPY --from=0 /empty        /langs/lua/rootfs/tmp/
-COPY --from=0 /empty        /langs/nim/rootfs/proc/
-COPY --from=0 /empty        /langs/nim/rootfs/tmp/
-COPY --from=0 /empty       /langs/perl/rootfs/proc/
-COPY --from=0 /empty       /langs/perl/rootfs/tmp/
-COPY --from=0 /empty        /langs/php/rootfs/proc/
-COPY --from=0 /empty        /langs/php/rootfs/tmp/
-COPY --from=0 /empty     /langs/python/rootfs/proc/
-COPY --from=0 /empty     /langs/python/rootfs/tmp/
-COPY --from=0 /empty       /langs/raku/rootfs/proc/
-COPY --from=0 /empty       /langs/raku/rootfs/tmp/
-COPY --from=0 /empty       /langs/ruby/rootfs/proc/
-COPY --from=0 /empty       /langs/ruby/rootfs/tmp/
-COPY --from=0 /empty       /langs/rust/rootfs/proc/
-COPY --from=0 /empty       /langs/rust/rootfs/tmp/
-COPY --from=0 /empty      /langs/swift/rootfs/proc/
-COPY --from=0 /empty      /langs/swift/rootfs/tmp/
+COPY --from=0 /rootfs       /langs/bash/rootfs/
+COPY --from=0 /rootfs  /langs/brainfuck/rootfs/
+COPY --from=0 /rootfs          /langs/c/rootfs/
+COPY --from=0 /rootfs    /langs/c-sharp/rootfs/
+COPY --from=0 /rootfs    /langs/f-sharp/rootfs/
+COPY --from=0 /rootfs    /langs/fortran/rootfs/
+COPY --from=0 /rootfs         /langs/go/rootfs/
+COPY --from=0 /rootfs    /langs/haskell/rootfs/
+COPY --from=0 /rootfs          /langs/j/rootfs/
+COPY --from=0 /rootfs       /langs/java/rootfs/
+COPY --from=0 /rootfs /langs/javascript/rootfs/
+COPY --from=0 /rootfs      /langs/julia/rootfs/
+COPY --from=0 /rootfs       /langs/lisp/rootfs/
+COPY --from=0 /rootfs        /langs/lua/rootfs/
+COPY --from=0 /rootfs        /langs/nim/rootfs/
+COPY --from=0 /rootfs       /langs/perl/rootfs/
+COPY --from=0 /rootfs        /langs/php/rootfs/
+COPY --from=0 /rootfs     /langs/python/rootfs/
+COPY --from=0 /rootfs       /langs/raku/rootfs/
+COPY --from=0 /rootfs       /langs/ruby/rootfs/
+COPY --from=0 /rootfs       /langs/rust/rootfs/
+COPY --from=0 /rootfs      /langs/swift/rootfs/
 
 COPY --from=0 /go/code-golf                      /
 COPY          /holes.toml                        /
