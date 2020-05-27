@@ -191,9 +191,8 @@ thead th {
 
 .card {
     align-items: end;
-    border: solid 2px var(--color);
-    color: #343a40;
-    cursor: pointer;
+    border: 2px solid var(--color);
+    color: var(--color);
     display: grid;
     grid-gap: .5rem;
     grid-template: min-content / 1fr min-content;
@@ -203,14 +202,11 @@ thead th {
     white-space: nowrap;
 }
 
-.card:hover {
-    background: none !important;
-    color: var(--color);
-}
+.card:hover { background: none !important }
 
 .card h2 {
     font-size: 1.25rem;
-    grid-column: span 2;
+    grid-column: 1 / -1;
     line-height: 1.25;
     overflow: hidden;
     text-overflow: ellipsis;
