@@ -60,32 +60,23 @@ header {
 }
 
 header a {
-    color: var(--background);
-    display: inline-block;
-    font-size: 1.5rem;
+    align-items: center;
+    display: flex;
+    fill: var(--background);
     height: 2.75rem;
-    line-height: 2.75rem;
-    position: relative;
-    text-align: center;
-    text-decoration: none;
+    justify-content: center;
     width: 2.75rem;
 }
 
 header a:hover,
 header a:not([href]) {
     background: var(--background);
-    color: var(--color);
+    fill: var(--color);
 }
 
 header img {
     border-radius: 50%;
-    bottom: 0;
     height: 1.75rem;
-    left: 0;
-    margin: auto;
-    position: absolute;
-    right: 0;
-    top: 0;
     width: 1.75rem;
 }
 
@@ -96,6 +87,11 @@ header nav, main {
     margin: auto;
     max-width: 1000px;
     width: 100%;
+}
+
+header svg {
+    height: 1.5rem;
+    width: 1.5rem;
 }
 
 main {

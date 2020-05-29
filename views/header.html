@@ -16,21 +16,37 @@
 
 <header>
     <nav>
-        <a {{ if ne             .Path "/"         }} href=/       title=Home                         {{ end }}></a>
-        <a {{ if ne             .Path "/about"    }} href=/about  title=About                        {{ end }}></a>
-        <a {{ if ne             .Path "/ideas"    }} href=/ideas  title=Ideas                        {{ end }}></a>
-        <a {{ if not (hasPrefix .Path "/recent/") }} href=/recent/all-langs title="Recent Solutions" {{ end }}></a>
-        <a {{ if not (hasPrefix .Path "/scores/") }} href=/scores/all-holes/all-langs title=Scores   {{ end }}></a>
-        <a {{ if ne             .Path "/stats"    }} href=/stats  title=Statistics                   {{ end }}></a>
+        <a {{ if ne .Path "/" }} href=/ title=Home {{ end }}>
+            {{ template "svg/logo" }}
+        </a>
+        <a {{ if ne .Path "/about" }} href=/about title=About {{ end }}>
+            {{ template "svg/question-circle-light" }}
+        </a>
+        <a {{ if ne .Path "/ideas" }} href=/ideas title=Ideas {{ end }}>
+            {{ template "svg/lightbulb-light" }}
+        </a>
+        <a {{ if not (hasPrefix .Path "/recent/") }} href=/recent/all-langs title="Recent Solutions" {{ end }}>
+            {{ template "svg/clock-light" }}
+        </a>
+        <a {{ if not (hasPrefix .Path "/scores/") }} href=/scores/all-holes/all-langs title=Scores {{ end }}>
+            {{ template "svg/list-ol-light" }}
+        </a>
+        <a {{ if ne .Path "/stats" }} href=/stats title=Statistics {{ end }}>
+            {{ template "svg/chart-area-light" }}
+        </a>
         <div></div>
     {{ if .Login }}
         {{ $profile := (print "/users/" .Login) }}
         <a {{ if ne .Path $profile }} href={{ $profile }} title=Profile {{ end }}>
             <img src="//avatars.githubusercontent.com/{{ .Login }}?s=28">
         </a>
-        <a href=/log-out title="Log Out"></a>
+        <a href=/log-out title="Log Out">
+            {{ template "svg/sign-out-alt-light" }}
+        </a>
     {{ else }}
-        <a href="{{ .LogInURL }}" title="Log In"></a>
+        <a href="{{ .LogInURL }}" title="Log In">
+            {{ template "svg/sign-in-alt-light" }}
+        </a>
     {{ end }}
     </nav>
 </header>
