@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"errors"
 	"net/http"
 	"sync"
 
@@ -145,7 +146,7 @@ func getSolutions(ctx context.Context, golfer, holeID, langID string) chan solut
 			solutions <- s
 		}
 
-		if err := rows.Err(); err != nil && err != context.Canceled {
+		if err := rows.Err(); err != nil && !errors.Is(err, context.Canceled) {
 			panic(err)
 		}
 	}()

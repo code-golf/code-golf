@@ -2,6 +2,7 @@ package routes
 
 import (
 	"database/sql"
+	"errors"
 	"net/http"
 	"time"
 )
@@ -33,7 +34,7 @@ func User(w http.ResponseWriter, r *http.Request) {
 	if err := db.QueryRow(
 		"SELECT id, login FROM users WHERE login = $1",
 		data.Login,
-	).Scan(&userID, &login); err == sql.ErrNoRows {
+	).Scan(&userID, &login); errors.Is(err, sql.ErrNoRows) {
 		render(w, r, http.StatusNotFound, "404", "", nil)
 		return
 	} else if err != nil {
@@ -46,7 +47,7 @@ func User(w http.ResponseWriter, r *http.Request) {
 	if err := db.QueryRow(
 		"SELECT points FROM points WHERE user_id = $1",
 		userID,
-	).Scan(&data.Points); err != nil && err != sql.ErrNoRows {
+	).Scan(&data.Points); err != nil && !errors.Is(err, sql.ErrNoRows) {
 		panic(err)
 	}
 

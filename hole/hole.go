@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"context"
+	"errors"
 	"os/exec"
 	"strings"
 	"syscall"
@@ -109,7 +110,7 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	score.Took = timeout - time.Until(deadline)
 
 	if err != nil {
-		if ctx.Err() == context.DeadlineExceeded {
+		if errors.Is(ctx.Err(), context.DeadlineExceeded) {
 			score.Timeout = true
 			stderr.WriteString("Killed for exceeding the 7s timeout.")
 		} else {

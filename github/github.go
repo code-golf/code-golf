@@ -132,6 +132,7 @@ func graphQL(key, query string) ([]json.RawMessage, error) {
 		}
 
 		if len(data.Errors) != 0 {
+			//nolint:goerr113
 			return nil, fmt.Errorf("%v", data.Errors)
 		}
 
