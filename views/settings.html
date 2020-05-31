@@ -1,0 +1,84 @@
+{{ template "header" . }}
+
+<style nonce="{{ .Nonce }}">
+form {
+    align-items: center;
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: min-content 1fr;
+    max-width: 40rem;
+    padding: 1rem;
+}
+
+form > :last-child { grid-column: -2 / -1 }
+
+input, select {
+    background: var(--background);
+    border: 1px solid var(--color);
+    padding: .5rem;
+    width: 100%;
+}
+
+label {
+    font-weight: bold;
+    text-align: right;
+    white-space: nowrap;
+}
+
+main {
+    grid-gap: 0;
+    padding: 0;
+}
+
+main nav {
+    background: var(--background);
+    border-bottom: 2px solid var(--color);
+    padding: 1rem 1rem 0;
+    position: sticky;
+    top: 2.75rem;
+}
+
+#profile { padding: 1rem 1rem 0 }
+
+@media (max-width: 34rem) {
+    form { grid-template-columns: 1fr }
+
+    label { text-align: left }
+}
+</style>
+
+<main>
+    <div class=grid id=profile>
+        <img src="//avatars.githubusercontent.com/JRaspass?s=192">
+        <h1>JRaspass</h1>
+        <p>32,146 points
+        <p>41/42 holes
+        <p>11/14 trophies
+    </div>
+
+    <nav class=nav>
+        <a href="/golfers/JRaspass">Trophies</a>
+        <a href="/golfers/JRaspass/holes">Holes</a>
+        <a>Settings</a>
+    </nav>
+
+    <form method=post>
+        <label for=default_lang>Default Language</label>
+        <select id=default_lang name=default_lang>
+        {{ range .Data.Langs }}
+            <option value="{{ .ID }}" {{ if eq .ID "python" }}selected{{ end }}>
+                {{ .Name }}
+        {{ end }}
+        </select>
+
+        <label for=time_zone>Time Zone</label>
+        <select id=time_zone name=time_zone>
+        {{ range .Data.TimeZones }}
+            <option value="{{ .Name }}" {{ if eq .Name "UTC" }}selected{{ end }}>
+                {{ . }}
+        {{ end }}
+        </select>
+        <p>
+            <button class="btn green">Save Changes</button>
+    </form>
+</main>

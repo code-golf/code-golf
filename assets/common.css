@@ -455,6 +455,7 @@ thead th {
 }
 
 #profile {
+    font-variant: tabular-nums;
     grid-row-gap: 0;
     grid-template-columns: min-content 1fr;
 }
