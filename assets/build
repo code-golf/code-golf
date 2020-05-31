@@ -26,7 +26,7 @@ my ( %data, %paths );
 
 for (
     sort { $b =~ /\.woff2$/ <=> $a =~ /\.woff2$/ or $a cmp $b }
-    <assets/*.{css,ico,js,woff2}>
+    <assets/*.{css,js,png,woff2}>
 ) {
     say;
 
@@ -36,13 +36,24 @@ for (
 
     my $name = s/\.(\w)/\U$1/r;
 
-    if ( $_ eq 'favicon.ico' ) {
+    if ( $_ eq 'favicon16.png' ) {
         $data{$name} = $data;
 
         print $fh <<'GO';
-	case "/favicon.ico":
-		w.Header().Set("Content-Type", "image/x-icon")
-		w.Write(faviconIco)
+	case "/favicon16.png":
+		w.Header().Set("Content-Type", "image/png")
+		w.Write(favicon16Png)
+GO
+
+        next;
+    }
+    if ( $_ eq 'favicon32.png' ) {
+        $data{$name} = $data;
+
+        print $fh <<'GO';
+	case "/favicon32.png":
+		w.Header().Set("Content-Type", "image/png")
+		w.Write(favicon32Png)
 GO
 
         next;
