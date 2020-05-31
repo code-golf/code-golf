@@ -20,7 +20,10 @@ func Golfer(w http.ResponseWriter, r *http.Request) {
 		Trophies: make([]EarnedTrophy, 0, len(trophies)),
 	}
 
-	tx, err := db(r).BeginTx(r.Context(), &sql.TxOptions{sql.LevelRepeatableRead, true})
+	tx, err := db(r).BeginTx(
+		r.Context(),
+		&sql.TxOptions{Isolation: sql.LevelRepeatableRead, ReadOnly: true},
+	)
 	if err != nil {
 		panic(err)
 	}
