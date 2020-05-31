@@ -37,9 +37,14 @@ func Golfer(w http.ResponseWriter, r *http.Request) {
 	}
 
 	rows, err := tx.Query(
-		`WITH count AS (SELECT trophy, COUNT(*) FROM trophies GROUP BY trophy),
-		     earned AS (SELECT trophy, earned   FROM trophies WHERE user_id = $1)
-		SELECT * FROM count LEFT JOIN earned USING(trophy) ORDER BY count DESC`,
+		`WITH count AS (
+		    SELECT trophy, COUNT(*) FROM trophies GROUP BY trophy
+		), earned AS (
+		    SELECT trophy, earned FROM trophies WHERE user_id = $1
+		)  SELECT *
+		     FROM count
+		LEFT JOIN earned USING(trophy)
+		 ORDER BY count DESC, trophy`,
 		184356,
 	)
 	if err != nil {
