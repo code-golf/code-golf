@@ -72,178 +72,22 @@ progress::-webkit-progress-value { background: var(--blue) }
     </nav>
 
     <div id=trophies>
-        <div class=trophy>
-            <div>👋</div>
-            <h2>Hello, World!</h2>
-            <p>Solve any hole in any language.
-            <p>
-                Won by 2,625 (100%)
-                <progress value=2625 max=2625></progress>
-                🔓 <time datetime="2020-04-21T15:41:02Z" title="2020-04-21T15:41:02Z">
-                    21 Apr 2020
-                </time>
-        </div>
+    {{ $max := .Data.Max }}
 
-        <div class=trophy>
-            <div>💼</div>
-            <h2>Interview Ready</h2>
-            <p>Solve <a href=/fizz-buzz>Fizz Buzz</a> in any language.
+    {{ range .Data.Trophies }}
+        <div class="trophy {{ if not .Earned.Valid }} locked {{ end }}">
+            <div>{{ .Trophy.Emoji }}</div>
+            <h2>{{ .Trophy.Name }}</h2>
+            <p>{{ .Trophy.Description }}
             <p>
-                Won by 1,517 (57%)
-                <progress value=1517 max=2625></progress>
-                🔓 <time datetime="2017-11-12T03:06:32Z" title="2017-11-12T03:06:32Z">
-                    12 Nov 2017
-                </time>
-        </div>
-
-        <div class=trophy>
-            <div>🦥</div>
-            <h2>Slowcoach</h2>
-            <p>Fail an attempt by exceeding the time limit.
-            <p>
-                Won by 661 (25%)
-                <progress value=661 max=2625></progress>
-                🔓 <time datetime="2019-05-10T00:16:44Z" title="2019-05-10T00:16:44Z">
-                    10 May 2019
-                </time>
-        </div>
-
-        <div class=trophy>
-            <div>🐘</div>
-            <h2>ElePHPant in the Room</h2>
-            <p>Solve any hole in PHP.
-            <p>
-                Won by 306 (11%)
-                <progress value=306 max=2625></progress>
-                🔓 <time datetime="2017-07-15T20:13:21Z" title="2017-07-15T20:13:21Z">
-                    15 Jul 2017
-                </time>
-        </div>
-
-        <div class=trophy>
-            <div>⭐</div>
-            <h2>My God, It’s Full of Stars</h2>
-            <p>Star <a href=//github.com/code-golf/code-golf>the Code Golf repository</a>.
-            <p>
-                Won by 232 (8%)
-                <progress value=232 max=2625></progress>
-                🔓 <time datetime="2017-09-19T06:28:32Z" title="2017-09-19T06:28:32Z">
-                    19 Sep 2017
-                </time>
-        </div>
-
-        <div class=trophy>
-            <div>🐉</div>
-            <h2>It’s Over 9000!</h2>
-            <p>Earn over 9,000 points.
-            <p>
-                Won by 185 (7%)
-                <progress value=185 max=2625></progress>
-                🔓 <time datetime="2019-02-10T18:51:08Z" title="2019-02-10T18:51:08Z">
-                    10 Feb 2019
-                </time>
-        </div>
-
-        <div class=trophy>
-            <div>🐍</div>
-            <h2>Ouroboros</h2>
-            <p>Solve <a href=/quine#python>Quine in Python</a>.
-            <p>
-                Won by 183 (7%)
-                <progress value=183 max=2625></progress>
-                🔓 <time datetime="2017-11-08T17:29:10Z" title="2017-11-08T17:29:10Z">
-                    8 Nov 2017
-                </time>
-        </div>
-
-        <div class=trophy>
-            <div>🍺</div>
-            <h2>The Watering Hole</h2>
-            <p>Solve your nineteenth hole.
-            <p>
-                Won by 175 (6%)
-                <progress value=175 max=2625></progress>
-                🔓 <time datetime="2019-02-10T18:15:56Z" title="2019-02-10T18:15:56Z">
-                    10 Feb 2019
-                </time>
-        </div>
-
-        <div class=trophy>
-            <div>🐪</div>
-            <h2>Tim Toady</h2>
-            <p>Solve the same hole in both Perl and Raku.
-            <p>
-                Won by 71 (2%)
-                <progress value=71 max=2625></progress>
-                🔓 <time datetime="2017-07-19T22:28:13Z" title="2017-07-19T22:28:13Z">
-                    19 Jul 2017
-                </time>
-        </div>
-
-        <div class="locked trophy">
-            <div>🎂</div>
-            <h2>Happy Birthday, Code Golf</h2>
-            <p>Solve any hole in any language on <a href=//github.com/code-golf/code-golf/commit/4b44>2 Oct</a>.
-            <p>
-                Won by 30 (1%)
-                <progress value=30 max=2625></progress>
+                Won by {{ comma .Count }} ({{ .Percent }}%)
+                <progress value="{{ .Count }}" max="{{ $max }}"></progress>
+            {{ if .Earned.Valid }}
+                🔓 {{ time .Earned.Value }}
+            {{ else }}
                 <span>🔒 Not Won</span>
+            {{ end }}
         </div>
-
-        <div class=trophy>
-            <div>🔣</div>
-            <h2>Polyglot</h2>
-            <p>Solve at least one hole in every language.
-            <p>
-                Won by 30 (1%)
-                <progress value=30 max=2625></progress>
-                🔓 <time datetime="2018-09-02T16:48:07Z" title="2018-09-02T16:48:07Z">
-                    2 Sep 2018
-                </time>
-        </div>
-
-        <div class=trophy>
-            <div>☕</div>
-            <h2>Caffeinated</h2>
-            <p>Solve the same hole in both Java and JavaScript.
-            <p>
-                Won by 27 (1%)
-                <progress value=27 max=2625></progress>
-                🔓 <time datetime="2020-04-21T15:41:02Z" title="2020-04-21T15:41:02Z">
-                    21 Apr 2020
-                </time>
-        </div>
-
-        <div class="locked trophy">
-            <div>💾</div>
-            <h2>Patches Welcome</h2>
-            <p>Contribute a merged PR to <a href=//github.com/code-golf/code-golf>the Code Golf repository</a>.
-            <p>
-                Won by 14 (0%)
-                <progress value=14 max=2625></progress>
-                <span>🔒 Not Won</span>
-        </div>
-
-        <div class="locked trophy">
-            <div>🧠</div>
-            <h2>Inception</h2>
-            <p>Solve <a href=/brainfuck#brainfuck>Brainfuck in Brainfuck</a>.
-            <p>
-                Won by 4 (0%)
-                <progress value=4 max=2625></progress>
-                <span>🔒 Not Won</span>
-        </div>
+    {{ end }}
     </div>
-<!--
-    <form method=post>
-        <label for=time_zone>Time Zone</label>
-        <select id=time_zone name=time_zone>
-        {{ range .Data }}
-            <option value="{{ .Name }}" {{ if eq .Name "UTC" }}selected{{ end }}>
-                {{ . }}
-        {{ end }}
-        </select>
-        <input type=submit value="Save Changes">
-    </form>
--->
 </main>
