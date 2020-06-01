@@ -41,6 +41,7 @@ func main() {
 	r.Get("/about", routes.About)
 	r.Get("/assets/{asset}", routes.Asset)
 	r.Get("/callback", routes.Callback)
+	r.Get("/favicon.svg", routes.Asset)
 	r.Get("/favicon16.png", routes.Asset)
 	r.Get("/favicon32.png", routes.Asset)
 	r.Get("/feeds/{feed}", routes.Feed)
