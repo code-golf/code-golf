@@ -94,6 +94,8 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		cmd.Args = []string{"/usr/bin/j", "/tmp/code.ijs"}
 	case "julia":
 		cmd.Args = []string{"/usr/bin/run-julia", "/tmp/code.jl"}
+	case "powershell":
+		cmd.Args = []string{"/interpreter/Interpreter", "-"}
 	case "nim":
 		// Pass a dummy argument to work around a nim bug.
 		// See https://github.com/code-golf/code-golf/issues/136

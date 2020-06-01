@@ -99,6 +99,9 @@ say for @ARGV
 php
 while($a = next($argv)) echo "$a\n"
 
+powershell
+$args | Write-Host
+
 python
 import sys
 [print(a) for a in sys.argv[1:]]

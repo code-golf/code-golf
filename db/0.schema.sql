@@ -16,7 +16,7 @@ CREATE TYPE hole AS ENUM (
 CREATE TYPE lang AS ENUM (
     'bash', 'brainfuck', 'c', 'c-sharp', 'f-sharp', 'fortran', 'go', 'haskell',
     'j', 'java', 'javascript', 'julia', 'lisp', 'lua', 'nim', 'perl', 'php',
-    'python', 'raku', 'ruby', 'rust', 'swift'
+    'powershell', 'python', 'raku', 'ruby', 'rust', 'swift'
 );
 
 CREATE TYPE trophy AS ENUM (

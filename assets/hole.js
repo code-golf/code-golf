@@ -17,6 +17,7 @@
 /* include vendor/codemirror-nim.js        */
 /* include vendor/codemirror-perl.js       */
 /* include vendor/codemirror-php.js        */
+/* include vendor/codemirror-powershell.js */
 /* include vendor/codemirror-python.js     */
 /* include vendor/codemirror-raku.js       */
 /* include vendor/codemirror-ruby.js       */
@@ -73,6 +74,9 @@ onload = () => {
         if (previousCode && code != previousCode && (!code ||
             confirm('Your local copy of the code is different than the remote one. Do you want to restore the local version?')))
             cm.setValue(previousCode);
+
+        for (let info of document.querySelectorAll('.info'))
+            info.style.display = info.classList.contains(lang) ? 'block' : '';
     })();
 
     const submit = document.querySelector('#run a').onclick = async () => {
