@@ -51,9 +51,9 @@ GO
         $data{$name} = $data;
 
         print $fh <<'GO';
-    case "/favicon16.png":
-        w.Header().Set("Content-Type", "image/png")
-        w.Write(favicon16Png)
+	case "/favicon16.png":
+		w.Header().Set("Content-Type", "image/png")
+		w.Write(favicon16Png)
 GO
 
         next;
