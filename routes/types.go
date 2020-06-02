@@ -41,6 +41,7 @@ var langs = []Lang{
 	{"nim", "Nim"},
 	{"perl", "Perl"},
 	{"php", "PHP"},
+	{"powershell", "PowerShell"},
 	{"python", "Python"},
 	{"raku", "Raku"},
 	{"ruby", "Ruby"},

@@ -16,7 +16,7 @@ declare -A urls=(
     ["Bash"]="//www.gnu.org/software/bash/"
     ["Brainfuck"]="//github.com/code-golf/code-golf/tree/master/langs/brainfuck/"
     ["C"]="//bellard.org/tcc/"
-    ["C-Sharp"]="//docs.microsoft.com/en-us/dotnet/csharp/"
+    ["C-Sharp"]="//docs.microsoft.com/dotnet/csharp/"
     ["F-Sharp"]="//fsharp.org/"
     ["Fortran"]="//gcc.gnu.org/fortran/"
     ["Go"]="//golang.org"
@@ -30,6 +30,7 @@ declare -A urls=(
     ["Nim"]="//nim-lang.org"
     ["Perl"]="//www.perl.org"
     ["PHP"]="//secure.php.net"
+    ["PowerShell"]="docs.microsoft.com/powershell/scripting/overview"
     ["Python"]="//www.python.org"
     ["Raku"]="//raku.org"
     ["Ruby"]="//www.ruby-lang.org"
@@ -111,7 +112,8 @@ for name in "${sorted_names[@]}"; do
     rm -fr $lang/rootfs/{dev,proc,sys,tmp}
 
     # Nim needs /etc/nim/nim.cfg to exist.
-    if [ $lang != nim ]; then
+    # PowerShell needs /etc/passwd to exist.
+    if [ $lang != nim ] && [ $lang != powershell ]; then
         rm -fr $lang/rootfs/etc
     fi
 

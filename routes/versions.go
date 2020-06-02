@@ -18,6 +18,7 @@ const versionTable = "" +
 	"<tr><th class=nim>Nim<td>1.2.0<td class=wide><a href=//nim-lang.org>website</a>" +
 	"<tr><th class=perl>Perl<td>5.30.3<td class=wide><a href=//www.perl.org>website</a>" +
 	"<tr><th class=php>PHP<td>7.4.6<td class=wide><a href=//secure.php.net>website</a>" +
+	"<tr><th class=powershell>PowerShell<td>PowerShell 7.0.1 on .NET Core 3.1.3<td class=wide><a href=docs.microsoft.com/powershell/scripting/overview>website</a>" +
 	"<tr><th class=python>Python<td>3.8.3<td class=wide><a href=//www.python.org>website</a>" +
 	"<tr><th class=raku>Raku<td>Rakudo 2020.05.1 on MoarVM 2020.05 implementing Raku 6.d<td class=wide><a href=//raku.org>website</a>" +
 	"<tr><th class=ruby>Ruby<td>2.7.1<td class=wide><a href=//www.ruby-lang.org>website</a>" +

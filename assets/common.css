@@ -228,6 +228,15 @@ thead th {
     grid-gap: 1rem;
 }
 
+.info {
+    background: #fffbdd;
+    display: none;
+    padding: 5px;
+    border: 1px solid #222;
+    color: #222;
+    margin-top: 10px;
+}
+
 /* TODO Need a dark version */
 .me { background: var(--blue) !important }
 
@@ -381,6 +390,7 @@ thead th {
 #matrix input.nim:not(:checked)        ~ .nim,
 #matrix input.perl:not(:checked)       ~ .perl,
 #matrix input.php:not(:checked)        ~ .php,
+#matrix input.powershell:not(:checked) ~ .powershell,
 #matrix input.python:not(:checked)     ~ .python,
 #matrix input.raku:not(:checked)       ~ .raku,
 #matrix input.ruby:not(:checked)       ~ .ruby,
@@ -417,7 +427,7 @@ thead th {
     }
     #matrix {
         /* Increase this number when adding a language. */
-        grid-template-columns: 4fr repeat(22,1fr);
+        grid-template-columns: 4fr repeat(23,1fr);
     }
     #matrix a {
         display: initial;
