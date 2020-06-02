@@ -19,7 +19,8 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 	db := db(r)
 
 	if err := db.QueryRow(
-		"SELECT COUNT(DISTINCT user_id), COUNT(*) FROM solutions WHERE NOT failing",
+		`SELECT (SELECT COUNT(DISTINCT user_id) FROM trophies),
+		        (SELECT COUNT(*) FROM solutions WHERE NOT failing)`,
 	).Scan(&data.Golfers, &data.Solutions); err != nil {
 		panic(err)
 	}
