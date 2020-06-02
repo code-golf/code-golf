@@ -42,7 +42,7 @@ dev:
 diff-db:
 	@diff --color --label live --label dev --strip-trailing-cr -su    \
 	    <(ssh rancher@code-golf.io "docker run --entrypoint pg_dump   \
-	    --env-file /etc/code-golf.env --rm postgres:11.7-alpine -Os") \
+	    --env-file /etc/code-golf.env --rm postgres:11.8-alpine -Os") \
 	    <(docker-compose exec db pg_dump -OsU postgres code-golf)
 
 fmt:
