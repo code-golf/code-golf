@@ -2,9 +2,9 @@ FROM alpine:3.11 as builder
 
 RUN apk add --no-cache build-base curl perl
 
-RUN curl http://www.cpan.org/src/5.0/perl-5.30.2.tar.xz | tar xJf -
+RUN curl http://www.cpan.org/src/5.0/perl-5.30.3.tar.xz | tar xJf -
 
-RUN cd perl-5.30.2                                   \
+RUN cd perl-5.30.3                                   \
  && sed -i s/error=// cflags.SH                      \
  && sed -E 's/qw\(\)/"say"/' regen/feature.pl | perl \
  && ./Configure                                      \
@@ -21,6 +21,6 @@ RUN cd perl-5.30.2                                   \
 
 FROM scratch
 
-COPY --from=0 /perl-5.30.2/miniperl /usr/bin/perl
+COPY --from=0 /perl-5.30.3/miniperl /usr/bin/perl
 
 ENTRYPOINT ["/usr/bin/perl", "-e", "say substr $^V, 1"]
