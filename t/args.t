@@ -100,7 +100,7 @@ php
 while($a = next($argv)) echo "$a\n"
 
 powershell
-$args | Write-Host
+$args
 
 python
 import sys
