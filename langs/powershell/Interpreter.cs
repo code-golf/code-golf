@@ -8,11 +8,6 @@ class Program
 {
 	static int Main(string[] args)
 	{
-		if (args.Length == 0)
-		{
-			Console.Error.WriteLine("Arguments required.");
-			return 1;
-		}
 		if (args.Length > 0 && args[0] == "--version")
 		{
 			string version;
@@ -25,11 +20,16 @@ class Program
 			return 0;
 		}
 
-		var code = args[0] == "-" ? Console.In.ReadToEnd() : File.ReadAllText(args[0]);
-		return Run(code, args[1..]);
+		var requireExplicitOutput = args.Length > 0 && args[0] == "--explicit";
+		if (requireExplicitOutput)
+		{
+			args = args[1..];
+		}
+
+		return Run(Console.In.ReadToEnd(), args, requireExplicitOutput);
 	}
 
-	static int Run(string code, string[] args)
+	static int Run(string code, string[] args, bool requireExplicitOutput)
 	{
 		var state = InitialSessionState.CreateDefault();
 		using (var runspace = RunspaceFactory.CreateRunspace(state))
@@ -45,9 +45,14 @@ class Program
 					powerShell.AddArgument(arg);
 				}
 
-				// Ignore the results of invoking the script. This requires explicit output to be
-				// used and prevents a two character Quine solution.
-				powerShell.Invoke();
+				var results = powerShell.Invoke();
+				if (!requireExplicitOutput)
+				{
+					foreach (var item in results)
+					{
+						Console.WriteLine(item);
+					}
+				}
 
 				foreach (var item in powerShell.Streams.Information)
 				{
