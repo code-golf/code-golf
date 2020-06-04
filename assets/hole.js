@@ -39,8 +39,7 @@ let latestSubmissionID = 0;
 
 onload = () => {
     if (hole != 'quine')
-        for (let info of document.querySelectorAll('.quine'))
-            info.parentNode.removeChild(info);
+        document.querySelectorAll('.quine').forEach(e => e.remove());
 
     // Lock the editor's height in so we scroll.
     editor.style.height = `${editor.offsetHeight}px`;
