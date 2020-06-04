@@ -95,7 +95,11 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	case "julia":
 		cmd.Args = []string{"/usr/bin/run-julia", "/tmp/code.jl"}
 	case "powershell":
-		cmd.Args = []string{"/interpreter/Interpreter", "-"}
+		cmd.Args = []string{"/interpreter/Interpreter"}
+		if holeID == "quine" {
+			// Require explicit output for the Quine hole to prevent trivial solutions.
+			cmd.Args = append(cmd.Args, "--explicit")
+		}
 	case "nim":
 		// Pass a dummy argument to work around a nim bug.
 		// See https://github.com/code-golf/code-golf/issues/136

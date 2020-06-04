@@ -38,6 +38,10 @@ let lang;
 let latestSubmissionID = 0;
 
 onload = () => {
+    if (hole != 'quine')
+        for (let info of document.querySelectorAll('.quine'))
+            info.parentNode.removeChild(info);
+
     // Lock the editor's height in so we scroll.
     editor.style.height = `${editor.offsetHeight}px`;
 
