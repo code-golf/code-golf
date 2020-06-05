@@ -23,7 +23,7 @@ var atomFeed, jsonFeed, rssFeed []byte
 // c1503f7 initial
 func init() {
 	feed := feeds.Feed{
-		Link:  &feeds.Link{Href: "https://code-golf.io/"},
+		Link:  &feeds.Link{Href: "https://code.golf/"},
 		Title: "Code Golf",
 	}
 
@@ -92,7 +92,7 @@ func init() {
 		{"c5468f0", "2017-06-12 23:34:47", "Raku", false},
 		{"8029a96", "2017-05-08 23:06:22", "Ruby", false},
 	} {
-		link := "https://code-golf.io/"
+		link := "https://code.golf/"
 
 		if !i.hole {
 			link += "scores/all-holes/"

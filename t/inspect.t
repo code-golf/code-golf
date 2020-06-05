@@ -40,7 +40,7 @@ like { run('say slurp "/proc/self/status"') =~ /(.+):\s*(.*)/g } => {
 
 sub run {
     my $res = ( state $ua = HTTP::Tiny->new )->post(
-        'https://code-golf.io/solution',
+        'https://code.golf/solution',
         { content => encode_json { Code => $_[0], Hole => 'π', Lang => 'raku' } },
     );
 

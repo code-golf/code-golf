@@ -3,7 +3,7 @@ use JSON::PP;
 use Test2::V0;
 
 my $res = HTTP::Tiny->new->post(
-    'https://code-golf.io/solution',
+    'https://code.golf/solution',
     {   content => encode_json {
             Code => 'sleep 8',
             Hole => 'fizz-buzz',

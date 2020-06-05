@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Update the local code-golf database with information from code-golf.io.
+"""Update the local code-golf database with information from code.golf.
 Instead of storing the actual solution code, store 'a' * strokes.
 This is helpful for working on features that affect the apperance of the
 leaderboards, users page, recent page, and more.
@@ -16,7 +16,7 @@ import pg8000
 
 
 def _main():
-    text = requests.get('https://code-golf.io/scores/all-holes/all-langs/all').content.decode()
+    text = requests.get('https://code.golf/scores/all-holes/all-langs/all').content.decode()
     data = json.loads(text)
 
     users = []

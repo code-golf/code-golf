@@ -3,7 +3,7 @@ use JSON::PP;
 use Test2::V0;
 
 my $res = HTTP::Tiny->new->post(
-    'https://code-golf.io/solution',
+    'https://code.golf/solution',
     {   content => encode_json {
             Code => 'say "a" x 1024 and say STDERR "b" x 1024 for 0..128',
             Hole => 'fizz-buzz',

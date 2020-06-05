@@ -25,11 +25,11 @@ cert:
 
 .PHONY: db
 db:
-	@ssh -t rancher@code-golf.io \
+	@ssh -t rancher@code.golf \
 	docker run -it --entrypoint psql --env-file /etc/code-golf.env --rm postgres
 
 db-admin:
-	@ssh -t rancher@code-golf.io \
+	@ssh -t rancher@code.golf \
 	docker run -it --entrypoint psql --env-file /etc/code-golf.env --rm postgres -WU doadmin
 
 deps:
@@ -41,7 +41,7 @@ dev:
 
 diff-db:
 	@diff --color --label live --label dev --strip-trailing-cr -su    \
-	    <(ssh rancher@code-golf.io "docker run --entrypoint pg_dump   \
+	    <(ssh rancher@code.golf "docker run --entrypoint pg_dump      \
 	    --env-file /etc/code-golf.env --rm postgres:11.8-alpine -Os") \
 	    <(docker-compose exec db pg_dump -OsU postgres code-golf)
 
@@ -71,7 +71,7 @@ live:
 
 	@docker push codegolf/code-golf
 
-	@ssh rancher@code-golf.io "           \
+	@ssh rancher@code.golf "              \
 	    docker pull codegolf/code-golf && \
 	    docker stop code-golf;            \
 	    docker rm code-golf;              \
@@ -94,7 +94,7 @@ live:
 	    codegolf/code-golf"
 
 logs:
-	@ssh rancher@code-golf.io docker logs -f code-golf
+	@ssh rancher@code.golf docker logs -f code-golf
 
 test:
 # FIXME Stub out assets if it doesn't yet exist.

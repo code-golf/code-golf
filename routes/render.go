@@ -130,7 +130,7 @@ func render(
 		// Shallow copy because we want to modify a string.
 		config := config
 
-		config.RedirectURL = "https://code-golf.io/callback?redirect_uri=" +
+		config.RedirectURL = "https://code.golf/callback?redirect_uri=" +
 			url.QueryEscape(r.RequestURI)
 
 		// TODO State is a token to protect the user from CSRF attacks.

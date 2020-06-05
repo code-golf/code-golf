@@ -11,7 +11,7 @@ for ( map [ split /\n/, $_, 2 ], <DATA> ) {
     @run{qw/Lang Code Hole/} = ( @$_, 'rock-paper-scissors-spock-lizard' );
 
     my $res = ( state $ua = HTTP::Tiny->new )->post(
-        'https://code-golf.io/solution', { content => encode_json \%run } );
+        'https://code.golf/solution', { content => encode_json \%run } );
 
     die $res->{content} unless $res->{success};
 

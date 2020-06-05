@@ -68,7 +68,7 @@ constant @langs = (
 
 constant $len = @langs[0, 3 … *]».chars.max;
 
-my %current = (get('https://code-golf.io/about') ~~ m:g/
+my %current = (get('https://code.golf/about') ~~ m:g/
     '<tr><th' .+? '>' (.+?) '<' .*? (<[\d+.]> ** 2..*)
 /)».list.flat».Str.Hash;
 

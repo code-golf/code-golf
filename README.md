@@ -1,6 +1,6 @@
 # Code Golf
 
-This is the repository behind https://code-golf.io
+This is the repository behind https://code.golf
 
 ## Quickstart
 
@@ -39,7 +39,7 @@ $ ./build-langs --pull
 $ make dev
 ```
 
-6. Optionally, load information from the code-golf.io database.
+6. Optionally, load information from the code.golf database.
 ```
 pip install -r utils/requirements.txt
 utils/update_sql_from_api.py

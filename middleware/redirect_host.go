@@ -5,7 +5,7 @@ import (
 	"syscall"
 )
 
-var host = "code-golf.io"
+var host = "code.golf"
 
 func init() {
 	if _, dev := syscall.Getenv("DEV"); dev {
