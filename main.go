@@ -76,9 +76,11 @@ func main() {
 	})
 
 	certManager := autocert.Manager{
-		Cache:      autocert.DirCache("certs"),
-		Prompt:     autocert.AcceptTOS,
-		HostPolicy: autocert.HostWhitelist("code-golf.io", "www.code-golf.io"),
+		Cache:  autocert.DirCache("certs"),
+		Prompt: autocert.AcceptTOS,
+		HostPolicy: autocert.HostWhitelist(
+			"code-golf.io", "code.golf", "www.code-golf.io", "www.code.golf",
+		),
 	}
 
 	server := &http.Server{
