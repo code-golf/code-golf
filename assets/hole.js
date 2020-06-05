@@ -178,6 +178,13 @@ async function refreshScores() {
                 <img src="//avatars.githubusercontent.com/${s.login}?s=24">${s.login}
             </a>
             <td class=right>${s.strokes.toLocaleString('en')}` : '<tr><td colspan=3>&nbsp;';
+
+        // If the user's solution is from before the powershell change (b79e88ca)
+        if (lang == 'powershell' && hole != 'quine' && s.me && s.submitted < '2020-06-04T19:56:49') {
+            const info = document.querySelector('.info.special');
+            info.innerHTML = '<b>Write-Host</b> is no longer required for output.';
+            info.style.display = 'block';
+        }
     }
 
     table.innerHTML = html;

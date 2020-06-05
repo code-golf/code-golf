@@ -20,7 +20,8 @@ func scoresMini(w http.ResponseWriter, r *http.Request) {
 		           RANK()       OVER (ORDER BY LENGTH(code)),
 		           user_id,
 		           LENGTH(code) strokes,
-		           user_id = $1 me
+		           user_id = $1 me,
+		           submitted
 		      FROM solutions
 		     WHERE hole = $2
 		       AND lang = $3
@@ -29,7 +30,8 @@ func scoresMini(w http.ResponseWriter, r *http.Request) {
 		    SELECT rank,
 		           login,
 		           me,
-		           strokes
+		           strokes,
+		           submitted
 		      FROM leaderboard
 		      JOIN users on user_id = id
 		     WHERE row_number >
