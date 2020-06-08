@@ -8,7 +8,7 @@ const versionTable = "" +
 	"<tr><th class=fortran>Fortran<td>9.3.0<td class=wide><a href=//gcc.gnu.org/fortran/>website</a>" +
 	"<tr><th class=f-sharp>F#<td>F# Compiler 10.9.1.0 for F# 4.7 on .NET Core 3.1.4<td class=wide><a href=//fsharp.org/>website</a>" +
 	"<tr><th class=go>Go<td>1.14.4<td class=wide><a href=//golang.org>website</a>" +
-	"<tr><th class=haskell>Haskell<td>Glasgow Haskell Compiler 8.6.5<td class=wide><a href=//www.haskell.org/ghc/>website</a>" +
+	"<tr><th class=haskell>Haskell<td>Glasgow Haskell Compiler 8.8.3<td class=wide><a href=//www.haskell.org/ghc/>website</a>" +
 	"<tr><th class=j>J<td>8.07.07<td class=wide><a href=//www.jsoftware.com>website</a>" +
 	"<tr><th class=java>Java<td>14.0.1+7<td class=wide><a href=//openjdk.java.net>website</a>" +
 	"<tr><th class=javascript>JavaScript<td>V8 7.4.51<td class=wide><a href=//v8.dev>website</a>" +
