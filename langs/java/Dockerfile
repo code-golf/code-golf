@@ -4,7 +4,7 @@ RUN jlink --compress=2 --module-path /opt/java/openjdk/jmods \
     --add-modules java.base,jdk.compiler \
     --output /jlinked
 
-FROM alpine:3.11 as bashhelper
+FROM alpine:3.12 as bashhelper
 
 RUN apk add --no-cache bash
 

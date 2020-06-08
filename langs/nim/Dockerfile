@@ -1,4 +1,4 @@
-FROM alpine:3.11 as builder
+FROM alpine:3.12 as builder
 
 RUN apk add -X http://dl-cdn.alpinelinux.org/alpine/edge/testing --no-cache \
     curl gcc musl-dev nim tcc

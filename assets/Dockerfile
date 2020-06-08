@@ -1,4 +1,4 @@
-FROM alpine:3.11
+FROM alpine:3.12
 
 RUN apk add --no-cache bash curl g++ make musl-dev nodejs-npm openjdk8-jre perl
 
