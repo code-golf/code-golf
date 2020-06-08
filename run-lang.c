@@ -12,7 +12,10 @@
 #include <unistd.h>
 
 // Not defined in alpine yet :-(
-#define __NR_clone3 435
+#define __NR_pidfd_open  434
+#define __NR_clone3      435
+#define __NR_openat2     437
+#define __NR_pidfd_getfd 438
 
 #define ALLOW(name) \
     BPF_JUMP(BPF_JMP+BPF_JEQ+BPF_K, __NR_##name, 0, 1), \
@@ -91,6 +94,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(name_to_handle_at), // 303
         ALLOW(open),              // 2
         ALLOW(openat),            // 257
+        ALLOW(openat2),           // 437
         ALLOW(open_by_handle_at), // 304
         ALLOW(rename),            // 82
         ALLOW(renameat2),         // 316
@@ -187,12 +191,15 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(syncfs),          // 306
 
         // Asynchronous I/O
-        ALLOW(io_pgetevents), // 333
-        ALLOW(io_cancel),     // 210
-        ALLOW(io_destroy),    // 207
-        ALLOW(io_getevents),  // 208
-        ALLOW(io_setup),      // 206
-        ALLOW(io_submit),     // 209
+        ALLOW(io_pgetevents),        // 333
+        ALLOW(io_cancel),            // 210
+        ALLOW(io_destroy),           // 207
+        ALLOW(io_getevents),         // 208
+        ALLOW(io_setup),             // 206
+        ALLOW(io_submit),            // 209
+        // ALLOW(io_uring_enter),    // 426
+        // ALLOW(io_uring_register), // 427
+        // ALLOW(io_uring_setup),    // 425
 
         // Multiplexed I/O
         ALLOW(epoll_create),  // 213
@@ -306,9 +313,11 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(waitid),     // 247
 
         // Process ID
-        ALLOW(getpid),  // 39
-        ALLOW(getppid), // 110
-        ALLOW(gettid),  // 186
+        ALLOW(getpid),      // 39
+        ALLOW(getppid),     // 110
+        ALLOW(gettid),      // 186
+        ALLOW(pidfd_getfd), // 438
+        ALLOW(pidfd_open),  // 434
 
         // Session ID
         ALLOW(getsid), // 124
@@ -423,10 +432,11 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(sigaltstack),       // 131
 
         // File Descriptor Based Signals
-        ALLOW(eventfd2),  // 290
-        ALLOW(eventfd),   // 284
-        ALLOW(signalfd),  // 282
-        ALLOW(signalfd4), // 289
+        ALLOW(eventfd),           // 284
+        ALLOW(eventfd2),          // 290
+        ALLOW(pidfd_send_signal), // 424
+        ALLOW(signalfd),          // 282
+        ALLOW(signalfd4),         // 289
 
         // Miscellaneous
         ALLOW(restart_syscall), // 219
@@ -512,8 +522,14 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         // ALLOW(quotactl), // 179
 
         // Filesystem (privileged)
+        // ALLOW(fsconfig),   // 431
+        // ALLOW(fsmount),    // 432
+        // ALLOW(fsopen),     // 430
+        // ALLOW(fspick),     // 433
         // ALLOW(mount),      // 165
+        // ALLOW(move_mount), // 429
         // ALLOW(nfsservctl), // 180
+        // ALLOW(open_tree),  // 428
         // ALLOW(pivot_root), // 155
         // ALLOW(swapoff),    // 168
         // ALLOW(swapon),     // 167
