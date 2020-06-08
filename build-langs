@@ -42,8 +42,6 @@ IFS=$'\n'
 sorted_names=( $(sort --ignore-case <<<"${!urls[*]}") )
 unset IFS
 
-docker pull alpine:3.11
-
 cd langs
 
 for name in "${sorted_names[@]}"; do
@@ -59,7 +57,7 @@ for name in "${sorted_names[@]}"; do
         docker pull $img
     else
         # Tag the builder stage so "docker system prune" won't remove it.
-        docker build --target builder -t $img-builder $lang
+        docker build --pull --target builder -t $img-builder $lang
 
         docker build -t $img $lang
     fi
