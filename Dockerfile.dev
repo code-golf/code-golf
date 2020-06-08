@@ -1,6 +1,8 @@
-FROM golang:1.14.4
+FROM golang:1.14.4-alpine3.12
 
 ENV CGO_ENABLED=0 GOPATH= TZ=Europe/London
+
+RUN apk add --no-cache build-base git linux-headers tzdata
 
 RUN GOBIN=/bin go get github.com/cespare/reflex
 
