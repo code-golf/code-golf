@@ -88,7 +88,7 @@ for name in "${sorted_names[@]}"; do
     ver=${ver//version /}
     ver=${ver%.}
     ver=${ver% d8> }
-    ver=${ver%  Copyright (C) 1994-2019 Lua.org, PUC-Rio}
+    ver=${ver%  Copyright (C) 1994-2020 Lua.org, PUC-Rio}
     ver=${ver/) OpenJDK*/}
     ver=${ver/*AdoptOpenJDK (build /}
     ver=${ver/Microsoft (R) /}
