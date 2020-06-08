@@ -97,7 +97,7 @@ for name in "${sorted_names[@]}"; do
     ver=${ver/ (*/}
     ver=${ver/ Copyright/}
 
-    display=${name/-Sharp/#}    
+    display=${name/-Sharp/#}
 
     html+="+
         \"<tr><th class=$lang>$display<td>$ver<td class=wide><a href=${urls[$name]}>website</a>\""
