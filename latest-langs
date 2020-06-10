@@ -38,7 +38,7 @@ constant @langs = (
     / 'versions.html' .+? '>Lua ' (<[\d.]>+) /,
 
     'Nim',
-    'https://nim-lang.org',
+    'https://nim-lang.org/blog.html',
     / 'Version ' (<[\d.]>+) /,
 
     'Perl',
