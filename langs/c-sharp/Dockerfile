@@ -1,14 +1,12 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1.300-alpine3.11 as builder
 
+ENV NUGET_VERSION=3.6.0-4.final
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 WORKDIR /source
 COPY Compiler.csproj Compiler.cs /source/
 
-# Note: the ReadyToRun optimization process failed for earlier versions
-# of the CSharp package.
-RUN /usr/bin/dotnet add package Microsoft.CodeAnalysis.CSharp -v 3.6.0-3.final
-
+RUN /usr/bin/dotnet add package Microsoft.CodeAnalysis.CSharp -v $NUGET_VERSION
 RUN /usr/bin/dotnet publish --runtime alpine.3.11-x64 -c Release -o /compiler
 
 RUN mkdir /empty

@@ -6,6 +6,10 @@ use Cro::HTTP::Client;
 # https://hub.docker.com/_/microsoft-dotnet-core-sdk/
 # https://mcr.microsoft.com/v2/dotnet/core/sdk/tags/list
 # The version string from code-golf contains the SDK version.
+# Check these pages for NuGet versions:
+# https://www.nuget.org/packages/FSharp.Compiler.Service/
+# https://www.nuget.org/packages/System.Management.Automation/
+# https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp/
 
 constant @langs = (
     'C',

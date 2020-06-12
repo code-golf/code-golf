@@ -52,9 +52,12 @@ let main args =
         fprintfn stderr "Arguments required."
         1
     elif args.[0] = "--version" then
-        let info = File.ReadAllText "/compiler/version.txt"
+        let assembly = Assembly.Load "FSharp.Compiler.Service"
+        let versionType = assembly.GetType "FSharp.Compiler.Features+LanguageVersion"
+        let field = versionType.GetField("latestVersion", BindingFlags.Static ||| BindingFlags.NonPublic)
+        let version = field.GetValue null :?> decimal
         let framework = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription
-        printfn "%s on %s" (info.Trim()) framework
+        printfn "F# %s on %s" (version.ToString "g") framework
         0
     else
         let codeFile = "/tmp/Code.fs"

@@ -6,7 +6,7 @@ const versionTable = "" +
 	"<tr><th class=c>C<td>Tiny C Compiler 0.9.27<td class=wide><a href=//bellard.org/tcc/>website</a>" +
 	"<tr><th class=c-sharp>C#<td>C# 8.0 on .NET Core 3.1.4<td class=wide><a href=//docs.microsoft.com/dotnet/csharp/>website</a>" +
 	"<tr><th class=fortran>Fortran<td>9.3.0<td class=wide><a href=//gcc.gnu.org/fortran/>website</a>" +
-	"<tr><th class=f-sharp>F#<td>F# Compiler 10.9.1.0 for F# 4.7 on .NET Core 3.1.4<td class=wide><a href=//fsharp.org/>website</a>" +
+	"<tr><th class=f-sharp>F#<td>F# 4.7 on .NET Core 3.1.4<td class=wide><a href=//fsharp.org/>website</a>" +
 	"<tr><th class=go>Go<td>1.14.4<td class=wide><a href=//golang.org>website</a>" +
 	"<tr><th class=haskell>Haskell<td>Glasgow Haskell Compiler 8.8.3<td class=wide><a href=//www.haskell.org/ghc/>website</a>" +
 	"<tr><th class=j>J<td>8.07.07<td class=wide><a href=//www.jsoftware.com>website</a>" +
@@ -18,7 +18,7 @@ const versionTable = "" +
 	"<tr><th class=nim>Nim<td>1.2.0<td class=wide><a href=//nim-lang.org>website</a>" +
 	"<tr><th class=perl>Perl<td>5.30.3<td class=wide><a href=//www.perl.org>website</a>" +
 	"<tr><th class=php>PHP<td>7.4.6<td class=wide><a href=//secure.php.net>website</a>" +
-	"<tr><th class=powershell>PowerShell<td>PowerShell 7.0.1 on .NET Core 3.1.4<td class=wide><a href=//docs.microsoft.com/powershell/scripting/overview>website</a>" +
+	"<tr><th class=powershell>PowerShell<td>PowerShell 7.0.2 on .NET Core 3.1.4<td class=wide><a href=//docs.microsoft.com/powershell/scripting/overview>website</a>" +
 	"<tr><th class=python>Python<td>3.8.3<td class=wide><a href=//www.python.org>website</a>" +
 	"<tr><th class=raku>Raku<td>Rakudo 2020.05.1 on MoarVM 2020.05 implementing Raku 6.d<td class=wide><a href=//raku.org>website</a>" +
 	"<tr><th class=ruby>Ruby<td>2.7.1<td class=wide><a href=//www.ruby-lang.org>website</a>" +

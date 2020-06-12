@@ -1,18 +1,17 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1.300-alpine3.11 as builder
 
+ENV NUGET_VERSION=7.0.2
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 WORKDIR /source
 COPY Interpreter.csproj Interpreter.cs /source/
 
-ENV VERSION=7.0.1
-
-RUN /usr/bin/dotnet add package System.Management.Automation -v $VERSION
-RUN /usr/bin/dotnet add package Microsoft.PowerShell.Commands.Diagnostics -v $VERSION
-RUN /usr/bin/dotnet add package Microsoft.PowerShell.Commands.Management -v $VERSION
-RUN /usr/bin/dotnet add package Microsoft.PowerShell.Commands.Utility -v $VERSION
-RUN /usr/bin/dotnet add package Microsoft.PowerShell.ConsoleHost -v $VERSION
-RUN /usr/bin/dotnet add package Microsoft.WSMan.Management -v $VERSION
+RUN /usr/bin/dotnet add package System.Management.Automation -v $NUGET_VERSION
+RUN /usr/bin/dotnet add package Microsoft.PowerShell.Commands.Diagnostics -v $NUGET_VERSION
+RUN /usr/bin/dotnet add package Microsoft.PowerShell.Commands.Management -v $NUGET_VERSION
+RUN /usr/bin/dotnet add package Microsoft.PowerShell.Commands.Utility -v $NUGET_VERSION
+RUN /usr/bin/dotnet add package Microsoft.PowerShell.ConsoleHost -v $NUGET_VERSION
+RUN /usr/bin/dotnet add package Microsoft.WSMan.Management -v $NUGET_VERSION
 
 RUN /usr/bin/dotnet publish --runtime alpine.3.11-x64 -c Release -o /interpreter
 
