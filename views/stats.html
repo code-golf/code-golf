@@ -1,29 +1,58 @@
 {{ template "header" . }}
 
+<style nonce="{{ .Nonce }}">
+table {
+    grid-column: span 2;
+    table-layout: fixed;
+    width: 100%;
+}
+
+td, th {
+    max-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#stats {
+    align-items: start;
+}
+</style>
+
 <main id=stats>
     <h1 class=span>Statistics</h1>
-    <div>
-        <h2>Langs</h2>
-        {{ .Data.Langs }}
-    </div>
-    <div>
-        <h2>Holes</h2>
-        {{ .Data.Holes }}
-    </div>
-    <div>
-        <h2>Golfers</h2>
-        {{ comma .Data.Golfers }}
-    </div>
-    <div>
-        <h2>Solutions</h2>
-        {{ comma .Data.Solutions }}
-    </div>
+
+    <div><h2>Langs</h2>{{ .Data.Langs }}</div>
+    <div><h2>Holes</h2>{{ .Data.Holes }}</div>
+    <div><h2>Golfers</h2>{{ comma .Data.Golfers }}</div>
+    <div><h2>Solutions</h2>{{ comma .Data.Solutions }}</div>
+
     <div class=pie>
         <h2 class=span>Solutions by Holes</h2>
         {{ .Data.SolutionsByHole.HTML }}
     </div>
+
     <div class=pie>
         <h2 class=span>Solutions by Langs</h2>
         {{ .Data.SolutionsByLang.HTML }}
     </div>
+
+{{ range .Data.Tables }}
+    <table>
+        <thead>
+            <tr>
+                <th>{{ .Fact }}
+                <th class=right>Solutions
+                <th class=right>Golfers
+                <th class=right>Per Golfer
+        <tbody>
+        {{ range .Rows }}
+            <tr>
+                <td>{{ .Fact }}
+                <td class=right>{{ comma .Count }}
+                <td class=right>{{ comma .Golfers }}
+                <td class=right>{{ .PerGolfer }}
+        {{ end }}
+    </table>
+{{ end }}
 </main>

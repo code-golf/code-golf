@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/code-golf/code-golf/pie"
@@ -8,12 +9,24 @@ import (
 
 // Stats serves GET /stats
 func Stats(w http.ResponseWriter, r *http.Request) {
+	type row struct {
+		Count, Golfers  int
+		Fact, PerGolfer string
+	}
+
+	type table struct {
+		Fact string
+		Rows []row
+	}
+
 	data := struct {
 		Golfers, Holes, Langs, Solutions int
 		SolutionsByHole, SolutionsByLang pie.Pie
+		Tables                           []table
 	}{
-		Holes: len(holes),
-		Langs: len(langs),
+		Holes:  len(holes),
+		Langs:  len(langs),
+		Tables: []table{{Fact: "Hole"}, {Fact: "Language"}},
 	}
 
 	db := db(r)
@@ -25,7 +38,7 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	for _, fact := range [...]string{"hole", "lang"} {
+	for i, fact := range [...]string{"hole", "lang"} {
 		rows, err := db.Query(
 			`WITH top AS (
 			    SELECT ` + fact + `, ` + fact + `::text txt, COUNT(*)
@@ -39,7 +52,7 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 			SELECT 'Other' txt,
 			       COUNT(*)
 			  FROM solutions
-			 WHERE NOT FAILING
+			 WHERE NOT failing
 			   AND ` + fact + ` NOT IN (SELECT ` + fact + ` FROM top)`,
 		)
 		if err != nil {
@@ -68,10 +81,46 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 			slices = append(slices, slice)
 		}
 
+		if err := rows.Err(); err != nil {
+			panic(err)
+		}
+
 		if fact == "hole" {
 			data.SolutionsByHole = pie.New(slices)
 		} else {
 			data.SolutionsByLang = pie.New(slices)
+		}
+
+		rows, err = db.Query(
+			` SELECT ` + fact + `, COUNT(*), COUNT(DISTINCT user_id)
+			    FROM solutions
+			   WHERE NOT failing
+			GROUP BY ` + fact,
+		)
+		if err != nil {
+			panic(err)
+		}
+
+		for rows.Next() {
+			var row row
+
+			if err := rows.Scan(&row.Fact, &row.Count, &row.Golfers); err != nil {
+				panic(err)
+			}
+
+			if fact == "hole" {
+				row.Fact = holeByID[row.Fact].Name
+			} else {
+				row.Fact = langByID[row.Fact].Name
+			}
+
+			row.PerGolfer = fmt.Sprintf("%.2f", float64(row.Count)/float64(row.Golfers))
+
+			data.Tables[i].Rows = append(data.Tables[i].Rows, row)
+		}
+
+		if err := rows.Err(); err != nil {
+			panic(err)
 		}
 	}
 
