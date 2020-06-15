@@ -1,6 +1,12 @@
 [run]
 skip-files = ['routes/assets.go']
 
+# SA1029 – Inappropriate key in call to context.WithValue
+# https://staticcheck.io/docs/checks#SA1029
+[[issues.exclude-rules]]
+linters = 'staticcheck'
+text    = 'SA1029:'
+
 # TODO stylecheck once assets is annihilated.
 [linters]
 disable-all = true
