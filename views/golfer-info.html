@@ -1,0 +1,103 @@
+<style nonce="{{ .Nonce }}">
+h1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+main {
+    grid-gap: 0;
+    padding: 0;
+}
+
+.nav {
+    background: var(--background);
+    border-bottom: 2px solid var(--color);
+    padding: 1rem 1rem 0;
+    position: sticky;
+    top: 2.75rem;
+}
+
+.nav a {
+    display: inline-flex;
+    font-weight: bold;
+}
+
+.nav span { margin-left: .5rem }
+
+#badges {
+    display: flex;
+    flex-wrap: wrap;
+    font-weight: bold;
+    margin-bottom: -.25rem;
+    padding: .75rem .75rem 0;
+}
+
+#badges div {
+    align-items: center;
+    background: var(--color);
+    display: flex;
+    margin: .25rem;
+}
+
+#badges p { padding: .2rem .5rem }
+
+#badges p:last-child {
+    border: 2px solid var(--color);
+    border-left: 0;
+}
+
+#profile {
+    grid-template-rows: min-content 1fr min-content;
+    padding: 1rem 1rem 0;
+}
+
+#profile img { grid-row: span 3 }
+
+#profile p:first-of-type { font-size: 1.25rem }
+</style>
+
+{{ $path := .Path }}
+
+{{ with .Request.Context.Value "golferInfo" }}
+<div class=grid id=profile>
+    <img src="//avatars.githubusercontent.com/{{ .Name }}?s=192">
+    <h1>{{ .Name }}</h1>
+    <p>{{ comma .Points }} points
+    <p>🥇 {{ .Gold }} • 🥈 {{ .Silver }} • 🥉 {{ .Bronze }}
+</div>
+
+<div id=badges>
+{{ if .Admin }}
+    <div><p>🔑 <p class=orange>Admin</div>
+{{ end }}
+
+{{ if .Sponsor }}
+    <div><p>💰 <p class=purple>Sponsor</div>
+{{ end }}
+
+    <div><p>⛳ <p class=red>{{ .Holes }} / 42<!-- TODO --> Holes</div>
+
+    <div><p>🏆 <p class=green>{{ .Trophies }} / 14<!-- TODO --> Trophies</div>
+
+    <div><p>⌛ <p class=blue>Tee off {{ time .TeeOff }}</div>
+</div>
+
+<nav class=nav>
+    {{ $slug := print "/golfers/" .Name }}
+
+    <a {{ if ne $path $slug }} href="{{ $slug }}" {{ end }}>
+        🏆<span>Trophies</span>
+    </a>
+
+    {{ $slug = print $slug "/holes" }}
+
+    <a {{ if ne $path $slug }} href="{{ $slug }}" {{ end }}>
+        ⛳<span>Holes</span>
+    </a>
+
+    <a {{ if ne $path "/settings" }} href="/settings" {{ end }}>
+        🛠️<span>Settings</span>
+    </a>
+</nav>
+{{ end }}

@@ -1,22 +1,7 @@
 {{ template "header" . }}
 
 <style nonce="{{ .Nonce }}">
-main {
-    grid-gap: 0;
-    padding: 0;
-}
-
-main nav {
-    background: var(--background);
-    border-bottom: 2px solid var(--color);
-    padding: 1rem 1rem 0;
-    position: sticky;
-    top: 2.75rem;
-}
-
 #matrix { padding: 1rem }
-
-#profile { padding: 1rem 1rem 0 }
 </style>
 
 <svg id=symbols>
@@ -26,19 +11,7 @@ main nav {
 </svg>
 
 <main>
-    <div class=grid id=profile>
-        <img src="//avatars.githubusercontent.com/JRaspass?s=192">
-        <h1>JRaspass</h1>
-        <p>32,146 points
-        <p>41/42 holes
-        <p>11/14 trophies
-    </div>
-
-    <nav class=nav>
-        <a href="/golfers/JRaspass">Trophies</a>
-        <a>Holes</a>
-        <a href="/settings">Settings</a>
-    </nav>
+    {{ template "golfer-info" . }}
 
     <div id=matrix>
     {{ range .Data }}

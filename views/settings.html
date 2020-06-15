@@ -25,21 +25,6 @@ label {
     white-space: nowrap;
 }
 
-main {
-    grid-gap: 0;
-    padding: 0;
-}
-
-main nav {
-    background: var(--background);
-    border-bottom: 2px solid var(--color);
-    padding: 1rem 1rem 0;
-    position: sticky;
-    top: 2.75rem;
-}
-
-#profile { padding: 1rem 1rem 0 }
-
 @media (max-width: 34rem) {
     form { grid-template-columns: 1fr }
 
@@ -48,19 +33,7 @@ main nav {
 </style>
 
 <main>
-    <div class=grid id=profile>
-        <img src="//avatars.githubusercontent.com/JRaspass?s=192">
-        <h1>JRaspass</h1>
-        <p>32,146 points
-        <p>41/42 holes
-        <p>11/14 trophies
-    </div>
-
-    <nav class=nav>
-        <a href="/golfers/JRaspass">Trophies</a>
-        <a href="/golfers/JRaspass/holes">Holes</a>
-        <a>Settings</a>
-    </nav>
+    {{ template "golfer-info" . }}
 
     <form method=post>
         <label for=default_lang>Default Language</label>

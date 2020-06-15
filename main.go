@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"crypto/tls"
 	"database/sql"
 	"math/rand"
@@ -10,6 +11,7 @@ import (
 
 	"github.com/code-golf/code-golf/cookie"
 	"github.com/code-golf/code-golf/github"
+	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/middleware"
 	"github.com/code-golf/code-golf/routes"
 	"github.com/go-chi/chi"
@@ -43,8 +45,6 @@ func main() {
 	r.Get("/callback", routes.Callback)
 	r.Get("/favicon.ico", routes.Asset)
 	r.Get("/feeds/{feed}", routes.Feed)
-	r.Get("/golfers/{golfer}", routes.Golfer)
-	r.Get("/golfers/{golfer}/holes", routes.GolferHoles)
 	r.Get("/ideas", routes.Ideas)
 	r.Get("/log-out", routes.LogOut)
 	r.Get("/random", routes.Random)
@@ -73,6 +73,22 @@ func main() {
 
 		r.Get("/", routes.Admin)
 		r.Get("/solutions", routes.AdminSolutions)
+	})
+
+	r.Route("/golfers/{name}", func(r chi.Router) {
+		r.Use(func(next http.Handler) http.Handler {
+			return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				if info := golfer.GetInfo(db, chi.URLParam(r, "name")); info != nil {
+					ctx := context.WithValue(r.Context(), "golferInfo", info)
+					next.ServeHTTP(w, r.WithContext(ctx))
+				} else {
+					routes.NotFound(w, r)
+				}
+			})
+		})
+
+		r.Get("/", routes.Golfer)
+		r.Get("/holes", routes.GolferHoles)
 	})
 
 	certManager := autocert.Manager{

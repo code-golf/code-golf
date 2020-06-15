@@ -1,19 +1,6 @@
 {{ template "header" . }}
 
 <style nonce="{{ .Nonce }}">
-main {
-    grid-gap: 0;
-    padding: 0;
-}
-
-main nav {
-    background: var(--background);
-    border-bottom: 2px solid var(--color);
-    padding: 1rem 1rem 0;
-    position: sticky;
-    top: 2.75rem;
-}
-
 progress {
     background: var(--grey);
     border: 0;
@@ -51,25 +38,11 @@ progress::-webkit-progress-value { background: var(--blue) }
 
 .trophy span { color: var(--red) }
 
-#profile { padding: 1rem 1rem 0 }
-
 #trophies { display: grid }
 </style>
 
 <main>
-    <div class=grid id=profile>
-        <img src="//avatars.githubusercontent.com/JRaspass?s=192">
-        <h1>JRaspass</h1>
-        <p>32,146 points
-        <p>41/42 holes
-        <p>11/14 trophies
-    </div>
-
-    <nav class=nav>
-        <a>Trophies</a>
-        <a href="/golfers/JRaspass/holes">Holes</a>
-        <a href="/settings">Settings</a>
-    </nav>
+    {{ template "golfer-info" . }}
 
     <div id=trophies>
     {{ $max := .Data.Max }}
