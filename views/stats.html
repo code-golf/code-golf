@@ -3,15 +3,16 @@
 <style nonce="{{ .Nonce }}">
 table {
     grid-column: span 2;
-    table-layout: fixed;
     width: 100%;
 }
 
-td, th {
+td, th { white-space: nowrap }
+
+td:nth-child(2) {
     max-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    width: 100%;
 }
 
 #stats {
@@ -41,17 +42,19 @@ td, th {
     <table>
         <thead>
             <tr>
+                <th class=wide>#
                 <th>{{ .Fact }}
                 <th class=right>Solutions
                 <th class=right>Golfers
-                <th class=right>Per Golfer
+                <th class="right wide">Per Golfer
         <tbody>
         {{ range .Rows }}
             <tr>
+                <td class=wide>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
                 <td>{{ .Fact }}
                 <td class=right>{{ comma .Count }}
                 <td class=right>{{ comma .Golfers }}
-                <td class=right>{{ .PerGolfer }}
+                <td class="right wide">{{ .PerGolfer }}
         {{ end }}
     </table>
 {{ end }}

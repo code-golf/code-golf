@@ -10,8 +10,8 @@ import (
 // Stats serves GET /stats
 func Stats(w http.ResponseWriter, r *http.Request) {
 	type row struct {
-		Count, Golfers  int
-		Fact, PerGolfer string
+		Count, Golfers, Rank int
+		Fact, PerGolfer      string
 	}
 
 	type table struct {
@@ -45,7 +45,7 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 			      FROM solutions
 			     WHERE NOT failing
 			  GROUP BY ` + fact + `
-			  ORDER BY count DESC
+			  ORDER BY count DESC, ` + fact + `
 			     LIMIT 5
 			) (SELECT txt, count FROM top)
 			    UNION ALL
@@ -92,7 +92,8 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 		}
 
 		rows, err = db.Query(
-			` SELECT ` + fact + `, COUNT(*), COUNT(DISTINCT user_id)
+			` SELECT RANK() OVER (ORDER BY COUNT(*) DESC, ` + fact + `),
+			         ` + fact + `, COUNT(*), COUNT(DISTINCT user_id)
 			    FROM solutions
 			   WHERE NOT failing
 			GROUP BY ` + fact,
@@ -104,7 +105,12 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 		for rows.Next() {
 			var row row
 
-			if err := rows.Scan(&row.Fact, &row.Count, &row.Golfers); err != nil {
+			if err := rows.Scan(
+				&row.Rank,
+				&row.Fact,
+				&row.Count,
+				&row.Golfers,
+			); err != nil {
 				panic(err)
 			}
 
