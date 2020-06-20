@@ -102,13 +102,11 @@ onload = () => {
         if (submissionID != latestSubmissionID)
             return;
 
-        const pass = data.Exp === data.Out && data.Out !== '';
-
-        if (pass && (!(lang in solutions) || strlen(code) <= strlen(solutions[lang])))
+        if (data.Pass && (!(lang in solutions) || strlen(code) <= strlen(solutions[lang])))
             solutions[lang] = code;
 
         document.querySelector('h2').innerText
-            = pass ? 'Pass 😊️' : 'Fail ☹️';
+            = data.Pass ? 'Pass 😊️' : 'Fail ☹️';
 
         // Show args if we have 'em.
         if (data.Argv) {
@@ -129,7 +127,7 @@ onload = () => {
             document.querySelector('#arg').style.display = '';
 
         // Show err if we have some and we're not passing.
-        if (data.Err && !pass) {
+        if (data.Err && !data.Pass) {
             document.querySelector('#err').style.display = 'block';
             document.querySelector('#err div').innerHTML = data.Err.replace(/\n/g, '<br>');
         }
@@ -140,7 +138,7 @@ onload = () => {
         document.querySelector('#exp div').innerText = data.Exp;
         document.querySelector('#out div').innerText = data.Out;
 
-        status.className = pass ? 'green' : 'red';
+        status.className = data.Pass ? 'green' : 'red';
         status.style.display = 'block';
 
         refreshScores();
