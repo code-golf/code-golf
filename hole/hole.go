@@ -30,6 +30,8 @@ func getAnswer(holeID, code string) ([]string, string) {
 		args, answer = arabicToRoman(holeID == "roman-to-arabic")
 	case "brainfuck":
 		args, answer = brainfuck()
+	case "css-colors":
+		args, answer = cssColors()
 	case "lucky-tickets":
 		args, answer = luckyTickets()
 	case "morse-decoder", "morse-encoder":
@@ -169,7 +171,14 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		score.Stdout = bytes.Replace(score.Stdout, []byte("Ⅿ"), []byte("M"), -1)
 	}
 
-	score.Pass = score.Answer == string(score.Stdout) && len(score.Stdout) != 0
+	if len(score.Stdout) != 0 {
+		// TODO Generalise a case insensitve flag, should it apply to others?
+		if holeID == "css-colors" {
+			score.Pass = strings.EqualFold(score.Answer, string(score.Stdout))
+		} else {
+			score.Pass = score.Answer == string(score.Stdout)
+		}
+	}
 
 	return
 }

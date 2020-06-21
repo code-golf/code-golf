@@ -25,6 +25,7 @@ aside > div {
     border: 1px solid var(--color);
     border-left: 0;
     font-family: emoji, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', Courier, monospace;
+    font-variant-ligatures: none;
     height: 140px;
     overflow: auto;
     padding: 5px;

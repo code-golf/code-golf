@@ -2,21 +2,21 @@ CREATE EXTENSION citext;
 
 CREATE TYPE hole AS ENUM (
     '12-days-of-christmas', '99-bottles-of-beer', 'abundant-numbers',
-    'arabic-to-roman', 'brainfuck', 'christmas-trees', 'cubes', 'diamonds',
-    'divisors', 'emirp-numbers', 'evil-numbers', 'fibonacci', 'fizz-buzz',
-    'happy-numbers', 'leap-years', 'lucky-tickets', 'morse-decoder',
-    'morse-encoder', 'niven-numbers', 'odious-numbers', 'ordinal-numbers',
-    'pangram-grep', 'pascals-triangle', 'pernicious-numbers', 'poker',
-    'prime-numbers', 'quine', 'rock-paper-scissors-spock-lizard',
-    'roman-to-arabic', 'rule-110', 'seven-segment', 'sierpiński-triangle',
-    'spelling-numbers', 'sudoku', 'ten-pin-bowling', 'united-states', 'λ',
-    'π', 'τ', 'φ', '√2', '𝑒'
+    'arabic-to-roman', 'brainfuck', 'christmas-trees', 'css-colors', 'cubes',
+    'diamonds', 'divisors', 'emirp-numbers', 'evil-numbers', 'fibonacci',
+    'fizz-buzz', 'happy-numbers', 'leap-years', 'lucky-tickets',
+    'morse-decoder', 'morse-encoder', 'niven-numbers', 'odious-numbers',
+    'ordinal-numbers', 'pangram-grep', 'pascals-triangle',
+    'pernicious-numbers', 'poker', 'prime-numbers', 'quine',
+    'rock-paper-scissors-spock-lizard', 'roman-to-arabic', 'rule-110',
+    'seven-segment', 'sierpiński-triangle', 'spelling-numbers', 'sudoku',
+    'ten-pin-bowling', 'united-states', 'λ', 'π', 'τ', 'φ', '√2', '𝑒'
 );
 
 CREATE TYPE lang AS ENUM (
-    'bash', 'brainfuck', 'c', 'c-sharp', 'f-sharp', 'fortran', 'go', 'haskell',
-    'j', 'java', 'javascript', 'julia', 'lisp', 'lua', 'nim', 'perl', 'php',
-    'powershell', 'python', 'raku', 'ruby', 'rust', 'swift'
+    'bash', 'brainfuck', 'c', 'c-sharp', 'f-sharp', 'fortran', 'go',
+    'haskell', 'j', 'java', 'javascript', 'julia', 'lisp', 'lua', 'nim',
+    'perl', 'php', 'powershell', 'python', 'raku', 'ruby', 'rust', 'swift'
 );
 
 CREATE TYPE trophy AS ENUM (
