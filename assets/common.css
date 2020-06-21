@@ -257,47 +257,6 @@ thead th {
     color: var(--background);
 }
 
-.pie {
-    grid-column: span 2;
-    grid-gap: 1rem !important;
-    grid-template-columns: 2fr 1fr;
-}
-
-.pie h2 { text-align: center }
-
-.pie li {
-    align-items: center;
-    display: grid;
-    font-weight: bold;
-    padding: .5rem;
-    white-space: nowrap;
-}
-
-.pie path:nth-child(1) { fill: var(--red)    }
-.pie path:nth-child(2) { fill: var(--orange) }
-.pie path:nth-child(3) { fill: var(--yellow) }
-.pie path:nth-child(4) { fill: var(--green)  }
-.pie path:nth-child(5) { fill: var(--blue)   }
-.pie path:nth-child(6) { fill: var(--purple) }
-
-.pie span {
-    display: block;
-    font-size: .75rem;
-    font-weight: normal;
-}
-
-.pie svg {
-    align-self: center;
-    max-width: 100%;
-    transform: rotate(-90deg);
-}
-
-.pie ul {
-    display: grid;
-    list-style: none;
-    padding: 0;
-}
-
 .right { text-align: right }
 
 .scores a { color: var(--color) }
@@ -519,15 +478,6 @@ thead th {
     width: 100%;
 }
 
-#stats { grid-template-columns: repeat(4, 1fr) }
-
-#stats div {
-    border: 2px solid var(--color);
-    display: grid;
-    grid-gap: .5rem;
-    padding: 1rem;
-}
-
 #wrapper {
     display: grid;
     grid-template-columns: 1fr 15rem;
@@ -543,8 +493,6 @@ thead th {
     #scores td:nth-child(4) {
         border-right: 1px solid var(--color);
     }
-
-    #stats { grid-template-columns: 1fr 1fr }
 
     #trophies, #wrapper { grid-template-columns: 1fr }
 }

@@ -1,26 +1,6 @@
 {{ template "header" . }}
 
-<style nonce="{{ .Nonce }}">
-table {
-    grid-column: span 2;
-    width: 100%;
-}
-
-td, th { white-space: nowrap }
-
-td:nth-child(2) {
-    max-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
-}
-
-#stats {
-    align-items: start;
-}
-</style>
-
-<main id=stats>
+<main>
     <h1 class=span>Statistics</h1>
 
     <div><h2>Langs</h2>{{ .Data.Langs }}</div>

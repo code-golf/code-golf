@@ -1,0 +1,68 @@
+li {
+    align-items: center;
+    display: grid;
+    font-weight: bold;
+    padding: .5rem;
+    white-space: nowrap;
+}
+
+main {
+    align-items: start;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+main div {
+    border: 2px solid var(--color);
+    display: grid;
+    grid-gap: .5rem;
+    padding: 1rem;
+}
+
+table {
+    grid-column: span 2;
+    width: 100%;
+}
+
+td, th { white-space: nowrap }
+
+td:nth-child(2) {
+    max-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+ul {
+    display: grid;
+    list-style: none;
+    padding: 0;
+}
+
+.pie {
+    grid-column: span 2;
+    grid-gap: 1rem !important;
+    grid-template-columns: 2fr 1fr;
+}
+
+.pie h2 { text-align: center }
+
+.pie path:nth-child(1) { fill: var(--red)    }
+.pie path:nth-child(2) { fill: var(--orange) }
+.pie path:nth-child(3) { fill: var(--yellow) }
+.pie path:nth-child(4) { fill: var(--green)  }
+.pie path:nth-child(5) { fill: var(--blue)   }
+.pie path:nth-child(6) { fill: var(--purple) }
+
+.pie span {
+    display: block;
+    font-size: .75rem;
+    font-weight: normal;
+}
+
+.pie svg {
+    align-self: center;
+    max-width: 100%;
+    transform: rotate(-90deg);
+}
+
+@media (max-width: 34rem) { main { grid-template-columns: 1fr 1fr } }

@@ -36,6 +36,7 @@ func colour(i int) string {
 	return "green"
 }
 
+var cssByPage = map[string]template.CSS{}
 var tmpl = template.New("").Funcs(template.FuncMap{
 	"colour":    colour,
 	"comma":     pretty.Comma,
@@ -64,12 +65,18 @@ func init() {
 	}
 
 	if err := filepath.Walk("views", func(file string, _ os.FileInfo, err error) error {
-		if ext := path.Ext(file); ext == ".html" || ext == ".svg" {
+		switch ext := path.Ext(file); ext {
+		case ".css", ".html", ".svg":
 			if b, err := ioutil.ReadFile(file); err != nil {
 				return err
 			} else {
 				name := file[len("views/") : len(file)-len(ext)]
-				tmpl = template.Must(tmpl.New(name).Parse(string(b)))
+
+				if ext == ".css" {
+					cssByPage[name[len("css/"):]] = template.CSS(b)
+				} else {
+					tmpl = template.Must(tmpl.New(name).Parse(string(b)))
+				}
 			}
 		}
 
@@ -96,10 +103,12 @@ func render(
 
 	args := struct {
 		CommonCssPath, Login, LogInURL, Nonce, Path, Title string
+		CSS                                                template.CSS
 		Data                                               interface{}
 		Request                                            *http.Request
 	}{
 		CommonCssPath: commonCssPath,
+		CSS:           cssByPage[name],
 		Data:          data,
 		Nonce:         base64.StdEncoding.EncodeToString(nonce),
 		Path:          r.URL.Path,

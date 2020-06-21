@@ -1,0 +1,38 @@
+form {
+    align-items: center;
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: min-content 1fr;
+    margin: auto;
+}
+
+form > div {
+    align-items: center;
+    display: flex;
+    grid-column: span 2;
+    justify-content: flex-end;
+}
+
+label { font-weight: bold }
+
+table {
+    display: none;
+    margin: auto;
+}
+
+td span {
+    border: 1px solid var(--color);
+    font-family: monospace;
+    font-size: .75rem;
+    font-weight: bold;
+    padding: .2rem .35rem;
+}
+
+tr > :nth-child(4) { text-align: right }
+
+#status {
+    font-variant: tabular-nums;
+    margin-right: 1rem;
+}
+
+#stop { display: none }

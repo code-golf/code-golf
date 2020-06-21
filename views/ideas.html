@@ -1,29 +1,5 @@
 {{ template "header" . }}
 
-<style nonce="{{ .Nonce }}">
-.card {
-    align-items: center;
-    grid-gap: .5rem .25rem;
-    grid-template: min-content / min-content min-content 1fr min-content min-content;
-}
-
-.card h2 {
-    font-size: 1.25rem;
-    line-height: 1.25;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.card svg {
-    fill: var(--color);
-    height: 1rem;
-    width: 1rem;
-}
-
-.card svg:last-of-type { grid-column: 4 }
-</style>
-
 <main id=ideas>
     <h1 class=span>Ideas</h1>
 
