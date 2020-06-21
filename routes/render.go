@@ -15,6 +15,8 @@ import (
 
 	"github.com/code-golf/code-golf/cookie"
 	"github.com/code-golf/code-golf/pretty"
+	"github.com/tdewolff/minify"
+	"github.com/tdewolff/minify/css"
 )
 
 func colour(i int) string {
@@ -64,6 +66,9 @@ func init() {
 		}
 	}
 
+	m := minify.New()
+	m.AddFunc("text/css", css.Minify)
+
 	if err := filepath.Walk("views", func(file string, _ os.FileInfo, err error) error {
 		switch ext := path.Ext(file); ext {
 		case ".css", ".html", ".svg":
@@ -73,7 +78,11 @@ func init() {
 				name := file[len("views/") : len(file)-len(ext)]
 
 				if ext == ".css" {
-					cssByPage[name[len("css/"):]] = template.CSS(b)
+					if b, err := m.Bytes("text/css", b); err != nil {
+						return err
+					} else {
+						cssByPage[name[len("css/"):]] = template.CSS(b)
+					}
 				} else {
 					tmpl = template.Must(tmpl.New(name).Parse(string(b)))
 				}
