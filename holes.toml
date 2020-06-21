@@ -451,7 +451,7 @@ preamble = '''
                 <td>#f8f8ff
             <tr><td><svg><use fill="#f5f5f5" href="#color"/></svg>WhiteSmoke
                 <td>#f5f5f5
-            <tr><td><svg><use fill="#fff5ee" href="#color"/></svg>Seashell
+            <tr><td><svg><use fill="#fff5ee" href="#color"/></svg>SeaShell
                 <td>#fff5ee
             <tr><td><svg><use fill="#f5f5dc" href="#color"/></svg>Beige
                 <td>#f5f5dc
@@ -467,7 +467,7 @@ preamble = '''
                 <td>#faf0e6
             <tr><td><svg><use fill="#fff0f5" href="#color"/></svg>LavenderBlush
                 <td>#fff0f5
-            <tr><td><svg><use fill="#ffe4e1" href="#color"/></svg>Mistyrose
+            <tr><td><svg><use fill="#ffe4e1" href="#color"/></svg>MistyRose
                 <td>#ffe4e1
             <tr><td><svg><use fill="#dcdcdc" href="#color"/></svg>Gainsboro
                 <td>#dcdcdc
