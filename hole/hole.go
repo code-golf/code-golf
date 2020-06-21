@@ -172,7 +172,7 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	}
 
 	if len(score.Stdout) != 0 {
-		// TODO Generalise a case insensitve flag, should it apply to others?
+		// TODO Generalise a case insensitive flag, should it apply to others?
 		if holeID == "css-colors" {
 			score.Pass = strings.EqualFold(score.Answer, string(score.Stdout))
 		} else {
