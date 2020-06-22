@@ -15,8 +15,7 @@ import (
 
 	"github.com/code-golf/code-golf/cookie"
 	"github.com/code-golf/code-golf/pretty"
-	"github.com/tdewolff/minify"
-	"github.com/tdewolff/minify/css"
+	"github.com/tdewolff/minify/v2/min"
 )
 
 func colour(i int) string {
@@ -38,7 +37,7 @@ func colour(i int) string {
 	return "green"
 }
 
-var cssByPage = map[string]template.CSS{}
+var css = map[string]template.CSS{}
 var tmpl = template.New("").Funcs(template.FuncMap{
 	"colour":    colour,
 	"comma":     pretty.Comma,
@@ -66,30 +65,32 @@ func init() {
 		}
 	}
 
-	m := minify.New()
-	m.AddFunc("text/css", css.Minify)
-
-	if err := filepath.Walk("views", func(file string, _ os.FileInfo, err error) error {
-		switch ext := path.Ext(file); ext {
-		case ".css", ".html", ".svg":
-			if b, err := ioutil.ReadFile(file); err != nil {
-				return err
-			} else {
-				name := file[len("views/") : len(file)-len(ext)]
-
-				if ext == ".css" {
-					if b, err := m.Bytes("text/css", b); err != nil {
-						return err
-					} else {
-						cssByPage[name[len("css/"):]] = template.CSS(b)
-					}
-				} else {
-					tmpl = template.Must(tmpl.New(name).Parse(string(b)))
-				}
-			}
+	if err := filepath.Walk("views", func(file string, info os.FileInfo, err error) error {
+		if err != nil || info.IsDir() {
+			return err
 		}
 
-		return err
+		b, err := ioutil.ReadFile(file)
+		if err != nil {
+			return err
+		}
+
+		data := string(b)
+		ext := path.Ext(file)
+		name := file[len("views/") : len(file)-len(ext)]
+
+		switch ext {
+		case ".css":
+			if data, err = min.CSS(data); err != nil {
+				return err
+			}
+
+			css[name[len("css/"):]] = template.CSS(data)
+		case ".html", ".svg":
+			tmpl = template.Must(tmpl.New(name).Parse(data))
+		}
+
+		return nil
 	}); err != nil {
 		panic(err)
 	}
@@ -117,7 +118,7 @@ func render(
 		Request                                            *http.Request
 	}{
 		CommonCssPath: commonCssPath,
-		CSS:           cssByPage[name],
+		CSS:           css[name],
 		Data:          data,
 		Nonce:         base64.StdEncoding.EncodeToString(nonce),
 		Path:          r.URL.Path,
