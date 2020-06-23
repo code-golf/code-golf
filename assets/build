@@ -26,7 +26,7 @@ my ( %data, %paths );
 
 for (
     sort { $b =~ /\.woff2$/ <=> $a =~ /\.woff2$/ or $a cmp $b }
-    <assets/*.{css,js,png,woff2,svg}>
+    <assets/*.{css,js,png,svg,woff2}>
 ) {
     say;
 
@@ -34,37 +34,16 @@ for (
 
     s|^assets/||;
 
-    my $name = s/\.(\w)/\U$1/r;
+    my $name = s/[.-](\w)/\U$1/gr;
 
-    if ( $_ eq 'favicon.svg' ) {
+    if (/\.(?:png|svg)$/) {
         $data{$name} = $data;
+        my $mime = /\.png$/ ? 'image/png' : 'image/svg+xml';
 
-        print $fh <<'GO';
-	case "/favicon.svg":
-		w.Header().Set("Content-Type", "image/svg+xml")
-		w.Write(faviconSvg)
-GO
-
-        next;
-    }
-    if ( $_ eq 'favicon16.png' ) {
-        $data{$name} = $data;
-
-        print $fh <<'GO';
-	case "/favicon16.png":
-		w.Header().Set("Content-Type", "image/png")
-		w.Write(favicon16Png)
-GO
-
-        next;
-    }
-    if ( $_ eq 'favicon32.png' ) {
-        $data{$name} = $data;
-
-        print $fh <<'GO';
-	case "/favicon32.png":
-		w.Header().Set("Content-Type", "image/png")
-		w.Write(favicon32Png)
+        print $fh <<GO;
+	case "/assets/$_":
+		w.Header().Set("Content-Type", "$mime")
+		w.Write($name)
 GO
 
         next;
