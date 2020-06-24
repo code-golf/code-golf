@@ -11,16 +11,7 @@ import (
 
 var atomFeed, jsonFeed, rssFeed []byte
 
-// TODO Trophies
-// f761931 Add "Happy Birthday, Code Golf" trophy
-// b8c8fc2 Add "Slowcoach" trophy
-// dbe1a24 Add "Inception" trophy
-// 412861e Add "It’s Over 9000!" trophy
-// b9b1f50 Add "The Watering Hole" trophy
-// eee3b47 Add "My God, It’s Full of Stars" trophy
-// 82c3f33 Add "Polyglot" trophy
-// 39b205c Add "ElePHPant in the Room" trophy
-// c1503f7 initial
+// TZ=UTC git log --date='format-local:%Y-%m-%d %X' --format='%h %cd %s'
 func init() {
 	feed := feeds.Feed{
 		Link:  &feeds.Link{Href: "https://code.golf/"},
@@ -31,6 +22,10 @@ func init() {
 		sha, created, name string
 		hole               bool
 	}{
+		{"3e971cc", "2020-06-21 01:44:16", "CSS Colors", true},
+		{"5a2068c", "2020-06-01 04:28:26", "PowerShell", false},
+		{"b71f2ee", "2020-05-09 13:17:53", "C#", false},
+		{"b71f2ee", "2020-05-09 13:17:53", "F#", false},
 		{"6b791f5", "2020-04-21 15:18:00", "Java", false},
 		{"4849dde", "2020-04-17 18:56:56", "Fortran", false},
 		{"5feb18b", "2020-04-15 17:33:16", "Go", false},
@@ -98,7 +93,12 @@ func init() {
 			link += "scores/all-holes/"
 		}
 
-		link += url.PathEscape(strings.ReplaceAll(strings.ToLower(i.name), " ", "-"))
+		link += url.PathEscape(
+			strings.ReplaceAll(
+				strings.ReplaceAll(strings.ToLower(i.name), " ", "-"),
+				"#", "-sharp",
+			),
+		)
 
 		item := feeds.Item{
 			Description: "Added the <a href=" + link + ">“" + i.name + "”</a> ",
