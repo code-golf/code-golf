@@ -27,8 +27,6 @@ progress::-webkit-progress-value { background: var(--blue) }
 .trophy > :last-child { font-size: .875rem }
 
 .trophy div {
-    /*font-family: apple color emoji,segoe ui emoji,noto color emoji,android emoji,emojisymbols,emojione mozilla,segoe ui symbol;*/
-    font-family: 'Twemoji Mozilla';
     font-size: 4rem;
     grid-row: span 3;
 }

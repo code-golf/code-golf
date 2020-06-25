@@ -50,6 +50,12 @@ fmt:
 	@goimports -w $(GOFILES)
 
 font:
+	@docker build -t code-golf-font -f Dockerfile.font .
+	@id=`docker create code-golf-font`;                                                 \
+	    docker cp "$$id:twemoji-colr/build/Twemoji Mozilla.woff2" assets/twemoji.woff2; \
+	    docker rm $$id
+
+legacy-font:
 	@pyftsubset ~/Downloads/fontawesome-pro-5.12.0-web/webfonts/fa-light-300.ttf \
 	    --flavor=woff2                                                           \
 	    --no-hinting                                                             \

@@ -15,9 +15,9 @@
                 Won by {{ comma .Count }} ({{ .Percent }}%)
                 <progress value="{{ .Count }}" max="{{ $max }}"></progress>
             {{ if .Earned.Valid }}
-                🔓 {{ time .Earned.Value }}
+                You won on {{ time .Earned.Value }}
             {{ else }}
-                <span>🔒 Not Won</span>
+                <span>You've not yet won</span>
             {{ end }}
         </div>
     {{ end }}

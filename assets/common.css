@@ -1,4 +1,21 @@
 @font-face {
+    font-family: emoji;
+    src: local('Apple Color Emoji'),
+         local('Noto Color Emoji'),
+         local('Segoe UI Emoji'),
+         local('Twemoji Mozilla'),
+         url(twemojiWoff2);
+    unicode-range: U+2300-23FF,   /* Miscellaneous Technical */
+                   U+2600-26FF,   /* Miscellaneous Symbols */
+                   U+2700-27BF,   /* Dingbats */
+                   U+2B00-2BFF,   /* Miscellaneous Symbols and Arrows */
+                   U+1F300-1F5FF, /* Miscellaneous Symbols and Pictographs */
+                   U+1F600-1F64F, /* Emoticons */
+                   U+1F680-1F6FF, /* Transport and Map Symbols */
+                   U+1F900-1F9FF; /* Supplemental Symbols and Pictographs */
+}
+
+@font-face {
     font-family: font;
     src: url(fontWoff2);
     unicode-range: U+F???;
@@ -35,7 +52,7 @@ blockquote {
 body {
     background: var(--background);
     color: var(--color);
-    font: 16px font, system-ui, -apple-system, sans-serif;
+    font: 16px emoji, font, system-ui, -apple-system, sans-serif;
 }
 
 caption { caption-side: bottom }

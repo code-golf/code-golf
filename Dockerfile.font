@@ -1,0 +1,48 @@
+FROM node:10.21.0-buster-slim
+
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    fontforge fonttools git make python-fontforge unzip woff2 zip
+
+RUN git clone -b v0.5.1 git://github.com/mozilla/twemoji-colr
+
+WORKDIR twemoji-colr
+
+RUN npm install
+
+RUN echo [] > extras/ligatures.json     \
+ && unzip twe-svg.zip                   \
+    svg/1f37a.svg `# Beer Mug`          \
+    svg/1f382.svg `# Birthday Cake`     \
+    svg/1f3c6.svg `# Trophy`            \
+    svg/1f409.svg `# Dragon`            \
+    svg/1f40d.svg `# Sanke`             \
+    svg/1f418.svg `# Elephant`          \
+    svg/1f42a.svg `# Camel`             \
+    svg/1f44b.svg `# Waving Hand`       \
+    svg/1f48e.svg `# Gem Stone`         \
+    svg/1f4b0.svg `# Money Bag`         \
+    svg/1f4bc.svg `# Briefcase`         \
+    svg/1f4be.svg `# Floppy Disk`       \
+    svg/1f4c4.svg `# Page Facing Up`    \
+    svg/1f4c9.svg `# Chart Decreasing`  \
+    svg/1f511.svg `# Key`               \
+    svg/1f523.svg `# Input Symbols`     \
+    svg/1f596.svg `# Vulcan Salute`     \
+    svg/1f600.svg `# Grinning Face`     \
+    svg/1f6e0.svg `# Hammer and Wrench` \
+    svg/1f947.svg `# 1st Place Medal`   \
+    svg/1f948.svg `# 2nd Place Medal`   \
+    svg/1f949.svg `# 3rd Place Medal`   \
+    svg/1f98e.svg `# Lizard`            \
+    svg/1f9a5.svg `# Sloth`             \
+    svg/1f9e0.svg `# Brain`             \
+    svg/231b.svg  `# Hourglass Done`    \
+    svg/2615.svg  `# Hot Beverage`      \
+    svg/2639.svg  `# Frowning Face`     \
+    svg/26f3.svg  `# Flag in Hole`      \
+    svg/2702.svg  `# Scissors`          \
+    svg/2b50.svg  `# Star`              \
+ && rm twe-svg.zip                      \
+ && zip -r twe-svg.zip svg              \
+ && make                                \
+ && woff2_compress 'build/Twemoji Mozilla.ttf'

@@ -1,11 +1,5 @@
 /* include vendor/codemirror.css */
 
-@font-face {
-    font-family: emoji;
-    src: url(twemojiWoff2);
-    unicode-range: U+2702, U+1F48E, U+1F4C4, U+1F596, U+1F98E;
-}
-
 .term-fg31 { color: #c00 }
 .term-fg32 { color: #490 }
 .term-fg33 { color: #ca0 }
@@ -30,8 +24,6 @@ aside > div {
     overflow: auto;
     padding: 5px;
 }
-
-body { font-family: emoji, font, system-ui, -apple-system, sans-serif }
 
 h3 {
     bottom: -1.5rem;

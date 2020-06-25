@@ -106,7 +106,7 @@ onload = () => {
             solutions[lang] = code;
 
         document.querySelector('h2').innerText
-            = data.Pass ? 'Pass 😊️' : 'Fail ☹️';
+            = data.Pass ? 'Pass 😀' : 'Fail ☹️';
 
         // Show args if we have 'em.
         if (data.Argv) {
