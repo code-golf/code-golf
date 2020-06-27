@@ -34,8 +34,10 @@ CREATE TABLE ideas (
 );
 
 CREATE TABLE users (
-    id    integer NOT NULL PRIMARY KEY,
-    login citext  NOT NULL UNIQUE
+    id      integer               NOT NULL PRIMARY KEY,
+    admin   boolean DEFAULT false NOT NULL,
+    sponsor boolean DEFAULT false NOT NULL,
+    login   citext                NOT NULL UNIQUE
 );
 
 CREATE TABLE solutions (
@@ -54,6 +56,16 @@ CREATE TABLE trophies (
     trophy  trophy                      NOT NULL,
     UNIQUE (user_id, trophy)
 );
+
+-- Check the tables are structured optimally.
+-- https://www.2ndquadrant.com/en/blog/on-rocks-and-sand/
+  SELECT c.relname, a.attname, t.typname, t.typalign, t.typlen
+    FROM pg_attribute a
+    JOIN pg_class     c ON a.attrelid = c.oid
+    JOIN pg_type      t ON a.atttypid = t.oid
+   WHERE a.attnum >= 0
+     AND c.relname IN ('ideas', 'solutions', 'trophies', 'users')
+ORDER BY c.relname, t.typlen DESC, t.typname, a.attname;
 
 CREATE VIEW points AS WITH leaderboard AS (
     SELECT DISTINCT ON (hole, user_id)

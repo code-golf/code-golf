@@ -3,6 +3,8 @@ package routes
 import (
 	"database/sql"
 	"net/http"
+
+	"github.com/code-golf/code-golf/golfer"
 )
 
 // Golfer serves GET /golfers/{golfer}
@@ -45,7 +47,7 @@ func Golfer(w http.ResponseWriter, r *http.Request) {
 		     FROM count
 		LEFT JOIN earned USING(trophy)
 		 ORDER BY count DESC, trophy`,
-		184356,
+		r.Context().Value("golferInfo").(*golfer.GolferInfo).ID,
 	)
 	if err != nil {
 		panic(err)

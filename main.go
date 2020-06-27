@@ -77,11 +77,18 @@ func main() {
 	r.Route("/golfers/{name}", func(r chi.Router) {
 		r.Use(func(next http.Handler) http.Handler {
 			return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				if info := golfer.GetInfo(db, chi.URLParam(r, "name")); info != nil {
+				name := chi.URLParam(r, "name")
+				info := golfer.GetInfo(db, name)
+
+				switch {
+				case info == nil:
+					routes.NotFound(w, r)
+				case info.Name != name:
+					// TODO Handle /holes suffix.
+					http.Redirect(w, r, "/golfers/"+info.Name, http.StatusPermanentRedirect)
+				default:
 					ctx := context.WithValue(r.Context(), "golferInfo", info)
 					next.ServeHTTP(w, r.WithContext(ctx))
-				} else {
-					routes.NotFound(w, r)
 				}
 			})
 		})
