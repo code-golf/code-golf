@@ -9,6 +9,8 @@ import (
 
 // Golfer serves GET /golfers/{golfer}
 func Golfer(w http.ResponseWriter, r *http.Request) {
+	golfer := r.Context().Value("golferInfo").(*golfer.GolferInfo).Golfer
+
 	type EarnedTrophy struct {
 		Count, Percent int
 		Earned         sql.NullTime
@@ -47,7 +49,7 @@ func Golfer(w http.ResponseWriter, r *http.Request) {
 		     FROM count
 		LEFT JOIN earned USING(trophy)
 		 ORDER BY count DESC, trophy`,
-		r.Context().Value("golferInfo").(*golfer.GolferInfo).ID,
+		golfer.ID,
 	)
 	if err != nil {
 		panic(err)
@@ -78,10 +80,5 @@ func Golfer(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	render(w, r, http.StatusOK, "golfer", "JRaspass", data)
-}
-
-// GolferHoles serves GET /golfers/{golfer}/holes
-func GolferHoles(w http.ResponseWriter, r *http.Request) {
-	render(w, r, http.StatusOK, "golfer-holes", "JRaspass", langs)
+	render(w, r, http.StatusOK, "golfer", golfer.Name, data)
 }
