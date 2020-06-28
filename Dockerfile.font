@@ -24,12 +24,12 @@ RUN echo [] > extras/ligatures.json     \
     svg/1f4bc.svg `# Briefcase`         \
     svg/1f4be.svg `# Floppy Disk`       \
     svg/1f4c4.svg `# Page Facing Up`    \
+    svg/1f4c5.svg `# Calendar`          \
     svg/1f4c9.svg `# Chart Decreasing`  \
     svg/1f511.svg `# Key`               \
     svg/1f523.svg `# Input Symbols`     \
     svg/1f596.svg `# Vulcan Salute`     \
     svg/1f600.svg `# Grinning Face`     \
-    svg/1f6e0.svg `# Hammer and Wrench` \
     svg/1f947.svg `# 1st Place Medal`   \
     svg/1f948.svg `# 2nd Place Medal`   \
     svg/1f949.svg `# 3rd Place Medal`   \

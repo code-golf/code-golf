@@ -19,12 +19,7 @@ main {
     top: 2.75rem;
 }
 
-.nav a {
-    display: flex;
-    font-weight: bold;
-}
-
-.nav span { margin-left: .5rem }
+.nav a { font-weight: bold }
 
 #badges {
     display: flex;
@@ -88,21 +83,13 @@ main {
 
 <nav class=nav>
     {{ $slug := print "/golfers/" .Name }}
-
-    <a {{ if ne $path $slug }} href="{{ $slug }}" {{ end }}>
-        🏆<span>Trophies</span>
-    </a>
+    <a {{ if ne $path $slug }} href="{{ $slug }}" {{ end }}>Trophies</a>
 
     {{ $slug = print $slug "/holes" }}
-
-    <a {{ if ne $path $slug }} href="{{ $slug }}" {{ end }}>
-        ⛳<span>Holes</span>
-    </a>
+    <a {{ if ne $path $slug }} href="{{ $slug }}" {{ end }}>Holes</a>
 
 <!-- TODO
-    <a {{ if ne $path "/settings" }} href="/settings" {{ end }}>
-        🛠️<span>Settings</span>
-    </a>
+    <a {{ if ne $path "/settings" }} href="/settings" {{ end }}>Settings</a>
 -->
 </nav>
 {{ end }}
