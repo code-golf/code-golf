@@ -70,18 +70,20 @@ main {
 
 <div id=badges>
 {{ if .Admin }}
-    <div><p>🔑 <p class=orange>Admin</div>
+    <div><p>🔑<p class=yellow>Admin</div>
 {{ end }}
 
 {{ if .Sponsor }}
-    <div><p>💰 <p class=purple>Sponsor</div>
+    <div><p>💰<p class=yellow>Sponsor</div>
 {{ end }}
 
-    <div><p>⛳ <p class=red>{{ .Holes }} / 42<!-- TODO --> Holes</div>
+    <div><p>⛳<p class=red>{{ .Holes }} / 42<!-- TODO --> Holes</div>
 
-    <div><p>🏆 <p class=green>{{ .Trophies }} / 14<!-- TODO --> Trophies</div>
+    <div><p>🔣<p class=green>{{ .Langs }} / 23<!-- TODO --> Languages</div>
 
-    <div><p>⌛ <p class=blue>Tee off {{ time .TeeOff }}</div>
+    <div><p>🏆<p class=blue>{{ .Trophies }} / 14<!-- TODO --> Trophies</div>
+
+    <div><p>📅<p class=orange>Teed off {{ time .TeedOff }}</div>
 </div>
 
 <nav class=nav>

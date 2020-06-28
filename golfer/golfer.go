@@ -23,11 +23,11 @@ type GolferInfo struct {
 	// Count of medals
 	Gold, Silver, Bronze int
 
-	// Count of holes/trophies done
-	Holes, Trophies int
+	// Count of holes/langs/trophies done
+	Holes, Langs, Trophies int
 
 	// Start date
-	TeeOff time.Time
+	TeedOff time.Time
 }
 
 func GetInfo(db *sql.DB, name string) *GolferInfo {
@@ -39,6 +39,9 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 		           FROM solutions
 		          WHERE user_id = id AND NOT FAILING),
 		        id,
+		        (SELECT COUNT(DISTINCT lang)
+		           FROM solutions
+		          WHERE user_id = id AND NOT FAILING),
 		        login,
 		        (SELECT points FROM points WHERE user_id = id),
 		        sponsor,
@@ -50,6 +53,7 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 		&info.Admin,
 		&info.Holes,
 		&info.ID,
+		&info.Langs,
 		&info.Name,
 		&info.Points,
 		&info.Sponsor,
@@ -64,7 +68,7 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 	info.Bronze = 28
 	info.Gold = 21
 	info.Silver = 22
-	info.TeeOff = time.Date(2019, time.July, 15, 20, 13, 21, 0, time.UTC)
+	info.TeedOff = time.Date(2019, time.July, 15, 20, 13, 21, 0, time.UTC)
 
 	return &info
 }
