@@ -1,5 +1,6 @@
-GOFILES := $(shell find . -name '*.go' ! -path './.go*')
-SHELL   := /bin/bash
+GOFILES  := $(shell find . -name '*.go' ! -path './.go*')
+POSTGRES := postgres:11.8-alpine
+SHELL    := /bin/bash
 
 define STUB
 package routes
@@ -25,12 +26,27 @@ cert:
 
 .PHONY: db
 db:
-	@ssh -t rancher@code.golf \
-	docker run -it --entrypoint psql --env-file /etc/code-golf.env --rm postgres
+	@ssh -t rancher@code.golf docker run -it --rm \
+	    --env-file /etc/code-golf.env $(POSTGRES) psql
 
 db-admin:
-	@ssh -t rancher@code.golf \
-	docker run -it --entrypoint psql --env-file /etc/code-golf.env --rm postgres -WU doadmin
+	@ssh -t rancher@code.golf docker run -it --rm \
+	    --env-file /etc/code-golf.env $(POSTGRES) psql -WU doadmin
+
+db-diff:
+	@diff --color --label live --label dev --strip-trailing-cr -su \
+	    <(ssh rancher@code.golf "docker run --rm                   \
+	    --env-file /etc/code-golf.env $(POSTGRES) pg_dump -Os")    \
+	    <(docker-compose exec db pg_dump -OsU postgres code-golf)
+
+db-dump:
+	@rm db/*.gz
+
+	@ssh rancher@code.golf "docker run --env-file /etc/code-golf.env \
+	    --rm $(POSTGRES) sh -c 'pg_dump -a | gzip -9'"               \
+	    > db/code-golf-`date +%Y-%m-%d`.sql.gz
+
+	@cp db/*.gz ~/Dropbox/code-golf/
 
 deps:
 	@yay -S mkcert python-brotli python-fonttools
@@ -38,12 +54,6 @@ deps:
 dev:
 	@docker-compose rm -f
 	@docker-compose up --build
-
-diff-db:
-	@diff --color --label live --label dev --strip-trailing-cr -su    \
-	    <(ssh rancher@code.golf "docker run --entrypoint pg_dump      \
-	    --env-file /etc/code-golf.env --rm postgres:11.8-alpine -Os") \
-	    <(docker-compose exec db pg_dump -OsU postgres code-golf)
 
 fmt:
 	@gofmt -s  -w $(GOFILES)
