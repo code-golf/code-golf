@@ -67,29 +67,16 @@ CREATE TABLE trophies (
      AND c.relname IN ('ideas', 'solutions', 'trophies', 'users')
 ORDER BY c.relname, t.typlen DESC, t.typname, a.attname;
 
-CREATE VIEW points AS WITH leaderboard AS (
-    SELECT DISTINCT ON (hole, user_id)
-           hole,
-           length(code) strokes,
-           user_id
+CREATE VIEW points AS WITH ranked AS (
+    SELECT user_id,
+           RANK()   OVER (PARTITION BY hole ORDER BY MIN(LENGTH(code))),
+           COUNT(*) OVER (PARTITION BY hole)
       FROM solutions
      WHERE NOT failing
-  ORDER BY hole, user_id, length(code), submitted
-), scored_leaderboard AS (
-    SELECT hole,
-           round(
-                (   (   count(*) OVER (PARTITION BY hole)
-                        -
-                        rank() OVER (PARTITION BY hole ORDER BY strokes)
-                    ) + 1
-                ) * (1000.0 / count(*) OVER (PARTITION BY hole))
-           ) score,
-           user_id
-      FROM leaderboard l
+  GROUP BY hole, user_id
 ) SELECT user_id,
-         sum(score) points,
-         count(*)   holes
-    FROM scored_leaderboard
+         SUM(ROUND(((count - rank) + 1) * (1000.0 / count))) points
+    FROM ranked
 GROUP BY user_id;
 
 CREATE ROLE "code-golf" WITH LOGIN;
