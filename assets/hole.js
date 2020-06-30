@@ -51,7 +51,12 @@ onload = () => {
         const len = strlen(code);
 
         chars.innerText = `${len.toLocaleString('en')} character${len - 1 ? 's' : ''}`;
-        localStorage.setItem('code_' + hole + '_' + lang, code);
+
+        // Avoid future conflicts by only storing code locally that's different from the server's copy.
+        const serverCode = lang in solutions ? solutions[lang] : '';
+
+        if (code && code != serverCode)
+            localStorage.setItem('code_' + hole + '_' + lang, code);
     });
 
     details.ontoggle = () =>
@@ -87,6 +92,7 @@ onload = () => {
         status.className = 'grey';
 
         const code = cm.getValue();
+        const codeLang = lang;
         const submissionID = ++latestSubmissionID;
 
         const res  = await fetch('/solution', {
@@ -102,8 +108,14 @@ onload = () => {
         if (submissionID != latestSubmissionID)
             return;
 
-        if (data.Pass && (!(lang in solutions) || strlen(code) <= strlen(solutions[lang])))
-            solutions[lang] = code;
+        if (data.Pass && (!(codeLang in solutions) || strlen(code) <= strlen(solutions[codeLang]))) {
+            solutions[codeLang] = code;
+
+            // Don't need to keep solution in local storage because it's stored on the site.
+            // This prevents conflicts when the solution is improved on another browser.
+            if (data.LoggedIn)
+                localStorage.removeItem('code_' + hole + '_' + codeLang);
+        }
 
         document.querySelector('h2').innerText
             = data.Pass ? 'Pass 😀' : 'Fail ☹️';
