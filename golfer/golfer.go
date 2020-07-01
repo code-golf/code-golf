@@ -41,9 +41,9 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 		     WHERE NOT failing
 		), medals AS (
 		    SELECT user_id,
-		           SUM((rank = 1)::int) gold,
-		           SUM((rank = 2)::int) silver,
-		           SUM((rank = 3)::int) bronze
+		           COUNT(*) FILTER (WHERE rank = 1) gold,
+		           COUNT(*) FILTER (WHERE rank = 2) silver,
+		           COUNT(*) FILTER (WHERE rank = 3) bronze
 		      FROM ranked
 		  GROUP BY user_id
 		)  SELECT admin,
