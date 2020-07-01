@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"errors"
 	"time"
+
+	"github.com/code-golf/code-golf/trophy"
 )
 
 type Golfer struct {
@@ -26,12 +28,17 @@ type GolferInfo struct {
 	// Count of holes/langs/trophies done
 	Holes, Langs, Trophies int
 
+	// Count of holes/langs/trophies available
+	HolesTotal, LangsTotal, TrophiesTotal int
+
 	// Start date
 	TeedOff time.Time
 }
 
 func GetInfo(db *sql.DB, name string) *GolferInfo {
-	var info GolferInfo
+	info := GolferInfo{
+		TrophiesTotal: len(trophy.List),
+	}
 
 	if err := db.QueryRow(
 		`WITH ranked AS (

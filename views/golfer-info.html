@@ -72,11 +72,11 @@ main {
     <div><p>💰<p class=yellow>Sponsor</div>
 {{ end }}
 
-    <div><p>⛳<p class=red>{{ .Holes }} / 42<!-- TODO --> Holes</div>
+    <div><p>⛳<p class=red>{{ .Holes }} / {{ .HolesTotal }} Holes</div>
 
-    <div><p>🔣<p class=green>{{ .Langs }} / 23<!-- TODO --> Languages</div>
+    <div><p>🔣<p class=green>{{ .Langs }} / {{ .LangsTotal }} Languages</div>
 
-    <div><p>🏆<p class=blue>{{ .Trophies }} / 14<!-- TODO --> Trophies</div>
+    <div><p>🏆<p class=blue>{{ .Trophies }} / {{ .TrophiesTotal }} Trophies</div>
 
     <div><p>📅<p class=orange>Teed off {{ time .TeedOff }}</div>
 </div>

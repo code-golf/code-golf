@@ -5,6 +5,8 @@ import (
 	"errors"
 	"net/http"
 	"time"
+
+	"github.com/code-golf/code-golf/trophy"
 )
 
 // User serves GET /users/{user}
@@ -15,14 +17,14 @@ func User(w http.ResponseWriter, r *http.Request) {
 		Login          string
 		Points         int
 		Ranks          map[string]map[string]int
-		Trophies       []Trophy
+		Trophies       []trophy.Trophy
 		TrophiesEarned map[string]*time.Time
 	}{
 		Holes:          holes,
 		Langs:          langs,
 		Login:          param(r, "user"),
 		Ranks:          map[string]map[string]int{},
-		Trophies:       trophies,
+		Trophies:       trophy.List,
 		TrophiesEarned: map[string]*time.Time{},
 	}
 

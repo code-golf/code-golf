@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/code-golf/code-golf/golfer"
+	"github.com/code-golf/code-golf/trophy"
 )
 
 // Golfer serves GET /golfers/{golfer}
@@ -14,14 +15,14 @@ func Golfer(w http.ResponseWriter, r *http.Request) {
 	type EarnedTrophy struct {
 		Count, Percent int
 		Earned         sql.NullTime
-		Trophy         Trophy
+		Trophy         trophy.Trophy
 	}
 
 	data := struct {
 		Max      int
 		Trophies []EarnedTrophy
 	}{
-		Trophies: make([]EarnedTrophy, 0, len(trophies)),
+		Trophies: make([]EarnedTrophy, 0, len(trophy.List)),
 	}
 
 	tx, err := db(r).BeginTx(
@@ -56,20 +57,20 @@ func Golfer(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for rows.Next() {
-		var trophy EarnedTrophy
+		var earned EarnedTrophy
 
 		if err := rows.Scan(
-			&trophy.Trophy.ID,
-			&trophy.Count,
-			&trophy.Earned,
+			&earned.Trophy.ID,
+			&earned.Count,
+			&earned.Earned,
 		); err != nil {
 			panic(err)
 		}
 
-		trophy.Percent = trophy.Count * 100 / data.Max
-		trophy.Trophy = trophiesByID[trophy.Trophy.ID]
+		earned.Percent = earned.Count * 100 / data.Max
+		earned.Trophy = trophy.ByID[earned.Trophy.ID]
 
-		data.Trophies = append(data.Trophies, trophy)
+		data.Trophies = append(data.Trophies, earned)
 	}
 
 	if err := rows.Err(); err != nil {
