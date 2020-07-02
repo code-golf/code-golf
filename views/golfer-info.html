@@ -65,7 +65,7 @@ main {
 
 <div id=badges>
 {{ if .Admin }}
-    <div><p>🔑<p class=yellow>Admin</div>
+    <div><p>🔑<p class=orange>Admin</div>
 {{ end }}
 
 {{ if .Sponsor }}
@@ -78,7 +78,9 @@ main {
 
     <div><p>🏆<p class=blue>{{ .Trophies }} / {{ .TrophiesTotal }} Trophies</div>
 
-    <div><p>📅<p class=orange>Teed off {{ time .TeedOff }}</div>
+<!-- TODO
+    <div><p>📅<p class=yellow>Teed off {{ time .TeedOff }}</div>
+    -->
 </div>
 
 <nav class=nav>
