@@ -79,6 +79,10 @@ CREATE VIEW points AS WITH ranked AS (
     FROM ranked
 GROUP BY user_id;
 
+-- Used by /stats
+CREATE INDEX solutions_hole_idx ON solutions(hole, user_id) WHERE NOT failing;
+CREATE INDEX solutions_lang_idx ON solutions(lang, user_id) WHERE NOT failing;
+
 CREATE ROLE "code-golf" WITH LOGIN;
 
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE ideas     TO "code-golf";
