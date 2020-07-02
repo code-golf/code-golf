@@ -54,7 +54,7 @@ func TestTime(t *testing.T) {
 		want template.HTML
 		t    time.Time
 	}{
-		{"a min ago", time.Now()},
+		{"a min ago", time.Now().UTC()},
 		{"7 Jun 1989", time.Date(1989, time.June, 7, 0, 0, 0, 0, time.UTC)},
 	} {
 		got := Time(tt.t)
