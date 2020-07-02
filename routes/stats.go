@@ -42,58 +42,6 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 
 	for i, fact := range [...]string{"hole", "lang"} {
 		rows, err := db.Query(
-			`WITH top AS (
-			    SELECT ` + fact + `, ` + fact + `::text txt, COUNT(*)
-			      FROM solutions
-			     WHERE NOT failing
-			  GROUP BY ` + fact + `
-			  ORDER BY count DESC, ` + fact + `
-			     LIMIT 5
-			) (SELECT txt, count FROM top)
-			    UNION ALL
-			SELECT 'Other' txt,
-			       COUNT(*)
-			  FROM solutions
-			 WHERE NOT failing
-			   AND ` + fact + ` NOT IN (SELECT ` + fact + ` FROM top)`,
-		)
-		if err != nil {
-			panic(err)
-		}
-
-		defer rows.Close()
-
-		var slices []pie.Slice
-
-		for rows.Next() {
-			var slice pie.Slice
-
-			if err := rows.Scan(&slice.Label, &slice.Quantity); err != nil {
-				panic(err)
-			}
-
-			if slice.Label != "Other" {
-				if fact == "hole" {
-					slice.Label = hole.ByID[slice.Label].Name
-				} else {
-					slice.Label = lang.ByID[slice.Label].Name
-				}
-			}
-
-			slices = append(slices, slice)
-		}
-
-		if err := rows.Err(); err != nil {
-			panic(err)
-		}
-
-		if fact == "hole" {
-			data.SolutionsByHole = pie.New(slices)
-		} else {
-			data.SolutionsByLang = pie.New(slices)
-		}
-
-		rows, err = db.Query(
 			` SELECT RANK() OVER (ORDER BY COUNT(*) DESC, ` + fact + `),
 			         ` + fact + `, COUNT(*), COUNT(DISTINCT user_id)
 			    FROM solutions
@@ -103,6 +51,8 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			panic(err)
 		}
+
+		var slices []pie.Slice
 
 		for rows.Next() {
 			var row row
@@ -125,10 +75,26 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 			row.PerGolfer = fmt.Sprintf("%.2f", float64(row.Count)/float64(row.Golfers))
 
 			data.Tables[i].Rows = append(data.Tables[i].Rows, row)
+
+			// Pie chart
+			switch len(slices) {
+			case 6:
+				slices[5].Quantity += row.Count
+			case 5:
+				slices = append(slices, pie.Slice{Label: "Other", Quantity: row.Count})
+			default:
+				slices = append(slices, pie.Slice{Label: row.Fact, Quantity: row.Count})
+			}
 		}
 
 		if err := rows.Err(); err != nil {
 			panic(err)
+		}
+
+		if fact == "hole" {
+			data.SolutionsByHole = pie.New(slices)
+		} else {
+			data.SolutionsByLang = pie.New(slices)
 		}
 	}
 
