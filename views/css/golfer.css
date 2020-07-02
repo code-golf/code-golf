@@ -36,4 +36,7 @@ progress::-webkit-progress-value { background: var(--blue) }
     font-weight: bold;
 }
 
-#trophies { display: grid }
+#trophies {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+}

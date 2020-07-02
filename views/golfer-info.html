@@ -44,11 +44,18 @@ main {
 }
 
 #profile {
-    grid-template-rows: min-content 1fr min-content;
+    font-variant: tabular-nums;
+    grid-row-gap: 0;
+    grid-template: min-content 1fr min-content / min-content 1fr;
     padding: 1rem 1rem 0;
 }
 
-#profile img { grid-row: span 3 }
+#profile img {
+    border-radius: 2rem;
+    grid-row: span 3;
+    height: 6rem;
+    width: 6rem;
+}
 
 #profile p:first-of-type { font-size: 1.25rem }
 </style>

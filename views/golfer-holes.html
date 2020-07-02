@@ -1,9 +1,5 @@
 {{ template "header" . }}
 
-<style nonce="{{ .Nonce }}">
-#matrix { padding: 1rem }
-</style>
-
 <svg id=symbols>
 {{ range .Data.Langs }}
     {{ symbol .ID }}
