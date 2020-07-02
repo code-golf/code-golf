@@ -11,33 +11,52 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-func scoresMini(w http.ResponseWriter, r *http.Request) {
+func scoresMini(w http.ResponseWriter, r *http.Request, scoring string) {
 	var userID int
 	if golfer := session.Golfer(r); golfer != nil {
 		userID = golfer.ID
+	}
+
+	var otherScoring string
+	if scoring == "chars" {
+		otherScoring = "bytes"
+	} else {
+		otherScoring = "chars"
 	}
 
 	var json []byte
 
 	if err := session.Database(r).QueryRow(
 		`WITH leaderboard AS (
-		    SELECT ROW_NUMBER() OVER (ORDER BY chars, submitted),
-		           RANK()       OVER (ORDER BY chars),
+		    SELECT ROW_NUMBER() OVER (ORDER BY `+scoring+`, submitted),
+		           RANK()       OVER (ORDER BY `+scoring+`),
 		           user_id,
-		           chars,
+		           `+scoring+`,
 		           user_id = $1 me
 		      FROM solutions
 		      JOIN code ON code_id = id
 		     WHERE hole = $2
 		       AND lang = $3
+		       AND scoring = $4
+		       AND NOT failing
+		), other_scoring AS (
+		    SELECT user_id,
+		           `+otherScoring+`
+		      FROM solutions
+		      JOIN code ON code_id = id
+		     WHERE hole = $2
+		       AND lang = $3
+		       AND scoring = $5
 		       AND NOT failing
 		), mini_leaderboard AS (
 		    SELECT rank,
 		           login,
 		           me,
-		           chars strokes
+		           chars,
+		           bytes
 		      FROM leaderboard
 		      JOIN users on user_id = id
+		 LEFT JOIN other_scoring ON leaderboard.user_id = other_scoring.user_id
 		     WHERE row_number >
 		           COALESCE((SELECT row_number - 4 FROM leaderboard WHERE me), 0)
 		  ORDER BY row_number
@@ -46,6 +65,8 @@ func scoresMini(w http.ResponseWriter, r *http.Request) {
 		userID,
 		param(r, "hole"),
 		param(r, "lang"),
+		scoring,
+		otherScoring,
 	).Scan(&json); err != nil {
 		panic(err)
 	}
@@ -61,6 +82,7 @@ func scoresAll(w http.ResponseWriter, r *http.Request) {
 		`WITH solution_lengths AS (
 		    SELECT hole,
 		           lang,
+                   scoring,
 		           login,
 		           chars strokes,
 		           bytes,
@@ -131,7 +153,11 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 
 	if suffix := param(r, "suffix"); suffix != "" {
 		if suffix == "mini" {
-			scoresMini(w, r)
+			scoresMini(w, r, "chars")
+			return
+		}
+		if suffix == "minibytes" {
+			scoresMini(w, r, "bytes")
 			return
 		}
 
@@ -180,6 +206,7 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 		   WHERE NOT failing
 		     AND $1 IN ('all-holes', hole::text)
 		     AND $2 IN ('all-langs', lang::text)
+		     AND scoring = 'chars'
 		ORDER BY hole, user_id, chars, submitted
 		), scored_leaderboard AS (
 		  SELECT hole,

@@ -14,10 +14,10 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 		HideDetails bool
 		Hole        hole.Hole
 		Langs       []lang.Lang
-		Solutions   map[string]string
+		Solutions   []map[string]string
 	}{
 		Langs:     lang.List,
-		Solutions: map[string]string{},
+		Solutions: []map[string]string{{}, {}},
 	}
 
 	var ok bool
@@ -33,7 +33,7 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 	if golfer := session.Golfer(r); golfer != nil {
 		// Fetch all the code per lang.
 		rows, err := session.Database(r).Query(
-			`SELECT code, lang
+			`SELECT code, lang, scoring
 			   FROM solutions
 			   JOIN code ON code_id = id
 			  WHERE hole = $1 AND user_id = $2`,
@@ -46,13 +46,18 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 		defer rows.Close()
 
 		for rows.Next() {
-			var code, lang string
+			var code, lang, scoring string
 
-			if err := rows.Scan(&code, &lang); err != nil {
+			if err := rows.Scan(&code, &lang, &scoring); err != nil {
 				panic(err)
 			}
 
-			data.Solutions[lang] = code
+			slot := 0
+			if scoring == "bytes" {
+				slot = 1
+			}
+
+			data.Solutions[slot][lang] = code
 		}
 
 		if err := rows.Err(); err != nil {

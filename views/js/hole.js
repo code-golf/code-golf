@@ -1,15 +1,29 @@
-const chars     = document.querySelector('#chars');
-const details   = document.querySelector('#details');
-const editor    = document.querySelector('#editor');
-const hole      = decodeURI(location.pathname.slice(1));
-const langs     = JSON.parse(document.querySelector('#langs').innerText);
-const picker    = document.querySelector('#picker');
-const solutions = JSON.parse(document.querySelector('#solutions').innerText);
-const status    = document.querySelector('#status');
-const table     = document.querySelector('.scores');
+const chars      = document.querySelector('#chars');
+const details    = document.querySelector('#details');
+const editor     = document.querySelector('#editor');
+const hole       = decodeURI(location.pathname.slice(1));
+const langs      = JSON.parse(document.querySelector('#langs').innerText);
+const picker     = document.querySelector('#picker');
+const slotPicker = document.querySelector('#slotPicker');
+const solutions  = JSON.parse(document.querySelector('#solutions').innerText);
+const status     = document.querySelector('#status');
+const table      = document.querySelector('.scores');
+
+const scoringModes = ['Chars', 'Bytes'];
 
 let lang;
+let slot = localStorage.getItem('slot') ? parseInt(localStorage.getItem('slot')) : 0;
+let scoringMode = localStorage.getItem('scoringMode') ? parseInt(localStorage.getItem('scoringMode')) : 0;
+let setCodeForLangAndSlot;
 let latestSubmissionID = 0;
+
+function setSlot(value) {
+    localStorage.setItem('slot', slot = value);
+}
+
+function setScoringMode(value) {
+    localStorage.setItem('scoringMode', scoringMode = value);
+}
 
 onload = () => {
     // Lock the editor's height in so we scroll.
@@ -20,13 +34,15 @@ onload = () => {
     cm.on('change', () => {
         const code = cm.getValue();
         const len = strlen(code);
-
+        const bytes = utf8ByteCount(code);
         chars.innerText = `${len.toLocaleString('en')} character${len - 1 ? 's' : ''}`;
+        if (len != bytes)
+            chars.innerText += `, ${bytes.toLocaleString('en')} byte${bytes - 1 ? 's' : ''}`;
 
         // Avoid future conflicts by only storing code locally that's different from the server's copy.
-        const serverCode = lang in solutions ? solutions[lang] : '';
+        const serverCode = lang in solutions[slot] ? solutions[slot][lang] : '';
 
-        const key = 'code_' + hole + '_' + lang;
+        const key = `code_${hole}_${lang}_${slot}`;
         if (code && code != serverCode)
             localStorage.setItem(key, code);
         else
@@ -36,22 +52,12 @@ onload = () => {
     details.ontoggle = () =>
         document.cookie = 'hide-details=' + (details.open ? ';Max-Age=0' : '');
 
-    (onhashchange = () => {
-        lang = location.hash.slice(1) || localStorage.getItem('lang');
-
-        // Kick 'em to Python if we don't know the chosen language.
-        if (!langs.find(l => l.id == lang))
-            lang = 'python';
-
-        const code = lang in solutions ? solutions[lang] : '';
-        const previousCode = localStorage.getItem('code_' + hole + '_' + lang);
+    setCodeForLangAndSlot = () => {
+        const code = lang in solutions[slot] ? solutions[slot][lang] : '';
+        const previousCode = localStorage.getItem(`code_${hole}_${lang}_${slot}`);
 
         cm.setOption('mode', {name: 'text/x-' + lang, startOpen: true});
         cm.setValue(code);
-
-        localStorage.setItem('lang', lang);
-
-        history.replaceState(null, '', '#' + lang);
 
         refreshScores();
 
@@ -61,6 +67,20 @@ onload = () => {
 
         for (let info of document.querySelectorAll('.info'))
             info.style.display = info.classList.contains(lang) ? 'block' : '';
+    };
+
+    (onhashchange = () => {
+        lang = location.hash.slice(1) || localStorage.getItem('lang');
+
+        // Kick 'em to Python if we don't know the chosen language.
+        if (!langs.find(l => l.id == lang))
+            lang = 'python';
+
+        localStorage.setItem('lang', lang);
+
+        history.replaceState(null, '', '#' + lang);
+
+        setCodeForLangAndSlot();
     })();
 
     const submit = document.querySelector('#run a').onclick = async () => {
@@ -84,14 +104,21 @@ onload = () => {
         if (submissionID != latestSubmissionID)
             return;
 
-        if (data.Pass && (!(codeLang in solutions) || strlen(code) <= strlen(solutions[codeLang]))) {
-            solutions[codeLang] = code;
+        for (let i = 0; i < 2; i++) {
+            const lengthFunc = i ? utf8ByteCount : strlen;
+            if (data.Pass && (!(codeLang in solutions[i]) || lengthFunc(code) <= lengthFunc(solutions[i][codeLang])))
+                solutions[i][codeLang] = code;
 
             // Don't need to keep solution in local storage because it's stored on the site.
             // This prevents conflicts when the solution is improved on another browser.
             if (data.LoggedIn)
-                localStorage.removeItem('code_' + hole + '_' + codeLang);
+                localStorage.removeItem(`code_${hole}_${codeLang}_${i}`);
         }
+
+        // Automatically switch to the slot whose code matches the current code after a new solution is submitted.
+        // Don't change scoringMode. refreshScores will update the slot picker.
+        if (data.Pass && solutions[slot][lang] != code && solutions[1 - slot][lang] == code)
+            setSlot(1 - slot);
 
         document.querySelector('h2').innerText
             = data.Pass ? 'Pass 😀' : 'Fail ☹️';
@@ -142,17 +169,49 @@ async function refreshScores() {
     for (const l of langs) {
         let name = l.name;
 
-        if (l.id in solutions)
-            name += ` <sup>${strlen(solutions[l.id]).toLocaleString('en')}</sup>`;
+        if (l.id in solutions[0]) {
+            const chars = strlen(solutions[0][l.id])
+            const bytes = utf8ByteCount(solutions[1][l.id])
+            if (chars != bytes)
+                name += ` <sup>${chars.toLocaleString('en')}/${bytes.toLocaleString('en')}</sup>`;
+            else
+               name += ` <sup>${chars.toLocaleString('en')}</sup>`;
+        }
 
         picker.innerHTML += l.id == lang
             ? `<a>${name}</a>` : `<a href=#${l.id}>${name}</a>`;
     }
 
-    const url    = `/scores/${hole}/${lang}`;
-    const scores = await (await fetch(`${url}/mini`)).json();
+    while (slotPicker.firstChild)
+        slotPicker.removeChild(slotPicker.firstChild);
 
-    let html = `<thead><tr><th colspan=3>Scores<a href=${url}>all</a><tbody>`;
+    // Only show the slot picker when both slots are actually used.
+    if (lang in solutions[0] && lang in solutions[1] && solutions[0][lang] != solutions[1][lang]) {
+        for (let i = 0; i < 2; i++) {
+            name = i == 0 ? 'Fewest Chars' : 'Fewest Bytes';
+
+            if (lang in solutions[i]) {
+                name += ` <sup>${[strlen,utf8ByteCount][i](solutions[i][lang]).toLocaleString('en')}</sup>`;
+            }
+
+            const child = document.createElement('a');
+            child.innerHTML = name;
+            if (i != slot) {
+                child.href = 'javascript:void(0)';
+                child.onclick = () => { setSlot(i); setCodeForLangAndSlot(); };
+            }
+            slotPicker.appendChild(child);
+        }
+    }
+
+    const url    = `/scores/${hole}/${lang}`;
+    const scores = await (await fetch(`${url}/${scoringMode ? 'minibytes' : 'mini'}`)).json();
+
+    let html = `<thead><tr><th colspan=4>
+        <a class=modePicker id=Chars>Chars</a>
+        <a class=modePicker id=Bytes>Bytes</a>
+        <a href=${url} id=all>all</a><tbody>
+        <tbody>`;
 
     // Ordinal from https://codegolf.stackexchange.com/a/119563
     for (let i = 0; i < 7; i++) {
@@ -163,10 +222,29 @@ async function refreshScores() {
             <td><a href=/golfers/${s.login}>
                 <img src="//avatars.githubusercontent.com/${s.login}?s=24">${s.login}
             </a>
-            <td class=right>${s.strokes.toLocaleString('en')}` : '<tr><td colspan=3>&nbsp;';
+            <td class=right><span${scoringMode != 0 ? ' class=inactive' : ''}>${s.chars.toLocaleString('en')}</span>
+            <td class=right><span${scoringMode != 1 ? ' class=inactive' : ''}>${s.bytes.toLocaleString('en')}</span>` : '<tr><td colspan=4>&nbsp;';
     }
 
     table.innerHTML = html;
+
+    const otherScoringMode = 1 - scoringMode;
+    const switchMode = table.querySelector(`#${scoringModes[otherScoringMode]}`);
+    switchMode.href = 'javascript:void(0)';
+    switchMode.onclick = () => { setScoringMode(otherScoringMode); refreshScores(); };
+}
+
+function bytesForCodePoint(codePoint) {
+    if ((codePoint & 0xFFFFFF80) == 0) {
+        return 1;
+    }
+    if ((codePoint & 0xFFFFF800) == 0) {
+        return 2;
+    }
+    else if ((codePoint & 0xFFFF0000) == 0) {
+        return 3;
+    }
+    return 4;
 }
 
 // Adapted from https://mths.be/punycode
@@ -195,4 +273,32 @@ function strlen(str) {
     }
 
     return len;
+}
+
+// Adapted from https://mths.be/punycode
+function utf8ByteCount(str) {
+    let i = 0, byteCount = 0;
+
+    while (i < str.length) {
+        const value = str.charCodeAt(i++);
+
+        if (value >= 0xD800 && value <= 0xDBFF && i < str.length) {
+            // It's a high surrogate, and there is a next character.
+            const extra = str.charCodeAt(i++);
+
+            // Low surrogate.
+            if ((extra & 0xFC00) == 0xDC00) {
+                byteCount += bytesForCodePoint(((value & 0x3FF) << 10) + (extra & 0x3FF) + 0x10000);
+            } else {
+                // It's an unmatched surrogate; only append this code unit, in case the
+                // next code unit is the high surrogate of a surrogate pair.
+                byteCount += bytesForCodePoint(value);
+                i--;
+            }
+        } else {
+            byteCount += bytesForCodePoint(value);
+        }
+    }
+
+    return byteCount;
 }

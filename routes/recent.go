@@ -35,6 +35,7 @@ func Recent(w http.ResponseWriter, r *http.Request) {
           JOIN code  ON code_id = code.id
           JOIN users ON user_id = users.id
          WHERE NOT failing
+           AND scoring = 'chars'
            AND $1 IN ('all-langs', lang::text)
      )  SELECT t1.hole,
                t1.lang,

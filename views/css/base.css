@@ -239,6 +239,8 @@ thead th {
     grid-gap: 1rem;
 }
 
+.inactive { opacity: 0.6 }
+
 /* TODO Need a dark version */
 .me { background: var(--blue) !important }
 
