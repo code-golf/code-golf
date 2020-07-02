@@ -184,7 +184,7 @@ async function refreshScores() {
 
         html += s ? `<tr ${s.me ? 'class=me' : ''}>
             <td>${s.rank}<sup>${[, 'st', 'nd', 'rd'][s.rank % 100 >> 3 ^ 1 && s.rank % 10] || 'th'}</sup>
-            <td><a href=/users/${s.login}>
+            <td><a href=/golfers/${s.login}>
                 <img src="//avatars.githubusercontent.com/${s.login}?s=24">${s.login}
             </a>
             <td class=right>${s.strokes.toLocaleString('en')}` : '<tr><td colspan=3>&nbsp;';

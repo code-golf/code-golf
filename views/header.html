@@ -44,8 +44,9 @@
         </a>
         <div></div>
     {{ if .Login }}
-        {{ $profile := (print "/users/" .Login) }}
-        <a {{ if ne .Path $profile }} href={{ $profile }} title=Profile {{ end }}>
+        {{ $slug := (print "/golfers/" .Login) }}
+
+        <a {{ if ne .Path $slug }} href="{{ $slug }}" title=Profile {{ end }}>
             <img src="//avatars.githubusercontent.com/{{ .Login }}?s=28">
         </a>
         <a href=/log-out title="Log Out">

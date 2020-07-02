@@ -55,7 +55,7 @@ func main() {
 	r.Get("/settings", routes.Settings)
 	r.Post("/solution", routes.Solution)
 	r.Get("/stats", routes.Stats)
-	r.Get("/users/{user}", routes.User)
+	r.Get("/users/{name}", routes.User)
 
 	r.Route("/admin", func(r chi.Router) {
 		// TODO Have previous middleware put Golfer into the context.
