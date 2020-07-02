@@ -25,9 +25,9 @@ type solution struct {
 // Admin serves GET /admin
 func Admin(w http.ResponseWriter, r *http.Request) {
 	render(w, r, http.StatusOK, "admin", "Admin", struct {
-		Holes []Hole
+		Holes []hole.Hole
 		Langs []lang.Lang
-	}{holes, lang.List})
+	}{hole.List, lang.List})
 }
 
 // AdminSolutions serves GET /admin/solutions

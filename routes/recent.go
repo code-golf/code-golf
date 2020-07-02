@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
 )
 
@@ -69,7 +70,7 @@ func Recent(w http.ResponseWriter, r *http.Request) {
 	defer rows.Close()
 
 	type recent struct {
-		Hole      Hole
+		Hole      hole.Hole
 		Lang      lang.Lang
 		Login     string
 		Strokes   int
@@ -96,7 +97,7 @@ func Recent(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
-		r.Hole = holeByID[holeID]
+		r.Hole = hole.ByID[holeID]
 		r.Lang = lang.ByID[langID]
 
 		recents = append(recents, r)

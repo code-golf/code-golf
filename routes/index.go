@@ -5,6 +5,7 @@ import (
 	"sort"
 
 	"github.com/code-golf/code-golf/cookie"
+	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
 )
 
@@ -26,11 +27,11 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 	type Card struct {
 		Golfers, Rank int
-		Hole          Hole
+		Hole          hole.Hole
 	}
 
 	type Fail struct {
-		Hole Hole
+		Hole hole.Hole
 		Lang lang.Lang
 	}
 
@@ -72,7 +73,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 				panic(err)
 			}
 
-			data.Fails = append(data.Fails, Fail{holeByID[holeID], lang.ByID[langID]})
+			data.Fails = append(data.Fails, Fail{hole.ByID[holeID], lang.ByID[langID]})
 		}
 
 		if err := rows.Err(); err != nil {
@@ -106,7 +107,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
-		card.Hole = holeByID[holeID]
+		card.Hole = hole.ByID[holeID]
 
 		data.Cards = append(data.Cards, card)
 	}

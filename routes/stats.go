@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
 	"github.com/code-golf/code-golf/pie"
 )
@@ -25,7 +26,7 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 		SolutionsByHole, SolutionsByLang pie.Pie
 		Tables                           []table
 	}{
-		Holes:  len(holes),
+		Holes:  len(hole.List),
 		Langs:  len(lang.List),
 		Tables: []table{{Fact: "Hole"}, {Fact: "Language"}},
 	}
@@ -73,7 +74,7 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 
 			if slice.Label != "Other" {
 				if fact == "hole" {
-					slice.Label = holeByID[slice.Label].Name
+					slice.Label = hole.ByID[slice.Label].Name
 				} else {
 					slice.Label = lang.ByID[slice.Label].Name
 				}
@@ -116,7 +117,7 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 			}
 
 			if fact == "hole" {
-				row.Fact = holeByID[row.Fact].Name
+				row.Fact = hole.ByID[row.Fact].Name
 			} else {
 				row.Fact = lang.ByID[row.Fact].Name
 			}

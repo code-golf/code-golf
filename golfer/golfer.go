@@ -5,6 +5,7 @@ import (
 	"errors"
 	"time"
 
+	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
 	"github.com/code-golf/code-golf/trophy"
 )
@@ -38,6 +39,7 @@ type GolferInfo struct {
 
 func GetInfo(db *sql.DB, name string) *GolferInfo {
 	info := GolferInfo{
+		HolesTotal:    len(hole.List),
 		LangsTotal:    len(lang.List),
 		TrophiesTotal: len(trophy.List),
 	}

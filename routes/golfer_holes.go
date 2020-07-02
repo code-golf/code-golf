@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/code-golf/code-golf/golfer"
+	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
 )
 
@@ -12,10 +13,10 @@ func GolferHoles(w http.ResponseWriter, r *http.Request) {
 	golfer := r.Context().Value("golferInfo").(*golfer.GolferInfo).Golfer
 
 	data := struct {
-		Holes []Hole
+		Holes []hole.Hole
 		Langs []lang.Lang
 		Ranks map[string]map[string]int
-	}{holes, lang.List, map[string]map[string]int{}}
+	}{hole.List, lang.List, map[string]map[string]int{}}
 
 	rows, err := db(r).Query(
 		`WITH matrix AS (

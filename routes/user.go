@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
 	"github.com/code-golf/code-golf/trophy"
 )
@@ -13,7 +14,7 @@ import (
 // User serves GET /users/{user}
 func User(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		Holes          []Hole
+		Holes          []hole.Hole
 		Langs          []lang.Lang
 		Login          string
 		Points         int
@@ -21,7 +22,7 @@ func User(w http.ResponseWriter, r *http.Request) {
 		Trophies       []trophy.Trophy
 		TrophiesEarned map[string]*time.Time
 	}{
-		Holes:          holes,
+		Holes:          hole.List,
 		Langs:          lang.List,
 		Login:          param(r, "user"),
 		Ranks:          map[string]map[string]int{},

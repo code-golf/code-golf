@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/code-golf/code-golf/cookie"
+	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
 )
 
@@ -80,7 +81,7 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 	holeID := param(r, "hole")
 	langID := param(r, "lang")
 
-	if _, ok := holeByID[holeID]; holeID != "all-holes" && !ok {
+	if _, ok := hole.ByID[holeID]; holeID != "all-holes" && !ok {
 		render(w, r, http.StatusNotFound, "404", "", nil)
 		return
 	}
@@ -109,13 +110,13 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 
 	data := struct {
 		HoleID, LangID string
-		Holes          []Hole
+		Holes          []hole.Hole
 		Langs          []lang.Lang
 		Next, Prev     int
 		Scores         []Score
 	}{
 		HoleID: holeID,
-		Holes:  holes,
+		Holes:  hole.List,
 		LangID: langID,
 		Langs:  lang.List,
 	}
@@ -251,7 +252,7 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 	if holeID == "all-holes" {
 		title = "All Holes"
 	} else {
-		title = holeByID[holeID].Name
+		title = hole.ByID[holeID].Name
 	}
 
 	title += " in "

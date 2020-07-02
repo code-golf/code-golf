@@ -39,7 +39,7 @@ func main() {
 	r.NotFound(routes.NotFound)
 
 	r.Get("/", routes.Index)
-	r.Get("/{hole}", routes.GETHole)
+	r.Get("/{hole}", routes.Hole)
 	r.Get("/about", routes.About)
 	r.Get("/assets/{asset}", routes.Asset)
 	r.Get("/callback", routes.Callback)

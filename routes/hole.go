@@ -4,15 +4,15 @@ import (
 	"net/http"
 
 	"github.com/code-golf/code-golf/cookie"
+	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
 )
 
-// GETHole serves GET /{hole}
-// TODO Rename when Hole isn't defined in routes
-func GETHole(w http.ResponseWriter, r *http.Request) {
+// Hole serves GET /{hole}
+func Hole(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		HideDetails             bool
-		Hole                    Hole
+		Hole                    hole.Hole
 		HoleCssPath, HoleJsPath string
 		Langs                   []lang.Lang
 		Solutions               map[string]string
@@ -24,7 +24,7 @@ func GETHole(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var ok bool
-	if data.Hole, ok = holeByID[param(r, "hole")]; !ok {
+	if data.Hole, ok = hole.ByID[param(r, "hole")]; !ok {
 		render(w, r, http.StatusNotFound, "404", "", nil)
 		return
 	}
