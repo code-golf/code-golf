@@ -12,12 +12,12 @@
             <h2>{{ .Trophy.Name }}</h2>
             <p>{{ .Trophy.Description }}
             <p>
-                Won by {{ comma .Count }} ({{ .Percent }}%)
+                Won by {{ comma .Count }} golfers ({{ .Percent }}%)
                 <progress value="{{ .Count }}" max="{{ $max }}"></progress>
             {{ if .Earned.Valid }}
-                You won on {{ time .Earned.Value }}
+                Won {{ time .Earned.Value }}
             {{ else }}
-                <span>You've not yet won</span>
+                <span>Not yet won</span>
             {{ end }}
         </div>
     {{ end }}

@@ -31,6 +31,9 @@ progress::-webkit-progress-value { background: var(--blue) }
     grid-row: span 3;
 }
 
-.trophy span { color: var(--red) }
+.trophy span {
+    color: var(--red);
+    font-weight: bold;
+}
 
 #trophies { display: grid }
