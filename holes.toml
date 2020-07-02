@@ -1011,7 +1011,7 @@ category = 'Computing'
 preamble = '''
 <p>
     A <b>quine</b> is a non-empty computer program which takes no input and
-    produces a copy of its own source code as its only output, produce such a
+    produces a copy of its own source code as its only output. Produce such a
     program.
 
 <p>Trailing whitespace is <b>NOT</b> stripped from the output for this hole.
