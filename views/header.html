@@ -44,9 +44,10 @@
         </a>
         <div></div>
     {{ if .Login }}
-        {{ $slug := (print "/golfers/" .Login) }}
+        {{ $slug  := (print "/golfers/" .Login) }}
+        {{ $slug2 := (print $slug "/holes") }}
 
-        <a {{ if ne .Path $slug }} href="{{ $slug }}" title=Profile {{ end }}>
+        <a {{ if and (ne .Path $slug) (ne .Path $slug2) }} href="{{ $slug }}" title=Profile {{ end }}>
             <img src="//avatars.githubusercontent.com/{{ .Login }}?s=28">
         </a>
         <a href=/log-out title="Log Out">
