@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/code-golf/code-golf/golfer"
+	"github.com/code-golf/code-golf/lang"
 )
 
 // GolferHoles serves GET /golfers/{golfer}/holes
@@ -12,9 +13,9 @@ func GolferHoles(w http.ResponseWriter, r *http.Request) {
 
 	data := struct {
 		Holes []Hole
-		Langs []Lang
+		Langs []lang.Lang
 		Ranks map[string]map[string]int
-	}{holes, langs, map[string]map[string]int{}}
+	}{holes, lang.List, map[string]map[string]int{}}
 
 	rows, err := db(r).Query(
 		`WITH matrix AS (

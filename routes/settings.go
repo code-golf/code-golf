@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/code-golf/code-golf/golfer"
+	"github.com/code-golf/code-golf/lang"
 	"github.com/code-golf/code-golf/zone"
 )
 
@@ -14,7 +15,7 @@ func Settings(w http.ResponseWriter, r *http.Request) {
 	r = r.WithContext(context.WithValue(r.Context(), "golferInfo", info))
 
 	render(w, r, http.StatusOK, "settings", "Settings", struct {
-		Langs     []Lang
+		Langs     []lang.Lang
 		TimeZones []zone.Zone
-	}{langs, zone.List()})
+	}{lang.List, zone.List()})
 }

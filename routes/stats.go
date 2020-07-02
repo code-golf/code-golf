@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/code-golf/code-golf/lang"
 	"github.com/code-golf/code-golf/pie"
 )
 
@@ -25,7 +26,7 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 		Tables                           []table
 	}{
 		Holes:  len(holes),
-		Langs:  len(langs),
+		Langs:  len(lang.List),
 		Tables: []table{{Fact: "Hole"}, {Fact: "Language"}},
 	}
 
@@ -74,7 +75,7 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 				if fact == "hole" {
 					slice.Label = holeByID[slice.Label].Name
 				} else {
-					slice.Label = langByID[slice.Label].Name
+					slice.Label = lang.ByID[slice.Label].Name
 				}
 			}
 
@@ -117,7 +118,7 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 			if fact == "hole" {
 				row.Fact = holeByID[row.Fact].Name
 			} else {
-				row.Fact = langByID[row.Fact].Name
+				row.Fact = lang.ByID[row.Fact].Name
 			}
 
 			row.PerGolfer = fmt.Sprintf("%.2f", float64(row.Count)/float64(row.Golfers))

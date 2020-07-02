@@ -9,6 +9,7 @@ import (
 	"sync"
 
 	"github.com/code-golf/code-golf/hole"
+	"github.com/code-golf/code-golf/lang"
 )
 
 type solution struct {
@@ -25,8 +26,8 @@ type solution struct {
 func Admin(w http.ResponseWriter, r *http.Request) {
 	render(w, r, http.StatusOK, "admin", "Admin", struct {
 		Holes []Hole
-		Langs []Lang
-	}{holes, langs})
+		Langs []lang.Lang
+	}{holes, lang.List})
 }
 
 // AdminSolutions serves GET /admin/solutions

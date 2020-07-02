@@ -3,6 +3,8 @@ package routes
 import (
 	"net/http"
 	"time"
+
+	"github.com/code-golf/code-golf/lang"
 )
 
 // Recent serves GET /recent/{lang}
@@ -14,7 +16,7 @@ func Recent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if _, ok := langByID[langID]; langID != "all-langs" && !ok {
+	if _, ok := lang.ByID[langID]; langID != "all-langs" && !ok {
 		render(w, r, http.StatusNotFound, "404", "", nil)
 		return
 	}
@@ -68,7 +70,7 @@ func Recent(w http.ResponseWriter, r *http.Request) {
 
 	type recent struct {
 		Hole      Hole
-		Lang      Lang
+		Lang      lang.Lang
 		Login     string
 		Strokes   int
 		Rank      int
@@ -95,7 +97,7 @@ func Recent(w http.ResponseWriter, r *http.Request) {
 		}
 
 		r.Hole = holeByID[holeID]
-		r.Lang = langByID[langID]
+		r.Lang = lang.ByID[langID]
 
 		recents = append(recents, r)
 	}
@@ -109,16 +111,16 @@ func Recent(w http.ResponseWriter, r *http.Request) {
 	if langID == "all-langs" {
 		title += "All Langs"
 	} else {
-		title += langByID[langID].Name
+		title += lang.ByID[langID].Name
 	}
 
 	data := struct {
 		LangID  string
-		Langs   []Lang
+		Langs   []lang.Lang
 		Recents []recent
 	}{
 		LangID:  langID,
-		Langs:   langs,
+		Langs:   lang.List,
 		Recents: recents,
 	}
 

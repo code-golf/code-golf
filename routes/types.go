@@ -8,45 +8,13 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
-type Lang struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
-}
-
 type Hole struct {
 	Prev, Next, ID, Name, Category, CategoryColor, CategoryIcon string
 	Preamble                                                    template.HTML
 }
 
-var langs = []Lang{
-	{"bash", "Bash"},
-	{"brainfuck", "Brainfuck"},
-	{"c", "C"},
-	{"c-sharp", "C#"},
-	{"f-sharp", "F#"},
-	{"fortran", "Fortran"},
-	{"go", "Go"},
-	{"haskell", "Haskell"},
-	{"j", "J"},
-	{"java", "Java"},
-	{"javascript", "JavaScript"},
-	{"julia", "Julia"},
-	{"lisp", "Lisp"},
-	{"lua", "Lua"},
-	{"nim", "Nim"},
-	{"perl", "Perl"},
-	{"php", "PHP"},
-	{"powershell", "PowerShell"},
-	{"python", "Python"},
-	{"raku", "Raku"},
-	{"ruby", "Ruby"},
-	{"rust", "Rust"},
-	{"swift", "Swift"},
-}
-
 var holes []Hole
 
-var langByID = map[string]Lang{}
 var holeByID = map[string]Hole{}
 
 func init() {
@@ -65,10 +33,6 @@ func init() {
 	}
 
 	sort.Slice(holes, func(i, j int) bool { return holes[i].Name < holes[j].Name })
-
-	for _, lang := range langs {
-		langByID[lang.ID] = lang
-	}
 
 	for i, hole := range holes {
 		if i == 0 {

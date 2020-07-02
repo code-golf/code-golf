@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/code-golf/code-golf/cookie"
+	"github.com/code-golf/code-golf/lang"
 )
 
 // GETHole serves GET /{hole}
@@ -13,12 +14,12 @@ func GETHole(w http.ResponseWriter, r *http.Request) {
 		HideDetails             bool
 		Hole                    Hole
 		HoleCssPath, HoleJsPath string
-		Langs                   []Lang
+		Langs                   []lang.Lang
 		Solutions               map[string]string
 	}{
 		HoleCssPath: holeCssPath,
 		HoleJsPath:  holeJsPath,
-		Langs:       langs,
+		Langs:       lang.List,
 		Solutions:   map[string]string{},
 	}
 

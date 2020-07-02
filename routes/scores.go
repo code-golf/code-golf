@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/code-golf/code-golf/cookie"
+	"github.com/code-golf/code-golf/lang"
 )
 
 func scoresMini(w http.ResponseWriter, r *http.Request) {
@@ -94,14 +95,14 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if _, ok := langByID[langID]; langID != "all-langs" && !ok {
+	if _, ok := lang.ByID[langID]; langID != "all-langs" && !ok {
 		render(w, r, http.StatusNotFound, "404", "", nil)
 		return
 	}
 
 	type Score struct {
 		Holes, Points, Rank, Strokes int
-		Lang                         Lang
+		Lang                         lang.Lang
 		Login                        string
 		Submitted                    time.Time
 	}
@@ -109,14 +110,14 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		HoleID, LangID string
 		Holes          []Hole
-		Langs          []Lang
+		Langs          []lang.Lang
 		Next, Prev     int
 		Scores         []Score
 	}{
 		HoleID: holeID,
 		Holes:  holes,
 		LangID: langID,
-		Langs:  langs,
+		Langs:  lang.List,
 	}
 
 	page := 1
@@ -238,7 +239,7 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
-		score.Lang = langByID[langID]
+		score.Lang = lang.ByID[langID]
 
 		data.Scores = append(data.Scores, score)
 	}
@@ -258,7 +259,7 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 	if langID == "all-langs" {
 		title += "All Langs"
 	} else {
-		title += langByID[langID].Name
+		title += lang.ByID[langID].Name
 	}
 
 	render(w, r, http.StatusOK, "scores", title, data)
