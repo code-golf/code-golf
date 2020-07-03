@@ -168,6 +168,6 @@ func Feed(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/rss+xml; charset=utf-8")
 		w.Write(rssFeed)
 	default:
-		render(w, r, http.StatusNotFound, "404", "", nil)
+		render(w, r, "404", "", nil)
 	}
 }

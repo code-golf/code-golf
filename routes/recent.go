@@ -18,7 +18,7 @@ func Recent(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if _, ok := lang.ByID[langID]; langID != "all-langs" && !ok {
-		render(w, r, http.StatusNotFound, "404", "", nil)
+		render(w, r, "404", "", nil)
 		return
 	}
 
@@ -125,5 +125,5 @@ func Recent(w http.ResponseWriter, r *http.Request) {
 		Recents: recents,
 	}
 
-	render(w, r, http.StatusOK, "recent", title, data)
+	render(w, r, "recent", title, data)
 }

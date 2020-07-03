@@ -82,7 +82,7 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 	langID := param(r, "lang")
 
 	if _, ok := hole.ByID[holeID]; holeID != "all-holes" && !ok {
-		render(w, r, http.StatusNotFound, "404", "", nil)
+		render(w, r, "404", "", nil)
 		return
 	}
 
@@ -97,7 +97,7 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if _, ok := lang.ByID[langID]; langID != "all-langs" && !ok {
-		render(w, r, http.StatusNotFound, "404", "", nil)
+		render(w, r, "404", "", nil)
 		return
 	}
 
@@ -137,7 +137,7 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 		page, _ = strconv.Atoi(suffix)
 
 		if page < 1 {
-			render(w, r, http.StatusNotFound, "404", "", nil)
+			render(w, r, "404", "", nil)
 			return
 		}
 
@@ -263,5 +263,5 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 		title += lang.ByID[langID].Name
 	}
 
-	render(w, r, http.StatusOK, "scores", title, data)
+	render(w, r, "scores", title, data)
 }

@@ -29,5 +29,5 @@ func Ideas(w http.ResponseWriter, r *http.Request) {
 		ideas = append(ideas, i)
 	}
 
-	render(w, r, http.StatusOK, "ideas", "Ideas", ideas)
+	render(w, r, "ideas", "Ideas", ideas)
 }

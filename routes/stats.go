@@ -98,5 +98,5 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	render(w, r, http.StatusOK, "stats", "Stats", data)
+	render(w, r, "stats", "Stats", data)
 }

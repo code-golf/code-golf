@@ -81,5 +81,5 @@ func Golfer(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	render(w, r, http.StatusOK, "golfer", golfer.Name, data)
+	render(w, r, "golfer", golfer.Name, data)
 }

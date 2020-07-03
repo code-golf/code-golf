@@ -25,7 +25,7 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 
 	var ok bool
 	if data.Hole, ok = hole.ByID[param(r, "hole")]; !ok {
-		render(w, r, http.StatusNotFound, "404", "", nil)
+		render(w, r, "404", "", nil)
 		return
 	}
 
@@ -62,5 +62,5 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	render(w, r, http.StatusOK, "hole", data.Hole.Name, data)
+	render(w, r, "hole", data.Hole.Name, data)
 }

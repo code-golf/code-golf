@@ -14,7 +14,7 @@ func Settings(w http.ResponseWriter, r *http.Request) {
 	info := golfer.GetInfo(db(r), "JRaspass")
 	r = r.WithContext(context.WithValue(r.Context(), "golferInfo", info))
 
-	render(w, r, http.StatusOK, "settings", "Settings", struct {
+	render(w, r, "settings", "Settings", struct {
 		Langs     []lang.Lang
 		TimeZones []zone.Zone
 	}{lang.List, zone.List()})

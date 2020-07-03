@@ -87,13 +87,7 @@ func init() {
 	}
 }
 
-func render(
-	w http.ResponseWriter,
-	r *http.Request,
-	code int,
-	name, title string,
-	data interface{},
-) {
+func render(w http.ResponseWriter, r *http.Request, name, title string, data interface{}) {
 	// The generated value SHOULD be at least 128 bits long (before encoding),
 	// and SHOULD be generated via a cryptographically secure random number
 	// generator - https://w3c.github.io/webappsec-csp/#security-nonces
@@ -147,7 +141,9 @@ func render(
 		args.LogInURL = config.AuthCodeURL("")
 	}
 
-	w.WriteHeader(code)
+	if name == "404" {
+		w.WriteHeader(http.StatusNotFound)
+	}
 
 	if err := tmpl.ExecuteTemplate(w, name, args); err != nil {
 		panic(err)
