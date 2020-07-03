@@ -54,15 +54,6 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 })
 
 func init() {
-	// Tests run from the package directory, walk upwards until we find views.
-	for {
-		if _, err := os.Stat("views"); os.IsNotExist(err) {
-			os.Chdir("..")
-		} else {
-			break
-		}
-	}
-
 	if err := filepath.Walk("views", func(file string, info os.FileInfo, err error) error {
 		if err != nil || info.IsDir() {
 			return err
