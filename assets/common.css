@@ -55,11 +55,6 @@ body {
     font: 16px emoji, font, system-ui, -apple-system, sans-serif;
 }
 
-caption { caption-side: bottom }
-
-dd { margin: 1rem }
-dt { font-weight: bold }
-
 details .grid { padding-top: 1rem }
 
 h1 { font-size: 1.75rem }
