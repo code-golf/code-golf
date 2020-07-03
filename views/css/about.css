@@ -3,3 +3,5 @@ caption { caption-side: bottom }
 dd { margin: 1rem }
 
 dt { font-weight: bold }
+
+p:not(:first-child) { margin-top: 1rem }
