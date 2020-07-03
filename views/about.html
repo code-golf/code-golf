@@ -38,7 +38,12 @@
                         <th>Version
                         <th class=wide>Website
                 <tbody>
-                    {{ .Data }}
+                {{ range .Data }}
+                    <tr>
+                        <th>{{ .Name }}
+                        <td>{{ .Version }}
+                        <td class=wide><a href="{{ .Website }}">website</a>
+                {{ end }}
             </table>
         <dt>Are Warnings Ignored?
         <dd>

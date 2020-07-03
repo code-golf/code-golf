@@ -66,7 +66,7 @@ COPY --from=0 /rootfs       /langs/rust/rootfs/
 COPY --from=0 /rootfs      /langs/swift/rootfs/
 
 COPY --from=0 /go/code-golf                      /
-COPY          /holes.toml                        /
+COPY          /holes.toml /langs.toml            /
 COPY --from=0 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=0 /usr/bin/run-lang                  /usr/bin/
 COPY --from=0 /usr/share/zoneinfo                /usr/share/zoneinfo/

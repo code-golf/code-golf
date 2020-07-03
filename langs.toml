@@ -1,0 +1,91 @@
+['Bash']
+version = '5.0.17'
+website = '//www.gnu.org/software/bash/'
+
+['Brainfuck']
+version = '1.0.0'
+website = '//github.com/code-golf/code-golf/tree/master/langs/brainfuck/'
+
+['C']
+version = 'Tiny C Compiler 0.9.27'
+website = '//bellard.org/tcc/'
+
+['C#']
+version = 'C# 8.0 on .NET Core 3.1.4'
+website = '//docs.microsoft.com/dotnet/csharp/'
+
+['Fortran']
+version = '9.3.0'
+website = '//gcc.gnu.org/fortran/'
+
+['F#']
+version = 'F# 4.7 on .NET Core 3.1.4'
+website = '//fsharp.org'
+
+['Go']
+version = '1.14.4'
+website = '//golang.org'
+
+['Haskell']
+version = 'Glasgow Haskell Compiler 8.8.3'
+website = '//www.haskell.org/ghc/'
+
+['J']
+version = '8.07.07'
+website = '//www.jsoftware.com'
+
+['Java']
+version = '14.0.1+7'
+website = '//openjdk.java.net'
+
+['JavaScript']
+version = 'V8 7.4.51'
+website = '//v8.dev'
+
+['Julia']
+version = '1.4.2'
+website = '//julialang.org'
+
+['Lisp']
+version = 'GNU CLISP 2.49.92'
+website = '//clisp.sourceforge.io'
+
+['Lua']
+version = '5.4.0'
+website = '//www.lua.org'
+
+['Nim']
+version = '1.2.2'
+website = '//nim-lang.org'
+
+['Perl']
+version = '5.32.0'
+website = '//www.perl.org'
+
+['PHP']
+version = '7.4.7'
+website = '//www.php.net'
+
+['PowerShell']
+version = 'PowerShell 7.0.2 on .NET Core 3.1.4'
+website = '//docs.microsoft.com/powershell/scripting/overview'
+
+['Python']
+version = '3.8.3'
+website = '//www.python.org'
+
+['Raku']
+version = 'Rakudo 2020.06 on MoarVM 2020.06 implementing Raku 6.d'
+website = '//raku.org'
+
+['Ruby']
+version = '2.7.1'
+website = '//www.ruby-lang.org'
+
+['Rust']
+version = '1.44.1'
+website = '//www.rust-lang.org'
+
+['Swift']
+version = '5.2.4'
+website = '//swift.org'
