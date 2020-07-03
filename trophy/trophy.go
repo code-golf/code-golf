@@ -37,6 +37,10 @@ var List = []Trophy{
 		"Solve <a href=/brainfuck#brainfuck>Brainfuck in Brainfuck</a>.",
 	},
 	{
+		"🇺🇸", "independence-day", "Independence Day",
+		"Solve <a href=/united-states>United States</a> in any language on <a href=//wikipedia.org/wiki/Independence_Day_(United_States)>4 Jul</a>.",
+	},
+	{
 		"💼", "interview-ready", "Interview Ready",
 		"Solve <a href=/fizz-buzz>Fizz Buzz</a> in any language.",
 	},
@@ -55,6 +59,10 @@ var List = []Trophy{
 	{
 		"💾", "patches-welcome", "Patches Welcome",
 		"Contribute a merged PR to <a href=//github.com/code-golf/code-golf>the Code Golf repository</a>.",
+	},
+	{
+		"🥧", "pi-day", "Pi Day",
+		"Solve <a href=/π>π</a> in any language on <a href=//wikipedia.org/wiki/Pi_Day>14 Mar</a>.",
 	},
 	{
 		"🔣", "polyglot", "Polyglot",

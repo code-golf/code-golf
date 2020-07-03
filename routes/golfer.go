@@ -43,7 +43,10 @@ func Golfer(w http.ResponseWriter, r *http.Request) {
 
 	rows, err := tx.Query(
 		`WITH count AS (
-		    SELECT trophy, COUNT(*) FROM trophies GROUP BY trophy
+		    SELECT trophy, COUNT(user_id)
+		      FROM (SELECT UNNEST(ENUM_RANGE(NULL::trophy)) trophy) x
+		 LEFT JOIN trophies USING(trophy)
+		  GROUP BY trophy
 		), earned AS (
 		    SELECT trophy, earned FROM trophies WHERE user_id = $1
 		)  SELECT *

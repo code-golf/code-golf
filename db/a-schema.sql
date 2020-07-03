@@ -21,9 +21,10 @@ CREATE TYPE lang AS ENUM (
 
 CREATE TYPE trophy AS ENUM (
     'caffeinated', 'elephpant-in-the-room', 'happy-birthday-code-golf',
-    'hello-world', 'inception', 'interview-ready', 'its-over-9000',
-    'my-god-its-full-of-stars', 'ouroboros', 'patches-welcome', 'polyglot',
-    'slowcoach', 'tim-toady', 'the-watering-hole'
+    'hello-world', 'inception', 'independence-day', 'interview-ready',
+    'its-over-9000', 'my-god-its-full-of-stars', 'ouroboros',
+    'patches-welcome', 'pi-day', 'polyglot', 'slowcoach', 'tim-toady',
+    'the-watering-hole'
 );
 
 CREATE TABLE ideas (

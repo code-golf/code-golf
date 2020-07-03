@@ -900,7 +900,7 @@ category = 'Transform'
 preamble = '''
 <p>
     Given various integers as arguments, print the argument and its
-    <a href=//en.wikipedia.org/wiki/Ordinal_number_%28linguistics%29>
+    <a href=//wikipedia.org/wiki/Ordinal_number_(linguistics)>
         ordinal suffix
     </a>.
 '''
@@ -1082,7 +1082,7 @@ preamble = '''
 
 <p>
     You can read more about on it and on its Turing-Completeness here:
-    <a href=//en.wikipedia.org/wiki/Rule_110>en.wikipedia.org/wiki/Rule_110</a>.
+    <a href=//wikipedia.org/wiki/Rule_110>wikipedia.org/wiki/Rule_110</a>.
 '''
 
 ['Seven Segment']
