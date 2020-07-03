@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"bytes"
 	"crypto/rand"
 	"encoding/base64"
 	"html/template"
@@ -38,18 +37,17 @@ func colour(i int) string {
 }
 
 var css = map[string]template.CSS{}
+var svg = map[string]template.HTML{}
+
 var tmpl = template.New("").Funcs(template.FuncMap{
 	"colour":    colour,
 	"comma":     pretty.Comma,
 	"hasPrefix": strings.HasPrefix,
 	"hasSuffix": strings.HasSuffix,
 	"ord":       pretty.Ordinal,
+	"svg":       func(name string) template.HTML { return svg[name] },
 	"symbol": func(name string) template.HTML {
-		if svg, err := ioutil.ReadFile("views/" + name + ".svg"); err != nil {
-			panic(err)
-		} else {
-			return template.HTML(bytes.ReplaceAll(svg, []byte("svg"), []byte("symbol")))
-		}
+		return template.HTML(strings.ReplaceAll(string(svg[name]), "svg", "symbol"))
 	},
 	"title": strings.Title,
 	"time":  pretty.Time,
@@ -86,8 +84,10 @@ func init() {
 			}
 
 			css[name[len("css/"):]] = template.CSS(data)
-		case ".html", ".svg":
+		case ".html":
 			tmpl = template.Must(tmpl.New(name).Parse(data))
+		case ".svg":
+			svg[name[len("svg/"):]] = template.HTML(data)
 		}
 
 		return nil
