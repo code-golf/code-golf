@@ -2,25 +2,28 @@
 
 <html lang=en>
 
-<link rel=stylesheet href={{ .CommonCssPath }}>
+<link href={{ .CommonCssPath }} rel=stylesheet>
 
 <link href=/assets/icon.svg     rel=icon>
 <link href=/assets/icon-16.png  rel=icon sizes=16x16>
 <link href=/assets/icon-32.png  rel=icon sizes=32x32>
 <link href=/assets/icon-180.png rel=apple-touch-icon>
 
-<link rel=alternate href=/feeds/atom type=application/atom+xml>
-<link rel=alternate href=/feeds/rss  type=application/rss+xml>
-<link rel=alternate href=/feeds/json type=application/json>
+<link href=/feeds/atom rel=alternate type=application/atom+xml>
+<link href=/feeds/rss  rel=alternate type=application/rss+xml>
+<link href=/feeds/json rel=alternate type=application/json>
 
 {{/* FIXME This won't change for dark themes :-( */}}
 <meta name=theme-color content=#343A40>
-<meta name=viewport content="maximum-scale=1,user-scalable=0,width=device-width">
+<meta name=viewport    content="maximum-scale=1,user-scalable=0,width=device-width">
 <meta name=description content="Code Golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.">
 
 <title>{{ with .Title }}{{ . }} | {{ end }}Code Golf</title>
 
-<style nonce="{{ .Nonce }}">{{ .CSS }}</style>
+{{/* type=module acts like defer, even on inline scripts */}}
+{{ $nonce := .Nonce }}
+{{ with .CSS }}<style  nonce="{{ $nonce }}"            >{{ . }}</style>{{ end }}
+{{ with .JS  }}<script nonce="{{ $nonce }}" type=module>{{ . }}</script>{{ end }}
 
 <header>
     <nav>

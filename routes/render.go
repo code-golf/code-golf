@@ -36,8 +36,11 @@ func colour(i int) string {
 	return "green"
 }
 
-var css = map[string]template.CSS{}
-var svg = map[string]template.HTML{}
+var (
+	css = map[string]template.CSS{}
+	js  = map[string]template.JS{}
+	svg = map[string]template.HTML{}
+)
 
 var tmpl = template.New("").Funcs(template.FuncMap{
 	"colour":    colour,
@@ -77,6 +80,12 @@ func init() {
 			css[name[len("css/"):]] = template.CSS(data)
 		case ".html":
 			tmpl = template.Must(tmpl.New(name).Parse(data))
+		case ".js":
+			if data, err = min.JS(data); err != nil {
+				return err
+			}
+
+			js[name[len("js/"):]] = template.JS(data)
 		case ".svg":
 			svg[name[len("svg/"):]] = template.HTML(data)
 		}
@@ -100,11 +109,13 @@ func render(w http.ResponseWriter, r *http.Request, name, title string, data int
 		CommonCssPath, Login, LogInURL, Nonce, Path, Title string
 		CSS                                                template.CSS
 		Data                                               interface{}
+		JS                                                 template.JS
 		Request                                            *http.Request
 	}{
 		CommonCssPath: commonCssPath,
 		CSS:           css[name],
 		Data:          data,
+		JS:            js[name],
 		Nonce:         base64.StdEncoding.EncodeToString(nonce),
 		Path:          r.URL.Path,
 		Request:       r,
