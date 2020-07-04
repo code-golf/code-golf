@@ -40,7 +40,7 @@ db-diff:
 	    <(docker-compose exec db pg_dump -OsU postgres code-golf)
 
 db-dump:
-	@rm db/*.gz
+	@rm -f db/*.gz
 
 	@ssh rancher@code.golf "docker run --env-file /etc/code-golf.env \
 	    --rm $(POSTGRES) sh -c 'pg_dump -a | gzip -9'"               \
