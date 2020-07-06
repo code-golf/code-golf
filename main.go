@@ -29,12 +29,14 @@ func main() {
 
 	var r = chi.NewRouter()
 
-	r.Use(middleware.Logger)
-	r.Use(middleware.Recoverer)
-	r.Use(middleware.RedirectHost)
-	r.Use(middleware.RedirectSlashes)
-	r.Use(middleware.Compress(5))
-	r.Use(middleware.WithValue("db", db))
+	r.Use(
+		middleware.Logger,
+		middleware.Recoverer,
+		middleware.RedirectHost,
+		middleware.RedirectSlashes,
+		middleware.Compress(5),
+		middleware.DatabaseHandler(db),
+	)
 
 	r.NotFound(routes.NotFound)
 

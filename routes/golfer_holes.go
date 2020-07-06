@@ -6,6 +6,7 @@ import (
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
+	"github.com/code-golf/code-golf/middleware"
 )
 
 // GolferHoles serves GET /golfers/{golfer}/holes
@@ -18,7 +19,7 @@ func GolferHoles(w http.ResponseWriter, r *http.Request) {
 		Ranks map[string]map[string]int
 	}{hole.List, lang.List, map[string]map[string]int{}}
 
-	rows, err := db(r).Query(
+	rows, err := middleware.Database(r).Query(
 		`WITH matrix AS (
 		  SELECT user_id,
 		         hole,

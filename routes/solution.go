@@ -9,6 +9,7 @@ import (
 	"github.com/buildkite/terminal"
 	"github.com/code-golf/code-golf/cookie"
 	"github.com/code-golf/code-golf/hole"
+	"github.com/code-golf/code-golf/middleware"
 	"github.com/pmezard/go-difflib/difflib"
 )
 
@@ -25,7 +26,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 
 	userID, _ := cookie.Read(r)
 
-	db := db(r)
+	db := middleware.Database(r)
 
 	score := hole.Play(r.Context(), in.Hole, in.Lang, in.Code)
 

@@ -6,6 +6,7 @@ import (
 	"github.com/code-golf/code-golf/cookie"
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
+	"github.com/code-golf/code-golf/middleware"
 )
 
 // Hole serves GET /{hole}
@@ -35,7 +36,7 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 
 	if userID, _ := cookie.Read(r); userID != 0 {
 		// Fetch all the code per lang.
-		rows, err := db(r).Query(
+		rows, err := middleware.Database(r).Query(
 			`SELECT code, lang
 			   FROM solutions
 			  WHERE hole = $1 AND user_id = $2`,

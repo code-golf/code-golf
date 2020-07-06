@@ -9,6 +9,7 @@ import (
 	"github.com/code-golf/code-golf/cookie"
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
+	"github.com/code-golf/code-golf/middleware"
 )
 
 func scoresMini(w http.ResponseWriter, r *http.Request) {
@@ -16,7 +17,7 @@ func scoresMini(w http.ResponseWriter, r *http.Request) {
 
 	var json []byte
 
-	if err := db(r).QueryRow(
+	if err := middleware.Database(r).QueryRow(
 		`WITH leaderboard AS (
 		    SELECT ROW_NUMBER() OVER (ORDER BY LENGTH(code), submitted),
 		           RANK()       OVER (ORDER BY LENGTH(code)),
@@ -53,7 +54,7 @@ func scoresMini(w http.ResponseWriter, r *http.Request) {
 func scoresAll(w http.ResponseWriter, r *http.Request) {
 	var json []byte
 
-	if err := db(r).QueryRow(
+	if err := middleware.Database(r).QueryRow(
 		`WITH solution_lengths AS (
 		    SELECT hole,
 		           lang,
@@ -160,7 +161,7 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 		table = "scored_leaderboard"
 	}
 
-	rows, err := db(r).Query(
+	rows, err := middleware.Database(r).Query(
 		`WITH leaderboard AS (
 		  SELECT `+distinct+`
 		         hole,

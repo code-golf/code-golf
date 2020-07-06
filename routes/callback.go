@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/code-golf/code-golf/cookie"
+	"github.com/code-golf/code-golf/middleware"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/github"
 )
@@ -51,7 +52,7 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	if _, err := db(r).Exec(
+	if _, err := middleware.Database(r).Exec(
 		`INSERT INTO users VALUES($1, $2)
 		     ON CONFLICT(id) DO UPDATE SET login = excluded.login`,
 		user.ID, user.Login,

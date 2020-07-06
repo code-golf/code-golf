@@ -6,6 +6,7 @@ import (
 
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
+	"github.com/code-golf/code-golf/middleware"
 )
 
 // Recent serves GET /recent/{lang}
@@ -22,7 +23,7 @@ func Recent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	rows, err := db(r).Query(
+	rows, err := middleware.Database(r).Query(
 		`WITH solution_lengths AS (
         SELECT hole,
                lang,

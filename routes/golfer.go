@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/code-golf/code-golf/golfer"
+	"github.com/code-golf/code-golf/middleware"
 	"github.com/code-golf/code-golf/trophy"
 )
 
@@ -25,7 +26,7 @@ func Golfer(w http.ResponseWriter, r *http.Request) {
 		Trophies: make([]EarnedTrophy, 0, len(trophy.List)),
 	}
 
-	tx, err := db(r).BeginTx(
+	tx, err := middleware.Database(r).BeginTx(
 		r.Context(),
 		&sql.TxOptions{Isolation: sql.LevelRepeatableRead, ReadOnly: true},
 	)

@@ -7,6 +7,7 @@ import (
 	"github.com/code-golf/code-golf/cookie"
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
+	"github.com/code-golf/code-golf/middleware"
 )
 
 // Index serves GET /
@@ -50,7 +51,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 	userID, _ := cookie.Read(r)
 
-	db := db(r)
+	db := middleware.Database(r)
 
 	if userID != 0 {
 		rows, err := db.Query(
