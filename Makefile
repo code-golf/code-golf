@@ -33,6 +33,9 @@ db-admin:
 	@ssh -t rancher@code.golf docker run -it --rm \
 	    --env-file /etc/code-golf.env $(POSTGRES) psql -WU doadmin
 
+db-dev:
+	@docker-compose exec db psql -U postgres code-golf
+
 db-diff:
 	@diff --color --label live --label dev --strip-trailing-cr -su \
 	    <(ssh rancher@code.golf "docker run --rm                   \
