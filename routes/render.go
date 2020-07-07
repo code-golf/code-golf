@@ -12,7 +12,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/code-golf/code-golf/cookie"
+	"github.com/code-golf/code-golf/golfer"
+	"github.com/code-golf/code-golf/middleware"
 	"github.com/code-golf/code-golf/pretty"
 	"github.com/tdewolff/minify/v2/min"
 )
@@ -106,15 +107,17 @@ func render(w http.ResponseWriter, r *http.Request, name, title string, data int
 	}
 
 	args := struct {
-		CommonCssPath, Login, LogInURL, Nonce, Path, Title string
-		CSS                                                template.CSS
-		Data                                               interface{}
-		JS                                                 template.JS
-		Request                                            *http.Request
+		CommonCssPath, LogInURL, Nonce, Path, Title string
+		CSS                                         template.CSS
+		Data                                        interface{}
+		Golfer                                      *golfer.Golfer
+		JS                                          template.JS
+		Request                                     *http.Request
 	}{
 		CommonCssPath: commonCssPath,
 		CSS:           css[name],
 		Data:          data,
+		Golfer:        middleware.Golfer(r),
 		JS:            js[name],
 		Nonce:         base64.StdEncoding.EncodeToString(nonce),
 		Path:          r.URL.Path,
@@ -141,7 +144,7 @@ func render(w http.ResponseWriter, r *http.Request, name, title string, data int
 			"style-src 'self' 'nonce-"+args.Nonce+"'",
 	)
 
-	if _, args.Login = cookie.Read(r); args.Login == "" {
+	if args.Golfer == nil {
 		// Shallow copy because we want to modify a string.
 		config := config
 

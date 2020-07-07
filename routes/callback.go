@@ -6,7 +6,6 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/code-golf/code-golf/cookie"
 	"github.com/code-golf/code-golf/middleware"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/github"
@@ -68,7 +67,7 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 		Path:     "/",
 		SameSite: http.SameSiteLaxMode,
 		Secure:   true,
-		Value:    data + ":" + cookie.Write(data),
+		Value:    data + ":" + middleware.GolferCookie(data),
 	})
 
 	uri := r.FormValue("redirect_uri")

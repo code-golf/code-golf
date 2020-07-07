@@ -1,9 +1,7 @@
 {{ template "header" . }}
 
-{{ $holeID := .Data.HoleID }}
-{{ $langID := .Data.LangID }}
-{{ $login  := .Login }}
-
+{{ $holeID   := .Data.HoleID }}
+{{ $langID   := .Data.LangID }}
 {{ $allHoles := eq $holeID "all-holes" }}
 
 <main id=scores>
@@ -78,8 +76,11 @@
                 <th class="right wide">Strokes
                 <th class="right wide">Submitted
         <tbody>
+        {{ $name := "" }}
+        {{ with .Golfer }}{{ $name = .Name }}{{ end }}
+
         {{- range .Data.Scores -}}
-            {{ $me := eq $login .Login }}
+            {{ $me := eq $name .Login }}
             <tr{{ if $me }} class=me {{ end }}>
                 <td>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup>{{ if $me }}<p id=me>{{ end }}
                 <td>

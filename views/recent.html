@@ -1,12 +1,11 @@
 {{ template "header" . }}
 
-{{ $langID := .Data.LangID }}
-{{ $login  := .Login }}
-
 <main id=recent>
     <h1>Recent Solutions</h1>
 
     <details class=nav>
+        {{ $langID := .Data.LangID }}
+
         {{ if eq $langID "all-langs" }}
             <summary>All Langs</summary>
         {{ else }}
@@ -32,8 +31,11 @@
                 <th class=wide>
                 <th class=right>Submitted
         <tbody>
+        {{ $name := "" }}
+        {{ with .Golfer }}{{ $name = .Name }}{{ end }}
+
         {{- range .Data.Recents -}}
-            <tr{{ if eq $login .Login }} class="me"{{ end }}>
+            <tr{{ if eq $name .Login }} class="me"{{ end }}>
                 <td>
                     <a href="/{{ .Hole.ID }}#{{ .Lang.ID }}">
                         {{ .Hole.Name }}

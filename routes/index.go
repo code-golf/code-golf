@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"sort"
 
-	"github.com/code-golf/code-golf/cookie"
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
 	"github.com/code-golf/code-golf/middleware"
@@ -49,7 +48,10 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		data.Sort = sort.Value
 	}
 
-	userID, _ := cookie.Read(r)
+	var userID int
+	if golfer := middleware.Golfer(r); golfer != nil {
+		userID = golfer.ID
+	}
 
 	db := middleware.Database(r)
 

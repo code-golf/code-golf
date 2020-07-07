@@ -6,14 +6,16 @@ import (
 	"strings"
 	"time"
 
-	"github.com/code-golf/code-golf/cookie"
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
 	"github.com/code-golf/code-golf/middleware"
 )
 
 func scoresMini(w http.ResponseWriter, r *http.Request) {
-	userID, _ := cookie.Read(r)
+	var userID int
+	if golfer := middleware.Golfer(r); golfer != nil {
+		userID = golfer.ID
+	}
 
 	var json []byte
 

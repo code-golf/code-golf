@@ -46,12 +46,12 @@
             {{ svg "chart-area-light" }}
         </a>
         <div></div>
-    {{ if .Login }}
-        {{ $slug  := (print "/golfers/" .Login) }}
+    {{ if .Golfer }}
+        {{ $slug  := (print "/golfers/" .Golfer.Name) }}
         {{ $slug2 := (print $slug "/holes") }}
 
         <a {{ if and (ne .Path $slug) (ne .Path $slug2) }} href="{{ $slug }}" title=Profile {{ end }}>
-            <img src="//avatars.githubusercontent.com/{{ .Login }}?s=28">
+            <img src="//avatars.githubusercontent.com/{{ .Golfer.Name }}?s=28">
         </a>
         <a href=/log-out title="Log Out">
             {{ svg "sign-out-alt-light" }}

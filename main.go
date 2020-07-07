@@ -9,7 +9,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/code-golf/code-golf/cookie"
 	"github.com/code-golf/code-golf/github"
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/middleware"
@@ -36,6 +35,7 @@ func main() {
 		middleware.RedirectSlashes,
 		middleware.Compress(5),
 		middleware.DatabaseHandler(db),
+		middleware.GolferHandler,
 	)
 
 	r.NotFound(routes.NotFound)
@@ -60,11 +60,9 @@ func main() {
 	r.Get("/users/{name}", routes.User)
 
 	r.Route("/admin", func(r chi.Router) {
-		// TODO Have previous middleware put Golfer into the context.
-		// TODO Have an admin boolean on said Golfer.
 		r.Use(func(next http.Handler) http.Handler {
 			return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				if _, login := cookie.Read(r); login == "JRaspass" {
+				if golfer := middleware.Golfer(r); golfer != nil && golfer.Admin {
 					next.ServeHTTP(w, r)
 				} else {
 					w.WriteHeader(http.StatusForbidden)
