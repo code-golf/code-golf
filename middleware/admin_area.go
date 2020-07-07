@@ -1,15 +1,19 @@
 package middleware
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/code-golf/code-golf/routes"
+	"github.com/code-golf/code-golf/session"
+)
 
 // AdminArea enforces that an admin golfer is logged in.
 func AdminArea(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if golfer := Golfer(r); golfer != nil && golfer.Admin {
+		if golfer := session.Golfer(r); golfer != nil && golfer.Admin {
 			next.ServeHTTP(w, r)
 		} else {
-			// TODO Serve custom 403 without import cycle.
-			w.WriteHeader(http.StatusForbidden)
+			routes.Forbidden(w, r)
 		}
 	})
 }

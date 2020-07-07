@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"context"
 	"crypto/hmac"
 	"crypto/sha256"
 	"crypto/subtle"
@@ -12,9 +11,9 @@ import (
 	"strings"
 
 	"github.com/code-golf/code-golf/golfer"
+	"github.com/code-golf/code-golf/session"
 )
 
-var golferKey = key("golfer")
 var hmacKey []byte
 
 func init() {
@@ -22,13 +21,6 @@ func init() {
 	if hmacKey, err = base64.RawURLEncoding.DecodeString(os.Getenv("HMAC_KEY")); err != nil {
 		panic(err)
 	}
-}
-
-func GolferCookie(data string) string {
-	mac := hmac.New(sha256.New, hmacKey)
-	mac.Write([]byte(data))
-
-	return base64.RawURLEncoding.EncodeToString(mac.Sum(nil))
 }
 
 // GolferHandler adds the golfer to the context if logged in.
@@ -52,18 +44,11 @@ func GolferHandler(next http.Handler) http.Handler {
 					// TODO
 					golfer.Admin = golfer.Name == "JRaspass"
 
-					r = r.WithContext(
-						context.WithValue(r.Context(), golferKey, &golfer))
+					r = session.Set(r, "golfer", &golfer)
 				}
 			}
 		}
 
 		next.ServeHTTP(w, r)
 	})
-}
-
-// Golfer gets the golfer from the request context.
-func Golfer(r *http.Request) *golfer.Golfer {
-	golfer, _ := r.Context().Value(golferKey).(*golfer.Golfer)
-	return golfer
 }

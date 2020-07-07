@@ -6,8 +6,8 @@ import (
 
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
-	"github.com/code-golf/code-golf/middleware"
 	"github.com/code-golf/code-golf/pie"
+	"github.com/code-golf/code-golf/session"
 )
 
 // Stats serves GET /stats
@@ -32,7 +32,7 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 		Tables: []table{{Fact: "Hole"}, {Fact: "Language"}},
 	}
 
-	db := middleware.Database(r)
+	db := session.Database(r)
 
 	if err := db.QueryRow(
 		`SELECT (SELECT COUNT(DISTINCT user_id) FROM trophies),

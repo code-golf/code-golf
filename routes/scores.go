@@ -8,18 +8,18 @@ import (
 
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
-	"github.com/code-golf/code-golf/middleware"
+	"github.com/code-golf/code-golf/session"
 )
 
 func scoresMini(w http.ResponseWriter, r *http.Request) {
 	var userID int
-	if golfer := middleware.Golfer(r); golfer != nil {
+	if golfer := session.Golfer(r); golfer != nil {
 		userID = golfer.ID
 	}
 
 	var json []byte
 
-	if err := middleware.Database(r).QueryRow(
+	if err := session.Database(r).QueryRow(
 		`WITH leaderboard AS (
 		    SELECT ROW_NUMBER() OVER (ORDER BY LENGTH(code), submitted),
 		           RANK()       OVER (ORDER BY LENGTH(code)),
@@ -56,7 +56,7 @@ func scoresMini(w http.ResponseWriter, r *http.Request) {
 func scoresAll(w http.ResponseWriter, r *http.Request) {
 	var json []byte
 
-	if err := middleware.Database(r).QueryRow(
+	if err := session.Database(r).QueryRow(
 		`WITH solution_lengths AS (
 		    SELECT hole,
 		           lang,
@@ -85,7 +85,7 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 	langID := param(r, "lang")
 
 	if _, ok := hole.ByID[holeID]; holeID != "all-holes" && !ok {
-		render(w, r, "404", "", nil)
+		NotFound(w, r)
 		return
 	}
 
@@ -100,7 +100,7 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if _, ok := lang.ByID[langID]; langID != "all-langs" && !ok {
-		render(w, r, "404", "", nil)
+		NotFound(w, r)
 		return
 	}
 
@@ -140,7 +140,7 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 		page, _ = strconv.Atoi(suffix)
 
 		if page < 1 {
-			render(w, r, "404", "", nil)
+			NotFound(w, r)
 			return
 		}
 
@@ -163,7 +163,7 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 		table = "scored_leaderboard"
 	}
 
-	rows, err := middleware.Database(r).Query(
+	rows, err := session.Database(r).Query(
 		`WITH leaderboard AS (
 		  SELECT `+distinct+`
 		         hole,

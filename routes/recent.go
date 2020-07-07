@@ -6,7 +6,7 @@ import (
 
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
-	"github.com/code-golf/code-golf/middleware"
+	"github.com/code-golf/code-golf/session"
 )
 
 // Recent serves GET /recent/{lang}
@@ -19,11 +19,11 @@ func Recent(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if _, ok := lang.ByID[langID]; langID != "all-langs" && !ok {
-		render(w, r, "404", "", nil)
+		NotFound(w, r)
 		return
 	}
 
-	rows, err := middleware.Database(r).Query(
+	rows, err := session.Database(r).Query(
 		`WITH solution_lengths AS (
         SELECT hole,
                lang,

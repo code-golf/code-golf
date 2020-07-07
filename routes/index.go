@@ -6,7 +6,7 @@ import (
 
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
-	"github.com/code-golf/code-golf/middleware"
+	"github.com/code-golf/code-golf/session"
 )
 
 // Index serves GET /
@@ -49,11 +49,11 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var userID int
-	if golfer := middleware.Golfer(r); golfer != nil {
+	if golfer := session.Golfer(r); golfer != nil {
 		userID = golfer.ID
 	}
 
-	db := middleware.Database(r)
+	db := session.Database(r)
 
 	if userID != 0 {
 		rows, err := db.Query(

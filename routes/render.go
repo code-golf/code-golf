@@ -13,8 +13,8 @@ import (
 	"strings"
 
 	"github.com/code-golf/code-golf/golfer"
-	"github.com/code-golf/code-golf/middleware"
 	"github.com/code-golf/code-golf/pretty"
+	"github.com/code-golf/code-golf/session"
 	"github.com/tdewolff/minify/v2/min"
 )
 
@@ -118,8 +118,8 @@ func render(w http.ResponseWriter, r *http.Request, name, title string, data int
 		CommonCssPath: commonCssPath,
 		CSS:           css[name],
 		Data:          data,
-		Golfer:        middleware.Golfer(r),
-		GolferInfo:    middleware.GolferInfo(r),
+		Golfer:        session.Golfer(r),
+		GolferInfo:    session.GolferInfo(r),
 		JS:            js[name],
 		Nonce:         base64.StdEncoding.EncodeToString(nonce),
 		Path:          r.URL.Path,
@@ -157,7 +157,10 @@ func render(w http.ResponseWriter, r *http.Request, name, title string, data int
 		args.LogInURL = config.AuthCodeURL("")
 	}
 
-	if name == "404" {
+	switch name {
+	case "403":
+		w.WriteHeader(http.StatusForbidden)
+	case "404":
 		w.WriteHeader(http.StatusNotFound)
 	}
 

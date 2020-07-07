@@ -3,7 +3,7 @@ package routes
 import (
 	"net/http"
 
-	"github.com/code-golf/code-golf/middleware"
+	"github.com/code-golf/code-golf/session"
 )
 
 // Ideas serves GET /ideas
@@ -13,7 +13,7 @@ func Ideas(w http.ResponseWriter, r *http.Request) {
 		Title                    string
 	}
 
-	rows, err := middleware.Database(r).Query(
+	rows, err := session.Database(r).Query(
 		"SELECT * FROM ideas ORDER BY thumbs_up - thumbs_down DESC, title")
 	if err != nil {
 		panic(err)

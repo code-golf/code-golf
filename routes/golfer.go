@@ -4,13 +4,13 @@ import (
 	"database/sql"
 	"net/http"
 
-	"github.com/code-golf/code-golf/middleware"
+	"github.com/code-golf/code-golf/session"
 	"github.com/code-golf/code-golf/trophy"
 )
 
 // Golfer serves GET /golfers/{golfer}
 func Golfer(w http.ResponseWriter, r *http.Request) {
-	golfer := middleware.GolferInfo(r).Golfer
+	golfer := session.GolferInfo(r).Golfer
 
 	type EarnedTrophy struct {
 		Count, Percent int
@@ -25,7 +25,7 @@ func Golfer(w http.ResponseWriter, r *http.Request) {
 		Trophies: make([]EarnedTrophy, 0, len(trophy.List)),
 	}
 
-	tx, err := middleware.Database(r).BeginTx(
+	tx, err := session.Database(r).BeginTx(
 		r.Context(),
 		&sql.TxOptions{Isolation: sql.LevelRepeatableRead, ReadOnly: true},
 	)

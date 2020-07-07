@@ -8,7 +8,7 @@ import (
 
 	"github.com/buildkite/terminal"
 	"github.com/code-golf/code-golf/hole"
-	"github.com/code-golf/code-golf/middleware"
+	"github.com/code-golf/code-golf/session"
 	"github.com/pmezard/go-difflib/difflib"
 )
 
@@ -24,11 +24,11 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 	println(in.Code)
 
 	var userID int
-	if golfer := middleware.Golfer(r); golfer != nil {
+	if golfer := session.Golfer(r); golfer != nil {
 		userID = golfer.ID
 	}
 
-	db := middleware.Database(r)
+	db := session.Database(r)
 
 	score := hole.Play(r.Context(), in.Hole, in.Lang, in.Code)
 

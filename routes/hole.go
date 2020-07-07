@@ -5,7 +5,7 @@ import (
 
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
-	"github.com/code-golf/code-golf/middleware"
+	"github.com/code-golf/code-golf/session"
 )
 
 // Hole serves GET /{hole}
@@ -25,7 +25,7 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 
 	var ok bool
 	if data.Hole, ok = hole.ByID[param(r, "hole")]; !ok {
-		render(w, r, "404", "", nil)
+		NotFound(w, r)
 		return
 	}
 
@@ -33,9 +33,9 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 		data.HideDetails = true
 	}
 
-	if golfer := middleware.Golfer(r); golfer != nil {
+	if golfer := session.Golfer(r); golfer != nil {
 		// Fetch all the code per lang.
-		rows, err := middleware.Database(r).Query(
+		rows, err := session.Database(r).Query(
 			`SELECT code, lang
 			   FROM solutions
 			  WHERE hole = $1 AND user_id = $2`,
