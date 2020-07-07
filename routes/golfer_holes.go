@@ -3,7 +3,6 @@ package routes
 import (
 	"net/http"
 
-	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
 	"github.com/code-golf/code-golf/middleware"
@@ -11,7 +10,7 @@ import (
 
 // GolferHoles serves GET /golfers/{golfer}/holes
 func GolferHoles(w http.ResponseWriter, r *http.Request) {
-	golfer := r.Context().Value("golferInfo").(*golfer.GolferInfo).Golfer
+	golfer := middleware.GolferInfo(r).Golfer
 
 	data := struct {
 		Holes []hole.Hole

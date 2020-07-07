@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"crypto/tls"
 	"database/sql"
 	"math/rand"
@@ -10,7 +9,6 @@ import (
 	"time"
 
 	"github.com/code-golf/code-golf/github"
-	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/middleware"
 	"github.com/code-golf/code-golf/routes"
 	"github.com/go-chi/chi"
@@ -43,9 +41,23 @@ func main() {
 	r.Get("/", routes.Index)
 	r.Get("/{hole}", routes.Hole)
 	r.Get("/about", routes.About)
+	r.Route("/admin", func(r chi.Router) {
+		r.Use(middleware.AdminArea)
+		r.Get("/", routes.Admin)
+		r.Get("/solutions", routes.AdminSolutions)
+	})
 	r.Get("/assets/{asset}", routes.Asset)
 	r.Get("/callback", routes.Callback)
 	r.Get("/feeds/{feed}", routes.Feed)
+	r.Route("/golfer", func(r chi.Router) {
+		r.Use(middleware.GolferArea)
+		r.Get("/settings", routes.Settings)
+	})
+	r.Route("/golfers/{name}", func(r chi.Router) {
+		r.Use(middleware.GolferInfoHandler)
+		r.Get("/", routes.Golfer)
+		r.Get("/holes", routes.GolferHoles)
+	})
 	r.Get("/ideas", routes.Ideas)
 	r.Get("/log-out", routes.LogOut)
 	r.Get("/random", routes.Random)
@@ -54,48 +66,9 @@ func main() {
 	r.Get("/robots.txt", routes.Robots)
 	r.Get("/scores/{hole}/{lang}", routes.Scores)
 	r.Get("/scores/{hole}/{lang}/{suffix}", routes.Scores)
-	r.Get("/settings", routes.Settings)
 	r.Post("/solution", routes.Solution)
 	r.Get("/stats", routes.Stats)
 	r.Get("/users/{name}", routes.User)
-
-	r.Route("/admin", func(r chi.Router) {
-		r.Use(func(next http.Handler) http.Handler {
-			return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				if golfer := middleware.Golfer(r); golfer != nil && golfer.Admin {
-					next.ServeHTTP(w, r)
-				} else {
-					w.WriteHeader(http.StatusForbidden)
-				}
-			})
-		})
-
-		r.Get("/", routes.Admin)
-		r.Get("/solutions", routes.AdminSolutions)
-	})
-
-	r.Route("/golfers/{name}", func(r chi.Router) {
-		r.Use(func(next http.Handler) http.Handler {
-			return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				name := chi.URLParam(r, "name")
-				info := golfer.GetInfo(db, name)
-
-				switch {
-				case info == nil:
-					routes.NotFound(w, r)
-				case info.Name != name:
-					// TODO Handle /holes suffix.
-					http.Redirect(w, r, "/golfers/"+info.Name, http.StatusPermanentRedirect)
-				default:
-					ctx := context.WithValue(r.Context(), "golferInfo", info)
-					next.ServeHTTP(w, r.WithContext(ctx))
-				}
-			})
-		})
-
-		r.Get("/", routes.Golfer)
-		r.Get("/holes", routes.GolferHoles)
-	})
 
 	certManager := autocert.Manager{
 		Cache:  autocert.DirCache("certs"),

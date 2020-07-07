@@ -111,6 +111,7 @@ func render(w http.ResponseWriter, r *http.Request, name, title string, data int
 		CSS                                         template.CSS
 		Data                                        interface{}
 		Golfer                                      *golfer.Golfer
+		GolferInfo                                  *golfer.GolferInfo
 		JS                                          template.JS
 		Request                                     *http.Request
 	}{
@@ -118,6 +119,7 @@ func render(w http.ResponseWriter, r *http.Request, name, title string, data int
 		CSS:           css[name],
 		Data:          data,
 		Golfer:        middleware.Golfer(r),
+		GolferInfo:    middleware.GolferInfo(r),
 		JS:            js[name],
 		Nonce:         base64.StdEncoding.EncodeToString(nonce),
 		Path:          r.URL.Path,

@@ -4,14 +4,13 @@ import (
 	"database/sql"
 	"net/http"
 
-	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/middleware"
 	"github.com/code-golf/code-golf/trophy"
 )
 
 // Golfer serves GET /golfers/{golfer}
 func Golfer(w http.ResponseWriter, r *http.Request) {
-	golfer := r.Context().Value("golferInfo").(*golfer.GolferInfo).Golfer
+	golfer := middleware.GolferInfo(r).Golfer
 
 	type EarnedTrophy struct {
 		Count, Percent int
