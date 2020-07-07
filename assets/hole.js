@@ -55,8 +55,11 @@ onload = () => {
         // Avoid future conflicts by only storing code locally that's different from the server's copy.
         const serverCode = lang in solutions ? solutions[lang] : '';
 
+        const key = 'code_' + hole + '_' + lang;
         if (code && code != serverCode)
-            localStorage.setItem('code_' + hole + '_' + lang, code);
+            localStorage.setItem(key, code);
+        else
+            localStorage.removeItem(key);
     });
 
     details.ontoggle = () =>
