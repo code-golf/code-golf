@@ -180,7 +180,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 
 func awardTrophy(db *sql.DB, userID int, trophy string) {
 	if _, err := db.Exec(
-		"INSERT INTO trophies VALUES(NOW() AT TIME ZONE 'UTC', $1, $2) ON CONFLICT DO NOTHING",
+		"INSERT INTO trophies VALUES (DEFAULT, $1, $2) ON CONFLICT DO NOTHING",
 		userID,
 		trophy,
 	); err != nil {

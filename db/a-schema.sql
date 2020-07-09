@@ -59,7 +59,7 @@ CREATE TABLE solutions (
 );
 
 CREATE TABLE trophies (
-    earned  timestamp NOT NULL,
+    earned  timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
     user_id int       NOT NULL REFERENCES users(id),
     trophy  trophy    NOT NULL,
     PRIMARY KEY (user_id, trophy)
