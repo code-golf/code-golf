@@ -29,17 +29,17 @@ CREATE TYPE trophy AS ENUM (
 );
 
 CREATE TABLE ideas (
-    id          integer NOT NULL PRIMARY KEY,
-    thumbs_down integer NOT NULL,
-    thumbs_up   integer NOT NULL,
-    title       text    NOT NULL UNIQUE
+    id          int  NOT NULL PRIMARY KEY,
+    thumbs_down int  NOT NULL,
+    thumbs_up   int  NOT NULL,
+    title       text NOT NULL UNIQUE
 );
 
 CREATE TABLE users (
-    id      integer               NOT NULL PRIMARY KEY,
-    admin   boolean DEFAULT false NOT NULL,
-    sponsor boolean DEFAULT false NOT NULL,
-    login   citext                NOT NULL UNIQUE
+    id      int    NOT NULL PRIMARY KEY,
+    admin   bool   NOT NULL DEFAULT false,
+    sponsor bool   NOT NULL DEFAULT false,
+    login   citext NOT NULL UNIQUE
 );
 
 CREATE TABLE sessions (
@@ -49,19 +49,19 @@ CREATE TABLE sessions (
 );
 
 CREATE TABLE solutions (
-    submitted timestamp without time zone NOT NULL,
-    user_id   integer                     NOT NULL REFERENCES users(id),
-    hole      hole                        NOT NULL,
-    lang      lang                        NOT NULL,
-    code      text                        NOT NULL,
-    failing   boolean DEFAULT false       NOT NULL,
+    submitted timestamp NOT NULL,
+    user_id   int       NOT NULL REFERENCES users(id),
+    hole      hole      NOT NULL,
+    lang      lang      NOT NULL,
+    code      text      NOT NULL,
+    failing   bool      NOT NULL DEFAULT false,
     PRIMARY KEY (user_id, hole, lang)
 );
 
 CREATE TABLE trophies (
-    earned  timestamp without time zone NOT NULL,
-    user_id integer                     NOT NULL REFERENCES users(id),
-    trophy  trophy                      NOT NULL,
+    earned  timestamp NOT NULL,
+    user_id int       NOT NULL REFERENCES users(id),
+    trophy  trophy    NOT NULL,
     UNIQUE (user_id, trophy)
 );
 
