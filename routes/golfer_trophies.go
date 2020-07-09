@@ -8,8 +8,8 @@ import (
 	"github.com/code-golf/code-golf/trophy"
 )
 
-// Golfer serves GET /golfers/{golfer}
-func Golfer(w http.ResponseWriter, r *http.Request) {
+// GolferTrophies serves GET /golfers/{golfer}
+func GolferTrophies(w http.ResponseWriter, r *http.Request) {
 	golfer := session.GolferInfo(r).Golfer
 
 	type EarnedTrophy struct {
@@ -84,5 +84,5 @@ func Golfer(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	render(w, r, "golfer", golfer.Name, data)
+	render(w, r, "golfer/trophies", golfer.Name, data)
 }

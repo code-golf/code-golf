@@ -1,0 +1,42 @@
+progress {
+    background: var(--grey);
+    border: 0;
+    height: .5rem;
+    margin: .25rem 0;
+    width: 100%;
+}
+
+progress::-moz-progress-bar      { background: var(--blue) }
+progress::-webkit-progress-bar   { background: var(--grey) }
+progress::-webkit-progress-value { background: var(--blue) }
+
+.locked { background: var(--grey) }
+
+.locked div {
+    color: transparent;
+    text-shadow: 0 0 var(--color);
+}
+
+.trophy {
+    display: grid;
+    grid-gap: .5rem 1.25rem;
+    grid-template: min-content 1fr min-content / min-content 1fr;
+    padding: 1.25rem;
+}
+
+.trophy > :last-child { font-size: .875rem }
+
+.trophy div {
+    font-size: 4rem;
+    grid-row: span 3;
+}
+
+.trophy span {
+    color: var(--red);
+    font-weight: bold;
+}
+
+#trophies {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+}

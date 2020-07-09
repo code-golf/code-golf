@@ -51,11 +51,11 @@ func main() {
 	r.Get("/feeds/{feed}", routes.Feed)
 	r.Route("/golfer", func(r chi.Router) {
 		r.Use(middleware.GolferArea)
-		r.Get("/settings", routes.Settings)
+		r.Get("/settings", routes.GolferSettings)
 	})
 	r.Route("/golfers/{name}", func(r chi.Router) {
 		r.Use(middleware.GolferInfoHandler)
-		r.Get("/", routes.Golfer)
+		r.Get("/", routes.GolferTrophies)
 		r.Get("/holes", routes.GolferHoles)
 	})
 	r.Get("/ideas", routes.Ideas)

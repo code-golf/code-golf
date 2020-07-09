@@ -116,7 +116,7 @@ func render(w http.ResponseWriter, r *http.Request, name, title string, data int
 		Request                                     *http.Request
 	}{
 		CommonCssPath: commonCssPath,
-		CSS:           css[name],
+		CSS:           css[path.Dir(name)] + css[name],
 		Data:          data,
 		Golfer:        session.Golfer(r),
 		GolferInfo:    session.GolferInfo(r),
