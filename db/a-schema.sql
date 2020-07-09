@@ -62,7 +62,7 @@ CREATE TABLE trophies (
     earned  timestamp NOT NULL,
     user_id int       NOT NULL REFERENCES users(id),
     trophy  trophy    NOT NULL,
-    UNIQUE (user_id, trophy)
+    PRIMARY KEY (user_id, trophy)
 );
 
 -- Check the tables are structured optimally.
