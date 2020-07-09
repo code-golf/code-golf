@@ -30,6 +30,7 @@ func main() {
 		middleware.Logger,
 		middleware.Recoverer,
 		middleware.RedirectHost,
+		middleware.Public,
 		middleware.RedirectSlashes,
 		middleware.Compress(5),
 		middleware.DatabaseHandler(db),
@@ -63,7 +64,6 @@ func main() {
 	r.Get("/random", routes.Random)
 	r.Get("/recent", routes.Recent)
 	r.Get("/recent/{lang}", routes.Recent)
-	r.Get("/robots.txt", routes.Robots)
 	r.Get("/scores/{hole}/{lang}", routes.Scores)
 	r.Get("/scores/{hole}/{lang}/{suffix}", routes.Scores)
 	r.Post("/solution", routes.Solution)
