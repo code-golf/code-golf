@@ -14,6 +14,7 @@ func TestLogOut(t *testing.T) {
 	LogOut(w, httptest.NewRequest("", "/", nil))
 
 	res := w.Result()
+	res.Body.Close()
 
 	assert.Equal(t, res.StatusCode, http.StatusTemporaryRedirect)
 	assert.Equal(t, res.Header.Get("Location"), "/")
