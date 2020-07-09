@@ -1,13 +1,9 @@
 package routes
 
 import (
-	"crypto/hmac"
-	"crypto/sha256"
-	"encoding/base64"
 	"encoding/json"
 	"net/http"
 	"os"
-	"strconv"
 
 	"github.com/code-golf/code-golf/session"
 	"golang.org/x/oauth2"
@@ -18,15 +14,6 @@ var config = oauth2.Config{
 	ClientID:     "7f6709819023e9215205",
 	ClientSecret: os.Getenv("CLIENT_SECRET"),
 	Endpoint:     github.Endpoint,
-}
-
-var hmacKey []byte
-
-func init() {
-	var err error
-	if hmacKey, err = base64.RawURLEncoding.DecodeString(os.Getenv("HMAC_KEY")); err != nil {
-		panic(err)
-	}
 }
 
 // Callback serves GET /callback
@@ -63,27 +50,26 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	if _, err := session.Database(r).Exec(
-		`INSERT INTO users VALUES($1, $2)
-		     ON CONFLICT(id) DO UPDATE SET login = excluded.login`,
-		user.ID, user.Login,
-	); err != nil {
-		panic(err)
-	}
-
-	data := strconv.Itoa(user.ID) + ":" + user.Login
-
-	mac := hmac.New(sha256.New, hmacKey)
-	mac.Write([]byte(data))
-
-	http.SetCookie(w, &http.Cookie{
+	cookie := http.Cookie{
 		HttpOnly: true,
-		Name:     "__Host-user",
+		Name:     "__Host-session",
 		Path:     "/",
 		SameSite: http.SameSiteLaxMode,
 		Secure:   true,
-		Value:    data + ":" + base64.RawURLEncoding.EncodeToString(mac.Sum(nil)),
-	})
+	}
+
+	if err := session.Database(r).QueryRow(
+		`WITH golfer AS (
+		    INSERT INTO users (id, login) VALUES ($1, $2)
+		    ON CONFLICT (id) DO UPDATE SET login = excluded.login
+		      RETURNING id
+		) INSERT INTO sessions (user_id) SELECT * FROM golfer RETURNING id`,
+		user.ID, user.Login,
+	).Scan(&cookie.Value); err != nil {
+		panic(err)
+	}
+
+	http.SetCookie(w, &cookie)
 
 	uri := r.FormValue("redirect_uri")
 	if uri == "" {

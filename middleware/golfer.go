@@ -4,7 +4,9 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"crypto/subtle"
+	"database/sql"
 	"encoding/base64"
+	"errors"
 	"net/http"
 	"os"
 	"strconv"
@@ -12,6 +14,7 @@ import (
 
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/session"
+	"github.com/gofrs/uuid"
 )
 
 var hmacKey []byte
@@ -41,11 +44,24 @@ func GolferHandler(next http.Handler) http.Handler {
 					golfer.ID, _ = strconv.Atoi(cookie.Value[:j])
 					golfer.Name = cookie.Value[j+1 : i]
 
-					// TODO
-					golfer.Admin = golfer.Name == "JRaspass"
-
 					r = session.Set(r, "golfer", &golfer)
 				}
+			}
+		}
+
+		if cookie, _ := r.Cookie("__Host-session"); cookie != nil {
+			var golfer golfer.Golfer
+
+			if err := session.Database(r).QueryRow(
+				`WITH golfer AS (
+				    UPDATE sessions SET last_used = DEFAULT WHERE id = $1
+				 RETURNING user_id
+				) SELECT admin, id, login FROM users JOIN golfer ON id = user_id`,
+				uuid.FromStringOrNil(cookie.Value),
+			).Scan(&golfer.Admin, &golfer.ID, &golfer.Name); err == nil {
+				r = session.Set(r, "golfer", &golfer)
+			} else if !errors.Is(err, sql.ErrNoRows) {
+				panic(err)
 			}
 		}
 

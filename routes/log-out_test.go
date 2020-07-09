@@ -11,9 +11,20 @@ import (
 func TestLogOut(t *testing.T) {
 	w := httptest.NewRecorder()
 
-	LogOut(w, httptest.NewRequest("", "/log-out", nil))
+	LogOut(w, httptest.NewRequest("", "/", nil))
 
-	assert.Equal(t, w.Code, http.StatusFound)
-	assert.Equal(t, w.Header().Get("Location"), "/")
-	assert.Equal(t, w.Header().Get("Set-Cookie"), "__Host-user=;MaxAge=0;Path=/;Secure")
+	res := w.Result()
+
+	assert.Equal(t, res.StatusCode, http.StatusTemporaryRedirect)
+	assert.Equal(t, res.Header.Get("Location"), "/")
+
+	var cookies []string
+	for _, cookie := range res.Cookies() {
+		cookies = append(cookies, cookie.String())
+	}
+
+	assert.Equal(t, cookies, []string{
+		"__Host-session=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax",
+		"__Host-user=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax",
+	})
 }

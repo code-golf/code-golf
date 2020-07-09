@@ -1,4 +1,5 @@
 CREATE EXTENSION citext;
+CREATE EXTENSION pgcrypto;
 
 CREATE TYPE hole AS ENUM (
     '12-days-of-christmas', '99-bottles-of-beer', 'abundant-numbers',
@@ -41,6 +42,12 @@ CREATE TABLE users (
     login   citext                NOT NULL UNIQUE
 );
 
+CREATE TABLE sessions (
+    id        uuid      NOT NULL DEFAULT GEN_RANDOM_UUID() PRIMARY KEY,
+    last_used timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
+    user_id   int       NOT NULL REFERENCES users(id)
+);
+
 CREATE TABLE solutions (
     submitted timestamp without time zone NOT NULL,
     user_id   integer                     NOT NULL REFERENCES users(id),
@@ -65,7 +72,7 @@ CREATE TABLE trophies (
     JOIN pg_class     c ON a.attrelid = c.oid
     JOIN pg_type      t ON a.atttypid = t.oid
    WHERE a.attnum >= 0
-     AND c.relname IN ('ideas', 'solutions', 'trophies', 'users')
+     AND c.relname IN ('ideas', 'sessions', 'solutions', 'trophies', 'users')
 ORDER BY c.relname, t.typlen DESC, t.typname, a.attname;
 
 CREATE VIEW points AS WITH ranked AS (
@@ -88,6 +95,7 @@ CREATE ROLE "code-golf" WITH LOGIN;
 
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE ideas     TO "code-golf";
 GRANT SELECT                         ON TABLE points    TO "code-golf";
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE sessions  TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE solutions TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE trophies  TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE users     TO "code-golf";
