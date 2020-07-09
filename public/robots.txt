@@ -1,4 +1,6 @@
-User-agent: *
-Disallow: /admin$
-Disallow: /admin/
-Disallow: /golfer/
+user-agent: *
+disallow: /admin$
+disallow: /admin/
+disallow: /golfer/
+
+sitemap: https://code.golf/sitemap.xml

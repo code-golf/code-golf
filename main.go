@@ -66,6 +66,7 @@ func main() {
 	r.Get("/recent/{lang}", routes.Recent)
 	r.Get("/scores/{hole}/{lang}", routes.Scores)
 	r.Get("/scores/{hole}/{lang}/{suffix}", routes.Scores)
+	r.Get("/sitemap.xml", routes.Sitemap)
 	r.Post("/solution", routes.Solution)
 	r.Get("/stats", routes.Stats)
 	r.Get("/users/{name}", routes.User)
