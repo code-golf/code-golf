@@ -45,6 +45,37 @@ func GolferHandler(next http.Handler) http.Handler {
 					golfer.Name = cookie.Value[j+1 : i]
 
 					r = session.Set(r, "golfer", &golfer)
+
+					// Port them to the new cookie.
+					cookie := http.Cookie{
+						HttpOnly: true,
+						Name:     "__Host-session",
+						Path:     "/",
+						SameSite: http.SameSiteLaxMode,
+						Secure:   true,
+					}
+
+					if err := session.Database(r).QueryRow(
+						`WITH golfer AS (
+						    INSERT INTO users (id, login) VALUES ($1, $2)
+						    ON CONFLICT (id) DO UPDATE SET login = excluded.login
+						      RETURNING id
+						) INSERT INTO sessions (user_id) SELECT * FROM golfer RETURNING id`,
+						golfer.ID, golfer.Name,
+					).Scan(&cookie.Value); err != nil {
+						panic(err)
+					}
+
+					http.SetCookie(w, &cookie)
+
+					http.SetCookie(w, &http.Cookie{
+						HttpOnly: true,
+						MaxAge:   -1,
+						Name:     "__Host-user",
+						Path:     "/",
+						SameSite: http.SameSiteLaxMode,
+						Secure:   true,
+					})
 				}
 			}
 		}
