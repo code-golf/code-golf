@@ -1,5 +1,5 @@
 GOFILES  := $(shell find . -name '*.go' ! -path './.go*')
-POSTGRES := postgres:11.8-alpine
+POSTGRES := postgres:12.3-alpine
 SHELL    := /bin/bash
 
 define STUB

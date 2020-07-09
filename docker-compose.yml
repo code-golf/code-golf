@@ -24,7 +24,7 @@ services:
     volumes:
       - .:/go
   db:
-    image: postgres:11.8-alpine
+    image: postgres:12.3-alpine
     ports:
       - 5432:5432
     environment:
