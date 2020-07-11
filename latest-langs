@@ -73,7 +73,7 @@ constant @langs = (
 constant $len = @langs[0, 3 … *]».chars.max;
 
 my %current = (get('https://code.golf/about') ~~ m:g/
-    '<tr><th' .+? '>' (.+?) '<' .*? (<[\d+.]> ** 2..*)
+    (<-[>]>+?) \s+ '<td>' .*? (<[\d+.]> ** 2..*)
 /)».list.flat».Str.Hash;
 
 for @langs -> $lang, $url, $re {
@@ -87,5 +87,8 @@ for @langs -> $lang, $url, $re {
 sub get ($url) {
     state $client = Cro::HTTP::Client.new(:!follow :http<1.1>);
 
-    await (await $client.get($url)).body;
+    my $html = await (await $client.get($url)).body;
+
+    # Decode HTML entities.
+    $html.subst: / '&#' (\d+) ';' /, { chr $0 }, :g;
 }
