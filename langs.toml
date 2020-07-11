@@ -63,7 +63,7 @@ version = '5.32.0'
 website = '//www.perl.org'
 
 ['PHP']
-version = '7.4.7'
+version = '7.4.8'
 website = '//www.php.net'
 
 ['PowerShell']
