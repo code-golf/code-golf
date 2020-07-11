@@ -2,7 +2,7 @@ FROM alpine:3.12 as builder
 
 RUN apk add --no-cache build-base curl fts-dev
 
-RUN curl -L https://github.com/jsoftware/jsource/archive/6a42dbc.tar.gz | tar xzf -
+RUN curl -L https://github.com/jsoftware/jsource/archive/j901-beta-d.tar.gz | tar xzf -
 
 COPY patch /
 
@@ -12,11 +12,7 @@ RUN mv jsource-* jsource                                       \
           /jsource/jlibrary/system/defs                        \
           /jsource/jlibrary/system/main/socket.ijs             \
  && cd jsource/jsrc                                            \
- && echo '#define jbuilder  "code.golf"' >> jversion.h         \
- && echo '#define jlicense  "GPL3"'      >> jversion.h         \
- && echo '#define jplatform "linux"'     >> jversion.h         \
- && echo '#define jtype     "release"'   >> jversion.h         \
- && echo '#define jversion  "807"'       >> jversion.h         \
+ && mv jversion-x.h jversion.h                                 \
  && gcc -s -O2 -o jconsole jconsole.c jeload.c                 \
  && rm andjnative.c fnmatch.c jconsole.c jeload.c jep.c jfex.c \
  && gcc -s -O2 -fPIC -fwrapv -fno-strict-aliasing -shared -o libj.so *.c blis/*.c

@@ -31,7 +31,7 @@ version = 'Glasgow Haskell Compiler 8.8.3'
 website = '//www.haskell.org/ghc/'
 
 ['J']
-version = '8.07.07'
+version = '9.01.01'
 website = '//www.jsoftware.com'
 
 ['Java']

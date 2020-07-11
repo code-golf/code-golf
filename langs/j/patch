@@ -2,7 +2,7 @@
 +++ /jsource/jlibrary/system/main/stdlib.ijs
 @@ -45,12 +45,7 @@ if. notdef 'FHS' do.
  end.
- 'libc.so.6 setlocale > x i *c'&(15!:0)^:(UNAME-:'Linux') 1;,'C'
+ 'libc.so.6 setlocale > x i *c'&(15!:0) ::0:^:(UNAME-:'Linux') 1;,'C'
  if. notdef 'IFRASPI' do.
 -  if. UNAME -: 'Linux' do.
 -    cpu=. 2!:0 'cat /proc/cpuinfo'
