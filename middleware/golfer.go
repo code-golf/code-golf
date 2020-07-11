@@ -11,6 +11,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/session"
@@ -91,6 +92,17 @@ func GolferHandler(next http.Handler) http.Handler {
 				uuid.FromStringOrNil(cookie.Value),
 			).Scan(&golfer.Admin, &golfer.ID, &golfer.Name); err == nil {
 				r = session.Set(r, "golfer", &golfer)
+
+				// Refresh the cookie.
+				http.SetCookie(w, &http.Cookie{
+					HttpOnly: true,
+					MaxAge:   int(30 * 24 * time.Hour / time.Second),
+					Name:     "__Host-session",
+					Path:     "/",
+					SameSite: http.SameSiteLaxMode,
+					Secure:   true,
+					Value:    cookie.Value,
+				})
 			} else if !errors.Is(err, sql.ErrNoRows) {
 				panic(err)
 			}
