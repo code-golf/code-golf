@@ -10,6 +10,7 @@ import (
 
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
+	"github.com/code-golf/code-golf/session"
 )
 
 type solution struct {
@@ -32,12 +33,8 @@ func Admin(w http.ResponseWriter, r *http.Request) {
 
 // AdminSolutions serves GET /admin/solutions
 func AdminSolutions(w http.ResponseWriter, r *http.Request) {
-	solutions := getSolutions(
-		r.Context(),
-		r.FormValue("golfer"),
-		r.FormValue("hole"),
-		r.FormValue("lang"),
-	)
+	db := session.Database(r)
+	solutions := getSolutions(r)
 
 	var mux sync.Mutex
 	var wg sync.WaitGroup
@@ -70,7 +67,7 @@ func AdminSolutions(w http.ResponseWriter, r *http.Request) {
 				if pass := s.Scores[len(s.Scores)-1].Pass; pass == s.Failing {
 					s.Failing = !pass
 
-					if _, err := r.Context().Value("db").(*sql.DB).Exec(
+					if _, err := db.Exec(
 						`UPDATE solutions
 						    SET failing = $1
 						  WHERE code    = $2
@@ -105,14 +102,18 @@ func AdminSolutions(w http.ResponseWriter, r *http.Request) {
 	wg.Wait()
 }
 
-func getSolutions(ctx context.Context, golfer, holeID, langID string) chan solution {
+func getSolutions(r *http.Request) chan solution {
+	golfer := r.FormValue("golfer")
+	holeID := r.FormValue("hole")
+	langID := r.FormValue("lang")
+
 	solutions := make(chan solution)
 
 	go func() {
 		defer close(solutions)
 
-		rows, err := ctx.Value("db").(*sql.DB).QueryContext(
-			ctx,
+		rows, err := session.Database(r).QueryContext(
+			r.Context(),
 			` SELECT code, failing, login, id, hole, lang
 				FROM solutions
 				JOIN users ON id = user_id
