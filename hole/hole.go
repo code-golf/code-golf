@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/BurntSushi/toml"
+	"github.com/tdewolff/minify/v2/min"
 )
 
 type Hole struct {
@@ -27,6 +28,13 @@ func init() {
 		hole.Name = name
 		hole.ID = strings.ToLower(
 			strings.ReplaceAll(strings.ReplaceAll(name, "’", ""), " ", "-"))
+
+		// Minify HTML
+		if html, err := min.HTML(string(hole.Preamble)); err != nil {
+			panic(err)
+		} else {
+			hole.Preamble = template.HTML(html)
+		}
 
 		List = append(List, hole)
 	}
