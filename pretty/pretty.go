@@ -10,6 +10,19 @@ import (
 
 const day = 24 * time.Hour
 
+func Bytes(b int) string {
+	const unit = 1024
+	if b < unit {
+		return fmt.Sprintf("%d.0 B", b)
+	}
+	div, exp := int(unit), 0
+	for n := b / unit; n >= unit; n /= unit {
+		div *= unit
+		exp++
+	}
+	return fmt.Sprintf("%.1f %ciB", float64(b)/float64(div), "KM"[exp])
+}
+
 // Comma returns a string of a int with thousand separators. Only 0 - 999,999.
 func Comma(i int) string {
 	if i > 999 {

@@ -9,17 +9,6 @@ main {
     padding: 0;
 }
 
-.nav {
-    background: var(--background);
-    border-bottom: 2px solid var(--color);
-    display: flex;
-    padding: 1rem 1rem 0;
-    position: sticky;
-    top: 2.75rem;
-}
-
-.nav a { font-weight: bold }
-
 #badges {
     display: flex;
     flex-wrap: wrap;
@@ -57,3 +46,5 @@ main {
 }
 
 #profile p:first-of-type { font-size: 1.25rem }
+
+#tabs { margin: 0 }

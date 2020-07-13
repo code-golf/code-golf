@@ -347,6 +347,17 @@ thead th {
 
 #run > span { margin: 1rem }
 
+#tabs {
+    background: var(--background);
+    border-bottom: 2px solid var(--color);
+    display: flex;
+    font-weight: bold;
+    margin-top: -1rem;
+    padding: 1rem 1rem 0;
+    position: sticky;
+    top: 2.75rem;
+}
+
 /* TODO Generalise the hole mapping table CSS, lose the specific IDs. */
 
                             #colors, #morse, #states { columns: 4 }

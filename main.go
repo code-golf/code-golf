@@ -46,6 +46,7 @@ func main() {
 		r.Use(middleware.AdminArea)
 		r.Get("/", routes.Admin)
 		r.Get("/solutions", routes.AdminSolutions)
+		r.Get("/solutions/run", routes.AdminSolutionsRun)
 	})
 	r.Get("/assets/{asset}", routes.Asset)
 	r.Get("/callback", routes.Callback)

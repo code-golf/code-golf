@@ -1,0 +1,34 @@
+{{ template "header" . }}
+
+<main>
+    {{ template "admin" . }}
+
+    <table>
+        <thead>
+            <th>Golfer
+            <th>Last Used
+        <tbody>
+        {{ range .Data.Sessions }}
+            <tr>
+                <td>
+                    <a href="/golfers/{{ .Golfer }}">
+                        <img src="//avatars.githubusercontent.com/{{ .Golfer }}?s=24">
+                        {{- .Golfer -}}
+                    </a>
+                <td>{{ time .LastUsed }}
+        {{ end }}
+    </table>
+    <table>
+        <thead>
+            <th>Relation
+            <th>Rows
+            <th>Size
+        <tbody>
+        {{ range .Data.Tables }}
+            <tr>
+                <td>{{ .Name.Value }}
+                <td>{{ with .Rows }}{{ comma . }}{{ end }}
+                <td>{{ bytes .Size }}
+        {{ end }}
+    </table>
+</main>

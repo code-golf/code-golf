@@ -28,7 +28,7 @@
     -->
 </div>
 
-<nav class=nav>
+<nav class=nav id=tabs>
     {{ $slug := print "/golfers/" .Name }}
     <a {{ if ne $path $slug }} href="{{ $slug }}" {{ end }}>Trophies</a>
 

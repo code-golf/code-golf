@@ -44,6 +44,7 @@ var (
 )
 
 var tmpl = template.New("").Funcs(template.FuncMap{
+	"bytes":     pretty.Bytes,
 	"colour":    colour,
 	"comma":     pretty.Comma,
 	"hasPrefix": strings.HasPrefix,

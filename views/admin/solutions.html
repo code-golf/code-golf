@@ -1,0 +1,47 @@
+{{ template "header" . }}
+
+<main>
+    {{ template "admin" . }}
+
+    <form>
+        <label for=golfer>Golfer</label>
+        <input id=golfer name=golfer value='{{ .Request.FormValue "golfer" }}'>
+
+        <label for=hole>Hole</label>
+        <select id=hole name=hole>
+            <option value>All
+        {{ $hole := .Request.FormValue "hole" }}
+        {{ range .Data.Holes }}
+            <option value={{ .ID }} {{ if eq .ID $hole }}selected{{ end }}>
+                {{ .Name }}
+        {{ end }}
+        </select>
+
+        <label for=lang>Lang</label>
+        <select id=lang name=lang>
+            <option value>All
+        {{ $lang := .Request.FormValue "lang" }}
+        {{ range .Data.Langs }}
+            <option value={{ .ID }} {{ if eq .ID $lang }}selected{{ end }}>
+                {{ .Name }}
+        {{ end }}
+        </select>
+
+        <div>
+            <div id=status></div>
+            <button class="btn blue" id=run>Run</button>
+            <button class="btn yellow" id=stop type=button>Stop</button>
+        </div>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Hole
+                <th>Lang
+                <th>Golfer
+                <th>Took
+                <th>Runs
+                <th>Status
+        <tbody>
+    </table>
+</main>

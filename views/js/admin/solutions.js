@@ -26,7 +26,7 @@ function make(tag, ...children) {
 stop.onclick = () => alert('TODO');
 
 form.onchange = () => history.replaceState(
-    '', '', '/admin?' + new URLSearchParams(new FormData(form)));
+    '', '', 'solutions?' + new URLSearchParams(new FormData(form)));
 
 form.onsubmit = async e => {
     e.preventDefault();
@@ -34,7 +34,7 @@ form.onsubmit = async e => {
     const start = Date.now();
     tbody.innerHTML = '';
 
-    const res = await fetch('/admin/solutions?' +
+    const res = await fetch('solutions/run?' +
         new URLSearchParams(new FormData(form)));
 
     if (!res.ok) return;

@@ -6,6 +6,21 @@ import (
 	"time"
 )
 
+func TestBytes(t *testing.T) {
+	for _, tt := range []struct {
+		want string
+		b    int
+	}{
+		{"1.0 B", 1},
+		{"1.0 KiB", 1024},
+		{"1.0 MiB", 1024 * 1024},
+	} {
+		if got := Bytes(tt.b); got != tt.want {
+			t.Errorf("Bytes(%v) = %v; want %v", tt.b, got, tt.want)
+		}
+	}
+}
+
 func TestComma(t *testing.T) {
 	for _, tt := range []struct {
 		want string
