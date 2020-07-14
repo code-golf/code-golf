@@ -6,8 +6,6 @@ use warnings;
 use Digest::MD5 'md5_base64';
 use IPC::Open2 'open2';
 
-system qw(svgo -q -f assets/includes);
-
 open my $fh, '>', 'routes/assets.go';
 
 print $fh <<GO;
@@ -26,7 +24,7 @@ my ( %data, %paths );
 
 for (
     sort { $b =~ /\.woff2$/ <=> $a =~ /\.woff2$/ or $a cmp $b }
-    <assets/*.{css,js,png,svg,woff2}>
+    <assets/*.{css,js,woff2}>
 ) {
     say;
 
@@ -36,19 +34,7 @@ for (
 
     my $name = s/[.-](\w)/\U$1/gr;
 
-    if (/\.(?:png|svg)$/) {
-        $data{$name} = $data;
-        my $mime = /\.png$/ ? 'image/png' : 'image/svg+xml';
-
-        print $fh <<GO;
-	case "/assets/$_":
-		w.Header().Set("Content-Type", "$mime")
-		w.Write($name)
-GO
-
-        next;
-    }
-    elsif (/\.woff2$/) {
+    if (/\.woff2$/) {
         $data{$name} = $data;
         my $path = $paths{$name} = '/assets/' . md5_base64($data) =~ y|+/|-_|r;
 
@@ -65,7 +51,6 @@ GO
     $data =~ s|/\* include ([^ ]+) +\*/|slurp("assets/includes/$1")|eg;
 
     if (/\.css$/) {
-        $data =~ s|svg\(([^#]+)(.+)\)|svg($1, $2)|eg;
         $data =~ s|fontWoff2|$paths{fontWoff2}|;
         $data =~ s|twemojiWoff2|$paths{twemojiWoff2}|;
 
@@ -131,15 +116,3 @@ sub run {
 }
 
 sub slurp { local ( @ARGV, $/ ) = @_; scalar <> }
-
-sub svg {
-    my ( $file, $fill ) = @_;
-
-    local $_ = slurp("assets/includes/$file.svg");
-
-    s/FILL/$fill/g;
-    s/#/%23/g;
-    s/"/'/g;
-
-    qq(url("data:image/svg+xml,$_"));
-}
