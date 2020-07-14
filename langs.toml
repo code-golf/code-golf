@@ -71,7 +71,7 @@ version = 'PowerShell 7.0.2 on .NET Core 3.1.4'
 website = '//docs.microsoft.com/powershell/scripting/overview'
 
 ['Python']
-version = '3.8.3'
+version = '3.8.4'
 website = '//www.python.org'
 
 ['Raku']
