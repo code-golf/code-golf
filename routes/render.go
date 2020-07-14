@@ -128,6 +128,10 @@ func render(w http.ResponseWriter, r *http.Request, name, title string, data int
 		Title:         title,
 	}
 
+	if name == "hole" {
+		args.CSS = css["vendor/codemirror"] + args.CSS
+	}
+
 	header := w.Header()
 
 	header.Set("Content-Language", "en")
