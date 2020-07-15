@@ -241,15 +241,6 @@ thead th {
     grid-gap: 1rem;
 }
 
-.info {
-    background: #fffbdd;
-    display: none;
-    padding: 5px;
-    border: 1px solid #222;
-    color: #222;
-    margin-top: 10px;
-}
-
 /* TODO Need a dark version */
 .me { background: var(--blue) !important }
 
@@ -291,8 +282,6 @@ thead th {
     top: 2.75rem;
 }
 
-.text-red { color: var(--red) }
-
 #alert {
     background: var(--yellow);
     border: solid 1px var(--color);
@@ -303,21 +292,10 @@ thead th {
 
 #alert:before { content: '' }
 
-#chars {
-    border-bottom: 1px solid var(--color);
-    font-weight: bold;
-    line-height: 2rem;
-}
-
 #error h1 { text-align: center }
 
-#header                { grid-template-columns: 1fr min-content min-content min-content }
 #ideas, #index         { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
 #scores > :first-child { grid-template-columns: 1fr min-content }
-
-#hole thead a { float: right }
-
-#hole .scores td { border-left: 0 }
 
 #index > .grid {
     border: 2px solid var(--color);
@@ -345,8 +323,6 @@ thead th {
     width: 50%;
 }
 
-#run > span { margin: 1rem }
-
 #tabs {
     background: var(--background);
     border-bottom: 2px solid var(--color);
@@ -358,43 +334,6 @@ thead th {
     top: 2.75rem;
 }
 
-/* TODO Generalise the hole mapping table CSS, lose the specific IDs. */
-
-                            #colors, #morse, #states { columns: 4 }
-@media (max-width: 54rem) { #colors, #morse, #states { columns: 2 } }
-@media (max-width: 30rem) { #colors, #morse, #states { columns: 1 } }
-
-#colors svg {
-    align-self: center;
-    border: 1px solid var(--color);
-    height: 1rem;
-    margin-right: .5rem;
-    width: 1rem;
-}
-
-#colors table, #morse table, #states table { break-inside: avoid-column }
-
-#colors td:first-child { display: flex }
-
-#colors td:last-child {
-    text-align-last: justify;
-    text-justify: inter-character;
-}
-
-#colors th:first-child,
-#morse  td:last-child,
-#states td:first-child {
-    width: 100%;
-}
-
-#wrapper {
-    display: grid;
-    grid-template-columns: 1fr 15rem;
-    grid-template-rows: min-content 1fr;
-}
-
-#wrapper .scores { grid-row: span 2 }
-
 @media (max-width: 34rem) {
     .wide { display: none }
 
@@ -402,8 +341,6 @@ thead th {
     #scores td:nth-child(4) {
         border-right: 1px solid var(--color);
     }
-
-    #wrapper { grid-template-columns: 1fr }
 }
 
 /* TODO https://github.com/code-golf/code-golf/issues/119

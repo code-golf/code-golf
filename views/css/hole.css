@@ -35,6 +35,17 @@ h3 {
     transform: rotate(-90deg);
 }
 
+.info {
+    background: #fffbdd;
+    display: none;
+    padding: 5px;
+    border: 1px solid #222;
+    color: #222;
+    margin-top: 10px;
+}
+
+.text-red { color: var(--red) }
+
 #arg, #err { display: none }
 
 #exp, #out { white-space: pre }
@@ -48,13 +59,65 @@ h3 {
     white-space: pre;
 }
 
+#chars {
+    border-bottom: 1px solid var(--color);
+    font-weight: bold;
+    line-height: 2rem;
+}
+
 #editor {
     border: 1px solid var(--color);
     min-height: 200px;
     overflow-x: hidden;
 }
 
+#header { grid-template-columns: 1fr min-content min-content min-content }
+
+#hole thead a { float: right }
+
+#hole .scores td { border-left: 0 }
+
+#run > span { margin: 1rem }
+
 #status {
     display: none;
     padding: 1rem;
 }
+
+/* TODO Generalise the hole mapping table CSS, lose the specific IDs. */
+                            #colors, #morse, #states { columns: 4 }
+@media (max-width: 54rem) { #colors, #morse, #states { columns: 2 } }
+@media (max-width: 30rem) { #colors, #morse, #states { columns: 1 } }
+
+#colors svg {
+    align-self: center;
+    border: 1px solid var(--color);
+    height: 1rem;
+    margin-right: .5rem;
+    width: 1rem;
+}
+
+#colors table, #morse table, #states table { break-inside: avoid-column }
+
+#colors td:first-child { display: flex }
+
+#colors td:last-child {
+    text-align-last: justify;
+    text-justify: inter-character;
+}
+
+#colors th:first-child,
+#morse  td:last-child,
+#states td:first-child {
+    width: 100%;
+}
+
+#wrapper {
+    display: grid;
+    grid-template-columns: 1fr 15rem;
+    grid-template-rows: min-content 1fr;
+}
+
+#wrapper .scores { grid-row: span 2 }
+
+@media (max-width: 34rem) { #wrapper { grid-template-columns: 1fr } }
