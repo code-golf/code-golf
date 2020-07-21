@@ -10,7 +10,7 @@ require (
 	github.com/gofrs/uuid v3.3.0+incompatible
 	github.com/gorilla/feeds v1.1.1
 	github.com/kr/pretty v0.2.0 // indirect
-	github.com/lib/pq v1.7.0
+	github.com/lib/pq v1.7.1
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/tdewolff/minify/v2 v2.7.6
 	golang.org/x/crypto v0.0.0-20200709230013-948cd5f35899
