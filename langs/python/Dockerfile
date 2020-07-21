@@ -2,10 +2,10 @@ FROM alpine:3.12 as builder
 
 RUN apk add --no-cache build-base curl libffi-dev zlib-dev
 
-RUN curl https://www.python.org/ftp/python/3.8.4/Python-3.8.4.tar.xz \
+RUN curl https://www.python.org/ftp/python/3.8.5/Python-3.8.5.tar.xz \
   | tar xJf -
 
-RUN cd Python-3.8.4       \
+RUN cd Python-3.8.5       \
  && ./configure           \
     --prefix=/usr         \
     --with-lto            \

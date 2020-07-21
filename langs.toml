@@ -23,7 +23,7 @@ version = 'F# 4.7 on .NET Core 3.1.4'
 website = '//fsharp.org'
 
 ['Go']
-version = '1.14.4'
+version = '1.14.6'
 website = '//golang.org'
 
 ['Haskell']
@@ -71,11 +71,11 @@ version = 'PowerShell 7.0.2 on .NET Core 3.1.4'
 website = '//docs.microsoft.com/powershell/scripting/overview'
 
 ['Python']
-version = '3.8.4'
+version = '3.8.5'
 website = '//www.python.org'
 
 ['Raku']
-version = 'Rakudo 2020.06 on MoarVM 2020.06 implementing Raku 6.d'
+version = 'Rakudo 2020.07 on MoarVM 2020.07 implementing Raku 6.d'
 website = '//raku.org'
 
 ['Ruby']
@@ -83,7 +83,7 @@ version = '2.7.1'
 website = '//www.ruby-lang.org'
 
 ['Rust']
-version = '1.44.1'
+version = '1.45.0'
 website = '//www.rust-lang.org'
 
 ['Swift']
