@@ -43,6 +43,21 @@ i; main(int n, char **a) { while(++i < n) puts(a[i]); }
 c-sharp
 class A {static void Main(string[] args){foreach(var a in args)System.Console.WriteLine(a);}}
 
+cobol
+identification division.
+program-id. test.
+data division.
+    working-storage section.
+    1 a pic x(50).
+procedure division.
+    loop.
+    accept a from argument-value
+    if a not=space
+        display a
+        move space to a
+        go to loop
+    end-if.
+
 f-sharp
 [<EntryPoint>]
 let main args =

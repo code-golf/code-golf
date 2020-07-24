@@ -14,13 +14,17 @@ website = '//bellard.org/tcc/'
 version = 'C# 8.0 on .NET Core 3.1.4'
 website = '//docs.microsoft.com/dotnet/csharp/'
 
-['Fortran']
-version = '9.3.0'
-website = '//gcc.gnu.org/fortran/'
+['Cobol']
+version = 'GnuCOBOL 2.2.0'
+website = '//www.gnu.org/software/gnucobol/'
 
 ['F#']
 version = 'F# 4.7 on .NET Core 3.1.4'
 website = '//fsharp.org'
+
+['Fortran']
+version = 'GNU Fortran 9.3.0'
+website = '//gcc.gnu.org/fortran/'
 
 ['Go']
 version = '1.14.6'
