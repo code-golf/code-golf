@@ -23,6 +23,8 @@ table {
     width: 100%;
 }
 
+td > a { color: var(--color) }
+
 td, th { white-space: nowrap }
 
 td:nth-child(2) {
