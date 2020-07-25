@@ -6,6 +6,7 @@
 
 /* include vendor/codemirror-bash.js       */
 /* include vendor/codemirror-brainfuck.js  */
+/* include vendor/codemirror-cobol.js      */
 /* include vendor/codemirror-fortran.js    */
 /* include vendor/codemirror-go.js         */
 /* include vendor/codemirror-haskell.js    */

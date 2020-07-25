@@ -24,6 +24,7 @@
 #matrix input.brainfuck:not(:checked)  ~ .brainfuck,
 #matrix input.c:not(:checked)          ~ .c,
 #matrix input.c-sharp:not(:checked)    ~ .c-sharp,
+#matrix input.cobol:not(:checked)      ~ .cobol,
 #matrix input.f-sharp:not(:checked)    ~ .f-sharp,
 #matrix input.fortran:not(:checked)    ~ .fortran,
 #matrix input.go:not(:checked)         ~ .go,
@@ -64,7 +65,7 @@
 
 @media (min-width: 1280px) {
     /* Increase this number when adding a language. */
-    #matrix { grid-template-columns: 4fr repeat(23, 1fr) }
+    #matrix { grid-template-columns: 4fr repeat(24, 1fr) }
 
     #matrix a {
         display: initial;
