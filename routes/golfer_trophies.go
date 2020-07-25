@@ -41,6 +41,10 @@ func GolferTrophies(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
+	if data.Max == 0 {
+		data.Max = 1
+	}
+
 	rows, err := tx.Query(
 		`WITH count AS (
 		    SELECT trophy, COUNT(user_id)
