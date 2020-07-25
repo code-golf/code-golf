@@ -13,8 +13,8 @@ import (
 // Stats serves GET /stats
 func Stats(w http.ResponseWriter, r *http.Request) {
 	type row struct {
-		Count, Golfers, Rank int
-		Fact, PerGolfer      string
+		Count, Golfers, Rank   int
+		Fact, PerGolfer, Route string
 	}
 
 	type table struct {
@@ -68,8 +68,10 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 			}
 
 			if fact == "hole" {
+				row.Route = "/" + row.Fact
 				row.Fact = hole.ByID[row.Fact].Name
 			} else {
+				row.Route = "/recent/" + row.Fact
 				row.Fact = lang.ByID[row.Fact].Name
 			}
 
