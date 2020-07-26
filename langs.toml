@@ -28,7 +28,7 @@ website = '//fsharp.org'
 
 ['Go']
 version = '1.14.6'
-website = '//golang.org'
+website = '//go.dev'
 
 ['Haskell']
 version = 'Glasgow Haskell Compiler 8.8.3'
