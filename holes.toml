@@ -735,6 +735,26 @@ preamble = '''
     to and including <b>2400</b>.
 '''
 
+['Leyland Numbers']
+category = 'Sequence'
+links = [
+    { name = 'OEIS A076980', url = '//oeis.org/A076980' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Leyland_number' },
+]
+preamble = '''
+<p>
+    A leyland number is of the form <b>x<sup>y</sup> + y<sup>x</sup></b> where
+    <b>1 < y ≤ x</b>.
+
+<p>
+    For example, <b>8</b> is a leyland number because
+    <b>2<sup>2</sup> + 2<sup>2</sup> = 8</b>.
+
+<p>
+    Print all the leyland numbers from <b>1</b> to <b>100,000,000,000</b>
+    inclusive, each on their own line.
+'''
+
 ['Lucky Tickets']
 category = 'Mathematics'
 preamble = '''
