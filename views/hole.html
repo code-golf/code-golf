@@ -10,11 +10,21 @@
             save solutions and appear on the leaderboards.
     </div>
 {{ end }}
-    <div class=grid id=header>
+    <div id=header>
         <h1>{{ .Data.Hole.Name }}</h1>
-        <a class="btn orange" href={{ .Data.Hole.Prev }}> <span class=wide>Prev</span></a>
-        <a class="btn purple" href=random> <span class=wide>Random</span></a>
-        <a class="btn orange" href={{ .Data.Hole.Next }}> <span class=wide>Next</span></a>
+    {{ with .Data.Hole.Links }}
+        <nav>
+        {{ range $i, $link := . }}
+            {{ if $i }}<span>•</span>{{ end }}
+            <a href="{{ .URL }}">{{ .Name }}</a>
+        {{ end }}
+        </nav>
+    {{ end }}
+        <nav>
+            <a class="btn orange" href={{ .Data.Hole.Prev }}> Prev</a>
+            <a class="btn purple" href=random> Random</a>
+            <a class="btn orange" href={{ .Data.Hole.Next }}> Next</a>
+        </nav>
     </div>
     <details id=details {{ if not .Data.HideDetails }}open{{ end }}>
         <summary>Details</summary>

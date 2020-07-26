@@ -12,6 +12,7 @@ import (
 type Hole struct {
 	Prev, Next, ID, Name, Category, CategoryColor, CategoryIcon string
 	Preamble                                                    template.HTML
+	Links                                                       []struct{ Name, URL string }
 }
 
 var ByID = map[string]Hole{}

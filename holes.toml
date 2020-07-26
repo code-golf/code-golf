@@ -25,6 +25,9 @@
 
 ['12 Days of Christmas']
 category = 'Art'
+links = [
+    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/The_Twelve_Days_of_Christmas_(song)' },
+]
 preamble = '''
 <p>Print the lyrics to the song <b>The 12 Days of Christmas</b>:</p>
 
@@ -53,6 +56,10 @@ A Partridge in a Pear Tree.
 
 ['99 Bottles of Beer']
 category = 'Art'
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/99_Bottles_of_Beer' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/99_Bottles_of_Beer' },
+]
 preamble = '''
 <p>Print the lyrics to the song <b>99 Bottles of Beer</b>:</p>
 
@@ -74,6 +81,10 @@ Go to the store and buy some more, 99 bottles of beer on the wall.
 
 ['Abundant Numbers']
 category = 'Sequence'
+links = [
+    { name = 'OEIS A005101', url = '//oeis.org/A005101' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Abundant_number' },
+]
 preamble = '''
 <p>
     An abundant number is a number for which the sum of its proper divisors
@@ -89,12 +100,19 @@ preamble = '''
 
 ['Arabic to Roman']
 category = 'Transform'
+links = [
+    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Roman_numerals' },
+]
 preamble = '''
 <p>For each arabic numeral argument print the same number in roman numerals.
 '''
 
 [Brainfuck]
 category = 'Computing'
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Execute_Brain****' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Brainfuck' },
+]
 preamble = '''
 <p>
     Brainfuck is a minimalistic esoteric programming language created by
@@ -600,6 +618,10 @@ preamble = '''
 
 ['Emirp Numbers']
 category = 'Sequence'
+links = [
+    { name = 'OEIS A006567', url = '//oeis.org/A006567' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Emirp' },
+]
 preamble = '''
 <p>
     An emirp (prime spelled backwards) is a prime number that results in a
@@ -613,6 +635,10 @@ preamble = '''
 
 ['Evil Numbers']
 category = 'Sequence'
+links = [
+    { name = 'OEIS A001969', url = '//oeis.org/A001969' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Evil_number' },
+]
 preamble = '''
 <p>
     An evil number is a non-negative number that has an even number of 1s in
@@ -629,6 +655,11 @@ preamble = '''
 
 [Fibonacci]
 category = 'Sequence'
+links = [
+    { name = 'OEIS A000045', url = '//oeis.org/A000045' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Fibonacci_sequence' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Fibonacci_number' },
+]
 preamble = '''
 <p>
     Print the first <b>31</b> Fibonacci numbers from <b>F<sub>0</sub> = 0</b>
@@ -637,6 +668,10 @@ preamble = '''
 
 ['Fizz Buzz']
 category = 'Sequence'
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/FizzBuzz' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Fizz_buzz' },
+]
 preamble = '''
 <p>
     Print the numbers from <b>1</b> to <b>100</b> inclusive, each on their own
@@ -654,6 +689,11 @@ preamble = '''
 
 ['Happy Numbers']
 category = 'Sequence'
+links = [
+    { name = 'OEIS A007770', url = '//oeis.org/A007770' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Happy_numbers' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Happy_number' },
+]
 preamble = '''
 <p>
     A happy number is defined by the following Sequence: Starting with any
@@ -679,6 +719,9 @@ preamble = '''
 
 ['Leap Years']
 category = 'Sequence'
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Leap_year' },
+]
 preamble = '''
 <p>
     In the Gregorian calendar, a leap year is created by extending Februrary
@@ -703,6 +746,9 @@ preamble = '''
 
 ['Morse Decoder']
 category = 'Transform'
+links = [
+    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Morse_code' },
+]
 preamble = '''
 <p>
     Using ▄ (U+2584 Lower Half Block) to represent a dot, decode the argument
@@ -786,6 +832,9 @@ preamble = '''
 
 ['Morse Encoder']
 category = 'Transform'
+links = [
+    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Morse_code' },
+]
 preamble = '''
 <p>
     Using ▄ (U+2584 Lower Half Block) to represent a dot, encode the argument
@@ -869,6 +918,10 @@ preamble = '''
 
 ['Niven Numbers']
 category = 'Sequence'
+links = [
+    { name = 'OEIS A005349', url = '//oeis.org/A005349' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Niven_number' },
+]
 preamble = '''
 <p>
     A niven number is a non-negative number that is divisible by the sum of
@@ -881,6 +934,10 @@ preamble = '''
 
 ['Odious Numbers']
 category = 'Sequence'
+links = [
+    { name = 'OEIS A000069', url = '//oeis.org/A000069' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Odious_number' },
+]
 preamble = '''
 <p>
     An odious number is a non-negative number that has an odd number of 1s in
@@ -897,16 +954,20 @@ preamble = '''
 
 ['Ordinal Numbers']
 category = 'Transform'
+links = [
+    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Ordinal_numeral' },
+]
 preamble = '''
 <p>
-    Given various integers as arguments, print the argument and its
-    <a href=//wikipedia.org/wiki/Ordinal_number_(linguistics)>
-        ordinal suffix
-    </a>.
+    Given various integers as arguments, print the argument and its ordinal
+    suffix.
 '''
 
 ['Pangram Grep']
 category = 'Transform'
+links = [
+    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Pangram' },
+]
 preamble = '''
 <p>A pangram is a sentence that uses every letter of a given alphabet.
 
@@ -917,12 +978,19 @@ preamble = '''
 
 ['Pascal’s Triangle']
 category = 'Sequence'
+links = [
+    { name = 'Wikipedia', url = "//www.wikipedia.org/wiki/Pascal's_triangle" },
+]
 preamble = '''
 <p>Print the first <b>20 rows</b> of Pascal’s triangle.
 '''
 
 ['Pernicious Numbers']
 category = 'Sequence'
+links = [
+    { name = 'OEIS A052294', url = '//oeis.org/A052294' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Pernicious_number' },
+]
 preamble = '''
 <p>
     A pernicious number is a positive number where the sum of its binary
@@ -939,6 +1007,9 @@ preamble = '''
 
 [Poker]
 category = 'Gaming'
+links = [
+    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/List_of_poker_hands' },
+]
 preamble = '''
 <p>
     Given various poker hands as arguments, print what type of hand each
@@ -1000,6 +1071,10 @@ preamble = '''
 
 ['Prime Numbers']
 category = 'Sequence'
+links = [
+    { name = 'OEIS A000040', url = '//oeis.org/A000040' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Prime_number' },
+]
 preamble = '''
 <p>
     Print all the prime numbers from <b>1</b> to <b>100</b> inclusive, each on
@@ -1008,6 +1083,10 @@ preamble = '''
 
 [Quine]
 category = 'Computing'
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Quine' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Quine_(computing)' },
+]
 preamble = '''
 <p>
     A <b>quine</b> is a non-empty computer program which takes no input and
@@ -1019,6 +1098,10 @@ preamble = '''
 
 [Rock-paper-scissors-Spock-lizard]
 category = 'Gaming'
+links = [
+    { name = 'Rules', url = 'http://www.samkass.com/theories/RPSSL.html' },
+    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Rock_paper_scissors#Additional_weapons' },
+]
 preamble = '''
 <p>
     ✂ cuts 📄 covers 💎 crushes 🦎 poisons 🖖 smashes ✂ decapitates 🦎 eats 📄
@@ -1057,12 +1140,18 @@ preamble = '''
 
 ['Roman to Arabic']
 category = 'Transform'
+links = [
+    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Roman_numerals' },
+]
 preamble = '''
 <p>For each roman numeral argument print the same number in arabic numerals.
 '''
 
 ['Rule 110']
 category = 'Computing'
+links = [
+    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Rule_110' },
+]
 preamble = '''
 <p>
     Print the first <b>100</b> rows in the Rule 110 cellular automaton
@@ -1079,14 +1168,13 @@ preamble = '''
  ███████ █
 ██     ███
 </pre>
-
-<p>
-    You can read more about on it and on its Turing-Completeness here:
-    <a href=//wikipedia.org/wiki/Rule_110>wikipedia.org/wiki/Rule_110</a>.
 '''
 
 ['Seven Segment']
 category = 'Transform'
+links = [
+    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Seven-segment_display' },
+]
 preamble = '''
 <p>
     Using pipes and underscores print the argument as if it were displayed on
@@ -1102,6 +1190,9 @@ preamble = '''
 
 ['Sierpiński Triangle']
 category = 'Art'
+links = [
+    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Sierpiński_triangle' },
+]
 preamble = '''
 <p>
     The Sierpiński triangle is a fractal and attractive fixed set with the
@@ -1141,6 +1232,9 @@ preamble = '''
 
 [Sudoku]
 category = 'Gaming'
+links = [
+    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Sudoku' },
+]
 preamble = '''
 <p>
     Sudoku is a number puzzle where a grid of 81 digits (9x9) is filled by the
@@ -1176,6 +1270,9 @@ preamble = '''
 
 ['Ten-pin Bowling']
 category = 'Gaming'
+links = [
+    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Ten-pin_bowling' },
+]
 preamble = '''
 <p>
     Given a series of ten-pin bowling scoreboards, determine the final scores
@@ -1327,36 +1424,59 @@ preamble = '''
 
 ['λ']
 category = 'Mathematics'
+links = [
+    { name = 'OEIS A014715', url = '//oeis.org/A014715' },
+    { name = 'Wikipedia',    url = "//www.wikipedia.org/wiki/Conway's_constant" },
+]
 preamble = '''
 <p>Print λ (Conway’s constant) to the first 1,000 decimal places.
 '''
 
 ['π']
 category = 'Mathematics'
+links = [
+    { name = 'OEIS A000796', url = '//oeis.org/A000796' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Pi' },
+]
 preamble = '''
 <p>Print π (Pi) to the first 1,000 decimal places.
 '''
 
 ['τ']
 category = 'Mathematics'
+links = [
+    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Tau_(mathematical_constant)' },
+]
 preamble = '''
 <p>Print τ (Tau) to the first 1,000 decimal places.
 '''
 
 ['φ']
 category = 'Mathematics'
+links = [
+    { name = 'OEIS A001622', url = '//oeis.org/A001622' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Golden_ratio' },
+]
 preamble = '''
 <p>Print φ (Phi) to the first 1,000 decimal places.
 '''
 
 ['√2']
 category = 'Mathematics'
+links = [
+    { name = 'OEIS A002193', url = '//oeis.org/A002193' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Square_root_of_2' },
+]
 preamble = '''
 <p>Print √2 (Pythagoras’ constant) to the first 1,000 decimal places.
 '''
 
 ['𝑒']
 category = 'Mathematics'
+links = [
+    { name = 'OEIS A001113', url = '//oeis.org/A001113' },
+    { name = 'Wikipedia',    url = '//wikipedia.org/wiki/E_(mathematical_constant)' },
+]
 preamble = '''
 <p>Print 𝑒 (Euler’s number) to the first 1,000 decimal places.
 '''

@@ -71,7 +71,27 @@ h3 {
     overflow-x: hidden;
 }
 
-#header { grid-template-columns: 1fr min-content min-content min-content }
+/* TODO Replace margins with gap 1rem https://caniuse.com#feat=flexbox-gap */
+#header {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: -.5rem;
+}
+
+#header > * { margin: .5rem }
+
+#header a { white-space: nowrap }
+
+#header nav {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#header span { margin: 0 .5rem }
+
+#header .purple { margin: 0 1rem }
 
 #hole thead a { float: right }
 
