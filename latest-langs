@@ -16,7 +16,7 @@ constant @langs = (
     'http://download.savannah.gnu.org/releases/tinycc/?C=M&O=D',
     / 'tcc-' (<[\d.]>+) '.tar.bz2' /,
 
-    'Cobol',
+    'COBOL',
     'https://ftp.gnu.org/gnu/gnucobol/?C=M;O=D',
     / 'gnucobol-' (<[\d.]>+) '.tar.xz' /,
 

@@ -10,7 +10,7 @@ website = '//github.com/code-golf/code-golf/tree/master/langs/brainfuck/'
 version = 'Tiny C Compiler 0.9.27'
 website = '//bellard.org/tcc/'
 
-['Cobol']
+['COBOL']
 version = 'GnuCOBOL 2.2.0'
 website = '//www.gnu.org/software/gnucobol/'
 
