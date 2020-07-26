@@ -97,7 +97,13 @@ h3 {
 
 #hole .scores td { border-left: 0 }
 
-#run > span { margin: 1rem }
+#run {
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#run > span { margin: 0 1rem }
 
 #status {
     display: none;

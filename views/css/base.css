@@ -60,11 +60,6 @@ details .grid { padding-top: 1rem }
 
 h1 { font-size: 1.75rem }
 
-h1 a {
-    float: right;
-    margin-left: 1rem;
-}
-
 header {
     background: var(--color);
     position: sticky;
@@ -182,7 +177,7 @@ thead th {
 .btn {
     border: solid 1px var(--color);
     color: var(--color);
-    display: inline-block;
+    display: flex;
     font-size: 1rem;
     font-weight: bold;
     line-height: 1;
@@ -196,6 +191,11 @@ thead th {
     color: var(--color);
     cursor: pointer;
     text-decoration: none;
+}
+
+.btn svg {
+    height: 1rem;
+    margin-right: .25rem;
 }
 
 .card {

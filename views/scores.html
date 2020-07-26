@@ -6,33 +6,36 @@
 
 <main id=scores>
     <h1>
-        Scores
-
-    {{ if .Data.Next }}
-        <a class="btn blue" href="/scores/{{ $holeID }}/{{ $langID }}/{{ .Data.Next }}">
-             <span class=wide>Next</span>
-        </a>
-    {{ end }}
+        <span>Scores</span>
 
 {{ if .Data.Prev }}
     {{ if eq .Data.Prev 1 }}
-        <a class="btn blue" href="/scores/{{ $holeID }}/{{ $langID }}">
-             <span class=wide>Prev</span>
+        <a class="btn orange" href="/scores/{{ $holeID }}/{{ $langID }}">
+            {{ svg "chevron-double-left-light" }}
+            Prev
         </a>
     {{ else }}
-        <a class="btn blue" href="/scores/{{ $holeID }}/{{ $langID }}/{{ .Data.Prev }}">
-             <span class=wide>Prev</span>
+        <a class="btn orange" href="/scores/{{ $holeID }}/{{ $langID }}/{{ .Data.Prev }}">
+            {{ svg "chevron-double-left-light" }}
+            Prev
         </a>
     {{ end }}
 {{ end }}
 
     {{ if not $allHoles }}
-        <a class="btn green" href='/{{ $holeID }}{{ if ne $langID "all-langs" }}#{{ $langID }}{{ end }}'>
-             Play Hole
+        <a class="btn purple" href='/{{ $holeID }}{{ if ne $langID "all-langs" }}#{{ $langID }}{{ end }}'>
+            {{ svg "play-light" }} Play Hole
         </a>
     {{ end }}
 
-        {{/* TODO <a class="btn blue" href=#me> Find Me</a> */}}
+    {{ if .Data.Next }}
+        <a class="btn orange" href="/scores/{{ $holeID }}/{{ $langID }}/{{ .Data.Next }}">
+            {{ svg "chevron-double-right-light" }}
+            Next
+        </a>
+    {{ end }}
+
+        {{/* TODO <a class="btn blue" href=#me>{{ svg "search-light" }} Find Me</a> */}}
     </h1>
     <details class=nav>
         {{ if eq $holeID "all-holes" }}

@@ -21,9 +21,15 @@
         </nav>
     {{ end }}
         <nav>
-            <a class="btn orange" href={{ .Data.Hole.Prev }}> Prev</a>
-            <a class="btn purple" href=random> Random</a>
-            <a class="btn orange" href={{ .Data.Hole.Next }}> Next</a>
+            <a class="btn orange" href={{ .Data.Hole.Prev }}>
+                {{ svg "chevron-double-left-light" }} Prev
+            </a>
+            <a class="btn purple" href=random>
+                {{ svg "dice-light" }} Random
+            </a>
+            <a class="btn orange" href={{ .Data.Hole.Next }}>
+                {{ svg "chevron-double-right-light" }} Next
+            </a>
         </nav>
     </div>
     <details id=details {{ if not .Data.HideDetails }}open{{ end }}>
@@ -56,10 +62,10 @@
     <div class="quine info powershell">
         Implicit output is disabled for this hole. Use <b>Out-Host</b> or <b>Write-Host</b> for output.
     </div>
-    <div class=right id=run>
+    <div id=run>
         ctrl + enter
         <span>or</span>
-        <a class="btn blue"> Run</a>
+        <a class="btn blue">{{ svg "play-light" }} Run</a>
     </div>
     <div id=status>
         <h2></h2>
