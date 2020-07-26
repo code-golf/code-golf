@@ -22,6 +22,8 @@ func init() {
 		sha, created, name string
 		hole               bool
 	}{
+		{"90b0cc8", "2020-07-26 01:05:14", "Leyland Numbers", true},
+		{"681846d", "2020-07-24 21:39:33", "COBOL", false},
 		{"3e971cc", "2020-06-21 01:44:16", "CSS Colors", true},
 		{"5a2068c", "2020-06-01 04:28:26", "PowerShell", false},
 		{"b71f2ee", "2020-05-09 13:17:53", "C#", false},
