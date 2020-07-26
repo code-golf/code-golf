@@ -7,11 +7,9 @@ package routes
 
 import "net/http"
 
-const (
-	commonCssPath = ""
-	holeCssPath   = ""
-	holeJsPath    = ""
-)
+const fontWoff2Path    = ""
+const holeJsPath       = ""
+const twemojiWoff2Path = ""
 
 func Asset(w http.ResponseWriter, r *http.Request) {}
 endef
