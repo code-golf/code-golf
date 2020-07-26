@@ -1,3 +1,4 @@
+U+F04B # play
 U+F071 # exclamation-triangle
 U+F074 # random
 U+F0DD # sort-down
