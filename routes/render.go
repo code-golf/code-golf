@@ -75,6 +75,9 @@ func init() {
 
 		switch ext {
 		case ".css":
+			data = strings.ReplaceAll(data, "fontWoff2", fontWoff2Path)
+			data = strings.ReplaceAll(data, "twemojiWoff2", twemojiWoff2Path)
+
 			if data, err = min.CSS(data); err != nil {
 				return err
 			}
@@ -108,24 +111,23 @@ func render(w http.ResponseWriter, r *http.Request, name, title string, data int
 	}
 
 	args := struct {
-		CommonCssPath, LogInURL, Nonce, Path, Title string
-		CSS                                         template.CSS
-		Data                                        interface{}
-		Golfer                                      *golfer.Golfer
-		GolferInfo                                  *golfer.GolferInfo
-		JS                                          template.JS
-		Request                                     *http.Request
+		LogInURL, Nonce, Path, Title string
+		CSS                          template.CSS
+		Data                         interface{}
+		Golfer                       *golfer.Golfer
+		GolferInfo                   *golfer.GolferInfo
+		JS                           template.JS
+		Request                      *http.Request
 	}{
-		CommonCssPath: commonCssPath,
-		CSS:           css[path.Dir(name)] + css[name],
-		Data:          data,
-		Golfer:        session.Golfer(r),
-		GolferInfo:    session.GolferInfo(r),
-		JS:            js[name],
-		Nonce:         base64.StdEncoding.EncodeToString(nonce),
-		Path:          r.URL.Path,
-		Request:       r,
-		Title:         title,
+		CSS:        css["base"] + css[path.Dir(name)] + css[name],
+		Data:       data,
+		Golfer:     session.Golfer(r),
+		GolferInfo: session.GolferInfo(r),
+		JS:         js[name],
+		Nonce:      base64.StdEncoding.EncodeToString(nonce),
+		Path:       r.URL.Path,
+		Request:    r,
+		Title:      title,
 	}
 
 	if name == "hole" {
