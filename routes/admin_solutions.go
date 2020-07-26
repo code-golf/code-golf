@@ -103,25 +103,26 @@ func AdminSolutionsRun(w http.ResponseWriter, r *http.Request) {
 }
 
 func getSolutions(r *http.Request) chan solution {
-	golfer := r.FormValue("golfer")
-	holeID := r.FormValue("hole")
-	langID := r.FormValue("lang")
-
 	solutions := make(chan solution)
 
 	go func() {
 		defer close(solutions)
 
+		holeID := r.FormValue("hole")
+		langID := r.FormValue("lang")
+
 		rows, err := session.Database(r).QueryContext(
 			r.Context(),
 			` SELECT code, failing, login, id, hole, lang
-				FROM solutions
-				JOIN users ON id = user_id
-			   WHERE (login = $1 OR $1 = '')
-				 AND (hole  = $2 OR $2 IS NULL)
-				 AND (lang  = $3 OR $3 IS NULL)
+			    FROM solutions
+			    JOIN users ON id = user_id
+			   WHERE failing IN (true, $1)
+			     AND (login = $2 OR $2 = '')
+			     AND (hole  = $3 OR $3 IS NULL)
+			     AND (lang  = $4 OR $4 IS NULL)
 			ORDER BY hole, lang, login`,
-			golfer,
+			r.FormValue("failing") == "on",
+			r.FormValue("golfer"),
 			sql.NullString{String: holeID, Valid: holeID != ""},
 			sql.NullString{String: langID, Valid: langID != ""},
 		)

@@ -27,6 +27,10 @@
         {{ end }}
         </select>
 
+        <label for=failing>Failing</label>
+        <input {{ if eq "on" (.Request.FormValue "failing") }}checked{{ end }}
+            id=failing name=failing type=checkbox>
+
         <div>
             <div id=status></div>
             <button class="btn blue" id=run>Run</button>
