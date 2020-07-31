@@ -16,6 +16,8 @@
 <meta name=viewport    content="width=device-width">
 <meta name=description content="Code Golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.">
 
+{{ if .Beta }}<meta name=robots content=noindex>{{ end }}
+
 <title>{{ with .Title }}{{ . }} | {{ end }}Code Golf</title>
 
 {{/* type=module acts like defer, even on inline scripts */}}
@@ -61,3 +63,14 @@
     {{ end }}
     </nav>
 </header>
+
+{{ if .Beta }}
+    <div id=alert>
+        <p>
+            This is the beta version of Code Golf for testing new features.
+            The database is periodically wiped and stability is not guaranteed.
+            You probaby want
+            <a href="//code.golf{{ .Request.RequestURI }}">code.golf</a>
+            instead.
+    </div>
+{{ end }}

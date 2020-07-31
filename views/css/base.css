@@ -56,6 +56,14 @@ body {
     font: 16px emoji, font, system-ui, -apple-system, sans-serif;
 }
 
+body > #alert, header nav, main {
+    margin: auto;
+    max-width: 1280px;
+    width: 100%;
+}
+
+body > #alert { margin: 1rem auto 0 }
+
 details .grid { padding-top: 1rem }
 
 h1 { font-size: 1.75rem }
@@ -92,12 +100,6 @@ header img {
 
 header div { flex: 1 }
 header nav { display: flex }
-
-header nav, main {
-    margin: auto;
-    max-width: 1280px;
-    width: 100%;
-}
 
 header svg {
     height: 1.5rem;

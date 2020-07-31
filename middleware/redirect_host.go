@@ -3,9 +3,14 @@ package middleware
 import (
 	"net/http"
 	"syscall"
+
+	"github.com/code-golf/code-golf/session"
 )
 
-var host = "code.golf"
+var (
+	host     = "code.golf"
+	betaHost = "beta.code.golf"
+)
 
 func init() {
 	if _, dev := syscall.Getenv("DEV"); dev {
@@ -16,9 +21,13 @@ func init() {
 // Redirect www (or any incorrect domain) to apex.
 func RedirectHost(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.Host == host {
+		switch r.Host {
+		case betaHost:
+			r = session.Set(r, "beta", true)
+			fallthrough
+		case host:
 			next.ServeHTTP(w, r)
-		} else {
+		default:
 			url := "https://" + host + r.RequestURI
 			http.Redirect(w, r, url, http.StatusPermanentRedirect)
 		}

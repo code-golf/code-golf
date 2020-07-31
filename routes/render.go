@@ -111,6 +111,7 @@ func render(w http.ResponseWriter, r *http.Request, name, title string, data int
 	}
 
 	args := struct {
+		Beta                         bool
 		LogInURL, Nonce, Path, Title string
 		CSS                          template.CSS
 		Data                         interface{}
@@ -119,6 +120,7 @@ func render(w http.ResponseWriter, r *http.Request, name, title string, data int
 		JS                           template.JS
 		Request                      *http.Request
 	}{
+		Beta:       session.Beta(r),
 		CSS:        css["base"] + css[path.Dir(name)] + css[name],
 		Data:       data,
 		Golfer:     session.Golfer(r),

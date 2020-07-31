@@ -77,7 +77,9 @@ func main() {
 		Cache:  autocert.DirCache("certs"),
 		Prompt: autocert.AcceptTOS,
 		HostPolicy: autocert.HostWhitelist(
-			"code-golf.io", "code.golf", "www.code-golf.io", "www.code.golf",
+			"code.golf", "beta.code.golf", "www.code.golf",
+			// Legacy domain.
+			"code-golf.io", "www.code-golf.io",
 		),
 	}
 
