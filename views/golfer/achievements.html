@@ -1,0 +1,31 @@
+{{ template "header" . }}
+
+<main>
+    {{ template "golfer" . }}
+
+{{ range .Data }}
+    <details open>
+        <summary>
+            [ {{ .Earned }} / {{ len .Cheevos }} ] {{ .Category }}
+        </summary>
+        <div>
+        {{ range .Cheevos }}
+            <div class="achievement {{ if eq .Value .Max }} earned {{ end }}">
+                <div>{{ .Emoji }}</div>
+                <h3>{{ .Title }}</h3>
+                <div class=progress title="{{ .Value }} / {{ .Max }}">
+                    {{ .Progress }}
+                    <div>{{ .Percent }}<sup>%</sup></div>
+                </div>
+                <p>{{ .Description }}
+                <p>
+                    1,809 golfers (59%) • Earned
+                    <time datetime="2019-02-10T18:51:08Z" title="2019-02-10T18:51:08Z">
+                        10 Feb 2019
+                    </time>
+            </div>
+        {{ end }}
+        </div>
+    </details>
+{{ end }}
+</main>

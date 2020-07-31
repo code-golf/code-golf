@@ -59,6 +59,8 @@ body {
 details .grid { padding-top: 1rem }
 
 h1 { font-size: 1.75rem }
+h2 { font-size: 1.50rem }
+h3 { font-size: 1.25rem }
 
 header {
     background: var(--color);
@@ -332,6 +334,7 @@ thead th {
     padding: 1rem 1rem 0;
     position: sticky;
     top: 2.75rem;
+    z-index: 1;
 }
 
 @media (max-width: 34rem) {

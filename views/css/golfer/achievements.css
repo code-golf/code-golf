@@ -1,0 +1,61 @@
+details { margin: 1rem }
+
+details > div {
+    display: grid;
+    grid-gap: 1.5rem 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(18.5rem, 1fr));
+    margin-top: 1rem;
+}
+
+summary {
+    background: none;
+    border: 0;
+    color: var(--color);
+    font-size: 1.5rem;
+    font-variant: tabular-nums;
+    font-weight: bold;
+}
+
+.achievement {
+    display: grid;
+    grid-gap: .5rem 1rem;
+    grid-template: min-content 1fr min-content
+                 / min-content 1fr min-content;
+}
+
+.achievement > div { grid-row: span 3 }
+
+.achievement > div:first-of-type { font-size:   4rem }
+.achievement >    p:last-of-type { font-size: .75rem }
+
+.achievement:not(.earned) > div:first-of-type {
+    color: transparent;
+    text-shadow: 0 0 var(--color);
+}
+
+.earned .progress { color: #40a940 }
+
+.earned .progress svg {
+    fill: #eeffd1;
+    stroke: #40a940;
+}
+
+.progress {
+    align-items: center;
+    display: flex;
+    font-variant: tabular-nums;
+    font-weight: bold;
+    height: 4rem;
+    justify-content: center;
+    position: relative;
+    width: 4rem;
+    z-index: 0;
+}
+
+.progress svg {
+    fill: var(--grey);
+    position: absolute;
+    stroke: var(--blue);
+    transform: rotate(-90deg);
+    z-index: -1;
+}
