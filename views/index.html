@@ -32,7 +32,7 @@
         {{ $on  := hasPrefix $sort . }}
 
         <a {{ if $on }} class=on {{ end }} href="?sort={{ . }}-{{ if and $on $asc }}desc{{ else }}asc{{ end }}">
-            {{ if and $on (not $asc) }}{{ else }}{{ end }}
+            {{ if and $on (not $asc) }}⌄{{ else }}⌃{{ end }}
             {{ title . }}
         </a>
     {{ end }}

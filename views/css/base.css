@@ -120,7 +120,7 @@ summary {
 }
 
 summary:before {
-    content: '';
+    content: '▶';
     margin-right: .5rem;
 }
 
@@ -131,7 +131,7 @@ summary:hover {
     color: inherit !important;
 }
 
-details[open] summary:before { content: '' }
+details[open] summary:before { content: '▼' }
 
 summary::-webkit-details-marker, #symbols { display: none }
 
@@ -290,7 +290,7 @@ thead th {
     padding: 1rem;
 }
 
-#alert:before { content: '' }
+#alert:before { content: '⚠' }
 
 #error h1 { text-align: center }
 

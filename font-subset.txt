@@ -1,12 +1,6 @@
-U+F04B # play
-U+F071 # exclamation-triangle
 U+F074 # random
-U+F0DD # sort-down
-U+F0DE # sort-up
 U+F11B # gamepad
 U+F162 # sort-numeric-down
-U+F322 # chevron-double-down
-U+F324 # chevron-double-right
 U+F53F # palette
 U+F544 # robot
 U+F698 # square-root-alt
