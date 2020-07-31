@@ -55,6 +55,8 @@ CREATE TABLE solutions (
     lang      lang      NOT NULL,
     code      text      NOT NULL,
     failing   bool      NOT NULL DEFAULT false,
+    bytes     int       NOT NULL GENERATED ALWAYS AS (octet_length(code)) STORED,
+    chars     int       NOT NULL GENERATED ALWAYS AS  (char_length(code)) STORED,
     PRIMARY KEY (user_id, hole, lang)
 );
 
