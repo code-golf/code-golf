@@ -23,9 +23,9 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := struct {
-		Golfers, Holes, Langs, Solutions int
-		SolutionsByHole, SolutionsByLang pie.Pie
-		Tables                           []table
+		Bytes, Golfers, Holes, Langs, Solutions int
+		SolutionsByHole, SolutionsByLang        pie.Pie
+		Tables                                  []table
 	}{
 		Holes:  len(hole.List),
 		Langs:  len(lang.List),
@@ -35,9 +35,14 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 	db := session.Database(r)
 
 	if err := db.QueryRow(
-		`SELECT (SELECT COUNT(DISTINCT user_id) FROM trophies),
-		        (SELECT COUNT(*) FROM solutions WHERE NOT failing)`,
-	).Scan(&data.Golfers, &data.Solutions); err != nil {
+		"SELECT COUNT(DISTINCT user_id) FROM trophies",
+	).Scan(&data.Golfers); err != nil {
+		panic(err)
+	}
+
+	if err := db.QueryRow(
+		"SELECT SUM(bytes), COUNT(*) FROM solutions WHERE NOT failing",
+	).Scan(&data.Bytes, &data.Solutions); err != nil {
 		panic(err)
 	}
 

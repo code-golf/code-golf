@@ -6,7 +6,14 @@
     <div><h2>Langs</h2>{{ .Data.Langs }}</div>
     <div><h2>Holes</h2>{{ .Data.Holes }}</div>
     <div><h2>Golfers</h2>{{ comma .Data.Golfers }}</div>
-    <div><h2>Solutions</h2>{{ comma .Data.Solutions }}</div>
+
+    <div>
+        <h2>Solutions</h2>
+        <span>
+            {{ comma .Data.Solutions }}
+            <small>({{ bytes .Data.Bytes }})</small>
+        </span>
+    </div>
 
     <div class=pie>
         <h2 class=span>Solutions by Holes</h2>
