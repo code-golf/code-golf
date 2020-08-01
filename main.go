@@ -114,6 +114,7 @@ func main() {
 			<-ticker.C
 			github.Ideas(db)
 			github.PullRequests(db)
+			github.Sponsors(db)
 			github.Stars(db)
 		}
 	}()

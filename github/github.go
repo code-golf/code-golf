@@ -2,15 +2,26 @@ package github
 
 import (
 	"bytes"
+	"context"
 	"database/sql"
 	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
 	"time"
+
+	"github.com/shurcooL/githubv4"
+	"golang.org/x/oauth2"
 )
 
 var accessToken = os.Getenv("GITHUB_ACCESS_TOKEN")
+
+var client = githubv4.NewClient(
+	oauth2.NewClient(
+		context.Background(),
+		oauth2.StaticTokenSource(&oauth2.Token{AccessToken: accessToken}),
+	),
+)
 
 func awardTrophies(db *sql.DB, earnedUsers map[int]time.Time, trophy string) {
 	rows, err := db.Query(

@@ -12,6 +12,8 @@ require (
 	github.com/kr/pretty v0.2.0 // indirect
 	github.com/lib/pq v1.7.1
 	github.com/pmezard/go-difflib v1.0.0
+	github.com/shurcooL/githubv4 v0.0.0-20200627185320-e003124d66e4
+	github.com/shurcooL/graphql v0.0.0-20181231061246-d48a9a75455f // indirect
 	github.com/tdewolff/minify/v2 v2.7.7
 	golang.org/x/crypto v0.0.0-20200709230013-948cd5f35899
 	golang.org/x/net v0.0.0-20200707034311-ab3426394381 // indirect
