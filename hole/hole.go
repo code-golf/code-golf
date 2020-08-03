@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/BurntSushi/toml"
-	"github.com/tdewolff/minify/v2/min"
+	min "github.com/tdewolff/minify/v2/minify"
 )
 
 type Hole struct {

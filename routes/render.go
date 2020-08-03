@@ -15,7 +15,7 @@ import (
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/pretty"
 	"github.com/code-golf/code-golf/session"
-	"github.com/tdewolff/minify/v2/min"
+	min "github.com/tdewolff/minify/v2/minify"
 )
 
 func colour(i int) string {
