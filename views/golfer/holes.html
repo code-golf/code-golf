@@ -1,6 +1,7 @@
 {{ template "header" . }}
 
 <svg id=symbols>
+    {{ symbol "play-light" }}
 {{ range .Data.Langs }}
     {{ symbol .ID }}
 {{ end }}
@@ -35,7 +36,7 @@
                     href="/{{ $hole.ID }}#{{ $lang.ID }}"
                     title="Play {{ $hole.Name }} in {{ $lang.Name }}">
                     <svg><use href="#{{ $lang.ID }}"/></svg>
-                    ▶
+                    <svg><use href="#play"/></svg>
                 </a>
             {{ end }}
         {{ end }}

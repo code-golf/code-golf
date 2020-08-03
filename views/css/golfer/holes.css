@@ -16,6 +16,11 @@
 
 #matrix a:hover { background: var(--background) }
 
+#matrix a :last-child {
+    flex: 1;
+    text-align: center;
+}
+
 #matrix h3 { padding: .25rem 0 }
 
 /* When adding a new language, update grid-template-columns for #matrix below. */
@@ -61,19 +66,18 @@
     width: 2rem;
 }
 
-#matrix a svg { margin-right: .5rem }
+#matrix svg:nth-of-type(2) {
+    height: 1rem;
+    width: 1rem;
+}
 
 @media (min-width: 1280px) {
     /* Increase this number when adding a language. */
     #matrix { grid-template-columns: 4fr repeat(24, 1fr) }
 
-    #matrix a {
-        display: initial;
-        height: 1.9rem;
-        text-align: center;
-    }
+    #matrix a { height: 1.9rem }
 
-    #matrix a svg { display: none }
+    #matrix a svg:first-of-type { display: none }
 
     #matrix .span {
         grid-column: 1/2;
