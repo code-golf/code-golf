@@ -47,7 +47,7 @@ version = 'V8 7.4.51'
 website = '//v8.dev'
 
 ['Julia']
-version = '1.4.2'
+version = '1.5.0'
 website = '//julialang.org'
 
 ['Lisp']
@@ -87,7 +87,7 @@ version = '2.7.1'
 website = '//www.ruby-lang.org'
 
 ['Rust']
-version = '1.45.0'
+version = '1.45.1'
 website = '//www.rust-lang.org'
 
 ['Swift']
