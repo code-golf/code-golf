@@ -11,14 +11,17 @@ RUN npm install
 
 RUN echo [] > extras/ligatures.json           \
  && unzip twe-svg.zip                         \
+    svg/1f35e.svg       `# Bread`             \
     svg/1f37a.svg       `# Beer Mug`          \
     svg/1f382.svg       `# Birthday Cake`     \
+    svg/1f385.svg       `# Santa Claus`       \
     svg/1f3c6.svg       `# Trophy`            \
     svg/1f409.svg       `# Dragon`            \
     svg/1f40d.svg       `# Sanke`             \
     svg/1f418.svg       `# Elephant`          \
     svg/1f42a.svg       `# Camel`             \
     svg/1f44b.svg       `# Waving Hand`       \
+    svg/1f44d.svg       `# Thumbs Up`         \
     svg/1f48e.svg       `# Gem Stone`         \
     svg/1f4b0.svg       `# Money Bag`         \
     svg/1f4bc.svg       `# Briefcase`         \
@@ -26,6 +29,7 @@ RUN echo [] > extras/ligatures.json           \
     svg/1f4c4.svg       `# Page Facing Up`    \
     svg/1f4c5.svg       `# Calendar`          \
     svg/1f4c9.svg       `# Chart Decreasing`  \
+    svg/1f4d5.svg       `# Closed Book`       \
     svg/1f511.svg       `# Key`               \
     svg/1f523.svg       `# Input Symbols`     \
     svg/1f596.svg       `# Vulcan Salute`     \
