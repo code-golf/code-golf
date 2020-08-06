@@ -28,7 +28,8 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	req, err := http.NewRequest("GET", "https://api.github.com/user", nil)
+	req, err := http.NewRequestWithContext(
+		r.Context(), "GET", "https://api.github.com/user", nil)
 	if err != nil {
 		panic(err)
 	}

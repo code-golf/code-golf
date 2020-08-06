@@ -15,8 +15,10 @@ type Lang struct {
 	Version string
 }
 
-var ByID = map[string]Lang{}
-var List []Lang
+var (
+	ByID = map[string]Lang{}
+	List []Lang
+)
 
 func init() {
 	var langsTOML map[string]Lang

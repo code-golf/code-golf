@@ -218,7 +218,6 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 		langID,
 		(page-1)*100,
 	)
-
 	if err != nil {
 		panic(err)
 	}

@@ -66,7 +66,6 @@ func Recent(w http.ResponseWriter, r *http.Request) {
       ORDER BY t1.submitted DESC LIMIT 100`,
 		langID,
 	)
-
 	if err != nil {
 		panic(err)
 	}
@@ -110,7 +109,7 @@ func Recent(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	var title = "Recent Solutions in "
+	title := "Recent Solutions in "
 
 	if langID == "all-langs" {
 		title += "All Langs"

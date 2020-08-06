@@ -24,7 +24,7 @@ func main() {
 		panic(err)
 	}
 
-	var r = chi.NewRouter()
+	r := chi.NewRouter()
 
 	r.Use(
 		middleware.Logger,

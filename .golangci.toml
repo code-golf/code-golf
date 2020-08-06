@@ -7,26 +7,33 @@ skip-files = ['routes/assets.go']
 linters = 'staticcheck'
 text    = 'SA1029:'
 
-# TODO stylecheck once assets is annihilated.
+# TODO noctx once github/ uses only github.com/shurcooL/githubv4.
 [linters]
 disable-all = true
 enable = [
+    'asciicheck',
     'bodyclose',
     'deadcode',
     'depguard',
     'dogsled',
     'dupl',
+  # 'errcheck',
+    'exhaustive',
+    'exportloopref',
   # 'funlen',
+    'gci',
   # 'gochecknoglobals',
   # 'gochecknoinits',
   # 'gocognit',
   # 'goconst',
   # 'gocritic',
-    'gocyclo',
+  # 'gocyclo',
   # 'godot',
   # 'godox',
     'goerr113',
     'gofmt',
+    'goheader',
+    'gofumpt',
     'goimports',
   # 'golint',
     'gomodguard',
@@ -42,13 +49,16 @@ enable = [
     'misspell',
   # 'nakedret',
   # 'nestif',
+  # 'nlreturn',
+  # 'noctx',
     'nolintlint',
   # 'prealloc',
     'rowserrcheck',
   # 'scopelint',
+  # 'sqlclosecheck',
     'staticcheck',
     'structcheck',
-  # 'stylecheck',
+    'stylecheck',
   # 'testpackage',
     'typecheck',
     'unconvert',

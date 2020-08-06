@@ -59,6 +59,7 @@ func getAnswer(holeID, code string) ([]string, string) {
 	default:
 		answer = answers[holeID]
 	}
+
 	return args, answer
 }
 

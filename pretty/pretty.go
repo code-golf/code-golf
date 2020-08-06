@@ -20,6 +20,7 @@ func Bytes(b int) string {
 		div *= unit
 		exp++
 	}
+
 	return fmt.Sprintf("%.1f %ciB", float64(b)/float64(div), "KM"[exp])
 }
 
@@ -48,6 +49,7 @@ func Ordinal(i int) string {
 			return "rd"
 		}
 	}
+
 	return "th"
 }
 

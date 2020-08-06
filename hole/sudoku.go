@@ -5,8 +5,10 @@ import (
 	"strings"
 )
 
-const boardSize = 9
-const blockSize = 3
+const (
+	boardSize = 9
+	blockSize = 3
+)
 
 func solve(board [boardSize][boardSize]int, cell int, count *int) bool {
 	var i, j int

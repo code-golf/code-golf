@@ -6,13 +6,12 @@ import (
 	"strings"
 )
 
-type Ticket struct {
-	digits int
-	base   int
-	result int64
+type ticket struct {
+	digits, base int
+	result       int64
 }
 
-var data = []Ticket{
+var data = []ticket{
 	{8, 2, 70},
 	{4, 8, 344},
 	{2, 10, 10},
@@ -23,6 +22,7 @@ var data = []Ticket{
 
 func iPow(a, b int64) int64 {
 	var result int64 = 1
+
 	for b != 0 {
 		if b&1 != 0 {
 			result *= a
@@ -30,20 +30,23 @@ func iPow(a, b int64) int64 {
 		b >>= 1
 		a *= a
 	}
+
 	return result
 }
 
 func sumDigits(number int64, base int64) int64 {
 	var result int64
+
 	for number > 0 {
 		result += number % base
 		number /= base
 	}
+
 	return result
 }
 
 func luckyTickets() ([]string, string) {
-	tickets := make([]Ticket, len(data))
+	tickets := make([]ticket, len(data))
 	copy(tickets, data)
 
 	// Randomly generate additional test cases.
@@ -54,9 +57,8 @@ func luckyTickets() ([]string, string) {
 		halfValue := iPow(int64(base), int64(digits/2))
 		maxSum := (base - 1) * digits / 2
 		counts := make([]int64, maxSum+1)
-		var j int64
-		for ; j < halfValue; j++ {
-			counts[sumDigits(j, int64(base))] += 1
+		for j := int64(0); j < halfValue; j++ {
+			counts[sumDigits(j, int64(base))]++
 		}
 
 		var result int64
@@ -64,7 +66,7 @@ func luckyTickets() ([]string, string) {
 			result += count * count
 		}
 
-		tickets = append(tickets, Ticket{digits, base, result})
+		tickets = append(tickets, ticket{digits, base, result})
 	}
 
 	args := make([]string, len(tickets))

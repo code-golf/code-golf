@@ -15,8 +15,10 @@ type Hole struct {
 	Links                                                       []struct{ Name, URL string }
 }
 
-var ByID = map[string]Hole{}
-var List []Hole
+var (
+	ByID = map[string]Hole{}
+	List []Hole
+)
 
 func init() {
 	var holesTOML map[string]Hole

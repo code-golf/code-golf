@@ -11,6 +11,7 @@ func cardRune(number, suit int) rune {
 		// Skip over the unused Knight face card
 		number++
 	}
+
 	return 0x1f0a1 + 16*rune(suit) + rune(number)
 }
 
@@ -19,6 +20,7 @@ func straightCheck(numbers []int) bool {
 	if reflect.DeepEqual(numbers, []int{0, 9, 10, 11, 12}) {
 		return true
 	}
+
 	return numbers[1]-numbers[0] == 1 &&
 		numbers[2]-numbers[1] == 1 &&
 		numbers[3]-numbers[2] == 1 &&
