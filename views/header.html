@@ -22,8 +22,9 @@
 
 {{/* type=module acts like defer, even on inline scripts */}}
 {{ $nonce := .Nonce }}
-{{ with .CSS }}<style  nonce="{{ $nonce }}"            >{{ . }}</style>{{ end }}
-{{ with .JS  }}<script nonce="{{ $nonce }}" type=module>{{ . }}</script>{{ end }}
+{{ with .CSS   }}<style  nonce="{{ $nonce }}"            >{{ . }}</style>{{ end }}
+{{ with .JSExt }}<script nonce="{{ $nonce }}" defer  src="{{ . }}"></script>{{ end }}
+{{ with .JS    }}<script nonce="{{ $nonce }}" type=module>{{ . }}</script>{{ end }}
 
 <header>
     <nav>

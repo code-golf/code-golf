@@ -13,13 +13,11 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		HideDetails bool
 		Hole        hole.Hole
-		HoleJsPath  string
 		Langs       []lang.Lang
 		Solutions   map[string]string
 	}{
-		HoleJsPath: holeJsPath,
-		Langs:      lang.List,
-		Solutions:  map[string]string{},
+		Langs:     lang.List,
+		Solutions: map[string]string{},
 	}
 
 	var ok bool
