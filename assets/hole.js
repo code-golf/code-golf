@@ -39,9 +39,6 @@ let lang;
 let latestSubmissionID = 0;
 
 onload = () => {
-    if (hole != 'quine')
-        document.querySelectorAll('.quine').forEach(e => e.remove());
-
     // Lock the editor's height in so we scroll.
     editor.style.height = `${editor.offsetHeight}px`;
 

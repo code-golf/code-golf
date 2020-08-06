@@ -59,9 +59,11 @@
     <div class="info perl">
         <b>say()</b> is available without any import.
     </div>
-    <div class="quine info powershell">
+{{ if eq .Data.Hole.ID "quine" }}
+    <div class="info powershell">
         Implicit output is disabled for this hole. Use <b>Out-Host</b> or <b>Write-Host</b> for output.
     </div>
+{{ end }}
     <div id=run>
         ctrl + enter
         <span>or</span>
