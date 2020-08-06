@@ -64,13 +64,13 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		// the submitted time if the solution is shorter. This avoids a user
 		// moving down the leaderboard by matching their personal best.
 		if _, err := db.Exec(`
-		    INSERT INTO solutions
-		         VALUES (NOW() AT TIME ZONE 'UTC', $1, $2, $3, $4)
+		    INSERT INTO solutions (user_id, hole, lang, code)
+		         VALUES ($1, $2, $3, $4)
 		    ON CONFLICT ON CONSTRAINT solutions_pkey
 		  DO UPDATE SET failing = false,
 		                submitted = CASE
 		                    WHEN solutions.failing OR excluded.chars < solutions.chars
-		                    THEN NOW() AT TIME ZONE 'UTC'
+		                    THEN excluded.submitted
 		                    ELSE solutions.submitted
 		                END,
 		                code = CASE

@@ -49,7 +49,7 @@ CREATE TABLE sessions (
 );
 
 CREATE TABLE solutions (
-    submitted timestamp NOT NULL,
+    submitted timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
     user_id   int       NOT NULL REFERENCES users(id),
     hole      hole      NOT NULL,
     lang      lang      NOT NULL,
