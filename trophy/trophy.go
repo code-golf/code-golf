@@ -18,7 +18,7 @@ func init() {
 var List = []Trophy{
 	{
 		"☕", "caffeinated", "Caffeinated",
-		"Solve the same hole in both Java and JavaScript.",
+		"Solve any hole in both Java and JavaScript.",
 	},
 	{
 		"🐘", "elephpant-in-the-room", "ElePHPant in the Room",
@@ -26,11 +26,11 @@ var List = []Trophy{
 	},
 	{
 		"🎂", "happy-birthday-code-golf", "Happy Birthday, Code Golf",
-		"Solve any hole in any language on <a href=//github.com/code-golf/code-golf/commit/4b44>2 Oct</a>.",
+		"Solve any hole on <a href=//github.com/code-golf/code-golf/commit/4b44>2 Oct</a>.",
 	},
 	{
 		"👋", "hello-world", "Hello, World!",
-		"Solve any hole in any language.",
+		"Solve your first hole.",
 	},
 	{
 		"🧠", "inception", "Inception",
@@ -38,11 +38,11 @@ var List = []Trophy{
 	},
 	{
 		"🇺🇸", "independence-day", "Independence Day",
-		"Solve <a href=/united-states>United States</a> in any language on <a href=//wikipedia.org/wiki/Independence_Day_(United_States)>4 Jul</a>.",
+		"Solve <a href=/united-states>United States</a> on <a href=//www.wikipedia.org/wiki/Independence_Day_(United_States)>4 Jul</a>.",
 	},
 	{
 		"💼", "interview-ready", "Interview Ready",
-		"Solve <a href=/fizz-buzz>Fizz Buzz</a> in any language.",
+		"Solve <a href=/fizz-buzz>Fizz Buzz</a>.",
 	},
 	{
 		"🐉", "its-over-9000", "It’s Over 9000!",
@@ -62,19 +62,19 @@ var List = []Trophy{
 	},
 	{
 		"🥧", "pi-day", "Pi Day",
-		"Solve <a href=/π>π</a> in any language on <a href=//wikipedia.org/wiki/Pi_Day>14 Mar</a>.",
+		"Solve <a href=/π>π</a> on <a href=//www.wikipedia.org/wiki/Pi_Day>14 Mar</a>.",
 	},
 	{
 		"🔣", "polyglot", "Polyglot",
-		"Solve at least one hole in every language.",
+		"Solve any hole in every language.",
 	},
 	{
 		"🦥", "slowcoach", "Slowcoach",
-		"Fail an attempt by exceeding the time limit.",
+		"Fail any hole by exceeding the time limit.",
 	},
 	{
 		"🐪", "tim-toady", "Tim Toady",
-		"Solve the same hole in both Perl and Raku.",
+		"Solve any hole in both Perl and Raku.",
 	},
 	{
 		"🍺", "the-watering-hole", "The Watering Hole",

@@ -66,7 +66,7 @@ func GolferAchievements(w http.ResponseWriter, r *http.Request) {
 			Cheevos: []cheevo{
 				{
 					"💼", "Interview Ready",
-					"Solve <a href=/fizz-buzz>Fizz Buzz</a> in any language.",
+					"Solve <a href=/fizz-buzz>Fizz Buzz</a>.",
 					0, 1,
 				},
 				{
@@ -81,12 +81,12 @@ func GolferAchievements(w http.ResponseWriter, r *http.Request) {
 				},
 				{
 					"🐪", "Tim Toady",
-					"Solve the same hole in both Perl and Raku.",
+					"Solve any hole in both Perl and Raku.",
 					0, 2,
 				},
 				{
 					"☕", "Caffeinated",
-					"Solve the same hole in both Java and JavaScript.",
+					"Solve any hole in both Java and JavaScript.",
 					0, 2,
 				},
 				{
@@ -109,7 +109,7 @@ func GolferAchievements(w http.ResponseWriter, r *http.Request) {
 				{
 					"🇺🇸", "Independence Day",
 					"Solve <a href=/united-states>United States</a> on " +
-						"<//www.wikipedia.org/wiki/Independence_Day_(United_States)>" +
+						"<a href=//www.wikipedia.org/wiki/Independence_Day_(United_States)>" +
 						"4 Jul</a>.",
 					0, 1,
 				},
@@ -126,7 +126,7 @@ func GolferAchievements(w http.ResponseWriter, r *http.Request) {
 			Cheevos: []cheevo{
 				{
 					"🦥", "Slowcoach",
-					"Fail an attempt by exceeding the time limit.",
+					"Fail any hole by exceeding the time limit.",
 					0, 1,
 				},
 				{
