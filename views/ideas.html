@@ -1,12 +1,12 @@
 {{ template "header" . }}
 
+<svg>
+    {{ symbol "thumbs-up-light" }}
+    {{ symbol "thumbs-down-light" }}
+</svg>
+
 <main id=ideas>
     <h1 class=span>Ideas</h1>
-
-    <svg id=symbols>
-        {{ symbol "thumbs-up-light" }}
-        {{ symbol "thumbs-down-light" }}
-    </svg>
 
 {{ range .Data }}
     <a class="card color" href="//github.com/code-golf/code-golf/issues/{{ .ID }}" title="{{ .Title }}">

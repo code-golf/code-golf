@@ -64,6 +64,8 @@ body > #alert, header nav, main {
 
 body > #alert { margin: 1rem auto 0 }
 
+body > svg { display: none }
+
 details .grid { padding-top: 1rem }
 
 h1 { font-size: 1.75rem }
@@ -316,8 +318,6 @@ thead th {
     white-space: nowrap;
     width: 50%;
 }
-
-#symbols { display: none }
 
 #tabs {
     background: var(--background);
