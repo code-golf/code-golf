@@ -87,9 +87,9 @@ version = '2.7.1'
 website = '//www.ruby-lang.org'
 
 ['Rust']
-version = '1.45.1'
+version = '1.45.2'
 website = '//www.rust-lang.org'
 
 ['Swift']
-version = '5.2.4'
+version = '5.2.5'
 website = '//swift.org'

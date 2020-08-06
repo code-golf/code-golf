@@ -1,8 +1,8 @@
-FROM ubuntu:18.04 as builder
+FROM ubuntu:20.04 as builder
 
-RUN apt-get update && apt-get install -y curl libatomic1 libedit2 libc6-dev
+RUN apt-get update && apt-get install -y curl libatomic1 libc6-dev libedit2 libz3-4
 
-RUN curl https://swift.org/builds/swift-5.2.4-release/ubuntu1804/swift-5.2.4-RELEASE/swift-5.2.4-RELEASE-ubuntu18.04.tar.gz \
+RUN curl https://swift.org/builds/swift-5.2.5-release/ubuntu2004/swift-5.2.5-RELEASE/swift-5.2.5-RELEASE-ubuntu20.04.tar.gz \
   | tar --directory / --strip-components 1 -xzf -
 
 RUN rm                     \
