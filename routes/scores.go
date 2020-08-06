@@ -21,10 +21,10 @@ func scoresMini(w http.ResponseWriter, r *http.Request) {
 
 	if err := session.Database(r).QueryRow(
 		`WITH leaderboard AS (
-		    SELECT ROW_NUMBER() OVER (ORDER BY LENGTH(code), submitted),
-		           RANK()       OVER (ORDER BY LENGTH(code)),
+		    SELECT ROW_NUMBER() OVER (ORDER BY chars, submitted),
+		           RANK()       OVER (ORDER BY chars),
 		           user_id,
-		           LENGTH(code) strokes,
+		           chars,
 		           user_id = $1 me
 		      FROM solutions
 		     WHERE hole = $2
@@ -34,7 +34,7 @@ func scoresMini(w http.ResponseWriter, r *http.Request) {
 		    SELECT rank,
 		           login,
 		           me,
-		           strokes
+		           chars strokes
 		      FROM leaderboard
 		      JOIN users on user_id = id
 		     WHERE row_number >
@@ -61,7 +61,7 @@ func scoresAll(w http.ResponseWriter, r *http.Request) {
 		    SELECT hole,
 		           lang,
 		           login,
-		           LENGTH(code) strokes,
+		           chars strokes,
 		           submitted
 		      FROM solutions
 		      JOIN users on user_id = id
@@ -105,10 +105,10 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 	}
 
 	type Score struct {
-		Holes, Points, Rank, Strokes int
-		Lang                         lang.Lang
-		Login                        string
-		Submitted                    time.Time
+		Bytes, Chars, Holes, Points, Rank int
+		Lang                              lang.Lang
+		Login                             string
+		Submitted                         time.Time
 	}
 
 	data := struct {
@@ -168,23 +168,25 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 		  SELECT `+distinct+`
 		         hole,
 		         submitted,
-		         LENGTH(code) strokes,
+		         bytes,
+		         chars,
 		         user_id,
 		         lang
 		    FROM solutions
 		   WHERE NOT failing
 		     AND $1 IN ('all-holes', hole::text)
 		     AND $2 IN ('all-langs', lang::text)
-		ORDER BY hole, user_id, LENGTH(code), submitted
+		ORDER BY hole, user_id, chars, submitted
 		), scored_leaderboard AS (
 		  SELECT hole,
 		         1 holes,
 		         ROUND(
 		             (COUNT(*) OVER (PARTITION BY hole) -
-		                RANK() OVER (PARTITION BY hole ORDER BY strokes) + 1)
+		                RANK() OVER (PARTITION BY hole ORDER BY chars) + 1)
 		             * (1000.0 / COUNT(*) OVER (PARTITION BY hole))
 		         ) points,
-		         strokes,
+		         bytes,
+		         chars,
 		         submitted,
 		         user_id,
 		         lang
@@ -194,20 +196,22 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 		         COUNT(*)       holes,
 		         '' lang,
 		         SUM(points)    points,
-		         SUM(strokes)   strokes,
+		         SUM(bytes)     bytes,
+		         SUM(chars)     chars,
 		         MAX(submitted) submitted
 		    FROM scored_leaderboard
 		GROUP BY user_id
-		) SELECT holes,
+		) SELECT bytes,
+		         chars,
+		         holes,
 		         lang,
 		         login,
 		         points,
-		         RANK() OVER (ORDER BY points DESC, strokes),
-		         strokes,
+		         RANK() OVER (ORDER BY points DESC, chars),
 		         submitted
 		    FROM `+table+`
 		    JOIN users on user_id = id
-		ORDER BY points DESC, strokes, submitted
+		ORDER BY points DESC, chars, submitted
 		   LIMIT 101
 		  OFFSET $3`,
 		holeID,
@@ -232,12 +236,13 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 		var score Score
 
 		if err := rows.Scan(
+			&score.Bytes,
+			&score.Chars,
 			&score.Holes,
 			&langID,
 			&score.Login,
 			&score.Points,
 			&score.Rank,
-			&score.Strokes,
 			&score.Submitted,
 		); err != nil {
 			panic(err)

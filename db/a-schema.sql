@@ -79,7 +79,7 @@ ORDER BY c.relname, t.typlen DESC, t.typname, a.attname;
 
 CREATE VIEW points AS WITH ranked AS (
     SELECT user_id,
-           RANK()   OVER (PARTITION BY hole ORDER BY MIN(LENGTH(code))),
+           RANK()   OVER (PARTITION BY hole ORDER BY MIN(chars)),
            COUNT(*) OVER (PARTITION BY hole)
       FROM solutions
      WHERE NOT failing

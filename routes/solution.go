@@ -69,14 +69,14 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		    ON CONFLICT ON CONSTRAINT solutions_pkey
 		  DO UPDATE SET failing = false,
 		                submitted = CASE
-		                    WHEN solutions.failing OR LENGTH($4) < LENGTH(solutions.code)
+		                    WHEN solutions.failing OR excluded.chars < solutions.chars
 		                    THEN NOW() AT TIME ZONE 'UTC'
 		                    ELSE solutions.submitted
 		                END,
 		                code = CASE
-		                    WHEN LENGTH($4) > LENGTH(solutions.code) AND NOT solutions.failing
+		                    WHEN excluded.chars > solutions.chars AND NOT solutions.failing
 		                    THEN solutions.code
-		                    ELSE $4
+		                    ELSE excluded.code
 		                END
 		`, userID, in.Hole, in.Lang, in.Code); err != nil {
 			panic(err)

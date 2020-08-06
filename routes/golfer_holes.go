@@ -23,7 +23,7 @@ func GolferHoles(w http.ResponseWriter, r *http.Request) {
 		  SELECT user_id,
 		         hole,
 		         lang,
-		         RANK() OVER (PARTITION BY hole, lang ORDER BY LENGTH(code))
+		         RANK() OVER (PARTITION BY hole, lang ORDER BY chars)
 		    FROM solutions
 		   WHERE NOT failing
 		) SELECT hole, lang, rank

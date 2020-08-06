@@ -86,14 +86,14 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 	rows, err := db.Query(
 		`WITH ranks AS (
-		    SELECT hole, RANK() OVER (PARTITION BY hole ORDER BY LENGTH(code)), user_id
+		    SELECT hole, RANK() OVER (PARTITION BY hole ORDER BY chars), user_id
 		      FROM solutions
 		     WHERE NOT failing
 		) SELECT COUNT(*),
 		         (SELECT COALESCE(MIN(rank), 0) FROM ranks WHERE hole = r.hole AND user_id = $1),
 		         hole
 		    FROM ranks r
-		GROUP BY hole;`,
+		GROUP BY hole`,
 		userID,
 	)
 	if err != nil {

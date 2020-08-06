@@ -316,7 +316,7 @@ thead th {
     top: -50vh;
 }
 
-#recent, #scores { max-width: 40rem }
+#recent, #scores { max-width: 42rem }
 
 #recent tr :nth-child(1),
 #recent tr :nth-child(2) {

@@ -28,7 +28,8 @@ func Recent(w http.ResponseWriter, r *http.Request) {
         SELECT hole,
                lang,
                login,
-               LENGTH(code) strokes,
+               bytes,
+               chars,
                submitted
           FROM solutions
           JOIN users on user_id = id
@@ -37,27 +38,29 @@ func Recent(w http.ResponseWriter, r *http.Request) {
      )  SELECT t1.hole,
                t1.lang,
                login,
-               t1.strokes,
+               bytes,
+               t1.chars,
                rank,
                COUNT(*) - 1 tie_count,
                t1.submitted
           FROM solution_lengths AS t1
     INNER JOIN (
-        SELECT RANK() OVER (PARTITION BY hole, lang ORDER BY strokes) rank,
+        SELECT RANK() OVER (PARTITION BY hole, lang ORDER BY chars) rank,
                hole,
                lang,
-               strokes,
+               chars,
                submitted
           FROM solution_lengths
     ) AS t2
             ON t1.hole = t2.hole
            AND t1.lang = t2.lang
-           AND t1.strokes = t2.strokes
+           AND t1.chars = t2.chars
            AND t2.submitted <= t1.submitted
       GROUP BY t1.hole,
                t1.lang,
                login,
-               t1.strokes,
+               bytes,
+               t1.chars,
                t1.submitted,
                rank
       ORDER BY t1.submitted DESC LIMIT 100`,
@@ -71,13 +74,11 @@ func Recent(w http.ResponseWriter, r *http.Request) {
 	defer rows.Close()
 
 	type recent struct {
-		Hole      hole.Hole
-		Lang      lang.Lang
-		Login     string
-		Strokes   int
-		Rank      int
-		TieCount  int
-		Submitted time.Time
+		Hole                         hole.Hole
+		Lang                         lang.Lang
+		Login                        string
+		Bytes, Chars, Rank, TieCount int
+		Submitted                    time.Time
 	}
 
 	var recents []recent
@@ -90,7 +91,8 @@ func Recent(w http.ResponseWriter, r *http.Request) {
 			&holeID,
 			&langID,
 			&r.Login,
-			&r.Strokes,
+			&r.Bytes,
+			&r.Chars,
 			&r.Rank,
 			&r.TieCount,
 			&r.Submitted,

@@ -76,7 +76,8 @@
                 <th>Golfer
                 <th class=right>{{ if $allHoles }}Holes{{ else }}Lang{{ end }}
                 <th class=right>Points
-                <th class="right wide">Strokes
+                <th class="right wide">Bytes
+                <th class="right wide">Chars
                 <th class="right wide">Submitted
         <tbody>
         {{ $name := "" }}
@@ -93,7 +94,8 @@
                     </a>
                 <td class=right>{{ if $allHoles }}{{ .Holes }}{{ else }}{{ .Lang.Name }}{{ end }}
                 <td class=right>{{ comma .Points }}
-                <td class="right wide">{{ comma .Strokes }}
+                <td class="right wide">{{ comma .Bytes }}
+                <td class="right wide">{{ comma .Chars }}
                 <td class="right wide">{{ time .Submitted }}
         {{- end -}}
     </table>

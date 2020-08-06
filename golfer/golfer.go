@@ -47,7 +47,7 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 	if err := db.QueryRow(
 		`WITH ranked AS (
 		    SELECT user_id,
-		           RANK() OVER (PARTITION BY hole, lang ORDER BY LENGTH(code))
+		           RANK() OVER (PARTITION BY hole, lang ORDER BY chars)
 		      FROM solutions
 		     WHERE NOT failing
 		), medals AS (
