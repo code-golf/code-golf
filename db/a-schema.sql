@@ -25,7 +25,7 @@ CREATE TYPE trophy AS ENUM (
     'hello-world', 'inception', 'independence-day', 'interview-ready',
     'its-over-9000', 'my-god-its-full-of-stars', 'ouroboros',
     'patches-welcome', 'pi-day', 'polyglot', 'slowcoach', 'tim-toady',
-    'the-watering-hole'
+    'the-watering-hole', 'twelvetide'
 );
 
 CREATE TABLE ideas (

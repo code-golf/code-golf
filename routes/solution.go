@@ -85,17 +85,31 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		awardTrophy(db, userID, "hello-world")
 
 		// TODO Use the golfer's timezone from /settings.
-		switch now := time.Now().UTC(); {
-		case now.Month() == time.March && now.Day() == 14 && in.Hole == "π":
-			awardTrophy(db, userID, "pi-day")
-		case now.Month() == time.October && now.Day() == 2:
+		var (
+			now   = time.Now().UTC()
+			month = now.Month()
+			day   = now.Day()
+		)
+
+		if month == time.October && day == 2 {
 			awardTrophy(db, userID, "happy-birthday-code-golf")
-		case now.Month() == time.July && now.Day() == 4 && in.Hole == "united-states":
-			awardTrophy(db, userID, "independence-day")
 		}
 
-		if in.Hole == "fizz-buzz" {
+		switch in.Hole {
+		case "12-days-of-christmas":
+			if (month == time.December && day >= 25) || (month == time.January && day <= 5) {
+				awardTrophy(db, userID, "twelvetide")
+			}
+		case "fizz-buzz":
 			awardTrophy(db, userID, "interview-ready")
+		case "united-states":
+			if month == time.July && day == 4 {
+				awardTrophy(db, userID, "independence-day")
+			}
+		case "π":
+			if month == time.March && day == 14 {
+				awardTrophy(db, userID, "pi-day")
+			}
 		}
 
 		if queryBool(

@@ -119,6 +119,11 @@ func GolferAchievements(w http.ResponseWriter, r *http.Request) {
 						"<a href=//www.wikipedia.org/wiki/Pi_Day>14 Mar.</a>",
 					0, 1,
 				},
+				{
+					"🎅", "Twelvetide",
+					"Solve <a href=/12-days-of-christmas>12 Days of Christmas</a> during <a href=//www.wikipedia.org/wiki/Twelvetide>25 Dec – 5 Jan</a>.",
+					0, 1,
+				},
 			},
 		},
 		{

@@ -80,4 +80,8 @@ var List = []Trophy{
 		"🍺", "the-watering-hole", "The Watering Hole",
 		"Solve your nineteenth hole.",
 	},
+	{
+		"🎅", "twelvetide", "Twelvetide",
+		"Solve <a href=/12-days-of-christmas>12 Days of Christmas</a> during <a href=//www.wikipedia.org/wiki/Twelvetide>25 Dec – 5 Jan</a>.",
+	},
 }
