@@ -290,8 +290,7 @@ thead th {
 
 #error h1 { text-align: center }
 
-#ideas, #index         { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
-#scores > :first-child { grid-template-columns: 1fr min-content }
+#ideas, #index { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
 
 #index > .grid {
     border: 2px solid var(--color);
