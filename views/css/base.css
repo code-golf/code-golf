@@ -118,14 +118,8 @@ summary {
     border: 1px solid var(--color);
     color: var(--background);
     cursor: pointer;
-    display: block !important;
     line-height: 2rem;
     padding: 0 .5rem;
-}
-
-summary:before {
-    content: '▶';
-    margin-right: .5rem;
 }
 
 summary:focus { outline: none }
@@ -134,10 +128,6 @@ summary:hover {
     background: inherit !important;
     color: inherit !important;
 }
-
-details[open] summary:before { content: '▼' }
-
-summary::-webkit-details-marker, #symbols { display: none }
 
 sup {
     font-size: .75em;
@@ -248,7 +238,7 @@ thead th {
 /* TODO Need a dark version */
 .me { background: var(--blue) !important }
 
-.nav > * {
+.nav > a {
     color: inherit;
     display: inline-block;
     height: 2rem;
@@ -326,6 +316,8 @@ thead th {
     white-space: nowrap;
     width: 50%;
 }
+
+#symbols { display: none }
 
 #tabs {
     background: var(--background);
