@@ -27,7 +27,7 @@ version = 'F# 4.7 on .NET Core 3.1.4'
 website = '//fsharp.org'
 
 ['Go']
-version = '1.14.6'
+version = '1.14.7'
 website = '//go.dev'
 
 ['Haskell']

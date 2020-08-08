@@ -13,7 +13,7 @@ require (
 	github.com/kr/text v0.2.0 // indirect
 	github.com/lib/pq v1.8.0
 	github.com/pmezard/go-difflib v1.0.0
-	github.com/shurcooL/githubv4 v0.0.0-20200627185320-e003124d66e4
+	github.com/shurcooL/githubv4 v0.0.0-20200802174311-f27d2ca7f6d5
 	github.com/shurcooL/graphql v0.0.0-20181231061246-d48a9a75455f // indirect
 	github.com/tdewolff/minify/v2 v2.8.0
 	golang.org/x/crypto v0.0.0-20200728195943-123391ffb6de

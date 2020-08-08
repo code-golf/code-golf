@@ -1,4 +1,4 @@
-FROM golang:1.14.6-alpine3.12 as builder
+FROM golang:1.14.7-alpine3.12 as builder
 
 FROM scratch
 
