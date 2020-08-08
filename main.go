@@ -3,6 +3,7 @@ package main
 import (
 	"crypto/tls"
 	"database/sql"
+	"log"
 	"math/rand"
 	"net/http"
 	"syscall"
@@ -107,15 +108,25 @@ func main() {
 		server.TLSConfig.GetCertificate = certManager.GetCertificate
 	}
 
+	// Hit GitHub API every 5 minutes.
 	go func() {
-		ticker := time.NewTicker(5 * time.Minute)
-
-		for {
-			<-ticker.C
+		for range time.NewTicker(5 * time.Minute).C {
 			github.Ideas(db)
 			github.PullRequests(db)
 			github.Sponsors(db)
 			github.Stars(db)
+		}
+	}()
+
+	// Clear month-old sessions every hour.
+	go func() {
+		for range time.NewTicker(60 * time.Minute).C {
+			if _, err := db.Exec(
+				`DELETE FROM sessions
+				  WHERE last_used < TIMEZONE('UTC', NOW()) - INTERVAL '30 days'`,
+			); err != nil {
+				log.Println(err)
+			}
 		}
 	}()
 
