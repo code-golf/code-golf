@@ -41,7 +41,7 @@ onload = () => {
 
         // Kick 'em to Python if we don't know the chosen language.
         if (!langs.find(l => l.id == lang))
-            location.hash = lang = 'python';
+            lang = 'python';
 
         const code = lang in solutions ? solutions[lang] : '';
         const previousCode = localStorage.getItem('code_' + hole + '_' + lang);
@@ -49,7 +49,9 @@ onload = () => {
         cm.setOption('mode', {name: 'text/x-' + lang, startOpen: true});
         cm.setValue(code);
 
-        localStorage.setItem('lang', location.hash = lang);
+        localStorage.setItem('lang', lang);
+
+        history.replaceState(null, '', '#' + lang);
 
         refreshScores();
 
