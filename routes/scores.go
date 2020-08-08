@@ -62,6 +62,7 @@ func scoresAll(w http.ResponseWriter, r *http.Request) {
 		           lang,
 		           login,
 		           chars strokes,
+		           bytes,
 		           submitted
 		      FROM solutions
 		      JOIN users on user_id = id
