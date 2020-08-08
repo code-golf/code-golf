@@ -16,6 +16,7 @@
 #define __NR_clone3      435
 #define __NR_openat2     437
 #define __NR_pidfd_getfd 438
+#define __NR_faccessat2  439
 
 #define ALLOW(name) \
     BPF_JUMP(BPF_JMP+BPF_JEQ+BPF_K, __NR_##name, 0, 1), \
@@ -74,10 +75,15 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         return 1;
     }
 
-    // sudo journalctl -f
+    // sudo journalctl -f _AUDIT_TYPE_NAME=SECCOMP
     // ... SECCOMP ... syscall=xxx ...
     struct sock_filter filter[] = {
         BPF_STMT(BPF_LD+BPF_W+BPF_ABS, offsetof(struct seccomp_data, nr)),
+
+        // FIXME Julia attempts this wildly high syscall :-S
+        // SECCOMP auid=x uid=65534 gid=65534 ses=x pid=x comm="julia" exe="/usr/bin/julia" sig=31 arch=c000003e syscall=1008 compat=0 ip=x code=0x0
+        #define __NR_julia 1008
+        ALLOW(julia),
 
         /*************\
         | File System |
@@ -129,6 +135,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(chmod),      // 90
         ALLOW(chown),      // 92
         ALLOW(faccessat),  // 269
+        ALLOW(faccessat2), // 439
         ALLOW(fchmod),     // 91
         ALLOW(fchmodat),   // 268
         ALLOW(fchown),     // 93
@@ -221,35 +228,35 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         // ALLOW(inotify_rm_watch),  // 255
 
         // Miscellaneous
-        // ALLOW(fadvise64), // 221
-        ALLOW(getrandom),    // 318
-        // ALLOW(readahead), // 187
+        ALLOW(fadvise64), // 221
+        ALLOW(getrandom), // 318
+        ALLOW(readahead), // 187
 
         /*********\
         | Network |
         \*********/
 
         // Socket Operations
-        // ALLOW(accept),      // 43
-        // ALLOW(accept4),     // 288
-        // ALLOW(bind),        // 49
-        // ALLOW(connect),     // 42
-        // ALLOW(getpeername), // 52
-        // ALLOW(getsockname), // 51
-        // ALLOW(getsockopt),  // 55
-        // ALLOW(listen),      // 50
-        // ALLOW(setsockopt),  // 54
-        // ALLOW(shutdown),    // 48
-        // ALLOW(socket),      // 41
-        ALLOW(socketpair),     // 53
+        ALLOW(accept),      // 43
+        ALLOW(accept4),     // 288
+        ALLOW(bind),        // 49
+        ALLOW(connect),     // 42
+        ALLOW(getpeername), // 52
+        ALLOW(getsockname), // 51
+        ALLOW(getsockopt),  // 55
+        ALLOW(listen),      // 50
+        ALLOW(setsockopt),  // 54
+        ALLOW(shutdown),    // 48
+        ALLOW(socket),      // 41
+        ALLOW(socketpair),  // 53
 
         // Send/Receive
-        // ALLOW(recvfrom), // 45
-        // ALLOW(recvmmsg), // 299
-        // ALLOW(recvmsg),  // 47
-        // ALLOW(sendmmsg), // 307
-        // ALLOW(sendmsg),  // 46
-        // ALLOW(sendto),   // 44
+        ALLOW(recvfrom), // 45
+        ALLOW(recvmmsg), // 299
+        ALLOW(recvmsg),  // 47
+        ALLOW(sendmmsg), // 307
+        ALLOW(sendmsg),  // 46
+        ALLOW(sendto),   // 44
 
         // Naming
         // ALLOW(setdomainname), // 171
@@ -287,9 +294,9 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(setitimer), // 38
 
         // File Descriptor Based Timers
-        // ALLOW(timerfd_create),  // 283
-        // ALLOW(timerfd_gettime), // 287
-        // ALLOW(timerfd_settime), // 286
+        ALLOW(timerfd_create),  // 283
+        ALLOW(timerfd_gettime), // 287
+        ALLOW(timerfd_settime), // 286
 
         // Miscellaneous
         // ALLOW(adjtimex), // 159
@@ -402,7 +409,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
 
         // Miscellaneous
         // ALLOW(kcmp),              // 312
-        // ALLOW(prctl),             // 157
+        ALLOW(prctl),                // 157
         // ALLOW(process_vm_readv),  // 310
         // ALLOW(process_vm_writev), // 311
         // ALLOW(ptrace),            // 101
@@ -465,9 +472,9 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         // ALLOW(semtimedop), // 220
 
         // Futexes
-        ALLOW(futex),              // 202
-        // ALLOW(get_robust_list), // 274
-        // ALLOW(set_robust_list), // 273
+        ALLOW(futex),           // 202
+        ALLOW(get_robust_list), // 274
+        ALLOW(set_robust_list), // 273
 
         // System V Message Queue
         // ALLOW(msgctl), // 71
@@ -491,11 +498,11 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         // ALLOW(getcpu), // 309
 
         // Memory Node
-        // ALLOW(get_mempolicy), // 239
-        // ALLOW(mbind),         // 237
-        // ALLOW(migrate_pages), // 256
-        // ALLOW(move_pages),    // 279
-        // ALLOW(set_mempolicy), // 238
+        ALLOW(get_mempolicy), // 239
+        ALLOW(mbind),         // 237
+        ALLOW(migrate_pages), // 256
+        ALLOW(move_pages),    // 279
+        ALLOW(set_mempolicy), // 238
 
         /****************\
         | Key Management |
@@ -594,12 +601,10 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         return 1;
     }
 
-    (void)fprog;
-    /* TODO Breaks Haskell, JavaScript, Julia, Ruby, & Swift.
     if (prctl(PR_SET_SECCOMP, SECCOMP_MODE_FILTER, &fprog)) {
         perror("prctl(SECCOMP)");
         return 1;
-    }*/
+    }
 
     execvpe(argv[0], argv, NULL);
     perror("execvpe");
