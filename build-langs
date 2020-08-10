@@ -16,9 +16,9 @@ declare -A urls=(
     ["Bash"]="//www.gnu.org/software/bash/"
     ["Brainfuck"]="//github.com/code-golf/code-golf/tree/master/langs/brainfuck/"
     ["C"]="//bellard.org/tcc/"
-    ["C-Sharp"]="//docs.microsoft.com/dotnet/csharp/"
+    ["C#"]="//docs.microsoft.com/dotnet/csharp/"
     ["COBOL"]="//www.gnu.org/software/gnucobol/"
-    ["F-Sharp"]="//fsharp.org"
+    ["F#"]="//fsharp.org"
     ["Fortran"]="//gcc.gnu.org/fortran/"
     ["Go"]="//go.dev"
     ["Haskell"]="//www.haskell.org/ghc/"
@@ -40,7 +40,7 @@ declare -A urls=(
 )
 
 IFS=$'\n'
-sorted_names=( $(sort --ignore-case <<<"${!urls[*]}") )
+sorted_names=( $(LC_COLLATE=C sort <<<"${!urls[*]}") )
 unset IFS
 
 cd langs
@@ -48,7 +48,8 @@ cd langs
 > ../langs.toml
 
 for name in "${sorted_names[@]}"; do
-    lang=${name,,}      # lowercase
+    lang=${name/\#/-sharp}
+    lang=${lang,,}  # lowercase
 
     # Start with a clean rootfs.
     rm -rf $lang/rootfs
@@ -99,9 +100,7 @@ for name in "${sorted_names[@]}"; do
     ver=${ver/ \[*/}
     ver=${ver/ Copyright/}
 
-    display=${name/-Sharp/#}
-
-    echo "['$display']"               >> ../langs.toml
+    echo "['$name']"                  >> ../langs.toml
     echo "version = '$ver'"           >> ../langs.toml
     echo "website = '${urls[$name]}'" >> ../langs.toml
     echo                              >> ../langs.toml

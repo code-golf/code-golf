@@ -10,21 +10,21 @@ website = '//github.com/code-golf/code-golf/tree/master/langs/brainfuck/'
 version = 'Tiny C Compiler 0.9.27'
 website = '//bellard.org/tcc/'
 
-['COBOL']
-version = 'GnuCOBOL 2.2.0'
-website = '//www.gnu.org/software/gnucobol/'
-
 ['C#']
 version = 'C# 8.0 on .NET Core 3.1.4'
 website = '//docs.microsoft.com/dotnet/csharp/'
 
-['Fortran']
-version = 'GNU Fortran 9.3.0'
-website = '//gcc.gnu.org/fortran/'
+['COBOL']
+version = 'GnuCOBOL 2.2.0'
+website = '//www.gnu.org/software/gnucobol/'
 
 ['F#']
 version = 'F# 4.7 on .NET Core 3.1.4'
 website = '//fsharp.org'
+
+['Fortran']
+version = 'GNU Fortran 9.3.0'
+website = '//gcc.gnu.org/fortran/'
 
 ['Go']
 version = '1.14.7'
@@ -62,13 +62,13 @@ website = '//www.lua.org'
 version = '1.2.6'
 website = '//nim-lang.org'
 
-['Perl']
-version = '5.32.0'
-website = '//www.perl.org'
-
 ['PHP']
 version = '7.4.9'
 website = '//www.php.net'
+
+['Perl']
+version = '5.32.0'
+website = '//www.perl.org'
 
 ['PowerShell']
 version = 'PowerShell 7.0.2 on .NET Core 3.1.4'
