@@ -67,8 +67,6 @@ for name in "${sorted_names[@]}"; do
 
     if [ $lang = j ]; then
         ver=`echo echo JLIB | docker run --rm --tmpfs /tmp -i $img`
-    elif [ $lang = nim ]; then
-        ver=`echo echo NimVersion | docker run --rm --tmpfs /tmp -i $img`
     else
         ver=`docker run --rm $img`
     fi
@@ -76,6 +74,7 @@ for name in "${sorted_names[@]}"; do
     # Remove some crap from version strings.
     ver=${ver#JavaScript-C}
     ver=${ver#Lua }
+    ver=${ver#Nim Compiler Version }
     ver=${ver#Swift }
     ver=${ver#The Glorious }
     ver=${ver#This is }
@@ -96,7 +95,8 @@ for name in "${sorted_names[@]}"; do
     ver=${ver/) OpenJDK*/}
     ver=${ver/*AdoptOpenJDK (build /}
     ver=${ver/Microsoft (R) /}
-    ver=${ver/ (*/}
+    ver=${ver/ \(*/}
+    ver=${ver/ \[*/}
     ver=${ver/ Copyright/}
 
     display=${name/-Sharp/#}
