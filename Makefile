@@ -111,7 +111,7 @@ live:
 	    codegolf/code-golf"
 
 logs:
-	@ssh rancher@code.golf docker logs -f code-golf
+	@ssh rancher@code.golf docker logs --tail 5 -f code-golf
 
 test:
 # FIXME Stub out assets if it doesn't yet exist.

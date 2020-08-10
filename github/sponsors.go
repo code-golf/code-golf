@@ -3,7 +3,7 @@ package github
 import (
 	"context"
 	"database/sql"
-	"fmt"
+	"log"
 	"time"
 )
 
@@ -33,8 +33,8 @@ func Sponsors(db *sql.DB) {
 		panic(err)
 	}
 
-	fmt.Printf(
-		"GitHub API: Spent %d, %d/%d left, resets in %v\n",
+	log.Printf(
+		"GitHub API: Spent %d, %d/%d left, resets in %v",
 		query.RateLimit.Cost,
 		query.RateLimit.Remaining,
 		query.RateLimit.Limit,

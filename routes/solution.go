@@ -21,8 +21,6 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	println(in.Code)
-
 	var userID int
 	if golfer := session.Golfer(r); golfer != nil {
 		userID = golfer.ID

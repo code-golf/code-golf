@@ -18,6 +18,8 @@ import (
 )
 
 func main() {
+	log.SetFlags(log.Ltime)
+
 	rand.Seed(time.Now().UTC().UnixNano())
 
 	db, err := sql.Open("postgres", "")
@@ -130,7 +132,7 @@ func main() {
 		}
 	}()
 
-	println("Listening…")
+	log.Println("Listening…")
 
 	// Redirect HTTP to HTTPS and handle ACME challenges.
 	go func() {

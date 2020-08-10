@@ -6,6 +6,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"time"
@@ -147,8 +148,8 @@ func graphQL(key, query string) ([]json.RawMessage, error) {
 			return nil, fmt.Errorf("%v", data.Errors)
 		}
 
-		fmt.Printf(
-			"GitHub API: Spent %d, %d/%d left, resets in %v\n",
+		log.Printf(
+			"GitHub API: Spent %d, %d/%d left, resets in %v",
 			data.Data.RateLimit.Cost,
 			data.Data.RateLimit.Remaining,
 			data.Data.RateLimit.Limit,
