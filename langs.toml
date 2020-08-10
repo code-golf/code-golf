@@ -39,7 +39,7 @@ version = '9.01.01'
 website = '//www.jsoftware.com'
 
 ['Java']
-version = '14.0.1+7'
+version = '14.0.2+12'
 website = '//openjdk.java.net'
 
 ['JavaScript']

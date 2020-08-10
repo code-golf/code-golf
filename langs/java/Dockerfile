@@ -1,4 +1,4 @@
-FROM adoptopenjdk:14.0.1_7-jdk-hotspot as builder
+FROM adoptopenjdk:14.0.2_8-jdk-hotspot as builder
 
 RUN jlink --compress=2 --module-path /opt/java/openjdk/jmods \
     --add-modules java.base,jdk.compiler \
