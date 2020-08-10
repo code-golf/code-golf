@@ -91,10 +91,12 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		cmd.Args = []string{"/usr/bin/tcc", "-run", "-"}
 	case "c-sharp", "f-sharp":
 		cmd.Args = []string{"/compiler/Compiler", "-"}
-	case "haskell", "javascript", "php":
+	case "haskell", "php":
 		cmd.Args = []string{"/usr/bin/" + langID, "--"}
 	case "j":
 		cmd.Args = []string{"/usr/bin/j", "/tmp/code.ijs"}
+	case "javascript":
+		cmd.Args = []string{"/v8/out.gn/x64.release/d8", "-e", code, "--"}
 	case "julia":
 		cmd.Args = []string{"/usr/bin/run-julia", "/tmp/code.jl"}
 	case "powershell":

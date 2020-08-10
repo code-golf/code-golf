@@ -90,19 +90,11 @@ RUN set -x \
   && : "---------- Build ----------" \
   && ninja d8 -C out.gn/x64.release/ -j $(getconf _NPROCESSORS_ONLN)
 
-RUN echo -e "#!/bin/sh -e\n\
-\n\
-/bin/cat - > /tmp/code.js\n\
-\n\
-exec /v8/out.gn/x64.release/d8 /tmp/code.js \"\$@\"" > /usr/bin/javascript \
- && chmod +x /usr/bin/javascript
-
 FROM scratch
 
 COPY --from=0 /bin/cat                                      \
               /bin/sh                                       /bin/
 COPY --from=0 /lib/ld-musl-x86_64.so.1                      /lib/
-COPY --from=0 /usr/bin/javascript                           /usr/bin/
 COPY --from=0 /usr/lib/libgcc_s.so.1                        \
               /usr/lib/libstdc++.so.6                       /usr/lib/
 COPY --from=0 /v8/out.gn/x64.release/d8                     /v8/out.gn/x64.release/
