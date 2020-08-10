@@ -53,6 +53,17 @@ func pangramGrep() (args []string, out string) {
 			}
 		}
 
+		// Replace 0-4 other letters with random letters.
+		for times := rand.Intn(5); times > 0; times-- {
+			old := 'a' + byte(rand.Intn(26))
+			new := 'a' + byte(rand.Intn(26))
+			for j, letter := range clone {
+				if letter == old {
+					clone[j] = new
+				}
+			}
+		}
+
 		pangrams = append(pangrams, clone)
 	}
 
