@@ -122,7 +122,7 @@ func main() {
 
 	// Clear month-old sessions every hour.
 	go func() {
-		for range time.NewTicker(60 * time.Minute).C {
+		for range time.NewTicker(time.Hour).C {
 			if _, err := db.Exec(
 				`DELETE FROM sessions
 				  WHERE last_used < TIMEZONE('UTC', NOW()) - INTERVAL '30 days'`,
