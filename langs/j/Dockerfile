@@ -30,4 +30,4 @@ COPY --from=0 /j                                \
               /jsource/jsrc/jconsole            \
               /jsource/jsrc/libj.so             /usr/bin/
 
-ENTRYPOINT ["/usr/bin/j", "/tmp/code.ijs"]
+ENTRYPOINT ["/usr/bin/j", "-v"]

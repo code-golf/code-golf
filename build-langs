@@ -66,11 +66,7 @@ for name in "${sorted_names[@]}"; do
         docker build -t $img $lang
     fi
 
-    if [ $lang = j ]; then
-        ver=`echo echo JLIB | docker run --rm --tmpfs /tmp -i $img`
-    else
-        ver=`docker run --rm $img`
-    fi
+    ver=`docker run --rm --tmpfs /tmp $img`
 
     # Remove some crap from version strings.
     ver=${ver#JavaScript-C}
