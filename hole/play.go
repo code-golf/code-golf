@@ -78,7 +78,9 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	cmd := exec.CommandContext(ctx, "/usr/bin/run-lang")
 	cmd.Dir = "langs/" + langID
 	cmd.Stderr = &stderr
-	cmd.Stdin = strings.NewReader(code)
+	if langID != "javascript" {
+		cmd.Stdin = strings.NewReader(code)
+	}
 	cmd.Stdout = &stdout
 	cmd.SysProcAttr = &syscall.SysProcAttr{
 		Cloneflags: syscall.CLONE_NEWIPC | syscall.CLONE_NEWNET | syscall.CLONE_NEWNS | syscall.CLONE_NEWPID | syscall.CLONE_NEWUTS,
