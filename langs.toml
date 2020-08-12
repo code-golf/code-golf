@@ -14,8 +14,8 @@ version = 'Tiny C Compiler 0.9.27'
 website = '//bellard.org/tcc/'
 
 ['C#']
-size    = '140 MiB'
-version = 'C# 8.0 on .NET Core 3.1.4'
+size    = '141 MiB'
+version = 'C# 8.0 on .NET Core 3.1.6'
 website = '//docs.microsoft.com/dotnet/csharp/'
 
 [COBOL]
@@ -24,8 +24,8 @@ version = 'GnuCOBOL 2.2.0'
 website = '//www.gnu.org/software/gnucobol/'
 
 ['F#']
-size    = '102 MiB'
-version = 'F# 4.7 on .NET Core 3.1.4'
+size    = '108 MiB'
+version = 'F# 4.7 on .NET Core 3.1.6'
 website = '//fsharp.org'
 
 [Fortran]
@@ -90,7 +90,7 @@ website = '//www.perl.org'
 
 [PowerShell]
 size    = '179 MiB'
-version = 'PowerShell 7.0.2 on .NET Core 3.1.4'
+version = 'PowerShell 7.0.3 on .NET Core 3.1.6'
 website = '//docs.microsoft.com/powershell/scripting/overview'
 
 [Python]
