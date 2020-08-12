@@ -1,6 +1,6 @@
 [Bash]
 size    = '1.15 MiB'
-version = '5.0.17'
+version = '5.0.18'
 website = '//www.gnu.org/software/bash/'
 
 [Brainfuck]
@@ -40,7 +40,7 @@ website = '//go.dev'
 
 [Haskell]
 size    = '377 MiB'
-version = 'Glasgow Haskell Compiler 8.8.3'
+version = 'Glasgow Haskell Compiler 8.8.4'
 website = '//www.haskell.org/ghc/'
 
 [J]

@@ -1,6 +1,7 @@
 FROM alpine:3.12 as builder
 
-RUN apk add --no-cache ghc=8.8.3-r0
+RUN apk add -X http://dl-cdn.alpinelinux.org/alpine/edge/community --no-cache \
+    ghc=8.8.4-r0
 
 RUN echo -e "#!/bin/sh -e\n\
 \n\
@@ -22,9 +23,9 @@ RUN find /usr/lib -name '*.a' -delete \
     /usr/bin/perl*                    \
     /usr/bin/pod*                     \
     /usr/lib/gcc                      \
-    /usr/lib/ghc-8.8.3/bin/ghc-iserv* \
-    /usr/lib/ghc-8.8.3/bin/haddock    \
-    /usr/lib/ghc-8.8.3/Cabal*         \
+    /usr/lib/ghc-8.8.4/bin/ghc-iserv* \
+    /usr/lib/ghc-8.8.4/bin/haddock    \
+    /usr/lib/ghc-8.8.4/Cabal*         \
     /usr/lib/libLLVM*                 \
     /usr/lib/perl5                    \
     /usr/libexec                      \
