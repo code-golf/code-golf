@@ -2,9 +2,58 @@ FROM golang:1.15rc2-alpine3.12
 
 ENV CGO_ENABLED=0 GOPATH= TZ=Europe/London
 
-RUN apk add --no-cache build-base git linux-headers tzdata
+RUN apk add --no-cache build-base git linux-headers tzdata \
+ && GOBIN=/bin go get github.com/cespare/reflex
 
-RUN GOBIN=/bin go get github.com/cespare/reflex
+COPY --from=codegolf/lang-bash       /       /langs/bash/rootfs/
+COPY --from=codegolf/lang-brainfuck  /  /langs/brainfuck/rootfs/
+COPY --from=codegolf/lang-c          /          /langs/c/rootfs/
+COPY --from=codegolf/lang-c-sharp    /    /langs/c-sharp/rootfs/
+COPY --from=codegolf/lang-cobol      /      /langs/cobol/rootfs/
+COPY --from=codegolf/lang-f-sharp    /    /langs/f-sharp/rootfs/
+COPY --from=codegolf/lang-fortran    /    /langs/fortran/rootfs/
+COPY --from=codegolf/lang-go         /         /langs/go/rootfs/
+COPY --from=codegolf/lang-haskell    /    /langs/haskell/rootfs/
+COPY --from=codegolf/lang-j          /          /langs/j/rootfs/
+COPY --from=codegolf/lang-java       /       /langs/java/rootfs/
+COPY --from=codegolf/lang-javascript / /langs/javascript/rootfs/
+COPY --from=codegolf/lang-julia      /      /langs/julia/rootfs/
+COPY --from=codegolf/lang-lisp       /       /langs/lisp/rootfs/
+COPY --from=codegolf/lang-lua        /        /langs/lua/rootfs/
+COPY --from=codegolf/lang-nim        /        /langs/nim/rootfs/
+COPY --from=codegolf/lang-perl       /       /langs/perl/rootfs/
+COPY --from=codegolf/lang-php        /        /langs/php/rootfs/
+COPY --from=codegolf/lang-powershell / /langs/powershell/rootfs/
+COPY --from=codegolf/lang-python     /     /langs/python/rootfs/
+COPY --from=codegolf/lang-raku       /       /langs/raku/rootfs/
+COPY --from=codegolf/lang-ruby       /       /langs/ruby/rootfs/
+COPY --from=codegolf/lang-rust       /       /langs/rust/rootfs/
+COPY --from=codegolf/lang-swift      /      /langs/swift/rootfs/
+
+RUN mkdir -p /langs/bash/rootfs/proc       /langs/bash/rootfs/tmp \
+        /langs/brainfuck/rootfs/proc  /langs/brainfuck/rootfs/tmp \
+                /langs/c/rootfs/proc          /langs/c/rootfs/tmp \
+          /langs/c-sharp/rootfs/proc    /langs/c-sharp/rootfs/tmp \
+            /langs/cobol/rootfs/proc      /langs/cobol/rootfs/tmp \
+          /langs/f-sharp/rootfs/proc    /langs/f-sharp/rootfs/tmp \
+          /langs/fortran/rootfs/proc    /langs/fortran/rootfs/tmp \
+               /langs/go/rootfs/proc         /langs/go/rootfs/tmp \
+          /langs/haskell/rootfs/proc    /langs/haskell/rootfs/tmp \
+                /langs/j/rootfs/proc          /langs/j/rootfs/tmp \
+             /langs/java/rootfs/proc       /langs/java/rootfs/tmp \
+       /langs/javascript/rootfs/proc /langs/javascript/rootfs/tmp \
+            /langs/julia/rootfs/proc      /langs/julia/rootfs/tmp \
+             /langs/lisp/rootfs/proc       /langs/lisp/rootfs/tmp \
+              /langs/lua/rootfs/proc        /langs/lua/rootfs/tmp \
+              /langs/nim/rootfs/proc        /langs/nim/rootfs/tmp \
+             /langs/perl/rootfs/proc       /langs/perl/rootfs/tmp \
+              /langs/php/rootfs/proc        /langs/php/rootfs/tmp \
+       /langs/powershell/rootfs/proc /langs/powershell/rootfs/tmp \
+           /langs/python/rootfs/proc     /langs/python/rootfs/tmp \
+             /langs/raku/rootfs/proc       /langs/raku/rootfs/tmp \
+             /langs/ruby/rootfs/proc       /langs/ruby/rootfs/tmp \
+             /langs/rust/rootfs/proc       /langs/rust/rootfs/tmp \
+            /langs/swift/rootfs/proc      /langs/swift/rootfs/tmp
 
 COPY run-lang.c ./
 

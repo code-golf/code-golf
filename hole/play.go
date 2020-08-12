@@ -76,7 +76,7 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	defer cancel()
 
 	cmd := exec.CommandContext(ctx, "/usr/bin/run-lang")
-	cmd.Dir = "langs/" + langID
+	cmd.Dir = "/langs/" + langID
 	cmd.Stderr = &stderr
 	if langID != "javascript" {
 		cmd.Stdin = strings.NewReader(code)

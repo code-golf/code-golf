@@ -28,25 +28,18 @@ The certificate is at "./localhost.pem" and the key at "./localhost-key.pem" ✅
 $ ./build-assets
 ```
 
-4. Build the languages:
-Using the pull option pulls images from Docker Hub, instead of building them locally, which saves a large amount of time (possibly hours).
-```
-$ ./build-langs --pull
-```
-
-5. Bring up the website:
+4. Bring up the website:
 ```
 $ make dev
 ```
 
-6. Optionally, load information from the code.golf database.
+5. Optionally, load information from the code.golf database.
 ```
 pip install -r utils/requirements.txt
 utils/update_sql_from_api.py
 ```
 
-7. Navigate to https://localhost
-
+6. Navigate to https://localhost
 
 ## Testing
 

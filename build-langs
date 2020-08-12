@@ -51,10 +51,6 @@ for name in "${sorted_names[@]}"; do
     lang=${name/\#/-sharp}
     lang=${lang,,}  # lowercase
 
-    # Start with a clean rootfs.
-    rm -rf $lang/rootfs
-    mkdir $lang/rootfs
-
     img=codegolf/lang-$lang
 
     if [ "$1" = --pull ]; then
@@ -100,23 +96,6 @@ for name in "${sorted_names[@]}"; do
     echo "version = '$ver'"           >> ../langs.toml
     echo "website = '${urls[$name]}'" >> ../langs.toml
     echo                              >> ../langs.toml
-
-    id=`docker create $img`
-
-    docker export $id | tar -C $lang/rootfs -xf -
-
-    docker rm $id >/dev/null
-
-    # Remove the crap we gained from creating the container, this is hacky.
-    rm -fr $lang/rootfs/{dev,proc,sys,tmp}
-
-    # Nim needs /etc/nim/nim.cfg to exist.
-    # PowerShell needs /etc/passwd to exist.
-    if [ $lang != nim ] && [ $lang != powershell ]; then
-        rm -fr $lang/rootfs/etc
-    fi
-
-    mkdir -p $lang/rootfs/{proc,tmp}
 
     if [ "$1" != --pull ]; then
         # Pushing the image only works for some users.
