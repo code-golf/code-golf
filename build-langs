@@ -35,7 +35,7 @@ sub MAIN(Bool :$no-push, *@langs) {
         my $ver = $proc.out.slurp(:close).chomp.trans: "\n" => ' ';
 
         given $name {
-            my ($digits) = $ver ~~ / ( <[\d.]>+ \d+ ) /;
+            my $digits = $ver ~~ / <[\d.]>+ \d+ /;
 
             when 'C#'
                | 'F#'

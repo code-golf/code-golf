@@ -1,98 +1,42 @@
 #!/usr/bin/env perl6
 
 use Cro::HTTP::Client;
+use TOML::Thumb;
 
-# For C#, F#, and PowerShell, see:
-# https://hub.docker.com/_/microsoft-dotnet-core-sdk/
-# https://mcr.microsoft.com/v2/dotnet/core/sdk/tags/list
-# The version string from code-golf contains the SDK version.
-# Check these pages for NuGet versions:
-# https://www.nuget.org/packages/FSharp.Compiler.Service/
-# https://www.nuget.org/packages/System.Management.Automation/
-# https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp/
-
-constant @langs = (
-    'C',
-    'http://download.savannah.gnu.org/releases/tinycc/?C=M&O=D',
-    / 'tcc-' (<[\d.]>+) '.tar.bz2' /,
-
-    'COBOL',
-    'https://ftp.gnu.org/gnu/gnucobol/?C=M;O=D',
-    / 'gnucobol-' (<[\d.]>+) '.tar.xz' /,
-
-    'Fortran',
-    'https://gcc.gnu.org/releases.html',
-    / 'GCC ' (\d<[\d.]>+) /,
-
-    'Go',
-    'https://golang.org/project/',
-    / 'var goVersion = "go' (<[\d.]>+) '"' /,
-
-    'Haskell',
-    'https://www.haskell.org/ghc/download.html',
-    / 'download_ghc' .+? ">" (<[\d.]>+) /,
-
-    'Java',
-    # Note: need to manually change the number in this url for major releases.
-    'https://raw.githubusercontent.com/AdoptOpenJDK/openjdk-docker/master/14/jdk/alpine/Dockerfile.hotspot.releases.slim',
-    / 'ENV JAVA_VERSION jdk-' (<[\d.]>+) /,
-
-    'Julia',
-    'https://julialang.org/downloads/',
-    / 'stable release: v' (<[\d.]>+) /,
-
-    'Lua',
-    'https://www.lua.org',
-    / 'versions.html' .+? '>Lua ' (<[\d.]>+) /,
-
-    'Nim',
-    'https://nim-lang.org/blog.html',
-    / 'Version ' (<[\d.]>+) /,
-
-    'Perl',
-    'https://www.perl.org',
-    / '"version-highlight">' (<[\d.]>+) /,
-
-    'PHP',
-    'https://www.php.net/downloads.php',
-    / 'Stable</span>' \s* 'PHP ' (<[\d.]>+) /,
-
-    'Python',
-    'https://www.python.org',
-    / 'Latest: <' .+? '>Python ' (<[\d.]>+) /,
-
-    'Ruby',
-    'https://www.ruby-lang.org/en/downloads/',
-    / 'stable version is ' (<[\d.]>+) '.' /,
-
-    'Rust',
-    'https://www.rust-lang.org',
-    / 'Version ' (<[\d.]>+) /,
-
-    'Swift',
-    'https://swift.org/download/',
-    / 'Swift ' (<[\d.]>+) /,
+constant @urls = (
+    'Bash'       => 'Bash_(Unix_shell)',
+    'C'          => 'Tiny_C_Compiler',
+    'C#'         => 'C_Sharp_(programming_language)',
+    'COBOL'      => 'GnuCOBOL',
+    'F#'         => 'F_Sharp_(programming_language)',
+    'Fortran'    => 'GNU_Fortran',
+    'Go'         => 'Go_(programming_language)',
+    'Haskell'    => 'Glasgow_Haskell_Compiler',
+    'Java'       => 'Java_Development_Kit',
+    'JavaScript' => 'V8_(JavaScript_engine)',
+    'Julia'      => 'Julia_(programming_language)',
+    'Lisp'       => 'CLISP',
+    'Lua'        => 'Lua_(programming_language)',
+    'Nim'        => 'Nim_(programming_language)',
+    'PHP'        => 'PHP',
+    'Perl'       => 'Perl',
+    'PowerShell' => 'PowerShell',
+    'Python'     => 'Python_(programming_language)',
+    'Raku'       => 'Rakudo',
+    'Ruby'       => 'Ruby_(programming_language)',
+    'Rust'       => 'Rust_(programming_language)',
+    'Swift'      => 'Swift_(programming_language)',
 );
 
-constant $len = @langs[0, 3 … *]».chars.max;
+my %langs = from-toml slurp 'langs.toml';
 
-my %current = (get('https://code.golf/about') ~~ m:g/
-    (<-[>]>+?) \s+ '<td>' .*? (<[\d+.]> ** 2..*)
-/)».list.flat».Str.Hash;
+for @urls -> (:key($lang), :value($path)) {
+    state $client = Cro::HTTP::Client.new: :http<1.1>;
 
-for @langs -> $lang, $url, $re {
-    my $ver = get($url) ~~ $re ?? ~$0 !! '';
-    my $current = %current{$lang};
-    if $ver ne $current && "$ver.0" ne $current {
-        printf " %*s %s\n", $len, $lang, $ver;
-    }
-}
+    my $old = %langs{$lang}<version> ~~ / <[\d.]>+ \d+ /;
+    my $new = (await (await $client.get: "https://en.wikipedia.org/wiki/$path").body)
+        ~~ / 'Stable release' .+? '>' ( '#' \d+ ' "' )? <(<[\d.]>+)> /;
 
-sub get ($url) {
-    state $client = Cro::HTTP::Client.new(:!follow :http<1.1>);
-
-    my $html = await (await $client.get($url)).body;
-
-    # Decode HTML entities.
-    $html.subst: / '&#' (\d+) ';' /, { chr $0 }, :g;
+    printf " %*s %s → %s\n", INIT { @urls».key».chars.max }, $lang, $old, $new
+        unless $old eq $new or $old.starts-with("$new.");
 }
