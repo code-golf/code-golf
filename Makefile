@@ -108,7 +108,8 @@ live:
 	    --restart      always             \
 	    --security-opt seccomp:unconfined \
 	    --volume       certs:/certs       \
-	    codegolf/code-golf"
+	    codegolf/code-golf &&             \
+	    docker system prune -f"
 
 logs:
 	@ssh rancher@code.golf docker logs --tail 5 -f code-golf
