@@ -27,7 +27,7 @@ version = 'GNU Fortran 9.3.0'
 website = '//gcc.gnu.org/fortran/'
 
 ['Go']
-version = '1.14.7'
+version = '1.15'
 website = '//go.dev'
 
 ['Haskell']
