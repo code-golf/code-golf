@@ -113,10 +113,7 @@ func main() {
 	// Hit GitHub API every 5 minutes.
 	go func() {
 		for range time.NewTicker(5 * time.Minute).C {
-			github.Ideas(db)
-			github.PullRequests(db)
-			github.Sponsors(db)
-			github.Stars(db)
+			github.Run(db)
 		}
 	}()
 

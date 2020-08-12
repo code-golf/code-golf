@@ -1,41 +1,50 @@
 package github
 
 import (
+	"context"
 	"database/sql"
-	"encoding/json"
 	"time"
+
+	"github.com/shurcooL/githubv4"
 )
 
-// Stars awards a trophy for starring the repo.
-func Stars(db *sql.DB) {
-	if accessToken == "" {
-		return
-	}
-
+func stars(db *sql.DB) (limits []rateLimit) {
 	stargazers := map[int]time.Time{}
 
-	edges, err := graphQL("stargazers", `
-		stargazers(after: $cursor first: 100) {
-			edges { node { databaseId } starredAt }
-			pageInfo { endCursor hasNextPage }
-		}
-	`)
-	if err != nil {
-		panic(err)
+	var query struct {
+		RateLimit  rateLimit
+		Repository struct {
+			Stargazers struct {
+				Edges []struct {
+					Node      struct{ DatabaseID int }
+					StarredAt time.Time
+				}
+				PageInfo pageInfo
+			} `graphql:"stargazers(after: $cursor first: 100)"`
+		} `graphql:"repository(name: \"code-golf\" owner: \"code-golf\")"`
 	}
 
-	for _, e := range edges {
-		var edge struct {
-			Node      struct{ DatabaseID int }
-			StarredAt time.Time
-		}
+	variables := map[string]interface{}{"cursor": (*githubv4.String)(nil)}
 
-		if err := json.Unmarshal(e, &edge); err != nil {
+	for {
+		if err := client.Query(context.Background(), &query, variables); err != nil {
 			panic(err)
 		}
 
-		stargazers[edge.Node.DatabaseID] = edge.StarredAt
+		limits = append(limits, query.RateLimit)
+
+		for _, edge := range query.Repository.Stargazers.Edges {
+			stargazers[edge.Node.DatabaseID] = edge.StarredAt
+		}
+
+		if !query.Repository.Stargazers.PageInfo.HasNextPage {
+			break
+		}
+
+		variables["cursor"] = &query.Repository.Stargazers.PageInfo.EndCursor
 	}
 
 	awardTrophies(db, stargazers, "my-god-its-full-of-stars")
+
+	return
 }

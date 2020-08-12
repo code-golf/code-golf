@@ -3,22 +3,12 @@ package github
 import (
 	"context"
 	"database/sql"
-	"log"
-	"time"
 )
 
-// Sponsors sets the golfer sponsor flag for sponsoring.
-func Sponsors(db *sql.DB) {
-	if accessToken == "" {
-		return
-	}
-
+func sponsors(db *sql.DB) (limits []rateLimit) {
 	var query struct {
-		RateLimit struct {
-			Cost, Limit, Remaining int
-			ResetAt                time.Time
-		}
-		Viewer struct {
+		RateLimit rateLimit
+		Viewer    struct {
 			SponsorshipsAsMaintainer struct {
 				Nodes []struct {
 					SponsorEntity struct {
@@ -33,13 +23,7 @@ func Sponsors(db *sql.DB) {
 		panic(err)
 	}
 
-	log.Printf(
-		"GitHub API: Spent %d, %d/%d left, resets in %v",
-		query.RateLimit.Cost,
-		query.RateLimit.Remaining,
-		query.RateLimit.Limit,
-		time.Until(query.RateLimit.ResetAt).Round(time.Second),
-	)
+	limits = append(limits, query.RateLimit)
 
 	tx, err := db.Begin()
 	if err != nil {
@@ -64,4 +48,6 @@ func Sponsors(db *sql.DB) {
 	if err := tx.Commit(); err != nil {
 		panic(err)
 	}
+
+	return
 }

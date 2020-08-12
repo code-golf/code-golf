@@ -1,46 +1,55 @@
 package github
 
 import (
+	"context"
 	"database/sql"
-	"encoding/json"
 	"time"
+
+	"github.com/shurcooL/githubv4"
 )
 
-// PullRequests awards a trophy for merging a PR.
-func PullRequests(db *sql.DB) {
-	if accessToken == "" {
-		return
-	}
-
+func pullRequests(db *sql.DB) (limits []rateLimit) {
 	pullRequests := map[int]time.Time{}
 
-	edges, err := graphQL("pullRequests", `
-		pullRequests(after: $cursor first: 100 states: MERGED) {
-			edges { node { author { ...on User { databaseId } } mergedAt } }
-			pageInfo { endCursor hasNextPage }
-		}
-	`)
-	if err != nil {
-		panic(err)
+	var query struct {
+		RateLimit  rateLimit
+		Repository struct {
+			PullRequests struct {
+				Nodes []struct {
+					Author struct {
+						User struct{ DatabaseID int } `graphql:"... on User"`
+					}
+					MergedAt time.Time
+				}
+				PageInfo pageInfo
+			} `graphql:"pullRequests(after: $cursor first: 100 states: MERGED)"`
+		} `graphql:"repository(name: \"code-golf\" owner: \"code-golf\")"`
 	}
 
-	for _, e := range edges {
-		var edge struct {
-			Node struct {
-				Author   struct{ DatabaseID int }
-				MergedAt time.Time
-			}
-		}
+	variables := map[string]interface{}{"cursor": (*githubv4.String)(nil)}
 
-		if err := json.Unmarshal(e, &edge); err != nil {
+	for {
+		if err := client.Query(context.Background(), &query, variables); err != nil {
 			panic(err)
 		}
 
-		mergedAt, ok := pullRequests[edge.Node.Author.DatabaseID]
-		if !ok || edge.Node.MergedAt.Before(mergedAt) {
-			pullRequests[edge.Node.Author.DatabaseID] = edge.Node.MergedAt
+		limits = append(limits, query.RateLimit)
+
+		for _, node := range query.Repository.PullRequests.Nodes {
+			mergedAt, ok := pullRequests[node.Author.User.DatabaseID]
+			if !ok || node.MergedAt.Before(mergedAt) {
+				pullRequests[node.Author.User.DatabaseID] = node.MergedAt
+			}
 		}
+
+		if !query.Repository.PullRequests.PageInfo.HasNextPage {
+			break
+		}
+
+		variables["cursor"] = &query.Repository.PullRequests.PageInfo.EndCursor
 	}
 
 	awardTrophies(db, pullRequests, "patches-welcome")
+
+	return
 }

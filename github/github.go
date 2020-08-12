@@ -1,13 +1,9 @@
 package github
 
 import (
-	"bytes"
 	"context"
 	"database/sql"
-	"encoding/json"
-	"fmt"
 	"log"
-	"net/http"
 	"os"
 	"time"
 
@@ -23,6 +19,40 @@ var client = githubv4.NewClient(
 		oauth2.StaticTokenSource(&oauth2.Token{AccessToken: accessToken}),
 	),
 )
+
+type pageInfo struct {
+	EndCursor   githubv4.String
+	HasNextPage bool
+}
+
+type rateLimit struct {
+	Cost, Limit, Remaining int
+	ResetAt                time.Time
+}
+
+func Run(db *sql.DB) {
+	if accessToken == "" {
+		return
+	}
+
+	var (
+		cost  int
+		limit rateLimit
+	)
+
+	for _, job := range []func(*sql.DB) []rateLimit{
+		ideas, pullRequests, sponsors, stars,
+	} {
+		for _, limit = range job(db) {
+			cost += limit.Cost
+		}
+	}
+
+	log.Printf(
+		"GitHub API: Spent %d, %d/%d left, resets in %v",
+		cost, limit.Remaining, limit.Limit, time.Until(limit.ResetAt).Round(time.Second),
+	)
+}
 
 func awardTrophies(db *sql.DB, earnedUsers map[int]time.Time, trophy string) {
 	rows, err := db.Query(
@@ -82,88 +112,4 @@ func awardTrophies(db *sql.DB, earnedUsers map[int]time.Time, trophy string) {
 			panic(err)
 		}
 	}
-}
-
-func graphQL(key, query string) ([]json.RawMessage, error) {
-	payload := struct {
-		Query     string `json:"query"`
-		Variables struct {
-			Cursor string `json:"cursor,omitempty"`
-		} `json:"variables"`
-	}{
-		Query: `query($cursor: String) {
-			rateLimit { cost limit remaining resetAt }
-			repository(name: "code-golf" owner: "code-golf") {` + query + `}
-		}`,
-	}
-
-	var edges []json.RawMessage
-
-	for {
-		var body bytes.Buffer
-
-		if err := json.NewEncoder(&body).Encode(payload); err != nil {
-			return nil, err
-		}
-
-		req, err := http.NewRequest("POST", "https://api.github.com/graphql", &body)
-		if err != nil {
-			return nil, err
-		}
-
-		req.Header.Add("Authorization", "bearer "+accessToken)
-
-		res, err := http.DefaultClient.Do(req)
-		if err != nil {
-			return nil, err
-		}
-
-		defer res.Body.Close()
-
-		var data struct {
-			Data struct {
-				RateLimit struct {
-					Cost      int
-					Limit     int
-					Remaining int
-					ResetAt   time.Time
-				}
-				Repository map[string]struct {
-					Edges    []json.RawMessage
-					PageInfo struct {
-						EndCursor   string
-						HasNextPage bool
-					}
-				}
-			}
-			Errors []interface{}
-		}
-
-		if err := json.NewDecoder(res.Body).Decode(&data); err != nil {
-			return nil, err
-		}
-
-		if len(data.Errors) != 0 {
-			//nolint:goerr113
-			return nil, fmt.Errorf("%v", data.Errors)
-		}
-
-		log.Printf(
-			"GitHub API: Spent %d, %d/%d left, resets in %v",
-			data.Data.RateLimit.Cost,
-			data.Data.RateLimit.Remaining,
-			data.Data.RateLimit.Limit,
-			time.Until(data.Data.RateLimit.ResetAt).Round(time.Second),
-		)
-
-		edges = append(edges, data.Data.Repository[key].Edges...)
-
-		if data.Data.Repository[key].PageInfo.HasNextPage {
-			payload.Variables.Cursor = data.Data.Repository[key].PageInfo.EndCursor
-		} else {
-			break
-		}
-	}
-
-	return edges, nil
 }
