@@ -1,108 +1,57 @@
-#!/usr/bin/env bash
-# The optional --pull command line argument pulls images from Docker Hub, instead of building them locally.
+#!/usr/bin/env perl6
 
-set -e
+use TOML::Thumb;
 
-if [ -z "${BASH_VERSINFO}" ] \
-        || [ -z "${BASH_VERSINFO[0]}" ] \
-        || [ ${BASH_VERSINFO[0]} -lt 4 ]; then
-    echo "This script requires Bash version >= 4"
-    exit 1
-fi
+sub MAIN(Bool :$no-push, *@langs) {
+    chdir $*PROGRAM.dirname;
 
-cd "$(dirname "${BASH_SOURCE[0]}")"
+    my %langs = from-toml slurp 'langs.toml';
 
-declare -A urls=(
-    ["Bash"]="//www.gnu.org/software/bash/"
-    ["Brainfuck"]="//github.com/code-golf/code-golf/tree/master/langs/brainfuck/"
-    ["C"]="//bellard.org/tcc/"
-    ["C#"]="//docs.microsoft.com/dotnet/csharp/"
-    ["COBOL"]="//www.gnu.org/software/gnucobol/"
-    ["F#"]="//fsharp.org"
-    ["Fortran"]="//gcc.gnu.org/fortran/"
-    ["Go"]="//go.dev"
-    ["Haskell"]="//www.haskell.org/ghc/"
-    ["J"]="//www.jsoftware.com"
-    ["Java"]="//openjdk.java.net"
-    ["JavaScript"]="//v8.dev"
-    ["Julia"]="//julialang.org"
-    ["Lisp"]="//clisp.sourceforge.io"
-    ["Lua"]="//www.lua.org"
-    ["Nim"]="//nim-lang.org"
-    ["Perl"]="//www.perl.org"
-    ["PHP"]="//www.php.net"
-    ["PowerShell"]="//docs.microsoft.com/powershell/scripting/overview"
-    ["Python"]="//www.python.org"
-    ["Raku"]="//raku.org"
-    ["Ruby"]="//www.ruby-lang.org"
-    ["Rust"]="//www.rust-lang.org"
-    ["Swift"]="//swift.org"
-)
+    if my $unknown = @langs ∖ %langs {
+        note "Unknown langs: $unknown";
+        exit 1;
+    }
 
-IFS=$'\n'
-sorted_names=( $(LC_COLLATE=C sort <<<"${!urls[*]}") )
-unset IFS
+    for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
+        my $id  = $name.lc.subst: '#', '-sharp';
+        my $img = "codegolf/lang-$id";
 
-cd langs
-
-> ../langs.toml
-
-for name in "${sorted_names[@]}"; do
-    lang=${name/\#/-sharp}
-    lang=${lang,,}  # lowercase
-
-    img=codegolf/lang-$lang
-
-    if [ "$1" = --pull ]; then
-        docker pull $img
-    else
         # Tag the builder stage so "docker system prune" won't remove it.
-        docker build --pull --target builder -t $img-builder $lang
+        run «docker build --pull --target builder -t "{$img}-builder" "langs/$id"»;
+        run «docker build -t $img "langs/$id"»;
+        run «docker push $img» unless $no-push;
 
-        docker build -t $img $lang
-    fi
+        # Size.
+        my $proc = run :out,
+            «docker images --format '{{.Size}}' -f "reference={$img}:latest"»;
 
-    ver=`docker run --rm --tmpfs /tmp $img`
+        $proc.sink;
 
-    # Remove some crap from version strings.
-    ver=${ver#JavaScript-C}
-    ver=${ver#Lua }
-    ver=${ver#Nim Compiler Version }
-    ver=${ver#Swift }
-    ver=${ver#The Glorious }
-    ver=${ver#This is }
-    ver=${ver#rustc }
-    ver=${ver/go version go/}
-    ver=${ver/ linux\/amd64/}
-    ver=${ver/GNU Fortran \(GCC\)/GNU Fortran}
-    ver=${ver/cobc \(GnuCOBOL\)/GnuCOBOL}
-    ver=${ver/ation/er}
-    ver=${ver/built /}
-    ver=${ver/System, /}
-    ver=${ver/tcc /Tiny C Compiler }
-    ver=${ver//$'\n'/ }
-    ver=${ver//version /}
-    ver=${ver%.}
-    ver=${ver% d8> }
-    ver=${ver%  Copyright (C) 1994-2020 Lua.org, PUC-Rio}
-    ver=${ver/) OpenJDK*/}
-    ver=${ver/*AdoptOpenJDK (build /}
-    ver=${ver/Microsoft (R) /}
-    ver=${ver/ \(*/}
-    ver=${ver/ \[*/}
-    ver=${ver/ Copyright/}
+        %lang<size> = $proc.out.slurp(:close).chomp.subst: /(.)B$/, {" {$0.uc}iB"};
 
-    echo "['$name']"                  >> ../langs.toml
-    echo "version = '$ver'"           >> ../langs.toml
-    echo "website = '${urls[$name]}'" >> ../langs.toml
-    echo                              >> ../langs.toml
+        # Version.
+        ( $proc = run «docker run --rm --tmpfs /tmp $img», :out ).sink;
 
-    if [ "$1" != --pull ]; then
-        # Pushing the image only works for some users.
-        set +e
-        docker push $img
-        set -e
-    fi
-done
+        my $ver = $proc.out.slurp(:close).chomp.trans: "\n" => ' ';
 
-truncate -s -1 ../langs.toml
+        given $name {
+            my ($digits) = $ver ~~ / ( <[\d.]>+ \d+ ) /;
+
+            when 'C#'
+               | 'F#'
+               | 'PowerShell' { }
+            when 'C'          { $ver = "Tiny C Compiler $digits" }
+            when 'COBOL'      { $ver = "GnuCOBOL $digits" }
+            when 'Fortran'    { $ver = "GNU Fortran $digits" }
+            when 'Haskell'    { $ver = "Glasgow Haskell Compiler $digits" }
+            when 'JavaScript' { $ver = "V8 $digits" }
+            when 'Lisp'       { $ver = "GNU CLISP $digits" }
+            when 'Raku'       { $ver ~~ s:g/ 'This is ' | 'version ' | 'built ' | \.$ // }
+            default           { $ver = $digits }
+        }
+
+        %lang<version> = $ver;
+    }
+
+    spurt 'langs.toml', to-toml %langs;
+}

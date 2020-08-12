@@ -1,95 +1,119 @@
-['Bash']
+[Bash]
+size    = '1.15 MiB'
 version = '5.0.17'
 website = '//www.gnu.org/software/bash/'
 
-['Brainfuck']
+[Brainfuck]
+size    = '1.59 MiB'
 version = '1.0.0'
 website = '//github.com/code-golf/code-golf/tree/master/langs/brainfuck/'
 
-['C']
+[C]
+size    = '1.58 MiB'
 version = 'Tiny C Compiler 0.9.27'
 website = '//bellard.org/tcc/'
 
 ['C#']
+size    = '140 MiB'
 version = 'C# 8.0 on .NET Core 3.1.4'
 website = '//docs.microsoft.com/dotnet/csharp/'
 
-['COBOL']
+[COBOL]
+size    = '6.12 MiB'
 version = 'GnuCOBOL 2.2.0'
 website = '//www.gnu.org/software/gnucobol/'
 
 ['F#']
+size    = '102 MiB'
 version = 'F# 4.7 on .NET Core 3.1.4'
 website = '//fsharp.org'
 
-['Fortran']
+[Fortran]
+size    = '410 MiB'
 version = 'GNU Fortran 9.3.0'
 website = '//gcc.gnu.org/fortran/'
 
-['Go']
+[Go]
+size    = '208 MiB'
 version = '1.15'
 website = '//go.dev'
 
-['Haskell']
+[Haskell]
+size    = '377 MiB'
 version = 'Glasgow Haskell Compiler 8.8.3'
 website = '//www.haskell.org/ghc/'
 
-['J']
+[J]
+size    = '3.3 MiB'
 version = '9.01.01'
 website = '//www.jsoftware.com'
 
-['Java']
-version = '14.0.2+12'
+[Java]
+size    = '67.2 MiB'
+version = '14.0.2'
 website = '//openjdk.java.net'
 
-['JavaScript']
+[JavaScript]
+size    = '26.3 MiB'
 version = 'V8 7.4.51'
 website = '//v8.dev'
 
-['Julia']
+[Julia]
+size    = '284 MiB'
 version = '1.5.0'
 website = '//julialang.org'
 
-['Lisp']
+[Lisp]
+size    = '35.4 MiB'
 version = 'GNU CLISP 2.49.92'
 website = '//clisp.sourceforge.io'
 
-['Lua']
+[Lua]
+size    = '310 KiB'
 version = '5.4.0'
 website = '//www.lua.org'
 
-['Nim']
+[Nim]
+size    = '21.7 MiB'
 version = '1.2.6'
 website = '//nim-lang.org'
 
-['PHP']
+[PHP]
+size    = '10.5 MiB'
 version = '7.4.9'
 website = '//www.php.net'
 
-['Perl']
+[Perl]
+size    = '3.44 MiB'
 version = '5.32.0'
 website = '//www.perl.org'
 
-['PowerShell']
+[PowerShell]
+size    = '179 MiB'
 version = 'PowerShell 7.0.2 on .NET Core 3.1.4'
 website = '//docs.microsoft.com/powershell/scripting/overview'
 
-['Python']
+[Python]
+size    = '197 MiB'
 version = '3.8.5'
 website = '//www.python.org'
 
-['Raku']
+[Raku]
+size    = '49.2 MiB'
 version = 'Rakudo 2020.07 on MoarVM 2020.07 implementing Raku 6.d'
 website = '//raku.org'
 
-['Ruby']
+[Ruby]
+size    = '19.9 MiB'
 version = '2.7.1'
 website = '//www.ruby-lang.org'
 
-['Rust']
+[Rust]
+size    = '502 MiB'
 version = '1.45.2'
 website = '//www.rust-lang.org'
 
-['Swift']
+[Swift]
+size    = '909 MiB'
 version = '5.2.5'
 website = '//swift.org'

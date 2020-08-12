@@ -35,7 +35,7 @@ constant @langs = (
     'Java',
     # Note: need to manually change the number in this url for major releases.
     'https://raw.githubusercontent.com/AdoptOpenJDK/openjdk-docker/master/14/jdk/alpine/Dockerfile.hotspot.releases.slim',
-    / 'ENV JAVA_VERSION jdk-' (<[\d+.]>+) /,
+    / 'ENV JAVA_VERSION jdk-' (<[\d.]>+) /,
 
     'Julia',
     'https://julialang.org/downloads/',

@@ -1,0 +1,7 @@
+{
+    "name": "Code Golf",
+    "depends": [
+        "Cro::HTTP::Client",
+        "git://gitlab.com/JRaspass/toml-thumb.git"
+    ]
+}
