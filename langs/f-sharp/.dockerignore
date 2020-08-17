@@ -1,6 +1,0 @@
-*
-!/Compiler.fs
-!/Compiler.fsproj
-!/Trimmer.cs
-!/Trimmer.csproj
-!/ExtraTrimmingList.txt
