@@ -163,6 +163,8 @@ td img {
     width: 1.5rem !important;
 }
 
+tfoot td { border: 0 }
+
 thead th {
     background: var(--background);
     border-bottom-width: 2px;

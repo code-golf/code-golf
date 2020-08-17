@@ -25,6 +25,7 @@
             <th>Size
         <tbody>
         {{ range .Data.Tables }}
+            {{ if not .Name.Value }}<tfoot>{{ end }}
             <tr>
                 <td>{{ .Name.Value }}
                 <td>{{ with .Rows }}{{ comma . }}{{ end }}
