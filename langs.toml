@@ -54,8 +54,8 @@ version = '14.0.2'
 website = '//openjdk.java.net'
 
 [JavaScript]
-size    = '26.3 MiB'
-version = 'V8 7.4.51'
+size    = '20.7 MiB'
+version = 'V8 8.4.371.23'
 website = '//v8.dev'
 
 [Julia]

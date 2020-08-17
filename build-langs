@@ -16,6 +16,10 @@ sub MAIN(Bool :$no-push, *@langs) {
         my $id  = $name.lc.subst: '#', '-sharp';
         my $img = "codegolf/lang-$id";
 
+        # V8 has a pre-builder target too.
+        run «docker build --pull --target pre-builder -t "{$img}-pre-builder" "langs/$id"»
+            if $id eq 'javascript';
+
         # Tag the builder stage so "docker system prune" won't remove it.
         run «docker build --pull --target builder -t "{$img}-builder" "langs/$id"»;
         run «docker build -t $img "langs/$id"»;
