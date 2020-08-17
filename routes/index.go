@@ -88,6 +88,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		`WITH ranks AS (
 		    SELECT hole, RANK() OVER (PARTITION BY hole ORDER BY chars), user_id
 		      FROM solutions
+		      JOIN code ON code_id = id
 		     WHERE NOT failing
 		) SELECT COUNT(*),
 		         (SELECT COALESCE(MIN(rank), 0) FROM ranks WHERE hole = r.hole AND user_id = $1),

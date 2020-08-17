@@ -41,7 +41,10 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := db.QueryRow(
-		"SELECT SUM(bytes), COUNT(*) FROM solutions WHERE NOT failing",
+		`SELECT SUM(bytes), COUNT(*)
+		   FROM solutions
+		   JOIN code ON code_id = id
+		  WHERE NOT failing`,
 	).Scan(&data.Bytes, &data.Solutions); err != nil {
 		panic(err)
 	}

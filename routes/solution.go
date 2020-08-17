@@ -61,22 +61,30 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		// Update the code if it's the same length or less, but only update
 		// the submitted time if the solution is shorter. This avoids a user
 		// moving down the leaderboard by matching their personal best.
-		if _, err := db.Exec(`
-		    INSERT INTO solutions (user_id, hole, lang, code)
-		         VALUES ($1, $2, $3, $4)
-		    ON CONFLICT ON CONSTRAINT solutions_pkey
-		  DO UPDATE SET failing = false,
-		                submitted = CASE
-		                    WHEN solutions.failing OR excluded.chars < solutions.chars
-		                    THEN excluded.submitted
-		                    ELSE solutions.submitted
-		                END,
-		                code = CASE
-		                    WHEN excluded.chars > solutions.chars AND NOT solutions.failing
-		                    THEN solutions.code
-		                    ELSE excluded.code
-		                END
-		`, userID, in.Hole, in.Lang, in.Code); err != nil {
+		if _, err := db.Exec(
+			`WITH new_code AS (
+			    INSERT INTO code (code) VALUES ($1)
+			    ON CONFLICT DO NOTHING RETURNING id, chars
+			) INSERT INTO solutions (code_id, user_id, hole, lang, scoring)
+			       SELECT id, $2, $3, $4, 'chars' FROM new_code
+			  ON CONFLICT ON CONSTRAINT solutions_pkey
+			DO UPDATE SET failing = false,
+			            submitted = CASE
+			                WHEN solutions.failing
+			                  OR (SELECT chars FROM new_code)
+			                   < (SELECT chars FROM code WHERE id = solutions.code_id)
+			                THEN excluded.submitted
+			                ELSE solutions.submitted
+			            END,
+			              code_id = CASE
+			                WHEN solutions.failing
+			                  OR (SELECT chars FROM new_code)
+			                  <= (SELECT chars FROM code WHERE id = solutions.code_id)
+			                THEN excluded.code_id
+			                ELSE solutions.code_id
+			            END`,
+			in.Code, userID, in.Hole, in.Lang,
+		); err != nil {
 			panic(err)
 		}
 

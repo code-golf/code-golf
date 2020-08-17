@@ -32,7 +32,8 @@ func Recent(w http.ResponseWriter, r *http.Request) {
                chars,
                submitted
           FROM solutions
-          JOIN users on user_id = id
+          JOIN code  ON code_id = code.id
+          JOIN users ON user_id = users.id
          WHERE NOT failing
            AND $1 IN ('all-langs', lang::text)
      )  SELECT t1.hole,

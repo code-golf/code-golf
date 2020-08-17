@@ -25,6 +25,7 @@ func GolferHoles(w http.ResponseWriter, r *http.Request) {
 		         lang,
 		         RANK() OVER (PARTITION BY hole, lang ORDER BY chars)
 		    FROM solutions
+		    JOIN code ON code_id = id
 		   WHERE NOT failing
 		) SELECT hole, lang, rank
 		    FROM matrix

@@ -36,6 +36,7 @@ func main() {
 		middleware.Public,
 		middleware.RedirectSlashes,
 		middleware.Compress(5),
+		// middleware.Downtime,
 		middleware.DatabaseHandler(db),
 		middleware.GolferHandler,
 	)

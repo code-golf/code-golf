@@ -20,12 +20,22 @@ CREATE TYPE lang AS ENUM (
     'perl', 'php', 'powershell', 'python', 'raku', 'ruby', 'rust', 'swift'
 );
 
+CREATE TYPE scoring AS ENUM ('bytes', 'chars');
+
 CREATE TYPE trophy AS ENUM (
     'caffeinated', 'elephpant-in-the-room', 'happy-birthday-code-golf',
     'hello-world', 'inception', 'independence-day', 'interview-ready',
     'its-over-9000', 'my-god-its-full-of-stars', 'ouroboros',
     'patches-welcome', 'pi-day', 'polyglot', 'slowcoach', 'tim-toady',
     'the-watering-hole', 'twelvetide'
+);
+
+CREATE TABLE code (
+    id    int    NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    bytes int    NOT NULL GENERATED ALWAYS AS (octet_length(code)) STORED,
+    chars int    NOT NULL GENERATED ALWAYS AS  (char_length(code)) STORED,
+    code  text   NOT NULL,
+    EXCLUDE USING hash(code WITH =)
 );
 
 CREATE TABLE ideas (
@@ -50,14 +60,13 @@ CREATE TABLE sessions (
 
 CREATE TABLE solutions (
     submitted timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
+    code_id   int       NOT NULL REFERENCES code(id),
     user_id   int       NOT NULL REFERENCES users(id),
     hole      hole      NOT NULL,
     lang      lang      NOT NULL,
-    code      text      NOT NULL,
+    scoring   scoring   NOT NULL,
     failing   bool      NOT NULL DEFAULT false,
-    bytes     int       NOT NULL GENERATED ALWAYS AS (octet_length(code)) STORED,
-    chars     int       NOT NULL GENERATED ALWAYS AS  (char_length(code)) STORED,
-    PRIMARY KEY (user_id, hole, lang)
+    PRIMARY KEY (user_id, hole, lang, scoring)
 );
 
 CREATE TABLE trophies (
@@ -74,7 +83,7 @@ CREATE TABLE trophies (
     JOIN pg_class     c ON a.attrelid = c.oid
     JOIN pg_type      t ON a.atttypid = t.oid
    WHERE a.attnum >= 0
-     AND c.relname IN ('ideas', 'sessions', 'solutions', 'trophies', 'users')
+     AND c.relname IN ('code', 'ideas', 'sessions', 'solutions', 'trophies', 'users')
 ORDER BY c.relname, t.typlen DESC, t.typname, a.attname;
 
 CREATE VIEW points AS WITH ranked AS (
@@ -82,6 +91,7 @@ CREATE VIEW points AS WITH ranked AS (
            RANK()   OVER (PARTITION BY hole ORDER BY MIN(chars)),
            COUNT(*) OVER (PARTITION BY hole)
       FROM solutions
+      JOIN code ON code_id = id
      WHERE NOT failing
   GROUP BY hole, user_id
 ) SELECT user_id,
@@ -89,15 +99,28 @@ CREATE VIEW points AS WITH ranked AS (
     FROM ranked
 GROUP BY user_id;
 
+CREATE FUNCTION delete_orphaned_code() RETURNS trigger AS $$ BEGIN
+    DELETE FROM code WHERE NOT EXISTS (SELECT 1 FROM solutions WHERE code_id = id);
+    RETURN NEW;
+END; $$ LANGUAGE plpgsql;
+
+CREATE TRIGGER delete_orphaned_code
+ AFTER UPDATE ON solutions EXECUTE FUNCTION delete_orphaned_code();
+
+-- Used by delete_orphaned_code()
+CREATE INDEX solutions_code_id_key ON solutions(code_id);
+
 -- Used by /stats
-CREATE INDEX solutions_hole_idx ON solutions(hole, user_id) WHERE NOT failing;
-CREATE INDEX solutions_lang_idx ON solutions(lang, user_id) WHERE NOT failing;
+CREATE INDEX solutions_hole_key ON solutions(hole, user_id) WHERE NOT failing;
+CREATE INDEX solutions_lang_key ON solutions(lang, user_id) WHERE NOT failing;
 
 CREATE ROLE "code-golf" WITH LOGIN;
 
-GRANT SELECT, INSERT, TRUNCATE       ON TABLE ideas     TO "code-golf";
-GRANT SELECT                         ON TABLE points    TO "code-golf";
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE sessions  TO "code-golf";
-GRANT SELECT, INSERT, UPDATE         ON TABLE solutions TO "code-golf";
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE trophies  TO "code-golf";
-GRANT SELECT, INSERT, UPDATE         ON TABLE users     TO "code-golf";
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    code        TO "code-golf";
+GRANT SELECT                         ON SEQUENCE code_id_seq TO "code-golf";
+GRANT SELECT, INSERT, TRUNCATE       ON TABLE    ideas       TO "code-golf";
+GRANT SELECT                         ON TABLE    points      TO "code-golf";
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    sessions    TO "code-golf";
+GRANT SELECT, INSERT, UPDATE         ON TABLE    solutions   TO "code-golf";
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    trophies    TO "code-golf";
+GRANT SELECT, INSERT, UPDATE         ON TABLE    users       TO "code-golf";

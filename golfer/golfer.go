@@ -49,6 +49,7 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 		    SELECT user_id,
 		           RANK() OVER (PARTITION BY hole, lang ORDER BY chars)
 		      FROM solutions
+		      JOIN code ON code_id = id
 		     WHERE NOT failing
 		), medals AS (
 		    SELECT user_id,
