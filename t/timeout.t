@@ -1,23 +1,9 @@
-use HTTP::Tiny;
-use JSON::PP;
-use Test2::V0;
+use t;
 
-my $res = HTTP::Tiny->new->post(
-    'https://code.golf/solution',
-    {   content => encode_json {
-            Code => 'sleep 8',
-            Hole => 'fizz-buzz',
-            Lang => 'perl',
-        },
-    },
-);
+my $res = post-solution :code('sleep 8');
 
-die $res->{content} unless $res->{success};
+is $res<Err>, 'Killed for exceeding the 7s timeout.', 'Correct error';
 
-$res = decode_json $res->{content};
+is floor( $res<Took> / 1e9 ), 7, 'Correct took';
 
-is $res->{Err}, 'Killed for exceeding the 7s timeout.';
-
-is int $res->{Took} / 1e9, 7;
-
-done_testing;
+done-testing;

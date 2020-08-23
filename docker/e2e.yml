@@ -1,0 +1,29 @@
+version: '2'
+services:
+  app:
+    command:
+      - go
+      - run
+      - -tags
+      - dev
+      - .
+    environment:
+      E2E: 1
+    logging:
+      driver: none
+  db:
+    logging:
+      driver: none
+    tmpfs: /var/lib/postgresql/data
+  e2e:
+    depends_on:
+      - app
+      - db
+    entrypoint:
+      - prove6
+      - -vIt
+    image: jraspass/raku:static-site
+    tty: true
+    volumes:
+      - ..:/code-golf
+    working_dir: /code-golf

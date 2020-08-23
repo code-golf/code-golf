@@ -1,0 +1,9 @@
+version: '2'
+services:
+  app:
+    ports:
+      - 80:1080
+      - 443:1443
+  db:
+    ports:
+      - 5432:5432

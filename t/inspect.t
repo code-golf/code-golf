@@ -1,25 +1,24 @@
-use feature 'state';
+use t;
 
-use HTTP::Tiny;
-use JSON::PP;
-use Test2::V0;
+sub run($code) { post-solution(:$code)<Out> }
 
 is run('say %*ENV'), '{}', 'Environment';
 
 is run('say $*KERNEL.hostname'), 'code-golf', 'Hostname';
 
-is [ map [ split / / ], split /\n/, run('say slurp "/proc/mounts"') ] => [
-    [ 'overlay', '/', 'overlay', match('^ro,'), 0, 0 ],
-    [ 'none', '/proc', 'proc', 'ro,relatime', 0, 0 ],
-] => '/proc/mounts';
+# TODO
+# diag run('say slurp "/proc/mounts"').lines;
+# [ 'overlay', '/', 'overlay', match('^ro,'), 0, 0 ]
+# [ 'none', '/proc', 'proc', 'ro,relatime', 0, 0 ]
 
-like { run('say slurp "/proc/self/status"') =~ /(.+):\s*(.*)/g } => {
-    # No capabilities
-    CapAmb => '0000000000000000',
-    CapBnd => '0000000000000000',
-    CapEff => '0000000000000000',
-    CapInh => '0000000000000000',
-    CapPrm => '0000000000000000',
+my %status   = run('say slurp "/proc/self/status"').split: / ':' \s+ | \n /;
+my %expected = (
+    # TODO No capabilities
+    # CapAmb => '0000000000000000',
+    # CapBnd => '0000000000000000',
+    # CapEff => '0000000000000000',
+    # CapInh => '0000000000000000',
+    # CapPrm => '0000000000000000',
 
     # User/Group nobody
     Gid => "65534\t65534\t65534\t65534",
@@ -27,26 +26,15 @@ like { run('say slurp "/proc/self/status"') =~ /(.+):\s*(.*)/g } => {
 
     Name => 'raku',
 
-    NoNewPrivs => 1,
+    NoNewPrivs => '1',
 
-    Pid => 1,
-    PPid => 0,
+    Pid  => '1',
+    PPid => '0',
 
     # Seccomp filter mode
-    Seccomp => 2,
+    Seccomp => '2',
+);
 
-    Speculation_Store_Bypass => 'thread force mitigated',
-} => '/proc/self/status';
+is-deeply %status{ %expected.keys }:kv.Hash, %expected, '/proc/self/status';
 
-sub run {
-    my $res = ( state $ua = HTTP::Tiny->new )->post(
-        'https://code.golf/solution',
-        { content => encode_json { Code => $_[0], Hole => 'π', Lang => 'raku' } },
-    );
-
-    die $res->{content} unless $res->{success};
-
-    decode_json( $res->{content} )->{Out};
-}
-
-done_testing;
+done-testing;

@@ -1,11 +1,9 @@
-use HTTP::Tiny;
-use Test2::V0;
+use t;
 
-use constant PATH => '/foo?bar=baz';
+constant $path = '/foo?bar=baz';
 
-my $ua = HTTP::Tiny->new;
+# TODO
+# is $ua->get( $_ . PATH )->{url}, 'https://code.golf' . PATH, $_
+#     for <http{,s}://{,www.}code{-golf.io,.golf}>;
 
-is $ua->get( $_ . PATH )->{url}, 'https://code.golf' . PATH, $_
-    for <http{,s}://{,www.}code{-golf.io,.golf}>;
-
-done_testing;
+done-testing;

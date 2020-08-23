@@ -53,10 +53,10 @@ $ zef install --deps-only .
 
 1. Run the unit tests:
 ```
-$ go test ./...
+$ make test
 ```
 
 2. Run the e2e tests:
 ```
-$ prove
+$ make e2e
 ```

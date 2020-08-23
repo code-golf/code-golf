@@ -2,6 +2,8 @@ GOFILES  := $(shell find . -name '*.go' ! -path './.go*')
 POSTGRES := postgres:12.3-alpine
 SHELL    := /bin/bash
 
+export COMPOSE_FILE = docker/core.yml:docker/ports.yml
+
 define STUB
 package routes
 
@@ -55,6 +57,15 @@ deps:
 dev:
 	@docker-compose rm -f
 	@docker-compose up --build
+
+e2e:
+# TODO Pass arguments to run specific tests.
+# TODO Return correct exit code.
+# TODO Show app/db logs if tests fail.
+	@docker-compose -f docker/core.yml -f docker/e2e.yml -p code-golf-e2e rm -f
+	@docker-compose -f docker/core.yml -f docker/e2e.yml -p code-golf-e2e build -q
+	@docker-compose -f docker/core.yml -f docker/e2e.yml -p code-golf-e2e run e2e
+	@docker-compose -f docker/core.yml -f docker/e2e.yml -p code-golf-e2e rm -f
 
 fmt:
 	@gofmt -s  -w $(GOFILES)

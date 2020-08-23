@@ -2,7 +2,7 @@ version: '2'
 services:
   app:
     build:
-      context: .
+      context: ..
       dockerfile: Dockerfile.dev
     cap_add:
       - CAP_KILL
@@ -16,19 +16,14 @@ services:
       PGHOST:    db
       PGSSLMODE: disable
       PGUSER:    code-golf
-    ports:
-      - 80:1080
-      - 443:1443
     security_opt:
       - seccomp:unconfined
     volumes:
-      - .:/go
+      - ..:/go
   db:
     image: postgres:12.3-alpine
-    ports:
-      - 5432:5432
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
       POSTGRES_DB: code-golf
     volumes:
-      - ./db:/docker-entrypoint-initdb.d
+      - ../db:/docker-entrypoint-initdb.d

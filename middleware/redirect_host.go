@@ -13,7 +13,9 @@ var (
 )
 
 func init() {
-	if _, dev := syscall.Getenv("DEV"); dev {
+	if _, e2e := syscall.Getenv("E2E"); e2e {
+		host = "app:1443"
+	} else if _, dev := syscall.Getenv("DEV"); dev {
 		host = "localhost"
 	}
 }
