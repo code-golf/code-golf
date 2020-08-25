@@ -68,7 +68,12 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		// Update the code if it's the same length or less, but only update
 		// the submitted time if the solution is shorter. This avoids a user
 		// moving down the leaderboard by matching their personal best.
-		for _, scoring := range []string{"bytes", "chars"} {
+		scoringList := []string{"chars"}
+		if session.Beta(r) {
+			scoringList = append(scoringList, "bytes")
+		}
+
+		for _, scoring := range scoringList {
 			if _, err := db.Exec(
 				`WITH new_code AS (
 				    SELECT id, `+scoring+` FROM code WHERE code = $1
