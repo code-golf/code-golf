@@ -222,7 +222,7 @@ async function refreshScores() {
     if (beta) {
         html += `<thead><tr><th colspan=4>`;
         for (let i = 0; i < 2; i++)
-            html += `<a class=scoringModePicker id=${scoringModes[i]}>${scoringModes[i]}</a>`;
+            html += `<a class="scoringModePicker${scoringMode != i ? ' inactive' : ''}" id=${scoringModes[i]}>${scoringModes[i]}</a>`;
     }
     else
         html += `<th colspan=3>Scores`;
