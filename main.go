@@ -27,6 +27,11 @@ func main() {
 		panic(err)
 	}
 
+	dbBeta, err := sql.Open("postgres", "dbname=code-golf-beta")
+	if err != nil {
+		panic(err)
+	}
+
 	r := chi.NewRouter()
 
 	r.Use(
@@ -37,7 +42,7 @@ func main() {
 		middleware.RedirectSlashes,
 		middleware.Compress(5),
 		// middleware.Downtime,
-		middleware.DatabaseHandler(db),
+		middleware.DatabaseHandler(db, dbBeta),
 		middleware.GolferHandler,
 	)
 
