@@ -44,7 +44,20 @@ h3 {
     margin-top: 10px;
 }
 
+.scoringModePicker {
+    font-weight: normal;
+    padding: 0 .5rem;
+}
+
+.scoringModePicker:hover,
+.scoringModePicker:not([href]) {
+    background: var(--color);
+    color: var(--background);
+}
+
 .text-red { color: var(--red) }
+
+#all { float: right }
 
 #arg, #err { display: none }
 
@@ -92,8 +105,6 @@ h3 {
 #header span { margin: 0 .5rem }
 
 #header .purple { margin: 0 1rem }
-
-#hole thead a { float: right }
 
 #hole .scores td { border-left: 0 }
 

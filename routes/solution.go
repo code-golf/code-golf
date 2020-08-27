@@ -68,30 +68,37 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		// Update the code if it's the same length or less, but only update
 		// the submitted time if the solution is shorter. This avoids a user
 		// moving down the leaderboard by matching their personal best.
-		if _, err := db.Exec(
-			`WITH new_code AS (
-			    SELECT id, chars FROM code WHERE code = $1
-			) INSERT INTO solutions (code_id, user_id, hole, lang, scoring)
-			       SELECT id, $2, $3, $4, 'chars' FROM new_code
-			  ON CONFLICT ON CONSTRAINT solutions_pkey
-			DO UPDATE SET failing = false,
-			            submitted = CASE
-			                WHEN solutions.failing
-			                  OR (SELECT chars FROM new_code)
-			                   < (SELECT chars FROM code WHERE id = solutions.code_id)
-			                THEN excluded.submitted
-			                ELSE solutions.submitted
-			            END,
-			              code_id = CASE
-			                WHEN solutions.failing
-			                  OR (SELECT chars FROM new_code)
-			                  <= (SELECT chars FROM code WHERE id = solutions.code_id)
-			                THEN excluded.code_id
-			                ELSE solutions.code_id
-			            END`,
-			in.Code, userID, in.Hole, in.Lang,
-		); err != nil {
-			panic(err)
+		scoringList := []string{"chars"}
+		if session.Beta(r) {
+			scoringList = append(scoringList, "bytes")
+		}
+
+		for _, scoring := range scoringList {
+			if _, err := db.Exec(
+				`WITH new_code AS (
+				    SELECT id, `+scoring+` FROM code WHERE code = $1
+				) INSERT INTO solutions (code_id, user_id, hole, lang, scoring)
+				       SELECT id, $2, $3, $4, $5 FROM new_code
+				  ON CONFLICT ON CONSTRAINT solutions_pkey
+				DO UPDATE SET failing = false,
+				            submitted = CASE
+				                WHEN solutions.failing
+				                  OR (SELECT `+scoring+` FROM new_code)
+				                   < (SELECT `+scoring+` FROM code WHERE id = solutions.code_id)
+				                THEN excluded.submitted
+				                ELSE solutions.submitted
+				            END,
+				              code_id = CASE
+				                WHEN solutions.failing
+				                  OR (SELECT `+scoring+` FROM new_code)
+				                  <= (SELECT `+scoring+` FROM code WHERE id = solutions.code_id)
+				                THEN excluded.code_id
+				                ELSE solutions.code_id
+				            END`,
+				in.Code, userID, in.Hole, in.Lang, scoring,
+			); err != nil {
+				panic(err)
+			}
 		}
 
 		awardTrophy(db, userID, "hello-world")

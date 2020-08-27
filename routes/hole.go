@@ -11,13 +11,15 @@ import (
 // Hole serves GET /{hole}
 func Hole(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		HideDetails bool
-		Hole        hole.Hole
-		Langs       []lang.Lang
-		Solutions   map[string]string
+		HideDetails  bool
+		Hole         hole.Hole
+		Langs        []lang.Lang
+		ScoringModes []string
+		Solutions    []map[string]string
 	}{
-		Langs:     lang.List,
-		Solutions: map[string]string{},
+		Langs:        lang.List,
+		ScoringModes: []string{"Chars"},
+		Solutions:    []map[string]string{{}, {}},
 	}
 
 	var ok bool
@@ -32,11 +34,16 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 
 	if golfer := session.Golfer(r); golfer != nil {
 		// Fetch all the code per lang.
+		condition := ""
+		if !session.Beta(r) {
+			condition = " AND scoring = 'chars'"
+		}
+
 		rows, err := session.Database(r).Query(
-			`SELECT code, lang
+			`SELECT code, lang, scoring
 			   FROM solutions
 			   JOIN code ON code_id = id
-			  WHERE hole = $1 AND user_id = $2`,
+			  WHERE hole = $1 AND user_id = $2`+condition,
 			data.Hole.ID, golfer.ID,
 		)
 		if err != nil {
@@ -46,18 +53,27 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 		defer rows.Close()
 
 		for rows.Next() {
-			var code, lang string
+			var code, lang, scoring string
 
-			if err := rows.Scan(&code, &lang); err != nil {
+			if err := rows.Scan(&code, &lang, &scoring); err != nil {
 				panic(err)
 			}
 
-			data.Solutions[lang] = code
+			slot := 0
+			if scoring == "bytes" {
+				slot = 1
+			}
+
+			data.Solutions[slot][lang] = code
 		}
 
 		if err := rows.Err(); err != nil {
 			panic(err)
 		}
+	}
+
+	if session.Beta(r) {
+		data.ScoringModes = append(data.ScoringModes, "Bytes")
 	}
 
 	render(w, r, "hole", data.Hole.Name, data)

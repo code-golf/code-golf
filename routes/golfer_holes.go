@@ -27,6 +27,7 @@ func GolferHoles(w http.ResponseWriter, r *http.Request) {
 		    FROM solutions
 		    JOIN code ON code_id = id
 		   WHERE NOT failing
+             AND scoring = 'chars'
 		) SELECT hole, lang, rank
 		    FROM matrix
 		   WHERE user_id = $1`,
