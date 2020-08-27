@@ -15,7 +15,7 @@ website = '//bellard.org/tcc/'
 
 ['C#']
 size    = '141 MiB'
-version = 'C# 8.0 on .NET Core 3.1.6'
+version = 'C# 8.0 on .NET Core 3.1.7'
 website = '//docs.microsoft.com/dotnet/csharp/'
 
 [COBOL]
@@ -25,7 +25,7 @@ website = '//www.gnu.org/software/gnucobol/'
 
 ['F#']
 size    = '108 MiB'
-version = 'F# 4.7 on .NET Core 3.1.6'
+version = 'F# 4.7 on .NET Core 3.1.7'
 website = '//fsharp.org'
 
 [Fortran]
@@ -60,7 +60,7 @@ website = '//v8.dev'
 
 [Julia]
 size    = '284 MiB'
-version = '1.5.0'
+version = '1.5.1'
 website = '//julialang.org'
 
 [Lisp]
@@ -90,7 +90,7 @@ website = '//www.perl.org'
 
 [PowerShell]
 size    = '179 MiB'
-version = 'PowerShell 7.0.3 on .NET Core 3.1.6'
+version = 'PowerShell 7.0.3 on .NET Core 3.1.7'
 website = '//docs.microsoft.com/powershell/scripting/overview'
 
 [Python]
@@ -99,8 +99,8 @@ version = '3.8.5'
 website = '//www.python.org'
 
 [Raku]
-size    = '49.2 MiB'
-version = 'Rakudo 2020.07 on MoarVM 2020.07 implementing Raku 6.d'
+size    = '48.8 MiB'
+version = 'Rakudo 2020.08.2 on MoarVM 2020.08 implementing Raku 6.d'
 website = '//raku.org'
 
 [Ruby]
