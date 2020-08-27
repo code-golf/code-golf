@@ -35,8 +35,7 @@ $ make dev
 
 5. Optionally, load information from the code.golf database.
 ```
-pip install -r utils/requirements.txt
-utils/update_sql_from_api.py
+go run utils/update_sql_from_api.go
 ```
 
 6. Navigate to https://localhost
