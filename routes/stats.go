@@ -41,7 +41,7 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := db.QueryRow(
-		`SELECT SUM(bytes), COUNT(*)
+		`SELECT COALESCE(SUM(bytes), 0), COUNT(*)
 		   FROM solutions
 		   JOIN code ON code_id = id
 		  WHERE NOT failing`,
