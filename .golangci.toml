@@ -7,6 +7,9 @@ skip-files = ['routes/assets.go']
 linters = 'staticcheck'
 text    = 'SA1029:'
 
+[linters-settings.misspell]
+locale = 'UK'
+
 # TODO noctx once github/ uses only github.com/shurcooL/githubv4.
 [linters]
 disable-all = true
