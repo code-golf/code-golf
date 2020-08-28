@@ -109,8 +109,8 @@ version = '2.7.1'
 website = '//www.ruby-lang.org'
 
 [Rust]
-size    = '502 MiB'
-version = '1.45.2'
+size    = '534 MiB'
+version = '1.46.0'
 website = '//www.rust-lang.org'
 
 [Swift]
