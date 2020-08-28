@@ -60,6 +60,7 @@ deps:
 	@yay -S mkcert python-brotli python-fonttools
 
 dev:
+	@touch docker/.env
 	@docker-compose rm -f
 	@docker-compose up --build
 
@@ -67,6 +68,7 @@ e2e:
 # TODO Pass arguments to run specific tests.
 # TODO Return correct exit code.
 # TODO Show app/db logs if tests fail.
+	@touch docker/.env
 	@docker-compose -f docker/core.yml -f docker/e2e.yml -p code-golf-e2e rm -f
 	@docker-compose -f docker/core.yml -f docker/e2e.yml -p code-golf-e2e build -q
 	@docker-compose -f docker/core.yml -f docker/e2e.yml -p code-golf-e2e run e2e

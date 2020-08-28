@@ -16,6 +16,18 @@ var config = oauth2.Config{
 	Endpoint:     github.Endpoint,
 }
 
+// /callback/{beta,dev} exist because GitHub doesn't support multiple URLs.
+
+// CallbackBeta serves GET /callback/beta
+func CallbackBeta(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, "https://beta.code.golf/callback?"+r.URL.RawQuery, http.StatusSeeOther)
+}
+
+// CallbackDev serves GET /callback/dev
+func CallbackDev(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, "https://localhost/callback?"+r.URL.RawQuery, http.StatusSeeOther)
+}
+
 // Callback serves GET /callback
 func Callback(w http.ResponseWriter, r *http.Request) {
 	if r.FormValue("code") == "" {

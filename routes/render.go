@@ -11,6 +11,7 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
+	"syscall"
 
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/pretty"
@@ -41,6 +42,8 @@ var (
 	css = map[string]template.CSS{}
 	js  = map[string]template.JS{}
 	svg = map[string]template.HTML{}
+
+	dev bool
 )
 
 var tmpl = template.New("").Funcs(template.FuncMap{
@@ -59,6 +62,8 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 })
 
 func init() {
+	_, dev = syscall.Getenv("DEV")
+
 	if err := filepath.Walk("views", func(file string, info os.FileInfo, err error) error {
 		if err != nil || info.IsDir() {
 			return err
@@ -160,8 +165,15 @@ func render(w http.ResponseWriter, r *http.Request, name, title string, data int
 		// Shallow copy because we want to modify a string.
 		config := config
 
-		config.RedirectURL = "https://code.golf/callback?redirect_uri=" +
-			url.QueryEscape(r.RequestURI)
+		config.RedirectURL = "https://code.golf/callback"
+
+		if dev {
+			config.RedirectURL += "/dev"
+		} else if args.Beta {
+			config.RedirectURL += "/beta"
+		}
+
+		config.RedirectURL += "?redirect_uri=" + url.QueryEscape(r.RequestURI)
 
 		// TODO State is a token to protect the user from CSRF attacks.
 		args.LogInURL = config.AuthCodeURL("")
