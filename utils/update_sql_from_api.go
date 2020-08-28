@@ -14,15 +14,13 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"strings"
 
 	_ "github.com/lib/pq"
 )
 
-// Solution contains information about a solution. Go-lint likes this comment
-type Solution struct {
+type solution struct {
 	Hole, Lang, Login, Submitted string
 	Strokes, Bytes               int
 }
@@ -55,18 +53,17 @@ func testMakeCode() {
 	}
 }
 
-func getInfo() (results []Solution) {
+func getInfo() (results []solution) {
 	resp, err := http.Get("https://code.golf/scores/all-holes/all-langs/all")
 	if err != nil {
 		panic(err)
 	}
 	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
+
+	if err := json.NewDecoder(resp.Body).Decode(&results); err != nil {
 		panic(err)
 	}
 
-	json.Unmarshal(body, &results)
 	return
 }
 
@@ -88,7 +85,7 @@ func main() {
 	}
 
 	for login, userID := range userMap {
-		if _, err := db.Exec(`INSERT INTO users (id, login) VALUES($1, $2)`,
+		if _, err := db.Exec("INSERT INTO users (id, login) VALUES($1, $2)",
 			userID, login,
 		); err != nil {
 			panic(err)
@@ -105,15 +102,12 @@ func main() {
 		}
 
 		if _, err := db.Exec(
-			`WITH new_code AS (
-			    SELECT id FROM code WHERE code = $1
-			) INSERT INTO solutions (code_id, user_id, hole, lang, scoring)
-			    SELECT id, $2, $3, $4, $5 FROM new_code`,
+			`INSERT INTO solutions (code_id, user_id, hole, lang, scoring)
+			    SELECT id, $2, $3, $4, 'chars' FROM code WHERE code = $1`,
 			code,
 			userMap[info.Login],
 			info.Hole,
 			info.Lang,
-			"chars",
 		); err != nil {
 			panic(err)
 		}
