@@ -86,11 +86,15 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 	rows, err := db.Query(
 		`WITH ranks AS (
-		    SELECT hole, RANK() OVER (PARTITION BY hole ORDER BY chars), user_id
+		    SELECT hole,
+		           RANK() OVER (PARTITION BY hole ORDER BY chars),
+		           lang,
+		           user_id,
+		           code_id
 		      FROM solutions
 		      JOIN code ON code_id = id
 		     WHERE NOT failing
-		) SELECT COUNT(*),
+		) SELECT COUNT(DISTINCT(lang, user_id, code_id)),
 		         (SELECT COALESCE(MIN(rank), 0) FROM ranks WHERE hole = r.hole AND user_id = $1),
 		         hole
 		    FROM ranks r
