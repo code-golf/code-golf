@@ -108,13 +108,14 @@ onload = () => {
 
         for (let i = 0; i < scoringModes.length; i++) {
             const lengthFunc = i ? utf8ByteCount : strlen;
-            if (data.Pass && (!(codeLang in solutions[i]) || lengthFunc(code) <= lengthFunc(solutions[i][codeLang])))
+            if (data.Pass && (!(codeLang in solutions[i]) || lengthFunc(code) <= lengthFunc(solutions[i][codeLang]))) {
                 solutions[i][codeLang] = code;
 
-            // Don't need to keep solution in local storage because it's stored on the site.
-            // This prevents conflicts when the solution is improved on another browser.
-            if (data.LoggedIn)
-                localStorage.removeItem(`code_${hole}_${codeLang}_${i}`);
+                // Don't need to keep solution in local storage because it's stored on the site.
+                // This prevents conflicts when the solution is improved on another browser.
+                if (data.LoggedIn)
+                    localStorage.removeItem(`code_${hole}_${codeLang}_${i}`);
+            }
         }
 
         // Automatically switch to the slot whose code matches the current code after a new solution is submitted.
