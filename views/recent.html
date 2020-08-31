@@ -47,9 +47,7 @@
                         {{- .Login -}}
                     </a>
                 <td class=wide>
-                    <a href="/scores/all-holes/{{ .Lang.ID }}">
-                        {{ .Lang.Name }}
-                    </a>
+                    <a href="/recent/{{ .Lang.ID }}">{{ .Lang.Name }}</a>
                 <td class="right wide">{{ comma .Bytes }}
                 <td class="right wide" title="Rank: {{ .Rank }}{{ ord .Rank }}">
                     {{ comma .Chars }}
