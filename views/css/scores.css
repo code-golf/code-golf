@@ -9,3 +9,7 @@ h1 {
 h1 > :first-child { flex: 1 }
 
 h1 > * { margin: .5rem }
+
+@media (max-width: 34rem) {
+    td:nth-child(4) { border-right: 1px solid var(--color) }
+}

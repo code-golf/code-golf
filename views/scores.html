@@ -4,7 +4,7 @@
 {{ $langID   := .Data.LangID }}
 {{ $allHoles := eq $holeID "all-holes" }}
 
-<main id=scores>
+<main id=thin>
     <h1>
         <span>Scores</span>
 
@@ -69,7 +69,7 @@
         {{ end }}
     </details>
 
-    <table class="scores sticky">
+    <table class="nowrap-second sticky">
         <thead>
             <tr>
                 <th>Rank
@@ -90,7 +90,7 @@
                 <td>
                     <a href="/golfers/{{ .Login }}">
                         <img src="//avatars.githubusercontent.com/{{ .Login }}?s=24">
-                        {{- .Login -}}
+                        <span>{{- .Login -}}</span>
                     </a>
                 <td class=right>{{ if $allHoles }}{{ .Holes }}{{ else }}{{ .Lang.Name }}{{ end }}
                 <td class=right>{{ comma .Points }}

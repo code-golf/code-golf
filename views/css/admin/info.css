@@ -1,12 +1,8 @@
-a { color: var(--color) }
-
 main {
     align-items: start;
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1fr 1fr;
 }
-
-td { white-space: nowrap }
 
 tr > :not(:first-child) { text-align: right }
 

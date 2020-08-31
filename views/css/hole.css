@@ -106,8 +106,6 @@ h3 {
 
 #header .purple { margin: 0 1rem }
 
-#hole .scores td { border-left: 0 }
-
 #run {
     align-items: center;
     display: flex;
@@ -115,6 +113,10 @@ h3 {
 }
 
 #run > span { margin: 0 1rem }
+
+#scores { grid-row: span 2 }
+
+#scores td { border-left: 0 }
 
 #status {
     display: none;
@@ -154,7 +156,5 @@ h3 {
     grid-template-columns: 1fr 15rem;
     grid-template-rows: min-content 1fr;
 }
-
-#wrapper .scores { grid-row: span 2 }
 
 @media (max-width: 34rem) { #wrapper { grid-template-columns: 1fr } }

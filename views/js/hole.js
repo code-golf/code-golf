@@ -8,7 +8,7 @@ const slotPicker   = document.querySelector('#slotPicker');
 const scoringModes = JSON.parse(document.querySelector('#scoringModes').innerText);
 const solutions    = JSON.parse(document.querySelector('#solutions').innerText);
 const status       = document.querySelector('#status');
-const table        = document.querySelector('.scores');
+const table        = document.querySelector('#scores');
 const beta         = scoringModes.length > 1;
 
 let lang;
@@ -238,7 +238,8 @@ async function refreshScores() {
             html += `<tr ${s.me ? 'class=me' : ''}>
                 <td>${s.rank}<sup>${[, 'st', 'nd', 'rd'][s.rank % 100 >> 3 ^ 1 && s.rank % 10] || 'th'}</sup>
                 <td><a href=/golfers/${s.login}>
-                    <img src="//avatars.githubusercontent.com/${s.login}?s=24">${s.login}
+                    <img src="//avatars.githubusercontent.com/${s.login}?s=24">
+                    <span>${s.login}</span>
                 </a>
                 <td class=right><span${scoringMode != 0 ? ' class=inactive' : ''}>${s.chars ? s.chars.toLocaleString('en') : '&nbsp'}</span>`;
 

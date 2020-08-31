@@ -1,6 +1,6 @@
 {{ template "header" . }}
 
-<main id=recent>
+<main id=thin>
     <h1>Recent Solutions</h1>
 
     <details class=nav>
@@ -21,7 +21,7 @@
         {{ end }}
     </details>
 
-    <table class="scores sticky">
+    <table class="nowrap-first-second sticky">
         <thead>
             <tr>
                 <th>Hole
@@ -39,12 +39,12 @@
             <tr{{ if eq $name .Login }} class="me"{{ end }}>
                 <td>
                     <a href="/{{ .Hole.ID }}#{{ .Lang.ID }}">
-                        {{ .Hole.Name }}
+                        <span>{{ .Hole.Name }}</span>
                     </a>
                 <td>
                     <a href="/golfers/{{ .Login }}">
                         <img src="//avatars.githubusercontent.com/{{ .Login }}?s=24">
-                        {{- .Login -}}
+                        <span>{{- .Login -}}</span>
                     </a>
                 <td class=wide>
                     <a href="/recent/{{ .Lang.ID }}">{{ .Lang.Name }}</a>

@@ -1,9 +1,9 @@
 {{ template "header" . }}
 
-<main>
+<main id=thin>
     {{ template "admin" . }}
 
-    <table>
+    <table class=nowrap-first>
         <thead>
             <th>Golfer
             <th>Last Used
@@ -13,12 +13,12 @@
                 <td>
                     <a href="/golfers/{{ .Golfer }}">
                         <img src="//avatars.githubusercontent.com/{{ .Golfer }}?s=24">
-                        {{- .Golfer -}}
+                        <span>{{- .Golfer -}}</span>
                     </a>
                 <td>{{ time .LastUsed }}
         {{ end }}
     </table>
-    <table>
+    <table class=nowrap-first>
         <thead>
             <th>Relation
             <th>Rows

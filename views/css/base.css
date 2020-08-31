@@ -155,12 +155,22 @@ td, th {
     text-align: left;
 }
 
-td img {
+td > a {
+    align-items: center;
+    display: flex;
+}
+
+td > a > img {
     border-radius: 50%;
+    flex-shrink: 0;
     height: 1.5rem;
     margin-right: .5rem;
-    vertical-align: middle;
-    width: 1.5rem !important;
+    width: 1.5rem;
+}
+
+td > a > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 tfoot td { border: 0 }
@@ -242,7 +252,7 @@ thead th {
 .inactive { opacity: 0.6 }
 
 /* TODO Need a dark version */
-.me { background: var(--blue) !important }
+.me { background: #efd !important }
 
 .nav > a {
     color: inherit;
@@ -261,19 +271,21 @@ thead th {
     color: var(--background);
 }
 
-.right { text-align: right }
+[class^=nowrap-] { white-space: nowrap }
 
-.scores a { color: var(--color) }
-
-.scores td { white-space: nowrap }
-
-.scores tr :nth-child(2) {
+.nowrap-first  td:nth-child(1),
+.nowrap-second td:nth-child(2) {
     max-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
     width: 100%;
 }
+
+.nowrap-first-second td:nth-child(1),
+.nowrap-first-second td:nth-child(2) {
+    max-width: 0;
+    width: 50%;
+}
+
+.right { text-align: right }
 
 .span { grid-column: 1 / -1 }
 
@@ -311,17 +323,6 @@ thead th {
     top: -50vh;
 }
 
-#recent, #scores { max-width: 42rem }
-
-#recent tr :nth-child(1),
-#recent tr :nth-child(2) {
-    max-width: 1.5rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 50%;
-}
-
 #tabs {
     background: var(--background);
     border-bottom: 2px solid var(--color);
@@ -334,14 +335,9 @@ thead th {
     z-index: 1;
 }
 
-@media (max-width: 34rem) {
-    .wide { display: none }
+#thin { max-width: 42rem }
 
-    #about  td:nth-child(2),
-    #scores td:nth-child(4) {
-        border-right: 1px solid var(--color);
-    }
-}
+@media (max-width: 34rem) { .wide { display: none } }
 
 /* TODO https://github.com/code-golf/code-golf/issues/119
 
