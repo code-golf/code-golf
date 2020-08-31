@@ -40,7 +40,7 @@
     margin: 0;
 }
 
-a { color: #0366d6 }
+a { color: #07b }
 
 a:not(:hover) { text-decoration: none }
 a:not([href]) { cursor: auto }
