@@ -34,8 +34,8 @@ version = 'GNU Fortran 9.3.0'
 website = '//gcc.gnu.org/fortran/'
 
 [Go]
-size    = '208 MiB'
-version = '1.15'
+size    = '110 MiB'
+version = '1.15.1'
 website = '//go.dev'
 
 [Haskell]

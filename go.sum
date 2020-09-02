@@ -34,8 +34,8 @@ github.com/shurcooL/githubv4 v0.0.0-20200802174311-f27d2ca7f6d5/go.mod h1:hAF0iL
 github.com/shurcooL/graphql v0.0.0-20181231061246-d48a9a75455f h1:tygelZueB1EtXkPI6mQ4o9DQ0+FKW41hTbunoXZCTqk=
 github.com/shurcooL/graphql v0.0.0-20181231061246-d48a9a75455f/go.mod h1:AuYgA5Kyo4c7HfUmvRGs/6rGlMMV/6B1bVnB9JxJEEg=
 github.com/spf13/pflag v1.0.5/go.mod h1:McXfInJRrz4CZXVZOBLb0bTZqETkiAhM9Iw0y3An2Bg=
-github.com/tdewolff/minify/v2 v2.9.2 h1:paeFMZEtrmWVJSmvZ+htMQ5RhbkBbLVyXdzs6f8Es+s=
-github.com/tdewolff/minify/v2 v2.9.2/go.mod h1:njYNbXhVTAhI1hARVHCbHAgRd44j+AEt0LdW+menKsY=
+github.com/tdewolff/minify/v2 v2.9.3 h1:5RMoa8DAqfI/Gne9rM1hnsQXZax24dnZhcQWHOFD7f4=
+github.com/tdewolff/minify/v2 v2.9.3/go.mod h1:njYNbXhVTAhI1hARVHCbHAgRd44j+AEt0LdW+menKsY=
 github.com/tdewolff/parse/v2 v2.5.1 h1:1PxbcgMxb8RWH1nmeQjBC+lZIOTUEjiYQ3u8RpzndN0=
 github.com/tdewolff/parse/v2 v2.5.1/go.mod h1:WzaJpRSbwq++EIQHYIRTpbYKNA3gn9it1Ik++q4zyho=
 github.com/tdewolff/test v1.0.6 h1:76mzYJQ83Op284kMT+63iCNCI7NEERsIN8dLM+RiKr4=
