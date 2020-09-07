@@ -1,5 +1,5 @@
 GOFILES  := $(shell find . -name '*.go' ! -path './.go*')
-POSTGRES := postgres:12.3-alpine
+POSTGRES := postgres:12.4-alpine
 SHELL    := /bin/bash
 
 export COMPOSE_FILE = docker/core.yml:docker/ports.yml
