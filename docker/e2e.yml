@@ -9,11 +9,7 @@ services:
       - .
     environment:
       E2E: 1
-    logging:
-      driver: none
   db:
-    logging:
-      driver: none
     tmpfs: /var/lib/postgresql/data
   e2e:
     depends_on:
@@ -22,7 +18,12 @@ services:
     entrypoint:
       - prove6
       - -vIt
-    image: jraspass/raku:static-site
+    environment:
+      PGDATABASE: code-golf
+      PGHOST:     db
+      PGSSLMODE:  disable
+      PGUSER:     postgres
+    image: jraspass/raku:toolbox
     tty: true
     volumes:
       - ..:/code-golf
