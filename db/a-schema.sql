@@ -99,14 +99,6 @@ CREATE VIEW points AS WITH ranked AS (
     FROM ranked
 GROUP BY user_id;
 
-CREATE FUNCTION delete_orphaned_code() RETURNS trigger AS $$ BEGIN
-    DELETE FROM code WHERE NOT EXISTS (SELECT 1 FROM solutions WHERE code_id = id);
-    RETURN NEW;
-END; $$ LANGUAGE plpgsql;
-
-CREATE TRIGGER delete_orphaned_code
- AFTER UPDATE ON solutions EXECUTE FUNCTION delete_orphaned_code();
-
 -- Used by delete_orphaned_code()
 CREATE INDEX solutions_code_id_key ON solutions(code_id);
 
