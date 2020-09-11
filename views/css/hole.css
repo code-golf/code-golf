@@ -44,13 +44,13 @@ h3 {
     margin-top: 10px;
 }
 
-.scoringModePicker {
+.scoringPicker {
     font-weight: normal;
     padding: 0 .5rem;
 }
 
-.scoringModePicker:hover,
-.scoringModePicker:not([href]) {
+.scoringPicker:hover,
+.scoringPicker:not([href]) {
     background: var(--color);
     color: var(--background);
 }

@@ -11,15 +11,15 @@ import (
 // Hole serves GET /{hole}
 func Hole(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		HideDetails  bool
-		Hole         hole.Hole
-		Langs        []lang.Lang
-		ScoringModes []string
-		Solutions    []map[string]string
+		HideDetails bool
+		Hole        hole.Hole
+		Langs       []lang.Lang
+		Scorings    []string
+		Solutions   []map[string]string
 	}{
-		Langs:        lang.List,
-		ScoringModes: []string{"Chars"},
-		Solutions:    []map[string]string{{}, {}},
+		Langs:     lang.List,
+		Scorings:  []string{"Chars"},
+		Solutions: []map[string]string{{}, {}},
 	}
 
 	var ok bool
@@ -59,12 +59,12 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 				panic(err)
 			}
 
-			slot := 0
+			solution := 0
 			if scoring == "bytes" {
-				slot = 1
+				solution = 1
 			}
 
-			data.Solutions[slot][lang] = code
+			data.Solutions[solution][lang] = code
 		}
 
 		if err := rows.Err(); err != nil {
@@ -73,7 +73,7 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if session.Beta(r) {
-		data.ScoringModes = append(data.ScoringModes, "Bytes")
+		data.Scorings = append(data.Scorings, "Bytes")
 	}
 
 	render(w, r, "hole", data.Hole.Name, data)

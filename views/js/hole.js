@@ -1,28 +1,32 @@
-const chars        = document.querySelector('#chars');
-const details      = document.querySelector('#details');
-const editor       = document.querySelector('#editor');
-const hole         = decodeURI(location.pathname.slice(1));
-const langs        = JSON.parse(document.querySelector('#langs').innerText);
-const picker       = document.querySelector('#picker');
-const slotPicker   = document.querySelector('#slotPicker');
-const scoringModes = JSON.parse(document.querySelector('#scoringModes').innerText);
-const solutions    = JSON.parse(document.querySelector('#solutions').innerText);
-const status       = document.querySelector('#status');
-const table        = document.querySelector('#scores');
-const beta         = scoringModes.length > 1;
+const chars          = document.querySelector('#chars');
+const details        = document.querySelector('#details');
+const editor         = document.querySelector('#editor');
+const hole           = decodeURI(location.pathname.slice(1));
+const langs          = JSON.parse(document.querySelector('#langs').innerText);
+const picker         = document.querySelector('#picker');
+const solutionPicker = document.querySelector('#solutionPicker');
+const scorings       = JSON.parse(document.querySelector('#scorings').innerText);
+const solutions      = JSON.parse(document.querySelector('#solutions').innerText);
+const status         = document.querySelector('#status');
+const table          = document.querySelector('#scores');
+const beta           = scorings.length > 1;
 
 let lang;
-let slot = beta && localStorage.getItem('slot') ? parseInt(localStorage.getItem('slot')) : 0;
-let scoringMode = beta && localStorage.getItem('scoringMode') ? parseInt(localStorage.getItem('scoringMode')) : 0;
-let setCodeForLangAndSlot;
+let solution = beta ? Math.max(scorings.indexOf(localStorage.getItem('solution')), 0) : 0;
+let scoring = beta ? Math.max(scorings.indexOf(localStorage.getItem('scoring')), 0) : 0;
+let setCodeForLangAndSolution;
 let latestSubmissionID = 0;
 
-function setSlot(value) {
-    localStorage.setItem('slot', slot = value);
+function getOtherScoring(value) {
+    return beta ? 1 - value : value;
 }
 
-function setScoringMode(value) {
-    localStorage.setItem('scoringMode', scoringMode = value);
+function setSolution(value) {
+    localStorage.setItem('solution', scorings[solution = value]);
+}
+
+function setScoring(value) {
+    localStorage.setItem('scoring', scorings[scoring = value]);
 }
 
 onload = () => {
@@ -42,9 +46,9 @@ onload = () => {
         }
 
         // Avoid future conflicts by only storing code locally that's different from the server's copy.
-        const serverCode = lang in solutions[slot] ? solutions[slot][lang] : '';
+        const serverCode = lang in solutions[solution] ? solutions[solution][lang] : '';
 
-        const key = `code_${hole}_${lang}_${slot}`;
+        const key = `code_${hole}_${lang}_${solution}`;
         if (code && code != serverCode)
             localStorage.setItem(key, code);
         else
@@ -54,9 +58,9 @@ onload = () => {
     details.ontoggle = () =>
         document.cookie = 'hide-details=' + (details.open ? ';Max-Age=0' : '');
 
-    setCodeForLangAndSlot = () => {
-        const code = lang in solutions[slot] ? solutions[slot][lang] : '';
-        const previousCode = localStorage.getItem(`code_${hole}_${lang}_${slot}`);
+    setCodeForLangAndSolution = () => {
+        const code = lang in solutions[solution] ? solutions[solution][lang] : '';
+        const previousCode = localStorage.getItem(`code_${hole}_${lang}_${solution}`);
 
         cm.setOption('mode', {name: 'text/x-' + lang, startOpen: true});
         cm.setValue(code);
@@ -82,7 +86,7 @@ onload = () => {
 
         history.replaceState(null, '', '#' + lang);
 
-        setCodeForLangAndSlot();
+        setCodeForLangAndSolution();
     })();
 
     const submit = document.querySelector('#run a').onclick = async () => {
@@ -106,7 +110,7 @@ onload = () => {
         if (submissionID != latestSubmissionID)
             return;
 
-        for (let i = 0; i < scoringModes.length; i++) {
+        for (let i = 0; i < scorings.length; i++) {
             const lengthFunc = i ? utf8ByteCount : strlen;
             if (data.Pass && (!(codeLang in solutions[i]) || lengthFunc(code) <= lengthFunc(solutions[i][codeLang]))) {
                 solutions[i][codeLang] = code;
@@ -118,10 +122,10 @@ onload = () => {
             }
         }
 
-        // Automatically switch to the slot whose code matches the current code after a new solution is submitted.
-        // Don't change scoringMode. refreshScores will update the slot picker.
-        if (beta && data.Pass && solutions[slot][lang] != code && solutions[1 - slot][lang] == code)
-            setSlot(1 - slot);
+        // Automatically switch to the solution whose code matches the current code after a new solution is submitted.
+        // Don't change scoring. refreshScores will update the solution picker.
+        if (beta && data.Pass && solutions[solution][lang] != code && solutions[getOtherScoring(solution)][lang] == code)
+            setSolution(getOtherScoring(solution));
 
         document.querySelector('h2').innerText
             = data.Pass ? 'Pass 😀' : 'Fail ☹️';
@@ -193,13 +197,13 @@ async function refreshScores() {
     }
 
     if (beta) {
-        while (slotPicker.firstChild)
-            slotPicker.removeChild(slotPicker.firstChild);
+        while (solutionPicker.firstChild)
+            solutionPicker.removeChild(solutionPicker.firstChild);
 
-        // Only show the slot picker when both slots are actually used.
+        // Only show the solution picker when both solutions are actually used.
         if (lang in solutions[0] && lang in solutions[1] && solutions[0][lang] != solutions[1][lang]) {
-            for (let i = 0; i < 2; i++) {
-                let name = `Fewest ${scoringModes[i]}`;
+            for (let i = 0; i < scorings.length; i++) {
+                let name = `Fewest ${scorings[i]}`;
 
                 if (lang in solutions[i]) {
                     name += ` <sup>${[strlen,utf8ByteCount][i](solutions[i][lang]).toLocaleString('en')}</sup>`;
@@ -207,23 +211,26 @@ async function refreshScores() {
 
                 const child = document.createElement('a');
                 child.innerHTML = name;
-                if (i != slot) {
+                if (i != solution) {
                     child.href = 'javascript:void(0)';
-                    child.onclick = () => { setSlot(i); setCodeForLangAndSlot(); };
+                    child.onclick = () => {
+                        setSolution(i);
+                        setCodeForLangAndSolution();
+                    };
                 }
-                slotPicker.appendChild(child);
+                solutionPicker.appendChild(child);
             }
         }
     }
 
     const url    = `/scores/${hole}/${lang}`;
-    const scores = await (await fetch(`${url}/${scoringMode ? 'minibytes' : 'mini'}`)).json();
+    const scores = await (await fetch(`${url}/${scoring ? 'minibytes' : 'mini'}`)).json();
     let html     = `<thead><tr>`;
 
     if (beta) {
         html += `<thead><tr><th colspan=4>`;
-        for (let i = 0; i < 2; i++)
-            html += `<a class="scoringModePicker${scoringMode != i ? ' inactive' : ''}" id=${scoringModes[i]}>${scoringModes[i]}</a>`;
+        for (let i = 0; i < scorings.length; i++)
+            html += `<a class="scoringPicker${scoring != i ? ' inactive' : ''}" id=${scorings[i]}>${scorings[i]}</a>`;
     }
     else
         html += `<th colspan=3>Scores`;
@@ -241,10 +248,10 @@ async function refreshScores() {
                     <img src="//avatars.githubusercontent.com/${s.login}?s=24">
                     <span>${s.login}</span>
                 </a>
-                <td class=right><span${scoringMode != 0 ? ' class=inactive' : ''}>${s.chars ? s.chars.toLocaleString('en') : '&nbsp'}</span>`;
+                <td class=right><span${scoring != 0 ? ' class=inactive' : ''}>${s.chars ? s.chars.toLocaleString('en') : '&nbsp'}</span>`;
 
             if (beta)
-                html += `<td class=right><span${scoringMode != 1 ? ' class=inactive' : ''}>${s.bytes ? s.bytes.toLocaleString('en') : '&nbsp'}</span>`;
+                html += `<td class=right><span${scoring != 1 ? ' class=inactive' : ''}>${s.bytes ? s.bytes.toLocaleString('en') : '&nbsp'}</span>`;
         }
         else
             html += `<tr><td colspan=${beta ? 4 : 3}>&nbsp`;
@@ -253,10 +260,10 @@ async function refreshScores() {
     table.innerHTML = html;
 
     if (beta) {
-        const otherScoringMode = 1 - scoringMode;
-        const switchMode = table.querySelector(`#${scoringModes[otherScoringMode]}`);
-        switchMode.href = 'javascript:void(0)';
-        switchMode.onclick = () => { setScoringMode(otherScoringMode); refreshScores(); };
+        const otherScoring = getOtherScoring(scoring);
+        const switchScoring = table.querySelector(`#${scorings[otherScoring]}`);
+        switchScoring.href = 'javascript:void(0)';
+        switchScoring.onclick = () => { setScoring(otherScoring); refreshScores(); };
     }
 }
 

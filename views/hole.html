@@ -35,7 +35,7 @@
         <div class=grid>{{ .Data.Hole.Preamble }}</div>
     </details>
     <div class=nav id=picker></div>
-    <div class=nav id=slotPicker></div>
+    <div class=nav id=solutionPicker></div>
     <div id=wrapper>
         <div id=chars>0 characters</div>
         <table class="nowrap-second wide" id=scores>
@@ -77,6 +77,6 @@
     </div>
 </main>
 
-<script id=langs        type=application/json>{{ .Data.Langs        }}</script>
-<script id=solutions    type=application/json>{{ .Data.Solutions    }}</script>
-<script id=scoringModes type=application/json>{{ .Data.ScoringModes }}</script>
+<script id=langs     type=application/json>{{ .Data.Langs     }}</script>
+<script id=solutions type=application/json>{{ .Data.Solutions }}</script>
+<script id=scorings  type=application/json>{{ .Data.Scorings  }}</script>
