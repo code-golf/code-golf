@@ -47,6 +47,7 @@ h3 {
 .scoringPicker {
     font-weight: normal;
     padding: 0 .5rem;
+    color: var(--color);
 }
 
 .scoringPicker:hover,
