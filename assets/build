@@ -22,10 +22,7 @@ GO
 
 my ( %data, %paths );
 
-for (
-    sort { $b =~ /\.woff2$/ <=> $a =~ /\.woff2$/ or $a cmp $b }
-    <assets/*.{css,js,woff2}>
-) {
+for (<assets/*.{js,woff2}>) {
     say;
 
     my $data = slurp($_);
@@ -50,17 +47,8 @@ GO
 
     $data =~ s|/\* include ([^ ]+) +\*/|slurp("assets/includes/$1")|eg;
 
-    if (/\.css$/) {
-        $data =~ s|fontWoff2|$paths{fontWoff2}|;
-        $data =~ s|twemojiWoff2|$paths{twemojiWoff2}|;
-
-        $data = run($data, 'csso');
-    }
-    else {
-        my @cmd = qw(java -jar /closure-compiler.jar --language_out ES_2017);
-
-        $data = run( $data, @cmd );
-    }
+    $data = run(
+        $data, qw(java -jar /closure-compiler.jar --language_out ES_2017) );
 
     $data{"${name}Br"} = run($data, 'brotli');
 
@@ -69,15 +57,14 @@ GO
     print $tmp $data;
     close $tmp;
 
-    $data{"${name}Gz"} = `zopfli -c /tmp/zopfli`;
+    $data{"${name}Gz"} = `zopfli --i50 -c /tmp/zopfli`;
 
-    my $mime = /\.css$/ ? 'text/css' : 'application/javascript';
     my $path = $paths{$name} = '/assets/' . md5_base64($data) =~ y|+/|-_|r;
 
     print $fh <<GO;
 	case ${name}Path:
 		w.Header().Set("Cache-Control", "max-age=9999999,public")
-		w.Header().Set("Content-Type", "$mime")
+		w.Header().Set("Content-Type", "application/javascript")
 
 		if strings.Contains(r.Header.Get("Accept-Encoding"), "br") {
 			w.Header().Set("Content-Encoding", "br")
