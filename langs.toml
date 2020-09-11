@@ -35,7 +35,7 @@ website = '//gcc.gnu.org/fortran/'
 
 [Go]
 size    = '110 MiB'
-version = '1.15.1'
+version = '1.15.2'
 website = '//go.dev'
 
 [Haskell]
@@ -80,7 +80,7 @@ website = '//nim-lang.org'
 
 [PHP]
 size    = '10.5 MiB'
-version = '7.4.9'
+version = '7.4.10'
 website = '//www.php.net'
 
 [Perl]
