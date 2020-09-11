@@ -33,7 +33,13 @@ onload = () => {
     // Lock the editor's height in so we scroll.
     editor.style.height = `${editor.offsetHeight}px`;
 
-    const cm = new CodeMirror(editor, {autofocus: true, lineNumbers: true, lineWrapping: true, smartIndent: false, indentUnit: 1});
+    const cm = new CodeMirror(editor, {
+        autofocus:    true,
+        indentUnit:   1,
+        lineNumbers:  true,
+        lineWrapping: true,
+        smartIndent:  false,
+    });
 
     cm.on('change', () => {
         const code = cm.getValue();
@@ -62,6 +68,7 @@ onload = () => {
         const code = lang in solutions[solution] ? solutions[solution][lang] : '';
         const previousCode = localStorage.getItem(`code_${hole}_${lang}_${solution}`);
 
+        cm.setOption('matchBrackets', lang != 'brainfuck' && lang != 'j');
         cm.setOption('mode', {name: 'text/x-' + lang, startOpen: true});
         cm.setValue(code);
 
