@@ -11,6 +11,7 @@ package main
 // Run 'docker-compose rm -f && docker-compose up' and then run this script.
 
 import (
+	"context"
 	"database/sql"
 	"encoding/json"
 	"fmt"
@@ -21,8 +22,8 @@ import (
 )
 
 type solution struct {
-	Hole, Lang, Login, Submitted string
-	Strokes, Bytes               int
+	Hole, Lang, Scoring, Login, Submitted string
+	Strokes, Bytes                        int
 }
 
 // Create a string containing the given number of characters and UTF-8 encoded bytes.
@@ -78,6 +79,13 @@ func main() {
 	infoList := getInfo()
 	userMap := map[string]int{}
 
+	tx, err := db.BeginTx(context.Background(), nil)
+	if err != nil {
+		panic(err)
+	}
+
+	defer tx.Rollback()
+
 	for _, info := range infoList {
 		if _, ok := userMap[info.Login]; !ok {
 			userMap[info.Login] = 1000 + len(userMap)
@@ -85,7 +93,7 @@ func main() {
 	}
 
 	for login, userID := range userMap {
-		if _, err := db.Exec("INSERT INTO users (id, login) VALUES($1, $2)",
+		if _, err := tx.Exec("INSERT INTO users (id, login) VALUES($1, $2)",
 			userID, login,
 		); err != nil {
 			panic(err)
@@ -95,19 +103,21 @@ func main() {
 	for index, info := range infoList {
 		code := makeCode(info.Strokes, info.Bytes)
 
-		if _, err := db.Exec(
+		if _, err := tx.Exec(
 			"INSERT INTO code (code) VALUES ($1) ON CONFLICT DO NOTHING", code,
 		); err != nil {
 			panic(err)
 		}
 
-		if _, err := db.Exec(
-			`INSERT INTO solutions (code_id, user_id, hole, lang, scoring)
-			    SELECT id, $2, $3, $4, 'chars' FROM code WHERE code = $1`,
+		if _, err := tx.Exec(
+			`INSERT INTO solutions (code_id, user_id, hole, lang, scoring, submitted)
+			    SELECT id, $2, $3, $4, $5, $6 FROM code WHERE code = $1`,
 			code,
 			userMap[info.Login],
 			info.Hole,
 			info.Lang,
+			info.Scoring,
+			info.Submitted,
 		); err != nil {
 			panic(err)
 		}
@@ -115,5 +125,9 @@ func main() {
 		if index%1000 == 0 {
 			fmt.Printf("Progress %d/%d\n", index+1, len(infoList))
 		}
+	}
+
+	if err := tx.Commit(); err != nil {
+		panic(err)
 	}
 }
