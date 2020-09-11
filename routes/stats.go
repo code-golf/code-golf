@@ -41,20 +41,37 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := db.QueryRow(
-		`SELECT COALESCE(SUM(bytes), 0), COUNT(*)
-		   FROM solutions
-		   JOIN code ON code_id = id
-		  WHERE NOT failing`,
+		`WITH distinct_solutions AS (
+		  SELECT DISTINCT ON (hole, lang, user_id, code_id)
+		         hole,
+		         lang,
+		         user_id,
+		         code_id,
+		         bytes
+		    FROM solutions
+		    JOIN code ON code_id = code.id
+		   WHERE NOT failing
+		) SELECT COALESCE(SUM(bytes), 0), COUNT(*)
+		    FROM distinct_solutions`,
 	).Scan(&data.Bytes, &data.Solutions); err != nil {
 		panic(err)
 	}
 
 	for i, fact := range [...]string{"hole", "lang"} {
 		rows, err := db.Query(
-			` SELECT RANK() OVER (ORDER BY COUNT(*) DESC, ` + fact + `),
-			         ` + fact + `, COUNT(*), COUNT(DISTINCT user_id)
+			`WITH distinct_solutions AS (
+			  SELECT DISTINCT ON (hole, lang, user_id, code_id)
+			         hole,
+			         lang,
+			         user_id,
+			         code_id
 			    FROM solutions
 			   WHERE NOT failing
+			) SELECT RANK() OVER (ORDER BY COUNT(*) DESC, ` + fact + `),
+			         ` + fact + `,
+			         COUNT(*),
+			         COUNT(DISTINCT user_id)
+			    FROM distinct_solutions
 			GROUP BY ` + fact,
 		)
 		if err != nil {
