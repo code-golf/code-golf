@@ -1,3 +1,6 @@
+/* TODO Stop having "thin" pages, make everything consistent. */
+body { max-width: 42rem }
+
 /* TODO Replace margins with gap 1rem https://caniuse.com#feat=flexbox-gap */
 h1 {
     align-items: center;

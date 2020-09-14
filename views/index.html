@@ -1,21 +1,24 @@
 {{ template "header" . }}
 
-<main id=index>
 {{ with .Data.Fails }}
-    <div class="grid span" id=alert>
-        <div class=grid>
-            The following solutions of yours have been marked as failing and
-            no longer contribute to scoring; please update them to pass:
-            <ul>
-            {{ range . }}
-                <li><a href={{ .Hole.ID }}#{{ .Lang.ID }}>{{ .Hole.Name }} ({{ .Lang.Name }})</a>
-            {{ end }}
-            </ul>
-        </div>
+    <div class=alert>
+        {{ svg "exclamation-circle-light" }}
+        The following solutions of yours have been marked as failing and
+        no longer contribute to scoring; please update them to pass:
+        <ul>
+        {{ range . }}
+            <li>
+                <a href={{ .Hole.ID }}#{{ .Lang.ID }}>
+                    {{ .Hole.Name }} ({{ .Lang.Name }})
+                </a>
+        {{ end }}
+        </ul>
     </div>
 {{ end }}
+
 {{ if not .Golfer }}
-    <div class="grid span">
+    <div class=info>
+        {{ svg "info-circle-light" }}
         <p>
             Code Golf is a game designed to let you show off your code-fu by
             solving problems in the least number of characters.
@@ -24,6 +27,8 @@
             something simple like <a href=fizz-buzz>Fizz Buzz</a>.
     </div>
 {{ end }}
+
+<main id=index>
     <nav class="nav span">
     {{ $sort := .Data.Sort }}
 

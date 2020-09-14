@@ -25,6 +25,7 @@
 :root {
     --background: #FDFDFD;
     --color:      #343A40;
+
     /* https://flatuicolors.com */
     --red:        #FC5C65BB;
     --orange:     #FD9644BB;
@@ -33,6 +34,10 @@
     --blue:       #45AAF2BB;
     --purple:     #8C7AE6BB;
     --grey:       #ECF0F1BB;
+
+    --light-blue:   #def;
+    --light-green:  #efd;
+    --light-yellow: #feb;
 }
 
 * {
@@ -54,15 +59,13 @@ body {
     background: var(--background);
     color: var(--color);
     font: 16px emoji, font, system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
 }
 
-body > #alert, header nav, main {
+body, header nav {
     margin: auto;
     max-width: 1280px;
-    width: 100%;
 }
-
-body > #alert { margin: 1rem auto 0 }
 
 body > svg { display: none }
 
@@ -74,6 +77,7 @@ h3 { font-size: 1.25rem }
 
 header {
     background: var(--color);
+    margin: 0 calc(50% - 50vw);
     position: sticky;
     top: 0;
     z-index: 9;
@@ -180,6 +184,26 @@ thead th {
     border-bottom-width: 2px;
 }
 
+.alert, .info {
+    border: 1px solid var(--color);
+    display: grid;
+    grid-gap: .5rem;
+    margin: 1rem 1rem 0;
+    padding: 1rem 1rem 1rem 3rem;
+    position: relative;
+}
+
+.alert svg, .info svg {
+    fill: var(--color);
+    left: .75rem;
+    position: absolute;
+    top: calc(50% - .75rem);
+    width: 1.5rem;
+}
+
+.alert { background: var(--light-yellow) }
+.info  { background: var(--light-blue) }
+
 .bold { font-weight: bold }
 
 .btn {
@@ -252,7 +276,7 @@ thead th {
 .inactive { opacity: 0.6 }
 
 /* TODO Need a dark version */
-.me { background: #efd !important }
+.me { background: var(--light-green) !important }
 
 .nav > a {
     color: inherit;
@@ -294,16 +318,6 @@ thead th {
     top: 2.75rem;
 }
 
-#alert {
-    background: var(--yellow);
-    border: solid 1px var(--color);
-    display: grid;
-    grid-template-columns: min-content 1fr;
-    padding: 1rem;
-}
-
-#alert:before { content: '⚠' }
-
 #error h1 { text-align: center }
 
 #ideas, #index { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
@@ -334,8 +348,6 @@ thead th {
     top: 2.75rem;
     z-index: 1;
 }
-
-#thin { max-width: 42rem }
 
 @media (max-width: 34rem) { .wide { display: none } }
 
