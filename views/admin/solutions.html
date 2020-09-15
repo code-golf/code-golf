@@ -1,8 +1,7 @@
 {{ template "header" . }}
+{{ template "admin"  . }}
 
 <main>
-    {{ template "admin" . }}
-
     <form>
         <label for=golfer>Golfer</label>
         <input id=golfer name=golfer value='{{ .Request.FormValue "golfer" }}'>

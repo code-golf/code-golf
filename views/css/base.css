@@ -67,6 +67,18 @@ body, header nav {
     max-width: 1280px;
 }
 
+/* tabs */
+body > nav {
+    background: var(--background);
+    border-bottom: 2px solid var(--color);
+    display: flex;
+    font-weight: bold;
+    padding: 1rem 1rem 0;
+    position: sticky;
+    top: 2.75rem;
+    z-index: 1;
+}
+
 body > svg { display: none }
 
 details .grid { padding-top: 1rem }
@@ -335,18 +347,6 @@ thead th {
 #me {
     position: relative;
     top: -50vh;
-}
-
-#tabs {
-    background: var(--background);
-    border-bottom: 2px solid var(--color);
-    display: flex;
-    font-weight: bold;
-    margin-top: -1rem;
-    padding: 1rem 1rem 0;
-    position: sticky;
-    top: 2.75rem;
-    z-index: 1;
 }
 
 @media (max-width: 34rem) { .wide { display: none } }
