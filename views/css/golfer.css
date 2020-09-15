@@ -4,11 +4,6 @@ h1 {
     white-space: nowrap;
 }
 
-main {
-    grid-gap: 0;
-    padding: 0;
-}
-
 #badges {
     display: flex;
     flex-wrap: wrap;

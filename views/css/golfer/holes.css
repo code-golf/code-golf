@@ -1,11 +1,9 @@
-#matrix {
-    display: grid;
+main {
     grid-gap: .25rem;
     grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
-    padding: 1rem;
 }
 
-#matrix a {
+main a {
     align-items: center;
     border: 1px solid var(--color);
     color: var(--color);
@@ -14,72 +12,72 @@
     text-decoration: none;
 }
 
-#matrix a:hover { background: var(--background) }
+main a:hover { background: var(--background) }
 
-#matrix a :last-child {
+main a :last-child {
     flex: 1;
     text-align: center;
 }
 
-#matrix h3 { padding: .25rem 0 }
+h3 { padding: .25rem 0 }
 
-/* When adding a new language, update grid-template-columns for #matrix below. */
-#matrix input,
-#matrix input.bash:not(:checked)       ~ .bash,
-#matrix input.brainfuck:not(:checked)  ~ .brainfuck,
-#matrix input.c:not(:checked)          ~ .c,
-#matrix input.c-sharp:not(:checked)    ~ .c-sharp,
-#matrix input.cobol:not(:checked)      ~ .cobol,
-#matrix input.f-sharp:not(:checked)    ~ .f-sharp,
-#matrix input.fortran:not(:checked)    ~ .fortran,
-#matrix input.go:not(:checked)         ~ .go,
-#matrix input.haskell:not(:checked)    ~ .haskell,
-#matrix input.j:not(:checked)          ~ .j,
-#matrix input.java:not(:checked)       ~ .java,
-#matrix input.javascript:not(:checked) ~ .javascript,
-#matrix input.julia:not(:checked)      ~ .julia,
-#matrix input.lisp:not(:checked)       ~ .lisp,
-#matrix input.lua:not(:checked)        ~ .lua,
-#matrix input.nim:not(:checked)        ~ .nim,
-#matrix input.perl:not(:checked)       ~ .perl,
-#matrix input.php:not(:checked)        ~ .php,
-#matrix input.powershell:not(:checked) ~ .powershell,
-#matrix input.python:not(:checked)     ~ .python,
-#matrix input.raku:not(:checked)       ~ .raku,
-#matrix input.ruby:not(:checked)       ~ .ruby,
-#matrix input.rust:not(:checked)       ~ .rust,
-#matrix input.swift:not(:checked)      ~ .swift { display: none }
+/* When adding a new language, update grid-template-columns below. */
+input,
+input.bash:not(:checked)       ~ .bash,
+input.brainfuck:not(:checked)  ~ .brainfuck,
+input.c:not(:checked)          ~ .c,
+input.c-sharp:not(:checked)    ~ .c-sharp,
+input.cobol:not(:checked)      ~ .cobol,
+input.f-sharp:not(:checked)    ~ .f-sharp,
+input.fortran:not(:checked)    ~ .fortran,
+input.go:not(:checked)         ~ .go,
+input.haskell:not(:checked)    ~ .haskell,
+input.j:not(:checked)          ~ .j,
+input.java:not(:checked)       ~ .java,
+input.javascript:not(:checked) ~ .javascript,
+input.julia:not(:checked)      ~ .julia,
+input.lisp:not(:checked)       ~ .lisp,
+input.lua:not(:checked)        ~ .lua,
+input.nim:not(:checked)        ~ .nim,
+input.perl:not(:checked)       ~ .perl,
+input.php:not(:checked)        ~ .php,
+input.powershell:not(:checked) ~ .powershell,
+input.python:not(:checked)     ~ .python,
+input.raku:not(:checked)       ~ .raku,
+input.ruby:not(:checked)       ~ .ruby,
+input.rust:not(:checked)       ~ .rust,
+input.swift:not(:checked)      ~ .swift { display: none }
 
-#matrix input:checked + label {
+input:checked + label {
     background: var(--color);
     color: var(--background);
 }
 
-#matrix label {
+label {
     cursor: pointer;
     padding: .25rem;
     text-align: center;
 }
 
-#matrix svg {
+main svg {
     height: 1.5rem;
     width: 2rem;
 }
 
-#matrix svg:nth-of-type(2) {
+main svg:nth-of-type(2) {
     height: 1rem;
     width: 1rem;
 }
 
 @media (min-width: 1280px) {
     /* Increase this number when adding a language. */
-    #matrix { grid-template-columns: 4fr repeat(24, 1fr) }
+    main { grid-template-columns: 4fr repeat(24, 1fr) }
 
-    #matrix a { height: 1.9rem }
+    main a { height: 1.9rem }
 
-    #matrix a svg:first-of-type { display: none }
+    main a svg:first-of-type { display: none }
 
-    #matrix .span {
+    main .span {
         grid-column: 1/2;
         overflow: hidden;
         text-align: right;
@@ -87,15 +85,15 @@
         white-space: nowrap;
     }
 
-    #matrix input:checked + label { grid-column: 2/3 }
+    input:checked + label { grid-column: 2/3 }
 
-    #matrix input:not(:checked) + label {
+    input:not(:checked) + label {
         grid-column: 2/3;
         order: -1;
     }
 
-    #matrix input:checked + label ~ input:checked + label,
-    #matrix input:not(:checked) + label ~ input:not(:checked) + label {
+    input:checked + label ~ input:checked + label,
+    input:not(:checked) + label ~ input:not(:checked) + label {
         grid-column: auto;
     }
 }

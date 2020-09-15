@@ -1,25 +1,22 @@
 {{ template "header" . }}
+{{ template "golfer" . }}
 
 <main>
-    {{ template "golfer" . }}
+{{ $max := .Data.Max }}
 
-    <div id=trophies>
-    {{ $max := .Data.Max }}
-
-    {{ range .Data.Trophies }}
-        <div class="trophy {{ if not .Earned.Valid }} locked {{ end }}">
-            <div>{{ .Trophy.Emoji }}</div>
-            <h2>{{ .Trophy.Name }}</h2>
-            <p>{{ .Trophy.Description }}
-            <p>
-                Won by {{ comma .Count }} golfers ({{ .Percent }}%)
-                <progress value="{{ .Count }}" max="{{ $max }}"></progress>
-            {{ if .Earned.Valid }}
-                Won {{ time .Earned.Value }}
-            {{ else }}
-                <span>Not yet won</span>
-            {{ end }}
-        </div>
-    {{ end }}
+{{ range .Data.Trophies }}
+    <div class="trophy {{ if not .Earned.Valid }} locked {{ end }}">
+        <div>{{ .Trophy.Emoji }}</div>
+        <h2>{{ .Trophy.Name }}</h2>
+        <p>{{ .Trophy.Description }}
+        <p>
+            Won by {{ comma .Count }} golfers ({{ .Percent }}%)
+            <progress value="{{ .Count }}" max="{{ $max }}"></progress>
+        {{ if .Earned.Valid }}
+            Won {{ time .Earned.Value }}
+        {{ else }}
+            <span>Not yet won</span>
+        {{ end }}
     </div>
+{{ end }}
 </main>

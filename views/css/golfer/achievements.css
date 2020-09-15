@@ -7,6 +7,11 @@ details > div {
     margin-top: 1rem;
 }
 
+main {
+    grid-gap: 0;
+    padding: 0;
+}
+
 summary {
     background: none;
     border: 0;

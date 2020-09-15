@@ -1,3 +1,9 @@
+main {
+    grid-gap: 0;
+    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+    padding: 0;
+}
+
 progress {
     background: var(--grey);
     border: 0;
@@ -34,9 +40,4 @@ progress::-webkit-progress-value { background: var(--blue) }
 .trophy span {
     color: var(--red);
     font-weight: bold;
-}
-
-#trophies {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
 }

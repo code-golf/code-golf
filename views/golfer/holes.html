@@ -1,4 +1,5 @@
 {{ template "header" . }}
+{{ template "golfer" . }}
 
 <svg>
     {{ symbol "play-light" }}
@@ -8,38 +9,34 @@
 </svg>
 
 <main>
-    {{ template "golfer" . }}
+{{ range .Data.Langs }}
+    <input checked class={{ .ID }} id="{{ .ID }}Check" type=checkbox>
+    <label for="{{ .ID }}Check" title="Toggle {{ .Name }}">
+        <svg><use href="#{{ .ID }}"/></svg>
+    </label>
+{{ end }}
 
-    <div id=matrix>
-    {{ range .Data.Langs }}
-        <input checked class={{ .ID }} id="{{ .ID }}Check" type=checkbox>
-        <label for="{{ .ID }}Check" title="Toggle {{ .Name }}">
-            <svg><use href="#{{ .ID }}"/></svg>
-        </label>
-    {{ end }}
+{{ $langs := .Data.Langs }}
+{{ $ranks := .Data.Ranks }}
 
-    {{ $langs := .Data.Langs }}
-    {{ $ranks := .Data.Ranks }}
-
-    {{ range $i, $hole := .Data.Holes }}
-        <h3 class=span>{{ .Name }}</h3>
-        {{ range $j, $lang := $langs }}
-            {{ with index (index $ranks $hole.ID) $lang.ID }}
-                <a class="{{ $lang.ID }} {{ colour . }}"
-                    href="/scores/{{ $hole.ID }}/{{ $lang.ID }}"
-                    title="View scores of {{ $hole.Name }} in {{ $lang.Name }}">
-                    <svg><use href="#{{ $lang.ID }}"/></svg>
-                    <span>{{ . }}<sup>{{ ord . }}</sup></span>
-                </a>
-            {{ else }}
-                <a class="{{ $lang.ID }} grey"
-                    href="/{{ $hole.ID }}#{{ $lang.ID }}"
-                    title="Play {{ $hole.Name }} in {{ $lang.Name }}">
-                    <svg><use href="#{{ $lang.ID }}"/></svg>
-                    <svg><use href="#play"/></svg>
-                </a>
-            {{ end }}
+{{ range $i, $hole := .Data.Holes }}
+    <h3 class=span>{{ .Name }}</h3>
+    {{ range $j, $lang := $langs }}
+        {{ with index (index $ranks $hole.ID) $lang.ID }}
+            <a class="{{ $lang.ID }} {{ colour . }}"
+                href="/scores/{{ $hole.ID }}/{{ $lang.ID }}"
+                title="View scores of {{ $hole.Name }} in {{ $lang.Name }}">
+                <svg><use href="#{{ $lang.ID }}"/></svg>
+                <span>{{ . }}<sup>{{ ord . }}</sup></span>
+            </a>
+        {{ else }}
+            <a class="{{ $lang.ID }} grey"
+                href="/{{ $hole.ID }}#{{ $lang.ID }}"
+                title="Play {{ $hole.Name }} in {{ $lang.Name }}">
+                <svg><use href="#{{ $lang.ID }}"/></svg>
+                <svg><use href="#play"/></svg>
+            </a>
         {{ end }}
     {{ end }}
-    </div>
+{{ end }}
 </main>
