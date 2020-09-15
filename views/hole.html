@@ -1,13 +1,15 @@
 {{ template "header" . }}
 
-<main id=hole>
 {{ if not .Golfer }}
-    <div class=grid id=alert>
+    <div class=alert>
+        {{ svg "exclamation-circle-light" }}
         <p>
             Please <a href={{ .LogInURL }}>log in with GitHub</a> in order to
             save solutions and appear on the leaderboards.
     </div>
 {{ end }}
+
+<main>
     <div id=header>
         <h1>{{ .Data.Hole.Name }}</h1>
     {{ with .Data.Hole.Links }}

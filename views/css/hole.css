@@ -35,13 +35,10 @@ h3 {
     transform: rotate(-90deg);
 }
 
-.info {
-    background: #fffbdd;
+main .info {
     display: none;
-    padding: 5px;
-    border: 1px solid #222;
-    color: #222;
-    margin-top: 10px;
+    margin: 0;
+    padding: .5rem;
 }
 
 .scoringPicker {

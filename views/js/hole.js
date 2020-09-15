@@ -78,7 +78,7 @@ onload = () => {
             confirm('Your local copy of the code is different than the remote one. Do you want to restore the local version?')))
             cm.setValue(previousCode);
 
-        for (let info of document.querySelectorAll('.info'))
+        for (let info of document.querySelectorAll('main .info'))
             info.style.display = info.classList.contains(lang) ? 'block' : '';
     };
 
