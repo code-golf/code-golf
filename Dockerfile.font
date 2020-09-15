@@ -11,6 +11,7 @@ RUN npm install
 
 RUN echo [] > extras/ligatures.json           \
  && unzip twe-svg.zip                         \
+    svg/1f1fa-1f1f8.svg `# United States`     \
     svg/1f35e.svg       `# Bread`             \
     svg/1f37a.svg       `# Beer Mug`          \
     svg/1f382.svg       `# Birthday Cake`     \
@@ -36,7 +37,6 @@ RUN echo [] > extras/ligatures.json           \
     svg/1f600.svg       `# Grinning Face`     \
     svg/1f947.svg       `# 1st Place Medal`   \
     svg/1f948.svg       `# 2nd Place Medal`   \
-    svg/1f1fa-1f1f8.svg `# United States`     \
     svg/1f949.svg       `# 3rd Place Medal`   \
     svg/1f967.svg       `# Pie`               \
     svg/1f98e.svg       `# Lizard`            \

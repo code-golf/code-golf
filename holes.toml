@@ -633,6 +633,38 @@ preamble = '''
     on their own line.
 '''
 
+[Emojify]
+category   = 'Transform'
+experiment = 123
+preamble   = '''
+<div id=emojify>
+    <pre>🙂&nbsp; :‑)</pre>
+    <pre>😀&nbsp; :-D</pre>
+    <pre>🙁&nbsp; :-(</pre>
+    <pre>😢&nbsp;:'‑(</pre>
+    <pre>😂&nbsp;:'‑)</pre>
+    <pre>😮&nbsp; :‑O</pre>
+    <pre>😗&nbsp; :-*</pre>
+    <pre>😉&nbsp; ;‑)</pre>
+    <pre>😛&nbsp; :‑P</pre>
+    <pre>😜&nbsp; ;‑P</pre>
+    <pre>😕&nbsp; :‑/</pre>
+    <pre>😐&nbsp; :‑|</pre>
+    <pre>🤐&nbsp; :‑#</pre>
+    <pre>😇&nbsp;O:‑)</pre>
+    <pre>😶&nbsp; :- </pre>
+    <pre>😅&nbsp;':-D</pre>
+    <pre>😓&nbsp;':-(</pre>
+    <pre>😝&nbsp; X-P</pre>
+    <pre>😆&nbsp; X-)</pre>
+    <pre>😡&nbsp; :-@</pre>
+    <pre>😈&nbsp;]:-)</pre>
+    <pre>👿&nbsp;]:-(</pre>
+    <pre>😎&nbsp; B-)</pre>
+    <pre>😏&nbsp; :‑J</pre>
+</div>
+'''
+
 ['Evil Numbers']
 category = 'Sequence'
 links = [

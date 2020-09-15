@@ -82,6 +82,18 @@ main .info {
     overflow-x: hidden;
 }
 
+#emojify {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#emojify pre {
+    background: #eee;
+    border: 1px solid var(--color);
+    margin: .25rem;
+    padding: .25rem;
+}
+
 /* TODO Replace margins with gap 1rem https://caniuse.com#feat=flexbox-gap */
 #header {
     align-items: center;

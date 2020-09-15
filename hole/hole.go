@@ -10,6 +10,7 @@ import (
 )
 
 type Hole struct {
+	Experiment                                                  int
 	Prev, Next, ID, Name, Category, CategoryColor, CategoryIcon string
 	Preamble                                                    template.HTML
 	Links                                                       []struct{ Name, URL string }
@@ -18,6 +19,9 @@ type Hole struct {
 var (
 	ByID = map[string]Hole{}
 	List []Hole
+
+	ExperimentalByID = map[string]Hole{}
+	ExperimentalList []Hole
 )
 
 func init() {
@@ -39,10 +43,18 @@ func init() {
 			hole.Preamble = template.HTML(html)
 		}
 
-		List = append(List, hole)
+		if hole.Experiment == 0 {
+			List = append(List, hole)
+		} else {
+			ExperimentalList = append(ExperimentalList, hole)
+		}
 	}
 
 	sort.Slice(List, func(i, j int) bool { return List[i].Name < List[j].Name })
+
+	for _, hole := range ExperimentalList {
+		ExperimentalByID[hole.ID] = hole
+	}
 
 	for i, hole := range List {
 		if i == 0 {

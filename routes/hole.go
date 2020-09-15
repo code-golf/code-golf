@@ -24,15 +24,17 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 
 	var ok bool
 	if data.Hole, ok = hole.ByID[param(r, "hole")]; !ok {
-		NotFound(w, r)
-		return
+		if data.Hole, ok = hole.ExperimentalByID[param(r, "hole")]; !ok {
+			NotFound(w, r)
+			return
+		}
 	}
 
 	if c, _ := r.Cookie("hide-details"); c != nil {
 		data.HideDetails = true
 	}
 
-	if golfer := session.Golfer(r); golfer != nil {
+	if golfer := session.Golfer(r); golfer != nil && data.Hole.Experiment == 0 {
 		// Fetch all the code per lang.
 		condition := ""
 		if !session.Beta(r) {

@@ -230,8 +230,10 @@ async function refreshScores() {
         }
     }
 
-    const url    = `/scores/${hole}/${lang}`;
-    const scores = await (await fetch(`${url}/${scoring ? 'minibytes' : 'mini'}`)).json();
+    const url = `/scores/${hole}/${lang}`;
+    const res = await fetch(`${url}/${scoring ? 'minibytes' : 'mini'}`);
+
+    const scores = res.ok ? await res.json() : [];
     let html     = `<thead><tr>`;
 
     if (beta) {

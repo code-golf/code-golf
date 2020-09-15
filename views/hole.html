@@ -1,6 +1,15 @@
 {{ template "header" . }}
 
-{{ if not .Golfer }}
+{{ with .Data.Hole.Experiment }}
+    <div class=alert>
+        {{ svg "flask-light" }}
+        <p>
+            This hole is experimental, no solutions will be saved.
+            Please leave feedback on the
+            <a href="//github.com/code-golf/code-golf/issues/{{ . }}">
+                GitHub issue</a>.
+    </div>
+{{ else }}{{ if not .Golfer }}
     <div class=alert>
         {{ svg "exclamation-circle-light" }}
         <p>
@@ -8,7 +17,7 @@
             <a class=log-in href="{{ .LogInURL }}">log in with GitHub</a>
             in order to save solutions and appear on the leaderboards.
     </div>
-{{ end }}
+{{ end }}{{ end }}
 
 <main>
     <div id=header>
