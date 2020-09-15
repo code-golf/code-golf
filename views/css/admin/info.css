@@ -4,3 +4,5 @@ main {
 }
 
 tr > :not(:first-child) { text-align: right }
+
+@media (max-width: 34rem) { main { grid-template-columns: 1fr } }
