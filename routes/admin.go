@@ -30,8 +30,11 @@ func Admin(w http.ResponseWriter, r *http.Request) {
 	rows, err := db.Query(
 		` SELECT login, MAX(last_used)
 		    FROM sessions JOIN users ON user_id = users.id
+		   WHERE user_id != $1
+		     AND last_used > TIMEZONE('UTC', NOW()) - INTERVAL '1 day'
 		GROUP BY login
 		ORDER BY max DESC`,
+		session.Golfer(r).ID,
 	)
 	if err != nil {
 		panic(err)
