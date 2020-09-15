@@ -330,6 +330,9 @@ thead th {
     top: 2.75rem;
 }
 
+/* Stick headers below tabs if we have them */
+nav + main .sticky th { top: calc(5.75rem + 2px) }
+
 #error h1 { text-align: center }
 
 #ideas, #index { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
