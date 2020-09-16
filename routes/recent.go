@@ -2,6 +2,7 @@ package routes
 
 import (
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/code-golf/code-golf/hole"
@@ -28,41 +29,48 @@ func Recent(w http.ResponseWriter, r *http.Request) {
         SELECT hole,
                lang,
                login,
+               scoring,
                bytes,
                chars,
+               case when scoring = 'chars' then chars else bytes end strokes,
                submitted
           FROM solutions
           JOIN code  ON code_id = code.id
           JOIN users ON user_id = users.id
          WHERE NOT failing
-           AND scoring = 'chars'
            AND $1 IN ('all-langs', lang::text)
      )  SELECT t1.hole,
                t1.lang,
                login,
+               t1.scoring,
                bytes,
-               t1.chars,
+               chars,
+               t1.strokes,
                rank,
                COUNT(*) - 1 tie_count,
                t1.submitted
           FROM solution_lengths AS t1
     INNER JOIN (
-        SELECT RANK() OVER (PARTITION BY hole, lang ORDER BY chars) rank,
+        SELECT RANK() OVER (PARTITION BY hole, lang, scoring ORDER BY strokes) rank,
                hole,
                lang,
-               chars,
+               scoring,
+               strokes,
                submitted
           FROM solution_lengths
     ) AS t2
             ON t1.hole = t2.hole
            AND t1.lang = t2.lang
-           AND t1.chars = t2.chars
+           AND t1.scoring = t2.scoring
+           AND t1.strokes = t2.strokes
            AND t2.submitted <= t1.submitted
       GROUP BY t1.hole,
                t1.lang,
                login,
+               t1.scoring,
                bytes,
-               t1.chars,
+               chars,
+               t1.strokes,
                t1.submitted,
                rank
       ORDER BY t1.submitted DESC LIMIT 100`,
@@ -75,14 +83,15 @@ func Recent(w http.ResponseWriter, r *http.Request) {
 	defer rows.Close()
 
 	type recent struct {
-		Hole                         hole.Hole
-		Lang                         lang.Lang
-		Login                        string
-		Bytes, Chars, Rank, TieCount int
-		Submitted                    time.Time
+		Hole                                  hole.Hole
+		Lang                                  lang.Lang
+		Login, Scoring                        string
+		Bytes, Chars, Strokes, Rank, TieCount int
+		Submitted                             time.Time
 	}
 
 	var recents []recent
+	var previous recent
 
 	for rows.Next() {
 		var holeID, langID string
@@ -92,8 +101,10 @@ func Recent(w http.ResponseWriter, r *http.Request) {
 			&holeID,
 			&langID,
 			&r.Login,
+			&r.Scoring,
 			&r.Bytes,
 			&r.Chars,
+			&r.Strokes,
 			&r.Rank,
 			&r.TieCount,
 			&r.Submitted,
@@ -103,8 +114,20 @@ func Recent(w http.ResponseWriter, r *http.Request) {
 
 		r.Hole = hole.ByID[holeID]
 		r.Lang = lang.ByID[langID]
+		r.Scoring = strings.Title(r.Scoring)
 
-		recents = append(recents, r)
+		// If all of the information in two rows matches, other than the scoring, collapse them into one.
+		if previous.Login == r.Login &&
+			previous.Hole.ID == r.Hole.ID &&
+			previous.Lang.ID == r.Lang.ID &&
+			previous.Strokes == r.Strokes &&
+			(previous.Rank == r.Rank || previous.Rank > 3 && r.Rank > 3) &&
+			(r.Rank > 3 || (previous.TieCount > 0) == (r.TieCount > 0)) {
+			recents[len(recents)-1].Scoring = "Both"
+		} else {
+			recents = append(recents, r)
+			previous = r
+		}
 	}
 
 	if err := rows.Err(); err != nil {
