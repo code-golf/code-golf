@@ -130,7 +130,7 @@ func render(w http.ResponseWriter, r *http.Request, name, title string, data int
 		Data:       data,
 		Golfer:     session.Golfer(r),
 		GolferInfo: session.GolferInfo(r),
-		JS:         js[name],
+		JS:         js["base"] + js[name],
 		Nonce:      base64.StdEncoding.EncodeToString(nonce),
 		Path:       r.URL.Path,
 		Request:    r,

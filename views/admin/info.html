@@ -31,4 +31,17 @@
                 <td>{{ bytes .Size }}
         {{ end }}
     </table>
+    <table class="nowrap-first sticky">
+        <thead>
+            <th>TimeZone
+            <th>Golfers
+            <th>%
+        <tbody>
+        {{ range .Data.TimeZones }}
+            <tr>
+                <td>{{ .Name }}
+                <td>{{ comma .Golfers }}
+                <td>{{ printf "%.2f" .Percent }}%
+        {{ end }}
+    </table>
 </main>

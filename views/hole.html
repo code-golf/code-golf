@@ -4,8 +4,9 @@
     <div class=alert>
         {{ svg "exclamation-circle-light" }}
         <p>
-            Please <a href={{ .LogInURL }}>log in with GitHub</a> in order to
-            save solutions and appear on the leaderboards.
+            Please
+            <a class=log-in href="{{ .LogInURL }}">log in with GitHub</a>
+            in order to save solutions and appear on the leaderboards.
     </div>
 {{ end }}
 

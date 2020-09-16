@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/code-golf/code-golf/session"
 	"golang.org/x/oauth2"
@@ -71,13 +72,24 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 		Secure:   true,
 	}
 
+	timeZone, _ := time.LoadLocation(r.FormValue("time_zone"))
+	if timeZone == nil || timeZone == time.Local {
+		timeZone = time.UTC
+	}
+
+	// Replace default 'UTC' time zone but don't overwrite a chosen time zone.
 	if err := session.Database(r).QueryRow(
 		`WITH golfer AS (
-		    INSERT INTO users (id, login) VALUES ($1, $2)
-		    ON CONFLICT (id) DO UPDATE SET login = excluded.login
+		    INSERT INTO users (id, login, time_zone) VALUES ($1, $2, $3)
+		    ON CONFLICT (id)
+		  DO UPDATE SET login = excluded.login,
+		            time_zone = CASE WHEN users.time_zone = 'UTC'
+		                             THEN excluded.time_zone
+		                             ELSE users.time_zone
+		                              END
 		      RETURNING id
 		) INSERT INTO sessions (user_id) SELECT * FROM golfer RETURNING id`,
-		user.ID, user.Login,
+		user.ID, user.Login, timeZone.String(),
 	).Scan(&cookie.Value); err != nil {
 		panic(err)
 	}

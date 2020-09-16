@@ -20,11 +20,13 @@
 
 <title>{{ with .Title }}{{ . }} | {{ end }}Code Golf</title>
 
-{{/* type=module acts like defer, even on inline scripts */}}
+{{/* TODO Kill JSExt, make codemirror a real module imported from hole.js */}}
 {{ $nonce := .Nonce }}
-{{ with .CSS   }}<style  nonce="{{ $nonce }}"            >{{ . }}</style>{{ end }}
-{{ with .JSExt }}<script nonce="{{ $nonce }}" defer  src="{{ . }}"></script>{{ end }}
-{{ with .JS    }}<script nonce="{{ $nonce }}" type=module>{{ . }}</script>{{ end }}
+{{ with .JSExt }}<script nonce="{{ $nonce }}" defer src="{{ . }}"></script>{{ end }}
+
+{{/* type=module acts like defer, even on inline scripts */}}
+<style  nonce="{{ .Nonce }}"            >{{ .CSS }}</style>
+<script nonce="{{ .Nonce }}" type=module>{{ .JS }}</script>
 
 <header>
     <nav>
@@ -58,7 +60,7 @@
             {{ svg "sign-out-alt-light" }}
         </a>
     {{ else }}
-        <a href="{{ .LogInURL }}" title="Log In">
+        <a class=log-in href="{{ .LogInURL }}" title="Log In">
             {{ svg "sign-in-alt-light" }}
         </a>
     {{ end }}

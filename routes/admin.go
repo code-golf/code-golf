@@ -20,9 +20,16 @@ func Admin(w http.ResponseWriter, r *http.Request) {
 		Rows, Size int
 	}
 
+	type TimeZone struct {
+		Name    string
+		Golfers int
+		Percent float64
+	}
+
 	data := struct {
-		Sessions []Session
-		Tables   []Table
+		Sessions  []Session
+		Tables    []Table
+		TimeZones []TimeZone
 	}{}
 
 	db := session.Database(r)
@@ -83,6 +90,30 @@ func Admin(w http.ResponseWriter, r *http.Request) {
 		}
 
 		data.Tables = append(data.Tables, table)
+	}
+
+	if err := rows.Err(); err != nil {
+		panic(err)
+	}
+
+	rows, err = db.Query(
+		`SELECT time_zone, COUNT(*), COUNT(*) / SUM(COUNT(*)) OVER () * 100
+		   FROM users GROUP BY time_zone ORDER BY time_zone`,
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var timeZone TimeZone
+
+		if err := rows.Scan(&timeZone.Name, &timeZone.Golfers, &timeZone.Percent); err != nil {
+			panic(err)
+		}
+
+		data.TimeZones = append(data.TimeZones, timeZone)
 	}
 
 	if err := rows.Err(); err != nil {

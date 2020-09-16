@@ -1,6 +1,6 @@
 main {
     align-items: start;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
 }
 
 tr > :not(:first-child) { text-align: right }
