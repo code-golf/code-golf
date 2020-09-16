@@ -118,19 +118,30 @@ func main() {
 		server.TLSConfig.GetCertificate = certManager.GetCertificate
 	}
 
-	// Hit GitHub API every 5 minutes.
+	// Every 5 minutes.
 	go func() {
+		// Various GitHub API requests.
 		for range time.NewTicker(5 * time.Minute).C {
 			github.Run(db)
 		}
 	}()
 
-	// Clear month-old sessions every hour.
+	// Hourly.
 	go func() {
 		for range time.NewTicker(time.Hour).C {
+			// Delete stale month-old sessions.
 			if _, err := db.Exec(
 				`DELETE FROM sessions
 				  WHERE last_used < TIMEZONE('UTC', NOW()) - INTERVAL '30 days'`,
+			); err != nil {
+				log.Println(err)
+			}
+
+			// Delete users with no current sessions or trophies.
+			if _, err := db.Exec(
+				`DELETE FROM users u
+				  WHERE NOT EXISTS (SELECT FROM sessions WHERE user_id = u.id)
+					AND NOT EXISTS (SELECT FROM trophies WHERE user_id = u.id)`,
 			); err != nil {
 				log.Println(err)
 			}

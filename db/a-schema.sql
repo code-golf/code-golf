@@ -115,4 +115,4 @@ GRANT SELECT                         ON TABLE    points      TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    sessions    TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE    solutions   TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    trophies    TO "code-golf";
-GRANT SELECT, INSERT, UPDATE         ON TABLE    users       TO "code-golf";
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    users       TO "code-golf";
