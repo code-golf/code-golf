@@ -68,13 +68,20 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		// Update the code if it's the same length or less, but only update
 		// the submitted time if the solution is shorter. This avoids a user
 		// moving down the leaderboard by matching their personal best.
-		scoringList := []string{"chars"}
+		scorings := []string{"chars"}
 		if session.Beta(r) {
-			scoringList = append(scoringList, "bytes")
+			scorings = append(scorings, "bytes")
 		}
 
-		for _, scoring := range scoringList {
-			if _, err := db.Exec(
+		tx, err := db.BeginTx(r.Context(), nil)
+		if err != nil {
+			panic(err)
+		}
+
+		defer tx.Rollback()
+
+		for _, scoring := range scorings {
+			if _, err := tx.Exec(
 				`WITH new_code AS (
 				    SELECT id, `+scoring+` FROM code WHERE code = $1
 				) INSERT INTO solutions (code_id, user_id, hole, lang, scoring)
@@ -99,6 +106,10 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			); err != nil {
 				panic(err)
 			}
+		}
+
+		if err := tx.Commit(); err != nil {
+			panic(err)
 		}
 
 		awardTrophy(db, userID, "hello-world")
