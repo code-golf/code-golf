@@ -65,6 +65,7 @@ func main() {
 	r.Route("/golfer", func(r chi.Router) {
 		r.Use(middleware.GolferArea)
 		r.Get("/settings", routes.GolferSettings)
+		r.Post("/settings", routes.GolferSettingsPost)
 	})
 	r.Route("/golfers/{name}", func(r chi.Router) {
 		r.Use(middleware.GolferInfoHandler)

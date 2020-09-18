@@ -1,20 +1,21 @@
 {{ template "header" . }}
+
+<!-- TODO Implement "flash" messages in session
+<div class=success>
+    {{ svg "check-circle-light" }}
+    Settings updated successfully.
+</div>
+-->
+
 {{ template "golfer" . }}
 
 <main>
     <form method=post>
-        <label for=default_lang>Default Language</label>
-        <select id=default_lang name=default_lang>
-        {{ range .Data.Langs }}
-            <option value="{{ .ID }}" {{ if eq .ID "python" }}selected{{ end }}>
-                {{ .Name }}
-        {{ end }}
-        </select>
-
         <label for=time_zone>Time Zone</label>
         <select id=time_zone name=time_zone>
+        {{ $tz := .Golfer.TimeZone }}
         {{ range .Data.TimeZones }}
-            <option value="{{ .Name }}" {{ if eq .Name "UTC" }}selected{{ end }}>
+            <option value="{{ .Name }}" {{ if eq .Name $tz }}selected{{ end }}>
                 {{ . }}
         {{ end }}
         </select>

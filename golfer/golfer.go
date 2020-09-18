@@ -11,9 +11,9 @@ import (
 )
 
 type Golfer struct {
-	Admin bool
-	ID    int
-	Name  string
+	Admin          bool
+	ID             int
+	Name, TimeZone string
 }
 
 type GolferInfo struct {

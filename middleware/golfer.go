@@ -21,9 +21,11 @@ func GolferHandler(next http.Handler) http.Handler {
 				`WITH golfer AS (
 				    UPDATE sessions SET last_used = DEFAULT WHERE id = $1
 				 RETURNING user_id
-				) SELECT admin, id, login FROM users JOIN golfer ON id = user_id`,
+				) SELECT admin, id, login, time_zone
+				    FROM users
+				    JOIN golfer ON id = user_id`,
 				uuid.FromStringOrNil(cookie.Value),
-			).Scan(&golfer.Admin, &golfer.ID, &golfer.Name); err == nil {
+			).Scan(&golfer.Admin, &golfer.ID, &golfer.Name, &golfer.TimeZone); err == nil {
 				r = session.Set(r, "golfer", &golfer)
 
 				// Refresh the cookie.

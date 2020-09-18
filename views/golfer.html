@@ -1,4 +1,5 @@
 {{ $path := .Path }}
+{{ $me   := eq .Golfer.ID .GolferInfo.ID }}
 
 {{ with .GolferInfo }}
 <div class=grid id=profile>
@@ -35,8 +36,10 @@
     {{ $slug = print $slug "/holes" }}
     <a {{ if ne $path $slug }} href="{{ $slug }}" {{ end }}>Holes</a>
 
-<!-- TODO
-    <a {{ if ne $path "/settings" }} href="/settings" {{ end }}>Settings</a>
--->
+{{ if $me }}
+    <a {{ if ne $path "/golfer/settings" }} href=/golfer/settings {{ end }}>
+        Settings
+    </a>
+{{ end }}
 </nav>
 {{ end }}

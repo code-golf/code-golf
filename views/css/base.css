@@ -196,7 +196,7 @@ thead th {
     border-bottom-width: 2px;
 }
 
-.alert, .info {
+.alert, .info, .success {
     border: 1px solid var(--color);
     display: grid;
     grid-gap: .5rem;
@@ -205,7 +205,7 @@ thead th {
     position: relative;
 }
 
-.alert svg, .info svg {
+.alert svg, .info svg, .success svg {
     fill: var(--color);
     left: .75rem;
     position: absolute;
@@ -213,8 +213,9 @@ thead th {
     width: 1.5rem;
 }
 
-.alert { background: var(--light-yellow) }
-.info  { background: var(--light-blue) }
+.alert   { background: var(--light-yellow) }
+.info    { background: var(--light-blue) }
+.success { background: var(--light-green) }
 
 .bold { font-weight: bold }
 
