@@ -635,7 +635,7 @@ preamble = '''
 
 [Emojify]
 category   = 'Transform'
-experiment = 123
+experiment = 262
 preamble   = '''
 <div id=emojify>
     <pre>🙂&nbsp; :‑)</pre>
