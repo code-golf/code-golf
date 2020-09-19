@@ -15,6 +15,8 @@ react {
 
 unit module t;
 
+our $client is export = Cro::HTTP::Client.new: ca => { :insecure };
+
 sub dbh is export {
     my $dbh = DBIish.connect: 'Pg';
 
@@ -25,8 +27,6 @@ sub dbh is export {
 }
 
 sub post-solution(:$code, :$hole = 'fizz-buzz', :$lang = 'raku', :$session = '') is export {
-    state $client = Cro::HTTP::Client.new: ca => { :insecure };
-
     my $res = await $client.post: 'https://app:1443/solution',
         content-type => 'application/json',
         headers      => [ cookie => "__Host-session=$session" ],
