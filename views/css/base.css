@@ -58,11 +58,14 @@ blockquote {
 body {
     background: var(--background);
     color: var(--color);
+    display: flex;
+    flex-direction: column;
     font: 16px emoji, font, system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
     overflow-x: hidden;
 }
 
-body, header nav {
+body, footer nav, header nav {
     margin: auto;
     max-width: 1280px;
 }
@@ -82,6 +85,22 @@ body > nav {
 body > svg { display: none }
 
 details .grid { padding-top: 1rem }
+
+footer {
+    background: #eee;
+    border-top: 1px solid var(--color);
+    margin: 0 calc(50% - 50vw);
+}
+
+footer a { margin: .5rem }
+
+footer div, header div { flex: 1 }
+
+footer nav {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+}
 
 h1 { font-size: 1.75rem }
 h2 { font-size: 1.50rem }
@@ -116,7 +135,6 @@ header img {
     width: 1.75rem;
 }
 
-header div { flex: 1 }
 header nav { display: flex }
 
 header svg {
@@ -126,6 +144,7 @@ header svg {
 
 main {
     display: grid;
+    flex: 1;
     grid-gap: 1rem;
     grid-template-columns: minmax(0, 1fr);
     padding: 1rem;
