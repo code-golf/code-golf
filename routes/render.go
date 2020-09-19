@@ -10,6 +10,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"syscall"
 
@@ -63,6 +64,7 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 
 func init() {
 	_, dev = syscall.Getenv("DEV")
+	uppercaseProps := regexp.MustCompile(`{{.+?[A-Z].*?}}`)
 
 	if err := filepath.Walk("views", func(file string, info os.FileInfo, err error) error {
 		if err != nil || info.IsDir() {
@@ -89,6 +91,14 @@ func init() {
 
 			css[name[len("css/"):]] = template.CSS(data)
 		case ".html":
+			// Minify templates without uppsercase properties.
+			// The real fix is https://github.com/tdewolff/minify/issues/35
+			if !uppercaseProps.MatchString(data) {
+				if data, err = min.HTML(data); err != nil {
+					return err
+				}
+			}
+
 			tmpl = template.Must(tmpl.New(name).Parse(data))
 		case ".js":
 			if data, err = min.JS(data); err != nil {
