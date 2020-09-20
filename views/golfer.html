@@ -6,44 +6,46 @@
 {{ end }}
 
 {{ with .GolferInfo }}
-<div class=grid id=profile>
-    <img src="//avatars.githubusercontent.com/{{ .Name }}?s=192">
-    <h1>{{ .Name }}</h1>
-    <p>{{ comma .Points }} points
-    <p>🥇 {{ .Gold }} • 🥈 {{ .Silver }} • 🥉 {{ .Bronze }}
-</div>
+    <div class=grid id=profile>
+        <img src="//avatars.githubusercontent.com/{{ .Name }}?s=192">
+        <h1>{{ .Name }}</h1>
+        <p>{{ comma .Points }} points
+        <p>🥇 {{ .Gold }} • 🥈 {{ .Silver }} • 🥉 {{ .Bronze }}
+    </div>
 
-<div id=badges>
-{{ if .Admin }}
-    <div><p>🔑<p class=orange>Admin</div>
-{{ end }}
+    <div id=badges>
+    {{ if .Admin }}
+        <div><p>🔑<p class=orange>Admin</div>
+    {{ end }}
+    {{ if .Sponsor }}
+        <div><p>💰<p class=yellow>Sponsor</div>
+    {{ end }}
+        <div>
+            <p>⛳
+            <p class=red>{{ .Holes }} / {{ .HolesTotal }} Holes
+        </div>
+        <div>
+            <p>🔣
+            <p class=green>{{ .Langs }} / {{ .LangsTotal }} Languages
+        </div>
+        <div>
+            <p>🏆
+            <p class=blue>{{ .Trophies }} / {{ .TrophiesTotal }} Trophies
+        </div>
+        <!-- TODO <div><p>📅<p class=yellow>Teed off {{ time .TeedOff }}</div>-->
+    </div>
 
-{{ if .Sponsor }}
-    <div><p>💰<p class=yellow>Sponsor</div>
-{{ end }}
+    <nav class=nav>
+        {{ $slug := print "/golfers/" .Name }}
+        <a {{ if ne $path $slug }} href="{{ $slug }}" {{ end }}>Trophies</a>
 
-    <div><p>⛳<p class=red>{{ .Holes }} / {{ .HolesTotal }} Holes</div>
+        {{ $slug = print $slug "/holes" }}
+        <a {{ if ne $path $slug }} href="{{ $slug }}" {{ end }}>Holes</a>
 
-    <div><p>🔣<p class=green>{{ .Langs }} / {{ .LangsTotal }} Languages</div>
-
-    <div><p>🏆<p class=blue>{{ .Trophies }} / {{ .TrophiesTotal }} Trophies</div>
-
-<!-- TODO
-    <div><p>📅<p class=yellow>Teed off {{ time .TeedOff }}</div>
-    -->
-</div>
-
-<nav class=nav>
-    {{ $slug := print "/golfers/" .Name }}
-    <a {{ if ne $path $slug }} href="{{ $slug }}" {{ end }}>Trophies</a>
-
-    {{ $slug = print $slug "/holes" }}
-    <a {{ if ne $path $slug }} href="{{ $slug }}" {{ end }}>Holes</a>
-
-{{ if $me }}
-    <a {{ if ne $path "/golfer/settings" }} href=/golfer/settings {{ end }}>
-        Settings
-    </a>
-{{ end }}
+    {{ if $me }}
+        <a {{ if ne $path "/golfer/settings" }} href=/golfer/settings {{ end }}>
+            Settings
+        </a>
+    {{ end }}
 </nav>
 {{ end }}
