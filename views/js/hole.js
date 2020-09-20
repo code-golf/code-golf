@@ -17,6 +17,14 @@ let scoring = beta ? Math.max(scorings.indexOf(localStorage.getItem('scoring')),
 let setCodeForLangAndSolution;
 let latestSubmissionID = 0;
 
+function getAutoSaveKey(lang, solution) {
+    return `code_${hole}_${lang}_${solution}`;
+}
+
+function getSolutionCode(lang, solution) {
+    return lang in solutions[solution] ? solutions[solution][lang] : '';
+}
+
 function getOtherScoring(value) {
     return beta ? 1 - value : value;
 }
@@ -52,9 +60,9 @@ onload = () => {
         }
 
         // Avoid future conflicts by only storing code locally that's different from the server's copy.
-        const serverCode = lang in solutions[solution] ? solutions[solution][lang] : '';
+        const serverCode = getSolutionCode(lang, solution);
 
-        const key = `code_${hole}_${lang}_${solution}`;
+        const key = getAutoSaveKey(lang, solution);
         if (code && code != serverCode)
             localStorage.setItem(key, code);
         else
@@ -65,8 +73,8 @@ onload = () => {
         document.cookie = 'hide-details=' + (details.open ? ';Max-Age=0' : '');
 
     setCodeForLangAndSolution = () => {
-        const code = lang in solutions[solution] ? solutions[solution][lang] : '';
-        const previousCode = localStorage.getItem(`code_${hole}_${lang}_${solution}`);
+        const code = getSolutionCode(lang, solution);
+        const autoSaveCode = localStorage.getItem(getAutoSaveKey(lang, solution));
 
         cm.setOption('matchBrackets', lang != 'brainfuck' && lang != 'j');
         cm.setOption('mode', {name: 'text/x-' + lang, startOpen: true});
@@ -74,9 +82,9 @@ onload = () => {
 
         refreshScores();
 
-        if (previousCode && code != previousCode && (!code ||
+        if (autoSaveCode && code != autoSaveCode && (!code ||
             confirm('Your local copy of the code is different than the remote one. Do you want to restore the local version?')))
-            cm.setValue(previousCode);
+            cm.setValue(autoSaveCode);
 
         for (let info of document.querySelectorAll('main .info'))
             info.style.display = info.classList.contains(lang) ? 'block' : '';
@@ -125,7 +133,17 @@ onload = () => {
                 // Don't need to keep solution in local storage because it's stored on the site.
                 // This prevents conflicts when the solution is improved on another browser.
                 if (data.LoggedIn)
-                    localStorage.removeItem(`code_${hole}_${codeLang}_${i}`);
+                    localStorage.removeItem(getAutoSaveKey(codeLang, i));
+            }
+
+            if (data.LoggedIn) {
+                // If the auto-saved code matches the other solution, remove it to avoid prompting the user to restore it.
+                const autoSaveCode = localStorage.getItem(getAutoSaveKey(codeLang, i));
+                for (let j = 0; j < scorings.length; j++) {
+                    if (getSolutionCode(codeLang, j) == autoSaveCode) {
+                        localStorage.removeItem(getAutoSaveKey(codeLang, i));
+                    }
+                }
             }
         }
 
