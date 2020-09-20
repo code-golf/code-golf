@@ -1,5 +1,9 @@
+{{ $me   := false }}
 {{ $path := .Path }}
-{{ $me   := eq .Golfer.ID .GolferInfo.ID }}
+
+{{ if .Golfer }}
+    {{ $me = eq .Golfer.ID .GolferInfo.ID }}
+{{ end }}
 
 {{ with .GolferInfo }}
 <div class=grid id=profile>
