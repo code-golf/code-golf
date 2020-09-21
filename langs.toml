@@ -114,6 +114,6 @@ version = '1.46.0'
 website = '//www.rust-lang.org'
 
 [Swift]
-size    = '909 MiB'
-version = '5.2.5'
+size    = '849 MiB'
+version = '5.3'
 website = '//swift.org'
