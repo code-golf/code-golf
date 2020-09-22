@@ -32,6 +32,8 @@ func getAnswer(holeID, code string) ([]string, string) {
 		args, answer = brainfuck()
 	case "css-colors":
 		args, answer = cssColors()
+	case "emojify":
+		args, answer = emojify()
 	case "lucky-tickets":
 		args, answer = luckyTickets()
 	case "morse-decoder", "morse-encoder":

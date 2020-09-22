@@ -636,32 +636,39 @@ preamble = '''
 [Emojify]
 category   = 'Transform'
 experiment = 262
+links = [
+    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/List_of_emoticons' },
+]
 preamble   = '''
+Given each of the following ASCII emoticons print the corresponding Unicode
+emoji.
+
 <div id=emojify>
-    <pre>🙂&nbsp; :-)</pre>
-    <pre>😀&nbsp; :-D</pre>
-    <pre>🙁&nbsp; :-(</pre>
-    <pre>😢&nbsp;:'-(</pre>
-    <pre>😂&nbsp;:'-)</pre>
-    <pre>😮&nbsp; :-O</pre>
-    <pre>😗&nbsp; :-*</pre>
-    <pre>😉&nbsp; ;-)</pre>
-    <pre>😛&nbsp; :-P</pre>
-    <pre>😜&nbsp; ;-P</pre>
-    <pre>😕&nbsp; :-/</pre>
-    <pre>😐&nbsp; :-|</pre>
-    <pre>🤐&nbsp; :-#</pre>
-    <pre>😇&nbsp;O:-)</pre>
-    <pre>😶&nbsp; :- </pre>
-    <pre>😅&nbsp;':-D</pre>
-    <pre>😓&nbsp;':-(</pre>
-    <pre>😝&nbsp; X-P</pre>
-    <pre>😆&nbsp; X-)</pre>
-    <pre>😡&nbsp; :-@</pre>
-    <pre>😈&nbsp;]:-)</pre>
-    <pre>👿&nbsp;]:-(</pre>
-    <pre>😎&nbsp; B-)</pre>
-    <pre>😏&nbsp; :-J</pre>
+    <div>😀<pre> :-D</pre></div>
+    <div>🙂<pre> :-)</pre></div>
+    <div>😐<pre> :-|</pre></div>
+    <div>🙁<pre> :-(</pre></div>
+    <div>😕<pre> :-\</pre></div>
+    <div>😗<pre> :-*</pre></div>
+    <div>😮<pre> :-O</pre></div>
+    <div>🤐<pre> :-#</pre></div>
+    <div>😅<pre>':-D</pre></div>
+    <div>😓<pre>':-(</pre></div>
+    <div>😂<pre>:'-)</pre></div>
+    <div>😢<pre>:'-(</pre></div>
+    <div>😛<pre> :-P</pre></div>
+    <div>😜<pre> ;-P</pre></div>
+    <div>😝<pre> X-P</pre></div>
+    <div>😆<pre> X-)</pre></div>
+    <div>😇<pre>O:-)</pre></div>
+    <div>😉<pre> ;-)</pre></div>
+    <div>😳<pre> :-$</pre></div>
+    <div>😶<pre> :- </pre></div>
+    <div>😎<pre> B-)</pre></div>
+    <div>😏<pre> :-J</pre></div>
+    <div>😈<pre>}:-)</pre></div>
+    <div>👿<pre>}:-(</pre></div>
+    <div>😡<pre> :-@</pre></div>
 </div>
 '''
 
