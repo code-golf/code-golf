@@ -638,20 +638,20 @@ category   = 'Transform'
 experiment = 262
 preamble   = '''
 <div id=emojify>
-    <pre>🙂&nbsp; :‑)</pre>
+    <pre>🙂&nbsp; :-)</pre>
     <pre>😀&nbsp; :-D</pre>
     <pre>🙁&nbsp; :-(</pre>
-    <pre>😢&nbsp;:'‑(</pre>
-    <pre>😂&nbsp;:'‑)</pre>
-    <pre>😮&nbsp; :‑O</pre>
+    <pre>😢&nbsp;:'-(</pre>
+    <pre>😂&nbsp;:'-)</pre>
+    <pre>😮&nbsp; :-O</pre>
     <pre>😗&nbsp; :-*</pre>
-    <pre>😉&nbsp; ;‑)</pre>
-    <pre>😛&nbsp; :‑P</pre>
-    <pre>😜&nbsp; ;‑P</pre>
-    <pre>😕&nbsp; :‑/</pre>
-    <pre>😐&nbsp; :‑|</pre>
-    <pre>🤐&nbsp; :‑#</pre>
-    <pre>😇&nbsp;O:‑)</pre>
+    <pre>😉&nbsp; ;-)</pre>
+    <pre>😛&nbsp; :-P</pre>
+    <pre>😜&nbsp; ;-P</pre>
+    <pre>😕&nbsp; :-/</pre>
+    <pre>😐&nbsp; :-|</pre>
+    <pre>🤐&nbsp; :-#</pre>
+    <pre>😇&nbsp;O:-)</pre>
     <pre>😶&nbsp; :- </pre>
     <pre>😅&nbsp;':-D</pre>
     <pre>😓&nbsp;':-(</pre>
@@ -661,7 +661,7 @@ preamble   = '''
     <pre>😈&nbsp;]:-)</pre>
     <pre>👿&nbsp;]:-(</pre>
     <pre>😎&nbsp; B-)</pre>
-    <pre>😏&nbsp; :‑J</pre>
+    <pre>😏&nbsp; :-J</pre>
 </div>
 '''
 
