@@ -156,7 +156,7 @@ onload = () => {
                 }
             }
             else {
-                // Autosave the best solution for each current scoring metric.
+                // Autosave the best solution for each scoring metric.
                 localStorage.setItem(getAutoSaveKey(codeLang, i), getSolutionCode(codeLang, i));
             }
         }
