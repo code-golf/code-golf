@@ -141,36 +141,30 @@ onload = () => {
 
                 // Don't need to keep solution in local storage because it's stored on the site.
                 // This prevents conflicts when the solution is improved on another browser.
-                if (loggedIn)
+                if (loggedIn && localStorage.getItem(getAutoSaveKey(codeLang, i)) == code)
                     localStorage.removeItem(getAutoSaveKey(codeLang, i));
             }
         }
 
-        if (loggedIn) {
-            for (let i = 0; i < scorings.length; i++) {
+        for (let i = 0; i < scorings.length; i++) {
+            if (loggedIn) {
                 // If the auto-saved code matches the other solution, remove it to avoid prompting the user to restore it.
                 const autoSaveCode = localStorage.getItem(getAutoSaveKey(codeLang, i));
                 for (let j = 0; j < scorings.length; j++) {
-                    if (getSolutionCode(codeLang, j) == autoSaveCode) {
+                    if (getSolutionCode(codeLang, j) == autoSaveCode)
                         localStorage.removeItem(getAutoSaveKey(codeLang, i));
-                    }
                 }
+            }
+            else {
+                // Autosave the best solution for each current scoring metric.
+                localStorage.setItem(getAutoSaveKey(codeLang, i), getSolutionCode(codeLang, i));
             }
         }
 
         // Automatically switch to the solution whose code matches the current code after a new solution is submitted.
         // Don't change scoring. refreshScores will update the solution picker.
-        if (beta && data.Pass && solutions[solution][lang] != code && solutions[getOtherScoring(solution)][lang] == code) {
-            if (!loggedIn) {
-                // Autosave the best solution for the current scoring metric, if applicable.
-                const previousCode = getSolutionCode(lang, solution);
-                if (previousCode && previousCode != code) {
-                    localStorage.setItem(getAutoSaveKey(codeLang, solution), previousCode);
-                }
-            }
-
+        if (beta && data.Pass && solutions[solution][codeLang] != code && solutions[getOtherScoring(solution)][codeLang] == code)
             setSolution(getOtherScoring(solution));
-        }
 
         document.querySelector('h2').innerText
             = data.Pass ? 'Pass 😀' : 'Fail ☹️';
@@ -251,7 +245,8 @@ async function refreshScores() {
         const autoSave1 = localStorage.getItem(getAutoSaveKey(lang, 1));
 
         // Only show the solution picker when both solutions are actually used.
-        if (code0 && code1 && code0 != code1 || autoSave0 && autoSave1 && autoSave0 != autoSave1) {
+        if (code0 && code1 && code0 != code1 || autoSave0 && autoSave1 && autoSave0 != autoSave1 ||
+            code0 && autoSave1 && code0 != autoSave1 || autoSave0 && code1 && autoSave0 != code1) {
             for (let i = 0; i < scorings.length; i++) {
                 let name = `Fewest ${scorings[i]}`;
 
