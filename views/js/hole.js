@@ -144,8 +144,10 @@ onload = () => {
                 if (loggedIn)
                     localStorage.removeItem(getAutoSaveKey(codeLang, i));
             }
+        }
 
-            if (loggedIn) {
+        if (loggedIn) {
+            for (let i = 0; i < scorings.length; i++) {
                 // If the auto-saved code matches the other solution, remove it to avoid prompting the user to restore it.
                 const autoSaveCode = localStorage.getItem(getAutoSaveKey(codeLang, i));
                 for (let j = 0; j < scorings.length; j++) {
