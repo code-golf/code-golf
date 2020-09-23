@@ -82,7 +82,7 @@ body > nav {
     z-index: 1;
 }
 
-body > svg { display: none }
+body > svg, .hide { display: none }
 
 details .grid { padding-top: 1rem }
 

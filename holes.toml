@@ -193,17 +193,14 @@ preamble = '''
 ['CSS Colors']
 category = 'Transform'
 preamble = '''
-<p>
-    Given each CSS color keyword print the corresponding hex value. The output
-    will be checked case-insensitively.
-
-<p>The full mapping is as follows:
-
-<svg id=symbols>
+<svg class=hide>
     <symbol id="color" viewBox="0 0 1 1" xmlns="http://www.w3.org/2000/symbol">
         <rect width="1" height="1"/>
     </symbol>
 </svg>
+
+Given each CSS color keyword print the corresponding hex value. The output
+will be checked case-insensitively. The full mapping is as follows:
 
 <div id=colors>
     <table>
