@@ -103,7 +103,7 @@ func init() {
 		case ".js":
 			// Skip because of https://github.com/tdewolff/minify/issues/333
 			if name != "js/admin/solutions" {
-				if data, err = min.JS(data); err != nil {
+				if data, err = min.JS("{" + data + "}"); err != nil {
 					return err
 				}
 			}
