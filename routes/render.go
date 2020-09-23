@@ -101,11 +101,9 @@ func init() {
 
 			tmpl = template.Must(tmpl.New(name).Parse(data))
 		case ".js":
-			// Skip because of https://github.com/tdewolff/minify/issues/333
-			if name != "js/admin/solutions" {
-				if data, err = min.JS("{" + data + "}"); err != nil {
-					return err
-				}
+			// Wrap in a block so top-level identifiers are minified.
+			if data, err = min.JS("{" + data + "}"); err != nil {
+				return err
 			}
 
 			js[name[len("js/"):]] = template.JS(data)
