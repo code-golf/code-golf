@@ -17,6 +17,13 @@ let scoring = beta ? Math.max(scorings.indexOf(localStorage.getItem('scoring')),
 let setCodeForLangAndSolution;
 let latestSubmissionID = 0;
 
+// Assume the user is logged in by default. At this point, it doesn't matter if the user is actually logged in,
+// because this is only used to prevent auto-saving submitted solutions for logged in users to avoid excessive
+// prompting to restore auto-saved solutions. The solutions dictionaries will initially be empty for users who are not
+// logged in, so the loggedIn state will not be used. By the time they are non-empty, the loggedIn state will have been
+// updated.
+let loggedIn = true;
+
 function getAutoSaveKey(lang, solution) {
     return `code_${hole}_${lang}_${solution}`;
 }
@@ -63,7 +70,7 @@ onload = () => {
         const serverCode = getSolutionCode(lang, solution);
 
         const key = getAutoSaveKey(lang, solution);
-        if (code && code != serverCode)
+        if (code && (code != serverCode || !loggedIn))
             localStorage.setItem(key, code);
         else
             localStorage.removeItem(key);
@@ -73,8 +80,8 @@ onload = () => {
         document.cookie = 'hide-details=' + (details.open ? ';Max-Age=0' : '');
 
     setCodeForLangAndSolution = () => {
-        const code = getSolutionCode(lang, solution);
-        const autoSaveCode = localStorage.getItem(getAutoSaveKey(lang, solution));
+        const autoSaveCode = localStorage.getItem(getAutoSaveKey(lang, solution)) || '';
+        const code = getSolutionCode(lang, solution) || autoSaveCode;
 
         cm.setOption('matchBrackets', lang != 'brainfuck' && lang != 'j');
         cm.setOption('mode', {name: 'text/x-' + lang, startOpen: true});
@@ -82,8 +89,8 @@ onload = () => {
 
         refreshScores();
 
-        if (autoSaveCode && code != autoSaveCode && (!code ||
-            confirm('Your local copy of the code is different than the remote one. Do you want to restore the local version?')))
+        if (autoSaveCode && code != autoSaveCode &&
+            confirm('Your local copy of the code is different than the remote one. Do you want to restore the local version?'))
             cm.setValue(autoSaveCode);
 
         for (let info of document.querySelectorAll('main .info'))
@@ -122,6 +129,8 @@ onload = () => {
         });
 
         const data = await res.json();
+        loggedIn = data.LoggedIn;
+
         if (submissionID != latestSubmissionID)
             return;
 
@@ -132,24 +141,29 @@ onload = () => {
 
                 // Don't need to keep solution in local storage because it's stored on the site.
                 // This prevents conflicts when the solution is improved on another browser.
-                if (data.LoggedIn)
+                if (loggedIn && localStorage.getItem(getAutoSaveKey(codeLang, i)) == code)
                     localStorage.removeItem(getAutoSaveKey(codeLang, i));
             }
+        }
 
-            if (data.LoggedIn) {
+        for (let i = 0; i < scorings.length; i++) {
+            if (loggedIn) {
                 // If the auto-saved code matches the other solution, remove it to avoid prompting the user to restore it.
                 const autoSaveCode = localStorage.getItem(getAutoSaveKey(codeLang, i));
                 for (let j = 0; j < scorings.length; j++) {
-                    if (getSolutionCode(codeLang, j) == autoSaveCode) {
+                    if (getSolutionCode(codeLang, j) == autoSaveCode)
                         localStorage.removeItem(getAutoSaveKey(codeLang, i));
-                    }
                 }
+            }
+            else {
+                // Autosave the best solution for each scoring metric.
+                localStorage.setItem(getAutoSaveKey(codeLang, i), getSolutionCode(codeLang, i));
             }
         }
 
         // Automatically switch to the solution whose code matches the current code after a new solution is submitted.
         // Don't change scoring. refreshScores will update the solution picker.
-        if (beta && data.Pass && solutions[solution][lang] != code && solutions[getOtherScoring(solution)][lang] == code)
+        if (beta && data.Pass && solutions[solution][codeLang] != code && solutions[getOtherScoring(solution)][codeLang] == code)
             setSolution(getOtherScoring(solution));
 
         document.querySelector('h2').innerText
@@ -225,8 +239,14 @@ async function refreshScores() {
         while (solutionPicker.firstChild)
             solutionPicker.removeChild(solutionPicker.firstChild);
 
+        const code0 = getSolutionCode(lang, 0);
+        const code1 = getSolutionCode(lang, 1);
+        const autoSave0 = localStorage.getItem(getAutoSaveKey(lang, 0));
+        const autoSave1 = localStorage.getItem(getAutoSaveKey(lang, 1));
+
         // Only show the solution picker when both solutions are actually used.
-        if (lang in solutions[0] && lang in solutions[1] && solutions[0][lang] != solutions[1][lang]) {
+        if (code0 && code1 && code0 != code1 || autoSave0 && autoSave1 && autoSave0 != autoSave1 ||
+            code0 && autoSave1 && code0 != autoSave1 || autoSave0 && code1 && autoSave0 != code1) {
             for (let i = 0; i < scorings.length; i++) {
                 let name = `Fewest ${scorings[i]}`;
 
