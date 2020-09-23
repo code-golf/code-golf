@@ -2,60 +2,60 @@
 
 use TOML::Thumb;
 
-sub MAIN(Bool :$no-push, *@langs) {
-    chdir $*PROGRAM.dirname;
+unit sub MAIN(Bool :$no-push, *@langs);
 
-    my %langs = from-toml slurp 'langs.toml';
+chdir $*PROGRAM.dirname;
 
-    if my $unknown = @langs ∖ %langs {
-        note "Unknown langs: $unknown";
-        exit 1;
-    }
+my %langs = from-toml slurp 'langs.toml';
 
-    for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
-        my $id  = $name.lc.subst: '#', '-sharp';
-        my $img = "codegolf/lang-$id";
-
-        # V8 has a pre-builder target too.
-        run «docker build --pull --target pre-builder -t "{$img}-pre-builder" "langs/$id"»
-            if $id eq 'javascript';
-
-        # Tag the builder stage so "docker system prune" won't remove it.
-        run «docker build --pull --target builder -t "{$img}-builder" "langs/$id"»;
-        run «docker build -t $img "langs/$id"»;
-        run «docker push $img» unless $no-push;
-
-        # Size.
-        my $proc = run :out,
-            «docker images --format '{{.Size}}' -f "reference={$img}:latest"»;
-
-        $proc.sink;
-
-        %lang<size> = $proc.out.slurp(:close).chomp.subst: /(.)B$/, {" {$0.uc}iB"};
-
-        # Version.
-        ( $proc = run «docker run --rm --tmpfs /tmp $img», :out ).sink;
-
-        my $ver = $proc.out.slurp(:close).chomp.trans: "\n" => ' ';
-
-        given $name {
-            my $digits = $ver ~~ / <[\d.]>+ \d+ /;
-
-            when 'C#'
-               | 'F#'
-               | 'PowerShell' { }
-            when 'C'          { $ver = "Tiny C Compiler $digits" }
-            when 'COBOL'      { $ver = "GnuCOBOL $digits" }
-            when 'Fortran'    { $ver = "GNU Fortran $digits" }
-            when 'Haskell'    { $ver = "Glasgow Haskell Compiler $digits" }
-            when 'JavaScript' { $ver = "V8 $digits" }
-            when 'Lisp'       { $ver = "GNU CLISP $digits" }
-            when 'Raku'       { $ver ~~ s:g/ 'This is ' | 'version ' | 'built ' | \.$ // }
-            default           { $ver = $digits }
-        }
-
-        %lang<version> = $ver;
-    }
-
-    spurt 'langs.toml', to-toml %langs;
+if my $unknown = @langs ∖ %langs {
+    note "Unknown langs: $unknown";
+    exit 1;
 }
+
+for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
+    my $id  = $name.lc.subst: '#', '-sharp';
+    my $img = "codegolf/lang-$id";
+
+    # V8 has a pre-builder target too.
+    run «docker build --pull --target pre-builder -t "{$img}-pre-builder" "langs/$id"»
+        if $id eq 'javascript';
+
+    # Tag the builder stage so "docker system prune" won't remove it.
+    run «docker build --pull --target builder -t "{$img}-builder" "langs/$id"»;
+    run «docker build -t $img "langs/$id"»;
+    run «docker push $img» unless $no-push;
+
+    # Size.
+    my $proc = run :out,
+        «docker images --format '{{.Size}}' -f "reference={$img}:latest"»;
+
+    $proc.sink;
+
+    %lang<size> = $proc.out.slurp(:close).chomp.subst: /(.)B$/, {" {$0.uc}iB"};
+
+    # Version.
+    ( $proc = run «docker run --rm --tmpfs /tmp $img», :out ).sink;
+
+    my $ver = $proc.out.slurp(:close).chomp.trans: "\n" => ' ';
+
+    given $name {
+        my $digits = $ver ~~ / <[\d.]>+ \d+ /;
+
+        when 'C#'
+            | 'F#'
+            | 'PowerShell' { }
+        when 'C'          { $ver = "Tiny C Compiler $digits" }
+        when 'COBOL'      { $ver = "GnuCOBOL $digits" }
+        when 'Fortran'    { $ver = "GNU Fortran $digits" }
+        when 'Haskell'    { $ver = "Glasgow Haskell Compiler $digits" }
+        when 'JavaScript' { $ver = "V8 $digits" }
+        when 'Lisp'       { $ver = "GNU CLISP $digits" }
+        when 'Raku'       { $ver ~~ s:g/ 'This is ' | 'version ' | 'built ' | \.$ // }
+        default           { $ver = $digits }
+    }
+
+    %lang<version> = $ver;
+}
+
+spurt 'langs.toml', to-toml %langs;
