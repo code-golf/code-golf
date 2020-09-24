@@ -82,7 +82,6 @@ func init() {
 
 		switch ext {
 		case ".css":
-			data = strings.ReplaceAll(data, "fontWoff2", fontWoff2Path)
 			data = strings.ReplaceAll(data, "twemojiWoff2", twemojiWoff2Path)
 
 			if data, err = min.CSS(data); err != nil {

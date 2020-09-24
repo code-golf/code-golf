@@ -16,12 +16,6 @@
                    U+1F900-1F9FF; /* Supplemental Symbols and Pictographs */
 }
 
-@font-face {
-    font-family: font;
-    src: url(fontWoff2);
-    unicode-range: U+F???;
-}
-
 :root {
     --background: #FDFDFD;
     --color:      #343A40;
@@ -60,7 +54,7 @@ body {
     color: var(--color);
     display: flex;
     flex-direction: column;
-    font: 16px emoji, font, system-ui, -apple-system, sans-serif;
+    font: 16px emoji, system-ui, -apple-system, sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
 }
@@ -299,6 +293,12 @@ thead th {
 .card p {
     align-self: start;
     white-space: normal;
+}
+
+.card svg {
+    fill: var(--color);
+    height: 1rem;
+    width: 1rem;
 }
 
 .color:nth-of-type(6n+1), .red    { background: var(--red)    }

@@ -1,6 +1,0 @@
-U+F074 # random
-U+F11B # gamepad
-U+F162 # sort-numeric-down
-U+F53F # palette
-U+F544 # robot
-U+F698 # square-root-alt

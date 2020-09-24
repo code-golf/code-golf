@@ -45,6 +45,15 @@
     </div>
 {{ end }}
 
+<svg>
+    {{ symbol "brush" }}
+    {{ symbol "calculator" }}
+    {{ symbol "cpu" }}
+    {{ symbol "joystick" }}
+    {{ symbol "shuffle" }}
+    {{ symbol "sort-numeric-down" }}
+</svg>
+
 <main id=index>
     <nav class="nav span">
     {{ $sort := .Data.Sort }}
@@ -62,7 +71,7 @@
 {{ range .Data.Cards }}
     <a class="card {{ .Hole.CategoryColor }}" href={{ .Hole.ID }} title="{{ .Hole.Name }} ({{ .Hole.Category }})">
         <h2>{{ .Hole.Name }}</h2>
-        <span>{{ .Hole.CategoryIcon }}</span>
+        <svg><use href="#{{ .Hole.CategoryIcon }}"/></svg>
         <span class=right>
             {{ with .Rank }}{{ comma . }}<sup>{{ ord . }}</sup> of{{ end }}
             {{ comma .Golfers }}

@@ -72,22 +72,22 @@ func init() {
 		switch hole.Category {
 		case "Art":
 			List[i].CategoryColor = "red"
-			List[i].CategoryIcon = "\uf53f"
+			List[i].CategoryIcon = "brush"
 		case "Computing":
 			List[i].CategoryColor = "orange"
-			List[i].CategoryIcon = "\uf544"
+			List[i].CategoryIcon = "cpu"
 		case "Gaming":
 			List[i].CategoryColor = "yellow"
-			List[i].CategoryIcon = "\uf11b"
+			List[i].CategoryIcon = "joystick"
 		case "Mathematics":
 			List[i].CategoryColor = "green"
-			List[i].CategoryIcon = "\uf698"
+			List[i].CategoryIcon = "calculator"
 		case "Sequence":
 			List[i].CategoryColor = "blue"
-			List[i].CategoryIcon = "\uf162"
+			List[i].CategoryIcon = "sort-numeric-down"
 		case "Transform":
 			List[i].CategoryColor = "purple"
-			List[i].CategoryIcon = "\uf074"
+			List[i].CategoryIcon = "shuffle"
 		}
 
 		ByID[hole.ID] = List[i]

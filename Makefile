@@ -9,7 +9,6 @@ package routes
 
 import "net/http"
 
-const fontWoff2Path    = ""
 const holeJsPath       = ""
 const twemojiWoff2Path = ""
 
@@ -85,13 +84,6 @@ font:
 	@id=`docker create code-golf-font`;                                                 \
 	    docker cp "$$id:twemoji-colr/build/Twemoji Mozilla.woff2" assets/twemoji.woff2; \
 	    docker rm $$id
-
-legacy-font:
-	@pyftsubset ~/Downloads/fontawesome-pro-5.14.0-web/webfonts/fa-light-300.ttf \
-	    --flavor=woff2                                                           \
-	    --no-hinting                                                             \
-	    --output-file=assets/font.woff2                                          \
-	    --unicodes-file=font-subset.txt
 
 lint:
 # FIXME Stub out assets if it doesn't yet exist.
