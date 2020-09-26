@@ -34,19 +34,19 @@
             {{ svg "logo" }}
         </a>
         <a {{ if ne .Path "/about" }} href=/about title=About {{ end }}>
-            {{ svg "question-circle-light" }}
+            {{ svg "question-circle" }}
         </a>
         <a {{ if ne .Path "/ideas" }} href=/ideas title=Ideas {{ end }}>
             {{ svg "lightbulb-light" }}
         </a>
         <a {{ if not (hasPrefix .Path "/recent/") }} href=/recent/all-langs title="Recent Solutions" {{ end }}>
-            {{ svg "clock-light" }}
+            {{ svg "clock" }}
         </a>
         <a {{ if not (hasPrefix .Path "/scores/") }} href=/scores/all-holes/all-langs title=Scores {{ end }}>
-            {{ svg "list-ol-light" }}
+            {{ svg "trophy" }}
         </a>
         <a {{ if ne .Path "/stats" }} href=/stats title=Statistics {{ end }}>
-            {{ svg "chart-area-light" }}
+            {{ svg "graph-up" }}
         </a>
         <div></div>
     {{ if .Golfer }}
@@ -69,7 +69,7 @@
 
 {{ if .Beta }}
     <div class=alert>
-        {{ svg "exclamation-circle-light" }}
+        {{ svg "exclamation-circle" }}
         <p>
             This is the beta version of Code Golf for testing new features.
             The database is periodically wiped and stability is not guaranteed.

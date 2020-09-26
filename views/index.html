@@ -19,7 +19,7 @@
 
 {{ with .Data.Fails }}
     <div class=alert>
-        {{ svg "exclamation-circle-light" }}
+        {{ svg "exclamation-circle" }}
         The following solutions of yours have been marked as failing and
         no longer contribute to scoring; please update them to pass:
         <ul>
@@ -35,7 +35,7 @@
 
 {{ if not .Golfer }}
     <div class=info>
-        {{ svg "info-circle-light" }}
+        {{ svg "info-circle" }}
         <p>
             Code Golf is a game designed to let you show off your code-fu by
             solving problems in the least number of characters.
