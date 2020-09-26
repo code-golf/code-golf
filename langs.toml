@@ -99,8 +99,8 @@ version = '3.8.5'
 website = '//www.python.org'
 
 [Raku]
-size    = '48.8 MiB'
-version = 'Rakudo 2020.08.2 on MoarVM 2020.08 implementing Raku 6.d'
+size    = '48.5 MiB'
+version = 'Rakudo 2020.09 on MoarVM 2020.09 implementing Raku 6.d'
 website = '//raku.org'
 
 [Ruby]
