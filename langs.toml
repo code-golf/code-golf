@@ -60,7 +60,7 @@ website = '//v8.dev'
 
 [Julia]
 size    = '284 MiB'
-version = '1.5.1'
+version = '1.5.2'
 website = '//julialang.org'
 
 [Lisp]
