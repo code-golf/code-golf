@@ -1,5 +1,5 @@
 main {
-    grid-gap: 0;
+    gap: 0;
     grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
     padding: 0;
 }
@@ -25,7 +25,7 @@ progress::-webkit-progress-value { background: var(--blue) }
 
 .trophy {
     display: grid;
-    grid-gap: .5rem 1.25rem;
+    gap: .5rem 1.25rem;
     grid-template: min-content 1fr min-content / min-content 1fr;
     padding: 1.25rem;
 }

@@ -140,7 +140,7 @@ main {
     align-content: start;
     display: grid;
     flex: 1;
-    grid-gap: 1rem;
+    gap: 1rem;
     grid-template-columns: minmax(0, 1fr);
     padding: 1rem;
 }
@@ -213,7 +213,7 @@ thead th {
 .alert, .hacktoberfest, .info, .success {
     border: 1px solid var(--color);
     display: grid;
-    grid-gap: .5rem;
+    gap: .5rem;
     margin: 1rem 1rem 0;
     padding: 1rem 1rem 1rem 3rem;
     position: relative;
@@ -272,7 +272,7 @@ thead th {
     border: 2px solid var(--color);
     color: var(--color);
     display: grid;
-    grid-gap: .5rem;
+    gap: .5rem;
     grid-template: min-content / 1fr min-content;
     height: 100%;
     padding: .5rem;
@@ -313,7 +313,7 @@ thead th {
 .grid {
     align-items: center;
     display: grid;
-    grid-gap: 1rem;
+    gap: 1rem;
 }
 
 .inactive { opacity: 0.6 }

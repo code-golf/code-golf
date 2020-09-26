@@ -1,5 +1,5 @@
 main {
-    grid-gap: .25rem;
+    gap: .25rem;
     grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
 }
 

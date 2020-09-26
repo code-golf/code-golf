@@ -2,13 +2,13 @@ details { margin: 1rem }
 
 details > div {
     display: grid;
-    grid-gap: 1.5rem 2rem;
+    gap: 1.5rem 2rem;
     grid-template-columns: repeat(auto-fill, minmax(18.5rem, 1fr));
     margin-top: 1rem;
 }
 
 main {
-    grid-gap: 0;
+    gap: 0;
     padding: 0;
 }
 
@@ -23,7 +23,7 @@ summary {
 
 .achievement {
     display: grid;
-    grid-gap: .5rem 1rem;
+    gap: .5rem 1rem;
     grid-template: min-content 1fr min-content
                  / min-content 1fr min-content;
 }

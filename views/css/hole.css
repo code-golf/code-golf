@@ -84,7 +84,7 @@ main .info {
 
 #emojify {
     display: grid;
-    grid-gap: .5rem;
+    gap: .5rem;
     grid-template-columns: repeat(auto-fill, minmax(4.5rem, 1fr));
 }
 

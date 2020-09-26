@@ -14,7 +14,7 @@ main {
 main div {
     border: 2px solid var(--color);
     display: grid;
-    grid-gap: .5rem;
+    gap: .5rem;
     padding: 1rem;
 }
 
@@ -37,8 +37,8 @@ ul {
 }
 
 .pie {
+    gap: 1rem !important;
     grid-column: span 2;
-    grid-gap: 1rem !important;
     grid-template-columns: 2fr 1fr;
 }
 
