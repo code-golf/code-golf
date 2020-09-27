@@ -82,9 +82,9 @@ func scoresAll(w http.ResponseWriter, r *http.Request) {
 		`WITH solution_lengths AS (
 		    SELECT hole,
 		           lang,
-                   scoring,
+		           scoring,
 		           login,
-		           chars strokes,
+		           chars,
 		           bytes,
 		           submitted
 		      FROM solutions
