@@ -1,8 +1,12 @@
 {{ template "header" . }}
 
-{{ $holeID   := .Data.HoleID }}
-{{ $langID   := .Data.LangID }}
-{{ $allHoles := eq $holeID "all-holes" }}
+{{ $beta         := .Beta }}
+{{ $holeID       := .Data.HoleID }}
+{{ $langID       := .Data.LangID }}
+{{ $scoring      := .Data.Scoring }}
+{{ $allHoles     := eq $holeID "all-holes" }}
+{{ $charsScoring := eq $scoring "chars" }}
+{{ $bytesScoring := eq $scoring "bytes" }}
 
 <main>
     <h1>
@@ -10,12 +14,12 @@
 
 {{ if .Data.Prev }}
     {{ if eq .Data.Prev 1 }}
-        <a class="btn orange" href="/scores/{{ $holeID }}/{{ $langID }}">
+        <a class="btn orange" href="/scores/{{ $holeID }}/{{ $langID }}/{{ $scoring }}">
             {{ svg "chevron-double-left-light" }}
             Prev
         </a>
     {{ else }}
-        <a class="btn orange" href="/scores/{{ $holeID }}/{{ $langID }}/{{ .Data.Prev }}">
+        <a class="btn orange" href="/scores/{{ $holeID }}/{{ $langID }}/{{ $scoring }}/{{ .Data.Prev }}">
             {{ svg "chevron-double-left-light" }}
             Prev
         </a>
@@ -29,7 +33,7 @@
     {{ end }}
 
     {{ if .Data.Next }}
-        <a class="btn orange" href="/scores/{{ $holeID }}/{{ $langID }}/{{ .Data.Next }}">
+        <a class="btn orange" href="/scores/{{ $holeID }}/{{ $langID }}/{{ $scoring }}/{{ .Data.Next }}">
             {{ svg "chevron-double-right-light" }}
             Next
         </a>
@@ -41,14 +45,14 @@
         {{ if eq $holeID "all-holes" }}
             <summary>All Holes</summary>
         {{ else }}
-            <a href="/scores/all-holes/{{ $langID }}">All Holes</a>
+            <a href="/scores/all-holes/{{ $langID }}/{{ $scoring }}">All Holes</a>
         {{ end }}
 
         {{ range .Data.Holes }}
             {{ if eq $holeID .ID }}
                 <summary>{{ .Name }}</summary>
             {{ else }}
-                <a href="/scores/{{ .ID }}/{{ $langID }}">{{ .Name }}</a>
+                <a href="/scores/{{ .ID }}/{{ $langID }}/{{ $scoring }}">{{ .Name }}</a>
             {{ end }}
         {{ end }}
     </details>
@@ -57,14 +61,14 @@
         {{ if eq $langID "all-langs" }}
             <summary>All Langs</summary>
         {{ else }}
-            <a href="/scores/{{ $holeID }}/all-langs">All Langs</a>
+            <a href="/scores/{{ $holeID }}/all-langs/{{ $scoring }}">All Langs</a>
         {{ end }}
 
         {{ range .Data.Langs }}
             {{ if eq $langID .ID }}
                 <summary>{{ .Name }}</summary>
             {{ else }}
-                <a href="/scores/{{ $holeID }}/{{ .ID }}">{{ .Name }}</a>
+                <a href="/scores/{{ $holeID }}/{{ .ID }}/{{ $scoring }}">{{ .Name }}</a>
             {{ end }}
         {{ end }}
     </details>
@@ -75,9 +79,15 @@
                 <th>Rank
                 <th>Golfer
                 <th class=right>{{ if $allHoles }}Holes{{ else }}Lang{{ end }}
-                <th class=right>Points
-                <th class="right wide">Bytes
-                <th class="right wide">Chars
+                {{ if $beta }}
+                    <th class=center colspan=2>Points
+                    <th class="right wide"><a {{ if $bytesScoring }}href="chars" class="scoringPicker inactive"{{else}}class="scoringPicker"{{end}}>Chars</a>
+                    <th class="right wide"><a {{ if $charsScoring }}href="bytes" class="scoringPicker inactive"{{else}}class="scoringPicker"{{end}}>Bytes</a>
+                {{ else }}
+                    <th class=right>Points
+                    <th class="right wide">Bytes
+                    <th class="right wide">Chars
+                {{ end }}
                 <th class="right wide">Submitted
         <tbody>
         {{ $name := "" }}
@@ -93,9 +103,28 @@
                         <span>{{- .Login -}}</span>
                     </a>
                 <td class=right>{{ if $allHoles }}{{ .Holes }}{{ else }}{{ .Lang.Name }}{{ end }}
-                <td class=right>{{ comma .Points }}
-                <td class="right wide">{{ comma .Bytes }}
-                <td class="right wide">{{ comma .Chars }}
+                {{ if $beta }}
+                    <td class=right><span{{ if $bytesScoring }} class=inactive {{end}}>{{ comma .CharsPoints }}
+                    <td class=right><span{{ if $charsScoring }} class=inactive {{end}}>{{ comma .BytesPoints }}
+                    <td class="right wide">
+                    <span{{ if $bytesScoring }} class=inactive {{end}}
+                    {{ if ne .Chars 0 }}
+                        data-tooltip="Chars scoring is {{ comma .Chars }} chars, {{ comma .CharsBytes }} bytes.">{{ comma .Chars }}
+                    {{ else }}
+                        >&nbsp;
+                    {{ end }}
+                    <td class="right wide">
+                    <span{{ if $charsScoring }} class=inactive {{end}}
+                    {{ if ne .Bytes 0 }}
+                        data-tooltip="Bytes scoring is {{ comma .BytesChars }} chars, {{ comma .Bytes }} bytes.">{{ comma .Bytes }}
+                    {{ else }}
+                        >&nbsp;
+                    {{ end }}
+                {{ else }}
+                    <td class=right>{{ comma .CharsPoints }}
+                    <td class="right wide">{{ comma .Bytes }}
+                    <td class="right wide">{{ comma .Chars }}
+                {{ end }}
                 <td class="right wide">{{ time .Submitted }}
         {{- end -}}
     </table>

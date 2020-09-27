@@ -39,6 +39,58 @@
     margin: 0;
 }
 
+[data-tooltip] {
+    position: relative;
+    cursor: pointer;
+}
+[data-tooltip]:before,
+[data-tooltip]:after {
+    line-height: 1;
+    font-size: .9em;
+    pointer-events: none;
+    position: absolute;
+    box-sizing: border-box;
+    display: none;
+    opacity: 0;
+}
+/* Tooltip Arrow */
+[data-tooltip]:before {
+    content: "";
+    border: 10px solid transparent;
+    z-index: 100;
+    bottom: 100%;
+    border-bottom-width: 0;
+    border-top-color: var(--color);
+}
+/* Tooltip Content */
+[data-tooltip]:after {
+    content: attr(data-tooltip);
+    text-align: center;
+    min-width: 3em;
+    max-width: 21em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 6px 8px;
+    border-radius: 3px;
+    background: var(--color);
+    color: var(--background);
+    z-index: 99;
+    bottom: calc(100% + 10px);
+}
+[data-tooltip]:hover:before, [data-tooltip]:hover:after {
+    display: block;
+    opacity: 1;
+}
+[data-tooltip]::before, [data-tooltip]::after {
+    left: 50%;
+    -webkit-transform: translate(-50%, -4px);
+            transform: translate(-50%, -4px);
+}
+[data-tooltip=""]::after, [data-tooltip=""]::before {
+    display: none !important;
+}
+
 a { color: #07b }
 
 a:not(:hover) { text-decoration: none }
@@ -301,6 +353,8 @@ thead th {
     width: 1rem;
 }
 
+.center { text-align: center }
+
 .color:nth-of-type(6n+1), .red    { background: var(--red)    }
 .color:nth-of-type(6n+2), .orange { background: var(--orange) }
 .color:nth-of-type(6n+3), .yellow { background: var(--yellow) }
@@ -316,7 +370,8 @@ thead th {
     gap: 1rem;
 }
 
-.inactive { opacity: 0.6 }
+/* #85888c is 0.6 * #343A40 + 0.4 * #FFFFFF, because setting the opacity to 0.6 affects the tooltip. */
+.inactive { color: #85888c }
 
 /* TODO Need a dark version */
 .me { background: var(--light-green) !important }
@@ -353,6 +408,19 @@ thead th {
 }
 
 .right { text-align: right }
+
+.scoringPicker {
+    font-weight: normal;
+    padding: 0 .5rem;
+}
+
+.scoringPicker:not(.inactive) { color: var(--color) }
+
+.scoringPicker:hover,
+.scoringPicker:not([href]) {
+    background: var(--color);
+    color: var(--background);
+}
 
 .span { grid-column: 1 / -1 }
 

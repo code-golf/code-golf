@@ -41,18 +41,6 @@ main .info {
     padding: .5rem;
 }
 
-.scoringPicker {
-    font-weight: normal;
-    padding: 0 .5rem;
-    color: var(--color);
-}
-
-.scoringPicker:hover,
-.scoringPicker:not([href]) {
-    background: var(--color);
-    color: var(--background);
-}
-
 .text-red { color: var(--red) }
 
 #all { float: right }
