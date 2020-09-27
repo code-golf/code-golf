@@ -1,7 +1,8 @@
 package main
 
 // Update the local code-golf database with information from code.golf.
-// Instead of storing the actual solution code, store 'a' * strokes.
+// Instead of storing the actual solution code, a string with the same
+// number of codepoints and UTF-8 bytes is generated and stored.
 // This is helpful for working on features that affect the appearance of the
 // leaderboards, users page, recent page, and more.
 // Run this script after running 'make dev' to start the server.
@@ -23,7 +24,7 @@ import (
 
 type solution struct {
 	Hole, Lang, Scoring, Login, Submitted string
-	Strokes, Bytes                        int
+	Chars, Bytes                          int
 }
 
 // Create a string containing the given number of characters and UTF-8 encoded bytes.
@@ -101,7 +102,7 @@ func main() {
 	}
 
 	for index, info := range infoList {
-		code := makeCode(info.Strokes, info.Bytes)
+		code := makeCode(info.Chars, info.Bytes)
 
 		if _, err := tx.Exec(
 			"INSERT INTO code (code) VALUES ($1) ON CONFLICT DO NOTHING", code,

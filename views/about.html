@@ -55,12 +55,26 @@
             Some holes pass arguments, for those your program should read them
             from ARGV.
 
+{{ if .Beta }}
         <dt>How Are Solutions Scored?
         <dd>
-            The score of your solution is the count of the Unicode characters
-            in your source code. This means both “A” (U+0041 Latin Capital
-            Letter A) and “😉” (U+1F609 Winking Face) cost the same despite
-            the 1:4 ratio in byte count in UTF-8.
+            There are two scorings in use, chars and bytes. Chars is the number
+            of Unicode codepoints of a solution. Bytes is the number of bytes
+            of a solution encoded in UTF-8. Users may submit up to two
+            solutions per hole per language. This is handled automatically when
+            you enter two solutions and each minimizes a different scoring.
+            Each scoring has its own set of leaderboards. For the chars
+            scoring, both “A” (U+0041 Latin Capital Letter A) and “😉” (U+1F609
+            Winking Face) cost the same despite the 1:4 ratio in byte count in
+            UTF-8.
+{{ else }}
+    <dt>How Are Solutions Scored?
+        <dd>
+            The score of your solution is the count of the characters (Unicode
+            codepoints) in your source code. This means both “A” (U+0041 Latin
+            Capital Letter A) and “😉” (U+1F609 Winking Face) cost the same
+            despite the 1:4 ratio in byte count in UTF-8.
+{{ end }}
 
         <dt>How Is My Overall Score Computed?
         <dd>
@@ -72,6 +86,13 @@
         <dd>
             Yes. Execution time is limited to 5 seconds, CPU & RAM usage is
             unbounded but this will probably change soon.
+
+        <dt>Is there an API?
+        <dd>There is a read-only API that returns scores in JSON format. The
+            URL is<a href=/scores/all-holes/all-langs/all>
+            /scores/all-holes/all-langs/all</a>. Note that all-holes and
+            all-langs may be replaced by the names of specific holes and
+            languages.
 
         <dt>Can I See Other People's Solutions?
         <dd>
