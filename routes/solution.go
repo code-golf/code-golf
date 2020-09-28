@@ -57,7 +57,8 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		ToFile:   "Out",
 	})
 
-	if out.Pass && userID != 0 {
+	_, experimental := hole.ExperimentalByID[in.Hole]
+	if out.Pass && userID != 0 && !experimental {
 		if _, err := db.Exec(
 			"INSERT INTO code (code) VALUES ($1) ON CONFLICT DO NOTHING",
 			in.Code,
