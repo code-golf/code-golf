@@ -98,7 +98,7 @@ func Admin(w http.ResponseWriter, r *http.Request) {
 
 	rows, err = db.Query(
 		`SELECT time_zone, COUNT(*), COUNT(*) / SUM(COUNT(*)) OVER () * 100
-		   FROM users GROUP BY time_zone ORDER BY time_zone`,
+		   FROM users GROUP BY time_zone ORDER BY COUNT(*) DESC, time_zone`,
 	)
 	if err != nil {
 		panic(err)
