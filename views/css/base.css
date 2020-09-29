@@ -140,8 +140,6 @@ footer {
 
 footer a { margin: .5rem }
 
-footer div, header div { flex: 1 }
-
 footer nav {
     align-items: center;
     display: flex;
@@ -196,6 +194,8 @@ main {
     grid-template-columns: minmax(0, 1fr);
     padding: 1rem;
 }
+
+nav > :empty { flex: 1 }
 
 summary {
     background: var(--color);
@@ -386,9 +386,9 @@ thead th {
     white-space: nowrap;
 }
 
-.nav > .on,
-.nav > :hover,
-.nav > :not([href]) {
+.nav > a.on,
+.nav > a:hover,
+.nav > a:not([href]) {
     background: var(--color);
     color: var(--background);
 }
@@ -441,10 +441,7 @@ nav + main .sticky th { top: calc(5.75rem + 2px) }
     padding: 1rem;
 }
 
-#index .nav {
-    display: flex;
-    justify-content: flex-end;
-}
+#index .nav { display: flex }
 
 #me {
     position: relative;

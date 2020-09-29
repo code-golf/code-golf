@@ -56,6 +56,13 @@
 
 <main id=index>
     <nav class="nav span">
+    {{ if .Beta }}
+        <a href="?scoring=bytes">Bytes</a>
+        <a href="?scoring=chars">Chars</a>
+    {{ end }}
+
+        <div></div>
+
     {{ $sort := .Data.Sort }}
 
     {{ range .Data.Sorts }}
