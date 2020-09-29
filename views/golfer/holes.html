@@ -24,7 +24,7 @@
     {{ range $j, $lang := $langs }}
         {{ with index (index $ranks $hole.ID) $lang.ID }}
             <a class="{{ $lang.ID }} {{ colour . }}"
-                href="/scores/{{ $hole.ID }}/{{ $lang.ID }}"
+                href="/scores/{{ $hole.ID }}/{{ $lang.ID }}/chars"
                 title="View scores of {{ $hole.Name }} in {{ $lang.Name }}">
                 <svg><use href="#{{ $lang.ID }}"/></svg>
                 <span>{{ . }}<sup>{{ ord . }}</sup></span>

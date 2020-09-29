@@ -11,18 +11,21 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
+func getOtherScoring(scoring string) string {
+	if scoring == "chars" {
+		return "bytes"
+	}
+
+	return "chars"
+}
+
 func scoresMini(w http.ResponseWriter, r *http.Request, scoring string) {
 	var userID int
 	if golfer := session.Golfer(r); golfer != nil {
 		userID = golfer.ID
 	}
 
-	var otherScoring string
-	if scoring == "chars" {
-		otherScoring = "bytes"
-	} else {
-		otherScoring = "chars"
-	}
+	otherScoring := getOtherScoring(scoring)
 
 	var json []byte
 
@@ -32,6 +35,7 @@ func scoresMini(w http.ResponseWriter, r *http.Request, scoring string) {
 		           RANK()       OVER (ORDER BY `+scoring+`),
 		           user_id,
 		           `+scoring+`,
+		           `+otherScoring+` `+scoring+`_`+otherScoring+`,
 		           user_id = $1 me
 		      FROM solutions
 		      JOIN code ON code_id = id
@@ -41,7 +45,8 @@ func scoresMini(w http.ResponseWriter, r *http.Request, scoring string) {
 		       AND NOT failing
 		), other_scoring AS (
 		    SELECT user_id,
-		           `+otherScoring+`
+		           `+otherScoring+`,
+		           `+scoring+` `+otherScoring+`_`+scoring+`
 		      FROM solutions
 		      JOIN code ON code_id = id
 		     WHERE hole = $2
@@ -53,7 +58,9 @@ func scoresMini(w http.ResponseWriter, r *http.Request, scoring string) {
 		           login,
 		           me,
 		           chars,
-		           bytes
+		           bytes,
+		           chars_bytes,
+		           bytes_chars
 		      FROM leaderboard
 		      JOIN users on user_id = id
 		 LEFT JOIN other_scoring ON leaderboard.user_id = other_scoring.user_id
@@ -104,7 +111,7 @@ func scoresAll(w http.ResponseWriter, r *http.Request) {
 	w.Write(json)
 }
 
-// Scores serves GET /scores/{hole}/{lang}/{suffix}
+// Scores serves GET /scores/{hole}/{lang}/{scoring}/{suffix}
 func Scores(w http.ResponseWriter, r *http.Request) {
 	holeID := param(r, "hole")
 	langID := param(r, "lang")
@@ -129,40 +136,55 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	scoring := param(r, "scoring")
+	suffix := param(r, "suffix")
+
+	if scoring != "chars" && scoring != "bytes" && scoring != "all" && suffix == "" {
+		if scoring == "" {
+			http.Redirect(w, r, "/scores/"+holeID+"/"+langID+"/chars", http.StatusPermanentRedirect)
+			return
+		}
+
+		http.Redirect(w, r, "/scores/"+holeID+"/"+langID+"/chars/"+scoring, http.StatusPermanentRedirect)
+		return
+	}
+
+	if scoring == "all" {
+		if suffix != "" {
+			NotFound(w, r)
+			return
+		}
+
+		scoresAll(w, r)
+		return
+	}
+
 	type Score struct {
-		Bytes, Chars, Holes, Points, Rank int
-		Lang                              lang.Lang
-		Login                             string
-		Submitted                         time.Time
+		Bytes, Chars, BytesChars, CharsBytes, Holes, CharsPoints, BytesPoints, Rank int
+		Lang                                                                        lang.Lang
+		Login                                                                       string
+		Submitted                                                                   time.Time
 	}
 
 	data := struct {
-		HoleID, LangID string
-		Holes          []hole.Hole
-		Langs          []lang.Lang
-		Next, Prev     int
-		Scores         []Score
+		HoleID, LangID, Scoring string
+		Holes                   []hole.Hole
+		Langs                   []lang.Lang
+		Next, Prev              int
+		Scores                  []Score
 	}{
-		HoleID: holeID,
-		Holes:  hole.List,
-		LangID: langID,
-		Langs:  lang.List,
+		HoleID:  holeID,
+		Holes:   hole.List,
+		LangID:  langID,
+		Langs:   lang.List,
+		Scoring: scoring,
 	}
 
 	page := 1
 
-	if suffix := param(r, "suffix"); suffix != "" {
+	if suffix != "" {
 		if suffix == "mini" {
-			scoresMini(w, r, "chars")
-			return
-		}
-		if suffix == "minibytes" {
-			scoresMini(w, r, "bytes")
-			return
-		}
-
-		if suffix == "all" {
-			scoresAll(w, r)
+			scoresMini(w, r, scoring)
 			return
 		}
 
@@ -174,7 +196,7 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if page == 1 {
-			http.Redirect(w, r, "/scores/"+holeID+"/"+langID, http.StatusPermanentRedirect)
+			http.Redirect(w, r, "/scores/"+holeID+"/"+langID+"/"+scoring, http.StatusPermanentRedirect)
 			return
 		}
 	}
@@ -183,22 +205,25 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 		data.Prev = page - 1
 	}
 
-	var distinct, table, title string
+	var distinct, join, table, title string
 
 	if holeID == "all-holes" {
 		distinct = "DISTINCT ON (hole, user_id)"
 		table = "summed_leaderboard"
 	} else {
+		join = "AND l.lang = o.lang"
 		table = "scored_leaderboard"
 	}
+
+	otherScoring := getOtherScoring(scoring)
 
 	rows, err := session.Database(r).Query(
 		`WITH leaderboard AS (
 		  SELECT `+distinct+`
 		         hole,
 		         submitted,
-		         bytes,
-		         chars,
+		         `+scoring+`,
+		         `+otherScoring+` `+scoring+`_`+otherScoring+`,
 		         user_id,
 		         lang
 		    FROM solutions
@@ -206,47 +231,77 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 		   WHERE NOT failing
 		     AND $1 IN ('all-holes', hole::text)
 		     AND $2 IN ('all-langs', lang::text)
-		     AND scoring = 'chars'
-		ORDER BY hole, user_id, chars, submitted
-		), scored_leaderboard AS (
-		  SELECT hole,
-		         1 holes,
-		         ROUND(
-		             (COUNT(*) OVER (PARTITION BY hole) -
-		                RANK() OVER (PARTITION BY hole ORDER BY chars) + 1)
-		             * (1000.0 / COUNT(*) OVER (PARTITION BY hole))
-		         ) points,
-		         bytes,
-		         chars,
-		         submitted,
+		     AND scoring = $3
+		ORDER BY hole, user_id, `+scoring+`, submitted
+		), other_scoring AS (
+		  SELECT `+distinct+`
+		         hole,
+		         `+otherScoring+`,
+		         `+scoring+` `+otherScoring+`_`+scoring+`,
 		         user_id,
 		         lang
-		    FROM leaderboard
+		    FROM solutions
+		    JOIN code ON code_id = id
+		   WHERE NOT failing
+		     AND $1 IN ('all-holes', hole::text)
+		     AND $2 IN ('all-langs', lang::text)
+		     AND scoring = $4
+		ORDER BY hole, user_id, `+otherScoring+`
+		), scored_leaderboard AS (
+		  SELECT l.hole,
+		         1 holes,
+		         ROUND(
+		             (COUNT(*) OVER (PARTITION BY l.hole) -
+		                RANK() OVER (PARTITION BY l.hole ORDER BY `+scoring+`) + 1)
+		             * (1000.0 / COUNT(*) OVER (PARTITION BY l.hole))
+		         ) `+scoring+`_points,
+		         ROUND(
+		             (COUNT(*) OVER (PARTITION BY l.hole) -
+		                RANK() OVER (PARTITION BY l.hole ORDER BY `+otherScoring+`) + 1)
+		             * (1000.0 / COUNT(*) OVER (PARTITION BY l.hole))
+		         ) `+otherScoring+`_points,
+		         COALESCE(bytes, 0) bytes,
+		         COALESCE(chars, 0) chars,
+		         COALESCE(bytes_chars, 0) bytes_chars,
+		         COALESCE(chars_bytes, 0) chars_bytes,
+		         submitted,
+		         l.user_id,
+		         l.lang
+		    FROM leaderboard l
+	   LEFT JOIN other_scoring o ON l.user_id = o.user_id AND l.hole = o.hole `+join+`
 		), summed_leaderboard AS (
 		  SELECT user_id,
-		         COUNT(*)       holes,
+		         COUNT(*)          holes,
 		         '' lang,
-		         SUM(points)    points,
-		         SUM(bytes)     bytes,
-		         SUM(chars)     chars,
-		         MAX(submitted) submitted
+		         SUM(chars_points) chars_points,
+		         SUM(bytes_points) bytes_points,
+		         SUM(bytes)        bytes,
+		         SUM(chars)        chars,
+		         SUM(bytes_chars)  bytes_chars,
+		         SUM(chars_bytes)  chars_bytes,
+		         MAX(submitted)    submitted
 		    FROM scored_leaderboard
 		GROUP BY user_id
 		) SELECT bytes,
 		         chars,
+		         bytes_chars,
+		         chars_bytes,
 		         holes,
 		         lang,
 		         login,
-		         points,
-		         RANK() OVER (ORDER BY points DESC, chars),
+		         chars_points,
+		         bytes_points,
+		         RANK() OVER (ORDER BY `+scoring+`_points DESC, `+scoring+`),
 		         submitted
 		    FROM `+table+`
 		    JOIN users on user_id = id
-		ORDER BY points DESC, chars, submitted
+		ORDER BY `+scoring+`_points DESC, `+scoring+`, submitted
 		   LIMIT 101
-		  OFFSET $3`,
+		  OFFSET $5`,
 		holeID,
 		langID,
+		scoring,
+		otherScoring,
 		(page-1)*100,
 	)
 	if err != nil {
@@ -268,14 +323,21 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 		if err := rows.Scan(
 			&score.Bytes,
 			&score.Chars,
+			&score.BytesChars,
+			&score.CharsBytes,
 			&score.Holes,
 			&langID,
 			&score.Login,
-			&score.Points,
+			&score.CharsPoints,
+			&score.BytesPoints,
 			&score.Rank,
 			&score.Submitted,
 		); err != nil {
 			panic(err)
+		}
+
+		if !session.Beta(r) {
+			score.Bytes = score.CharsBytes
 		}
 
 		score.Lang = lang.ByID[langID]

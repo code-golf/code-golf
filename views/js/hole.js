@@ -44,6 +44,10 @@ function setScoring(value) {
     localStorage.setItem('scoring', scorings[scoring = value]);
 }
 
+function formatScore(value) {
+    return value ? value.toLocaleString('en') : '&nbsp';
+}
+
 onload = () => {
     // Lock the editor's height in so we scroll.
     editor.style.height = `${editor.offsetHeight}px`;
@@ -268,8 +272,8 @@ async function refreshScores() {
         }
     }
 
-    const url = `/scores/${hole}/${lang}`;
-    const res = await fetch(`${url}/${scoring ? 'minibytes' : 'mini'}`);
+    const url = `/scores/${hole}/${lang}/${scorings[scoring].toLowerCase()}`;
+    const res = await fetch(`${url}/mini`);
 
     const scores = res.ok ? await res.json() : [];
     let html     = `<thead><tr>`;
@@ -295,10 +299,22 @@ async function refreshScores() {
                     <img src="//avatars.githubusercontent.com/${s.login}?s=24">
                     <span>${s.login}</span>
                 </a>
-                <td class=right><span${scoring != 0 ? ' class=inactive' : ''}>${s.chars ? s.chars.toLocaleString('en') : '&nbsp'}</span>`;
+                <td class=right><span${scoring != 0 ? ' class=inactive' : ''}`;
 
-            if (beta)
-                html += `<td class=right><span${scoring != 1 ? ' class=inactive' : ''}>${s.bytes ? s.bytes.toLocaleString('en') : '&nbsp'}</span>`;
+            if (beta && s.chars)
+                html += ` data-tooltip="Chars solution is ${formatScore(s.chars)} chars, ${formatScore(s.chars_bytes)} bytes."`;
+
+            html += `>${formatScore(s.chars)}</span>`;
+
+            if (beta) {
+                html += `<td class=right><span${scoring != 1 ? ' class=inactive' : ''}`;
+
+                if (s.bytes)
+                    html += 
+                        ` data-tooltip="Bytes solution is ${formatScore(s.bytes_chars)} chars, ${formatScore(s.bytes)} bytes."`;
+
+                html += `>${formatScore(s.bytes)}</span>`;
+            }
         }
         else
             html += `<tr><td colspan=${beta ? 4 : 3}>&nbsp`;
