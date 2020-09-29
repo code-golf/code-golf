@@ -331,16 +331,10 @@ async function refreshScores() {
 }
 
 function bytesForCodePoint(codePoint) {
-    if ((codePoint & 0xFFFFFF80) == 0) {
-        return 1;
-    }
-    if ((codePoint & 0xFFFFF800) == 0) {
-        return 2;
-    }
-    else if ((codePoint & 0xFFFF0000) == 0) {
-        return 3;
-    }
-    return 4;
+    if ((codePoint & 0xFFFFFF80) == 0) return 1;
+    if ((codePoint & 0xFFFFF800) == 0) return 2;
+    if ((codePoint & 0xFFFF0000) == 0) return 3;
+                                       return 4;
 }
 
 // Adapted from https://mths.be/punycode
