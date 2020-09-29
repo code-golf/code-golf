@@ -64,6 +64,8 @@ func main() {
 	r.Get("/feeds/{feed}", routes.Feed)
 	r.Route("/golfer", func(r chi.Router) {
 		r.Use(middleware.GolferArea)
+		r.Post("/cancel-delete", routes.GolferCancelDelete)
+		r.Post("/delete", routes.GolferDelete)
 		r.Get("/settings", routes.GolferSettings)
 		r.Post("/settings", routes.GolferSettingsPost)
 	})
@@ -130,21 +132,28 @@ func main() {
 	// Hourly.
 	go func() {
 		for range time.NewTicker(time.Hour).C {
-			// Delete stale month-old sessions.
-			if _, err := db.Exec(
-				`DELETE FROM sessions
-				  WHERE last_used < TIMEZONE('UTC', NOW()) - INTERVAL '30 days'`,
-			); err != nil {
-				log.Println(err)
-			}
-
-			// Delete users with no current sessions or trophies.
-			if _, err := db.Exec(
-				`DELETE FROM users u
-				  WHERE NOT EXISTS (SELECT FROM sessions WHERE user_id = u.id)
-					AND NOT EXISTS (SELECT FROM trophies WHERE user_id = u.id)`,
-			); err != nil {
-				log.Println(err)
+			for _, job := range [...]struct{ name, sql string }{
+				{
+					"expired sessions",
+					`DELETE FROM sessions
+					  WHERE last_used < TIMEZONE('UTC', NOW()) - INTERVAL '30 days'`,
+				},
+				{
+					"superfluous users",
+					`DELETE FROM users u
+					  WHERE NOT EXISTS (SELECT FROM sessions WHERE user_id = u.id)
+						AND NOT EXISTS (SELECT FROM trophies WHERE user_id = u.id)`,
+				},
+				{
+					"users scheduled for deletion",
+					"DELETE FROM users WHERE delete < TIMEZONE('UTC', NOW())",
+				},
+			} {
+				if res, err := db.Exec(job.sql); err != nil {
+					log.Println(err)
+				} else if rows, _ := res.RowsAffected(); rows != 0 {
+					log.Printf("Deleted %d %s\n", rows, job.name)
+				}
 			}
 		}
 	}()

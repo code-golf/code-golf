@@ -52,19 +52,20 @@ CREATE TABLE users (
     admin     bool   NOT NULL DEFAULT false,
     sponsor   bool   NOT NULL DEFAULT false,
     login     citext NOT NULL UNIQUE,
-    time_zone text   NOT NULL DEFAULT 'UTC'
+    time_zone text   NOT NULL DEFAULT 'UTC',
+    delete    timestamp
 );
 
 CREATE TABLE sessions (
     id        uuid      NOT NULL DEFAULT GEN_RANDOM_UUID() PRIMARY KEY,
     last_used timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
-    user_id   int       NOT NULL REFERENCES users(id)
+    user_id   int       NOT NULL REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE solutions (
     submitted timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
     code_id   int       NOT NULL REFERENCES code(id),
-    user_id   int       NOT NULL REFERENCES users(id),
+    user_id   int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     hole      hole      NOT NULL,
     lang      lang      NOT NULL,
     scoring   scoring   NOT NULL,
@@ -74,7 +75,7 @@ CREATE TABLE solutions (
 
 CREATE TABLE trophies (
     earned  timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
-    user_id int       NOT NULL REFERENCES users(id),
+    user_id int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     trophy  trophy    NOT NULL,
     PRIMARY KEY (user_id, trophy)
 );

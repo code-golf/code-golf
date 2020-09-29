@@ -22,6 +22,16 @@
         <p>
             <button class="btn green">Save Changes</button>
     </form>
+    <hr>
+{{ if .Golfer.Delete.Valid }}
+    <form action=/golfer/cancel-delete method=post>
+        <p><button class="btn green">Cancel Deletion</button>
+    </form>
+{{ else }}
+    <form action=/golfer/delete method=post>
+        <p><button class="btn red">Delete Account</button>
+    </form>
+{{ end }}
 </main>
 
 {{ template "footer" }}

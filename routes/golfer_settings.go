@@ -8,6 +8,30 @@ import (
 	"github.com/code-golf/code-golf/zone"
 )
 
+// GolferCancelDelete serves POST /golfer/cancel-delete
+func GolferCancelDelete(w http.ResponseWriter, r *http.Request) {
+	if _, err := session.Database(r).Exec(
+		"UPDATE users SET delete = NULL WHERE id = $1",
+		session.Golfer(r).ID,
+	); err != nil {
+		panic(err)
+	}
+
+	http.Redirect(w, r, "/golfer/settings", http.StatusSeeOther)
+}
+
+// GolferDelete serves POST /golfer/delete
+func GolferDelete(w http.ResponseWriter, r *http.Request) {
+	if _, err := session.Database(r).Exec(
+		"UPDATE users SET delete = TIMEZONE('UTC', NOW()) + INTERVAL '7 days' WHERE id = $1",
+		session.Golfer(r).ID,
+	); err != nil {
+		panic(err)
+	}
+
+	http.Redirect(w, r, "/golfer/settings", http.StatusSeeOther)
+}
+
 // GolferSettings serves GET /golfer/settings
 func GolferSettings(w http.ResponseWriter, r *http.Request) {
 	render(w, r, "golfer/settings", "Settings", struct {

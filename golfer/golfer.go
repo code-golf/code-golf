@@ -12,6 +12,7 @@ import (
 
 type Golfer struct {
 	Admin          bool
+	Delete         sql.NullTime
 	ID             int
 	Name, TimeZone string
 }

@@ -78,3 +78,17 @@
             instead.
     </div>
 {{ end }}
+
+{{ with .Golfer }}{{ if .Delete.Valid }}
+    <div class=alert>
+        {{ svg "exclamation-circle" }}
+        <p>
+            Your account will be permanently deleted on the
+            {{ .Delete.Value.Format "2 Jan 2006" }}.
+
+        <p>
+            If you wish to stop this, visit
+            <a href=/golfer/settings>settings</a>
+            and cancel the deletion.
+    </div>
+{{ end }}{{ end }}
