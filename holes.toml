@@ -159,8 +159,30 @@ preamble = '''
 '''
 
 ['Boxes Intersection']
+experiment = 1
 category = 'Computing'
+links = [{name='Wikipedia', url='//en.wikipedia.org/wiki/Jaccard_index'}]
 preamble = '''
+<p>
+    A box is defined in the pixel space via x, y, w, and h as
+
+<pre>
+(0,0)-----------------------> y
+  |   (x,y)---->w
+  |     |       |
+  |     |       |
+  |     V       |
+  |     h-------*
+  |
+x v
+</pre>
+
+<p>
+    Compute the intersection area between two boxes given as
+
+<pre>
+x1 y1 w1 h1 x2 y2 w2 h2
+</pre>
 '''
 
 ['Christmas Trees']

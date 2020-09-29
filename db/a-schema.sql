@@ -3,7 +3,8 @@ CREATE EXTENSION pgcrypto;  -- For GEN_RANDOM_UUID(), not needed under PG13.
 
 CREATE TYPE hole AS ENUM (
     '12-days-of-christmas', '99-bottles-of-beer', 'abundant-numbers',
-    'arabic-to-roman', 'brainfuck', 'christmas-trees', 'css-colors', 'cubes',
+    'arabic-to-roman', 'boxes-intersection', 'brainfuck',
+    'christmas-trees', 'css-colors', 'cubes',
     'diamonds', 'divisors', 'emirp-numbers', 'evil-numbers', 'fibonacci',
     'fizz-buzz', 'happy-numbers', 'leap-years', 'leyland-numbers',
     'lucky-tickets', 'morse-decoder', 'morse-encoder', 'niven-numbers',
