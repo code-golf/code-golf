@@ -164,7 +164,8 @@ category = 'Computing'
 links = [{name='Wikipedia', url='//en.wikipedia.org/wiki/Jaccard_index'}]
 preamble = '''
 <p>
-    A box is defined in the pixel space via x, y, w, and h as
+    A box is defined in the pixel space via <b>x</b>, <b>y</b>, 
+    <b>w</b> and <b>h</b> as
 
 <pre>
 (0,0)-----------------------> y
