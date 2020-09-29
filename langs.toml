@@ -113,6 +113,11 @@ size    = '534 MiB'
 version = '1.46.0'
 website = '//www.rust-lang.org'
 
+[SQL]
+size    = '1.02 MiB'
+version = '3.33.0'
+website = '//sqlite.org/index.html'
+
 [Swift]
 size    = '849 MiB'
 version = '5.3'

@@ -28,6 +28,7 @@ COPY --from=codegolf/lang-python     /     /langs/python/rootfs/
 COPY --from=codegolf/lang-raku       /       /langs/raku/rootfs/
 COPY --from=codegolf/lang-ruby       /       /langs/ruby/rootfs/
 COPY --from=codegolf/lang-rust       /       /langs/rust/rootfs/
+COPY --from=codegolf/lang-sql        /        /langs/sql/rootfs/
 COPY --from=codegolf/lang-swift      /      /langs/swift/rootfs/
 
 RUN mkdir -p /langs/bash/rootfs/proc       /langs/bash/rootfs/tmp \
@@ -53,6 +54,7 @@ RUN mkdir -p /langs/bash/rootfs/proc       /langs/bash/rootfs/tmp \
              /langs/raku/rootfs/proc       /langs/raku/rootfs/tmp \
              /langs/ruby/rootfs/proc       /langs/ruby/rootfs/tmp \
              /langs/rust/rootfs/proc       /langs/rust/rootfs/tmp \
+              /langs/sql/rootfs/proc        /langs/sql/rootfs/tmp \
             /langs/swift/rootfs/proc      /langs/swift/rootfs/tmp
 
 COPY run-lang.c ./

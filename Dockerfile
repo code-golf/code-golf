@@ -40,6 +40,7 @@ COPY --from=codegolf/lang-python     /     /langs/python/rootfs/
 COPY --from=codegolf/lang-raku       /       /langs/raku/rootfs/
 COPY --from=codegolf/lang-ruby       /       /langs/ruby/rootfs/
 COPY --from=codegolf/lang-rust       /       /langs/rust/rootfs/
+COPY --from=codegolf/lang-sql        /        /langs/sql/rootfs/
 COPY --from=codegolf/lang-swift      /      /langs/swift/rootfs/
 
 COPY --from=0 /rootfs       /langs/bash/rootfs/
@@ -65,6 +66,7 @@ COPY --from=0 /rootfs     /langs/python/rootfs/
 COPY --from=0 /rootfs       /langs/raku/rootfs/
 COPY --from=0 /rootfs       /langs/ruby/rootfs/
 COPY --from=0 /rootfs       /langs/rust/rootfs/
+COPY --from=0 /rootfs        /langs/sql/rootfs/
 COPY --from=0 /rootfs      /langs/swift/rootfs/
 
 COPY --from=0 /go/code-golf                      /

@@ -65,16 +65,22 @@
         <div id=editor></div>
     </div>
     <div class="info javascript">
-        <b>arguments</b> holds ARGV, <b>print()</b> to output with a newline, <b>write()</b> to output without a newline.
+        <b>arguments</b> holds ARGV, <b>print()</b> to output with a newline,
+        <b>write()</b> to output without a newline.
     </div>
     <div class="info perl">
         <b>say()</b> is available without any import.
     </div>
 {{ if eq .Data.Hole.ID "quine" }}
     <div class="info powershell">
-        Implicit output is disabled for this hole. Use <b>Out-Host</b> or <b>Write-Host</b> for output.
+        Implicit output is disabled for this hole. Use <b>Out-Host</b> or
+        <b>Write-Host</b> for output.
     </div>
 {{ end }}
+    <div class="info sql">
+        <b>SELECT arg FROM argv</b> to access ARGV. Only the first column of
+        each row will be printed, and each on a newline.
+    </div>
     <div id=run>
         ctrl + enter
         <span>or</span>

@@ -156,4 +156,8 @@ swift
     for a in CommandLine.arguments[1...] {
         print(a)
     }
+
+sql
+
+    SELECT * FROM argv
 =end pod

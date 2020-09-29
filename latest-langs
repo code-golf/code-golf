@@ -25,6 +25,7 @@ constant @urls = (
     'Raku'       => 'Rakudo',
     'Ruby'       => 'Ruby_(programming_language)',
     'Rust'       => 'Rust_(programming_language)',
+    'SQL'        => 'SQLite',
     'Swift'      => 'Swift_(programming_language)',
 );
 
