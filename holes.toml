@@ -158,6 +158,11 @@ preamble = '''
     and execute each program in turn.
 '''
 
+['Boxes Intersection']
+category = 'Computing'
+preamble = '''
+'''
+
 ['Christmas Trees']
 category = 'Art'
 preamble = '''
