@@ -56,9 +56,12 @@
 
 <main id=index>
     <nav class="nav span">
-    {{ if .Beta }}
-        <a href="?scoring=bytes">Bytes</a>
-        <a href="?scoring=chars">Chars</a>
+    {{ $scoring := .Data.Scoring }}
+
+	{{ range .Data.Scorings }}
+        <a {{ if eq $scoring . }} class=on {{ else }} href="?scoring={{ . }}" {{ end }}>
+            {{ title . }}
+        </a>
     {{ end }}
 
         <div></div>
