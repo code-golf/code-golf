@@ -161,7 +161,6 @@ preamble = '''
 ['Boxes Intersection']
 experiment = 1
 category = 'Computing'
-links = [{name='Wikipedia', url='//en.wikipedia.org/wiki/Jaccard_index'}]
 preamble = '''
 <p>
     A box is defined in the pixel space via <b>x</b>, <b>y</b>, 
