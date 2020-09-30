@@ -11,6 +11,20 @@ import (
 
 // Index serves GET /
 func Index(w http.ResponseWriter, r *http.Request) {
+	if scoring := r.URL.Query().Get("scoring"); scoring != "" {
+		http.SetCookie(w, &http.Cookie{
+			HttpOnly: true,
+			Name:     "__Host-scoring",
+			Path:     "/",
+			SameSite: http.SameSiteLaxMode,
+			Secure:   true,
+			Value:    scoring,
+		})
+
+		http.Redirect(w, r, "/", http.StatusFound)
+		return
+	}
+
 	if sort := r.URL.Query().Get("sort"); sort != "" {
 		http.SetCookie(w, &http.Cookie{
 			HttpOnly: true,
@@ -36,16 +50,34 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := struct {
-		Cards []Card
-		Fails []Fail
-		Sort  string
-		Sorts []string
+		Cards    []Card
+		Fails    []Fail
+		Scoring  string
+		Scorings []string
+		Sort     string
+		Sorts    []string
 	}{
-		Sorts: []string{"alphabetical", "golfers", "rank"},
+		// The "chars" default supports the non-beta version.
+		Scoring: "chars",
+		Sorts:   []string{"alphabetical", "golfers", "rank"},
+	}
+
+	if session.Beta(r) {
+		data.Scoring = "bytes"
+		data.Scorings = []string{"bytes", "chars"}
 	}
 
 	if sort, err := r.Cookie("__Host-sort"); err == nil {
 		data.Sort = sort.Value
+	}
+
+	if scoring, err := r.Cookie("__Host-scoring"); err == nil {
+		for _, value := range data.Scorings {
+			if scoring.Value == value {
+				data.Scoring = value
+				break
+			}
+		}
 	}
 
 	var userID int
@@ -87,19 +119,19 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	rows, err := db.Query(
 		`WITH ranks AS (
 		    SELECT hole,
-		           RANK() OVER (PARTITION BY hole ORDER BY chars),
-		           lang,
-		           user_id,
-		           code_id
+		           RANK() OVER (PARTITION BY hole ORDER BY `+data.Scoring+`),
+		           user_id
 		      FROM solutions
 		      JOIN code ON code_id = id
-		     WHERE NOT failing
-		) SELECT COUNT(DISTINCT(lang, user_id, code_id)),
+		     WHERE scoring = $2
+		       AND NOT failing
+		) SELECT COUNT(*),
 		         (SELECT COALESCE(MIN(rank), 0) FROM ranks WHERE hole = r.hole AND user_id = $1),
 		         hole
 		    FROM ranks r
 		GROUP BY hole`,
 		userID,
+		data.Scoring,
 	)
 	if err != nil {
 		panic(err)
