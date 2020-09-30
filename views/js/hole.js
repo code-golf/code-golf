@@ -63,7 +63,7 @@ onload = () => {
     cm.on('change', () => {
         const code = cm.getValue();
         const len = strlen(code);
-        chars.innerText = `${len.toLocaleString('en')} character${len - 1 ? 's' : ''}`;
+        chars.innerText = `${len.toLocaleString('en')} char${len - 1 ? 's' : ''}`;
         if (beta) {
             const bytes = utf8ByteCount(code);
             if (bytes != len)
