@@ -80,7 +80,7 @@ website = '//nim-lang.org'
 
 [PHP]
 size    = '10.5 MiB'
-version = '7.4.10'
+version = '7.4.11'
 website = '//www.php.net'
 
 [Perl]
@@ -94,8 +94,8 @@ version = 'PowerShell 7.0.3 on .NET Core 3.1.7'
 website = '//docs.microsoft.com/powershell/scripting/overview'
 
 [Python]
-size    = '197 MiB'
-version = '3.8.5'
+size    = '199 MiB'
+version = '3.8.6'
 website = '//www.python.org'
 
 [Raku]
