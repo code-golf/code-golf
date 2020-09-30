@@ -156,6 +156,10 @@ func main() {
 					log.Printf("Deleted %d %s\n", rows, job.name)
 				}
 			}
+
+			if err := syncToBeta(db, dbBeta); err != nil {
+				log.Println(err)
+			}
 		}
 	}()
 
@@ -168,4 +172,118 @@ func main() {
 
 	// Serve HTTPS.
 	panic(server.ListenAndServeTLS(crt, key))
+}
+
+func syncToBeta(db, dbBeta *sql.DB) error {
+	insertUser, err := dbBeta.Prepare(
+		"INSERT INTO users(id, login) VALUES($1, $2) ON CONFLICT DO NOTHING")
+	if err != nil {
+		return err
+	}
+
+	rows, err := db.Query("SELECT id, login FROM users")
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var id int
+		var login string
+
+		if err := rows.Scan(&id, &login); err != nil {
+			return err
+		}
+
+		if _, err := insertUser.Exec(id, login); err != nil {
+			return err
+		}
+	}
+
+	if err := rows.Err(); err != nil {
+		return err
+	}
+
+	insertCode, err := dbBeta.Prepare(
+		"INSERT INTO code (code) VALUES ($1) ON CONFLICT DO NOTHING")
+	if err != nil {
+		return err
+	}
+
+	var insertBytes, insertChars *sql.Stmt
+
+	for _, scoring := range []string{"bytes", "chars"} {
+		stmt, err := dbBeta.Prepare(
+			`WITH new_code AS (
+				SELECT id, ` + scoring + ` FROM code WHERE code = $1
+			) INSERT INTO solutions (code_id, failing, hole, lang, scoring, submitted, user_id)
+				   SELECT id, $2, $3, $4, '` + scoring + `', $5, $6 FROM new_code
+			  ON CONFLICT ON CONSTRAINT solutions_pkey
+			DO UPDATE SET failing = excluded.failing,
+						submitted = CASE
+							WHEN (SELECT ` + scoring + ` FROM new_code)
+							   < (SELECT ` + scoring + ` FROM code WHERE id = solutions.code_id)
+							THEN excluded.submitted
+							ELSE solutions.submitted
+						END,
+						  code_id = CASE
+							WHEN (SELECT ` + scoring + ` FROM new_code)
+							  <= (SELECT ` + scoring + ` FROM code WHERE id = solutions.code_id)
+							THEN excluded.code_id
+							ELSE solutions.code_id
+						END`,
+		)
+		if err != nil {
+			return err
+		}
+
+		if scoring == "bytes" {
+			insertBytes = stmt
+		} else {
+			insertChars = stmt
+		}
+	}
+
+	rows, err = db.Query(
+		`SELECT code, failing, hole, lang, scoring, submitted, user_id
+		   FROM solutions
+		   JOIN code ON code_id = id`,
+	)
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var failing bool
+		var code, hole, lang, scoring string
+		var submitted time.Time
+		var userID int
+
+		if err := rows.Scan(
+			&code,
+			&failing,
+			&hole,
+			&lang,
+			&scoring,
+			&submitted,
+			&userID,
+		); err != nil {
+			return err
+		}
+
+		if _, err := insertCode.Exec(code); err != nil {
+			return err
+		}
+
+		if _, err := insertBytes.Exec(code, failing, hole, lang, submitted, userID); err != nil {
+			return err
+		}
+
+		if _, err := insertChars.Exec(code, failing, hole, lang, submitted, userID); err != nil {
+			return err
+		}
+	}
+
+	return rows.Err()
 }
