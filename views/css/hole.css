@@ -154,7 +154,7 @@ main .info {
 
 #wrapper {
     display: grid;
-    grid-template-columns: 1fr 15rem;
+    grid-template-columns: 1fr 16rem;
     grid-template-rows: min-content 1fr;
 }
 
