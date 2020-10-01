@@ -81,8 +81,8 @@
                 <th class=right>{{ if $allHoles }}Holes{{ else }}Lang{{ end }}
                 {{ if $beta }}
                     <th class=center colspan=2>Points
-                    <th class="right wide"><a {{ if $bytesScoring }}href="chars" class="scoringPicker inactive"{{else}}class="scoringPicker"{{end}}>Chars</a>
                     <th class="right wide"><a {{ if $charsScoring }}href="bytes" class="scoringPicker inactive"{{else}}class="scoringPicker"{{end}}>Bytes</a>
+                    <th class="right wide"><a {{ if $bytesScoring }}href="chars" class="scoringPicker inactive"{{else}}class="scoringPicker"{{end}}>Chars</a>
                 {{ else }}
                     <th class=right>Points
                     <th class="right wide">Bytes
@@ -104,19 +104,19 @@
                     </a>
                 <td class=right>{{ if $allHoles }}{{ .Holes }}{{ else }}{{ .Lang.Name }}{{ end }}
                 {{ if $beta }}
-                    <td class=right><span{{ if $bytesScoring }} class=inactive {{end}} data-tooltip="Points for Chars scoring">{{ comma .CharsPoints }}
                     <td class=right><span{{ if $charsScoring }} class=inactive {{end}} data-tooltip="Points for Bytes scoring">{{ comma .BytesPoints }}
+                    <td class=right><span{{ if $bytesScoring }} class=inactive {{end}} data-tooltip="Points for Chars scoring">{{ comma .CharsPoints }}
+                    <td class="right wide">
+                        <span{{ if $charsScoring }} class=inactive {{end}}
+                        {{ if ne .Bytes 0 }}
+                            data-tooltip="Bytes scoring is {{ comma .BytesChars }} chars, {{ comma .Bytes }} bytes.">{{ comma .Bytes }}
+                        {{ else }}
+                            >&nbsp;
+                        {{ end }}
                     <td class="right wide">
                     <span{{ if $bytesScoring }} class=inactive {{end}}
                     {{ if ne .Chars 0 }}
                         data-tooltip="Chars scoring is {{ comma .Chars }} chars, {{ comma .CharsBytes }} bytes.">{{ comma .Chars }}
-                    {{ else }}
-                        >&nbsp;
-                    {{ end }}
-                    <td class="right wide">
-                    <span{{ if $charsScoring }} class=inactive {{end}}
-                    {{ if ne .Bytes 0 }}
-                        data-tooltip="Bytes scoring is {{ comma .BytesChars }} chars, {{ comma .Bytes }} bytes.">{{ comma .Bytes }}
                     {{ else }}
                         >&nbsp;
                     {{ end }}
