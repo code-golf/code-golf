@@ -1214,21 +1214,7 @@ preamble = '''
     starting from an initial single living cell.
 <p>
     Each new row in the life of the automaton should be a new line, and the rules for whether a cell is alive or dead depends on whether is was alive on the previous iteration, as well as the state of the two neighbouring cells.
-<p>
-    The first 10 rows are shown here:
-
-<pre>         █
-        ██
-       ███
-      ██ █
-     █████
-    ██   █
-   ███  ██
-  ██ █ ███
- ███████ █
-██     ███
-</pre>
-The rules which dictate whether a cell is alive or dead the in next iteration are as follows:
+    The rules which dictate whether a cell is alive or dead the in next iteration are as follows:
 <div>
     <table>
         <thead>
@@ -1263,6 +1249,19 @@ The rules which dictate whether a cell is alive or dead the in next iteration ar
     </table>
 </div>
 where 1 is alive, 0 is dead, and the middle digit represents the previous state of the current cell.
+<p>
+    The first 10 rows are shown here:
+<pre>         █
+        ██
+       ███
+      ██ █
+     █████
+    ██   █
+   ███  ██
+  ██ █ ███
+ ███████ █
+██     ███
+</pre>
 
 '''
 
