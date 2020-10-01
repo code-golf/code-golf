@@ -66,10 +66,10 @@
     color: var(--background);
     content: attr(data-tooltip);
     max-width: 21em;
+    min-width: 16em;
     overflow: hidden;
     padding: 0 .5rem;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    text-align: center;
     z-index: 99;
 }
 

@@ -110,16 +110,31 @@ CREATE MATERIALIZED VIEW medals AS WITH ranked AS (
     FROM ranked
 GROUP BY user_id;
 
-CREATE VIEW points AS WITH ranked AS (
+CREATE VIEW bytes_points AS WITH ranked AS (
+    SELECT user_id,
+           RANK()   OVER (PARTITION BY hole ORDER BY MIN(bytes)),
+           COUNT(*) OVER (PARTITION BY hole)
+      FROM solutions
+      JOIN code ON code_id = id
+     WHERE NOT failing
+       AND scoring = 'bytes'
+  GROUP BY hole, user_id
+) SELECT user_id,
+         SUM(ROUND(((count - rank) + 1) * (1000.0 / count))) bytes_points
+    FROM ranked
+GROUP BY user_id;
+
+CREATE VIEW chars_points AS WITH ranked AS (
     SELECT user_id,
            RANK()   OVER (PARTITION BY hole ORDER BY MIN(chars)),
            COUNT(*) OVER (PARTITION BY hole)
       FROM solutions
       JOIN code ON code_id = id
      WHERE NOT failing
+       AND scoring = 'chars'
   GROUP BY hole, user_id
 ) SELECT user_id,
-         SUM(ROUND(((count - rank) + 1) * (1000.0 / count))) points
+         SUM(ROUND(((count - rank) + 1) * (1000.0 / count))) chars_points
     FROM ranked
 GROUP BY user_id;
 
@@ -138,11 +153,12 @@ CREATE ROLE "code-golf" WITH LOGIN;
 -- Only owners can refresh.
 ALTER MATERIALIZED VIEW medals OWNER TO "code-golf";
 
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    code        TO "code-golf";
-GRANT SELECT                         ON SEQUENCE code_id_seq TO "code-golf";
-GRANT SELECT, INSERT, TRUNCATE       ON TABLE    ideas       TO "code-golf";
-GRANT SELECT                         ON TABLE    points      TO "code-golf";
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    sessions    TO "code-golf";
-GRANT SELECT, INSERT, UPDATE         ON TABLE    solutions   TO "code-golf";
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    trophies    TO "code-golf";
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    users       TO "code-golf";
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    code         TO "code-golf";
+GRANT SELECT                         ON SEQUENCE code_id_seq  TO "code-golf";
+GRANT SELECT, INSERT, TRUNCATE       ON TABLE    ideas        TO "code-golf";
+GRANT SELECT                         ON TABLE    bytes_points TO "code-golf";
+GRANT SELECT                         ON TABLE    chars_points TO "code-golf";
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    sessions     TO "code-golf";
+GRANT SELECT, INSERT, UPDATE         ON TABLE    solutions    TO "code-golf";
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    trophies     TO "code-golf";
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    users        TO "code-golf";

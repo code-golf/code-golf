@@ -1,3 +1,4 @@
+{{ $beta := .Beta }}
 {{ $me   := false }}
 {{ $path := .Path }}
 
@@ -9,7 +10,11 @@
     <div class=grid id=profile>
         <img src="//avatars.githubusercontent.com/{{ .Name }}?s=192">
         <h1>{{ .Name }}</h1>
-        <p>{{ comma .Points }} points
+    {{ if $beta }}
+        <p>{{ comma .BytesPoints }} points (Bytes) • {{ comma .CharsPoints }} points (Chars)
+    {{ else }} 
+        <p>{{ comma .CharsPoints }} points
+    {{ end }} 
         <p>🥇 {{ comma .Gold }} • 🥈 {{ comma .Silver }} • 🥉 {{ comma .Bronze }}
     </div>
 
@@ -40,7 +45,7 @@
         <a {{ if ne $path $slug }} href="{{ $slug }}" {{ end }}>Trophies</a>
 
         {{ $slug = print $slug "/holes" }}
-        <a {{ if ne $path $slug }} href="{{ $slug }}" {{ end }}>Holes</a>
+        <a {{ if not (hasPrefix $path $slug) }} href="{{ $slug }}/{{ if $beta }}bytes{{ else }}chars{{ end }}" {{ end }}>Holes</a>
 
     {{ if $me }}
         <a {{ if ne $path "/golfer/settings" }} href=/golfer/settings {{ end }}>
