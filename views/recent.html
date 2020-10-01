@@ -56,17 +56,21 @@
                 <td class=wide>
                     <a href="/recent/{{ .Lang.ID }}">{{ .Lang.Name }}</a>
                 {{ if $beta }}
-                    <td class="right wide" title="Rank: {{ .Rank }}{{ ord .Rank }}">
-                        {{ comma .Strokes }}
+                {{ if eq .OtherRank 0 }}
+                    <td class="right wide" data-tooltip="Rank: {{ .Rank }}{{ ord .Rank }}">
+                {{ else }}
+                    <td class="right wide" data-tooltip="Bytes rank is {{ .Rank }}{{ ord .Rank }}. Chars rank is {{ .OtherRank }}{{ ord .OtherRank }}.">
+                {{ end }}
+                    {{ comma .Strokes }}
                     <td class="wide">{{ .Scoring }}
                 {{ else }}
                     <td class="right wide">{{ comma .Bytes }}
-                    <td class="right wide" title="Rank: {{ .Rank }}{{ ord .Rank }}">
+                    <td class="right wide" data-tooltip="Rank: {{ .Rank }}{{ ord .Rank }}">
                         {{ comma .Chars }}
                 {{ end }}
                 <td class=wide
                     {{ if not .TieCount }}
-                        title="Shorter than previous {{ .Rank }}{{ ord .Rank }} place solutions"
+                        data-tooltip="Shorter than previous {{ .Rank }}{{ ord .Rank }} place solutions"
                     {{ end }}>
                     {{if eq .Rank 1}}🥇
                     {{else if eq .Rank 2}}🥈

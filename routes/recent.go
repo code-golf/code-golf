@@ -83,11 +83,11 @@ func Recent(w http.ResponseWriter, r *http.Request) {
 	defer rows.Close()
 
 	type recent struct {
-		Hole                                  hole.Hole
-		Lang                                  lang.Lang
-		Login, Scoring                        string
-		Bytes, Chars, Strokes, Rank, TieCount int
-		Submitted                             time.Time
+		Hole                                             hole.Hole
+		Lang                                             lang.Lang
+		Login, Scoring                                   string
+		Bytes, Chars, Strokes, OtherRank, Rank, TieCount int
+		Submitted                                        time.Time
 	}
 
 	var recents []recent
@@ -123,7 +123,15 @@ func Recent(w http.ResponseWriter, r *http.Request) {
 			previous.Strokes == r.Strokes &&
 			(previous.Rank == r.Rank || previous.Rank > 3 && r.Rank > 3) &&
 			(r.Rank > 3 || (previous.TieCount > 0) == (r.TieCount > 0)) {
-			recents[len(recents)-1].Scoring = "Both"
+			if r.Scoring == "Chars" {
+				previous.OtherRank = r.Rank
+			} else {
+				previous.OtherRank = previous.Rank
+				previous.Rank = r.Rank
+			}
+
+			previous.Scoring = "Both"
+			recents[len(recents)-1] = previous
 		} else {
 			recents = append(recents, r)
 			previous = r
