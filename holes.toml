@@ -167,7 +167,7 @@ links = [
 preamble = '''
 <p>
     A box is defined in the pixel space via <b>x</b>, <b>y</b>, 
-    <b>w</b> and <b>h</b> as
+    <b>h</b> and <b>w</b> as
 
 <pre>
 (0,0)→ y
@@ -188,7 +188,7 @@ preamble = '''
     Compute the intersection area between two boxes given as
 
 <pre>
-x1 y1 w1 h1 x2 y2 w2 h2
+x1 y1 h1 w1 x2 y2 h2 w2
 </pre>
 '''
 

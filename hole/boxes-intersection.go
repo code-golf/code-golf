@@ -21,8 +21,8 @@ func strconvbox(box bbox) (out string) {
 	var outs []string
 	outs = append(outs, strconv.Itoa(box.x))
 	outs = append(outs, strconv.Itoa(box.y))
-	outs = append(outs, strconv.Itoa(box.w))
 	outs = append(outs, strconv.Itoa(box.h))
+	outs = append(outs, strconv.Itoa(box.w))
 	return strings.Join(outs, " ")
 }
 
