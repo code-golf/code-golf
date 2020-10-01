@@ -105,14 +105,13 @@ func boxesIntersection() (args []string, out string) {
 		b2 = boxGen()
 		intersection := calculateIntersection(b1, b2)
 
-		// we want 90 fun (i.e. non zero) cases
+		// compute 90 non-zero cases and 8 zero ones
 		if intersection > 0 && non_zeros < 90 {
 			args = append(args,
 				strconvbox(b1)+" "+strconvbox(b2))
 			outs = append(outs,
 				strconv.Itoa(intersection))
 			non_zeros += 1
-			// 8 more zeroes to be sure edge case is tested
 		} else if intersection == 0 && zeros < 8 {
 			args = append(args,
 				strconvbox(b1)+" "+strconvbox(b2))
