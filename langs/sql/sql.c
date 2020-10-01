@@ -46,7 +46,8 @@ int main(int argc, char *argv[]) {
     }
 
     while (sqlite3_step(res) == SQLITE_ROW)
-        printf("%s\n", sqlite3_column_text(res, 0));
+        if (sqlite3_column_type(res, 0) != SQLITE_NULL)
+            printf("%s\n", sqlite3_column_text(res, 0));
 
     sqlite3_finalize(res);
     sqlite3_close(db);

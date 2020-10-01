@@ -13,11 +13,11 @@ require (
 	github.com/kr/text v0.2.0 // indirect
 	github.com/lib/pq v1.8.0
 	github.com/pmezard/go-difflib v1.0.0
-	github.com/shurcooL/githubv4 v0.0.0-20200802174311-f27d2ca7f6d5
-	github.com/shurcooL/graphql v0.0.0-20181231061246-d48a9a75455f // indirect
-	github.com/tdewolff/minify/v2 v2.9.5
-	golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a
-	golang.org/x/net v0.0.0-20200904194848-62affa334b73 // indirect
+	github.com/shurcooL/githubv4 v0.0.0-20200928013246-d292edc3691b
+	github.com/shurcooL/graphql v0.0.0-20200928012149-18c5c3165e3a // indirect
+	github.com/tdewolff/minify/v2 v2.9.6
+	golang.org/x/crypto v0.0.0-20200930160638-afb6bcd081ae
+	golang.org/x/net v0.0.0-20200930145003-4acb6c075d10 // indirect
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
 	golang.org/x/text v0.3.3 // indirect
 )
