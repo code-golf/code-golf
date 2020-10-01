@@ -73,8 +73,12 @@ func calculateIntersection(b1, b2 bbox) int {
 
 // generator of random non-null boxes (i.e. with area != 0)
 func boxGen() bbox {
-	return bbox{x: rand.Intn(101), y: rand.Intn(101),
-		w: rand.Intn(50) + 1, h: rand.Intn(50) + 1}
+	return bbox{
+		x: rand.Intn(101),
+		y: rand.Intn(101),
+		w: rand.Intn(50) + 1,
+		h: rand.Intn(50) + 1,
+	}
 }
 
 func boxesIntersection() (args []string, out string) {
@@ -99,19 +103,19 @@ func boxesIntersection() (args []string, out string) {
 
 	//// generate 98 more random cases
 	zeros := 0
-	non_zeros := 0
-	for zeros+non_zeros < 98 {
+	nonZeros := 0
+	for zeros+nonZeros < 98 {
 		b1 = boxGen()
 		b2 = boxGen()
 		intersection := calculateIntersection(b1, b2)
 
 		// compute 90 non-zero cases and 8 zero ones
-		if intersection > 0 && non_zeros < 90 {
+		if intersection > 0 && nonZeros < 90 {
 			args = append(args,
 				strconvbox(b1)+" "+strconvbox(b2))
 			outs = append(outs,
 				strconv.Itoa(intersection))
-			non_zeros += 1
+			nonZeros += 1
 		} else if intersection == 0 && zeros < 8 {
 			args = append(args,
 				strconvbox(b1)+" "+strconvbox(b2))
