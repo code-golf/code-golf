@@ -42,14 +42,16 @@
             {{ $rank1 := index (index (index $ranks 1) $hole.ID) $lang.ID }}
             <a class="{{ $lang.ID }} {{ colour . }}"
                 href="/scores/{{ $hole.ID }}/{{ $lang.ID }}/{{ $scoring }}"
-                data-tooltip="{{ if $beta }}{{ title (index $scorings 0) }} rank is {{ $rank0 }}{{ ord $rank0 }}, {{ title (index $scorings 1) }} rank is {{ $rank1 }}{{ ord $rank1 }}. {{ end }}View scores of {{ $hole.Name }} in {{ $lang.Name }}.">
+                data-tooltip="{{ if $beta }}{{ title (index $scorings 0) }} rank is {{ $rank0 }}{{ ord $rank0 }}, {{ title (index $scorings 1) }} rank is {{ $rank1 }}{{ ord $rank1 }}. {{ end }}View scores of {{ $hole.Name }} in {{ $lang.Name }}."
+                data-wide-tooltip=true>
                 <svg><use href="#{{ $lang.ID }}"/></svg>
                 <span>{{ . }}<sup>{{ ord . }}</sup></span>
             </a>
         {{ else }}
             <a class="{{ $lang.ID }} grey"
                 href="/{{ $hole.ID }}#{{ $lang.ID }}"
-                data-tooltip="Play {{ $hole.Name }} in {{ $lang.Name }}.">
+                data-tooltip="Play {{ $hole.Name }} in {{ $lang.Name }}."
+                data-wide-tooltip=true>
                 <svg><use href="#{{ $lang.ID }}"/></svg>
                 <svg><use href="#play"/></svg>
             </a>

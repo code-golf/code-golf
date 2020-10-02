@@ -66,11 +66,13 @@
     color: var(--background);
     content: attr(data-tooltip);
     max-width: 21em;
-    min-width: 16em;
-    overflow: hidden;
     padding: 0 .5rem;
     text-align: center;
     z-index: 99;
+}
+
+[data-tooltip][data-wide-tooltip="true"]:after {
+    min-width: 16em;
 }
 
 [data-tooltip]:hover:before, [data-tooltip]:hover:after { display: block }
