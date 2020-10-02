@@ -61,8 +61,8 @@ func calculateIntersection(b1, b2 bbox) int {
 	ibry := minint(bry1, bry2)
 
 	// calculate intersection dimensions
-	ih := itlx - ibrx
-	iw := itly - ibry
+	ih := ibrx - itlx
+	iw := ibry - itly
 
 	// intersection is empty if the bboxes do not overlap
 	if iw < 0 || ih < 0 || iw > b1.w+b2.w || ih > b1.h+b2.h {
@@ -88,18 +88,35 @@ func boxesIntersection() (args []string, out string) {
 	// define two non overlapping 1x1 boxes
 	b1 := bbox{x: 0, y: 0, w: 1, h: 1}
 	b2 := bbox{x: 0, y: 0, w: 2, h: 2}
-	b3 := bbox{x: 3, y: 3, w: 1, h: 1}
+	b3 := bbox{x: 3, y: 3, w: 1, h: 2}
+	b4 := bbox{x: 3, y: 1, w: 3, h: 2}
+	b5 := bbox{x: 3, y: 1, w: 3, h: 1}
+	b6 := bbox{x: 0, y: 0, w: 10, h: 10}
+	b7 := bbox{x: 2, y: 2, w: 2, h: 2}
 
-	// b1 and b2 partially overlap
-	//-> intersection area is 1 squared pixels
-	args = append(args, strconvbox(b1)+" "+strconvbox(b1))
-	outs = append(outs,
-		strconv.Itoa(calculateIntersection(b1, b2)))
-
-	// b1 and b3 do not overlap -> intersection area is 0
+	// b1 and b2 overlap by 1 pixel
 	args = append(args, strconvbox(b1)+" "+strconvbox(b2))
-	outs = append(outs,
-		strconv.Itoa(calculateIntersection(b1, b3)))
+	outs = append(outs, "1")
+
+	// b1 and b3 are far away and don't overlap
+	args = append(args, strconvbox(b1)+" "+strconvbox(b3))
+	outs = append(outs, "0")
+
+	// b3 and b4 overlap on one horizontal side
+	args = append(args, strconvbox(b3)+" "+strconvbox(b4))
+	outs = append(outs, "2")
+
+	// b4 and b5 overlap on one vertical side
+	args = append(args, strconvbox(b4)+" "+strconvbox(b5))
+	outs = append(outs, "3")
+
+	// b4 is inside b6
+	args = append(args, strconvbox(b4)+" "+strconvbox(b6))
+	outs = append(outs, "6")
+
+	// b2 and b7 are side by side but don't overlap
+	args = append(args, strconvbox(b2)+" "+strconvbox(b7))
+	outs = append(outs, "0")
 
 	//// generate 98 more random cases
 	zeros := 0
