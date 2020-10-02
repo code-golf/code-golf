@@ -127,7 +127,7 @@ GROUP BY user_id;
 CREATE INDEX solutions_code_id_key ON solutions(code_id);
 
 -- Used by /golfers
-CREATE INDEX medals_user_id_key ON medals(user_id);
+CREATE UNIQUE INDEX medals_user_id_key ON medals(user_id);
 
 -- Used by /stats
 CREATE INDEX solutions_hole_key ON solutions(hole, user_id) WHERE NOT failing;
