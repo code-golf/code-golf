@@ -91,6 +91,25 @@ CREATE TABLE trophies (
      AND c.relname IN ('code', 'ideas', 'sessions', 'solutions', 'trophies', 'users')
 ORDER BY c.relname, t.typlen DESC, t.typname, a.attname;
 
+CREATE MATERIALIZED VIEW medals AS WITH ranked AS (
+    SELECT user_id,
+           RANK() OVER (PARTITION BY hole, lang ORDER BY bytes)
+      FROM solutions
+      JOIN code ON code_id = id
+     WHERE NOT failing AND scoring = 'bytes'
+     UNION ALL
+    SELECT user_id,
+           RANK() OVER (PARTITION BY hole, lang ORDER BY chars)
+      FROM solutions
+      JOIN code ON code_id = id
+     WHERE NOT failing AND scoring = 'chars'
+) SELECT user_id,
+         COUNT(*) FILTER (WHERE rank = 1) gold,
+         COUNT(*) FILTER (WHERE rank = 2) silver,
+         COUNT(*) FILTER (WHERE rank = 3) bronze
+    FROM ranked
+GROUP BY user_id;
+
 CREATE VIEW points AS WITH ranked AS (
     SELECT user_id,
            RANK()   OVER (PARTITION BY hole ORDER BY MIN(chars)),
@@ -107,11 +126,17 @@ GROUP BY user_id;
 -- Used by delete_orphaned_code()
 CREATE INDEX solutions_code_id_key ON solutions(code_id);
 
+-- Used by /golfers
+CREATE INDEX medals_user_id_key ON medals(user_id);
+
 -- Used by /stats
 CREATE INDEX solutions_hole_key ON solutions(hole, user_id) WHERE NOT failing;
 CREATE INDEX solutions_lang_key ON solutions(lang, user_id) WHERE NOT failing;
 
 CREATE ROLE "code-golf" WITH LOGIN;
+
+-- Only owners can refresh.
+ALTER MATERIALIZED VIEW medals OWNER TO "code-golf";
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    code        TO "code-golf";
 GRANT SELECT                         ON SEQUENCE code_id_seq TO "code-golf";

@@ -46,20 +46,7 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 	}
 
 	if err := db.QueryRow(
-		`WITH ranked AS (
-		    SELECT user_id,
-		           RANK() OVER (PARTITION BY hole, lang ORDER BY chars)
-		      FROM solutions
-		      JOIN code ON code_id = id
-		     WHERE NOT failing
-		), medals AS (
-		    SELECT user_id,
-		           COUNT(*) FILTER (WHERE rank = 1) gold,
-		           COUNT(*) FILTER (WHERE rank = 2) silver,
-		           COUNT(*) FILTER (WHERE rank = 3) bronze
-		      FROM ranked
-		  GROUP BY user_id
-		)  SELECT admin,
+		`  SELECT admin,
 		          COALESCE(bronze, 0),
 		          COALESCE(gold, 0),
 		          (SELECT COUNT(DISTINCT hole)

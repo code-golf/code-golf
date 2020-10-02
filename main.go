@@ -122,6 +122,19 @@ func main() {
 		server.TLSConfig.GetCertificate = certManager.GetCertificate
 	}
 
+	// Every minute.
+	go func() {
+		for range time.NewTicker(time.Minute).C {
+			for _, db := range []*sql.DB{db, dbBeta} {
+				if _, err := db.Exec(
+					"REFRESH MATERIALIZED VIEW CONCURRENTLY medals",
+				); err != nil {
+					log.Println(err)
+				}
+			}
+		}
+	}()
+
 	// Every 5 minutes.
 	go func() {
 		// Various GitHub API requests.
@@ -130,7 +143,7 @@ func main() {
 		}
 	}()
 
-	// Hourly.
+	// Every hour.
 	go func() {
 		for range time.NewTicker(time.Hour).C {
 			for _, job := range [...]struct{ name, sql string }{

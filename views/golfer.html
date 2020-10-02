@@ -10,7 +10,7 @@
         <img src="//avatars.githubusercontent.com/{{ .Name }}?s=192">
         <h1>{{ .Name }}</h1>
         <p>{{ comma .Points }} points
-        <p>🥇 {{ .Gold }} • 🥈 {{ .Silver }} • 🥉 {{ .Bronze }}
+        <p>🥇 {{ comma .Gold }} • 🥈 {{ comma .Silver }} • 🥉 {{ comma .Bronze }}
     </div>
 
     <div id=badges>
