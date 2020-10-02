@@ -121,7 +121,7 @@ func boxesIntersection() (args []string, out string) {
 	//// generate 98 more random cases
 	zeros := 0
 	nonZeros := 0
-	for zeros+nonZeros < 98 {
+	for zeros+nonZeros < 94 {
 		b1 = boxGen()
 		b2 = boxGen()
 		intersection := calculateIntersection(b1, b2)
@@ -133,7 +133,7 @@ func boxesIntersection() (args []string, out string) {
 			outs = append(outs,
 				strconv.Itoa(intersection))
 			nonZeros += 1
-		} else if intersection == 0 && zeros < 8 {
+		} else if intersection == 0 && zeros < 4 {
 			args = append(args,
 				strconvbox(b1)+" "+strconvbox(b2))
 			outs = append(outs,
