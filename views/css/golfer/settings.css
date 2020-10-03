@@ -16,4 +16,9 @@ label {
     gap: 1rem;
 }
 
-label > * { font-weight: normal }
+label > *, .inline { font-weight: normal }
+
+.inline {
+    gap: .5rem;
+    grid-template-columns: min-content 1fr;
+}

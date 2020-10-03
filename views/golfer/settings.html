@@ -11,6 +11,28 @@
 
 <main>
     <form method=post>
+        <label class=col>
+            Country
+            <span>
+                Will eventually be used in aggregate on the statistics page.
+                Showing it publicly will put a little flag next to your name.
+            </span>
+            <select name=country>
+                <option value>Unspecified
+            {{ range $continent, $countries := .Data.Countries }}
+                <optgroup label="{{ $continent }}">
+                {{ range $countries }}
+                    <option value="{{ .ID }}">{{ .Flag }}&ensp;{{ .Name }}
+                {{ end }}
+            {{ end }}
+            </select>
+        </label>
+
+        <label class=inline>
+            <input name=show_country type=checkbox>
+            Show my country publicly?
+        </label>
+
         <label>
             Time Zone
             <span>
