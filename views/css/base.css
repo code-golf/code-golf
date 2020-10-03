@@ -17,8 +17,9 @@
 }
 
 :root {
-    --background: #FDFDFD;
-    --color:      #343A40;
+    --background: #fdfdfd;
+    --color:      #343a40;
+    --grey:       #85888c; /* #85888c is 0.6 * #343a40 + 0.4 * #ffffff */
 
     /* https://flatuicolors.com */
     --red:        #FC5C65BB;
@@ -27,10 +28,10 @@
     --green:      #26DE81BB;
     --blue:       #45AAF2BB;
     --purple:     #8C7AE6BB;
-    --grey:       #ECF0F1BB;
 
     --light-blue:   #def;
     --light-green:  #efd;
+    --light-grey:   #eee;
     --light-yellow: #feb;
 }
 
@@ -117,7 +118,7 @@ body > svg, .hide { display: none }
 details .grid { padding-top: 1rem }
 
 footer {
-    background: #eee;
+    background: var(--light-grey);
     border-top: 1px solid var(--color);
     margin: 0 calc(50% - 50vw);
 }
@@ -207,7 +208,7 @@ table {
     font-variant: tabular-nums;
 }
 
-tbody > :nth-child(even) { background: #eee }
+tbody > :nth-child(even) { background: var(--light-grey) }
 
 tbody th { text-align: right }
 
@@ -346,7 +347,7 @@ thead th {
 .color:nth-of-type(6n+5), .blue   { background: var(--blue)   }
 .color:nth-of-type(6n+6), .purple { background: var(--purple) }
 
-.grey { background: var(--grey) }
+.grey { background: var(--light-grey) }
 
 .grid {
     align-items: center;
@@ -354,10 +355,8 @@ thead th {
     gap: 1rem;
 }
 
-/* #85888c is 0.6 * #343A40 + 0.4 * #FFFFFF, because setting the opacity to 0.6 affects the tooltip. */
-.inactive { color: #85888c }
+.inactive { color: var(--grey) }
 
-/* TODO Need a dark version */
 .me { background: var(--light-green) !important }
 
 .nav > a {
