@@ -56,27 +56,27 @@
                 <td class=wide>
                     <a href="/recent/{{ .Lang.ID }}">{{ .Lang.Name }}</a>
                 {{ if $beta }}
+                    <td class="right wide">
                 {{ if eq .OtherRank 0 }}
-                    <td class="right wide" data-tooltip="Rank: {{ .Rank }}{{ ord .Rank }}">
+                    <span data-tooltip="Rank: {{ .Rank }}{{ ord .Rank }}">
                 {{ else }}
-                    <td class="right wide" data-tooltip="Bytes rank is {{ .Rank }}{{ ord .Rank }}. Chars rank is {{ .OtherRank }}{{ ord .OtherRank }}.">
+                    <span data-tooltip="Bytes rank is {{ .Rank }}{{ ord .Rank }}. Chars rank is {{ .OtherRank }}{{ ord .OtherRank }}.">
                 {{ end }}
                     {{ comma .Strokes }}
+                    </span>
                     <td class="wide">{{ .Scoring }}
                 {{ else }}
                     <td class="right wide">{{ comma .Bytes }}
-                    <td class="right wide" data-tooltip="Rank: {{ .Rank }}{{ ord .Rank }}">
-                        {{ comma .Chars }}
+                    <td class="right wide"><span data-tooltip="Rank: {{ .Rank }}{{ ord .Rank }}">{{ comma .Chars }}</span>
                 {{ end }}
-                <td class=wide
-                    {{ if not .TieCount }}
-                        data-tooltip="Shorter than previous {{ .Rank }}{{ ord .Rank }} place solutions"
-                    {{ end }}>
+                <td class=wide>
                     {{if eq .Rank 1}}🥇
                     {{else if eq .Rank 2}}🥈
                     {{else if eq .Rank 3}}🥉
                     {{end}}
-                    {{if and (not .TieCount) (le .Rank 3)}}📉{{end}}
+                    {{if and (not .TieCount) (le .Rank 3)}}
+                        <span data-tooltip="Shorter than previous {{ .Rank }}{{ ord .Rank }} place solutions">📉</span>
+                    {{end}}
                 <td class=right>{{ time .Submitted }}
         {{- end -}}
     </table>
