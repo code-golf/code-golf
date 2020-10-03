@@ -1,29 +1,19 @@
 form {
-    align-items: center;
     display: grid;
-    gap: .5rem;
-    grid-template-columns: min-content 1fr;
-    max-width: 40rem;
+    gap: 1rem;
+    max-width: 30rem;
 }
 
-form > :last-child { grid-column: -2 / -1 }
-
-input, select {
-    background: var(--background);
-    border: 1px solid var(--color);
-    font: 16px emoji, font, system-ui, -apple-system, sans-serif;
-    padding: .5rem;
-    width: 100%;
+form + form {
+    border-top: 1px solid var(--grey);
+    padding-top: 1rem;
 }
 
 label {
+    align-items: center;
+    display: grid;
     font-weight: bold;
-    text-align: right;
-    white-space: nowrap;
+    gap: 1rem;
 }
 
-@media (max-width: 34rem) {
-    form { grid-template-columns: 1fr }
-
-    label { text-align: left }
-}
+label > * { font-weight: normal }

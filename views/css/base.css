@@ -171,6 +171,15 @@ header svg {
     width: 1.5rem;
 }
 
+input:not([type=checkbox]), select {
+    background: var(--background);
+    border: 1px solid var(--grey);
+    border-radius: .25rem;
+    font: inherit;
+    padding: .5rem;
+    width: 100%;
+}
+
 main {
     align-content: start;
     display: grid;
@@ -181,6 +190,12 @@ main {
 }
 
 nav > :empty { flex: 1 }
+
+select {
+    appearance: none;
+    background: var(--background) url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path d='M2 0L0 2h4zm0 5L0 3h4' fill='%23343A40'/></svg>") no-repeat right .75rem center/auto calc(100% - 1.5rem);
+    cursor: pointer;
+}
 
 summary {
     background: var(--color);
