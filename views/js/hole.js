@@ -250,7 +250,8 @@ async function refreshScores() {
 
         // Only show the solution picker when both solutions are actually used.
         if (code0 && code1 && code0 != code1 || autoSave0 && autoSave1 && autoSave0 != autoSave1 ||
-            code0 && autoSave1 && code0 != autoSave1 || autoSave0 && code1 && autoSave0 != code1) {
+            (solution == 0 && code0 && autoSave1 && code0 != autoSave1) ||
+            (solution == 1 && autoSave0 && code1 && autoSave0 != code1)) {
             for (let i = 0; i < scorings.length; i++) {
                 let name = `Fewest ${scorings[i]}`;
 
