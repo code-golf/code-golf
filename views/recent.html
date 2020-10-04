@@ -1,7 +1,5 @@
 {{ template "header" . }}
 
-{{ $beta := .Beta }}
-
 <main>
     <h1>Recent Solutions</h1>
 
@@ -29,13 +27,8 @@
                 <th>Hole
                 <th>Golfer
                 <th class=wide>Lang
-                {{ if .Beta }}
-                    <th class="right wide">Strokes
-                    <th class="wide">Scoring
-                {{ else }}
-                    <th class="right wide">Bytes
-                    <th class="right wide">Chars
-                {{ end }}
+                <th class="right wide">Strokes
+                <th class=wide>Scoring
                 <th class=wide>
                 <th class=right>Submitted
         <tbody>
@@ -55,15 +48,9 @@
                     </a>
                 <td class=wide>
                     <a href="/recent/{{ .Lang.ID }}">{{ .Lang.Name }}</a>
-                {{ if $beta }}
-                    <td class="right wide" title="Rank: {{ .Rank }}{{ ord .Rank }}">
-                        {{ comma .Strokes }}
-                    <td class="wide">{{ .Scoring }}
-                {{ else }}
-                    <td class="right wide">{{ comma .Bytes }}
-                    <td class="right wide" title="Rank: {{ .Rank }}{{ ord .Rank }}">
-                        {{ comma .Chars }}
-                {{ end }}
+                <td class="right wide" title="Rank: {{ .Rank }}{{ ord .Rank }}">
+                    {{ comma .Strokes }}
+                <td class=wide>{{ .Scoring }}
                 <td class=wide
                     {{ if not .TieCount }}
                         title="Shorter than previous {{ .Rank }}{{ ord .Rank }} place solutions"

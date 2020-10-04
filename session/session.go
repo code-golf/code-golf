@@ -14,11 +14,6 @@ func Set(r *http.Request, k string, v interface{}) *http.Request {
 	return r.WithContext(context.WithValue(r.Context(), key(k), v))
 }
 
-func Beta(r *http.Request) bool {
-	beta, _ := r.Context().Value(key("beta")).(bool)
-	return beta
-}
-
 // Database gets the database handle from the request context.
 func Database(r *http.Request) *sql.DB {
 	return r.Context().Value(key("database")).(*sql.DB)

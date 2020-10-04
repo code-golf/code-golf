@@ -20,7 +20,8 @@ subtest 'Initial solution' => {
     ok post-solution( :$session, :code($code-long) )<Pass>, 'Solution passes';
 
     is-deeply db(), (
-        { code => $code-long, code_id => 1, user_id => 123 },
+        { code => $code-long, code_id => 1, scoring => 'bytes', user_id => 123 },
+        { code => $code-long, code_id => 1, scoring => 'chars', user_id => 123 },
     ), 'DB is inserted';
 };
 
@@ -28,7 +29,8 @@ subtest 'Same solution' => {
     ok post-solution( :$session, :code($code-long) )<Pass>, 'Solution passes';
 
     is-deeply db(), (
-        { code => $code-long, code_id => 1, user_id => 123 },
+        { code => $code-long, code_id => 1, scoring => 'bytes', user_id => 123 },
+        { code => $code-long, code_id => 1, scoring => 'chars', user_id => 123 },
     ), 'DB is the same';
 };
 
@@ -37,7 +39,8 @@ subtest 'Updated solution' => {
 
     # Note how the sequence has jumped because of the second solution.
     is-deeply db(), (
-        { code => $code-short, code_id => 3, user_id => 123 },
+        { code => $code-short, code_id => 3, scoring => 'bytes', user_id => 123 },
+        { code => $code-short, code_id => 3, scoring => 'chars', user_id => 123 },
     ), 'DB is updated';
 
     todo "Code isn't cleaned up yet";
@@ -55,14 +58,17 @@ subtest 'Different user' => {
 
     # Note how they share the some code ID.
     is-deeply db(), (
-        { code => $code-short, code_id => 3, user_id => 123 },
-        { code => $code-short, code_id => 3, user_id => 456 },
+        { code => $code-short, code_id => 3, scoring => 'bytes', user_id => 123 },
+        { code => $code-short, code_id => 3, scoring => 'chars', user_id => 123 },
+        { code => $code-short, code_id => 3, scoring => 'bytes', user_id => 456 },
+        { code => $code-short, code_id => 3, scoring => 'chars', user_id => 456 },
     ), 'DB is updated';
 };
 
 sub db {
     $dbh.execute(
-        'SELECT code, code_id, user_id FROM solutions JOIN code ON id = code_id',
+        'SELECT code, code_id, scoring, user_id
+           FROM solutions JOIN code ON id = code_id',
     ).allrows(:array-of-hash)
 }
 

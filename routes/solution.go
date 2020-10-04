@@ -71,14 +71,6 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
-		// Update the code if it's the same length or less, but only update
-		// the submitted time if the solution is shorter. This avoids a user
-		// moving down the leaderboard by matching their personal best.
-		scorings := []string{"chars"}
-		if session.Beta(r) {
-			scorings = append(scorings, "bytes")
-		}
-
 		tx, err := db.BeginTx(r.Context(), nil)
 		if err != nil {
 			panic(err)
@@ -86,7 +78,10 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 
 		defer tx.Rollback()
 
-		for _, scoring := range scorings {
+		// Update the code if it's the same length or less, but only update
+		// the submitted time if the solution is shorter. This avoids a user
+		// moving down the leaderboard by matching their personal best.
+		for _, scoring := range []string{"bytes", "chars"} {
 			if _, err := tx.Exec(
 				`WITH new_code AS (
 				    SELECT id, `+scoring+` FROM code WHERE code = $1
@@ -168,8 +163,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			awardTrophy(db, userID, "polyglot")
 		}
 
-		// FIXME Each one of these queries takes 50ms! Chars first as until
-		// beta ships that's more likely to be over 9k and short-circuit.
+		// FIXME Each one of these queries takes 50ms!
 		if queryBool(
 			db,
 			"SELECT chars_points > 9000 FROM chars_points WHERE user_id = $1",
@@ -182,6 +176,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			awardTrophy(db, userID, "its-over-9000")
 		}
 
+		// COUNT(*) = 4 because langs x (bytes, chars)
 		switch in.Lang {
 		case "brainfuck":
 			if in.Hole == "brainfuck" {
@@ -190,7 +185,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		case "java", "javascript":
 			if queryBool(
 				db,
-				`SELECT COUNT(*) = 2
+				`SELECT COUNT(*) = 4
 				   FROM solutions
 				  WHERE NOT failing
 				    AND hole = $1
@@ -206,7 +201,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		case "perl", "raku":
 			if queryBool(
 				db,
-				`SELECT COUNT(*) = 2
+				`SELECT COUNT(*) = 4
 				   FROM solutions
 				  WHERE NOT failing
 				    AND hole = $1
