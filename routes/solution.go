@@ -168,9 +168,15 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			awardTrophy(db, userID, "polyglot")
 		}
 
+		// FIXME Each one of these queries takes 50ms! Chars first as until
+		// beta ships that's more likely to be over 9k and short-circuit.
 		if queryBool(
 			db,
-			"SELECT points > 9000 FROM points WHERE user_id = $1",
+			"SELECT chars_points > 9000 FROM chars_points WHERE user_id = $1",
+			userID,
+		) || queryBool(
+			db,
+			"SELECT bytes_points > 9000 FROM bytes_points WHERE user_id = $1",
 			userID,
 		) {
 			awardTrophy(db, userID, "its-over-9000")

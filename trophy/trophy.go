@@ -46,7 +46,7 @@ var List = []Trophy{
 	},
 	{
 		"🐉", "its-over-9000", "It’s Over 9000!",
-		"Earn over 9,000 points.",
+		"Earn over 9,000 points in either bytes or chars scoring.",
 	},
 	{
 		"⭐", "my-god-its-full-of-stars", "My God, It’s Full of Stars",
