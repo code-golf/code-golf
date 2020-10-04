@@ -74,6 +74,7 @@ func main() {
 		r.Get("/", routes.GolferTrophies)
 		r.Get("/achievements", routes.GolferAchievements)
 		r.Get("/holes", routes.GolferHoles)
+		r.Get("/holes/{scoring}", routes.GolferHoles)
 	})
 	r.Get("/ideas", routes.Ideas)
 	r.Get("/log-out", routes.LogOut)

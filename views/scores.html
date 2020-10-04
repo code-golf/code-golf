@@ -104,8 +104,8 @@
                     </a>
                 <td class=right>{{ if $allHoles }}{{ .Holes }}{{ else }}{{ .Lang.Name }}{{ end }}
                 {{ if $beta }}
-                    <td class=right><span{{ if $bytesScoring }} class=inactive {{end}}>{{ comma .CharsPoints }}
-                    <td class=right><span{{ if $charsScoring }} class=inactive {{end}}>{{ comma .BytesPoints }}
+                    <td class=right><span{{ if $bytesScoring }} class=inactive {{end}} data-tooltip="Points for Chars scoring">{{ comma .CharsPoints }}
+                    <td class=right><span{{ if $charsScoring }} class=inactive {{end}} data-tooltip="Points for Bytes scoring">{{ comma .BytesPoints }}
                     <td class="right wide">
                     <span{{ if $bytesScoring }} class=inactive {{end}}
                     {{ if ne .Chars 0 }}

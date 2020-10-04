@@ -1,6 +1,21 @@
 {{ template "header" . }}
 {{ template "golfer" . }}
 
+{{ $beta := .Beta }}
+{{ $scorings := .Data.Scorings }}
+{{ $scoringIndex := .Data.ScoringIndex }}
+{{ $scoring := index $scorings $scoringIndex }}
+
+{{ if $beta }}
+<nav class="nav span">
+	{{ range $scorings }}
+        <a {{ if eq (index $scorings $scoringIndex) . }} class=on {{ else }} href="{{ . }}" {{ end }}>
+            {{ title . }}
+        </a>
+    {{ end }}
+</nav>
+{{ end }}
+
 <svg>
     {{ symbol "play-light" }}
 {{ range .Data.Langs }}
@@ -22,17 +37,21 @@
 {{ range $i, $hole := .Data.Holes }}
     <h3 class=span>{{ .Name }}</h3>
     {{ range $j, $lang := $langs }}
-        {{ with index (index $ranks $hole.ID) $lang.ID }}
+        {{ with index (index (index $ranks $scoringIndex) $hole.ID) $lang.ID }}
+            {{ $rank0 := index (index (index $ranks 0) $hole.ID) $lang.ID }}
+            {{ $rank1 := index (index (index $ranks 1) $hole.ID) $lang.ID }}
             <a class="{{ $lang.ID }} {{ colour . }}"
-                href="/scores/{{ $hole.ID }}/{{ $lang.ID }}/chars"
-                title="View scores of {{ $hole.Name }} in {{ $lang.Name }}">
+                href="/scores/{{ $hole.ID }}/{{ $lang.ID }}/{{ $scoring }}"
+                data-tooltip="{{ if $beta }}{{ title (index $scorings 0) }} rank is {{ $rank0 }}{{ ord $rank0 }}, {{ title (index $scorings 1) }} rank is {{ $rank1 }}{{ ord $rank1 }}. {{ end }}View scores of {{ $hole.Name }} in {{ $lang.Name }}."
+                data-wide-tooltip=true>
                 <svg><use href="#{{ $lang.ID }}"/></svg>
                 <span>{{ . }}<sup>{{ ord . }}</sup></span>
             </a>
         {{ else }}
             <a class="{{ $lang.ID }} grey"
                 href="/{{ $hole.ID }}#{{ $lang.ID }}"
-                title="Play {{ $hole.Name }} in {{ $lang.Name }}">
+                data-tooltip="Play {{ $hole.Name }} in {{ $lang.Name }}."
+                data-wide-tooltip=true>
                 <svg><use href="#{{ $lang.ID }}"/></svg>
                 <svg><use href="#play"/></svg>
             </a>
