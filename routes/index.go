@@ -92,6 +92,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 			` SELECT hole, lang
 			    FROM solutions
 			   WHERE failing AND user_id = $1
+			GROUP BY hole, lang
 			ORDER BY hole`,
 			userID,
 		)
