@@ -23,7 +23,7 @@ type GolferInfo struct {
 	Sponsor bool
 
 	// Overall points
-	Points int
+	BytesPoints, CharsPoints int
 
 	// Count of medals
 	Gold, Silver, Bronze int
@@ -46,20 +46,7 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 	}
 
 	if err := db.QueryRow(
-		`WITH ranked AS (
-		    SELECT user_id,
-		           RANK() OVER (PARTITION BY hole, lang ORDER BY chars)
-		      FROM solutions
-		      JOIN code ON code_id = id
-		     WHERE NOT failing
-		), medals AS (
-		    SELECT user_id,
-		           COUNT(*) FILTER (WHERE rank = 1) gold,
-		           COUNT(*) FILTER (WHERE rank = 2) silver,
-		           COUNT(*) FILTER (WHERE rank = 3) bronze
-		      FROM ranked
-		  GROUP BY user_id
-		)  SELECT admin,
+		`  SELECT admin,
 		          COALESCE(bronze, 0),
 		          COALESCE(gold, 0),
 		          (SELECT COUNT(DISTINCT hole)
@@ -70,13 +57,15 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 		             FROM solutions
 		            WHERE user_id = id AND NOT FAILING),
 		          login,
-		          COALESCE(points, 0),
+		          COALESCE(bytes_points, 0),
+		          COALESCE(chars_points, 0),
 		          COALESCE(silver, 0),
 		          sponsor,
 		          (SELECT COUNT(*) FROM trophies WHERE user_id = id)
 		     FROM users
 		LEFT JOIN medals ON id = medals.user_id
-		LEFT JOIN points ON id = points.user_id
+		LEFT JOIN bytes_points ON id = bytes_points.user_id
+		LEFT JOIN chars_points ON id = chars_points.user_id
 		    WHERE login = $1`,
 		name,
 	).Scan(
@@ -87,7 +76,8 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 		&info.ID,
 		&info.Langs,
 		&info.Name,
-		&info.Points,
+		&info.BytesPoints,
+		&info.CharsPoints,
 		&info.Silver,
 		&info.Sponsor,
 		&info.Trophies,

@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/code-golf/code-golf/country"
 	"github.com/code-golf/code-golf/session"
 	"github.com/code-golf/code-golf/zone"
 )
@@ -40,12 +41,10 @@ func GolferDelete(w http.ResponseWriter, r *http.Request) {
 // GolferSettings serves GET /golfer/settings
 func GolferSettings(w http.ResponseWriter, r *http.Request) {
 	render(w, r, "golfer/settings", "Settings", struct {
-		TimeZones         []zone.Zone
+		Countries         map[string][]*country.Country
 		KeymapPreferences []string
-	}{
-		TimeZones:         zone.List(),
-		KeymapPreferences: validKeymapPrefs,
-	})
+		TimeZones         []zone.Zone
+	}{country.Tree, validKeymapPrefs, zone.List()})
 }
 
 // GolferSettingsPost serves POST /golfer/settings

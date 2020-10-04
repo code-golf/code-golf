@@ -67,7 +67,7 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 				}
 
 				solution := 0
-				if scoring == "bytes" {
+				if session.Beta(r) && scoring == "chars" {
 					solution = 1
 				}
 
@@ -81,7 +81,7 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if session.Beta(r) {
-		data.Scorings = append(data.Scorings, "Bytes")
+		data.Scorings = []string{"Bytes", "Chars"}
 	}
 
 	render(w, r, "hole", data.Hole.Name, data)

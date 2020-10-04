@@ -66,13 +66,13 @@ onload = () => {
 
     cm.on('change', () => {
         const code = cm.getValue();
-        const len = strlen(code);
-        chars.innerText = `${len.toLocaleString('en')} char${len - 1 ? 's' : ''}`;
-        if (beta) {
-            const bytes = utf8ByteCount(code);
-            if (bytes != len)
-                chars.innerText += `, ${bytes.toLocaleString('en')} byte${bytes - 1 ? 's' : ''}`;
+        let infoText = '';
+        for (let i = 0; i < scorings.length; i++) {
+            if (i)
+                infoText += ', ';
+            infoText += `${getScoring(code, i).toLocaleString('en')} ${scorings[i].toLowerCase()}`;
         }
+        chars.innerText = infoText;
 
         // Avoid future conflicts by only storing code locally that's different from the server's copy.
         const serverCode = getSolutionCode(lang, solution);
@@ -142,15 +142,17 @@ onload = () => {
         if (submissionID != latestSubmissionID)
             return;
 
-        for (let i = 0; i < scorings.length; i++) {
-            const lengthFunc = i ? utf8ByteCount : strlen;
-            if (data.Pass && (!(codeLang in solutions[i]) || lengthFunc(code) <= lengthFunc(solutions[i][codeLang]))) {
-                solutions[i][codeLang] = code;
+        if (data.Pass) {
+            for (let i = 0; i < scorings.length; i++) {
+                const solutionCode = getSolutionCode(codeLang, i);
+                if (!solutionCode || getScoring(code, i) <= getScoring(solutionCode, i)) {
+                    solutions[i][codeLang] = code;
 
-                // Don't need to keep solution in local storage because it's stored on the site.
-                // This prevents conflicts when the solution is improved on another browser.
-                if (loggedIn && localStorage.getItem(getAutoSaveKey(codeLang, i)) == code)
-                    localStorage.removeItem(getAutoSaveKey(codeLang, i));
+                    // Don't need to keep solution in local storage because it's stored on the site.
+                    // This prevents conflicts when the solution is improved on another browser.
+                    if (loggedIn && localStorage.getItem(getAutoSaveKey(codeLang, i)) == code)
+                        localStorage.removeItem(getAutoSaveKey(codeLang, i));
+                }
             }
         }
 
@@ -171,7 +173,7 @@ onload = () => {
 
         // Automatically switch to the solution whose code matches the current code after a new solution is submitted.
         // Don't change scoring. refreshScores will update the solution picker.
-        if (beta && data.Pass && solutions[solution][codeLang] != code && solutions[getOtherScoring(solution)][codeLang] == code)
+        if (beta && data.Pass && getSolutionCode(codeLang, solution) != code && getSolutionCode(codeLang, getOtherScoring(solution)) == code)
             setSolution(getOtherScoring(solution));
 
         document.querySelector('h2').innerText
@@ -223,20 +225,21 @@ async function refreshScores() {
     for (const l of langs) {
         let name = l.name;
 
-        if (l.id in solutions[0]) {
-            const chars = strlen(solutions[0][l.id])
-            let sameCount = true;
+        if (getSolutionCode(l.id, 0)) {
+            name += ' <sup>';
 
-            if (beta) {
-                const bytes = utf8ByteCount(solutions[1][l.id])
-                if (chars != bytes) {
-                    name += ` <sup>${chars.toLocaleString('en')}/${bytes.toLocaleString('en')}</sup>`;
-                    sameCount = false;
+            let lastValue = 0;
+            for (let i = 0; i < scorings.length; i++) {
+                const value = getScoring(getSolutionCode(l.id, i), i);
+                if (lastValue != value) {
+                    if (lastValue)
+                        name += '/';
+                    name += value.toLocaleString('en');
                 }
+                lastValue = value;
             }
 
-            if (sameCount)
-                name += ` <sup>${chars.toLocaleString('en')}</sup>`;
+            name += '</sup>';
         }
 
         picker.innerHTML += l.id == lang
@@ -254,12 +257,14 @@ async function refreshScores() {
 
         // Only show the solution picker when both solutions are actually used.
         if (code0 && code1 && code0 != code1 || autoSave0 && autoSave1 && autoSave0 != autoSave1 ||
-            code0 && autoSave1 && code0 != autoSave1 || autoSave0 && code1 && autoSave0 != code1) {
+            (solution == 0 && code0 && autoSave1 && code0 != autoSave1) ||
+            (solution == 1 && autoSave0 && code1 && autoSave0 != code1)) {
             for (let i = 0; i < scorings.length; i++) {
                 let name = `Fewest ${scorings[i]}`;
 
-                if (lang in solutions[i]) {
-                    name += ` <sup>${[strlen,utf8ByteCount][i](solutions[i][lang]).toLocaleString('en')}</sup>`;
+                const solutionCode = getSolutionCode(lang, i);
+                if (solutionCode) {
+                    name += ` <sup>${getScoring(solutionCode, i).toLocaleString('en')}</sup>`;
                 }
 
                 const child = document.createElement('a');
@@ -302,23 +307,24 @@ async function refreshScores() {
                 <td><a href=/golfers/${s.login}>
                     <img src="//avatars.githubusercontent.com/${s.login}?s=24">
                     <span>${s.login}</span>
-                </a>
-                <td class=right><span${scoring != 0 ? ' class=inactive' : ''}`;
-
-            if (beta && s.chars)
-                html += ` data-tooltip="Chars solution is ${formatScore(s.chars)} chars, ${formatScore(s.chars_bytes)} bytes."`;
-
-            html += `>${formatScore(s.chars)}</span>`;
+                </a>`;
 
             if (beta) {
-                html += `<td class=right><span${scoring != 1 ? ' class=inactive' : ''}`;
+                html += `<td class=right><span${scorings[scoring] != "Bytes" ? ' class=inactive' : ''}`;
 
                 if (s.bytes)
-                    html +=
-                        ` data-tooltip="Bytes solution is ${formatScore(s.bytes_chars)} chars, ${formatScore(s.bytes)} bytes."`;
+                    html += ` data-tooltip="Bytes solution is ${formatScore(s.bytes)} bytes, ${formatScore(s.bytes_chars)} chars."`;
 
                 html += `>${formatScore(s.bytes)}</span>`;
             }
+
+            html += `<td class=right><span${scorings[scoring] != "Chars" ? ' class=inactive' : ''}`;
+
+            if (beta && s.chars)
+                html +=
+                    ` data-tooltip="Chars solution is ${formatScore(s.chars_bytes)} bytes, ${formatScore(s.chars)} chars."`;
+
+            html += `>${formatScore(s.chars)}</span>`;
         }
         else
             html += `<tr><td colspan=${beta ? 4 : 3}>&nbsp`;
@@ -395,4 +401,8 @@ function utf8ByteCount(str) {
     }
 
     return byteCount;
+}
+
+function getScoring(str, index) {
+    return (scorings[index] == "Bytes" ? utf8ByteCount : strlen)(str);
 }

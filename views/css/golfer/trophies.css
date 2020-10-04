@@ -5,7 +5,7 @@ main {
 }
 
 progress {
-    background: var(--grey);
+    background: var(--light-grey);
     border: 0;
     height: .5rem;
     margin: .25rem 0;
@@ -13,10 +13,10 @@ progress {
 }
 
 progress::-moz-progress-bar      { background: var(--blue) }
-progress::-webkit-progress-bar   { background: var(--grey) }
+progress::-webkit-progress-bar   { background: var(--light-grey) }
 progress::-webkit-progress-value { background: var(--blue) }
 
-.locked { background: var(--grey) }
+.locked { background: var(--light-grey) }
 
 .locked div {
     color: transparent;

@@ -17,8 +17,9 @@
 }
 
 :root {
-    --background: #FDFDFD;
-    --color:      #343A40;
+    --background: #fdfdfd;
+    --color:      #343a40;
+    --grey:       #85888c; /* #85888c is 0.6 * #343a40 + 0.4 * #ffffff */
 
     /* https://flatuicolors.com */
     --red:        #FC5C65BB;
@@ -27,10 +28,10 @@
     --green:      #26DE81BB;
     --blue:       #45AAF2BB;
     --purple:     #8C7AE6BB;
-    --grey:       #ECF0F1BB;
 
     --light-blue:   #def;
     --light-green:  #efd;
+    --light-grey:   #eee;
     --light-yellow: #feb;
 }
 
@@ -66,11 +67,13 @@
     color: var(--background);
     content: attr(data-tooltip);
     max-width: 21em;
-    overflow: hidden;
     padding: 0 .5rem;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    text-align: center;
     z-index: 99;
+}
+
+[data-tooltip][data-wide-tooltip="true"]:after {
+    min-width: 16em;
 }
 
 [data-tooltip]:hover:before, [data-tooltip]:hover:after { display: block }
@@ -117,7 +120,7 @@ body > svg, .hide { display: none }
 details .grid { padding-top: 1rem }
 
 footer {
-    background: #eee;
+    background: var(--light-grey);
     border-top: 1px solid var(--color);
     margin: 0 calc(50% - 50vw);
 }
@@ -170,6 +173,15 @@ header svg {
     width: 1.5rem;
 }
 
+input:not([type=checkbox]), select {
+    background: var(--background);
+    border: 1px solid var(--grey);
+    border-radius: .25rem;
+    font: inherit;
+    padding: .5rem;
+    width: 100%;
+}
+
 main {
     align-content: start;
     display: grid;
@@ -180,6 +192,12 @@ main {
 }
 
 nav > :empty { flex: 1 }
+
+select {
+    appearance: none;
+    background: var(--background) url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path d='M2 0L0 2h4zm0 5L0 3h4' fill='%23343A40'/></svg>") no-repeat right .75rem center/auto calc(100% - 1.5rem);
+    cursor: pointer;
+}
 
 summary {
     background: var(--color);
@@ -207,7 +225,7 @@ table {
     font-variant: tabular-nums;
 }
 
-tbody > :nth-child(even) { background: #eee }
+tbody > :nth-child(even) { background: var(--light-grey) }
 
 tbody th { text-align: right }
 
@@ -346,7 +364,7 @@ thead th {
 .color:nth-of-type(6n+5), .blue   { background: var(--blue)   }
 .color:nth-of-type(6n+6), .purple { background: var(--purple) }
 
-.grey { background: var(--grey) }
+.grey { background: var(--light-grey) }
 
 .grid {
     align-items: center;
@@ -354,10 +372,8 @@ thead th {
     gap: 1rem;
 }
 
-/* #85888c is 0.6 * #343A40 + 0.4 * #FFFFFF, because setting the opacity to 0.6 affects the tooltip. */
-.inactive { color: #85888c }
+.inactive { color: var(--grey) }
 
-/* TODO Need a dark version */
 .me { background: var(--light-green) !important }
 
 .nav > a {
@@ -411,6 +427,7 @@ thead th {
 .sticky th {
     position: sticky;
     top: 2.75rem;
+    z-index: 9;
 }
 
 /* Stick headers below tabs if we have them */

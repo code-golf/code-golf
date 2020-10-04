@@ -158,6 +158,40 @@ preamble = '''
     and execute each program in turn.
 '''
 
+['Boxes Intersection']
+experiment = 281
+category = 'Computing'
+links = [
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Intersection' },
+]
+preamble = '''
+<p>
+    A box is defined in the pixel space via <b>x</b>, <b>y</b>, 
+    <b>h</b> and <b>w</b> as
+
+<pre>
+(0,0)→ y
+  ↓ ┌────────────────────────────────────┐
+  x │                                    │
+    │   (x,y)◎───w───┐                   │
+    │        │   ◎───┼──────┐            │
+    │        h   │▓▓▓│      │            │
+    │        │   │▓▓▓│      │            │
+    │        └───┼───┘      │            │
+    │            │          │            │
+    │            │          │            │
+    │            └──────────┘            │
+    └────────────────────────────────────┘
+</pre>
+
+<p>
+    Compute the intersection area between two boxes given as
+
+<pre>
+x1 y1 h1 w1 x2 y2 h2 w2
+</pre>
+'''
+
 ['Christmas Trees']
 category = 'Art'
 preamble = '''
@@ -1211,8 +1245,46 @@ links = [
 preamble = '''
 <p>
     Print the first <b>100</b> rows in the Rule 110 cellular automaton
-    starting from an initial single living cell, which should begin like this:
-
+    starting from an initial single living cell.
+<p>
+    Each new row in the life of the automaton should be a new line, and the rules for whether a cell is alive or dead depends on whether is was alive on the previous iteration, as well as the state of the two neighbouring cells.
+    The rules which dictate whether a cell is alive or dead in the next iteration are as follows:
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>Previous cells
+                <th>New centre cell
+        <tbody>
+            <tr>
+                <th>111
+                <th>0
+            <tr>
+                <th>110
+                <th>1
+            <tr>
+                <th>101
+                <th>1
+            <tr>
+                <th>100
+                <th>0
+            <tr>
+                <th>011
+                <th>1
+            <tr>
+                <th>010
+                <th>1
+            <tr>
+                <th>001
+                <th>1
+            <tr>
+                <th>000
+                <th>0
+    </table>
+</div>
+where 1 is alive, 0 is dead, and the middle digit represents the previous state of the current cell.
+<p>
+    The first 10 rows are shown here:
 <pre>         █
         ██
        ███
@@ -1224,6 +1296,7 @@ preamble = '''
  ███████ █
 ██     ███
 </pre>
+
 '''
 
 ['Seven Segment']

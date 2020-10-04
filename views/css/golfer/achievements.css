@@ -58,7 +58,7 @@ summary {
 }
 
 .progress svg {
-    fill: var(--grey);
+    fill: var(--light-grey);
     position: absolute;
     stroke: var(--blue);
     transform: rotate(-90deg);

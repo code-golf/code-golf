@@ -7,8 +7,7 @@
  */
 CodeMirror.defineMode("cobol", function () {
   var BUILTIN = "builtin", COMMENT = "comment", STRING = "string",
-      ATOM = "atom", NUMBER = "number", KEYWORD = "keyword", MODTAG = "header",
-      COBOLLINENUM = "def", PERIOD = "link";
+      ATOM = "atom", NUMBER = "number", KEYWORD = "keyword";
   function makeKeywords(str) {
     var obj = {}, words = str.split(" ");
     for (var i = 0; i < words.length; ++i) obj[words[i]] = true;
@@ -127,7 +126,7 @@ CodeMirror.defineMode("cobol", function () {
       "WORDS WORKING-STORAGE WRITE XML XML-CODE " +
       "XML-EVENT XML-NTEXT XML-TEXT ZERO ZERO-FILL " );
 
-  var builtins = makeKeywords("- * ** / + < <= = > >= ");
+  var builtins = makeKeywords("- * ** / + < <= = > >= . ");
   var tests = {
     digit: /\d/,
     digit_or_colon: /[\d:]/,
@@ -194,13 +193,7 @@ CodeMirror.defineMode("cobol", function () {
         break;
       default: // default parsing mode
         var ch = stream.next();
-        var col = stream.column();
-        if (col >= 0 && col <= 5) {
-          returnType = COBOLLINENUM;
-        } else if (col >= 72 && col <= 79) {
-          stream.skipToEnd();
-          returnType = MODTAG;
-        } else if (ch == "*" && col == 6) { // comment
+        if (ch == "*" && stream.eat(">")) { // comment
           stream.skipToEnd(); // rest of the line is a comment
           returnType = COMMENT;
         } else if (ch == "\"" || ch == "\'") {
@@ -208,19 +201,11 @@ CodeMirror.defineMode("cobol", function () {
           returnType = STRING;
         } else if (ch == "'" && !( tests.digit_or_colon.test(stream.peek()) )) {
           returnType = ATOM;
-        } else if (ch == ".") {
-          returnType = PERIOD;
         } else if (isNumber(ch,stream)){
           returnType = NUMBER;
         } else {
           if (stream.current().match(tests.symbol)) {
-            while (col < 71) {
-              if (stream.eat(tests.symbol) === undefined) {
-                break;
-              } else {
-                col++;
-              }
-            }
+            while (stream.eat(tests.symbol) !== undefined) {}
           }
           if (keywords && keywords.propertyIsEnumerable(stream.current().toUpperCase())) {
             returnType = KEYWORD;

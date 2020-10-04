@@ -94,21 +94,58 @@ CREATE TABLE trophies (
      AND c.relname IN ('code', 'ideas', 'sessions', 'solutions', 'trophies', 'users')
 ORDER BY c.relname, t.typlen DESC, t.typname, a.attname;
 
-CREATE VIEW points AS WITH ranked AS (
+CREATE MATERIALIZED VIEW medals AS WITH ranked AS (
+    SELECT user_id,
+           RANK() OVER (PARTITION BY hole, lang ORDER BY bytes)
+      FROM solutions
+      JOIN code ON code_id = id
+     WHERE NOT failing AND scoring = 'bytes'
+     UNION ALL
+    SELECT user_id,
+           RANK() OVER (PARTITION BY hole, lang ORDER BY chars)
+      FROM solutions
+      JOIN code ON code_id = id
+     WHERE NOT failing AND scoring = 'chars'
+) SELECT user_id,
+         COUNT(*) FILTER (WHERE rank = 1) gold,
+         COUNT(*) FILTER (WHERE rank = 2) silver,
+         COUNT(*) FILTER (WHERE rank = 3) bronze
+    FROM ranked
+GROUP BY user_id;
+
+CREATE VIEW bytes_points AS WITH ranked AS (
+    SELECT user_id,
+           RANK()   OVER (PARTITION BY hole ORDER BY MIN(bytes)),
+           COUNT(*) OVER (PARTITION BY hole)
+      FROM solutions
+      JOIN code ON code_id = id
+     WHERE NOT failing
+       AND scoring = 'bytes'
+  GROUP BY hole, user_id
+) SELECT user_id,
+         SUM(ROUND(((count - rank) + 1) * (1000.0 / count))) bytes_points
+    FROM ranked
+GROUP BY user_id;
+
+CREATE VIEW chars_points AS WITH ranked AS (
     SELECT user_id,
            RANK()   OVER (PARTITION BY hole ORDER BY MIN(chars)),
            COUNT(*) OVER (PARTITION BY hole)
       FROM solutions
       JOIN code ON code_id = id
      WHERE NOT failing
+       AND scoring = 'chars'
   GROUP BY hole, user_id
 ) SELECT user_id,
-         SUM(ROUND(((count - rank) + 1) * (1000.0 / count))) points
+         SUM(ROUND(((count - rank) + 1) * (1000.0 / count))) chars_points
     FROM ranked
 GROUP BY user_id;
 
 -- Used by delete_orphaned_code()
 CREATE INDEX solutions_code_id_key ON solutions(code_id);
+
+-- Used by /golfers
+CREATE UNIQUE INDEX medals_user_id_key ON medals(user_id);
 
 -- Used by /stats
 CREATE INDEX solutions_hole_key ON solutions(hole, user_id) WHERE NOT failing;
@@ -116,11 +153,15 @@ CREATE INDEX solutions_lang_key ON solutions(lang, user_id) WHERE NOT failing;
 
 CREATE ROLE "code-golf" WITH LOGIN;
 
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    code        TO "code-golf";
-GRANT SELECT                         ON SEQUENCE code_id_seq TO "code-golf";
-GRANT SELECT, INSERT, TRUNCATE       ON TABLE    ideas       TO "code-golf";
-GRANT SELECT                         ON TABLE    points      TO "code-golf";
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    sessions    TO "code-golf";
-GRANT SELECT, INSERT, UPDATE         ON TABLE    solutions   TO "code-golf";
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    trophies    TO "code-golf";
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    users       TO "code-golf";
+-- Only owners can refresh.
+ALTER MATERIALIZED VIEW medals OWNER TO "code-golf";
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    code         TO "code-golf";
+GRANT SELECT                         ON SEQUENCE code_id_seq  TO "code-golf";
+GRANT SELECT, INSERT, TRUNCATE       ON TABLE    ideas        TO "code-golf";
+GRANT SELECT                         ON TABLE    bytes_points TO "code-golf";
+GRANT SELECT                         ON TABLE    chars_points TO "code-golf";
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    sessions     TO "code-golf";
+GRANT SELECT, INSERT, UPDATE         ON TABLE    solutions    TO "code-golf";
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    trophies     TO "code-golf";
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    users        TO "code-golf";

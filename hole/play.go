@@ -30,6 +30,8 @@ func getAnswer(holeID, code string) ([]string, string) {
 		args, answer = arabicToRoman(holeID == "roman-to-arabic")
 	case "brainfuck":
 		args, answer = brainfuck()
+	case "boxes-intersection":
+		args, answer = boxesIntersection()
 	case "css-colors":
 		args, answer = cssColors()
 	case "emojify":
