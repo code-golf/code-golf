@@ -1,15 +1,16 @@
-const chars          = document.querySelector('#chars');
-const details        = document.querySelector('#details');
-const editor         = document.querySelector('#editor');
-const hole           = decodeURI(location.pathname.slice(1));
-const langs          = JSON.parse(document.querySelector('#langs').innerText);
-const picker         = document.querySelector('#picker');
-const solutionPicker = document.querySelector('#solutionPicker');
-const scorings       = JSON.parse(document.querySelector('#scorings').innerText);
-const solutions      = JSON.parse(document.querySelector('#solutions').innerText);
-const status         = document.querySelector('#status');
-const table          = document.querySelector('#scores');
-const beta           = scorings.length > 1;
+const chars             = document.querySelector('#chars');
+const details           = document.querySelector('#details');
+const editor            = document.querySelector('#editor');
+const hole              = decodeURI(location.pathname.slice(1));
+const keymapPreference  = JSON.parse(document.querySelector('#keymapPreference').innerText);
+const langs             = JSON.parse(document.querySelector('#langs').innerText);
+const picker            = document.querySelector('#picker');
+const solutionPicker    = document.querySelector('#solutionPicker');
+const scorings          = JSON.parse(document.querySelector('#scorings').innerText);
+const solutions         = JSON.parse(document.querySelector('#solutions').innerText);
+const status            = document.querySelector('#status');
+const table             = document.querySelector('#scores');
+const beta              = scorings.length > 1;
 
 let lang;
 let solution = beta ? Math.max(scorings.indexOf(localStorage.getItem('solution')), 0) : 0;
@@ -52,12 +53,15 @@ onload = () => {
     // Lock the editor's height in so we scroll.
     editor.style.height = `${editor.offsetHeight}px`;
 
+    const vimMode = keymapPreference === 'vim';
+
     const cm = new CodeMirror(editor, {
         autofocus:    true,
         indentUnit:   1,
         lineNumbers:  true,
         lineWrapping: true,
         smartIndent:  false,
+        vimMode,
     });
 
     cm.on('change', () => {
@@ -310,7 +314,7 @@ async function refreshScores() {
                 html += `<td class=right><span${scoring != 1 ? ' class=inactive' : ''}`;
 
                 if (s.bytes)
-                    html += 
+                    html +=
                         ` data-tooltip="Bytes solution is ${formatScore(s.bytes_chars)} chars, ${formatScore(s.bytes)} bytes."`;
 
                 html += `>${formatScore(s.bytes)}</span>`;
