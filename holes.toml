@@ -167,7 +167,7 @@ links = [
 preamble = '''
 <p>
     A box is defined via <b>x</b>, <b>y</b>, 
-    <b>w</b> and <b>w</b> as
+    <b>w</b> and <b>h</b> as
 
 <pre>
   y

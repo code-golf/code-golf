@@ -118,7 +118,7 @@ func boxesIntersection() (args []string, out string) {
 	args = append(args, strconvbox(b2)+" "+strconvbox(b7))
 	outs = append(outs, "0")
 
-	// generate 98 more random cases
+	//// generate 98 more random cases
 	zeros := 0
 	nonZeros := 0
 	for zeros+nonZeros < 94 {
