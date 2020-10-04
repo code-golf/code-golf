@@ -48,15 +48,20 @@
             </select>
         </label>
 
-        <label for=keymap>Keybindings</label>
-        <select id=keymap name=keymap>
-        {{ $keymap := .Golfer.KeymapPreference }}
-        {{ range .Data.KeymapPreferences }}
-            <option value="{{ . }}" {{ if eq . $keymap }}selected{{ end }}>
-                {{ . }}
-            </option>
-        {{ end }}
-        </select>
+        <label>
+            Keybindings
+            <span>
+                Preferred keyboard mapping for the code editor.
+            </span>
+            <select name=keymap>
+            {{ $keymap := .Golfer.KeymapPreference }}
+            {{ range .Data.KeymapPreferences }}
+                <option value="{{ . }}" {{ if eq . $keymap }}selected{{ end }}>
+                    {{ . }}
+                </option>
+            {{ end }}
+            </select>
+        </label>
 
         <p><button class="btn green">Save Changes</button>
     </form>
