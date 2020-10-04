@@ -75,7 +75,7 @@ func setKeymapPreference(r *http.Request) error {
 		"UPDATE users SET keymap = $1 WHERE id = $2",
 		keymapPreference, session.Golfer(r).ID,
 	); err != nil {
-		return fmt.Errorf("Error setting keymap preference: %w", err)
+		return fmt.Errorf("error setting keymap preference: %w", err)
 	}
 
 	return nil
