@@ -166,29 +166,26 @@ links = [
 ]
 preamble = '''
 <p>
-    A box is defined in the pixel space via <b>x</b>, <b>y</b>, 
-    <b>h</b> and <b>w</b> as
+    A box is defined via <b>x</b>, <b>y</b>, 
+    <b>w</b> and <b>w</b> as
 
 <pre>
-(0,0)→ y
-  ↓ ┌────────────────────────────────────┐
-  x │                                    │
-    │   (x,y)◎───w───┐                   │
-    │        │   ◎───┼──────┐            │
-    │        h   │▓▓▓│      │            │
-    │        │   │▓▓▓│      │            │
-    │        └───┼───┘      │            │
-    │            │          │            │
-    │            │          │            │
-    │            └──────────┘            │
-    └────────────────────────────────────┘
+  y
+  │ ┌───w───┐
+  │ │   ┌───┼──┐
+  │ h   │▓▓▓│  │
+  │ │   │▓▓▓│  │
+  │ o───┼───┘  │
+  │     o──────┘
+  └───────────────x
+(0,0)
 </pre>
 
 <p>
     Compute the intersection area between two boxes given as
 
 <pre>
-x1 y1 h1 w1 x2 y2 h2 w2
+x1 y1 w1 h1 x2 y2 w2 h2
 </pre>
 '''
 
