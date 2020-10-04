@@ -216,6 +216,11 @@ onload = () => {
     };
 
     onkeydown = e => e.ctrlKey && e.key == 'Enter' ? submit() : undefined;
+
+    // Allow vim users to run code with :w or :write
+    if (vimMode) {
+        CodeMirror.Vim.defineEx('write', 'w', (_cm, _input) => submit());
+    }
 };
 
 async function refreshScores() {
