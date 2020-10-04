@@ -427,6 +427,7 @@ thead th {
 .sticky th {
     position: sticky;
     top: 2.75rem;
+    z-index: 9;
 }
 
 /* Stick headers below tabs if we have them */
