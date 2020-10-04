@@ -81,7 +81,7 @@ func boxGen() bbox {
 	}
 }
 
-func boxesIntersection() (args []string, out string) {
+func intersection() (args []string, out string) {
 	var outs []string
 
 	//// default cases
