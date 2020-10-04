@@ -21,7 +21,7 @@ func GolferHandler(next http.Handler) http.Handler {
 				`WITH golfer AS (
 				    UPDATE sessions SET last_used = DEFAULT WHERE id = $1
 				 RETURNING user_id
-				) SELECT admin, delete, id, login, time_zone, keymap_pref
+				) SELECT admin, delete, id, login, time_zone, keymap
 				    FROM users
 				    JOIN golfer ON id = user_id`,
 				uuid.FromStringOrNil(cookie.Value),

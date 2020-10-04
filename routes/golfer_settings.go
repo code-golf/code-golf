@@ -1,12 +1,17 @@
 package routes
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
 	"github.com/code-golf/code-golf/session"
 	"github.com/code-golf/code-golf/zone"
 )
+
+var validKeymapPrefs = []string{
+	"default", "vim",
+}
 
 // GolferCancelDelete serves POST /golfer/cancel-delete
 func GolferCancelDelete(w http.ResponseWriter, r *http.Request) {
@@ -35,8 +40,12 @@ func GolferDelete(w http.ResponseWriter, r *http.Request) {
 // GolferSettings serves GET /golfer/settings
 func GolferSettings(w http.ResponseWriter, r *http.Request) {
 	render(w, r, "golfer/settings", "Settings", struct {
-		TimeZones []zone.Zone
-	}{zone.List()})
+		TimeZones         []zone.Zone
+		KeymapPreferences []string
+	}{
+		TimeZones:         zone.List(),
+		KeymapPreferences: validKeymapPrefs,
+	})
 }
 
 // GolferSettingsPost serves POST /golfer/settings
@@ -52,5 +61,22 @@ func GolferSettingsPost(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	if err := setKeymapPreference(r); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+	}
+
 	http.Redirect(w, r, "/golfer/settings", http.StatusSeeOther)
+}
+
+func setKeymapPreference(r *http.Request) error {
+	keymapPreference := r.FormValue("keymap")
+
+	if _, err := session.Database(r).Exec(
+		"UPDATE users SET keymap = $1 WHERE id = $2",
+		keymapPreference, session.Golfer(r).ID,
+	); err != nil {
+		return fmt.Errorf("Error setting keymap preference: %w", err)
+	}
+
+	return nil
 }
