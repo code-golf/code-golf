@@ -10,11 +10,10 @@ const scorings          = JSON.parse(document.querySelector('#scorings').innerTe
 const solutions         = JSON.parse(document.querySelector('#solutions').innerText);
 const status            = document.querySelector('#status');
 const table             = document.querySelector('#scores');
-const beta              = scorings.length > 1;
 
 let lang;
-let solution = beta ? Math.max(scorings.indexOf(localStorage.getItem('solution')), 0) : 0;
-let scoring = beta ? Math.max(scorings.indexOf(localStorage.getItem('scoring')), 0) : 0;
+let solution = Math.max(scorings.indexOf(localStorage.getItem('solution')), 0);
+let scoring = Math.max(scorings.indexOf(localStorage.getItem('scoring')), 0);
 let setCodeForLangAndSolution;
 let latestSubmissionID = 0;
 
@@ -34,7 +33,7 @@ function getSolutionCode(lang, solution) {
 }
 
 function getOtherScoring(value) {
-    return beta ? 1 - value : value;
+    return 1 - value;
 }
 
 function setSolution(value) {
@@ -173,7 +172,7 @@ onload = () => {
 
         // Automatically switch to the solution whose code matches the current code after a new solution is submitted.
         // Don't change scoring. refreshScores will update the solution picker.
-        if (beta && data.Pass && getSolutionCode(codeLang, solution) != code && getSolutionCode(codeLang, getOtherScoring(solution)) == code)
+        if (data.Pass && getSolutionCode(codeLang, solution) != code && getSolutionCode(codeLang, getOtherScoring(solution)) == code)
             setSolution(getOtherScoring(solution));
 
         document.querySelector('h2').innerText
@@ -251,38 +250,36 @@ async function refreshScores() {
             ? `<a>${name}</a>` : `<a href=#${l.id}>${name}</a>`;
     }
 
-    if (beta) {
-        while (solutionPicker.firstChild)
-            solutionPicker.removeChild(solutionPicker.firstChild);
+    while (solutionPicker.firstChild)
+        solutionPicker.removeChild(solutionPicker.firstChild);
 
-        const code0 = getSolutionCode(lang, 0);
-        const code1 = getSolutionCode(lang, 1);
-        const autoSave0 = localStorage.getItem(getAutoSaveKey(lang, 0));
-        const autoSave1 = localStorage.getItem(getAutoSaveKey(lang, 1));
+    const code0 = getSolutionCode(lang, 0);
+    const code1 = getSolutionCode(lang, 1);
+    const autoSave0 = localStorage.getItem(getAutoSaveKey(lang, 0));
+    const autoSave1 = localStorage.getItem(getAutoSaveKey(lang, 1));
 
-        // Only show the solution picker when both solutions are actually used.
-        if (code0 && code1 && code0 != code1 || autoSave0 && autoSave1 && autoSave0 != autoSave1 ||
-            (solution == 0 && code0 && autoSave1 && code0 != autoSave1) ||
-            (solution == 1 && autoSave0 && code1 && autoSave0 != code1)) {
-            for (let i = 0; i < scorings.length; i++) {
-                let name = `Fewest ${scorings[i]}`;
+    // Only show the solution picker when both solutions are actually used.
+    if (code0 && code1 && code0 != code1 || autoSave0 && autoSave1 && autoSave0 != autoSave1 ||
+        (solution == 0 && code0 && autoSave1 && code0 != autoSave1) ||
+        (solution == 1 && autoSave0 && code1 && autoSave0 != code1)) {
+        for (let i = 0; i < scorings.length; i++) {
+            let name = `Fewest ${scorings[i]}`;
 
-                const solutionCode = getSolutionCode(lang, i);
-                if (solutionCode) {
-                    name += ` <sup>${getScoring(solutionCode, i).toLocaleString('en')}</sup>`;
-                }
-
-                const child = document.createElement('a');
-                child.innerHTML = name;
-                if (i != solution) {
-                    child.href = 'javascript:void(0)';
-                    child.onclick = () => {
-                        setSolution(i);
-                        setCodeForLangAndSolution();
-                    };
-                }
-                solutionPicker.appendChild(child);
+            const solutionCode = getSolutionCode(lang, i);
+            if (solutionCode) {
+                name += ` <sup>${getScoring(solutionCode, i).toLocaleString('en')}</sup>`;
             }
+
+            const child = document.createElement('a');
+            child.innerHTML = name;
+            if (i != solution) {
+                child.href = 'javascript:void(0)';
+                child.onclick = () => {
+                    setSolution(i);
+                    setCodeForLangAndSolution();
+                };
+            }
+            solutionPicker.appendChild(child);
         }
     }
 
@@ -290,15 +287,10 @@ async function refreshScores() {
     const res = await fetch(`${url}/mini`);
 
     const scores = res.ok ? await res.json() : [];
-    let html     = `<thead><tr>`;
+    let html     = `<thead><tr><th colspan=4>`;
 
-    if (beta) {
-        html += `<thead><tr><th colspan=4>`;
-        for (let i = 0; i < scorings.length; i++)
-            html += `<a class="scoringPicker${scoring != i ? ' inactive' : ''}" id=${scorings[i]}>${scorings[i]}</a>`;
-    }
-    else
-        html += `<th colspan=3>Scores`;
+    for (let i = 0; i < scorings.length; i++)
+        html += `<a class="scoringPicker${scoring != i ? ' inactive' : ''}" id=${scorings[i]}>${scorings[i]}</a>`;
 
     html += `<a href=${url} id=all>all</a><tbody>`;
 
@@ -312,37 +304,31 @@ async function refreshScores() {
                 <td><a href=/golfers/${s.login}>
                     <img src="//avatars.githubusercontent.com/${s.login}?s=24">
                     <span>${s.login}</span>
-                </a>`;
+                </a>
+                <td class=right><span${scorings[scoring] != "Bytes" ? ' class=inactive' : ''}`;
 
-            if (beta) {
-                html += `<td class=right><span${scorings[scoring] != "Bytes" ? ' class=inactive' : ''}`;
+            if (s.bytes)
+                html += ` data-tooltip="Bytes solution is ${formatScore(s.bytes)} bytes, ${formatScore(s.bytes_chars)} chars."`;
 
-                if (s.bytes)
-                    html += ` data-tooltip="Bytes solution is ${formatScore(s.bytes)} bytes, ${formatScore(s.bytes_chars)} chars."`;
+            html += `>${formatScore(s.bytes)}</span>
+                <td class=right><span${scorings[scoring] != "Chars" ? ' class=inactive' : ''}`;
 
-                html += `>${formatScore(s.bytes)}</span>`;
-            }
-
-            html += `<td class=right><span${scorings[scoring] != "Chars" ? ' class=inactive' : ''}`;
-
-            if (beta && s.chars)
+            if (s.chars)
                 html +=
                     ` data-tooltip="Chars solution is ${formatScore(s.chars_bytes)} bytes, ${formatScore(s.chars)} chars."`;
 
             html += `>${formatScore(s.chars)}</span>`;
         }
         else
-            html += `<tr><td colspan=${beta ? 4 : 3}>&nbsp`;
+            html += `<tr><td colspan=4>&nbsp`;
     }
 
     table.innerHTML = html;
 
-    if (beta) {
-        const otherScoring = getOtherScoring(scoring);
-        const switchScoring = table.querySelector(`#${scorings[otherScoring]}`);
-        switchScoring.href = 'javascript:void(0)';
-        switchScoring.onclick = () => { setScoring(otherScoring); refreshScores(); };
-    }
+    const otherScoring = getOtherScoring(scoring);
+    const switchScoring = table.querySelector(`#${scorings[otherScoring]}`);
+    switchScoring.href = 'javascript:void(0)';
+    switchScoring.onclick = () => { setScoring(otherScoring); refreshScores(); };
 }
 
 function bytesForCodePoint(codePoint) {
