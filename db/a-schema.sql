@@ -15,6 +15,8 @@ CREATE TYPE hole AS ENUM (
     'τ', 'φ', '√2', '𝑒'
 );
 
+CREATE TYPE keymap AS ENUM ('default', 'vim');
+
 CREATE TYPE lang AS ENUM (
     'bash', 'brainfuck', 'c', 'c-sharp', 'cobol', 'f-sharp', 'fortran', 'go',
     'haskell', 'j', 'java', 'javascript', 'julia', 'lisp', 'lua', 'nim',
@@ -31,8 +33,6 @@ CREATE TYPE trophy AS ENUM (
     'patches-welcome', 'pi-day', 'polyglot', 'slowcoach', 'tim-toady',
     'the-watering-hole', 'twelvetide'
 );
-
-CREATE TYPE keymap_type AS ENUM ('default', 'vim');
 
 CREATE TABLE code (
     id    int    NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -51,13 +51,14 @@ CREATE TABLE ideas (
 );
 
 CREATE TABLE users (
-    id        int         NOT NULL PRIMARY KEY,
-    admin     bool        NOT NULL DEFAULT false,
-    sponsor   bool        NOT NULL DEFAULT false,
-    login     citext      NOT NULL UNIQUE,
-    time_zone text        NOT NULL DEFAULT 'UTC',
-    keymap    keymap_type NOT NULL DEFAULT 'default',
-    delete    timestamp
+    id        int       NOT NULL PRIMARY KEY,
+    admin     bool      NOT NULL DEFAULT false,
+    sponsor   bool      NOT NULL DEFAULT false,
+    login     citext    NOT NULL UNIQUE,
+    time_zone text      NOT NULL DEFAULT 'UTC',
+    delete    timestamp,
+    keymap    keymap    NOT NULL DEFAULT 'default'
+
 );
 
 CREATE TABLE sessions (
