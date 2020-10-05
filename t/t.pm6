@@ -15,7 +15,7 @@ react {
 
 unit module t;
 
-our $client is export = Cro::HTTP::Client.new: ca => { :insecure };
+our $client is export = Cro::HTTP::Client.new: :ca({ :insecure }), :http(1.1);
 
 sub dbh is export {
     my $dbh = DBIish.connect: 'Pg';
