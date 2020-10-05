@@ -57,14 +57,9 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		Sort     string
 		Sorts    []string
 	}{
-		// The "chars" default supports the non-beta version.
-		Scoring: "chars",
-		Sorts:   []string{"alphabetical", "golfers", "rank"},
-	}
-
-	if session.Beta(r) {
-		data.Scoring = "bytes"
-		data.Scorings = []string{"bytes", "chars"}
+		Scoring:  "bytes",
+		Scorings: []string{"bytes", "chars"},
+		Sorts:    []string{"alphabetical", "golfers", "rank"},
 	}
 
 	if sort, err := r.Cookie("__Host-sort"); err == nil {

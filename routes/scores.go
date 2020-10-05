@@ -336,10 +336,6 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
-		if !session.Beta(r) {
-			score.Bytes = score.CharsBytes
-		}
-
 		score.Lang = lang.ByID[langID]
 
 		data.Scores = append(data.Scores, score)

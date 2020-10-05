@@ -37,11 +37,6 @@ db-dev:
 	@docker-compose exec db psql -U postgres code-golf
 
 db-diff:
-	@diff --color --label beta --label dev --strip-trailing-cr -su             \
-	    <(ssh rancher@code.golf "docker run --rm                               \
-	    --env-file /etc/code-golf.env $(POSTGRES) pg_dump -Os code-golf-beta") \
-	    <(docker-compose exec db pg_dump -OsU postgres code-golf) || true
-
 	@diff --color --label live --label dev --strip-trailing-cr -su \
 	    <(ssh rancher@code.golf "docker run --rm                   \
 	    --env-file /etc/code-golf.env $(POSTGRES) pg_dump -Os")    \

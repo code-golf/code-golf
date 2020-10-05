@@ -21,8 +21,8 @@ func strconvbox(box bbox) (out string) {
 	var outs []string
 	outs = append(outs, strconv.Itoa(box.x))
 	outs = append(outs, strconv.Itoa(box.y))
-	outs = append(outs, strconv.Itoa(box.h))
 	outs = append(outs, strconv.Itoa(box.w))
+	outs = append(outs, strconv.Itoa(box.h))
 	return strings.Join(outs, " ")
 }
 
@@ -30,8 +30,8 @@ func strconvbox(box bbox) (out string) {
 func unbox(b bbox) (tlx, tly, brx, bry int) {
 	tlx = b.x
 	tly = b.y
-	brx = b.x + b.h
-	bry = b.y + b.w
+	brx = b.x + b.w
+	bry = b.y + b.h
 	return
 }
 
@@ -61,8 +61,8 @@ func calculateIntersection(b1, b2 bbox) int {
 	ibry := minint(bry1, bry2)
 
 	// calculate intersection dimensions
-	ih := ibrx - itlx
-	iw := ibry - itly
+	iw := ibrx - itlx
+	ih := ibry - itly
 
 	// intersection is empty if the bboxes do not overlap
 	if iw < 0 || ih < 0 || iw > b1.w+b2.w || ih > b1.h+b2.h {
@@ -81,18 +81,18 @@ func boxGen() bbox {
 	}
 }
 
-func boxesIntersection() (args []string, out string) {
+func intersection() (args []string, out string) {
 	var outs []string
 
 	//// default cases
 	// define two non overlapping 1x1 boxes
-	b1 := bbox{x: 0, y: 0, w: 1, h: 1}
-	b2 := bbox{x: 0, y: 0, w: 2, h: 2}
-	b3 := bbox{x: 3, y: 3, w: 1, h: 2}
-	b4 := bbox{x: 3, y: 1, w: 3, h: 2}
-	b5 := bbox{x: 3, y: 1, w: 3, h: 1}
-	b6 := bbox{x: 0, y: 0, w: 10, h: 10}
-	b7 := bbox{x: 2, y: 2, w: 2, h: 2}
+	b1 := bbox{x: 0, y: 0, h: 1, w: 1}
+	b2 := bbox{x: 0, y: 0, h: 2, w: 2}
+	b3 := bbox{x: 3, y: 3, h: 1, w: 2}
+	b4 := bbox{x: 3, y: 1, h: 3, w: 2}
+	b5 := bbox{x: 3, y: 1, h: 3, w: 1}
+	b6 := bbox{x: 0, y: 0, h: 10, w: 10}
+	b7 := bbox{x: 2, y: 2, h: 2, w: 2}
 
 	// b1 and b2 overlap by 1 pixel
 	args = append(args, strconvbox(b1)+" "+strconvbox(b2))

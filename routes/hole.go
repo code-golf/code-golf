@@ -20,7 +20,7 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 	}{
 		KeymapPreference: "default",
 		Langs:            lang.List,
-		Scorings:         []string{"Chars"},
+		Scorings:         []string{"Bytes", "Chars"},
 		Solutions:        []map[string]string{{}, {}},
 	}
 
@@ -38,19 +38,13 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 
 	if golfer := session.Golfer(r); golfer != nil {
 		data.KeymapPreference = golfer.KeymapPreference
-
 		if data.Hole.Experiment == 0 {
 			// Fetch all the code per lang.
-			condition := ""
-			if !session.Beta(r) {
-				condition = " AND scoring = 'chars'"
-			}
-
 			rows, err := session.Database(r).Query(
 				`SELECT code, lang, scoring
-				   	FROM solutions
-				   	JOIN code ON code_id = id
-				  WHERE hole = $1 AND user_id = $2`+condition,
+				    FROM solutions
+				    JOIN code ON code_id = id
+				  WHERE hole = $1 AND user_id = $2`,
 				data.Hole.ID, golfer.ID,
 			)
 			if err != nil {
@@ -78,10 +72,6 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 				panic(err)
 			}
 		}
-	}
-
-	if session.Beta(r) {
-		data.Scorings = []string{"Bytes", "Chars"}
 	}
 
 	render(w, r, "hole", data.Hole.Name, data)

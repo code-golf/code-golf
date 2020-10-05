@@ -158,40 +158,6 @@ preamble = '''
     and execute each program in turn.
 '''
 
-['Boxes Intersection']
-experiment = 281
-category = 'Computing'
-links = [
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Intersection' },
-]
-preamble = '''
-<p>
-    A box is defined in the pixel space via <b>x</b>, <b>y</b>, 
-    <b>h</b> and <b>w</b> as
-
-<pre>
-(0,0)→ y
-  ↓ ┌────────────────────────────────────┐
-  x │                                    │
-    │   (x,y)◎───w───┐                   │
-    │        │   ◎───┼──────┐            │
-    │        h   │▓▓▓│      │            │
-    │        │   │▓▓▓│      │            │
-    │        └───┼───┘      │            │
-    │            │          │            │
-    │            │          │            │
-    │            └──────────┘            │
-    └────────────────────────────────────┘
-</pre>
-
-<p>
-    Compute the intersection area between two boxes given as
-
-<pre>
-x1 y1 h1 w1 x2 y2 h2 w2
-</pre>
-'''
-
 ['Christmas Trees']
 category = 'Art'
 preamble = '''
@@ -785,6 +751,31 @@ preamble = '''
 <p>
     Print all the happy numbers from <b>1</b> to <b>200</b> inclusive, each on
     their own line.
+'''
+
+[Intersection]
+category = 'Mathematics'
+links = [
+    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Intersection' },
+]
+preamble = '''
+<p>A box is defined via <b>x</b>, <b>y</b>, <b>w</b> and <b>h</b> as
+
+<pre>
+  y
+  │ ┌───w───┐
+  │ │   ┌───┼──┐
+  │ h   │▓▓▓│  │
+  │ │   │▓▓▓│  │
+  │ o───┼───┘  │
+  │     o──────┘
+  └───────────────x
+(0,0)
+</pre>
+
+<p>Compute the intersection area between two boxes given as
+
+<pre>x1 y1 w1 h1 x2 y2 w2 h2</pre>
 '''
 
 ['Leap Years']

@@ -126,7 +126,6 @@ func render(w http.ResponseWriter, r *http.Request, name, title string, data int
 	}
 
 	args := struct {
-		Beta                                bool
 		CSS                                 template.CSS
 		Data                                interface{}
 		Golfer                              *golfer.Golfer
@@ -135,7 +134,6 @@ func render(w http.ResponseWriter, r *http.Request, name, title string, data int
 		JSExt, LogInURL, Nonce, Path, Title string
 		Request                             *http.Request
 	}{
-		Beta:       session.Beta(r),
 		CSS:        css["base"] + css[path.Dir(name)] + css[name],
 		Data:       data,
 		Golfer:     session.Golfer(r),
@@ -179,8 +177,6 @@ func render(w http.ResponseWriter, r *http.Request, name, title string, data int
 
 		if dev {
 			config.RedirectURL += "/dev"
-		} else if args.Beta {
-			config.RedirectURL += "/beta"
 		}
 
 		config.RedirectURL += "?redirect_uri=" + url.QueryEscape(r.RequestURI)
