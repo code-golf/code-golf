@@ -1,4 +1,10 @@
-/* include vendor/codemirror.css */
+/**
+ * NOTE: These includes are hardcoded in render.go, not inlined automatically
+ * from comments like the *.js `include`s
+ */
+
+/* include vendor/codemirror.css        */
+/* include vendor/codemirror-dialog.css */
 
 .term-fg31 { color: #c00 }
 .term-fg32 { color: #490 }

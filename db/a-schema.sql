@@ -32,6 +32,8 @@ CREATE TYPE trophy AS ENUM (
     'the-watering-hole', 'twelvetide'
 );
 
+CREATE TYPE keymap_type AS ENUM ('default', 'vim');
+
 CREATE TABLE code (
     id    int    NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     bytes int    NOT NULL GENERATED ALWAYS AS (octet_length(code)) STORED,
@@ -49,11 +51,12 @@ CREATE TABLE ideas (
 );
 
 CREATE TABLE users (
-    id        int    NOT NULL PRIMARY KEY,
-    admin     bool   NOT NULL DEFAULT false,
-    sponsor   bool   NOT NULL DEFAULT false,
-    login     citext NOT NULL UNIQUE,
-    time_zone text   NOT NULL DEFAULT 'UTC',
+    id        int         NOT NULL PRIMARY KEY,
+    admin     bool        NOT NULL DEFAULT false,
+    sponsor   bool        NOT NULL DEFAULT false,
+    login     citext      NOT NULL UNIQUE,
+    time_zone text        NOT NULL DEFAULT 'UTC',
+    keymap    keymap_type NOT NULL DEFAULT 'default',
     delete    timestamp
 );
 

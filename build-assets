@@ -2,9 +2,19 @@
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
+FORCE=0
+while [ "$1" != "" ]; do
+    case "$1" in
+        "-f" | "--force")
+            FORCE=1
+            ;;
+    esac
+    shift
+done
+
 # Only re-run if assets.go is stale.
 newest_file=$(ls -t assets/{,*/,*/*/}* | head -1)
-if [[ routes/assets.go -ot $newest_file ]]; then
+if [[ $FORCE = 1 || routes/assets.go -ot $newest_file ]]; then
     docker build --pull -t code-golf-assets assets
     docker run --rm -u $UID:$GROUPS -v $PWD:/work code-golf-assets
 fi

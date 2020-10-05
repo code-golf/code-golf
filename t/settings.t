@@ -17,9 +17,15 @@ my $session = $dbh.execute(
 await $client.post: 'https://app:1443/golfer/settings',
     content-type => 'application/x-www-form-urlencoded',
     headers      => [ cookie => "__Host-session=$session" ],
-    body         => { time_zone => 'Europe/London' };
+    body         => {
+        time_zone => 'Europe/London',
+        keymap    => 'vim',
+    };
 
 is $dbh.execute('SELECT time_zone FROM users').row.head, 'Europe/London',
     'Time zone updated to "Europe/London"';
+
+is $dbh.execute('SELECT keymap FROM users').row.head, 'vim',
+    'Keymap preference updated to "vim"';
 
 done-testing;

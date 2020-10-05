@@ -1,8 +1,10 @@
 /* include vendor/codemirror.js               */
 /* include vendor/codemirror-clike.js         */
+/* include vendor/codemirror-dialog.js        */
 /* include vendor/codemirror-htmlmixed.js     */
 /* include vendor/codemirror-matchbrackets.js */
 /* include vendor/codemirror-simple.js        */
+/* include vendor/codemirror-vim.js           */
 /* include vendor/codemirror-xml.js           */
 
 /* include vendor/codemirror-bash.js          */
