@@ -101,14 +101,14 @@
                 <td class="right wide">
                     <span{{ if $charsScoring }} class=inactive {{end}}
                     {{ if ne .Bytes 0 }}
-                        data-tooltip="Bytes scoring is {{ comma .BytesChars }} chars, {{ comma .Bytes }} bytes.">{{ comma .Bytes }}
+                        data-tooltip="Bytes scoring is {{ comma .Bytes }} bytes, {{ comma .BytesChars }} chars.">{{ comma .Bytes }}
                     {{ else }}
                         >&nbsp;
                     {{ end }}
                 <td class="right wide">
                 <span{{ if $bytesScoring }} class=inactive {{end}}
                 {{ if ne .Chars 0 }}
-                    data-tooltip="Chars scoring is {{ comma .Chars }} chars, {{ comma .CharsBytes }} bytes.">{{ comma .Chars }}
+                    data-tooltip="Chars scoring is {{ comma .CharsBytes }} bytes, {{ comma .Chars }} chars.">{{ comma .Chars }}
                 {{ else }}
                     >&nbsp;
                 {{ end }}
