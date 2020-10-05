@@ -9,12 +9,7 @@ import (
 // a bounding box (bbox) is defined in
 // terms of its top-left vertex coordinates
 // (x, y) and its width and height (w, h).
-type bbox struct {
-	x int
-	y int
-	w int
-	h int
-}
+type bbox struct{ x, y, w, h int }
 
 // couldn't find a quick way to loop a struct
 func strconvbox(box bbox) (out string) {
@@ -128,17 +123,13 @@ func intersection() (args []string, out string) {
 
 		// compute 90 non-zero cases and 8 zero ones
 		if intersection > 0 && nonZeros < 90 {
-			args = append(args,
-				strconvbox(b1)+" "+strconvbox(b2))
-			outs = append(outs,
-				strconv.Itoa(intersection))
-			nonZeros += 1
+			args = append(args, strconvbox(b1)+" "+strconvbox(b2))
+			outs = append(outs, strconv.Itoa(intersection))
+			nonZeros++
 		} else if intersection == 0 && zeros < 4 {
-			args = append(args,
-				strconvbox(b1)+" "+strconvbox(b2))
-			outs = append(outs,
-				strconv.Itoa(intersection))
-			zeros += 1
+			args = append(args, strconvbox(b1)+" "+strconvbox(b2))
+			outs = append(outs, strconv.Itoa(intersection))
+			zeros++
 		}
 	}
 
