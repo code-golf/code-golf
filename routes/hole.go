@@ -38,6 +38,7 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 
 	if golfer := session.Golfer(r); golfer != nil {
 		data.KeymapPreference = golfer.KeymapPreference
+
 		if data.Hole.Experiment == 0 {
 			// Fetch all the code per lang.
 			rows, err := session.Database(r).Query(
@@ -61,7 +62,7 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 				}
 
 				solution := 0
-				if session.Beta(r) && scoring == "chars" {
+				if scoring == "chars" {
 					solution = 1
 				}
 
