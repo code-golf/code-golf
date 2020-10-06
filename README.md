@@ -4,10 +4,12 @@ This is the repository behind https://code.golf
 
 ## Quickstart
 
-1. Install mkcert:
-```
-$ yay mkcert
-```
+1. Install dependencies:
+* [Go](https://golang.org/doc/install) - currently version 1.15.2
+* [Docker](https://docs.docker.com/engine/install/)
+* [Docker Compose](https://docs.docker.com/compose/install/)
+* [make](https://www.gnu.org/software/make/) - most likely already on your system
+* [mkcert](https://github.com/FiloSottile/mkcert#installation)
 
 2. Install the local CA:
 ```
