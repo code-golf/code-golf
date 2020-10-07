@@ -1,3 +1,9 @@
+[role=group] {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: min-content 1fr;
+}
+
 form {
     display: grid;
     gap: 1rem;
@@ -9,16 +15,11 @@ form + form {
     padding-top: 1rem;
 }
 
+h2 { font-size: 1.25rem }
+
 label {
     align-items: center;
     display: grid;
-    font-weight: bold;
-    gap: 1rem;
-}
-
-label > *, .inline { font-weight: normal }
-
-.inline {
     gap: .5rem;
     grid-template-columns: min-content 1fr;
 }

@@ -11,82 +11,70 @@
 
 <main>
     <form method=post>
-        <label class=col>
-            Country
-            <span>
-                Will eventually be used in aggregate on the statistics page.
-                Showing it publicly will put a little flag next to your name.
-            </span>
-            <select name=country>
-                <option value>Unspecified
-            {{ range $continent, $countries := .Data.Countries }}
-                <optgroup label="{{ $continent }}">
-                {{ range $countries }}
-                    <option value="{{ .ID }}">{{ .Flag }}&ensp;{{ .Name }}
-                {{ end }}
-            {{ end }}
-            </select>
-        </label>
+        <h2>Country</h2>
 
-        <label class=inline>
+        Will eventually be used in aggregate on the statistics page.
+        Showing it publicly will put a little flag next to your name.
+
+        <select name=country>
+            <option value>Unspecified
+        {{ range $continent, $countries := .Data.Countries }}
+            <optgroup label="{{ $continent }}">
+            {{ range $countries }}
+                <option value="{{ .ID }}">{{ .Flag }}&ensp;{{ .Name }}
+            {{ end }}
+        {{ end }}
+        </select>
+
+        <label>
             <input name=show_country type=checkbox>
             Show my country publicly?
         </label>
 
-        <label>
-            Time Zone
-            <span>
-                Will eventually affect how times are displayed and when date
-                specific trophies are awarded.
-            </span>
-            <select name=time_zone>
-            {{ $tz := .Golfer.TimeZone }}
-            {{ range .Data.TimeZones }}
-                <option value="{{ .Name }}" {{ if eq .Name $tz }}selected{{ end }}>
-                    {{ . }}
-            {{ end }}
-            </select>
-        </label>
+        <h2>Keymap</h2>
 
-        <label>
-            Keybindings
-            <span>
-                Preferred keyboard mapping for the code editor.
-            </span>
-            <select name=keymap>
-            {{ $keymap := .Golfer.KeymapPreference }}
-            {{ range .Data.KeymapPreferences }}
-                <option value="{{ . }}" {{ if eq . $keymap }}selected{{ end }}>
-                    {{ . }}
-                </option>
-            {{ end }}
-            </select>
-        </label>
+        Preferred keyboard mapping for the code editor.
+
+        <div role=group>
+        {{ $keymap := .Golfer.KeymapPreference }}
+        {{ range .Data.KeymapPreferences }}
+            <label>
+                <input name=keymap type=radio value="{{ . }}"
+                    {{ if eq . $keymap }}checked{{ end }}>{{ title . }}
+            </label>
+        {{ end }}
+        </div>
+
+        <h2>Time Zone</h2>
+
+        Will eventually affect how times are displayed and when date specific
+        trophies are awarded.
+
+        <select name=time_zone>
+        {{ $tz := .Golfer.TimeZone }}
+        {{ range .Data.TimeZones }}
+            <option value="{{ .Name }}" {{ if eq .Name $tz }}selected{{ end }}>
+                {{ . }}
+        {{ end }}
+        </select>
 
         <p><button class="btn green">Save Changes</button>
     </form>
 {{ if .Golfer.Delete.Valid }}
     <form action=/golfer/cancel-delete method=post>
-        <label>
-            Cancel Deletion
-            <span>
-                Will cancel the scheduled permanent deletion of this account
-                and all its data.
-            <span>
-        </label>
+        <h2>Cancel Deletion</h2>
+
+        Will cancel the scheduled permanent deletion of this account and all
+        its data.
 
         <p><button class="btn green">Cancel Deletion</button>
     </form>
 {{ else }}
     <form action=/golfer/delete method=post>
-        <label>
-            Delete Account
-            <span>
-                Will schedule this account and all its data to be
-                permanently delete in 14 days. Inside this window the schedule
-                can be cancelled.
-            <span>
-        </label>
+        <h2>Delete Account</h2>
+
+        Will schedule this account and all its data to be permanently delete
+        in 14 days. Inside this window the schedule can be cancelled.
 
         <p><button class="btn red">Delete Account</button>
     </form>
