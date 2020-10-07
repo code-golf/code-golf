@@ -9,7 +9,12 @@ import (
 // a bounding box (bbox) is defined in
 // terms of its top-left vertex coordinates
 // (x, y) and its width and height (w, h).
-type bbox struct{ x, y, w, h int }
+type bbox struct {
+	x int
+	y int
+	w int
+	h int
+}
 
 // couldn't find a quick way to loop a struct
 func strconvbox(box bbox) (out string) {
@@ -76,7 +81,7 @@ func boxGen() bbox {
 	}
 }
 
-func intersection() (args []string, out string) {
+func boxesIntersection() (args []string, out string) {
 	var outs []string
 
 	//// default cases
@@ -113,33 +118,87 @@ func intersection() (args []string, out string) {
 	args = append(args, strconvbox(b2)+" "+strconvbox(b7))
 	outs = append(outs, "0")
 
-	//// generate 98 more random cases
+	//// generate 100 random cases
 	zeros := 0
 	nonZeros := 0
-	for zeros+nonZeros < 94 {
-		b1 = boxGen()
-		b2 = boxGen()
+	for zeros+nonZeros < 100 {
+		b1 := boxGen()
+		b2 := boxGen()
 		intersection := calculateIntersection(b1, b2)
 
-		// compute 90 non-zero cases and 8 zero ones
+		// compute 90 non-zero cases and 10 zero ones
 		if intersection > 0 && nonZeros < 90 {
-			args = append(args, strconvbox(b1)+" "+strconvbox(b2))
-			outs = append(outs, strconv.Itoa(intersection))
-			nonZeros++
-		} else if intersection == 0 && zeros < 4 {
-			args = append(args, strconvbox(b1)+" "+strconvbox(b2))
-			outs = append(outs, strconv.Itoa(intersection))
-			zeros++
+			args = append(args,
+				strconvbox(b1)+" "+strconvbox(b2))
+			outs = append(outs,
+				strconv.Itoa(intersection))
+			nonZeros += 1
+		} else if intersection == 0 && zeros < 10 {
+			args = append(args,
+				strconvbox(b1)+" "+strconvbox(b2))
+			outs = append(outs,
+				strconv.Itoa(intersection))
+			zeros += 1
 		}
 	}
 
-	// this should shuffle args and outputs in the same way
+	// 13x13 default side cases
+	// - |   |
+	// --|   |
+	// --|-  |
+	// --|---|
+	// --|---|-
+	//   |-  |
+	//   |-- |
+	//   |---|
+	//   |---|-
+	//   | - |
+	//   | --|
+	//   | --|-
+	//   |   |-
+	//   |   |--
+	//   |   | -
+	bigbox := bbox{x: 2, y: 2, w: 3, h: 3}
+	strbigbox := strconvbox(bigbox)
+
+	xs := []int{0, 2, 3, 5, 6}
+	ys := []int{0, 2, 3, 5, 6}
+	for _, x := range xs {
+		for _, y := range ys {
+			for w := 1; w < 7; w++ {
+				for h := 1; h < 7; h++ {
+					if (x == 0 && (w == 4 || w > 6)) ||
+						(x == 2 && (w == 2 || w > 4)) ||
+						(x == 3 && w > 3) ||
+						(x == 5 && w > 1) || (x == 6 && w > 1) {
+						continue
+					}
+					if (y == 0 && (h == 4 || h > 6)) ||
+						(y == 2 && (h == 2 || h > 4)) ||
+						(y == 3 && h > 3) ||
+						(y == 5 && h > 1) || (y == 6 && h > 1) {
+						continue
+					}
+					if rand.Float32() > 0.5 { // randomly add test ?
+						b := bbox{x: x, y: y, w: w, h: h}
+						if rand.Float32() > 0.5 { // randomly flip input
+							args = append(args, strconvbox(b)+" "+strbigbox)
+						} else {
+							args = append(args, strbigbox+" "+strconvbox(b))
+						}
+						outs = append(outs, strconv.Itoa(calculateIntersection(b, bigbox)))
+					}
+				}
+			}
+		}
+	}
+
+	// shuffle args and outputs in the same way
 	rand.Shuffle(len(args), func(i, j int) {
 		args[i], args[j] = args[j], args[i]
 		outs[i], outs[j] = outs[j], outs[i]
 	})
 
-	// 100 test cases in total
 	out = strings.Join(outs, "\n")
 	return
 }
