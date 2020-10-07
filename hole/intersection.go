@@ -144,14 +144,12 @@ func intersection() (args []string, out string) {
 	// --|---|
 	// --|---|-
 	//   |-  |
-	//   |-- |
 	//   |---|
 	//   |---|-
 	//   | - |
 	//   | --|
 	//   | --|-
 	//   |   |-
-	//   |   |--
 	//   |   | -
 	bigbox := bbox{x: 2, y: 2, w: 3, h: 3}
 	strbigbox := strconvbox(bigbox)
