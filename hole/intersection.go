@@ -9,12 +9,7 @@ import (
 // a bounding box (bbox) is defined in
 // terms of its top-left vertex coordinates
 // (x, y) and its width and height (w, h).
-type bbox struct {
-	x int
-	y int
-	w int
-	h int
-}
+type bbox struct{ x, y, w, h int }
 
 // couldn't find a quick way to loop a struct
 func strconvbox(box bbox) (out string) {
@@ -81,7 +76,7 @@ func boxGen() bbox {
 	}
 }
 
-func boxesIntersection() (args []string, out string) {
+func intersection() (args []string, out string) {
 	var outs []string
 
 	//// default cases
