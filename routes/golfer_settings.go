@@ -10,10 +10,6 @@ import (
 	"github.com/code-golf/code-golf/zone"
 )
 
-var validKeymapPrefs = []string{
-	"default", "vim",
-}
-
 // GolferCancelDelete serves POST /golfer/cancel-delete
 func GolferCancelDelete(w http.ResponseWriter, r *http.Request) {
 	if _, err := session.Database(r).Exec(
@@ -41,10 +37,10 @@ func GolferDelete(w http.ResponseWriter, r *http.Request) {
 // GolferSettings serves GET /golfer/settings
 func GolferSettings(w http.ResponseWriter, r *http.Request) {
 	render(w, r, "golfer/settings", "Settings", struct {
-		Countries         map[string][]*country.Country
-		KeymapPreferences []string
-		TimeZones         []zone.Zone
-	}{country.Tree, validKeymapPrefs, zone.List()})
+		Countries map[string][]*country.Country
+		Keymaps   []string
+		TimeZones []zone.Zone
+	}{country.Tree, []string{"default", "vim"}, zone.List()})
 }
 
 // GolferSettingsPost serves POST /golfer/settings

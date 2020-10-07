@@ -37,7 +37,7 @@
 
         <div role=group>
         {{ $keymap := .Golfer.KeymapPreference }}
-        {{ range .Data.KeymapPreferences }}
+        {{ range .Data.Keymaps }}
             <label>
                 <input name=keymap type=radio value="{{ . }}"
                     {{ if eq . $keymap }}checked{{ end }}>{{ title . }}
