@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 
@@ -45,33 +44,32 @@ func GolferSettings(w http.ResponseWriter, r *http.Request) {
 
 // GolferSettingsPost serves POST /golfer/settings
 func GolferSettingsPost(w http.ResponseWriter, r *http.Request) {
-	// TODO Send a 400 if the time zone isn't valid?
-	timeZone, _ := time.LoadLocation(r.FormValue("time_zone"))
-	if timeZone != nil && timeZone != time.Local {
-		if _, err := session.Database(r).Exec(
-			"UPDATE users SET time_zone = $1 WHERE id = $2",
-			timeZone.String(), session.Golfer(r).ID,
-		); err != nil {
-			panic(err)
-		}
+	r.ParseForm()
+
+	if _, ok := country.ByID[r.Form.Get("country")]; !ok && r.Form.Get("country") != "" {
+		http.Error(w, "Invalid country", http.StatusBadRequest)
+		return
 	}
 
-	if err := setKeymapPreference(r); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+	if r.Form.Get("keymap") != "default" && r.Form.Get("keymap") != "vim" {
+		http.Error(w, "Invalid keymap", http.StatusBadRequest)
+		return
+	}
+
+	timeZone, _ := time.LoadLocation(r.Form.Get("time_zone"))
+	if timeZone == nil || timeZone == time.Local {
+		http.Error(w, "Invalid time_zone", http.StatusBadRequest)
+		return
+	}
+
+	if _, err := session.Database(r).Exec(
+		"UPDATE users SET keymap = $1, time_zone = $2 WHERE id = $3",
+		r.Form.Get("keymap"),
+		timeZone.String(),
+		session.Golfer(r).ID,
+	); err != nil {
+		panic(err)
 	}
 
 	http.Redirect(w, r, "/golfer/settings", http.StatusSeeOther)
-}
-
-func setKeymapPreference(r *http.Request) error {
-	keymapPreference := r.FormValue("keymap")
-
-	if _, err := session.Database(r).Exec(
-		"UPDATE users SET keymap = $1 WHERE id = $2",
-		keymapPreference, session.Golfer(r).ID,
-	); err != nil {
-		return fmt.Errorf("error setting keymap preference: %w", err)
-	}
-
-	return nil
 }
