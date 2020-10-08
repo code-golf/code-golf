@@ -37,13 +37,10 @@ subtest 'Same solution' => {
 subtest 'Updated solution' => {
     ok post-solution( :$session, :code($code-short) )<Pass>, 'Solution passes';
 
-    # Note how the sequence has jumped because of the second solution.
     is-deeply db(), (
-        { code => $code-short, code_id => 3, scoring => 'bytes', user_id => 123 },
-        { code => $code-short, code_id => 3, scoring => 'chars', user_id => 123 },
+        { code => $code-short, code_id => 2, scoring => 'bytes', user_id => 123 },
+        { code => $code-short, code_id => 2, scoring => 'chars', user_id => 123 },
     ), 'DB is updated';
-
-    todo "Code isn't cleaned up yet";
 
     is $dbh.execute('SELECT COUNT(*) FROM code').row.head, 1, 'Code is cleaned up';
 };
@@ -58,10 +55,10 @@ subtest 'Different user' => {
 
     # Note how they share the some code ID.
     is-deeply db(), (
-        { code => $code-short, code_id => 3, scoring => 'bytes', user_id => 123 },
-        { code => $code-short, code_id => 3, scoring => 'chars', user_id => 123 },
-        { code => $code-short, code_id => 3, scoring => 'bytes', user_id => 456 },
-        { code => $code-short, code_id => 3, scoring => 'chars', user_id => 456 },
+        { code => $code-short, code_id => 2, scoring => 'bytes', user_id => 123 },
+        { code => $code-short, code_id => 2, scoring => 'chars', user_id => 123 },
+        { code => $code-short, code_id => 2, scoring => 'bytes', user_id => 456 },
+        { code => $code-short, code_id => 2, scoring => 'chars', user_id => 456 },
     ), 'DB is updated';
 };
 

@@ -64,52 +64,11 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 
 	_, experimental := hole.ExperimentalByID[in.Hole]
 	if out.Pass && userID != 0 && !experimental {
-		if _, err := db.Exec(
-			"INSERT INTO code (code) VALUES ($1) ON CONFLICT DO NOTHING",
-			in.Code,
+		if _, err := db.ExecContext(
+			r.Context(),
+			"SELECT save_solution(code := $1, hole := $2, lang := $3, user_id := $4)",
+			in.Code, in.Hole, in.Lang, userID,
 		); err != nil {
-			panic(err)
-		}
-
-		tx, err := db.BeginTx(r.Context(), nil)
-		if err != nil {
-			panic(err)
-		}
-
-		defer tx.Rollback()
-
-		// Update the code if it's the same length or less, but only update
-		// the submitted time if the solution is shorter. This avoids a user
-		// moving down the leaderboard by matching their personal best.
-		for _, scoring := range []string{"bytes", "chars"} {
-			if _, err := tx.Exec(
-				`WITH new_code AS (
-				    SELECT id, `+scoring+` FROM code WHERE code = $1
-				) INSERT INTO solutions (code_id, user_id, hole, lang, scoring)
-				       SELECT id, $2, $3, $4, $5 FROM new_code
-				  ON CONFLICT ON CONSTRAINT solutions_pkey
-				DO UPDATE SET failing = false,
-				            submitted = CASE
-				                WHEN solutions.failing
-				                  OR (SELECT `+scoring+` FROM new_code)
-				                   < (SELECT `+scoring+` FROM code WHERE id = solutions.code_id)
-				                THEN excluded.submitted
-				                ELSE solutions.submitted
-				            END,
-				              code_id = CASE
-				                WHEN solutions.failing
-				                  OR (SELECT `+scoring+` FROM new_code)
-				                  <= (SELECT `+scoring+` FROM code WHERE id = solutions.code_id)
-				                THEN excluded.code_id
-				                ELSE solutions.code_id
-				            END`,
-				in.Code, userID, in.Hole, in.Lang, scoring,
-			); err != nil {
-				panic(err)
-			}
-		}
-
-		if err := tx.Commit(); err != nil {
 			panic(err)
 		}
 
