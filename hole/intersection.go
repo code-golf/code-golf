@@ -117,23 +117,19 @@ func intersection() (args []string, out string) {
 	zeros := 0
 	nonZeros := 0
 	for zeros+nonZeros < 100 {
-		b1 := boxGen()
-		b2 := boxGen()
+		b1 = boxGen()
+		b2 = boxGen()
 		intersection := calculateIntersection(b1, b2)
 
 		// compute 90 non-zero cases and 10 zero ones
 		if intersection > 0 && nonZeros < 90 {
-			args = append(args,
-				strconvbox(b1)+" "+strconvbox(b2))
-			outs = append(outs,
-				strconv.Itoa(intersection))
-			nonZeros += 1
+			args = append(args, strconvbox(b1)+" "+strconvbox(b2))
+			outs = append(outs, strconv.Itoa(intersection))
+			nonZeros++
 		} else if intersection == 0 && zeros < 10 {
-			args = append(args,
-				strconvbox(b1)+" "+strconvbox(b2))
-			outs = append(outs,
-				strconv.Itoa(intersection))
-			zeros += 1
+			args = append(args, strconvbox(b1)+" "+strconvbox(b2))
+			outs = append(outs, strconv.Itoa(intersection))
+			zeros++
 		}
 	}
 
