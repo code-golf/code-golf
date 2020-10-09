@@ -26,7 +26,7 @@ bash
 
 brainfuck
 
-    ++++++++++>,[[.,]<.>,]
+    ,[[.>,]++++++++++.>,]
 
 c
 
@@ -142,12 +142,9 @@ ruby
 
 rust
 
-    use std::env;
     fn main() {
-        for arg in env::args() {
-            if arg != "-" {
-                println!("{}", arg);
-            }
+        for a in std::env::args().skip(1) {
+            println!("{}", a);
         }
     }
 
