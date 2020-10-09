@@ -14,11 +14,9 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 		HideDetails bool
 		Hole        hole.Hole
 		Langs       []lang.Lang
-		Scorings    []string
 		Solutions   []map[string]string
 	}{
 		Langs:     lang.List,
-		Scorings:  []string{"Bytes", "Chars"},
 		Solutions: []map[string]string{{}, {}},
 	}
 
