@@ -1,15 +1,15 @@
-const chars             = document.querySelector('#chars');
-const details           = document.querySelector('#details');
-const editor            = document.querySelector('#editor');
-const hole              = decodeURI(location.pathname.slice(1));
-const keymapPreference  = JSON.parse(document.querySelector('#keymapPreference').innerText);
-const langs             = JSON.parse(document.querySelector('#langs').innerText);
-const picker            = document.querySelector('#picker');
-const solutionPicker    = document.querySelector('#solutionPicker');
-const scorings          = JSON.parse(document.querySelector('#scorings').innerText);
-const solutions         = JSON.parse(document.querySelector('#solutions').innerText);
-const status            = document.querySelector('#status');
-const table             = document.querySelector('#scores');
+const chars          = document.querySelector('#chars');
+const details        = document.querySelector('#details');
+const editor         = document.querySelector('#editor');
+const hole           = decodeURI(location.pathname.slice(1));
+const keymap         = JSON.parse(document.querySelector('#keymap').innerText);
+const langs          = JSON.parse(document.querySelector('#langs').innerText);
+const picker         = document.querySelector('#picker');
+const solutionPicker = document.querySelector('#solutionPicker');
+const scorings       = JSON.parse(document.querySelector('#scorings').innerText);
+const solutions      = JSON.parse(document.querySelector('#solutions').innerText);
+const status         = document.querySelector('#status');
+const table          = document.querySelector('#scores');
 
 let lang;
 let solution = Math.max(scorings.indexOf(localStorage.getItem('solution')), 0);
@@ -52,9 +52,8 @@ onload = () => {
     // Lock the editor's height in so we scroll.
     editor.style.height = `${editor.offsetHeight}px`;
 
-    const vimMode = keymapPreference === 'vim';
-
-    const cm = new CodeMirror(editor, {
+    const vimMode = keymap == 'vim';
+    const cm      = new CodeMirror(editor, {
         autofocus:    true,
         indentUnit:   1,
         lineNumbers:  true,
@@ -217,9 +216,8 @@ onload = () => {
     onkeydown = e => e.ctrlKey && e.key == 'Enter' ? submit() : undefined;
 
     // Allow vim users to run code with :w or :write
-    if (vimMode) {
-        CodeMirror.Vim.defineEx('write', 'w', (_cm, _input) => submit());
-    }
+    if (vimMode)
+        CodeMirror.Vim.defineEx('write', 'w', submit);
 };
 
 async function refreshScores() {

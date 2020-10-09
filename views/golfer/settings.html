@@ -36,7 +36,7 @@
         Preferred keyboard mapping for the code editor.
 
         <div role=group>
-        {{ $keymap := .Golfer.KeymapPreference }}
+        {{ $keymap := .Golfer.Keymap }}
         {{ range .Data.Keymaps }}
             <label>
                 <input name=keymap type=radio value="{{ . }}"
