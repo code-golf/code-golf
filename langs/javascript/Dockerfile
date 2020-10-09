@@ -11,7 +11,7 @@ WORKDIR /tmp
 RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git \
  && fetch v8                \
  && cd v8                   \
- && git checkout 8.4.371.23 \
+ && git checkout 8.6.395.10 \
  && gclient sync
 
 FROM alpine:3.12 as builder

@@ -54,8 +54,8 @@ version = '14.0.2'
 website = '//openjdk.java.net'
 
 [JavaScript]
-size    = '20.7 MiB'
-version = 'V8 8.4.371.23'
+size    = '21.1 MiB'
+version = 'V8 8.6.395.10'
 website = '//v8.dev'
 
 [Julia]
@@ -109,8 +109,8 @@ version = '2.7.1'
 website = '//www.ruby-lang.org'
 
 [Rust]
-size    = '534 MiB'
-version = '1.46.0'
+size    = '588 MiB'
+version = '1.47.0'
 website = '//www.rust-lang.org'
 
 [SQL]
