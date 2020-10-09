@@ -329,13 +329,6 @@ async function refreshScores() {
     switchScoring.onclick = () => { setScoring(otherScoring); refreshScores(); };
 }
 
-function bytesForCodePoint(codePoint) {
-    if ((codePoint & 0xFFFFFF80) == 0) return 1;
-    if ((codePoint & 0xFFFFF800) == 0) return 2;
-    if ((codePoint & 0xFFFF0000) == 0) return 3;
-                                       return 4;
-}
-
 // Adapted from https://mths.be/punycode
 function strlen(str) {
     let i = 0, len = 0;
@@ -364,34 +357,6 @@ function strlen(str) {
     return len;
 }
 
-// Adapted from https://mths.be/punycode
-function utf8ByteCount(str) {
-    let i = 0, byteCount = 0;
-
-    while (i < str.length) {
-        const value = str.charCodeAt(i++);
-
-        if (value >= 0xD800 && value <= 0xDBFF && i < str.length) {
-            // It's a high surrogate, and there is a next character.
-            const extra = str.charCodeAt(i++);
-
-            // Low surrogate.
-            if ((extra & 0xFC00) == 0xDC00) {
-                byteCount += bytesForCodePoint(((value & 0x3FF) << 10) + (extra & 0x3FF) + 0x10000);
-            } else {
-                // It's an unmatched surrogate; only append this code unit, in case the
-                // next code unit is the high surrogate of a surrogate pair.
-                byteCount += bytesForCodePoint(value);
-                i--;
-            }
-        } else {
-            byteCount += bytesForCodePoint(value);
-        }
-    }
-
-    return byteCount;
-}
-
 function getScoring(str, index) {
-    return (scorings[index] == "Bytes" ? utf8ByteCount : strlen)(str);
+    return scorings[index] == 'Bytes' ? new TextEncoder().encode(str).length : strlen(str);
 }
