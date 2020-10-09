@@ -96,7 +96,10 @@
     </div>
 </main>
 
-<script id=keymap    type=application/json>{{ .Golfer.Keymap  }}</script>
+<script id=keymap type=application/json>
+    {{ with .Golfer }}{{ .Keymap  }}{{ else }}"default"{{ end }}
+</script>
+
 <script id=langs     type=application/json>{{ .Data.Langs     }}</script>
 <script id=solutions type=application/json>{{ .Data.Solutions }}</script>
 
