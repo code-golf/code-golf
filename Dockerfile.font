@@ -1,4 +1,4 @@
-FROM node:10.21.0-buster-slim
+FROM node:10.22.1-buster-slim
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
     fontforge fonttools git make python-fontforge unzip woff2 zip
@@ -11,7 +11,7 @@ RUN npm install
 
 RUN echo [] > extras/ligatures.json                      \
  && unzip -q twe-svg.zip                                 \
-    svg/1f1fa-1f1f8.svg `# United States`                \
+    svg/1f1*-*          `# Flags`                        \
     svg/1f35e.svg       `# Bread`                        \
     svg/1f37a.svg       `# Beer Mug`                     \
     svg/1f382.svg       `# Birthday Cake`                \
@@ -72,6 +72,9 @@ RUN echo [] > extras/ligatures.json                      \
     svg/2702.svg        `# Scissors`                     \
     svg/2b50.svg        `# Star`                         \
  && rm twe-svg.zip                                       \
+    svg/1f1e6-1f1f6.svg `# Flag: Antarctica`             \
+    svg/1f1ea-1f1fa.svg `# Flag: European Union`         \
+    svg/1f1fa-1f1f3.svg `# Flag: United Nations`         \
  && zip -qr twe-svg.zip svg                              \
  && make                                                 \
  && woff2_compress 'build/Twemoji Mozilla.ttf'
