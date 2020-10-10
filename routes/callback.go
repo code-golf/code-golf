@@ -71,7 +71,10 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 	var timeZone sql.NullString
 
 	if tz, _ := time.LoadLocation(r.FormValue("time_zone")); tz != nil {
-		timeZone = sql.NullString{tz.String(), tz != time.Local && tz != time.UTC}
+		timeZone = sql.NullString{
+			String: tz.String(),
+			Valid:  tz != time.Local && tz != time.UTC,
+		}
 	}
 
 	// Replace default 'UTC' time zone but don't overwrite a chosen time zone.

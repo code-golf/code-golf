@@ -16,7 +16,7 @@ type Zone struct {
 
 var locations []*time.Location
 
-// TODO Actually point to something.
+// ByID TODO Actually point to something.
 var ByID = map[string]bool{}
 
 func init() {
