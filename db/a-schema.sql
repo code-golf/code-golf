@@ -51,14 +51,15 @@ CREATE TABLE ideas (
 );
 
 CREATE TABLE users (
-    id        int       NOT NULL PRIMARY KEY,
-    admin     bool      NOT NULL DEFAULT false,
-    sponsor   bool      NOT NULL DEFAULT false,
-    login     citext    NOT NULL UNIQUE,
-    time_zone text      NOT NULL DEFAULT 'UTC',
-    delete    timestamp,
-    keymap    keymap    NOT NULL DEFAULT 'default'
-
+    id           int       NOT NULL PRIMARY KEY,
+    admin        bool      NOT NULL DEFAULT false,
+    sponsor      bool      NOT NULL DEFAULT false,
+    login        citext    NOT NULL UNIQUE,
+    time_zone    text,
+    delete       timestamp,
+    keymap       keymap    NOT NULL DEFAULT 'default',
+    country      char(2),
+    show_country bool NOT NULL DEFAULT false
 );
 
 CREATE TABLE sessions (

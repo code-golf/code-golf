@@ -11,10 +11,10 @@ import (
 )
 
 type Golfer struct {
-	Admin                  bool
-	Delete                 sql.NullTime
-	ID                     int
-	Keymap, Name, TimeZone string
+	Admin, ShowCountry              bool
+	Country, Keymap, Name, TimeZone string
+	Delete                          sql.NullTime
+	ID                              int
 }
 
 type GolferInfo struct {

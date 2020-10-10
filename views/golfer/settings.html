@@ -17,17 +17,20 @@
         Showing it publicly will put a little flag next to your name.
 
         <select name=country>
-            <option value>Unspecified
+            <option value>Rather not say
+        {{ $country := .Golfer.Country }}
         {{ range $continent, $countries := .Data.Countries }}
             <optgroup label="{{ $continent }}">
             {{ range $countries }}
-                <option value="{{ .ID }}">{{ .Flag }}&ensp;{{ .Name }}
+                <option value="{{ .ID }}" {{ if eq .ID $country }}selected{{ end }}>
+                    {{ .Flag }}&ensp;{{ .Name }}
             {{ end }}
         {{ end }}
         </select>
 
         <label>
-            <input name=show_country type=checkbox>
+            <input name=show_country type=checkbox
+                {{ if .Golfer.ShowCountry }}checked{{ end }}>
             Show my country publicly?
         </label>
 
@@ -51,6 +54,7 @@
         trophies are awarded.
 
         <select name=time_zone>
+            <option value>Rather not say
         {{ $tz := .Golfer.TimeZone }}
         {{ range .Data.TimeZones }}
             <option value="{{ .Name }}" {{ if eq .Name $tz }}selected{{ end }}>

@@ -2,7 +2,6 @@ package routes
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/code-golf/code-golf/country"
 	"github.com/code-golf/code-golf/session"
@@ -56,16 +55,22 @@ func GolferSettingsPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	timeZone, _ := time.LoadLocation(r.Form.Get("time_zone"))
-	if timeZone == nil || timeZone == time.Local {
+	if _, ok := zone.ByID[r.Form.Get("time_zone")]; !ok && r.Form.Get("time_zone") != "" {
 		http.Error(w, "Invalid time_zone", http.StatusBadRequest)
 		return
 	}
 
 	if _, err := session.Database(r).Exec(
-		"UPDATE users SET keymap = $1, time_zone = $2 WHERE id = $3",
+		`UPDATE users
+		    SET country = $1,
+		         keymap = $2,
+		   show_country = $3,
+		      time_zone = $4
+		  WHERE id = $5`,
+		r.Form.Get("country"),
 		r.Form.Get("keymap"),
-		timeZone.String(),
+		r.Form.Get("show_country") == "on",
+		r.Form.Get("time_zone"),
 		session.Golfer(r).ID,
 	); err != nil {
 		panic(err)

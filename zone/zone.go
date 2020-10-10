@@ -16,6 +16,9 @@ type Zone struct {
 
 var locations []*time.Location
 
+// TODO Actually point to something.
+var ByID = map[string]bool{}
+
 func init() {
 	file, err := os.Open("/usr/share/zoneinfo/zone1970.tab")
 	if err != nil {
@@ -37,8 +40,9 @@ func init() {
 				panic(err)
 			}
 			locations = append(locations, location)
+
+			ByID[row[2]] = true
 		case io.EOF:
-			locations = append(locations, time.UTC)
 			return
 		default:
 			panic(err)

@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"database/sql"
 	"encoding/json"
 	"net/http"
 	"os"
@@ -67,9 +68,10 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 		Secure:   true,
 	}
 
-	timeZone, _ := time.LoadLocation(r.FormValue("time_zone"))
-	if timeZone == nil || timeZone == time.Local {
-		timeZone = time.UTC
+	var timeZone sql.NullString
+
+	if tz, _ := time.LoadLocation(r.FormValue("time_zone")); tz != nil {
+		timeZone = sql.NullString{tz.String(), tz != time.Local && tz != time.UTC}
 	}
 
 	// Replace default 'UTC' time zone but don't overwrite a chosen time zone.
@@ -78,13 +80,10 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 		    INSERT INTO users (id, login, time_zone) VALUES ($1, $2, $3)
 		    ON CONFLICT (id)
 		  DO UPDATE SET login = excluded.login,
-		            time_zone = CASE WHEN users.time_zone = 'UTC'
-		                             THEN excluded.time_zone
-		                             ELSE users.time_zone
-		                              END
+		            time_zone = COALESCE(users.time_zone, excluded.time_zone)
 		      RETURNING id
 		) INSERT INTO sessions (user_id) SELECT * FROM golfer RETURNING id`,
-		user.ID, user.Login, timeZone.String(),
+		user.ID, user.Login, timeZone,
 	).Scan(&cookie.Value); err != nil {
 		panic(err)
 	}
