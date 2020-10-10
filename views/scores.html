@@ -1,5 +1,6 @@
 {{ template "header" . }}
 
+{{ $countries    := .Data.Countries }}
 {{ $holeID       := .Data.HoleID }}
 {{ $langID       := .Data.LangID }}
 {{ $scoring      := .Data.Scoring }}
@@ -93,7 +94,10 @@
                 <td>
                     <a href="/golfers/{{ .Login }}">
                         <img loading=lazy src="//avatars.githubusercontent.com/{{ .Login }}?s=24">
-                        <span>{{- .Login -}}</span>
+                        <span>{{ .Login }}</span>
+                    {{ with index $countries .Country }}
+                        <span title="{{ .Name }}">{{ .Flag }}</span>
+                    {{ end }}
                     </a>
                 <td class=right>{{ if $allHoles }}{{ .Holes }}{{ else }}{{ .Lang.Name }}{{ end }}
                 <td class=right><span{{ if $charsScoring }} class=inactive {{end}} data-tooltip="Points for Bytes scoring">{{ comma .BytesPoints }}

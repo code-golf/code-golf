@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/code-golf/code-golf/country"
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
 	"github.com/code-golf/code-golf/session"
@@ -160,24 +161,29 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 	}
 
 	type Score struct {
-		Bytes, Chars, BytesChars, CharsBytes, Holes, CharsPoints, BytesPoints, Rank int
-		Lang                                                                        lang.Lang
-		Login                                                                       string
-		Submitted                                                                   time.Time
+		Bytes, Chars             int
+		BytesChars, CharsBytes   int
+		BytesPoints, CharsPoints int
+		Country, Login           string
+		Holes, Rank              int
+		Lang                     lang.Lang
+		Submitted                time.Time
 	}
 
 	data := struct {
+		Countries               map[string]*country.Country
 		HoleID, LangID, Scoring string
 		Holes                   []hole.Hole
 		Langs                   []lang.Lang
 		Next, Prev              int
 		Scores                  []Score
 	}{
-		HoleID:  holeID,
-		Holes:   hole.List,
-		LangID:  langID,
-		Langs:   lang.List,
-		Scoring: scoring,
+		Countries: country.ByID,
+		HoleID:    holeID,
+		Holes:     hole.List,
+		LangID:    langID,
+		Langs:     lang.List,
+		Scoring:   scoring,
 	}
 
 	page := 1
@@ -286,6 +292,7 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 		         chars,
 		         bytes_chars,
 		         chars_bytes,
+		         COALESCE(CASE WHEN show_country THEN country END, ''),
 		         holes,
 		         lang,
 		         login,
@@ -325,6 +332,7 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 			&score.Chars,
 			&score.BytesChars,
 			&score.CharsBytes,
+			&score.Country,
 			&score.Holes,
 			&langID,
 			&score.Login,
