@@ -2,7 +2,7 @@
     font-family: emoji;
     src: local('Apple Color Emoji'),
          local('Noto Color Emoji'),
-         local('Segoe UI Emoji'),
+         /* local('Segoe UI Emoji'), Microsoft don't support country flags */
          local('Twemoji Mozilla'),
          url(twemojiWoff2);
     unicode-range: U+2300-23FF,   /* Miscellaneous Technical */
