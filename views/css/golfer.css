@@ -1,4 +1,6 @@
 h1 {
+    align-items: center;
+    display: flex;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

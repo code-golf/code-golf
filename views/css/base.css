@@ -360,6 +360,12 @@ thead th {
 .color:nth-of-type(6n+5), .blue   { background: var(--blue)   }
 .color:nth-of-type(6n+6), .purple { background: var(--purple) }
 
+.flag {
+    margin-left: .5rem;
+    overflow: visible;
+    text-shadow: var(--color) 1px 1px 2px;
+}
+
 .grey { background: var(--light-grey) }
 
 .grid {
