@@ -5,14 +5,6 @@
 {{ $scoringIndex := .Data.ScoringIndex }}
 {{ $scoring := index $scorings $scoringIndex }}
 
-<nav class="nav span">
-	{{ range $scorings }}
-        <a {{ if eq (index $scorings $scoringIndex) . }} class=on {{ else }} href="{{ . }}" {{ end }}>
-            {{ title . }}
-        </a>
-    {{ end }}
-</nav>
-
 <svg>
     {{ symbol "play-light" }}
 {{ range .Data.Langs }}
@@ -21,6 +13,14 @@
 </svg>
 
 <main>
+<nav class=nav>
+{{ range $scorings }}
+    <a {{ if eq (index $scorings $scoringIndex) . }} class=on {{ else }} href="{{ . }}" {{ end }}>
+        {{ title . }}
+    </a>
+{{ end }}
+</nav>
+
 {{ range .Data.Langs }}
     <input checked class={{ .ID }} id="{{ .ID }}Check" type=checkbox>
     <label for="{{ .ID }}Check" title="Toggle {{ .Name }}">

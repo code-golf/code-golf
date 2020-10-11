@@ -3,7 +3,7 @@ main {
     grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
 }
 
-main a {
+main > a {
     align-items: center;
     border: 1px solid var(--color);
     color: var(--color);
@@ -12,11 +12,18 @@ main a {
     text-decoration: none;
 }
 
-main a:hover { background: var(--background) }
+main > a:hover { background: var(--background) }
 
-main a :last-child {
+main > a :last-child {
     flex: 1;
     text-align: center;
+}
+
+main nav {
+    display: flex;
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+    margin-bottom: .75rem;
 }
 
 h3 { padding: .25rem 0 }
