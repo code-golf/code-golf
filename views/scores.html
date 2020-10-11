@@ -73,6 +73,11 @@
         {{ end }}
     </details>
 
+    <nav class=nav>
+        <a {{ if $charsScoring }} href=bytes {{ end }}>Bytes</a>
+        <a {{ if $bytesScoring }} href=chars {{ end }}>Chars</a>
+    </nav>
+
     <table class="nowrap-second sticky">
         <thead>
             <tr>
@@ -80,8 +85,8 @@
                 <th>Golfer
                 <th class=right>{{ if $allHoles }}Holes{{ else }}Lang{{ end }}
                 <th class=center colspan=2>Points
-                <th class="right wide"><a {{ if $charsScoring }}href="bytes" class="scoringPicker inactive"{{else}}class="scoringPicker"{{end}}>Bytes</a>
-                <th class="right wide"><a {{ if $bytesScoring }}href="chars" class="scoringPicker inactive"{{else}}class="scoringPicker"{{end}}>Chars</a>
+                <th class="right wide">Bytes
+                <th class="right wide">Chars
                 <th class="right wide">Submitted
         <tbody>
         {{ $name := "" }}
