@@ -112,7 +112,7 @@ body > nav {
     padding: 1rem 1rem 0;
     position: sticky;
     top: 2.75rem;
-    z-index: 1;
+    z-index: 2;
 }
 
 body > svg, .hide { display: none }
@@ -142,7 +142,7 @@ header {
     margin: 0 calc(50% - 50vw);
     position: sticky;
     top: 0;
-    z-index: 9;
+    z-index: 3;
 }
 
 header a {
@@ -429,7 +429,7 @@ thead th {
 .sticky th {
     position: sticky;
     top: 2.75rem;
-    z-index: 9;
+    z-index: 1;
 }
 
 /* Stick headers below tabs if we have them */
