@@ -96,7 +96,7 @@ CREATE TABLE trophies (
      AND c.relname IN ('code', 'ideas', 'sessions', 'solutions', 'trophies', 'users')
 ORDER BY c.relname, t.typlen DESC, t.typname, a.attname;
 
-CREATE MATERIALIZED VIEW medals AS WITH ranked AS (
+CREATE MATERIALIZED VIEW medals AS WITH ranks AS (
     SELECT user_id,
            RANK() OVER (PARTITION BY hole, lang ORDER BY bytes)
       FROM solutions
@@ -108,12 +108,14 @@ CREATE MATERIALIZED VIEW medals AS WITH ranked AS (
       FROM solutions
       JOIN code ON code_id = id
      WHERE NOT failing AND scoring = 'chars'
-) SELECT user_id,
-         COUNT(*) FILTER (WHERE rank = 1) gold,
-         COUNT(*) FILTER (WHERE rank = 2) silver,
-         COUNT(*) FILTER (WHERE rank = 3) bronze
-    FROM ranked
-GROUP BY user_id;
+), medals AS (
+    SELECT user_id,
+           COUNT(*) FILTER (WHERE rank = 1) gold,
+           COUNT(*) FILTER (WHERE rank = 2) silver,
+           COUNT(*) FILTER (WHERE rank = 3) bronze
+      FROM ranks
+  GROUP BY user_id
+) SELECT * FROM medals WHERE gold > 0 OR silver > 0 OR bronze > 0;
 
 CREATE VIEW bytes_points AS WITH ranked AS (
     SELECT user_id,
