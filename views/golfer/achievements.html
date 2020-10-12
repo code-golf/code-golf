@@ -1,20 +1,27 @@
 {{ template "header" . }}
 {{ template "golfer" . }}
 
+{{ $progress := .Data.Progress }}
+
 <main>
-{{ range .Data }}
+{{ range $category, $cheevos := .Data.Cheevos }}
     <details open>
-        <summary>
-            [ {{ .Earned }} / {{ len .Cheevos }} ] {{ .Category }}
-        </summary>
         <div>
-        {{ range .Cheevos }}
-            <div class="achievement {{ if eq .Value .Max }} earned {{ end }}">
+        {{ $i := 0 }}
+        {{ range $cheevos }}
+            {{ $progress := index $progress .ID }}
+            {{ $earned   := eq $progress.Completed $progress.Steps }}
+
+            {{ if $earned }}
+                {{ $i = inc $i }}
+            {{ end }}
+
+            <div class="achievement {{ if $earned }} earned {{ end }}">
                 <div>{{ .Emoji }}</div>
-                <h3>{{ .Title }}</h3>
-                <div class=progress title="{{ .Value }} / {{ .Max }}">
-                    {{ .Progress }}
-                    <div>{{ .Percent }}<sup>%</sup></div>
+                <h3>{{ .Name }}</h3>
+                <div class=progress title="{{ $progress.Completed }} / {{ $progress.Steps }}">
+                    {{ $progress.SVG }}
+                    <div>{{ $progress.Percent }}<sup>%</sup></div>
                 </div>
                 <p>{{ .Description }}
                 <p>
@@ -25,6 +32,7 @@
             </div>
         {{ end }}
         </div>
+        <summary>[ {{ $i }} / {{ len $cheevos }} ] {{ $category }}</summary>
     </details>
 {{ end }}
 </main>

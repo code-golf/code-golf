@@ -15,7 +15,7 @@ func GolferTrophies(w http.ResponseWriter, r *http.Request) {
 	type EarnedTrophy struct {
 		Count, Percent int
 		Earned         sql.NullTime
-		Trophy         trophy.Trophy
+		Trophy         *trophy.Trophy
 	}
 
 	data := struct {
@@ -65,9 +65,10 @@ func GolferTrophies(w http.ResponseWriter, r *http.Request) {
 
 	for rows.Next() {
 		var earned EarnedTrophy
+		var trophyID string
 
 		if err := rows.Scan(
-			&earned.Trophy.ID,
+			&trophyID,
 			&earned.Count,
 			&earned.Earned,
 		); err != nil {
@@ -75,7 +76,7 @@ func GolferTrophies(w http.ResponseWriter, r *http.Request) {
 		}
 
 		earned.Percent = earned.Count * 100 / data.Max
-		earned.Trophy = trophy.ByID[earned.Trophy.ID]
+		earned.Trophy = trophy.ByID[trophyID]
 
 		data.Trophies = append(data.Trophies, earned)
 	}

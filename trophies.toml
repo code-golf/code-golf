@@ -1,0 +1,111 @@
+# Categories in alpha order, trophies in difficulty then alpha order.
+
+# Date Specific
+
+[['Date Specific']]
+name        = 'Happy Birthday, Code Golf'
+emoji       = '🎂'
+description = 'Solve any hole on <a href=//github.com/code-golf/code-golf/commit/4b44>2 Oct</a>.'
+
+[['Date Specific']]
+name        = 'Independence Day'
+emoji       = '🇺🇸'
+description = 'Solve <a href=/united-states>United States</a> on <a href=//www.wikipedia.org/wiki/Independence_Day_(United_States)>4 Jul</a>.'
+
+[['Date Specific']]
+name        = 'Pi Day'
+emoji       = '🥧'
+description = 'Solve <a href=/π>π</a> on <a href=//www.wikipedia.org/wiki/Pi_Day>14 Mar</a>.'
+
+[['Date Specific']]
+name        = 'Twelvetide'
+emoji       = '🎅'
+description = 'Solve <a href=/12-days-of-christmas>12 Days of Christmas</a> during <a href=//www.wikipedia.org/wiki/Twelvetide>25 Dec – 5 Jan</a>.'
+
+# GitHub
+
+[[GitHub]]
+name        = 'My God, It’s Full of Stars'
+emoji       = '⭐'
+description = 'Star <a href=//github.com/code-golf/code-golf>the Code Golf repository</a>.'
+
+[[GitHub]]
+name        = 'Patches Welcome'
+emoji       = '💾'
+description = 'Contribute a merged PR to <a href=//github.com/code-golf/code-golf>the Code Golf repository</a>.'
+
+# Hole/Lang Specific
+
+[['Hole/Lang Specific']]
+name        = 'Interview Ready'
+emoji       = '💼'
+description = 'Solve <a href=/fizz-buzz>Fizz Buzz</a>.'
+
+[['Hole/Lang Specific']]
+name        = 'Caffeinated'
+emoji       = '☕'
+description = 'Solve any hole in both Java and JavaScript.'
+
+[['Hole/Lang Specific']]
+name        = 'ElePHPant in the Room'
+emoji       = '🐘'
+description = 'Solve any hole in PHP.'
+
+[['Hole/Lang Specific']]
+name        = 'Inception'
+emoji       = '🧠'
+description = 'Solve <a href=/brainfuck#brainfuck>Brainfuck in Brainfuck</a>.'
+
+[['Hole/Lang Specific']]
+name        = 'Ouroboros'
+emoji       = '🐍'
+description = 'Solve <a href=/quine#python>Quine in Python</a>.'
+
+[['Hole/Lang Specific']]
+name        = 'Tim Toady'
+emoji       = '🐪'
+description = 'Solve any hole in both Perl and Raku.'
+
+# Miscellaneous
+
+#[[Miscellaneous]]
+#name        = 'RTFM'
+#emoji       = '📕'
+#description = 'Vist the <a href=/about>About page</a>.'
+
+[[Miscellaneous]]
+name        = 'Slowcoach'
+emoji       = '🦥'
+description = 'Fail any hole by exceeding the time limit.'
+
+# Progression
+
+[[Progression]]
+name        = 'Hello, World!'
+emoji       = '👋'
+description = 'Solve your first hole.'
+
+#[[Progression]]
+#name        = 'Baker’s Dozen'
+#emoji       = '🍞'
+#description = 'Solve your thirteenth hole.'
+
+[[Progression]]
+name        = 'The Watering Hole'
+emoji       = '🍺'
+description = 'Solve your nineteenth hole.'
+
+#[[Progression]]
+#name        = 'DON’T PANIC!'
+#emoji       = '👍'
+#description = 'Solve your forty-second hole.'
+
+[[Progression]]
+name        = 'It’s Over 9000!'
+emoji       = '🐉'
+description = 'Earn over 9,000 points in either bytes or chars scoring.'
+
+[[Progression]]
+name        = 'Polyglot'
+emoji       = '🔣'
+description = 'Solve any hole in every language.'

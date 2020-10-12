@@ -1,87 +1,53 @@
 package trophy
 
-import "html/template"
+import (
+	"html/template"
+	"os"
+	"sort"
+	"strings"
+
+	"github.com/BurntSushi/toml"
+)
 
 type Trophy struct {
-	Emoji, ID, Name string
 	Description     template.HTML
+	Emoji, ID, Name string
 }
 
-var ByID = map[string]Trophy{}
+var (
+	ByID = map[string]*Trophy{}
+	List = []*Trophy{}
+	Tree = map[string][]*Trophy{}
+)
+
+// TODO Share with other packages
+func id(name string) string {
+	name = strings.ReplaceAll(name, " ", "-")
+	name = strings.ReplaceAll(name, "!", "")
+	name = strings.ReplaceAll(name, ",", "")
+	name = strings.ReplaceAll(name, "’", "")
+
+	return strings.ToLower(name)
+}
 
 func init() {
-	for _, trophy := range List {
-		ByID[trophy.ID] = trophy
+	// Tests run from the package directory, walk upward to find trophies.toml.
+	if _, err := os.Stat("trophies.toml"); os.IsNotExist(err) {
+		os.Chdir("..")
 	}
-}
 
-var List = []Trophy{
-	{
-		"☕", "caffeinated", "Caffeinated",
-		"Solve any hole in both Java and JavaScript.",
-	},
-	{
-		"🐘", "elephpant-in-the-room", "ElePHPant in the Room",
-		"Solve any hole in PHP.",
-	},
-	{
-		"🎂", "happy-birthday-code-golf", "Happy Birthday, Code Golf",
-		"Solve any hole on <a href=//github.com/code-golf/code-golf/commit/4b44>2 Oct</a>.",
-	},
-	{
-		"👋", "hello-world", "Hello, World!",
-		"Solve your first hole.",
-	},
-	{
-		"🧠", "inception", "Inception",
-		"Solve <a href=/brainfuck#brainfuck>Brainfuck in Brainfuck</a>.",
-	},
-	{
-		"🇺🇸", "independence-day", "Independence Day",
-		"Solve <a href=/united-states>United States</a> on <a href=//www.wikipedia.org/wiki/Independence_Day_(United_States)>4 Jul</a>.",
-	},
-	{
-		"💼", "interview-ready", "Interview Ready",
-		"Solve <a href=/fizz-buzz>Fizz Buzz</a>.",
-	},
-	{
-		"🐉", "its-over-9000", "It’s Over 9000!",
-		"Earn over 9,000 points in either bytes or chars scoring.",
-	},
-	{
-		"⭐", "my-god-its-full-of-stars", "My God, It’s Full of Stars",
-		"Star <a href=//github.com/code-golf/code-golf>the Code Golf repository</a>.",
-	},
-	{
-		"🐍", "ouroboros", "Ouroboros",
-		"Solve <a href=/quine#python>Quine in Python</a>.",
-	},
-	{
-		"💾", "patches-welcome", "Patches Welcome",
-		"Contribute a merged PR to <a href=//github.com/code-golf/code-golf>the Code Golf repository</a>.",
-	},
-	{
-		"🥧", "pi-day", "Pi Day",
-		"Solve <a href=/π>π</a> on <a href=//www.wikipedia.org/wiki/Pi_Day>14 Mar</a>.",
-	},
-	{
-		"🔣", "polyglot", "Polyglot",
-		"Solve any hole in every language.",
-	},
-	{
-		"🦥", "slowcoach", "Slowcoach",
-		"Fail any hole by exceeding the time limit.",
-	},
-	{
-		"🐪", "tim-toady", "Tim Toady",
-		"Solve any hole in both Perl and Raku.",
-	},
-	{
-		"🍺", "the-watering-hole", "The Watering Hole",
-		"Solve your nineteenth hole.",
-	},
-	{
-		"🎅", "twelvetide", "Twelvetide",
-		"Solve <a href=/12-days-of-christmas>12 Days of Christmas</a> during <a href=//www.wikipedia.org/wiki/Twelvetide>25 Dec – 5 Jan</a>.",
-	},
+	if _, err := toml.DecodeFile("trophies.toml", &Tree); err != nil {
+		panic(err)
+	}
+
+	for _, categories := range Tree {
+		for _, trophy := range categories {
+			trophy.ID = id(trophy.Name)
+
+			ByID[trophy.ID] = trophy
+			List = append(List, trophy)
+		}
+	}
+
+	sort.Slice(List, func(i, j int) bool { return List[i].Name < List[j].Name })
 }
