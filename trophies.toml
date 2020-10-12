@@ -85,20 +85,20 @@ name        = 'Hello, World!'
 emoji       = '👋'
 description = 'Solve your first hole.'
 
-#[[Progression]]
-#name        = 'Baker’s Dozen'
-#emoji       = '🍞'
-#description = 'Solve your thirteenth hole.'
+[[Progression]]
+name        = 'Baker’s Dozen'
+emoji       = '🍞'
+description = 'Solve your thirteenth hole.'
 
 [[Progression]]
 name        = 'The Watering Hole'
 emoji       = '🍺'
 description = 'Solve your nineteenth hole.'
 
-#[[Progression]]
-#name        = 'DON’T PANIC!'
-#emoji       = '👍'
-#description = 'Solve your forty-second hole.'
+[[Progression]]
+name        = 'DON’T PANIC!'
+emoji       = '👍'
+description = 'Solve your forty-second hole.'
 
 [[Progression]]
 name        = 'It’s Over 9000!'

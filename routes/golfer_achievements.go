@@ -29,7 +29,9 @@ func GolferAchievements(w http.ResponseWriter, r *http.Request) {
 	}{
 		trophy.Tree,
 		map[string]*progress{
+			"bakers-dozen":             {0, 13},
 			"caffeinated":              {0, 2},
+			"dont-panic":               {0, 42},
 			"elephpant-in-the-room":    {0, 1},
 			"happy-birthday-code-golf": {0, 1},
 			"hello-world":              {0, 1},

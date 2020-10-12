@@ -104,12 +104,32 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 
 		if queryBool(
 			db,
+			`SELECT COUNT(DISTINCT hole) > 12
+			   FROM solutions
+			  WHERE NOT failing AND user_id = $1`,
+			userID,
+		) {
+			awardTrophy(db, userID, "bakers-dozen")
+		}
+
+		if queryBool(
+			db,
 			`SELECT COUNT(DISTINCT hole) > 18
 			   FROM solutions
 			  WHERE NOT failing AND user_id = $1`,
 			userID,
 		) {
 			awardTrophy(db, userID, "the-watering-hole")
+		}
+
+		if queryBool(
+			db,
+			`SELECT COUNT(DISTINCT hole) > 41
+			   FROM solutions
+			  WHERE NOT failing AND user_id = $1`,
+			userID,
+		) {
+			awardTrophy(db, userID, "dont-panic")
 		}
 
 		if queryBool(
