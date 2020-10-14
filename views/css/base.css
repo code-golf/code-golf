@@ -142,7 +142,7 @@ header {
     margin: 0 calc(50% - 50vw);
     position: sticky;
     top: 0;
-    z-index: 3;
+    z-index: 7; /* Codemirror uses up to 6 */
 }
 
 header a {
