@@ -14,6 +14,7 @@ import (
 	"strings"
 	"syscall"
 
+	"github.com/code-golf/code-golf/country"
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/pretty"
 	"github.com/code-golf/code-golf/session"
@@ -127,6 +128,7 @@ func render(w http.ResponseWriter, r *http.Request, name, title string, data int
 	}
 
 	args := struct {
+		Countries                           map[string]*country.Country
 		CSS                                 template.CSS
 		Data                                interface{}
 		Golfer                              *golfer.Golfer
@@ -135,6 +137,7 @@ func render(w http.ResponseWriter, r *http.Request, name, title string, data int
 		JSExt, LogInURL, Nonce, Path, Title string
 		Request                             *http.Request
 	}{
+		Countries:  country.ByID,
 		CSS:        css["base"] + css[path.Dir(name)] + css[name],
 		Data:       data,
 		Golfer:     session.Golfer(r),

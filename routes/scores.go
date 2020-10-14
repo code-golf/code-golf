@@ -6,7 +6,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/code-golf/code-golf/country"
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
 	"github.com/code-golf/code-golf/session"
@@ -171,19 +170,17 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := struct {
-		Countries               map[string]*country.Country
 		HoleID, LangID, Scoring string
 		Holes                   []hole.Hole
 		Langs                   []lang.Lang
 		Next, Prev              int
 		Scores                  []Score
 	}{
-		Countries: country.ByID,
-		HoleID:    holeID,
-		Holes:     hole.List,
-		LangID:    langID,
-		Langs:     lang.List,
-		Scoring:   scoring,
+		HoleID:  holeID,
+		Holes:   hole.List,
+		LangID:  langID,
+		Langs:   lang.List,
+		Scoring: scoring,
 	}
 
 	page := 1

@@ -5,7 +5,6 @@ import (
 	"errors"
 	"time"
 
-	"github.com/code-golf/code-golf/country"
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
 	"github.com/code-golf/code-golf/trophy"
@@ -26,9 +25,6 @@ type GolferInfo struct {
 	// Overall points
 	BytesPoints, CharsPoints int
 
-	// Country
-	Country *country.Country
-
 	// Count of medals
 	Gold, Silver, Bronze int
 
@@ -48,8 +44,6 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 		LangsTotal:    len(lang.List),
 		TrophiesTotal: len(trophy.List),
 	}
-
-	var countryID string
 
 	if err := db.QueryRow(
 		`  SELECT admin,
@@ -78,7 +72,7 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 	).Scan(
 		&info.Admin,
 		&info.Bronze,
-		&countryID,
+		&info.Country,
 		&info.Gold,
 		&info.Holes,
 		&info.ID,
@@ -94,8 +88,6 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 	} else if err != nil {
 		panic(err)
 	}
-
-	info.Country = country.ByID[countryID]
 
 	// TODO
 	info.TeedOff = time.Date(2019, time.July, 15, 20, 13, 21, 0, time.UTC)

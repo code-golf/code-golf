@@ -1,5 +1,6 @@
-{{ $me   := false }}
-{{ $path := .Path }}
+{{ $countries := .Countries }}
+{{ $me        := false }}
+{{ $path      := .Path }}
 
 {{ if .Golfer }}
     {{ $me = eq .Golfer.ID .GolferInfo.ID }}
@@ -10,7 +11,7 @@
         <img src="//avatars.githubusercontent.com/{{ .Name }}?s=192">
         <h1>
             {{ .Name }}
-        {{ with .Country }}
+        {{ with index $countries .Country }}
             <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
         {{ end }}
         </h1>
