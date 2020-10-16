@@ -33,6 +33,7 @@ func GolferAchievements(w http.ResponseWriter, r *http.Request) {
 			"caffeinated":              {0, 2},
 			"dont-panic":               {0, 42},
 			"elephpant-in-the-room":    {0, 1},
+			"forty-winks":              {0, 40},
 			"happy-birthday-code-golf": {0, 1},
 			"hello-world":              {0, 1},
 			"inception":                {0, 1},
@@ -48,6 +49,7 @@ func GolferAchievements(w http.ResponseWriter, r *http.Request) {
 			"the-watering-hole":        {0, 19},
 			"tim-toady":                {0, 2},
 			"twelvetide":               {0, 1},
+			"up-to-eleven":             {0, 11},
 		},
 	}
 

@@ -3,8 +3,10 @@ use TOML::Thumb;
 
 constant %trophies = <
     1  {hello-world}
+    11 {up-to-eleven}
     13 {bakers-dozen}
     19 {the-watering-hole}
+    40 {forty-winks}
     42 {dont-panic}
 >;
 

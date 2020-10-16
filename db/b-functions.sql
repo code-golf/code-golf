@@ -80,8 +80,10 @@ BEGIN
       FROM solutions WHERE NOT failing AND solutions.user_id = user_id;
 
     IF holes >= 1  THEN earned := earn(earned, 'hello-world',       user_id); END IF;
+    IF holes >= 11 THEN earned := earn(earned, 'up-to-eleven',      user_id); END IF;
     IF holes >= 13 THEN earned := earn(earned, 'bakers-dozen',      user_id); END IF;
     IF holes >= 19 THEN earned := earn(earned, 'the-watering-hole', user_id); END IF;
+    IF holes >= 40 THEN earned := earn(earned, 'forty-winks',       user_id); END IF;
     IF holes >= 42 THEN earned := earn(earned, 'dont-panic',        user_id); END IF;
 
     IF hole = 'brainfuck' AND lang = 'brainfuck' THEN

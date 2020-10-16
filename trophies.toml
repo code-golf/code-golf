@@ -86,6 +86,11 @@ emoji       = '👋'
 description = 'Solve your first hole.'
 
 [[Progression]]
+name        = 'Up to Eleven'
+emoji       = '🎸'
+description = 'Solve your eleventh hole.'
+
+[[Progression]]
 name        = 'Baker’s Dozen'
 emoji       = '🍞'
 description = 'Solve your thirteenth hole.'
@@ -94,6 +99,11 @@ description = 'Solve your thirteenth hole.'
 name        = 'The Watering Hole'
 emoji       = '🍺'
 description = 'Solve your nineteenth hole.'
+
+[[Progression]]
+name        = 'Forty Winks'
+emoji       = '😴'
+description = 'Solve your fortieth hole.'
 
 [[Progression]]
 name        = 'DON’T PANIC!'

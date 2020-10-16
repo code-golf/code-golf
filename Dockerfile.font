@@ -16,6 +16,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f37a.svg       `# Beer Mug`                     \
     svg/1f382.svg       `# Birthday Cake`                \
     svg/1f385.svg       `# Santa Claus`                  \
+    svg/1f3b8.svg       `# Guitar`                       \
     svg/1f3c6.svg       `# Trophy`                       \
     svg/1f409.svg       `# Dragon`                       \
     svg/1f40d.svg       `# Sanke`                        \
@@ -55,6 +56,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f622.svg       `# Crying Face`                  \
     svg/1f62e.svg       `# Face with Open Mouth`         \
     svg/1f633.svg       `# Flushed Face`                 \
+    svg/1f634.svg       `# Sleeping Face`                \
     svg/1f636.svg       `# Face Without Mouth`           \
     svg/1f641.svg       `# Slightly Frowning Face`       \
     svg/1f642.svg       `# Slightly Smiling Face`        \

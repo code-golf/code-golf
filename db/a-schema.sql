@@ -28,10 +28,11 @@ CREATE TYPE scoring AS ENUM ('bytes', 'chars');
 
 CREATE TYPE trophy AS ENUM (
     'bakers-dozen', 'caffeinated', 'dont-panic', 'elephpant-in-the-room',
-    'happy-birthday-code-golf', 'hello-world', 'inception',
+    'forty-winks', 'happy-birthday-code-golf', 'hello-world', 'inception',
     'independence-day', 'interview-ready', 'its-over-9000',
     'my-god-its-full-of-stars', 'ouroboros', 'patches-welcome', 'pi-day',
-    'polyglot', 'slowcoach', 'tim-toady', 'the-watering-hole', 'twelvetide'
+    'polyglot', 'slowcoach', 'tim-toady', 'the-watering-hole', 'twelvetide',
+    'up-to-eleven'
 );
 
 CREATE TABLE code (
