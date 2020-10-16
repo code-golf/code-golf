@@ -68,6 +68,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f98e.svg       `# Lizard`                       \
     svg/1f9a5.svg       `# Sloth`                        \
     svg/1f9e0.svg       `# Brain`                        \
+    svg/1f9f6.svg       `# Yarn`                         \
     svg/2615.svg        `# Hot Beverage`                 \
     svg/2639.svg        `# Frowning Face`                \
     svg/26f3.svg        `# Flag in Hole`                 \

@@ -22,17 +22,21 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	if len(in.Code) > 409_600 {
-		w.WriteHeader(http.StatusRequestEntityTooLarge)
-		return
-	}
-
 	var userID int
 	if golfer := session.Golfer(r); golfer != nil {
 		userID = golfer.ID
 	}
 
 	db := session.Database(r)
+
+	if len(in.Code) > 409_600 {
+		if userID != 0 {
+			awardTrophy(db, userID, "tl-dr")
+		}
+
+		w.WriteHeader(http.StatusRequestEntityTooLarge)
+		return
+	}
 
 	score := hole.Play(r.Context(), in.Hole, in.Lang, in.Code)
 

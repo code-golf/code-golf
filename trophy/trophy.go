@@ -25,6 +25,7 @@ func id(name string) string {
 	name = strings.ReplaceAll(name, " ", "-")
 	name = strings.ReplaceAll(name, "!", "")
 	name = strings.ReplaceAll(name, ",", "")
+	name = strings.ReplaceAll(name, ";", "-")
 	name = strings.ReplaceAll(name, "’", "")
 
 	return strings.ToLower(name)

@@ -68,15 +68,20 @@ description = 'Solve any hole in both Perl and Raku.'
 
 # Miscellaneous
 
-#[[Miscellaneous]]
-#name        = 'RTFM'
-#emoji       = '📕'
-#description = 'Vist the <a href=/about>About page</a>.'
+[[Miscellaneous]]
+name        = 'RTFM'
+emoji       = '📕'
+description = 'Vist the <a href=/about>About page</a>.'
 
 [[Miscellaneous]]
 name        = 'Slowcoach'
 emoji       = '🦥'
 description = 'Fail any hole by exceeding the time limit.'
+
+[[Miscellaneous]]
+name        = 'tl;dr'
+emoji       = '🧶'
+description = 'Submit a solution that is rejected for being too long.'
 
 # Progression
 

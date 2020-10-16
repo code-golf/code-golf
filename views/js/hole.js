@@ -134,6 +134,11 @@ onload = () => {
             }),
         });
 
+        if (res.status != 200) {
+            alert(res.statusText);
+            return;
+        }
+
         const data = await res.json();
         loggedIn = data.LoggedIn;
 
