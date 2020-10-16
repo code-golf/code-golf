@@ -135,7 +135,7 @@ onload = () => {
         });
 
         if (res.status != 200) {
-            alert(res.statusText);
+            alert('Error ' + res.status);
             return;
         }
 
