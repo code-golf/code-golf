@@ -9,6 +9,7 @@ import (
 	"github.com/buildkite/terminal"
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/session"
+	"github.com/lib/pq"
 	"github.com/pmezard/go-difflib/difflib"
 )
 
@@ -44,6 +45,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		Diff, Err, Exp, Out string
 		Pass, LoggedIn      bool
 		Took                time.Duration
+		Trophies            []string
 	}{
 		Argv:     score.Args,
 		Err:      string(terminal.Render(score.Stderr)),
@@ -64,15 +66,13 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 
 	_, experimental := hole.ExperimentalByID[in.Hole]
 	if out.Pass && userID != 0 && !experimental {
-		if _, err := db.ExecContext(
+		if err := db.QueryRowContext(
 			r.Context(),
 			"SELECT save_solution(code := $1, hole := $2, lang := $3, user_id := $4)",
 			in.Code, in.Hole, in.Lang, userID,
-		); err != nil {
+		).Scan(pq.Array(&out.Trophies)); err != nil {
 			panic(err)
 		}
-
-		awardTrophy(db, userID, "hello-world")
 
 		// TODO Use the golfer's timezone from /settings.
 		var (
@@ -90,8 +90,6 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			if (month == time.December && day >= 25) || (month == time.January && day <= 5) {
 				awardTrophy(db, userID, "twelvetide")
 			}
-		case "fizz-buzz":
-			awardTrophy(db, userID, "interview-ready")
 		case "united-states":
 			if month == time.July && day == 4 {
 				awardTrophy(db, userID, "independence-day")
@@ -100,36 +98,6 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			if month == time.March && day == 14 {
 				awardTrophy(db, userID, "pi-day")
 			}
-		}
-
-		if queryBool(
-			db,
-			`SELECT COUNT(DISTINCT hole) > 12
-			   FROM solutions
-			  WHERE NOT failing AND user_id = $1`,
-			userID,
-		) {
-			awardTrophy(db, userID, "bakers-dozen")
-		}
-
-		if queryBool(
-			db,
-			`SELECT COUNT(DISTINCT hole) > 18
-			   FROM solutions
-			  WHERE NOT failing AND user_id = $1`,
-			userID,
-		) {
-			awardTrophy(db, userID, "the-watering-hole")
-		}
-
-		if queryBool(
-			db,
-			`SELECT COUNT(DISTINCT hole) > 41
-			   FROM solutions
-			  WHERE NOT failing AND user_id = $1`,
-			userID,
-		) {
-			awardTrophy(db, userID, "dont-panic")
 		}
 
 		if queryBool(
@@ -157,10 +125,6 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 
 		// COUNT(*) = 4 because langs x (bytes, chars)
 		switch in.Lang {
-		case "brainfuck":
-			if in.Hole == "brainfuck" {
-				awardTrophy(db, userID, "inception")
-			}
 		case "java", "javascript":
 			if queryBool(
 				db,
@@ -175,8 +139,6 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			) {
 				awardTrophy(db, userID, "caffeinated")
 			}
-		case "php":
-			awardTrophy(db, userID, "elephpant-in-the-room")
 		case "perl", "raku":
 			if queryBool(
 				db,
@@ -190,10 +152,6 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 				userID,
 			) {
 				awardTrophy(db, userID, "tim-toady")
-			}
-		case "python":
-			if in.Hole == "quine" {
-				awardTrophy(db, userID, "ouroboros")
 			}
 		}
 	}

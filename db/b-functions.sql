@@ -1,10 +1,23 @@
+CREATE FUNCTION earn(INOUT earned trophy[], trophy trophy, user_id int) AS $$
+BEGIN
+    INSERT INTO trophies VALUES (DEFAULT, user_id, trophy)
+             ON CONFLICT DO NOTHING;
+
+    IF found THEN
+        earned := array_append(earned, trophy);
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
 CREATE FUNCTION save_solution(code text, hole hole, lang lang, user_id int)
-RETURNS void AS $$
+RETURNS trophy[] AS $$
 #variable_conflict use_variable
 DECLARE
     bytes   int;
     chars   int;
     code_id int;
+    earned  trophy[] := '{}'::trophy[];
+    holes   int;
 BEGIN
     bytes := octet_length(code);
     chars :=  char_length(code);
@@ -62,6 +75,31 @@ BEGIN
     -- Remove any orphaned code.
     DELETE FROM code WHERE NOT EXISTS (SELECT FROM solutions WHERE id = solutions.code_id);
 
-    -- TODO Port trophies to here.
+    -- Earn trophies.
+    SELECT COUNT(DISTINCT solutions.hole) INTO holes
+      FROM solutions WHERE NOT failing AND solutions.user_id = user_id;
+
+    IF holes >= 1  THEN earned := earn(earned, 'hello-world',       user_id); END IF;
+    IF holes >= 13 THEN earned := earn(earned, 'bakers-dozen',      user_id); END IF;
+    IF holes >= 19 THEN earned := earn(earned, 'the-watering-hole', user_id); END IF;
+    IF holes >= 42 THEN earned := earn(earned, 'dont-panic',        user_id); END IF;
+
+    IF hole = 'brainfuck' AND lang = 'brainfuck' THEN
+        earned := earn(earned, 'inception', user_id);
+    END IF;
+
+    IF hole = 'fizz-buzz' THEN
+        earned := earn(earned, 'interview-ready', user_id);
+    END IF;
+
+    IF hole = 'quine' AND lang = 'python' THEN
+        earned := earn(earned, 'ouroboros', user_id);
+    END IF;
+
+    IF lang = 'php' THEN
+        earned := earn(earned, 'elephpant-in-the-room', user_id);
+    END IF;
+
+    RETURN earned;
 END;
 $$ LANGUAGE plpgsql;
