@@ -35,7 +35,7 @@ website = '//gcc.gnu.org/fortran/'
 
 [Go]
 size    = '110 MiB'
-version = '1.15.2'
+version = '1.15.3'
 website = '//go.dev'
 
 [Haskell]
@@ -69,8 +69,8 @@ version = 'GNU CLISP 2.49.92'
 website = '//clisp.sourceforge.io'
 
 [Lua]
-size    = '310 KiB'
-version = '5.4.0'
+size    = '314 KiB'
+version = '5.4.1'
 website = '//www.lua.org'
 
 [Nim]
@@ -104,8 +104,8 @@ version = 'Rakudo 2020.09 on MoarVM 2020.09 implementing Raku 6.d'
 website = '//raku.org'
 
 [Ruby]
-size    = '19.9 MiB'
-version = '2.7.1'
+size    = '14.3 MiB'
+version = '2.7.2'
 website = '//www.ruby-lang.org'
 
 [Rust]

@@ -2,14 +2,14 @@ FROM alpine:3.12 as builder
 
 RUN apk add --no-cache build-base curl openssl-dev
 
-RUN curl https://cache.ruby-lang.org/pub/ruby/2.7/ruby-2.7.1.tar.xz \
+RUN curl https://cache.ruby-lang.org/pub/ruby/2.7/ruby-2.7.2.tar.xz \
   | tar xJf -
 
-RUN cd ruby-2.7.1          \
- && ./configure            \
-    --disable-install-doc  \
-    --prefix=/usr          \
- && make -j`nproc` install \
+RUN cd ruby-2.7.2            \
+ && CFLAGS=-flto ./configure \
+    --disable-install-doc    \
+    --prefix=/usr            \
+ && make -j`nproc` install   \
  && strip -s /usr/bin/ruby
 
 # Remove some big default gems
