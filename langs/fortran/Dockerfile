@@ -30,27 +30,24 @@ RUN make install
 
 WORKDIR /scratch
 
-RUN /src/gcc-9.3.0/configure \
-  --disable-shared           \
-  --disable-bootstrap        \
-  --disable-libstdcxx-pch    \
-  --disable-multilib         \
-  --enable-languages=fortran \
-  --enable-libgomp           \
-  --enable-lto               \
-  --enable-static            \
-  --enable-threads=posix     \
-  --enable-tls               \
-  --with-gmp=/tmp/gcc        \
-  --with-mpfr=/tmp/gcc       \
-  --with-mpc=/tmp/gcc        \
-  --with-fpmath=sse          \
-  --prefix=/fortran
-
-RUN make
-RUN make install
-
-RUN mkdir /empty
+RUN /src/gcc-9.3.0/configure   \
+    --disable-bootstrap        \
+    --disable-libstdcxx-pch    \
+    --disable-multilib         \
+    --disable-shared           \
+    --enable-languages=fortran \
+    --enable-libgomp           \
+    --enable-lto               \
+    --enable-static            \
+    --enable-threads=posix     \
+    --enable-tls               \
+    --prefix=/fortran          \
+    --with-fpmath=sse          \
+    --with-gmp=/tmp/gcc        \
+    --with-mpc=/tmp/gcc        \
+    --with-mpfr=/tmp/gcc       \
+ && make                       \
+ && make install
 
 FROM scratch
 
@@ -69,7 +66,6 @@ COPY --from=0 /bin/cat                 \
               /bin/rm                  /bin/
 COPY --from=0 /lib/ld-musl-x86_64.so.1 \
               /lib/libz.so.1           /lib/
-COPY --from=0 /empty                   /tmp/
 
 COPY fortran                           /usr/bin/
 
