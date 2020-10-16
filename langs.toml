@@ -74,8 +74,8 @@ version = '5.4.1'
 website = '//www.lua.org'
 
 [Nim]
-size    = '21.7 MiB'
-version = '1.2.6'
+size    = '22.3 MiB'
+version = '1.4.0'
 website = '//nim-lang.org'
 
 [PHP]
