@@ -112,9 +112,7 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 			cmd.Args = append(cmd.Args, "--explicit")
 		}
 	case "nim":
-		// Pass a dummy argument to work around a nim bug.
-		// See https://github.com/code-golf/code-golf/issues/136
-		cmd.Args = []string{"/usr/bin/nim", "-o:/tmp/code", "-r", "c", "-", "dummy"}
+		cmd.Args = []string{"/usr/bin/nim", "-o:/tmp/code", "-r", "c", "-"}
 	default:
 		cmd.Args = []string{"/usr/bin/" + langID, "-"}
 	}
