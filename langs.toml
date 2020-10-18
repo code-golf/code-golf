@@ -39,7 +39,7 @@ version = '1.15.3'
 website = '//go.dev'
 
 [Haskell]
-size    = '377 MiB'
+size    = '332 MiB'
 version = 'Glasgow Haskell Compiler 8.8.4'
 website = '//www.haskell.org/ghc/'
 
