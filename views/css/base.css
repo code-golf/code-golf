@@ -444,7 +444,10 @@ nav + main .sticky th { top: calc(5.75rem + 2px) }
     padding: 1rem;
 }
 
-#index .nav { display: flex }
+#index .nav {
+    display: flex;
+    flex-wrap: wrap;
+}
 
 #me {
     position: relative;
