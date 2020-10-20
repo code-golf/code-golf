@@ -64,8 +64,12 @@ func wordify(i uint16) []byte {
 }
 
 func spellingNumbers() (args []string, out string) {
-	// Always test the teens & 1,000.
-	numbers := []uint16{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 1000}
+	// Always test the low and high end.
+	numbers := []uint16{
+		0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+		10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+		990, 991, 992, 993, 994, 995, 996, 997, 998, 999, 1000,
+	}
 
 	tens := []uint16{20, 30, 40, 50, 60, 70, 80, 90}
 
