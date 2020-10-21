@@ -2,8 +2,8 @@ package hole
 
 import (
 	"math/rand"
-	"strings"
 	"strconv"
+	"strings"
 )
 
 var games = [...]struct {
@@ -31,7 +31,7 @@ var games = [...]struct {
 }
 
 // Randomly create splits and fouls to make it more interesting.
-func randReplacements(gFrames []rune) ([]rune) {
+func randReplacements(gFrames []rune) []rune {
 	frames := make([]rune, len(gFrames))
 	copy(frames, gFrames)
 
@@ -72,19 +72,19 @@ func tenPinBowling() ([]string, string) {
 		args[i] = string(frames)
 		outs[i] = game.score
 	}
-	
+
 	for i := 0; i < extraCases; i++ {
 		rolls := make([]int, 24)
-		
+
 		// Generate some random rolls
 		for rollNum := 0; rollNum < 23; rollNum++ {
 			roll := 0
 			maxRoll := 10
-			if (rollNum % 2 == 1) {
-				maxRoll = 10-rolls[rollNum-1]
+			if rollNum%2 == 1 {
+				maxRoll = 10 - rolls[rollNum-1]
 			}
 			// Roll with bias towards strikes/spares and misses
-			roll = rand.Intn(maxRoll + 2)-1
+			roll = rand.Intn(maxRoll+2) - 1
 			if roll > maxRoll {
 				roll = maxRoll
 			} else if roll < 0 {
@@ -92,28 +92,27 @@ func tenPinBowling() ([]string, string) {
 			}
 			rolls[rollNum] = roll
 		}
-		
+
 		if rolls[18] != 10 {
 			rolls[21] = 0
 		}
-		
+
 		// Now let's score the rolls and format the input
 		arg := ""
 		score := 0
 		for frame := 0; frame < 12; frame++ {
-		
-			// Skip the bonus rolls if neccessary
+			// Skip the bonus rolls if necessary
 			if frame > 9 {
-				if rolls[18] + rolls[19] != 10 || (frame == 11 && (rolls[18] != 10 || rolls[20] != 10)) {
+				if rolls[18]+rolls[19] != 10 || (frame == 11 && (rolls[18] != 10 || rolls[20] != 10)) {
 					arg += " "
 					break
 				}
 			} else if frame > 0 {
 				arg += " "
 				// Add the bonus scores if the last frame was a spare or strike
-				if rolls[frame*2-2] + rolls[frame*2-1] == 10 {
+				if rolls[frame*2-2]+rolls[frame*2-1] == 10 {
 					score += rolls[frame*2]
-					
+
 					// If it was a strike specifically
 					if rolls[frame*2-2] == 10 {
 						score += rolls[frame*2+1]
@@ -125,28 +124,27 @@ func tenPinBowling() ([]string, string) {
 				}
 			}
 			score += rolls[frame*2] + rolls[frame*2+1]
-			
+
 			if rolls[frame*2] == 10 {
 				if frame < 9 {
 					arg += " "
 				}
 				arg += "X"
 			} else {
-				arg += string('0'+rolls[frame*2])
+				arg += string('0' + rolls[frame*2])
 				if frame < 10 || (frame == 10 && rolls[18] == 10) {
-					if rolls[frame*2] + rolls[frame*2+1] == 10 {
+					if rolls[frame*2]+rolls[frame*2+1] == 10 {
 						arg += "/"
 					} else {
-						arg += string('0'+rolls[frame*2+1])
+						arg += string('0' + rolls[frame*2+1])
 					}
 				}
-				 
 			}
 		}
 		r := []rune(arg)
 		frames := randReplacements(r)
-		args[i + len(games)] = string(frames)
-		outs[i + len(games)] = strconv.Itoa(score)
+		args[i+len(games)] = string(frames)
+		outs[i+len(games)] = strconv.Itoa(score)
 	}
 
 	rand.Shuffle(len(args), func(i, j int) {
