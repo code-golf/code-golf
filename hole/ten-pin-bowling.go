@@ -103,8 +103,16 @@ func tenPinBowling() ([]string, string) {
 		for frame := 0; frame < 12; frame++ {
 			// Skip the bonus rolls if necessary
 			if frame > 9 {
-				if rolls[18]+rolls[19] != 10 || (frame == 11 && (rolls[18] != 10 || rolls[20] != 10)) {
+				if rolls[18]+rolls[19] != 10 {
 					arg += " "
+					break
+				}
+				// Don't forget the second ball of the tenth frame,
+				// if the previous two were a strike
+				if frame == 10 && rolls[18] == 10 && rolls[16] == 10 {
+					score += rolls[20]
+				}
+				if frame == 11 && (rolls[18] != 10 || rolls[20] != 10) {
 					break
 				}
 			} else if frame > 0 {
