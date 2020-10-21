@@ -26,10 +26,11 @@ for from-toml slurp 'holes.toml' {
 }
 
 for <
-    brainfuck brainfuck {inception}
-    divisors  php       {elephpant-in-the-room}
-    fizz-buzz haskell   {interview-ready}
-    quine     python    {ouroboros}
+    brainfuck       brainfuck {inception}
+    divisors        php       {elephpant-in-the-room}
+    fizz-buzz       haskell   {interview-ready}
+    quine           python    {ouroboros}
+    ten-pin-bowling cobol     {cobowl}
 > -> $hole, $lang, $trophies {
     is $dbh.execute("SELECT save_solution('', ?, ?, 1)", $hole, $lang).row,
         $trophies, "$hole/$lang earns $trophies";

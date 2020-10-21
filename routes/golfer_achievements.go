@@ -31,6 +31,7 @@ func GolferAchievements(w http.ResponseWriter, r *http.Request) {
 		map[string]*progress{
 			"bakers-dozen":             {0, 13},
 			"caffeinated":              {0, 2},
+			"cobowl":                   {0, 1},
 			"dont-panic":               {0, 42},
 			"elephpant-in-the-room":    {0, 1},
 			"forty-winks":              {0, 40},

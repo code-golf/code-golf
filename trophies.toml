@@ -47,6 +47,11 @@ emoji       = '☕'
 description = 'Solve any hole in both Java and JavaScript.'
 
 [['Hole/Lang Specific']]
+name        = 'COBOWL'
+emoji       = '🎳'
+description = 'Solve <a href=/ten-pin-bowling#cobol>Ten-pin Bowling in COBOL</a>.'
+
+[['Hole/Lang Specific']]
 name        = 'ElePHPant in the Room'
 emoji       = '🐘'
 description = 'Solve any hole in PHP.'

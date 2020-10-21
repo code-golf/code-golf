@@ -28,12 +28,12 @@ CREATE TYPE scoring AS ENUM ('bytes', 'chars');
 
 -- TODO Fix 'tim-toady' & 'the-watering-hole' order when renamed to cheevos.
 CREATE TYPE trophy AS ENUM (
-    'bakers-dozen', 'caffeinated', 'dont-panic', 'elephpant-in-the-room',
-    'forty-winks', 'happy-birthday-code-golf', 'hello-world', 'inception',
-    'independence-day', 'interview-ready', 'its-over-9000',
-    'my-god-its-full-of-stars', 'ouroboros', 'patches-welcome', 'pi-day',
-    'polyglot', 'rtfm', 'slowcoach', 'tim-toady', 'the-watering-hole',
-    'tl-dr', 'twelvetide', 'up-to-eleven'
+    'bakers-dozen', 'caffeinated', 'cobowl', 'dont-panic',
+    'elephpant-in-the-room', 'forty-winks', 'happy-birthday-code-golf',
+    'hello-world', 'inception', 'independence-day', 'interview-ready',
+    'its-over-9000', 'my-god-its-full-of-stars', 'ouroboros',
+    'patches-welcome', 'pi-day', 'polyglot', 'rtfm', 'slowcoach', 'tim-toady',
+    'the-watering-hole', 'tl-dr', 'twelvetide', 'up-to-eleven'
 );
 
 CREATE TABLE code (

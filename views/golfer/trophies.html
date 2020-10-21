@@ -10,7 +10,8 @@
         <h2>{{ .Trophy.Name }}</h2>
         <p>{{ .Trophy.Description }}
         <p>
-            Won by {{ comma .Count }} golfers ({{ .Percent }}%)
+            Won by {{ comma .Count }} golfer{{ if ne .Count 1 }}s{{ end }}
+            ({{ .Percent }}%)
             <progress value="{{ .Count }}" max="{{ $max }}"></progress>
         {{ if .Earned.Valid }}
             Won {{ time .Earned.Value }}

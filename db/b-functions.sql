@@ -98,6 +98,10 @@ BEGIN
         earned := earn(earned, 'ouroboros', user_id);
     END IF;
 
+    IF hole = 'ten-pin-bowling' AND lang = 'cobol' THEN
+        earned := earn(earned, 'cobowl', user_id);
+    END IF;
+
     IF lang = 'php' THEN
         earned := earn(earned, 'elephpant-in-the-room', user_id);
     END IF;
