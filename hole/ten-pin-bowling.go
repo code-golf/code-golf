@@ -131,12 +131,12 @@ func tenPinBowling() ([]string, string) {
 				}
 				arg += "X"
 			} else {
-				arg += string('0' + rolls[frame*2])
+				arg += strconv.Itoa(rolls[frame*2])
 				if frame < 10 || (frame == 10 && rolls[18] == 10) {
 					if rolls[frame*2]+rolls[frame*2+1] == 10 {
 						arg += "/"
 					} else {
-						arg += string('0' + rolls[frame*2+1])
+						arg += strconv.Itoa(rolls[frame*2+1])
 					}
 				}
 			}
