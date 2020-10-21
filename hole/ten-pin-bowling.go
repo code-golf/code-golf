@@ -27,7 +27,7 @@ var games = [...]struct {
 	{[]rune("72 9- 81  X 9- 8/  X  X  X 9- "), "162"},
 	{[]rune("81 16 8/ 33  X 7- -7 9- 8- -- "), "83"},
 	{[]rune("9- -2 35  X  X  X  X 62 22 62 "), "143"},
-	{[]rune("9/ 5F 5- F2  X 5- 81  X F7 9/3"), "93"},
+	{[]rune("9/ 5F 5- F/  X -/ 81  X F/ X-/"), "152"},
 }
 
 // Randomly create splits and fouls to make it more interesting.
