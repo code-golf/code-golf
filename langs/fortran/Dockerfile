@@ -1,5 +1,7 @@
 FROM alpine:3.12 as builder
 
+RUN mkdir /empty
+
 RUN apk add --no-cache curl g++ libexecinfo-dev \
     linux-headers m4 make patch tar xz
 
@@ -59,6 +61,8 @@ COPY --from=0 /fortran/libexec/gcc/x86_64-pc-linux-musl/9.3.0/f951              
               /fortran/libexec/gcc/x86_64-pc-linux-musl/9.3.0/liblto_plugin.so.0.0.0 /fortran/libexec/gcc/x86_64-pc-linux-musl/9.3.0/
 COPY --from=0 /fortran/lib/            /fortran/lib/
 COPY --from=0 /fortran/lib64/          /fortran/lib64/
+COPY --from=0 /empty                   /proc
+COPY --from=0 /empty                   /tmp
 COPY --from=0 /usr/bin/                /usr/bin/
 COPY --from=0 /usr/lib/                /usr/lib/
 COPY --from=0 /bin/cat                 \

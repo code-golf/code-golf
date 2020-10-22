@@ -1,5 +1,7 @@
 FROM alpine:3.12 as builder
 
+RUN mkdir /empty
+
 RUN apk add --no-cache build-base curl perl
 
 RUN curl http://www.cpan.org/src/5.0/perl-5.32.0.tar.xz | tar xJf -
@@ -20,6 +22,8 @@ RUN cd perl-5.32.0                                            \
 
 FROM scratch
 
+COPY --from=0 /empty                /proc
+COPY --from=0 /empty                /tmp
 COPY --from=0 /perl-5.32.0/miniperl /usr/bin/perl
 
 ENTRYPOINT ["/usr/bin/perl", "-e", "say substr $^V, 1"]

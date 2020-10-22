@@ -16,6 +16,8 @@ RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git \
 
 FROM alpine:3.12 as builder
 
+RUN mkdir /empty
+
 COPY --from=0 /tmp/v8 /tmp/v8
 
 RUN apk add --no-cache alpine-sdk binutils-gold clang curl g++ gcc git \
@@ -56,6 +58,8 @@ RUN cd /tmp/v8                               \
 FROM scratch
 
 COPY --from=1 /lib/ld-musl-x86_64.so.1                        /lib/
+COPY --from=1 /empty                                          /proc
+COPY --from=1 /empty                                          /tmp
 COPY --from=1 /usr/lib/libgcc_s.so.1                          \
               /usr/lib/libstdc++.so.6                         /usr/lib/
 COPY --from=1 /tmp/v8/include                                 /v8/include

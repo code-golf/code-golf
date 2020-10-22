@@ -1,5 +1,7 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1.401-alpine3.12 as builder
 
+RUN mkdir /empty
+
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1 VERSION=7.0.3
 
 WORKDIR /source
@@ -22,6 +24,8 @@ COPY --from=0 /etc/passwd              /etc/
 COPY --from=0 /lib/ld-musl-x86_64.so.1 \
               /lib/libcrypto.so.1.1    \
               /lib/libssl.so.1.1       /lib/
+COPY --from=0 /empty                   /proc
+COPY --from=0 /empty                   /tmp
 COPY --from=0 /usr/lib                 /usr/lib/
 COPY --from=0 /interpreter             /interpreter/
 

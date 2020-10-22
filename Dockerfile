@@ -13,8 +13,6 @@ COPY . ./
 RUN go build -ldflags -s \
  && gcc -Wall -Werror -Wextra -o /usr/bin/run-lang -s -static run-lang.c
 
-RUN mkdir -p /rootfs/proc /rootfs/tmp
-
 FROM scratch
 
 COPY --from=codegolf/lang-bash       /       /langs/bash/rootfs/
@@ -42,32 +40,6 @@ COPY --from=codegolf/lang-ruby       /       /langs/ruby/rootfs/
 COPY --from=codegolf/lang-rust       /       /langs/rust/rootfs/
 COPY --from=codegolf/lang-sql        /        /langs/sql/rootfs/
 COPY --from=codegolf/lang-swift      /      /langs/swift/rootfs/
-
-COPY --from=0 /rootfs       /langs/bash/rootfs/
-COPY --from=0 /rootfs  /langs/brainfuck/rootfs/
-COPY --from=0 /rootfs          /langs/c/rootfs/
-COPY --from=0 /rootfs    /langs/c-sharp/rootfs/
-COPY --from=0 /rootfs      /langs/cobol/rootfs/
-COPY --from=0 /rootfs    /langs/f-sharp/rootfs/
-COPY --from=0 /rootfs    /langs/fortran/rootfs/
-COPY --from=0 /rootfs         /langs/go/rootfs/
-COPY --from=0 /rootfs    /langs/haskell/rootfs/
-COPY --from=0 /rootfs          /langs/j/rootfs/
-COPY --from=0 /rootfs       /langs/java/rootfs/
-COPY --from=0 /rootfs /langs/javascript/rootfs/
-COPY --from=0 /rootfs      /langs/julia/rootfs/
-COPY --from=0 /rootfs       /langs/lisp/rootfs/
-COPY --from=0 /rootfs        /langs/lua/rootfs/
-COPY --from=0 /rootfs        /langs/nim/rootfs/
-COPY --from=0 /rootfs       /langs/perl/rootfs/
-COPY --from=0 /rootfs        /langs/php/rootfs/
-COPY --from=0 /rootfs /langs/powershell/rootfs/
-COPY --from=0 /rootfs     /langs/python/rootfs/
-COPY --from=0 /rootfs       /langs/raku/rootfs/
-COPY --from=0 /rootfs       /langs/ruby/rootfs/
-COPY --from=0 /rootfs       /langs/rust/rootfs/
-COPY --from=0 /rootfs        /langs/sql/rootfs/
-COPY --from=0 /rootfs      /langs/swift/rootfs/
 
 COPY --from=0 /go/code-golf                      /
 COPY          /*.toml                            /

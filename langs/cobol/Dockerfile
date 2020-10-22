@@ -1,5 +1,7 @@
 FROM alpine:3.12 as builder
 
+RUN mkdir /empty
+
 RUN apk add --no-cache build-base curl db-dev g++ gmp-dev gnupg \
     make ncurses-dev patch tar xz
 
@@ -36,6 +38,8 @@ RUN gcc -s -o cobol cobol.c
 FROM scratch
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1    /lib/
+COPY --from=0 /empty                      /proc
+COPY --from=0 /empty                      /tmp
 COPY --from=0 /usr/local/bin/cobc         /usr/local/bin/
 COPY --from=0 /usr/local/share/gnucobol/  /usr/local/share/gnucobol/
 COPY --from=0 /usr/local/include/libcob.h /usr/local/include/

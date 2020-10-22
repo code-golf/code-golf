@@ -1,5 +1,7 @@
 FROM alpine:3.12 as builder
 
+RUN mkdir /empty
+
 RUN apk add -X http://dl-cdn.alpinelinux.org/alpine/edge/community --no-cache \
     ghc=8.8.4-r0
 
@@ -35,6 +37,8 @@ FROM scratch
 
 COPY --from=0 /bin                     /bin
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
+COPY --from=0 /empty                   /proc
+COPY --from=0 /empty                   /tmp
 COPY --from=0 /usr/bin                 /usr/bin
 COPY --from=0 /usr/lib                 /usr/lib
 

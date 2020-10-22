@@ -119,6 +119,6 @@ version = '3.33.0'
 website = '//sqlite.org/index.html'
 
 [Swift]
-size    = '849 MiB'
+size    = '852 MiB'
 version = '5.3'
 website = '//swift.org'

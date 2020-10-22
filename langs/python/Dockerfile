@@ -1,5 +1,7 @@
 FROM alpine:3.12 as builder
 
+RUN mkdir /empty
+
 RUN apk add --no-cache build-base curl libffi-dev zlib-dev
 
 RUN curl https://www.python.org/ftp/python/3.9.0/Python-3.9.0.tar.xz \
@@ -15,6 +17,8 @@ RUN cd Python-3.9.0       \
 FROM scratch
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
+COPY --from=0 /empty                   /proc
+COPY --from=0 /empty                   /tmp
 COPY --from=0 /usr/bin/python3.9       /usr/bin/python
 COPY --from=0 /usr/lib/python3.9       /usr/lib/python3.9
 

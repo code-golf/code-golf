@@ -1,5 +1,7 @@
 FROM alpine:3.12 as builder
 
+RUN mkdir /empty
+
 RUN apk add --no-cache build-base curl openssl-dev
 
 RUN curl https://cache.ruby-lang.org/pub/ruby/2.7/ruby-2.7.2.tar.xz \
@@ -45,6 +47,8 @@ RUN cd /usr/lib/ruby/2.7.0 && rm -rf \
 FROM scratch
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
+COPY --from=0 /empty                   /proc
+COPY --from=0 /empty                   /tmp
 COPY --from=0 /usr/bin/ruby            /usr/bin/
 COPY --from=0 /usr/lib/ruby/2.7.0      /usr/lib/ruby/2.7.0
 

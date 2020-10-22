@@ -1,5 +1,7 @@
 FROM alpine:3.12 as builder
 
+RUN mkdir /empty
+
 RUN apk add -X http://dl-cdn.alpinelinux.org/alpine/edge/testing --no-cache \
     curl gcc musl-dev nim tcc
 
@@ -20,6 +22,8 @@ FROM scratch
 COPY --from=0 /bin/sh                  /bin/
 COPY          /nim.cfg                 /etc/nim/
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
+COPY --from=0 /empty                   /proc
+COPY --from=0 /empty                   /tmp
 COPY --from=0 /usr/bin/nim             \
               /usr/bin/tcc             /usr/bin/
 COPY --from=0 /usr/include             /usr/include/

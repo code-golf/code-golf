@@ -31,32 +31,6 @@ COPY --from=codegolf/lang-rust       /       /langs/rust/rootfs/
 COPY --from=codegolf/lang-sql        /        /langs/sql/rootfs/
 COPY --from=codegolf/lang-swift      /      /langs/swift/rootfs/
 
-RUN mkdir -p /langs/bash/rootfs/proc       /langs/bash/rootfs/tmp \
-        /langs/brainfuck/rootfs/proc  /langs/brainfuck/rootfs/tmp \
-                /langs/c/rootfs/proc          /langs/c/rootfs/tmp \
-          /langs/c-sharp/rootfs/proc    /langs/c-sharp/rootfs/tmp \
-            /langs/cobol/rootfs/proc      /langs/cobol/rootfs/tmp \
-          /langs/f-sharp/rootfs/proc    /langs/f-sharp/rootfs/tmp \
-          /langs/fortran/rootfs/proc    /langs/fortran/rootfs/tmp \
-               /langs/go/rootfs/proc         /langs/go/rootfs/tmp \
-          /langs/haskell/rootfs/proc    /langs/haskell/rootfs/tmp \
-                /langs/j/rootfs/proc          /langs/j/rootfs/tmp \
-             /langs/java/rootfs/proc       /langs/java/rootfs/tmp \
-       /langs/javascript/rootfs/proc /langs/javascript/rootfs/tmp \
-            /langs/julia/rootfs/proc      /langs/julia/rootfs/tmp \
-             /langs/lisp/rootfs/proc       /langs/lisp/rootfs/tmp \
-              /langs/lua/rootfs/proc        /langs/lua/rootfs/tmp \
-              /langs/nim/rootfs/proc        /langs/nim/rootfs/tmp \
-             /langs/perl/rootfs/proc       /langs/perl/rootfs/tmp \
-              /langs/php/rootfs/proc        /langs/php/rootfs/tmp \
-       /langs/powershell/rootfs/proc /langs/powershell/rootfs/tmp \
-           /langs/python/rootfs/proc     /langs/python/rootfs/tmp \
-             /langs/raku/rootfs/proc       /langs/raku/rootfs/tmp \
-             /langs/ruby/rootfs/proc       /langs/ruby/rootfs/tmp \
-             /langs/rust/rootfs/proc       /langs/rust/rootfs/tmp \
-              /langs/sql/rootfs/proc        /langs/sql/rootfs/tmp \
-            /langs/swift/rootfs/proc      /langs/swift/rootfs/tmp
-
 COPY run-lang.c ./
 
 RUN gcc -Wall -Werror -Wextra -o /usr/bin/run-lang -s -static run-lang.c
