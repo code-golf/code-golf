@@ -125,6 +125,11 @@ name        = 'It’s Over 9000!'
 emoji       = '🐉'
 description = 'Earn over 9,000 points in either bytes or chars scoring.'
 
+#[[Progression]]
+#name        = 'Leagues Under the Sea'
+#emoji       = '🐳'
+#description = 'Earn 20,000 points in either bytes or chars scoring.'
+
 [[Progression]]
 name        = 'Polyglot'
 emoji       = '🔣'
