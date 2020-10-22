@@ -19,4 +19,5 @@ jobs:
 
       - run: make lint
       - run: make test
+      - run: make cert
       - run: make e2e
