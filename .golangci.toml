@@ -1,5 +1,6 @@
 [run]
-skip-files = ['routes/assets.go']
+skip-files = ['routes/assets.go', 'utils/update_sql_from_api.go']
+timeout    = '2m'
 
 # SA1029 – Inappropriate key in call to context.WithValue
 # https://staticcheck.io/docs/checks#SA1029
@@ -7,7 +8,6 @@ skip-files = ['routes/assets.go']
 linters = 'staticcheck'
 text    = 'SA1029:'
 
-# TODO noctx once github/ uses only github.com/shurcooL/githubv4.
 [linters]
 disable-all = true
 enable = [
@@ -50,7 +50,7 @@ enable = [
   # 'nakedret',
   # 'nestif',
   # 'nlreturn',
-  # 'noctx',
+    'noctx',
     'nolintlint',
   # 'prealloc',
     'rowserrcheck',
