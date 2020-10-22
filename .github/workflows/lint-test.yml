@@ -19,5 +19,6 @@ jobs:
 
       - run: make lint
       - run: make test
+      - run: go get github.com/FiloSottile/mkcert
       - run: make cert
       - run: make e2e
