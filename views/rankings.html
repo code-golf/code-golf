@@ -1,0 +1,16 @@
+<h1>Rankings</h1>
+
+<nav class=nav>
+    {{ $slug := "/rankings/achievements/" }}
+    <a {{ if not (hasPrefix .Path $slug) }} href="{{ $slug }}all" {{ end }}>
+        Achievements
+    </a>
+
+    <a {{ if ne .Path "/rankings/medals" }} href=/rankings/medals {{ end }}>
+        Medals
+    </a>
+
+    <a {{ if ne .Path "/rankings/points" }} href=/rankings/points {{ end }}>
+        Points
+    </a>
+</nav>

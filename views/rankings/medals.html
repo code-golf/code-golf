@@ -1,0 +1,59 @@
+{{ template "header"   . }}
+{{ template "rankings" . }}
+
+{{ $countries := .Countries }}
+{{ $path      := .Path }}
+
+<main>
+    <nav class=wide>
+        {{ $slug := "/rankings/medals" }}
+
+        <h2>Scoring</h2>
+        <a>All</a>
+        <a href="{{ $slug }}">Bytes</a>
+        <a href="{{ $slug }}">Chars</a>
+
+        <h2>Language</h2>
+        <a>All</a>
+    {{ range .Data.Langs }}
+        <a href="{{ $slug }}"><span>{{ .Name }}</span></a>
+    {{ end }}
+
+        <h2>Hole</h2>
+        <a>All</a>
+    {{ range .Data.Holes }}
+        <a href="{{ $slug }}"><span>{{ .Name }}</span></a>
+    {{ end }}
+    </nav>
+
+    <table class="nowrap-second sticky">
+        <thead>
+            <tr>
+                <th>Rank
+                <th>Golfer
+                <th class=right title=Gold>🥇
+                <th class=right title=Silver>🥈
+                <th class=right title=Bronze>🥉
+        <tbody>
+        {{ $name := "" }}
+        {{ with .Golfer }}{{ $name = .Name }}{{ end }}
+
+        {{ range .Data.Rows }}
+            <tr{{ if eq $name .Login }} class=me {{ end }}>
+                <td>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup>
+                <td>
+                    <a href="/golfers/{{ .Login }}">
+                        <img loading=lazy src="//avatars.githubusercontent.com/{{ .Login }}?s=24">
+                        <span>{{ .Login }}</span>
+                    {{ with index $countries .Country }}
+                        <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
+                    {{ end }}
+                    </a>
+                <td class=right>{{ comma .Gold }}
+                <td class=right>{{ comma .Silver }}
+                <td class=right>{{ comma .Bronze }}
+        {{ end }}
+    </table>
+</main>
+
+{{ template "footer" }}

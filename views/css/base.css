@@ -435,6 +435,8 @@ thead th {
 /* Stick headers below tabs if we have them */
 nav + main .sticky th { top: calc(5.75rem + 2px) }
 
+.thin { display: none }
+
 #error h1 { text-align: center }
 
 #ideas, #index { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
@@ -454,7 +456,10 @@ nav + main .sticky th { top: calc(5.75rem + 2px) }
     top: -50vh;
 }
 
-@media (max-width: 34rem) { .wide { display: none } }
+@media (max-width: 34rem) {
+    .thin { display: initial }
+    .wide { display: none }
+}
 
 /* TODO https://github.com/code-golf/code-golf/issues/119
 

@@ -1,0 +1,8 @@
+main nav {
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+@media (max-width: 34rem) {
+    main { flex-direction: column }
+}

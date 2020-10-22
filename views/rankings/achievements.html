@@ -1,0 +1,77 @@
+{{ template "header"   . }}
+{{ template "rankings" . }}
+
+{{ $cheevo    := .Data.Cheevo }}
+{{ $countries := .Countries }}
+{{ $path      := .Path }}
+{{ $total     := .Data.Total }}
+
+<main>
+    <form class=thin>
+        <input type=hidden value=/rankings/achievements>
+        <select>
+            <option value=all>All
+        {{ $id := "" }}
+        {{ with $cheevo }}{{ $id = .ID }}{{ end }}
+        {{ range $category, $cheevos := .Data.Cheevos }}
+            <optgroup label="{{ $category }}">
+            {{ range $cheevos }}
+                <option value="{{ .ID }}" {{ if eq $id .ID }} selected {{ end }}>
+                    {{ .Emoji }}&ensp;{{ .Name }}
+            {{ end }}
+        {{ end }}
+        </select>
+    </form>
+
+{{ with $cheevo }}
+    <p class=thin>{{ .Description }}
+{{ end }}
+
+    <nav class=wide>
+        {{ $slug := "/rankings/achievements/all" }}
+        <a {{ if ne $path $slug }} href="{{ $slug }}" {{ end }}>All</a>
+{{ range $category, $cheevos := .Data.Cheevos }}
+        <h2>{{ $category }}</h2>
+    {{ range $cheevos }}
+        {{ $slug := print "/rankings/achievements/" .ID }}
+        <a {{ if ne $path $slug }} href="{{ $slug }}" {{ end }} title="{{ .Description }}">
+            <span>{{ .Name }}</span>
+            <span>{{ .Emoji }}</span>
+        </a>
+    {{ end }}
+{{ end }}
+    </nav>
+
+    <table class="nowrap-second sticky">
+        <thead>
+            <tr>
+                <th>Rank
+                <th>Golfer
+            {{ if not $cheevo }}
+                <th class=right>Count
+            {{ end }}
+                <th class=right>Earned
+        <tbody>
+        {{ $name := "" }}
+        {{ with .Golfer }}{{ $name = .Name }}{{ end }}
+
+        {{ range .Data.Rows }}
+            <tr{{ if eq $name .Login }} class=me {{ end }}>
+                <td>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup>
+                <td>
+                    <a href="/golfers/{{ .Login }}">
+                        <img loading=lazy src="//avatars.githubusercontent.com/{{ .Login }}?s=24">
+                        <span>{{ .Login }}</span>
+                    {{ with index $countries .Country }}
+                        <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
+                    {{ end }}
+                    </a>
+            {{ if not $cheevo }}
+                <td class=right>{{ .Count }} / {{ $total }}
+            {{ end }}
+                <td class=right>{{ time .Earned }}
+        {{ end }}
+    </table>
+</main>
+
+{{ template "footer" }}

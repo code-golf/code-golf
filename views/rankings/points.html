@@ -1,0 +1,27 @@
+{{ template "header"   . }}
+{{ template "rankings" . }}
+
+<main>
+    <nav class=wide>
+        {{ $slug := "/rankings/points" }}
+
+        <h2>Scoring</h2>
+        <a>All</a>
+        <a href="{{ $slug }}">Bytes</a>
+        <a href="{{ $slug }}">Chars</a>
+
+        <h2>Language</h2>
+        <a>All</a>
+    {{ range .Data.Langs }}
+        <a href="{{ $slug }}"><span>{{ .Name }}</span></a>
+    {{ end }}
+
+        <h2>Hole</h2>
+        <a>All</a>
+    {{ range .Data.Holes }}
+        <a href="{{ $slug }}"><span>{{ .Name }}</span></a>
+    {{ end }}
+    </nav>
+</main>
+
+{{ template "footer" }}
