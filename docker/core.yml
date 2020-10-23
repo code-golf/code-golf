@@ -4,21 +4,13 @@ services:
     build:
       context: ..
       dockerfile: Dockerfile.dev
-    cap_add:
-      - CAP_KILL
-      - CAP_SETGID
-      - CAP_SETUID
-      - CAP_SYS_ADMIN
-    cap_drop:
-      - ALL
     env_file: .env  # Used for testing with prod secrets, NEVER committed.
     environment:
       DEV:       1
       PGHOST:    db
       PGSSLMODE: disable
       PGUSER:    code-golf
-    security_opt:
-      - seccomp:unconfined
+    privileged: true
     volumes:
       - ..:/go
   db:
