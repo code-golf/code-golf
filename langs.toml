@@ -97,6 +97,17 @@ website = '//docs.microsoft.com/powershell/scripting/overview'
 size    = '206 MiB'
 version = '3.9.0'
 website = '//www.python.org'
+example = '''
+# Printing.
+print('Hello, World!')
+
+# Looping.
+for i in range(1,11): print(i)
+
+# Accessing arguments.
+import sys
+for arg in sys.argv[1:]: print(arg)
+'''
 
 [Raku]
 size    = '48.5 MiB'
@@ -107,6 +118,20 @@ website = '//raku.org'
 size    = '14.3 MiB'
 version = '2.7.2'
 website = '//www.ruby-lang.org'
+example = '''
+# Printing.
+puts 'Hello World!'
+
+# Looping.
+(1..10).each do |i|
+ puts i
+end
+
+# Accessing arguments.
+ARGV.each do|arg|
+  puts arg
+end
+'''
 
 [Rust]
 size    = '588 MiB'

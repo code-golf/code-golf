@@ -13,6 +13,7 @@ type Lang struct {
 	Name    string `json:"name"`
 	Website string
 	Version string
+	Example string `json:"example"`
 }
 
 var (
