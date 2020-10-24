@@ -122,3 +122,8 @@ website = '//sqlite.org/index.html'
 size    = '852 MiB'
 version = '5.3'
 website = '//swift.org'
+
+[Zig]
+size    = '242 MiB'
+version = '0.6.0'
+website = '//ziglang.org'

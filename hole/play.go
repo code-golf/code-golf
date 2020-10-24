@@ -113,6 +113,8 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		}
 	case "nim":
 		cmd.Args = []string{"/usr/bin/nim", "-o:/tmp/code", "-r", "c", "-"}
+	case "zig":
+		cmd.Args = []string{"/usr/bin/" + langID}
 	default:
 		cmd.Args = []string{"/usr/bin/" + langID, "-"}
 	}

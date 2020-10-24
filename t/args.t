@@ -148,13 +148,26 @@ rust
         }
     }
 
+sql
+
+    SELECT * FROM argv
+
 swift
 
     for a in CommandLine.arguments[1...] {
         print(a)
     }
 
-sql
+zig
 
-    SELECT * FROM argv
+    const std = @import("std");
+
+    pub fn main() !void {
+        var args = std.process.args();
+
+        _ = args.skip();
+
+        while (args.next(std.testing.allocator)) |arg|
+            try std.io.getStdOut().outStream().print("{}\n", .{arg});
+    }
 =end pod
