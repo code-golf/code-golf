@@ -12,6 +12,18 @@ website = '//github.com/code-golf/code-golf/tree/master/langs/brainfuck/'
 size    = '1.58 MiB'
 version = 'Tiny C Compiler 0.9.27'
 website = '//bellard.org/tcc/'
+example = '''
+int main(int argc, char* argv[]) {
+  //print hello world
+  puts("Hello World!");
+  // loop over 0-10 and print them
+  for (int i = 0; i <= 10; i++)
+    printf("%d\n", i);
+  // loop over all arguments and print them
+  for (int i = 1; i <= argc; i++)
+    puts(argv[i]);
+}
+'''
 
 ['C#']
 size    = '141 MiB'
@@ -57,6 +69,16 @@ website = '//openjdk.java.net'
 size    = '21.1 MiB'
 version = 'V8 8.6.395.17'
 website = '//v8.dev'
+example = '''
+// print hello world
+print("Hello World!");
+// loop over 0 to 10 and print
+for (let i = 0; i<=10; i++)
+  print(i);
+// loop over arguments and print
+for (let arg of arguments)
+  print(arg);
+'''
 
 [Julia]
 size    = '284 MiB'
