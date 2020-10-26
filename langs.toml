@@ -2,6 +2,20 @@
 size    = '1.15 MiB'
 version = '5.0.18'
 website = '//www.gnu.org/software/bash/'
+example = '''
+# Printing
+echo Hello, World!
+
+# Looping
+for i in {0..9}; do
+    echo $i;
+done
+
+# Accessing arguments
+for arg; do
+    echo $arg;
+done
+'''
 
 [Brainfuck]
 size    = '1.59 MiB'
@@ -14,14 +28,16 @@ version = 'Tiny C Compiler 0.9.27'
 website = '//bellard.org/tcc/'
 example = '''
 int main(int argc, char* argv[]) {
-  //print hello world
-  puts("Hello World!");
-  // loop over 0-10 and print them
-  for (int i = 0; i <= 10; i++)
-    printf("%d\n", i);
-  // loop over all arguments and print them
-  for (int i = 1; i <= argc; i++)
-    puts(argv[i]);
+    // Printing
+    puts("Hello, World!");
+
+    // Looping
+    for (int i = 0; i < 10; i++)
+        printf("%d\n", i);
+
+    // Accessing arguments
+    for (int i = 1; i <= argc; i++)
+        puts(argv[i]);
 }
 '''
 
@@ -49,6 +65,29 @@ website = '//gcc.gnu.org/fortran/'
 size    = '110 MiB'
 version = '1.15.3'
 website = '//go.dev'
+example = '''
+package main
+
+import (
+    "fmt"
+    "os"
+)
+
+func main() {
+    // Printing
+    fmt.Println("Hello, World!")
+
+    // Looping
+    for i := 0; i < 10; i++ {
+        fmt.Println(i)
+    }
+
+    // Accessing arguments
+    for _, arg := range os.Args[1:] {
+        fmt.Println(arg)
+    }
+}
+'''
 
 [Haskell]
 size    = '332 MiB'
@@ -65,17 +104,19 @@ size    = '67.2 MiB'
 version = '14.0.2'
 website = '//openjdk.java.net'
 example = '''
-class Main{
-  public static void main(String[] args) {
-    // print hello world
-    System.out.println("Hello World!");
-    // loop over and print numbers 0-10
-    for (int i = 0; i <= 10; i++)
-      System.out.println(i);
-    // print all arguments
-    for (String arg : args)
-      System.out.println(arg);
-  }
+class Main {
+    public static void main(String[] args) {
+        // Printing
+        System.out.println("Hello, World!");
+
+        // Looping
+        for (int i = 0; i < 10; i++)
+            System.out.println(i);
+
+        // Accessing arguments
+        for (String arg : args)
+            System.out.println(arg);
+    }
 }
 '''
 
@@ -84,14 +125,16 @@ size    = '21.1 MiB'
 version = 'V8 8.6.395.17'
 website = '//v8.dev'
 example = '''
-// print hello world
-print("Hello World!");
-// loop over 0 to 10 and print
-for (let i = 0; i<=10; i++)
-  print(i);
-// loop over arguments and print
+// Printing
+print("Hello, World!");
+
+// Looping
+for (let i = 0; i < 10; i++)
+    print(i);
+
+// Accessing arguments
 for (let arg of arguments)
-  print(arg);
+    print(arg);
 '''
 
 [Julia]
@@ -123,6 +166,16 @@ website = '//www.php.net'
 size    = '3.44 MiB'
 version = '5.32.0'
 website = '//www.perl.org'
+example = '''
+# Printing
+say 'Hello, World!';
+
+# Looping
+say for 0..9;
+
+# Accessing arguments
+say for @ARGV;
+'''
 
 [PowerShell]
 size    = '179 MiB'
@@ -134,38 +187,51 @@ size    = '206 MiB'
 version = '3.9.0'
 website = '//www.python.org'
 example = '''
-# Printing.
+import sys
+
+# Printing
 print('Hello, World!')
 
-# Looping.
-for i in range(1,11): print(i)
+# Looping
+for i in range(0, 10):
+    print(i)
 
-# Accessing arguments.
-import sys
-for arg in sys.argv[1:]: print(arg)
+# Accessing arguments
+for arg in sys.argv[1:]:
+    print(arg)
 '''
 
 [Raku]
 size    = '48.7 MiB'
 version = 'Raku 6.d on Rakudo 2020.10'
 website = '//raku.org'
+example = '''
+# Printing
+say 'Hello, World!';
+
+# Looping
+.say for ^10;
+
+# Accessing arguments
+.say for @*ARGS;
+'''
 
 [Ruby]
 size    = '14.3 MiB'
 version = '2.7.2'
 website = '//www.ruby-lang.org'
 example = '''
-# Printing.
-puts 'Hello World!'
+# Printing
+puts 'Hello, World!'
 
-# Looping.
-(1..10).each do |i|
- puts i
+# Looping
+(0..9).each do |i|
+    puts i
 end
 
-# Accessing arguments.
-ARGV.each do|arg|
-  puts arg
+# Accessing arguments
+ARGV.each do |arg|
+    puts arg
 end
 '''
 
