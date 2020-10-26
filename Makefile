@@ -65,7 +65,7 @@ e2e:
 # TODO Pass arguments to run specific tests.
 	@touch docker/.env
 	@docker-compose rm -fs
-	@docker-compose pull
+	@docker-compose pull -q
 	@docker-compose build -q
 	@docker-compose run e2e || (docker-compose logs; false)
 	@docker-compose rm -fs
