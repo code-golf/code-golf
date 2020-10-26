@@ -2,8 +2,8 @@ GOFILES  := $(shell find . -name '*.go' ! -path './.go*')
 POSTGRES := postgres:12.4-alpine
 SHELL    := /bin/bash
 
-export COMPOSE_PATH_SEPARATOR = :
-export COMPOSE_FILE = docker/core.yml:docker/ports.yml
+export COMPOSE_PATH_SEPARATOR=:
+export COMPOSE_FILE=docker/core.yml:docker/ports.yml
 
 define STUB
 package routes

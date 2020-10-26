@@ -148,8 +148,8 @@ for arg in sys.argv[1:]: print(arg)
 '''
 
 [Raku]
-size    = '48.5 MiB'
-version = 'Rakudo 2020.09 on MoarVM 2020.09 implementing Raku 6.d'
+size    = '48.7 MiB'
+version = 'Raku 6.d on Rakudo 2020.10'
 website = '//raku.org'
 
 [Ruby]
