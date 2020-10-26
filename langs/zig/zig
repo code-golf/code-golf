@@ -4,7 +4,7 @@ chdir /tmp
 
 cat - > code.zig
 
-/usr/local/bin/zig build-exe --global-cache-dir . code.zig
+/usr/local/bin/zig build-exe --global-cache-dir . --strip code.zig
 
 rm code.zig
 
