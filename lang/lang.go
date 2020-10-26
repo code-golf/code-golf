@@ -9,11 +9,10 @@ import (
 )
 
 type Lang struct {
-	ID      string `json:"id"`
-	Name    string `json:"name"`
-	Website string
-	Version string
-	Example string `json:"example"`
+	Example                string `json:"example"`
+	ID                     string `json:"id"`
+	Name                   string `json:"name"`
+	Size, Version, Website string
 }
 
 var (

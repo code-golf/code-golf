@@ -26,25 +26,21 @@
                 and a warm fuzzy feeling in their heart.
 
         <dt>What Languages Are Supported?
-        <dd>
-            <table id=versions>
-                <caption class=right>
-                    If you'd like to see another language added then raise an
-                    <a href=//github.com/code-golf/code-golf/issues/new>issue</a>.
-                </caption>
-                <thead>
-                    <tr>
-                        <th>Language
-                        <th>Version
-                        <th class=wide>Website
-                <tbody>
-                {{ range .Data }}
-                    <tr>
-                        <th>{{ .Name }}
-                        <td>{{ .Version }}
-                        <td class=wide><a href="{{ .Website }}">website</a>
-                {{ end }}
-            </table>
+        <dd id=langs>
+        {{ range .Data }}
+            <section>
+                <header>
+                    {{ svg .ID }}
+                    <h2>{{ .Name }}</h2>
+                    {{ .Size }}
+                </header>
+                {{ .Version }}
+                <a href="{{ .Website }}">{{ trimPrefix .Website "//" }}</a>
+            </section>
+        {{ end }}
+            <p>
+                If you'd like to see another language added then raise an
+                <a href=//github.com/code-golf/code-golf/issues/new>issue</a>.
         <dt>Are Warnings Ignored?
         <dd>
             Yes. Only STDOUT is checked against the solution, STDERR is
