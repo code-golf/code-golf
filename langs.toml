@@ -70,13 +70,11 @@ class Main{
     // print hello world
     System.out.println("Hello World!");
     // loop over and print numbers 0-10
-    for (int i = 0; i <= 10; i++) {
+    for (int i = 0; i <= 10; i++)
       System.out.println(i);
-    }
     // print all arguments
-    for (String arg : args) {
+    for (String arg : args)
       System.out.println(arg);
-    }
   }
 }
 '''
