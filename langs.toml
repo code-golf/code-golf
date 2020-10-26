@@ -64,6 +64,22 @@ website = '//www.jsoftware.com'
 size    = '67.2 MiB'
 version = '14.0.2'
 website = '//openjdk.java.net'
+example = '''
+class Main{
+  public static void main(String[] args) {
+    // print hello world
+    System.out.println("Hello World!");
+    // loop over and print numbers 0-10
+    for (int i = 0; i <= 10; i++) {
+      System.out.println(i);
+    }
+    // print all arguments
+    for (String arg : args) {
+      System.out.println(arg);
+    }
+  }
+}
+'''
 
 [JavaScript]
 size    = '21.1 MiB'
