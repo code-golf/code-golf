@@ -157,12 +157,12 @@ print("Hello, World!")
 
 -- Looping
 for i = 0, 9 do
-	print(i)
+    print(i)
 end
 
 -- Accessing arguments
 for i = 1, #arg do
-	print(arg[i])
+    print(arg[i])
 end
 '''
 
@@ -170,11 +170,37 @@ end
 size    = '22.3 MiB'
 version = '1.4.0'
 website = '//nim-lang.org'
+example = '''
+import os
+
+# Printing
+echo "Hello, World!"
+
+# Looping
+for i in 0 .. 9:
+    echo i
+
+# Accessing arguments
+for arg in commandLineParams():
+    echo arg
+'''
 
 [PHP]
 size    = '10.5 MiB'
 version = '7.4.11'
 website = '//www.php.net'
+example = '''
+# Printing
+echo "Hello, World!\n";
+
+# Looping
+for ($i = 0; $i < 10; $i++)
+    echo "$i\n";
+
+# Accessing arguments
+while ($arg = next($argv))
+    echo "$arg\n";
+'''
 
 [Perl]
 size    = '3.44 MiB'
