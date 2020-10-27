@@ -151,6 +151,20 @@ website = '//clisp.sourceforge.io'
 size    = '314 KiB'
 version = '5.4.1'
 website = '//www.lua.org'
+example = '''
+-- Printing
+print("Hello, World!")
+
+-- Looping
+for i = 0, 9 do
+	print(i)
+end
+
+-- Accessing arguments
+for i = 1, #arg do
+	print(arg[i])
+end
+'''
 
 [Nim]
 size    = '22.3 MiB'
