@@ -45,6 +45,30 @@ int main(int argc, char* argv[]) {
 size    = '141 MiB'
 version = 'C# 8.0 on .NET Core 3.1.7'
 website = '//docs.microsoft.com/dotnet/csharp/'
+example = '''
+using System;
+					
+public class Example
+{
+	public static void Main(string[] args)
+	{
+		// Printing
+		Console.WriteLine("Hello World");
+
+		// Looping
+		for (int i = 0; i < 10; i++)
+		{
+        	Console.WriteLine(i);
+		}
+		
+		// Accessing arguments
+		foreach (String arg in args)
+		{
+			Console.WriteLine(arg);
+		}
+	}
+}
+'''
 
 [COBOL]
 size    = '6.12 MiB'
