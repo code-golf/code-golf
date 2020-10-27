@@ -165,6 +165,20 @@ for (let arg of arguments)
 size    = '284 MiB'
 version = '1.5.2'
 website = '//julialang.org'
+example = '''
+# Printing
+println("Hello, World!")
+
+# Looping
+for i=0:9
+    println(i)
+end
+
+# Accessing arguments
+for arg in ARGS
+    println(arg)
+end
+'''
 
 [Lisp]
 size    = '35.4 MiB'
