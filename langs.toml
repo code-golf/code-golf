@@ -146,7 +146,7 @@ example = '''
 println("Hello, World!")
 
 # Looping
-for i=1:10
+for i=0:9
     println(i)
 end
 
