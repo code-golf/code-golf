@@ -35,7 +35,9 @@
                     {{ .Size }}
                 </header>
                 {{ .Version }}
-                <a href="{{ .Website }}">{{ trimPrefix .Website "//" }}</a>
+                <a href="{{ .Website }}">
+                    {{ trimPrefix (trimPrefix .Website "//") "www." }}
+                </a>
             </section>
         {{ end }}
             <p>
