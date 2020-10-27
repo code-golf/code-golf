@@ -239,6 +239,22 @@ end
 size    = '588 MiB'
 version = '1.47.0'
 website = '//www.rust-lang.org'
+example = '''
+fn main() {
+    // Printing
+    println!("Hello, World!");
+
+    // Looping
+    for i in 0..10 {
+        println!("{}", i);
+    }
+
+    // Accessing arguments
+    for arg in std::env::args().skip(1) {
+        println!("{}", arg);
+    }
+}
+'''
 
 [SQL]
 size    = '1.02 MiB'
