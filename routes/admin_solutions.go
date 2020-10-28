@@ -114,7 +114,7 @@ func getSolutions(r *http.Request) chan solution {
 
 		rows, err := session.Database(r).QueryContext(
 			r.Context(),
-			` SELECT code, code_id, failing, login, u.id, hole, lang
+			` SELECT DISTINCT code, code_id, failing, login, u.id, hole, lang
 			    FROM solutions
 			    JOIN code  c ON c.id = code_id
 			    JOIN users u ON u.id = user_id
