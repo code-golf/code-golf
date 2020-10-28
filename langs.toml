@@ -241,7 +241,7 @@ while ($arg = next($argv))
 '''
 
 [Perl]
-size    = '3.44 MiB'
+size    = '4.04 MiB'
 version = '5.32.0'
 website = '//www.perl.org'
 example = '''

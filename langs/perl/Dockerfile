@@ -15,15 +15,17 @@ RUN cd perl-5.32.0                                            \
     -DPERL_HASH_USE_SBOX32_ALSO=0                             \
     -DPERL_USE_SAFE_PUTENV                                    \
     -DSILENT_NO_TAINT_SUPPORT'                                \
-    -Aldflags='-static'                                       \
     -des                                                      \
- && make -j`nproc` miniperl                                   \
- && strip -s miniperl
+    -Dprefix=/usr                                             \
+ && make -j`nproc`                                            \
+ && strip -s perl
 
 FROM scratch
 
-COPY --from=0 /empty                /proc
-COPY --from=0 /empty                /tmp
-COPY --from=0 /perl-5.32.0/miniperl /usr/bin/perl
+COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
+COPY --from=0 /empty                   /proc
+COPY --from=0 /empty                   /tmp
+COPY --from=0 /perl-5.32.0/perl        /usr/bin/perl
+COPY --from=0 /perl-5.32.0/lib/utf8.pm /usr/lib/perl5/5.32.0/
 
 ENTRYPOINT ["/usr/bin/perl", "-e", "say substr $^V, 1"]
