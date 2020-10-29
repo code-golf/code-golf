@@ -71,6 +71,7 @@ Asia = [
     { id = 'KH', name = 'Cambodia' },
     { id = 'CN', name = 'China' },
     { id = 'CY', name = 'Cyprus' },
+    { id = 'HK', name = 'Hong Kong' },
     { id = 'IN', name = 'India' },
     { id = 'ID', name = 'Indonesia' },
     { id = 'IR', name = 'Iran' },
