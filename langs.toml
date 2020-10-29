@@ -338,6 +338,28 @@ fn main() {
 size    = '1.02 MiB'
 version = '3.33.0'
 website = '//sqlite.org/index.html'
+example = '''
+-- Printing
+SELECT 'Hello, World!'
+
+UNION ALL
+
+SELECT * FROM (
+    -- Looping
+    WITH loop(i) AS (
+        SELECT 0
+        UNION ALL
+        SELECT i+1 FROM loop
+        WHERE i<9
+    )
+    SELECT i FROM loop
+)
+
+UNION ALL
+
+-- Accessing arguments
+SELECT arg FROM argv
+'''
 
 [Swift]
 size    = '852 MiB'
