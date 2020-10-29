@@ -17,10 +17,27 @@ for arg; do
 done
 '''
 
-[Brainfuck]
+[brainfuck]
 size    = '1.59 MiB'
 version = '1.0.0'
 website = '//github.com/code-golf/code-golf/tree/master/langs/brainfuck/'
+example = '''
+>>Printing
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.+.
+
+>>Looping
+++++++++[>++++++<-]
+++++++++++[>.+>++++++++++.[-]<<-]
+
+>>Accessing arguments
+,[
+    [
+        .[-],
+    ]
+    ++++++++++.
+    [-],
+]
+'''
 
 [C]
 size    = '1.58 MiB'
