@@ -35,6 +35,7 @@ func init() {
 	for name, lang := range langsTOML {
 		lang.Name = name
 		lang.ID = strings.ReplaceAll(strings.ToLower(name), "#", "-sharp")
+		lang.ID = strings.ReplaceAll(strings.ToLower(lang.ID), "><>", "fish")
 
 		ByID[lang.ID] = lang
 		List = append(List, lang)

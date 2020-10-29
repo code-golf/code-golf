@@ -15,6 +15,7 @@ RUN go build -ldflags -s \
 
 FROM scratch
 
+COPY --from=codegolf/lang-fish       /       /langs/fish/rootfs/
 COPY --from=codegolf/lang-bash       /       /langs/bash/rootfs/
 COPY --from=codegolf/lang-brainfuck  /  /langs/brainfuck/rootfs/
 COPY --from=codegolf/lang-c          /          /langs/c/rootfs/
