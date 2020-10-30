@@ -98,6 +98,10 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			if month == time.July && day == 4 {
 				awardTrophy(db, userID, "independence-day")
 			}
+		case "vampire-numbers":
+			if month == time.October && day == 31 {
+				awardTrophy(db, userID, "vampire-byte")
+			}
 		case "π":
 			if month == time.March && day == 14 {
 				awardTrophy(db, userID, "pi-day")

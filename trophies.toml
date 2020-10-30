@@ -22,6 +22,11 @@ name        = 'Twelvetide'
 emoji       = '🎅'
 description = 'Solve <a href=/12-days-of-christmas>12 Days of Christmas</a> during <a href=//www.wikipedia.org/wiki/Twelvetide>25 Dec – 5 Jan</a>.'
 
+[['Date Specific']]
+name        = 'Vampire Byte'
+emoji       = '🧛'
+description = 'Solve <a href=/vampire-numbers>Vampire Numbers</a> on <a href=//www.wikipedia.org/wiki/Halloween>31 Oct</a>.'
+
 # GitHub
 
 [[GitHub]]
