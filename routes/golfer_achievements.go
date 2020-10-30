@@ -53,6 +53,7 @@ func GolferAchievements(w http.ResponseWriter, r *http.Request) {
 			"tl-dr":                    {0, 1},
 			"twelvetide":               {0, 1},
 			"up-to-eleven":             {0, 11},
+			"vampire-byte":             {0, 1},
 		},
 	}
 
