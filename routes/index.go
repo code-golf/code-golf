@@ -3,6 +3,7 @@ package routes
 import (
 	"net/http"
 	"sort"
+	"strings"
 
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
@@ -155,7 +156,8 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	switch data.Sort {
 	case "alphabetical-desc":
 		sort.Slice(data.Cards, func(i, j int) bool {
-			return data.Cards[i].Hole.Name > data.Cards[j].Hole.Name
+			return strings.ToLower(data.Cards[i].Hole.Name) >
+				strings.ToLower(data.Cards[j].Hole.Name)
 		})
 	case "golfers-asc":
 		sort.Slice(data.Cards, func(i, j int) bool {
@@ -189,7 +191,8 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		data.Sort = "alphabetical-asc"
 
 		sort.Slice(data.Cards, func(i, j int) bool {
-			return data.Cards[i].Hole.Name < data.Cards[j].Hole.Name
+			return strings.ToLower(data.Cards[i].Hole.Name) <
+				strings.ToLower(data.Cards[j].Hole.Name)
 		})
 	}
 

@@ -240,6 +240,21 @@ for arg in commandLineParams():
     echo arg
 '''
 
+[Perl]
+size    = '4.04 MiB'
+version = '5.32.0'
+website = '//www.perl.org'
+example = '''
+# Printing
+say 'Hello, World!';
+
+# Looping
+say for 0..9;
+
+# Accessing arguments
+say for @ARGV;
+'''
+
 [PHP]
 size    = '10.5 MiB'
 version = '7.4.11'
@@ -255,21 +270,6 @@ for ($i = 0; $i < 10; $i++)
 # Accessing arguments
 while ($arg = next($argv))
     echo "$arg\n";
-'''
-
-[Perl]
-size    = '4.04 MiB'
-version = '5.32.0'
-website = '//www.perl.org'
-example = '''
-# Printing
-say 'Hello, World!';
-
-# Looping
-say for 0..9;
-
-# Accessing arguments
-say for @ARGV;
 '''
 
 [PowerShell]
