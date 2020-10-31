@@ -15,6 +15,7 @@ if my $unknown = @langs ∖ %langs {
 
 for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
     my $id  = $name.lc.subst: '#', '-sharp';
+    $id  .= subst: '><>', 'fish';
     my $img = "codegolf/lang-$id";
 
     # V8 has a pre-builder target too.

@@ -30,6 +30,7 @@ h3 { padding: .25rem 0 }
 
 /* When adding a new language, update grid-template-columns below. */
 input,
+input.fish:not(:checked)       ~ .fish,
 input.bash:not(:checked)       ~ .bash,
 input.brainfuck:not(:checked)  ~ .brainfuck,
 input.c:not(:checked)          ~ .c,
@@ -80,7 +81,7 @@ main svg:nth-of-type(2) {
 
 @media (min-width: 1280px) {
     /* Increase this number when adding a language. */
-    main { grid-template-columns: 4fr repeat(26, 1fr) }
+    main { grid-template-columns: 4fr repeat(27, 1fr) }
 
     main a { height: 1.9rem }
 
