@@ -1,18 +1,13 @@
 {{ template "header"   . }}
 {{ template "rankings" . }}
 
-{{ $cheevo    := .Data.Cheevo }}
-{{ $countries := .Countries }}
-{{ $path      := .Path }}
-{{ $total     := .Data.Total }}
-
 <main>
     <form class=thin>
         <input type=hidden value=/rankings/achievements>
         <select>
             <option value=all>All
         {{ $id := "" }}
-        {{ with $cheevo }}{{ $id = .ID }}{{ end }}
+        {{ with $.Data.Cheevo }}{{ $id = .ID }}{{ end }}
         {{ range $category, $cheevos := .Data.Cheevos }}
             <optgroup label="{{ $category }}">
             {{ range $cheevos }}
@@ -23,18 +18,18 @@
         </select>
     </form>
 
-{{ with $cheevo }}
+{{ with $.Data.Cheevo }}
     <p class=thin>{{ .Description }}
 {{ end }}
 
     <nav class=wide>
         {{ $slug := "/rankings/achievements/all" }}
-        <a {{ if ne $path $slug }} href="{{ $slug }}" {{ end }}>All</a>
+        <a {{ if ne $.Path $slug }} href="{{ $slug }}" {{ end }}>All</a>
 {{ range $category, $cheevos := .Data.Cheevos }}
         <h2>{{ $category }}</h2>
     {{ range $cheevos }}
         {{ $slug := print "/rankings/achievements/" .ID }}
-        <a {{ if ne $path $slug }} href="{{ $slug }}" {{ end }} title="{{ .Description }}">
+        <a {{ if ne $.Path $slug }} href="{{ $slug }}" {{ end }} title="{{ .Description }}">
             <span>{{ .Name }}</span>
             <span>{{ .Emoji }}</span>
         </a>
@@ -47,7 +42,7 @@
             <tr>
                 <th>Rank
                 <th>Golfer
-            {{ if not $cheevo }}
+            {{ if not $.Data.Cheevo }}
                 <th class=right>Count
             {{ end }}
                 <th class=right>Earned
@@ -62,12 +57,12 @@
                     <a href="/golfers/{{ .Login }}">
                         <img loading=lazy src="//avatars.githubusercontent.com/{{ .Login }}?s=24">
                         <span>{{ .Login }}</span>
-                    {{ with index $countries .Country }}
+                    {{ with index $.Countries .Country }}
                         <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
                     {{ end }}
                     </a>
-            {{ if not $cheevo }}
-                <td class=right>{{ .Count }} / {{ $total }}
+            {{ if not $.Data.Cheevo }}
+                <td class=right>{{ .Count }} / {{ $.Data.Total }}
             {{ end }}
                 <td class=right>{{ time .Earned }}
         {{ end }}
