@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/code-golf/code-golf/session"
+	"github.com/code-golf/code-golf/zone"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/github"
 )
@@ -68,25 +69,29 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 		Secure:   true,
 	}
 
-	var timeZone sql.NullString
+	var country, timeZone sql.NullString
 
 	if tz, _ := time.LoadLocation(r.FormValue("time_zone")); tz != nil {
+		country.String, country.Valid = zone.Country[tz.String()]
+
 		timeZone = sql.NullString{
 			String: tz.String(),
 			Valid:  tz != time.Local && tz != time.UTC,
 		}
 	}
 
-	// Replace default 'UTC' time zone but don't overwrite a chosen time zone.
+	// Only replace NULL countries and time_zones, never user chosen ones.
 	if err := session.Database(r).QueryRow(
 		`WITH golfer AS (
-		    INSERT INTO users (id, login, time_zone) VALUES ($1, $2, $3)
-		    ON CONFLICT (id)
+		    INSERT INTO users (id, login, country, time_zone)
+		         VALUES       ($1,    $2,      $3,        $4)
+		    ON CONFLICT       (id)
 		  DO UPDATE SET login = excluded.login,
+		              country = COALESCE(users.country,   excluded.country),
 		            time_zone = COALESCE(users.time_zone, excluded.time_zone)
 		      RETURNING id
 		) INSERT INTO sessions (user_id) SELECT * FROM golfer RETURNING id`,
-		user.ID, user.Login, timeZone,
+		user.ID, user.Login, country, timeZone,
 	).Scan(&cookie.Value); err != nil {
 		panic(err)
 	}

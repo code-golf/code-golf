@@ -50,7 +50,10 @@ func init() {
 		}
 	}
 
-	sort.Slice(List, func(i, j int) bool { return List[i].Name < List[j].Name })
+	// Case-insensitive sort.
+	sort.Slice(List, func(i, j int) bool {
+		return strings.ToLower(List[i].Name) < strings.ToLower(List[j].Name)
+	})
 
 	for _, hole := range ExperimentalList {
 		ExperimentalByID[hole.ID] = hole

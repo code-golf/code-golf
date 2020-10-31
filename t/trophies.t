@@ -1,5 +1,4 @@
 use t;
-use TOML::Thumb;
 
 constant %trophies = <
     1  {hello-world}

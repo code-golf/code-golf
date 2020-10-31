@@ -41,6 +41,7 @@ COPY --from=codegolf/lang-ruby       /       /langs/ruby/rootfs/
 COPY --from=codegolf/lang-rust       /       /langs/rust/rootfs/
 COPY --from=codegolf/lang-sql        /        /langs/sql/rootfs/
 COPY --from=codegolf/lang-swift      /      /langs/swift/rootfs/
+COPY --from=codegolf/lang-zig        /        /langs/zig/rootfs/
 
 COPY --from=0 /go/code-golf                      /
 COPY          /*.toml                            /

@@ -22,6 +22,11 @@ name        = 'Twelvetide'
 emoji       = '🎅'
 description = 'Solve <a href=/12-days-of-christmas>12 Days of Christmas</a> during <a href=//www.wikipedia.org/wiki/Twelvetide>25 Dec – 5 Jan</a>.'
 
+[['Date Specific']]
+name        = 'Vampire Byte'
+emoji       = '🧛'
+description = 'Solve <a href=/vampire-numbers>Vampire Numbers</a> on <a href=//www.wikipedia.org/wiki/Halloween>31 Oct</a>.'
+
 # GitHub
 
 [[GitHub]]
@@ -59,7 +64,7 @@ description = 'Solve any hole in PHP.'
 [['Hole/Lang Specific']]
 name        = 'Inception'
 emoji       = '🧠'
-description = 'Solve <a href=/brainfuck#brainfuck>Brainfuck in Brainfuck</a>.'
+description = 'Solve <a href=/brainfuck#brainfuck>brainfuck in brainfuck</a>.'
 
 [['Hole/Lang Specific']]
 name        = 'Ouroboros'
@@ -76,7 +81,7 @@ description = 'Solve any hole in both Perl and Raku.'
 [[Miscellaneous]]
 name        = 'RTFM'
 emoji       = '📕'
-description = 'Vist the <a href=/about>About page</a>.'
+description = 'Visit the <a href=/about>About page</a>.'
 
 [[Miscellaneous]]
 name        = 'Slowcoach'

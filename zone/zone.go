@@ -19,6 +19,8 @@ var locations []*time.Location
 // ByID TODO Actually point to something.
 var ByID = map[string]bool{}
 
+var Country = map[string]string{}
+
 func init() {
 	file, err := os.Open("/usr/share/zoneinfo/zone1970.tab")
 	if err != nil {
@@ -42,6 +44,11 @@ func init() {
 			locations = append(locations, location)
 
 			ByID[row[2]] = true
+
+			// If the zone maps exactly to one country.
+			if len(row[0]) == 2 {
+				Country[row[2]] = row[0]
+			}
 		case io.EOF:
 			return
 		default:

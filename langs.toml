@@ -7,21 +7,90 @@ website = '//esolangs.org/wiki/fish'
 size    = '1.15 MiB'
 version = '5.0.18'
 website = '//www.gnu.org/software/bash/'
+example = '''
+# Printing
+echo Hello, World!
 
-[Brainfuck]
+# Looping
+for i in {0..9}; do
+    echo $i;
+done
+
+# Accessing arguments
+for arg; do
+    echo $arg;
+done
+'''
+
+[brainfuck]
 size    = '1.59 MiB'
 version = '1.0.0'
 website = '//github.com/code-golf/code-golf/tree/master/langs/brainfuck/'
+example = '''
+>>Printing
++[-->-[>>+>-----<<]<--<---]>-.>>>+.>>..+++[.>]<<<<.+++.------.<<-.>>>>+.[<->-]<-.>
+
+>>Looping
+++++++++[>++++++<-]
+++++++++++[>.+>++++++++++.[-]<<-]
+
+>>Accessing arguments
+,[
+    [
+        .[-],
+    ]
+    ++++++++++.
+    [-],
+]
+'''
 
 [C]
 size    = '1.58 MiB'
 version = 'Tiny C Compiler 0.9.27'
 website = '//bellard.org/tcc/'
+example = '''
+int main(int argc, char* argv[]) {
+    // Printing
+    puts("Hello, World!");
+
+    // Looping
+    for (int i = 0; i < 10; i++)
+        printf("%d\n", i);
+
+    // Accessing arguments
+    for (int i = 1; i <= argc; i++)
+        puts(argv[i]);
+}
+'''
 
 ['C#']
 size    = '141 MiB'
 version = 'C# 8.0 on .NET Core 3.1.7'
 website = '//docs.microsoft.com/dotnet/csharp/'
+example = '''
+using System;
+
+public class Example
+{
+	public static void Main(string[] args)
+	{
+		// Printing
+		Console.WriteLine("Hello, World!");
+
+		// Looping
+		for (int i = 0; i < 10; i++)
+		{
+			Console.WriteLine(i);
+		}
+		
+		// Accessing arguments
+		foreach (String arg in args)
+		{
+			Console.WriteLine(arg);
+		}
+	}
+}
+'''
 
 [COBOL]
 size    = '6.12 MiB'
@@ -42,6 +111,29 @@ website = '//gcc.gnu.org/fortran/'
 size    = '110 MiB'
 version = '1.15.3'
 website = '//go.dev'
+example = '''
+package main
+
+import (
+    "fmt"
+    "os"
+)
+
+func main() {
+    // Printing
+    fmt.Println("Hello, World!")
+
+    // Looping
+    for i := 0; i < 10; i++ {
+        fmt.Println(i)
+    }
+
+    // Accessing arguments
+    for _, arg := range os.Args[1:] {
+        fmt.Println(arg)
+    }
+}
+'''
 
 [Haskell]
 size    = '332 MiB'
@@ -57,16 +149,58 @@ website = '//www.jsoftware.com'
 size    = '67.2 MiB'
 version = '14.0.2'
 website = '//openjdk.java.net'
+example = '''
+class Main {
+    public static void main(String[] args) {
+        // Printing
+        System.out.println("Hello, World!");
+
+        // Looping
+        for (int i = 0; i < 10; i++)
+            System.out.println(i);
+
+        // Accessing arguments
+        for (String arg : args)
+            System.out.println(arg);
+    }
+}
+'''
 
 [JavaScript]
 size    = '21.1 MiB'
 version = 'V8 8.6.395.17'
 website = '//v8.dev'
+example = '''
+// Printing
+print("Hello, World!");
+
+// Looping
+for (let i = 0; i < 10; i++)
+    print(i);
+
+// Accessing arguments
+for (let arg of arguments)
+    print(arg);
+'''
 
 [Julia]
 size    = '284 MiB'
 version = '1.5.2'
 website = '//julialang.org'
+example = '''
+# Printing
+println("Hello, World!")
+
+# Looping
+for i=0:9
+    println(i)
+end
+
+# Accessing arguments
+for arg in ARGS
+    println(arg)
+end
+'''
 
 [Lisp]
 size    = '35.4 MiB'
@@ -77,21 +211,71 @@ website = '//clisp.sourceforge.io'
 size    = '314 KiB'
 version = '5.4.1'
 website = '//www.lua.org'
+example = '''
+-- Printing
+print("Hello, World!")
+
+-- Looping
+for i = 0, 9 do
+    print(i)
+end
+
+-- Accessing arguments
+for i = 1, #arg do
+    print(arg[i])
+end
+'''
 
 [Nim]
 size    = '22.3 MiB'
 version = '1.4.0'
 website = '//nim-lang.org'
+example = '''
+import os
+
+# Printing
+echo "Hello, World!"
+
+# Looping
+for i in 0 .. 9:
+    echo i
+
+# Accessing arguments
+for arg in commandLineParams():
+    echo arg
+'''
+
+[Perl]
+size    = '4.04 MiB'
+version = '5.32.0'
+website = '//www.perl.org'
+example = '''
+# Printing
+say 'Hello, World!';
+
+# Looping
+say for 0..9;
+
+# Accessing arguments
+say for @ARGV;
+'''
 
 [PHP]
 size    = '10.5 MiB'
 version = '7.4.11'
 website = '//www.php.net'
+example = '''
+# Printing
+echo "Hello, World!\n";
 
-[Perl]
-size    = '3.44 MiB'
-version = '5.32.0'
-website = '//www.perl.org'
+# Looping
+for ($i = 0; $i < 10; $i++)
+    echo "$i\n";
+
+# Accessing arguments
+while ($arg = next($argv))
+    echo "$arg\n";
+'''
 
 [PowerShell]
 size    = '179 MiB'
@@ -102,28 +286,109 @@ website = '//docs.microsoft.com/powershell/scripting/overview'
 size    = '206 MiB'
 version = '3.9.0'
 website = '//www.python.org'
+example = '''
+import sys
+
+# Printing
+print('Hello, World!')
+
+# Looping
+for i in range(10):
+    print(i)
+
+# Accessing arguments
+for arg in sys.argv[1:]:
+    print(arg)
+'''
 
 [Raku]
-size    = '48.5 MiB'
-version = 'Rakudo 2020.09 on MoarVM 2020.09 implementing Raku 6.d'
+size    = '48.7 MiB'
+version = 'Raku 6.d on Rakudo 2020.10'
 website = '//raku.org'
+example = '''
+# Printing
+say 'Hello, World!';
+
+# Looping
+.say for ^10;
+
+# Accessing arguments
+.say for @*ARGS;
+'''
 
 [Ruby]
-size    = '14.3 MiB'
+size    = '14.9 MiB'
 version = '2.7.2'
 website = '//www.ruby-lang.org'
+example = '''
+# Printing
+puts 'Hello, World!'
+
+# Looping
+(0..9).each do |i|
+    puts i
+end
+
+# Accessing arguments
+ARGV.each do |arg|
+    puts arg
+end
+'''
 
 [Rust]
 size    = '588 MiB'
 version = '1.47.0'
 website = '//www.rust-lang.org'
+example = '''
+fn main() {
+    // Printing
+    println!("Hello, World!");
+
+    // Looping
+    for i in 0..10 {
+        println!("{}", i);
+    }
+
+    // Accessing arguments
+    for arg in std::env::args().skip(1) {
+        println!("{}", arg);
+    }
+}
+'''
 
 [SQL]
 size    = '1.02 MiB'
 version = '3.33.0'
 website = '//sqlite.org/index.html'
+example = '''
+-- Printing
+SELECT 'Hello, World!'
+
+UNION ALL
+
+SELECT * FROM (
+    -- Looping
+    WITH loop(i) AS (
+        SELECT 0
+        UNION ALL
+        SELECT i+1 FROM loop
+        WHERE i<9
+    )
+    SELECT i FROM loop
+)
+
+UNION ALL
+
+-- Accessing arguments
+SELECT arg FROM argv
+'''
 
 [Swift]
 size    = '852 MiB'
 version = '5.3'
 website = '//swift.org'
+
+[Zig]
+size    = '242 MiB'
+version = '0.6.0'
+website = '//ziglang.org'

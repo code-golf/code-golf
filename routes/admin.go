@@ -3,13 +3,21 @@ package routes
 import (
 	"database/sql"
 	"net/http"
+	"sort"
 	"time"
 
+	"github.com/code-golf/code-golf/country"
 	"github.com/code-golf/code-golf/session"
 )
 
 // Admin serves GET /admin
 func Admin(w http.ResponseWriter, r *http.Request) {
+	type Country struct {
+		Flag, Name string
+		Golfers    int
+		Percent    float64
+	}
+
 	type Session struct {
 		Golfer   string
 		LastUsed time.Time
@@ -20,16 +28,10 @@ func Admin(w http.ResponseWriter, r *http.Request) {
 		Rows, Size int
 	}
 
-	type TimeZone struct {
-		Name    string
-		Golfers int
-		Percent float64
-	}
-
 	data := struct {
+		Countries []Country
 		Sessions  []Session
 		Tables    []Table
-		TimeZones []TimeZone
 	}{}
 
 	db := session.Database(r)
@@ -97,8 +99,8 @@ func Admin(w http.ResponseWriter, r *http.Request) {
 	}
 
 	rows, err = db.Query(
-		`SELECT COALESCE(time_zone, ''), COUNT(*), COUNT(*) / SUM(COUNT(*)) OVER () * 100
-		   FROM users GROUP BY time_zone ORDER BY COUNT(*) DESC, COALESCE(time_zone, '')`,
+		`SELECT COALESCE(country, ''), COUNT(*), COUNT(*) / SUM(COUNT(*)) OVER () * 100
+		   FROM users GROUP BY country`,
 	)
 	if err != nil {
 		panic(err)
@@ -107,14 +109,28 @@ func Admin(w http.ResponseWriter, r *http.Request) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var timeZone TimeZone
+		var c Country
+		var id string
 
-		if err := rows.Scan(&timeZone.Name, &timeZone.Golfers, &timeZone.Percent); err != nil {
+		if err := rows.Scan(&id, &c.Golfers, &c.Percent); err != nil {
 			panic(err)
 		}
 
-		data.TimeZones = append(data.TimeZones, timeZone)
+		if country, ok := country.ByID[id]; ok {
+			c.Flag = country.Flag
+			c.Name = country.Name
+		}
+
+		data.Countries = append(data.Countries, c)
 	}
+
+	sort.Slice(data.Countries, func(i, j int) bool {
+		if data.Countries[i].Golfers != data.Countries[j].Golfers {
+			return data.Countries[i].Golfers > data.Countries[j].Golfers
+		}
+
+		return data.Countries[i].Name < data.Countries[j].Name
+	})
 
 	if err := rows.Err(); err != nil {
 		panic(err)

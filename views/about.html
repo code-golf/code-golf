@@ -26,25 +26,23 @@
                 and a warm fuzzy feeling in their heart.
 
         <dt>What Languages Are Supported?
-        <dd>
-            <table id=versions>
-                <caption class=right>
-                    If you'd like to see another language added then raise an
-                    <a href=//github.com/code-golf/code-golf/issues/new>issue</a>.
-                </caption>
-                <thead>
-                    <tr>
-                        <th>Language
-                        <th>Version
-                        <th class=wide>Website
-                <tbody>
-                {{ range .Data }}
-                    <tr>
-                        <th>{{ .Name }}
-                        <td>{{ .Version }}
-                        <td class=wide><a href="{{ .Website }}">website</a>
-                {{ end }}
-            </table>
+        <dd id=langs>
+        {{ range .Data }}
+            <section>
+                <header>
+                    {{ svg .ID }}
+                    <h2>{{ .Name }}</h2>
+                    {{ .Size }}
+                </header>
+                {{ .Version }}
+                <a href="{{ .Website }}">
+                    {{ trimPrefix (trimPrefix .Website "//") "www." }}
+                </a>
+            </section>
+        {{ end }}
+            <p>
+                If you'd like to see another language added then raise an
+                <a href=//github.com/code-golf/code-golf/issues/new>issue</a>.
         <dt>Are Warnings Ignored?
         <dd>
             Yes. Only STDOUT is checked against the solution, STDERR is
@@ -88,8 +86,9 @@
 
         <dt>Can I See Other People's Solutions?
         <dd>
-            Currently no, but a feature is in development to allow you to see
-            any solution that you already beaten in score.
+            No, that way all holes stay competitive. If you're stuck on how to
+            shave a couple of bytes off your solution then why not drop by
+            <a href=//discord.gg/eVCTkYQ>our Discord server</a> for some advice.
     </dl>
 </main>
 

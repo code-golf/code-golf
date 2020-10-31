@@ -9,10 +9,10 @@ import (
 )
 
 type Lang struct {
-	ID      string `json:"id"`
-	Name    string `json:"name"`
-	Website string
-	Version string
+	Example                string `json:"example"`
+	ID                     string `json:"id"`
+	Name                   string `json:"name"`
+	Size, Version, Website string
 }
 
 var (
@@ -41,6 +41,8 @@ func init() {
 		List = append(List, lang)
 	}
 
-	// Sort by ID rather than Name so the "sharps" are next to each other.
-	sort.Slice(List, func(i, j int) bool { return List[i].ID < List[j].ID })
+	// Case-insensitive sort.
+	sort.Slice(List, func(i, j int) bool {
+		return strings.ToLower(List[i].Name) < strings.ToLower(List[j].Name)
+	})
 }

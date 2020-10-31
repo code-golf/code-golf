@@ -55,7 +55,8 @@ input.raku:not(:checked)       ~ .raku,
 input.ruby:not(:checked)       ~ .ruby,
 input.rust:not(:checked)       ~ .rust,
 input.sql:not(:checked)        ~ .sql,
-input.swift:not(:checked)      ~ .swift { display: none }
+input.swift:not(:checked)      ~ .swift,
+input.zig:not(:checked)        ~ .zig { display: none }
 
 input:checked + label {
     background: var(--color);

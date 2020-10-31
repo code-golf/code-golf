@@ -1,9 +1,10 @@
 use Cro::HTTP::Client;
 use DBIish;
 use Test;
+use TOML::Thumb;
 
-# Export Test to caller.
-sub EXPORT { Test::EXPORT::DEFAULT:: }
+# Export Test & TOML::Thumb to caller.
+sub EXPORT { %( Test::EXPORT::DEFAULT::, TOML::Thumb::EXPORT::DEFAULT:: ) }
 
 # Block until the app is up or we time out.
 react {

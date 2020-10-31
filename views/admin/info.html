@@ -33,13 +33,13 @@
     </table>
     <table class="nowrap-first sticky">
         <thead>
-            <th>Time Zone
+            <th>Country
             <th>Golfers
             <th>%
         <tbody>
-        {{ range .Data.TimeZones }}
+        {{ range .Data.Countries }}
             <tr>
-                <td>{{ .Name }}
+                <td><span class=flag>{{ .Flag }}</span>{{ .Name }}
                 <td>{{ comma .Golfers }}
                 <td>{{ printf "%.2f" .Percent }}%
         {{ end }}

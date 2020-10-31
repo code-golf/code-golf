@@ -98,7 +98,7 @@ body {
     overflow-x: hidden;
 }
 
-body, footer nav, header nav {
+body, footer nav, body > header nav {
     margin: auto;
     max-width: 1280px;
 }
@@ -137,7 +137,7 @@ h1 { font-size: 1.75rem }
 h2 { font-size: 1.50rem }
 h3 { font-size: 1.25rem }
 
-header {
+body > header {
     background: var(--color);
     margin: 0 calc(50% - 50vw);
     position: sticky;
@@ -145,7 +145,7 @@ header {
     z-index: 7; /* Codemirror uses up to 6 */
 }
 
-header a {
+body > header a {
     align-items: center;
     display: flex;
     fill: var(--background);
@@ -154,21 +154,21 @@ header a {
     width: 2.75rem;
 }
 
-header a:hover,
-header a:not([href]) {
+body > header a:hover,
+body > header a:not([href]) {
     background: var(--background);
     fill: var(--color);
 }
 
-header img {
+body > header img {
     border-radius: 50%;
     height: 1.75rem;
     width: 1.75rem;
 }
 
-header nav { display: flex }
+body > header nav { display: flex }
 
-header svg {
+body > header svg {
     height: 1.5rem;
     width: 1.5rem;
 }

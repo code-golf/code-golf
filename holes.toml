@@ -107,7 +107,7 @@ preamble = '''
 <p>For each arabic numeral argument print the same number in roman numerals.
 '''
 
-[Brainfuck]
+[brainfuck]
 category = 'Computing'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Execute_Brain****' },
@@ -119,7 +119,7 @@ preamble = '''
     Urban Müller in 1993.
 
 <p>
-    Assuming an infinitely large array, the entire Brainfuck alphabet matches
+    Assuming an infinitely large array, the entire brainfuck alphabet matches
     the following pseudocode:
 
 <div>
@@ -154,7 +154,7 @@ preamble = '''
 </div>
 
 <p>
-    Write a program that will receive various Brainfuck programs as arguments
+    Write a program that will receive various brainfuck programs as arguments
     and execute each program in turn.
 '''
 
@@ -1160,6 +1160,33 @@ preamble = '''
 <p>
     Print all the prime numbers from <b>1</b> to <b>100</b> inclusive, each on
     their own line.
+'''
+
+['Vampire Numbers']
+category = 'Sequence'
+links = [
+    { name = 'OEIS A014575', url = '//oeis.org/A014575' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Vampire_number' },
+    { name = 'Wikipedia',    url = '//wikipedia.org/wiki/Vampire_number' },
+]
+preamble = '''
+<p>
+    A vampire number is a non-negative number that can be factored into two
+    numbers (fangs) each with half as many digits as the original where the
+    two factors contain all the digits of the original, in any order. Both
+    fangs may not have trailing zeros.
+
+<p>
+    For example <b>1260 = 21*60</b>, <b>1395 = 15*93</b>, <b>1435 = 35*41</b>,
+    <b>1530 = 30*51</b>, etc..
+
+<p>
+    Print all the vampire numbers from <b>1</b> to <b>1,000,000</b> inclusive,
+    each on their own line.
+
+<p>
+    Be careful with the algorithmic complexity of your solution to avoid
+    timing out.
 '''
 
 [Quine]
