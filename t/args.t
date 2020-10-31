@@ -20,6 +20,10 @@ done-testing;
 # are no arguments. Ideally it wouldn't be necessary to skip two arguments in that version,
 # but it doesn't really matter since the other form should be used.
 =begin pod
+><>
+
+    i:?!ao
+
 bash
 
     for a; do echo $a; done
