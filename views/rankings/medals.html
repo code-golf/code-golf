@@ -1,9 +1,6 @@
 {{ template "header"   . }}
 {{ template "rankings" . }}
 
-{{ $countries := .Countries }}
-{{ $path      := .Path }}
-
 <main>
     <nav class=wide>
         {{ $slug := "/rankings/medals" }}
@@ -45,7 +42,7 @@
                     <a href="/golfers/{{ .Login }}">
                         <img loading=lazy src="//avatars.githubusercontent.com/{{ .Login }}?s=24">
                         <span>{{ .Login }}</span>
-                    {{ with index $countries .Country }}
+                    {{ with index $.Countries .Country }}
                         <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
                     {{ end }}
                     </a>

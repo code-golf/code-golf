@@ -9,9 +9,9 @@
         <label for=hole>Hole</label>
         <select id=hole name=hole>
             <option value>All
-        {{ $hole := .Request.FormValue "hole" }}
         {{ range .Data.Holes }}
-            <option value={{ .ID }} {{ if eq .ID $hole }}selected{{ end }}>
+            <option value={{ .ID }}
+                {{ if eq .ID ($.Request.FormValue "hole") }}selected{{ end }}>
                 {{ .Name }}
         {{ end }}
         </select>
@@ -19,9 +19,9 @@
         <label for=lang>Lang</label>
         <select id=lang name=lang>
             <option value>All
-        {{ $lang := .Request.FormValue "lang" }}
         {{ range .Data.Langs }}
-            <option value={{ .ID }} {{ if eq .ID $lang }}selected{{ end }}>
+            <option value={{ .ID }}
+                {{ if eq .ID ($.Request.FormValue "lang") }}selected{{ end }}>
                 {{ .Name }}
         {{ end }}
         </select>

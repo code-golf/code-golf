@@ -56,10 +56,8 @@
 
 <main id=index>
     <nav class="nav span">
-    {{ $scoring := .Data.Scoring }}
-
-	{{ range .Data.Scorings }}
-        <a {{ if eq $scoring . }} class=on {{ else }} href="?scoring={{ . }}" {{ end }}>
+    {{ range .Data.Scorings }}
+        <a {{ if ne . $.Data.Scoring }} href="?scoring={{ . }}" {{ end }}>
             {{ title . }}
         </a>
     {{ end }}

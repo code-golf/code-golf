@@ -18,11 +18,11 @@
 
         <select name=country>
             <option value>Rather not say
-        {{ $country := .Golfer.Country }}
         {{ range $continent, $countries := .Data.Countries }}
             <optgroup label="{{ $continent }}">
             {{ range $countries }}
-                <option value="{{ .ID }}" {{ if eq .ID $country }}selected{{ end }}>
+                <option value="{{ .ID }}"
+                    {{ if eq .ID $.Golfer.Country }}selected{{ end }}>
                     {{ .Flag }}&ensp;{{ .Name }}
             {{ end }}
         {{ end }}
@@ -39,11 +39,10 @@
         Preferred keyboard mapping for the code editor.
 
         <div role=group>
-        {{ $keymap := .Golfer.Keymap }}
         {{ range .Data.Keymaps }}
             <label>
                 <input name=keymap type=radio value="{{ . }}"
-                    {{ if eq . $keymap }}checked{{ end }}>{{ title . }}
+                    {{ if eq . $.Golfer.Keymap }}checked{{ end }}>{{ title . }}
             </label>
         {{ end }}
         </div>
@@ -55,10 +54,9 @@
 
         <select name=time_zone>
             <option value>Rather not say
-        {{ $tz := .Golfer.TimeZone }}
         {{ range .Data.TimeZones }}
-            <option value="{{ .Name }}" {{ if eq .Name $tz }}selected{{ end }}>
-                {{ . }}
+            <option value="{{ .Name }}"
+                {{ if eq .Name $.Golfer.TimeZone }}selected{{ end }}>{{ . }}
         {{ end }}
         </select>
 

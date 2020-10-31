@@ -1,15 +1,13 @@
 {{ template "header" . }}
 {{ template "golfer" . }}
 
-{{ $progress := .Data.Progress }}
-
 <main>
 {{ range $category, $cheevos := .Data.Cheevos }}
     <details open>
         <div>
         {{ $i := 0 }}
         {{ range $cheevos }}
-            {{ $progress := index $progress .ID }}
+            {{ $progress := index $.Data.Progress .ID }}
             {{ $earned   := eq $progress.Completed $progress.Steps }}
 
             {{ if $earned }}

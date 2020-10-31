@@ -2,8 +2,6 @@
 {{ template "golfer" . }}
 
 <main>
-{{ $max := .Data.Max }}
-
 {{ range .Data.Trophies }}
     <div class="trophy {{ if not .Earned.Valid }} locked {{ end }}">
         <div>{{ .Trophy.Emoji }}</div>
@@ -12,7 +10,7 @@
         <p>
             Won by {{ comma .Count }} golfer{{ if ne .Count 1 }}s{{ end }}
             ({{ .Percent }}%)
-            <progress value="{{ .Count }}" max="{{ $max }}"></progress>
+            <progress value="{{ .Count }}" max="{{ $.Data.Max }}"></progress>
         {{ if .Earned.Valid }}
             Won {{ time .Earned.Value }}
         {{ else }}
