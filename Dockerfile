@@ -15,13 +15,13 @@ RUN go build -ldflags -s \
 
 FROM scratch
 
-COPY --from=codegolf/lang-fish       /       /langs/fish/rootfs/
 COPY --from=codegolf/lang-bash       /       /langs/bash/rootfs/
 COPY --from=codegolf/lang-brainfuck  /  /langs/brainfuck/rootfs/
 COPY --from=codegolf/lang-c          /          /langs/c/rootfs/
 COPY --from=codegolf/lang-c-sharp    /    /langs/c-sharp/rootfs/
 COPY --from=codegolf/lang-cobol      /      /langs/cobol/rootfs/
 COPY --from=codegolf/lang-f-sharp    /    /langs/f-sharp/rootfs/
+COPY --from=codegolf/lang-fish       /       /langs/fish/rootfs/
 COPY --from=codegolf/lang-fortran    /    /langs/fortran/rootfs/
 COPY --from=codegolf/lang-go         /         /langs/go/rootfs/
 COPY --from=codegolf/lang-haskell    /    /langs/haskell/rootfs/

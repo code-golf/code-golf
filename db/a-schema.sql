@@ -18,10 +18,10 @@ CREATE TYPE hole AS ENUM (
 CREATE TYPE keymap AS ENUM ('default', 'vim');
 
 CREATE TYPE lang AS ENUM (
-    'fish', 'bash', 'brainfuck', 'c', 'c-sharp', 'cobol', 'f-sharp', 'fortran', 'go',
-    'haskell', 'j', 'java', 'javascript', 'julia', 'lisp', 'lua', 'nim',
-    'perl', 'php', 'powershell', 'python', 'raku', 'ruby', 'rust', 'sql',
-    'swift', 'zig'
+    'bash', 'brainfuck', 'c', 'c-sharp', 'cobol', 'f-sharp', 'fish',
+    'fortran', 'go', 'haskell', 'j', 'java', 'javascript', 'julia', 'lisp',
+    'lua', 'nim', 'perl', 'php', 'powershell', 'python', 'raku', 'ruby',
+    'rust', 'sql', 'swift', 'zig'
 );
 
 CREATE TYPE scoring AS ENUM ('bytes', 'chars');

@@ -20,10 +20,6 @@ done-testing;
 # are no arguments. Ideally it wouldn't be necessary to skip two arguments in that version,
 # but it doesn't really matter since the other form should be used.
 =begin pod
-><>
-
-    i:?!ao
-
 bash
 
     for a; do echo $a; done
@@ -67,6 +63,10 @@ f-sharp
 f-sharp
 
     System.Environment.GetCommandLineArgs() |> Array.skip 2 |> Array.iter (printfn "%s")
+
+fish
+
+    i:?!ao
 
 fortran
 
