@@ -14,7 +14,7 @@ if my $unknown = @langs ∖ %langs {
 }
 
 for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
-    my $id  = $name eq '><>' ?? 'fish' !! $name.lc.subst: '#', '-sharp';
+    my $id  = id($name);
     my $img = "codegolf/lang-$id";
 
     # V8 has a pre-builder target too.
@@ -45,8 +45,8 @@ for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
         my $digits = $ver ~~ / <[\d.]>+ \d+ /;
 
         when 'C#'
-            | 'F#'
-            | 'PowerShell' { }
+           | 'F#'
+           | 'PowerShell' { }
         when 'C'          { $ver = "Tiny C Compiler $digits" }
         when 'COBOL'      { $ver = "GnuCOBOL $digits" }
         when 'Fortran'    { $ver = "GNU Fortran $digits" }
@@ -64,3 +64,17 @@ for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
 }
 
 spurt 'langs.toml', to-toml %langs;
+
+# Reorder Dockerfiles: largest first to speed-up partial deploys.
+my $layers;
+my $max = %langs.keys».&id».chars.max;
+
+$layers ~= sprintf(
+    qq[COPY --from=codegolf/lang-%s%s ["/", "/langs/%1\$s/rootfs/"%2\$s] # %8s\n],
+    id(.key), ' ' x $max - id(.key).chars, .value<size>,
+) for %langs.sort: { so .value<size> ~~ /K/, -.value<size>.split(" ")[0], id(.key) };
+
+.spurt: .slurp.subst: / ( 'COPY --from=codegolf' \N+ \n )+ /, $layers
+    for <Dockerfile Dockerfile.dev>».IO;
+
+sub id { $^name eq '><>' ?? 'fish' !! $name.lc.subst: '#', '-sharp' }
