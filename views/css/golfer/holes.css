@@ -1,3 +1,6 @@
+/* TODO Stop having "wide" pages, make everything consistent. */
+body { max-width: 90rem }
+
 main {
     gap: .25rem;
     grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
