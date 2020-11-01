@@ -1,4 +1,4 @@
-#!/usr/local/bin/python
+#!/usr/bin/python
 
 """
 
@@ -421,4 +421,3 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         # exit cleanly
         parser.exit(message="\n")
-
