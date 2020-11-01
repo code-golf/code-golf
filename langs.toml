@@ -262,7 +262,7 @@ say for @ARGV;
 
 [PHP]
 size    = '10.5 MiB'
-version = '7.4.11'
+version = '7.4.12'
 website = '//www.php.net'
 example = '''
 # Printing
