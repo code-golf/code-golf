@@ -57,7 +57,6 @@ onload = () => {
         autofocus:    true,
         indentUnit:   1,
         lineNumbers:  true,
-        lineWrapping: true,
         smartIndent:  false,
         vimMode,
     });
@@ -89,6 +88,7 @@ onload = () => {
         const autoSaveCode = localStorage.getItem(getAutoSaveKey(lang, solution)) || '';
         const code = getSolutionCode(lang, solution) || autoSaveCode;
 
+        cm.setOption('lineWrapping', lang != 'fish');
         cm.setOption('matchBrackets', lang != 'brainfuck' && lang != 'j');
         cm.setOption('mode', {name: 'text/x-' + lang, startOpen: true});
         cm.setValue(code);
