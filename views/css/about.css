@@ -12,9 +12,12 @@ main p:not(:first-child) { margin-top: 1rem }
 
 #langs a {
     overflow: hidden;
+    padding: 0 .5rem .25rem;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+#langs div { padding: .25rem .5rem 0 }
 
 #langs h2 {
     flex: 1;
@@ -24,11 +27,8 @@ main p:not(:first-child) { margin-top: 1rem }
 
 #langs header {
     align-items: center;
-    background: var(--color);
-    border-bottom: 1px solid var(--color);
     color: var(--background);
     display: flex;
-    margin: -.5rem -.5rem 0;
     padding: .25rem .5rem;
 }
 
@@ -38,14 +38,15 @@ main p:not(:first-child) { margin-top: 1rem }
 }
 
 #langs section {
-    background: var(--light-grey);
+    background: var(--color);
     border: 1px solid var(--color);
     border-radius: .5rem;
-    display: grid;
-    gap: .25rem;
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
-    padding: .5rem;
 }
+
+#langs section > :not(:first-child) { background: var(--light-grey) }
 
 #langs svg {
     max-height: 1.25rem;
