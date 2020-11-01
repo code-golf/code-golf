@@ -23,7 +23,9 @@ for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
         if $id eq 'javascript';
 
     # Tag the builder stage so "docker system prune" won't remove it.
-    run «docker build --pull --target builder -t "{$img}-builder" "langs/$id"»;
+    run «docker build --pull --target builder -t "{$img}-builder" "langs/$id"»
+        if $id ne 'fish';
+
     run «docker build -t $img "langs/$id"»;
     run «docker push $img» unless $no-push;
 
