@@ -110,6 +110,9 @@ func init() {
 
 			js[name[len("js/"):]] = template.JS(data)
 		case ".svg":
+			// Trim namespace as it's not needed for inline SVG under HTML 5.
+			data = strings.ReplaceAll(data, ` xmlns="http://www.w3.org/2000/svg"`, "")
+
 			svg[name[len("svg/"):]] = template.HTML(data)
 		}
 
