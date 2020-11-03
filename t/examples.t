@@ -1,7 +1,7 @@
 use t;
 
 for sort from-toml slurp 'langs.toml' {
-    my $lang = .key.lc.subst: '#', '-sharp';
+    my $lang = .key eq '><>' ?? 'fish' !! .key.lc.subst: '#', '-sharp';
 
     # TODO Remove this to ensure we have examples for every lang.
     # skip 'No example yet' unless .value<example>;
