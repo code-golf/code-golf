@@ -2,6 +2,20 @@
 size    = '206 MiB'
 version = '1.0'
 website = '//esolangs.org/wiki/fish'
+example = '''
+\ printing
+> "!dlroW ,olleH" ooooooooooooo ao 03.
+  looping
+> 0 v
+    >:nao 1+ :9)?v
+v               ~<
+  accessing arguments
+> i : ?!v : 0) ?v ~;
+        a
+        o       o
+        ~
+^       <       <
+'''
 
 [Bash]
 size    = '1.15 MiB'
