@@ -44,7 +44,7 @@ COPY --from=codegolf/lang-sql        ["/", "/langs/sql/rootfs/"       ] # 1.02 M
 COPY --from=codegolf/lang-lua        ["/", "/langs/lua/rootfs/"       ] #  314 KiB
 
 COPY --from=0 /go/code-golf                      /
-COPY          /*.toml                            /
+COPY          /*.toml /words.txt                 /
 COPY --from=0 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY          /public                            /public/
 COPY --from=0 /usr/bin/run-lang                  /usr/bin/
