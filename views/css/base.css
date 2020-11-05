@@ -13,7 +13,8 @@
                    U+1F300-1F5FF, /* Miscellaneous Symbols and Pictographs */
                    U+1F600-1F64F, /* Emoticons */
                    U+1F680-1F6FF, /* Transport and Map Symbols */
-                   U+1F900-1F9FF; /* Supplemental Symbols and Pictographs */
+                   U+1F900-1F9FF, /* Supplemental Symbols and Pictographs */
+                   U+1FA70-1FAFF; /* Symbols and Pictographs Extended-A */
 }
 
 :root {
