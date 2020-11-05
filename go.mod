@@ -5,6 +5,7 @@ go 1.15
 require (
 	github.com/BurntSushi/toml v0.3.1
 	github.com/SeerUK/assert v1.0.0
+	github.com/agnivade/levenshtein v1.1.0
 	github.com/buildkite/terminal v3.2.0+incompatible
 	github.com/go-chi/chi v4.1.2+incompatible
 	github.com/gofrs/uuid v3.3.0+incompatible

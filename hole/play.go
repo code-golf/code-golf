@@ -36,6 +36,8 @@ func getAnswer(holeID, code string) ([]string, string) {
 		args, answer = emojify()
 	case "intersection":
 		args, answer = intersection()
+	case "levenshtein-distance":
+		args, answer = levenshteinDistance()
 	case "lucky-tickets":
 		args, answer = luckyTickets()
 	case "maze":

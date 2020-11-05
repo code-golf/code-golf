@@ -796,6 +796,35 @@ preamble = '''
     to and including <b>2400</b>.
 '''
 
+['Levenshtein Distance']
+category = 'Transform'
+experiment = 999
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Levenshtein_distance' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Levenshtein_distance' },
+]
+preamble = '''
+<p>
+    The Levenshtein distance is the minimum number of single character edits
+    that are needed to transform one word into another. The available edits
+    are deletion, insertion, or substitution of a single character.
+
+<p>
+    For example the Levenshtein distance between <b>“shine”</b> and
+    <b>“train”</b> is 4:
+
+<ol>
+    <li>shine → shin (deletion of 'e')
+    <li>shin → <b>t</b>shin (insertion of 't')
+    <li>t<b>s</b>hin → t<b>r</b>hin (substitution of 's' for 'r')
+    <li>tr<b>h</b>in → tr<b>a</b>in (substitution of 'h' for 'a')
+</ol>
+
+<p>
+    For each pair of words per argument, print the Levenshtein distance on its
+    own line.
+'''
+
 ['Leyland Numbers']
 category = 'Sequence'
 links = [
