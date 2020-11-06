@@ -7,6 +7,7 @@ import (
 	"errors"
 	"net/http"
 	"sync"
+	"time"
 
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
@@ -16,12 +17,14 @@ import (
 type solution struct {
 	code     string
 	codeID   int
-	Golfer   string           `json:"golfer"`
-	GolferID int              `json:"golfer_id"`
-	HoleID   string           `json:"hole"`
-	LangID   string           `json:"lang"`
-	Failing  bool             `json:"failing"`
-	Scores   []hole.Scorecard `json:"scores"`
+	failing  bool
+	Golfer   string        `json:"golfer"`
+	GolferID int           `json:"golfer_id"`
+	HoleID   string        `json:"hole"`
+	LangID   string        `json:"lang"`
+	Pass     bool          `json:"pass"`
+	Stderr   string        `json:"stderr"`
+	Took     time.Duration `json:"took"`
 }
 
 // AdminSolutions serves GET /admin/solutions
@@ -49,25 +52,29 @@ func AdminSolutionsRun(w http.ResponseWriter, r *http.Request) {
 			defer wg.Done()
 
 			for s := range solutions {
-				// Run the solution upto three times, bail early if it passes.
-				for j := 0; j < 3; j++ {
-					s.Scores = append(
-						s.Scores,
-						hole.Play(r.Context(), s.HoleID, s.LangID, s.code),
-					)
+				var passes, fails int
 
-					if s.Scores[j].Pass {
-						break
+				// Best of three runs.
+				for j := 0; passes < 2 && fails < 2; j++ {
+					score := hole.Play(r.Context(), s.HoleID, s.LangID, s.code)
+
+					s.Took = score.Took
+
+					if score.Pass {
+						passes++
+					} else {
+						fails++
+						s.Stderr = string(score.Stderr)
 					}
 				}
+
+				s.Pass = passes > fails
 
 				// If the last run differs from the DB, update the database.
 				//
 				// NOTE It's a little confusing that present is called pass
 				//      but past is called failing, so == is a mismatch.
-				if pass := s.Scores[len(s.Scores)-1].Pass; pass == s.Failing {
-					s.Failing = !pass
-
+				if s.Pass == s.failing {
 					if _, err := db.Exec(
 						`UPDATE solutions
 						    SET failing = $1
@@ -75,7 +82,7 @@ func AdminSolutionsRun(w http.ResponseWriter, r *http.Request) {
 						    AND hole    = $3
 						    AND lang    = $4
 						    AND user_id = $5`,
-						s.Failing,
+						!s.Pass,
 						s.codeID,
 						s.HoleID,
 						s.LangID,
@@ -140,7 +147,7 @@ func getSolutions(r *http.Request) chan solution {
 			if err := rows.Scan(
 				&s.code,
 				&s.codeID,
-				&s.Failing,
+				&s.failing,
 				&s.Golfer,
 				&s.GolferID,
 				&s.HoleID,

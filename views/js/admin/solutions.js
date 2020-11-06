@@ -11,11 +11,11 @@ const langs  = [...form.lang.options].reduce(reduce, {});
 
 const pass = document.createElement('span');
 pass.className = 'green';
-pass.innerText = 'P';
+pass.innerText = 'PASS';
 
 const fail = document.createElement('span');
 fail.className = 'red';
-fail.innerText = 'F';
+fail.innerText = 'FAIL';
 
 function make(tag, ...children) {
     const node = document.createElement(tag);
@@ -52,7 +52,7 @@ form.onsubmit = async e => {
     const append  = line => {
         line = JSON.parse(line);
 
-        if (!line.scores[line.scores.length - 1].Pass) failing++;
+        if (!line.pass) failing++;
 
         status.innerText = (++solutions).toLocaleString('en') +
             ` solutions (${failing} failing) in ` +
@@ -64,11 +64,9 @@ form.onsubmit = async e => {
                 make('td', holes[line.hole]),
                 make('td', langs[line.lang]),
                 make('td', `${line.golfer} (${line.golfer_id})`),
-                make('td', line.scores.map(
-                    s => Math.round(s.Took / 1e6).toLocaleString('en') + 'ms',
-                ).join(', ')),
-                make('td', ...line.scores.map(s => (s.Pass ? pass : fail).cloneNode(true))),
-                make('td', line.failing ? 'failing' : ''),
+                make('td', Math.round(line.took / 1e6).toLocaleString('en') + 'ms'),
+                make('td', (line.pass ? pass : fail).cloneNode(true)),
+                make('td', make('code', line.stderr)),
             ),
         );
     };
