@@ -75,6 +75,6 @@ $layers ~= sprintf(
 ) for %langs.sort: { so .value<size> ~~ /K/, -.value<size>.split(" ")[0], id(.key) };
 
 .spurt: .slurp.subst: / ( 'COPY --from=codegolf' \N+ \n )+ /, $layers
-    for <Dockerfile Dockerfile.dev>».IO;
+    for <docker/dev.Dockerfile docker/live.Dockerfile>».IO;
 
 sub id { $^name eq '><>' ?? 'fish' !! $name.lc.subst: '#', '-sharp' }
