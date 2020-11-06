@@ -5,9 +5,11 @@
         {{ svg "flask-light" }}
         <p>
             This hole is experimental, no solutions will be saved.
+        {{ if ne . -1 }}
             Please leave feedback on the
             <a href="//github.com/code-golf/code-golf/issues/{{ . }}">
                 GitHub issue</a>.
+        {{ end }}
     </div>
 {{ else }}{{ if not .Golfer }}
     <div class=alert>
