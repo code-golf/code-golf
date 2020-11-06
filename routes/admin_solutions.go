@@ -15,14 +15,14 @@ import (
 )
 
 type solution struct {
-	code     string
-	codeID   int
-	failing  bool
-	Golfer   string        `json:"golfer"`
+	failing  bool          `json:"-"`
+	Pass     bool          `json:"pass"`
+	codeID   int           `json:"-"`
 	GolferID int           `json:"golfer_id"`
+	code     string        `json:"-"`
+	Golfer   string        `json:"golfer"`
 	HoleID   string        `json:"hole"`
 	LangID   string        `json:"lang"`
-	Pass     bool          `json:"pass"`
 	Stderr   string        `json:"stderr"`
 	Took     time.Duration `json:"took"`
 }
