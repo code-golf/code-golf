@@ -123,7 +123,7 @@ website = '//gcc.gnu.org/fortran/'
 
 [Go]
 size    = '110 MiB'
-version = '1.15.3'
+version = '1.15.4'
 website = '//go.dev'
 example = '''
 package main
@@ -403,6 +403,6 @@ version = '5.3'
 website = '//swift.org'
 
 [Zig]
-size    = '242 MiB'
-version = '0.6.0'
+size    = '216 MiB'
+version = '0.7.0'
 website = '//ziglang.org'
