@@ -30,9 +30,18 @@ func levenshteinDistance() ([]string, string) {
 
 	args := make([]string, count)
 	outs := make([]string, count)
+	same := rand.Intn(count)
 
 	for i := 0; i < count; i++ {
 		a := words[rand.Intn(len(words))]
+
+		// Ensure we have at least one zero distance.
+		if i == same {
+			args[i] = a + " " + a
+			outs[i] = "0"
+			continue
+		}
+
 		b := words[rand.Intn(len(words))]
 
 		args[i] = a + " " + b
