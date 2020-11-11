@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <ItemGroup>
         <TrimmerRootAssembly Include="netstandard" />
+        <TrimmerRootAssembly Include="System.Runtime" />
     </ItemGroup>
     <PropertyGroup>
         <Nullable>enable</Nullable>

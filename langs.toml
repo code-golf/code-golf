@@ -78,8 +78,8 @@ int main(int argc, char* argv[]) {
 '''
 
 ['C#']
-size    = '127 MiB'
-version = 'C# 8.0 on .NET 5.0.0'
+size    = '128 MiB'
+version = 'C# 9.0 on .NET 5.0.0'
 website = '//docs.microsoft.com/dotnet/csharp/'
 example = '''
 using System;
