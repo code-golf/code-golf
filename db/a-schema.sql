@@ -6,13 +6,14 @@ CREATE TYPE hole AS ENUM (
     'arabic-to-roman', 'brainfuck', 'christmas-trees', 'css-colors', 'cubes',
     'diamonds', 'divisors', 'emirp-numbers', 'evil-numbers', 'fibonacci',
     'fizz-buzz', 'happy-numbers', 'intersection', 'leap-years',
-    'leyland-numbers', 'lucky-tickets', 'morse-decoder', 'morse-encoder',
-    'niven-numbers', 'odious-numbers', 'ordinal-numbers', 'pangram-grep',
-    'pascals-triangle', 'pernicious-numbers', 'poker', 'prime-numbers',
-    'quine', 'rock-paper-scissors-spock-lizard', 'roman-to-arabic',
-    'rule-110', 'seven-segment', 'sierpiński-triangle', 'spelling-numbers',
-    'sudoku', 'ten-pin-bowling', 'tongue-twisters', 'united-states',
-    'vampire-numbers', 'λ', 'π', 'τ', 'φ', '√2', '𝑒'
+    'levenshtein-distance', 'leyland-numbers', 'lucky-tickets',
+    'morse-decoder', 'morse-encoder', 'niven-numbers', 'odious-numbers',
+    'ordinal-numbers', 'pangram-grep', 'pascals-triangle',
+    'pernicious-numbers', 'poker', 'prime-numbers', 'quine',
+    'rock-paper-scissors-spock-lizard', 'roman-to-arabic', 'rule-110',
+    'seven-segment', 'sierpiński-triangle', 'spelling-numbers', 'sudoku',
+    'ten-pin-bowling', 'tongue-twisters', 'united-states', 'vampire-numbers',
+    'λ', 'π', 'τ', 'φ', '√2', '𝑒'
 );
 
 CREATE TYPE keymap AS ENUM ('default', 'vim');

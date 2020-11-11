@@ -798,7 +798,6 @@ preamble = '''
 
 ['Levenshtein Distance']
 category = 'Transform'
-experiment = -1
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Levenshtein_distance' },
     { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Levenshtein_distance' },
