@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1.401-alpine3.12 as builder
+FROM mcr.microsoft.com/dotnet/sdk:5.0.100-alpine3.12 as builder
 
 RUN mkdir /empty
 

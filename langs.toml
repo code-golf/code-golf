@@ -78,8 +78,8 @@ int main(int argc, char* argv[]) {
 '''
 
 ['C#']
-size    = '141 MiB'
-version = 'C# 8.0 on .NET Core 3.1.7'
+size    = '127 MiB'
+version = 'C# 8.0 on .NET 5.0.0'
 website = '//docs.microsoft.com/dotnet/csharp/'
 example = '''
 using System;
@@ -112,8 +112,8 @@ version = 'GnuCOBOL 2.2.0'
 website = '//www.gnu.org/software/gnucobol/'
 
 ['F#']
-size    = '108 MiB'
-version = 'F# 4.7 on .NET Core 3.1.7'
+size    = '112 MiB'
+version = 'F# 4.7 on .NET 5.0.0'
 website = '//fsharp.org'
 
 [Fortran]
@@ -292,8 +292,8 @@ while ($arg = next($argv))
 '''
 
 [PowerShell]
-size    = '179 MiB'
-version = 'PowerShell 7.0.3 on .NET Core 3.1.7'
+size    = '175 MiB'
+version = 'PowerShell 7.0.3 on .NET 5.0.0'
 website = '//docs.microsoft.com/powershell/scripting/overview'
 
 [Python]
