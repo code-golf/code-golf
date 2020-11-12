@@ -5,12 +5,14 @@ RUN mkdir /empty
 RUN apk add --no-cache cmake curl g++ gfortran libexecinfo-dev \
     linux-headers m4 make musl-dev patch perl python3 tar xz
 
-RUN curl -L https://github.com/JuliaLang/julia/releases/download/v1.5.2/julia-1.5.2.tar.gz \
+ENV CXXFLAGS=-flto LDFLAGS=-flto VER=1.5.3
+
+RUN curl -L https://github.com/JuliaLang/julia/releases/download/v$VER/julia-$VER.tar.gz \
   | tar xzf -
 
-RUN make -C julia-1.5.2 -j`nproc` prefix=/usr MARCH=x86-64 install \
- && strip -s /usr/bin/julia /usr/lib/julia/*.so                    \
- && rm -r julia-1.5.2
+RUN make -C julia-$VER -j`nproc` prefix=/usr MARCH=x86-64 install \
+ && strip -s /usr/bin/julia /usr/lib/julia/*.so                   \
+ && rm -r julia-$VER
 
 COPY julia.c /
 
