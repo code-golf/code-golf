@@ -30,15 +30,20 @@ func levenshteinDistance() ([]string, string) {
 
 	args := make([]string, count)
 	outs := make([]string, count)
-	same := rand.Intn(count)
+	perm := rand.Perm(count)
 
 	for i := 0; i < count; i++ {
 		a := words[rand.Intn(len(words))]
 
-		// Ensure we have at least one zero distance.
-		if i == same {
+		if i == perm[0] {
+			// Ensure we have at least one zero distance.
 			args[i] = a + " " + a
 			outs[i] = "0"
+			continue
+		} else if i == perm[1] {
+			// Add a test case that blocks an incorrect simplification to the algorithm from working.
+			args[i] = "open however"
+			outs[i] = "5"
 			continue
 		}
 
