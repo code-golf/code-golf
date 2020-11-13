@@ -15,6 +15,7 @@ services:
     depends_on:
       - app
       - db
+      - firefox
     entrypoint:
       - prove6
       - -vIt
@@ -28,3 +29,7 @@ services:
     volumes:
       - ..:/code-golf
     working_dir: /code-golf
+  firefox:
+    build:
+      context: .
+      dockerfile: firefox.Dockerfile
