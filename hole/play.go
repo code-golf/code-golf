@@ -76,24 +76,18 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 
 	var stderr, stdout bytes.Buffer
 
-	if langID == "php" {
-		code = "<?php " + code + " ;"
-	}
-
 	ctx, cancel := context.WithTimeout(ctx, timeout)
 	defer cancel()
 
 	cmd := exec.CommandContext(ctx, "/usr/bin/run-lang")
 	cmd.Dir = "/langs/" + langID
 	cmd.Stderr = &stderr
-	if langID != "javascript" {
-		cmd.Stdin = strings.NewReader(code)
-	}
 	cmd.Stdout = &stdout
 	cmd.SysProcAttr = &syscall.SysProcAttr{
 		Cloneflags: syscall.CLONE_NEWIPC | syscall.CLONE_NEWNET | syscall.CLONE_NEWNS | syscall.CLONE_NEWPID | syscall.CLONE_NEWUTS,
 	}
 
+	// Interpreter
 	switch langID {
 	case "bash":
 		cmd.Args = []string{"/usr/bin/bash", "-s", "-"}
@@ -102,7 +96,7 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	case "c-sharp", "f-sharp":
 		cmd.Args = []string{"/compiler/Compiler", "-"}
 	case "fish":
-		cmd.Args = []string{"/usr/bin/fish", "-c", code, "-i"}
+		cmd.Args = []string{"/usr/bin/fish", "-c", code}
 	case "haskell", "php":
 		cmd.Args = []string{"/usr/bin/" + langID, "--"}
 	case "j":
@@ -113,8 +107,9 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		cmd.Args = []string{"/usr/bin/run-julia", "/tmp/code.jl"}
 	case "powershell":
 		cmd.Args = []string{"/interpreter/Interpreter"}
+
+		// Require explicit output for Quine to prevent trivial solutions.
 		if holeID == "quine" {
-			// Require explicit output for the Quine hole to prevent trivial solutions.
 			cmd.Args = append(cmd.Args, "--explicit")
 		}
 	case "nim":
@@ -125,7 +120,24 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		cmd.Args = []string{"/usr/bin/" + langID, "-"}
 	}
 
-	cmd.Args = append(cmd.Args, score.Args...)
+	// Args
+	switch langID {
+	case "fish":
+		cmd.Stdin = strings.NewReader(strings.Join(score.Args, "\x00"))
+	default:
+		cmd.Args = append(cmd.Args, score.Args...)
+	}
+
+	// Code
+	switch langID {
+	case "fish", "javascript":
+		// For these code is passed as an argument above.
+	case "php":
+		code = "<?php " + code + " ;"
+		fallthrough
+	default:
+		cmd.Stdin = strings.NewReader(code)
+	}
 
 	err := cmd.Run()
 
