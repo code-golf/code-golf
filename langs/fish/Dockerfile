@@ -5,11 +5,11 @@ RUN apk add --no-cache curl gcc linux-headers make musl-dev python2
 RUN curl https://downloads.python.org/pypy/pypy3.7-v7.3.2-src.tar.bz2 \
   | tar xj
 
-RUN curl -L https://github.com/primo-ppcg/fish-jit/tarball/f9d6ade \
+RUN curl -L https://github.com/primo-ppcg/fish-jit/tarball/cee89b7 \
   | tar xz
 
 RUN LDFLAGS=-static python pypy3.7-v7.3.2-src/rpython/bin/rpython \
-    --lto primo-ppcg-fish-jit-f9d6ade/fish-jit.py                 \
+    --lto primo-ppcg-fish-jit-cee89b7/fish-jit.py                 \
  && strip fish-jit-c
 
 FROM scratch
