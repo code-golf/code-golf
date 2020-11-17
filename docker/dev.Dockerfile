@@ -11,7 +11,6 @@ COPY --from=codegolf/lang-fortran    ["/", "/langs/fortran/rootfs/"   ] #  410 M
 COPY --from=codegolf/lang-haskell    ["/", "/langs/haskell/rootfs/"   ] #  332 MiB
 COPY --from=codegolf/lang-julia      ["/", "/langs/julia/rootfs/"     ] #  279 MiB
 COPY --from=codegolf/lang-zig        ["/", "/langs/zig/rootfs/"       ] #  216 MiB
-COPY --from=codegolf/lang-fish       ["/", "/langs/fish/rootfs/"      ] #  206 MiB
 COPY --from=codegolf/lang-python     ["/", "/langs/python/rootfs/"    ] #  206 MiB
 COPY --from=codegolf/lang-powershell ["/", "/langs/powershell/rootfs/"] #  185 MiB
 COPY --from=codegolf/lang-c-sharp    ["/", "/langs/c-sharp/rootfs/"   ] #  141 MiB
@@ -31,6 +30,7 @@ COPY --from=codegolf/lang-brainfuck  ["/", "/langs/brainfuck/rootfs/" ] # 1.59 M
 COPY --from=codegolf/lang-c          ["/", "/langs/c/rootfs/"         ] # 1.58 MiB
 COPY --from=codegolf/lang-bash       ["/", "/langs/bash/rootfs/"      ] # 1.15 MiB
 COPY --from=codegolf/lang-sql        ["/", "/langs/sql/rootfs/"       ] # 1.02 MiB
+COPY --from=codegolf/lang-fish       ["/", "/langs/fish/rootfs/"      ] #  579 KiB
 COPY --from=codegolf/lang-lua        ["/", "/langs/lua/rootfs/"       ] #  314 KiB
 
 COPY run-lang.c ./
