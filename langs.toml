@@ -1,7 +1,7 @@
 ['><>']
-size    = '206 MiB'
-version = '1.0'
-website = '//esolangs.org/wiki/fish'
+size    = '579 KiB'
+version = 'bde83aa'
+website = '//github.com/primo-ppcg/fish-jit'
 example = '''
 \ printing
 > "!dlroW ,olleH" ooooooooooooo ao 03.

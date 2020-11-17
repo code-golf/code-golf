@@ -22,8 +22,7 @@ for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
         if $id eq 'javascript';
 
     # Tag the builder stage so "docker system prune" won't remove it.
-    run «docker build --pull --target builder -t "{$img}-builder" "langs/$id"»
-        if $id ne 'fish';
+    run «docker build --pull --target builder -t "{$img}-builder" "langs/$id"»;
 
     run «docker build -t $img "langs/$id"»;
     run «docker push $img» unless $no-push;
@@ -37,30 +36,36 @@ for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
     %lang<size> = $proc.out.slurp(:close).chomp.subst: /(.)B$/, {" {$0.uc}iB"};
 
     # Version.
-    ( $proc = run «docker run --rm --tmpfs /tmp $img», :out ).sink;
-
-    my $ver = $proc.out.slurp(:close).chomp.trans: "\n" => ' ';
-
-    given $name {
-        my $digits = $ver ~~ / <[\d.]>+ \d+ /;
-
-        when 'C#'
-           | 'F#'
-           | 'PowerShell' { }
-        when 'C'          { $ver = "Tiny C Compiler $digits" }
-        when 'COBOL'      { $ver = "GnuCOBOL $digits" }
-        when 'Fortran'    { $ver = "GNU Fortran $digits" }
-        when 'Haskell'    { $ver = "Glasgow Haskell Compiler $digits" }
-        when 'JavaScript' { $ver = "V8 $digits" }
-        when 'Lisp'       { $ver = "GNU CLISP $digits" }
-        when 'Raku'       {
-            $ver ~~ m:g/ v (\S+) '.' /;
-            $ver = "Raku $1[0] on Rakudo $0[0]";
-        }
-        default { $ver = $digits }
+    if $id eq 'fish' {
+        "langs/$id/Dockerfile".IO.slurp ~~ / ' VERSION=' (\S+) /;
+        %lang<version> = $0;
     }
+    else {
+        ( my $proc = run «docker run --rm --tmpfs /tmp $img», :out ).sink;
 
-    %lang<version> = $ver;
+        my $ver = $proc.out.slurp(:close).chomp.trans: "\n" => ' ';
+
+        given $name {
+            my $digits = $ver ~~ / <[\d.]>+ \d+ /;
+
+            when 'C#'
+            | 'F#'
+            | 'PowerShell' { }
+            when 'C'          { $ver = "Tiny C Compiler $digits" }
+            when 'COBOL'      { $ver = "GnuCOBOL $digits" }
+            when 'Fortran'    { $ver = "GNU Fortran $digits" }
+            when 'Haskell'    { $ver = "Glasgow Haskell Compiler $digits" }
+            when 'JavaScript' { $ver = "V8 $digits" }
+            when 'Lisp'       { $ver = "GNU CLISP $digits" }
+            when 'Raku'       {
+                $ver ~~ m:g/ v (\S+) '.' /;
+                $ver = "Raku $1[0] on Rakudo $0[0]";
+            }
+            default { $ver = $digits }
+        }
+
+        %lang<version> = $ver;
+    }
 }
 
 spurt 'langs.toml', to-toml %langs;
