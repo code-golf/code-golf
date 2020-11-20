@@ -825,6 +825,25 @@ preamble = '''
     Each argument describes a ticket numbering system and consists of two numbers separated by a space. The first is the even number of digits. The second is the base of the numbering system (2-16). For each argument, output the total number of lucky tickets for the numbering system on a separate line.
 '''
 
+['Maze']
+category = 'Gaming'
+experiment = 338
+links = [{name='Wikipedia', url='//wikipedia.org/wiki/Maze_solving_algorithm'},]
+preamble = '''
+<p>
+    Find the shortest path from <b>S</b>tart to <b>E</b>nd points. Output the path in the maze with dots. For example
+
+<pre>
+███████████       ███████████
+█S█      E█       █S█  ....E█
+█ ███ █████       █.███.█████
+█   █     █   →   █...█.....█
+███ █████ █       ███.█████.█
+█         █       █  .......█
+███████████       ███████████
+</pre>
+'''
+
 ['Morse Decoder']
 category = 'Transform'
 links = [
