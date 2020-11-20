@@ -125,7 +125,6 @@ func draw(grid [height][width]int, si, sj, ei, ej int, path [height][width]int, 
 }
 
 func maze() (args []string, out string) {
-
 	var grid [height][width]int
 	var dist [height][width]int
 
