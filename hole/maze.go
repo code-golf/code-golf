@@ -72,9 +72,9 @@ func trace_path(dist [height][width]int, ei, ej int) (path [height][width]int) {
 	return
 }
 
-func draw(grid [height][width]int, si, sj, ei, ej int, path [height][width]int, draw_path bool) (mazestr string) {
+func draw(grid [height][width]int, si, sj, ei, ej int, path [height][width]int, drawpath bool) (mazestr string) {
 	wall, track := "█", ""
-	if draw_path {
+	if drawpath {
 		track = "."
 	} else {
 		track = " "
