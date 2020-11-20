@@ -40,6 +40,8 @@ func getAnswer(holeID, code string) ([]string, string) {
 		args, answer = levenshteinDistance()
 	case "lucky-tickets":
 		args, answer = luckyTickets()
+	case "maze":
+		args, answer = maze()
 	case "morse-decoder", "morse-encoder":
 		args, answer = morse(holeID == "morse-decoder")
 	case "ordinal-numbers":
