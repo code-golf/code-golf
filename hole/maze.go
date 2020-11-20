@@ -28,7 +28,7 @@ func dig(i, j int, grid, dist [height][width]int) ([height][width]int, [height][
 		newi := i + di[d]
 		newj := j + dj[d]
 
-		if newj >= 0 && new_j < width && new_i >= 0 && newi < height && grid[newi][newj] == 0 {
+		if newj >= 0 && newj < width && newi >= 0 && newi < height && grid[newi][newj] == 0 {
 			grid[i][j] |= d
 			dist[newi][newj] = dist[i][j] + 1
 			grid[newi][newj] |= opposite[d]
@@ -72,9 +72,7 @@ func trace_path(dist [height][width]int, ei, ej int) (path [height][width]int) {
 	return
 }
 
-func draw(grid [height][width]int, si, sj, ei, ej int,
-	path [height][width]int, draw_path bool) (mazestr string) {
-
+func draw(grid [height][width]int, si, sj, ei, ej int, path [height][width]int, draw_path bool) (mazestr string) {
 	wall, track := "█", ""
 	if draw_path {
 		track = "."
