@@ -25,14 +25,14 @@ func dig(i, j int, grid, dist [height][width]int) ([height][width]int, [height][
 	})
 
 	for _, d := range directions {
-		new_i := i + di[d]
-		new_j := j + dj[d]
+		newi := i + di[d]
+		newj := j + dj[d]
 
-		if new_j >= 0 && new_j < width && new_i >= 0 && new_i < height && grid[new_i][new_j] == 0 {
+		if newj >= 0 && new_j < width && new_i >= 0 && newi < height && grid[newi][newj] == 0 {
 			grid[i][j] |= d
-			dist[new_i][new_j] = dist[i][j] + 1
-			grid[new_i][new_j] |= opposite[d]
-			grid, dist = dig(new_i, new_j, grid, dist)
+			dist[newi][newj] = dist[i][j] + 1
+			grid[newi][newj] |= opposite[d]
+			grid, dist = dig(newi, newj, grid, dist)
 		}
 	}
 	return grid, dist
@@ -73,7 +73,7 @@ func trace_path(dist [height][width]int, ei, ej int) (path [height][width]int) {
 }
 
 func draw(grid [height][width]int, si, sj, ei, ej int,
-	path [height][width]int, draw_path bool) (maze_s string) {
+	path [height][width]int, draw_path bool) (mazestr string) {
 
 	wall, track := "█", ""
 	if draw_path {
@@ -82,9 +82,9 @@ func draw(grid [height][width]int, si, sj, ei, ej int,
 		track = " "
 	}
 	top, bottom, cell := "", "", ""
-	east_boundary, south_boundary := "", ""
+	eastboundary, southboundary := "", ""
 
-	maze_s = wall + strings.Repeat(strings.Repeat(wall, 2), width) + "\n"
+	mazestr = wall + strings.Repeat(strings.Repeat(wall, 2), width) + "\n"
 	for i := 0; i < height; i++ {
 		top = wall
 		bottom = wall
@@ -102,26 +102,26 @@ func draw(grid [height][width]int, si, sj, ei, ej int,
 			}
 			if grid[i][j]&east != 0 {
 				if path[i][j+1] != 0 && path[i][j] != 0 {
-					east_boundary = track
+					eastboundary = track
 				} else {
-					east_boundary = " "
+					eastboundary = " "
 				}
 			} else {
-				east_boundary = wall
+				eastboundary = wall
 			}
 			if grid[i][j]&south != 0 {
 				if path[i+1][j] != 0 && path[i][j] != 0 {
-					south_boundary = track
+					southboundary = track
 				} else {
-					south_boundary = " "
+					southboundary = " "
 				}
 			} else {
-				south_boundary = wall
+				southboundary = wall
 			}
-			top += cell + east_boundary
-			bottom += south_boundary + wall
+			top += cell + eastboundary
+			bottom += southboundary + wall
 		}
-		maze_s += top + "\n" + bottom + "\n"
+		mazestr += top + "\n" + bottom + "\n"
 	}
 	return
 }
@@ -137,10 +137,10 @@ func maze() (args []string, out string) {
 	grid, dist = dig(si, sj, grid, dist)
 	ei, ej := find_exit(dist)
 	path := trace_path(dist, ei, ej)
-	maze_input := draw(grid, si, sj, ei, ej, path, false)
-	maze_solved := draw(grid, si, sj, ei, ej, path, true)
+	mazeinput := draw(grid, si, sj, ei, ej, path, false)
+	mazesolved := draw(grid, si, sj, ei, ej, path, true)
 
-	args = append(args, maze_input)
-	out = maze_solved
+	args = append(args, mazeinput)
+	out = mazesolved
 	return
 }
