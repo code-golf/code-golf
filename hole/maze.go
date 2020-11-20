@@ -38,7 +38,7 @@ func dig(i, j int, grid, dist [height][width]int) ([height][width]int, [height][
 	return grid, dist
 }
 
-func find_exit(dist [height][width]int) (ei, ej int) {
+func findExit(dist [height][width]int) (ei, ej int) {
 	maxd := -1
 	for i := 0; i < height; i++ {
 		for j := 0; j < width; j++ {
@@ -51,7 +51,7 @@ func find_exit(dist [height][width]int) (ei, ej int) {
 	return ei, ej
 }
 
-func trace_path(dist [height][width]int, ei, ej int) (path [height][width]int) {
+func tracePath(dist [height][width]int, ei, ej int) (path [height][width]int) {
 	directions := []int{north, south, west, east}
 	d := dist[ei][ej]
 	path[ei][ej] = 1
@@ -133,8 +133,8 @@ func maze() (args []string, out string) {
 	si := rand.Intn(height)
 
 	grid, dist = dig(si, sj, grid, dist)
-	ei, ej := find_exit(dist)
-	path := trace_path(dist, ei, ej)
+	ei, ej := findExit(dist)
+	path := tracePath(dist, ei, ej)
 	mazeinput := draw(grid, si, sj, ei, ej, path, false)
 	mazesolved := draw(grid, si, sj, ei, ej, path, true)
 
