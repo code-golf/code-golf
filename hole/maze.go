@@ -58,12 +58,12 @@ func tracePath(dist [height][width]int, ei, ej int) (path [height][width]int) {
 	i, j := ei, ej
 	for d > 0 {
 		for _, dir := range directions {
-			i_, j_ := i+di[dir], j+dj[dir]
-			if i_ >= 0 && i_ < height && j_ >= 0 && j_ < width {
-				if dist[i_][j_] == d-1 {
+			newi, newj := i+di[dir], j+dj[dir]
+			if newi >= 0 && newi < height && newj >= 0 && newj < width {
+				if dist[newi][newj] == d-1 {
 					d -= 1
-					path[i_][j_] = 1
-					i, j = i_, j_
+					path[newi][newj] = 1
+					i, j = newi, newj
 					break
 				}
 			}
