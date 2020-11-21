@@ -5,17 +5,20 @@ import (
 	"strings"
 )
 
-const north = 1
-const south = 2
-const west = 4
-const east = 8
+const (
+	north  = 1
+	south  = 2
+	west   = 4
+	east   = 8
+	width  = 50
+	height = 50
+)
 
-const width = 50
-const height = 50
-
-var dj = map[int]int{east: 1, west: -1, north: 0, south: 0}
-var di = map[int]int{east: 0, west: 0, north: -1, south: 1}
-var opposite = map[int]int{east: west, west: east, north: south, south: north}
+var (
+	dj       = map[int]int{east: 1, west: -1, north: 0, south: 0}
+	di       = map[int]int{east: 0, west: 0, north: -1, south: 1}
+	opposite = map[int]int{east: west, west: east, north: south, south: north}
+)
 
 // shorturl.at/mQT19
 func dig(i, j int, grid, dist [height][width]int) ([height][width]int, [height][width]int) {
