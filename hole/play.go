@@ -94,7 +94,7 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	case "c-sharp", "f-sharp":
 		cmd.Args = []string{"/compiler/Compiler", "-"}
 	case "fish":
-		cmd.Args = []string{"/usr/bin/fish", "-c", code, "-u"}
+		cmd.Args = []string{"/usr/bin/fish", "--no-prng", "-c", code, "-u"}
 	case "haskell", "php":
 		cmd.Args = []string{"/usr/bin/" + langID, "--"}
 	case "j":
