@@ -44,8 +44,9 @@ func RankingsAchievements(w http.ResponseWriter, r *http.Request) {
 		         COALESCE(CASE WHEN show_country THEN country END, ''),
 		         max,
 		         login,
-		         RANK() OVER(ORDER BY count DESC, max)
+		         RANK() OVER(ORDER BY count DESC)
 		    FROM count JOIN users ON id = user_id
+		ORDER BY rank, max
 		   LIMIT 25`,
 		cheevoID,
 	)

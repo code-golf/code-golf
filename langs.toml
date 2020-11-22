@@ -1,3 +1,22 @@
+['><>']
+size    = '570 KiB'
+version = 'd1b38f9'
+website = '//github.com/primo-ppcg/fish-jit'
+example = '''
+\ printing
+> "!dlroW ,olleH" ooooooooooooo ao 03.
+  looping
+> 0 v
+    >:nao 1+ :9)?v
+v               ~<
+  accessing arguments
+> i : ?!v : 0) ?v ~;
+        a
+        o       o
+        ~
+^       <       <
+'''
+
 [Bash]
 size    = '1.15 MiB'
 version = '5.0.18'
@@ -104,7 +123,7 @@ website = '//gcc.gnu.org/fortran/'
 
 [Go]
 size    = '110 MiB'
-version = '1.15.3'
+version = '1.15.5'
 website = '//go.dev'
 example = '''
 package main
@@ -179,8 +198,8 @@ for (let arg of arguments)
 '''
 
 [Julia]
-size    = '284 MiB'
-version = '1.5.2'
+size    = '279 MiB'
+version = '1.5.3'
 website = '//julialang.org'
 example = '''
 # Printing
@@ -257,7 +276,7 @@ say for @ARGV;
 
 [PHP]
 size    = '10.5 MiB'
-version = '7.4.11'
+version = '7.4.12'
 website = '//www.php.net'
 example = '''
 # Printing
@@ -273,8 +292,8 @@ while ($arg = next($argv))
 '''
 
 [PowerShell]
-size    = '179 MiB'
-version = 'PowerShell 7.0.3 on .NET Core 3.1.7'
+size    = '185 MiB'
+version = 'PowerShell 7.1.0 on .NET 5.0.0'
 website = '//docs.microsoft.com/powershell/scripting/overview'
 
 [Python]
@@ -384,6 +403,6 @@ version = '5.3'
 website = '//swift.org'
 
 [Zig]
-size    = '242 MiB'
-version = '0.6.0'
+size    = '216 MiB'
+version = '0.7.0'
 website = '//ziglang.org'

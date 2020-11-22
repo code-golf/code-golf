@@ -27,6 +27,7 @@ constant @urls = (
     'Rust'       => 'Rust_(programming_language)',
     'SQL'        => 'SQLite',
     'Swift'      => 'Swift_(programming_language)',
+    'Zig'        => 'Zig_(programming_language)',
 );
 
 my %langs = from-toml slurp 'langs.toml';
@@ -36,7 +37,7 @@ for @urls -> (:key($lang), :value($path)) {
 
     my $old = %langs{$lang}<version> ~~ / <[\d.]>+ \d+ /;
     my $new = (await (await $client.get: "https://en.wikipedia.org/wiki/$path").body)
-        ~~ / 'Stable release' .+? '>' ( '#' \d+ ' "' )? <(<[\d.]>+)> /;
+        ~~ / < Stable Preview > ' release' .+? '>' ( '#' \d+ ' "' )? <(<[\d.]>+)> /;
 
     printf " %*s %s → %s\n", INIT { @urls».key».chars.max }, $lang, $old, $new
         unless $old eq $new or $old.starts-with("$new.");

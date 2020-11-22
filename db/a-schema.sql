@@ -6,22 +6,23 @@ CREATE TYPE hole AS ENUM (
     'arabic-to-roman', 'brainfuck', 'christmas-trees', 'css-colors', 'cubes',
     'diamonds', 'divisors', 'emirp-numbers', 'evil-numbers', 'fibonacci',
     'fizz-buzz', 'happy-numbers', 'intersection', 'leap-years',
-    'leyland-numbers', 'lucky-tickets', 'morse-decoder', 'morse-encoder',
-    'niven-numbers', 'odious-numbers', 'ordinal-numbers', 'pangram-grep',
-    'pascals-triangle', 'pernicious-numbers', 'poker', 'prime-numbers',
-    'quine', 'rock-paper-scissors-spock-lizard', 'roman-to-arabic',
-    'rule-110', 'seven-segment', 'sierpiński-triangle', 'spelling-numbers',
-    'sudoku', 'ten-pin-bowling', 'tongue-twisters', 'united-states', 'λ', 'π',
-    'τ', 'φ', '√2', '𝑒'
+    'levenshtein-distance', 'leyland-numbers', 'lucky-tickets',
+    'morse-decoder', 'morse-encoder', 'niven-numbers', 'odious-numbers',
+    'ordinal-numbers', 'pangram-grep', 'pascals-triangle',
+    'pernicious-numbers', 'poker', 'prime-numbers', 'quine',
+    'rock-paper-scissors-spock-lizard', 'roman-to-arabic', 'rule-110',
+    'seven-segment', 'sierpiński-triangle', 'spelling-numbers', 'sudoku',
+    'ten-pin-bowling', 'tongue-twisters', 'united-states', 'vampire-numbers',
+    'λ', 'π', 'τ', 'φ', '√2', '𝑒'
 );
 
 CREATE TYPE keymap AS ENUM ('default', 'vim');
 
 CREATE TYPE lang AS ENUM (
-    'bash', 'brainfuck', 'c', 'c-sharp', 'cobol', 'f-sharp', 'fortran', 'go',
-    'haskell', 'j', 'java', 'javascript', 'julia', 'lisp', 'lua', 'nim',
-    'perl', 'php', 'powershell', 'python', 'raku', 'ruby', 'rust', 'sql',
-    'swift', 'zig'
+    'bash', 'brainfuck', 'c', 'c-sharp', 'cobol', 'f-sharp', 'fish',
+    'fortran', 'go', 'haskell', 'j', 'java', 'javascript', 'julia', 'lisp',
+    'lua', 'nim', 'perl', 'php', 'powershell', 'python', 'raku', 'ruby',
+    'rust', 'sql', 'swift', 'zig'
 );
 
 CREATE TYPE scoring AS ENUM ('bytes', 'chars');
@@ -33,7 +34,7 @@ CREATE TYPE trophy AS ENUM (
     'hello-world', 'inception', 'independence-day', 'interview-ready',
     'its-over-9000', 'my-god-its-full-of-stars', 'ouroboros',
     'patches-welcome', 'pi-day', 'polyglot', 'rtfm', 'slowcoach', 'tim-toady',
-    'the-watering-hole', 'tl-dr', 'twelvetide', 'up-to-eleven'
+    'the-watering-hole', 'tl-dr', 'twelvetide', 'up-to-eleven', 'vampire-byte'
 );
 
 CREATE TABLE code (

@@ -796,6 +796,34 @@ preamble = '''
     to and including <b>2400</b>.
 '''
 
+['Levenshtein Distance']
+category = 'Transform'
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Levenshtein_distance' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Levenshtein_distance' },
+]
+preamble = '''
+<p>
+    The Levenshtein distance is the minimum number of single character edits
+    that are needed to transform one word into another. The available edits
+    are deletion, insertion, or substitution of a single character.
+
+<p>
+    For example the Levenshtein distance between <b>“shine”</b> and
+    <b>“train”</b> is 4:
+
+<ol>
+    <li>shine → shin (deletion of 'e')
+    <li>shin → <b>t</b>shin (insertion of 't')
+    <li>t<b>s</b>hin → t<b>r</b>hin (substitution of 's' for 'r')
+    <li>tr<b>h</b>in → tr<b>a</b>in (substitution of 'h' for 'a')
+</ol>
+
+<p>
+    For each pair of words per argument, print the Levenshtein distance on its
+    own line.
+'''
+
 ['Leyland Numbers']
 category = 'Sequence'
 links = [
@@ -1179,6 +1207,33 @@ preamble = '''
 <p>
     Print all the prime numbers from <b>1</b> to <b>100</b> inclusive, each on
     their own line.
+'''
+
+['Vampire Numbers']
+category = 'Sequence'
+links = [
+    { name = 'OEIS A014575', url = '//oeis.org/A014575' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Vampire_number' },
+    { name = 'Wikipedia',    url = '//wikipedia.org/wiki/Vampire_number' },
+]
+preamble = '''
+<p>
+    A vampire number is a non-negative number that can be factored into two
+    numbers (fangs) each with half as many digits as the original where the
+    two factors contain all the digits of the original, in any order. Both
+    fangs may not have trailing zeros.
+
+<p>
+    For example <b>1260 = 21*60</b>, <b>1395 = 15*93</b>, <b>1435 = 35*41</b>,
+    <b>1530 = 30*51</b>, etc..
+
+<p>
+    Print all the vampire numbers from <b>1</b> to <b>1,000,000</b> inclusive,
+    each on their own line.
+
+<p>
+    Be careful with the algorithmic complexity of your solution to avoid
+    timing out.
 '''
 
 [Quine]

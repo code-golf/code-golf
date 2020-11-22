@@ -9,6 +9,8 @@ WORKDIR twemoji-colr
 
 RUN npm install
 
+COPY ["1fa9e.svg", "svg/"] # Mirror
+
 RUN echo [] > extras/ligatures.json                      \
  && unzip -q twe-svg.zip                                 \
     svg/1f1*-*          `# Flags`                        \
@@ -68,6 +70,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f967.svg       `# Pie`                          \
     svg/1f98e.svg       `# Lizard`                       \
     svg/1f9a5.svg       `# Sloth`                        \
+    svg/1f9db.svg       `# Vampire`                      \
     svg/1f9e0.svg       `# Brain`                        \
     svg/1f9f6.svg       `# Yarn`                         \
     svg/2615.svg        `# Hot Beverage`                 \

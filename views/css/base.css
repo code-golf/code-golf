@@ -13,7 +13,8 @@
                    U+1F300-1F5FF, /* Miscellaneous Symbols and Pictographs */
                    U+1F600-1F64F, /* Emoticons */
                    U+1F680-1F6FF, /* Transport and Map Symbols */
-                   U+1F900-1F9FF; /* Supplemental Symbols and Pictographs */
+                   U+1F900-1F9FF, /* Supplemental Symbols and Pictographs */
+                   U+1FA70-1FAFF; /* Symbols and Pictographs Extended-A */
 }
 
 :root {
@@ -173,6 +174,15 @@ body > header svg {
     width: 1.5rem;
 }
 
+input:not([type]), select {
+    background: #fff;
+    border-radius: .25rem;
+    border: 1px solid var(--grey);
+    font: inherit;
+    line-height: 1.5;
+    padding: .375rem .5rem;
+}
+
 main {
     align-content: start;
     display: grid;
@@ -186,13 +196,7 @@ nav > :empty { flex: 1 }
 
 select {
     appearance: none;
-    background: var(--background) url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path d='M2 0L0 2h4zm0 5L0 3h4' fill='%23343A40'/></svg>") no-repeat right .75rem center/auto calc(100% - 1.5rem);
-    border: 1px solid var(--grey);
-    border-radius: .25rem;
-    cursor: pointer;
-    font: inherit;
-    padding: .5rem;
-    width: 100%;
+    background: #fff url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path d='M2 0L0 2h4zm0 5L0 3h4' fill='%23343A40'/></svg>") no-repeat right .5rem center/auto calc(100% - 1.5rem);
 }
 
 summary {
@@ -260,7 +264,7 @@ thead th {
     border-bottom-width: 2px;
 }
 
-.alert, .hacktoberfest, .info, .success {
+.alert, .info, .success {
     border: 1px solid var(--color);
     display: grid;
     gap: .5rem;
@@ -269,7 +273,7 @@ thead th {
     position: relative;
 }
 
-.alert svg, .hacktoberfest svg, .info svg, .success svg {
+.alert svg, .info svg, .success svg {
     fill: var(--color);
     left: .75rem;
     position: absolute;
@@ -280,16 +284,6 @@ thead th {
 .alert   { background: var(--light-yellow) }
 .info    { background: var(--light-blue) }
 .success { background: var(--light-green) }
-
-.hacktoberfest {
-    background: #dce;
-    padding-left: 5rem;
-}
-
-.hacktoberfest svg {
-    top: calc(50% - 1.75rem);
-    width: 3.5rem;
-}
 
 .bold { font-weight: bold }
 

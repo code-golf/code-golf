@@ -3,7 +3,7 @@ services:
   app:
     build:
       context: ..
-      dockerfile: Dockerfile.dev
+      dockerfile: docker/dev.Dockerfile
     env_file: .env  # Used for testing with prod secrets, NEVER committed.
     environment:
       DEV:       1

@@ -1,22 +1,5 @@
 {{ template "header" . }}
 
-    <div class=hacktoberfest>
-        {{ svg "hacktoberfest" }}
-
-        <p>
-            Why not contribute to
-            <a href=//github.com/code-golf/code-golf>Code Golf</a>
-            for this year's
-            <a href=//hacktoberfest.digitalocean.com>Hacktoberfest</a>?
-
-        <p>
-            Try
-            <a href="//github.com/code-golf/code-golf/issues?q=is:open+label:hacktoberfest">
-                these issues</a>
-            to get you started or come hang out in our
-            <a href=//discord.gg/eVCTkYQ>Discord room</a>.
-    </div>
-
 {{ with .Data.Fails }}
     <div class=alert>
         {{ svg "exclamation-circle" }}
@@ -56,10 +39,8 @@
 
 <main id=index>
     <nav class="nav span">
-    {{ $scoring := .Data.Scoring }}
-
-	{{ range .Data.Scorings }}
-        <a {{ if eq $scoring . }} class=on {{ else }} href="?scoring={{ . }}" {{ end }}>
+    {{ range .Data.Scorings }}
+        <a {{ if ne . $.Data.Scoring }} href="?scoring={{ . }}" {{ end }}>
             {{ title . }}
         </a>
     {{ end }}

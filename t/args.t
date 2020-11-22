@@ -64,6 +64,10 @@ f-sharp
 
     System.Environment.GetCommandLineArgs() |> Array.skip 2 |> Array.iter (printfn "%s")
 
+fish
+
+    i:?!ao
+
 fortran
 
     character(10)::a

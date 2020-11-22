@@ -1,3 +1,6 @@
+/* TODO Stop having "wide" pages, make everything consistent. */
+body { max-width: 90rem }
+
 main {
     gap: .25rem;
     grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
@@ -32,10 +35,11 @@ h3 { padding: .25rem 0 }
 input,
 input.bash:not(:checked)       ~ .bash,
 input.brainfuck:not(:checked)  ~ .brainfuck,
-input.c:not(:checked)          ~ .c,
 input.c-sharp:not(:checked)    ~ .c-sharp,
+input.c:not(:checked)          ~ .c,
 input.cobol:not(:checked)      ~ .cobol,
 input.f-sharp:not(:checked)    ~ .f-sharp,
+input.fish:not(:checked)       ~ .fish,
 input.fortran:not(:checked)    ~ .fortran,
 input.go:not(:checked)         ~ .go,
 input.haskell:not(:checked)    ~ .haskell,
@@ -80,7 +84,7 @@ main svg:nth-of-type(2) {
 
 @media (min-width: 1280px) {
     /* Increase this number when adding a language. */
-    main { grid-template-columns: 4fr repeat(26, 1fr) }
+    main { grid-template-columns: 4fr repeat(27, 1fr) }
 
     main a { height: 1.9rem }
 

@@ -1,6 +1,4 @@
-{{ $countries := .Countries }}
-{{ $me        := false }}
-{{ $path      := .Path }}
+{{ $me := false }}
 
 {{ if .Golfer }}
     {{ $me = eq .Golfer.ID .GolferInfo.ID }}
@@ -11,7 +9,7 @@
         <img src="//avatars.githubusercontent.com/{{ .Name }}?s=192">
         <h1>
             {{ .Name }}
-        {{ with index $countries .Country }}
+        {{ with index $.Countries .Country }}
             <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
         {{ end }}
         </h1>
@@ -43,15 +41,15 @@
 
     <nav class=nav>
         {{ $slug := print "/golfers/" .Name }}
-        <a {{ if ne $path $slug }} href="{{ $slug }}" {{ end }}>Trophies</a>
+        <a {{ if ne $.Path $slug }} href="{{ $slug }}" {{ end }}>Trophies</a>
 
         {{ $slug = print $slug "/holes" }}
-        <a {{ if not (hasPrefix $path $slug) }} href="{{ $slug }}/bytes" {{ end }}>
+        <a {{ if not (hasPrefix $.Path $slug) }} href="{{ $slug }}/bytes" {{ end }}>
             Holes
         </a>
 
     {{ if $me }}
-        <a {{ if ne $path "/golfer/settings" }} href=/golfer/settings {{ end }}>
+        <a {{ if ne $.Path "/golfer/settings" }} href=/golfer/settings {{ end }}>
             Settings
         </a>
     {{ end }}

@@ -100,7 +100,7 @@ func Admin(w http.ResponseWriter, r *http.Request) {
 
 	rows, err = db.Query(
 		`SELECT COALESCE(country, ''), COUNT(*), COUNT(*) / SUM(COUNT(*)) OVER () * 100
-		   FROM users GROUP BY country`,
+		   FROM users GROUP BY COALESCE(country, '')`,
 	)
 	if err != nil {
 		panic(err)

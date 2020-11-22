@@ -14,7 +14,7 @@ if my $unknown = @langs ∖ %langs {
 }
 
 for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
-    my $id  = $name.lc.subst: '#', '-sharp';
+    my $id  = id($name);
     my $img = "codegolf/lang-$id";
 
     # V8 has a pre-builder target too.
@@ -23,6 +23,7 @@ for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
 
     # Tag the builder stage so "docker system prune" won't remove it.
     run «docker build --pull --target builder -t "{$img}-builder" "langs/$id"»;
+
     run «docker build -t $img "langs/$id"»;
     run «docker push $img» unless $no-push;
 
@@ -35,30 +36,50 @@ for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
     %lang<size> = $proc.out.slurp(:close).chomp.subst: /(.)B$/, {" {$0.uc}iB"};
 
     # Version.
-    ( $proc = run «docker run --rm --tmpfs /tmp $img», :out ).sink;
+    if $id eq 'fish' {
+        "langs/$id/Dockerfile".IO.slurp ~~ / ' VERSION=' (\S+) /;
+        %lang<version> = $0;
+    }
+    else {
+        ( my $proc = run «docker run --rm --tmpfs /tmp $img», :out ).sink;
 
-    my $ver = $proc.out.slurp(:close).chomp.trans: "\n" => ' ';
+        my $ver = $proc.out.slurp(:close).chomp.trans: "\n" => ' ';
 
-    given $name {
-        my $digits = $ver ~~ / <[\d.]>+ \d+ /;
+        given $name {
+            my $digits = $ver ~~ / <[\d.]>+ \d+ /;
 
-        when 'C#'
+            when 'C#'
             | 'F#'
             | 'PowerShell' { }
-        when 'C'          { $ver = "Tiny C Compiler $digits" }
-        when 'COBOL'      { $ver = "GnuCOBOL $digits" }
-        when 'Fortran'    { $ver = "GNU Fortran $digits" }
-        when 'Haskell'    { $ver = "Glasgow Haskell Compiler $digits" }
-        when 'JavaScript' { $ver = "V8 $digits" }
-        when 'Lisp'       { $ver = "GNU CLISP $digits" }
-        when 'Raku'       {
-            $ver ~~ m:g/ 'v' (\S+) '.' /;
-            $ver = "Raku $1[0] on Rakudo $0[0]";
+            when 'C'          { $ver = "Tiny C Compiler $digits" }
+            when 'COBOL'      { $ver = "GnuCOBOL $digits" }
+            when 'Fortran'    { $ver = "GNU Fortran $digits" }
+            when 'Haskell'    { $ver = "Glasgow Haskell Compiler $digits" }
+            when 'JavaScript' { $ver = "V8 $digits" }
+            when 'Lisp'       { $ver = "GNU CLISP $digits" }
+            when 'Raku'       {
+                $ver ~~ m:g/ v (\S+) '.' /;
+                $ver = "Raku $1[0] on Rakudo $0[0]";
+            }
+            default { $ver = $digits }
         }
-        default { $ver = $digits }
-    }
 
-    %lang<version> = $ver;
+        %lang<version> = $ver;
+    }
 }
 
 spurt 'langs.toml', to-toml %langs;
+
+# Reorder Dockerfiles: largest first to speed-up partial deploys.
+my $layers;
+my $max = %langs.keys».&id».chars.max;
+
+$layers ~= sprintf(
+    qq[COPY --from=codegolf/lang-%s%s ["/", "/langs/%1\$s/rootfs/"%2\$s] # %8s\n],
+    id(.key), ' ' x $max - id(.key).chars, .value<size>,
+) for %langs.sort: { so .value<size> ~~ /K/, -.value<size>.split(" ")[0], id(.key) };
+
+.spurt: .slurp.subst: / ( 'COPY --from=codegolf' \N+ \n )+ /, $layers
+    for <docker/dev.Dockerfile docker/live.Dockerfile>».IO;
+
+sub id { $^name eq '><>' ?? 'fish' !! $name.lc.subst: '#', '-sharp' }
