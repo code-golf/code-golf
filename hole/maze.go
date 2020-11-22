@@ -20,7 +20,7 @@ var (
 	opposite = map[int]int{east: west, west: east, north: south, south: north}
 )
 
-// shorturl.at/mQT19
+// http://weblog.jamisbuck.org/2010/12/27/maze-generation-recursive-backtracking
 func dig(i, j int, grid, dist [height][width]int) ([height][width]int, [height][width]int) {
 	directions := []int{north, south, west, east}
 	rand.Shuffle(len(directions), func(m, n int) {
@@ -51,7 +51,7 @@ func findExit(dist [height][width]int) (ei, ej int) {
 			}
 		}
 	}
-	return ei, ej
+	return
 }
 
 func tracePath(dist [height][width]int, ei, ej int) (path [height][width]int) {
