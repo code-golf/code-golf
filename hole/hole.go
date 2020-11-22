@@ -43,6 +43,27 @@ func init() {
 			hole.Preamble = template.HTML(html)
 		}
 
+		switch hole.Category {
+		case "Art":
+			hole.CategoryColor = "red"
+			hole.CategoryIcon = "brush"
+		case "Computing":
+			hole.CategoryColor = "orange"
+			hole.CategoryIcon = "cpu"
+		case "Gaming":
+			hole.CategoryColor = "yellow"
+			hole.CategoryIcon = "joystick"
+		case "Mathematics":
+			hole.CategoryColor = "green"
+			hole.CategoryIcon = "calculator"
+		case "Sequence":
+			hole.CategoryColor = "blue"
+			hole.CategoryIcon = "sort-numeric-down"
+		case "Transform":
+			hole.CategoryColor = "purple"
+			hole.CategoryIcon = "shuffle"
+		}
+
 		if hole.Experiment == 0 {
 			List = append(List, hole)
 		} else {
@@ -70,27 +91,6 @@ func init() {
 			List[i].Next = List[0].ID
 		} else {
 			List[i].Next = List[i+1].ID
-		}
-
-		switch hole.Category {
-		case "Art":
-			List[i].CategoryColor = "red"
-			List[i].CategoryIcon = "brush"
-		case "Computing":
-			List[i].CategoryColor = "orange"
-			List[i].CategoryIcon = "cpu"
-		case "Gaming":
-			List[i].CategoryColor = "yellow"
-			List[i].CategoryIcon = "joystick"
-		case "Mathematics":
-			List[i].CategoryColor = "green"
-			List[i].CategoryIcon = "calculator"
-		case "Sequence":
-			List[i].CategoryColor = "blue"
-			List[i].CategoryIcon = "sort-numeric-down"
-		case "Transform":
-			List[i].CategoryColor = "purple"
-			List[i].CategoryIcon = "shuffle"
 		}
 
 		ByID[hole.ID] = List[i]

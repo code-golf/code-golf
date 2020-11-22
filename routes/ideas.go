@@ -3,6 +3,7 @@ package routes
 import (
 	"net/http"
 
+	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/session"
 )
 
@@ -13,6 +14,13 @@ func Ideas(w http.ResponseWriter, r *http.Request) {
 		Title                    string
 	}
 
+	data := struct {
+		Holes []hole.Hole
+		Ideas []idea
+	}{
+		Holes: hole.ExperimentalList,
+	}
+
 	rows, err := session.Database(r).Query(
 		"SELECT * FROM ideas ORDER BY thumbs_up - thumbs_down DESC, title")
 	if err != nil {
@@ -21,8 +29,6 @@ func Ideas(w http.ResponseWriter, r *http.Request) {
 
 	defer rows.Close()
 
-	var ideas []idea
-
 	for rows.Next() {
 		var i idea
 
@@ -30,8 +36,8 @@ func Ideas(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
-		ideas = append(ideas, i)
+		data.Ideas = append(data.Ideas, i)
 	}
 
-	render(w, r, "ideas", "Ideas", ideas)
+	render(w, r, "ideas", "Ideas", data)
 }
