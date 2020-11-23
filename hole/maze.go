@@ -140,6 +140,9 @@ func maze() (args []string, out string) {
 	mazeinput := draw(grid, si, sj, ei, ej, path, false)
 	mazesolved := draw(grid, si, sj, ei, ej, path, true)
 
+	mazeinput = mazeinput[:len(mazeinput)-1]
+	mazesolved = mazesolved[:len(mazesolved)-1]
+
 	args = append(args, mazeinput)
 	out = mazesolved
 	return
