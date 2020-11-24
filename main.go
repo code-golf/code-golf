@@ -122,7 +122,7 @@ func main() {
 
 	// Every minute.
 	go func() {
-		for range time.NewTicker(time.Minute).C {
+		for range time.Tick(time.Minute) {
 			if _, err := db.Exec(
 				"REFRESH MATERIALIZED VIEW CONCURRENTLY medals",
 			); err != nil {
@@ -134,14 +134,14 @@ func main() {
 	// Every 5 minutes.
 	go func() {
 		// Various GitHub API requests.
-		for range time.NewTicker(5 * time.Minute).C {
+		for range time.Tick(5 * time.Minute) {
 			github.Run(db)
 		}
 	}()
 
 	// Every hour.
 	go func() {
-		for range time.NewTicker(time.Hour).C {
+		for range time.Tick(time.Hour) {
 			for _, job := range [...]struct{ name, sql string }{
 				{
 					"expired sessions",
