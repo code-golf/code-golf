@@ -15,7 +15,7 @@ RUN go build -ldflags -s \
 
 FROM scratch
 
-COPY --from=codegolf/lang-swift      ["/", "/langs/swift/rootfs/"     ] #  852 MiB
+COPY --from=codegolf/lang-swift      ["/", "/langs/swift/rootfs/"     ] #  869 MiB
 COPY --from=codegolf/lang-rust       ["/", "/langs/rust/rootfs/"      ] #  588 MiB
 COPY --from=codegolf/lang-fortran    ["/", "/langs/fortran/rootfs/"   ] #  410 MiB
 COPY --from=codegolf/lang-haskell    ["/", "/langs/haskell/rootfs/"   ] #  332 MiB
