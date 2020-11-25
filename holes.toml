@@ -631,14 +631,16 @@ preamble = '''
 '''
 
 [Emojify]
-category   = 'Transform'
-experiment = 262
+category = 'Transform'
 links = [
     { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/List_of_emoticons' },
 ]
-preamble   = '''
-Given each of the following ASCII emoticons print the corresponding Unicode
-emoji.
+preamble = '''
+<p>
+    Given each of the following ASCII emoticons print the corresponding
+    Unicode emoji.
+
+<p>Note despite how they appear below, there are no spaces in the emoticons.
 
 <div id=emojify>
     <div>😀<pre> :-D</pre></div>
