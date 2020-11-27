@@ -1,7 +1,6 @@
 package hole
 
 import (
-	"fmt"
 	"math/rand"
 	"strings"
 )
@@ -149,8 +148,6 @@ func maze() (args []string, out string) {
 		mazesolved := draw(grid, si, sj, ei, ej, path, true)
 
 		mazeinput = mazeinput[:len(mazeinput)-1]
-
-		fmt.Println(mazesolved)
 
 		args = append(args, mazeinput)
 
