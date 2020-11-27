@@ -1,6 +1,7 @@
 package hole
 
 import (
+	"fmt"
 	"math/rand"
 	"strings"
 )
@@ -48,6 +49,10 @@ func findExit(dist [height][width]int) (ei, ej int) {
 			if dist[i][j] > maxd {
 				maxd = dist[i][j]
 				ei, ej = i, j
+				// distance roulette
+				if rand.Float64() < 0.1 {
+					return
+				}
 			}
 		}
 	}
@@ -71,6 +76,7 @@ func tracePath(dist [height][width]int, ei, ej int) (path [height][width]int) {
 				}
 			}
 		}
+
 	}
 	return
 }
@@ -128,22 +134,28 @@ func draw(grid [height][width]int, si, sj, ei, ej int, path [height][width]int, 
 }
 
 func maze() (args []string, out string) {
-	var grid [height][width]int
-	var dist [height][width]int
+	nomazes := rand.Intn(9) + 1
+	for i := 0; i < nomazes; i++ {
+		var grid [height][width]int
+		var dist [height][width]int
 
-	sj := rand.Intn(width)
-	si := rand.Intn(height)
+		sj := rand.Intn(width)
+		si := rand.Intn(height)
 
-	grid, dist = dig(si, sj, grid, dist)
-	ei, ej := findExit(dist)
-	path := tracePath(dist, ei, ej)
-	mazeinput := draw(grid, si, sj, ei, ej, path, false)
-	mazesolved := draw(grid, si, sj, ei, ej, path, true)
+		grid, dist = dig(si, sj, grid, dist)
+		ei, ej := findExit(dist)
+		path := tracePath(dist, ei, ej)
+		mazeinput := draw(grid, si, sj, ei, ej, path, false)
+		mazesolved := draw(grid, si, sj, ei, ej, path, true)
 
-	mazeinput = mazeinput[:len(mazeinput)-1]
-	mazesolved = mazesolved[:len(mazesolved)-1]
+		mazeinput = mazeinput[:len(mazeinput)-1]
 
-	args = append(args, mazeinput)
-	out = mazesolved
+		fmt.Println(mazesolved)
+
+		args = append(args, mazeinput)
+
+		out += mazesolved + "\n"
+	}
+	out = out[:len(out)-2]
 	return
 }
