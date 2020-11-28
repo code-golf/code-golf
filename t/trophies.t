@@ -7,6 +7,7 @@ constant %trophies = <
     19 {the-watering-hole}
     40 {forty-winks}
     42 {dont-panic}
+    50 {bullseye}
 >;
 
 my $dbh = dbh;

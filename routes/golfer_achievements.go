@@ -30,6 +30,7 @@ func GolferAchievements(w http.ResponseWriter, r *http.Request) {
 		trophy.Tree,
 		map[string]*progress{
 			"bakers-dozen":             {0, 13},
+			"bullseye":                 {0, 50},
 			"caffeinated":              {0, 2},
 			"cobowl":                   {0, 1},
 			"dont-panic":               {0, 42},

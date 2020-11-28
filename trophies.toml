@@ -126,6 +126,11 @@ emoji       = '👍'
 description = 'Solve your forty-second hole.'
 
 [[Progression]]
+name        = 'Bullseye'
+emoji       = '🎯'
+description = 'Solve your fiftieth hole.'
+
+[[Progression]]
 name        = 'It’s Over 9000!'
 emoji       = '🐉'
 description = 'Earn over 9,000 points in either bytes or chars scoring.'
