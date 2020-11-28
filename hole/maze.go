@@ -75,7 +75,6 @@ func tracePath(dist [height][width]int, ei, ej int) (path [height][width]int) {
 				}
 			}
 		}
-
 	}
 	return
 }
@@ -133,7 +132,7 @@ func draw(grid [height][width]int, si, sj, ei, ej int, path [height][width]int, 
 }
 
 func maze() (args []string, out string) {
-	nomazes := rand.Intn(9) + 1
+	nomazes := rand.Intn(8) + 2
 	for i := 0; i < nomazes; i++ {
 		var grid [height][width]int
 		var dist [height][width]int

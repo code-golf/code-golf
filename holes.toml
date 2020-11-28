@@ -861,7 +861,7 @@ experiment = 338
 links = [{name='Wikipedia', url='//wikipedia.org/wiki/Maze_solving_algorithm'},]
 preamble = '''
 <p>
-    Find the shortest path from <b>S</b>tart to <b>E</b>nd points. Output the path in the maze with dots. For example
+    For each input maze, find the shortest path from <b>S</b>tart to <b>E</b>nd points. Output the path in the maze with dots. For example:
 
 <pre>
 ███████████       ███████████
