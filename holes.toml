@@ -793,13 +793,12 @@ preamble = '''
     and subtracting one from each element then interpreting it as a binary fraction.
 
 <pre>
-    1 2 2 1 1 2 1 2 2 1 2 2 1 1 2 1 1 2 2 1 2 1 1 2 1 …
-    0 1 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 1 0 1 0 0 1 0 …
+    1 221121221221121122121121…
     0.110010110110010011010010…
     0.7945071927…
 </pre>
 
-<p> Print the Kolakoski constant to 1000 decimal places. </p>
+<p> Print the Kolakoski constant to the first 1,000 decimal places </p>
 '''
 
 ['Kolakoski Sequence']
@@ -897,7 +896,10 @@ category = 'Sequence'
 experiment = 3
 preamble = '''
 <p>
-    The Look and Say sequence starts with 1 and is continued by looking the runs of the same number in the previous element an combining the length with the original number. For example the next element after 111221 would be 312211 (three ones, two twos and one one). 
+    The Look and Say sequence starts with 1 and is continued by looking
+    at each of the runs of the same number in the previous element and combining
+    the length with the original number. For example the next element after
+    111221 would be 312211 (three ones, two twos and one one).
 
 <p>
     Print the first 20 elements of the Look and Say sequence.
