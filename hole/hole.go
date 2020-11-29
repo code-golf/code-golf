@@ -71,13 +71,30 @@ func init() {
 		}
 	}
 
-	// Case-insensitive sort.
+	// Case-insensitive sorts.
+	sort.Slice(ExperimentalList, func(i, j int) bool {
+		return strings.ToLower(ExperimentalList[i].Name) <
+			strings.ToLower(ExperimentalList[j].Name)
+	})
+
 	sort.Slice(List, func(i, j int) bool {
 		return strings.ToLower(List[i].Name) < strings.ToLower(List[j].Name)
 	})
 
-	for _, hole := range ExperimentalList {
-		ExperimentalByID[hole.ID] = hole
+	for i, hole := range ExperimentalList {
+		if i == 0 {
+			ExperimentalList[i].Prev = ExperimentalList[len(ExperimentalList)-1].ID
+		} else {
+			ExperimentalList[i].Prev = ExperimentalList[i-1].ID
+		}
+
+		if i == len(ExperimentalList)-1 {
+			ExperimentalList[i].Next = ExperimentalList[0].ID
+		} else {
+			ExperimentalList[i].Next = ExperimentalList[i+1].ID
+		}
+
+		ExperimentalByID[hole.ID] = ExperimentalList[i]
 	}
 
 	for i, hole := range List {

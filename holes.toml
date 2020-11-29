@@ -782,9 +782,9 @@ preamble = '''
 
 ['Kolakoski Constant']
 category = 'Mathematics'
-experiment = 6
+experiment = -1
 links = [
-   { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Kolakoski_sequence#Kolakoski_Constant' }
+   { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Kolakoski_sequence#Kolakoski_Constant' }
 ]
 preamble = '''
 <p>
@@ -803,7 +803,7 @@ preamble = '''
 
 ['Kolakoski Sequence']
 category = 'Sequence'
-experiment = 5
+experiment = -1
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Kolakoski_sequence' },
     { name = 'OEIS A000002', url = '//oeis.org/A000002' }
@@ -893,7 +893,11 @@ preamble = '''
 
 ['Look and Say']
 category = 'Sequence'
-experiment = 3
+experiment = -1
+links = [
+    { name = 'OEIS A005150', url = '//oeis.org/A005150' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Look-and-say_sequence' },
+]
 preamble = '''
 <p>
     The Look and Say sequence starts with 1 and is continued by looking
@@ -904,7 +908,6 @@ preamble = '''
 <p>
     Print the first 20 elements of the Look and Say sequence.
 '''
-
 
 ['Lucky Tickets']
 category = 'Mathematics'
@@ -918,7 +921,9 @@ preamble = '''
 ['Maze']
 category = 'Gaming'
 experiment = 338
-links = [{name='Wikipedia', url='//wikipedia.org/wiki/Maze_solving_algorithm'},]
+links = [
+    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Maze_solving_algorithm' },
+]
 preamble = '''
 <p>
     For each input maze, find the shortest path from <b>S</b>tart to <b>E</b>nd points. Output the path in the maze with dots. For example:
