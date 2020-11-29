@@ -780,6 +780,52 @@ preamble = '''
 <pre>x1 y1 w1 h1 x2 y2 w2 h2</pre>
 '''
 
+['Kolakoski Constant']
+category = 'Mathematics'
+experiment = 6
+links = [
+   { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Kolakoski_sequence#Kolakoski_Constant' }
+]
+preamble = '''
+<p>
+    The Kolakoski constant is created by taking the
+    <a href="kolakoski-sequence"> Kolakoski sequence </a>
+    and subtracting one from each element then interpreting it as a binary fraction.
+
+<pre>
+    1 2 2 1 1 2 1 2 2 1 2 2 1 1 2 1 1 2 2 1 2 1 1 2 1 …
+    0 1 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 1 0 1 0 0 1 0 …
+    0.110010110110010011010010…
+    0.7945071927…
+</pre>
+
+<p> Print the Kolakoski constant to 1000 decimal places. </p>
+'''
+
+['Kolakoski Sequence']
+category = 'Sequence'
+experiment = 5
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Kolakoski_sequence' },
+    { name = 'OEIS A000002', url = '//oeis.org/A000002' }
+]
+preamble = '''
+<p>
+    The Kolakoski sequence is a self referential sequence where the nth element
+    is the length of the nth run of same numbers in the sequence.
+    This has the interesting property where if you take the run lengths of
+    this sequence, then you will get the same sequence back again.
+    For example, the sequence starting with (1, 2) looks like:
+
+<pre>
+    1 2 2 1 1 2 1 2 2 1 2 2 1 1 2 1 1 2 2 1 2 1 1 2 1…
+    1  2   2  1 1  2  1  2   2  1  2   2  1 1  2  1 1…
+</pre>
+<p>
+    Beginning with (1, 2) output the first 1000 elements in the Kolakoski
+    sequence, separated by spaces.
+'''
+
 ['Leap Years']
 category = 'Sequence'
 links = [
@@ -787,7 +833,7 @@ links = [
 ]
 preamble = '''
 <p>
-    In the Gregorian calendar, a leap year is created by extending Februrary
+    In the Gregorian calendar, a leap year is created by extending February
     to 29 days in order to keep the calendar year synchronized with the
     astronomical year. These longer years occur in years which are multiples
     of <b>4</b>, with the exception of centennial years that aren’t multiples
@@ -845,6 +891,18 @@ preamble = '''
     Print all the leyland numbers from <b>1</b> to <b>100,000,000,000</b>
     inclusive, each on their own line.
 '''
+
+['Look and Say']
+category = 'Sequence'
+experiment = 3
+preamble = '''
+<p>
+    The Look and Say sequence starts with 1 and is continued by looking the runs of the same number in the previous element an combining the length with the original number. For example the next element after 111221 would be 312211 (three ones, two twos and one one). 
+
+<p>
+    Print the first 20 elements of the Look and Say sequence.
+'''
+
 
 ['Lucky Tickets']
 category = 'Mathematics'
