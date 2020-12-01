@@ -1320,9 +1320,9 @@ preamble = '''
 
 ['Recamán']
 category = 'Sequence'
-experimental = 348
+experiment = 348
 links = [
-    { name = 'Numberphile', url = '//www.numberphile.com/videos/slightly-spooky-recaman-sequence' },
+    { name = 'Numberphile', url = '//numberphile.com/videos/slightly-spooky-recaman-sequence' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Recamán%27s_sequence' },
     { name = 'OEIS', url = '//oeis.org/A005132'},
 ]
