@@ -1318,6 +1318,25 @@ preamble = '''
 <p>Trailing whitespace is <b>NOT</b> stripped from the output for this hole.
 '''
 
+['Recamán']
+category = 'Sequence'
+experimental = 348
+links = [
+    { name = 'Numberphile', url = '//www.numberphile.com/videos/slightly-spooky-recaman-sequence' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Recamán%27s_sequence' },
+    { name = 'OEIS', url = '//oeis.org/A005132'},
+]
+preamble = '''
+<p>
+    Starting from zero, each term of the sequence is <b>a(n) = a(n-1) - n</b> but only if <b>a(n) > 0</b>
+     and it has not previously generated. In case the condition doesn't hold, <b>a(n) = a(n-1) + n</b>.
+     Print the first 250 terms of the sequence, separated by spaces:
+
+<p>
+    0 1 3 6 2 7 ...
+'''
+
+
 [Rock-paper-scissors-Spock-lizard]
 category = 'Gaming'
 links = [
