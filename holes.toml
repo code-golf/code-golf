@@ -893,9 +893,9 @@ preamble = '''
 
 ['Look and Say']
 category = 'Sequence'
-experiment = -1
 links = [
     { name = 'OEIS A005150', url = '//oeis.org/A005150' },
+    { name = 'Rosetta Code', url = '//www.rosettacode.org/wiki/Look-and-say_sequence' },
     { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Look-and-say_sequence' },
 ]
 preamble = '''
@@ -905,8 +905,7 @@ preamble = '''
     the length with the original number. For example the next element after
     111221 would be 312211 (three ones, two twos and one one).
 
-<p>
-    Print the first 20 elements of the Look and Say sequence.
+<p>Print the first 20 elements of the Look and Say sequence.
 '''
 
 ['Lucky Tickets']
