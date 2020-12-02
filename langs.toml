@@ -406,7 +406,7 @@ example = '''
 print("Hello, World!")
 
 // Looping
-for n in 0...9 {
+for n in 0...10 {
     print(n)
 }
 
