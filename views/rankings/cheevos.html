@@ -1,13 +1,14 @@
 {{ template "header"   . }}
 {{ template "rankings" . }}
 
+{{ $id := "" }}
+{{ with $.Data.Cheevo }}{{ $id = .ID }}{{ end }}
+
 <main>
     <form class=thin>
-        <input type=hidden value=/rankings/achievements>
+        <input type=hidden value=/rankings/cheevos>
         <select>
             <option value=all>All
-        {{ $id := "" }}
-        {{ with $.Data.Cheevo }}{{ $id = .ID }}{{ end }}
         {{ range $category, $cheevos := .Data.Cheevos }}
             <optgroup label="{{ $category }}">
             {{ range $cheevos }}
@@ -23,13 +24,13 @@
 {{ end }}
 
     <nav class=wide>
-        {{ $slug := "/rankings/achievements/all" }}
-        <a {{ if ne $.Path $slug }} href="{{ $slug }}" {{ end }}>All</a>
+        <a {{ if $id }} href=/rankings/cheevos/all {{ end }}>All</a>
 {{ range $category, $cheevos := .Data.Cheevos }}
         <h2>{{ $category }}</h2>
     {{ range $cheevos }}
-        {{ $slug := print "/rankings/achievements/" .ID }}
-        <a {{ if ne $.Path $slug }} href="{{ $slug }}" {{ end }} title="{{ .Description }}">
+        <a {{ if ne $id .ID }}
+            href="/rankings/cheevos/{{ .ID }}"
+        {{ end }} title="{{ .Description }}">
             <span>{{ .Name }}</span>
             <span>{{ .Emoji }}</span>
         </a>

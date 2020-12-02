@@ -8,8 +8,8 @@ import (
 	"github.com/code-golf/code-golf/trophy"
 )
 
-// RankingsAchievements serves GET /rankings/achievements/{cheevo}
-func RankingsAchievements(w http.ResponseWriter, r *http.Request) {
+// RankingsCheevos serves GET /rankings/cheevos/{cheevo}/{page}
+func RankingsCheevos(w http.ResponseWriter, r *http.Request) {
 	cheevoID := param(r, "cheevo")
 
 	type row struct {
@@ -76,5 +76,5 @@ func RankingsAchievements(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	render(w, r, "rankings/achievements", "Rankings: Achievements", data)
+	render(w, r, "rankings/cheevos", "Rankings: Achievements", data)
 }

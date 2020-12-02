@@ -7,8 +7,8 @@ import (
 	"github.com/code-golf/code-golf/lang"
 )
 
-// RankingsPoints serves GET /rankings/points
-func RankingsPoints(w http.ResponseWriter, r *http.Request) {
+// RankingsHoles serves GET /rankings/holes/{hole}/{lang}/{scoring}/{page}
+func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Holes []hole.Hole
 		Langs []lang.Lang
@@ -17,5 +17,5 @@ func RankingsPoints(w http.ResponseWriter, r *http.Request) {
 		Langs: lang.List,
 	}
 
-	render(w, r, "rankings/points", "Rankings: Points", data)
+	render(w, r, "rankings/holes", "Rankings: Holes", data)
 }

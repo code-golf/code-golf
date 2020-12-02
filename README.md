@@ -66,3 +66,6 @@ $ make e2e
 
 URL slugs are consistently abbreviated (e.g. cheeovs, langs, stats) but page
 titles aren't (e.g. Achievements, Languages, Statistics).
+
+Paginated URLs use a trailing number but only on pages after the first (e.g.
+/rankings/medals/all, /rankings/medals/all/2, etc.).

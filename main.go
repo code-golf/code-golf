@@ -73,9 +73,21 @@ func main() {
 	r.Get("/ideas", routes.Ideas)
 	r.Get("/log-out", routes.LogOut)
 	r.Get("/random", routes.Random)
-	r.Get("/rankings/achievements/{cheevo}", routes.RankingsAchievements)
-	r.Get("/rankings/medals", routes.RankingsMedals)
-	r.Get("/rankings/points", routes.RankingsPoints)
+	r.Route("/rankings", func(r chi.Router) {
+		r.Get("/", redir("/rankings/holes/all/all/all"))
+		r.Get("/cheevos", redir("/rankings/cheevos/all"))
+		r.Get("/holes", redir("/rankings/holes/all/all/all"))
+		r.Get("/medals", redir("/rankings/medals/all/all/all"))
+
+		r.Get("/cheevos/{cheevo}", routes.RankingsCheevos)
+		r.Get("/cheevos/{cheevo}/{page}", routes.RankingsCheevos)
+
+		r.Get("/holes/{hole}/{lang}/{scoring}", routes.RankingsHoles)
+		r.Get("/holes/{hole}/{lang}/{scoring}/{page}", routes.RankingsHoles)
+
+		r.Get("/medals/{hole}/{lang}/{scoring}", routes.RankingsMedals)
+		r.Get("/medals/{hole}/{lang}/{scoring}/{page}", routes.RankingsMedals)
+	})
 	r.Get("/recent", routes.Recent)
 	r.Get("/recent/{lang}", routes.Recent)
 	r.Get("/scores/{hole}/{lang}", routes.Scores)
@@ -177,4 +189,8 @@ func main() {
 
 	// Serve HTTPS.
 	panic(server.ListenAndServeTLS(crt, key))
+}
+
+func redir(url string) http.HandlerFunc {
+	return http.RedirectHandler(url, http.StatusPermanentRedirect).ServeHTTP
 }
