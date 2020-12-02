@@ -3,7 +3,7 @@
 <main>
     <h1 class=span>Statistics</h1>
 
-    <div><h2>Langs</h2>{{ .Data.Langs }}</div>
+    <div><h2>Languages</h2>{{ .Data.Langs }}</div>
     <div><h2>Holes</h2>{{ .Data.Holes }}</div>
     <div><h2>Golfers</h2>{{ comma .Data.Golfers }}</div>
 
@@ -16,12 +16,12 @@
     </div>
 
     <div class=pie>
-        <h2 class=span>Solutions by Holes</h2>
+        <h2 class=span>Solutions by Hole</h2>
         {{ .Data.SolutionsByHole.HTML }}
     </div>
 
     <div class=pie>
-        <h2 class=span>Solutions by Langs</h2>
+        <h2 class=span>Solutions by Language</h2>
         {{ .Data.SolutionsByLang.HTML }}
     </div>
 
