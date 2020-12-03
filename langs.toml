@@ -401,6 +401,20 @@ SELECT arg FROM argv
 size    = '869 MiB'
 version = '5.3.1'
 website = '//swift.org'
+example = '''
+// Printing
+print("Hello, World!")
+
+// Looping
+for n in 0...9 {
+    print(n)
+}
+
+// Accessing arguments
+for arg in CommandLine.arguments[1...]{
+	print(arg)
+}
+'''
 
 [Zig]
 size    = '216 MiB'
