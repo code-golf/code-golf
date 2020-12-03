@@ -412,7 +412,7 @@ for n in 0...9 {
 
 // Accessing arguments
 for arg in CommandLine.arguments[1...]{
-	print("\(arg)")
+	print(arg)
 }
 '''
 
