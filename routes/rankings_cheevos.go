@@ -36,17 +36,20 @@ func RankingsCheevos(w http.ResponseWriter, r *http.Request) {
 
 	rows, err := session.Database(r).Query(
 		`WITH count AS (
-		    SELECT user_id, COUNT(*), MAX(earned)
+		    SELECT user_id, COUNT(*), MAX(earned) earned
 		      FROM trophies
 		     WHERE $1 IN ('all', trophy::text)
 		  GROUP BY user_id
 		) SELECT count,
 		         COALESCE(CASE WHEN show_country THEN country END, ''),
-		         max,
+		         earned,
 		         login,
-		         RANK() OVER(ORDER BY count DESC)
+		         CASE WHEN $1 = 'all'
+		            THEN RANK() OVER(ORDER BY count DESC)
+		            ELSE RANK() OVER(ORDER BY earned)
+		         END
 		    FROM count JOIN users ON id = user_id
-		ORDER BY rank, max
+		ORDER BY rank, earned
 		   LIMIT 25`,
 		cheevoID,
 	)
