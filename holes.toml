@@ -755,7 +755,7 @@ preamble = '''
     their own line.
 '''
 
-[Intersection]
+['Intersection']
 category = 'Mathematics'
 links = [
     { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Intersection' },
@@ -778,6 +778,18 @@ preamble = '''
 <p>Compute the intersection area between two boxes given as
 
 <pre>x1 y1 w1 h1 x2 y2 w2 h2</pre>
+'''
+
+['Julia Set']
+category = 'Art'
+experiment = -1
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Julia_set'},
+    { name = 'Rosettacode', url = '//rosettacode.org/wiki/Julia_set'}
+]
+preamble = '''
+<p>
+    In a 500x500px canvas, draw the Julia for f(z) = z^2 + c, where c = -0.4 + 0.6i. Output the image in ppm grayscale format.
 '''
 
 ['Kolakoski Constant']
@@ -921,11 +933,12 @@ preamble = '''
 category = 'Art'
 experiment = -1
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Mandelbrot_set'}.
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Mandelbrot_set'},
+    { name = 'Rosettacode', url = '//rosettacode.org/wiki/Mandelbrot_set'},
 ]
 preamble = '''
 <p>
-    Draw the Mandelbrot set.
+    Draw with dots the Mandelbrot in a 40x80 ascii grid.
 '''
 
 ['Maze']
