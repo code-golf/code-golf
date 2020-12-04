@@ -8,7 +8,7 @@ sub EXPORT { %( Test::EXPORT::DEFAULT::, TOML::Thumb::EXPORT::DEFAULT:: ) }
 
 # Block until the app is up or we time out.
 react {
-    whenever Promise.in(10) { bail-out 'Timed our waiting for app' }
+    whenever Promise.in(20) { bail-out 'Timed our waiting for app' }
     whenever start {
         sleep .1 until try await IO::Socket::Async.connect: 'app', 1080;
     } { done }

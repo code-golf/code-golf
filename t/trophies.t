@@ -28,7 +28,7 @@ for from-toml slurp 'holes.toml' {
 for <
     brainfuck       brainfuck {inception}
     divisors        php       {elephpant-in-the-room}
-    fizz-buzz       haskell   {interview-ready}
+    fizz-buzz       haskell   {bullseye,interview-ready}
     quine           python    {ouroboros}
     ten-pin-bowling cobol     {cobowl}
 > -> $hole, $lang, $trophies {
