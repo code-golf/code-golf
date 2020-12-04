@@ -1,10 +1,10 @@
-FROM rust:1.47.0-alpine3.12 as builder
+FROM rust:1.48.0-alpine3.12 as builder
 
 RUN mkdir /empty
 
 # Delete the non rustc binaries.
 RUN find /usr/local/cargo/bin \
-    /usr/local/rustup/toolchains/1.47.0-x86_64-unknown-linux-musl/bin \
+    /usr/local/rustup/toolchains/1.48.0-x86_64-unknown-linux-musl/bin \
     -not -name rustc -delete
 
 FROM scratch
