@@ -295,6 +295,20 @@ while ($arg = next($argv))
 size    = '185 MiB'
 version = 'PowerShell 7.1.0 on .NET 5.0.0'
 website = '//docs.microsoft.com/powershell/scripting/overview'
+example = '''
+// Printing
+echo 'Hello, World!'
+
+// Looping
+ForEach ($i in 0..9) {
+    Write-Output $i
+}
+
+// Accessing arguments
+ForEach ($arg in $args) {
+   Write-Output $arg
+}
+'''
 
 [Python]
 size    = '206 MiB'
@@ -411,8 +425,8 @@ for n in 0...9 {
 }
 
 // Accessing arguments
-for arg in CommandLine.arguments[1...]{
-	print(arg)
+for arg in CommandLine.arguments[1...] {
+    print(arg)
 }
 '''
 
