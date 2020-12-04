@@ -755,7 +755,7 @@ preamble = '''
     their own line.
 '''
 
-['Intersection']
+[Intersection]
 category = 'Mathematics'
 links = [
     { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Intersection' },
@@ -929,7 +929,7 @@ preamble = '''
     Each argument describes a ticket numbering system and consists of two numbers separated by a space. The first is the even number of digits. The second is the base of the numbering system (2-16). For each argument, output the total number of lucky tickets for the numbering system on a separate line.
 '''
 
-['Mandelbrot']
+[Mandelbrot]
 category = 'Art'
 experiment = -1
 links = [
@@ -941,7 +941,7 @@ preamble = '''
     Draw with dots the Mandelbrot in a 40x80 ascii grid.
 '''
 
-['Maze']
+[Maze]
 category = 'Gaming'
 experiment = 338
 links = [
