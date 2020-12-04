@@ -3,18 +3,15 @@ FROM alpine:3.12 as builder
 RUN mkdir /empty
 
 RUN apk add -X http://dl-cdn.alpinelinux.org/alpine/edge/testing --no-cache \
-    curl gcc musl-dev nim tcc
+    curl gcc musl-dev tcc
 
-RUN curl -L https://github.com/nim-lang/Nim/archive/v1.4.0.tar.gz | tar xzf - \
- && curl -L https://github.com/nim-lang/csources/archive/v0.20.0.tar.gz | tar xzf -
+RUN curl https://nim-lang.org/download/nim-1.4.2.tar.xz | tar xJf -
 
-RUN mv csources-0.20.0 Nim-1.4.0/csources \
- && cd Nim-*/csources                     \
- && ./build.sh                            \
- && cd ..                                 \
- && ./bin/nim compile -d:release koch     \
- && ./koch boot -d:release                \
- && ./koch install /usr/bin               \
+RUN cd nim-1.4.2            \
+ && ./build.sh              \
+ && ./bin/nim c koch        \
+ && ./koch boot -d:release  \
+ && ./koch install /usr/bin \
  && strip /usr/bin/nim
 
 FROM scratch
