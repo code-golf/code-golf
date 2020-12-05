@@ -10,7 +10,7 @@ main p:not(:first-child) { margin-top: 1rem }
     grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
 }
 
-#langs a {
+#langs .alang {
     overflow: hidden;
     padding: 0 .5rem .25rem;
     text-overflow: ellipsis;
