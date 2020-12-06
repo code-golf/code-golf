@@ -35,7 +35,7 @@ c
 
 c-sharp
 
-    class A {static void Main(string[] args){foreach(var a in args)System.Console.WriteLine(a);}}
+    foreach(var a in args)System.Console.WriteLine(a);
 
 cobol
 

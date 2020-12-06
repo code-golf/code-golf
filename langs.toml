@@ -78,32 +78,22 @@ int main(int argc, char* argv[]) {
 '''
 
 ['C#']
-size    = '141 MiB'
-version = 'C# 8.0 on .NET Core 3.1.7'
+size    = '128 MiB'
+version = 'C# 9.0 on .NET 5.0.0'
 website = '//docs.microsoft.com/dotnet/csharp/'
 example = '''
 using System;
 
-public class Example
-{
-	public static void Main(string[] args)
-	{
-		// Printing
-		Console.WriteLine("Hello, World!");
+// Printing
+Console.WriteLine("Hello, World!");
 
-		// Looping
-		for (int i = 0; i < 10; i++)
-		{
-			Console.WriteLine(i);
-		}
-		
-		// Accessing arguments
-		foreach (String arg in args)
-		{
-			Console.WriteLine(arg);
-		}
-	}
-}
+// Looping
+for (int i = 0; i < 10; i++)
+    Console.WriteLine(i);
+
+// Accessing arguments
+foreach (String arg in args)
+    Console.WriteLine(arg);
 '''
 
 [COBOL]
