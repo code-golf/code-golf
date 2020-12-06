@@ -2,40 +2,20 @@
 {{ template "rankings" . }}
 
 <main>
-    <nav class=wide>
-        {{ $slug := "/rankings/medals" }}
-
-        <h2>Scoring</h2>
-        <a>All</a>
-        <a href="{{ $slug }}">Bytes</a>
-        <a href="{{ $slug }}">Chars</a>
-
-        <h2>Language</h2>
-        <a>All</a>
-    {{ range .Data.Langs }}
-        <a href="{{ $slug }}"><span>{{ .Name }}</span></a>
-    {{ end }}
-
-        <h2>Hole</h2>
-        <a>All</a>
-    {{ range .Data.Holes }}
-        <a href="{{ $slug }}"><span>{{ .Name }}</span></a>
-    {{ end }}
-    </nav>
-
     <table class="nowrap-second sticky">
         <thead>
             <tr>
                 <th>#
                 <th>Golfer
-                <th class=right title=Gold>🥇
-                <th class=right title=Silver>🥈
-                <th class=right title=Bronze>🥉
+                <th>Count
+                <th class=right>Bytes
+                <th class=right>Chars
+                <th class=right>Submitted
         <tbody>
         {{ $name := "" }}
         {{ with .Golfer }}{{ $name = .Name }}{{ end }}
 
-        {{ range .Data.Rows }}
+        {{ range .Data }}
             <tr{{ if eq $name .Login }} class=me {{ end }}>
                 <td>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup>
                 <td>
@@ -46,9 +26,10 @@
                         <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
                     {{ end }}
                     </a>
-                <td class=right>{{ comma .Gold }}
-                <td class=right>{{ comma .Silver }}
-                <td class=right>{{ comma .Bronze }}
+                <td class=right>{{ comma .Count }}
+                <td class=right>{{ comma .Bytes }}
+                <td class=right>{{ comma .Chars }}
+                <td class=right>{{ time .Submitted }}
         {{ end }}
     </table>
 </main>

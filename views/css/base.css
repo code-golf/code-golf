@@ -181,6 +181,7 @@ input:not([type]), select {
     font: inherit;
     line-height: 1.5;
     padding: .375rem .5rem;
+    width: 100%;
 }
 
 main {

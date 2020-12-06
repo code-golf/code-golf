@@ -18,4 +18,10 @@
     {{ end }}>
         Achievements
     </a>
+
+    <a {{ if not (hasPrefix .Path "/rankings/solutions") }}
+        href=/rankings/solutions
+    {{ end }}>
+        Solutions
+    </a>
 </nav>

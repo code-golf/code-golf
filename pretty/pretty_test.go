@@ -32,6 +32,7 @@ func TestComma(t *testing.T) {
 		{"1,234", 1234},
 		{"12,345", 12345},
 		{"123,456", 123456},
+		{"1,234,567", 1234567},
 	} {
 		if got := Comma(tt.i); got != tt.want {
 			t.Errorf("Comma(%v) = %v; want %v", tt.i, got, tt.want)

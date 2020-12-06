@@ -26,11 +26,14 @@ func Bytes(b int) string {
 
 // Comma returns a string of a int with thousand separators. Only 0 - 999,999.
 func Comma(i int) string {
-	if i > 999 {
-		return fmt.Sprintf("%d,%03d", i/1000, i%1000)
+	switch {
+	case i >= 1e6:
+		return fmt.Sprintf("%d,%03d,%03d", i/1e6, i%1e6/1e3, i%1e3)
+	case i >= 1e3:
+		return fmt.Sprintf("%d,%03d", i/1e3, i%1e3)
+	default:
+		return strconv.Itoa(i)
 	}
-
-	return strconv.Itoa(i)
 }
 
 // Ordinal returns the ordinal of a int.

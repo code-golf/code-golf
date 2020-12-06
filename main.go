@@ -87,6 +87,8 @@ func main() {
 
 		r.Get("/medals/{hole}/{lang}/{scoring}", routes.RankingsMedals)
 		r.Get("/medals/{hole}/{lang}/{scoring}/{page}", routes.RankingsMedals)
+
+		r.Get("/solutions", routes.RankingsSolutions)
 	})
 	r.Get("/recent", routes.Recent)
 	r.Get("/recent/{lang}", routes.Recent)
