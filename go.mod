@@ -8,7 +8,7 @@ require (
 	github.com/agnivade/levenshtein v1.1.0
 	github.com/buildkite/terminal v3.2.0+incompatible
 	github.com/dgryski/trifles v0.0.0-20200830180326-aaf60a07f6a3 // indirect
-	github.com/go-chi/chi v4.1.2+incompatible
+	github.com/go-chi/chi v1.5.1
 	github.com/gofrs/uuid v3.3.0+incompatible
 	github.com/golang/protobuf v1.4.3 // indirect
 	github.com/google/go-cmp v0.5.4 // indirect
