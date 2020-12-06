@@ -938,7 +938,8 @@ links = [
 ]
 preamble = '''
 <p>
-    Draw with dots the Mandelbrot in a 40x80 ascii grid.
+    Draw the Mandelbrot set in a 40x80 unicode grid by using ▒ (U+2592)
+    and █ (U+2588).
 '''
 
 [Maze]
