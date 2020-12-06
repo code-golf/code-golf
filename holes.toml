@@ -780,6 +780,18 @@ preamble = '''
 <pre>x1 y1 w1 h1 x2 y2 w2 h2</pre>
 '''
 
+['Julia Set']
+category = 'Art'
+experiment = -1
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Julia_set'},
+    { name = 'Rosettacode', url = '//rosettacode.org/wiki/Julia_set'}
+]
+preamble = '''
+<p>
+    In a 500x500px canvas, draw the Julia for f(z) = z^2 + c, where c = -0.4 + 0.6i. Output the image in ppm grayscale format.
+'''
+
 ['Kolakoski Constant']
 category = 'Mathematics'
 experiment = -1
@@ -917,7 +929,19 @@ preamble = '''
     Each argument describes a ticket numbering system and consists of two numbers separated by a space. The first is the even number of digits. The second is the base of the numbering system (2-16). For each argument, output the total number of lucky tickets for the numbering system on a separate line.
 '''
 
-['Maze']
+[Mandelbrot]
+category = 'Art'
+experiment = -1
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Mandelbrot_set'},
+    { name = 'Rosettacode', url = '//rosettacode.org/wiki/Mandelbrot_set'},
+]
+preamble = '''
+<p>
+    Draw with dots the Mandelbrot in a 40x80 ascii grid.
+'''
+
+[Maze]
 category = 'Gaming'
 experiment = 338
 links = [
