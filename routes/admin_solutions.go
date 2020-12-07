@@ -6,6 +6,8 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	"regexp"
+	"strings"
 	"sync"
 	"time"
 
@@ -25,6 +27,126 @@ type solution struct {
 	LangID   string        `json:"lang"`
 	Stderr   string        `json:"stderr"`
 	Took     time.Duration `json:"took"`
+}
+
+func testCode(code, holeID string, r *http.Request) bool {
+	var passes, fails int
+
+	// Best of three runs.
+	for j := 0; passes < 2 && fails < 2; j++ {
+		score := hole.Play(r.Context(), holeID, "c-sharp", code)
+		if score.Pass {
+			passes++
+		} else {
+			fails++
+		}
+	}
+
+	return passes > fails
+}
+
+func substitueArgs(originalCode, code, args, holeID string, r *http.Request) string {
+	re := regexp.MustCompile(`\b` + args + `\b`)
+	resultCode := originalCode
+
+	// Try first of two strategies.
+	code1 := re.ReplaceAllString(code, "args")
+	if testCode(code1, holeID, r) && len(code1) < len(resultCode) {
+		resultCode = code1
+	}
+
+	// Second strategy: declare new variable and assign args to it.
+	// The variable would have to be used in at least four places for this to help.
+	// Ex: var a=args;aaaa
+	// Vs: argsargsargsargs
+	code2 := "var " + args + "=args;" + code
+	if testCode(code2, holeID, r) && len(code2) < len(resultCode) {
+		resultCode = code2
+	}
+
+	return resultCode
+}
+
+// If the code can be shortened automatically and the new code passes the tests, returns the new code.
+// Otherwise, returns the original code.
+func updateCode(originalCode, holeID string, recursionLevel int, r *http.Request) string {
+	// Find the Class
+	regex := regexp.MustCompile(`(public\s+|internal\s+)?class\s+\w+\s*({{?)`)
+	match := regex.FindStringIndex(originalCode)
+
+	if match == nil {
+		// Can't find class
+		return originalCode
+	}
+
+	submatch := regex.FindStringSubmatch(originalCode)
+	// If this is in a Quine, the { } may be doubled to escape them.
+	endingThing := strings.Repeat("}", len(submatch[2]))
+
+	start := match[0]
+	end := match[1]
+	code1 := originalCode[:start] + originalCode[end:]
+	endIndex := strings.LastIndex(code1, endingThing)
+	if endIndex == -1 {
+		// Can't find end of class
+		return originalCode
+	}
+
+	code1 = code1[:endIndex] + code1[endIndex+len(endingThing):]
+
+	var code2, argsName string
+
+	// Maybe Main uses an expression body.
+	regex = regexp.MustCompile(`(public\s+|private\s+)?static\s+(public\s+|private\s+)?void\s+Main\s*\(\s*(string\[\]\s*(?P<args>\w+))?\s*\)\s*=>\s*`)
+	match = regex.FindStringIndex(code1)
+	if match != nil {
+		start = match[0]
+		end = match[1]
+		code2 = code1[:start] + code1[end:]
+		argsName = regex.FindStringSubmatch(code1)[4]
+	} else {
+		// Find Main with opening square backets
+		regex = regexp.MustCompile(`(public\s+|private\s+)?static\s+(public\s+|private\s+)?void\s+Main\s*\(\s*(string\[\]\s*(?P<args>\w+))?\s*\)\s*({{?)\s*`)
+		match = regex.FindStringIndex(code1)
+
+		if match == nil {
+			// Can't find Main
+			return originalCode
+		}
+
+		submatch = regex.FindStringSubmatch(code1)
+		argsName = submatch[4]
+
+		// If this is in a Quine, the { } may be doubled to escape them.
+		endingThing = strings.Repeat("}", len(submatch[5]))
+
+		start = match[0]
+		end = match[1]
+		code2 = code1[:start] + code1[end:]
+		endIndex = strings.LastIndex(code2, endingThing)
+		if endIndex == -1 {
+			// Can't find end of Main
+			return originalCode
+		}
+
+		code2 = code2[:endIndex] + code2[endIndex+len(endingThing):]
+	}
+
+	resultCode := originalCode
+
+	if len(argsName) > 0 {
+		resultCode = substitueArgs(originalCode, code2, argsName, holeID, r)
+	} else if testCode(code2, holeID, r) {
+		resultCode = code2
+	} else if holeID == "quine" && recursionLevel == 0 {
+		// If we are in a quine, may need to repeat once to fix it.
+		code3 := updateCode(code2, holeID, recursionLevel+1, r)
+		if code3 != code2 {
+			resultCode = code3
+		}
+	}
+
+	return resultCode
 }
 
 // AdminSolutions serves GET /admin/solutions
@@ -52,44 +174,28 @@ func AdminSolutionsRun(w http.ResponseWriter, r *http.Request) {
 			defer wg.Done()
 
 			for s := range solutions {
-				var passes, fails int
-
-				// Best of three runs.
-				for j := 0; passes < 2 && fails < 2; j++ {
-					score := hole.Play(r.Context(), s.HoleID, s.LangID, s.code)
-
-					s.Took = score.Took
-
-					if score.Pass {
-						passes++
-					} else {
-						fails++
-						s.Stderr = string(score.Stderr)
-					}
+				if s.LangID != "c-sharp" {
+					continue
 				}
 
-				s.Pass = passes > fails
+				newCode := updateCode(s.code, s.HoleID, 0, r)
+				if s.code != newCode {
+					// Indicate that it was updated.
+					s.Pass = true
 
-				// If the last run differs from the DB, update the database.
-				//
-				// NOTE It's a little confusing that present is called pass
-				//      but past is called failing, so == is a mismatch.
-				if s.Pass == s.failing {
+					// update the database.
 					if _, err := db.Exec(
-						`UPDATE solutions
-						    SET failing = $1
-						  WHERE code_id = $2
-						    AND hole    = $3
-						    AND lang    = $4
-						    AND user_id = $5`,
-						!s.Pass,
-						s.codeID,
+						`SELECT save_solution(code := $1, hole := $2, lang := $3, user_id := $4)`,
+						newCode,
 						s.HoleID,
 						s.LangID,
 						s.GolferID,
 					); err != nil {
 						panic(err)
 					}
+				} else {
+					// Indicate it was not updated.
+					s.Pass = false
 				}
 
 				b, err := json.Marshal(s)
