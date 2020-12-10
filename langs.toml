@@ -18,8 +18,8 @@ v               ~<
 '''
 
 [Bash]
-size    = '1.15 MiB'
-version = '5.0.18'
+size    = '1.19 MiB'
+version = '5.1.0'
 website = '//www.gnu.org/software/bash/'
 example = '''
 # Printing
@@ -301,8 +301,8 @@ ForEach ($arg in $args) {
 '''
 
 [Python]
-size    = '206 MiB'
-version = '3.9.0'
+size    = '205 MiB'
+version = '3.9.1'
 website = '//www.python.org'
 example = '''
 import sys
