@@ -1,10 +1,12 @@
-FROM adoptopenjdk:14.0.2_8-jdk-hotspot as builder
+FROM adoptopenjdk/openjdk15:jdk-15.0.1_9-debian-slim as builder
 
 RUN mkdir /empty
 
-RUN jlink --compress=2 --module-path /opt/java/openjdk/jmods \
-    --add-modules java.base,jdk.compiler \
-    --output /jlinked
+RUN jlink                                 \
+    --add-modules java.base,jdk.compiler  \
+    --compress=2                          \
+    --module-path /opt/java/openjdk/jmods \
+    --output /opt/jdk
 
 FROM alpine:3.12
 
@@ -15,7 +17,7 @@ FROM scratch
 COPY --from=0 /bin/cat /bin/rm            /bin/
 COPY --from=0 /lib/x86_64-linux-gnu       /lib/x86_64-linux-gnu/
 COPY --from=0 /lib64/ld-linux-x86-64.so.2 /lib64/
-COPY --from=0 /jlinked                    /opt/jdk/
+COPY --from=0 //opt/jdk                   /opt/jdk
 COPY --from=0 /empty                      /proc
 COPY --from=0 /empty                      /tmp
 COPY --from=0 /usr/lib/locale             /usr/lib/locale/

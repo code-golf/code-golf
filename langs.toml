@@ -150,8 +150,8 @@ version = '9.01.01'
 website = '//www.jsoftware.com'
 
 [Java]
-size    = '67.2 MiB'
-version = '14.0.2'
+size    = '68.7 MiB'
+version = '15.0.1'
 website = '//openjdk.java.net'
 example = '''
 class Main {
@@ -403,7 +403,7 @@ SELECT arg FROM argv
 
 [Swift]
 size    = '869 MiB'
-version = '5.3.1'
+version = '5.3.2'
 website = '//swift.org'
 example = '''
 // Printing

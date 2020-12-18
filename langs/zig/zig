@@ -1,11 +1,12 @@
 #!/bin/sh -e
 
-chdir /tmp
+cd /tmp
 
+# Compile
 cat - > code.zig
-
 /usr/local/bin/zig build-exe --global-cache-dir . --strip code.zig
-
 rm code.zig
 
+# Execute
+shift
 exec ./code "$@"
