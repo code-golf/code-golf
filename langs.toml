@@ -266,7 +266,7 @@ say for @ARGV;
 
 [PHP]
 size    = '10.5 MiB'
-version = '7.4.12'
+version = '7.4.13'
 website = '//www.php.net'
 example = '''
 # Printing
@@ -320,8 +320,8 @@ for arg in sys.argv[1:]:
 '''
 
 [Raku]
-size    = '48.7 MiB'
-version = 'Raku 6.d on Rakudo 2020.10'
+size    = '50.6 MiB'
+version = 'Raku 6.d on Rakudo 2020.12'
 website = '//raku.org'
 example = '''
 # Printing

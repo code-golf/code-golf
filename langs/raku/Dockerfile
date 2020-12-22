@@ -4,7 +4,7 @@ RUN mkdir /empty
 
 RUN apk add --no-cache build-base git perl
 
-RUN git clone -b 2020.10 git://github.com/rakudo/rakudo \
+RUN git clone -b 2020.12 git://github.com/rakudo/rakudo \
  && cd rakudo                                           \
  && CFLAGS=-flto ./Configure.pl                         \
     --gen-moar                                          \
