@@ -26,6 +26,7 @@ COPY --from=codegolf/lang-powershell ["/", "/langs/powershell/rootfs/"] #  185 M
 COPY --from=codegolf/lang-c-sharp    ["/", "/langs/c-sharp/rootfs/"   ] #  128 MiB
 COPY --from=codegolf/lang-go         ["/", "/langs/go/rootfs/"        ] #  110 MiB
 COPY --from=codegolf/lang-f-sharp    ["/", "/langs/f-sharp/rootfs/"   ] #  108 MiB
+COPY --from=codegolf/lang-v          ["/", "/langs/v/rootfs/"         ] # 97.1 MiB
 COPY --from=codegolf/lang-java       ["/", "/langs/java/rootfs/"      ] # 68.7 MiB
 COPY --from=codegolf/lang-raku       ["/", "/langs/raku/rootfs/"      ] # 50.6 MiB
 COPY --from=codegolf/lang-lisp       ["/", "/langs/lisp/rootfs/"      ] # 35.4 MiB

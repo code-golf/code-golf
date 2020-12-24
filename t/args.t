@@ -162,6 +162,14 @@ swift
         print(a)
     }
 
+v
+
+    import os
+
+    for a in os.args[1..] {
+        println(a)
+    }
+
 zig
 
     const std = @import("std");

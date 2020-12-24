@@ -410,13 +410,34 @@ example = '''
 print("Hello, World!")
 
 // Looping
-for n in 0...9 {
-    print(n)
+for i in 0...9 {
+    print(i)
 }
 
 // Accessing arguments
 for arg in CommandLine.arguments[1...] {
     print(arg)
+}
+'''
+
+[V]
+size    = '97.1 MiB'
+version = '0.2'
+website = '//vlang.io'
+example = '''
+import os
+
+// Printing
+println('Hello, World!')
+
+// Looping
+for i in 0..10 {
+    println(i)
+}
+
+// Accessing arguments
+for arg in os.args[1..] {
+    println(arg)
 }
 '''
 
