@@ -335,8 +335,8 @@ say 'Hello, World!';
 '''
 
 [Ruby]
-size    = '14.9 MiB'
-version = '2.7.2'
+size    = '14.6 MiB'
+version = '3.0.0'
 website = '//www.ruby-lang.org'
 example = '''
 # Printing
