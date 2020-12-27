@@ -14,6 +14,7 @@ RUN curl https://cache.ruby-lang.org/pub/ruby/3.0/ruby-3.0.0.tar.xz \
 RUN cd ruby-3.0.0          \
  && CC=clang ./configure   \
     --disable-install-doc  \
+    --disable-jit-support  \
     --prefix=/usr          \
  && make -j`nproc` install \
  && strip -s /usr/bin/ruby

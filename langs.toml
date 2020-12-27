@@ -335,7 +335,7 @@ say 'Hello, World!';
 '''
 
 [Ruby]
-size    = '14.6 MiB'
+size    = '14.5 MiB'
 version = '3.0.0'
 website = '//www.ruby-lang.org'
 example = '''
@@ -421,7 +421,7 @@ for arg in CommandLine.arguments[1...] {
 '''
 
 [V]
-size    = '97.1 MiB'
+size    = '96.6 MiB'
 version = '0.2'
 website = '//vlang.io'
 example = '''

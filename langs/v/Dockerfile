@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y gcc git make
 
 RUN git clone -b 0.2 git://github.com/vlang/v /opt/v
 
-RUN cd /opt/v && make
+RUN cd /opt/v && make && strip v
 
 FROM debian:buster-slim
 
