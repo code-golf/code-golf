@@ -19,7 +19,7 @@ v               ~<
 
 [Bash]
 size    = '1.19 MiB'
-version = '5.1.0'
+version = '5.1.4'
 website = '//www.gnu.org/software/bash/'
 example = '''
 # Printing

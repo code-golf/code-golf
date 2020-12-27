@@ -4,7 +4,8 @@ RUN mkdir /empty
 
 RUN apk add --no-cache build-base curl patch
 
-RUN curl https://ftp.gnu.org/gnu/bash/bash-5.1.tar.gz | tar xzf -
+RUN curl https://ftp.gnu.org/gnu/bash/bash-5.1.tar.gz | tar xzf - && cd bash-5.1 \
+ && curl https://ftp.gnu.org/gnu/bash/bash-5.1-patches/bash51-00[1-4] | patch -p0
 
 RUN cd bash-5.1                \
  && ./configure                \
