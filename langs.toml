@@ -144,6 +144,32 @@ size    = '332 MiB'
 version = 'Glasgow Haskell Compiler 8.8.4'
 website = '//www.haskell.org/ghc/'
 
+[Hexagony]
+size    = '19.9 MiB'
+version = 'f749e59'
+website = '//esolangs.org/wiki/Hexagony'
+example = '''
+          \ P r i n t i n g .
+         \ H ; e ; l ; ; o ; \
+        / o ; W ; 0 P ; 2 Q < .
+       . > ; r ; l ; d ; P 1 ; \
+      > * . . . . . . . . . . < .
+     . . . . . . . . . . . . . . .
+    . . L o o p i n g . . . . . . .
+   \ 1 0 ; " $ / } ! ) " ; \ . . . .
+  . . . . . . . > . - " = < . . . . .
+ . / . . . . . < . . . . . . . . . . .
+  . . . . . . . . . . . . . . . . . .
+   . . . A c c e s s i n g . . . . .
+    . . . A r g u m e n t s . . . .
+     . . . . . . > \ . @ . . . . .
+      . > $ > , < \ ) < . . . . .
+       . . \ . ; / $ 0 / . . . .
+        . . . . . . . . . . . .
+         . . . . . . . . . . .
+          . . . . . . . . . .
+'''
+
 [J]
 size    = '3.3 MiB'
 version = '9.01.01'

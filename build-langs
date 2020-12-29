@@ -36,7 +36,7 @@ for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
     %lang<size> = $proc.out.slurp(:close).chomp.subst: /(.)B$/, {" {$0.uc}iB"};
 
     # Version.
-    if $id eq 'fish' {
+    if $id eq 'fish'|'hexagony' {
         "langs/$id/Dockerfile".IO.slurp ~~ / ' VERSION=' (\S+) /;
         %lang<version> = $0;
     }
