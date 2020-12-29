@@ -15,48 +15,23 @@ func GolferTrophies(w http.ResponseWriter, r *http.Request) {
 	type EarnedTrophy struct {
 		Count, Percent int
 		Earned         sql.NullTime
-		Trophy         *trophy.Trophy
 	}
 
 	data := struct {
-		Max      int
-		Trophies []EarnedTrophy
+		Earned   map[string]EarnedTrophy
+		Trophies map[string][]*trophy.Trophy
 	}{
-		Trophies: make([]EarnedTrophy, 0, len(trophy.List)),
+		map[string]EarnedTrophy{},
+		trophy.Tree,
 	}
 
-	tx, err := session.Database(r).BeginTx(
-		r.Context(),
-		&sql.TxOptions{Isolation: sql.LevelRepeatableRead, ReadOnly: true},
-	)
-	if err != nil {
-		panic(err)
-	}
-
-	defer tx.Rollback()
-
-	if err := tx.QueryRow(
-		"SELECT COUNT(DISTINCT user_id) FROM trophies",
-	).Scan(&data.Max); err != nil {
-		panic(err)
-	}
-
-	if data.Max == 0 {
-		data.Max = 1
-	}
-
-	rows, err := tx.Query(
+	rows, err := session.Database(r).Query(
 		`WITH count AS (
-		    SELECT trophy, COUNT(user_id)
-		      FROM (SELECT UNNEST(ENUM_RANGE(NULL::trophy)) trophy) x
-		 LEFT JOIN trophies USING(trophy)
-		  GROUP BY trophy
+		    SELECT trophy, COUNT(*) FROM trophies GROUP BY trophy
 		), earned AS (
 		    SELECT trophy, earned FROM trophies WHERE user_id = $1
-		)  SELECT *
-		     FROM count
-		LEFT JOIN earned USING(trophy)
-		 ORDER BY count DESC, trophy`,
+		) SELECT *, count * 100 / (SELECT COUNT(*) FROM users)
+		    FROM count LEFT JOIN earned USING(trophy)`,
 		golfer.ID,
 	)
 	if err != nil {
@@ -71,21 +46,15 @@ func GolferTrophies(w http.ResponseWriter, r *http.Request) {
 			&trophyID,
 			&earned.Count,
 			&earned.Earned,
+			&earned.Percent,
 		); err != nil {
 			panic(err)
 		}
 
-		earned.Percent = earned.Count * 100 / data.Max
-		earned.Trophy = trophy.ByID[trophyID]
-
-		data.Trophies = append(data.Trophies, earned)
+		data.Earned[trophyID] = earned
 	}
 
 	if err := rows.Err(); err != nil {
-		panic(err)
-	}
-
-	if err := tx.Commit(); err != nil {
 		panic(err)
 	}
 
