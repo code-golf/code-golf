@@ -62,7 +62,8 @@ CREATE TABLE users (
     delete       timestamp,
     keymap       keymap    NOT NULL DEFAULT 'default',
     country      char(2),
-    show_country bool NOT NULL DEFAULT false
+    show_country bool      NOT NULL DEFAULT false,
+    started      timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW())
 );
 
 CREATE TABLE sessions (
