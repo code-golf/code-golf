@@ -9,8 +9,9 @@
                 <th>Golfer
                 <th>Count
                 <th class=right>Bytes
+                <th class=right>Per
                 <th class=right>Chars
-                <th class=right>Submitted
+                <th class=right>Per
         <tbody>
         {{ $name := "" }}
         {{ with .Golfer }}{{ $name = .Name }}{{ end }}
@@ -28,8 +29,9 @@
                     </a>
                 <td class=right>{{ comma .Count }}
                 <td class=right>{{ comma .Bytes }}
+                <td class=right>{{ .BytesPer }}
                 <td class=right>{{ comma .Chars }}
-                <td class=right>{{ time .Submitted }}
+                <td class=right>{{ .CharsPer }}
         {{ end }}
     </table>
 </main>
