@@ -2,21 +2,35 @@
 {{ template "golfer" . }}
 
 <main>
-{{ range .Data.Trophies }}
-    <div class="trophy {{ if not .Earned.Valid }} locked {{ end }}">
-        <div>{{ .Trophy.Emoji }}</div>
-        <h2>{{ .Trophy.Name }}</h2>
-        <p>{{ .Trophy.Description }}
-        <p>
-            Won by {{ comma .Count }} golfer{{ if ne .Count 1 }}s{{ end }}
-            ({{ .Percent }}%)
-            <progress value="{{ .Count }}" max="{{ $.Data.Max }}"></progress>
-        {{ if .Earned.Valid }}
-            Won {{ time .Earned.Value }}
-        {{ else }}
-            <span>Not yet won</span>
+{{ range $category, $trophies := .Data.Trophies }}
+    <details open>
+        <div>
+        {{ $i := 0 }}
+        {{ range $trophies }}
+            {{ $earned := index $.Data.Earned .ID }}
+
+            <div class="trophy {{ if $earned.Earned.Valid }} earned {{ end }}">
+                <div>{{ .Emoji }}</div>
+                <h3>{{ .Name }}</h3>
+                <p>{{ .Description }}
+                <p>
+                {{ with $earned }}
+                    <span>
+                    {{ if .Earned.Valid }}
+                        {{ $i = inc $i }}
+                        Earned {{ time .Earned.Value }}
+                    {{ else }}
+                        Not yet earned
+                    {{ end }}
+                    </span>
+                    {{ .Count | comma }} golfer{{ if ne .Count 1 }}s{{ end }}
+                    ({{ .Percent }}%)
+                {{ end }}
+            </div>
         {{ end }}
-    </div>
+        </div>
+        <summary>[ {{ $i }} / {{ len $trophies }} ] {{ $category }}</summary>
+    </details>
 {{ end }}
 </main>
 

@@ -18,8 +18,8 @@ v               ~<
 '''
 
 [Bash]
-size    = '1.15 MiB'
-version = '5.0.18'
+size    = '1.19 MiB'
+version = '5.1.4'
 website = '//www.gnu.org/software/bash/'
 example = '''
 # Printing
@@ -150,8 +150,8 @@ version = '9.01.01'
 website = '//www.jsoftware.com'
 
 [Java]
-size    = '67.2 MiB'
-version = '14.0.2'
+size    = '68.7 MiB'
+version = '15.0.1'
 website = '//openjdk.java.net'
 example = '''
 class Main {
@@ -266,7 +266,7 @@ say for @ARGV;
 
 [PHP]
 size    = '10.5 MiB'
-version = '7.4.12'
+version = '7.4.13'
 website = '//www.php.net'
 example = '''
 # Printing
@@ -301,8 +301,8 @@ ForEach ($arg in $args) {
 '''
 
 [Python]
-size    = '206 MiB'
-version = '3.9.0'
+size    = '205 MiB'
+version = '3.9.1'
 website = '//www.python.org'
 example = '''
 import sys
@@ -320,8 +320,8 @@ for arg in sys.argv[1:]:
 '''
 
 [Raku]
-size    = '48.7 MiB'
-version = 'Raku 6.d on Rakudo 2020.10'
+size    = '50.6 MiB'
+version = 'Raku 6.d on Rakudo 2020.12'
 website = '//raku.org'
 example = '''
 # Printing
@@ -335,8 +335,8 @@ say 'Hello, World!';
 '''
 
 [Ruby]
-size    = '14.9 MiB'
-version = '2.7.2'
+size    = '14.5 MiB'
+version = '3.0.0'
 website = '//www.ruby-lang.org'
 example = '''
 # Printing
@@ -403,20 +403,41 @@ SELECT arg FROM argv
 
 [Swift]
 size    = '869 MiB'
-version = '5.3.1'
+version = '5.3.2'
 website = '//swift.org'
 example = '''
 // Printing
 print("Hello, World!")
 
 // Looping
-for n in 0...9 {
-    print(n)
+for i in 0...9 {
+    print(i)
 }
 
 // Accessing arguments
 for arg in CommandLine.arguments[1...] {
     print(arg)
+}
+'''
+
+[V]
+size    = '96.6 MiB'
+version = '0.2'
+website = '//vlang.io'
+example = '''
+import os
+
+// Printing
+println('Hello, World!')
+
+// Looping
+for i in 0..10 {
+    println(i)
+}
+
+// Accessing arguments
+for arg in os.args[1..] {
+    println(arg)
 }
 '''
 

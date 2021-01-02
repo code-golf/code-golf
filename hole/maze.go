@@ -10,8 +10,8 @@ const (
 	south  = 2
 	west   = 4
 	east   = 8
-	width  = 50
-	height = 50
+	width  = 25
+	height = 25
 )
 
 var (

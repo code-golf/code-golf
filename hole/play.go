@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"context"
+	"embed"
 	"errors"
 	"os/exec"
 	"strings"
@@ -13,6 +14,9 @@ import (
 )
 
 const timeout = 7 * time.Second
+
+//go:embed answers
+var answers embed.FS
 
 type Scorecard struct {
 	Answer         string
@@ -65,7 +69,11 @@ func getAnswer(holeID, code string) ([]string, string) {
 	case "united-states":
 		args, answer = unitedStates()
 	default:
-		answer = answers[holeID]
+		if b, err := answers.ReadFile("answers/" + holeID + ".txt"); err != nil {
+			panic(err)
+		} else {
+			answer = string(bytes.TrimSuffix(b, []byte{'\n'}))
+		}
 	}
 
 	return args, answer
@@ -114,8 +122,6 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		}
 	case "nim":
 		cmd.Args = []string{"/usr/bin/nim", "-o:/tmp/code", "-r", "c", "-"}
-	case "zig":
-		cmd.Args = []string{"/usr/bin/" + langID}
 	default:
 		cmd.Args = []string{"/usr/bin/" + langID, "-"}
 	}

@@ -74,8 +74,8 @@
     </details>
 
     <nav class=nav>
-        <a {{ if $charsScoring }} href=bytes {{ end }}>Bytes</a>
-        <a {{ if $bytesScoring }} href=chars {{ end }}>Chars</a>
+        <a {{ if $charsScoring }} href="/scores/{{ $holeID }}/{{ $langID }}/bytes" {{ end }}>Bytes</a>
+        <a {{ if $bytesScoring }} href="/scores/{{ $holeID }}/{{ $langID }}/chars" {{ end }}>Chars</a>
     </nav>
 
     <table class="nowrap-second sticky">
