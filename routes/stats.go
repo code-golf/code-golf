@@ -42,17 +42,11 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 
 	if err := db.QueryRow(
 		`WITH distinct_solutions AS (
-		  SELECT DISTINCT ON (hole, lang, user_id, code_id)
-		         hole,
-		         lang,
-		         user_id,
-		         code_id,
-		         bytes
+		  SELECT DISTINCT ON (hole, lang, user_id, code_id) bytes
 		    FROM solutions
 		    JOIN code ON code_id = code.id
 		   WHERE NOT failing
-		) SELECT COALESCE(SUM(bytes), 0), COUNT(*)
-		    FROM distinct_solutions`,
+		) SELECT COALESCE(SUM(bytes), 0), COUNT(*) FROM distinct_solutions`,
 	).Scan(&data.Bytes, &data.Solutions); err != nil {
 		panic(err)
 	}

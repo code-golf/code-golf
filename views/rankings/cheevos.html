@@ -24,7 +24,9 @@
 {{ end }}
 
     <nav class=wide>
-        <a {{ if $id }} href=/rankings/cheevos/all {{ end }}>All</a>
+        <a {{ if $id }} href=/rankings/cheevos/all {{ end }}>
+            <span>All</span>
+        </a>
 {{ range $category, $cheevos := .Data.Cheevos }}
         <h2>{{ $category }}</h2>
     {{ range $cheevos }}

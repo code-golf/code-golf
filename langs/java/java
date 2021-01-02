@@ -1,27 +1,16 @@
 #!/bin/bash -e
 
-export LANG=C.UTF-8
-export LANGUAGE=C:en
-export LC_CTYPE="C.UTF-8"
-export LC_NUMERIC="C.UTF-8"
-export LC_TIME="C.UTF-8"
-export LC_COLLATE="C.UTF-8"
-export LC_MONETARY="C.UTF-8"
-export LC_MESSAGES="C.UTF-8"
-export LC_PAPER="C.UTF-8"
-export LC_NAME="C.UTF-8"
-export LC_ADDRESS="C.UTF-8"
-export LC_TELEPHONE="C.UTF-8"
-export LC_MEASUREMENT="C.UTF-8"
-export LC_IDENTIFICATION="C.UTF-8"
 export LC_ALL=C.UTF-8
 
-shift
-cat - > /tmp/code.java
-/opt/jdk/bin/javac /tmp/code.java
-rm /tmp/code.java
-
 cd /tmp
+
+# Compile
+cat - > code.java
+/opt/jdk/bin/javac code.java
+rm code.java
+
+# Execute
+shift
 shopt -s nullglob
 printf -v class %s *.class
-/opt/jdk/bin/java "${class/.class*/}" "$@"
+exec /opt/jdk/bin/java "${class/.class*/}" "$@"

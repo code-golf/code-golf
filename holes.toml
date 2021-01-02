@@ -938,7 +938,8 @@ links = [
 ]
 preamble = '''
 <p>
-    Draw with dots the Mandelbrot in a 40x80 ascii grid.
+    Draw the Mandelbrot set in a 40x80 unicode grid by using ▒ (U+2592)
+    and █ (U+2588).
 '''
 
 [Maze]
@@ -1343,17 +1344,19 @@ preamble = '''
 
 ['Recamán']
 category = 'Sequence'
-experiment = 348
 links = [
-    { name = 'Numberphile', url = '//numberphile.com/videos/slightly-spooky-recaman-sequence' },
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Recamán%27s_sequence' },
+    { name = 'Numberphile',  url = '//numberphile.com/videos/slightly-spooky-recaman-sequence' },
     { name = 'OEIS A005132', url = '//oeis.org/A005132'},
+    { name = 'Rosetta Code', url = "//rosettacode.org/wiki/Recaman's_sequence" },
+    { name = 'Wikipedia',    url = "//www.wikipedia.org/wiki/Recamán's_sequence" },
 ]
 preamble = '''
 <p>
-    Starting from zero, each term of the sequence is <b>a(n) = a(n-1) - n</b> but only if <b>a(n) > 0</b>
-     and it has not previously generated. In case the condition doesn't hold, <b>a(n) = a(n-1) + n</b>.
-     Print the first 250 terms of the sequence one per line.
+    Starting from zero, each term of the sequence is <b>a(n) = a(n-1) - n</b>
+    but only if <b>a(n) > 0</b> and it has not previously generated. In case
+    the condition doesn't hold, <b>a(n) = a(n-1) + n</b>.
+
+<p>Print the first <b>250</b> terms of the sequence one per line.
 '''
 
 

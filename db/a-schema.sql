@@ -9,7 +9,7 @@ CREATE TYPE hole AS ENUM (
     'levenshtein-distance', 'leyland-numbers', 'look-and-say',
     'lucky-tickets', 'morse-decoder', 'morse-encoder', 'niven-numbers',
     'odious-numbers', 'ordinal-numbers', 'pangram-grep', 'pascals-triangle',
-    'pernicious-numbers', 'poker', 'prime-numbers', 'quine',
+    'pernicious-numbers', 'poker', 'prime-numbers', 'quine', 'recamán',
     'rock-paper-scissors-spock-lizard', 'roman-to-arabic', 'rule-110',
     'seven-segment', 'sierpiński-triangle', 'spelling-numbers', 'sudoku',
     'ten-pin-bowling', 'tongue-twisters', 'united-states', 'vampire-numbers',
@@ -22,7 +22,7 @@ CREATE TYPE lang AS ENUM (
     'bash', 'brainfuck', 'c', 'c-sharp', 'cobol', 'f-sharp', 'fish',
     'fortran', 'go', 'haskell', 'j', 'java', 'javascript', 'julia', 'lisp',
     'lua', 'nim', 'perl', 'php', 'powershell', 'python', 'raku', 'ruby',
-    'rust', 'sql', 'swift', 'zig'
+    'rust', 'sql', 'swift', 'v', 'zig'
 );
 
 CREATE TYPE scoring AS ENUM ('bytes', 'chars');
@@ -62,7 +62,8 @@ CREATE TABLE users (
     delete       timestamp,
     keymap       keymap    NOT NULL DEFAULT 'default',
     country      char(2),
-    show_country bool NOT NULL DEFAULT false
+    show_country bool      NOT NULL DEFAULT false,
+    started      timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW())
 );
 
 CREATE TABLE sessions (

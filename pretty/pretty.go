@@ -8,8 +8,7 @@ import (
 	"time"
 )
 
-const day = 24 * time.Hour
-
+// Bytes returns a string of integer bytes formatted as B/KiB/MiB.
 func Bytes(b int) string {
 	const unit = 1024
 	if b < unit {
@@ -24,7 +23,7 @@ func Bytes(b int) string {
 	return fmt.Sprintf("%.1f %ciB", float64(b)/float64(div), "KM"[exp])
 }
 
-// Comma returns a string of a int with thousand separators. Only 0 - 999,999.
+// Comma returns a string of an integer with thousand separators.
 func Comma(i int) string {
 	switch {
 	case i >= 1e6:
@@ -36,7 +35,7 @@ func Comma(i int) string {
 	}
 }
 
-// Ordinal returns the ordinal of a int.
+// Ordinal returns the ordinal of an integer.
 func Ordinal(i int) string {
 	switch i % 10 {
 	case 1:
@@ -74,6 +73,8 @@ func Ordinal(i int) string {
 //          ...
 //  31 Dec 2020
 func Time(t time.Time) template.HTML {
+	const day = 24 * time.Hour
+
 	var sb strings.Builder
 
 	rfc := t.Format(time.RFC3339)
