@@ -354,8 +354,8 @@ end
 '''
 
 [Rust]
-size    = '614 MiB'
-version = '1.48.0'
+size    = '619 MiB'
+version = '1.49.0'
 website = '//www.rust-lang.org'
 example = '''
 fn main() {
