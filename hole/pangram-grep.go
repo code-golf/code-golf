@@ -8,7 +8,7 @@ import (
 func pangramGrep() (args []string, out string) {
 	// They all start lowercase and valid.
 	pangrams := [][]byte{
-		[]byte("6>_4\"gv9lb?2!ic7=-m'fd30ph].o%@w+[8unk&t1es<az(x;$^y#)q,rj\\5/*:"),
+		[]byte("6>_4\"gv9lb?2!ic7}=-m'fd30ph].o%@w+[8unk&t1es<az(x;${^y#)q,rj\\5/*:"),
 		[]byte(`a large fawn jumped quickly over white zinc boxes.`),
 		[]byte(`all questions asked by five watched experts amaze the judge.`),
 		[]byte(`a quick movement of the enemy will jeopardize six gunboats.`),
@@ -73,6 +73,19 @@ func pangramGrep() (args []string, out string) {
 			if 'a' <= letter && letter <= 'z' && rand.Intn(2) == 0 {
 				pangram[j] -= 32
 			}
+		}
+	}
+
+	// Insert 0-3 random post-'z' characters
+	for i, pangram := range pangrams {
+		for times := rand.Intn(8)-4; times > 0; times-- {
+			c := '{' + byte(rand.Intn(4))
+			pos := rand.Intn(len(pangram))
+
+			pangram = append(pangram, 0)
+			copy(pangram[pos+1:], pangram[pos:])
+			pangram[pos] = c
+			pangrams[i] = pangram
 		}
 	}
 
