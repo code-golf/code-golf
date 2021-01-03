@@ -46,7 +46,7 @@ func sumDigits(number int64, base int64) int64 {
 }
 
 func luckyTickets() ([]string, string) {
-	tickets := make([]ticket, len(data))
+	tickets := make([]ticket, 0, len(data))
 	copy(tickets, data)
 
 	// Randomly generate additional test cases.

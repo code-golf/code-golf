@@ -78,7 +78,7 @@ func pangramGrep() (args []string, out string) {
 
 	// Insert 0-3 random post-'z' characters
 	for i, pangram := range pangrams {
-		for times := rand.Intn(8)-4; times > 0; times-- {
+		for times := rand.Intn(8) - 4; times > 0; times-- {
 			c := '{' + byte(rand.Intn(4))
 			pos := rand.Intn(len(pangram))
 
