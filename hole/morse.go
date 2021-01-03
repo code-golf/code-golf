@@ -45,13 +45,17 @@ var morseMap = map[rune]string{
 	' ': "    ",
 }
 
-func morse(reverse bool) (args []string, out string) {
-	digits := []string{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
+func shuffle(str string) string {
+	chars := []byte(str)
 
-	rand.Shuffle(len(digits), func(i, j int) {
-		digits[i], digits[j] = digits[j], digits[i]
+	rand.Shuffle(len(chars), func(i, j int) {
+		chars[i], chars[j] = chars[j], chars[i]
 	})
 
+	return string(chars)
+}
+
+func morse(reverse bool) (args []string, out string) {
 	words := []string{
 		"BUD",
 		"FOR",
@@ -60,7 +64,8 @@ func morse(reverse bool) (args []string, out string) {
 		"QUICK",
 		"VEX",
 		"WALTZ",
-		strings.Join(digits, ""),
+		shuffle("0123456789"),
+		shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ"),
 	}
 
 	rand.Shuffle(len(words), func(i, j int) {
