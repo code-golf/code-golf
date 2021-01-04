@@ -7,7 +7,6 @@ RUN apk add --no-cache build-base git linux-headers tzdata \
 
 COPY --from=codegolf/lang-swift      ["/", "/langs/swift/rootfs/"     ] #  869 MiB
 COPY --from=codegolf/lang-rust       ["/", "/langs/rust/rootfs/"      ] #  619 MiB
-COPY --from=codegolf/lang-fortran    ["/", "/langs/fortran/rootfs/"   ] #  410 MiB
 COPY --from=codegolf/lang-haskell    ["/", "/langs/haskell/rootfs/"   ] #  332 MiB
 COPY --from=codegolf/lang-julia      ["/", "/langs/julia/rootfs/"     ] #  279 MiB
 COPY --from=codegolf/lang-zig        ["/", "/langs/zig/rootfs/"       ] #  216 MiB
@@ -17,6 +16,7 @@ COPY --from=codegolf/lang-c-sharp    ["/", "/langs/c-sharp/rootfs/"   ] #  128 M
 COPY --from=codegolf/lang-go         ["/", "/langs/go/rootfs/"        ] #  110 MiB
 COPY --from=codegolf/lang-f-sharp    ["/", "/langs/f-sharp/rootfs/"   ] #  108 MiB
 COPY --from=codegolf/lang-v          ["/", "/langs/v/rootfs/"         ] # 96.6 MiB
+COPY --from=codegolf/lang-fortran    ["/", "/langs/fortran/rootfs/"   ] # 85.7 MiB
 COPY --from=codegolf/lang-java       ["/", "/langs/java/rootfs/"      ] # 68.7 MiB
 COPY --from=codegolf/lang-raku       ["/", "/langs/raku/rootfs/"      ] # 50.6 MiB
 COPY --from=codegolf/lang-lisp       ["/", "/langs/lisp/rootfs/"      ] # 35.4 MiB

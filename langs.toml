@@ -107,8 +107,8 @@ version = 'F# 4.7 on .NET Core 3.1.7'
 website = '//fsharp.org'
 
 [Fortran]
-size    = '410 MiB'
-version = 'GNU Fortran 9.3.0'
+size    = '85.7 MiB'
+version = 'GNU Fortran 10.2.0'
 website = '//gcc.gnu.org/fortran/'
 
 [Go]

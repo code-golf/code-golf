@@ -1,8 +1,10 @@
 #!/bin/sh -e
 
-export PATH
+# Compile
 cat - > /tmp/code.f90
-/fortran/bin/gfortran -fbackslash /tmp/code.f90 -o /tmp/code
+/usr/local/bin/gfortran -fbackslash -o /tmp/code /tmp/code.f90
 rm /tmp/code.f90
+
+# Execute
 shift
-/tmp/code "$@"
+exec /tmp/code "$@"
