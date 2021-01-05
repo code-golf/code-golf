@@ -212,8 +212,8 @@ version = 'GNU CLISP 2.49.92'
 website = '//clisp.sourceforge.io'
 
 [Lua]
-size    = '314 KiB'
-version = '5.4.1'
+size    = '318 KiB'
+version = '5.4.2'
 website = '//www.lua.org'
 example = '''
 -- Printing

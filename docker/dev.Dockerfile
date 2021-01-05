@@ -32,7 +32,7 @@ COPY --from=codegolf/lang-c          ["/", "/langs/c/rootfs/"         ] # 1.58 M
 COPY --from=codegolf/lang-bash       ["/", "/langs/bash/rootfs/"      ] # 1.19 MiB
 COPY --from=codegolf/lang-sql        ["/", "/langs/sql/rootfs/"       ] # 1.03 MiB
 COPY --from=codegolf/lang-fish       ["/", "/langs/fish/rootfs/"      ] #  585 KiB
-COPY --from=codegolf/lang-lua        ["/", "/langs/lua/rootfs/"       ] #  314 KiB
+COPY --from=codegolf/lang-lua        ["/", "/langs/lua/rootfs/"       ] #  318 KiB
 
 COPY run-lang.c ./
 
