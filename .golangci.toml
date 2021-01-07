@@ -48,7 +48,7 @@ enable = [
     'ineffassign',
     'interfacer',
   # 'lll',
-    'makezero',
+  # 'makezero',
     'maligned',
     'misspell',
   # 'nakedret',
