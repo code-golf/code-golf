@@ -200,6 +200,21 @@ onload = () => {
         else
             document.querySelector('#arg').style.display = '';
 
+	if (data.Reqs) {
+	    //console.log(data.Reqs)
+            document.querySelector('#req').style.display = 'block';
+            const reqDiv = document.querySelector('#req div');
+            // Remove all arg spans
+            while (reqDiv.firstChild) {
+                reqDiv.removeChild(reqDiv.firstChild);
+	    }
+            for (const req of data.Reqs) {
+                reqDiv.appendChild(document.createElement('div'));
+                reqDiv.lastChild.innerText = (req.Pass ? "☑️ " :"❌ ") + req.Message;
+	    }
+	}
+	else
+            document.querySelector('#req').style.display = '';
         // Show err if we have some and we're not passing.
         if (data.Err && !data.Pass) {
             document.querySelector('#err').style.display = 'block';

@@ -18,10 +18,12 @@ const timeout = 7 * time.Second
 //go:embed answers
 var answers embed.FS
 
+
 type Scorecard struct {
 	Answer         string
 	Args           []string
 	Pass, Timeout  bool
+	Requirements   []struct{Name string; Pass bool; Message string}
 	Stderr, Stdout []byte
 	Took           time.Duration
 }
@@ -203,25 +205,49 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		score.Stdout = bytes.Replace(score.Stdout, []byte("Ⅾ"), []byte("D"), -1)
 		score.Stdout = bytes.Replace(score.Stdout, []byte("Ⅿ"), []byte("M"), -1)
 	}
-
+	if holeID == "palindromic-quine" {
+		isCorrect := true
+		codeRune := []rune(string(code))
+		for i := 0; i < len(codeRune)/2; i++ {
+			if codeRune[i] != codeRune[len(codeRune)-i-1] {
+				isCorrect = false
+			}
+		}
+		var message string
+		if isCorrect {
+			message = "code is a palindrom"
+		} else {
+			message = "code is not a palindrom"
+		}
+		score.Requirements = []struct{Name string; Pass bool; Message string }{
+			{"is palindromic", isCorrect, message},
+		}
+	}
+	equalsExpected := false
 	if len(score.Stdout) != 0 {
 		// TODO Generalise a case insensitive flag, should it apply to others?
 		if holeID == "css-colors" {
-			score.Pass = strings.EqualFold(score.Answer, string(score.Stdout))
+			equalsExpected = strings.EqualFold(score.Answer, string(score.Stdout))
 		} else {
-			if holeID == "palindromic-quine" {
-				isCorrect := true
-				output := []rune(string(score.Stdout))
-				for i := 0; i < len(output)/2; i++ {
-					if output[i] != output[len(output)-i-1] {
-						isCorrect = false
-					}
-				}
-				score.Pass = isCorrect && score.Answer == string(score.Stdout)
-			} else {
-				score.Pass = score.Answer == string(score.Stdout)
-			}
+			equalsExpected = score.Answer == string(score.Stdout)
 		}
+	}
+	//if there are some requirements add to them "equals expected" requirement
+	if len(score.Requirements) != 0 {
+		var message string
+		if equalsExpected {
+			message = "output matches expected"
+		} else {
+			message = "output doesn't matches expected"
+		}
+		score.Requirements = append([]struct{Name string;Pass bool; Message string}{
+			{"equals expected", equalsExpected, message },}, score.Requirements...)
+		score.Pass = false
+		for _, req := range score.Requirements {
+			score.Pass = score.Pass && req.Pass
+		}
+	} else {
+		score.Pass = equalsExpected
 	}
 	return
 }

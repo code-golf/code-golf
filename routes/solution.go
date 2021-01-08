@@ -47,6 +47,9 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 	out := struct {
 		Argv                []string
 		Diff, Err, Exp, Out string
+		Reqs                []struct{Name string
+		                             Pass bool
+					     Message string}
 		Pass, LoggedIn      bool
 		Took                time.Duration
 		Trophies            []string
@@ -55,6 +58,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		Err:      string(terminal.Render(score.Stderr)),
 		Exp:      score.Answer,
 		Out:      string(score.Stdout),
+		Reqs:     score.Requirements,
 		Pass:     score.Pass,
 		LoggedIn: userID != 0,
 		Took:     score.Took,

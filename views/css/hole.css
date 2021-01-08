@@ -51,7 +51,7 @@ main .info {
 
 #all { float: right }
 
-#arg, #err { display: none }
+#req, #arg, #err { display: none }
 
 #exp, #out { white-space: pre }
 
@@ -61,6 +61,15 @@ main .info {
     font-family: emoji, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', Courier, monospace;
     line-height: 30px;
     padding: 3px 7px;
+    white-space: pre;
+}
+
+#req div {
+    /* background: #eee;
+    border-radius: 10px;*/
+    font-family: emoji, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', Courier, monospace;
+    line-height: 10px;
+    padding: 3px 3px;
     white-space: pre;
 }
 
