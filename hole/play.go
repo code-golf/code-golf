@@ -54,7 +54,7 @@ func getAnswer(holeID, code string) ([]string, string) {
 		args, answer = pangramGrep()
 	case "poker":
 		args, answer = poker()
-	case "quine":
+	case "quine", "palindromic-quine":
 		answer = code
 	case "rock-paper-scissors-spock-lizard":
 		args, answer = rockPaperScissorsSpockLizard()
@@ -165,7 +165,7 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	// Trim trailing whitespace.
 	score.Stderr = bytes.TrimRightFunc(stderr.Next(maxLength), unicode.IsSpace)
 
-	if holeID == "quine" {
+	if holeID == "quine" || holeID == "palindromic-quine" {
 		score.Stdout = stdout.Next(maxLength)
 	} else {
 		// Trim trailing spaces per line.
@@ -209,9 +209,19 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		if holeID == "css-colors" {
 			score.Pass = strings.EqualFold(score.Answer, string(score.Stdout))
 		} else {
-			score.Pass = score.Answer == string(score.Stdout)
+			if holeID == "palindromic-quine" {
+				isCorrect := true
+				output := []rune(string(score.Stdout))
+				for i := 0; i < len(output)/2; i++ {
+					if output[i] != output[len(output)-i-1] {
+						isCorrect = false
+					}
+				}
+				score.Pass = isCorrect && score.Answer == string(score.Stdout)
+			} else {
+				score.Pass = score.Answer == string(score.Stdout)
+			}
 		}
 	}
-
 	return
 }
