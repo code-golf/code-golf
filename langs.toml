@@ -445,3 +445,24 @@ for arg in os.args[1..] {
 size    = '216 MiB'
 version = '0.7.0'
 website = '//ziglang.org'
+example = '''
+const std = @import("std");
+
+pub fn main() !void {
+    const stdout = std.io.getStdOut().outStream();
+
+    // Printing
+    try stdout.print("Hello, World!\n", .{});
+
+    // Looping
+    var i: i32 = 0;
+    while (i < 10) : (i += 1)
+        try stdout.print("{}\n", .{i});
+
+    // Accessing arguments
+    var args = std.process.args();
+    _ = args.skip();
+    while (args.next(std.testing.allocator)) |arg|
+        try stdout.print("{}\n", .{arg});
+}
+'''
