@@ -97,8 +97,8 @@ foreach (String arg in args)
 '''
 
 [COBOL]
-size    = '3.69 MiB'
-version = 'GnuCOBOL 2.2.0'
+size    = '4.17 MiB'
+version = 'GnuCOBOL 3.1.2.0'
 website = '//gnucobol.sourceforge.io'
 
 ['F#']

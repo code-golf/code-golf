@@ -4,12 +4,12 @@ RUN mkdir /empty
 
 RUN apk add --no-cache build-base curl gmp-dev
 
-RUN curl https://ftp.gnu.org/gnu/gnucobol/gnucobol-2.2.tar.xz | tar xJf -
+RUN curl https://ftp.gnu.org/gnu/gnucobol/gnucobol-3.1.2.tar.xz | tar xJf -
 
-RUN cd gnucobol-2.2                        \
+RUN cd gnucobol-3.1.2                      \
  && ./configure --prefix=/usr --without-db \
  && make -j`nproc` install                 \
- && strip /usr/bin/cobc /usr/lib/libcob.so.4.0.0
+ && strip /usr/bin/cobc /usr/lib/libcob.so.4.1.0
 
 COPY cobol.c /
 
