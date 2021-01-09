@@ -202,17 +202,30 @@ onload = () => {
 
 	if (data.Reqs) {
 	    //console.log(data.Reqs)
-            document.querySelector('#req').style.display = 'block';
-            const reqDiv = document.querySelector('#req div');
-            // Remove all arg spans
+            document.querySelector('#req').style.display = 'grid';
+            const reqDiv = document.querySelector('#req');
+            // Remove all div in requirements
             while (reqDiv.firstChild) {
                 reqDiv.removeChild(reqDiv.firstChild);
 	    }
             for (const req of data.Reqs) {
                 reqDiv.appendChild(document.createElement('div'));
-                reqDiv.lastChild.innerText = (req.Pass ? "☑️ " :"❌ ") + req.Message;
-	    }
-	}
+                const passElem = reqDiv.lastChild;
+                passElem.appendChild(document.createElement('span'));
+                passElem.lastChild.innerHTML = req.Pass ? "<b>Pass</b>✔️ " : "<b>Fail</b>❌";
+                passElem.className = "pass"
+                passElem.setAttribute("condition", req.Pass ? "pass": "fail")
+                reqDiv.appendChild(document.createElement('div'));
+                reqDiv.lastChild.innerText = req.Name;
+                reqDiv.lastChild.className = "name";
+                reqDiv.lastChild.setAttribute("condition", req.Pass ? "pass": "fail");
+                if (req.Message) {
+                    reqDiv.appendChild(document.createElement("div"));
+                    reqDiv.lastChild.innerText = req.Message;
+                    reqDiv.lastChild.className = "message";
+                }
+            }
+        }
 	else
             document.querySelector('#req').style.display = '';
         // Show err if we have some and we're not passing.
