@@ -49,6 +49,7 @@ COPY --from=0 /usr/include/alloca.h      \
               /usr/include/stdlib.h      \
               /usr/include/stdnoreturn.h \
               /usr/include/string.h      \
+              /usr/include/strings.h     \
               /usr/include/tgmath.h      \
               /usr/include/threads.h     \
               /usr/include/time.h        \

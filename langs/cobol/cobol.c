@@ -5,40 +5,21 @@
 #include <unistd.h>
 
 int main (int argc, char *argv[]) {
-    char buffer[4096];
-    ssize_t nbytes;
-    FILE *fp = fopen("/tmp/code.cbl", "w");
-
-    if (!fp)
-        return 1;
-
-    while ((nbytes = fread(buffer, sizeof(char), sizeof(buffer), stdin)) > 0)
-        if (fwrite(buffer, sizeof(char), nbytes, fp) != nbytes)
-            return 2;
-
-    fclose(fp);
-
     pid_t pid = fork();
     if (!pid) {
-        execl("/usr/local/bin/cobc", "/usr/local/bin/cobc", "-FCx",
-              "/tmp/code.cbl", "-o", "/tmp/code.c", NULL);
+        execl("/usr/bin/cobc", "/usr/bin/cobc", "-CFxo", "/tmp/code.c", "-", NULL);
         perror("execl");
-        return 3;
+        return 1;
     }
 
-    int status;             
+    int status;
     waitpid(pid, &status, 0); 
 
     if (!WIFEXITED(status))
-        return 4;
+        return 2;
 
     if (WEXITSTATUS(status))
         return WEXITSTATUS(status);
-
-    if (remove("/tmp/code.cbl")) {
-        perror("remove");
-        return 5;
-    }
 
     int ntcc = argc + 3;
     char **tcc = malloc(ntcc * sizeof(char*));
@@ -51,5 +32,5 @@ int main (int argc, char *argv[]) {
 
     execv("/usr/bin/tcc", tcc);
     perror("execv");
-    return 6;
+    return 3;
 }

@@ -97,7 +97,7 @@ foreach (String arg in args)
 '''
 
 [COBOL]
-size    = '6.12 MiB'
+size    = '3.69 MiB'
 version = 'GnuCOBOL 2.2.0'
 website = '//www.gnu.org/software/gnucobol/'
 
