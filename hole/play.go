@@ -206,48 +206,27 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		score.Stdout = bytes.Replace(score.Stdout, []byte("Ⅿ"), []byte("M"), -1)
 	}
 	if holeID == "palindromic-quine" {
-		isCorrect := true
-		codeRune := []rune(string(code))
-		for i := 0; i < len(codeRune)/2; i++ {
-			if codeRune[i] != codeRune[len(codeRune)-i-1] {
-				isCorrect = false
-			}
-		}
-		var message string
-		if isCorrect {
-			message = "code is a palindrom"
-		} else {
-			message = "code is not a palindrom"
-		}
-		score.Requirements = []struct{Name string; Pass bool; Message string }{
-			{"is palindromic", isCorrect, message},
-		}
+		score.Requirements = palindromicQuineRequirements(string(code))
 	}
-	equalsExpected := false
+	doesEqualsExpected := false
 	if len(score.Stdout) != 0 {
 		// TODO Generalise a case insensitive flag, should it apply to others?
 		if holeID == "css-colors" {
-			equalsExpected = strings.EqualFold(score.Answer, string(score.Stdout))
+			doesEqualsExpected = strings.EqualFold(score.Answer, string(score.Stdout))
 		} else {
-			equalsExpected = score.Answer == string(score.Stdout)
+			doesEqualsExpected = score.Answer == string(score.Stdout)
 		}
 	}
-	//if there are some requirements add to them "equals expected" requirement
+	//if there are some requirements add to them "output equals expected" requirement
 	if len(score.Requirements) != 0 {
-		var message string
-		if equalsExpected {
-			message = "output matches expected"
-		} else {
-			message = "output doesn't matches expected"
-		}
 		score.Requirements = append([]struct{Name string;Pass bool; Message string}{
-			{"equals expected", equalsExpected, message },}, score.Requirements...)
-		score.Pass = false
+			{"output equals expected", doesEqualsExpected, "" },}, score.Requirements...)
+		score.Pass = true
 		for _, req := range score.Requirements {
 			score.Pass = score.Pass && req.Pass
 		}
 	} else {
-		score.Pass = equalsExpected
+		score.Pass = doesEqualsExpected
 	}
 	return
 }
