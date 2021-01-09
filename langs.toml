@@ -105,6 +105,22 @@ website = '//gnucobol.sourceforge.io'
 size    = '108 MiB'
 version = 'F# 4.7 on .NET Core 3.1.7'
 website = '//fsharp.org'
+example = '''
+[<EntryPoint>]
+let main args =
+    // Printing
+    printfn "Hello, World!"
+
+    // Looping
+    for i in 0..9 do
+        printfn "%d" i
+
+    // Accessing arguments
+    for arg in args do
+        printfn "%s" arg
+
+    0
+'''
 
 [Fortran]
 size    = '85.7 MiB'
