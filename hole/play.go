@@ -18,12 +18,15 @@ const timeout = 7 * time.Second
 //go:embed answers
 var answers embed.FS
 
-
 type Scorecard struct {
-	Answer         string
-	Args           []string
-	Pass, Timeout  bool
-	Requirements   []struct{Name string; Pass bool; Message string}
+	Answer        string
+	Args          []string
+	Pass, Timeout bool
+	Requirements  []struct {
+		Name    string
+		Pass    bool
+		Message string
+	}
 	Stderr, Stdout []byte
 	Took           time.Duration
 }
@@ -206,7 +209,7 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		score.Stdout = bytes.Replace(score.Stdout, []byte("Ⅿ"), []byte("M"), -1)
 	}
 	if holeID == "palindromic-quine" {
-		score.Requirements = palindromicQuineRequirements(string(code))
+		score.Requirements = palindromicQuineRequirements(code)
 	}
 	doesEqualsExpected := false
 	if len(score.Stdout) != 0 {
@@ -217,10 +220,15 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 			doesEqualsExpected = score.Answer == string(score.Stdout)
 		}
 	}
-	//if there are some requirements add to them "output equals expected" requirement
+	// if there are some requirements add to them "output equals expected" requirement
 	if len(score.Requirements) != 0 {
-		score.Requirements = append([]struct{Name string;Pass bool; Message string}{
-			{"output equals expected", doesEqualsExpected, "" },}, score.Requirements...)
+		score.Requirements = append([]struct {
+			Name    string
+			Pass    bool
+			Message string
+		}{
+			{"output equals expected", doesEqualsExpected, ""},
+		}, score.Requirements...)
 		score.Pass = true
 		for _, req := range score.Requirements {
 			score.Pass = score.Pass && req.Pass

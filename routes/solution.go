@@ -47,12 +47,14 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 	out := struct {
 		Argv                []string
 		Diff, Err, Exp, Out string
-		Reqs                []struct{Name string
-		                             Pass bool
-					     Message string}
-		Pass, LoggedIn      bool
-		Took                time.Duration
-		Trophies            []string
+		Reqs                []struct {
+			Name    string
+			Pass    bool
+			Message string
+		}
+		Pass, LoggedIn bool
+		Took           time.Duration
+		Trophies       []string
 	}{
 		Argv:     score.Args,
 		Err:      string(terminal.Render(score.Stderr)),
