@@ -85,6 +85,7 @@ main .info {
 
 #req .message {
     background-color: lightgray;
+    font-family: monospace;
     grid-column-start: 1;
     grid-column-end: 3;
     max-height: 100px;
