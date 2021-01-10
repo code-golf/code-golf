@@ -1,0 +1,11 @@
+--- libcob/coblocal.h
++++ libcob/coblocal.h
+@@ -173,7 +173,7 @@
+ #endif
+ 
+ /* Convert between a digit and an integer (e.g., '0' <-> 0) */
+-#define COB_D2I(x)		((x) - '0')
++#define COB_D2I(x)		((x) & 0x0F)
+ #define COB_I2D(x)		(char) ((x) + '0')
+ 
+ #define	COB_MODULE_PTR		cobglobptr->cob_current_module
