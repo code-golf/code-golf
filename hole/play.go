@@ -227,7 +227,7 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 			Pass    bool
 			Message string
 		}{
-			{"output equals expected", doesEqualsExpected, ""},
+			{"output matches expected output", doesEqualsExpected, ""},
 		}, score.Requirements...)
 		score.Pass = true
 		for _, req := range score.Requirements {

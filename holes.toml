@@ -1348,10 +1348,9 @@ experiment = 365
 preamble = '''
 <p>
     Make a <b>quine</b> i.e. program that outputs its own source code.
-    Additionaly source code has to be the same read forwards as backwards
-    in other words be a palindrom.
-<p>
-    Example of a palindrom <b>print(\"Hello World\")#)\"dlroW olleH\"(tnipr</b>
+    Additionaly source code has to be the same read forwards as backwards.
+    A sequence of charcters with this property is called a palindrome.
+    Example of a palindrome: <b>print("Hello")#)"olleH"(tnirp</b>.
 
 <p>Trailing whitespace is <b>NOT</b> stripped from the output for this hole.
 '''

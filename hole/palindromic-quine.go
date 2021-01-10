@@ -55,6 +55,6 @@ func palindromicQuineRequirements(code string) []struct {
 		Pass    bool
 		Message string
 	}{
-		{"code is palindromic", isCorrect, message},
+		{"code is a palindrome", isCorrect, message},
 	}
 }
