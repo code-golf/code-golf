@@ -1192,7 +1192,8 @@ preamble = '''
 
 <p>
     Write a program that will receive various sentences as arguments and print
-    those that are valid pangrams.
+    those that are valid pangrams, meaning they use all letters from a-z, case
+    insensitive.
 '''
 
 ['Pascal’s Triangle']
