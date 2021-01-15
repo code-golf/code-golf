@@ -1,4 +1,4 @@
-FROM alpine:3.12 as builder
+FROM alpine:3.13 as builder
 
 RUN mkdir /empty
 
@@ -60,4 +60,4 @@ COPY --from=0 /usr/include/bits          /usr/include/bits/
 COPY --from=0 /usr/lib/libc.so           /usr/lib/
 COPY --from=0 /usr/lib/tcc/libtcc1.a     /usr/lib/tcc/
 
-ENTRYPOINT ["/usr/bin/tcc", "-v"]
+ENTRYPOINT ["tcc", "-v"]

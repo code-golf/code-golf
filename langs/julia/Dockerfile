@@ -1,4 +1,4 @@
-FROM alpine:3.12 as builder
+FROM alpine:3.13 as builder
 
 RUN mkdir /empty
 
@@ -32,4 +32,4 @@ COPY --from=0 /usr/lib/libexecinfo.so.1 \
               /usr/lib/libquadmath.so.0 \
               /usr/lib/libstdc++.so.6   /usr/lib/
 
-ENTRYPOINT ["/usr/bin/julia", "-e", "println(VERSION)"]
+ENTRYPOINT ["julia", "-e", "println(VERSION)"]

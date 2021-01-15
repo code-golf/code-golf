@@ -1,4 +1,4 @@
-FROM alpine:3.12 as builder
+FROM alpine:3.13 as builder
 
 RUN mkdir /empty
 
@@ -17,7 +17,8 @@ RUN mv jsource-* jsource                                       \
  && mv jversion-x.h jversion.h                                 \
  && gcc -s -O2 -o jconsole jconsole.c jeload.c                 \
  && rm andjnative.c fnmatch.c jconsole.c jeload.c jep.c jfex.c \
- && gcc -s -O2 -fPIC -fwrapv -fno-strict-aliasing -shared -o libj.so *.c blis/*.c
+ && gcc -s -O2 -fPIC -fcommon -fwrapv -fno-strict-aliasing     \
+    -shared -o libj.so *.c blis/*.c
 
 COPY j.c /
 
@@ -34,4 +35,4 @@ COPY --from=0 /j                                \
               /jsource/jsrc/jconsole            \
               /jsource/jsrc/libj.so             /usr/bin/
 
-ENTRYPOINT ["/usr/bin/j", "-v"]
+ENTRYPOINT ["j", "-v"]

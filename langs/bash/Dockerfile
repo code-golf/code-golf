@@ -1,4 +1,4 @@
-FROM alpine:3.12 as builder
+FROM alpine:3.13 as builder
 
 RUN mkdir /empty
 
@@ -28,4 +28,4 @@ COPY --from=0 /empty         /proc
 COPY --from=0 /empty         /tmp
 COPY --from=0 /bash-5.1/bash /usr/bin/
 
-ENTRYPOINT ["/usr/bin/bash", "-c", "echo ${BASH_VERSION%\\([0-9]\\)-release}"]
+ENTRYPOINT ["bash", "-c", "echo ${BASH_VERSION%\\([0-9]\\)-release}"]

@@ -1,4 +1,4 @@
-FROM alpine:3.12 as builder
+FROM alpine:3.13 as builder
 
 RUN mkdir /empty
 
@@ -28,4 +28,4 @@ COPY --from=0 /empty                   /tmp
 COPY --from=0 /perl-5.32.0/perl        /usr/bin/perl
 COPY --from=0 /perl-5.32.0/lib/utf8.pm /usr/lib/perl5/5.32.0/
 
-ENTRYPOINT ["/usr/bin/perl", "-e", "say substr $^V, 1"]
+ENTRYPOINT ["perl", "-e", "say substr $^V, 1"]

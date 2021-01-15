@@ -8,7 +8,7 @@ RUN jlink                                 \
     --module-path /opt/java/openjdk/jmods \
     --output /opt/jdk
 
-FROM alpine:3.12
+FROM alpine:3.13
 
 RUN apk add --no-cache bash
 

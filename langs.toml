@@ -1,5 +1,5 @@
 ['><>']
-size    = '585 KiB'
+size    = '486 KiB'
 version = '358ff13'
 website = '//github.com/primo-ppcg/fish-jit'
 example = '''
@@ -18,7 +18,7 @@ v               ~<
 '''
 
 [Bash]
-size    = '1.19 MiB'
+size    = '1.15 MiB'
 version = '5.1.4'
 website = '//www.gnu.org/software/bash/'
 example = '''
@@ -37,7 +37,7 @@ done
 '''
 
 [brainfuck]
-size    = '1.59 MiB'
+size    = '1.62 MiB'
 version = '1.0.0'
 website = '//github.com/code-golf/code-golf/tree/master/langs/brainfuck/'
 example = '''
@@ -59,7 +59,7 @@ example = '''
 '''
 
 [C]
-size    = '1.58 MiB'
+size    = '1.61 MiB'
 version = 'Tiny C Compiler 0.9.27'
 website = '//bellard.org/tcc/'
 example = '''
@@ -79,7 +79,7 @@ int main(int argc, char* argv[]) {
 
 ['C#']
 size    = '128 MiB'
-version = 'C# 9.0 on .NET 5.0.0'
+version = 'C# 9.0 on .NET 5.0.2'
 website = '//docs.microsoft.com/dotnet/csharp/'
 example = '''
 using System;
@@ -97,7 +97,7 @@ foreach (String arg in args)
 '''
 
 [COBOL]
-size    = '4.17 MiB'
+size    = '4.09 MiB'
 version = 'GnuCOBOL 3.1.2.0'
 website = '//gnucobol.sourceforge.io'
 
@@ -123,7 +123,7 @@ let main args =
 '''
 
 [Fortran]
-size    = '85.7 MiB'
+size    = '85.6 MiB'
 version = 'GNU Fortran 10.2.0'
 website = '//gcc.gnu.org/fortran/'
 
@@ -161,7 +161,7 @@ version = 'Glasgow Haskell Compiler 8.8.4'
 website = '//www.haskell.org/ghc/'
 
 [J]
-size    = '3.3 MiB'
+size    = '3.32 MiB'
 version = '9.01.01'
 website = '//www.jsoftware.com'
 
@@ -187,8 +187,8 @@ class Main {
 '''
 
 [JavaScript]
-size    = '21.1 MiB'
-version = 'V8 8.6.395.17'
+size    = '21.2 MiB'
+version = 'V8 8.7.220.31'
 website = '//v8.dev'
 example = '''
 // Printing
@@ -204,7 +204,7 @@ for (let arg of arguments)
 '''
 
 [Julia]
-size    = '279 MiB'
+size    = '280 MiB'
 version = '1.5.3'
 website = '//julialang.org'
 example = '''
@@ -223,12 +223,12 @@ end
 '''
 
 [Lisp]
-size    = '35.4 MiB'
+size    = '33.6 MiB'
 version = 'GNU CLISP 2.49.92'
 website = '//clisp.sourceforge.io'
 
 [Lua]
-size    = '318 KiB'
+size    = '334 KiB'
 version = '5.4.2'
 website = '//www.lua.org'
 example = '''
@@ -247,7 +247,7 @@ end
 '''
 
 [Nim]
-size    = '21.8 MiB'
+size    = '21.5 MiB'
 version = '1.4.2'
 website = '//nim-lang.org'
 example = '''
@@ -266,7 +266,7 @@ for arg in commandLineParams():
 '''
 
 [Perl]
-size    = '4.04 MiB'
+size    = '4.07 MiB'
 version = '5.32.0'
 website = '//www.perl.org'
 example = '''
@@ -282,7 +282,7 @@ say for @ARGV;
 
 [PHP]
 size    = '10.5 MiB'
-version = '7.4.13'
+version = '7.4.14'
 website = '//www.php.net'
 example = '''
 # Printing
@@ -299,7 +299,7 @@ while ($arg = next($argv))
 
 [PowerShell]
 size    = '185 MiB'
-version = 'PowerShell 7.1.0 on .NET 5.0.0'
+version = 'PowerShell 7.1.1 on .NET 5.0.2'
 website = '//docs.microsoft.com/powershell/scripting/overview'
 example = '''
 // Printing
@@ -317,7 +317,7 @@ ForEach ($arg in $args) {
 '''
 
 [Python]
-size    = '205 MiB'
+size    = '196 MiB'
 version = '3.9.1'
 website = '//www.python.org'
 example = '''
@@ -391,7 +391,7 @@ fn main() {
 '''
 
 [SQL]
-size    = '1.03 MiB'
+size    = '986 KiB'
 version = '3.34.0'
 website = '//sqlite.org/index.html'
 example = '''
