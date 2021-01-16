@@ -794,15 +794,14 @@ preamble = '''
 
 ['Kolakoski Constant']
 category = 'Mathematics'
-experiment = -1
 links = [
-   { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Kolakoski_sequence#Kolakoski_Constant' }
+   { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Kolakoski_sequence#Kolakoski_Constant' },
 ]
 preamble = '''
 <p>
     The Kolakoski constant is created by taking the
-    <a href="kolakoski-sequence"> Kolakoski sequence </a>
-    and subtracting one from each element then interpreting it as a binary fraction.
+    <a href=kolakoski-sequence>Kolakoski sequence</a> and subtracting one from
+    each element then interpreting it as a binary fraction.
 
 <pre>
     1 221121221221121122121121…
@@ -810,28 +809,28 @@ preamble = '''
     0.7945071927…
 </pre>
 
-<p> Print the Kolakoski constant to the first 1,000 decimal places </p>
+<p>Print the Kolakoski constant to the first 1,000 decimal places.
 '''
 
 ['Kolakoski Sequence']
 category = 'Sequence'
-experiment = -1
 links = [
+    { name = 'OEIS A000002', url = '//oeis.org/A000002' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Kolakoski_sequence' },
-    { name = 'OEIS A000002', url = '//oeis.org/A000002' }
 ]
 preamble = '''
 <p>
-    The Kolakoski sequence is a self referential sequence where the nth element
-    is the length of the nth run of same numbers in the sequence.
+    The Kolakoski sequence is a self referential sequence where the nth
+    element is the length of the nth run of same numbers in the sequence.
     This has the interesting property where if you take the run lengths of
-    this sequence, then you will get the same sequence back again.
-    For example, the sequence starting with (1, 2) looks like:
+    this sequence, then you will get the same sequence back again. For
+    example, the sequence starting with (1, 2) looks like:
 
 <pre>
     1 2 2 1 1 2 1 2 2 1 2 2 1 1 2 1 1 2 2 1 2 1 1 2 1…
     1  2   2  1 1  2  1  2   2  1  2   2  1 1  2  1 1…
 </pre>
+
 <p>
     Beginning with (1, 2) output the first 1000 elements in the Kolakoski
     sequence, separated by spaces.
