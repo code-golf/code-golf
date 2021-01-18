@@ -7,6 +7,7 @@ require (
 	github.com/SeerUK/assert v1.0.0
 	github.com/agnivade/levenshtein v1.1.0
 	github.com/buildkite/terminal v3.2.0+incompatible
+	github.com/bwmarrin/discordgo v0.22.1 // indirect
 	github.com/dgryski/trifles v0.0.0-20200830180326-aaf60a07f6a3 // indirect
 	github.com/go-chi/chi v1.5.1
 	github.com/gofrs/uuid v4.0.0+incompatible

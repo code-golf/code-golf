@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/buildkite/terminal"
+	"github.com/code-golf/code-golf/discord"
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/session"
 	"github.com/lib/pq"
@@ -70,6 +71,9 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 
 	_, experimental := hole.ExperimentalByID[in.Hole]
 	if out.Pass && userID != 0 && !experimental {
+		// Log new records in Discord
+		discord.LogNewRecord(db, in.Code, session.Golfer(r).Name, in.Hole, in.Lang)
+
 		if err := db.QueryRowContext(
 			r.Context(),
 			"SELECT save_solution(code := $1, hole := $2, lang := $3, user_id := $4)",
