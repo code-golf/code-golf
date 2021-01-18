@@ -3,10 +3,7 @@ package discord
 import (
 	"database/sql"
 	"fmt"
-	"io/ioutil"
 	"os"
-	"os/signal"
-	"syscall"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/code-golf/code-golf/hole"
@@ -19,45 +16,36 @@ const RECORD_ANNOUNCE_CHANNEL = "755435773096099992"
 const PREFIX = "%"
 
 func init() {
-	// Stop event (on SIGINT)
-	sig := make(chan os.Signal, 1)
-	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
+	// The authentication token of the bot should be stored in the .env file
+	// If it's not found, the bot is skipped
+	token := os.Getenv("DISCORD_BOT_TOKEN")
+	if token != "" {
+		go func() {
+			var err error
+			bot, err = discordgo.New("Bot " + string(token))
+			if err != nil {
+				fmt.Println("Couldn't start bot:", err)
+				return
+			}
 
-	go func() {
-		// The authentication token is kept in botAuth.txt (untracked on Git)
-		token, err := ioutil.ReadFile("/go/discord/botAuth.txt")
-		if err != nil {
-			return
-		}
+			// Start event
+			bot.AddHandler(func(session *discordgo.Session, event *discordgo.Ready) {
+				go func() {
+					fmt.Println("Discord bot is now online!")
+					session.UpdateStatus(0, "Code Golf")
+				}()
+			})
 
-		bot, err = discordgo.New("Bot " + string(token))
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
+			// Message event
+			bot.AddHandler(handleMessage)
 
-		// Start event
-		bot.AddHandler(func(session *discordgo.Session, event *discordgo.Ready) {
-			go func() {
-				fmt.Println("Discord bot is now online!")
-				session.UpdateStatus(0, "Code Golf")
-			}()
-		})
-
-		// Message event
-		bot.AddHandler(handleMessage)
-
-		// Start the bot!
-		if bot.Open() != nil {
-			fmt.Println("Error starting the Discord bot")
-			return
-		}
-
-		// Wait for sigint, then disconnect
-		<-sig
-		bot.Close()
-		fmt.Println("Discord bot disconnected")
-	}()
+			// Start the bot!
+			if bot.Open() != nil {
+				fmt.Println("Error starting the Discord bot")
+				return
+			}
+		}()
+	}
 }
 
 // Receive code for a given hole and send a message if it breaks that hole's record
