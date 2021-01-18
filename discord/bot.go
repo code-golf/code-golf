@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/code-golf/code-golf/hole"
@@ -12,8 +13,8 @@ import (
 
 var bot *discordgo.Session
 
-const RECORD_ANNOUNCE_CHANNEL = "755435773096099992"
-const PREFIX = "%"
+const recordAnnounceChannel = "800680710964903946"
+const prefix = "%"
 
 func init() {
 	// The authentication token of the bot should be stored in the .env file
@@ -50,46 +51,49 @@ func init() {
 
 // Receive code for a given hole and send a message if it breaks that hole's record
 func LogNewRecord(db *sql.DB, code string, userName string, holeName string, langName string) {
+	if bot != nil {
+		// Save the current top records to compare against the new solution
+		oldBytes, oldChars := 0, 0
+		err := db.QueryRow(
+			`SELECT MIN(bytes), MIN(chars) FROM code
+				JOIN solutions ON code_id = id
+				WHERE hole=$1 AND lang=$2;`,
+			holeName, langName,
+		).Scan(&oldBytes, &oldChars)
 
-	// Save the current top records to compare against the new solution
-	oldBytes, oldChars := 0, 0
-	err := db.QueryRow(
-		`SELECT MIN(bytes), MIN(chars) FROM code
-			JOIN solutions ON code_id = id
-			WHERE hole=$1 AND lang=$2;`,
-		holeName, langName,
-	).Scan(&oldBytes, &oldChars)
+		if err == nil {
+			go func() {
+				newBytes, newChars := len(code), len([]rune(code))
+				newByteRecord := newBytes < oldBytes
+				newCharRecord := newChars < oldChars
 
-	if err == nil {
-		go func() {
-			newBytes, newChars := len(code), len([]rune(code))
-			newByteRecord := newBytes < oldBytes
-			newCharRecord := newChars < oldChars
+				// Make sure the user has broken at least one of the records
+				if !newByteRecord && !newCharRecord {
+					return
+				}
 
-			// Make sure the user has broken at least one of the records
-			if !newByteRecord && !newCharRecord {
-				return
-			}
+				holeName = hole.ByID[holeName].Name
+				langName = lang.ByID[langName].Name
 
-			holeName = hole.ByID[holeName].Name
-			langName = lang.ByID[langName].Name
+				scoring := ""
+				if !newCharRecord {
+					scoring = "byte "
+				}
+				if !newByteRecord {
+					scoring = "char "
+				}
 
-			scoring := ""
-			if !newCharRecord {
-				scoring = "byte "
-			}
-			if !newByteRecord {
-				scoring = "char "
-			}
-
-			bot.ChannelMessageSend(RECORD_ANNOUNCE_CHANNEL,
-				fmt.Sprintf("New %srecord on %s in %s by %s!\n\t%d bytes / %d chars",
-					scoring, holeName, langName, userName, newBytes, newChars))
-		}()
+				bot.ChannelMessageSend(recordAnnounceChannel,
+					fmt.Sprintf("New %srecord on %s in %s by %s!\n\t%d bytes / %d chars",
+						scoring, holeName, langName, userName, newBytes, newChars))
+			}()
+		}
 	}
 }
 
 // Respond to a message on Discord (if necessary)
 func handleMessage(session *discordgo.Session, event *discordgo.MessageCreate) {
-
+	if strings.HasPrefix(event.Content, prefix) {
+		// TODO
+	}
 }
