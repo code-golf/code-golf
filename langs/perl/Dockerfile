@@ -4,9 +4,9 @@ RUN mkdir /empty
 
 RUN apk add --no-cache build-base curl perl
 
-RUN curl http://www.cpan.org/src/5.0/perl-5.32.0.tar.xz | tar xJf -
+RUN curl http://www.cpan.org/src/5.0/perl-5.32.1.tar.xz | tar xJf -
 
-RUN cd perl-5.32.0                                            \
+RUN cd perl-5.32.1                                            \
  && perl -pe 's/qw\(indirect/$& say/' regen/feature.pl | perl \
  && ./Configure                                               \
     -Accflags='-DNO_LOCALE                                    \
@@ -25,7 +25,7 @@ FROM scratch
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
 COPY --from=0 /empty                   /proc
 COPY --from=0 /empty                   /tmp
-COPY --from=0 /perl-5.32.0/perl        /usr/bin/perl
-COPY --from=0 /perl-5.32.0/lib/utf8.pm /usr/lib/perl5/5.32.0/
+COPY --from=0 /perl-5.32.1/perl        /usr/bin/perl
+COPY --from=0 /perl-5.32.1/lib/utf8.pm /usr/lib/perl5/5.32.1/
 
 ENTRYPOINT ["perl", "-e", "say substr $^V, 1"]

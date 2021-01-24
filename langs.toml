@@ -129,7 +129,7 @@ website = '//gcc.gnu.org/fortran/'
 
 [Go]
 size    = '110 MiB'
-version = '1.15.6'
+version = '1.15.7'
 website = '//go.dev'
 example = '''
 package main
@@ -267,7 +267,7 @@ for arg in commandLineParams():
 
 [Perl]
 size    = '4.07 MiB'
-version = '5.32.0'
+version = '5.32.1'
 website = '//www.perl.org'
 example = '''
 # Printing
@@ -392,7 +392,7 @@ fn main() {
 
 [SQL]
 size    = '986 KiB'
-version = '3.34.0'
+version = '3.34.1'
 website = '//sqlite.org/index.html'
 example = '''
 -- Printing
