@@ -2,8 +2,8 @@ package discord
 
 import (
 	"fmt"
+	"log"
 	"os"
-	"strings"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/code-golf/code-golf/golfer"
@@ -14,7 +14,6 @@ import (
 var bot *discordgo.Session
 
 const recordAnnounceChannel = "800680710964903946"
-const prefix = "%"
 
 func init() {
 	// The authentication token of the bot should be stored in the .env file
@@ -22,25 +21,14 @@ func init() {
 	if token := os.Getenv("DISCORD_BOT_TOKEN"); token != "" {
 		go func() {
 			var err error
-			bot, err = discordgo.New("Bot " + string(token))
-			if err != nil {
-				fmt.Println("Couldn't start bot:", err)
+			if bot, err = discordgo.New("Bot " + token); err != nil {
+				log.Println(err)
 				return
 			}
 
-			// Start event
-			bot.AddHandler(func(session *discordgo.Session, event *discordgo.Ready) {
-				go func() {
-					fmt.Println("Discord bot is now online!")
-				}()
-			})
-
-			// Message event
-			bot.AddHandler(handleMessage)
-
 			// Start the bot!
-			if bot.Open() != nil {
-				fmt.Println("Error starting the Discord bot")
+			if err := bot.Open(); err != nil {
+				log.Println(err)
 				return
 			}
 		}()
@@ -70,12 +58,5 @@ func LogNewRecord(golfer *golfer.Golfer, holeName string, langName string, scori
 
 			bot.ChannelMessageSendEmbed(recordAnnounceChannel, embed)
 		}()
-	}
-}
-
-// Respond to a message on Discord (if necessary)
-func handleMessage(session *discordgo.Session, event *discordgo.MessageCreate) {
-	if strings.HasPrefix(event.Content, prefix) {
-		// TODO
 	}
 }
