@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/code-golf/code-golf/golfer"
@@ -48,9 +49,10 @@ func LogNewRecord(
 			hole.Name,
 			lang.Name,
 		),
-		URL:    "https://code.golf/scores/" + hole.ID + "/" + lang.ID + "/" + updates[0].Scoring,
-		Fields: make([]*discordgo.MessageEmbedField, 0, 2),
-		Author: &discordgo.MessageEmbedAuthor{Name: golfer.Name, IconURL: imageURL, URL: golferURL},
+		URL:       "https://code.golf/scores/" + hole.ID + "/" + lang.ID + "/" + updates[0].Scoring,
+		Fields:    make([]*discordgo.MessageEmbedField, 0, 2),
+		Author:    &discordgo.MessageEmbedAuthor{Name: golfer.Name, IconURL: imageURL, URL: golferURL},
+		Timestamp: time.Now().Format(time.RFC3339),
 	}
 
 	// Add in the scorings (as necessary)
