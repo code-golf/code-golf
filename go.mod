@@ -7,7 +7,7 @@ require (
 	github.com/SeerUK/assert v1.0.0
 	github.com/agnivade/levenshtein v1.1.0
 	github.com/buildkite/terminal v3.2.0+incompatible
-	github.com/dgryski/trifles v0.0.0-20200830180326-aaf60a07f6a3 // indirect
+	github.com/dgryski/trifles v0.0.0-20210119233746-37d926d5de6c // indirect
 	github.com/go-chi/chi v1.5.1
 	github.com/gofrs/uuid v4.0.0+incompatible
 	github.com/golang/protobuf v1.4.3 // indirect
@@ -19,10 +19,9 @@ require (
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/shurcooL/githubv4 v0.0.0-20201206200315-234843c633fa
 	github.com/shurcooL/graphql v0.0.0-20200928012149-18c5c3165e3a // indirect
-	github.com/tdewolff/minify/v2 v2.9.10
-	github.com/tdewolff/parse/v2 v2.5.7 // indirect
+	github.com/tdewolff/minify/v2 v2.9.11
 	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad
-	golang.org/x/net v0.0.0-20201224014010-6772e930b67b // indirect
+	golang.org/x/net v0.0.0-20210119194325-5f4716e94777 // indirect
 	golang.org/x/oauth2 v0.0.0-20210113205817-d3ed898aa8a3
 	golang.org/x/text v0.3.5 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
