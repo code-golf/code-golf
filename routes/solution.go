@@ -141,11 +141,13 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 				pretty.Ordinal(int(rank.To.Rank.Int64)),
 			)
 
+			// This keeps track of which scorings (if any) represent new records
 			if !rank.To.Joint.Bool && rank.To.Rank.Int64 == 1 {
 				recordScorings += rank.Scoring
 			}
 		}
 
+		// If either of the scorings is a new record, announce it on Discord
 		if recordScorings != "" {
 			discord.LogNewRecord(golfer, in.Hole, in.Lang, recordScorings, out.RankUpdates[0].To.Strokes.Int64, out.RankUpdates[1].To.Strokes.Int64)
 		}

@@ -19,8 +19,7 @@ const prefix = "%"
 func init() {
 	// The authentication token of the bot should be stored in the .env file
 	// If it's not found, the bot is skipped
-	token := os.Getenv("DISCORD_BOT_TOKEN")
-	if token != "" {
+	if token := os.Getenv("DISCORD_BOT_TOKEN"); token != "" {
 		go func() {
 			var err error
 			bot, err = discordgo.New("Bot " + string(token))
