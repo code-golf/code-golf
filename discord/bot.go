@@ -13,7 +13,7 @@ import (
 
 var bot *discordgo.Session
 
-const recordAnnounceChannel = "800680710964903946"
+const channelID = "800680710964903946"
 
 func init() {
 	// The authentication token of the bot should be stored in the .env file
@@ -23,40 +23,36 @@ func init() {
 			var err error
 			if bot, err = discordgo.New("Bot " + token); err != nil {
 				log.Println(err)
-				return
-			}
-
-			// Start the bot!
-			if err := bot.Open(); err != nil {
+			} else if err := bot.Open(); err != nil {
 				log.Println(err)
-				return
 			}
 		}()
 	}
 }
 
-// Log a record breaking solution in Discord
-func LogNewRecord(golfer *golfer.Golfer, holeName string, langName string, scorings string, bytes int64, chars int64) {
-	if bot != nil {
-		go func() {
-			holeName = hole.ByID[holeName].Name
-			langName = lang.ByID[langName].Name
+// LogNewRecord logs a record breaking solution in Discord.
+func LogNewRecord(
+	golfer *golfer.Golfer, hole hole.Hole, lang lang.Lang, scorings string,
+	bytes int64, chars int64,
+) {
+	if bot == nil {
+		return
+	}
 
-			scoring := ""
-			if scorings != "byteschars" {
-				scoring = scorings[:len(scorings)-1] + " "
-			}
+	scoring := ""
+	if scorings != "byteschars" {
+		scoring = scorings[:len(scorings)-1] + " "
+	}
 
-			embed := &discordgo.MessageEmbed{
-				Title:       fmt.Sprintf("New record on %s in %s!", holeName, langName),
-				Description: fmt.Sprintf("A new %srecord has been set by %s!", scoring, golfer.Name),
-				Fields: []*discordgo.MessageEmbedField{
-					{Name: "Bytes", Inline: true, Value: fmt.Sprint(bytes)},
-					{Name: "Chars", Inline: true, Value: fmt.Sprint(chars)},
-				},
-			}
-
-			bot.ChannelMessageSendEmbed(recordAnnounceChannel, embed)
-		}()
+	_, err := bot.ChannelMessageSendEmbed(channelID, &discordgo.MessageEmbed{
+		Title:       fmt.Sprintf("New record on %s in %s!", hole.Name, lang.Name),
+		Description: fmt.Sprintf("A new %srecord has been set by %s!", scoring, golfer.Name),
+		Fields: []*discordgo.MessageEmbedField{
+			{Name: "Bytes", Inline: true, Value: fmt.Sprint(bytes)},
+			{Name: "Chars", Inline: true, Value: fmt.Sprint(chars)},
+		},
+	})
+	if err != nil {
+		log.Println(err)
 	}
 }
