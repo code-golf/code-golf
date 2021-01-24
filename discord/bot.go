@@ -33,7 +33,6 @@ func init() {
 			bot.AddHandler(func(session *discordgo.Session, event *discordgo.Ready) {
 				go func() {
 					fmt.Println("Discord bot is now online!")
-					session.UpdateStatus(0, "Code Golf")
 				}()
 			})
 
