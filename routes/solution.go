@@ -13,6 +13,7 @@ import (
 	"github.com/code-golf/code-golf/session"
 	"github.com/lib/pq"
 	"github.com/pmezard/go-difflib/difflib"
+	"gopkg.in/guregu/null.v4"
 )
 
 // Solution serves POST /solution
@@ -45,8 +46,8 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 	type rankUpdate struct {
 		Scoring  string
 		From, To struct {
-			Joint         sql.NullBool
-			Rank, Strokes sql.NullInt32
+			Joint         null.Bool
+			Rank, Strokes null.Int
 		}
 	}
 
@@ -109,7 +110,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		}
 
 		for _, rank := range out.RankUpdates {
-			if rank.From.Strokes.Int32 == rank.To.Strokes.Int32 {
+			if rank.From.Strokes.Int64 == rank.To.Strokes.Int64 {
 				continue
 			}
 
@@ -127,14 +128,14 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 				in.Hole,
 				in.Lang,
 				rank.Scoring,
-				rank.From.Strokes.Int32,
+				rank.From.Strokes.Int64,
 				fromJoint,
-				rank.From.Rank.Int32,
-				pretty.Ordinal(int(rank.From.Rank.Int32)),
-				rank.To.Strokes.Int32,
+				rank.From.Rank.Int64,
+				pretty.Ordinal(int(rank.From.Rank.Int64)),
+				rank.To.Strokes.Int64,
 				toJoint,
-				rank.To.Rank.Int32,
-				pretty.Ordinal(int(rank.To.Rank.Int32)),
+				rank.To.Rank.Int64,
+				pretty.Ordinal(int(rank.To.Rank.Int64)),
 			)
 		}
 

@@ -25,4 +25,5 @@ require (
 	golang.org/x/oauth2 v0.0.0-20210113205817-d3ed898aa8a3
 	golang.org/x/text v0.3.5 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
+	gopkg.in/guregu/null.v4 v4.0.0 // indirect
 )
