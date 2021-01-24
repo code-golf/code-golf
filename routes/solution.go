@@ -3,11 +3,16 @@ package routes
 import (
 	"database/sql"
 	"encoding/json"
+	"log"
 	"net/http"
 	"time"
 
 	"github.com/buildkite/terminal"
+	"github.com/code-golf/code-golf/discord"
+	Golfer "github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/hole"
+	"github.com/code-golf/code-golf/lang"
+	"github.com/code-golf/code-golf/pretty"
 	"github.com/code-golf/code-golf/session"
 	"github.com/lib/pq"
 	"github.com/pmezard/go-difflib/difflib"
@@ -22,16 +27,12 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	var userID int
-	if golfer := session.Golfer(r); golfer != nil {
-		userID = golfer.ID
-	}
-
 	db := session.Database(r)
+	golfer := session.Golfer(r)
 
 	if len(in.Code) > 409_600 {
-		if userID != 0 {
-			awardTrophy(db, userID, "tl-dr")
+		if golfer != nil {
+			awardTrophy(db, golfer.ID, "tl-dr")
 		}
 
 		w.WriteHeader(http.StatusRequestEntityTooLarge)
@@ -40,23 +41,28 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 
 	score := hole.Play(r.Context(), in.Hole, in.Lang, in.Code)
 
-	if score.Timeout && userID != 0 {
-		awardTrophy(db, userID, "slowcoach")
+	if score.Timeout && golfer != nil {
+		awardTrophy(db, golfer.ID, "slowcoach")
 	}
 
 	out := struct {
 		Argv                []string
 		Diff, Err, Exp, Out string
 		Pass, LoggedIn      bool
+		RankUpdates         []Golfer.RankUpdate
 		Took                time.Duration
 		Trophies            []string
 	}{
-		Argv:     score.Args,
-		Err:      string(terminal.Render(score.Stderr)),
-		Exp:      score.Answer,
-		Out:      string(score.Stdout),
-		Pass:     score.Pass,
-		LoggedIn: userID != 0,
+		Argv: score.Args,
+		Err:  string(terminal.Render(score.Stderr)),
+		Exp:  score.Answer,
+		Out:  string(score.Stdout),
+		Pass: score.Pass,
+		RankUpdates: []Golfer.RankUpdate{
+			{Scoring: "bytes"},
+			{Scoring: "chars"},
+		},
+		LoggedIn: golfer != nil,
 		Took:     score.Took,
 	}
 
@@ -69,13 +75,76 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 	})
 
 	_, experimental := hole.ExperimentalByID[in.Hole]
-	if out.Pass && userID != 0 && !experimental {
+	if out.Pass && golfer != nil && !experimental {
 		if err := db.QueryRowContext(
 			r.Context(),
-			"SELECT save_solution(code := $1, hole := $2, lang := $3, user_id := $4)",
-			in.Code, in.Hole, in.Lang, userID,
-		).Scan(pq.Array(&out.Trophies)); err != nil {
+			`SELECT earned,
+			        old_bytes_joint, old_bytes_rank, old_bytes,
+			        new_bytes_joint, new_bytes_rank, new_bytes,
+			        old_chars_joint, old_chars_rank, old_chars,
+			        new_chars_joint, new_chars_rank, new_chars
+			   FROM save_solution(code := $1, hole := $2, lang := $3, user_id := $4)`,
+			in.Code, in.Hole, in.Lang, golfer.ID,
+		).Scan(
+			pq.Array(&out.Trophies),
+			&out.RankUpdates[0].From.Joint,
+			&out.RankUpdates[0].From.Rank,
+			&out.RankUpdates[0].From.Strokes,
+			&out.RankUpdates[0].To.Joint,
+			&out.RankUpdates[0].To.Rank,
+			&out.RankUpdates[0].To.Strokes,
+			&out.RankUpdates[1].From.Joint,
+			&out.RankUpdates[1].From.Rank,
+			&out.RankUpdates[1].From.Strokes,
+			&out.RankUpdates[1].To.Joint,
+			&out.RankUpdates[1].To.Rank,
+			&out.RankUpdates[1].To.Strokes,
+		); err != nil {
 			panic(err)
+		}
+
+		recordUpdates := make([]Golfer.RankUpdate, 0, 2)
+
+		for _, rank := range out.RankUpdates {
+			if rank.From.Strokes.Int64 == rank.To.Strokes.Int64 {
+				continue
+			}
+
+			var fromJoint, toJoint string
+			if rank.From.Joint.Bool {
+				fromJoint = "joint "
+			}
+			if rank.To.Joint.Bool {
+				toJoint = "joint "
+			}
+
+			log.Printf(
+				"%s: %s/%s/%s %d (%s%d%s) → %d (%s%d%s)\n",
+				golfer.Name,
+				in.Hole,
+				in.Lang,
+				rank.Scoring,
+				rank.From.Strokes.Int64,
+				fromJoint,
+				rank.From.Rank.Int64,
+				pretty.Ordinal(int(rank.From.Rank.Int64)),
+				rank.To.Strokes.Int64,
+				toJoint,
+				rank.To.Rank.Int64,
+				pretty.Ordinal(int(rank.To.Rank.Int64)),
+			)
+
+			// This keeps track of which updates (if any) represent new records
+			if !rank.To.Joint.Bool && rank.To.Rank.Int64 == 1 {
+				recordUpdates = append(recordUpdates, rank)
+			}
+		}
+
+		// If any of the updates are record breakers, announce them on Discord
+		if len(recordUpdates) > 0 {
+			go discord.LogNewRecord(
+				golfer, hole.ByID[in.Hole], lang.ByID[in.Lang], recordUpdates,
+			)
 		}
 
 		// TODO Use the golfer's timezone from /settings.
@@ -86,25 +155,25 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		)
 
 		if month == time.October && day == 2 {
-			awardTrophy(db, userID, "happy-birthday-code-golf")
+			awardTrophy(db, golfer.ID, "happy-birthday-code-golf")
 		}
 
 		switch in.Hole {
 		case "12-days-of-christmas":
 			if (month == time.December && day >= 25) || (month == time.January && day <= 5) {
-				awardTrophy(db, userID, "twelvetide")
+				awardTrophy(db, golfer.ID, "twelvetide")
 			}
 		case "united-states":
 			if month == time.July && day == 4 {
-				awardTrophy(db, userID, "independence-day")
+				awardTrophy(db, golfer.ID, "independence-day")
 			}
 		case "vampire-numbers":
 			if month == time.October && day == 31 {
-				awardTrophy(db, userID, "vampire-byte")
+				awardTrophy(db, golfer.ID, "vampire-byte")
 			}
 		case "π":
 			if month == time.March && day == 14 {
-				awardTrophy(db, userID, "pi-day")
+				awardTrophy(db, golfer.ID, "pi-day")
 			}
 		}
 
@@ -113,22 +182,22 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			`SELECT COUNT(DISTINCT lang) = ARRAY_LENGTH(ENUM_RANGE(NULL::lang), 1)
 			   FROM solutions
 			  WHERE NOT failing AND user_id = $1`,
-			userID,
+			golfer.ID,
 		) {
-			awardTrophy(db, userID, "polyglot")
+			awardTrophy(db, golfer.ID, "polyglot")
 		}
 
 		// FIXME Each one of these queries takes 50ms!
 		if queryBool(
 			db,
 			"SELECT chars_points > 9000 FROM chars_points WHERE user_id = $1",
-			userID,
+			golfer.ID,
 		) || queryBool(
 			db,
 			"SELECT bytes_points > 9000 FROM bytes_points WHERE user_id = $1",
-			userID,
+			golfer.ID,
 		) {
-			awardTrophy(db, userID, "its-over-9000")
+			awardTrophy(db, golfer.ID, "its-over-9000")
 		}
 
 		// COUNT(*) = 4 because langs x (bytes, chars)
@@ -143,9 +212,9 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 				    AND lang IN ('java', 'javascript')
 				    AND user_id = $2`,
 				in.Hole,
-				userID,
+				golfer.ID,
 			) {
-				awardTrophy(db, userID, "caffeinated")
+				awardTrophy(db, golfer.ID, "caffeinated")
 			}
 		case "perl", "raku":
 			if queryBool(
@@ -157,9 +226,9 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 				    AND lang IN ('perl', 'raku')
 				    AND user_id = $2`,
 				in.Hole,
-				userID,
+				golfer.ID,
 			) {
-				awardTrophy(db, userID, "tim-toady")
+				awardTrophy(db, golfer.ID, "tim-toady")
 			}
 		}
 	}

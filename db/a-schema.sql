@@ -5,7 +5,8 @@ CREATE TYPE hole AS ENUM (
     '12-days-of-christmas', '99-bottles-of-beer', 'abundant-numbers',
     'arabic-to-roman', 'brainfuck', 'christmas-trees', 'css-colors', 'cubes',
     'diamonds', 'divisors', 'emirp-numbers', 'emojify', 'evil-numbers',
-    'fibonacci', 'fizz-buzz', 'happy-numbers', 'intersection', 'leap-years',
+    'fibonacci', 'fizz-buzz', 'happy-numbers', 'intersection',
+    'kolakoski-constant', 'kolakoski-sequence', 'leap-years',
     'levenshtein-distance', 'leyland-numbers', 'look-and-say',
     'lucky-tickets', 'morse-decoder', 'morse-encoder', 'niven-numbers',
     'odious-numbers', 'ordinal-numbers', 'pangram-grep', 'pascals-triangle',
@@ -62,7 +63,8 @@ CREATE TABLE users (
     delete       timestamp,
     keymap       keymap    NOT NULL DEFAULT 'default',
     country      char(2),
-    show_country bool NOT NULL DEFAULT false
+    show_country bool      NOT NULL DEFAULT false,
+    started      timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW())
 );
 
 CREATE TABLE sessions (

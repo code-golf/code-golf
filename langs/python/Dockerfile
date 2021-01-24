@@ -1,4 +1,4 @@
-FROM alpine:3.12 as builder
+FROM alpine:3.13 as builder
 
 RUN mkdir /empty
 
@@ -22,4 +22,4 @@ COPY --from=0 /empty                   /tmp
 COPY --from=0 /usr/bin/python3.9       /usr/bin/python
 COPY --from=0 /usr/lib/python3.9       /usr/lib/python3.9
 
-ENTRYPOINT ["/usr/bin/python", "-c", "import platform;print(platform.python_version())"]
+ENTRYPOINT ["python", "-c", "import platform;print(platform.python_version())"]

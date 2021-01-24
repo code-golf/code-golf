@@ -1,4 +1,4 @@
-FROM alpine:3.12 as builder
+FROM alpine:3.13 as builder
 
 RUN mkdir /empty
 
@@ -34,4 +34,4 @@ COPY --from=0 /usr/lib/crt1.o          \
 COPY --from=0 /usr/lib/nim             /usr/lib/nim/
 COPY --from=0 /usr/lib/tcc             /usr/lib/tcc/
 
-ENTRYPOINT ["/usr/bin/nim", "-v"]
+ENTRYPOINT ["nim", "-v"]

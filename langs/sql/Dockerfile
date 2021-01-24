@@ -1,10 +1,10 @@
-FROM alpine:3.12 as builder
+FROM alpine:3.13 as builder
 
 RUN mkdir /empty
 
 RUN apk add --no-cache curl gcc musl-dev
 
-RUN curl https://www.sqlite.org/2020/sqlite-autoconf-3340000.tar.gz \
+RUN curl https://www.sqlite.org/2021/sqlite-autoconf-3340100.tar.gz \
   | tar --strip 1 -xzf -
 
 COPY sql.c /
@@ -17,4 +17,4 @@ COPY --from=0 /empty /proc
 COPY --from=0 /empty /tmp
 COPY --from=0 /sql   /usr/bin/
 
-ENTRYPOINT ["/usr/bin/sql", "-v"]
+ENTRYPOINT ["sql", "-v"]

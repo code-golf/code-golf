@@ -1,43 +1,51 @@
+details > div {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(21rem, 1fr));
+}
+
 main {
     gap: 0;
-    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
     padding: 0;
 }
 
-progress {
-    background: var(--light-grey);
+summary {
+    background: var(--background);
     border: 0;
-    height: .5rem;
-    margin: .25rem 0;
-    width: 100%;
+    color: var(--color);
+    font-size: 1.5rem;
+    font-variant: tabular-nums;
+    font-weight: bold;
+    padding: 1rem;
+    position: sticky;
+    top: calc(5.75rem + 2px);
+    z-index: 1;
 }
 
-progress::-moz-progress-bar      { background: var(--blue) }
-progress::-webkit-progress-bar   { background: var(--light-grey) }
-progress::-webkit-progress-value { background: var(--blue) }
+summary:hover { background: var(--background) !important }
 
-.locked { background: var(--light-grey) }
+.trophy {
+    display: grid;
+    gap: .5rem 1rem;
+    grid-template: auto 1fr auto / auto 1fr;
+    padding: 1rem;
+}
 
-.locked div {
+.trophy > div { grid-row: span 3 }
+
+.trophy > div:first-of-type { font-size: 4rem }
+
+.trophy > p:last-of-type {
+    display: flex;
+    font-size: .75rem;
+    font-weight: bold;
+    justify-content: space-between;
+}
+
+.trophy:not(.earned) { background: var(--light-grey) }
+
+.trophy:not(.earned) > div:first-of-type {
     color: transparent;
     text-shadow: 0 0 var(--color);
 }
 
-.trophy {
-    display: grid;
-    gap: .5rem 1.25rem;
-    grid-template: min-content 1fr min-content / min-content 1fr;
-    padding: 1.25rem;
-}
-
-.trophy > :last-child { font-size: .875rem }
-
-.trophy div {
-    font-size: 4rem;
-    grid-row: span 3;
-}
-
-.trophy span {
-    color: var(--red);
-    font-weight: bold;
-}
+.trophy:not(.earned) span { color: var(--red) }
