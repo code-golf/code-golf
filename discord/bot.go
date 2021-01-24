@@ -44,7 +44,7 @@ func LogNewRecord(
 	golferURL := "https://code.golf/golfers/" + golfer.Name
 
 	embed := &discordgo.MessageEmbed{
-		Title: fmt.Sprintf("New :first_place: on %s in %s!",
+		Title: fmt.Sprintf("New 🥇 on %s in %s!",
 			hole.Name,
 			lang.Name,
 		),
