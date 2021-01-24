@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/buildkite/terminal"
+	"github.com/code-golf/code-golf/discord"
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/pretty"
 	"github.com/code-golf/code-golf/session"
@@ -109,6 +110,8 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
+		recordScorings := ""
+
 		for _, rank := range out.RankUpdates {
 			if rank.From.Strokes.Int64 == rank.To.Strokes.Int64 {
 				continue
@@ -137,6 +140,16 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 				rank.To.Rank.Int64,
 				pretty.Ordinal(int(rank.To.Rank.Int64)),
 			)
+
+			// This keeps track of which scorings (if any) represent new records
+			if !rank.To.Joint.Bool && rank.To.Rank.Int64 == 1 {
+				recordScorings += rank.Scoring
+			}
+		}
+
+		// If either of the scorings is a new record, announce it on Discord
+		if recordScorings != "" {
+			discord.LogNewRecord(golfer, in.Hole, in.Lang, recordScorings, out.RankUpdates[0].To.Strokes.Int64, out.RankUpdates[1].To.Strokes.Int64)
 		}
 
 		// TODO Use the golfer's timezone from /settings.
