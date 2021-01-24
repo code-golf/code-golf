@@ -9,13 +9,13 @@ import (
 
 	"github.com/buildkite/terminal"
 	"github.com/code-golf/code-golf/discord"
+	Golfer "github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
 	"github.com/code-golf/code-golf/pretty"
 	"github.com/code-golf/code-golf/session"
 	"github.com/lib/pq"
 	"github.com/pmezard/go-difflib/difflib"
-	"gopkg.in/guregu/null.v4"
 )
 
 // Solution serves POST /solution
@@ -45,19 +45,11 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		awardTrophy(db, golfer.ID, "slowcoach")
 	}
 
-	type rankUpdate struct {
-		Scoring  string
-		From, To struct {
-			Joint         null.Bool
-			Rank, Strokes null.Int
-		}
-	}
-
 	out := struct {
 		Argv                []string
 		Diff, Err, Exp, Out string
 		Pass, LoggedIn      bool
-		RankUpdates         []rankUpdate
+		RankUpdates         []Golfer.RankUpdate
 		Took                time.Duration
 		Trophies            []string
 	}{
@@ -66,7 +58,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		Exp:  score.Answer,
 		Out:  string(score.Stdout),
 		Pass: score.Pass,
-		RankUpdates: []rankUpdate{
+		RankUpdates: []Golfer.RankUpdate{
 			{Scoring: "bytes"},
 			{Scoring: "chars"},
 		},
@@ -111,7 +103,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
-		recordScorings := ""
+		recordUpdates := make([]Golfer.RankUpdate, 0, 2)
 
 		for _, rank := range out.RankUpdates {
 			if rank.From.Strokes.Int64 == rank.To.Strokes.Int64 {
@@ -142,18 +134,16 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 				pretty.Ordinal(int(rank.To.Rank.Int64)),
 			)
 
-			// This keeps track of which scorings (if any) represent new records
+			// This keeps track of which updates (if any) represent new records
 			if !rank.To.Joint.Bool && rank.To.Rank.Int64 == 1 {
-				recordScorings += rank.Scoring
+				recordUpdates = append(recordUpdates, rank)
 			}
 		}
 
-		// If either of the scorings is a new record, announce it on Discord
-		if recordScorings != "" {
+		// If any of the updates are record breakers, announce them on Discord
+		if len(recordUpdates) > 0 {
 			go discord.LogNewRecord(
-				golfer, hole.ByID[in.Hole], lang.ByID[in.Lang], recordScorings,
-				out.RankUpdates[0].To.Strokes.Int64,
-				out.RankUpdates[1].To.Strokes.Int64,
+				golfer, hole.ByID[in.Hole], lang.ByID[in.Lang], recordUpdates,
 			)
 		}
 

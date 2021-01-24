@@ -8,6 +8,7 @@ import (
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
 	"github.com/code-golf/code-golf/trophy"
+	"gopkg.in/guregu/null.v4"
 )
 
 type Golfer struct {
@@ -36,6 +37,14 @@ type GolferInfo struct {
 
 	// Start date
 	TeedOff time.Time
+}
+
+type RankUpdate struct {
+	Scoring  string
+	From, To struct {
+		Joint         null.Bool
+		Rank, Strokes null.Int
+	}
 }
 
 func GetInfo(db *sql.DB, name string) *GolferInfo {
