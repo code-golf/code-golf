@@ -43,6 +43,7 @@ input.fish:not(:checked)       ~ .fish,
 input.fortran:not(:checked)    ~ .fortran,
 input.go:not(:checked)         ~ .go,
 input.haskell:not(:checked)    ~ .haskell,
+input.hexagony:not(:checked)   ~ .hexagony,
 input.j:not(:checked)          ~ .j,
 input.java:not(:checked)       ~ .java,
 input.javascript:not(:checked) ~ .javascript,
@@ -85,7 +86,7 @@ main svg:nth-of-type(2) {
 
 @media (min-width: 1280px) {
     /* Increase this number when adding a language. */
-    main { grid-template-columns: 4fr repeat(28, 1fr) }
+    main { grid-template-columns: 4fr repeat(29, 1fr) }
 
     main a { height: 1.9rem }
 
