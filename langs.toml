@@ -267,7 +267,7 @@ for arg in commandLineParams():
 
 [Perl]
 size    = '4.07 MiB'
-version = '5.32.0'
+version = '5.32.1'
 website = '//www.perl.org'
 example = '''
 # Printing
