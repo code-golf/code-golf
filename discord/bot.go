@@ -1,12 +1,12 @@
 package discord
 
 import (
-	"database/sql"
 	"fmt"
 	"os"
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
 )
@@ -48,45 +48,29 @@ func init() {
 	}
 }
 
-// Receive code for a given hole and send a message if it breaks that hole's record
-func LogNewRecord(db *sql.DB, code string, userName string, holeName string, langName string) {
+// Log a record breaking solution in Discord
+func LogNewRecord(golfer *golfer.Golfer, holeName string, langName string, scorings string, bytes int64, chars int64) {
 	if bot != nil {
-		// Save the current top records to compare against the new solution
-		oldBytes, oldChars := 0, 0
-		err := db.QueryRow(
-			`SELECT MIN(bytes), MIN(chars) FROM code
-				JOIN solutions ON code_id = id
-				WHERE hole=$1 AND lang=$2;`,
-			holeName, langName,
-		).Scan(&oldBytes, &oldChars)
+		go func() {
+			holeName = hole.ByID[holeName].Name
+			langName = lang.ByID[langName].Name
 
-		if err == nil {
-			go func() {
-				newBytes, newChars := len(code), len([]rune(code))
-				newByteRecord := newBytes < oldBytes
-				newCharRecord := newChars < oldChars
+			scoring := ""
+			if scorings != "byteschars" {
+				scoring = scorings[:len(scorings)-1] + " "
+			}
 
-				// Make sure the user has broken at least one of the records
-				if !newByteRecord && !newCharRecord {
-					return
-				}
+			embed := &discordgo.MessageEmbed{
+				Title:       fmt.Sprintf("New record on %s in %s!", holeName, langName),
+				Description: fmt.Sprintf("A new %srecord has been set by %s!", scoring, golfer.Name),
+				Fields: []*discordgo.MessageEmbedField{
+					{Name: "Bytes", Inline: true, Value: fmt.Sprint(bytes)},
+					{Name: "Chars", Inline: true, Value: fmt.Sprint(chars)},
+				},
+			}
 
-				holeName = hole.ByID[holeName].Name
-				langName = lang.ByID[langName].Name
-
-				scoring := ""
-				if !newCharRecord {
-					scoring = "byte "
-				}
-				if !newByteRecord {
-					scoring = "char "
-				}
-
-				bot.ChannelMessageSend(recordAnnounceChannel,
-					fmt.Sprintf("New %srecord on %s in %s by %s!\n\t%d bytes / %d chars",
-						scoring, holeName, langName, userName, newBytes, newChars))
-			}()
-		}
+			bot.ChannelMessageSendEmbed(recordAnnounceChannel, embed)
+		}()
 	}
 }
 
