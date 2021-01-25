@@ -12,8 +12,10 @@ import (
 	"github.com/code-golf/code-golf/lang"
 )
 
-var bot *discordgo.Session
-var channelID string
+var (
+	bot       *discordgo.Session
+	channelID string
+)
 
 // Represents a new record announcement message
 type RecAnnouncement struct {
@@ -37,6 +39,8 @@ func init() {
 				log.Println(err)
 			} else if err := bot.Open(); err != nil {
 				log.Println(err)
+			} else {
+				bot.AddHandler(handleMessage)
 			}
 		}()
 	}
@@ -50,10 +54,7 @@ func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
 
 	// Creating the basic embed
 	embed := &discordgo.MessageEmbed{
-		Title: fmt.Sprintf("New 🥇 on %s in %s!",
-			hole.Name,
-			lang.Name,
-		),
+		Title:  fmt.Sprintf("New 🥇 on %s in %s!", hole.Name, lang.Name),
 		URL:    "https://code.golf/scores/" + hole.ID + "/" + lang.ID + "/",
 		Fields: make([]*discordgo.MessageEmbedField, 0, 2),
 		Author: &discordgo.MessageEmbedAuthor{Name: golfer.Name, IconURL: imageURL, URL: golferURL},
@@ -119,7 +120,7 @@ func LogNewRecord(
 			lastAnnouncement.Message.ChannelID,
 			lastAnnouncement.Message.ID,
 			recAnnounceToEmbed(lastAnnouncement),
-		); err == nil { // Note that we only return if the embed was edited succesfully;
+		); err == nil { // Note that we only return if the embed was edited successfully;
 			return // otherwise, we'll continue forward and send it as a new message
 		}
 	}
@@ -129,5 +130,17 @@ func LogNewRecord(
 	} else {
 		lastAnnouncement = announcement
 		lastAnnouncement.Message = newMessage
+	}
+}
+
+// handleMessage handles a message received by the bot
+func handleMessage(session *discordgo.Session, event *discordgo.MessageCreate) {
+	if event.Author.Bot {
+		return
+	}
+
+	// Discard the last announcement if another message was sent after it
+	if event.ChannelID == channelID {
+		lastAnnouncement = nil
 	}
 }
