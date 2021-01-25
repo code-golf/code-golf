@@ -60,23 +60,23 @@ func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
 	}
 
 	// Now, we fill out the fields according to the updates of the announcement
+
 	fieldValues := make(map[string]string)
 	for _, pair := range announce.Updates {
 		for _, update := range pair {
-			improveString := fmt.Sprint(update.To.Strokes.Int64)
 			if update.From.Strokes.Valid {
-				improveString = fmt.Sprint(update.From.Strokes.Int64) + "  →  " + improveString
+				if fieldValues[update.Scoring] == "" {
+					fieldValues[update.Scoring] = fmt.Sprint(update.From.Strokes.Int64)
+				}
+				fieldValues[update.Scoring] += "  →  "
 			}
-			fieldValues[update.Scoring] += improveString
+			fieldValues[update.Scoring] += fmt.Sprint(update.To.Strokes.Int64)
 		}
-		// Use invisible Braille characters so that Discord won't truncate them
-		fieldValues["bytes"] += "⠀\n"
-		fieldValues["chars"] += "⠀\n"
 	}
 
 	// We iterate over the scorings rather than the map itself so that the order will be guaranteed
 	for _, scoring := range []string{"bytes", "chars"} {
-		if strings.ReplaceAll(fieldValues[scoring], "⠀\n", "") != "" {
+		if fieldValues[scoring] != "" {
 			embed.Fields = append(embed.Fields, &discordgo.MessageEmbedField{
 				Name:   strings.Title(scoring),
 				Value:  fieldValues[scoring],
@@ -86,7 +86,7 @@ func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
 	}
 
 	// Find the dominant scoring (only "chars" if there were no improvements on bytes)
-	if strings.ReplaceAll(fieldValues["bytes"], "⠀\n", "") == "" {
+	if fieldValues["bytes"] == "" {
 		embed.URL += "chars"
 	} else {
 		embed.URL += "bytes"
