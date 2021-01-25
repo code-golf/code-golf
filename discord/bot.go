@@ -5,7 +5,6 @@ import (
 	"log"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/bwmarrin/discordgo"
 	Golfer "github.com/code-golf/code-golf/golfer"
@@ -18,12 +17,11 @@ var channelID string
 
 // Represents a new record announcement message
 type RecAnnouncement struct {
-	Timestamp time.Time
-	Message   *discordgo.Message
-	Updates   [][]Golfer.RankUpdate
-	Golfer    *Golfer.Golfer
-	Hole      hole.Hole
-	Lang      lang.Lang
+	Message *discordgo.Message
+	Updates [][]Golfer.RankUpdate
+	Golfer  *Golfer.Golfer
+	Hole    hole.Hole
+	Lang    lang.Lang
 }
 
 var lastAnnouncement *RecAnnouncement
@@ -56,10 +54,9 @@ func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
 			hole.Name,
 			lang.Name,
 		),
-		URL:       "https://code.golf/scores/" + hole.ID + "/" + lang.ID + "/",
-		Fields:    make([]*discordgo.MessageEmbedField, 0, 2),
-		Author:    &discordgo.MessageEmbedAuthor{Name: golfer.Name, IconURL: imageURL, URL: golferURL},
-		Timestamp: announce.Timestamp.Format(time.RFC3339),
+		URL:    "https://code.golf/scores/" + hole.ID + "/" + lang.ID + "/",
+		Fields: make([]*discordgo.MessageEmbedField, 0, 2),
+		Author: &discordgo.MessageEmbedAuthor{Name: golfer.Name, IconURL: imageURL, URL: golferURL},
 	}
 
 	// Now, we fill out the fields according to the updates of the announcement
@@ -77,6 +74,7 @@ func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
 		fieldValues["chars"] += "⠀\n"
 	}
 
+	// We iterate over the scorings rather than the map itself so that the order will be guaranteed
 	for _, scoring := range []string{"bytes", "chars"} {
 		if strings.ReplaceAll(fieldValues[scoring], "⠀\n", "") != "" {
 			embed.Fields = append(embed.Fields, &discordgo.MessageEmbedField{
@@ -106,16 +104,16 @@ func LogNewRecord(
 	}
 
 	announcement := &RecAnnouncement{
-		Timestamp: time.Now(),
-		Hole:      hole, Lang: lang, Golfer: golfer,
+		Hole:    hole,
+		Lang:    lang,
+		Golfer:  golfer,
 		Updates: [][]Golfer.RankUpdate{updates},
 	}
 
 	if lastAnnouncement != nil &&
 		announcement.Lang.ID == lastAnnouncement.Lang.ID &&
 		announcement.Hole.ID == lastAnnouncement.Hole.ID &&
-		announcement.Golfer.ID == lastAnnouncement.Golfer.ID &&
-		announcement.Timestamp.Sub(lastAnnouncement.Timestamp) < time.Hour {
+		announcement.Golfer.ID == lastAnnouncement.Golfer.ID {
 		lastAnnouncement.Updates = append(lastAnnouncement.Updates, updates)
 		if _, err := bot.ChannelMessageEditEmbed(
 			lastAnnouncement.Message.ChannelID,
