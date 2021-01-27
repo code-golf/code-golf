@@ -10,6 +10,7 @@ import (
 	Golfer "github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
+	"github.com/code-golf/code-golf/pretty"
 )
 
 var (
@@ -67,11 +68,11 @@ func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
 		for _, update := range pair {
 			if update.From.Strokes.Valid {
 				if fieldValues[update.Scoring] == "" {
-					fieldValues[update.Scoring] = fmt.Sprint(update.From.Strokes.Int64)
+					fieldValues[update.Scoring] = pretty.Comma(int(update.To.Strokes.Int64))
 				}
 				fieldValues[update.Scoring] += "  →  "
 			}
-			fieldValues[update.Scoring] += fmt.Sprint(update.To.Strokes.Int64)
+			fieldValues[update.Scoring] += pretty.Comma(int(update.To.Strokes.Int64))
 		}
 	}
 
