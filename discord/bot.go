@@ -5,17 +5,28 @@ import (
 	"log"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/code-golf/code-golf/golfer"
+	Golfer "github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
 )
 
-var bot *discordgo.Session
+var (
+	bot       *discordgo.Session
+	channelID string
+)
 
-var channelID string
+// Represents a new record announcement message
+type RecAnnouncement struct {
+	Message *discordgo.Message
+	Updates [][]Golfer.RankUpdate
+	Golfer  *Golfer.Golfer
+	Hole    hole.Hole
+	Lang    lang.Lang
+}
+
+var lastAnnouncement *RecAnnouncement
 
 func init() {
 	/* The authentication token of the bot and the ID of the announcement channel (800680710964903946)
@@ -28,47 +39,108 @@ func init() {
 				log.Println(err)
 			} else if err := bot.Open(); err != nil {
 				log.Println(err)
+			} else {
+				bot.AddHandler(handleMessage)
 			}
 		}()
 	}
 }
 
+// recAnnounceToEmbed parses a recAnnouncement object and turns it into a Discord embed
+func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
+	hole, lang, golfer := announce.Hole, announce.Lang, announce.Golfer
+	imageURL := "https://avatars.githubusercontent.com/" + golfer.Name
+	golferURL := "https://code.golf/golfers/" + golfer.Name
+
+	// Creating the basic embed
+	embed := &discordgo.MessageEmbed{
+		Title:  fmt.Sprintf("New 🥇 on %s in %s!", hole.Name, lang.Name),
+		URL:    "https://code.golf/scores/" + hole.ID + "/" + lang.ID + "/",
+		Fields: make([]*discordgo.MessageEmbedField, 0, 2),
+		Author: &discordgo.MessageEmbedAuthor{Name: golfer.Name, IconURL: imageURL, URL: golferURL},
+	}
+
+	// Now, we fill out the fields according to the updates of the announcement
+
+	fieldValues := make(map[string]string)
+	for _, pair := range announce.Updates {
+		for _, update := range pair {
+			if update.From.Strokes.Valid {
+				if fieldValues[update.Scoring] == "" {
+					fieldValues[update.Scoring] = fmt.Sprint(update.From.Strokes.Int64)
+				}
+				fieldValues[update.Scoring] += "  →  "
+			}
+			fieldValues[update.Scoring] += fmt.Sprint(update.To.Strokes.Int64)
+		}
+	}
+
+	// We iterate over the scorings rather than the map itself so that the order will be guaranteed
+	for _, scoring := range []string{"bytes", "chars"} {
+		if fieldValues[scoring] != "" {
+			embed.Fields = append(embed.Fields, &discordgo.MessageEmbedField{
+				Name:   strings.Title(scoring),
+				Value:  fieldValues[scoring],
+				Inline: true,
+			})
+		}
+	}
+
+	// Find the dominant scoring (only "chars" if there were no improvements on bytes)
+	if fieldValues["bytes"] == "" {
+		embed.URL += "chars"
+	} else {
+		embed.URL += "bytes"
+	}
+
+	return embed
+}
+
 // LogNewRecord logs a record breaking solution in Discord.
 func LogNewRecord(
-	golfer *golfer.Golfer, hole hole.Hole, lang lang.Lang, updates []golfer.RankUpdate,
+	golfer *Golfer.Golfer, hole hole.Hole, lang lang.Lang, updates []Golfer.RankUpdate,
 ) {
 	if bot == nil {
 		return
 	}
 
-	imageURL := "https://avatars.githubusercontent.com/" + golfer.Name
-	golferURL := "https://code.golf/golfers/" + golfer.Name
-
-	embed := &discordgo.MessageEmbed{
-		Title: fmt.Sprintf("New 🥇 on %s in %s!",
-			hole.Name,
-			lang.Name,
-		),
-		URL:       "https://code.golf/scores/" + hole.ID + "/" + lang.ID + "/" + updates[0].Scoring,
-		Fields:    make([]*discordgo.MessageEmbedField, 0, 2),
-		Author:    &discordgo.MessageEmbedAuthor{Name: golfer.Name, IconURL: imageURL, URL: golferURL},
-		Timestamp: time.Now().Format(time.RFC3339),
+	announcement := &RecAnnouncement{
+		Hole:    hole,
+		Lang:    lang,
+		Golfer:  golfer,
+		Updates: [][]Golfer.RankUpdate{updates},
 	}
 
-	// Add in the scorings (as necessary)
-	for _, update := range updates {
-		improveString := fmt.Sprint(update.To.Strokes.Int64)
-		if update.From.Strokes.Valid {
-			improveString = fmt.Sprint(update.From.Strokes.Int64) + "  →  " + improveString
+	if lastAnnouncement != nil &&
+		announcement.Lang.ID == lastAnnouncement.Lang.ID &&
+		announcement.Hole.ID == lastAnnouncement.Hole.ID &&
+		announcement.Golfer.ID == lastAnnouncement.Golfer.ID {
+		lastAnnouncement.Updates = append(lastAnnouncement.Updates, updates)
+		if _, err := bot.ChannelMessageEditEmbed(
+			lastAnnouncement.Message.ChannelID,
+			lastAnnouncement.Message.ID,
+			recAnnounceToEmbed(lastAnnouncement),
+		); err == nil { // Note that we only return if the embed was edited successfully;
+			return // otherwise, we'll continue forward and send it as a new message
 		}
-		embed.Fields = append(embed.Fields, &discordgo.MessageEmbedField{
-			Name:   strings.Title(update.Scoring),
-			Value:  improveString,
-			Inline: true,
-		})
 	}
 
-	if _, err := bot.ChannelMessageSendEmbed(channelID, embed); err != nil {
+	if newMessage, err := bot.ChannelMessageSendEmbed(channelID, recAnnounceToEmbed(announcement)); err != nil {
 		log.Println(err)
+	} else {
+		lastAnnouncement = announcement
+		lastAnnouncement.Message = newMessage
+	}
+}
+
+// handleMessage handles a message received by the bot
+func handleMessage(session *discordgo.Session, event *discordgo.MessageCreate) {
+	if event.Author.Bot {
+		return
+	}
+
+	// Discard the last announcement if another message was sent after it
+	if event.ChannelID == channelID {
+		lastAnnouncement = nil
 	}
 }
