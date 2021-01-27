@@ -17,7 +17,7 @@ FROM scratch
 COPY --from=0 /bin/cat /bin/rm            /bin/
 COPY --from=0 /lib/x86_64-linux-gnu       /lib/x86_64-linux-gnu/
 COPY --from=0 /lib64/ld-linux-x86-64.so.2 /lib64/
-COPY --from=0 //opt/jdk                   /opt/jdk
+COPY --from=0 /opt/jdk                    /opt/jdk
 COPY --from=0 /empty                      /proc
 COPY --from=0 /empty                      /tmp
 COPY --from=0 /usr/lib/locale             /usr/lib/locale/
