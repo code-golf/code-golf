@@ -26,9 +26,7 @@ type Scorecard struct {
 	Took           time.Duration
 }
 
-func getAnswer(holeID, code string) ([]string, string) {
-	var answer string
-	var args []string
+func getAnswer(holeID, code string) (args []string, answer string) {
 	switch holeID {
 	case "arabic-to-roman", "roman-to-arabic":
 		args, answer = arabicToRoman(holeID == "roman-to-arabic")
@@ -76,7 +74,7 @@ func getAnswer(holeID, code string) ([]string, string) {
 		}
 	}
 
-	return args, answer
+	return
 }
 
 func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
