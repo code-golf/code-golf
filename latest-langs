@@ -1,6 +1,6 @@
 #!/usr/bin/env perl6
 
-use Cro::HTTP::Client;
+use HTTP::Tiny;
 use TOML::Thumb;
 
 constant @urls = (
@@ -33,10 +33,10 @@ constant @urls = (
 my %langs = from-toml slurp 'langs.toml';
 
 for @urls -> (:key($lang), :value($path)) {
-    state $client = Cro::HTTP::Client.new: :http<1.1>;
+    state $ua = HTTP::Tiny.new :throw-exceptions;
 
     my $old = %langs{$lang}<version> ~~ / <[\d.]>+ \d+ /;
-    my $new = (await (await $client.get: "https://en.wikipedia.org/wiki/$path").body)
+    my $new = $ua.get("https://en.wikipedia.org/wiki/$path")<content>.decode
         ~~ / < Stable Preview > ' release' .+? '>' ( '#' \d+ ' "' )? <(<[\d.]>+)> /;
 
     printf " %*s %s → %s\n", INIT { @urls».key».chars.max }, $lang, $old, $new

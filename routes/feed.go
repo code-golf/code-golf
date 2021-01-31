@@ -23,6 +23,9 @@ func init() {
 		sha, created, id string
 		hole             bool
 	}{
+		{"78f7023", "2021-01-24 20:44:04", "hexagony", false},
+		{"1d9ce0d", "2021-01-16 22:57:45", "kolakoski-constant", true},
+		{"1d9ce0d", "2021-01-16 22:57:45", "kolakoski-sequence", true},
 		{"1ef979e", "2020-12-26 21:13:30", "recamán", true},
 		{"74bbb70", "2020-12-24 23:44:45", "v", false},
 		{"fe9bf4c", "2020-12-01 18:53:11", "look-and-say", true},

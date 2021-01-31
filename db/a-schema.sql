@@ -5,7 +5,8 @@ CREATE TYPE hole AS ENUM (
     '12-days-of-christmas', '99-bottles-of-beer', 'abundant-numbers',
     'arabic-to-roman', 'brainfuck', 'christmas-trees', 'css-colors', 'cubes',
     'diamonds', 'divisors', 'emirp-numbers', 'emojify', 'evil-numbers',
-    'fibonacci', 'fizz-buzz', 'happy-numbers', 'intersection', 'leap-years',
+    'fibonacci', 'fizz-buzz', 'happy-numbers', 'intersection',
+    'kolakoski-constant', 'kolakoski-sequence', 'leap-years',
     'levenshtein-distance', 'leyland-numbers', 'look-and-say',
     'lucky-tickets', 'morse-decoder', 'morse-encoder', 'niven-numbers',
     'odious-numbers', 'ordinal-numbers', 'pangram-grep', 'pascals-triangle',
@@ -20,7 +21,7 @@ CREATE TYPE keymap AS ENUM ('default', 'vim');
 
 CREATE TYPE lang AS ENUM (
     'bash', 'brainfuck', 'c', 'c-sharp', 'cobol', 'f-sharp', 'fish',
-    'fortran', 'go', 'haskell', 'j', 'java', 'javascript', 'julia', 'lisp',
+    'fortran', 'go', 'haskell', 'hexagony', 'j', 'java', 'javascript', 'julia', 'lisp',
     'lua', 'nim', 'perl', 'php', 'powershell', 'python', 'raku', 'ruby',
     'rust', 'sql', 'swift', 'v', 'zig'
 );

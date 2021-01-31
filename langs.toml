@@ -1,5 +1,5 @@
 ['><>']
-size    = '585 KiB'
+size    = '486 KiB'
 version = '358ff13'
 website = '//github.com/primo-ppcg/fish-jit'
 example = '''
@@ -18,7 +18,7 @@ v               ~<
 '''
 
 [Bash]
-size    = '1.19 MiB'
+size    = '1.15 MiB'
 version = '5.1.4'
 website = '//www.gnu.org/software/bash/'
 example = '''
@@ -37,7 +37,7 @@ done
 '''
 
 [brainfuck]
-size    = '1.59 MiB'
+size    = '1.62 MiB'
 version = '1.0.0'
 website = '//github.com/code-golf/code-golf/tree/master/langs/brainfuck/'
 example = '''
@@ -59,7 +59,7 @@ example = '''
 '''
 
 [C]
-size    = '1.58 MiB'
+size    = '1.61 MiB'
 version = 'Tiny C Compiler 0.9.27'
 website = '//bellard.org/tcc/'
 example = '''
@@ -79,7 +79,7 @@ int main(int argc, char* argv[]) {
 
 ['C#']
 size    = '128 MiB'
-version = 'C# 9.0 on .NET 5.0.0'
+version = 'C# 9.0 on .NET 5.0.2'
 website = '//docs.microsoft.com/dotnet/csharp/'
 example = '''
 using System;
@@ -97,23 +97,39 @@ foreach (String arg in args)
 '''
 
 [COBOL]
-size    = '6.12 MiB'
-version = 'GnuCOBOL 2.2.0'
-website = '//www.gnu.org/software/gnucobol/'
+size    = '4.09 MiB'
+version = 'GnuCOBOL 3.1.2.0'
+website = '//gnucobol.sourceforge.io'
 
 ['F#']
 size    = '108 MiB'
 version = 'F# 4.7 on .NET Core 3.1.7'
 website = '//fsharp.org'
+example = '''
+[<EntryPoint>]
+let main args =
+    // Printing
+    printfn "Hello, World!"
+
+    // Looping
+    for i in 0..9 do
+        printfn "%d" i
+
+    // Accessing arguments
+    for arg in args do
+        printfn "%s" arg
+
+    0
+'''
 
 [Fortran]
-size    = '85.7 MiB'
+size    = '85.6 MiB'
 version = 'GNU Fortran 10.2.0'
 website = '//gcc.gnu.org/fortran/'
 
 [Go]
 size    = '110 MiB'
-version = '1.15.6'
+version = '1.15.7'
 website = '//go.dev'
 example = '''
 package main
@@ -144,8 +160,34 @@ size    = '332 MiB'
 version = 'Glasgow Haskell Compiler 8.8.4'
 website = '//www.haskell.org/ghc/'
 
+[Hexagony]
+size    = '14.5 MiB'
+version = 'f749e59'
+website = '//esolangs.org/wiki/Hexagony'
+example = '''
+          \ P r i n t i n g .
+         \ H ; e ; l ; ; o ; \
+        / o ; W ; 0 P ; 2 Q < .
+       . > ; r ; l ; d ; P 1 ; \
+      > * . . . . . . . . . . < .
+     . . . . . . . . . . . . . . .
+    . . L o o p i n g . . . . . . .
+   \ 1 0 ; " $ / } ! ) " ; \ . . . .
+  . . . . . . . > . - " = < . . . . .
+ . / . . . . . < . . . . . . . . . . .
+  . . . . . . . . . . . . . . . . . .
+   . . . A c c e s s i n g . . . . .
+    . . . A r g u m e n t s . . . .
+     . . . . . . > \ . @ . . . . .
+      . > $ > , < \ ) < . . . . .
+       . . \ . ; / $ 0 / . . . .
+        . . . . . . . . . . . .
+         . . . . . . . . . . .
+          . . . . . . . . . .
+'''
+
 [J]
-size    = '3.3 MiB'
+size    = '3.32 MiB'
 version = '9.01.01'
 website = '//www.jsoftware.com'
 
@@ -171,8 +213,8 @@ class Main {
 '''
 
 [JavaScript]
-size    = '21.1 MiB'
-version = 'V8 8.6.395.17'
+size    = '21.2 MiB'
+version = 'V8 8.7.220.31'
 website = '//v8.dev'
 example = '''
 // Printing
@@ -188,7 +230,7 @@ for (let arg of arguments)
 '''
 
 [Julia]
-size    = '279 MiB'
+size    = '280 MiB'
 version = '1.5.3'
 website = '//julialang.org'
 example = '''
@@ -207,12 +249,12 @@ end
 '''
 
 [Lisp]
-size    = '35.4 MiB'
+size    = '33.6 MiB'
 version = 'GNU CLISP 2.49.92'
 website = '//clisp.sourceforge.io'
 
 [Lua]
-size    = '318 KiB'
+size    = '334 KiB'
 version = '5.4.2'
 website = '//www.lua.org'
 example = '''
@@ -231,7 +273,7 @@ end
 '''
 
 [Nim]
-size    = '21.8 MiB'
+size    = '21.5 MiB'
 version = '1.4.2'
 website = '//nim-lang.org'
 example = '''
@@ -250,8 +292,8 @@ for arg in commandLineParams():
 '''
 
 [Perl]
-size    = '4.04 MiB'
-version = '5.32.0'
+size    = '4.07 MiB'
+version = '5.32.1'
 website = '//www.perl.org'
 example = '''
 # Printing
@@ -266,7 +308,7 @@ say for @ARGV;
 
 [PHP]
 size    = '10.5 MiB'
-version = '7.4.13'
+version = '7.4.14'
 website = '//www.php.net'
 example = '''
 # Printing
@@ -283,7 +325,7 @@ while ($arg = next($argv))
 
 [PowerShell]
 size    = '185 MiB'
-version = 'PowerShell 7.1.0 on .NET 5.0.0'
+version = 'PowerShell 7.1.1 on .NET 5.0.2'
 website = '//docs.microsoft.com/powershell/scripting/overview'
 example = '''
 // Printing
@@ -301,7 +343,7 @@ ForEach ($arg in $args) {
 '''
 
 [Python]
-size    = '205 MiB'
+size    = '196 MiB'
 version = '3.9.1'
 website = '//www.python.org'
 example = '''
@@ -375,8 +417,8 @@ fn main() {
 '''
 
 [SQL]
-size    = '1.03 MiB'
-version = '3.34.0'
+size    = '986 KiB'
+version = '3.34.1'
 website = '//sqlite.org/index.html'
 example = '''
 -- Printing
@@ -445,3 +487,24 @@ for arg in os.args[1..] {
 size    = '216 MiB'
 version = '0.7.0'
 website = '//ziglang.org'
+example = '''
+const std = @import("std");
+
+pub fn main() !void {
+    const stdout = std.io.getStdOut().writer();
+
+    // Printing
+    try stdout.print("Hello, World!\n", .{});
+
+    // Looping
+    var i: i32 = 0;
+    while (i < 10) : (i += 1)
+        try stdout.print("{}\n", .{i});
+
+    // Accessing arguments
+    var args = std.process.args();
+    _ = args.skip();
+    while (args.next(std.testing.allocator)) |arg|
+        try stdout.print("{}\n", .{arg});
+}
+'''

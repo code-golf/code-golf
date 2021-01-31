@@ -1,9 +1,8 @@
-FROM alpine:3.12 as builder
+FROM alpine:3.13 as builder
 
 RUN mkdir /empty
 
-RUN apk add -X http://dl-cdn.alpinelinux.org/alpine/edge/community --no-cache \
-    ghc=8.8.4-r0
+RUN apk add --no-cache ghc=8.8.4-r0
 
 RUN find /usr/lib -name '*.a' -delete
 
@@ -44,4 +43,4 @@ COPY --from=0 /usr/lib                 /usr/lib
 
 COPY haskell /usr/bin/
 
-ENTRYPOINT ["/usr/bin/ghc", "--version"]
+ENTRYPOINT ["ghc", "--version"]

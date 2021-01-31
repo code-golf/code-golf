@@ -11,17 +11,17 @@ WORKDIR /tmp
 RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git \
  && fetch v8                \
  && cd v8                   \
- && git checkout 8.6.395.17 \
+ && git checkout 8.7.220.31 \
  && gclient sync
 
-FROM alpine:3.12 as builder
+FROM alpine:3.13 as builder
 
 RUN mkdir /empty
 
 COPY --from=0 /tmp/v8 /tmp/v8
 
 RUN apk add --no-cache alpine-sdk binutils-gold clang curl g++ gcc git \
-    glib-dev icu-dev libstdc++ linux-headers llvm9 make ninja python2 tar xz
+    glib-dev icu-dev libstdc++ linux-headers llvm make ninja python2 tar xz
 
 ENV PATH "/usr/lib/llvm9/bin:$PATH"
 

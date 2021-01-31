@@ -31,9 +31,7 @@ type Scorecard struct {
 	Took           time.Duration
 }
 
-func getAnswer(holeID, code string) ([]string, string) {
-	var answer string
-	var args []string
+func getAnswer(holeID, code string) (args []string, answer string) {
 	switch holeID {
 	case "arabic-to-roman", "roman-to-arabic":
 		args, answer = arabicToRoman(holeID == "roman-to-arabic")
@@ -81,7 +79,7 @@ func getAnswer(holeID, code string) ([]string, string) {
 		}
 	}
 
-	return args, answer
+	return
 }
 
 func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
@@ -112,6 +110,8 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		cmd.Args = []string{"/usr/bin/fish", "--no-prng", "-c", code, "-u"}
 	case "haskell", "php":
 		cmd.Args = []string{"/usr/bin/" + langID, "--"}
+	case "hexagony":
+		cmd.Args = []string{"ruby", "/usr/bin/hexagony/interpreter.rb"}
 	case "j":
 		cmd.Args = []string{"/usr/bin/j", "/tmp/code.ijs"}
 	case "javascript":

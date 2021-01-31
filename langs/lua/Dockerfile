@@ -1,4 +1,4 @@
-FROM alpine:3.12 as builder
+FROM alpine:3.13 as builder
 
 RUN mkdir /empty
 
@@ -20,4 +20,4 @@ COPY --from=0 /empty             /proc
 COPY --from=0 /empty             /tmp
 COPY --from=0 /lua-5.4.2/src/lua /usr/bin/
 
-ENTRYPOINT ["/usr/bin/lua", "-v"]
+ENTRYPOINT ["lua", "-v"]

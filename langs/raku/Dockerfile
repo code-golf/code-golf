@@ -1,4 +1,4 @@
-FROM alpine:3.12 as builder
+FROM alpine:3.13 as builder
 
 RUN mkdir /empty
 
@@ -29,4 +29,4 @@ COPY --from=0 /usr/share/nqp           /usr/share/nqp
 COPY --from=0 /usr/share/perl6/lib     /usr/share/perl6/lib
 COPY --from=0 /usr/share/perl6/runtime /usr/share/perl6/runtime
 
-ENTRYPOINT ["/usr/bin/raku", "-v"]
+ENTRYPOINT ["raku", "-v"]

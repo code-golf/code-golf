@@ -25,7 +25,6 @@ for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
     run «docker build --pull --target builder -t "{$img}-builder" "langs/$id"»;
 
     run «docker build -t $img "langs/$id"»;
-    run «docker push $img» unless $no-push;
 
     # Size.
     my $proc = run :out,
@@ -36,7 +35,7 @@ for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
     %lang<size> = $proc.out.slurp(:close).chomp.subst: /(.)B$/, {" {$0.uc}iB"};
 
     # Version.
-    if $id eq 'fish' {
+    if $id eq 'fish' | 'hexagony' {
         "langs/$id/Dockerfile".IO.slurp ~~ / ' VERSION=' (\S+) /;
         %lang<version> = $0;
     }
@@ -66,6 +65,8 @@ for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
 
         %lang<version> = $ver;
     }
+
+    run «docker push $img» unless $no-push;
 }
 
 spurt 'langs.toml', to-toml %langs;

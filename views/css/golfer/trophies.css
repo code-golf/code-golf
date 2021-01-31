@@ -21,6 +21,8 @@ summary {
     z-index: 1;
 }
 
+summary:hover { background: var(--background) !important }
+
 .trophy {
     display: grid;
     gap: .5rem 1rem;

@@ -9,8 +9,43 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE TYPE hole_rank_ret AS (strokes int, rank int, joint bool);
+
+CREATE FUNCTION hole_rank(hole hole, lang lang, scoring scoring, user_id int)
+RETURNS SETOF hole_rank_ret AS $$
+BEGIN
+    RETURN QUERY EXECUTE FORMAT(
+        'WITH ranks AS (
+            SELECT %I, RANK() OVER (ORDER BY %I), user_id
+              FROM solutions
+              JOIN code ON id = code_id
+             WHERE NOT failing AND hole = $1 AND lang = $2 AND scoring = $3
+        ) SELECT %I, rank::int,
+                 (SELECT COUNT(*) != 1 FROM ranks r WHERE r.rank = ranks.rank)
+            FROM ranks WHERE user_id = $4',
+        scoring, scoring, scoring
+    ) USING hole, lang, scoring, user_id;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TYPE save_solution_ret AS (
+    earned          trophy[],
+    new_bytes       int,
+    new_bytes_joint bool,
+    new_bytes_rank  int,
+    new_chars       int,
+    new_chars_joint bool,
+    new_chars_rank  int,
+    old_bytes       int,
+    old_bytes_joint bool,
+    old_bytes_rank  int,
+    old_chars       int,
+    old_chars_joint bool,
+    old_chars_rank  int
+);
+
 CREATE FUNCTION save_solution(code text, hole hole, lang lang, user_id int)
-RETURNS trophy[] AS $$
+RETURNS save_solution_ret AS $$
 #variable_conflict use_variable
 DECLARE
     bytes   int;
@@ -18,12 +53,24 @@ DECLARE
     code_id int;
     earned  trophy[] := '{}'::trophy[];
     holes   int;
+    rank    hole_rank_ret;
+    ret     save_solution_ret;
 BEGIN
     bytes := octet_length(code);
     chars :=  char_length(code);
 
     -- Ensure we're the only one messing with code.
     LOCK TABLE code IN EXCLUSIVE MODE;
+
+    rank                := hole_rank(hole, lang, 'bytes', user_id);
+    ret.old_bytes       := rank.strokes;
+    ret.old_bytes_joint := rank.joint;
+    ret.old_bytes_rank  := rank.rank;
+
+    rank                := hole_rank(hole, lang, 'chars', user_id);
+    ret.old_chars       := rank.strokes;
+    ret.old_chars_joint := rank.joint;
+    ret.old_chars_rank  := rank.rank;
 
     -- Lookup the code ID, creating a new record if necessary.
     SELECT id INTO code_id FROM code WHERE code.code = code;
@@ -72,6 +119,16 @@ BEGIN
                     ELSE solutions.code_id
                 END;
 
+    rank                := hole_rank(hole, lang, 'bytes', user_id);
+    ret.new_bytes       := rank.strokes;
+    ret.new_bytes_joint := rank.joint;
+    ret.new_bytes_rank  := rank.rank;
+
+    rank                := hole_rank(hole, lang, 'chars', user_id);
+    ret.new_chars       := rank.strokes;
+    ret.new_chars_joint := rank.joint;
+    ret.new_chars_rank  := rank.rank;
+
     -- Remove any orphaned code.
     DELETE FROM code WHERE NOT EXISTS (SELECT FROM solutions WHERE id = solutions.code_id);
 
@@ -107,6 +164,8 @@ BEGIN
         earned := earn(earned, 'elephpant-in-the-room', user_id);
     END IF;
 
-    RETURN earned;
+    ret.earned := earned;
+
+    RETURN ret;
 END;
 $$ LANGUAGE plpgsql;

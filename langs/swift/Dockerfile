@@ -21,4 +21,4 @@ COPY --from=0 /      /
 COPY --from=0 /empty /proc
 COPY --from=0 /empty /tmp
 
-ENTRYPOINT [ "swift", "--version" ]
+ENTRYPOINT ["swift", "--version"]
