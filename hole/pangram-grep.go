@@ -33,7 +33,6 @@ func pangramGrep() (args []string, out string) {
 		[]byte(`the quick brown fox jumps over the lazy dog.`),
 		[]byte(`the wizard quickly jinxed the gnomes before they vaporized.`),
 		[]byte(`when zombies arrive, quickly fax judge pat.`),
-		[]byte(`"who am taking the ebonics quiz?", the prof jovially axed.`),
 	}
 
 	rand.Shuffle(len(pangrams), func(i, j int) {
