@@ -129,7 +129,7 @@ website = '//gcc.gnu.org/fortran/'
 
 [Go]
 size    = '110 MiB'
-version = '1.15.7'
+version = '1.15.8'
 website = '//go.dev'
 example = '''
 package main
@@ -308,7 +308,7 @@ say for @ARGV;
 
 [PHP]
 size    = '10.5 MiB'
-version = '7.4.14'
+version = '7.4.15'
 website = '//www.php.net'
 example = '''
 # Printing
@@ -444,8 +444,8 @@ SELECT arg FROM argv
 '''
 
 [Swift]
-size    = '869 MiB'
-version = '5.3.2'
+size    = '870 MiB'
+version = '5.3.3'
 website = '//swift.org'
 example = '''
 // Printing
