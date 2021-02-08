@@ -44,7 +44,7 @@ go run utils/update_sql_from_api.go
 
 ## Hacking
 
-Some of ancillary scripts are written in Raku, to run these ensure you have a
+Some of ancillary scripts are written in [Raku](https://raku.org), to run these ensure you have a
 recent install of Raku installed and use Zef to install the dependencies:
 ```
 $ zef install --deps-only .
@@ -64,7 +64,7 @@ $ make e2e
 
 ## Style
 
-URL slugs are consistently abbreviated (e.g. cheeovs, langs, stats) but page
+URL slugs are consistently abbreviated (e.g. cheevos, langs, stats) but page
 titles aren't (e.g. Achievements, Languages, Statistics).
 
 Paginated URLs use a trailing number but only on pages after the first (e.g.

@@ -113,6 +113,8 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		cmd.Args = []string{"/v8/lib/d8", "-e", code, "--"}
 	case "julia":
 		cmd.Args = []string{"/usr/bin/run-julia", "/tmp/code.jl"}
+	case "lolcode":
+		cmd.Args = []string{"/usr/local/bin/lci", "-"}
 	case "powershell":
 		cmd.Args = []string{"/interpreter/Interpreter"}
 
