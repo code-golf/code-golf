@@ -90,7 +90,11 @@ onload = () => {
 
         cm.setOption('lineWrapping', lang != 'fish');
         cm.setOption('matchBrackets', lang != 'brainfuck' && lang != 'j');
-        cm.setOption('mode', {name: 'text/x-' + lang, startOpen: true});
+        cm.setOption('mode', {
+            name: 'text/x-' + lang,
+            startOpen: true,
+            multiLineStrings: lang == 'c' // TCC supports multi-line strings
+        });
         cm.setValue(code);
 
         refreshScores();
