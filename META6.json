@@ -3,6 +3,6 @@
     "depends": [
         "HTTP::Tiny",
         "IO::Socket::SSL",
-        "git://gitlab.com/JRaspass/toml-thumb.git"
+        "TOML::Thumb"
     ]
 }
