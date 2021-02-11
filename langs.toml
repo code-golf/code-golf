@@ -192,8 +192,8 @@ version = '9.01.01'
 website = '//www.jsoftware.com'
 
 [Java]
-size    = '68.7 MiB'
-version = '15.0.1'
+size    = '68.8 MiB'
+version = '15.0.2'
 website = '//openjdk.java.net'
 example = '''
 class Main {
