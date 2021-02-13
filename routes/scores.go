@@ -167,6 +167,9 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 		Holes, Rank              int
 		Lang                     lang.Lang
 		Submitted                time.Time
+		Gold                     int
+		Silver                   int
+		Bronze                   int
 	}
 
 	data := struct {
@@ -268,8 +271,12 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 		         COALESCE(bytes_chars, 0) bytes_chars,
 		         COALESCE(chars_bytes, 0) chars_bytes,
 		         submitted,
+		         RANK() OVER (PARTITION BY l.hole ORDER BY `+otherScoring+`) ranking,
 		         l.user_id,
-		         l.lang
+		         l.lang,
+		         (CASE WHEN (RANK() OVER (PARTITION BY l.hole ORDER BY `+scoring+`) = 1) THEN 1 ELSE 0 END) gold,
+		         (CASE WHEN (RANK() OVER (PARTITION BY l.hole ORDER BY `+scoring+`) = 2) THEN 1 ELSE 0 END) silver,
+		         (CASE WHEN (RANK() OVER (PARTITION BY l.hole ORDER BY `+scoring+`) = 3) THEN 1 ELSE 0 END) bronze
 		    FROM leaderboard l
 	   LEFT JOIN other_scoring o ON l.user_id = o.user_id AND l.hole = o.hole `+join+`
 		), summed_leaderboard AS (
@@ -282,7 +289,10 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 		         SUM(chars)        chars,
 		         SUM(bytes_chars)  bytes_chars,
 		         SUM(chars_bytes)  chars_bytes,
-		         MAX(submitted)    submitted
+		         MAX(submitted)    submitted,
+		         SUM(gold) gold,
+		         SUM(silver) silver,
+		         SUM(bronze) bronze
 		    FROM scored_leaderboard
 		GROUP BY user_id
 		) SELECT bytes,
@@ -296,7 +306,10 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 		         chars_points,
 		         bytes_points,
 		         RANK() OVER (ORDER BY `+scoring+`_points DESC, `+scoring+`),
-		         submitted
+		         submitted,
+		         gold,
+		         silver,
+		         bronze
 		    FROM `+table+`
 		    JOIN users on user_id = id
 		ORDER BY `+scoring+`_points DESC, `+scoring+`, submitted
@@ -337,6 +350,9 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 			&score.BytesPoints,
 			&score.Rank,
 			&score.Submitted,
+			&score.Gold,
+			&score.Silver,
+			&score.Bronze,
 		); err != nil {
 			panic(err)
 		}

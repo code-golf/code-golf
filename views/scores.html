@@ -95,7 +95,14 @@
         {{- range .Data.Scores -}}
             {{ $me := eq $name .Login }}
             <tr{{ if $me }} class=me {{ end }}>
-                <td>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup>{{ if $me }}<p id=me>{{ end }}
+                <td>
+                    {{ if ne $holeID "all-holes" }}
+                        {{ if .Gold }}   🥇 {{ end }}
+                        {{ if .Silver }} 🥈 {{ end }}
+                        {{ if .Bronze }} 🥉 {{ end }}
+                    {{ end }}
+                    {{ comma .Rank }}<sup>{{ ord .Rank }}</sup>
+                    {{ if $me }}<p id=me>{{ end }}
                 <td>
                     <a href="/golfers/{{ .Login }}">
                         <img loading=lazy src="//avatars.githubusercontent.com/{{ .Login }}?s=24">
@@ -104,6 +111,11 @@
                         <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
                     {{ end }}
                     </a>
+                    {{ if eq $holeID "all-holes" }}
+                        {{ if or (gt .Gold 0) (gt .Silver 0) (gt .Bronze 0) }}
+                            <span> 🥇{{ comma .Gold }} 🥈{{ comma .Silver }} 🥉{{ comma .Bronze }} </span>
+                        {{ end }}
+                    {{ end }}
                 <td class=right>{{ if $allHoles }}{{ .Holes }}{{ else }}{{ .Lang.Name }}{{ end }}
                 <td class=right><span{{ if $charsScoring }} class=inactive {{end}} data-tooltip="Points for Bytes scoring">{{ comma .BytesPoints }}
                 <td class=right><span{{ if $bytesScoring }} class=inactive {{end}} data-tooltip="Points for Chars scoring">{{ comma .CharsPoints }}
