@@ -112,7 +112,7 @@
                     {{ end }}
                     </a>
                     {{ if eq $holeID "all-holes" }}
-                        {{ if or (gt .Gold 0) (gt .Silver 0) (gt .Bronze 0) }}
+                        {{ if or .Gold .Silver .Bronze }}
                             <span> 🥇{{ comma .Gold }} 🥈{{ comma .Silver }} 🥉{{ comma .Bronze }} </span>
                         {{ end }}
                     {{ end }}

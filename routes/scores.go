@@ -271,7 +271,6 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 		         COALESCE(bytes_chars, 0) bytes_chars,
 		         COALESCE(chars_bytes, 0) chars_bytes,
 		         submitted,
-		         RANK() OVER (PARTITION BY l.hole ORDER BY `+otherScoring+`) ranking,
 		         l.user_id,
 		         l.lang,
 		         (CASE WHEN (RANK() OVER (PARTITION BY l.hole ORDER BY `+scoring+`) = 1) THEN 1 ELSE 0 END) gold,
