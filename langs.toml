@@ -126,6 +126,27 @@ let main args =
 size    = '85.6 MiB'
 version = 'GNU Fortran 10.2.0'
 website = '//gcc.gnu.org/fortran/'
+example = '''
+character(len=32) :: s
+integer :: i
+
+! Printing
+print "(a)", "Hello, World!"
+
+! Looping
+do i = 0, 9
+    print "(i0)", i
+end do
+
+! Accessing arguments
+! (NOTE: getarg() and iargc() are GNU Fortran extensions)
+do i = 1, iargc()
+    call getarg(i,s)
+    print "(a)", s
+end do
+
+end
+'''
 
 [Go]
 size    = '110 MiB'
