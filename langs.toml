@@ -325,7 +325,7 @@ while ($arg = next($argv))
 
 [PowerShell]
 size    = '185 MiB'
-version = 'PowerShell 7.1.1 on .NET 5.0.2'
+version = 'PowerShell 7.1.2 on .NET 5.0.2'
 website = '//docs.microsoft.com/powershell/scripting/overview'
 example = '''
 // Printing
@@ -396,8 +396,8 @@ end
 '''
 
 [Rust]
-size    = '619 MiB'
-version = '1.49.0'
+size    = '707 MiB'
+version = '1.50.0'
 website = '//www.rust-lang.org'
 example = '''
 fn main() {

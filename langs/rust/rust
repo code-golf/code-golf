@@ -1,6 +1,7 @@
 #!/bin/sh -e
 src="$1"
 shift
+export CARGO_HOME=/usr/local/cargo
 export RUST_BACKTRACE=1
 export RUSTUP_HOME=/usr/local/rustup
 export PATH=/usr/local/cargo/bin:$PATH
