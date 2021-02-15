@@ -63,6 +63,8 @@ size    = '1.61 MiB'
 version = 'Tiny C Compiler 0.9.27'
 website = '//bellard.org/tcc/'
 example = '''
+#include <stdio.h>
+
 int main(int argc, char* argv[]) {
     // Printing
     puts("Hello, World!");
@@ -72,8 +74,10 @@ int main(int argc, char* argv[]) {
         printf("%d\n", i);
 
     // Accessing arguments
-    for (int i = 1; i <= argc; i++)
+    for (int i = 1; i < argc; i++)
         puts(argv[i]);
+
+    return 0;
 }
 '''
 
@@ -349,17 +353,17 @@ size    = '185 MiB'
 version = 'PowerShell 7.1.2 on .NET 5.0.2'
 website = '//docs.microsoft.com/powershell/scripting/overview'
 example = '''
-// Printing
-echo 'Hello, World!'
+# Printing
+Write-Host 'Hello, World!'
 
-// Looping
+# Looping
 ForEach ($i in 0..9) {
-    Write-Output $i
+    Write-Host $i
 }
 
-// Accessing arguments
+# Accessing arguments
 ForEach ($arg in $args) {
-   Write-Output $arg
+   Write-Host $arg
 }
 '''
 

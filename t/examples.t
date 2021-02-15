@@ -1,20 +1,26 @@
 use t;
 
-for sort from-toml slurp 'langs.toml' {
-    my $lang = .key eq '><>' ?? 'fish' !! .key.lc.subst: '#', '-sharp';
-
+for slurp("langs.toml").&from-toml.map({
+    .key.lc.trans( qw[# ><>] => qw[-sharp fish] ) => .value<example>;
+}).sort -> (:key($lang), :value($code)) {
     # TODO Remove this to ensure we have examples for every lang.
-    # skip 'No example yet' unless .value<example>;
-    next unless .value<example>;
+    next unless $code;
 
-    # Pick a hole that will definitely have unicode.
-    my $res = post-solution
-        code => .value<example>,
-        hole => 'rock-paper-scissors-spock-lizard',
-        lang => $lang;
+    for (
+        # Pick a hole that will definitely have unicode arguments.
+        'rock-paper-scissors-spock-lizard',
 
-    is $res<Out>, join("\n", 'Hello, World!', |^10, |$res<Argv>), $lang
-        or diag $res<Err>;
+        # Ensure PowerShell example works on Quine with explicit output.
+        ( 'quine' if $lang eq 'powershell' ),
+    ) -> $hole {
+        subtest "$lang ($hole)" => {
+            my $got = post-solution :$code :$hole :$lang;
+            my $exp = join "\n", 'Hello, World!', |^10, |($got<Argv> // '');
+
+            is $got<Out>, $exp, 'Out';
+            is $got<Err>,   '', 'Err';
+        }
+    }
 }
 
 done-testing;
