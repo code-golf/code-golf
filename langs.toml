@@ -82,8 +82,8 @@ int main(int argc, char* argv[]) {
 '''
 
 ['C#']
-size    = '128 MiB'
-version = 'C# 9.0 on .NET 5.0.2'
+size    = '129 MiB'
+version = 'C# 9.0 on .NET 5.0.3'
 website = '//docs.microsoft.com/dotnet/csharp/'
 example = '''
 using System;
@@ -350,7 +350,7 @@ while ($arg = next($argv))
 
 [PowerShell]
 size    = '185 MiB'
-version = 'PowerShell 7.1.2 on .NET 5.0.2'
+version = 'PowerShell 7.1.2 on .NET 5.0.3'
 website = '//docs.microsoft.com/powershell/scripting/overview'
 example = '''
 # Printing
