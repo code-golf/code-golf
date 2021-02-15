@@ -16,6 +16,7 @@ import { c, csharp }   from '@codemirror/legacy-modes/mode/clike';
 import { cobol }       from '@codemirror/legacy-modes/mode/cobol';
 import { commonLisp }  from '@codemirror/legacy-modes/mode/commonlisp';
 import { fortran }     from '@codemirror/legacy-modes/mode/fortran';
+import { fSharp }      from '@codemirror/legacy-modes/mode/mllike';
 import { go }          from '@codemirror/legacy-modes/mode/go';
 import { haskell }     from '@codemirror/legacy-modes/mode/haskell';
 import { java }        from '@codemirror/lang-java';
@@ -48,7 +49,7 @@ export const languages = {
     'c':          StreamLanguage.define(c),
     'c-sharp':    StreamLanguage.define(csharp),
     'cobol':      StreamLanguage.define(cobol),
-    // TODO f-sharp
+    'f-sharp':    StreamLanguage.define(fSharp),
     // TODO fish
     'fortran':    StreamLanguage.define(fortran),
     'go':         StreamLanguage.define(go),
