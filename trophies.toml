@@ -93,6 +93,11 @@ name        = 'tl;dr'
 emoji       = '🧶'
 description = 'Submit a solution that is rejected for being too long.'
 
+[[Miscellaneous]]
+name        = 'Different Strokes'
+emoji       = '🏳️‍🌈'
+description = 'Submit unique solutions for bytes and chars on the same hole.'
+
 # Progression
 
 [[Progression]]

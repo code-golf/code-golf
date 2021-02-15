@@ -35,7 +35,8 @@ CREATE TYPE trophy AS ENUM (
     'hello-world', 'inception', 'independence-day', 'interview-ready',
     'its-over-9000', 'my-god-its-full-of-stars', 'ouroboros',
     'patches-welcome', 'pi-day', 'polyglot', 'rtfm', 'slowcoach', 'tim-toady',
-    'the-watering-hole', 'tl-dr', 'twelvetide', 'up-to-eleven', 'vampire-byte'
+    'the-watering-hole', 'tl-dr', 'twelvetide', 'up-to-eleven', 'vampire-byte',
+    'different-strokes'
 );
 
 CREATE TABLE code (

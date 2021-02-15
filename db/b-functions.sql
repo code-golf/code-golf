@@ -164,6 +164,11 @@ BEGIN
         earned := earn(earned, 'elephpant-in-the-room', user_id);
     END IF;
 
+    IF bytes > ret.old_bytes AND chars < ret.old_chars
+        OR chars > ret.old_chars AND bytes < ret.old_bytes THEN
+        earned := earn(earned, 'different-strokes', user_id);
+    END IF;
+
     ret.earned := earned;
 
     RETURN ret;
