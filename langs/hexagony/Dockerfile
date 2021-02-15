@@ -1,14 +1,27 @@
-FROM alpine:3.13 as builder
+FROM mcr.microsoft.com/dotnet/sdk:5.0.102-alpine3.12 as builder
 
-ENV VERSION=f749e59
+ENV COMMIT=b531c38
 
-RUN apk add --no-cache curl
+RUN mkdir /empty
 
-RUN curl -L https://github.com/m-ender/hexagony/tarball/$VERSION | tar xz \
- && mv /m-ender-hexagony-$VERSION /hexagony
+ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 
-FROM codegolf/lang-ruby
+RUN curl -L https://github.com/SirBogman/Hexagony/tarball/$COMMIT \
+  | tar xz
 
-COPY --from=0 /hexagony /usr/bin/hexagony
+WORKDIR /SirBogman-Hexagony-$COMMIT
 
-COPY interpreter.rb /usr/bin/hexagony/
+RUN dotnet publish -c Release -r linux-musl-x64 -o /hexagony \
+    -p:PublishReadyToRun=true -p:PublishTrimmed=true
+
+FROM scratch
+
+COPY --from=0 /lib/ld-musl-x86_64.so.1 \
+              /lib/libcrypto.so.1.1    \
+              /lib/libssl.so.1.1       /lib/
+COPY --from=0 /empty                   /proc
+COPY --from=0 /empty                   /tmp
+COPY --from=0 /usr/lib                 /usr/lib/
+COPY --from=0 /hexagony                /hexagony/
+
+ENTRYPOINT ["/hexagony/Hexagony"]

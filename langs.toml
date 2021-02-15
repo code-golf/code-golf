@@ -187,8 +187,8 @@ website = '//www.haskell.org/ghc/'
 
 [Hexagony]
 size    = '14.5 MiB'
-version = 'f749e59'
-website = '//esolangs.org/wiki/Hexagony'
+version = 'b531c38'
+website = '//github.com/SirBogman/Hexagony'
 example = '''
           \ P r i n t i n g .
          \ H ; e ; l ; ; o ; \
