@@ -1,0 +1,7 @@
+#run {
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#run > span { margin: 0 1rem }

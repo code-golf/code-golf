@@ -3,6 +3,7 @@
 /docker/.env
 /localhost-key.pem
 /localhost.pem
+/node_modules/
 /routes/assets.go
 /run-lang
 /t/.precomp/

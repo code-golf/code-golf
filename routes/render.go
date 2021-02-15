@@ -102,8 +102,7 @@ func init() {
 
 			tmpl = template.Must(tmpl.New(name).Parse(data))
 		case ".js":
-			// Wrap in a block so top-level identifiers are minified.
-			if data, err = min.JS("{" + data + "}"); err != nil {
+			if data, err = min.JS(data); err != nil {
 				return err
 			}
 
@@ -173,7 +172,7 @@ func render(w http.ResponseWriter, r *http.Request, name, title string, data int
 			"frame-ancestors 'none';"+
 			"img-src 'self' data: avatars.githubusercontent.com;"+
 			"script-src 'self' 'nonce-"+args.Nonce+"';"+
-			"style-src 'self' 'nonce-"+args.Nonce+"'",
+			"style-src 'unsafe-inline'",
 	)
 
 	if args.Golfer == nil {

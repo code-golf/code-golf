@@ -45,6 +45,7 @@ func main() {
 
 	r.Get("/", routes.Index)
 	r.Get("/{hole}", routes.Hole)
+	r.Get("/ng/{hole}", routes.HoleNG)
 	r.Get("/about", routes.About)
 	r.Route("/admin", func(r chi.Router) {
 		r.Use(middleware.AdminArea)

@@ -1,0 +1,21 @@
+{{ template "header" . }}
+
+<main>
+    <select>
+    {{ range $id, $lang := .Data }}
+        <option value="{{ $id }}">{{ $lang.Name }}
+    {{ end }}
+    </select>
+
+    <div id=editor></div>
+
+    <div id=run>
+        ctrl + enter
+        <span>or</span>
+        <a class="btn blue">{{ svg "play-light" }} Run</a>
+    </div>
+</main>
+
+<script id=langs type=application/json>{{ .Data }}</script>
+
+{{ template "footer" }}

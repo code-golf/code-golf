@@ -70,6 +70,10 @@ e2e:
 	@docker-compose run e2e || (docker-compose logs; false)
 	@docker-compose rm -fs
 
+editor:
+	@node_modules/.bin/rollup \
+		-f es -o public/editor.js -p @rollup/plugin-node-resolve editor.js
+
 fmt:
 	@gofmt -s  -w $(GOFILES)
 	@goimports -w $(GOFILES)

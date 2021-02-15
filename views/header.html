@@ -36,8 +36,9 @@
 {{/* TODO Kill JSExt, make codemirror a real module imported from hole.js */}}
 {{ with .JSExt }}<script nonce="{{ $.Nonce }}" defer src="{{ . }}"></script>{{ end }}
 
+<style>{{ .CSS }}</style>
+
 {{/* type=module acts like defer, even on inline scripts */}}
-<style  nonce="{{ .Nonce }}"            >{{ .CSS }}</style>
 <script nonce="{{ .Nonce }}" type=module>{{ .JS }}</script>
 
 <header>

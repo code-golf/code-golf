@@ -69,3 +69,16 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 
 	render(w, r, "hole", data.Hole.Name, data)
 }
+
+// HoleNG serves GET /ng/{hole}
+func HoleNG(w http.ResponseWriter, r *http.Request) {
+	h, ok := hole.ByID[param(r, "hole")]
+	if !ok {
+		if h, ok = hole.ExperimentalByID[param(r, "hole")]; !ok {
+			NotFound(w, r)
+			return
+		}
+	}
+
+	render(w, r, "hole-ng", h.Name, lang.ByID)
+}
