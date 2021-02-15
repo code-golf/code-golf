@@ -186,7 +186,7 @@ version = 'Glasgow Haskell Compiler 8.8.4'
 website = '//www.haskell.org/ghc/'
 
 [Hexagony]
-size    = '14.5 MiB'
+size    = '62.6 MiB'
 version = 'b531c38'
 website = '//github.com/SirBogman/Hexagony'
 example = '''
