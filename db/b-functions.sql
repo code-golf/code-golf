@@ -164,8 +164,10 @@ BEGIN
         earned := earn(earned, 'elephpant-in-the-room', user_id);
     END IF;
 
-    IF bytes > ret.old_bytes AND chars < ret.old_chars
-        OR chars > ret.old_chars AND bytes < ret.old_bytes THEN
+    IF (SELECT COUNT(DISTINCT solutions.code_id) > 1 FROM solutions
+        WHERE   solutions.user_id = user_id
+        AND     solutions.hole = hole
+        AND     solutions.lang = lang) THEN
         earned := earn(earned, 'different-strokes', user_id);
     END IF;
 
