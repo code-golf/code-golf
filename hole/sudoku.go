@@ -16,11 +16,7 @@ func solve(board [boardSize][boardSize]int, cell int, count *int) bool {
 	for {
 		if cell == boardSize*boardSize {
 			*count++
-			if *count == 2 {
-				return true
-			} else {
-				return false
-			}
+			return *count == 2
 		}
 
 		i = cell / boardSize

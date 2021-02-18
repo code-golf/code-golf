@@ -72,7 +72,7 @@ e2e:
 
 editor:
 	@node_modules/.bin/rollup \
-		-f es -o public/editor.js -p @rollup/plugin-node-resolve editor.js
+	    -f es -o public/editor.js -p @rollup/plugin-node-resolve editor.js
 
 fmt:
 	@gofmt -s  -w $(GOFILES)
@@ -90,8 +90,8 @@ ifeq ($(wildcard routes/assets.go),)
 	$(file > routes/assets.go, $(STUB))
 endif
 
-	@docker build -t code-golf-lint -f docker/lint.Dockerfile .
-	@docker run --rm -v $(CURDIR):/app -w /app code-golf-lint golangci-lint run
+	@docker run --rm -v $(CURDIR):/app -w /app \
+	    golangci/golangci-lint:v1.37.0 golangci-lint run
 
 live:
 	@./build-assets
