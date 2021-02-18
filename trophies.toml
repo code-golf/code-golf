@@ -79,6 +79,11 @@ description = 'Solve any hole in both Perl and Raku.'
 # Miscellaneous
 
 [[Miscellaneous]]
+name        = 'Different Strokes'
+emoji       = '🌈'
+description = 'Solve any hole using different bytes and chars solutions.'
+
+[[Miscellaneous]]
 name        = 'RTFM'
 emoji       = '📕'
 description = 'Visit the <a href=/about>About page</a>.'
