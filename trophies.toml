@@ -81,7 +81,7 @@ description = 'Solve any hole in both Perl and Raku.'
 [[Miscellaneous]]
 name        = 'Different Strokes'
 emoji       = '🌈'
-description = 'Submit unique solutions for bytes and chars on the same hole.'
+description = 'Solve any hole using different bytes and chars solutions.'
 
 [[Miscellaneous]]
 name        = 'RTFM'
