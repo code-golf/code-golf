@@ -238,8 +238,8 @@ class Main {
 '''
 
 [JavaScript]
-size    = '21.2 MiB'
-version = 'V8 8.7.220.31'
+size    = '21.6 MiB'
+version = 'V8 8.8.278.17'
 website = '//v8.dev'
 example = '''
 // Printing
@@ -368,8 +368,8 @@ ForEach ($arg in $args) {
 '''
 
 [Python]
-size    = '196 MiB'
-version = '3.9.1'
+size    = '199 MiB'
+version = '3.9.2'
 website = '//www.python.org'
 example = '''
 import sys
@@ -387,8 +387,8 @@ for arg in sys.argv[1:]:
 '''
 
 [Raku]
-size    = '50.6 MiB'
-version = 'Raku 6.d on Rakudo 2020.12'
+size    = '53.7 MiB'
+version = 'Raku 6.d on Rakudo 2021.02'
 website = '//raku.org'
 example = '''
 # Printing

@@ -11,7 +11,7 @@ WORKDIR /tmp
 RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git \
  && fetch v8                \
  && cd v8                   \
- && git checkout 8.7.220.31 \
+ && git checkout 8.8.278.17 \
  && gclient sync
 
 FROM alpine:3.13 as builder
@@ -28,7 +28,7 @@ ENV PATH "/usr/lib/llvm9/bin:$PATH"
 RUN cp -f /usr/bin/ld.gold /usr/bin/ld               \
  && git clone https://gn.googlesource.com/gn /tmp/gn \
  && cd /tmp/gn                                       \
- && git reset --hard e1ac69b                         \
+ && git reset --hard dfcbc6f                         \
  && build/gen.py                                     \
  && ninja -C out                                     \
  && cp -f /tmp/gn/out/gn /tmp/v8/buildtools/linux64/gn
