@@ -27,6 +27,14 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
+	experimental := false
+	if _, ok := hole.ByID[in.Hole]; !ok {
+		if _, experimental = hole.ExperimentalByID[in.Hole]; !experimental {
+			w.WriteHeader(http.StatusNotFound)
+			return
+		}
+	}
+
 	db := session.Database(r)
 	golfer := session.Golfer(r)
 
@@ -74,7 +82,6 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		ToFile:   "Out",
 	})
 
-	_, experimental := hole.ExperimentalByID[in.Hole]
 	if out.Pass && golfer != nil && !experimental {
 		if err := db.QueryRowContext(
 			r.Context(),

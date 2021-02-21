@@ -67,6 +67,11 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 	case "united-states":
 		args, answer = unitedStates()
 	default:
+		// ¯\_(ツ)_/¯ cannot embed file answers/√2.txt: invalid name √2.txt
+		if holeID == "√2" {
+			holeID = "root-2"
+		}
+
 		if b, err := answers.ReadFile("answers/" + holeID + ".txt"); err != nil {
 			panic(err)
 		} else {
