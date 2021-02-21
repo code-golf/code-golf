@@ -106,8 +106,8 @@ version = 'GnuCOBOL 3.1.2.0'
 website = '//gnucobol.sourceforge.io'
 
 ['F#']
-size    = '108 MiB'
-version = 'F# 4.7 on .NET Core 3.1.7'
+size    = '119 MiB'
+version = 'F# 5.0 on .NET 5.0.3'
 website = '//fsharp.org'
 example = '''
 [<EntryPoint>]
