@@ -363,7 +363,7 @@ ForEach ($i in 0..9) {
 
 # Accessing arguments
 ForEach ($arg in $args) {
-   Write-Host $arg
+    Write-Host $arg
 }
 '''
 
