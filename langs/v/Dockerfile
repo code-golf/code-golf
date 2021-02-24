@@ -4,9 +4,8 @@ RUN mkdir /empty
 
 RUN apt-get update && apt-get install -y gcc git make
 
-RUN git clone -b 0.2 git://github.com/vlang/v /opt/v
-
-RUN cd /opt/v && make && strip v
+RUN git clone git://github.com/vlang/v /opt/v \
+ && cd /opt/v && git checkout 57d1b5b && make && strip v
 
 FROM debian:buster-slim
 

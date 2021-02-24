@@ -5,9 +5,9 @@ RUN mkdir /empty
 RUN apk add -X http://dl-cdn.alpinelinux.org/alpine/edge/testing --no-cache \
     curl gcc musl-dev tcc
 
-RUN curl https://nim-lang.org/download/nim-1.4.2.tar.xz | tar xJf -
+RUN curl https://nim-lang.org/download/nim-1.4.4.tar.xz | tar xJf -
 
-RUN cd nim-1.4.2            \
+RUN cd nim-1.4.4            \
  && ./build.sh              \
  && ./bin/nim c koch        \
  && ./koch boot -d:release  \

@@ -1,5 +1,7 @@
 #!/bin/sh -e
 
+export VMODULES=/tmp
+
 # FIXME Setting VVV=/opt/v doesn't prevent the need to cd.
 cd /opt/v
 

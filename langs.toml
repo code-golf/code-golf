@@ -298,8 +298,8 @@ end
 '''
 
 [Nim]
-size    = '21.5 MiB'
-version = '1.4.2'
+size    = '21.6 MiB'
+version = '1.4.4'
 website = '//nim-lang.org'
 example = '''
 import os
@@ -488,8 +488,8 @@ for arg in CommandLine.arguments[1...] {
 '''
 
 [V]
-size    = '96.6 MiB'
-version = '0.2'
+size    = '97.8 MiB'
+version = '0.2.2'
 website = '//vlang.io'
 example = '''
 import os
