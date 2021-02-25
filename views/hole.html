@@ -85,6 +85,10 @@
         Implicit output is disabled for this hole. Use <b>Out-Host</b> or
         <b>Write-Host</b> for output.
     </div>
+{{ else }}
+    <div class="info powershell">
+        <b>$args</b> to access the arguments.
+    </div>
 {{ end }}
     <div class="info sql">
         <b>SELECT arg FROM argv</b> to access the arguments, only the first
