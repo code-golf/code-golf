@@ -11565,7 +11565,7 @@ const deleteToLineEnd = view => deleteBy(view, pos => {
     let lineEnd = view.visualLineAt(pos).to;
     if (pos < lineEnd)
         return lineEnd;
-    return Math.max(view.state.doc.length, pos + 1);
+    return Math.min(view.state.doc.length, pos + 1);
 });
 /// Replace each selection range with a line break, leaving the cursor
 /// on the line before the break.
@@ -11599,7 +11599,8 @@ function isBetweenBrackets(state, pos) {
     let context = syntaxTree(state).resolve(pos);
     let before = context.childBefore(pos), after = context.childAfter(pos), closedBy;
     if (before && after && before.to <= pos && after.from >= pos &&
-        (closedBy = before.type.prop(NodeProp.closedBy)) && closedBy.indexOf(after.name) > -1)
+        (closedBy = before.type.prop(NodeProp.closedBy)) && closedBy.indexOf(after.name) > -1 &&
+        state.doc.lineAt(before.to).from == state.doc.lineAt(after.from).from)
         return { from: before.to, to: after.from };
     return null;
 }
@@ -18396,7 +18397,18 @@ const javascriptLanguage = LezerLanguage.define({
                 },
                 Block: delimitedIndent({ closing: "}" }),
                 "TemplateString BlockComment": () => -1,
-                "Statement Property": continuedIndent({ except: /^{/ })
+                "Statement Property": continuedIndent({ except: /^{/ }),
+                JSXElement(context) {
+                    let closed = /^\s*<\//.test(context.textAfter);
+                    return context.lineIndent(context.state.doc.lineAt(context.node.from)) + (closed ? 0 : context.unit);
+                },
+                JSXEscape(context) {
+                    let closed = /\s*\}/.test(context.textAfter);
+                    return context.lineIndent(context.state.doc.lineAt(context.node.from)) + (closed ? 0 : context.unit);
+                },
+                "JSXOpenTag JSXSelfClosingTag"(context) {
+                    return context.column(context.node.from) + context.unit;
+                }
             }),
             foldNodeProp.add({
                 "Block ClassBody SwitchBody EnumBody ObjectExpression ArrayExpression"(tree) {
@@ -18422,6 +18434,8 @@ const javascriptLanguage = LezerLanguage.define({
                 Label: tags.labelName,
                 PropertyName: tags.propertyName,
                 "CallExpression/MemberExpression/PropertyName": tags.function(tags.propertyName),
+                "FunctionDeclaration/VariableDefinition": tags.function(tags.definition(tags.variableName)),
+                "ClassDeclaration/VariableDefinition": tags.definition(tags.className),
                 PropertyNameDefinition: tags.definition(tags.propertyName),
                 UpdateOp: tags.updateOperator,
                 LineComment: tags.lineComment,
