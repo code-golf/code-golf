@@ -9,7 +9,7 @@ require (
 	github.com/buildkite/terminal v3.2.0+incompatible
 	github.com/bwmarrin/discordgo v0.23.2
 	github.com/dgryski/trifles v0.0.0-20210119233746-37d926d5de6c // indirect
-	github.com/go-chi/chi v1.5.1
+	github.com/go-chi/chi v1.5.3
 	github.com/gofrs/uuid v4.0.0+incompatible
 	github.com/golang/protobuf v1.4.3 // indirect
 	github.com/google/go-cmp v0.5.4 // indirect
@@ -21,11 +21,12 @@ require (
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/shurcooL/githubv4 v0.0.0-20201206200315-234843c633fa
 	github.com/shurcooL/graphql v0.0.0-20200928012149-18c5c3165e3a // indirect
-	github.com/tdewolff/minify/v2 v2.9.12
-	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad
-	golang.org/x/net v0.0.0-20210119194325-5f4716e94777 // indirect
-	golang.org/x/oauth2 v0.0.0-20210201163806-010130855d6c
-	golang.org/x/sys v0.0.0-20210124154548-22da62e12c0c // indirect
+	github.com/tdewolff/minify/v2 v2.9.13
+	github.com/tdewolff/parse/v2 v2.5.11 // indirect
+	golang.org/x/crypto v0.0.0-20210220033148-5ea612d1eb83
+	golang.org/x/net v0.0.0-20210224082022-3d97a244fca7 // indirect
+	golang.org/x/oauth2 v0.0.0-20210220000619-9bb904979d93
+	golang.org/x/sys v0.0.0-20210225014209-683adc9d29d7 // indirect
 	golang.org/x/text v0.3.5 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	gopkg.in/guregu/null.v4 v4.0.0
