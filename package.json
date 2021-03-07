@@ -1,0 +1,21 @@
+{
+  "dependencies": {
+    "@codemirror/closebrackets": "^0.18.0",
+    "@codemirror/commands": "^0.18.0",
+    "@codemirror/gutter": "^0.18.0",
+    "@codemirror/highlight": "^0.18.3",
+    "@codemirror/lang-java": "^0.18.0",
+    "@codemirror/lang-javascript": "^0.18.0",
+    "@codemirror/lang-python": "^0.18.0",
+    "@codemirror/lang-rust": "^0.18.0",
+    "@codemirror/lang-sql": "^0.18.0",
+    "@codemirror/language": "^0.18.0",
+    "@codemirror/legacy-modes": "^0.18.0",
+    "@codemirror/matchbrackets": "^0.18.0",
+    "@codemirror/state": "^0.18.0",
+    "@codemirror/stream-parser": "^0.18.0",
+    "@codemirror/view": "^0.18.1",
+    "@rollup/plugin-node-resolve": "^11.2.0",
+    "rollup": "^2.40.0"
+  }
+}
