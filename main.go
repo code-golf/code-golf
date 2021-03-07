@@ -12,7 +12,7 @@ import (
 	"github.com/code-golf/code-golf/github"
 	"github.com/code-golf/code-golf/middleware"
 	"github.com/code-golf/code-golf/routes"
-	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/v5"
 	_ "github.com/lib/pq"
 	"golang.org/x/crypto/acme/autocert"
 )

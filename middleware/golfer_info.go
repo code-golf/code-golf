@@ -6,7 +6,7 @@ import (
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/routes"
 	"github.com/code-golf/code-golf/session"
-	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/v5"
 )
 
 // GolferInfoHandler adds the GolferInfo object handle to the context.
