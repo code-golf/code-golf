@@ -96,6 +96,28 @@ preamble = '''
 <p>
     Print all the abundant numbers from <b>1</b> to <b>200</b> inclusive, each
     on their own line.
+    See <a href=abundant-numbers-ii>Abundant Numbers II</a> hole to print abundant numbers up to <b>1,000</b>.
+'''
+
+['Abundant Numbers II']
+category = 'Sequence'
+experiment = 384
+links = [
+    { name = 'OEIS A005101', url = '//oeis.org/A005101' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Abundant_number' },
+]
+preamble = '''
+<p>
+    An abundant number is a number for which the sum of its proper divisors
+    (divisors not including the number itself) is greater than the number
+    itself. For example <b>12</b> is abundant because its proper divisors are
+    <b>1</b>, <b>2</b>, <b>3</b>, <b>4</b>, and <b>6</b> which add up to
+    <b>16</b>.
+
+<p>
+    Print all the abundant numbers from <b>1</b> to <b>1,000</b> inclusive, each
+    on their own line.
+    See <a href=abundant-numbers>Abundant Numbers</a> hole to print abundant numbers up to <b>200</b>.
 '''
 
 ['Arabic to Roman']
@@ -626,7 +648,7 @@ preamble = '''
     <b>13</b> and <b>31</b> are emirps.
 
 <p>
-    Print all the emirp numbers from <b>1</b> to <b>1000</b> inclusive, each
+    Print all the emirp numbers from <b>1</b> to <b>1,000</b> inclusive, each
     on their own line.
 '''
 
@@ -685,6 +707,29 @@ preamble = '''
 <p>
     Print all the evil numbers from <b>0</b> to <b>50</b> inclusive, each on
     their own line.
+    See <a href=evil-numbers-ii>Evil Numbers II</a> hole to print evil numbers up to <b>1,000</b>.
+
+<p>
+    Numbers that are not evil are called
+    <a href=odious-numbers>odious numbers</a>.
+'''
+
+['Evil Numbers II']
+category = 'Sequence'
+experiment = 384
+links = [
+    { name = 'OEIS A001969', url = '//oeis.org/A001969' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Evil_number' },
+]
+preamble = '''
+<p>
+    An evil number is a non-negative number that has an even number of 1s in
+    its binary expansion.
+
+<p>
+    Print all the evil numbers from <b>0</b> to <b>1,000</b> inclusive, each on
+    their own line.
+    See <a href=evil-numbers>Evil Numbers</a> hole to print evil numbers up to <b>50</b>.
 
 <p>
     Numbers that are not evil are called
@@ -753,6 +798,39 @@ preamble = '''
 <p>
     Print all the happy numbers from <b>1</b> to <b>200</b> inclusive, each on
     their own line.
+    See <a href=happy-numbers-ii>Happy Numbers II</a> hole to print happy numbers up to <b>1,000</b>.
+'''
+
+['Happy Numbers II']
+category = 'Sequence'
+experiment = 384
+links = [
+    { name = 'OEIS A007770', url = '//oeis.org/A007770' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Happy_numbers' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Happy_number' },
+]
+preamble = '''
+<p>
+    A happy number is defined by the following Sequence: Starting with any
+    positive integer, replace the number by the sum of the squares of its
+    digits in base-ten, and repeat the process until the number either equals
+    1 (where it will stay), or it loops endlessly in a cycle that does not
+    include 1. Those numbers for which this process ends in 1 are happy
+    numbers, while those that do not end in 1 are sad numbers.
+
+<p>For example, 19 is happy, as the associated Sequence is:</p>
+
+<dl>
+    <dd>1<sup>2</sup> + 9<sup>2</sup> = 82
+    <dd>8<sup>2</sup> + 2<sup>2</sup> = 68
+    <dd>6<sup>2</sup> + 8<sup>2</sup> = 100
+    <dd>1<sup>2</sup> + 0<sup>2</sup> + 0<sup>2</sup> = 1.
+</dl>
+
+<p>
+    Print all the happy numbers from <b>1</b> to <b>1,000</b> inclusive, each on
+    their own line.
+    See <a href=happy-numbers>Happy Numbers</a> hole to print happy numbers up to <b>200</b>.
 '''
 
 [Intersection]
@@ -832,7 +910,7 @@ preamble = '''
 </pre>
 
 <p>
-    Beginning with (1, 2) output the first 1000 elements in the Kolakoski
+    Beginning with (1, 2) output the first 1,000 elements in the Kolakoski
     sequence, separated by spaces.
 '''
 
@@ -1148,6 +1226,25 @@ preamble = '''
 <p>
     Print all the niven numbers from <b>0</b> to <b>100</b> inclusive, each on
     their own line.
+    See <a href=niven-numbers-ii>Niven Numbers II</a> hole to print niven numbers up to <b>1,000</b>.
+'''
+
+['Niven Numbers II']
+category = 'Sequence'
+experiment = 384
+links = [
+    { name = 'OEIS A005349', url = '//oeis.org/A005349' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Niven_number' },
+]
+preamble = '''
+<p>
+    A niven number is a non-negative number that is divisible by the sum of
+    its digits.
+
+<p>
+    Print all the niven numbers from <b>0</b> to <b>1,000</b> inclusive, each on
+    their own line.
+    See <a href=niven-numbers>Niven Numbers</a> hole to print niven numbers up to <b>100</b>.
 '''
 
 ['Odious Numbers']
@@ -1164,6 +1261,29 @@ preamble = '''
 <p>
     Print all the odious numbers from <b>0</b> to <b>50</b> inclusive, each on
     their own line.
+    See <a href=odious-numbers-ii>Odious Numbers II</a> hole to print odious numbers up to <b>1,000</b>.
+
+<p>
+    Numbers that are not odious are called
+    <a href=evil-numbers>evil numbers</a>.
+'''
+
+['Odious Numbers II']
+category = 'Sequence'
+experiment = 384
+links = [
+    { name = 'OEIS A000069', url = '//oeis.org/A000069' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Odious_number' },
+]
+preamble = '''
+<p>
+    An odious number is a non-negative number that has an odd number of 1s in
+    its binary expansion.
+
+<p>
+    Print all the odious numbers from <b>0</b> to <b>1,000</b> inclusive, each on
+    their own line.
+    See <a href=odious-numbers>Odious Numbers</a> hole to print odious numbers up to <b>50</b>.
 
 <p>
     Numbers that are not odious are called
@@ -1217,11 +1337,34 @@ preamble = '''
 
 <p>
     For example, <b>5</b> is a pernicious number since
-    <b>5 = 101<sub>2</sub></b> and <b>1 + 1 = 2</b>, which is prime.
+    <b>5 = 101<sub>2</sub></b> and <b>1 + 0 + 1 = 2</b>, which is prime.
 
 <p>
     Print all the pernicious numbers from <b>0</b> to <b>50</b> inclusive,
     each on their own line.
+    See <a href=pernicious-numbers-ii>Pernicious Numbers II</a> hole to print pernicious numbers up to <b>1,000</b>.
+'''
+
+['Pernicious Numbers']
+category = 'Sequence'
+experiment = 384
+links = [
+    { name = 'OEIS A052294', url = '//oeis.org/A052294' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Pernicious_number' },
+]
+preamble = '''
+<p>
+    A pernicious number is a positive number where the sum of its binary
+    expansion is a <a href=prime-numbers>prime number</a>.
+
+<p>
+    For example, <b>5</b> is a pernicious number since
+    <b>5 = 101<sub>2</sub></b> and <b>1 + 0 + 1 = 2</b>, which is prime.
+
+<p>
+    Print all the pernicious numbers from <b>0</b> to <b>1,000</b> inclusive,
+    each on their own line.
+    See <a href=pernicious-numbers>Pernicious Numbers</a> hole to print pernicious numbers up to <b>50</b>.
 '''
 
 [Poker]
@@ -1298,6 +1441,21 @@ preamble = '''
 <p>
     Print all the prime numbers from <b>1</b> to <b>100</b> inclusive, each on
     their own line.
+    See <a href=prime-numbers-ii>Prime Numbers II</a> hole to print prime numbers up to <b>1,000</b>.
+'''
+
+['Prime Numbers II']
+category = 'Sequence'
+experiment = 384
+links = [
+    { name = 'OEIS A000040', url = '//oeis.org/A000040' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Prime_number' },
+]
+preamble = '''
+<p>
+    Print all the prime numbers from <b>1</b> to <b>1,000</b> inclusive, each on
+    their own line.
+    See <a href=prime-numbers>Prime Numbers</a> hole to print prime numbers up to <b>100</b>.
 '''
 
 ['Vampire Numbers']

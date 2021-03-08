@@ -3,18 +3,19 @@ CREATE EXTENSION pgcrypto;  -- For GEN_RANDOM_UUID(), not needed under PG13.
 
 CREATE TYPE hole AS ENUM (
     '12-days-of-christmas', '99-bottles-of-beer', 'abundant-numbers',
-    'arabic-to-roman', 'brainfuck', 'christmas-trees', 'css-colors', 'cubes',
-    'diamonds', 'divisors', 'emirp-numbers', 'emojify', 'evil-numbers',
-    'fibonacci', 'fizz-buzz', 'happy-numbers', 'intersection',
-    'kolakoski-constant', 'kolakoski-sequence', 'leap-years',
-    'levenshtein-distance', 'leyland-numbers', 'look-and-say',
-    'lucky-tickets', 'morse-decoder', 'morse-encoder', 'niven-numbers',
-    'odious-numbers', 'ordinal-numbers', 'pangram-grep', 'pascals-triangle',
-    'pernicious-numbers', 'poker', 'prime-numbers', 'quine', 'recamán',
-    'rock-paper-scissors-spock-lizard', 'roman-to-arabic', 'rule-110',
-    'seven-segment', 'sierpiński-triangle', 'spelling-numbers', 'sudoku',
-    'ten-pin-bowling', 'tongue-twisters', 'united-states', 'vampire-numbers',
-    'λ', 'π', 'τ', 'φ', '√2', '𝑒'
+    'abundant-numbers-ii', 'arabic-to-roman', 'brainfuck', 'christmas-trees',
+    'css-colors', 'cubes', 'diamonds', 'divisors', 'emirp-numbers', 'emojify',
+    'evil-numbers', 'evil-numbers-ii', 'fibonacci', 'fizz-buzz',
+    'happy-numbers', 'happy-numbers-ii', 'intersection', 'kolakoski-constant',
+    'kolakoski-sequence', 'leap-years', 'levenshtein-distance',
+    'leyland-numbers', 'look-and-say', 'lucky-tickets', 'morse-decoder',
+    'morse-encoder', 'niven-numbers', 'niven-numbers-ii', 'odious-numbers',
+    'odious-numbers-ii', 'ordinal-numbers', 'pangram-grep', 'pascals-triangle',
+    'pernicious-numbers', 'pernicious-numbers-ii', 'poker', 'prime-numbers',
+    'prime-numbers-ii', 'quine', 'recamán', 'rock-paper-scissors-spock-lizard',
+    'roman-to-arabic', 'rule-110', 'seven-segment', 'sierpiński-triangle',
+    'spelling-numbers', 'sudoku', 'ten-pin-bowling', 'tongue-twisters',
+    'united-states', 'vampire-numbers', 'λ', 'π', 'τ', 'φ', '√2', '𝑒'
 );
 
 CREATE TYPE keymap AS ENUM ('default', 'vim');
