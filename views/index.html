@@ -1,21 +1,5 @@
 {{ template "header" . }}
 
-{{ with .Data.Fails }}
-    <div class=alert>
-        {{ svg "exclamation-circle" }}
-        The following solutions of yours have been marked as failing and
-        no longer contribute to scoring; please update them to pass:
-        <ul>
-        {{ range . }}
-            <li>
-                <a href={{ .Hole.ID }}#{{ .Lang.ID }}>
-                    {{ .Hole.Name }} ({{ .Lang.Name }})
-                </a>
-        {{ end }}
-        </ul>
-    </div>
-{{ end }}
-
 {{ if not .Golfer }}
     <div class=info>
         {{ svg "info-circle" }}

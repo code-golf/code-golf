@@ -21,9 +21,17 @@ func GolferHandler(next http.Handler) http.Handler {
 				`WITH golfer AS (
 				    UPDATE sessions SET last_used = DEFAULT WHERE id = $1
 				 RETURNING user_id
+				), failing AS (
+				    SELECT hole, lang
+				      FROM solutions
+				      JOIN golfer USING(user_id)
+				     WHERE failing
+				  GROUP BY hole, lang
+				  ORDER BY hole, lang
 				) SELECT admin,
 				         COALESCE(country, ''),
 				         delete,
+				         (SELECT COALESCE(json_agg(failing), '[]') FROM failing),
 				         id,
 				         keymap,
 				         login,
@@ -36,6 +44,7 @@ func GolferHandler(next http.Handler) http.Handler {
 				&golfer.Admin,
 				&golfer.Country,
 				&golfer.Delete,
+				&golfer.FailingSolutions,
 				&golfer.ID,
 				&golfer.Keymap,
 				&golfer.Name,

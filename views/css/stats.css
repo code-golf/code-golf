@@ -1,11 +1,3 @@
-li {
-    align-items: center;
-    display: grid;
-    font-weight: bold;
-    padding: .5rem;
-    white-space: nowrap;
-}
-
 main {
     align-items: start;
     grid-template-columns: repeat(4, 1fr);
@@ -30,12 +22,6 @@ td:nth-child(2) {
     width: 100%;
 }
 
-ul {
-    display: grid;
-    list-style: none;
-    padding: 0;
-}
-
 .pie {
     gap: 1rem !important;
     grid-column: span 2;
@@ -43,6 +29,14 @@ ul {
 }
 
 .pie h2 { text-align: center }
+
+.pie li {
+    align-items: center;
+    display: grid;
+    font-weight: bold;
+    padding: .5rem;
+    white-space: nowrap;
+}
 
 .pie path:nth-child(1) { fill: var(--red)    }
 .pie path:nth-child(2) { fill: var(--orange) }
@@ -61,6 +55,12 @@ ul {
     align-self: center;
     max-width: 100%;
     transform: rotate(-90deg);
+}
+
+.pie ul {
+    display: grid;
+    list-style: none;
+    padding: 0;
 }
 
 @media (max-width: 34rem) { main { grid-template-columns: 1fr 1fr } }

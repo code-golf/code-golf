@@ -2,6 +2,7 @@ package golfer
 
 import (
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"time"
 
@@ -11,10 +12,17 @@ import (
 	"gopkg.in/guregu/null.v4"
 )
 
+type FailingSolutions []struct{ Hole, Lang string }
+
+func (f *FailingSolutions) Scan(src interface{}) error {
+	return json.Unmarshal(src.([]byte), f)
+}
+
 type Golfer struct {
 	Admin, ShowCountry              bool
 	Country, Keymap, Name, TimeZone string
 	Delete                          sql.NullTime
+	FailingSolutions                FailingSolutions
 	ID                              int
 }
 

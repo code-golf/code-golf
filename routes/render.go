@@ -15,6 +15,8 @@ import (
 
 	"github.com/code-golf/code-golf/country"
 	"github.com/code-golf/code-golf/golfer"
+	"github.com/code-golf/code-golf/hole"
+	"github.com/code-golf/code-golf/lang"
 	"github.com/code-golf/code-golf/pretty"
 	"github.com/code-golf/code-golf/session"
 	min "github.com/tdewolff/minify/v2/minify"
@@ -135,6 +137,8 @@ func render(w http.ResponseWriter, r *http.Request, name, title string, data int
 		Data                                interface{}
 		Golfer                              *golfer.Golfer
 		GolferInfo                          *golfer.GolferInfo
+		Holes                               map[string]hole.Hole
+		Langs                               map[string]lang.Lang
 		JS                                  template.JS
 		JSExt, LogInURL, Nonce, Path, Title string
 		Request                             *http.Request
@@ -144,6 +148,8 @@ func render(w http.ResponseWriter, r *http.Request, name, title string, data int
 		Data:       data,
 		Golfer:     session.Golfer(r),
 		GolferInfo: session.GolferInfo(r),
+		Holes:      hole.ByID,
+		Langs:      lang.ByID,
 		JS:         js["base"] + js[path.Dir(name)] + js[name],
 		Nonce:      base64.StdEncoding.EncodeToString(nonce),
 		Path:       r.URL.Path,

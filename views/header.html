@@ -80,7 +80,9 @@
     </nav>
 </header>
 
-{{ with .Golfer }}{{ if .Delete.Valid }}
+{{ with .Golfer }}
+
+{{ if .Delete.Valid }}
     <div class=alert>
         {{ svg "exclamation-circle" }}
         <p>
@@ -92,4 +94,23 @@
             <a href=/golfer/settings>settings</a>
             and cancel the deletion.
     </div>
-{{ end }}{{ end }}
+{{ end }}
+
+{{ with .FailingSolutions }}
+    <div class=alert>
+        {{ svg "exclamation-circle" }}
+        The following solutions of yours have been marked as failing and no
+        longer contribute to scoring; please update them to pass:
+        <ul>
+        {{ range . }}
+            <li>
+                <a href={{ .Hole }}#{{ .Lang }}>
+                    {{ ( index $.Holes .Hole ).Name }}
+                    ({{ ( index $.Langs .Lang ).Name }})
+                </a>
+        {{ end }}
+        </ul>
+    </div>
+{{ end }}
+
+{{ end }}

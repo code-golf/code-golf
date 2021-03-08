@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/code-golf/code-golf/hole"
-	"github.com/code-golf/code-golf/lang"
 	"github.com/code-golf/code-golf/session"
 )
 
@@ -45,14 +44,8 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		Hole          hole.Hole
 	}
 
-	type Fail struct {
-		Hole hole.Hole
-		Lang lang.Lang
-	}
-
 	data := struct {
 		Cards    []Card
-		Fails    []Fail
 		Scoring  string
 		Scorings []string
 		Sort     string
@@ -82,36 +75,6 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	}
 
 	db := session.Database(r)
-
-	if userID != 0 {
-		rows, err := db.Query(
-			` SELECT hole, lang
-			    FROM solutions
-			   WHERE failing AND user_id = $1
-			GROUP BY hole, lang
-			ORDER BY hole`,
-			userID,
-		)
-		if err != nil {
-			panic(err)
-		}
-
-		defer rows.Close()
-
-		for rows.Next() {
-			var holeID, langID string
-
-			if err := rows.Scan(&holeID, &langID); err != nil {
-				panic(err)
-			}
-
-			data.Fails = append(data.Fails, Fail{hole.ByID[holeID], lang.ByID[langID]})
-		}
-
-		if err := rows.Err(); err != nil {
-			panic(err)
-		}
-	}
 
 	rows, err := db.Query(
 		`WITH ranks AS (
