@@ -1345,7 +1345,7 @@ preamble = '''
     See <a href=pernicious-numbers-ii>Pernicious Numbers II</a> hole to print pernicious numbers up to <b>1,000</b>.
 '''
 
-['Pernicious Numbers']
+['Pernicious Numbers II']
 category = 'Sequence'
 experiment = 384
 links = [
