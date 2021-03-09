@@ -630,6 +630,16 @@ preamble = '''
     on their own line.
 '''
 
+[Ellipse]
+category = ''
+links = [{name='Wikipedia', url=''},]
+experiment = -1
+preamble = '''
+<p>
+    Write a function that takes a and b as arguments as the two radii of an
+    ellipse and outputs the perimeter of the ellipse to ten decimal places.
+'''
+
 [Emojify]
 category = 'Transform'
 links = [
