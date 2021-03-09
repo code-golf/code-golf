@@ -114,7 +114,7 @@ local-storage section.
 
 procedure division.
 *> Printing
-display "Hello World!"
+display "Hello, World!"
 
 *> Looping
 perform 10 times
