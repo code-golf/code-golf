@@ -6,6 +6,9 @@ for slurp("langs.toml").&from-toml.map({
     # TODO Remove this to ensure we have examples for every lang.
     next unless $code;
 
+    # <built-in>: internal compiler error: Illegal instruction
+    todo 'intermittent error' if $lang eq 'fortran';
+
     for (
         # Pick a hole that will definitely have unicode arguments.
         'rock-paper-scissors-spock-lizard',
