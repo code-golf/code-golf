@@ -242,6 +242,16 @@ example = '''
 size    = '3.32 MiB'
 version = '9.01.01'
 website = '//www.jsoftware.com'
+example = '''
+NB.Printing
+echo'Hello, World!'
+
+NB.Looping
+echo i.10 1
+
+NB.Accessing arguments
+echo each 2}.ARGV
+'''
 
 [Java]
 size    = '68.8 MiB'
