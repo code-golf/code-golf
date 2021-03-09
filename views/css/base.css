@@ -456,6 +456,7 @@ nav + main .sticky th { top: calc(5.75rem + 2px) }
     gap: .5rem;
     grid-template-columns: 1fr min-content;
     padding: .5rem;
+    pointer-events: none;
     position: fixed;
     top: 2.75rem;
     width: 100%;
