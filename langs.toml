@@ -117,7 +117,7 @@ procedure division.
 display "Hello World!"
 
 *> Looping
-perform 20 times
+perform 10 times
 display n(2- function log10(n):)
 add 1 to n
 end-perform.
