@@ -104,6 +104,32 @@ foreach (String arg in args)
 size    = '4.09 MiB'
 version = 'GnuCOBOL 3.1.2.0'
 website = '//gnucobol.sourceforge.io'
+example = '''
+program-id.example.
+
+data division.
+local-storage section.
+1 n pic 99 value 0.
+1 a pic X(99).
+
+procedure division.
+*> Printing
+display "Hello World!"
+
+*> Looping
+perform 20 times
+display n(2- function log10(n):)
+add 1 to n
+end-perform.
+
+*> Accessing arguments
+perform 10 times
+accept a from argument-value
+display a
+end-perform.
+end-program.
+
+'''
 
 ['F#']
 size    = '119 MiB'
