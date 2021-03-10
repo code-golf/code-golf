@@ -216,14 +216,14 @@ import System.Environment
 
 main = do
   -- Printing
-  putStrLn "Hello, world!"
+  putStrLn "Hello, World!"
 
   -- Looping
-  mapM_ print [0..9]
+  mapM print [0..9]
 
   -- Accessing arguments
   args <- getArgs
-  mapM_ putStrLn args
+  mapM putStrLn args
 '''
 
 [Hexagony]
