@@ -22,5 +22,5 @@ td > a > span:nth-of-type(1) { flex: 1 }
 td > a:hover > span:first-of-type { text-decoration: underline }
 
 @media (max-width: 34rem) {
-    td:nth-child(5) { border-right: 1px solid var(--color) }
+    td:nth-child(5), td:nth-child(7) { border-right: 1px solid var(--color) }
 }
