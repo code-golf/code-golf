@@ -222,7 +222,7 @@ main = do
   mapM print [0..9]
 
   -- Accessing arguments
-  args <- getArgs
+  args <- tail <$> getArgs
   mapM putStrLn args
 '''
 
