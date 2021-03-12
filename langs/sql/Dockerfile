@@ -4,7 +4,7 @@ RUN mkdir /empty
 
 RUN apk add --no-cache curl gcc musl-dev
 
-RUN curl https://www.sqlite.org/2021/sqlite-autoconf-3340100.tar.gz \
+RUN curl https://www.sqlite.org/2021/sqlite-autoconf-3350000.tar.gz \
   | tar --strip 1 -xzf -
 
 COPY sql.c /

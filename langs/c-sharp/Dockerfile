@@ -1,8 +1,8 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0.103-alpine3.13 as builder
+FROM mcr.microsoft.com/dotnet/sdk:5.0.201-alpine3.13 as builder
 
 RUN mkdir /empty
 
-ENV DOTNET_CLI_TELEMETRY_OPTOUT=1 VERSION=3.9.0-1.final
+ENV DOTNET_CLI_TELEMETRY_OPTOUT=1 VERSION=3.10.0-1.final
 
 WORKDIR /source
 

@@ -1,4 +1,4 @@
-FROM golang:1.16-alpine3.13
+FROM golang:1.16.2-alpine3.13
 
 ENV CGO_ENABLED=0 GOPATH= TZ=Europe/London
 
@@ -8,7 +8,7 @@ RUN apk add --no-cache build-base git linux-headers tzdata \
 COPY --from=codegolf/lang-swift      ["/", "/langs/swift/rootfs/"     ] #  870 MiB
 COPY --from=codegolf/lang-rust       ["/", "/langs/rust/rootfs/"      ] #  707 MiB
 COPY --from=codegolf/lang-haskell    ["/", "/langs/haskell/rootfs/"   ] #  332 MiB
-COPY --from=codegolf/lang-julia      ["/", "/langs/julia/rootfs/"     ] #  280 MiB
+COPY --from=codegolf/lang-julia      ["/", "/langs/julia/rootfs/"     ] #  283 MiB
 COPY --from=codegolf/lang-zig        ["/", "/langs/zig/rootfs/"       ] #  216 MiB
 COPY --from=codegolf/lang-python     ["/", "/langs/python/rootfs/"    ] #  199 MiB
 COPY --from=codegolf/lang-powershell ["/", "/langs/powershell/rootfs/"] #  185 MiB
@@ -31,7 +31,7 @@ COPY --from=codegolf/lang-j          ["/", "/langs/j/rootfs/"         ] # 3.32 M
 COPY --from=codegolf/lang-brainfuck  ["/", "/langs/brainfuck/rootfs/" ] # 1.62 MiB
 COPY --from=codegolf/lang-c          ["/", "/langs/c/rootfs/"         ] # 1.61 MiB
 COPY --from=codegolf/lang-bash       ["/", "/langs/bash/rootfs/"      ] # 1.15 MiB
-COPY --from=codegolf/lang-sql        ["/", "/langs/sql/rootfs/"       ] #  986 KiB
+COPY --from=codegolf/lang-sql        ["/", "/langs/sql/rootfs/"       ] # 1.01 MiB
 COPY --from=codegolf/lang-fish       ["/", "/langs/fish/rootfs/"      ] #  486 KiB
 COPY --from=codegolf/lang-lua        ["/", "/langs/lua/rootfs/"       ] #  334 KiB
 

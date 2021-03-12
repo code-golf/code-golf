@@ -83,7 +83,7 @@ int main(int argc, char* argv[]) {
 
 ['C#']
 size    = '129 MiB'
-version = 'C# 9.0 on .NET 5.0.3'
+version = 'C# 9.0 on .NET 5.0.4'
 website = '//docs.microsoft.com/dotnet/csharp/'
 example = '''
 using System;
@@ -134,7 +134,7 @@ end-program.
 
 ['F#']
 size    = '119 MiB'
-version = 'F# 5.0 on .NET 5.0.3'
+version = 'F# 5.0 on .NET 5.0.4'
 website = '//fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -181,7 +181,7 @@ end
 
 [Go]
 size    = '124 MiB'
-version = '1.16'
+version = '1.16.2'
 website = '//go.dev'
 example = '''
 package main
@@ -306,8 +306,8 @@ for (let arg of arguments)
 '''
 
 [Julia]
-size    = '280 MiB'
-version = '1.5.3'
+size    = '283 MiB'
+version = '1.5.4'
 website = '//julialang.org'
 example = '''
 # Printing
@@ -401,7 +401,7 @@ while ($arg = next($argv))
 
 [PowerShell]
 size    = '185 MiB'
-version = 'PowerShell 7.1.2 on .NET 5.0.3'
+version = 'PowerShell 7.1.3 on .NET 5.0.4'
 website = '//docs.microsoft.com/powershell/scripting/overview'
 example = '''
 # Printing
@@ -493,8 +493,8 @@ fn main() {
 '''
 
 [SQL]
-size    = '986 KiB'
-version = '3.34.1'
+size    = '1.01 MiB'
+version = '3.35.0'
 website = '//sqlite.org/index.html'
 example = '''
 -- Printing
