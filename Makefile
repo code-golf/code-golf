@@ -73,9 +73,6 @@ e2e:
 editor:
 	@node_modules/.bin/esbuild --bundle --format=esm --outdir=public editor.js
 
-	# Double the 2 space indent back to 4.
-	@sed -ri 's/^( +)/\1\1/' public/editor.js
-
 fmt:
 	@gofmt -s  -w $(GOFILES)
 	@goimports -w $(GOFILES)
