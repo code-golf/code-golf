@@ -211,6 +211,20 @@ func main() {
 size    = '332 MiB'
 version = 'Glasgow Haskell Compiler 8.8.4'
 website = '//www.haskell.org/ghc/'
+example = '''
+import System.Environment
+
+main = do
+  -- Printing
+  putStrLn "Hello, World!"
+
+  -- Looping
+  mapM print [0..9]
+
+  -- Accessing arguments
+  args <- tail <$> getArgs
+  mapM putStrLn args
+'''
 
 [Hexagony]
 size    = '62.6 MiB'
