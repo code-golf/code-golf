@@ -1033,10 +1033,10 @@ var EditorSelection = class {
     return new EditorSelection(ranges, mainIndex);
   }
   static cursor(pos, assoc = 0, bidiLevel, goalColumn) {
-    return new SelectionRange(pos, pos, (assoc == 0 ? 0 : assoc < 0 ? 4 : 8) | (bidiLevel == null ? 3 : Math.min(2, bidiLevel)) | (goalColumn !== null && goalColumn !== void 0 ? goalColumn : 33554431) << 5);
+    return new SelectionRange(pos, pos, (assoc == 0 ? 0 : assoc < 0 ? 4 : 8) | (bidiLevel == null ? 3 : Math.min(2, bidiLevel)) | (goalColumn ?? 33554431) << 5);
   }
   static range(anchor, head, goalColumn) {
-    let goal = (goalColumn !== null && goalColumn !== void 0 ? goalColumn : 33554431) << 5;
+    let goal = (goalColumn ?? 33554431) << 5;
     return head < anchor ? new SelectionRange(head, anchor, 16 | goal) : new SelectionRange(anchor, head, goal);
   }
 };
@@ -1105,7 +1105,6 @@ var FacetProvider = class {
     this.id = nextID++;
   }
   dynamicSlot(addresses) {
-    var _a;
     let getter = this.value;
     let compare2 = this.facet.compareInput;
     let idx = addresses[this.id] >> 1, multi = this.type == 2;
@@ -1115,7 +1114,7 @@ var FacetProvider = class {
         depDoc = true;
       else if (dep == "selection")
         depSel = true;
-      else if ((((_a = addresses[dep.id]) !== null && _a !== void 0 ? _a : 1) & 1) == 0)
+      else if (((addresses[dep.id] ?? 1) & 1) == 0)
         depAddrs.push(addresses[dep.id]);
     }
     return (state, tr) => {
@@ -1195,7 +1194,7 @@ var StateField = class {
   }
   create(state) {
     let init = state.facet(initField).find((i) => i.field == this);
-    return ((init === null || init === void 0 ? void 0 : init.create) || this.createF)(state);
+    return (init?.create || this.createF)(state);
   }
   slot(addresses) {
     let idx = addresses[this.id] >> 1;
@@ -1223,6 +1222,9 @@ var StateField = class {
   init(create) {
     return [this, initField.of({field: this, create})];
   }
+  get extension() {
+    return this;
+  }
 };
 var Prec_ = {fallback: 3, default: 2, extend: 1, override: 0};
 function prec(value) {
@@ -1246,6 +1248,9 @@ var Compartment = class {
   }
   reconfigure(content2) {
     return Compartment.reconfigure.of({compartment: this, extension: content2});
+  }
+  get(state) {
+    return state.config.compartments.get(this);
   }
 };
 var CompartmentInstance = class {
@@ -1272,8 +1277,8 @@ var Configuration = class {
   static resolve(base3, compartments, oldState) {
     let fields = [];
     let facets = Object.create(null);
-    let usedCompartments = new Set();
-    for (let ext of flatten(base3, compartments, usedCompartments)) {
+    let newCompartments = new Map();
+    for (let ext of flatten(base3, compartments, newCompartments)) {
       if (ext instanceof StateField)
         fields.push(ext);
       else
@@ -1312,25 +1317,10 @@ var Configuration = class {
         dynamicSlots.push((a) => dynamicFacetSlot(a, facet, providers));
       }
     }
-    return new Configuration(base3, removeUnused(compartments, usedCompartments), dynamicSlots.map((f) => f(address)), address, staticValues);
+    return new Configuration(base3, newCompartments, dynamicSlots.map((f) => f(address)), address, staticValues);
   }
 };
-function removeUnused(compartments, usedCompartments) {
-  let dropped = [];
-  compartments.forEach((_, c2) => {
-    if (!usedCompartments.has(c2))
-      dropped.push(c2);
-  });
-  if (!dropped.length)
-    return compartments;
-  let newCompartments = new Map();
-  compartments.forEach((e, c2) => {
-    if (dropped.indexOf(c2) < 0)
-      newCompartments.set(c2, e);
-  });
-  return newCompartments;
-}
-function flatten(extension, compartments, compartmentsSeen) {
+function flatten(extension, compartments, newCompartments) {
   let result = [[], [], [], []];
   let seen = new Map();
   function inner(ext, prec2) {
@@ -1342,17 +1332,18 @@ function flatten(extension, compartments, compartmentsSeen) {
       if (found > -1)
         result[known].splice(found, 1);
       if (ext instanceof CompartmentInstance)
-        compartmentsSeen.delete(ext.compartment);
+        newCompartments.delete(ext.compartment);
     }
     seen.set(ext, prec2);
     if (Array.isArray(ext)) {
       for (let e of ext)
         inner(e, prec2);
     } else if (ext instanceof CompartmentInstance) {
-      if (compartmentsSeen.has(ext.compartment))
+      if (newCompartments.has(ext.compartment))
         throw new RangeError(`Duplicate use of compartment in extensions`);
-      compartmentsSeen.add(ext.compartment);
-      inner(compartments.get(ext.compartment) || ext.inner, prec2);
+      let content2 = compartments.get(ext.compartment) || ext.inner;
+      newCompartments.set(ext.compartment, content2);
+      inner(content2, prec2);
     } else if (ext instanceof PrecExtension) {
       inner(ext.inner, ext.prec);
     } else if (ext instanceof StateField) {
@@ -1513,7 +1504,6 @@ function joinRanges(a, b) {
   }
 }
 function mergeTransaction(a, b, sequential) {
-  var _a;
   let mapForA, mapForB, changes;
   if (sequential) {
     mapForA = b.changes;
@@ -1526,7 +1516,7 @@ function mergeTransaction(a, b, sequential) {
   }
   return {
     changes,
-    selection: b.selection ? b.selection.map(mapForB) : (_a = a.selection) === null || _a === void 0 ? void 0 : _a.map(mapForA),
+    selection: b.selection ? b.selection.map(mapForB) : a.selection?.map(mapForA),
     effects: StateEffect.mapEffects(a.effects, mapForA).concat(StateEffect.mapEffects(b.effects, mapForB)),
     annotations: a.annotations.length ? a.annotations.concat(b.annotations) : b.annotations,
     scrollIntoView: a.scrollIntoView || b.scrollIntoView
@@ -11222,7 +11212,7 @@ var Parse = class {
     this.pos = this.chunkStart = startPos + tree.length;
     if (tree.length) {
       this.chunks.push(tree);
-      this.chunkPos.push(startPos);
+      this.chunkPos.push(0);
     }
     if (this.pos < context.viewport.from - 1e5) {
       this.state = this.lang.streamParser.startState(getIndentUnit(context.state));
@@ -11231,12 +11221,12 @@ var Parse = class {
     }
   }
   advance() {
-    let end = Math.min(this.context.viewport.to, this.chunkStart + 2048);
+    let end = Math.min(this.context.viewport.to, this.input.length, this.chunkStart + 2048);
     while (this.pos < end)
       this.parseLine();
     if (this.chunkStart < this.pos)
       this.finishChunk();
-    if (this.pos < this.context.viewport.to)
+    if (end < this.input.length && this.pos < this.context.viewport.to)
       return null;
     this.context.skipUntilInView(this.pos, this.input.length);
     return this.finish();
@@ -11268,7 +11258,7 @@ var Parse = class {
     });
     this.lang.stateAfter.set(tree, this.lang.streamParser.copyState(this.state));
     this.chunks.push(tree);
-    this.chunkPos.push(this.chunkStart);
+    this.chunkPos.push(this.chunkStart - this.startPos);
     this.chunk = [];
     this.chunkStart = this.pos;
   }
@@ -15308,12 +15298,11 @@ function cur(state) {
   return state.selection.main.head;
 }
 function ensureAnchor(expr, start) {
-  var _a;
   let {source} = expr;
   let addStart = start && source[0] != "^", addEnd = source[source.length - 1] != "$";
   if (!addStart && !addEnd)
     return expr;
-  return new RegExp(`${addStart ? "^" : ""}(?:${source})${addEnd ? "$" : ""}`, (_a = expr.flags) !== null && _a !== void 0 ? _a : expr.ignoreCase ? "i" : "");
+  return new RegExp(`${addStart ? "^" : ""}(?:${source})${addEnd ? "$" : ""}`, expr.flags ?? (expr.ignoreCase ? "i" : ""));
 }
 function applyCompletion(view, option) {
   let apply = option.completion.apply || option.completion.label;
@@ -15446,8 +15435,10 @@ var baseTheme5 = EditorView.baseTheme({
   ".cm-tooltip.cm-tooltip-autocomplete": {
     "& > ul": {
       fontFamily: "monospace",
-      overflowY: "auto",
       whiteSpace: "nowrap",
+      overflow: "auto",
+      maxWidth_fallback: "700px",
+      maxWidth: "min(700px, 95vw)",
       maxHeight: "10em",
       listStyle: "none",
       margin: 0,
@@ -15578,14 +15569,19 @@ function createListBox(options, id2, range) {
     ul.classList.add("cm-completionListIncompleteBottom");
   return ul;
 }
-function createInfoDialog(option) {
+function createInfoDialog(option, view) {
   let dom = document.createElement("div");
   dom.className = "cm-tooltip cm-completionInfo";
   let {info} = option.completion;
-  if (typeof info == "string")
+  if (typeof info == "string") {
     dom.textContent = info;
-  else
-    dom.appendChild(info(option.completion));
+  } else {
+    let content2 = info(option.completion);
+    if (content2.then)
+      content2.then((node) => dom.appendChild(node), (e) => logException(view.state, e, "completion info"));
+    else
+      dom.appendChild(content2);
+  }
   return dom;
 }
 function rangeAroundSelected(total, selected, max) {
@@ -15657,7 +15653,7 @@ var CompletionTooltip = class {
       }
       let option = open.options[open.selected];
       if (option.completion.info) {
-        this.info = this.dom.appendChild(createInfoDialog(option));
+        this.info = this.dom.appendChild(createInfoDialog(option, this.view));
         this.view.requestMeasure(this.placeInfo);
       }
     }
@@ -15773,7 +15769,7 @@ var CompletionDialog = class {
     }], prev ? prev.timestamp : Date.now(), selected);
   }
   map(changes) {
-    return new CompletionDialog(this.options, this.attrs, [Object.assign(Object.assign({}, this.tooltip[0]), {pos: changes.mapPos(this.tooltip[0].pos)})], this.timestamp, this.selected);
+    return new CompletionDialog(this.options, this.attrs, [{...this.tooltip[0], pos: changes.mapPos(this.tooltip[0].pos)}], this.timestamp, this.selected);
   }
 };
 var CompletionState = class {
@@ -15795,6 +15791,8 @@ var CompletionState = class {
     if (active.length == this.active.length && active.every((a, i) => a == this.active[i]))
       active = this.active;
     let open = tr.selection || active.some((a) => a.hasResult() && tr.changes.touchesRange(a.from, a.to)) || !sameResults(active, this.active) ? CompletionDialog.build(active, state, this.id, this.open) : this.open && tr.docChanged ? this.open.map(tr.changes) : this.open;
+    if (!open && active.every((a) => a.state != 1) && active.some((a) => a.hasResult()))
+      active = active.map((a) => a.hasResult() ? new ActiveSource(a.source, 0, false) : a);
     for (let effect of tr.effects)
       if (effect.is(setSelectedEffect))
         open = open && open.setSelected(effect.value, this.id);
@@ -16049,7 +16047,6 @@ var completionPlugin = ViewPlugin.fromClass(class {
       this.debounceAccept = setTimeout(() => this.accept(), DebounceTime);
   }
   accept() {
-    var _a;
     if (this.debounceAccept > -1)
       clearTimeout(this.debounceAccept);
     this.debounceAccept = -1;
@@ -16061,7 +16058,7 @@ var completionPlugin = ViewPlugin.fromClass(class {
         continue;
       this.running.splice(i--, 1);
       if (query.done) {
-        let active = new ActiveResult(query.source, query.context.explicit, query.done, query.done.from, (_a = query.done.to) !== null && _a !== void 0 ? _a : cur(query.updates.length ? query.updates[0].startState : this.view.state), query.done.span ? ensureAnchor(query.done.span, true) : null);
+        let active = new ActiveResult(query.source, query.context.explicit, query.done, query.done.from, query.done.to ?? cur(query.updates.length ? query.updates[0].startState : this.view.state), query.done.span ? ensureAnchor(query.done.span, true) : null);
         for (let tr of query.updates)
           active = active.update(tr, conf);
         if (active.hasResult()) {
@@ -16262,7 +16259,7 @@ var snippetKeymap = Facet.define({
 });
 var addSnippetKeymap = Prec.override(keymap.compute([snippetKeymap], (state) => state.facet(snippetKeymap)));
 function snippetCompletion(template2, completion) {
-  return Object.assign(Object.assign({}, completion), {apply: snippet(template2)});
+  return {...completion, apply: snippet(template2)};
 }
 var snippetPointerHandler = EditorView.domEventHandlers({
   mousedown(event, view) {
