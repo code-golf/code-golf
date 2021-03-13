@@ -9,7 +9,7 @@ require (
 	github.com/buildkite/terminal v3.2.0+incompatible
 	github.com/bwmarrin/discordgo v0.23.2
 	github.com/dgryski/trifles v0.0.0-20210119233746-37d926d5de6c // indirect
-	github.com/go-chi/chi/v5 v5.0.0
+	github.com/go-chi/chi/v5 v5.0.1
 	github.com/gofrs/uuid v4.0.0+incompatible
 	github.com/golang/protobuf v1.4.3 // indirect
 	github.com/google/go-cmp v0.5.4 // indirect
@@ -25,8 +25,8 @@ require (
 	github.com/tdewolff/parse/v2 v2.5.12 // indirect
 	golang.org/x/crypto v0.0.0-20210220033148-5ea612d1eb83
 	golang.org/x/net v0.0.0-20210226172049-e18ecbb05110 // indirect
-	golang.org/x/oauth2 v0.0.0-20210220000619-9bb904979d93
-	golang.org/x/sys v0.0.0-20210305230114-8fe3ee5dd75b // indirect
+	golang.org/x/oauth2 v0.0.0-20210311163135-5366d9dc1934
+	golang.org/x/sys v0.0.0-20210309074719-68d13333faf2 // indirect
 	golang.org/x/text v0.3.5 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	gopkg.in/guregu/null.v4 v4.0.0
