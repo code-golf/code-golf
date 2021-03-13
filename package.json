@@ -15,7 +15,6 @@
     "@codemirror/state": "^0.18.0",
     "@codemirror/stream-parser": "^0.18.0",
     "@codemirror/view": "^0.18.1",
-    "@rollup/plugin-node-resolve": "^11.2.0",
-    "rollup": "^2.40.0"
+    "esbuild": "^0.9.0"
   }
 }
