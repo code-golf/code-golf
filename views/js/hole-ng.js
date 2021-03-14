@@ -3,7 +3,7 @@ import { EditorView, EditorState, extensions, languages } from '/editor.js';
 const langs  = JSON.parse(document.querySelector('#langs').innerText);
 const select = document.querySelector('select');
 const editor = new EditorView({ parent: document.querySelector('#editor') });
-editor.contentDOM.setAttribute("data-gramm", false);
+editor.contentDOM.setAttribute("data-gramm", "false"); // Disable Grammarly
 
 // Switch Lang
 const switchLang = onhashchange = () => {
