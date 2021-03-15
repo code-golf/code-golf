@@ -12,6 +12,7 @@ import (
 	"regexp"
 	"strings"
 	"syscall"
+	"time"
 
 	"github.com/code-golf/code-golf/country"
 	"github.com/code-golf/code-golf/golfer"
@@ -19,6 +20,7 @@ import (
 	"github.com/code-golf/code-golf/lang"
 	"github.com/code-golf/code-golf/pretty"
 	"github.com/code-golf/code-golf/session"
+	"github.com/code-golf/code-golf/trophy"
 	min "github.com/tdewolff/minify/v2/minify"
 )
 
@@ -131,6 +133,12 @@ func render(w http.ResponseWriter, r *http.Request, name, title string, data int
 		panic(err)
 	}
 
+	type trophyBanner struct {
+		During     bool
+		Start, End time.Time
+		Trophy     *trophy.Trophy
+	}
+
 	args := struct {
 		Countries                           map[string]*country.Country
 		CSS                                 template.CSS
@@ -142,6 +150,7 @@ func render(w http.ResponseWriter, r *http.Request, name, title string, data int
 		JS                                  template.JS
 		JSExt, LogInURL, Nonce, Path, Title string
 		Request                             *http.Request
+		TrophyBanner                        *trophyBanner
 	}{
 		Countries:  country.ByID,
 		CSS:        css["base"] + css[path.Dir(name)] + css[name],
@@ -155,6 +164,21 @@ func render(w http.ResponseWriter, r *http.Request, name, title string, data int
 		Path:       r.URL.Path,
 		Request:    r,
 		Title:      title,
+	}
+
+	// Pi Day banner. TODO Generalise.
+	if args.Golfer != nil && !args.Golfer.Earned("pi-day") {
+		var (
+			now   = time.Now().UTC()
+			year  = now.Year()
+			start = time.Date(year, time.March, 14, 0, 0, 0, 0, time.UTC)
+			end   = time.Date(year, time.March, 15, 0, 0, 0, 0, time.UTC)
+		)
+
+		if now.Before(end) {
+			args.TrophyBanner = &trophyBanner{
+				start.Before(now), start, end, trophy.ByID["pi-day"]}
+		}
 	}
 
 	if name == "hole" {

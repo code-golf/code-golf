@@ -114,3 +114,16 @@
 {{ end }}
 
 {{ end }}
+
+{{ with $.TrophyBanner }}
+    <div class=info>
+        {{ svg "info-circle" }}
+        <p>
+            The <b>{{ .Trophy.Emoji }} {{ .Trophy.Name }}</b> trophy will
+            {{ if .During }}
+                stop being available in {{ time .End }}.
+            {{ else }}
+                be available in {{ time .Start }}.
+            {{ end }}
+    </div>
+{{ end }}

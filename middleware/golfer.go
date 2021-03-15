@@ -9,6 +9,7 @@ import (
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/session"
 	"github.com/gofrs/uuid"
+	"github.com/lib/pq"
 )
 
 // GolferHandler adds the golfer to the context if logged in.
@@ -36,9 +37,15 @@ func GolferHandler(next http.Handler) http.Handler {
 				         keymap,
 				         login,
 				         show_country,
-				         COALESCE(time_zone, '')
+				         COALESCE(time_zone, ''),
+				         ARRAY(
+				             SELECT trophy
+				               FROM trophies
+				              WHERE user_id = golfer.user_id
+				           ORDER BY trophy
+				         )
 				    FROM users
-				    JOIN golfer ON id = user_id`,
+				    JOIN golfer ON id = golfer.user_id`,
 				uuid.FromStringOrNil(cookie.Value),
 			).Scan(
 				&golfer.Admin,
@@ -50,6 +57,7 @@ func GolferHandler(next http.Handler) http.Handler {
 				&golfer.Name,
 				&golfer.ShowCountry,
 				&golfer.TimeZone,
+				pq.Array(&golfer.Trophies),
 			); err == nil {
 				r = session.Set(r, "golfer", &golfer)
 

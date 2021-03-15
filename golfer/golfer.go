@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"errors"
+	"sort"
 	"time"
 
 	"github.com/code-golf/code-golf/hole"
@@ -24,6 +25,12 @@ type Golfer struct {
 	Delete                          sql.NullTime
 	FailingSolutions                FailingSolutions
 	ID                              int
+	Trophies                        []string
+}
+
+func (g *Golfer) Earned(trophyID string) bool {
+	i := sort.SearchStrings(g.Trophies, trophyID)
+	return i < len(g.Trophies) && g.Trophies[i] == trophyID
 }
 
 type GolferInfo struct {

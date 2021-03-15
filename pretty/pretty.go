@@ -85,20 +85,33 @@ func Time(t time.Time) template.HTML {
 	sb.WriteString(rfc)
 	sb.WriteRune('>')
 
-	switch diff := time.Since(t); {
-	case diff < 2*time.Minute:
-		sb.WriteString("a min ago")
-	case diff < time.Hour:
-		fmt.Fprintf(&sb, "%d mins ago", diff/time.Minute)
-	case diff < 2*time.Hour:
-		sb.WriteString("an hour ago")
-	case diff < day:
-		fmt.Fprintf(&sb, "%d hours ago", diff/time.Hour)
-	case diff < 2*day:
-		sb.WriteString("a day ago")
-	case diff < 28*day:
-		fmt.Fprintf(&sb, "%d days ago", diff/day)
-	default:
+	diff := time.Until(t)
+	past := false
+	if diff < 0 {
+		diff = -diff
+		past = true
+	}
+
+	if diff < 28*day {
+		switch {
+		case diff < 2*time.Minute:
+			sb.WriteString("a min")
+		case diff < time.Hour:
+			fmt.Fprintf(&sb, "%d mins", diff/time.Minute)
+		case diff < 2*time.Hour:
+			sb.WriteString("an hour")
+		case diff < day:
+			fmt.Fprintf(&sb, "%d hours", diff/time.Hour)
+		case diff < 2*day:
+			sb.WriteString("a day")
+		default:
+			fmt.Fprintf(&sb, "%d days", diff/day)
+		}
+
+		if past {
+			sb.WriteString(" ago")
+		}
+	} else {
 		sb.WriteString(t.Format("2 Jan 2006"))
 	}
 
