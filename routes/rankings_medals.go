@@ -33,7 +33,7 @@ func RankingsMedals(w http.ResponseWriter, r *http.Request) {
 		        bronze
 		   FROM medals
 		   JOIN users ON id = user_id
-		  LIMIT 25`,
+		  LIMIT 30`,
 	)
 	if err != nil {
 		panic(err)

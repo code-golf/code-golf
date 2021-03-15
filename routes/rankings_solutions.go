@@ -36,7 +36,7 @@ func RankingsSolutions(w http.ResponseWriter, r *http.Request) {
 		    FROM solutions
 		    JOIN users on id = user_id
 		ORDER BY rank, bytes, chars, login
-		   LIMIT 25`,
+		   LIMIT 30`,
 	)
 	if err != nil {
 		panic(err)

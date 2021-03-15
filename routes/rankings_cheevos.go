@@ -50,7 +50,7 @@ func RankingsCheevos(w http.ResponseWriter, r *http.Request) {
 		         END
 		    FROM count JOIN users ON id = user_id
 		ORDER BY rank, earned
-		   LIMIT 25`,
+		   LIMIT 30`,
 		cheevoID,
 	)
 	if err != nil {
