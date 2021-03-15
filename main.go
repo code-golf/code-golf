@@ -75,10 +75,11 @@ func main() {
 	r.Get("/random", routes.Random)
 	r.Route("/rankings", func(r chi.Router) {
 		r.Get("/", redir("/rankings/holes/all/all/all"))
-		r.Get("/cheevos", redir("/rankings/cheevos/all"))
 		r.Get("/holes", redir("/rankings/holes/all/all/all"))
 		r.Get("/medals", redir("/rankings/medals/all/all/all"))
 
+		r.Get("/cheevos", routes.RankingsCheevos)
+		r.Get("/cheevos/all", redir("/rankings/cheevos"))
 		r.Get("/cheevos/{cheevo}", routes.RankingsCheevos)
 
 		r.Get("/holes/{hole}/{lang}/{scoring}", routes.RankingsHoles)

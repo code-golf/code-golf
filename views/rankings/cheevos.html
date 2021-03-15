@@ -8,7 +8,7 @@
     <form class=thin>
         <input type=hidden value=/rankings/cheevos>
         <select>
-            <option value=all>All
+            <option value>All
         {{ range $category, $cheevos := .Data.Cheevos }}
             <optgroup label="{{ $category }}">
             {{ range $cheevos }}
@@ -24,7 +24,7 @@
 {{ end }}
 
     <nav class=wide>
-        <a {{ if $id }} href=/rankings/cheevos/all {{ end }}>
+        <a {{ if $id }} href=/rankings/cheevos {{ end }}>
             <span>All</span>
         </a>
 {{ range $category, $cheevos := .Data.Cheevos }}
