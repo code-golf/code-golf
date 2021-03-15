@@ -7,7 +7,7 @@ import (
 	"github.com/code-golf/code-golf/lang"
 )
 
-// RankingsHoles serves GET /rankings/holes/{hole}/{lang}/{scoring}/{page}
+// RankingsHoles serves GET /rankings/holes/{hole}/{lang}/{scoring}
 func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Holes []hole.Hole

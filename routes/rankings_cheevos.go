@@ -8,7 +8,7 @@ import (
 	"github.com/code-golf/code-golf/trophy"
 )
 
-// RankingsCheevos serves GET /rankings/cheevos/{cheevo}/{page}
+// RankingsCheevos serves GET /rankings/cheevos/{cheevo}
 func RankingsCheevos(w http.ResponseWriter, r *http.Request) {
 	cheevoID := param(r, "cheevo")
 

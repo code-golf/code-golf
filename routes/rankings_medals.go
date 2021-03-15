@@ -8,7 +8,7 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-// RankingsMedals serves GET /rankings/medals/{hole}/{lang}/{page}
+// RankingsMedals serves GET /rankings/medals/{hole}/{lang}
 func RankingsMedals(w http.ResponseWriter, r *http.Request) {
 	type row struct {
 		Country, Login             string

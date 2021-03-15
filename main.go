@@ -80,13 +80,10 @@ func main() {
 		r.Get("/medals", redir("/rankings/medals/all/all/all"))
 
 		r.Get("/cheevos/{cheevo}", routes.RankingsCheevos)
-		r.Get("/cheevos/{cheevo}/{page}", routes.RankingsCheevos)
 
 		r.Get("/holes/{hole}/{lang}/{scoring}", routes.RankingsHoles)
-		r.Get("/holes/{hole}/{lang}/{scoring}/{page}", routes.RankingsHoles)
 
 		r.Get("/medals/{hole}/{lang}/{scoring}", routes.RankingsMedals)
-		r.Get("/medals/{hole}/{lang}/{scoring}/{page}", routes.RankingsMedals)
 
 		r.Get("/solutions", routes.RankingsSolutions)
 	})
