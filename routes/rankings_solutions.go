@@ -10,7 +10,7 @@ import (
 func RankingsSolutions(w http.ResponseWriter, r *http.Request) {
 	type row struct {
 		BytesPer, CharsPer, Country, Login string
-		Bytes, Chars, Rank, Count          int
+		Bytes, Chars, Rank, Count, Langs   int
 	}
 
 	var data []row
@@ -19,6 +19,7 @@ func RankingsSolutions(w http.ResponseWriter, r *http.Request) {
 		`WITH solutions AS (
 		    SELECT user_id,
 		           COUNT(*),
+		           COUNT(DISTINCT lang) langs,
 		           SUM(bytes) bytes,
 		           SUM(chars) chars
 		      FROM solutions
@@ -31,6 +32,7 @@ func RankingsSolutions(w http.ResponseWriter, r *http.Request) {
 		         TO_CHAR(chars::decimal / count, 'FM999,999.0'),
 		         count,
 		         COALESCE(CASE WHEN show_country THEN country END, ''),
+		         langs,
 		         login,
 		         RANK() OVER(ORDER BY count DESC)
 		    FROM solutions
@@ -52,6 +54,7 @@ func RankingsSolutions(w http.ResponseWriter, r *http.Request) {
 			&r.CharsPer,
 			&r.Count,
 			&r.Country,
+			&r.Langs,
 			&r.Login,
 			&r.Rank,
 		); err != nil {

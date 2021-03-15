@@ -8,6 +8,7 @@
                 <th>#
                 <th>Golfer
                 <th>Count
+                <th>Langs
                 <th class=right>Bytes
                 <th class=right>Per
                 <th class=right>Chars
@@ -28,6 +29,7 @@
                     {{ end }}
                     </a>
                 <td class=right>{{ comma .Count }}
+                <td class=right>{{ .Langs }}
                 <td class=right>{{ comma .Bytes }}
                 <td class=right>{{ .BytesPer }}
                 <td class=right>{{ comma .Chars }}
