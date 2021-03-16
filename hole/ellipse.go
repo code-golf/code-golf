@@ -1,30 +1,31 @@
 package hole
 
 import (
-	"math/big"
+	"math"
 	"math/rand"
 	"strconv"
 	"strings"
 )
 
-func perimeter(a, b int) (p float64) {
-	//TODO: compute perimeter
+func perimeter(ai, bi int) (p float64) {
+	a, b := float64(ai), float64(bi)
+	h := math.Pow(a-b, 2) / math.Pow(a+b, 2)
+	p = math.Pi * (a + b) * (1.0 + (3.0 * h / (10.0 + math.Sqrt(4.0-(3.0*h)))))
+	return
 }
 
 func ellipse() (args []string, out string) {
 	var outs []string
 
-	// few random tests
+	// some random tests
 	var a, b int
-	for i := 0; i < 10; i++ {
-		a = rand.Intn(10) + 1
-		b = rand.Intn(10) + 1
+	for i := 0; i < 50; i++ {
+		a = rand.Intn(50) + 1
+		b = rand.Intn(50) + 1
 
 		args = append(args, strconv.Itoa(a)+" "+strconv.Itoa(b))
-		outs = append(outs, strconv.Itoa(perimeter(a, b)))
+		outs = append(outs, strconv.FormatFloat(perimeter(a, b), 'f', 40, 64))
 	}
-
-	//TODO: add default tests
 
 	rand.Shuffle(len(args), func(i, j int) {
 		args[i], args[j] = args[j], args[i]

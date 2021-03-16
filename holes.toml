@@ -632,12 +632,12 @@ preamble = '''
 
 [Ellipse]
 category = ''
-links = [{name='Wikipedia', url=''},]
+links = [{name='Wikipedia', url='https://en.wikipedia.org/wiki/Ellipse'},]
 experiment = -1
 preamble = '''
 <p>
-    Write a function that takes a and b as arguments as the two radii of an
-    ellipse and outputs the perimeter of the ellipse to ten decimal places.
+    Given the two radii of an ellipse, compute its perimeter to forty decimal
+    places.
 '''
 
 [Emojify]
