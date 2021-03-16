@@ -631,8 +631,10 @@ preamble = '''
 '''
 
 [Ellipse]
-category = ''
-links = [{name='Wikipedia', url='https://en.wikipedia.org/wiki/Ellipse'},]
+category = 'Mathematics'
+links = [
+    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Ellipse' },
+]
 experiment = -1
 preamble = '''
 <p>
