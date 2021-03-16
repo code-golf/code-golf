@@ -177,7 +177,8 @@ func render(w http.ResponseWriter, r *http.Request, name, title string, data int
 
 		if now.Before(end) {
 			args.TrophyBanner = &trophyBanner{
-				start.Before(now), start, end, trophy.ByID["pi-day"]}
+				start.Before(now), start, end, trophy.ByID["pi-day"],
+			}
 		}
 	}
 
