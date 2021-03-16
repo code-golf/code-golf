@@ -1,6 +1,6 @@
 ['><>']
-size    = '486 KiB'
-version = '358ff13'
+size    = '473 KiB'
+version = '44b227e'
 website = '//github.com/primo-ppcg/fish-jit'
 example = '''
 \ printing
@@ -494,7 +494,7 @@ fn main() {
 
 [SQL]
 size    = '1.01 MiB'
-version = '3.35.0'
+version = '3.35.1'
 website = '//sqlite.org/index.html'
 example = '''
 -- Printing

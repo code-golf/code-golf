@@ -42,7 +42,7 @@ COPY --from=codegolf/lang-brainfuck  ["/", "/langs/brainfuck/rootfs/" ] # 1.62 M
 COPY --from=codegolf/lang-c          ["/", "/langs/c/rootfs/"         ] # 1.61 MiB
 COPY --from=codegolf/lang-bash       ["/", "/langs/bash/rootfs/"      ] # 1.15 MiB
 COPY --from=codegolf/lang-sql        ["/", "/langs/sql/rootfs/"       ] # 1.01 MiB
-COPY --from=codegolf/lang-fish       ["/", "/langs/fish/rootfs/"      ] #  486 KiB
+COPY --from=codegolf/lang-fish       ["/", "/langs/fish/rootfs/"      ] #  473 KiB
 COPY --from=codegolf/lang-lua        ["/", "/langs/lua/rootfs/"       ] #  334 KiB
 
 COPY --from=0 /go/code-golf                      /

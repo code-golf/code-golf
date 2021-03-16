@@ -2,7 +2,7 @@ FROM alpine:3.13 as builder
 
 RUN mkdir /empty
 
-ENV PY_VERSION=3.7-v7.3.3 VERSION=358ff13
+ENV PY_VERSION=3.7-v7.3.3 VERSION=44b227e
 
 RUN apk add --no-cache curl gcc linux-headers make musl-dev python2
 
