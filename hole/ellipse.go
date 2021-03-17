@@ -19,12 +19,16 @@ func ellipse() (args []string, out string) {
 
 	// some random tests
 	var a, b int
+	var p float64
+	var ps string
 	for i := 0; i < 50; i++ {
 		a = rand.Intn(50) + 1
 		b = rand.Intn(50) + 1
-
 		args = append(args, strconv.Itoa(a)+" "+strconv.Itoa(b))
-		outs = append(outs, strconv.FormatFloat(perimeter(a, b), 'f', 40, 64))
+
+		p = perimeter(a, b)
+		ps = strconv.FormatFloat(p, 'f', 40, 64)[0:11]
+		outs = append(outs, ps)
 	}
 
 	rand.Shuffle(len(args), func(i, j int) {
