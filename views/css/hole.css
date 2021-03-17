@@ -51,9 +51,49 @@ main .info {
 
 #all { float: right }
 
-#arg, #err { display: none }
+#req, #arg, #err { display: none }
 
 #exp, #out { white-space: pre }
+
+#req {
+    grid-template-columns: auto 1fr;
+    padding-top: 0.5rem
+}
+
+#req div {
+   padding: 0.5rem;
+   border-width: 1px;
+   border-style: solid;
+}
+
+#req [condition="pass"] { background-color: lightgreen }
+
+#req [condition="fail"] { background-color: lightcoral }
+
+#req .pass {
+    border-right: none;
+    font-size: 1.3rem;
+    display: flex;
+}
+
+#req .pass span { align-self: center}
+
+#req .name {
+    border-left: none;
+    padding-left: 10px;
+}
+
+#req .message {
+    background-color: lightgray;
+    font-family: monospace;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    max-height: 100px;
+    overflow: auto;
+    overflow-x: auto;
+    overflow-y: auto;
+    white-space: pre;
+}
 
 #arg span {
     background: #eee;

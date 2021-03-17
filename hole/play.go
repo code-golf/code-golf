@@ -19,9 +19,14 @@ const timeout = 7 * time.Second
 var answers embed.FS
 
 type Scorecard struct {
-	Answer         string
-	Args           []string
-	Pass, Timeout  bool
+	Answer        string
+	Args          []string
+	Pass, Timeout bool
+	Requirements  []struct {
+		Name    string
+		Pass    bool
+		Message string
+	}
 	Stderr, Stdout []byte
 	Took           time.Duration
 }
@@ -54,7 +59,7 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 		args, answer = pangramGrep()
 	case "poker":
 		args, answer = poker()
-	case "quine":
+	case "quine", "palindromic-quine":
 		answer = code
 	case "rock-paper-scissors-spock-lizard":
 		args, answer = rockPaperScissorsSpockLizard()
@@ -172,7 +177,7 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	// Trim trailing whitespace.
 	score.Stderr = bytes.TrimRightFunc(stderr.Next(maxLength), unicode.IsSpace)
 
-	if holeID == "quine" {
+	if holeID == "quine" || holeID == "palindromic-quine" {
 		score.Stdout = stdout.Next(maxLength)
 	} else {
 		// Trim trailing spaces per line.
@@ -210,15 +215,33 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		score.Stdout = bytes.Replace(score.Stdout, []byte("Ⅾ"), []byte("D"), -1)
 		score.Stdout = bytes.Replace(score.Stdout, []byte("Ⅿ"), []byte("M"), -1)
 	}
-
+	if holeID == "palindromic-quine" {
+		score.Requirements = palindromicQuineRequirements(code)
+	}
+	doesEqualsExpected := false
 	if len(score.Stdout) != 0 {
 		// TODO Generalise a case insensitive flag, should it apply to others?
 		if holeID == "css-colors" {
-			score.Pass = strings.EqualFold(score.Answer, string(score.Stdout))
+			doesEqualsExpected = strings.EqualFold(score.Answer, string(score.Stdout))
 		} else {
-			score.Pass = score.Answer == string(score.Stdout)
+			doesEqualsExpected = score.Answer == string(score.Stdout)
 		}
 	}
-
+	// if there are some requirements add to them "output equals expected" requirement
+	if len(score.Requirements) != 0 {
+		score.Requirements = append([]struct {
+			Name    string
+			Pass    bool
+			Message string
+		}{
+			{"output matches expected output", doesEqualsExpected, ""},
+		}, score.Requirements...)
+		score.Pass = true
+		for _, req := range score.Requirements {
+			score.Pass = score.Pass && req.Pass
+		}
+	} else {
+		score.Pass = doesEqualsExpected
+	}
 	return
 }

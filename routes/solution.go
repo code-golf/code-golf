@@ -56,6 +56,11 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 	out := struct {
 		Argv                []string
 		Diff, Err, Exp, Out string
+    Reqs                []struct {
+			Name    string
+			Pass    bool
+			Message string
+		}
 		Pass, LoggedIn      bool
 		RankUpdates         []Golfer.RankUpdate
 		Took                time.Duration
