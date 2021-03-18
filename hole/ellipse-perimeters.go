@@ -14,7 +14,7 @@ func perimeter(ai, bi int) (p float64) {
 	return
 }
 
-func ellipse() (args []string, out string) {
+func ellipsePerimeters() (args []string, out string) {
 	var outs []string
 
 	// some random tests

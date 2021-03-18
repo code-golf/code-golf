@@ -630,7 +630,7 @@ preamble = '''
     on their own line.
 '''
 
-[Ellipsis]
+['Ellipse Perimeters']
 category = 'Mathematics'
 links = [
     { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Ellipse' },
