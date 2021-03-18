@@ -104,18 +104,6 @@ body, footer nav, body > header nav, #popups {
     max-width: 1280px;
 }
 
-/* tabs */
-body > nav {
-    background: var(--background);
-    border-bottom: 2px solid var(--color);
-    display: flex;
-    font-weight: bold;
-    padding: 1rem 1rem 0;
-    position: sticky;
-    top: 2.75rem;
-    z-index: 2;
-}
-
 body > svg, .hide { display: none }
 
 details .grid { padding-top: 1rem }
@@ -373,23 +361,6 @@ thead th {
 
 .me { background: var(--light-green) !important }
 
-.nav > a {
-    color: inherit;
-    display: inline-block;
-    height: 2rem;
-    line-height: 2rem;
-    padding: 0 .5rem;
-    text-decoration: none;
-    white-space: nowrap;
-}
-
-.nav > a.on,
-.nav > a:hover,
-.nav > a:not([href]) {
-    background: var(--color);
-    color: var(--background);
-}
-
 [class^=nowrap-] { white-space: nowrap }
 
 .nowrap-first  td:nth-child(1),
@@ -406,19 +377,6 @@ thead th {
 
 .right { text-align: right }
 
-.scoringPicker {
-    font-weight: normal;
-    padding: 0 .5rem;
-}
-
-.scoringPicker:not(.inactive) { color: var(--color) }
-
-.scoringPicker:hover,
-.scoringPicker:not([href]) {
-    background: var(--color);
-    color: var(--background);
-}
-
 .span { grid-column: 1 / -1 }
 
 .sticky th {
@@ -430,6 +388,43 @@ thead th {
 /* Stick headers below tabs if we have them */
 nav + main .sticky th { top: calc(5.75rem + 2px) }
 
+.tabs {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* Tabs outside <main> should be bold, sticky, & underlined. */
+body > .tabs {
+    background: var(--background);
+    border-bottom: 2px solid var(--color);
+    font-weight: bold;
+    padding: 1rem 1rem 0;
+    position: sticky;
+    top: 2.75rem;
+    z-index: 2;
+}
+
+body > .tabs a {
+    margin-bottom: -2px;
+    padding: calc(.5rem - 1px) .5rem;
+}
+
+.tabs a {
+    color: var(--color);
+    padding: .375rem .5rem;
+}
+
+/* TODO .tabs a:is(.on, :hover, :not([href])) */
+.tabs .on, .tabs a:hover, .tabs a:not([href]) {
+    background: var(--color);
+    color: var(--background);
+    text-decoration: none;
+}
+
+/* Hacky, remove once we no longer use links inside <details>. */
+details.tabs   { display: initial }
+details.tabs a { display: inline-block }
+
 .thin { display: none }
 
 #error h1 { text-align: center }
@@ -439,11 +434,6 @@ nav + main .sticky th { top: calc(5.75rem + 2px) }
 #index > .grid {
     border: 2px solid var(--color);
     padding: 1rem;
-}
-
-#index .nav {
-    display: flex;
-    flex-wrap: wrap;
 }
 
 #me {

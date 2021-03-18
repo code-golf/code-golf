@@ -13,8 +13,6 @@ h1 > :first-child { flex: 1 }
 
 h1 > * { margin: .5rem }
 
-main > nav { display: flex }
-
 td > a { text-decoration: none }
 
 td > a > span:nth-of-type(1) { flex: 1 }

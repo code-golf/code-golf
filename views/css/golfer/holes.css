@@ -23,7 +23,6 @@ main > a :last-child {
 }
 
 main nav {
-    display: flex;
     grid-column: 1 / -1;
     justify-content: flex-end;
     margin-bottom: .75rem;

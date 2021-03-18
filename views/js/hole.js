@@ -290,16 +290,13 @@ async function refreshScores() {
         }
     }
 
-    const url = `/scores/${hole}/${lang}/${scorings[scoring].toLowerCase()}`;
-    const res = await fetch(`${url}/mini`);
-
+    const url    = `/scores/${hole}/${lang}/${scorings[scoring].toLowerCase()}`;
+    const res    = await fetch(`${url}/mini`);
     const scores = res.ok ? await res.json() : [];
-    let html     = `<thead><tr><th colspan=4>`;
 
-    for (let i = 0; i < scorings.length; i++)
-        html += `<a class="scoringPicker${scoring != i ? ' inactive' : ''}" id=${scorings[i]}>${scorings[i]}</a>`;
-
-    html += `<a href=${url} id=all>all</a><tbody>`;
+    let html = '<thead><tr><th colspan=4><nav class=tabs>' +
+        scorings.map(s => `<a id=${s}>${s}</a>`).join('') +
+        `</nav><a href=${url}>All</a><tbody>`;
 
     // Ordinal from https://codegolf.stackexchange.com/a/119563
     for (let i = 0; i < 7; i++) {
@@ -334,8 +331,8 @@ async function refreshScores() {
 
     const otherScoring = getOtherScoring(scoring);
     const switchScoring = table.querySelector(`#${scorings[otherScoring]}`);
-    switchScoring.href = 'javascript:void(0)';
-    switchScoring.onclick = () => { setScoring(otherScoring); refreshScores(); };
+    switchScoring.href = '';
+    switchScoring.onclick = e => { e.preventDefault(); setScoring(otherScoring); refreshScores() };
 }
 
 // Adapted from https://mths.be/punycode

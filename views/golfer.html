@@ -39,7 +39,7 @@
         <!-- TODO <div><p>📅<p class=yellow>Teed off {{ time .TeedOff }}</div>-->
     </div>
 
-    <nav class=nav>
+    <nav class=tabs>
         {{ $slug := print "/golfers/" .Name }}
         <a {{ if ne $.Path $slug }} href="{{ $slug }}" {{ end }}>Trophies</a>
 

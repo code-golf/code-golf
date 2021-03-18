@@ -13,13 +13,17 @@
 </svg>
 
 <main>
-<nav class=nav>
-{{ range $scorings }}
-    <a {{ if eq (index $scorings $scoringIndex) . }} class=on {{ else }} href="{{ . }}" {{ end }}>
-        {{ title . }}
-    </a>
-{{ end }}
-</nav>
+    <nav class=tabs>
+    {{ range $scorings }}
+        <a {{ if eq (index $scorings $scoringIndex) . }}
+            class=on
+        {{ else }}
+            href="{{ . }}"
+        {{ end }}>
+            {{ title . }}
+        </a>
+    {{ end }}
+    </nav>
 
 {{ range .Data.Langs }}
     <input checked class={{ .ID }} id="{{ .ID }}Check" type=checkbox>

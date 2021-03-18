@@ -22,7 +22,7 @@
 </svg>
 
 <main id=index>
-    <nav class="nav span">
+    <nav class="span tabs">
     {{ range .Data.Scorings }}
         <a {{ if ne . $.Data.Scoring }} href="?scoring={{ . }}" {{ end }}>
             {{ title . }}

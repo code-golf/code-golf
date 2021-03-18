@@ -1,6 +1,6 @@
 <h1>{{ .Title }}</h1>
 
-<nav class=nav>
+<nav class=tabs>
     <a {{ if not (hasPrefix .Path "/rankings/holes/") }}
         href=/rankings/holes/all/all/all
     {{ end }}>

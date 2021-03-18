@@ -41,7 +41,7 @@
 
         {{/* TODO <a class="btn blue" href=#me>{{ svg "search-light" }} Find Me</a> */}}
     </h1>
-    <details class=nav>
+    <details class=tabs>
         {{ if $allHoles }}
             <summary>All Holes</summary>
         {{ else }}
@@ -57,7 +57,7 @@
         {{ end }}
     </details>
 
-    <details class=nav>
+    <details class=tabs>
         {{ if eq $langID "all-langs" }}
             <summary>All Langs</summary>
         {{ else }}
@@ -73,7 +73,7 @@
         {{ end }}
     </details>
 
-    <nav class=nav>
+    <nav class=tabs>
         <a {{ if $charsScoring }} href="/scores/{{ $holeID }}/{{ $langID }}/bytes" {{ end }}>Bytes</a>
         <a {{ if $bytesScoring }} href="/scores/{{ $holeID }}/{{ $langID }}/chars" {{ end }}>Chars</a>
     </nav>

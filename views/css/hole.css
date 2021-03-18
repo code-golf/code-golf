@@ -49,8 +49,6 @@ main .info {
 
 .text-red { color: var(--red) }
 
-#all { float: right }
-
 #arg, #err { display: none }
 
 #exp, #out { white-space: pre }
@@ -121,9 +119,12 @@ main .info {
 
 #run > span { margin: 0 1rem }
 
-#scores { grid-row: span 2 }
-
-#scores td { border-left: 0 }
+#scores            { grid-row: span 2 }
+#scores td         { border-left: 0 }
+#scores th         { font-weight: normal }
+#scores th > a     { float: right }
+#scores th .tabs   { display: inline-flex }
+#scores th .tabs a { padding: 0 .5rem }
 
 #status {
     display: none;
