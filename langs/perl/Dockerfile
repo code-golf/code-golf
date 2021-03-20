@@ -4,9 +4,10 @@ RUN mkdir /empty
 
 RUN apk add --no-cache build-base curl perl
 
-RUN curl http://www.cpan.org/src/5.0/perl-5.32.1.tar.xz | tar xJf -
+RUN curl http://www.cpan.org/src/5.0/perl-5.32.1.tar.xz | tar xJ
 
-RUN cd perl-5.32.1                                            \
+RUN mv perl-5.32.1 perl                                       \
+ && cd perl                                                   \
  && perl -pe 's/qw\(indirect/$& say/' regen/feature.pl | perl \
  && ./Configure                                               \
     -Accflags='-DNO_LOCALE                                    \
@@ -16,7 +17,13 @@ RUN cd perl-5.32.1                                            \
     -DPERL_USE_SAFE_PUTENV                                    \
     -DSILENT_NO_TAINT_SUPPORT'                                \
     -des                                                      \
+    -Darchlib=/usr/lib/perl                                   \
+    -Dinc_version_list=none                                   \
     -Dprefix=/usr                                             \
+    -Dprivlib=/usr/lib/perl                                   \
+    -Dsitearch=/usr/lib/perl                                  \
+    -Dsitelib=/usr/lib/perl                                   \
+    -Dvendorarch=/usr/lib/perl                                \
  && make -j`nproc`                                            \
  && strip -s perl
 
@@ -25,7 +32,18 @@ FROM scratch
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
 COPY --from=0 /empty                   /proc
 COPY --from=0 /empty                   /tmp
-COPY --from=0 /perl-5.32.1/perl        /usr/bin/perl
-COPY --from=0 /perl-5.32.1/lib/utf8.pm /usr/lib/perl5/5.32.1/
+COPY --from=0 /perl/perl               /usr/bin/
+COPY --from=0 /perl/lib/Carp.pm        \
+              /perl/lib/Config.pm      \
+              /perl/lib/DynaLoader.pm  \
+              /perl/lib/Exporter.pm    \
+              /perl/lib/XSLoader.pm    \
+              /perl/lib/feature.pm     \
+              /perl/lib/strict.pm      \
+              /perl/lib/utf8.pm        \
+              /perl/lib/warnings.pm    /usr/lib/perl/
+COPY --from=0 /perl/lib/File/Glob.pm   /usr/lib/perl/File/
+COPY --from=0 /perl/lib/auto/File/Glob/Glob.so \
+          /usr/lib/perl/auto/File/Glob/
 
 ENTRYPOINT ["perl", "-e", "say substr $^V, 1"]
