@@ -493,7 +493,7 @@ fn main() {
 '''
 
 [SQL]
-size    = '1.01 MiB'
+size    = '1.03 MiB'
 version = '3.35.1'
 website = '//sqlite.org/index.html'
 example = '''

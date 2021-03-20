@@ -9,7 +9,7 @@ RUN curl https://www.sqlite.org/2021/sqlite-autoconf-3350100.tar.gz \
 
 COPY sql.c /
 
-RUN gcc -static -s -o sql sql.c sqlite3.c
+RUN gcc -DSQLITE_ENABLE_MATH_FUNCTIONS -static -s -o sql sql.c sqlite3.c
 
 FROM scratch
 
