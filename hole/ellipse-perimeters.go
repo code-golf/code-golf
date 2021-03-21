@@ -20,6 +20,7 @@ func perimeter(ai, bi int) (p float64) {
 	p *= math.Pi * (a + b)
 	return
 }
+
 func ellipsePerimeters() (args []string, out string) {
 	var outs []string
 
