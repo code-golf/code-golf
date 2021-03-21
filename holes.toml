@@ -638,8 +638,8 @@ links = [
 experiment = -1
 preamble = '''
 <p>
-    Given the two radii of an ellipse, compute its perimeter to ten
-    significant figures.
+    Given the two radii of an ellipse, compute its perimeter and print
+    its integer part.
 '''
 
 [Emojify]
