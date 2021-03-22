@@ -1,9 +1,3 @@
-{{ $me := false }}
-
-{{ if .Golfer }}
-    {{ $me = eq .Golfer.ID .GolferInfo.ID }}
-{{ end }}
-
 {{ with .GolferInfo }}
     <div class=grid id=profile>
         <img src="//avatars.githubusercontent.com/{{ .Name }}?s=192">
@@ -48,10 +42,12 @@
             Holes
         </a>
 
-    {{ if $me }}
+{{ if $.Golfer }}
+    {{ if eq $.Golfer.ID .ID }}
         <a {{ if ne $.Path "/golfer/settings" }} href=/golfer/settings {{ end }}>
             Settings
         </a>
     {{ end }}
+{{ end }}
 </nav>
 {{ end }}
