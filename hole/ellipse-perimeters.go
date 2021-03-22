@@ -27,15 +27,13 @@ func ellipsePerimeters() (args []string, out string) {
 	// some random tests
 	var a, b int
 	var p float64
-	var ps string
 	for i := 0; i < 10; i++ {
 		a = rand.Intn(15) + 5
 		b = rand.Intn(5) + 1
 		args = append(args, strconv.Itoa(a)+" "+strconv.Itoa(b))
 
 		p = perimeter(a, b)
-		ps = strconv.FormatFloat(p, 'f', 40, 64)[0:2]
-		outs = append(outs, ps)
+		outs = append(outs, strconv.Itoa(int(p)))
 	}
 
 	rand.Shuffle(len(args), func(i, j int) {
