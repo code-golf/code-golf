@@ -4,7 +4,9 @@
 <main>
     <form>
         <label for=golfer>Golfer</label>
-        <input id=golfer name=golfer value='{{ .Request.FormValue "golfer" }}'>
+        <datalist id=golfers></datalist>
+        <input autocomplete=off id=golfer list=golfers name=golfer
+            value='{{ .Request.FormValue "golfer" }}'>
 
         <label for=hole>Hole</label>
         <select id=hole name=hole>
