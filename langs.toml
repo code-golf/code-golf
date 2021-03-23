@@ -132,6 +132,25 @@ end-perform.
 end-program.
 '''
 
+[Crystal]
+size    = '284 MiB'
+version = '1.0.0'
+website = '//crystal-lang.org'
+example = '''
+# Printing
+puts "Hello, World!"
+
+# Looping
+(0..9).each do |i|
+    puts i
+end
+
+# Accessing arguments
+ARGV.each do |arg|
+    puts arg
+end
+'''
+
 ['F#']
 size    = '119 MiB'
 version = 'F# 5.0 on .NET 5.0.4'

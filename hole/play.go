@@ -94,6 +94,7 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 
 	cmd := exec.CommandContext(ctx, "/usr/bin/run-lang")
 	cmd.Dir = "/langs/" + langID
+	cmd.Env = []string{}
 	cmd.Stderr = &stderr
 	cmd.Stdout = &stdout
 	cmd.SysProcAttr = &syscall.SysProcAttr{
@@ -108,6 +109,9 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		cmd.Args = []string{"/usr/bin/tcc", "-run", "-"}
 	case "c-sharp", "f-sharp":
 		cmd.Args = []string{"/compiler/Compiler", "-"}
+	case "crystal":
+		cmd.Args = []string{"/usr/bin/crystal", "run", "--stdin-filename", "code.cr", "--"}
+		cmd.Env = []string{"CRYSTAL_CACHE_DIR=/tmp", "PATH=/usr/bin:/bin"}
 	case "fish":
 		cmd.Args = []string{"/usr/bin/fish", "--no-prng", "-c", code, "-u"}
 	case "haskell", "php":

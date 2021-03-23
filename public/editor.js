@@ -7996,10 +7996,10 @@ var NodeType = class {
 };
 NodeType.none = new NodeType("", Object.create(null), 0, 8);
 var NodeSet = class {
-  constructor(types3) {
-    this.types = types3;
-    for (let i = 0; i < types3.length; i++)
-      if (types3[i].id != i)
+  constructor(types4) {
+    this.types = types4;
+    for (let i = 0; i < types4.length; i++)
+      if (types4[i].id != i)
         throw new RangeError("Node type ids should correspond to array positions when creating a node set");
   }
   extend(...props) {
@@ -8535,7 +8535,7 @@ function buildTree(data) {
   var _a;
   let {buffer, nodeSet: nodeSet2, topID = 0, maxBufferLength = DefaultBufferLength, reused = [], minRepeatType = nodeSet2.types.length} = data;
   let cursor = Array.isArray(buffer) ? new FlatBufferCursor(buffer, buffer.length) : buffer;
-  let types3 = nodeSet2.types;
+  let types4 = nodeSet2.types;
   let contextHash = 0;
   function takeNode(parentStart, minPos, children2, positions2, inRepeat) {
     let {id: id2, start, end, size} = cursor;
@@ -8550,13 +8550,13 @@ function buildTree(data) {
       cursor.next();
       return;
     }
-    let type2 = types3[id2], node, buffer2;
+    let type2 = types4[id2], node, buffer2;
     if (end - start <= maxBufferLength && (buffer2 = findBufferSize(cursor.pos - minPos, inRepeat))) {
       let data2 = new Uint16Array(buffer2.size - buffer2.skip);
       let endPos = cursor.pos - buffer2.size, index = data2.length;
       while (cursor.pos > endPos)
         index = copyToBuffer(buffer2.start, data2, index, inRepeat);
-      node = new TreeBuffer(data2, end - buffer2.start, nodeSet2, inRepeat < 0 ? NodeType.none : types3[inRepeat]);
+      node = new TreeBuffer(data2, end - buffer2.start, nodeSet2, inRepeat < 0 ? NodeType.none : types4[inRepeat]);
       startPos = buffer2.start - parentStart;
     } else {
       let endPos = cursor.pos - size;
@@ -8641,7 +8641,7 @@ function buildTree(data) {
   while (cursor.pos > 0)
     takeNode(data.start || 0, 0, children, positions, -1);
   let length = (_a = data.length) !== null && _a !== void 0 ? _a : children.length ? positions[0] + children[0].length : 0;
-  return new Tree(types3[topID], children.reverse(), positions.reverse(), length);
+  return new Tree(types4[topID], children.reverse(), positions.reverse(), length);
 }
 function balanceRange(outerType, innerType, children, positions, from, to, start, maxBufferLength, length, contextHash) {
   let localChildren = [], localPositions = [];
@@ -9616,13 +9616,13 @@ function matchBrackets(state, pos, dir, config2 = {}) {
   else
     return matchPlainBrackets(state, pos, dir, tree, sub.type, maxScanDistance, brackets);
 }
-function matchMarkedBrackets(_state, _pos, dir, token, matching, brackets) {
+function matchMarkedBrackets(_state, _pos, dir, token, matching2, brackets) {
   let parent = token.parent, firstToken = {from: token.from, to: token.to};
   let depth = 0, cursor = parent === null || parent === void 0 ? void 0 : parent.cursor;
   if (cursor && (dir < 0 ? cursor.childBefore(token.from) : cursor.childAfter(token.to)))
     do {
       if (dir < 0 ? cursor.to <= token.from : cursor.from >= token.to) {
-        if (depth == 0 && matching.indexOf(cursor.type.name) > -1) {
+        if (depth == 0 && matching2.indexOf(cursor.type.name) > -1) {
           return {start: firstToken, end: {from: cursor.from, to: cursor.to}, matched: true};
         } else if (matchingNodes(cursor.type, dir, brackets)) {
           depth++;
@@ -9748,11 +9748,11 @@ var cursorLineStart = (view) => moveSel(view, (range) => EditorSelection.cursor(
 var cursorLineEnd = (view) => moveSel(view, (range) => EditorSelection.cursor(view.visualLineAt(range.head).to, -1));
 function toMatchingBracket(state, dispatch, extend2) {
   let found = false, selection = updateSel(state.selection, (range) => {
-    let matching = matchBrackets(state, range.head, -1) || matchBrackets(state, range.head, 1) || range.head > 0 && matchBrackets(state, range.head - 1, 1) || range.head < state.doc.length && matchBrackets(state, range.head + 1, -1);
-    if (!matching || !matching.end)
+    let matching2 = matchBrackets(state, range.head, -1) || matchBrackets(state, range.head, 1) || range.head > 0 && matchBrackets(state, range.head - 1, 1) || range.head < state.doc.length && matchBrackets(state, range.head + 1, -1);
+    if (!matching2 || !matching2.end)
       return range;
     found = true;
-    let head = matching.start.from == range.head ? matching.end.to : matching.end.from;
+    let head = matching2.start.from == range.head ? matching2.end.to : matching2.end.from;
     return extend2 ? EditorSelection.range(range.anchor, head) : EditorSelection.cursor(head);
   });
   if (!found)
@@ -11431,9 +11431,9 @@ function isTopScope(context) {
   }
 }
 function clike(parserConfig) {
-  var statementIndentUnit = parserConfig.statementIndentUnit, dontAlignCalls = parserConfig.dontAlignCalls, keywords10 = parserConfig.keywords || {}, types3 = parserConfig.types || {}, builtin = parserConfig.builtin || {}, blockKeywords = parserConfig.blockKeywords || {}, defKeywords = parserConfig.defKeywords || {}, atoms4 = parserConfig.atoms || {}, hooks = parserConfig.hooks || {}, multiLineStrings = parserConfig.multiLineStrings, indentStatements = parserConfig.indentStatements !== false, indentSwitch = parserConfig.indentSwitch !== false, namespaceSeparator = parserConfig.namespaceSeparator, isPunctuationChar = parserConfig.isPunctuationChar || /[\[\]{}\(\),;\:\.]/, numberStart = parserConfig.numberStart || /[\d\.]/, number2 = parserConfig.number || /^(?:0x[a-f\d]+|0b[01]+|(?:\d+\.?\d*|\.\d+)(?:e[-+]?\d+)?)(u|ll?|l|f)?/i, isOperatorChar3 = parserConfig.isOperatorChar || /[+\-*&%=<>!?|\/]/, isIdentifierChar = parserConfig.isIdentifierChar || /[\w\$_\xa1-\uffff]/, isReservedIdentifier = parserConfig.isReservedIdentifier || false;
+  var statementIndentUnit = parserConfig.statementIndentUnit, dontAlignCalls = parserConfig.dontAlignCalls, keywords11 = parserConfig.keywords || {}, types4 = parserConfig.types || {}, builtin = parserConfig.builtin || {}, blockKeywords = parserConfig.blockKeywords || {}, defKeywords = parserConfig.defKeywords || {}, atoms4 = parserConfig.atoms || {}, hooks = parserConfig.hooks || {}, multiLineStrings = parserConfig.multiLineStrings, indentStatements = parserConfig.indentStatements !== false, indentSwitch = parserConfig.indentSwitch !== false, namespaceSeparator = parserConfig.namespaceSeparator, isPunctuationChar = parserConfig.isPunctuationChar || /[\[\]{}\(\),;\:\.]/, numberStart = parserConfig.numberStart || /[\d\.]/, number2 = parserConfig.number || /^(?:0x[a-f\d]+|0b[01]+|(?:\d+\.?\d*|\.\d+)(?:e[-+]?\d+)?)(u|ll?|l|f)?/i, isOperatorChar3 = parserConfig.isOperatorChar || /[+\-*&%=<>!?|\/]/, isIdentifierChar = parserConfig.isIdentifierChar || /[\w\$_\xa1-\uffff]/, isReservedIdentifier = parserConfig.isReservedIdentifier || false;
   var curPunc3, isDefKeyword;
-  function tokenBase8(stream, state) {
+  function tokenBase9(stream, state) {
     var ch = stream.next();
     if (hooks[ch]) {
       var result = hooks[ch](stream, state);
@@ -11474,14 +11474,14 @@ function clike(parserConfig) {
       while (stream.match(namespaceSeparator))
         stream.eatWhile(isIdentifierChar);
     var cur2 = stream.current();
-    if (contains(keywords10, cur2)) {
+    if (contains(keywords11, cur2)) {
       if (contains(blockKeywords, cur2))
         curPunc3 = "newstatement";
       if (contains(defKeywords, cur2))
         isDefKeyword = true;
       return "keyword";
     }
-    if (contains(types3, cur2))
+    if (contains(types4, cur2))
       return "type";
     if (contains(builtin, cur2) || isReservedIdentifier && isReservedIdentifier(cur2)) {
       if (contains(blockKeywords, cur2))
@@ -11545,7 +11545,7 @@ function clike(parserConfig) {
         return null;
       }
       curPunc3 = isDefKeyword = null;
-      var style = (state.tokenize || tokenBase8)(stream, state);
+      var style = (state.tokenize || tokenBase9)(stream, state);
       if (style == "comment" || style == "meta")
         return style;
       if (ctx.align == null)
@@ -11586,7 +11586,7 @@ function clike(parserConfig) {
       return style;
     },
     indent: function(state, textAfter, context) {
-      if (state.tokenize != tokenBase8 && state.tokenize != null || state.typeAtEndOfLine)
+      if (state.tokenize != tokenBase9 && state.tokenize != null || state.typeAtEndOfLine)
         return null;
       var ctx = state.context, firstChar = textAfter && textAfter.charAt(0);
       var closing3 = firstChar == ctx.type;
@@ -11617,7 +11617,7 @@ function clike(parserConfig) {
     languageData: {
       indentOnInput: indentSwitch ? /^\s*(?:case .*?:|default:|\{\}?|\})$/ : /^\s*[{}]$/,
       commentTokens: {line: "//", block: {open: "/*", close: "*/"}},
-      autocomplete: Object.keys(keywords10).concat(Object.keys(types3)).concat(Object.keys(builtin)).concat(Object.keys(atoms4)),
+      autocomplete: Object.keys(keywords11).concat(Object.keys(types4)).concat(Object.keys(builtin)).concat(Object.keys(atoms4)),
       ...parserConfig.languageData
     }
   };
@@ -12458,6 +12458,402 @@ var commonLisp = {
   }
 };
 
+// node_modules/@codemirror/legacy-modes/mode/crystal.js
+function wordRegExp(words4, end) {
+  return new RegExp((end ? "" : "^") + "(?:" + words4.join("|") + ")" + (end ? "$" : "\\b"));
+}
+function chain(tokenize2, stream, state) {
+  state.tokenize.push(tokenize2);
+  return tokenize2(stream, state);
+}
+var operators = /^(?:[-+/%|&^]|\*\*?|[<>]{2})/;
+var conditionalOperators = /^(?:[=!]~|===|<=>|[<>=!]=?|[|&]{2}|~)/;
+var indexingOperators = /^(?:\[\][?=]?)/;
+var anotherOperators = /^(?:\.(?:\.{2})?|->|[?:])/;
+var idents = /^[a-z_\u009F-\uFFFF][a-zA-Z0-9_\u009F-\uFFFF]*/;
+var types2 = /^[A-Z_\u009F-\uFFFF][a-zA-Z0-9_\u009F-\uFFFF]*/;
+var keywords2 = wordRegExp([
+  "abstract",
+  "alias",
+  "as",
+  "asm",
+  "begin",
+  "break",
+  "case",
+  "class",
+  "def",
+  "do",
+  "else",
+  "elsif",
+  "end",
+  "ensure",
+  "enum",
+  "extend",
+  "for",
+  "fun",
+  "if",
+  "include",
+  "instance_sizeof",
+  "lib",
+  "macro",
+  "module",
+  "next",
+  "of",
+  "out",
+  "pointerof",
+  "private",
+  "protected",
+  "rescue",
+  "return",
+  "require",
+  "select",
+  "sizeof",
+  "struct",
+  "super",
+  "then",
+  "type",
+  "typeof",
+  "uninitialized",
+  "union",
+  "unless",
+  "until",
+  "when",
+  "while",
+  "with",
+  "yield",
+  "__DIR__",
+  "__END_LINE__",
+  "__FILE__",
+  "__LINE__"
+]);
+var atomWords = wordRegExp(["true", "false", "nil", "self"]);
+var indentKeywordsArray = [
+  "def",
+  "fun",
+  "macro",
+  "class",
+  "module",
+  "struct",
+  "lib",
+  "enum",
+  "union",
+  "do",
+  "for"
+];
+var indentKeywords = wordRegExp(indentKeywordsArray);
+var indentExpressionKeywordsArray = ["if", "unless", "case", "while", "until", "begin", "then"];
+var indentExpressionKeywords = wordRegExp(indentExpressionKeywordsArray);
+var dedentKeywordsArray = ["end", "else", "elsif", "rescue", "ensure"];
+var dedentKeywords = wordRegExp(dedentKeywordsArray);
+var dedentPunctualsArray = ["\\)", "\\}", "\\]"];
+var dedentPunctuals = new RegExp("^(?:" + dedentPunctualsArray.join("|") + ")$");
+var nextTokenizer = {
+  def: tokenFollowIdent,
+  fun: tokenFollowIdent,
+  macro: tokenMacroDef,
+  class: tokenFollowType,
+  module: tokenFollowType,
+  struct: tokenFollowType,
+  lib: tokenFollowType,
+  enum: tokenFollowType,
+  union: tokenFollowType
+};
+var matching = {"[": "]", "{": "}", "(": ")", "<": ">"};
+function tokenBase(stream, state) {
+  if (stream.eatSpace()) {
+    return null;
+  }
+  if (state.lastToken != "\\" && stream.match("{%", false)) {
+    return chain(tokenMacro("%", "%"), stream, state);
+  }
+  if (state.lastToken != "\\" && stream.match("{{", false)) {
+    return chain(tokenMacro("{", "}"), stream, state);
+  }
+  if (stream.peek() == "#") {
+    stream.skipToEnd();
+    return "comment";
+  }
+  var matched;
+  if (stream.match(idents)) {
+    stream.eat(/[?!]/);
+    matched = stream.current();
+    if (stream.eat(":")) {
+      return "atom";
+    } else if (state.lastToken == ".") {
+      return "property";
+    } else if (keywords2.test(matched)) {
+      if (indentKeywords.test(matched)) {
+        if (!(matched == "fun" && state.blocks.indexOf("lib") >= 0) && !(matched == "def" && state.lastToken == "abstract")) {
+          state.blocks.push(matched);
+          state.currentIndent += 1;
+        }
+      } else if ((state.lastStyle == "operator" || !state.lastStyle) && indentExpressionKeywords.test(matched)) {
+        state.blocks.push(matched);
+        state.currentIndent += 1;
+      } else if (matched == "end") {
+        state.blocks.pop();
+        state.currentIndent -= 1;
+      }
+      if (nextTokenizer.hasOwnProperty(matched)) {
+        state.tokenize.push(nextTokenizer[matched]);
+      }
+      return "keyword";
+    } else if (atomWords.test(matched)) {
+      return "atom";
+    }
+    return "variable";
+  }
+  if (stream.eat("@")) {
+    if (stream.peek() == "[") {
+      return chain(tokenNest("[", "]", "meta"), stream, state);
+    }
+    stream.eat("@");
+    stream.match(idents) || stream.match(types2);
+    return "propertyName";
+  }
+  if (stream.match(types2)) {
+    return "tag";
+  }
+  if (stream.eat(":")) {
+    if (stream.eat('"')) {
+      return chain(tokenQuote('"', "atom", false), stream, state);
+    } else if (stream.match(idents) || stream.match(types2) || stream.match(operators) || stream.match(conditionalOperators) || stream.match(indexingOperators)) {
+      return "atom";
+    }
+    stream.eat(":");
+    return "operator";
+  }
+  if (stream.eat('"')) {
+    return chain(tokenQuote('"', "string", true), stream, state);
+  }
+  if (stream.peek() == "%") {
+    var style = "string";
+    var embed = true;
+    var delim;
+    if (stream.match("%r")) {
+      style = "string.special";
+      delim = stream.next();
+    } else if (stream.match("%w")) {
+      embed = false;
+      delim = stream.next();
+    } else if (stream.match("%q")) {
+      embed = false;
+      delim = stream.next();
+    } else {
+      if (delim = stream.match(/^%([^\w\s=])/)) {
+        delim = delim[1];
+      } else if (stream.match(/^%[a-zA-Z0-9_\u009F-\uFFFF]*/)) {
+        return "meta";
+      } else {
+        return "operator";
+      }
+    }
+    if (matching.hasOwnProperty(delim)) {
+      delim = matching[delim];
+    }
+    return chain(tokenQuote(delim, style, embed), stream, state);
+  }
+  if (matched = stream.match(/^<<-('?)([A-Z]\w*)\1/)) {
+    return chain(tokenHereDoc(matched[2], !matched[1]), stream, state);
+  }
+  if (stream.eat("'")) {
+    stream.match(/^(?:[^']|\\(?:[befnrtv0'"]|[0-7]{3}|u(?:[0-9a-fA-F]{4}|\{[0-9a-fA-F]{1,6}\})))/);
+    stream.eat("'");
+    return "atom";
+  }
+  if (stream.eat("0")) {
+    if (stream.eat("x")) {
+      stream.match(/^[0-9a-fA-F]+/);
+    } else if (stream.eat("o")) {
+      stream.match(/^[0-7]+/);
+    } else if (stream.eat("b")) {
+      stream.match(/^[01]+/);
+    }
+    return "number";
+  }
+  if (stream.eat(/^\d/)) {
+    stream.match(/^\d*(?:\.\d+)?(?:[eE][+-]?\d+)?/);
+    return "number";
+  }
+  if (stream.match(operators)) {
+    stream.eat("=");
+    return "operator";
+  }
+  if (stream.match(conditionalOperators) || stream.match(anotherOperators)) {
+    return "operator";
+  }
+  if (matched = stream.match(/[({[]/, false)) {
+    matched = matched[0];
+    return chain(tokenNest(matched, matching[matched], null), stream, state);
+  }
+  if (stream.eat("\\")) {
+    stream.next();
+    return "meta";
+  }
+  stream.next();
+  return null;
+}
+function tokenNest(begin, end, style, started) {
+  return function(stream, state) {
+    if (!started && stream.match(begin)) {
+      state.tokenize[state.tokenize.length - 1] = tokenNest(begin, end, style, true);
+      state.currentIndent += 1;
+      return style;
+    }
+    var nextStyle = tokenBase(stream, state);
+    if (stream.current() === end) {
+      state.tokenize.pop();
+      state.currentIndent -= 1;
+      nextStyle = style;
+    }
+    return nextStyle;
+  };
+}
+function tokenMacro(begin, end, started) {
+  return function(stream, state) {
+    if (!started && stream.match("{" + begin)) {
+      state.currentIndent += 1;
+      state.tokenize[state.tokenize.length - 1] = tokenMacro(begin, end, true);
+      return "meta";
+    }
+    if (stream.match(end + "}")) {
+      state.currentIndent -= 1;
+      state.tokenize.pop();
+      return "meta";
+    }
+    return tokenBase(stream, state);
+  };
+}
+function tokenMacroDef(stream, state) {
+  if (stream.eatSpace()) {
+    return null;
+  }
+  var matched;
+  if (matched = stream.match(idents)) {
+    if (matched == "def") {
+      return "keyword";
+    }
+    stream.eat(/[?!]/);
+  }
+  state.tokenize.pop();
+  return "def";
+}
+function tokenFollowIdent(stream, state) {
+  if (stream.eatSpace()) {
+    return null;
+  }
+  if (stream.match(idents)) {
+    stream.eat(/[!?]/);
+  } else {
+    stream.match(operators) || stream.match(conditionalOperators) || stream.match(indexingOperators);
+  }
+  state.tokenize.pop();
+  return "def";
+}
+function tokenFollowType(stream, state) {
+  if (stream.eatSpace()) {
+    return null;
+  }
+  stream.match(types2);
+  state.tokenize.pop();
+  return "def";
+}
+function tokenQuote(end, style, embed) {
+  return function(stream, state) {
+    var escaped = false;
+    while (stream.peek()) {
+      if (!escaped) {
+        if (stream.match("{%", false)) {
+          state.tokenize.push(tokenMacro("%", "%"));
+          return style;
+        }
+        if (stream.match("{{", false)) {
+          state.tokenize.push(tokenMacro("{", "}"));
+          return style;
+        }
+        if (embed && stream.match("#{", false)) {
+          state.tokenize.push(tokenNest("#{", "}", "meta"));
+          return style;
+        }
+        var ch = stream.next();
+        if (ch == end) {
+          state.tokenize.pop();
+          return style;
+        }
+        escaped = embed && ch == "\\";
+      } else {
+        stream.next();
+        escaped = false;
+      }
+    }
+    return style;
+  };
+}
+function tokenHereDoc(phrase, embed) {
+  return function(stream, state) {
+    if (stream.sol()) {
+      stream.eatSpace();
+      if (stream.match(phrase)) {
+        state.tokenize.pop();
+        return "string";
+      }
+    }
+    var escaped = false;
+    while (stream.peek()) {
+      if (!escaped) {
+        if (stream.match("{%", false)) {
+          state.tokenize.push(tokenMacro("%", "%"));
+          return "string";
+        }
+        if (stream.match("{{", false)) {
+          state.tokenize.push(tokenMacro("{", "}"));
+          return "string";
+        }
+        if (embed && stream.match("#{", false)) {
+          state.tokenize.push(tokenNest("#{", "}", "meta"));
+          return "string";
+        }
+        escaped = embed && stream.next() == "\\";
+      } else {
+        stream.next();
+        escaped = false;
+      }
+    }
+    return "string";
+  };
+}
+var crystal = {
+  startState: function() {
+    return {
+      tokenize: [tokenBase],
+      currentIndent: 0,
+      lastToken: null,
+      lastStyle: null,
+      blocks: []
+    };
+  },
+  token: function(stream, state) {
+    var style = state.tokenize[state.tokenize.length - 1](stream, state);
+    var token = stream.current();
+    if (style && style != "comment") {
+      state.lastToken = token;
+      state.lastStyle = style;
+    }
+    return style;
+  },
+  indent: function(state, textAfter, cx) {
+    textAfter = textAfter.replace(/^\s*(?:\{%)?\s*|\s*(?:%\})?\s*$/g, "");
+    if (dedentKeywords.test(textAfter) || dedentPunctuals.test(textAfter)) {
+      return cx.unit * (state.currentIndent - 1);
+    }
+    return cx.unit * state.currentIndent;
+  },
+  languageData: {
+    indentOnInput: wordRegExp(dedentPunctualsArray.concat(dedentKeywordsArray), true),
+    commentTokens: {line: "#"}
+  }
+};
+
 // node_modules/@codemirror/legacy-modes/mode/fortran.js
 function words2(array) {
   var keys = {};
@@ -12466,7 +12862,7 @@ function words2(array) {
   }
   return keys;
 }
-var keywords2 = words2([
+var keywords3 = words2([
   "abstract",
   "accept",
   "allocatable",
@@ -12863,7 +13259,7 @@ var dataTypes = words2([
 ]);
 var isOperatorChar = /[+\-*&=<>\/\:]/;
 var litOperator = new RegExp("(.and.|.or.|.eq.|.lt.|.le.|.gt.|.ge.|.ne.|.not.|.eqv.|.neqv.)", "i");
-function tokenBase(stream, state) {
+function tokenBase2(stream, state) {
   if (stream.match(litOperator)) {
     return "operator";
   }
@@ -12889,7 +13285,7 @@ function tokenBase(stream, state) {
   }
   stream.eatWhile(/[\w\$_]/);
   var word = stream.current().toLowerCase();
-  if (keywords2.hasOwnProperty(word)) {
+  if (keywords3.hasOwnProperty(word)) {
     return "keyword";
   }
   if (builtins2.hasOwnProperty(word) || dataTypes.hasOwnProperty(word)) {
@@ -12919,7 +13315,7 @@ var fortran = {
   token: function(stream, state) {
     if (stream.eatSpace())
       return null;
-    var style = (state.tokenize || tokenBase)(stream, state);
+    var style = (state.tokenize || tokenBase2)(stream, state);
     if (style == "comment" || style == "meta")
       return style;
     return style;
@@ -12960,7 +13356,7 @@ function mlLike(parserConfig) {
   for (var k in words4) {
     hintWords.push(k);
   }
-  function tokenBase8(stream, state) {
+  function tokenBase9(stream, state) {
     var ch = stream.next();
     if (ch === '"') {
       state.tokenize = tokenString5;
@@ -13032,7 +13428,7 @@ function mlLike(parserConfig) {
       escaped = !escaped && next === "\\";
     }
     if (end && !escaped) {
-      state.tokenize = tokenBase8;
+      state.tokenize = tokenBase9;
     }
     return "string";
   }
@@ -13047,7 +13443,7 @@ function mlLike(parserConfig) {
       prev = next;
     }
     if (state.commentLevel <= 0) {
-      state.tokenize = tokenBase8;
+      state.tokenize = tokenBase9;
     }
     return "comment";
   }
@@ -13059,13 +13455,13 @@ function mlLike(parserConfig) {
       prev = next;
     }
     if (!state.longString) {
-      state.tokenize = tokenBase8;
+      state.tokenize = tokenBase9;
     }
     return "string";
   }
   return {
     startState: function() {
-      return {tokenize: tokenBase8, commentLevel: 0, longString: false};
+      return {tokenize: tokenBase9, commentLevel: 0, longString: false};
     },
     token: function(stream, state) {
       if (stream.eatSpace())
@@ -13256,7 +13652,7 @@ var sml = mlLike({
 });
 
 // node_modules/@codemirror/legacy-modes/mode/go.js
-var keywords3 = {
+var keywords4 = {
   break: true,
   case: true,
   chan: true,
@@ -13326,7 +13722,7 @@ var atoms2 = {
 };
 var isOperatorChar2 = /[+\-*&^%:=<>!|\/]/;
 var curPunc;
-function tokenBase2(stream, state) {
+function tokenBase3(stream, state) {
   var ch = stream.next();
   if (ch == '"' || ch == "'" || ch == "`") {
     state.tokenize = tokenString2(ch);
@@ -13362,7 +13758,7 @@ function tokenBase2(stream, state) {
   }
   stream.eatWhile(/[\w\$_\xa1-\uffff]/);
   var cur2 = stream.current();
-  if (keywords3.propertyIsEnumerable(cur2)) {
+  if (keywords4.propertyIsEnumerable(cur2)) {
     if (cur2 == "case" || cur2 == "default")
       curPunc = "case";
     return "keyword";
@@ -13382,7 +13778,7 @@ function tokenString2(quote) {
       escaped = !escaped && quote != "`" && next == "\\";
     }
     if (end || !(escaped || quote == "`"))
-      state.tokenize = tokenBase2;
+      state.tokenize = tokenBase3;
     return "string";
   };
 }
@@ -13390,7 +13786,7 @@ function tokenComment(stream, state) {
   var maybeEnd = false, ch;
   while (ch = stream.next()) {
     if (ch == "/" && maybeEnd) {
-      state.tokenize = tokenBase2;
+      state.tokenize = tokenBase3;
       break;
     }
     maybeEnd = ch == "*";
@@ -13437,7 +13833,7 @@ var go = {
     if (stream.eatSpace())
       return null;
     curPunc = null;
-    var style = (state.tokenize || tokenBase2)(stream, state);
+    var style = (state.tokenize || tokenBase3)(stream, state);
     if (style == "comment")
       return style;
     if (ctx.align == null)
@@ -13458,7 +13854,7 @@ var go = {
     return style;
   },
   indent: function(state, textAfter, cx) {
-    if (state.tokenize != tokenBase2 && state.tokenize != null)
+    if (state.tokenize != tokenBase3 && state.tokenize != null)
       return null;
     var ctx = state.context, firstChar = textAfter && textAfter.charAt(0);
     if (ctx.type == "case" && /^(?:case|default)\b/.test(textAfter)) {
@@ -13826,12 +14222,12 @@ var Stack = class {
       state = this.stack[base3];
     }
   }
-  startOf(types3, before) {
+  startOf(types4, before) {
     let state = this.state, frame = this.stack.length, {parser: parser6} = this.p;
     for (; ; ) {
       let force = parser6.stateSlot(state, 5);
       let depth = force >> 19, term = force & 65535;
-      if (types3.indexOf(term) > -1) {
+      if (types4.indexOf(term) > -1) {
         let base3 = frame - 3 * (force >> 19), pos = this.stack[base3 + 1];
         if (before == null || before > pos)
           return pos;
@@ -15228,9 +15624,9 @@ var CompletionContext = class {
     this.explicit = explicit;
     this.abortListeners = [];
   }
-  tokenBefore(types3) {
+  tokenBefore(types4) {
     let token = syntaxTree(this.state).resolve(this.pos, -1);
-    while (token && types3.indexOf(token.name) < 0)
+    while (token && types4.indexOf(token.name) < 0)
       token = token.parent;
     return token ? {
       from: token.from,
@@ -16437,7 +16833,7 @@ var octChar = "\\\\[0-7]{1,3}";
 var hexChar = "\\\\x[A-Fa-f0-9]{1,2}";
 var sChar = `\\\\[abefnrtv0%?'"\\\\]`;
 var uChar = "([^\\u0027\\u005C\\uD800-\\uDFFF]|[\\uD800-\\uDFFF][\\uDC00-\\uDFFF])";
-var operators = wordRegexp([
+var operators2 = wordRegexp([
   "[<>]:",
   "[<>=]=",
   "<<=?",
@@ -16533,7 +16929,7 @@ var keywordsList = [
 var builtinsList = ["true", "false", "nothing", "NaN", "Inf"];
 var openers = wordRegexp(openersList);
 var closers = wordRegexp(closersList);
-var keywords4 = wordRegexp(keywordsList);
+var keywords5 = wordRegexp(keywordsList);
 var builtins3 = wordRegexp(builtinsList);
 var macro = /^@[_A-Za-z][\w]*/;
 var symbol2 = /^:[_A-Za-z\u00A1-\uFFFF][\w\u00A1-\uFFFF]*!*/;
@@ -16553,7 +16949,7 @@ function currentScope(state, n) {
   }
   return state.scopes[state.scopes.length - (n + 1)];
 }
-function tokenBase3(stream, state) {
+function tokenBase4(stream, state) {
   if (stream.match("#=", false)) {
     state.tokenize = tokenComment2;
     return state.tokenize(stream, state);
@@ -16627,7 +17023,7 @@ function tokenBase3(stream, state) {
   if (!leavingExpr && stream.match(symbol2) || stream.match(/:([<>]:|<<=?|>>>?=?|->|\/\/|\.{2,3}|[\.\\%*+\-<>!\/^|&]=?|[~\?\$])/)) {
     return "builtin";
   }
-  if (stream.match(operators)) {
+  if (stream.match(operators2)) {
     return "operator";
   }
   if (stream.match(/^\.?\d/, false)) {
@@ -16671,7 +17067,7 @@ function tokenBase3(stream, state) {
   if (stream.match(delimiters)) {
     return null;
   }
-  if (stream.match(keywords4)) {
+  if (stream.match(keywords5)) {
     return "keyword";
   }
   if (stream.match(builtins3)) {
@@ -16703,7 +17099,7 @@ function tokenAnnotation(stream, state) {
   if (state.nestedParameters > 0) {
     stream.match(/.*?(?={|})/) || stream.next();
   } else if (state.nestedParameters == 0) {
-    state.tokenize = tokenBase3;
+    state.tokenize = tokenBase4;
   }
   return "builtin";
 }
@@ -16717,7 +17113,7 @@ function tokenComment2(stream, state) {
   if (stream.match("=#")) {
     state.nestedComments--;
     if (state.nestedComments == 0)
-      state.tokenize = tokenBase3;
+      state.tokenize = tokenBase4;
   }
   return "comment";
 }
@@ -16740,14 +17136,14 @@ function tokenChar(stream, state) {
   }
   if (isChar) {
     state.leavingExpr = true;
-    state.tokenize = tokenBase3;
+    state.tokenize = tokenBase4;
     return "string";
   }
   if (!stream.match(/^[^']+(?=')/)) {
     stream.skipToEnd();
   }
   if (stream.match("'")) {
-    state.tokenize = tokenBase3;
+    state.tokenize = tokenBase4;
   }
   return "error";
 }
@@ -16761,7 +17157,7 @@ function tokenStringFactory(delimiter) {
     if (stream.eat("\\")) {
       stream.next();
     } else if (stream.match(delimiter)) {
-      state.tokenize = tokenBase3;
+      state.tokenize = tokenBase4;
       state.leavingExpr = true;
       return "string";
     } else {
@@ -16775,7 +17171,7 @@ function tokenStringFactory(delimiter) {
 var julia = {
   startState: function() {
     return {
-      tokenize: tokenBase3,
+      tokenize: tokenBase4,
       scopes: [],
       lastToken: null,
       leavingExpr: false,
@@ -16956,7 +17352,7 @@ var builtins4 = wordRE([
   "table.remove",
   "table.sort"
 ]);
-var keywords5 = wordRE([
+var keywords6 = wordRE([
   "and",
   "break",
   "elseif",
@@ -17052,7 +17448,7 @@ var lua = {
     var style = state.cur(stream, state);
     var word = stream.current();
     if (style == "variable") {
-      if (keywords5.test(word))
+      if (keywords6.test(word))
         style = "keyword";
       else if (builtins4.test(word))
         style = "builtin";
@@ -17551,16 +17947,16 @@ var PERL = {
 };
 var RXstyle = "string.special";
 var RXmodifiers = /[goseximacplud]/;
-function tokenChain(stream, state, chain2, style, tail) {
+function tokenChain(stream, state, chain3, style, tail) {
   state.chain = null;
   state.style = null;
   state.tail = null;
   state.tokenize = function(stream2, state2) {
     var e = false, c2, i = 0;
     while (c2 = stream2.next()) {
-      if (c2 === chain2[i] && !e) {
-        if (chain2[++i] !== void 0) {
-          state2.chain = chain2[i];
+      if (c2 === chain3[i] && !e) {
+        if (chain3[++i] !== void 0) {
+          state2.chain = chain3[i];
           state2.style = style;
           state2.tail = tail;
         } else if (tail)
@@ -17958,7 +18354,7 @@ function buildRegexp(patterns, options) {
 }
 var notCharacterOrDash = "(?=[^A-Za-z\\d\\-_]|$)";
 var varNames = /[\w\-:]/;
-var keywords6 = buildRegexp([
+var keywords7 = buildRegexp([
   /begin|break|catch|continue|data|default|do|dynamicparam/,
   /else|elseif|end|exit|filter|finally|for|foreach|from|function|if|in/,
   /param|process|return|switch|throw|trap|try|until|where|while/
@@ -17977,7 +18373,7 @@ var wordOperators = buildRegexp([
   /b?(and|or|xor)/
 ], {prefix: "-"});
 var symbolOperators = /[+\-*\/%]=|\+\+|--|\.\.|[+\-*&^%:=!|\/]|<(?!#)|(?!#)>/;
-var operators2 = buildRegexp([wordOperators, symbolOperators], {suffix: ""});
+var operators3 = buildRegexp([wordOperators, symbolOperators], {suffix: ""});
 var numbers = /^((0x[\da-f]+)|((\d+\.\d+|\d\.|\.\d+|\d+)(e[\+\-]?\d+)?))[ld]?([kmgtp]b)?/i;
 var identifiers2 = /^[A-Za-z\_][A-Za-z\-\_\d]*\b/;
 var symbolBuiltins = /[A-Z]:|%|\?/i;
@@ -18066,14 +18462,14 @@ var variableBuiltins = buildRegexp([
 ], {prefix: "\\$", suffix: ""});
 var builtins5 = buildRegexp([symbolBuiltins, namedBuiltins, variableBuiltins], {suffix: notCharacterOrDash});
 var grammar = {
-  keyword: keywords6,
+  keyword: keywords7,
   number: numbers,
-  operator: operators2,
+  operator: operators3,
   builtin: builtins5,
   punctuation: punctuation2,
   variable: identifiers2
 };
-function tokenBase4(stream, state) {
+function tokenBase5(stream, state) {
   var parent = state.returnStack[state.returnStack.length - 1];
   if (parent && parent.shouldReturnFrom(state)) {
     state.tokenize = parent.tokenize;
@@ -18135,7 +18531,7 @@ function tokenSingleQuoteString(stream, state) {
   while ((ch = stream.peek()) != null) {
     stream.next();
     if (ch === "'" && !stream.eat("'")) {
-      state.tokenize = tokenBase4;
+      state.tokenize = tokenBase5;
       return "string";
     }
   }
@@ -18154,7 +18550,7 @@ function tokenDoubleQuoteString(stream, state) {
       continue;
     }
     if (ch === '"' && !stream.eat('"')) {
-      state.tokenize = tokenBase4;
+      state.tokenize = tokenBase5;
       return "string";
     }
   }
@@ -18180,7 +18576,7 @@ function tokenInterpolation2(stream, state, parentTokenize) {
       },
       tokenize: parentTokenize
     });
-    state.tokenize = tokenBase4;
+    state.tokenize = tokenBase5;
     state.bracketNesting += 1;
     return "punctuation";
   } else {
@@ -18199,7 +18595,7 @@ function tokenComment3(stream, state) {
   var maybeEnd = false, ch;
   while ((ch = stream.next()) != null) {
     if (maybeEnd && ch == ">") {
-      state.tokenize = tokenBase4;
+      state.tokenize = tokenBase5;
       break;
     }
     maybeEnd = ch === "#";
@@ -18213,10 +18609,10 @@ function tokenVariable(stream, state) {
     return tokenVariableWithBraces(stream, state);
   } else if (ch != void 0 && ch.match(varNames)) {
     stream.eatWhile(varNames);
-    state.tokenize = tokenBase4;
+    state.tokenize = tokenBase5;
     return "variable";
   } else {
-    state.tokenize = tokenBase4;
+    state.tokenize = tokenBase5;
     return "error";
   }
 }
@@ -18224,7 +18620,7 @@ function tokenVariableWithBraces(stream, state) {
   var ch;
   while ((ch = stream.next()) != null) {
     if (ch === "}") {
-      state.tokenize = tokenBase4;
+      state.tokenize = tokenBase5;
       break;
     }
   }
@@ -18233,7 +18629,7 @@ function tokenVariableWithBraces(stream, state) {
 function tokenMultiString(stream, state) {
   var quote = state.startQuote;
   if (stream.sol() && stream.match(new RegExp(quote + "@"))) {
-    state.tokenize = tokenBase4;
+    state.tokenize = tokenBase5;
   } else if (quote === '"') {
     while (!stream.eol()) {
       var ch = stream.peek();
@@ -18256,7 +18652,7 @@ var powerShell = {
     return {
       returnStack: [],
       bracketNesting: 0,
-      tokenize: tokenBase4
+      tokenize: tokenBase5
     };
   },
   token: function(stream, state) {
@@ -18519,7 +18915,7 @@ var keywordList = [
   "__LINE__",
   "__dir__"
 ];
-var keywords7 = wordObj(keywordList);
+var keywords8 = wordObj(keywordList);
 var indentWords = wordObj([
   "def",
   "class",
@@ -18538,11 +18934,11 @@ var dedentWords = wordObj(["end", "until"]);
 var opening = {"[": "]", "{": "}", "(": ")"};
 var closing2 = {"]": "[", "}": "{", ")": "("};
 var curPunc2;
-function chain(newtok, stream, state) {
+function chain2(newtok, stream, state) {
   state.tokenize.push(newtok);
   return newtok(stream, state);
 }
-function tokenBase5(stream, state) {
+function tokenBase6(stream, state) {
   if (stream.sol() && stream.match("=begin") && stream.eol()) {
     state.tokenize.push(readBlockComment);
     return "comment";
@@ -18551,10 +18947,10 @@ function tokenBase5(stream, state) {
     return null;
   var ch = stream.next(), m;
   if (ch == "`" || ch == "'" || ch == '"') {
-    return chain(readQuoted(ch, "string", ch == '"' || ch == "`"), stream, state);
+    return chain2(readQuoted(ch, "string", ch == '"' || ch == "`"), stream, state);
   } else if (ch == "/") {
     if (regexpAhead(stream))
-      return chain(readQuoted(ch, "string.special", true), stream, state);
+      return chain2(readQuoted(ch, "string.special", true), stream, state);
     else
       return "operator";
   } else if (ch == "%") {
@@ -18574,12 +18970,12 @@ function tokenBase5(stream, state) {
       return "operator";
     if (opening.propertyIsEnumerable(delim))
       delim = opening[delim];
-    return chain(readQuoted(delim, style, embed, true), stream, state);
+    return chain2(readQuoted(delim, style, embed, true), stream, state);
   } else if (ch == "#") {
     stream.skipToEnd();
     return "comment";
   } else if (ch == "<" && (m = stream.match(/^<([-~])[\`\"\']?([a-zA-Z_?]\w*)[\`\"\']?(?:;|$)/))) {
-    return chain(readHereDoc(m[2], m[1]), stream, state);
+    return chain2(readHereDoc(m[2], m[1]), stream, state);
   } else if (ch == "0") {
     if (stream.eat("x"))
       stream.eatWhile(/[\da-fA-F]/);
@@ -18601,9 +18997,9 @@ function tokenBase5(stream, state) {
     return "string";
   } else if (ch == ":") {
     if (stream.eat("'"))
-      return chain(readQuoted("'", "atom", false), stream, state);
+      return chain2(readQuoted("'", "atom", false), stream, state);
     if (stream.eat('"'))
-      return chain(readQuoted('"', "atom", true), stream, state);
+      return chain2(readQuoted('"', "atom", true), stream, state);
     if (stream.eat(/[\<\>]/)) {
       stream.eat(/[\<\>]/);
       return "atom";
@@ -18689,7 +19085,7 @@ function tokenBaseUntilBrace(depth) {
     } else if (stream.peek() == "{") {
       state.tokenize[state.tokenize.length - 1] = tokenBaseUntilBrace(depth + 1);
     }
-    return tokenBase5(stream, state);
+    return tokenBase6(stream, state);
   };
 }
 function tokenBaseOnce() {
@@ -18700,7 +19096,7 @@ function tokenBaseOnce() {
       return state.tokenize[state.tokenize.length - 1](stream, state);
     }
     alreadyCalled = true;
-    return tokenBase5(stream, state);
+    return tokenBase6(stream, state);
   };
 }
 function readQuoted(quote, style, embed, unescaped) {
@@ -18752,7 +19148,7 @@ function readBlockComment(stream, state) {
 var ruby = {
   startState: function(indentUnit2) {
     return {
-      tokenize: [tokenBase5],
+      tokenize: [tokenBase6],
       indented: 0,
       context: {type: "top", indented: -indentUnit2},
       continuedLine: false,
@@ -18768,7 +19164,7 @@ var ruby = {
     var thisTok = curPunc2;
     if (style == "variable") {
       var word = stream.current();
-      style = state.lastTok == "." ? "property" : keywords7.propertyIsEnumerable(stream.current()) ? "keyword" : /^[A-Z]/.test(word) ? "tag" : state.lastTok == "def" || state.lastTok == "class" || state.varList ? "def" : "variable";
+      style = state.lastTok == "." ? "property" : keywords8.propertyIsEnumerable(stream.current()) ? "keyword" : /^[A-Z]/.test(word) ? "tag" : state.lastTok == "def" || state.lastTok == "class" || state.varList ? "def" : "variable";
       if (style == "keyword") {
         thisTok = word;
         if (indentWords.propertyIsEnumerable(word))
@@ -18794,7 +19190,7 @@ var ruby = {
     return style;
   },
   indent: function(state, textAfter, cx) {
-    if (state.tokenize[state.tokenize.length - 1] != tokenBase5)
+    if (state.tokenize[state.tokenize.length - 1] != tokenBase6)
       return null;
     var firstChar = textAfter && textAfter.charAt(0);
     var ct = state.context;
@@ -19103,7 +19499,7 @@ var commonCommands = [
 define("atom", commonAtoms);
 define("keyword", commonKeywords);
 define("builtin", commonCommands);
-function tokenBase6(stream, state) {
+function tokenBase7(stream, state) {
   if (stream.eatSpace())
     return null;
   var sol = stream.sol();
@@ -19212,7 +19608,7 @@ function tokenHeredoc(delim) {
   };
 }
 function tokenize(stream, state) {
-  return (state.tokens[0] || tokenBase6)(stream, state);
+  return (state.tokens[0] || tokenBase7)(stream, state);
 }
 var shell = {
   startState: function() {
@@ -19320,14 +19716,14 @@ function inString2(ch, str) {
   return false;
 }
 var Space = " 	\r\n";
-function keywords8(keywords10, types3, builtin) {
+function keywords9(keywords11, types4, builtin) {
   let result = Object.create(null);
   result["true"] = result["false"] = Bool;
   result["null"] = result["unknown"] = Null;
-  for (let kw of keywords10.split(" "))
+  for (let kw of keywords11.split(" "))
     if (kw)
       result[kw] = Keyword;
-  for (let tp of types3.split(" "))
+  for (let tp of types4.split(" "))
     if (tp)
       result[tp] = Type;
   for (let kw of (builtin || "").split(" "))
@@ -19347,14 +19743,14 @@ var defaults3 = {
   operatorChars: "*+-%<>!=&|~^/",
   specialVar: "?",
   identifierQuotes: '"',
-  words: keywords8(SQLKeywords, SQLTypes)
+  words: keywords9(SQLKeywords, SQLTypes)
 };
-function dialect(spec, kws, types3, builtin) {
+function dialect(spec, kws, types4, builtin) {
   let dialect2 = {};
   for (let prop in defaults3)
     dialect2[prop] = (spec.hasOwnProperty(prop) ? spec : defaults3)[prop];
   if (kws)
-    dialect2.words = keywords8(kws, types3 || "", builtin);
+    dialect2.words = keywords9(kws, types4 || "", builtin);
   return dialect2;
 }
 function tokensFor(d) {
@@ -19545,10 +19941,10 @@ function completeFromSchema(schema, tables, defaultTable) {
     };
   };
 }
-function completeKeywords(keywords10, upperCase) {
-  let completions = Object.keys(keywords10).map((keyword2) => ({
+function completeKeywords(keywords11, upperCase) {
+  let completions = Object.keys(keywords11).map((keyword2) => ({
     label: upperCase ? keyword2.toUpperCase() : keyword2,
-    type: keywords10[keyword2] == Type ? "type" : keywords10[keyword2] == Keyword ? "keyword" : "variable",
+    type: keywords11[keyword2] == Type ? "type" : keywords11[keyword2] == Keyword ? "keyword" : "variable",
     boost: -1
   }));
   return ifNotIn(["QuotedIdentifier", "SpecialVar", "String", "LineComment", "BlockComment", "."], completeFromList(completions));
@@ -19694,7 +20090,7 @@ function wordSet(words4) {
     set[words4[i]] = true;
   return set;
 }
-var keywords9 = wordSet([
+var keywords10 = wordSet([
   "_",
   "var",
   "let",
@@ -19785,7 +20181,7 @@ var keywords9 = wordSet([
 ]);
 var definingKeywords = wordSet(["var", "let", "class", "enum", "extension", "import", "protocol", "struct", "func", "typealias", "associatedtype", "for"]);
 var atoms3 = wordSet(["true", "false", "nil", "self", "super", "_"]);
-var types2 = wordSet([
+var types3 = wordSet([
   "Array",
   "Bool",
   "Character",
@@ -19807,7 +20203,7 @@ var types2 = wordSet([
   "UInt64",
   "Void"
 ]);
-var operators3 = "+-/*%=|&<>~^?!";
+var operators4 = "+-/*%=|&<>~^?!";
 var punc = ":;,.(){}[]";
 var binary = /^\-?0b[01][01_]*/;
 var octal = /^\-?0o[0-7][0-7_]*/;
@@ -19817,7 +20213,7 @@ var identifier = /^\$\d+|(`?)[_A-Za-z][_A-Za-z$0-9]*\1/;
 var property = /^\.(?:\$\d+|(`?)[_A-Za-z][_A-Za-z$0-9]*\1)/;
 var instruction = /^\#[A-Za-z]+/;
 var attribute = /^@(?:\$\d+|(`?)[_A-Za-z][_A-Za-z$0-9]*\1)/;
-function tokenBase7(stream, state, prev) {
+function tokenBase8(stream, state, prev) {
   if (stream.sol())
     state.indented = stream.indentation();
   if (stream.eatSpace())
@@ -19847,7 +20243,7 @@ function tokenBase7(stream, state, prev) {
     return "number";
   if (stream.match(property))
     return "property";
-  if (operators3.indexOf(ch) > -1) {
+  if (operators4.indexOf(ch) > -1) {
     stream.next();
     return "operator";
   }
@@ -19864,11 +20260,11 @@ function tokenBase7(stream, state, prev) {
   }
   if (stream.match(identifier)) {
     var ident = stream.current();
-    if (types2.hasOwnProperty(ident))
+    if (types3.hasOwnProperty(ident))
       return "type";
     if (atoms3.hasOwnProperty(ident))
       return "atom";
-    if (keywords9.hasOwnProperty(ident)) {
+    if (keywords10.hasOwnProperty(ident)) {
       if (definingKeywords.hasOwnProperty(ident))
         state.prev = "define";
       return "keyword";
@@ -19883,7 +20279,7 @@ function tokenBase7(stream, state, prev) {
 function tokenUntilClosingParen() {
   var depth = 0;
   return function(stream, state, prev) {
-    var inner = tokenBase7(stream, state, prev);
+    var inner = tokenBase8(stream, state, prev);
     if (inner == "punctuation") {
       if (stream.current() == "(")
         ++depth;
@@ -19965,7 +20361,7 @@ var swift = {
   token: function(stream, state) {
     var prev = state.prev;
     state.prev = null;
-    var tokenize2 = state.tokenize[state.tokenize.length - 1] || tokenBase7;
+    var tokenize2 = state.tokenize[state.tokenize.length - 1] || tokenBase8;
     var style = tokenize2(stream, state, prev);
     if (!style || style == "comment")
       state.prev = prev;
@@ -20009,6 +20405,7 @@ var languages = {
   c: StreamLanguage.define(c),
   "c-sharp": StreamLanguage.define(csharp),
   cobol: StreamLanguage.define(cobol),
+  crystal: StreamLanguage.define(crystal),
   "f-sharp": StreamLanguage.define(fSharp),
   fortran: StreamLanguage.define(fortran),
   go: StreamLanguage.define(go),

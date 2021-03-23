@@ -606,7 +606,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         return 1;
     }
 
-    execvpe(argv[0], argv, NULL);
-    perror("execvpe");
+    execvp(argv[0], argv);
+    perror("execvp");
     return 1;
 }
