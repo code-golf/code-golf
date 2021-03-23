@@ -64,11 +64,13 @@ func GolferSettingsPost(w http.ResponseWriter, r *http.Request) {
 		`UPDATE users
 		    SET country = $1,
 		         keymap = $2,
-		   show_country = $3,
-		      time_zone = $4
-		  WHERE id = $5`,
+		    referrer_id = (SELECT id FROM users WHERE login = $3 AND id != $6),
+		   show_country = $4,
+		      time_zone = $5
+		  WHERE id = $6`,
 		r.Form.Get("country"),
 		r.Form.Get("keymap"),
+		r.Form.Get("referrer"),
 		r.Form.Get("show_country") == "on",
 		r.Form.Get("time_zone"),
 		session.Golfer(r).ID,

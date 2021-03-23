@@ -20,12 +20,12 @@ func (f *FailingSolutions) Scan(src interface{}) error {
 }
 
 type Golfer struct {
-	Admin, ShowCountry              bool
-	Country, Keymap, Name, TimeZone string
-	Delete                          sql.NullTime
-	FailingSolutions                FailingSolutions
-	ID                              int
-	Trophies                        []string
+	Admin, ShowCountry                        bool
+	Country, Keymap, Name, Referrer, TimeZone string
+	Delete                                    sql.NullTime
+	FailingSolutions                          FailingSolutions
+	ID                                        int
+	Trophies                                  []string
 }
 
 func (g *Golfer) Earned(trophyID string) bool {

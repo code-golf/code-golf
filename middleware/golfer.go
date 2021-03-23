@@ -29,23 +29,25 @@ func GolferHandler(next http.Handler) http.Handler {
 				     WHERE failing
 				  GROUP BY hole, lang
 				  ORDER BY hole, lang
-				) SELECT admin,
-				         COALESCE(country, ''),
-				         delete,
-				         (SELECT COALESCE(json_agg(failing), '[]') FROM failing),
-				         id,
-				         keymap,
-				         login,
-				         show_country,
-				         COALESCE(time_zone, ''),
-				         ARRAY(
-				             SELECT trophy
-				               FROM trophies
-				              WHERE user_id = golfer.user_id
-				           ORDER BY trophy
-				         )
-				    FROM users
-				    JOIN golfer ON id = golfer.user_id`,
+				)  SELECT u.admin,
+				          COALESCE(u.country, ''),
+				          u.delete,
+				          (SELECT COALESCE(json_agg(failing), '[]') FROM failing),
+				          u.id,
+				          u.keymap,
+				          u.login,
+				          COALESCE(r.login, ''),
+				          u.show_country,
+				          COALESCE(u.time_zone, ''),
+				          ARRAY(
+				              SELECT trophy
+				                FROM trophies
+				               WHERE user_id = u.id
+				            ORDER BY trophy
+				          )
+				     FROM users  u
+				     JOIN golfer g ON u.id = g.user_id
+				LEFT JOIN users  r ON r.id = u.referrer_id`,
 				uuid.FromStringOrNil(cookie.Value),
 			).Scan(
 				&golfer.Admin,
@@ -55,6 +57,7 @@ func GolferHandler(next http.Handler) http.Handler {
 				&golfer.ID,
 				&golfer.Keymap,
 				&golfer.Name,
+				&golfer.Referrer,
 				&golfer.ShowCountry,
 				&golfer.TimeZone,
 				pq.Array(&golfer.Trophies),

@@ -64,7 +64,9 @@ CREATE TABLE users (
     keymap       keymap    NOT NULL DEFAULT 'default',
     country      char(2),
     show_country bool      NOT NULL DEFAULT false,
-    started      timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW())
+    started      timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
+    referrer_id  int                REFERENCES users(id) ON DELETE SET NULL,
+    CHECK (id != referrer_id)   -- Can't refer yourself
 );
 
 CREATE TABLE sessions (

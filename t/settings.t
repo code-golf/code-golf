@@ -6,28 +6,45 @@ throws-like { await $client.get: 'https://app:1443/golfer/settings' },
 
 my $dbh = dbh;
 
-$dbh.execute: "INSERT INTO users (id, login) VALUES (123, 'test')";
+$dbh.execute: "INSERT INTO users (id, login) VALUES (123, 'foo'), (456, 'bar')";
 
 my $session = $dbh.execute(
     'INSERT INTO sessions (user_id) VALUES (123) RETURNING id').row.head;
 
-is-deeply settings,
-    { :country(Str), :keymap<default>, :!show_country, :time_zone(Str) },
-    'DB has defaults';
+is-deeply settings, {
+    :country(Str), :keymap<default>, :referrer_id(Int), :!show_country,
+    :time_zone(Str),
+}, 'DB has defaults';
 
 for <country keymap time_zone> {
-    throws-like { post %( :country(''), :keymap<default>, :time_zone(''), $_ => 'foo' ) },
+    throws-like { post %( :country(''), :keymap<default>, :time_zone(''), $_ => 'baz' ) },
         Exception, message => /'Server responded with 400 Bad Request'/,
         "400 with invalid $_";
 }
 
-post my %args = :country<GB>, :keymap<vim>, :show_country<on>, :time_zone<Europe/London>;
+post my %args = :country<GB>, :keymap<vim>, :show_country<on>,
+    :time_zone<Europe/London>;
 
-is-deeply settings, %( |%args, :show_country ), 'DB is updated';
+is-deeply settings, %( |%args, :referrer_id(Int), :show_country ),
+    'DB is updated';
 
-sub settings {
-    $dbh.execute('SELECT country, keymap, show_country, time_zone FROM users').row(:hash);
-}
+post %( |%args, :referrer<BaR> );   # Case-insensitive
+
+is-deeply settings<referrer_id>, 456, 'referrer_id is 456';
+
+$dbh.execute: 'DELETE FROM users WHERE id = 456';   # ON DELETE SET NULL
+
+is-deeply settings<referrer_id>, Int, 'referrer_id is NULL';
+
+post %( |%args, :referrer<foo> );   # Can't be yourself
+
+is-deeply settings<referrer_id>, Int, 'referrer_id is NULL';
+
+sub settings { $dbh.execute(q:to/SQL/).row :hash }
+    SELECT country, keymap, referrer_id, show_country, time_zone
+      FROM users
+     WHERE id = 123
+SQL
 
 sub post(%body) {
     await $client.post: 'https://app:1443/golfer/settings',
