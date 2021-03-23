@@ -11,9 +11,13 @@ func APISuggestionsGolfers(w http.ResponseWriter, r *http.Request) {
 	var json []byte
 
 	if err := session.Database(r).QueryRow(
-		`SELECT COALESCE(json_agg(login ORDER BY login), '[]')
-		   FROM users
-		  WHERE strpos(login, $1) > 0 AND login != $2`,
+		`WITH golfers AS (
+		    SELECT login
+		      FROM users
+		     WHERE strpos(login, $1) > 0 AND login != $2
+		  ORDER BY login
+		     LIMIT 10
+		) SELECT COALESCE(json_agg(login), '[]') FROM golfers`,
 		r.FormValue("q"),
 		r.FormValue("ignore"),
 	).Scan(&json); err != nil {
