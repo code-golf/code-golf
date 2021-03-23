@@ -8,6 +8,7 @@ constant @urls = (
     'C'          => 'Tiny_C_Compiler',
     'C#'         => 'C_Sharp_(programming_language)',
     'COBOL'      => 'GnuCOBOL',
+    'Crystal'    => 'Crystal_(programming_language)',
     'F#'         => 'F_Sharp_(programming_language)',
     'Fortran'    => 'GNU_Fortran',
     'Go'         => 'Go_(programming_language)',
