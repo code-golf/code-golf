@@ -34,8 +34,8 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 		args, answer = brainfuck()
 	case "css-colors":
 		args, answer = cssColors()
-	case "ellipse":
-		args, answer = ellipse()
+	case "ellipse-perimeters":
+		args, answer = ellipsePerimeters()
 	case "emojify":
 		args, answer = emojify()
 	case "intersection":
