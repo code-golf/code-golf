@@ -51,6 +51,8 @@
                 <td class=right>{{ comma .Bronze }}
         {{ end }}
     </table>
+
+    {{ template "pagination" .Data.Pager }}
 </main>
 
 {{ template "footer" }}

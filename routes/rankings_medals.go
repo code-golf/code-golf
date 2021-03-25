@@ -5,6 +5,7 @@ import (
 
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
+	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
 )
 
@@ -18,10 +19,12 @@ func RankingsMedals(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Holes []hole.Hole
 		Langs []lang.Lang
+		Pager *pager.Pager
 		Rows  []row
 	}{
 		Holes: hole.List,
 		Langs: lang.List,
+		Pager: pager.New(r),
 	}
 
 	rows, err := session.Database(r).Query(
@@ -30,10 +33,13 @@ func RankingsMedals(w http.ResponseWriter, r *http.Request) {
 		        login,
 		        gold,
 		        silver,
-		        bronze
+		        bronze,
+		        COUNT(*) OVER()
 		   FROM medals
 		   JOIN users ON id = user_id
-		  LIMIT 30`,
+		  LIMIT $1 OFFSET $2`,
+		pager.PerPage,
+		data.Pager.Offset,
 	)
 	if err != nil {
 		panic(err)
@@ -51,6 +57,7 @@ func RankingsMedals(w http.ResponseWriter, r *http.Request) {
 			&r.Gold,
 			&r.Silver,
 			&r.Bronze,
+			&data.Pager.Total,
 		); err != nil {
 			panic(err)
 		}
@@ -60,6 +67,11 @@ func RankingsMedals(w http.ResponseWriter, r *http.Request) {
 
 	if err := rows.Err(); err != nil {
 		panic(err)
+	}
+
+	if data.Pager.Calculate() {
+		NotFound(w, r)
+		return
 	}
 
 	render(w, r, "rankings/medals", "Rankings: Medals", data)

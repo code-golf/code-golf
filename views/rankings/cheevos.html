@@ -19,7 +19,7 @@
         </select>
     </form>
 
-{{ with $.Data.Cheevo }}
+{{ with .Data.Cheevo }}
     <p class=thin>{{ .Description }}
 {{ end }}
 
@@ -70,6 +70,8 @@
                 <td class=right>{{ time .Earned }}
         {{ end }}
     </table>
+
+    {{ template "pagination" .Data.Pager }}
 </main>
 
 {{ template "footer" }}

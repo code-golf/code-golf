@@ -12,8 +12,9 @@ h2 {
 h2:not(:first-child) { margin-top: 1rem }
 
 main {
-    display: flex;
+    display: grid;
     gap: 1rem 2rem;
+    grid-template: min-content 1fr / min-content 1fr;
 }
 
 main nav {
@@ -22,6 +23,7 @@ main nav {
     display: flex;
     flex-wrap: wrap;
     gap: .25rem .75rem;
+    grid-row: span 2;
     justify-content: flex-end;
     max-width: 15rem;
     min-width: 15rem;
@@ -53,3 +55,18 @@ td > a { text-decoration: none }
 td > a > span:nth-of-type(1) { flex: 1 }
 
 td > a:hover > span:first-of-type { text-decoration: underline }
+
+#pagination { display: flex }
+
+#pagination > :first-child { text-align: right }
+
+#pagination > :not(:nth-child(2)) { flex: 1 }
+
+#pagination > :nth-child(2) {
+    font-variant: tabular-nums;
+    margin: 0 .5rem;
+}
+
+@media (max-width: 34rem) {
+    main { grid-template-columns: 1fr }
+}

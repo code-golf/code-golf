@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
 	"github.com/code-golf/code-golf/trophy"
 )
@@ -20,12 +21,14 @@ func RankingsCheevos(w http.ResponseWriter, r *http.Request) {
 
 	data := struct {
 		Cheevo  *trophy.Trophy
-		Rows    []row
 		Cheevos map[string][]*trophy.Trophy
+		Pager   *pager.Pager
+		Rows    []row
 		Total   int
 	}{
 		Cheevo:  trophy.ByID[cheevoID],
 		Cheevos: trophy.Tree,
+		Pager:   pager.New(r),
 		Total:   len(trophy.List),
 	}
 
@@ -47,11 +50,14 @@ func RankingsCheevos(w http.ResponseWriter, r *http.Request) {
 		         CASE WHEN $1 = ''
 		            THEN RANK() OVER(ORDER BY count DESC)
 		            ELSE RANK() OVER(ORDER BY earned)
-		         END
+		         END,
+		         COUNT(*) OVER()
 		    FROM count JOIN users ON id = user_id
 		ORDER BY rank, earned
-		   LIMIT 30`,
+		   LIMIT $2 OFFSET $3`,
 		cheevoID,
+		pager.PerPage,
+		data.Pager.Offset,
 	)
 	if err != nil {
 		panic(err)
@@ -68,6 +74,7 @@ func RankingsCheevos(w http.ResponseWriter, r *http.Request) {
 			&r.Earned,
 			&r.Login,
 			&r.Rank,
+			&data.Pager.Total,
 		); err != nil {
 			panic(err)
 		}
@@ -77,6 +84,11 @@ func RankingsCheevos(w http.ResponseWriter, r *http.Request) {
 
 	if err := rows.Err(); err != nil {
 		panic(err)
+	}
+
+	if data.Pager.Calculate() {
+		NotFound(w, r)
+		return
 	}
 
 	render(w, r, "rankings/cheevos", "Rankings: Achievements", data)

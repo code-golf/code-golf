@@ -3,6 +3,7 @@ package routes
 import (
 	"net/http"
 
+	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
 )
 
@@ -13,7 +14,10 @@ func RankingsSolutions(w http.ResponseWriter, r *http.Request) {
 		Bytes, Chars, Rank, Count, Langs   int
 	}
 
-	var data []row
+	data := struct {
+		Pager *pager.Pager
+		Rows  []row
+	}{Pager: pager.New(r)}
 
 	rows, err := session.Database(r).Query(
 		`WITH solutions AS (
@@ -34,11 +38,14 @@ func RankingsSolutions(w http.ResponseWriter, r *http.Request) {
 		         COALESCE(CASE WHEN show_country THEN country END, ''),
 		         langs,
 		         login,
-		         RANK() OVER(ORDER BY count DESC)
+		         RANK() OVER(ORDER BY count DESC),
+		         COUNT(*) OVER ()
 		    FROM solutions
 		    JOIN users on id = user_id
 		ORDER BY rank, bytes, chars, login
-		   LIMIT 30`,
+		   LIMIT $1 OFFSET $2`,
+		pager.PerPage,
+		data.Pager.Offset,
 	)
 	if err != nil {
 		panic(err)
@@ -57,15 +64,21 @@ func RankingsSolutions(w http.ResponseWriter, r *http.Request) {
 			&r.Langs,
 			&r.Login,
 			&r.Rank,
+			&data.Pager.Total,
 		); err != nil {
 			panic(err)
 		}
 
-		data = append(data, r)
+		data.Rows = append(data.Rows, r)
 	}
 
 	if err := rows.Err(); err != nil {
 		panic(err)
+	}
+
+	if data.Pager.Calculate() {
+		NotFound(w, r)
+		return
 	}
 
 	render(w, r, "rankings/solutions", "Rankings: Solutions", data)

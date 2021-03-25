@@ -4,8 +4,6 @@ main nav {
 }
 
 @media (max-width: 34rem) {
-    main { flex-direction: column }
-
     td:nth-child(3) { border-right: 1px solid var(--color) }
 
     tr > :nth-child(n+4) { display: none }

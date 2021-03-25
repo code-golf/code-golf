@@ -17,7 +17,7 @@
         {{ $name := "" }}
         {{ with .Golfer }}{{ $name = .Name }}{{ end }}
 
-        {{ range .Data }}
+        {{ range .Data.Rows }}
             <tr{{ if eq $name .Login }} class=me {{ end }}>
                 <td>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup>
                 <td>
@@ -36,6 +36,8 @@
                 <td class=right>{{ .CharsPer }}
         {{ end }}
     </table>
+
+    {{ template "pagination" .Data.Pager }}
 </main>
 
 {{ template "footer" }}
