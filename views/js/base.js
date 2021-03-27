@@ -16,8 +16,8 @@ for (const input of document.querySelectorAll('[list]')) {
     let controller;
 
     input.oninput = async () => {
-        controller?.abort();        // Abort the old request (if exists).
-        input.list.innerHTML = '';  // Clear current suggestions.
+        if (controller) controller.abort(); // Abort the old request (if exists).
+        input.list.innerHTML = '';          // Clear current suggestions.
 
         if (input.value != '')
             input.list.append(...(await (await fetch(
