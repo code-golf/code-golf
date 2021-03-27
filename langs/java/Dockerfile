@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk15:jdk-15.0.2_7-debian-slim as builder
+FROM adoptopenjdk/openjdk16:x86_64-debianslim-jdk-16_36-slim as builder
 
 RUN mkdir /empty
 

@@ -287,8 +287,8 @@ echo each 2}.ARGV
 '''
 
 [Java]
-size    = '68.8 MiB'
-version = '15.0.2'
+size    = '69.2 MiB'
+version = '16'
 website = '//openjdk.java.net'
 example = '''
 class Main {
@@ -325,8 +325,8 @@ for (let arg of arguments)
 '''
 
 [Julia]
-size    = '283 MiB'
-version = '1.5.4'
+size    = '287 MiB'
+version = '1.6.0'
 website = '//julialang.org'
 example = '''
 # Printing
@@ -491,8 +491,8 @@ end
 '''
 
 [Rust]
-size    = '707 MiB'
-version = '1.50.0'
+size    = '661 MiB'
+version = '1.51.0'
 website = '//www.rust-lang.org'
 example = '''
 fn main() {
