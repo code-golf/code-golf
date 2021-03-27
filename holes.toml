@@ -1441,7 +1441,7 @@ preamble = '''
 <p>
     Print all the prime numbers from <b>1</b> to <b>100</b> inclusive, each on
     their own line.
-    See <a href=prime-numbers-ii>Prime Numbers II</a> hole to print prime numbers up to <b>1,000</b>.
+    See <a href=prime-numbers-ii>Prime Numbers II</a> hole to print prime numbers up to <b>10,000</b>.
 '''
 
 ['Prime Numbers II']
@@ -1453,7 +1453,7 @@ links = [
 ]
 preamble = '''
 <p>
-    Print all the prime numbers from <b>1</b> to <b>1,000</b> inclusive, each on
+    Print all the prime numbers from <b>1</b> to <b>10,000</b> inclusive, each on
     their own line.
     See <a href=prime-numbers>Prime Numbers</a> hole to print prime numbers up to <b>100</b>.
 '''
