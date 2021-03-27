@@ -650,6 +650,26 @@ preamble = '''
 <p>
     Print all the emirp numbers from <b>1</b> to <b>1,000</b> inclusive, each
     on their own line.
+    See <a href=emirp-numbers-ii>Emirp Numbers II</a> hole to print emirp numbers up to <b>10,000</b>.
+'''
+
+['Emirp Numbers II']
+category = 'Sequence'
+experiment = 384
+links = [
+    { name = 'OEIS A006567', url = '//oeis.org/A006567' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Emirp' },
+]
+preamble = '''
+<p>
+    An emirp (prime spelled backwards) is a prime number that results in a
+    different prime when its decimal digits are reversed. For example both
+    <b>13</b> and <b>31</b> are emirps.
+
+<p>
+    Print all the emirp numbers from <b>1</b> to <b>10,000</b> inclusive, each
+    on their own line.
+    See <a href=emirp-numbers>Emirp Numbers</a> hole to print emirp numbers up to <b>1,000</b>.
 '''
 
 [Emojify]
