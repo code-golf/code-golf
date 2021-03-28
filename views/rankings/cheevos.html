@@ -6,8 +6,9 @@
 
 <main>
     <form class=thin>
-        <input type=hidden value=/rankings/cheevos>
-        <select>
+        <input name=base type=hidden value=/rankings/cheevos>
+
+        <select name=cheevo>
             <option value>All
         {{ range $category, $cheevos := .Data.Cheevos }}
             <optgroup label="{{ $category }}">
