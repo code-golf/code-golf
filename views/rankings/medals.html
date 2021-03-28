@@ -2,24 +2,85 @@
 {{ template "rankings" . }}
 
 <main>
-    <nav>
-        {{ $slug := "/rankings/medals" }}
+    <form>
+        <input name=base type=hidden value=/rankings/medals>
 
+        <select name=holes>
+            <option value=all>All Holes
+        {{ range .Data.Holes }}
+            <option value="{{ .ID }}"
+                {{ if eq $.Data.HoleID .ID }} selected {{ end }}>{{ .Name }}
+        {{ end }}
+        </select>
+
+        <select name=langs>
+            <option value=all>All Languages
+        {{ range .Data.Langs }}
+            <option value="{{ .ID }}"
+                {{ if eq $.Data.LangID .ID }} selected {{ end }}>{{ .Name }}
+        {{ end }}
+        </select>
+
+        <label>
+            <input {{ if eq .Data.Scoring "all" }} checked {{ end }}
+                name=scoring type=radio value=all>All
+        </label>
+
+        <label>
+            <input {{ if eq .Data.Scoring "bytes" }} checked {{ end }}
+                name=scoring type=radio value=bytes>Bytes
+        </label>
+
+        <label>
+            <input {{ if eq .Data.Scoring "chars" }} checked {{ end }}
+                name=scoring type=radio value=chars>Chars
+        </label>
+    </form>
+
+    <nav>
         <h2>Scoring</h2>
-        <a>All</a>
-        <a href="{{ $slug }}"><span>Bytes</span></a>
-        <a href="{{ $slug }}"><span>Chars</span></a>
+        <a {{ if ne .Data.Scoring "all" }}
+            href="/rankings/medals/{{ .Data.HoleID }}/{{ .Data.LangID }}/all"
+        {{ end }}>
+            <span>All</span>
+        </a>
+        <a {{ if ne .Data.Scoring "bytes" }}
+            href="/rankings/medals/{{ .Data.HoleID }}/{{ .Data.LangID }}/bytes"
+        {{ end }}>
+            <span>Bytes</span>
+        </a>
+        <a {{ if ne .Data.Scoring "chars" }}
+            href="/rankings/medals/{{ .Data.HoleID }}/{{ .Data.LangID }}/chars"
+        {{ end }}>
+            <span>Chars</span>
+        </a>
 
         <h2>Language</h2>
-        <a>All</a>
+        <a {{ if ne .Data.LangID "all" }}
+            href="/rankings/medals/{{ .Data.HoleID }}/all/{{ .Data.Scoring }}"
+        {{ end }}>
+            <span>All</span>
+        </a>
     {{ range .Data.Langs }}
-        <a href="{{ $slug }}"><span>{{ .Name }}</span></a>
+        <a {{ if ne $.Data.LangID .ID }}
+            href="/rankings/medals/{{ $.Data.HoleID }}/{{ .ID }}/{{ $.Data.Scoring }}"
+        {{ end }}>
+            <span>{{ .Name }}</span>
+        </a>
     {{ end }}
 
         <h2>Hole</h2>
-        <a>All</a>
+        <a {{ if ne .Data.HoleID "all" }}
+            href="/rankings/medals/all/{{ .Data.LangID }}/{{ .Data.Scoring }}"
+        {{ end }}>
+            <span>All</span>
+        </a>
     {{ range .Data.Holes }}
-        <a href="{{ $slug }}"><span>{{ .Name }}</span></a>
+        <a {{ if ne $.Data.HoleID .ID }}
+            href="/rankings/medals/{{ .ID }}/{{ $.Data.LangID }}/{{ $.Data.Scoring }}"
+        {{ end }}>
+            <span>{{ .Name }}</span>
+        </a>
     {{ end }}
     </nav>
 

@@ -17,15 +17,26 @@ func RankingsMedals(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := struct {
-		Holes []hole.Hole
-		Langs []lang.Lang
-		Pager *pager.Pager
-		Rows  []row
+		HoleID, LangID, Scoring string
+		Holes                   []hole.Hole
+		Langs                   []lang.Lang
+		Pager                   *pager.Pager
+		Rows                    []row
 	}{
-		Holes: hole.List,
-		Langs: lang.List,
-		Pager: pager.New(r),
-		Rows:  make([]row, 0, pager.PerPage),
+		HoleID:  param(r, "hole"),
+		Holes:   hole.List,
+		LangID:  param(r, "lang"),
+		Langs:   lang.List,
+		Pager:   pager.New(r),
+		Rows:    make([]row, 0, pager.PerPage),
+		Scoring: param(r, "scoring"),
+	}
+
+	if data.HoleID != "all" && hole.ByID[data.HoleID].ID == "" ||
+		data.LangID != "all" && lang.ByID[data.LangID].ID == "" ||
+		data.Scoring != "all" && data.Scoring != "chars" && data.Scoring != "bytes" {
+		NotFound(w, r)
+		return
 	}
 
 	rows, err := session.Database(r).Query(
