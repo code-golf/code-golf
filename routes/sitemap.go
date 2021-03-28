@@ -24,6 +24,10 @@ func Sitemap(w http.ResponseWriter, r *http.Request) {
 			{"https://code.golf"},
 			{"https://code.golf/about"},
 			{"https://code.golf/ideas"},
+			{"https://code.golf/rankings/cheevos"},
+			{"https://code.golf/rankings/holes/all/all/bytes"},
+			{"https://code.golf/rankings/medals/all/all/all"},
+			{"https://code.golf/rankings/solutions"},
 			{"https://code.golf/stats"},
 		},
 	}
