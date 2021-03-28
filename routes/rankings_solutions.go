@@ -17,7 +17,7 @@ func RankingsSolutions(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Pager *pager.Pager
 		Rows  []row
-	}{Pager: pager.New(r)}
+	}{pager.New(r), make([]row, 0, pager.PerPage)}
 
 	rows, err := session.Database(r).Query(
 		`WITH solutions AS (

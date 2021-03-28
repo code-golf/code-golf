@@ -25,6 +25,7 @@ func RankingsMedals(w http.ResponseWriter, r *http.Request) {
 		Holes: hole.List,
 		Langs: lang.List,
 		Pager: pager.New(r),
+		Rows:  make([]row, 0, pager.PerPage),
 	}
 
 	rows, err := session.Database(r).Query(

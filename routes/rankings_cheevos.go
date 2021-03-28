@@ -29,6 +29,7 @@ func RankingsCheevos(w http.ResponseWriter, r *http.Request) {
 		Cheevo:  trophy.ByID[cheevoID],
 		Cheevos: trophy.Tree,
 		Pager:   pager.New(r),
+		Rows:    make([]row, 0, pager.PerPage),
 		Total:   len(trophy.List),
 	}
 
