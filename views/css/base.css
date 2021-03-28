@@ -425,8 +425,6 @@ body > .tabs a {
 details.tabs   { display: initial }
 details.tabs a { display: inline-block }
 
-.thin { display: none }
-
 #error h1 { text-align: center }
 
 #ideas, #index { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
@@ -472,10 +470,8 @@ details.tabs a { display: inline-block }
     100% { opacity: 1; maring-top: 0 }
 }
 
-@media (max-width: 34rem) {
-    .thin { display: initial }
-    .wide { display: none }
-}
+@media     (max-width: 34rem) { .wide { display: none } }
+@media not (max-width: 34rem) { .thin { display: none } }
 
 /* TODO https://github.com/code-golf/code-golf/issues/119
 
