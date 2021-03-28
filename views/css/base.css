@@ -387,7 +387,7 @@ thead th {
 }
 
 /* Stick headers below tabs if we have them */
-nav + main .sticky th { top: calc(5.75rem + 2px) }
+nav + main .sticky th { top: calc(5.75rem + 1px) }
 
 .tabs {
     display: flex;
