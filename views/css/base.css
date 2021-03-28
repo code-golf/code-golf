@@ -184,6 +184,7 @@ main {
 nav > :empty { flex: 1 }
 
 select {
+    -webkit-appearance: none;
     appearance: none;
     background: #fff url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path d='M2 0L0 2h4zm0 5L0 3h4' fill='%23343A40'/></svg>") no-repeat right .5rem center/auto calc(100% - 1.5rem);
 }
