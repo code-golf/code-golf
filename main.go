@@ -77,8 +77,10 @@ func main() {
 	r.Get("/log-out", routes.LogOut)
 	r.Get("/random", routes.Random)
 	r.Route("/rankings", func(r chi.Router) {
-		r.Get("/", redir("/rankings/holes/all/all/all"))
-		r.Get("/holes", redir("/rankings/holes/all/all/all"))
+		// Redirect some old URLs that got out.
+		r.Get("/", redir("/rankings/holes/all/all/bytes"))
+		r.Get("/holes", redir("/rankings/holes/all/all/bytes"))
+		r.Get("/holes/all/all/all", redir("/rankings/holes/all/all/bytes"))
 		r.Get("/medals", redir("/rankings/medals/all/all/all"))
 
 		r.Get("/cheevos", routes.RankingsCheevos)

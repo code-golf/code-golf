@@ -1,6 +1,12 @@
 /* TODO Stop having "thin" pages, make everything consistent. */
 body { max-width: 50rem }
 
+form {
+    display: grid;
+    gap: .5rem;
+    grid-template-columns: auto auto 1fr;
+}
+
 h1 { margin: 1rem 1rem 0 }
 
 h2 {
@@ -10,6 +16,10 @@ h2 {
 }
 
 h2:not(:first-child) { margin-top: 1rem }
+
+input { margin-right: .5rem }
+
+label { display: flex }
 
 main {
     display: grid;
@@ -47,6 +57,8 @@ main nav a:not([href]) {
 }
 
 main nav span:nth-child(2) { margin-left: .5rem }
+
+select { grid-column: 1 / -1 }
 
 table { flex: 1 }
 

@@ -1,0 +1,5 @@
+@media (max-width: 34rem) {
+    td:nth-child(4) { border-right: 1px solid var(--color) }
+
+    tr > :nth-child(n+5) { display: none }
+}
