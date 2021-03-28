@@ -50,6 +50,10 @@ func levenshteinDistance() ([]string, string) {
 		case perm[2]:
 			args[i] = "however open"
 			outs[i] = "5"
+		// Ensure we have a double digit distance, TODO randomise the words?
+		case perm[3]:
+			args[i] = "large hypothetical"
+			outs[i] = "11"
 		default:
 			a := randWord()
 			b := randWord()
