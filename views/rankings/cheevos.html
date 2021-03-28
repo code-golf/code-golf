@@ -5,7 +5,7 @@
 {{ with $.Data.Cheevo }}{{ $id = .ID }}{{ end }}
 
 <main>
-    <form class=thin>
+    <form>
         <input name=base type=hidden value=/rankings/cheevos>
 
         <select name=cheevo>
@@ -18,13 +18,11 @@
             {{ end }}
         {{ end }}
         </select>
+
+        {{ with .Data.Cheevo }}<p>{{ .Description }}{{ end }}
     </form>
 
-{{ with .Data.Cheevo }}
-    <p class=thin>{{ .Description }}
-{{ end }}
-
-    <nav class=wide>
+    <nav>
         <a {{ if $id }} href=/rankings/cheevos {{ end }}>
             <span>All</span>
         </a>

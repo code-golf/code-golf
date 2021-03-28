@@ -1,11 +1,7 @@
 /* TODO Stop having "thin" pages, make everything consistent. */
 body { max-width: 50rem }
 
-form {
-    display: grid;
-    gap: .5rem;
-    grid-template-columns: auto auto 1fr;
-}
+form { display: none }
 
 h1 { margin: 1rem 1rem 0 }
 
@@ -79,6 +75,14 @@ td > a:hover > span:first-of-type { text-decoration: underline }
     margin: 0 .5rem;
 }
 
-@media (max-width: 34rem) {
+@media (max-width: 46rem) {
+    form {
+        display: grid;
+        gap: .5rem;
+        grid-template-columns: auto auto 1fr;
+    }
+
     main { grid-template-columns: 1fr }
+
+    main nav { display: none }
 }
