@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-const PerPage = 30
+const PerPage = 32
 
 type Pager struct {
 	lastPage, First, Last, Offset, Page, Total int
