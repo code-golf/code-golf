@@ -26,6 +26,8 @@ CREATE TYPE lang AS ENUM (
     'raku', 'ruby', 'rust', 'sql', 'swift', 'v', 'zig'
 );
 
+CREATE TYPE medal AS ENUM ('diamond', 'gold', 'silver', 'bronze');
+
 CREATE TYPE scoring AS ENUM ('bytes', 'chars');
 
 -- TODO Fix 'tim-toady' & 'the-watering-hole' order when renamed to cheevos.
@@ -100,29 +102,31 @@ CREATE TABLE trophies (
     JOIN pg_class     c ON a.attrelid = c.oid
     JOIN pg_type      t ON a.atttypid = t.oid
    WHERE a.attnum >= 0
-     AND c.relname IN ('code', 'ideas', 'sessions', 'solutions', 'trophies', 'users')
+     AND c.relname IN (
+             'code', 'ideas', 'sessions', 'solutions', 'trophies', 'users'
+         )
 ORDER BY c.relname, t.typlen DESC, t.typname, a.attname;
 
 CREATE MATERIALIZED VIEW medals AS WITH ranks AS (
-    SELECT user_id,
-           RANK() OVER (PARTITION BY hole, lang ORDER BY bytes)
+    SELECT user_id, hole, lang, scoring,
+           RANK() OVER (
+               PARTITION BY hole, lang, scoring
+                   ORDER BY CASE WHEN scoring = 'bytes'
+                                 THEN bytes ELSE chars END
+           )
       FROM solutions
       JOIN code ON code_id = id
-     WHERE NOT failing AND scoring = 'bytes'
-     UNION ALL
-    SELECT user_id,
-           RANK() OVER (PARTITION BY hole, lang ORDER BY chars)
-      FROM solutions
-      JOIN code ON code_id = id
-     WHERE NOT failing AND scoring = 'chars'
-), medals AS (
-    SELECT user_id,
-           COUNT(*) FILTER (WHERE rank = 1) gold,
-           COUNT(*) FILTER (WHERE rank = 2) silver,
-           COUNT(*) FILTER (WHERE rank = 3) bronze
-      FROM ranks
-  GROUP BY user_id
-) SELECT * FROM medals WHERE gold > 0 OR silver > 0 OR bronze > 0;
+     WHERE NOT failing
+) SELECT user_id, hole, lang, scoring,
+         (enum_range(NULL::medal))[rank + 1] medal
+    FROM ranks
+   WHERE rank < 4
+   UNION ALL
+  SELECT MIN(user_id) user_id, hole, lang, scoring, 'diamond'::medal
+    FROM ranks
+   WHERE rank = 1
+GROUP BY hole, lang, scoring
+  HAVING COUNT(*) = 1;
 
 CREATE VIEW bytes_points AS WITH ranked AS (
     SELECT user_id,
@@ -152,11 +156,11 @@ CREATE VIEW chars_points AS WITH ranked AS (
     FROM ranked
 GROUP BY user_id;
 
+-- Needed to refresh concurrently
+CREATE UNIQUE INDEX medals_key ON medals(user_id, hole, lang, scoring, medal);
+
 -- Used by delete_orphaned_code()
 CREATE INDEX solutions_code_id_key ON solutions(code_id);
-
--- Used by /golfers
-CREATE UNIQUE INDEX medals_user_id_key ON medals(user_id);
 
 -- Used by /stats
 CREATE INDEX solutions_hole_key ON solutions(hole, user_id) WHERE NOT failing;

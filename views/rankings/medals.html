@@ -89,9 +89,10 @@
             <tr>
                 <th>#
                 <th>Golfer
-                <th class=right title=Gold>🥇
-                <th class=right title=Silver>🥈
-                <th class=right title=Bronze>🥉
+                <th class=right title="Gold medals">🥇
+                <th class=right title="Diamonds (uncontested gold medals)">💎
+                <th class=right title="Silver medals">🥈
+                <th class=right title="Bronze medals">🥉
         <tbody>
         {{ $name := "" }}
         {{ with .Golfer }}{{ $name = .Name }}{{ end }}
@@ -107,9 +108,10 @@
                         <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
                     {{ end }}
                     </a>
-                <td class=right>{{ comma .Gold }}
-                <td class=right>{{ comma .Silver }}
-                <td class=right>{{ comma .Bronze }}
+                <td class=right> {{ comma .Gold    }}
+                <td class=right>({{ comma .Diamond }})
+                <td class=right> {{ comma .Silver  }}
+                <td class=right> {{ comma .Bronze  }}
         {{ end }}
     </table>
 

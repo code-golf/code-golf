@@ -7,8 +7,16 @@
             <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
         {{ end }}
         </h1>
-        <p>{{ comma .BytesPoints }} points (Bytes) • {{ comma .CharsPoints }} points (Chars)
-        <p>🥇 {{ comma .Gold }} • 🥈 {{ comma .Silver }} • 🥉 {{ comma .Bronze }}
+        <p>
+            {{ comma .BytesPoints }} points (Bytes) •
+            {{ comma .CharsPoints }} points (Chars)
+        <p>
+            <span title="Diamonds (uncontested gold medals)">
+                💎 {{ comma .Diamond }}
+            </span>
+            • <span title="Gold medals"  >🥇 {{ comma .Gold    }}</span>
+            • <span title="Silver medals">🥈 {{ comma .Silver  }}</span>
+            • <span title="Bronze medals">🥉 {{ comma .Bronze  }}</span>
     </div>
 
     <div id=badges>

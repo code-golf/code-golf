@@ -12,8 +12,8 @@ import (
 // RankingsMedals serves GET /rankings/medals/{hole}/{lang}
 func RankingsMedals(w http.ResponseWriter, r *http.Request) {
 	type row struct {
-		Country, Login             string
-		Rank, Gold, Silver, Bronze int
+		Country, Login                      string
+		Rank, Diamond, Gold, Silver, Bronze int
 	}
 
 	data := struct {
@@ -40,16 +40,34 @@ func RankingsMedals(w http.ResponseWriter, r *http.Request) {
 	}
 
 	rows, err := session.Database(r).Query(
-		`SELECT RANK() OVER(ORDER BY gold DESC, silver DESC, bronze DESC),
-		        COALESCE(CASE WHEN show_country THEN country END, ''),
-		        login,
-		        gold,
-		        silver,
-		        bronze,
-		        COUNT(*) OVER()
-		   FROM medals
-		   JOIN users ON id = user_id
-		  LIMIT $1 OFFSET $2`,
+		`WITH counts AS (
+		    SELECT user_id,
+		           COUNT(*) FILTER (WHERE medal = 'diamond') diamond,
+		           COUNT(*) FILTER (WHERE medal = 'gold'   ) gold,
+		           COUNT(*) FILTER (WHERE medal = 'silver' ) silver,
+		           COUNT(*) FILTER (WHERE medal = 'bronze' ) bronze
+		      FROM medals
+		     WHERE $1 IN ('all', hole::text)
+		       AND $2 IN ('all', lang::text)
+		       AND $3 IN ('all', scoring::text)
+		  GROUP BY user_id
+		) SELECT RANK() OVER(
+		             ORDER BY gold DESC, diamond DESC, silver DESC, bronze DESC
+		         ),
+		         COALESCE(CASE WHEN show_country THEN country END, ''),
+		         login,
+		         diamond,
+		         gold,
+		         silver,
+		         bronze,
+		         COUNT(*) OVER()
+		    FROM counts
+		    JOIN users ON id = user_id
+		ORDER BY rank, login
+		   LIMIT $4 OFFSET $5`,
+		data.HoleID,
+		data.LangID,
+		data.Scoring,
 		pager.PerPage,
 		data.Pager.Offset,
 	)
@@ -66,6 +84,7 @@ func RankingsMedals(w http.ResponseWriter, r *http.Request) {
 			&r.Rank,
 			&r.Country,
 			&r.Login,
+			&r.Diamond,
 			&r.Gold,
 			&r.Silver,
 			&r.Bronze,

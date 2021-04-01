@@ -42,7 +42,7 @@ type GolferInfo struct {
 	BytesPoints, CharsPoints int
 
 	// Count of medals
-	Gold, Silver, Bronze int
+	Diamond, Gold, Silver, Bronze int
 
 	// Count of holes/langs/trophies done
 	Holes, Langs, Trophies int
@@ -70,9 +70,18 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 	}
 
 	if err := db.QueryRow(
-		`  SELECT admin,
+		`WITH medals AS (
+		   SELECT user_id,
+		          COUNT(*) FILTER (WHERE medal = 'diamond') diamond,
+		          COUNT(*) FILTER (WHERE medal = 'gold'   ) gold,
+		          COUNT(*) FILTER (WHERE medal = 'silver' ) silver,
+		          COUNT(*) FILTER (WHERE medal = 'bronze' ) bronze
+		     FROM medals
+		 GROUP BY user_id
+		)  SELECT admin,
 		          COALESCE(bronze, 0),
 		          COALESCE(CASE WHEN show_country THEN country END, ''),
+		          COALESCE(diamond, 0),
 		          COALESCE(gold, 0),
 		          (SELECT COUNT(DISTINCT hole)
 		             FROM solutions
@@ -97,6 +106,7 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 		&info.Admin,
 		&info.Bronze,
 		&info.Country,
+		&info.Diamond,
 		&info.Gold,
 		&info.Holes,
 		&info.ID,
