@@ -62,8 +62,8 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 		args, answer = sevenSegment()
 	case "spelling-numbers":
 		args, answer = spellingNumbers()
-	case "sudoku":
-		args, answer = sudoku()
+	case "sudoku", "sudoku-v2":
+		args, answer = sudoku(holeID == "sudoku-v2")
 	case "ten-pin-bowling":
 		args, answer = tenPinBowling()
 	case "united-states":

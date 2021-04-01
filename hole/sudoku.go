@@ -10,7 +10,43 @@ const (
 	blockSize = 3
 )
 
-func solve(board [boardSize][boardSize]int, cell int, count *int) bool {
+func printSudoku(board [boardSize][boardSize]int) string {
+	var b strings.Builder
+
+	for i, row := range board {
+		if i == 0 {
+			b.WriteString("┏━━━┯━━━┯━━━┳━━━┯━━━┯━━━┳━━━┯━━━┯━━━┓\n")
+		} else if i%blockSize == 0 {
+			b.WriteString("┣━━━┿━━━┿━━━╋━━━┿━━━┿━━━╋━━━┿━━━┿━━━┫\n")
+		} else {
+			b.WriteString("┠───┼───┼───╂───┼───┼───╂───┼───┼───┨\n")
+		}
+
+		for j, number := range row {
+			if j%blockSize == 0 {
+				b.WriteString("┃")
+			} else {
+				b.WriteString("│")
+			}
+
+			b.WriteRune(' ')
+			if number == 0 {
+				b.WriteRune(' ')
+			} else {
+				b.WriteRune(rune('0' + number))
+			}
+			b.WriteRune(' ')
+		}
+
+		b.WriteString("┃\n")
+	}
+
+	b.WriteString("┗━━━┷━━━┷━━━┻━━━┷━━━┷━━━┻━━━┷━━━┷━━━┛")
+
+	return b.String()
+}
+
+func solveSudoku(board [boardSize][boardSize]int, cell int, count *int) bool {
 	var i, j int
 
 	for {
@@ -69,7 +105,7 @@ Numbers:
 
 		board[i][j] = number
 
-		if solve(board, cell+1, count) {
+		if solveSudoku(board, cell+1, count) {
 			return true
 		}
 	}
@@ -80,7 +116,7 @@ Numbers:
 	return false
 }
 
-func sudoku() (args []string, out string) {
+func sudoku(v2 bool) (args []string, out string) {
 	var board [boardSize][boardSize]int
 
 	var generate func(int) bool
@@ -141,39 +177,7 @@ func sudoku() (args []string, out string) {
 
 	generate(0)
 
-	var b strings.Builder
-
-	for i, row := range board {
-		if i == 0 {
-			b.WriteString("┏━━━┯━━━┯━━━┳━━━┯━━━┯━━━┳━━━┯━━━┯━━━┓\n")
-		} else if i%blockSize == 0 {
-			b.WriteString("┣━━━┿━━━┿━━━╋━━━┿━━━┿━━━╋━━━┿━━━┿━━━┫\n")
-		} else {
-			b.WriteString("┠───┼───┼───╂───┼───┼───╂───┼───┼───┨\n")
-		}
-
-		for j, number := range row {
-			if j%blockSize == 0 {
-				b.WriteString("┃")
-			} else {
-				b.WriteString("│")
-			}
-
-			b.WriteRune(' ')
-			if number == 0 {
-				b.WriteRune(' ')
-			} else {
-				b.WriteRune(rune('0' + number))
-			}
-			b.WriteRune(' ')
-		}
-
-		b.WriteString("┃\n")
-	}
-
-	b.WriteString("┗━━━┷━━━┷━━━┻━━━┷━━━┷━━━┻━━━┷━━━┷━━━┛")
-
-	out = b.String()
+	out = printSudoku(board)
 
 	for k, cell := range rand.Perm(boardSize * boardSize) {
 		i := cell / boardSize
@@ -183,7 +187,7 @@ func sudoku() (args []string, out string) {
 		board[i][j] = 0
 
 		var count int
-		solve(board, 0, &count)
+		solveSudoku(board, 0, &count)
 
 		// Removing this cell creates too many solutions, put it back.
 		if count == 2 {
@@ -197,18 +201,22 @@ func sudoku() (args []string, out string) {
 		}
 	}
 
-	for _, row := range board {
-		var b strings.Builder
+	if v2 {
+		args = append(args, printSudoku(board))
+	} else {
+		for _, row := range board {
+			var b strings.Builder
 
-		for _, number := range row {
-			if number == 0 {
-				b.WriteRune('_')
-			} else {
-				b.WriteRune(rune('0' + number))
+			for _, number := range row {
+				if number == 0 {
+					b.WriteRune('_')
+				} else {
+					b.WriteRune(rune('0' + number))
+				}
 			}
-		}
 
-		args = append(args, b.String())
+			args = append(args, b.String())
+		}
 	}
 
 	return
