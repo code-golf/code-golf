@@ -44,7 +44,7 @@ COPY --from=codegolf/lang-c          ["/", "/langs/c/rootfs/"         ] # 1.61 M
 COPY --from=codegolf/lang-bash       ["/", "/langs/bash/rootfs/"      ] # 1.15 MiB
 COPY --from=codegolf/lang-sql        ["/", "/langs/sql/rootfs/"       ] # 1.03 MiB
 COPY --from=codegolf/lang-fish       ["/", "/langs/fish/rootfs/"      ] #  473 KiB
-COPY --from=codegolf/lang-lua        ["/", "/langs/lua/rootfs/"       ] #  334 KiB
+COPY --from=codegolf/lang-lua        ["/", "/langs/lua/rootfs/"       ] #  338 KiB
 
 COPY --from=0 /go/code-golf                      /
 COPY          /*.toml /words.txt                 /

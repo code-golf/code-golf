@@ -349,8 +349,8 @@ version = 'GNU CLISP 2.49.92'
 website = '//clisp.sourceforge.io'
 
 [Lua]
-size    = '334 KiB'
-version = '5.4.2'
+size    = '338 KiB'
+version = '5.4.3'
 website = '//www.lua.org'
 example = '''
 -- Printing
@@ -513,7 +513,7 @@ fn main() {
 
 [SQL]
 size    = '1.03 MiB'
-version = '3.35.2'
+version = '3.35.3'
 website = '//sqlite.org/index.html'
 example = '''
 -- Printing
