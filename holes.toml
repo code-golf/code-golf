@@ -1548,7 +1548,8 @@ preamble = '''
 [Sudoku]
 category = 'Gaming'
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Sudoku' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Sudoku' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Sudoku' },
 ]
 preamble = '''
 <p>
