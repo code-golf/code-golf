@@ -8836,7 +8836,7 @@ var Language = class {
   }
   parseString(code) {
     let doc2 = Text.of(code.split("\n"));
-    let parse = this.parser.startParse(new DocInput(doc2), 0, new EditorParseContext(this.parser, EditorState.create({doc: doc2}), [], Tree.empty, {from: 0, to: code.length}, []));
+    let parse = this.parser.startParse(new DocInput(doc2), 0, new EditorParseContext(this.parser, EditorState.create({doc: doc2}), [], Tree.empty, {from: 0, to: code.length}, [], null));
     let tree;
     while (!(tree = parse.advance())) {
     }
@@ -8918,7 +8918,7 @@ var DocInput = class {
     let stringStart = this.cursorPos - this.string.length;
     if (pos < stringStart || pos >= this.cursorPos)
       stringStart = this.syncTo(pos);
-    return this.cursor.lineBreak ? "" : this.string.slice(pos - stringStart);
+    return this.cursor.lineBreak ? "" : this.string.slice(pos - stringStart, Math.min(this.length - stringStart, this.string.length));
   }
   read(from, to) {
     let stringStart = this.cursorPos - this.string.length;
@@ -8932,13 +8932,14 @@ var DocInput = class {
   }
 };
 var EditorParseContext = class {
-  constructor(parser6, state, fragments = [], tree, viewport, skipped) {
+  constructor(parser6, state, fragments = [], tree, viewport, skipped, scheduleOn) {
     this.parser = parser6;
     this.state = state;
     this.fragments = fragments;
     this.tree = tree;
     this.viewport = viewport;
     this.skipped = skipped;
+    this.scheduleOn = scheduleOn;
     this.parse = null;
     this.tempSkipped = [];
   }
@@ -8994,7 +8995,7 @@ var EditorParseContext = class {
         }
       }
     }
-    return new EditorParseContext(this.parser, newState, fragments, tree, viewport, skipped);
+    return new EditorParseContext(this.parser, newState, fragments, tree, viewport, skipped, this.scheduleOn);
   }
   updateViewport(viewport) {
     this.viewport = viewport;
@@ -9017,25 +9018,31 @@ var EditorParseContext = class {
   skipUntilInView(from, to) {
     this.skipped.push({from, to});
   }
+  static getSkippingParser(until) {
+    return {
+      startParse(input, startPos, context) {
+        return {
+          pos: startPos,
+          advance() {
+            let ecx = context;
+            ecx.tempSkipped.push({from: startPos, to: input.length});
+            if (until)
+              ecx.scheduleOn = ecx.scheduleOn ? Promise.all([ecx.scheduleOn, until]) : until;
+            this.pos = input.length;
+            return new Tree(NodeType.none, [], [], input.length - startPos);
+          },
+          forceFinish() {
+            return this.advance();
+          }
+        };
+      }
+    };
+  }
   movedPast(pos) {
     return this.tree.length < pos && this.parse && this.parse.pos >= pos;
   }
 };
-EditorParseContext.skippingParser = {
-  startParse(input, startPos, context) {
-    return {
-      pos: startPos,
-      advance() {
-        context.tempSkipped.push({from: startPos, to: input.length});
-        this.pos = input.length;
-        return new Tree(NodeType.none, [], [], input.length - startPos);
-      },
-      forceFinish() {
-        return this.advance();
-      }
-    };
-  }
-};
+EditorParseContext.skippingParser = EditorParseContext.getSkippingParser();
 function cutFragments(fragments, from, to) {
   return TreeFragment.applyChanges(fragments, [{fromA: from, toA: to, fromB: from, toB: to}]);
 }
@@ -9054,7 +9061,7 @@ var LanguageState = class {
     return new LanguageState(newCx);
   }
   static init(state) {
-    let parseState = new EditorParseContext(state.facet(language).parser, state, [], Tree.empty, {from: 0, to: state.doc.length}, []);
+    let parseState = new EditorParseContext(state.facet(language).parser, state, [], Tree.empty, {from: 0, to: state.doc.length}, [], null);
     if (!parseState.work(25))
       parseState.takeTree();
     return new LanguageState(parseState);
@@ -9083,8 +9090,8 @@ var parseWorker = ViewPlugin.fromClass(class ParseWorker {
     this.scheduleWork();
   }
   update(update) {
+    let cx = this.view.state.field(Language.state).context;
     if (update.viewportChanged) {
-      let cx = this.view.state.field(Language.state).context;
       if (cx.updateViewport(update.view.viewport))
         cx.reset();
       if (this.view.viewport.to > cx.tree.length)
@@ -9095,12 +9102,13 @@ var parseWorker = ViewPlugin.fromClass(class ParseWorker {
         this.chunkBudget += 50;
       this.scheduleWork();
     }
+    this.checkAsyncSchedule(cx);
   }
-  scheduleWork() {
+  scheduleWork(force = false) {
     if (this.working > -1)
       return;
     let {state} = this.view, field = state.field(Language.state);
-    if (field.tree.length >= state.doc.length)
+    if (!force && field.tree.length >= state.doc.length)
       return;
     this.working = requestIdle(this.work, {timeout: 500});
   }
@@ -9125,6 +9133,13 @@ var parseWorker = ViewPlugin.fromClass(class ParseWorker {
     }
     if (!done && this.chunkBudget > 0)
       this.scheduleWork();
+    this.checkAsyncSchedule(field.context);
+  }
+  checkAsyncSchedule(cx) {
+    if (cx.scheduleOn) {
+      cx.scheduleOn.then(() => this.scheduleWork(true));
+      cx.scheduleOn = null;
+    }
   }
   destroy() {
     if (this.working >= 0)
