@@ -439,7 +439,7 @@ ForEach ($arg in $args) {
 
 [Python]
 size    = '199 MiB'
-version = '3.9.2'
+version = '3.9.3'
 website = '//www.python.org'
 example = '''
 import sys
