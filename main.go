@@ -54,7 +54,9 @@ func main() {
 		r.Get("/solutions/run", routes.AdminSolutionsRun)
 	})
 	r.Route("/api", func(r chi.Router) {
-		r.Get("/v1/suggestions/golfers", routes.APISuggestionsGolfers)
+		r.Use(middleware.API)
+		r.Get("/", routes.API)
+		r.Get("/suggestions/golfers", routes.APISuggestionsGolfers)
 	})
 	r.Get("/assets/{asset}", routes.Asset)
 	r.Get("/callback", routes.Callback)

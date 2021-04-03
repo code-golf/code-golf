@@ -1,12 +1,19 @@
 package routes
 
 import (
+	_ "embed"
 	"net/http"
 
 	"github.com/code-golf/code-golf/session"
 )
 
-// APISuggestionsGolfers serves GET /api/v1/suggestions/golfers
+//go:embed api.yml
+var yml []byte
+
+// API serves GET /api
+func API(w http.ResponseWriter, r *http.Request) { w.Write(yml) }
+
+// APISuggestionsGolfers serves GET /api/suggestions/golfers
 func APISuggestionsGolfers(w http.ResponseWriter, r *http.Request) {
 	var json []byte
 

@@ -1,0 +1,31 @@
+openapi: 3.0.3
+
+info:
+  title: Code Golf API
+  description: API for [Code Golf](https://code.golf).
+  version: unstable
+
+servers:
+  - url: https://code.golf/api
+
+paths:
+  /suggestions/golfers:
+    get:
+      parameters:
+        - name: q
+          description: Case-insensitive substring to search for
+          in: query
+          schema:
+            type: string
+      tags:
+        - suggestions
+      summary: Returns a list of matching golfers, limited to 10
+      responses:
+        '200':
+          description: A JSON array matching golfer names, limited to 10
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
