@@ -80,14 +80,15 @@ func tracePath(dist [height][width]int, ei, ej int) (path [height][width]int) {
 }
 
 func draw(grid [height][width]int, si, sj, ei, ej int, path [height][width]int, drawpath bool) (mazestr string) {
-	wall, track := "█", ""
+	const wall = "█"
+
+	var track, top, bottom, cell, eastboundary, southboundary string
+
 	if drawpath {
 		track = "."
 	} else {
 		track = " "
 	}
-	top, bottom, cell := "", "", ""
-	eastboundary, southboundary := "", ""
 
 	mazestr = wall + strings.Repeat(strings.Repeat(wall, 2), width) + "\n"
 	for i := 0; i < height; i++ {

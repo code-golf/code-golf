@@ -78,13 +78,12 @@ func tenPinBowling() ([]string, string) {
 
 		// Generate some random rolls
 		for rollNum := 0; rollNum < 23; rollNum++ {
-			roll := 0
 			maxRoll := 10
 			if rollNum%2 == 1 {
 				maxRoll = 10 - rolls[rollNum-1]
 			}
 			// Roll with bias towards strikes/spares and misses
-			roll = rand.Intn(maxRoll+2) - 1
+			roll := rand.Intn(maxRoll+2) - 1
 			if roll > maxRoll {
 				roll = maxRoll
 			} else if roll < 0 {
