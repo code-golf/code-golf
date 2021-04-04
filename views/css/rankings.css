@@ -1,6 +1,11 @@
 /* TODO Stop having "thin" pages, make everything consistent. */
 body { max-width: 50rem }
 
+body > p {
+    font-weight: bold;
+    margin: .5rem 1.5rem 0;
+}
+
 form { display: none }
 
 h1 { margin: 1rem 1rem 0 }

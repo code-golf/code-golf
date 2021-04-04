@@ -92,5 +92,10 @@ func RankingsCheevos(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	render(w, r, "rankings/cheevos", data, "Rankings: Achievements")
+	description := "All achievements"
+	if cheevo := data.Cheevo; cheevo != nil {
+		description = cheevo.Emoji + " " + cheevo.Name
+	}
+
+	render(w, r, "rankings/cheevos", data, "Rankings: Achievements", description)
 }

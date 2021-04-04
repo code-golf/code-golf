@@ -137,5 +137,20 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	render(w, r, "rankings/holes", data, "Rankings: Holes")
+	description := ""
+	if hole := hole.ByID[data.HoleID]; hole.ID != "" {
+		description += hole.Name + " in "
+	} else {
+		description += "All holes in "
+	}
+
+	if lang := lang.ByID[data.LangID]; lang.ID != "" {
+		description += lang.Name + " in "
+	} else {
+		description += "all languages in "
+	}
+
+	description += data.Scoring
+
+	render(w, r, "rankings/holes", data, "Rankings: Holes", description)
 }

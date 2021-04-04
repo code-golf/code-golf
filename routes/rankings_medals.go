@@ -105,5 +105,22 @@ func RankingsMedals(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	render(w, r, "rankings/medals", data, "Rankings: Medals")
+	description := ""
+	if hole := hole.ByID[data.HoleID]; hole.ID != "" {
+		description += hole.Name + " in "
+	} else {
+		description += "All holes in "
+	}
+
+	if lang := lang.ByID[data.LangID]; lang.ID != "" {
+		description += lang.Name
+	} else {
+		description += "all languages"
+	}
+
+	if data.Scoring != "all" {
+		description += " in " + data.Scoring
+	}
+
+	render(w, r, "rankings/medals", data, "Rankings: Medals", description)
 }
