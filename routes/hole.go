@@ -67,7 +67,7 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	render(w, r, "hole", data.Hole.Name, data)
+	render(w, r, "hole", data, data.Hole.Name)
 }
 
 // HoleNG serves GET /ng/{hole}
@@ -80,5 +80,5 @@ func HoleNG(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	render(w, r, "hole-ng", h.Name, lang.ByID)
+	render(w, r, "hole-ng", lang.ByID, h.Name)
 }

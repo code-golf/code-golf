@@ -152,5 +152,5 @@ func Recent(w http.ResponseWriter, r *http.Request) {
 		Recents: recents,
 	}
 
-	render(w, r, "recent", title, data)
+	render(w, r, "recent", data, title)
 }

@@ -92,5 +92,5 @@ func RankingsCheevos(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	render(w, r, "rankings/cheevos", "Rankings: Achievements", data)
+	render(w, r, "rankings/cheevos", data, "Rankings: Achievements")
 }

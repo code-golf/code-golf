@@ -17,9 +17,7 @@ func Ideas(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Holes []hole.Hole
 		Ideas []idea
-	}{
-		Holes: hole.ExperimentalList,
-	}
+	}{Holes: hole.ExperimentalList}
 
 	rows, err := session.Database(r).Query(
 		"SELECT * FROM ideas ORDER BY thumbs_up - thumbs_down DESC, title")
@@ -39,5 +37,5 @@ func Ideas(w http.ResponseWriter, r *http.Request) {
 		data.Ideas = append(data.Ideas, i)
 	}
 
-	render(w, r, "ideas", "Ideas", data)
+	render(w, r, "ideas", data, "Ideas")
 }

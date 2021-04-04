@@ -58,5 +58,5 @@ func GolferTrophies(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	render(w, r, "golfer/trophies", golfer.Name, data)
+	render(w, r, "golfer/trophies", data, golfer.Name)
 }

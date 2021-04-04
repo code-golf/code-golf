@@ -105,5 +105,5 @@ func RankingsMedals(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	render(w, r, "rankings/medals", "Rankings: Medals", data)
+	render(w, r, "rankings/medals", data, "Rankings: Medals")
 }

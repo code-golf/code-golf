@@ -136,5 +136,5 @@ func Admin(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	render(w, r, "admin/info", "Admin Info", data)
+	render(w, r, "admin/info", data, "Admin Info")
 }

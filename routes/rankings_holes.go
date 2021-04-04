@@ -137,5 +137,5 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	render(w, r, "rankings/holes", "Rankings: Holes", data)
+	render(w, r, "rankings/holes", data, "Rankings: Holes")
 }

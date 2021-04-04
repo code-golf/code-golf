@@ -13,5 +13,5 @@ func About(w http.ResponseWriter, r *http.Request) {
 		awardTrophy(session.Database(r), golfer.ID, "rtfm")
 	}
 
-	render(w, r, "about", "About", lang.List)
+	render(w, r, "about", lang.List, "About")
 }

@@ -364,5 +364,5 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 		title += lang.ByID[langID].Name
 	}
 
-	render(w, r, "scores", title, data)
+	render(w, r, "scores", data, title)
 }

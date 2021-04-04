@@ -34,11 +34,13 @@ func GolferDelete(w http.ResponseWriter, r *http.Request) {
 
 // GolferSettings serves GET /golfer/settings
 func GolferSettings(w http.ResponseWriter, r *http.Request) {
-	render(w, r, "golfer/settings", "Settings", struct {
+	data := struct {
 		Countries map[string][]*country.Country
 		Keymaps   []string
 		TimeZones []zone.Zone
-	}{country.Tree, []string{"default", "vim"}, zone.List()})
+	}{country.Tree, []string{"default", "vim"}, zone.List()}
+
+	render(w, r, "golfer/settings", data, "Settings")
 }
 
 // GolferSettingsPost serves POST /golfer/settings

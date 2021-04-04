@@ -124,7 +124,7 @@ func init() {
 	}
 }
 
-func render(w http.ResponseWriter, r *http.Request, name, title string, data interface{}) {
+func render(w http.ResponseWriter, r *http.Request, name string, data interface{}, meta ...string) {
 	// The generated value SHOULD be at least 128 bits long (before encoding),
 	// and SHOULD be generated via a cryptographically secure random number
 	// generator - https://w3c.github.io/webappsec-csp/#security-nonces
@@ -140,30 +140,39 @@ func render(w http.ResponseWriter, r *http.Request, name, title string, data int
 	}
 
 	args := struct {
-		Countries                           map[string]*country.Country
-		CSS                                 template.CSS
-		Data                                interface{}
-		Golfer                              *golfer.Golfer
-		GolferInfo                          *golfer.GolferInfo
-		Holes                               map[string]hole.Hole
-		Langs                               map[string]lang.Lang
-		JS                                  template.JS
-		JSExt, LogInURL, Nonce, Path, Title string
-		Request                             *http.Request
-		TrophyBanner                        *trophyBanner
+		Countries                                        map[string]*country.Country
+		CSS                                              template.CSS
+		Data                                             interface{}
+		Description, JSExt, LogInURL, Nonce, Path, Title string
+		Golfer                                           *golfer.Golfer
+		GolferInfo                                       *golfer.GolferInfo
+		Holes                                            map[string]hole.Hole
+		Langs                                            map[string]lang.Lang
+		JS                                               template.JS
+		Request                                          *http.Request
+		TrophyBanner                                     *trophyBanner
 	}{
-		Countries:  country.ByID,
-		CSS:        css["base"] + css[path.Dir(name)] + css[name],
-		Data:       data,
-		Golfer:     session.Golfer(r),
-		GolferInfo: session.GolferInfo(r),
-		Holes:      hole.ByID,
-		Langs:      lang.ByID,
-		JS:         js["base"] + js[path.Dir(name)] + js[name],
-		Nonce:      base64.StdEncoding.EncodeToString(nonce),
-		Path:       r.URL.Path,
-		Request:    r,
-		Title:      title,
+		Countries:   country.ByID,
+		CSS:         css["base"] + css[path.Dir(name)] + css[name],
+		Data:        data,
+		Description: "Code Golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.",
+		Golfer:      session.Golfer(r),
+		GolferInfo:  session.GolferInfo(r),
+		Holes:       hole.ByID,
+		Langs:       lang.ByID,
+		JS:          js["base"] + js[path.Dir(name)] + js[name],
+		Nonce:       base64.StdEncoding.EncodeToString(nonce),
+		Path:        r.URL.Path,
+		Request:     r,
+		Title:       "Code Golf",
+	}
+
+	if len(meta) > 0 {
+		args.Title = meta[0]
+	}
+
+	if len(meta) > 1 {
+		args.Description = meta[1]
 	}
 
 	// Pi Day banner. TODO Generalise.

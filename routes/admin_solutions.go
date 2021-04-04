@@ -29,10 +29,12 @@ type solution struct {
 
 // AdminSolutions serves GET /admin/solutions
 func AdminSolutions(w http.ResponseWriter, r *http.Request) {
-	render(w, r, "admin/solutions", "Admin Solutions", struct {
+	data := struct {
 		Holes []hole.Hole
 		Langs []lang.Lang
-	}{hole.List, lang.List})
+	}{hole.List, lang.List}
+
+	render(w, r, "admin/solutions", data, "Admin Solutions")
 }
 
 // AdminSolutionsRun serves GET /admin/solutions/run
