@@ -79,9 +79,8 @@
             <tr>
                 <th>#
                 <th>Golfer
-            {{ if eq .Data.HoleID "all" }}
-                <th class=right>Holes
-            {{ end }}
+                <th class=right>
+                    {{ if eq .Data.HoleID "all" }}Holes{{ else }}Lang{{ end }}
                 <th class=right>Points
                 <th class=right>{{ title .Data.Scoring }}
                 <th class=right>Submitted
@@ -100,9 +99,12 @@
                     <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
                 {{ end }}
                 </a>
-        {{ if eq $.Data.HoleID "all" }}
-            <td class=right>{{ .Holes }}
-        {{ end }}
+            <td class=right>
+            {{ if eq $.Data.HoleID "all" }}
+                {{ .Holes }}
+            {{ else }}
+                {{ .Lang }}
+            {{ end }}
             <td class=right>{{ comma .Points }}
             <td class=right>{{ comma .Strokes }}
             <td class=right>{{ time .Submitted }}

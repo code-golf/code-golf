@@ -13,7 +13,7 @@ import (
 // RankingsHoles serves GET /rankings/holes/{hole}/{lang}/{scoring}
 func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 	type row struct {
-		Country, Login               string
+		Country, Lang, Login         string
 		Holes, Rank, Points, Strokes int
 		Submitted                    time.Time
 	}
@@ -68,6 +68,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 		), scored_leaderboard AS (
 		  SELECT l.hole,
 		         1 holes,
+		         lang,
 		         ROUND(
 		             (COUNT(*) OVER (PARTITION BY l.hole) -
 		                RANK() OVER (PARTITION BY l.hole ORDER BY strokes) + 1)
@@ -80,6 +81,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 		), summed_leaderboard AS (
 		  SELECT user_id,
 		         COUNT(*)       holes,
+		         ''             lang,
 		         SUM(points)    points,
 		         SUM(strokes)   strokes,
 		         MAX(submitted) submitted
@@ -87,6 +89,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 		GROUP BY user_id
 		) SELECT COALESCE(CASE WHEN show_country THEN country END, ''),
 		         holes,
+		         lang,
 		         login,
 		         points,
 		         RANK() OVER (ORDER BY points DESC, strokes),
@@ -115,6 +118,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 		if err := rows.Scan(
 			&r.Country,
 			&r.Holes,
+			&r.Lang,
 			&r.Login,
 			&r.Points,
 			&r.Rank,
@@ -124,6 +128,8 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 		); err != nil {
 			panic(err)
 		}
+
+		r.Lang = lang.ByID[r.Lang].Name
 
 		data.Rows = append(data.Rows, r)
 	}
