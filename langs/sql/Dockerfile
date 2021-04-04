@@ -4,12 +4,13 @@ RUN mkdir /empty
 
 RUN apk add --no-cache curl gcc musl-dev
 
-RUN curl https://www.sqlite.org/2021/sqlite-autoconf-3350300.tar.gz \
+RUN curl https://www.sqlite.org/2021/sqlite-autoconf-3350400.tar.gz \
   | tar --strip 1 -xzf -
 
 COPY sql.c /
 
-RUN gcc -DSQLITE_ENABLE_MATH_FUNCTIONS -static -s -o sql sql.c sqlite3.c
+RUN gcc -DSQLITE_ENABLE_MATH_FUNCTIONS -DSQLITE_THREADSAFE=0 \
+    -static -s -o sql sql.c sqlite3.c
 
 FROM scratch
 
