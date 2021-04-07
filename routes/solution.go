@@ -154,7 +154,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		// If any of the updates are record breakers, announce them on Discord
 		if len(recordUpdates) > 0 {
 			go discord.LogNewRecord(
-				golfer, hole.ByID[in.Hole], lang.ByID[in.Lang], recordUpdates,
+				golfer, hole.ByID[in.Hole], lang.ByID[in.Lang], recordUpdates, db,
 			)
 		}
 

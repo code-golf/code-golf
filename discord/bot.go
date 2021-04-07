@@ -1,6 +1,7 @@
 package discord
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"os"
@@ -99,7 +100,7 @@ func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
 
 // LogNewRecord logs a record breaking solution in Discord.
 func LogNewRecord(
-	golfer *Golfer.Golfer, hole hole.Hole, lang lang.Lang, updates []Golfer.RankUpdate,
+	golfer *Golfer.Golfer, hole hole.Hole, lang lang.Lang, updates []Golfer.RankUpdate, db *sql.DB,
 ) {
 	if bot == nil {
 		return
@@ -126,8 +127,37 @@ func LogNewRecord(
 		}
 	}
 
-	if newMessage, err := bot.ChannelMessageSendEmbed(channelID, recAnnounceToEmbed(announcement)); err != nil {
+	var prevMessage string
+	var newMessage *discordgo.Message
+	var sendErr error
+
+	if err := db.QueryRow(
+		`SELECT message FROM discord_records WHERE hole = $1 AND lang = $2`,
+		hole.ID, lang.ID,
+	).Scan(&prevMessage); err != nil {
+		newMessage, sendErr = bot.ChannelMessageSendEmbed(channelID, recAnnounceToEmbed(announcement))
+	} else {
+		newMessage, sendErr = bot.ChannelMessageSendComplex(channelID, &discordgo.MessageSend{
+			Embed: recAnnounceToEmbed(announcement),
+			Reference: &discordgo.MessageReference{
+				MessageID: prevMessage,
+				ChannelID: channelID,
+			},
+		})
+	}
+
+	if _, err := db.Query(
+		`INSERT INTO discord_records (hole, lang, message) VALUES
+			($1, $2, $3)
+			ON CONFLICT ON CONSTRAINT discord_records_pkey
+			DO UPDATE SET message = $3`,
+		hole.ID, lang.ID, newMessage.ID,
+	); err != nil {
 		log.Println(err)
+	}
+
+	if sendErr != nil {
+		log.Println(sendErr)
 	} else {
 		lastAnnouncement = announcement
 		lastAnnouncement.Message = newMessage
