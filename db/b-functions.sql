@@ -41,7 +41,9 @@ CREATE TYPE save_solution_ret AS (
     old_bytes_rank  int,
     old_chars       int,
     old_chars_joint bool,
-    old_chars_rank  int
+    old_chars_rank  int,
+    beat_bytes      int,
+    beat_chars      int
 );
 
 CREATE FUNCTION save_solution(code text, hole hole, lang lang, user_id int)
@@ -128,6 +130,22 @@ BEGIN
     ret.new_chars       := rank.strokes;
     ret.new_chars_joint := rank.joint;
     ret.new_chars_rank  := rank.rank;
+
+    IF ret.new_bytes_rank = ret.old_bytes_rank THEN
+        ret.beat_bytes = ret.old_bytes;
+    ELSE
+        SELECT MIN(code.bytes) INTO ret.beat_bytes
+            FROM solutions JOIN code ON id = solutions.code_id
+            WHERE solutions.hole = hole AND solutions.lang = lang AND code.bytes > bytes;
+    END IF;
+
+    IF ret.new_chars_rank = ret.old_chars_rank THEN
+        ret.beat_chars = ret.old_chars;
+    ELSE
+        SELECT MIN(code.chars) INTO ret.beat_chars
+            FROM solutions JOIN code ON id = solutions.code_id
+            WHERE solutions.hole = hole AND solutions.lang = lang AND code.chars > chars;
+    END IF;
 
     -- Remove any orphaned code.
     DELETE FROM code WHERE NOT EXISTS (SELECT FROM solutions WHERE id = solutions.code_id);

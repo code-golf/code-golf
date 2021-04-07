@@ -66,9 +66,9 @@ func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
 	fieldValues := make(map[string]string)
 	for _, pair := range announce.Updates {
 		for _, update := range pair {
-			if update.From.Strokes.Valid {
+			if update.Beat.Valid {
 				if fieldValues[update.Scoring] == "" {
-					fieldValues[update.Scoring] = pretty.Comma(int(update.From.Strokes.Int64))
+					fieldValues[update.Scoring] = pretty.Comma(int(update.Beat.Int64))
 				}
 				fieldValues[update.Scoring] += "  →  "
 			}
