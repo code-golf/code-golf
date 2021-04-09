@@ -2,6 +2,7 @@ package discord
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -134,9 +135,7 @@ func LogNewRecord(
 	if err := db.QueryRow(
 		`SELECT message FROM discord_records WHERE hole = $1 AND lang = $2`,
 		hole.ID, lang.ID,
-	).Scan(&prevMessage); err != nil {
-		newMessage, sendErr = bot.ChannelMessageSendEmbed(channelID, recAnnounceToEmbed(announcement))
-	} else {
+	).Scan(&prevMessage); err == nil {
 		newMessage, sendErr = bot.ChannelMessageSendComplex(channelID, &discordgo.MessageSend{
 			Embed: recAnnounceToEmbed(announcement),
 			Reference: &discordgo.MessageReference{
@@ -144,6 +143,10 @@ func LogNewRecord(
 				ChannelID: channelID,
 			},
 		})
+	} else if errors.Is(err, sql.ErrNoRows) {
+		newMessage, sendErr = bot.ChannelMessageSendEmbed(channelID, recAnnounceToEmbed(announcement))
+	} else {
+		log.Println(err)
 	}
 
 	if _, err := db.Query(
