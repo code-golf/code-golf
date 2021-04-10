@@ -56,7 +56,7 @@ func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
 	// Creating the basic embed
 	embed := &discordgo.MessageEmbed{
 		Title:  fmt.Sprintf("New 🥇 on %s in %s!", hole.Name, lang.Name),
-		URL:    "https://code.golf/scores/" + hole.ID + "/" + lang.ID + "/",
+		URL:    "https://code.golf/rankings/holes/" + hole.ID + "/" + lang.ID + "/",
 		Fields: make([]*discordgo.MessageEmbedField, 0, 2),
 		Author: &discordgo.MessageEmbedAuthor{Name: golfer.Name, IconURL: imageURL, URL: golferURL},
 	}
