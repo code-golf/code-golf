@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:5.0.201-alpine3.13 as builder
 
-ENV DOTNET_CLI_TELEMETRY_OPTOUT=1 VERSION=b531c38
+ENV DOTNET_CLI_TELEMETRY_OPTOUT=1 VERSION=e373b84
 
 RUN mkdir /empty
 
