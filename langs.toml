@@ -439,7 +439,7 @@ ForEach ($arg in $args) {
 
 [Python]
 size    = '199 MiB'
-version = '3.9.3'
+version = '3.9.4'
 website = '//www.python.org'
 example = '''
 import sys
@@ -473,7 +473,7 @@ say 'Hello, World!';
 
 [Ruby]
 size    = '14.5 MiB'
-version = '3.0.0'
+version = '3.0.1'
 website = '//www.ruby-lang.org'
 example = '''
 # Printing
