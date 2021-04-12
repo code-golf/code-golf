@@ -6,6 +6,24 @@ import (
 	"time"
 )
 
+func benchmarkTimeShort(b *testing.B, t time.Time) {
+	for n := 0; n < b.N; n++ {
+		TimeShort(t)
+	}
+}
+
+func BenchmarkTimeShortTime(b *testing.B) {
+	benchmarkTimeShort(b, time.Now())
+}
+
+func BenchmarkTimeShortDate(b *testing.B) {
+	benchmarkTimeShort(b, time.Now().Add(-24*time.Hour))
+}
+
+func BenchmarkTimeShortYear(b *testing.B) {
+	benchmarkTimeShort(b, time.Now().Add(-365*24*time.Hour))
+}
+
 func TestBytes(t *testing.T) {
 	for _, tt := range []struct {
 		want string

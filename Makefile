@@ -16,6 +16,14 @@ const twemojiWoff2Path = ""
 func Asset(w http.ResponseWriter, r *http.Request) {}
 endef
 
+bench:
+# FIXME Stub out assets if it doesn't yet exist.
+ifeq ($(wildcard routes/assets.go),)
+	$(file > routes/assets.go, $(STUB))
+endif
+
+	@go test -bench B -benchmem ./...
+
 bump:
 	@go get -u
 	@go mod tidy

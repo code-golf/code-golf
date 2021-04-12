@@ -63,13 +63,16 @@ func TimeShort(t time.Time) template.HTML {
 		post = "</time>"
 	)
 
+	// +2 because the two "2 Jan" could have a double digit day.
+	b := make([]byte, 0, len(pre)+len("2 Jan")+len(post)+2)
+
 	switch diff := time.Since(t); {
 	case diff > 365*day:
-		return template.HTML(t.Format(pre + "2006" + post))
+		return template.HTML(t.AppendFormat(b, pre+"2006"+post))
 	case diff > day:
-		return template.HTML(t.Format(pre + "2 Jan" + post))
+		return template.HTML(t.AppendFormat(b, pre+"2 Jan"+post))
 	default:
-		return template.HTML(t.Format(pre + "15:04" + post))
+		return template.HTML(t.AppendFormat(b, pre+"15:04"+post))
 	}
 }
 
