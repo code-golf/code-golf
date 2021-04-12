@@ -11,10 +11,11 @@ import (
 )
 
 var atomFeed, jsonFeed, rssFeed []byte
+var feed feeds.Feed
 
 // TZ=UTC git log --date='format-local:%Y-%m-%d %X' --format='%h %cd %s'
 func init() {
-	feed := feeds.Feed{
+	feed = feeds.Feed{
 		Link:  &feeds.Link{Href: "https://code.golf/"},
 		Title: "Code Golf",
 	}
@@ -173,6 +174,11 @@ func init() {
 	} else {
 		rssFeed = []byte(data)
 	}
+}
+
+// Feeds serves /feeds
+func Feeds(w http.ResponseWriter, r *http.Request) {
+	render(w, r, "feeds", feed, "Feeds")
 }
 
 // Feed serves /feeds/{feed}

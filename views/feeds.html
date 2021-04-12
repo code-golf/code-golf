@@ -1,0 +1,23 @@
+{{ template "header" . }}
+
+<main>
+    <h1>Feeds</h1>
+
+    <p>
+        <a href=feeds/atom>Atom</a>
+        /
+        <a href=feeds/json>JSON</a>
+        /
+        <a href=feeds/rss>RSS</a>
+
+    <ul>
+    {{ range .Data.Items }}
+        <li>
+            <h4>{{ .Title }}</h4>
+            <p>{{ time .Created }}
+            <p>{{ html .Description }}
+    {{ end }}
+    </ul>
+</main>
+
+{{ template "footer" }}

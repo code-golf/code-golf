@@ -57,6 +57,7 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 	"comma":     pretty.Comma,
 	"hasPrefix": strings.HasPrefix,
 	"hasSuffix": strings.HasSuffix,
+	"html":      func(html string) template.HTML { return template.HTML(html) },
 	"inc":       func(i int) int { return i + 1 },
 	"ord":       pretty.Ordinal,
 	"svg":       func(name string) template.HTML { return svg[name] },

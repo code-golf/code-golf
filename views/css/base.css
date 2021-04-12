@@ -120,6 +120,7 @@ footer nav {
     align-items: center;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 h1 { font-size: 1.75rem }
