@@ -7,6 +7,8 @@ import (
 )
 
 func benchmarkTimeShort(b *testing.B, t time.Time) {
+	b.Helper()
+
 	for n := 0; n < b.N; n++ {
 		TimeShort(t)
 	}
