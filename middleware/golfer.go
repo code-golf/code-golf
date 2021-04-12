@@ -17,6 +17,7 @@ func GolferHandler(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if cookie, _ := r.Cookie("__Host-session"); cookie != nil {
 			var golfer golfer.Golfer
+			var timeZone sql.NullString
 
 			if err := session.Database(r).QueryRow(
 				`WITH golfer AS (
@@ -38,7 +39,7 @@ func GolferHandler(next http.Handler) http.Handler {
 				          u.login,
 				          COALESCE(r.login, ''),
 				          u.show_country,
-				          COALESCE(u.time_zone, ''),
+				          u.time_zone,
 				          ARRAY(
 				              SELECT trophy
 				                FROM trophies
@@ -59,10 +60,10 @@ func GolferHandler(next http.Handler) http.Handler {
 				&golfer.Name,
 				&golfer.Referrer,
 				&golfer.ShowCountry,
-				&golfer.TimeZone,
+				&timeZone,
 				pq.Array(&golfer.Trophies),
 			); err == nil {
-				golfer.Location, _ = time.LoadLocation(golfer.TimeZone)
+				golfer.TimeZone, _ = time.LoadLocation(timeZone.String)
 
 				r = session.Set(r, "golfer", &golfer)
 

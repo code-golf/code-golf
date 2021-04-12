@@ -177,8 +177,8 @@ func render(w http.ResponseWriter, r *http.Request, name string, data interface{
 		args.Description = meta[1]
 	}
 
-	if args.Golfer != nil && args.Golfer.Location != nil {
-		args.Location = args.Golfer.Location
+	if args.Golfer != nil && args.Golfer.TimeZone != nil {
+		args.Location = args.Golfer.TimeZone
 	} else {
 		args.Location = time.UTC
 	}

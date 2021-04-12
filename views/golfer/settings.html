@@ -62,11 +62,13 @@
         Affects how times are displayed and might eventually affect when date
         specific trophies are awarded.
 
+        {{ $tz := "" }}
+        {{ with $.Golfer.TimeZone }}{{ $tz = .String }}{{ end }}
         <select name=time_zone>
             <option value>Rather not say
         {{- range .Data.TimeZones -}}
             <option value="{{ .Name }}"
-                {{- if eq .Name $.Golfer.TimeZone }} selected{{ end }}>
+                {{- if eq .Name $tz }} selected{{ end }}>
                 {{- . -}}
         {{- end -}}
         </select>
