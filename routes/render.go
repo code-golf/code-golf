@@ -65,6 +65,7 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 	},
 	"title":      strings.Title,
 	"time":       pretty.Time,
+	"timeShort":  pretty.TimeShort,
 	"trimPrefix": strings.TrimPrefix,
 })
 
@@ -148,6 +149,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data interface{
 		GolferInfo                                       *golfer.GolferInfo
 		Holes                                            map[string]hole.Hole
 		Langs                                            map[string]lang.Lang
+		Location                                         *time.Location
 		JS                                               template.JS
 		Request                                          *http.Request
 		TrophyBanner                                     *trophyBanner
@@ -173,6 +175,12 @@ func render(w http.ResponseWriter, r *http.Request, name string, data interface{
 
 	if len(meta) > 1 {
 		args.Description = meta[1]
+	}
+
+	if args.Golfer != nil && args.Golfer.Location != nil {
+		args.Location = args.Golfer.Location
+	} else {
+		args.Location = time.UTC
 	}
 
 	// Pi Day banner. TODO Generalise.

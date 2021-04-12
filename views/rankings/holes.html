@@ -83,7 +83,7 @@
                     {{ if eq .Data.HoleID "all" }}Holes{{ else }}Lang{{ end }}
                 <th class=right>Points
                 <th class=right>{{ title .Data.Scoring }}
-                <th class=right>Submitted
+                <th class=right>Time
         <tbody>
     {{ $name := "" }}
     {{ with .Golfer }}{{ $name = .Name }}{{ end }}
@@ -107,7 +107,7 @@
             {{ end }}
             <td class=right>{{ comma .Points }}
             <td class=right>{{ comma .Strokes }}
-            <td class=right>{{ time .Submitted }}
+            <td class=right>{{ timeShort (.Submitted.In $.Location) }}
     {{ end }}
     </table>
 

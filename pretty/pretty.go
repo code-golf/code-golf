@@ -55,6 +55,24 @@ func Ordinal(i int) string {
 	return "th"
 }
 
+// TimeShort returns an HTML <time> tag of a time.Time.
+func TimeShort(t time.Time) template.HTML {
+	const (
+		day  = 24 * time.Hour
+		pre  = `<time datetime=2006-01-02T15:04:05Z07:00 title="2 Jan 2006 15:04:05 MST">`
+		post = "</time>"
+	)
+
+	switch diff := time.Since(t); {
+	case diff > 365*day:
+		return template.HTML(t.Format(pre + "2006" + post))
+	case diff > day:
+		return template.HTML(t.Format(pre + "2 Jan" + post))
+	default:
+		return template.HTML(t.Format(pre + "15:04" + post))
+	}
+}
+
 // Time returns a fuzzy HTML <time> tag of a time.Time.
 //
 //    a min ago

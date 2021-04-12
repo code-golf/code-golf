@@ -62,6 +62,8 @@ func GolferHandler(next http.Handler) http.Handler {
 				&golfer.TimeZone,
 				pq.Array(&golfer.Trophies),
 			); err == nil {
+				golfer.Location, _ = time.LoadLocation(golfer.TimeZone)
+
 				r = session.Set(r, "golfer", &golfer)
 
 				// Refresh the cookie.

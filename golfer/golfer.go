@@ -25,6 +25,7 @@ type Golfer struct {
 	Delete                                    sql.NullTime
 	FailingSolutions                          FailingSolutions
 	ID                                        int
+	Location                                  *time.Location
 	Trophies                                  []string
 }
 
