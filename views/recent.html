@@ -54,7 +54,8 @@
                     {{ if not .TieCount }}
                         title="Shorter than previous {{ .Rank }}{{ ord .Rank }} place solutions"
                     {{ end }}>
-                    {{if eq .Rank 1}}🥇
+                    {{if and (not .TieCount) (eq .Rank 1)}}💎
+                    {{else if eq .Rank 1}}🥇
                     {{else if eq .Rank 2}}🥈
                     {{else if eq .Rank 3}}🥉
                     {{end}}
