@@ -10,8 +10,10 @@ import (
 	"github.com/gorilla/feeds"
 )
 
-var atomFeed, jsonFeed, rssFeed []byte
-var feed feeds.Feed
+var (
+	atomFeed, jsonFeed, rssFeed []byte
+	feed                        feeds.Feed
+)
 
 // TZ=UTC git log --date='format-local:%Y-%m-%d %X' --format='%h %cd %s'
 func init() {
