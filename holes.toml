@@ -1162,6 +1162,22 @@ preamble = '''
     their own line.
 '''
 
+['Odd Polyomino Tiling']
+category = 'Art'
+experiment = -1
+links = [
+    { name = 'Rectifiable polyomino page', url = 'https://cflmath.com/Polyomino/rectifiable_data.html' },
+    { name = 'Wikipedia Polyomino Page',   url = 'https://en.wikipedia.org/wiki/Polyomino' },
+]
+preamble = '''
+<p>
+    A polyomino is called rectifiable if there exists a rectangle that can be
+    tiled with the copies of the polyomino. It is even more challenging to
+    find a so-called odd tiling for a given polyomino, especially covered
+    rectangles with minimal size.
+
+'''
+
 ['Odious Numbers']
 category = 'Sequence'
 links = [
