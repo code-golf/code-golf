@@ -1164,6 +1164,7 @@ preamble = '''
 
 ['Odd Polyomino Tiling']
 category = 'Art'
+experiment = -1
 links = [
     { name = 'Rectifiable polyomino page', url = 'https://cflmath.com/Polyomino/rectifiable_data.html' },
     { name = 'Wikipedia Polyomino Page',   url = 'https://en.wikipedia.org/wiki/Polyomino' },
