@@ -115,13 +115,12 @@ func init() {
 			name = lang.ByID[i.id].Name
 		}
 
-		link := "https://code.golf/"
-
-		if !i.hole {
-			link += "scores/all-holes/"
+		var link string
+		if i.hole {
+			link = "https://code.golf/" + i.id
+		} else {
+			link = "https://code.golf/rankings/holes/all/" + i.id + "/bytes"
 		}
-
-		link += i.id
 
 		item := feeds.Item{
 			Description: "Added the <a href=" + link + ">“" + html.EscapeString(name) + "”</a> ",

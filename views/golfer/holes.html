@@ -39,8 +39,8 @@
             {{ $rank0 := index (index (index $.Data.Ranks 0) $hole.ID) $lang.ID }}
             {{ $rank1 := index (index (index $.Data.Ranks 1) $hole.ID) $lang.ID }}
             <a class="{{ $lang.ID }} {{ colour . }}"
-                href="/scores/{{ $hole.ID }}/{{ $lang.ID }}/{{ $scoring }}"
-                data-tooltip="{{ title (index $scorings 0) }} rank is {{ $rank0 }}{{ ord $rank0 }}, {{ title (index $scorings 1) }} rank is {{ $rank1 }}{{ ord $rank1 }}. View scores of {{ $hole.Name }} in {{ $lang.Name }}."
+                href="/rankings/holes/{{ $hole.ID }}/{{ $lang.ID }}/{{ $scoring }}"
+                data-tooltip="{{ title (index $scorings 0) }} rank is {{ $rank0 }}{{ ord $rank0 }}, {{ title (index $scorings 1) }} rank is {{ $rank1 }}{{ ord $rank1 }}. View rankings of {{ $hole.Name }} in {{ $lang.Name }}."
                 data-wide-tooltip=true>
                 <svg><use href="#{{ $lang.ID }}"/></svg>
                 <span>{{ . }}<sup>{{ ord . }}</sup></span>

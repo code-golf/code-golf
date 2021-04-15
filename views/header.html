@@ -52,7 +52,7 @@
         <a {{ if not (hasPrefix .Path "/recent/") }} href=/recent/all-langs title="Recent Solutions" {{ end }}>
             {{ svg "clock" }}
         </a>
-        <a {{ if not (hasPrefix .Path "/scores/") }} href=/scores/all-holes/all-langs/bytes title=Scores {{ end }}>
+        <a {{ if not (hasPrefix .Path "/rankings/") }} href=/rankings/holes/all/all/bytes title=Rankings {{ end }}>
             {{ svg "trophy" }}
         </a>
         <a {{ if ne .Path "/stats" }} href=/stats title=Statistics {{ end }}>

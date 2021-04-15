@@ -290,13 +290,13 @@ async function refreshScores() {
         }
     }
 
-    const url    = `/scores/${hole}/${lang}/${scorings[scoring].toLowerCase()}`;
-    const res    = await fetch(`${url}/mini`);
+    const path   = `/${hole}/${lang}/${scorings[scoring].toLowerCase()}`;
+    const res    = await fetch(`/scores${path}/mini`);
     const scores = res.ok ? await res.json() : [];
 
     let html = '<thead><tr><th colspan=4><nav class=tabs>' +
         scorings.map(s => `<a id=${s}>${s}</a>`).join('') +
-        `</nav><a href=${url}>All</a><tbody>`;
+        `</nav><a href=/rankings/holes${path}>All</a><tbody>`;
 
     // Ordinal from https://codegolf.stackexchange.com/a/119563
     for (let i = 0; i < 7; i++) {
