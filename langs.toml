@@ -173,8 +173,8 @@ let main args =
 '''
 
 [Fortran]
-size    = '85.6 MiB'
-version = 'GNU Fortran 10.2.0'
+size    = '85.8 MiB'
+version = 'GNU Fortran 10.3.0'
 website = '//gcc.gnu.org/fortran/'
 example = '''
 character(len=32) :: s

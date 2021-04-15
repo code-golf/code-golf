@@ -7,7 +7,7 @@ RUN apk add --no-cache curl g++ libexecinfo-dev \
 
 WORKDIR /src
 
-RUN curl -L ftp://ftp.gnu.org/gnu/gcc/gcc-10.2.0/gcc-10.2.0.tar.xz      | tar xJf - \
+RUN curl -L ftp://ftp.gnu.org/gnu/gcc/gcc-10.3.0/gcc-10.3.0.tar.xz      | tar xJf - \
  && curl -L ftp://gcc.gnu.org/pub/gcc/infrastructure/gmp-6.1.0.tar.bz2  | tar xjf - \
  && curl -L ftp://gcc.gnu.org/pub/gcc/infrastructure/mpfr-3.1.4.tar.bz2 | tar xjf - \
  && curl -L ftp://gcc.gnu.org/pub/gcc/infrastructure/mpc-1.0.3.tar.gz   | tar xzf -
@@ -26,7 +26,7 @@ RUN cd /src/mpc-1.0.3 \
 
 WORKDIR /scratch
 
-RUN /src/gcc-10.2.0/configure     \
+RUN /src/gcc-10.3.0/configure     \
     --disable-bootstrap           \
     --disable-gcov                \
     --disable-libgomp             \
@@ -44,7 +44,7 @@ RUN /src/gcc-10.2.0/configure     \
  && make -j`nproc`                \
  && make install                  \
  && strip /usr/local/bin/gfortran \
-    /usr/local/libexec/gcc/x86_64-pc-linux-musl/10.2.0/f951
+    /usr/local/libexec/gcc/x86_64-pc-linux-musl/10.3.0/f951
 
 FROM scratch
 
@@ -63,8 +63,8 @@ COPY --from=0 /usr/lib/crt1.o               \
 COPY --from=0 /usr/local/bin/gfortran       /usr/local/bin/
 COPY --from=0 /usr/local/lib                /usr/local/lib
 COPY --from=0 /usr/local/lib64              /usr/local/lib64
-COPY --from=0 /usr/local/libexec/gcc/x86_64-pc-linux-musl/10.2.0/f951 \
-              /usr/local/libexec/gcc/x86_64-pc-linux-musl/10.2.0/
+COPY --from=0 /usr/local/libexec/gcc/x86_64-pc-linux-musl/10.3.0/f951 \
+              /usr/local/libexec/gcc/x86_64-pc-linux-musl/10.3.0/
 COPY --from=0 /empty                        /proc
 COPY --from=0 /empty                        /tmp
 
