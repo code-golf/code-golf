@@ -9,6 +9,39 @@ servers:
   - url: https://code.golf/api
 
 paths:
+  /langs:
+    get:
+      tags: [languages]
+      summary: Get all languages
+      responses:
+        '200':
+          description: A list of languages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Language'
+
+  /langs/{id}:
+    get:
+      parameters:
+        - name: id
+          description: Language ID
+          in: path
+          required: true
+          schema:
+            type: string
+      tags: [languages]
+      summary: Get a language by ID
+      responses:
+        '200':
+          description: A single language
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Language'
+
   /suggestions/golfers:
     get:
       parameters:
@@ -17,8 +50,7 @@ paths:
           in: query
           schema:
             type: string
-      tags:
-        - suggestions
+      tags: [suggestions]
       summary: Returns a list of matching golfers, limited to 10
       responses:
         '200':
@@ -29,3 +61,22 @@ paths:
                 type: array
                 items:
                   type: string
+
+components:
+  schemas:
+    Language:
+      type: object
+      properties:
+        example:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        size:
+          type: string
+        version:
+          type: string
+        website:
+          type: string
+          format: uri

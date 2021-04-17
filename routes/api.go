@@ -2,8 +2,10 @@ package routes
 
 import (
 	_ "embed"
+	"encoding/json"
 	"net/http"
 
+	"github.com/code-golf/code-golf/lang"
 	"github.com/code-golf/code-golf/session"
 )
 
@@ -12,6 +14,26 @@ var yml []byte
 
 // API serves GET /api
 func API(w http.ResponseWriter, r *http.Request) { w.Write(yml) }
+
+// APILangs serves GET /api/langs
+func APILangs(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(lang.List); err != nil {
+		panic(err)
+	}
+}
+
+// APILang serves GET /api/langs/{lang}
+func APILang(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	if l := lang.ByID[param(r, "lang")]; l.ID == "" {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte{'{', '}'})
+	} else if err := json.NewEncoder(w).Encode(l); err != nil {
+		panic(err)
+	}
+}
 
 // APISuggestionsGolfers serves GET /api/suggestions/golfers
 func APISuggestionsGolfers(w http.ResponseWriter, r *http.Request) {

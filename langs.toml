@@ -1,7 +1,7 @@
 ['><>']
 size    = '473 KiB'
 version = '44b227e'
-website = '//github.com/primo-ppcg/fish-jit'
+website = 'https://github.com/primo-ppcg/fish-jit'
 example = '''
 \ printing
 > "!dlroW ,olleH" ooooooooooooo ao 03.
@@ -20,7 +20,7 @@ v               ~<
 [Bash]
 size    = '1.15 MiB'
 version = '5.1.4'
-website = '//www.gnu.org/software/bash/'
+website = 'https://www.gnu.org/software/bash/'
 example = '''
 # Printing
 echo Hello, World!
@@ -39,7 +39,7 @@ done
 [brainfuck]
 size    = '1.62 MiB'
 version = '1.0.0'
-website = '//github.com/code-golf/code-golf/tree/master/langs/brainfuck/'
+website = 'https://github.com/code-golf/code-golf/tree/master/langs/brainfuck/'
 example = '''
 >>Printing
 +[-->-[>>+>-----<<]<--<---]>-.>>>+.>>..+++[.>]<<<<.+++.------.<<-.>>>>+.[<->-]<-.>
@@ -61,7 +61,7 @@ example = '''
 [C]
 size    = '1.61 MiB'
 version = 'Tiny C Compiler 0.9.27'
-website = '//bellard.org/tcc/'
+website = 'https://bellard.org/tcc/'
 example = '''
 #include <stdio.h>
 
@@ -84,7 +84,7 @@ int main(int argc, char* argv[]) {
 ['C#']
 size    = '129 MiB'
 version = 'C# 9.0 on .NET 5.0.4'
-website = '//docs.microsoft.com/dotnet/csharp/'
+website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 using System;
 
@@ -103,7 +103,7 @@ foreach (String arg in args)
 [COBOL]
 size    = '4.09 MiB'
 version = 'GnuCOBOL 3.1.2.0'
-website = '//gnucobol.sourceforge.io'
+website = 'https://gnucobol.sourceforge.io'
 example = '''
 program-id.example.
 
@@ -135,7 +135,7 @@ end-program.
 [Crystal]
 size    = '284 MiB'
 version = '1.0.0'
-website = '//crystal-lang.org'
+website = 'https://crystal-lang.org'
 example = '''
 # Printing
 puts "Hello, World!"
@@ -154,7 +154,7 @@ end
 ['F#']
 size    = '119 MiB'
 version = 'F# 5.0 on .NET 5.0.4'
-website = '//fsharp.org'
+website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
 let main args =
@@ -175,7 +175,7 @@ let main args =
 [Fortran]
 size    = '85.8 MiB'
 version = 'GNU Fortran 10.3.0'
-website = '//gcc.gnu.org/fortran/'
+website = 'https://gcc.gnu.org/fortran/'
 example = '''
 character(len=32) :: s
 integer :: i
@@ -201,7 +201,7 @@ end
 [Go]
 size    = '124 MiB'
 version = '1.16.3'
-website = '//go.dev'
+website = 'https://go.dev'
 example = '''
 package main
 
@@ -229,7 +229,7 @@ func main() {
 [Haskell]
 size    = '332 MiB'
 version = 'Glasgow Haskell Compiler 8.8.4'
-website = '//www.haskell.org/ghc/'
+website = 'https://www.haskell.org/ghc/'
 example = '''
 import System.Environment
 
@@ -248,7 +248,7 @@ main = do
 [Hexagony]
 size    = '62.6 MiB'
 version = 'e373b84'
-website = '//github.com/SirBogman/Hexagony'
+website = 'https://github.com/SirBogman/Hexagony'
 example = '''
           \ P r i n t i n g .
          \ H ; e ; l ; ; o ; \
@@ -274,7 +274,7 @@ example = '''
 [J]
 size    = '3.32 MiB'
 version = '9.01.01'
-website = '//www.jsoftware.com'
+website = 'https://www.jsoftware.com'
 example = '''
 NB.Printing
 echo'Hello, World!'
@@ -289,7 +289,7 @@ echo each 2}.ARGV
 [Java]
 size    = '69.2 MiB'
 version = '16'
-website = '//openjdk.java.net'
+website = 'https://openjdk.java.net'
 example = '''
 class Main {
     public static void main(String[] args) {
@@ -310,7 +310,7 @@ class Main {
 [JavaScript]
 size    = '21.6 MiB'
 version = 'V8 8.8.278.17'
-website = '//v8.dev'
+website = 'https://v8.dev'
 example = '''
 // Printing
 print("Hello, World!");
@@ -327,7 +327,7 @@ for (let arg of arguments)
 [Julia]
 size    = '287 MiB'
 version = '1.6.0'
-website = '//julialang.org'
+website = 'https://julialang.org'
 example = '''
 # Printing
 println("Hello, World!")
@@ -346,12 +346,12 @@ end
 [Lisp]
 size    = '33.6 MiB'
 version = 'GNU CLISP 2.49.92'
-website = '//clisp.sourceforge.io'
+website = 'https://clisp.sourceforge.io'
 
 [Lua]
 size    = '338 KiB'
 version = '5.4.3'
-website = '//www.lua.org'
+website = 'https://www.lua.org'
 example = '''
 -- Printing
 print("Hello, World!")
@@ -370,7 +370,7 @@ end
 [Nim]
 size    = '21.6 MiB'
 version = '1.4.4'
-website = '//nim-lang.org'
+website = 'https://nim-lang.org'
 example = '''
 import os
 
@@ -389,7 +389,7 @@ for arg in commandLineParams():
 [Perl]
 size    = '4.29 MiB'
 version = '5.32.1'
-website = '//www.perl.org'
+website = 'https://www.perl.org'
 example = '''
 # Printing
 say 'Hello, World!';
@@ -404,7 +404,7 @@ say for @ARGV;
 [PHP]
 size    = '10.5 MiB'
 version = '7.4.16'
-website = '//www.php.net'
+website = 'https://www.php.net'
 example = '''
 # Printing
 echo "Hello, World!\n";
@@ -421,7 +421,7 @@ while ($arg = next($argv))
 [PowerShell]
 size    = '185 MiB'
 version = 'PowerShell 7.1.3 on .NET 5.0.4'
-website = '//docs.microsoft.com/powershell/scripting/overview'
+website = 'https://docs.microsoft.com/powershell/scripting/overview'
 example = '''
 # Printing
 Write-Host 'Hello, World!'
@@ -440,7 +440,7 @@ ForEach ($arg in $args) {
 [Python]
 size    = '199 MiB'
 version = '3.9.4'
-website = '//www.python.org'
+website = 'https://www.python.org'
 example = '''
 import sys
 
@@ -459,7 +459,7 @@ for arg in sys.argv[1:]:
 [Raku]
 size    = '53.7 MiB'
 version = 'Raku 6.d on Rakudo 2021.03'
-website = '//raku.org'
+website = 'https://raku.org'
 example = '''
 # Printing
 say 'Hello, World!';
@@ -474,7 +474,7 @@ say 'Hello, World!';
 [Ruby]
 size    = '14.5 MiB'
 version = '3.0.1'
-website = '//www.ruby-lang.org'
+website = 'https://www.ruby-lang.org'
 example = '''
 # Printing
 puts 'Hello, World!'
@@ -493,7 +493,7 @@ end
 [Rust]
 size    = '661 MiB'
 version = '1.51.0'
-website = '//www.rust-lang.org'
+website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
     // Printing
@@ -514,7 +514,7 @@ fn main() {
 [SQL]
 size    = '1.02 MiB'
 version = '3.35.4'
-website = '//sqlite.org/index.html'
+website = 'https://sqlite.org/index.html'
 example = '''
 -- Printing
 SELECT 'Hello, World!'
@@ -541,7 +541,7 @@ SELECT arg FROM argv
 [Swift]
 size    = '870 MiB'
 version = '5.3.3'
-website = '//swift.org'
+website = 'https://swift.org'
 example = '''
 // Printing
 print("Hello, World!")
@@ -560,7 +560,7 @@ for arg in CommandLine.arguments[1...] {
 [V]
 size    = '98.1 MiB'
 version = '0.2.2'
-website = '//vlang.io'
+website = 'https://vlang.io'
 example = '''
 import os
 
@@ -581,7 +581,7 @@ for arg in os.args[1..] {
 [Zig]
 size    = '216 MiB'
 version = '0.7.0'
-website = '//ziglang.org'
+website = 'https://ziglang.org'
 example = '''
 const std = @import("std");
 

@@ -56,6 +56,8 @@ func main() {
 	r.Route("/api", func(r chi.Router) {
 		r.Use(middleware.API)
 		r.Get("/", routes.API)
+		r.Get("/langs", routes.APILangs)
+		r.Get("/langs/{lang}", routes.APILang)
 		r.Get("/suggestions/golfers", routes.APISuggestionsGolfers)
 	})
 	r.Get("/assets/{asset}", routes.Asset)

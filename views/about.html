@@ -36,7 +36,7 @@
                 </header>
                 <div>{{ .Version }}</div>
                 <a href="{{ .Website }}">
-                    {{ trimPrefix (trimPrefix .Website "//") "www." }}
+                    {{ trimPrefix (trimPrefix .Website "https://") "www." }}
                 </a>
             </section>
         {{ end }}
