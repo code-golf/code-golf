@@ -80,7 +80,7 @@ func ScoresMini(w http.ResponseWriter, r *http.Request) {
 	w.Write(json)
 }
 
-// Scores serves GET /scores/all-holes/all-langs/all
+// Scores serves GET /scores/{hole}/{lang}/all
 func ScoresAll(w http.ResponseWriter, r *http.Request) {
 	var json []byte
 
@@ -97,7 +97,11 @@ func ScoresAll(w http.ResponseWriter, r *http.Request) {
 		      JOIN code  ON code_id = code.id
 		      JOIN users ON user_id = users.id
 		     WHERE NOT failing
+		       AND $1 IN ('all-holes', hole::text)
+		       AND $2 IN ('all-langs', lang::text)
 		) SELECT COALESCE(JSON_AGG(solution_lengths), '[]') FROM solution_lengths`,
+		param(r, "hole"),
+		param(r, "lang"),
 	).Scan(&json); err != nil {
 		panic(err)
 	}
