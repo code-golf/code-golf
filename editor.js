@@ -36,6 +36,7 @@ import { swift }       from '@codemirror/legacy-modes/mode/swift';
 export { EditorState, EditorView };
 
 export const extensions = [
+    EditorView.lineWrapping,
     bracketMatching(),
     closeBrackets(),
     defaultHighlightStyle,

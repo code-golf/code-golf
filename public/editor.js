@@ -485,13 +485,13 @@ var Line = class {
 
 // node_modules/@codemirror/state/dist/index.js
 var DefaultSplit = /\r\n?|\n/;
-var MapMode;
-(function(MapMode2) {
+var MapMode = /* @__PURE__ */ function(MapMode2) {
   MapMode2[MapMode2["Simple"] = 0] = "Simple";
   MapMode2[MapMode2["TrackDel"] = 1] = "TrackDel";
   MapMode2[MapMode2["TrackBefore"] = 2] = "TrackBefore";
   MapMode2[MapMode2["TrackAfter"] = 3] = "TrackAfter";
-})(MapMode || (MapMode = {}));
+  return MapMode2;
+}(MapMode || (MapMode = {}));
 var ChangeDesc = class {
   constructor(sections) {
     this.sections = sections;
@@ -1185,7 +1185,7 @@ function maybeIndex(state, id2) {
   let found = state.config.address[id2];
   return found == null ? null : found >> 1;
 }
-var initField = Facet.define({static: true});
+var initField = /* @__PURE__ */ Facet.define({static: true});
 var StateField = class {
   constructor(id2, createF, updateF, compareF, spec) {
     this.id = id2;
@@ -1240,10 +1240,10 @@ function prec(value) {
   return (ext) => new PrecExtension(ext, value);
 }
 var Prec = {
-  fallback: prec(Prec_.fallback),
-  default: prec(Prec_.default),
-  extend: prec(Prec_.extend),
-  override: prec(Prec_.override)
+  fallback: /* @__PURE__ */ prec(Prec_.fallback),
+  default: /* @__PURE__ */ prec(Prec_.default),
+  extend: /* @__PURE__ */ prec(Prec_.extend),
+  override: /* @__PURE__ */ prec(Prec_.override)
 };
 var PrecExtension = class {
   constructor(inner, prec2) {
@@ -1389,18 +1389,18 @@ function ensureAddr(state, addr) {
 function getAddr(state, addr) {
   return addr & 1 ? state.config.staticValues[addr >> 1] : state.values[addr >> 1];
 }
-var languageData = Facet.define();
-var allowMultipleSelections = Facet.define({
+var languageData = /* @__PURE__ */ Facet.define();
+var allowMultipleSelections = /* @__PURE__ */ Facet.define({
   combine: (values) => values.some((v) => v),
   static: true
 });
-var lineSeparator = Facet.define({
+var lineSeparator = /* @__PURE__ */ Facet.define({
   combine: (values) => values.length ? values[0] : void 0,
   static: true
 });
-var changeFilter = Facet.define();
-var transactionFilter = Facet.define();
-var transactionExtender = Facet.define();
+var changeFilter = /* @__PURE__ */ Facet.define();
+var transactionFilter = /* @__PURE__ */ Facet.define();
+var transactionExtender = /* @__PURE__ */ Facet.define();
 var Annotation = class {
   constructor(type2, value) {
     this.type = type2;
@@ -1450,8 +1450,8 @@ var StateEffect = class {
     return result;
   }
 };
-StateEffect.reconfigure = StateEffect.define();
-StateEffect.appendConfig = StateEffect.define();
+StateEffect.reconfigure = /* @__PURE__ */ StateEffect.define();
+StateEffect.appendConfig = /* @__PURE__ */ StateEffect.define();
 var Transaction = class {
   constructor(startState, changes, selection, effects, annotations, scrollIntoView2) {
     this.startState = startState;
@@ -1491,9 +1491,10 @@ var Transaction = class {
     return this.startState.config != this.state.config;
   }
 };
-Transaction.time = Annotation.define();
-Transaction.userEvent = Annotation.define();
-Transaction.addToHistory = Annotation.define();
+Transaction.time = /* @__PURE__ */ Annotation.define();
+Transaction.userEvent = /* @__PURE__ */ Annotation.define();
+Transaction.addToHistory = /* @__PURE__ */ Annotation.define();
+Transaction.remote = /* @__PURE__ */ Annotation.define();
 function joinRanges(a, b) {
   let result = [];
   for (let iA = 0, iB = 0; ; ) {
@@ -1604,16 +1605,16 @@ var none = [];
 function asArray(value) {
   return value == null ? none : Array.isArray(value) ? value : [value];
 }
-var CharCategory;
-(function(CharCategory2) {
+var CharCategory = /* @__PURE__ */ function(CharCategory2) {
   CharCategory2[CharCategory2["Word"] = 0] = "Word";
   CharCategory2[CharCategory2["Space"] = 1] = "Space";
   CharCategory2[CharCategory2["Other"] = 2] = "Other";
-})(CharCategory || (CharCategory = {}));
+  return CharCategory2;
+}(CharCategory || (CharCategory = {}));
 var nonASCIISingleCaseWordChar = /[\u00df\u0587\u0590-\u05f4\u0600-\u06ff\u3040-\u309f\u30a0-\u30ff\u3400-\u4db5\u4e00-\u9fcc\uac00-\ud7af]/;
 var wordChar;
 try {
-  wordChar = new RegExp("[\\p{Alphabetic}\\p{Number}_]", "u");
+  wordChar = /* @__PURE__ */ new RegExp("[\\p{Alphabetic}\\p{Number}_]", "u");
 } catch (_) {
 }
 function hasWordChar(str) {
@@ -1805,18 +1806,36 @@ var EditorState = class {
   charCategorizer(at) {
     return makeCategorizer(this.languageDataAt("wordChars", at).join(""));
   }
+  wordAt(pos) {
+    let {text, from, length} = this.doc.lineAt(pos);
+    let cat = this.charCategorizer(pos);
+    let start = pos - from, end = pos - from;
+    while (start > 0) {
+      let prev = findClusterBreak(text, start, false);
+      if (cat(text.slice(prev, start)) != CharCategory.Word)
+        break;
+      start = prev;
+    }
+    while (end < length) {
+      let next = findClusterBreak(text, end);
+      if (cat(text.slice(end, next)) != CharCategory.Word)
+        break;
+      end = next;
+    }
+    return start == end ? EditorSelection.range(start + from, end + from) : null;
+  }
 };
 EditorState.allowMultipleSelections = allowMultipleSelections;
-EditorState.tabSize = Facet.define({
+EditorState.tabSize = /* @__PURE__ */ Facet.define({
   combine: (values) => values.length ? values[0] : 4
 });
 EditorState.lineSeparator = lineSeparator;
-EditorState.phrases = Facet.define();
+EditorState.phrases = /* @__PURE__ */ Facet.define();
 EditorState.languageData = languageData;
 EditorState.changeFilter = changeFilter;
 EditorState.transactionFilter = transactionFilter;
 EditorState.transactionExtender = transactionExtender;
-Compartment.reconfigure = StateEffect.define();
+Compartment.reconfigure = /* @__PURE__ */ StateEffect.define();
 function combineConfig(configs, defaults4, combine = {}) {
   let result = {};
   for (let config2 of configs)
@@ -2657,27 +2676,27 @@ function keyName(event) {
 
 // node_modules/@codemirror/view/dist/index.js
 var [nav, doc] = typeof navigator != "undefined" ? [navigator, document] : [{userAgent: "", vendor: "", platform: ""}, {documentElement: {style: {}}}];
-var ie_edge = /Edge\/(\d+)/.exec(nav.userAgent);
-var ie_upto10 = /MSIE \d/.test(nav.userAgent);
-var ie_11up = /Trident\/(?:[7-9]|\d{2,})\..*rv:(\d+)/.exec(nav.userAgent);
+var ie_edge = /* @__PURE__ */ /Edge\/(\d+)/.exec(nav.userAgent);
+var ie_upto10 = /* @__PURE__ */ /MSIE \d/.test(nav.userAgent);
+var ie_11up = /* @__PURE__ */ /Trident\/(?:[7-9]|\d{2,})\..*rv:(\d+)/.exec(nav.userAgent);
 var ie2 = !!(ie_upto10 || ie_11up || ie_edge);
-var gecko2 = !ie2 && /gecko\/(\d+)/i.test(nav.userAgent);
-var chrome2 = !ie2 && /Chrome\/(\d+)/.exec(nav.userAgent);
+var gecko2 = !ie2 && /* @__PURE__ */ /gecko\/(\d+)/i.test(nav.userAgent);
+var chrome2 = !ie2 && /* @__PURE__ */ /Chrome\/(\d+)/.exec(nav.userAgent);
 var webkit = "webkitFontSmoothing" in doc.documentElement.style;
-var safari2 = !ie2 && /Apple Computer/.test(nav.vendor);
+var safari2 = !ie2 && /* @__PURE__ */ /Apple Computer/.test(nav.vendor);
 var browser = {
-  mac: /Mac/.test(nav.platform),
+  mac: /* @__PURE__ */ /Mac/.test(nav.platform),
   ie: ie2,
   ie_version: ie_upto10 ? doc.documentMode || 6 : ie_11up ? +ie_11up[1] : ie_edge ? +ie_edge[1] : 0,
   gecko: gecko2,
-  gecko_version: gecko2 ? +(/Firefox\/(\d+)/.exec(nav.userAgent) || [0, 0])[1] : 0,
+  gecko_version: gecko2 ? +(/* @__PURE__ */ /Firefox\/(\d+)/.exec(nav.userAgent) || [0, 0])[1] : 0,
   chrome: !!chrome2,
   chrome_version: chrome2 ? +chrome2[1] : 0,
-  ios: safari2 && (/Mobile\/\w+/.test(nav.userAgent) || nav.maxTouchPoints > 2),
-  android: /Android\b/.test(nav.userAgent),
+  ios: safari2 && (/* @__PURE__ */ /Mobile\/\w+/.test(nav.userAgent) || nav.maxTouchPoints > 2),
+  android: /* @__PURE__ */ /Android\b/.test(nav.userAgent),
   webkit,
   safari: safari2,
-  webkit_version: webkit ? +(/\bAppleWebKit\/(\d+)/.exec(navigator.userAgent) || [0, 0])[1] : 0,
+  webkit_version: webkit ? +(/* @__PURE__ */ /\bAppleWebKit\/(\d+)/.exec(navigator.userAgent) || [0, 0])[1] : 0,
   tabSize: doc.documentElement.style.tabSize != null ? "tab-size" : "-moz-tab-size"
 };
 function getSelection(root) {
@@ -2689,11 +2708,14 @@ function selectionCollapsed(domSel) {
     collapsed = false;
   return collapsed;
 }
+function contains(dom, node) {
+  return node ? dom.contains(node.nodeType != 1 ? node.parentNode : node) : false;
+}
 function hasSelection(dom, selection) {
   if (!selection.anchorNode)
     return false;
   try {
-    return dom.contains(selection.anchorNode.nodeType == 3 ? selection.anchorNode.parentNode : selection.anchorNode);
+    return contains(dom, selection.anchorNode);
   } catch (_) {
     return false;
   }
@@ -3495,13 +3517,13 @@ var WidgetType = class {
     return null;
   }
 };
-var BlockType;
-(function(BlockType2) {
+var BlockType = /* @__PURE__ */ function(BlockType2) {
   BlockType2[BlockType2["Text"] = 0] = "Text";
   BlockType2[BlockType2["WidgetBefore"] = 1] = "WidgetBefore";
   BlockType2[BlockType2["WidgetAfter"] = 2] = "WidgetAfter";
   BlockType2[BlockType2["WidgetRange"] = 3] = "WidgetRange";
-})(BlockType || (BlockType = {}));
+  return BlockType2;
+}(BlockType || (BlockType = {}));
 var Decoration = class extends RangeValue {
   constructor(startSide, endSide, widget, spec) {
     super();
@@ -3925,12 +3947,12 @@ var NullWidget = class extends WidgetType {
   }
 };
 var none2 = [];
-var clickAddsSelectionRange = Facet.define();
-var dragMovesSelection$1 = Facet.define();
-var mouseSelectionStyle = Facet.define();
-var exceptionSink = Facet.define();
-var updateListener = Facet.define();
-var inputHandler = Facet.define();
+var clickAddsSelectionRange = /* @__PURE__ */ Facet.define();
+var dragMovesSelection$1 = /* @__PURE__ */ Facet.define();
+var mouseSelectionStyle = /* @__PURE__ */ Facet.define();
+var exceptionSink = /* @__PURE__ */ Facet.define();
+var updateListener = /* @__PURE__ */ Facet.define();
+var inputHandler = /* @__PURE__ */ Facet.define();
 function logException(state, exception, context) {
   let handler = state.facet(exceptionSink);
   if (handler.length)
@@ -3942,7 +3964,7 @@ function logException(state, exception, context) {
   else
     console.error(exception);
 }
-var editable = Facet.define({combine: (values) => values.length ? values[0] : true});
+var editable = /* @__PURE__ */ Facet.define({combine: (values) => values.length ? values[0] : true});
 var PluginFieldProvider = class {
   constructor(field, get) {
     this.field = field;
@@ -3957,10 +3979,10 @@ var PluginField = class {
     return new PluginField();
   }
 };
-PluginField.decorations = PluginField.define();
-PluginField.scrollMargins = PluginField.define();
+PluginField.decorations = /* @__PURE__ */ PluginField.define();
+PluginField.scrollMargins = /* @__PURE__ */ PluginField.define();
 var nextPluginID = 0;
-var viewPlugin = Facet.define();
+var viewPlugin = /* @__PURE__ */ Facet.define();
 var ViewPlugin = class {
   constructor(id2, create, fields) {
     this.id = id2;
@@ -3984,7 +4006,7 @@ var ViewPlugin = class {
     return ViewPlugin.define((view) => new cls(view), spec);
   }
 };
-var domEventHandlers = PluginField.define();
+var domEventHandlers = /* @__PURE__ */ PluginField.define();
 var PluginInstance = class {
   constructor(spec) {
     this.spec = spec;
@@ -4034,15 +4056,15 @@ var PluginInstance = class {
     }
   }
 };
-PluginInstance.dummy = new PluginInstance(ViewPlugin.define(() => ({})));
-var editorAttributes = Facet.define({
+PluginInstance.dummy = /* @__PURE__ */ new PluginInstance(/* @__PURE__ */ ViewPlugin.define(() => ({})));
+var editorAttributes = /* @__PURE__ */ Facet.define({
   combine: (values) => values.reduce((a, b) => combineAttrs(b, a), {})
 });
-var contentAttributes = Facet.define({
+var contentAttributes = /* @__PURE__ */ Facet.define({
   combine: (values) => values.reduce((a, b) => combineAttrs(b, a), {})
 });
-var decorations = Facet.define();
-var styleModule = Facet.define();
+var decorations = /* @__PURE__ */ Facet.define();
+var styleModule = /* @__PURE__ */ Facet.define();
 var ChangedRange = class {
   constructor(fromA, toA, fromB, toB) {
     this.fromA = fromA;
@@ -4569,11 +4591,11 @@ function findChangedDeco(a, b, diff) {
   RangeSet.compare(a, b, diff, comp);
   return comp.changes;
 }
-var Direction;
-(function(Direction2) {
+var Direction = /* @__PURE__ */ function(Direction2) {
   Direction2[Direction2["LTR"] = 0] = "LTR";
   Direction2[Direction2["RTL"] = 1] = "RTL";
-})(Direction || (Direction = {}));
+  return Direction2;
+}(Direction || (Direction = {}));
 var LTR = Direction.LTR;
 var RTL = Direction.RTL;
 function dec(str) {
@@ -4582,8 +4604,15 @@ function dec(str) {
     result.push(1 << +str[i]);
   return result;
 }
-var LowTypes = dec("88888888888888888888888888888888888666888888787833333333337888888000000000000000000000000008888880000000000000000000000000088888888888888888888888888888888888887866668888088888663380888308888800000000000000000000000800000000000000000000000000000008");
-var ArabicTypes = dec("4444448826627288999999999992222222222222222222222222222222222222222222222229999999999999999999994444444444644222822222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222999999949999999229989999223333333333");
+var LowTypes = /* @__PURE__ */ dec("88888888888888888888888888888888888666888888787833333333337888888000000000000000000000000008888880000000000000000000000000088888888888888888888888888888888888887866668888088888663380888308888800000000000000000000000800000000000000000000000000000008");
+var ArabicTypes = /* @__PURE__ */ dec("4444448826627288999999999992222222222222222222222222222222222222222222222229999999999999999999994444444444644222822222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222999999949999999229989999223333333333");
+var Brackets = /* @__PURE__ */ Object.create(null);
+var BracketStack = [];
+for (let p of ["()", "[]", "{}"]) {
+  let l = /* @__PURE__ */ p.charCodeAt(0), r = /* @__PURE__ */ p.charCodeAt(1);
+  Brackets[l] = r;
+  Brackets[r] = -l;
+}
 function charType(ch) {
   return ch <= 247 ? LowTypes[ch] : 1424 <= ch && ch <= 1524 ? 2 : 1536 <= ch && ch <= 1785 ? ArabicTypes[ch - 1536] : 1774 <= ch && ch <= 2220 ? 4 : 8192 <= ch && ch <= 8203 ? 256 : ch == 8204 ? 256 : 1;
 }
@@ -4618,7 +4647,7 @@ var BidiSpan = class {
 };
 var types = [];
 function computeOrder(line, direction) {
-  let len = line.length, outerType = direction == LTR ? 1 : 2;
+  let len = line.length, outerType = direction == LTR ? 1 : 2, oppositeType = direction == LTR ? 2 : 1;
   if (!line || outerType == 1 && !BidiRE.test(line))
     return trivialOrder(len);
   for (let i = 0, prev = outerType, prevStrong = outerType; i < len; i++) {
@@ -4653,6 +4682,43 @@ function computeOrder(line, direction) {
     prev = type2;
     if (type2 & 7)
       prevStrong = type2;
+  }
+  for (let i = 0, sI = 0, context = 0, ch, br, type2; i < len; i++) {
+    if (br = Brackets[ch = line.charCodeAt(i)]) {
+      if (br < 0) {
+        for (let sJ = sI - 3; sJ >= 0; sJ -= 3) {
+          if (BracketStack[sJ + 1] == -br) {
+            let flags = BracketStack[sJ + 2];
+            let type3 = flags & 2 ? outerType : !(flags & 4) ? 0 : flags & 1 ? oppositeType : outerType;
+            if (type3)
+              types[i] = types[BracketStack[sJ]] = type3;
+            sI = sJ;
+            break;
+          }
+        }
+      } else if (BracketStack.length == 189) {
+        break;
+      } else {
+        BracketStack[sI++] = i;
+        BracketStack[sI++] = ch;
+        BracketStack[sI++] = context;
+      }
+    } else if ((type2 = types[i]) == 2 || type2 == 1) {
+      let embed = type2 == outerType;
+      context = embed ? 0 : 1;
+      for (let sJ = sI - 3; sJ >= 0; sJ -= 3) {
+        let cur2 = BracketStack[sJ + 2];
+        if (cur2 & 2)
+          break;
+        if (embed) {
+          BracketStack[sJ + 2] |= 2;
+        } else {
+          if (cur2 & 4)
+            break;
+          BracketStack[sJ + 2] |= 4;
+        }
+      }
+    }
   }
   for (let i = 0; i < len; i++) {
     if (types[i] == 256) {
@@ -4733,8 +4799,8 @@ function moveVisually(line, order, dir, start, forward) {
   if (!nextSpan && span.level != dir)
     return EditorSelection.cursor(forward ? line.to : line.from, forward ? -1 : 1, dir);
   if (nextSpan && nextSpan.level < span.level)
-    return EditorSelection.cursor(nextSpan.side(!forward, dir) + line.from, 0, nextSpan.level);
-  return EditorSelection.cursor(nextIndex + line.from, 0, span.level);
+    return EditorSelection.cursor(nextSpan.side(!forward, dir) + line.from, forward ? 1 : -1, nextSpan.level);
+  return EditorSelection.cursor(nextIndex + line.from, forward ? -1 : 1, span.level);
 }
 function groupAt(state, pos, bias = 1) {
   let categorize = state.charCategorizer(pos);
@@ -5006,6 +5072,8 @@ var InputState = class {
   constructor(view) {
     this.lastKeyCode = 0;
     this.lastKeyTime = 0;
+    this.lastIOSEnter = 0;
+    this.lastIOSBackspace = 0;
     this.lastSelectionOrigin = null;
     this.lastSelectionTime = 0;
     this.lastEscPress = 0;
@@ -5018,7 +5086,9 @@ var InputState = class {
     for (let type2 in handlers) {
       let handler = handlers[type2];
       view.contentDOM.addEventListener(type2, (event) => {
-        if (!eventBelongsToEditor(view, event) || this.ignoreDuringComposition(event) || type2 == "keydown" && this.screenKeyEvent(view, event))
+        if (type2 == "keydown" && this.keydown(view, event))
+          return;
+        if (!eventBelongsToEditor(view, event) || this.ignoreDuringComposition(event))
           return;
         if (this.mustFlushObserver(event))
           view.observer.forceFlush();
@@ -5029,10 +5099,6 @@ var InputState = class {
       });
       this.registeredEvents.push(type2);
     }
-    view.contentDOM.addEventListener("keydown", (event) => {
-      view.inputState.lastKeyCode = event.keyCode;
-      view.inputState.lastKeyTime = Date.now();
-    });
     this.notifiedFocused = view.hasFocus;
     this.ensureHandlers(view);
   }
@@ -5084,6 +5150,17 @@ var InputState = class {
         }
       }
     }
+  }
+  keydown(view, event) {
+    this.lastKeyCode = event.keyCode;
+    this.lastKeyTime = Date.now();
+    if (this.screenKeyEvent(view, event))
+      return;
+    if (browser.ios && (event.keyCode == 13 || event.keyCode == 8) && !(event.ctrlKey || event.altKey || event.metaKey) && !event.synthetic) {
+      this[event.keyCode == 13 ? "lastIOSEnter" : "lastIOSBackspace"] = Date.now();
+      return true;
+    }
+    return false;
   }
   ignoreDuringComposition(event) {
     if (!/^key/.test(event.type))
@@ -5209,7 +5286,7 @@ function eventBelongsToEditor(view, event) {
       return false;
   return true;
 }
-var handlers = Object.create(null);
+var handlers = /* @__PURE__ */ Object.create(null);
 var brokenClipboardAPI = browser.ie && browser.ie_version < 15 || browser.ios && browser.webkit_version < 604;
 function capturePaste(view) {
   let parent = view.dom.parentNode;
@@ -5257,14 +5334,7 @@ function doPaste(view, input) {
     scrollIntoView: true
   });
 }
-function mustCapture(event) {
-  let mods = (event.ctrlKey ? 1 : 0) | (event.metaKey ? 8 : 0) | (event.altKey ? 2 : 0) | (event.shiftKey ? 4 : 0);
-  let code = event.keyCode, macCtrl = browser.mac && mods == 1;
-  return code == 8 || macCtrl && code == 72 || code == 46 || macCtrl && code == 68 || code == 27 || mods == (browser.mac ? 8 : 1) && (code == 66 || code == 73 || code == 89 || code == 90);
-}
 handlers.keydown = (view, event) => {
-  if (mustCapture(event))
-    event.preventDefault();
   view.inputState.setSelectionOrigin("keyboardselection");
 };
 var lastTouch = 0;
@@ -5393,7 +5463,7 @@ handlers.dragstart = (view, event) => {
   }
 };
 handlers.drop = (view, event) => {
-  if (!event.dataTransfer)
+  if (!event.dataTransfer || !view.state.facet(editable))
     return;
   let dropPos = view.posAtCoords({x: event.clientX, y: event.clientY});
   let text = event.dataTransfer.getData("Text");
@@ -5412,6 +5482,8 @@ handlers.drop = (view, event) => {
   });
 };
 handlers.paste = (view, event) => {
+  if (!view.state.facet(editable))
+    return;
   view.observer.flush();
   let data = brokenClipboardAPI ? null : event.clipboardData;
   let text = data && data.getData("text/plain");
@@ -5472,7 +5544,7 @@ handlers.copy = handlers.cut = (view, event) => {
   } else {
     captureCopy(view, text);
   }
-  if (event.type == "cut")
+  if (event.type == "cut" && view.state.facet(editable))
     view.dispatch({
       changes: ranges,
       scrollIntoView: true,
@@ -5605,12 +5677,12 @@ var BlockInfo = class {
     return new BlockInfo(this.from, this.length + other.length, this.top, this.height + other.height, detail);
   }
 };
-var QueryType;
-(function(QueryType2) {
+var QueryType = /* @__PURE__ */ function(QueryType2) {
   QueryType2[QueryType2["ByPos"] = 0] = "ByPos";
   QueryType2[QueryType2["ByHeight"] = 1] = "ByHeight";
   QueryType2[QueryType2["ByPosNoHeight"] = 2] = "ByPosNoHeight";
-})(QueryType || (QueryType = {}));
+  return QueryType2;
+}(QueryType || (QueryType = {}));
 var Epsilon = 1e-4;
 var HeightMap = class {
   constructor(length, height, flags = 2) {
@@ -6539,11 +6611,11 @@ function scaleBlock(block, scaler, top2) {
   let bTop = scaler.toDOM(block.top, top2), bBottom = scaler.toDOM(block.bottom, top2);
   return new BlockInfo(block.from, block.length, bTop, bBottom - bTop, Array.isArray(block.type) ? block.type.map((b) => scaleBlock(b, scaler, top2)) : block.type);
 }
-var theme = Facet.define({combine: (strs) => strs.join(" ")});
-var darkTheme = Facet.define({combine: (values) => values.indexOf(true) > -1});
-var baseThemeID = StyleModule.newName();
-var baseLightID = StyleModule.newName();
-var baseDarkID = StyleModule.newName();
+var theme = /* @__PURE__ */ Facet.define({combine: (strs) => strs.join(" ")});
+var darkTheme = /* @__PURE__ */ Facet.define({combine: (values) => values.indexOf(true) > -1});
+var baseThemeID = /* @__PURE__ */ StyleModule.newName();
+var baseLightID = /* @__PURE__ */ StyleModule.newName();
+var baseDarkID = /* @__PURE__ */ StyleModule.newName();
 var lightDarkIDs = {"&light": "." + baseLightID, "&dark": "." + baseDarkID};
 function buildTheme(main, spec, scopes) {
   return new StyleModule(spec, {
@@ -6558,13 +6630,12 @@ function buildTheme(main, spec, scopes) {
     }
   });
 }
-var baseTheme = buildTheme("." + baseThemeID, {
+var baseTheme = /* @__PURE__ */ buildTheme("." + baseThemeID, {
   "&": {
     position: "relative !important",
     boxSizing: "border-box",
     "&.cm-focused": {
-      outline_fallback: "1px dotted #212121",
-      outline: "5px auto -webkit-focus-ring-color"
+      outline: "1px dotted #212121"
     },
     display: "flex !important",
     flexDirection: "column"
@@ -6574,7 +6645,7 @@ var baseTheme = buildTheme("." + baseThemeID, {
     alignItems: "flex-start !important",
     fontFamily: "monospace",
     lineHeight: 1.4,
-    height: "100%",
+    flexGrow: 2,
     overflowX: "auto",
     position: "relative",
     zIndex: 0
@@ -6585,6 +6656,7 @@ var baseTheme = buildTheme("." + baseThemeID, {
     minHeight: "100%",
     display: "block",
     whiteSpace: "pre",
+    wordWrap: "normal",
     boxSizing: "border-box",
     padding: "4px 0",
     outline: "none"
@@ -6941,8 +7013,8 @@ function applyDOMChange(view, start, end, typeOver) {
   } else if (view.hasFocus || !view.state.facet(editable)) {
     let domSel = getSelection(view.root);
     let {impreciseHead: iHead, impreciseAnchor: iAnchor} = view.docView;
-    let head = iHead && iHead.node == domSel.focusNode && iHead.offset == domSel.focusOffset ? view.state.selection.main.head : view.docView.posFromDOM(domSel.focusNode, domSel.focusOffset);
-    let anchor = iAnchor && iAnchor.node == domSel.anchorNode && iAnchor.offset == domSel.anchorOffset ? view.state.selection.main.anchor : selectionCollapsed(domSel) ? head : view.docView.posFromDOM(domSel.anchorNode, domSel.anchorOffset);
+    let head = iHead && iHead.node == domSel.focusNode && iHead.offset == domSel.focusOffset || !contains(view.contentDOM, domSel.focusNode) ? view.state.selection.main.head : view.docView.posFromDOM(domSel.focusNode, domSel.focusOffset);
+    let anchor = iAnchor && iAnchor.node == domSel.anchorNode && iAnchor.offset == domSel.anchorOffset || !contains(view.contentDOM, domSel.anchorNode) ? view.state.selection.main.anchor : selectionCollapsed(domSel) ? head : view.docView.posFromDOM(domSel.anchorNode, domSel.anchorOffset);
     if (head != sel.head || anchor != sel.anchor)
       newSel = EditorSelection.single(anchor, head);
   }
@@ -6952,7 +7024,7 @@ function applyDOMChange(view, start, end, typeOver) {
     change = {from: sel.from, to: sel.to, insert: view.state.doc.slice(sel.from, sel.to)};
   if (change) {
     let startState = view.state;
-    if (browser.android && (change.from == sel.from && change.to == sel.to && change.insert.length == 1 && change.insert.lines == 2 && dispatchKey(view, "Enter", 10) || change.from == sel.from - 1 && change.to == sel.to && change.insert.length == 0 && dispatchKey(view, "Backspace", 8) || change.from == sel.from && change.to == sel.to + 1 && change.insert.length == 0 && dispatchKey(view, "Delete", 46)))
+    if (browser.android && (change.from == sel.from && change.to == sel.to && change.insert.length == 1 && change.insert.lines == 2 && dispatchKey(view, "Enter", 13) || change.from == sel.from - 1 && change.to == sel.to && change.insert.length == 0 && dispatchKey(view, "Backspace", 8) || change.from == sel.from && change.to == sel.to + 1 && change.insert.length == 0 && dispatchKey(view, "Delete", 46)) || browser.ios && (view.inputState.lastIOSEnter > Date.now() - 225 && change.insert.lines > 1 && dispatchKey(view, "Enter", 13) || view.inputState.lastIOSBackspace > Date.now() - 225 && !change.insert.length && dispatchKey(view, "Backspace", 8)))
       return;
     let text = change.insert.toString();
     if (view.state.facet(inputHandler).some((h) => h(view, change.from, change.to, text)))
@@ -7099,8 +7171,10 @@ function selectionFromPoints(points, base3) {
 function dispatchKey(view, name2, code) {
   let options = {key: name2, code: name2, keyCode: code, which: code, cancelable: true};
   let down = new KeyboardEvent("keydown", options);
+  down.synthetic = true;
   view.contentDOM.dispatchEvent(down);
   let up = new KeyboardEvent("keyup", options);
+  up.synthetic = true;
   view.contentDOM.dispatchEvent(up);
   return down.defaultPrevented || up.defaultPrevented;
 }
@@ -7370,20 +7444,20 @@ var EditorView = class {
         return inst.update(this).value;
     return null;
   }
-  blockAtHeight(height, editorTop) {
+  blockAtHeight(height, docTop) {
     this.readMeasured();
-    return this.viewState.blockAtHeight(height, ensureTop(editorTop, this.contentDOM));
+    return this.viewState.blockAtHeight(height, ensureTop(docTop, this.contentDOM));
   }
-  visualLineAtHeight(height, editorTop) {
+  visualLineAtHeight(height, docTop) {
     this.readMeasured();
-    return this.viewState.lineAtHeight(height, ensureTop(editorTop, this.contentDOM));
+    return this.viewState.lineAtHeight(height, ensureTop(docTop, this.contentDOM));
   }
-  viewportLines(f, editorTop) {
+  viewportLines(f, docTop) {
     let {from, to} = this.viewport;
-    this.viewState.forEachLine(from, to, f, ensureTop(editorTop, this.contentDOM));
+    this.viewState.forEachLine(from, to, f, ensureTop(docTop, this.contentDOM));
   }
-  visualLineAt(pos, editorTop = 0) {
-    return this.viewState.lineAt(pos, editorTop);
+  visualLineAt(pos, docTop = 0) {
+    return this.viewState.lineAt(pos, docTop);
   }
   get contentHeight() {
     return this.viewState.contentHeight;
@@ -7489,8 +7563,8 @@ EditorView.clickAddsSelectionRange = clickAddsSelectionRange;
 EditorView.decorations = decorations;
 EditorView.contentAttributes = contentAttributes;
 EditorView.editorAttributes = editorAttributes;
-EditorView.lineWrapping = EditorView.contentAttributes.of({class: "cm-lineWrapping"});
-EditorView.announce = StateEffect.define();
+EditorView.lineWrapping = /* @__PURE__ */ EditorView.contentAttributes.of({class: "cm-lineWrapping"});
+EditorView.announce = /* @__PURE__ */ StateEffect.define();
 var MaxBidiLine = 4096;
 function ensureTop(given, dom) {
   return given == null ? dom.getBoundingClientRect().top : given;
@@ -7531,7 +7605,7 @@ var CachedOrder = class {
     return result;
   }
 };
-var currentPlatform = typeof navigator == "undefined" ? "key" : /Mac/.test(navigator.platform) ? "mac" : /Win/.test(navigator.platform) ? "win" : /Linux|X11/.test(navigator.platform) ? "linux" : "key";
+var currentPlatform = typeof navigator == "undefined" ? "key" : /* @__PURE__ */ /Mac/.test(navigator.platform) ? "mac" : /* @__PURE__ */ /Win/.test(navigator.platform) ? "win" : /* @__PURE__ */ /Linux|X11/.test(navigator.platform) ? "linux" : "key";
 function normalizeKeyName(name2, platform) {
   const parts = name2.split(/-(?!$)/);
   let result = parts[parts.length - 1];
@@ -7577,13 +7651,13 @@ function modifiers(name2, event, shift2) {
     name2 = "Shift-" + name2;
   return name2;
 }
-var handleKeyEvents = EditorView.domEventHandlers({
+var handleKeyEvents = /* @__PURE__ */ EditorView.domEventHandlers({
   keydown(event, view) {
     return runHandlers(getKeymap(view.state), event, view, "editor");
   }
 });
-var keymap = Facet.define({enables: handleKeyEvents});
-var Keymaps = new WeakMap();
+var keymap = /* @__PURE__ */ Facet.define({enables: handleKeyEvents});
+var Keymaps = /* @__PURE__ */ new WeakMap();
 function getKeymap(state) {
   let bindings = state.facet(keymap);
   let map = Keymaps.get(bindings);
@@ -7674,107 +7748,6 @@ function runHandlers(map, event, view, scope) {
   return fallthrough;
 }
 var CanHidePrimary = !browser.ios;
-var selectionConfig = Facet.define({
-  combine(configs) {
-    return combineConfig(configs, {
-      cursorBlinkRate: 1200,
-      drawRangeCursor: true
-    }, {
-      cursorBlinkRate: (a, b) => Math.min(a, b),
-      drawRangeCursor: (a, b) => a || b
-    });
-  }
-});
-var Piece = class {
-  constructor(left, top2, width, height, className) {
-    this.left = left;
-    this.top = top2;
-    this.width = width;
-    this.height = height;
-    this.className = className;
-  }
-  draw() {
-    let elt = document.createElement("div");
-    elt.className = this.className;
-    this.adjust(elt);
-    return elt;
-  }
-  adjust(elt) {
-    elt.style.left = this.left + "px";
-    elt.style.top = this.top + "px";
-    if (this.width >= 0)
-      elt.style.width = this.width + "px";
-    elt.style.height = this.height + "px";
-  }
-  eq(p) {
-    return this.left == p.left && this.top == p.top && this.width == p.width && this.height == p.height && this.className == p.className;
-  }
-};
-var drawSelectionPlugin = ViewPlugin.fromClass(class {
-  constructor(view) {
-    this.view = view;
-    this.rangePieces = [];
-    this.cursors = [];
-    this.measureReq = {read: this.readPos.bind(this), write: this.drawSel.bind(this)};
-    this.selectionLayer = view.scrollDOM.appendChild(document.createElement("div"));
-    this.selectionLayer.className = "cm-selectionLayer";
-    this.selectionLayer.setAttribute("aria-hidden", "true");
-    this.cursorLayer = view.scrollDOM.appendChild(document.createElement("div"));
-    this.cursorLayer.className = "cm-cursorLayer";
-    this.cursorLayer.setAttribute("aria-hidden", "true");
-    view.requestMeasure(this.measureReq);
-    this.setBlinkRate();
-  }
-  setBlinkRate() {
-    this.cursorLayer.style.animationDuration = this.view.state.facet(selectionConfig).cursorBlinkRate + "ms";
-  }
-  update(update) {
-    let confChanged = update.startState.facet(selectionConfig) != update.state.facet(selectionConfig);
-    if (confChanged || update.selectionSet || update.geometryChanged || update.viewportChanged)
-      this.view.requestMeasure(this.measureReq);
-    if (update.transactions.some((tr) => tr.scrollIntoView))
-      this.cursorLayer.style.animationName = this.cursorLayer.style.animationName == "cm-blink" ? "cm-blink2" : "cm-blink";
-    if (confChanged)
-      this.setBlinkRate();
-  }
-  readPos() {
-    let {state} = this.view, conf = state.facet(selectionConfig);
-    let rangePieces = state.selection.ranges.map((r) => r.empty ? [] : measureRange(this.view, r)).reduce((a, b) => a.concat(b));
-    let cursors = [];
-    for (let r of state.selection.ranges) {
-      let prim = r == state.selection.main;
-      if (r.empty ? !prim || CanHidePrimary : conf.drawRangeCursor) {
-        let piece = measureCursor(this.view, r, prim);
-        if (piece)
-          cursors.push(piece);
-      }
-    }
-    return {rangePieces, cursors};
-  }
-  drawSel({rangePieces, cursors}) {
-    if (rangePieces.length != this.rangePieces.length || rangePieces.some((p, i) => !p.eq(this.rangePieces[i]))) {
-      this.selectionLayer.textContent = "";
-      for (let p of rangePieces)
-        this.selectionLayer.appendChild(p.draw());
-      this.rangePieces = rangePieces;
-    }
-    if (cursors.length != this.cursors.length || cursors.some((c2, i) => !c2.eq(this.cursors[i]))) {
-      let oldCursors = this.cursorLayer.children;
-      if (oldCursors.length !== cursors.length) {
-        this.cursorLayer.textContent = "";
-        for (const c2 of cursors)
-          this.cursorLayer.appendChild(c2.draw());
-      } else {
-        cursors.forEach((c2, idx) => c2.adjust(oldCursors[idx]));
-      }
-      this.cursors = cursors;
-    }
-  }
-  destroy() {
-    this.selectionLayer.remove();
-    this.cursorLayer.remove();
-  }
-});
 var themeSpec = {
   ".cm-line": {
     "& ::selection": {backgroundColor: "transparent !important"},
@@ -7783,145 +7756,7 @@ var themeSpec = {
 };
 if (CanHidePrimary)
   themeSpec[".cm-line"].caretColor = "transparent !important";
-var hideNativeSelection = Prec.override(EditorView.theme(themeSpec));
-function getBase(view) {
-  let rect = view.scrollDOM.getBoundingClientRect();
-  let left = view.textDirection == Direction.LTR ? rect.left : rect.right - view.scrollDOM.clientWidth;
-  return {left: left - view.scrollDOM.scrollLeft, top: rect.top - view.scrollDOM.scrollTop};
-}
-function wrappedLine(view, pos, inside2) {
-  let range = EditorSelection.cursor(pos);
-  return {
-    from: Math.max(inside2.from, view.moveToLineBoundary(range, false, true).from),
-    to: Math.min(inside2.to, view.moveToLineBoundary(range, true, true).from)
-  };
-}
-function measureRange(view, range) {
-  if (range.to <= view.viewport.from || range.from >= view.viewport.to)
-    return [];
-  let from = Math.max(range.from, view.viewport.from), to = Math.min(range.to, view.viewport.to);
-  let ltr = view.textDirection == Direction.LTR;
-  let content2 = view.contentDOM, contentRect = content2.getBoundingClientRect(), base3 = getBase(view);
-  let lineStyle = window.getComputedStyle(content2.firstChild);
-  let leftSide = contentRect.left + parseInt(lineStyle.paddingLeft);
-  let rightSide = contentRect.right - parseInt(lineStyle.paddingRight);
-  let visualStart = view.visualLineAt(from);
-  let visualEnd = view.visualLineAt(to);
-  if (view.lineWrapping) {
-    visualStart = wrappedLine(view, from, visualStart);
-    visualEnd = wrappedLine(view, to, visualEnd);
-  }
-  if (visualStart.from == visualEnd.from) {
-    return pieces(drawForLine(range.from, range.to, visualStart));
-  } else {
-    let top2 = drawForLine(range.from, null, visualStart);
-    let bottom = drawForLine(null, range.to, visualEnd);
-    let between = [];
-    if (visualStart.to < visualEnd.from - 1)
-      between.push(piece(leftSide, top2.bottom, rightSide, bottom.top));
-    else if (top2.bottom < bottom.top && bottom.top - top2.bottom < 4)
-      top2.bottom = bottom.top = (top2.bottom + bottom.top) / 2;
-    return pieces(top2).concat(between).concat(pieces(bottom));
-  }
-  function piece(left, top2, right, bottom) {
-    return new Piece(left - base3.left, top2 - base3.top, right - left, bottom - top2, "cm-selectionBackground");
-  }
-  function pieces({top: top2, bottom, horizontal}) {
-    let pieces2 = [];
-    for (let i = 0; i < horizontal.length; i += 2)
-      pieces2.push(piece(horizontal[i], top2, horizontal[i + 1], bottom));
-    return pieces2;
-  }
-  function drawForLine(from2, to2, line) {
-    let top2 = 1e9, bottom = -1e9, horizontal = [];
-    function addSpan(from3, fromOpen, to3, toOpen, dir) {
-      let fromCoords = view.coordsAtPos(from3, from3 == line.to ? -1 : 1);
-      let toCoords = view.coordsAtPos(to3, to3 == line.from ? 1 : -1);
-      top2 = Math.min(fromCoords.top, toCoords.top, top2);
-      bottom = Math.max(fromCoords.bottom, toCoords.bottom, bottom);
-      if (dir == Direction.LTR)
-        horizontal.push(ltr && fromOpen ? leftSide : fromCoords.left, ltr && toOpen ? rightSide : toCoords.right);
-      else
-        horizontal.push(!ltr && toOpen ? leftSide : toCoords.left, !ltr && fromOpen ? rightSide : fromCoords.right);
-    }
-    let start = from2 !== null && from2 !== void 0 ? from2 : line.from, end = to2 !== null && to2 !== void 0 ? to2 : line.to;
-    for (let r of view.visibleRanges)
-      if (r.to > start && r.from < end) {
-        for (let pos = Math.max(r.from, start), endPos = Math.min(r.to, end); ; ) {
-          let docLine = view.state.doc.lineAt(pos);
-          for (let span of view.bidiSpans(docLine)) {
-            let spanFrom = span.from + docLine.from, spanTo = span.to + docLine.from;
-            if (spanFrom >= endPos)
-              break;
-            if (spanTo > pos)
-              addSpan(Math.max(spanFrom, pos), from2 == null && spanFrom <= start, Math.min(spanTo, endPos), to2 == null && spanTo >= end, span.dir);
-          }
-          pos = docLine.to + 1;
-          if (pos >= endPos)
-            break;
-        }
-      }
-    if (horizontal.length == 0)
-      addSpan(start, from2 == null, end, to2 == null, view.textDirection);
-    return {top: top2, bottom, horizontal};
-  }
-}
-function measureCursor(view, cursor, primary) {
-  let pos = view.coordsAtPos(cursor.head, cursor.assoc || 1);
-  if (!pos)
-    return null;
-  let base3 = getBase(view);
-  return new Piece(pos.left - base3.left, pos.top - base3.top, -1, pos.bottom - pos.top, primary ? "cm-cursor cm-cursor-primary" : "cm-cursor cm-cursor-secondary");
-}
 var UnicodeRegexpSupport = /x/.unicode != null ? "gu" : "g";
-var Specials = new RegExp("[\0-\b\n-\x7F-\x9F\xAD\u061C\u200B\u200E\u200F\u2028\u2029\uFEFF\uFFF9-\uFFFC]", UnicodeRegexpSupport);
-var _supportsTabSize = null;
-function supportsTabSize() {
-  if (_supportsTabSize == null && typeof document != "undefined" && document.body) {
-    let styles = document.body.style;
-    _supportsTabSize = (styles.tabSize || styles.MozTabSize) != null;
-  }
-  return _supportsTabSize || false;
-}
-var specialCharConfig = Facet.define({
-  combine(configs) {
-    let config2 = combineConfig(configs, {
-      render: null,
-      specialChars: Specials,
-      addSpecialChars: null
-    });
-    if (config2.replaceTabs = !supportsTabSize())
-      config2.specialChars = new RegExp("	|" + config2.specialChars.source, UnicodeRegexpSupport);
-    if (config2.addSpecialChars)
-      config2.specialChars = new RegExp(config2.specialChars.source + "|" + config2.addSpecialChars.source, UnicodeRegexpSupport);
-    return config2;
-  }
-});
-var lineDeco = Decoration.line({attributes: {class: "cm-activeLine"}});
-var activeLineHighlighter = ViewPlugin.fromClass(class {
-  constructor(view) {
-    this.decorations = this.getDeco(view);
-  }
-  update(update) {
-    if (update.docChanged || update.selectionSet)
-      this.decorations = this.getDeco(update.view);
-  }
-  getDeco(view) {
-    let lastLineStart = -1, deco = [];
-    for (let r of view.state.selection.ranges) {
-      if (!r.empty)
-        continue;
-      let line = view.visualLineAt(r.head);
-      if (line.from > lastLineStart) {
-        deco.push(lineDeco.range(line.from));
-        lastLineStart = line.from;
-      }
-    }
-    return Decoration.set(deco);
-  }
-}, {
-  decorations: (v) => v.decorations
-});
 
 // node_modules/lezer-tree/dist/tree.es.js
 var DefaultBufferLength = 1024;
@@ -9733,33 +9568,6 @@ var cursorGroupLeft = (view) => cursorByGroup(view, view.textDirection != Direct
 var cursorGroupRight = (view) => cursorByGroup(view, view.textDirection == Direction.LTR);
 var cursorGroupForward = (view) => cursorByGroup(view, true);
 var cursorGroupBackward = (view) => cursorByGroup(view, false);
-function interestingNode(state, node, bracketProp) {
-  if (node.type.prop(bracketProp))
-    return true;
-  let len = node.to - node.from;
-  return len && (len > 2 || /[^\s,.;:]/.test(state.sliceDoc(node.from, node.to))) || node.firstChild;
-}
-function moveBySyntax(state, start, forward) {
-  let pos = syntaxTree(state).resolve(start.head);
-  let bracketProp = forward ? NodeProp.closedBy : NodeProp.openedBy;
-  for (let at = start.head; ; ) {
-    let next = forward ? pos.childAfter(at) : pos.childBefore(at);
-    if (!next)
-      break;
-    if (interestingNode(state, next, bracketProp))
-      pos = next;
-    else
-      at = forward ? next.to : next.from;
-  }
-  let bracket2 = pos.type.prop(bracketProp), match, newPos;
-  if (bracket2 && (match = forward ? matchBrackets(state, pos.from, 1) : matchBrackets(state, pos.to, -1)) && match.matched)
-    newPos = forward ? match.end.to : match.end.from;
-  else
-    newPos = forward ? pos.to : pos.from;
-  return EditorSelection.cursor(newPos, forward ? -1 : 1);
-}
-var cursorSyntaxLeft = (view) => moveSel(view, (range) => moveBySyntax(view.state, range, view.textDirection != Direction.LTR));
-var cursorSyntaxRight = (view) => moveSel(view, (range) => moveBySyntax(view.state, range, view.textDirection == Direction.LTR));
 function cursorByLine(view, forward) {
   return moveSel(view, (range) => range.empty ? view.moveVertically(range, forward) : rangeEnd(range, forward));
 }
@@ -9785,21 +9593,6 @@ var cursorLineBoundaryForward = (view) => moveSel(view, (range) => moveByLineBou
 var cursorLineBoundaryBackward = (view) => moveSel(view, (range) => moveByLineBoundary(view, range, false));
 var cursorLineStart = (view) => moveSel(view, (range) => EditorSelection.cursor(view.visualLineAt(range.head).from, 1));
 var cursorLineEnd = (view) => moveSel(view, (range) => EditorSelection.cursor(view.visualLineAt(range.head).to, -1));
-function toMatchingBracket(state, dispatch, extend2) {
-  let found = false, selection = updateSel(state.selection, (range) => {
-    let matching2 = matchBrackets(state, range.head, -1) || matchBrackets(state, range.head, 1) || range.head > 0 && matchBrackets(state, range.head - 1, 1) || range.head < state.doc.length && matchBrackets(state, range.head + 1, -1);
-    if (!matching2 || !matching2.end)
-      return range;
-    found = true;
-    let head = matching2.start.from == range.head ? matching2.end.to : matching2.end.from;
-    return extend2 ? EditorSelection.range(range.anchor, head) : EditorSelection.cursor(head);
-  });
-  if (!found)
-    return false;
-  dispatch(setSel(state, selection));
-  return true;
-}
-var cursorMatchingBracket = ({state, dispatch}) => toMatchingBracket(state, dispatch, false);
 function extendSel(view, how) {
   let selection = updateSel(view.state.selection, (range) => {
     let head = how(range);
@@ -9822,8 +9615,6 @@ var selectGroupLeft = (view) => selectByGroup(view, view.textDirection != Direct
 var selectGroupRight = (view) => selectByGroup(view, view.textDirection == Direction.LTR);
 var selectGroupForward = (view) => selectByGroup(view, true);
 var selectGroupBackward = (view) => selectByGroup(view, false);
-var selectSyntaxLeft = (view) => extendSel(view, (range) => moveBySyntax(view.state, range, view.textDirection != Direction.LTR));
-var selectSyntaxRight = (view) => extendSel(view, (range) => moveBySyntax(view.state, range, view.textDirection == Direction.LTR));
 function selectByLine(view, forward) {
   return extendSel(view, (range) => view.moveVertically(range, forward));
 }
@@ -9856,33 +9647,6 @@ var selectDocEnd = ({state, dispatch}) => {
 };
 var selectAll = ({state, dispatch}) => {
   dispatch(state.update({selection: {anchor: 0, head: state.doc.length}, annotations: Transaction.userEvent.of("keyboardselection")}));
-  return true;
-};
-var selectLine = ({state, dispatch}) => {
-  let ranges = selectedLineBlocks(state).map(({from, to}) => EditorSelection.range(from, Math.min(to + 1, state.doc.length)));
-  dispatch(state.update({selection: EditorSelection.create(ranges), annotations: Transaction.userEvent.of("keyboardselection")}));
-  return true;
-};
-var selectParentSyntax = ({state, dispatch}) => {
-  let selection = updateSel(state.selection, (range) => {
-    var _a;
-    let context = syntaxTree(state).resolve(range.head, 1);
-    while (!(context.from < range.from && context.to >= range.to || context.to > range.to && context.from <= range.from || !((_a = context.parent) === null || _a === void 0 ? void 0 : _a.parent)))
-      context = context.parent;
-    return EditorSelection.range(context.to, context.from);
-  });
-  dispatch(setSel(state, selection));
-  return true;
-};
-var simplifySelection = ({state, dispatch}) => {
-  let cur2 = state.selection, selection = null;
-  if (cur2.ranges.length > 1)
-    selection = EditorSelection.create([cur2.main]);
-  else if (!cur2.main.empty)
-    selection = EditorSelection.create([EditorSelection.cursor(cur2.main.head)]);
-  if (!selection)
-    return false;
-  dispatch(setSel(state, selection));
   return true;
 };
 function deleteBy({state, dispatch}, by) {
@@ -9953,6 +9717,12 @@ var deleteToLineEnd = (view) => deleteBy(view, (pos) => {
     return lineEnd;
   return Math.min(view.state.doc.length, pos + 1);
 });
+var deleteToLineStart = (view) => deleteBy(view, (pos) => {
+  let lineStart = view.visualLineAt(pos).from;
+  if (pos > lineStart)
+    return lineStart;
+  return Math.max(0, pos - 1);
+});
 var splitLine = ({state, dispatch}) => {
   let changes = state.changeByRange((range) => {
     return {
@@ -9978,61 +9748,6 @@ var transposeChars = ({state, dispatch}) => {
   if (changes.changes.empty)
     return false;
   dispatch(state.update(changes, {scrollIntoView: true}));
-  return true;
-};
-function selectedLineBlocks(state) {
-  let blocks = [], upto = -1;
-  for (let range of state.selection.ranges) {
-    let startLine = state.doc.lineAt(range.from), endLine = state.doc.lineAt(range.to);
-    if (upto == startLine.number)
-      blocks[blocks.length - 1].to = endLine.to;
-    else
-      blocks.push({from: startLine.from, to: endLine.to});
-    upto = endLine.number;
-  }
-  return blocks;
-}
-function moveLine(state, dispatch, forward) {
-  let changes = [];
-  for (let block of selectedLineBlocks(state)) {
-    if (forward ? block.to == state.doc.length : block.from == 0)
-      continue;
-    let nextLine = state.doc.lineAt(forward ? block.to + 1 : block.from - 1);
-    if (forward)
-      changes.push({from: block.to, to: nextLine.to}, {from: block.from, insert: nextLine.text + state.lineBreak});
-    else
-      changes.push({from: nextLine.from, to: block.from}, {from: block.to, insert: state.lineBreak + nextLine.text});
-  }
-  if (!changes.length)
-    return false;
-  dispatch(state.update({changes, scrollIntoView: true}));
-  return true;
-}
-var moveLineUp = ({state, dispatch}) => moveLine(state, dispatch, false);
-var moveLineDown = ({state, dispatch}) => moveLine(state, dispatch, true);
-function copyLine(state, dispatch, forward) {
-  let changes = [];
-  for (let block of selectedLineBlocks(state)) {
-    if (forward)
-      changes.push({from: block.from, insert: state.doc.slice(block.from, block.to) + state.lineBreak});
-    else
-      changes.push({from: block.to, insert: state.lineBreak + state.doc.slice(block.from, block.to)});
-  }
-  dispatch(state.update({changes, scrollIntoView: true}));
-  return true;
-}
-var copyLineUp = ({state, dispatch}) => copyLine(state, dispatch, false);
-var copyLineDown = ({state, dispatch}) => copyLine(state, dispatch, true);
-var deleteLine = (view) => {
-  let {state} = view, changes = state.changes(selectedLineBlocks(state).map(({from, to}) => {
-    if (from > 0)
-      from--;
-    else if (to < state.doc.length)
-      to++;
-    return {from, to};
-  }));
-  let selection = updateSel(state.selection, (range) => view.moveVertically(range, true)).map(changes);
-  view.dispatch({changes, selection, scrollIntoView: true});
   return true;
 };
 function isBetweenBrackets(state, pos) {
@@ -10115,19 +9830,6 @@ var indentMore = ({state, dispatch}) => {
   })));
   return true;
 };
-var indentLess = ({state, dispatch}) => {
-  dispatch(state.update(changeBySelectedLine(state, (line, changes) => {
-    let space3 = /^\s*/.exec(line.text)[0];
-    if (!space3)
-      return;
-    let col = countColumn(space3, 0, state.tabSize), keep = 0;
-    let insert2 = indentString(state, Math.max(0, col - getIndentUnit(state)));
-    while (keep < space3.length && keep < insert2.length && space3.charCodeAt(keep) == insert2.charCodeAt(keep))
-      keep++;
-    changes.push({from: line.from + keep, to: line.from + space3.length, insert: insert2.slice(keep)});
-  })));
-  return true;
-};
 var insertTab = ({state, dispatch}) => {
   if (state.selection.ranges.some((r) => !r.empty))
     return indentMore({state, dispatch});
@@ -10155,7 +9857,7 @@ var emacsStyleKeymap = [
   {key: "Ctrl-v", run: cursorPageDown},
   {key: "Alt-v", run: cursorPageUp}
 ];
-var standardKeymap = [
+var standardKeymap = /* @__PURE__ */ [
   {key: "ArrowLeft", run: cursorCharLeft, shift: selectCharLeft},
   {key: "Mod-ArrowLeft", mac: "Alt-ArrowLeft", run: cursorGroupLeft, shift: selectGroupLeft},
   {mac: "Cmd-ArrowLeft", run: cursorLineStart, shift: selectLineStart},
@@ -10176,27 +9878,13 @@ var standardKeymap = [
   {key: "Mod-End", run: cursorDocEnd, shift: selectDocEnd},
   {key: "Enter", run: insertNewlineAndIndent},
   {key: "Mod-a", run: selectAll},
-  {key: "Backspace", run: deleteCodePointBackward},
-  {key: "Delete", run: deleteCharForward},
+  {key: "Backspace", run: deleteCodePointBackward, shift: deleteCodePointBackward},
+  {key: "Delete", run: deleteCharForward, shift: deleteCharForward},
   {key: "Mod-Backspace", mac: "Alt-Backspace", run: deleteGroupBackward},
-  {key: "Mod-Delete", mac: "Alt-Delete", run: deleteGroupForward}
-].concat(emacsStyleKeymap.map((b) => ({mac: b.key, run: b.run, shift: b.shift})));
-var defaultKeymap = [
-  {key: "Alt-ArrowLeft", mac: "Ctrl-ArrowLeft", run: cursorSyntaxLeft, shift: selectSyntaxLeft},
-  {key: "Alt-ArrowRight", mac: "Ctrl-ArrowRight", run: cursorSyntaxRight, shift: selectSyntaxRight},
-  {key: "Alt-ArrowUp", run: moveLineUp},
-  {key: "Shift-Alt-ArrowUp", run: copyLineUp},
-  {key: "Alt-ArrowDown", run: moveLineDown},
-  {key: "Shift-Alt-ArrowDown", run: copyLineDown},
-  {key: "Escape", run: simplifySelection},
-  {key: "Alt-l", run: selectLine},
-  {key: "Mod-i", run: selectParentSyntax},
-  {key: "Mod-[", run: indentLess},
-  {key: "Mod-]", run: indentMore},
-  {key: "Mod-Alt-\\", run: indentSelection},
-  {key: "Shift-Mod-k", run: deleteLine},
-  {key: "Shift-Mod-\\", run: cursorMatchingBracket}
-].concat(standardKeymap);
+  {key: "Mod-Delete", mac: "Alt-Delete", run: deleteGroupForward},
+  {mac: "Mod-Backspace", run: deleteToLineStart},
+  {mac: "Mod-Delete", run: deleteToLineEnd}
+].concat(/* @__PURE__ */ emacsStyleKeymap.map((b) => ({mac: b.key, run: b.run, shift: b.shift})));
 var defaultTabBinding = {key: "Tab", run: insertTab, shift: indentSelection};
 
 // node_modules/@codemirror/gutter/dist/index.js
@@ -11317,9 +11005,9 @@ function readToken(token, stream, state) {
   }
   throw new Error("Stream parser failed to advance stream.");
 }
-var tokenTable = Object.create(null);
+var tokenTable = /* @__PURE__ */ Object.create(null);
 var typeArray = [NodeType.none];
-var nodeSet = new NodeSet(typeArray);
+var nodeSet = /* @__PURE__ */ new NodeSet(typeArray);
 var warned = [];
 function tokenID(tag) {
   return !tag ? 0 : tokenTable[tag] || (tokenTable[tag] = createTokenType(tag));
@@ -11338,7 +11026,7 @@ for (let [legacyName, name2] of [
   ["header", "heading"],
   ["property", "propertyName"]
 ])
-  tokenTable[legacyName] = tokenID(name2);
+  tokenTable[legacyName] = /* @__PURE__ */ tokenID(name2);
 function warnForPart(part, msg) {
   if (warned.indexOf(part) > -1)
     return;
@@ -11513,21 +11201,21 @@ function clike(parserConfig) {
       while (stream.match(namespaceSeparator))
         stream.eatWhile(isIdentifierChar);
     var cur2 = stream.current();
-    if (contains(keywords11, cur2)) {
-      if (contains(blockKeywords, cur2))
+    if (contains2(keywords11, cur2)) {
+      if (contains2(blockKeywords, cur2))
         curPunc3 = "newstatement";
-      if (contains(defKeywords, cur2))
+      if (contains2(defKeywords, cur2))
         isDefKeyword = true;
       return "keyword";
     }
-    if (contains(types4, cur2))
+    if (contains2(types4, cur2))
       return "type";
-    if (contains(builtin, cur2) || isReservedIdentifier && isReservedIdentifier(cur2)) {
-      if (contains(blockKeywords, cur2))
+    if (contains2(builtin, cur2) || isReservedIdentifier && isReservedIdentifier(cur2)) {
+      if (contains2(blockKeywords, cur2))
         curPunc3 = "newstatement";
       return "builtin";
     }
-    if (contains(atoms4, cur2))
+    if (contains2(atoms4, cur2))
       return "atom";
     return "variable";
   }
@@ -11667,7 +11355,7 @@ function words(str) {
     obj[words4[i]] = true;
   return obj;
 }
-function contains(words4, word) {
+function contains2(words4, word) {
   if (typeof words4 === "function") {
     return words4(word);
   } else {
@@ -11681,10 +11369,10 @@ var objCBuiltins = "FOUNDATION_EXPORT FOUNDATION_EXTERN NS_INLINE NS_FORMAT_FUNC
 var basicCTypes = words("int long char short double float unsigned signed void bool");
 var basicObjCTypes = words("SEL instancetype id Class Protocol BOOL");
 function cTypes(identifier2) {
-  return contains(basicCTypes, identifier2) || /.+_t$/.test(identifier2);
+  return contains2(basicCTypes, identifier2) || /.+_t$/.test(identifier2);
 }
 function objCTypes(identifier2) {
-  return cTypes(identifier2) || contains(basicObjCTypes, identifier2);
+  return cTypes(identifier2) || contains2(basicObjCTypes, identifier2);
 }
 var cBlockKeywords = "case do else for if switch while struct enum union";
 var cDefKeywords = "struct enum union";
@@ -20449,6 +20137,7 @@ var swift = {
 
 // editor.js
 var extensions = [
+  EditorView.lineWrapping,
   bracketMatching(),
   closeBrackets(),
   defaultHighlightStyle,
