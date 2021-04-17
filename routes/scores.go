@@ -14,7 +14,7 @@ func ScoresMini(w http.ResponseWriter, r *http.Request) {
 	}
 
 	scoring := param(r, "scoring")
-	otherScoring := ""
+	var otherScoring string
 	switch scoring {
 	case "bytes":
 		otherScoring = "chars"
