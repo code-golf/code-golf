@@ -26,8 +26,8 @@ const switchLang = onhashchange = () => {
     );
 };
 
-select.onchange = e => {
-    history.replaceState(null, '', '#' + e.target.value);
+select.onchange = () => {
+    history.replaceState(null, '', '#' + select.value);
     switchLang();
 }
 
