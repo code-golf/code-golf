@@ -1,13 +1,41 @@
 {{ template "header" . }}
 
-<main>
-    <select>
-    {{ range $id, $lang := .Data }}
-        <option value="{{ $id }}">{{ $lang.Name }}
-    {{ end }}
-    </select>
+{{ range $id, $lang := .Data.Langs }}
+    {{ svg $id }}
+{{ end }}
 
-    <div id=editor></div>
+<main>
+    <h1>{{ .Data.Hole.Name }}</h1>
+    <section>
+        <header>
+            <select>
+            {{ range $id, $lang := .Data.Langs }}
+                <option value="{{ $id }}">{{ $lang.Name }}
+            {{ end }}
+            </select>
+            <div id=strokes></div>
+        </header>
+        <header>
+            <nav class=tabs>
+                <a id=bytes>Bytes</a>
+                <a id=chars>Chars</a>
+            </nav>
+            <a id=all>All</a>
+        </header>
+        <div id=editor></div>
+        <div id=rankings>
+            <table class=nowrap-second>
+                <tr>
+                    <td>1<sup>st</sup>
+                    <td>primo-ppcg
+                    <td>43
+                <tr>
+                    <td>2<sup>nd</sup>
+                    <td>JRaspass
+                    <td>44
+            </table>
+        </div>
+    </section>
 
     <div id=run>
         ctrl + enter
@@ -27,6 +55,6 @@
     </div>
 </div>
 
-<script id=langs type=application/json>{{ .Data }}</script>
+<script id=langs type=application/json>{{ .Data.Langs }}</script>
 
 {{ template "footer" }}

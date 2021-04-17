@@ -1,3 +1,42 @@
+section {
+    display: grid;
+    grid-template-columns: 1fr 15rem;
+}
+
+section > div {
+    border: 1px solid var(--color);
+    border-top: 2px solid var(--color);
+}
+
+section > header {
+    align-items: center;
+    display: flex;
+    gap: .5rem;
+    justify-content: space-between;
+}
+
+select {
+    border: 0;
+    border-radius: 0;
+    color: var(--background);
+    margin-bottom: -2px;
+    padding: calc(.25rem + 1px) 1.25rem calc(.25rem + 1px) 1.75rem;
+    width: initial;
+}
+
+td { border-width: 1px 0 !important }
+
+.tabs a {
+    margin-bottom: -2px;
+    padding: calc(.5rem - 1px) .5rem;
+}
+
+#all { margin-right: .5rem }
+
+#editor { border-right-width: 0 }
+
+#rankings { overflow-y: auto }
+
 #run {
     align-items: center;
     display: flex;
@@ -5,3 +44,11 @@
 }
 
 #run > span { margin: 0 1rem }
+
+@media (max-width: 34rem) {
+    section { grid-template-columns: 1fr }
+
+    section > :nth-child(even) { display: none }
+
+    #editor { border-right-width: 1px }
+}

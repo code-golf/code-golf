@@ -72,13 +72,18 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 
 // HoleNG serves GET /ng/{hole}
 func HoleNG(w http.ResponseWriter, r *http.Request) {
-	h, ok := hole.ByID[param(r, "hole")]
-	if !ok {
-		if h, ok = hole.ExperimentalByID[param(r, "hole")]; !ok {
+	data := struct {
+		Hole  hole.Hole
+		Langs map[string]lang.Lang
+	}{Langs: lang.ByID}
+
+	var ok bool
+	if data.Hole, ok = hole.ByID[param(r, "hole")]; !ok {
+		if data.Hole, ok = hole.ExperimentalByID[param(r, "hole")]; !ok {
 			NotFound(w, r)
 			return
 		}
 	}
 
-	render(w, r, "hole-ng", lang.ByID, h.Name)
+	render(w, r, "hole-ng", data, data.Hole.Name)
 }
