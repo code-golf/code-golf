@@ -13,6 +13,7 @@ section > header {
     display: flex;
     gap: .5rem;
     justify-content: space-between;
+    padding-right: .5rem;
 }
 
 select {
@@ -30,8 +31,6 @@ td { border-width: 1px 0 !important }
     margin-bottom: -2px;
     padding: calc(.5rem - 1px) .5rem;
 }
-
-#all { margin-right: .5rem }
 
 #editor { border-right-width: 0 }
 

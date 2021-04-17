@@ -13,15 +13,14 @@ const select   = document.querySelector('select');
 const strokes  = document.querySelector('#strokes');
 const tabs     = document.querySelectorAll('.tabs a');
 const editor   = new EditorView({
-    // There's latency :-( Need a different update method.
     dispatch: (tr) => {
-        const code  = [...editor.state.doc].join('');
+        const code  = [...tr.state.doc].join('');
         const bytes = new TextEncoder().encode(code).length;
         const chars = strlen(code);
 
         strokes.innerText =
-            `${bytes} byte${bytes > 1 ? 's' : ''}, ` +
-            `${chars} char${chars > 1 ? 's' : ''}`;
+            `${bytes} byte${bytes != 1 ? 's' : ''}, ` +
+            `${chars} char${chars != 1 ? 's' : ''}`;
 
         return editor.update([tr]);
     },
@@ -90,6 +89,9 @@ const switchLang = onhashchange = () => {
             extensions: [...extensions, languages[lang] || []],
         }),
     );
+
+    // Dispatch to update strokes.
+    editor.dispatch();
 
     update();
 };
