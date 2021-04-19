@@ -88,10 +88,10 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			`SELECT earned,
 			        old_bytes_joint, old_bytes_rank, old_bytes,
 			        new_bytes_joint, new_bytes_rank, new_bytes,
-					beat_bytes,
+			        beat_bytes,
 			        old_chars_joint, old_chars_rank, old_chars,
 			        new_chars_joint, new_chars_rank, new_chars,
-					beat_chars
+			        beat_chars
 			   FROM save_solution(code := $1, hole := $2, lang := $3, user_id := $4)`,
 			in.Code, in.Hole, in.Lang, golfer.ID,
 		).Scan(

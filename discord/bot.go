@@ -149,7 +149,7 @@ func LogNewRecord(
 		log.Println(err)
 	}
 
-	if _, err := db.Query(
+	if _, err := db.Exec(
 		`INSERT INTO discord_records (hole, lang, message) VALUES
 			($1, $2, $3)
 			ON CONFLICT ON CONSTRAINT discord_records_pkey

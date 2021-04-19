@@ -179,8 +179,8 @@ CREATE ROLE "code-golf" WITH LOGIN;
 ALTER MATERIALIZED VIEW medals OWNER TO "code-golf";
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    code            TO "code-golf";
-GRANT SELECT, INSERT, UPDATE         ON TABLE    discord_records TO "code-golf";
 GRANT SELECT                         ON SEQUENCE code_id_seq     TO "code-golf";
+GRANT SELECT, INSERT, UPDATE         ON TABLE    discord_records TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE    ideas           TO "code-golf";
 GRANT SELECT                         ON TABLE    bytes_points    TO "code-golf";
 GRANT SELECT                         ON TABLE    chars_points    TO "code-golf";

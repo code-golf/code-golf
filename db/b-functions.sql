@@ -29,6 +29,8 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TYPE save_solution_ret AS (
+    beat_bytes      int,
+    beat_chars      int,
     earned          trophy[],
     new_bytes       int,
     new_bytes_joint bool,
@@ -41,9 +43,7 @@ CREATE TYPE save_solution_ret AS (
     old_bytes_rank  int,
     old_chars       int,
     old_chars_joint bool,
-    old_chars_rank  int,
-    beat_bytes      int,
-    beat_chars      int
+    old_chars_rank  int
 );
 
 CREATE FUNCTION save_solution(code text, hole hole, lang lang, user_id int)
