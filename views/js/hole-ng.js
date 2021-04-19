@@ -5,14 +5,15 @@ import { EditorView, EditorState, extensions, languages } from '/editor.js';
 let lang;
 let scoring = 'bytes';
 
-const all      = document.querySelector('#all');
-const hole     = decodeURI(location.pathname.slice(4));
-const langs    = JSON.parse(document.querySelector('#langs').innerText);
-const rankings = document.querySelector('#rankings table');
-const select   = document.querySelector('select');
-const strokes  = document.querySelector('#strokes');
-const tabs     = document.querySelectorAll('.tabs a');
-const editor   = new EditorView({
+const all       = document.querySelector('#all');
+const hole      = decodeURI(location.pathname.slice(4));
+const langs     = JSON.parse(document.querySelector('#langs').innerText);
+const rankings  = document.querySelector('#rankings table');
+const select    = document.querySelector('select');
+const solutions = JSON.parse(document.querySelector('#solutions').innerText);
+const strokes   = document.querySelector('#strokes');
+const tabs      = document.querySelectorAll('.tabs a');
+const editor    = new EditorView({
     dispatch: (tr) => {
         const code  = [...tr.state.doc].join('');
         const bytes = new TextEncoder().encode(code).length;
@@ -85,7 +86,7 @@ const switchLang = onhashchange = () => {
 
     editor.setState(
         EditorState.create({
-            doc:        langs[lang].example,
+            doc:        solutions[lang].bytes ?? langs[lang].example,
             extensions: [...extensions, languages[lang] || []],
         }),
     );
