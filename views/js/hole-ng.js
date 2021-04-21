@@ -86,7 +86,7 @@ const switchLang = onhashchange = () => {
 
     editor.setState(
         EditorState.create({
-            doc:        solutions[lang].bytes ?? langs[lang].example,
+            doc:        solutions[lang]?.[scoring] ?? langs[lang].example,
             extensions: [...extensions, languages[lang] || []],
         }),
     );
