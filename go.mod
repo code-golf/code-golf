@@ -16,15 +16,16 @@ require (
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/kr/pretty v0.2.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
-	github.com/lib/pq v1.10.0
+	github.com/lib/pq v1.10.1
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/shurcooL/githubv4 v0.0.0-20201206200315-234843c633fa
 	github.com/shurcooL/graphql v0.0.0-20200928012149-18c5c3165e3a // indirect
 	github.com/tdewolff/minify/v2 v2.9.16
-	golang.org/x/crypto v0.0.0-20210322153248-0c34fe9e7dc2
-	golang.org/x/net v0.0.0-20210414194228-064579744ee0 // indirect
+	github.com/tdewolff/parse/v2 v2.5.15 // indirect
+	golang.org/x/crypto v0.0.0-20210421170649-83a5a9bb288b
+	golang.org/x/net v0.0.0-20210420210106-798c2154c571 // indirect
 	golang.org/x/oauth2 v0.0.0-20210413134643-5e61552d6c78
-	golang.org/x/sys v0.0.0-20210414055047-fe65e336abe0 // indirect
+	golang.org/x/sys v0.0.0-20210420205809-ac73e9fd8988 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	gopkg.in/guregu/null.v4 v4.0.0
 )
