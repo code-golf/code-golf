@@ -369,7 +369,7 @@ end
 
 [Nim]
 size    = '21.6 MiB'
-version = '1.4.4'
+version = '1.4.6'
 website = 'https://nim-lang.org'
 example = '''
 import os
@@ -513,7 +513,7 @@ fn main() {
 
 [SQL]
 size    = '1.02 MiB'
-version = '3.35.4'
+version = '3.35.5'
 website = 'https://sqlite.org/index.html'
 example = '''
 -- Printing
