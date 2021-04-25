@@ -38,8 +38,8 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 	db := session.Database(r)
 	golfer := session.Golfer(r)
 
-	// 128 KiB.
-	if len(in.Code) > 128*1024 {
+	// 128 KiB, >= because arguments needs a null termination.
+	if len(in.Code) >= 128*1024 {
 		if golfer != nil {
 			awardTrophy(db, golfer.ID, "tl-dr")
 		}
