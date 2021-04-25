@@ -1574,7 +1574,6 @@ preamble = '''
 
 ['Sudoku V2']
 category = 'Gaming'
-experiment = -1
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Sudoku' },
     { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Sudoku' },

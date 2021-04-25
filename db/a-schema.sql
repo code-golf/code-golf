@@ -13,8 +13,8 @@ CREATE TYPE hole AS ENUM (
     'pernicious-numbers', 'poker', 'prime-numbers', 'quine', 'recamán',
     'rock-paper-scissors-spock-lizard', 'roman-to-arabic', 'rule-110',
     'seven-segment', 'sierpiński-triangle', 'spelling-numbers', 'sudoku',
-    'ten-pin-bowling', 'tongue-twisters', 'united-states', 'vampire-numbers',
-    'λ', 'π', 'τ', 'φ', '√2', '𝑒'
+    'sudoku-v2', 'ten-pin-bowling', 'tongue-twisters', 'united-states',
+    'vampire-numbers', 'λ', 'π', 'τ', 'φ', '√2', '𝑒'
 );
 
 CREATE TYPE keymap AS ENUM ('default', 'vim');

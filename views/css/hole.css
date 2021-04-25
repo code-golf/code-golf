@@ -57,9 +57,10 @@ main .info {
 
 #arg span {
     background: #eee;
-    border-radius: 10px;
+    border-radius: .5rem;
+    display: inline-block;
     font-family: emoji, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', Courier, monospace;
-    line-height: 30px;
+    margin-bottom: .5rem;
     padding: 3px 7px;
     white-space: pre;
 }
