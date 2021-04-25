@@ -1,5 +1,5 @@
 ['><>']
-size    = '473 KiB'
+size    = '477 KiB'
 version = '44b227e'
 website = 'https://github.com/primo-ppcg/fish-jit'
 example = '''
@@ -37,8 +37,8 @@ done
 '''
 
 [brainfuck]
-size    = '1.62 MiB'
-version = '1.0.0'
+size    = '355 KiB'
+version = '61d1f49'
 website = 'https://github.com/code-golf/code-golf/tree/master/langs/brainfuck/'
 example = '''
 >>Printing

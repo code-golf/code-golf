@@ -45,7 +45,7 @@ CREATE TABLE code (
     bytes int    NOT NULL GENERATED ALWAYS AS (octet_length(code)) STORED,
     chars int    NOT NULL GENERATED ALWAYS AS  (char_length(code)) STORED,
     code  text   NOT NULL,
-    CHECK (bytes <= 409600), -- 400 KiB
+    CHECK (bytes <= 409600), -- 400 KiB, TODO Lower to 128 KiB.
     EXCLUDE USING hash(code WITH =)
 );
 

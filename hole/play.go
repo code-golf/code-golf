@@ -105,6 +105,8 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	switch langID {
 	case "bash":
 		cmd.Args = []string{"/usr/bin/bash", "-s", "-"}
+	case "brainfuck":
+		cmd.Args = []string{"/usr/bin/brainfuck", "-c", code}
 	case "c":
 		cmd.Args = []string{"/usr/bin/tcc", "-run", "-"}
 	case "c-sharp", "f-sharp":
@@ -142,6 +144,13 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 
 	// Args
 	switch langID {
+	// FIXME brainfuck and fish should be consistent.
+	case "brainfuck":
+		args := ""
+		for _, arg := range score.Args {
+			args += arg + "\x00"
+		}
+		cmd.Stdin = strings.NewReader(args)
 	case "fish":
 		cmd.Stdin = strings.NewReader(strings.Join(score.Args, "\x00"))
 	default:
@@ -150,7 +159,7 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 
 	// Code
 	switch langID {
-	case "fish", "javascript":
+	case "brainfuck", "fish", "javascript":
 		// For these code is passed as an argument above.
 	case "php":
 		code = "<?php " + code + " ;"
