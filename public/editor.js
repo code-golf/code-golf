@@ -2675,41 +2675,17 @@ function keyName(event) {
 }
 
 // node_modules/@codemirror/view/dist/index.js
-var [nav, doc] = typeof navigator != "undefined" ? [navigator, document] : [{userAgent: "", vendor: "", platform: ""}, {documentElement: {style: {}}}];
-var ie_edge = /* @__PURE__ */ /Edge\/(\d+)/.exec(nav.userAgent);
-var ie_upto10 = /* @__PURE__ */ /MSIE \d/.test(nav.userAgent);
-var ie_11up = /* @__PURE__ */ /Trident\/(?:[7-9]|\d{2,})\..*rv:(\d+)/.exec(nav.userAgent);
-var ie2 = !!(ie_upto10 || ie_11up || ie_edge);
-var gecko2 = !ie2 && /* @__PURE__ */ /gecko\/(\d+)/i.test(nav.userAgent);
-var chrome2 = !ie2 && /* @__PURE__ */ /Chrome\/(\d+)/.exec(nav.userAgent);
-var webkit = "webkitFontSmoothing" in doc.documentElement.style;
-var safari2 = !ie2 && /* @__PURE__ */ /Apple Computer/.test(nav.vendor);
-var browser = {
-  mac: /* @__PURE__ */ /Mac/.test(nav.platform),
-  ie: ie2,
-  ie_version: ie_upto10 ? doc.documentMode || 6 : ie_11up ? +ie_11up[1] : ie_edge ? +ie_edge[1] : 0,
-  gecko: gecko2,
-  gecko_version: gecko2 ? +(/* @__PURE__ */ /Firefox\/(\d+)/.exec(nav.userAgent) || [0, 0])[1] : 0,
-  chrome: !!chrome2,
-  chrome_version: chrome2 ? +chrome2[1] : 0,
-  ios: safari2 && (/* @__PURE__ */ /Mobile\/\w+/.test(nav.userAgent) || nav.maxTouchPoints > 2),
-  android: /* @__PURE__ */ /Android\b/.test(nav.userAgent),
-  webkit,
-  safari: safari2,
-  webkit_version: webkit ? +(/* @__PURE__ */ /\bAppleWebKit\/(\d+)/.exec(navigator.userAgent) || [0, 0])[1] : 0,
-  tabSize: doc.documentElement.style.tabSize != null ? "tab-size" : "-moz-tab-size"
-};
 function getSelection(root) {
   return root.getSelection ? root.getSelection() : document.getSelection();
 }
-function selectionCollapsed(domSel) {
-  let collapsed = domSel.isCollapsed;
-  if (collapsed && browser.chrome && domSel.rangeCount && !domSel.getRangeAt(0).collapsed)
-    collapsed = false;
-  return collapsed;
-}
 function contains(dom, node) {
   return node ? dom.contains(node.nodeType != 1 ? node.parentNode : node) : false;
+}
+function deepActiveElement() {
+  let elt = document.activeElement;
+  while (elt && elt.shadowRoot)
+    elt = elt.shadowRoot.activeElement;
+  return elt;
 }
 function hasSelection(dom, selection) {
   if (!selection.anchorNode)
@@ -2939,12 +2915,13 @@ var ContentView = class {
     return null;
   }
   sync(track) {
+    var _a;
     if (this.dirty & 2) {
       let parent = this.dom, pos = null;
       for (let child of this.children) {
         if (child.dirty) {
           let next2 = pos ? pos.nextSibling : parent.firstChild;
-          if (next2 && !child.dom && !ContentView.get(next2))
+          if (!child.dom && next2 && !((_a = ContentView.get(next2)) === null || _a === void 0 ? void 0 : _a.parent))
             child.reuseDOM(next2);
           child.sync(track);
           child.dirty = 0;
@@ -3008,7 +2985,7 @@ var ContentView = class {
   }
   domBoundsAround(from, to, offset = 0) {
     let fromI = -1, fromStart = -1, toI = -1, toEnd = -1;
-    for (let i = 0, pos = offset; i < this.children.length; i++) {
+    for (let i = 0, pos = offset, prevEnd = offset; i < this.children.length; i++) {
       let child = this.children[i], end = pos + child.length;
       if (pos < from && end > to)
         return child.domBoundsAround(from, to, pos);
@@ -3016,14 +2993,15 @@ var ContentView = class {
         fromI = i;
         fromStart = pos;
       }
-      if (end >= to && end != pos && toI == -1) {
+      if (pos > to && child.dom.parentNode == this.dom) {
         toI = i;
-        toEnd = end;
+        toEnd = prevEnd;
         break;
       }
+      prevEnd = end;
       pos = end + child.breakAfter;
     }
-    return {from: fromStart, to: toEnd < 0 ? offset + this.length : toEnd, startDOM: (fromI ? this.children[fromI - 1].dom.nextSibling : null) || this.dom.firstChild, endDOM: toI < this.children.length - 1 && toI >= 0 ? this.children[toI + 1].dom : null};
+    return {from: fromStart, to: toEnd < 0 ? offset + this.length : toEnd, startDOM: (fromI ? this.children[fromI - 1].dom.nextSibling : null) || this.dom.firstChild, endDOM: toI < this.children.length && toI >= 0 ? this.children[toI].dom : null};
   }
   markDirty(andParent = false) {
     if (this.dirty & 2)
@@ -3119,6 +3097,30 @@ var ChildCursor = class {
       this.pos -= next.length + next.breakAfter;
     }
   }
+};
+var [nav, doc] = typeof navigator != "undefined" ? [navigator, document] : [{userAgent: "", vendor: "", platform: ""}, {documentElement: {style: {}}}];
+var ie_edge = /* @__PURE__ */ /Edge\/(\d+)/.exec(nav.userAgent);
+var ie_upto10 = /* @__PURE__ */ /MSIE \d/.test(nav.userAgent);
+var ie_11up = /* @__PURE__ */ /Trident\/(?:[7-9]|\d{2,})\..*rv:(\d+)/.exec(nav.userAgent);
+var ie2 = !!(ie_upto10 || ie_11up || ie_edge);
+var gecko2 = !ie2 && /* @__PURE__ */ /gecko\/(\d+)/i.test(nav.userAgent);
+var chrome2 = !ie2 && /* @__PURE__ */ /Chrome\/(\d+)/.exec(nav.userAgent);
+var webkit = "webkitFontSmoothing" in doc.documentElement.style;
+var safari2 = !ie2 && /* @__PURE__ */ /Apple Computer/.test(nav.vendor);
+var browser = {
+  mac: /* @__PURE__ */ /Mac/.test(nav.platform),
+  ie: ie2,
+  ie_version: ie_upto10 ? doc.documentMode || 6 : ie_11up ? +ie_11up[1] : ie_edge ? +ie_edge[1] : 0,
+  gecko: gecko2,
+  gecko_version: gecko2 ? +(/* @__PURE__ */ /Firefox\/(\d+)/.exec(nav.userAgent) || [0, 0])[1] : 0,
+  chrome: !!chrome2,
+  chrome_version: chrome2 ? +chrome2[1] : 0,
+  ios: safari2 && (/* @__PURE__ */ /Mobile\/\w+/.test(nav.userAgent) || nav.maxTouchPoints > 2),
+  android: /* @__PURE__ */ /Android\b/.test(nav.userAgent),
+  webkit,
+  safari: safari2,
+  webkit_version: webkit ? +(/* @__PURE__ */ /\bAppleWebKit\/(\d+)/.exec(navigator.userAgent) || [0, 0])[1] : 0,
+  tabSize: doc.documentElement.style.tabSize != null ? "tab-size" : "-moz-tab-size"
 };
 var none$2 = [];
 var InlineView = class extends ContentView {
@@ -3458,7 +3460,11 @@ function coordsInChildren(view, pos, side) {
       return child.coordsAt(pos - off, side);
     off = end;
   }
-  return (view.dom.lastChild || view.dom).getBoundingClientRect();
+  let last = view.dom.lastChild;
+  if (!last)
+    return view.dom.getBoundingClientRect();
+  let rects = clientRectsFor(last);
+  return rects[rects.length - 1];
 }
 function combineAttrs(source, target) {
   for (let name2 in source) {
@@ -4293,9 +4299,10 @@ var DocView = class extends ContentView {
       anchor = head = new DOMPos(dummy, 0);
       force = true;
     }
-    let domSel = getSelection(this.root);
+    let domSel = this.view.observer.selectionRange;
     if (force || !domSel.focusNode || browser.gecko && main.empty && nextToUneditable(domSel.focusNode, domSel.focusOffset) || !isEquivalentPosition(anchor.node, anchor.offset, domSel.anchorNode, domSel.anchorOffset) || !isEquivalentPosition(head.node, head.offset, domSel.focusNode, domSel.focusOffset)) {
       this.view.observer.ignore(() => {
+        let rawSel = getSelection(this.root);
         if (main.empty) {
           if (browser.gecko) {
             let nextTo = nextToUneditable(anchor.node, anchor.offset);
@@ -4305,20 +4312,20 @@ var DocView = class extends ContentView {
                 anchor = new DOMPos(text, nextTo == 1 ? 0 : text.nodeValue.length);
             }
           }
-          domSel.collapse(anchor.node, anchor.offset);
+          rawSel.collapse(anchor.node, anchor.offset);
           if (main.bidiLevel != null && domSel.cursorBidiLevel != null)
             domSel.cursorBidiLevel = main.bidiLevel;
-        } else if (domSel.extend) {
-          domSel.collapse(anchor.node, anchor.offset);
-          domSel.extend(head.node, head.offset);
+        } else if (rawSel.extend) {
+          rawSel.collapse(anchor.node, anchor.offset);
+          rawSel.extend(head.node, head.offset);
         } else {
           let range = document.createRange();
           if (main.anchor > main.head)
             [anchor, head] = [head, anchor];
           range.setEnd(head.node, head.offset);
           range.setStart(anchor.node, anchor.offset);
-          domSel.removeAllRanges();
-          domSel.addRange(range);
+          rawSel.removeAllRanges();
+          rawSel.addRange(range);
         }
       });
     }
@@ -4344,7 +4351,7 @@ var DocView = class extends ContentView {
     sel.modify("move", cursor.assoc < 0 ? "forward" : "backward", "lineboundary");
   }
   mayControlSelection() {
-    return this.view.state.facet(editable) ? this.root.activeElement == this.dom : hasSelection(this.dom, getSelection(this.root));
+    return this.view.state.facet(editable) ? this.root.activeElement == this.dom : hasSelection(this.dom, this.view.observer.selectionRange);
   }
   nearest(dom) {
     for (let cur = dom; cur; ) {
@@ -4500,7 +4507,7 @@ var BlockGapWidget = class extends WidgetType {
   }
 };
 function computeCompositionDeco(view, changes) {
-  let sel = getSelection(view.root);
+  let sel = view.observer.selectionRange;
   let textNode = sel.focusNode && nearbyTextNode(sel.focusNode, sel.focusOffset, 0);
   if (!textNode)
     return Decoration.none;
@@ -5077,6 +5084,7 @@ var InputState = class {
     this.lastSelectionOrigin = null;
     this.lastSelectionTime = 0;
     this.lastEscPress = 0;
+    this.lastContextMenu = 0;
     this.scrollHandlers = [];
     this.registeredEvents = [];
     this.customHandlers = [];
@@ -5167,7 +5175,7 @@ var InputState = class {
       return false;
     if (this.composing > 0)
       return true;
-    if (browser.safari && event.timeStamp - this.compositionEndedAt < 500) {
+    if (browser.safari && Date.now() - this.compositionEndedAt < 500) {
       this.compositionEndedAt = 0;
       return true;
     }
@@ -5338,12 +5346,8 @@ handlers.keydown = (view, event) => {
   view.inputState.setSelectionOrigin("keyboardselection");
 };
 var lastTouch = 0;
-function mouseLikeTouchEvent(e) {
-  return e.touches.length == 1 && e.touches[0].radiusX <= 1 && e.touches[0].radiusY <= 1;
-}
 handlers.touchstart = (view, e) => {
-  if (!mouseLikeTouchEvent(e))
-    lastTouch = Date.now();
+  lastTouch = Date.now();
   view.inputState.setSelectionOrigin("pointerselection");
 };
 handlers.touchmove = (view) => {
@@ -5408,12 +5412,14 @@ function queryPos(view, event) {
 var BadMouseDetail = browser.ie && browser.ie_version <= 11;
 var lastMouseDown = null;
 var lastMouseDownCount = 0;
+var lastMouseDownTime = 0;
 function getClickType(event) {
   if (!BadMouseDetail)
     return event.detail;
-  let last = lastMouseDown;
+  let last = lastMouseDown, lastTime = lastMouseDownTime;
   lastMouseDown = event;
-  return lastMouseDownCount = !last || last.timeStamp > Date.now() - 400 && Math.abs(last.clientX - event.clientX) < 2 && Math.abs(last.clientY - event.clientY) < 2 ? (lastMouseDownCount + 1) % 3 : 1;
+  lastMouseDownTime = Date.now();
+  return lastMouseDownCount = !last || lastTime > Date.now() - 400 && Math.abs(last.clientX - event.clientX) < 2 && Math.abs(last.clientY - event.clientY) < 2 ? (lastMouseDownCount + 1) % 3 : 1;
 }
 function basicMouseSelection(view, event) {
   let start = queryPos(view, event), type2 = getClickType(event);
@@ -5585,6 +5591,9 @@ handlers.compositionend = (view) => {
     if (view.inputState.composing < 0)
       forceClearComposition(view);
   }, 50);
+};
+handlers.contextmenu = (view) => {
+  view.inputState.lastContextMenu = Date.now();
 };
 var wrappingWhiteSpace = ["pre-wrap", "normal", "pre-line"];
 var HeightOracle = class {
@@ -6800,6 +6809,7 @@ var DOMObserver = class {
         });
         this.flushSoon();
       };
+    this.updateSelectionRange();
     this.onSelectionChange = this.onSelectionChange.bind(this);
     this.start();
     this.onScroll = this.onScroll.bind(this);
@@ -6825,7 +6835,8 @@ var DOMObserver = class {
     }
   }
   onSelectionChange(event) {
-    let {view} = this, sel = getSelection(view.root);
+    this.updateSelectionRange();
+    let {view} = this, sel = this.selectionRange;
     if (view.state.facet(editable) ? view.root.activeElement != this.dom : !hasSelection(view.dom, sel))
       return;
     let context = sel.anchorNode && view.docView.nearest(sel.anchorNode);
@@ -6835,6 +6846,12 @@ var DOMObserver = class {
       this.flushSoon();
     else
       this.flush();
+  }
+  updateSelectionRange() {
+    let {root} = this.view, sel = getSelection(root);
+    if (browser.safari && root.nodeType == 11 && deepActiveElement() == this.view.contentDOM)
+      sel = safariSelectionRangeHack(this.view) || sel;
+    this.selectionRange = sel;
   }
   listenForScroll() {
     this.parentCheck = -1;
@@ -6893,7 +6910,7 @@ var DOMObserver = class {
       this.dom.removeEventListener("DOMCharacterDataModified", this.onCharData);
   }
   clearSelection() {
-    this.ignoreSelection.set(getSelection(this.view.root));
+    this.ignoreSelection.set(this.selectionRange);
   }
   clear() {
     this.observer.takeRecords();
@@ -6922,7 +6939,7 @@ var DOMObserver = class {
       records.push(mut);
     if (records.length)
       this.queue = [];
-    let selection = getSelection(this.view.root);
+    let selection = this.selectionRange;
     let newSel = !this.ignoreSelection.eq(selection) && hasSelection(this.dom, selection);
     if (records.length == 0 && !newSel)
       return;
@@ -6989,12 +7006,37 @@ function findChild(cView, dom, dir) {
   }
   return null;
 }
+function safariSelectionRangeHack(view) {
+  let found = null;
+  function read(event) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    found = event.getTargetRanges()[0];
+  }
+  view.contentDOM.addEventListener("beforeinput", read, true);
+  document.execCommand("indent");
+  view.contentDOM.removeEventListener("beforeinput", read, true);
+  if (!found)
+    return null;
+  let curAnchor = view.docView.domAtPos(view.state.selection.main.anchor);
+  return isEquivalentPosition(curAnchor.node, curAnchor.offset, found.endContainer, found.endOffset) ? {
+    anchorNode: found.endContainer,
+    anchorOffset: found.endOffset,
+    focusNode: found.startContainer,
+    focusOffset: found.startOffset
+  } : {
+    anchorNode: found.startContainer,
+    anchorOffset: found.startOffset,
+    focusNode: found.endContainer,
+    focusOffset: found.endOffset
+  };
+}
 function applyDOMChange(view, start, end, typeOver) {
   let change, newSel;
   let sel = view.state.selection.main, bounds;
   if (start > -1 && (bounds = view.docView.domBoundsAround(start, end, 0))) {
     let {from, to} = bounds;
-    let selPoints = view.docView.impreciseHead || view.docView.impreciseAnchor ? [] : selectionPoints(view.contentDOM, view.root);
+    let selPoints = view.docView.impreciseHead || view.docView.impreciseAnchor ? [] : selectionPoints(view);
     let reader = new DOMReader(selPoints, view);
     reader.readRange(bounds.startDOM, bounds.endDOM);
     newSel = selectionFromPoints(selPoints, from);
@@ -7011,10 +7053,10 @@ function applyDOMChange(view, start, end, typeOver) {
         insert: view.state.toText(reader.text.slice(diff.from, diff.toB))
       };
   } else if (view.hasFocus || !view.state.facet(editable)) {
-    let domSel = getSelection(view.root);
+    let domSel = view.observer.selectionRange;
     let {impreciseHead: iHead, impreciseAnchor: iAnchor} = view.docView;
     let head = iHead && iHead.node == domSel.focusNode && iHead.offset == domSel.focusOffset || !contains(view.contentDOM, domSel.focusNode) ? view.state.selection.main.head : view.docView.posFromDOM(domSel.focusNode, domSel.focusOffset);
-    let anchor = iAnchor && iAnchor.node == domSel.anchorNode && iAnchor.offset == domSel.anchorOffset || !contains(view.contentDOM, domSel.anchorNode) ? view.state.selection.main.anchor : selectionCollapsed(domSel) ? head : view.docView.posFromDOM(domSel.anchorNode, domSel.anchorOffset);
+    let anchor = iAnchor && iAnchor.node == domSel.anchorNode && iAnchor.offset == domSel.anchorOffset || !contains(view.contentDOM, domSel.anchorNode) ? view.state.selection.main.anchor : view.docView.posFromDOM(domSel.anchorNode, domSel.anchorOffset);
     if (head != sel.head || anchor != sel.anchor)
       newSel = EditorSelection.single(anchor, head);
   }
@@ -7156,11 +7198,11 @@ var DOMPoint = class {
     this.pos = -1;
   }
 };
-function selectionPoints(dom, root) {
+function selectionPoints(view) {
   let result = [];
-  if (root.activeElement != dom)
+  if (view.root.activeElement != view.contentDOM)
     return result;
-  let {anchorNode, anchorOffset, focusNode, focusOffset} = getSelection(root);
+  let {anchorNode, anchorOffset, focusNode, focusOffset} = view.observer.selectionRange;
   if (anchorNode) {
     result.push(new DOMPoint(anchorNode, anchorOffset));
     if (focusNode != anchorNode || focusOffset != anchorOffset)
@@ -7393,6 +7435,8 @@ var EditorView = class {
     this.editorAttrs = editorAttrs;
     let contentAttrs = combineAttrs(this.state.facet(contentAttributes), {
       spellcheck: "false",
+      autocorrect: "off",
+      autocapitalize: "off",
       contenteditable: String(this.state.facet(editable)),
       class: "cm-content",
       style: `${browser.tabSize}: ${this.state.tabSize}`,
@@ -7527,7 +7571,7 @@ var EditorView = class {
     return order;
   }
   get hasFocus() {
-    return document.hasFocus() && this.root.activeElement == this.contentDOM;
+    return (document.hasFocus() || browser.safari && this.inputState.lastContextMenu > Date.now() - 3e4) && this.root.activeElement == this.contentDOM;
   }
   focus() {
     this.observer.ignore(() => {
@@ -9982,10 +10026,13 @@ var gutterView = /* @__PURE__ */ ViewPlugin.fromClass(class {
       this.dom.style.position = "sticky";
     }
     view.scrollDOM.insertBefore(this.dom, view.contentDOM);
+    this.syncGutters();
   }
   update(update) {
-    if (!this.updateGutters(update))
-      return;
+    if (this.updateGutters(update))
+      this.syncGutters();
+  }
+  syncGutters() {
     let contexts = this.gutters.map((gutter2) => new UpdateContext(gutter2, this.view.viewport));
     this.view.viewportLines((line) => {
       let text;
@@ -10006,7 +10053,7 @@ var gutterView = /* @__PURE__ */ ViewPlugin.fromClass(class {
     for (let cx of contexts)
       cx.finish();
     this.dom.style.minHeight = this.view.contentHeight + "px";
-    if (update.state.facet(unfixGutters) != !this.fixed) {
+    if (this.view.state.facet(unfixGutters) != !this.fixed) {
       this.fixed = !this.fixed;
       this.dom.style.position = this.fixed ? "sticky" : "";
     }
@@ -15414,7 +15461,7 @@ var Snippet = class {
       while (m = /[#$]\{(?:(\d+)(?::([^}]*))?|([^}]*))\}/.exec(line)) {
         let seq = m[1] ? +m[1] : null, name2 = m[2] || m[3], found = -1;
         for (let i = 0; i < fields.length; i++) {
-          if (name2 ? fields[i].name == name2 : seq != null && fields[i].seq == seq)
+          if (seq != null ? fields[i].seq == seq : name2 ? fields[i].name == name2 : false)
             found = i;
         }
         if (found < 0) {
@@ -15423,6 +15470,9 @@ var Snippet = class {
             i++;
           fields.splice(i, 0, {seq, name: name2 || null});
           found = i;
+          for (let pos of positions)
+            if (pos.field >= found)
+              pos.field++;
         }
         positions.push(new FieldPos(found, lines.length, m.index, m.index + name2.length));
         line = line.slice(0, m.index) + name2 + line.slice(m.index + m[0].length);
@@ -15492,9 +15542,15 @@ function snippet(template2) {
     if (ranges.length)
       spec.selection = fieldSelection(ranges, 0);
     if (ranges.length > 1) {
-      let effects = spec.effects = [setActive.of(new ActiveSnippet(ranges, 0))];
+      let active = new ActiveSnippet(ranges, 0);
+      let effects = spec.effects = [setActive.of(active)];
       if (editor.state.field(snippetState, false) === void 0)
-        effects.push(StateEffect.appendConfig.of([snippetState, addSnippetKeymap, snippetPointerHandler, baseTheme4]));
+        effects.push(StateEffect.appendConfig.of([
+          snippetState.init(() => active),
+          addSnippetKeymap,
+          snippetPointerHandler,
+          baseTheme4
+        ]));
     }
     editor.dispatch(editor.state.update(spec));
   };
