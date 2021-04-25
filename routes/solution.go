@@ -89,8 +89,10 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			`SELECT earned,
 			        old_bytes_joint, old_bytes_rank, old_bytes,
 			        new_bytes_joint, new_bytes_rank, new_bytes,
+			        beat_bytes,
 			        old_chars_joint, old_chars_rank, old_chars,
-			        new_chars_joint, new_chars_rank, new_chars
+			        new_chars_joint, new_chars_rank, new_chars,
+			        beat_chars
 			   FROM save_solution(code := $1, hole := $2, lang := $3, user_id := $4)`,
 			in.Code, in.Hole, in.Lang, golfer.ID,
 		).Scan(
@@ -101,12 +103,14 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			&out.RankUpdates[0].To.Joint,
 			&out.RankUpdates[0].To.Rank,
 			&out.RankUpdates[0].To.Strokes,
+			&out.RankUpdates[0].Beat,
 			&out.RankUpdates[1].From.Joint,
 			&out.RankUpdates[1].From.Rank,
 			&out.RankUpdates[1].From.Strokes,
 			&out.RankUpdates[1].To.Joint,
 			&out.RankUpdates[1].To.Rank,
 			&out.RankUpdates[1].To.Strokes,
+			&out.RankUpdates[1].Beat,
 		); err != nil {
 			panic(err)
 		}
@@ -151,7 +155,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		// If any of the updates are record breakers, announce them on Discord
 		if len(recordUpdates) > 0 {
 			go discord.LogNewRecord(
-				golfer, hole.ByID[in.Hole], lang.ByID[in.Lang], recordUpdates,
+				golfer, hole.ByID[in.Hole], lang.ByID[in.Lang], recordUpdates, db,
 			)
 		}
 

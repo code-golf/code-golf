@@ -61,6 +61,7 @@ type RankUpdate struct {
 		Joint         null.Bool
 		Rank, Strokes null.Int
 	}
+	Beat null.Int
 }
 
 func GetInfo(db *sql.DB, name string) *GolferInfo {
