@@ -39,7 +39,7 @@ done
 [brainfuck]
 size    = '4.55 MiB'
 version = '61d1f49'
-website = 'https://github.com/code-golf/code-golf/tree/master/langs/brainfuck/'
+website = 'https://github.com/primo-ppcg/bf-jit'
 example = '''
 >>Printing
 +[-->-[>>+>-----<<]<--<---]>-.>>>+.>>..+++[.>]<<<<.+++.------.<<-.>>>>+.[<->-]<-.>
