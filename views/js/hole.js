@@ -89,7 +89,7 @@ onload = () => {
         const code = getSolutionCode(lang, solution) || autoSaveCode;
 
         cm.setOption('lineWrapping', lang != 'fish');
-        cm.setOption('matchBrackets', lang != 'brainfuck' && lang != 'j');
+        cm.setOption('matchBrackets', lang != 'brainfuck' && lang != 'j' && lang != 'hexagony');
         cm.setOption('mode', {
             name: 'text/x-' + lang,
             startOpen: true,
