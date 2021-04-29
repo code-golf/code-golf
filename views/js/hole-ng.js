@@ -105,8 +105,24 @@ select.onchange = () => {
 switchLang();
 
 // Run Code
-const runCode = document.querySelector('#run a').onclick = () => {
-    alert(editor.state.doc);
+const runCode = document.querySelector('#run a').onclick = async () => {
+    const res = await fetch('/solution', {
+        method: 'POST',
+        body: JSON.stringify({
+            Code: [...editor.state.doc].join(''),
+            Hole: hole,
+            Lang: lang,
+        }),
+    });
+
+    if (res.status != 200) {
+        alert('Error ' + res.status);
+        return;
+    }
+
+    const data = await res.json();
+
+    alert(JSON.stringify(data));
 };
 
 onkeydown = e => e.ctrlKey && e.key == 'Enter' ? runCode() : undefined;
