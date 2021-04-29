@@ -38,7 +38,7 @@ done
 
 [brainfuck]
 size    = '4.55 MiB'
-version = '61d1f49'
+version = '6fe46c2'
 website = 'https://github.com/primo-ppcg/bf-jit'
 example = '''
 >>Printing
