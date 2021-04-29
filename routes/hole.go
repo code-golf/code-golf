@@ -81,6 +81,9 @@ func HoleNG(w http.ResponseWriter, r *http.Request) {
 		Solutions: map[string]map[string]string{},
 	}
 
+	// Add Assembly.
+	data.Langs["assembly"] = lang.Asm
+
 	var ok bool
 	if data.Hole, ok = hole.ByID[param(r, "hole")]; !ok {
 		if data.Hole, ok = hole.ExperimentalByID[param(r, "hole")]; !ok {

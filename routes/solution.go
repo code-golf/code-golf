@@ -35,6 +35,11 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	if _, ok := lang.ByID[in.Lang]; !ok && in.Lang != "assembly" {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
 	db := session.Database(r)
 	golfer := session.Golfer(r)
 
@@ -83,7 +88,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		ToFile:   "Out",
 	})
 
-	if out.Pass && golfer != nil && !experimental {
+	if out.Pass && golfer != nil && !experimental && in.Lang != "assembly" {
 		if err := db.QueryRowContext(
 			r.Context(),
 			`SELECT earned,

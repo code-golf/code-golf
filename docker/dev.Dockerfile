@@ -15,6 +15,7 @@ COPY --from=codegolf/lang-python     ["/", "/langs/python/rootfs/"    ] #  199 M
 COPY --from=codegolf/lang-powershell ["/", "/langs/powershell/rootfs/"] #  185 MiB
 COPY --from=codegolf/lang-c-sharp    ["/", "/langs/c-sharp/rootfs/"   ] #  129 MiB
 COPY --from=codegolf/lang-go         ["/", "/langs/go/rootfs/"        ] #  124 MiB
+COPY --from=codegolf/lang-assembly   ["/", "/langs/assembly/rootfs/"  ] #  121 MiB
 COPY --from=codegolf/lang-f-sharp    ["/", "/langs/f-sharp/rootfs/"   ] #  119 MiB
 COPY --from=codegolf/lang-v          ["/", "/langs/v/rootfs/"         ] # 98.1 MiB
 COPY --from=codegolf/lang-fortran    ["/", "/langs/fortran/rootfs/"   ] # 85.8 MiB
