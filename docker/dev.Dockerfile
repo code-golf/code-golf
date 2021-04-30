@@ -41,5 +41,8 @@ COPY run-lang.c ./
 
 RUN gcc -Wall -Werror -Wextra -o /usr/bin/run-lang -s -static run-lang.c
 
+CMD \
+# Redirect core dumps to /tmp/core, for Assembly error analysis
+sysctl -w kernel.core_pattern="/tmp/core" && \
 # reflex reruns a command when files change.
-CMD reflex -sd none -r '\.(css|go|html|js|pem|svg|toml)$' -R '_test\.go$' -- go run -tags dev .
+reflex -sd none -r '\.(css|go|html|js|pem|svg|toml)$' -R '_test\.go$' -- go run -tags dev .

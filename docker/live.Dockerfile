@@ -55,4 +55,7 @@ COPY --from=0 /usr/bin/run-lang                  /usr/bin/
 COPY --from=0 /usr/share/zoneinfo                /usr/share/zoneinfo/
 COPY          /views                             /views/
 
-CMD ["/code-golf"]
+CMD \
+# Redirect core dumps to /tmp/core, for Assembly error analysis
+sysctl -w kernel.core_pattern="/tmp/core" && \
+/code-golf

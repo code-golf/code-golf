@@ -129,6 +129,7 @@ live:
 	    --read-only                       \
 	    --restart      always             \
 	    --security-opt seccomp:unconfined \
+	    --ulimit       core=-1            \
 	    --volume       certs:/certs       \
 	    codegolf/code-golf &&             \
 	    docker system prune -f"
