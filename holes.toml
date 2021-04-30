@@ -1822,6 +1822,43 @@ preamble = '''
     timing out.
 '''
 
+['Van Eck Sequence']
+category = 'Sequence'
+experiment = -1
+links = [
+    { name = 'OEIS A181391', url = 'https://oeis.org/A181391' },
+    { name = 'Numberphile', url = 'https://www.youtube.com/watch?v=etMJxB-igrc' },
+    { name = 'Rosetta Code', url = 'https://rosettacode.org/wiki/Van_Eck_sequence' },
+]
+preamble = ''' 
+<p>
+    The rules of the Van Eck sequence are as follows: If the previous number has not occurred
+    in the sequence before, then the next number is 0. If the previous number has occurred
+    in the sequence before, then the next number is the number of steps back to that occurrence.
+<p>
+    The sequence starts with 0.
+<p>
+    <b>Example</b>
+<p> 
+    Consider the sequence:
+<p>    
+    0 0 1 0 2
+<p>    
+    The last number is a 2, which does not appear previously in the rest of the sequence.
+    Thus, the next number will be 0.
+<p>    
+    Consider another sequence:
+<p>    
+    	0 0 1 0 2 0 2 2 1
+<p>    
+    The last number is a 1, which does appear previously in the sequence. The most recent
+    previous 1 is six steps back from this 1, so the next number will be 6.
+    
+<p>
+    Print the first <b>1000</b> terms of the Van Eck sequence, with each number on a new line.
+'''
+
+
 ['λ']
 category = 'Mathematics'
 links = [
