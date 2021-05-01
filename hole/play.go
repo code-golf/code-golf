@@ -161,7 +161,7 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 
 	// Code
 	switch langID {
-	case "brainfuck", "fish", "javascript":
+	case "assembly", "brainfuck", "fish", "javascript":
 		// For these code is passed as an argument above.
 	case "php":
 		code = "<?php " + code + " ;"
