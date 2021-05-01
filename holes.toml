@@ -1345,7 +1345,7 @@ preamble = '''
 ['Recamán']
 category = 'Sequence'
 links = [
-    { name = 'Numberphile',  url = '//numberphile.com/videos/slightly-spooky-recaman-sequence' },
+    { name = 'Numberphile',  url = '//www.numberphile.com/videos/slightly-spooky-recaman-sequence' },
     { name = 'OEIS A005132', url = '//oeis.org/A005132'},
     { name = 'Rosetta Code', url = "//rosettacode.org/wiki/Recaman's_sequence" },
     { name = 'Wikipedia',    url = "//www.wikipedia.org/wiki/Recamán's_sequence" },
@@ -1824,38 +1824,33 @@ preamble = '''
 
 ['Van Eck Sequence']
 category = 'Sequence'
-experiment = -1
 links = [
-    { name = 'OEIS A181391', url = 'https://oeis.org/A181391' },
-    { name = 'Numberphile', url = 'https://www.youtube.com/watch?v=etMJxB-igrc' },
-    { name = 'Rosetta Code', url = 'https://rosettacode.org/wiki/Van_Eck_sequence' },
+    { name = 'Numberphile',  url = '//www.numberphile.com/videos/van-eck-sequence' },
+    { name = 'OEIS A181391', url = '//oeis.org/A181391' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Van_Eck_sequence' },
 ]
 preamble = ''' 
+<p>The rules of the Van Eck sequence are as follows:
+
+<ol type=a>
+    <li>The first term is zero.
+    <li>If the last term is new then the next term is zero.
+    <li>Otherwise the next term is how far back the term occured previously.
+</ol>
+
+<p>The first few terms are as follows:
+
+<pre>
+0         (using a)
+0 0       (using b)
+0 0 1     (using c)
+0 0 1 0   (using b)
+0 0 1 0 2 (using c)
+</pre>
+
 <p>
-    The rules of the Van Eck sequence are as follows: If the previous number has not occurred
-    in the sequence before, then the next number is 0. If the previous number has occurred
-    in the sequence before, then the next number is the number of steps back to that occurrence.
-<p>
-    The sequence starts with 0.
-<p>
-    <b>Example</b>
-<p> 
-    Consider the sequence:
-<p>    
-    0 0 1 0 2
-<p>    
-    The last number is a 2, which does not appear previously in the rest of the sequence.
-    Thus, the next number will be 0.
-<p>    
-    Consider another sequence:
-<p>    
-    	0 0 1 0 2 0 2 2 1
-<p>    
-    The last number is a 1, which does appear previously in the sequence. The most recent
-    previous 1 is six steps back from this 1, so the next number will be 6.
-    
-<p>
-    Print the first <b>1000</b> terms of the Van Eck sequence, with each number on a new line.
+    Print the first <b>1000</b> terms of the Van Eck sequence, with each term
+    on a new line.
 '''
 
 
