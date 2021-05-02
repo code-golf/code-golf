@@ -1533,6 +1533,77 @@ preamble = '''
 <p>The numbers will be in the range of <b>0</b> to <b>1,000</b> inclusive.
 '''
 
+['Star Wars Opening Crawl']
+category = 'Transform'
+experiment = -1
+links = [
+    { name = 'Wookieepedia', url = '//starwars.fandom.com/wiki/Opening_crawl' },
+]
+preamble = '''
+<p>
+    Format a piece of text in the style of Star Wars opening crawl. Here is an
+    example. Input:
+
+<pre>5
+21
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</pre>
+
+<p>
+    Corresponding output:
+
+<pre>     Lorem ipsum dolor sit
+     amet,     consectetur
+    adipiscing elit, sed do
+    eiusmod          tempor
+   incididunt  ut  labore et
+   dolore magna aliqua.
+  
+  Ut  enim  ad  minim veniam,
+ quis   nostrud   exercitation
+ ullamco   laboris   nisi   ut
+aliquip     ex    ea    commodo
+consequat.</pre>
+
+<p>
+    Here is how this works. Each test case consists of the following:
+
+    <ul>
+        <li> A line containing the initial indentation <b>I</b>.
+        <li> A line containing the initial line width <b>W</b>.
+        <li> Several lines of text, each representing a paragraph of the output.
+    </ul>
+
+<p>
+    Split the text into centred lines that get progressively longer as follows:
+
+<p>
+    The first line starts with <b>I</b> spaces and should contain as many words
+    as you can fit in <b>W</b> characters (so lines may only be wrapped where
+    there are spaces in the input).
+
+<p>
+    If the resulting line contains fewer than <b>W</b> characters, pad out the
+    the line by adding spaces between the words as evenly as possible to get to
+    <b>W</b> characters in total. If some gaps require extra spaces, add them
+    starting from the left. Example:
+
+<pre>May the Force be with you!</pre>
+
+<p>
+    This line contains 26 characters and has 5 gaps. If we had <b>W = 33</b>,
+    the result should look like:
+
+<pre>May   the   Force  be  with  you!</pre>
+
+<p>
+    After every pair of lines, reduce <b>I</b> by 1 and increase <b>W</b> by 2.
+    Continue this way through all of the input. The last line of each paragraph
+    should <em>not</em> be justified (i.e. don't add any spaces to it). And
+    paragraphs should be separated by an empty line that does count towards the
+    progression of <b>I</b> and <b>W</b>.
+'''
+
 [Sudoku]
 category = 'Gaming'
 links = [
