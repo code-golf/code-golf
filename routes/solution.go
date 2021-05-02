@@ -180,13 +180,13 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			if (month == time.December && day >= 25) || (month == time.January && day <= 5) {
 				awardTrophy(db, golfer.ID, "twelvetide")
 			}
+		case "star-wars-opening-crawl":
+			if month == time.May && day == 4 {
+				awardTrophy(db, golfer.ID, "may-the-fourth-be-with-you")
+			}
 		case "united-states":
 			if month == time.July && day == 4 {
 				awardTrophy(db, golfer.ID, "independence-day")
-			}
-		case "star-wars-opening-crawl":
-			if month == time.May && day == 4 {
-				awardTrophy(db, golfer.ID, "may-the-force-be-with-you")
 			}
 		case "vampire-numbers":
 			if month == time.October && day == 31 {

@@ -15,6 +15,7 @@ RUN echo [] > extras/ligatures.json                      \
  && unzip -q twe-svg.zip                                 \
     svg/1f1*-*          `# Flags`                        \
     svg/1f308.svg       `# Rainbow`                      \
+    svg/1f30c.svg       `# Milky Way`                    \
     svg/1f35e.svg       `# Bread`                        \
     svg/1f37a.svg       `# Beer Mug`                     \
     svg/1f382.svg       `# Birthday Cake`                \
