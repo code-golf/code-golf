@@ -35,5 +35,5 @@ func starWarsOpeningCrawl() ([]string, string) {
 		outs[i], outs[j] = outs[j], outs[i]
 	})
 
-	return args, strings.Join(outs, "\n")
+	return args, strings.Join(outs, "\n\n")
 }
