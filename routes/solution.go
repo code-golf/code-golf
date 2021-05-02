@@ -182,7 +182,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			}
 		case "star-wars-opening-crawl":
 			if month == time.May && day == 4 {
-				awardTrophy(db, golfer.ID, "may-the-fourth-be-with-you")
+				awardTrophy(db, golfer.ID, "may-the-4ᵗʰ-be-with-you")
 			}
 		case "united-states":
 			if month == time.July && day == 4 {

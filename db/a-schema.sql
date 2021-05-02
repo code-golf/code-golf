@@ -35,7 +35,7 @@ CREATE TYPE trophy AS ENUM (
     'bakers-dozen', 'bullseye', 'caffeinated', 'cobowl', 'different-strokes',
     'dont-panic', 'elephpant-in-the-room', 'forty-winks',
     'happy-birthday-code-golf', 'hello-world', 'inception', 'independence-day',
-    'interview-ready', 'its-over-9000', 'may-the-fourth-be-with-you',
+    'interview-ready', 'its-over-9000', 'may-the-4ᵗʰ-be-with-you',
     'my-god-its-full-of-stars', 'ouroboros', 'patches-welcome', 'pi-day',
     'polyglot', 'rtfm', 'slowcoach', 'tim-toady', 'the-watering-hole',
     'tl-dr', 'twelvetide', 'up-to-eleven', 'vampire-byte'
