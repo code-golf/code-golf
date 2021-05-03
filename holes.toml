@@ -1544,8 +1544,7 @@ preamble = '''
     Format a piece of text in the style of Star Wars opening crawl. Here is an
     example. Input:
 
-<pre>5
-21
+<pre>5 21
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</pre>
 
@@ -1569,8 +1568,7 @@ consequat.</pre>
     Here is how this works. Each test case consists of the following:
 
     <ul>
-        <li> A line containing the initial indentation <b>I</b>.
-        <li> A line containing the initial line width <b>W</b>.
+        <li> A line containing the initial indentation <b>I</b> and the initial line width <b>W</b>, separated by a space.
         <li> Several lines of text, each representing a paragraph of the output.
     </ul>
 
@@ -1602,6 +1600,10 @@ consequat.</pre>
     should <em>not</em> be justified (i.e. don't add any spaces to it). And
     paragraphs should be separated by an empty line that does count towards the
     progression of <b>I</b> and <b>W</b>.
+
+<p>
+    This hole contains multiple test cases (one argument per test case). Separate
+    the output for multiple test cases by an empty line.
 '''
 
 [Sudoku]
