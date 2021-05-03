@@ -6,6 +6,7 @@ import (
 	"context"
 	"embed"
 	"errors"
+	"os"
 	"os/exec"
 	"strings"
 	"syscall"
@@ -90,11 +91,12 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	score.Args, score.Answer = getAnswer(holeID, code)
 
-	var stderr, stdout bytes.Buffer
-
 	ctx, cancel := context.WithTimeout(ctx, timeout)
 	defer cancel()
 
+	const CLONE_NEWCGROUP = 0x02000000
+
+	var stderr, stdout bytes.Buffer
 	cmd := exec.CommandContext(ctx, "/usr/bin/run-lang")
 	cmd.Dir = "/langs/" + langID
 	cmd.Env = []string{}
@@ -173,7 +175,17 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		cmd.Stdin = strings.NewReader(code)
 	}
 
-	err := cmd.Run()
+	cmd.Start()
+
+	time.Sleep(time.Second)
+
+	if b, err := os.ReadFile("/sys/fs/cgroup/code-golf/cgroup.procs"); err != nil {
+		panic(err)
+	} else {
+		println("procs: " + string(b))
+	}
+
+	err := cmd.Wait()
 
 	deadline, _ := ctx.Deadline()
 	score.Took = timeout - time.Until(deadline)

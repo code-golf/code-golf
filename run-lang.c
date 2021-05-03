@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <sys/mount.h>
 #include <sys/prctl.h>
+#include <sys/stat.h>
 #include <sys/syscall.h>
 #include <unistd.h>
 
@@ -25,6 +26,15 @@
 #define STR_WITH_LEN(str) str, sizeof(str) - 1
 
 int main(__attribute__((unused)) int argc, char *argv[]) {
+    FILE *fp = fopen("/sys/fs/cgroup/code-golf/cgroup.procs", "w");
+    if (fp == NULL) {
+        perror("fopen cgroup");
+        return 1;
+    }
+    fprintf(fp, "%d\n", getpid());
+    printf("%d\n", getpid());
+    fclose(fp);
+
     if (mount(NULL, "/", NULL, MS_PRIVATE|MS_REC, NULL) < 0) {
         perror("mount private");
         return 1;

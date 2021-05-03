@@ -3,9 +3,11 @@ package main
 import (
 	"crypto/tls"
 	"database/sql"
+	"errors"
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
 	"syscall"
 	"time"
 
@@ -191,6 +193,26 @@ func main() {
 			}
 		}
 	}()
+
+	// echo "+cpu +memory -io" > cgroup.subtree_control
+	if err := os.WriteFile(
+		"/sys/fs/cgroup/cgroup.subtree_control", []byte("+pids"), 0,
+	); err != nil {
+		panic(err)
+	}
+
+	// Create a cgroup and set some limits.
+	if err := os.Mkdir(
+		"/sys/fs/cgroup/code-golf", 0,
+	); err != nil && !errors.Is(err, os.ErrExist) {
+		panic(err)
+	}
+
+	if err := os.WriteFile(
+		"/sys/fs/cgroup/code-golf/pids.max", []byte("3"), 0,
+	); err != nil {
+		panic(err)
+	}
 
 	log.Println("Listening…")
 
