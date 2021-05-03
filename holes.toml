@@ -1644,7 +1644,7 @@ preamble = '''
 </pre>
 '''
 
-['Sudoku V2']
+['Sudoku v2']
 category = 'Gaming'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Sudoku' },
