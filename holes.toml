@@ -1535,7 +1535,6 @@ preamble = '''
 
 ['Star Wars Opening Crawl']
 category = 'Transform'
-experiment = -1
 links = [
     { name = 'Wookieepedia', url = '//starwars.fandom.com/wiki/Opening_crawl' },
 ]
