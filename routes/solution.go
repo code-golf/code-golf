@@ -62,22 +62,24 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 	out := struct {
 		Argv                []string
 		Diff, Err, Exp, Out string
+		ExitCode            int
 		Pass, LoggedIn      bool
 		RankUpdates         []Golfer.RankUpdate
 		Took                time.Duration
 		Trophies            []string
 	}{
-		Argv: score.Args,
-		Err:  string(terminal.Render(score.Stderr)),
-		Exp:  score.Answer,
-		Out:  string(score.Stdout),
-		Pass: score.Pass,
+		Argv:     score.Args,
+		Err:      string(terminal.Render(score.Stderr)),
+		ExitCode: score.ExitCode,
+		Exp:      score.Answer,
+		LoggedIn: golfer != nil,
+		Out:      string(score.Stdout),
+		Pass:     score.Pass,
 		RankUpdates: []Golfer.RankUpdate{
 			{Scoring: "bytes"},
 			{Scoring: "chars"},
 		},
-		LoggedIn: golfer != nil,
-		Took:     score.Took,
+		Took: score.Took,
 	}
 
 	out.Diff, _ = difflib.GetUnifiedDiffString(difflib.UnifiedDiff{
