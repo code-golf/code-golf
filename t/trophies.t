@@ -14,6 +14,15 @@ my $dbh = dbh;
 
 $dbh.execute: "INSERT INTO users (id, login) VALUES (1, '')";
 
+my $session = $dbh.execute(
+    'INSERT INTO sessions (user_id) VALUES (1) RETURNING id').row.head;
+
+await $client.get: 'https://app:1443/about',
+    headers => [ cookie => "__Host-session=$session" ];
+
+is $dbh.execute('SELECT ARRAY(SELECT trophy FROM trophies)').row, '{rtfm}',
+    'GET /about earns {rtfm}';
+
 for from-toml slurp 'holes.toml' {
     next if .value<experiment>;     # Experimental holes can't be saved.
     next if .key eq 'Fizz Buzz';    # This is tested lower.

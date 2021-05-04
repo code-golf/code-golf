@@ -116,11 +116,11 @@
     <div class=info>
         {{ svg "info-circle" }}
         <p>
-            The <b>{{ .Trophy.Emoji }} {{ .Trophy.Name }}</b> trophy will
+            The {{ .Trophy.Emoji }} <b>{{ .Trophy.Name }}</b> trophy will
             {{ if .During }}
-                stop being available in {{ time .End }}.
+                stop being available in {{ time (.End.In $.Location) }}.
             {{ else }}
-                be available in {{ time .Start }}.
+                be available in {{ time (.Start.In $.Location) }}.
             {{ end }}
     </div>
 {{ end }}

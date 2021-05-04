@@ -10,7 +10,7 @@ import (
 // About serves GET /about
 func About(w http.ResponseWriter, r *http.Request) {
 	if golfer := session.Golfer(r); golfer != nil {
-		awardTrophy(session.Database(r), golfer.ID, "rtfm")
+		golfer.Earn(session.Database(r), "rtfm")
 	}
 
 	render(w, r, "about", lang.List, "About")

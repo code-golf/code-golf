@@ -121,6 +121,7 @@ live:
 	    --env-file     /etc/code-golf.env \
 	    --init                            \
 	    --name         code-golf          \
+	    --pids-limit   1024               \
 	    --publish       80:1080           \
 	    --publish      443:1443           \
 	    --read-only                       \

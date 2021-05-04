@@ -10,6 +10,7 @@ services:
       PGHOST:    db
       PGSSLMODE: disable
       PGUSER:    code-golf
+    pids_limit: 1024
     privileged: true
     volumes:
       - ..:/go

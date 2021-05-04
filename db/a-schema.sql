@@ -12,9 +12,10 @@ CREATE TYPE hole AS ENUM (
     'odious-numbers', 'ordinal-numbers', 'pangram-grep', 'pascals-triangle',
     'pernicious-numbers', 'poker', 'prime-numbers', 'quine', 'recamán',
     'rock-paper-scissors-spock-lizard', 'roman-to-arabic', 'rule-110',
-    'seven-segment', 'sierpiński-triangle', 'spelling-numbers', 'sudoku',
-    'sudoku-v2', 'ten-pin-bowling', 'tongue-twisters', 'united-states',
-    'vampire-numbers', 'van-eck-sequence', 'λ', 'π', 'τ', 'φ', '√2', '𝑒'
+    'seven-segment', 'sierpiński-triangle', 'spelling-numbers',
+    'star-wars-opening-crawl', 'sudoku', 'sudoku-v2', 'ten-pin-bowling',
+    'tongue-twisters', 'united-states', 'vampire-numbers', 'van-eck-sequence',
+    'λ', 'π', 'τ', 'φ', '√2', '𝑒'
 );
 
 CREATE TYPE keymap AS ENUM ('default', 'vim');
@@ -35,7 +36,7 @@ CREATE TYPE trophy AS ENUM (
     'bakers-dozen', 'bullseye', 'caffeinated', 'cobowl', 'different-strokes',
     'dont-panic', 'elephpant-in-the-room', 'forty-winks',
     'happy-birthday-code-golf', 'hello-world', 'inception', 'independence-day',
-    'interview-ready', 'its-over-9000', 'may-the-fourth-be-with-you',
+    'interview-ready', 'its-over-9000', 'may-the-4ᵗʰ-be-with-you',
     'my-god-its-full-of-stars', 'ouroboros', 'patches-welcome', 'pi-day',
     'polyglot', 'rtfm', 'slowcoach', 'tim-toady', 'the-watering-hole',
     'tl-dr', 'twelvetide', 'up-to-eleven', 'vampire-byte'

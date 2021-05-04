@@ -184,18 +184,18 @@ func render(w http.ResponseWriter, r *http.Request, name string, data interface{
 		args.Location = time.UTC
 	}
 
-	// Pi Day banner. TODO Generalise.
-	if args.Golfer != nil && !args.Golfer.Earned("pi-day") {
+	// Star Wars cheevo banner. TODO Generalise.
+	if args.Golfer != nil && !args.Golfer.Earnt("may-the-4ᵗʰ-be-with-you") {
 		var (
 			now   = time.Now().UTC()
 			year  = now.Year()
-			start = time.Date(year, time.March, 14, 0, 0, 0, 0, time.UTC)
-			end   = time.Date(year, time.March, 15, 0, 0, 0, 0, time.UTC)
+			start = time.Date(year, time.May, 4, 0, 0, 0, 0, time.UTC)
+			end   = time.Date(year, time.May, 5, 0, 0, 0, 0, time.UTC)
 		)
 
 		if now.Before(end) {
 			args.TrophyBanner = &trophyBanner{
-				start.Before(now), start, end, trophy.ByID["pi-day"],
+				start.Before(now), start, end, trophy.ByID["may-the-4ᵗʰ-be-with-you"],
 			}
 		}
 	}
