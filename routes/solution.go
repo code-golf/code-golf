@@ -46,7 +46,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 	// 128 KiB, >= because arguments needs a null termination.
 	if len(in.Code) >= 128*1024 {
 		if golfer != nil {
-			awardTrophy(db, golfer.ID, "tl-dr")
+			golfer.Earn(db, "tl-dr")
 		}
 
 		w.WriteHeader(http.StatusRequestEntityTooLarge)
@@ -56,7 +56,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 	score := hole.Play(r.Context(), in.Hole, in.Lang, in.Code)
 
 	if score.Timeout && golfer != nil {
-		awardTrophy(db, golfer.ID, "slowcoach")
+		golfer.Earn(db, "slowcoach")
 	}
 
 	out := struct {
@@ -174,29 +174,29 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		)
 
 		if month == time.October && day == 2 {
-			awardTrophy(db, golfer.ID, "happy-birthday-code-golf")
+			golfer.Earn(db, "happy-birthday-code-golf")
 		}
 
 		switch in.Hole {
 		case "12-days-of-christmas":
 			if (month == time.December && day >= 25) || (month == time.January && day <= 5) {
-				awardTrophy(db, golfer.ID, "twelvetide")
+				golfer.Earn(db, "twelvetide")
 			}
 		case "star-wars-opening-crawl":
 			if month == time.May && day == 4 {
-				awardTrophy(db, golfer.ID, "may-the-4ᵗʰ-be-with-you")
+				golfer.Earn(db, "may-the-4ᵗʰ-be-with-you")
 			}
 		case "united-states":
 			if month == time.July && day == 4 {
-				awardTrophy(db, golfer.ID, "independence-day")
+				golfer.Earn(db, "independence-day")
 			}
 		case "vampire-numbers":
 			if month == time.October && day == 31 {
-				awardTrophy(db, golfer.ID, "vampire-byte")
+				golfer.Earn(db, "vampire-byte")
 			}
 		case "π":
 			if month == time.March && day == 14 {
-				awardTrophy(db, golfer.ID, "pi-day")
+				golfer.Earn(db, "pi-day")
 			}
 		}
 
@@ -207,7 +207,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			  WHERE NOT failing AND user_id = $1`,
 			golfer.ID,
 		) {
-			awardTrophy(db, golfer.ID, "polyglot")
+			golfer.Earn(db, "polyglot")
 		}
 
 		// FIXME Each one of these queries takes 50ms!
@@ -220,7 +220,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			"SELECT bytes_points > 9000 FROM bytes_points WHERE user_id = $1",
 			golfer.ID,
 		) {
-			awardTrophy(db, golfer.ID, "its-over-9000")
+			golfer.Earn(db, "its-over-9000")
 		}
 
 		// COUNT(*) = 4 because langs x (bytes, chars)
@@ -237,7 +237,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 				in.Hole,
 				golfer.ID,
 			) {
-				awardTrophy(db, golfer.ID, "caffeinated")
+				golfer.Earn(db, "caffeinated")
 			}
 		case "perl", "raku":
 			if queryBool(
@@ -251,7 +251,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 				in.Hole,
 				golfer.ID,
 			) {
-				awardTrophy(db, golfer.ID, "tim-toady")
+				golfer.Earn(db, "tim-toady")
 			}
 		}
 	}
@@ -262,16 +262,6 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 	enc.SetEscapeHTML(false)
 
 	if err := enc.Encode(&out); err != nil {
-		panic(err)
-	}
-}
-
-func awardTrophy(db *sql.DB, userID int, trophy string) {
-	if _, err := db.Exec(
-		"INSERT INTO trophies VALUES (DEFAULT, $1, $2) ON CONFLICT DO NOTHING",
-		userID,
-		trophy,
-	); err != nil {
 		panic(err)
 	}
 }

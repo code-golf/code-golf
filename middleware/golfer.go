@@ -61,7 +61,7 @@ func GolferHandler(next http.Handler) http.Handler {
 				&golfer.Referrer,
 				&golfer.ShowCountry,
 				&timeZone,
-				pq.Array(&golfer.Trophies),
+				pq.Array(&golfer.Cheevos),
 			); err == nil {
 				golfer.TimeZone, _ = time.LoadLocation(timeZone.String)
 

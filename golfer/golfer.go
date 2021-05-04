@@ -21,17 +21,38 @@ func (f *FailingSolutions) Scan(src interface{}) error {
 
 type Golfer struct {
 	Admin, ShowCountry              bool
+	Cheevos                         []string
 	Country, Keymap, Name, Referrer string
 	Delete                          sql.NullTime
 	FailingSolutions                FailingSolutions
 	ID                              int
 	TimeZone                        *time.Location
-	Trophies                        []string
 }
 
-func (g *Golfer) Earned(trophyID string) bool {
-	i := sort.SearchStrings(g.Trophies, trophyID)
-	return i < len(g.Trophies) && g.Trophies[i] == trophyID
+// Earn the given cheevo, no-op if already earnt.
+func (g *Golfer) Earn(db *sql.DB, cheevoID string) {
+	if _, err := db.Exec(
+		"INSERT INTO trophies VALUES (DEFAULT, $1, $2) ON CONFLICT DO NOTHING",
+		g.ID,
+		cheevoID,
+	); err != nil {
+		panic(err)
+	}
+
+	// Update g.Cheevos if necessary.
+	if i := sort.SearchStrings(
+		g.Cheevos, cheevoID,
+	); i == len(g.Cheevos) || g.Cheevos[i] != cheevoID {
+		g.Cheevos = append(g.Cheevos, "")
+		copy(g.Cheevos[i+1:], g.Cheevos[i:])
+		g.Cheevos[i] = cheevoID
+	}
+}
+
+// Earnt returns whether the golfer has that cheevo.
+func (g *Golfer) Earnt(cheevoID string) bool {
+	i := sort.SearchStrings(g.Cheevos, cheevoID)
+	return i < len(g.Cheevos) && g.Cheevos[i] == cheevoID
 }
 
 type GolferInfo struct {

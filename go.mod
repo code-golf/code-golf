@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	github.com/BurntSushi/toml v0.3.1
+	github.com/DATA-DOG/go-sqlmock v1.5.0 // indirect
 	github.com/SeerUK/assert v1.0.0
 	github.com/agnivade/levenshtein v1.1.0
 	github.com/buildkite/terminal v3.2.0+incompatible

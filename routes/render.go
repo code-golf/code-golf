@@ -185,7 +185,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data interface{
 	}
 
 	// Star Wars cheevo banner. TODO Generalise.
-	if args.Golfer != nil && !args.Golfer.Earned("may-the-4ᵗʰ-be-with-you") {
+	if args.Golfer != nil && !args.Golfer.Earnt("may-the-4ᵗʰ-be-with-you") {
 		var (
 			now   = time.Now().UTC()
 			year  = now.Year()
