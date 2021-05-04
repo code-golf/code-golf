@@ -1581,7 +1581,7 @@ consequat.</pre>
 
 <p>
     If the resulting line contains fewer than <b>W</b> characters, pad out the
-    the line by adding spaces between the words as evenly as possible to get to
+    line by adding spaces between the words as evenly as possible to get to
     <b>W</b> characters in total. If some gaps require extra spaces, add them
     starting from the left. Example:
 
