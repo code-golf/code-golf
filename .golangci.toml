@@ -51,7 +51,7 @@ enable = [
     'ineffassign',
   # 'lll',
   # 'makezero',
-    'misspell',
+  # 'misspell',
   # 'nakedret',
   # 'nestif',
     'nilerr',
