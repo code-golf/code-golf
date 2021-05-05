@@ -114,13 +114,13 @@ footer {
     margin: 0 calc(50% - 50vw);
 }
 
-footer a { margin: .5rem }
-
 footer nav {
     align-items: center;
     display: flex;
     flex-wrap: wrap;
+    gap: .5rem;
     justify-content: center;
+    padding: .5rem;
 }
 
 h1 { font-size: 1.75rem }
