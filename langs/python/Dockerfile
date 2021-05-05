@@ -4,15 +4,22 @@ RUN mkdir /empty
 
 RUN apk add --no-cache build-base curl libffi-dev zlib-dev
 
-RUN curl https://www.python.org/ftp/python/3.9.4/Python-3.9.4.tar.xz \
-  | tar xJf -
+RUN curl https://www.python.org/ftp/python/3.9.5/Python-3.9.5.tar.xz | tar xJ
 
-RUN cd Python-3.9.4       \
+RUN cd Python-3.9.5       \
  && ./configure           \
     --prefix=/usr         \
     --with-lto            \
+    --without-ensurepip   \
  && make -j`proc` install \
  && strip /usr/bin/python3.9
+
+# Remove tests and .a files, but keep .pyc files to aid execution speed.
+# https://github.com/docker-library/python/blob/master/Dockerfile-alpine.template
+RUN find /usr/lib/python3.9 -depth \( \
+        \( -type d -a \( -name idle_test -o -name test -o -name tests \) \) \
+     -o \( -type f -a \( -name '*.a' \) \) \
+    \) -exec rm -rf {} +
 
 FROM scratch
 
