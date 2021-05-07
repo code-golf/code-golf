@@ -19,11 +19,21 @@ import (
 	"strings"
 
 	_ "github.com/lib/pq"
+	"gopkg.in/guregu/null.v4"
 )
 
+type solution struct {
+	Bytes, Chars                          null.Int
+	Hole, Lang, Login, Scoring, Submitted string
+}
+
 // Create a string containing the given number of characters and UTF-8 encoded bytes.
-func makeCode(chars, bytes int) (result string) {
-	delta := bytes - chars
+func makeCode(info solution) (result string) {
+	if info.Lang == "assembly" {
+		result = ".ascii \"" + strings.Repeat("a", int(info.Bytes.Int64)) + "\""
+		return
+	}
+	delta := int(info.Bytes.Int64 - info.Chars.Int64)
 
 	for _, replacement := range "😃景£" {
 		replacementDelta := len(string(replacement)) - 1
@@ -31,14 +41,18 @@ func makeCode(chars, bytes int) (result string) {
 		delta %= replacementDelta
 	}
 
-	result += strings.Repeat("a", chars-len([]rune(result)))
+	result += strings.Repeat("a", int(info.Chars.Int64)-len([]rune(result)))
 	return
 }
 
 func testMakeCode() {
 	for x := 0; x < 10; x++ {
 		for y := x; y <= 4*x; y++ {
-			result := makeCode(x, y)
+			result := makeCode(solution{
+				Chars: null.IntFrom(int64(x)),
+				Bytes: null.IntFrom(int64(y)),
+				Lang:  "",
+			})
 			if len([]rune(result)) != x {
 				panic("unexpected rune count")
 			}
@@ -63,10 +77,7 @@ func main() {
 	}
 	defer res.Body.Close()
 
-	var infoList []struct {
-		Bytes, Chars                          int
-		Hole, Lang, Login, Scoring, Submitted string
-	}
+	var infoList []solution
 	if err := json.NewDecoder(res.Body).Decode(&infoList); err != nil {
 		panic(err)
 	}
@@ -100,7 +111,7 @@ func main() {
 			                             $6,        $7,      $8)`,
 			info.Bytes,
 			info.Chars,
-			makeCode(info.Chars, info.Bytes),
+			makeCode(info),
 			info.Hole,
 			info.Lang,
 			info.Scoring,

@@ -27,8 +27,8 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	in.Bytes = len(in.Code)
-	in.Chars = len([]rune(in.Code))
+	in.Bytes.SetValid(int64(len(in.Code)))
+	in.Chars.SetValid(int64(len([]rune(in.Code))))
 
 	experimental := false
 	if _, ok := hole.ByID[in.Hole]; !ok {
@@ -222,11 +222,11 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// FIXME Each one of these queries takes 50ms!
-		if queryBool(
+		if in.Chars.Valid && queryBool(
 			db,
 			"SELECT chars_points > 9000 FROM chars_points WHERE user_id = $1",
 			golfer.ID,
-		) || queryBool(
+		) || in.Bytes.Valid && queryBool(
 			db,
 			"SELECT bytes_points > 9000 FROM bytes_points WHERE user_id = $1",
 			golfer.ID,

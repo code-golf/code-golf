@@ -13,6 +13,8 @@ import (
 	"syscall"
 	"time"
 	"unicode"
+
+	"gopkg.in/guregu/null.v4"
 )
 
 const timeout = 7 * time.Second
@@ -30,7 +32,7 @@ type Scorecard struct {
 }
 
 type Solution struct {
-	Bytes, Chars int
+	Bytes, Chars null.Int
 	Code         string
 	Hole         string
 	Lang         string
@@ -219,10 +221,13 @@ func Play(ctx context.Context, solution *Solution) (score Scorecard) {
 
 	// Actual byte count is printed by the assembler
 	if langID == "assembly" {
-		if _, err := fmt.Fscanf(asmSizeRead, "%d", &solution.Bytes); err != nil {
+		var bytesNum int64
+		if _, err := fmt.Fscanf(asmSizeRead, "%d", &bytesNum); err != nil {
 			panic(err)
 		}
 		asmSizeRead.Close()
+		solution.Bytes.SetValid(bytesNum)
+		solution.Chars.Valid = false
 	}
 
 	// Trim trailing whitespace.
