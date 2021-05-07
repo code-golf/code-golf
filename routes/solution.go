@@ -94,7 +94,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		ToFile:   "Out",
 	})
 
-	if out.Pass && golfer != nil && !experimental && in.Lang != "assembly" {
+	if out.Pass && golfer != nil && !experimental {
 		if err := db.QueryRowContext(
 			r.Context(),
 			`SELECT earned,
