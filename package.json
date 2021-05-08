@@ -15,7 +15,7 @@
     "@codemirror/state": "",
     "@codemirror/stream-parser": "",
     "@codemirror/view": "",
-    "defasm": "github:NewDefectus/defAsm#codemirror",
+    "@defasm/codemirror": "",
     "esbuild": ""
   }
 }

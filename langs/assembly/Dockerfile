@@ -1,12 +1,9 @@
-FROM alpine:3.13 as builder
+FROM node:16.1.0-alpine3.13 as builder
 
-ENV VERSION=57b1109
+ENV VERSION=1.0.1
 
-RUN apk add --no-cache build-base curl
+RUN npm install -g @defasm/core@$VERSION
 
-RUN curl -L https://github.com/NewDefectus/defAsm/tarball/$VERSION | tar xz \
- && mv NewDefectus-defAsm-$VERSION defAsm
+FROM scratch
 
-FROM gcr.io/distroless/nodejs
-
-COPY --from=0 /defAsm /defAsm
+COPY --from=0 / /

@@ -11410,7 +11410,7 @@ function hoverTooltip(source, options = {}) {
   ];
 }
 
-// node_modules/defasm/parser.js
+// node_modules/@defasm/core/parser.js
 var srcTokens;
 var match;
 var token;
@@ -11451,7 +11451,7 @@ function ParserError(message, startPos = codePos, endPos = startPos) {
   this.length = endPos.start + endPos.length - startPos.start;
 }
 
-// node_modules/defasm/operands.js
+// node_modules/@defasm/core/operands.js
 var OPT = {
   REG: 1,
   VEC: 2,
@@ -11632,7 +11632,7 @@ function Operand() {
     if (next() !== "%") {
       if (token !== ",") {
         ungetToken();
-        this.expression = parseExpression();
+        this.expression = parseExpression(0, true);
         this.value = evaluate(this.expression);
         if (token !== ")")
           throw new ParserError("Expected ')'");
@@ -11693,7 +11693,7 @@ function Operand() {
   }
 }
 
-// node_modules/defasm/shuntingYard.js
+// node_modules/@defasm/core/shuntingYard.js
 var unaries = {
   "+": (a) => a,
   "-": (a) => -a,
@@ -11781,7 +11781,7 @@ function parseNumber(asFloat = false) {
     throw e;
   }
 }
-function parseExpression(minFloatPrec = 0) {
+function parseExpression(minFloatPrec = 0, inBrackets = false) {
   let output = [], stack = [], lastOp, lastWasNum = false, hasLabelDependency = false;
   next();
   while (token !== "," && token !== "\n" && token !== ";") {
@@ -11809,8 +11809,11 @@ function parseExpression(minFloatPrec = 0) {
         throw new ParserError("Missing right operand", stack.length ? stack[stack.length - 1].pos : codePos);
       while (lastOp = stack[stack.length - 1], lastOp && !lastOp.bracket)
         output.push(stack.pop());
-      if (!lastOp || !lastOp.bracket)
+      if (!lastOp || !lastOp.bracket) {
+        if (inBrackets)
+          break;
         throw new ParserError("Mismatched parentheses");
+      }
       stack.pop();
       lastWasNum = true;
       next();
@@ -11828,7 +11831,7 @@ function parseExpression(minFloatPrec = 0) {
   if (!lastWasNum)
     throw new ParserError("Missing right operand", stack.length ? stack[stack.length - 1].pos : codePos);
   while (stack[0]) {
-    if (stack[stack.length - 1].func === null)
+    if (stack[stack.length - 1].bracket)
       throw new ParserError("Mismatched parentheses", stack[stack.length - 1].pos);
     output.push(stack.pop());
   }
@@ -11870,7 +11873,7 @@ function evaluate(expression, labels2 = null, currIndex = 0) {
   return new Uint8Array(floatVal.buffer).reduceRight((prev, val) => (prev << 8n) + BigInt(val), 0n);
 }
 
-// node_modules/defasm/directives.js
+// node_modules/@defasm/core/directives.js
 var DIRECTIVE_BUFFER_SIZE = 15;
 var encoder = new TextEncoder();
 var dirs = {
@@ -12007,7 +12010,7 @@ Directive.prototype.genValue = function(value) {
   }
 };
 
-// node_modules/defasm/mnemonicList.js
+// node_modules/@defasm/core/mnemonicList.js
 var lines;
 var mnemonicStrings = `
 adcx:66)0F38F6 r Rlq
@@ -13530,7 +13533,7 @@ vfmDirs.forEach((dir, dirI) => vfmOps.forEach((op, opI) => vfmTypes.forEach((typ
   }
 })));
 
-// node_modules/defasm/mnemonics.js
+// node_modules/@defasm/core/mnemonics.js
 var REG_MOD = -1;
 var REG_OP = -2;
 var OPC = {
@@ -14000,7 +14003,7 @@ Operation.prototype.fit = function(operands, enforcedSize, vexInfo) {
   };
 };
 
-// node_modules/defasm/instructions.js
+// node_modules/@defasm/core/instructions.js
 var MAX_INSTR_SIZE = 15;
 var prefixes = {
   lock: 240,
@@ -14281,10 +14284,10 @@ function inferUnsignedImmSize(value) {
   return value < 0x100n ? 8 : value < 0x10000n ? 16 : value < 0x100000000n ? 32 : 64;
 }
 
-// node_modules/defasm/compiler.js
+// node_modules/@defasm/core/compiler.js
 var baseAddr = 134512760;
 var labels = new Map();
-function compileAsm(source, instructions, haltOnError = false, line = 1, linesRemoved = 0, doSecondPass = true) {
+function compileAsm(source, instructions, {haltOnError = false, line = 1, linesRemoved = 0, doSecondPass = true} = {}) {
   let opcode, currLineArr = [], pos;
   macros.clear();
   for (let i = 1; i < line && i <= instructions.length; i++) {
@@ -14390,13 +14393,13 @@ function secondPass(instructions, haltOnError = false) {
   return currIndex - baseAddr;
 }
 
-// node_modules/defasm/codemirror/parser.terms.js
+// node_modules/@defasm/codemirror/parser.terms.js
 var Opcode = 1;
 var Prefix = 2;
 var Register = 3;
 var Directive2 = 4;
 
-// node_modules/defasm/codemirror/asmPlugin.js
+// node_modules/@defasm/codemirror/asmPlugin.js
 var AsmDumpWidget = class extends WidgetType {
   constructor(instrs, offset) {
     super();
@@ -14467,7 +14470,7 @@ var asmPlugin = ViewPlugin.fromClass(class {
         let line = doc2.lineAt(fromB);
         fromB = line.from;
         toB = doc2.lineAt(toB).to;
-        compileAsm(state.sliceDoc(fromB, toB), this.instrs, false, line.number, removedLines, false);
+        compileAsm(state.sliceDoc(fromB, toB), this.instrs, {line: line.number, linesRemoved: removedLines, doSecondPass: false});
       });
       update.view["asm-bytes"] = secondPass(this.instrs);
     } catch (e) {
@@ -15812,7 +15815,7 @@ function findFinished(stacks) {
   return best;
 }
 
-// node_modules/defasm/codemirror/parser.js
+// node_modules/@defasm/codemirror/parser.js
 var parser = Parser.deserialize({
   version: 13,
   states: "$OOQOPOOOOOO'#Cj'#CjOlOPO'#CbOzOQO'#CbO!YOSO'#CdO!hOPO'#CnQOOOOOOOOO-E6h-E6hOzOQO,58|O!pOPO'#CoOOOO,58|,58|O!{OPO'#CqOOOO,59O,59OOOOO,59Y,59YOOOO1G.h1G.hO#WOQO'#CkO#iOPO,59ZO#tOSO'#ClO$VOPO,59]OOOO,59V,59VOOOO-E6i-E6iOOOO,59W,59WOOOO-E6j-E6j",
@@ -15829,7 +15832,7 @@ var parser = Parser.deserialize({
   tokenPrec: 156
 });
 
-// node_modules/defasm/codemirror/assembly.js
+// node_modules/@defasm/codemirror/assembly.js
 var assemblyLang = LezerLanguage.define({
   parser: parser.configure({
     props: [

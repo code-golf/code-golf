@@ -11,7 +11,7 @@ import { bracketMatching }                    from '@codemirror/matchbrackets';
 import { StreamLanguage }                     from '@codemirror/stream-parser';
 
 // Languages.
-import { assembly }    from 'defasm/codemirror/assembly';
+import { assembly }    from '@defasm/codemirror';
 import { brainfuck }   from '@codemirror/legacy-modes/mode/brainfuck';
 import { c, csharp }   from '@codemirror/legacy-modes/mode/clike';
 import { cobol }       from '@codemirror/legacy-modes/mode/cobol';
