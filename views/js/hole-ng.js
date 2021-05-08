@@ -15,15 +15,23 @@ const strokes   = document.querySelector('#strokes');
 const tabs      = document.querySelectorAll('.tabs a');
 const editor    = new EditorView({
     dispatch: (tr) => {
-        const code  = [...tr.state.doc].join('');
-        const bytes = new TextEncoder().encode(code).length;
-        const chars = strlen(code);
+        const result = editor.update([tr]);
+        let scorings = {};
 
-        strokes.innerText =
-            `${bytes} byte${bytes != 1 ? 's' : ''}, ` +
-            `${chars} char${chars != 1 ? 's' : ''}`;
+        if (lang == 'assembly')
+            scorings.byte = editor['asm-bytes'];
+        else {
+            const code = [...tr.state.doc].join('');
 
-        return editor.update([tr]);
+            scorings.byte = bytes = new TextEncoder().encode(code).length;
+            scorings.char = chars = strlen(code);
+        }
+
+        strokes.innerText = Object.keys(scorings).map(
+            s => `${scorings[s]} ${s}${scorings[s] != 1 ? 's' : ''}`
+        ).join(', ');
+
+        return result;
     },
     parent: document.querySelector('#editor'),
 });
@@ -90,6 +98,13 @@ const switchLang = onhashchange = () => {
             extensions: [...extensions, languages[lang] || []],
         }),
     );
+
+    if (lang == 'assembly') {
+        scoring = 'bytes';
+        tabs[1].style.display = 'none';
+    }
+    else
+        tabs[1].style.display = '';
 
     // Dispatch to update strokes.
     editor.dispatch();
