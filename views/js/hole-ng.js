@@ -23,8 +23,8 @@ const editor    = new EditorView({
         else {
             const code = [...tr.state.doc].join('');
 
-            scorings.byte = bytes = new TextEncoder().encode(code).length;
-            scorings.char = chars = strlen(code);
+            scorings.byte = new TextEncoder().encode(code).length;
+            scorings.char = strlen(code);
         }
 
         strokes.innerText = Object.keys(scorings).map(
