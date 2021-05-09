@@ -1,4 +1,4 @@
-FROM golang:1.16.3-alpine3.13
+FROM golang:1.16.4-alpine3.13
 
 ENV CGO_ENABLED=0 GOPATH= TZ=Europe/London
 
