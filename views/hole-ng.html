@@ -1,46 +1,92 @@
 {{ template "header" . }}
 
-{{ range $id, $lang := .Data.Langs }}
-    {{ svg $id }}
+{{ range .Data.LangsList }}
+    {{ svg .ID }}
 {{ end }}
 
+{{ with .Data.Hole.Experiment }}
+    <div class=alert>
+        {{ svg "flask-light" }}
+        <p>
+            This hole is experimental, no solutions will be saved.
+        {{ if ne . -1 }}
+            Please leave feedback on the
+            <a href="//github.com/code-golf/code-golf/issues/{{ . }}">
+                GitHub issue</a>.
+        {{ end }}
+    </div>
+{{ else }}{{ if not .Golfer }}
+    <div class=alert>
+        {{ svg "exclamation-circle" }}
+        <p>
+            Please
+            <a class=log-in href="{{ .LogInURL }}">log in with GitHub</a>
+            in order to save solutions and appear on the leaderboards.
+    </div>
+{{ end }}{{ end }}
+
 <main>
-    <h1>{{ .Data.Hole.Name }}</h1>
+    <header>
+        <h1>{{ .Data.Hole.Name }}</h1>
+    {{ with .Data.Hole.Links }}
+        <nav>
+        {{ range $i, $link := . }}
+            {{ if $i }}<span>•</span>{{ end }}
+            <a href="{{ .URL }}">{{ .Name }}</a>
+        {{ end }}
+        </nav>
+    {{ end }}
+        <nav>
+            <a class="btn orange" href="{{ .Data.Hole.Prev }}">
+                {{ svg "chevron-double-left-light" }} Prev
+            </a>
+            <a class="btn purple" href=random>
+                {{ svg "dice-light" }} Random
+            </a>
+            <a class="btn orange" href="{{ .Data.Hole.Next }}">
+                {{ svg "chevron-double-right-light" }} Next
+            </a>
+        </nav>
+    </header>
+    <details id=details {{ if not .Data.HideDetails }}open{{ end }}>
+        <summary>Details</summary>
+        <div class=grid>{{ .Data.Hole.Preamble }}</div>
+    </details>
     <section>
         <header>
             <select>
-            {{ range $id, $lang := .Data.Langs }}
-                <option value="{{ $id }}">{{ $lang.Name }}
+            {{ range .Data.LangsList }}
+                <option value="{{ .ID }}">{{ .Name }}
             {{ end }}
             </select>
             <div id=strokes></div>
         </header>
         <header>
-            <nav class=tabs>
+            <nav class=tabs id=scoringTabs>
                 <a id=bytes>Bytes</a>
                 <a id=chars>Chars</a>
             </nav>
             <a id=all>All</a>
         </header>
         <div id=editor></div>
-        <div id=rankings>
-            <table class=nowrap-second>
-                <tr>
-                    <td>1<sup>st</sup>
-                    <td>primo-ppcg
-                    <td>43
-                <tr>
-                    <td>2<sup>nd</sup>
-                    <td>JRaspass
-                    <td>44
-            </table>
-        </div>
+        <table class=nowrap-second id=rankings></table>
     </section>
 
     <div id=run>
         ctrl + enter
         <span>or</span>
         <a class="btn blue">{{ svg "play-light" }} Run</a>
+    </div>
+
+    <div id=status>
+        <h2>Pass 😀</h2>
+        <nav class=tabs id=statusTabs>
+            <a id=arguments>Arguments</a>
+            <a id=diff>Diff</a>
+            <a id=expected>Expected</a>
+            <a id=output>Output</a>
+            <a id=errors>Errors</a>
+        </nav>
     </div>
 </main>
 
@@ -55,7 +101,7 @@
     </div>
 </div>
 
-<script id=langs     type=application/json>{{ .Data.Langs     }}</script>
+<script id=langs     type=application/json>{{ .Data.LangsByID }}</script>
 <script id=solutions type=application/json>{{ .Data.Solutions }}</script>
 
 {{ template "footer" }}

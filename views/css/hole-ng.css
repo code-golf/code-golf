@@ -1,11 +1,22 @@
-section {
-    display: grid;
-    grid-template-columns: 1fr 15rem;
+main > header {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
 }
 
-section > div {
-    border: 1px solid var(--color);
-    border-top: 2px solid var(--color);
+main > header a { white-space: nowrap }
+
+main > header nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+
+section {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 15rem;
 }
 
 section > header {
@@ -25,16 +36,26 @@ select {
     width: initial;
 }
 
-td { border-width: 1px 0 !important }
+.cm-editor { height: 100% }
+.cm-gutter { min-width: 1.75rem }
 
 .tabs a {
     margin-bottom: -2px;
     padding: calc(.5rem - 1px) .5rem;
 }
 
+#editor, #rankings {
+    border: 1px solid var(--color);
+    border-top: 2px solid var(--color);
+    /* 15 rows of 2rem, 1px border under each, 2px border at the top */
+    height: calc((2rem + 1px) * 15 + 2px);
+}
+
 #editor { border-right-width: 0 }
 
-#rankings { overflow-y: auto }
+#rankings td { border-width: 1px 0 !important }
+
+#rankings tr:last-child td { border-bottom: 0 }
 
 #run {
     align-items: center;
@@ -44,10 +65,30 @@ td { border-width: 1px 0 !important }
 
 #run > span { margin: 0 1rem }
 
+#status {
+    display: none;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+#status .cm-editor {
+    background: var(--background);
+    border: 1px solid var(--color);
+    height: 20rem;
+}
+
+#status .tabs {
+    border-bottom: 1px solid var(--color);
+    margin-top: 1rem;
+}
+
 @media (max-width: 34rem) {
-    section { grid-template-columns: 1fr }
+    section { grid-template-columns: minmax(0, 1fr) }
 
     section > :nth-child(even) { display: none }
 
-    #editor { border-right-width: 1px }
+    #editor {
+        border-right-width: 1px;
+        height: auto;
+    }
 }

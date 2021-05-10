@@ -37,6 +37,7 @@ func init() {
 
 	for name, lang := range langsTOML {
 		lang.Name = name
+		lang.Example = strings.TrimSpace(lang.Example)
 		lang.ID = strings.ReplaceAll(strings.ToLower(name), "#", "-sharp")
 		lang.ID = strings.ReplaceAll(strings.ToLower(lang.ID), "><>", "fish")
 

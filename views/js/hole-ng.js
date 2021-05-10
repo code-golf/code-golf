@@ -3,17 +3,21 @@
 import { EditorView, EditorState, extensions, languages } from '/editor.js';
 
 let lang;
+let result = {};
 let scoring = 'bytes';
 
-const all       = document.querySelector('#all');
-const hole      = decodeURI(location.pathname.slice(4));
-const langs     = JSON.parse(document.querySelector('#langs').innerText);
-const rankings  = document.querySelector('#rankings table');
-const select    = document.querySelector('select');
-const solutions = JSON.parse(document.querySelector('#solutions').innerText);
-const strokes   = document.querySelector('#strokes');
-const tabs      = document.querySelectorAll('.tabs a');
-const editor    = new EditorView({
+const all         = document.querySelector('#all');
+const hole        = decodeURI(location.pathname.slice(4));
+const langs       = JSON.parse(document.querySelector('#langs').innerText);
+const rankings    = document.querySelector('#rankings');
+const scoringTabs = document.querySelectorAll('#scoringTabs a');
+const select      = document.querySelector('select');
+const solutions   = JSON.parse(document.querySelector('#solutions').innerText);
+const status      = document.querySelector('#status');
+const statusView  = new EditorView({ parent: status });
+const statusTabs  = document.querySelectorAll('#statusTabs a');
+const strokes     = document.querySelector('#strokes');
+const editor      = new EditorView({
     dispatch: (tr) => {
         const result = editor.update([tr]);
         let scorings = {};
@@ -49,7 +53,7 @@ async function update() {
     select.style.background = `url("data:image/svg+xml,${data}") no-repeat left .5rem center/1rem auto, url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path d='M2 0L0 2h4zm0 5L0 3h4' fill='%23fff'/></svg>") no-repeat right .5rem center/auto calc(100% - 1.25rem), var(--color)`;
 
     // Update scoring tabs.
-    for (const tab of tabs)
+    for (const tab of scoringTabs)
         if (tab.id == scoring)
             tab.removeAttribute('href');
         else
@@ -58,10 +62,11 @@ async function update() {
     // Update "All" link.
     all.href = `/rankings/holes/${hole}/${lang}/${scoring}`;
 
-    const res = await fetch(`/scores/${hole}/${lang}/${scoring}/mini`);
+    const res  = await fetch(`/scores/${hole}/${lang}/${scoring}/mini`);
+    const rows = res.ok ? await res.json() : [];
 
     let html = '';
-    for (const r of res.ok ? await res.json() : [])
+    for (const r of rows)
         html += `
             <tr ${r.me ? 'class=me' : ''}>
                 <td>${r.rank}<sup>${ord(r.rank)}</sup>
@@ -72,12 +77,31 @@ async function update() {
                     </a>
                 <td class=right>${r[scoring].toLocaleString('en')}`;
 
-    rankings.innerHTML = html;
+    rankings.innerHTML =
+        html + '<tr><td colspan=3>&nbsp;'.repeat(15 - rows.length);
 }
 
 // Switch scoring
-for (const tab of tabs)
+for (const tab of scoringTabs)
     tab.onclick = e => { e.preventDefault(); scoring = tab.id; update() };
+
+// Switch status
+for (const tab of statusTabs)
+    tab.onclick = e => {
+        e.preventDefault();
+
+        for (const tab of statusTabs)
+            tab.href = '';
+
+        tab.removeAttribute('href');
+
+        let ext = extensions;
+        if (tab.id == 'diff')
+            ext.push(languages.diff);
+
+        statusView.setState(EditorState.create({
+            doc: result[tab.id], extensions: extensions }));
+    };
 
 // Switch lang
 const switchLang = onhashchange = () => {
@@ -101,10 +125,10 @@ const switchLang = onhashchange = () => {
 
     if (lang == 'assembly') {
         scoring = 'bytes';
-        tabs[1].style.display = 'none';
+        scoringTabs[1].style.display = 'none';
     }
     else
-        tabs[1].style.display = '';
+        scoringTabs[1].style.display = '';
 
     // Dispatch to update strokes.
     editor.dispatch();
@@ -121,6 +145,8 @@ switchLang();
 
 // Run Code
 const runCode = document.querySelector('#run a').onclick = async () => {
+    status.style.display = 'none';
+
     const res = await fetch('/solution', {
         method: 'POST',
         body: JSON.stringify({
@@ -137,7 +163,23 @@ const runCode = document.querySelector('#run a').onclick = async () => {
 
     const data = await res.json();
 
-    alert(JSON.stringify(data));
+    status.style.background = data.Pass ? 'var(--green)' : 'var(--red)';
+
+    document.querySelector('h2').innerText
+        = data.Pass ? 'Pass 😀' : 'Fail ☹️';
+
+    result = {
+        arguments: data.Argv.join('\n'),
+        diff:      data.Diff,
+        errors:    data.Err,
+        expected:  data.Exp,
+        output:    data.Out,
+    };
+
+    // Default to the "Diff" tab.
+    statusTabs[1].click();
+
+    status.style.display = 'flex';
 };
 
 onkeydown = e => e.ctrlKey && e.key == 'Enter' ? runCode() : undefined;

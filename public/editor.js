@@ -1992,10 +1992,10 @@ var Chunk = class {
       if (lo == hi)
         return lo;
       let mid = lo + hi >> 1;
-      let diff = arr[mid] - pos || (end < 0 ? this.value[mid].startSide : this.value[mid].endSide) - side;
+      let diff2 = arr[mid] - pos || (end < 0 ? this.value[mid].startSide : this.value[mid].endSide) - side;
       if (mid == lo)
-        return diff >= 0 ? lo : hi;
-      if (diff >= 0)
+        return diff2 >= 0 ? lo : hi;
+      if (diff2 >= 0)
         hi = mid;
       else
         lo = mid + 1;
@@ -2193,10 +2193,10 @@ var RangeSetBuilder = class {
       (this.nextLayer || (this.nextLayer = new RangeSetBuilder())).add(from, to, value);
   }
   addInner(from, to, value) {
-    let diff = from - this.lastTo || value.startSide - this.last.endSide;
-    if (diff <= 0 && (from - this.lastFrom || value.startSide - this.last.startSide) < 0)
+    let diff2 = from - this.lastTo || value.startSide - this.last.endSide;
+    if (diff2 <= 0 && (from - this.lastFrom || value.startSide - this.last.startSide) < 0)
       throw new Error("Ranges must be added sorted by `from` position and `startSide`");
-    if (diff < 0)
+    if (diff2 < 0)
       return false;
     if (this.from.length == 250)
       this.finishChunk(true);
@@ -2511,8 +2511,8 @@ function compare(a, startA, b, startB, length, comparator) {
   let endB = startB + length;
   let pos = startB, dPos = startB - startA;
   for (; ; ) {
-    let diff = a.to + dPos - b.to || a.endSide - b.endSide;
-    let end = diff < 0 ? a.to + dPos : b.to, clipEnd = Math.min(end, endB);
+    let diff2 = a.to + dPos - b.to || a.endSide - b.endSide;
+    let end = diff2 < 0 ? a.to + dPos : b.to, clipEnd = Math.min(end, endB);
     if (a.point || b.point) {
       if (!(a.point && b.point && (a.point == b.point || a.point.eq(b.point))))
         comparator.comparePoint(pos, clipEnd, a.point, b.point);
@@ -2523,9 +2523,9 @@ function compare(a, startA, b, startB, length, comparator) {
     if (end > endB)
       break;
     pos = end;
-    if (diff <= 0)
+    if (diff2 <= 0)
       a.next();
-    if (diff >= 0)
+    if (diff2 >= 0)
       b.next();
   }
 }
@@ -4096,12 +4096,12 @@ var ChangedRange = class {
     set.splice(i, 0, me);
     return set;
   }
-  static extendWithRanges(diff, ranges) {
+  static extendWithRanges(diff2, ranges) {
     if (ranges.length == 0)
-      return diff;
+      return diff2;
     let result = [];
     for (let dI = 0, rI = 0, posA = 0, posB = 0; ; dI++) {
-      let next2 = dI == diff.length ? null : diff[dI], off = posA - posB;
+      let next2 = dI == diff2.length ? null : diff2[dI], off = posA - posB;
       let end = next2 ? next2.fromB : 1e9;
       while (rI < ranges.length && ranges[rI] < end) {
         let from = ranges[rI], to = ranges[rI + 1];
@@ -4595,9 +4595,9 @@ var DecorationComparator$1 = class {
     addRange(from, to, this.changes);
   }
 };
-function findChangedDeco(a, b, diff) {
+function findChangedDeco(a, b, diff2) {
   let comp = new DecorationComparator$1();
-  RangeSet.compare(a, b, diff, comp);
+  RangeSet.compare(a, b, diff2, comp);
   return comp.changes;
 }
 var Direction = /* @__PURE__ */ function(Direction2) {
@@ -6174,9 +6174,9 @@ var NodeBuilder = class {
     return builder.finish(from);
   }
 };
-function heightRelevantDecoChanges(a, b, diff) {
+function heightRelevantDecoChanges(a, b, diff2) {
   let comp = new DecorationComparator();
-  RangeSet.compare(a, b, diff, comp, 0);
+  RangeSet.compare(a, b, diff2, comp, 0);
   return comp.changes;
 }
 var DecorationComparator = class {
@@ -7058,12 +7058,12 @@ function applyDOMChange(view, start, end, typeOver) {
       preferredPos = sel.to;
       preferredSide = "end";
     }
-    let diff = findDiff(view.state.sliceDoc(from, to), reader.text, preferredPos - from, preferredSide);
-    if (diff)
+    let diff2 = findDiff(view.state.sliceDoc(from, to), reader.text, preferredPos - from, preferredSide);
+    if (diff2)
       change = {
-        from: from + diff.from,
-        to: from + diff.toA,
-        insert: view.state.toText(reader.text.slice(diff.from, diff.toB))
+        from: from + diff2.from,
+        to: from + diff2.toA,
+        insert: view.state.toText(reader.text.slice(diff2.from, diff2.toB))
       };
   } else if (view.hasFocus || !view.state.facet(editable)) {
     let domSel = view.observer.selectionRange;
@@ -17408,6 +17408,29 @@ var crystal = {
   }
 };
 
+// node_modules/@codemirror/legacy-modes/mode/diff.js
+var TOKEN_NAMES = {
+  "+": "inserted",
+  "-": "deleted",
+  "@": "meta"
+};
+var diff = {
+  token: function(stream) {
+    var tw_pos = stream.string.search(/[\t ]+?$/);
+    if (!stream.sol() || tw_pos === 0) {
+      stream.skipToEnd();
+      return ("error " + (TOKEN_NAMES[stream.string.charAt(0)] || "")).replace(/ $/, "");
+    }
+    var token_name = TOKEN_NAMES[stream.peek()] || stream.skipToEnd();
+    if (tw_pos === -1) {
+      stream.skipToEnd();
+    } else {
+      stream.pos = tw_pos;
+    }
+    return token_name;
+  }
+};
+
 // node_modules/@codemirror/legacy-modes/mode/fortran.js
 function words2(array) {
   var keys = {};
@@ -22857,6 +22880,7 @@ var languages = {
   "c-sharp": StreamLanguage.define(csharp),
   "cobol": StreamLanguage.define(cobol),
   "crystal": StreamLanguage.define(crystal),
+  "diff": StreamLanguage.define(diff),
   "f-sharp": StreamLanguage.define(fSharp),
   "fortran": StreamLanguage.define(fortran),
   "go": StreamLanguage.define(go),
