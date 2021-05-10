@@ -18,8 +18,8 @@ v               ~<
 '''
 
 [Assembly]
-size    = '114 MiB'
-version = '1.0.1'
+size    = '72.9 MiB'
+version = '1.1.2'
 website = 'https://github.com/NewDefectus/defAsm'
 example = '''
 # Printing
