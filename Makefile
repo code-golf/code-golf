@@ -27,6 +27,8 @@ endif
 bump:
 	@go get -u
 	@go mod tidy
+	@npm upgrade
+	@make editor
 
 cert:
 	@mkcert -install localhost
