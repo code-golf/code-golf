@@ -38,6 +38,7 @@ for <
     brainfuck       brainfuck {inception}
     divisors        php       {elephpant-in-the-room}
     fizz-buzz       haskell   {interview-ready}
+    poker           fish      {fish-n-chips}
     quine           python    {ouroboros}
     ten-pin-bowling cobol     {cobowl}
 > -> $hole, $lang, $trophies {

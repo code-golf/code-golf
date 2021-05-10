@@ -67,6 +67,11 @@ emoji       = '🐘'
 description = 'Solve any hole in PHP.'
 
 [['Hole/Lang Specific']]
+name        = 'Fish ’n’ Chips'
+emoji       = '🐟'
+description = 'Solve <a href=/poker#fish>Poker in &gt;&lt;&gt;</a>.'
+
+[['Hole/Lang Specific']]
 name        = 'Inception'
 emoji       = '🧠'
 description = 'Solve <a href=/brainfuck#brainfuck>brainfuck in brainfuck</a>.'

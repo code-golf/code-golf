@@ -174,6 +174,10 @@ BEGIN
         earned := earn(earned, 'ouroboros', user_id);
     END IF;
 
+    IF hole = 'poker' AND lang = 'fish' THEN
+        earned := earn(earned, 'fish-n-chips', user_id);
+    END IF;
+
     IF hole = 'ten-pin-bowling' AND lang = 'cobol' THEN
         earned := earn(earned, 'cobowl', user_id);
     END IF;
