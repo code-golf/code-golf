@@ -3729,7 +3729,7 @@ var LineView = class extends ContentView {
     }
     super.sync(track);
     let last = this.dom.lastChild;
-    if (!last || last.nodeName != "BR" && ContentView.get(last) instanceof WidgetView) {
+    if (!last || last.nodeName != "BR" && (!browser.ios && ContentView.get(last) instanceof WidgetView)) {
       let hack = document.createElement("BR");
       hack.cmIgnore = true;
       this.dom.appendChild(hack);
@@ -4301,7 +4301,7 @@ var DocView = class extends ContentView {
       force = true;
     }
     let domSel = this.view.observer.selectionRange;
-    if (force || !domSel.focusNode || browser.gecko && main.empty && nextToUneditable(domSel.focusNode, domSel.focusOffset) || !isEquivalentPosition(anchor.node, anchor.offset, domSel.anchorNode, domSel.anchorOffset) || !isEquivalentPosition(head.node, head.offset, domSel.focusNode, domSel.focusOffset)) {
+    if (force || !domSel.focusNode || browser.gecko && main.empty && nextToUneditable(domSel.focusNode, domSel.focusOffset) || browser.safari && main.empty && head.node.childNodes.length == 1 && head.node.firstChild.nodeName == "BR" && this.view.inputState.lastIOSBackspace > Date.now() - 225 || !isEquivalentPosition(anchor.node, anchor.offset, domSel.anchorNode, domSel.anchorOffset) || !isEquivalentPosition(head.node, head.offset, domSel.focusNode, domSel.focusOffset)) {
       this.view.observer.ignore(() => {
         let rawSel = getSelection(this.root);
         if (main.empty) {
@@ -5111,6 +5111,8 @@ var InputState = class {
     }
     this.notifiedFocused = view.hasFocus;
     this.ensureHandlers(view);
+    if (browser.safari)
+      view.contentDOM.addEventListener("input", () => null);
   }
   setSelectionOrigin(origin) {
     this.lastSelectionOrigin = origin;
@@ -14462,7 +14464,8 @@ var asmPlugin = ViewPlugin.fromClass(class {
     view["asm-bytes"] = result.bytes;
     this.decorations = Decoration.set([]);
     setTimeout(() => {
-      this.ctx.font = window.getComputedStyle(view.contentDOM).getPropertyValue("font");
+      let style = window.getComputedStyle(view.contentDOM);
+      this.ctx.font = `${style.getPropertyValue("font-style")} ${style.getPropertyValue("font-variant")} ${style.getPropertyValue("font-weight")} ${style.getPropertyValue("font-size")} ${style.getPropertyValue("font-family")}`;
       this.updateWidths(0, view.state.doc.length, 0, view.state.doc);
       this.makeAsmDecorations(view);
       view.dispatch();
