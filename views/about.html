@@ -1,5 +1,14 @@
 {{ template "header" . }}
 
+{{ with .Data.Trophy }}
+<div id=popups>
+    <div>
+        <h3>Achievement Earned!</h3>
+        {{ .Emoji }}<p>{{ .Name }}
+    </div>
+</div>
+{{ end }}
+
 <main>
     <h1>About</h1>
     <dl>
@@ -27,7 +36,7 @@
 
         <dt>What Languages Are Supported?
         <dd id=langs>
-        {{ range .Data }}
+        {{ range .Data.Langs }}
             <section>
                 <header>
                     {{ svg .ID }}

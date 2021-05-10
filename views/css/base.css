@@ -445,7 +445,7 @@ details.tabs a { display: inline-block }
 #popups {
     display: grid;
     gap: .5rem;
-    grid-template-columns: 1fr min-content;
+    grid-template-columns: 1fr auto;
     padding: .5rem;
     pointer-events: none;
     position: fixed;
@@ -454,14 +454,16 @@ details.tabs a { display: inline-block }
 }
 
 #popups div {
-    animation: 1s fade .5s forwards, 1s fade 4s reverse forwards;
+    animation: 1s fade .5s forwards, 1s fade 7s reverse forwards;
     background: var(--color);
+    box-shadow: 0 0 1rem #07b;
     color: var(--background);
     display: grid;
     gap: .25rem .5rem;
     grid-column: 2;
-    grid-template-columns: min-content 1fr;
+    grid-template-columns: auto 1fr;
     opacity: 0;
+    pointer-events: initial;
     padding: .5rem;
     white-space: nowrap;
 }

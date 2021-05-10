@@ -30,13 +30,15 @@ type Golfer struct {
 }
 
 // Earn the given cheevo, no-op if already earnt.
-func (g *Golfer) Earn(db *sql.DB, cheevoID string) {
-	if _, err := db.Exec(
+func (g *Golfer) Earn(db *sql.DB, cheevoID string) (earned *trophy.Trophy) {
+	if res, err := db.Exec(
 		"INSERT INTO trophies VALUES (DEFAULT, $1, $2) ON CONFLICT DO NOTHING",
 		g.ID,
 		cheevoID,
 	); err != nil {
 		panic(err)
+	} else if rowsAffected, _ := res.RowsAffected(); rowsAffected == 1 {
+		earned = trophy.ByID[cheevoID]
 	}
 
 	// Update g.Cheevos if necessary.
@@ -47,6 +49,8 @@ func (g *Golfer) Earn(db *sql.DB, cheevoID string) {
 		copy(g.Cheevos[i+1:], g.Cheevos[i:])
 		g.Cheevos[i] = cheevoID
 	}
+
+	return
 }
 
 // Earnt returns whether the golfer has that cheevo.
