@@ -7,9 +7,9 @@ import (
 	"sort"
 	"time"
 
+	"github.com/code-golf/code-golf/cheevo"
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
-	"github.com/code-golf/code-golf/trophy"
 	"gopkg.in/guregu/null.v4"
 )
 
@@ -30,7 +30,7 @@ type Golfer struct {
 }
 
 // Earn the given cheevo, no-op if already earnt.
-func (g *Golfer) Earn(db *sql.DB, cheevoID string) (earned *trophy.Trophy) {
+func (g *Golfer) Earn(db *sql.DB, cheevoID string) (earned *cheevo.Cheevo) {
 	if res, err := db.Exec(
 		"INSERT INTO trophies VALUES (DEFAULT, $1, $2) ON CONFLICT DO NOTHING",
 		g.ID,
@@ -38,7 +38,7 @@ func (g *Golfer) Earn(db *sql.DB, cheevoID string) (earned *trophy.Trophy) {
 	); err != nil {
 		panic(err)
 	} else if rowsAffected, _ := res.RowsAffected(); rowsAffected == 1 {
-		earned = trophy.ByID[cheevoID]
+		earned = cheevo.ByID[cheevoID]
 	}
 
 	// Update g.Cheevos if necessary.
@@ -70,11 +70,11 @@ type GolferInfo struct {
 	// Count of medals
 	Diamond, Gold, Silver, Bronze int
 
-	// Count of holes/langs/trophies done
-	Holes, Langs, Trophies int
+	// Count of cheevos/holes/langs done
+	Cheevos, Holes, Langs int
 
-	// Count of holes/langs/trophies available
-	HolesTotal, LangsTotal, TrophiesTotal int
+	// Count of cheevos/holes/langs available
+	CheevosTotal, HolesTotal, LangsTotal int
 
 	// Start date
 	TeedOff time.Time
@@ -91,9 +91,9 @@ type RankUpdate struct {
 
 func GetInfo(db *sql.DB, name string) *GolferInfo {
 	info := GolferInfo{
-		HolesTotal:    len(hole.List),
-		LangsTotal:    len(lang.List),
-		TrophiesTotal: len(trophy.List),
+		CheevosTotal: len(cheevo.List),
+		HolesTotal:   len(hole.List),
+		LangsTotal:   len(lang.List),
 	}
 
 	if err := db.QueryRow(
@@ -143,7 +143,7 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 		&info.CharsPoints,
 		&info.Silver,
 		&info.Sponsor,
-		&info.Trophies,
+		&info.Cheevos,
 	); errors.Is(err, sql.ErrNoRows) {
 		return nil
 	} else if err != nil {

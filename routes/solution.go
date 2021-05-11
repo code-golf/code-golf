@@ -61,12 +61,12 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 
 	out := struct {
 		Argv                []string
+		Cheevos             []string
 		Diff, Err, Exp, Out string
 		ExitCode            int
 		Pass, LoggedIn      bool
 		RankUpdates         []Golfer.RankUpdate
 		Took                time.Duration
-		Trophies            []string
 	}{
 		Argv:     score.Args,
 		Err:      string(terminal.Render(score.Stderr)),
@@ -103,7 +103,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			   FROM save_solution(code := $1, hole := $2, lang := $3, user_id := $4)`,
 			in.Code, in.Hole, in.Lang, golfer.ID,
 		).Scan(
-			pq.Array(&out.Trophies),
+			pq.Array(&out.Cheevos),
 			&out.RankUpdates[0].From.Joint,
 			&out.RankUpdates[0].From.Rank,
 			&out.RankUpdates[0].From.Strokes,

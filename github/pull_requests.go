@@ -49,7 +49,7 @@ func pullRequests(db *sql.DB) (limits []rateLimit) {
 		variables["cursor"] = &query.Repository.PullRequests.PageInfo.EndCursor
 	}
 
-	awardTrophies(db, pullRequests, "patches-welcome")
+	awardCheevos(db, pullRequests, "patches-welcome")
 
 	return
 }

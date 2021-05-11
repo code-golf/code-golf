@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/code-golf/code-golf/cheevo"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
-	"github.com/code-golf/code-golf/trophy"
 )
 
 // RankingsCheevos serves GET /rankings/cheevos/{cheevo}
@@ -20,17 +20,17 @@ func RankingsCheevos(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := struct {
-		Cheevo  *trophy.Trophy
-		Cheevos map[string][]*trophy.Trophy
+		Cheevo  *cheevo.Cheevo
+		Cheevos map[string][]*cheevo.Cheevo
 		Pager   *pager.Pager
 		Rows    []row
 		Total   int
 	}{
-		Cheevo:  trophy.ByID[cheevoID],
-		Cheevos: trophy.Tree,
+		Cheevo:  cheevo.ByID[cheevoID],
+		Cheevos: cheevo.Tree,
 		Pager:   pager.New(r),
 		Rows:    make([]row, 0, pager.PerPage),
-		Total:   len(trophy.List),
+		Total:   len(cheevo.List),
 	}
 
 	if cheevoID != "" && data.Cheevo == nil {

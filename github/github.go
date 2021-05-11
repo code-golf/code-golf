@@ -54,10 +54,10 @@ func Run(db *sql.DB) {
 	)
 }
 
-func awardTrophies(db *sql.DB, earnedUsers map[int]time.Time, trophy string) {
+func awardCheevos(db *sql.DB, earnedUsers map[int]time.Time, cheevoID string) {
 	rows, err := db.Query(
 		"SELECT earned, user_id FROM trophies WHERE trophy = $1",
-		trophy,
+		cheevoID,
 	)
 	if err != nil {
 		panic(err)
@@ -82,7 +82,7 @@ func awardTrophies(db *sql.DB, earnedUsers map[int]time.Time, trophy string) {
 					  WHERE trophy  = $2
 					    AND user_id = $3`,
 					newEarned,
-					trophy,
+					cheevoID,
 					userID,
 				); err != nil {
 					panic(err)
@@ -90,7 +90,7 @@ func awardTrophies(db *sql.DB, earnedUsers map[int]time.Time, trophy string) {
 			}
 		} else if _, err := db.Exec(
 			"DELETE FROM trophies WHERE trophy = $1 AND user_id = $2",
-			trophy,
+			cheevoID,
 			userID,
 		); err != nil {
 			panic(err)
@@ -107,7 +107,7 @@ func awardTrophies(db *sql.DB, earnedUsers map[int]time.Time, trophy string) {
 			WHERE EXISTS (SELECT * FROM users WHERE id = $2)`,
 			earned,
 			userID,
-			trophy,
+			cheevoID,
 		); err != nil {
 			panic(err)
 		}

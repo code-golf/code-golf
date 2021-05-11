@@ -14,13 +14,13 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/code-golf/code-golf/cheevo"
 	"github.com/code-golf/code-golf/country"
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
 	"github.com/code-golf/code-golf/pretty"
 	"github.com/code-golf/code-golf/session"
-	"github.com/code-golf/code-golf/trophy"
 	min "github.com/tdewolff/minify/v2/minify"
 )
 
@@ -135,25 +135,25 @@ func render(w http.ResponseWriter, r *http.Request, name string, data interface{
 		panic(err)
 	}
 
-	type trophyBanner struct {
+	type CheevoBanner struct {
+		Cheevo     *cheevo.Cheevo
 		During     bool
 		Start, End time.Time
-		Trophy     *trophy.Trophy
 	}
 
 	args := struct {
-		Countries                                        map[string]*country.Country
 		CSS                                              template.CSS
+		CheevoBanner                                     *CheevoBanner
+		Countries                                        map[string]*country.Country
 		Data                                             interface{}
 		Description, JSExt, LogInURL, Nonce, Path, Title string
 		Golfer                                           *golfer.Golfer
 		GolferInfo                                       *golfer.GolferInfo
 		Holes                                            map[string]hole.Hole
+		JS                                               template.JS
 		Langs                                            map[string]lang.Lang
 		Location                                         *time.Location
-		JS                                               template.JS
 		Request                                          *http.Request
-		TrophyBanner                                     *trophyBanner
 	}{
 		Countries:   country.ByID,
 		CSS:         css["base"] + css[path.Dir(name)] + css[name],
@@ -194,8 +194,9 @@ func render(w http.ResponseWriter, r *http.Request, name string, data interface{
 		)
 
 		if now.Before(end) {
-			args.TrophyBanner = &trophyBanner{
-				start.Before(now), start, end, trophy.ByID["may-the-4ᵗʰ-be-with-you"],
+			args.CheevoBanner = &CheevoBanner{
+				cheevo.ByID["may-the-4ᵗʰ-be-with-you"],
+				start.Before(now), start, end,
 			}
 		}
 	}

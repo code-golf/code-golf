@@ -112,11 +112,11 @@
 
 {{ end }}
 
-{{ with $.TrophyBanner }}
+{{ with $.CheevoBanner }}
     <div class=info>
         {{ svg "info-circle" }}
         <p>
-            The {{ .Trophy.Emoji }} <b>{{ .Trophy.Name }}</b> trophy will
+            The {{ .Cheevo.Emoji }} <b>{{ .Cheevo.Name }}</b> achievement will
             {{ if .During }}
                 stop being available in {{ time (.End.In $.Location) }}.
             {{ else }}

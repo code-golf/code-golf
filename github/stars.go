@@ -44,7 +44,7 @@ func stars(db *sql.DB) (limits []rateLimit) {
 		variables["cursor"] = &query.Repository.Stargazers.PageInfo.EndCursor
 	}
 
-	awardTrophies(db, stargazers, "my-god-its-full-of-stars")
+	awardCheevos(db, stargazers, "my-god-its-full-of-stars")
 
 	return
 }

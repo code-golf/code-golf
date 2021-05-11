@@ -1,4 +1,4 @@
-package trophy
+package cheevo
 
 import (
 	"html/template"
@@ -9,15 +9,15 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
-type Trophy struct {
+type Cheevo struct {
 	Description     template.HTML
 	Emoji, ID, Name string
 }
 
 var (
-	ByID = map[string]*Trophy{}
-	List = []*Trophy{}
-	Tree = map[string][]*Trophy{}
+	ByID = map[string]*Cheevo{}
+	List = []*Cheevo{}
+	Tree = map[string][]*Cheevo{}
 )
 
 // TODO Share with other packages
@@ -32,21 +32,21 @@ func id(name string) string {
 }
 
 func init() {
-	// Tests run from the package directory, walk upward to find trophies.toml.
-	if _, err := os.Stat("trophies.toml"); os.IsNotExist(err) {
+	// Tests run from the package directory, walk upward to find cheevos.toml.
+	if _, err := os.Stat("cheevos.toml"); os.IsNotExist(err) {
 		os.Chdir("..")
 	}
 
-	if _, err := toml.DecodeFile("trophies.toml", &Tree); err != nil {
+	if _, err := toml.DecodeFile("cheevos.toml", &Tree); err != nil {
 		panic(err)
 	}
 
 	for _, categories := range Tree {
-		for _, trophy := range categories {
-			trophy.ID = id(trophy.Name)
+		for _, cheevo := range categories {
+			cheevo.ID = id(cheevo.Name)
 
-			ByID[trophy.ID] = trophy
-			List = append(List, trophy)
+			ByID[cheevo.ID] = cheevo
+			List = append(List, cheevo)
 		}
 	}
 
