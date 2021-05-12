@@ -1,10 +1,10 @@
-CREATE FUNCTION earn(INOUT earned trophy[], trophy trophy, user_id int) AS $$
+CREATE FUNCTION earn(INOUT earned cheevo[], cheevo cheevo, user_id int) AS $$
 BEGIN
-    INSERT INTO trophies VALUES (DEFAULT, user_id, trophy)
+    INSERT INTO trophies VALUES (DEFAULT, user_id, cheevo)
              ON CONFLICT DO NOTHING;
 
     IF found THEN
-        earned := array_append(earned, trophy);
+        earned := array_append(earned, cheevo);
     END IF;
 END;
 $$ LANGUAGE plpgsql;
@@ -31,7 +31,7 @@ $$ LANGUAGE plpgsql;
 CREATE TYPE save_solution_ret AS (
     beat_bytes      int,
     beat_chars      int,
-    earned          trophy[],
+    earned          cheevo[],
     new_bytes       int,
     new_bytes_joint bool,
     new_bytes_rank  int,
@@ -53,7 +53,7 @@ DECLARE
     bytes   int;
     chars   int;
     code_id int;
-    earned  trophy[] := '{}'::trophy[];
+    earned  cheevo[] := '{}'::cheevo[];
     holes   int;
     rank    hole_rank_ret;
     ret     save_solution_ret;
@@ -150,7 +150,7 @@ BEGIN
     -- Remove any orphaned code.
     DELETE FROM code WHERE NOT EXISTS (SELECT FROM solutions WHERE id = solutions.code_id);
 
-    -- Earn trophies.
+    -- Earn cheevos.
     SELECT COUNT(DISTINCT solutions.hole) INTO holes
       FROM solutions WHERE NOT failing AND solutions.user_id = user_id;
 

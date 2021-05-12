@@ -31,15 +31,15 @@ CREATE TYPE medal AS ENUM ('diamond', 'gold', 'silver', 'bronze');
 
 CREATE TYPE scoring AS ENUM ('bytes', 'chars');
 
--- TODO Fix 'tim-toady' & 'the-watering-hole' order when renamed to cheevos.
-CREATE TYPE trophy AS ENUM (
+CREATE TYPE cheevo AS ENUM (
     'bakers-dozen', 'bullseye', 'caffeinated', 'cobowl', 'different-strokes',
     'dont-panic', 'elephpant-in-the-room', 'fish-n-chips', 'forty-winks',
-    'happy-birthday-code-golf', 'hello-world', 'inception', 'independence-day',
-    'interview-ready', 'its-over-9000', 'may-the-4ᵗʰ-be-with-you',
-    'my-god-its-full-of-stars', 'ouroboros', 'patches-welcome', 'pi-day',
-    'polyglot', 'rtfm', 'slowcoach', 'tim-toady', 'the-watering-hole',
-    'tl-dr', 'twelvetide', 'up-to-eleven', 'vampire-byte'
+    'happy-birthday-code-golf', 'hello-world', 'inception',
+    'independence-day', 'interview-ready', 'its-over-9000',
+    'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars', 'ouroboros',
+    'patches-welcome', 'pi-day', 'polyglot', 'rtfm', 'slowcoach',
+    'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide', 'up-to-eleven',
+    'vampire-byte'
 );
 
 CREATE TABLE code (
@@ -100,7 +100,7 @@ CREATE TABLE solutions (
 CREATE TABLE trophies (
     earned  timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
     user_id int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    trophy  trophy    NOT NULL,
+    trophy  cheevo    NOT NULL,
     PRIMARY KEY (user_id, trophy)
 );
 
