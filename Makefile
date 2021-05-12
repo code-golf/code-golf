@@ -88,7 +88,7 @@ fmt:
 	@goimports -w $(GOFILES)
 
 font:
-	@docker build -t code-golf-font -f docker/font.Dockerfile .
+	@docker build -t code-golf-font -f docker/font.Dockerfile docker
 	@id=`docker create code-golf-font`;                                                 \
 	    docker cp "$$id:twemoji-colr/build/Twemoji Mozilla.woff2" assets/twemoji.woff2; \
 	    docker rm $$id
