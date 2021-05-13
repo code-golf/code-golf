@@ -104,18 +104,6 @@ CREATE TABLE trophies (
     PRIMARY KEY (user_id, trophy)
 );
 
--- Check the tables are structured optimally.
--- https://www.2ndquadrant.com/en/blog/on-rocks-and-sand/
-  SELECT c.relname, a.attname, t.typname, t.typalign, t.typlen
-    FROM pg_attribute a
-    JOIN pg_class     c ON a.attrelid = c.oid
-    JOIN pg_type      t ON a.atttypid = t.oid
-   WHERE a.attnum >= 0
-     AND c.relname IN (
-             'code', 'ideas', 'sessions', 'solutions', 'trophies', 'users'
-         )
-ORDER BY c.relname, t.typlen DESC, t.typname, a.attname;
-
 CREATE MATERIALIZED VIEW medals AS WITH ranks AS (
     SELECT user_id, hole, lang, scoring,
            RANK() OVER (
