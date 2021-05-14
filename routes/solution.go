@@ -20,12 +20,15 @@ import (
 
 // Solution serves POST /solution
 func Solution(w http.ResponseWriter, r *http.Request) {
-	var in struct{ Code, Hole, Lang string }
+	var in hole.Solution
 
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
 		panic(err)
 	}
 	defer r.Body.Close()
+
+	in.Bytes = len(in.Code)
+	in.Chars = len([]rune(in.Code))
 
 	experimental := false
 	if _, ok := hole.ByID[in.Hole]; !ok {
@@ -53,7 +56,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	score := hole.Play(r.Context(), in.Hole, in.Lang, in.Code)
+	score := hole.Play(r.Context(), &in)
 
 	if score.Timeout && golfer != nil {
 		golfer.Earn(db, "slowcoach")
@@ -102,14 +105,14 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			        new_chars_joint, new_chars_rank, new_chars,
 			        beat_chars
 			   FROM save_solution(
-			            bytes   := octet_length($1),
-			            chars   :=  char_length($1),
-			            code    := $1,
-			            hole    := $2,
-			            lang    := $3,
-			            user_id := $4
+			            bytes   := $1,
+			            chars   := $2,
+			            code    := $3,
+			            hole    := $4,
+			            lang    := $5,
+			            user_id := $6
 			        )`,
-			in.Code, in.Hole, in.Lang, golfer.ID,
+			in.Bytes, in.Chars, in.Code, in.Hole, in.Lang, golfer.ID,
 		).Scan(
 			pq.Array(&out.Cheevos),
 			&out.RankUpdates[0].From.Joint,

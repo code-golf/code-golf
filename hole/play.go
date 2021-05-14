@@ -6,6 +6,8 @@ import (
 	"context"
 	"embed"
 	"errors"
+	"fmt"
+	"os"
 	"os/exec"
 	"strings"
 	"syscall"
@@ -25,6 +27,13 @@ type Scorecard struct {
 	Pass, Timeout  bool
 	Stderr, Stdout []byte
 	Took           time.Duration
+}
+
+type Solution struct {
+	Bytes, Chars int
+	Code         string
+	Hole         string
+	Lang         string
 }
 
 func getAnswer(holeID, code string) (args []string, answer string) {
@@ -89,10 +98,15 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 	return
 }
 
-func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
+func Play(ctx context.Context, solution *Solution) (score Scorecard) {
+	holeID := solution.Hole
+	langID := solution.Lang
+	code := solution.Code
+
 	score.Args, score.Answer = getAnswer(holeID, code)
 
 	var stderr, stdout bytes.Buffer
+	var asmSizeRead, asmSizeWrite *os.File
 
 	ctx, cancel := context.WithTimeout(ctx, timeout)
 	defer cancel()
@@ -109,7 +123,14 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	// Interpreter
 	switch langID {
 	case "assembly":
-		cmd.Args = []string{"/usr/bin/defasm", "-r"}
+		cmd.Args = []string{"/usr/bin/defasm", "--size-out=3", "-r"}
+
+		// Open a stream to read the byte count
+		var err error
+		if asmSizeRead, asmSizeWrite, err = os.Pipe(); err != nil {
+			panic(err)
+		}
+		cmd.ExtraFiles = []*os.File{asmSizeWrite}
 	case "bash":
 		cmd.Args = []string{"/usr/bin/bash", "-s", "-"}
 	case "brainfuck":
@@ -195,6 +216,14 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	}
 
 	const maxLength = 128 * 1024 // 128 KiB
+
+	// Actual byte count is printed by the assembler
+	if langID == "assembly" {
+		if _, err := fmt.Fscanf(asmSizeRead, "%d", &solution.Bytes); err != nil {
+			panic(err)
+		}
+		asmSizeRead.Close()
+	}
 
 	// Trim trailing whitespace.
 	score.Stderr = bytes.TrimRightFunc(stderr.Next(maxLength), unicode.IsSpace)

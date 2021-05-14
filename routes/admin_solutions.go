@@ -57,7 +57,11 @@ func AdminSolutionsRun(w http.ResponseWriter, r *http.Request) {
 
 				// Best of three runs.
 				for j := 0; passes < 2 && fails < 2; j++ {
-					score := hole.Play(r.Context(), s.HoleID, s.LangID, s.code)
+					score := hole.Play(r.Context(), &hole.Solution{
+						Hole: s.HoleID,
+						Lang: s.LangID,
+						Code: s.code,
+					})
 
 					s.Took = score.Took
 
