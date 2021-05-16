@@ -222,7 +222,7 @@ onload = () => {
         refreshScores();
     };
 
-    onkeydown = e => e.ctrlKey && e.key == 'Enter' ? submit() : undefined;
+    onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter' ? submit() : undefined;
 
     // Allow vim users to run code with :w or :write
     if (vimMode)
