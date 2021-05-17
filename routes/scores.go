@@ -45,7 +45,6 @@ func ScoresMini(w http.ResponseWriter, r *http.Request) {
 		           `+otherScoring+` `+scoring+`_`+otherScoring+`,
 		           user_id = $1 me
 		      FROM solutions
-		      JOIN code ON code_id = id
 		     WHERE hole = $2
 		       AND lang = $3
 		       AND scoring = $4
@@ -55,7 +54,6 @@ func ScoresMini(w http.ResponseWriter, r *http.Request) {
 		           `+otherScoring+`,
 		           `+scoring+` `+otherScoring+`_`+scoring+`
 		      FROM solutions
-		      JOIN code ON code_id = id
 		     WHERE hole = $2
 		       AND lang = $3
 		       AND scoring = $5
@@ -103,7 +101,6 @@ func ScoresAll(w http.ResponseWriter, r *http.Request) {
 		           bytes,
 		           submitted
 		      FROM solutions
-		      JOIN code  ON code_id = code.id
 		      JOIN users ON user_id = users.id
 		     WHERE NOT failing
 		       AND $1 IN ('all-holes', hole::text)

@@ -21,10 +21,10 @@ CREATE TYPE hole AS ENUM (
 CREATE TYPE keymap AS ENUM ('default', 'vim');
 
 CREATE TYPE lang AS ENUM (
-    'bash', 'brainfuck', 'c', 'c-sharp', 'cobol', 'crystal', 'f-sharp',
-    'fish', 'fortran', 'go', 'haskell', 'hexagony', 'j', 'java', 'javascript',
-    'julia', 'lisp', 'lua', 'nim', 'perl', 'php', 'powershell', 'python',
-    'raku', 'ruby', 'rust', 'sql', 'swift', 'v', 'zig'
+    'assembly', 'bash', 'brainfuck', 'c', 'c-sharp', 'cobol', 'crystal',
+    'f-sharp', 'fish', 'fortran', 'go', 'haskell', 'hexagony', 'j', 'java',
+    'javascript', 'julia', 'lisp', 'lua', 'nim', 'perl', 'php', 'powershell',
+    'python', 'raku', 'ruby', 'rust', 'sql', 'swift', 'v', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('diamond', 'gold', 'silver', 'bronze');
@@ -40,15 +40,6 @@ CREATE TYPE cheevo AS ENUM (
     'patches-welcome', 'pi-day', 'polyglot', 'rtfm', 'slowcoach',
     'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide', 'up-to-eleven',
     'vampire-byte'
-);
-
-CREATE TABLE code (
-    id    int    NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    bytes int    NOT NULL GENERATED ALWAYS AS (octet_length(code)) STORED,
-    chars int    NOT NULL GENERATED ALWAYS AS  (char_length(code)) STORED,
-    code  text   NOT NULL,
-    CHECK (bytes <= 409600), -- 400 KiB, TODO < 128 KiB (not <=).
-    EXCLUDE USING hash(code WITH =)
 );
 
 CREATE TABLE discord_records (
@@ -88,12 +79,20 @@ CREATE TABLE sessions (
 
 CREATE TABLE solutions (
     submitted timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
-    code_id   int       NOT NULL REFERENCES code(id),
+    bytes     int       NOT NULL,
+    chars     int,
     user_id   int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     hole      hole      NOT NULL,
     lang      lang      NOT NULL,
     scoring   scoring   NOT NULL,
     failing   bool      NOT NULL DEFAULT false,
+    code      text      NOT NULL,
+    -- Assembly can only be scored on bytes, and they are compiled bytes.
+    CHECK ((lang  = 'assembly' AND chars IS NULL AND scoring = 'bytes')
+        OR (lang != 'assembly' AND bytes = octet_length(code)
+                               AND chars = char_length(code))),
+    -- Solutions are limited to 400 KiB, TODO < 128 KiB (not <=).
+    CHECK (octet_length(code) <= 409600),
     PRIMARY KEY (user_id, hole, lang, scoring)
 );
 
@@ -112,7 +111,6 @@ CREATE MATERIALIZED VIEW medals AS WITH ranks AS (
                                  THEN bytes ELSE chars END
            )
       FROM solutions
-      JOIN code ON code_id = id
      WHERE NOT failing
 ) SELECT user_id, hole, lang, scoring,
          (enum_range(NULL::medal))[rank + 1] medal
@@ -130,7 +128,6 @@ CREATE VIEW bytes_points AS WITH ranked AS (
            RANK()   OVER (PARTITION BY hole ORDER BY MIN(bytes)),
            COUNT(*) OVER (PARTITION BY hole)
       FROM solutions
-      JOIN code ON code_id = id
      WHERE NOT failing
        AND scoring = 'bytes'
   GROUP BY hole, user_id
@@ -144,7 +141,6 @@ CREATE VIEW chars_points AS WITH ranked AS (
            RANK()   OVER (PARTITION BY hole ORDER BY MIN(chars)),
            COUNT(*) OVER (PARTITION BY hole)
       FROM solutions
-      JOIN code ON code_id = id
      WHERE NOT failing
        AND scoring = 'chars'
   GROUP BY hole, user_id
@@ -156,9 +152,6 @@ GROUP BY user_id;
 -- Needed to refresh concurrently
 CREATE UNIQUE INDEX medals_key ON medals(user_id, hole, lang, scoring, medal);
 
--- Used by delete_orphaned_code()
-CREATE INDEX solutions_code_id_key ON solutions(code_id);
-
 -- Used by /stats
 CREATE INDEX solutions_hole_key ON solutions(hole, user_id) WHERE NOT failing;
 CREATE INDEX solutions_lang_key ON solutions(lang, user_id) WHERE NOT failing;
@@ -168,8 +161,6 @@ CREATE ROLE "code-golf" WITH LOGIN;
 -- Only owners can refresh.
 ALTER MATERIALIZED VIEW medals OWNER TO "code-golf";
 
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    code            TO "code-golf";
-GRANT SELECT                         ON SEQUENCE code_id_seq     TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE    discord_records TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE    ideas           TO "code-golf";
 GRANT SELECT                         ON TABLE    bytes_points    TO "code-golf";

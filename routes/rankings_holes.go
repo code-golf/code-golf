@@ -59,7 +59,6 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 		         user_id,
 		         lang
 		    FROM solutions
-		    JOIN code ON code_id = id
 		   WHERE NOT failing
 		     AND $1 IN ('all', hole::text)
 		     AND $2 IN ('all', lang::text)

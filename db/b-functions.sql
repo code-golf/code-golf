@@ -18,7 +18,6 @@ BEGIN
         'WITH ranks AS (
             SELECT %I, RANK() OVER (ORDER BY %I), user_id
               FROM solutions
-              JOIN code ON id = code_id
              WHERE NOT failing AND hole = $1 AND lang = $2 AND scoring = $3
         ) SELECT %I, rank::int,
                  (SELECT COUNT(*) != 1 FROM ranks r WHERE r.rank = ranks.rank)
@@ -50,19 +49,18 @@ CREATE FUNCTION save_solution(code text, hole hole, lang lang, user_id int)
 RETURNS save_solution_ret AS $$
 #variable_conflict use_variable
 DECLARE
-    bytes   int;
-    chars   int;
-    code_id int;
-    earned  cheevo[] := '{}'::cheevo[];
-    holes   int;
-    rank    hole_rank_ret;
-    ret     save_solution_ret;
+    bytes  int;
+    chars  int;
+    earned cheevo[] := '{}'::cheevo[];
+    holes  int;
+    rank   hole_rank_ret;
+    ret    save_solution_ret;
 BEGIN
     bytes := octet_length(code);
     chars :=  char_length(code);
 
-    -- Ensure we're the only one messing with code.
-    LOCK TABLE code IN EXCLUSIVE MODE;
+    -- Ensure we're the only one messing with solutions.
+    LOCK TABLE solutions IN EXCLUSIVE MODE;
 
     rank                := hole_rank(hole, lang, 'bytes', user_id);
     ret.old_bytes       := rank.strokes;
@@ -74,52 +72,42 @@ BEGIN
     ret.old_chars_joint := rank.joint;
     ret.old_chars_rank  := rank.rank;
 
-    -- Lookup the code ID, creating a new record if necessary.
-    SELECT id INTO code_id FROM code WHERE code.code = code;
-    IF NOT FOUND THEN
-        INSERT INTO code (code) VALUES (code) RETURNING id INTO code_id;
-    END IF;
-
     -- Update the code if it's the same length or less, but only update the
     -- submitted time if the solution is shorter. This avoids a user moving
     -- down the leaderboard by matching their personal best.
-    INSERT INTO solutions (code_id, hole, lang, scoring, user_id)
-         VALUES           (code_id, hole, lang, 'bytes', user_id)
+    INSERT INTO solutions (bytes, chars, code, hole, lang, scoring, user_id)
+         VALUES           (bytes, chars, code, hole, lang, 'bytes', user_id)
     ON CONFLICT ON CONSTRAINT solutions_pkey
     DO UPDATE SET failing = false,
+                    bytes = CASE
+                    WHEN solutions.failing OR excluded.bytes <= solutions.bytes
+                    THEN excluded.bytes ELSE solutions.bytes END,
+                    chars = CASE
+                    WHEN solutions.failing OR excluded.bytes <= solutions.bytes
+                    THEN excluded.chars ELSE solutions.chars END,
+                     code = CASE
+                    WHEN solutions.failing OR excluded.bytes <= solutions.bytes
+                    THEN excluded.code ELSE solutions.code END,
                 submitted = CASE
-                    WHEN solutions.failing
-                        OR bytes
-                        < (SELECT code.bytes FROM code WHERE id = solutions.code_id)
-                    THEN excluded.submitted
-                    ELSE solutions.submitted
-                END,
-                    code_id = CASE
-                    WHEN solutions.failing
-                        OR bytes
-                        <= (SELECT code.bytes FROM code WHERE id = solutions.code_id)
-                    THEN excluded.code_id
-                    ELSE solutions.code_id
-                END;
+                    WHEN solutions.failing OR excluded.bytes < solutions.bytes
+                    THEN excluded.submitted ELSE solutions.submitted END;
 
-    INSERT INTO solutions (code_id, hole, lang, scoring, user_id)
-         VALUES           (code_id, hole, lang, 'chars', user_id)
+    INSERT INTO solutions (bytes, chars, code, hole, lang, scoring, user_id)
+         VALUES           (bytes, chars, code, hole, lang, 'chars', user_id)
     ON CONFLICT ON CONSTRAINT solutions_pkey
     DO UPDATE SET failing = false,
+                    bytes = CASE
+                    WHEN solutions.failing OR excluded.chars <= solutions.chars
+                    THEN excluded.bytes ELSE solutions.bytes END,
+                    chars = CASE
+                    WHEN solutions.failing OR excluded.chars <= solutions.chars
+                    THEN excluded.chars ELSE solutions.chars END,
+                     code = CASE
+                    WHEN solutions.failing OR excluded.chars <= solutions.chars
+                    THEN excluded.code ELSE solutions.code END,
                 submitted = CASE
-                    WHEN solutions.failing
-                        OR chars
-                        < (SELECT code.chars FROM code WHERE id = solutions.code_id)
-                    THEN excluded.submitted
-                    ELSE solutions.submitted
-                END,
-                    code_id = CASE
-                    WHEN solutions.failing
-                        OR chars
-                        <= (SELECT code.chars FROM code WHERE id = solutions.code_id)
-                    THEN excluded.code_id
-                    ELSE solutions.code_id
-                END;
+                    WHEN solutions.failing OR excluded.chars < solutions.chars
+                    THEN excluded.submitted ELSE solutions.submitted END;
 
     rank                := hole_rank(hole, lang, 'bytes', user_id);
     ret.new_bytes       := rank.strokes;
@@ -134,21 +122,22 @@ BEGIN
     IF ret.new_bytes_rank = ret.old_bytes_rank THEN
         ret.beat_bytes = ret.old_bytes;
     ELSE
-        SELECT MIN(code.bytes) INTO ret.beat_bytes
-            FROM solutions JOIN code ON id = solutions.code_id
-            WHERE solutions.hole = hole AND solutions.lang = lang AND code.bytes > bytes;
+        SELECT MIN(solutions.bytes) INTO ret.beat_bytes
+          FROM solutions
+         WHERE solutions.hole  = hole
+           AND solutions.lang  = lang
+           AND solutions.bytes > bytes;
     END IF;
 
     IF ret.new_chars_rank = ret.old_chars_rank THEN
         ret.beat_chars = ret.old_chars;
     ELSE
-        SELECT MIN(code.chars) INTO ret.beat_chars
-            FROM solutions JOIN code ON id = solutions.code_id
-            WHERE solutions.hole = hole AND solutions.lang = lang AND code.chars > chars;
+        SELECT MIN(solutions.chars) INTO ret.beat_chars
+          FROM solutions
+         WHERE solutions.hole  = hole
+           AND solutions.lang  = lang
+           AND solutions.chars > chars;
     END IF;
-
-    -- Remove any orphaned code.
-    DELETE FROM code WHERE NOT EXISTS (SELECT FROM solutions WHERE id = solutions.code_id);
 
     -- Earn cheevos.
     SELECT COUNT(DISTINCT solutions.hole) INTO holes
@@ -186,7 +175,7 @@ BEGIN
         earned := earn(earned, 'elephpant-in-the-room', user_id);
     END IF;
 
-    IF (SELECT COUNT(DISTINCT solutions.code_id) > 1 FROM solutions
+    IF (SELECT COUNT(DISTINCT solutions.code) > 1 FROM solutions
         WHERE   solutions.user_id = user_id
         AND     solutions.hole = hole
         AND     solutions.lang = lang) THEN

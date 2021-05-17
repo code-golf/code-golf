@@ -38,9 +38,8 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 		// Fetch all the code per lang.
 		rows, err := session.Database(r).Query(
 			`SELECT code, lang, scoring
-				    FROM solutions
-				    JOIN code ON code_id = id
-				  WHERE hole = $1 AND user_id = $2`,
+			   FROM solutions
+			  WHERE hole = $1 AND user_id = $2`,
 			data.Hole.ID, golfer.ID,
 		)
 		if err != nil {
@@ -110,7 +109,6 @@ func HoleNG(w http.ResponseWriter, r *http.Request) {
 		rows, err := session.Database(r).Query(
 			`SELECT code, lang, scoring
 			   FROM solutions
-			   JOIN code ON code_id = id
 			  WHERE hole = $1 AND user_id = $2`,
 			data.Hole.ID, golfer.ID,
 		)

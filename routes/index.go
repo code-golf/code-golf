@@ -82,7 +82,6 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		           RANK() OVER (PARTITION BY hole ORDER BY `+data.Scoring+`),
 		           user_id
 		      FROM solutions
-		      JOIN code ON code_id = id
 		     WHERE scoring = $2
 		       AND NOT failing
 		) SELECT COUNT(*),

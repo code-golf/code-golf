@@ -1,7 +1,8 @@
 use t;
 
-constant $code-long  = 'say "Fizz" x $_ %% 3 ~ "Buzz" x $_ %% 5 || $_ for 1 .. 100';
-constant $code-short = 'say "Fizz"x$_%%3~"Buzz"x$_%%5||$_ for 1..100';
+constant $code-long        = 'say "Fizz" x $_ %% 3 ~ "Buzz" x $_ %% 5 || $_ for 1 .. 100';
+constant $code-short       = 'say "Fizz"x$_%%3~"Buzz"x$_%%5||$_ for 1..100';
+constant $code-short-chars = 'say "Fizz"x$_%%3~"Buzz"x$_%%5||$_ for 1…100';
 
 my $dbh = dbh;
 
@@ -13,60 +14,47 @@ my $session = $dbh.execute(
 subtest 'Failing solution' => {
     nok post-solution( :$session, :code('say 1') )<Pass>, 'Solution fails';
 
-    is $dbh.execute('SELECT COUNT(*) FROM code').row.head, 0, 'DB is empty';
+    is $dbh.execute('SELECT COUNT(*) FROM solutions').row.head, 0, 'DB is empty';
 }
 
 subtest 'Initial solution' => {
-    ok post-solution( :$session, :code($code-long) )<Pass>, 'Solution passes';
+    ok post-solution( :$session, :code($code-long) )<Pass>, 'Passes';
 
-    is-deeply db(), (
-        { code => $code-long, code_id => 1, scoring => 'bytes', user_id => 123 },
-        { code => $code-long, code_id => 1, scoring => 'chars', user_id => 123 },
-    ), 'DB is inserted';
+    is-deeply db, (
+        { code => $code-long, scoring => 'bytes' },
+        { code => $code-long, scoring => 'chars' },
+    ), 'Inserts both';
 };
 
 subtest 'Same solution' => {
-    ok post-solution( :$session, :code($code-long) )<Pass>, 'Solution passes';
+    ok post-solution( :$session, :code($code-long) )<Pass>, 'Passes';
 
-    is-deeply db(), (
-        { code => $code-long, code_id => 1, scoring => 'bytes', user_id => 123 },
-        { code => $code-long, code_id => 1, scoring => 'chars', user_id => 123 },
-    ), 'DB is the same';
+    is-deeply db, (
+        { code => $code-long, scoring => 'bytes' },
+        { code => $code-long, scoring => 'chars' },
+    ), 'Updates none';
 };
 
-subtest 'Updated solution' => {
-    ok post-solution( :$session, :code($code-short) )<Pass>, 'Solution passes';
+subtest 'Shorter solution' => {
+    ok post-solution( :$session, :code($code-short) )<Pass>, 'Passes';
 
-    is-deeply db(), (
-        { code => $code-short, code_id => 2, scoring => 'bytes', user_id => 123 },
-        { code => $code-short, code_id => 2, scoring => 'chars', user_id => 123 },
-    ), 'DB is updated';
-
-    is $dbh.execute('SELECT COUNT(*) FROM code').row.head, 1, 'Code is cleaned up';
+    is-deeply db, (
+        { code => $code-short, scoring => 'bytes' },
+        { code => $code-short, scoring => 'chars' },
+    ), 'Updates both';
 };
 
-subtest 'Different user' => {
-    $dbh.execute: "INSERT INTO users (id, login) VALUES (456, 'test2')";
+subtest 'Shorter chars solution' => {
+    ok post-solution( :$session, :code($code-short-chars) )<Pass>, 'Passes';
 
-    my $session = $dbh.execute(
-        'INSERT INTO sessions (user_id) VALUES (456) RETURNING id').row.head;
-
-    ok post-solution( :$session, :code($code-short) )<Pass>, 'Solution passes';
-
-    # Note how they share the some code ID.
-    is-deeply db(), (
-        { code => $code-short, code_id => 2, scoring => 'bytes', user_id => 123 },
-        { code => $code-short, code_id => 2, scoring => 'chars', user_id => 123 },
-        { code => $code-short, code_id => 2, scoring => 'bytes', user_id => 456 },
-        { code => $code-short, code_id => 2, scoring => 'chars', user_id => 456 },
-    ), 'DB is updated';
+    is-deeply db, (
+        { code => $code-short,       scoring => 'bytes' },
+        { code => $code-short-chars, scoring => 'chars' },
+    ), 'Updates just the chars';
 };
 
 sub db {
-    $dbh.execute(
-        'SELECT code, code_id, scoring, user_id
-           FROM solutions JOIN code ON id = code_id',
-    ).allrows(:array-of-hash)
+    $dbh.execute('SELECT code, scoring FROM solutions').allrows :array-of-hash;
 }
 
 done-testing;

@@ -27,7 +27,6 @@ func RankingsSolutions(w http.ResponseWriter, r *http.Request) {
 		           SUM(bytes) bytes,
 		           SUM(chars) chars
 		      FROM solutions
-		      JOIN code ON id = code_id
 		     WHERE NOT failing
 		  GROUP BY user_id
 		) SELECT bytes,

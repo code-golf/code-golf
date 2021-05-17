@@ -17,7 +17,6 @@ import (
 type solution struct {
 	failing  bool          `json:"-"`
 	Pass     bool          `json:"pass"`
-	codeID   int           `json:"-"`
 	GolferID int           `json:"golfer_id"`
 	code     string        `json:"-"`
 	Golfer   string        `json:"golfer"`
@@ -80,12 +79,12 @@ func AdminSolutionsRun(w http.ResponseWriter, r *http.Request) {
 					if _, err := db.Exec(
 						`UPDATE solutions
 						    SET failing = $1
-						  WHERE code_id = $2
+						  WHERE code    = $2
 						    AND hole    = $3
 						    AND lang    = $4
 						    AND user_id = $5`,
 						!s.Pass,
-						s.codeID,
+						s.code,
 						s.HoleID,
 						s.LangID,
 						s.GolferID,
@@ -123,10 +122,9 @@ func getSolutions(r *http.Request) chan solution {
 
 		rows, err := session.Database(r).QueryContext(
 			r.Context(),
-			` SELECT DISTINCT code, code_id, failing, login, u.id, hole, lang
+			` SELECT DISTINCT code, failing, login, user_id, hole, lang
 			    FROM solutions
-			    JOIN code  c ON c.id = code_id
-			    JOIN users u ON u.id = user_id
+			    JOIN users   ON id = user_id
 			   WHERE failing IN (true, $1)
 			     AND (login = $2 OR $2 = '')
 			     AND (hole  = $3 OR $3 IS NULL)
@@ -148,7 +146,6 @@ func getSolutions(r *http.Request) chan solution {
 
 			if err := rows.Scan(
 				&s.code,
-				&s.codeID,
 				&s.failing,
 				&s.Golfer,
 				&s.GolferID,

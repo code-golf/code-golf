@@ -47,7 +47,6 @@ func GolferHoles(w http.ResponseWriter, r *http.Request) {
 		         lang,
 		         RANK() OVER (PARTITION BY hole, lang ORDER BY `+data.Scorings[0]+`)
 		    FROM solutions
-		    JOIN code ON code_id = id
 		   WHERE NOT failing
 		     AND scoring = $2
 		), other_matrix AS (
@@ -56,7 +55,6 @@ func GolferHoles(w http.ResponseWriter, r *http.Request) {
 		         lang,
 		         RANK() OVER (PARTITION BY hole, lang ORDER BY `+data.Scorings[1]+`) other_rank
 		    FROM solutions
-		    JOIN code ON code_id = id
 		   WHERE NOT failing
 		     AND scoring = $3
 		) SELECT hole, lang, COALESCE(rank, 0), COALESCE(other_rank, 0)

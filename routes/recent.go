@@ -35,7 +35,6 @@ func Recent(w http.ResponseWriter, r *http.Request) {
                case when scoring = 'chars' then chars else bytes end strokes,
                submitted
           FROM solutions
-          JOIN code  ON code_id = code.id
           JOIN users ON user_id = users.id
          WHERE NOT failing
            AND $1 IN ('all-langs', lang::text)
