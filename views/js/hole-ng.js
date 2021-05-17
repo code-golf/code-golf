@@ -182,7 +182,7 @@ const runCode = document.querySelector('#run a').onclick = async () => {
     status.style.display = 'flex';
 };
 
-onkeydown = e => e.ctrlKey && e.key == 'Enter' ? runCode() : undefined;
+onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter' ? runCode() : undefined;
 
 // Adapted from https://codegolf.stackexchange.com/a/119563
 const ord = i => [, 'st', 'nd', 'rd'][i % 100 >> 3 ^ 1 && i % 10] || 'th';
