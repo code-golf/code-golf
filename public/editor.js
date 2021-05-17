@@ -7793,8 +7793,8 @@ function runHandlers(map, event, view, scope) {
   }
   let runFor = (binding) => {
     if (binding) {
-      for (let cmd of binding.commands)
-        if (cmd(view))
+      for (let cmd2 of binding.commands)
+        if (cmd2(view))
           return true;
       if (binding.preventDefault)
         fallthrough = true;
@@ -8404,7 +8404,7 @@ var TreeCursor = class {
   get node() {
     if (!this.buffer)
       return this._tree;
-    let cache = this.bufferNode, result = null, depth = 0;
+    let cache = this.bufferNode, result = null, depth2 = 0;
     if (cache && cache.context == this.buffer) {
       scan:
         for (let index = this.index, d = this.stack.length; d >= 0; ) {
@@ -8413,13 +8413,13 @@ var TreeCursor = class {
               if (index == this.index)
                 return c2;
               result = c2;
-              depth = d + 1;
+              depth2 = d + 1;
               break scan;
             }
           index = this.stack[--d];
         }
     }
-    for (let i = depth; i < this.stack.length; i++)
+    for (let i = depth2; i < this.stack.length; i++)
       result = new BufferNode(this.buffer, result, this.stack[i]);
     return this.bufferNode = new BufferNode(this.buffer, result, this.index);
   }
@@ -9560,17 +9560,17 @@ function matchBrackets(state, pos, dir, config2 = {}) {
 }
 function matchMarkedBrackets(_state, _pos, dir, token2, matching2, brackets) {
   let parent = token2.parent, firstToken = {from: token2.from, to: token2.to};
-  let depth = 0, cursor = parent === null || parent === void 0 ? void 0 : parent.cursor;
+  let depth2 = 0, cursor = parent === null || parent === void 0 ? void 0 : parent.cursor;
   if (cursor && (dir < 0 ? cursor.childBefore(token2.from) : cursor.childAfter(token2.to)))
     do {
       if (dir < 0 ? cursor.to <= token2.from : cursor.from >= token2.to) {
-        if (depth == 0 && matching2.indexOf(cursor.type.name) > -1) {
+        if (depth2 == 0 && matching2.indexOf(cursor.type.name) > -1) {
           return {start: firstToken, end: {from: cursor.from, to: cursor.to}, matched: true};
         } else if (matchingNodes(cursor.type, dir, brackets)) {
-          depth++;
+          depth2++;
         } else if (matchingNodes(cursor.type, -dir, brackets)) {
-          depth--;
-          if (depth == 0)
+          depth2--;
+          if (depth2 == 0)
             return {start: firstToken, end: {from: cursor.from, to: cursor.to}, matched: false};
         }
       }
@@ -9583,7 +9583,7 @@ function matchPlainBrackets(state, pos, dir, tree, tokenType, maxScanDistance, b
   if (bracket2 < 0 || bracket2 % 2 == 0 != dir > 0)
     return null;
   let startToken = {from: dir < 0 ? pos - 1 : pos, to: dir > 0 ? pos + 1 : pos};
-  let iter = state.doc.iterRange(pos, dir > 0 ? state.doc.length : 0), depth = 0;
+  let iter = state.doc.iterRange(pos, dir > 0 ? state.doc.length : 0), depth2 = 0;
   for (let distance = 0; !iter.next().done && distance <= maxScanDistance; ) {
     let text = iter.value;
     if (dir < 0)
@@ -9594,11 +9594,11 @@ function matchPlainBrackets(state, pos, dir, tree, tokenType, maxScanDistance, b
       if (found < 0 || tree.resolve(basePos + pos2, 1).type != tokenType)
         continue;
       if (found % 2 == 0 == dir > 0) {
-        depth++;
-      } else if (depth == 1) {
+        depth2++;
+      } else if (depth2 == 1) {
         return {start: startToken, end: {from: basePos + pos2, to: basePos + pos2 + 1}, matched: found >> 1 == bracket2 >> 1};
       } else {
-        depth--;
+        depth2--;
       }
     }
     if (dir > 0)
@@ -10529,17 +10529,17 @@ var nodeStack = [""];
 function highlightTreeRange(tree, from, to, style, span) {
   let spanStart = from, spanClass = "";
   let cursor = tree.topNode.cursor;
-  function node(inheritedClass, depth, scope) {
+  function node(inheritedClass, depth2, scope) {
     let {type: type2, from: start, to: end} = cursor;
     if (start >= to || end <= from)
       return;
-    nodeStack[depth] = type2.name;
+    nodeStack[depth2] = type2.name;
     if (type2.isTop)
       scope = type2;
     let cls = inheritedClass;
     let rule = type2.prop(ruleNodeProp), opaque = false;
     while (rule) {
-      if (!rule.context || matchContext(rule.context, nodeStack, depth)) {
+      if (!rule.context || matchContext(rule.context, nodeStack, depth2)) {
         for (let tag of rule.tags) {
           let st = style(tag, scope);
           if (st) {
@@ -10565,7 +10565,7 @@ function highlightTreeRange(tree, from, to, style, span) {
     if (!opaque && cursor.firstChild()) {
       do {
         let end2 = cursor.to;
-        node(inheritedClass, depth + 1, scope);
+        node(inheritedClass, depth2 + 1, scope);
         if (spanClass != cls) {
           let pos = Math.min(to, end2);
           if (pos > spanStart && spanClass)
@@ -10579,10 +10579,10 @@ function highlightTreeRange(tree, from, to, style, span) {
   }
   node("", 0, tree.type);
 }
-function matchContext(context, stack, depth) {
-  if (context.length > depth - 1)
+function matchContext(context, stack, depth2) {
+  if (context.length > depth2 - 1)
     return false;
-  for (let d = depth - 1, i = context.length - 1; i >= 0; i--, d--) {
+  for (let d = depth2 - 1, i = context.length - 1; i >= 0; i--, d--) {
     let check = context[i];
     if (check && check != stack[d])
       return false;
@@ -10790,6 +10790,268 @@ var classHighlightStyle = HighlightStyle.define([
   {tag: tags.invalid, class: "cmt-invalid"},
   {tag: tags.punctuation, class: "cmt-punctuation"}
 ]);
+
+// node_modules/@codemirror/history/dist/index.js
+var fromHistory = Annotation.define();
+var isolateHistory = Annotation.define();
+var invertedEffects = Facet.define();
+var historyConfig = Facet.define({
+  combine(configs) {
+    return combineConfig(configs, {
+      minDepth: 100,
+      newGroupDelay: 500
+    }, {minDepth: Math.max, newGroupDelay: Math.min});
+  }
+});
+var historyField_ = StateField.define({
+  create() {
+    return HistoryState.empty;
+  },
+  update(state, tr) {
+    let config2 = tr.state.facet(historyConfig);
+    let fromHist = tr.annotation(fromHistory);
+    if (fromHist) {
+      let item = HistEvent.fromTransaction(tr), from = fromHist.side;
+      let other = from == 0 ? state.undone : state.done;
+      if (item)
+        other = updateBranch(other, other.length, config2.minDepth, item);
+      else
+        other = addSelection(other, tr.startState.selection);
+      return new HistoryState(from == 0 ? fromHist.rest : other, from == 0 ? other : fromHist.rest);
+    }
+    let isolate = tr.annotation(isolateHistory);
+    if (isolate == "full" || isolate == "before")
+      state = state.isolate();
+    if (tr.annotation(Transaction.addToHistory) === false)
+      return !tr.changes.empty ? state.addMapping(tr.changes.desc) : state;
+    let event = HistEvent.fromTransaction(tr);
+    let time = tr.annotation(Transaction.time), userEvent = tr.annotation(Transaction.userEvent);
+    if (event)
+      state = state.addChanges(event, time, userEvent, config2.newGroupDelay, config2.minDepth);
+    else if (tr.selection)
+      state = state.addSelection(tr.startState.selection, time, userEvent, config2.newGroupDelay);
+    if (isolate == "full" || isolate == "after")
+      state = state.isolate();
+    return state;
+  },
+  toJSON(value) {
+    return {done: value.done.map((e) => e.toJSON()), undone: value.undone.map((e) => e.toJSON())};
+  },
+  fromJSON(json) {
+    return new HistoryState(json.done.map(HistEvent.fromJSON), json.undone.map(HistEvent.fromJSON));
+  }
+});
+function history(config2 = {}) {
+  return [
+    historyField_,
+    historyConfig.of(config2),
+    EditorView.domEventHandlers({
+      beforeinput(e, view) {
+        if (e.inputType == "historyUndo")
+          return undo(view);
+        if (e.inputType == "historyRedo")
+          return redo(view);
+        return false;
+      }
+    })
+  ];
+}
+function cmd(side, selection) {
+  return function({state, dispatch}) {
+    let historyState = state.field(historyField_, false);
+    if (!historyState)
+      return false;
+    let tr = historyState.pop(side, state, selection);
+    if (!tr)
+      return false;
+    dispatch(tr);
+    return true;
+  };
+}
+var undo = cmd(0, false);
+var redo = cmd(1, false);
+var undoSelection = cmd(0, true);
+var redoSelection = cmd(1, true);
+function depth(side) {
+  return function(state) {
+    let histState = state.field(historyField_, false);
+    if (!histState)
+      return 0;
+    let branch = side == 0 ? histState.done : histState.undone;
+    return branch.length - (branch.length && !branch[0].changes ? 1 : 0);
+  };
+}
+var undoDepth = depth(0);
+var redoDepth = depth(1);
+var HistEvent = class {
+  constructor(changes, effects, mapped, startSelection, selectionsAfter) {
+    this.changes = changes;
+    this.effects = effects;
+    this.mapped = mapped;
+    this.startSelection = startSelection;
+    this.selectionsAfter = selectionsAfter;
+  }
+  setSelAfter(after) {
+    return new HistEvent(this.changes, this.effects, this.mapped, this.startSelection, after);
+  }
+  toJSON() {
+    var _a, _b2, _c;
+    return {
+      changes: (_a = this.changes) === null || _a === void 0 ? void 0 : _a.toJSON(),
+      mapped: (_b2 = this.mapped) === null || _b2 === void 0 ? void 0 : _b2.toJSON(),
+      startSelection: (_c = this.startSelection) === null || _c === void 0 ? void 0 : _c.toJSON(),
+      selectionsAfter: this.selectionsAfter.map((s) => s.toJSON())
+    };
+  }
+  static fromJSON(json) {
+    return new HistEvent(json.changes && ChangeSet.fromJSON(json.changes), [], json.mapped && ChangeDesc.fromJSON(json.mapped), json.startSelection && EditorSelection.fromJSON(json.startSelection), json.selectionsAfter.map(EditorSelection.fromJSON));
+  }
+  static fromTransaction(tr) {
+    let effects = none3;
+    for (let invert of tr.startState.facet(invertedEffects)) {
+      let result = invert(tr);
+      if (result.length)
+        effects = effects.concat(result);
+    }
+    if (!effects.length && tr.changes.empty)
+      return null;
+    return new HistEvent(tr.changes.invert(tr.startState.doc), effects, void 0, tr.startState.selection, none3);
+  }
+  static selection(selections) {
+    return new HistEvent(void 0, none3, void 0, void 0, selections);
+  }
+};
+function updateBranch(branch, to, maxLen, newEvent) {
+  let start = to + 1 > maxLen + 20 ? to - maxLen - 1 : 0;
+  let newBranch = branch.slice(start, to);
+  newBranch.push(newEvent);
+  return newBranch;
+}
+function isAdjacent(a, b) {
+  let ranges = [], isAdjacent2 = false;
+  a.iterChangedRanges((f, t2) => ranges.push(f, t2));
+  b.iterChangedRanges((_f2, _t, f, t2) => {
+    for (let i = 0; i < ranges.length; ) {
+      let from = ranges[i++], to = ranges[i++];
+      if (t2 >= from && f <= to)
+        isAdjacent2 = true;
+    }
+  });
+  return isAdjacent2;
+}
+function eqSelectionShape(a, b) {
+  return a.ranges.length == b.ranges.length && a.ranges.filter((r, i) => r.empty != b.ranges[i].empty).length === 0;
+}
+function conc(a, b) {
+  return !a.length ? b : !b.length ? a : a.concat(b);
+}
+var none3 = [];
+var MaxSelectionsPerEvent = 200;
+function addSelection(branch, selection) {
+  if (!branch.length) {
+    return [HistEvent.selection([selection])];
+  } else {
+    let lastEvent = branch[branch.length - 1];
+    let sels = lastEvent.selectionsAfter.slice(Math.max(0, lastEvent.selectionsAfter.length - MaxSelectionsPerEvent));
+    if (sels.length && sels[sels.length - 1].eq(selection))
+      return branch;
+    sels.push(selection);
+    return updateBranch(branch, branch.length - 1, 1e9, lastEvent.setSelAfter(sels));
+  }
+}
+function popSelection(branch) {
+  let last = branch[branch.length - 1];
+  let newBranch = branch.slice();
+  newBranch[branch.length - 1] = last.setSelAfter(last.selectionsAfter.slice(0, last.selectionsAfter.length - 1));
+  return newBranch;
+}
+function addMappingToBranch(branch, mapping) {
+  if (!branch.length)
+    return branch;
+  let length = branch.length, selections = none3;
+  while (length) {
+    let event = mapEvent(branch[length - 1], mapping, selections);
+    if (event.changes && !event.changes.empty || event.effects.length) {
+      let result = branch.slice(0, length);
+      result[length - 1] = event;
+      return result;
+    } else {
+      mapping = event.mapped;
+      length--;
+      selections = event.selectionsAfter;
+    }
+  }
+  return selections.length ? [HistEvent.selection(selections)] : none3;
+}
+function mapEvent(event, mapping, extraSelections) {
+  let selections = conc(event.selectionsAfter.length ? event.selectionsAfter.map((s) => s.map(mapping)) : none3, extraSelections);
+  if (!event.changes)
+    return HistEvent.selection(selections);
+  let mappedChanges = event.changes.map(mapping), before = mapping.mapDesc(event.changes, true);
+  let fullMapping = event.mapped ? event.mapped.composeDesc(before) : before;
+  return new HistEvent(mappedChanges, StateEffect.mapEffects(event.effects, mapping), fullMapping, event.startSelection.map(before), selections);
+}
+var HistoryState = class {
+  constructor(done, undone, prevTime = 0, prevUserEvent = void 0) {
+    this.done = done;
+    this.undone = undone;
+    this.prevTime = prevTime;
+    this.prevUserEvent = prevUserEvent;
+  }
+  isolate() {
+    return this.prevTime ? new HistoryState(this.done, this.undone) : this;
+  }
+  addChanges(event, time, userEvent, newGroupDelay, maxLen) {
+    let done = this.done, lastEvent = done[done.length - 1];
+    if (lastEvent && lastEvent.changes && time - this.prevTime < newGroupDelay && !lastEvent.selectionsAfter.length && !lastEvent.changes.empty && event.changes && isAdjacent(lastEvent.changes, event.changes)) {
+      done = updateBranch(done, done.length - 1, maxLen, new HistEvent(event.changes.compose(lastEvent.changes), conc(event.effects, lastEvent.effects), lastEvent.mapped, lastEvent.startSelection, none3));
+    } else {
+      done = updateBranch(done, done.length, maxLen, event);
+    }
+    return new HistoryState(done, none3, time, userEvent);
+  }
+  addSelection(selection, time, userEvent, newGroupDelay) {
+    let last = this.done.length ? this.done[this.done.length - 1].selectionsAfter : none3;
+    if (last.length > 0 && time - this.prevTime < newGroupDelay && userEvent == "keyboardselection" && this.prevUserEvent == userEvent && eqSelectionShape(last[last.length - 1], selection))
+      return this;
+    return new HistoryState(addSelection(this.done, selection), this.undone, time, userEvent);
+  }
+  addMapping(mapping) {
+    return new HistoryState(addMappingToBranch(this.done, mapping), addMappingToBranch(this.undone, mapping), this.prevTime, this.prevUserEvent);
+  }
+  pop(side, state, selection) {
+    let branch = side == 0 ? this.done : this.undone;
+    if (branch.length == 0)
+      return null;
+    let event = branch[branch.length - 1];
+    if (selection && event.selectionsAfter.length) {
+      return state.update({
+        selection: event.selectionsAfter[event.selectionsAfter.length - 1],
+        annotations: fromHistory.of({side, rest: popSelection(branch)})
+      });
+    } else if (!event.changes) {
+      return null;
+    } else {
+      let rest = branch.length == 1 ? none3 : branch.slice(0, branch.length - 1);
+      if (event.mapped)
+        rest = addMappingToBranch(rest, event.mapped);
+      return state.update({
+        changes: event.changes,
+        selection: event.startSelection,
+        effects: event.effects,
+        annotations: fromHistory.of({side, rest}),
+        filter: false
+      });
+    }
+  }
+};
+HistoryState.empty = new HistoryState(none3, none3);
+var historyKeymap = [
+  {key: "Mod-z", run: undo, preventDefault: true},
+  {key: "Mod-y", mac: "Mod-Shift-z", run: redo, preventDefault: true},
+  {key: "Mod-u", run: undoSelection, preventDefault: true},
+  {key: "Alt-u", mac: "Mod-Shift-u", run: redoSelection, preventDefault: true}
+];
 
 // node_modules/@codemirror/stream-parser/dist/index.js
 function countCol(string3, end, tabSize, startIndex = 0, startValue = 0) {
@@ -14613,19 +14875,19 @@ var Stack = class {
     this.state = state;
   }
   reduce(action) {
-    let depth = action >> 19, type2 = action & 65535;
+    let depth2 = action >> 19, type2 = action & 65535;
     let {parser: parser7} = this.p;
     let dPrec = parser7.dynamicPrecedence(type2);
     if (dPrec)
       this.score += dPrec;
-    if (depth == 0) {
+    if (depth2 == 0) {
       if (type2 < parser7.minRepeatTerm)
         this.storeNode(type2, this.reducePos, this.reducePos, 4, true);
       this.pushState(parser7.getGoto(this.state, type2, true), this.reducePos);
       this.reduceContext(type2);
       return;
     }
-    let base3 = this.stack.length - (depth - 1) * 3 - (action & 262144 ? 6 : 0);
+    let base3 = this.stack.length - (depth2 - 1) * 3 - (action & 262144 ? 6 : 0);
     let start = this.stack[base3 - 2];
     let bufferBase = this.stack[base3 - 1], count = this.bufferBase + this.buffer.length - bufferBase;
     if (type2 < parser7.minRepeatTerm || action & 131072) {
@@ -14760,7 +15022,7 @@ var Stack = class {
     let state = this.state, frame = this.stack.length, {parser: parser7} = this.p;
     for (; ; ) {
       let force = parser7.stateSlot(state, 5);
-      let depth = force >> 19, term = force & 65535;
+      let depth2 = force >> 19, term = force & 65535;
       if (types4.indexOf(term) > -1) {
         let base3 = frame - 3 * (force >> 19), pos = this.stack[base3 + 1];
         if (before == null || before > pos)
@@ -14768,11 +15030,11 @@ var Stack = class {
       }
       if (frame == 0)
         return null;
-      if (depth == 0) {
+      if (depth2 == 0) {
         frame -= 3;
         state = this.stack[frame];
       } else {
-        frame -= 3 * (depth - 1);
+        frame -= 3 * (depth2 - 1);
         state = parser7.getGoto(this.stack[frame - 3], term, true);
       }
     }
@@ -14897,14 +15159,14 @@ var SimulatedStack = class {
     this.offset = this.rest.length;
   }
   reduce(action) {
-    let term = action & 65535, depth = action >> 19;
-    if (depth == 0) {
+    let term = action & 65535, depth2 = action >> 19;
+    if (depth2 == 0) {
       if (this.rest == this.stack.stack)
         this.rest = this.rest.slice();
       this.rest.push(this.top, 0, 0);
       this.offset += 3;
     } else {
-      this.offset -= (depth - 1) * 3;
+      this.offset -= (depth2 - 1) * 3;
     }
     let goto = this.stack.p.parser.getGoto(this.rest[this.offset - 3], term, true);
     this.top = goto;
@@ -16373,20 +16635,20 @@ function tokenTripleString(stream, state) {
   }
   return "string";
 }
-function tokenNestedComment(depth) {
+function tokenNestedComment(depth2) {
   return function(stream, state) {
     var ch;
     while (ch = stream.next()) {
       if (ch == "*" && stream.eat("/")) {
-        if (depth == 1) {
+        if (depth2 == 1) {
           state.tokenize = null;
           break;
         } else {
-          state.tokenize = tokenNestedComment(depth - 1);
+          state.tokenize = tokenNestedComment(depth2 - 1);
           return state.tokenize(stream, state);
         }
       } else if (ch == "/" && stream.eat("*")) {
-        state.tokenize = tokenNestedComment(depth + 1);
+        state.tokenize = tokenNestedComment(depth2 + 1);
         return state.tokenize(stream, state);
       }
     }
@@ -21211,14 +21473,14 @@ var newlines = new ExternalTokenizer((input, token2, stack) => {
   }
 }, {contextual: true, fallback: true});
 var indentation = new ExternalTokenizer((input, token2, stack) => {
-  let prev = input.get(token2.start - 1), depth;
-  if ((prev == newline$1 || prev == carriageReturn) && (depth = getIndent(input, token2.start)) >= 0 && depth != stack.context.depth && stack.startOf(bracketed2) == null)
-    token2.accept(depth < stack.context.depth ? dedent : indent, token2.start);
+  let prev = input.get(token2.start - 1), depth2;
+  if ((prev == newline$1 || prev == carriageReturn) && (depth2 = getIndent(input, token2.start)) >= 0 && depth2 != stack.context.depth && stack.startOf(bracketed2) == null)
+    token2.accept(depth2 < stack.context.depth ? dedent : indent, token2.start);
 });
-function IndentLevel(parent, depth) {
+function IndentLevel(parent, depth2) {
   this.parent = parent;
-  this.depth = depth;
-  this.hash = (parent ? parent.hash + parent.hash << 8 : 0) + depth + (depth << 4);
+  this.depth = depth2;
+  this.hash = (parent ? parent.hash + parent.hash << 8 : 0) + depth2 + (depth2 << 4);
 }
 var topIndent2 = new IndentLevel(null, 0);
 var trackIndent = new ContextTracker({
@@ -21525,16 +21787,16 @@ function tokenBase6(stream, state) {
   }
 }
 function regexpAhead(stream) {
-  var start = stream.pos, depth = 0, next2, found = false, escaped = false;
+  var start = stream.pos, depth2 = 0, next2, found = false, escaped = false;
   while ((next2 = stream.next()) != null) {
     if (!escaped) {
       if ("[{(".indexOf(next2) > -1) {
-        depth++;
+        depth2++;
       } else if ("]})".indexOf(next2) > -1) {
-        depth--;
-        if (depth < 0)
+        depth2--;
+        if (depth2 < 0)
           break;
-      } else if (next2 == "/" && depth == 0) {
+      } else if (next2 == "/" && depth2 == 0) {
         found = true;
         break;
       }
@@ -21546,19 +21808,19 @@ function regexpAhead(stream) {
   stream.backUp(stream.pos - start);
   return found;
 }
-function tokenBaseUntilBrace(depth) {
-  if (!depth)
-    depth = 1;
+function tokenBaseUntilBrace(depth2) {
+  if (!depth2)
+    depth2 = 1;
   return function(stream, state) {
     if (stream.peek() == "}") {
-      if (depth == 1) {
+      if (depth2 == 1) {
         state.tokenize.pop();
         return state.tokenize[state.tokenize.length - 1](stream, state);
       } else {
-        state.tokenize[state.tokenize.length - 1] = tokenBaseUntilBrace(depth - 1);
+        state.tokenize[state.tokenize.length - 1] = tokenBaseUntilBrace(depth2 - 1);
       }
     } else if (stream.peek() == "{") {
-      state.tokenize[state.tokenize.length - 1] = tokenBaseUntilBrace(depth + 1);
+      state.tokenize[state.tokenize.length - 1] = tokenBaseUntilBrace(depth2 + 1);
     }
     return tokenBase6(stream, state);
   };
@@ -22244,18 +22506,18 @@ function tokensFor(d) {
       token2.accept(LineComment, eol(input, pos + 1));
     } else if (next2 == 47 && next22 == 42) {
       pos++;
-      for (let prev = -1, depth = 1; ; ) {
+      for (let prev = -1, depth2 = 1; ; ) {
         let next3 = input.get(pos++);
         if (next3 < 0) {
           pos--;
           break;
         } else if (prev == 42 && next3 == 47) {
-          depth--;
-          if (!depth)
+          depth2--;
+          if (!depth2)
             break;
           next3 = -1;
         } else if (prev == 47 && next3 == 42) {
-          depth++;
+          depth2++;
           next3 = -1;
         }
         prev = next3;
@@ -22752,19 +23014,19 @@ function tokenBase8(stream, state, prev) {
   return null;
 }
 function tokenUntilClosingParen() {
-  var depth = 0;
+  var depth2 = 0;
   return function(stream, state, prev) {
     var inner = tokenBase8(stream, state, prev);
     if (inner == "punctuation") {
       if (stream.current() == "(")
-        ++depth;
+        ++depth2;
       else if (stream.current() == ")") {
-        if (depth == 0) {
+        if (depth2 == 0) {
           stream.backUp(1);
           state.tokenize.pop();
           return state.tokenize[state.tokenize.length - 1](stream, state);
         } else
-          --depth;
+          --depth2;
       }
     }
     return inner;
@@ -22871,8 +23133,14 @@ var extensions = [
   bracketMatching(),
   closeBrackets(),
   defaultHighlightStyle,
+  history(),
   indentOnInput(),
-  keymap.of([...closeBracketsKeymap, defaultTabBinding, ...standardKeymap]),
+  keymap.of([
+    ...closeBracketsKeymap,
+    defaultTabBinding,
+    ...historyKeymap,
+    ...standardKeymap
+  ]),
   lineNumbers()
 ];
 var languages = {

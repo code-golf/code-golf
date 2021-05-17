@@ -4,6 +4,7 @@
     "@codemirror/commands": "",
     "@codemirror/gutter": "",
     "@codemirror/highlight": "",
+    "@codemirror/history": "",
     "@codemirror/lang-java": "",
     "@codemirror/lang-javascript": "",
     "@codemirror/lang-python": "",

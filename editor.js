@@ -6,6 +6,7 @@ import { closeBrackets, closeBracketsKeymap } from '@codemirror/closebrackets';
 import { defaultTabBinding, standardKeymap }  from '@codemirror/commands';
 import { lineNumbers }                        from '@codemirror/gutter';
 import { defaultHighlightStyle }              from '@codemirror/highlight';
+import { history, historyKeymap }             from '@codemirror/history';
 import { indentOnInput }                      from '@codemirror/language';
 import { bracketMatching }                    from '@codemirror/matchbrackets';
 import { StreamLanguage }                     from '@codemirror/stream-parser';
@@ -42,8 +43,12 @@ export const extensions = [
     bracketMatching(),
     closeBrackets(),
     defaultHighlightStyle,
+    history(),
     indentOnInput(),
-    keymap.of([...closeBracketsKeymap, defaultTabBinding, ...standardKeymap]),
+    keymap.of([
+        ...closeBracketsKeymap, defaultTabBinding,
+        ...historyKeymap, ...standardKeymap,
+    ]),
     lineNumbers(),
 ];
 
