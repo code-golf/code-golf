@@ -64,7 +64,6 @@ func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
 	}
 
 	// Now, we fill out the fields according to the updates of the announcement
-
 	fieldValues := make(map[string]string)
 	for _, pair := range announce.Updates {
 		for _, update := range pair {
@@ -78,8 +77,11 @@ func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
 		}
 	}
 
+	if fieldValues["bytes"] == fieldValues["chars"] {
+		fieldValues = map[string]string{"bytes/chars": fieldValues["bytes"]}
+	}
 	// We iterate over the scorings rather than the map itself so that the order will be guaranteed
-	for _, scoring := range []string{"bytes", "chars"} {
+	for _, scoring := range []string{"bytes", "chars", "bytes/chars"} {
 		if fieldValues[scoring] != "" {
 			embed.Fields = append(embed.Fields, &discordgo.MessageEmbedField{
 				Name:   strings.Title(scoring),
