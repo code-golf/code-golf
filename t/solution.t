@@ -4,6 +4,18 @@ constant $code-long        = 'say "Fizz" x $_ %% 3 ~ "Buzz" x $_ %% 5 || $_ for 
 constant $code-short       = 'say "Fizz"x$_%%3~"Buzz"x$_%%5||$_ for 1..100';
 constant $code-short-chars = 'say "Fizz"x$_%%3~"Buzz"x$_%%5||$_ for 1…100';
 
+is-deeply post-solution(:code($code-long))<
+    Argv Cheevos Diff Err ExitCode Exp Pass
+>:kv.Hash, {
+    Argv     => [],
+    Cheevos  => [],
+    Diff     => '',
+    Err      => '',
+    ExitCode => 0,
+    Exp      => slurp("hole/answers/fizz-buzz.txt").chomp,
+    Pass     => True,
+};
+
 my $dbh = dbh;
 
 $dbh.execute: "INSERT INTO users (id, login) VALUES (123, 'test')";

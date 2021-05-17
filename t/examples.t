@@ -18,7 +18,9 @@ for slurp("langs.toml").&from-toml.map({
     ) -> $hole {
         subtest "$lang ($hole)" => {
             my $got = post-solution :$code :$hole :$lang;
-            my $exp = join "\n", 'Hello, World!', |^10, |($got<Argv> // '');
+            my $exp = join "\n", 'Hello, World!', |^10, |$got<Argv>;
+
+            $exp ~= "\n" if $hole eq 'quine';
 
             is $got<Out>, $exp, 'Out';
             is $got<Err>,   '', 'Err';

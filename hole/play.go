@@ -28,6 +28,8 @@ type Scorecard struct {
 }
 
 func getAnswer(holeID, code string) (args []string, answer string) {
+	args = []string{}
+
 	switch holeID {
 	case "arabic-to-roman", "roman-to-arabic":
 		args, answer = arabicToRoman(holeID == "roman-to-arabic")

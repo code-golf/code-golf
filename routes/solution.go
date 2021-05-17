@@ -69,6 +69,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		Took                time.Duration
 	}{
 		Argv:     score.Args,
+		Cheevos:  []string{},
 		Err:      string(terminal.Render(score.Stderr)),
 		ExitCode: score.ExitCode,
 		Exp:      score.Answer,

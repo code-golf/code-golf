@@ -187,7 +187,7 @@ onload = () => {
             = data.Pass ? 'Pass 😀' : 'Fail ☹️';
 
         // Show args if we have 'em.
-        if (data.Argv) {
+        if (data.Argv.length) {
             document.querySelector('#arg').style.display = 'block';
             const argDiv = document.querySelector('#arg div');
             // Remove all arg spans
