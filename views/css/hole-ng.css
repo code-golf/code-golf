@@ -14,6 +14,12 @@ main > header nav {
     gap: .5rem;
 }
 
+main .info {
+    display: none;
+    margin: 0;
+    padding: .5rem;
+}
+
 section {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 15rem;

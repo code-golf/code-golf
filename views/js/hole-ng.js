@@ -130,6 +130,9 @@ const switchLang = onhashchange = () => {
     else
         scoringTabs[1].style.display = '';
 
+    for (const info of document.querySelectorAll('main .info'))
+        info.style.display = info.classList.contains(lang) ? 'block' : '';
+
     // Dispatch to update strokes.
     editor.dispatch();
 

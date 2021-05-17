@@ -72,6 +72,39 @@
         <table class=nowrap-second id=rankings></table>
     </section>
 
+    <div class="info c-sharp">
+        <a href=//devblogs.microsoft.com/dotnet/welcome-to-c-9-0/#top-level-programs>
+            Top-level programs</a> are supported, <b>args</b> holds ARGV.
+    </div>
+    <div class="info fish">
+        ARGV is available via STDIN, joined on NULL. <b>x</b> is a no-op.
+    </div>
+    <div class="info hexagony">
+        ARGV is available via STDIN, joined on NULL.
+    </div>
+    <div class="info javascript">
+        <b>arguments</b> holds ARGV, <b>print()</b> to output with a newline,
+        <b>write()</b> to output without a newline.
+    </div>
+    <div class="info perl">
+        <b>say()</b> is available without any import.
+    </div>
+{{ if eq .Data.Hole.ID "quine" }}
+    <div class="info powershell">
+        Implicit output is disabled for this hole. Use <b>Out-Host</b> or
+        <b>Write-Host</b> for output.
+    </div>
+{{ else }}
+    <div class="info powershell">
+        <b>$args</b> to access the arguments.
+    </div>
+{{ end }}
+    <div class="info sql">
+        <b>SELECT arg FROM argv</b> to access the arguments, only the first
+        column of the first result set will be printed, NULL values will be
+        skipped, and the dialect is <a href=//sqlite.org/index.html>SQLite</a>.
+    </div>
+
     <div id=run>
         ctrl + enter
         <span>or</span>
