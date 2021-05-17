@@ -62,7 +62,7 @@ async function update() {
     // Update "All" link.
     all.href = `/rankings/holes/${hole}/${lang}/${scoring}`;
 
-    const res  = await fetch(`/scores/${hole}/${lang}/${scoring}/mini`);
+    const res  = await fetch(`/scores/${hole}/${lang}/${scoring}/mini?ng=1`);
     const rows = res.ok ? await res.json() : [];
 
     let html = '';

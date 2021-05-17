@@ -36,6 +36,11 @@ func ScoresMini(w http.ResponseWriter, r *http.Request) {
 
 	var json []byte
 
+	limit := 7
+	if r.FormValue("ng") == "1" {
+		limit = 15
+	}
+
 	if err := session.Database(r).QueryRow(
 		`WITH leaderboard AS (
 		    SELECT ROW_NUMBER() OVER (ORDER BY `+scoring+`, submitted),
@@ -70,15 +75,17 @@ func ScoresMini(w http.ResponseWriter, r *http.Request) {
 		      JOIN users on user_id = id
 		 LEFT JOIN other_scoring ON leaderboard.user_id = other_scoring.user_id
 		     WHERE row_number >
-		           COALESCE((SELECT row_number - 4 FROM leaderboard WHERE me), 0)
+		           COALESCE((SELECT row_number - $6 FROM leaderboard WHERE me), 0)
 		  ORDER BY row_number
-		     LIMIT 7
+		     LIMIT $7
 		) SELECT COALESCE(JSON_AGG(mini_leaderboard), '[]') FROM mini_leaderboard`,
 		userID,
 		param(r, "hole"),
 		param(r, "lang"),
 		scoring,
 		otherScoring,
+		limit/2+1,
+		limit,
 	).Scan(&json); err != nil {
 		panic(err)
 	}
