@@ -10,9 +10,7 @@ import (
 
 // ScoresMini serves GET /scores/{hole}/{lang}/{scoring}/mini
 func ScoresMini(w http.ResponseWriter, r *http.Request) {
-	if hole.ByID[param(r, "hole")].ID == "" ||
-		lang.ByID[param(r, "lang")].ID == "" ||
-		param(r, "lang") == "assembly" {
+	if hole.ByID[param(r, "hole")].ID == "" || lang.ByID[param(r, "lang")].ID == "" {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
