@@ -36,7 +36,10 @@ import { shell }       from '@codemirror/legacy-modes/mode/shell';
 import { sql, SQLite } from '@codemirror/lang-sql';
 import { swift }       from '@codemirror/legacy-modes/mode/swift';
 
-export { EditorState, EditorView };
+// Other.
+import LZString from 'lz-string';
+
+export { EditorState, EditorView, LZString };
 
 export const extensions = [
     EditorView.lineWrapping,

@@ -17,6 +17,7 @@
     "@codemirror/stream-parser": "",
     "@codemirror/view": "",
     "@defasm/codemirror": "",
-    "esbuild": ""
+    "esbuild": "",
+    "lz-string": ""
   }
 }

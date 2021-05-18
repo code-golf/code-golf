@@ -1,6 +1,6 @@
 // TODO Set #rankings height to editor on expand/shrink.
 
-import { EditorView, EditorState, extensions, languages } from '/editor.js';
+import { EditorView, EditorState, extensions, languages, LZString } from '/editor.js';
 
 let lang;
 let result = {};
@@ -17,6 +17,7 @@ const status      = document.querySelector('#status');
 const statusView  = new EditorView({ parent: status });
 const statusTabs  = document.querySelectorAll('#statusTabs a');
 const strokes     = document.querySelector('#strokes');
+const thirdParty  = document.querySelector('#thirdParty');
 const editor      = new EditorView({
     dispatch: (tr) => {
         const result = editor.update([tr]);
@@ -150,10 +151,11 @@ switchLang();
 const runCode = document.querySelector('#run a').onclick = async () => {
     status.style.display = 'none';
 
-    const res = await fetch('/solution', {
+    const code = [...editor.state.doc].join('');
+    const res  = await fetch('/solution', {
         method: 'POST',
         body: JSON.stringify({
-            Code: [...editor.state.doc].join(''),
+            Code: code,
             Hole: hole,
             Lang: lang,
         }),
@@ -179,10 +181,20 @@ const runCode = document.querySelector('#run a').onclick = async () => {
         output:    data.Out,
     };
 
+    // 3rd party integrations.
+    if (lang == 'hexagony') {
+        const url = '//hexagony.net#lz' + LZString.compressToBase64(
+            JSON.stringify({ code, input: data.Argv.join('\0'), inputMode: 'raw' }));
+
+        thirdParty.innerHTML =
+            `<a href="${url}" target=_blank>Run on Hexagony.net</a>`;
+    } else
+        thirdParty.innerHTML = '';
+
     // Default to the "Diff" tab.
     statusTabs[1].click();
 
-    status.style.display = 'flex';
+    status.style.display = 'grid';
 };
 
 onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter' ? runCode() : undefined;

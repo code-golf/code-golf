@@ -73,19 +73,26 @@ select {
 
 #status {
     display: none;
-    flex-direction: column;
+    grid-template-columns: 1fr auto;
     padding: 1rem;
+}
+
+#status h2 {
+    grid-column: span 2;
+    margin-bottom: 1rem;
 }
 
 #status .cm-editor {
     background: var(--background);
     border: 1px solid var(--color);
+    border-top-width: 2px;
+    grid-column: span 2;
     height: 20rem;
 }
 
-#status .tabs {
-    border-bottom: 1px solid var(--color);
-    margin-top: 1rem;
+#thirdParty {
+    align-items: center;
+    display: flex;
 }
 
 @media (max-width: 34rem) {
