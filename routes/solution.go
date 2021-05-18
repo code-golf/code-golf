@@ -35,7 +35,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if _, ok := lang.ByID[in.Lang]; !ok && in.Lang != "assembly" {
+	if _, ok := lang.ByID[in.Lang]; !ok {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}

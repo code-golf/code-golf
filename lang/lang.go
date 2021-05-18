@@ -18,7 +18,6 @@ type Lang struct {
 }
 
 var (
-	Asm  Lang
 	ByID = map[string]Lang{}
 	List []Lang
 )
@@ -41,12 +40,8 @@ func init() {
 		lang.ID = strings.ReplaceAll(strings.ToLower(name), "#", "-sharp")
 		lang.ID = strings.ReplaceAll(strings.ToLower(lang.ID), "><>", "fish")
 
-		if lang.ID == "assembly" {
-			Asm = lang
-		} else {
-			ByID[lang.ID] = lang
-			List = append(List, lang)
-		}
+		ByID[lang.ID] = lang
+		List = append(List, lang)
 	}
 
 	// Case-insensitive sort.

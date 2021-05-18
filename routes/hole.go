@@ -2,8 +2,6 @@ package routes
 
 import (
 	"net/http"
-	"sort"
-	"strings"
 
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
@@ -84,13 +82,6 @@ func HoleNG(w http.ResponseWriter, r *http.Request) {
 		LangsList: append(make([]lang.Lang, 0), lang.List...),
 		Solutions: map[string]map[string]string{},
 	}
-
-	// Add Assembly.
-	data.LangsByID["assembly"] = lang.Asm
-	data.LangsList = append(data.LangsList, lang.Asm)
-	sort.Slice(data.LangsList, func(i, j int) bool {
-		return strings.ToLower(data.LangsList[i].Name) < strings.ToLower(data.LangsList[j].Name)
-	})
 
 	var ok bool
 	if data.Hole, ok = hole.ByID[param(r, "hole")]; !ok {

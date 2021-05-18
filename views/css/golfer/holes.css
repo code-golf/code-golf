@@ -1,5 +1,5 @@
 /* TODO Stop having "wide" pages, make everything consistent. */
-body { max-width: 90rem }
+body { max-width: 100% }
 
 main {
     gap: .25rem;
@@ -32,6 +32,7 @@ h3 { padding: .25rem 0 }
 
 /* When adding a new language, update grid-template-columns below. */
 input,
+input.assembly:not(:checked)   ~ .assembly,
 input.bash:not(:checked)       ~ .bash,
 input.brainfuck:not(:checked)  ~ .brainfuck,
 input.c-sharp:not(:checked)    ~ .c-sharp,
@@ -84,9 +85,9 @@ main svg:nth-of-type(2) {
     width: 1rem;
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 95rem) {
     /* Increase this number when adding a language. */
-    main { grid-template-columns: 4fr repeat(30, 1fr) }
+    main { grid-template-columns: 4fr repeat(31, 1fr) }
 
     main a { height: 1.9rem }
 
