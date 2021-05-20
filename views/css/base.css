@@ -34,7 +34,58 @@
     --light-green:  #efd;
     --light-grey:   #eee;
     --light-yellow: #feb;
+
+    --link-color: #07b;
+
+    --asm-error:            red;
+    --badge-background:     #343a40;
+    --cheevo-not-earned:    #343a40;
+    --cheevo-not-earned-text: var(--red);
+    --summary-background:   #343a40;
+    --summary-color:        #fdfdfd;
 }
+
+/* TODO https://github.com/code-golf/code-golf/issues/119 */
+:root.dark {
+    --background: hsl(210, 9%, 13%);
+    --color:      rgb(235, 235, 235);
+    --grey:       #85888c; /* #85888c is 0.6 * #343a40 + 0.4 * #ffffff */
+
+    --red:        hsl(357, 70%, 30%);
+    --orange:     hsl(27, 80%, 36%);
+    --yellow:     hsl(58, 84%, 24%);
+    --green:      hsl(150, 80%, 25%);
+    --blue:       hsl(205, 80%, 36%);
+    --purple:     hsl(265, 60%, 36%);
+
+    --green2: hsl(123, 93%, 30%);
+    --blue2: hsl(217, 45%, 25%);
+    --purple2: hsl(267, 95%, 16%);
+    --p2: hsl(288, 69%, 35%);
+
+    /* For dark mode, the light colors are darker than the typical ones. */
+    --light-blue:   hsl(210, 50%, 15%);
+    --light-green:  hsl(150, 80%, 15%);
+    --light-grey:   hsl(214, 8%, 17%);
+    --light-yellow: hsl(58, 84%, 13%);
+
+    --link-color: hsl(205, 87%, 61%);
+
+    --asm-error:              #f76970;
+    --badge-background:       hsl(210, 8%, 25%);
+    --cheevo-not-earned:      #343a40;
+    --cheevo-not-earned-text: hsl(357, 70%, 50%);
+    --summary-background:     var(--light-grey);
+    --summary-color:          #dddddd;
+
+    --badge-border-left: 20;
+}
+
+:root.dark > body > header {
+    --background: #ddd;
+    --color:      #343a40;
+}
+
 
 * {
     box-sizing: border-box;
@@ -79,7 +130,7 @@
 
 [data-tooltip]:hover:before, [data-tooltip]:hover:after { display: block }
 
-a { color: #07b }
+a { color: var(--link-color) }
 
 a:not(:hover) { text-decoration: none }
 a:not([href]) { cursor: auto }
@@ -192,9 +243,9 @@ select {
 }
 
 summary {
-    background: var(--color);
+    background: var(--summary-background);
     border: 1px solid var(--color);
-    color: var(--background);
+    color: var(--summary-color);
     cursor: pointer;
     line-height: 2rem;
     padding: 0 .5rem;
@@ -476,16 +527,3 @@ details.tabs a { display: inline-block }
 }
 
 @media (max-width: 34rem) { .wide { display: none } }
-
-/* TODO https://github.com/code-golf/code-golf/issues/119
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --background: #343a40;
-        --color: #fdfdfd;
-    }
-
-    a { color: #45aaf2 }
-
-    tbody > :nth-child(even) { background: #444a50 }
-}*/

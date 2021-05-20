@@ -55,7 +55,21 @@
 
         <datalist id=golfers></datalist>
         <input autocomplete=off data-ignore="{{ .Golfer.Name }}" list=golfers
-            name=referrer value="{{ .Golfer.Referrer }}">
+            name=referrer type=text value="{{ .Golfer.Referrer }}">
+
+        <h2>Theme</h2>
+
+        Preferred set of colors for the user interface.
+
+        <div role=group>
+            {{- range .Data.Themes -}}
+                <label>
+                    <input name=theme type=radio value="{{ . }}"
+                        {{- if eq . $.Golfer.Theme }} checked{{ end }}>
+                        {{- title . -}}
+                </label>
+            {{- end -}}
+        </div>
 
         <h2>Time Zone</h2>
 

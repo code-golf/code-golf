@@ -31,6 +31,8 @@ CREATE TYPE medal AS ENUM ('diamond', 'gold', 'silver', 'bronze');
 
 CREATE TYPE scoring AS ENUM ('bytes', 'chars');
 
+CREATE TYPE theme AS ENUM ('auto', 'dark', 'light');
+
 CREATE TYPE cheevo AS ENUM (
     'bakers-dozen', 'bullseye', 'caffeinated', 'cobowl', 'different-strokes',
     'dont-panic', 'elephpant-in-the-room', 'fish-n-chips', 'forty-winks',
@@ -67,6 +69,7 @@ CREATE TABLE users (
     country      char(2),
     show_country bool      NOT NULL DEFAULT false,
     started      timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
+    theme        theme     NOT NULL DEFAULT 'auto',
     referrer_id  int                REFERENCES users(id) ON DELETE SET NULL,
     CHECK (id != referrer_id)   -- Can't refer yourself
 );

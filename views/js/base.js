@@ -1,3 +1,7 @@
+if (document.documentElement.classList.contains('auto') &&
+    matchMedia('(prefers-color-scheme: dark)').matches)
+    document.documentElement.classList.add('dark');
+
 const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 // Add current time zone to the redirect URI of any log in links.

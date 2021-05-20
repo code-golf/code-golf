@@ -1,6 +1,6 @@
 // TODO Set #rankings height to editor on expand/shrink.
 
-import { EditorView, EditorState, extensions, languages, LZString } from '/editor.js';
+import { darkThemeExtensions, defaultExtensions, EditorView, EditorState, languages, LZString } from '/editor.js';
 
 let lang;
 let result = {};
@@ -43,15 +43,21 @@ const editor      = new EditorView({
 
 editor.contentDOM.setAttribute("data-gramm", "false"); // Disable Grammarly
 
+const darkMode = document.documentElement.classList.contains('dark');
+const extensions = darkMode ?
+    [...darkThemeExtensions, ...defaultExtensions] :
+    defaultExtensions;
+
 // Update UI.
 async function update() {
     // From left to right... update lang select.
     const svg = document.querySelector('#' + lang);
     svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-    const data = svg.outerHTML.replaceAll('currentColor', '#fdfdfd')
+    const color = (darkMode ? '#1e2124' : '#fdfdfd').replaceAll('#', '%23');
+    const data = svg.outerHTML.replaceAll('currentColor', color)
         .replaceAll('#', '%23').replaceAll('"', "'");
 
-    select.style.background = `url("data:image/svg+xml,${data}") no-repeat left .5rem center/1rem auto, url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path d='M2 0L0 2h4zm0 5L0 3h4' fill='%23fff'/></svg>") no-repeat right .5rem center/auto calc(100% - 1.25rem), var(--color)`;
+    select.style.background = `url("data:image/svg+xml,${data}") no-repeat left .5rem center/1rem auto, url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path d='M2 0L0 2h4zm0 5L0 3h4' fill='${color}'/></svg>") no-repeat right .5rem center/auto calc(100% - 1.25rem), var(--color)`;
 
     // Update scoring tabs.
     for (const tab of scoringTabs)

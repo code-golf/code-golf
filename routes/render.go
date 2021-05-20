@@ -203,7 +203,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data interface{
 
 	if name == "hole" {
 		args.JSExt = holeJsPath
-		args.CSS = css["vendor/codemirror"] + css["vendor/codemirror-dialog"] + args.CSS
+		args.CSS = css["vendor/codemirror"] + css["vendor/codemirror-dialog"] + css["vendor/codemirror-dark"] + args.CSS
 	}
 
 	header := w.Header()
