@@ -26,7 +26,8 @@
 ['12 Days of Christmas']
 category = 'Art'
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/The_Twelve_Days_of_Christmas_(song)' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/The_Twelve_Days_of_Christmas' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/The_Twelve_Days_of_Christmas_(song)' },
 ]
 preamble = '''
 <p>Print the lyrics to the song <b>The 12 Days of Christmas</b>:</p>
@@ -83,6 +84,7 @@ Go to the store and buy some more, 99 bottles of beer on the wall.
 category = 'Sequence'
 links = [
     { name = 'OEIS A005101', url = '//oeis.org/A005101' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Abundant,_deficient_and_perfect_number_classifications' },
     { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Abundant_number' },
 ]
 preamble = '''
@@ -101,7 +103,8 @@ preamble = '''
 ['Arabic to Roman']
 category = 'Transform'
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Roman_numerals' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Roman_numerals/Encode' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Roman_numerals' },
 ]
 preamble = '''
 <p>For each arabic numeral argument print the same number in roman numerals.
@@ -617,6 +620,7 @@ preamble = '''
 category = 'Sequence'
 links = [
     { name = 'OEIS A006567', url = '//oeis.org/A006567' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Emirp_primes' },
     { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Emirp' },
 ]
 preamble = '''
@@ -687,6 +691,7 @@ preamble = '''
 category = 'Sequence'
 links = [
     { name = 'OEIS A001969', url = '//oeis.org/A001969' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Population_count' },
     { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Evil_number' },
 ]
 preamble = '''
@@ -796,8 +801,8 @@ preamble = '''
 category = 'Art'
 experiment = -1
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Julia_set'},
-    { name = 'Rosettacode', url = '//rosettacode.org/wiki/Julia_set'}
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Julia_set' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Julia_set' },
 ]
 preamble = '''
 <p>
@@ -944,8 +949,8 @@ preamble = '''
 category = 'Art'
 experiment = -1
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Mandelbrot_set'},
-    { name = 'Rosettacode', url = '//rosettacode.org/wiki/Mandelbrot_set'},
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Mandelbrot_set' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Mandelbrot_set' },
 ]
 preamble = '''
 <p>
@@ -977,7 +982,8 @@ preamble = '''
 ['Morse Decoder']
 category = 'Transform'
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Morse_code' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Morse_code' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Morse_code' },
 ]
 preamble = '''
 <p>
@@ -1063,7 +1069,8 @@ preamble = '''
 ['Morse Encoder']
 category = 'Transform'
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Morse_code' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Morse_code' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Morse_code' },
 ]
 preamble = '''
 <p>
@@ -1150,6 +1157,7 @@ preamble = '''
 category = 'Sequence'
 links = [
     { name = 'OEIS A005349', url = '//oeis.org/A005349' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Harshad_or_Niven_series' },
     { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Niven_number' },
 ]
 preamble = '''
@@ -1181,6 +1189,7 @@ preamble = '''
 category = 'Sequence'
 links = [
     { name = 'OEIS A000069', url = '//oeis.org/A000069' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Population_count' },
     { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Odious_number' },
 ]
 preamble = '''
@@ -1200,7 +1209,8 @@ preamble = '''
 ['Ordinal Numbers']
 category = 'Transform'
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Ordinal_numeral' },
+    { name = 'Rosetta Code', url = "//rosettacode.org/wiki/N'th" },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Ordinal_numeral' },
 ]
 preamble = '''
 <p>
@@ -1211,7 +1221,8 @@ preamble = '''
 ['Pangram Grep']
 category = 'Transform'
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Pangram' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Pangram_checker' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Pangram' },
 ]
 preamble = '''
 <p>A pangram is a sentence that uses every letter of a given alphabet.
@@ -1225,7 +1236,8 @@ preamble = '''
 ['Pascal’s Triangle']
 category = 'Sequence'
 links = [
-    { name = 'Wikipedia', url = "//www.wikipedia.org/wiki/Pascal's_triangle" },
+    { name = 'Rosetta Code', url = "//rosettacode.org/wiki/Pascal's_triangle" },
+    { name = 'Wikipedia',    url = "//www.wikipedia.org/wiki/Pascal's_triangle" },
 ]
 preamble = '''
 <p>Print the first <b>20 rows</b> of Pascal’s triangle.
@@ -1235,6 +1247,7 @@ preamble = '''
 category = 'Sequence'
 links = [
     { name = 'OEIS A052294', url = '//oeis.org/A052294' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Pernicious_numbers' },
     { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Pernicious_number' },
 ]
 preamble = '''
@@ -1254,7 +1267,8 @@ preamble = '''
 [Poker]
 category = 'Gaming'
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/List_of_poker_hands' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Poker_hand_analyser' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/List_of_poker_hands' },
 ]
 preamble = '''
 <p>
@@ -1363,7 +1377,7 @@ preamble = '''
 [Rock-paper-scissors-Spock-lizard]
 category = 'Gaming'
 links = [
-    { name = 'Rules', url = 'http://www.samkass.com/theories/RPSSL.html' },
+    { name = 'Rules',     url = 'http://www.samkass.com/theories/RPSSL.html' },
     { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Rock_paper_scissors#Additional_weapons' },
 ]
 preamble = '''
@@ -1405,7 +1419,8 @@ preamble = '''
 ['Roman to Arabic']
 category = 'Transform'
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Roman_numerals' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Roman_numerals/Decode' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Roman_numerals' },
 ]
 preamble = '''
 <p>For each roman numeral argument print the same number in arabic numerals.
