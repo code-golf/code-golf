@@ -109,7 +109,7 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	// Interpreter
 	switch langID {
 	case "assembly":
-		cmd.Args = []string{"/usr/bin/defasm", "-o", "/tmp/code.exe", "-r", "--"}
+		cmd.Args = []string{"/usr/bin/defasm", "-o", "/tmp/code", "-r"}
 	case "bash":
 		cmd.Args = []string{"/usr/bin/bash", "-s", "-"}
 	case "brainfuck":
