@@ -30,8 +30,9 @@ for from-toml slurp 'holes.toml' {
     my $hole    = .key.lc.trans: ' ’' => '-', :d;
     my $cheevos = %cheevos{ my $i = ++$ } // '{}';
 
-    is $dbh.execute("SELECT earned FROM save_solution('ab', ?, 'c', 1)", $hole).row,
-        $cheevos, "Solution $i earns $cheevos";
+    is $dbh.execute(
+        "SELECT earned FROM save_solution(2, 2, 'ab', ?, 'c', 1)", $hole,
+    ).row, $cheevos, "Solution $i earns $cheevos";
 }
 
 for <
@@ -42,11 +43,13 @@ for <
     quine           python    {ouroboros}
     ten-pin-bowling cobol     {cobowl}
 > -> $hole, $lang, $cheevos {
-    is $dbh.execute("SELECT earned FROM save_solution('ab', ?, ?, 1)", $hole, $lang).row,
-        $cheevos, "$hole/$lang earns $cheevos";
+    is $dbh.execute(
+        "SELECT earned FROM save_solution(2, 2, 'ab', ?, ?, 1)", $hole, $lang,
+    ).row, $cheevos, "$hole/$lang earns $cheevos";
 }
 
-is $dbh.execute("SELECT earned FROM save_solution('⛳', 'π', 'c', 1)").row,
-    '{different-strokes}', 'Earns {different-strokes}';
+is $dbh.execute(
+    "SELECT earned FROM save_solution(3, 1, '⛳', 'π', 'c', 1)",
+).row, '{different-strokes}', 'Earns {different-strokes}';
 
 done-testing;
