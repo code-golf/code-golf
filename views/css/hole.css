@@ -50,14 +50,14 @@ main .info {
     padding: .5rem;
 }
 
-.text-red { color: var(--red) }
+.text-red { color: var(--red-text) }
 
 #arg, #err { display: none }
 
 #exp, #out { white-space: pre }
 
 #arg span {
-    background: #eee;
+    background: var(--arg-background);
     border-radius: .5rem;
     display: inline-block;
     font-family: emoji, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', Courier, monospace;
@@ -86,7 +86,7 @@ main .info {
 
 #emojify div {
     align-items: center;
-    background: #eee;
+    background: var(--light-grey);
     border: 1px solid var(--color);
     display: flex;
     justify-content: space-between;
