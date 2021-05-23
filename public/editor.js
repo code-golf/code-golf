@@ -23847,10 +23847,16 @@ var darkThemeExtensions = [
     },
     ".cm-asm-error-tooltip": asmErrorTooltip
   }, { dark: true }),
-  HighlightStyle.define([{
-    tag: tags.literal,
-    color: "#98c379"
-  }]),
+  HighlightStyle.define([
+    {
+      tag: tags.literal,
+      color: "#98c379"
+    },
+    {
+      tag: tags.regexp,
+      color: "#e06c75"
+    }
+  ]),
   oneDarkTheme,
   oneDarkHighlightStyle
 ];
