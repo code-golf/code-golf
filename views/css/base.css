@@ -37,12 +37,13 @@
 
     --link-color: #07b;
 
-    --asm-error:            red;
-    --badge-background:     #343a40;
-    --cheevo-not-earned:    #343a40;
-    --cheevo-not-earned-text: var(--red);
-    --summary-background:   #343a40;
-    --summary-color:        #fdfdfd;
+    --arg-background:     #eee;
+    --asm-error:          red;
+    --badge-background:   #343a40;
+    --cheevo-not-earned:  #343a40;
+    --red-text:           var(--red);
+    --summary-background: #343a40;
+    --summary-color:      #fdfdfd;
 }
 
 :root.dark {
@@ -64,12 +65,13 @@
 
     --link-color: hsl(205, 87%, 61%);
 
-    --asm-error:              #f76970;
-    --badge-background:       hsl(210, 8%, 25%);
-    --cheevo-not-earned:      #343a40;
-    --cheevo-not-earned-text: hsl(357, 70%, 50%);
-    --summary-background:     var(--light-grey);
-    --summary-color:          #ddd;
+    --arg-background:     hsl(210, 8%, 25%);
+    --asm-error:          #f76970;
+    --badge-background:   hsl(210, 8%, 25%);
+    --cheevo-not-earned:  #343a40;
+    --red-text:           hsl(357, 70%, 50%);
+    --summary-background: var(--light-grey);
+    --summary-color:      #ddd;
 }
 
 :root.dark > body > header {

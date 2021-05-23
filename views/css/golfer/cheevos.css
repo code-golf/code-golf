@@ -48,4 +48,4 @@ summary:hover { background: var(--background) !important }
     text-shadow: 0 0 var(--cheevo-not-earned);
 }
 
-.cheevo:not(.earned) span { color: var(--cheevo-not-earned-text) }
+.cheevo:not(.earned) span { color: var(--red-text) }
