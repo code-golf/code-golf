@@ -23665,11 +23665,27 @@ var swift = {
 
 // editor.js
 var import_lz_string = __toModule(require_lz_string());
+var fontFamily = "'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', Courier, monospace";
+var defaultTheme = EditorView.theme({
+  ".cm-content": {
+    fontFamily
+  },
+  ".cm-gutters": {
+    fontFamily
+  },
+  ".cm-tooltip-autocomplete": {
+    fontFamily
+  },
+  ".cm-tooltip": {
+    fontFamily
+  }
+}, {dark: false});
 var extensions = [
   EditorView.lineWrapping,
   bracketMatching(),
   closeBrackets(),
   defaultHighlightStyle,
+  defaultTheme,
   history(),
   indentOnInput(),
   keymap.of([
