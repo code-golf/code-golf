@@ -69,8 +69,8 @@ CREATE TABLE users (
     country      char(2),
     show_country bool      NOT NULL DEFAULT false,
     started      timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
-    theme        theme     NOT NULL DEFAULT 'auto',
     referrer_id  int                REFERENCES users(id) ON DELETE SET NULL,
+    theme        theme     NOT NULL DEFAULT 'auto',
     CHECK (id != referrer_id)   -- Can't refer yourself
 );
 
