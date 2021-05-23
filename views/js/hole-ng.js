@@ -6,19 +6,20 @@ let lang;
 let result = {};
 let scoring = 'bytes';
 
-const all         = document.querySelector('#all');
-const hole        = decodeURI(location.pathname.slice(4));
-const langs       = JSON.parse(document.querySelector('#langs').innerText);
-const rankings    = document.querySelector('#rankings');
-const scoringTabs = document.querySelectorAll('#scoringTabs a');
-const select      = document.querySelector('select');
-const solutions   = JSON.parse(document.querySelector('#solutions').innerText);
-const status      = document.querySelector('#status');
-const statusView  = new EditorView({ parent: status });
-const statusTabs  = document.querySelectorAll('#statusTabs a');
-const strokes     = document.querySelector('#strokes');
-const thirdParty  = document.querySelector('#thirdParty');
-const editor      = new EditorView({
+const all                = document.querySelector('#all');
+const darkModeMediaQuery = JSON.parse(document.querySelector('#darkModeMediaQuery').innerText);
+const hole               = decodeURI(location.pathname.slice(4));
+const langs              = JSON.parse(document.querySelector('#langs').innerText);
+const rankings           = document.querySelector('#rankings');
+const scoringTabs        = document.querySelectorAll('#scoringTabs a');
+const select             = document.querySelector('select');
+const solutions          = JSON.parse(document.querySelector('#solutions').innerText);
+const status             = document.querySelector('#status');
+const statusView         = new EditorView({ parent: status });
+const statusTabs         = document.querySelectorAll('#statusTabs a');
+const strokes            = document.querySelector('#strokes');
+const thirdParty         = document.querySelector('#thirdParty');
+const editor             = new EditorView({
     dispatch: (tr) => {
         const result = editor.update([tr]);
         let scorings = {};
@@ -43,7 +44,7 @@ const editor      = new EditorView({
 
 editor.contentDOM.setAttribute("data-gramm", "false"); // Disable Grammarly
 
-const darkMode = document.documentElement.classList.contains('dark');
+const darkMode = matchMedia(darkModeMediaQuery).matches;
 const extensions = darkMode ?
     [...darkThemeExtensions, ...defaultExtensions] :
     defaultExtensions;

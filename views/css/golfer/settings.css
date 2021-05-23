@@ -24,11 +24,6 @@ label {
     grid-template-columns: min-content 1fr;
 }
 
-:root.dark select {
-    background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path d='M2 0L0 2h4zm0 5L0 3h4' fill='%23ebebeb'/></svg>") no-repeat right .5rem center/auto calc(100% - 1.25rem), var(--background);
-    color: var(--color);
-}
-
 input[type=text] {
     background: var(--background);
     color: var(--color);
