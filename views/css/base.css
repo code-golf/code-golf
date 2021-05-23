@@ -45,7 +45,6 @@
     --summary-color:        #fdfdfd;
 }
 
-/* TODO https://github.com/code-golf/code-golf/issues/119 */
 :root.dark {
     --background: hsl(210, 9%, 13%);
     --color:      rgb(235, 235, 235);
