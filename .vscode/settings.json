@@ -1,0 +1,10 @@
+{
+    "emeraldwalk.runonsave": {
+        "commands": [
+            {
+                "match": "editor\\.js",
+                "cmd": "make editor"
+            }
+        ]
+    }
+}
