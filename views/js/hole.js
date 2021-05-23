@@ -58,6 +58,7 @@ onload = () => {
         indentUnit:   1,
         lineNumbers:  true,
         smartIndent:  false,
+        theme: document.documentElement.classList.contains('dark') ? 'material-ocean' : 'default',
         vimMode,
     });
 

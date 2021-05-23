@@ -45,7 +45,7 @@ summary:hover { background: var(--background) !important }
 
 .cheevo:not(.earned) > div:first-of-type {
     color: transparent;
-    text-shadow: 0 0 var(--color);
+    text-shadow: 0 0 var(--cheevo-not-earned);
 }
 
-.cheevo:not(.earned) span { color: var(--red) }
+.cheevo:not(.earned) span { color: var(--cheevo-not-earned-text) }

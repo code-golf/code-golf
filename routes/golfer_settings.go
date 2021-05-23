@@ -37,8 +37,9 @@ func GolferSettings(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Countries map[string][]*country.Country
 		Keymaps   []string
+		Themes    []string
 		TimeZones []zone.Zone
-	}{country.Tree, []string{"default", "vim"}, zone.List()}
+	}{country.Tree, []string{"default", "vim"}, []string{"auto", "dark", "light"}, zone.List()}
 
 	render(w, r, "golfer/settings", data, "Settings")
 }
@@ -57,6 +58,11 @@ func GolferSettingsPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if r.Form.Get("theme") != "auto" && r.Form.Get("theme") != "dark" && r.Form.Get("theme") != "light" {
+		http.Error(w, "Invalid theme", http.StatusBadRequest)
+		return
+	}
+
 	if _, ok := zone.ByID[r.Form.Get("time_zone")]; !ok && r.Form.Get("time_zone") != "" {
 		http.Error(w, "Invalid time_zone", http.StatusBadRequest)
 		return
@@ -66,14 +72,16 @@ func GolferSettingsPost(w http.ResponseWriter, r *http.Request) {
 		`UPDATE users
 		    SET country = $1,
 		         keymap = $2,
-		    referrer_id = (SELECT id FROM users WHERE login = $3 AND id != $6),
+		    referrer_id = (SELECT id FROM users WHERE login = $3 AND id != $7),
 		   show_country = $4,
-		      time_zone = $5
-		  WHERE id = $6`,
+		          theme = $5,
+		      time_zone = $6
+		  WHERE id = $7`,
 		r.Form.Get("country"),
 		r.Form.Get("keymap"),
 		r.Form.Get("referrer"),
 		r.Form.Get("show_country") == "on",
+		r.Form.Get("theme"),
 		r.Form.Get("time_zone"),
 		session.Golfer(r).ID,
 	); err != nil {

@@ -16,7 +16,7 @@ h1 {
 
 #badges div {
     align-items: center;
-    background: var(--color);
+    background: var(--badge-background);
     display: flex;
     margin: .25rem;
 }
@@ -24,7 +24,7 @@ h1 {
 #badges p { padding: .2rem .5rem }
 
 #badges p:last-child {
-    border: 2px solid var(--color);
+    border: 2px solid var(--badge-background);
     border-left: 0;
 }
 

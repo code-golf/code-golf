@@ -2,14 +2,15 @@ import { EditorState }        from '@codemirror/state';
 import { EditorView, keymap } from '@codemirror/view';
 
 // Extensions.
-import { closeBrackets, closeBracketsKeymap } from '@codemirror/closebrackets';
-import { defaultTabBinding, standardKeymap }  from '@codemirror/commands';
-import { lineNumbers }                        from '@codemirror/gutter';
-import { defaultHighlightStyle }              from '@codemirror/highlight';
-import { history, historyKeymap }             from '@codemirror/history';
-import { indentOnInput }                      from '@codemirror/language';
-import { bracketMatching }                    from '@codemirror/matchbrackets';
-import { StreamLanguage }                     from '@codemirror/stream-parser';
+import { closeBrackets, closeBracketsKeymap }          from '@codemirror/closebrackets';
+import { defaultTabBinding, standardKeymap }           from '@codemirror/commands';
+import { lineNumbers }                                 from '@codemirror/gutter';
+import { defaultHighlightStyle, HighlightStyle, tags } from '@codemirror/highlight';
+import { history, historyKeymap }                      from '@codemirror/history';
+import { indentOnInput }                               from '@codemirror/language';
+import { bracketMatching }                             from '@codemirror/matchbrackets';
+import { StreamLanguage }                              from '@codemirror/stream-parser';
+import { oneDarkTheme, oneDarkHighlightStyle }         from '@codemirror/theme-one-dark';
 
 // Languages.
 import { assembly }    from '@defasm/codemirror';
@@ -41,6 +42,33 @@ import LZString from 'lz-string';
 
 export { EditorState, EditorView, LZString };
 
+// For some reason, this doesn't fully work unless added to both themes.
+const asmErrorTooltip = {
+    color: "var(--background)",
+    backgroundColor: "var(--color)",
+    "&:before": {
+        borderTopColor: "var(--color)",
+    }
+};
+
+export const darkThemeExtensions = [
+    EditorView.theme({
+        "&": {
+            backgroundColor: "var(--background)",
+        },
+        ".cm-gutters": {
+            backgroundColor: "var(--light-grey)",
+        },
+        ".cm-asm-error-tooltip": asmErrorTooltip,
+    }, { dark: true }),
+    HighlightStyle.define([{
+        tag: tags.literal,
+        color: "#98c379",
+    }]),
+    oneDarkTheme,
+    oneDarkHighlightStyle,
+];
+
 const fontFamily = "'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', Courier, monospace";
 
 const defaultTheme = EditorView.theme({
@@ -56,9 +84,13 @@ const defaultTheme = EditorView.theme({
     ".cm-tooltip": {
         fontFamily,
     },
+    ".cm-asm-error-tooltip": asmErrorTooltip,
+    ".cm-asm-error": {
+        textDecoration: "underline var(--asm-error)"
+    },
 }, { dark: false });
 
-export const extensions = [
+export const defaultExtensions = [
     EditorView.lineWrapping,
     bracketMatching(),
     closeBrackets(),
