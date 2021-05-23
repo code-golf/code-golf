@@ -41,11 +41,29 @@ import LZString from 'lz-string';
 
 export { EditorState, EditorView, LZString };
 
+const fontFamily = "'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', Courier, monospace";
+
+const defaultTheme = EditorView.theme({
+    ".cm-content": {
+        fontFamily,
+    },
+    ".cm-gutters": {
+        fontFamily,
+    },
+    ".cm-tooltip-autocomplete": {
+        fontFamily,
+    },
+    ".cm-tooltip": {
+        fontFamily,
+    },
+}, { dark: false });
+
 export const extensions = [
     EditorView.lineWrapping,
     bracketMatching(),
     closeBrackets(),
     defaultHighlightStyle,
+    defaultTheme,
     history(),
     indentOnInput(),
     keymap.of([
