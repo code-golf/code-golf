@@ -12612,7 +12612,27 @@ for (let i = 0; i < operators.length; i++) {
   }
 }
 operators = Object.assign({}, ...operators);
-var unescapeString = (string3) => string3.slice(1, -1).replace("\\n", "\n").replace("\\0", "\0");
+var stringEscapeSeqs = {
+  "a": "\x07",
+  "b": "\b",
+  "e": "",
+  "f": "\f",
+  "n": "\n",
+  "r": "\r",
+  "t": "	",
+  "v": "\v",
+  "\\": "\\",
+  "'": "'",
+  '"': '"',
+  "?": "?"
+};
+var unescapeString = (string3) => string3.slice(1, -1).replace(/\\x[0-9a-f]{1,2}/ig, (x) => String.fromCharCode(parseInt(x.slice(2), 16))).replace(/\\[0-7]{1,3}/g, (x) => String.fromCharCode(parseInt(x.slice(1), 8) & 255)).replace(/\\u[0-9a-f]{1,8}/ig, (x) => {
+  try {
+    return String.fromCodePoint(parseInt(x.slice(2), 16));
+  } catch (e) {
+    return "";
+  }
+}).replace(/\\./g, (x) => stringEscapeSeqs[x.slice(1)] || "");
 function parseNumber(asFloat = false) {
   let value = asFloat ? 0 : 0n, floatPrec = asFloat ? 1 : 0;
   try {
@@ -13323,10 +13343,10 @@ C6.0 i rbwl
 0F7F V~$q v
 F3)0F7E -$q v Vx > {w
 66)0FD6 -$q Vx v > {w
-8C s Rwlq
-8C s m
-8E Rwlq s
-8E m s
+8C s ^Rwlq
+8C s mW
+8E ^RWlq s
+8E mW s
 0F20 C ^RQ
 0F21 D ^RQ
 0F22 ^RQ C
@@ -14953,16 +14973,16 @@ Instruction.prototype.interpret = function() {
       }
     }
   }
-  let variations = mnemonics[opcode], operands = [];
-  if (typeof variations[0] === "string") {
-    if (variations[0][0] === "#") {
-      let otherOpcode = variations[0].slice(1);
+  let operations = mnemonics[opcode], operands = [];
+  if (typeof operations[0] === "string") {
+    if (operations[0][0] === "#") {
+      let otherOpcode = operations[0].slice(1);
       if (typeof mnemonics[otherOpcode][0] === "string") {
         mnemonics[otherOpcode] = mnemonics[otherOpcode].map((line) => new Operation(line.split(" ")));
       }
-      mnemonics[opcode] = variations = mnemonics[otherOpcode];
+      mnemonics[opcode] = operations = mnemonics[otherOpcode];
     } else
-      mnemonics[opcode] = variations = variations.map((line) => new Operation(line.split(" ")));
+      mnemonics[opcode] = operations = operations.map((line) => new Operation(line.split(" ")));
   }
   if (token === "{") {
     vexInfo.evex = true;
@@ -15020,14 +15040,15 @@ Instruction.prototype.interpret = function() {
   }
   if (usesMemory && vexInfo.round !== null)
     throw new ParserError("Embedded rounding can only be used on reg-reg", vexInfo.roundingPos);
-  this.outline = [operands, enforcedSize, variations, prefsToGen, vexInfo];
+  this.outline = [operands, enforcedSize, operations, prefsToGen, vexInfo];
   this.endPos = codePos;
-  this.compile();
-  if (!this.needsRecompilation)
+  if (!this.needsRecompilation) {
+    this.compile();
     this.outline = void 0;
+  }
 };
 Instruction.prototype.compile = function() {
-  let [operands, enforcedSize, variations, prefsToGen, vexInfo] = this.outline;
+  let [operands, enforcedSize, operations, prefsToGen, vexInfo] = this.outline;
   this.length = 0;
   if (enforcedSize === 0) {
     for (let op2 of operands) {
@@ -15039,8 +15060,8 @@ Instruction.prototype.compile = function() {
     }
   }
   let op, found = false, rexVal = 64;
-  for (let variation of variations) {
-    op = variation.fit(operands, enforcedSize, vexInfo);
+  for (let operation of operations) {
+    op = operation.fit(operands, enforcedSize, vexInfo);
     if (op !== null) {
       found = true;
       break;
@@ -15192,7 +15213,7 @@ function addInstruction(instr) {
   lastInstr = instr;
 }
 function compileAsm(source, instructions, {haltOnError = false, line = 1, linesRemoved = 0, doSecondPass = true} = {}) {
-  let opcode, pos, tailInstr = null;
+  let opcode, pos;
   lastInstr = null;
   currLineArr = [];
   macros.clear();
@@ -15202,12 +15223,10 @@ function compileAsm(source, instructions, {haltOnError = false, line = 1, linesR
         macros.set(lastInstr.macroName, lastInstr.macro);
     }
   }
-  if (lastInstr)
-    tailInstr = lastInstr.next;
   let removedInstrs = instructions.splice(line - 1, linesRemoved + 1, currLineArr);
   for (let removed of removedInstrs)
-    for (tailInstr of removed)
-      if (tailInstr.macroName)
+    for (let instr of removed)
+      if (instr.macroName)
         throw "Macro edited, must recompile";
   loadCode(source);
   while (next(), !match.done) {
@@ -15253,8 +15272,15 @@ function compileAsm(source, instructions, {haltOnError = false, line = 1, linesR
         instructions.splice(line++, 0, currLineArr = []);
     }
   }
-  if (lastInstr)
-    lastInstr.next = tailInstr;
+  if (lastInstr) {
+    while (line < instructions.length) {
+      if (instructions[line].length > 0) {
+        lastInstr.next = instructions[line][0];
+        break;
+      }
+      line++;
+    }
+  }
   let bytes = 0;
   if (doSecondPass)
     bytes = secondPass(instructions, haltOnError);
@@ -15266,6 +15292,8 @@ function secondPass(instructions, haltOnError = false) {
   for (let instrLine of instructions) {
     for (instr of instrLine) {
       instr.address = currIndex;
+      if (instr.outline)
+        instr.length = 0;
       currIndex += instr.length;
       if (instr.labelName !== void 0)
         labels.set(instr.labelName, instr);

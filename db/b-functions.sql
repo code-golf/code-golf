@@ -45,20 +45,16 @@ CREATE TYPE save_solution_ret AS (
     old_chars_rank  int
 );
 
-CREATE FUNCTION save_solution(code text, hole hole, lang lang, user_id int)
-RETURNS save_solution_ret AS $$
+CREATE FUNCTION save_solution(
+    bytes int, chars int, code text, hole hole, lang lang, user_id int
+) RETURNS save_solution_ret AS $$
 #variable_conflict use_variable
 DECLARE
-    bytes  int;
-    chars  int;
     earned cheevo[] := '{}'::cheevo[];
     holes  int;
     rank   hole_rank_ret;
     ret    save_solution_ret;
 BEGIN
-    bytes := octet_length(code);
-    chars :=  char_length(code);
-
     -- Ensure we're the only one messing with solutions.
     LOCK TABLE solutions IN EXCLUSIVE MODE;
 

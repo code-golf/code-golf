@@ -101,7 +101,14 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			        old_chars_joint, old_chars_rank, old_chars,
 			        new_chars_joint, new_chars_rank, new_chars,
 			        beat_chars
-			   FROM save_solution(code := $1, hole := $2, lang := $3, user_id := $4)`,
+			   FROM save_solution(
+			            bytes   := octet_length($1),
+			            chars   :=  char_length($1),
+			            code    := $1,
+			            hole    := $2,
+			            lang    := $3,
+			            user_id := $4
+			        )`,
 			in.Code, in.Hole, in.Lang, golfer.ID,
 		).Scan(
 			pq.Array(&out.Cheevos),

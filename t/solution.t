@@ -1,5 +1,6 @@
 use t;
 
+constant $answer           = slurp("hole/answers/fizz-buzz.txt").chomp;
 constant $code-long        = 'say "Fizz" x $_ %% 3 ~ "Buzz" x $_ %% 5 || $_ for 1 .. 100';
 constant $code-short       = 'say "Fizz"x$_%%3~"Buzz"x$_%%5||$_ for 1..100';
 constant $code-short-chars = 'say "Fizz"x$_%%3~"Buzz"x$_%%5||$_ for 1…100';
@@ -12,7 +13,7 @@ is-deeply post-solution(:code($code-long))<
     Diff     => '',
     Err      => '',
     ExitCode => 0,
-    Exp      => slurp("hole/answers/fizz-buzz.txt").chomp,
+    Exp      => $answer,
     Pass     => True,
 };
 
@@ -33,8 +34,8 @@ subtest 'Initial solution' => {
     ok post-solution( :$session, :code($code-long) )<Pass>, 'Passes';
 
     is-deeply db, (
-        { code => $code-long, scoring => 'bytes' },
-        { code => $code-long, scoring => 'chars' },
+        { :code($code-long), :lang<raku>, :scoring<bytes> },
+        { :code($code-long), :lang<raku>, :scoring<chars> },
     ), 'Inserts both';
 };
 
@@ -42,8 +43,8 @@ subtest 'Same solution' => {
     ok post-solution( :$session, :code($code-long) )<Pass>, 'Passes';
 
     is-deeply db, (
-        { code => $code-long, scoring => 'bytes' },
-        { code => $code-long, scoring => 'chars' },
+        { :code($code-long), :lang<raku>, :scoring<bytes> },
+        { :code($code-long), :lang<raku>, :scoring<chars> },
     ), 'Updates none';
 };
 
@@ -51,8 +52,8 @@ subtest 'Shorter solution' => {
     ok post-solution( :$session, :code($code-short) )<Pass>, 'Passes';
 
     is-deeply db, (
-        { code => $code-short, scoring => 'bytes' },
-        { code => $code-short, scoring => 'chars' },
+        { :code($code-short), :lang<raku>, :scoring<bytes> },
+        { :code($code-short), :lang<raku>, :scoring<chars> },
     ), 'Updates both';
 };
 
@@ -60,13 +61,34 @@ subtest 'Shorter chars solution' => {
     ok post-solution( :$session, :code($code-short-chars) )<Pass>, 'Passes';
 
     is-deeply db, (
-        { code => $code-short,       scoring => 'bytes' },
-        { code => $code-short-chars, scoring => 'chars' },
+        { :code($code-short),       :lang<raku>, :scoring<bytes> },
+        { :code($code-short-chars), :lang<raku>, :scoring<chars> },
     ), 'Updates just the chars';
 };
 
+subtest 'Assembly solution' => {
+    constant $code = qq{
+        mov \$1,               %eax
+        mov \$1,               %edi
+        mov \$text,            %rsi
+        mov \$$answer.chars(), %edx
+        syscall
+
+        text: .string "$answer.lines.join(｢\n｣)"
+    };
+
+    ok post-solution( :$session, :$code, :lang<assembly> )<Pass>, 'Passes';
+
+    is-deeply db, (
+        { :code($code-short),       :lang<raku>,     :scoring<bytes> },
+        { :code($code-short-chars), :lang<raku>,     :scoring<chars> },
+        # TODO { :$code,            :lang<assembly>, :scoring<bytes> },
+    ), 'Inserts only bytes';
+};
+
 sub db {
-    $dbh.execute('SELECT code, scoring FROM solutions').allrows :array-of-hash;
+    $dbh.execute(
+        'SELECT code, lang, scoring FROM solutions').allrows :array-of-hash;
 }
 
 done-testing;
