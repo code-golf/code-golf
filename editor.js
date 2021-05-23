@@ -64,6 +64,10 @@ export const darkThemeExtensions = [
     HighlightStyle.define([{
         tag: tags.literal,
         color: "#98c379",
+    },
+    {
+        tag: tags.regexp,
+        color: "#e06c75"
     }]),
     oneDarkTheme,
     oneDarkHighlightStyle,
