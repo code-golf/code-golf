@@ -72,22 +72,12 @@ export const darkThemeExtensions = [
 const fontFamily = "'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', Courier, monospace";
 
 const defaultTheme = EditorView.theme({
-    ".cm-content": {
-        fontFamily,
-    },
-    ".cm-gutters": {
-        fontFamily,
-    },
-    ".cm-tooltip-autocomplete": {
-        fontFamily,
-    },
-    ".cm-tooltip": {
-        fontFamily,
-    },
-    ".cm-asm-error-tooltip": asmErrorTooltip,
-    ".cm-asm-error": {
-        textDecoration: "underline var(--asm-error)"
-    },
+    '.cm-content':              { fontFamily },
+    '.cm-gutters':              { fontFamily },
+    '.cm-tooltip':              { fontFamily },
+    '.cm-tooltip-autocomplete': { fontFamily },
+    '.cm-asm-error':            { textDecoration: 'underline var(--asm-error)' },
+    '.cm-asm-error-tooltip':    asmErrorTooltip,
 }, { dark: false });
 
 export const defaultExtensions = [
