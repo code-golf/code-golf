@@ -13,7 +13,7 @@ my $session = $dbh.execute(
 
 is-deeply settings, {
     :country(Str), :keymap<default>, :referrer_id(Int), :!show_country,
-    :time_zone(Str),
+    :theme<auto>,  :time_zone(Str),
 }, 'DB has defaults';
 
 for <country keymap time_zone> {
@@ -22,7 +22,7 @@ for <country keymap time_zone> {
         "400 with invalid $_";
 }
 
-post my %args = :country<GB>, :keymap<vim>, :show_country<on>,
+post my %args = :country<GB>, :keymap<vim>, :show_country<on>, :theme<dark>,
     :time_zone<Europe/London>;
 
 is-deeply settings, %( |%args, :referrer_id(Int), :show_country ),
@@ -41,7 +41,7 @@ post %( |%args, :referrer<foo> );   # Can't be yourself
 is-deeply settings<referrer_id>, Int, 'referrer_id is NULL';
 
 sub settings { $dbh.execute(q:to/SQL/).row :hash }
-    SELECT country, keymap, referrer_id, show_country, time_zone
+    SELECT country, keymap, referrer_id, show_country, theme, time_zone
       FROM users
      WHERE id = 123
 SQL
