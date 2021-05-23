@@ -12674,7 +12674,8 @@ function parseNumber(asFloat = false) {
       throw new ParserError("Expected value, got none");
     if (token[0] === "'" && token[token.length - 1] === "'") {
       let string3 = unescapeString(token);
-      for (let i = 0; i < string3.length; i++) {
+      let i = string3.length;
+      while (i--) {
         value <<= asFloat ? 8 : 8n;
         value += asFloat ? string3.charCodeAt(i) : BigInt(string3.charCodeAt(i));
       }
@@ -14431,7 +14432,7 @@ conditionals.forEach((names, i) => {
     hex(112 + i) + " jb",
     hex(3968 + i) + " jl"
   ];
-  mnemonics["cmov" + firstName] = [hex(3904 + i) + " Rwlq"];
+  mnemonics["cmov" + firstName] = [hex(3904 + i) + " r Rwlq"];
   mnemonics["set" + firstName] = [hex(3984 + i) + ".0 rB"];
   names.forEach((name2) => {
     mnemonics["j" + name2] = ["#j" + firstName];
@@ -19976,7 +19977,7 @@ var Snippet = class {
       while (m = /[#$]\{(?:(\d+)(?::([^}]*))?|([^}]*))\}/.exec(line)) {
         let seq = m[1] ? +m[1] : null, name2 = m[2] || m[3], found = -1;
         for (let i = 0; i < fields.length; i++) {
-          if (seq != null ? fields[i].seq == seq : name2 ? fields[i].name == name2 : false)
+          if (name2 ? fields[i].name == name2 : seq != null && fields[i].seq == seq)
             found = i;
         }
         if (found < 0) {
@@ -19985,9 +19986,6 @@ var Snippet = class {
             i++;
           fields.splice(i, 0, { seq, name: name2 || null });
           found = i;
-          for (let pos of positions)
-            if (pos.field >= found)
-              pos.field++;
         }
         positions.push(new FieldPos(found, lines2.length, m.index, m.index + name2.length));
         line = line.slice(0, m.index) + name2 + line.slice(m.index + m[0].length);
@@ -20057,15 +20055,9 @@ function snippet(template2) {
     if (ranges.length)
       spec.selection = fieldSelection(ranges, 0);
     if (ranges.length > 1) {
-      let active = new ActiveSnippet(ranges, 0);
-      let effects = spec.effects = [setActive.of(active)];
+      let effects = spec.effects = [setActive.of(new ActiveSnippet(ranges, 0))];
       if (editor.state.field(snippetState, false) === void 0)
-        effects.push(StateEffect.appendConfig.of([
-          snippetState.init(() => active),
-          addSnippetKeymap,
-          snippetPointerHandler,
-          baseTheme5
-        ]));
+        effects.push(StateEffect.appendConfig.of([snippetState, addSnippetKeymap, snippetPointerHandler, baseTheme5]));
     }
     editor.dispatch(editor.state.update(spec));
   };
