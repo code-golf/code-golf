@@ -17,68 +17,6 @@
                    U+1FA70-1FAFF; /* Symbols and Pictographs Extended-A */
 }
 
-:root {
-    --background: #fdfdfd;
-    --color:      #343a40;
-    --grey:       #85888c; /* #85888c is 0.6 * #343a40 + 0.4 * #ffffff */
-
-    /* https://flatuicolors.com */
-    --red:        #FC5C65BB;
-    --orange:     #FD9644BB;
-    --yellow:     #FED330BB;
-    --green:      #26DE81BB;
-    --blue:       #45AAF2BB;
-    --purple:     #8C7AE6BB;
-
-    --light-blue:   #def;
-    --light-green:  #efd;
-    --light-grey:   #eee;
-    --light-yellow: #feb;
-
-    --link-color: #07b;
-
-    --arg-background:     #eee;
-    --asm-error:          red;
-    --badge-background:   #343a40;
-    --cheevo-not-earned:  #343a40;
-    --red-text:           var(--red);
-    --summary-background: #343a40;
-    --summary-color:      #fdfdfd;
-}
-
-:root.dark {
-    --background: hsl(210, 9%, 13%);
-    --color:      #ebebeb;
-
-    --red:        hsl(357, 70%, 30%);
-    --orange:     hsl( 27, 80%, 36%);
-    --yellow:     hsl( 58, 84%, 24%);
-    --green:      hsl(150, 80%, 25%);
-    --blue:       hsl(205, 80%, 36%);
-    --purple:     hsl(265, 60%, 36%);
-
-    /* For dark mode, the light colors are darker than the typical ones. */
-    --light-blue:   hsl(210, 50%, 15%);
-    --light-green:  hsl(150, 80%, 15%);
-    --light-grey:   hsl(214,  8%, 17%);
-    --light-yellow: hsl( 58, 84%, 13%);
-
-    --link-color: hsl(205, 87%, 61%);
-
-    --arg-background:     hsl(210, 8%, 25%);
-    --asm-error:          #f76970;
-    --badge-background:   hsl(210, 8%, 25%);
-    --cheevo-not-earned:  #343a40;
-    --red-text:           hsl(357, 70%, 50%);
-    --summary-background: var(--light-grey);
-    --summary-color:      #ddd;
-}
-
-:root.dark > body > header {
-    --background: #ddd;
-    --color:      #343a40;
-}
-
 * {
     box-sizing: border-box;
     margin: 0;

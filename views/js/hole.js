@@ -1,16 +1,18 @@
-const chars          = document.querySelector('#chars');
-const details        = document.querySelector('#details');
-const editor         = document.querySelector('#editor');
-const hole           = decodeURI(location.pathname.slice(1));
-const keymap         = JSON.parse(document.querySelector('#keymap').innerText);
-const langs          = JSON.parse(document.querySelector('#langs').innerText);
-const picker         = document.querySelector('#picker');
-const scorings       = ['Bytes', 'Chars'];
-const solutionPicker = document.querySelector('#solutionPicker');
-const solutions      = JSON.parse(document.querySelector('#solutions').innerText);
-const status         = document.querySelector('#status');
-const table          = document.querySelector('#scores');
+const chars              = document.querySelector('#chars');
+const darkModeMediaQuery = JSON.parse(document.querySelector('#darkModeMediaQuery').innerText);
+const details            = document.querySelector('#details');
+const editor             = document.querySelector('#editor');
+const hole               = decodeURI(location.pathname.slice(1));
+const keymap             = JSON.parse(document.querySelector('#keymap').innerText);
+const langs              = JSON.parse(document.querySelector('#langs').innerText);
+const picker             = document.querySelector('#picker');
+const scorings           = ['Bytes', 'Chars'];
+const solutionPicker     = document.querySelector('#solutionPicker');
+const solutions          = JSON.parse(document.querySelector('#solutions').innerText);
+const status             = document.querySelector('#status');
+const table              = document.querySelector('#scores');
 
+const darkMode = matchMedia(darkModeMediaQuery).matches;
 let lang;
 let solution = Math.max(scorings.indexOf(localStorage.getItem('solution')), 0);
 let scoring = Math.max(scorings.indexOf(localStorage.getItem('scoring')), 0);
@@ -58,7 +60,7 @@ onload = () => {
         indentUnit:   1,
         lineNumbers:  true,
         smartIndent:  false,
-        theme: document.documentElement.classList.contains('dark') ? 'material-ocean' : 'default',
+        theme: darkMode ? 'material-ocean' : 'default',
         vimMode,
     });
 

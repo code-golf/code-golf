@@ -70,6 +70,27 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 	"trimPrefix": strings.TrimPrefix,
 })
 
+func getDarkModeMediaQuery(theme string) string {
+	switch theme {
+	case "dark":
+		return "all"
+	case "light":
+		return "not all"
+	}
+	return "(prefers-color-scheme:dark)"
+}
+
+func getThemeCSS(theme string) template.CSS {
+	switch theme {
+	case "dark":
+		return css["dark"]
+	case "light":
+		return css["light"]
+	}
+
+	return css["light"] + "@media(prefers-color-scheme:dark){" + css["dark"] + "}"
+}
+
 func init() {
 	_, dev = syscall.Getenv("DEV")
 	uppercaseProps := regexp.MustCompile(`{{.+?[A-Z].*?}}`)
@@ -141,33 +162,40 @@ func render(w http.ResponseWriter, r *http.Request, name string, data interface{
 		Start, End time.Time
 	}
 
+	theme := "auto"
+	theGolfer := session.Golfer(r)
+	if theGolfer != nil {
+		theme = theGolfer.Theme
+	}
+
 	args := struct {
-		CSS                                              template.CSS
-		CheevoBanner                                     *CheevoBanner
-		Countries                                        map[string]*country.Country
-		Data                                             interface{}
-		Description, JSExt, LogInURL, Nonce, Path, Title string
-		Golfer                                           *golfer.Golfer
-		GolferInfo                                       *golfer.GolferInfo
-		Holes                                            map[string]hole.Hole
-		JS                                               template.JS
-		Langs                                            map[string]lang.Lang
-		Location                                         *time.Location
-		Request                                          *http.Request
+		CSS                                                                  template.CSS
+		CheevoBanner                                                         *CheevoBanner
+		Countries                                                            map[string]*country.Country
+		Data                                                                 interface{}
+		DarkModeMediaQuery, Description, JSExt, LogInURL, Nonce, Path, Title string
+		Golfer                                                               *golfer.Golfer
+		GolferInfo                                                           *golfer.GolferInfo
+		Holes                                                                map[string]hole.Hole
+		JS                                                                   template.JS
+		Langs                                                                map[string]lang.Lang
+		Location                                                             *time.Location
+		Request                                                              *http.Request
 	}{
-		Countries:   country.ByID,
-		CSS:         css["base"] + css[path.Dir(name)] + css[name],
-		Data:        data,
-		Description: "Code Golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.",
-		Golfer:      session.Golfer(r),
-		GolferInfo:  session.GolferInfo(r),
-		Holes:       hole.ByID,
-		Langs:       lang.ByID,
-		JS:          js["base"] + js[path.Dir(name)] + js[name],
-		Nonce:       base64.StdEncoding.EncodeToString(nonce),
-		Path:        r.URL.Path,
-		Request:     r,
-		Title:       "Code Golf",
+		Countries:          country.ByID,
+		CSS:                getThemeCSS(theme) + css["base"] + css[path.Dir(name)] + css[name],
+		Data:               data,
+		DarkModeMediaQuery: getDarkModeMediaQuery(theme),
+		Description:        "Code Golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.",
+		Golfer:             theGolfer,
+		GolferInfo:         session.GolferInfo(r),
+		Holes:              hole.ByID,
+		Langs:              lang.ByID,
+		JS:                 js["base"] + js[path.Dir(name)] + js[name],
+		Nonce:              base64.StdEncoding.EncodeToString(nonce),
+		Path:               r.URL.Path,
+		Request:            r,
+		Title:              "Code Golf",
 	}
 
 	if len(meta) > 0 {
