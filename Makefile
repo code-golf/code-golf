@@ -1,5 +1,5 @@
 GOFILES  := $(shell find . -name '*.go' ! -path './.go*')
-POSTGRES := postgres:12.6-alpine
+POSTGRES := postgres:12.7-alpine
 SHELL    := /bin/bash
 
 export COMPOSE_PATH_SEPARATOR=:
