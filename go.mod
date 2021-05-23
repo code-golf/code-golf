@@ -6,7 +6,7 @@ require (
 	github.com/BurntSushi/toml v0.3.1
 	github.com/DATA-DOG/go-sqlmock v1.5.0
 	github.com/SeerUK/assert v1.0.0
-	github.com/agnivade/levenshtein v1.1.0
+	github.com/agnivade/levenshtein v1.1.1
 	github.com/buildkite/terminal v3.2.0+incompatible
 	github.com/bwmarrin/discordgo v0.23.2
 	github.com/dgryski/trifles v0.0.0-20210119233746-37d926d5de6c // indirect
@@ -24,9 +24,9 @@ require (
 	github.com/tdewolff/minify/v2 v2.9.16
 	github.com/tdewolff/parse/v2 v2.5.16 // indirect
 	golang.org/x/crypto v0.0.0-20210513164829-c07d793c2f9a
-	golang.org/x/net v0.0.0-20210510120150-4163338589ed // indirect
+	golang.org/x/net v0.0.0-20210521195947-fe42d452be8f // indirect
 	golang.org/x/oauth2 v0.0.0-20210514164344-f6687ab2804c
-	golang.org/x/sys v0.0.0-20210514084401-e8d321eab015 // indirect
+	golang.org/x/sys v0.0.0-20210521203332-0cec03c779c1 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	gopkg.in/guregu/null.v4 v4.0.0
 )
