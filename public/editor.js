@@ -23840,7 +23840,8 @@ var asmErrorTooltip = {
 var darkThemeExtensions = [
   EditorView.theme({
     "&": {
-      backgroundColor: "var(--background)"
+      backgroundColor: "var(--background)",
+      color: "var(--color)"
     },
     ".cm-gutters": {
       backgroundColor: "var(--light-grey)"

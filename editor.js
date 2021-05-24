@@ -55,6 +55,7 @@ export const darkThemeExtensions = [
     EditorView.theme({
         "&": {
             backgroundColor: "var(--background)",
+            color: "var(--color)",
         },
         ".cm-gutters": {
             backgroundColor: "var(--light-grey)",

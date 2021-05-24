@@ -6,7 +6,7 @@
 
 .cm-s-material-ocean.CodeMirror {
   background-color: var(--background);
-  color: #8F93A2;
+  color: var(--color);
 }
 
 .cm-s-material-ocean .CodeMirror-gutters {
