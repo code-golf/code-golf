@@ -23,11 +23,3 @@ label {
     gap: .5rem;
     grid-template-columns: min-content 1fr;
 }
-
-input[type=text] {
-    background: var(--background);
-    color: var(--color);
-    font-size: 1rem;
-    padding: 0.25rem;
-    border-radius: 0.25rem;
-}
