@@ -12516,7 +12516,7 @@ function parseRegister(expectedType = null) {
   next();
   return [reg, type2, size, prefs];
 }
-function Operand() {
+function Operand(address) {
   this.reg = this.reg2 = -1;
   this.shift = 0;
   this.value = null;
@@ -12531,19 +12531,16 @@ function Operand() {
     [this.reg, this.type, this.size, this.prefs] = parseRegister();
     this.endPos = regParsePos;
   } else if (token === "$") {
-    this.expression = parseExpression();
-    this.value = evaluate(this.expression);
+    this.expression = new Expression();
+    this.value = this.expression.evaluate(null, address);
     this.type = OPT.IMM;
   } else {
     this.type = OPT.MEM;
-    this.expression = parseExpression(0, true);
-    if (this.expression)
-      this.value = evaluate(this.expression);
+    this.expression = new Expression(0, true);
+    this.value = this.expression.evaluate(null, address);
     if (token !== "(") {
-      if (!indirect) {
+      if (!indirect)
         this.type = OPT.REL;
-        this.virtualValue = this.value;
-      }
       return;
     }
     let tempSize, tempType;
@@ -12674,7 +12671,8 @@ function parseNumber(asFloat = false) {
       throw new ParserError("Expected value, got none");
     if (token[0] === "'" && token[token.length - 1] === "'") {
       let string3 = unescapeString(token);
-      for (let i = 0; i < string3.length; i++) {
+      let i = string3.length;
+      while (i--) {
         value <<= asFloat ? 8 : 8n;
         value += asFloat ? string3.charCodeAt(i) : BigInt(string3.charCodeAt(i));
       }
@@ -12711,25 +12709,28 @@ function parseNumber(asFloat = false) {
     throw e;
   }
 }
-function parseExpression(minFloatPrec = 0, expectMemory = false) {
-  let output = [], stack = [], lastOp, lastWasNum = false, hasLabelDependency = false;
+function Expression(minFloatPrec = 0, expectMemory = false) {
+  this.hasLabelDependency = false;
+  this.stack = [];
+  this.floatPrec = minFloatPrec;
+  let opStack = [], lastOp, lastWasNum = false;
   if (!expectMemory)
     next();
   while (token !== "," && token !== "\n" && token !== ";") {
     if (!lastWasNum && unaries.hasOwnProperty(token)) {
-      stack.push({ pos: codePos, func: unaries[token], prec: -1 });
+      opStack.push({ pos: codePos, func: unaries[token], prec: -1 });
       next();
     } else if (operators.hasOwnProperty(token)) {
       if (!lastWasNum) {
-        if (expectMemory && stack.length > 0 && stack[stack.length - 1].bracket)
+        if (expectMemory && opStack.length > 0 && opStack[opStack.length - 1].bracket)
           break;
         throw new ParserError("Missing left operand");
       }
       lastWasNum = false;
       let op = Object.assign({ pos: codePos }, operators[token]);
-      while (lastOp = stack[stack.length - 1], lastOp && lastOp.prec <= op.prec && !lastOp.bracket)
-        output.push(stack.pop());
-      stack.push(op);
+      while (lastOp = opStack[opStack.length - 1], lastOp && lastOp.prec <= op.prec && !lastOp.bracket)
+        this.stack.push(opStack.pop());
+      opStack.push(op);
       next();
     } else if (unaries.hasOwnProperty(token))
       throw new ParserError("Unary operator can't be used here");
@@ -12739,47 +12740,48 @@ function parseExpression(minFloatPrec = 0, expectMemory = false) {
           break;
         throw new ParserError("Unexpected parenthesis");
       }
-      stack.push({ pos: codePos, bracket: true });
+      opStack.push({ pos: codePos, bracket: true });
       next();
     } else if (token === ")") {
       if (!lastWasNum)
-        throw new ParserError("Missing right operand", stack.length ? stack[stack.length - 1].pos : codePos);
-      while (lastOp = stack[stack.length - 1], lastOp && !lastOp.bracket)
-        output.push(stack.pop());
+        throw new ParserError("Missing right operand", opStack.length ? opStack[opStack.length - 1].pos : codePos);
+      while (lastOp = opStack[opStack.length - 1], lastOp && !lastOp.bracket)
+        this.stack.push(opStack.pop());
       if (!lastOp || !lastOp.bracket)
         throw new ParserError("Mismatched parentheses");
-      stack.pop();
+      opStack.pop();
       lastWasNum = true;
       next();
     } else {
       lastWasNum = true;
-      let imm = parseNumber(minFloatPrec !== 0);
-      if (imm.floatPrec > minFloatPrec)
-        minFloatPrec = imm.floatPrec;
+      let imm = parseNumber(this.floatPrec !== 0);
+      if (imm.floatPrec > this.floatPrec)
+        this.floatPrec = imm.floatPrec;
       let value = imm.value;
       if (value.name)
-        hasLabelDependency = true;
-      output.push(value);
+        this.hasLabelDependency = true;
+      this.stack.push(value);
     }
   }
-  if (expectMemory && stack.length == 1 && stack[0].bracket) {
+  if (expectMemory && opStack.length == 1 && opStack[0].bracket) {
     ungetToken();
     setToken("(");
     return null;
   } else if (!lastWasNum)
-    throw new ParserError("Missing right operand", stack.length ? stack[stack.length - 1].pos : codePos);
-  while (stack[0]) {
-    if (stack[stack.length - 1].bracket)
-      throw new ParserError("Mismatched parentheses", stack[stack.length - 1].pos);
-    output.push(stack.pop());
+    throw new ParserError("Missing right operand", opStack.length ? opStack[opStack.length - 1].pos : codePos);
+  while (opStack[0]) {
+    if (opStack[opStack.length - 1].bracket)
+      throw new ParserError("Mismatched parentheses", opStack[opStack.length - 1].pos);
+    this.stack.push(opStack.pop());
   }
-  if (minFloatPrec !== 0)
-    output = output.map((num) => typeof num === "bigint" ? Number(num) : num);
-  return { hasLabelDependency, stack: output, floatPrec: minFloatPrec };
+  if (this.floatPrec !== 0)
+    this.stack = this.stack.map((num) => typeof num === "bigint" ? Number(num) : num);
 }
-function evaluate(expression, labels2 = null, currIndex = 0) {
+Expression.prototype.evaluate = function(labels2 = null, currIndex = 0) {
+  if (this.stack.length === 0)
+    return null;
   let stack = [], len = 0;
-  for (let op of expression.stack) {
+  for (let op of this.stack) {
     let func = op.func;
     if (func) {
       if (func.length === 1)
@@ -12801,19 +12803,19 @@ function evaluate(expression, labels2 = null, currIndex = 0) {
       }
       stack[len++] = op;
     }
-    if (expression.floatPrec === 0)
+    if (this.floatPrec === 0)
       stack[len - 1] = BigInt(stack[len - 1]);
     else
       stack[len - 1] = Number(stack[len - 1]);
   }
   if (stack.length > 1)
     throw new ParserError("Invalid expression");
-  if (expression.floatPrec === 0)
+  if (this.floatPrec === 0)
     return stack[0];
-  let floatVal = expression.floatPrec === 1 ? new Float32Array(1) : new Float64Array(1);
+  let floatVal = this.floatPrec === 1 ? new Float32Array(1) : new Float64Array(1);
   floatVal[0] = Number(stack[0]);
   return new Uint8Array(floatVal.buffer).reduceRight((prev, val) => (prev << 8n) + BigInt(val), 0n);
-}
+};
 
 // node_modules/@defasm/core/directives.js
 var DIRECTIVE_BUFFER_SIZE = 15;
@@ -12896,8 +12898,8 @@ Directive.prototype.compileValues = function(valSize) {
   this.outline = [];
   try {
     do {
-      expression = parseExpression(this.floatPrec);
-      value = evaluate(expression);
+      expression = new Expression(this.floatPrec);
+      value = expression.evaluate();
       if (expression.hasLabelDependency)
         needsRecompilation = true;
       this.outline.push({ value, expression });
@@ -12915,7 +12917,7 @@ Directive.prototype.resolveLabels = function(labels2) {
     op = this.outline[i];
     try {
       if (op.expression.hasLabelDependency)
-        op.value = evaluate(op.expression, labels2, this.address + i * this.valSize);
+        op.value = op.expression.evaluate(labels2, this.address + i * this.valSize);
       this.genValue(op.value);
     } catch (e) {
       this.error = e;
@@ -14427,11 +14429,8 @@ g nle`.split("\n");
 conditionals.forEach((names, i) => {
   names = names.split(" ");
   let firstName = names.shift();
-  mnemonics["j" + firstName] = [
-    hex(112 + i) + " jb",
-    hex(3968 + i) + " jl"
-  ];
-  mnemonics["cmov" + firstName] = [hex(3904 + i) + " Rwlq"];
+  mnemonics["j" + firstName] = [hex(112 + i) + "+3856 jbl"];
+  mnemonics["cmov" + firstName] = [hex(3904 + i) + " r Rwlq"];
   mnemonics["set" + firstName] = [hex(3984 + i) + ".0 rB"];
   names.forEach((name2) => {
     mnemonics["j" + name2] = ["#j" + firstName];
@@ -14667,9 +14666,12 @@ function Operation(format) {
     format.shift();
   }
   let [opcode, extension] = format.shift().split(".");
-  if (opcode[opcode.length - 2] === "+" || opcode[opcode.length - 2] === "-") {
-    this.opDiff = parseInt(opcode.slice(-2));
-    opcode = opcode.slice(0, -2);
+  let adderSeparator = opcode.indexOf("+");
+  if (adderSeparator < 0)
+    adderSeparator = opcode.indexOf("-");
+  if (adderSeparator >= 0) {
+    this.opDiff = parseInt(opcode.slice(adderSeparator));
+    opcode = opcode.slice(0, adderSeparator);
   } else
     this.opDiff = 1;
   if (opcode[2] === ")") {
@@ -14718,6 +14720,8 @@ function Operation(format) {
       this.maskSizing |= 2;
     if (this.vexOpCatchers !== null)
       this.vexOpCatchers.push(opCatcher);
+    if (opCatcher.type === OPT.REL)
+      this.relativeSizes = opCatcher.sizes;
     if (Array.isArray(opCatcher.sizes)) {
       let had64 = false;
       for (let size of opCatcher.sizes) {
@@ -14734,7 +14738,7 @@ function Operation(format) {
     this.vexBase |= 30720 | [15, 3896, 3898].indexOf(this.code >> 8) + 1 | [null, 102, 243, 242].indexOf(this.prefix) << 8;
   }
 }
-Operation.prototype.fit = function(operands, enforcedSize, vexInfo) {
+Operation.prototype.fit = function(operands, address, enforcedSize, vexInfo) {
   let needsRecompilation = false;
   if (vexInfo.needed) {
     if (this.actuallyNotVex)
@@ -14763,6 +14767,11 @@ Operation.prototype.fit = function(operands, enforcedSize, vexInfo) {
   else if (this.evexPermits & EVEXPERM_FORCE)
     return null;
   let adjustByteOp = false, overallSize = 0, rexw = false;
+  if (this.relativeSizes) {
+    if (!(operands.length === 1 && operands[0].type === OPT.REL))
+      return null;
+    this.generateRelative(operands[0], address);
+  }
   if (this.checkableSizes) {
     if (enforcedSize === 0) {
       if (this.defaultCheckableSize === null)
@@ -14946,6 +14955,26 @@ Operation.prototype.fit = function(operands, enforcedSize, vexInfo) {
     needsRecompilation
   };
 };
+var sizeLen = (x) => x == 32 ? 4n : x == 16 ? 2n : 1n;
+var absolute = (x) => x < 0n ? ~x : x;
+Operation.prototype.generateRelative = function(operand, address) {
+  let target = operand.value - BigInt(address + ((this.code > 255 ? 2 : 1) + (this.prefix !== null ? 1 : 0)));
+  if (this.relativeSizes.length === 1) {
+    let size = this.relativeSizes[0];
+    operand.virtualSize = size;
+    operand.virtualValue = target - sizeLen(size);
+    return;
+  }
+  let [small, large] = this.relativeSizes;
+  let smallLen = sizeLen(small), largeLen = sizeLen(large) + (this.opDiff > 256 ? 1n : 0n);
+  if (absolute(target - smallLen) >= 1 << small - 1) {
+    operand.virtualSize = large;
+    operand.virtualValue = target - largeLen;
+  } else {
+    operand.virtualSize = small;
+    operand.virtualValue = target - smallLen;
+  }
+};
 
 // node_modules/@defasm/core/instructions.js
 var MAX_INSTR_SIZE = 15;
@@ -14957,11 +14986,12 @@ var prefixes = {
   repe: 243,
   repz: 243
 };
-function Instruction(opcode, opcodePos) {
+function Instruction(address, opcode, opcodePos) {
   this.opcode = opcode;
   this.opcodePos = opcodePos;
   this.bytes = new Uint8Array(MAX_INSTR_SIZE);
   this.length = 0;
+  this.address = address;
   this.interpret();
 }
 Instruction.prototype.genByte = function(byte) {
@@ -15030,13 +15060,13 @@ Instruction.prototype.interpret = function() {
       next();
   }
   while (token !== ";" && token !== "\n") {
-    operand = new Operand();
+    operand = new Operand(this.address);
     if (token === ":") {
       if (operand.type !== OPT.SEG)
         throw new ParserError("Incorrect prefix");
       prefsToGen |= operand.reg + 1 << 3;
       next();
-      operand = new Operand();
+      operand = new Operand(this.address);
       if (operand.type !== OPT.MEM)
         throw new ParserError("Segment prefix must be followed by memory reference");
     }
@@ -15078,7 +15108,8 @@ Instruction.prototype.interpret = function() {
   this.endPos = codePos;
   if (!this.needsRecompilation) {
     this.compile();
-    this.outline = void 0;
+    if (!this.needsRecompilation)
+      this.outline = void 0;
   }
 };
 Instruction.prototype.compile = function() {
@@ -15089,13 +15120,12 @@ Instruction.prototype.compile = function() {
       if (op2.type === OPT.IMM) {
         op2.size = inferImmSize(op2.value);
         op2.unsignedSize = inferUnsignedImmSize(op2.value);
-      } else if (op2.type === OPT.REL)
-        op2.virtualSize = inferImmSize(op2.virtualValue);
+      }
     }
   }
   let op, found = false, rexVal = 64;
   for (let operation of operations) {
-    op = operation.fit(operands, enforcedSize, vexInfo);
+    op = operation.fit(operands, this.address, enforcedSize, vexInfo);
     if (op !== null) {
       found = true;
       break;
@@ -15208,9 +15238,7 @@ Instruction.prototype.resolveLabels = function(labels2) {
   try {
     for (let op of this.outline[0]) {
       if (op.expression && op.expression.hasLabelDependency)
-        op.value = evaluate(op.expression, labels2, this.address);
-      if (op.type === OPT.REL)
-        op.virtualValue = op.value - BigInt(this.address + initialLength);
+        op.value = op.expression.evaluate(labels2, this.address);
     }
     this.compile();
   } catch (e) {
@@ -15240,11 +15268,13 @@ var baseAddr = 4194424;
 var labels = new Map();
 var lastInstr;
 var currLineArr;
+var currAddr;
 function addInstruction(instr) {
   if (lastInstr)
     lastInstr.next = instr;
   currLineArr.push(instr);
   lastInstr = instr;
+  currAddr += instr.length;
 }
 function compileAsm(source, instructions, { haltOnError = false, line = 1, linesRemoved = 0, doSecondPass = true } = {}) {
   let opcode, pos;
@@ -15257,6 +15287,7 @@ function compileAsm(source, instructions, { haltOnError = false, line = 1, lines
         macros.set(lastInstr.macroName, lastInstr.macro);
     }
   }
+  currAddr = lastInstr ? lastInstr.address : baseAddr;
   let removedInstrs = instructions.splice(line - 1, linesRemoved + 1, currLineArr);
   for (let removed of removedInstrs)
     for (let instr of removed)
@@ -15283,7 +15314,7 @@ function compileAsm(source, instructions, { haltOnError = false, line = 1, lines
               addInstruction({ length: 0, bytes: new Uint8Array(), macroName: opcode, macro: macroTokens, pos });
               break;
             default:
-              addInstruction(new Instruction(opcode.toLowerCase(), pos));
+              addInstruction(new Instruction(currAddr, opcode.toLowerCase(), pos));
               break;
           }
         }
@@ -15396,7 +15427,7 @@ var AsmDumpWidget = class extends WidgetType {
     return node;
   }
 };
-var asmHover = hoverTooltip((view, pos, side) => {
+var asmHover = hoverTooltip((view, pos) => {
   for (let err of view["asm-errors"]) {
     if (err.from <= pos && err.to >= pos) {
       let text = err.value.message;
@@ -15415,6 +15446,19 @@ var asmHover = hoverTooltip((view, pos, side) => {
   }
   return null;
 });
+function expandTabs(text, tabSize) {
+  let result = "", i = tabSize;
+  for (let char of text) {
+    if (char == "	") {
+      result += " ".repeat(i);
+      i = tabSize;
+    } else {
+      result += char;
+      i = i - 1 || tabSize;
+    }
+  }
+  return result;
+}
 var asmPlugin = ViewPlugin.fromClass(class {
   constructor(view) {
     this.ctx = document.createElement("canvas").getContext("2d");
@@ -15426,6 +15470,7 @@ var asmPlugin = ViewPlugin.fromClass(class {
     setTimeout(() => {
       let style = window.getComputedStyle(view.contentDOM);
       this.ctx.font = `${style.getPropertyValue("font-style")} ${style.getPropertyValue("font-variant")} ${style.getPropertyValue("font-weight")} ${style.getPropertyValue("font-size")} ${style.getPropertyValue("font-family")}`;
+      this.tabSize = style.getPropertyValue("tab-size");
       this.updateWidths(0, view.state.doc.length, 0, view.state.doc);
       this.makeAsmDecorations(view);
       view.dispatch();
@@ -15453,7 +15498,7 @@ var asmPlugin = ViewPlugin.fromClass(class {
       if (e !== "Macro edited, must recompile")
         throw e;
       this.instrs = [];
-      compileAsm(state.sliceDoc(), this.instrs);
+      update.view["asm-bytes"] = compileAsm(state.sliceDoc(), this.instrs).bytes;
     }
     this.makeAsmDecorations(update.view);
   }
@@ -15462,7 +15507,7 @@ var asmPlugin = ViewPlugin.fromClass(class {
     let end = doc2.lineAt(to).number;
     let newWidths = [];
     for (let i = start; i <= end; i++) {
-      newWidths.push(this.ctx.measureText(doc2.line(i).text).width);
+      newWidths.push(this.ctx.measureText(expandTabs(doc2.line(i).text, this.tabSize)).width);
     }
     this.lineWidths.splice(start - 1, removedLines + 1, ...newWidths);
   }
@@ -15509,9 +15554,8 @@ function isOpcode(opcode) {
   if (!mnemonics.hasOwnProperty(opcode)) {
     if (opcode[0] === "v" && !mnemonics.hasOwnProperty(opcode.slice(0, -1)))
       opcode = opcode.slice(1);
-    if (!mnemonics.hasOwnProperty(opcode) && !mnemonics.hasOwnProperty(opcode.slice(0, -1))) {
+    if (!mnemonics.hasOwnProperty(opcode) && !mnemonics.hasOwnProperty(opcode.slice(0, -1)))
       return -1;
-    }
   }
   return Opcode;
 }
@@ -16801,7 +16845,7 @@ var parser = Parser.deserialize({
   maxTerm: 33,
   skippedNodes: [0],
   repeatNodeCount: 4,
-  tokenData: "#3v~RdYZ!aqr!frs!!Xst!!{tu!#Wuv!#]wx#[xy!$jyz!%U{|!f|}!%Z}!O!f!O!P!%`!Q!R3U!R![5T!]!^!%}!c!}!&S#R#S!&S#T#o!&S#r#s!f~!fOn~U!iZqr!fwx#[xy2l{|!f}!O!f!Q!R3U!R![5T!c!}7a#R#S7a#T#o7a#r#s!fU#cjXSZQOY#[Zq#[qr%Tru#[uv'ivw)}wx0sxy#[yz#[z{'i{|'i|}#[}!O'i!O!P#[!P!Q'i!Q!^#[!^!_=y!_!`Gd!`!aBs!a#O#[#O#PI]#P#Q#[#Q#R'i#R#p#[#p#qIc#q~#[U%[sXSZQOY#[Zq#[qr%Tru#[uv'ivw)}wx#[xy,cyz#[z{'i{|'i|}#[}!O'i!O!P#[!P!Q'i!Q!R.q!R![;}![!^#[!^!_=y!_!`@_!`!aBs!a!c#[!c!}EX!}#O#[#O#PI]#P#Q#[#Q#R'i#R#SEX#S#T#[#T#oEX#o#p#[#p#qIc#q#r#[#r#s'i#s~#[U'psXSZQOY#[Zq#[qr%Tru#[uv'ivw)}wx#[xy,cyz#[z{'i{|'i|}#[}!O'i!O!P#[!P!Q'i!Q!R.q!R![;}![!^#[!^!_=y!_!`Gd!`!aBs!a!c#[!c!}EX!}#O#[#O#PI]#P#Q#[#Q#R'i#R#SEX#S#T#[#T#oEX#o#p#[#p#qIc#q#r#[#r#s'i#s~#[U*UsXSZQOY#[Zq#[qr%Tru#[uv'ivw)}wx#[xy,cyz#[z{'i{|'i|}#[}!O'i!O!P#[!P!Q'i!Q!R.q!R![;}![!^#[!^!_=y!_!`Gd!`!aBs!a!c#[!c!}EX!}#O#[#O#PI]#P#Q#[#Q#R'i#R#SEX#S#T#[#T#oEX#o#p#[#p#qIc#q#r#[#r#s'i#s~#[U,jqXSZQOY#[Zq#[qr%Tru#[uv'ivw)}wx#[xy,cyz#[z{'i{|'i|}#[}!O'i!O!P#[!P!Q'i!Q!R.q!R![;}![!^#[!^!_=y!_!`Gd!`!aBs!a!c#[!c!}EX!}#O#[#O#PI]#P#Q#[#Q#R'i#R#SEX#S#T#[#T#oEX#o#p#[#p#qIc#q~#[U.xmXSZQOY#[Zq#[qr%Tru#[uv'ivw)}wx0sxy#[yz#[z{'i{|'i|}#[}!O'i!O!P#[!P!Q'i!Q![;}![!^#[!^!_=y!_!`Gd!`!aBs!a#O#[#O#PI]#P#Q#[#Q#R'i#R#l#[#l#mKw#m#p#[#p#qIc#q~#[U0z]XSZQqr1suv!fvw4[yz6Wz{!f{|!f}!O!f!P!Q!f!^!_6b!_!`8m!`!a8s#Q#R!f#p#q9oU1v[qr!fwx#[xy2l{|!f}!O!f!Q!R3U!R![5T!_!`!f!c!}7a#R#S7a#T#o7a#r#s!fU2oVwx#[xy2l!Q!R3U!R![5T!c!}7a#R#S7a#T#o7aU3]_XSZQqr1suv!fvw4[yz6Wz{!f{|!f}!O!f!P!Q!f!Q![5T!^!_6b!_!`8m!`!a8s#Q#R!f#l#m:h#p#q9oU4_[qr!fvw!fwx#[xy2l{|!f}!O!f!Q!R3U!R![5T!c!}7a#R#S7a#T#o7a#r#s!fU5[^XSZQqr1suv!fvw4[yz6Wz{!f{|!f}!O!f!P!Q!f!Q![5T!^!_6b!_!`8m!`!a8s#Q#R!f#p#q9oU6_PXSZQyz6WU6e^qr!fwx#[xy2l{|!f}!O!f!Q!R3U!R![5T!^!_!f!_!`!f!`!a!f!c!}7a#R#S7a#T#o7a#r#s!fU7haXSZQqr1suv!fvw4[yz6Wz{!f{|!f}!O!f!P!Q!f!Q![7a!^!_6b!_!`8m!`!a8s!c!}7a#Q#R!f#R#S7a#T#o7a#p#q9oU8pP!_!`!fU8v]qr!fwx#[xy2l{|!f}!O!f!Q!R3U!R![5T!_!`!f!`!a!f!c!}7a#R#S7a#T#o7a#r#s!fU9r[qr!fwx#[xy2l{|!f}!O!f!Q!R3U!R![5T!c!}7a#R#S7a#T#o7a#p#q!f#r#s!fU:kR!Q![:t!c!i:t#T#Z:tU:{`XSZQqr1suv!fvw4[yz6Wz{!f{|!f}!O!f!P!Q!f!Q![:t!^!_6b!_!`8m!`!a8s!c!i:t#Q#R!f#T#Z:t#p#q9oU<UkXSZQOY#[Zq#[qr%Tru#[uv'ivw)}wx0sxy#[yz#[z{'i{|'i|}#[}!O'i!O!P#[!P!Q'i!Q![;}![!^#[!^!_=y!_!`Gd!`!aBs!a#O#[#O#PI]#P#Q#[#Q#R'i#R#p#[#p#qIc#q~#[U>QsXSZQOY#[Zq#[qr%Tru#[uv'ivw)}wx#[xy,cyz#[z{'i{|'i|}#[}!O'i!O!P#[!P!Q'i!Q!R.q!R![;}![!^#[!^!_=y!_!`@_!`!aBs!a!c#[!c!}EX!}#O#[#O#PI]#P#Q#[#Q#R'i#R#SEX#S#T#[#T#oEX#o#p#[#p#qIc#q#r#[#r#s'i#s~#[U@fsXSZQOY#[Zq#[qr%Tru#[uv'ivw)}wx#[xy,cyz#[z{'i{|'i|}#[}!O'i!O!P#[!P!Q'i!Q!R.q!R![;}![!^#[!^!_=y!_!`@_!`!aBs!a!c#[!c!}EX!}#O#[#O#PI]#P#Q#[#Q#R'i#R#SEX#S#T#[#T#oEX#o#p#[#p#qIc#q#r#[#r#s'i#s~#[UBzsXSZQOY#[Zq#[qr%Tru#[uv'ivw)}wx#[xy,cyz#[z{'i{|'i|}#[}!O'i!O!P#[!P!Q'i!Q!R.q!R![;}![!^#[!^!_=y!_!`@_!`!aBs!a!c#[!c!}EX!}#O#[#O#PI]#P#Q#[#Q#R'i#R#SEX#S#T#[#T#oEX#o#p#[#p#qIc#q#r#[#r#s'i#s~#[UE`pXSZQOY#[Zq#[qr%Tru#[uv'ivw)}wx0sxy#[yz#[z{'i{|'i|}#[}!O'i!O!P#[!P!Q'i!Q![EX![!^#[!^!_=y!_!`Gd!`!aBs!a!c#[!c!}EX!}#O#[#O#PI]#P#Q#[#Q#R'i#R#SEX#S#T#[#T#oEX#o#p#[#p#qIc#q~#[UGkjXSZQOY#[Zq#[qr%Tru#[uv'ivw)}wx0sxy#[yz#[z{'i{|'i|}#[}!O'i!O!P#[!P!Q'i!Q!^#[!^!_=y!_!`@_!`!aBs!a#O#[#O#PI]#P#Q#[#Q#R'i#R#p#[#p#qIc#q~#[UI`PO~#[UIjsXSZQOY#[Zq#[qr%Tru#[uv'ivw)}wx#[xy,cyz#[z{'i{|'i|}#[}!O'i!O!P#[!P!Q'i!Q!R.q!R![;}![!^#[!^!_=y!_!`Gd!`!aBs!a!c#[!c!}EX!}#O#[#O#PI]#P#Q#[#Q#R'i#R#SEX#S#T#[#T#oEX#o#p#[#p#qIc#q#r#[#r#s'i#s~#[ULOoXSZQOY#[Zq#[qr%Tru#[uv'ivw)}wx0sxy#[yz#[z{'i{|'i|}#[}!O'i!O!P#[!P!Q'i!Q![NP![!^#[!^!_=y!_!`Gd!`!aBs!a!c#[!c!iNP!i#O#[#O#PI]#P#Q#[#Q#R'i#R#T#[#T#ZNP#Z#p#[#p#qIc#q~#[UNWoXSZQOY#[Zq#[qr%Tru#[uv'ivw)}wx0sxy#[yz#[z{'i{|'i|}#[}!O'i!O!P#[!P!Q'i!Q![NP![!^#[!^!_=y!_!`Gd!`!aBs!a!c#[!c!iNP!i#O#[#O#PI]#P#Q#[#Q#R'i#R#T#[#T#ZNP#Z#p#[#p#qIc#q~#[~!!^U]~OY!!XZr!!Xrs!!ps#O!!X#O#P!!u#P~!!X~!!uO]~~!!xPO~!!X~!#QQ_~OY!!{Z~!!{~!#]Og~~!#`]X^!#]pq!#]!c!}!$X#R#S!$X#T#o!$X#y#z!#]$f$g!#]#BY#BZ!#]$IS$I_!#]$I|$JO!#]$JT$JU!#]$KV$KW!#]&FU&FV!#]~!$^Sp~!Q![!$X!c!}!$X#R#S!$X#T#o!$XV!$oVhRwx#[xy2l!Q!R3U!R![5T!c!}7a#R#S7a#T#o7a~!%ZOk~~!%`Oj~~!%cR!c!}!%l#R#S!%l#T#o!%l~!%qSq~!Q![!%l!c!}!%l#R#S!%l#T#o!%l~!&SOm~V!&]lXSZQoPX^!(Tpq!(Tqr1suv!fvw4[yz6Wz{!f{|!f}!O!f!P!Q!f!Q![!&S![!]!(|!^!_6b!_!`!)^!`!a8s!c!}!&S#Q#R!f#R#S!&S#T#o!&S#p#q9o#y#z!(T$f$g!(T#BY#BZ!(T$IS$I_!(T$I|$JO!(T$JT$JU!(T$KV$KW!(T&FU&FV!(TP!(W[X^!(Tpq!(T![!]!(|!_!`!)R#y#z!(T$f$g!(T#BY#BZ!(T$IS$I_!(T$I|$JO!(T$JT$JU!(T$KV$KW!(T&FU&FV!(TP!)ROUPP!)WQ^POY!)RZ~!)RV!)cS^POY!)RZ!_!)R!_!`!)o!`~!)RV!)tf^POY!)RZq!)Rqr!)orw!)Rwx!+Yxy!<`y{!)R{|!)o|}!)R}!O!)o!O!Q!)R!Q!R!=a!R![!@x![!c!)R!c!}!Dy!}#R!)R#R#S!Dy#S#T!)R#T#o!Dy#o#r!)R#r#s!)o#s~!)RV!+cjXS^PZQOY!+YZq!+Yqr!-Tru!+Yuv!/kvw!2Rwx!8}xy!+Yyz!+Yz{!/k{|!/k|}!+Y}!O!/k!O!P!+Y!P!Q!/k!Q!^!+Y!^!_# O!_!`#*q!`!a#%|!a#O!+Y#O#P#,l#P#Q!+Y#Q#R!/k#R#p!+Y#p#q#,z#q~!+YV!-^sXS^PZQOY!+YZq!+Yqr!-Tru!+Yuv!/kvw!2Rwx!+Yxy!4iyz!+Yz{!/k{|!/k|}!+Y}!O!/k!O!P!+Y!P!Q!/k!Q!R!6y!R![!MQ![!^!+Y!^!_# O!_!`##f!`!a#%|!a!c!+Y!c!}#(d!}#O!+Y#O#P#,l#P#Q!+Y#Q#R!/k#R#S#(d#S#T!+Y#T#o#(d#o#p!+Y#p#q#,z#q#r!+Y#r#s!/k#s~!+YV!/tsXS^PZQOY!+YZq!+Yqr!-Tru!+Yuv!/kvw!2Rwx!+Yxy!4iyz!+Yz{!/k{|!/k|}!+Y}!O!/k!O!P!+Y!P!Q!/k!Q!R!6y!R![!MQ![!^!+Y!^!_# O!_!`#*q!`!a#%|!a!c!+Y!c!}#(d!}#O!+Y#O#P#,l#P#Q!+Y#Q#R!/k#R#S#(d#S#T!+Y#T#o#(d#o#p!+Y#p#q#,z#q#r!+Y#r#s!/k#s~!+YV!2[sXS^PZQOY!+YZq!+Yqr!-Tru!+Yuv!/kvw!2Rwx!+Yxy!4iyz!+Yz{!/k{|!/k|}!+Y}!O!/k!O!P!+Y!P!Q!/k!Q!R!6y!R![!MQ![!^!+Y!^!_# O!_!`#*q!`!a#%|!a!c!+Y!c!}#(d!}#O!+Y#O#P#,l#P#Q!+Y#Q#R!/k#R#S#(d#S#T!+Y#T#o#(d#o#p!+Y#p#q#,z#q#r!+Y#r#s!/k#s~!+YV!4rqXS^PZQOY!+YZq!+Yqr!-Tru!+Yuv!/kvw!2Rwx!+Yxy!4iyz!+Yz{!/k{|!/k|}!+Y}!O!/k!O!P!+Y!P!Q!/k!Q!R!6y!R![!MQ![!^!+Y!^!_# O!_!`#*q!`!a#%|!a!c!+Y!c!}#(d!}#O!+Y#O#P#,l#P#Q!+Y#Q#R!/k#R#S#(d#S#T!+Y#T#o#(d#o#p!+Y#p#q#,z#q~!+YV!7SmXS^PZQOY!+YZq!+Yqr!-Tru!+Yuv!/kvw!2Rwx!8}xy!+Yyz!+Yz{!/k{|!/k|}!+Y}!O!/k!O!P!+Y!P!Q!/k!Q![!MQ![!^!+Y!^!_# O!_!`#*q!`!a#%|!a#O!+Y#O#P#,l#P#Q!+Y#Q#R!/k#R#l!+Y#l#m#/b#m#p!+Y#p#q#,z#q~!+YV!9WgXS^PZQOY!)RZq!)Rqr!:oru!)Ruv!)ovw!?[wy!)Ryz!Bmz{!)o{|!)o|}!)R}!O!)o!O!P!)R!P!Q!)o!Q!^!)R!^!_!CS!_!`!)^!`!a!F}!a#Q!)R#Q#R!)o#R#p!)R#p#q!Hq#q~!)RV!:th^POY!)RZq!)Rqr!)orw!)Rwx!+Yxy!<`y{!)R{|!)o|}!)R}!O!)o!O!Q!)R!Q!R!=a!R![!@x![!_!)R!_!`!)o!`!c!)R!c!}!Dy!}#R!)R#R#S!Dy#S#T!)R#T#o!Dy#o#r!)R#r#s!)o#s~!)RV!<e^^POY!)RZw!)Rwx!+Yxy!<`y!Q!)R!Q!R!=a!R![!@x![!c!)R!c!}!Dy!}#R!)R#R#S!Dy#S#T!)R#T#o!Dy#o~!)RV!=jjXS^PZQOY!)RZq!)Rqr!:oru!)Ruv!)ovw!?[wy!)Ryz!Bmz{!)o{|!)o|}!)R}!O!)o!O!P!)R!P!Q!)o!Q![!@x![!^!)R!^!_!CS!_!`!)^!`!a!F}!a#Q!)R#Q#R!)o#R#l!)R#l#m!Jb#m#p!)R#p#q!Hq#q~!)RV!?ag^POY!)RZq!)Rqr!)orv!)Rvw!)owx!+Yxy!<`y{!)R{|!)o|}!)R}!O!)o!O!Q!)R!Q!R!=a!R![!@x![!c!)R!c!}!Dy!}#R!)R#R#S!Dy#S#T!)R#T#o!Dy#o#r!)R#r#s!)o#s~!)RV!ARhXS^PZQOY!)RZq!)Rqr!:oru!)Ruv!)ovw!?[wy!)Ryz!Bmz{!)o{|!)o|}!)R}!O!)o!O!P!)R!P!Q!)o!Q![!@x![!^!)R!^!_!CS!_!`!)^!`!a!F}!a#Q!)R#Q#R!)o#R#p!)R#p#q!Hq#q~!)RV!BvSXS^PZQOY!)RZy!)Ryz!Bmz~!)RV!CXj^POY!)RZq!)Rqr!)orw!)Rwx!+Yxy!<`y{!)R{|!)o|}!)R}!O!)o!O!Q!)R!Q!R!=a!R![!@x![!^!)R!^!_!)o!_!`!)o!`!a!)o!a!c!)R!c!}!Dy!}#R!)R#R#S!Dy#S#T!)R#T#o!Dy#o#r!)R#r#s!)o#s~!)RV!ESmXS^PZQOY!)RZq!)Rqr!:oru!)Ruv!)ovw!?[wy!)Ryz!Bmz{!)o{|!)o|}!)R}!O!)o!O!P!)R!P!Q!)o!Q![!Dy![!^!)R!^!_!CS!_!`!)^!`!a!F}!a!c!)R!c!}!Dy!}#Q!)R#Q#R!)o#R#S!Dy#S#T!)R#T#o!Dy#o#p!)R#p#q!Hq#q~!)RV!GSi^POY!)RZq!)Rqr!)orw!)Rwx!+Yxy!<`y{!)R{|!)o|}!)R}!O!)o!O!Q!)R!Q!R!=a!R![!@x![!_!)R!_!`!)o!`!a!)o!a!c!)R!c!}!Dy!}#R!)R#R#S!Dy#S#T!)R#T#o!Dy#o#r!)R#r#s!)o#s~!)RV!Hvh^POY!)RZq!)Rqr!)orw!)Rwx!+Yxy!<`y{!)R{|!)o|}!)R}!O!)o!O!Q!)R!Q!R!=a!R![!@x![!c!)R!c!}!Dy!}#R!)R#R#S!Dy#S#T!)R#T#o!Dy#o#p!)R#p#q!)o#q#r!)R#r#s!)o#s~!)RV!JgW^POY!)RZ!Q!)R!Q![!KP![!c!)R!c!i!KP!i#T!)R#T#Z!KP#Z~!)RV!KYlXS^PZQOY!)RZq!)Rqr!:oru!)Ruv!)ovw!?[wy!)Ryz!Bmz{!)o{|!)o|}!)R}!O!)o!O!P!)R!P!Q!)o!Q![!KP![!^!)R!^!_!CS!_!`!)^!`!a!F}!a!c!)R!c!i!KP!i#Q!)R#Q#R!)o#R#T!)R#T#Z!KP#Z#p!)R#p#q!Hq#q~!)RV!MZkXS^PZQOY!+YZq!+Yqr!-Tru!+Yuv!/kvw!2Rwx!8}xy!+Yyz!+Yz{!/k{|!/k|}!+Y}!O!/k!O!P!+Y!P!Q!/k!Q![!MQ![!^!+Y!^!_# O!_!`#*q!`!a#%|!a#O!+Y#O#P#,l#P#Q!+Y#Q#R!/k#R#p!+Y#p#q#,z#q~!+YV# XsXS^PZQOY!+YZq!+Yqr!-Tru!+Yuv!/kvw!2Rwx!+Yxy!4iyz!+Yz{!/k{|!/k|}!+Y}!O!/k!O!P!+Y!P!Q!/k!Q!R!6y!R![!MQ![!^!+Y!^!_# O!_!`##f!`!a#%|!a!c!+Y!c!}#(d!}#O!+Y#O#P#,l#P#Q!+Y#Q#R!/k#R#S#(d#S#T!+Y#T#o#(d#o#p!+Y#p#q#,z#q#r!+Y#r#s!/k#s~!+YV##osXS^PZQOY!+YZq!+Yqr!-Tru!+Yuv!/kvw!2Rwx!+Yxy!4iyz!+Yz{!/k{|!/k|}!+Y}!O!/k!O!P!+Y!P!Q!/k!Q!R!6y!R![!MQ![!^!+Y!^!_# O!_!`##f!`!a#%|!a!c!+Y!c!}#(d!}#O!+Y#O#P#,l#P#Q!+Y#Q#R!/k#R#S#(d#S#T!+Y#T#o#(d#o#p!+Y#p#q#,z#q#r!+Y#r#s!/k#s~!+YV#&VsXS^PZQOY!+YZq!+Yqr!-Tru!+Yuv!/kvw!2Rwx!+Yxy!4iyz!+Yz{!/k{|!/k|}!+Y}!O!/k!O!P!+Y!P!Q!/k!Q!R!6y!R![!MQ![!^!+Y!^!_# O!_!`##f!`!a#%|!a!c!+Y!c!}#(d!}#O!+Y#O#P#,l#P#Q!+Y#Q#R!/k#R#S#(d#S#T!+Y#T#o#(d#o#p!+Y#p#q#,z#q#r!+Y#r#s!/k#s~!+YV#(mpXS^PZQOY!+YZq!+Yqr!-Tru!+Yuv!/kvw!2Rwx!8}xy!+Yyz!+Yz{!/k{|!/k|}!+Y}!O!/k!O!P!+Y!P!Q!/k!Q![#(d![!^!+Y!^!_# O!_!`#*q!`!a#%|!a!c!+Y!c!}#(d!}#O!+Y#O#P#,l#P#Q!+Y#Q#R!/k#R#S#(d#S#T!+Y#T#o#(d#o#p!+Y#p#q#,z#q~!+YV#*zjXS^PZQOY!+YZq!+Yqr!-Tru!+Yuv!/kvw!2Rwx!8}xy!+Yyz!+Yz{!/k{|!/k|}!+Y}!O!/k!O!P!+Y!P!Q!/k!Q!^!+Y!^!_# O!_!`##f!`!a#%|!a#O!+Y#O#P#,l#P#Q!+Y#Q#R!/k#R#p!+Y#p#q#,z#q~!+YV#,qR^POY!+YYZ#[Z~!+YV#-TsXS^PZQOY!+YZq!+Yqr!-Tru!+Yuv!/kvw!2Rwx!+Yxy!4iyz!+Yz{!/k{|!/k|}!+Y}!O!/k!O!P!+Y!P!Q!/k!Q!R!6y!R![!MQ![!^!+Y!^!_# O!_!`#*q!`!a#%|!a!c!+Y!c!}#(d!}#O!+Y#O#P#,l#P#Q!+Y#Q#R!/k#R#S#(d#S#T!+Y#T#o#(d#o#p!+Y#p#q#,z#q#r!+Y#r#s!/k#s~!+YV#/koXS^PZQOY!+YZq!+Yqr!-Tru!+Yuv!/kvw!2Rwx!8}xy!+Yyz!+Yz{!/k{|!/k|}!+Y}!O!/k!O!P!+Y!P!Q!/k!Q![#1l![!^!+Y!^!_# O!_!`#*q!`!a#%|!a!c!+Y!c!i#1l!i#O!+Y#O#P#,l#P#Q!+Y#Q#R!/k#R#T!+Y#T#Z#1l#Z#p!+Y#p#q#,z#q~!+YV#1uoXS^PZQOY!+YZq!+Yqr!-Tru!+Yuv!/kvw!2Rwx!8}xy!+Yyz!+Yz{!/k{|!/k|}!+Y}!O!/k!O!P!+Y!P!Q!/k!Q![#1l![!^!+Y!^!_# O!_!`#*q!`!a#%|!a!c!+Y!c!i#1l!i#O!+Y#O#P#,l#P#Q!+Y#Q#R!/k#R#T!+Y#T#Z#1l#Z#p!+Y#p#q#,z#q~!+Y",
+  tokenData: "#6R~RdYZ!aqr!frs!!tst!#htu!#suv!#xwx#_xy!%Vyz!%t{|!f|}!%y}!O!f!O!P!&O!Q!R5Z!R![3X!]!^!'p!c!}!'u#R#S!'u#T#o!'u#r#s!f~!fOn~U!i[qr!fwx#_xy2l{|!f}!O!f!O!P3X!Q!R5Z!R![3X!c!}7p#R#S7p#T#o7p#r#s!fU#fjXSZQOY#_Zq#_qr%Wru#_uv'lvw*Qwx0pxy#_yz#_z{'l{|'l|}#_}!O'l!O!P#_!P!Q'l!Q!^#_!^!_<d!_!`@z!`!aEX!a#O#_#O#PIx#P#Q#_#Q#R'l#R#p#_#p#qJO#q~#_U%_sXSZQOY#_Zq#_qr%Wru#_uv'lvw*Qwx#_xy,fyz#_z{'l{|'l|}#_}!O'l!O!P.t!P!Q'l!Q!R>x!R![.t![!^#_!^!_<d!_!`Bs!`!aEX!a!c#_!c!}Gm!}#O#_#O#PIx#P#Q#_#Q#R'l#R#SGm#S#T#_#T#oGm#o#p#_#p#qJO#q#r#_#r#s'l#s~#_U'ssXSZQOY#_Zq#_qr%Wru#_uv'lvw*Qwx#_xy,fyz#_z{'l{|'l|}#_}!O'l!O!P.t!P!Q'l!Q!R>x!R![.t![!^#_!^!_<d!_!`@z!`!aEX!a!c#_!c!}Gm!}#O#_#O#PIx#P#Q#_#Q#R'l#R#SGm#S#T#_#T#oGm#o#p#_#p#qJO#q#r#_#r#s'l#s~#_U*XsXSZQOY#_Zq#_qr%Wru#_uv'lvw*Qwx#_xy,fyz#_z{'l{|'l|}#_}!O'l!O!P.t!P!Q'l!Q!R>x!R![.t![!^#_!^!_<d!_!`@z!`!aEX!a!c#_!c!}Gm!}#O#_#O#PIx#P#Q#_#Q#R'l#R#SGm#S#T#_#T#oGm#o#p#_#p#qJO#q#r#_#r#s'l#s~#_U,mqXSZQOY#_Zq#_qr%Wru#_uv'lvw*Qwx#_xy,fyz#_z{'l{|'l|}#_}!O'l!O!P.t!P!Q'l!Q!R>x!R![.t![!^#_!^!_<d!_!`@z!`!aEX!a!c#_!c!}Gm!}#O#_#O#PIx#P#Q#_#Q#R'l#R#SGm#S#T#_#T#oGm#o#p#_#p#qJO#q~#_U.{kXSZQOY#_Zq#_qr%Wru#_uv'lvw*Qwx0pxy#_yz#_z{'l{|'l|}#_}!O'l!O!P.t!P!Q'l!Q![.t![!^#_!^!_<d!_!`@z!`!aEX!a#O#_#O#PIx#P#Q#_#Q#R'l#R#p#_#p#qJO#q~#_U0w]XSZQqr1puv!fvw4_yz6dz{!f{|!f}!O!f!P!Q!f!^!_6n!_!`8|!`!a9S#Q#R!f#p#q:RU1s]qr!fwx#_xy2l{|!f}!O!f!O!P3X!Q!R5Z!R![3X!_!`!f!c!}7p#R#S7p#T#o7p#r#s!fU2oWwx#_xy2l!O!P3X!Q!R5Z!R![3X!c!}7p#R#S7p#T#o7pU3`_XSZQqr1puv!fvw4_yz6dz{!f{|!f}!O!f!O!P3X!P!Q!f!Q![3X!^!_6n!_!`8|!`!a9S#Q#R!f#p#q:RU4b]qr!fvw!fwx#_xy2l{|!f}!O!f!O!P3X!Q!R5Z!R![3X!c!}7p#R#S7p#T#o7p#r#s!fU5b`XSZQqr1puv!fvw4_yz6dz{!f{|!f}!O!f!O!P3X!P!Q!f!Q![3X!^!_6n!_!`8|!`!a9S#Q#R!f#l#m:}#p#q:RU6kPXSZQyz6dU6q_qr!fwx#_xy2l{|!f}!O!f!O!P3X!Q!R5Z!R![3X!^!_!f!_!`!f!`!a!f!c!}7p#R#S7p#T#o7p#r#s!fU7waXSZQqr1puv!fvw4_yz6dz{!f{|!f}!O!f!P!Q!f!Q![7p!^!_6n!_!`8|!`!a9S!c!}7p#Q#R!f#R#S7p#T#o7p#p#q:RU9PP!_!`!fU9V^qr!fwx#_xy2l{|!f}!O!f!O!P3X!Q!R5Z!R![3X!_!`!f!`!a!f!c!}7p#R#S7p#T#o7p#r#s!fU:U]qr!fwx#_xy2l{|!f}!O!f!O!P3X!Q!R5Z!R![3X!c!}7p#R#S7p#T#o7p#p#q!f#r#s!fU;QR!Q![;Z!c!i;Z#T#Z;ZU;b`XSZQqr1puv!fvw4_yz6dz{!f{|!f}!O!f!P!Q!f!Q![;Z!^!_6n!_!`8|!`!a9S!c!i;Z#Q#R!f#T#Z;Z#p#q:RU<ksXSZQOY#_Zq#_qr%Wru#_uv'lvw*Qwx#_xy,fyz#_z{'l{|'l|}#_}!O'l!O!P.t!P!Q'l!Q!R>x!R![.t![!^#_!^!_<d!_!`Bs!`!aEX!a!c#_!c!}Gm!}#O#_#O#PIx#P#Q#_#Q#R'l#R#SGm#S#T#_#T#oGm#o#p#_#p#qJO#q#r#_#r#s'l#s~#_U?PmXSZQOY#_Zq#_qr%Wru#_uv'lvw*Qwx0pxy#_yz#_z{'l{|'l|}#_}!O'l!O!P.t!P!Q'l!Q![.t![!^#_!^!_<d!_!`@z!`!aEX!a#O#_#O#PIx#P#Q#_#Q#R'l#R#l#_#l#mLd#m#p#_#p#qJO#q~#_UARjXSZQOY#_Zq#_qr%Wru#_uv'lvw*Qwx0pxy#_yz#_z{'l{|'l|}#_}!O'l!O!P#_!P!Q'l!Q!^#_!^!_<d!_!`Bs!`!aEX!a#O#_#O#PIx#P#Q#_#Q#R'l#R#p#_#p#qJO#q~#_UBzsXSZQOY#_Zq#_qr%Wru#_uv'lvw*Qwx#_xy,fyz#_z{'l{|'l|}#_}!O'l!O!P.t!P!Q'l!Q!R>x!R![.t![!^#_!^!_<d!_!`Bs!`!aEX!a!c#_!c!}Gm!}#O#_#O#PIx#P#Q#_#Q#R'l#R#SGm#S#T#_#T#oGm#o#p#_#p#qJO#q#r#_#r#s'l#s~#_UE`sXSZQOY#_Zq#_qr%Wru#_uv'lvw*Qwx#_xy,fyz#_z{'l{|'l|}#_}!O'l!O!P.t!P!Q'l!Q!R>x!R![.t![!^#_!^!_<d!_!`Bs!`!aEX!a!c#_!c!}Gm!}#O#_#O#PIx#P#Q#_#Q#R'l#R#SGm#S#T#_#T#oGm#o#p#_#p#qJO#q#r#_#r#s'l#s~#_UGtpXSZQOY#_Zq#_qr%Wru#_uv'lvw*Qwx0pxy#_yz#_z{'l{|'l|}#_}!O'l!O!P#_!P!Q'l!Q![Gm![!^#_!^!_<d!_!`@z!`!aEX!a!c#_!c!}Gm!}#O#_#O#PIx#P#Q#_#Q#R'l#R#SGm#S#T#_#T#oGm#o#p#_#p#qJO#q~#_UI{PO~#_UJVsXSZQOY#_Zq#_qr%Wru#_uv'lvw*Qwx#_xy,fyz#_z{'l{|'l|}#_}!O'l!O!P.t!P!Q'l!Q!R>x!R![.t![!^#_!^!_<d!_!`@z!`!aEX!a!c#_!c!}Gm!}#O#_#O#PIx#P#Q#_#Q#R'l#R#SGm#S#T#_#T#oGm#o#p#_#p#qJO#q#r#_#r#s'l#s~#_ULkoXSZQOY#_Zq#_qr%Wru#_uv'lvw*Qwx0pxy#_yz#_z{'l{|'l|}#_}!O'l!O!P#_!P!Q'l!Q![Nl![!^#_!^!_<d!_!`@z!`!aEX!a!c#_!c!iNl!i#O#_#O#PIx#P#Q#_#Q#R'l#R#T#_#T#ZNl#Z#p#_#p#qJO#q~#_UNsoXSZQOY#_Zq#_qr%Wru#_uv'lvw*Qwx0pxy#_yz#_z{'l{|'l|}#_}!O'l!O!P#_!P!Q'l!Q![Nl![!^#_!^!_<d!_!`@z!`!aEX!a!c#_!c!iNl!i#O#_#O#PIx#P#Q#_#Q#R'l#R#T#_#T#ZNl#Z#p#_#p#qJO#q~#_~!!yU]~OY!!tZr!!trs!#]s#O!!t#O#P!#b#P~!!t~!#bO]~~!#ePO~!!t~!#mQ_~OY!#hZ~!#h~!#xOg~~!#{]X^!#xpq!#x!c!}!$t#R#S!$t#T#o!$t#y#z!#x$f$g!#x#BY#BZ!#x$IS$I_!#x$I|$JO!#x$JT$JU!#x$KV$KW!#x&FU&FV!#x~!$ySp~!Q![!$t!c!}!$t#R#S!$t#T#o!$tV!%[WhRwx#_xy2l!O!P3X!Q!R5Z!R![3X!c!}7p#R#S7p#T#o7p~!%yOk~~!&OOj~V!&VbXSZQqr1puv!fvw4_yz6dz{!f{|!f}!O!f!O!P3X!P!Q!f!Q![3X!^!_6n!_!`8|!`!a9S!c!}!'_#Q#R!f#R#S!'_#T#o!'_#p#q:RP!'dSqP!Q![!'_!c!}!'_#R#S!'_#T#o!'_~!'uOm~V!(OlXSZQoPX^!)vpq!)vqr1puv!fvw4_yz6dz{!f{|!f}!O!f!P!Q!f!Q![!'u![!]!*o!^!_6n!_!`!+P!`!a9S!c!}!'u#Q#R!f#R#S!'u#T#o!'u#p#q:R#y#z!)v$f$g!)v#BY#BZ!)v$IS$I_!)v$I|$JO!)v$JT$JU!)v$KV$KW!)v&FU&FV!)vP!)y[X^!)vpq!)v![!]!*o!_!`!*t#y#z!)v$f$g!)v#BY#BZ!)v$IS$I_!)v$I|$JO!)v$JT$JU!)v$KV$KW!)v&FU&FV!)vP!*tOUPP!*yQ^POY!*tZ~!*tV!+US^POY!*tZ!_!*t!_!`!+b!`~!*tV!+gg^POY!*tZq!*tqr!+brw!*twx!-Oxy!>Ry{!*t{|!+b|}!*t}!O!+b!O!P!?Y!P!Q!*t!Q!R!Bn!R![!?Y![!c!*t!c!}!Fx!}#R!*t#R#S!Fx#S#T!*t#T#o!Fx#o#r!*t#r#s!+b#s~!*tV!-XjXS^PZQOY!-OZq!-Oqr!.yru!-Ouv!1avw!3wwx!:mxy!-Oyz!-Oz{!1a{|!1a|}!-O}!O!1a!O!P!-O!P!Q!1a!Q!^!-O!^!_# V!_!`#%q!`!a#*S!a#O!-O#O#P#.w#P#Q!-O#Q#R!1a#R#p!-O#p#q#/V#q~!-OV!/SsXS^PZQOY!-OZq!-Oqr!.yru!-Ouv!1avw!3wwx!-Oxy!6_yz!-Oz{!1a{|!1a|}!-O}!O!1a!O!P!8o!P!Q!1a!Q!R##m!R![!8o![!^!-O!^!_# V!_!`#'l!`!a#*S!a!c!-O!c!}#,j!}#O!-O#O#P#.w#P#Q!-O#Q#R!1a#R#S#,j#S#T!-O#T#o#,j#o#p!-O#p#q#/V#q#r!-O#r#s!1a#s~!-OV!1jsXS^PZQOY!-OZq!-Oqr!.yru!-Ouv!1avw!3wwx!-Oxy!6_yz!-Oz{!1a{|!1a|}!-O}!O!1a!O!P!8o!P!Q!1a!Q!R##m!R![!8o![!^!-O!^!_# V!_!`#%q!`!a#*S!a!c!-O!c!}#,j!}#O!-O#O#P#.w#P#Q!-O#Q#R!1a#R#S#,j#S#T!-O#T#o#,j#o#p!-O#p#q#/V#q#r!-O#r#s!1a#s~!-OV!4QsXS^PZQOY!-OZq!-Oqr!.yru!-Ouv!1avw!3wwx!-Oxy!6_yz!-Oz{!1a{|!1a|}!-O}!O!1a!O!P!8o!P!Q!1a!Q!R##m!R![!8o![!^!-O!^!_# V!_!`#%q!`!a#*S!a!c!-O!c!}#,j!}#O!-O#O#P#.w#P#Q!-O#Q#R!1a#R#S#,j#S#T!-O#T#o#,j#o#p!-O#p#q#/V#q#r!-O#r#s!1a#s~!-OV!6hqXS^PZQOY!-OZq!-Oqr!.yru!-Ouv!1avw!3wwx!-Oxy!6_yz!-Oz{!1a{|!1a|}!-O}!O!1a!O!P!8o!P!Q!1a!Q!R##m!R![!8o![!^!-O!^!_# V!_!`#%q!`!a#*S!a!c!-O!c!}#,j!}#O!-O#O#P#.w#P#Q!-O#Q#R!1a#R#S#,j#S#T!-O#T#o#,j#o#p!-O#p#q#/V#q~!-OV!8xkXS^PZQOY!-OZq!-Oqr!.yru!-Ouv!1avw!3wwx!:mxy!-Oyz!-Oz{!1a{|!1a|}!-O}!O!1a!O!P!8o!P!Q!1a!Q![!8o![!^!-O!^!_# V!_!`#%q!`!a#*S!a#O!-O#O#P#.w#P#Q!-O#Q#R!1a#R#p!-O#p#q#/V#q~!-OV!:vgXS^PZQOY!*tZq!*tqr!<_ru!*tuv!+bvw!@}wy!*tyz!Diz{!+b{|!+b|}!*t}!O!+b!O!P!*t!P!Q!+b!Q!^!*t!^!_!EO!_!`!+P!`!a!H|!a#Q!*t#Q#R!+b#R#p!*t#p#q!Js#q~!*tV!<di^POY!*tZq!*tqr!+brw!*twx!-Oxy!>Ry{!*t{|!+b|}!*t}!O!+b!O!P!?Y!P!Q!*t!Q!R!Bn!R![!?Y![!_!*t!_!`!+b!`!c!*t!c!}!Fx!}#R!*t#R#S!Fx#S#T!*t#T#o!Fx#o#r!*t#r#s!+b#s~!*tV!>W`^POY!*tZw!*twx!-Oxy!>Ry!O!*t!O!P!?Y!P!Q!*t!Q!R!Bn!R![!?Y![!c!*t!c!}!Fx!}#R!*t#R#S!Fx#S#T!*t#T#o!Fx#o~!*tV!?chXS^PZQOY!*tZq!*tqr!<_ru!*tuv!+bvw!@}wy!*tyz!Diz{!+b{|!+b|}!*t}!O!+b!O!P!?Y!P!Q!+b!Q![!?Y![!^!*t!^!_!EO!_!`!+P!`!a!H|!a#Q!*t#Q#R!+b#R#p!*t#p#q!Js#q~!*tV!ASh^POY!*tZq!*tqr!+brv!*tvw!+bwx!-Oxy!>Ry{!*t{|!+b|}!*t}!O!+b!O!P!?Y!P!Q!*t!Q!R!Bn!R![!?Y![!c!*t!c!}!Fx!}#R!*t#R#S!Fx#S#T!*t#T#o!Fx#o#r!*t#r#s!+b#s~!*tV!BwjXS^PZQOY!*tZq!*tqr!<_ru!*tuv!+bvw!@}wy!*tyz!Diz{!+b{|!+b|}!*t}!O!+b!O!P!?Y!P!Q!+b!Q![!?Y![!^!*t!^!_!EO!_!`!+P!`!a!H|!a#Q!*t#Q#R!+b#R#l!*t#l#m!Lg#m#p!*t#p#q!Js#q~!*tV!DrSXS^PZQOY!*tZy!*tyz!Diz~!*tV!ETk^POY!*tZq!*tqr!+brw!*twx!-Oxy!>Ry{!*t{|!+b|}!*t}!O!+b!O!P!?Y!P!Q!*t!Q!R!Bn!R![!?Y![!^!*t!^!_!+b!_!`!+b!`!a!+b!a!c!*t!c!}!Fx!}#R!*t#R#S!Fx#S#T!*t#T#o!Fx#o#r!*t#r#s!+b#s~!*tV!GRmXS^PZQOY!*tZq!*tqr!<_ru!*tuv!+bvw!@}wy!*tyz!Diz{!+b{|!+b|}!*t}!O!+b!O!P!*t!P!Q!+b!Q![!Fx![!^!*t!^!_!EO!_!`!+P!`!a!H|!a!c!*t!c!}!Fx!}#Q!*t#Q#R!+b#R#S!Fx#S#T!*t#T#o!Fx#o#p!*t#p#q!Js#q~!*tV!IRj^POY!*tZq!*tqr!+brw!*twx!-Oxy!>Ry{!*t{|!+b|}!*t}!O!+b!O!P!?Y!P!Q!*t!Q!R!Bn!R![!?Y![!_!*t!_!`!+b!`!a!+b!a!c!*t!c!}!Fx!}#R!*t#R#S!Fx#S#T!*t#T#o!Fx#o#r!*t#r#s!+b#s~!*tV!Jxi^POY!*tZq!*tqr!+brw!*twx!-Oxy!>Ry{!*t{|!+b|}!*t}!O!+b!O!P!?Y!P!Q!*t!Q!R!Bn!R![!?Y![!c!*t!c!}!Fx!}#R!*t#R#S!Fx#S#T!*t#T#o!Fx#o#p!*t#p#q!+b#q#r!*t#r#s!+b#s~!*tV!LlW^POY!*tZ!Q!*t!Q![!MU![!c!*t!c!i!MU!i#T!*t#T#Z!MU#Z~!*tV!M_lXS^PZQOY!*tZq!*tqr!<_ru!*tuv!+bvw!@}wy!*tyz!Diz{!+b{|!+b|}!*t}!O!+b!O!P!*t!P!Q!+b!Q![!MU![!^!*t!^!_!EO!_!`!+P!`!a!H|!a!c!*t!c!i!MU!i#Q!*t#Q#R!+b#R#T!*t#T#Z!MU#Z#p!*t#p#q!Js#q~!*tV# `sXS^PZQOY!-OZq!-Oqr!.yru!-Ouv!1avw!3wwx!-Oxy!6_yz!-Oz{!1a{|!1a|}!-O}!O!1a!O!P!8o!P!Q!1a!Q!R##m!R![!8o![!^!-O!^!_# V!_!`#'l!`!a#*S!a!c!-O!c!}#,j!}#O!-O#O#P#.w#P#Q!-O#Q#R!1a#R#S#,j#S#T!-O#T#o#,j#o#p!-O#p#q#/V#q#r!-O#r#s!1a#s~!-OV##vmXS^PZQOY!-OZq!-Oqr!.yru!-Ouv!1avw!3wwx!:mxy!-Oyz!-Oz{!1a{|!1a|}!-O}!O!1a!O!P!8o!P!Q!1a!Q![!8o![!^!-O!^!_# V!_!`#%q!`!a#*S!a#O!-O#O#P#.w#P#Q!-O#Q#R!1a#R#l!-O#l#m#1m#m#p!-O#p#q#/V#q~!-OV#%zjXS^PZQOY!-OZq!-Oqr!.yru!-Ouv!1avw!3wwx!:mxy!-Oyz!-Oz{!1a{|!1a|}!-O}!O!1a!O!P!-O!P!Q!1a!Q!^!-O!^!_# V!_!`#'l!`!a#*S!a#O!-O#O#P#.w#P#Q!-O#Q#R!1a#R#p!-O#p#q#/V#q~!-OV#'usXS^PZQOY!-OZq!-Oqr!.yru!-Ouv!1avw!3wwx!-Oxy!6_yz!-Oz{!1a{|!1a|}!-O}!O!1a!O!P!8o!P!Q!1a!Q!R##m!R![!8o![!^!-O!^!_# V!_!`#'l!`!a#*S!a!c!-O!c!}#,j!}#O!-O#O#P#.w#P#Q!-O#Q#R!1a#R#S#,j#S#T!-O#T#o#,j#o#p!-O#p#q#/V#q#r!-O#r#s!1a#s~!-OV#*]sXS^PZQOY!-OZq!-Oqr!.yru!-Ouv!1avw!3wwx!-Oxy!6_yz!-Oz{!1a{|!1a|}!-O}!O!1a!O!P!8o!P!Q!1a!Q!R##m!R![!8o![!^!-O!^!_# V!_!`#'l!`!a#*S!a!c!-O!c!}#,j!}#O!-O#O#P#.w#P#Q!-O#Q#R!1a#R#S#,j#S#T!-O#T#o#,j#o#p!-O#p#q#/V#q#r!-O#r#s!1a#s~!-OV#,spXS^PZQOY!-OZq!-Oqr!.yru!-Ouv!1avw!3wwx!:mxy!-Oyz!-Oz{!1a{|!1a|}!-O}!O!1a!O!P!-O!P!Q!1a!Q![#,j![!^!-O!^!_# V!_!`#%q!`!a#*S!a!c!-O!c!}#,j!}#O!-O#O#P#.w#P#Q!-O#Q#R!1a#R#S#,j#S#T!-O#T#o#,j#o#p!-O#p#q#/V#q~!-OV#.|R^POY!-OYZ#_Z~!-OV#/`sXS^PZQOY!-OZq!-Oqr!.yru!-Ouv!1avw!3wwx!-Oxy!6_yz!-Oz{!1a{|!1a|}!-O}!O!1a!O!P!8o!P!Q!1a!Q!R##m!R![!8o![!^!-O!^!_# V!_!`#%q!`!a#*S!a!c!-O!c!}#,j!}#O!-O#O#P#.w#P#Q!-O#Q#R!1a#R#S#,j#S#T!-O#T#o#,j#o#p!-O#p#q#/V#q#r!-O#r#s!1a#s~!-OV#1voXS^PZQOY!-OZq!-Oqr!.yru!-Ouv!1avw!3wwx!:mxy!-Oyz!-Oz{!1a{|!1a|}!-O}!O!1a!O!P!-O!P!Q!1a!Q![#3w![!^!-O!^!_# V!_!`#%q!`!a#*S!a!c!-O!c!i#3w!i#O!-O#O#P#.w#P#Q!-O#Q#R!1a#R#T!-O#T#Z#3w#Z#p!-O#p#q#/V#q~!-OV#4QoXS^PZQOY!-OZq!-Oqr!.yru!-Ouv!1avw!3wwx!:mxy!-Oyz!-Oz{!1a{|!1a|}!-O}!O!1a!O!P!-O!P!Q!1a!Q![#3w![!^!-O!^!_# V!_!`#%q!`!a#*S!a!c!-O!c!i#3w!i#O!-O#O#P#.w#P#Q!-O#Q#R!1a#R#T!-O#T#Z#3w#Z#p!-O#p#q#/V#q~!-O",
   tokenizers: [0, 1, 2],
   topRules: { "Program": [0, 5] },
   specialized: [{ term: 31, get: (value, stack) => isOpcode(value, stack) << 1 }, { term: 32, get: (value, stack) => isRegister(value, stack) << 1 }, { term: 33, get: (value, stack) => isDirective(value, stack) << 1 }],
