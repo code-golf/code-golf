@@ -6,6 +6,8 @@ import (
 	"context"
 	"embed"
 	"errors"
+	"fmt"
+	"os"
 	"os/exec"
 	"strings"
 	"syscall"
@@ -19,12 +21,12 @@ const timeout = 7 * time.Second
 var answers embed.FS
 
 type Scorecard struct {
-	Answer         string
-	Args           []string
-	ExitCode       int
-	Pass, Timeout  bool
-	Stderr, Stdout []byte
-	Took           time.Duration
+	ASMBytes, ExitCode int
+	Answer             string
+	Args               []string
+	Pass, Timeout      bool
+	Stderr, Stdout     []byte
+	Took               time.Duration
 }
 
 func getAnswer(holeID, code string) (args []string, answer string) {
@@ -93,6 +95,7 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	score.Args, score.Answer = getAnswer(holeID, code)
 
 	var stderr, stdout bytes.Buffer
+	var asmBytesRead, asmBytesWrite *os.File
 
 	ctx, cancel := context.WithTimeout(ctx, timeout)
 	defer cancel()
@@ -109,7 +112,13 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	// Interpreter
 	switch langID {
 	case "assembly":
-		cmd.Args = []string{"/usr/bin/defasm", "-r"}
+		var err error
+		if asmBytesRead, asmBytesWrite, err = os.Pipe(); err != nil {
+			panic(err)
+		}
+
+		cmd.Args = []string{"/usr/bin/defasm", "--size-out=3", "-r"}
+		cmd.ExtraFiles = []*os.File{asmBytesWrite}
 	case "bash":
 		cmd.Args = []string{"/usr/bin/bash", "-s", "-"}
 	case "brainfuck":
@@ -192,6 +201,14 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 			stderr.WriteString(err.Error())
 			println(err.Error())
 		}
+	}
+
+	// Actual byte count is printed by the assembler.
+	if langID == "assembly" {
+		if _, err := fmt.Fscanf(asmBytesRead, "%d", &score.ASMBytes); err != nil {
+			panic(err)
+		}
+		asmBytesRead.Close()
 	}
 
 	const maxLength = 128 * 1024 // 128 KiB

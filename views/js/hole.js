@@ -117,6 +117,10 @@ onload = () => {
         if (!langs.find(l => l.id == lang))
             lang = 'python';
 
+        // Assembly only has bytes.
+        if (lang == 'assembly')
+            setSolution(solution = 0);
+
         localStorage.setItem('lang', lang);
 
         history.replaceState(null, '', '#' + lang);

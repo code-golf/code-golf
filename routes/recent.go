@@ -8,6 +8,7 @@ import (
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
 	"github.com/code-golf/code-golf/session"
+	"gopkg.in/guregu/null.v4"
 )
 
 // Recent serves GET /recent/{lang}
@@ -82,11 +83,12 @@ func Recent(w http.ResponseWriter, r *http.Request) {
 	defer rows.Close()
 
 	type recent struct {
-		Hole                                  hole.Hole
-		Lang                                  lang.Lang
-		Login, Scoring                        string
-		Bytes, Chars, Strokes, Rank, TieCount int
-		Submitted                             time.Time
+		Hole                           hole.Hole
+		Lang                           lang.Lang
+		Login, Scoring                 string
+		Bytes, Strokes, Rank, TieCount int
+		Chars                          null.Int
+		Submitted                      time.Time
 	}
 
 	var recents []recent

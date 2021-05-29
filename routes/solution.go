@@ -91,7 +91,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		ToFile:   "Out",
 	})
 
-	if out.Pass && golfer != nil && !experimental && in.Lang != "assembly" {
+	if out.Pass && golfer != nil && !experimental {
 		if err := db.QueryRowContext(
 			r.Context(),
 			`SELECT earned,
@@ -102,14 +102,20 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			        new_chars_joint, new_chars_rank, new_chars,
 			        beat_chars
 			   FROM save_solution(
-			            bytes   := octet_length($1),
-			            chars   :=  char_length($1),
+			            bytes   := CASE WHEN $3 = 'assembly'::lang
+			                            THEN $5
+			                            ELSE octet_length($1)
+			                            END,
+			            chars   := CASE WHEN $3 = 'assembly'::lang
+			                            THEN NULL
+			                            ELSE char_length($1)
+			                            END,
 			            code    := $1,
 			            hole    := $2,
 			            lang    := $3,
 			            user_id := $4
 			        )`,
-			in.Code, in.Hole, in.Lang, golfer.ID,
+			in.Code, in.Hole, in.Lang, golfer.ID, score.ASMBytes,
 		).Scan(
 			pq.Array(&out.Cheevos),
 			&out.RankUpdates[0].From.Joint,

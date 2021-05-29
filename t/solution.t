@@ -77,12 +77,12 @@ constant $code = Q:c:to/ASM/;
     text: .string "{ $answer.lines.join: ｢\n｣ }"; textEnd:
     ASM
 
-ok post-solution( :$session :$code :lang<assembly> )<Pass>, 'Passes';
+    ok post-solution( :$session :$code :lang<assembly> )<Pass>, 'Passes';
 
     is-deeply db, (
         { :code($code-short),       :lang<raku>,     :scoring<bytes> },
         { :code($code-short-chars), :lang<raku>,     :scoring<chars> },
-        # TODO { :$code,            :lang<assembly>, :scoring<bytes> },
+        { :$code,                   :lang<assembly>, :scoring<bytes> },
     ), 'Inserts only bytes';
 };
 
