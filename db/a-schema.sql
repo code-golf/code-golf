@@ -1,5 +1,4 @@
 CREATE EXTENSION citext;
-CREATE EXTENSION pgcrypto;  -- For GEN_RANDOM_UUID(), not needed under PG13.
 
 CREATE TYPE hole AS ENUM (
     '12-days-of-christmas', '99-bottles-of-beer', 'abundant-numbers',
