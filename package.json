@@ -19,6 +19,7 @@
     "@codemirror/view": "",
     "@defasm/codemirror": "",
     "esbuild": "",
-    "lz-string": ""
+    "lz-string": "",
+    "nim-codemirror-mode": ""
   }
 }

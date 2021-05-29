@@ -13,29 +13,37 @@ import { StreamLanguage }                              from '@codemirror/stream-
 import { oneDarkTheme, oneDarkHighlightStyle }         from '@codemirror/theme-one-dark';
 
 // Languages.
-import { assembly }    from '@defasm/codemirror';
-import { brainfuck }   from '@codemirror/legacy-modes/mode/brainfuck';
-import { c, csharp }   from '@codemirror/legacy-modes/mode/clike';
-import { cobol }       from '@codemirror/legacy-modes/mode/cobol';
-import { commonLisp }  from '@codemirror/legacy-modes/mode/commonlisp';
-import { crystal }     from '@codemirror/legacy-modes/mode/crystal';
-import { diff }        from '@codemirror/legacy-modes/mode/diff';
-import { fortran }     from '@codemirror/legacy-modes/mode/fortran';
-import { fSharp }      from '@codemirror/legacy-modes/mode/mllike';
-import { go }          from '@codemirror/legacy-modes/mode/go';
-import { haskell }     from '@codemirror/legacy-modes/mode/haskell';
-import { java }        from '@codemirror/lang-java';
-import { javascript }  from '@codemirror/lang-javascript';
-import { julia }       from '@codemirror/legacy-modes/mode/julia';
-import { lua }         from '@codemirror/legacy-modes/mode/lua';
-import { perl }        from '@codemirror/legacy-modes/mode/perl';
-import { powerShell }  from '@codemirror/legacy-modes/mode/powershell';
-import { python }      from '@codemirror/lang-python';
-import { ruby }        from '@codemirror/legacy-modes/mode/ruby';
-import { rust }        from '@codemirror/lang-rust';
-import { shell }       from '@codemirror/legacy-modes/mode/shell';
-import { sql, SQLite } from '@codemirror/lang-sql';
-import { swift }       from '@codemirror/legacy-modes/mode/swift';
+import { assembly }           from '@defasm/codemirror';
+import { brainfuck }          from '@codemirror/legacy-modes/mode/brainfuck';
+import { c, csharp }          from '@codemirror/legacy-modes/mode/clike';
+import { cobol }              from '@codemirror/legacy-modes/mode/cobol';
+import { commonLisp }         from '@codemirror/legacy-modes/mode/commonlisp';
+import { crystal }            from '@codemirror/legacy-modes/mode/crystal';
+import { diff }               from '@codemirror/legacy-modes/mode/diff';
+import { fortran }            from '@codemirror/legacy-modes/mode/fortran';
+import { fSharp }             from '@codemirror/legacy-modes/mode/mllike';
+import { go }                 from '@codemirror/legacy-modes/mode/go';
+import { haskell }            from '@codemirror/legacy-modes/mode/haskell';
+import { java }               from '@codemirror/lang-java';
+import { javascript }         from '@codemirror/lang-javascript';
+import { julia }              from '@codemirror/legacy-modes/mode/julia';
+import { lua }                from '@codemirror/legacy-modes/mode/lua';
+import { register as nimReg } from 'nim-codemirror-mode';
+import { perl }               from '@codemirror/legacy-modes/mode/perl';
+import { powerShell }         from '@codemirror/legacy-modes/mode/powershell';
+import { python }             from '@codemirror/lang-python';
+import { ruby }               from '@codemirror/legacy-modes/mode/ruby';
+import { rust }               from '@codemirror/lang-rust';
+import { shell }              from '@codemirror/legacy-modes/mode/shell';
+import { sql, SQLite }        from '@codemirror/lang-sql';
+import { swift }              from '@codemirror/legacy-modes/mode/swift';
+
+let nim;
+nimReg({
+    defineMIME: () => {},
+    defineMode: (_, mode) => { nim = mode({}, {}) },
+    modeInfo:   { push: () => {} },
+});
 
 // Other.
 import LZString from 'lz-string';
@@ -123,7 +131,7 @@ export const languages = {
     'julia':      StreamLanguage.define(julia),
     'lisp':       StreamLanguage.define(commonLisp),
     'lua':        StreamLanguage.define(lua),
-    // TODO nim
+    'nim':        StreamLanguage.define(nim),
     'perl':       StreamLanguage.define(perl),
     // TODO php
     'powershell': StreamLanguage.define(powerShell),
