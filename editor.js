@@ -86,19 +86,21 @@ const defaultTheme = EditorView.theme({
 }, { dark: false });
 
 export const defaultExtensions = [
-    EditorView.lineWrapping,
-    bracketMatching(),
-    closeBrackets(),
     defaultHighlightStyle,
     defaultTheme,
     history(),
     indentOnInput(),
     keymap.of([
-        ...closeBracketsKeymap, defaultTabBinding,
-        ...historyKeymap, ...standardKeymap,
+        defaultTabBinding, ...historyKeymap, ...standardKeymap,
     ]),
     lineNumbers(),
 ];
+
+export const bracketExtensions = [
+    bracketMatching(),
+    closeBrackets(),
+    keymap.of(closeBracketsKeymap)
+]
 
 export const languages = {
     'assembly':   assembly(),

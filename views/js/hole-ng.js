@@ -1,6 +1,6 @@
 // TODO Set #rankings height to editor on expand/shrink.
 
-import { darkThemeExtensions, defaultExtensions, EditorView, EditorState, languages, LZString } from '/editor.js';
+import { bracketExtensions, darkThemeExtensions, defaultExtensions, EditorView, EditorState, languages, LZString } from '/editor.js';
 
 let lang;
 let result = {};
@@ -127,7 +127,11 @@ const switchLang = onhashchange = () => {
     editor.setState(
         EditorState.create({
             doc:        solutions[lang]?.[scoring] ?? langs[lang].example,
-            extensions: [...extensions, languages[lang] || []],
+            extensions: [
+                ['brainfuck', 'fish', 'j', 'hexagony'].includes(lang) ? [] : bracketExtensions,
+                ['assembly', 'fish', 'hexagony'].includes(lang) ? [] : EditorView.lineWrapping,
+                ...extensions,
+                languages[lang] || []],
         }),
     );
 
