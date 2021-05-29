@@ -23915,20 +23915,21 @@ var defaultTheme = EditorView.theme({
   ".cm-asm-error-tooltip": asmErrorTooltip
 }, { dark: false });
 var defaultExtensions = [
-  EditorView.lineWrapping,
-  bracketMatching(),
-  closeBrackets(),
   defaultHighlightStyle,
   defaultTheme,
   history(),
   indentOnInput(),
   keymap.of([
-    ...closeBracketsKeymap,
     defaultTabBinding,
     ...historyKeymap,
     ...standardKeymap
   ]),
   lineNumbers()
+];
+var bracketExtensions = [
+  bracketMatching(),
+  closeBrackets(),
+  keymap.of(closeBracketsKeymap)
 ];
 var languages = {
   "assembly": assembly(),
@@ -23961,6 +23962,7 @@ export {
   EditorState,
   EditorView,
   export_LZString as LZString,
+  bracketExtensions,
   darkThemeExtensions,
   defaultExtensions,
   languages
