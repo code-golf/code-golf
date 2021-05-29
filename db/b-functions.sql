@@ -63,10 +63,12 @@ BEGIN
     ret.old_bytes_joint := rank.joint;
     ret.old_bytes_rank  := rank.rank;
 
-    rank                := hole_rank(hole, lang, 'chars', user_id);
-    ret.old_chars       := rank.strokes;
-    ret.old_chars_joint := rank.joint;
-    ret.old_chars_rank  := rank.rank;
+    IF chars IS NOT NULL THEN
+        rank                := hole_rank(hole, lang, 'chars', user_id);
+        ret.old_chars       := rank.strokes;
+        ret.old_chars_joint := rank.joint;
+        ret.old_chars_rank  := rank.rank;
+    END IF;
 
     -- Update the code if it's the same length or less, but only update the
     -- submitted time if the solution is shorter. This avoids a user moving
@@ -88,32 +90,36 @@ BEGIN
                     WHEN solutions.failing OR excluded.bytes < solutions.bytes
                     THEN excluded.submitted ELSE solutions.submitted END;
 
-    INSERT INTO solutions (bytes, chars, code, hole, lang, scoring, user_id)
-         VALUES           (bytes, chars, code, hole, lang, 'chars', user_id)
-    ON CONFLICT ON CONSTRAINT solutions_pkey
-    DO UPDATE SET failing = false,
-                    bytes = CASE
-                    WHEN solutions.failing OR excluded.chars <= solutions.chars
-                    THEN excluded.bytes ELSE solutions.bytes END,
-                    chars = CASE
-                    WHEN solutions.failing OR excluded.chars <= solutions.chars
-                    THEN excluded.chars ELSE solutions.chars END,
-                     code = CASE
-                    WHEN solutions.failing OR excluded.chars <= solutions.chars
-                    THEN excluded.code ELSE solutions.code END,
-                submitted = CASE
-                    WHEN solutions.failing OR excluded.chars < solutions.chars
-                    THEN excluded.submitted ELSE solutions.submitted END;
+    IF chars IS NOT NULL THEN
+        INSERT INTO solutions (bytes, chars, code, hole, lang, scoring, user_id)
+             VALUES           (bytes, chars, code, hole, lang, 'chars', user_id)
+        ON CONFLICT ON CONSTRAINT solutions_pkey
+        DO UPDATE SET failing = false,
+                        bytes = CASE
+                        WHEN solutions.failing OR excluded.chars <= solutions.chars
+                        THEN excluded.bytes ELSE solutions.bytes END,
+                        chars = CASE
+                        WHEN solutions.failing OR excluded.chars <= solutions.chars
+                        THEN excluded.chars ELSE solutions.chars END,
+                         code = CASE
+                        WHEN solutions.failing OR excluded.chars <= solutions.chars
+                        THEN excluded.code ELSE solutions.code END,
+                    submitted = CASE
+                        WHEN solutions.failing OR excluded.chars < solutions.chars
+                        THEN excluded.submitted ELSE solutions.submitted END;
+    END IF;
 
     rank                := hole_rank(hole, lang, 'bytes', user_id);
     ret.new_bytes       := rank.strokes;
     ret.new_bytes_joint := rank.joint;
     ret.new_bytes_rank  := rank.rank;
 
-    rank                := hole_rank(hole, lang, 'chars', user_id);
-    ret.new_chars       := rank.strokes;
-    ret.new_chars_joint := rank.joint;
-    ret.new_chars_rank  := rank.rank;
+    IF chars IS NOT NULL THEN
+        rank                := hole_rank(hole, lang, 'chars', user_id);
+        ret.new_chars       := rank.strokes;
+        ret.new_chars_joint := rank.joint;
+        ret.new_chars_rank  := rank.rank;
+    END IF;
 
     IF ret.new_bytes_rank = ret.old_bytes_rank THEN
         ret.beat_bytes = ret.old_bytes;
@@ -125,14 +131,16 @@ BEGIN
            AND solutions.bytes > bytes;
     END IF;
 
-    IF ret.new_chars_rank = ret.old_chars_rank THEN
-        ret.beat_chars = ret.old_chars;
-    ELSE
-        SELECT MIN(solutions.chars) INTO ret.beat_chars
-          FROM solutions
-         WHERE solutions.hole  = hole
-           AND solutions.lang  = lang
-           AND solutions.chars > chars;
+    IF chars IS NOT NULL THEN
+        IF ret.new_chars_rank = ret.old_chars_rank THEN
+             ret.beat_chars = ret.old_chars;
+        ELSE
+            SELECT MIN(solutions.chars) INTO ret.beat_chars
+              FROM solutions
+             WHERE solutions.hole  = hole
+               AND solutions.lang  = lang
+               AND solutions.chars > chars;
+        END IF;
     END IF;
 
     -- Earn cheevos.
