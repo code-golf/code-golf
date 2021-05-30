@@ -206,6 +206,8 @@ const runCode = document.querySelector('#run a').onclick = async () => {
     statusTabs[1].click();
 
     status.style.display = 'grid';
+
+    update();
 };
 
 onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter' ? runCode() : undefined;
