@@ -20,7 +20,7 @@ v               ~<
 [Assembly]
 size    = '48.7 MiB'
 version = '1.4.3'
-website = 'https://github.com/NewDefectus/defAsm'
+website = 'https://www.npmjs.com/package/@defasm/core'
 example = '''
 # Printing
 mov $1, %eax    # Syscall code 1 (write)
