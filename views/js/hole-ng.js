@@ -15,8 +15,8 @@ const scoringTabs        = document.querySelectorAll('#scoringTabs a');
 const select             = document.querySelector('select');
 const solutions          = JSON.parse(document.querySelector('#solutions').innerText);
 const status             = document.querySelector('#status');
-const statusView         = new EditorView({ parent: status });
-const statusTabs         = document.querySelectorAll('#statusTabs a');
+const statusDivs         = document.querySelectorAll('#status > div');
+const statusH2           = document.querySelector('#status h2');
 const strokes            = document.querySelector('#strokes');
 const thirdParty         = document.querySelector('#thirdParty');
 const editor             = new EditorView({
@@ -93,24 +93,6 @@ async function update() {
 for (const tab of scoringTabs)
     tab.onclick = e => { e.preventDefault(); scoring = tab.id; update() };
 
-// Switch status
-for (const tab of statusTabs)
-    tab.onclick = e => {
-        e.preventDefault();
-
-        for (const tab of statusTabs)
-            tab.href = '';
-
-        tab.removeAttribute('href');
-
-        let ext = extensions;
-        if (tab.id == 'diff')
-            ext.push(languages.diff);
-
-        statusView.setState(EditorState.create({
-            doc: result[tab.id], extensions: extensions }));
-    };
-
 // Switch lang
 const switchLang = onhashchange = () => {
     lang = location.hash.slice(1);
@@ -180,9 +162,7 @@ const runCode = document.querySelector('#run a').onclick = async () => {
     const data = await res.json();
 
     status.style.background = data.Pass ? 'var(--green)' : 'var(--red)';
-
-    document.querySelector('h2').innerText
-        = data.Pass ? 'Pass 😀' : 'Fail ☹️';
+    statusH2.innerText      = data.Pass ? 'Pass 😀'      : 'Fail ☹️';
 
     result = {
         arguments: data.Argv.join('\n'),
@@ -191,6 +171,18 @@ const runCode = document.querySelector('#run a').onclick = async () => {
         expected:  data.Exp,
         output:    data.Out,
     };
+
+    for (const div of statusDivs)
+        div.replaceChildren(new EditorView({
+            state: EditorState.create({
+                doc: result[div.id],
+                extensions: [
+                    extensions,
+                    EditorView.editable.of(false),
+                    EditorView.lineWrapping,
+                    div.id == 'diff' ? languages.diff : [],
+                ] }),
+        }).dom);
 
     // 3rd party integrations.
     if (lang == 'hexagony') {
@@ -201,9 +193,6 @@ const runCode = document.querySelector('#run a').onclick = async () => {
             `<a href="${url}" target=_blank>Run on Hexagony.net</a>`;
     } else
         thirdParty.innerHTML = '';
-
-    // Default to the "Diff" tab.
-    statusTabs[1].click();
 
     status.style.display = 'grid';
 

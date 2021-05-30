@@ -1,3 +1,17 @@
+input { display: none }
+
+input:checked + label,
+input:hover   + label {
+    background: var(--color);
+    color: var(--background);
+}
+
+label {
+    cursor: pointer;
+    margin-bottom: -2px;
+    padding: calc(.5rem - 1px) .5rem;
+}
+
 main > header {
     align-items: center;
     display: flex;
@@ -45,10 +59,11 @@ select {
 .cm-editor { height: 100% }
 .cm-gutter { min-width: 1.75rem }
 
-.tabs a {
-    margin-bottom: -2px;
-    padding: calc(.5rem - 1px) .5rem;
-}
+#arguments-tab:checked ~ #arguments,
+     #diff-tab:checked ~ #diff,
+   #errors-tab:checked ~ #errors,
+ #expected-tab:checked ~ #expected,
+   #output-tab:checked ~ #output { display: block }
 
 #editor, #rankings {
     border: 1px solid var(--color);
@@ -73,26 +88,28 @@ select {
 
 #status {
     display: none;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: repeat(5, auto) 1fr auto;
     padding: 1rem;
 }
 
-#status h2 {
-    grid-column: span 2;
-    margin-bottom: 1rem;
-}
-
-#status .cm-editor {
+#status > div {
     background: var(--background);
     border: 1px solid var(--color);
     border-top-width: 2px;
-    grid-column: span 2;
-    height: 20rem;
+    display: none;
+    grid-column: span 7;
+    height: 14rem;
+}
+
+#status h2 {
+    grid-column: span 7;
+    margin-bottom: 1rem;
 }
 
 #thirdParty {
     align-items: center;
     display: flex;
+    grid-column: 7;
 }
 
 @media (max-width: 34rem) {

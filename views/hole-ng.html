@@ -119,15 +119,30 @@
     </div>
 
     <div id=status>
-        <h2>Pass 😀</h2>
-        <nav class=tabs id=statusTabs>
-            <a id=arguments>Arguments</a>
-            <a id=diff>Diff</a>
-            <a id=expected>Expected</a>
-            <a id=output>Output</a>
-            <a id=errors>Errors</a>
-        </nav>
+        <h2></h2>
+
+        <input id=arguments-tab name=status type=radio>
+        <label for=arguments-tab>Arguments</label>
+
+        <input checked id=output-tab name=status type=radio>
+        <label for=output-tab>Output</label>
+
+        <input id=expected-tab name=status type=radio>
+        <label for=expected-tab>Expected</label>
+
+        <input id=diff-tab name=status type=radio>
+        <label for=diff-tab>Diff</label>
+
+        <input id=errors-tab name=status type=radio>
+        <label for=errors-tab>Errors</label>
+
         <nav id=thirdParty></nav>
+
+        <div id=arguments></div>
+        <div id=output   ></div>
+        <div id=expected ></div>
+        <div id=diff     ></div>
+        <div id=errors   ></div>
     </div>
 </main>
 
