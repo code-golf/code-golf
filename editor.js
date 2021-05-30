@@ -48,69 +48,50 @@ nimReg({
 // Other.
 import LZString from 'lz-string';
 
-export { EditorState, EditorView, LZString };
-
 // For some reason, this doesn't fully work unless added to both themes.
 const asmErrorTooltip = {
-    color: "var(--background)",
-    backgroundColor: "var(--color)",
-    "&:before": {
-        borderTopColor: "var(--color)",
-    }
+    '&:before':   { borderTopColor: 'var(--color)' },
+    'background': 'var(--color)',
+    'color':      'var(--background)',
 };
 
-export const darkThemeExtensions = [
-    EditorView.theme({
-        "&": {
-            backgroundColor: "var(--background)",
-            color: "var(--color)",
-        },
-        ".cm-gutters": {
-            backgroundColor: "var(--light-grey)",
-        },
-        ".cm-asm-error-tooltip": asmErrorTooltip,
-    }, { dark: true }),
-    HighlightStyle.define([{
-        tag: tags.literal,
-        color: "#98c379",
-    },
-    {
-        tag: tags.regexp,
-        color: "#e06c75"
-    }]),
-    oneDarkTheme,
-    oneDarkHighlightStyle,
-];
+const fontFamily =
+    "'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', Courier, monospace";
 
-const fontFamily = "'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', Courier, monospace";
+export { EditorState, EditorView, LZString };
 
-const defaultTheme = EditorView.theme({
-    '.cm-content':              { fontFamily },
-    '.cm-gutters':              { fontFamily },
-    '.cm-tooltip':              { fontFamily },
-    '.cm-tooltip-autocomplete': { fontFamily },
-    '.cm-asm-error':            { textDecoration: 'underline var(--asm-error)' },
-    '.cm-asm-error-tooltip':    asmErrorTooltip,
-}, { dark: false });
+export const extensions = {
+    // Extensions.
+    base: [
+        defaultHighlightStyle, history(), indentOnInput(), lineNumbers(),
+        keymap.of([ defaultTabBinding, historyKeymap, standardKeymap ]),
+        EditorView.theme({
+            '.cm-asm-error': { textDecoration: 'underline var(--asm-error)' },
+            '.cm-asm-error-tooltip':    asmErrorTooltip,
+            '.cm-content':              { fontFamily },
+            '.cm-gutters':              { fontFamily },
+            '.cm-tooltip':              { fontFamily },
+            '.cm-tooltip-autocomplete': { fontFamily },
+        }, { dark: false }),
+    ],
+    brackets: [
+        bracketMatching(), closeBrackets(), keymap.of(closeBracketsKeymap),
+    ],
+    dark: [
+        EditorView.theme({
+            '&': { background: 'var(--background)', color: 'var(--color)' },
+            '.cm-asm-error-tooltip': asmErrorTooltip,
+            '.cm-gutters':           { background: 'var(--light-grey)' },
+        }, { dark: true }),
+        HighlightStyle.define([
+            { color: '#98c379', tag: tags.literal },
+            { color: '#e06c75', tag: tags.regexp  },
+        ]),
+        oneDarkTheme,
+        oneDarkHighlightStyle,
+    ],
 
-export const defaultExtensions = [
-    defaultHighlightStyle,
-    defaultTheme,
-    history(),
-    indentOnInput(),
-    keymap.of([
-        defaultTabBinding, ...historyKeymap, ...standardKeymap,
-    ]),
-    lineNumbers(),
-];
-
-export const bracketExtensions = [
-    bracketMatching(),
-    closeBrackets(),
-    keymap.of(closeBracketsKeymap)
-]
-
-export const languages = {
+    // Languages.
     'assembly':   assembly(),
     'bash':       StreamLanguage.define(shell),
     'brainfuck':  StreamLanguage.define(brainfuck),
@@ -143,4 +124,4 @@ export const languages = {
     'swift':      StreamLanguage.define(swift),
     // TODO v
     // TODO zig
-}
+};

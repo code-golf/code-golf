@@ -2150,12 +2150,12 @@ function checkSelection(selection2, docLength) {
 }
 var nextID = 0;
 var Facet = class {
-  constructor(combine, compareInput, compare2, isStatic, extensions) {
+  constructor(combine, compareInput, compare2, isStatic, extensions2) {
     this.combine = combine;
     this.compareInput = compareInput;
     this.compare = compare2;
     this.isStatic = isStatic;
-    this.extensions = extensions;
+    this.extensions = extensions2;
     this.id = nextID++;
     this.default = combine([]);
   }
@@ -10194,8 +10194,8 @@ var parseWorker = ViewPlugin.fromClass(class ParseWorker {
   } }
 });
 var language = Facet.define({
-  combine(languages2) {
-    return languages2.length ? languages2[0] : null;
+  combine(languages) {
+    return languages.length ? languages[0] : null;
   },
   enables: [Language.state, parseWorker]
 });
@@ -24587,63 +24587,45 @@ var nim;
   } }
 });
 var asmErrorTooltip = {
-  color: "var(--background)",
-  backgroundColor: "var(--color)",
-  "&:before": {
-    borderTopColor: "var(--color)"
-  }
+  "&:before": { borderTopColor: "var(--color)" },
+  "background": "var(--color)",
+  "color": "var(--background)"
 };
-var darkThemeExtensions = [
-  EditorView.theme({
-    "&": {
-      backgroundColor: "var(--background)",
-      color: "var(--color)"
-    },
-    ".cm-gutters": {
-      backgroundColor: "var(--light-grey)"
-    },
-    ".cm-asm-error-tooltip": asmErrorTooltip
-  }, { dark: true }),
-  HighlightStyle.define([
-    {
-      tag: tags.literal,
-      color: "#98c379"
-    },
-    {
-      tag: tags.regexp,
-      color: "#e06c75"
-    }
-  ]),
-  oneDarkTheme,
-  oneDarkHighlightStyle
-];
 var fontFamily = "'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', Courier, monospace";
-var defaultTheme = EditorView.theme({
-  ".cm-content": { fontFamily },
-  ".cm-gutters": { fontFamily },
-  ".cm-tooltip": { fontFamily },
-  ".cm-tooltip-autocomplete": { fontFamily },
-  ".cm-asm-error": { textDecoration: "underline var(--asm-error)" },
-  ".cm-asm-error-tooltip": asmErrorTooltip
-}, { dark: false });
-var defaultExtensions = [
-  defaultHighlightStyle,
-  defaultTheme,
-  history(),
-  indentOnInput(),
-  keymap.of([
-    defaultTabBinding,
-    ...historyKeymap,
-    ...standardKeymap
-  ]),
-  lineNumbers()
-];
-var bracketExtensions = [
-  bracketMatching(),
-  closeBrackets(),
-  keymap.of(closeBracketsKeymap)
-];
-var languages = {
+var extensions = {
+  base: [
+    defaultHighlightStyle,
+    history(),
+    indentOnInput(),
+    lineNumbers(),
+    keymap.of([defaultTabBinding, historyKeymap, standardKeymap]),
+    EditorView.theme({
+      ".cm-asm-error": { textDecoration: "underline var(--asm-error)" },
+      ".cm-asm-error-tooltip": asmErrorTooltip,
+      ".cm-content": { fontFamily },
+      ".cm-gutters": { fontFamily },
+      ".cm-tooltip": { fontFamily },
+      ".cm-tooltip-autocomplete": { fontFamily }
+    }, { dark: false })
+  ],
+  brackets: [
+    bracketMatching(),
+    closeBrackets(),
+    keymap.of(closeBracketsKeymap)
+  ],
+  dark: [
+    EditorView.theme({
+      "&": { background: "var(--background)", color: "var(--color)" },
+      ".cm-asm-error-tooltip": asmErrorTooltip,
+      ".cm-gutters": { background: "var(--light-grey)" }
+    }, { dark: true }),
+    HighlightStyle.define([
+      { color: "#98c379", tag: tags.literal },
+      { color: "#e06c75", tag: tags.regexp }
+    ]),
+    oneDarkTheme,
+    oneDarkHighlightStyle
+  ],
   "assembly": assembly(),
   "bash": StreamLanguage.define(shell),
   "brainfuck": StreamLanguage.define(brainfuck),
@@ -24675,8 +24657,5 @@ export {
   EditorState,
   EditorView,
   export_LZString as LZString,
-  bracketExtensions,
-  darkThemeExtensions,
-  defaultExtensions,
-  languages
+  extensions
 };

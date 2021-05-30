@@ -1,25 +1,27 @@
 // TODO Set #rankings height to editor on expand/shrink.
 
-import { bracketExtensions, darkThemeExtensions, defaultExtensions, EditorView, EditorState, languages, LZString } from '/editor.js';
+import { EditorView, EditorState, LZString, extensions } from '/editor.js';
 
-let lang;
-let result = {};
-let scoring = 'bytes';
+const all         = document.querySelector('#all');
+const hole        = decodeURI(location.pathname.slice(4));
+const langs       = JSON.parse(document.querySelector('#langs').innerText);
+const rankings    = document.querySelector('#rankings');
+const scoringTabs = document.querySelectorAll('#scoringTabs a');
+const select      = document.querySelector('select');
+const solutions   = JSON.parse(document.querySelector('#solutions').innerText);
+const status      = document.querySelector('#status');
+const statusDivs  = document.querySelectorAll('#status > div');
+const statusH2    = document.querySelector('#status h2');
+const strokes     = document.querySelector('#strokes');
+const thirdParty  = document.querySelector('#thirdParty');
 
-const all                = document.querySelector('#all');
-const darkModeMediaQuery = JSON.parse(document.querySelector('#darkModeMediaQuery').innerText);
-const hole               = decodeURI(location.pathname.slice(4));
-const langs              = JSON.parse(document.querySelector('#langs').innerText);
-const rankings           = document.querySelector('#rankings');
-const scoringTabs        = document.querySelectorAll('#scoringTabs a');
-const select             = document.querySelector('select');
-const solutions          = JSON.parse(document.querySelector('#solutions').innerText);
-const status             = document.querySelector('#status');
-const statusDivs         = document.querySelectorAll('#status > div');
-const statusH2           = document.querySelector('#status h2');
-const strokes            = document.querySelector('#strokes');
-const thirdParty         = document.querySelector('#thirdParty');
-const editor             = new EditorView({
+const darkMode = matchMedia(JSON.parse(document.querySelector(
+    '#darkModeMediaQuery').innerText)).matches;
+
+const baseExtensions =
+    darkMode ? [...extensions.dark, ...extensions.base] : extensions.base;
+
+const editor = new EditorView({
     dispatch: (tr) => {
         const result = editor.update([tr]);
         let scorings = {};
@@ -42,12 +44,11 @@ const editor             = new EditorView({
     parent: document.querySelector('#editor'),
 });
 
-editor.contentDOM.setAttribute("data-gramm", "false"); // Disable Grammarly
+editor.contentDOM.setAttribute('data-gramm', 'false');  // Disable Grammarly.
 
-const darkMode = matchMedia(darkModeMediaQuery).matches;
-const extensions = darkMode ?
-    [...darkThemeExtensions, ...defaultExtensions] :
-    defaultExtensions;
+let lang;
+let result = {};
+let scoring = 'bytes';
 
 // Update UI.
 async function update() {
@@ -110,10 +111,18 @@ const switchLang = onhashchange = () => {
         EditorState.create({
             doc:        solutions[lang]?.[scoring] ?? langs[lang].example,
             extensions: [
-                ['brainfuck', 'fish', 'j', 'hexagony'].includes(lang) ? [] : bracketExtensions,
-                ['assembly', 'fish', 'hexagony'].includes(lang) ? [] : EditorView.lineWrapping,
-                ...extensions,
-                languages[lang] || []],
+                ...baseExtensions,
+
+                extensions[lang] || [],
+
+                // These languages shouldn't auto-complete brackets.
+                ['brainfuck', 'fish', 'j', 'hexagony'].includes(lang)
+                    ? [] : extensions.brackets,
+
+                // These languages shouldn't wrap lines.
+                ['assembly', 'fish', 'hexagony'].includes(lang)
+                    ? [] : EditorView.lineWrapping,
+            ],
         }),
     );
 
@@ -177,10 +186,10 @@ const runCode = document.querySelector('#run a').onclick = async () => {
             state: EditorState.create({
                 doc: result[div.id],
                 extensions: [
-                    extensions,
+                    ...baseExtensions,
                     EditorView.editable.of(false),
                     EditorView.lineWrapping,
-                    div.id == 'diff' ? languages.diff : [],
+                    div.id == 'diff' ? extensions.diff : [],
                 ] }),
         }).dom);
 
