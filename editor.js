@@ -64,7 +64,7 @@ export const extensions = {
     // Extensions.
     base: [
         defaultHighlightStyle, history(), indentOnInput(), lineNumbers(),
-        keymap.of([ defaultTabBinding, historyKeymap, standardKeymap ]),
+        keymap.of([ defaultTabBinding, ...historyKeymap, ...standardKeymap ]),
         EditorView.theme({
             '.cm-asm-error': { textDecoration: 'underline var(--asm-error)' },
             '.cm-asm-error-tooltip':    asmErrorTooltip,
