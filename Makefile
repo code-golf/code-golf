@@ -114,21 +114,17 @@ live:
 	    docker stop code-golf;            \
 	    docker rm code-golf;              \
 	    docker run                        \
-	    --cap-add      CAP_KILL           \
-	    --cap-add      CAP_SETGID         \
-	    --cap-add      CAP_SETUID         \
-	    --cap-add      CAP_SYS_ADMIN      \
-	    --cap-drop     ALL                \
 	    --detach                          \
 	    --env-file     /etc/code-golf.env \
 	    --init                            \
 	    --name         code-golf          \
 	    --pids-limit   1024               \
+	    --privileged                      \
 	    --publish       80:1080           \
 	    --publish      443:1443           \
 	    --read-only                       \
 	    --restart      always             \
-	    --security-opt seccomp:unconfined \
+	    --ulimit       core=-1            \
 	    --volume       certs:/certs       \
 	    codegolf/code-golf &&             \
 	    docker system prune -f"

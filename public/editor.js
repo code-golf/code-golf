@@ -14686,7 +14686,7 @@ var shiftMnemonics = `rol ror rcl rcr shl shr  sar`.split(" ");
 shiftMnemonics.forEach((name2, i) => {
   if (name2)
     mnemonics[name2] = [
-      "D0." + i + " i_1 rbwlq",
+      "D0." + i + " i_1b rbwlq",
       "D2." + i + " R_1b rbwlq",
       "C0." + i + " ib rbwlq"
     ];

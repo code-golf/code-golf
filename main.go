@@ -6,6 +6,7 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
 	"syscall"
 	"time"
 
@@ -192,6 +193,20 @@ func main() {
 			}
 		}
 	}()
+
+	// Configure core dumps so that defAsm can read them to dump registers.
+	// Note this affects the host, maybe one day Linux will namespace these.
+	// See https://stackoverflow.com/a/39152041
+	if err := os.WriteFile(
+		"/proc/sys/kernel/core_pattern", []byte("/tmp/core"), 0644,
+	); err != nil {
+		log.Println(err)
+	}
+	if err := os.WriteFile(
+		"/proc/sys/kernel/core_uses_pid", []byte("0"), 0644,
+	); err != nil {
+		log.Println(err)
+	}
 
 	log.Println("Listening…")
 

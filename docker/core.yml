@@ -12,6 +12,8 @@ services:
       PGUSER:    code-golf
     pids_limit: 1024
     privileged: true
+    ulimits:
+      core: -1
     volumes:
       - ..:/go
   db:
