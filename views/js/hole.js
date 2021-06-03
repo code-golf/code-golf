@@ -96,7 +96,7 @@ onload = () => {
         cm.setOption('mode', {
             name: 'text/x-' + lang,
             startOpen: true,
-            multiLineStrings: lang == 'c' // TCC supports multi-line strings
+            multiLineStrings: lang == 'c', // TCC supports multi-line strings
         });
         cm.setValue(code);
 
@@ -106,7 +106,7 @@ onload = () => {
             confirm('Your local copy of the code is different than the remote one. Do you want to restore the local version?'))
             cm.setValue(autoSaveCode);
 
-        for (let info of document.querySelectorAll('main .info'))
+        for (const info of document.querySelectorAll('main .info'))
             info.style.display = info.classList.contains(lang) ? 'block' : '';
     };
 
@@ -316,13 +316,13 @@ async function refreshScores() {
                     <img src="//avatars.githubusercontent.com/${s.login}?s=24">
                     <span>${s.login}</span>
                 </a>
-                <td class=right><span${scorings[scoring] != "Bytes" ? ' class=inactive' : ''}`;
+                <td class=right><span${scorings[scoring] != 'Bytes' ? ' class=inactive' : ''}`;
 
             if (s.bytes)
                 html += ` data-tooltip="Bytes solution is ${formatScore(s.bytes)} bytes, ${formatScore(s.bytes_chars)} chars."`;
 
             html += `>${formatScore(s.bytes)}</span>
-                <td class=right><span${scorings[scoring] != "Chars" ? ' class=inactive' : ''}`;
+                <td class=right><span${scorings[scoring] != 'Chars' ? ' class=inactive' : ''}`;
 
             if (s.chars)
                 html +=
@@ -331,7 +331,7 @@ async function refreshScores() {
             html += `>${formatScore(s.chars)}</span>`;
         }
         else
-            html += `<tr><td colspan=4>&nbsp`;
+            html += '<tr><td colspan=4>&nbsp';
     }
 
     table.innerHTML = html;

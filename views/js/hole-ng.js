@@ -21,10 +21,12 @@ const darkMode = matchMedia(JSON.parse(document.querySelector(
 const baseExtensions =
     darkMode ? [...extensions.dark, ...extensions.base] : extensions.base;
 
+let lang, result = {}, scoring = 'bytes';
+
 const editor = new EditorView({
-    dispatch: (tr) => {
+    dispatch: tr => {
         const result = editor.update([tr]);
-        let scorings = {};
+        const scorings = {};
 
         if (lang == 'assembly')
             scorings.byte = editor['asm-bytes'];
@@ -35,9 +37,9 @@ const editor = new EditorView({
             scorings.char = strlen(code);
         }
 
-        strokes.innerText = Object.keys(scorings).map(
-            s => `${scorings[s]} ${s}${scorings[s] != 1 ? 's' : ''}`
-        ).join(', ');
+        strokes.innerText = Object.keys(scorings)
+            .map(s => `${scorings[s]} ${s}${scorings[s] != 1 ? 's' : ''}`)
+            .join(', ');
 
         return result;
     },
@@ -45,10 +47,6 @@ const editor = new EditorView({
 });
 
 editor.contentDOM.setAttribute('data-gramm', 'false');  // Disable Grammarly.
-
-let lang;
-let result = {};
-let scoring = 'bytes';
 
 // Update UI.
 async function update() {
