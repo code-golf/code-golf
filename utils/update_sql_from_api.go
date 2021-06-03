@@ -22,8 +22,13 @@ import (
 )
 
 // Create a string containing the given number of characters and UTF-8 encoded bytes.
-func makeCode(chars, bytes int) (result string) {
-	delta := bytes - chars
+func makeCode(chars *int, bytes int) (result string) {
+	if chars == nil {
+		// Support assembly solutions without chars.
+		return strings.Repeat("a", bytes)
+	}
+
+	delta := bytes - *chars
 
 	for _, replacement := range "😃景£" {
 		replacementDelta := len(string(replacement)) - 1
@@ -31,14 +36,14 @@ func makeCode(chars, bytes int) (result string) {
 		delta %= replacementDelta
 	}
 
-	result += strings.Repeat("a", chars-len([]rune(result)))
+	result += strings.Repeat("a", *chars-len([]rune(result)))
 	return
 }
 
 func testMakeCode() {
 	for x := 0; x < 10; x++ {
 		for y := x; y <= 4*x; y++ {
-			result := makeCode(x, y)
+			result := makeCode(&x, y)
 			if len([]rune(result)) != x {
 				panic("unexpected rune count")
 			}
@@ -64,7 +69,8 @@ func main() {
 	defer res.Body.Close()
 
 	var infoList []struct {
-		Bytes, Chars                          int
+		Bytes                                 int
+		Chars                                 *int
 		Hole, Lang, Login, Scoring, Submitted string
 	}
 	if err := json.NewDecoder(res.Body).Decode(&infoList); err != nil {
