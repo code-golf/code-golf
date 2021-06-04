@@ -1162,11 +1162,11 @@ links = [
 ]
 preamble = '''
 <p>
-    A niven number is a non-negative number that is divisible by the sum of
+    A Niven number is a positive integer that is divisible by the sum of
     its digits.
 
 <p>
-    Print all the niven numbers from <b>0</b> to <b>100</b> inclusive, each on
+    Print all the Niven numbers from <b>1</b> to <b>100</b> inclusive, each on
     their own line.
 '''
 
