@@ -107,7 +107,7 @@
             {{ end }}
             <td class=right>{{ comma .Points }}
             <td class=right>{{ comma .Strokes }}
-            <td class=right>{{ timeShort (.Submitted.In $.Location) }}
+            <td class=right>{{ time (.Submitted.In $.Location) }}
     {{ end }}
     </table>
 

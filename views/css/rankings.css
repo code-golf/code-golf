@@ -1,5 +1,5 @@
 /* TODO Stop having "thin" pages, make everything consistent. */
-body { max-width: 50rem }
+body { max-width: 52rem }
 
 body > p {
     font-weight: bold;
@@ -40,9 +40,8 @@ main nav {
     gap: .25rem .75rem;
     grid-row: span 2;
     justify-content: flex-end;
-    max-width: 15rem;
-    min-width: 15rem;
     padding: .5rem .5rem .5rem 0;
+    width: 15rem;
 }
 
 main nav > * {

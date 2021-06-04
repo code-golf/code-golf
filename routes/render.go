@@ -66,7 +66,6 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 	},
 	"title":      strings.Title,
 	"time":       pretty.Time,
-	"timeShort":  pretty.TimeShort,
 	"trimPrefix": strings.TrimPrefix,
 })
 
