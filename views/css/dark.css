@@ -19,6 +19,7 @@
     --link-color: hsl(205, 87%, 61%);
 
     --arg-background:     hsl(210, 8%, 25%);
+    --asm-dump:           hsl(210, 10%, 67%);
     --asm-error:          #f76970;
     --badge-background:   hsl(210, 8%, 25%);
     --cheevo-not-earned:  #343a40;

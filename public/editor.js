@@ -24607,6 +24607,7 @@ var extensions = {
   dark: [
     EditorView.theme({
       "&": { background: "var(--background)", color: "var(--color)" },
+      ".cm-asm-dump": { color: "var(--asm-dump)" },
       ".cm-asm-error-tooltip": asmErrorTooltip,
       ".cm-gutters": { background: "var(--light-grey)" }
     }, { dark: true }),
