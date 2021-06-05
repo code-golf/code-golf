@@ -52,6 +52,7 @@ func AdminSolutionsRun(w http.ResponseWriter, r *http.Request) {
 		go func() {
 			defer wg.Done()
 
+			i := 0
 			for s := range solutions {
 				var passes, fails int
 
@@ -102,7 +103,9 @@ func AdminSolutionsRun(w http.ResponseWriter, r *http.Request) {
 
 				mux.Lock()
 				w.Write(b)
-				w.(http.Flusher).Flush()
+				if i++; i%10 == 0 {
+					w.(http.Flusher).Flush()
+				}
 				mux.Unlock()
 			}
 		}()
