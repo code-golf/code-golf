@@ -255,6 +255,12 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		score.Stdout = bytes.Replace(score.Stdout, []byte("Ⅿ"), []byte("M"), -1)
 	}
 
+	// Timeouts do not pass, no matter what they output
+	if score.Timeout {
+		score.Pass = false
+		return
+	}
+
 	if len(score.Stdout) != 0 {
 		// TODO Generalise a case insensitive flag, should it apply to others?
 		if holeID == "css-colors" {
