@@ -1,4 +1,4 @@
-FROM golang:1.16.4-alpine3.13
+FROM golang:1.16.5-alpine3.13
 
 ENV CGO_ENABLED=0 GOPATH=
 
@@ -10,7 +10,7 @@ RUN go mod download
 
 COPY . ./
 
-RUN go build -ldflags -s \
+RUN go build -ldflags -s -trimpath \
  && gcc -Wall -Werror -Wextra -o /usr/bin/run-lang -s -static run-lang.c
 
 FROM scratch
