@@ -428,7 +428,7 @@ end
 
 [Nim]
 size    = '21.6 MiB'
-version = '1.4.6'
+version = '1.4.8'
 website = 'https://nim-lang.org'
 example = '''
 import os
@@ -462,7 +462,7 @@ say for @ARGV;
 
 [PHP]
 size    = '10.5 MiB'
-version = '7.4.19'
+version = '7.4.20'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -638,8 +638,8 @@ for arg in os.args[1..] {
 '''
 
 [Zig]
-size    = '216 MiB'
-version = '0.7.0'
+size    = '241 MiB'
+version = '0.8.0'
 website = 'https://ziglang.org'
 example = '''
 const std = @import("std");
@@ -659,6 +659,6 @@ pub fn main() !void {
     var args = std.process.args();
     _ = args.skip();
     while (args.next(std.testing.allocator)) |arg|
-        try stdout.print("{}\n", .{arg});
+        try stdout.print("{s}\n", .{arg});
 }
 '''
