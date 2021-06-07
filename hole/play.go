@@ -161,14 +161,12 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	// Args
 	switch langID {
 	// FIXME brainfuck and fish should be consistent.
-	case "brainfuck":
+	case "brainfuck", "fish":
 		args := ""
 		for _, arg := range score.Args {
 			args += arg + "\x00"
 		}
 		cmd.Stdin = strings.NewReader(args)
-	case "fish":
-		cmd.Stdin = strings.NewReader(strings.Join(score.Args, "\x00"))
 	default:
 		cmd.Args = append(cmd.Args, score.Args...)
 	}
