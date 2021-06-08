@@ -23,7 +23,7 @@ RUN node_modules/.bin/esbuild         \
     --outbase=views                   \
     --outdir=dist                     \
     --sourcemap                       \
-    `find views/js -name '*.js'`
+    `find views/js -name '*.js' -not -name '_*'`
 
 # Pre-compress assets.
 RUN find dist \( -name '*.js' -or -name '*.map' \) -exec brotli {} + \

@@ -34,7 +34,7 @@ services:
           --outdir=dist                     \
           --sourcemap                       \
           --watch                           \
-          `find views/js -name '*.js'`
+          `find views/js -name '*.js' -not -name '_*'`
     user: 1000:1000
     volumes:
       - ..:/code-golf
