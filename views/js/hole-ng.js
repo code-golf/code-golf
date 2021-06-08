@@ -187,20 +187,23 @@ async function update() {
     const res  = await fetch(`/scores/${hole}/${lang}/${scoring}/mini?ng=1`);
     const rows = res.ok ? await res.json() : [];
 
-    let html = '';
-    for (const r of rows)
-        html += `
-            <tr ${r.me ? 'class=me' : ''}>
-                <td>${r.rank}<sup>${ord(r.rank)}</sup>
-                <td>
-                    <a href=/golfers/${r.login}>
-                        <img src="//avatars.githubusercontent.com/${r.login}?s=24">
-                        <span>${r.login}</span>
-                    </a>
-                <td class=right>${r[scoring].toLocaleString('en')}`;
-
-    rankings.innerHTML =
-        html + '<tr><td colspan=3>&nbsp;'.repeat(15 - rows.length);
+    rankings.replaceChildren(<tbody>{
+        // Rows.
+        rows.map(r => <tr class={ r.me ? 'me' : '' }>
+            <td>{ r.rank }<sup>{ ord(r.rank) }</sup></td>
+            <td>
+                <a href={ `/golfers/${r.login}` }>
+                    <img src={ `//avatars.githubusercontent.com/${r.login}?s=24` }/>
+                    <span>{ r.login }</span>
+                </a>
+            </td>
+            <td class="right">{ r[scoring].toLocaleString('en') }</td>
+        </tr>)
+    }{
+        // Padding.
+        [...Array(15 - rows.length).keys()].map(() =>
+            <tr><td colspan="3">&nbsp;</td></tr>)
+    }</tbody>);
 }
 
 // Switch scoring
@@ -307,14 +310,10 @@ const runCode = document.querySelector('#run a').onclick = async () => {
         }).dom);
 
     // 3rd party integrations.
-    if (lang == 'hexagony') {
-        const url = '//hexagony.net#lz' + LZString.compressToBase64(
-            JSON.stringify({ code, input: data.Argv.join('\0'), inputMode: 'raw' }));
-
-        thirdParty.innerHTML =
-            `<a href="${url}" target=_blank>Run on Hexagony.net</a>`;
-    } else
-        thirdParty.innerHTML = '';
+    thirdParty.replaceChildren( lang == 'hexagony' ? <a target="_blank" href={
+        '//hexagony.net#lz' + LZString.compressToBase64(JSON.stringify({
+            code, input: data.Argv.join('\0'), inputMode: 'raw' }))
+    }>Run on Hexagony.net</a> : '' );
 
     status.style.display = 'grid';
 

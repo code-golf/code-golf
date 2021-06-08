@@ -18,6 +18,9 @@ RUN node_modules/.bin/esbuild         \
     --bundle                          \
     --entry-names=[dir]/[name]-[hash] \
     --format=esm                      \
+    --inject:views/js/_inject.js      \
+    --jsx-factory=createElement       \
+    --loader:.js=jsx                  \
     --metafile=esbuild.json           \
     --minify                          \
     --outbase=views                   \
