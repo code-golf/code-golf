@@ -77,13 +77,10 @@ func Time(t time.Time) template.HTML {
 
 	var sb strings.Builder
 
-	rfc := t.Format(time.RFC3339)
-
-	sb.WriteString("<time datetime=")
-	sb.WriteString(rfc)
-	sb.WriteString(" title=")
-	sb.WriteString(rfc)
-	sb.WriteRune('>')
+	sb.WriteString(t.Format(
+		"<time datetime=" + time.RFC3339Nano +
+			` title="2 Jan 2006 15:04:05.000000 MST">`,
+	))
 
 	diff := time.Until(t)
 	past := false
