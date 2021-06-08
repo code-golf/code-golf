@@ -144,7 +144,7 @@ const editor = new EditorView({
         const scorings = {};
 
         if (lang == 'assembly')
-            scorings.byte = editor['asm-bytes'];
+            scorings.byte = editor['asm-state'].bytes;
         else {
             const code = [...tr.state.doc].join('');
 
