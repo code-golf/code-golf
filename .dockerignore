@@ -1,5 +1,6 @@
 /.git/
 /code-golf
 /db/
+/dist/
+/docker/
 /langs/
-/node_modules/

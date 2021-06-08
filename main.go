@@ -34,7 +34,7 @@ func main() {
 		middleware.Logger,
 		middleware.Recoverer,
 		middleware.RedirectHost,
-		middleware.Public,
+		middleware.Static,
 		middleware.RedirectSlashes,
 		middleware.Compress(5),
 		// middleware.Downtime,

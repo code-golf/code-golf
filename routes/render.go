@@ -3,6 +3,7 @@ package routes
 import (
 	"crypto/rand"
 	"encoding/base64"
+	"encoding/json"
 	"html/template"
 	"net/http"
 	"net/url"
@@ -44,9 +45,9 @@ func colour(i int) string {
 }
 
 var (
-	css = map[string]template.CSS{}
-	js  = map[string]template.JS{}
-	svg = map[string]template.HTML{}
+	assets = map[string]string{}
+	css    = map[string]template.CSS{}
+	svg    = map[string]template.HTML{}
 
 	dev bool
 )
@@ -127,12 +128,6 @@ func init() {
 			}
 
 			tmpl = template.Must(tmpl.New(name).Parse(data))
-		case ".js":
-			if data, err = min.JS(data); err != nil {
-				return err
-			}
-
-			js[name[len("js/"):]] = template.JS(data)
 		case ".svg":
 			// Trim namespace as it's not needed for inline SVG under HTML 5.
 			data = strings.ReplaceAll(data, ` xmlns="http://www.w3.org/2000/svg"`, "")
@@ -143,6 +138,26 @@ func init() {
 		return nil
 	}); err != nil {
 		panic(err)
+	}
+
+	file, err := os.Open("esbuild.json")
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	var esbuild struct {
+		Outputs map[string]struct{ EntryPoint string }
+	}
+
+	if err := json.NewDecoder(file).Decode(&esbuild); err != nil {
+		panic(err)
+	}
+
+	for dist, src := range esbuild.Outputs {
+		if src.EntryPoint != "" {
+			assets[strings.TrimPrefix(src.EntryPoint, "views/")] = "/" + dist
+		}
 	}
 }
 
@@ -176,7 +191,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data interface{
 		Golfer                                                               *golfer.Golfer
 		GolferInfo                                                           *golfer.GolferInfo
 		Holes                                                                map[string]hole.Hole
-		JS                                                                   template.JS
+		JS                                                                   []string
 		Langs                                                                map[string]lang.Lang
 		Location                                                             *time.Location
 		Request                                                              *http.Request
@@ -189,8 +204,8 @@ func render(w http.ResponseWriter, r *http.Request, name string, data interface{
 		Golfer:             theGolfer,
 		GolferInfo:         session.GolferInfo(r),
 		Holes:              hole.ByID,
+		JS:                 []string{assets["js/base.js"]},
 		Langs:              lang.ByID,
-		JS:                 js["base"] + js[path.Dir(name)] + js[name],
 		Nonce:              base64.StdEncoding.EncodeToString(nonce),
 		Path:               r.URL.Path,
 		Request:            r,
@@ -228,9 +243,18 @@ func render(w http.ResponseWriter, r *http.Request, name string, data interface{
 		}
 	}
 
+	// Legacy old "build-assets".
 	if name == "hole" {
 		args.JSExt = holeJsPath
 		args.CSS = css["vendor/codemirror"] + css["vendor/codemirror-dialog"] + css["vendor/codemirror-dark"] + args.CSS
+	}
+
+	// Append route specific JS.
+	// e.g. GET /foo/bar might add js/foo.js and/or js/foo/bar.js.
+	for _, path := range []string{path.Dir(name), name} {
+		if url, ok := assets["js/"+path+".js"]; ok {
+			args.JS = append(args.JS, url)
+		}
 	}
 
 	header := w.Header()

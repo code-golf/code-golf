@@ -2,7 +2,7 @@ FROM golang:1.16.5-alpine3.13
 
 ENV CGO_ENABLED=0 GOPATH=
 
-RUN apk add --no-cache build-base linux-headers tzdata
+RUN apk add --no-cache brotli build-base linux-headers tzdata zopfli
 
 COPY go.mod go.sum ./
 
@@ -12,6 +12,22 @@ COPY . ./
 
 RUN go build -ldflags -s -trimpath \
  && gcc -Wall -Werror -Wextra -o /usr/bin/run-lang -s -static run-lang.c
+
+# Build assets. Keep this and docker/core.yml in sync!
+RUN node_modules/.bin/esbuild         \
+    --bundle                          \
+    --entry-names=[dir]/[name]-[hash] \
+    --format=esm                      \
+    --metafile=esbuild.json           \
+    --minify                          \
+    --outbase=views                   \
+    --outdir=dist                     \
+    --sourcemap                       \
+    `find views/js -name '*.js'`
+
+# Pre-compress assets.
+RUN find dist \( -name '*.js' -or -name '*.map' \) -exec brotli {} + \
+ && find dist \( -name '*.js' -or -name '*.map' \) -exec zopfli {} +
 
 FROM scratch
 
@@ -47,8 +63,9 @@ COPY --from=codegolf/lang-sql        ["/", "/langs/sql/rootfs/"       ] # 1.02 M
 COPY --from=codegolf/lang-fish       ["/", "/langs/fish/rootfs/"      ] #  477 KiB
 COPY --from=codegolf/lang-lua        ["/", "/langs/lua/rootfs/"       ] #  338 KiB
 
-COPY --from=0 /go/code-golf                      /
+COPY --from=0 /go/code-golf /go/esbuild.json     /
 COPY          /*.toml /words.txt                 /
+COPY --from=0 /go/dist                           /dist/
 COPY --from=0 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY          /public                            /public/
 COPY --from=0 /usr/bin/run-lang                  /usr/bin/

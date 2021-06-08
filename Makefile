@@ -80,9 +80,6 @@ e2e:
 	@docker-compose run e2e || (docker-compose logs; false)
 	@docker-compose rm -fs
 
-editor:
-	@node_modules/.bin/esbuild --bundle --format=esm --outdir=public editor.js
-
 fmt:
 	@gofmt -s  -w $(GOFILES)
 	@goimports -w $(GOFILES)

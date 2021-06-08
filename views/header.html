@@ -30,13 +30,14 @@
 <meta property=og:image:height content=200>
 <meta property=og:url content="https://code.golf{{ with .Path }}{{ . }}{{ end }}">
 
+{{ range .JS -}}
+    <script nonce="{{ $.Nonce }}" src="{{ . }}" type=module></script>
+{{ end -}}
+
 {{/* TODO Kill JSExt, make codemirror a real module imported from hole.js */}}
 {{ with .JSExt }}<script nonce="{{ $.Nonce }}" defer src="{{ . }}"></script>{{ end }}
 
 <style>{{ .CSS }}</style>
-
-{{/* type=module acts like defer, even on inline scripts */}}
-<script nonce="{{ .Nonce }}" type=module>{{ .JS }}</script>
 
 <header>
     <nav>
