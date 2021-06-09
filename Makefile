@@ -73,11 +73,11 @@ e2e: export COMPOSE_PROJECT_NAME = code-golf-e2e
 e2e:
 # TODO Pass arguments to run specific tests.
 	@touch docker/.env
-	@docker-compose rm -fs
+	@docker-compose rm -fsv &>/dev/null
 	@docker-compose pull -q
 	@docker-compose build -q
 	@docker-compose run e2e || (docker-compose logs; false)
-	@docker-compose rm -fs
+	@docker-compose rm -fsv &>/dev/null
 
 fmt:
 	@gofmt -s  -w $(GOFILES)
