@@ -4,8 +4,6 @@ services:
     command:
       - go
       - run
-      - -tags
-      - dev
       - .
     environment:
       E2E: 1
