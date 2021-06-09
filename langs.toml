@@ -347,6 +347,20 @@ end
 size    = '33.6 MiB'
 version = 'GNU CLISP 2.49.92'
 website = 'https://clisp.sourceforge.io'
+example = '''
+; Printing
+(write-line "Hello World")
+
+; Looping
+(loop for i from 0 to 9
+    do (format t "~d~%" i)
+)
+
+; Accessing Arguments
+(loop for arg in *args*
+    do (write-line arg)
+)
+'''
 
 [Lua]
 size    = '338 KiB'
