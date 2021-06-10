@@ -408,7 +408,7 @@ version = 'GNU CLISP 2.49.92'
 website = 'https://clisp.sourceforge.io'
 example = '''
 ; Printing
-(write-line "Hello World")
+(write-line "Hello, World!")
 
 ; Looping
 (loop for i from 0 to 9
