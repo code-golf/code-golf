@@ -3,9 +3,6 @@ use t;
 for slurp("langs.toml").&from-toml.map({
     .key.lc.trans( qw[# ><>] => qw[-sharp fish] ) => .value<example>;
 }).sort -> (:key($lang), :value($code)) {
-    # TODO Remove this to ensure we have examples for every lang.
-    next unless $code;
-
     # <built-in>: internal compiler error: Illegal instruction
     todo 'intermittent error' if $lang eq 'fortran';
 
