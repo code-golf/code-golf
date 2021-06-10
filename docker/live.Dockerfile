@@ -13,23 +13,8 @@ COPY . ./
 RUN go build -ldflags -s -trimpath \
  && gcc -Wall -Werror -Wextra -o /usr/bin/run-lang -s -static run-lang.c
 
-# Build assets. Keep this and docker/core.yml in sync!
-RUN node_modules/.bin/esbuild         \
-    --bundle                          \
-    --entry-names=[dir]/[name]-[hash] \
-    --format=esm                      \
-    --inject:views/js/_inject.js      \
-    --jsx-factory=createElement       \
-    --loader:.js=jsx                  \
-    --metafile=esbuild.json           \
-    --minify                          \
-    --outbase=views                   \
-    --outdir=dist                     \
-    --sourcemap                       \
-    `find views/js -name '*.js' -not -name '_*'`
-
-# Pre-compress assets.
-RUN find dist \( -name '*.js' -or -name '*.map' \) -exec brotli {} + \
+RUN ./esbuild \
+ && find dist \( -name '*.js' -or -name '*.map' \) -exec brotli {} + \
  && find dist \( -name '*.js' -or -name '*.map' \) -exec zopfli {} +
 
 FROM scratch

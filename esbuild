@@ -1,0 +1,17 @@
+#!/bin/sh -e
+
+rm -rf dist esbuild.json
+
+node_modules/.bin/esbuild "$@"        \
+    --bundle                          \
+    --entry-names=[dir]/[name]-[hash] \
+    --format=esm                      \
+    --inject:views/js/_inject.js      \
+    --jsx-factory=createElement       \
+    --loader:.js=jsx                  \
+    --metafile=esbuild.json           \
+    --minify                          \
+    --outbase=views                   \
+    --outdir=dist                     \
+    --sourcemap                       \
+    `find views/js -name '*.js' -not -name '_*'`

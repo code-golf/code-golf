@@ -4,6 +4,11 @@ services:
     ports:
       - 80:1080
       - 443:1443
+  assets:
+    command:
+      - sh
+      - -c
+      - npm install && ./esbuild --watch
   db:
     ports:
       - 5432:5432

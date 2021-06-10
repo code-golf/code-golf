@@ -3,7 +3,7 @@ POSTGRES := postgres:13.3-alpine
 SHELL    := /bin/bash
 
 export COMPOSE_PATH_SEPARATOR=:
-export COMPOSE_FILE=docker/core.yml:docker/ports.yml
+export COMPOSE_FILE=docker/core.yml:docker/dev.yml
 
 define STUB
 package routes
@@ -76,6 +76,7 @@ e2e:
 	@docker-compose rm -fsv &>/dev/null
 	@docker-compose pull -q
 	@docker-compose build -q
+	@docker-compose run assets
 	@docker-compose run e2e || (docker-compose logs; false)
 	@docker-compose rm -fsv &>/dev/null
 
