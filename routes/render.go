@@ -140,23 +140,21 @@ func init() {
 		panic(err)
 	}
 
-	file, err := os.Open("esbuild.json")
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
+	if file, err := os.Open("esbuild.json"); err == nil {
+		defer file.Close()
 
-	var esbuild struct {
-		Outputs map[string]struct{ EntryPoint string }
-	}
+		var esbuild struct {
+			Outputs map[string]struct{ EntryPoint string }
+		}
 
-	if err := json.NewDecoder(file).Decode(&esbuild); err != nil {
-		panic(err)
-	}
+		if err := json.NewDecoder(file).Decode(&esbuild); err != nil {
+			panic(err)
+		}
 
-	for dist, src := range esbuild.Outputs {
-		if src.EntryPoint != "" {
-			assets[strings.TrimPrefix(src.EntryPoint, "views/")] = "/" + dist
+		for dist, src := range esbuild.Outputs {
+			if src.EntryPoint != "" {
+				assets[strings.TrimPrefix(src.EntryPoint, "views/")] = "/" + dist
+			}
 		}
 	}
 }
