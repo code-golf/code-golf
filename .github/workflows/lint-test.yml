@@ -6,14 +6,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+
       - uses: actions/setup-go@v2
         with:
           go-version: 1.16.5
 
-      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
 
       - run: make lint
       - run: make test
       - run: go get filippo.io/mkcert
       - run: make cert
+      - run: npm install
       - run: make e2e

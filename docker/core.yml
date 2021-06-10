@@ -16,16 +16,6 @@ services:
       core: -1
     volumes:
       - ..:/go
-  assets:
-    image: node:16.3.0-alpine3.13
-    command:
-      - sh
-      - -c
-      - npm install && ./esbuild
-    user: 1000:1000
-    volumes:
-      - ..:/code-golf
-    working_dir: /code-golf
   db:
     image: postgres:13.3-alpine
     environment:
