@@ -1,6 +1,6 @@
 ['><>']
 size    = '477 KiB'
-version = '44b227e'
+version = 'b71dce3'
 website = 'https://github.com/primo-ppcg/fish-jit'
 example = '''
 \ printing
@@ -97,7 +97,7 @@ done
 
 [brainfuck]
 size    = '4.55 MiB'
-version = '6fe46c2'
+version = 'c68db6c'
 website = 'https://github.com/primo-ppcg/bf-jit'
 example = '''
 >>Printing
