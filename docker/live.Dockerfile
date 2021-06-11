@@ -53,9 +53,11 @@ COPY --from=codegolf/lang-lua        ["/", "/langs/lua/rootfs/"       ] #  338 K
 
 COPY --from=0 /go/code-golf /go/esbuild.json     /
 COPY          /*.toml /words.txt                 /
+COPY          /css                               /css/
 COPY --from=0 /go/dist                           /dist/
 COPY --from=0 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY          /public                            /public/
+COPY          /svg                               /svg/
 COPY --from=0 /usr/bin/run-lang                  /usr/bin/
 COPY --from=0 /usr/share/zoneinfo                /usr/share/zoneinfo/
 COPY          /views                             /views/

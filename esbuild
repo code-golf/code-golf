@@ -6,12 +6,12 @@ node_modules/.bin/esbuild "$@"        \
     --bundle                          \
     --entry-names=[dir]/[name]-[hash] \
     --format=esm                      \
-    --inject:views/js/_inject.js      \
+    --inject:js/_inject.js            \
     --jsx-factory=createElement       \
     --loader:.js=jsx                  \
     --metafile=esbuild.json           \
     --minify                          \
-    --outbase=views                   \
+    --outbase=.                       \
     --outdir=dist                     \
     --sourcemap                       \
-    `find views/js -name '*.js' -not -name '_*'`
+    `find js -name '*.js' -not -name '_*'`

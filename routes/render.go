@@ -91,55 +91,32 @@ func getThemeCSS(theme string) template.CSS {
 	return css["light"] + "@media(prefers-color-scheme:dark){" + css["dark"] + "}"
 }
 
-func init() {
-	_, dev = syscall.Getenv("DEV")
-	uppercaseProps := regexp.MustCompile(`{{.+?[A-Z].*?}}`)
+func slurp(dir string) map[string]string {
+	files := map[string]string{}
 
-	if err := filepath.Walk("views", func(file string, info os.FileInfo, err error) error {
-		if err != nil || info.IsDir() {
-			return err
-		}
-
-		b, err := os.ReadFile(file)
-		if err != nil {
-			return err
-		}
-
-		data := string(b)
-		ext := path.Ext(file)
-		name := file[len("views/") : len(file)-len(ext)]
-
-		switch ext {
-		case ".css":
-			data = strings.ReplaceAll(data, "twemojiWoff2", twemojiWoff2Path)
-
-			if data, err = min.CSS(data); err != nil {
+	if err := filepath.Walk(dir, func(file string, info os.FileInfo, err error) error {
+		if !info.IsDir() {
+			data, err := os.ReadFile(file)
+			if err != nil {
 				return err
 			}
 
-			css[name[len("css/"):]] = template.CSS(data)
-		case ".html":
-			// Minify templates without uppsercase properties.
-			// The real fix is https://github.com/tdewolff/minify/issues/35
-			if !uppercaseProps.MatchString(data) {
-				if data, err = min.HTML(data); err != nil {
-					return err
-				}
-			}
-
-			tmpl = template.Must(tmpl.New(name).Parse(data))
-		case ".svg":
-			// Trim namespace as it's not needed for inline SVG under HTML 5.
-			data = strings.ReplaceAll(data, ` xmlns="http://www.w3.org/2000/svg"`, "")
-
-			svg[name[len("svg/"):]] = template.HTML(data)
+			name := file[len(dir)+1 : len(file)-len(path.Ext(file))]
+			files[name] = string(data)
 		}
 
-		return nil
+		return err
 	}); err != nil {
 		panic(err)
 	}
 
+	return files
+}
+
+func init() {
+	_, dev = syscall.Getenv("DEV")
+
+	// Assets.
 	if file, err := os.Open("esbuild.json"); err == nil {
 		defer file.Close()
 
@@ -153,9 +130,44 @@ func init() {
 
 		for dist, src := range esbuild.Outputs {
 			if src.EntryPoint != "" {
-				assets[strings.TrimPrefix(src.EntryPoint, "views/")] = "/" + dist
+				assets[src.EntryPoint] = "/" + dist
 			}
 		}
+	}
+
+	// CSS.
+	for name, data := range slurp("css") {
+		data = strings.ReplaceAll(data, "twemojiWoff2", twemojiWoff2Path)
+
+		var err error
+		if data, err = min.CSS(data); err != nil {
+			panic(err)
+		}
+
+		css[name] = template.CSS(data)
+	}
+
+	// SVG.
+	for name, data := range slurp("svg") {
+		// Trim namespace as it's not needed for inline SVG under HTML 5.
+		data = strings.ReplaceAll(data, ` xmlns="http://www.w3.org/2000/svg"`, "")
+
+		svg[name] = template.HTML(data)
+	}
+
+	// Views.
+	uppercaseProps := regexp.MustCompile(`{{.+?[A-Z].*?}}`)
+	for name, data := range slurp("views") {
+		// Minify templates without uppercase properties.
+		// The real fix is https://github.com/tdewolff/minify/issues/35
+		if !uppercaseProps.MatchString(data) {
+			var err error
+			if data, err = min.HTML(data); err != nil {
+				panic(err)
+			}
+		}
+
+		tmpl = template.Must(tmpl.New(name).Parse(data))
 	}
 }
 
