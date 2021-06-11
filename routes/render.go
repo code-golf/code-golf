@@ -137,8 +137,6 @@ func init() {
 
 	// CSS.
 	for name, data := range slurp("css") {
-		data = strings.ReplaceAll(data, "twemojiWoff2", twemojiWoff2Path)
-
 		var err error
 		if data, err = min.CSS(data); err != nil {
 			panic(err)
@@ -146,6 +144,14 @@ func init() {
 
 		css[name] = template.CSS(data)
 	}
+
+	// HACK Prepend font.css (with font URL) onto base.css.
+	// TODO Use esbuild for all CSS? Still serve inline?
+	cssBytes, err := os.ReadFile(assets["css/font.css"][1:])
+	if err != nil {
+		panic(err)
+	}
+	css["base"] = template.CSS(cssBytes) + css["base"]
 
 	// SVG.
 	for name, data := range slurp("svg") {

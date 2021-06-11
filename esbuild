@@ -9,9 +9,11 @@ node_modules/.bin/esbuild "$@"        \
     --inject:js/_inject.js            \
     --jsx-factory=createElement       \
     --loader:.js=jsx                  \
+    --loader:.woff2=file              \
     --metafile=esbuild.json           \
     --minify                          \
     --outbase=.                       \
     --outdir=dist                     \
+    --public-path=/dist               \
     --sourcemap                       \
-    `find js -name '*.js' -not -name '_*'`
+    `find css/font.css js -type f -not -name '_*'`

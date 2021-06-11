@@ -22,7 +22,7 @@ GO
 
 my ( %data, %paths );
 
-for (<assets/*.{js,woff2}>) {
+for (<assets/hole.js>) {
     say;
 
     my $data = slurp($_);
@@ -30,20 +30,6 @@ for (<assets/*.{js,woff2}>) {
     s|^assets/||;
 
     my $name = s/[.-](\w)/\U$1/gr;
-
-    if (/\.woff2$/) {
-        $data{$name} = $data;
-        my $path = $paths{$name} = '/assets/' . md5_base64($data) =~ y|+/|-_|r;
-
-        print $fh <<GO;
-	case "$path":
-		w.Header().Set("Cache-Control", "max-age=9999999,public")
-		w.Header().Set("Content-Type", "font/woff2")
-		w.Write($name)
-GO
-
-        next;
-    }
 
     $data =~ s|/\* include ([^ ]+) +\*/|slurp("assets/includes/$1")|eg;
 

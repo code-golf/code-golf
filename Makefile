@@ -10,8 +10,7 @@ package routes
 
 import "net/http"
 
-const holeJsPath       = ""
-const twemojiWoff2Path = ""
+const holeJsPath = ""
 
 func Asset(w http.ResponseWriter, r *http.Request) {}
 endef
@@ -86,8 +85,8 @@ fmt:
 
 font:
 	@docker build -t code-golf-font -f docker/font.Dockerfile docker
-	@id=`docker create code-golf-font`;                                                 \
-	    docker cp "$$id:twemoji-colr/build/Twemoji Mozilla.woff2" assets/twemoji.woff2; \
+	@id=`docker create code-golf-font`;                                                \
+	    docker cp "$$id:twemoji-colr/build/Twemoji Mozilla.woff2" fonts/twemoji.woff2; \
 	    docker rm $$id
 
 lint:
