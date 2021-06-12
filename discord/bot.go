@@ -92,7 +92,7 @@ func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
 	}
 
 	// Find the dominant scoring (only "chars" if there were no improvements on bytes)
-	if fieldValues["bytes"] == "" {
+	if fieldValues["bytes"] == "" && fieldValues["bytes/chars"] == "" {
 		embed.URL += "chars"
 	} else {
 		embed.URL += "bytes"
