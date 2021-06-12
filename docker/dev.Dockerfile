@@ -1,9 +1,9 @@
-FROM golang:1.16.5-alpine3.13
+FROM golang:1.17beta1-alpine3.13
 
 ENV CGO_ENABLED=0 GOPATH= TZ=Europe/London
 
 RUN apk add --no-cache build-base git linux-headers tzdata \
- && GOBIN=/bin go get github.com/cespare/reflex
+ && GOBIN=/bin go install github.com/cespare/reflex@latest
 
 COPY --from=codegolf/lang-swift      ["/", "/langs/swift/rootfs/"     ] #  691 MiB
 COPY --from=codegolf/lang-rust       ["/", "/langs/rust/rootfs/"      ] #  669 MiB
