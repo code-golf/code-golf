@@ -1,10 +1,10 @@
-FROM alpine:3.13 as builder
+FROM alpine:3.14 as builder
 
 RUN mkdir /empty
 
 RUN apk add --no-cache build-base curl
 
-RUN curl https://www.lua.org/ftp/lua-5.4.3.tar.gz | tar xzf -
+RUN curl https://www.lua.org/ftp/lua-5.4.3.tar.gz | tar xz
 
 RUN cd lua-5.4.3      \
  && make generic      \

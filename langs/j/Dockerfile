@@ -1,10 +1,11 @@
-FROM alpine:3.13 as builder
+FROM alpine:3.14 as builder
 
 RUN mkdir /empty
 
 RUN apk add --no-cache build-base curl fts-dev
 
-RUN curl -L https://github.com/jsoftware/jsource/archive/j901-beta-d.tar.gz | tar xzf -
+RUN curl -L https://github.com/jsoftware/jsource/archive/j901-beta-d.tar.gz \
+  | tar xz
 
 COPY patch /
 

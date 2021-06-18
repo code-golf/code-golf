@@ -1,11 +1,11 @@
-FROM alpine:3.13 as builder
+FROM alpine:3.14 as builder
 
 RUN mkdir /empty
 
 RUN apk add --no-cache build-base curl
 
 RUN curl -L https://download.savannah.nongnu.org/releases/tinycc/tcc-0.9.27.tar.bz2 \
-  | tar xjf -
+  | tar xj
 
 COPY setvbuf.patch /
 

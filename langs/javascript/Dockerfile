@@ -2,7 +2,7 @@
 
 FROM debian:buster-slim as pre-builder
 
-RUN apt-get update && apt-get install -y curl git python
+RUN apt-get update && apt-get install -y curl git python3
 
 ENV PATH "/tmp/depot_tools:$PATH"
 
@@ -14,7 +14,7 @@ RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git \
  && git checkout 8.8.278.17 \
  && gclient sync
 
-FROM alpine:3.13 as builder
+FROM alpine:3.14 as builder
 
 RUN mkdir /empty
 

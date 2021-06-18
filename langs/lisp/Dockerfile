@@ -1,4 +1,4 @@
-FROM alpine:3.13 as builder
+FROM alpine:3.14 as builder
 
 RUN mkdir /empty
 
@@ -6,7 +6,7 @@ ENV FORCE_UNSAFE_CONFIGURE 1
 
 RUN apk add --no-cache build-base curl
 
-RUN curl https://haible.de/bruno/gnu/clisp-2.49.92.tar.bz2 | tar xjf -
+RUN curl https://haible.de/bruno/gnu/clisp-2.49.92.tar.bz2 | tar xj
 
 RUN cd clisp-2.49.92/src                                      \
  && ../configure --ignore-absence-of-libsigsegv --prefix=/usr \

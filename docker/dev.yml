@@ -5,7 +5,7 @@ services:
       - 80:1080
       - 443:1443
   assets:
-    image: alpine:3.13
+    image: alpine:3.14
     command:
       - ./esbuild
       - --watch
