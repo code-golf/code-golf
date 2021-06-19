@@ -585,8 +585,8 @@ fn main() {
 '''
 
 [SQL]
-size    = '1.02 MiB'
-version = '3.35.5'
+size    = '1.03 MiB'
+version = '3.36.0'
 website = 'https://sqlite.org/index.html'
 example = '''
 -- Printing
