@@ -17,10 +17,6 @@ for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
     my $id  = id($name);
     my $img = "codegolf/lang-$id";
 
-    # V8 has a pre-builder target too.
-    run «docker build --pull --target pre-builder -t "{$img}-pre-builder" "langs/$id"»
-        if $id eq 'javascript';
-
     # Tag the builder stage so "docker system prune" won't remove it.
     run «docker build --pull --target builder -t "{$img}-builder" "langs/$id"»;
 
