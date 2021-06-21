@@ -19,7 +19,7 @@ v               ~<
 
 [Assembly]
 size    = '48.7 MiB'
-version = 'DefAssembler 1.5.0'
+version = 'DefAssembler 1.5.1'
 website = 'https://www.npmjs.com/package/@defasm/core'
 example = '''
 # Printing
@@ -530,8 +530,8 @@ for arg in sys.argv[1:]:
 '''
 
 [Raku]
-size    = '53.9 MiB'
-version = 'Raku 6.d on Rakudo 2021.05'
+size    = '54 MiB'
+version = 'Raku 6.d on Rakudo 2021.06'
 website = 'https://raku.org'
 example = '''
 # Printing
