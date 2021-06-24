@@ -179,6 +179,10 @@ BEGIN
         earned := earn(earned, 'elephpant-in-the-room', user_id);
     END IF;
 
+    IF hole = 'seven-segment' AND lang = 'assembly' THEN
+        earned := earn(earned, 'assembly-required', user_id);
+    END IF;
+
     IF (SELECT COUNT(DISTINCT solutions.code) > 1 FROM solutions
         WHERE   solutions.user_id = user_id
         AND     solutions.hole = hole

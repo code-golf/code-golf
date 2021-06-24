@@ -9,6 +9,7 @@ WORKDIR twemoji-colr
 
 RUN npm install
 
+COPY ["1fa9b.svg", "svg/"] # Screwdriver
 COPY ["1fa9e.svg", "svg/"] # Mirror
 
 RUN echo [] > extras/ligatures.json                      \
