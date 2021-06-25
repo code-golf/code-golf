@@ -82,6 +82,11 @@ emoji       = '🧠'
 description = 'Solve <a href=/brainfuck#brainfuck>brainfuck in brainfuck</a>.'
 
 [['Hole/Lang Specific']]
+name        = 'Solve Quine'
+emoji       = '🪞'
+description = 'Solve <a href=/quine>Quine</a>.'
+
+[['Hole/Lang Specific']]
 name        = 'Ouroboros'
 emoji       = '🐍'
 description = 'Solve <a href=/quine#python>Quine in Python</a>.'

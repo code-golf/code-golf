@@ -24,8 +24,8 @@ is $dbh.execute('SELECT ARRAY(SELECT trophy FROM trophies)').row, '{rtfm}',
     'GET /about earns {rtfm}';
 
 for from-toml slurp 'holes.toml' {
-    next if .value<experiment>;     # Experimental holes can't be saved.
-    next if .key eq 'Fizz Buzz';    # This is tested lower.
+    next if .value<experiment>;             # Experimental holes can't be saved.
+    next if .key ~~ 'Fizz Buzz' | 'Quine';  # Theese are tested lower.
 
     my $hole    = .key.lc.trans: ' ’' => '-', :d;
     my $cheevos = %cheevos{ my $i = ++$ } // '{}';
@@ -40,7 +40,7 @@ for <
     divisors        php       {elephpant-in-the-room}
     fizz-buzz       haskell   {interview-ready}
     poker           fish      {fish-n-chips}
-    quine           python    {ouroboros}
+    quine           python    {solve-quine,ouroboros}
     seven-segment   assembly  {assembly-required}
     ten-pin-bowling cobol     {cobowl}
 > -> $hole, $lang, $cheevos {

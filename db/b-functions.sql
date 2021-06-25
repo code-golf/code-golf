@@ -163,8 +163,12 @@ BEGIN
         earned := earn(earned, 'interview-ready', user_id);
     END IF;
 
-    IF hole = 'quine' AND lang = 'python' THEN
-        earned := earn(earned, 'ouroboros', user_id);
+    IF hole = 'quine' THEN
+        earned := earn(earned, 'solve-quine', user_id);
+
+        IF lang = 'python' THEN
+            earned := earn(earned, 'ouroboros', user_id);
+        END IF;
     END IF;
 
     IF hole = 'poker' AND lang = 'fish' THEN
