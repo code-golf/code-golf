@@ -244,18 +244,18 @@ func render(w http.ResponseWriter, r *http.Request, name string, data interface{
 		args.Location = time.UTC
 	}
 
-	// Star Wars cheevo banner. TODO Generalise.
-	if args.Golfer != nil && !args.Golfer.Earnt("may-the-4ᵗʰ-be-with-you") {
+	// Independence Day cheevo banner. TODO Generalise.
+	if args.Golfer != nil && !args.Golfer.Earnt("independence-day") {
 		var (
 			now   = time.Now().UTC()
 			year  = now.Year()
-			start = time.Date(year, time.May, 4, 0, 0, 0, 0, time.UTC)
-			end   = time.Date(year, time.May, 5, 0, 0, 0, 0, time.UTC)
+			start = time.Date(year, time.July, 4, 0, 0, 0, 0, time.UTC)
+			end   = time.Date(year, time.July, 5, 0, 0, 0, 0, time.UTC)
 		)
 
 		if now.Before(end) {
 			args.CheevoBanner = &CheevoBanner{
-				cheevo.ByID["may-the-4ᵗʰ-be-with-you"],
+				cheevo.ByID["independence-day"],
 				start.Before(now), start, end,
 			}
 		}
