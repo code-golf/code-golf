@@ -41,10 +41,12 @@ for <
     fizz-buzz       haskell   {interview-ready}
     poker           fish      {fish-n-chips}
     quine           python    {ouroboros}
+    seven-segment   assembly  {assembly-required}
     ten-pin-bowling cobol     {cobowl}
 > -> $hole, $lang, $cheevos {
     is $dbh.execute(
-        "SELECT earned FROM save_solution(2, 2, 'ab', ?, ?, 1)", $hole, $lang,
+        "SELECT earned FROM save_solution(2, ?, 'ab', ?, ?, 1)",
+        $lang eq 'assembly' ?? Nil !! 2, $hole, $lang,
     ).row, $cheevos, "$hole/$lang earns $cheevos";
 }
 

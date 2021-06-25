@@ -52,6 +52,11 @@ emoji       = '💼'
 description = 'Solve <a href=/fizz-buzz>Fizz Buzz</a>.'
 
 [['Hole/Lang Specific']]
+name        = 'Assembly Required'
+emoji       = '🪛'
+description = 'Solve <a href=/seven-segment#assembly>Seven Segment in Assembly</a>.'
+
+[['Hole/Lang Specific']]
 name        = 'Caffeinated'
 emoji       = '☕'
 description = 'Solve any hole in both Java and JavaScript.'
