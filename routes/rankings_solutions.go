@@ -25,14 +25,14 @@ func RankingsSolutions(w http.ResponseWriter, r *http.Request) {
 		           COUNT(*),
 		           COUNT(DISTINCT lang) langs,
 		           SUM(bytes) bytes,
-		           SUM(chars) chars
+		           COALESCE(SUM(chars), 0) chars
 		      FROM solutions
 		     WHERE NOT failing
 		  GROUP BY user_id
 		) SELECT bytes,
-		         TO_CHAR(bytes::decimal / count, 'FM999,999.0'),
+		         TO_CHAR(bytes::decimal / count, 'FM999,990.0'),
 		         chars,
-		         TO_CHAR(chars::decimal / count, 'FM999,999.0'),
+		         TO_CHAR(chars::decimal / count, 'FM999,990.0'),
 		         count,
 		         COALESCE(CASE WHEN show_country THEN country END, ''),
 		         langs,
