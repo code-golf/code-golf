@@ -74,6 +74,21 @@ select {
 
 #editor { border-right-width: 0 }
 
+#emojify {
+    display: grid;
+    gap: .5rem;
+    grid-template-columns: repeat(auto-fill, minmax(4.5rem, 1fr));
+}
+
+#emojify div {
+    align-items: center;
+    background: var(--light-grey);
+    border: 1px solid var(--color);
+    display: flex;
+    justify-content: space-between;
+    padding: .25rem .4rem;
+}
+
 #rankings td { border-width: 1px 0 !important }
 
 #rankings tr:last-child td { border-bottom: 0 }
@@ -104,6 +119,34 @@ select {
 #status h2 {
     grid-column: span 7;
     margin-bottom: 1rem;
+}
+
+/* TODO Generalise the hole mapping table CSS, lose the specific IDs. */
+#colors, #morse, #states { columns: 4 }
+@media (max-width: 54rem) { #colors, #morse, #states { columns: 2 } }
+@media (max-width: 30rem) { #colors, #morse, #states { columns: 1 } }
+
+#colors svg {
+    align-self: center;
+    border: 1px solid var(--color);
+    height: 1rem;
+    margin-right: .5rem;
+    width: 1rem;
+}
+
+#colors table, #morse table, #states table { break-inside: avoid-column }
+
+#colors td:first-child { display: flex }
+
+#colors td:last-child {
+    text-align-last: justify;
+    text-justify: inter-character;
+}
+
+#colors th:first-child,
+#morse  td:last-child,
+#states td:first-child {
+    width: 100%;
 }
 
 #thirdParty {
