@@ -212,16 +212,15 @@ for (const tab of scoringTabs)
 
 // Switch lang
 const switchLang = onhashchange = () => {
-    lang = location.hash.slice(1);
+    lang = location.hash.slice(1) || localStorage.getItem('lang');
 
     // Kick 'em to Python if we don't know the chosen language.
-    if (!langs[lang]) {
+    if (!langs[lang])
         lang = 'python';
 
-        window.history.replaceState(null, '', '#' + lang);
-    }
-
     select.value = lang;
+    localStorage.setItem('lang', lang);
+    window.history.replaceState(null, '', '#' + lang);
 
     editor.setState(
         EditorState.create({
