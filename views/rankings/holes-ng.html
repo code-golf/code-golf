@@ -1,0 +1,117 @@
+{{ template "header"   . }}
+{{ template "rankings" . }}
+
+<main>
+    <form>
+        <input name=base type=hidden value=/rankings/holes-ng>
+
+        <select name=holes>
+            <option value=all>All Holes
+        {{ range .Data.Holes }}
+            <option value="{{ .ID }}"
+                {{ if eq $.Data.HoleID .ID }} selected {{ end }}>{{ .Name }}
+        {{ end }}
+        </select>
+
+        <select name=langs>
+            <option value=all>All Languages
+        {{ range .Data.Langs }}
+            <option value="{{ .ID }}"
+                {{ if eq $.Data.LangID .ID }} selected {{ end }}>{{ .Name }}
+        {{ end }}
+        </select>
+
+        <label>
+            <input {{ if eq .Data.Scoring "bytes" }} checked {{ end }}
+                name=scoring type=radio value=bytes>Bytes
+        </label>
+
+        <label>
+            <input {{ if eq .Data.Scoring "chars" }} checked {{ end }}
+                name=scoring type=radio value=chars>Chars
+        </label>
+    </form>
+
+    <nav>
+        <h2>Scoring</h2>
+        <a {{ if ne .Data.Scoring "bytes" }}
+            href="/rankings/holes-ng/{{ .Data.HoleID }}/{{ .Data.LangID }}/bytes"
+        {{ end }}>
+            <span>Bytes</span>
+        </a>
+        <a {{ if ne .Data.Scoring "chars" }}
+            href="/rankings/holes-ng/{{ .Data.HoleID }}/{{ .Data.LangID }}/chars"
+        {{ end }}>
+            <span>Chars</span>
+        </a>
+
+        <h2>Language</h2>
+        <a {{ if ne .Data.LangID "all" }}
+            href="/rankings/holes-ng/{{ .Data.HoleID }}/all/{{ .Data.Scoring }}"
+        {{ end }}>
+            <span>All</span>
+        </a>
+    {{ range .Data.Langs }}
+        <a {{ if ne $.Data.LangID .ID }}
+            href="/rankings/holes-ng/{{ $.Data.HoleID }}/{{ .ID }}/{{ $.Data.Scoring }}"
+        {{ end }}>
+            <span>{{ .Name }}</span>
+        </a>
+    {{ end }}
+
+        <h2>Hole</h2>
+        <a {{ if ne .Data.HoleID "all" }}
+            href="/rankings/holes-ng/all/{{ .Data.LangID }}/{{ .Data.Scoring }}"
+        {{ end }}>
+            <span>All</span>
+        </a>
+    {{ range .Data.Holes }}
+        <a {{ if ne $.Data.HoleID .ID }}
+            href="/rankings/holes-ng/{{ .ID }}/{{ $.Data.LangID }}/{{ $.Data.Scoring }}"
+        {{ end }}>
+            <span>{{ .Name }}</span>
+        </a>
+    {{ end }}
+    </nav>
+
+    <table class="nowrap-second sticky {{ if eq .Data.HoleID "all" }}all-holes{{ else }}one-hole{{ end }}">
+        <thead>
+            <tr>
+                <th>#
+                <th>Golfer
+                <th class=right>
+                    {{ if eq .Data.HoleID "all" }}Holes{{ else }}Lang{{ end }}
+                <th class=right>Points
+                <th class=right>{{ title .Data.Scoring }}
+                <th class=right>Time
+        <tbody>
+    {{ $name := "" }}
+    {{ with .Golfer }}{{ $name = .Name }}{{ end }}
+
+    {{ range .Data.Rows }}
+        <tr{{ if eq $name .Login }} class=me {{ end }}>
+            <td>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup>
+            <td>
+                <a href="/golfers/{{ .Login }}">
+                    <img loading=lazy src="//avatars.githubusercontent.com/{{ .Login }}?s=24">
+                    <span>{{ .Login }}</span>
+                {{ with index $.Countries .Country }}
+                    <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
+                {{ end }}
+                </a>
+            <td class=right>
+            {{ if eq $.Data.HoleID "all" }}
+                {{ .Holes }}
+            {{ else }}
+                {{ .Lang }}
+            {{ end }}
+            <td class=right>{{ comma .Points }}
+            <td class=right>{{ comma .Strokes }}
+            <td class=right>{{ time (.Submitted.In $.Location) }}
+    {{ end }}
+    </table>
+
+    {{ template "pagination" .Data.Pager }}
+</main>
+
+{{ template "footer" }}

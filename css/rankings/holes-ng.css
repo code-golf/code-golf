@@ -1,0 +1,7 @@
+@media (max-width: 34rem) {
+    .one-hole  td:nth-child(5),
+    .all-holes td:nth-child(4) { border-right: 1px solid var(--color) }
+
+    .one-hole  tr > :nth-child(2n+4),
+    .all-holes tr > :nth-child(n+5) { display: none }
+}

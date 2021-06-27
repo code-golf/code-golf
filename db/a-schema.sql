@@ -151,8 +151,33 @@ CREATE VIEW chars_points AS WITH ranked AS (
     FROM ranked
 GROUP BY user_id;
 
+CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
+    select hole, lang, scoring, user_id, submitted,
+           case when scoring = 'bytes' then bytes else chars end strokes
+      from solutions
+     where not failing
+), min as (
+    select hole, scoring, min(strokes)::numeric Sa
+      from strokes
+  group by hole, scoring
+), min_per_lang as (
+    select hole, lang, scoring, min(strokes)::numeric S, sqrt(count(*)) N
+     from strokes
+  group by hole, lang, scoring
+), bayesian_estimators as (
+    select hole, lang, scoring, S,
+           (N / (N + 1)) * S + (1 / (N + 1)) * Sa Sb
+      from min
+      join min_per_lang using(hole, scoring)
+) select hole, lang, scoring, user_id, strokes, submitted,
+         round(Sb / strokes * 1000) points,
+         round(S  / strokes * 1000) points_for_lang
+    from strokes
+    join bayesian_estimators using(hole, lang, scoring);
+
 -- Needed to refresh concurrently
-CREATE UNIQUE INDEX medals_key ON medals(user_id, hole, lang, scoring, medal);
+CREATE UNIQUE INDEX   medals_key ON   medals(user_id, hole, lang, scoring, medal);
+CREATE UNIQUE INDEX rankings_key ON rankings(user_id, hole, lang, scoring);
 
 -- Used by /stats
 CREATE INDEX solutions_hole_key ON solutions(hole, user_id) WHERE NOT failing;
@@ -161,12 +186,14 @@ CREATE INDEX solutions_lang_key ON solutions(lang, user_id) WHERE NOT failing;
 CREATE ROLE "code-golf" WITH LOGIN;
 
 -- Only owners can refresh.
-ALTER MATERIALIZED VIEW medals OWNER TO "code-golf";
+ALTER MATERIALIZED VIEW medals   OWNER TO "code-golf";
+ALTER MATERIALIZED VIEW rankings OWNER TO "code-golf";
 
 GRANT SELECT, INSERT, UPDATE         ON TABLE    discord_records TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE    ideas           TO "code-golf";
 GRANT SELECT                         ON TABLE    bytes_points    TO "code-golf";
 GRANT SELECT                         ON TABLE    chars_points    TO "code-golf";
+GRANT SELECT                         ON TABLE    rankings        TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    sessions        TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE    solutions       TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    trophies        TO "code-golf";

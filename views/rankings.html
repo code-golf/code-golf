@@ -1,7 +1,7 @@
 <h1>
     {{ .Title }}
 
-{{ if or (eq .Title "Rankings: Holes") (eq .Title "Rankings: Medals") }}
+{{ if or (hasPrefix .Title "Rankings: Holes") (eq .Title "Rankings: Medals") }}
     {{ if ne .Data.HoleID "all" }}
         <a class="btn purple" href='/{{ .Data.HoleID }}{{ if ne .Data.LangID "all" }}#{{ .Data.LangID }}{{ end }}'>
             {{ svg "play-light" }} Play Hole
@@ -17,6 +17,12 @@
         href=/rankings/holes/all/all/bytes
     {{ end }}>
         Holes
+    </a>
+
+    <a {{ if not (hasPrefix .Path "/rankings/holes-ng/") }}
+        href=/rankings/holes-ng/all/all/bytes
+    {{ end }}>
+        Holes NG
     </a>
 
     <a {{ if not (hasPrefix .Path "/rankings/medals/") }}

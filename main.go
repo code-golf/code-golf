@@ -87,6 +87,7 @@ func main() {
 		// Redirect some old URLs that got out.
 		r.Get("/", redir("/rankings/holes/all/all/bytes"))
 		r.Get("/holes", redir("/rankings/holes/all/all/bytes"))
+		r.Get("/holes-ng", redir("/rankings/holes-ng/all/all/bytes"))
 		r.Get("/holes/all/all/all", redir("/rankings/holes/all/all/bytes"))
 		r.Get("/medals", redir("/rankings/medals/all/all/all"))
 
@@ -95,6 +96,7 @@ func main() {
 		r.Get("/cheevos/{cheevo}", routes.RankingsCheevos)
 
 		r.Get("/holes/{hole}/{lang}/{scoring}", routes.RankingsHoles)
+		r.Get("/holes-ng/{hole}/{lang}/{scoring}", routes.RankingsHolesNG)
 
 		r.Get("/medals/{hole}/{lang}/{scoring}", routes.RankingsMedals)
 
@@ -149,10 +151,12 @@ func main() {
 	// Every minute.
 	go func() {
 		for range time.Tick(time.Minute) {
-			if _, err := db.Exec(
-				"REFRESH MATERIALIZED VIEW CONCURRENTLY medals",
-			); err != nil {
-				log.Println(err)
+			for _, view := range []string{"medals", "rankings"} {
+				if _, err := db.Exec(
+					"REFRESH MATERIALIZED VIEW CONCURRENTLY " + view,
+				); err != nil {
+					log.Println(err)
+				}
 			}
 		}
 	}()
