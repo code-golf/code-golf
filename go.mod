@@ -24,9 +24,9 @@ require (
 	github.com/tdewolff/minify/v2 v2.9.18
 	golang.org/x/crypto v0.0.0-20210616213533-5ff15b29337e
 	golang.org/x/net v0.0.0-20210614182718-04defd469f4e // indirect
-	golang.org/x/oauth2 v0.0.0-20210622215436-a8dc77f794b6
+	golang.org/x/oauth2 v0.0.0-20210628180205-a41e5a781914
 	golang.org/x/sys v0.0.0-20210616094352-59db8d763f22 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/protobuf v1.27.0 // indirect
+	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/guregu/null.v4 v4.0.0
 )
