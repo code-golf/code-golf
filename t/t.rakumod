@@ -6,15 +6,13 @@ use TOML::Thumb;
 # Export Test & TOML::Thumb to caller.
 sub EXPORT { %( Test::EXPORT::DEFAULT::, TOML::Thumb::EXPORT::DEFAULT:: ) }
 
-# Block until the app is up or we time out.
-react {
-    whenever Promise.in(20) { bail-out 'Timed our waiting for app' }
-    whenever start {
-        sleep .1 until try await IO::Socket::Async.connect: 'app', 1080;
-    } { done }
-};
-
 unit module t;
+
+# The DB is the slowest to start, block until the DB is up or we time out.
+react {
+    whenever Promise.in(20) { bail-out 'Timed our waiting for DB' }
+    whenever start          { sleep .1 until try dbh } { done }
+};
 
 our $client is export = Cro::HTTP::Client.new: :ca({ :insecure }), :http(1.1);
 
