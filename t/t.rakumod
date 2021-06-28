@@ -1,5 +1,6 @@
-use Cro::HTTP::Client;
 use DBIish;
+use HTTP::Tiny;
+use JSON::Fast;
 use Test;
 use TOML::Thumb;
 
@@ -8,7 +9,8 @@ sub EXPORT { %( Test::EXPORT::DEFAULT::, TOML::Thumb::EXPORT::DEFAULT:: ) }
 
 unit module t;
 
-our $client is export = Cro::HTTP::Client.new: :ca({ :insecure }), :http(1.1);
+# TODO Remove :!max-redirect once https://gitlab.com/jjatria/http-tiny/-/issues/12
+our $client is export = HTTP::Tiny.new :!max-redirect :throw-exceptions;
 
 sub dbh is export {
     my $dbh = DBIish.connect: 'Pg';
@@ -20,10 +22,9 @@ sub dbh is export {
 }
 
 sub post-solution(:$code, :$hole = 'fizz-buzz', :$lang = 'raku', :$session = '') is export {
-    my $res = await $client.post: 'https://app:1443/solution',
-        content-type => 'application/json',
-        headers      => [ cookie => "__Host-session=$session" ],
-        body         => { Code => $code, Hole => $hole, Lang => $lang };
-
-    await $res.body;
+    $client.post(
+        'https://app:1443/solution',
+        content => to-json({ Code => $code, Hole => $hole, Lang => $lang }),
+        headers => { cookie => "__Host-session=$session" },
+    )<content>.decode.&from-json;
 }
