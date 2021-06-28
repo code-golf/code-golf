@@ -64,6 +64,7 @@ func main() {
 	r.Get("/assets/{asset}", routes.Asset)
 	r.Get("/callback", routes.Callback)
 	r.Get("/callback/dev", routes.CallbackDev)
+	r.Get("/callback/discord", routes.CallbackDiscord)
 	r.Get("/feeds", routes.Feeds)
 	r.Get("/feeds/{feed}", routes.Feed)
 	r.Route("/golfer", func(r chi.Router) {

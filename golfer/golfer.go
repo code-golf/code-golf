@@ -24,6 +24,7 @@ type Golfer struct {
 	Cheevos                                []string
 	Country, Keymap, Name, Referrer, Theme string
 	Delete                                 sql.NullTime
+	Discord                                string
 	FailingSolutions                       FailingSolutions
 	ID                                     int
 	TimeZone                               *time.Location
