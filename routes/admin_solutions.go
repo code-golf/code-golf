@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"errors"
-	"fmt"
+	"log"
 	"net/http"
 	"sync"
 	"time"
@@ -41,7 +41,7 @@ func AdminSolutions(w http.ResponseWriter, r *http.Request) {
 func play(ctx context.Context, holeID, langID, code string) (score hole.Scorecard) {
 	defer func() {
 		if r := recover(); r != nil {
-			fmt.Println(r)
+			log.Println(r)
 		}
 	}()
 
