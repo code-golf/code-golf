@@ -8,12 +8,6 @@ sub EXPORT { %( Test::EXPORT::DEFAULT::, TOML::Thumb::EXPORT::DEFAULT:: ) }
 
 unit module t;
 
-# The DB is the slowest to start, block until the DB is up or we time out.
-react {
-    whenever Promise.in(20) { bail-out 'Timed our waiting for DB' }
-    whenever start          { sleep .1 until try dbh } { done }
-};
-
 our $client is export = Cro::HTTP::Client.new: :ca({ :insecure }), :http(1.1);
 
 sub dbh is export {

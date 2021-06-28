@@ -2,7 +2,8 @@ FROM golang:1.17beta1-alpine3.13
 
 ENV CGO_ENABLED=0 GOPATH= TZ=Europe/London
 
-RUN apk add --no-cache build-base git linux-headers tzdata \
+# curl is used for the e2e healthcheck.
+RUN apk add --no-cache build-base curl git linux-headers tzdata \
  && GOBIN=/bin go install github.com/cespare/reflex@latest
 
 COPY --from=codegolf/lang-rust       ["/", "/langs/rust/rootfs/"      ] #  773 MiB

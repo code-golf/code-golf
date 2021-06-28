@@ -5,15 +5,22 @@ services:
       - go
       - run
       - .
+    depends_on:
+      - db
     environment:
       E2E: 1
+    healthcheck:
+      test:     curl -fks https://app:1443/healthz
+      interval: 1s
+      retries:  20
   db:
     tmpfs: /var/lib/postgresql/data
   e2e:
     depends_on:
-      - app
-      - db
-      - firefox
+      app:
+        condition: service_healthy
+      firefox:
+        condition: service_started
     entrypoint:
       - prove6
       - -It

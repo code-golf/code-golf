@@ -79,6 +79,7 @@ func main() {
 		r.Get("/holes", routes.GolferHoles)
 		r.Get("/holes/{scoring}", routes.GolferHoles)
 	})
+	r.Get("/healthz", routes.Healthz)
 	r.Get("/ideas", routes.Ideas)
 	r.Get("/log-out", routes.LogOut)
 	r.Get("/random", routes.Random)
