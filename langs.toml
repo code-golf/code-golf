@@ -306,7 +306,7 @@ main = do
 
 [Hexagony]
 size    = '62.6 MiB'
-version = 'ac545d2'
+version = '4b30f58'
 website = 'https://github.com/SirBogman/Hexagony'
 example = '''
           \ P r i n t i n g .

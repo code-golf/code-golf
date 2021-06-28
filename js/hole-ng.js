@@ -311,7 +311,7 @@ const runCode = document.querySelector('#run a').onclick = async () => {
     // 3rd party integrations.
     thirdParty.replaceChildren( lang == 'hexagony' ? <a target="_blank" href={
         '//hexagony.net#lz' + LZString.compressToBase64(JSON.stringify({
-            code, input: data.Argv.join('\0'), inputMode: 'raw' }))
+            code, input: data.Argv.join('\0') + '\0', inputMode: 'raw' }))
     }>Run on Hexagony.net</a> : '' );
 
     status.style.display = 'grid';

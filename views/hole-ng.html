@@ -83,11 +83,17 @@
         <a href=//devblogs.microsoft.com/dotnet/welcome-to-c-9-0/#top-level-programs>
             Top-level programs</a> are supported, <b>args</b> holds ARGV.
     </div>
+    <div class="info brainfuck">
+        Arguments are available via STDIN, each argument is NULL terminated.
+        EOF is -1, cells left of the starting cell are supported and cells are
+        8-bit with wrapping.
+    </div>
     <div class="info fish">
-        ARGV is available via STDIN, joined on NULL. <b>x</b> is a no-op.
+        Arguments are available via STDIN, each argument is NULL terminated.
+        <b>x</b> is a no-op.
     </div>
     <div class="info hexagony">
-        ARGV is available via STDIN, joined on NULL.
+        Arguments are available via STDIN, each argument is NULL terminated.
     </div>
     <div class="info javascript">
         <b>arguments</b> holds ARGV, <b>print()</b> to output with a newline,
