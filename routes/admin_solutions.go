@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"sync"
 	"time"
@@ -36,6 +37,17 @@ func AdminSolutions(w http.ResponseWriter, r *http.Request) {
 	render(w, r, "admin/solutions", data, "Admin Solutions")
 }
 
+// Wrap hole.Play so we can recover from panics.
+func play(ctx context.Context, holeID, langID, code string) (score hole.Scorecard) {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println(r)
+		}
+	}()
+
+	return hole.Play(ctx, holeID, langID, code)
+}
+
 // AdminSolutionsRun serves GET /admin/solutions/run
 func AdminSolutionsRun(w http.ResponseWriter, r *http.Request) {
 	db := session.Database(r)
@@ -58,7 +70,7 @@ func AdminSolutionsRun(w http.ResponseWriter, r *http.Request) {
 
 				// Best of three runs.
 				for j := 0; passes < 2 && fails < 2; j++ {
-					score := hole.Play(r.Context(), s.HoleID, s.LangID, s.code)
+					score := play(r.Context(), s.HoleID, s.LangID, s.code)
 
 					s.Took = score.Took
 
