@@ -2,15 +2,15 @@ package middleware
 
 import (
 	"net/http"
-	"syscall"
+	"os"
 )
 
 var host = "code.golf"
 
 func init() {
-	if _, e2e := syscall.Getenv("E2E"); e2e {
+	if _, e2e := os.LookupEnv("E2E"); e2e {
 		host = "app:1443"
-	} else if _, dev := syscall.Getenv("DEV"); dev {
+	} else if _, dev := os.LookupEnv("DEV"); dev {
 		host = "localhost"
 	}
 }

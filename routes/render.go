@@ -12,7 +12,6 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
-	"syscall"
 	"time"
 
 	"github.com/code-golf/code-golf/cheevo"
@@ -114,7 +113,7 @@ func slurp(dir string) map[string]string {
 }
 
 func init() {
-	_, dev = syscall.Getenv("DEV")
+	_, dev = os.LookupEnv("DEV")
 
 	// Assets.
 	if file, err := os.Open("esbuild.json"); err == nil {

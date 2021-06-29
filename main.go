@@ -7,7 +7,6 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
-	"syscall"
 	"time"
 
 	"github.com/code-golf/code-golf/github"
@@ -142,7 +141,7 @@ func main() {
 	}
 
 	var crt, key string
-	if _, dev := syscall.Getenv("DEV"); dev {
+	if _, dev := os.LookupEnv("DEV"); dev {
 		crt = "localhost.pem"
 		key = "localhost-key.pem"
 	} else {
