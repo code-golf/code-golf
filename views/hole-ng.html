@@ -85,8 +85,8 @@
     </div>
     <div class="info brainfuck">
         Arguments are available via STDIN, each argument is NULL terminated.
-        EOF is -1, cells left of the starting cell are supported and cells are
-        8-bit with wrapping.
+        Taking input after EOF leaves the cell unchanged. The tape is circular
+        with 65536 cells.
     </div>
     <div class="info fish">
         Arguments are available via STDIN, each argument is NULL terminated.
