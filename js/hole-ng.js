@@ -1,4 +1,5 @@
 import LZString               from 'lz-string';
+import pbm                    from './_pbm.js';
 import strlen                 from './_strlen.js';
 import { EditorState }        from '@codemirror/state';
 import { EditorView, keymap } from '@codemirror/view';
@@ -266,6 +267,8 @@ switchLang();
 
 // Run Code
 const runCode = document.querySelector('#run a').onclick = async () => {
+    document.querySelectorAll('canvas').forEach(e => e.remove());
+
     status.style.display = 'none';
 
     const code = [...editor.state.doc].join('');
@@ -313,6 +316,9 @@ const runCode = document.querySelector('#run a').onclick = async () => {
         '//hexagony.net#lz' + LZString.compressToBase64(JSON.stringify({
             code, input: data.Argv.join('\0') + '\0', inputMode: 'raw' }))
     }>Run on Hexagony.net</a> : '' );
+
+    if (hole == 'julia-set')
+        document.querySelector('main').append(pbm(data.Exp), pbm(data.Out) ?? []);
 
     status.style.display = 'grid';
 
