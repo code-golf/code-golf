@@ -1,4 +1,4 @@
-package discord
+package bot
 
 import (
 	"database/sql"
@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/code-golf/code-golf/discord"
 	Golfer "github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
@@ -16,8 +17,9 @@ import (
 )
 
 var (
-	bot       *discordgo.Session
-	channelID string
+	channelID        string
+	lastAnnouncement *RecAnnouncement
+	bot              *discordgo.Session
 )
 
 // Represents a new record announcement message
@@ -29,23 +31,11 @@ type RecAnnouncement struct {
 	Lang    lang.Lang
 }
 
-var lastAnnouncement *RecAnnouncement
-
 func init() {
-	/* The authentication token of the bot and the ID of the announcement channel (800680710964903946)
-	should be stored in the .env file. If either of them isn't found, the bot is skipped */
-	var token string
-	if token, channelID = os.Getenv("DISCORD_BOT_TOKEN"), os.Getenv("DISCORD_BOT_CHANNEL"); token != "" && channelID != "" {
-		go func() {
-			var err error
-			if bot, err = discordgo.New("Bot " + token); err != nil {
-				log.Println(err)
-			} else if err := bot.Open(); err != nil {
-				log.Println(err)
-			} else {
-				bot.AddHandler(handleMessage)
-			}
-		}()
+	channelID = os.Getenv("DISCORD_BOT_CHANNEL")
+	if discord.Session != nil && channelID != "" {
+		bot = discord.Session
+		bot.AddHandler(handleMessage)
 	}
 }
 

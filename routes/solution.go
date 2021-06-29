@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/buildkite/terminal"
-	"github.com/code-golf/code-golf/discord"
+	"github.com/code-golf/code-golf/discord/bot"
 	Golfer "github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
@@ -175,7 +175,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 
 		// If any of the updates are record breakers, announce them on Discord
 		if len(recordUpdates) > 0 {
-			go discord.LogNewRecord(
+			go bot.LogNewRecord(
 				golfer, hole.ByID[in.Hole], lang.ByID[in.Lang], recordUpdates, db,
 			)
 		}
