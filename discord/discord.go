@@ -7,7 +7,10 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-var Session *discordgo.Session
+var (
+	Session *discordgo.Session
+	GuildID = os.Getenv("DISCORD_GUILD_ID")
+)
 
 func init() {
 	/* The authentication token of the bot and the ID of the announcement channel (800680710964903946)
@@ -18,7 +21,7 @@ func init() {
 			var err error
 			if Session, err = discordgo.New("Bot " + token); err != nil {
 				log.Println(err)
-			} else if err := Session.Open(); err != nil {
+			} else if err = Session.Open(); err != nil {
 				log.Println(err)
 			}
 		}()

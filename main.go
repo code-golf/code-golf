@@ -71,6 +71,7 @@ func main() {
 		r.Use(middleware.GolferArea)
 		r.Post("/cancel-delete", routes.GolferCancelDelete)
 		r.Post("/delete", routes.GolferDelete)
+		r.Post("/disconnect/discord", routes.GolferDisconnectDiscord)
 		r.Get("/settings", routes.GolferSettings)
 		r.Post("/settings", routes.GolferSettingsPost)
 	})

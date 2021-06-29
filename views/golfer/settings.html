@@ -89,6 +89,55 @@
 
         <p><button class="btn green">Save Changes</button>
     </form>
+
+    <h2>Discord</h2>
+
+    Connect your Discord account for improved functionality on our server.
+    
+    <div class=grid id=discord>
+        {{ with .GolferInfo }}
+        <img src=
+        {{ if .Discord.Valid }}
+            {{ .DiscordUser.AvatarURL "" }}
+        {{ else }}
+            //cdn.discordapp.com/embed/avatars/0.png
+        {{ end }}>
+        <h2>
+        {{ if .Discord.Valid }}
+            {{ .DiscordUser.Username }}
+            <span id=discriminator>
+                #{{ .DiscordUser.Discriminator }}
+            </span>
+        {{ else }}
+            Not connected
+        {{ end }}
+        </h2>
+        
+        {{ if .Discord.Valid }}
+            {{ if $.DiscordOnline }}
+        <form action=/golfer/disconnect/discord method=post>
+            <button class="btn red">
+                Disconnect
+            </a>
+        </form>
+            {{ else }}
+        <a href=//discord.gg/eVCTkYQ>
+            <button class="btn blue" type="button">
+                Join the Server
+            </button>
+        </a>
+            {{ end }}
+        {{ else }}
+        <a href="{{ $.DiscordAuthURL }}">
+            <button class="btn green" type="button">
+                Connect
+            </button>
+        </a>
+        {{ end }}
+
+        {{ end }}
+    </div>
+
 {{ if .Golfer.Delete.Valid }}
     <form action=/golfer/cancel-delete method=post>
         <h2>Cancel Deletion</h2>

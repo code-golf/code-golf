@@ -17,6 +17,7 @@ import (
 	"github.com/code-golf/code-golf/cheevo"
 	Config "github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/country"
+	"github.com/code-golf/code-golf/discord"
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
@@ -197,18 +198,19 @@ func render(w http.ResponseWriter, r *http.Request, name string, data interface{
 	}
 
 	args := struct {
-		CSS                                                                  template.CSS
-		CheevoBanner                                                         *CheevoBanner
-		Countries                                                            map[string]*country.Country
-		Data                                                                 interface{}
-		DarkModeMediaQuery, Description, JSExt, LogInURL, Nonce, Path, Title string
-		Golfer                                                               *golfer.Golfer
-		GolferInfo                                                           *golfer.GolferInfo
-		Holes                                                                map[string]hole.Hole
-		JS                                                                   []string
-		Langs                                                                map[string]lang.Lang
-		Location                                                             *time.Location
-		Request                                                              *http.Request
+		CSS                                                                                  template.CSS
+		CheevoBanner                                                                         *CheevoBanner
+		Countries                                                                            map[string]*country.Country
+		Data                                                                                 interface{}
+		DarkModeMediaQuery, Description, DiscordAuthURL, JSExt, LogInURL, Nonce, Path, Title string
+		DiscordOnline                                                                        bool
+		Golfer                                                                               *golfer.Golfer
+		GolferInfo                                                                           *golfer.GolferInfo
+		Holes                                                                                map[string]hole.Hole
+		JS                                                                                   []string
+		Langs                                                                                map[string]lang.Lang
+		Location                                                                             *time.Location
+		Request                                                                              *http.Request
 	}{
 		Countries:          country.ByID,
 		CSS:                getThemeCSS(theme) + css["base"] + css[path.Dir(name)] + css[name],
@@ -285,7 +287,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data interface{
 			"form-action 'self';"+
 			"font-src 'self';"+
 			"frame-ancestors 'none';"+
-			"img-src 'self' data: avatars.githubusercontent.com;"+
+			"img-src 'self' data: avatars.githubusercontent.com cdn.discordapp.com;"+
 			"script-src 'self' 'nonce-"+args.Nonce+"';"+
 			"style-src 'unsafe-inline'",
 	)
@@ -304,6 +306,13 @@ func render(w http.ResponseWriter, r *http.Request, name string, data interface{
 
 		// TODO State is a token to protect the user from CSRF attacks.
 		args.LogInURL = config.AuthCodeURL("")
+	} else if r.URL.Path == "/golfer/settings" {
+		if args.Golfer.Discord.Valid {
+			_, err := discord.Session.GuildMember(discord.GuildID, args.Golfer.Discord.String)
+			args.DiscordOnline = err == nil
+		} else if discordConfig.ClientSecret != "" {
+			args.DiscordAuthURL = discordConfig.AuthCodeURL("") + "&scope=identify"
+		}
 	}
 
 	switch name {

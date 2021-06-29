@@ -7,7 +7,9 @@ import (
 	"sort"
 	"time"
 
+	"github.com/bwmarrin/discordgo"
 	"github.com/code-golf/code-golf/cheevo"
+	"github.com/code-golf/code-golf/discord"
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
 	"gopkg.in/guregu/null.v4"
@@ -24,7 +26,7 @@ type Golfer struct {
 	Cheevos                                []string
 	Country, Keymap, Name, Referrer, Theme string
 	Delete                                 sql.NullTime
-	Discord                                string
+	Discord                                sql.NullString
 	FailingSolutions                       FailingSolutions
 	ID                                     int
 	TimeZone                               *time.Location
@@ -77,6 +79,9 @@ type GolferInfo struct {
 	// Count of cheevos/holes/langs available
 	CheevosTotal, HolesTotal, LangsTotal int
 
+	// The Discord account associated with this golfer
+	DiscordUser *discordgo.User
+
 	// Start date
 	TeedOff time.Time
 }
@@ -110,6 +115,7 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 		          COALESCE(bronze, 0),
 		          COALESCE(CASE WHEN show_country THEN country END, ''),
 		          COALESCE(diamond, 0),
+		          discord,
 		          COALESCE(gold, 0),
 		          (SELECT COUNT(DISTINCT hole)
 		             FROM solutions
@@ -135,6 +141,7 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 		&info.Bronze,
 		&info.Country,
 		&info.Diamond,
+		&info.Discord,
 		&info.Gold,
 		&info.Holes,
 		&info.ID,
@@ -149,6 +156,10 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 		return nil
 	} else if err != nil {
 		panic(err)
+	}
+
+	if info.Discord.Valid {
+		info.DiscordUser, _ = discord.Session.User(info.Discord.String)
 	}
 
 	// TODO

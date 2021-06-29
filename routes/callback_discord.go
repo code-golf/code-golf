@@ -2,11 +2,11 @@ package routes
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"os"
 
 	"github.com/bwmarrin/discordgo"
+	Config "github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
 	"golang.org/x/oauth2"
 )
@@ -14,6 +14,7 @@ import (
 var discordConfig = oauth2.Config{
 	ClientID:     os.Getenv("DISCORD_CLIENT_ID"),
 	ClientSecret: os.Getenv("DISCORD_CLIENT_SECRET"),
+	RedirectURL:  "https://" + Config.Host + "/callback/discord",
 	Endpoint: oauth2.Endpoint{
 		AuthURL:   discordgo.EndpointOauth2 + "authorize",
 		TokenURL:  discordgo.EndpointOauth2 + "token",
@@ -33,8 +34,6 @@ func CallbackDiscord(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-
-	discordConfig.RedirectURL = "https://" + r.Host + "/callback/discord"
 
 	token, err := discordConfig.Exchange(r.Context(), r.FormValue("code"))
 	if err != nil {
@@ -62,8 +61,6 @@ func CallbackDiscord(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewDecoder(res.Body).Decode(&user); err != nil {
 		panic(err)
 	}
-
-	fmt.Println(user)
 
 	if _, err := session.Database(r).Exec(
 		`UPDATE users SET discord = $1`,

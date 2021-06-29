@@ -1,4 +1,4 @@
-h1 {
+h1, #discord h2 {
     align-items: center;
     display: flex;
     overflow: hidden;
@@ -26,6 +26,27 @@ h1 {
 #badges p:last-child {
     border: 2px solid var(--badge-background);
     border-left: 0;
+}
+
+#discord {
+    grid-row-gap: 0;
+    grid-template: min-content 1fr / min-content min-content;
+}
+
+#discord a, #discord a:hover, #discord button {
+    text-decoration: none;
+    width: min-content;
+}
+
+#discord #discriminator {
+    color: var(--grey)
+}
+
+#discord img {
+    border-radius: 50%;
+    grid-row: span 2;
+    height: 4rem;
+    width: 4rem;
 }
 
 #profile {
