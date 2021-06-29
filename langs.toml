@@ -564,7 +564,7 @@ end
 '''
 
 [Rust]
-size    = '773 MiB'
+size    = '661 MiB'
 version = '1.53.0'
 website = 'https://www.rust-lang.org'
 example = '''
