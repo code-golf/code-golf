@@ -28,37 +28,9 @@ func CallbackDev(w http.ResponseWriter, r *http.Request) {
 
 // Callback serves GET /callback
 func Callback(w http.ResponseWriter, r *http.Request) {
-	if r.FormValue("code") == "" {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	token, err := config.Exchange(r.Context(), r.FormValue("code"))
-	if err != nil {
-		panic(err)
-	}
-
-	req, err := http.NewRequestWithContext(
-		r.Context(), "GET", "https://api.github.com/user", nil)
-	if err != nil {
-		panic(err)
-	}
-
-	req.Header.Add("Authorization", "Bearer "+token.AccessToken)
-
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-		panic(err)
-	}
-	defer res.Body.Close()
-
 	var user struct {
 		ID    int
 		Login string
-	}
-
-	if err := json.NewDecoder(res.Body).Decode(&user); err != nil {
-		panic(err)
 	}
 
 	cookie := http.Cookie{
@@ -77,6 +49,49 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 		timeZone = sql.NullString{
 			String: tz.String(),
 			Valid:  tz != time.Local && tz != time.UTC,
+		}
+	}
+
+	// In dev mode, the username is selected by the "username" parameter
+	if _, dev := os.LookupEnv("DEV"); dev && config.ClientSecret == "" {
+		user.Login = r.FormValue("username")
+		if user.Login == "" {
+			user.Login = "JRaspass"
+		}
+
+		if err := session.Database(r).QueryRow(
+			`SELECT COALESCE((SELECT id FROM users WHERE login = $1), COUNT(*) + 1) FROM users`,
+			user.Login,
+		).Scan(&user.ID); err != nil {
+			panic(err)
+		}
+	} else {
+		if r.FormValue("code") == "" {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		token, err := config.Exchange(r.Context(), r.FormValue("code"))
+		if err != nil {
+			panic(err)
+		}
+
+		req, err := http.NewRequestWithContext(
+			r.Context(), "GET", "https://api.github.com/user", nil)
+		if err != nil {
+			panic(err)
+		}
+
+		req.Header.Add("Authorization", "Bearer "+token.AccessToken)
+
+		res, err := http.DefaultClient.Do(req)
+		if err != nil {
+			panic(err)
+		}
+		defer res.Body.Close()
+
+		if err := json.NewDecoder(res.Body).Decode(&user); err != nil {
+			panic(err)
 		}
 	}
 
