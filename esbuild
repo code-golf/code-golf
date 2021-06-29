@@ -3,6 +3,7 @@
 rm -rf dist esbuild.json
 
 node_modules/.bin/esbuild "$@"        \
+    --asset-names=[dir]/[name]-[hash] \
     --bundle                          \
     --entry-names=[dir]/[name]-[hash] \
     --format=esm                      \
