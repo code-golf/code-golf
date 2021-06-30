@@ -52,7 +52,7 @@ COPY --from=codegolf/lang-fish       ["/", "/langs/fish/rootfs/"      ] #  477 K
 COPY --from=codegolf/lang-lua        ["/", "/langs/lua/rootfs/"       ] #  338 KiB
 
 COPY --from=0 /go/code-golf /go/esbuild.json     /
-COPY          /*.toml /words.txt                 /
+COPY          /*.toml                            /
 COPY          /css                               /css/
 COPY --from=0 /go/dist                           /dist/
 COPY --from=0 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/

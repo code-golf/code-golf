@@ -1,33 +1,21 @@
 package hole
 
 import (
-	"bufio"
+	_ "embed"
 	"math/rand"
-	"os"
 	"strconv"
 	"strings"
 
 	"github.com/agnivade/levenshtein"
 )
 
-var words []string
+var (
+	//go:embed words.txt
+	wordsTxt string
+	words    = strings.Split(strings.TrimSpace(wordsTxt), "\n")
+)
 
-func init() {
-	file, err := os.Open("words.txt")
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		words = append(words, scanner.Text())
-	}
-}
-
-func randWord() string {
-	return words[rand.Intn(len(words))]
-}
+func randWord() string { return words[rand.Intn(len(words))] }
 
 func levenshteinDistance() ([]string, string) {
 	const count = 20
@@ -38,13 +26,14 @@ func levenshteinDistance() ([]string, string) {
 
 	for i := 0; i < count; i++ {
 		switch i {
+		// Ensure we have at least one zero distance.
 		case perm[0]:
-			// Ensure we have at least one zero distance.
 			a := randWord()
 			args[i] = a + " " + a
 			outs[i] = "0"
+		// Add a test case that blocks an incorrect simplification to the
+		// algorithm from working.
 		case perm[1]:
-			// Add a test case that blocks an incorrect simplification to the algorithm from working.
 			args[i] = "open however"
 			outs[i] = "5"
 		case perm[2]:
