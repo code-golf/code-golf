@@ -1,5 +1,16 @@
 CREATE EXTENSION citext;
 
+CREATE TYPE cheevo AS ENUM (
+    'assembly-required', 'bakers-dozen', 'bullseye', 'caffeinated', 'cobowl',
+    'different-strokes', 'dont-panic', 'elephpant-in-the-room',
+    'fish-n-chips', 'forty-winks', 'happy-birthday-code-golf', 'hello-world',
+    'inception', 'independence-day', 'interview-ready', 'its-over-9000',
+    'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars', 'ouroboros',
+    'patches-welcome', 'pi-day', 'polyglot', 'rtfm', 'slowcoach',
+    'solve-quine', 'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
+    'up-to-eleven', 'vampire-byte'
+);
+
 CREATE TYPE hole AS ENUM (
     '12-days-of-christmas', '99-bottles-of-beer', 'abundant-numbers',
     'arabic-to-roman', 'brainfuck', 'christmas-trees', 'css-colors', 'cubes',
@@ -31,17 +42,6 @@ CREATE TYPE medal AS ENUM ('diamond', 'gold', 'silver', 'bronze');
 CREATE TYPE scoring AS ENUM ('bytes', 'chars');
 
 CREATE TYPE theme AS ENUM ('auto', 'dark', 'light');
-
-CREATE TYPE cheevo AS ENUM (
-    'assembly-required', 'bakers-dozen', 'bullseye', 'caffeinated', 'cobowl',
-    'different-strokes', 'dont-panic', 'elephpant-in-the-room',
-    'fish-n-chips', 'forty-winks', 'happy-birthday-code-golf', 'hello-world',
-    'inception', 'independence-day', 'interview-ready', 'its-over-9000',
-    'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars', 'ouroboros',
-    'patches-welcome', 'pi-day', 'polyglot', 'rtfm', 'slowcoach',
-    'solve-quine', 'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
-    'up-to-eleven', 'vampire-byte'
-);
 
 CREATE TABLE discord_records (
     hole    hole NOT NULL,
