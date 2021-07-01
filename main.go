@@ -9,6 +9,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/github"
 	"github.com/code-golf/code-golf/middleware"
 	"github.com/code-golf/code-golf/routes"
@@ -141,7 +142,7 @@ func main() {
 	}
 
 	var crt, key string
-	if _, dev := os.LookupEnv("DEV"); dev {
+	if config.Dev {
 		crt = "localhost.pem"
 		key = "localhost-key.pem"
 	} else {

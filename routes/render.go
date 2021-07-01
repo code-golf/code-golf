@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/code-golf/code-golf/cheevo"
+	Config "github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/country"
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/hole"
@@ -47,8 +48,6 @@ var (
 	assets = map[string]string{}
 	css    = map[string]template.CSS{}
 	svg    = map[string]template.HTML{}
-
-	dev bool
 )
 
 var tmpl = template.New("").Funcs(template.FuncMap{
@@ -113,8 +112,6 @@ func slurp(dir string) map[string]string {
 }
 
 func init() {
-	_, dev = os.LookupEnv("DEV")
-
 	// Assets.
 	if file, err := os.Open("esbuild.json"); err == nil {
 		defer file.Close()
@@ -299,7 +296,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data interface{
 
 		config.RedirectURL = "https://code.golf/callback"
 
-		if dev {
+		if Config.Dev {
 			config.RedirectURL += "/dev"
 		}
 
