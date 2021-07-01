@@ -1,82 +1,22 @@
 [run]
-skip-files = ['routes/assets.go', 'utils/update_sql_from_api.go']
-timeout    = '2m'
-
-# SA1029 – Inappropriate key in call to context.WithValue
-# https://staticcheck.io/docs/checks#SA1029
-[[issues.exclude-rules]]
-linters = 'staticcheck'
-text    = 'SA1029:'
+skip-files = ['routes/assets.go']
 
 [linters]
 disable-all = true
 enable = [
-    'asciicheck',
     'bodyclose',
     'deadcode',
-    'depguard',
-    'dogsled',
-    'dupl',
-    'durationcheck',
-  # 'errcheck',
-  # 'errorlint',
-    'exhaustive',
-  # 'exhaustivestruct',
-    'exportloopref',
-    'forbidigo',
-  # 'funlen',
-    'gci',
-  # 'gochecknoglobals',
-  # 'gochecknoinits',
-  # 'gocognit',
-  # 'goconst',
-  # 'gocritic',
-  # 'gocyclo',
-  # 'godot',
-  # 'godox',
-    'goerr113',
-    'gofmt',
     'gofumpt',
-    'goheader',
     'goimports',
-  # 'golint',
-    'gomoddirectives',
-    'gomodguard',
-  # 'gomnd',
-    'goprintffuncname',
-  # 'gosec',
     'gosimple',
     'govet',
-  # 'ifshort',
     'ineffassign',
-  # 'lll',
-  # 'makezero',
-  # 'misspell',
-  # 'nakedret',
-  # 'nestif',
-    'nilerr',
-  # 'nlreturn',
-    'noctx',
-    'nolintlint',
-  # 'paralleltest',
-  # 'prealloc',
-  # 'predeclared',
-    'revive',
     'rowserrcheck',
-  # 'sqlclosecheck',
     'staticcheck',
     'structcheck',
-    'stylecheck',
-  # 'testpackage',
-    'thelper',
-    'tparallel',
     'typecheck',
     'unconvert',
     'unparam',
     'unused',
     'varcheck',
-    'wastedassign',
-    'whitespace',
-  # 'wrapcheck',
-  # 'wsl',
 ]
