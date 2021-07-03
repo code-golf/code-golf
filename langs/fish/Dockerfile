@@ -21,3 +21,5 @@ FROM scratch
 COPY --from=0 /empty      /proc
 COPY --from=0 /empty      /tmp
 COPY --from=0 /fish-jit-c /usr/bin/fish
+
+ENTRYPOINT ["/usr/bin/fish", "--no-prng", "-u"]

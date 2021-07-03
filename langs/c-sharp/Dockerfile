@@ -21,4 +21,6 @@ COPY --from=0 /empty                   /tmp
 COPY --from=0 /usr/lib                 /usr/lib/
 COPY --from=0 /compiler                /compiler/
 
-ENTRYPOINT ["/compiler/Compiler", "--version"]
+ENTRYPOINT ["/compiler/Compiler"]
+
+CMD ["--version"]

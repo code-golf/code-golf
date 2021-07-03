@@ -5,6 +5,12 @@
 #include <unistd.h>
 
 int main (int argc, char *argv[]) {
+    if (argc > 1 && strcmp(argv[1], "--version") == 0) {
+        execv("/usr/bin/cobc", argv);
+        perror("execv");
+        return 0;
+    }
+
     pid_t pid = fork();
     if (!pid) {
         execl("/usr/bin/cobc", "/usr/bin/cobc", "-CFxo", "/tmp/code.c", "-", NULL);

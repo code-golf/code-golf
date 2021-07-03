@@ -1,5 +1,10 @@
 #!/bin/sh -e
 
+if [ "$1" = "version" ]; then
+    /opt/v/v version
+    exit 0
+fi
+
 export VMODULES=/tmp
 
 # FIXME Setting VVV=/opt/v doesn't prevent the need to cd.

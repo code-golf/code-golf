@@ -60,4 +60,6 @@ COPY --from=0 /empty                   /tmp
 COPY --from=0 /usr/bin/ruby            /usr/bin/
 COPY --from=0 /usr/lib/ruby/3.0.0      /usr/lib/ruby/3.0.0
 
-ENTRYPOINT ["ruby", "-e", "puts RUBY_VERSION"]
+ENTRYPOINT ["ruby"]
+
+CMD ["-e", "puts RUBY_VERSION"]

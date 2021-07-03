@@ -18,4 +18,6 @@ COPY --from=0 /empty /proc
 COPY --from=0 /empty /tmp
 COPY --from=0 /sql   /usr/bin/
 
-ENTRYPOINT ["sql", "-v"]
+ENTRYPOINT ["sql"]
+
+CMD ["-v"]

@@ -1,5 +1,10 @@
 #!/bin/sh -e
 
+if [ "$1" = "--version" ]; then
+    /usr/local/bin/gfortran --version
+    exit 0
+fi
+
 # Compile
 cat - > /tmp/code.f90
 /usr/local/bin/gfortran -fbackslash -o /tmp/code /tmp/code.f90

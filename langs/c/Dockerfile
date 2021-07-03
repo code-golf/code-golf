@@ -60,4 +60,6 @@ COPY --from=0 /usr/include/bits          /usr/include/bits/
 COPY --from=0 /usr/lib/libc.so           /usr/lib/
 COPY --from=0 /usr/lib/tcc/libtcc1.a     /usr/lib/tcc/
 
-ENTRYPOINT ["tcc", "-v"]
+ENTRYPOINT ["tcc"]
+
+CMD ["-v"]

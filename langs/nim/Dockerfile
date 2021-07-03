@@ -34,4 +34,6 @@ COPY --from=0 /usr/lib/crt1.o          \
 COPY --from=0 /usr/lib/nim             /usr/lib/nim/
 COPY --from=0 /usr/lib/tcc             /usr/lib/tcc/
 
-ENTRYPOINT ["nim", "-v"]
+ENTRYPOINT ["nim"]
+
+CMD ["-v"]

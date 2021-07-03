@@ -30,4 +30,6 @@ COPY --from=1 /usr/lib/libncursesw.so.6 \
 
 COPY java /usr/bin/
 
-ENTRYPOINT ["/opt/jdk/bin/java", "--version"]
+ENTRYPOINT ["/usr/bin/java"]
+
+CMD ["--version"]

@@ -16,3 +16,5 @@ COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
 COPY --from=0 /empty                   /proc
 COPY --from=0 /empty                   /tmp
 COPY --from=0 /defasm                  /usr/bin/
+
+ENTRYPOINT ["/usr/bin/defasm"]

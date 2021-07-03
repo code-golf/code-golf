@@ -25,4 +25,6 @@ COPY --from=0 /empty                   /tmp
 COPY --from=0 /usr/bin/clisp           /usr/bin/lisp
 COPY --from=0 /usr/lib/clisp-2.49.92   /usr/lib/clisp-2.49.92
 
-ENTRYPOINT ["lisp", "--version"]
+ENTRYPOINT ["lisp"]
+
+CMD ["--version"]

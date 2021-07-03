@@ -46,4 +46,6 @@ COPY --from=0 /perl/lib/File/Glob.pm   /usr/lib/perl/File/
 COPY --from=0 /perl/lib/auto/File/Glob/Glob.so \
           /usr/lib/perl/auto/File/Glob/
 
-ENTRYPOINT ["perl", "-e", "say substr $^V, 1"]
+ENTRYPOINT ["perl"]
+
+CMD ["-e", "say substr $^V, 1"]

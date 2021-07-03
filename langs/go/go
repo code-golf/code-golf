@@ -1,5 +1,10 @@
 #!/bin/sh -e
 
+if [ "$1" = "version" ]; then
+    /usr/local/go/bin/go version
+    exit 0
+fi
+
 # Separate compile and link relies on environment variables less than "go run" does.
 # "go run" also doesn't support reading the file from stdin.
 shift

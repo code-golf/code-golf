@@ -23,4 +23,6 @@ COPY --from=0 /zig-linux-x86_64-0.8.0/lib /usr/local/lib/
 
 COPY zig /usr/bin/
 
-ENTRYPOINT ["/usr/local/bin/zig", "version"]
+ENTRYPOINT ["/usr/bin/zig"]
+
+CMD ["version"]
