@@ -6,6 +6,8 @@ my $wd = WebDriver.new: :4444port, :host<firefox>, :capabilities(:alwaysMatch(
 
 $wd.get: 'https://app:1443/fizz-buzz';
 
+sleep 1;
+
 $wd.find('Raku', :using(LinkText)).click;
 
 $wd.find('textarea').send-keys:
