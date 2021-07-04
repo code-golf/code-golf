@@ -15,6 +15,9 @@ services:
   db:
     tmpfs: /var/lib/postgresql/data
   e2e:
+    build:
+      context: .
+      dockerfile: e2e.Dockerfile
     depends_on:
       app:
         condition: service_healthy
@@ -28,7 +31,6 @@ services:
       PGHOST:     db
       PGSSLMODE:  disable
       PGUSER:     postgres
-    image: jraspass/raku:toolbox
     tty: true
     volumes:
       - ..:/code-golf
