@@ -4,9 +4,8 @@ use WebDriver;
 my $wd = WebDriver.new: :4444port, :host<firefox>, :capabilities(:alwaysMatch(
     {:acceptInsecureCerts, 'moz:firefoxOptions' => :args('-headless',)}));
 
-$wd.get: 'https://app:1443/fizz-buzz';
-
-sleep 1;
+# TODO Using app:1443 seems to fail on GH actions :-(
+$wd.get: 'https://code.golf/fizz-buzz';
 
 $wd.find('Raku', :using(LinkText)).click;
 
