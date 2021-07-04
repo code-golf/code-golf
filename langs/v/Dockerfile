@@ -27,4 +27,6 @@ COPY --from=1 /usr   /usr
 
 COPY v /usr/bin/
 
-CMD ["/opt/v/v", "version"]
+ENTRYPOINT ["/usr/bin/v"]
+
+CMD ["version"]

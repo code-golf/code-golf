@@ -39,4 +39,6 @@ COPY --from=0 /usr/x86_64-alpine-linux-musl /usr/x86_64-alpine-linux-musl
 
 COPY rust /usr/bin/
 
-ENTRYPOINT ["/usr/local/cargo/bin/rustc", "--version"]
+ENTRYPOINT ["/usr/bin/rust"]
+
+CMD ["--version"]

@@ -15,4 +15,6 @@ COPY --from=0 /usr/local/go/pkg/tool/linux_amd64/compile \
 
 COPY go /usr/bin/go
 
-ENTRYPOINT ["/usr/local/go/bin/go", "version"]
+ENTRYPOINT ["/usr/bin/go"]
+
+CMD ["version"]

@@ -20,4 +20,6 @@ COPY --from=0 /empty             /proc
 COPY --from=0 /empty             /tmp
 COPY --from=0 /lua-5.4.3/src/lua /usr/bin/
 
-ENTRYPOINT ["lua", "-v"]
+ENTRYPOINT ["lua"]
+
+CMD ["-v"]

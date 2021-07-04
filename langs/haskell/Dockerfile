@@ -43,4 +43,6 @@ COPY --from=0 /usr/lib                 /usr/lib
 
 COPY haskell /usr/bin/
 
-ENTRYPOINT ["ghc", "--version"]
+ENTRYPOINT ["/usr/bin/haskell"]
+
+CMD ["--version"]

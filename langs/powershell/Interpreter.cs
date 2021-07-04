@@ -24,7 +24,7 @@ class Program
 			args = args[1..];
 		}
 
-		return Run(Console.In.ReadToEnd(), args, requireExplicitOutput);
+		return Run(Console.In.ReadToEnd(), args[1..], requireExplicitOutput);
 	}
 
 	static int Run(string code, string[] args, bool requireExplicitOutput)

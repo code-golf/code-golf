@@ -28,4 +28,6 @@ COPY --from=0 /empty         /proc
 COPY --from=0 /empty         /tmp
 COPY --from=0 /bash-5.1/bash /usr/bin/
 
-ENTRYPOINT ["bash", "-c", "echo ${BASH_VERSION%\\([0-9]\\)-release}"]
+ENTRYPOINT ["bash"]
+
+CMD ["-c", "echo ${BASH_VERSION%\\([0-9]\\)-release}"]

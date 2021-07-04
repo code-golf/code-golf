@@ -28,4 +28,6 @@ COPY --from=0 /empty           /tmp
 COPY --from=0 /usr/bin/php     /usr/bin/
 COPY --from=0 /usr/lib/php.ini /usr/lib/
 
-ENTRYPOINT ["php", "-r", "echo phpversion();"]
+ENTRYPOINT ["php"]
+
+CMD ["-r", "echo phpversion();"]

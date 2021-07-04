@@ -29,4 +29,6 @@ COPY --from=0 /empty                   /tmp
 COPY --from=0 /usr/bin/python3.9       /usr/bin/python
 COPY --from=0 /usr/lib/python3.9       /usr/lib/python3.9
 
-ENTRYPOINT ["python", "-c", "import platform;print(platform.python_version())"]
+ENTRYPOINT ["python"]
+
+CMD ["-c", "import platform;print(platform.python_version())"]

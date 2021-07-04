@@ -37,4 +37,6 @@ COPY --from=0 /empty                                /proc
 COPY --from=0 /empty                                /tmp
 COPY --from=0 /v8/out/d8                            /usr/bin/
 
-ENTRYPOINT ["/usr/bin/d8", "-v"]
+ENTRYPOINT ["/usr/bin/d8"]
+
+CMD ["-v"]

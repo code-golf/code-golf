@@ -29,4 +29,6 @@ COPY --from=0 /empty                   /tmp
 COPY --from=0 /usr/lib                 /usr/lib/
 COPY --from=0 /interpreter             /interpreter/
 
-ENTRYPOINT ["/interpreter/Interpreter", "--version"]
+ENTRYPOINT ["/interpreter/Interpreter"]
+
+CMD ["--version"]

@@ -1,5 +1,10 @@
 #!/bin/bash -e
 
+if [ "$1" = "--version" ]; then
+    /opt/jdk/bin/java --version
+    exit 0
+fi
+
 export LC_ALL=C.UTF-8
 
 cd /tmp

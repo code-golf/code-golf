@@ -70,4 +70,6 @@ COPY --from=0 /empty                        /tmp
 
 COPY fortran /usr/bin/
 
-ENTRYPOINT ["gfortran", "--version"]
+ENTRYPOINT ["fortran"]
+
+CMD ["--version"]

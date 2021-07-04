@@ -30,4 +30,6 @@ COPY --from=0 /j                                \
               /jsource/bin/linux/j64/jconsole   \
               /jsource/bin/linux/j64/libj.so    /usr/bin/
 
-ENTRYPOINT ["j", "-v"]
+ENTRYPOINT ["j"]
+
+CMD ["-v"]

@@ -1,5 +1,10 @@
 #!/bin/sh -e
 
+if [ "$1" = "--version" ]; then
+    /usr/bin/ghc --version
+    exit 0
+fi
+
 cat - > /tmp/code.hs
 
 exec /usr/bin/runghc /tmp/code.hs "$@"

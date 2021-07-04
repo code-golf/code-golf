@@ -21,3 +21,5 @@ FROM scratch
 COPY --from=0 /empty    /proc
 COPY --from=0 /empty    /tmp
 COPY --from=0 /bf-jit-c /usr/bin/brainfuck
+
+ENTRYPOINT ["/usr/bin/brainfuck"]

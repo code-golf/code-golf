@@ -143,11 +143,12 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	case "julia":
 		cmd.Args = []string{"/usr/bin/run-julia", "/tmp/code.jl"}
 	case "powershell":
-		cmd.Args = []string{"/interpreter/Interpreter"}
+		cmd.Args = []string{"/interpreter/Interpreter", "-"}
 
 		// Require explicit output for Quine to prevent trivial solutions.
 		if holeID == "quine" {
-			cmd.Args = append(cmd.Args, "--explicit")
+			cmd.Args[1] = "--explicit"
+			cmd.Args = append(cmd.Args, "-")
 		}
 	case "python":
 		// Force the stdout and stderr streams to be unbuffered.

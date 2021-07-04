@@ -1,5 +1,10 @@
 #!/bin/sh -e
 
+if [ "$1" = "version" ]; then
+    /usr/local/bin/zig version
+    exit 0
+fi
+
 cd /tmp
 
 # Compile

@@ -37,4 +37,6 @@ COPY --from=0 /usr/lib/libbrotlicommon.so.1 \
               /usr/lib/libssl.so.1.1        \
               /usr/lib/libstdc++.so.6       /usr/lib/
 
-ENTRYPOINT ["julia", "-e", "println(VERSION)"]
+ENTRYPOINT ["/usr/bin/run-julia"]
+
+CMD ["-e", "println(VERSION)"]
