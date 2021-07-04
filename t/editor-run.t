@@ -1,10 +1,10 @@
 use Test;
 use WebDriver;
 
-my $wd = WebDriver.new: :4444port, :host<firefox>,
-    :capabilities(:alwaysMatch('moz:firefoxOptions' => :args('-headless',)));
+my $wd = WebDriver.new: :4444port, :host<firefox>, :capabilities(:alwaysMatch(
+    {:acceptInsecureCerts, 'moz:firefoxOptions' => :args('-headless',)}));
 
-$wd.get: 'https://code.golf/fizz-buzz';
+$wd.get: 'https://app:1443/fizz-buzz';
 
 $wd.find('Raku', :using(WebDriver::Selector::LinkText)).click;
 
