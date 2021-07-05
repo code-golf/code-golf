@@ -10,7 +10,7 @@ require (
 	github.com/buildkite/terminal v3.2.0+incompatible
 	github.com/bwmarrin/discordgo v0.23.2
 	github.com/dgryski/trifles v0.0.0-20210119233746-37d926d5de6c // indirect
-	github.com/go-chi/chi/v5 v5.0.3
+	github.com/go-chi/chi/v5 v5.0.4-0.20210705131352-a63dd1f8a9ea
 	github.com/gofrs/uuid v4.0.0+incompatible
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/gorilla/feeds v1.1.1
