@@ -12,6 +12,14 @@ unit module t;
 # TODO Remove :!max-redirect once https://gitlab.com/jjatria/http-tiny/-/issues/12
 our $client is export = HTTP::Tiny.new :!max-redirect :throw-exceptions;
 
+sub createSession($dbh, int $userId) is export {
+    $dbh.execute("INSERT INTO sessions (user_id) VALUES ($userId) RETURNING id").row.head;
+}
+
+sub createUser($dbh, int $id) is export {
+    $dbh.execute: "INSERT INTO users (id, login) VALUES ($id, '')";
+}
+
 sub dbh is export {
     my $dbh = DBIish.connect: 'Pg';
 
