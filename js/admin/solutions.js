@@ -54,7 +54,7 @@ form.onsubmit = async e => {
 
         if (!line.pass) failing++;
 
-        status.innerText = (++solutions).toLocaleString('en') +
+        status.innerText = (++solutions).toLocaleString('en') + '/' + line.total.toLocaleString('en') +
             ` solutions (${failing} failing) in ` +
             new Date(Date.now() - start).toISOString().substr(14, 8).replace(/^00:/, '');
 

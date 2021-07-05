@@ -25,6 +25,7 @@ type solution struct {
 	LangID   string        `json:"lang"`
 	Stderr   string        `json:"stderr"`
 	Took     time.Duration `json:"took"`
+	Total    int           `json:"total"`
 }
 
 // AdminSolutions serves GET /admin/solutions
@@ -137,14 +138,16 @@ func getSolutions(r *http.Request) chan solution {
 
 		rows, err := session.Database(r).QueryContext(
 			r.Context(),
-			` SELECT DISTINCT code, failing, login, user_id, hole, lang
+			`WITH distinct_solutions AS (
+			  SELECT DISTINCT code, failing, login, user_id, hole, lang
 			    FROM solutions
 			    JOIN users   ON id = user_id
 			   WHERE failing IN (true, $1)
 			     AND (login = $2 OR $2 = '')
 			     AND (hole  = $3 OR $3 IS NULL)
 			     AND (lang  = $4 OR $4 IS NULL)
-			ORDER BY hole, lang, login`,
+			ORDER BY hole, lang, login
+			) SELECT *, COUNT(*) OVER () FROM distinct_solutions`,
 			r.FormValue("failing") == "on",
 			r.FormValue("golfer"),
 			sql.NullString{String: holeID, Valid: holeID != ""},
@@ -166,6 +169,7 @@ func getSolutions(r *http.Request) chan solution {
 				&s.GolferID,
 				&s.HoleID,
 				&s.LangID,
+				&s.Total,
 			); err != nil {
 				panic(err)
 			}
