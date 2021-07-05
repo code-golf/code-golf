@@ -51,7 +51,7 @@ func wordify(out *strings.Builder, i int) {
 		out.Write(tens[i/10])
 
 		if j := i % 10; j > 0 {
-			out.WriteRune('-')
+			out.WriteByte('-')
 			out.Write(teens[j])
 		}
 	} else {
@@ -80,7 +80,7 @@ func spellingNumbers() ([]string, string) {
 		wordify(&out, n)
 
 		if i < max {
-			out.WriteRune('\n')
+			out.WriteByte('\n')
 		}
 	}
 
