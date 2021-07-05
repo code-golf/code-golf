@@ -72,6 +72,7 @@ e2e: export COMPOSE_PROJECT_NAME = code-golf-e2e
 e2e:
 # TODO Pass arguments to run specific tests.
 	@./esbuild
+	@./build-assets --force
 	@touch docker/.env
 	@docker-compose rm -fsv &>/dev/null
 	@docker-compose pull -q
