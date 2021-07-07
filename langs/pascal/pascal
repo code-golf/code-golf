@@ -1,0 +1,17 @@
+#!/bin/sh -e
+
+export PATH=/usr/lib/fpc/3.2.2:/usr/bin:/bin
+
+if [ "$1" = "version" ]; then
+    exec fpc -iV
+fi
+
+# Compile
+cd /tmp
+cat - > code.pas
+fpc code.pas >&2
+rm code.pas
+
+# Execute
+shift
+exec ./code "$@"

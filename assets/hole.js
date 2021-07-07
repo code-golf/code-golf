@@ -23,6 +23,7 @@
 /* include vendor/codemirror-lua.js           */
 /* include vendor/codemirror-mllike.js        */
 /* include vendor/codemirror-nim.js           */
+/* include vendor/codemirror-pascal.js        */
 /* include vendor/codemirror-perl.js          */
 /* include vendor/codemirror-php.js           */
 /* include vendor/codemirror-powershell.js    */

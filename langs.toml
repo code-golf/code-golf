@@ -459,6 +459,27 @@ for arg in commandLineParams():
     echo arg
 '''
 
+[Pascal]
+size    = '31.3 MiB'
+version = '3.2.2'
+website = 'https://freepascal.org'
+example = '''
+var
+    i: integer;
+begin
+    { Printing }
+    writeLn('Hello, World!');
+
+    { Looping }
+    for i := 0 to 9 do
+        writeLn(i);
+
+    { Accessing arguments }
+    for i := 1 to paramCount() do
+        writeLn(paramStr(i));
+end.
+'''
+
 [Perl]
 size    = '4.32 MiB'
 version = '5.34.0'

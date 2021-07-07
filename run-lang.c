@@ -270,9 +270,9 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         \******/
 
         // Current Time of Day
-        // ALLOW(gettimeofday), // 96
+        ALLOW(gettimeofday),    // 96
         // ALLOW(settimeofday), // 164
-        // ALLOW(time),         // 201
+        ALLOW(time),            // 201
 
         // POSIX Clocks
         ALLOW(clock_adjtime),   // 305

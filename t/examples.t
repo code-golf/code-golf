@@ -19,8 +19,9 @@ for slurp("langs.toml").&from-toml.map({
 
             $exp ~= "\n" if $hole eq 'quine';
 
+            # Pascal prints lots of info to STDERR.
             is $got<Out>, $exp, 'Out';
-            is $got<Err>,   '', 'Err';
+            is $got<Err>,   '', 'Err' if $lang ne 'pascal';
         }
     }
 }

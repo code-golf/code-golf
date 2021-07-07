@@ -33,8 +33,8 @@ CREATE TYPE keymap AS ENUM ('default', 'vim');
 CREATE TYPE lang AS ENUM (
     'assembly', 'bash', 'brainfuck', 'c', 'c-sharp', 'cobol', 'crystal',
     'f-sharp', 'fish', 'fortran', 'go', 'haskell', 'hexagony', 'j', 'java',
-    'javascript', 'julia', 'lisp', 'lua', 'nim', 'perl', 'php', 'powershell',
-    'python', 'raku', 'ruby', 'rust', 'sql', 'swift', 'v', 'zig'
+    'javascript', 'julia', 'lisp', 'lua', 'nim', 'pascal', 'perl', 'php',
+    'powershell', 'python', 'raku', 'ruby', 'rust', 'sql', 'swift', 'v', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('diamond', 'gold', 'silver', 'bronze');

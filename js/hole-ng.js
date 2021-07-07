@@ -32,6 +32,7 @@ import { javascript }  from '@codemirror/lang-javascript';
 import { julia }       from '@codemirror/legacy-modes/mode/julia';
 import { lua }         from '@codemirror/legacy-modes/mode/lua';
 import { nim }         from 'nim-codemirror-mode';
+import { pascal }      from '@codemirror/legacy-modes/mode/pascal';
 import { perl }        from '@codemirror/legacy-modes/mode/perl';
 import { powerShell }  from '@codemirror/legacy-modes/mode/powershell';
 import { python }      from '@codemirror/lang-python';
@@ -105,6 +106,7 @@ const extensions = {
     'lisp':       StreamLanguage.define(commonLisp),
     'lua':        StreamLanguage.define(lua),
     'nim':        StreamLanguage.define(nim( {}, {} )),
+    'pascal':     StreamLanguage.define(pascal),
     'perl':       StreamLanguage.define(perl),
     // TODO php
     'powershell': StreamLanguage.define(powerShell),
