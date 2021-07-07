@@ -107,7 +107,7 @@ links = [
     { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Roman_numerals' },
 ]
 preamble = '''
-<p>For each arabic numeral argument print the same number in roman numerals.
+<p>For each Arabic numeral argument print the same number in Roman numerals.
 '''
 
 [brainfuck]
@@ -954,7 +954,7 @@ links = [
 ]
 preamble = '''
 <p>
-    Draw the Mandelbrot set in a 40x80 unicode grid by using ▒ (U+2592)
+    Draw the Mandelbrot set in a 40x80 Unicode grid by using ▒ (U+2592)
     and █ (U+2588).
 '''
 
@@ -1423,7 +1423,7 @@ links = [
     { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Roman_numerals' },
 ]
 preamble = '''
-<p>For each roman numeral argument print the same number in arabic numerals.
+<p>For each Roman numeral argument print the same number in Arabic numerals.
 '''
 
 ['Rule 110']
@@ -1635,7 +1635,7 @@ preamble = '''
 <p>
     Write a program that given an incomplete Sudoku board as 9 arguments of 9
     digits, with blanks respresented by an underscore, print a solved Sudoku
-    grid using unicode box-drawing characters like so:
+    grid using Unicode box-drawing characters like so:
 
 <pre>┏━━━┯━━━┯━━━┳━━━┯━━━┯━━━┳━━━┯━━━┯━━━┓
 ┃ 2 │ 5 │ 8 ┃ 4 │ 1 │ 7 ┃ 6 │ 9 │ 3 ┃
@@ -1673,7 +1673,7 @@ preamble = '''
 
 <p>
     Write a program that given an incomplete Sudoku board as an argument,
-    prints the solved Sudoku board. The grid will be drawn with unicode
+    prints the solved Sudoku board. The grid will be drawn with Unicode
     box-drawing characters like so:
 
 <pre>┏━━━┯━━━┯━━━┳━━━┯━━━┯━━━┳━━━┯━━━┯━━━┓
