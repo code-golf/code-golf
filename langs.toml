@@ -476,7 +476,7 @@ say for @ARGV;
 
 [PHP]
 size    = '10.5 MiB'
-version = '7.4.20'
+version = '7.4.21'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -512,7 +512,7 @@ ForEach ($arg in $args) {
 
 [Python]
 size    = '57 MiB'
-version = '3.9.5'
+version = '3.9.6'
 website = 'https://www.python.org'
 example = '''
 import sys
