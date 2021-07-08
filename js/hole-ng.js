@@ -116,9 +116,9 @@ const switchLang = onhashchange = () => {
 
                 extensions[lang] || [],
 
-                // These languages shouldn't auto-complete brackets.
+                // These languages shouldn't match brackets.
                 ['brainfuck', 'fish', 'j', 'hexagony'].includes(lang)
-                    ? [] : extensions.brackets,
+                    ? [] : extensions.bracketMatching,
 
                 // These languages shouldn't wrap lines.
                 ['assembly', 'fish', 'hexagony'].includes(lang)

@@ -4,7 +4,6 @@ import { EditorView, keymap } from '@codemirror/view';
 export { EditorState, EditorView };
 
 // Extensions.
-import { closeBrackets, closeBracketsKeymap }          from '@codemirror/closebrackets';
 import { defaultTabBinding, standardKeymap }           from '@codemirror/commands';
 import { lineNumbers }                                 from '@codemirror/gutter';
 import { defaultHighlightStyle, HighlightStyle, tags } from '@codemirror/highlight';
@@ -65,9 +64,7 @@ export const extensions = {
             '.cm-tooltip-autocomplete': { fontFamily },
         }, { dark: false }),
     ],
-    brackets: [
-        bracketMatching(), closeBrackets(), keymap.of(closeBracketsKeymap),
-    ],
+    bracketMatching: bracketMatching(),
     dark: [
         EditorView.theme({
             '&': { background: 'var(--background)', color: 'var(--color)' },

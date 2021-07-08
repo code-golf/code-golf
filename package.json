@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "@codemirror/closebrackets": "",
     "@codemirror/commands": "",
     "@codemirror/gutter": "",
     "@codemirror/highlight": "",
