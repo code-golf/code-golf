@@ -181,7 +181,7 @@ onload = () => {
                         localStorage.removeItem(getAutoSaveKey(codeLang, i));
                 }
             }
-            else {
+            else if (getSolutionCode(codeLang, i)) {
                 // Autosave the best solution for each scoring metric.
                 localStorage.setItem(getAutoSaveKey(codeLang, i), getSolutionCode(codeLang, i));
             }
@@ -263,7 +263,7 @@ async function refreshScores() {
         }
 
         picker.innerHTML += l.id == lang
-            ? `<a>${name}</a>` : `<a href=#${l.id}>${name}</a>`;
+            ? `<a id="${l.name}">${name}</a>` : `<a id="${l.name}" href=#${l.id}>${name}</a>`;
     }
 
     while (solutionPicker.firstChild)
@@ -287,9 +287,10 @@ async function refreshScores() {
             }
 
             const child = document.createElement('a');
+            child.id = `${scorings[i]}Solution`;
             child.innerHTML = name;
             if (i != solution) {
-                child.href = 'javascript:void(0)';
+                child.href = '';
                 child.onclick = () => {
                     setSolution(i);
                     setCodeForLangAndSolution();
