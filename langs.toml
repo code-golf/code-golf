@@ -475,8 +475,8 @@ begin
         writeLn(i);
 
     { Accessing arguments }
-    for i := 1 to paramCount() do
-        writeLn(paramStr(i));
+    for i := 1 to argc do
+        writeLn(argv[i]);
 end.
 '''
 
