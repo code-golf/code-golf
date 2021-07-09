@@ -20,6 +20,7 @@ constant @urls = (
     'Lua'        => 'Lua_(programming_language)',
     'Nim'        => 'Nim_(programming_language)',
     'PHP'        => 'PHP',
+    'Pascal'     => 'Free_Pascal',
     'Perl'       => 'Perl',
     'PowerShell' => 'PowerShell',
     'Python'     => 'Python_(programming_language)',
