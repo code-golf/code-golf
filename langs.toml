@@ -672,6 +672,23 @@ for arg in os.args[1..] {
 }
 '''
 
+[VimL]
+size    = '3.25 MiB'
+version = 'v8.2.3131'
+website = 'https://www.vim.org/'
+example = '''
+" Printing
+execute "normal! iHello, World!\r"
+
+" Looping
+for i in range(0, 9)
+  execute "normal! i".i."\r"
+endfor
+
+" Accessing arguments
+execute "normal! :wq\<cr>"
+'''
+
 [Zig]
 size    = '241 MiB'
 version = '0.8.0'

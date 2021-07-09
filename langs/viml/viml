@@ -1,0 +1,32 @@
+#!/bin/sh -e
+
+export PATH=/usr/bin:/bin
+
+if [ "$1" = "--version" ]; then
+    /usr/bin/vim --version
+    exit 0
+fi
+
+# Write code to .vim file
+cd /tmp
+cat - > code.vim
+
+# Write args to output file
+shift
+while [[ $# -gt 0 ]]; do
+  echo "$1" >> output
+  shift
+done
+
+# Execute
+set +e
+err="$(/usr/bin/vim --clean --not-a-term --noplugin -eZ -V1 +0 -S code.vim output 2>&1)"
+status=$?
+set -e
+
+if [[ $status -eq 0 ]];then
+  cat output
+else
+  echo "$err" >&2
+  exit $status
+fi
