@@ -7,16 +7,35 @@ if [ "$1" = "--version" ]; then
     exit 0
 fi
 
-# Write code to .vim file
 cd /tmp
-cat - > code.vim
 
-# Write args to output file
+# Inject args variable into code
 shift
+printf "let args = [" > code.vim
 while [[ $# -gt 0 ]]; do
-  echo "$1" >> output
+
+  # Escape double quotes and newlines
+  escaped="$(\
+    printf "$1" \
+      | sed -e 's/"/\\\\"/g' \
+      | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/\\\\n/g' \
+  )"
+
+  printf "\"$escaped\"" >> code.vim
+
+  if [[ $# -gt 1 ]]; then
+    printf ", " >> code.vim
+  fi
+
   shift
 done
+printf "]\n" >> code.vim
+
+# Write code to .vim file
+cat - >> code.vim
+
+# Create output file
+touch output
 
 # Execute
 set +e

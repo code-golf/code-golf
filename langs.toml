@@ -686,6 +686,10 @@ for i in range(0, 9)
 endfor
 
 " Accessing arguments
+for a in args
+  execute "normal! i".a."\r"
+endfor
+
 execute "normal! :wq\<cr>"
 '''
 
