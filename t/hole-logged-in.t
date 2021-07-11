@@ -204,7 +204,7 @@ subtest 'Different bytes and chars solutions, and the active solution, are loade
 }
 
 subtest 'Different bytes and chars solutions, submitted while not logged in, can be resubmitted once logged in.' => {
-    plan 15;
+    plan 14;
     my $wd = HoleWebDriver.create;
     LEAVE $wd.delete-session;
     $wd.loadFizzBuzz; 
@@ -227,10 +227,6 @@ subtest 'Different bytes and chars solutions, submitted while not logged in, can
     $wd.run;
     $wd.isPassing;
     $wd.setSolution: 'bytes';
-    # Ideally it shouldn't prompt the user twice to restore the local version at this point.
-    is $wd.alert-text, 'Your local copy of the code is different than the remote one. Do you want to restore the local version?', 'Confirm alert text';
-    $wd.accept-alert;
-    sleep 2;
     is $wd.alert-text, 'Your local copy of the code is different than the remote one. Do you want to restore the local version?', 'Confirm alert text';
     $wd.accept-alert;
     $wd.isBytesAndChars: 121, 121;

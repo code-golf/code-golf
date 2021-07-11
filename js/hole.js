@@ -291,7 +291,8 @@ async function refreshScores() {
             child.innerHTML = name;
             if (i != solution) {
                 child.href = '';
-                child.onclick = () => {
+                child.onclick = e => {
+                    e.preventDefault();
                     setSolution(i);
                     setCodeForLangAndSolution();
                 };
