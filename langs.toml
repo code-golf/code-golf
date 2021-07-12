@@ -19,7 +19,7 @@ v               ~<
 
 [Assembly]
 size    = '48.7 MiB'
-version = 'DefAssembler 1.6.0'
+version = 'DefAssembler 1.6.1'
 website = 'https://www.npmjs.com/package/@defasm/core'
 example = '''
 # Printing
@@ -475,8 +475,8 @@ begin
         writeLn(i);
 
     { Accessing arguments }
-    for i := 1 to paramCount() do
-        writeLn(paramStr(i));
+    for i := 1 to argc do
+        writeLn(argv[i]);
 end.
 '''
 

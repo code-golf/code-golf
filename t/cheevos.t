@@ -11,11 +11,8 @@ constant %cheevos = <
 >;
 
 my $dbh = dbh;
-
-$dbh.execute: "INSERT INTO users (id, login) VALUES (1, '')";
-
-my $session = $dbh.execute(
-    'INSERT INTO sessions (user_id) VALUES (1) RETURNING id').row.head;
+createUser($dbh, 1);
+my $session = createSession($dbh, 1);
 
 $client.get: 'https://app:1443/about',
     headers => { cookie => "__Host-session=$session" };
