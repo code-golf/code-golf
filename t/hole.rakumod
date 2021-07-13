@@ -28,7 +28,7 @@ our $python62_62 is export = 'for i in range(1,101):print("Fizz"*(i%3<1)+"Buzz"*
 class HoleWebDriver is WebDriver is export {
     method create(::?CLASS:U $wd:) {
         $wd.new: :4444port, :host<firefox>, :capabilities(:alwaysMatch(
-            {:acceptInsecureCerts, 'moz:firefoxOptions' => :args('-headless',)}));
+            {:acceptInsecureCerts, 'moz:firefoxOptions' => {:args('-headless',), :prefs('devtools.console.stdout.content' => True)}}));
     }
 
     method clearLocalStorage {

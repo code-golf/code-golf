@@ -204,7 +204,7 @@ subtest 'Different bytes and chars solutions, and the active solution, are loade
 }
 
 subtest 'Different bytes and chars solutions, submitted while not logged in, can be resubmitted once logged in.' => {
-    plan 14;
+    plan 15;
     my $wd = HoleWebDriver.create;
     LEAVE $wd.delete-session;
     $wd.loadFizzBuzz; 
@@ -230,8 +230,7 @@ subtest 'Different bytes and chars solutions, submitted while not logged in, can
     is $wd.alert-text, 'Your local copy of the code is different than the remote one. Do you want to restore the local version?', 'Confirm alert text';
     $wd.accept-alert;
     $wd.isBytesAndChars: 121, 121;
-    # TODO: the solution picker should show bytes, but it actually disappears at this point, which is technically a bug.
-    # is $wd.getSolutionPickerState, 'bytes', 'The bytes solution should be active, after selecting it.';
+    is $wd.getSolutionPickerState, 'bytes', 'The bytes solution should be active, after selecting it.';
     # Submit the solution as a logged-in user.
     $wd.run;
     $wd.isPassing;
