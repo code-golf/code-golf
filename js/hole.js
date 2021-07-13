@@ -100,7 +100,10 @@ onload = () => {
             startOpen: true,
             multiLineStrings: lang == 'c', // TCC supports multi-line strings
         });
-        cm.setValue(code);
+
+        // In some cases, setting the code to its current value can lead to auto-saved code being removed from localStorage.
+        if (cm.getValue() != code)
+            cm.setValue(code);
 
         refreshScores();
 
@@ -276,8 +279,8 @@ async function refreshScores() {
 
     // Only show the solution picker when both solutions are actually used.
     if (code0 && code1 && code0 != code1 || autoSave0 && autoSave1 && autoSave0 != autoSave1 ||
-        (solution == 0 && code0 && autoSave1 && code0 != autoSave1) ||
-        (solution == 1 && autoSave0 && code1 && autoSave0 != code1)) {
+        (code0 && autoSave1 && code0 != autoSave1) ||
+        (autoSave0 && code1 && autoSave0 != code1)) {
         for (let i = 0; i < scorings.length; i++) {
             let name = `Fewest ${scorings[i]}`;
 
