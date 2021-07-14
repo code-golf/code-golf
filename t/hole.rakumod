@@ -109,6 +109,15 @@ class HoleWebDriver is WebDriver is export {
         flunk "Failed to find run results. $desc";
     }
 
+    # Methods whose names begin with "is" do exactly one assertion.
+    method isSolutionPickerState(Str:D $expectedState, Str:D $context = '') {
+        my $desc = $expectedState ??
+            "The $expectedState solution should be active" !!
+            "The solution picker shouldn't be visible, because a single solution optimizes both metrics";
+        $desc ~= $context ?? ", $context" !! '.';
+        is $.getSolutionPickerState, $expectedState, $desc;
+    }
+
     method loadFibonacci {
         $.get: 'https://app:1443/fibonacci';
     }

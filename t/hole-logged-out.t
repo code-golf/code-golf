@@ -7,7 +7,7 @@ use hole;
 plan 8;
 
 subtest 'Successful solutions are loaded from localStorage on reload.' => {
-    plan 3;
+    plan 5;
     my $wd = HoleWebDriver.create;
     LEAVE $wd.delete-session;
     $wd.loadFizzBuzz;
@@ -16,13 +16,16 @@ subtest 'Successful solutions are loaded from localStorage on reload.' => {
     $wd.isBytesAndChars: 57, 55;
     $wd.run;
     $wd.isPassing;
+    $wd.isSolutionPickerState: '';
     $wd.clearLocalStorage;
     $wd.loadFizzBuzz;
+    $wd.getLangLink('Raku').click;
     $wd.isBytesAndChars: 0, 0, 'Solutions should not be preserved, after clearing localStorage.';
+    $wd.isSolutionPickerState: '';
 }
 
 subtest 'Untested solutions are loaded from localStorage on reload.' => {
-    plan 3;
+    plan 5;
     my $wd = HoleWebDriver.create;
     LEAVE $wd.delete-session;
     $wd.loadFizzBuzz;
@@ -31,13 +34,16 @@ subtest 'Untested solutions are loaded from localStorage on reload.' => {
     $wd.isBytesAndChars: 3, 3;
     $wd.loadFizzBuzz;
     $wd.isBytesAndChars: 3, 3, 'The byte count should be the same after reloading the page.';
+    $wd.isSolutionPickerState: '';
     $wd.clearLocalStorage;
     $wd.loadFizzBuzz;
+    $wd.getLangLink('Raku').click;
     $wd.isBytesAndChars: 0, 0, 'Untested solutions should not be preserved, after clearing localStorage.';
+    $wd.isSolutionPickerState: '', 'after clearing localStorage and reloading the page.';
 }
 
 subtest 'Failing solutions are loaded from localStorage on reload.' => {
-    plan 4;
+    plan 5;
     my $wd = HoleWebDriver.create;
     LEAVE $wd.delete-session;
     $wd.loadFizzBuzz;
@@ -50,7 +56,9 @@ subtest 'Failing solutions are loaded from localStorage on reload.' => {
     $wd.isBytesAndChars: 3, 3, 'The byte count should be the same after reloading the page.';
     $wd.clearLocalStorage;
     $wd.loadFizzBuzz;
+    $wd.getLangLink('Raku').click;
     $wd.isBytesAndChars: 0, 0, 'Failing solutions should not be preserved, after clearing localStorage.';
+    $wd.isSolutionPickerState: '', 'after clearing localStorage and reloading the page.';
 }
 
 subtest 'The solution picker appears automatically, switching to bytes, and is independent of the scoring.' => {
@@ -63,13 +71,13 @@ subtest 'The solution picker appears automatically, switching to bytes, and is i
     $wd.isBytesAndChars: 210, 88;
     $wd.run;
     $wd.isPassing;
-    is $wd.getSolutionPickerState, '', "The solution picker shouldn't be visible, because a single solution optimizes both metrics.";
+    $wd.isSolutionPickerState: '';
     is $wd.getScoringPickerState, 'bytes', "The scoring should be the default, bytes.";
     $wd.typeCode: BACKSPACE x 88 ~ $python121_121;
     $wd.isBytesAndChars: 121, 121;
     $wd.run;
     $wd.isPassing;
-    is $wd.getSolutionPickerState, 'bytes', 'The bytes solution should be active, because the submitted solution optimized that criteria.';
+    $wd.isSolutionPickerState: 'bytes';
     is $wd.getScoringPickerState, 'bytes', "The scoring should be the default, bytes.";
 }
 
@@ -83,13 +91,13 @@ subtest 'The solution picker appears automatically, switching to chars, and is i
     $wd.isBytesAndChars: 121, 121;
     $wd.run;
     $wd.isPassing;
-    is $wd.getSolutionPickerState, '', "The solution picker shouldn't be visible, because a single solution optimizes both metrics.";
+    $wd.isSolutionPickerState: '';
     is $wd.getScoringPickerState, 'bytes', "The scoring should be the default, bytes.";
     $wd.typeCode: BACKSPACE x 121 ~ $python210_88;
     $wd.isBytesAndChars: 210, 88;
     $wd.run;
     $wd.isPassing;
-    is $wd.getSolutionPickerState, 'chars', 'The chars solution should be active, because the submitted solution optimized that criteria.';
+    $wd.isSolutionPickerState: 'chars';
     is $wd.getScoringPickerState, 'bytes', "The scoring should be the default, bytes.";
 }
 
@@ -107,15 +115,15 @@ subtest 'The user can choose from bytes and chars solutions, independently of th
     $wd.isBytesAndChars: 210, 88;
     $wd.run;
     $wd.isPassing;
-    is $wd.getSolutionPickerState, 'chars', 'The chars solution should be active, because the submitted solution optimized that criteria.';
+    $wd.isSolutionPickerState: 'chars';
     is $wd.getScoringPickerState, 'bytes', "The scoring should be the default, bytes.";
     $wd.isBytesAndChars: 210, 88;
     $wd.setSolution: 'bytes';
-    is $wd.getSolutionPickerState, 'bytes', 'The bytes solution should still be active, after reloading the page.';
+    $wd.isSolutionPickerState: 'bytes', 'after reloading the page.';
     is $wd.getScoringPickerState, 'bytes', "The scoring should be the default, bytes.";
     $wd.isBytesAndChars: 121, 121;
     $wd.setSolution: 'chars';
-    is $wd.getSolutionPickerState, 'chars', 'The chars solution should be active, because the submitted solution optimized that criteria.';
+    $wd.isSolutionPickerState: 'chars', 'after switching solutions.';
     is $wd.getScoringPickerState, 'bytes', "The scoring should be the default, bytes.";
     $wd.isBytesAndChars: 210, 88;
 }
@@ -134,12 +142,12 @@ subtest 'The solution picker disappears automatically.' => {
     $wd.isBytesAndChars: 210, 88;
     $wd.run;
     $wd.isPassing;
-    is $wd.getSolutionPickerState, 'chars', 'The chars solution should be active, because the submitted solution optimized that criteria.';
+    $wd.isSolutionPickerState: 'chars';
     $wd.typeCode: BACKSPACE x 88 ~ $python62_62;
     $wd.isBytesAndChars: 62, 62;
     $wd.run;
     $wd.isPassing;
-    is $wd.getSolutionPickerState, '', "The solution picker shouldn't be visible, because a single solution once again optimizes both metrics.";
+    $wd.isSolutionPickerState: '';
 }
 
 subtest 'Different bytes and chars solutions, and the active solution, are loaded from localStorage on reload.' => {
@@ -157,14 +165,14 @@ subtest 'Different bytes and chars solutions, and the active solution, are loade
     $wd.isBytesAndChars: 210, 88;
     $wd.run;
     $wd.isPassing;
-    is $wd.getSolutionPickerState, 'chars', 'The chars solution should be active, because the submitted solution optimized that criteria.';
+    $wd.isSolutionPickerState: 'chars';
     $wd.loadFizzBuzz;
-    is $wd.getSolutionPickerState, 'chars', 'The chars solution should still be active, after reloading the page.';
+    $wd.isSolutionPickerState: 'chars', 'after reloading the page.';
     $wd.isBytesAndChars: 210, 88;
     $wd.setSolution: 'bytes';
-    is $wd.getSolutionPickerState, 'bytes', 'The bytes solution should be active, after selecting it.';
+    $wd.isSolutionPickerState: 'bytes', 'after switching solutions.';
     $wd.isBytesAndChars: 121, 121;
     $wd.loadFizzBuzz;
-    is $wd.getSolutionPickerState, 'bytes', 'The bytes solution should still be active, after reloading the page.';
+    $wd.isSolutionPickerState: 'bytes', 'after reloading the page.';
     $wd.isBytesAndChars: 121, 121;
 }
