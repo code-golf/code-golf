@@ -100,10 +100,7 @@ onload = () => {
             startOpen: true,
             multiLineStrings: lang == 'c', // TCC supports multi-line strings
         });
-
-        // In some cases, setting the code to its current value can lead to auto-saved code being removed from localStorage.
-        if (cm.getValue() != code)
-            cm.setValue(code);
+        cm.setValue(code);
 
         refreshScores();
 
@@ -279,8 +276,10 @@ async function refreshScores() {
 
     // Only show the solution picker when both solutions are actually used.
     if (code0 && code1 && code0 != code1 || autoSave0 && autoSave1 && autoSave0 != autoSave1 ||
-        (code0 && autoSave1 && code0 != autoSave1) ||
-        (autoSave0 && code1 && autoSave0 != code1)) {
+        // If a logged in user has an auto-saved solution for the other metric, that they have not
+        // submitted since logging in, they must be allowed to switch to it, so they can submit it.
+        (solution == 0 && code0 && autoSave1 && code0 != autoSave1) ||
+        (solution == 1 && autoSave0 && code1 && autoSave0 != code1)) {
         for (let i = 0; i < scorings.length; i++) {
             let name = `Fewest ${scorings[i]}`;
 
