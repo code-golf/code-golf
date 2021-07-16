@@ -1,6 +1,6 @@
-FROM node:16.4.2-alpine3.13 as builder
+FROM node:16.5.0-alpine3.14 as builder
 
-ENV VERSION=1.6.3
+ENV VERSION=1.6.4
 
 RUN mkdir /empty
 

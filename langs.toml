@@ -19,7 +19,7 @@ v               ~<
 
 [Assembly]
 size    = '48.7 MiB'
-version = 'DefAssembler 1.6.3'
+version = 'DefAssembler 1.6.4'
 website = 'https://www.npmjs.com/package/@defasm/core'
 example = '''
 # Printing
@@ -384,8 +384,8 @@ for (let arg of arguments)
 '''
 
 [Julia]
-size    = '287 MiB'
-version = '1.6.1'
+size    = '288 MiB'
+version = '1.6.2'
 website = 'https://julialang.org'
 example = '''
 # Printing
