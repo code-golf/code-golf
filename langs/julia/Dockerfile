@@ -39,4 +39,4 @@ COPY --from=0 /usr/lib/libbrotlicommon.so.1 \
 
 ENTRYPOINT ["/usr/bin/run-julia"]
 
-CMD ["-e", "println(VERSION)"]
+CMD ["-v"]
