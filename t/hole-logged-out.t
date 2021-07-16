@@ -20,8 +20,8 @@ subtest 'Successful solutions are loaded from localStorage on reload.' => {
     $wd.clearLocalStorage;
     $wd.loadFizzBuzz;
     $wd.getLangLink('Raku').click;
-    $wd.isBytesAndChars: 0, 0, 'Solutions should not be preserved, after clearing localStorage.';
-    $wd.isSolutionPickerState: '';
+    $wd.isBytesAndChars: 0, 0, 'after clearing localStorage and reloading the page.';
+    $wd.isSolutionPickerState: '', 'after clearing localStorage and reloading the page.';
 }
 
 subtest 'Untested solutions are loaded from localStorage on reload.' => {
@@ -33,12 +33,12 @@ subtest 'Untested solutions are loaded from localStorage on reload.' => {
     $wd.typeCode: 'abc';
     $wd.isBytesAndChars: 3, 3;
     $wd.loadFizzBuzz;
-    $wd.isBytesAndChars: 3, 3, 'The byte count should be the same after reloading the page.';
+    $wd.isBytesAndChars: 3, 3, 'after reloading the page.';
     $wd.isSolutionPickerState: '';
     $wd.clearLocalStorage;
     $wd.loadFizzBuzz;
     $wd.getLangLink('Raku').click;
-    $wd.isBytesAndChars: 0, 0, 'Untested solutions should not be preserved, after clearing localStorage.';
+    $wd.isBytesAndChars: 0, 0, 'after clearing localStorage and reloading the page.';
     $wd.isSolutionPickerState: '', 'after clearing localStorage and reloading the page.';
 }
 
@@ -53,11 +53,11 @@ subtest 'Failing solutions are loaded from localStorage on reload.' => {
     $wd.run;
     $wd.isFailing;
     $wd.loadFizzBuzz;
-    $wd.isBytesAndChars: 3, 3, 'The byte count should be the same after reloading the page.';
+    $wd.isBytesAndChars: 3, 3, 'after reloading the page.';
     $wd.clearLocalStorage;
     $wd.loadFizzBuzz;
     $wd.getLangLink('Raku').click;
-    $wd.isBytesAndChars: 0, 0, 'Failing solutions should not be preserved, after clearing localStorage.';
+    $wd.isBytesAndChars: 0, 0, 'after clearing localStorage and reloading the page.';
     $wd.isSolutionPickerState: '', 'after clearing localStorage and reloading the page.';
 }
 

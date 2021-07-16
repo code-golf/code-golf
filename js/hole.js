@@ -89,7 +89,7 @@ onload = () => {
     details.ontoggle = () =>
         document.cookie = 'hide-details=' + (details.open ? ';Max-Age=0' : '');
 
-    setCodeForLangAndSolution = () => {
+    setCodeForLangAndSolution = allowPrompt => {
         const autoSaveCode = localStorage.getItem(getAutoSaveKey(lang, solution)) || '';
         const code = getSolutionCode(lang, solution) || autoSaveCode;
 
@@ -104,9 +104,17 @@ onload = () => {
 
         refreshScores();
 
-        if (autoSaveCode && code != autoSaveCode &&
-            confirm('Your local copy of the code is different than the remote one. Do you want to restore the local version?'))
-            cm.setValue(autoSaveCode);
+        if (autoSaveCode && code != autoSaveCode) {
+            if (!allowPrompt ||
+                confirm('Your local copy of the code is different than the remote one. Do you want to restore the local version?'))
+                cm.setValue(autoSaveCode);
+            else
+                // Users are prompted to restore their auto-saved solutions at most once per language.
+                // Remove the autosave for the other solution, if present.
+                // The autosave for the current solution was removed by the change callback when cm.setValue(code) was called.
+                // Users can reload the page to restore the database solutions.
+                localStorage.removeItem(getAutoSaveKey(lang, getOtherScoring(solution)));
+        }
 
         for (const info of document.querySelectorAll('main .info'))
             info.style.display = info.classList.contains(lang) ? 'block' : '';
@@ -127,7 +135,7 @@ onload = () => {
 
         history.replaceState(null, '', '#' + lang);
 
-        setCodeForLangAndSolution();
+        setCodeForLangAndSolution(true);
     })();
 
     const submit = document.querySelector('#run a').onclick = async () => {
@@ -296,7 +304,7 @@ async function refreshScores() {
                 child.onclick = e => {
                     e.preventDefault();
                     setSolution(i);
-                    setCodeForLangAndSolution();
+                    setCodeForLangAndSolution(false);
                 };
             }
             solutionPicker.appendChild(child);

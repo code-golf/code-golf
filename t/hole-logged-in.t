@@ -4,7 +4,7 @@
 use hole;
 use t;
 
-plan 15;
+plan 17;
 
 sub createUserAndSession {
     my $dbh = dbh;
@@ -30,7 +30,7 @@ subtest 'Successful solutions are loaded from the database on reload.' => {
     $wd.clearLocalStorage;
     $wd.loadFizzBuzz;
     $wd.getLangLink('Raku').click;
-    $wd.isBytesAndChars: 57, 55, 'The byte count should be the same after reloading the page.';
+    $wd.isBytesAndChars: 57, 55, 'after clearing localStorage and reloading the page.';
     $wd.isSolutionPickerState: '', 'after clearing localStorage and reloading the page.';
 }
 
@@ -45,12 +45,12 @@ subtest 'Untested solutions are loaded from localStorage on reload.' => {
     $wd.typeCode: 'abc';
     $wd.isBytesAndChars: 3, 3;
     $wd.loadFizzBuzz;
-    $wd.isBytesAndChars: 3, 3, 'The byte count should be the same after reloading the page.';
+    $wd.isBytesAndChars: 3, 3, 'after reloading the page.';
     $wd.isSolutionPickerState: '';
     $wd.clearLocalStorage;
     $wd.loadFizzBuzz;
     $wd.getLangLink('Raku').click;
-    $wd.isBytesAndChars: 0, 0, 'Untested solutions should not be preserved, after clearing localStorage.';
+    $wd.isBytesAndChars: 0, 0, 'after clearing localStorage and reloading the page.';
     $wd.isSolutionPickerState: '', 'after clearing localStorage and reloading the page.';
 }
 
@@ -67,11 +67,11 @@ subtest 'Failing solutions are loaded from localStorage on reload.' => {
     $wd.run;
     $wd.isFailing;
     $wd.loadFizzBuzz;
-    $wd.isBytesAndChars: 3, 3, 'The byte count should be the same after reloading the page.';
+    $wd.isBytesAndChars: 3, 3, 'after reloading the page.';
     $wd.clearLocalStorage;
     $wd.loadFizzBuzz;
     $wd.getLangLink('Raku').click;
-    $wd.isBytesAndChars: 0, 0, 'Failing solutions should not be preserved, after clearing localStorage.';
+    $wd.isBytesAndChars: 0, 0, 'after clearing localStorage and reloading the page.';
     $wd.isSolutionPickerState: '', 'after clearing localStorage and reloading the page.';
 }
 
@@ -212,7 +212,7 @@ subtest 'Different bytes and chars solutions, and the active solution, are loade
 
 # TODO: Add a variant that submits the two solutions in the opposite order.
 subtest 'After submitting different bytes and chars solutions while not logged in, users can submit both once logged in.' => {
-    plan 15;
+    plan 14;
     my $wd = HoleWebDriver.create;
     LEAVE $wd.delete-session;
     $wd.loadFizzBuzz;
@@ -235,8 +235,6 @@ subtest 'After submitting different bytes and chars solutions while not logged i
     $wd.run;
     $wd.isPassing;
     $wd.setSolution: 'bytes';
-    is $wd.alert-text, 'Your local copy of the code is different than the remote one. Do you want to restore the local version?', 'Confirm alert text';
-    $wd.accept-alert;
     $wd.isBytesAndChars: 121, 121;
     is $wd.getSolutionPickerState, '', 'after submitting the first solution after logging in.';
     # Submit the solution as a logged-in user.
@@ -254,7 +252,7 @@ subtest 'After submitting different bytes and chars solutions while not logged i
 }
 
 subtest 'After submitting different bytes and chars solutions while not logged in, users can submit one and discard the other once logged in.' => {
-    plan 12;
+    plan 13;
     my $wd = HoleWebDriver.create;
     LEAVE $wd.delete-session;
     $wd.loadFizzBuzz;
@@ -277,14 +275,17 @@ subtest 'After submitting different bytes and chars solutions while not logged i
     $wd.run;
     $wd.isPassing;
     $wd.setSolution: 'bytes';
+    $wd.isBytesAndChars: 121, 121;
+    # Reload the page, without submitting the solution.
+    $wd.loadFizzBuzz;
     is $wd.alert-text, 'Your local copy of the code is different than the remote one. Do you want to restore the local version?', 'Confirm alert text';
     $wd.dismiss-alert;
-    $wd.isBytesAndChars: 210, 88;
-    is $wd.getSolutionPickerState, '', 'after discarding the other solution.';
+    $wd.isBytesAndChars: 210, 88, 'after reloading the page.';
+    is $wd.getSolutionPickerState, '', 'after reloading the page.';
     # Reload the page to verify that users aren't prompted to restore the solution again.
     $wd.loadFizzBuzz;
-    $wd.isBytesAndChars: 210, 88, 'The byte count should be the same, after reloading the page.';
-    is $wd.getSolutionPickerState, '', 'after reloading the page.';
+    $wd.isBytesAndChars: 210, 88, 'after reloading the page again.';
+    is $wd.getSolutionPickerState, '', 'after reloading the page again.';
 }
 
 subtest 'Users can choose not to restore autosaved solutions.' => {
@@ -339,6 +340,82 @@ subtest 'Users can restore autosaved solutions.' => {
     $wd.accept-alert;
     $wd.isBytesAndChars: 3, 3;
     $wd.isSolutionPickerState: '', 'after reloading the page.';
+}
+
+subtest 'Discarding autosaved solutions applies to both bytes and chars solutions.' => {
+    plan 15;
+    my $wd = HoleWebDriver.create;
+    LEAVE $wd.delete-session;
+    $wd.loadFizzBuzz;
+    $wd.setSessionCookie: createUserAndSession;
+    $wd.loadFizzBuzz;
+    $wd.getLangLink('Python').click;
+    # Submit different solutions for bytes and chars.
+    $wd.typeCode: $python121_121;
+    $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
+    $wd.run;
+    $wd.isPassing;
+    $wd.isSolutionPickerState: '';
+    $wd.typeCode: BACKSPACE x 121 ~ $python210_88;
+    $wd.isBytesAndChars: 210, 88, 'after typing the chars solution.';
+    $wd.run;
+    $wd.isPassing;
+    $wd.isSolutionPickerState: 'chars';
+    # Modify both solutions.
+    $wd.typeCode: 'A';
+    $wd.isBytesAndChars: 211, 89, 'after modifying the chars solution.';
+    $wd.setSolution: 'bytes';
+    $wd.typeCode: 'A';
+    $wd.isBytesAndChars: 122, 122, 'after modifying the bytes solution.';
+    # Reload the page and restore the local solutions.
+    $wd.loadFizzBuzz;
+    is $wd.alert-text, 'Your local copy of the code is different than the remote one. Do you want to restore the local version?', 'Confirm alert text';
+    $wd.dismiss-alert;
+    $wd.isBytesAndChars: 121, 121, 'after reloading the page.';
+    $wd.isSolutionPickerState: 'bytes', 'after reloading the page.';
+    $wd.setSolution: 'chars';
+    $wd.isBytesAndChars: 210, 88, 'after switching to the chars solution.';
+    # Reload the page to verify that users aren't prompted to restore the solution again.
+    $wd.loadFizzBuzz;
+    $wd.isBytesAndChars: 210, 88, 'after reloading the page again.';
+    $wd.isSolutionPickerState: 'chars', 'after reloading the page again.';
+    $wd.setSolution: 'bytes';
+    $wd.isBytesAndChars: 121, 121, 'after switching to the bytes solution';
+}
+
+subtest 'Restoring autosaved solutions applies to both bytes and chars solutions.' => {
+    plan 12;
+    my $wd = HoleWebDriver.create;
+    LEAVE $wd.delete-session;
+    $wd.loadFizzBuzz;
+    $wd.setSessionCookie: createUserAndSession;
+    $wd.loadFizzBuzz;
+    $wd.getLangLink('Python').click;
+    # Submit different solutions for bytes and chars.
+    $wd.typeCode: $python121_121;
+    $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
+    $wd.run;
+    $wd.isPassing;
+    $wd.isSolutionPickerState: '';
+    $wd.typeCode: BACKSPACE x 121 ~ $python210_88;
+    $wd.isBytesAndChars: 210, 88, 'after typing the chars solution.';
+    $wd.run;
+    $wd.isPassing;
+    $wd.isSolutionPickerState: 'chars';
+    # Modify both solutions.
+    $wd.typeCode: 'A';
+    $wd.isBytesAndChars: 211, 89, 'after modifying the chars solution.';
+    $wd.setSolution: 'bytes';
+    $wd.typeCode: 'A';
+    $wd.isBytesAndChars: 122, 122, 'after modifying the bytes solution.';
+    # Reload the page and restore the local solutions.
+    $wd.loadFizzBuzz;
+    is $wd.alert-text, 'Your local copy of the code is different than the remote one. Do you want to restore the local version?', 'Confirm alert text';
+    $wd.accept-alert;
+    $wd.isBytesAndChars: 122, 122, 'after reloading the page.';
+    $wd.isSolutionPickerState: 'bytes', 'after reloading the page.';
+    $wd.setSolution: 'chars';
+    $wd.isBytesAndChars: 211, 89, 'after switching to the chars solution.';
 }
 
 subtest 'If the user improves their solution on another browser, they are not prompted to restore their old one.' => {
