@@ -50,12 +50,12 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         return 1;
     }
 
-    if (mount(NULL, "/proc", "proc", MS_RDONLY, NULL) < 0) {
+    if (mount("proc", "/proc", "proc", MS_NODEV|MS_NOEXEC|MS_NOSUID|MS_RDONLY, NULL) < 0) {
         perror("mount proc");
         return 1;
     }
 
-    if (mount(NULL, "/tmp", "tmpfs", 0, NULL) < 0) {
+    if (mount("tmpfs", "/tmp", "tmpfs", MS_NODEV|MS_NOSUID, NULL) < 0) {
         perror("mount tmp");
         return 1;
     }

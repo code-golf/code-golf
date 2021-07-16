@@ -6,10 +6,14 @@ is run('say %*ENV'), '{}', 'Environment';
 
 is run('say $*KERNEL.hostname'), 'code-golf', 'Hostname';
 
-# TODO
-# diag run('say slurp "/proc/mounts"').lines;
-# [ 'overlay', '/', 'overlay', match('^ro,'), 0, 0 ]
-# [ 'none', '/proc', 'proc', 'ro,relatime', 0, 0 ]
+# Strip the docker specific crap.
+# Note on live root is read-only but doing that on dev breaks go build.
+my $mounts = run('say slurp "/proc/mounts"').subst: / ',lowerdir=' \S+ /;
+is $mounts, Q:to/MOUNTS/.chomp, '/proc/mounts';
+    overlay / overlay rw,relatime 0 0
+    proc /proc proc ro,nosuid,nodev,noexec,relatime 0 0
+    tmpfs /tmp tmpfs rw,nosuid,nodev,relatime,inode64 0 0
+    MOUNTS
 
 my %status   = run('say slurp "/proc/self/status"').split: / ':' \s+ | \n /;
 my %expected = (
