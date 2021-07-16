@@ -1,16 +1,13 @@
-FROM node:10.22.1-buster-slim
+FROM node:10.24.1-buster-slim
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
     fontforge fonttools git make python-fontforge unzip woff2 zip
 
-RUN git clone -b v0.5.1 git://github.com/mozilla/twemoji-colr
+RUN git clone -b v0.6.0 git://github.com/mozilla/twemoji-colr
 
 WORKDIR twemoji-colr
 
 RUN npm install
-
-COPY ["1fa9b.svg", "svg/"] # Screwdriver
-COPY ["1fa9e.svg", "svg/"] # Mirror
 
 RUN echo [] > extras/ligatures.json                      \
  && unzip -q twe-svg.zip                                 \
@@ -78,6 +75,8 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f9db.svg       `# Vampire`                      \
     svg/1f9e0.svg       `# Brain`                        \
     svg/1f9f6.svg       `# Yarn`                         \
+    svg/1fa9b.svg       `# Screwdriver`                  \
+    svg/1fa9e.svg       `# Mirror`                       \
     svg/2615.svg        `# Hot Beverage`                 \
     svg/2639.svg        `# Frowning Face`                \
     svg/26f3.svg        `# Flag in Hole`                 \
