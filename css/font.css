@@ -1,5 +1,6 @@
 @font-face {
     font-family: emoji;
+    font-weight: bold; /* Edge seems to require this */
     src: local('Apple Color Emoji'),
          local('Noto Color Emoji'),
          /* local('Segoe UI Emoji'), Microsoft don't support country flags */
