@@ -3,7 +3,7 @@
 use hole;
 use t;
 
-plan 35;
+plan 37;
 
 sub createUserAndSession {
     my $dbh = dbh;
@@ -155,7 +155,7 @@ for (False, True) -> $loggedIn {
             $wd.isPassing: 'after restoring solution and running it.';
         }
 
-        subtest "When $loggedInContext, successful solution can be restored after typing an untested solution$context." => {
+        subtest "When $loggedInContext, a successful solution can be restored after typing an untested solution$context." => {
             plan 17;
             my $wd = HoleWebDriver.create;
             LEAVE $wd.delete-session;
@@ -189,7 +189,7 @@ for (False, True) -> $loggedIn {
         }
 
         subtest "When $loggedInContext, a successful solution can be restored after submitting a failed solution$context." => {
-            plan 15;
+            plan 21;
             my $wd = HoleWebDriver.create;
             LEAVE $wd.delete-session;
             setup $wd;
@@ -198,21 +198,27 @@ for (False, True) -> $loggedIn {
             $wd.typeCode: $raku57_55;
             $wd.isBytesAndChars: 57, 55, 'after typing code.';
             $wd.isRestoreSolutionLinkVisible: False, 'before submitting code.';
+            $wd.isSolutionPickerState: '', 'before submitting code.';
             $wd.run;
             $wd.isPassing: 'after submitting code.';
             $wd.isRestoreSolutionLinkVisible: False, 'after submitting code.';
+            $wd.isSolutionPickerState: '', 'after submitting code.';
             $wd.typeCode: 'abc';
             $wd.isBytesAndChars: 60, 58, 'after modifying code.';
             $wd.isRestoreSolutionLinkVisible: True, 'after modifying code.';
+            $wd.isSolutionPickerState: '', 'after modifying code.';
             $wd.run;
             $wd.isFailing: 'after submitting a failing solution';
             $wd.loadFizzBuzz if $reloadFirst;
             $wd.isRestoreSolutionLinkVisible: True, 'after submitting failing solution.';
+            $wd.isSolutionPickerState: '', 'after submitting failing solution.';
             $wd.restoreSolution;
             $wd.isBytesAndChars: 57, 55, 'after restoring the solution.';
             $wd.isRestoreSolutionLinkVisible: False, 'after restoring the solution.';
+            $wd.isSolutionPickerState: '', 'after restoring the solution.';
             $wd.run;
             $wd.isPassing: 'after restoring solution and running it.';
+            $wd.isSolutionPickerState: '', 'after running the restored solution.';
             # Reload the page to verify that the autosaved solution is gone.
             $wd.loadFizzBuzz;
             $wd.isBytesAndChars: 57, 55, 'after reloading the page.';
@@ -353,7 +359,7 @@ for (False, True) -> $loggedIn {
     for @reloadFirstValues -> $reloadFirst {
         my $context = $reloadFirst ?? ', and reloading the page' !! '';
 
-        subtest "Successful solutions for both bytes and chars can be restored after typing untested solutions$context." => {
+        subtest "When $loggedInContext, successful solutions for both bytes and chars can be restored after typing untested solutions$context." => {
             plan 25;
             my $wd = HoleWebDriver.create;
             LEAVE $wd.delete-session;
@@ -403,9 +409,8 @@ for (False, True) -> $loggedIn {
     }
 }
 
-# TODO: Add a variant that submits the two solutions in the opposite order.
-subtest 'After submitting different bytes and chars solutions while not logged in, users can submit both once logged in.' => {
-    plan 14;
+subtest 'When not logged in, after a user submits different bytes and chars solutions and then logs in, they can submit the chars solution and then the bytes solution.' => {
+    plan 15;
     my $wd = HoleWebDriver.create;
     LEAVE $wd.delete-session;
     $wd.loadFizzBuzz;
@@ -418,6 +423,7 @@ subtest 'After submitting different bytes and chars solutions while not logged i
     $wd.isBytesAndChars: 210, 88, 'after typing the chars solution.';
     $wd.run;
     $wd.isPassing: 'after submitting the chars solution, while logged out.';
+    $wd.isSolutionPickerState: 'chars', 'after submitting the chars solution, while logged out.';
     # Log in and reload the page.
     $wd.setSessionCookie: createUserAndSession;
     $wd.loadFizzBuzz;
@@ -443,8 +449,48 @@ subtest 'After submitting different bytes and chars solutions while not logged i
     $wd.isBytesAndChars: 210, 88, 'after switching to the chars solution.';
 }
 
-subtest 'After submitting different bytes and chars solutions while not logged in, users can submit one and discard the other once logged in.' => {
-    plan 10;
+subtest 'When not logged in, after a user submits different bytes and chars solutions and then logs in, they can submit the bytes solution and then the chars solution.' => {
+    plan 15;
+    my $wd = HoleWebDriver.create;
+    LEAVE $wd.delete-session;
+    $wd.loadFizzBuzz;
+    $wd.getLangLink('Python').click;
+    $wd.typeCode: $python210_88;
+    $wd.isBytesAndChars: 210, 88, 'after typing the chars solution.';
+    $wd.run;
+    $wd.isPassing: 'after submitting the chars solution, while logged out.';
+    $wd.typeCode: BACKSPACE x 88 ~ $python121_121;
+    $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
+    $wd.run;
+    $wd.isPassing: 'after submitting the bytes solution, while logged out.';
+    $wd.isSolutionPickerState: 'bytes', 'after submitting the bytes solution, while logged out.';
+    # Log in and reload the page.
+    $wd.setSessionCookie: createUserAndSession;
+    $wd.loadFizzBuzz;
+    $wd.isBytesAndChars: 121, 121, 'after reloading the page';
+    $wd.isSolutionPickerState: 'bytes', 'after reloading the page';
+    # Submit the solution as a logged-in user.
+    $wd.run;
+    $wd.isPassing: 'after submitting the bytes solution, while logged in.';
+    $wd.setSolution: 'chars';
+    $wd.isBytesAndChars: 210, 88, 'after switching to the chars solution.';
+    $wd.isSolutionPickerState: '', 'after switching to the chars solution. There is only one submitted solution at this point.';
+    # Submit the solution as a logged-in user.
+    $wd.run;
+    $wd.isPassing: 'after submitting the chars solution, while logged in.';
+    # Clear local storage just to prove that it's not required.
+    $wd.clearLocalStorage;
+    $wd.loadFizzBuzz;
+    $wd.getLangLink('Python').click;
+    $wd.isSolutionPickerState: 'bytes', 'after clearing localStorage and reloading the page.';
+    $wd.isBytesAndChars: 121, 121, 'after clearing localStorage and reloading the page.';
+    $wd.setSolution: 'chars';
+    $wd.isSolutionPickerState: 'chars', 'after switching to the chars solution.';
+    $wd.isBytesAndChars: 210, 88, 'after switching to the chars solution.';
+}
+
+subtest 'When not logged in, after a user submits different bytes and chars solutions and then logs in, they can submit the chars solution and discard the bytes solution.' => {
+    plan 12;
     my $wd = HoleWebDriver.create;
     LEAVE $wd.delete-session;
     $wd.loadFizzBuzz;
@@ -457,6 +503,7 @@ subtest 'After submitting different bytes and chars solutions while not logged i
     $wd.isBytesAndChars: 210, 88, 'after typing the chars solution.';
     $wd.run;
     $wd.isPassing: 'after submitting the chars solution, while logged out.';
+    $wd.isSolutionPickerState: 'chars', 'after submitting the chars solution, while logged out.';
     # Log in and reload the page.
     $wd.setSessionCookie: createUserAndSession;
     $wd.loadFizzBuzz;
@@ -467,9 +514,41 @@ subtest 'After submitting different bytes and chars solutions while not logged i
     $wd.isPassing: 'after submitting the chars solution, while logged in.';
     $wd.setSolution: 'bytes';
     $wd.isBytesAndChars: 121, 121, 'after switching to the bytes solution.';
+    $wd.isSolutionPickerState: '', 'after switching to the bytes solution. There is only one submitted solution at this point.';
     $wd.restoreSolution;
     $wd.isBytesAndChars: 210, 88, 'after discarding the bytes solution.';
     $wd.isSolutionPickerState: '', 'after discarding the bytes solution.';
+}
+
+subtest 'When not logged in, after a user submits different bytes and chars solutions and then logs in, they can submit the bytes solution and discard the chars solution.' => {
+    plan 12;
+    my $wd = HoleWebDriver.create;
+    LEAVE $wd.delete-session;
+    $wd.loadFizzBuzz;
+    $wd.getLangLink('Python').click;
+    $wd.typeCode: $python210_88;
+    $wd.isBytesAndChars: 210, 88, 'after typing the chars solution.';
+    $wd.run;
+    $wd.isPassing: 'after submitting the chars solution, while logged out.';
+    $wd.typeCode: BACKSPACE x 88 ~ $python121_121;
+    $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
+    $wd.run;
+    $wd.isPassing: 'after submitting the bytes solution, while logged out.';
+    $wd.isSolutionPickerState: 'bytes', 'after submitting the bytes solution, while logged out.';
+    # Log in and reload the page.
+    $wd.setSessionCookie: createUserAndSession;
+    $wd.loadFizzBuzz;
+    $wd.isBytesAndChars: 121, 121, 'after reloading the page';
+    $wd.isSolutionPickerState: 'bytes', 'after reloading the page';
+    # Submit the solution as a logged-in user.
+    $wd.run;
+    $wd.isPassing: 'after submitting the bytes solution, while logged in.';
+    $wd.setSolution: 'chars';
+    $wd.isBytesAndChars: 210, 88, 'after switching to the chars solution.';
+    $wd.isSolutionPickerState: '', 'after switching to the chars solution. There is only one submitted solution at this point.';
+    $wd.restoreSolution;
+    $wd.isBytesAndChars: 121, 121, 'after discarding the chars solution.';
+    $wd.isSolutionPickerState: '', 'after discarding the chars solution.';
 }
 
 subtest 'If the user improves their solution on another browser, the restore solution link is not shown.' => {
