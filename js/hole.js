@@ -23,11 +23,11 @@ let scoring = Math.max(scorings.indexOf(localStorage.getItem('scoring')), 0);
 let setCodeForLangAndSolution;
 let updateRestoreLinkVisibility;
 
-// Assume the user is logged in by default. At this point, it doesn't matter if the user is actually logged in,
-// because this is only used to prevent auto-saving submitted solutions for logged in users to avoid excessive
-// prompting to restore auto-saved solutions. The solutions dictionaries will initially be empty for users who are not
-// logged in, so the loggedIn state will not be used. By the time they are non-empty, the loggedIn state will have been
-// updated.
+// The loggedIn state is used to avoid saving solutions in localStorage when those solutions match the solutions in the
+// database. It's used to avoid restoring a solution from localStorage when the user has improved that solution on a
+// different browser. Assume the user is logged-in by default. At this point, it doesn't matter whether the user is
+// actually logged-in, because solutions dictionaries will initially be empty for users who aren't logged-in, so the
+// loggedIn state will not be used. By the time they are non-empty, the loggedIn state will have been updated.
 let loggedIn = true;
 
 function getAutoSaveKey(lang, solution) {
@@ -290,7 +290,7 @@ async function refreshScores() {
 
     // Only show the solution picker when both solutions are actually used.
     if (code0 && code1 && code0 != code1 || autoSave0 && autoSave1 && autoSave0 != autoSave1 ||
-        // If a logged in user has an auto-saved solution for the other metric, that they have not
+        // If a logged-in user has an auto-saved solution for the other metric, that they have not
         // submitted since logging in, they must be allowed to switch to it, so they can submit it.
         (solution == 0 && code0 && autoSave1 && code0 != autoSave1) ||
         (solution == 1 && autoSave0 && code1 && autoSave0 != code1)) {
