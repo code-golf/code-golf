@@ -252,7 +252,7 @@ onload = () => {
         CodeMirror.Vim.defineEx('write', 'w', submit);
 };
 
-async function refreshScores() {
+function populateLanguagePicker() {
     picker.innerHTML = '';
     picker.open = false;
 
@@ -279,7 +279,9 @@ async function refreshScores() {
         picker.innerHTML += l.id == lang
             ? `<a id="${l.name}">${name}</a>` : `<a id="${l.name}" href=#${l.id}>${name}</a>`;
     }
+}
 
+function populateSolutionPicker() {
     while (solutionPicker.firstChild)
         solutionPicker.removeChild(solutionPicker.firstChild);
 
@@ -316,6 +318,11 @@ async function refreshScores() {
             solutionPicker.appendChild(child);
         }
     }
+}
+
+async function refreshScores() {
+    populateLanguagePicker();
+    populateSolutionPicker();
 
     const path   = `/${hole}/${lang}/${scorings[scoring].toLowerCase()}`;
     const res    = await fetch(`/scores${path}/mini`);
