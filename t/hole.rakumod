@@ -13,6 +13,8 @@ my $cookieKey = "__Host-session";
 
 our $raku57_55 is export = 'say "Fizz" x $_ %% 3 ~ "Buzz" x $_ %% 5 || $_ for 1…100';
 
+our $raku59_57 is export = 'say ("Fizz" x $_ %% 3) ~ "Buzz" x $_ %% 5 || $_ for 1…100';
+
 # For the final three lines, Code Mirror is expected to add a single leading space for auto-indentation.
 # For NG, the second line is also auto-indented and the leading space below should be removed.
 our $python121_121 is export = "for x in range(1,101):" ~
@@ -120,12 +122,28 @@ class HoleWebDriver is WebDriver is export {
         is $.getSolutionPickerState, $expectedState, $desc;
     }
 
+    # Methods whose names begin with "is" do exactly one assertion.
+    method isRestoreSolutionLinkVisible(Bool:D $expectedState, Str:D $context) {
+        my $callable = { $.find('Restore solution', :using(WebDriver::Selector::LinkText)) };
+        if $expectedState {
+            lives-ok $callable, "Restore solution link should be visible, $context";
+        }
+        else {
+            throws-like $callable, Exception, :message(/'Unable to locate element'/),
+                "Restore solution link should be hidden, $context";
+        }
+    }
+
     method loadFibonacci {
         $.get: 'https://app:1443/fibonacci';
     }
 
     method loadFizzBuzz {
         $.get: 'https://app:1443/fizz-buzz';
+    }
+
+    method restoreSolution {
+        $.find('Restore solution', :using(WebDriver::Selector::LinkText)).click;
     }
 
     method run {

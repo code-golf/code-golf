@@ -4,7 +4,7 @@
 use hole;
 use t;
 
-plan 17;
+plan 20;
 
 sub createUserAndSession {
     my $dbh = dbh;
@@ -73,6 +73,133 @@ subtest 'Failing solutions are loaded from localStorage on reload.' => {
     $wd.getLangLink('Raku').click;
     $wd.isBytesAndChars: 0, 0, 'after clearing localStorage and reloading the page.';
     $wd.isSolutionPickerState: '', 'after clearing localStorage and reloading the page.';
+}
+
+subtest 'After manually reverting unsaved changes, the restore solution link is not shown.' => {
+    plan 9;
+    my $wd = HoleWebDriver.create;
+    LEAVE $wd.delete-session;
+    $wd.loadFizzBuzz;
+    $wd.setSessionCookie: createUserAndSession;
+    $wd.loadFizzBuzz;
+    $wd.getLangLink('Raku').click;
+    $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
+    $wd.typeCode: $raku57_55;
+    $wd.isBytesAndChars: 57, 55, 'after typing code.';
+    $wd.isRestoreSolutionLinkVisible: False, 'before submitting code.';
+    $wd.run;
+    $wd.isPassing;
+    $wd.isRestoreSolutionLinkVisible: False, 'after submitting code.';
+    $wd.typeCode: 'abc';
+    $wd.isBytesAndChars: 60, 58, 'after modifying code.';
+    $wd.isRestoreSolutionLinkVisible: True, 'after modifying code.';
+    $wd.typeCode: BACKSPACE x 3;
+    $wd.isBytesAndChars: 57, 55, 'after manually reverting changes.';
+    $wd.isRestoreSolutionLinkVisible: False, 'after manually reverting changes.';
+}
+
+subtest 'After submitting a shorter solution, the restore solution link is not shown.' => {
+    plan 9;
+    my $wd = HoleWebDriver.create;
+    LEAVE $wd.delete-session;
+    $wd.loadFizzBuzz;
+    $wd.setSessionCookie: createUserAndSession;
+    $wd.loadFizzBuzz;
+    $wd.getLangLink('Raku').click;
+    $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
+    $wd.typeCode: $raku59_57;
+    $wd.isBytesAndChars: 59, 57, 'after typing code.';
+    $wd.isRestoreSolutionLinkVisible: False, 'before submitting code.';
+    $wd.run;
+    $wd.isPassing;
+    $wd.isRestoreSolutionLinkVisible: False, 'after submitting code.';
+    $wd.typeCode: BACKSPACE x 57 ~ $raku57_55;
+    $wd.isBytesAndChars: 57, 55, 'after modifying code.';
+    $wd.isRestoreSolutionLinkVisible: True, 'after modifying code.';
+    $wd.run;
+    $wd.isPassing;
+    $wd.isRestoreSolutionLinkVisible: False, 'after submitting a shorter solution.';
+}
+
+subtest 'After submitting a longer solution, the restore solution link is shown and it works.' => {
+    plan 12;
+    my $wd = HoleWebDriver.create;
+    LEAVE $wd.delete-session;
+    $wd.loadFizzBuzz;
+    $wd.setSessionCookie: createUserAndSession;
+    $wd.loadFizzBuzz;
+    $wd.getLangLink('Raku').click;
+    $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
+    $wd.typeCode: $raku57_55;
+    $wd.isBytesAndChars: 57, 55, 'after typing code.';
+    $wd.isRestoreSolutionLinkVisible: False, 'before submitting code.';
+    $wd.run;
+    $wd.isPassing;
+    $wd.isRestoreSolutionLinkVisible: False, 'after submitting code.';
+    $wd.typeCode: BACKSPACE x 55 ~ $raku59_57;
+    $wd.isBytesAndChars: 59, 57, 'after modifying code.';
+    $wd.isRestoreSolutionLinkVisible: True, 'after modifying code.';
+    $wd.run;
+    $wd.isPassing;
+    $wd.isRestoreSolutionLinkVisible: True, 'after submitting a longer solution.';
+    $wd.restoreSolution;
+    $wd.isBytesAndChars: 57, 55, 'after typing code.';
+    $wd.isRestoreSolutionLinkVisible: False, 'after restoring solution';
+    $wd.run;
+    $wd.isPassing;
+}
+
+subtest 'Successful solution can be restored after typing an untested solution.' => {
+    plan 10;
+    my $wd = HoleWebDriver.create;
+    LEAVE $wd.delete-session;
+    $wd.loadFizzBuzz;
+    $wd.setSessionCookie: createUserAndSession;
+    $wd.loadFizzBuzz;
+    $wd.getLangLink('Raku').click;
+    $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
+    $wd.typeCode: $raku57_55;
+    $wd.isBytesAndChars: 57, 55, 'after typing code.';
+    $wd.isRestoreSolutionLinkVisible: False, 'before submitting code.';
+    $wd.run;
+    $wd.isPassing;
+    $wd.isRestoreSolutionLinkVisible: False, 'after submitting code.';
+    $wd.typeCode: 'abc';
+    $wd.isBytesAndChars: 60, 58, 'after modifying code.';
+    $wd.isRestoreSolutionLinkVisible: True, 'after modifying code.';
+    $wd.restoreSolution;
+    $wd.isBytesAndChars: 57, 55, 'after restoring the solution.';
+    $wd.isRestoreSolutionLinkVisible: False, 'after restoring the solution.';
+    $wd.run;
+    $wd.isPassing;
+}
+
+subtest 'Successful solution can be restored after submitting a failed solution.' => {
+    plan 12;
+    my $wd = HoleWebDriver.create;
+    LEAVE $wd.delete-session;
+    $wd.loadFizzBuzz;
+    $wd.setSessionCookie: createUserAndSession;
+    $wd.loadFizzBuzz;
+    $wd.getLangLink('Raku').click;
+    $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
+    $wd.typeCode: $raku57_55;
+    $wd.isBytesAndChars: 57, 55, 'after typing code.';
+    $wd.isRestoreSolutionLinkVisible: False, 'before submitting code.';
+    $wd.run;
+    $wd.isPassing;
+    $wd.isRestoreSolutionLinkVisible: False, 'after submitting code.';
+    $wd.typeCode: 'abc';
+    $wd.isBytesAndChars: 60, 58, 'after modifying code.';
+    $wd.isRestoreSolutionLinkVisible: True, 'after modifying code.';
+    $wd.run;
+    $wd.isFailing;
+    $wd.isRestoreSolutionLinkVisible: True, 'after submitting failing solution.';
+    $wd.restoreSolution;
+    $wd.isBytesAndChars: 57, 55, 'after restoring the solution.';
+    $wd.isRestoreSolutionLinkVisible: False, 'after restoring the solution.';
+    $wd.run;
+    $wd.isPassing;
 }
 
 subtest 'The solution picker appears automatically, switching to bytes, and is independent of the scoring.' => {
@@ -210,6 +337,60 @@ subtest 'Different bytes and chars solutions, and the active solution, are loade
     $wd.isBytesAndChars: 210, 88;
 }
 
+for (False, True) -> $reloadFirst {
+    my $context = $reloadFirst ?? ', and reloading the page' !! '';
+    subtest "Successful solutions for both bytes and chars can be restored after typing untested solutions$context." => {
+        plan 25;
+        my $wd = HoleWebDriver.create;
+        LEAVE $wd.delete-session;
+        $wd.loadFizzBuzz;
+        $wd.setSessionCookie: createUserAndSession;
+        $wd.loadFizzBuzz;
+        $wd.getLangLink('Python').click;
+        $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
+        # Submit different solutions for bytes and chars.
+        $wd.typeCode: $python121_121;
+        $wd.isRestoreSolutionLinkVisible: False, 'after typing the bytes solution.';
+        $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
+        $wd.run;
+        $wd.isPassing;
+        $wd.isSolutionPickerState: '', 'after submitting the bytes solution.';
+        $wd.isRestoreSolutionLinkVisible: False, 'after submitting the bytes solution.';
+        $wd.typeCode: BACKSPACE x 121 ~ $python210_88;
+        $wd.isBytesAndChars: 210, 88, 'after typing the chars solution.';
+        $wd.isRestoreSolutionLinkVisible: True, 'after typing the chars solution.';
+        $wd.run;
+        $wd.isPassing;
+        $wd.isSolutionPickerState: 'chars', 'after submitting the chars solution.';
+        $wd.isRestoreSolutionLinkVisible: False, 'after submitting the chars solution.';
+        # Modify both solutions.
+        $wd.typeCode: 'A';
+        $wd.isBytesAndChars: 211, 89, 'after modifying the chars solution.';
+        $wd.isRestoreSolutionLinkVisible: True, 'after modifying the chars solution.';
+        $wd.setSolution: 'bytes';
+        $wd.isBytesAndChars: 121, 121, 'after switching to the bytes solution.';
+        $wd.isRestoreSolutionLinkVisible: False, 'after after switching to the bytes solution.';
+        $wd.typeCode: 'A';
+        # Restore the solutions.
+        $wd.loadFizzBuzz if $reloadFirst;
+        sleep 2 if $reloadFirst;
+        $wd.isBytesAndChars: 122, 122, 'after modifying the bytes solution.';
+        $wd.isRestoreSolutionLinkVisible: True, 'after modifying the bytes solution.';
+        $wd.restoreSolution;
+        $wd.isBytesAndChars: 121, 121, 'after restoring the bytes solution.';
+        $wd.isRestoreSolutionLinkVisible: False, 'after restoring the bytes solution.';
+        $wd.setSolution: 'chars';
+        $wd.isBytesAndChars: 211, 89, 'after switching to the chars solution.';
+        $wd.isRestoreSolutionLinkVisible: True, 'after switching to the chars solution.';
+        $wd.restoreSolution;
+        $wd.isBytesAndChars: 210, 88, 'after restoring the bytes solution.';
+        $wd.isRestoreSolutionLinkVisible: False, 'after restoring the bytes solution.';
+        $wd.setSolution: 'bytes';
+        $wd.isBytesAndChars: 121, 121, 'after switching to the bytes solution again.';
+        $wd.isRestoreSolutionLinkVisible: False, 'after after switching to the bytes solution again.';
+    }
+}
+
 # TODO: Add a variant that submits the two solutions in the opposite order.
 subtest 'After submitting different bytes and chars solutions while not logged in, users can submit both once logged in.' => {
     plan 14;
@@ -252,7 +433,7 @@ subtest 'After submitting different bytes and chars solutions while not logged i
 }
 
 subtest 'After submitting different bytes and chars solutions while not logged in, users can submit one and discard the other once logged in.' => {
-    plan 13;
+    plan 10;
     my $wd = HoleWebDriver.create;
     LEAVE $wd.delete-session;
     $wd.loadFizzBuzz;
@@ -276,150 +457,83 @@ subtest 'After submitting different bytes and chars solutions while not logged i
     $wd.isPassing;
     $wd.setSolution: 'bytes';
     $wd.isBytesAndChars: 121, 121;
-    # Reload the page, without submitting the solution.
-    $wd.loadFizzBuzz;
-    is $wd.alert-text, 'Your local copy of the code is different than the remote one. Do you want to restore the local version?', 'Confirm alert text';
-    $wd.dismiss-alert;
-    $wd.isBytesAndChars: 210, 88, 'after reloading the page.';
-    is $wd.getSolutionPickerState, '', 'after reloading the page.';
-    # Reload the page to verify that users aren't prompted to restore the solution again.
-    $wd.loadFizzBuzz;
-    $wd.isBytesAndChars: 210, 88, 'after reloading the page again.';
-    is $wd.getSolutionPickerState, '', 'after reloading the page again.';
+    $wd.restoreSolution;
+    $wd.isBytesAndChars: 210, 88, 'after discarding the bytes solution.';
+    $wd.isSolutionPickerState: '', 'after discarding the bytes solution.';
 }
 
-subtest 'Users can choose not to restore autosaved solutions.' => {
-    plan 11;
+subtest 'Failing local solutions are automatically restored after reloading the page. Users can restore their solutions from the database.' => {
+    plan 19;
     my $wd = HoleWebDriver.create;
     LEAVE $wd.delete-session;
     $wd.loadFizzBuzz;
     $wd.setSessionCookie: createUserAndSession;
     $wd.loadFizzBuzz;
     $wd.getLangLink('Raku').click;
+    $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
     $wd.typeCode: $raku57_55;
     $wd.isBytesAndChars: 57, 55;
+    $wd.isRestoreSolutionLinkVisible: False, 'before submitting code.';
     $wd.run;
     $wd.isPassing;
+    $wd.isRestoreSolutionLinkVisible: False, 'after submitting code.';
     $wd.isSolutionPickerState: '';
     $wd.typeCode: BACKSPACE x 55 ~ 'abc';
     $wd.isBytesAndChars: 3, 3;
+    $wd.isRestoreSolutionLinkVisible: True, 'after modifying code.';
     $wd.run;
     $wd.isFailing;
+    $wd.isRestoreSolutionLinkVisible: True, 'after submitting failing solution.';
     $wd.isSolutionPickerState: '', 'after submitting failing solution.';
     $wd.loadFizzBuzz;
-    is $wd.alert-text, 'Your local copy of the code is different than the remote one. Do you want to restore the local version?', 'Confirm alert text';
-    $wd.dismiss-alert;
+    $wd.isBytesAndChars: 3, 3;
+    $wd.isRestoreSolutionLinkVisible: True, 'after reloading the page.';
+    $wd.restoreSolution;
     $wd.isBytesAndChars: 57, 55;
-    $wd.isSolutionPickerState: '', 'after reloading the page.';
-    # Reload the page to verify that users aren't prompted to restore the solution again.
+    $wd.isRestoreSolutionLinkVisible: False, 'after restoring the solution.';
+    $wd.isSolutionPickerState: '', 'after restoring the solution.';
+    # Reload the page to verify that the autosaved solution is gone.
     $wd.loadFizzBuzz;
     $wd.isBytesAndChars: 57, 55;
-    $wd.isSolutionPickerState: '', 'after reloading the page.';
+    $wd.isRestoreSolutionLinkVisible: False, 'after reloading the page again.';
+    $wd.isSolutionPickerState: '', 'after reloading the page again.';
 }
 
-subtest 'Users can restore autosaved solutions.' => {
-    plan 9;
+subtest 'Untested local solutions are automatically restored after reloading the page. Users can restore their solutions from the database.' => {
+    plan 16;
     my $wd = HoleWebDriver.create;
     LEAVE $wd.delete-session;
     $wd.loadFizzBuzz;
     $wd.setSessionCookie: createUserAndSession;
     $wd.loadFizzBuzz;
     $wd.getLangLink('Raku').click;
+    $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
     $wd.typeCode: $raku57_55;
     $wd.isBytesAndChars: 57, 55;
+    $wd.isRestoreSolutionLinkVisible: False, 'before submitting code.';
     $wd.run;
     $wd.isPassing;
+    $wd.isRestoreSolutionLinkVisible: False, 'after submitting code.';
     $wd.isSolutionPickerState: '';
     $wd.typeCode: BACKSPACE x 55 ~ 'abc';
     $wd.isBytesAndChars: 3, 3;
-    $wd.run;
-    $wd.isFailing;
-    $wd.isSolutionPickerState: '', 'after submitting failing solution.';
+    $wd.isRestoreSolutionLinkVisible: True, 'after modifying code.';
     $wd.loadFizzBuzz;
-    is $wd.alert-text, 'Your local copy of the code is different than the remote one. Do you want to restore the local version?', 'Confirm alert text';
-    $wd.accept-alert;
     $wd.isBytesAndChars: 3, 3;
-    $wd.isSolutionPickerState: '', 'after reloading the page.';
+    $wd.isRestoreSolutionLinkVisible: True, 'after reloading the page.';
+    $wd.restoreSolution;
+    $wd.isBytesAndChars: 57, 55;
+    $wd.isRestoreSolutionLinkVisible: False, 'after restoring the solution.';
+    $wd.isSolutionPickerState: '', 'after restoring the solution.';
+    # Reload the page to verify that the autosaved solution is gone.
+    $wd.loadFizzBuzz;
+    $wd.isBytesAndChars: 57, 55;
+    $wd.isRestoreSolutionLinkVisible: False, 'after reloading the page again.';
+    $wd.isSolutionPickerState: '', 'after reloading the page again.';
 }
 
-subtest 'Discarding autosaved solutions applies to both bytes and chars solutions.' => {
-    plan 15;
-    my $wd = HoleWebDriver.create;
-    LEAVE $wd.delete-session;
-    $wd.loadFizzBuzz;
-    $wd.setSessionCookie: createUserAndSession;
-    $wd.loadFizzBuzz;
-    $wd.getLangLink('Python').click;
-    # Submit different solutions for bytes and chars.
-    $wd.typeCode: $python121_121;
-    $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
-    $wd.run;
-    $wd.isPassing;
-    $wd.isSolutionPickerState: '';
-    $wd.typeCode: BACKSPACE x 121 ~ $python210_88;
-    $wd.isBytesAndChars: 210, 88, 'after typing the chars solution.';
-    $wd.run;
-    $wd.isPassing;
-    $wd.isSolutionPickerState: 'chars';
-    # Modify both solutions.
-    $wd.typeCode: 'A';
-    $wd.isBytesAndChars: 211, 89, 'after modifying the chars solution.';
-    $wd.setSolution: 'bytes';
-    $wd.typeCode: 'A';
-    $wd.isBytesAndChars: 122, 122, 'after modifying the bytes solution.';
-    # Reload the page and restore the local solutions.
-    $wd.loadFizzBuzz;
-    is $wd.alert-text, 'Your local copy of the code is different than the remote one. Do you want to restore the local version?', 'Confirm alert text';
-    $wd.dismiss-alert;
-    $wd.isBytesAndChars: 121, 121, 'after reloading the page.';
-    $wd.isSolutionPickerState: 'bytes', 'after reloading the page.';
-    $wd.setSolution: 'chars';
-    $wd.isBytesAndChars: 210, 88, 'after switching to the chars solution.';
-    # Reload the page to verify that users aren't prompted to restore the solution again.
-    $wd.loadFizzBuzz;
-    $wd.isBytesAndChars: 210, 88, 'after reloading the page again.';
-    $wd.isSolutionPickerState: 'chars', 'after reloading the page again.';
-    $wd.setSolution: 'bytes';
-    $wd.isBytesAndChars: 121, 121, 'after switching to the bytes solution';
-}
-
-subtest 'Restoring autosaved solutions applies to both bytes and chars solutions.' => {
-    plan 12;
-    my $wd = HoleWebDriver.create;
-    LEAVE $wd.delete-session;
-    $wd.loadFizzBuzz;
-    $wd.setSessionCookie: createUserAndSession;
-    $wd.loadFizzBuzz;
-    $wd.getLangLink('Python').click;
-    # Submit different solutions for bytes and chars.
-    $wd.typeCode: $python121_121;
-    $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
-    $wd.run;
-    $wd.isPassing;
-    $wd.isSolutionPickerState: '';
-    $wd.typeCode: BACKSPACE x 121 ~ $python210_88;
-    $wd.isBytesAndChars: 210, 88, 'after typing the chars solution.';
-    $wd.run;
-    $wd.isPassing;
-    $wd.isSolutionPickerState: 'chars';
-    # Modify both solutions.
-    $wd.typeCode: 'A';
-    $wd.isBytesAndChars: 211, 89, 'after modifying the chars solution.';
-    $wd.setSolution: 'bytes';
-    $wd.typeCode: 'A';
-    $wd.isBytesAndChars: 122, 122, 'after modifying the bytes solution.';
-    # Reload the page and restore the local solutions.
-    $wd.loadFizzBuzz;
-    is $wd.alert-text, 'Your local copy of the code is different than the remote one. Do you want to restore the local version?', 'Confirm alert text';
-    $wd.accept-alert;
-    $wd.isBytesAndChars: 122, 122, 'after reloading the page.';
-    $wd.isSolutionPickerState: 'bytes', 'after reloading the page.';
-    $wd.setSolution: 'chars';
-    $wd.isBytesAndChars: 211, 89, 'after switching to the chars solution.';
-}
-
-subtest 'If the user improves their solution on another browser, they are not prompted to restore their old one.' => {
-    plan 6;
+subtest 'If the user improves their solution on another browser, the restore solution link is not shown.' => {
+    plan 7;
     my $wd = HoleWebDriver.create;
     LEAVE $wd.delete-session;
     $wd.loadFizzBuzz;
@@ -435,55 +549,7 @@ subtest 'If the user improves their solution on another browser, they are not pr
     # Improve the solution outside of this browser session.
     ok post-solution(:code($python62_62), :hole<fizz-buzz>, :lang<python>, :$session)<Pass>, 'Passes';
     $wd.loadFizzBuzz;
+    $wd.isRestoreSolutionLinkVisible: False, 'after improving the solution outside of the browser session and reloading.';
     $wd.isBytesAndChars: 62, 62, 'The byte count should be lower, after reloading the page.';
-    $wd.isSolutionPickerState: '', 'after reloading the page.';
-}
-
-subtest 'Unsaved changes are auto-saved.' => {
-    plan 7;
-    my $wd = HoleWebDriver.create;
-    LEAVE $wd.delete-session;
-    $wd.loadFizzBuzz;
-    my $session = createUserAndSession;
-    $wd.setSessionCookie: $session;
-    $wd.loadFizzBuzz;
-    $wd.getLangLink('Python').click;
-    $wd.typeCode: $python121_121;
-    $wd.isBytesAndChars: 121, 121;
-    $wd.run;
-    $wd.isPassing;
-    $wd.isSolutionPickerState: '';
-    # Type some code, but don't run it.
-    $wd.typeCode: "a";
-    $wd.isBytesAndChars: 122, 122;
-    $wd.loadFizzBuzz;
-    is $wd.alert-text, 'Your local copy of the code is different than the remote one. Do you want to restore the local version?', 'Confirm alert text';
-    $wd.accept-alert;
-    $wd.isBytesAndChars: 122, 122, 'The byte count should be the same, after reloading the page.';
-    $wd.isSolutionPickerState: '', 'after reloading the page.';
-}
-
-subtest 'If unsaved changes are manually reverted, the user is not prompted to restore them.' => {
-    plan 7;
-    my $wd = HoleWebDriver.create;
-    LEAVE $wd.delete-session;
-    $wd.loadFizzBuzz;
-    my $session = createUserAndSession;
-    $wd.setSessionCookie: $session;
-    $wd.loadFizzBuzz;
-    $wd.getLangLink('Python').click;
-    $wd.typeCode: $python121_121;
-    $wd.isBytesAndChars: 121, 121;
-    $wd.run;
-    $wd.isPassing;
-    $wd.isSolutionPickerState: '';
-    # Type some code, but don't run it.
-    $wd.typeCode: "a";
-    $wd.isBytesAndChars: 122, 122;
-    # Manually undo the code change.
-    $wd.typeCode: BACKSPACE;
-    $wd.isBytesAndChars: 121, 121;
-    $wd.loadFizzBuzz;
-    $wd.isBytesAndChars: 121, 121, 'The byte count should be the same, after reloading the page.';
     $wd.isSolutionPickerState: '', 'after reloading the page.';
 }

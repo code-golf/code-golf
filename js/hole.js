@@ -8,6 +8,7 @@ const hole               = decodeURI(location.pathname.slice(1));
 const keymap             = JSON.parse(document.querySelector('#keymap').innerText);
 const langs              = JSON.parse(document.querySelector('#langs').innerText);
 const picker             = document.querySelector('#picker');
+const restoreLink        = document.querySelector('#restoreLink');
 const scorings           = ['Bytes', 'Chars'];
 const solutionPicker     = document.querySelector('#solutionPicker');
 const solutions          = JSON.parse(document.querySelector('#solutions').innerText);
@@ -16,10 +17,11 @@ const table              = document.querySelector('#scores');
 
 const darkMode = matchMedia(darkModeMediaQuery).matches;
 let lang;
+let latestSubmissionID = 0;
 let solution = Math.max(scorings.indexOf(localStorage.getItem('solution')), 0);
 let scoring = Math.max(scorings.indexOf(localStorage.getItem('scoring')), 0);
 let setCodeForLangAndSolution;
-let latestSubmissionID = 0;
+let updateRestoreLinkVisibility;
 
 // Assume the user is logged in by default. At this point, it doesn't matter if the user is actually logged in,
 // because this is only used to prevent auto-saving submitted solutions for logged in users to avoid excessive
@@ -66,6 +68,11 @@ onload = () => {
         vimMode,
     });
 
+    updateRestoreLinkVisibility = () => {
+        const serverCode = getSolutionCode(lang, solution);
+        restoreLink.style.display = serverCode && cm.getValue() != serverCode ? 'initial' : 'none';
+    };
+
     cm.on('change', () => {
         const code = cm.getValue();
         let infoText = '';
@@ -84,12 +91,19 @@ onload = () => {
             localStorage.setItem(key, code);
         else
             localStorage.removeItem(key);
+
+        updateRestoreLinkVisibility();
     });
 
     details.ontoggle = () =>
         document.cookie = 'hide-details=' + (details.open ? ';Max-Age=0' : '');
 
-    setCodeForLangAndSolution = allowPrompt => {
+    restoreLink.onclick = e => {
+        cm.setValue(getSolutionCode(lang, solution));
+        e.preventDefault();
+    };
+
+    setCodeForLangAndSolution = () => {
         const autoSaveCode = localStorage.getItem(getAutoSaveKey(lang, solution)) || '';
         const code = getSolutionCode(lang, solution) || autoSaveCode;
 
@@ -100,21 +114,10 @@ onload = () => {
             startOpen: true,
             multiLineStrings: lang == 'c', // TCC supports multi-line strings
         });
-        cm.setValue(code);
+
+        cm.setValue(autoSaveCode || code);
 
         refreshScores();
-
-        if (autoSaveCode && code != autoSaveCode) {
-            if (!allowPrompt ||
-                confirm('Your local copy of the code is different than the remote one. Do you want to restore the local version?'))
-                cm.setValue(autoSaveCode);
-            else
-                // Users are prompted to restore their auto-saved solutions at most once per language.
-                // Remove the autosave for the other solution, if present.
-                // The autosave for the current solution was removed by the change callback when cm.setValue(code) was called.
-                // Users can reload the page to restore the database solutions.
-                localStorage.removeItem(getAutoSaveKey(lang, getOtherScoring(solution)));
-        }
 
         for (const info of document.querySelectorAll('main .info'))
             info.style.display = info.classList.contains(lang) ? 'block' : '';
@@ -135,7 +138,7 @@ onload = () => {
 
         history.replaceState(null, '', '#' + lang);
 
-        setCodeForLangAndSolution(true);
+        setCodeForLangAndSolution();
     })();
 
     const submit = document.querySelector('#run a').onclick = async () => {
@@ -199,6 +202,9 @@ onload = () => {
         // Don't change scoring. refreshScores will update the solution picker.
         if (data.Pass && getSolutionCode(codeLang, solution) != code && getSolutionCode(codeLang, getOtherScoring(solution)) == code)
             setSolution(getOtherScoring(solution));
+
+        // Update the restore link visibility, after possibly changing the active solution.
+        updateRestoreLinkVisibility();
 
         document.querySelector('h2').innerText
             = data.Pass ? 'Pass 😀' : 'Fail ☹️';
@@ -304,7 +310,7 @@ async function refreshScores() {
                 child.onclick = e => {
                     e.preventDefault();
                     setSolution(i);
-                    setCodeForLangAndSolution(false);
+                    setCodeForLangAndSolution();
                 };
             }
             solutionPicker.appendChild(child);
