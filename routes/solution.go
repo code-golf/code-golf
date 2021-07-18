@@ -224,19 +224,6 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			golfer.Earn(db, "polyglot")
 		}
 
-		// FIXME Each one of these queries takes 50ms!
-		if queryBool(
-			db,
-			"SELECT chars_points > 9000 FROM chars_points WHERE user_id = $1",
-			golfer.ID,
-		) || queryBool(
-			db,
-			"SELECT bytes_points > 9000 FROM bytes_points WHERE user_id = $1",
-			golfer.ID,
-		) {
-			golfer.Earn(db, "its-over-9000")
-		}
-
 		// COUNT(*) = 4 because langs x (bytes, chars)
 		switch in.Lang {
 		case "java", "javascript":

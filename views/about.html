@@ -62,7 +62,7 @@
             Some holes pass arguments, for those your program should read them
             from ARGV.
 
-        <dt>How Are Solutions Scored?
+        <dt>How Are Solutions Ranked?
         <dd>
             There are two scorings in use, bytes and chars. Bytes is the
             number of bytes of a solution encoded in UTF-8. Chars is the
@@ -74,11 +74,28 @@
             (U+1F609 Winking Face) cost the same despite the 1:4 ratio in byte
             count in UTF-8.
 
-        <dt>How Is My Overall Score Computed?
+        <dt>How Are Solutions Scored?
         <dd>
-            For each hole, the shortest solution is awarded 1,000 points, with
-            the points descreasing in uniform decrements per rank. Your
-            overall score is simply the sum of your points in each hole.
+            For each hole, in each language, up to 1,000 points are available.
+            The formula is:
+            <blockquote>
+                <i>Points</i> =
+                    <i>S<sub>b</sub></i> ÷ <i>S<sub>u</sub></i> × 1000
+            </blockquote>
+            Where <i>S<sub>u</sub></i> is the length of the user's solution,
+            and <i>S<sub>b</sub></i> is a Bayesian estimator of the form:
+            <blockquote>
+                <i>S<sub>b</sub></i> = (<i>√n</i> ÷ (<i>√n</i> + 1))
+                    × <i>S</i> + (1 ÷ (<i>√n</i> +1)) × <i>S<sub>a</sub></i>
+            </blockquote>
+            <i>n</i> is the number of solutions in this hole in this language.
+            <i>S</i> is the length of the shortest solution in this hole in
+            this language.
+            <i>S<sub>a</sub></i> is the shortest solution among all languages
+            in this hole.
+
+            <p>Your overall score is the sum of your highest points in each
+            hole.
 
         <dt>Are Submissions Resource Constrained?
         <dd>

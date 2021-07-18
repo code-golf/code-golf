@@ -39,7 +39,7 @@ db:
 
 db-admin:
 	@ssh -t rancher@code.golf docker run -it --rm \
-	    --env-file /etc/code-golf.env $(POSTGRES) psql -WU doadmin
+	    --env-file /etc/code-golf.env $(POSTGRES) psql -W code-golf doadmin
 
 db-dev:
 	@docker-compose exec db psql -U postgres code-golf

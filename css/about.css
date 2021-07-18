@@ -1,3 +1,8 @@
+blockquote {
+    margin: 1rem;
+    white-space: normal;
+}
+
 dd { margin: 1rem }
 
 dt { font-weight: bold }

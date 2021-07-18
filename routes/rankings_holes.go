@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"database/sql"
 	"net/http"
 	"time"
 
@@ -41,70 +42,119 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var distinct, table string
+	var rows *sql.Rows
+	var err error
 
-	if data.HoleID == "all" {
-		distinct = "DISTINCT ON (hole, user_id)"
-		table = "summed_leaderboard"
+	// TODO Try and merge these SQL queries?
+	if data.HoleID == "all" && data.LangID == "all" {
+		rows, err = session.Database(r).Query(
+			`WITH foo AS (
+			    SELECT user_id, hole, lang, points, strokes, submitted,
+			           ROW_NUMBER() OVER (
+			               PARTITION BY user_id, hole ORDER BY points DESC
+			           )
+			      FROM rankings
+			     WHERE scoring = $1
+			), summed AS (
+			    SELECT user_id,
+			           COUNT(*)       holes,
+			           SUM(points)    points,
+			           SUM(strokes)   strokes,
+			           MAX(submitted) submitted
+			      FROM foo
+			     WHERE row_number = 1
+			  GROUP BY user_id
+			) SELECT COALESCE(CASE WHEN show_country THEN country END, ''),
+			         holes,
+			         $1,
+			         login,
+			         points,
+			         RANK() OVER (ORDER BY points DESC, strokes),
+			         strokes,
+			         submitted,
+			         COUNT(*) OVER()
+			    FROM summed
+			    JOIN users ON user_id = id
+			ORDER BY rank, submitted
+			   LIMIT $2 OFFSET $3`,
+			data.Scoring,
+			pager.PerPage,
+			data.Pager.Offset,
+		)
+	} else if data.HoleID == "all" {
+		rows, err = session.Database(r).Query(
+			`WITH summed AS (
+			    SELECT user_id,
+			           COUNT(*)             holes,
+			           SUM(points_for_lang) points,
+			           SUM(strokes)         strokes,
+			           MAX(submitted)       submitted
+			      FROM rankings
+			     WHERE lang    = $1
+			       AND scoring = $2
+			  GROUP BY user_id
+			) SELECT COALESCE(CASE WHEN show_country THEN country END, ''),
+			         holes,
+			         $1,
+			         login,
+			         points,
+			         RANK() OVER (ORDER BY points DESC, strokes),
+			         strokes,
+			         submitted,
+			         COUNT(*) OVER()
+			    FROM summed
+			    JOIN users ON user_id = id
+			ORDER BY rank, submitted
+			   LIMIT $3 OFFSET $4`,
+			data.LangID,
+			data.Scoring,
+			pager.PerPage,
+			data.Pager.Offset,
+		)
+	} else if data.LangID == "all" {
+		rows, err = session.Database(r).Query(
+			` SELECT COALESCE(CASE WHEN show_country THEN country END, ''),
+			         1,
+			         lang,
+			         login,
+			         points,
+			         RANK() OVER (ORDER BY points DESC, strokes),
+			         strokes,
+			         submitted,
+			         COUNT(*) OVER()
+			    FROM rankings
+			    JOIN users ON user_id = id
+			   WHERE hole = $1 AND scoring = $2
+			ORDER BY rank, submitted
+			   LIMIT $3 OFFSET $4`,
+			data.HoleID,
+			data.Scoring,
+			pager.PerPage,
+			data.Pager.Offset,
+		)
 	} else {
-		table = "scored_leaderboard"
+		rows, err = session.Database(r).Query(
+			` SELECT COALESCE(CASE WHEN show_country THEN country END, ''),
+			         1,
+			         lang,
+			         login,
+			         points_for_lang,
+			         RANK() OVER (ORDER BY points_for_lang DESC, strokes),
+			         strokes,
+			         submitted,
+			         COUNT(*) OVER()
+			    FROM rankings
+			    JOIN users ON user_id = id
+			   WHERE hole = $1 AND lang = $2 AND scoring = $3
+			ORDER BY rank, submitted
+			   LIMIT $4 OFFSET $5`,
+			data.HoleID,
+			data.LangID,
+			data.Scoring,
+			pager.PerPage,
+			data.Pager.Offset,
+		)
 	}
-
-	rows, err := session.Database(r).Query(
-		`WITH leaderboard AS (
-		  SELECT `+distinct+`
-		         hole,
-		         submitted,
-		         `+data.Scoring+` strokes,
-		         user_id,
-		         lang
-		    FROM solutions
-		   WHERE NOT failing
-		     AND $1 IN ('all', hole::text)
-		     AND $2 IN ('all', lang::text)
-		     AND scoring = $3
-		ORDER BY hole, user_id, `+data.Scoring+`, submitted
-		), scored_leaderboard AS (
-		  SELECT l.hole,
-		         1 holes,
-		         lang,
-		         ROUND(
-		             (COUNT(*) OVER (PARTITION BY l.hole) -
-		                RANK() OVER (PARTITION BY l.hole ORDER BY strokes) + 1)
-		             * (1000.0 / COUNT(*) OVER (PARTITION BY l.hole))
-		         ) points,
-		         strokes,
-		         submitted,
-		         l.user_id
-		    FROM leaderboard l
-		), summed_leaderboard AS (
-		  SELECT user_id,
-		         COUNT(*)       holes,
-		         ''             lang,
-		         SUM(points)    points,
-		         SUM(strokes)   strokes,
-		         MAX(submitted) submitted
-		    FROM scored_leaderboard
-		GROUP BY user_id
-		) SELECT COALESCE(CASE WHEN show_country THEN country END, ''),
-		         holes,
-		         lang,
-		         login,
-		         points,
-		         RANK() OVER (ORDER BY points DESC, strokes),
-		         strokes,
-		         submitted,
-		         COUNT(*) OVER()
-		    FROM `+table+`
-		    JOIN users on user_id = id
-		ORDER BY points DESC, strokes, submitted
-		   LIMIT $4 OFFSET $5`,
-		data.HoleID,
-		data.LangID,
-		data.Scoring,
-		pager.PerPage,
-		data.Pager.Offset,
-	)
 	if err != nil {
 		panic(err)
 	}

@@ -118,15 +118,15 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 		             FROM solutions
 		            WHERE user_id = id AND NOT FAILING),
 		          login,
-		          COALESCE(bytes_points, 0),
-		          COALESCE(chars_points, 0),
+		          COALESCE(bytes.points, 0),
+		          COALESCE(chars.points, 0),
 		          COALESCE(silver, 0),
 		          sponsor,
 		          (SELECT COUNT(*) FROM trophies WHERE user_id = id)
 		     FROM users
-		LEFT JOIN medals ON id = medals.user_id
-		LEFT JOIN bytes_points ON id = bytes_points.user_id
-		LEFT JOIN chars_points ON id = chars_points.user_id
+		LEFT JOIN medals       ON id = medals.user_id
+		LEFT JOIN points bytes ON id = bytes.user_id AND bytes.scoring = 'bytes'
+		LEFT JOIN points chars ON id = chars.user_id AND chars.scoring = 'chars'
 		    WHERE login = $1`,
 		name,
 	).Scan(

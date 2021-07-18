@@ -125,32 +125,6 @@ CREATE MATERIALIZED VIEW medals AS WITH ranks AS (
 GROUP BY hole, lang, scoring
   HAVING COUNT(*) = 1;
 
-CREATE VIEW bytes_points AS WITH ranked AS (
-    SELECT user_id,
-           RANK()   OVER (PARTITION BY hole ORDER BY MIN(bytes)),
-           COUNT(*) OVER (PARTITION BY hole)
-      FROM solutions
-     WHERE NOT failing
-       AND scoring = 'bytes'
-  GROUP BY hole, user_id
-) SELECT user_id,
-         SUM(ROUND(((count - rank) + 1) * (1000.0 / count))) bytes_points
-    FROM ranked
-GROUP BY user_id;
-
-CREATE VIEW chars_points AS WITH ranked AS (
-    SELECT user_id,
-           RANK()   OVER (PARTITION BY hole ORDER BY MIN(chars)),
-           COUNT(*) OVER (PARTITION BY hole)
-      FROM solutions
-     WHERE NOT failing
-       AND scoring = 'chars'
-  GROUP BY hole, user_id
-) SELECT user_id,
-         SUM(ROUND(((count - rank) + 1) * (1000.0 / count))) chars_points
-    FROM ranked
-GROUP BY user_id;
-
 CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
     select hole, lang, scoring, user_id, submitted,
            case when scoring = 'bytes' then bytes else chars end strokes
@@ -175,8 +149,18 @@ CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
     from strokes
     join bayesian_estimators using(hole, lang, scoring);
 
+CREATE MATERIALIZED VIEW points AS WITH ranked_by_hole AS (
+    SELECT points, scoring, user_id, ROW_NUMBER()
+               OVER (PARTITION BY user_id, scoring, hole ORDER BY points DESC)
+      FROM rankings
+) SELECT user_id, scoring, SUM(points) points
+    FROM ranked_by_hole
+   WHERE row_number = 1
+GROUP BY user_id, scoring;
+
 -- Needed to refresh concurrently
 CREATE UNIQUE INDEX   medals_key ON   medals(user_id, hole, lang, scoring, medal);
+CREATE UNIQUE INDEX   points_key ON   points(user_id, scoring);
 CREATE UNIQUE INDEX rankings_key ON rankings(user_id, hole, lang, scoring);
 
 -- Used by /stats
@@ -187,14 +171,12 @@ CREATE ROLE "code-golf" WITH LOGIN;
 
 -- Only owners can refresh.
 ALTER MATERIALIZED VIEW medals   OWNER TO "code-golf";
+ALTER MATERIALIZED VIEW points   OWNER TO "code-golf";
 ALTER MATERIALIZED VIEW rankings OWNER TO "code-golf";
 
-GRANT SELECT, INSERT, UPDATE         ON TABLE    discord_records TO "code-golf";
-GRANT SELECT, INSERT, TRUNCATE       ON TABLE    ideas           TO "code-golf";
-GRANT SELECT                         ON TABLE    bytes_points    TO "code-golf";
-GRANT SELECT                         ON TABLE    chars_points    TO "code-golf";
-GRANT SELECT                         ON TABLE    rankings        TO "code-golf";
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    sessions        TO "code-golf";
-GRANT SELECT, INSERT, UPDATE         ON TABLE    solutions       TO "code-golf";
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    trophies        TO "code-golf";
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE    users           TO "code-golf";
+GRANT SELECT, INSERT, UPDATE         ON TABLE discord_records TO "code-golf";
+GRANT SELECT, INSERT, TRUNCATE       ON TABLE ideas           TO "code-golf";
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE sessions        TO "code-golf";
+GRANT SELECT, INSERT, UPDATE         ON TABLE solutions       TO "code-golf";
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE trophies        TO "code-golf";
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE users           TO "code-golf";

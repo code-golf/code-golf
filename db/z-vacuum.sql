@@ -2,6 +2,7 @@ VACUUM ANALYZE;
 
 REFRESH MATERIALIZED VIEW medals;
 REFRESH MATERIALIZED VIEW rankings;
+REFRESH MATERIALIZED VIEW points;
 
 -- Check the tables are structured optimally.
 -- https://www.2ndquadrant.com/en/blog/on-rocks-and-sand/
