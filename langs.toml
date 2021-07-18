@@ -192,8 +192,8 @@ end-program.
 '''
 
 [Crystal]
-size    = '284 MiB'
-version = '1.0.0'
+size    = '263 MiB'
+version = '1.1.0'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -567,7 +567,7 @@ say 'Hello, World!';
 
 [Ruby]
 size    = '14.4 MiB'
-version = '3.0.1'
+version = '3.0.2'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing
