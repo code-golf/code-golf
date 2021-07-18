@@ -8,7 +8,7 @@ CREATE TYPE cheevo AS ENUM (
     'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars', 'ouroboros',
     'patches-welcome', 'pi-day', 'polyglot', 'rtfm', 'slowcoach',
     'solve-quine', 'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
-    'up-to-eleven', 'vampire-byte'
+    'twenty-kiloleagues', 'up-to-eleven', 'vampire-byte'
 );
 
 CREATE TYPE hole AS ENUM (

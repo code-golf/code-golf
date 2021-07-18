@@ -160,9 +160,13 @@ func main() {
 			// Once points is refreshed, award points based cheevos.
 			if _, err := db.Exec(
 				`INSERT INTO trophies(user_id, trophy)
-				      SELECT DISTINCT user_id, 'its-over-9000'::cheevo
+				      SELECT user_id, 'its-over-9000'::cheevo
 				        FROM points
 				       WHERE points > 9000
+				   UNION ALL
+				      SELECT user_id, 'twenty-kiloleagues'::cheevo
+				        FROM points
+				       WHERE points >= 20000
 				 ON CONFLICT DO NOTHING`,
 			); err != nil {
 				log.Println(err)
