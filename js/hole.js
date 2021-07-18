@@ -8,6 +8,7 @@ const hole               = decodeURI(location.pathname.slice(1));
 const keymap             = JSON.parse(document.querySelector('#keymap').innerText);
 const langs              = JSON.parse(document.querySelector('#langs').innerText);
 const picker             = document.querySelector('#picker');
+const restoreLink        = document.querySelector('#restoreLink');
 const scorings           = ['Bytes', 'Chars'];
 const solutionPicker     = document.querySelector('#solutionPicker');
 const solutions          = JSON.parse(document.querySelector('#solutions').innerText);
@@ -16,16 +17,17 @@ const table              = document.querySelector('#scores');
 
 const darkMode = matchMedia(darkModeMediaQuery).matches;
 let lang;
+let latestSubmissionID = 0;
 let solution = Math.max(scorings.indexOf(localStorage.getItem('solution')), 0);
 let scoring = Math.max(scorings.indexOf(localStorage.getItem('scoring')), 0);
 let setCodeForLangAndSolution;
-let latestSubmissionID = 0;
+let updateRestoreLinkVisibility;
 
-// Assume the user is logged in by default. At this point, it doesn't matter if the user is actually logged in,
-// because this is only used to prevent auto-saving submitted solutions for logged in users to avoid excessive
-// prompting to restore auto-saved solutions. The solutions dictionaries will initially be empty for users who are not
-// logged in, so the loggedIn state will not be used. By the time they are non-empty, the loggedIn state will have been
-// updated.
+// The loggedIn state is used to avoid saving solutions in localStorage when those solutions match the solutions in the
+// database. It's used to avoid restoring a solution from localStorage when the user has improved that solution on a
+// different browser. Assume the user is logged-in by default. At this point, it doesn't matter whether the user is
+// actually logged-in, because solutions dictionaries will initially be empty for users who aren't logged-in, so the
+// loggedIn state will not be used. By the time they are non-empty, the loggedIn state will have been updated.
 let loggedIn = true;
 
 function getAutoSaveKey(lang, solution) {
@@ -66,6 +68,11 @@ onload = () => {
         vimMode,
     });
 
+    updateRestoreLinkVisibility = () => {
+        const serverCode = getSolutionCode(lang, solution);
+        restoreLink.style.display = serverCode && cm.getValue() != serverCode ? 'initial' : 'none';
+    };
+
     cm.on('change', () => {
         const code = cm.getValue();
         let infoText = '';
@@ -84,12 +91,19 @@ onload = () => {
             localStorage.setItem(key, code);
         else
             localStorage.removeItem(key);
+
+        updateRestoreLinkVisibility();
     });
 
     details.ontoggle = () =>
         document.cookie = 'hide-details=' + (details.open ? ';Max-Age=0' : '');
 
-    setCodeForLangAndSolution = allowPrompt => {
+    restoreLink.onclick = e => {
+        cm.setValue(getSolutionCode(lang, solution));
+        e.preventDefault();
+    };
+
+    setCodeForLangAndSolution = () => {
         const autoSaveCode = localStorage.getItem(getAutoSaveKey(lang, solution)) || '';
         const code = getSolutionCode(lang, solution) || autoSaveCode;
 
@@ -100,21 +114,10 @@ onload = () => {
             startOpen: true,
             multiLineStrings: lang == 'c', // TCC supports multi-line strings
         });
-        cm.setValue(code);
+
+        cm.setValue(autoSaveCode || code);
 
         refreshScores();
-
-        if (autoSaveCode && code != autoSaveCode) {
-            if (!allowPrompt ||
-                confirm('Your local copy of the code is different than the remote one. Do you want to restore the local version?'))
-                cm.setValue(autoSaveCode);
-            else
-                // Users are prompted to restore their auto-saved solutions at most once per language.
-                // Remove the autosave for the other solution, if present.
-                // The autosave for the current solution was removed by the change callback when cm.setValue(code) was called.
-                // Users can reload the page to restore the database solutions.
-                localStorage.removeItem(getAutoSaveKey(lang, getOtherScoring(solution)));
-        }
 
         for (const info of document.querySelectorAll('main .info'))
             info.style.display = info.classList.contains(lang) ? 'block' : '';
@@ -135,7 +138,7 @@ onload = () => {
 
         history.replaceState(null, '', '#' + lang);
 
-        setCodeForLangAndSolution(true);
+        setCodeForLangAndSolution();
     })();
 
     const submit = document.querySelector('#run a').onclick = async () => {
@@ -200,6 +203,9 @@ onload = () => {
         if (data.Pass && getSolutionCode(codeLang, solution) != code && getSolutionCode(codeLang, getOtherScoring(solution)) == code)
             setSolution(getOtherScoring(solution));
 
+        // Update the restore link visibility, after possibly changing the active solution.
+        updateRestoreLinkVisibility();
+
         document.querySelector('h2').innerText
             = data.Pass ? 'Pass 😀' : 'Fail ☹️';
 
@@ -246,7 +252,7 @@ onload = () => {
         CodeMirror.Vim.defineEx('write', 'w', submit);
 };
 
-async function refreshScores() {
+function populateLanguagePicker() {
     picker.innerHTML = '';
     picker.open = false;
 
@@ -273,7 +279,9 @@ async function refreshScores() {
         picker.innerHTML += l.id == lang
             ? `<a id="${l.name}">${name}</a>` : `<a id="${l.name}" href=#${l.id}>${name}</a>`;
     }
+}
 
+function populateSolutionPicker() {
     while (solutionPicker.firstChild)
         solutionPicker.removeChild(solutionPicker.firstChild);
 
@@ -284,7 +292,7 @@ async function refreshScores() {
 
     // Only show the solution picker when both solutions are actually used.
     if (code0 && code1 && code0 != code1 || autoSave0 && autoSave1 && autoSave0 != autoSave1 ||
-        // If a logged in user has an auto-saved solution for the other metric, that they have not
+        // If a logged-in user has an auto-saved solution for the other metric, that they have not
         // submitted since logging in, they must be allowed to switch to it, so they can submit it.
         (solution == 0 && code0 && autoSave1 && code0 != autoSave1) ||
         (solution == 1 && autoSave0 && code1 && autoSave0 != code1)) {
@@ -304,12 +312,17 @@ async function refreshScores() {
                 child.onclick = e => {
                     e.preventDefault();
                     setSolution(i);
-                    setCodeForLangAndSolution(false);
+                    setCodeForLangAndSolution();
                 };
             }
             solutionPicker.appendChild(child);
         }
     }
+}
+
+async function refreshScores() {
+    populateLanguagePicker();
+    populateSolutionPicker();
 
     const path   = `/${hole}/${lang}/${scorings[scoring].toLowerCase()}`;
     const res    = await fetch(`/scores${path}/mini`);

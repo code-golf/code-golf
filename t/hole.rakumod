@@ -13,6 +13,8 @@ my $cookieKey = "__Host-session";
 
 our $raku57_55 is export = 'say "Fizz" x $_ %% 3 ~ "Buzz" x $_ %% 5 || $_ for 1…100';
 
+our $raku59_57 is export = 'say ("Fizz" x $_ %% 3) ~ "Buzz" x $_ %% 5 || $_ for 1…100';
+
 # For the final three lines, Code Mirror is expected to add a single leading space for auto-indentation.
 # For NG, the second line is also auto-indented and the leading space below should be removed.
 our $python121_121 is export = "for x in range(1,101):" ~
@@ -81,43 +83,57 @@ class HoleWebDriver is WebDriver is export {
     }
 
     # Methods whose names begin with "is" do exactly one assertion.
-    method isBytesAndChars(Int:D $bytes, Int:D $chars, Str:D $context = '') {
-        my $desc = 'Confirm byte and char counts';
-        $desc ~= $context ?? ", $context" !! '.';
-        is $.find('#chars').text, "$bytes bytes, $chars chars", $desc;
+    method isBytesAndChars(Int:D $bytes, Int:D $chars, Str:D $context) {
+        is $.find('#chars').text, "$bytes bytes, $chars chars", "Confirm byte and char counts, $context";
     }
 
     # Methods whose names begin with "is" do exactly one assertion.
-    method isFailing(Str:D $desc = '') {
-        $.isResult: 'Fail ☹️', $desc;
+    method isFailing(Str:D $context) {
+        $.isResult: 'Fail ☹️', $context;
     }
 
     # Methods whose names begin with "is" do exactly one assertion.
-    method isPassing(Str:D $desc = '') {
-        $.isResult: 'Pass 😀', $desc;
+    method isPassing(Str:D $context) {
+        $.isResult: 'Pass 😀', $context;
     }
 
     # Methods whose names begin with "is" do exactly one assertion.
-    method isResult(Str:D $expectedText, Str:D $desc = '') {
+    method isResult(Str:D $expectedText, Str:D $context) {
         for ^5 {
             if (my $text = $.find('h2').text) && $text ne '…' {
-                is $text, $expectedText, ($desc || 'Confirm the result of running the program');
+                is $text, $expectedText, "Confirm the result of running the program, $context";
                 return;
             }
 
             sleep 1;
         }
 
-        flunk "Failed to find run results. $desc";
+        flunk "Failed to find run results, $context";
     }
 
     # Methods whose names begin with "is" do exactly one assertion.
-    method isSolutionPickerState(Str:D $expectedState, Str:D $context = '') {
+    method isScoringPickerState(Str:D $expectedState, Str:D $context) {
+        is $.getScoringPickerState, $expectedState, "Confirm the scoring picker state, $context";
+    }
+
+    # Methods whose names begin with "is" do exactly one assertion.
+    method isSolutionPickerState(Str:D $expectedState, Str:D $context) {
         my $desc = $expectedState ??
             "The $expectedState solution should be active" !!
             "The solution picker shouldn't be visible, because a single solution optimizes both metrics";
-        $desc ~= $context ?? ", $context" !! '.';
-        is $.getSolutionPickerState, $expectedState, $desc;
+        is $.getSolutionPickerState, $expectedState, "$desc, $context";
+    }
+
+    # Methods whose names begin with "is" do exactly one assertion.
+    method isRestoreSolutionLinkVisible(Bool:D $expectedState, Str:D $context) {
+        my $callable = { $.find('Restore solution', :using(WebDriver::Selector::LinkText)) };
+        if $expectedState {
+            lives-ok $callable, "Restore solution link should be visible, $context";
+        }
+        else {
+            throws-like $callable, Exception, :message(/'Unable to locate element'/),
+                "Restore solution link should be hidden, $context";
+        }
     }
 
     method loadFibonacci {
@@ -126,6 +142,10 @@ class HoleWebDriver is WebDriver is export {
 
     method loadFizzBuzz {
         $.get: 'https://app:1443/fizz-buzz';
+    }
+
+    method restoreSolution {
+        $.find('Restore solution', :using(WebDriver::Selector::LinkText)).click;
     }
 
     method run {
