@@ -22,11 +22,11 @@
 </svg>
 
 <main id=index>
+{{ if .Golfer }}
     <nav class="span tabs">
-    {{ range .Data.Scorings }}
-        <a {{ if ne . $.Data.Scoring }} href="?scoring={{ . }}" {{ end }}>
-            {{ title . }}
-        </a>
+    {{ with .Data.Scoring }}
+        <a {{ if ne . "bytes" }} href="?scoring=bytes" {{ end }}>Bytes</a>
+        <a {{ if ne . "chars" }} href="?scoring=chars" {{ end }}>Chars</a>
     {{ end }}
 
         <div></div>
@@ -43,14 +43,18 @@
         </a>
     {{ end }}
     </nav>
+{{ end }}
 {{ range .Data.Cards }}
-    <a class="card {{ .Hole.CategoryColor }}" href={{ .Hole.ID }} title="{{ .Hole.Name }} ({{ .Hole.Category }})">
+    <a class="card {{ .Hole.CategoryColor }}"
+    {{ if .Points }}
+        href="rankings/holes/{{ .Hole.ID }}/all/{{ $.Data.Scoring }}"
+    {{ else }}
+        href="{{ .Hole.ID }}"
+    {{ end }}
+       title="{{ .Hole.Name }} ({{ .Hole.Category }})">
         <h2>{{ .Hole.Name }}</h2>
         <svg><use href="#{{ .Hole.CategoryIcon }}"/></svg>
-        <span class=right>
-            {{ with .Rank }}{{ comma . }}<sup>{{ ord . }}</sup> of{{ end }}
-            {{ comma .Golfers }}
-        </span>
+        {{ with .Points }}<span class=right>{{ comma . }} pts.</span>{{ end }}
     </a>
 {{ end }}
 </main>

@@ -11,151 +11,111 @@ import (
 
 // Index serves GET /
 func Index(w http.ResponseWriter, r *http.Request) {
-	if scoring := r.URL.Query().Get("scoring"); scoring != "" {
-		http.SetCookie(w, &http.Cookie{
-			HttpOnly: true,
-			Name:     "__Host-scoring",
-			Path:     "/",
-			SameSite: http.SameSiteLaxMode,
-			Secure:   true,
-			Value:    scoring,
-		})
+	for _, param := range []string{"scoring", "sort"} {
+		if value := r.FormValue(param); value != "" {
+			http.SetCookie(w, &http.Cookie{
+				HttpOnly: true,
+				Name:     "__Host-" + param,
+				Path:     "/",
+				SameSite: http.SameSiteLaxMode,
+				Secure:   true,
+				Value:    value,
+			})
 
-		http.Redirect(w, r, "/", http.StatusFound)
-		return
-	}
-
-	if sort := r.URL.Query().Get("sort"); sort != "" {
-		http.SetCookie(w, &http.Cookie{
-			HttpOnly: true,
-			Name:     "__Host-sort",
-			Path:     "/",
-			SameSite: http.SameSiteLaxMode,
-			Secure:   true,
-			Value:    sort,
-		})
-
-		http.Redirect(w, r, "/", http.StatusFound)
-		return
+			http.Redirect(w, r, "/", http.StatusFound)
+			return
+		}
 	}
 
 	type Card struct {
-		Golfers, Rank int
-		Hole          hole.Hole
+		Hole   hole.Hole
+		Points int
 	}
 
 	data := struct {
-		Cards    []Card
-		Scoring  string
-		Scorings []string
-		Sort     string
-		Sorts    []string
+		Cards         []Card
+		Scoring, Sort string
+		Sorts         []string
 	}{
-		Scoring:  "bytes",
-		Scorings: []string{"bytes", "chars"},
-		Sorts:    []string{"alphabetical", "golfers", "rank"},
+		Cards:   make([]Card, 0, len(hole.List)),
+		Scoring: "bytes",
+		Sorts:   []string{"alphabetical", "points"},
 	}
 
-	if sort, err := r.Cookie("__Host-sort"); err == nil {
-		data.Sort = sort.Value
-	}
-
-	if scoring, err := r.Cookie("__Host-scoring"); err == nil {
-		for _, value := range data.Scorings {
-			if scoring.Value == value {
-				data.Scoring = value
-				break
-			}
+	if golfer := session.Golfer(r); golfer == nil {
+		for _, hole := range hole.List {
+			data.Cards = append(data.Cards, Card{Hole: hole})
 		}
-	}
+	} else {
+		if cookie(r, "__Host-scoring") == "chars" {
+			data.Scoring = "chars"
+		}
 
-	var userID int
-	if golfer := session.Golfer(r); golfer != nil {
-		userID = golfer.ID
-	}
-
-	db := session.Database(r)
-
-	rows, err := db.Query(
-		`WITH ranks AS (
-		    SELECT hole,
-		           RANK() OVER (PARTITION BY hole ORDER BY `+data.Scoring+`),
-		           user_id
-		      FROM solutions
-		     WHERE scoring = $2
-		       AND NOT failing
-		) SELECT COUNT(*),
-		         (SELECT COALESCE(MIN(rank), 0) FROM ranks WHERE hole = r.hole AND user_id = $1),
-		         hole
-		    FROM ranks r
-		GROUP BY hole`,
-		userID,
-		data.Scoring,
-	)
-	if err != nil {
-		panic(err)
-	}
-
-	defer rows.Close()
-
-	for rows.Next() {
-		var card Card
-		var holeID string
-
-		if err := rows.Scan(&card.Golfers, &card.Rank, &holeID); err != nil {
+		rows, err := session.Database(r).Query(
+			`WITH points AS (
+			    SELECT hole, MAX(points) points
+			      FROM rankings
+			     WHERE scoring = $1 AND user_id = $2
+			  GROUP BY hole
+			)  SELECT hole, COALESCE(points, 0)
+			     FROM unnest(enum_range(NULL::hole)) hole
+			LEFT JOIN points USING(hole)`,
+			data.Scoring,
+			golfer.ID,
+		)
+		if err != nil {
 			panic(err)
 		}
 
-		card.Hole = hole.ByID[holeID]
+		defer rows.Close()
 
-		data.Cards = append(data.Cards, card)
-	}
+		for rows.Next() {
+			var card Card
+			var holeID string
 
-	if err := rows.Err(); err != nil {
-		panic(err)
-	}
+			if err := rows.Scan(&holeID, &card.Points); err != nil {
+				panic(err)
+			}
 
-	switch data.Sort {
-	case "alphabetical-desc":
-		sort.Slice(data.Cards, func(i, j int) bool {
-			return strings.ToLower(data.Cards[i].Hole.Name) >
-				strings.ToLower(data.Cards[j].Hole.Name)
-		})
-	case "golfers-asc":
-		sort.Slice(data.Cards, func(i, j int) bool {
-			if data.Cards[i].Golfers == data.Cards[j].Golfers {
-				return data.Cards[i].Hole.Name < data.Cards[j].Hole.Name
-			}
-			return data.Cards[i].Golfers < data.Cards[j].Golfers
-		})
-	case "golfers-desc":
-		sort.Slice(data.Cards, func(i, j int) bool {
-			if data.Cards[i].Golfers == data.Cards[j].Golfers {
-				return data.Cards[i].Hole.Name < data.Cards[j].Hole.Name
-			}
-			return data.Cards[i].Golfers > data.Cards[j].Golfers
-		})
-	case "rank-asc":
-		sort.Slice(data.Cards, func(i, j int) bool {
-			if data.Cards[i].Rank == data.Cards[j].Rank {
-				return data.Cards[i].Hole.Name < data.Cards[j].Hole.Name
-			}
-			return data.Cards[i].Rank < data.Cards[j].Rank
-		})
-	case "rank-desc":
-		sort.Slice(data.Cards, func(i, j int) bool {
-			if data.Cards[i].Rank == data.Cards[j].Rank {
-				return data.Cards[i].Hole.Name < data.Cards[j].Hole.Name
-			}
-			return data.Cards[i].Rank > data.Cards[j].Rank
-		})
-	default:
-		data.Sort = "alphabetical-asc"
+			card.Hole = hole.ByID[holeID]
 
-		sort.Slice(data.Cards, func(i, j int) bool {
-			return strings.ToLower(data.Cards[i].Hole.Name) <
-				strings.ToLower(data.Cards[j].Hole.Name)
-		})
+			data.Cards = append(data.Cards, card)
+		}
+
+		if err := rows.Err(); err != nil {
+			panic(err)
+		}
+
+		switch data.Sort = cookie(r, "__Host-sort"); data.Sort {
+		case "alphabetical-desc":
+			sort.Slice(data.Cards, func(i, j int) bool {
+				return strings.ToLower(data.Cards[i].Hole.Name) >
+					strings.ToLower(data.Cards[j].Hole.Name)
+			})
+		case "points-asc":
+			sort.Slice(data.Cards, func(i, j int) bool {
+				if data.Cards[i].Points == data.Cards[j].Points {
+					return strings.ToLower(data.Cards[i].Hole.Name) <
+						strings.ToLower(data.Cards[j].Hole.Name)
+				}
+				return data.Cards[i].Points < data.Cards[j].Points
+			})
+		case "points-desc":
+			sort.Slice(data.Cards, func(i, j int) bool {
+				if data.Cards[i].Points == data.Cards[j].Points {
+					return strings.ToLower(data.Cards[i].Hole.Name) >
+						strings.ToLower(data.Cards[j].Hole.Name)
+				}
+				return data.Cards[i].Points > data.Cards[j].Points
+			})
+		default:
+			data.Sort = "alphabetical-asc"
+
+			sort.Slice(data.Cards, func(i, j int) bool {
+				return strings.ToLower(data.Cards[i].Hole.Name) <
+					strings.ToLower(data.Cards[j].Hole.Name)
+			})
+		}
 	}
 
 	w.Header().Set(
