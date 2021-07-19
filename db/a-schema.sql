@@ -62,6 +62,7 @@ CREATE TABLE users (
     admin        bool      NOT NULL DEFAULT false,
     sponsor      bool      NOT NULL DEFAULT false,
     login        citext    NOT NULL UNIQUE,
+    discord      text      UNIQUE,
     time_zone    text,
     delete       timestamp,
     keymap       keymap    NOT NULL DEFAULT 'default',

@@ -32,6 +32,18 @@ func GolferDelete(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/golfer/settings", http.StatusSeeOther)
 }
 
+// GolferDisconnectDiscord serves POST /golfer/disconnect/discord
+func GolferDisconnectDiscord(w http.ResponseWriter, r *http.Request) {
+	if _, err := session.Database(r).Exec(
+		"UPDATE users SET discord = NULL WHERE id = $1",
+		session.Golfer(r).ID,
+	); err != nil {
+		panic(err)
+	}
+
+	http.Redirect(w, r, "/golfer/settings", http.StatusSeeOther)
+}
+
 // GolferSettings serves GET /golfer/settings
 func GolferSettings(w http.ResponseWriter, r *http.Request) {
 	data := struct {

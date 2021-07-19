@@ -9,6 +9,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/github"
 	"github.com/code-golf/code-golf/middleware"
 	"github.com/code-golf/code-golf/routes"
@@ -63,12 +64,14 @@ func main() {
 	r.Get("/assets/{asset}", routes.Asset)
 	r.Get("/callback", routes.Callback)
 	r.Get("/callback/dev", routes.CallbackDev)
+	r.Get("/callback/discord", routes.CallbackDiscord)
 	r.Get("/feeds", routes.Feeds)
 	r.Get("/feeds/{feed}", routes.Feed)
 	r.Route("/golfer", func(r chi.Router) {
 		r.Use(middleware.GolferArea)
 		r.Post("/cancel-delete", routes.GolferCancelDelete)
 		r.Post("/delete", routes.GolferDelete)
+		r.Post("/disconnect/discord", routes.GolferDisconnectDiscord)
 		r.Get("/settings", routes.GolferSettings)
 		r.Post("/settings", routes.GolferSettingsPost)
 	})
@@ -139,7 +142,7 @@ func main() {
 	}
 
 	var crt, key string
-	if _, dev := os.LookupEnv("DEV"); dev {
+	if config.Dev {
 		crt = "localhost.pem"
 		key = "localhost-key.pem"
 	} else {

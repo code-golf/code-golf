@@ -7,6 +7,7 @@ import (
 	"os"
 	"time"
 
+	Config "github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
 	"github.com/code-golf/code-golf/zone"
 	"golang.org/x/oauth2"
@@ -53,7 +54,7 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// In dev mode, the username is selected by the "username" parameter
-	if _, dev := os.LookupEnv("DEV"); dev && config.ClientSecret == "" {
+	if Config.Dev && config.ClientSecret == "" {
 		user.Login = r.FormValue("username")
 		if user.Login == "" {
 			user.Login = "JRaspass"
