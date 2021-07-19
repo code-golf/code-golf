@@ -26,9 +26,9 @@ Created a new certificate valid for the following names 📜
 The certificate is at "./localhost.pem" and the key at "./localhost-key.pem" ✅
 ```
 
-3. Build the assets:
+3. Install the NPM packages:
 ```
-$ ./build-assets
+$ npm install
 ```
 
 4. Bring up the website:

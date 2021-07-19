@@ -1,4 +1,5 @@
-import strlen from './_strlen.js';
+import CodeMirror from './_codemirror-legacy';
+import strlen     from './_strlen';
 
 const chars              = document.querySelector('#chars');
 const darkModeMediaQuery = JSON.parse(document.querySelector('#darkModeMediaQuery').innerText);

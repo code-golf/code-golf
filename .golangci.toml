@@ -1,6 +1,3 @@
-[run]
-skip-files = ['routes/assets.go']
-
 [linters]
 disable-all = true
 enable = [

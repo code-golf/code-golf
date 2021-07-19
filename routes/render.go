@@ -200,18 +200,18 @@ func render(w http.ResponseWriter, r *http.Request, name string, data interface{
 	}
 
 	args := struct {
-		CSS                                                                  template.CSS
-		CheevoBanner                                                         *CheevoBanner
-		Countries                                                            map[string]*country.Country
-		Data                                                                 interface{}
-		DarkModeMediaQuery, Description, JSExt, LogInURL, Nonce, Path, Title string
-		Golfer                                                               *golfer.Golfer
-		GolferInfo                                                           *golfer.GolferInfo
-		Holes                                                                map[string]hole.Hole
-		JS                                                                   []string
-		Langs                                                                map[string]lang.Lang
-		Location                                                             *time.Location
-		Request                                                              *http.Request
+		CSS                                                           template.CSS
+		CheevoBanner                                                  *CheevoBanner
+		Countries                                                     map[string]*country.Country
+		Data                                                          interface{}
+		DarkModeMediaQuery, Description, LogInURL, Nonce, Path, Title string
+		Golfer                                                        *golfer.Golfer
+		GolferInfo                                                    *golfer.GolferInfo
+		Holes                                                         map[string]hole.Hole
+		JS                                                            []string
+		Langs                                                         map[string]lang.Lang
+		Location                                                      *time.Location
+		Request                                                       *http.Request
 	}{
 		Countries:          country.ByID,
 		CSS:                getThemeCSS(theme) + css["base"] + css[path.Dir(name)] + css[name],
@@ -260,10 +260,10 @@ func render(w http.ResponseWriter, r *http.Request, name string, data interface{
 		}
 	}
 
-	// Legacy old "build-assets".
+	// TODO CSS imports?
 	if name == "hole" {
-		args.JSExt = holeJsPath
-		args.CSS = css["vendor/codemirror"] + css["vendor/codemirror-dialog"] + css["vendor/codemirror-dark"] + args.CSS
+		args.CSS = css["vendor/codemirror"] + css["vendor/codemirror-dialog"] +
+			css["vendor/codemirror-dark"] + args.CSS
 	}
 
 	// Append route specific JS.

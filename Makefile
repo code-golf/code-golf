@@ -5,22 +5,7 @@ SHELL    := /bin/bash
 export COMPOSE_PATH_SEPARATOR=:
 export COMPOSE_FILE=docker/core.yml:docker/dev.yml
 
-define STUB
-package routes
-
-import "net/http"
-
-const holeJsPath = ""
-
-func Asset(w http.ResponseWriter, r *http.Request) {}
-endef
-
 bench:
-# FIXME Stub out assets if it doesn't yet exist.
-ifeq ($(wildcard routes/assets.go),)
-	$(file > routes/assets.go, $(STUB))
-endif
-
 	@go test -bench B -benchmem ./...
 
 bump:
@@ -80,7 +65,6 @@ e2e: export COMPOSE_PROJECT_NAME = code-golf-e2e
 e2e:
 # TODO Pass arguments to run specific tests.
 	@./esbuild
-	@./build-assets --force
 	@touch docker/.env
 	@docker-compose rm -fsv &>/dev/null
 	@docker-compose pull -q
@@ -99,17 +83,10 @@ font:
 	    docker rm $$id
 
 lint:
-# FIXME Stub out assets if it doesn't yet exist.
-ifeq ($(wildcard routes/assets.go),)
-	$(file > routes/assets.go, $(STUB))
-endif
-
 	@docker run --rm -v $(CURDIR):/app -w /app \
 	    golangci/golangci-lint:v1.41.1 golangci-lint run
 
 live:
-	@./build-assets
-
 	@docker build --pull -f docker/live.Dockerfile -t codegolf/code-golf .
 
 	@docker push codegolf/code-golf
@@ -138,9 +115,4 @@ logs:
 	@ssh rancher@code.golf docker logs --tail 5 -f code-golf
 
 test:
-# FIXME Stub out assets if it doesn't yet exist.
-ifeq ($(wildcard routes/assets.go),)
-	$(file > routes/assets.go, $(STUB))
-endif
-
 	@go test ./...

@@ -60,7 +60,6 @@ func main() {
 		r.Get("/langs/{lang}", routes.APILang)
 		r.Get("/suggestions/golfers", routes.APISuggestionsGolfers)
 	})
-	r.Get("/assets/{asset}", routes.Asset)
 	r.Get("/callback", routes.Callback)
 	r.Get("/callback/dev", routes.CallbackDev)
 	r.Get("/feeds", routes.Feeds)
