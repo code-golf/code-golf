@@ -29,6 +29,7 @@ constant @urls = (
     'Rust'       => 'Rust_(programming_language)',
     'SQL'        => 'SQLite',
     'Swift'      => 'Swift_(programming_language)',
+    'VimL'       => 'Vim_(text_editor)',
     'Zig'        => 'Zig_(programming_language)',
 );
 
