@@ -1,0 +1,51 @@
+#!/bin/sh -e
+
+export PATH=/usr/bin:/bin
+
+if [ "$1" = "--version" ]; then
+    /usr/bin/vim --version
+    exit 0
+fi
+
+cd /tmp
+
+# Inject args variable into code
+shift
+printf "let args = [" > code.vim
+while [[ $# -gt 0 ]]; do
+
+  # Escape double quotes and newlines
+  escaped="$(\
+    printf "$1" \
+      | sed -e 's/"/\\\\"/g' \
+      | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/\\\\n/g' \
+  )"
+
+  printf "\"$escaped\"" >> code.vim
+
+  if [[ $# -gt 1 ]]; then
+    printf ", " >> code.vim
+  fi
+
+  shift
+done
+printf "]\n" >> code.vim
+
+# Write code to .vim file
+cat - >> code.vim
+
+# Create output file
+touch output
+
+# Execute
+set +e
+err="$(/usr/bin/vim --clean --not-a-term --noplugin -eZ -V1 +0 -S code.vim output 2>&1)"
+status=$?
+set -e
+
+if [[ $status -eq 0 ]];then
+  cat output
+else
+  echo "$err" >&2
+  exit $status
+fi
