@@ -673,7 +673,7 @@ for arg in os.args[1..] {
 '''
 
 [VimL]
-size    = '30 MiB'
+size    = '21.3 MiB'
 version = '8.2'
 website = 'https://www.vim.org'
 example = '''
