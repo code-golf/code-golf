@@ -14,9 +14,10 @@ shift
 printf "let args = [" > code.vim
 while [[ $# -gt 0 ]]; do
 
-  # Escape double quotes and newlines
+  # Escape backslash, double quotes, and newlines
   escaped="$(\
     printf "$1" \
+      | sed -e 's/\\/\\\\\\\\/g' \
       | sed -e 's/"/\\\\"/g' \
       | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/\\\\n/g' \
   )"
