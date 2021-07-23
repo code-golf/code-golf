@@ -16,13 +16,13 @@ while [[ $# -gt 0 ]]; do
 
   # Escape backslash, double quotes, and newlines
   escaped="$(\
-    printf "$1" \
-      | sed -e 's/\\/\\\\\\\\/g' \
-      | sed -e 's/"/\\\\"/g' \
-      | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/\\\\n/g' \
+    printf '%s' "$1" \
+      | sed -e 's/\\/\\\\/g' \
+      | sed -e 's/"/\\"/g' \
+      | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/\\n/g' \
   )"
 
-  printf "\"$escaped\"" >> code.vim
+  printf '"%s"' "$escaped" >> code.vim
 
   if [[ $# -gt 1 ]]; then
     printf ", " >> code.vim
