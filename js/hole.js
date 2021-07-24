@@ -105,6 +105,13 @@ onload = () => {
     };
 
     setCodeForLangAndSolution = () => {
+        if (solution != 0 && getSolutionCode(lang, 0) == getSolutionCode(lang, 1)) {
+            const autoSave0 = localStorage.getItem(getAutoSaveKey(lang, 0));
+            const autoSave1 = localStorage.getItem(getAutoSaveKey(lang, 1));
+            if (autoSave0 && !autoSave1)
+                setSolution(0);
+        }
+
         const autoSaveCode = localStorage.getItem(getAutoSaveKey(lang, solution)) || '';
         const code = getSolutionCode(lang, solution) || autoSaveCode;
 
@@ -133,7 +140,7 @@ onload = () => {
 
         // Assembly only has bytes.
         if (lang == 'assembly')
-            setSolution(solution = 0);
+            setSolution(0);
 
         localStorage.setItem('lang', lang);
 
@@ -185,17 +192,22 @@ onload = () => {
         }
 
         for (let i = 0; i < scorings.length; i++) {
+            const key = getAutoSaveKey(codeLang, i);
             if (loggedIn) {
-                // If the auto-saved code matches the other solution, remove it to avoid prompting the user to restore it.
-                const autoSaveCode = localStorage.getItem(getAutoSaveKey(codeLang, i));
+                // If the auto-saved code matches either solution, remove it to avoid prompting the user to restore it.
+                const autoSaveCode = localStorage.getItem(key);
                 for (let j = 0; j < scorings.length; j++) {
                     if (getSolutionCode(codeLang, j) == autoSaveCode)
-                        localStorage.removeItem(getAutoSaveKey(codeLang, i));
+                        localStorage.removeItem(key);
                 }
             }
             else if (getSolutionCode(codeLang, i)) {
-                // Autosave the best solution for each scoring metric.
-                localStorage.setItem(getAutoSaveKey(codeLang, i), getSolutionCode(codeLang, i));
+                // Autosave the best solution for each scoring metric, but don't save two copies of the same solution,
+                // because that can lead to the solution picker being show unnecessarily.
+                if (i == 0 || getSolutionCode(codeLang, 0) != getSolutionCode(codeLang, i))
+                    localStorage.setItem(key, getSolutionCode(codeLang, i));
+                else
+                    localStorage.removeItem(key);
             }
         }
 

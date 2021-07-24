@@ -3,7 +3,7 @@
 use hole;
 use t;
 
-plan 37;
+plan 53;
 
 sub createUserAndSession {
     my $dbh = dbh;
@@ -188,7 +188,7 @@ for (False, True) -> $loggedIn {
             $wd.isSolutionPickerState: '', 'after reloading the page.';
         }
 
-        subtest "When $loggedInContext, a successful solution can be restored after submitting a failed solution$context." => {
+        subtest "When $loggedInContext, a successful solution can be restored after submitting a failing solution$context." => {
             plan 21;
             my $wd = HoleWebDriver.create;
             LEAVE $wd.delete-session;
@@ -224,6 +224,242 @@ for (False, True) -> $loggedIn {
             $wd.isBytesAndChars: 57, 55, 'after reloading the page.';
             $wd.isRestoreSolutionLinkVisible: False, 'after reloading the page.';
             $wd.isSolutionPickerState: '', 'after reloading the page.';
+        }
+    }
+
+    subtest "When $loggedInContext, the selected solution (bytes or chars) is preserved, when navigating between holes." => {
+        # This could be useful when stepping through your solutions for a language with the previous/next buttons.
+        plan 28;
+        my $wd = HoleWebDriver.create;
+        LEAVE $wd.delete-session;
+        setup $wd;
+        $wd.getLangLink('Python').click;
+        $wd.typeCode: $python121_121;
+        $wd.isRestoreSolutionLinkVisible: False, 'after typing the bytes solution.';
+        $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
+        $wd.run;
+        $wd.isPassing: 'after submitting the bytes solution.';
+        $wd.isSolutionPickerState: '', 'after submitting the bytes solution.';
+        $wd.isRestoreSolutionLinkVisible: False, 'after submitting the bytes solution.';
+        $wd.typeCode: BACKSPACE x 121 ~ $python210_88;
+        $wd.isBytesAndChars: 210, 88, 'after typing the chars solution.';
+        $wd.isRestoreSolutionLinkVisible: True, 'after typing the chars solution.';
+        $wd.run;
+        $wd.isPassing: 'after submitting the chars solution.';
+        $wd.isSolutionPickerState: 'chars', 'after submitting the chars solution.';
+        $wd.isRestoreSolutionLinkVisible: False, 'after submitting the chars solution.';
+        # Switch to another hole and enter bytes and chars solutions.
+        $wd.loadFibonacci;
+        $wd.getLangLink('Python').click;
+        $wd.typeCode: $python_fibonacci_66_66;
+        $wd.run;
+        $wd.isPassing: 'after submitting fibonacci bytes solution.';
+        $wd.isBytesAndChars: 66, 66, 'after submitting fibonacci bytes solution.';
+        $wd.isSolutionPickerState: '', 'after submitting fibonacci bytes solution.';
+        $wd.typeCode: BACKSPACE x 66 ~ $python_fibonacci_126_60;
+        $wd.run;
+        $wd.isPassing: 'after submitting fibonacci chars solution.';
+        $wd.isBytesAndChars: 126, 60, 'after modifying code and reloading the page.';
+        $wd.isSolutionPickerState: 'chars', 'after submitting fibonacci chars solution.';
+        # Leaving the chars solution active, go back to Fizz Buzz.
+        $wd.loadFizzBuzz;
+        $wd.getLangLink('Python').click;
+        $wd.isBytesAndChars: 210, 88, 'after returning to Fizz Buzz the first time.';
+        $wd.isRestoreSolutionLinkVisible: False, 'after returning to Fizz Buzz the first time.';
+        $wd.isSolutionPickerState: 'chars', 'after returning to Fizz Buzz the first time.';
+        $wd.loadFibonacci;
+        $wd.getLangLink('Python').click;
+        $wd.isBytesAndChars: 126, 60, 'after returning to Fibonacci the first time.';
+        $wd.isRestoreSolutionLinkVisible: False, 'after returning to Fizz Buzz the second  time.';
+        $wd.isSolutionPickerState: 'chars', 'after returning to Fibonacci the first time.';
+        $wd.setSolution: 'bytes';
+        $wd.isBytesAndChars: 66, 66, 'after switching to the bytes solution.';
+        $wd.isRestoreSolutionLinkVisible: False, 'after returning to Fizz Buzz the second  time.';
+        $wd.isSolutionPickerState: 'bytes', 'after switching to the bytes solution.';
+        $wd.loadFizzBuzz;
+        $wd.getLangLink('Python').click;
+        $wd.isBytesAndChars: 121, 121, 'after returning to Fizz Buzz the second time.';
+        $wd.isRestoreSolutionLinkVisible: False, 'after returning to Fizz Buzz the second  time.';
+        $wd.isSolutionPickerState: 'bytes', 'after returning to Fizz Buzz the second time.';
+    }
+
+    subtest "When $loggedInContext, after submiting a successful solution, typing an untested solution, navigating to a different hole and switching to the chars solution, and navigating back, the solution picker is not shown." => {
+        plan 17;
+        my $wd = HoleWebDriver.create;
+        LEAVE $wd.delete-session;
+        setup $wd;
+        $wd.getLangLink('Python').click;
+        $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
+        $wd.typeCode: $python121_121;
+        $wd.isRestoreSolutionLinkVisible: False, 'before submitting code.';
+        $wd.isSolutionPickerState: '', 'before submitting code.';
+        $wd.run;
+        $wd.isPassing: 'after submitting solution.';
+        $wd.isBytesAndChars: 121, 121, 'after submitting solution.';
+        $wd.isSolutionPickerState: '', 'after submitting solution.';
+        $wd.typeCode: 'abc';
+        $wd.isBytesAndChars: 124, 124, 'after typing code.';
+        $wd.isRestoreSolutionLinkVisible: True, 'after typing code.';
+        # Switch to another hole and enter bytes and chars solutions.
+        $wd.loadFibonacci;
+        $wd.getLangLink('Python').click;
+        $wd.typeCode: $python_fibonacci_66_66;
+        $wd.run;
+        $wd.isPassing: 'after submitting fibonacci bytes solution.';
+        $wd.isBytesAndChars: 66, 66, 'after submitting fibonacci bytes solution.';
+        $wd.isSolutionPickerState: '', 'after submitting fibonacci bytes solution.';
+        $wd.typeCode: BACKSPACE x 66 ~ $python_fibonacci_126_60;
+        $wd.run;
+        $wd.isPassing: 'after submitting fibonacci chars solution.';
+        $wd.isBytesAndChars: 126, 60, 'after modifying code and reloading the page.';
+        $wd.isSolutionPickerState: 'chars', 'after submitting fibonacci chars solution.';
+        # Leaving the chars solution active, go back to Fizz Buzz.
+        $wd.loadFizzBuzz;
+        $wd.getLangLink('Python').click;
+        $wd.isBytesAndChars: 124, 124, 'after navigating to a different hole and back.';
+        $wd.isRestoreSolutionLinkVisible: $loggedIn, 'after navigating to a different hole and back.';
+        $wd.isSolutionPickerState: '', 'after navigating to a different hole and back.';
+    }
+
+    subtest "When $loggedInContext, after submiting a successful solution, typing an untested solution, and reloading the page, the solution picker is not shown." => {
+        # This is a regression test.
+        plan 10;
+        my $wd = HoleWebDriver.create;
+        LEAVE $wd.delete-session;
+        setup $wd;
+        $wd.getLangLink('Raku').click;
+        $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
+        $wd.typeCode: $raku57_55;
+        $wd.isBytesAndChars: 57, 55, 'after typing code.';
+        $wd.isRestoreSolutionLinkVisible: False, 'before submitting code.';
+        $wd.isSolutionPickerState: '', 'before submitting code.';
+        $wd.run;
+        $wd.isPassing: 'after submitting code.';
+        $wd.isRestoreSolutionLinkVisible: False, 'after submitting code.';
+        $wd.isSolutionPickerState: '', 'after submitting code.';
+        $wd.typeCode: 'abc';
+        $wd.loadFizzBuzz;
+        $wd.isBytesAndChars: 60, 58, 'after modifying code and reloading the page.';
+        $wd.isRestoreSolutionLinkVisible: $loggedIn, 'after modifying code and reloading the page.';
+        $wd.isSolutionPickerState: '', 'after modifying code and reloading the page.';
+    }
+
+    subtest "When $loggedInContext, after submiting a successful solution, reloading the page, and submiting a failing solution, the solution picker is not shown." => {
+        # This is a regression test for a bug fixed by 6eae37b.
+        plan 11;
+        my $wd = HoleWebDriver.create;
+        LEAVE $wd.delete-session;
+        setup $wd;
+        $wd.getLangLink('Raku').click;
+        $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
+        $wd.typeCode: $raku57_55;
+        $wd.isBytesAndChars: 57, 55, 'after typing code.';
+        $wd.isRestoreSolutionLinkVisible: False, 'before submitting code.';
+        $wd.isSolutionPickerState: '', 'before submitting code.';
+        $wd.run;
+        $wd.isPassing: 'after submitting code.';
+        $wd.isRestoreSolutionLinkVisible: False, 'after submitting code.';
+        $wd.isSolutionPickerState: '', 'after submitting code.';
+        $wd.loadFizzBuzz;
+        $wd.typeCode: 'abc';
+        $wd.run;
+        $wd.isFailing: 'after submitting a failing solution';
+        $wd.isBytesAndChars: 60, 58, 'after modifying code and reloading the page.';
+        $wd.isRestoreSolutionLinkVisible: $loggedIn, 'after modifying code and reloading the page.';
+        $wd.isSolutionPickerState: '', 'after modifying code and reloading the page.';
+    }
+
+    for (False, True) -> $switch {
+        my $context = $switch ?? ', the user switches to the other solution' !! '';
+
+        subtest "When $loggedInContext, after an untested bytes solution is auto-saved$context, and the page is reloaded, the bytes solution is still active." => {
+            plan 17 + 3 * $switch;
+            my $wd = HoleWebDriver.create;
+            LEAVE $wd.delete-session;
+            setup $wd;
+            $wd.getLangLink('Python').click;
+            $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
+            # Submit different solutions for bytes and chars.
+            $wd.typeCode: $python121_121;
+            $wd.isRestoreSolutionLinkVisible: False, 'after typing the bytes solution.';
+            $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
+            $wd.run;
+            $wd.isPassing: 'after submitting the bytes solution.';
+            $wd.isSolutionPickerState: '', 'after submitting the bytes solution.';
+            $wd.isRestoreSolutionLinkVisible: False, 'after submitting the bytes solution.';
+            $wd.typeCode: BACKSPACE x 121 ~ $python210_88;
+            $wd.isBytesAndChars: 210, 88, 'after typing the chars solution.';
+            $wd.isRestoreSolutionLinkVisible: True, 'after typing the chars solution.';
+            $wd.run;
+            $wd.isPassing: 'after submitting the chars solution.';
+            $wd.isSolutionPickerState: 'chars', 'after submitting the chars solution.';
+            $wd.isRestoreSolutionLinkVisible: False, 'after submitting the chars solution.';
+            # Modify the bytes solutions.
+            $wd.setSolution: 'bytes';
+            $wd.typeCode: 'A';
+            $wd.isBytesAndChars: 122, 122, 'after modifying the bytes solution.';
+            $wd.isRestoreSolutionLinkVisible: True, 'after modifying the bytes solution.';
+            $wd.isSolutionPickerState: 'bytes', 'after modifying the bytes solution.';
+            if $switch {
+                $wd.setSolution: 'chars';
+                $wd.isBytesAndChars: 210, 88, 'after switching to the chars solution.';
+                $wd.isRestoreSolutionLinkVisible: False, 'after switching to the chars solution.';
+                $wd.isSolutionPickerState: 'chars', 'after switching to the chars solution.';
+                $wd.loadFizzBuzz;
+                $wd.isBytesAndChars: 210, 88, 'after reloading the page.';
+                $wd.isRestoreSolutionLinkVisible: False, 'after reloading the page.';
+                $wd.isSolutionPickerState: 'chars', 'after reloading the page.';
+            }
+            else {
+                $wd.loadFizzBuzz;
+                $wd.isBytesAndChars: 122, 122, 'after reloading the page.';
+                $wd.isRestoreSolutionLinkVisible: $loggedIn, 'after reloading the page.';
+                $wd.isSolutionPickerState: 'bytes', 'after reloading the page.';
+            }
+        }
+
+        subtest "When $loggedInContext, after an untested chars solution is auto-saved$context and the page is reloaded, the chars solution is still active." => {
+            plan 16 + 3 * $switch;
+            my $wd = HoleWebDriver.create;
+            LEAVE $wd.delete-session;
+            setup $wd;
+            $wd.getLangLink('Python').click;
+            $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
+            # Submit different solutions for bytes and chars.
+            $wd.typeCode: $python121_121;
+            $wd.isRestoreSolutionLinkVisible: False, 'after typing the bytes solution.';
+            $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
+            $wd.run;
+            $wd.isPassing: 'after submitting the bytes solution.';
+            $wd.isSolutionPickerState: '', 'after submitting the bytes solution.';
+            $wd.isRestoreSolutionLinkVisible: False, 'after submitting the bytes solution.';
+            $wd.typeCode: BACKSPACE x 121 ~ $python210_88;
+            $wd.isBytesAndChars: 210, 88, 'after typing the chars solution.';
+            $wd.isRestoreSolutionLinkVisible: True, 'after typing the chars solution.';
+            $wd.run;
+            $wd.isPassing: 'after submitting the chars solution.';
+            $wd.isSolutionPickerState: 'chars', 'after submitting the chars solution.';
+            $wd.isRestoreSolutionLinkVisible: False, 'after submitting the chars solution.';
+            # Modify the chars solutions.
+            $wd.typeCode: 'A';
+            $wd.isBytesAndChars: 211, 89, 'after modifying the chars solution.';
+            $wd.isSolutionPickerState: 'chars', 'after switching to the chars solution.';
+            if $switch {
+                $wd.setSolution: 'bytes';
+                $wd.isBytesAndChars: 121, 121, 'after switching to the bytes solution.';
+                $wd.isRestoreSolutionLinkVisible: False, 'after switching to the bytes solution.';
+                $wd.isSolutionPickerState: 'bytes', 'after switching to the bytes solution.';
+                $wd.loadFizzBuzz;
+                $wd.isBytesAndChars: 121, 121, 'after reloading the page.';
+                $wd.isRestoreSolutionLinkVisible: False, 'after reloading the page.';
+                $wd.isSolutionPickerState: 'bytes', 'after reloading the page.';
+            }
+            else {
+                $wd.loadFizzBuzz;
+                $wd.isBytesAndChars: 211, 89, 'after reloading the page.';
+                $wd.isRestoreSolutionLinkVisible: $loggedIn, 'after reloading the page.';
+                $wd.isSolutionPickerState: 'chars', 'after reloading the page.';
+            }
         }
     }
 
