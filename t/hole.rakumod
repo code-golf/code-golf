@@ -27,6 +27,17 @@ our $python210_88 is export = "exec('景爠砠楮⁲慮来⠱ⰱ〱⤺ਠ楦⁸�
 
 our $python62_62 is export = 'for i in range(1,101):print("Fizz"*(i%3<1)+"Buzz"*(i%5<1)or i)';
 
+# For NG, the print(x) line is also auto-indented and the leading space below should be removed.
+our $python_fibonacci_66_66 is export = "x = 0" ~
+    "{RETURN}y = 1" ~
+    "{RETURN}for i in range(31):" ~
+    "{RETURN} print(x)" ~
+    "{RETURN}z = x + y" ~
+    "{RETURN}x = y" ~
+    "{RETURN}y = z";
+
+our $python_fibonacci_126_60 is export = "exec('砽《礽ㄊ景爠椠楮⁲慮来⠳ㄩ㨊††灲楮琨砩ਠ†⁺㵸⭹ਠ†⁸㵹ਠ†⁹㵺'.encode('utf-16be'))";
+
 class HoleWebDriver is WebDriver is export {
     method create(::?CLASS:U $wd:) {
         $wd.new: :4444port, :host<firefox>, :capabilities(:alwaysMatch(

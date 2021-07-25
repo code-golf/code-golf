@@ -55,13 +55,13 @@ dev:
 # e2e-iterate is useful when you have made a small change to test code only and want to re-run.
 # Note that logs are not automatically shown when tests fail, because they make it harder to see
 # test results and this target isn't used by CI.
-e2e-iterate: export COMPOSE_FILE         = docker/core.yml:docker/e2e.yml
-e2e-iterate: export COMPOSE_PROJECT_NAME = code-golf-e2e
+e2e-iterate: export COMPOSE_FILE=docker/core.yml:docker/e2e.yml
+e2e-iterate: export COMPOSE_PROJECT_NAME=code-golf-e2e
 e2e-iterate:
 	@docker-compose run e2e
 
-e2e: export COMPOSE_FILE         = docker/core.yml:docker/e2e.yml
-e2e: export COMPOSE_PROJECT_NAME = code-golf-e2e
+e2e: export COMPOSE_FILE=docker/core.yml:docker/e2e.yml
+e2e: export COMPOSE_PROJECT_NAME=code-golf-e2e
 e2e:
 # TODO Pass arguments to run specific tests.
 	@./esbuild
