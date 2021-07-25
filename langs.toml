@@ -551,8 +551,8 @@ for arg in sys.argv[1:]:
 '''
 
 [Raku]
-size    = '54 MiB'
-version = 'Raku 6.d on Rakudo 2021.06'
+size    = '54.5 MiB'
+version = 'Raku 6.d on Rakudo 2021.07'
 website = 'https://raku.org'
 example = '''
 # Printing
