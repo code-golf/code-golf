@@ -79,6 +79,7 @@ export const extensions = {
         oneDarkTheme,
         oneDarkHighlightStyle,
     ],
+    defaultHighlightStyle,
 
     // Languages.
     'assembly':   assembly(),

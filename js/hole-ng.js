@@ -11,7 +11,6 @@ const scoringTabs = document.querySelectorAll('#scoringTabs a');
 const select      = document.querySelector('select');
 const solutions   = JSON.parse(document.querySelector('#solutions').innerText);
 const status      = document.querySelector('#status');
-const statusDivs  = document.querySelectorAll('#status > div');
 const statusH2    = document.querySelector('#status h2');
 const strokes     = document.querySelector('#strokes');
 const thirdParty  = document.querySelector('#thirdParty');
@@ -22,7 +21,7 @@ const darkMode = matchMedia(JSON.parse(document.querySelector(
 const baseExtensions =
     darkMode ? [...extensions.dark, ...extensions.base] : extensions.base;
 
-let lang, result = {}, scoring = 'bytes';
+let lang, scoring = 'bytes';
 
 const editor = new EditorView({
     dispatch: tr => {
@@ -176,25 +175,23 @@ const runCode = document.querySelector('#run a').onclick = async () => {
     status.style.background = data.Pass ? 'var(--green)' : 'var(--red)';
     statusH2.innerText      = data.Pass ? 'Pass 😀'      : 'Fail ☹️';
 
-    result = {
-        arguments: data.Argv.join('\n'),
-        diff:      data.Diff,
-        errors:    data.Err,
-        expected:  data.Exp,
-        output:    data.Out,
-    };
+    document.querySelector('#arguments').replaceChildren(...data.Argv.map(arg =>
+        <span>{arg}</span>
+    ));
 
-    for (const div of statusDivs)
-        div.replaceChildren(new EditorView({
-            state: EditorState.create({
-                doc: result[div.id],
-                extensions: [
-                    ...baseExtensions,
-                    EditorView.editable.of(false),
-                    EditorView.lineWrapping,
-                    div.id == 'diff' ? extensions.diff : [],
-                ] }),
-        }).dom);
+    document.querySelector('#diff').replaceChildren(new EditorView({
+        state: EditorState.create({
+            doc: data.Diff,
+            extensions: [
+                darkMode ? extensions.dark : extensions.defaultHighlightStyle,
+                EditorView.editable.of(false),
+                extensions.diff,
+            ] }),
+    }).dom);
+
+    document.querySelector('#errors').innerHTML   = data.Err;
+    document.querySelector('#expected').innerText = data.Exp;
+    document.querySelector('#output').innerText   = data.Out;
 
     // 3rd party integrations.
     thirdParty.replaceChildren( lang == 'hexagony' ? <a target="_blank" href={
