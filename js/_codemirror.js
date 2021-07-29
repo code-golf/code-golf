@@ -4,14 +4,15 @@ import { EditorView, keymap } from '@codemirror/view';
 export { EditorState, EditorView };
 
 // Extensions.
-import { defaultTabBinding, standardKeymap }           from '@codemirror/commands';
-import { lineNumbers }                                 from '@codemirror/gutter';
-import { defaultHighlightStyle, HighlightStyle, tags } from '@codemirror/highlight';
-import { history, historyKeymap }                      from '@codemirror/history';
-import { indentOnInput }                               from '@codemirror/language';
-import { bracketMatching }                             from '@codemirror/matchbrackets';
-import { StreamLanguage }                              from '@codemirror/stream-parser';
-import { oneDarkTheme, oneDarkHighlightStyle }         from '@codemirror/theme-one-dark';
+import { carriageReturn, insertChar, showUnprintables } from './_codemirror_unprintable.js';
+import { defaultTabBinding, standardKeymap }            from '@codemirror/commands';
+import { lineNumbers }                                  from '@codemirror/gutter';
+import { defaultHighlightStyle, HighlightStyle, tags }  from '@codemirror/highlight';
+import { history, historyKeymap }                       from '@codemirror/history';
+import { indentOnInput }                                from '@codemirror/language';
+import { bracketMatching }                              from '@codemirror/matchbrackets';
+import { StreamLanguage }                               from '@codemirror/stream-parser';
+import { oneDarkTheme, oneDarkHighlightStyle }          from '@codemirror/theme-one-dark';
 
 // Languages.
 import { assembly }    from '@defasm/codemirror';
@@ -53,7 +54,8 @@ const fontFamily =
 export const extensions = {
     // Extensions.
     base: [
-        defaultHighlightStyle, history(), indentOnInput(), lineNumbers(),
+        carriageReturn, defaultHighlightStyle, history(),
+        indentOnInput(), insertChar, lineNumbers(), showUnprintables,
         keymap.of([ defaultTabBinding, ...historyKeymap, ...standardKeymap ]),
         EditorView.theme({
             '.cm-asm-error': { textDecoration: 'underline var(--asm-error)' },
