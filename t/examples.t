@@ -1,6 +1,6 @@
 use t;
 
-for slurp("langs.toml").&from-toml.map({
+for 'langs.toml'.IO.&from-toml.map({
     .key.lc.trans( qw[# ><>] => qw[-sharp fish] ) => .value<example>;
 }).sort -> (:key($lang), :value($code)) {
     # <built-in>: internal compiler error: Illegal instruction
