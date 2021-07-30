@@ -10,6 +10,25 @@ export const carriageReturn = [
             dispatch(state.replaceSelection('\r'));
             return true;
         }
+    }),
+    /* When all the newlines inserted in a transaction are preceded by a
+    carriage return, remove the carriage returns. This fixes lines ending
+    with a carriage return when copied and pasted on Windows. */
+    EditorState.transactionFilter.of(transaction => {
+        let changes = [], allPrefixed = true;
+        transaction.changes.iterChanges((fromA, toA, fromB, toB, inserted) => {
+            if(!allPrefixed)
+                return;
+            const string = inserted.sliceString(0);
+            for(let i = 0; (i = string.indexOf('\n', i)) >= 0; i++) {
+                if(string[i - 1] != '\r') {
+                    allPrefixed = false;
+                    return;
+                }
+                changes.push({ from: fromB + i - 1, to: fromB + i });
+            }
+        });
+        return allPrefixed ? [transaction, { changes, sequential: true }] : transaction;
     })
 ];
 
