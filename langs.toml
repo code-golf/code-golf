@@ -368,7 +368,7 @@ class Main {
 
 [JavaScript]
 size    = '20.8 MiB'
-version = 'V8 9.1.269.36'
+version = 'V8 9.2.230.22'
 website = 'https://v8.dev'
 example = '''
 // Printing
