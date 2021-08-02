@@ -3,14 +3,6 @@
     --color:      #ebebeb;
     --grey:       #85888c; /* #85888c is 0.6 * #343a40 + 0.4 * #ffffff */
 
-    --red:        hsl(357, 70%, 30%);
-    --orange:     hsl( 27, 80%, 36%);
-    --yellow:     hsl( 60, 80%, 28%);
-
-    --green:      hsl(150, 80%, 25%);
-    --blue:       hsl(205, 80%, 36%);
-    --purple:     hsl(265, 60%, 36%);
-
     /* For dark mode, the light colors are darker than the typical ones. */
     --light-blue:   hsl(210, 50%, 15%);
     --light-green:  hsl(150, 80%, 15%);
@@ -32,6 +24,16 @@
 body > header {
     --background: #ddd;
     --color:      #343a40;
+}
+
+.card, .btn {
+    border: 2px solid var(--thisColor);
+    fill: var(--thisColor);
+}
+
+.color, .red, .orange, .yellow, .green, .blue, .purple {
+    background: var(--light-grey);
+    color: var(--thisColor);
 }
 
 select {

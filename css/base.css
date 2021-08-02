@@ -1,3 +1,13 @@
+:root {
+    /* https://flatuicolors.com */
+    --red:        #FC5C65BB;
+    --orange:     #FD9644BB;
+    --yellow:     #FED330BB;
+    --green:      #26DE81BB;
+    --blue:       #45AAF2BB;
+    --purple:     #8C7AE6BB;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -245,8 +255,7 @@ thead th {
 .bold { font-weight: bold }
 
 .btn {
-    border: solid 1px var(--color);
-    color: var(--color);
+    border-width: 1px;
     display: flex;
     font-size: 1rem;
     font-weight: bold;
@@ -270,8 +279,6 @@ thead th {
 
 .card {
     align-items: end;
-    border: 2px solid var(--color);
-    color: var(--color);
     display: grid;
     gap: .5rem;
     grid-template: min-content / 1fr min-content;
@@ -297,19 +304,18 @@ thead th {
 }
 
 .card svg {
-    fill: var(--color);
     height: 1rem;
     width: 1rem;
 }
 
 .center { text-align: center }
 
-.color:nth-of-type(6n+1), .red    { background: var(--red)    }
-.color:nth-of-type(6n+2), .orange { background: var(--orange) }
-.color:nth-of-type(6n+3), .yellow { background: var(--yellow) }
-.color:nth-of-type(6n+4), .green  { background: var(--green)  }
-.color:nth-of-type(6n+5), .blue   { background: var(--blue)   }
-.color:nth-of-type(6n+6), .purple { background: var(--purple) }
+.color:nth-of-type(6n+1), .red    { --thisColor: var(--red)    }
+.color:nth-of-type(6n+2), .orange { --thisColor: var(--orange) }
+.color:nth-of-type(6n+3), .yellow { --thisColor: var(--yellow) }
+.color:nth-of-type(6n+4), .green  { --thisColor: var(--green)  }
+.color:nth-of-type(6n+5), .blue   { --thisColor: var(--blue)   }
+.color:nth-of-type(6n+6), .purple { --thisColor: var(--purple) }
 
 .flag {
     margin-left: .5rem;

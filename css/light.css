@@ -3,14 +3,6 @@
     --color:      #343a40;
     --grey:       #85888c; /* #85888c is 0.6 * #343a40 + 0.4 * #ffffff */
 
-    /* https://flatuicolors.com */
-    --red:        #FC5C65BB;
-    --orange:     #FD9644BB;
-    --yellow:     #FED330BB;
-    --green:      #26DE81BB;
-    --blue:       #45AAF2BB;
-    --purple:     #8C7AE6BB;
-
     --light-blue:   #def;
     --light-green:  #efd;
     --light-grey:   #eee;
@@ -25,6 +17,16 @@
     --red-text:           var(--red);
     --summary-background: #343a40;
     --summary-color:      #fdfdfd;
+}
+
+.card, .btn {
+    border: 2px solid var(--color);
+    fill: var(--color);
+}
+
+.color, .red, .orange, .yellow, .green, .blue, .purple {
+    background: var(--thisColor);
+    color: var(--color);
 }
 
 select {
