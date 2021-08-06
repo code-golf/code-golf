@@ -141,7 +141,7 @@ CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
   group by hole, lang, scoring
 ), bayesian_estimators as (
     select hole, lang, scoring, S,
-           (N / (N + 1)) * S + (1 / (N + 1)) * Sa Sb
+           ((N + 2) / (N + 3)) * S + (1 / (N + 3)) * Sa Sb
       from min
       join min_per_lang using(hole, scoring)
 ) select hole, lang, scoring, user_id, strokes, submitted,

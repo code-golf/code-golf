@@ -85,8 +85,8 @@
             Where <i>S<sub>u</sub></i> is the length of the user's solution,
             and <i>S<sub>b</sub></i> is a Bayesian estimator of the form:
             <blockquote>
-                <i>S<sub>b</sub></i> = (<i>√n</i> ÷ (<i>√n</i> + 1))
-                    × <i>S</i> + (1 ÷ (<i>√n</i> +1)) × <i>S<sub>a</sub></i>
+                <i>S<sub>b</sub></i> = ((<i>√n</i> + 2) ÷ (<i>√n</i> + 3))
+                    × <i>S</i> + (1 ÷ (<i>√n</i> + 3)) × <i>S<sub>a</sub></i>
             </blockquote>
             <i>n</i> is the number of solutions in this hole in this language.
             <i>S</i> is the length of the shortest solution in this hole in
@@ -94,8 +94,13 @@
             <i>S<sub>a</sub></i> is the shortest solution among all languages
             in this hole.
 
-            <p>Your overall score is the sum of your highest points in each
-            hole.
+            <p>
+                The confidence interval is chosen such that the shortest
+                solution in any language will receive a score of at least 750.
+
+            <p>
+                Your overall score is the sum of your highest points in each
+                hole.
 
         <dt>Are Submissions Resource Constrained?
         <dd>
