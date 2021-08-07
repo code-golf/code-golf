@@ -1,4 +1,4 @@
-FROM crystallang/crystal:1.1.0-alpine as builder
+FROM crystallang/crystal:1.1.1-alpine as builder
 
 # Crystal expects /dev/null to exist.
 RUN mkdir /empty /mydev             \

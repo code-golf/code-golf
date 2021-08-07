@@ -193,7 +193,7 @@ end-program.
 
 [Crystal]
 size    = '263 MiB'
-version = '1.1.0'
+version = '1.1.1'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -233,7 +233,7 @@ let main args =
 
 [Fortran]
 size    = '80.6 MiB'
-version = 'GNU Fortran 11.1.0'
+version = 'GNU Fortran 11.2.0'
 website = 'https://gcc.gnu.org/fortran/'
 example = '''
 character(len=32) :: s
@@ -259,7 +259,7 @@ end
 
 [Go]
 size    = '124 MiB'
-version = '1.16.6'
+version = '1.16.7'
 website = 'https://go.dev'
 example = '''
 package main
@@ -497,7 +497,7 @@ say for @ARGV;
 
 [PHP]
 size    = '10.5 MiB'
-version = '7.4.21'
+version = '7.4.22'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -585,8 +585,8 @@ end
 '''
 
 [Rust]
-size    = '661 MiB'
-version = '1.53.0'
+size    = '718 MiB'
+version = '1.54.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
