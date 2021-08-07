@@ -17,4 +17,5 @@ node_modules/.bin/esbuild "$@"        \
     --outdir=dist                     \
     --public-path=/dist               \
     --sourcemap                       \
+    --target=es2020                   \
     `find css/font.css js -type f -not -name '_*'`
