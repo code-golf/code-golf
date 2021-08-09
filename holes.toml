@@ -1394,10 +1394,7 @@ preamble = '''
 <ul>
     <li>
         Rock is represented by
-        <a href=//emojipedia.org/gem-stone/>“💎” (U+1F48E Gem Stone)</a>,
-        though may be replaced by
-        <a href=//emojipedia.org/rock/>“Rock”</a> when Unicode 13.0 ships in
-        2020.
+        <a href=//emojipedia.org/gem-stone/>“💎” (U+1F48E Gem Stone)</a>.
     <li>
         Paper is represented by
         <a href=//emojipedia.org/page-facing-up/>“📄” (U+1F4C4 Page Facing Up)</a>.
