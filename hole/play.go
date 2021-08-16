@@ -142,6 +142,8 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		cmd.Args = []string{"/usr/bin/d8", "-e", code, "--"}
 	case "julia":
 		cmd.Args = []string{"/usr/bin/run-julia", "/tmp/code.jl"}
+	case "nim":
+		cmd.Args = []string{"/usr/bin/nim", "-o:/tmp/code", "-r", "c", "-"}
 	case "powershell":
 		cmd.Args = []string{"/interpreter/Interpreter", "-"}
 
@@ -153,8 +155,6 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	case "python":
 		// Force the stdout and stderr streams to be unbuffered.
 		cmd.Args = []string{"/usr/bin/python", "-u", "-"}
-	case "nim":
-		cmd.Args = []string{"/usr/bin/nim", "-o:/tmp/code", "-r", "c", "-"}
 	default:
 		cmd.Args = []string{"/usr/bin/" + langID, "-"}
 	}
