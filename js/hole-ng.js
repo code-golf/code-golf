@@ -1,3 +1,4 @@
+import { ASMStateField }                       from '@defasm/codemirror';
 import LZString                                from 'lz-string';
 import { EditorState, EditorView, extensions } from './_codemirror.js';
 import pbm                                     from './_pbm.js';
@@ -29,7 +30,7 @@ const editor = new EditorView({
         const scorings = {};
 
         if (lang == 'assembly')
-            scorings.byte = editor['asm-state'].bytes;
+            scorings.byte = editor.state.field(ASMStateField).bytes;
         else {
             const code = [...tr.state.doc].join('');
 

@@ -19,7 +19,7 @@ v               ~<
 
 [Assembly]
 size    = '48.7 MiB'
-version = 'DefAssembler 1.6.4'
+version = 'DefAssembler 2.0.0'
 website = 'https://www.npmjs.com/package/@defasm/core'
 example = '''
 # Printing

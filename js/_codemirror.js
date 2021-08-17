@@ -5,7 +5,7 @@ export { EditorState, EditorView };
 
 // Extensions.
 import { carriageReturn, insertChar, showUnprintables } from './_codemirror_unprintable.js';
-import { defaultTabBinding, standardKeymap }            from '@codemirror/commands';
+import { insertTab, standardKeymap }                    from '@codemirror/commands';
 import { lineNumbers }                                  from '@codemirror/gutter';
 import { defaultHighlightStyle, HighlightStyle, tags }  from '@codemirror/highlight';
 import { history, historyKeymap }                       from '@codemirror/history';
@@ -56,7 +56,10 @@ export const extensions = {
     base: [
         carriageReturn, defaultHighlightStyle, history(),
         indentOnInput(), insertChar, lineNumbers(), showUnprintables,
-        keymap.of([ defaultTabBinding, ...historyKeymap, ...standardKeymap ]),
+        keymap.of([
+            { key: 'Tab', run: insertTab },
+            ...historyKeymap, ...standardKeymap,
+        ]),
         EditorView.theme({
             '.cm-asm-error': { textDecoration: 'underline var(--asm-error)' },
             '.cm-asm-error-tooltip':    asmErrorTooltip,
