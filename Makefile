@@ -44,9 +44,6 @@ db-dump:
 
 	@cp db/*.gz ~/Dropbox/code-golf/
 
-deps:
-	@yay -S mkcert python-brotli python-fonttools
-
 dev:
 	@touch docker/.env
 	@docker-compose rm -f
