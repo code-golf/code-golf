@@ -1,4 +1,4 @@
-FROM golang:1.16.7-alpine3.14 as builder
+FROM golang:1.17.0-alpine3.14 as builder
 
 RUN mkdir /empty
 

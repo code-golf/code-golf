@@ -1,15 +1,15 @@
 #!/bin/sh -e
 
-if [ "$1" = "version" ]; then
-    /usr/local/go/bin/go version
-    exit 0
-fi
+[ "$1" = "version" ] && exec /usr/local/go/bin/go version
 
-# Separate compile and link relies on environment variables less than "go run" does.
-# "go run" also doesn't support reading the file from stdin.
-shift
+# Compile
+# Separate compile and link relies on environment variables less than "go run"
+# does. "go run" also doesn't support reading the file from stdin.
 cat - > /tmp/code.go
 /usr/local/go/bin/go tool compile -o /tmp/code.o /tmp/code.go 1>&2
-/usr/local/go/bin/go tool link -o /tmp/code /tmp/code.o 1>&2
+/usr/local/go/bin/go tool link    -o /tmp/code   /tmp/code.o  1>&2
 rm /tmp/code.go /tmp/code.o
-/tmp/code "$@"
+
+# Execute
+shift
+exec /tmp/code "$@"

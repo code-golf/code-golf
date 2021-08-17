@@ -1,6 +1,6 @@
 module github.com/code-golf/code-golf
 
-go 1.16
+go 1.17
 
 require (
 	github.com/BurntSushi/toml v0.4.1
@@ -31,3 +31,5 @@ require (
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/guregu/null.v4 v4.0.0
 )
+
+require github.com/tdewolff/parse/v2 v2.5.19 // indirect
