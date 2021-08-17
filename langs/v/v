@@ -1,8 +1,6 @@
 #!/bin/sh -e
 
-if [ "$1" = "version" ]; then
-    exec /opt/v/v version
-fi
+[ "$1" = "version" ] && exec /opt/v/v version
 
 export VMODULES=/tmp
 

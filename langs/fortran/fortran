@@ -1,9 +1,6 @@
 #!/bin/sh -e
 
-if [ "$1" = "--version" ]; then
-    /usr/local/bin/gfortran --version
-    exit 0
-fi
+[ "$1" = "--version" ] && exec /usr/local/bin/gfortran --version
 
 # Compile
 cat - > /tmp/code.f90

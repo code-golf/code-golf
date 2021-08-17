@@ -2,10 +2,7 @@
 
 export PATH=/usr/bin:/bin
 
-if [ "$1" = "--version" ]; then
-    /usr/bin/vim --version
-    exit 0
-fi
+[ "$1" = "--version" ] && exec /usr/bin/vim --version
 
 cd /tmp
 

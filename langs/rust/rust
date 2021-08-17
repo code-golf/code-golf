@@ -1,9 +1,6 @@
 #!/bin/sh -e
 
-if [ "$1" = "--version" ]; then
-    /usr/local/cargo/bin/rustc --version
-    exit 0
-fi
+[ "$1" = "--version" ] && exec /usr/local/cargo/bin/rustc --version
 
 export CARGO_HOME=/usr/local/cargo
 export RUST_BACKTRACE=1

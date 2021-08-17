@@ -2,9 +2,7 @@
 
 export PATH=/usr/lib/fpc/3.2.2:/usr/bin:/bin
 
-if [ "$1" = "version" ]; then
-    exec fpc -iV
-fi
+[ "$1" = "version" ] && exec fpc -iV
 
 # Compile
 cd /tmp
