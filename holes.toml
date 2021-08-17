@@ -938,6 +938,10 @@ preamble = '''
 
 ['Lucky Tickets']
 category = 'Mathematics'
+links = [
+    { name = 'OEIS A163269', url = '//oeis.org/A163269' },
+    { name = 'OEIS A077042', url = '//oeis.org/A077042' },
+]
 preamble = '''
 <p>
     In Russia, bus ticket numbers consist of 6 decimal digits. It is considered lucky when the sum of the first three digits equals the sum of the last three digits. The concept of lucky tickets can be extended to ticket numbering systems with even numbers of digits and arbitrary bases.
