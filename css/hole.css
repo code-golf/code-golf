@@ -66,6 +66,11 @@ main .info {
     white-space: pre;
 }
 
+#arrows code { font-size: 1.5rem }
+#arrows td   { font-family: 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', Courier, monospace }
+#arrows td:first-child { white-space: pre }
+#arrows td:last-child  { width: 100% }
+
 #chars {
     border-bottom: 1px solid var(--color);
     font-weight: bold;

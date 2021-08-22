@@ -13,9 +13,9 @@ CREATE TYPE cheevo AS ENUM (
 
 CREATE TYPE hole AS ENUM (
     '12-days-of-christmas', '99-bottles-of-beer', 'abundant-numbers',
-    'arabic-to-roman', 'brainfuck', 'christmas-trees', 'css-colors', 'cubes',
-    'diamonds', 'divisors', 'emirp-numbers', 'emojify', 'evil-numbers',
-    'fibonacci', 'fizz-buzz', 'happy-numbers', 'intersection',
+    'arabic-to-roman', 'arrows', 'brainfuck', 'christmas-trees', 'css-colors',
+    'cubes', 'diamonds', 'divisors', 'emirp-numbers', 'emojify',
+    'evil-numbers', 'fibonacci', 'fizz-buzz', 'happy-numbers', 'intersection',
     'kolakoski-constant', 'kolakoski-sequence', 'leap-years',
     'levenshtein-distance', 'leyland-numbers', 'look-and-say',
     'lucky-tickets', 'morse-decoder', 'morse-encoder', 'niven-numbers',
@@ -48,7 +48,7 @@ CREATE TABLE discord_records (
     hole    hole NOT NULL,
     lang    lang NOT NULL,
     message text NOT NULL,
-    PRIMARY KEY(hole, lang)
+    PRIMARY KEY (hole, lang)
 );
 
 CREATE TABLE ideas (

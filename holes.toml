@@ -110,6 +110,59 @@ preamble = '''
 <p>For each Arabic numeral argument print the same number in Roman numerals.
 '''
 
+[Arrows]
+category = 'Transform'
+preamble = '''
+<p>
+    Starting at <b>[0, 0]</b> print the result of applying each of the given
+    Unicode arrow arguments. The arrows will be a random combination of these:
+
+<table id=arrows>
+    <thead>
+        <tr><th>Coord<th>Arrows
+    <tbody>
+        <tr><td>[-1,&nbsp;-1]
+            <td><code>↙</code> U+2199,
+                <code>↲</code> U+21B2,
+                <code>⇙</code> U+21D9
+        <tr><td>[-1,&nbsp; 0]
+            <td><code>←</code> U+2190,
+                <code>⇐</code> U+21D0,
+                <code>⇦</code> U+21E6
+        <tr><td>[-1,&nbsp; 1]
+            <td><code>↖</code> U+2196,
+                <code>↰</code> U+21B0,
+                <code>⇖</code> U+21D6
+        <tr><td>[ 0,&nbsp;-1]
+            <td><code>↓</code> U+2193,
+                <code>⇓</code> U+21D3,
+                <code>⇩</code> U+21E9
+        <tr><td>[ 0,&nbsp; 0]
+            <td><code>↔</code> U+2194,
+                <code>↕</code> U+2195,
+                <code>⇔</code> U+21D4,
+                <code>⇕</code> U+21D5,
+                <code>⥀</code> U+2940,
+                <code>⥁</code> U+2941
+        <tr><td>[ 0,&nbsp; 1]
+            <td><code>↑</code> U+2191,
+                <code>⇑</code> U+21D1,
+                <code>⇧</code> U+21E7
+        <tr><td>[ 1,&nbsp;-1]
+            <td><code>↘</code> U+2198,
+                <code>↳</code> U+21B3,
+                <code>⇘</code> U+21D8
+        <tr><td>[ 1,&nbsp; 0]
+            <td><code>→</code> U+2192,
+                <code>⇒</code> U+21D2,
+                <code>⇨</code> U+21E8
+        <tr><td>[ 1,&nbsp; 1]
+            <td><code>↗</code> U+2197,
+                <code>↱</code> U+21B1,
+                <code>⇗</code> U+21D7
+</table>
+'''
+
 [brainfuck]
 category = 'Computing'
 links = [

@@ -35,6 +35,8 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 	switch holeID {
 	case "arabic-to-roman", "roman-to-arabic":
 		args, answer = arabicToRoman(holeID == "roman-to-arabic")
+	case "arrows":
+		args, answer = arrows()
 	case "brainfuck":
 		args, answer = brainfuck()
 	case "css-colors":
