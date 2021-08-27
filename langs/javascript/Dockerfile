@@ -1,4 +1,4 @@
-FROM debian:buster-slim as builder
+FROM debian:bullseye-slim as builder
 
 RUN mkdir /empty
 
@@ -12,7 +12,7 @@ RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git \
 
 WORKDIR /v8
 
-RUN git checkout 9.2.230.22 && gclient sync -D
+RUN git checkout 9.2.230.30 && gclient sync -D
 
 RUN gn gen out --args="                 \
     is_debug=false                      \
