@@ -39,6 +39,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f4c5.svg       `# Calendar`                     \
     svg/1f4c9.svg       `# Chart Decreasing`             \
     svg/1f4d5.svg       `# Closed Book`                  \
+    svg/1f4f4.svg       `# Mobile Phone Off`             \
     svg/1f511.svg       `# Key`                          \
     svg/1f523.svg       `# Input Symbols`                \
     svg/1f596.svg       `# Vulcan Salute`                \

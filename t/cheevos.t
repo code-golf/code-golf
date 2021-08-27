@@ -39,6 +39,7 @@ for <
     poker           fish      {fish-n-chips}
     quine           python    {solve-quine,ouroboros}
     seven-segment   assembly  {assembly-required}
+    sudoku          hexagony  {off-the-grid}
     ten-pin-bowling cobol     {cobowl}
 > -> $hole, $lang, $cheevos {
     is $dbh.execute(

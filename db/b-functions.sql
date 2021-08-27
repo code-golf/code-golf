@@ -187,6 +187,10 @@ BEGIN
         earned := earn(earned, 'assembly-required', user_id);
     END IF;
 
+    IF hole IN ('sudoku', 'sudoku-v2') AND lang = 'hexagony' THEN
+        earned = earn(earned, 'off-the-grid', user_id);
+    END IF;
+
     IF (SELECT COUNT(DISTINCT solutions.code) > 1 FROM solutions
         WHERE   solutions.user_id = user_id
         AND     solutions.hole = hole
