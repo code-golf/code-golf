@@ -441,7 +441,7 @@ end
 '''
 
 [Nim]
-size    = '21.6 MiB'
+size    = '12.1 MiB'
 version = '1.4.8'
 website = 'https://nim-lang.org'
 example = '''
