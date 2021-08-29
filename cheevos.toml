@@ -119,6 +119,11 @@ emoji       = '🦥'
 description = 'Fail any hole by exceeding the time limit.'
 
 [[Miscellaneous]]
+name        = 'Takeout'
+emoji       = '🥡'
+description = '<a href=/golfer/export>Export</a> your Code Golf Data.</a>'
+
+[[Miscellaneous]]
 name        = 'tl;dr'
 emoji       = '🧶'
 description = 'Submit a solution that is rejected for being too long.'
