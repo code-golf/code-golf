@@ -652,8 +652,8 @@ for arg in CommandLine.arguments[1...] {
 '''
 
 [V]
-size    = '35.1 MiB'
-version = '0.2.2'
+size    = '35.4 MiB'
+version = '0.2.4'
 website = 'https://vlang.io'
 example = '''
 import os

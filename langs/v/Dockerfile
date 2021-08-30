@@ -4,7 +4,7 @@ RUN mkdir /empty
 
 RUN apt-get update && apt-get install -y gcc git make
 
-RUN git clone -b weekly.2021.33 git://github.com/vlang/v /opt/v \
+RUN git clone -b 0.2.4 git://github.com/vlang/v /opt/v \
  && cd /opt/v && make && strip v
 
 FROM debian:bullseye-slim
