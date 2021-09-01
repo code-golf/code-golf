@@ -95,7 +95,7 @@ func fractions() (args []string, out string) {
     args = append(args, strconvunsimplifiedfrac(f8))
     outs = append(outs, strconvsimplifiedfrac(f8))
 
-	//// generate 100 random cases
+    //// generate 100 random cases
     cases := 0
     for cases < 100 {
     	f1 = fracGen()
@@ -106,12 +106,12 @@ func fractions() (args []string, out string) {
         }
     }
 
-	// shuffle args and outputs in the same way
-	rand.Shuffle(len(args), func(i, j int) {
-		args[i], args[j] = args[j], args[i]
-		outs[i], outs[j] = outs[j], outs[i]
-	})
+    // shuffle args and outputs in the same way
+    rand.Shuffle(len(args), func(i, j int) {
+	args[i], args[j] = args[j], args[i]
+	outs[i], outs[j] = outs[j], outs[i]
+    })
 
-	out = strings.Join(outs, "\n")
-	return
+    out = strings.Join(outs, "\n")
+    return
 }
