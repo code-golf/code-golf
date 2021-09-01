@@ -4,6 +4,8 @@ import "net/http"
 
 // Forbidden serves a 403.
 func Forbidden(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("X-Robots-Tag", "noindex")
+
 	render(w, r, "403", nil, "403 Forbidden")
 }
 
