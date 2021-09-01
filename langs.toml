@@ -1,6 +1,37 @@
+Skip to content
+Search or jump to…
+Pulls
+Issues
+Marketplace
+Explore
+ 
+@MeWhenI 
+code-golf
+/
+code-golf
+13
+59944
+Code
+Issues
+82
+Pull requests
+4
+Actions
+Projects
+Wiki
+More
+code-golf/langs.toml
+@JRaspass
+JRaspass Bump V
+Latest commit f6d4adc 2 days ago
+ History
+ 15 contributors
+@JRaspass@SirBogman@Irratix@GrayJoKing@o0lit3@Andre-Lameirinhas@MeWhenI@Waffle3z@marshallward@lynn@KatieLG@JayXon
+720 lines (598 sloc)  11 KB
+  
 ['><>']
 size    = '477 KiB'
-version = '44b227e'
+version = 'b71dce3'
 website = 'https://github.com/primo-ppcg/fish-jit'
 example = '''
 \ printing
@@ -17,19 +48,65 @@ v               ~<
 ^       <       <
 '''
 
+[Assembly]
+size    = '48.7 MiB'
+version = 'DefAssembler 2.0.0'
+website = 'https://www.npmjs.com/package/@defasm/core'
+example = '''
+# Printing
+mov $1, %eax    # Syscall code 1 (write)
+mov $1, %edi    # File descriptor 1 (stdout)
+mov $text, %rsi # Address of buffer
+mov $14, %edx   # Length of buffer
+syscall
+# Looping
+mov $10, %bl
+numberLoop:
+    mov $1, %eax
+    mov $1, %edi
+    mov $digit, %rsi
+    mov $2, %edx
+    syscall
+    incb (%rsi)
+    dec %bl
+    jnz numberLoop
+# Accessing arguments
+pop %rbx
+pop %rax
+argLoop:
+    dec %rbx
+    jz endArgLoop
+    pop %rsi
+    mov %rsi, %rdi
+    mov $-1, %ecx
+    xor %al, %al
+    repnz scasb
+    not %ecx
+    movb $'\n', -1(%rsi, %rcx)
+    mov %ecx, %edx
+    mov $1, %eax
+    mov $1, %edi
+    syscall
+    jmp argLoop
+endArgLoop:
+mov $60, %eax   # Syscall code 60 (exit)
+mov $0, %edi    # Exit code
+syscall
+text:  .string "Hello, World!\n"
+digit: .byte   '0', '\n'
+'''
+
 [Bash]
-size    = '1.15 MiB'
-version = '5.1.4'
+size    = '1.14 MiB'
+version = '5.1.8'
 website = 'https://www.gnu.org/software/bash/'
 example = '''
 # Printing
 echo Hello, World!
-
 # Looping
 for i in {0..9}; do
     echo $i;
 done
-
 # Accessing arguments
 for arg; do
     echo $arg;
@@ -37,17 +114,15 @@ done
 '''
 
 [brainfuck]
-size    = '355 KiB'
-version = '61d1f49'
-website = 'https://github.com/code-golf/code-golf/tree/master/langs/brainfuck/'
+size    = '4.55 MiB'
+version = 'c68db6c'
+website = 'https://github.com/primo-ppcg/bf-jit'
 example = '''
 >>Printing
 +[-->-[>>+>-----<<]<--<---]>-.>>>+.>>..+++[.>]<<<<.+++.------.<<-.>>>>+.[<->-]<-.>
-
 >>Looping
 ++++++++[>++++++<-]
 ++++++++++[>.+>++++++++++.[-]<<-]
-
 >>Accessing arguments
 ,[
     [
@@ -64,65 +139,54 @@ version = 'Tiny C Compiler 0.9.27'
 website = 'https://bellard.org/tcc/'
 example = '''
 #include <stdio.h>
-
 int main(int argc, char* argv[]) {
     // Printing
     puts("Hello, World!");
-
     // Looping
     for (int i = 0; i < 10; i++)
         printf("%d\n", i);
-
     // Accessing arguments
     for (int i = 1; i < argc; i++)
         puts(argv[i]);
-
     return 0;
 }
 '''
 
 ['C#']
-size    = '129 MiB'
-version = 'C# 9.0 on .NET 5.0.4'
+size    = '130 MiB'
+version = 'C# 9.0 on .NET 5.0.9'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 using System;
-
 // Printing
 Console.WriteLine("Hello, World!");
-
 // Looping
 for (int i = 0; i < 10; i++)
     Console.WriteLine(i);
-
 // Accessing arguments
 foreach (String arg in args)
     Console.WriteLine(arg);
 '''
 
 [COBOL]
-size    = '4.09 MiB'
+size    = '4.1 MiB'
 version = 'GnuCOBOL 3.1.2.0'
 website = 'https://gnucobol.sourceforge.io'
 example = '''
 program-id.example.
-
 data division.
 local-storage section.
 1 n pic 99 value 0.
 1 i pic 99.
 1 a pic X(99).
 procedure division.
-
 *> Printing
 display "Hello, World!"
-
 *> Looping
 perform 10 times
 display n(2- function log10(n):)
 add 1 to n
 end-perform.
-
 *> Accessing arguments
 accept i from argument-number
 perform i times
@@ -133,18 +197,16 @@ end-program.
 '''
 
 [Crystal]
-size    = '284 MiB'
-version = '1.0.0'
+size    = '263 MiB'
+version = '1.1.1'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
 puts "Hello, World!"
-
 # Looping
 (0..9).each do |i|
     puts i
 end
-
 # Accessing arguments
 ARGV.each do |arg|
     puts arg
@@ -153,72 +215,61 @@ end
 
 ['F#']
 size    = '119 MiB'
-version = 'F# 5.0 on .NET 5.0.4'
+version = 'F# 5.0 on .NET 5.0.9'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
 let main args =
     // Printing
     printfn "Hello, World!"
-
     // Looping
     for i in 0..9 do
         printfn "%d" i
-
     // Accessing arguments
     for arg in args do
         printfn "%s" arg
-
     0
 '''
 
 [Fortran]
-size    = '85.8 MiB'
-version = 'GNU Fortran 10.3.0'
+size    = '80.6 MiB'
+version = 'GNU Fortran 11.2.0'
 website = 'https://gcc.gnu.org/fortran/'
 example = '''
 character(len=32) :: s
 integer :: i
-
 ! Printing
 print "(a)", "Hello, World!"
-
 ! Looping
 do i = 0, 9
     print "(i0)", i
 end do
-
 ! Accessing arguments
 ! (NOTE: getarg() and iargc() are GNU Fortran extensions)
 do i = 1, iargc()
     call getarg(i,s)
     print "(a)", s
 end do
-
 end
 '''
 
 [Go]
-size    = '124 MiB'
-version = '1.16.3'
+size    = '136 MiB'
+version = '1.17'
 website = 'https://go.dev'
 example = '''
 package main
-
 import (
     "fmt"
     "os"
 )
-
 func main() {
     // Printing
     fmt.Println("Hello, World!")
-
     // Looping
     for i := 0; i < 10; i++ {
         fmt.Println(i)
     }
-
     // Accessing arguments
     for _, arg := range os.Args[1:] {
         fmt.Println(arg)
@@ -232,14 +283,11 @@ version = 'Glasgow Haskell Compiler 8.8.4'
 website = 'https://www.haskell.org/ghc/'
 example = '''
 import System.Environment
-
 main = do
   -- Printing
   putStrLn "Hello, World!"
-
   -- Looping
   mapM print [0..9]
-
   -- Accessing arguments
   args <- tail <$> getArgs
   mapM putStrLn args
@@ -247,7 +295,7 @@ main = do
 
 [Hexagony]
 size    = '62.6 MiB'
-version = 'ac545d2'
+version = '4b30f58'
 website = 'https://github.com/SirBogman/Hexagony'
 example = '''
           \ P r i n t i n g .
@@ -272,34 +320,30 @@ example = '''
 '''
 
 [J]
-size    = '3.32 MiB'
-version = '9.01.01'
+size    = '4.77 MiB'
+version = '9.02.08'
 website = 'https://www.jsoftware.com'
 example = '''
 NB.Printing
 echo'Hello, World!'
-
 NB.Looping
 echo i.10 1
-
 NB.Accessing arguments
 echo each 2}.ARGV
 '''
 
 [Java]
 size    = '69.2 MiB'
-version = '16'
+version = '16.0.1'
 website = 'https://openjdk.java.net'
 example = '''
 class Main {
     public static void main(String[] args) {
         // Printing
         System.out.println("Hello, World!");
-
         // Looping
         for (int i = 0; i < 10; i++)
             System.out.println(i);
-
         // Accessing arguments
         for (String arg : args)
             System.out.println(arg);
@@ -308,35 +352,31 @@ class Main {
 '''
 
 [JavaScript]
-size    = '21.6 MiB'
-version = 'V8 8.8.278.17'
+size    = '20.6 MiB'
+version = 'V8 9.2.230.30'
 website = 'https://v8.dev'
 example = '''
 // Printing
 print("Hello, World!");
-
 // Looping
 for (let i = 0; i < 10; i++)
     print(i);
-
 // Accessing arguments
 for (let arg of arguments)
     print(arg);
 '''
 
 [Julia]
-size    = '287 MiB'
-version = '1.6.0'
+size    = '288 MiB'
+version = '1.6.2'
 website = 'https://julialang.org'
 example = '''
 # Printing
 println("Hello, World!")
-
 # Looping
 for i=0:9
     println(i)
 end
-
 # Accessing arguments
 for arg in ARGS
     println(arg)
@@ -349,13 +389,11 @@ version = 'GNU CLISP 2.49.92'
 website = 'https://clisp.sourceforge.io'
 example = '''
 ; Printing
-(write-line "Hello World")
-
+(write-line "Hello, World!")
 ; Looping
 (loop for i from 0 to 9
     do (format t "~d~%" i)
 )
-
 ; Accessing Arguments
 (loop for arg in *args*
     do (write-line arg)
@@ -369,12 +407,10 @@ website = 'https://www.lua.org'
 example = '''
 -- Printing
 print("Hello, World!")
-
 -- Looping
 for i = 0, 9 do
     print(i)
 end
-
 -- Accessing arguments
 for i = 1, #arg do
     print(arg[i])
@@ -382,51 +418,63 @@ end
 '''
 
 [Nim]
-size    = '21.6 MiB'
-version = '1.4.6'
+size    = '12.1 MiB'
+version = '1.4.8'
 website = 'https://nim-lang.org'
 example = '''
 import os
-
 # Printing
 echo "Hello, World!"
-
 # Looping
 for i in 0 .. 9:
     echo i
-
 # Accessing arguments
 for arg in commandLineParams():
     echo arg
 '''
 
+[Pascal]
+size    = '31.3 MiB'
+version = '3.2.2'
+website = 'https://freepascal.org'
+example = '''
+var
+    i: integer;
+begin
+    { Printing }
+    writeLn('Hello, World!');
+    { Looping }
+    for i := 0 to 9 do
+        writeLn(i);
+    { Accessing arguments }
+    for i := 1 to argc do
+        writeLn(argv[i]);
+end.
+'''
+
 [Perl]
-size    = '4.29 MiB'
-version = '5.32.1'
+size    = '4.32 MiB'
+version = '5.34.0'
 website = 'https://www.perl.org'
 example = '''
 # Printing
 say 'Hello, World!';
-
 # Looping
 say for 0..9;
-
 # Accessing arguments
 say for @ARGV;
 '''
 
 [PHP]
 size    = '10.5 MiB'
-version = '7.4.16'
+version = '7.4.23'
 website = 'https://www.php.net'
 example = '''
 # Printing
 echo "Hello, World!\n";
-
 # Looping
 for ($i = 0; $i < 10; $i++)
     echo "$i\n";
-
 # Accessing arguments
 while ($arg = next($argv))
     echo "$arg\n";
@@ -434,17 +482,15 @@ while ($arg = next($argv))
 
 [PowerShell]
 size    = '185 MiB'
-version = 'PowerShell 7.1.3 on .NET 5.0.4'
+version = 'PowerShell 7.1.4 on .NET 5.0.9'
 website = 'https://docs.microsoft.com/powershell/scripting/overview'
 example = '''
 # Printing
 Write-Host 'Hello, World!'
-
 # Looping
 ForEach ($i in 0..9) {
     Write-Host $i
 }
-
 # Accessing arguments
 ForEach ($arg in $args) {
     Write-Host $arg
@@ -452,52 +498,45 @@ ForEach ($arg in $args) {
 '''
 
 [Python]
-size    = '199 MiB'
-version = '3.9.4'
+size    = '57 MiB'
+version = '3.9.6'
 website = 'https://www.python.org'
 example = '''
 import sys
-
 # Printing
 print('Hello, World!')
-
 # Looping
 for i in range(10):
     print(i)
-
 # Accessing arguments
 for arg in sys.argv[1:]:
     print(arg)
 '''
 
 [Raku]
-size    = '53.7 MiB'
-version = 'Raku 6.d on Rakudo 2021.03'
+size    = '54.5 MiB'
+version = 'Raku 6.d on Rakudo 2021.08'
 website = 'https://raku.org'
 example = '''
 # Printing
 say 'Hello, World!';
-
 # Looping
 .say for ^10;
-
 # Accessing arguments
 .say for @*ARGS;
 '''
 
 [Ruby]
-size    = '14.5 MiB'
-version = '3.0.1'
+size    = '14.4 MiB'
+version = '3.0.2'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing
 puts 'Hello, World!'
-
 # Looping
 (0..9).each do |i|
     puts i
 end
-
 # Accessing arguments
 ARGV.each do |arg|
     puts arg
@@ -505,19 +544,17 @@ end
 '''
 
 [Rust]
-size    = '661 MiB'
-version = '1.51.0'
+size    = '718 MiB'
+version = '1.54.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
     // Printing
     println!("Hello, World!");
-
     // Looping
     for i in 0..10 {
         println!("{}", i);
     }
-
     // Accessing arguments
     for arg in std::env::args().skip(1) {
         println!("{}", arg);
@@ -526,15 +563,13 @@ fn main() {
 '''
 
 [SQL]
-size    = '1.02 MiB'
-version = '3.35.5'
+size    = '1.03 MiB'
+version = '3.36.0'
 website = 'https://sqlite.org/index.html'
 example = '''
 -- Printing
 SELECT 'Hello, World!'
-
 UNION ALL
-
 SELECT * FROM (
     -- Looping
     WITH loop(i) AS (
@@ -545,26 +580,22 @@ SELECT * FROM (
     )
     SELECT i FROM loop
 )
-
 UNION ALL
-
 -- Accessing arguments
 SELECT arg FROM argv
 '''
 
 [Swift]
-size    = '870 MiB'
+size    = '693 MiB'
 version = '5.3.3'
 website = 'https://swift.org'
 example = '''
 // Printing
 print("Hello, World!")
-
 // Looping
 for i in 0...9 {
     print(i)
 }
-
 // Accessing arguments
 for arg in CommandLine.arguments[1...] {
     print(arg)
@@ -572,48 +603,72 @@ for arg in CommandLine.arguments[1...] {
 '''
 
 [V]
-size    = '98.1 MiB'
-version = '0.2.2'
+size    = '35.4 MiB'
+version = '0.2.4'
 website = 'https://vlang.io'
 example = '''
 import os
-
 // Printing
 println('Hello, World!')
-
 // Looping
 for i in 0..10 {
     println(i)
 }
-
 // Accessing arguments
 for arg in os.args[1..] {
     println(arg)
 }
 '''
 
+[VimL]
+size    = '21.3 MiB'
+version = '8.2'
+website = 'https://www.vim.org'
+example = '''
+" Printing
+execute "normal! iHello, World!\r"
+" Looping
+for i in range(0, 9)
+  execute "normal! i".i."\r"
+endfor
+" Accessing arguments
+for a in args
+  execute "normal! i".a."\r"
+endfor
+execute "normal! :wq\<cr>"
+'''
+
 [Zig]
-size    = '216 MiB'
-version = '0.7.0'
+size    = '241 MiB'
+version = '0.8.0'
 website = 'https://ziglang.org'
 example = '''
 const std = @import("std");
-
 pub fn main() !void {
     const stdout = std.io.getStdOut().writer();
-
     // Printing
     try stdout.print("Hello, World!\n", .{});
-
     // Looping
     var i: i32 = 0;
     while (i < 10) : (i += 1)
         try stdout.print("{}\n", .{i});
-
     // Accessing arguments
     var args = std.process.args();
     _ = args.skip();
     while (args.next(std.testing.allocator)) |arg|
-        try stdout.print("{}\n", .{arg});
+        try stdout.print("{s}\n", .{arg});
 }
 '''
+© 2021 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Docs
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
+Loading complete
