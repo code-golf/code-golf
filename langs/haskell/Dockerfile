@@ -1,8 +1,8 @@
-FROM alpine:3.13 as builder
+FROM alpine:3.14 as builder
 
 RUN mkdir /empty
 
-RUN apk add --no-cache ghc=8.8.4-r0
+RUN apk add --no-cache ghc=8.8.4-r1
 
 RUN find /usr/lib -name '*.a' -delete
 
@@ -43,4 +43,6 @@ COPY --from=0 /usr/lib                 /usr/lib
 
 COPY haskell /usr/bin/
 
-ENTRYPOINT ["ghc", "--version"]
+ENTRYPOINT ["/usr/bin/haskell"]
+
+CMD ["--version"]

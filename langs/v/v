@@ -1,16 +1,12 @@
 #!/bin/sh -e
 
+[ "$1" = "version" ] && exec /opt/v/v version
+
 export VMODULES=/tmp
-
-# FIXME Setting VVV=/opt/v doesn't prevent the need to cd.
-cd /opt/v
-
-# FIXME "v run -" writes the code to the cwd first, which fails under r/o.
-# V panic: Failed to create temporary file 01ETADWV0J7NFKFRH587599FQQ.v
 
 # Compile
 cat - > /tmp/code.v
-./v /tmp/code.v
+/opt/v/v /tmp/code.v
 rm /tmp/code.v
 
 # Execute

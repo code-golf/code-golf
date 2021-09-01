@@ -2,29 +2,10 @@ package pretty
 
 import (
 	"html/template"
+	"strings"
 	"testing"
 	"time"
 )
-
-func benchmarkTimeShort(b *testing.B, t time.Time) {
-	b.Helper()
-
-	for n := 0; n < b.N; n++ {
-		TimeShort(t)
-	}
-}
-
-func BenchmarkTimeShortTime(b *testing.B) {
-	benchmarkTimeShort(b, time.Now())
-}
-
-func BenchmarkTimeShortDate(b *testing.B) {
-	benchmarkTimeShort(b, time.Now().Add(-24*time.Hour))
-}
-
-func BenchmarkTimeShortYear(b *testing.B) {
-	benchmarkTimeShort(b, time.Now().Add(-365*24*time.Hour))
-}
 
 func TestBytes(t *testing.T) {
 	for _, tt := range []struct {
@@ -94,7 +75,11 @@ func TestTime(t *testing.T) {
 		{"7 Jun 1989", time.Date(1989, time.June, 7, 0, 0, 0, 0, time.UTC)},
 	} {
 		got := Time(tt.t)
-		if got = got[63 : len(got)-len("</time>")]; got != tt.want {
+
+		// Extract the bit between the <time> tags.
+		got = got[strings.IndexByte(string(got), '>')+1 : len(got)-len("</time>")]
+
+		if got != tt.want {
 			t.Errorf("Ordinal(%v) = %v; want %v", tt.t, got, tt.want)
 		}
 	}

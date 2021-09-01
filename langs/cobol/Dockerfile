@@ -1,10 +1,10 @@
-FROM alpine:3.13 as builder
+FROM alpine:3.14 as builder
 
 RUN mkdir /empty
 
 RUN apk add --no-cache build-base curl gmp-dev
 
-RUN curl https://ftp.gnu.org/gnu/gnucobol/gnucobol-3.1.2.tar.xz | tar xJf -
+RUN curl https://ftp.gnu.org/gnu/gnucobol/gnucobol-3.1.2.tar.xz | tar xJ
 
 COPY patch /
 
@@ -32,4 +32,6 @@ COPY --from=0 /usr/include/gmp.h    \
 COPY --from=0 /usr/include/libcob   /usr/include/libcob
 COPY --from=0 /usr/share/gnucobol   /usr/share/gnucobol
 
-ENTRYPOINT ["cobc", "--version"]
+ENTRYPOINT ["/usr/bin/cobol"]
+
+CMD ["--version"]

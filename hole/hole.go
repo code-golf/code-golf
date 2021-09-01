@@ -2,6 +2,7 @@ package hole
 
 import (
 	"html/template"
+	"os"
 	"sort"
 	"strings"
 
@@ -26,6 +27,11 @@ var (
 
 func init() {
 	var holesTOML map[string]Hole
+
+	// Tests run from the package directory, walk upward to find holes.toml.
+	if _, err := os.Stat("holes.toml"); os.IsNotExist(err) {
+		os.Chdir("..")
+	}
 
 	if _, err := toml.DecodeFile("holes.toml", &holesTOML); err != nil {
 		panic(err)

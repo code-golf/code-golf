@@ -26,7 +26,8 @@
 ['12 Days of Christmas']
 category = 'Art'
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/The_Twelve_Days_of_Christmas_(song)' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/The_Twelve_Days_of_Christmas' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/The_Twelve_Days_of_Christmas_(song)' },
 ]
 preamble = '''
 <p>Print the lyrics to the song <b>The 12 Days of Christmas</b>:</p>
@@ -83,6 +84,7 @@ Go to the store and buy some more, 99 bottles of beer on the wall.
 category = 'Sequence'
 links = [
     { name = 'OEIS A005101', url = '//oeis.org/A005101' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Abundant,_deficient_and_perfect_number_classifications' },
     { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Abundant_number' },
 ]
 preamble = '''
@@ -101,10 +103,64 @@ preamble = '''
 ['Arabic to Roman']
 category = 'Transform'
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Roman_numerals' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Roman_numerals/Encode' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Roman_numerals' },
 ]
 preamble = '''
-<p>For each arabic numeral argument print the same number in roman numerals.
+<p>For each Arabic numeral argument print the same number in Roman numerals.
+'''
+
+[Arrows]
+category = 'Transform'
+preamble = '''
+<p>
+    Starting at <b>[0, 0]</b> print the result of applying each of the given
+    Unicode arrow arguments. The arrows will be a random combination of these:
+
+<table id=arrows>
+    <thead>
+        <tr><th>Coord<th>Arrows
+    <tbody>
+        <tr><td>[-1,&nbsp;-1]
+            <td><code>↙</code> U+2199,
+                <code>↲</code> U+21B2,
+                <code>⇙</code> U+21D9
+        <tr><td>[-1,&nbsp; 0]
+            <td><code>←</code> U+2190,
+                <code>⇐</code> U+21D0,
+                <code>⇦</code> U+21E6
+        <tr><td>[-1,&nbsp; 1]
+            <td><code>↖</code> U+2196,
+                <code>↰</code> U+21B0,
+                <code>⇖</code> U+21D6
+        <tr><td>[ 0,&nbsp;-1]
+            <td><code>↓</code> U+2193,
+                <code>⇓</code> U+21D3,
+                <code>⇩</code> U+21E9
+        <tr><td>[ 0,&nbsp; 0]
+            <td><code>↔</code> U+2194,
+                <code>↕</code> U+2195,
+                <code>⇔</code> U+21D4,
+                <code>⇕</code> U+21D5,
+                <code>⥀</code> U+2940,
+                <code>⥁</code> U+2941
+        <tr><td>[ 0,&nbsp; 1]
+            <td><code>↑</code> U+2191,
+                <code>⇑</code> U+21D1,
+                <code>⇧</code> U+21E7
+        <tr><td>[ 1,&nbsp;-1]
+            <td><code>↘</code> U+2198,
+                <code>↳</code> U+21B3,
+                <code>⇘</code> U+21D8
+        <tr><td>[ 1,&nbsp; 0]
+            <td><code>→</code> U+2192,
+                <code>⇒</code> U+21D2,
+                <code>⇨</code> U+21E8
+        <tr><td>[ 1,&nbsp; 1]
+            <td><code>↗</code> U+2197,
+                <code>↱</code> U+21B1,
+                <code>⇗</code> U+21D7
+</table>
 '''
 
 [brainfuck]
@@ -617,6 +673,7 @@ preamble = '''
 category = 'Sequence'
 links = [
     { name = 'OEIS A006567', url = '//oeis.org/A006567' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Emirp_primes' },
     { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Emirp' },
 ]
 preamble = '''
@@ -687,6 +744,7 @@ preamble = '''
 category = 'Sequence'
 links = [
     { name = 'OEIS A001969', url = '//oeis.org/A001969' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Population_count' },
     { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Evil_number' },
 ]
 preamble = '''
@@ -803,8 +861,8 @@ preamble = '''
 category = 'Art'
 experiment = -1
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Julia_set'},
-    { name = 'Rosettacode', url = '//rosettacode.org/wiki/Julia_set'}
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Julia_set' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Julia_set' },
 ]
 preamble = '''
 <p>
@@ -940,6 +998,10 @@ preamble = '''
 
 ['Lucky Tickets']
 category = 'Mathematics'
+links = [
+    { name = 'OEIS A163269', url = '//oeis.org/A163269' },
+    { name = 'OEIS A077042', url = '//oeis.org/A077042' },
+]
 preamble = '''
 <p>
     In Russia, bus ticket numbers consist of 6 decimal digits. It is considered lucky when the sum of the first three digits equals the sum of the last three digits. The concept of lucky tickets can be extended to ticket numbering systems with even numbers of digits and arbitrary bases.
@@ -951,12 +1013,12 @@ preamble = '''
 category = 'Art'
 experiment = -1
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Mandelbrot_set'},
-    { name = 'Rosettacode', url = '//rosettacode.org/wiki/Mandelbrot_set'},
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Mandelbrot_set' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Mandelbrot_set' },
 ]
 preamble = '''
 <p>
-    Draw the Mandelbrot set in a 40x80 unicode grid by using ▒ (U+2592)
+    Draw the Mandelbrot set in a 40x80 Unicode grid by using ▒ (U+2592)
     and █ (U+2588).
 '''
 
@@ -984,7 +1046,8 @@ preamble = '''
 ['Morse Decoder']
 category = 'Transform'
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Morse_code' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Morse_code' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Morse_code' },
 ]
 preamble = '''
 <p>
@@ -1070,7 +1133,8 @@ preamble = '''
 ['Morse Encoder']
 category = 'Transform'
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Morse_code' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Morse_code' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Morse_code' },
 ]
 preamble = '''
 <p>
@@ -1157,15 +1221,16 @@ preamble = '''
 category = 'Sequence'
 links = [
     { name = 'OEIS A005349', url = '//oeis.org/A005349' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Harshad_or_Niven_series' },
     { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Niven_number' },
 ]
 preamble = '''
 <p>
-    A niven number is a non-negative number that is divisible by the sum of
+    A Niven number is a positive integer that is divisible by the sum of
     its digits.
 
 <p>
-    Print all the niven numbers from <b>0</b> to <b>100</b> inclusive, each on
+    Print all the Niven numbers from <b>1</b> to <b>100</b> inclusive, each on
     their own line.
 '''
 
@@ -1188,6 +1253,7 @@ preamble = '''
 category = 'Sequence'
 links = [
     { name = 'OEIS A000069', url = '//oeis.org/A000069' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Population_count' },
     { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Odious_number' },
 ]
 preamble = '''
@@ -1207,7 +1273,8 @@ preamble = '''
 ['Ordinal Numbers']
 category = 'Transform'
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Ordinal_numeral' },
+    { name = 'Rosetta Code', url = "//rosettacode.org/wiki/N'th" },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Ordinal_numeral' },
 ]
 preamble = '''
 <p>
@@ -1218,7 +1285,8 @@ preamble = '''
 ['Pangram Grep']
 category = 'Transform'
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Pangram' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Pangram_checker' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Pangram' },
 ]
 preamble = '''
 <p>A pangram is a sentence that uses every letter of a given alphabet.
@@ -1232,7 +1300,8 @@ preamble = '''
 ['Pascal’s Triangle']
 category = 'Sequence'
 links = [
-    { name = 'Wikipedia', url = "//www.wikipedia.org/wiki/Pascal's_triangle" },
+    { name = 'Rosetta Code', url = "//rosettacode.org/wiki/Pascal's_triangle" },
+    { name = 'Wikipedia',    url = "//www.wikipedia.org/wiki/Pascal's_triangle" },
 ]
 preamble = '''
 <p>Print the first <b>20 rows</b> of Pascal’s triangle.
@@ -1242,6 +1311,7 @@ preamble = '''
 category = 'Sequence'
 links = [
     { name = 'OEIS A052294', url = '//oeis.org/A052294' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Pernicious_numbers' },
     { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Pernicious_number' },
 ]
 preamble = '''
@@ -1261,7 +1331,8 @@ preamble = '''
 [Poker]
 category = 'Gaming'
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/List_of_poker_hands' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Poker_hand_analyser' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/List_of_poker_hands' },
 ]
 preamble = '''
 <p>
@@ -1352,7 +1423,7 @@ preamble = '''
 ['Recamán']
 category = 'Sequence'
 links = [
-    { name = 'Numberphile',  url = '//numberphile.com/videos/slightly-spooky-recaman-sequence' },
+    { name = 'Numberphile',  url = '//www.numberphile.com/videos/slightly-spooky-recaman-sequence' },
     { name = 'OEIS A005132', url = '//oeis.org/A005132'},
     { name = 'Rosetta Code', url = "//rosettacode.org/wiki/Recaman's_sequence" },
     { name = 'Wikipedia',    url = "//www.wikipedia.org/wiki/Recamán's_sequence" },
@@ -1370,7 +1441,7 @@ preamble = '''
 [Rock-paper-scissors-Spock-lizard]
 category = 'Gaming'
 links = [
-    { name = 'Rules', url = 'http://www.samkass.com/theories/RPSSL.html' },
+    { name = 'Rules',     url = 'http://www.samkass.com/theories/RPSSL.html' },
     { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Rock_paper_scissors#Additional_weapons' },
 ]
 preamble = '''
@@ -1387,10 +1458,7 @@ preamble = '''
 <ul>
     <li>
         Rock is represented by
-        <a href=//emojipedia.org/gem-stone/>“💎” (U+1F48E Gem Stone)</a>,
-        though may be replaced by
-        <a href=//emojipedia.org/rock/>“Rock”</a> when Unicode 13.0 ships in
-        2020.
+        <a href=//emojipedia.org/gem-stone/>“💎” (U+1F48E Gem Stone)</a>.
     <li>
         Paper is represented by
         <a href=//emojipedia.org/page-facing-up/>“📄” (U+1F4C4 Page Facing Up)</a>.
@@ -1412,10 +1480,11 @@ preamble = '''
 ['Roman to Arabic']
 category = 'Transform'
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Roman_numerals' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Roman_numerals/Decode' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Roman_numerals' },
 ]
 preamble = '''
-<p>For each roman numeral argument print the same number in arabic numerals.
+<p>For each Roman numeral argument print the same number in Arabic numerals.
 '''
 
 ['Rule 110']
@@ -1540,6 +1609,78 @@ preamble = '''
 <p>The numbers will be in the range of <b>0</b> to <b>1,000</b> inclusive.
 '''
 
+['Star Wars Opening Crawl']
+category = 'Transform'
+links = [
+    { name = 'Wookieepedia', url = '//starwars.fandom.com/wiki/Opening_crawl' },
+]
+preamble = '''
+<p>
+    Format a piece of text in the style of Star Wars opening crawl. Here is an
+    example. Input:
+
+<pre>5 21
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</pre>
+
+<p>
+    Corresponding output:
+
+<pre>     Lorem ipsum dolor sit
+     amet,     consectetur
+    adipiscing elit, sed do
+    eiusmod          tempor
+   incididunt  ut  labore et
+   dolore magna aliqua.
+  
+  Ut  enim  ad  minim veniam,
+ quis   nostrud   exercitation
+ ullamco   laboris   nisi   ut
+aliquip     ex    ea    commodo
+consequat.</pre>
+
+<p>
+    Here is how this works. Each test case consists of the following:
+
+    <ul>
+        <li> A line containing the initial indentation <b>I</b> and the initial line width <b>W</b>, separated by a space.
+        <li> Several lines of text, each representing a paragraph of the output.
+    </ul>
+
+<p>
+    Split the text into centred lines that get progressively longer as follows:
+
+<p>
+    The first line starts with <b>I</b> spaces and should contain as many words
+    as you can fit in <b>W</b> characters (so lines may only be wrapped where
+    there are spaces in the input).
+
+<p>
+    If the resulting line contains fewer than <b>W</b> characters, pad out the
+    line by adding spaces between the words as evenly as possible to get to
+    <b>W</b> characters in total. If some gaps require extra spaces, add them
+    starting from the left. Example:
+
+<pre>May the Force be with you!</pre>
+
+<p>
+    This line contains 26 characters and has 5 gaps. If we had <b>W = 33</b>,
+    the result should look like:
+
+<pre>May   the   Force  be  with  you!</pre>
+
+<p>
+    After every pair of lines, reduce <b>I</b> by 1 and increase <b>W</b> by 2.
+    Continue this way through all of the input. The last line of each paragraph
+    should <em>not</em> be justified (i.e. don't add any spaces to it). And
+    paragraphs should be separated by an empty line that does count towards the
+    progression of <b>I</b> and <b>W</b>.
+
+<p>
+    This hole contains multiple test cases (one argument per test case). Separate
+    the output for multiple test cases by an empty line.
+'''
+
 [Sudoku]
 category = 'Gaming'
 links = [
@@ -1555,7 +1696,7 @@ preamble = '''
 <p>
     Write a program that given an incomplete Sudoku board as 9 arguments of 9
     digits, with blanks respresented by an underscore, print a solved Sudoku
-    grid using unicode box-drawing characters like so:
+    grid using Unicode box-drawing characters like so:
 
 <pre>┏━━━┯━━━┯━━━┳━━━┯━━━┯━━━┳━━━┯━━━┯━━━┓
 ┃ 2 │ 5 │ 8 ┃ 4 │ 1 │ 7 ┃ 6 │ 9 │ 3 ┃
@@ -1579,7 +1720,7 @@ preamble = '''
 </pre>
 '''
 
-['Sudoku V2']
+['Sudoku v2']
 category = 'Gaming'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Sudoku' },
@@ -1593,7 +1734,7 @@ preamble = '''
 
 <p>
     Write a program that given an incomplete Sudoku board as an argument,
-    prints the solved Sudoku board. The grid will be drawn with unicode
+    prints the solved Sudoku board. The grid will be drawn with Unicode
     box-drawing characters like so:
 
 <pre>┏━━━┯━━━┯━━━┳━━━┯━━━┯━━━┳━━━┯━━━┯━━━┓
@@ -1813,8 +1954,8 @@ preamble = '''
 <p>
     A vampire number is a non-negative number that can be factored into two
     numbers (fangs) each with half as many digits as the original where the
-    two factors contain all the digits of the original, in any order. Both
-    fangs may not have trailing zeros.
+    two factors contain all the digits of the original, in any order. One but
+    not both fangs may have trailing zeros.
 
 <p>
     For example <b>1260 = 21*60</b>, <b>1395 = 15*93</b>, <b>1435 = 35*41</b>,
@@ -1828,6 +1969,38 @@ preamble = '''
     Be careful with the algorithmic complexity of your solution to avoid
     timing out.
 '''
+
+['Van Eck Sequence']
+category = 'Sequence'
+links = [
+    { name = 'Numberphile',  url = '//www.numberphile.com/videos/van-eck-sequence' },
+    { name = 'OEIS A181391', url = '//oeis.org/A181391' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Van_Eck_sequence' },
+]
+preamble = ''' 
+<p>The rules of the Van Eck sequence are as follows:
+
+<ol type=a>
+    <li>The first term is zero.
+    <li>If the last term is new then the next term is zero.
+    <li>Otherwise the next term is how far back the term occured previously.
+</ol>
+
+<p>The first few terms are as follows:
+
+<pre>
+0         (using a)
+0 0       (using b)
+0 0 1     (using c)
+0 0 1 0   (using b)
+0 0 1 0 2 (using c)
+</pre>
+
+<p>
+    Print the first <b>1000</b> terms of the Van Eck sequence, with each term
+    on a new line.
+'''
+
 
 ['λ']
 category = 'Mathematics'

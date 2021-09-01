@@ -57,10 +57,24 @@
         <input autocomplete=off data-ignore="{{ .Golfer.Name }}" list=golfers
             name=referrer value="{{ .Golfer.Referrer }}">
 
+        <h2>Theme</h2>
+
+        Preferred set of colors for the user interface.
+
+        <div role=group>
+            {{- range .Data.Themes -}}
+                <label>
+                    <input name=theme type=radio value="{{ . }}"
+                        {{- if eq . $.Golfer.Theme }} checked{{ end }}>
+                        {{- title . -}}
+                </label>
+            {{- end -}}
+        </div>
+
         <h2>Time Zone</h2>
 
         Affects how times are displayed and might eventually affect when date
-        specific trophies are awarded.
+        specific achievements are awarded.
 
         {{ $tz := "" }}
         {{ with $.Golfer.TimeZone }}{{ $tz = .String }}{{ end }}
@@ -75,6 +89,11 @@
 
         <p><button class="btn green">Save Changes</button>
     </form>
+
+    <h2>Export Data</h2>
+
+    <p>You can export your data <a href=export>here</a>.
+
 {{ if .Golfer.Delete.Valid }}
     <form action=/golfer/cancel-delete method=post>
         <h2>Cancel Deletion</h2>
@@ -88,7 +107,7 @@
     <form action=/golfer/delete method=post>
         <h2>Delete Account</h2>
 
-        Will schedule this account and all its data to be permanently delete
+        Will schedule this account and all its data to be permanently deleted
         in 14 days. Inside this window the schedule can be cancelled.
 
         <p><button class="btn red">Delete Account</button>

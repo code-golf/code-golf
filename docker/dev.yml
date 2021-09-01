@@ -1,0 +1,17 @@
+services:
+  app:
+    ports:
+      - 80:1080
+      - 443:1443
+  assets:
+    image: alpine:3.14
+    command:
+      - ./esbuild
+      - --watch
+    user: 1000:1000
+    volumes:
+      - ..:/code-golf
+    working_dir: /code-golf
+  db:
+    ports:
+      - 5432:5432

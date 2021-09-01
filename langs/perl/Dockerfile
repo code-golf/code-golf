@@ -1,30 +1,30 @@
-FROM alpine:3.13 as builder
+FROM alpine:3.14 as builder
 
 RUN mkdir /empty
 
 RUN apk add --no-cache build-base curl perl
 
-RUN curl http://www.cpan.org/src/5.0/perl-5.32.1.tar.xz | tar xJ
+RUN curl http://www.cpan.org/src/5.0/perl-5.34.0.tar.xz | tar xJ
 
-RUN mv perl-5.32.1 perl                                       \
- && cd perl                                                   \
- && perl -pe 's/qw\(indirect/$& say/' regen/feature.pl | perl \
- && ./Configure                                               \
-    -Accflags='-DNO_LOCALE                                    \
-    -DNO_MATHOMS                                              \
-    -DPERL_DISABLE_PMC                                        \
-    -DPERL_HASH_USE_SBOX32_ALSO=0                             \
-    -DPERL_USE_SAFE_PUTENV                                    \
-    -DSILENT_NO_TAINT_SUPPORT'                                \
-    -des                                                      \
-    -Darchlib=/usr/lib/perl                                   \
-    -Dinc_version_list=none                                   \
-    -Dprefix=/usr                                             \
-    -Dprivlib=/usr/lib/perl                                   \
-    -Dsitearch=/usr/lib/perl                                  \
-    -Dsitelib=/usr/lib/perl                                   \
-    -Dvendorarch=/usr/lib/perl                                \
- && make -j`nproc`                                            \
+RUN mv perl-5.34.0 perl                                           \
+ && cd perl                                                       \
+ && perl -pe 's/default => \[/$& "say",/' regen/feature.pl | perl \
+ && ./Configure                                                   \
+    -Accflags='-DNO_LOCALE                                        \
+    -DNO_MATHOMS                                                  \
+    -DPERL_DISABLE_PMC                                            \
+    -DPERL_HASH_USE_SBOX32_ALSO=0                                 \
+    -DPERL_USE_SAFE_PUTENV                                        \
+    -DSILENT_NO_TAINT_SUPPORT'                                    \
+    -des                                                          \
+    -Darchlib=/usr/lib/perl                                       \
+    -Dinc_version_list=none                                       \
+    -Dprefix=/usr                                                 \
+    -Dprivlib=/usr/lib/perl                                       \
+    -Dsitearch=/usr/lib/perl                                      \
+    -Dsitelib=/usr/lib/perl                                       \
+    -Dvendorarch=/usr/lib/perl                                    \
+ && make -j`nproc`                                                \
  && strip -s perl
 
 FROM scratch
@@ -46,4 +46,6 @@ COPY --from=0 /perl/lib/File/Glob.pm   /usr/lib/perl/File/
 COPY --from=0 /perl/lib/auto/File/Glob/Glob.so \
           /usr/lib/perl/auto/File/Glob/
 
-ENTRYPOINT ["perl", "-e", "say substr $^V, 1"]
+ENTRYPOINT ["perl"]
+
+CMD ["-e", "say substr $^V, 1"]

@@ -1,4 +1,4 @@
-FROM golang:1.16.3-alpine3.13 as builder
+FROM golang:1.17.0-alpine3.14 as builder
 
 RUN mkdir /empty
 
@@ -15,4 +15,6 @@ COPY --from=0 /usr/local/go/pkg/tool/linux_amd64/compile \
 
 COPY go /usr/bin/go
 
-ENTRYPOINT ["/usr/local/go/bin/go", "version"]
+ENTRYPOINT ["/usr/bin/go"]
+
+CMD ["version"]

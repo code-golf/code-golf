@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"errors"
+	"log"
 	"net/http"
 	"sync"
 	"time"
@@ -17,7 +18,6 @@ import (
 type solution struct {
 	failing  bool          `json:"-"`
 	Pass     bool          `json:"pass"`
-	codeID   int           `json:"-"`
 	GolferID int           `json:"golfer_id"`
 	code     string        `json:"-"`
 	Golfer   string        `json:"golfer"`
@@ -25,6 +25,7 @@ type solution struct {
 	LangID   string        `json:"lang"`
 	Stderr   string        `json:"stderr"`
 	Took     time.Duration `json:"took"`
+	Total    int           `json:"total"`
 }
 
 // AdminSolutions serves GET /admin/solutions
@@ -35,6 +36,17 @@ func AdminSolutions(w http.ResponseWriter, r *http.Request) {
 	}{hole.List, lang.List}
 
 	render(w, r, "admin/solutions", data, "Admin Solutions")
+}
+
+// Wrap hole.Play so we can recover from panics.
+func play(ctx context.Context, holeID, langID, code string) (score hole.Scorecard) {
+	defer func() {
+		if r := recover(); r != nil {
+			log.Println(r)
+		}
+	}()
+
+	return hole.Play(ctx, holeID, langID, code)
 }
 
 // AdminSolutionsRun serves GET /admin/solutions/run
@@ -53,12 +65,13 @@ func AdminSolutionsRun(w http.ResponseWriter, r *http.Request) {
 		go func() {
 			defer wg.Done()
 
+			i := 0
 			for s := range solutions {
 				var passes, fails int
 
 				// Best of three runs.
 				for j := 0; passes < 2 && fails < 2; j++ {
-					score := hole.Play(r.Context(), s.HoleID, s.LangID, s.code)
+					score := play(r.Context(), s.HoleID, s.LangID, s.code)
 
 					s.Took = score.Took
 
@@ -80,12 +93,12 @@ func AdminSolutionsRun(w http.ResponseWriter, r *http.Request) {
 					if _, err := db.Exec(
 						`UPDATE solutions
 						    SET failing = $1
-						  WHERE code_id = $2
+						  WHERE code    = $2
 						    AND hole    = $3
 						    AND lang    = $4
 						    AND user_id = $5`,
 						!s.Pass,
-						s.codeID,
+						s.code,
 						s.HoleID,
 						s.LangID,
 						s.GolferID,
@@ -103,7 +116,9 @@ func AdminSolutionsRun(w http.ResponseWriter, r *http.Request) {
 
 				mux.Lock()
 				w.Write(b)
-				w.(http.Flusher).Flush()
+				if i++; i%10 == 0 {
+					w.(http.Flusher).Flush()
+				}
 				mux.Unlock()
 			}
 		}()
@@ -123,15 +138,16 @@ func getSolutions(r *http.Request) chan solution {
 
 		rows, err := session.Database(r).QueryContext(
 			r.Context(),
-			` SELECT DISTINCT code, code_id, failing, login, u.id, hole, lang
+			`WITH distinct_solutions AS (
+			  SELECT DISTINCT code, failing, login, user_id, hole, lang
 			    FROM solutions
-			    JOIN code  c ON c.id = code_id
-			    JOIN users u ON u.id = user_id
+			    JOIN users   ON id = user_id
 			   WHERE failing IN (true, $1)
 			     AND (login = $2 OR $2 = '')
 			     AND (hole  = $3 OR $3 IS NULL)
 			     AND (lang  = $4 OR $4 IS NULL)
-			ORDER BY hole, lang, login`,
+			ORDER BY hole, lang, login
+			) SELECT *, COUNT(*) OVER () FROM distinct_solutions`,
 			r.FormValue("failing") == "on",
 			r.FormValue("golfer"),
 			sql.NullString{String: holeID, Valid: holeID != ""},
@@ -148,12 +164,12 @@ func getSolutions(r *http.Request) chan solution {
 
 			if err := rows.Scan(
 				&s.code,
-				&s.codeID,
 				&s.failing,
 				&s.Golfer,
 				&s.GolferID,
 				&s.HoleID,
 				&s.LangID,
+				&s.Total,
 			); err != nil {
 				panic(err)
 			}

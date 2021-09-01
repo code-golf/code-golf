@@ -1,9 +1,9 @@
 {
   "dependencies": {
-    "@codemirror/closebrackets": "",
     "@codemirror/commands": "",
     "@codemirror/gutter": "",
     "@codemirror/highlight": "",
+    "@codemirror/history": "",
     "@codemirror/lang-java": "",
     "@codemirror/lang-javascript": "",
     "@codemirror/lang-python": "",
@@ -14,7 +14,11 @@
     "@codemirror/matchbrackets": "",
     "@codemirror/state": "",
     "@codemirror/stream-parser": "",
+    "@codemirror/theme-one-dark": "",
     "@codemirror/view": "",
-    "esbuild": ""
+    "@defasm/codemirror": "",
+    "esbuild": "",
+    "lz-string": "",
+    "nim-codemirror-mode": ""
   }
 }

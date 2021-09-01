@@ -51,7 +51,10 @@
     <nav class=tabs id=picker></nav>
     <nav class=tabs id=solutionPicker></nav>
     <div id=wrapper>
-        <div id=chars>0 characters</div>
+        <div id=chars>0 bytes, 0 chars</div>
+        <div id=restore>
+            <a href id=restoreLink>Restore solution</a>
+        </div>
         <table class="nowrap-second wide" id=scores>
             <thead>
                 <tr><th>&nbsp;
@@ -66,15 +69,30 @@
         </table>
         <div id=editor></div>
     </div>
+    <div class="info assembly">
+        Compiled from
+        <a href=//www.wikibooks.org/wiki/X86_Assembly/GAS_Syntax>
+            AT&T syntax</a> to x86-64 Linux. Use
+        <a href=//blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64>
+            syscalls</a> to write output.
+        For accurate byte counts and syntax highlighting, please use the
+        <a href="/ng/{{ .Data.Hole.ID }}#assembly">new editor</a>.
+    </div>
     <div class="info c-sharp">
         <a href=//devblogs.microsoft.com/dotnet/welcome-to-c-9-0/#top-level-programs>
             Top-level programs</a> are supported, <b>args</b> holds ARGV.
     </div>
+    <div class="info brainfuck">
+        Arguments are available via STDIN, each argument is NULL terminated.
+        Taking input after EOF leaves the cell unchanged, the tape is circular
+        with 65536 cells, and cells are 8-bit with wrapping.
+    </div>
     <div class="info fish">
-        ARGV is available via STDIN, joined on NULL. <b>x</b> is a no-op.
+        Arguments are available via STDIN, each argument is NULL terminated.
+        <b>x</b> is a no-op.
     </div>
     <div class="info hexagony">
-        ARGV is available via STDIN, joined on NULL.
+        Arguments are available via STDIN, each argument is NULL terminated.
     </div>
     <div class="info javascript">
         <b>arguments</b> holds ARGV, <b>print()</b> to output with a newline,
@@ -98,6 +116,10 @@
         column of the first result set will be printed, NULL values will be
         skipped, and the dialect is <a href=//sqlite.org/index.html>SQLite</a>.
     </div>
+    <div class="info viml">
+        Arguments are available via <b>args</b> list variable. To terminate
+        script execution, write and quit the current buffer.
+    </div>
     <div id=run>
         ctrl + enter
         <span>or</span>
@@ -116,7 +138,8 @@
     {{ with .Golfer }}{{ .Keymap }}{{ else }}"default"{{ end }}
 </script>
 
-<script id=langs     type=application/json>{{ .Data.Langs     }}</script>
-<script id=solutions type=application/json>{{ .Data.Solutions }}</script>
+<script id=darkModeMediaQuery type=application/json>{{ .DarkModeMediaQuery }}</script>
+<script id=langs              type=application/json>{{ .Data.Langs         }}</script>
+<script id=solutions          type=application/json>{{ .Data.Solutions     }}</script>
 
 {{ template "footer" }}

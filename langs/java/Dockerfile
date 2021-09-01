@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk16:x86_64-debianslim-jdk-16_36-slim as builder
+FROM adoptopenjdk/openjdk16:x86_64-debian-jdk-16.0.1_9-slim as builder
 
 RUN mkdir /empty
 
@@ -8,7 +8,7 @@ RUN jlink                                 \
     --module-path /opt/java/openjdk/jmods \
     --output /opt/jdk
 
-FROM alpine:3.13
+FROM alpine:3.14
 
 RUN apk add --no-cache bash
 
@@ -30,4 +30,6 @@ COPY --from=1 /usr/lib/libncursesw.so.6 \
 
 COPY java /usr/bin/
 
-ENTRYPOINT ["/opt/jdk/bin/java", "--version"]
+ENTRYPOINT ["/usr/bin/java"]
+
+CMD ["--version"]

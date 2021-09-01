@@ -1,61 +1,163 @@
 {{ template "header" . }}
 
-{{ range $id, $lang := .Data.Langs }}
-    {{ svg $id }}
+{{ range .Data.LangsList }}
+    {{ svg .ID }}
 {{ end }}
 
+{{ with .Data.Hole.Experiment }}
+    <div class=alert>
+        {{ svg "flask-light" }}
+        <p>
+            This hole is experimental, no solutions will be saved.
+        {{ if ne . -1 }}
+            Please leave feedback on the
+            <a href="//github.com/code-golf/code-golf/issues/{{ . }}">
+                GitHub issue</a>.
+        {{ end }}
+    </div>
+{{ else }}{{ if not .Golfer }}
+    <div class=alert>
+        {{ svg "exclamation-circle" }}
+        <p>
+            Please
+            <a class=log-in href="{{ .LogInURL }}">log in with GitHub</a>
+            in order to save solutions and appear on the leaderboards.
+    </div>
+{{ end }}{{ end }}
+
 <main>
-    <h1>{{ .Data.Hole.Name }}</h1>
+    <header>
+        <h1>{{ .Data.Hole.Name }}</h1>
+    {{ with .Data.Hole.Links }}
+        <nav>
+        {{ range $i, $link := . }}
+            {{ if $i }}<span>•</span>{{ end }}
+            <a href="{{ .URL }}">{{ .Name }}</a>
+        {{ end }}
+        </nav>
+    {{ end }}
+        <nav>
+            <a class="btn orange" href="{{ .Data.Hole.Prev }}">
+                {{ svg "chevron-double-left-light" }} Prev
+            </a>
+            <a class="btn purple" href=random>
+                {{ svg "dice-light" }} Random
+            </a>
+            <a class="btn orange" href="{{ .Data.Hole.Next }}">
+                {{ svg "chevron-double-right-light" }} Next
+            </a>
+        </nav>
+    </header>
+    <details id=details {{ if not .Data.HideDetails }}open{{ end }}>
+        <summary>Details</summary>
+        <div class=grid>{{ .Data.Hole.Preamble }}</div>
+    </details>
     <section>
         <header>
             <select>
-            {{ range $id, $lang := .Data.Langs }}
-                <option value="{{ $id }}">{{ $lang.Name }}
+            {{ range .Data.LangsList }}
+                <option value="{{ .ID }}">{{ .Name }}
             {{ end }}
             </select>
             <div id=strokes></div>
         </header>
         <header>
-            <nav class=tabs>
+            <nav class=tabs id=scoringTabs>
                 <a id=bytes>Bytes</a>
                 <a id=chars>Chars</a>
             </nav>
             <a id=all>All</a>
         </header>
         <div id=editor></div>
-        <div id=rankings>
-            <table class=nowrap-second>
-                <tr>
-                    <td>1<sup>st</sup>
-                    <td>primo-ppcg
-                    <td>43
-                <tr>
-                    <td>2<sup>nd</sup>
-                    <td>JRaspass
-                    <td>44
-            </table>
-        </div>
+        <table class=nowrap-second id=rankings></table>
     </section>
+
+    <div class="info assembly">
+        Compiled from
+        <a href=//www.wikibooks.org/wiki/X86_Assembly/GAS_Syntax>
+            AT&T syntax</a> to x86-64 Linux. Use
+        <a href=//blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64>
+            syscalls</a> to write output.
+    </div>
+    <div class="info c-sharp">
+        <a href=//devblogs.microsoft.com/dotnet/welcome-to-c-9-0/#top-level-programs>
+            Top-level programs</a> are supported, <b>args</b> holds ARGV.
+    </div>
+    <div class="info brainfuck">
+        Arguments are available via STDIN, each argument is NULL terminated.
+        Taking input after EOF leaves the cell unchanged, the tape is circular
+        with 65536 cells, and cells are 8-bit with wrapping.
+    </div>
+    <div class="info fish">
+        Arguments are available via STDIN, each argument is NULL terminated.
+        <b>x</b> is a no-op.
+    </div>
+    <div class="info hexagony">
+        Arguments are available via STDIN, each argument is NULL terminated.
+    </div>
+    <div class="info javascript">
+        <b>arguments</b> holds ARGV, <b>print()</b> to output with a newline,
+        <b>write()</b> to output without a newline.
+    </div>
+    <div class="info perl">
+        <b>say()</b> is available without any import.
+    </div>
+{{ if eq .Data.Hole.ID "quine" }}
+    <div class="info powershell">
+        Implicit output is disabled for this hole. Use <b>Out-Host</b> or
+        <b>Write-Host</b> for output.
+    </div>
+{{ else }}
+    <div class="info powershell">
+        <b>$args</b> to access the arguments.
+    </div>
+{{ end }}
+    <div class="info sql">
+        <b>SELECT arg FROM argv</b> to access the arguments, only the first
+        column of the first result set will be printed, NULL values will be
+        skipped, and the dialect is <a href=//sqlite.org/index.html>SQLite</a>.
+    </div>
+    <div class="info viml">
+        Arguments are available via <b>args</b> list variable. To terminate
+        script execution, write and quit the current buffer.
+    </div>
 
     <div id=run>
         ctrl + enter
         <span>or</span>
         <a class="btn blue">{{ svg "play-light" }} Run</a>
     </div>
+
+    <div id=status>
+        <h2></h2>
+
+        <input id=arguments-tab name=status type=radio>
+        <label for=arguments-tab>Arguments</label>
+
+        <input checked id=output-tab name=status type=radio>
+        <label for=output-tab>Output</label>
+
+        <input id=expected-tab name=status type=radio>
+        <label for=expected-tab>Expected</label>
+
+        <input id=diff-tab name=status type=radio>
+        <label for=diff-tab>Diff</label>
+
+        <input id=errors-tab name=status type=radio>
+        <label for=errors-tab>Errors</label>
+
+        <nav id=thirdParty></nav>
+
+        <div id=arguments></div>
+        <div id=output   ></div>
+        <div id=expected ></div>
+        <div id=diff     ></div>
+        <div id=errors   ></div>
+    </div>
 </main>
 
-<div id=popups>
-    <div>
-        <h3>Trophy Earned!</h3>
-        👋<p>Hello, World!
-    </div>
-    <div>
-        <h3>Trophy Earned!</h3>
-        💼<p>Interview Ready
-    </div>
-</div>
-
-<script id=langs     type=application/json>{{ .Data.Langs     }}</script>
-<script id=solutions type=application/json>{{ .Data.Solutions }}</script>
+<script id=darkModeMediaQuery type=application/json>{{ .DarkModeMediaQuery }}</script>
+<script id=langs              type=application/json>{{ .Data.LangsByID     }}</script>
+<script id=solutions          type=application/json>{{ .Data.Solutions     }}</script>
 
 {{ template "footer" }}

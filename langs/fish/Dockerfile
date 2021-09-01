@@ -1,8 +1,8 @@
-FROM alpine:3.13 as builder
+FROM alpine:3.14 as builder
 
 RUN mkdir /empty
 
-ENV PY_VERSION=3.7-v7.3.4 VERSION=44b227e
+ENV PY_VERSION=3.7-v7.3.5 VERSION=b71dce3
 
 RUN apk add --no-cache curl gcc linux-headers make musl-dev python2
 
@@ -21,3 +21,5 @@ FROM scratch
 COPY --from=0 /empty      /proc
 COPY --from=0 /empty      /tmp
 COPY --from=0 /fish-jit-c /usr/bin/fish
+
+ENTRYPOINT ["/usr/bin/fish", "--no-prng", "-u"]

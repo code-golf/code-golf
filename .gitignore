@@ -1,9 +1,9 @@
 /code-golf
 /db/
+/dist/
 /docker/.env
+/esbuild.json
 /localhost-key.pem
 /localhost.pem
 /node_modules/
-/routes/assets.go
-/run-lang
 /t/.precomp/

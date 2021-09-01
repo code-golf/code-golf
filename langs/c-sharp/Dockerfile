@@ -1,8 +1,8 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0.201-alpine3.13 as builder
+FROM mcr.microsoft.com/dotnet/sdk:5.0.400-alpine3.13 as builder
 
 RUN mkdir /empty
 
-ENV DOTNET_CLI_TELEMETRY_OPTOUT=1 VERSION=3.10.0-1.final
+ENV DOTNET_CLI_TELEMETRY_OPTOUT=1 VERSION=3.11.0
 
 WORKDIR /source
 
@@ -21,4 +21,6 @@ COPY --from=0 /empty                   /tmp
 COPY --from=0 /usr/lib                 /usr/lib/
 COPY --from=0 /compiler                /compiler/
 
-ENTRYPOINT ["/compiler/Compiler", "--version"]
+ENTRYPOINT ["/compiler/Compiler"]
+
+CMD ["--version"]

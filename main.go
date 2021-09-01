@@ -6,7 +6,7 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
-	"syscall"
+	"os"
 	"time"
 
 	"github.com/code-golf/code-golf/github"
@@ -33,7 +33,7 @@ func main() {
 		middleware.Logger,
 		middleware.Recoverer,
 		middleware.RedirectHost,
-		middleware.Public,
+		middleware.Static,
 		middleware.RedirectSlashes,
 		middleware.Compress(5),
 		// middleware.Downtime,
@@ -60,7 +60,6 @@ func main() {
 		r.Get("/langs/{lang}", routes.APILang)
 		r.Get("/suggestions/golfers", routes.APISuggestionsGolfers)
 	})
-	r.Get("/assets/{asset}", routes.Asset)
 	r.Get("/callback", routes.Callback)
 	r.Get("/callback/dev", routes.CallbackDev)
 	r.Get("/feeds", routes.Feeds)
@@ -69,18 +68,21 @@ func main() {
 		r.Use(middleware.GolferArea)
 		r.Post("/cancel-delete", routes.GolferCancelDelete)
 		r.Post("/delete", routes.GolferDelete)
+		r.Get("/export", routes.GolferExport)
 		r.Get("/settings", routes.GolferSettings)
 		r.Post("/settings", routes.GolferSettingsPost)
 	})
 	r.Route("/golfers/{name}", func(r chi.Router) {
 		r.Use(middleware.GolferInfoHandler)
-		r.Get("/", routes.GolferTrophies)
+		r.Get("/", routes.GolferCheevos)
 		r.Get("/holes", routes.GolferHoles)
 		r.Get("/holes/{scoring}", routes.GolferHoles)
 	})
+	r.Get("/healthz", routes.Healthz)
 	r.Get("/ideas", routes.Ideas)
 	r.Get("/log-out", routes.LogOut)
 	r.Get("/random", routes.Random)
+	r.Get("/ng/random", routes.NGRandom)
 	r.Route("/rankings", func(r chi.Router) {
 		// Redirect some old URLs that got out.
 		r.Get("/", redir("/rankings/holes/all/all/bytes"))
@@ -137,7 +139,7 @@ func main() {
 	}
 
 	var crt, key string
-	if _, dev := syscall.Getenv("DEV"); dev {
+	if _, dev := os.LookupEnv("DEV"); dev {
 		crt = "localhost.pem"
 		key = "localhost-key.pem"
 	} else {
@@ -147,8 +149,25 @@ func main() {
 	// Every minute.
 	go func() {
 		for range time.Tick(time.Minute) {
+			for _, view := range []string{"medals", "rankings", "points"} {
+				if _, err := db.Exec(
+					"REFRESH MATERIALIZED VIEW CONCURRENTLY " + view,
+				); err != nil {
+					log.Println(err)
+				}
+			}
+
+			// Once points is refreshed, award points based cheevos.
 			if _, err := db.Exec(
-				"REFRESH MATERIALIZED VIEW CONCURRENTLY medals",
+				`INSERT INTO trophies(user_id, trophy)
+				      SELECT user_id, 'its-over-9000'::cheevo
+				        FROM points
+				       WHERE points > 9000
+				   UNION ALL
+				      SELECT user_id, 'twenty-kiloleagues'::cheevo
+				        FROM points
+				       WHERE points >= 20000
+				 ON CONFLICT DO NOTHING`,
 			); err != nil {
 				log.Println(err)
 			}
@@ -191,6 +210,20 @@ func main() {
 			}
 		}
 	}()
+
+	// Configure core dumps so that defAsm can read them to dump registers.
+	// Note this affects the host, maybe one day Linux will namespace these.
+	// See https://stackoverflow.com/a/39152041
+	if err := os.WriteFile(
+		"/proc/sys/kernel/core_pattern", []byte("/tmp/core"), 0644,
+	); err != nil {
+		log.Println(err)
+	}
+	if err := os.WriteFile(
+		"/proc/sys/kernel/core_uses_pid", []byte("0"), 0644,
+	); err != nil {
+		log.Println(err)
+	}
 
 	log.Println("Listening…")
 

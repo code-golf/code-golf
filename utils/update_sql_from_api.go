@@ -12,7 +12,6 @@ package main
 // Run 'docker-compose rm -f && docker-compose up' and then run this script.
 
 import (
-	"context"
 	"database/sql"
 	"encoding/json"
 	"fmt"
@@ -22,14 +21,14 @@ import (
 	_ "github.com/lib/pq"
 )
 
-type solution struct {
-	Hole, Lang, Scoring, Login, Submitted string
-	Chars, Bytes                          int
-}
-
 // Create a string containing the given number of characters and UTF-8 encoded bytes.
-func makeCode(chars, bytes int) (result string) {
-	delta := bytes - chars
+func makeCode(chars *int, bytes int) (result string) {
+	if chars == nil {
+		// Support assembly solutions without chars.
+		return strings.Repeat("a", bytes)
+	}
+
+	delta := bytes - *chars
 
 	for _, replacement := range "😃景£" {
 		replacementDelta := len(string(replacement)) - 1
@@ -37,14 +36,14 @@ func makeCode(chars, bytes int) (result string) {
 		delta %= replacementDelta
 	}
 
-	result += strings.Repeat("a", chars-len([]rune(result)))
+	result += strings.Repeat("a", *chars-len([]rune(result)))
 	return
 }
 
 func testMakeCode() {
 	for x := 0; x < 10; x++ {
 		for y := x; y <= 4*x; y++ {
-			result := makeCode(x, y)
+			result := makeCode(&x, y)
 			if len([]rune(result)) != x {
 				panic("unexpected rune count")
 			}
@@ -55,20 +54,6 @@ func testMakeCode() {
 	}
 }
 
-func getInfo() (results []solution) {
-	resp, err := http.Get("https://code.golf/scores/all-holes/all-langs/all")
-	if err != nil {
-		panic(err)
-	}
-	defer resp.Body.Close()
-
-	if err := json.NewDecoder(resp.Body).Decode(&results); err != nil {
-		panic(err)
-	}
-
-	return
-}
-
 func main() {
 	testMakeCode()
 
@@ -77,16 +62,28 @@ func main() {
 		panic(err)
 	}
 
-	infoList := getInfo()
-	userMap := map[string]int{}
-
-	tx, err := db.BeginTx(context.Background(), nil)
+	res, err := http.Get("https://code.golf/scores/all-holes/all-langs/all")
 	if err != nil {
 		panic(err)
 	}
+	defer res.Body.Close()
 
+	var infoList []struct {
+		Bytes                                 int
+		Chars                                 *int
+		Hole, Lang, Login, Scoring, Submitted string
+	}
+	if err := json.NewDecoder(res.Body).Decode(&infoList); err != nil {
+		panic(err)
+	}
+
+	tx, err := db.Begin()
+	if err != nil {
+		panic(err)
+	}
 	defer tx.Rollback()
 
+	userMap := map[string]int{}
 	for _, info := range infoList {
 		if _, ok := userMap[info.Login]; !ok {
 			userMap[info.Login] = 1000 + len(userMap)
@@ -101,30 +98,26 @@ func main() {
 		}
 	}
 
-	for index, info := range infoList {
-		code := makeCode(info.Chars, info.Bytes)
-
+	for i, info := range infoList {
 		if _, err := tx.Exec(
-			"INSERT INTO code (code) VALUES ($1) ON CONFLICT DO NOTHING", code,
-		); err != nil {
-			panic(err)
-		}
-
-		if _, err := tx.Exec(
-			`INSERT INTO solutions (code_id, user_id, hole, lang, scoring, submitted)
-			    SELECT id, $2, $3, $4, $5, $6 FROM code WHERE code = $1`,
-			code,
-			userMap[info.Login],
+			`INSERT INTO solutions (  bytes,     chars,    code, hole, lang,
+			                        scoring, submitted, user_id)
+			                VALUES (     $1,        $2,      $3,   $4,   $5,
+			                             $6,        $7,      $8)`,
+			info.Bytes,
+			info.Chars,
+			makeCode(info.Chars, info.Bytes),
 			info.Hole,
 			info.Lang,
 			info.Scoring,
 			info.Submitted,
+			userMap[info.Login],
 		); err != nil {
 			panic(err)
 		}
 
-		if index%1000 == 0 {
-			fmt.Printf("Progress %d/%d\n", index+1, len(infoList))
+		if i%1000 == 0 {
+			fmt.Printf("Progress %d/%d\n", i+1, len(infoList))
 		}
 	}
 

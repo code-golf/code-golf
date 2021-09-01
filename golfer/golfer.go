@@ -7,9 +7,9 @@ import (
 	"sort"
 	"time"
 
+	"github.com/code-golf/code-golf/cheevo"
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
-	"github.com/code-golf/code-golf/trophy"
 	"gopkg.in/guregu/null.v4"
 )
 
@@ -20,18 +20,43 @@ func (f *FailingSolutions) Scan(src interface{}) error {
 }
 
 type Golfer struct {
-	Admin, ShowCountry              bool
-	Country, Keymap, Name, Referrer string
-	Delete                          sql.NullTime
-	FailingSolutions                FailingSolutions
-	ID                              int
-	TimeZone                        *time.Location
-	Trophies                        []string
+	Admin, ShowCountry                     bool
+	Cheevos                                []string
+	Country, Keymap, Name, Referrer, Theme string
+	Delete                                 sql.NullTime
+	FailingSolutions                       FailingSolutions
+	ID                                     int
+	TimeZone                               *time.Location
 }
 
-func (g *Golfer) Earned(trophyID string) bool {
-	i := sort.SearchStrings(g.Trophies, trophyID)
-	return i < len(g.Trophies) && g.Trophies[i] == trophyID
+// Earn the given cheevo, no-op if already earnt.
+func (g *Golfer) Earn(db *sql.DB, cheevoID string) (earned *cheevo.Cheevo) {
+	if res, err := db.Exec(
+		"INSERT INTO trophies VALUES (DEFAULT, $1, $2) ON CONFLICT DO NOTHING",
+		g.ID,
+		cheevoID,
+	); err != nil {
+		panic(err)
+	} else if rowsAffected, _ := res.RowsAffected(); rowsAffected == 1 {
+		earned = cheevo.ByID[cheevoID]
+	}
+
+	// Update g.Cheevos if necessary.
+	if i := sort.SearchStrings(
+		g.Cheevos, cheevoID,
+	); i == len(g.Cheevos) || g.Cheevos[i] != cheevoID {
+		g.Cheevos = append(g.Cheevos, "")
+		copy(g.Cheevos[i+1:], g.Cheevos[i:])
+		g.Cheevos[i] = cheevoID
+	}
+
+	return
+}
+
+// Earnt returns whether the golfer has that cheevo.
+func (g *Golfer) Earnt(cheevoID string) bool {
+	i := sort.SearchStrings(g.Cheevos, cheevoID)
+	return i < len(g.Cheevos) && g.Cheevos[i] == cheevoID
 }
 
 type GolferInfo struct {
@@ -45,11 +70,11 @@ type GolferInfo struct {
 	// Count of medals
 	Diamond, Gold, Silver, Bronze int
 
-	// Count of holes/langs/trophies done
-	Holes, Langs, Trophies int
+	// Count of cheevos/holes/langs done
+	Cheevos, Holes, Langs int
 
-	// Count of holes/langs/trophies available
-	HolesTotal, LangsTotal, TrophiesTotal int
+	// Count of cheevos/holes/langs available
+	CheevosTotal, HolesTotal, LangsTotal int
 
 	// Start date
 	TeedOff time.Time
@@ -66,9 +91,9 @@ type RankUpdate struct {
 
 func GetInfo(db *sql.DB, name string) *GolferInfo {
 	info := GolferInfo{
-		HolesTotal:    len(hole.List),
-		LangsTotal:    len(lang.List),
-		TrophiesTotal: len(trophy.List),
+		CheevosTotal: len(cheevo.List),
+		HolesTotal:   len(hole.List),
+		LangsTotal:   len(lang.List),
 	}
 
 	if err := db.QueryRow(
@@ -93,15 +118,15 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 		             FROM solutions
 		            WHERE user_id = id AND NOT FAILING),
 		          login,
-		          COALESCE(bytes_points, 0),
-		          COALESCE(chars_points, 0),
+		          COALESCE(bytes.points, 0),
+		          COALESCE(chars.points, 0),
 		          COALESCE(silver, 0),
 		          sponsor,
 		          (SELECT COUNT(*) FROM trophies WHERE user_id = id)
 		     FROM users
-		LEFT JOIN medals ON id = medals.user_id
-		LEFT JOIN bytes_points ON id = bytes_points.user_id
-		LEFT JOIN chars_points ON id = chars_points.user_id
+		LEFT JOIN medals       ON id = medals.user_id
+		LEFT JOIN points bytes ON id = bytes.user_id AND bytes.scoring = 'bytes'
+		LEFT JOIN points chars ON id = chars.user_id AND chars.scoring = 'chars'
 		    WHERE login = $1`,
 		name,
 	).Scan(
@@ -118,7 +143,7 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 		&info.CharsPoints,
 		&info.Silver,
 		&info.Sponsor,
-		&info.Trophies,
+		&info.Cheevos,
 	); errors.Is(err, sql.ErrNoRows) {
 		return nil
 	} else if err != nil {

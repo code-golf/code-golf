@@ -11,13 +11,6 @@
 #include <sys/syscall.h>
 #include <unistd.h>
 
-// Not defined in alpine yet :-(
-#define __NR_pidfd_open  434
-#define __NR_clone3      435
-#define __NR_openat2     437
-#define __NR_pidfd_getfd 438
-#define __NR_faccessat2  439
-
 #define ALLOW(name) \
     BPF_JUMP(BPF_JMP+BPF_JEQ+BPF_K, __NR_##name, 0, 1), \
     BPF_STMT(BPF_RET+BPF_K, SECCOMP_RET_ALLOW)
@@ -50,12 +43,12 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         return 1;
     }
 
-    if (mount(NULL, "/proc", "proc", MS_RDONLY, NULL) < 0) {
+    if (mount("proc", "/proc", "proc", MS_NODEV|MS_NOEXEC|MS_NOSUID|MS_RDONLY, NULL) < 0) {
         perror("mount proc");
         return 1;
     }
 
-    if (mount(NULL, "/tmp", "tmpfs", 0, NULL) < 0) {
+    if (mount("tmpfs", "/tmp", "tmpfs", MS_NODEV|MS_NOSUID, NULL) < 0) {
         perror("mount tmp");
         return 1;
     }
@@ -91,6 +84,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
 
         // File Operations
         ALLOW(close),             // 3
+        ALLOW(close_range),       // 436
         ALLOW(creat),             // 85
         ALLOW(fallocate),         // 285
         ALLOW(ftruncate),         // 77
@@ -99,12 +93,12 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(mknodat),           // 259
         ALLOW(name_to_handle_at), // 303
         ALLOW(open),              // 2
+        ALLOW(open_by_handle_at), // 304
         ALLOW(openat),            // 257
         ALLOW(openat2),           // 437
-        ALLOW(open_by_handle_at), // 304
         ALLOW(rename),            // 82
-        ALLOW(renameat2),         // 316
         ALLOW(renameat),          // 264
+        ALLOW(renameat2),         // 316
         ALLOW(truncate),          // 76
         ALLOW(userfaultfd),       // 323
 
@@ -270,9 +264,9 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         \******/
 
         // Current Time of Day
-        // ALLOW(gettimeofday), // 96
+        ALLOW(gettimeofday),    // 96
         // ALLOW(settimeofday), // 164
-        // ALLOW(time),         // 201
+        ALLOW(time),            // 201
 
         // POSIX Clocks
         ALLOW(clock_adjtime),   // 305

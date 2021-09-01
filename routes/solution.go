@@ -35,13 +35,18 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	if _, ok := lang.ByID[in.Lang]; !ok {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
 	db := session.Database(r)
 	golfer := session.Golfer(r)
 
 	// 128 KiB, >= because arguments needs a null termination.
 	if len(in.Code) >= 128*1024 {
 		if golfer != nil {
-			awardTrophy(db, golfer.ID, "tl-dr")
+			golfer.Earn(db, "tl-dr")
 		}
 
 		w.WriteHeader(http.StatusRequestEntityTooLarge)
@@ -51,28 +56,31 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 	score := hole.Play(r.Context(), in.Hole, in.Lang, in.Code)
 
 	if score.Timeout && golfer != nil {
-		awardTrophy(db, golfer.ID, "slowcoach")
+		golfer.Earn(db, "slowcoach")
 	}
 
 	out := struct {
 		Argv                []string
+		Cheevos             []string
 		Diff, Err, Exp, Out string
+		ExitCode            int
 		Pass, LoggedIn      bool
 		RankUpdates         []Golfer.RankUpdate
 		Took                time.Duration
-		Trophies            []string
 	}{
-		Argv: score.Args,
-		Err:  string(terminal.Render(score.Stderr)),
-		Exp:  score.Answer,
-		Out:  string(score.Stdout),
-		Pass: score.Pass,
+		Argv:     score.Args,
+		Cheevos:  []string{},
+		Err:      string(terminal.Render(score.Stderr)),
+		ExitCode: score.ExitCode,
+		Exp:      score.Answer,
+		LoggedIn: golfer != nil,
+		Out:      string(score.Stdout),
+		Pass:     score.Pass,
 		RankUpdates: []Golfer.RankUpdate{
 			{Scoring: "bytes"},
 			{Scoring: "chars"},
 		},
-		LoggedIn: golfer != nil,
-		Took:     score.Took,
+		Took: score.Took,
 	}
 
 	out.Diff, _ = difflib.GetUnifiedDiffString(difflib.UnifiedDiff{
@@ -93,10 +101,23 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			        old_chars_joint, old_chars_rank, old_chars,
 			        new_chars_joint, new_chars_rank, new_chars,
 			        beat_chars
-			   FROM save_solution(code := $1, hole := $2, lang := $3, user_id := $4)`,
-			in.Code, in.Hole, in.Lang, golfer.ID,
+			   FROM save_solution(
+			            bytes   := CASE WHEN $3 = 'assembly'::lang
+			                            THEN $5
+			                            ELSE octet_length($1)
+			                            END,
+			            chars   := CASE WHEN $3 = 'assembly'::lang
+			                            THEN NULL
+			                            ELSE char_length($1)
+			                            END,
+			            code    := $1,
+			            hole    := $2,
+			            lang    := $3,
+			            user_id := $4
+			        )`,
+			in.Code, in.Hole, in.Lang, golfer.ID, score.ASMBytes,
 		).Scan(
-			pq.Array(&out.Trophies),
+			pq.Array(&out.Cheevos),
 			&out.RankUpdates[0].From.Joint,
 			&out.RankUpdates[0].From.Rank,
 			&out.RankUpdates[0].From.Strokes,
@@ -167,25 +188,29 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		)
 
 		if month == time.October && day == 2 {
-			awardTrophy(db, golfer.ID, "happy-birthday-code-golf")
+			golfer.Earn(db, "happy-birthday-code-golf")
 		}
 
 		switch in.Hole {
 		case "12-days-of-christmas":
 			if (month == time.December && day >= 25) || (month == time.January && day <= 5) {
-				awardTrophy(db, golfer.ID, "twelvetide")
+				golfer.Earn(db, "twelvetide")
+			}
+		case "star-wars-opening-crawl":
+			if month == time.May && day == 4 {
+				golfer.Earn(db, "may-the-4ᵗʰ-be-with-you")
 			}
 		case "united-states":
 			if month == time.July && day == 4 {
-				awardTrophy(db, golfer.ID, "independence-day")
+				golfer.Earn(db, "independence-day")
 			}
 		case "vampire-numbers":
 			if month == time.October && day == 31 {
-				awardTrophy(db, golfer.ID, "vampire-byte")
+				golfer.Earn(db, "vampire-byte")
 			}
 		case "π":
 			if month == time.March && day == 14 {
-				awardTrophy(db, golfer.ID, "pi-day")
+				golfer.Earn(db, "pi-day")
 			}
 		}
 
@@ -196,20 +221,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			  WHERE NOT failing AND user_id = $1`,
 			golfer.ID,
 		) {
-			awardTrophy(db, golfer.ID, "polyglot")
-		}
-
-		// FIXME Each one of these queries takes 50ms!
-		if queryBool(
-			db,
-			"SELECT chars_points > 9000 FROM chars_points WHERE user_id = $1",
-			golfer.ID,
-		) || queryBool(
-			db,
-			"SELECT bytes_points > 9000 FROM bytes_points WHERE user_id = $1",
-			golfer.ID,
-		) {
-			awardTrophy(db, golfer.ID, "its-over-9000")
+			golfer.Earn(db, "polyglot")
 		}
 
 		// COUNT(*) = 4 because langs x (bytes, chars)
@@ -226,7 +238,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 				in.Hole,
 				golfer.ID,
 			) {
-				awardTrophy(db, golfer.ID, "caffeinated")
+				golfer.Earn(db, "caffeinated")
 			}
 		case "perl", "raku":
 			if queryBool(
@@ -240,7 +252,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 				in.Hole,
 				golfer.ID,
 			) {
-				awardTrophy(db, golfer.ID, "tim-toady")
+				golfer.Earn(db, "tim-toady")
 			}
 		}
 	}
@@ -251,16 +263,6 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 	enc.SetEscapeHTML(false)
 
 	if err := enc.Encode(&out); err != nil {
-		panic(err)
-	}
-}
-
-func awardTrophy(db *sql.DB, userID int, trophy string) {
-	if _, err := db.Exec(
-		"INSERT INTO trophies VALUES (DEFAULT, $1, $2) ON CONFLICT DO NOTHING",
-		userID,
-		trophy,
-	); err != nil {
 		panic(err)
 	}
 }

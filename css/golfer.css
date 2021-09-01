@@ -1,0 +1,45 @@
+h1 {
+    align-items: center;
+    display: flex;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#badges {
+    display: flex;
+    flex-wrap: wrap;
+    font-weight: bold;
+    margin-bottom: -.25rem;
+    padding: .75rem .75rem 0;
+}
+
+#badges div {
+    align-items: center;
+    background: var(--badge-background);
+    display: flex;
+    margin: .25rem;
+}
+
+#badges p { padding: .2rem .5rem }
+
+#badges p:last-child {
+    border: 2px solid var(--badge-background);
+    border-left: 0;
+}
+
+#profile {
+    font-variant: tabular-nums;
+    grid-row-gap: 0;
+    grid-template: min-content 1fr min-content / min-content 1fr;
+    padding: 1rem 1rem 0;
+}
+
+#profile img {
+    border-radius: 2rem;
+    grid-row: span 3;
+    height: 6rem;
+    width: 6rem;
+}
+
+#profile p:first-of-type { font-size: 1.25rem }

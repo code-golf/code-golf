@@ -1,11 +1,8 @@
 use t;
 
-for slurp("langs.toml").&from-toml.map({
+for 'langs.toml'.IO.&from-toml.map({
     .key.lc.trans( qw[# ><>] => qw[-sharp fish] ) => .value<example>;
 }).sort -> (:key($lang), :value($code)) {
-    # TODO Remove this to ensure we have examples for every lang.
-    next unless $code;
-
     # <built-in>: internal compiler error: Illegal instruction
     todo 'intermittent error' if $lang eq 'fortran';
 
@@ -18,10 +15,13 @@ for slurp("langs.toml").&from-toml.map({
     ) -> $hole {
         subtest "$lang ($hole)" => {
             my $got = post-solution :$code :$hole :$lang;
-            my $exp = join "\n", 'Hello, World!', |^10, |($got<Argv> // '');
+            my $exp = join "\n", 'Hello, World!', |^10, |$got<Argv>;
 
+            $exp ~= "\n" if $hole eq 'quine';
+
+            # Pascal prints lots of info to STDERR.
             is $got<Out>, $exp, 'Out';
-            is $got<Err>,   '', 'Err';
+            is $got<Err>,   '', 'Err' if $lang ne 'pascal';
         }
     }
 }

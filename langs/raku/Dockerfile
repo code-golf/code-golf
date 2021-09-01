@@ -1,10 +1,10 @@
-FROM alpine:3.13 as builder
+FROM alpine:3.14 as builder
 
 RUN mkdir /empty
 
 RUN apk add --no-cache build-base git perl
 
-RUN git clone -b 2021.03 git://github.com/rakudo/rakudo \
+RUN git clone -b 2021.08 git://github.com/rakudo/rakudo \
  && cd rakudo                                           \
  && CFLAGS=-flto ./Configure.pl                         \
     --gen-moar                                          \
@@ -29,4 +29,6 @@ COPY --from=0 /usr/share/nqp           /usr/share/nqp
 COPY --from=0 /usr/share/perl6/lib     /usr/share/perl6/lib
 COPY --from=0 /usr/share/perl6/runtime /usr/share/perl6/runtime
 
-ENTRYPOINT ["raku", "-v"]
+ENTRYPOINT ["raku"]
+
+CMD ["-v"]

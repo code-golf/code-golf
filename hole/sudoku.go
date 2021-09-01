@@ -29,13 +29,13 @@ func printSudoku(board [boardSize][boardSize]int) string {
 				b.WriteString("│")
 			}
 
-			b.WriteRune(' ')
+			b.WriteByte(' ')
 			if number == 0 {
-				b.WriteRune(' ')
+				b.WriteByte(' ')
 			} else {
-				b.WriteRune(rune('0' + number))
+				b.WriteByte(byte('0' + number))
 			}
-			b.WriteRune(' ')
+			b.WriteByte(' ')
 		}
 
 		b.WriteString("┃\n")
@@ -209,9 +209,9 @@ func sudoku(v2 bool) (args []string, out string) {
 
 			for _, number := range row {
 				if number == 0 {
-					b.WriteRune('_')
+					b.WriteByte('_')
 				} else {
-					b.WriteRune(rune('0' + number))
+					b.WriteByte(byte('0' + number))
 				}
 			}
 

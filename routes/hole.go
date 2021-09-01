@@ -36,9 +36,8 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 		// Fetch all the code per lang.
 		rows, err := session.Database(r).Query(
 			`SELECT code, lang, scoring
-				    FROM solutions
-				    JOIN code ON code_id = id
-				  WHERE hole = $1 AND user_id = $2`,
+			   FROM solutions
+			  WHERE hole = $1 AND user_id = $2`,
 			data.Hole.ID, golfer.ID,
 		)
 		if err != nil {
@@ -73,11 +72,14 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 // HoleNG serves GET /ng/{hole}
 func HoleNG(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		Hole      hole.Hole
-		Langs     map[string]lang.Lang
-		Solutions map[string]map[string]string
+		HideDetails bool
+		Hole        hole.Hole
+		LangsByID   map[string]lang.Lang
+		LangsList   []lang.Lang
+		Solutions   map[string]map[string]string
 	}{
-		Langs:     lang.ByID,
+		LangsByID: lang.ByID,
+		LangsList: append(make([]lang.Lang, 0), lang.List...),
 		Solutions: map[string]map[string]string{},
 	}
 
@@ -89,12 +91,15 @@ func HoleNG(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	if c, _ := r.Cookie("hide-details"); c != nil {
+		data.HideDetails = true
+	}
+
 	if golfer := session.Golfer(r); golfer != nil && data.Hole.Experiment == 0 {
 		// Fetch all the code per lang.
 		rows, err := session.Database(r).Query(
 			`SELECT code, lang, scoring
 			   FROM solutions
-			   JOIN code ON code_id = id
 			  WHERE hole = $1 AND user_id = $2`,
 			data.Hole.ID, golfer.ID,
 		)

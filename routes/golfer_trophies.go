@@ -4,26 +4,23 @@ import (
 	"database/sql"
 	"net/http"
 
+	"github.com/code-golf/code-golf/cheevo"
 	"github.com/code-golf/code-golf/session"
-	"github.com/code-golf/code-golf/trophy"
 )
 
-// GolferTrophies serves GET /golfers/{golfer}
-func GolferTrophies(w http.ResponseWriter, r *http.Request) {
+// GolferCheevos serves GET /golfers/{golfer}
+func GolferCheevos(w http.ResponseWriter, r *http.Request) {
 	golfer := session.GolferInfo(r).Golfer
 
-	type EarnedTrophy struct {
+	type EarnedCheevo struct {
 		Count, Percent int
 		Earned         sql.NullTime
 	}
 
 	data := struct {
-		Earned   map[string]EarnedTrophy
-		Trophies map[string][]*trophy.Trophy
-	}{
-		map[string]EarnedTrophy{},
-		trophy.Tree,
-	}
+		Cheevos map[string][]*cheevo.Cheevo
+		Earned  map[string]EarnedCheevo
+	}{cheevo.Tree, map[string]EarnedCheevo{}}
 
 	rows, err := session.Database(r).Query(
 		`WITH count AS (
@@ -39,11 +36,11 @@ func GolferTrophies(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for rows.Next() {
-		var earned EarnedTrophy
-		var trophyID string
+		var cheevoID string
+		var earned EarnedCheevo
 
 		if err := rows.Scan(
-			&trophyID,
+			&cheevoID,
 			&earned.Count,
 			&earned.Earned,
 			&earned.Percent,
@@ -51,12 +48,12 @@ func GolferTrophies(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
-		data.Earned[trophyID] = earned
+		data.Earned[cheevoID] = earned
 	}
 
 	if err := rows.Err(); err != nil {
 		panic(err)
 	}
 
-	render(w, r, "golfer/trophies", data, golfer.Name)
+	render(w, r, "golfer/cheevos", data, golfer.Name)
 }

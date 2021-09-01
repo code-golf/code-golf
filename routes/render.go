@@ -3,6 +3,7 @@ package routes
 import (
 	"crypto/rand"
 	"encoding/base64"
+	"encoding/json"
 	"html/template"
 	"net/http"
 	"net/url"
@@ -11,16 +12,15 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
-	"syscall"
 	"time"
 
+	"github.com/code-golf/code-golf/cheevo"
 	"github.com/code-golf/code-golf/country"
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/lang"
 	"github.com/code-golf/code-golf/pretty"
 	"github.com/code-golf/code-golf/session"
-	"github.com/code-golf/code-golf/trophy"
 	min "github.com/tdewolff/minify/v2/minify"
 )
 
@@ -44,9 +44,9 @@ func colour(i int) string {
 }
 
 var (
-	css = map[string]template.CSS{}
-	js  = map[string]template.JS{}
-	svg = map[string]template.HTML{}
+	assets = map[string]string{}
+	css    = map[string]template.CSS{}
+	svg    = map[string]template.HTML{}
 
 	dev bool
 )
@@ -66,63 +66,115 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 	},
 	"title":      strings.Title,
 	"time":       pretty.Time,
-	"timeShort":  pretty.TimeShort,
 	"trimPrefix": strings.TrimPrefix,
 })
 
-func init() {
-	_, dev = syscall.Getenv("DEV")
-	uppercaseProps := regexp.MustCompile(`{{.+?[A-Z].*?}}`)
+func getDarkModeMediaQuery(theme string) string {
+	switch theme {
+	case "dark":
+		return "all"
+	case "light":
+		return "not all"
+	}
+	return "(prefers-color-scheme:dark)"
+}
 
-	if err := filepath.Walk("views", func(file string, info os.FileInfo, err error) error {
-		if err != nil || info.IsDir() {
-			return err
-		}
+func getThemeCSS(theme string) template.CSS {
+	switch theme {
+	case "dark":
+		return css["dark"]
+	case "light":
+		return css["light"]
+	}
 
-		b, err := os.ReadFile(file)
-		if err != nil {
-			return err
-		}
+	return css["light"] + "@media(prefers-color-scheme:dark){" + css["dark"] + "}"
+}
 
-		data := string(b)
-		ext := path.Ext(file)
-		name := file[len("views/") : len(file)-len(ext)]
+func slurp(dir string) map[string]string {
+	files := map[string]string{}
 
-		switch ext {
-		case ".css":
-			data = strings.ReplaceAll(data, "twemojiWoff2", twemojiWoff2Path)
-
-			if data, err = min.CSS(data); err != nil {
+	if err := filepath.Walk(dir, func(file string, info os.FileInfo, err error) error {
+		if !info.IsDir() {
+			data, err := os.ReadFile(file)
+			if err != nil {
 				return err
 			}
 
-			css[name[len("css/"):]] = template.CSS(data)
-		case ".html":
-			// Minify templates without uppsercase properties.
-			// The real fix is https://github.com/tdewolff/minify/issues/35
-			if !uppercaseProps.MatchString(data) {
-				if data, err = min.HTML(data); err != nil {
-					return err
-				}
-			}
-
-			tmpl = template.Must(tmpl.New(name).Parse(data))
-		case ".js":
-			if data, err = min.JS(data); err != nil {
-				return err
-			}
-
-			js[name[len("js/"):]] = template.JS(data)
-		case ".svg":
-			// Trim namespace as it's not needed for inline SVG under HTML 5.
-			data = strings.ReplaceAll(data, ` xmlns="http://www.w3.org/2000/svg"`, "")
-
-			svg[name[len("svg/"):]] = template.HTML(data)
+			name := file[len(dir)+1 : len(file)-len(path.Ext(file))]
+			files[name] = string(data)
 		}
 
-		return nil
+		return err
 	}); err != nil {
 		panic(err)
+	}
+
+	return files
+}
+
+func init() {
+	_, dev = os.LookupEnv("DEV")
+
+	// Assets.
+	if file, err := os.Open("esbuild.json"); err == nil {
+		defer file.Close()
+
+		var esbuild struct {
+			Outputs map[string]struct{ EntryPoint string }
+		}
+
+		if err := json.NewDecoder(file).Decode(&esbuild); err != nil {
+			panic(err)
+		}
+
+		for dist, src := range esbuild.Outputs {
+			if src.EntryPoint != "" {
+				assets[src.EntryPoint] = "/" + dist
+			}
+		}
+	}
+
+	// CSS.
+	for name, data := range slurp("css") {
+		var err error
+		if data, err = min.CSS(data); err != nil {
+			panic(err)
+		}
+
+		css[name] = template.CSS(data)
+	}
+
+	// HACK Prepend font.css (with font URL) onto base.css.
+	// TODO Use esbuild for all CSS? Still serve inline?
+	if fontCSS, ok := assets["css/font.css"]; ok {
+		cssBytes, err := os.ReadFile(fontCSS[1:])
+		if err != nil {
+			panic(err)
+		}
+		css["base"] = template.CSS(cssBytes) + css["base"]
+	}
+
+	// SVG.
+	for name, data := range slurp("svg") {
+		// Trim namespace as it's not needed for inline SVG under HTML 5.
+		data = strings.ReplaceAll(data, ` xmlns="http://www.w3.org/2000/svg"`, "")
+
+		svg[name] = template.HTML(data)
+	}
+
+	// Views.
+	uppercaseProps := regexp.MustCompile(`{{.+?[A-Z].*?}}`)
+	for name, data := range slurp("views") {
+		// Minify templates without uppercase properties.
+		// The real fix is https://github.com/tdewolff/minify/issues/35
+		if !uppercaseProps.MatchString(data) {
+			var err error
+			if data, err = min.HTML(data); err != nil {
+				panic(err)
+			}
+		}
+
+		tmpl = template.Must(tmpl.New(name).Parse(data))
 	}
 }
 
@@ -135,39 +187,46 @@ func render(w http.ResponseWriter, r *http.Request, name string, data interface{
 		panic(err)
 	}
 
-	type trophyBanner struct {
+	type CheevoBanner struct {
+		Cheevo     *cheevo.Cheevo
 		During     bool
 		Start, End time.Time
-		Trophy     *trophy.Trophy
+	}
+
+	theme := "auto"
+	theGolfer := session.Golfer(r)
+	if theGolfer != nil {
+		theme = theGolfer.Theme
 	}
 
 	args := struct {
-		Countries                                        map[string]*country.Country
-		CSS                                              template.CSS
-		Data                                             interface{}
-		Description, JSExt, LogInURL, Nonce, Path, Title string
-		Golfer                                           *golfer.Golfer
-		GolferInfo                                       *golfer.GolferInfo
-		Holes                                            map[string]hole.Hole
-		Langs                                            map[string]lang.Lang
-		Location                                         *time.Location
-		JS                                               template.JS
-		Request                                          *http.Request
-		TrophyBanner                                     *trophyBanner
+		CSS                                                           template.CSS
+		CheevoBanner                                                  *CheevoBanner
+		Countries                                                     map[string]*country.Country
+		Data                                                          interface{}
+		DarkModeMediaQuery, Description, LogInURL, Nonce, Path, Title string
+		Golfer                                                        *golfer.Golfer
+		GolferInfo                                                    *golfer.GolferInfo
+		Holes                                                         map[string]hole.Hole
+		JS                                                            []string
+		Langs                                                         map[string]lang.Lang
+		Location                                                      *time.Location
+		Request                                                       *http.Request
 	}{
-		Countries:   country.ByID,
-		CSS:         css["base"] + css[path.Dir(name)] + css[name],
-		Data:        data,
-		Description: "Code Golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.",
-		Golfer:      session.Golfer(r),
-		GolferInfo:  session.GolferInfo(r),
-		Holes:       hole.ByID,
-		Langs:       lang.ByID,
-		JS:          js["base"] + js[path.Dir(name)] + js[name],
-		Nonce:       base64.StdEncoding.EncodeToString(nonce),
-		Path:        r.URL.Path,
-		Request:     r,
-		Title:       "Code Golf",
+		Countries:          country.ByID,
+		CSS:                getThemeCSS(theme) + css["base"] + css[path.Dir(name)] + css[name],
+		Data:               data,
+		DarkModeMediaQuery: getDarkModeMediaQuery(theme),
+		Description:        "Code Golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.",
+		Golfer:             theGolfer,
+		GolferInfo:         session.GolferInfo(r),
+		Holes:              hole.ByID,
+		JS:                 []string{assets["js/base.js"]},
+		Langs:              lang.ByID,
+		Nonce:              base64.StdEncoding.EncodeToString(nonce),
+		Path:               r.URL.Path,
+		Request:            r,
+		Title:              "Code Golf",
 	}
 
 	if len(meta) > 0 {
@@ -184,25 +243,35 @@ func render(w http.ResponseWriter, r *http.Request, name string, data interface{
 		args.Location = time.UTC
 	}
 
-	// Pi Day banner. TODO Generalise.
-	if args.Golfer != nil && !args.Golfer.Earned("pi-day") {
+	// Independence Day cheevo banner. TODO Generalise.
+	if args.Golfer != nil && !args.Golfer.Earnt("independence-day") {
 		var (
 			now   = time.Now().UTC()
 			year  = now.Year()
-			start = time.Date(year, time.March, 14, 0, 0, 0, 0, time.UTC)
-			end   = time.Date(year, time.March, 15, 0, 0, 0, 0, time.UTC)
+			start = time.Date(year, time.July, 4, 0, 0, 0, 0, time.UTC)
+			end   = time.Date(year, time.July, 5, 0, 0, 0, 0, time.UTC)
 		)
 
 		if now.Before(end) {
-			args.TrophyBanner = &trophyBanner{
-				start.Before(now), start, end, trophy.ByID["pi-day"],
+			args.CheevoBanner = &CheevoBanner{
+				cheevo.ByID["independence-day"],
+				start.Before(now), start, end,
 			}
 		}
 	}
 
+	// TODO CSS imports?
 	if name == "hole" {
-		args.JSExt = holeJsPath
-		args.CSS = css["vendor/codemirror"] + css["vendor/codemirror-dialog"] + args.CSS
+		args.CSS = css["vendor/codemirror"] + css["vendor/codemirror-dialog"] +
+			css["vendor/codemirror-dark"] + args.CSS
+	}
+
+	// Append route specific JS.
+	// e.g. GET /foo/bar might add js/foo.js and/or js/foo/bar.js.
+	for _, path := range []string{path.Dir(name), name} {
+		if url, ok := assets["js/"+path+".js"]; ok {
+			args.JS = append(args.JS, url)
+		}
 	}
 
 	header := w.Header()

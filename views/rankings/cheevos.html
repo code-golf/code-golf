@@ -64,7 +64,7 @@
             {{ if not $.Data.Cheevo }}
                 <td class=right>{{ .Count }} / {{ $.Data.Total }}
             {{ end }}
-                <td class=right>{{ time .Earned }}
+                <td class=right>{{ time (.Earned.In $.Location) }}
         {{ end }}
     </table>
 

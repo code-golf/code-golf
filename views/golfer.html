@@ -36,14 +36,14 @@
         </div>
         <div>
             <p>🏆
-            <p class=blue>{{ .Trophies }} / {{ .TrophiesTotal }} Trophies
+            <p class=blue>{{ .Cheevos }} / {{ .CheevosTotal }} Achievements
         </div>
         <!-- TODO <div><p>📅<p class=yellow>Teed off {{ time .TeedOff }}</div>-->
     </div>
 
     <nav class=tabs>
         {{ $slug := print "/golfers/" .Name }}
-        <a {{ if ne $.Path $slug }} href="{{ $slug }}" {{ end }}>Trophies</a>
+        <a {{ if ne $.Path $slug }} href="{{ $slug }}" {{ end }}>Achievements</a>
 
         {{ $slug = print $slug "/holes" }}
         <a {{ if not (hasPrefix $.Path $slug) }} href="{{ $slug }}/bytes" {{ end }}>

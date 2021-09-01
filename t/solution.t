@@ -1,7 +1,21 @@
 use t;
 
-constant $code-long  = 'say "Fizz" x $_ %% 3 ~ "Buzz" x $_ %% 5 || $_ for 1 .. 100';
-constant $code-short = 'say "Fizz"x$_%%3~"Buzz"x$_%%5||$_ for 1..100';
+constant $answer           = slurp("hole/answers/fizz-buzz.txt").chomp;
+constant $code-long        = 'say "Fizz" x $_ %% 3 ~ "Buzz" x $_ %% 5 || $_ for 1 .. 100';
+constant $code-short       = 'say "Fizz"x$_%%3~"Buzz"x$_%%5||$_ for 1..100';
+constant $code-short-chars = 'say "Fizz"x$_%%3~"Buzz"x$_%%5||$_ for 1…100';
+
+is-deeply post-solution(:code($code-long))<
+    Argv Cheevos Diff Err ExitCode Exp Pass
+>:kv.Hash, {
+    Argv     => [],
+    Cheevos  => [],
+    Diff     => '',
+    Err      => '',
+    ExitCode => 0,
+    Exp      => $answer,
+    Pass     => True,
+};
 
 my $dbh = dbh;
 
@@ -11,62 +25,70 @@ my $session = $dbh.execute(
     'INSERT INTO sessions (user_id) VALUES (123) RETURNING id').row.head;
 
 subtest 'Failing solution' => {
-    nok post-solution( :$session, :code('say 1') )<Pass>, 'Solution fails';
+    nok post-solution( :$session :code('say 1') )<Pass>, 'Solution fails';
 
-    is $dbh.execute('SELECT COUNT(*) FROM code').row.head, 0, 'DB is empty';
+    is $dbh.execute('SELECT COUNT(*) FROM solutions').row.head, 0, 'DB is empty';
 }
 
 subtest 'Initial solution' => {
-    ok post-solution( :$session, :code($code-long) )<Pass>, 'Solution passes';
+    ok post-solution( :$session :code($code-long) )<Pass>, 'Passes';
 
-    is-deeply db(), (
-        { code => $code-long, code_id => 1, scoring => 'bytes', user_id => 123 },
-        { code => $code-long, code_id => 1, scoring => 'chars', user_id => 123 },
-    ), 'DB is inserted';
+    is-deeply db, (
+        { :code($code-long), :lang<raku>, :scoring<bytes> },
+        { :code($code-long), :lang<raku>, :scoring<chars> },
+    ), 'Inserts both';
 };
 
 subtest 'Same solution' => {
-    ok post-solution( :$session, :code($code-long) )<Pass>, 'Solution passes';
+    ok post-solution( :$session :code($code-long) )<Pass>, 'Passes';
 
-    is-deeply db(), (
-        { code => $code-long, code_id => 1, scoring => 'bytes', user_id => 123 },
-        { code => $code-long, code_id => 1, scoring => 'chars', user_id => 123 },
-    ), 'DB is the same';
+    is-deeply db, (
+        { :code($code-long), :lang<raku>, :scoring<bytes> },
+        { :code($code-long), :lang<raku>, :scoring<chars> },
+    ), 'Updates none';
 };
 
-subtest 'Updated solution' => {
-    ok post-solution( :$session, :code($code-short) )<Pass>, 'Solution passes';
+subtest 'Shorter solution' => {
+    ok post-solution( :$session :code($code-short) )<Pass>, 'Passes';
 
-    is-deeply db(), (
-        { code => $code-short, code_id => 2, scoring => 'bytes', user_id => 123 },
-        { code => $code-short, code_id => 2, scoring => 'chars', user_id => 123 },
-    ), 'DB is updated';
-
-    is $dbh.execute('SELECT COUNT(*) FROM code').row.head, 1, 'Code is cleaned up';
+    is-deeply db, (
+        { :code($code-short), :lang<raku>, :scoring<bytes> },
+        { :code($code-short), :lang<raku>, :scoring<chars> },
+    ), 'Updates both';
 };
 
-subtest 'Different user' => {
-    $dbh.execute: "INSERT INTO users (id, login) VALUES (456, 'test2')";
+subtest 'Shorter chars solution' => {
+    ok post-solution( :$session :code($code-short-chars) )<Pass>, 'Passes';
 
-    my $session = $dbh.execute(
-        'INSERT INTO sessions (user_id) VALUES (456) RETURNING id').row.head;
+    is-deeply db, (
+        { :code($code-short),       :lang<raku>, :scoring<bytes> },
+        { :code($code-short-chars), :lang<raku>, :scoring<chars> },
+    ), 'Updates just the chars';
+};
 
-    ok post-solution( :$session, :code($code-short) )<Pass>, 'Solution passes';
+subtest 'Assembly solution' => {
+constant $code = Q:c:to/ASM/;
+    mov $1,              %eax
+    mov $1,              %edi
+    mov $text,           %rsi
+    mov $textEnd - text, %edx
+    syscall
 
-    # Note how they share the some code ID.
-    is-deeply db(), (
-        { code => $code-short, code_id => 2, scoring => 'bytes', user_id => 123 },
-        { code => $code-short, code_id => 2, scoring => 'chars', user_id => 123 },
-        { code => $code-short, code_id => 2, scoring => 'bytes', user_id => 456 },
-        { code => $code-short, code_id => 2, scoring => 'chars', user_id => 456 },
-    ), 'DB is updated';
+    text: .string "{ $answer.lines.join: ｢\n｣ }"; textEnd:
+    ASM
+
+    ok post-solution( :$session :$code :lang<assembly> )<Pass>, 'Passes';
+
+    is-deeply db, (
+        { :code($code-short),       :lang<raku>,     :scoring<bytes> },
+        { :code($code-short-chars), :lang<raku>,     :scoring<chars> },
+        { :$code,                   :lang<assembly>, :scoring<bytes> },
+    ), 'Inserts only bytes';
 };
 
 sub db {
     $dbh.execute(
-        'SELECT code, code_id, scoring, user_id
-           FROM solutions JOIN code ON id = code_id',
-    ).allrows(:array-of-hash)
+        'SELECT code, lang, scoring FROM solutions').allrows :array-of-hash;
 }
 
 done-testing;

@@ -1,0 +1,21 @@
+#!/bin/sh -e
+
+rm -rf dist esbuild.json
+
+node_modules/.bin/esbuild "$@"        \
+    --asset-names=[dir]/[name]-[hash] \
+    --bundle                          \
+    --entry-names=[dir]/[name]-[hash] \
+    --format=esm                      \
+    --inject:js/_inject.js            \
+    --jsx-factory=createElement       \
+    --loader:.js=jsx                  \
+    --loader:.woff2=file              \
+    --metafile=esbuild.json           \
+    --minify                          \
+    --outbase=.                       \
+    --outdir=dist                     \
+    --public-path=/dist               \
+    --sourcemap                       \
+    --target=es2020                   \
+    `find css/font.css js -type f -not -name '_*'`

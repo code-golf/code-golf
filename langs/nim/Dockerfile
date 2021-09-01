@@ -1,18 +1,21 @@
-FROM alpine:3.13 as builder
+FROM alpine:3.14 as builder
 
 RUN mkdir /empty
 
 RUN apk add -X http://dl-cdn.alpinelinux.org/alpine/edge/testing --no-cache \
-    curl gcc musl-dev tcc
+    curl gcc musl-dev pcre tcc
 
-RUN curl https://nim-lang.org/download/nim-1.4.6.tar.xz | tar xJ
+RUN curl https://nim-lang.org/download/nim-1.4.8.tar.xz | tar xJ
 
-RUN cd nim-1.4.6            \
+RUN cd nim-1.4.8            \
  && ./build.sh              \
  && ./bin/nim c koch        \
  && ./koch boot -d:release  \
  && ./koch install /usr/bin \
  && strip /usr/bin/nim
+
+# Docker can only copy symlinks by copying the whole folder :-(
+RUN mkdir /usr-lib-symlinks && cp -P /usr/lib/libc.so /usr-lib-symlinks
 
 FROM scratch
 
@@ -24,14 +27,17 @@ COPY --from=0 /empty                   /tmp
 COPY --from=0 /usr/bin/nim             \
               /usr/bin/tcc             /usr/bin/
 COPY --from=0 /usr/include             /usr/include/
+COPY --from=0 /usr-lib-symlinks        /usr/lib
 COPY --from=0 /usr/lib/crt1.o          \
               /usr/lib/crti.o          \
               /usr/lib/crtn.o          \
-              /usr/lib/libc.a          \
               /usr/lib/libdl.a         \
               /usr/lib/libm.a          \
+              /usr/lib/libpcre.so.1    \
               /usr/lib/librt.a         /usr/lib/
 COPY --from=0 /usr/lib/nim             /usr/lib/nim/
 COPY --from=0 /usr/lib/tcc             /usr/lib/tcc/
 
-ENTRYPOINT ["nim", "-v"]
+ENTRYPOINT ["nim"]
+
+CMD ["-v"]

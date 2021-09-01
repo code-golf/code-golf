@@ -1,5 +1,7 @@
 #!/bin/sh -e
 
+[ "$1" = "--version" ] && exec /usr/bin/ghc --version
+
 cat - > /tmp/code.hs
 
 exec /usr/bin/runghc /tmp/code.hs "$@"

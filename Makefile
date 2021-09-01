@@ -1,32 +1,17 @@
 GOFILES  := $(shell find . -name '*.go' ! -path './.go*')
-POSTGRES := postgres:12.6-alpine
+POSTGRES := postgres:13.4-alpine
 SHELL    := /bin/bash
 
 export COMPOSE_PATH_SEPARATOR=:
-export COMPOSE_FILE=docker/core.yml:docker/ports.yml
-
-define STUB
-package routes
-
-import "net/http"
-
-const holeJsPath       = ""
-const twemojiWoff2Path = ""
-
-func Asset(w http.ResponseWriter, r *http.Request) {}
-endef
+export COMPOSE_FILE=docker/core.yml:docker/dev.yml
 
 bench:
-# FIXME Stub out assets if it doesn't yet exist.
-ifeq ($(wildcard routes/assets.go),)
-	$(file > routes/assets.go, $(STUB))
-endif
-
 	@go test -bench B -benchmem ./...
 
 bump:
 	@go get -u
 	@go mod tidy
+	@npm upgrade
 
 cert:
 	@mkcert -install localhost
@@ -39,7 +24,7 @@ db:
 
 db-admin:
 	@ssh -t rancher@code.golf docker run -it --rm \
-	    --env-file /etc/code-golf.env $(POSTGRES) psql -WU doadmin
+	    --env-file /etc/code-golf.env $(POSTGRES) psql -W code-golf doadmin
 
 db-dev:
 	@docker-compose exec db psql -U postgres code-golf
@@ -59,50 +44,46 @@ db-dump:
 
 	@cp db/*.gz ~/Dropbox/code-golf/
 
-deps:
-	@yay -S mkcert python-brotli python-fonttools
-
 dev:
 	@touch docker/.env
 	@docker-compose rm -f
 	@docker-compose up --build
 
-e2e: export COMPOSE_FILE         = docker/core.yml:docker/e2e.yml
-e2e: export COMPOSE_PROJECT_NAME = code-golf-e2e
+# e2e-iterate is useful when you have made a small change to test code only and want to re-run.
+# Note that logs are not automatically shown when tests fail, because they make it harder to see
+# test results and this target isn't used by CI.
+e2e-iterate: export COMPOSE_FILE=docker/core.yml:docker/e2e.yml
+e2e-iterate: export COMPOSE_PROJECT_NAME=code-golf-e2e
+e2e-iterate:
+	@docker-compose run e2e
+
+e2e: export COMPOSE_FILE=docker/core.yml:docker/e2e.yml
+e2e: export COMPOSE_PROJECT_NAME=code-golf-e2e
 e2e:
 # TODO Pass arguments to run specific tests.
+	@./esbuild
 	@touch docker/.env
-	@docker-compose rm -fs
+	@docker-compose rm -fsv &>/dev/null
 	@docker-compose pull -q
 	@docker-compose build -q
 	@docker-compose run e2e || (docker-compose logs; false)
-	@docker-compose rm -fs
-
-editor:
-	@node_modules/.bin/esbuild --bundle --format=esm --outdir=public editor.js
+	@docker-compose rm -fsv &>/dev/null
 
 fmt:
 	@gofmt -s  -w $(GOFILES)
 	@goimports -w $(GOFILES)
 
 font:
-	@docker build -t code-golf-font -f docker/font.Dockerfile .
-	@id=`docker create code-golf-font`;                                                 \
-	    docker cp "$$id:twemoji-colr/build/Twemoji Mozilla.woff2" assets/twemoji.woff2; \
+	@docker build -t code-golf-font -f docker/font.Dockerfile docker
+	@id=`docker create code-golf-font`;                                                \
+	    docker cp "$$id:twemoji-colr/build/Twemoji Mozilla.woff2" fonts/twemoji.woff2; \
 	    docker rm $$id
 
 lint:
-# FIXME Stub out assets if it doesn't yet exist.
-ifeq ($(wildcard routes/assets.go),)
-	$(file > routes/assets.go, $(STUB))
-endif
-
 	@docker run --rm -v $(CURDIR):/app -w /app \
-	    golangci/golangci-lint:v1.39.0 golangci-lint run
+	    golangci/golangci-lint:v1.41.1 golangci-lint run
 
 live:
-	@./build-assets
-
 	@docker build --pull -f docker/live.Dockerfile -t codegolf/code-golf .
 
 	@docker push codegolf/code-golf
@@ -112,20 +93,17 @@ live:
 	    docker stop code-golf;            \
 	    docker rm code-golf;              \
 	    docker run                        \
-	    --cap-add      CAP_KILL           \
-	    --cap-add      CAP_SETGID         \
-	    --cap-add      CAP_SETUID         \
-	    --cap-add      CAP_SYS_ADMIN      \
-	    --cap-drop     ALL                \
 	    --detach                          \
 	    --env-file     /etc/code-golf.env \
 	    --init                            \
 	    --name         code-golf          \
+	    --pids-limit   1024               \
+	    --privileged                      \
 	    --publish       80:1080           \
 	    --publish      443:1443           \
 	    --read-only                       \
 	    --restart      always             \
-	    --security-opt seccomp:unconfined \
+	    --ulimit       core=-1            \
 	    --volume       certs:/certs       \
 	    codegolf/code-golf &&             \
 	    docker system prune -f"
@@ -134,9 +112,4 @@ logs:
 	@ssh rancher@code.golf docker logs --tail 5 -f code-golf
 
 test:
-# FIXME Stub out assets if it doesn't yet exist.
-ifeq ($(wildcard routes/assets.go),)
-	$(file > routes/assets.go, $(STUB))
-endif
-
 	@go test ./...

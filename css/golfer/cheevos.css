@@ -1,0 +1,51 @@
+details > div {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(21rem, 1fr));
+}
+
+main {
+    gap: 0;
+    padding: 0;
+}
+
+summary {
+    background: var(--background);
+    border: 0;
+    color: var(--color);
+    font-size: 1.5rem;
+    font-variant: tabular-nums;
+    font-weight: bold;
+    padding: 1rem;
+    position: sticky;
+    top: calc(5.75rem + 2px);
+    z-index: 1;
+}
+
+summary:hover { background: var(--background) !important }
+
+.cheevo {
+    display: grid;
+    gap: .5rem 1rem;
+    grid-template: auto 1fr auto / auto 1fr;
+    padding: 1rem;
+}
+
+.cheevo > div { grid-row: span 3 }
+
+.cheevo > div:first-of-type { font-size: 4rem }
+
+.cheevo > p:last-of-type {
+    display: flex;
+    font-size: .75rem;
+    font-weight: bold;
+    justify-content: space-between;
+}
+
+.cheevo:not(.earned) { background: var(--light-grey) }
+
+.cheevo:not(.earned) > div:first-of-type {
+    color: transparent;
+    text-shadow: 0 0 var(--cheevo-not-earned);
+}
+
+.cheevo:not(.earned) span { color: var(--red-text) }

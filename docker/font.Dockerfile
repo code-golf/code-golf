@@ -1,20 +1,19 @@
-FROM node:10.22.1-buster-slim
+FROM node:10.24.1-buster-slim
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
     fontforge fonttools git make python-fontforge unzip woff2 zip
 
-RUN git clone -b v0.5.1 git://github.com/mozilla/twemoji-colr
+RUN git clone -b v0.6.0 git://github.com/mozilla/twemoji-colr
 
 WORKDIR twemoji-colr
 
 RUN npm install
 
-COPY ["1fa9e.svg", "svg/"] # Mirror
-
 RUN echo [] > extras/ligatures.json                      \
  && unzip -q twe-svg.zip                                 \
     svg/1f1*-*          `# Flags`                        \
     svg/1f308.svg       `# Rainbow`                      \
+    svg/1f30c.svg       `# Milky Way`                    \
     svg/1f35e.svg       `# Bread`                        \
     svg/1f37a.svg       `# Beer Mug`                     \
     svg/1f382.svg       `# Birthday Cake`                \
@@ -24,8 +23,10 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f3b8.svg       `# Guitar`                       \
     svg/1f3c6.svg       `# Trophy`                       \
     svg/1f409.svg       `# Dragon`                       \
+    svg/1f40b.svg       `# Whale`                        \
     svg/1f40d.svg       `# Sanke`                        \
     svg/1f418.svg       `# Elephant`                     \
+    svg/1f41f.svg       `# Fish`                         \
     svg/1f42a.svg       `# Camel`                        \
     svg/1f44b.svg       `# Waving Hand`                  \
     svg/1f44d.svg       `# Thumbs Up`                    \
@@ -38,6 +39,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f4c5.svg       `# Calendar`                     \
     svg/1f4c9.svg       `# Chart Decreasing`             \
     svg/1f4d5.svg       `# Closed Book`                  \
+    svg/1f4f4.svg       `# Mobile Phone Off`             \
     svg/1f511.svg       `# Key`                          \
     svg/1f523.svg       `# Input Symbols`                \
     svg/1f596.svg       `# Vulcan Salute`                \
@@ -69,12 +71,15 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f947.svg       `# 1st Place Medal`              \
     svg/1f948.svg       `# 2nd Place Medal`              \
     svg/1f949.svg       `# 3rd Place Medal`              \
+    svg/1f961.svg       `# Takeout Box`                  \
     svg/1f967.svg       `# Pie`                          \
     svg/1f98e.svg       `# Lizard`                       \
     svg/1f9a5.svg       `# Sloth`                        \
     svg/1f9db.svg       `# Vampire`                      \
     svg/1f9e0.svg       `# Brain`                        \
     svg/1f9f6.svg       `# Yarn`                         \
+    svg/1fa9b.svg       `# Screwdriver`                  \
+    svg/1fa9e.svg       `# Mirror`                       \
     svg/2615.svg        `# Hot Beverage`                 \
     svg/2639.svg        `# Frowning Face`                \
     svg/26f3.svg        `# Flag in Hole`                 \

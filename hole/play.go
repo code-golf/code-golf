@@ -6,6 +6,8 @@ import (
 	"context"
 	"embed"
 	"errors"
+	"fmt"
+	"os"
 	"os/exec"
 	"strings"
 	"syscall"
@@ -19,17 +21,22 @@ const timeout = 7 * time.Second
 var answers embed.FS
 
 type Scorecard struct {
-	Answer         string
-	Args           []string
-	Pass, Timeout  bool
-	Stderr, Stdout []byte
-	Took           time.Duration
+	ASMBytes, ExitCode int
+	Answer             string
+	Args               []string
+	Pass, Timeout      bool
+	Stderr, Stdout     []byte
+	Took               time.Duration
 }
 
 func getAnswer(holeID, code string) (args []string, answer string) {
+	args = []string{}
+
 	switch holeID {
 	case "arabic-to-roman", "roman-to-arabic":
 		args, answer = arabicToRoman(holeID == "roman-to-arabic")
+	case "arrows":
+		args, answer = arrows()
 	case "brainfuck":
 		args, answer = brainfuck()
 	case "css-colors":
@@ -64,6 +71,8 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 		args, answer = sevenSegment()
 	case "spelling-numbers":
 		args, answer = spellingNumbers()
+	case "star-wars-opening-crawl":
+		args, answer = starWarsOpeningCrawl()
 	case "sudoku", "sudoku-v2":
 		args, answer = sudoku(holeID == "sudoku-v2")
 	case "ten-pin-bowling":
@@ -90,6 +99,7 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	score.Args, score.Answer = getAnswer(holeID, code)
 
 	var stderr, stdout bytes.Buffer
+	var asmBytesRead, asmBytesWrite *os.File
 
 	ctx, cancel := context.WithTimeout(ctx, timeout)
 	defer cancel()
@@ -105,6 +115,14 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 
 	// Interpreter
 	switch langID {
+	case "assembly":
+		var err error
+		if asmBytesRead, asmBytesWrite, err = os.Pipe(); err != nil {
+			panic(err)
+		}
+
+		cmd.Args = []string{"/usr/bin/defasm", "--size-out=3", "-r"}
+		cmd.ExtraFiles = []*os.File{asmBytesWrite}
 	case "bash":
 		cmd.Args = []string{"/usr/bin/bash", "-s", "-"}
 	case "brainfuck":
@@ -125,36 +143,34 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	case "j":
 		cmd.Args = []string{"/usr/bin/j", "/tmp/code.ijs"}
 	case "javascript":
-		cmd.Args = []string{"/v8/lib/d8", "-e", code, "--"}
+		cmd.Args = []string{"/usr/bin/d8", "-e", code, "--"}
 	case "julia":
 		cmd.Args = []string{"/usr/bin/run-julia", "/tmp/code.jl"}
+	case "nim":
+		cmd.Args = []string{"/usr/bin/nim", "-o:/tmp/code", "-r", "c", "-"}
 	case "powershell":
-		cmd.Args = []string{"/interpreter/Interpreter"}
+		cmd.Args = []string{"/interpreter/Interpreter", "-"}
 
 		// Require explicit output for Quine to prevent trivial solutions.
 		if holeID == "quine" {
-			cmd.Args = append(cmd.Args, "--explicit")
+			cmd.Args[1] = "--explicit"
+			cmd.Args = append(cmd.Args, "-")
 		}
 	case "python":
 		// Force the stdout and stderr streams to be unbuffered.
 		cmd.Args = []string{"/usr/bin/python", "-u", "-"}
-	case "nim":
-		cmd.Args = []string{"/usr/bin/nim", "-o:/tmp/code", "-r", "c", "-"}
 	default:
 		cmd.Args = []string{"/usr/bin/" + langID, "-"}
 	}
 
 	// Args
 	switch langID {
-	// FIXME brainfuck and fish should be consistent.
-	case "brainfuck":
+	case "brainfuck", "fish":
 		args := ""
 		for _, arg := range score.Args {
 			args += arg + "\x00"
 		}
 		cmd.Stdin = strings.NewReader(args)
-	case "fish":
-		cmd.Stdin = strings.NewReader(strings.Join(score.Args, "\x00"))
 	default:
 		cmd.Args = append(cmd.Args, score.Args...)
 	}
@@ -176,6 +192,10 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	score.Took = timeout - time.Until(deadline)
 
 	if err != nil {
+		if err, ok := err.(*exec.ExitError); ok {
+			score.ExitCode = err.ExitCode()
+		}
+
 		if errors.Is(ctx.Err(), context.DeadlineExceeded) {
 			score.Timeout = true
 			stderr.WriteString("Killed for exceeding the 7s timeout.")
@@ -183,6 +203,14 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 			stderr.WriteString(err.Error())
 			println(err.Error())
 		}
+	}
+
+	// Actual byte count is printed by the assembler.
+	if langID == "assembly" {
+		if _, err := fmt.Fscanf(asmBytesRead, "%d", &score.ASMBytes); err != nil {
+			panic(err)
+		}
+		asmBytesRead.Close()
 	}
 
 	const maxLength = 128 * 1024 // 128 KiB
@@ -227,6 +255,12 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		score.Stdout = bytes.Replace(score.Stdout, []byte("Ⅽ"), []byte("C"), -1)
 		score.Stdout = bytes.Replace(score.Stdout, []byte("Ⅾ"), []byte("D"), -1)
 		score.Stdout = bytes.Replace(score.Stdout, []byte("Ⅿ"), []byte("M"), -1)
+	}
+
+	// Timeouts do not pass, no matter what they output
+	if score.Timeout {
+		score.Pass = false
+		return
 	}
 
 	if len(score.Stdout) != 0 {

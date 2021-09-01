@@ -5,11 +5,12 @@ This is the repository behind https://code.golf
 ## Quickstart
 
 1. Install dependencies:
-* [Go](https://golang.org/doc/install)
 * [Docker](https://docs.docker.com/engine/install/)
 * [Docker Compose](https://docs.docker.com/compose/install/)
+* [Go](https://golang.org/doc/install)
 * [make](https://www.gnu.org/software/make/) - most likely already on your system
 * [mkcert](https://github.com/FiloSottile/mkcert#installation)
+* [npm](https://www.npmjs.com/get-npm)
 
 2. Install the local CA:
 ```
@@ -25,9 +26,9 @@ Created a new certificate valid for the following names 📜
 The certificate is at "./localhost.pem" and the key at "./localhost-key.pem" ✅
 ```
 
-3. Build the assets:
+3. Install the NPM packages:
 ```
-$ ./build-assets
+$ npm install
 ```
 
 4. Bring up the website:

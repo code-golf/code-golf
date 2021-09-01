@@ -1,5 +1,7 @@
 #!/bin/sh -e
 
+[ "$1" = "version" ] && exec /usr/local/bin/zig version
+
 cd /tmp
 
 # Compile

@@ -1,17 +1,16 @@
-FROM alpine:3.13 as builder
+FROM alpine:3.14 as builder
 
 RUN mkdir /empty
 
 RUN apk add --no-cache build-base clang curl openssl-dev
 
-RUN curl https://cache.ruby-lang.org/pub/ruby/3.0/ruby-3.0.1.tar.xz \
-  | tar xJf -
+RUN curl https://cache.ruby-lang.org/pub/ruby/3.0/ruby-3.0.2.tar.xz | tar xJ
 
 # Clang produces the same size binary as using LTO with GCC, but GCC+LTO leads
 # to an issue where the stack size available for recursion is significantly
 # reduced. It may be worth trying to enable LTO for Clang. That appears to
 # require building the LLVMgold plugin.
-RUN cd ruby-3.0.1          \
+RUN cd ruby-3.0.2          \
  && CC=clang ./configure   \
     --disable-install-doc  \
     --disable-jit-support  \
@@ -61,4 +60,6 @@ COPY --from=0 /empty                   /tmp
 COPY --from=0 /usr/bin/ruby            /usr/bin/
 COPY --from=0 /usr/lib/ruby/3.0.0      /usr/lib/ruby/3.0.0
 
-ENTRYPOINT ["ruby", "-e", "puts RUBY_VERSION"]
+ENTRYPOINT ["ruby"]
+
+CMD ["-e", "puts RUBY_VERSION"]

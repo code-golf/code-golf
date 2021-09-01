@@ -1,15 +1,15 @@
-FROM alpine:3.13 as builder
+FROM alpine:3.14 as builder
 
 RUN mkdir /empty
 
 RUN apk add --no-cache build-base curl
 
-RUN curl -L https://php.net/distributions/php-7.4.16.tar.xz | tar xJf -
+RUN curl -L https://php.net/distributions/php-7.4.23.tar.xz | tar xJ
 
 ENV CFLAGS='-O2 -flto -ffat-lto-objects' \
    LDFLAGS='-O2 -flto -ffat-lto-objects'
 
-RUN cd php-7.4.16                                             \
+RUN cd php-7.4.23                                             \
  && ./configure                                               \
     --disable-all                                             \
     --disable-gcc-global-regs                                 \
@@ -28,4 +28,6 @@ COPY --from=0 /empty           /tmp
 COPY --from=0 /usr/bin/php     /usr/bin/
 COPY --from=0 /usr/lib/php.ini /usr/lib/
 
-ENTRYPOINT ["php", "-r", "echo phpversion();"]
+ENTRYPOINT ["php"]
+
+CMD ["-r", "echo phpversion();"]

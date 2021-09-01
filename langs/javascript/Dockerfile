@@ -1,73 +1,42 @@
-# Based on https://gist.github.com/tylerchr/15a74b05944cfb90729db6a51265b6c9
-
-FROM debian:buster-slim as pre-builder
-
-RUN apt-get update && apt-get install -y curl git python
-
-ENV PATH "/tmp/depot_tools:$PATH"
-
-WORKDIR /tmp
-
-RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git \
- && fetch v8                \
- && cd v8                   \
- && git checkout 8.8.278.17 \
- && gclient sync
-
-FROM alpine:3.13 as builder
+FROM debian:bullseye-slim as builder
 
 RUN mkdir /empty
 
-COPY --from=0 /tmp/v8 /tmp/v8
+RUN apt-get update \
+ && apt-get install -y curl g++ git pkg-config python python3
 
-RUN apk add --no-cache alpine-sdk binutils-gold clang curl g++ gcc git \
-    glib-dev icu-dev libstdc++ linux-headers llvm make ninja python2 tar xz
+ENV PATH "/depot_tools:$PATH"
 
-ENV PATH "/usr/lib/llvm9/bin:$PATH"
+RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git \
+ && fetch v8
 
-RUN cp -f /usr/bin/ld.gold /usr/bin/ld               \
- && git clone https://gn.googlesource.com/gn /tmp/gn \
- && cd /tmp/gn                                       \
- && git reset --hard dfcbc6f                         \
- && build/gen.py                                     \
- && ninja -C out                                     \
- && cp -f /tmp/gn/out/gn /tmp/v8/buildtools/linux64/gn
+WORKDIR /v8
 
-RUN cd /tmp/v8                               \
- && tools/dev/v8gen.py x64.release --        \
-    'is_cfi=false'                           \
-    'is_clang=false'                         \
-    'is_component_build=true'                \
-    'is_official_build=true'                 \
-    'strip_debug_info=true'                  \
-    'symbol_level=0'                         \
-    'target_cpu="x64"'                       \
-    'target_os="linux"'                      \
-    'treat_warnings_as_errors=false'         \
-    'use_custom_libcxx=false'                \
-    'use_gold=false'                         \
-    'use_sysroot=false'                      \
-    'v8_enable_future=true'                  \
-    'v8_enable_gdbjit=false'                 \
-    'v8_enable_i18n_support=false'           \
-    'v8_static_library=true'                 \
-    'v8_target_cpu="x64"'                    \
-    'v8_use_external_startup_data=false'     \
- && ninja -C out.gn/x64.release -j`nproc` d8 \
- && strip /tmp/v8/out.gn/x64.release/d8 /tmp/v8/out.gn/x64.release/*.so
+RUN git checkout 9.2.230.30 && gclient sync -D
+
+RUN gn gen out --args="                 \
+    is_debug=false                      \
+    symbol_level=0                      \
+    use_thin_lto=true                   \
+    v8_enable_gdbjit=false              \
+    v8_enable_i18n_support=false        \
+    v8_enable_webassembly=false         \
+    v8_monolithic=true                  \
+    v8_use_external_startup_data=false" \
+ && ninja -C out d8                     \
+ && strip out/d8
 
 FROM scratch
 
-COPY --from=1 /lib/ld-musl-x86_64.so.1                        /lib/
-COPY --from=1 /empty                                          /proc
-COPY --from=1 /empty                                          /tmp
-COPY --from=1 /usr/lib/libgcc_s.so.1                          \
-              /usr/lib/libstdc++.so.6                         /usr/lib/
-COPY --from=1 /tmp/v8/include                                 /v8/include
-COPY --from=1 /tmp/v8/out.gn/x64.release/d8                   \
-              /tmp/v8/out.gn/x64.release/libchrome_zlib.so    \
-              /tmp/v8/out.gn/x64.release/libv8.so             \
-              /tmp/v8/out.gn/x64.release/libv8_libbase.so     \
-              /tmp/v8/out.gn/x64.release/libv8_libplatform.so /v8/lib/
+COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
+              /lib/x86_64-linux-gnu/libgcc_s.so.1   \
+              /lib/x86_64-linux-gnu/libm.so.6       \
+              /lib/x86_64-linux-gnu/libpthread.so.0 /lib/
+COPY --from=0 /lib64/ld-linux-x86-64.so.2           /lib64/
+COPY --from=0 /empty                                /proc
+COPY --from=0 /empty                                /tmp
+COPY --from=0 /v8/out/d8                            /usr/bin/
 
-ENTRYPOINT ["/v8/lib/d8", "-v"]
+ENTRYPOINT ["/usr/bin/d8"]
+
+CMD ["-v"]

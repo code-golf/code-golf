@@ -1,14 +1,14 @@
-FROM alpine:3.13 as builder
+FROM alpine:3.14 as builder
 
 RUN mkdir /empty
 
 RUN apk add --no-cache cmake curl g++ gfortran libexecinfo-dev \
     linux-headers m4 make musl-dev patch perl python3 tar xz
 
-ENV CXXFLAGS=-flto LDFLAGS=-flto VER=1.6.0
+ENV CXXFLAGS=-flto LDFLAGS=-flto VER=1.6.2
 
 RUN curl -L https://github.com/JuliaLang/julia/releases/download/v$VER/julia-$VER.tar.gz \
-  | tar xzf -
+  | tar xz
 
 RUN make -C julia-$VER -j`nproc` prefix=/usr MARCH=x86-64 install \
  && strip -s /usr/bin/julia /usr/lib/julia/*.so                   \
@@ -37,4 +37,6 @@ COPY --from=0 /usr/lib/libbrotlicommon.so.1 \
               /usr/lib/libssl.so.1.1        \
               /usr/lib/libstdc++.so.6       /usr/lib/
 
-ENTRYPOINT ["julia", "-e", "println(VERSION)"]
+ENTRYPOINT ["/usr/bin/run-julia"]
+
+CMD ["-v"]
