@@ -737,6 +737,13 @@ preamble = '''
     <b>FizzBuzz</b>.
 '''
 
+['Fractions']
+category = 'Mathematics'
+preamble = '''
+<p>
+    Reduce each fraction to its simplest form.
+'''
+
 ['Happy Numbers']
 category = 'Sequence'
 links = [
