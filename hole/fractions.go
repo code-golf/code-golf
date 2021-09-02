@@ -45,8 +45,8 @@ func isIrreducible(frac fract) bool {
 func fracGen() fract {
 	return fract{
 		n: rand.Intn(16),
-		d: rand.Intn(15)+1,
-		s: rand.Intn(15)+1,
+		d: rand.Intn(15) + 1,
+		s: rand.Intn(15) + 1,
 	}
 }
 
@@ -54,6 +54,7 @@ func fractions() (args []string, out string) {
 	var outs []string
 
    	//// some hardcoded cases
+	// values
     	f1 := fract{n: 1,  d: 1, s:1}
    	f2 := fract{n: 1,  d: 1, s:10}
  	f3 := fract{n: 1,  d: 2, s:1}
