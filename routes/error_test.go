@@ -15,6 +15,7 @@ func TestForbidden(t *testing.T) {
 
 	assert.Equal(t, w.Code, http.StatusForbidden)
 	assert.Equal(t, w.Header().Get("Content-Type"), "text/html; charset=utf-8")
+	assert.Equal(t, w.Header().Get("X-Robots-Tag"), "noindex")
 }
 
 func TestNotFound(t *testing.T) {
