@@ -51,7 +51,7 @@ func genNotes(rootIdx int, rootNote string, steps [2]int) []string {
 
 	// Enforce strict spelling. The third should be 2 letters
 	// above the root, and the fifth should be 4 letters above,
-	// wrapping at F
+	// wrapping at G
 	if (letterVal(rootNote)+2)%7 != letterVal(thirdNote) {
 		thirdNote = notes[thirdIdx][1]
 	}
@@ -59,15 +59,11 @@ func genNotes(rootIdx int, rootNote string, steps [2]int) []string {
 		fifthNote = notes[fifthIdx][1]
 	}
 
-	//Return empty if strict spelling is impossible
+	// Return empty if strict spelling is impossible
 	if (letterVal(rootNote)+2)%7 != letterVal(thirdNote) || (letterVal(rootNote)+4)%7 != letterVal(fifthNote) {
 		return []string{}
 	}
 	return []string{rootNote, thirdNote, fifthNote}
-}
-
-func genChord(note, triad string) string {
-	return note + triad
 }
 
 func musicalChords() (args []string, out string) {
@@ -75,7 +71,7 @@ func musicalChords() (args []string, out string) {
 
 	for rootIdx, rootNames := range notes {
 
-		//Loop once for each unique name the note has
+		// Loop once for each unique name the note has
 		uniqueNames := 2
 		if rootNames[0] == rootNames[1] {
 			uniqueNames = 1
