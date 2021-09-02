@@ -53,16 +53,16 @@ func fracGen() fract {
 func fractions() (args []string, out string) {
 	var outs []string
 
-   	//// some hardcoded cases
-	// values
-    	f1 := fract{n: 1,  d: 1, s:1}
-   	f2 := fract{n: 1,  d: 1, s:10}
- 	f3 := fract{n: 1,  d: 2, s:1}
-  	f4 := fract{n: 1,  d: 2, s:10}
-  	f5 := fract{n: 2,  d: 1, s:1}
-  	f6 := fract{n: 2,  d: 1, s:10}
-  	f7 := fract{n: 0,  d: 1, s:1}
- 	f8 := fract{n: 15, d:14, s:15}
+   	//// default cases
+	// hardcoded values
+    	f1 := fract{n: 1, d: 1, s: 1}
+   	f2 := fract{n: 1, d: 1, s: 10}
+ 	f3 := fract{n: 1, d: 2, s: 1}
+  	f4 := fract{n: 1, d: 2, s: 10}
+  	f5 := fract{n: 2, d: 1, s: 1}
+  	f6 := fract{n: 2, d: 1, s: 10}
+  	f7 := fract{n: 0, d: 1, s: 1}
+ 	f8 := fract{n: 15, d: 14, s: 15}
     
    	 // 1 over 1
    	 args = append(args, strconvunsimplifiedfrac(f1))
