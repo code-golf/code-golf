@@ -1210,6 +1210,32 @@ preamble = '''
 </div>
 '''
 
+['Musical Chords']
+category = 'Transform'
+experiment = -1
+links = [
+    { name = 'Wikipedia', url = 'https://en.wikipedia.org/wiki/Triad_(music)' },
+]
+preamble = '''
+<p>
+    The twelve pitch classes in twelve-tone equal temperament are, in ascending order:
+<p>
+    A, A♯/B♭, B, C, C♯/D♭, D, D♯/E♭, E, F, F♯/G♭, G, G♯/A♭
+<p>
+    A triad in root position consists of a root note on the bottom followed by two thirds stacked on top of it. A third can be either of two types:
+<p>
+    Interval Name | Distance in Semitones | Example
+    Minor third | 3 | A C
+    Major third | 4 | C E
+<p>
+    Requiring the root to be unique (for any order and spelling of notes) leaves three possible combinations of thirds:
+<p>
+    Triad Name | Intervals (Bottom to Top) | Example
+    Major triad | Major third + Minor third | C E G
+    Minor triad | Minor third + Major third | E G B
+    Diminished triad | Minor third + Minor third |  B D F
+'''
+
 ['Niven Numbers']
 category = 'Sequence'
 links = [

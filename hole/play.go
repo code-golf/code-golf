@@ -55,6 +55,8 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 		args, answer = maze()
 	case "morse-decoder", "morse-encoder":
 		args, answer = morse(holeID == "morse-decoder")
+	case "musical-chords":
+		args, answer = musicalChords()
 	case "ordinal-numbers":
 		args, answer = ordinalNumbers()
 	case "pangram-grep":
