@@ -4,9 +4,9 @@ RUN mkdir /empty
 
 RUN apk add --no-cache build-base curl libffi-dev zlib-dev
 
-RUN curl https://www.python.org/ftp/python/3.9.6/Python-3.9.6.tar.xz | tar xJ
+RUN curl https://www.python.org/ftp/python/3.9.7/Python-3.9.7.tar.xz | tar xJ
 
-RUN cd Python-3.9.6       \
+RUN cd Python-3.9.7       \
  && ./configure           \
     --prefix=/usr         \
     --with-lto            \

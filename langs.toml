@@ -367,8 +367,8 @@ class Main {
 '''
 
 [JavaScript]
-size    = '20.6 MiB'
-version = 'V8 9.2.230.30'
+size    = '20.7 MiB'
+version = 'V8 9.3.345.16'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -532,8 +532,8 @@ ForEach ($arg in $args) {
 '''
 
 [Python]
-size    = '57 MiB'
-version = '3.9.6'
+size    = '57.2 MiB'
+version = '3.9.7'
 website = 'https://www.python.org'
 example = '''
 import sys
