@@ -797,6 +797,7 @@ preamble = '''
 
 ['Fractions']
 category = 'Mathematics'
+experiment = -1
 preamble = '''
 <p>
     Reduce each fraction to its simplest form.
