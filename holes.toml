@@ -1209,6 +1209,7 @@ preamble = '''
     </table>
 </div>
 '''
+
 ['Musical Chords']
 category = 'Transform'
 experiment = -1
@@ -1234,6 +1235,7 @@ preamble = '''
     Minor triad | Minor third + Major third | E G B
     Diminished triad | Minor third + Minor third |  B D F
 '''
+
 ['Niven Numbers']
 category = 'Sequence'
 links = [
