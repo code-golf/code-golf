@@ -1,4 +1,4 @@
-package fractions
+package hole
 
 import (
 	"math/rand"
