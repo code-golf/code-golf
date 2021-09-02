@@ -32,13 +32,13 @@ func strconvsimplifiedfrac(frac fract) (out string) {
 // 1 then the fraction is reducible
 func isIrreducible(frac fract) bool {
 	gcd := 2
-    for gcd <= frac.d {
-    	if frac.n % gcd == 0 && frac.d % gcd == 0 {
-        	return false
-        }
-        gcd++
-    }
-    return true
+	for gcd <= frac.d {
+    		if frac.n % gcd == 0 && frac.d % gcd == 0 {
+        		return false
+        	}
+        	gcd++
+    	}
+    	return true
 }
 
 // generator of random fraction with non-zero denominator
@@ -105,13 +105,11 @@ func fractions() (args []string, out string) {
         	cases++
         }
     }
-
     // shuffle args and outputs in the same way
     rand.Shuffle(len(args), func(i, j int) {
 	args[i], args[j] = args[j], args[i]
 	outs[i], outs[j] = outs[j], outs[i]
     })
-
     out = strings.Join(outs, "\n")
     return
 }
