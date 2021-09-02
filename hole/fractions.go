@@ -15,8 +15,8 @@ type fract struct{ n, d, s int }
 // intersection hole
 func strconvunsimplifiedfrac(frac fract) (out string) {
 	var outs []string
-	outs = append(outs, strconv.Itoa(frac.n * frac.s))
-	outs = append(outs, strconv.Itoa(frac.d * frac.s))
+	outs = append(outs, strconv.Itoa(frac.n*frac.s))
+	outs = append(outs, strconv.Itoa(frac.d*frac.s))
 	return strings.Join(outs, "/")
 }
 
