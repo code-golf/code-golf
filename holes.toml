@@ -1311,7 +1311,7 @@ preamble = '''
     	            <th>Triad Name<th>Thirds (Bottom to Top)<th>Example
     	    <tbody>
     	        <tr>
-    	            <td>Diminshed Triad
+    	            <td>Diminished Triad
     	            <td>Minor, Minor
    	 	 	        <td><b>B D F</b>
     	        <tr>
