@@ -77,9 +77,10 @@ func Index(w http.ResponseWriter, r *http.Request) {
 				panic(err)
 			}
 
-			card.Hole = hole.ByID[holeID]
-
-			data.Cards = append(data.Cards, card)
+			if hole, ok := hole.ByID[holeID]; ok {
+				card.Hole = hole
+				data.Cards = append(data.Cards, card)
+			}
 		}
 
 		if err := rows.Err(); err != nil {
