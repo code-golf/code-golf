@@ -1225,40 +1225,60 @@ preamble = '''
     Background:
 <p>
     There are twelve pitch classes in twelve-tone equal temperament, some of which have multiple names due to <b>♯</b> and <b>♭</b> raising and lowering the pitch, respectively. They are, in ascending order:
- 	<div>
+ 	
+	<div>
     	<table>
         	<thead>
             	<tr>
-                	<th>#<th>0<th>1<th>2<th>3<th>4<th>5<th>6<th>7<th>8<th>9<th>10<th>11
+                	<th>#<th>Name 1<th>Name 2
         	<tbody>
             	<tr>
-                	<td>Name 1
+                	<td>0
                 	<td><b>A</b>
-                	<td><b>A♯</b>
-                	<td><b>B</b>
-                	<td><b>C</b>
-                	<td><b>C♯</b>
-                	<td><b>D</b>
-                	<td><b>D♯</b>
-                	<td><b>E</b>
-                	<td><b>F</b>
-                	<td><b>F♯</b>
-                	<td><b>G</b>
-               	 	<td><b>G♯</b>
-            	</tr>
+                	<td>
             	<tr>
-                	<td>Name 2
-                	<td>
+                	<td>1
+                	<td><b>A♯</b>
                 	<td><b>B♭</b>
+            	<tr>
+                	<td>2
+                	<td><b>B</b>
                 	<td><b>C♭</b>
+            	<tr>
+                	<td>3
+                	<td><b>C</b>
                 	<td><b>B♯</b>
-               	 	<td><b>D♭</b>
+            	<tr>
+                	<td>4
+                	<td><b>C♯</b>
+                	<td><b>D♭</b>
+            	<tr>
+                	<td>5
+                	<td><b>D</b>
                 	<td>
+            	<tr>
+                	<td>6
+                	<td><b>D♯</b>
                 	<td><b>E♭</b>
-               	 	<td><b>F♭</b>
+            	<tr>
+                	<td>7
+                	<td><b>E</b>
+                	<td><b>F♭</b>
+            	<tr>
+                	<td>8
+                	<td><b>F</b>
                 	<td><b>E♯</b>
+            	<tr>
+                	<td>9
+                	<td><b>F♯</b>
                 	<td><b>G♭</b>
+            	<tr>
+                	<td>10
+                	<td><b>F</b>
                 	<td>
+            	<tr>
+                	<td>11
+                	<td><b>G♯</b>
                 	<td><b>A♭</b>
           </table>
 	</div>
@@ -1283,6 +1303,7 @@ preamble = '''
     </div>
 <p>
     Being that there are 2 thirds in a triad and each third can be of 2 different types, there are 4 total “types” of triads. They are:  
+	
 	<div>
     	<table>
     	    <thead>
