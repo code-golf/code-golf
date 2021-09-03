@@ -1218,22 +1218,106 @@ links = [
 ]
 preamble = '''
 <p>
-    The twelve pitch classes in twelve-tone equal temperament are, in ascending order:
+    For each set of three musical notes forming a triad, print the name of the chord they form, consisting of the root note and the type of triad.
 <p>
-    A, A♯/B♭, B, C, C♯/D♭, D, D♯/E♭, E, F, F♯/G♭, G, G♯/A♭
+    Each note is represented as an uppercase letter, optionally followed by a single accidental, either sharp (<code>♯</code> U+266F) or flat (<code>♭</code> U+266D). 
 <p>
-    A triad in root position consists of a root note on the bottom followed by two thirds stacked on top of it. A third can be either of two types:
+    Background:
 <p>
-    Interval Name | Distance in Semitones | Example
-    Minor third | 3 | A C
-    Major third | 4 | C E
+    There are twelve pitch classes in twelve-tone equal temperament, some of which have multiple names due to <code>♯</code> and <code>♭</code> raising and lowering the pitch, respectively. They are, in ascending order:
+ 
+    <table>
+        <thead>
+            <tr>
+                <th>#<th>0<th>1<th>2<th>3<th>4<th>5<th>6 <th>7<th>8<th>9<th>10<th>11
+        <tbody>
+            <tr>
+                <td>Name 1
+                <td><code>A</code>
+                <td><code>A♯</code>
+                <td><code>B</code>
+                <td><code>C</code>
+                <td><code>C♯</code>
+                <td><code>D</code>
+                <td><code>D♯</code>
+                <td><code>E</code>
+                <td><code>F</code>
+                <td><code>F♯</code>
+                <td><code>G</code>
+                <td><code>G♯</code>
+            </tr>
+            <tr>
+                <td>Name 2
+                <td>
+                <td><code>B♭</code>
+                <td><code>C♭</code>
+                <td><code>B♯</code>
+                <td><code>D♭</code>
+                <td>
+                <td><code>E♭</code>
+                <td><code>F♭</code>
+                <td><code>E♯</code>
+                <td><code>G♭</code>
+                <td>
+                <td><code>A♭</code>
+    </table>
 <p>
-    Requiring the root to be unique (for any order and spelling of notes) leaves three possible combinations of thirds:
+	A triad consists of a root note on the bottom followed by two thirds stacked on top of it. Thirds describe the distance between the preceding and following note. A third can be either of two types: 
+  
+    <table>
+        <thead>
+            <tr>
+                <th>Name<th>Distance<th>Example
+        <tbody>
+            <tr>
+                <td>Minor third
+                <td>3
+                <td><code>A C</code> (note 0 to note 3)
+            <tr>
+                <td>Major third
+                <td>4
+                <td><code>C E</code> (note 3 to note 7)
+    </table>
 <p>
-    Triad Name | Intervals (Bottom to Top) | Example
-    Major triad | Major third + Minor third | C E G
-    Minor triad | Minor third + Major third | E G B
-    Diminished triad | Minor third + Minor third |  B D F
+    Being that there are 2 thirds in a triad and each third can be of 2 different types, there are 4 total “types” of triads. They are:  
+  
+    <table>
+        <thead>
+            <tr>
+                <th>Triad Name<th>Thirds (Bottom to Top)<th>Example
+        <tbody>
+            <tr>
+                <td>Diminshed Triad
+                <td>Minor, Minor
+                <td><code>B D F</code>
+            <tr>
+                <td>Minor Triad
+                <td>Minor, Major
+                <td><code>E G B</code>
+            <tr>
+                <td>Major Triad
+                <td>Major, Minor
+                <td><code>C E G</code>
+            <tr>
+                <td>Augmented Triad
+                <td>Major, Major
+                <td><code>D F♯ A♯</code>
+    </table>
+<p>
+    Input:
+  	
+  	<ul>
+        <li>Triads of notes will always be written out so that the letters in the name used ascend by 2 between each third. Therefore, a triad consisting of notes 3, 6, and 9 may be written as <code>B♯ D♯ F♯</code> or <code>C E♭ G♭</code>, but not, for example, as <code>C D♯ F♯</code>.
+        <li>The notes may appear in any order, e.g., <code>C E G</code> and <code>E C G</code> both may appear. 
+	</ul>
+
+<p>
+	Output:
+  
+ 	<ul>
+        <li>Chords are named by the root note followed by nothing for major, <code>m</code> for minor, <code>°</code> U+00B0 for diminished, and <code>+</code> for augmented. 
+        <li>The spelling of the root note in the output must match the input, e.g. the expected output for <code>C E♭ G♭</code> is <code>C°</code>, not <code>B♯°</code>. 
+  	</ul>
 '''
 
 ['Niven Numbers']
