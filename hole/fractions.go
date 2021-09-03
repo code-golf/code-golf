@@ -104,12 +104,18 @@ func fractions() (args []string, out string) {
 
 	//// default cases
 	// hardcoded values
-	ra1 := rand.Intn(248) + 2
-	ra2 := rand.Intn(248) + 2
+	ra1 := rand.Intn(249) + 2
+	ra2 := rand.Intn(249) + 2
+	ra3 := rand.Intn(249) + 2
+	ra4 := rand.Intn(151) + 100
 
 	hardcodes := []fract{
 		fract{n: 1, d: 1, s: 1},
 		fract{n: 1, d: 1, s: ra1},
+		fract{n: 1, d: ra3, s: 1},
+		fract{n: ra3, d: 1, s: 1},
+		fract{n: 1, d: ra4, s: 1},
+		fract{n: ra4, d: 1, s: 1},
 		fract{n: 1, d: 2, s: 1},
 		fract{n: 1, d: 2, s: 10},
 		fract{n: 1, d: 2, s: 100},
