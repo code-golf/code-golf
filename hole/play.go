@@ -45,6 +45,8 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 		args, answer = ellipsePerimeters()
 	case "emojify":
 		args, answer = emojify()
+	case "fractions":
+		args, answer = fractions()
 	case "intersection":
 		args, answer = intersection()
 	case "levenshtein-distance":
