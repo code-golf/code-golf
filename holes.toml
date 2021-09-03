@@ -795,12 +795,10 @@ preamble = '''
     <b>FizzBuzz</b>.
 '''
 
-['Fractions']
+[Fractions]
 category = 'Mathematics'
-experiment = -1
 preamble = '''
-<p>
-    Reduce each fraction to its simplest form.
+<p>For each fraction argument, reduce it to its simplest form.
 '''
 
 ['Happy Numbers']
