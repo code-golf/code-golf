@@ -1332,7 +1332,7 @@ preamble = '''
     Input:
   	
   	<ul>
-        <li>Triads of notes will always be written out so that the letters in the name used ascend by 2 between each third. Therefore, a triad consisting of notes 3, 6, and 9 may be written as <b>B♯ D♯ F♯</b> or <b>C E♭ G♭</b>, but not, for example, as <b>C D♯ F♯</b>.
+        <li>Triads of notes will always be written out so that the letters in the name used ascend by 2 between each third  (wrapping back to A after G). Therefore, a triad consisting of notes 3, 6, and 9 may be written as <b>B♯ D♯ F♯</b> or <b>C E♭ G♭</b>, but not, for example, as <b>C D♯ F♯</b>.
         <li>The notes may appear in any order, e.g., <b>C E G</b> and <b>E C G</b> both may appear. 
 	</ul>
 
