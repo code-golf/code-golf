@@ -33,6 +33,7 @@ import { lua }         from '@codemirror/legacy-modes/mode/lua';
 import { nim }         from 'nim-codemirror-mode';
 import { pascal }      from '@codemirror/legacy-modes/mode/pascal';
 import { perl }        from '@codemirror/legacy-modes/mode/perl';
+import { php }         from '@codemirror/lang-php';
 import { powerShell }  from '@codemirror/legacy-modes/mode/powershell';
 import { python }      from '@codemirror/lang-python';
 import { ruby }        from '@codemirror/legacy-modes/mode/ruby';
@@ -110,7 +111,7 @@ export const extensions = {
     'nim':        StreamLanguage.define(nim( {}, {} )),
     'pascal':     StreamLanguage.define(pascal),
     'perl':       StreamLanguage.define(perl),
-    // TODO php
+    'php':        php({ plain: true }),
     'powershell': StreamLanguage.define(powerShell),
     'python':     python(),
     // TODO raku

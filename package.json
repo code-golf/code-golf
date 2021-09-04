@@ -6,6 +6,7 @@
     "@codemirror/history": "",
     "@codemirror/lang-java": "",
     "@codemirror/lang-javascript": "",
+    "@codemirror/lang-php": "",
     "@codemirror/lang-python": "",
     "@codemirror/lang-rust": "",
     "@codemirror/lang-sql": "",
