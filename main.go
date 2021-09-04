@@ -215,12 +215,12 @@ func main() {
 	// Note this affects the host, maybe one day Linux will namespace these.
 	// See https://stackoverflow.com/a/39152041
 	if err := os.WriteFile(
-		"/proc/sys/kernel/core_pattern", []byte("/tmp/core"), 0644,
+		"/proc/sys/kernel/core_pattern", []byte("/tmp/core"), 0o644,
 	); err != nil {
 		log.Println(err)
 	}
 	if err := os.WriteFile(
-		"/proc/sys/kernel/core_uses_pid", []byte("0"), 0644,
+		"/proc/sys/kernel/core_uses_pid", []byte("0"), 0o644,
 	); err != nil {
 		log.Println(err)
 	}

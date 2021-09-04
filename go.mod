@@ -17,7 +17,7 @@ require (
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/kr/pretty v0.2.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
-	github.com/lib/pq v1.10.2
+	github.com/lib/pq v1.10.3
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/shurcooL/githubv4 v0.0.0-20210725200734-83ba7b4c9228
 	github.com/shurcooL/graphql v0.0.0-20200928012149-18c5c3165e3a // indirect
