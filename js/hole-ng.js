@@ -30,7 +30,7 @@ const editor = new EditorView({
         const scorings = {};
 
         if (lang == 'assembly')
-            scorings.byte = editor.state.field(ASMStateField).bytes;
+            scorings.byte = editor.state.field(ASMStateField).head.length();
         else {
             const code = [...tr.state.doc].join('');
 

@@ -1,7 +1,7 @@
 use t;
 
-like post-solution(:lang<assembly>)<Err>, rx[^
-    'Signal: segmentation violation after line 1 (%rip was ' <xdigit> ** 16 ')'
+like post-solution(:code('.globl _start;_start:nop') :lang<assembly>)<Err>, rx[^
+    'Signal: segmentation fault after line 1 (%rip was ' <xdigit> ** 16 ')'
  \n 'Registers:'
  \n '    %rax = ' <xdigit> ** 16 '        %r8  = ' <xdigit> ** 16
  \n '    %rbx = ' <xdigit> ** 16 '        %r9  = ' <xdigit> ** 16

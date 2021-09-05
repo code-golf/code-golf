@@ -406,7 +406,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(prctl),                // 157
         // ALLOW(process_vm_readv),  // 310
         // ALLOW(process_vm_writev), // 311
-        // ALLOW(ptrace),            // 101
+        ALLOW(ptrace),               // 101
         // ALLOW(seccomp),           // 317
         // ALLOW(unshare),           // 272
         // ALLOW(uselib),            // 134

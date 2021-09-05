@@ -18,10 +18,12 @@ v               ~<
 '''
 
 [Assembly]
-size    = '48.7 MiB'
-version = 'DefAssembler 2.0.0'
+size    = '42.1 MiB'
+version = 'DefAssembler 2.1.3'
 website = 'https://www.npmjs.com/package/@defasm/core'
 example = '''
+.globl _start
+_start:
 # Printing
 mov $1, %eax    # Syscall code 1 (write)
 mov $1, %edi    # File descriptor 1 (stdout)
