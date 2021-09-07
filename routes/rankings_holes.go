@@ -205,7 +205,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 		description += "all languages in "
 	}
 
-	description += data.Scoring
+	description += data.Scoring + "."
 
 	render(w, r, "rankings/holes", data, "Rankings: Holes", description)
 }

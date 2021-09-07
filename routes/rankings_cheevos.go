@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"html/template"
 	"net/http"
 	"time"
 
@@ -92,9 +93,9 @@ func RankingsCheevos(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	description := "All achievements"
+	description := interface{}("All achievements")
 	if cheevo := data.Cheevo; cheevo != nil {
-		description = cheevo.Emoji + " " + cheevo.Name
+		description = template.HTML(cheevo.Emoji+" "+cheevo.Name+" - ") + cheevo.Description
 	}
 
 	render(w, r, "rankings/cheevos", data, "Rankings: Achievements", description)

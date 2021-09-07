@@ -178,7 +178,7 @@ func init() {
 	}
 }
 
-func render(w http.ResponseWriter, r *http.Request, name string, data interface{}, meta ...string) {
+func render(w http.ResponseWriter, r *http.Request, name string, data ...interface{}) {
 	// The generated value SHOULD be at least 128 bits long (before encoding),
 	// and SHOULD be generated via a cryptographically secure random number
 	// generator - https://w3c.github.io/webappsec-csp/#security-nonces
@@ -200,22 +200,22 @@ func render(w http.ResponseWriter, r *http.Request, name string, data interface{
 	}
 
 	args := struct {
-		CSS                                                           template.CSS
-		CheevoBanner                                                  *CheevoBanner
-		Countries                                                     map[string]*country.Country
-		Data                                                          interface{}
-		DarkModeMediaQuery, Description, LogInURL, Nonce, Path, Title string
-		Golfer                                                        *golfer.Golfer
-		GolferInfo                                                    *golfer.GolferInfo
-		Holes                                                         map[string]hole.Hole
-		JS                                                            []string
-		Langs                                                         map[string]lang.Lang
-		Location                                                      *time.Location
-		Request                                                       *http.Request
+		CSS                                       template.CSS
+		CheevoBanner                              *CheevoBanner
+		Countries                                 map[string]*country.Country
+		Data, Description, Title                  interface{}
+		DarkModeMediaQuery, LogInURL, Nonce, Path string
+		Golfer                                    *golfer.Golfer
+		GolferInfo                                *golfer.GolferInfo
+		Holes                                     map[string]hole.Hole
+		JS                                        []string
+		Langs                                     map[string]lang.Lang
+		Location                                  *time.Location
+		Request                                   *http.Request
 	}{
 		Countries:          country.ByID,
 		CSS:                getThemeCSS(theme) + css["base"] + css[path.Dir(name)] + css[name],
-		Data:               data,
+		Data:               data[0],
 		DarkModeMediaQuery: getDarkModeMediaQuery(theme),
 		Description:        "Code Golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.",
 		Golfer:             theGolfer,
@@ -229,12 +229,12 @@ func render(w http.ResponseWriter, r *http.Request, name string, data interface{
 		Title:              "Code Golf",
 	}
 
-	if len(meta) > 0 {
-		args.Title = meta[0]
+	if len(data) > 1 {
+		args.Title = data[1]
 	}
 
-	if len(meta) > 1 {
-		args.Description = meta[1]
+	if len(data) > 2 {
+		args.Description = data[2]
 	}
 
 	if args.Golfer != nil && args.Golfer.TimeZone != nil {

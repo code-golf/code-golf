@@ -122,5 +122,7 @@ func RankingsMedals(w http.ResponseWriter, r *http.Request) {
 		description += " in " + data.Scoring
 	}
 
+	description += "."
+
 	render(w, r, "rankings/medals", data, "Rankings: Medals", description)
 }
