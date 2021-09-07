@@ -18,8 +18,10 @@ RUN sed -i '1c#!/usr/bin/node' /usr/local/lib/node_modules/@defasm/cli/main.js
 RUN mkdir /symlink \
  && ln -s /usr/lib/node_modules/@defasm/cli/main.js /symlink/defasm
 
-# Linker script that ensures ld.gold sets the entry point properly if _start is missing
-RUN echo 'PROVIDE_HIDDEN(_start = ADDR(.text));ENTRY (_start)' > /usr/lib/defaultEntry.ld
+# Linker script that ensures ld.gold sets the entry point properly if _start
+# is missing
+RUN echo 'PROVIDE_HIDDEN(_start = ADDR(.text));ENTRY (_start)' \
+  > /usr/lib/defaultEntry.ld
 
 FROM scratch
 
@@ -30,8 +32,6 @@ COPY --from=0 /empty                               /tmp
 COPY --from=0 /symlink                             /usr/bin
 COPY --from=0 /usr/bin/ld.gold /usr/local/bin/node /usr/bin/
 COPY --from=0 /usr/lib/defaultEntry.ld             \
-              /usr/lib/libbfd-2.35.2.so            \
-              /usr/lib/libctf.so.0                 \
               /usr/lib/libgcc_s.so.1               \
               /usr/lib/libstdc++.so.6              /usr/lib/
 COPY --from=0 /usr/local/lib/node_modules/@defasm  /usr/lib/node_modules/@defasm
