@@ -90,7 +90,7 @@ td > a:hover > span:first-of-type { text-decoration: underline }
         grid-template-columns: auto auto 1fr;
     }
 
-    main { grid-template-columns: 1fr }
+    main { grid-template: min-content min-content 1fr / 1fr }
 
     main nav { display: none }
 }
