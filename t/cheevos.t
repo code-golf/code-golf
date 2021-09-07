@@ -52,4 +52,13 @@ is $dbh.execute(
     "SELECT earned FROM save_solution(3, 1, '⛳', 'π', 'c', 1)",
 ).row, '{different-strokes}', 'Earns {different-strokes}';
 
+for <c fish go j java lisp lua nim php sql v zig> {
+    my $i     = ++$;
+    my $earns = $i == 12 ?? '{polyglot}' !! '{}';
+
+    is $dbh.execute(
+        "SELECT earned FROM save_solution(2, 2, 'ab', 'λ', ?, 1)", $_,
+    ).row, $earns, "Lang $i earns $earns";
+}
+
 done-testing;

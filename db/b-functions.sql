@@ -192,10 +192,16 @@ BEGIN
     END IF;
 
     IF (SELECT COUNT(DISTINCT solutions.code) > 1 FROM solutions
-        WHERE   solutions.user_id = user_id
-        AND     solutions.hole = hole
-        AND     solutions.lang = lang) THEN
+         WHERE solutions.user_id = user_id
+           AND solutions.hole    = hole
+           AND solutions.lang    = lang) THEN
         earned := earn(earned, 'different-strokes', user_id);
+    END IF;
+
+    IF (SELECT COUNT(DISTINCT solutions.lang) > 11 FROM solutions
+         WHERE solutions.user_id = user_id
+           AND solutions.hole    = hole) THEN
+        earned := earn(earned, 'polyglot', user_id);
     END IF;
 
     ret.earned := earned;

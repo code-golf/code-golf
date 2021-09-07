@@ -214,16 +214,6 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		if queryBool(
-			db,
-			`SELECT COUNT(DISTINCT lang) = ARRAY_LENGTH(ENUM_RANGE(NULL::lang), 1)
-			   FROM solutions
-			  WHERE NOT failing AND user_id = $1`,
-			golfer.ID,
-		) {
-			golfer.Earn(db, "polyglot")
-		}
-
 		// COUNT(*) = 4 because langs x (bytes, chars)
 		switch in.Lang {
 		case "java", "javascript":

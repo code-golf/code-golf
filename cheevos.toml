@@ -109,6 +109,11 @@ emoji       = '🌈'
 description = 'Solve any hole using different bytes and chars solutions.'
 
 [[Miscellaneous]]
+name        = 'Polyglot'
+emoji       = '🔣'
+description = 'Solve any hole in a dozen different languages.'
+
+[[Miscellaneous]]
 name        = 'RTFM'
 emoji       = '📕'
 description = 'Visit the <a href=/about>About page</a>.'
@@ -174,8 +179,3 @@ description = 'Earn over 9,000 points in either bytes or chars scoring.'
 name        = 'Twenty Kiloleagues'
 emoji       = '🐋'
 description = 'Earn 20,000 points in either bytes or chars scoring.'
-
-[[Progression]]
-name        = 'Polyglot'
-emoji       = '🔣'
-description = 'Solve any hole in every language.'
