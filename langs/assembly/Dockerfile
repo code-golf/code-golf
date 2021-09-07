@@ -6,7 +6,7 @@ RUN mkdir /empty
 
 RUN apk add --no-cache binutils-gold g++ make python3
 
-RUN npm install -g @defasm/cli@1.0.5 @defasm/core@$VERSION
+RUN npm install -g @defasm/cli@1.0.8 @defasm/core@$VERSION
 
 # Strip node.
 RUN strip /usr/local/bin/node
