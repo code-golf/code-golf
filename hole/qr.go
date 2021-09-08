@@ -45,7 +45,7 @@ func qrToString(qr [][]bool) string {
 		}
 		for x := range qr[y] {
 			if qr[y][x] {
-				buf.WriteRune('█')
+				buf.WriteByte('#')
 			} else {
 				buf.WriteByte(' ')
 			}

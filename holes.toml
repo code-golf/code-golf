@@ -1542,10 +1542,13 @@ preamble = '''
 ['QR Decoder']
 category = 'Transform'
 experiment = -1
+links = [
+    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/QR_code#Encoding' },
+]
 preamble = '''
 <p>
-    Decode QR code. It always has version 1 (21×21), byte encoding, and 000 mask
-    pattern (<span class="mono">(row+col)%2 = 0</span>).
+    Decode QR code. The code is guaranteed to have version 1 (21×21), byte encoding,
+    and 000 mask pattern (<span class="mono">(row+col)%2 = 0</span>).
 '''
 
 [Quine]
