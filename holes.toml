@@ -1539,6 +1539,15 @@ preamble = '''
     their own line.
 '''
 
+['QR Decoder']
+category = 'Transform'
+experiment = -1
+preamble = '''
+<p>
+    Decode QR code. It always has version 1 (21×21), byte encoding, and 000 mask
+    pattern (<span class="mono">(row+col)%2 = 0</span>).
+'''
+
 [Quine]
 category = 'Computing'
 links = [
