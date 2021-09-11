@@ -22,19 +22,32 @@ size    = '73.2 MiB'
 version = 'DefAssembler 2.1.5'
 website = 'https://www.npmjs.com/package/@defasm/core'
 example = '''
+SYS_WRITE = 1
+SYS_EXIT = 60
+STDOUT_FILENO = 1
+
 # Printing
-mov $1, %eax    # Syscall code 1 (write)
-mov $1, %edi    # File descriptor 1 (stdout)
-mov $text, %rsi # Address of buffer
-mov $14, %edx   # Length of buffer
+.data
+buffer: .string "Hello, world!\n"
+bufferLen = . - buffer
+
+.text
+mov $SYS_WRITE, %eax
+mov $STDOUT_FILENO, %edi
+mov $buffer, %esi
+mov $bufferLen, %edx
 syscall
 
 # Looping
+.data
+digit: .byte   '0', '\n'
+
+.text
 mov $10, %bl
 numberLoop:
-    mov $1, %eax
-    mov $1, %edi
-    mov $digit, %rsi
+    mov $SYS_WRITE, %eax
+    mov $STDOUT_FILENO, %edi
+    mov $digit, %esi
     mov $2, %edx
     syscall
 
@@ -61,19 +74,16 @@ argLoop:
     movb $'\n', -1(%rsi, %rcx)
 
     mov %ecx, %edx
-    mov $1, %eax
-    mov $1, %edi
+    mov $SYS_WRITE, %eax
+    mov $STDOUT_FILENO, %edi
     syscall
 
     jmp argLoop
 endArgLoop:
 
-mov $60, %eax   # Syscall code 60 (exit)
-mov $0, %edi    # Exit code
+mov $SYS_EXIT, %eax
+mov $0, %edi
 syscall
-
-text:  .string "Hello, World!\n"
-digit: .byte   '0', '\n'
 '''
 
 [Bash]
