@@ -1,5 +1,6 @@
 import CodeMirror from './_codemirror-legacy';
 import strlen     from './_strlen';
+import * as Diff  from "diff";
 
 const chars              = document.querySelector('#chars');
 const darkModeMediaQuery = JSON.parse(document.querySelector('#darkModeMediaQuery').innerText);
@@ -15,6 +16,7 @@ const solutionPicker     = document.querySelector('#solutionPicker');
 const solutions          = JSON.parse(document.querySelector('#solutions').innerText);
 const status             = document.querySelector('#status');
 const table              = document.querySelector('#scores');
+const diff               = document.querySelector("#diff")
 
 const darkMode = matchMedia(darkModeMediaQuery).matches;
 let lang;
@@ -251,6 +253,7 @@ onload = () => {
         // Always show exp & out.
         document.querySelector('#exp div').innerText = data.Exp;
         document.querySelector('#out div').innerText = data.Out;
+        updateDiff(data.Exp, data.Out);
 
         status.className = data.Pass ? 'green' : 'red';
         status.style.display = 'block';
@@ -384,4 +387,43 @@ async function refreshScores() {
 
 function getScoring(str, index) {
     return scorings[index] == 'Bytes' ? new TextEncoder().encode(str).length : strlen(str);
+}
+
+function updateDiff(exp, out) {
+    diff.style.display = exp === out ? 'none' : 'block'
+    let html = '';
+    const changes = Diff.diffLines(out, exp);
+    let pendingChange = null
+    for (let change of changes) {
+        if (change.added || change.removed) {
+            if (pendingChange === null) {
+                pendingChange = change;
+            } else {
+                html += getDiffRow(pendingChange, change);
+                pendingChange = null;
+            }
+        } else {
+            if (pendingChange) {
+                html += getDiffRow(pendingChange, {})
+                pendingChange = null;
+            }
+            html += `
+                <div class='diff-left'>${change.value}</div>
+                <div class='diff-right'>${change.value}</div>
+            `;
+        }
+    }
+    if (pendingChange) {
+        html += getDiffRow(pendingChange, {})
+    }
+    diff.querySelector("div").innerHTML = html;
+}
+
+function getDiffRow(change1, change2) {
+    const addition = change1.added ? change1 : change2.added ? change2 : null;
+    const removal = change1.removed ? change1 : change2.removed ? change2 : null;
+    return `
+        <div class='diff-removal diff-left'>${removal?.value ?? ''}</div>
+        <div class='diff-addition diff-right'>${addition?.value ?? ''}</div>
+    `
 }

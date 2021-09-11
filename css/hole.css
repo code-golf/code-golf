@@ -56,9 +56,23 @@ main .info {
 
 .text-red { color: var(--red-text) }
 
-#arg, #err { display: none }
+#arg, #err, #diff { display: none }
 
 #exp, #out { white-space: pre }
+
+#diff > div {
+    display: grid;
+    grid-template-columns: [left] 1fr 1em [right] 1fr;
+    white-space: pre-wrap;
+}
+
+#diff .diff-left { grid-column: left }
+
+#diff .diff-right { grid-column: right }
+
+#diff .diff-removal { background-color: var(--red) }
+
+#diff .diff-addition { background-color: var(--green) }
 
 #arg span {
     background: var(--arg-background);
