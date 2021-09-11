@@ -28,7 +28,7 @@ STDOUT_FILENO = 1
 
 # Printing
 .data
-buffer: .string "Hello, world!\n"
+buffer: .string "Hello, World!\n"
 bufferLen = . - buffer
 
 .text
