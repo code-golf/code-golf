@@ -253,7 +253,7 @@ onload = () => {
         // Always show exp & out.
         document.querySelector('#exp div').innerText = data.Exp;
         document.querySelector('#out div').innerText = data.Out;
-        updateDiff(data.Exp, data.Out);
+        updateDiff(data.Exp, data.Out, data.Argv);
 
         status.className = data.Pass ? 'green' : 'red';
         status.style.display = 'block';
@@ -389,51 +389,94 @@ function getScoring(str, index) {
     return scorings[index] == 'Bytes' ? new TextEncoder().encode(str).length : strlen(str);
 }
 
-function updateDiff(exp, out) {
+function calculateChanges(before, after) {
+    const includeArgs = getDiffType() == 'arg'
+    if (includeArgs) {
+        const out = []
+        const splitBefore = lines(before)
+        const splitAfter = lines(after)
+        for (let i=0; i<Math.max(splitBefore.length, splitAfter.length); i++) {
+            const a = splitBefore[i]
+            const b = splitAfter[i]
+            if (a === b) {
+                out.push({
+                    count: 1,
+                    value: a + '\n'
+                })
+            } else {
+                for (let [k,v] of [['removed', a], ['added', b]]) {
+                    if (v !== undefined) {
+                        const prev = out[out.length - 1]
+                        if (prev && prev[k]) {
+                            prev.count++;
+                            prev.value += v + '\n'
+                        } else {
+                            out.push({
+                                count: 1,
+                                [k]: true,
+                                value: v + '\n'
+                            })
+                        }
+                    }
+                }
+            }
+        }
+        return out
+    } else {
+        return Diff.diffLines(before, after)
+    }
+}
+
+function updateDiff(exp, out, argv) {
     diff.style.display = exp === out ? 'none' : 'block'
     let html = '';
     let pos = {
         left: 1,
         right: 1
     };
-    const changes = Diff.diffLines(out, exp);
+    const changes = calculateChanges(out, exp);
     let pendingChange = null;
     for (let change of changes) {
         if (change.added || change.removed) {
             if (pendingChange === null) {
                 pendingChange = change;
             } else {
-                html += getDiffRow(pendingChange, change, pos);
+                html += getDiffRow(pendingChange, change, pos, argv);
                 pendingChange = null;
             }
         } else {
             if (pendingChange) {
-                html += getDiffRow(pendingChange, {}, pos);
+                html += getDiffRow(pendingChange, {}, pos, argv);
                 pendingChange = null;
             }
-            html += getDiffLines(change, change, pos);
+            html += getDiffLines(change, change, pos, argv);
         }
     }
     if (pendingChange) {
-        html += getDiffRow(pendingChange, {}), pos;
+        html += getDiffRow(pendingChange, {}, pos, argv);
     }
     diff.querySelector("div").innerHTML = html;
 }
 
-function getDiffRow(change1, change2, pos) {
+function getDiffRow(change1, change2, pos, argv) {
     change2.value ??= ''
     change2.count ??= 0
     const left = change1.removed ? change1 : change2
     const right = change1.added ? change1 : change2
-    return getDiffLines(left, right, pos)
+    return getDiffLines(left, right, pos, argv)
 }
 
-function getDiffLines(left, right, pos) {
-    const leftSplit = left.value.split(/\r\n|\n/).slice(0,-1);
-    const rightSplit = right.value.split(/\r\n|\n/).slice(0,-1);
+function getDiffLines(left, right, pos, argv) {
+    const leftSplit = lines(left.value).slice(0, -1);
+    const rightSplit = lines(right.value).slice(0, -1);
     let s = ''
     for (let i=0; i<Math.max(leftSplit.length, rightSplit.length); i++) {
         const leftLine = leftSplit[i];
+        // subtract 1 because the lines start counting at 1 instead of 0
+        const arg = argv[i + pos.right - 1]
+        if (arg !== undefined) {
+            s += `<div class='diff-arg'>${arg}</div>`
+        }
         if (leftLine !== undefined) {
             s += `<div class='diff-left-num'>${i + pos.left}</div>
                   <div class='diff-left${left.removed?' diff-removal':''}'>${leftLine}</div>`
@@ -447,4 +490,32 @@ function getDiffLines(left, right, pos) {
     pos.left += left.count;
     pos.right += right.count;
     return s
+}
+
+function getDiffType() {
+    console.log(hole)
+    switch (hole) {
+        case 'arabic-to-roman':
+        case 'arrows':
+        case 'css-colors':
+        case 'emojify':
+        case 'fractions':
+        case 'intersection':
+        case 'levenshtein-distance':
+        case 'musical-chords':
+        case 'ordinal-numbers':
+        case 'roman-to-arabic':
+        case 'spelling-numbers':
+        case 'united-states':
+            // { | category = Transform }
+            // - {Pangram Grep, QR Decoder, Seven Segment, Morse Decoder, Morse Encoder}
+            // + {Fractions, Intersection}
+            return 'arg'
+        default:
+            return 'line'
+    }
+}
+
+function lines(s) {
+    return s.split(/\r\n|\n/)
 }

@@ -63,12 +63,15 @@ main .info {
 #diff > div {
     display: grid;
     grid-template-columns:
+        [arg] max-content
         [left-num] minmax(20px, min-content)
         [left] 1fr
         [right-num] minmax(20px, min-content)
         [right] 1fr;
     white-space: pre-wrap;
+    overflow-wrap: anywhere;
     padding: 0;
+    line-height: 1.25em;
 }
 
 #diff .diff-left-num,
@@ -79,7 +82,13 @@ main .info {
     padding: 0 3px 0 5px;
     min-width: 20px;
     text-align: right;
-    white-space: nowrap
+    white-space: nowrap;
+}
+
+#diff .diff-arg {
+    grid-column: arg;
+    padding: 0 6px 0 8px;
+    text-align: right;
 }
 
 #diff .diff-left-num { grid-column: left-num }
