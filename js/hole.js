@@ -467,8 +467,10 @@ function getDiffRow(change1, change2, pos, argv) {
 }
 
 function getDiffLines(left, right, pos, argv) {
-    const leftSplit = lines(left.value).slice(0, -1);
-    const rightSplit = lines(right.value).slice(0, -1);
+    const leftSplit = lines(left.value);
+    if (leftSplit[leftSplit.length - 1] === '') leftSplit.pop()
+    const rightSplit = lines(right.value);
+    if (rightSplit[rightSplit.length - 1] === '') rightSplit.pop()
     let s = ''
     for (let i=0; i<Math.max(leftSplit.length, rightSplit.length); i++) {
         const leftLine = leftSplit[i];
