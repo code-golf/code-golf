@@ -392,38 +392,59 @@ function getScoring(str, index) {
 function updateDiff(exp, out) {
     diff.style.display = exp === out ? 'none' : 'block'
     let html = '';
+    let pos = {
+        left: 1,
+        right: 1
+    };
     const changes = Diff.diffLines(out, exp);
-    let pendingChange = null
+    let pendingChange = null;
     for (let change of changes) {
         if (change.added || change.removed) {
             if (pendingChange === null) {
                 pendingChange = change;
             } else {
-                html += getDiffRow(pendingChange, change);
+                html += getDiffRow(pendingChange, change, pos);
                 pendingChange = null;
             }
         } else {
             if (pendingChange) {
-                html += getDiffRow(pendingChange, {})
+                html += getDiffRow(pendingChange, {}, pos);
                 pendingChange = null;
             }
-            html += `
-                <div class='diff-left'>${change.value}</div>
-                <div class='diff-right'>${change.value}</div>
-            `;
+            html += getDiffLines(change, change, pos);
         }
     }
     if (pendingChange) {
-        html += getDiffRow(pendingChange, {})
+        html += getDiffRow(pendingChange, {}), pos;
     }
     diff.querySelector("div").innerHTML = html;
 }
 
-function getDiffRow(change1, change2) {
-    const addition = change1.added ? change1 : change2.added ? change2 : null;
-    const removal = change1.removed ? change1 : change2.removed ? change2 : null;
-    return `
-        <div class='diff-removal diff-left'>${removal?.value ?? ''}</div>
-        <div class='diff-addition diff-right'>${addition?.value ?? ''}</div>
-    `
+function getDiffRow(change1, change2, pos) {
+    change2.value ??= ''
+    change2.count ??= 0
+    const left = change1.removed ? change1 : change2
+    const right = change1.added ? change1 : change2
+    return getDiffLines(left, right, pos)
+}
+
+function getDiffLines(left, right, pos) {
+    const leftSplit = left.value.split(/\r\n|\n/).slice(0,-1);
+    const rightSplit = right.value.split(/\r\n|\n/).slice(0,-1);
+    let s = ''
+    for (let i=0; i<Math.max(leftSplit.length, rightSplit.length); i++) {
+        const leftLine = leftSplit[i];
+        if (leftLine !== undefined) {
+            s += `<div class='diff-left-num'>${i + pos.left}</div>
+                  <div class='diff-left${left.removed?' diff-removal':''}'>${leftLine}</div>`
+        }
+        const rightLine = rightSplit[i];
+        if (rightLine !== undefined) {
+            s += `<div class='diff-right-num'>${i + pos.right}</div>
+                <div class='diff-right${right.added?' diff-addition':''}'>${rightLine}</div>`
+        }
+    }
+    pos.left += left.count;
+    pos.right += right.count;
+    return s
 }

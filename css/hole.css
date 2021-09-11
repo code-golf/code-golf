@@ -62,17 +62,42 @@ main .info {
 
 #diff > div {
     display: grid;
-    grid-template-columns: [left] 1fr 1em [right] 1fr;
+    grid-template-columns:
+        [left-num] minmax(20px, min-content)
+        [left] 1fr
+        [right-num] minmax(20px, min-content)
+        [right] 1fr;
     white-space: pre-wrap;
+    padding: 0;
 }
 
+#diff .diff-left-num,
+#diff .diff-right-num {
+    /* Ref .CodeMirror-linenumber and .CodeMirror-gutters */
+    background: #eee;
+    border-inline: 1px solid var(--color);
+    padding: 0 3px 0 5px;
+    min-width: 20px;
+    text-align: right;
+    white-space: nowrap
+}
+
+#diff .diff-left-num { grid-column: left-num }
+
 #diff .diff-left { grid-column: left }
+
+#diff .diff-right-num { grid-column: right-num }
 
 #diff .diff-right { grid-column: right }
 
 #diff .diff-removal { background-color: var(--red) }
 
 #diff .diff-addition { background-color: var(--green) }
+
+#diff .diff-left,
+#diff .diff-right {
+    padding: 0 4px;
+}
 
 #arg span {
     background: var(--arg-background);
