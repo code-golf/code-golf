@@ -39,7 +39,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	}{
 		Cards:   make([]Card, 0, len(hole.List)),
 		Scoring: "bytes",
-		Sorts:   []string{"alphabetical", "points"},
+		Sorts:   []string{"alphabetical", "category", "points"},
 	}
 
 	if golfer := session.Golfer(r); golfer == nil {
@@ -92,6 +92,22 @@ func Index(w http.ResponseWriter, r *http.Request) {
 			sort.Slice(data.Cards, func(i, j int) bool {
 				return strings.ToLower(data.Cards[i].Hole.Name) >
 					strings.ToLower(data.Cards[j].Hole.Name)
+			})
+		case "category-asc":
+			sort.Slice(data.Cards, func(i, j int) bool {
+				if data.Cards[i].Hole.Category == data.Cards[j].Hole.Category {
+					return strings.ToLower(data.Cards[i].Hole.Name) <
+						strings.ToLower(data.Cards[j].Hole.Name)
+				}
+				return data.Cards[i].Hole.Category < data.Cards[j].Hole.Category
+			})
+		case "category-desc":
+			sort.Slice(data.Cards, func(i, j int) bool {
+				if data.Cards[i].Hole.Category == data.Cards[j].Hole.Category {
+					return strings.ToLower(data.Cards[i].Hole.Name) >
+						strings.ToLower(data.Cards[j].Hole.Name)
+				}
+				return data.Cards[i].Hole.Category > data.Cards[j].Hole.Category
 			})
 		case "points-asc":
 			sort.Slice(data.Cards, func(i, j int) bool {
