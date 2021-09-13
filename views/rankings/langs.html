@@ -1,0 +1,55 @@
+{{ template "header"   . }}
+{{ template "rankings" . }}
+
+<main>
+    <form>
+        <input name=base type=hidden value=/rankings/langs>
+
+        <label>
+            <input {{ if eq .Data.Scoring "bytes" }} checked {{ end }}
+                name=scoring type=radio value=bytes>Bytes
+        </label>
+
+        <label>
+            <input {{ if eq .Data.Scoring "chars" }} checked {{ end }}
+                name=scoring type=radio value=chars>Chars
+        </label>
+    </form>
+
+    <nav>
+        <h2>Scoring</h2>
+        <a {{ if ne .Data.Scoring "bytes" }}
+            href=/rankings/langs/bytes
+        {{ end }}>
+            <span>Bytes</span>
+        </a>
+        <a {{ if ne .Data.Scoring "chars" }}
+            href=/rankings/langs/chars
+        {{ end }}>
+            <span>Chars</span>
+        </a>
+    </nav>
+
+    <table class="nowrap-second sticky">
+        <thead>
+            <tr>
+                <th>#
+                <th>Language
+                <th class=right colspan=3>Medals
+                <th class=right>Points
+                <th class=right>{{ title .Data.Scoring }}
+        <tbody>
+        {{ range .Data.Rows }}
+            <tr>
+                <td>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
+                <td>{{ .Lang.Name }}
+                <td class=right>{{ with .Golds   }}{{ . }}🥇{{ end }}
+                <td class=right>{{ with .Silvers }}{{ . }}🥈{{ end }}
+                <td class=right>{{ with .Bronzes }}{{ . }}🥉{{ end }}
+                <td class=right>{{ comma .Points  }}
+                <td class=right>{{ comma .Strokes }}
+        {{ end }}
+    </table>
+</main>
+
+{{ template "footer" }}

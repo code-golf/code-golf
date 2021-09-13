@@ -13,22 +13,28 @@
 <p>{{ .Description }}
 
 <nav class=tabs>
+    <a {{ if not (hasPrefix .Path "/rankings/cheevos") }}
+        href=/rankings/cheevos
+    {{ end }}>
+        Cheevos
+    </a>
+
     <a {{ if not (hasPrefix .Path "/rankings/holes/") }}
         href=/rankings/holes/all/all/bytes
     {{ end }}>
         Holes
     </a>
 
+    <a {{ if not (hasPrefix .Path "/rankings/langs/") }}
+        href=/rankings/langs/bytes
+    {{ end }}>
+        Langs
+    </a>
+
     <a {{ if not (hasPrefix .Path "/rankings/medals/") }}
         href=/rankings/medals/all/all/all
     {{ end }}>
         Medals
-    </a>
-
-    <a {{ if not (hasPrefix .Path "/rankings/cheevos") }}
-        href=/rankings/cheevos
-    {{ end }}>
-        Achievements
     </a>
 
     <a {{ if not (hasPrefix .Path "/rankings/solutions") }}
