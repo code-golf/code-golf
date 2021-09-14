@@ -36,6 +36,7 @@ aside > div {
     line-height: 1;
     overflow: auto;
     padding: 5px;
+    white-space: pre;
 }
 
 h3 {
