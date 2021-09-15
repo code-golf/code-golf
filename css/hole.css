@@ -22,7 +22,8 @@ pre {
     line-height: 1;
 }
 
-.mono {
+.qr-span span {
+    color: var(--grey);
     font-family: emoji, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', Courier, monospace;
 }
 

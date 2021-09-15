@@ -39,12 +39,12 @@ func qrIsStandard(b [][]bool) bool {
 
 func qrToString(qr [][]bool) string {
 	var buf strings.Builder
-	for y := range qr {
-		if y > 0 {
+	for i, row := range qr {
+		if i > 0 {
 			buf.WriteByte('\n')
 		}
-		for x := range qr[y] {
-			if qr[y][x] {
+		for _, bit := range row {
+			if bit {
 				buf.WriteByte('#')
 			} else {
 				buf.WriteByte(' ')
