@@ -1546,9 +1546,58 @@ links = [
     { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/QR_code#Encoding' },
 ]
 preamble = '''
-<p>
-    Decode QR code. The code is guaranteed to have version 1 (21×21), byte encoding,
-    and 000 mask pattern (<span class="mono">(row+col)%2 = 0</span>).
+<div class=qr-span>
+<p>Decode a Version-1 QR code given in this ASCII-art format, where all the <span>↓</span> and <span>↑</span> are filled with "#" and spaces, encoding a message.
+</div>
+
+<div class=qr-span><pre>
+    #######  <span>↓↓↑↑</span> #######
+    #     #  <span>↓↓↑↑</span> #     #
+    # ### # #<span>↓↓↑↑</span> # ### #
+    # ### #  <span>↓↓↑↑</span> # ### #
+    # ### #  <span>↓↓↑↑</span> # ### #
+    #     #  <span>↓↓↑↑</span> #     #
+    ####### # # # #######
+            #<span>↓↓↑↑</span>
+    ### #####<span>↓↓↑↑</span>##   #
+    <span>↓↓↑↑↓↓</span> <span>↑↑↓↓↑↑↓↓↑↑↓↓↑↑</span>
+    <span>↓↓↑↑↓↓</span>#<span>↑↑↓↓↑↑↓↓↑↑↓↓↑↑</span>
+    <span>↓↓↑↑↓↓</span> <span>↑↑↓↓↑↑↓↓↑↑↓↓↑↑</span>
+    <span>↓↓↑↑↓↓</span>#<span>↑↑↓↓↑↑↓↓↑↑↓↓↑↑</span>
+            #<span>↓↓↑↑↓↓↑↑↓↓↑↑</span>
+    ####### #<span>↓↓↑↑↓↓↑↑↓↓↑↑</span>
+    #     # #<span>↓↓↑↑↓↓↑↑↓↓↑↑</span>
+    # ### # #<span>↓↓↑↑↓↓↑↑↓↓↑↑</span>
+    # ### #  <span>↓↓↑↑↓↓↑↑↓↓↑↑</span>
+    # ### # #<span>↓↓↑↑↓↓↑↑↓↓↑↑</span>
+    #     # #<span>↓↓↑↑↓↓↑↑↓↓↑↑</span>
+    ####### #<span>↓↓↑↑↓↓↑↑↓↓↑↑</span>
+</div>
+
+<div class=qr-span>
+<p>The 10 vertical "strips" of <span>↑↑</span> or <span>↓↓</span> must be read from right to left. The bits in a strip are stored in a zig-zag order: <span>↑↑</span> zig-zags upwards, and <span>↓↓</span> zig-zags downwards. The bit on the right always precedes the one on its left.
+</div>
+
+<div class=qr-span><pre>
+      <span>↑↑</span> ..       <span>↓↓</span> 10
+      <span>↑↑</span> 98       <span>↓↓</span> 32
+      <span>↑↑</span> 76       <span>↓↓</span> 54
+      <span>↑↑</span> 54       <span>↓↓</span> 76
+      <span>↑↑</span> 32       <span>↓↓</span> 98
+      <span>↑↑</span> 10       <span>↓↓</span> ..
+</div>
+
+<p>To decode a bit off of a strip, read the value from the QR code bitmap ("#" = 1, space = 0) and XOR it by <b>(x+y)%2</b>, where <b>(x, y)</b> are the coordinates of the bit in the bitmap.
+
+<p>This will yield a bitstream like:
+
+<pre>
+    0100  00010001  01001000  01100101  01101100 ...
+    Enc   Length    'H'       'e'       'l'
+    (4)   (17)      (17-byte ASCII message)
+</pre>
+
+<p>Print the 17 bytes of ASCII stored in the QR code.
 '''
 
 [Quine]
