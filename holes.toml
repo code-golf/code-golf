@@ -1625,7 +1625,7 @@ links = [
 ]
 preamble = '''
 <p>
-    Starting from zero, each term of the sequence is <b>a(n) = a(n-1) - n</b>
+    Starting from <b>a(0) = 0</b>, each term of the sequence is <b>a(n) = a(n-1) - n</b>
     but only if <b>a(n) > 0</b> and it has not previously generated. In case
     the condition doesn't hold, <b>a(n) = a(n-1) + n</b>.
 
