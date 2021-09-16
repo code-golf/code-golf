@@ -88,6 +88,8 @@ func main() {
 		r.Get("/", redir("/rankings/holes/all/all/bytes"))
 		r.Get("/holes", redir("/rankings/holes/all/all/bytes"))
 		r.Get("/holes/all/all/all", redir("/rankings/holes/all/all/bytes"))
+		r.Get("/langs/bytes", redir("/rankings/langs/all/bytes"))
+		r.Get("/langs/chars", redir("/rankings/langs/all/chars"))
 		r.Get("/medals", redir("/rankings/medals/all/all/all"))
 
 		r.Get("/cheevos", routes.RankingsCheevos)
@@ -98,7 +100,7 @@ func main() {
 
 		r.Get("/medals/{hole}/{lang}/{scoring}", routes.RankingsMedals)
 
-		r.Get("/langs/{scoring}", routes.RankingsLangs)
+		r.Get("/langs/{lang}/{scoring}", routes.RankingsLangs)
 		r.Get("/solutions", routes.RankingsSolutions)
 	})
 	r.Get("/recent", routes.Recent)
