@@ -395,10 +395,15 @@ function getLineChanges(before, after) {
         const out = []
         const splitBefore = lines(before)
         const splitAfter = lines(after)
+        const compareOpts = {
+            sensitivity: shouldIgnoreCase() ? 'accent' : 'base'
+        }
         for (let i=0; i<Math.max(splitBefore.length, splitAfter.length); i++) {
             const a = splitBefore[i]
             const b = splitAfter[i]
-            if (a === b) {
+            // https://stackoverflow.com/a/2140723/7481517
+            const linesEqual = 0 === a.localeCompare(b, undefined, compareOpts);
+            if (linesEqual) {
                 out.push({
                     count: 1,
                     value: a + '\n'
@@ -423,7 +428,9 @@ function getLineChanges(before, after) {
         }
         return out
     } else {
-        return Diff.diffLines(before, after)
+        return Diff.diffLines(before, after, {
+            ignoreCase: shouldIgnoreCase()
+        })
     }
 }
 
@@ -472,10 +479,13 @@ function getDiffLines(left, right, pos, argv) {
     const rightSplit = lines(right.value);
     if (rightSplit[rightSplit.length - 1] === '') rightSplit.pop()
     let s = ''
+    const diffOpts = {
+        ignoreCase: shouldIgnoreCase()
+    }
     for (let i=0; i<Math.max(leftSplit.length, rightSplit.length); i++) {
-        const leftLine = leftSplit[i];
-        const rightLine = rightSplit[i];
-        const charDiff = Diff.diffChars(leftLine, rightLine);
+        const leftLine = leftSplit[i] ?? '';
+        const rightLine = rightSplit[i] ?? '';
+        const charDiff = Diff.diffChars(leftLine, rightLine, diffOpts);
         // subtract 1 because the lines start counting at 1 instead of 0
         const arg = argv[i + pos.right - 1]
         if (arg !== undefined) {
@@ -510,7 +520,6 @@ function renderCharDiff(charDiff, isRight) {
 }
 
 function getDiffType() {
-    console.log(hole)
     switch (hole) {
         case 'arabic-to-roman':
         case 'arrows':
@@ -531,6 +540,10 @@ function getDiffType() {
         default:
             return 'line'
     }
+}
+
+function shouldIgnoreCase() {
+    return hole === "css-colors"
 }
 
 function lines(s) {
