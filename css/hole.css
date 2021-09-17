@@ -68,6 +68,7 @@ main .info {
         [left] 1fr
         [right-num] minmax(20px, min-content)
         [right] 1fr;
+    grid-template-rows: max-content;
     white-space: pre-wrap;
     overflow-wrap: anywhere;
     padding: 0;

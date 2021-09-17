@@ -443,7 +443,9 @@ function updateDiff(exp, out, argv) {
     };
     const changes = getLineChanges(out, exp);
     let pendingChange = null;
-    for (let change of changes) {
+    for (let i = 0; i < changes.length; i++) {
+        const change = changes[i]
+        pos.isLastDiff = i === changes.length - 1
         if (change.added || change.removed) {
             if (pendingChange === null) {
                 pendingChange = change;
@@ -475,17 +477,20 @@ function getDiffRow(change1, change2, pos, argv) {
 
 function getDiffLines(left, right, pos, argv) {
     const leftSplit = lines(left.value);
-    if (leftSplit[leftSplit.length - 1] === '') leftSplit.pop()
     const rightSplit = lines(right.value);
-    if (rightSplit[rightSplit.length - 1] === '') rightSplit.pop()
+    if (!(pos.isLastDiff && hole === "quine")) {
+        // ignore trailing newline
+        if (leftSplit[leftSplit.length - 1] === '') leftSplit.pop();
+        if (rightSplit[rightSplit.length - 1] === '') rightSplit.pop();
+    }
     let s = ''
     const diffOpts = {
         ignoreCase: shouldIgnoreCase()
     }
     for (let i=0; i<Math.max(leftSplit.length, rightSplit.length); i++) {
-        const leftLine = leftSplit[i] ?? '';
-        const rightLine = rightSplit[i] ?? '';
-        const charDiff = Diff.diffChars(leftLine, rightLine, diffOpts);
+        const leftLine = leftSplit[i];
+        const rightLine = rightSplit[i];
+        const charDiff = Diff.diffChars(leftLine ?? '', rightLine ?? '', diffOpts);
         // subtract 1 because the lines start counting at 1 instead of 0
         const arg = argv[i + pos.right - 1]
         if (arg !== undefined) {
