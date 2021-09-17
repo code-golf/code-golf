@@ -1547,44 +1547,44 @@ links = [
 ]
 preamble = '''
 <div class=qr-span>
-<p>Decode a Version-1 QR code given in this ASCII-art format, where all the <span>↓</span> and <span>↑</span> are filled with "#" and spaces, encoding a message.
+<p>Decode a Version-1 QR code given in this ASCII-art format, where all the <span>v</span> and <span>^</span> are filled with "#" and spaces, encoding a message.
 </div>
 
 <div class=qr-span><pre>
-    #######  <span>↓↓↑↑</span> #######
-    #     #  <span>↓↓↑↑</span> #     #
-    # ### # #<span>↓↓↑↑</span> # ### #
-    # ### #  <span>↓↓↑↑</span> # ### #
-    # ### #  <span>↓↓↑↑</span> # ### #
-    #     #  <span>↓↓↑↑</span> #     #
+    #######  <span>vv^^</span> #######
+    #     #  <span>vv^^</span> #     #
+    # ### # #<span>vv^^</span> # ### #
+    # ### #  <span>vv^^</span> # ### #
+    # ### #  <span>vv^^</span> # ### #
+    #     #  <span>vv^^</span> #     #
     ####### # # # #######
-            #<span>↓↓↑↑</span>
-    ### #####<span>↓↓↑↑</span>##   #
-    <span>↓↓↑↑↓↓</span> <span>↑↑↓↓↑↑↓↓↑↑↓↓↑↑</span>
-    <span>↓↓↑↑↓↓</span>#<span>↑↑↓↓↑↑↓↓↑↑↓↓↑↑</span>
-    <span>↓↓↑↑↓↓</span> <span>↑↑↓↓↑↑↓↓↑↑↓↓↑↑</span>
-    <span>↓↓↑↑↓↓</span>#<span>↑↑↓↓↑↑↓↓↑↑↓↓↑↑</span>
-            #<span>↓↓↑↑↓↓↑↑↓↓↑↑</span>
-    ####### #<span>↓↓↑↑↓↓↑↑↓↓↑↑</span>
-    #     # #<span>↓↓↑↑↓↓↑↑↓↓↑↑</span>
-    # ### # #<span>↓↓↑↑↓↓↑↑↓↓↑↑</span>
-    # ### #  <span>↓↓↑↑↓↓↑↑↓↓↑↑</span>
-    # ### # #<span>↓↓↑↑↓↓↑↑↓↓↑↑</span>
-    #     # #<span>↓↓↑↑↓↓↑↑↓↓↑↑</span>
-    ####### #<span>↓↓↑↑↓↓↑↑↓↓↑↑</span>
+            #<span>vv^^</span>
+    ### #####<span>vv^^</span>##   #
+    <span>vv^^vv</span> <span>^^vv^^vv^^vv^^</span>
+    <span>vv^^vv</span>#<span>^^vv^^vv^^vv^^</span>
+    <span>vv^^vv</span> <span>^^vv^^vv^^vv^^</span>
+    <span>vv^^vv</span>#<span>^^vv^^vv^^vv^^</span>
+            #<span>vv^^vv^^vv^^</span>
+    ####### #<span>vv^^vv^^vv^^</span>
+    #     # #<span>vv^^vv^^vv^^</span>
+    # ### # #<span>vv^^vv^^vv^^</span>
+    # ### #  <span>vv^^vv^^vv^^</span>
+    # ### # #<span>vv^^vv^^vv^^</span>
+    #     # #<span>vv^^vv^^vv^^</span>
+    ####### #<span>vv^^vv^^vv^^</span>
 </div>
 
 <div class=qr-span>
-<p>The 10 vertical "strips" of <span>↑↑</span> or <span>↓↓</span> must be read from right to left. The bits in a strip are stored in a zig-zag order: <span>↑↑</span> zig-zags upwards, and <span>↓↓</span> zig-zags downwards. The bit on the right always precedes the one on its left.
+<p>The 10 vertical "strips" of <span>^^</span> or <span>vv</span> must be read from right to left. The bits in a strip are stored in a zig-zag order: <span>^^</span> zig-zags upwards, and <span>vv</span> zig-zags downwards. The bit on the right always precedes the one on its left.
 </div>
 
 <div class=qr-span><pre>
-      <span>↑↑</span> ..       <span>↓↓</span> 10
-      <span>↑↑</span> 98       <span>↓↓</span> 32
-      <span>↑↑</span> 76       <span>↓↓</span> 54
-      <span>↑↑</span> 54       <span>↓↓</span> 76
-      <span>↑↑</span> 32       <span>↓↓</span> 98
-      <span>↑↑</span> 10       <span>↓↓</span> ..
+      <span>^^</span> ..       <span>vv</span> 10
+      <span>^^</span> 98       <span>vv</span> 32
+      <span>^^</span> 76       <span>vv</span> 54
+      <span>^^</span> 54       <span>vv</span> 76
+      <span>^^</span> 32       <span>vv</span> 98
+      <span>^^</span> 10       <span>vv</span> ..
 </div>
 
 <p>To decode a bit off of a strip, read the value from the QR code bitmap ("#" = 1, space = 0) and XOR it by <b>(x+y)%2</b>, where <b>(x, y)</b> are the coordinates of the bit in the bitmap.
