@@ -59,7 +59,7 @@ main .info {
 
 #arg, #err { display: none }
 
-#exp, #out { white-space: pre }
+#err, #exp, #out { white-space: pre }
 
 #arg span {
     background: var(--arg-background);
