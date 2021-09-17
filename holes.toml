@@ -1541,7 +1541,6 @@ preamble = '''
 
 ['QR Decoder']
 category = 'Transform'
-experiment = -1
 links = [
     { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/QR_code#Encoding' },
 ]

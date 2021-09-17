@@ -20,9 +20,9 @@ CREATE TYPE hole AS ENUM (
     'levenshtein-distance', 'leyland-numbers', 'look-and-say',
     'lucky-tickets', 'morse-decoder', 'morse-encoder', 'niven-numbers',
     'odious-numbers', 'ordinal-numbers', 'pangram-grep', 'pascals-triangle',
-    'pernicious-numbers', 'poker', 'prime-numbers', 'quine', 'recamán',
-    'rock-paper-scissors-spock-lizard', 'roman-to-arabic', 'rule-110',
-    'seven-segment', 'sierpiński-triangle', 'spelling-numbers',
+    'pernicious-numbers', 'poker', 'prime-numbers', 'qr-decoder', 'quine',
+    'recamán', 'rock-paper-scissors-spock-lizard', 'roman-to-arabic',
+    'rule-110', 'seven-segment', 'sierpiński-triangle', 'spelling-numbers',
     'star-wars-opening-crawl', 'sudoku', 'sudoku-v2', 'ten-pin-bowling',
     'tongue-twisters', 'united-states', 'vampire-numbers', 'van-eck-sequence',
     'λ', 'π', 'τ', 'φ', '√2', '𝑒'
