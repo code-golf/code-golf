@@ -77,7 +77,6 @@ main .info {
 #diff .diff-left-num,
 #diff .diff-right-num {
     /* Ref .CodeMirror-linenumber and .CodeMirror-gutters */
-    background: #eee;
     border-inline: 1px solid var(--color);
     padding: 0 3px 0 5px;
     min-width: 20px;
@@ -99,13 +98,21 @@ main .info {
 
 #diff .diff-right { grid-column: right }
 
-#diff .diff-removal { background-color: var(--red) }
+#diff .diff-removal { background-color: var(--diff-light-red) }
 
-#diff .diff-addition { background-color: var(--green) }
+#diff .diff-addition { background-color: var(--diff-light-green) }
 
 #diff .diff-left,
 #diff .diff-right {
     padding: 0 4px;
+}
+
+#diff .diff-char-removal {
+    background-color: var(--red)
+}
+
+#diff .diff-char-addition {
+    background-color: var(--green)
 }
 
 #arg span {

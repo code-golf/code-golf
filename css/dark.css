@@ -17,6 +17,9 @@
     --light-grey:   hsl(214,  8%, 17%);
     --light-yellow: hsl( 58, 84%, 13%);
 
+    --diff-light-green: var(--light-green);
+    --diff-light-red:   #400600;
+
     --link-color: hsl(205, 87%, 61%);
 
     --arg-background:     hsl(210, 8%, 25%);

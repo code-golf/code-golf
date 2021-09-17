@@ -389,7 +389,7 @@ function getScoring(str, index) {
     return scorings[index] == 'Bytes' ? new TextEncoder().encode(str).length : strlen(str);
 }
 
-function calculateChanges(before, after) {
+function getLineChanges(before, after) {
     const includeArgs = getDiffType() == 'arg'
     if (includeArgs) {
         const out = []
@@ -434,7 +434,7 @@ function updateDiff(exp, out, argv) {
         left: 1,
         right: 1
     };
-    const changes = calculateChanges(out, exp);
+    const changes = getLineChanges(out, exp);
     let pendingChange = null;
     for (let change of changes) {
         if (change.added || change.removed) {
@@ -474,6 +474,8 @@ function getDiffLines(left, right, pos, argv) {
     let s = ''
     for (let i=0; i<Math.max(leftSplit.length, rightSplit.length); i++) {
         const leftLine = leftSplit[i];
+        const rightLine = rightSplit[i];
+        const charDiff = Diff.diffChars(leftLine, rightLine);
         // subtract 1 because the lines start counting at 1 instead of 0
         const arg = argv[i + pos.right - 1]
         if (arg !== undefined) {
@@ -481,17 +483,30 @@ function getDiffLines(left, right, pos, argv) {
         }
         if (leftLine !== undefined) {
             s += `<div class='diff-left-num'>${i + pos.left}</div>
-                  <div class='diff-left${left.removed?' diff-removal':''}'>${leftLine}</div>`
+                <div class='diff-left${left.removed?' diff-removal':''}'>${renderCharDiff(charDiff, false)}</div>`
         }
-        const rightLine = rightSplit[i];
         if (rightLine !== undefined) {
             s += `<div class='diff-right-num'>${i + pos.right}</div>
-                <div class='diff-right${right.added?' diff-addition':''}'>${rightLine}</div>`
+                <div class='diff-right${right.added?' diff-addition':''}'>${renderCharDiff(charDiff, true)}</div>`
         }
     }
     pos.left += left.count;
     pos.right += right.count;
     return s
+}
+
+function renderCharDiff(charDiff, isRight) {
+    let html = ''
+    for (let change of charDiff) {
+        if (change.added && isRight) {
+            html += `<span class='diff-char-addition'>${change.value}</span>`
+        } else if (change.removed && !isRight) {
+            html += `<span class='diff-char-removal'>${change.value}</span>`
+        } else if (!change.added && !change.removed) {
+            html += change.value;
+        }
+    }
+    return html
 }
 
 function getDiffType() {
