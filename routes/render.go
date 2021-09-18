@@ -112,6 +112,11 @@ func slurp(dir string) map[string]string {
 func init() {
 	_, dev = os.LookupEnv("DEV")
 
+	// HACK Tests are run from the package directory, walk a dir up.
+	if _, err := os.Stat("README.md"); os.IsNotExist(err) {
+		os.Chdir("..")
+	}
+
 	// Assets.
 	if file, err := os.Open("esbuild.json"); err == nil {
 		defer file.Close()
