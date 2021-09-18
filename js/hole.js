@@ -436,7 +436,11 @@ function getLineChanges(before, after) {
 
 function updateDiff(exp, out, argv) {
     diff.style.display = exp === out ? 'none' : 'block'
-    let html = '';
+    let html = `<div class='diff-title-bg'></div>
+        <div class='diff-title-bg'></div>
+        <h3 class='diff-output'>Output</h3>
+        <div class='diff-title-bg'></div>
+        <h3 class='diff-expected'>Expected</h3>`;
     let pos = {
         left: 1,
         right: 1

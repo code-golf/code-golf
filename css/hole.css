@@ -39,8 +39,12 @@ aside > div {
 }
 
 h3 {
-    bottom: -1.5rem;
     color: var(--background);
+    background: var(--color);
+}
+
+h3.aside-title {
+    bottom: -1.5rem;
     left: -2rem;
     line-height: 2rem;
     position: absolute;
@@ -93,11 +97,22 @@ main .info {
 
 #diff .diff-left-num { grid-column: left-num }
 
-#diff .diff-left { grid-column: left }
+#diff .diff-title-bg {
+    /* Just let these fall into whatever columns */
+    background: var(--color);
+}
+
+#diff .diff-left,
+#diff .diff-output {
+    grid-column: left
+}
 
 #diff .diff-right-num { grid-column: right-num }
 
-#diff .diff-right { grid-column: right }
+#diff .diff-right,
+#diff .diff-expected {
+    grid-column: right
+}
 
 #diff .diff-removal { background-color: var(--diff-light-red) }
 
