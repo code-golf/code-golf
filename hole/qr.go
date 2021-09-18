@@ -9,9 +9,10 @@ import (
 
 func randStr(len int) string {
 	buf := make([]byte, len)
-	for i := range buf {
+	for i := 0; i < len-1; i++ {
 		buf[i] = byte(32 + rand.Intn(95)) // randPrintableAscii: [32; 126]
 	}
+	buf[len-1] = byte(33 + rand.Intn(94)) // [33; 126]: avoid trailing spaces because of trimming
 	return string(buf)
 }
 

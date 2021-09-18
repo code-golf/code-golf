@@ -1586,7 +1586,7 @@ preamble = '''
       <span>^^</span> 10       <span>vv</span> ..
 </div>
 
-<p>To decode a bit off of a strip, read the value from the QR code bitmap ("#" = 1, space = 0) and XOR it by <b>(x+y)%2</b>, where <b>(x, y)</b> are the coordinates of the bit in the bitmap.
+<p>To decode a bit off of a strip, read the value from the QR code bitmap ("#" = 1, space = 0) and invert it if <b>(x+y)%2 = 0</b>, where <b>(x, y)</b> are the coordinates of the bit in the bitmap with the origin (0, 0) at the top-left corner.
 
 <p>This will yield a bitstream like:
 
