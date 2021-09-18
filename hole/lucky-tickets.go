@@ -59,15 +59,13 @@ func sumDigits(number int64, base int64) int64 {
 }
 
 func luckyTickets() ([]string, string) {
-	// make a random selection of 4 from the fixed cases
-	rand.Shuffle(len(data), func(i, j int) {
-		data[i], data[j] = data[j], data[i]
-	})
-	data = data[0:4]
-	tickets := make([]ticket, len(data))
+	var tickets []ticket
 	// always add case 14 12
 	tickets = append(tickets, ticket{14, 12, 39222848622984})
-	copy(tickets, data)
+	// add random sample of fixed cases
+	for _, test_case := range rand.Perm(len(data))[:4] {
+		tickets = append(tickets, data[test_case])
+	}
 
 	// Randomly generate additional test cases.
 	for i := 0; i < 15; i++ {
