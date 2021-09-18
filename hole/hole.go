@@ -6,16 +6,17 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/BurntSushi/toml"
 	"github.com/code-golf/code-golf/config"
+	"github.com/pelletier/go-toml/v2"
 	min "github.com/tdewolff/minify/v2/minify"
 )
 
 type Hole struct {
-	Experiment                                                  int
-	Prev, Next, ID, Name, Category, CategoryColor, CategoryIcon string
-	Preamble                                                    template.HTML
-	Links                                                       []struct{ Name, URL string }
+	Experiment                            int
+	Category, CategoryColor, CategoryIcon string
+	ID, Name, Prev, Next                  string
+	Preamble                              template.HTML
+	Links                                 []struct{ Name, URL string }
 }
 
 var (
@@ -27,18 +28,20 @@ var (
 )
 
 func init() {
-	var holesTOML map[string]Hole
+	var holes map[string]Hole
 
 	// Tests run from the package directory, walk upward to find holes.toml.
 	if _, err := os.Stat("holes.toml"); os.IsNotExist(err) {
 		os.Chdir("..")
 	}
 
-	if _, err := toml.DecodeFile("holes.toml", &holesTOML); err != nil {
+	if data, err := os.ReadFile("holes.toml"); err != nil {
+		panic(err)
+	} else if err := toml.Unmarshal(data, &holes); err != nil {
 		panic(err)
 	}
 
-	for name, hole := range holesTOML {
+	for name, hole := range holes {
 		hole.Name = name
 		hole.ID = config.ID(name)
 

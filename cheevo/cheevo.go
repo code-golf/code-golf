@@ -5,8 +5,8 @@ import (
 	"os"
 	"sort"
 
-	"github.com/BurntSushi/toml"
 	"github.com/code-golf/code-golf/config"
+	"github.com/pelletier/go-toml/v2"
 )
 
 type Cheevo struct {
@@ -26,7 +26,9 @@ func init() {
 		os.Chdir("..")
 	}
 
-	if _, err := toml.DecodeFile("cheevos.toml", &Tree); err != nil {
+	if data, err := os.ReadFile("cheevos.toml"); err != nil {
+		panic(err)
+	} else if err := toml.Unmarshal(data, &Tree); err != nil {
 		panic(err)
 	}
 

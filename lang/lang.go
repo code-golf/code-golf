@@ -5,8 +5,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/BurntSushi/toml"
 	"github.com/code-golf/code-golf/config"
+	"github.com/pelletier/go-toml/v2"
 )
 
 type Lang struct {
@@ -24,18 +24,20 @@ var (
 )
 
 func init() {
-	var langsTOML map[string]Lang
+	var langs map[string]Lang
 
 	// Tests run from the package directory, walk upward to find langs.toml.
 	if _, err := os.Stat("langs.toml"); os.IsNotExist(err) {
 		os.Chdir("..")
 	}
 
-	if _, err := toml.DecodeFile("langs.toml", &langsTOML); err != nil {
+	if data, err := os.ReadFile("langs.toml"); err != nil {
+		panic(err)
+	} else if err := toml.Unmarshal(data, &langs); err != nil {
 		panic(err)
 	}
 
-	for name, lang := range langsTOML {
+	for name, lang := range langs {
 		lang.Name = name
 		lang.Example = strings.TrimSpace(lang.Example)
 		lang.ID = config.ID(name)
