@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/BurntSushi/toml"
+	"github.com/code-golf/code-golf/config"
 )
 
 type Lang struct {
@@ -37,8 +38,7 @@ func init() {
 	for name, lang := range langsTOML {
 		lang.Name = name
 		lang.Example = strings.TrimSpace(lang.Example)
-		lang.ID = strings.ReplaceAll(strings.ToLower(name), "#", "-sharp")
-		lang.ID = strings.ReplaceAll(strings.ToLower(lang.ID), "><>", "fish")
+		lang.ID = config.ID(name)
 
 		ByID[lang.ID] = lang
 		List = append(List, lang)

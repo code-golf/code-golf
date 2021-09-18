@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/BurntSushi/toml"
+	"github.com/code-golf/code-golf/config"
 	min "github.com/tdewolff/minify/v2/minify"
 )
 
@@ -39,8 +40,7 @@ func init() {
 
 	for name, hole := range holesTOML {
 		hole.Name = name
-		hole.ID = strings.ToLower(
-			strings.ReplaceAll(strings.ReplaceAll(name, "’", ""), " ", "-"))
+		hole.ID = config.ID(name)
 
 		// Minify HTML
 		if html, err := min.HTML(string(hole.Preamble)); err != nil {

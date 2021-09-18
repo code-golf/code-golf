@@ -4,9 +4,9 @@ import (
 	"html/template"
 	"os"
 	"sort"
-	"strings"
 
 	"github.com/BurntSushi/toml"
+	"github.com/code-golf/code-golf/config"
 )
 
 type Cheevo struct {
@@ -20,17 +20,6 @@ var (
 	Tree = map[string][]*Cheevo{}
 )
 
-// TODO Share with other packages
-func id(name string) string {
-	name = strings.ReplaceAll(name, " ", "-")
-	name = strings.ReplaceAll(name, "!", "")
-	name = strings.ReplaceAll(name, ",", "")
-	name = strings.ReplaceAll(name, ";", "-")
-	name = strings.ReplaceAll(name, "’", "")
-
-	return strings.ToLower(name)
-}
-
 func init() {
 	// Tests run from the package directory, walk upward to find cheevos.toml.
 	if _, err := os.Stat("cheevos.toml"); os.IsNotExist(err) {
@@ -43,7 +32,7 @@ func init() {
 
 	for _, categories := range Tree {
 		for _, cheevo := range categories {
-			cheevo.ID = id(cheevo.Name)
+			cheevo.ID = config.ID(cheevo.Name)
 
 			ByID[cheevo.ID] = cheevo
 			List = append(List, cheevo)
