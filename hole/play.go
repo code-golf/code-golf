@@ -163,6 +163,8 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	case "python":
 		// Force the stdout and stderr streams to be unbuffered.
 		cmd.Args = []string{"/usr/bin/python", "-u", "-"}
+	case "swift":
+		cmd.Args = []string{"/usr/bin/swift", "-module-cache-path", "/tmp", "-"}
 	default:
 		cmd.Args = []string{"/usr/bin/" + langID, "-"}
 	}
