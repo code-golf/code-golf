@@ -3,7 +3,6 @@ module github.com/code-golf/code-golf
 go 1.17
 
 require (
-	github.com/BurntSushi/toml v0.4.1
 	github.com/DATA-DOG/go-sqlmock v1.5.0
 	github.com/SeerUK/assert v1.0.0
 	github.com/agnivade/levenshtein v1.1.1

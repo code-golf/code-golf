@@ -1,6 +1,6 @@
 use t;
 
-for 'langs.toml'.IO.&from-toml.map({
+for 'config/langs.toml'.IO.&from-toml.map({
     .key.lc.trans( qw[# ><>] => qw[-sharp fish] ) => .value<example>;
 }).sort -> (:key($lang), :value($code)) {
     # <built-in>: internal compiler error: Illegal instruction

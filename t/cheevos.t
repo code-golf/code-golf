@@ -20,7 +20,7 @@ $client.get: 'https://app:1443/about',
 is $dbh.execute('SELECT ARRAY(SELECT trophy FROM trophies)').row, '{rtfm}',
     'GET /about earns {rtfm}';
 
-for %( from-toml 'holes.toml'.IO ) {
+for %( from-toml 'config/holes.toml'.IO ) {
     next if .value<experiment>;             # Experimental holes can't be saved.
     next if .key ~~ 'Fizz Buzz' | 'Quine';  # Theese are tested lower.
 

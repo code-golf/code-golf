@@ -19,7 +19,7 @@ func TestID(t *testing.T) {
 		{"√2", "√2"},
 		{"𝑒", "𝑒"},
 	} {
-		if got := ID(tt.name); got != tt.id {
+		if got := id(tt.name); got != tt.id {
 			t.Errorf("ID(%v) = %v; want %v", tt.name, got, tt.id)
 		}
 	}

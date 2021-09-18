@@ -10,8 +10,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/hole"
-	"github.com/code-golf/code-golf/lang"
 	"github.com/code-golf/code-golf/session"
 )
 
@@ -31,9 +31,9 @@ type solution struct {
 // AdminSolutions serves GET /admin/solutions
 func AdminSolutions(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		Holes []hole.Hole
-		Langs []lang.Lang
-	}{hole.List, lang.List}
+		Holes []*config.Hole
+		Langs []*config.Lang
+	}{config.HoleList, config.LangList}
 
 	render(w, r, "admin/solutions", data, "Admin Solutions")
 }

@@ -8,10 +8,10 @@ import (
 	"time"
 
 	"github.com/buildkite/terminal"
+	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/discord"
 	Golfer "github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/hole"
-	"github.com/code-golf/code-golf/lang"
 	"github.com/code-golf/code-golf/pretty"
 	"github.com/code-golf/code-golf/session"
 	"github.com/lib/pq"
@@ -27,15 +27,13 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	experimental := false
-	if _, ok := hole.ByID[in.Hole]; !ok {
-		if _, experimental = hole.ExperimentalByID[in.Hole]; !experimental {
-			w.WriteHeader(http.StatusNotFound)
-			return
-		}
+	_, experimental := config.ExpHoleByID[in.Hole]
+	if !experimental && config.HoleByID[in.Hole] == nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
 	}
 
-	if _, ok := lang.ByID[in.Lang]; !ok {
+	if _, ok := config.LangByID[in.Lang]; !ok {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
@@ -176,7 +174,8 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		// If any of the updates are record breakers, announce them on Discord
 		if len(recordUpdates) > 0 {
 			go discord.LogNewRecord(
-				golfer, hole.ByID[in.Hole], lang.ByID[in.Lang], recordUpdates, db,
+				golfer, config.HoleByID[in.Hole], config.LangByID[in.Lang],
+				recordUpdates, db,
 			)
 		}
 

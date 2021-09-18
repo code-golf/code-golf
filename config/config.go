@@ -1,9 +1,16 @@
 package config
 
-import "strings"
+import (
+	"embed"
+	"strings"
 
-// ID converts a name into a URL-safe ID.
-func ID(name string) string {
+	"github.com/pelletier/go-toml/v2"
+)
+
+//go:embed *.toml
+var tomls embed.FS
+
+func id(name string) string {
 	name = strings.ReplaceAll(name, " ", "-")
 	name = strings.ReplaceAll(name, "!", "")
 	name = strings.ReplaceAll(name, "#", "-sharp")
@@ -13,4 +20,12 @@ func ID(name string) string {
 	name = strings.ReplaceAll(name, "’", "")
 
 	return strings.ToLower(name)
+}
+
+func unmarshal(file string, value interface{}) {
+	if data, err := tomls.ReadFile(file); err != nil {
+		panic(err)
+	} else if err := toml.Unmarshal(data, value); err != nil {
+		panic(err)
+	}
 }

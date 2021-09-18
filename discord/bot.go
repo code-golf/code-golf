@@ -9,9 +9,8 @@ import (
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/code-golf/code-golf/config"
 	Golfer "github.com/code-golf/code-golf/golfer"
-	"github.com/code-golf/code-golf/hole"
-	"github.com/code-golf/code-golf/lang"
 	"github.com/code-golf/code-golf/pretty"
 )
 
@@ -25,8 +24,8 @@ type RecAnnouncement struct {
 	Message *discordgo.Message
 	Updates [][]Golfer.RankUpdate
 	Golfer  *Golfer.Golfer
-	Hole    hole.Hole
-	Lang    lang.Lang
+	Hole    *config.Hole
+	Lang    *config.Lang
 }
 
 var lastAnnouncement *RecAnnouncement
@@ -103,7 +102,7 @@ func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
 
 // LogNewRecord logs a record breaking solution in Discord.
 func LogNewRecord(
-	golfer *Golfer.Golfer, hole hole.Hole, lang lang.Lang, updates []Golfer.RankUpdate, db *sql.DB,
+	golfer *Golfer.Golfer, hole *config.Hole, lang *config.Lang, updates []Golfer.RankUpdate, db *sql.DB,
 ) {
 	if bot == nil {
 		return

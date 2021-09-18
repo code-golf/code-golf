@@ -5,8 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/code-golf/code-golf/hole"
-	"github.com/code-golf/code-golf/lang"
+	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
 	"gopkg.in/guregu/null.v4"
 )
@@ -20,7 +19,7 @@ func Recent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if _, ok := lang.ByID[langID]; langID != "all-langs" && !ok {
+	if _, ok := config.LangByID[langID]; langID != "all-langs" && !ok {
 		NotFound(w, r)
 		return
 	}
@@ -83,8 +82,8 @@ func Recent(w http.ResponseWriter, r *http.Request) {
 	defer rows.Close()
 
 	type recent struct {
-		Hole                           hole.Hole
-		Lang                           lang.Lang
+		Hole                           *config.Hole
+		Lang                           *config.Lang
 		Login, Scoring                 string
 		Bytes, Strokes, Rank, TieCount int
 		Chars                          null.Int
@@ -113,8 +112,8 @@ func Recent(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
-		r.Hole = hole.ByID[holeID]
-		r.Lang = lang.ByID[langID]
+		r.Hole = config.HoleByID[holeID]
+		r.Lang = config.LangByID[langID]
 		r.Scoring = strings.Title(r.Scoring)
 
 		// If all of the information in two rows matches, other than the scoring, collapse them into one.
@@ -140,16 +139,16 @@ func Recent(w http.ResponseWriter, r *http.Request) {
 	if langID == "all-langs" {
 		title += "All Langs"
 	} else {
-		title += lang.ByID[langID].Name
+		title += config.LangByID[langID].Name
 	}
 
 	data := struct {
 		LangID  string
-		Langs   []lang.Lang
+		Langs   []*config.Lang
 		Recents []recent
 	}{
 		LangID:  langID,
-		Langs:   lang.List,
+		Langs:   config.LangList,
 		Recents: recents,
 	}
 

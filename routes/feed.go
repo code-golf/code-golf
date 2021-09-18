@@ -5,8 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/code-golf/code-golf/hole"
-	"github.com/code-golf/code-golf/lang"
+	"github.com/code-golf/code-golf/config"
 	"github.com/gorilla/feeds"
 )
 
@@ -119,9 +118,9 @@ func init() {
 	} {
 		var name string
 		if i.hole {
-			name = hole.ByID[i.id].Name
+			name = config.HoleByID[i.id].Name
 		} else {
-			name = lang.ByID[i.id].Name
+			name = config.LangByID[i.id].Name
 		}
 
 		var link string

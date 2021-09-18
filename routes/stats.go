@@ -4,8 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/code-golf/code-golf/hole"
-	"github.com/code-golf/code-golf/lang"
+	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/pie"
 	"github.com/code-golf/code-golf/session"
 )
@@ -27,8 +26,8 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 		SolutionsByHole, SolutionsByLang        pie.Pie
 		Tables                                  []table
 	}{
-		Holes:  len(hole.List),
-		Langs:  len(lang.List),
+		Holes:  len(config.HoleList),
+		Langs:  len(config.LangList),
 		Tables: []table{{Fact: "Hole"}, {Fact: "Language"}},
 	}
 
@@ -75,10 +74,10 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 
 			if fact == "hole" {
 				row.Route = "/" + row.Fact
-				row.Fact = hole.ByID[row.Fact].Name
+				row.Fact = config.HoleByID[row.Fact].Name
 			} else {
 				row.Route = "/recent/" + row.Fact
-				row.Fact = lang.ByID[row.Fact].Name
+				row.Fact = config.LangByID[row.Fact].Name
 			}
 
 			row.PerGolfer = fmt.Sprintf("%.2f", float64(row.Count)/float64(row.Golfers))

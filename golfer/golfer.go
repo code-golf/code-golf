@@ -7,9 +7,7 @@ import (
 	"sort"
 	"time"
 
-	"github.com/code-golf/code-golf/cheevo"
-	"github.com/code-golf/code-golf/hole"
-	"github.com/code-golf/code-golf/lang"
+	"github.com/code-golf/code-golf/config"
 	"gopkg.in/guregu/null.v4"
 )
 
@@ -30,7 +28,7 @@ type Golfer struct {
 }
 
 // Earn the given cheevo, no-op if already earnt.
-func (g *Golfer) Earn(db *sql.DB, cheevoID string) (earned *cheevo.Cheevo) {
+func (g *Golfer) Earn(db *sql.DB, cheevoID string) (earned *config.Cheevo) {
 	if res, err := db.Exec(
 		"INSERT INTO trophies VALUES (DEFAULT, $1, $2) ON CONFLICT DO NOTHING",
 		g.ID,
@@ -38,7 +36,7 @@ func (g *Golfer) Earn(db *sql.DB, cheevoID string) (earned *cheevo.Cheevo) {
 	); err != nil {
 		panic(err)
 	} else if rowsAffected, _ := res.RowsAffected(); rowsAffected == 1 {
-		earned = cheevo.ByID[cheevoID]
+		earned = config.CheevoByID[cheevoID]
 	}
 
 	// Update g.Cheevos if necessary.
@@ -91,9 +89,9 @@ type RankUpdate struct {
 
 func GetInfo(db *sql.DB, name string) *GolferInfo {
 	info := GolferInfo{
-		CheevosTotal: len(cheevo.List),
-		HolesTotal:   len(hole.List),
-		LangsTotal:   len(lang.List),
+		CheevosTotal: len(config.CheevoList),
+		HolesTotal:   len(config.HoleList),
+		LangsTotal:   len(config.LangList),
 	}
 
 	if err := db.QueryRow(

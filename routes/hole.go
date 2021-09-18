@@ -3,8 +3,7 @@ package routes
 import (
 	"net/http"
 
-	"github.com/code-golf/code-golf/hole"
-	"github.com/code-golf/code-golf/lang"
+	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
 )
 
@@ -12,17 +11,17 @@ import (
 func Hole(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		HideDetails bool
-		Hole        hole.Hole
-		Langs       []lang.Lang
+		Hole        *config.Hole
+		Langs       []*config.Lang
 		Solutions   []map[string]string
 	}{
-		Langs:     lang.List,
+		Langs:     config.LangList,
 		Solutions: []map[string]string{{}, {}},
 	}
 
 	var ok bool
-	if data.Hole, ok = hole.ByID[param(r, "hole")]; !ok {
-		if data.Hole, ok = hole.ExperimentalByID[param(r, "hole")]; !ok {
+	if data.Hole, ok = config.HoleByID[param(r, "hole")]; !ok {
+		if data.Hole, ok = config.ExpHoleByID[param(r, "hole")]; !ok {
 			NotFound(w, r)
 			return
 		}
@@ -73,19 +72,17 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 func HoleNG(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		HideDetails bool
-		Hole        hole.Hole
-		LangsByID   map[string]lang.Lang
-		LangsList   []lang.Lang
+		Hole        *config.Hole
+		Langs       []*config.Lang
 		Solutions   map[string]map[string]string
 	}{
-		LangsByID: lang.ByID,
-		LangsList: append(make([]lang.Lang, 0), lang.List...),
+		Langs:     config.LangList,
 		Solutions: map[string]map[string]string{},
 	}
 
 	var ok bool
-	if data.Hole, ok = hole.ByID[param(r, "hole")]; !ok {
-		if data.Hole, ok = hole.ExperimentalByID[param(r, "hole")]; !ok {
+	if data.Hole, ok = config.HoleByID[param(r, "hole")]; !ok {
+		if data.Hole, ok = config.ExpHoleByID[param(r, "hole")]; !ok {
 			NotFound(w, r)
 			return
 		}

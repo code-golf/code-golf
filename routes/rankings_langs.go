@@ -3,31 +3,30 @@ package routes
 import (
 	"net/http"
 
-	"github.com/code-golf/code-golf/hole"
-	"github.com/code-golf/code-golf/lang"
+	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
 )
 
 // RankingsLangs serves GET /rankings/langs/{scoring}
 func RankingsLangs(w http.ResponseWriter, r *http.Request) {
 	type row struct {
-		Hole                    hole.Hole
-		Lang                    lang.Lang
+		Hole                    *config.Hole
+		Lang                    *config.Lang
 		Golds, Silvers, Bronzes int
 		Points, Rank, Strokes   int
 	}
 
 	data := struct {
 		LangID, Scoring string
-		Langs           []lang.Lang
+		Langs           []*config.Lang
 		Rows            []row
 	}{
 		LangID:  param(r, "lang"),
-		Langs:   lang.List,
+		Langs:   config.LangList,
 		Scoring: param(r, "scoring"),
 	}
 
-	if data.LangID != "all" && lang.ByID[data.LangID].ID == "" ||
+	if data.LangID != "all" && config.LangByID[data.LangID] == nil ||
 		data.Scoring != "chars" && data.Scoring != "bytes" {
 		NotFound(w, r)
 		return
@@ -59,7 +58,7 @@ func RankingsLangs(w http.ResponseWriter, r *http.Request) {
 				panic(err)
 			}
 
-			r.Hole = hole.ByID[holeID]
+			r.Hole = config.HoleByID[holeID]
 
 			data.Rows = append(data.Rows, r)
 		}
@@ -110,7 +109,7 @@ func RankingsLangs(w http.ResponseWriter, r *http.Request) {
 				panic(err)
 			}
 
-			r.Lang = lang.ByID[langID]
+			r.Lang = config.LangByID[langID]
 
 			data.Rows = append(data.Rows, r)
 		}
@@ -121,7 +120,7 @@ func RankingsLangs(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var description string
-	if lang := lang.ByID[data.LangID]; lang.ID != "" {
+	if lang, ok := config.LangByID[data.LangID]; ok {
 		description = lang.Name + " in "
 	} else {
 		description = "All languages in "

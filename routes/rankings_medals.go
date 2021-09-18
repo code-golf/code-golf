@@ -3,8 +3,7 @@ package routes
 import (
 	"net/http"
 
-	"github.com/code-golf/code-golf/hole"
-	"github.com/code-golf/code-golf/lang"
+	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
 )
@@ -18,22 +17,22 @@ func RankingsMedals(w http.ResponseWriter, r *http.Request) {
 
 	data := struct {
 		HoleID, LangID, Scoring string
-		Holes                   []hole.Hole
-		Langs                   []lang.Lang
+		Holes                   []*config.Hole
+		Langs                   []*config.Lang
 		Pager                   *pager.Pager
 		Rows                    []row
 	}{
 		HoleID:  param(r, "hole"),
-		Holes:   hole.List,
+		Holes:   config.HoleList,
 		LangID:  param(r, "lang"),
-		Langs:   lang.List,
+		Langs:   config.LangList,
 		Pager:   pager.New(r),
 		Rows:    make([]row, 0, pager.PerPage),
 		Scoring: param(r, "scoring"),
 	}
 
-	if data.HoleID != "all" && hole.ByID[data.HoleID].ID == "" ||
-		data.LangID != "all" && lang.ByID[data.LangID].ID == "" ||
+	if data.HoleID != "all" && config.HoleByID[data.HoleID] == nil ||
+		data.LangID != "all" && config.LangByID[data.LangID] == nil ||
 		data.Scoring != "all" && data.Scoring != "chars" && data.Scoring != "bytes" {
 		NotFound(w, r)
 		return
@@ -106,13 +105,13 @@ func RankingsMedals(w http.ResponseWriter, r *http.Request) {
 	}
 
 	description := ""
-	if hole := hole.ByID[data.HoleID]; hole.ID != "" {
+	if hole, ok := config.HoleByID[data.HoleID]; ok {
 		description += hole.Name + " in "
 	} else {
 		description += "All holes in "
 	}
 
-	if lang := lang.ByID[data.LangID]; lang.ID != "" {
+	if lang, ok := config.LangByID[data.LangID]; ok {
 		description += lang.Name
 	} else {
 		description += "all languages"
