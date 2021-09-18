@@ -104,27 +104,21 @@ main .info {
     padding: .25rem .4rem;
 }
 
-/* TODO Replace margins with gap 1rem https://caniuse.com#feat=flexbox-gap */
-#header {
+main > header {
     align-items: center;
     display: flex;
     flex-wrap: wrap;
+    gap: 1rem;
     justify-content: space-between;
-    margin: -.5rem;
 }
 
-#header > * { margin: .5rem }
+main > header a { white-space: nowrap }
 
-#header a { white-space: nowrap }
-
-#header nav {
+main > header nav {
     display: flex;
     flex-wrap: wrap;
+    gap: .5rem;
 }
-
-#header span { margin: 0 .5rem }
-
-#header .purple { margin: 0 1rem }
 
 #run {
     align-items: center;
