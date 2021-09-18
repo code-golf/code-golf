@@ -63,7 +63,7 @@ func luckyTickets() ([]string, string) {
 	rand.Shuffle(len(data), func(i, j int) {
 		data[i], data[j] = data[j], data[i]
 	})
-	data = data[0:3]
+	data = data[0:4]
 	tickets := make([]ticket, len(data))
 	// always add case 14 12
 	tickets = append(tickets, ticket{14, 12, 39222848622984})
