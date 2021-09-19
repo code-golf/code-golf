@@ -8,6 +8,7 @@ constant %cheevos = <
     40 {forty-winks}
     42 {dont-panic}
     50 {bullseye}
+    60 {gone-in-60-holes}
 >;
 
 my $dbh = dbh;
@@ -20,26 +21,22 @@ $client.get: 'https://app:1443/about',
 is $dbh.execute('SELECT ARRAY(SELECT trophy FROM trophies)').row, '{rtfm}',
     'GET /about earns {rtfm}';
 
-my @holes = 'config/holes.toml'.IO.&from-toml.grep(!*.value<experiment>).map:
-    { .value<variants> ?? |(.key X .value<variants>[])».join(" ") !! .key };
-
-for @holes.sort {
-    next if $_ ~~ 'Fizz Buzz' | 'Quine';  # Theese are tested lower.
-
-    my $hole    = .lc.trans: ' ’' => '-', :d;
+for $dbh.execute('SELECT unnest(enum_range(null::hole))').allrows.flat {
     my $cheevos = %cheevos{ my $i = ++$ } // '{}';
 
+    $cheevos.=subst: '}', 'interview-ready}' if $_ eq 'fizz-buzz';
+    $cheevos.=subst: '}', 'solve-quine}'     if $_ eq 'quine';
+
     is $dbh.execute(
-        "SELECT earned FROM save_solution(2, 2, 'ab', ?, 'c', 1)", $hole,
-    ).row, $cheevos, "Solution $i earns $cheevos";
+        "SELECT earned FROM save_solution(2, 2, 'ab', ?, 'c', 1)", $_,
+    ).row, $cheevos, "$_/c earns $cheevos";
 }
 
 for <
     brainfuck       brainfuck {inception}
     divisors        php       {elephpant-in-the-room}
-    fizz-buzz       haskell   {interview-ready}
     poker           fish      {fish-n-chips}
-    quine           python    {solve-quine,ouroboros}
+    quine           python    {ouroboros}
     seven-segment   assembly  {assembly-required}
     sudoku          hexagony  {off-the-grid}
     ten-pin-bowling cobol     {cobowl}
