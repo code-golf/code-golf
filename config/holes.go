@@ -40,6 +40,9 @@ func init() {
 			continue
 		}
 
+		// Delete the original meta hole.
+		delete(holes, name)
+
 		// Parse the templated preamble.
 		t, err := template.New("").Parse(string(hole.Preamble))
 		if err != nil {
@@ -48,26 +51,28 @@ func init() {
 
 		var variants []*Hole
 		for _, variant := range hole.Variants {
-			newHole := *hole
+			hole := *hole
 
 			// Process the templated preamble with the current variant.
 			var b bytes.Buffer
 			if err := t.Execute(&b, variant); err != nil {
 				panic(err)
 			}
-			newHole.Preamble = template.HTML(b.String())
+			hole.Preamble = template.HTML(b.String())
 
-			holes[name+" ("+variant+")"] = &newHole
-			variants = append(variants, &newHole.Hole)
+			name := name
+			if variant != "" {
+				name += " (" + variant + ")"
+			}
+
+			holes[name] = &hole
+			variants = append(variants, &hole.Hole)
 		}
 
 		// Reference the variants from each variant.
 		for _, variant := range variants {
 			variant.Variants = variants
 		}
-
-		// Delete the original meta hole.
-		delete(holes, name)
 	}
 
 	for name, hole := range holes {

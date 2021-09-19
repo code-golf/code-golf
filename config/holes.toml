@@ -803,6 +803,7 @@ preamble = '''
 
 ['Happy Numbers']
 category = 'Sequence'
+variants = ['', 'Long']
 links = [
     { name = 'OEIS A007770', url = '//oeis.org/A007770' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Happy_numbers' },
@@ -827,8 +828,9 @@ preamble = '''
 </dl>
 
 <p>
-    Print all the happy numbers from <b>1</b> to <b>200</b> inclusive, each on
-    their own line.
+    Print all the happy numbers from <b>1</b> to
+    <b>{{ if . }}1,000{{ else }}200{{ end }}</b>
+    inclusive, each on their own line.
 '''
 
 [Intersection]
