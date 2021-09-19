@@ -20,11 +20,13 @@ $client.get: 'https://app:1443/about',
 is $dbh.execute('SELECT ARRAY(SELECT trophy FROM trophies)').row, '{rtfm}',
     'GET /about earns {rtfm}';
 
-for %( from-toml 'config/holes.toml'.IO ) {
-    next if .value<experiment>;             # Experimental holes can't be saved.
-    next if .key ~~ 'Fizz Buzz' | 'Quine';  # Theese are tested lower.
+my @holes = 'config/holes.toml'.IO.&from-toml.grep(!*.value<experiment>).map:
+    { .value<variants> ?? |(.key X .value<variants>[])».join(" ") !! .key };
 
-    my $hole    = .key.lc.trans: ' ’' => '-', :d;
+for @holes.sort {
+    next if $_ ~~ 'Fizz Buzz' | 'Quine';  # Theese are tested lower.
+
+    my $hole    = .lc.trans: ' ’' => '-', :d;
     my $cheevos = %cheevos{ my $i = ++$ } // '{}';
 
     is $dbh.execute(

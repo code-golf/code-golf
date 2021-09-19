@@ -33,6 +33,11 @@
         </nav>
     {{ end }}
         <nav>
+        {{ range .Data.Hole.Variants }}
+            {{ if ne . $.Data.Hole }}
+                <a class="btn blue" href="{{ .ID }}">{{ .Name }}</a>
+            {{ end }}
+        {{ end }}
             <a class="btn orange" href="{{ .Data.Hole.Prev }}">
                 {{ svg "chevron-double-left-light" }} Prev
             </a>

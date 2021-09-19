@@ -1,6 +1,7 @@
 package config
 
 import (
+	"bytes"
 	"html/template"
 	"sort"
 	"strings"
@@ -22,11 +23,52 @@ type Hole struct {
 	ID, Name, Prev, Next                  string
 	Preamble                              template.HTML
 	Links                                 []struct{ Name, URL string }
+	Variants                              []*Hole
 }
 
 func init() {
-	var holes map[string]*Hole
+	var holes map[string]*struct {
+		Hole
+		Variants []string
+	}
 	unmarshal("holes.toml", &holes)
+
+	// Expand variants.
+	for name, hole := range holes {
+		// Don't process holes without variants or already processed variants.
+		if len(hole.Variants) == 0 || len(hole.Hole.Variants) != 0 {
+			continue
+		}
+
+		// Parse the templated preamble.
+		t, err := template.New("").Parse(string(hole.Preamble))
+		if err != nil {
+			panic(err)
+		}
+
+		var variants []*Hole
+		for _, variant := range hole.Variants {
+			newHole := *hole
+
+			// Process the templated preamble with the current variant.
+			var b bytes.Buffer
+			if err := t.Execute(&b, variant); err != nil {
+				panic(err)
+			}
+			newHole.Preamble = template.HTML(b.String())
+
+			holes[name+" ("+variant+")"] = &newHole
+			variants = append(variants, &newHole.Hole)
+		}
+
+		// Reference the variants from each variant.
+		for _, variant := range variants {
+			variant.Variants = variants
+		}
+
+		// Delete the original meta hole.
+		delete(holes, name)
+	}
 
 	for name, hole := range holes {
 		hole.ID = id(name)
@@ -61,11 +103,11 @@ func init() {
 		}
 
 		if hole.Experiment == 0 {
-			HoleByID[hole.ID] = hole
-			HoleList = append(HoleList, hole)
+			HoleByID[hole.ID] = &hole.Hole
+			HoleList = append(HoleList, &hole.Hole)
 		} else {
-			ExpHoleByID[hole.ID] = hole
-			ExpHoleList = append(ExpHoleList, hole)
+			ExpHoleByID[hole.ID] = &hole.Hole
+			ExpHoleList = append(ExpHoleList, &hole.Hole)
 		}
 	}
 

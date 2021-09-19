@@ -9,6 +9,7 @@ func TestID(t *testing.T) {
 		{"DON’T PANIC!", "dont-panic"},
 		{"Happy Birthday, Code Golf", "happy-birthday-code-golf"},
 		{"May the 4ᵗʰ Be with You", "may-the-4ᵗʰ-be-with-you"},
+		{"Morse (Decoder)", "morse-decoder"},
 		{"My God, It’s Full of Stars", "my-god-its-full-of-stars"},
 		{"Off-the-grid", "off-the-grid"},
 		{"tl;dr", "tl-dr"},
