@@ -113,7 +113,7 @@ func init() {
 	_, dev = os.LookupEnv("DEV")
 
 	// HACK Tests are run from the package directory, walk a dir up.
-	if _, err := os.Stat("README.md"); os.IsNotExist(err) {
+	if _, err := os.Stat("css"); os.IsNotExist(err) {
 		os.Chdir("..")
 	}
 
