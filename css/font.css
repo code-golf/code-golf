@@ -15,3 +15,8 @@
                    U+1F900-1F9FF, /* Supplemental Symbols and Pictographs */
                    U+1FA70-1FAFF; /* Symbols and Pictographs Extended-A */
 }
+
+@font-face {
+     font-family: 'Source Code Pro';
+     src: url(../fonts/source-code-pro.woff2);
+}

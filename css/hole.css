@@ -18,20 +18,21 @@ aside {
 }
 
 pre {
-    font-family: emoji, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', Courier, monospace;
-    line-height: 1;
+    font-family: emoji, 'Source Code Pro', monospace;
+    line-height: 1.2;
+    overflow: auto hidden;
 }
 
 .qr-span span {
     color: var(--grey);
-    font-family: emoji, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', Courier, monospace;
+    font-family: emoji, 'Source Code Pro', monospace;
 }
 
 aside > div {
     background: var(--background);
     border: 1px solid var(--color);
     border-left: 0;
-    font-family: emoji, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', Courier, monospace;
+    font-family: emoji, 'Source Code Pro', monospace;
     font-variant-ligatures: none;
     height: 140px;
     line-height: 1;
@@ -65,14 +66,14 @@ main .info {
     background: var(--arg-background);
     border-radius: .5rem;
     display: inline-block;
-    font-family: emoji, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', Courier, monospace;
+    font-family: emoji, 'Source Code Pro', monospace;
     margin-bottom: .5rem;
     padding: 3px 7px;
     white-space: pre;
 }
 
 #arrows code { font-size: 1.5rem }
-#arrows td   { font-family: 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', Courier, monospace }
+#arrows td   { font-family: emoji, 'Source Code Pro', monospace }
 #arrows td:first-child { white-space: pre }
 #arrows td:last-child  { width: 100% }
 

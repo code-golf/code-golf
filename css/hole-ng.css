@@ -137,7 +137,7 @@ select {
     border: 1px solid var(--color);
     border-top-width: 2px;
     display: none;
-    font-family: emoji, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', Courier, monospace;
+    font-family: emoji, 'Source Code Pro', monospace;
     grid-column: span 7;
     height: 14rem;
     overflow: auto;

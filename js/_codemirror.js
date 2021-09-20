@@ -49,8 +49,7 @@ const asmErrorTooltip = {
     'color':      'var(--background)',
 };
 
-const fontFamily =
-    "'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', Courier, monospace";
+const fontFamily = "'Source Code Pro', monospace";
 
 export const extensions = {
     // Extensions.
