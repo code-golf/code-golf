@@ -4,13 +4,13 @@ RUN mkdir /empty
 
 RUN apk add --no-cache build-base git perl
 
-RUN git clone -b 2021.08 git://github.com/rakudo/rakudo \
- && cd rakudo                                           \
- && CFLAGS=-flto ./Configure.pl                         \
-    --gen-moar                                          \
-    --moar-option=--ar=gcc-ar                           \
-    --prefix=/usr                                       \
- && make -j`nproc` install                              \
+RUN git clone -b 2021.09 https://github.com/rakudo/rakudo.git \
+ && cd rakudo                                                 \
+ && CFLAGS=-flto ./Configure.pl                               \
+    --gen-moar                                                \
+    --moar-option=--ar=gcc-ar                                 \
+    --prefix=/usr                                             \
+ && make -j`nproc` install                                    \
  && strip /usr/bin/rakudo /usr/lib/libmoar.so
 
 RUN rm -r /usr/share/nqp/lib/profiler            \
