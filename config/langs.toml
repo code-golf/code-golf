@@ -704,8 +704,8 @@ execute "normal! :wq\<cr>"
 '''
 
 [Zig]
-size    = '241 MiB'
-version = '0.8.0'
+size    = '242 MiB'
+version = '0.8.1'
 website = 'https://ziglang.org'
 example = '''
 const std = @import("std");
