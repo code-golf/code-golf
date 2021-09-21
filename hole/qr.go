@@ -109,7 +109,7 @@ func qr(decoder bool) (args []string, out string) {
 		args = []string{qrString}
 		out = content
 	} else {
-		arg := fmt.Sprintf("%s %s", content, hex.EncodeToString(getErrorCorrectionBlocks(qr)))
+		arg := content + " " + hex.EncodeToString(getErrorCorrectionBlocks(qr))
 		args = []string{arg}
 		out = qrString
 	}
