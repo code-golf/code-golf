@@ -1506,7 +1506,7 @@ preamble = '''
       <span>^^</span> 10       <span>vv</span> ..
 </div>
 
-<p>To decode a bit off of a strip, read the value from the QR code bitmap ("#" = 1, space = 0) and invert it if <b>(x+y)%2 = 0</b>, where <b>(x, y)</b> are the coordinates of the bit in the bitmap with the origin (0, 0) at the top-left corner.
+<p>To decode a bit off of a strip, read the value from the QR code bitmap ("#" = 1, space = 0) and invert it if <b>(x+y)%2 = 0</b>, where <b>(x, y)</b> are the coordinates of the bit in the bitmap with the origin <b>(0, 0)</b> at the top-left corner.
 
 <p>This will yield a bitstream like:
 
@@ -1517,6 +1517,65 @@ preamble = '''
 </pre>
 
 <p>Print the 17 bytes of ASCII stored in the QR code.
+'''
+
+['QR Encoder']
+category = 'Transform'
+experiment = -1
+links = [
+    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/QR_code#Encoding' },
+]
+preamble = '''
+<div class=qr-span>
+<p>Encode ASCII string to a Version-1 QR code of this ASCII-art format, where all the <span>v</span> and <span>^</span> must be filled with "#" and spaces.
+</div>
+
+<div class=qr-span><pre>
+    #######  <span>vv^^</span> #######
+    #     #  <span>vv^^</span> #     #
+    # ### # #<span>vv^^</span> # ### #
+    # ### #  <span>vv^^</span> # ### #
+    # ### #  <span>vv^^</span> # ### #
+    #     #  <span>vv^^</span> #     #
+    ####### # # # #######
+            #<span>vv^^</span>
+    ### #####<span>vv^^</span>##   #
+    <span>vv^^vv</span> <span>^^vv^^vv^^vv^^</span>
+    <span>vv^^vv</span>#<span>^^vv^^vv^^vv^^</span>
+    <span>vv^^vv</span> <span>^^vv^^vv^^vv^^</span>
+    <span>vv^^vv</span>#<span>^^vv^^vv^^vv^^</span>
+            #<span>vv^^vv^^vv^^</span>
+    ####### #<span>vv^^vv^^vv^^</span>
+    #     # #<span>vv^^vv^^vv^^</span>
+    # ### # #<span>vv^^vv^^vv^^</span>
+    # ### #  <span>vv^^vv^^vv^^</span>
+    # ### # #<span>vv^^vv^^vv^^</span>
+    #     # #<span>vv^^vv^^vv^^</span>
+    ####### #<span>vv^^vv^^vv^^</span>
+</div>
+
+<div class=qr-span>
+<p>The 10 vertical "strips" of <span>^^</span> or <span>vv</span> must be written from right to left. The bits in a strip are written in a zig-zag order: <span>^^</span> zig-zags upwards, and <span>vv</span> zig-zags downwards. The bit on the right always precedes the one on its left.
+</div>
+
+<div class=qr-span><pre>
+      <span>^^</span> ..       <span>vv</span> 10
+      <span>^^</span> 98       <span>vv</span> 32
+      <span>^^</span> 76       <span>vv</span> 54
+      <span>^^</span> 54       <span>vv</span> 76
+      <span>^^</span> 32       <span>vv</span> 98
+      <span>^^</span> 10       <span>vv</span> ..
+</div>
+
+<p>The strips are filled with data from a bitstream:
+
+<pre>
+    0100  00010001  01001000  01100101  ...  01101111  0000  11000000  11111111  ...  11101110
+    Enc   Length    'H'       'e'                 'o'  End   c0        ff             ee
+    (4)   (17)      (17-byte ASCII message)            (0)   (7 error correction bytes)
+</pre>
+
+<p>To encode a bit from the bitstream to a strip, determine the coordinates <b>(x, y)</b> of the current position in the bitmap with the origin <b>(0, 0)</b> at the top-left corner, invert the bit if <b>(x+y)%2 = 0</b>, and write the value to this position ("#" = 1, space = 0).
 '''
 
 [Quine]
