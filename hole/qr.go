@@ -38,8 +38,15 @@ func get8(qr matrix, i, j, dir int) byte {
 }
 
 func getErrorCorrectionBlocks(qr matrix) []byte {
-	return []byte{get8(qr, 9, 10, 1), get8(qr, 13, 10, 1), get8(qr, 17, 10, 1),
-		get8(qr, 12, 8, -1), get8(qr, 9, 5, 1), get8(qr, 12, 3, -1), get8(qr, 9, 1, 1)}
+	return []byte{
+		get8(qr, 9, 10, 1),
+		get8(qr, 13, 10, 1),
+		get8(qr, 17, 10, 1),
+		get8(qr, 12, 8, -1),
+		get8(qr, 9, 5, 1),
+		get8(qr, 12, 3, -1),
+		get8(qr, 9, 1, 1),
+	}
 }
 
 func genQr(content string) matrix {
