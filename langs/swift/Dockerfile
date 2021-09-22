@@ -5,7 +5,7 @@ RUN mkdir /empty
 RUN apt-get update \
  && apt-get install -y binutils curl libatomic1 libc6-dev libedit2 libz3-4
 
-RUN curl https://swift.org/builds/swift-5.4.3-release/ubuntu2004/swift-5.4.3-RELEASE/swift-5.4.3-RELEASE-ubuntu20.04.tar.gz \
+RUN curl https://swift.org/builds/swift-5.5-release/ubuntu2004/swift-5.5-RELEASE/swift-5.5-RELEASE-ubuntu20.04.tar.gz \
   | tar xz --directory / --strip-components 1
 
 RUN strip /usr/bin/swift
