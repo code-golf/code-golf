@@ -56,8 +56,6 @@ main .info {
     padding: .5rem;
 }
 
-.text-red { color: var(--red-text) }
-
 #arg, #err { display: none }
 
 #err, #exp, #out { white-space: pre }

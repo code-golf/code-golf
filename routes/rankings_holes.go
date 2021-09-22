@@ -13,8 +13,9 @@ import (
 // RankingsHoles serves GET /rankings/holes/{hole}/{lang}/{scoring}
 func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 	type row struct {
-		Country, Lang, Login         string
+		Country, Login               string
 		Holes, Rank, Points, Strokes int
+		Lang                         *config.Lang
 		Submitted                    time.Time
 	}
 
@@ -162,11 +163,12 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 
 	for rows.Next() {
 		var r row
+		var langID string
 
 		if err := rows.Scan(
 			&r.Country,
 			&r.Holes,
-			&r.Lang,
+			&langID,
 			&r.Login,
 			&r.Points,
 			&r.Rank,
@@ -177,9 +179,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
-		if r.Lang != "" {
-			r.Lang = config.LangByID[r.Lang].Name
-		}
+		r.Lang = config.LangByID[langID]
 
 		data.Rows = append(data.Rows, r)
 	}
