@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/discord"
 	h "github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/session"
 )
@@ -62,6 +63,7 @@ func GolferSolutionPost(w http.ResponseWriter, r *http.Request) {
 	code := ""
 	ctx := r.Context()
 	db := session.Database(r)
+	golfer := session.GolferInfo(r).Golfer
 
 	if err := db.QueryRowContext(
 		ctx,
@@ -75,7 +77,7 @@ func GolferSolutionPost(w http.ResponseWriter, r *http.Request) {
 		hole.ID,
 		lang.ID,
 		scoring,
-		session.GolferInfo(r).Golfer.ID,
+		golfer.ID,
 	).Scan(&code); errors.Is(err, sql.ErrNoRows) {
 		NotFound(w, r)
 		return
@@ -103,6 +105,8 @@ func GolferSolutionPost(w http.ResponseWriter, r *http.Request) {
 		); err != nil {
 			panic(err)
 		}
+
+		go discord.LogFailedRejudge(&golfer, hole, lang, scoring)
 	}
 
 	http.Redirect(w, r, param(r, "scoring"), http.StatusSeeOther)

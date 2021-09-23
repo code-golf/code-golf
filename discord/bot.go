@@ -100,6 +100,21 @@ func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
 	return embed
 }
 
+func LogFailedRejudge(golfer *Golfer.Golfer, hole *config.Hole, lang *config.Lang, scoring string) {
+	if bot == nil {
+		return
+	}
+
+	imageURL := "https://avatars.githubusercontent.com/" + golfer.Name
+	golferURL := "https://code.golf/golfers/" + golfer.Name
+
+	bot.ChannelMessageSendEmbed(channelID, &discordgo.MessageEmbed{
+		Title:  fmt.Sprintf("%s in %s failed rejudge!", hole.Name, lang.Name),
+		URL:    "https://code.golf/rankings/holes/" + hole.ID + "/" + lang.ID + "/" + scoring,
+		Author: &discordgo.MessageEmbedAuthor{Name: golfer.Name, IconURL: imageURL, URL: golferURL},
+	})
+}
+
 // LogNewRecord logs a record breaking solution in Discord.
 func LogNewRecord(
 	golfer *Golfer.Golfer, hole *config.Hole, lang *config.Lang, updates []Golfer.RankUpdate, db *sql.DB,
