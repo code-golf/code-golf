@@ -89,7 +89,7 @@ func GolferSolutionPost(w http.ResponseWriter, r *http.Request) {
 	var passes, fails int
 	for i := 0; passes < 2 && fails < 2; i++ {
 		score := h.Play(ctx, hole.ID, lang.ID, code)
-		if score.Pass || score.Timeout {
+		if score.Pass || score.Timeout || score.ExitCode != 0 {
 			passes++
 		} else {
 			fails++
