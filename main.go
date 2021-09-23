@@ -78,7 +78,7 @@ func main() {
 		r.Get("/holes", routes.GolferHoles)
 		r.Get("/holes/{scoring}", routes.GolferHoles)
 		r.Get("/{hole}/{lang}/{scoring}", routes.GolferSolution)
-		r.Post("/{hole}/{lang}/{scoring}", routes.GolferSolutionPost)
+		//r.Post("/{hole}/{lang}/{scoring}", routes.GolferSolutionPost)
 	})
 	r.Get("/healthz", routes.Healthz)
 	r.Get("/ideas", routes.Ideas)
