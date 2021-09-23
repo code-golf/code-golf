@@ -97,16 +97,20 @@ func GolferSolutionPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if fails > passes {
-		if _, err := db.Exec(
+		res, err := db.Exec(
 			`UPDATE solutions
 			    SET failing = true
-			  WHERE code = $1 AND hole = $2 AND lang = $3`,
+			  WHERE NOT failing AND code = $1 AND hole = $2 AND lang = $3`,
 			code, hole.ID, lang.ID,
-		); err != nil {
+		)
+		if err != nil {
 			panic(err)
 		}
 
-		go discord.LogFailedRejudge(&golfer, hole, lang, scoring)
+		// FIXME Technically we can end up failing multiple golfers.
+		if rows, _ := res.RowsAffected(); rows > 0 {
+			go discord.LogFailedRejudge(&golfer, hole, lang, scoring)
+		}
 	}
 
 	http.Redirect(w, r, param(r, "scoring"), http.StatusSeeOther)
