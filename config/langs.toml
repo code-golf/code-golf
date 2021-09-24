@@ -507,7 +507,7 @@ say for @ARGV;
 
 [PHP]
 size    = '10.5 MiB'
-version = '7.4.23'
+version = '7.4.24'
 website = 'https://www.php.net'
 example = '''
 # Printing
