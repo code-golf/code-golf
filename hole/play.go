@@ -149,9 +149,9 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	case "javascript":
 		cmd.Args = []string{"/usr/bin/d8", "-e", code, "--"}
 	case "julia":
-		cmd.Args = []string{"/usr/bin/run-julia", "/tmp/code.jl"}
+		cmd.Args = []string{"/usr/bin/run-julia", "--color=yes", "/tmp/code.jl"}
 	case "nim":
-		cmd.Args = []string{"/usr/bin/nim", "-o:/tmp/code", "-r", "c", "-"}
+		cmd.Args = []string{"/usr/bin/nim", "--colors:on", "-o:/tmp/code", "-r", "c", "-"}
 	case "powershell":
 		cmd.Args = []string{"/interpreter/Interpreter", "-"}
 

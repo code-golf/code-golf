@@ -6,7 +6,7 @@ cd /tmp
 
 # Compile
 cat - > code.zig
-/usr/local/bin/zig build-exe --global-cache-dir . --strip code.zig
+/usr/local/bin/zig build-exe --global-cache-dir . --strip --color on code.zig
 rm code.zig
 
 # Execute
