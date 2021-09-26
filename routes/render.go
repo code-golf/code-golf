@@ -268,6 +268,10 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...interfa
 			css["vendor/codemirror-dark"] + args.CSS
 	}
 
+	if name == "hole" || name == "hole-ng" {
+		args.CSS += css["terminal"]
+	}
+
 	// Append route specific JS.
 	// e.g. GET /foo/bar might add js/foo.js and/or js/foo/bar.js.
 	for _, path := range []string{path.Dir(name), name} {
