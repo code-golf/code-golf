@@ -4,4 +4,4 @@
 
 cat - > /tmp/code.hs
 
-exec /usr/bin/runghc /tmp/code.hs "$@"
+exec /usr/bin/runghc --ghc-arg=-fdiagnostics-color=always /tmp/code.hs "$@"
