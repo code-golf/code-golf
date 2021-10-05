@@ -394,8 +394,8 @@ for (let arg of arguments)
 '''
 
 [Julia]
-size    = '288 MiB'
-version = '1.6.2'
+size    = '259 MiB'
+version = '1.6.3'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -542,8 +542,8 @@ ForEach ($arg in $args) {
 '''
 
 [Python]
-size    = '57.2 MiB'
-version = '3.9.7'
+size    = '58.4 MiB'
+version = '3.10.0'
 website = 'https://www.python.org'
 example = '''
 import sys
