@@ -267,6 +267,9 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...interfa
 		args.CSS = css["vendor/codemirror"] + css["vendor/codemirror-dialog"] +
 			css["vendor/codemirror-dark"] + args.CSS
 	}
+	if name == "hole" || name == "hole-ng" {
+		args.CSS = css["hole-diff"] + args.CSS
+	}
 
 	if name == "hole" || name == "hole-ng" {
 		args.CSS += css["terminal"]

@@ -1,3 +1,10 @@
+/**
+ * NOTE: These includes are hardcoded in render.go, not inlined automatically
+ * from comments like the *.js `include`s
+ */
+ 
+/* include hole-diff.css */
+
 canvas {
     border: 1px solid var(--color);
     image-rendering: crisp-edges;

@@ -6,6 +6,7 @@
 /* include vendor/codemirror.css        */
 /* include vendor/codemirror-dialog.css */
 /* include vendor/codemirror-dark.css */
+/* include hole-diff.css */
 
 aside {
     border-left: 2rem solid var(--color);
@@ -37,8 +38,12 @@ aside > div {
 }
 
 h3 {
-    bottom: -1.5rem;
     color: var(--background);
+    background: var(--color);
+}
+
+h3.aside-title {
+    bottom: -1.5rem;
     left: -2rem;
     line-height: 2rem;
     position: absolute;
@@ -52,7 +57,9 @@ main .info {
     padding: .5rem;
 }
 
-#arg, #err { display: none }
+.text-red { color: var(--red-text) }
+
+#arg, #err, #diff { display: none }
 
 #err, #exp, #out { white-space: pre }
 

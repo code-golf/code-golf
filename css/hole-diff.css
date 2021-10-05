@@ -1,0 +1,76 @@
+#diff-content {
+    display: grid;
+    grid-template-columns:
+        [arg] max-content
+        [left-num] minmax(20px, min-content)
+        [left] 1fr
+        [right-num] minmax(20px, min-content)
+        [right] 1fr;
+    grid-template-rows: max-content;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    padding: 0;
+    line-height: 1.25em;
+}
+
+#diff h3 {
+    /* This is already set in hole.css but not hole-ng.css */
+    color: var(--background);
+    background: var(--color);
+}
+
+#diff .diff-left-num,
+#diff .diff-right-num {
+    /* Ref .CodeMirror-linenumber and .CodeMirror-gutters */
+    border-inline: 1px solid var(--color);
+    padding: 0 3px 0 5px;
+    min-width: 20px;
+    text-align: right;
+    white-space: nowrap;
+}
+
+#diff-arguments {
+    text-align: right;
+}
+
+#diff .diff-arg {
+    grid-column: arg;
+    padding: 0 6px 0 8px;
+    text-align: right;
+}
+
+#diff .diff-left-num { grid-column: left-num }
+
+#diff .diff-title-bg {
+    /* Just let these fall into whatever columns */
+    background: var(--color);
+}
+
+#diff .diff-left,
+#diff-output {
+    grid-column: left
+}
+
+#diff .diff-right-num { grid-column: right-num }
+
+#diff .diff-right,
+#diff-expected {
+    grid-column: right
+}
+
+#diff .diff-removal { background-color: var(--diff-light-red) }
+
+#diff .diff-addition { background-color: var(--diff-light-green) }
+
+#diff .diff-left,
+#diff .diff-right {
+    padding: 0 4px;
+}
+
+#diff .diff-char-removal {
+    background-color: var(--red)
+}
+
+#diff .diff-char-addition {
+    background-color: var(--green)
+}

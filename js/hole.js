@@ -1,5 +1,6 @@
 import CodeMirror from './_codemirror-legacy';
 import strlen     from './_strlen';
+import diffHTML   from './_diff';
 
 const chars              = document.querySelector('#chars');
 const darkModeMediaQuery = JSON.parse(document.querySelector('#darkModeMediaQuery').innerText);
@@ -15,6 +16,7 @@ const solutionPicker     = document.querySelector('#solutionPicker');
 const solutions          = JSON.parse(document.querySelector('#solutions').innerText);
 const status             = document.querySelector('#status');
 const table              = document.querySelector('#scores');
+const diff               = document.querySelector("#diff")
 
 const darkMode = matchMedia(darkModeMediaQuery).matches;
 let lang;
@@ -251,6 +253,9 @@ onload = () => {
         // Always show exp & out.
         document.querySelector('#exp div').innerText = data.Exp;
         document.querySelector('#out div').innerText = data.Out;
+
+        document.querySelector("#diff-content").innerHTML = diffHTML(hole, data.Exp, data.Out, data.Argv);
+        diff.style.display = data.Exp === data.Out ? 'none' : 'block'
 
         status.className = data.Pass ? 'green' : 'red';
         status.style.display = 'block';
