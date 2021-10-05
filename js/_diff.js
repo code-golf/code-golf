@@ -103,13 +103,14 @@ function getDiffLines(hole, left, right, pos, argv) {
     const diffOpts = {
         ignoreCase: shouldIgnoreCase(hole)
     }
+    const isArgDiff = getDiffType(hole) === 'arg';
     for (let i=0; i<Math.max(leftSplit.length, rightSplit.length); i++) {
         const leftLine = leftSplit[i];
         const rightLine = rightSplit[i];
         const charDiff = Diff.diffChars(leftLine ?? '', rightLine ?? '', diffOpts);
         // subtract 1 because the lines start counting at 1 instead of 0
         const arg = argv[i + pos.right - 1]
-        if (arg !== undefined) {
+        if (arg !== undefined && isArgDiff) {
             s += `<div class='diff-arg'>${arg}</div>`
         }
         if (leftLine !== undefined) {
