@@ -1776,7 +1776,6 @@ preamble = '''
 
 ['Smith Numbers']
 category = 'Sequence'
-experiment = -1
 links = [
     { name = 'OEIS A006753', url = '//oeis.org/A006753' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Smith_numbers' },
