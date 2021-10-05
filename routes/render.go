@@ -265,6 +265,9 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...interfa
 		args.CSS = css["vendor/codemirror"] + css["vendor/codemirror-dialog"] +
 			css["vendor/codemirror-dark"] + args.CSS
 	}
+	if name == "hole" || name == "hole-ng" {
+		args.CSS = css["hole-diff"] + args.CSS
+	}
 
 	// Append route specific JS.
 	// e.g. GET /foo/bar might add js/foo.js and/or js/foo/bar.js.
