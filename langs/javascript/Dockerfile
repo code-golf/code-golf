@@ -12,13 +12,14 @@ RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git \
 
 WORKDIR /v8
 
-RUN git checkout 9.4.146.17 && gclient sync -D
+RUN git checkout 9.4.146.20 && gclient sync -D
 
 RUN gn gen out --args="                 \
     is_debug=false                      \
     symbol_level=0                      \
     use_thin_lto=true                   \
     v8_enable_gdbjit=false              \
+    v8_enable_i18n_support=false        \
     v8_enable_webassembly=false         \
     v8_monolithic=true                  \
     v8_use_external_startup_data=false" \
