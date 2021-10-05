@@ -1774,6 +1774,29 @@ preamble = '''
 </pre>
 '''
 
+['Smith Numbers']
+category = 'Sequence'
+experiment = -1
+links = [
+    { name = 'OEIS A006753', url = '//oeis.org/A006753' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Smith_numbers' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Smith_number' },
+]
+preamble = '''
+<p>
+    A Smith number is a number where the sum of whose digits is the sum of the
+    digits of its prime factors (excluding 1 and primes since they trivially
+    satisfy this condition).
+
+<p>
+    One example of a Smith number is the beast number <b>666=2·3·3·37</b>,
+    since <b>6+6+6=2+3+3+(3+7)=18</b>.
+
+<p>
+    Print all the Smith numbers from <b>1</b> to <b>10,000</b> inclusive,
+    each on their own line.
+'''
+
 ['Spelling Numbers']
 category = 'Transform'
 preamble = '''
