@@ -9,9 +9,8 @@ import (
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/code-golf/code-golf/config"
 	Golfer "github.com/code-golf/code-golf/golfer"
-	"github.com/code-golf/code-golf/hole"
-	"github.com/code-golf/code-golf/lang"
 	"github.com/code-golf/code-golf/pretty"
 )
 
@@ -25,8 +24,8 @@ type RecAnnouncement struct {
 	Message *discordgo.Message
 	Updates [][]Golfer.RankUpdate
 	Golfer  *Golfer.Golfer
-	Hole    hole.Hole
-	Lang    lang.Lang
+	Hole    *config.Hole
+	Lang    *config.Lang
 }
 
 var lastAnnouncement *RecAnnouncement
@@ -101,9 +100,26 @@ func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
 	return embed
 }
 
+func LogFailedRejudge(golfer *Golfer.Golfer, hole *config.Hole, lang *config.Lang, scoring string) {
+	if bot == nil {
+		return
+	}
+
+	imageURL := "https://avatars.githubusercontent.com/" + golfer.Name
+	golferURL := "https://code.golf/golfers/" + golfer.Name
+
+	if _, err := bot.ChannelMessageSendEmbed(channelID, &discordgo.MessageEmbed{
+		Title:  fmt.Sprintf("%s in %s failed rejudge!", hole.Name, lang.Name),
+		URL:    "https://code.golf/rankings/holes/" + hole.ID + "/" + lang.ID + "/" + scoring,
+		Author: &discordgo.MessageEmbedAuthor{Name: golfer.Name, IconURL: imageURL, URL: golferURL},
+	}); err != nil {
+		log.Println(err)
+	}
+}
+
 // LogNewRecord logs a record breaking solution in Discord.
 func LogNewRecord(
-	golfer *Golfer.Golfer, hole hole.Hole, lang lang.Lang, updates []Golfer.RankUpdate, db *sql.DB,
+	golfer *Golfer.Golfer, hole *config.Hole, lang *config.Lang, updates []Golfer.RankUpdate, db *sql.DB,
 ) {
 	if bot == nil {
 		return

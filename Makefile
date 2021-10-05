@@ -10,7 +10,7 @@ bench:
 
 bump:
 	@go get -u
-	@go mod tidy
+	@go mod tidy -compat=1.17
 	@npm upgrade
 
 cert:
@@ -81,7 +81,7 @@ font:
 
 lint:
 	@docker run --rm -v $(CURDIR):/app -w /app \
-	    golangci/golangci-lint:v1.42.0 golangci-lint run
+	    golangci/golangci-lint:v1.42.1 golangci-lint run
 
 live:
 	@npm install

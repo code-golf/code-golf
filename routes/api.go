@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/code-golf/code-golf/lang"
+	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
 )
 
@@ -18,7 +18,7 @@ func API(w http.ResponseWriter, r *http.Request) { w.Write(yml) }
 // APILangs serves GET /api/langs
 func APILangs(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(lang.List); err != nil {
+	if err := json.NewEncoder(w).Encode(config.LangList); err != nil {
 		panic(err)
 	}
 }
@@ -27,10 +27,10 @@ func APILangs(w http.ResponseWriter, r *http.Request) {
 func APILang(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	if l := lang.ByID[param(r, "lang")]; l.ID == "" {
+	if lang, ok := config.LangByID[param(r, "lang")]; ok {
 		w.WriteHeader(http.StatusNotFound)
 		w.Write([]byte{'{', '}'})
-	} else if err := json.NewEncoder(w).Encode(l); err != nil {
+	} else if err := json.NewEncoder(w).Encode(lang); err != nil {
 		panic(err)
 	}
 }

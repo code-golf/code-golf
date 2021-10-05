@@ -6,7 +6,7 @@ import (
 	"sort"
 	"time"
 
-	"github.com/code-golf/code-golf/country"
+	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
 )
 
@@ -116,7 +116,7 @@ func Admin(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
-		if country, ok := country.ByID[id]; ok {
+		if country, ok := config.CountryByID[id]; ok {
 			c.Flag = country.Flag
 			c.Name = country.Name
 		}

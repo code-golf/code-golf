@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/code-golf/code-golf/hole"
+	"github.com/code-golf/code-golf/config"
 )
 
 // Sitemap serves GET /sitemap.xml
@@ -32,7 +32,7 @@ func Sitemap(w http.ResponseWriter, r *http.Request) {
 		},
 	}
 
-	for _, hole := range hole.List {
+	for _, hole := range config.HoleList {
 		sitemap.URLs = append(
 			sitemap.URLs, URL{"https://code.golf/" + url.PathEscape(hole.ID)})
 	}

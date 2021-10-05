@@ -13,7 +13,7 @@ import (
 	"golang.org/x/oauth2/github"
 )
 
-var config = oauth2.Config{
+var oauthConfig = oauth2.Config{
 	ClientID:     "7f6709819023e9215205",
 	ClientSecret: os.Getenv("CLIENT_SECRET"),
 	Endpoint:     github.Endpoint,
@@ -53,7 +53,7 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// In dev mode, the username is selected by the "username" parameter
-	if _, dev := os.LookupEnv("DEV"); dev && config.ClientSecret == "" {
+	if _, dev := os.LookupEnv("DEV"); dev && oauthConfig.ClientSecret == "" {
 		user.Login = r.FormValue("username")
 		if user.Login == "" {
 			user.Login = "JRaspass"
@@ -71,7 +71,7 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		token, err := config.Exchange(r.Context(), r.FormValue("code"))
+		token, err := oauthConfig.Exchange(r.Context(), r.FormValue("code"))
 		if err != nil {
 			panic(err)
 		}

@@ -154,6 +154,7 @@ BEGIN
     IF holes >= 40 THEN earned := earn(earned, 'forty-winks',       user_id); END IF;
     IF holes >= 42 THEN earned := earn(earned, 'dont-panic',        user_id); END IF;
     if holes >= 50 THEN earned := earn(earned, 'bullseye',          user_id); END IF;
+    if holes >= 60 THEN earned := earn(earned, 'gone-in-60-holes',  user_id); END IF;
 
     IF hole = 'brainfuck' AND lang = 'brainfuck' THEN
         earned := earn(earned, 'inception', user_id);

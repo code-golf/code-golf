@@ -65,8 +65,8 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 		args, answer = pangramGrep()
 	case "poker":
 		args, answer = poker()
-	case "qr-decoder":
-		args, answer = qr()
+	case "qr-decoder", "qr-encoder":
+		args, answer = qr(holeID == "qr-decoder")
 	case "quine":
 		answer = code
 	case "rock-paper-scissors-spock-lizard":
@@ -125,7 +125,7 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 			panic(err)
 		}
 
-		cmd.Args = []string{"/usr/bin/defasm", "-l", "ld.gold", "--ldflags=-N -u _start -T /usr/lib/defaultEntry.ld", "--size-out=3", "-r"}
+		cmd.Args = []string{"/usr/bin/defasm", "--size-out=3", "-w", "-r"}
 		cmd.ExtraFiles = []*os.File{asmBytesWrite}
 	case "bash":
 		cmd.Args = []string{"/usr/bin/bash", "-s", "-"}
@@ -149,9 +149,9 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	case "javascript":
 		cmd.Args = []string{"/usr/bin/d8", "-e", code, "--"}
 	case "julia":
-		cmd.Args = []string{"/usr/bin/run-julia", "/tmp/code.jl"}
+		cmd.Args = []string{"/usr/bin/run-julia", "--color=yes", "/tmp/code.jl"}
 	case "nim":
-		cmd.Args = []string{"/usr/bin/nim", "-o:/tmp/code", "-r", "c", "-"}
+		cmd.Args = []string{"/usr/bin/nim", "--colors:on", "-o:/tmp/code", "-r", "c", "-"}
 	case "powershell":
 		cmd.Args = []string{"/interpreter/Interpreter", "-"}
 
@@ -163,6 +163,8 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	case "python":
 		// Force the stdout and stderr streams to be unbuffered.
 		cmd.Args = []string{"/usr/bin/python", "-u", "-"}
+	case "swift":
+		cmd.Args = []string{"/usr/bin/swift", "-module-cache-path", "/tmp", "-"}
 	default:
 		cmd.Args = []string{"/usr/bin/" + langID, "-"}
 	}

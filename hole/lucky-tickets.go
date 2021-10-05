@@ -11,17 +11,30 @@ type ticket struct {
 	result       int64
 }
 
-var data = []ticket{
+var data = [...]ticket{
 	{8, 2, 70},
+	{14, 5, 454805755},
+	{6, 6, 4332},
+	{12, 7, 786588243},
 	{4, 8, 344},
+	{4, 9, 489},
+	{8, 9, 2306025},
 	{2, 10, 10},
 	{4, 10, 670},
 	{6, 10, 55252},
-	{14, 12, 39222848622984},
+	{8, 10, 4816030},
+	{12, 9, 12434998005},
+	{12, 10, 39581170420},
+	{12, 11, 112835748609},
+	{6, 13, 204763},
+	{4, 15, 2255},
+	{6, 15, 418503},
+	{8, 15, 82073295},
+	{10, 15, 16581420835},
 }
 
 func iPow(a, b int64) int64 {
-	var result int64 = 1
+	result := int64(1)
 
 	for b != 0 {
 		if b&1 != 0 {
@@ -34,9 +47,7 @@ func iPow(a, b int64) int64 {
 	return result
 }
 
-func sumDigits(number int64, base int64) int64 {
-	var result int64
-
+func sumDigits(number, base int64) (result int64) {
 	for number > 0 {
 		result += number % base
 		number /= base
@@ -46,11 +57,18 @@ func sumDigits(number int64, base int64) int64 {
 }
 
 func luckyTickets() ([]string, string) {
-	tickets := make([]ticket, len(data))
-	copy(tickets, data)
+	var tickets [20]ticket
+
+	// Add 4 random different fixed cases.
+	for i, j := range rand.Perm(len(data))[:4] {
+		tickets[i] = data[j]
+	}
+
+	// Always add case 14 12.
+	tickets[4] = ticket{14, 12, 39222848622984}
 
 	// Randomly generate additional test cases.
-	for i := 0; i < 5; i++ {
+	for i := 5; i < 20; i++ {
 		digits := 2 + 2*rand.Intn(5)
 		base := 2 + rand.Intn(15)
 
@@ -66,7 +84,7 @@ func luckyTickets() ([]string, string) {
 			result += count * count
 		}
 
-		tickets = append(tickets, ticket{digits, base, result})
+		tickets[i] = ticket{digits, base, result}
 	}
 
 	args := make([]string, len(tickets))

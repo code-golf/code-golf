@@ -2,7 +2,7 @@
 
 .CodeMirror {
   /* Set height, width, borders, and global font properties here */
-  font-family: 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', Courier, monospace;
+  font-family: 'Source Code Pro', monospace;
   height: 100%;
 }
 

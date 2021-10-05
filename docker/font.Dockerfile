@@ -1,9 +1,9 @@
 FROM node:10.24.1-buster-slim
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
-    fontforge fonttools git make python-fontforge unzip woff2 zip
+    ca-certificates fontforge fonttools git make python-fontforge unzip woff2 zip
 
-RUN git clone -b v0.6.0 git://github.com/mozilla/twemoji-colr
+RUN git clone -b v0.6.0 https://github.com/mozilla/twemoji-colr.git
 
 WORKDIR twemoji-colr
 
@@ -67,6 +67,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f636.svg       `# Face Without Mouth`           \
     svg/1f641.svg       `# Slightly Frowning Face`       \
     svg/1f642.svg       `# Slightly Smiling Face`        \
+    svg/1f697.svg       `# Automobile`                   \
     svg/1f910.svg       `# Zipper-Mouth Face`            \
     svg/1f947.svg       `# 1st Place Medal`              \
     svg/1f948.svg       `# 2nd Place Medal`              \

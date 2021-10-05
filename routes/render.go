@@ -14,11 +14,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/code-golf/code-golf/cheevo"
-	"github.com/code-golf/code-golf/country"
+	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/golfer"
-	"github.com/code-golf/code-golf/hole"
-	"github.com/code-golf/code-golf/lang"
 	"github.com/code-golf/code-golf/pretty"
 	"github.com/code-golf/code-golf/session"
 	min "github.com/tdewolff/minify/v2/minify"
@@ -115,6 +112,11 @@ func slurp(dir string) map[string]string {
 func init() {
 	_, dev = os.LookupEnv("DEV")
 
+	// HACK Tests are run from the package directory, walk a dir up.
+	if _, err := os.Stat("css"); os.IsNotExist(err) {
+		os.Chdir("..")
+	}
+
 	// Assets.
 	if file, err := os.Open("esbuild.json"); err == nil {
 		defer file.Close()
@@ -188,7 +190,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...interfa
 	}
 
 	type CheevoBanner struct {
-		Cheevo     *cheevo.Cheevo
+		Cheevo     *config.Cheevo
 		During     bool
 		Start, End time.Time
 	}
@@ -202,27 +204,27 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...interfa
 	args := struct {
 		CSS                                       template.CSS
 		CheevoBanner                              *CheevoBanner
-		Countries                                 map[string]*country.Country
+		Countries                                 map[string]*config.Country
 		Data, Description, Title                  interface{}
 		DarkModeMediaQuery, LogInURL, Nonce, Path string
 		Golfer                                    *golfer.Golfer
 		GolferInfo                                *golfer.GolferInfo
-		Holes                                     map[string]hole.Hole
+		Holes                                     map[string]*config.Hole
 		JS                                        []string
-		Langs                                     map[string]lang.Lang
+		Langs                                     map[string]*config.Lang
 		Location                                  *time.Location
 		Request                                   *http.Request
 	}{
-		Countries:          country.ByID,
+		Countries:          config.CountryByID,
 		CSS:                getThemeCSS(theme) + css["base"] + css[path.Dir(name)] + css[name],
 		Data:               data[0],
 		DarkModeMediaQuery: getDarkModeMediaQuery(theme),
 		Description:        "Code Golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.",
 		Golfer:             theGolfer,
 		GolferInfo:         session.GolferInfo(r),
-		Holes:              hole.ByID,
+		Holes:              config.HoleByID,
 		JS:                 []string{assets["js/base.js"]},
-		Langs:              lang.ByID,
+		Langs:              config.LangByID,
 		Nonce:              base64.StdEncoding.EncodeToString(nonce),
 		Path:               r.URL.Path,
 		Request:            r,
@@ -254,7 +256,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...interfa
 
 		if now.Before(end) {
 			args.CheevoBanner = &CheevoBanner{
-				cheevo.ByID["independence-day"],
+				config.CheevoByID["independence-day"],
 				start.Before(now), start, end,
 			}
 		}
@@ -267,6 +269,10 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...interfa
 	}
 	if name == "hole" || name == "hole-ng" {
 		args.CSS = css["hole-diff"] + args.CSS
+	}
+
+	if name == "hole" || name == "hole-ng" {
+		args.CSS += css["terminal"]
 	}
 
 	// Append route specific JS.
@@ -298,7 +304,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...interfa
 
 	if args.Golfer == nil {
 		// Shallow copy because we want to modify a string.
-		config := config
+		config := oauthConfig
 
 		config.RedirectURL = "https://code.golf/callback"
 

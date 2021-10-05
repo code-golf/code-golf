@@ -22,7 +22,7 @@
 {{ end }}{{ end }}
 
 <main>
-    <div id=header>
+    <header>
         <h1>{{ .Data.Hole.Name }}</h1>
     {{ with .Data.Hole.Links }}
         <nav>
@@ -33,17 +33,22 @@
         </nav>
     {{ end }}
         <nav>
-            <a class="btn orange" href={{ .Data.Hole.Prev }}>
+        {{ range .Data.Hole.Variants }}
+            {{ if ne . $.Data.Hole }}
+                <a class="btn blue" href="{{ .ID }}">{{ .Name }}</a>
+            {{ end }}
+        {{ end }}
+            <a class="btn orange" href="{{ .Data.Hole.Prev }}">
                 {{ svg "chevron-double-left-light" }} Prev
             </a>
             <a class="btn purple" href=random>
                 {{ svg "dice-light" }} Random
             </a>
-            <a class="btn orange" href={{ .Data.Hole.Next }}>
+            <a class="btn orange" href="{{ .Data.Hole.Next }}">
                 {{ svg "chevron-double-right-light" }} Next
             </a>
         </nav>
-    </div>
+    </header>
     <details id=details {{ if not .Data.HideDetails }}open{{ end }}>
         <summary>Details</summary>
         <div class=grid>{{ .Data.Hole.Preamble }}</div>

@@ -3,8 +3,7 @@ package routes
 import (
 	"net/http"
 
-	"github.com/code-golf/code-golf/hole"
-	"github.com/code-golf/code-golf/lang"
+	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
 )
 
@@ -24,14 +23,14 @@ func GolferHoles(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := struct {
-		Holes        []hole.Hole
-		Langs        []lang.Lang
+		Holes        []*config.Hole
+		Langs        []*config.Lang
 		Ranks        []map[string]map[string]int
 		ScoringIndex int
 		Scorings     []string
 	}{
-		Holes:    hole.List,
-		Langs:    lang.List,
+		Holes:    config.HoleList,
+		Langs:    config.LangList,
 		Ranks:    []map[string]map[string]int{{}, {}},
 		Scorings: []string{"bytes", "chars"},
 	}

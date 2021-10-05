@@ -5,10 +5,6 @@
  
 /* include hole-diff.css */
 
-.term-fg31 { color: #c00 }
-.term-fg32 { color: #490 }
-.term-fg33 { color: #ca0 }
-
 canvas {
     border: 1px solid var(--color);
     image-rendering: crisp-edges;
@@ -144,7 +140,7 @@ select {
     border: 1px solid var(--color);
     border-top-width: 2px;
     display: none;
-    font-family: emoji, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', Courier, monospace;
+    font-family: emoji, 'Source Code Pro', monospace;
     grid-column: span 7;
     height: 14rem;
     overflow: auto;

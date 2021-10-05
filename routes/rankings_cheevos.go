@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/code-golf/code-golf/cheevo"
+	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
 )
@@ -21,17 +21,17 @@ func RankingsCheevos(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := struct {
-		Cheevo  *cheevo.Cheevo
-		Cheevos map[string][]*cheevo.Cheevo
+		Cheevo  *config.Cheevo
+		Cheevos map[string][]*config.Cheevo
 		Pager   *pager.Pager
 		Rows    []row
 		Total   int
 	}{
-		Cheevo:  cheevo.ByID[cheevoID],
-		Cheevos: cheevo.Tree,
+		Cheevo:  config.CheevoByID[cheevoID],
+		Cheevos: config.CheevoTree,
 		Pager:   pager.New(r),
 		Rows:    make([]row, 0, pager.PerPage),
-		Total:   len(cheevo.List),
+		Total:   len(config.CheevoList),
 	}
 
 	if cheevoID != "" && data.Cheevo == nil {

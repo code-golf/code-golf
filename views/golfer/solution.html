@@ -1,0 +1,18 @@
+{{ template "header" . }}
+{{ template "golfer" . }}
+
+<main>
+    <h1>{{ .Data.Hole.Name }} in {{ .Data.Lang.Name }}</h1>
+
+{{ if .Data.Failing }}
+    <p>Status: <span class=text-red>Failing</span>
+{{ else }}
+    <p>Status: Passing
+
+    <!--<form method=post>
+        <button class="btn blue" name=rejudge>Rejudge</button>
+    </form>-->
+{{ end }}
+</main>
+
+{{ template "footer" }}

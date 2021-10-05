@@ -33,7 +33,7 @@ constant @urls = (
     'Zig'        => 'Zig_(programming_language)',
 );
 
-my %langs = from-toml slurp 'langs.toml';
+my %langs = from-toml 'config/langs.toml'.IO;
 
 for @urls -> (:key($lang), :value($path)) {
     state $ua = HTTP::Tiny.new :throw-exceptions;

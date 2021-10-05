@@ -6,7 +6,7 @@ export VMODULES=/tmp
 
 # Compile
 cat - > /tmp/code.v
-/opt/v/v /tmp/code.v
+/opt/v/v -color /tmp/code.v
 rm /tmp/code.v
 
 # Execute

@@ -77,6 +77,8 @@ func main() {
 		r.Get("/", routes.GolferCheevos)
 		r.Get("/holes", routes.GolferHoles)
 		r.Get("/holes/{scoring}", routes.GolferHoles)
+		r.Get("/{hole}/{lang}/{scoring}", routes.GolferSolution)
+		// r.Post("/{hole}/{lang}/{scoring}", routes.GolferSolutionPost)
 	})
 	r.Get("/healthz", routes.Healthz)
 	r.Get("/ideas", routes.Ideas)
@@ -88,6 +90,8 @@ func main() {
 		r.Get("/", redir("/rankings/holes/all/all/bytes"))
 		r.Get("/holes", redir("/rankings/holes/all/all/bytes"))
 		r.Get("/holes/all/all/all", redir("/rankings/holes/all/all/bytes"))
+		r.Get("/langs/bytes", redir("/rankings/langs/all/bytes"))
+		r.Get("/langs/chars", redir("/rankings/langs/all/chars"))
 		r.Get("/medals", redir("/rankings/medals/all/all/all"))
 
 		r.Get("/cheevos", routes.RankingsCheevos)
@@ -98,6 +102,7 @@ func main() {
 
 		r.Get("/medals/{hole}/{lang}/{scoring}", routes.RankingsMedals)
 
+		r.Get("/langs/{lang}/{scoring}", routes.RankingsLangs)
 		r.Get("/solutions", routes.RankingsSolutions)
 	})
 	r.Get("/recent", routes.Recent)
@@ -122,7 +127,7 @@ func main() {
 		),
 	}
 
-	server := &http.Server{
+	server := http.Server{
 		Addr:    ":1443",
 		Handler: r,
 		TLSConfig: &tls.Config{
@@ -132,9 +137,8 @@ func main() {
 				tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
 				tls.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, // HTTP/2-required.
 			},
-			CurvePreferences:         []tls.CurveID{tls.CurveP256, tls.X25519},
-			MinVersion:               tls.VersionTLS12,
-			PreferServerCipherSuites: true,
+			CurvePreferences: []tls.CurveID{tls.CurveP256, tls.X25519},
+			MinVersion:       tls.VersionTLS12,
 		},
 	}
 

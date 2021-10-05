@@ -3,7 +3,7 @@ package routes
 import (
 	"net/http"
 
-	"github.com/code-golf/code-golf/country"
+	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
 	"github.com/code-golf/code-golf/zone"
 )
@@ -35,11 +35,16 @@ func GolferDelete(w http.ResponseWriter, r *http.Request) {
 // GolferSettings serves GET /golfer/settings
 func GolferSettings(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		Countries map[string][]*country.Country
+		Countries map[string][]*config.Country
 		Keymaps   []string
 		Themes    []string
 		TimeZones []zone.Zone
-	}{country.Tree, []string{"default", "vim"}, []string{"auto", "dark", "light"}, zone.List()}
+	}{
+		config.CountryTree,
+		[]string{"default", "vim"},
+		[]string{"auto", "dark", "light"},
+		zone.List(),
+	}
 
 	render(w, r, "golfer/settings", data, "Settings")
 }
@@ -48,17 +53,17 @@ func GolferSettings(w http.ResponseWriter, r *http.Request) {
 func GolferSettingsPost(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
-	if _, ok := country.ByID[r.Form.Get("country")]; !ok && r.Form.Get("country") != "" {
+	if c := r.Form.Get("country"); c != "" && config.CountryByID[c] == nil {
 		http.Error(w, "Invalid country", http.StatusBadRequest)
 		return
 	}
 
-	if r.Form.Get("keymap") != "default" && r.Form.Get("keymap") != "vim" {
+	if k := r.Form.Get("keymap"); k != "default" && k != "vim" {
 		http.Error(w, "Invalid keymap", http.StatusBadRequest)
 		return
 	}
 
-	if r.Form.Get("theme") != "auto" && r.Form.Get("theme") != "dark" && r.Form.Get("theme") != "light" {
+	if t := r.Form.Get("theme"); t != "auto" && t != "dark" && t != "light" {
 		http.Error(w, "Invalid theme", http.StatusBadRequest)
 		return
 	}

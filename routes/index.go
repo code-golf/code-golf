@@ -5,7 +5,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/code-golf/code-golf/hole"
+	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
 )
 
@@ -28,7 +28,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	}
 
 	type Card struct {
-		Hole   hole.Hole
+		Hole   *config.Hole
 		Points int
 	}
 
@@ -37,13 +37,13 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		Scoring, Sort string
 		Sorts         []string
 	}{
-		Cards:   make([]Card, 0, len(hole.List)),
+		Cards:   make([]Card, 0, len(config.HoleList)),
 		Scoring: "bytes",
-		Sorts:   []string{"alphabetical", "points"},
+		Sorts:   []string{"alphabetical", "category", "points"},
 	}
 
 	if golfer := session.Golfer(r); golfer == nil {
-		for _, hole := range hole.List {
+		for _, hole := range config.HoleList {
 			data.Cards = append(data.Cards, Card{Hole: hole})
 		}
 	} else {
@@ -77,7 +77,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 				panic(err)
 			}
 
-			if hole, ok := hole.ByID[holeID]; ok {
+			if hole, ok := config.HoleByID[holeID]; ok {
 				card.Hole = hole
 				data.Cards = append(data.Cards, card)
 			}
@@ -92,6 +92,22 @@ func Index(w http.ResponseWriter, r *http.Request) {
 			sort.Slice(data.Cards, func(i, j int) bool {
 				return strings.ToLower(data.Cards[i].Hole.Name) >
 					strings.ToLower(data.Cards[j].Hole.Name)
+			})
+		case "category-asc":
+			sort.Slice(data.Cards, func(i, j int) bool {
+				if data.Cards[i].Hole.Category == data.Cards[j].Hole.Category {
+					return strings.ToLower(data.Cards[i].Hole.Name) <
+						strings.ToLower(data.Cards[j].Hole.Name)
+				}
+				return data.Cards[i].Hole.Category < data.Cards[j].Hole.Category
+			})
+		case "category-desc":
+			sort.Slice(data.Cards, func(i, j int) bool {
+				if data.Cards[i].Hole.Category == data.Cards[j].Hole.Category {
+					return strings.ToLower(data.Cards[i].Hole.Name) >
+						strings.ToLower(data.Cards[j].Hole.Name)
+				}
+				return data.Cards[i].Hole.Category > data.Cards[j].Hole.Category
 			})
 		case "points-asc":
 			sort.Slice(data.Cards, func(i, j int) bool {

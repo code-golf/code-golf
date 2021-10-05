@@ -201,6 +201,8 @@ td > a {
     display: flex;
 }
 
+td.right > a { justify-content: right }
+
 td > a > img {
     border-radius: 50%;
     flex-shrink: 0;
@@ -388,6 +390,8 @@ body > .tabs a {
     color: var(--background);
     text-decoration: none;
 }
+
+.text-red { color: var(--red-text) }
 
 /* Hacky, remove once we no longer use links inside <details>. */
 details.tabs   { display: initial }

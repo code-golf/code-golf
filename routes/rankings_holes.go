@@ -5,8 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/code-golf/code-golf/hole"
-	"github.com/code-golf/code-golf/lang"
+	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
 )
@@ -14,29 +13,30 @@ import (
 // RankingsHoles serves GET /rankings/holes/{hole}/{lang}/{scoring}
 func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 	type row struct {
-		Country, Lang, Login         string
+		Country, Login               string
 		Holes, Rank, Points, Strokes int
+		Lang                         *config.Lang
 		Submitted                    time.Time
 	}
 
 	data := struct {
 		HoleID, LangID, Scoring string
-		Holes                   []hole.Hole
-		Langs                   []lang.Lang
+		Holes                   []*config.Hole
+		Langs                   []*config.Lang
 		Pager                   *pager.Pager
 		Rows                    []row
 	}{
 		HoleID:  param(r, "hole"),
-		Holes:   hole.List,
+		Holes:   config.HoleList,
 		LangID:  param(r, "lang"),
-		Langs:   lang.List,
+		Langs:   config.LangList,
 		Pager:   pager.New(r),
 		Rows:    make([]row, 0, pager.PerPage),
 		Scoring: param(r, "scoring"),
 	}
 
-	if data.HoleID != "all" && hole.ByID[data.HoleID].ID == "" ||
-		data.LangID != "all" && lang.ByID[data.LangID].ID == "" ||
+	if data.HoleID != "all" && config.HoleByID[data.HoleID] == nil ||
+		data.LangID != "all" && config.LangByID[data.LangID] == nil ||
 		data.Scoring != "chars" && data.Scoring != "bytes" {
 		NotFound(w, r)
 		return
@@ -66,7 +66,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 			  GROUP BY user_id
 			) SELECT COALESCE(CASE WHEN show_country THEN country END, ''),
 			         holes,
-			         $1,
+			         '',
 			         login,
 			         points,
 			         RANK() OVER (ORDER BY points DESC, strokes),
@@ -163,11 +163,12 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 
 	for rows.Next() {
 		var r row
+		var langID string
 
 		if err := rows.Scan(
 			&r.Country,
 			&r.Holes,
-			&r.Lang,
+			&langID,
 			&r.Login,
 			&r.Points,
 			&r.Rank,
@@ -178,7 +179,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
-		r.Lang = lang.ByID[r.Lang].Name
+		r.Lang = config.LangByID[langID]
 
 		data.Rows = append(data.Rows, r)
 	}
@@ -193,13 +194,13 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 	}
 
 	description := ""
-	if hole := hole.ByID[data.HoleID]; hole.ID != "" {
+	if hole, ok := config.HoleByID[data.HoleID]; ok {
 		description += hole.Name + " in "
 	} else {
 		description += "All holes in "
 	}
 
-	if lang := lang.ByID[data.LangID]; lang.ID != "" {
+	if lang, ok := config.LangByID[data.LangID]; ok {
 		description += lang.Name + " in "
 	} else {
 		description += "all languages in "

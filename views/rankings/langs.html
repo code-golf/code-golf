@@ -1,0 +1,103 @@
+{{ template "header"   . }}
+{{ template "rankings" . }}
+
+<main>
+    <form>
+        <input name=base type=hidden value=/rankings/langs>
+
+        <select name=langs>
+            <option value=all>All Languages
+        {{ range .Data.Langs }}
+            <option value="{{ .ID }}"
+                {{ if eq $.Data.LangID .ID }} selected {{ end }}>{{ .Name }}
+        {{ end }}
+        </select>
+
+        <label>
+            <input {{ if eq .Data.Scoring "bytes" }} checked {{ end }}
+                name=scoring type=radio value=bytes>Bytes
+        </label>
+
+        <label>
+            <input {{ if eq .Data.Scoring "chars" }} checked {{ end }}
+                name=scoring type=radio value=chars>Chars
+        </label>
+    </form>
+
+    <nav>
+        <h2>Scoring</h2>
+        <a {{ if ne .Data.Scoring "bytes" }}
+            href="/rankings/langs/{{ .Data.LangID }}/bytes"
+        {{ end }}>
+            <span>Bytes</span>
+        </a>
+        <a {{ if ne .Data.Scoring "chars" }}
+            href="/rankings/langs/{{ .Data.LangID }}/chars"
+        {{ end }}>
+            <span>Chars</span>
+        </a>
+
+        <h2>Language</h2>
+        <a {{ if ne .Data.LangID "all" }}
+            href="/rankings/langs/all/{{ .Data.Scoring }}"
+        {{ end }}>
+            <span>All</span>
+        </a>
+    {{ range .Data.Langs }}
+        <a {{ if ne $.Data.LangID .ID }}
+            href="/rankings/langs/{{ .ID }}/{{ $.Data.Scoring }}"
+        {{ end }}>
+            <span>{{ .Name }}</span>
+        </a>
+    {{ end }}
+    </nav>
+
+{{ if ne .Data.LangID "all" }}
+    <table class="nowrap-second sticky">
+        <thead>
+            <tr>
+                <th>#
+                <th>Hole
+                <th class=right>Medal
+        <tbody>
+        {{ range $i, $r := .Data.Rows }}
+            <tr>
+                <td>{{ inc $i }}<sup>{{ $i | inc | ord }}</sup>
+                <td>
+                    <a href="/rankings/holes/{{ .Hole.ID }}/all/{{ $.Data.Scoring }}">
+                        <span>{{ .Hole.Name }}</span>
+                    </a>
+                <td class=right>
+                    {{ if eq .Rank 1 }}🥇{{ end }}
+                    {{ if eq .Rank 2 }}🥈{{ end }}
+                    {{ if eq .Rank 3 }}🥉{{ end }}
+        {{ end }}
+    </table>
+{{ else }}
+    <table class="nowrap-second sticky">
+        <thead>
+            <tr>
+                <th>#
+                <th>Language
+                <th class=right colspan=3>Medals
+                <th class=right>Points
+                <th class=right>{{ title .Data.Scoring }}
+        <tbody>
+        {{ range .Data.Rows }}
+            <tr>
+                <td>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
+                <td>
+                    <a href="/rankings/langs/{{ .Lang.ID }}/{{ $.Data.Scoring }}">
+                        <span>{{ .Lang.Name }}</span>
+                    </a>
+                <td class=right>{{ with .Golds   }}{{ . }}🥇{{ end }}
+                <td class=right>{{ with .Silvers }}{{ . }}🥈{{ end }}
+                <td class=right>{{ with .Bronzes }}{{ . }}🥉{{ end }}
+                <td class=right>{{ comma .Points  }}
+                <td class=right>{{ comma .Strokes }}
+        {{ end }}
+    </table>
+{{ end }}
+</main>
+
+{{ template "footer" }}

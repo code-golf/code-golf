@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"net/http"
 
-	"github.com/code-golf/code-golf/cheevo"
+	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
 )
 
@@ -18,9 +18,9 @@ func GolferCheevos(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := struct {
-		Cheevos map[string][]*cheevo.Cheevo
+		Cheevos map[string][]*config.Cheevo
 		Earned  map[string]EarnedCheevo
-	}{cheevo.Tree, map[string]EarnedCheevo{}}
+	}{config.CheevoTree, map[string]EarnedCheevo{}}
 
 	rows, err := session.Database(r).Query(
 		`WITH count AS (

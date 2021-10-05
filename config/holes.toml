@@ -803,6 +803,7 @@ preamble = '''
 
 ['Happy Numbers']
 category = 'Sequence'
+variants = ['', 'Long']
 links = [
     { name = 'OEIS A007770', url = '//oeis.org/A007770' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Happy_numbers' },
@@ -827,8 +828,9 @@ preamble = '''
 </dl>
 
 <p>
-    Print all the happy numbers from <b>1</b> to <b>200</b> inclusive, each on
-    their own line.
+    Print all the happy numbers from <b>1</b> to
+    <b>{{ if . }}1,000{{ else }}200{{ end }}</b>
+    inclusive, each on their own line.
 '''
 
 [Intersection]
@@ -1042,103 +1044,21 @@ preamble = '''
 </pre>
 '''
 
-['Morse Decoder']
+[Morse]
 category = 'Transform'
+variants = ['Decoder', 'Encoder']
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Morse_code' },
     { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Morse_code' },
 ]
 preamble = '''
 <p>
-    Using ▄ (U+2584 Lower Half Block) to represent a dot, decode the argument
-    from International Morse Code to alphanumeric.
-
-<ol>
-    <li>The length of a dot is one unit.
-    <li>A dash is three units.
-    <li>The space between parts of the same letter is one unit.
-    <li>The space between letters is three units.
-    <li>The space between words is ten units.
-</ol>
-
-<div id=morse>
-    <table>
-        <thead>
-            <tr>
-                <th>Chr.
-                <th>Code
-        <tbody>
-            <tr><td>A<td>▄ ▄▄▄
-            <tr><td>B<td>▄▄▄ ▄ ▄ ▄
-            <tr><td>C<td>▄▄▄ ▄ ▄▄▄ ▄
-            <tr><td>D<td>▄▄▄ ▄ ▄
-            <tr><td>E<td>▄
-            <tr><td>F<td>▄ ▄ ▄▄▄ ▄
-            <tr><td>G<td>▄▄▄ ▄▄▄ ▄
-            <tr><td>H<td>▄ ▄ ▄ ▄
-            <tr><td>I<td>▄ ▄
-    </table>
-    <table>
-        <thead>
-            <tr>
-                <th>Chr.
-                <th>Code
-        <tbody>
-            <tr><td>J<td>▄ ▄▄▄ ▄▄▄ ▄▄▄
-            <tr><td>K<td>▄▄▄ ▄ ▄▄▄
-            <tr><td>L<td>▄ ▄▄▄ ▄ ▄
-            <tr><td>M<td>▄▄▄ ▄▄▄
-            <tr><td>N<td>▄▄▄ ▄
-            <tr><td>O<td>▄▄▄ ▄▄▄ ▄▄▄
-            <tr><td>P<td>▄ ▄▄▄ ▄▄▄ ▄
-            <tr><td>Q<td>▄▄▄ ▄▄▄ ▄ ▄▄▄
-            <tr><td>R<td>▄ ▄▄▄ ▄
-    </table>
-    <table>
-        <thead>
-            <tr>
-                <th>Chr.
-                <th>Code
-        <tbody>
-            <tr><td>S<td>▄ ▄ ▄
-            <tr><td>T<td>▄▄▄
-            <tr><td>U<td>▄ ▄ ▄▄▄
-            <tr><td>V<td>▄ ▄ ▄ ▄▄▄
-            <tr><td>W<td>▄ ▄▄▄ ▄▄▄
-            <tr><td>X<td>▄▄▄ ▄ ▄ ▄▄▄
-            <tr><td>Y<td>▄▄▄ ▄ ▄▄▄ ▄▄▄
-            <tr><td>Z<td>▄▄▄ ▄▄▄ ▄ ▄
-            <tr><td>0<td>▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄
-    </table>
-    <table>
-        <thead>
-            <tr>
-                <th>Chr.
-                <th>Code
-        <tbody>
-            <tr><td>1<td>▄ ▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄
-            <tr><td>2<td>▄ ▄ ▄▄▄ ▄▄▄ ▄▄▄
-            <tr><td>3<td>▄ ▄ ▄ ▄▄▄ ▄▄▄
-            <tr><td>4<td>▄ ▄ ▄ ▄ ▄▄▄
-            <tr><td>5<td>▄ ▄ ▄ ▄ ▄
-            <tr><td>6<td>▄▄▄ ▄ ▄ ▄ ▄
-            <tr><td>7<td>▄▄▄ ▄▄▄ ▄ ▄ ▄
-            <tr><td>8<td>▄▄▄ ▄▄▄ ▄▄▄ ▄ ▄
-            <tr><td>9<td>▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄ ▄
-    </table>
-</div>
-'''
-
-['Morse Encoder']
-category = 'Transform'
-links = [
-    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Morse_code' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Morse_code' },
-]
-preamble = '''
-<p>
-    Using ▄ (U+2584 Lower Half Block) to represent a dot, encode the argument
-    from alphanumeric into International Morse Code.
+    Using ▄ (U+2584 Lower Half Block) to represent a dot,
+{{ if eq . "Decoder" }}
+    decode the argument from International Morse Code to alphanumeric.
+{{ else }}
+    encode the argument from alphanumeric into International Morse Code.
+{{ end }}
 
 <ol>
     <li>The length of a dot is one unit.
@@ -1541,14 +1461,121 @@ preamble = '''
 
 ['QR Decoder']
 category = 'Transform'
+links = [
+    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/QR_code#Encoding' },
+]
+preamble = '''
+<div class=qr-span>
+<p>Decode a Version-1 QR code given in this ASCII-art format, where all the <span>v</span> and <span>^</span> are filled with "#" and spaces, encoding a message.
+</div>
+
+<div class=qr-span><pre>
+    #######  <span>vv^^</span> #######
+    #     #  <span>vv^^</span> #     #
+    # ### # #<span>vv^^</span> # ### #
+    # ### #  <span>vv^^</span> # ### #
+    # ### #  <span>vv^^</span> # ### #
+    #     #  <span>vv^^</span> #     #
+    ####### # # # #######
+            #<span>vv^^</span>
+    ### #####<span>vv^^</span>##   #
+    <span>vv^^vv</span> <span>^^vv^^vv^^vv^^</span>
+    <span>vv^^vv</span>#<span>^^vv^^vv^^vv^^</span>
+    <span>vv^^vv</span> <span>^^vv^^vv^^vv^^</span>
+    <span>vv^^vv</span>#<span>^^vv^^vv^^vv^^</span>
+            #<span>vv^^vv^^vv^^</span>
+    ####### #<span>vv^^vv^^vv^^</span>
+    #     # #<span>vv^^vv^^vv^^</span>
+    # ### # #<span>vv^^vv^^vv^^</span>
+    # ### #  <span>vv^^vv^^vv^^</span>
+    # ### # #<span>vv^^vv^^vv^^</span>
+    #     # #<span>vv^^vv^^vv^^</span>
+    ####### #<span>vv^^vv^^vv^^</span>
+</div>
+
+<div class=qr-span>
+<p>The 10 vertical "strips" of <span>^^</span> or <span>vv</span> must be read from right to left. The bits in a strip are stored in a zig-zag order: <span>^^</span> zig-zags upwards, and <span>vv</span> zig-zags downwards. The bit on the right always precedes the one on its left.
+</div>
+
+<div class=qr-span><pre>
+      <span>^^</span> ..       <span>vv</span> 10
+      <span>^^</span> 98       <span>vv</span> 32
+      <span>^^</span> 76       <span>vv</span> 54
+      <span>^^</span> 54       <span>vv</span> 76
+      <span>^^</span> 32       <span>vv</span> 98
+      <span>^^</span> 10       <span>vv</span> ..
+</div>
+
+<p>To decode a bit off of a strip, read the value from the QR code bitmap ("#" = 1, space = 0) and invert it if <b>(x+y)%2 = 0</b>, where <b>(x, y)</b> are the coordinates of the bit in the bitmap with the origin <b>(0, 0)</b> at the top-left corner.
+
+<p>This will yield a bitstream like:
+
+<pre>
+    0100  00010001  01001000  01100101  01101100 ...
+    Enc   Length    'H'       'e'       'l'
+    (4)   (17)      (17-byte ASCII message)
+</pre>
+
+<p>Print the 17 bytes of ASCII stored in the QR code.
+'''
+
+['QR Encoder']
+category = 'Transform'
 experiment = -1
 links = [
     { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/QR_code#Encoding' },
 ]
 preamble = '''
-<p>
-    Decode QR code. The code is guaranteed to have version 1 (21×21), byte encoding,
-    and 000 mask pattern (<span class="mono">(row+col)%2 = 0</span>).
+<div class=qr-span>
+<p>Encode ASCII string to a Version-1 QR code of this ASCII-art format, where all the <span>v</span> and <span>^</span> must be filled with "#" and spaces.
+</div>
+
+<div class=qr-span><pre>
+    #######  <span>vv^^</span> #######
+    #     #  <span>vv^^</span> #     #
+    # ### # #<span>vv^^</span> # ### #
+    # ### #  <span>vv^^</span> # ### #
+    # ### #  <span>vv^^</span> # ### #
+    #     #  <span>vv^^</span> #     #
+    ####### # # # #######
+            #<span>vv^^</span>
+    ### #####<span>vv^^</span>##   #
+    <span>vv^^vv</span> <span>^^vv^^vv^^vv^^</span>
+    <span>vv^^vv</span>#<span>^^vv^^vv^^vv^^</span>
+    <span>vv^^vv</span> <span>^^vv^^vv^^vv^^</span>
+    <span>vv^^vv</span>#<span>^^vv^^vv^^vv^^</span>
+            #<span>vv^^vv^^vv^^</span>
+    ####### #<span>vv^^vv^^vv^^</span>
+    #     # #<span>vv^^vv^^vv^^</span>
+    # ### # #<span>vv^^vv^^vv^^</span>
+    # ### #  <span>vv^^vv^^vv^^</span>
+    # ### # #<span>vv^^vv^^vv^^</span>
+    #     # #<span>vv^^vv^^vv^^</span>
+    ####### #<span>vv^^vv^^vv^^</span>
+</div>
+
+<div class=qr-span>
+<p>The 10 vertical "strips" of <span>^^</span> or <span>vv</span> must be written from right to left. The bits in a strip are written in a zig-zag order: <span>^^</span> zig-zags upwards, and <span>vv</span> zig-zags downwards. The bit on the right always precedes the one on its left.
+</div>
+
+<div class=qr-span><pre>
+      <span>^^</span> ..       <span>vv</span> 10
+      <span>^^</span> 98       <span>vv</span> 32
+      <span>^^</span> 76       <span>vv</span> 54
+      <span>^^</span> 54       <span>vv</span> 76
+      <span>^^</span> 32       <span>vv</span> 98
+      <span>^^</span> 10       <span>vv</span> ..
+</div>
+
+<p>The strips are filled with data from a bitstream:
+
+<pre>
+    0100  00010001  01001000  01100101  ...  01101111  0000  11000000  11111111  ...  11101110
+    Enc   Length    'H'       'e'                 'o'  End   c0        ff             ee
+    (4)   (17)      (17-byte ASCII message)            (0)   (7 error correction bytes)
+</pre>
+
+<p>To encode a bit from the bitstream to a strip, determine the coordinates <b>(x, y)</b> of the current position in the bitmap with the origin <b>(0, 0)</b> at the top-left corner, invert the bit if <b>(x+y)%2 = 0</b>, and write the value to this position ("#" = 1, space = 0).
 '''
 
 [Quine]
@@ -1576,7 +1603,7 @@ links = [
 ]
 preamble = '''
 <p>
-    Starting from zero, each term of the sequence is <b>a(n) = a(n-1) - n</b>
+    Starting from <b>a(0) = 0</b>, each term of the sequence is <b>a(n) = a(n-1) - n</b>
     but only if <b>a(n) > 0</b> and it has not previously generated. In case
     the condition doesn't hold, <b>a(n) = a(n-1) + n</b>.
 

@@ -1,6 +1,6 @@
 {{ template "header" . }}
 
-{{ range .Data.LangsList }}
+{{ range .Data.Langs }}
     {{ svg .ID }}
 {{ end }}
 
@@ -37,6 +37,11 @@
         </nav>
     {{ end }}
         <nav>
+        {{ range .Data.Hole.Variants }}
+            {{ if ne . $.Data.Hole }}
+                <a class="btn blue" href="{{ .ID }}">{{ .Name }}</a>
+            {{ end }}
+        {{ end }}
             <a class="btn orange" href="{{ .Data.Hole.Prev }}">
                 {{ svg "chevron-double-left-light" }} Prev
             </a>
@@ -55,7 +60,7 @@
     <section>
         <header>
             <select>
-            {{ range .Data.LangsList }}
+            {{ range .Data.Langs }}
                 <option value="{{ .ID }}">{{ .Name }}
             {{ end }}
             </select>
@@ -157,7 +162,7 @@
 </main>
 
 <script id=darkModeMediaQuery type=application/json>{{ .DarkModeMediaQuery }}</script>
-<script id=langs              type=application/json>{{ .Data.LangsByID     }}</script>
+<script id=langs              type=application/json>{{ .Langs              }}</script>
 <script id=solutions          type=application/json>{{ .Data.Solutions     }}</script>
 
 {{ template "footer" }}

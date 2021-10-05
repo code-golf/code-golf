@@ -103,10 +103,15 @@
             {{ if eq $.Data.HoleID "all" }}
                 {{ .Holes }}
             {{ else }}
-                {{ .Lang }}
+                {{ .Lang.Name }}
             {{ end }}
             <td class=right>{{ comma .Points }}
-            <td class=right>{{ comma .Strokes }}
+            <td class=right>
+            {{ if eq $.Data.HoleID "all" }}
+                {{ comma .Strokes }}
+            {{ else }}
+                <a href="/golfers/{{ .Login }}/{{ $.Data.HoleID }}/{{ .Lang.ID }}/{{ $.Data.Scoring }}">{{ comma .Strokes }}</a>
+            {{ end }}
             <td class=right>{{ time (.Submitted.In $.Location) }}
     {{ end }}
     </table>

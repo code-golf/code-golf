@@ -3,14 +3,14 @@ package routes
 import (
 	"net/http"
 
-	"github.com/code-golf/code-golf/hole"
-	"github.com/code-golf/code-golf/lang"
+	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
 )
 
 // ScoresMini serves GET /scores/{hole}/{lang}/{scoring}/mini
 func ScoresMini(w http.ResponseWriter, r *http.Request) {
-	if hole.ByID[param(r, "hole")].ID == "" || lang.ByID[param(r, "lang")].ID == "" {
+	if config.HoleByID[param(r, "hole")] == nil ||
+		config.LangByID[param(r, "lang")] == nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
