@@ -88,7 +88,7 @@ select {
 }
 
 #arguments-tab:checked ~ #arguments { display: flex }
-     #diff-tab:checked ~ #diff,
+     #diff-tab:checked ~ #diff { display: grid }
    #errors-tab:checked ~ #errors,
  #expected-tab:checked ~ #expected,
    #output-tab:checked ~ #output { display: block }

@@ -1,16 +1,52 @@
 import * as Diff  from "diff";
 
-export default function diffHTML(hole, exp, out, argv) {
-    let html = getDiffType(hole) === 'arg'
-        ? `<h3 id='diff-arguments'>Args</h3>`
-        : `<div class='diff-title-bg'></div>`
-    html += `<div class='diff-title-bg'></div>
-        <h3 id='diff-output'>Output</h3>
-        <div class='diff-title-bg'></div>
-        <h3 id='diff-expected'>Expected</h3>`;
+export function attachDiff(element, hole, exp, out, argv) {
+    const header = getHeader();
+    const rows = diffHTMLRows(hole, exp, out, argv);
+    updateDiff(element, rows, header);
+    element.onscroll = () => {
+        updateDiff(element, rows, header);
+    };
+}
+
+function getHeader(hole) {
+  return (
+    (getDiffType(hole) === "arg"
+      ? `<h3 id='diff-arguments'>Args</h3>`
+      : `<div class='diff-title-bg'></div>`) +
+    `<div class='diff-title-bg'></div>
+     <h3 id='diff-output'>Output</h3>
+     <div class='diff-title-bg'></div>
+     <h3 id='diff-expected'>Expected</h3>`
+  );
+}
+
+// pixels
+const rowHeight = 20;
+
+function updateDiff(element, rows, header) {
+    // -1 for the header row
+    const rowTop = element.scrollTop / rowHeight - 1;
+    // Buffer of approx 50 rows in each direction
+    // Selected rows include rowStart but exclude rowEnd
+    // We can only show a few rows for memory reasons:
+    // Chrome limits a CSS grid to 1000 rows
+    const rowStart = Math.max(Math.floor(rowTop - 50), 0);
+    const padStart = rowStart * rowHeight;
+    const rowEnd = Math.min(Math.floor(rowTop + 60), rows.length);
+    const padEnd = (rows.length - rowEnd - 1) * rowHeight;
+    element.innerHTML = `${header}
+        <div class="diff-gap" style="height:${padStart}px"></div>
+        ${rows.slice(rowStart, rowEnd).join("")}
+        <div class="diff-gap" style="height:${padEnd}px"></div>`
+}
+
+function diffHTMLRows(hole, exp, out, argv) {
+    let rows = []
     let pos = {
         left: 1,
-        right: 1
+        right: 1,
+        isLastDiff: false
     };
     const changes = getLineChanges(hole, out, exp);
     let pendingChange = null;
@@ -21,21 +57,21 @@ export default function diffHTML(hole, exp, out, argv) {
             if (pendingChange === null) {
                 pendingChange = change;
             } else {
-                html += getDiffRow(hole, pendingChange, change, pos, argv);
+                rows.push(...getDiffRow(hole, pendingChange, change, pos, argv));
                 pendingChange = null;
             }
         } else {
             if (pendingChange) {
-                html += getDiffRow(hole, pendingChange, {}, pos, argv);
+                rows.push(...getDiffRow(hole, pendingChange, {}, pos, argv));
                 pendingChange = null;
             }
-            html += getDiffLines(hole, change, change, pos, argv);
+            rows.push(...getDiffLines(hole, change, change, pos, argv));
         }
     }
     if (pendingChange) {
-        html += getDiffRow(hole, pendingChange, {}, pos, argv);
+        rows.push(...getDiffRow(hole, pendingChange, {}, pos, argv));
     }
-    return html
+    return rows
 }
 
 function getLineChanges(hole, before, after) {
@@ -99,12 +135,14 @@ function getDiffLines(hole, left, right, pos, argv) {
         if (leftSplit[leftSplit.length - 1] === '') leftSplit.pop();
         if (rightSplit[rightSplit.length - 1] === '') rightSplit.pop();
     }
-    let s = ''
     const diffOpts = {
         ignoreCase: shouldIgnoreCase(hole)
     }
     const isArgDiff = getDiffType(hole) === 'arg';
-    for (let i=0; i<Math.max(leftSplit.length, rightSplit.length); i++) {
+    let rows = []
+    const numLines = Math.max(leftSplit.length, rightSplit.length)
+    for (let i=0; i<numLines; i++) {
+        let s = ''
         const leftLine = leftSplit[i];
         const rightLine = rightSplit[i];
         const charDiff = Diff.diffChars(leftLine ?? '', rightLine ?? '', diffOpts);
@@ -121,10 +159,11 @@ function getDiffLines(hole, left, right, pos, argv) {
             s += `<div class='diff-right-num'>${i + pos.right}</div>
                 <div class='diff-right${right.added?' diff-addition':''}'>${renderCharDiff(charDiff, true)}</div>`
         }
+        rows.push(s)
     }
     pos.left += left.count;
     pos.right += right.count;
-    return s
+    return rows
 }
 
 function renderCharDiff(charDiff, isRight) {

@@ -3,7 +3,7 @@ import LZString                                from 'lz-string';
 import { EditorState, EditorView, extensions } from './_codemirror.js';
 import pbm                                     from './_pbm.js';
 import strlen                                  from './_strlen.js';
-import diffHTML                                from './_diff';
+import { attachDiff }                          from './_diff';
 
 const all         = document.querySelector('#all');
 const hole        = decodeURI(location.pathname.slice(4));
@@ -16,7 +16,7 @@ const status      = document.querySelector('#status');
 const statusH2    = document.querySelector('#status h2');
 const strokes     = document.querySelector('#strokes');
 const thirdParty  = document.querySelector('#thirdParty');
-const diffContent = document.querySelector('#diff-content');
+const diffContent = document.querySelector('#diff');
 
 const darkMode = matchMedia(JSON.parse(document.querySelector(
     '#darkModeMediaQuery').innerText)).matches;
@@ -182,7 +182,7 @@ const runCode = document.querySelector('#run a').onclick = async () => {
         <span>{arg}</span>
     ));
 
-    diffContent.innerHTML = diffHTML(hole, data.Exp, data.Out, data.Argv);
+    attachDiff(diffContent, hole, data.Exp, data.Out, data.Argv);
 
     document.querySelector('#errors').innerHTML   = data.Err;
     document.querySelector('#expected').innerText = data.Exp;
