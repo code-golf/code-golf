@@ -1,6 +1,6 @@
 import CodeMirror from './_codemirror-legacy';
 import strlen     from './_strlen';
-import diffHTML   from './_diff';
+import { attachDiff }   from './_diff';
 
 const chars              = document.querySelector('#chars');
 const darkModeMediaQuery = JSON.parse(document.querySelector('#darkModeMediaQuery').innerText);
@@ -254,8 +254,9 @@ onload = () => {
         document.querySelector('#exp div').innerText = data.Exp;
         document.querySelector('#out div').innerText = data.Out;
 
-        document.querySelector("#diff-content").innerHTML = diffHTML(hole, data.Exp, data.Out, data.Argv);
-        diff.style.display = data.Exp === data.Out ? 'none' : 'block'
+        const diffContent = document.querySelector("#diff-content");
+        attachDiff(diffContent, hole, data.Exp, data.Out, data.Argv);
+        diff.style.display = data.Exp === data.Out ? 'none' : 'block';
 
         status.className = data.Pass ? 'green' : 'red';
         status.style.display = 'block';

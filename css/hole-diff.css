@@ -1,4 +1,4 @@
-#diff-content {
+.diff-content {
     display: grid;
     grid-template-columns:
         [arg] max-content
