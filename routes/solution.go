@@ -15,7 +15,6 @@ import (
 	"github.com/code-golf/code-golf/pretty"
 	"github.com/code-golf/code-golf/session"
 	"github.com/lib/pq"
-	"github.com/pmezard/go-difflib/difflib"
 )
 
 // Solution serves POST /solution
@@ -58,13 +57,13 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 	}
 
 	out := struct {
-		Argv                []string
-		Cheevos             []string
-		Diff, Err, Exp, Out string
-		ExitCode            int
-		Pass, LoggedIn      bool
-		RankUpdates         []Golfer.RankUpdate
-		Took                time.Duration
+		Argv           []string
+		Cheevos        []string
+		Err, Exp, Out  string
+		ExitCode       int
+		Pass, LoggedIn bool
+		RankUpdates    []Golfer.RankUpdate
+		Took           time.Duration
 	}{
 		Argv:     score.Args,
 		Cheevos:  []string{},
@@ -80,14 +79,6 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		},
 		Took: score.Took,
 	}
-
-	out.Diff, _ = difflib.GetUnifiedDiffString(difflib.UnifiedDiff{
-		A:        difflib.SplitLines(out.Exp),
-		B:        difflib.SplitLines(out.Out),
-		Context:  3,
-		FromFile: "Exp",
-		ToFile:   "Out",
-	})
 
 	if out.Pass && golfer != nil && !experimental {
 		if err := db.QueryRowContext(

@@ -6,11 +6,10 @@ constant $code-short       = 'say "Fizz"x$_%%3~"Buzz"x$_%%5||$_ for 1..100';
 constant $code-short-chars = 'say "Fizz"x$_%%3~"Buzz"x$_%%5||$_ for 1…100';
 
 is-deeply post-solution(:code($code-long))<
-    Argv Cheevos Diff Err ExitCode Exp Pass
+    Argv Cheevos Err ExitCode Exp Pass
 >:kv.Hash, {
     Argv     => [],
     Cheevos  => [],
-    Diff     => '',
     Err      => '',
     ExitCode => 0,
     Exp      => $answer,
