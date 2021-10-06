@@ -2,6 +2,13 @@ import * as Diff  from "diff";
 
 export function attachDiff(element, hole, exp, out, argv) {
     const header = getHeader();
+    // Limit `out` to 999 lines to avoid slow computation of the line diff
+    let outLines = lines(out)
+    if (outLines.length > 998) {
+        outLines = outLines.slice(0, 998);
+        outLines.push("[Truncated for performance]");
+        out = outLines.join("\n")
+    }
     const rows = diffHTMLRows(hole, exp, out, argv);
     updateDiff(element, rows, header);
     element.onscroll = () => {
