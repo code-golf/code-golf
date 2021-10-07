@@ -91,8 +91,8 @@ function getLineChanges(hole, before, after) {
             sensitivity: shouldIgnoreCase(hole) ? 'accent' : 'base'
         }
         for (let i=0; i<Math.max(splitBefore.length, splitAfter.length); i++) {
-            const a = splitBefore[i]
-            const b = splitAfter[i]
+            const a = splitBefore[i] ?? '';
+            const b = splitAfter[i] ?? '';
             // https://stackoverflow.com/a/2140723/7481517
             const linesEqual = 0 === a.localeCompare(b, undefined, compareOpts);
             if (linesEqual) {
