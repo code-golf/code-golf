@@ -146,11 +146,23 @@ CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
            ((N + 2) / (N + 3)) * S + (1 / (N + 3)) * Sa Sb
       from min
       join min_per_lang using(hole, scoring)
-) select hole, lang, scoring, user_id, strokes, submitted,
-         round(Sb / strokes * 1000) points,
-         round(S  / strokes * 1000) points_for_lang
-    from strokes
-    join bayesian_estimators using(hole, lang, scoring);
+), points as (
+    select hole, lang, scoring, user_id, strokes, submitted,
+           round(Sb / strokes * 1000) points,
+           round(S  / strokes * 1000) points_for_lang
+      from strokes
+      join bayesian_estimators using(hole, lang, scoring)
+), ranks as (
+    select *, rank() over (
+               partition by hole, lang, scoring
+                   order by points_for_lang desc, strokes
+           )
+      from points
+), tie_count as (
+    select hole, lang, scoring, strokes, count(*) tie_count
+      from strokes
+  group by hole, lang, scoring, strokes
+) select * from ranks join tie_count using (hole, lang, scoring, strokes);
 
 CREATE MATERIALIZED VIEW points AS WITH ranked_by_hole AS (
     SELECT points, scoring, user_id, ROW_NUMBER()

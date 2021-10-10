@@ -1,9 +1,9 @@
-{{ template "header"   . }}
-{{ template "rankings" . }}
+{{ template "header" . }}
+{{ template "recent" . }}
 
 <main>
     <form id=form-nav>
-        <input name=base type=hidden value=/rankings/medals>
+        <input name=base type=hidden value=/recent/solutions>
 
         <select name=holes>
             <option value=all>All Holes
@@ -22,11 +22,6 @@
         </select>
 
         <label>
-            <input {{ if eq .Data.Scoring "all" }} checked {{ end }}
-                name=scoring type=radio value=all>All
-        </label>
-
-        <label>
             <input {{ if eq .Data.Scoring "bytes" }} checked {{ end }}
                 name=scoring type=radio value=bytes>Bytes
         </label>
@@ -39,31 +34,26 @@
 
     <nav>
         <h2>Scoring</h2>
-        <a {{ if ne .Data.Scoring "all" }}
-            href="/rankings/medals/{{ .Data.HoleID }}/{{ .Data.LangID }}/all"
-        {{ end }}>
-            <span>All</span>
-        </a>
         <a {{ if ne .Data.Scoring "bytes" }}
-            href="/rankings/medals/{{ .Data.HoleID }}/{{ .Data.LangID }}/bytes"
+            href="/recent/solutions/{{ .Data.HoleID }}/{{ .Data.LangID }}/bytes"
         {{ end }}>
             <span>Bytes</span>
         </a>
         <a {{ if ne .Data.Scoring "chars" }}
-            href="/rankings/medals/{{ .Data.HoleID }}/{{ .Data.LangID }}/chars"
+            href="/recent/solutions/{{ .Data.HoleID }}/{{ .Data.LangID }}/chars"
         {{ end }}>
             <span>Chars</span>
         </a>
 
         <h2>Language</h2>
         <a {{ if ne .Data.LangID "all" }}
-            href="/rankings/medals/{{ .Data.HoleID }}/all/{{ .Data.Scoring }}"
+            href="/recent/solutions/{{ .Data.HoleID }}/all/{{ .Data.Scoring }}"
         {{ end }}>
             <span>All</span>
         </a>
     {{ range .Data.Langs }}
         <a {{ if ne $.Data.LangID .ID }}
-            href="/rankings/medals/{{ $.Data.HoleID }}/{{ .ID }}/{{ $.Data.Scoring }}"
+            href="/recent/solutions/{{ $.Data.HoleID }}/{{ .ID }}/{{ $.Data.Scoring }}"
         {{ end }}>
             <span>{{ .Name }}</span>
         </a>
@@ -71,51 +61,52 @@
 
         <h2>Hole</h2>
         <a {{ if ne .Data.HoleID "all" }}
-            href="/rankings/medals/all/{{ .Data.LangID }}/{{ .Data.Scoring }}"
+            href="/recent/solutions/all/{{ .Data.LangID }}/{{ .Data.Scoring }}"
         {{ end }}>
             <span>All</span>
         </a>
     {{ range .Data.Holes }}
         <a {{ if ne $.Data.HoleID .ID }}
-            href="/rankings/medals/{{ .ID }}/{{ $.Data.LangID }}/{{ $.Data.Scoring }}"
+            href="/recent/solutions/{{ .ID }}/{{ $.Data.LangID }}/{{ $.Data.Scoring }}"
         {{ end }}>
             <span>{{ .Name }}</span>
         </a>
     {{ end }}
     </nav>
 
-    <table class="nowrap-second sticky">
+    <table class="nowrap-first-second sticky">
         <thead>
             <tr>
-                <th>#
+                <th>Hole
                 <th>Golfer
-                <th class=right title="Gold medals">🥇
-                <th class=right title="Diamonds (uncontested gold medals)">💎
-                <th class=right title="Silver medals">🥈
-                <th class=right title="Bronze medals">🥉
+                <th class=wide>Lang
+                <th class="right wide">{{ title .Data.Scoring }}
+                <th class=right>Submitted
         <tbody>
         {{ $name := "" }}
         {{ with .Golfer }}{{ $name = .Name }}{{ end }}
 
         {{ range .Data.Rows }}
-            <tr{{ if eq $name .Login }} class=me {{ end }}>
-                <td>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup>
+            <tr{{ if eq $name .Login }} class="me"{{ end }}>
+                <td>
+                    <a href="/{{ .Hole.ID }}#{{ .Lang.ID }}">
+                        <span>{{ .Hole.Name }}</span>
+                    </a>
                 <td>
                     <a href="/golfers/{{ .Login }}">
                         <img loading=lazy src="//avatars.githubusercontent.com/{{ .Login }}?s=24">
                         <span>{{ .Login }}</span>
-                    {{ with index $.Countries .Country }}
-                        <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
-                    {{ end }}
                     </a>
-                <td class=right> {{ comma .Gold    }}
-                <td class=right>({{ comma .Diamond }})
-                <td class=right> {{ comma .Silver  }}
-                <td class=right> {{ comma .Bronze  }}
+                <td class=wide>{{ .Lang.Name }}
+                <td class=wide title="{{ if eq .TieCount 1 }}Uncontested{{ else }}Joint{{ end }} {{ .Rank }}{{ ord .Rank }}">
+                    <div>{{ comma .Strokes }}</div>
+                    {{ if and (eq .Rank 1) (eq .TieCount 1) }}💎
+                    {{ else if eq .Rank 1                   }}🥇
+                    {{ else if eq .Rank 2                   }}🥈
+                    {{ else if eq .Rank 3                   }}🥉
+                    {{ else }}<span>🏅</span>
+                    {{ end }}
+                <td class=right>{{ time .Submitted }}
         {{ end }}
     </table>
-
-    {{ template "pagination" .Data.Pager }}
 </main>
-
-{{ template "footer" }}

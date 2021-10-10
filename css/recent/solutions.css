@@ -1,0 +1,11 @@
+td:nth-child(4) {
+    display: flex;
+    gap: .5rem;
+}
+
+td:nth-child(4) div {
+    flex: 1;
+    text-align: right;
+}
+
+td:nth-child(4) span { visibility: hidden }

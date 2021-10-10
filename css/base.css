@@ -444,4 +444,4 @@ details.tabs a { display: inline-block }
     100% { opacity: 1; maring-top: 0 }
 }
 
-@media (max-width: 34rem) { .wide { display: none } }
+@media (max-width: 34rem) { .wide { display: none !important } }

@@ -47,7 +47,7 @@
         <a {{ if ne .Path "/ideas" }} href=/ideas title=Ideas {{ end }}>
             {{ svg "lightbulb-light" }}
         </a>
-        <a {{ if not (hasPrefix .Path "/recent/") }} href=/recent/all-langs title="Recent Solutions" {{ end }}>
+        <a {{ if not (hasPrefix .Path "/recent/") }} href=/recent/solutions/all/all/bytes title="Recent Solutions" {{ end }}>
             {{ svg "clock" }}
         </a>
         <a {{ if not (hasPrefix .Path "/rankings/") }} href=/rankings/holes/all/all/bytes title=Rankings {{ end }}>

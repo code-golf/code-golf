@@ -105,8 +105,13 @@ func main() {
 		r.Get("/langs/{lang}/{scoring}", routes.RankingsLangs)
 		r.Get("/solutions", routes.RankingsSolutions)
 	})
-	r.Get("/recent", routes.Recent)
-	r.Get("/recent/{lang}", routes.Recent)
+	r.Route("/recent", func(r chi.Router) {
+		r.Get("/", redir("/recent/solutions/all/all/bytes"))
+		r.Get("/{lang}", routes.Recent)
+
+		r.Get("/golfers", routes.RecentGolfers)
+		r.Get("/solutions/{hole}/{lang}/{scoring}", routes.RecentSolutions)
+	})
 	r.Get("/scores/{hole}/{lang}", routes.Scores)
 	r.Get("/scores/{hole}/{lang}/all", routes.ScoresAll)
 	r.Get("/scores/{hole}/{lang}/{scoring}", routes.Scores)

@@ -139,7 +139,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 			         lang,
 			         login,
 			         points_for_lang,
-			         RANK() OVER (ORDER BY points_for_lang DESC, strokes),
+			         rank,
 			         strokes,
 			         submitted,
 			         COUNT(*) OVER()

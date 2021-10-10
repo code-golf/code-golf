@@ -1,68 +1,15 @@
-{{ template "header" . }}
+<h1>{{ .Title }}</h1>
 
-<main>
-    <h1>Recent Solutions</h1>
+<nav class=tabs>
+    <a {{ if ne .Path "/recent/golfers" }}
+        href=/recent/golfers
+    {{ end }}>
+        Golfers
+    </a>
 
-    <details class=tabs>
-        {{ $langID := .Data.LangID }}
-
-        {{ if eq $langID "all-langs" }}
-            <summary>All Langs</summary>
-        {{ else }}
-            <a href="/recent/all-langs">All Langs</a>
-        {{ end }}
-
-        {{ range .Data.Langs }}
-            {{ if eq $langID .ID }}
-                <summary>{{ .Name }}</summary>
-            {{ else }}
-                <a href="/recent/{{ .ID }}">{{ .Name }}</a>
-            {{ end }}
-        {{ end }}
-    </details>
-
-    <table class="nowrap-first-second sticky">
-        <thead>
-            <tr>
-                <th>Hole
-                <th>Golfer
-                <th class=wide>Lang
-                <th class="right wide">Strokes
-                <th class=wide colspan=2>Scoring
-                <th class=right>Submitted
-        <tbody>
-        {{ $name := "" }}
-        {{ with .Golfer }}{{ $name = .Name }}{{ end }}
-
-        {{- range .Data.Recents -}}
-            <tr{{ if eq $name .Login }} class="me"{{ end }}>
-                <td>
-                    <a href="/{{ .Hole.ID }}#{{ .Lang.ID }}">
-                        <span>{{ .Hole.Name }}</span>
-                    </a>
-                <td>
-                    <a href="/golfers/{{ .Login }}">
-                        <img loading=lazy src="//avatars.githubusercontent.com/{{ .Login }}?s=24">
-                        <span>{{ .Login }}</span>
-                    </a>
-                <td class=wide>
-                    <a href="/recent/{{ .Lang.ID }}">{{ .Lang.Name }}</a>
-                <td class="right wide" title="Rank: {{ .Rank }}{{ ord .Rank }}">
-                    {{ comma .Strokes }}
-                <td class=wide>{{ .Scoring }}
-                <td class=wide
-                    {{ if not .TieCount }}
-                        title="Shorter than previous {{ .Rank }}{{ ord .Rank }} place solutions"
-                    {{ end }}>
-                    {{if and (not .TieCount) (eq .Rank 1)}}💎
-                    {{else if eq .Rank 1}}🥇
-                    {{else if eq .Rank 2}}🥈
-                    {{else if eq .Rank 3}}🥉
-                    {{end}}
-                    {{if and (not .TieCount) (le .Rank 3)}}📉{{end}}
-                <td class=right>{{ time .Submitted }}
-        {{- end -}}
-    </table>
-</main>
-
-{{ template "footer" }}
+    <a {{ if not (hasPrefix .Path "/recent/solutions/") }}
+        href=/recent/solutions/all/all/bytes
+    {{ end }}>
+        Solutions
+    </a>
+</nav>

@@ -1,0 +1,27 @@
+{{ template "header" . }}
+{{ template "recent" . }}
+
+<main>
+    <table class="nowrap-first sticky">
+        <thead>
+            <tr>
+                <th>Golfer
+                <th class=right>Date
+        <tbody>
+        {{ $name := "" }}
+        {{ with .Golfer }}{{ $name = .Name }}{{ end }}
+
+        {{ range .Data }}
+            <tr{{ if eq $name .Name }} class=me {{ end }}>
+                <td>
+                    <a href="/golfers/{{ .Name }}">
+                        <img loading=lazy src="//avatars.githubusercontent.com/{{ .Name }}?s=24">
+                        <span>{{ .Name }}</span>
+                    {{ with index $.Countries .Country }}
+                        <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
+                    {{ end }}
+                    </a>
+                <td class=right>{{ time .Date }}
+        {{ end }}
+    </table>
+</main>

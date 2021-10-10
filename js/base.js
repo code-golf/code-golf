@@ -11,6 +11,11 @@ for (const a of document.querySelectorAll('.log-in')) {
     a.href = url;
 }
 
+// Wire up mobile form navigation.
+document.querySelector('#form-nav')?.addEventListener('change', e =>
+    location = [...new FormData(e.target.form).values()].filter(v =>
+        v.length).join('/'));
+
 // Add suggestions to any input with a list.
 for (const input of document.querySelectorAll('[list]')) {
     let controller;
