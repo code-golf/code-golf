@@ -6,12 +6,13 @@
         <thead>
             <tr>
                 <th>Golfer
+                <th class=right>Cheevos
                 <th class=right>Date
         <tbody>
         {{ $name := "" }}
         {{ with .Golfer }}{{ $name = .Name }}{{ end }}
 
-        {{ range .Data }}
+        {{ range .Data.Golfers }}
             <tr{{ if eq $name .Name }} class=me {{ end }}>
                 <td>
                     <a href="/golfers/{{ .Name }}">
@@ -21,6 +22,7 @@
                         <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
                     {{ end }}
                     </a>
+                <td class=right>{{ .Cheevos }} / {{ $.Data.Cheevos }}
                 <td class=right>{{ time .Date }}
         {{ end }}
     </table>

@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
 )
@@ -11,21 +12,25 @@ import (
 // RecentGolfers serves GET /recent/golfers
 func RecentGolfers(w http.ResponseWriter, r *http.Request) {
 	type golfer struct {
+		Cheevos       int
 		Country, Name string
 		Date          time.Time
 	}
 
-	golfers := make([]golfer, 0, pager.PerPage)
+	data := struct {
+		Cheevos int
+		Golfers []golfer
+	}{len(config.CheevoList), make([]golfer, 0, pager.PerPage)}
 
 	rows, err := session.Database(r).Query(
 		`WITH recent AS (
-		    SELECT user_id, MIN(earned) date
+		    SELECT user_id, COUNT(*) cheevos, MIN(earned) date
 		      FROM trophies
 		  GROUP BY user_id
 		  ORDER BY date DESC
 		     LIMIT $1
 		) SELECT COALESCE(CASE WHEN show_country THEN country END, ''),
-		         date, login
+		         cheevos, date, login
 		    FROM recent
 		    JOIN users ON id = user_id
 		ORDER BY date DESC`,
@@ -38,16 +43,16 @@ func RecentGolfers(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		var g golfer
 
-		if err := rows.Scan(&g.Country, &g.Date, &g.Name); err != nil {
+		if err := rows.Scan(&g.Country, &g.Cheevos, &g.Date, &g.Name); err != nil {
 			panic(err)
 		}
 
-		golfers = append(golfers, g)
+		data.Golfers = append(data.Golfers, g)
 	}
 
 	if err := rows.Err(); err != nil {
 		panic(err)
 	}
 
-	render(w, r, "recent/golfers", golfers, "Recent Golfers")
+	render(w, r, "recent/golfers", data, "Recent Golfers")
 }
