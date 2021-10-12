@@ -8,6 +8,8 @@ services:
     command:
       - ./esbuild
       - --watch
+    stop_signal: SIGKILL
+    tty: true
     user: 1000:1000
     volumes:
       - ..:/code-golf
