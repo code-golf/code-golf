@@ -9,8 +9,8 @@ RUN apk add --no-cache build-base curl git linux-headers tzdata \
 COPY --from=codegolf/lang-rust       ["/", "/langs/rust/rootfs/"      ] #  720 MiB
 COPY --from=codegolf/lang-swift      ["/", "/langs/swift/rootfs/"     ] #  613 MiB
 COPY --from=codegolf/lang-haskell    ["/", "/langs/haskell/rootfs/"   ] #  332 MiB
-COPY --from=codegolf/lang-crystal    ["/", "/langs/crystal/rootfs/"   ] #  263 MiB
 COPY --from=codegolf/lang-julia      ["/", "/langs/julia/rootfs/"     ] #  259 MiB
+COPY --from=codegolf/lang-crystal    ["/", "/langs/crystal/rootfs/"   ] #  254 MiB
 COPY --from=codegolf/lang-zig        ["/", "/langs/zig/rootfs/"       ] #  242 MiB
 COPY --from=codegolf/lang-powershell ["/", "/langs/powershell/rootfs/"] #  185 MiB
 COPY --from=codegolf/lang-go         ["/", "/langs/go/rootfs/"        ] #  136 MiB

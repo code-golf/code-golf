@@ -1,9 +1,9 @@
-FROM crystallang/crystal:1.1.1-alpine as builder
+FROM crystallang/crystal:1.2.0-alpine as builder
 
 # Crystal expects /dev/null to exist.
-RUN mkdir /empty /mydev             \
- && mknod -m 0666 /mydev/null c 1 3 \
- && rm -r /usr/share/doc
+RUN mkdir /empty /mydev && mknod -m 0666 /mydev/null c 1 3
+
+RUN strip /usr/bin/crystal
 
 FROM scratch
 
