@@ -1,7 +1,7 @@
 import * as Diff  from "diff";
 
 export function attachDiff(element, hole, exp, out, argv) {
-    const header = getHeader();
+    const header = getHeader(hole);
     // Limit `out` to 999 lines to avoid slow computation of the line diff
     let outLines = lines(out)
     if (outLines.length > 998) {
