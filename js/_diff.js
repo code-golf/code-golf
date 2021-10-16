@@ -1,4 +1,4 @@
-import * as Diff  from "diff";
+import * as Diff from 'diff';
 
 export function attachDiff(element, hole, exp, out, argv) {
     const header = getHeader(hole);
