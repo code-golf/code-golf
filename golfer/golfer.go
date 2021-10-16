@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/oauth"
 	"gopkg.in/guregu/null.v4"
 )
 
@@ -57,6 +58,13 @@ func (g *Golfer) Earnt(cheevoID string) bool {
 	return i < len(g.Cheevos) && g.Cheevos[i] == cheevoID
 }
 
+type Connection struct {
+	Connection, Username string
+	Discriminator        sql.NullInt16
+	ID                   int
+	Public               bool
+}
+
 type GolferInfo struct {
 	Golfer
 
@@ -76,6 +84,24 @@ type GolferInfo struct {
 
 	// Start date
 	TeedOff time.Time
+
+	Connections []Connection
+}
+
+// MissingConnections returns which connections are missing.
+func (g *GolferInfo) MissingConnections() map[string]*oauth.Config {
+	missing := map[string]*oauth.Config{}
+
+	for id, config := range oauth.Connections {
+		i := sort.Search(len(g.Connections),
+			func(i int) bool { return g.Connections[i].Connection >= id })
+
+		if i >= len(g.Connections) || g.Connections[i].Connection != id {
+			missing[id] = config
+		}
+	}
+
+	return missing
 }
 
 type RankUpdate struct {
@@ -150,6 +176,37 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 
 	// TODO
 	info.TeedOff = time.Date(2019, time.July, 15, 20, 13, 21, 0, time.UTC)
+
+	rows, err := db.Query(
+		` SELECT connection, discriminator, id, public, username
+		    FROM connections
+		   WHERE user_id = $1
+		ORDER BY connection`,
+		info.ID,
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	for rows.Next() {
+		var c Connection
+
+		if err := rows.Scan(
+			&c.Connection,
+			&c.Discriminator,
+			&c.ID,
+			&c.Public,
+			&c.Username,
+		); err != nil {
+			panic(err)
+		}
+
+		info.Connections = append(info.Connections, c)
+	}
+
+	if err := rows.Err(); err != nil {
+		panic(err)
+	}
 
 	return &info
 }

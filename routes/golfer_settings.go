@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/oauth"
 	"github.com/code-golf/code-golf/session"
 	"github.com/code-golf/code-golf/zone"
 )
@@ -35,11 +36,13 @@ func GolferDelete(w http.ResponseWriter, r *http.Request) {
 // GolferSettings serves GET /golfer/settings
 func GolferSettings(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		Countries map[string][]*config.Country
-		Keymaps   []string
-		Themes    []string
-		TimeZones []zone.Zone
+		Connections map[string]*oauth.Config
+		Countries   map[string][]*config.Country
+		Keymaps     []string
+		Themes      []string
+		TimeZones   []zone.Zone
 	}{
+		oauth.Connections,
 		config.CountryTree,
 		[]string{"default", "vim"},
 		[]string{"auto", "dark", "light"},
@@ -73,7 +76,14 @@ func GolferSettingsPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if _, err := session.Database(r).Exec(
+	tx, err := session.Database(r).BeginTx(r.Context(), nil)
+	if err != nil {
+		panic(err)
+	}
+	defer tx.Rollback()
+
+	userID := session.Golfer(r).ID
+	if _, err := tx.Exec(
 		`UPDATE users
 		    SET country = $1,
 		         keymap = $2,
@@ -88,8 +98,28 @@ func GolferSettingsPost(w http.ResponseWriter, r *http.Request) {
 		r.Form.Get("show_country") == "on",
 		r.Form.Get("theme"),
 		r.Form.Get("time_zone"),
-		session.Golfer(r).ID,
+		userID,
 	); err != nil {
+		panic(err)
+	}
+
+	// Update connections' publicness if they differ from DB.
+	for _, c := range session.GolferInfo(r).Connections {
+		if show := r.Form.Get("show_"+c.Connection) == "on"; show != c.Public {
+			if _, err := tx.Exec(
+				`UPDATE connections
+				    SET public = $1
+				  WHERE connection = $2 AND user_id = $3`,
+				show,
+				c.Connection,
+				userID,
+			); err != nil {
+				panic(err)
+			}
+		}
+	}
+
+	if err := tx.Commit(); err != nil {
 		panic(err)
 	}
 

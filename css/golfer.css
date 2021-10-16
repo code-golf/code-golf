@@ -21,11 +21,22 @@ h1 {
     margin: .25rem;
 }
 
-#badges p { padding: .2rem .5rem }
+#badges p {
+    display: flex;
+    padding: .2rem .5rem;
+}
 
 #badges p:last-child {
     border: 2px solid var(--badge-background);
     border-left: 0;
+}
+
+#badges span { font-weight: normal }
+
+#badges svg {
+    fill: var(--background);
+    height: 1rem;
+    width: 1rem;
 }
 
 #profile {

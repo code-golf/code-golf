@@ -14,8 +14,8 @@ import (
 )
 
 var oauthConfig = oauth2.Config{
-	ClientID:     "7f6709819023e9215205",
-	ClientSecret: os.Getenv("CLIENT_SECRET"),
+	ClientID:     os.Getenv("GITHUB_CLIENT_ID"),
+	ClientSecret: os.Getenv("GITHUB_CLIENT_SECRET"),
 	Endpoint:     github.Endpoint,
 }
 
@@ -95,19 +95,46 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Only replace NULL countries and time_zones, never user chosen ones.
-	if err := session.Database(r).QueryRow(
-		`WITH golfer AS (
-		    INSERT INTO users (id, login, country, time_zone)
-		         VALUES       ($1,    $2,      $3,        $4)
-		    ON CONFLICT       (id)
-		  DO UPDATE SET login = excluded.login,
-		              country = COALESCE(users.country,   excluded.country),
-		            time_zone = COALESCE(users.time_zone, excluded.time_zone)
-		      RETURNING id
-		) INSERT INTO sessions (user_id) SELECT * FROM golfer RETURNING id`,
+	tx, err := session.Database(r).BeginTx(r.Context(), nil)
+	if err != nil {
+		panic(err)
+	}
+	defer tx.Rollback()
+
+	// Create or update a user. For now user ID == GitHub user ID.
+	// This'll need to change for true multi connection OAuth support.
+	if _, err := tx.Exec(
+		`INSERT INTO users (id, login, country, time_zone)
+		      VALUES       ($1,    $2,      $3,        $4)
+		 ON CONFLICT       (id)
+		   DO UPDATE SET login = excluded.login,
+		     country = COALESCE(users.country,   excluded.country),
+		   time_zone = COALESCE(users.time_zone, excluded.time_zone)`,
 		user.ID, user.Login, country, timeZone,
+	); err != nil {
+		panic(err)
+	}
+
+	// Create or update a connection. For now user ID == GitHub user ID.
+	// This'll need to change for true multi connection OAuth support.
+	if _, err := tx.Exec(
+		`INSERT INTO connections (connection, id, user_id, username)
+		      VALUES             (  'github', $1,      $2,       $3)
+		 ON CONFLICT             (connection, id)
+		   DO UPDATE SET username = excluded.username`,
+		user.ID, user.ID, user.Login,
+	); err != nil {
+		panic(err)
+	}
+
+	// Create a session, write cookie value.
+	if err := tx.QueryRow(
+		"INSERT INTO sessions (user_id) VALUES ($1) RETURNING id", user.ID,
 	).Scan(&cookie.Value); err != nil {
+		panic(err)
+	}
+
+	if err := tx.Commit(); err != nil {
 		panic(err)
 	}
 

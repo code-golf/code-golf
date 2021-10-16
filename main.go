@@ -67,7 +67,9 @@ func main() {
 	r.Route("/golfer", func(r chi.Router) {
 		r.Use(middleware.GolferArea)
 		r.Post("/cancel-delete", routes.GolferCancelDelete)
+		r.Get("/connect/{connection}", routes.GolferConnect)
 		r.Post("/delete", routes.GolferDelete)
+		r.Get("/disconnect/{connection}", routes.GolferDisconnect)
 		r.Get("/export", routes.GolferExport)
 		r.Get("/settings", routes.GolferSettings)
 		r.Post("/settings", routes.GolferSettingsPost)

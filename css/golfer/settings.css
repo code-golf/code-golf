@@ -23,3 +23,38 @@ label {
     gap: .5rem;
     grid-template-columns: min-content 1fr;
 }
+
+#connections {
+    display: grid;
+    gap: 1rem;
+    padding: 0;
+}
+
+#connections div { grid-row: span 2 }
+
+#connections h3 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#connections h3 span { font-weight: normal }
+
+#connections li {
+    column-gap: .5rem;
+    display: grid;
+    grid-template-columns: min-content 1fr min-content;
+}
+
+#connections li > svg {
+    background: var(--color);
+    border-radius: .75rem;
+    fill: var(--background);
+    grid-row: span 2;
+    height: 3rem;
+    width: 3rem;
+}
+
+#missingConnections {
+    display: flex;
+    gap: .5rem;
+}

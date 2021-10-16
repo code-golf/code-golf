@@ -252,6 +252,7 @@ thead th {
     display: flex;
     font-size: 1rem;
     font-weight: bold;
+    gap: .25rem;
     line-height: 1;
     padding: .5rem;
     user-select: none;
@@ -265,10 +266,7 @@ thead th {
     text-decoration: none;
 }
 
-.btn svg {
-    height: 1rem;
-    margin-right: .25rem;
-}
+.btn svg { height: 1rem }
 
 .card {
     align-items: end;
@@ -312,6 +310,8 @@ thead th {
 .color:nth-of-type(6n+4), .green  { background: var(--green)  }
 .color:nth-of-type(6n+5), .blue   { background: var(--blue)   }
 .color:nth-of-type(6n+6), .purple { background: var(--purple) }
+
+.light-grey { background: var(--light-grey) }
 
 .flag {
     margin-left: .5rem;

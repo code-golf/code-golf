@@ -32,13 +32,31 @@
         </div>
         <div>
             <p>🔣
-            <p class=green>{{ .Langs }} / {{ .LangsTotal }} Languages
+            <p class=green>{{ .Langs }} / {{ .LangsTotal }} Langs
         </div>
         <div>
             <p>🏆
-            <p class=blue>{{ .Cheevos }} / {{ .CheevosTotal }} Achievements
+            <p class=blue>{{ .Cheevos }} / {{ .CheevosTotal }} Cheevos
         </div>
         <!-- TODO <div><p>📅<p class=yellow>Teed off {{ time .TeedOff }}</div>-->
+
+{{ range .Connections }}
+    {{ if .Public }}
+        <div title="{{ .Connection }}">
+            <p>{{ svg .Connection }}
+            <p class=light-grey>
+            {{ if or (eq .Connection "github") (eq .Connection "gitlab") }}
+                <a href="//{{ .Connection }}.com/{{ .Username }}">
+                    {{ .Username }}</a>
+            {{ else }}
+                {{ .Username }}
+                {{- if .Discriminator.Valid -}}
+                    <span>#{{ .Discriminator.Value }}</span>
+                {{- end -}}
+            {{ end }}
+        </div>
+    {{ end }}
+{{ end }}
     </div>
 
     <nav class=tabs>

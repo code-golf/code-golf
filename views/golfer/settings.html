@@ -11,6 +11,47 @@
 
 <main>
     <form method=post>
+        <h2>Connections</h2>
+
+        Will eventually allow for logging in with any supported OAuth
+        connection.
+
+        <ol id=connections>
+        {{ range .GolferInfo.Connections }}
+            <li>
+                {{ svg .Connection }}
+                <h3>
+                    <span>{{ .Connection }}/</span>
+                    {{- .Username -}}
+                {{- if .Discriminator.Valid -}}
+                    <span>#{{ .Discriminator.Value }}</span>
+                {{- end -}}
+                </h3>
+                <div>
+                {{ if ne .Connection "github" }}
+                    <a class="btn red" href="disconnect/{{ .Connection }}">
+                        {{ svg "trash" }}<span class=wide>Remove</span>
+                    </a>
+                {{ end }}
+                </div>
+                <label>
+                    <input name="show_{{ .Connection }}" type=checkbox
+                        {{ if .Public }}checked{{ end }}>
+                    Show this connection publicly?
+                </label>
+        {{ end }}
+        </ol>
+
+    {{ if .GolferInfo.MissingConnections }}
+        <div id=missingConnections>
+        {{ range $id, $conn := .GolferInfo.MissingConnections }}
+            <a class="btn blue" href="{{ $conn.AuthCodeURL "" }}">
+                {{ svg $id }} Add {{ $conn.Name }}
+            </a>
+        {{ end }}
+        </div>
+    {{ end }}
+
         <h2>Country</h2>
 
         Will eventually be used in aggregate on the statistics page.

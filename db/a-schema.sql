@@ -12,6 +12,8 @@ CREATE TYPE cheevo AS ENUM (
     'twelvetide', 'twenty-kiloleagues', 'up-to-eleven', 'vampire-byte'
 );
 
+CREATE TYPE connection AS ENUM ('discord', 'github', 'gitlab');
+
 CREATE TYPE hole AS ENUM (
     '12-days-of-christmas', '99-bottles-of-beer', 'abundant-numbers',
     'arabic-to-roman', 'arrows', 'brainfuck', 'christmas-trees', 'css-colors',
@@ -74,6 +76,17 @@ CREATE TABLE users (
     referrer_id  int                REFERENCES users(id) ON DELETE SET NULL,
     theme        theme     NOT NULL DEFAULT 'auto',
     CHECK (id != referrer_id)   -- Can't refer yourself
+);
+
+CREATE TABLE connections (
+    id            bigint     NOT NULL,
+    connection    connection NOT NULL,
+    user_id       int        NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    discriminator smallint,
+    public        bool       NOT NULL DEFAULT false,
+    username      text       NOT NULL,
+    PRIMARY KEY (connection, id),
+    UNIQUE (connection, user_id)
 );
 
 CREATE TABLE sessions (
@@ -189,6 +202,7 @@ ALTER MATERIALIZED VIEW medals   OWNER TO "code-golf";
 ALTER MATERIALIZED VIEW points   OWNER TO "code-golf";
 ALTER MATERIALIZED VIEW rankings OWNER TO "code-golf";
 
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE connections     TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE discord_records TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE ideas           TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE sessions        TO "code-golf";
