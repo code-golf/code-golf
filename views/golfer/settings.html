@@ -24,7 +24,7 @@
                     <span>{{ .Connection }}/</span>
                     {{- .Username -}}
                 {{- if .Discriminator.Valid -}}
-                    <span>#{{ .Discriminator.Value }}</span>
+                    <span>{{ printf "#%04d" .Discriminator.Value }}</span>
                 {{- end -}}
                 </h3>
                 <div>
