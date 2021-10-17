@@ -9,6 +9,7 @@ export function attachDiff(element, hole, exp, out, argv) {
         outLines.push("[Truncated for performance]");
         out = outLines.join("\n")
     }
+    element.classList.toggle("diff-arg-type", getDiffType(hole) === "arg");
     const rows = diffHTMLRows(hole, exp, out, argv);
     updateDiff(element, rows, header);
     element.onscroll = () => {
@@ -17,14 +18,18 @@ export function attachDiff(element, hole, exp, out, argv) {
 }
 
 function getHeader(hole) {
+  const isArgDiff = getDiffType(hole) === "arg"
+  const numHeader = isArgDiff ? '' : `<div class='diff-title-bg'></div>`
   return (
-    (getDiffType(hole) === "arg"
-      ? `<h3 id='diff-arguments'>Args</h3>`
-      : `<div class='diff-title-bg'></div>`) +
-    `<div class='diff-title-bg'></div>
-     <h3 id='diff-output'>Output</h3>
-     <div class='diff-title-bg'></div>
-     <h3 id='diff-expected'>Expected</h3>`
+    (
+      isArgDiff
+        ? `<h3 id='diff-arguments'>Args</h3>`
+        : `<div class='diff-title-bg'></div>`
+    ) +
+    numHeader +
+    `<h3 id='diff-output'>Output</h3>` +
+    numHeader +
+    `<h3 id='diff-expected'>Expected</h3>`
   );
 }
 
@@ -159,12 +164,12 @@ function getDiffLines(hole, left, right, pos, argv) {
             s += `<div class='diff-arg'>${arg}</div>`
         }
         if (leftLine !== undefined) {
-            s += `<div class='diff-left-num'>${i + pos.left}</div>
-                <div class='diff-left${left.removed?' diff-removal':''}'>${renderCharDiff(charDiff, false)}</div>`
+            s += isArgDiff ? '' : `<div class='diff-left-num'>${i + pos.left}</div>`
+            s += `<div class='diff-left${left.removed?' diff-removal':''}'>${renderCharDiff(charDiff, false)}</div>`
         }
         if (rightLine !== undefined) {
-            s += `<div class='diff-right-num'>${i + pos.right}</div>
-                <div class='diff-right${right.added?' diff-addition':''}'>${renderCharDiff(charDiff, true)}</div>`
+            s += isArgDiff ? '' : `<div class='diff-right-num'>${i + pos.right}</div>`
+            s += `<div class='diff-right${right.added?' diff-addition':''}'>${renderCharDiff(charDiff, true)}</div>`
         }
         rows.push(s)
     }
