@@ -1,7 +1,8 @@
 import * as Diff from 'diff';
 
 export function attachDiff(element, hole, exp, out, argv) {
-    const header = getHeader(hole);
+    const isArgDiff = getDiffType(hole, exp, argv);
+    const header = getHeader(isArgDiff);
     // Limit `out` to 999 lines to avoid slow computation of the line diff
     let outLines = lines(out)
     if (outLines.length > 998) {
@@ -9,22 +10,26 @@ export function attachDiff(element, hole, exp, out, argv) {
         outLines.push("[Truncated for performance]");
         out = outLines.join("\n")
     }
-    const rows = diffHTMLRows(hole, exp, out, argv);
+    element.classList.toggle("diff-arg-type", isArgDiff);
+    const rows = diffHTMLRows(hole, exp, out, argv, isArgDiff);
     updateDiff(element, rows, header);
     element.onscroll = () => {
         updateDiff(element, rows, header);
     };
 }
 
-function getHeader(hole) {
+function getHeader(isArgDiff) {
+  const numHeader = isArgDiff ? '' : `<div class='diff-title-bg'></div>`
   return (
-    (getDiffType(hole) === "arg"
-      ? `<h3 id='diff-arguments'>Args</h3>`
-      : `<div class='diff-title-bg'></div>`) +
-    `<div class='diff-title-bg'></div>
-     <h3 id='diff-output'>Output</h3>
-     <div class='diff-title-bg'></div>
-     <h3 id='diff-expected'>Expected</h3>`
+    (
+      isArgDiff
+        ? `<h3 id='diff-arguments'>Args</h3>`
+        : `<div class='diff-title-bg'></div>`
+    ) +
+    numHeader +
+    `<h3 id='diff-output'>Output</h3>` +
+    numHeader +
+    `<h3 id='diff-expected'>Expected</h3>`
   );
 }
 
@@ -48,14 +53,14 @@ function updateDiff(element, rows, header) {
         <div class="diff-gap" style="height:${padEnd}px"></div>`
 }
 
-function diffHTMLRows(hole, exp, out, argv) {
+function diffHTMLRows(hole, exp, out, argv, isArgDiff) {
     let rows = []
     let pos = {
         left: 1,
         right: 1,
         isLastDiff: false
     };
-    const changes = getLineChanges(hole, out, exp);
+    const changes = getLineChanges(hole, out, exp, isArgDiff);
     let pendingChange = null;
     for (let i = 0; i < changes.length; i++) {
         const change = changes[i]
@@ -64,26 +69,25 @@ function diffHTMLRows(hole, exp, out, argv) {
             if (pendingChange === null) {
                 pendingChange = change;
             } else {
-                rows.push(...getDiffRow(hole, pendingChange, change, pos, argv));
+                rows.push(...getDiffRow(hole, pendingChange, change, pos, argv, isArgDiff));
                 pendingChange = null;
             }
         } else {
             if (pendingChange) {
-                rows.push(...getDiffRow(hole, pendingChange, {}, pos, argv));
+                rows.push(...getDiffRow(hole, pendingChange, {}, pos, argv, isArgDiff));
                 pendingChange = null;
             }
-            rows.push(...getDiffLines(hole, change, change, pos, argv));
+            rows.push(...getDiffLines(hole, change, change, pos, argv, isArgDiff));
         }
     }
     if (pendingChange) {
-        rows.push(...getDiffRow(hole, pendingChange, {}, pos, argv));
+        rows.push(...getDiffRow(hole, pendingChange, {}, pos, argv, isArgDiff));
     }
     return rows
 }
 
-function getLineChanges(hole, before, after) {
-    const includeArgs = getDiffType(hole) == 'arg'
-    if (includeArgs) {
+function getLineChanges(hole, before, after, isArgDiff) {
+    if (isArgDiff) {
         const out = []
         const splitBefore = lines(before)
         const splitAfter = lines(after)
@@ -126,15 +130,15 @@ function getLineChanges(hole, before, after) {
     }
 }
 
-function getDiffRow(hole, change1, change2, pos, argv) {
+function getDiffRow(hole, change1, change2, pos, argv, isArgDiff) {
     change2.value ??= ''
     change2.count ??= 0
     const left = change1.removed ? change1 : change2
     const right = change1.added ? change1 : change2
-    return getDiffLines(hole, left, right, pos, argv)
+    return getDiffLines(hole, left, right, pos, argv, isArgDiff)
 }
 
-function getDiffLines(hole, left, right, pos, argv) {
+function getDiffLines(hole, left, right, pos, argv, isArgDiff) {
     const leftSplit = lines(left.value);
     const rightSplit = lines(right.value);
     if (!(pos.isLastDiff && hole === "quine")) {
@@ -145,7 +149,6 @@ function getDiffLines(hole, left, right, pos, argv) {
     const diffOpts = {
         ignoreCase: shouldIgnoreCase(hole)
     }
-    const isArgDiff = getDiffType(hole) === 'arg';
     let rows = []
     const numLines = Math.max(leftSplit.length, rightSplit.length)
     for (let i=0; i<numLines; i++) {
@@ -159,12 +162,12 @@ function getDiffLines(hole, left, right, pos, argv) {
             s += `<div class='diff-arg'>${arg}</div>`
         }
         if (leftLine !== undefined) {
-            s += `<div class='diff-left-num'>${i + pos.left}</div>
-                <div class='diff-left${left.removed?' diff-removal':''}'>${renderCharDiff(charDiff, false)}</div>`
+            s += isArgDiff ? '' : `<div class='diff-left-num'>${i + pos.left}</div>`
+            s += `<div class='diff-left${left.removed?' diff-removal':''}'>${renderCharDiff(charDiff, false)}</div>`
         }
         if (rightLine !== undefined) {
-            s += `<div class='diff-right-num'>${i + pos.right}</div>
-                <div class='diff-right${right.added?' diff-addition':''}'>${renderCharDiff(charDiff, true)}</div>`
+            s += isArgDiff ? '' : `<div class='diff-right-num'>${i + pos.right}</div>`
+            s += `<div class='diff-right${right.added?' diff-addition':''}'>${renderCharDiff(charDiff, true)}</div>`
         }
         rows.push(s)
     }
@@ -187,27 +190,13 @@ function renderCharDiff(charDiff, isRight) {
     return html
 }
 
-function getDiffType(hole) {
-    switch (hole) {
-        case 'arabic-to-roman':
-        case 'arrows':
-        case 'css-colors':
-        case 'emojify':
-        case 'fractions':
-        case 'intersection':
-        case 'levenshtein-distance':
-        case 'musical-chords':
-        case 'ordinal-numbers':
-        case 'roman-to-arabic':
-        case 'spelling-numbers':
-        case 'united-states':
-            // { | category = Transform }
-            // - {Pangram Grep, QR Decoder, Seven Segment, Morse Decoder, Morse Encoder}
-            // + {Fractions, Intersection}
-            return 'arg'
-        default:
-            return 'line'
-    }
+const argBlocklist = ['qr-decoder']
+
+function getDiffType(hole, exp, argv) {
+    const expectedLines = lines(exp)
+    // The subtracted part removes 1 line in the case of a trailing newline
+    const numExpectedLines = expectedLines.length - (lines[lines.length - 1] === '' ? 1 : 0)
+    return numExpectedLines === argv.length && !argBlocklist.includes(hole)
 }
 
 function shouldIgnoreCase(hole) {
