@@ -65,7 +65,7 @@ $ make e2e
 
 ## Style
 
-URL slugs are consistently abbreviated (e.g. cheeovs, langs, stats) but page
+URL slugs are consistently abbreviated (e.g. cheevos, langs, stats) but page
 titles aren't (e.g. Achievements, Languages, Statistics).
 
 Paginated URLs use a trailing number but only on pages after the first (e.g.
