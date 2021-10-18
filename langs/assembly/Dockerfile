@@ -1,22 +1,22 @@
-FROM node:16.9.0-alpine3.14 as builder
+FROM node:16.11.0-alpine3.14 as builder
 
-ENV VERSION=2.1.5
+ENV VERSION=2.1.6
 
 RUN mkdir /empty
 
 RUN apk add --no-cache binutils
 
-RUN npm install -g @defasm/cli@1.1.3 @defasm/core@$VERSION
+RUN npm install -g @defasm/cli@1.2.2 @defasm/core@$VERSION
 
 # Strip node.
 RUN strip /usr/local/bin/node
 
 # Rewrite shebang to bypass /usr/bin/env and go directly to /usr/bin/node.
-RUN sed -i '1c#!/usr/bin/node' /usr/local/lib/node_modules/@defasm/cli/main.js
+RUN sed -i '1c#!/usr/bin/node' /usr/local/lib/node_modules/@defasm/cli/cli.js
 
 # Put the symlink in a folder to avoid docker COPY resolving it.
 RUN mkdir /symlink \
- && ln -s /usr/lib/node_modules/@defasm/cli/main.js /symlink/defasm
+ && ln -s /usr/lib/node_modules/@defasm/cli/cli.js /symlink/defasm
 
 FROM scratch
 

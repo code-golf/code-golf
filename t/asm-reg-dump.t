@@ -15,7 +15,6 @@ like post-solution(:code<nop> :lang<assembly>)<Err>, rx[^
  \n '    Carry     = 0 (no carry)       Zero   = 0 (isn&#39;t zero)'
  \n '    Overflow  = 0 (no overflow)    Sign   = 0 (positive)'
  \n '    Direction = 0 (up)             Parity = 0 (odd)'
- \n '    Adjust    = 0 (no aux carry)'
 $];
 
 done-testing;
