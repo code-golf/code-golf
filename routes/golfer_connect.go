@@ -28,7 +28,8 @@ func GolferConnect(w http.ResponseWriter, r *http.Request) {
 	conn := param(r, "connection")
 	config := oauth.Connections[conn]
 
-	if code == "" || config == nil || config.Name == "GitHub" {
+	if code == "" || config == nil || config.Name == "GitHub" ||
+		cookie(r, "__Host-oauth-state") != r.FormValue("state") {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}

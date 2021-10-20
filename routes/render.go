@@ -1,8 +1,6 @@
 package routes
 
 import (
-	"crypto/rand"
-	"encoding/base64"
 	"encoding/json"
 	"html/template"
 	"net/http"
@@ -181,14 +179,6 @@ func init() {
 }
 
 func render(w http.ResponseWriter, r *http.Request, name string, data ...interface{}) {
-	// The generated value SHOULD be at least 128 bits long (before encoding),
-	// and SHOULD be generated via a cryptographically secure random number
-	// generator - https://w3c.github.io/webappsec-csp/#security-nonces
-	nonce := make([]byte, 16)
-	if _, err := rand.Read(nonce); err != nil {
-		panic(err)
-	}
-
 	type CheevoBanner struct {
 		Cheevo     *config.Cheevo
 		During     bool
@@ -225,7 +215,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...interfa
 		Holes:              config.HoleByID,
 		JS:                 []string{assets["js/base.js"]},
 		Langs:              config.LangByID,
-		Nonce:              base64.StdEncoding.EncodeToString(nonce),
+		Nonce:              nonce(),
 		Path:               r.URL.Path,
 		Request:            r,
 		Title:              "Code Golf",

@@ -1,6 +1,8 @@
 package routes
 
 import (
+	"crypto/rand"
+	"encoding/base64"
 	"net/http"
 	"net/url"
 
@@ -12,6 +14,20 @@ func cookie(r *http.Request, name string) (value string) {
 		value = c.Value
 	}
 	return
+}
+
+// Generate a random string for CSP & OAuth state.
+//
+// The generated value SHOULD be at least 128 bits long (before encoding), and
+// SHOULD be generated via a cryptographically secure random number generator.
+// https://w3c.github.io/webappsec-csp/#security-nonces
+func nonce() string {
+	nonce := make([]byte, 16)
+	if _, err := rand.Read(nonce); err != nil {
+		panic(err)
+	}
+
+	return base64.StdEncoding.EncodeToString(nonce)
 }
 
 func param(r *http.Request, key string) string {

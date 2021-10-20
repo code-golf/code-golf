@@ -45,7 +45,7 @@
     {{ if .GolferInfo.MissingConnections }}
         <div id=missingConnections>
         {{ range $id, $conn := .GolferInfo.MissingConnections }}
-            <a class="btn blue" href="{{ $conn.AuthCodeURL "" }}">
+            <a class="btn blue" href="{{ $conn.AuthCodeURL $.Data.OauthState }}">
                 {{ svg $id }} Add {{ $conn.Name }}
             </a>
         {{ end }}

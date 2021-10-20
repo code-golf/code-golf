@@ -39,15 +39,26 @@ func GolferSettings(w http.ResponseWriter, r *http.Request) {
 		Connections map[string]*oauth.Config
 		Countries   map[string][]*config.Country
 		Keymaps     []string
+		OauthState  string
 		Themes      []string
 		TimeZones   []zone.Zone
 	}{
 		oauth.Connections,
 		config.CountryTree,
 		[]string{"default", "vim"},
+		nonce(),
 		[]string{"auto", "dark", "light"},
 		zone.List(),
 	}
+
+	http.SetCookie(w, &http.Cookie{
+		HttpOnly: true,
+		Name:     "__Host-oauth-state",
+		Path:     "/",
+		SameSite: http.SameSiteLaxMode,
+		Secure:   true,
+		Value:    data.OauthState,
+	})
 
 	render(w, r, "golfer/settings", data, "Settings")
 }
