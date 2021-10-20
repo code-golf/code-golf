@@ -451,8 +451,8 @@ end
 '''
 
 [Nim]
-size    = '12.1 MiB'
-version = '1.4.8'
+size    = '13.2 MiB'
+version = '1.6.0'
 website = 'https://nim-lang.org'
 example = '''
 import os
