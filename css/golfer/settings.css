@@ -48,7 +48,7 @@ label {
 #connections li > svg {
     background: var(--color);
     border-radius: .75rem;
-    fill: var(--background);
+    color: var(--background);
     grid-row: span 2;
     height: 3rem;
     width: 3rem;

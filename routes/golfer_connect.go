@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/code-golf/code-golf/oauth"
 	"github.com/code-golf/code-golf/session"
@@ -43,7 +44,14 @@ func GolferConnect(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	req.Header.Add("Authorization", "Bearer "+token.AccessToken)
+	// Stack Overflow expects the access token in the query string instead.
+	if conn == "stack-overflow" {
+		q := req.URL.Query()
+		q.Add("access_token", token.AccessToken)
+		req.URL.RawQuery = q.Encode()
+	} else {
+		req.Header.Add("Authorization", "Bearer "+token.AccessToken)
+	}
 
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
@@ -67,6 +75,20 @@ func GolferConnect(w http.ResponseWriter, r *http.Request) {
 
 		user.ID = info.Sub
 		user.Username = info.Nickname
+	case "stack-overflow":
+		var info struct {
+			Items []struct {
+				Display_Name string
+				User_ID      int
+			}
+		}
+
+		if err := json.NewDecoder(res.Body).Decode(&info); err != nil {
+			panic(err)
+		}
+
+		user.ID = strconv.Itoa(info.Items[0].User_ID)
+		user.Username = info.Items[0].Display_Name
 	}
 
 	if _, err := session.Database(r).Exec(

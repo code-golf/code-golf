@@ -1,6 +1,7 @@
 package oauth
 
 import (
+	"net/url"
 	"os"
 	"strings"
 
@@ -8,6 +9,7 @@ import (
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/github"
 	"golang.org/x/oauth2/gitlab"
+	"golang.org/x/oauth2/stackoverflow"
 )
 
 type Config struct {
@@ -45,6 +47,13 @@ var Connections = map[string]*Config{
 			Scopes:   []string{"openid"},
 		},
 	},
+
+	// https://stackapps.com/apps/oauth
+	"stack-overflow": {
+		Name:         "Stack Overflow",
+		Config:       oauth2.Config{Endpoint: stackoverflow.Endpoint},
+		UserEndpoint: "https://api.stackexchange.com/me?site=stackoverflow",
+	},
 }
 
 func init() {
@@ -54,8 +63,23 @@ func init() {
 	}
 
 	for id, config := range Connections {
-		config.ClientID = os.Getenv(strings.ToUpper(id) + "_CLIENT_ID")
-		config.ClientSecret = os.Getenv(strings.ToUpper(id) + "_CLIENT_SECRET")
+		prefix := strings.ReplaceAll(strings.ToUpper(id), "-", "_")
+
+		config.ClientID = os.Getenv(prefix + "_CLIENT_ID")
+		config.ClientSecret = os.Getenv(prefix + "_CLIENT_SECRET")
 		config.RedirectURL = "https://" + host + "/golfer/connect/" + id
+
+		// Add a key to UserEndpoint if we have one.
+		if key := os.Getenv(prefix + "_KEY"); key != "" {
+			u, err := url.Parse(config.UserEndpoint)
+			if err != nil {
+				panic(err)
+			}
+
+			q := u.Query()
+			q.Set("key", key)
+			u.RawQuery = q.Encode()
+			config.UserEndpoint = u.String()
+		}
 	}
 }

@@ -12,7 +12,9 @@ CREATE TYPE cheevo AS ENUM (
     'twelvetide', 'twenty-kiloleagues', 'up-to-eleven', 'vampire-byte'
 );
 
-CREATE TYPE connection AS ENUM ('discord', 'github', 'gitlab');
+CREATE TYPE connection AS ENUM (
+    'discord', 'github', 'gitlab', 'stack-overflow'
+);
 
 CREATE TYPE hole AS ENUM (
     '12-days-of-christmas', '99-bottles-of-beer', 'abundant-numbers',

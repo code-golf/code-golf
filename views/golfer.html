@@ -48,6 +48,9 @@
             {{ if or (eq .Connection "github") (eq .Connection "gitlab") }}
                 <a href="//{{ .Connection }}.com/{{ .Username }}">
                     {{ .Username }}</a>
+            {{ else if eq .Connection "stack-overflow" }}
+                <a href="//stackoverflow.com/users/{{ .ID }}">
+                    {{ .Username }}</a>
             {{ else }}
                 {{ .Username }}
                 {{- if .Discriminator.Valid -}}
