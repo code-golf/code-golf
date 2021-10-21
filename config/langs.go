@@ -24,7 +24,7 @@ func init() {
 	unmarshal("langs.toml", &langs)
 
 	for name, lang := range langs {
-		lang.Example = strings.TrimSpace(lang.Example)
+		lang.Example = strings.TrimSuffix(lang.Example, "\n")
 		lang.ID = id(name)
 		lang.Name = name
 
