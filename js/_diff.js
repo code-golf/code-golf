@@ -1,7 +1,7 @@
 import * as Diff from 'diff';
 
 export function attachDiff(element, hole, exp, out, argv) {
-    const isArgDiff = getDiffType(hole, exp, argv);
+    const isArgDiff = shouldArgDiff(hole, exp, argv);
     const header = getHeader(isArgDiff);
     // Limit `out` to 999 lines to avoid slow computation of the line diff
     let outLines = lines(out)
@@ -190,13 +190,12 @@ function renderCharDiff(charDiff, isRight) {
     return html
 }
 
-const argBlocklist = ['qr-decoder']
-
-function getDiffType(hole, exp, argv) {
+function shouldArgDiff(hole, exp, argv) {
     const expectedLines = lines(exp)
     // The subtracted part removes 1 line in the case of a trailing newline
     const numExpectedLines = expectedLines.length - (lines[lines.length - 1] === '' ? 1 : 0)
-    return numExpectedLines === argv.length && !argBlocklist.includes(hole)
+    // Exclude holes such as qr-decoder, morse-decoder, and morse-encoder, which have only one (big) arg
+    return numExpectedLines === argv.length && argv.length > 1
 }
 
 function shouldIgnoreCase(hole) {
