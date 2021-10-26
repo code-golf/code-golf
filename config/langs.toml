@@ -561,8 +561,8 @@ for arg in sys.argv[1:]:
 '''
 
 [Raku]
-size    = '54.5 MiB'
-version = 'Raku 6.d on Rakudo 2021.09'
+size    = '46.6 MiB'
+version = 'Raku 6.d on Rakudo 2021.10'
 website = 'https://raku.org'
 example = '''
 # Printing
@@ -595,8 +595,8 @@ end
 '''
 
 [Rust]
-size    = '720 MiB'
-version = '1.55.0'
+size    = '648 MiB'
+version = '1.56.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {

@@ -1,10 +1,10 @@
-FROM rust:1.55-alpine3.13 as builder
+FROM rust:1.56-alpine3.13 as builder
 
 RUN mkdir /empty
 
 # Delete the non rustc binaries.
 RUN find /usr/local/cargo/bin \
-    /usr/local/rustup/toolchains/1.55.0-x86_64-unknown-linux-musl/bin \
+    /usr/local/rustup/toolchains/1.56.0-x86_64-unknown-linux-musl/bin \
     -not -name rustc -delete
 
 # Delete some large unneeded libs.
@@ -19,7 +19,7 @@ RUN rm                             \
     /usr/lib/libstdc++.so.6.0.28
 
 # Strip the giant rust libs.
-RUN strip /usr/local/rustup/toolchains/1.55.0-x86_64-unknown-linux-musl/lib/*.so
+RUN strip /usr/local/rustup/toolchains/1.56.0-x86_64-unknown-linux-musl/lib/*.so
 
 FROM scratch
 

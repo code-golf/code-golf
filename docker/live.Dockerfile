@@ -19,7 +19,7 @@ RUN ./esbuild \
 
 FROM scratch
 
-COPY --from=codegolf/lang-rust       ["/", "/langs/rust/rootfs/"      ] #  720 MiB
+COPY --from=codegolf/lang-rust       ["/", "/langs/rust/rootfs/"      ] #  648 MiB
 COPY --from=codegolf/lang-swift      ["/", "/langs/swift/rootfs/"     ] #  613 MiB
 COPY --from=codegolf/lang-haskell    ["/", "/langs/haskell/rootfs/"   ] #  332 MiB
 COPY --from=codegolf/lang-julia      ["/", "/langs/julia/rootfs/"     ] #  259 MiB
@@ -34,7 +34,7 @@ COPY --from=codegolf/lang-assembly   ["/", "/langs/assembly/rootfs/"  ] # 73.1 M
 COPY --from=codegolf/lang-java       ["/", "/langs/java/rootfs/"      ] # 69.2 MiB
 COPY --from=codegolf/lang-hexagony   ["/", "/langs/hexagony/rootfs/"  ] # 62.6 MiB
 COPY --from=codegolf/lang-python     ["/", "/langs/python/rootfs/"    ] # 58.4 MiB
-COPY --from=codegolf/lang-raku       ["/", "/langs/raku/rootfs/"      ] # 54.5 MiB
+COPY --from=codegolf/lang-raku       ["/", "/langs/raku/rootfs/"      ] # 46.6 MiB
 COPY --from=codegolf/lang-v          ["/", "/langs/v/rootfs/"         ] # 35.4 MiB
 COPY --from=codegolf/lang-lisp       ["/", "/langs/lisp/rootfs/"      ] # 33.6 MiB
 COPY --from=codegolf/lang-pascal     ["/", "/langs/pascal/rootfs/"    ] # 31.3 MiB
