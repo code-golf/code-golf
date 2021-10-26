@@ -873,7 +873,8 @@ preamble = '''
 ['Kolakoski Constant']
 category = 'Mathematics'
 links = [
-   { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Kolakoski_sequence#Kolakoski_Constant' },
+   { name = 'OEIS A118270', url = '//oeis.org/A118270' },
+   { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Kolakoski_sequence#Kolakoski_Constant' },
 ]
 preamble = '''
 <p>
