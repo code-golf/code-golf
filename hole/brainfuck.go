@@ -33,7 +33,7 @@ func brainfuck() ([]string, string) {
 		"Code Golf",
 		"abcdefghijklmnopqrstuvwxyz",
 		"eL34NfeOL454KdeJ44JOdefePK55gQ67ShfTL787KegJ77JTeghfUK88iV9:XjgYL:;:KfiJ::JYfijgZK;;k[<=]lh^L=>=KgkJ==J^gklh_K>>m`?@bnicL@A@KhmJ@@JchmnidKAA",
-		"zaybxcwdveuftgshriqjpkolnm",
+		"zaybxcwdveuftgshriqjpkolnmU<#",
 	}
 
 	rand.Shuffle(len(args), func(i, j int) {
