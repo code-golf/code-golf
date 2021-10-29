@@ -235,18 +235,18 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...interfa
 		args.Location = time.UTC
 	}
 
-	// Independence Day cheevo banner. TODO Generalise.
-	if args.Golfer != nil && !args.Golfer.Earnt("independence-day") {
+	// Vampire Byte cheevo banner. TODO Generalise.
+	if args.Golfer != nil && !args.Golfer.Earnt("vampire-byte") {
 		var (
 			now   = time.Now().UTC()
 			year  = now.Year()
-			start = time.Date(year, time.July, 4, 0, 0, 0, 0, time.UTC)
-			end   = time.Date(year, time.July, 5, 0, 0, 0, 0, time.UTC)
+			start = time.Date(year, time.October, 31, 0, 0, 0, 0, time.UTC)
+			end   = time.Date(year, time.November, 1, 0, 0, 0, 0, time.UTC)
 		)
 
 		if now.Before(end) {
 			args.CheevoBanner = &CheevoBanner{
-				config.CheevoByID["independence-day"],
+				config.CheevoByID["vampire-byte"],
 				start.Before(now), start, end,
 			}
 		}
