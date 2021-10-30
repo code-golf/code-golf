@@ -776,23 +776,33 @@ preamble = '''
 
 ['Fizz Buzz']
 category = 'Sequence'
+variants = ['Fizz Buzz', 'Foo Fizz Buzz Bar']
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/FizzBuzz' },
     { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Fizz_buzz' },
 ]
 preamble = '''
 <p>
-    Print the numbers from <b>1</b> to <b>100</b> inclusive, each on their own
-    line.
+    Print the numbers from <b>1</b> to
+    <b>1{{ if eq . "Fizz Buzz" }}00{{ else }},000{{ end }}</b>
+    inclusive, each on their own line.
 
 <p>
+{{ if eq . "Fizz Buzz" }}
     If, however, the number is a multiple of <b>three</b> then print
     <b>Fizz</b> instead, and if the number is a multiple of <b>five</b> then
     print <b>Buzz</b>.
+{{ else }}
+    If, however, the number is a multiple of <b>two</b> then print <b>Foo</b>
+    instead, if the number is a multiple of <b>three</b> then print
+    <b>Fizz</b>, if the number is a multiple of <b>five</b> then print
+    <b>Buzz</b>, and if the number is a multiple of <b>seven</b> then print
+    </b>Bar</b>.
+{{ end }}
 
 <p>
-    For numbers which are multiples of <b>both three and five</b> then print
-    <b>FizzBuzz</b>.
+    If multiple conditions hold true then all replacements should be printed,
+    for example <b>15</b> should print <b>FizzBuzz</b>.
 '''
 
 [Fractions]
@@ -803,7 +813,7 @@ preamble = '''
 
 ['Happy Numbers']
 category = 'Sequence'
-variants = ['', 'Long']
+variants = ['Happy Numbers', 'Happy Numbers (Long)']
 links = [
     { name = 'OEIS A007770', url = '//oeis.org/A007770' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Happy_numbers' },
@@ -1047,7 +1057,7 @@ preamble = '''
 
 [Morse]
 category = 'Transform'
-variants = ['Decoder', 'Encoder']
+variants = ['Morse Decoder', 'Morse Encoder']
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Morse_code' },
     { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Morse_code' },
@@ -1055,7 +1065,7 @@ links = [
 preamble = '''
 <p>
     Using ▄ (U+2584 Lower Half Block) to represent a dot,
-{{ if eq . "Decoder" }}
+{{ if eq . "Morse Decoder" }}
     decode the argument from International Morse Code to alphanumeric.
 {{ else }}
     encode the argument from alphanumeric into International Morse Code.

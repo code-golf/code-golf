@@ -60,12 +60,7 @@ func init() {
 			}
 			hole.Preamble = template.HTML(b.String())
 
-			name := name
-			if variant != "" {
-				name += " (" + variant + ")"
-			}
-
-			holes[name] = &hole
+			holes[variant] = &hole
 			variants = append(variants, &hole.Hole)
 		}
 
@@ -78,6 +73,10 @@ func init() {
 	for name, hole := range holes {
 		hole.ID = id(name)
 		hole.Name = name
+
+		if hole.ID == "foo-fizz-buzz-bar" {
+			hole.Experiment = 525
+		}
 
 		// Minify preamble.
 		if html, err := minify.HTML(string(hole.Preamble)); err != nil {
