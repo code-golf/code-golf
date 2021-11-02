@@ -24,8 +24,10 @@ is $dbh.execute('SELECT ARRAY(SELECT trophy FROM trophies)').row, '{rtfm}',
 for $dbh.execute('SELECT unnest(enum_range(null::hole))').allrows.flat {
     my $cheevos = %cheevos{ my $i = ++$ } // '{}';
 
-    $cheevos.=subst: '}', 'interview-ready}' if $_ eq 'fizz-buzz';
-    $cheevos.=subst: '}', 'solve-quine}'     if $_ eq 'quine';
+    # Add hole-specific cheevos on the end.
+    $cheevos.=subst: '}', ',interview-ready}' if $_ eq 'fizz-buzz';
+    $cheevos.=subst: '}', ',solve-quine}'     if $_ eq 'quine';
+    $cheevos.=subst: '{,', '{';
 
     is $dbh.execute(
         "SELECT earned FROM save_solution(2, 2, 'ab', ?, 'c', 1)", $_,

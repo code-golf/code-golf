@@ -1149,7 +1149,6 @@ preamble = '''
 
 ['Musical Chords']
 category = 'Transform'
-experiment = -1
 links = [
     { name = 'Wikipedia', url = 'https://en.wikipedia.org/wiki/Triad_(music)' },
 ]
