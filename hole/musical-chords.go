@@ -69,6 +69,10 @@ func genNotes(rootIdx int, rootNote string, steps [2]int) []string {
 func musicalChords() (args []string, out string) {
 	var outs []string
 
+	// Skip a random combination for anti-cheese
+	skipNum := rand.Intn(61)
+	combNum := 0
+
 	for rootIdx, rootNames := range notes {
 
 		// Loop once for each unique name the note has
@@ -82,13 +86,15 @@ func musicalChords() (args []string, out string) {
 				steps := triadSteps[triadIdx]
 				chordNotes := genNotes(rootIdx, rootNote, steps)
 				if len(chordNotes) > 0 {
-					chord := rootNote + triad
-					for _, ordering := range orderings {
-						rearrangedNotes := []string{chordNotes[ordering[0]], chordNotes[ordering[1]], chordNotes[ordering[2]]}
-						args = append(args, strings.Join(rearrangedNotes, " "))
-						outs = append(outs, chord)
+					if skipNum != combNum {
+						chord := rootNote + triad
+						for _, ordering := range orderings {
+							rearrangedNotes := []string{chordNotes[ordering[0]], chordNotes[ordering[1]], chordNotes[ordering[2]]}
+							args = append(args, strings.Join(rearrangedNotes, " "))
+							outs = append(outs, chord)
+						}
 					}
-
+					combNum++
 				}
 
 			}
@@ -99,6 +105,11 @@ func musicalChords() (args []string, out string) {
 		args[i], args[j] = args[j], args[i]
 		outs[i], outs[j] = outs[j], outs[i]
 	})
+
+	// Cut 3 args
+	args = args[3:]
+	outs = outs[3:]
+
 	out = strings.Join(outs, "\n")
 	return
 }
