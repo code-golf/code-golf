@@ -94,7 +94,7 @@ func musicalChords() (args []string, out string) {
 							outs = append(outs, chord)
 						}
 					}
-					combNum = combNum + 1
+					combNum++
 				}
 
 			}
