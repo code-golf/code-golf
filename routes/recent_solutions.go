@@ -24,16 +24,18 @@ func RecentSolutions(w http.ResponseWriter, r *http.Request) {
 		HoleID, LangID, Scoring string
 		Holes                   []*config.Hole
 		Langs                   []*config.Lang
+		LangsShown              map[string]bool
 		Pager                   *pager.Pager
 		Rows                    []row
 	}{
-		HoleID:  param(r, "hole"),
-		Holes:   config.HoleList,
-		LangID:  param(r, "lang"),
-		Langs:   config.LangList,
-		Pager:   pager.New(r),
-		Rows:    make([]row, 0, pager.PerPage),
-		Scoring: param(r, "scoring"),
+		HoleID:     param(r, "hole"),
+		Holes:      config.HoleList,
+		LangID:     param(r, "lang"),
+		Langs:      config.LangList,
+		LangsShown: map[string]bool{},
+		Pager:      pager.New(r),
+		Rows:       make([]row, 0, pager.PerPage),
+		Scoring:    param(r, "scoring"),
 	}
 
 	if data.HoleID != "all" && config.HoleByID[data.HoleID] == nil ||
@@ -81,6 +83,7 @@ func RecentSolutions(w http.ResponseWriter, r *http.Request) {
 		r.Hole = config.HoleByID[holeID]
 		r.Lang = config.LangByID[langID]
 
+		data.LangsShown[langID] = true
 		data.Rows = append(data.Rows, r)
 	}
 

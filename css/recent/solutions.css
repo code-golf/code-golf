@@ -1,11 +1,15 @@
-td:nth-child(4) {
+td:nth-child(3) {
+    align-items: center;
     display: flex;
     gap: .5rem;
 }
 
-td:nth-child(4) div {
+td:nth-child(3) div {
     flex: 1;
     text-align: right;
 }
 
-td:nth-child(4) span { visibility: hidden }
+td svg {
+    height: 1rem;
+    width: 1rem;
+}

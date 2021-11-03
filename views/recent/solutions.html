@@ -1,6 +1,12 @@
 {{ template "header" . }}
 {{ template "recent" . }}
 
+<svg>
+{{ range $lang, $true := .Data.LangsShown }}
+    {{ symbol $lang }}
+{{ end }}
+</svg>
+
 <main>
     <form id=form-nav>
         <input name=base type=hidden value=/recent/solutions>
@@ -79,7 +85,6 @@
             <tr>
                 <th>Hole
                 <th>Golfer
-                <th class=wide>Lang
                 <th class="right wide">{{ title .Data.Scoring }}
                 <th class=right>Submitted
         <tbody>
@@ -97,15 +102,14 @@
                         <img loading=lazy src="//avatars.githubusercontent.com/{{ .Login }}?s=24">
                         <span>{{ .Login }}</span>
                     </a>
-                <td class=wide>{{ .Lang.Name }}
-                <td class=wide title="{{ if eq .TieCount 1 }}Uncontested{{ else }}Joint{{ end }} {{ .Rank }}{{ ord .Rank }}">
-                    <div>{{ comma .Strokes }}</div>
+                <td class=wide title="{{ if eq .TieCount 1 }}Uncontested{{ else }}Joint{{ end }} {{ .Rank }}{{ ord .Rank }} with {{ comma .Strokes }} {{ $.Data.Scoring }} in {{ .Lang.Name }}">
                     {{ if and (eq .Rank 1) (eq .TieCount 1) }}💎
                     {{ else if eq .Rank 1                   }}🥇
                     {{ else if eq .Rank 2                   }}🥈
                     {{ else if eq .Rank 3                   }}🥉
-                    {{ else }}<span>💎</span>
                     {{ end }}
+                    <div>{{ comma .Strokes }}</div>
+                    <svg><use href="#{{ .Lang.ID }}"/></svg>
                 <td class=right>{{ time .Submitted }}
         {{ end }}
     </table>
