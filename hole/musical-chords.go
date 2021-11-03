@@ -72,7 +72,7 @@ func musicalChords() (args []string, out string) {
 	// Skip a random combination for anti-cheese
 	skipNum := rand.Intn(61)
 	combNum := 0
-	
+
 	for rootIdx, rootNames := range notes {
 
 		// Loop once for each unique name the note has
@@ -105,11 +105,11 @@ func musicalChords() (args []string, out string) {
 		args[i], args[j] = args[j], args[i]
 		outs[i], outs[j] = outs[j], outs[i]
 	})
-	
+
 	// Cut 3 args
 	args = args[3:]
 	outs = outs[3:]
-	
+
 	out = strings.Join(outs, "\n")
 	return
 }
