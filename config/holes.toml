@@ -839,7 +839,7 @@ preamble = '''
 
 <p>
     Print all the happy numbers from <b>1</b> to
-    <b>{{ if . }}1,000{{ else }}200{{ end }}</b>
+    <b>{{ if eq . "Happy Numbers" }}200{{ else }}1,000{{ end }}</b>
     inclusive, each on their own line.
 '''
 
