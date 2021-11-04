@@ -1,6 +1,6 @@
 ['><>']
-size    = '4.99 MiB'
-version = 'b71dce3'
+size    = '4.98 MiB'
+version = '4808a6c'
 website = 'https://github.com/primo-ppcg/fish-jit'
 example = '''
 \ printing
