@@ -81,7 +81,7 @@ font:
 
 lint:
 	@docker run --rm -v $(CURDIR):/app -w /app \
-	    golangci/golangci-lint:v1.42.1 golangci-lint run
+	    golangci/golangci-lint:v1.43.0 golangci-lint run
 
 live:
 	@npm install

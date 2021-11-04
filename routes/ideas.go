@@ -37,5 +37,9 @@ func Ideas(w http.ResponseWriter, r *http.Request) {
 		data.Ideas = append(data.Ideas, i)
 	}
 
+	if err := rows.Err(); err != nil {
+		panic(err)
+	}
+
 	render(w, r, "ideas", data, "Ideas")
 }
