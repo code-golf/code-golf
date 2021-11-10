@@ -1680,7 +1680,7 @@ preamble = '''
     Print the first <b>100</b> rows in the Rule 110 cellular automaton
     starting from an initial single living cell.
 <p>
-    Each new row in the life of the automaton should be a new line, and the rules for whether a cell is alive or dead depends on whether is was alive on the previous iteration, as well as the state of the two neighbouring cells.
+    Each new row in the life of the automaton should be a new line, and the rules for whether a cell is alive or dead depends on whether it was alive on the previous iteration, as well as the state of the two neighbouring cells.
     The rules which dictate whether a cell is alive or dead in the next iteration are as follows:
 <div>
     <table>
