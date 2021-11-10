@@ -1,0 +1,27 @@
+FROM swipl:8.4.0 as builder
+
+RUN mkdir /empty
+
+RUN rm -rf /usr/lib/swipl/doc
+
+FROM scratch
+
+COPY --from=0 /bin/sh        \
+              /bin/cat       /bin/
+COPY --from=0 /usr/bin/swipl /usr/bin/
+COPY --from=0 /lib           /lib
+COPY --from=0 /lib64         /lib64
+COPY --from=0 /empty         /proc
+COPY --from=0 /empty         /tmp
+COPY --from=0 /usr/lib/swipl /usr/lib/swipl
+COPY --from=0 /usr/lib/libtcmalloc_minimal.so.4             \
+              /usr/lib/x86_64-linux-gnu/libstdc++.so.6      \
+              /usr/lib/x86_64-linux-gnu/libform.so.5        \
+              /usr/lib/x86_64-linux-gnu/libgmp.so.10        /usr/lib/
+
+
+COPY prolog /usr/bin/
+
+ENTRYPOINT ["/usr/bin/prolog"]
+
+CMD ["--version"]
