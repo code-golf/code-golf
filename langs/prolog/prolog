@@ -1,4 +1,5 @@
 #!/bin/sh -e
+export LC_ALL=C.UTF-8
 
 # Check for version
 if [ "$1" = "--version" ]; then
