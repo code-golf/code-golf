@@ -694,12 +694,12 @@ Hello, World!
 
 " Looping
 for i in range(10)
-pu=i
+    pu=i
 endfo
 
 " Accessing arguments
 for a in args
-pu=a
+    pu=a
 endfo
 
 " Make sure to save the file when you're done!
