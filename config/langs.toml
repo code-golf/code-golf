@@ -688,19 +688,22 @@ version = '8.2'
 website = 'https://www.vim.org'
 example = '''
 " Printing
-execute "normal! iHello, World!\r"
+i
+Hello, World!
+.
 
 " Looping
-for i in range(0, 9)
-  execute "normal! i".i."\r"
-endfor
+for i in range(10)
+    pu=i
+endfo
 
 " Accessing arguments
 for a in args
-  execute "normal! i".a."\r"
-endfor
+    pu=a
+endfo
 
-execute "normal! :wq\<cr>"
+" Make sure to save the file when you're done!
+w
 '''
 
 [Zig]
