@@ -9,7 +9,8 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <PublishReadyToRun>true</PublishReadyToRun>
-        <PublishTrimmed>true</PublishTrimmed>
-        <TargetFramework>net5.0</TargetFramework>
+        <!-- It would be nice to turn on trimming, but prevents certain things from working. -->
+        <PublishTrimmed>false</PublishTrimmed>
+        <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
 </Project>

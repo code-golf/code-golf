@@ -151,8 +151,8 @@ int main(int argc, char* argv[]) {
 '''
 
 ['C#']
-size    = '130 MiB'
-version = 'C# 9.0 on .NET 5.0.9'
+size    = '144 MiB'
+version = 'C# 10.0 on .NET 6.0.0-rtm.21522.10'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 using System;
@@ -221,8 +221,8 @@ end
 '''
 
 ['F#']
-size    = '119 MiB'
-version = 'F# 5.0 on .NET 5.0.9'
+size    = '138 MiB'
+version = 'F# 6.0 on .NET 6.0.0-rtm.21522.10'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
