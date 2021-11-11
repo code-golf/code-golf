@@ -711,6 +711,8 @@ size    = '242 MiB'
 version = '0.8.1'
 website = 'https://ziglang.org'
 example = '''
+// Notice: use spaces as indentation, since tab causes a compile-time error
+
 const std = @import("std");
 
 pub fn main() !void {
