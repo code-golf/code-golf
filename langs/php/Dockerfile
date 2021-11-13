@@ -4,12 +4,12 @@ RUN mkdir /empty
 
 RUN apk add --no-cache build-base curl
 
-RUN curl -L https://php.net/distributions/php-7.4.24.tar.xz | tar xJ
+RUN curl -L https://php.net/distributions/php-7.4.25.tar.xz | tar xJ
 
 ENV CFLAGS='-O2 -flto -ffat-lto-objects' \
    LDFLAGS='-O2 -flto -ffat-lto-objects'
 
-RUN cd php-7.4.24                                             \
+RUN cd php-7.4.25                                             \
  && ./configure                                               \
     --disable-all                                             \
     --disable-gcc-global-regs                                 \

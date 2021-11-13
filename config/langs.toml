@@ -378,7 +378,7 @@ class Main {
 
 [JavaScript]
 size    = '20.7 MiB'
-version = 'V8 9.4.146.20'
+version = 'V8 9.5.172.27'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -507,7 +507,7 @@ say for @ARGV;
 
 [PHP]
 size    = '10.5 MiB'
-version = '7.4.24'
+version = '7.4.25'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -596,7 +596,7 @@ end
 
 [Rust]
 size    = '648 MiB'
-version = '1.56.0'
+version = '1.56.1'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -644,7 +644,7 @@ SELECT arg FROM argv
 
 [Swift]
 size    = '613 MiB'
-version = '5.5'
+version = '5.5.1'
 website = 'https://swift.org'
 example = '''
 // Printing
