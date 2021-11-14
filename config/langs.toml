@@ -542,9 +542,9 @@ ForEach ($arg in $args) {
 '''
 
 [Prolog]
-size    = '30.8 MiB'
+size    = '30.7 MiB'
 version = 'SWI-Prolog 8.4.0'
-website = 'https://www.swi-prolog.org/'
+website = 'https://www.swi-prolog.org'
 example = '''
 % Printing
 :- writeln("Hello, World!").

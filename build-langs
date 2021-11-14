@@ -52,6 +52,7 @@ for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
             when 'Haskell'    { $ver = "Glasgow Haskell Compiler $digits" }
             when 'JavaScript' { $ver = "V8 $digits" }
             when 'Lisp'       { $ver = "GNU CLISP $digits" }
+            when 'Prolog'     { $ver = "SWI-Prolog $digits" }
             when 'Raku'       {
                 $ver ~~ m:g/ v (\S+) '.' /;
                 $ver = "Raku $1[0] on Rakudo $0[0]";
