@@ -51,7 +51,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 			`WITH foo AS (
 			    SELECT user_id, hole, lang, points, strokes, submitted,
 			           ROW_NUMBER() OVER (
-			               PARTITION BY user_id, hole ORDER BY points DESC
+			               PARTITION BY user_id, hole ORDER BY points DESC, strokes
 			           )
 			      FROM rankings
 			     WHERE scoring = $1
