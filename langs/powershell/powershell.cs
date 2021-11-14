@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Management.Automation;
@@ -13,8 +11,8 @@ class Program
 	{
 		if (args.Length > 0 && args[0] == "--version")
 		{
-			var framework = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
-			Console.WriteLine($"PowerShell {PSVersionInfo.PSVersion} on {framework}");
+			Console.WriteLine("PowerShell {0} on .NET {1}",
+				PSVersionInfo.PSVersion, Environment.Version);
 			return 0;
 		}
 
@@ -24,11 +22,7 @@ class Program
 			args = args[1..];
 		}
 
-		return Run(Console.In.ReadToEnd(), args[1..], requireExplicitOutput);
-	}
-
-	static int Run(string code, string[] args, bool requireExplicitOutput)
-	{
+		var code  = Console.In.ReadToEnd();
 		var state = InitialSessionState.CreateDefault();
 
 		// These aliases are from:
@@ -64,6 +58,7 @@ class Program
 			new SessionStateAliasEntry("dnsn", "Disconnect-PSSession", string.Empty, ScopedItemOptions.ReadOnly),
 			new SessionStateAliasEntry("ogv", "Out-GridView", string.Empty, ScopedItemOptions.ReadOnly),
 			new SessionStateAliasEntry("shcm", "Show-Command", string.Empty, ScopedItemOptions.ReadOnly),
+			new SessionStateAliasEntry("kill", "Stop-Process"),
 		});
 
 		var host = new Host();

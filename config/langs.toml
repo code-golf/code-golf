@@ -523,8 +523,8 @@ while ($arg = next($argv))
 '''
 
 [PowerShell]
-size    = '185 MiB'
-version = 'PowerShell 7.1.4 on .NET 5.0.9'
+size    = '177 MiB'
+version = 'PowerShell 7.2.0 on .NET 6.0.0'
 website = 'https://docs.microsoft.com/powershell/scripting/overview'
 example = '''
 # Printing

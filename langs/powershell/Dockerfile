@@ -1,34 +1,28 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0.400-alpine3.13 as builder
+FROM mcr.microsoft.com/dotnet/sdk:6.0.100-alpine3.14 as builder
 
-RUN mkdir /empty
-
-ENV DOTNET_CLI_TELEMETRY_OPTOUT=1 VERSION=7.1.4
+# /dev/urandom & /etc/passwd are needed.
+RUN mkdir /empty /mydev /myetc        \
+ && mknod -m 444 /mydev/urandom c 1 9 \
+ && echo nobody:x:99:99::/: > /myetc/passwd
 
 WORKDIR /source
 
-COPY Interpreter.csproj Interpreter.cs ./
+COPY powershell.cs powershell.csproj ./
 
-RUN dotnet add package System.Management.Automation              -v $VERSION \
- && dotnet add package Microsoft.PowerShell.Commands.Diagnostics -v $VERSION \
- && dotnet add package Microsoft.PowerShell.Commands.Management  -v $VERSION \
- && dotnet add package Microsoft.PowerShell.Commands.Utility     -v $VERSION \
- && dotnet add package Microsoft.PowerShell.ConsoleHost          -v $VERSION \
- && dotnet add package Microsoft.WSMan.Management                -v $VERSION \
- && dotnet publish -c Release -r linux-musl-x64 -o /interpreter
-
-RUN echo nobody:x:99:99::/: > /etc/passwd
+RUN dotnet publish -c Release -o /mybin
 
 FROM scratch
 
-COPY --from=0 /etc/passwd              /etc/
+COPY --from=0 /mydev                   /dev
+COPY --from=0 /myetc                   /etc
 COPY --from=0 /lib/ld-musl-x86_64.so.1 \
               /lib/libcrypto.so.1.1    \
               /lib/libssl.so.1.1       /lib/
 COPY --from=0 /empty                   /proc
 COPY --from=0 /empty                   /tmp
-COPY --from=0 /usr/lib                 /usr/lib/
-COPY --from=0 /interpreter             /interpreter/
+COPY --from=0 /mybin                   /usr/bin
+COPY --from=0 /usr/lib                 /usr/lib
 
-ENTRYPOINT ["/interpreter/Interpreter"]
+ENTRYPOINT ["powershell"]
 
 CMD ["--version"]

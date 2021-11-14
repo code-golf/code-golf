@@ -153,12 +153,11 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	case "nim":
 		cmd.Args = []string{"/usr/bin/nim", "--colors:on", "-o:/tmp/code", "-r", "c", "-"}
 	case "powershell":
-		cmd.Args = []string{"/interpreter/Interpreter", "-"}
+		cmd.Args = []string{"/usr/bin/powershell"}
 
 		// Require explicit output for Quine to prevent trivial solutions.
 		if holeID == "quine" {
-			cmd.Args[1] = "--explicit"
-			cmd.Args = append(cmd.Args, "-")
+			cmd.Args = append(cmd.Args, "--explicit")
 		}
 	case "python":
 		// Force the stdout and stderr streams to be unbuffered.
