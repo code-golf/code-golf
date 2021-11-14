@@ -110,6 +110,7 @@ export const extensions = {
     'perl':       StreamLanguage.define(perl),
     'php':        php({ plain: true }),
     'powershell': StreamLanguage.define(powerShell),
+    // TODO prolog
     'python':     python(),
     // TODO raku
     'ruby':       StreamLanguage.define(ruby),

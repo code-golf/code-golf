@@ -541,6 +541,23 @@ ForEach ($arg in $args) {
 }
 '''
 
+[Prolog]
+size    = '30.8 MiB'
+version = 'SWI-Prolog 8.4.0'
+website = 'https://www.swi-prolog.org/'
+example = '''
+% Printing
+:- writeln("Hello, world").
+
+% Looping
+:- numlist(0, 9, List),
+   maplist(writeln, List).
+
+% Accessing arguments
+:- current_prolog_flag(argv, [_| Args]),
+   maplist(writeln, Args).
+'''
+
 [Python]
 size    = '58.4 MiB'
 version = '3.10.0'

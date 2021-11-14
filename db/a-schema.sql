@@ -40,7 +40,7 @@ CREATE TYPE lang AS ENUM (
     'assembly', 'bash', 'brainfuck', 'c', 'c-sharp', 'cobol', 'crystal',
     'f-sharp', 'fish', 'fortran', 'go', 'haskell', 'hexagony', 'j', 'java',
     'javascript', 'julia', 'lisp', 'lua', 'nim', 'pascal', 'perl', 'php',
-    'powershell', 'python', 'raku', 'ruby', 'rust', 'sql', 'swift', 'v',
+    'powershell', 'prolog', 'python', 'raku', 'ruby', 'rust', 'sql', 'swift', 'v',
     'viml', 'zig'
 );
 
