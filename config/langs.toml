@@ -547,7 +547,7 @@ version = 'SWI-Prolog 8.4.0'
 website = 'https://www.swi-prolog.org/'
 example = '''
 % Printing
-:- writeln("Hello, world").
+:- writeln("Hello, World!").
 
 % Looping
 :- numlist(0, 9, List),
