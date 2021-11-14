@@ -1,4 +1,22 @@
-<h1>{{ .Title }}</h1>
+<h1>
+    <span>{{ .Title }}</span>
+
+{{ if eq .Name "recent/solutions" }}
+    {{ with index .Holes .Data.HoleID }}
+    <nav>
+        <a class="btn orange" href="/{{ $.Name }}/{{ .Prev }}/{{ $.Data.LangID }}/{{ $.Data.Scoring }}">
+            {{ svg "chevron-double-left-light" }} Prev Hole
+        </a>
+        <a class="btn purple" href='/{{ .ID }}{{ if ne $.Data.LangID "all" }}#{{ $.Data.LangID }}{{ end }}'>
+            {{ svg "play-light" }} Play Hole
+        </a>
+        <a class="btn orange" href="/{{ $.Name }}/{{ .Next }}/{{ $.Data.LangID }}/{{ $.Data.Scoring }}">
+            {{ svg "chevron-double-right-light" }} Next Hole
+        </a>
+    </nav>
+    {{ end }}
+{{ end }}
+</h1>
 
 <nav class=tabs>
     <a {{ if ne .Path "/recent/golfers" }}

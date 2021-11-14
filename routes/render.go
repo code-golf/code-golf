@@ -192,18 +192,18 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...interfa
 	}
 
 	args := struct {
-		CSS                                       template.CSS
-		CheevoBanner                              *CheevoBanner
-		Countries                                 map[string]*config.Country
-		Data, Description, Title                  interface{}
-		DarkModeMediaQuery, LogInURL, Nonce, Path string
-		Golfer                                    *golfer.Golfer
-		GolferInfo                                *golfer.GolferInfo
-		Holes                                     map[string]*config.Hole
-		JS                                        []string
-		Langs                                     map[string]*config.Lang
-		Location                                  *time.Location
-		Request                                   *http.Request
+		CSS                                             template.CSS
+		CheevoBanner                                    *CheevoBanner
+		Countries                                       map[string]*config.Country
+		Data, Description, Title                        interface{}
+		DarkModeMediaQuery, LogInURL, Name, Nonce, Path string
+		Golfer                                          *golfer.Golfer
+		GolferInfo                                      *golfer.GolferInfo
+		Holes                                           map[string]*config.Hole
+		JS                                              []string
+		Langs                                           map[string]*config.Lang
+		Location                                        *time.Location
+		Request                                         *http.Request
 	}{
 		Countries:          config.CountryByID,
 		CSS:                getThemeCSS(theme) + css["base"] + css[path.Dir(name)] + css[name],
@@ -215,6 +215,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...interfa
 		Holes:              config.HoleByID,
 		JS:                 []string{assets["js/base.js"]},
 		Langs:              config.LangByID,
+		Name:               name,
 		Nonce:              nonce(),
 		Path:               r.URL.Path,
 		Request:            r,

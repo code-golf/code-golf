@@ -6,10 +6,20 @@ body > p { margin: 1rem 1rem 0 }
 form { display: none }
 
 h1 {
-    display: grid;
-    grid-template-columns: 1fr auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
     margin: 1rem 1rem 0;
+    white-space: nowrap;
 }
+
+h1 nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+
+h1 span { flex: 1 }
 
 h2 {
     font-size: 1rem;

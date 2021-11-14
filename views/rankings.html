@@ -1,11 +1,19 @@
 <h1>
-    {{ .Title }}
+    <span>{{ .Title }}</span>
 
-{{ if or (hasPrefix .Title "Rankings: Holes") (eq .Title "Rankings: Medals") }}
-    {{ if ne .Data.HoleID "all" }}
-        <a class="btn purple" href='/{{ .Data.HoleID }}{{ if ne .Data.LangID "all" }}#{{ .Data.LangID }}{{ end }}'>
+{{ if or (eq .Name "rankings/holes") (eq .Name "rankings/medals") }}
+    {{ with index .Holes .Data.HoleID }}
+    <nav>
+        <a class="btn orange" href="/{{ $.Name }}/{{ .Prev }}/{{ $.Data.LangID }}/{{ $.Data.Scoring }}">
+            {{ svg "chevron-double-left-light" }} Prev Hole
+        </a>
+        <a class="btn purple" href='/{{ .ID }}{{ if ne $.Data.LangID "all" }}#{{ $.Data.LangID }}{{ end }}'>
             {{ svg "play-light" }} Play Hole
         </a>
+        <a class="btn orange" href="/{{ $.Name }}/{{ .Next }}/{{ $.Data.LangID }}/{{ $.Data.Scoring }}">
+            {{ svg "chevron-double-right-light" }} Next Hole
+        </a>
+    </nav>
     {{ end }}
 {{ end }}
 </h1>
