@@ -1,11 +1,8 @@
 #!/bin/sh -e
+
 export LC_ALL=C.UTF-8
 
-# Check for version
-if [ "$1" = "--version" ]; then
-    /usr/bin/swipl --version
-    exit 0
-fi
+[ "$1" = "--version" ] && exec swipl --version
 
 # Put user-defined predicates in file
 cd /tmp
@@ -14,4 +11,4 @@ cat - > code.pl
 # Ensure interpreter never shows its face in the output box.
 # Concatenate 'halt' as a goal to every program.
 
-swipl --quiet --on-error=halt -g 'halt.' code.pl "$@"
+swipl --quiet --on-error=halt -g halt. code.pl "$@"
