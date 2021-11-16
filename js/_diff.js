@@ -3,10 +3,11 @@ import * as Diff from 'diff';
 export function attachDiff(element, hole, exp, out, argv) {
     const isArgDiff = shouldArgDiff(hole, exp, argv);
     const header = getHeader(isArgDiff);
-    // Limit `out` to 999 lines to avoid slow computation of the line diff
+    // Limit `out` to 1001 lines to avoid slow computation of the line diff
+    // Limit must be >1000 for Van Eck Sequence
     let outLines = lines(out)
-    if (outLines.length > 998) {
-        outLines = outLines.slice(0, 998);
+    if (outLines.length > 1000) {
+        outLines = outLines.slice(0, 1000);
         outLines.push("[Truncated for performance]");
         out = outLines.join("\n")
     }
