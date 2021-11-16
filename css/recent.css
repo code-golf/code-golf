@@ -79,6 +79,11 @@ td > a > span:nth-of-type(1) { flex: 1 }
 
 td > a:hover > span:first-of-type { text-decoration: underline }
 
+td svg {
+    height: 1rem;
+    width: 1rem;
+}
+
 @media (max-width: 46rem) {
     form {
         display: grid;

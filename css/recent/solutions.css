@@ -8,8 +8,3 @@ td:nth-child(3) div {
     flex: 1;
     text-align: right;
 }
-
-td svg {
-    height: 1rem;
-    width: 1rem;
-}

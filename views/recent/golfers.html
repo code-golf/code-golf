@@ -1,12 +1,15 @@
 {{ template "header" . }}
 {{ template "recent" . }}
 
+<svg>{{ range .Langs }}{{ symbol .ID }}{{ end }}</svg>
+
 <main>
-    <table class="nowrap-first sticky">
+    <table class="nowrap-first-second sticky">
         <thead>
             <tr>
                 <th>Golfer
-                <th class=right>Cheevos
+                <th>Languages
+                <th class="right wide">Cheevos
                 <th class=right>Date
         <tbody>
         {{ $name := "" }}
@@ -22,7 +25,18 @@
                         <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
                     {{ end }}
                     </a>
-                <td class=right>{{ .Cheevos }} / {{ $.Data.Cheevos }}
+                <td>
+                    <div>
+                    {{ range .Langs }}
+                        {{ with index $.Langs . }}
+                            <svg>
+                                <title>{{ .Name }}</title>
+                                <use href="#{{ .ID }}"/>
+                            </svg>
+                        {{ end }}
+                    {{ end }}
+                    </div>
+                <td class="right wide">{{ .Cheevos }} / {{ $.Data.Cheevos }}
                 <td class=right>{{ time .Date }}
         {{ end }}
     </table>
