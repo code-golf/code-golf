@@ -117,7 +117,7 @@
     </div>
 {{ end }}
     <div class="info prolog">
-        Your code will be passed to <b>swipl</b> as an external file. <b>current_prolog_flag(argv, [_|Args])</b> to access the arguments.
+        Your code will be passed to <b>swipl</b> as an external file. <b>prolog_flag(argv, Args)</b> to access the arguments.
     </div>
     <div class="info sql">
         <b>SELECT arg FROM argv</b> to access the arguments, only the first
