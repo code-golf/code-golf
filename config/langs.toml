@@ -554,7 +554,7 @@ example = '''
    maplist(writeln, List).
 
 % Accessing arguments
-:- current_prolog_flag(argv, [_| Args]),
+:- prolog_flag(argv, Args),
    maplist(writeln, Args).
 '''
 

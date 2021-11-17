@@ -6,7 +6,9 @@ export LC_ALL=C.UTF-8
 
 # Put user-defined predicates in file
 cd /tmp
-cat - > code.pl
+cat $1 > code.pl
+# Discard the filename argument. swipl doesn't normally provide the filename as the first argument.
+shift
 
 # Ensure interpreter never shows its face in the output box.
 # Concatenate 'halt' as a goal to every program.
