@@ -7,6 +7,8 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"regexp"
+	"strings"
 	"sync"
 	"time"
 
@@ -26,6 +28,83 @@ type solution struct {
 	Stderr   string        `json:"stderr"`
 	Took     time.Duration `json:"took"`
 	Total    int           `json:"total"`
+}
+
+func testCode(code, holeID string, r *http.Request) bool {
+	var passes, fails int
+
+	// Best of three runs.
+	for j := 0; passes < 2 && fails < 2; j++ {
+		score := play(r.Context(), holeID, "c-sharp", code)
+		if score.Pass {
+			passes++
+		} else {
+			fails++
+		}
+	}
+
+	return passes > fails
+}
+
+// Test each deletion and keep it if it works.
+func deleteMatches(code, holeID string, r *http.Request, matches [][]int) string {
+	// Start with the last match, so that indices remain valid.
+	// Note that matches are non-overlapping.
+	for i := len(matches) - 1; i >= 0; i-- {
+		start := matches[i][0]
+		end := matches[i][1]
+		newCode := code[:start] + code[end:]
+		if testCode(newCode, holeID, r) {
+			code = newCode
+		}
+	}
+
+	return code
+}
+
+// If the code can be shortened automatically and the new code passes the tests, returns the new code.
+// Otherwise, returns the original code.
+func updateCode(originalCode, holeID string, r *http.Request) string {
+	resultCode := originalCode
+	var re *regexp.Regexp
+
+	// Try removing all of the instances of "System." at once.
+	// For quine, removing them one at a time would not work.
+	re = regexp.MustCompile(`System\.`)
+	newCode := re.ReplaceAllString(resultCode, "")
+	if testCode(newCode, holeID, r) {
+		resultCode = newCode
+	}
+
+	// // Look for using statements and try removing them.
+	re = regexp.MustCompile(`using.*?;`)
+	resultCode = deleteMatches(resultCode, holeID, r, re.FindAllStringIndex(resultCode, -1))
+
+	// Look for fully qualified names and try removing the namespace.
+	re = regexp.MustCompile(`(\w+\.)+`)
+	matches := re.FindAllStringIndex(resultCode, -1)
+	for i := len(matches) - 1; i >= 0; i-- {
+		start := matches[i][0]
+		end := matches[i][1]
+		for {
+			newCode := resultCode[:start] + resultCode[end:]
+			if testCode(newCode, holeID, r) {
+				resultCode = newCode
+				break
+			}
+
+			offset := strings.LastIndex(resultCode[start:end-1], ".")
+			if offset >= 0 {
+				// Try again, removing everything but the last component.
+				end = start + offset + 1
+				continue
+			}
+
+			break
+		}
+	}
+
+	return resultCode
 }
 
 // AdminSolutions serves GET /admin/solutions
@@ -67,44 +146,28 @@ func AdminSolutionsRun(w http.ResponseWriter, r *http.Request) {
 
 			i := 0
 			for s := range solutions {
-				var passes, fails int
-
-				// Best of three runs.
-				for j := 0; passes < 2 && fails < 2; j++ {
-					score := play(r.Context(), s.HoleID, s.LangID, s.code)
-
-					s.Took = score.Took
-
-					if score.Pass {
-						passes++
-					} else {
-						fails++
-						s.Stderr = string(score.Stderr)
-					}
+				if s.LangID != "c-sharp" {
+					continue
 				}
 
-				s.Pass = passes > fails
+				newCode := updateCode(s.code, s.HoleID, r)
+				if s.code != newCode {
+					// Indicate that it was updated.
+					s.Pass = true
 
-				// If the last run differs from the DB, update the database.
-				//
-				// NOTE It's a little confusing that present is called pass
-				//      but past is called failing, so == is a mismatch.
-				if s.Pass == s.failing {
+					// update the database.
 					if _, err := db.Exec(
-						`UPDATE solutions
-						    SET failing = $1
-						  WHERE code    = $2
-						    AND hole    = $3
-						    AND lang    = $4
-						    AND user_id = $5`,
-						!s.Pass,
-						s.code,
+						`SELECT save_solution(bytes := octet_length($1), chars := char_length($1), code := $1, hole := $2, lang := $3, user_id := $4)`,
+						newCode,
 						s.HoleID,
 						s.LangID,
 						s.GolferID,
 					); err != nil {
 						panic(err)
 					}
+				} else {
+					// Indicate it was not updated.
+					s.Pass = false
 				}
 
 				b, err := json.Marshal(s)
