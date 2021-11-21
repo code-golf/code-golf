@@ -1,0 +1,10 @@
+#!/bin/bash
+
+curl https://rakubrew.org/install-on-perl.sh | sh
+echo 'eval "$(/home/vagrant/.rakubrew/bin/rakubrew init Bash)"' >> ~/.bashrc
+eval "$(/home/vagrant/.rakubrew/bin/rakubrew init Bash)"
+rakubrew build
+rakubrew build-zef
+cd /vagrant/
+zef install --deps-only .
+npm install

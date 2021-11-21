@@ -4,6 +4,8 @@ This is the repository behind https://code.golf
 
 ## Quickstart
 
+Alternatively, see the Vagrant section below to create a virtual machine with everything pre-installed.
+
 1. Install dependencies:
 * [Docker](https://docs.docker.com/engine/install/)
 * [Docker Compose](https://docs.docker.com/compose/install/)
@@ -38,7 +40,7 @@ $ make dev
 
 5. Optionally, load information from the code.golf database.
 ```
-go run utils/update_sql_from_api.go
+$ go run utils/update_sql_from_api.go
 ```
 
 6. Navigate to https://localhost
@@ -61,6 +63,52 @@ $ make test
 2. Run the e2e tests:
 ```
 $ make e2e
+```
+
+## Vagrant
+
+Using Vagrant and VirtualBox, with one command you can create a virtual machine, install all of the other dependencies onto it (Docker, Docker Compose, Go, Raku + zef dependencies, npm, etc.), and forward port 443 (https) to it.
+
+1. Install the dependencies:
+* [Vagrant](https://www.vagrantup.com/downloads)
+* [VirtualBox](https://www.virtualbox.org/)
+
+If you have homebrew, you can install with:
+```
+$ brew install vagrant virtualbox
+```
+
+2. Create the virtual machine:
+```
+$ vagrant up
+```
+
+3. Install certificates. Ideally, you should run the following command outside of the virtual machine, the same as in the quickstart, because it will install the certificate in your browser. Alternatively, you can run the command in a virtual machine shell and then install the certificates manually.
+```
+$ make cert
+```
+or
+```
+$ vagrant ssh --command 'cd /vagrant/ && make cert'
+```
+
+5. Bring up the website:
+```
+$ vagrant ssh --command 'cd /vagrant/ && make dev'
+```
+
+5. Optionally, load information from the code.golf database.
+```
+$ vagrant ssh --command 'cd /vagrant/ && go run utils/update_sql_from_api.go'
+```
+
+6. Navigate to https://localhost
+
+## Database Access
+
+If you have [PostgreSQL](https://www.postgresql.org/download/) installed You can access the SQL database directly with the following command. If you are using Vagrant, PostgreSQL is pre-installed.
+```
+$ make db-dev
 ```
 
 ## Style
