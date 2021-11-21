@@ -2,6 +2,8 @@
 
 rm -rf dist esbuild.json
 
+npm install
+
 node_modules/.bin/esbuild "$@"        \
     --asset-names=[dir]/[name]-[hash] \
     --bundle                          \

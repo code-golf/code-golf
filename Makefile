@@ -84,8 +84,6 @@ lint:
 	    golangci/golangci-lint:v1.43.0 golangci-lint run
 
 live:
-	@npm install
-
 	@docker build --pull -f docker/live.Dockerfile -t codegolf/code-golf .
 
 	@docker push codegolf/code-golf
