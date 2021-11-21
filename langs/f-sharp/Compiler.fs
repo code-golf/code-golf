@@ -56,8 +56,8 @@ let main args =
         let versionType = assembly.GetType "FSharp.Compiler.Features+LanguageVersion"
         let field = versionType.GetField("latestVersion", BindingFlags.Static ||| BindingFlags.NonPublic)
         let version = field.GetValue null :?> decimal
-        let framework = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription
-        printfn "F# %s on %s" (version.ToString "g") framework
+        let framework = System.Environment.Version
+        printfn "F# %s on .NET %O" (version.ToString "g") framework
         0
     else
         let codeFile = "/tmp/Code.fs"

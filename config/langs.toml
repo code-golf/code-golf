@@ -152,7 +152,7 @@ int main(int argc, char* argv[]) {
 
 ['C#']
 size    = '144 MiB'
-version = 'C# 10.0 on .NET 6.0.0-rtm.21522.10'
+version = 'C# 10.0 on .NET 6.0.0'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 using System;
@@ -222,7 +222,7 @@ end
 
 ['F#']
 size    = '138 MiB'
-version = 'F# 6.0 on .NET 6.0.0-rtm.21522.10'
+version = 'F# 6.0 on .NET 6.0.0'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]

@@ -5,9 +5,9 @@ using Microsoft.CodeAnalysis.CSharp;
 
 if (args.Length > 0 && args[0] == "--version")
 {
-	var version = LanguageVersion.Latest.MapSpecifiedToEffectiveVersion().ToDisplayString();
-	var framework = RuntimeInformation.FrameworkDescription;
-	Console.WriteLine($"C# {version} on {framework}");
+	Console.WriteLine("C# {0} on .NET {1}",
+		LanguageVersion.Latest.MapSpecifiedToEffectiveVersion().ToDisplayString(),
+		Environment.Version);
 	return 0;
 }
 
