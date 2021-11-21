@@ -635,7 +635,7 @@ fn main() {
 [SQL]
 size    = '1.03 MiB'
 version = '3.36.0'
-website = 'https://sqlite.org/index.html'
+website = 'https://sqlite.org'
 example = '''
 -- Printing
 SELECT 'Hello, World!'
