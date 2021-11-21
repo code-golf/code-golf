@@ -797,7 +797,7 @@ preamble = '''
     instead, if the number is a multiple of <b>three</b> then print
     <b>Fizz</b>, if the number is a multiple of <b>five</b> then print
     <b>Buzz</b>, and if the number is a multiple of <b>seven</b> then print
-    </b>Bar</b>.
+    <b>Bar</b>.
 {{ end }}
 
 <p>
