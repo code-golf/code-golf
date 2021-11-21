@@ -74,10 +74,6 @@ func init() {
 		hole.ID = id(name)
 		hole.Name = name
 
-		if hole.ID == "foo-fizz-buzz-bar" {
-			hole.Experiment = 525
-		}
-
 		// Minify preamble.
 		if html, err := minify.HTML(string(hole.Preamble)); err != nil {
 			panic(err)
