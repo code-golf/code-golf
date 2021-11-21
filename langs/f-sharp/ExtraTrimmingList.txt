@@ -29,8 +29,6 @@ System.Net.Sockets.dll
 System.Net.WebHeaderCollection.dll
 System.Private.DataContractSerialization.dll
 System.Private.Uri.dll
-System.Private.Xml.dll
-System.Private.Xml.Linq.dll
 System.Resources.Writer.dll
 System.Runtime.CompilerServices.Unsafe.dll
 System.Runtime.Serialization.Formatters.dll
@@ -43,4 +41,3 @@ System.Security.Cryptography.OpenSsl.dll
 System.Security.Cryptography.Primitives.dll
 System.Security.Cryptography.X509Certificates.dll
 System.Security.Principal.Windows.dll
-System.Threading.Tasks.Parallel.dll

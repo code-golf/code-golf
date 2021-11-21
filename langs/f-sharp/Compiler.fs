@@ -1,7 +1,7 @@
 open System
 open System.IO
 open System.Reflection
-open FSharp.Compiler.SourceCodeServices
+open FSharp.Compiler.CodeAnalysis
 
 let runCode (assembly: Assembly) (args: string[]) =
     let entryPoint =
