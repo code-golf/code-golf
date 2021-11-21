@@ -6,6 +6,7 @@
     </ItemGroup>
     <PropertyGroup>
         <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
         <OutputType>Exe</OutputType>
         <PublishReadyToRun>true</PublishReadyToRun>
         <!-- It would be nice to turn on trimming, but it's not working. -->
