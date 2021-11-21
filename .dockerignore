@@ -1,4 +1,5 @@
 /.git/
+/.vagrant/
 /code-golf
 /db/
 /dist/
