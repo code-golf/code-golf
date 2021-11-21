@@ -2,7 +2,7 @@ FROM golang:1.17.3-alpine3.14
 
 ENV CGO_ENABLED=0 GOPATH=
 
-RUN apk add --no-cache brotli build-base linux-headers tzdata zopfli
+RUN apk add --no-cache brotli build-base linux-headers npm tzdata zopfli
 
 COPY go.mod go.sum ./
 
