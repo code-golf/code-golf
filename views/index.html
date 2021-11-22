@@ -54,7 +54,11 @@
        title="{{ .Hole.Name }} ({{ .Hole.Category }})">
         <h2>{{ .Hole.Name }}</h2>
         <svg><use href="#{{ .Hole.CategoryIcon }}"/></svg>
-        {{ with .Points }}<span class=right>{{ comma . }} pts.</span>{{ end }}
+    {{ if .Lang }}
+        <span title="{{ comma .Points }} points in {{ .Lang.Name }}">
+            {{ comma .Points }} pts.
+        </span>
+    {{ end }}
     </a>
 {{ end }}
 </main>

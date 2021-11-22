@@ -29,6 +29,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 	type Card struct {
 		Hole   *config.Hole
+		Lang   *config.Lang
 		Points int
 	}
 
@@ -53,11 +54,11 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 		rows, err := session.Database(r).Query(
 			`WITH points AS (
-			    SELECT hole, MAX(points) points
+			    SELECT DISTINCT ON (hole) hole, lang, points
 			      FROM rankings
 			     WHERE scoring = $1 AND user_id = $2
-			  GROUP BY hole
-			)  SELECT hole, COALESCE(points, 0)
+			  ORDER BY hole, points DESC, lang
+			)  SELECT hole, COALESCE(lang::text, ''), COALESCE(points, 0)
 			     FROM unnest(enum_range(NULL::hole)) hole
 			LEFT JOIN points USING(hole)`,
 			data.Scoring,
@@ -71,14 +72,16 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 		for rows.Next() {
 			var card Card
-			var holeID string
+			var holeID, langID string
 
-			if err := rows.Scan(&holeID, &card.Points); err != nil {
+			if err := rows.Scan(&holeID, &langID, &card.Points); err != nil {
 				panic(err)
 			}
 
 			if hole, ok := config.HoleByID[holeID]; ok {
 				card.Hole = hole
+				card.Lang = config.LangByID[langID]
+
 				data.Cards = append(data.Cards, card)
 			}
 		}
