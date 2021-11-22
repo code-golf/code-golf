@@ -395,7 +395,7 @@ for (let arg of arguments)
 
 [Julia]
 size    = '259 MiB'
-version = '1.6.3'
+version = '1.6.4'
 website = 'https://julialang.org'
 example = '''
 # Printing
