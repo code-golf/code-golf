@@ -1,4 +1,4 @@
-FROM node:16.11.0-alpine3.14 as builder
+FROM node:17-alpine3.14 as builder
 
 ENV VERSION=2.1.6
 
@@ -30,4 +30,4 @@ COPY --from=0 /usr/lib/libgcc_s.so.1              \
               /usr/lib/libstdc++.so.6             /usr/lib/
 COPY --from=0 /usr/local/lib/node_modules/@defasm /usr/lib/node_modules/@defasm
 
-ENTRYPOINT ["/usr/bin/defasm"]
+ENTRYPOINT ["defasm"]
