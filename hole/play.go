@@ -245,22 +245,22 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 
 	// ASCII-ify roman numerals
 	if holeID == "arabic-to-roman" {
-		score.Stdout = bytes.Replace(score.Stdout, []byte("Ⅰ"), []byte("I"), -1)
-		score.Stdout = bytes.Replace(score.Stdout, []byte("Ⅱ"), []byte("II"), -1)
-		score.Stdout = bytes.Replace(score.Stdout, []byte("Ⅲ"), []byte("III"), -1)
-		score.Stdout = bytes.Replace(score.Stdout, []byte("Ⅳ"), []byte("IV"), -1)
-		score.Stdout = bytes.Replace(score.Stdout, []byte("Ⅴ"), []byte("V"), -1)
-		score.Stdout = bytes.Replace(score.Stdout, []byte("Ⅵ"), []byte("VI"), -1)
-		score.Stdout = bytes.Replace(score.Stdout, []byte("Ⅶ"), []byte("VII"), -1)
-		score.Stdout = bytes.Replace(score.Stdout, []byte("Ⅷ"), []byte("VIII"), -1)
-		score.Stdout = bytes.Replace(score.Stdout, []byte("Ⅸ"), []byte("IX"), -1)
-		score.Stdout = bytes.Replace(score.Stdout, []byte("Ⅹ"), []byte("X"), -1)
-		score.Stdout = bytes.Replace(score.Stdout, []byte("Ⅺ"), []byte("XI"), -1)
-		score.Stdout = bytes.Replace(score.Stdout, []byte("Ⅻ"), []byte("XII"), -1)
-		score.Stdout = bytes.Replace(score.Stdout, []byte("Ⅼ"), []byte("L"), -1)
-		score.Stdout = bytes.Replace(score.Stdout, []byte("Ⅽ"), []byte("C"), -1)
-		score.Stdout = bytes.Replace(score.Stdout, []byte("Ⅾ"), []byte("D"), -1)
-		score.Stdout = bytes.Replace(score.Stdout, []byte("Ⅿ"), []byte("M"), -1)
+		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅰ"), []byte("I"))
+		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅱ"), []byte("II"))
+		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅲ"), []byte("III"))
+		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅳ"), []byte("IV"))
+		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅴ"), []byte("V"))
+		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅵ"), []byte("VI"))
+		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅶ"), []byte("VII"))
+		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅷ"), []byte("VIII"))
+		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅸ"), []byte("IX"))
+		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅹ"), []byte("X"))
+		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅺ"), []byte("XI"))
+		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅻ"), []byte("XII"))
+		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅼ"), []byte("L"))
+		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅽ"), []byte("C"))
+		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅾ"), []byte("D"))
+		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅿ"), []byte("M"))
 	}
 
 	// Timeouts do not pass, no matter what they output
