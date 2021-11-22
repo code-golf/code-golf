@@ -14,16 +14,12 @@ RUN make -C julia-$VER -j`nproc` prefix=/usr MARCH=x86-64 install \
  && strip -s /usr/bin/julia /usr/lib/julia/*.so                   \
  && rm -r julia-$VER
 
-COPY julia.c /
-
-RUN gcc -s -o run-julia julia.c
-
 FROM scratch
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1      /lib/
 COPY --from=0 /empty                        /proc
 COPY --from=0 /empty                        /tmp
-COPY --from=0 /run-julia /usr/bin/julia     /usr/bin/
+COPY --from=0 /usr/bin/julia                /usr/bin/
 COPY --from=0 /usr/lib/julia                /usr/lib/julia/
 COPY --from=0 /usr/lib/libcurl.so.4         /usr/lib/libcurl.so
 COPY --from=0 /usr/lib/libbrotlicommon.so.1 \
@@ -37,6 +33,6 @@ COPY --from=0 /usr/lib/libbrotlicommon.so.1 \
               /usr/lib/libssl.so.1.1        \
               /usr/lib/libstdc++.so.6       /usr/lib/
 
-ENTRYPOINT ["/usr/bin/run-julia"]
+ENTRYPOINT ["julia"]
 
 CMD ["-v"]

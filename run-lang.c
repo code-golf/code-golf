@@ -11,6 +11,8 @@
 #include <sys/syscall.h>
 #include <unistd.h>
 
+#define NOBODY 65534
+
 #define ALLOW(name) \
     BPF_JUMP(BPF_JMP+BPF_JEQ+BPF_K, __NR_##name, 0, 1), \
     BPF_STMT(BPF_RET+BPF_K, SECCOMP_RET_ALLOW)
@@ -58,12 +60,18 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         return 1;
     }
 
-    if (setgid(65534) < 0) {
+    // Allow /proc/self/fd/0 to be read by the lang after we change user.
+    if (chown("/proc/self/fd/0", NOBODY, NOBODY) < 0) {
+        perror("chown");
+        return 1;
+    }
+
+    if (setgid(NOBODY) < 0) {
         perror("setgid");
         return 1;
     }
 
-    if (setuid(65534) < 0) {
+    if (setuid(NOBODY) < 0) {
         perror("setuid");
         return 1;
     }
