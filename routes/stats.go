@@ -52,6 +52,7 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 			         COUNT(*),
 			         COUNT(DISTINCT user_id)
 			    FROM solutions
+			   WHERE NOT failing
 			GROUP BY ` + fact,
 		)
 		if err != nil {
