@@ -2,11 +2,17 @@ FROM swipl:8.4.0 as builder
 
 RUN mkdir /empty
 
+RUN apt-get update && apt-get install -y gcc
+
 RUN rm -r /usr/lib/swipl/demo /usr/lib/swipl/doc
+
+COPY prolog.c /
+
+RUN gcc -s -o prolog prolog.c
 
 FROM scratch
 
-COPY --from=0 /usr/bin/swipl                           /usr/bin/
+COPY --from=0 /prolog /usr/bin/swipl                   /usr/bin/
 COPY --from=0 /lib                                     /lib
 COPY --from=0 /lib64                                   /lib64
 COPY --from=0 /empty                                   /proc
@@ -18,6 +24,6 @@ COPY --from=0 /usr/lib/libtcmalloc_minimal.so.4        \
               /usr/lib/x86_64-linux-gnu/libgmp.so.10   \
               /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /usr/lib/
 
-ENTRYPOINT ["swipl"]
+ENTRYPOINT ["prolog"]
 
 CMD ["--version"]
