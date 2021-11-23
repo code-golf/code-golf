@@ -160,6 +160,9 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		if holeID == "quine" {
 			cmd.Args = append(cmd.Args, "--explicit")
 		}
+	case "prolog":
+		cmd.Args = []string{"/usr/bin/swipl", "-g", "load_files(stdin, [stream(user_input)])", "-t", "halt", "--"}
+		cmd.Env = []string{"LC_ALL=C.UTF-8"}
 	case "python":
 		// Force the stdout and stderr streams to be unbuffered.
 		cmd.Args = []string{"/usr/bin/python", "-u", "-"}

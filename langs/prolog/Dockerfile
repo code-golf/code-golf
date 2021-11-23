@@ -6,7 +6,6 @@ RUN rm -r /usr/lib/swipl/demo /usr/lib/swipl/doc
 
 FROM scratch
 
-COPY --from=0 /bin/cat /bin/sh                         /bin/
 COPY --from=0 /usr/bin/swipl                           /usr/bin/
 COPY --from=0 /lib                                     /lib
 COPY --from=0 /lib64                                   /lib64
@@ -19,8 +18,6 @@ COPY --from=0 /usr/lib/libtcmalloc_minimal.so.4        \
               /usr/lib/x86_64-linux-gnu/libgmp.so.10   \
               /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /usr/lib/
 
-COPY prolog /usr/bin/
-
-ENTRYPOINT ["prolog"]
+ENTRYPOINT ["swipl"]
 
 CMD ["--version"]
