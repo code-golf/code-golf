@@ -179,13 +179,12 @@ CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
   group by hole, lang, scoring, strokes
 ) select * from ranks join tie_count using (hole, lang, scoring, strokes);
 
-CREATE MATERIALIZED VIEW points AS WITH ranked_by_hole AS (
-    SELECT points, scoring, user_id, ROW_NUMBER()
-               OVER (PARTITION BY user_id, scoring, hole ORDER BY points DESC)
+CREATE MATERIALIZED VIEW points AS WITH max_points_per_hole AS (
+    SELECT DISTINCT ON (user_id, hole, scoring) user_id, scoring, points
       FROM rankings
+  ORDER BY user_id, hole, scoring, points DESC
 ) SELECT user_id, scoring, SUM(points) points
-    FROM ranked_by_hole
-   WHERE row_number = 1
+    FROM max_points_per_hole
 GROUP BY user_id, scoring;
 
 -- Needed to refresh concurrently
