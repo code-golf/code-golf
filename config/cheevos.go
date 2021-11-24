@@ -13,8 +13,10 @@ var (
 )
 
 type Cheevo struct {
-	Description     template.HTML
-	Emoji, ID, Name string
+	Description template.HTML `json:"-"`
+	Emoji       string        `json:"emoji"`
+	ID          string        `json:"-"`
+	Name        string        `json:"name"`
 }
 
 func init() {

@@ -8,6 +8,7 @@ import { attachDiff }                          from './_diff';
 const all         = document.querySelector('#all');
 const hole        = decodeURI(location.pathname.slice(4));
 const langs       = JSON.parse(document.querySelector('#langs').innerText);
+const popups      = document.querySelector('#popups');
 const rankings    = document.querySelector('#rankings');
 const scoringTabs = document.querySelectorAll('#scoringTabs a');
 const select      = document.querySelector('select');
@@ -200,6 +201,12 @@ const runCode = document.querySelector('#run a').onclick = async () => {
     status.style.display = 'grid';
 
     update();
+
+    // Show cheevos.
+    popups.replaceChildren(...data.Cheevos.map(c => <div>
+        <h3>Achievement Earned!</h3>
+        { c.emoji }<p>{ c.name }</p>
+    </div>));
 };
 
 onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter' ? runCode() : undefined;

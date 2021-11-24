@@ -10,6 +10,7 @@ const hole               = decodeURI(location.pathname.slice(1));
 const keymap             = JSON.parse(document.querySelector('#keymap').innerText);
 const langs              = JSON.parse(document.querySelector('#langs').innerText);
 const picker             = document.querySelector('#picker');
+const popups             = document.querySelector('#popups');
 const restoreLink        = document.querySelector('#restoreLink');
 const scorings           = ['Bytes', 'Chars'];
 const solutionPicker     = document.querySelector('#solutionPicker');
@@ -262,6 +263,12 @@ onload = () => {
         status.style.display = 'block';
 
         refreshScores();
+
+        // Show cheevos.
+        popups.replaceChildren(...data.Cheevos.map(c => <div>
+            <h3>Achievement Earned!</h3>
+            { c.emoji }<p>{ c.name }</p>
+        </div>));
     };
 
     onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter' ? submit() : undefined;

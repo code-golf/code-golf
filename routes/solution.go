@@ -58,7 +58,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 
 	out := struct {
 		Argv           []string
-		Cheevos        []string
+		Cheevos        []*config.Cheevo
 		Err, Exp, Out  string
 		ExitCode       int
 		Pass, LoggedIn bool
@@ -66,7 +66,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		Took           time.Duration
 	}{
 		Argv:     score.Args,
-		Cheevos:  []string{},
+		Cheevos:  []*config.Cheevo{},
 		Err:      string(terminal.Render(score.Stderr)),
 		ExitCode: score.ExitCode,
 		Exp:      score.Answer,
@@ -81,6 +81,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if out.Pass && golfer != nil && !experimental {
+		var cheevos []string
 		if err := db.QueryRowContext(
 			r.Context(),
 			`SELECT earned,
@@ -106,7 +107,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			        )`,
 			in.Code, in.Hole, in.Lang, golfer.ID, score.ASMBytes,
 		).Scan(
-			pq.Array(&out.Cheevos),
+			pq.Array(&cheevos),
 			&out.RankUpdates[0].From.Joint,
 			&out.RankUpdates[0].From.Rank,
 			&out.RankUpdates[0].From.Strokes,
@@ -123,6 +124,10 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			&out.RankUpdates[1].Beat,
 		); err != nil {
 			panic(err)
+		}
+
+		for _, cheevo := range cheevos {
+			out.Cheevos = append(out.Cheevos, config.CheevoByID[cheevo])
 		}
 
 		recordUpdates := make([]Golfer.RankUpdate, 0, 2)
