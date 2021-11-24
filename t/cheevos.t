@@ -5,6 +5,8 @@ constant %cheevos = <
     11 {up-to-eleven}
     13 {bakers-dozen}
     19 {the-watering-hole}
+    21 {blackjack}
+    34 {rule-34}
     40 {forty-winks}
     42 {dont-panic}
     50 {bullseye}

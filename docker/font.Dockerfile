@@ -12,6 +12,7 @@ RUN npm install
 RUN echo [] > extras/ligatures.json                      \
  && unzip -q twe-svg.zip                                 \
     svg/1f1*-*          `# Flags`                        \
+    svg/1f0cf.svg       `# Joker`                        \
     svg/1f308.svg       `# Rainbow`                      \
     svg/1f30c.svg       `# Milky Way`                    \
     svg/1f35e.svg       `# Bread`                        \
@@ -40,6 +41,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f4d5.svg       `# Closed Book`                  \
     svg/1f4f4.svg       `# Mobile Phone Off`             \
     svg/1f511.svg       `# Key`                          \
+    svg/1f51e.svg       `# No One Under Eighteen`        \
     svg/1f523.svg       `# Input Symbols`                \
     svg/1f596.svg       `# Vulcan Salute`                \
     svg/1f600.svg       `# Grinning Face`                \

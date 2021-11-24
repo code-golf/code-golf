@@ -156,6 +156,16 @@ emoji       = '🍺'
 description = 'Solve your nineteenth hole.'
 
 [[Progression]]
+name        = 'Blackjack'
+emoji       = '🃏'
+description = 'Solve your twenty-first hole.'
+
+[[Progression]]
+name        = 'Rule 34'
+emoji       = '🔞'
+description = 'Solve your thirty-fourth hole.'
+
+[[Progression]]
 name        = 'Forty Winks'
 emoji       = '😴'
 description = 'Solve your fortieth hole.'

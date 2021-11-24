@@ -151,6 +151,8 @@ BEGIN
     IF holes >= 11 THEN earned := earn(earned, 'up-to-eleven',      user_id); END IF;
     IF holes >= 13 THEN earned := earn(earned, 'bakers-dozen',      user_id); END IF;
     IF holes >= 19 THEN earned := earn(earned, 'the-watering-hole', user_id); END IF;
+    IF holes >= 21 THEN earned := earn(earned, 'blackjack',         user_id); END IF;
+    IF holes >= 34 THEN earned := earn(earned, 'rule-34',           user_id); END IF;
     IF holes >= 40 THEN earned := earn(earned, 'forty-winks',       user_id); END IF;
     IF holes >= 42 THEN earned := earn(earned, 'dont-panic',        user_id); END IF;
     if holes >= 50 THEN earned := earn(earned, 'bullseye',          user_id); END IF;
