@@ -87,8 +87,8 @@ syscall
 '''
 
 [Bash]
-size    = '1.14 MiB'
-version = '5.1.8'
+size    = '1.19 MiB'
+version = '5.1.12'
 website = 'https://www.gnu.org/software/bash/'
 example = '''
 # Printing
@@ -296,8 +296,8 @@ func main() {
 '''
 
 [Haskell]
-size    = '332 MiB'
-version = 'Glasgow Haskell Compiler 8.8.4'
+size    = '309 MiB'
+version = 'Glasgow Haskell Compiler 9.0.1'
 website = 'https://www.haskell.org/ghc/'
 example = '''
 import System.Environment
@@ -377,8 +377,8 @@ class Main {
 '''
 
 [JavaScript]
-size    = '20.7 MiB'
-version = 'V8 9.5.172.27'
+size    = '20.8 MiB'
+version = 'V8 9.6.180.15'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -507,7 +507,7 @@ say for @ARGV;
 
 [PHP]
 size    = '10.5 MiB'
-version = '7.4.25'
+version = '7.4.26'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -542,8 +542,8 @@ ForEach ($arg in $args) {
 '''
 
 [Prolog]
-size    = '30.5 MiB'
-version = 'SWI-Prolog 8.4.0'
+size    = '28.7 MiB'
+version = 'SWI-Prolog 8.4.1'
 website = 'https://www.swi-prolog.org'
 example = '''
 % Printing

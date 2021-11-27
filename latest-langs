@@ -23,6 +23,7 @@ constant @urls = (
     'Pascal'     => 'Free_Pascal',
     'Perl'       => 'Perl',
     'PowerShell' => 'PowerShell',
+    'Prolog'     => 'SWI-Prolog',
     'Python'     => 'Python_(programming_language)',
     'Raku'       => 'Rakudo',
     'Ruby'       => 'Ruby_(programming_language)',

@@ -12,7 +12,7 @@ RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git \
 
 WORKDIR /v8
 
-RUN git checkout 9.5.172.27 && gclient sync -D
+RUN git checkout 9.6.180.15 && gclient sync -D
 
 RUN gn gen out --args="                 \
     is_debug=false                      \
@@ -37,6 +37,6 @@ COPY --from=0 /empty                                /proc
 COPY --from=0 /empty                                /tmp
 COPY --from=0 /v8/out/d8                            /usr/bin/
 
-ENTRYPOINT ["/usr/bin/d8"]
+ENTRYPOINT ["d8"]
 
 CMD ["-v"]

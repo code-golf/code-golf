@@ -1,19 +1,19 @@
-FROM alpine:3.14 as builder
+FROM alpine:3.15 as builder
 
 RUN mkdir /empty
 
 RUN apk add --no-cache build-base curl patch
 
 RUN curl https://ftp.gnu.org/gnu/bash/bash-5.1.tar.gz | tar xz && cd bash-5.1 \
- && curl https://ftp.gnu.org/gnu/bash/bash-5.1-patches/bash51-00[1-8] | patch -p0
+ && curl https://ftp.gnu.org/gnu/bash/bash-5.1-patches/bash51-0[01-12] | patch -p0
 
+# FIXME bash51-10 patch breaks --disable-job-control.
 RUN cd bash-5.1                \
  && ./configure                \
     --disable-command-timing   \
     --disable-debugger         \
     --disable-directory-stack  \
     --disable-help-builtin     \
-    --disable-job-control      \
     --disable-net-redirections \
     --disable-progcomp         \
     --disable-select           \
