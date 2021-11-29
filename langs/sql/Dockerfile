@@ -1,10 +1,10 @@
-FROM alpine:3.14 as builder
+FROM alpine:3.15 as builder
 
 RUN mkdir /empty
 
 RUN apk add --no-cache curl gcc musl-dev
 
-RUN curl https://www.sqlite.org/2021/sqlite-autoconf-3360000.tar.gz \
+RUN curl https://www.sqlite.org/2021/sqlite-autoconf-3370000.tar.gz \
   | tar xz --strip 1
 
 COPY sql.c /

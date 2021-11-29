@@ -593,8 +593,8 @@ say 'Hello, World!';
 '''
 
 [Ruby]
-size    = '14.4 MiB'
-version = '3.0.2'
+size    = '14.3 MiB'
+version = '3.0.3'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing
@@ -633,8 +633,8 @@ fn main() {
 '''
 
 [SQL]
-size    = '1.03 MiB'
-version = '3.36.0'
+size    = '1.05 MiB'
+version = '3.37.0'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
