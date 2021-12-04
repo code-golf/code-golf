@@ -105,8 +105,16 @@ function updateDiff(element, rows, header) {
     const padEnd = (rows.length - rowEnd - 1) * rowHeight;
     element.innerHTML = `${header}
         <div class="diff-gap" style="height:${padStart}px"></div>
-        ${rows.slice(rowStart, rowEnd).join("")}
         <div class="diff-gap" style="height:${padEnd}px"></div>`
+    // ${rows.slice(rowStart, rowEnd).join("")}
+    for (let row of rows) {
+        for (let newNode of row) {
+            element.insertBefore(
+                newNode,
+                element.lastElementChild
+            );
+        }
+    }
 }
 
 function diffHTMLRows(hole, exp, out, argv, isArgDiff) {
@@ -194,6 +202,13 @@ function getDiffRow(hole, change1, change2, pos, argv, isArgDiff) {
     return getDiffLines(hole, left, right, pos, argv, isArgDiff)
 }
 
+function elFromText(nodeType, className, innerText) {
+    const out = document.createElement(nodeType);
+    out.className = className;
+    out.innerText = innerText;
+    return out;
+}
+
 function getDiffLines(hole, left, right, pos, argv, isArgDiff) {
     const leftSplit = lines(left.value);
     const rightSplit = lines(right.value);
@@ -208,22 +223,36 @@ function getDiffLines(hole, left, right, pos, argv, isArgDiff) {
     let rows = []
     const numLines = Math.max(leftSplit.length, rightSplit.length)
     for (let i=0; i<numLines; i++) {
-        let s = ''
+        let s = []
         const leftLine = leftSplit[i];
         const rightLine = rightSplit[i];
         const charDiff = diffChars(leftLine ?? '', rightLine ?? '', diffOpts);
         // subtract 1 because the lines start counting at 1 instead of 0
         const arg = argv[i + pos.right - 1]
         if (arg !== undefined && isArgDiff) {
-            s += `<div class='diff-arg'>${arg}</div>`
+            s.push(elFromText("div", "diff-arg", arg))
         }
         if (leftLine !== undefined) {
-            s += isArgDiff ? '' : `<div class='diff-left-num'>${i + pos.left}</div>`
-            s += `<div class='diff-left${left.removed?' diff-removal':''}'>${renderCharDiff(charDiff, false)}</div>`
+            isArgDiff && s.push(
+                elFromText("div", "diff-left-num", String(i + pos.left))
+            )
+            s.push(
+                renderCharDiff(
+                    'diff-left' + (left.removed?' diff-removal':''),
+                    charDiff,
+                    false
+                )
+            )
         }
         if (rightLine !== undefined) {
-            s += isArgDiff ? '' : `<div class='diff-right-num'>${i + pos.right}</div>`
-            s += `<div class='diff-right${right.added?' diff-addition':''}'>${renderCharDiff(charDiff, true)}</div>`
+            isArgDiff && s.push(elFromText("div", "diff-right-num", String(i + pos.right)));
+            s.push(
+                renderCharDiff(
+                    'diff-right' + (right.added?' diff-addition':''),
+                    charDiff,
+                    true
+                )
+            )
         }
         rows.push(s)
     }
@@ -232,18 +261,25 @@ function getDiffLines(hole, left, right, pos, argv, isArgDiff) {
     return rows
 }
 
-function renderCharDiff(charDiff, isRight) {
-    let html = ''
+function renderCharDiff(className, charDiff, isRight) {
+    const out = document.createElement("div");
+    out.className = className;
     for (let change of charDiff) {
         if (change.added && isRight) {
-            html += `<span class='diff-char-addition'>${change.value}</span>`
+            out.appendChild(
+                elFromText("span", "diff-char-addition", change.value)
+            );
         } else if (change.removed && !isRight) {
-            html += `<span class='diff-char-removal'>${change.value}</span>`
+            out.appendChild(
+                elFromText("span", "diff-char-removal", change.value)
+            );
         } else if (!change.added && !change.removed) {
-            html += change.value;
+            out.appendChild(
+                document.createTextNode(change.value)
+            );
         }
     }
-    return html
+    return out
 }
 
 function shouldArgDiff(hole, exp, argv) {
