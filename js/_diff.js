@@ -1,5 +1,60 @@
 import * as Diff from 'diff';
 
+function diffChars(left, right, diffOpts) {
+    // Wrapper for performance
+    // Include characters until the first difference, then include 1000 characters
+    // after that, and treat the rest as a single block
+    const d = firstDifference(left, right);
+    const length = Math.min(1000, left.length - d, right.length - d);
+    const diff = Diff.diffChars(
+        left.substring(d, d + length),
+        right.substring(d, d + length),
+        diffOpts
+    );
+    const head = left.substring(0, d);
+    if (head !== "") {
+        diff.unshift({
+            count: head.length,
+            value: head
+        })
+    }
+    const leftTail = left.substring(d + length);
+    const rightTail = right.substring(d + length);
+    if (leftTail === rightTail) {
+        diff.push({
+            count: leftTail.length,
+            value: leftTail
+        });
+    } else {
+        if (leftTail !== "") {
+            diff.push({
+                added: undefined,
+                removed: true,
+                count: leftTail.length,
+                value: leftTail,
+            });
+        }
+        if (rightTail !== "") {
+            diff.push({
+                added: true,
+                removed: undefined,
+                count: rightTail.length,
+                value: rightTail
+            });
+        }
+    }
+    return diff;
+}
+
+function firstDifference(left, right) {
+    for (let i=0; i<left.length && i<right.length; i++) {
+        if (left[i] != right[i]) {
+            return i;
+        }
+    }
+    return Math.min(left.length, right.length) + 1;
+}
+
 export function attachDiff(element, hole, exp, out, argv) {
     const isArgDiff = shouldArgDiff(hole, exp, argv);
     const header = getHeader(isArgDiff);
@@ -156,7 +211,7 @@ function getDiffLines(hole, left, right, pos, argv, isArgDiff) {
         let s = ''
         const leftLine = leftSplit[i];
         const rightLine = rightSplit[i];
-        const charDiff = Diff.diffChars(leftLine ?? '', rightLine ?? '', diffOpts);
+        const charDiff = diffChars(leftLine ?? '', rightLine ?? '', diffOpts);
         // subtract 1 because the lines start counting at 1 instead of 0
         const arg = argv[i + pos.right - 1]
         if (arg !== undefined && isArgDiff) {
