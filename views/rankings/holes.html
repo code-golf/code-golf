@@ -110,7 +110,12 @@
             {{ if eq $.Data.HoleID "all" }}
                 {{ comma .Strokes }}
             {{ else }}
-                <a href="/golfers/{{ .Login }}/{{ $.Data.HoleID }}/{{ .Lang.ID }}/{{ $.Data.Scoring }}">{{ comma .Strokes }}</a>
+                <a href="/golfers/{{ .Login }}/{{ $.Data.HoleID }}/{{ .Lang.ID }}/{{ $.Data.Scoring }}"
+                {{ if .OtherStrokes }}
+                   data-tooltip="{{ title $.Data.Scoring }} solution is {{ comma .Strokes }} {{ $.Data.Scoring }}, {{ comma .OtherStrokes }} {{ $.Data.OtherScoring }}."
+                {{ end }}>
+                   {{ comma .Strokes }}
+                </a>
             {{ end }}
             <td class=right>{{ time (.Submitted.In $.Location) }}
     {{ end }}

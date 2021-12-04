@@ -15,16 +15,17 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 	type row struct {
 		Country, Login               string
 		Holes, Rank, Points, Strokes int
+		OtherStrokes                 *int
 		Lang                         *config.Lang
 		Submitted                    time.Time
 	}
 
 	data := struct {
-		HoleID, LangID, Scoring string
-		Holes                   []*config.Hole
-		Langs                   []*config.Lang
-		Pager                   *pager.Pager
-		Rows                    []row
+		HoleID, LangID, OtherScoring, Scoring string
+		Holes                                 []*config.Hole
+		Langs                                 []*config.Lang
+		Pager                                 *pager.Pager
+		Rows                                  []row
 	}{
 		HoleID:  param(r, "hole"),
 		Holes:   config.HoleList,
@@ -40,6 +41,12 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 		data.Scoring != "chars" && data.Scoring != "bytes" {
 		NotFound(w, r)
 		return
+	}
+
+	if data.Scoring == "bytes" {
+		data.OtherScoring = "chars"
+	} else {
+		data.OtherScoring = "bytes"
 	}
 
 	var rows *sql.Rows
@@ -71,6 +78,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 			         points,
 			         RANK() OVER (ORDER BY points DESC, strokes),
 			         strokes,
+			         NULL other_strokes,
 			         submitted,
 			         COUNT(*) OVER()
 			    FROM summed
@@ -100,6 +108,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 			         points,
 			         RANK() OVER (ORDER BY points DESC, strokes),
 			         strokes,
+			         NULL other_strokes,
 			         submitted,
 			         COUNT(*) OVER()
 			    FROM summed
@@ -120,6 +129,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 			         points,
 			         RANK() OVER (ORDER BY points DESC, strokes),
 			         strokes,
+			         other_strokes,
 			         submitted,
 			         COUNT(*) OVER()
 			    FROM rankings
@@ -141,6 +151,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 			         points_for_lang,
 			         rank,
 			         strokes,
+			         other_strokes,
 			         submitted,
 			         COUNT(*) OVER()
 			    FROM rankings
@@ -173,6 +184,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 			&r.Points,
 			&r.Rank,
 			&r.Strokes,
+			&r.OtherStrokes,
 			&r.Submitted,
 			&data.Pager.Total,
 		); err != nil {
