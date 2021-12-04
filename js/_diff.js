@@ -47,8 +47,8 @@ function diffChars(left, right, diffOpts) {
 }
 
 function firstDifference(left, right) {
-    for (let i=0; i<left.length && i<right.length; i++) {
-        if (left[i] != right[i]) {
+    for (let i=0; i<left.length || i<right.length; i++) {
+        if (left[i] !== right[i]) {
             return i;
         }
     }
