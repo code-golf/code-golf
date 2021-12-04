@@ -55,9 +55,15 @@ function firstDifference(left, right) {
     return Math.min(left.length, right.length) + 1;
 }
 
+function colFromWidth(className, width) {
+    const out = document.createElement("col");
+    out.className = className;
+    out.style.width = width;
+    return out;
+}
+
 export function attachDiff(element, hole, exp, out, argv) {
     const isArgDiff = shouldArgDiff(hole, exp, argv);
-    const header = getHeader(isArgDiff);
     // Limit `out` to 1001 lines to avoid slow computation of the line diff
     // Limit must be >1000 for Van Eck Sequence
     let outLines = lines(out)
@@ -67,54 +73,54 @@ export function attachDiff(element, hole, exp, out, argv) {
         out = outLines.join("\n")
     }
     element.classList.toggle("diff-arg-type", isArgDiff);
-    const rows = diffHTMLRows(hole, exp, out, argv, isArgDiff);
-    updateDiff(element, rows, header);
-    element.onscroll = () => {
-        updateDiff(element, rows, header);
-    };
+    const {rows, maxLineNum} = diffHTMLRows(hole, exp, out, argv, isArgDiff);
+
+    element.innerHTML = "";
+    const table = document.createElement("table");
+    table.appendChild(getColgroup(isArgDiff, maxLineNum, argv));
+    const tbody = document.createElement("tbody");
+    tbody.appendChild(getHeader(isArgDiff));
+    for (let row of rows) {
+      tbody.appendChild(row);
+    }
+    table.appendChild(tbody);
+    element.appendChild(table);
+}
+
+function getColgroup(isArgDiff, maxLineNum, argv) {
+    const colgroup = document.createElement("colgroup");
+    const numLength = String(maxLineNum).length + 1;
+    const charWidth = 11;
+    if (isArgDiff) {
+        const longestArgLength = Math.max(6, ...argv.map((arg) => arg.length));
+        colgroup.appendChild(
+          colFromWidth("diff-col-arg", Math.min(longestArgLength * charWidth, 350) + "px")
+        );
+    } else {
+        colgroup.appendChild(
+          colFromWidth("diff-col-left-num", numLength * charWidth + "px")
+        );
+    }
+    colgroup.appendChild(colFromWidth("diff-col-left", "auto"));
+    if (!isArgDiff) {
+        colgroup.appendChild(
+          colFromWidth("diff-col-right-num", numLength * charWidth + "px")
+        );
+    }
+    colgroup.appendChild(colFromWidth("diff-col-right", "auto"));
+    return colgroup;
 }
 
 function getHeader(isArgDiff) {
-  const numHeader = isArgDiff ? '' : `<div class='diff-title-bg'></div>`
-  return (
-    (
-      isArgDiff
-        ? `<h3 id='diff-arguments'>Args</h3>`
-        : `<div class='diff-title-bg'></div>`
-    ) +
-    numHeader +
-    `<h3 id='diff-output'>Output</h3>` +
-    numHeader +
-    `<h3 id='diff-expected'>Expected</h3>`
-  );
-}
-
-// pixels
-const rowHeight = 20;
-
-function updateDiff(element, rows, header) {
-    // -1 for the header row
-    const rowTop = element.scrollTop / rowHeight - 1;
-    // Buffer of approx 50 rows in each direction
-    // Selected rows include rowStart but exclude rowEnd
-    // We can only show a few rows for memory reasons:
-    // Chrome limits a CSS grid to 1000 rows
-    const rowStart = Math.max(Math.floor(rowTop - 50), 0);
-    const padStart = rowStart * rowHeight;
-    const rowEnd = Math.min(Math.floor(rowTop + 60), rows.length);
-    const padEnd = (rows.length - rowEnd - 1) * rowHeight;
-    element.innerHTML = `${header}
-        <div class="diff-gap" style="height:${padStart}px"></div>
-        <div class="diff-gap" style="height:${padEnd}px"></div>`
-    // ${rows.slice(rowStart, rowEnd).join("")}
-    for (let row of rows) {
-        for (let newNode of row) {
-            element.insertBefore(
-                newNode,
-                element.lastElementChild
-            );
-        }
-    }
+    const header = document.createElement("tr");
+    isArgDiff && header.appendChild(
+        elFromText("th", "diff-header-args", "Args")
+    );
+    isArgDiff || header.appendChild(elFromText("th", "", ""));
+    header.appendChild(elFromText("th", "diff-header-output", "Output"));
+    isArgDiff || header.appendChild(elFromText("th", "diff-title-bg", ""));
+    header.appendChild(elFromText("th", "diff-header-expected", "Expected"));
+    return header;
 }
 
 function diffHTMLRows(hole, exp, out, argv, isArgDiff) {
@@ -147,7 +153,10 @@ function diffHTMLRows(hole, exp, out, argv, isArgDiff) {
     if (pendingChange) {
         rows.push(...getDiffRow(hole, pendingChange, {}, pos, argv, isArgDiff));
     }
-    return rows
+    return {
+        rows,
+        maxLineNum: Math.max(pos.left, pos.right),
+    };
 }
 
 function getLineChanges(hole, before, after, isArgDiff) {
@@ -223,38 +232,46 @@ function getDiffLines(hole, left, right, pos, argv, isArgDiff) {
     let rows = []
     const numLines = Math.max(leftSplit.length, rightSplit.length)
     for (let i=0; i<numLines; i++) {
-        let s = []
+        let row = document.createElement("tr");
         const leftLine = leftSplit[i];
         const rightLine = rightSplit[i];
         const charDiff = diffChars(leftLine ?? '', rightLine ?? '', diffOpts);
         // subtract 1 because the lines start counting at 1 instead of 0
         const arg = argv[i + pos.right - 1]
-        if (arg !== undefined && isArgDiff) {
-            s.push(elFromText("div", "diff-arg", arg))
+        if (isArgDiff) {
+            row.appendChild(elFromText("td", "diff-arg", arg ?? ""));
         }
         if (leftLine !== undefined) {
-            isArgDiff && s.push(
-                elFromText("div", "diff-left-num", String(i + pos.left))
+            isArgDiff || row.appendChild(
+                elFromText("td", "diff-left-num", String(i + pos.left))
             )
-            s.push(
+            row.appendChild(
                 renderCharDiff(
                     'diff-left' + (left.removed?' diff-removal':''),
                     charDiff,
                     false
                 )
             )
+        } else {
+            row.appendChild(elFromText("td", "", ""));
+            row.appendChild(elFromText("td", "", ""));
         }
         if (rightLine !== undefined) {
-            isArgDiff && s.push(elFromText("div", "diff-right-num", String(i + pos.right)));
-            s.push(
-                renderCharDiff(
-                    'diff-right' + (right.added?' diff-addition':''),
-                    charDiff,
-                    true
-                )
-            )
+            isArgDiff || row.appendChild(
+                elFromText("td", "diff-right-num", String(i + pos.right))
+            );
+            row.appendChild(
+              renderCharDiff(
+                "diff-right" + (right.added ? " diff-addition" : ""),
+                charDiff,
+                true
+              )
+            );
+        } else {
+            row.appendChild(elFromText("td", "", ""));
+            row.appendChild(elFromText("td", "", ""));
         }
-        rows.push(s)
+        rows.push(row)
     }
     pos.left += left.count;
     pos.right += right.count;
@@ -262,19 +279,21 @@ function getDiffLines(hole, left, right, pos, argv, isArgDiff) {
 }
 
 function renderCharDiff(className, charDiff, isRight) {
-    const out = document.createElement("div");
+    const out = document.createElement("td");
     out.className = className;
+    const contents = document.createElement("span");
+    out.appendChild(contents);
     for (let change of charDiff) {
         if (change.added && isRight) {
-            out.appendChild(
+            contents.appendChild(
                 elFromText("span", "diff-char-addition", change.value)
             );
         } else if (change.removed && !isRight) {
-            out.appendChild(
+            contents.appendChild(
                 elFromText("span", "diff-char-removal", change.value)
             );
         } else if (!change.added && !change.removed) {
-            out.appendChild(
+            contents.appendChild(
                 document.createTextNode(change.value)
             );
         }
