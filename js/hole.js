@@ -256,7 +256,7 @@ onload = () => {
         document.querySelector('#out div').innerText = data.Out;
 
         const diffContent = document.querySelector("#diff-content");
-        attachDiff(diffContent, hole, data.Exp, data.Out, data.Argv);
+        attachDiff(diffContent, hole, data.Exp, data.Out, data.Argv, false);
         diff.style.display = data.Exp === data.Out ? 'none' : 'block';
 
         status.className = data.Pass ? 'green' : 'red';

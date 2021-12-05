@@ -183,7 +183,7 @@ const runCode = document.querySelector('#run a').onclick = async () => {
         <span>{arg}</span>
     ));
 
-    attachDiff(diffContent, hole, data.Exp, data.Out, data.Argv);
+    attachDiff(diffContent, hole, data.Exp, data.Out, data.Argv, true);
 
     document.querySelector('#errors').innerHTML   = data.Err;
     document.querySelector('#expected').innerText = data.Exp;
