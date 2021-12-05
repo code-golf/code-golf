@@ -63,9 +63,13 @@
 #diff .diff-addition { background-color: var(--diff-light-green) }
 
 #diff .diff-char-removal {
-    background-color: var(--red)
+    background-color: var(--red);
 }
 
 #diff .diff-char-addition {
-    background-color: var(--green)
+    background-color: var(--green);
+}
+
+#diff .diff-skip {
+    background-color: var(--blue);
 }

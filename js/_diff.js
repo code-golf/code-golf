@@ -1,45 +1,51 @@
 import * as Diff from 'diff';
 
-function diffChars(left, right, diffOpts) {
+function diffWrapper(join, left, right, diffOpts) {
+    // join = "\n" for line diff or "" for char diff
+    // pass in left,right =  list of tokens;
+    //   for char diff, this is a list of chars
+    //   for line diff, this is a list of lines
     // Wrapper for performance
     // Include characters until the first difference, then include 1000 characters
     // after that, and treat the rest as a single block
     const d = firstDifference(left, right);
-    const length = Math.min(1000, left.length - d, right.length - d);
-    const diff = Diff.diffChars(
-        left.substring(d, d + length),
-        right.substring(d, d + length),
+    const length = Math.min(1000, Math.max(left.length - d, right.length - d));
+    const diff = (join === "" ? Diff.diffChars : Diff.diffLines)(
+        left.slice(d, d + length).join(join),
+        right.slice(d, d + length).join(join),
         diffOpts
     );
-    const head = left.substring(0, d);
+    const head = left.slice(0, d);
     if (head !== "") {
         diff.unshift({
             count: head.length,
-            value: head
+            value: head.join(join)
         })
     }
-    const leftTail = left.substring(d + length);
-    const rightTail = right.substring(d + length);
-    if (leftTail === rightTail) {
+    const leftTail = left.slice(d + length);
+    const ltString = leftTail.join(join);
+    const rightTail = right.slice(d + length);
+    const rtString = rightTail.join(join);
+    if (ltString === rtString) {
         diff.push({
             count: leftTail.length,
-            value: leftTail
+            value: ltString
         });
     } else {
-        if (leftTail !== "") {
+        if (ltString !== "") {
             diff.push({
                 added: undefined,
                 removed: true,
                 count: leftTail.length,
-                value: leftTail,
+                value: ltString
             });
         }
-        if (rightTail !== "") {
+        if (rtString !== "") {
             diff.push({
                 added: true,
                 removed: undefined,
                 count: rightTail.length,
-                value: rightTail
+                value: rtString
             });
         }
     }
@@ -64,14 +70,6 @@ function colFromWidth(className, width) {
 
 export function attachDiff(element, hole, exp, out, argv) {
     const isArgDiff = shouldArgDiff(hole, exp, argv);
-    // Limit `out` to 1001 lines to avoid slow computation of the line diff
-    // Limit must be >1000 for Van Eck Sequence
-    let outLines = lines(out)
-    if (outLines.length > 1000) {
-        outLines = outLines.slice(0, 1000);
-        outLines.push("[Truncated for performance]");
-        out = outLines.join("\n")
-    }
     element.classList.toggle("diff-arg-type", isArgDiff);
     const {rows, maxLineNum} = diffHTMLRows(hole, exp, out, argv, isArgDiff);
 
@@ -197,7 +195,7 @@ function getLineChanges(hole, before, after, isArgDiff) {
         }
         return out
     } else {
-        return Diff.diffLines(before, after, {
+        return diffWrapper("\n", lines(before), lines(after), {
             ignoreCase: shouldIgnoreCase(hole)
         })
     }
@@ -231,11 +229,30 @@ function getDiffLines(hole, left, right, pos, argv, isArgDiff) {
     }
     let rows = []
     const numLines = Math.max(leftSplit.length, rightSplit.length)
+    const isUnchanged = !left.removed && !right.added;
+    // Skip the middle of any block of more than 7 unchanged lines, or 41 changed lines
+    const padding = isUnchanged ? 3 : 20;
+    const skipMiddle = numLines > 2 * padding + 1;
     for (let i=0; i<numLines; i++) {
         let row = document.createElement("tr");
+        if (skipMiddle && i === padding) {
+            const td = elFromText("td", "diff-skip", `@@ ${numLines - 2 * padding} lines omitted @@`);
+            td.colSpan = isArgDiff ? "3" : "4";
+            row.appendChild(td);
+            rows.push(row);
+            continue;
+        }
+        if (skipMiddle && padding <= i && i < numLines - padding) {
+            continue;
+        }
         const leftLine = leftSplit[i];
         const rightLine = rightSplit[i];
-        const charDiff = diffChars(leftLine ?? '', rightLine ?? '', diffOpts);
+        const charDiff = diffWrapper(
+            "",
+            [...leftLine ?? ''],
+            [...rightLine ?? ''],
+            diffOpts
+        );
         // subtract 1 because the lines start counting at 1 instead of 0
         const arg = argv[i + pos.right - 1]
         if (isArgDiff) {
