@@ -394,8 +394,8 @@ for (let arg of arguments)
 '''
 
 [Julia]
-size    = '259 MiB'
-version = '1.6.4'
+size    = '278 MiB'
+version = '1.7.0'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -612,8 +612,8 @@ end
 '''
 
 [Rust]
-size    = '648 MiB'
-version = '1.56.1'
+size    = '658 MiB'
+version = '1.57.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
