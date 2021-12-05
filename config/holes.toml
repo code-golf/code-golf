@@ -1459,15 +1459,16 @@ preamble = '''
 
 ['Prime Numbers']
 category = 'Sequence'
-variants = ['Prime Numbers', 'Prime Numbers (10k)', 'Prime Numbers (50k)', 'Prime Numbers (100k)']
+variants = ['Prime Numbers', 'Prime Numbers (Long)']
 links = [
     { name = 'OEIS A000040', url = '//oeis.org/A000040' },
     { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Prime_number' },
 ]
 preamble = '''
 <p>
-    Print all the prime numbers from <b>1</b> to <b>100</b> inclusive, each on
-    their own line.
+    Print all the prime numbers from <b>1</b> to
+    <b>{{ if eq . "Prime Numbers" }}100{{ else }}10,000{{ end }}</b>
+    inclusive, each on their own line.
 '''
 
 ['QR Decoder']
