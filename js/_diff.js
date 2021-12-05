@@ -68,21 +68,23 @@ function colFromWidth(className, width) {
     return out;
 }
 
-export function attachDiff(element, hole, exp, out, argv) {
+export function attachDiff(element, hole, exp, out, argv, doProcessEqual) {
     const isArgDiff = shouldArgDiff(hole, exp, argv);
     element.classList.toggle("diff-arg-type", isArgDiff);
-    const {rows, maxLineNum} = diffHTMLRows(hole, exp, out, argv, isArgDiff);
-
+    
     element.innerHTML = "";
-    const table = document.createElement("table");
-    table.appendChild(getColgroup(isArgDiff, maxLineNum, argv));
-    const tbody = document.createElement("tbody");
-    tbody.appendChild(getHeader(isArgDiff));
-    for (let row of rows) {
-      tbody.appendChild(row);
+    if (doProcessEqual || !stringsEqual(exp, out, hole)) {
+        const table = document.createElement("table");
+        const {rows, maxLineNum} = diffHTMLRows(hole, exp, out, argv, isArgDiff);
+        table.appendChild(getColgroup(isArgDiff, maxLineNum, argv));
+        const tbody = document.createElement("tbody");
+        tbody.appendChild(getHeader(isArgDiff));
+        for (let row of rows) {
+          tbody.appendChild(row);
+        }
+        table.appendChild(tbody);
+        element.appendChild(table);
     }
-    table.appendChild(tbody);
-    element.appendChild(table);
 }
 
 function getColgroup(isArgDiff, maxLineNum, argv) {
@@ -157,20 +159,27 @@ function diffHTMLRows(hole, exp, out, argv, isArgDiff) {
     };
 }
 
+function stringsEqual(a, b, hole) {
+    return 0 === a.localeCompare(
+        b,
+        undefined,
+        {
+            sensitivity: shouldIgnoreCase(hole) ? 'accent' : 'base'
+        }
+    )
+}
+
 function getLineChanges(hole, before, after, isArgDiff) {
     if (isArgDiff) {
         const out = []
         const splitBefore = lines(before)
         const splitAfter = lines(after)
-        const compareOpts = {
-            sensitivity: shouldIgnoreCase(hole) ? 'accent' : 'base'
-        }
         let currentUnchanged = []
         for (let i=0; i<Math.max(splitBefore.length, splitAfter.length); i++) {
             const a = splitBefore[i] ?? '';
             const b = splitAfter[i] ?? '';
             // https://stackoverflow.com/a/2140723/7481517
-            const linesEqual = 0 === a.localeCompare(b, undefined, compareOpts);
+            const linesEqual = stringsEqual(a, b, hole);
             if (linesEqual) {
                 currentUnchanged.push(a);
             } else {
