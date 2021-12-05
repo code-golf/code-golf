@@ -1459,6 +1459,7 @@ preamble = '''
 
 ['Prime Numbers']
 category = 'Sequence'
+variants = ['Prime Numbers', 'Prime Numbers (10k)', 'Prime Numbers (50k)', 'Prime Numbers (100k)']
 links = [
     { name = 'OEIS A000040', url = '//oeis.org/A000040' },
     { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Prime_number' },

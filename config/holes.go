@@ -74,6 +74,10 @@ func init() {
 		hole.ID = id(name)
 		hole.Name = name
 
+		if strings.HasPrefix(name, "Prime Numbers (") {
+			hole.Experiment = 548
+		}
+
 		// Minify preamble.
 		if html, err := minify.HTML(string(hole.Preamble)); err != nil {
 			panic(err)
