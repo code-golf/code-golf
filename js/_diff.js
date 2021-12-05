@@ -165,17 +165,22 @@ function getLineChanges(hole, before, after, isArgDiff) {
         const compareOpts = {
             sensitivity: shouldIgnoreCase(hole) ? 'accent' : 'base'
         }
+        let currentUnchanged = []
         for (let i=0; i<Math.max(splitBefore.length, splitAfter.length); i++) {
             const a = splitBefore[i] ?? '';
             const b = splitAfter[i] ?? '';
             // https://stackoverflow.com/a/2140723/7481517
             const linesEqual = 0 === a.localeCompare(b, undefined, compareOpts);
             if (linesEqual) {
-                out.push({
-                    count: 1,
-                    value: a + '\n'
-                })
+                currentUnchanged.push(a);
             } else {
+                if (currentUnchanged.length > 0) {
+                    out.push({
+                        count: currentUnchanged.length,
+                        value: currentUnchanged.join("\n") + "\n"
+                    });
+                    currentUnchanged = [];
+                }
                 for (let [k,v] of [['removed', a], ['added', b]]) {
                     if (v !== undefined) {
                         const prev = out[out.length - 1]
@@ -183,6 +188,7 @@ function getLineChanges(hole, before, after, isArgDiff) {
                             prev.count++;
                             prev.value += v + '\n'
                         } else {
+                            // Never skip lines for changes in arg diff
                             out.push({
                                 count: 1,
                                 [k]: true,
@@ -192,6 +198,12 @@ function getLineChanges(hole, before, after, isArgDiff) {
                     }
                 }
             }
+        }
+        if (currentUnchanged.length > 0) {
+            out.push({
+                count: currentUnchanged.length,
+                value: currentUnchanged.join("\n") + "\n"
+            });
         }
         return out
     } else {
