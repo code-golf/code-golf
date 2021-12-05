@@ -1,5 +1,23 @@
 import * as Diff from 'diff';
 
+function pushToDiff(diff, entry, join) {
+    // Mutate the given diff by pushing `entry`
+    // If `entry` has the same type as the previous entry, then merge them together
+    const last = diff.at(-1);
+    if (
+        last &&
+        ((entry.removed && last.removed) ||
+            (entry.added && last.added) ||
+            (!entry.added && !last.added && !entry.removed && !last.removed))
+    ) {
+        // The value keeps a trailing newline when join="\n"
+        last.value += entry.value + join;
+        last.count += entry.count;
+    } else {
+        diff.push(entry);
+    }
+}
+
 function diffWrapper(join, left, right, diffOpts) {
     // join = "\n" for line diff or "" for char diff
     // pass in left,right =  list of tokens;
@@ -10,43 +28,63 @@ function diffWrapper(join, left, right, diffOpts) {
     // after that, and treat the rest as a single block
     const d = firstDifference(left, right);
     const length = Math.min(1000, Math.max(left.length - d, right.length - d));
+    // Concatenate a newline on line diff because Diff.diffLines counts
+    // lines without trailing newlines as changed
     const diff = (join === "" ? Diff.diffChars : Diff.diffLines)(
-        left.slice(d, d + length).join(join),
-        right.slice(d, d + length).join(join),
+        left.slice(d, d + length).join(join) + join,
+        right.slice(d, d + length).join(join) + join,
         diffOpts
     );
     const head = left.slice(0, d);
     if (head !== "") {
-        diff.unshift({
-            count: head.length,
-            value: head.join(join)
-        })
+        const fst = diff[0]
+        if (fst && !fst.added && !fst.removed) {
+            fst.count += head.length;
+            fst.value += head.join(join) + join;
+        } else {
+            diff.unshift({
+                count: head.length,
+                value: head.join(join)
+            })
+        }
     }
     const leftTail = left.slice(d + length);
     const ltString = leftTail.join(join);
     const rightTail = right.slice(d + length);
     const rtString = rightTail.join(join);
     if (ltString === rtString) {
-        diff.push({
-            count: leftTail.length,
-            value: ltString
-        });
+        pushToDiff(
+            diff,
+            {
+                count: leftTail.length,
+                value: ltString,
+            },
+            join
+        );
     } else {
         if (ltString !== "") {
-            diff.push({
-                added: undefined,
-                removed: true,
-                count: leftTail.length,
-                value: ltString
-            });
+            pushToDiff(
+                diff,
+                {
+                    added: undefined,
+                    removed: true,
+                    count: leftTail.length,
+                    value: ltString
+                },
+                join
+            )
         }
         if (rtString !== "") {
-            diff.push({
-                added: true,
-                removed: undefined,
-                count: rightTail.length,
-                value: rtString
-            });
+            pushToDiff(
+                diff,
+                {
+                    added: true,
+                    removed: undefined,
+                    count: rightTail.length,
+                    value: rtString
+                },
+                join
+            )
         }
     }
     return diff;
@@ -192,18 +230,15 @@ function getLineChanges(hole, before, after, isArgDiff) {
                 }
                 for (let [k,v] of [['removed', a], ['added', b]]) {
                     if (v !== undefined) {
-                        const prev = out[out.length - 1]
-                        if (prev && prev[k]) {
-                            prev.count++;
-                            prev.value += v + '\n'
-                        } else {
-                            // Never skip lines for changes in arg diff
-                            out.push({
+                        pushToDiff(
+                            out,
+                            {
                                 count: 1,
                                 [k]: true,
                                 value: v + '\n'
-                            })
-                        }
+                            },
+                            '\n'
+                        )
                     }
                 }
             }
