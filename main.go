@@ -157,9 +157,9 @@ func main() {
 		server.TLSConfig.GetCertificate = certManager.GetCertificate
 	}
 
-	// Every minute.
+	// Every 30 seconds.
 	go func() {
-		for range time.Tick(time.Minute) {
+		for range time.Tick(30 * time.Second) {
 			for _, view := range []string{"medals", "rankings", "points"} {
 				if _, err := db.Exec(
 					"REFRESH MATERIALIZED VIEW CONCURRENTLY " + view,
