@@ -28,9 +28,11 @@ function diffWrapper(join, left, right, diffOpts) {
     // after that, and treat the rest as a single block
     const d = firstDifference(left, right);
     const length = Math.min(1000, Math.max(left.length - d, right.length - d));
+    // Concatenate a newline on line diff because Diff.diffLines counts
+    // lines without trailing newlines as changed
     const diff = (join === "" ? Diff.diffChars : Diff.diffLines)(
-        left.slice(d, d + length).join(join),
-        right.slice(d, d + length).join(join),
+        left.slice(d, d + length).join(join) + join,
+        right.slice(d, d + length).join(join) + join,
         diffOpts
     );
     const head = left.slice(0, d);
