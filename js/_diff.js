@@ -26,7 +26,7 @@ function diffWrapper(join, left, right, diffOpts) {
     // Wrapper for performance
     // Include characters until the first difference, then include 1000 characters
     // after that, and treat the rest as a single block
-    const d = firstDifference(left, right);
+    const d = firstDifference(left, right, diffOpts.shouldIgnoreCase);
     const length = Math.min(1000, Math.max(left.length - d, right.length - d));
     // Concatenate a newline on line diff because Diff.diffLines counts
     // lines without trailing newlines as changed
@@ -52,7 +52,7 @@ function diffWrapper(join, left, right, diffOpts) {
     const ltString = leftTail.join(join);
     const rightTail = right.slice(d + length);
     const rtString = rightTail.join(join);
-    if (ltString === rtString) {
+    if (stringsEqual(ltString, rtString, diffOpts.shouldIgnoreCase)) {
         pushToDiff(
             diff,
             {
@@ -90,9 +90,9 @@ function diffWrapper(join, left, right, diffOpts) {
     return diff;
 }
 
-function firstDifference(left, right) {
+function firstDifference(left, right, ignoreCase) {
     for (let i=0; i<left.length || i<right.length; i++) {
-        if (left[i] !== right[i]) {
+        if (!stringsEqual(left[i], right[i], ignoreCase)) {
             return i;
         }
     }
@@ -107,11 +107,13 @@ function colFromWidth(className, width) {
 }
 
 export function attachDiff(element, hole, exp, out, argv, doProcessEqual) {
+    /* Returns true if the attached element should be visible. Otherwise false */
     const isArgDiff = shouldArgDiff(hole, exp, argv);
     element.classList.toggle("diff-arg-type", isArgDiff);
     
     element.innerHTML = "";
-    if (doProcessEqual || !stringsEqual(exp, out, hole)) {
+    const ignoreCase = shouldIgnoreCase(hole)
+    if (doProcessEqual || !stringsEqual(exp, out, ignoreCase)) {
         const table = document.createElement("table");
         const {rows, maxLineNum} = diffHTMLRows(hole, exp, out, argv, isArgDiff);
         table.appendChild(getColgroup(isArgDiff, maxLineNum, argv));
@@ -122,7 +124,9 @@ export function attachDiff(element, hole, exp, out, argv, doProcessEqual) {
         }
         table.appendChild(tbody);
         element.appendChild(table);
+        return true;
     }
+    return false;
 }
 
 function getColgroup(isArgDiff, maxLineNum, argv) {
@@ -197,14 +201,22 @@ function diffHTMLRows(hole, exp, out, argv, isArgDiff) {
     };
 }
 
-function stringsEqual(a, b, hole) {
-    return 0 === a.localeCompare(
-        b,
-        undefined,
-        {
-            sensitivity: shouldIgnoreCase(hole) ? 'accent' : 'base'
-        }
-    )
+function stringsEqual(a, b, ignoreCase) {
+    // https://stackoverflow.com/a/2140723/7481517
+    return (
+        a !== undefined &&
+        a !== null &&
+        0 ===
+        a.localeCompare(
+                b,
+                undefined,
+                ignoreCase
+                    ? {
+                        sensitivity: "accent",
+                      }
+                    : undefined
+        )
+    );
 }
 
 function getLineChanges(hole, before, after, isArgDiff) {
@@ -216,7 +228,6 @@ function getLineChanges(hole, before, after, isArgDiff) {
         for (let i=0; i<Math.max(splitBefore.length, splitAfter.length); i++) {
             const a = splitBefore[i] ?? '';
             const b = splitAfter[i] ?? '';
-            // https://stackoverflow.com/a/2140723/7481517
             const linesEqual = stringsEqual(a, b, hole);
             if (linesEqual) {
                 currentUnchanged.push(a);
