@@ -1,17 +1,18 @@
-FROM alpine:3.14 as builder
+FROM alpine:3.15 as builder
 
 RUN mkdir /empty
 
 RUN apk add --no-cache build-base curl libffi-dev zlib-dev
 
-RUN curl https://www.python.org/ftp/python/3.10.0/Python-3.10.0.tar.xz | tar xJ
+RUN curl https://www.python.org/ftp/python/3.10.1/Python-3.10.1.tar.xz | tar xJ
 
-RUN cd Python-3.10.0      \
- && ./configure           \
-    --prefix=/usr         \
-    --with-lto            \
-    --without-ensurepip   \
- && make -j`proc` install \
+RUN cd Python-3.10.1       \
+ && ./configure            \
+    --disable-test-modules \
+    --prefix=/usr          \
+    --with-lto             \
+    --without-ensurepip    \
+ && make -j`proc` install  \
  && strip /usr/bin/python3.10
 
 # Remove tests and .a files, but keep .pyc files to aid execution speed.

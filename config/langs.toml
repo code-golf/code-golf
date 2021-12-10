@@ -559,8 +559,8 @@ example = '''
 '''
 
 [Python]
-size    = '58.4 MiB'
-version = '3.10.0'
+size    = '57.1 MiB'
+version = '3.10.1'
 website = 'https://www.python.org'
 example = '''
 import sys
