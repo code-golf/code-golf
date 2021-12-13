@@ -38,30 +38,37 @@
 
 <header>
     <nav>
-        <a {{ if ne .Path "/" }} href=/ title=Home {{ end }}>
+        <a {{ if eq .Path "/" }} class=on {{ end }}
+            href=/ title=Home>
             {{ svg "logo" }}
         </a>
-        <a {{ if ne .Path "/about" }} href=/about title=About {{ end }}>
+        <a {{ if eq .Path "/about" }} class=on {{ end }}
+            href=/about title=About>
             {{ svg "question-circle" }}
         </a>
-        <a {{ if ne .Path "/ideas" }} href=/ideas title=Ideas {{ end }}>
+        <a {{ if eq .Path "/ideas" }} class=on {{ end }}
+            href=/ideas title=Ideas>
             {{ svg "lightbulb-light" }}
         </a>
-        <a {{ if not (hasPrefix .Path "/recent/") }} href=/recent/solutions/all/all/bytes title=Recent {{ end }}>
+        <a {{ if hasPrefix .Path "/recent/" }} class=on {{ end }}
+            href=/recent/solutions/all/all/bytes title=Recent>
             {{ svg "clock" }}
         </a>
-        <a {{ if not (hasPrefix .Path "/rankings/") }} href=/rankings/holes/all/all/bytes title=Rankings {{ end }}>
+        <a {{ if hasPrefix .Path "/rankings/" }} class=on {{ end }}
+            href=/rankings/holes/all/all/bytes title=Rankings>
             {{ svg "trophy" }}
         </a>
-        <a {{ if ne .Path "/stats" }} href=/stats title=Statistics {{ end }}>
+        <a {{ if eq .Path "/stats" }} class=on {{ end }}
+            href=/stats title=Statistics>
             {{ svg "graph-up" }}
         </a>
         <div></div>
     {{ if .Golfer }}
-        {{ $slug  := (print "/golfers/" .Golfer.Name) }}
-        {{ $slug2 := (print $slug "/holes") }}
+        {{ $slug := (print "/golfers/" .Golfer.Name) }}
 
-        <a {{ if and (ne .Path $slug) (ne .Path $slug2) }} href="{{ $slug }}" title=Profile {{ end }}>
+        <a {{ if or (eq .Path $slug) (hasPrefix .Path "/golfer/")
+            (hasPrefix .Path (print $slug "/")) }} class=on {{ end }}
+            href="{{ $slug }}" title=Profile>
             <img src="//avatars.githubusercontent.com/{{ .Golfer.Name }}?s=28">
         </a>
         <a href=/log-out title="Log Out">

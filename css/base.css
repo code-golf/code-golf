@@ -107,7 +107,7 @@ body > header a {
 }
 
 body > header a:hover,
-body > header a:not([href]) {
+body > header a.on {
     background: var(--background);
     fill: var(--color);
 }
