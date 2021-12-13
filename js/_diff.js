@@ -3,7 +3,7 @@ import * as Diff from 'diff';
 function pushToDiff(diff, entry, join) {
     // Mutate the given diff by pushing `entry`
     // If `entry` has the same type as the previous entry, then merge them together
-    const last = diff.at(-1);
+    const last = diff[diff.length - 1];
     if (
         last &&
         ((entry.removed && last.removed) ||
