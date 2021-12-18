@@ -269,7 +269,7 @@ end
 
 [Go]
 size    = '136 MiB'
-version = '1.17.4'
+version = '1.17.5'
 website = 'https://go.dev'
 example = '''
 package main
@@ -452,7 +452,7 @@ end
 
 [Nim]
 size    = '13.2 MiB'
-version = '1.6.0'
+version = '1.6.2'
 website = 'https://nim-lang.org'
 example = '''
 import os
@@ -507,7 +507,7 @@ say for @ARGV;
 
 [PHP]
 size    = '10.5 MiB'
-version = '7.4.26'
+version = '7.4.27'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -660,8 +660,8 @@ SELECT arg FROM argv
 '''
 
 [Swift]
-size    = '613 MiB'
-version = '5.5.1'
+size    = '614 MiB'
+version = '5.5.2'
 website = 'https://swift.org'
 example = '''
 // Printing
