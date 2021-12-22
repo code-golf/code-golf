@@ -238,7 +238,7 @@ preamble = '''
     The nth Catalan number can be expressed as C(n) = binomial(2n,n)/(n+1).
 
 <p>
-    Print the first 100 Cataln numbers, each on their own line.
+    Print the first 100 Catalan numbers, each on their own line.
 '''
 
 ['Christmas Trees']
