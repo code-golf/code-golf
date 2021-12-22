@@ -218,8 +218,8 @@ preamble = '''
 category = 'Mathematics'
 experiment = -1
 links = [
-   { name = 'OEIS A006752', url = 'https://oeis.org/A006752' },
-   { name = 'Wikipedia',    url = 'https://en.wikipedia.org/wiki/Catalan%27s_constant' },
+   { name = 'OEIS A006752', url = '//oeis.org/A006752' },
+   { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Catalan%27s_constant' },
 ]
 preamble = '''
 <p>Print the Catalan constant to the first 1,000 decimal places.
@@ -230,8 +230,8 @@ category = 'Sequence'
 experiment = -1
 links = [
     { name = 'OEIS A000108', url = '//oeis.org/A000108' },
-    { name = 'Rosetta Code', url = 'http://rosettacode.org/wiki/Catalan_numbers' },
-    { name = 'Wikipedia',    url = 'https://en.wikipedia.org/wiki/Catalan_number' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Catalan_numbers' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Catalan_number' },
 ]
 preamble = '''
 <p>
