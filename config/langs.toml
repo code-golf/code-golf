@@ -152,7 +152,7 @@ int main(int argc, char* argv[]) {
 
 ['C#']
 size    = '144 MiB'
-version = 'C# 10.0 on .NET 6.0.0'
+version = 'C# 10.0 on .NET 6.0.1'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 using System;
@@ -221,8 +221,8 @@ end
 '''
 
 ['F#']
-size    = '138 MiB'
-version = 'F# 6.0 on .NET 6.0.0'
+size    = '139 MiB'
+version = 'F# 6.0 on .NET 6.0.1'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -524,7 +524,7 @@ while ($arg = next($argv))
 
 [PowerShell]
 size    = '177 MiB'
-version = 'PowerShell 7.2.0 on .NET 6.0.0'
+version = 'PowerShell 7.2.1 on .NET 6.0.1'
 website = 'https://docs.microsoft.com/powershell/scripting/overview'
 example = '''
 # Printing
@@ -724,8 +724,8 @@ w
 '''
 
 [Zig]
-size    = '242 MiB'
-version = '0.8.1'
+size    = '270 MiB'
+version = '0.9.0'
 website = 'https://ziglang.org'
 example = '''
 // Notice: use spaces as indentation, since tab causes a compile-time error
