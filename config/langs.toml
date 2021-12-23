@@ -356,8 +356,8 @@ echo each 2}.ARGV
 '''
 
 [Java]
-size    = '67.1 MiB'
-version = '16.0.1'
+size    = '51.1 MiB'
+version = '17.0.1'
 website = 'https://openjdk.java.net'
 example = '''
 class Main {
