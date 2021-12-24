@@ -17,12 +17,12 @@ RUN gcc -s -o java java.c
 FROM scratch
 
 COPY --from=0 /java                    /usr/bin/
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /lib/libz.so.1           /lib/
+COPY --from=0 /lib/ld-musl-x86_64.so.1 \
+              /lib/libz.so.1           /lib/
 COPY --from=0 /opt/jdk                 /opt/jdk
 COPY --from=0 /empty                   /proc
 COPY --from=0 /empty                   /tmp
 
-ENTRYPOINT ["/usr/bin/java"]
+ENTRYPOINT ["java"]
 
 CMD ["--version"]
