@@ -46,9 +46,13 @@ RUN /src/gcc-11.2.0/configure     \
  && strip /usr/local/bin/gfortran \
     /usr/local/libexec/gcc/x86_64-pc-linux-musl/11.2.0/f951
 
+COPY fortran.c /scratch/
+
+RUN gcc -s -o fortran fortran.c
+
 FROM scratch
 
-COPY --from=0 /bin/cat /bin/rm /bin/sh      /bin/
+COPY --from=0 /scratch/fortran              /usr/bin/
 COPY --from=0 /lib/ld-musl-x86_64.so.1      \
               /lib/libz.so.1                /lib/
 COPY --from=0 /usr/bin/as /usr/bin/ld       /usr/bin/
@@ -68,8 +72,6 @@ COPY --from=0 /usr/local/libexec/gcc/x86_64-pc-linux-musl/11.2.0/f951 \
 COPY --from=0 /empty                        /proc
 COPY --from=0 /empty                        /tmp
 
-COPY fortran /usr/bin/
-
-ENTRYPOINT ["fortran"]
+ENTRYPOINT ["/usr/bin/fortran"]
 
 CMD ["--version"]
