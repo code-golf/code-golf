@@ -93,7 +93,7 @@ int main(int argc, char* argv[]) {
     char** jargv = malloc(jargc * sizeof(char*));
     jargv[0] = (char*)java;
     jargv[1] = class;
-    memcpy(&jargv[2], &argv[1], (argc - 2) * sizeof(char*));
+    memcpy(&jargv[2], &argv[2], (argc - 2) * sizeof(char*));
     jargv[jargc - 1] = NULL;
 
     execv(java, jargv);
