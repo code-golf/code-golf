@@ -237,17 +237,16 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...interfa
 	}
 
 	// Vampire Byte cheevo banner. TODO Generalise.
-	if args.Golfer != nil && !args.Golfer.Earnt("vampire-byte") {
+	if args.Golfer != nil && !args.Golfer.Earnt("twelvetide") {
 		var (
 			now   = time.Now().UTC()
-			year  = now.Year()
-			start = time.Date(year, time.October, 31, 0, 0, 0, 0, time.UTC)
-			end   = time.Date(year, time.November, 1, 0, 0, 0, 0, time.UTC)
+			start = time.Date(2021, time.December, 25, 0, 0, 0, 0, time.UTC)
+			end   = time.Date(2022, time.January, 5, 0, 0, 0, 0, time.UTC)
 		)
 
 		if now.Before(end) {
 			args.CheevoBanner = &CheevoBanner{
-				config.CheevoByID["vampire-byte"],
+				config.CheevoByID["twelvetide"],
 				start.Before(now), start, end,
 			}
 		}
