@@ -6,6 +6,7 @@ func TestID(t *testing.T) {
 	for _, tt := range []struct{ name, id string }{
 		{"><>", "fish"},
 		{"C#", "c-sharp"},
+		{"C++", "cpp"},
 		{"DON’T PANIC!", "dont-panic"},
 		{"Happy Birthday, Code Golf", "happy-birthday-code-golf"},
 		{"May the 4ᵗʰ Be with You", "may-the-4ᵗʰ-be-with-you"},

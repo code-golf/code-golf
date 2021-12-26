@@ -14,6 +14,7 @@ func id(name string) string {
 	name = strings.ReplaceAll(name, " ", "-")
 	name = strings.ReplaceAll(name, "!", "")
 	name = strings.ReplaceAll(name, "#", "-sharp")
+	name = strings.ReplaceAll(name, "+", "p")
 	name = strings.ReplaceAll(name, "(", "")
 	name = strings.ReplaceAll(name, ")", "")
 	name = strings.ReplaceAll(name, ",", "")

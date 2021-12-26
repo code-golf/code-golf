@@ -169,6 +169,29 @@ foreach (String arg in args)
     Console.WriteLine(arg);
 '''
 
+['C++']
+size    = '205 MiB'
+version = '12.0.1'
+website = 'https://clang.llvm.org'
+example = '''
+#include <iostream>
+
+int main(int argc, char* argv[]) {
+    // Printing
+    std::cout<<"Hello, World!"<<std::endl;
+
+    // Looping
+    for (int i = 0; i < 10; i++)
+        std::cout<<i<<std::endl;
+
+    // Accessing arguments
+    for (int i = 1; i < argc; i++)
+        std::cout<<argv[i]<<std::endl;
+
+    return 0;
+}
+'''
+
 [COBOL]
 size    = '4.1 MiB'
 version = 'GnuCOBOL 3.1.2.0'

@@ -80,4 +80,4 @@ $layers ~= sprintf(
 .spurt: .slurp.subst: / ( 'COPY --from=codegolf' \N+ \n )+ /, $layers
     for <docker/dev.Dockerfile docker/live.Dockerfile>».IO;
 
-sub id { $^name eq '><>' ?? 'fish' !! $name.lc.subst: '#', '-sharp' }
+sub id { $^name eq '><>' ?? 'fish' !! $name.lc.subst('+', 'p', :g).subst: '#', '-sharp' }
