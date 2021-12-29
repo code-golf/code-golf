@@ -170,8 +170,8 @@ foreach (String arg in args)
 '''
 
 ['C++']
-size    = '205 MiB'
-version = '12.0.1'
+size    = '115 MiB'
+version = '13.0.0'
 website = 'https://clang.llvm.org'
 example = '''
 #include <iostream>

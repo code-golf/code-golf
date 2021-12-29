@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
     pid_t pid = fork();
     if (!pid) {
         // See https://clang.llvm.org/cxx_status.html for valid -std values.
-        execl(clang, clang, "-std=c++2b", "-O2", "-I/usr/include/c++/10.3.1/", "-I/usr/include/c++/10.3.1/x86_64-alpine-linux-musl/", "-I/usr/include/c++/10.3.1/backward/", "-o", object, "-c", code, NULL);
+        execl(clang, clang, "-std=c++2b", "-target", "x86_64-alpine-linux-musl", "-O2", "-I/usr/include/c++/10.3.1/", "-I/usr/include/c++/10.3.1/x86_64-alpine-linux-musl/", "-I/usr/include/c++/10.3.1/backward/", "-o", object, "-c", code, NULL);
         perror("execl");
         return 3;
     }
@@ -49,7 +49,7 @@ int main(int argc, char* argv[]) {
 
     pid = fork();
     if (!pid) {
-        execl(clang, clang, "-std=c++2b", "-lstdc++", "-o", bin, object, NULL);
+        execl(clang, clang, "-std=c++2b", "-target", "x86_64-alpine-linux-musl", "-lstdc++", "-o", bin, object, NULL);
         perror("execl");
         return 5;
     }
