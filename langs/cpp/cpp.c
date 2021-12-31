@@ -6,7 +6,6 @@
 
 const char* clang = "/usr/bin/clang";
 const char* code = "/tmp/code.cpp";
-const char* object = "/tmp/code.o";
 const char* bin = "/tmp/code";
 
 int main(int argc, char* argv[]) {
@@ -33,7 +32,10 @@ int main(int argc, char* argv[]) {
     pid_t pid = fork();
     if (!pid) {
         // See https://clang.llvm.org/cxx_status.html for valid -std values.
-        execl(clang, clang, "-std=c++2b", "-target", "x86_64-alpine-linux-musl", "-O2", "-I/usr/include/c++/10.3.1/", "-I/usr/include/c++/10.3.1/x86_64-alpine-linux-musl/", "-I/usr/include/c++/10.3.1/backward/", "-o", object, "-c", code, NULL);
+        execl(clang, clang, "-std=c++2b", "-target", "x86_64-alpine-linux-musl", "-O2", "-lstdc++",
+            "-fcolor-diagnostics", "-I/usr/include/c++/10.3.1/",
+            "-I/usr/include/c++/10.3.1/x86_64-alpine-linux-musl/",
+            "-I/usr/include/c++/10.3.1/backward/", "-o", bin, code, NULL);
         perror("execl");
         return 3;
     }
@@ -47,24 +49,9 @@ int main(int argc, char* argv[]) {
     if (WEXITSTATUS(status))
         return WEXITSTATUS(status);
 
-    pid = fork();
-    if (!pid) {
-        execl(clang, clang, "-std=c++2b", "-target", "x86_64-alpine-linux-musl", "-lstdc++", "-o", bin, object, NULL);
-        perror("execl");
-        return 5;
-    }
-
-    waitpid(pid, &status, 0);
-
-    if (!WIFEXITED(status))
-        return 6;
-
-    if (WEXITSTATUS(status))
-        return WEXITSTATUS(status);
-
     if(remove(code)) {
         perror("Error deleting file");
-        return 7;
+        return 5;
     }
 
     int cargc = argc;
@@ -75,5 +62,5 @@ int main(int argc, char* argv[]) {
 
     execv(bin, cargv);
     perror("execv");
-    return 8;
+    return 6;
 }
