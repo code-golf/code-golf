@@ -39,6 +39,7 @@ input.c-sharp:not(:checked)    ~ .c-sharp,
 input.c:not(:checked)          ~ .c,
 input.cobol:not(:checked)      ~ .cobol,
 input.crystal:not(:checked)    ~ .crystal,
+input.cpp:not(:checked)        ~ .cpp,
 input.f-sharp:not(:checked)    ~ .f-sharp,
 input.fish:not(:checked)       ~ .fish,
 input.fortran:not(:checked)    ~ .fortran,
@@ -90,7 +91,7 @@ main svg:nth-of-type(2) {
 
 @media (min-width: 95rem) {
     /* Increase this number when adding a language. */
-    main { grid-template-columns: 4fr repeat(34, 1fr) }
+    main { grid-template-columns: 4fr repeat(35, 1fr) }
 
     main a { height: 1.9rem }
 
