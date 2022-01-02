@@ -4,6 +4,7 @@
     "@codemirror/gutter": "",
     "@codemirror/highlight": "",
     "@codemirror/history": "",
+    "@codemirror/lang-cpp": "",
     "@codemirror/lang-java": "",
     "@codemirror/lang-javascript": "",
     "@codemirror/lang-php": "",

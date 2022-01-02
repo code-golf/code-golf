@@ -17,9 +17,10 @@ import { oneDarkTheme, oneDarkHighlightStyle }          from '@codemirror/theme-
 // Languages.
 import { assembly }       from '@defasm/codemirror';
 import { brainfuck }      from '@codemirror/legacy-modes/mode/brainfuck';
-import { c, csharp, cpp } from '@codemirror/legacy-modes/mode/clike';
+import { c, csharp }      from '@codemirror/legacy-modes/mode/clike';
 import { cobol }          from '@codemirror/legacy-modes/mode/cobol';
 import { commonLisp }     from '@codemirror/legacy-modes/mode/commonlisp';
+import { cpp }            from '@codemirror/lang-cpp';
 import { crystal }        from '@codemirror/legacy-modes/mode/crystal';
 import { fortran }        from '@codemirror/legacy-modes/mode/fortran';
 import { fSharp }         from '@codemirror/legacy-modes/mode/mllike';
@@ -92,7 +93,7 @@ export const extensions = {
     'c':          StreamLanguage.define(c),
     'c-sharp':    StreamLanguage.define(csharp),
     'cobol':      StreamLanguage.define(cobol),
-    'cpp':        StreamLanguage.define(cpp),
+    'cpp':        cpp(),
     'crystal':    StreamLanguage.define(crystal),
     'f-sharp':    StreamLanguage.define(fSharp),
     // TODO fish
