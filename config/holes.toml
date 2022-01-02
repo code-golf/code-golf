@@ -214,15 +214,14 @@ preamble = '''
     and execute each program in turn.
 '''
 
-['Catalan Constant']
+['Catalan’s Constant']
 category = 'Mathematics'
-experiment = -1
 links = [
    { name = 'OEIS A006752', url = '//oeis.org/A006752' },
-   { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Catalan%27s_constant' },
+   { name = 'Wikipedia',    url = "//www.wikipedia.org/wiki/Catalan's_constant" },
 ]
 preamble = '''
-<p>Print the Catalan constant to the first 1,000 decimal places.
+<p>Print Catalan’s constant to the first 1,000 decimal places.
 '''
 
 ['Catalan Numbers']
@@ -231,7 +230,7 @@ experiment = -1
 links = [
     { name = 'OEIS A000108', url = '//oeis.org/A000108' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Catalan_numbers' },
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Catalan_number' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Catalan_number' },
 ]
 preamble = '''
 <p>
