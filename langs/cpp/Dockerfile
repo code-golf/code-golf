@@ -38,8 +38,10 @@ RUN strip /llvm/bin/clang /llvm/lib/libLLVM-13.so
 
 WORKDIR /runner
 
-COPY cpp.c /runner/
+COPY cpp.c                           \
+     buffer_fix.cpp                  /runner/
 RUN gcc -s -o cpp cpp.c
+RUN g++ -c buffer_fix.cpp
 
 FROM scratch
 
@@ -70,6 +72,8 @@ COPY --from=0 usr/lib/gcc/x86_64-alpine-linux-musl/10.3.1/libgcc.a    \
               usr/lib/gcc/x86_64-alpine-linux-musl/10.3.1/crtbeginS.o \
               usr/lib/gcc/x86_64-alpine-linux-musl/10.3.1/crtend.o    \
               usr/lib/gcc/x86_64-alpine-linux-musl/10.3.1/crtendS.o   /usr/lib/gcc/x86_64-alpine-linux-musl/10.3.1/
+
+COPY --from=0 /runner/buffer_fix.o     /tmp/
 
 COPY --from=0 /empty                   /tmp
 COPY --from=0 /empty                   /proc

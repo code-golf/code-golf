@@ -5,7 +5,6 @@
 #include <unistd.h>
 
 const char* clang = "/usr/bin/clang";
-const char* buffer_fix = "/tmp/buffer_fix.cpp";
 const char* code = "/tmp/code.cpp";
 const char* bin = "/tmp/code";
 
@@ -30,22 +29,13 @@ int main(int argc, char* argv[]) {
 
     fclose(fp);
 
-    // Before main runs, set stdout and stderr to unbuffered
-    fp = fopen(buffer_fix, "w");
-    fputs(
-        "#include <stdio.h>\n"
-        "static int success_stdout = setvbuf(stdout, NULL, _IONBF, 0);\n"
-        "static int success_stderr = setvbuf(stderr, NULL, _IONBF, 0);\n",
-        fp);
-    fclose(fp);
-
     pid_t pid = fork();
     if (!pid) {
         // See https://clang.llvm.org/cxx_status.html for valid -std values.
         execl(clang, clang, "-std=c++2b", "-target", "x86_64-alpine-linux-musl", "-O2", "-lstdc++",
             "-fcolor-diagnostics", "-I/usr/include/c++/10.3.1/",
             "-I/usr/include/c++/10.3.1/x86_64-alpine-linux-musl/",
-            "-I/usr/include/c++/10.3.1/backward/", "-o", bin, code, buffer_fix, NULL);
+            "-I/usr/include/c++/10.3.1/backward/", "-o", bin, code, "/tmp/buffer_fix.o", NULL);
         perror("execl");
         return 3;
     }
@@ -59,7 +49,7 @@ int main(int argc, char* argv[]) {
     if (WEXITSTATUS(status))
         return WEXITSTATUS(status);
 
-    if (remove(code) || remove(buffer_fix)) {
+    if (remove(code)) {
         perror("Error deleting file");
         return 5;
     }
