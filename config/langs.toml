@@ -416,7 +416,7 @@ for (let arg of arguments)
 
 [Julia]
 size    = '278 MiB'
-version = '1.7.0'
+version = '1.7.1'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -655,7 +655,7 @@ fn main() {
 
 [SQL]
 size    = '1.05 MiB'
-version = '3.37.0'
+version = '3.37.1'
 website = 'https://sqlite.org'
 example = '''
 -- Printing

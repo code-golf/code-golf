@@ -7,7 +7,7 @@ RUN mkdir /empty /mydev \
 RUN apk add --no-cache cmake curl g++ gfortran libexecinfo-dev \
     linux-headers m4 make musl-dev patch perl python3 tar xz
 
-ENV CXXFLAGS=-flto LDFLAGS=-flto VER=1.7.0
+ENV CXXFLAGS=-flto LDFLAGS=-flto VER=1.7.1
 
 RUN curl -L https://github.com/JuliaLang/julia/releases/download/v$VER/julia-$VER.tar.gz \
   | tar xz
