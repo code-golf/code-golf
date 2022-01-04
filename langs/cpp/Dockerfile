@@ -38,10 +38,8 @@ RUN strip /llvm/bin/clang /llvm/lib/libLLVM-13.so
 
 WORKDIR /runner
 
-COPY cpp.c                           \
-     unbuffered.cpp                  /runner/
+COPY cpp.c /runner/
 RUN gcc -s -o cpp cpp.c
-RUN g++ -c unbuffered.cpp
 
 FROM scratch
 
@@ -73,7 +71,7 @@ COPY --from=0 usr/lib/gcc/x86_64-alpine-linux-musl/10.3.1/libgcc.a    \
               usr/lib/gcc/x86_64-alpine-linux-musl/10.3.1/crtend.o    \
               usr/lib/gcc/x86_64-alpine-linux-musl/10.3.1/crtendS.o   /usr/lib/gcc/x86_64-alpine-linux-musl/10.3.1/
 
-COPY --from=0 /runner/unbuffered.o     /
+COPY unbuffered.cpp                    /
 
 COPY --from=0 /empty                   /tmp
 COPY --from=0 /empty                   /proc
