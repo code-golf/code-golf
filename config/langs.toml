@@ -155,8 +155,6 @@ size    = '144 MiB'
 version = 'C# 10.0 on .NET 6.0.1'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
-using System;
-
 // Printing
 Console.WriteLine("Hello, World!");
 
