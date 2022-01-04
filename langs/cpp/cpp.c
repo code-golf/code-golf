@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
         execl(clang, clang, "-std=c++2b", "-target", "x86_64-alpine-linux-musl", "-O2", "-lstdc++",
             "-fcolor-diagnostics", "-I/usr/include/c++/10.3.1/",
             "-I/usr/include/c++/10.3.1/x86_64-alpine-linux-musl/",
-            "-I/usr/include/c++/10.3.1/backward/", "-o", bin, code, "/tmp/buffer_fix.o", NULL);
+            "-I/usr/include/c++/10.3.1/backward/", "-o", bin, code, "/unbuffered.o", NULL);
         perror("execl");
         return 3;
     }
