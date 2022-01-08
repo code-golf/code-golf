@@ -3,77 +3,58 @@ package hole
 import (
 	"math/rand"
 	"strconv"
-	"time"
 )
 
 func isbn() (args []string, out string) {
+	for i := 0; i < 20; i++ {
+		weightedDigitsSum := 0
+		weight := 10
 
-	for m:=0; m < 20; m++ {
+		// First digit of ISBN, not sticking with traditional 1 or 0, can't
+		// let them exploit that.
+		firstDigit := rand.Intn(10)
 
-
-	// Initialize the ISBN string
-	var ISBNarg = ""
-	var weightedDigitsSum = 0
-	var weight = 10
-
-	//random number seeding
-	s1 := rand.NewSource(time.Now().UnixNano())
-	r1 := rand.New(s1)
-
-	//first digit of ISBN, not sticking with traditional 1 or 0, can't let them exploit that.
-	var firstDigit = r1.Intn(10)
-
-	weightedDigitsSum += firstDigit * weight
-
-	weight--
-
-	ISBNarg = strconv.Itoa(firstDigit) + "-"
-
-	// This here logic is for varying the second two parts of the ISBN. Sure, it's cosmetic, but it might mess some people up.
-	difference := 6 - r1.Intn(5)
-	for i := 0; i < difference; i++ {
-		var publisherDigit = r1.Intn(10)
-
-		weightedDigitsSum += publisherDigit * weight
-
+		weightedDigitsSum += firstDigit * weight
 		weight--
 
-		ISBNarg += strconv.Itoa(publisherDigit)
+		arg := strconv.Itoa(firstDigit) + "-"
+
+		// This here logic is for varying the second two parts of the ISBN.
+		// Sure, it's cosmetic, but it might mess some people up.
+		difference := 6 - rand.Intn(5)
+		for i := 0; i < difference; i++ {
+			publisherDigit := rand.Intn(10)
+
+			weightedDigitsSum += publisherDigit * weight
+			weight--
+
+			arg += strconv.Itoa(publisherDigit)
+		}
+
+		arg += "-"
+
+		difference = 8 - difference
+		for j := 0; j < difference; j++ {
+			titleDigit := rand.Intn(10)
+
+			weightedDigitsSum += titleDigit * weight
+			weight--
+
+			arg += strconv.Itoa(titleDigit)
+		}
+
+		arg += "-"
+		args = append(args, arg)
+
+		if check := (11 - (weightedDigitsSum % 11)) % 11; check == 10 {
+			out += arg + "X\n"
+		} else {
+			out += arg + strconv.Itoa(check) + "\n"
+		}
 	}
 
-	ISBNarg += "-"
-
-	secondDifference := 8 - difference
-	for j := 0; j < secondDifference; j++ {
-		var titleDigit = r1.Intn(10)
-
-		weightedDigitsSum += titleDigit * weight
-
-		weight--
-
-		ISBNarg += strconv.Itoa(titleDigit)
-	}
-
-	ISBNarg += "-"
-
-	args = append(args, ISBNarg)
-
-	var checkDigit = (11 - (weightedDigitsSum % 11)) % 11
-
-	if checkDigit == 10 {
-		out += ISBNarg + "X" + "\n"
-	} else {
-		out+= ISBNarg + strconv.Itoa(checkDigit) + "\n"
-	}
-
-
-	}//end of m-loop
-
-	//shamelessly stolen
+	// Trim the trailing newline.
 	out = out[:len(out)-1]
 
-
 	return
-
-} //end of isbn func
-
+}
