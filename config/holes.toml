@@ -20,7 +20,6 @@
 #  - Triangular Numbers
 #
 # Transform
-#  - ISBN Check Digit
 #  - £sd
 
 ['12 Days of Christmas']
@@ -904,6 +903,15 @@ links = [
 preamble = '''
 <p>
     In a 500x500px canvas, draw the Julia for f(z) = z^2 + c, where c = -0.4 + 0.6i. Output the image in ppm grayscale format.
+'''
+
+['ISBN']
+category = 'Transform'
+links = [
+	{name  = 'Wikipedia', url = '//www.wikipedia.org/wiki/International_Standard_Book_Number#ISBN-10_check_digit_calculation'}
+]
+preamble = '''
+<p>Calculate the check digit for these incomplete ISBNs. If the check digit would be 10, write "X" instead.
 '''
 
 ['Kolakoski Constant']
