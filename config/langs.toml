@@ -433,6 +433,21 @@ for arg in ARGS
 end
 '''
 
+[K]
+size    = '864 KiB'
+version = 'a52e48b43b'
+website = 'https://codeberg.org/ngn/k'
+example = '''
+/Printing
+`0:"Hello, World!"
+
+/Looping
+`0:$!10
+
+/Accessing arguments
+`0:2_`argv[]
+'''
+
 [Lisp]
 size    = '33.6 MiB'
 version = 'GNU CLISP 2.49.92'

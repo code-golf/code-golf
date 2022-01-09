@@ -31,7 +31,7 @@ for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
     %lang<size> = $proc.out.slurp(:close).chomp.subst: /(.)B$/, {" {$0.uc}iB"};
 
     # Version.
-    if $id ~~ any <assembly brainfuck fish hexagony> {
+    if $id ~~ any <assembly brainfuck fish hexagony k> {
         "langs/$id/Dockerfile".IO.slurp ~~ / ' VERSION=' (\S+) /;
         %lang<version> = $id eq 'assembly' ?? "DefAssembler $0" !! $0;
     }
