@@ -6,7 +6,7 @@ constant CONTROL = "\xe009";
 constant RETURN = "\xe006";
 constant END = "\xe010";
 constant HOME = "\xe011";
-constant DELETE = "\xe011";
+constant DELETE = "\xe017";
 constant BACKSPACE = "\xe003";
 
 my $cookieKey = "__Host-session";
@@ -173,6 +173,10 @@ class HoleWebDriver is WebDriver is export {
 
     method setSessionCookie(Str:D $session) {
         $.cookie: $cookieKey, $session, :httpOnly, :sameSite<Lax>, :secure;
+    }
+
+    method clearCode {
+        $.find('textarea').send-keys: CONTROL ~ 'a' ~ DELETE;
     }
 
     method typeCode(Str:D $code) {

@@ -29,58 +29,53 @@ for (False, True) -> $loggedIn {
     }
 
     subtest "When $loggedInContext, successful solutions persist on reload." => {
-        plan 5;
+        plan 3 + 2 * $loggedIn;
         my $wd = HoleWebDriver.create;
         LEAVE $wd.delete-session;
         setup $wd;
         $wd.getLangLink('Raku').click;
+        $wd.clearCode;
         $wd.typeCode: $raku57_55;
         $wd.isBytesAndChars: 57, 55, 'after typing code.';
         $wd.run;
         $wd.isPassing: 'after running code.';
         $wd.isSolutionPickerState: '', 'after running code.';
-        $wd.clearLocalStorage;
-        $wd.loadFizzBuzz;
-        $wd.getLangLink('Raku').click;
-        $wd.isBytesAndChars: 57 * $loggedIn, 55 * $loggedIn, 'after clearing localStorage and reloading the page.';
-        $wd.isSolutionPickerState: '', 'after clearing localStorage and reloading the page.';
+        if $loggedIn {
+            $wd.clearLocalStorage;
+            $wd.loadFizzBuzz;
+            $wd.getLangLink('Raku').click;
+            $wd.isBytesAndChars: 57, 55, 'after clearing localStorage and reloading the page.';
+            $wd.isSolutionPickerState: '', 'after clearing localStorage and reloading the page.';
+        }
     }
 
     subtest "When $loggedInContext, untested solutions are loaded from localStorage on reload." => {
-        plan 5;
+        plan 3;
         my $wd = HoleWebDriver.create;
         LEAVE $wd.delete-session;
         setup $wd;
         $wd.getLangLink('Raku').click;
+        $wd.clearCode;
         $wd.typeCode: 'abc';
         $wd.isBytesAndChars: 3, 3, 'after typing code.';
         $wd.loadFizzBuzz;
         $wd.isBytesAndChars: 3, 3, 'after reloading the page.';
         $wd.isSolutionPickerState: '', 'after reloading the page.';
-        $wd.clearLocalStorage;
-        $wd.loadFizzBuzz;
-        $wd.getLangLink('Raku').click;
-        $wd.isBytesAndChars: 0, 0, 'after clearing localStorage and reloading the page.';
-        $wd.isSolutionPickerState: '', 'after clearing localStorage and reloading the page.';
     }
 
     subtest "When $loggedInContext, failing solutions are loaded from localStorage on reload." => {
-        plan 5;
+        plan 3;
         my $wd = HoleWebDriver.create;
         LEAVE $wd.delete-session;
         setup $wd;
         $wd.getLangLink('Raku').click;
+        $wd.clearCode;
         $wd.typeCode: 'abc';
         $wd.isBytesAndChars: 3, 3, 'after typing a failing solution.';
         $wd.run;
         $wd.isFailing: 'after submitting a failing solution';
         $wd.loadFizzBuzz;
         $wd.isBytesAndChars: 3, 3, 'after reloading the page.';
-        $wd.clearLocalStorage;
-        $wd.loadFizzBuzz;
-        $wd.getLangLink('Raku').click;
-        $wd.isBytesAndChars: 0, 0, 'after clearing localStorage and reloading the page.';
-        $wd.isSolutionPickerState: '', 'after clearing localStorage and reloading the page.';
     }
 
     subtest "When $loggedInContext, after manually reverting unsaved changes, the restore solution link is not shown." => {
@@ -90,6 +85,7 @@ for (False, True) -> $loggedIn {
         setup $wd;
         $wd.getLangLink('Raku').click;
         $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
+        $wd.clearCode;
         $wd.typeCode: $raku57_55;
         $wd.isBytesAndChars: 57, 55, 'after typing code.';
         $wd.isRestoreSolutionLinkVisible: False, 'before submitting code.';
@@ -111,13 +107,15 @@ for (False, True) -> $loggedIn {
         setup $wd;
         $wd.getLangLink('Raku').click;
         $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
+        $wd.clearCode;
         $wd.typeCode: $raku59_57;
         $wd.isBytesAndChars: 59, 57, 'after typing code.';
         $wd.isRestoreSolutionLinkVisible: False, 'before submitting code.';
         $wd.run;
         $wd.isPassing: 'after submitting code.';
         $wd.isRestoreSolutionLinkVisible: False, 'after submitting code.';
-        $wd.typeCode: BACKSPACE x 57 ~ $raku57_55;
+        $wd.clearCode;
+        $wd.typeCode: $raku57_55;
         $wd.isBytesAndChars: 57, 55, 'after typing a shorter solution.';
         $wd.isRestoreSolutionLinkVisible: True, 'after typing a shorter solution.';
         $wd.run;
@@ -135,13 +133,15 @@ for (False, True) -> $loggedIn {
             setup $wd;
             $wd.getLangLink('Raku').click;
             $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
+            $wd.clearCode;
             $wd.typeCode: $raku57_55;
             $wd.isBytesAndChars: 57, 55, 'after typing code.';
             $wd.isRestoreSolutionLinkVisible: False, 'before submitting code.';
             $wd.run;
             $wd.isPassing: 'after submitting code.';
             $wd.isRestoreSolutionLinkVisible: False, 'after submitting code.';
-            $wd.typeCode: BACKSPACE x 55 ~ $raku59_57;
+            $wd.clearCode;
+            $wd.typeCode: $raku59_57;
             $wd.isBytesAndChars: 59, 57, 'after typing a longer solution.';
             $wd.isRestoreSolutionLinkVisible: True, 'after typing a longer solution.';
             $wd.run;
@@ -162,6 +162,7 @@ for (False, True) -> $loggedIn {
             setup $wd;
             $wd.getLangLink('Raku').click;
             $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
+            $wd.clearCode;
             $wd.typeCode: $raku57_55;
             $wd.isBytesAndChars: 57, 55, 'after typing code.';
             $wd.isRestoreSolutionLinkVisible: False, 'before submitting code.';
@@ -195,6 +196,7 @@ for (False, True) -> $loggedIn {
             setup $wd;
             $wd.getLangLink('Raku').click;
             $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
+            $wd.clearCode;
             $wd.typeCode: $raku57_55;
             $wd.isBytesAndChars: 57, 55, 'after typing code.';
             $wd.isRestoreSolutionLinkVisible: False, 'before submitting code.';
@@ -234,6 +236,7 @@ for (False, True) -> $loggedIn {
         LEAVE $wd.delete-session;
         setup $wd;
         $wd.getLangLink('Python').click;
+        $wd.clearCode;
         $wd.typeCode: $python121_121;
         $wd.isRestoreSolutionLinkVisible: False, 'after typing the bytes solution.';
         $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
@@ -241,7 +244,8 @@ for (False, True) -> $loggedIn {
         $wd.isPassing: 'after submitting the bytes solution.';
         $wd.isSolutionPickerState: '', 'after submitting the bytes solution.';
         $wd.isRestoreSolutionLinkVisible: False, 'after submitting the bytes solution.';
-        $wd.typeCode: BACKSPACE x 121 ~ $python210_88;
+        $wd.clearCode;
+        $wd.typeCode: $python210_88;
         $wd.isBytesAndChars: 210, 88, 'after typing the chars solution.';
         $wd.isRestoreSolutionLinkVisible: True, 'after typing the chars solution.';
         $wd.run;
@@ -251,12 +255,14 @@ for (False, True) -> $loggedIn {
         # Switch to another hole and enter bytes and chars solutions.
         $wd.loadFibonacci;
         $wd.getLangLink('Python').click;
+        $wd.clearCode;
         $wd.typeCode: $python_fibonacci_66_66;
         $wd.run;
         $wd.isPassing: 'after submitting fibonacci bytes solution.';
         $wd.isBytesAndChars: 66, 66, 'after submitting fibonacci bytes solution.';
         $wd.isSolutionPickerState: '', 'after submitting fibonacci bytes solution.';
-        $wd.typeCode: BACKSPACE x 66 ~ $python_fibonacci_126_60;
+        $wd.clearCode;
+        $wd.typeCode: $python_fibonacci_126_60;
         $wd.run;
         $wd.isPassing: 'after submitting fibonacci chars solution.';
         $wd.isBytesAndChars: 126, 60, 'after modifying code and reloading the page.';
@@ -290,6 +296,7 @@ for (False, True) -> $loggedIn {
         setup $wd;
         $wd.getLangLink('Python').click;
         $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
+        $wd.clearCode;
         $wd.typeCode: $python121_121;
         $wd.isRestoreSolutionLinkVisible: False, 'before submitting code.';
         $wd.isSolutionPickerState: '', 'before submitting code.';
@@ -303,12 +310,14 @@ for (False, True) -> $loggedIn {
         # Switch to another hole and enter bytes and chars solutions.
         $wd.loadFibonacci;
         $wd.getLangLink('Python').click;
+        $wd.clearCode;
         $wd.typeCode: $python_fibonacci_66_66;
         $wd.run;
         $wd.isPassing: 'after submitting fibonacci bytes solution.';
         $wd.isBytesAndChars: 66, 66, 'after submitting fibonacci bytes solution.';
         $wd.isSolutionPickerState: '', 'after submitting fibonacci bytes solution.';
-        $wd.typeCode: BACKSPACE x 66 ~ $python_fibonacci_126_60;
+        $wd.clearCode;
+        $wd.typeCode: $python_fibonacci_126_60;
         $wd.run;
         $wd.isPassing: 'after submitting fibonacci chars solution.';
         $wd.isBytesAndChars: 126, 60, 'after modifying code and reloading the page.';
@@ -329,6 +338,7 @@ for (False, True) -> $loggedIn {
         setup $wd;
         $wd.getLangLink('Raku').click;
         $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
+        $wd.clearCode;
         $wd.typeCode: $raku57_55;
         $wd.isBytesAndChars: 57, 55, 'after typing code.';
         $wd.isRestoreSolutionLinkVisible: False, 'before submitting code.';
@@ -352,6 +362,7 @@ for (False, True) -> $loggedIn {
         setup $wd;
         $wd.getLangLink('Raku').click;
         $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
+        $wd.clearCode;
         $wd.typeCode: $raku57_55;
         $wd.isBytesAndChars: 57, 55, 'after typing code.';
         $wd.isRestoreSolutionLinkVisible: False, 'before submitting code.';
@@ -380,6 +391,7 @@ for (False, True) -> $loggedIn {
             $wd.getLangLink('Python').click;
             $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
             # Submit different solutions for bytes and chars.
+            $wd.clearCode;
             $wd.typeCode: $python121_121;
             $wd.isRestoreSolutionLinkVisible: False, 'after typing the bytes solution.';
             $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
@@ -387,7 +399,8 @@ for (False, True) -> $loggedIn {
             $wd.isPassing: 'after submitting the bytes solution.';
             $wd.isSolutionPickerState: '', 'after submitting the bytes solution.';
             $wd.isRestoreSolutionLinkVisible: False, 'after submitting the bytes solution.';
-            $wd.typeCode: BACKSPACE x 121 ~ $python210_88;
+            $wd.clearCode;
+            $wd.typeCode: $python210_88;
             $wd.isBytesAndChars: 210, 88, 'after typing the chars solution.';
             $wd.isRestoreSolutionLinkVisible: True, 'after typing the chars solution.';
             $wd.run;
@@ -426,6 +439,7 @@ for (False, True) -> $loggedIn {
             $wd.getLangLink('Python').click;
             $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
             # Submit different solutions for bytes and chars.
+            $wd.clearCode;
             $wd.typeCode: $python121_121;
             $wd.isRestoreSolutionLinkVisible: False, 'after typing the bytes solution.';
             $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
@@ -433,7 +447,8 @@ for (False, True) -> $loggedIn {
             $wd.isPassing: 'after submitting the bytes solution.';
             $wd.isSolutionPickerState: '', 'after submitting the bytes solution.';
             $wd.isRestoreSolutionLinkVisible: False, 'after submitting the bytes solution.';
-            $wd.typeCode: BACKSPACE x 121 ~ $python210_88;
+            $wd.clearCode;
+            $wd.typeCode: $python210_88;
             $wd.isBytesAndChars: 210, 88, 'after typing the chars solution.';
             $wd.isRestoreSolutionLinkVisible: True, 'after typing the chars solution.';
             $wd.run;
@@ -469,13 +484,15 @@ for (False, True) -> $loggedIn {
         LEAVE $wd.delete-session;
         setup $wd;
         $wd.getLangLink('Python').click;
+        $wd.clearCode;
         $wd.typeCode: $python210_88;
         $wd.isBytesAndChars: 210, 88, 'after typing the chars solution.';
         $wd.run;
         $wd.isPassing: 'after submitting the chars solution';
         $wd.isSolutionPickerState: '', 'after submitting the chars solution';
         $wd.isScoringPickerState: 'bytes', 'after submitting the chars solution. The scoring should be the default, bytes.';
-        $wd.typeCode: BACKSPACE x 88 ~ $python121_121;
+        $wd.clearCode;
+        $wd.typeCode: $python121_121;
         $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
         $wd.run;
         $wd.isPassing: 'after submitting the bytes solution.';
@@ -489,13 +506,15 @@ for (False, True) -> $loggedIn {
         LEAVE $wd.delete-session;
         setup $wd;
         $wd.getLangLink('Python').click;
+        $wd.clearCode;
         $wd.typeCode: $python121_121;
         $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
         $wd.run;
         $wd.isPassing: 'after submitting the bytes solution';
         $wd.isSolutionPickerState: '', 'after submitting the bytes solution';
         $wd.isScoringPickerState: 'bytes', 'after submitting the bytes solution. The scoring should be the default, bytes.';
-        $wd.typeCode: BACKSPACE x 121 ~ $python210_88;
+        $wd.clearCode;
+        $wd.typeCode: $python210_88;
         $wd.isBytesAndChars: 210, 88, 'after typing the chars solution.';
         $wd.run;
         $wd.isPassing: 'after submitting the chars solution';
@@ -509,11 +528,13 @@ for (False, True) -> $loggedIn {
         LEAVE $wd.delete-session;
         setup $wd;
         $wd.getLangLink('Python').click;
+        $wd.clearCode;
         $wd.typeCode: $python121_121;
         $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
         $wd.run;
         $wd.isPassing: 'after submitting the bytes solution.';
-        $wd.typeCode: BACKSPACE x 121 ~ $python210_88;
+        $wd.clearCode;
+        $wd.typeCode: $python210_88;
         $wd.isBytesAndChars: 210, 88, 'after typing the chars solution.';
         $wd.run;
         $wd.isPassing: 'after submitting the chars solution';
@@ -536,16 +557,19 @@ for (False, True) -> $loggedIn {
         LEAVE $wd.delete-session;
         setup $wd;
         $wd.getLangLink('Python').click;
+        $wd.clearCode;
         $wd.typeCode: $python121_121;
         $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
         $wd.run;
         $wd.isPassing: 'after submitting the bytes solution.';
-        $wd.typeCode: BACKSPACE x 121 ~ $python210_88;
+        $wd.clearCode;
+        $wd.typeCode: $python210_88;
         $wd.isBytesAndChars: 210, 88, 'after typing the chars solution.';
         $wd.run;
         $wd.isPassing: 'after submitting the chars solution';
         $wd.isSolutionPickerState: 'chars', 'after submitting the chars solution';
-        $wd.typeCode: BACKSPACE x 88 ~ $python62_62;
+        $wd.clearCode;
+        $wd.typeCode: $python62_62;
         $wd.isBytesAndChars: 62, 62, 'after typing a solution that improves both metrics.';
         $wd.run;
         $wd.isPassing: 'after running the solution that improves both metrics.';
@@ -553,16 +577,18 @@ for (False, True) -> $loggedIn {
     }
 
     subtest "When $loggedInContext, different bytes and chars solutions, and the active solution, persist on reload." => {
-        plan 13 + 2 * $loggedIn;
+        plan 11 + 4 * $loggedIn;
         my $wd = HoleWebDriver.create;
         LEAVE $wd.delete-session;
         setup $wd;
         $wd.getLangLink('Python').click;
+        $wd.clearCode;
         $wd.typeCode: $python121_121;
         $wd.isBytesAndChars: 121, 121, 'after submitting the bytes solution.';
         $wd.run;
         $wd.isPassing: 'after submitting the bytes solution.';
-        $wd.typeCode: BACKSPACE x 121 ~ $python210_88;
+        $wd.clearCode;
+        $wd.typeCode: $python210_88;
         $wd.isBytesAndChars: 210, 88, 'after typing the chars solution.';
         $wd.run;
         $wd.isPassing: 'after submitting the chars solution';
@@ -581,14 +607,10 @@ for (False, True) -> $loggedIn {
         $wd.getLangLink('Python').click;
         if $loggedIn {
             $wd.isSolutionPickerState: 'bytes', 'after clearing localStorage and reloading the page.';
-            $wd.isBytesAndChars: 121 * $loggedIn, 121 * $loggedIn, 'after clearing localStorage and reloading the page.';
+            $wd.isBytesAndChars: 121, 121, 'after clearing localStorage and reloading the page.';
             $wd.setSolution: 'chars';
             $wd.isSolutionPickerState: 'chars', 'after switching to the chars solution.';
-            $wd.isBytesAndChars: 210 * $loggedIn, 88 * $loggedIn, 'after switching to the chars solution.';
-        }
-        else {
-            $wd.isSolutionPickerState: '', 'after clearing localStorage and reloading the page.';
-            $wd.isBytesAndChars: 0, 0, 'after clearing localStorage and reloading the page.';
+            $wd.isBytesAndChars: 210, 88, 'after switching to the chars solution.';
         }
     }
 
@@ -603,6 +625,7 @@ for (False, True) -> $loggedIn {
             $wd.getLangLink('Python').click;
             $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
             # Submit different solutions for bytes and chars.
+            $wd.clearCode;
             $wd.typeCode: $python121_121;
             $wd.isRestoreSolutionLinkVisible: False, 'after typing the bytes solution.';
             $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
@@ -610,7 +633,8 @@ for (False, True) -> $loggedIn {
             $wd.isPassing: 'after submitting the bytes solution.';
             $wd.isSolutionPickerState: '', 'after submitting the bytes solution.';
             $wd.isRestoreSolutionLinkVisible: False, 'after submitting the bytes solution.';
-            $wd.typeCode: BACKSPACE x 121 ~ $python210_88;
+            $wd.clearCode;
+            $wd.typeCode: $python210_88;
             $wd.isBytesAndChars: 210, 88, 'after typing the chars solution.';
             $wd.isRestoreSolutionLinkVisible: True, 'after typing the chars solution.';
             $wd.run;
@@ -651,11 +675,13 @@ subtest 'When not logged in, after a user submits different bytes and chars solu
     LEAVE $wd.delete-session;
     $wd.loadFizzBuzz;
     $wd.getLangLink('Python').click;
+    $wd.clearCode;
     $wd.typeCode: $python121_121;
     $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
     $wd.run;
     $wd.isPassing: 'after submitting the bytes solution, while logged out.';
-    $wd.typeCode: BACKSPACE x 121 ~ $python210_88;
+    $wd.clearCode;
+    $wd.typeCode: $python210_88;
     $wd.isBytesAndChars: 210, 88, 'after typing the chars solution.';
     $wd.run;
     $wd.isPassing: 'after submitting the chars solution, while logged out.';
@@ -691,11 +717,13 @@ subtest 'When not logged in, after a user submits different bytes and chars solu
     LEAVE $wd.delete-session;
     $wd.loadFizzBuzz;
     $wd.getLangLink('Python').click;
+    $wd.clearCode;
     $wd.typeCode: $python210_88;
     $wd.isBytesAndChars: 210, 88, 'after typing the chars solution.';
     $wd.run;
     $wd.isPassing: 'after submitting the chars solution, while logged out.';
-    $wd.typeCode: BACKSPACE x 88 ~ $python121_121;
+    $wd.clearCode;
+    $wd.typeCode: $python121_121;
     $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
     $wd.run;
     $wd.isPassing: 'after submitting the bytes solution, while logged out.';
@@ -731,11 +759,13 @@ subtest 'When not logged in, after a user submits different bytes and chars solu
     LEAVE $wd.delete-session;
     $wd.loadFizzBuzz;
     $wd.getLangLink('Python').click;
+    $wd.clearCode;
     $wd.typeCode: $python121_121;
     $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
     $wd.run;
     $wd.isPassing: 'after submitting the bytes solution, while logged out.';
-    $wd.typeCode: BACKSPACE x 121 ~ $python210_88;
+    $wd.clearCode;
+    $wd.typeCode: $python210_88;
     $wd.isBytesAndChars: 210, 88, 'after typing the chars solution.';
     $wd.run;
     $wd.isPassing: 'after submitting the chars solution, while logged out.';
@@ -762,11 +792,13 @@ subtest 'When not logged in, after a user submits different bytes and chars solu
     LEAVE $wd.delete-session;
     $wd.loadFizzBuzz;
     $wd.getLangLink('Python').click;
+    $wd.clearCode;
     $wd.typeCode: $python210_88;
     $wd.isBytesAndChars: 210, 88, 'after typing the chars solution.';
     $wd.run;
     $wd.isPassing: 'after submitting the chars solution, while logged out.';
-    $wd.typeCode: BACKSPACE x 88 ~ $python121_121;
+    $wd.clearCode;
+    $wd.typeCode: $python121_121;
     $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
     $wd.run;
     $wd.isPassing: 'after submitting the bytes solution, while logged out.';
@@ -796,6 +828,7 @@ subtest 'If the user improves their solution on another browser, the restore sol
     $wd.setSessionCookie: $session;
     $wd.loadFizzBuzz;
     $wd.getLangLink('Python').click;
+    $wd.clearCode;
     $wd.typeCode: $python121_121;
     $wd.isBytesAndChars: 121, 121, 'after typing code.';
     $wd.run;

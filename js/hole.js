@@ -126,7 +126,7 @@ onload = () => {
             multiLineStrings: lang == 'c', // TCC supports multi-line strings
         });
 
-        cm.setValue(autoSaveCode || code);
+        cm.setValue(autoSaveCode || code || langs[lang].example);
 
         refreshScores();
 
@@ -138,7 +138,7 @@ onload = () => {
         lang = location.hash.slice(1) || localStorage.getItem('lang');
 
         // Kick 'em to Python if we don't know the chosen language.
-        if (!langs.find(l => l.id == lang))
+        if (!langs[lang])
             lang = 'python';
 
         // Assembly only has bytes.
@@ -282,7 +282,7 @@ function populateLanguagePicker() {
     picker.innerHTML = '';
     picker.open = false;
 
-    for (const l of langs) {
+    for (const l of Object.values(langs).sort((a, b) => a.name.localeCompare(b.name))) {
         let name = l.name;
 
         if (getSolutionCode(l.id, 0)) {

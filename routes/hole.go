@@ -12,10 +12,8 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		HideDetails bool
 		Hole        *config.Hole
-		Langs       []*config.Lang
 		Solutions   []map[string]string
 	}{
-		Langs:     config.LangList,
 		Solutions: []map[string]string{{}, {}},
 	}
 
