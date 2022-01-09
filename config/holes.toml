@@ -1941,7 +1941,7 @@ preamble = '''
 <p>
 {{ if eq . "Sudoku" }}
     Write a program that given an incomplete Sudoku board as 9 arguments of 9
-    digits, with blanks represented by an underscore, print a solved Sudoku
+    digits, with blanks represented by an underscore, prints a solved Sudoku
     grid using Unicode box-drawing characters like so:
 {{ else }}
     Write a program that given an incomplete Sudoku board as an argument,
