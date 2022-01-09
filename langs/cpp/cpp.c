@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
         execl(clang, clang, "-std=c++2b", "-target", "x86_64-alpine-linux-musl", "-O2", "-lstdc++",
             "-fcolor-diagnostics", "-I/usr/include/c++/10.3.1/",
             "-I/usr/include/c++/10.3.1/x86_64-alpine-linux-musl/",
-            "-I/usr/include/c++/10.3.1/backward/", "-o", bin, code, NULL);
+            "-I/usr/include/c++/10.3.1/backward/", "-o", bin, code, "/unbuffered.cpp", NULL);
         perror("execl");
         return 3;
     }
@@ -49,7 +49,7 @@ int main(int argc, char* argv[]) {
     if (WEXITSTATUS(status))
         return WEXITSTATUS(status);
 
-    if(remove(code)) {
+    if (remove(code)) {
         perror("Error deleting file");
         return 5;
     }
