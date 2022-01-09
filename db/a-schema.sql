@@ -6,11 +6,11 @@ CREATE TYPE cheevo AS ENUM (
     'elephpant-in-the-room', 'fish-n-chips', 'forty-winks',
     'gone-in-60-holes', 'happy-birthday-code-golf', 'hello-world',
     'inception', 'independence-day', 'interview-ready', 'its-over-9000',
-    'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars', 'off-the-grid',
-    'ouroboros', 'patches-welcome', 'pi-day', 'polyglot', 'rtfm', 'rule-34',
-    'slowcoach', 'solve-quine', 'takeout', 'the-watering-hole', 'tim-toady',
-    'tl-dr', 'twelvetide', 'twenty-kiloleagues', 'up-to-eleven',
-    'vampire-byte'
+    'just-kidding', 'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars',
+    'off-the-grid', 'ouroboros', 'patches-welcome', 'pi-day', 'polyglot',
+    'rtfm', 'rule-34', 'slowcoach', 'solve-quine', 'takeout',
+    'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
+    'twenty-kiloleagues', 'up-to-eleven', 'vampire-byte'
 );
 
 CREATE TYPE connection AS ENUM (
@@ -39,11 +39,11 @@ CREATE TYPE hole AS ENUM (
 CREATE TYPE keymap AS ENUM ('default', 'vim');
 
 CREATE TYPE lang AS ENUM (
-    'assembly', 'bash', 'brainfuck', 'c', 'c-sharp', 'cpp', 'cobol', 'crystal',
-    'f-sharp', 'fish', 'fortran', 'go', 'haskell', 'hexagony', 'j', 'java',
-    'javascript', 'julia', 'k', 'lisp', 'lua', 'nim', 'pascal', 'perl', 'php',
-    'powershell', 'prolog', 'python', 'raku', 'ruby', 'rust', 'sql', 'swift',
-    'v', 'viml', 'zig'
+    'assembly', 'bash', 'brainfuck', 'c', 'c-sharp', 'cpp', 'cobol',
+    'crystal', 'f-sharp', 'fish', 'fortran', 'go', 'haskell', 'hexagony', 'j',
+    'java', 'javascript', 'julia', 'k', 'lisp', 'lua', 'nim', 'pascal',
+    'perl', 'php', 'powershell', 'prolog', 'python', 'raku', 'ruby', 'rust',
+    'sql', 'swift', 'v', 'viml', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('diamond', 'gold', 'silver', 'bronze');
