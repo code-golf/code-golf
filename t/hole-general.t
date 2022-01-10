@@ -11,6 +11,7 @@ subtest 'Run button works.' => {
     LEAVE $wd.delete-session;
     $wd.loadFizzBuzz;
     $wd.getLangLink('Raku').click;
+    $wd.clearCode;
     $wd.typeCode: $raku57_55;
     $wd.isBytesAndChars: 57, 55, 'after typing code.';
     $wd.run;
@@ -26,6 +27,7 @@ subtest 'Run button cancels running solutions.' => {
     $wd.loadFizzBuzz;
     $wd.getLangLink('Raku').click;
     # Submit a solution that will fail after a couple seconds.
+    $wd.clearCode;
     $wd.typeCode: "sleep 2";
     $wd.isBytesAndChars: 7, 7, 'after typing a failing solution.';
     $wd.run;

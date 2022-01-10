@@ -25,6 +25,10 @@ func init() {
 		sha, created, id string
 		hole             bool
 	}{
+		{"1e59551", "2022-01-10 19:25:07", "isbn", true},
+		{"ab1f804", "2022-01-09 21:45:31", "k", false},
+		{"1628145", "2022-01-02 03:29:48", "catalans-constant", true},
+		{"e431f15", "2022-01-01 20:45:25", "cpp", false},
 		{"56ae94b", "2021-12-05 18:45:56", "prime-numbers-long", true},
 		{"fbf52e2", "2021-11-21 22:01:40", "foo-fizz-buzz-bar", true},
 		{"52d818c", "2021-11-14 22:51:44", "prolog", false},

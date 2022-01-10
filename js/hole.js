@@ -17,7 +17,7 @@ const solutionPicker     = document.querySelector('#solutionPicker');
 const solutions          = JSON.parse(document.querySelector('#solutions').innerText);
 const status             = document.querySelector('#status');
 const table              = document.querySelector('#scores');
-const diff               = document.querySelector("#diff")
+const diff               = document.querySelector('#diff');
 
 const darkMode = matchMedia(darkModeMediaQuery).matches;
 let lang;
@@ -126,7 +126,7 @@ onload = () => {
             multiLineStrings: lang == 'c', // TCC supports multi-line strings
         });
 
-        cm.setValue(autoSaveCode || code);
+        cm.setValue(autoSaveCode || code || langs[lang].example);
 
         refreshScores();
 
@@ -138,7 +138,7 @@ onload = () => {
         lang = location.hash.slice(1) || localStorage.getItem('lang');
 
         // Kick 'em to Python if we don't know the chosen language.
-        if (!langs.find(l => l.id == lang))
+        if (!langs[lang])
             lang = 'python';
 
         // Assembly only has bytes.
@@ -255,9 +255,9 @@ onload = () => {
         document.querySelector('#exp div').innerText = data.Exp;
         document.querySelector('#out div').innerText = data.Out;
 
-        const diffContent = document.querySelector("#diff-content");
+        const diffContent = document.querySelector('#diff-content');
         const diffVisible = attachDiff(diffContent, hole, data.Exp, data.Out, data.Argv, false);
-        diff.style.display = diffVisible ? "block" : "none";
+        diff.style.display = diffVisible ? 'block' : 'none';
 
         status.className = data.Pass ? 'green' : 'red';
         status.style.display = 'block';
@@ -282,7 +282,7 @@ function populateLanguagePicker() {
     picker.innerHTML = '';
     picker.open = false;
 
-    for (const l of langs) {
+    for (const l of Object.values(langs).sort((a, b) => a.name.localeCompare(b.name))) {
         let name = l.name;
 
         if (getSolutionCode(l.id, 0)) {

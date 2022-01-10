@@ -33,7 +33,7 @@ db-diff:
 	@diff --color --label live --label dev --strip-trailing-cr -su \
 	    <(ssh rancher@code.golf "docker run --rm                   \
 	    --env-file /etc/code-golf.env $(POSTGRES) pg_dump -Os")    \
-	    <(docker-compose exec db pg_dump -OsU postgres code-golf)
+	    <(docker-compose exec -T db pg_dump -OsU postgres code-golf)
 
 db-dump:
 	@rm -f db/*.gz
@@ -80,6 +80,8 @@ font:
 	    docker rm $$id
 
 lint:
+	@node_modules/.bin/eslint js
+
 	@docker run --rm -v $(CURDIR):/app -w /app \
 	    golangci/golangci-lint:v1.43.0 golangci-lint run
 

@@ -20,7 +20,6 @@
 #  - Triangular Numbers
 #
 # Transform
-#  - ISBN Check Digit
 #  - £sd
 
 ['12 Days of Christmas']
@@ -214,15 +213,14 @@ preamble = '''
     and execute each program in turn.
 '''
 
-['Catalan Constant']
+['Catalan’s Constant']
 category = 'Mathematics'
-experiment = -1
 links = [
    { name = 'OEIS A006752', url = '//oeis.org/A006752' },
-   { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Catalan%27s_constant' },
+   { name = 'Wikipedia',    url = "//www.wikipedia.org/wiki/Catalan's_constant" },
 ]
 preamble = '''
-<p>Print the Catalan constant to the first 1,000 decimal places.
+<p>Print Catalan’s constant to the first 1,000 decimal places.
 '''
 
 ['Catalan Numbers']
@@ -231,7 +229,7 @@ experiment = -1
 links = [
     { name = 'OEIS A000108', url = '//oeis.org/A000108' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Catalan_numbers' },
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Catalan_number' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Catalan_number' },
 ]
 preamble = '''
 <p>
@@ -905,6 +903,17 @@ links = [
 preamble = '''
 <p>
     In a 500x500px canvas, draw the Julia for f(z) = z^2 + c, where c = -0.4 + 0.6i. Output the image in ppm grayscale format.
+'''
+
+[ISBN]
+category = 'Transform'
+links = [
+    { name  = 'Wikipedia', url = '//www.wikipedia.org/wiki/International_Standard_Book_Number#ISBN-10_check_digit_calculation' }
+]
+preamble = '''
+<p>
+    Calculate the check digit for these incomplete ISBNs.
+    If the check digit would be 10, write "X" instead.
 '''
 
 ['Kolakoski Constant']
@@ -1931,7 +1940,7 @@ preamble = '''
 <p>
 {{ if eq . "Sudoku" }}
     Write a program that given an incomplete Sudoku board as 9 arguments of 9
-    digits, with blanks respresented by an underscore, print a solved Sudoku
+    digits, with blanks represented by an underscore, prints a solved Sudoku
     grid using Unicode box-drawing characters like so:
 {{ else }}
     Write a program that given an incomplete Sudoku board as an argument,

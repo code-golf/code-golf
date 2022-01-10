@@ -31,7 +31,7 @@ for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
     %lang<size> = $proc.out.slurp(:close).chomp.subst: /(.)B$/, {" {$0.uc}iB"};
 
     # Version.
-    if $id ~~ any <assembly brainfuck fish hexagony> {
+    if $id ~~ any <assembly brainfuck fish hexagony k> {
         "langs/$id/Dockerfile".IO.slurp ~~ / ' VERSION=' (\S+) /;
         %lang<version> = $id eq 'assembly' ?? "DefAssembler $0" !! $0;
     }
@@ -80,4 +80,4 @@ $layers ~= sprintf(
 .spurt: .slurp.subst: / ( 'COPY --from=codegolf' \N+ \n )+ /, $layers
     for <docker/dev.Dockerfile docker/live.Dockerfile>».IO;
 
-sub id { $^name eq '><>' ?? 'fish' !! $name.lc.subst: '#', '-sharp' }
+sub id { $^name.lc.trans: qw[# + ><>] => qw[-sharp p fish] }

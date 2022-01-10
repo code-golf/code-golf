@@ -8,6 +8,7 @@ enable = [
     'gosimple',
     'govet',
     'ineffassign',
+    'revive',
     'rowserrcheck',
     'staticcheck',
     'structcheck',
@@ -16,4 +17,11 @@ enable = [
     'unparam',
     'unused',
     'varcheck',
+]
+
+[linters-settings]
+revive.rules = [
+    { name = 'increment-decrement' },
+    { name = 'unnecessary-stmt' },
+    { name = 'var-naming' },
 ]

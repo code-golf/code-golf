@@ -39,6 +39,7 @@ input.c-sharp:not(:checked)    ~ .c-sharp,
 input.c:not(:checked)          ~ .c,
 input.cobol:not(:checked)      ~ .cobol,
 input.crystal:not(:checked)    ~ .crystal,
+input.cpp:not(:checked)        ~ .cpp,
 input.f-sharp:not(:checked)    ~ .f-sharp,
 input.fish:not(:checked)       ~ .fish,
 input.fortran:not(:checked)    ~ .fortran,
@@ -49,6 +50,7 @@ input.j:not(:checked)          ~ .j,
 input.java:not(:checked)       ~ .java,
 input.javascript:not(:checked) ~ .javascript,
 input.julia:not(:checked)      ~ .julia,
+input.k:not(:checked)          ~ .k,
 input.lisp:not(:checked)       ~ .lisp,
 input.lua:not(:checked)        ~ .lua,
 input.nim:not(:checked)        ~ .nim,
@@ -90,7 +92,7 @@ main svg:nth-of-type(2) {
 
 @media (min-width: 95rem) {
     /* Increase this number when adding a language. */
-    main { grid-template-columns: 4fr repeat(34, 1fr) }
+    main { grid-template-columns: 4fr repeat(36, 1fr) }
 
     main a { height: 1.9rem }
 

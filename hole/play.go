@@ -29,6 +29,28 @@ type Scorecard struct {
 	Took               time.Duration
 }
 
+func preprocessKCode(holeID, code string) string {
+	if holeID == "quine" {
+		length := len(code)
+		var newCode []byte
+
+		// Disable implicit output by inserting a ';' before all newlines, except when
+		// the next line begins with a space (for a continuation).
+		for i := 0; i < length; i++ {
+			x := code[i]
+			if x != '\n' || i+1 < length && code[i+1] == ' ' {
+				newCode = append(newCode, x)
+			} else {
+				newCode = append(newCode, ';', '\n')
+			}
+		}
+
+		return string(newCode)
+	} else {
+		return code + "\n"
+	}
+}
+
 func getAnswer(holeID, code string) (args []string, answer string) {
 	args = []string{}
 
@@ -47,6 +69,8 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 		args, answer = emojify()
 	case "fractions":
 		args, answer = fractions()
+	case "isbn":
+		args, answer = isbn()
 	case "intersection":
 		args, answer = intersection()
 	case "levenshtein-distance":
@@ -146,6 +170,8 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		cmd.Args = []string{"/hexagony/Hexagony", "-d", "-"}
 	case "j":
 		cmd.Args = []string{"/usr/bin/j", "/tmp/code.ijs"}
+	case "k":
+		cmd.Args = []string{"/usr/bin/kwrapper", "/tmp/code.k"}
 	case "javascript":
 		cmd.Args = []string{"/usr/bin/d8", "-e", code, "--"}
 	case "julia":
@@ -187,6 +213,9 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	switch langID {
 	case "brainfuck", "fish", "javascript":
 		// For these code is passed as an argument above.
+	case "k":
+		code = preprocessKCode(holeID, code)
+		cmd.Stdin = strings.NewReader(code)
 	case "php":
 		code = "<?php " + code + " ;"
 		fallthrough

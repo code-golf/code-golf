@@ -95,6 +95,9 @@
         Taking input after EOF leaves the cell unchanged, the tape is circular
         with 65536 cells, and cells are 8-bit with wrapping.
     </div>
+    <div class="info cpp">
+        Code is compiled with clang with <a href=//clang.llvm.org/cxx_status.html>-std=c++2b</a>.
+    </div>
     <div class="info fish">
         Arguments are available via STDIN, each argument is NULL terminated.
         <b>x</b> is a no-op.
@@ -106,6 +109,11 @@
         <b>arguments</b> holds ARGV, <b>print()</b> to output with a newline,
         <b>write()</b> to output without a newline.
     </div>
+{{ if eq .Data.Hole.ID "quine" }}
+    <div class="info k">
+        Implicit output is disabled for this hole. Code must end with a newline.
+    </div>
+{{ end }}
     <div class="info perl">
         <b>say()</b> is available without any import.
     </div>

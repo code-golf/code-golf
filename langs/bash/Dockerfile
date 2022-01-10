@@ -5,7 +5,7 @@ RUN mkdir /empty
 RUN apk add --no-cache build-base curl patch
 
 RUN curl https://ftp.gnu.org/gnu/bash/bash-5.1.tar.gz | tar xz && cd bash-5.1 \
- && curl https://ftp.gnu.org/gnu/bash/bash-5.1-patches/bash51-0[01-12] | patch -p0
+ && curl https://ftp.gnu.org/gnu/bash/bash-5.1-patches/bash51-0[01-16] | patch -p0
 
 # FIXME bash51-10 patch breaks --disable-job-control.
 RUN cd bash-5.1                \

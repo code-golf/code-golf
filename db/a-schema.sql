@@ -6,11 +6,11 @@ CREATE TYPE cheevo AS ENUM (
     'elephpant-in-the-room', 'fish-n-chips', 'forty-winks',
     'gone-in-60-holes', 'happy-birthday-code-golf', 'hello-world',
     'inception', 'independence-day', 'interview-ready', 'its-over-9000',
-    'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars', 'off-the-grid',
-    'ouroboros', 'patches-welcome', 'pi-day', 'polyglot', 'rtfm', 'rule-34',
-    'slowcoach', 'solve-quine', 'takeout', 'the-watering-hole', 'tim-toady',
-    'tl-dr', 'twelvetide', 'twenty-kiloleagues', 'up-to-eleven',
-    'vampire-byte'
+    'just-kidding', 'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars',
+    'off-the-grid', 'ouroboros', 'patches-welcome', 'pi-day', 'polyglot',
+    'rtfm', 'rule-34', 'slowcoach', 'solve-quine', 'takeout',
+    'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
+    'twenty-kiloleagues', 'up-to-eleven', 'vampire-byte'
 );
 
 CREATE TYPE connection AS ENUM (
@@ -19,12 +19,12 @@ CREATE TYPE connection AS ENUM (
 
 CREATE TYPE hole AS ENUM (
     '12-days-of-christmas', '99-bottles-of-beer', 'abundant-numbers',
-    'arabic-to-roman', 'arrows', 'brainfuck', 'christmas-trees', 'css-colors',
-    'cubes', 'diamonds', 'divisors', 'emirp-numbers', 'emojify',
-    'evil-numbers', 'fibonacci', 'fizz-buzz', 'foo-fizz-buzz-bar',
-    'fractions', 'happy-numbers', 'happy-numbers-long', 'intersection',
-    'kolakoski-constant', 'kolakoski-sequence', 'leap-years',
-    'levenshtein-distance', 'leyland-numbers', 'look-and-say',
+    'arabic-to-roman', 'arrows', 'brainfuck', 'catalans-constant',
+    'christmas-trees', 'css-colors', 'cubes', 'diamonds', 'divisors',
+    'emirp-numbers', 'emojify', 'evil-numbers', 'fibonacci', 'fizz-buzz',
+    'foo-fizz-buzz-bar', 'fractions', 'happy-numbers', 'happy-numbers-long',
+    'intersection', 'isbn', 'kolakoski-constant', 'kolakoski-sequence',
+    'leap-years', 'levenshtein-distance', 'leyland-numbers', 'look-and-say',
     'lucky-tickets', 'morse-decoder', 'morse-encoder', 'musical-chords',
     'niven-numbers', 'odious-numbers', 'ordinal-numbers', 'pangram-grep',
     'pascals-triangle', 'pernicious-numbers', 'poker', 'prime-numbers',
@@ -39,11 +39,11 @@ CREATE TYPE hole AS ENUM (
 CREATE TYPE keymap AS ENUM ('default', 'vim');
 
 CREATE TYPE lang AS ENUM (
-    'assembly', 'bash', 'brainfuck', 'c', 'c-sharp', 'cobol', 'crystal',
-    'f-sharp', 'fish', 'fortran', 'go', 'haskell', 'hexagony', 'j', 'java',
-    'javascript', 'julia', 'lisp', 'lua', 'nim', 'pascal', 'perl', 'php',
-    'powershell', 'prolog', 'python', 'raku', 'ruby', 'rust', 'sql', 'swift',
-    'v', 'viml', 'zig'
+    'assembly', 'bash', 'brainfuck', 'c', 'c-sharp', 'cpp', 'cobol',
+    'crystal', 'f-sharp', 'fish', 'fortran', 'go', 'haskell', 'hexagony', 'j',
+    'java', 'javascript', 'julia', 'k', 'lisp', 'lua', 'nim', 'pascal',
+    'perl', 'php', 'powershell', 'prolog', 'python', 'raku', 'ruby', 'rust',
+    'sql', 'swift', 'v', 'viml', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('diamond', 'gold', 'silver', 'bronze');

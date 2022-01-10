@@ -18,8 +18,8 @@ v               ~<
 '''
 
 [Assembly]
-size    = '75 MiB'
-version = 'DefAssembler 2.1.7'
+size    = '76 MiB'
+version = 'DefAssembler 2.1.8'
 website = 'https://www.npmjs.com/package/@defasm/core'
 example = '''
 SYS_WRITE = 1
@@ -88,7 +88,7 @@ syscall
 
 [Bash]
 size    = '1.19 MiB'
-version = '5.1.12'
+version = '5.1.16'
 website = 'https://www.gnu.org/software/bash/'
 example = '''
 # Printing
@@ -155,8 +155,6 @@ size    = '144 MiB'
 version = 'C# 10.0 on .NET 6.0.1'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
-using System;
-
 // Printing
 Console.WriteLine("Hello, World!");
 
@@ -167,6 +165,29 @@ for (int i = 0; i < 10; i++)
 // Accessing arguments
 foreach (String arg in args)
     Console.WriteLine(arg);
+'''
+
+['C++']
+size    = '115 MiB'
+version = '13.0.0'
+website = 'https://clang.llvm.org'
+example = '''
+#include <iostream>
+
+int main(int argc, char* argv[]) {
+    // Printing
+    std::cout<<"Hello, World!"<<std::endl;
+
+    // Looping
+    for (int i = 0; i < 10; i++)
+        std::cout<<i<<std::endl;
+
+    // Accessing arguments
+    for (int i = 1; i < argc; i++)
+        std::cout<<argv[i]<<std::endl;
+
+    return 0;
+}
 '''
 
 [COBOL]
@@ -202,8 +223,8 @@ end-program.
 '''
 
 [Crystal]
-size    = '241 MiB'
-version = '1.2.2'
+size    = '242 MiB'
+version = '1.3.0'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -269,7 +290,7 @@ end
 
 [Go]
 size    = '135 MiB'
-version = '1.17.5'
+version = '1.17.6'
 website = 'https://go.dev'
 example = '''
 package main
@@ -356,8 +377,8 @@ echo each 2}.ARGV
 '''
 
 [Java]
-size    = '69.2 MiB'
-version = '16.0.1'
+size    = '51.1 MiB'
+version = '17.0.1'
 website = 'https://openjdk.java.net'
 example = '''
 class Main {
@@ -395,7 +416,7 @@ for (let arg of arguments)
 
 [Julia]
 size    = '278 MiB'
-version = '1.7.0'
+version = '1.7.1'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -410,6 +431,21 @@ end
 for arg in ARGS
     println(arg)
 end
+'''
+
+[K]
+size    = '864 KiB'
+version = 'a52e48b43b'
+website = 'https://codeberg.org/ngn/k'
+example = '''
+/Printing
+`0:"Hello, World!"
+
+/Looping
+`0:$!10
+
+/Accessing arguments
+`0:2_`argv[]
 '''
 
 [Lisp]
@@ -634,7 +670,7 @@ fn main() {
 
 [SQL]
 size    = '1.05 MiB'
-version = '3.37.0'
+version = '3.37.2'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
