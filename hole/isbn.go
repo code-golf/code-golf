@@ -2,7 +2,7 @@ package hole
 
 import (
 	"math/rand"
-	"strconv"
+	"strings"
 )
 
 func checkDigit(digits [9]int) int {
@@ -16,9 +16,11 @@ func checkDigit(digits [9]int) int {
 	return (11 - (sum % 11)) % 11
 }
 
-func isbn() (args []string, out string) {
-	guaranteedTens := rand.Perm(100)
-	for i := 0; i < 100; i++ {
+func isbn() ([]string, string) {
+	args := make([]string, 100)
+	outs := make([]string, 100)
+
+	for i, perm := range rand.Perm(100) {
 		var digits [9]int
 
 		for j := 0; j < 9; j++ {
@@ -26,7 +28,7 @@ func isbn() (args []string, out string) {
 		}
 
 		// Guarantee at least 5 arguments end with 'X'
-		if guaranteedTens[i] < 5 {
+		if perm < 5 {
 			if digits[7] == 9 {
 				digits[7] = 8
 			}
@@ -40,31 +42,31 @@ func isbn() (args []string, out string) {
 			}
 		}
 
-		arg := ""
+		var id strings.Builder
 
 		// This here logic is for varying the second two parts of the ISBN.
 		// Sure, it's cosmetic, but it might mess some people up.
 		difference := 7 - rand.Intn(5)
 		for j, digit := range digits {
-			arg += strconv.Itoa(digit)
+			id.WriteByte(byte('0' + digit))
 
 			if j == 0 || j == difference {
-				arg += "-"
+				id.WriteByte('-')
 			}
 		}
 
-		arg += "-"
-		args = append(args, arg)
+		id.WriteByte('-')
 
-		if check := checkDigit(digits); check == 10 {
-			out += arg + "X\n"
+		args[i] = id.String()
+
+		if digit := checkDigit(digits); digit == 10 {
+			id.WriteByte('X')
 		} else {
-			out += arg + strconv.Itoa(check) + "\n"
+			id.WriteByte(byte('0' + digit))
 		}
+
+		outs[i] = id.String()
 	}
 
-	// Trim the trailing newline.
-	out = out[:len(out)-1]
-
-	return
+	return args, strings.Join(outs, "\n")
 }

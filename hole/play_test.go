@@ -3,6 +3,7 @@ package hole
 import "testing"
 
 func BenchmarkArrows(b *testing.B)          { benchHole(b, arrows) }
+func BenchmarkISBN(b *testing.B)            { benchHole(b, isbn) }
 func BenchmarkSpellingNumbers(b *testing.B) { benchHole(b, spellingNumbers) }
 
 func benchHole(b *testing.B, hole func() ([]string, string)) {
