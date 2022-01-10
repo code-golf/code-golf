@@ -410,5 +410,5 @@ function shouldIgnoreCase(hole) {
 }
 
 function lines(s) {
-    return s.split(/\r\n|\n/);
+    return s.split(/\r?\n/);
 }
