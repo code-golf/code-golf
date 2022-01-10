@@ -907,7 +907,6 @@ preamble = '''
 
 [ISBN]
 category = 'Transform'
-experiment = -1
 links = [
     { name  = 'Wikipedia', url = '//www.wikipedia.org/wiki/International_Standard_Book_Number#ISBN-10_check_digit_calculation' }
 ]
