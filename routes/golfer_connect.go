@@ -79,8 +79,8 @@ func GolferConnect(w http.ResponseWriter, r *http.Request) {
 	case "stack-overflow":
 		var info struct {
 			Items []struct {
-				Display_Name string
-				User_ID      int
+				DisplayName string `json:"display_name"`
+				UserID      int    `json:"user_id"`
 			}
 		}
 
@@ -88,8 +88,8 @@ func GolferConnect(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
-		user.ID = strconv.Itoa(info.Items[0].User_ID)
-		user.Username = info.Items[0].Display_Name
+		user.ID = strconv.Itoa(info.Items[0].UserID)
+		user.Username = info.Items[0].DisplayName
 	}
 
 	if _, err := session.Database(r).Exec(

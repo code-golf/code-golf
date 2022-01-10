@@ -5,7 +5,7 @@ import (
 	"strconv"
 )
 
-func check_digit(digits [9]int) int {
+func checkDigit(digits [9]int) int {
 	sum, weight := 0, 10
 
 	for _, digit := range digits {
@@ -31,12 +31,12 @@ func isbn() (args []string, out string) {
 				digits[7] = 8
 			}
 
-			for check_digit(digits) != 2 && check_digit(digits) != 10 {
+			for checkDigit(digits) != 2 && checkDigit(digits) != 10 {
 				digits[8] = (digits[8] + 1) % 10
 			}
 
-			if check_digit(digits) != 10 {
-				digits[7] += 1
+			if checkDigit(digits) != 10 {
+				digits[7]++
 			}
 		}
 
@@ -56,7 +56,7 @@ func isbn() (args []string, out string) {
 		arg += "-"
 		args = append(args, arg)
 
-		if check := check_digit(digits); check == 10 {
+		if check := checkDigit(digits); check == 10 {
 			out += arg + "X\n"
 		} else {
 			out += arg + strconv.Itoa(check) + "\n"

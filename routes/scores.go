@@ -127,8 +127,7 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 	langID := param(r, "lang")
 	scoring := param(r, "scoring")
 
-	switch holeID {
-	case "all-holes":
+	if holeID == "all-holes" {
 		holeID = "all"
 	}
 
@@ -139,8 +138,7 @@ func Scores(w http.ResponseWriter, r *http.Request) {
 		langID = "raku"
 	}
 
-	switch scoring {
-	case "":
+	if scoring == "" {
 		scoring = "bytes"
 	}
 
