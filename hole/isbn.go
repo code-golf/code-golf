@@ -5,16 +5,15 @@ import (
 	"strconv"
 )
 
-func check_digit(digits [9]int) (check int) {
-	weightedDigitsSum := 0
-	weight := 10
+func check_digit(digits [9]int) int {
+	sum, weight := 0, 10
 
 	for _, digit := range digits {
-		weightedDigitsSum += digit * weight
+		sum += digit * weight
 		weight--
 	}
-	check = (11 - (weightedDigitsSum % 11)) % 11
-	return
+
+	return (11 - (sum % 11)) % 11
 }
 
 func isbn() (args []string, out string) {
