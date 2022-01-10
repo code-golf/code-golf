@@ -16,9 +16,9 @@ jobs:
         with:
           node-version: 16
 
+      - run: npm install
       - run: make lint
       - run: make test
       - run: go get filippo.io/mkcert
       - run: make cert
-      - run: npm install
       - run: make e2e

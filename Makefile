@@ -80,6 +80,8 @@ font:
 	    docker rm $$id
 
 lint:
+	@node_modules/.bin/eslint js
+
 	@docker run --rm -v $(CURDIR):/app -w /app \
 	    golangci/golangci-lint:v1.43.0 golangci-lint run
 

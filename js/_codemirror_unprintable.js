@@ -1,6 +1,6 @@
 // CodeMirror unprintable character extensions
-import { Decoration, EditorView, keymap, MatchDecorator, ViewPlugin, WidgetType } from "@codemirror/view";
-import { EditorState }                                                            from "@codemirror/state";
+import { Decoration, EditorView, keymap, MatchDecorator, ViewPlugin, WidgetType } from '@codemirror/view';
+import { EditorState }                                                            from '@codemirror/state';
 
 export const carriageReturn = [
     EditorState.lineSeparator.of('\n'), // Prevent CM from treating carriage return as newline
@@ -9,19 +9,20 @@ export const carriageReturn = [
         run: ({ state, dispatch }) => {
             dispatch(state.replaceSelection('\r'));
             return true;
-        }
+        },
     }),
     /* When all the newlines inserted in a transaction are preceded by a
     carriage return, remove the carriage returns. This fixes lines ending
     with a carriage return when copied and pasted on Windows. */
     EditorState.transactionFilter.of(transaction => {
-        let changes = [], allPrefixed = true;
+        const changes = [];
+        let allPrefixed = true;
         transaction.changes.iterChanges((fromA, toA, fromB, toB, inserted) => {
-            if(!allPrefixed)
+            if (!allPrefixed)
                 return;
             const string = inserted.sliceString(0);
-            for(let i = 0; (i = string.indexOf('\n', i)) >= 0; i++) {
-                if(string[i - 1] != '\r') {
+            for (let i = 0; (i = string.indexOf('\n', i)) >= 0; i++) {
+                if (string[i - 1] != '\r') {
                     allPrefixed = false;
                     return;
                 }
@@ -29,30 +30,30 @@ export const carriageReturn = [
             }
         });
         return allPrefixed ? [transaction, { changes, sequential: true }] : transaction;
-    })
+    }),
 ];
 
 let inputSequence = '';
 export const insertChar = EditorView.domEventHandlers({
-    'keydown': event => {
-        if(event.altKey && event.key.match(/^[0-9a-f]$/i)) {
+    keydown: event => {
+        if (event.altKey && event.key.match(/^[0-9a-f]$/i)) {
             inputSequence += event.key;
             event.preventDefault();
         }
     },
-    'keyup': (event, view) => {
-        if(event.key == 'Alt' && inputSequence) {
+    keyup: (event, view) => {
+        if (event.key == 'Alt' && inputSequence) {
             try {
                 const codepoint = parseInt(inputSequence, 16);
-                if(codepoint != 0)
+                if (codepoint != 0)
                     view.dispatch(view.state.replaceSelection(
-                        String.fromCodePoint(codepoint)
+                        String.fromCodePoint(codepoint),
                     ));
             }
-            catch(e) {}
+            catch (e) {}
             inputSequence = '';
         }
-    }
+    },
 });
 
 class UnprintableWidget extends WidgetType {
@@ -61,15 +62,15 @@ class UnprintableWidget extends WidgetType {
         this.value = value;
     }
     toDOM() {
-        return <span title={'\\u' + this.value.toString(16)}>•</span>
+        return <span title={'\\u' + this.value.toString(16)}>•</span>;
     }
 }
 
 const unprintableDecorator = new MatchDecorator({
     regexp: /[\x01-\x08\x0B-\x1F]/g,
     decoration: match => Decoration.replace({
-        widget: new UnprintableWidget(match[0].charCodeAt(0))
-    })
+        widget: new UnprintableWidget(match[0].charCodeAt(0)),
+    }),
 });
 
 export const showUnprintables = ViewPlugin.fromClass(
@@ -81,5 +82,5 @@ export const showUnprintables = ViewPlugin.fromClass(
             this.decorations = unprintableDecorator.updateDeco(update, this.decorations);
         }
     },
-    { decorations: plugin => plugin.decorations }
+    { decorations: plugin => plugin.decorations },
 );

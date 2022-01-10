@@ -12,14 +12,16 @@ export default str => {
             // Low surrogate.
             if ((extra & 0xFC00) == 0xDC00) {
                 len++;
-            } else {
+            }
+            else {
                 // It's an unmatched surrogate; only append this code unit, in
                 // case the next code unit is the high surrogate of a
                 // surrogate pair.
                 len++;
                 i--;
             }
-        } else {
+        }
+        else {
             len++;
         }
     }

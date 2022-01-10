@@ -17,7 +17,7 @@ const solutionPicker     = document.querySelector('#solutionPicker');
 const solutions          = JSON.parse(document.querySelector('#solutions').innerText);
 const status             = document.querySelector('#status');
 const table              = document.querySelector('#scores');
-const diff               = document.querySelector("#diff")
+const diff               = document.querySelector('#diff');
 
 const darkMode = matchMedia(darkModeMediaQuery).matches;
 let lang;
@@ -255,9 +255,9 @@ onload = () => {
         document.querySelector('#exp div').innerText = data.Exp;
         document.querySelector('#out div').innerText = data.Out;
 
-        const diffContent = document.querySelector("#diff-content");
+        const diffContent = document.querySelector('#diff-content');
         const diffVisible = attachDiff(diffContent, hole, data.Exp, data.Out, data.Argv, false);
-        diff.style.display = diffVisible ? "block" : "none";
+        diff.style.display = diffVisible ? 'block' : 'none';
 
         status.className = data.Pass ? 'green' : 'red';
         status.style.display = 'block';

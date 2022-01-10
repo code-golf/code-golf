@@ -15,32 +15,32 @@ import { StreamLanguage }                               from '@codemirror/stream
 import { oneDarkTheme, oneDarkHighlightStyle }          from '@codemirror/theme-one-dark';
 
 // Languages.
-import { assembly }       from '@defasm/codemirror';
-import { brainfuck }      from '@codemirror/legacy-modes/mode/brainfuck';
-import { c, csharp }      from '@codemirror/legacy-modes/mode/clike';
-import { cobol }          from '@codemirror/legacy-modes/mode/cobol';
-import { commonLisp }     from '@codemirror/legacy-modes/mode/commonlisp';
-import { cpp }            from '@codemirror/lang-cpp';
-import { crystal }        from '@codemirror/legacy-modes/mode/crystal';
-import { fortran }        from '@codemirror/legacy-modes/mode/fortran';
-import { fSharp }         from '@codemirror/legacy-modes/mode/mllike';
-import { go }             from '@codemirror/legacy-modes/mode/go';
-import { haskell }        from '@codemirror/legacy-modes/mode/haskell';
-import { java }           from '@codemirror/lang-java';
-import { javascript }     from '@codemirror/lang-javascript';
-import { julia }          from '@codemirror/legacy-modes/mode/julia';
-import { lua }            from '@codemirror/legacy-modes/mode/lua';
-import { nim }            from 'nim-codemirror-mode';
-import { pascal }         from '@codemirror/legacy-modes/mode/pascal';
-import { perl }           from '@codemirror/legacy-modes/mode/perl';
-import { php }            from '@codemirror/lang-php';
-import { powerShell }     from '@codemirror/legacy-modes/mode/powershell';
-import { python }         from '@codemirror/lang-python';
-import { ruby }           from '@codemirror/legacy-modes/mode/ruby';
-import { rust }           from '@codemirror/lang-rust';
-import { shell }          from '@codemirror/legacy-modes/mode/shell';
-import { sql, SQLite }    from '@codemirror/lang-sql';
-import { swift }          from '@codemirror/legacy-modes/mode/swift';
+import { assembly }    from '@defasm/codemirror';
+import { brainfuck }   from '@codemirror/legacy-modes/mode/brainfuck';
+import { c, csharp }   from '@codemirror/legacy-modes/mode/clike';
+import { cobol }       from '@codemirror/legacy-modes/mode/cobol';
+import { commonLisp }  from '@codemirror/legacy-modes/mode/commonlisp';
+import { cpp }         from '@codemirror/lang-cpp';
+import { crystal }     from '@codemirror/legacy-modes/mode/crystal';
+import { fortran }     from '@codemirror/legacy-modes/mode/fortran';
+import { fSharp }      from '@codemirror/legacy-modes/mode/mllike';
+import { go }          from '@codemirror/legacy-modes/mode/go';
+import { haskell }     from '@codemirror/legacy-modes/mode/haskell';
+import { java }        from '@codemirror/lang-java';
+import { javascript }  from '@codemirror/lang-javascript';
+import { julia }       from '@codemirror/legacy-modes/mode/julia';
+import { lua }         from '@codemirror/legacy-modes/mode/lua';
+import { nim }         from 'nim-codemirror-mode';
+import { pascal }      from '@codemirror/legacy-modes/mode/pascal';
+import { perl }        from '@codemirror/legacy-modes/mode/perl';
+import { php }         from '@codemirror/lang-php';
+import { powerShell }  from '@codemirror/legacy-modes/mode/powershell';
+import { python }      from '@codemirror/lang-python';
+import { ruby }        from '@codemirror/legacy-modes/mode/ruby';
+import { rust }        from '@codemirror/lang-rust';
+import { shell }       from '@codemirror/legacy-modes/mode/shell';
+import { sql, SQLite } from '@codemirror/lang-sql';
+import { swift }       from '@codemirror/legacy-modes/mode/swift';
 
 // For some reason, this doesn't fully work unless added to both themes.
 const asmErrorTooltip = {
@@ -73,7 +73,7 @@ export const extensions = {
     dark: [
         EditorView.theme({
             '&': { background: 'var(--background)', color: 'var(--color)' },
-            ".cm-asm-dump":          { color: "var(--asm-dump)" },
+            '.cm-asm-dump':          { color: 'var(--asm-dump)' },
             '.cm-asm-error-tooltip': asmErrorTooltip,
             '.cm-gutters':           { background: 'var(--light-grey)' },
         }, { dark: true }),

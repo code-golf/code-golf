@@ -21,6 +21,7 @@
     "@defasm/codemirror": "",
     "diff": "^5.0.0",
     "esbuild": "",
+    "eslint": "^8.6.0",
     "lz-string": "",
     "nim-codemirror-mode": ""
   }
