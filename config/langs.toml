@@ -445,7 +445,7 @@ example = '''
 `0:$!10
 
 /Accessing arguments
-`0:2_`argv[]
+`0:x
 '''
 
 [Lisp]
