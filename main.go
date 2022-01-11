@@ -9,6 +9,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/code-golf/code-golf/discord"
 	"github.com/code-golf/code-golf/github"
 	"github.com/code-golf/code-golf/middleware"
 	"github.com/code-golf/code-golf/routes"
@@ -187,9 +188,13 @@ func main() {
 
 	// Every 5 minutes.
 	go func() {
-		// Various GitHub API requests.
 		for range time.Tick(5 * time.Minute) {
+			// Various GitHub API requests.
 			github.Run(db)
+
+			if err := discord.AwardRoles(db); err != nil {
+				log.Println(err)
+			}
 		}
 	}()
 

@@ -15,8 +15,14 @@ import (
 )
 
 var (
-	bot       *discordgo.Session
-	channelID string
+	bot *discordgo.Session
+
+	// All the config keys!
+	botToken      = os.Getenv("DISCORD_BOT_TOKEN")       // Caddie
+	channelID     = os.Getenv("DISCORD_CHANNEL_ID")      // 🍇・sour-grapes
+	guildID       = os.Getenv("DISCORD_GUILD_ID")        // Code Golf
+	roleContribID = os.Getenv("DISCORD_ROLE_CONTRIB_ID") // Contributor
+	roleSponsorID = os.Getenv("DISCORD_ROLE_SPONSOR_ID") // Sponsor
 )
 
 // Represents a new record announcement message
@@ -31,21 +37,24 @@ type RecAnnouncement struct {
 var lastAnnouncement *RecAnnouncement
 
 func init() {
-	/* The authentication token of the bot and the ID of the announcement channel (800680710964903946)
-	should be stored in the .env file. If either of them isn't found, the bot is skipped */
-	var token string
-	if token, channelID = os.Getenv("DISCORD_BOT_TOKEN"), os.Getenv("DISCORD_BOT_CHANNEL"); token != "" && channelID != "" {
-		go func() {
-			var err error
-			if bot, err = discordgo.New("Bot " + token); err != nil {
-				log.Println(err)
-			} else if err := bot.Open(); err != nil {
-				log.Println(err)
-			} else {
-				bot.AddHandler(handleMessage)
-			}
-		}()
+	// Ensure we have all our config.
+	switch "" {
+	case botToken, channelID, guildID, roleContribID, roleSponsorID:
+		return
 	}
+
+	// Connect to Discord off the main thread.
+	go func() {
+		var err error
+		if bot, err = discordgo.New("Bot " + botToken); err != nil {
+			log.Println(err)
+		} else if err = bot.Open(); err != nil {
+			log.Println(err)
+			bot = nil
+		} else {
+			bot.AddHandler(handleMessage)
+		}
+	}()
 }
 
 // recAnnounceToEmbed parses a recAnnouncement object and turns it into a Discord embed
@@ -98,6 +107,106 @@ func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
 	}
 
 	return embed
+}
+
+// AwardRoles awards Discord roles based on cheevos etc.
+func AwardRoles(db *sql.DB) error {
+	if bot == nil {
+		return nil
+	}
+
+	// Make maps of members with contributor or sponsor roles. TODO Paginate.
+	var (
+		contributors = map[string]interface{}{}
+		sponsors     = map[string]interface{}{}
+	)
+	members, err := bot.GuildMembers(guildID, "", 1000)
+	if err != nil {
+		panic(err)
+	}
+
+	for _, member := range members {
+		for _, role := range member.Roles {
+			switch role {
+			case roleContribID:
+				contributors[member.User.ID] = nil
+			case roleSponsorID:
+				sponsors[member.User.ID] = nil
+			}
+		}
+	}
+
+	rows, err := db.Query(
+		`SELECT id
+		   FROM connections JOIN trophies USING(user_id)
+		  WHERE connection = 'discord' AND trophy = 'patches-welcome'`,
+	)
+	if err != nil {
+		return err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var userID string
+		if err := rows.Scan(&userID); err != nil {
+			return err
+		}
+
+		if _, ok := contributors[userID]; ok {
+			delete(contributors, userID)
+		} else if err := bot.GuildMemberRoleAdd(guildID, userID, roleContribID); err != nil {
+			log.Println(err)
+		}
+	}
+
+	if err := rows.Err(); err != nil {
+		return err
+	}
+
+	// Remove any stale roles.
+	for userID := range contributors {
+		if err := bot.GuildMemberRoleRemove(guildID, userID, roleContribID); err != nil {
+			log.Println(err)
+		}
+	}
+
+	// TODO DRY DRY DRY
+	rows, err = db.Query(
+		`SELECT c.id
+		   FROM connections c JOIN users u ON user_id = u.id
+		  WHERE connection = 'discord' AND sponsor`,
+	)
+	if err != nil {
+		return err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var userID string
+		if err := rows.Scan(&userID); err != nil {
+			return err
+		}
+
+		if _, ok := sponsors[userID]; ok {
+			delete(sponsors, userID)
+		} else if err := bot.GuildMemberRoleAdd(guildID, userID, roleSponsorID); err != nil {
+			log.Println(err)
+		}
+	}
+
+	if err := rows.Err(); err != nil {
+		return err
+	}
+
+	for userID := range sponsors {
+		if err := bot.GuildMemberRoleRemove(guildID, userID, roleSponsorID); err != nil {
+			log.Println(err)
+		}
+	}
+
+	return nil
 }
 
 func LogFailedRejudge(golfer *Golfer.Golfer, hole *config.Hole, lang *config.Lang, scoring string) {
