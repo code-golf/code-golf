@@ -289,7 +289,7 @@ end
 '''
 
 [Go]
-size    = '136 MiB'
+size    = '135 MiB'
 version = '1.17.6'
 website = 'https://go.dev'
 example = '''
