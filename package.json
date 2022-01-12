@@ -19,9 +19,9 @@
     "@codemirror/theme-one-dark": "",
     "@codemirror/view": "",
     "@defasm/codemirror": "",
-    "diff": "^5.0.0",
+    "diff": "",
     "esbuild": "",
-    "eslint": "^8.6.0",
+    "eslint": "",
     "lz-string": "",
     "nim-codemirror-mode": ""
   }
