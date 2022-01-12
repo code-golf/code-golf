@@ -200,7 +200,7 @@ program-id.example.
 data division.
 local-storage section.
 1 n pic 99 value 0.
-1 i pic 99.
+1 i pic 9999.
 1 a pic X(99).
 procedure division.
 
