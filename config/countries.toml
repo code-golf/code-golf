@@ -62,6 +62,10 @@ Africa = [
     { id = 'ZW', name = 'Zimbabwe' },
 ]
 
+Antarctica = [
+    { id = 'AQ', name = 'Antarctica' },
+]
+
 Asia = [
     { id = 'AF', name = 'Afghanistan' },
     { id = 'BH', name = 'Bahrain' },
@@ -125,7 +129,7 @@ Europe = [
     { id = 'BG', name = 'Bulgaria' },
     { id = 'HR', name = 'Croatia' },
     { id = 'CY', name = 'Cyprus' },
-    { id = 'CZ', name = 'Czech Republic' },
+    { id = 'CZ', name = 'Czechia' },
     { id = 'DK', name = 'Denmark' },
     { id = 'EE', name = 'Estonia' },
     { id = 'FO', name = 'Faroe Islands' },

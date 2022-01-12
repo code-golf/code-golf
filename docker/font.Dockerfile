@@ -88,7 +88,6 @@ RUN echo [] > extras/ligatures.json                      \
     svg/2702.svg        `# Scissors`                     \
     svg/2b50.svg        `# Star`                         \
  && rm twe-svg.zip                                       \
-    svg/1f1e6-1f1f6.svg `# Flag: Antarctica`             \
     svg/1f1ea-1f1fa.svg `# Flag: European Union`         \
     svg/1f1fa-1f1f3.svg `# Flag: United Nations`         \
  && zip -qr twe-svg.zip svg                              \
