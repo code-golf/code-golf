@@ -1,0 +1,32 @@
+{{ template "header" . }}
+{{ template "golfer" . }}
+
+<main>
+    <div id=wall>
+{{ $lastDay := "" }}
+{{ range .Data }}
+    {{ $day := .Date.Format "Mon 2 Jan 2006" }}
+    {{ if ne $day $lastDay }}
+        <time>{{ $day }}</time>
+        {{ $lastDay = $day }}
+    {{ end }}
+        <div>
+            <a href="/golfers/{{ .Golfer }}">
+                <img loading=lazy
+                    src="//avatars.githubusercontent.com/{{ .Golfer }}?s=64">
+            </a>
+            <p>
+                <a href="/golfers/{{ .Golfer }}">{{ .Golfer }}</a>
+            {{ with .Cheevo }}
+                earnt the {{ .Emoji }} <a href="/rankings/cheevos/{{ .ID }}">
+                    {{ .Name }}</a> achievement.
+            {{ else }}
+                solved <a href="/{{ .Hole.ID }}#{{ .Lang.ID }}">
+                    {{ .Hole.Name }} in {{ .Lang.Name }}</a>.
+            {{ end }}
+        </div>
+{{ end }}
+    </div>
+</main>
+
+{{ template "footer" }}

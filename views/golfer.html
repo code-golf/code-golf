@@ -64,9 +64,12 @@
 
     <nav class=tabs>
         {{ $slug := print "/golfers/" .Name }}
+        <a {{ if ne $.Path $slug }} href="{{ $slug }}" {{ end }}>Wall</a>
+
+        {{ $slug = print "/golfers/" .Name "/cheevos" }}
         <a {{ if ne $.Path $slug }} href="{{ $slug }}" {{ end }}>Achievements</a>
 
-        {{ $slug = print $slug "/holes" }}
+        {{ $slug = print "/golfers/" .Name "/holes" }}
         <a {{ if not (hasPrefix $.Path $slug) }} href="{{ $slug }}/bytes" {{ end }}>
             Holes
         </a>

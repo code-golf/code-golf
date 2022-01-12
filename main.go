@@ -77,7 +77,8 @@ func main() {
 	})
 	r.Route("/golfers/{name}", func(r chi.Router) {
 		r.Use(middleware.GolferInfoHandler)
-		r.Get("/", routes.GolferCheevos)
+		r.Get("/", routes.GolferWall)
+		r.Get("/cheevos", routes.GolferCheevos)
 		r.Get("/holes", routes.GolferHoles)
 		r.Get("/holes/{scoring}", routes.GolferHoles)
 		r.Get("/{hole}/{lang}/{scoring}", routes.GolferSolution)

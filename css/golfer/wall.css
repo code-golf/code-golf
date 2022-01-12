@@ -1,0 +1,24 @@
+#wall {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    max-width: 40rem;
+}
+
+#wall div {
+    align-items: center;
+    display: flex;
+    gap: .5rem;
+}
+
+#wall img {
+    border-radius: 50%;
+    display: block;
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+#wall time {
+    font-weight: 600;
+    border-bottom: 2px solid var(--color);
+}
