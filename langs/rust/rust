@@ -1,14 +1,14 @@
 #!/bin/sh -e
 
-[ "$1" = "--version" ] && exec /usr/local/cargo/bin/rustc --version
-
 export CARGO_HOME=/usr/local/cargo
-export RUST_BACKTRACE=1
-export RUSTUP_HOME=/usr/local/rustup
 export PATH=/usr/local/cargo/bin:$PATH
+export RUSTUP_HOME=/usr/local/rustup
+export RUST_BACKTRACE=1
+
+[ "$1" = "--version" ] && exec rustc --version
 
 # Compile
-rustc -o /tmp/code --color always -
+rustc -C linker=ld -o /tmp/code --color always -
 
 # Execute
 shift

@@ -648,8 +648,8 @@ end
 '''
 
 [Rust]
-size    = '658 MiB'
-version = '1.57.0'
+size    = '604 MiB'
+version = '1.58.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -658,12 +658,12 @@ fn main() {
 
     // Looping
     for i in 0..10 {
-        println!("{}", i);
+        println!("{i}");
     }
 
     // Accessing arguments
     for arg in std::env::args().skip(1) {
-        println!("{}", arg);
+        println!("{arg}");
     }
 }
 '''
