@@ -4,13 +4,13 @@ RUN mkdir /empty
 
 RUN apk add --no-cache build-base clang curl openssl-dev
 
-RUN curl https://cache.ruby-lang.org/pub/ruby/3.0/ruby-3.0.3.tar.xz | tar xJ
+RUN curl https://cache.ruby-lang.org/pub/ruby/3.1/ruby-3.1.0.tar.xz | tar xJ
 
 # Clang produces the same size binary as using LTO with GCC, but GCC+LTO leads
 # to an issue where the stack size available for recursion is significantly
 # reduced. It may be worth trying to enable LTO for Clang. That appears to
 # require building the LLVMgold plugin.
-RUN cd ruby-3.0.3          \
+RUN cd ruby-3.1.0          \
  && CC=clang ./configure   \
     --disable-install-doc  \
     --disable-jit-support  \
@@ -19,7 +19,7 @@ RUN cd ruby-3.0.3          \
  && strip -s /usr/bin/ruby
 
 # Remove some default gems we don't need.
-RUN cd /usr/lib/ruby/3.0.0 && rm -rf \
+RUN cd /usr/lib/ruby/3.1.0 && rm -rf \
                       English.rb     \
                       benchmark      \
                       benchmark.rb   \
@@ -58,7 +58,7 @@ COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
 COPY --from=0 /empty                   /proc
 COPY --from=0 /empty                   /tmp
 COPY --from=0 /usr/bin/ruby            /usr/bin/
-COPY --from=0 /usr/lib/ruby/3.0.0      /usr/lib/ruby/3.0.0
+COPY --from=0 /usr/lib/ruby            /usr/lib/ruby
 
 ENTRYPOINT ["ruby"]
 
