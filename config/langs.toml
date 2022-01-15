@@ -554,8 +554,8 @@ for ($i = 0; $i < 10; $i++)
     echo "$i\n";
 
 # Accessing arguments
-while ($arg = next($argv))
-    echo "$arg\n";
+for ($i = 1; $i < $argc; $i++)
+    echo "$argv[$i]\n";
 '''
 
 [PowerShell]
