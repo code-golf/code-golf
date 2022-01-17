@@ -88,6 +88,15 @@ func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
 	if fieldValues["bytes"] == fieldValues["chars"] {
 		fieldValues = map[string]string{"bytes/chars": fieldValues["bytes"]}
 	}
+
+	// Find the dominant scoring (only "chars" if there were no improvements on bytes)
+	if fieldValues["bytes"] == "" && fieldValues["bytes/chars"] == "" {
+		embed.URL += "chars"
+		fieldValues["bytes"] = "​" // Display the bytes column in any case, to avoid confusion
+	} else {
+		embed.URL += "bytes"
+	}
+
 	// We iterate over the scorings rather than the map itself so that the order will be guaranteed
 	for _, scoring := range []string{"bytes", "chars", "bytes/chars"} {
 		if fieldValues[scoring] != "" {
@@ -97,13 +106,6 @@ func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
 				Inline: true,
 			})
 		}
-	}
-
-	// Find the dominant scoring (only "chars" if there were no improvements on bytes)
-	if fieldValues["bytes"] == "" && fieldValues["bytes/chars"] == "" {
-		embed.URL += "chars"
-	} else {
-		embed.URL += "bytes"
 	}
 
 	return embed
