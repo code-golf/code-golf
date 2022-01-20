@@ -17,7 +17,18 @@
 {{ end }}
 {{ end }}
 
-    <h1 class=span>Ideas</h1>
+    <h1 class=span>Languages</h1>
+
+{{ range .Data.Languages }}
+    <a class="card color" href="//github.com/code-golf/code-golf/issues/{{ .ID }}" title="{{ .Title }}">
+        <h2 class=span>{{ .Title }}</h2>
+        <svg><use href="#thumbs-up"/></svg>
+        {{ .ThumbsUp }}
+        <svg><use href="#thumbs-down"/></svg>
+        {{ .ThumbsDown }}
+    </a>
+{{ end }}
+    <h1 class=span>Other ideas</h1>
 
 {{ range .Data.Ideas }}
     <a class="card color" href="//github.com/code-golf/code-golf/issues/{{ .ID }}" title="{{ .Title }}">

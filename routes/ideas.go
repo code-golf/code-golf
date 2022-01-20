@@ -2,6 +2,7 @@ package routes
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
@@ -16,6 +17,7 @@ func Ideas(w http.ResponseWriter, r *http.Request) {
 
 	data := struct {
 		Holes []*config.Hole
+		Languages []idea
 		Ideas []idea
 	}{Holes: config.ExpHoleList}
 
@@ -33,8 +35,12 @@ func Ideas(w http.ResponseWriter, r *http.Request) {
 		if err := rows.Scan(&i.ID, &i.ThumbsDown, &i.ThumbsUp, &i.Title); err != nil {
 			panic(err)
 		}
-
-		data.Ideas = append(data.Ideas, i)
+		if strings.Contains(strings.ToLower(t.Title), "lang") {
+			data.Languages = append(data.Languages, i)
+		}
+		else{
+			data.Ideas = append(data.Ideas, i)
+		}
 	}
 
 	if err := rows.Err(); err != nil {
