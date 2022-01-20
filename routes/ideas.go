@@ -35,7 +35,7 @@ func Ideas(w http.ResponseWriter, r *http.Request) {
 		if err := rows.Scan(&i.ID, &i.ThumbsDown, &i.ThumbsUp, &i.Title); err != nil {
 			panic(err)
 		}
-		if strings.Contains(strings.ToLower(t.Title), "lang") {
+		if strings.Contains(strings.ToLower(i.Title), "lang") {
 			data.Languages = append(data.Languages, i)
 		} else {
 			data.Ideas = append(data.Ideas, i)
