@@ -17,9 +17,8 @@
 {{ end }}
 {{ end }}
 
-    <h1 class=span>Ideas</h1>
-
-{{ range .Data.Ideas }}
+{{ define "IdeasTable" }}
+  {{ range . }}
     <a class="card color" href="//github.com/code-golf/code-golf/issues/{{ .ID }}" title="{{ .Title }}">
         <h2 class=span>{{ .Title }}</h2>
         <svg><use href="#thumbs-up"/></svg>
@@ -27,7 +26,14 @@
         <svg><use href="#thumbs-down"/></svg>
         {{ .ThumbsDown }}
     </a>
+  {{ end }}
 {{ end }}
+
+    <h1 class=span>Ideas</h1>
+{{ template "IdeasTable" .Data.Ideas }}
+
+    <h1 class=span>Language Suggestions</h1>
+{{ template "IdeasTable" .Data.Languages }}
 
     <p class="right span">
         <a href="//github.com/code-golf/code-golf/issues/new?labels=idea">
