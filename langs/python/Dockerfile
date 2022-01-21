@@ -4,9 +4,9 @@ RUN mkdir /empty
 
 RUN apk add --no-cache build-base curl libffi-dev zlib-dev
 
-RUN curl https://www.python.org/ftp/python/3.10.1/Python-3.10.1.tar.xz | tar xJ
+RUN curl https://www.python.org/ftp/python/3.10.2/Python-3.10.2.tar.xz | tar xJ
 
-RUN cd Python-3.10.1       \
+RUN cd Python-3.10.2       \
  && ./configure            \
     --disable-test-modules \
     --prefix=/usr          \
