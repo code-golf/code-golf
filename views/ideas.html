@@ -27,13 +27,13 @@
     </a>
 {{end}}
 
-    <h1 class=span>Languages</h1>
-{{ range .Data.Languages }}
+    <h1 class=span>Ideas</h1>
+{{ range .Data.Ideas }}
     {{template "IdeasTable"}}
 {{ end }}
 
-    <h1 class=span>Other ideas</h1>
-{{ range .Data.Ideas }}
+    <h1 class=span>Language Suggestions</h1>
+{{ range .Data.Languages }}
     {{template "IdeasTable"}}
 {{ end }}
 
