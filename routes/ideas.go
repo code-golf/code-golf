@@ -16,9 +16,8 @@ func Ideas(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := struct {
-		Holes     []*config.Hole
-		Languages []idea
-		Ideas     []idea
+		Holes            []*config.Hole
+		Ideas, Languages []idea
 	}{Holes: config.ExpHoleList}
 
 	rows, err := session.Database(r).Query(
