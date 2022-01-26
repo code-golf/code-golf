@@ -291,7 +291,7 @@ function populateLanguagePicker() {
             let lastValue = 0;
             for (let i = 0; i < scorings.length; i++) {
                 const value = getScoring(getSolutionCode(l.id, i), i);
-                if (lastValue != value) {
+                if (value && lastValue != value) {
                     if (lastValue)
                         name += '/';
                     name += value.toLocaleString('en');
