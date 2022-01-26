@@ -100,7 +100,8 @@ onload = () => {
     });
 
     details.ontoggle = () =>
-        document.cookie = 'hide-details=' + (details.open ? ';Max-Age=0' : '');
+        document.cookie = 'hide-details=;SameSite=Lax;Secure' +
+            (details.open ? ';Max-Age=0' : '');
 
     restoreLink.onclick = e => {
         cm.setValue(getSolutionCode(lang, solution));
