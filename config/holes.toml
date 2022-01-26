@@ -1336,6 +1336,9 @@ preamble = '''
 
 ['Number Spiral']
 category = 'Art'
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Spiral_matrix' },
+]
 preamble = '''
 <p>
     Print a <b>10x10</b> grid of the numbers <b>0</b> to <b>99</b> inclusive.
