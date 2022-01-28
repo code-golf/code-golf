@@ -78,6 +78,25 @@ main .info {
 #arrows td:first-child { white-space: pre }
 #arrows td:last-child  { width: 100% }
 
+#authors {
+    display: flex;
+    font-size: 1rem;
+    font-weight: normal;
+    padding-left: 1rem;
+}
+
+#authors a {
+    display: flex;
+    gap: .25rem;
+    margin-left: .25rem;
+}
+
+#authors img {
+    border-radius: 50%;
+    height: 1.25rem;
+    width: 1.25rem;
+}
+
 #chars {
     border-bottom: 1px solid var(--color);
     font-weight: bold;

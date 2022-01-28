@@ -5,11 +5,13 @@ import (
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
+	"github.com/lib/pq"
 )
 
 // Hole serves GET /{hole}
 func Hole(w http.ResponseWriter, r *http.Request) {
 	data := struct {
+		Authors     []string
 		HideDetails bool
 		Hole        *config.Hole
 		Solutions   []map[string]string
@@ -27,6 +29,19 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 
 	if c, _ := r.Cookie("hide-details"); c != nil {
 		data.HideDetails = true
+	}
+
+	// Lookup the hole's author(s).
+	if data.Hole.Experiment == 0 {
+		if err := session.Database(r).QueryRow(
+			`SELECT array_agg(login ORDER BY login)
+			   FROM authors
+			   JOIN users ON id = user_id
+			  WHERE hole = $1`,
+			data.Hole.ID,
+		).Scan(pq.Array(&data.Authors)); err != nil {
+			panic(err)
+		}
 	}
 
 	if golfer := session.Golfer(r); golfer != nil && data.Hole.Experiment == 0 {
@@ -69,6 +84,7 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 // HoleNG serves GET /ng/{hole}
 func HoleNG(w http.ResponseWriter, r *http.Request) {
 	data := struct {
+		Authors     []string
 		HideDetails bool
 		Hole        *config.Hole
 		Langs       []*config.Lang
@@ -88,6 +104,19 @@ func HoleNG(w http.ResponseWriter, r *http.Request) {
 
 	if c, _ := r.Cookie("hide-details"); c != nil {
 		data.HideDetails = true
+	}
+
+	// Lookup the hole's author(s).
+	if data.Hole.Experiment == 0 {
+		if err := session.Database(r).QueryRow(
+			`SELECT array_agg(login ORDER BY login)
+			   FROM authors
+			   JOIN users ON id = user_id
+			  WHERE hole = $1`,
+			data.Hole.ID,
+		).Scan(pq.Array(&data.Authors)); err != nil {
+			panic(err)
+		}
 	}
 
 	if golfer := session.Golfer(r); golfer != nil && data.Hole.Experiment == 0 {

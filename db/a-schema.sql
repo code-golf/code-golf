@@ -82,6 +82,12 @@ CREATE TABLE users (
     CHECK (id != referrer_id)   -- Can't refer yourself
 );
 
+CREATE TABLE authors (
+    hole    hole NOT NULL,
+    user_id int  REFERENCES users(id) ON DELETE CASCADE,
+    PRIMARY KEY (hole, user_id)
+);
+
 CREATE TABLE connections (
     id            bigint     NOT NULL,
     connection    connection NOT NULL,
@@ -206,6 +212,7 @@ ALTER MATERIALIZED VIEW medals   OWNER TO "code-golf";
 ALTER MATERIALIZED VIEW points   OWNER TO "code-golf";
 ALTER MATERIALIZED VIEW rankings OWNER TO "code-golf";
 
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE authors         TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE connections     TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE discord_records TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE ideas           TO "code-golf";

@@ -93,6 +93,25 @@ select {
  #expected-tab:checked ~ #expected,
    #output-tab:checked ~ #output { display: block }
 
+#authors {
+    display: flex;
+    font-size: 1rem;
+    font-weight: normal;
+    padding-left: 1rem;
+}
+
+#authors a {
+    display: flex;
+    gap: .25rem;
+    margin-left: .25rem;
+}
+
+#authors img {
+    border-radius: 50%;
+    height: 1.25rem;
+    width: 1.25rem;
+}
+
 #editor, #rankings {
     border: 1px solid var(--color);
     border-top: 2px solid var(--color);

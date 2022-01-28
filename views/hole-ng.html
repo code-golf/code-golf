@@ -27,7 +27,19 @@
 
 <main>
     <header>
-        <h1>{{ .Data.Hole.Name }}</h1>
+        <h1>
+            {{ .Data.Hole.Name }}
+        {{ with .Data.Authors }}
+            <p id=authors>by
+            {{- range $i, $author := . -}}
+                {{- if $i }},{{ end }}
+                <a href="/golfers/{{ . }}">
+                    <img src="//avatars.githubusercontent.com/{{ $author }}?s=40">
+                    <span>{{ $author }}</span>
+                </a>
+            {{- end -}}
+        {{ end }}
+        </h1>
     {{ with .Data.Hole.Links }}
         <nav>
         {{ range $i, $link := . }}
