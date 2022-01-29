@@ -213,6 +213,19 @@ preamble = '''
     and execute each program in turn.
 '''
 
+['Catalan Numbers']
+category = 'Sequence'
+links = [
+    { name = 'OEIS A000108', url = '//oeis.org/A000108' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Catalan_numbers' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Catalan_number' },
+]
+preamble = '''
+<p>The nth Catalan number can be expressed as C(n) = binomial(2n,n)/(n+1).
+
+<p>Print the first 100 Catalan numbers, each on their own line.
+'''
+
 ['Catalan’s Constant']
 category = 'Mathematics'
 links = [
@@ -221,22 +234,6 @@ links = [
 ]
 preamble = '''
 <p>Print Catalan’s constant to the first 1,000 decimal places.
-'''
-
-['Catalan Numbers']
-category = 'Sequence'
-experiment = -1
-links = [
-    { name = 'OEIS A000108', url = '//oeis.org/A000108' },
-    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Catalan_numbers' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Catalan_number' },
-]
-preamble = '''
-<p>
-    The nth Catalan number can be expressed as C(n) = binomial(2n,n)/(n+1).
-
-<p>
-    Print the first 100 Catalan numbers, each on their own line.
 '''
 
 ['Christmas Trees']
