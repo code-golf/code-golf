@@ -1,6 +1,6 @@
 FROM alpine:3.15 as builder
 
-ENV VERSION=cc4e73b700
+ENV VERSION=cf753e859d
 
 RUN mkdir /empty
 
