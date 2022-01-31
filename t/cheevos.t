@@ -11,6 +11,7 @@ constant %cheevos = <
     42 {dont-panic}
     50 {bullseye}
     60 {gone-in-60-holes}
+    69 {cunning-linguist}
 >;
 
 my $dbh = dbh;

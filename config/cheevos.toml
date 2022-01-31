@@ -191,6 +191,11 @@ emoji       = '🚗'
 description = 'Solve your sixtieth hole.'
 
 [[Progression]]
+name        = 'Cunning Linguist'
+emoji       = '👅'
+description = 'Solve your sixty-ninth hole.'
+
+[[Progression]]
 name        = 'It’s Over 9000!'
 emoji       = '🐉'
 description = 'Earn over 9,000 points in either bytes or chars scoring.'

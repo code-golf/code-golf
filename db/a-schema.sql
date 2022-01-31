@@ -2,8 +2,8 @@ CREATE EXTENSION citext;
 
 CREATE TYPE cheevo AS ENUM (
     'assembly-required', 'bakers-dozen', 'blackjack', 'bullseye',
-    'caffeinated', 'cobowl', 'different-strokes', 'dont-panic',
-    'elephpant-in-the-room', 'fish-n-chips', 'forty-winks',
+    'caffeinated', 'cobowl', 'cunning-linguist', 'different-strokes',
+    'dont-panic', 'elephpant-in-the-room', 'fish-n-chips', 'forty-winks',
     'gone-in-60-holes', 'happy-birthday-code-golf', 'hello-world',
     'inception', 'independence-day', 'interview-ready', 'its-over-9000',
     'just-kidding', 'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars',
