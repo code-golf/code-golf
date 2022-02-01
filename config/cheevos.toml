@@ -119,6 +119,11 @@ emoji       = '🔣'
 description = 'Solve any hole in a dozen different languages.'
 
 [[Miscellaneous]]
+name        = 'Polyglutton'
+emoji       = '🍖'
+description = 'Solve any hole in a two dozen different languages.'
+
+[[Miscellaneous]]
 name        = 'RTFM'
 emoji       = '📕'
 description = 'Visit the <a href=/about>About page</a>.'

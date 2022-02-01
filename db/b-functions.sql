@@ -52,6 +52,7 @@ CREATE FUNCTION save_solution(
 DECLARE
     earned cheevo[] := '{}'::cheevo[];
     holes  int;
+    langs  int;
     rank   hole_rank_ret;
     ret    save_solution_ret;
 BEGIN
@@ -202,11 +203,14 @@ BEGIN
         earned := earn(earned, 'different-strokes', user_id);
     END IF;
 
-    IF (SELECT COUNT(DISTINCT solutions.lang) > 11 FROM solutions
-         WHERE solutions.user_id = user_id
-           AND solutions.hole    = hole) THEN
-        earned := earn(earned, 'polyglot', user_id);
-    END IF;
+    SELECT COUNT(DISTINCT solutions.lang) INTO langs
+      FROM solutions
+     WHERE NOT failing
+       AND solutions.hole    = hole
+       AND solutions.user_id = user_id;
+
+    IF langs >= 12 THEN earned := earn(earned, 'polyglot',    user_id); END IF;
+    IF langs >= 24 THEN earned := earn(earned, 'polyglutton', user_id); END IF;
 
     ret.earned := earned;
 

@@ -1,6 +1,6 @@
 use t;
 
-constant %cheevos = <
+constant %holes = <
     1  {hello-world}
     11 {up-to-eleven}
     13 {bakers-dozen}
@@ -14,6 +14,11 @@ constant %cheevos = <
     69 {cunning-linguist}
 >;
 
+constant %langs = <
+    12 {polyglot}
+    24 {polyglutton}
+>;
+
 my $dbh = dbh;
 createUser($dbh, 1);
 my $session = createSession($dbh, 1);
@@ -25,7 +30,7 @@ is $dbh.execute('SELECT ARRAY(SELECT trophy FROM trophies)').row, '{rtfm}',
     'GET /about earns {rtfm}';
 
 for $dbh.execute('SELECT unnest(enum_range(null::hole))').allrows.flat {
-    my $cheevos = %cheevos{ my $i = ++$ } // '{}';
+    my $cheevos = %holes{ my $i = ++$ } // '{}';
 
     # Add hole-specific cheevos on the end.
     $cheevos.=subst: '}', ',interview-ready}' if $_ eq 'fizz-buzz';
@@ -56,9 +61,10 @@ is $dbh.execute(
     "SELECT earned FROM save_solution(3, 1, '⛳', 'π', 'c', 1)",
 ).row, '{different-strokes}', 'Earns {different-strokes}';
 
-for <c fish go j java lisp lua nim php sql v zig> {
-    my $i     = ++$;
-    my $earns = $i == 12 ?? '{polyglot}' !! '{}';
+for $dbh.execute('SELECT unnest(enum_range(null::lang))').allrows.flat {
+    next if $_ eq 'assembly';   # Assembly can't have non-NULL chars.
+
+    my $earns = %langs{ my $i = ++$ } // '{}';
 
     is $dbh.execute(
         "SELECT earned FROM save_solution(2, 2, 'ab', 'λ', ?, 1)", $_,
