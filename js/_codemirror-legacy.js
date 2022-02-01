@@ -10,6 +10,7 @@ import './codemirror-legacy/_bash';
 import './codemirror-legacy/_brainfuck';
 import './codemirror-legacy/_cobol';
 import './codemirror-legacy/_crystal';
+import './codemirror-legacy/_d';
 import './codemirror-legacy/_fortran';
 import './codemirror-legacy/_go';
 import './codemirror-legacy/_haskell';
