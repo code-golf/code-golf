@@ -17,7 +17,7 @@ constant %holes = <
 constant %langs = <
     12 {polyglot}
     24 {polyglutton}
-    32 {omniglot}
+    36 {omniglot}
 >;
 
 my $dbh = dbh;
