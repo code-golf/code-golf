@@ -121,7 +121,12 @@ description = 'Solve any hole in a dozen different languages.'
 [[Miscellaneous]]
 name        = 'Polyglutton'
 emoji       = '🍖'
-description = 'Solve any hole in a two dozen different languages.'
+description = 'Solve any hole in two dozen different languages.'
+
+[[Miscellaneous]]
+name        = 'Omniglot'
+emoji       = '🕉️'
+description = 'Solve any hole in three dozen different languages.'
 
 [[Miscellaneous]]
 name        = 'RTFM'

@@ -17,6 +17,7 @@ constant %holes = <
 constant %langs = <
     12 {polyglot}
     24 {polyglutton}
+    32 {omniglot}
 >;
 
 my $dbh = dbh;
@@ -62,12 +63,11 @@ is $dbh.execute(
 ).row, '{different-strokes}', 'Earns {different-strokes}';
 
 for $dbh.execute('SELECT unnest(enum_range(null::lang))').allrows.flat {
-    next if $_ eq 'assembly';   # Assembly can't have non-NULL chars.
-
     my $earns = %langs{ my $i = ++$ } // '{}';
 
     is $dbh.execute(
-        "SELECT earned FROM save_solution(2, 2, 'ab', 'λ', ?, 1)", $_,
+        "SELECT earned FROM save_solution(2, ?, 'ab', 'λ', ?, 1)",
+        $_ eq 'assembly' ?? Nil !! 2, $_,
     ).row, $earns, "Lang $i earns $earns";
 }
 

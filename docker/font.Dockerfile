@@ -15,6 +15,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f0cf.svg       `# Joker`                        \
     svg/1f308.svg       `# Rainbow`                      \
     svg/1f30c.svg       `# Milky Way`                    \
+    svg/1f356.svg       `# Meat on Bone`                 \
     svg/1f35e.svg       `# Bread`                        \
     svg/1f37a.svg       `# Beer Mug`                     \
     svg/1f382.svg       `# Birthday Cake`                \
@@ -44,6 +45,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f511.svg       `# Key`                          \
     svg/1f51e.svg       `# No One Under Eighteen`        \
     svg/1f523.svg       `# Input Symbols`                \
+    svg/1f549.svg       `# Om`                           \
     svg/1f596.svg       `# Vulcan Salute`                \
     svg/1f600.svg       `# Grinning Face`                \
     svg/1f602.svg       `# Face with Tears of Joy`       \

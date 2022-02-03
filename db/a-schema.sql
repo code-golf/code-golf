@@ -7,9 +7,9 @@ CREATE TYPE cheevo AS ENUM (
     'gone-in-60-holes', 'happy-birthday-code-golf', 'hello-world',
     'inception', 'independence-day', 'interview-ready', 'its-over-9000',
     'just-kidding', 'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars',
-    'off-the-grid', 'ouroboros', 'patches-welcome', 'pi-day', 'polyglot',
-    'polyglutton', 'rtfm', 'rule-34', 'slowcoach', 'solve-quine', 'takeout',
-    'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
+    'off-the-grid', 'omniglot', 'ouroboros', 'patches-welcome', 'pi-day',
+    'polyglot', 'polyglutton', 'rtfm', 'rule-34', 'slowcoach', 'solve-quine',
+    'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
     'twenty-kiloleagues', 'up-to-eleven', 'vampire-byte'
 );
 

@@ -211,6 +211,7 @@ BEGIN
 
     IF langs >= 12 THEN earned := earn(earned, 'polyglot',    user_id); END IF;
     IF langs >= 24 THEN earned := earn(earned, 'polyglutton', user_id); END IF;
+    IF langs >= 32 THEN earned := earn(earned, 'omniglot',    user_id); END IF;
 
     ret.earned := earned;
 
