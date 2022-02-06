@@ -209,14 +209,13 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		// COUNT(*) = 4 because langs x (bytes, chars)
 		// TODO Move these to save_solution() in db/b-functions.sql so they
 		//      can be tested by t/cheevos.t
 		switch in.Lang {
 		case "c", "c-sharp", "f-sharp":
 			if queryBool(
 				db,
-				`SELECT COUNT(*) = 6
+				`SELECT COUNT(DISTINCT lang) = 3
 				   FROM solutions
 				  WHERE NOT failing
 				    AND hole = 'musical-chords'
@@ -229,7 +228,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		case "j", "k":
 			if queryBool(
 				db,
-				`SELECT COUNT(*) = 4
+				`SELECT COUNT(DISTINCT lang) = 2
 				   FROM solutions
 				  WHERE NOT failing
 				    AND hole = $1
@@ -243,7 +242,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		case "java", "javascript":
 			if queryBool(
 				db,
-				`SELECT COUNT(*) = 4
+				`SELECT COUNT(DISTINCT lang) = 2
 				   FROM solutions
 				  WHERE NOT failing
 				    AND hole = $1
@@ -257,7 +256,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		case "perl", "raku":
 			if queryBool(
 				db,
-				`SELECT COUNT(*) = 4
+				`SELECT COUNT(DISTINCT lang) = 2
 				   FROM solutions
 				  WHERE NOT failing
 				    AND hole = $1
