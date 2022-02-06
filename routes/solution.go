@@ -213,6 +213,19 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		// TODO Move these to save_solution() in db/b-functions.sql so they
 		//      can be tested by t/cheevos.t
 		switch in.Lang {
+		case "c", "c-sharp", "f-sharp":
+			if queryBool(
+				db,
+				`SELECT COUNT(*) = 6
+				   FROM solutions
+				  WHERE NOT failing
+				    AND hole = 'musical-chords'
+				    AND lang IN ('c', 'c-sharp', 'f-sharp')
+				    AND user_id = $1`,
+				golfer.ID,
+			) {
+				golfer.Earn(db, "sounds-quite-nice")
+			}
 		case "j", "k":
 			if queryBool(
 				db,
@@ -254,19 +267,6 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 				golfer.ID,
 			) {
 				golfer.Earn(db, "tim-toady")
-			}
-		case "c", "c-sharp", "f-sharp":
-			if queryBool(
-				db,
-				`SELECT COUNT(*) = 6
-				   FROM solutions
-				  WHERE NOT failing
-				    AND hole = 'musical-chords'
-					AND lang IN ('c','c-sharp','f-sharp')
-					AND user_id = $1`,
-				golfer.ID
-			) {
-				golfer.Earn(db, "sounds-quite-nice")
 			}
 		}
 	}

@@ -9,8 +9,8 @@ CREATE TYPE cheevo AS ENUM (
     'just-kidding', 'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars',
     'off-the-grid', 'omniglot', 'ouroboros', 'patches-welcome', 'pi-day',
     'polyglot', 'polyglutton', 'rtfm', 'rule-34', 'slowcoach', 'solve-quine',
-    'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
-    'twenty-kiloleagues', 'up-to-eleven', 'vampire-byte','sounds-quite-nice'
+    'sounds-quite-nice', 'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr',
+    'twelvetide', 'twenty-kiloleagues', 'up-to-eleven', 'vampire-byte'
 );
 
 CREATE TYPE connection AS ENUM (
