@@ -18,7 +18,7 @@
             <p>
                 <a href="/golfers/{{ .Golfer }}">{{ .Golfer }}</a>
             {{ with .Cheevo }}
-                earnt the {{ .Emoji }} <a href="/rankings/cheevos/{{ .ID }}">
+                earned the {{ .Emoji }} <a href="/rankings/cheevos/{{ .ID }}">
                     {{ .Name }}</a> achievement.
             {{ else }}
                 solved <a href="/{{ .Hole.ID }}#{{ .Lang.ID }}">

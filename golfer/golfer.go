@@ -28,7 +28,7 @@ type Golfer struct {
 	TimeZone                               *time.Location
 }
 
-// Earn the given cheevo, no-op if already earnt.
+// Earn the given cheevo, no-op if already earned.
 func (g *Golfer) Earn(db *sql.DB, cheevoID string) (earned *config.Cheevo) {
 	if res, err := db.Exec(
 		"INSERT INTO trophies VALUES (DEFAULT, $1, $2) ON CONFLICT DO NOTHING",
@@ -52,8 +52,8 @@ func (g *Golfer) Earn(db *sql.DB, cheevoID string) (earned *config.Cheevo) {
 	return
 }
 
-// Earnt returns whether the golfer has that cheevo.
-func (g *Golfer) Earnt(cheevoID string) bool {
+// Earned returns whether the golfer has that cheevo.
+func (g *Golfer) Earned(cheevoID string) bool {
 	i := sort.SearchStrings(g.Cheevos, cheevoID)
 	return i < len(g.Cheevos) && g.Cheevos[i] == cheevoID
 }
