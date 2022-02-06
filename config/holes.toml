@@ -1814,6 +1814,7 @@ preamble = '''
 category = 'Art'
 links = [
     { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Sierpiński_triangle' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Sierpinski_triangle' },
 ]
 preamble = '''
 <p>
