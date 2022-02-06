@@ -92,6 +92,11 @@ emoji       = '📴'
 description = 'Solve <a href=/sudoku#hexagony>Sudoku</a> or <a href=/sudoku-v2#hexagony>Sudoku v2</a> in Hexagony.'
 
 [['Hole/Lang Specific']]
+name        = 'Sounds Quite Nice'
+emoji       = '🎺'
+description = 'Solve <a href=/musical-chords#c-sharp>Musical Chords</a> in C, C# and F#.'
+
+[['Hole/Lang Specific']]
 name        = 'Solve Quine'
 emoji       = '🪞'
 description = 'Solve <a href=/quine>Quine</a>.'
