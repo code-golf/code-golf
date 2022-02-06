@@ -117,16 +117,19 @@ description = 'Solve any hole using different bytes and chars solutions.'
 name        = 'Polyglot'
 emoji       = '🔣'
 description = 'Solve any hole in a dozen different languages.'
+target      = 12
 
 [[Miscellaneous]]
 name        = 'Polyglutton'
 emoji       = '🍖'
 description = 'Solve any hole in two dozen different languages.'
+target      = 24
 
 [[Miscellaneous]]
 name        = 'Omniglot'
 emoji       = '🕉️'
 description = 'Solve any hole in three dozen different languages.'
+target      = 36
 
 [[Miscellaneous]]
 name        = 'RTFM'
@@ -159,51 +162,61 @@ description = 'Solve your first hole.'
 name        = 'Up to Eleven'
 emoji       = '🎸'
 description = 'Solve your eleventh hole.'
+target      = 11
 
 [[Progression]]
 name        = 'Baker’s Dozen'
 emoji       = '🍞'
 description = 'Solve your thirteenth hole.'
+target      = 13
 
 [[Progression]]
 name        = 'The Watering Hole'
 emoji       = '🍺'
 description = 'Solve your nineteenth hole.'
+target      = 19
 
 [[Progression]]
 name        = 'Blackjack'
 emoji       = '🃏'
 description = 'Solve your twenty-first hole.'
+target      = 21
 
 [[Progression]]
 name        = 'Rule 34'
 emoji       = '🔞'
 description = 'Solve your thirty-fourth hole.'
+target      = 34
 
 [[Progression]]
 name        = 'Forty Winks'
 emoji       = '😴'
 description = 'Solve your fortieth hole.'
+target      = 40
 
 [[Progression]]
 name        = 'DON’T PANIC!'
 emoji       = '👍'
 description = 'Solve your forty-second hole.'
+target      = 42
 
 [[Progression]]
 name        = 'Bullseye'
 emoji       = '🎯'
 description = 'Solve your fiftieth hole.'
+target      = 50
 
 [[Progression]]
 name        = 'Gone in 60 Holes'
 emoji       = '🚗'
 description = 'Solve your sixtieth hole.'
+target      = 60
 
 [[Progression]]
 name        = 'Cunning Linguist'
 emoji       = '👅'
 description = 'Solve your sixty-ninth hole.'
+target      = 69
 
 [[Progression]]
 name        = 'It’s Over 9000!'

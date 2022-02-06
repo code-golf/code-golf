@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"database/sql"
 	"net/http"
+	"time"
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
@@ -12,17 +12,18 @@ import (
 func GolferCheevos(w http.ResponseWriter, r *http.Request) {
 	golfer := session.GolferInfo(r).Golfer
 
-	type EarnedCheevo struct {
-		Count, Percent int
-		Earned         sql.NullTime
+	type Progress struct {
+		Count, Percent, Progress int
+		Earned                   *time.Time
 	}
 
 	data := struct {
-		Cheevos map[string][]*config.Cheevo
-		Earned  map[string]EarnedCheevo
-	}{config.CheevoTree, map[string]EarnedCheevo{}}
+		Cheevos  map[string][]*config.Cheevo
+		Progress map[string]Progress
+	}{config.CheevoTree, map[string]Progress{}}
 
-	rows, err := session.Database(r).Query(
+	db := session.Database(r)
+	rows, err := db.Query(
 		`WITH count AS (
 		    SELECT trophy, COUNT(*) FROM trophies GROUP BY trophy
 		), earned AS (
@@ -37,18 +38,58 @@ func GolferCheevos(w http.ResponseWriter, r *http.Request) {
 
 	for rows.Next() {
 		var cheevoID string
-		var earned EarnedCheevo
+		var progress Progress
 
 		if err := rows.Scan(
 			&cheevoID,
-			&earned.Count,
-			&earned.Earned,
-			&earned.Percent,
+			&progress.Count,
+			&progress.Earned,
+			&progress.Percent,
 		); err != nil {
 			panic(err)
 		}
 
-		data.Earned[cheevoID] = earned
+		data.Progress[cheevoID] = progress
+	}
+
+	// Caclulate progress
+	// TODO Bake it into the cheevos table rather than calculating on the fly.
+	var count int
+	if err := db.QueryRow(
+		`SELECT COUNT(DISTINCT hole)
+		   FROM solutions
+		  WHERE NOT failing AND user_id = $1`,
+		golfer.ID,
+	).Scan(&count); err != nil {
+		panic(err)
+	}
+
+	for _, cheevoID := range []string{
+		"up-to-eleven", "bakers-dozen", "the-watering-hole", "blackjack",
+		"rule-34", "forty-winks", "dont-panic", "bullseye",
+		"gone-in-60-holes", "cunning-linguist",
+	} {
+		progress := data.Progress[cheevoID]
+		progress.Progress = count
+		data.Progress[cheevoID] = progress
+	}
+
+	if err := db.QueryRow(
+		`WITH langs AS (
+		    SELECT COUNT(DISTINCT lang) FROM solutions
+		     WHERE NOT failing AND user_id = $1
+		) SELECT MAX(count) FROM langs`,
+		golfer.ID,
+	).Scan(&count); err != nil {
+		panic(err)
+	}
+
+	for _, cheevoID := range []string{
+		"polyglot", "polyglutton", "omniglot",
+	} {
+		progress := data.Progress[cheevoID]
+		progress.Progress = count
+		data.Progress[cheevoID] = progress
 	}
 
 	if err := rows.Err(); err != nil {
