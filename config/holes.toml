@@ -1028,7 +1028,7 @@ preamble = '''
 category = 'Sequence'
 links = [
     { name = 'OEIS A005150', url = '//oeis.org/A005150' },
-    { name = 'Rosetta Code', url = '//www.rosettacode.org/wiki/Look-and-say_sequence' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Look-and-say_sequence' },
     { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Look-and-say_sequence' },
 ]
 preamble = '''
@@ -1813,8 +1813,8 @@ preamble = '''
 ['Sierpiński Triangle']
 category = 'Art'
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Sierpiński_triangle' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Sierpinski_triangle' },
+    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Sierpiński_triangle' },
 ]
 preamble = '''
 <p>
