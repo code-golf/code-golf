@@ -255,6 +255,19 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			) {
 				golfer.Earn(db, "tim-toady")
 			}
+		case "c", "c-sharp", "f-sharp":
+			if queryBool(
+				db,
+				`SELECT COUNT(*) = 6
+				   FROM solutions
+				  WHERE NOT failing
+				    AND hole = 'musical-chords'
+					AND lang IN ('c','c-sharp','f-sharp')
+					AND user_id = $1`,
+				golfer.ID
+			) {
+				golfer.Earn(db, "sounds-quite-nice")
+			}
 		}
 	}
 
