@@ -1,8 +1,40 @@
+main {
+    column-gap: 3rem;
+    display: grid;
+    grid-template-columns: auto 27rem;
+}
+
+#cheevos {
+    align-content: start;
+    display: grid;
+    font-size: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(3rem, 1fr));
+}
+
+#cheevos div {
+    display: grid;
+    height: 3rem;
+    place-content: center;
+    min-width: 3rem;
+}
+
+#cheevos div:not(.earned) {
+    background: var(--light-grey);
+    color: transparent;
+    text-shadow: 0 0 var(--cheevo-not-earned);
+}
+
+#cheevos h2 {
+    border-bottom: 2px solid var(--color);
+    font-size: 1rem;
+    font-weight: 600;
+    grid-column: 1 / -1;
+}
+
 #wall {
     display: flex;
     flex-direction: column;
     gap: .5rem;
-    max-width: 40rem;
 }
 
 #wall div {
@@ -21,4 +53,8 @@
 #wall time {
     font-weight: 600;
     border-bottom: 2px solid var(--color);
+}
+
+@media (max-width: 46rem) {
+    main { grid-template-columns: auto }
 }

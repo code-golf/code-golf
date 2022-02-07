@@ -194,6 +194,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...interfa
 	args := struct {
 		CSS                                             template.CSS
 		CheevoBanner                                    *CheevoBanner
+		Cheevos                                         map[string][]*config.Cheevo
 		Countries                                       map[string]*config.Country
 		Data, Description, Title                        interface{}
 		DarkModeMediaQuery, LogInURL, Name, Nonce, Path string
@@ -205,6 +206,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...interfa
 		Location                                        *time.Location
 		Request                                         *http.Request
 	}{
+		Cheevos:            config.CheevoTree,
 		Countries:          config.CountryByID,
 		CSS:                getThemeCSS(theme) + css["base"] + css[path.Dir(name)] + css[name],
 		Data:               data[0],

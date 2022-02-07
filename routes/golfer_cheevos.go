@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
 )
 
@@ -17,10 +16,7 @@ func GolferCheevos(w http.ResponseWriter, r *http.Request) {
 		Earned                   *time.Time
 	}
 
-	data := struct {
-		Cheevos  map[string][]*config.Cheevo
-		Progress map[string]Progress
-	}{config.CheevoTree, map[string]Progress{}}
+	data := map[string]Progress{}
 
 	db := session.Database(r)
 	rows, err := db.Query(
@@ -49,7 +45,7 @@ func GolferCheevos(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
-		data.Progress[cheevoID] = progress
+		data[cheevoID] = progress
 	}
 
 	// Caclulate progress
@@ -69,9 +65,9 @@ func GolferCheevos(w http.ResponseWriter, r *http.Request) {
 		"rule-34", "forty-winks", "dont-panic", "bullseye",
 		"gone-in-60-holes", "cunning-linguist",
 	} {
-		progress := data.Progress[cheevoID]
+		progress := data[cheevoID]
 		progress.Progress = count
-		data.Progress[cheevoID] = progress
+		data[cheevoID] = progress
 	}
 
 	if err := db.QueryRow(
@@ -87,9 +83,9 @@ func GolferCheevos(w http.ResponseWriter, r *http.Request) {
 	for _, cheevoID := range []string{
 		"polyglot", "polyglutton", "omniglot",
 	} {
-		progress := data.Progress[cheevoID]
+		progress := data[cheevoID]
 		progress.Progress = count
-		data.Progress[cheevoID] = progress
+		data[cheevoID] = progress
 	}
 
 	if err := rows.Err(); err != nil {

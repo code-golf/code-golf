@@ -2,12 +2,12 @@
 {{ template "golfer" . }}
 
 <main>
-{{ range $category, $cheevos := .Data.Cheevos }}
+{{ range $category, $cheevos := .Cheevos }}
     <details open>
         <div>
         {{ $i := 0 }}
         {{ range $cheevos }}
-            {{ $progress := index $.Data.Progress .ID }}
+            {{ $progress := index $.Data .ID }}
 
             <div class="cheevo {{ if $progress.Earned }} earned {{ end }}">
                 <div>{{ .Emoji }}</div>
