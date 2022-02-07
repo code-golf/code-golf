@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"database/sql"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -208,66 +207,6 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 				golfer.Earn(db, "pi-day")
 			}
 		}
-
-		// TODO Move these to save_solution() in db/b-functions.sql so they
-		//      can be tested by t/cheevos.t
-		switch in.Lang {
-		case "c", "c-sharp", "f-sharp":
-			if queryBool(
-				db,
-				`SELECT COUNT(DISTINCT lang) = 3
-				   FROM solutions
-				  WHERE NOT failing
-				    AND hole = 'musical-chords'
-				    AND lang IN ('c', 'c-sharp', 'f-sharp')
-				    AND user_id = $1`,
-				golfer.ID,
-			) {
-				golfer.Earn(db, "sounds-quite-nice")
-			}
-		case "j", "k":
-			if queryBool(
-				db,
-				`SELECT COUNT(DISTINCT lang) = 2
-				   FROM solutions
-				  WHERE NOT failing
-				    AND hole = $1
-				    AND lang IN ('j', 'k')
-				    AND user_id = $2`,
-				in.Hole,
-				golfer.ID,
-			) {
-				golfer.Earn(db, "just-kidding")
-			}
-		case "java", "javascript":
-			if queryBool(
-				db,
-				`SELECT COUNT(DISTINCT lang) = 2
-				   FROM solutions
-				  WHERE NOT failing
-				    AND hole = $1
-				    AND lang IN ('java', 'javascript')
-				    AND user_id = $2`,
-				in.Hole,
-				golfer.ID,
-			) {
-				golfer.Earn(db, "caffeinated")
-			}
-		case "perl", "raku":
-			if queryBool(
-				db,
-				`SELECT COUNT(DISTINCT lang) = 2
-				   FROM solutions
-				  WHERE NOT failing
-				    AND hole = $1
-				    AND lang IN ('perl', 'raku')
-				    AND user_id = $2`,
-				in.Hole,
-				golfer.ID,
-			) {
-				golfer.Earn(db, "tim-toady")
-			}
-		}
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -278,12 +217,4 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 	if err := enc.Encode(&out); err != nil {
 		panic(err)
 	}
-}
-
-func queryBool(db *sql.DB, query string, args ...interface{}) (b bool) {
-	if err := db.QueryRow(query, args...).Scan(&b); err != nil {
-		panic(err)
-	}
-
-	return
 }

@@ -65,8 +65,15 @@ is $dbh.execute(
 for $dbh.execute('SELECT unnest(enum_range(null::lang))').allrows.flat {
     my $earns = %langs{ my $i = ++$ } // '{}';
 
+    # Add hole-specific cheevos on the end.
+    $earns.=subst: '}', ',sounds-quite-nice}' if $_ eq 'f-sharp';
+    $earns.=subst: '}', ',caffeinated}'       if $_ eq 'javascript';
+    $earns.=subst: '}', ',just-kidding}'      if $_ eq 'k';
+    $earns.=subst: '}', ',tim-toady}'         if $_ eq 'raku';
+    $earns.=subst: '{,', '{';
+
     is $dbh.execute(
-        "SELECT earned FROM save_solution(2, ?, 'ab', 'λ', ?, 1)",
+        "SELECT earned FROM save_solution(2, ?, 'ab', 'musical-chords', ?, 1)",
         $_ eq 'assembly' ?? Nil !! 2, $_,
     ).row, $earns, "Lang $i earns $earns";
 }
