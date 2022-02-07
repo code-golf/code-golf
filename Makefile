@@ -86,8 +86,9 @@ lint:
 	    golangci/golangci-lint:v1.44.0 golangci-lint run
 
 live:
-	@docker buildx build --pull --push \
-	    --file docker/live.Dockerfile --tag codegolf/code-golf .
+	@docker build --pull -f docker/live.Dockerfile -t codegolf/code-golf .
+
+	@docker push codegolf/code-golf
 
 	@ssh rancher@code.golf "              \
 	    docker pull codegolf/code-golf && \
