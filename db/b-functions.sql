@@ -210,6 +210,10 @@ BEGIN
     IF langs @> '{perl,raku}' THEN
         earned := earn(earned, 'tim-toady', user_id); END IF;
 
+    -- 🗜 Under Pressure
+    IF hole = 'pascals-triangle' AND lang = 'pascal' THEN
+        earned := earn(earned, 'under-pressure', user_id); END IF;
+
     -------------------
     -- Miscellaneous --
     -------------------
