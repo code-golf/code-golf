@@ -8,10 +8,7 @@ import (
 )
 
 func ordinalNumbers() (args []string, out string) {
-	for _, i := range rand.Perm(200) {
-		if i > 100 {
-			i += rand.Intn(20) * 100
-		}
+	for _, i := range rand.Perm(1000) {
 		s := strconv.Itoa(i)
 
 		args = append(args, s)
