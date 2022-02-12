@@ -1442,7 +1442,7 @@ links = [
     { name = 'Wikipedia',    url = "//www.wikipedia.org/wiki/Pascal's_triangle" },
 ]
 preamble = '''
-<p>Pascal’s triangle is a triangular pattern of integers formed by the binomial coefficients.</p>
+<p>Pascal’s triangle is a triangular pattern of integers formed by the binomial coefficients.
 <p>Print the first <b>20 rows</b> of Pascal’s triangle.
 '''
 
