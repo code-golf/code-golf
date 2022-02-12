@@ -72,8 +72,10 @@ func GolferCheevos(w http.ResponseWriter, r *http.Request) {
 
 	if err := db.QueryRow(
 		`WITH langs AS (
-		    SELECT COUNT(DISTINCT lang) FROM solutions
+		    SELECT COUNT(DISTINCT lang)
+		      FROM solutions
 		     WHERE NOT failing AND user_id = $1
+		  GROUP BY hole
 		) SELECT MAX(count) FROM langs`,
 		golfer.ID,
 	).Scan(&count); err != nil {
