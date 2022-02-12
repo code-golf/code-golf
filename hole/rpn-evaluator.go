@@ -32,20 +32,20 @@ func expand(node *Node) {
 	val := node.value
 	op := "+-*/"[rand.Intn(4)]
 
-	var left_val int
-	var right_val int
+	var leftVal int
+	var rightVal int
 
 	switch op {
 	case '+':
-		left_val = randInt(0, val)
-		right_val = val - left_val
+		leftVal = randInt(0, val)
+		rightVal = val - leftVal
 	case '-':
-		left_val = randInt(val, MaxInt)
-		right_val = left_val - val
+		leftVal = randInt(val, MaxInt)
+		rightVal = leftVal - val
 	case '*':
 		if val == 0 {
-			left_val = randInt(0, MaxInt)
-			right_val = 0
+			leftVal = randInt(0, MaxInt)
+			rightVal = 0
 		} else {
 			factors := []int{1}
 			for i := 2; i*i <= val; i++ {
@@ -53,25 +53,25 @@ func expand(node *Node) {
 					factors = append(factors, i)
 				}
 			}
-			left_val = factors[rand.Intn(len(factors))]
-			right_val = val / left_val
+			leftVal = factors[rand.Intn(len(factors))]
+			rightVal = val / leftVal
 		}
 		if rand.Intn(2) == 1 {
-			left_val, right_val = right_val, left_val
+			leftVal, rightVal = rightVal, leftVal
 		}
 	case '/':
 		if val == 0 {
-			left_val = 0
-			right_val = randInt(0, MaxInt)
+			leftVal = 0
+			rightVal = randInt(0, MaxInt)
 		} else {
-			right_val = randInt(1, MaxInt/val)
-			left_val = val * right_val
+			rightVal = randInt(1, MaxInt/val)
+			leftVal = val * rightVal
 		}
 	}
 
 	node.op = op
-	node.left = asNode(left_val)
-	node.right = asNode(right_val)
+	node.left = asNode(leftVal)
+	node.right = asNode(rightVal)
 }
 
 func expandLeft(init *Node, count int) {
@@ -91,10 +91,10 @@ func expandRight(init *Node, count int) {
 func expandRand(init *Node, count int) {
 	valueNodes := []*Node{init}
 	for nodesCount := 1; nodesCount <= count; nodesCount++ {
-		nodeId := rand.Intn(nodesCount)
-		node := valueNodes[nodeId]
+		nodeIdx := rand.Intn(nodesCount)
+		node := valueNodes[nodeIdx]
 		expand(node)
-		valueNodes[nodeId] = node.left
+		valueNodes[nodeIdx] = node.left
 		valueNodes = append(valueNodes, node.right)
 	}
 }
