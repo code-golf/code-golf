@@ -48,6 +48,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f523.svg       `# Input Symbols`                \
     svg/1f549.svg       `# Om`                           \
     svg/1f596.svg       `# Vulcan Salute`                \
+    svg/1f5dc.svg       `# Compression`                  \
     svg/1f600.svg       `# Grinning Face`                \
     svg/1f602.svg       `# Face with Tears of Joy`       \
     svg/1f605.svg       `# Grinning Face with Sweat`     \

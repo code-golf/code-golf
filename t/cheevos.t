@@ -44,13 +44,14 @@ for $dbh.execute('SELECT unnest(enum_range(null::hole))').allrows.flat {
 }
 
 for <
-    brainfuck       brainfuck {inception}
-    divisors        php       {elephpant-in-the-room}
-    poker           fish      {fish-n-chips}
-    quine           python    {ouroboros}
-    seven-segment   assembly  {assembly-required}
-    sudoku          hexagony  {off-the-grid}
-    ten-pin-bowling cobol     {cobowl}
+    brainfuck        brainfuck {inception}
+    divisors         php       {elephpant-in-the-room}
+    pascals-triangle pascal    {under-pressure}
+    poker            fish      {fish-n-chips}
+    quine            python    {ouroboros}
+    seven-segment    assembly  {assembly-required}
+    sudoku           hexagony  {off-the-grid}
+    ten-pin-bowling  cobol     {cobowl}
 > -> $hole, $lang, $cheevos {
     is $dbh.execute(
         "SELECT earned FROM save_solution(2, ?, 'ab', ?, ?, 1)",
