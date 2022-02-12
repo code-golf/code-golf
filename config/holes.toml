@@ -1730,16 +1730,22 @@ preamble = '''
 <p>For each Roman numeral argument print the same number in Arabic numerals.
 '''
 
-['RPN Evaluator']
+['Reverse Polish Notation']
 category = 'Computing'
-experiment = -1
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Parsing/RPN_calculator_algorithm' },
     { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Reverse_Polish_notation' },
 ]
 preamble = '''
-<p>Evaluate each RPN (Reverse Polish notation) expression.
-<p>The result of each operation is a non-negative integer not exceeding 32,767.
+<p>Evaluate each Reverse Polish notation expression.
+
+<p>
+    All given numbers and the result of each operation are positive integers
+    not exceeding <b>32,767</b>.
+
+<p>
+    Only the operators <code><b>+</b></code>, <code><b>-</b></code>,
+    <code><b>*</b></code>, and <code><b>/</b></code> are used.
 '''
 
 ['Rule 110']
