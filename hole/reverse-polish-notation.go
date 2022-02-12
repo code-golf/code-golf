@@ -32,8 +32,7 @@ func expand(node *Node) {
 	val := node.value
 	op := "+-*/"[rand.Intn(4)]
 
-	var leftVal int
-	var rightVal int
+	var leftVal, rightVal int
 
 	switch op {
 	case '+':
@@ -119,17 +118,17 @@ func genExpr(initVal int, expander func(*Node, int), expandCount int) *Node {
 	return init
 }
 
-func rpnEvaluator() ([]string, string) {
-	const TestsCount = 20
+func reversePolishNotation() ([]string, string) {
+	const tests = 20
 
-	exprs := [TestsCount]*Node{
+	exprs := [tests]*Node{
 		genExpr(randInt(1, MaxInt), expandLeft, randInt(16, 31)),
 		genExpr(randInt(1, MaxInt), expandRight, randInt(16, 31)),
 		genExpr(randInt(1, MaxInt), expandRight, 0),
 		genExpr(0, expandRand, randInt(16, 31)),
 	}
 
-	for i := 4; i < TestsCount; i++ {
+	for i := 4; i < tests; i++ {
 		exprs[i] = genExpr(randInt(1, MaxInt), expandRand, randInt(1, 31))
 	}
 
@@ -137,14 +136,14 @@ func rpnEvaluator() ([]string, string) {
 		exprs[i], exprs[j] = exprs[j], exprs[i]
 	})
 
-	args := make([]string, TestsCount)
+	args := make([]string, tests)
 	var answer strings.Builder
 
-	for k, expr := range exprs {
+	for i, expr := range exprs {
 		var arg strings.Builder
 		printNode(&arg, expr)
-		args[k] = arg.String()
-		if k > 0 {
+		args[i] = arg.String()
+		if i > 0 {
 			answer.WriteByte('\n')
 		}
 		answer.WriteString(strconv.Itoa(expr.value))
