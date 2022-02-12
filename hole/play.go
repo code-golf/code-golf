@@ -95,6 +95,8 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 		answer = code
 	case "rock-paper-scissors-spock-lizard":
 		args, answer = rockPaperScissorsSpockLizard()
+	case "rpn-evaluator":
+		args, answer = rpnEvaluator()
 	case "seven-segment":
 		args, answer = sevenSegment()
 	case "spelling-numbers":
