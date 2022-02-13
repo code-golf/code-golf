@@ -1,50 +1,37 @@
 package hole
 
 import (
+	"math"
 	"math/rand"
 	"strconv"
 	"strings"
 )
 
-func randInt(a, b int) int {
-	return rand.Intn(b-a+1) + a
-}
-
-const MaxInt = 1<<15 - 1
-
 type Node struct {
-	op    byte
-	value int
-	left  *Node
-	right *Node
+	op          byte
+	value       int
+	left, right *Node
 }
 
-func asNode(val int) *Node {
-	return &Node{
-		op:    '=',
-		value: val,
-		left:  nil,
-		right: nil,
-	}
-}
+func asNode(val int) *Node { return &Node{op: '=', value: val} }
+
+func randInt(a, b int) int { return rand.Intn(b-a+1) + a }
 
 func expand(node *Node) {
 	val := node.value
-	op := "+-*/"[rand.Intn(4)]
+	var left, right int
 
-	var leftVal, rightVal int
-
-	switch op {
+	switch node.op = "+-*/"[rand.Intn(4)]; node.op {
 	case '+':
-		leftVal = randInt(0, val)
-		rightVal = val - leftVal
+		left = randInt(0, val)
+		right = val - left
 	case '-':
-		leftVal = randInt(val, MaxInt)
-		rightVal = leftVal - val
+		left = randInt(val, math.MaxInt16)
+		right = left - val
 	case '*':
 		if val == 0 {
-			leftVal = randInt(0, MaxInt)
-			rightVal = 0
+			left = randInt(0, math.MaxInt16)
+			right = 0
 		} else {
 			factors := []int{1}
 			for i := 2; i*i <= val; i++ {
@@ -52,25 +39,24 @@ func expand(node *Node) {
 					factors = append(factors, i)
 				}
 			}
-			leftVal = factors[rand.Intn(len(factors))]
-			rightVal = val / leftVal
+			left = factors[rand.Intn(len(factors))]
+			right = val / left
 		}
 		if rand.Intn(2) == 1 {
-			leftVal, rightVal = rightVal, leftVal
+			left, right = right, left
 		}
 	case '/':
 		if val == 0 {
-			leftVal = 0
-			rightVal = randInt(1, MaxInt)
+			left = 0
+			right = randInt(1, math.MaxInt16)
 		} else {
-			rightVal = randInt(1, MaxInt/val)
-			leftVal = val * rightVal
+			right = randInt(1, math.MaxInt16/val)
+			left = val * right
 		}
 	}
 
-	node.op = op
-	node.left = asNode(leftVal)
-	node.right = asNode(rightVal)
+	node.left = asNode(left)
+	node.right = asNode(right)
 }
 
 func expandLeft(init *Node, count int) {
@@ -112,24 +98,24 @@ func writeNode(sb *strings.Builder, node *Node) {
 	}
 }
 
-func genExpr(initVal int, expander func(*Node, int), expandCount int) *Node {
-	init := asNode(initVal)
-	expander(init, expandCount)
-	return init
+func genExpr(init int, expander func(*Node, int), expandCount int) *Node {
+	node := asNode(init)
+	expander(node, expandCount)
+	return node
 }
 
 func reversePolishNotation() ([]string, string) {
 	const tests = 20
 
 	exprs := [tests]*Node{
-		genExpr(randInt(1, MaxInt), expandLeft, randInt(16, 31)),
-		genExpr(randInt(1, MaxInt), expandRight, randInt(16, 31)),
-		genExpr(randInt(1, MaxInt), expandRight, 0),
+		genExpr(randInt(1, math.MaxInt16), expandLeft, randInt(16, 31)),
+		genExpr(randInt(1, math.MaxInt16), expandRight, randInt(16, 31)),
+		genExpr(randInt(1, math.MaxInt16), expandRight, 0),
 		genExpr(0, expandRand, randInt(16, 31)),
 	}
 
 	for i := 4; i < tests; i++ {
-		exprs[i] = genExpr(randInt(1, MaxInt), expandRand, randInt(1, 31))
+		exprs[i] = genExpr(randInt(1, math.MaxInt16), expandRand, randInt(1, 31))
 	}
 
 	rand.Shuffle(len(exprs), func(i, j int) {
