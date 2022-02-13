@@ -114,3 +114,7 @@ logs:
 
 test:
 	@go test ./...
+
+.PHONY: xt
+xt:
+	@prove6 xt

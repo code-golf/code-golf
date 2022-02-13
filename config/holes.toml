@@ -26,7 +26,7 @@
 category = 'Art'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/The_Twelve_Days_of_Christmas' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/The_Twelve_Days_of_Christmas_(song)' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/The_Twelve_Days_of_Christmas_(song)' },
 ]
 preamble = '''
 <p>Print the lyrics to the song <b>The 12 Days of Christmas</b>:</p>
@@ -58,7 +58,7 @@ A Partridge in a Pear Tree.
 category = 'Art'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/99_Bottles_of_Beer' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/99_Bottles_of_Beer' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/99_Bottles_of_Beer' },
 ]
 preamble = '''
 <p>Print the lyrics to the song <b>99 Bottles of Beer</b>:</p>
@@ -84,7 +84,7 @@ category = 'Sequence'
 links = [
     { name = 'OEIS A005101', url = '//oeis.org/A005101' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Abundant,_deficient_and_perfect_number_classifications' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Abundant_number' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Abundant_number' },
 ]
 preamble = '''
 <p>
@@ -103,7 +103,7 @@ preamble = '''
 category = 'Transform'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Roman_numerals/Encode' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Roman_numerals' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Roman_numerals' },
 ]
 preamble = '''
 <p>For each Arabic numeral argument print the same number in Roman numerals.
@@ -166,7 +166,7 @@ preamble = '''
 category = 'Computing'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Execute_Brain****' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Brainfuck' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Brainfuck' },
 ]
 preamble = '''
 <p>
@@ -218,7 +218,7 @@ category = 'Sequence'
 links = [
     { name = 'OEIS A000108', url = '//oeis.org/A000108' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Catalan_numbers' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Catalan_number' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Catalan_number' },
 ]
 preamble = '''
 <p>The nth Catalan number can be expressed as C(n) = binomial(2n,n)/(n+1).
@@ -232,7 +232,7 @@ preamble = '''
 category = 'Mathematics'
 links = [
    { name = 'OEIS A006752', url = '//oeis.org/A006752' },
-   { name = 'Wikipedia',    url = "//www.wikipedia.org/wiki/Catalan's_constant" },
+   { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Catalan's_constant" },
 ]
 preamble = '''
 <p>Catalan’s constant is a mathematical constant equal to <b>1/1 − 1/3² + 1/5² − 1/7² + 1/9² − …</b>
@@ -702,7 +702,7 @@ category = 'Sequence'
 links = [
     { name = 'OEIS A006567', url = '//oeis.org/A006567' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Emirp_primes' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Emirp' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Emirp' },
 ]
 preamble = '''
 <p>
@@ -718,7 +718,7 @@ preamble = '''
 ['Ellipse Perimeters']
 category = 'Mathematics'
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Ellipse' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Ellipse' },
 ]
 experiment = -1
 preamble = '''
@@ -730,7 +730,7 @@ preamble = '''
 [Emojify]
 category = 'Transform'
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/List_of_emoticons' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/List_of_emoticons' },
 ]
 preamble = '''
 <p>
@@ -773,7 +773,7 @@ category = 'Sequence'
 links = [
     { name = 'OEIS A001969', url = '//oeis.org/A001969' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Population_count' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Evil_number' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Evil_number' },
 ]
 preamble = '''
 <p>
@@ -794,7 +794,7 @@ category = 'Sequence'
 links = [
     { name = 'OEIS A000045', url = '//oeis.org/A000045' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Fibonacci_sequence' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Fibonacci_number' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Fibonacci_number' },
 ]
 preamble = '''
 <p>
@@ -807,7 +807,7 @@ category = 'Sequence'
 variants = ['Fizz Buzz', 'Foo Fizz Buzz Bar']
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/FizzBuzz' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Fizz_buzz' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Fizz_buzz' },
 ]
 preamble = '''
 <p>
@@ -845,7 +845,7 @@ variants = ['Happy Numbers', 'Happy Numbers (Long)']
 links = [
     { name = 'OEIS A007770', url = '//oeis.org/A007770' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Happy_numbers' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Happy_number' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Happy_number' },
 ]
 preamble = '''
 <p>
@@ -874,7 +874,7 @@ preamble = '''
 [Intersection]
 category = 'Mathematics'
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Intersection' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Intersection' },
 ]
 preamble = '''
 <p>A box is defined via <b>x</b>, <b>y</b>, <b>w</b> and <b>h</b> as
@@ -901,7 +901,7 @@ category = 'Art'
 experiment = -1
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Julia_set' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Julia_set' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Julia_set' },
 ]
 preamble = '''
 <p>
@@ -911,7 +911,7 @@ preamble = '''
 [ISBN]
 category = 'Transform'
 links = [
-    { name  = 'Wikipedia', url = '//www.wikipedia.org/wiki/International_Standard_Book_Number#ISBN-10_check_digit_calculation' }
+    { name  = 'Wikipedia', url = '//en.wikipedia.org/wiki/International_Standard_Book_Number#ISBN-10_check_digit_calculation' }
 ]
 preamble = '''
 <p>
@@ -927,7 +927,7 @@ preamble = '''
 category = 'Mathematics'
 links = [
    { name = 'OEIS A118270', url = '//oeis.org/A118270' },
-   { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Kolakoski_sequence#Kolakoski_Constant' },
+   { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Kolakoski_sequence#Kolakoski_Constant' },
 ]
 preamble = '''
 <p>
@@ -990,7 +990,7 @@ preamble = '''
 category = 'Transform'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Levenshtein_distance' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Levenshtein_distance' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Levenshtein_distance' },
 ]
 preamble = '''
 <p>
@@ -1018,7 +1018,7 @@ preamble = '''
 category = 'Sequence'
 links = [
     { name = 'OEIS A076980', url = '//oeis.org/A076980' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Leyland_number' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Leyland_number' },
 ]
 preamble = '''
 <p>
@@ -1039,7 +1039,7 @@ category = 'Sequence'
 links = [
     { name = 'OEIS A005150', url = '//oeis.org/A005150' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Look-and-say_sequence' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Look-and-say_sequence' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Look-and-say_sequence' },
 ]
 preamble = '''
 <p>
@@ -1069,7 +1069,7 @@ category = 'Art'
 experiment = -1
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Mandelbrot_set' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Mandelbrot_set' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Mandelbrot_set' },
 ]
 preamble = '''
 <p>
@@ -1081,7 +1081,7 @@ preamble = '''
 category = 'Gaming'
 experiment = 338
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Maze_solving_algorithm' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Maze_solving_algorithm' },
 ]
 preamble = '''
 <p>
@@ -1103,7 +1103,7 @@ category = 'Transform'
 variants = ['Morse Decoder', 'Morse Encoder']
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Morse_code' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Morse_code' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Morse_code' },
 ]
 preamble = '''
 <p>
@@ -1335,7 +1335,7 @@ category = 'Sequence'
 links = [
     { name = 'OEIS A005349', url = '//oeis.org/A005349' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Harshad_or_Niven_series' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Niven_number' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Niven_number' },
 ]
 preamble = '''
 <p>
@@ -1377,7 +1377,7 @@ category = 'Art'
 experiment = -1
 links = [
     { name = 'Rectifiable Polyomino', url = '//cflmath.com/Polyomino/rectifiable_data.html' },
-    { name = 'Wikipedia',             url = '//www.wikipedia.org/wiki/Polyomino' },
+    { name = 'Wikipedia',             url = '//en.wikipedia.org/wiki/Polyomino' },
 ]
 preamble = '''
 <p>
@@ -1392,7 +1392,7 @@ category = 'Sequence'
 links = [
     { name = 'OEIS A000069', url = '//oeis.org/A000069' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Population_count' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Odious_number' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Odious_number' },
 ]
 preamble = '''
 <p>
@@ -1412,7 +1412,7 @@ preamble = '''
 category = 'Transform'
 links = [
     { name = 'Rosetta Code', url = "//rosettacode.org/wiki/N'th" },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Ordinal_numeral' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Ordinal_numeral' },
 ]
 preamble = '''
 <p>
@@ -1424,7 +1424,7 @@ preamble = '''
 category = 'Transform'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Pangram_checker' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Pangram' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Pangram' },
 ]
 preamble = '''
 <p>A pangram is a sentence that uses every letter of a given alphabet.
@@ -1439,7 +1439,7 @@ preamble = '''
 category = 'Sequence'
 links = [
     { name = 'Rosetta Code', url = "//rosettacode.org/wiki/Pascal's_triangle" },
-    { name = 'Wikipedia',    url = "//www.wikipedia.org/wiki/Pascal's_triangle" },
+    { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Pascal's_triangle" },
 ]
 preamble = '''
 <p>Pascal’s triangle is a triangular pattern of integers formed by the binomial coefficients.
@@ -1451,7 +1451,7 @@ category = 'Sequence'
 links = [
     { name = 'OEIS A052294', url = '//oeis.org/A052294' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Pernicious_numbers' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Pernicious_number' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Pernicious_number' },
 ]
 preamble = '''
 <p>
@@ -1471,7 +1471,7 @@ preamble = '''
 category = 'Gaming'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Poker_hand_analyser' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/List_of_poker_hands' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/List_of_poker_hands' },
 ]
 preamble = '''
 <p>
@@ -1537,7 +1537,7 @@ category = 'Sequence'
 variants = ['Prime Numbers', 'Prime Numbers (Long)']
 links = [
     { name = 'OEIS A000040', url = '//oeis.org/A000040' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Prime_number' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Prime_number' },
 ]
 preamble = '''
 <p>
@@ -1549,7 +1549,7 @@ preamble = '''
 ['QR Decoder']
 category = 'Transform'
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/QR_code#Encoding' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/QR_code#Encoding' },
 ]
 preamble = '''
 <div class=qr-span>
@@ -1610,7 +1610,7 @@ preamble = '''
 category = 'Transform'
 experiment = -1
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/QR_code#Encoding' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/QR_code#Encoding' },
 ]
 preamble = '''
 <div class=qr-span>
@@ -1669,7 +1669,7 @@ preamble = '''
 category = 'Computing'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Quine' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Quine_(computing)' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Quine_(computing)' },
 ]
 preamble = '''
 <p>
@@ -1686,7 +1686,7 @@ links = [
     { name = 'Numberphile',  url = '//www.numberphile.com/videos/slightly-spooky-recaman-sequence' },
     { name = 'OEIS A005132', url = '//oeis.org/A005132'},
     { name = 'Rosetta Code', url = "//rosettacode.org/wiki/Recaman's_sequence" },
-    { name = 'Wikipedia',    url = "//www.wikipedia.org/wiki/Recamán's_sequence" },
+    { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Recamán's_sequence" },
 ]
 preamble = '''
 <p>
@@ -1702,7 +1702,7 @@ preamble = '''
 category = 'Gaming'
 links = [
     { name = 'Rules',     url = 'http://www.samkass.com/theories/RPSSL.html' },
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Rock_paper_scissors#Additional_weapons' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Rock_paper_scissors#Additional_weapons' },
 ]
 preamble = '''
 <p>
@@ -1741,7 +1741,7 @@ preamble = '''
 category = 'Transform'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Roman_numerals/Decode' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Roman_numerals' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Roman_numerals' },
 ]
 preamble = '''
 <p>For each Roman numeral argument print the same number in Arabic numerals.
@@ -1751,7 +1751,7 @@ preamble = '''
 category = 'Computing'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Parsing/RPN_calculator_algorithm' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Reverse_Polish_notation' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Reverse_Polish_notation' },
 ]
 preamble = '''
 <p>RPN (Reverse Polish notation) is a way of writing expressions such that operators are written after their operands: <code>3 2 +</code> rather than <code>(3+2)</code>.
@@ -1764,7 +1764,7 @@ preamble = '''
 ['Rule 110']
 category = 'Computing'
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Rule_110' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Rule_110' },
 ]
 preamble = '''
 <p>
@@ -1826,7 +1826,7 @@ where 1 is alive, 0 is dead, and the middle digit represents the previous state 
 ['Seven Segment']
 category = 'Transform'
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Seven-segment_display' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Seven-segment_display' },
 ]
 preamble = '''
 <p>
@@ -1845,7 +1845,7 @@ preamble = '''
 category = 'Art'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Sierpinski_triangle' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Sierpiński_triangle' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Sierpiński_triangle' },
 ]
 preamble = '''
 <p>
@@ -1881,7 +1881,7 @@ category = 'Sequence'
 links = [
     { name = 'OEIS A006753', url = '//oeis.org/A006753' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Smith_numbers' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Smith_number' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Smith_number' },
 ]
 preamble = '''
 <p>
@@ -1983,7 +1983,7 @@ category = 'Gaming'
 variants = ['Sudoku', 'Sudoku v2']
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Sudoku' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Sudoku' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Sudoku' },
 ]
 preamble = '''
 <p>
@@ -2027,7 +2027,7 @@ preamble = '''
 ['Ten-pin Bowling']
 category = 'Gaming'
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Ten-pin_bowling' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Ten-pin_bowling' },
 ]
 preamble = '''
 <p>
@@ -2097,7 +2097,7 @@ preamble = '''
 [Tongue-twisters]
 category = 'Art'
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Tongue-twister' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Tongue-twister' },
 ]
 preamble = '''
 <p>Output the following tongue twisters with a blank line between each one:
@@ -2213,7 +2213,7 @@ category = 'Sequence'
 links = [
     { name = 'OEIS A014575', url = '//oeis.org/A014575' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Vampire_number' },
-    { name = 'Wikipedia',    url = '//wikipedia.org/wiki/Vampire_number' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Vampire_number' },
 ]
 preamble = '''
 <p>
@@ -2271,7 +2271,7 @@ preamble = '''
 category = 'Mathematics'
 links = [
     { name = 'OEIS A014715', url = '//oeis.org/A014715' },
-    { name = 'Wikipedia',    url = "//www.wikipedia.org/wiki/Conway's_constant" },
+    { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Conway's_constant" },
 ]
 preamble = '''
 <p>Conway’s constant λ is a mathematical constant related to the growth of the <a href=look-and-say>look-and-say sequence</a>.
@@ -2283,7 +2283,7 @@ preamble = '''
 category = 'Mathematics'
 links = [
     { name = 'OEIS A000796', url = '//oeis.org/A000796' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Pi' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Pi' },
 ]
 preamble = '''
 <p>Print π (Pi) to the first 1,000 decimal places.
@@ -2292,7 +2292,7 @@ preamble = '''
 ['τ']
 category = 'Mathematics'
 links = [
-    { name = 'Wikipedia', url = '//www.wikipedia.org/wiki/Tau_(mathematical_constant)' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Tau_(mathematical_constant)' },
 ]
 preamble = '''
 <p>Print τ (Tau) to the first 1,000 decimal places.
@@ -2302,7 +2302,7 @@ preamble = '''
 category = 'Mathematics'
 links = [
     { name = 'OEIS A001622', url = '//oeis.org/A001622' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Golden_ratio' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Golden_ratio' },
 ]
 preamble = '''
 <p>Print φ (Phi) to the first 1,000 decimal places.
@@ -2312,7 +2312,7 @@ preamble = '''
 category = 'Mathematics'
 links = [
     { name = 'OEIS A002193', url = '//oeis.org/A002193' },
-    { name = 'Wikipedia',    url = '//www.wikipedia.org/wiki/Square_root_of_2' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Square_root_of_2' },
 ]
 preamble = '''
 <p>Print √2 (Pythagoras’ constant) to the first 1,000 decimal places.
@@ -2322,7 +2322,7 @@ preamble = '''
 category = 'Mathematics'
 links = [
     { name = 'OEIS A001113', url = '//oeis.org/A001113' },
-    { name = 'Wikipedia',    url = '//wikipedia.org/wiki/E_(mathematical_constant)' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/E_(mathematical_constant)' },
 ]
 preamble = '''
 <p>Print 𝑒 (Euler’s number) to the first 1,000 decimal places.
