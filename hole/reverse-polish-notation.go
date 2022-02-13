@@ -61,7 +61,7 @@ func expand(node *Node) {
 	case '/':
 		if val == 0 {
 			leftVal = 0
-			rightVal = randInt(0, MaxInt)
+			rightVal = randInt(1, MaxInt)
 		} else {
 			rightVal = randInt(1, MaxInt/val)
 			leftVal = val * rightVal
@@ -98,15 +98,15 @@ func expandRand(init *Node, count int) {
 	}
 }
 
-func printNode(sb *strings.Builder, node *Node) {
+func writeNode(sb *strings.Builder, node *Node) {
 	if node.op == '=' {
 		if sb.Len() > 0 {
 			sb.WriteByte(' ')
 		}
 		sb.WriteString(strconv.Itoa(node.value))
 	} else {
-		printNode(sb, node.left)
-		printNode(sb, node.right)
+		writeNode(sb, node.left)
+		writeNode(sb, node.right)
 		sb.WriteByte(' ')
 		sb.WriteByte(node.op)
 	}
@@ -141,7 +141,7 @@ func reversePolishNotation() ([]string, string) {
 
 	for i, expr := range exprs {
 		var arg strings.Builder
-		printNode(&arg, expr)
+		writeNode(&arg, expr)
 		args[i] = arg.String()
 		if i > 0 {
 			answer.WriteByte('\n')
