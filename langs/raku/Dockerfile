@@ -26,8 +26,7 @@ COPY --from=0 /empty                   /tmp
 COPY --from=0 /usr/bin/rakudo          /usr/bin/raku
 COPY --from=0 /usr/lib/libmoar.so      /usr/lib/
 COPY --from=0 /usr/share/nqp           /usr/share/nqp
-COPY --from=0 /usr/share/perl6/lib     /usr/share/perl6/lib
-COPY --from=0 /usr/share/perl6/runtime /usr/share/perl6/runtime
+COPY --from=0 /usr/share/perl6         /usr/share/perl6
 
 ENTRYPOINT ["raku"]
 
