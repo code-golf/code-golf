@@ -3,20 +3,29 @@ package hole
 import (
 	"math/rand"
 	"strconv"
+	"strings"
 
 	"github.com/code-golf/code-golf/pretty"
 )
 
-func ordinalNumbers() (args []string, out string) {
-	for _, i := range rand.Perm(1000) {
-		s := strconv.Itoa(i)
+func ordinalNumbers() ([]string, string) {
+	const count = 1000
 
-		args = append(args, s)
-		out += s + pretty.Ordinal(i) + "\n"
+	args := make([]string, count)
+	var out strings.Builder
+
+	// The strings "0th" to "999th", newline delimited, are this len.
+	out.Grow(5889)
+
+	for i, n := range rand.Perm(count) {
+		args[i] = strconv.Itoa(n)
+
+		if i > 0 {
+			out.WriteByte('\n')
+		}
+		out.WriteString(args[i])
+		out.WriteString(pretty.Ordinal(n))
 	}
 
-	// Drop the trailing newline.
-	out = out[:len(out)-1]
-
-	return
+	return args, out.String()
 }
