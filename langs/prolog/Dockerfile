@@ -19,7 +19,8 @@ COPY --from=0 /empty                                             /proc
 COPY --from=0 /empty                                             /tmp
 COPY --from=0 /usr/lib/swipl                                     /usr/lib/swipl
 COPY --from=0 /usr/lib/locale                                    /usr/lib/locale
-COPY --from=0 /usr/lib/x86_64-linux-gnu/libtcmalloc_minimal.so.4 \
+COPY --from=0 /usr/lib/x86_64-linux-gnu/libcrypto.so.1.1         \
+              /usr/lib/x86_64-linux-gnu/libtcmalloc_minimal.so.4 \
               /usr/lib/x86_64-linux-gnu/libgmp.so.10             \
               /usr/lib/x86_64-linux-gnu/libstdc++.so.6           /usr/lib/
 

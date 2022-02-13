@@ -578,7 +578,7 @@ ForEach ($arg in $args) {
 '''
 
 [Prolog]
-size    = '28.7 MiB'
+size    = '31.7 MiB'
 version = 'SWI-Prolog 8.4.1'
 website = 'https://www.swi-prolog.org'
 example = '''
