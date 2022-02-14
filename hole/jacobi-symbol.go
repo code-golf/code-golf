@@ -25,7 +25,7 @@ func jacobiSymbol() ([]string, string) {
 		p2, _ := rand.Prime(rand.Reader, 32)
 		inputs[i] = new(big.Int).Mul(p1, p2)
 	}
-	for i := 2*tests; i < 3*tests; i++ {
+	for i := 2 * tests; i < 3*tests; i++ {
 		inputs[i], _ = rand.Int(rand.Reader, new(big.Int).SetUint64(^uint64(0)))
 	}
 
