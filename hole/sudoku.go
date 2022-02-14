@@ -6,12 +6,14 @@ import (
 )
 
 const (
-	boardSize = 9
 	blockSize = 3
+	boardSize = blockSize * blockSize
+	cellCount = boardSize * boardSize
 )
 
 func printSudoku(board [boardSize][boardSize]int) string {
 	var b strings.Builder
+	b.Grow(1641) // Length in bytes of a printed Sudoku board.
 
 	for i, row := range board {
 		if i == 0 {
@@ -50,7 +52,7 @@ func solveSudoku(board [boardSize][boardSize]int, cell int, count *int) bool {
 	var i, j int
 
 	for {
-		if cell == boardSize*boardSize {
+		if cell == cellCount {
 			*count++
 			return *count == 2
 		}
@@ -70,12 +72,9 @@ func solveSudoku(board [boardSize][boardSize]int, cell int, count *int) bool {
 	j0 := j - j%blockSize
 
 	// 1 - 9 in random order.
-	var numbers [boardSize]int
-
+	numbers := rand.Perm(9)
 	for i := range numbers {
-		j := rand.Intn(i + 1)
-		numbers[i] = numbers[j]
-		numbers[j] = i + 1
+		numbers[i]++
 	}
 
 Numbers:
@@ -129,12 +128,9 @@ func sudoku(v2 bool) (args []string, out string) {
 		j0 := j - j%blockSize
 
 		// 1 - 9 in random order.
-		var numbers [boardSize]int
-
+		numbers := rand.Perm(9)
 		for i := range numbers {
-			j := rand.Intn(i + 1)
-			numbers[i] = numbers[j]
-			numbers[j] = i + 1
+			numbers[i]++
 		}
 
 	Numbers:
@@ -154,7 +150,7 @@ func sudoku(v2 bool) (args []string, out string) {
 			}
 
 			// number is already in the block.
-			for _, row := range board[i0:i] {
+			for _, row := range board[i0 : i0+blockSize] {
 				for _, numberInRow := range row[j0 : j0+blockSize] {
 					if number == numberInRow {
 						continue Numbers
@@ -164,7 +160,7 @@ func sudoku(v2 bool) (args []string, out string) {
 
 			board[i][j] = number
 
-			if cell+1 == boardSize*boardSize || generate(cell+1) {
+			if cell+1 == cellCount || generate(cell+1) {
 				return true
 			}
 		}
@@ -179,32 +175,30 @@ func sudoku(v2 bool) (args []string, out string) {
 
 	out = printSudoku(board)
 
-	for k, cell := range rand.Perm(boardSize * boardSize) {
+	// Clear random cells while keeping a unique solution. Only clear up-to 50
+	// cells so that brute force solutions are unlikely to time out.
+	for _, cell := range rand.Perm(cellCount)[:50] {
 		i := cell / boardSize
 		j := cell % boardSize
 
 		orig := board[i][j]
 		board[i][j] = 0
 
-		var count int
-		solveSudoku(board, 0, &count)
+		var solutions int
+		solveSudoku(board, 0, &solutions)
 
 		// Removing this cell creates too many solutions, put it back.
-		if count == 2 {
+		if solutions == 2 {
 			board[i][j] = orig
-		}
-
-		// TODO Switch to dancing links to remove this grotesque hack!
-		// http://garethrees.org/2007/06/10/zendoku-generation/#section-4
-		if k == 50 {
-			break
 		}
 	}
 
 	if v2 {
-		args = append(args, printSudoku(board))
+		args = []string{printSudoku(board)}
 	} else {
-		for _, row := range board {
+		args = make([]string, boardSize)
+
+		for i, row := range board {
 			var b strings.Builder
 
 			for _, number := range row {
@@ -215,7 +209,7 @@ func sudoku(v2 bool) (args []string, out string) {
 				}
 			}
 
-			args = append(args, b.String())
+			args[i] = b.String()
 		}
 	}
 
