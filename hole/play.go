@@ -75,6 +75,8 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 		args, answer = intersection()
 	case "levenshtein-distance":
 		args, answer = levenshteinDistance()
+	case "jacobi-symbol":
+		args, answer = jacobiSymbol()
 	case "lucky-tickets":
 		args, answer = luckyTickets()
 	case "maze":

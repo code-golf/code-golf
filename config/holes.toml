@@ -923,6 +923,20 @@ preamble = '''
     Dashes may occur in varying positions and are ignored.
 '''
 
+['Jacobi Symbol']
+category = 'Mathematics'
+experiment = -1
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Jacobi_symbol' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Jacobi_symbol' },
+]
+preamble = '''
+<p>
+    For each input pair (a,n) print the Jacobi symbol (a/n).
+<p>
+	For prime n and a<n, (a/n) is -1 if and only if a does not have a square root modulo n. For composite n, only the forward implication holds.
+'''
+
 ['Kolakoski Constant']
 category = 'Mathematics'
 links = [
