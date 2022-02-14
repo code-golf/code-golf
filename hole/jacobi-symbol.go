@@ -2,7 +2,6 @@ package hole
 
 import (
 	"crypto/rand"
-	"fmt"
 	"math/big"
 	mrand "math/rand"
 	"strconv"
