@@ -1,16 +1,33 @@
 package hole
 
 import (
-	"crypto/rand"
 	"math/big"
-	mrand "math/rand"
+	"math/rand"
 	"strconv"
 	"strings"
 )
 
-func randomOdd() *big.Int {
-	k := new(big.Int).SetUint64(mrand.Uint64())
+func randomNatural(bits int) *big.Int {
+	if bits == 64 {
+		return new(big.Int).SetUint64(rand.Uint64())
+	}
+	if bits == 63 {
+		return new(big.Int).SetInt64(rand.Int63())
+	}
+	return new(big.Int).SetInt64(rand.Int63n((1 << bits) - 1))
+}
+
+func randomOdd(bits int) *big.Int {
+	k := randomNatural(bits)
 	return k.SetBit(k, 0, 1)
+}
+
+func randomPrime(bits int) *big.Int {
+	k := randomOdd(bits)
+	for !k.ProbablyPrime(20) {
+		k = randomOdd(bits)
+	}
+	return k
 }
 
 func jacobiSymbol() ([]string, string) {
@@ -18,25 +35,23 @@ func jacobiSymbol() ([]string, string) {
 	inputs := make([]*big.Int, 3*tests)
 
 	for i := 0; i < tests; i++ {
-		inputs[i], _ = rand.Prime(rand.Reader, 64)
+		inputs[i] = randomPrime(64)
 	}
 	for i := tests; i < 2*tests; i++ {
-		p1, _ := rand.Prime(rand.Reader, 32)
-		p2, _ := rand.Prime(rand.Reader, 32)
-		inputs[i] = new(big.Int).Mul(p1, p2)
+		inputs[i] = new(big.Int).Mul(randomPrime(32), randomPrime(32))
 	}
 	for i := 2 * tests; i < 3*tests; i++ {
-		inputs[i] = new(big.Int).SetUint64(mrand.Uint64())
+		inputs[i] = randomNatural(64)
 	}
 
-	mrand.Shuffle(len(inputs), func(i, j int) {
+	rand.Shuffle(len(inputs), func(i, j int) {
 		inputs[i], inputs[j] = inputs[j], inputs[i]
 	})
 	var answer strings.Builder
 	args := make([]string, 3*tests)
 
 	for i, n := range inputs {
-		k := randomOdd()
+		k := randomOdd(64)
 		args[i] = n.String() + " " + k.String()
 		if i > 0 {
 			answer.WriteByte('\n')
