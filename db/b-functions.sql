@@ -52,6 +52,7 @@ CREATE FUNCTION save_solution(
 DECLARE
     earned cheevo[] := '{}'::cheevo[];
     holes  int;
+    langs  lang[];
     rank   hole_rank_ret;
     ret    save_solution_ret;
 BEGIN
@@ -143,9 +144,103 @@ BEGIN
         END IF;
     END IF;
 
-    -- Earn cheevos.
+    -- Earn cheevos. Same order as cheevos.toml.
     SELECT COUNT(DISTINCT solutions.hole) INTO holes
       FROM solutions WHERE NOT failing AND solutions.user_id = user_id;
+
+    SELECT array_agg(DISTINCT solutions.lang) INTO langs
+      FROM solutions
+     WHERE NOT failing
+       AND solutions.hole    = hole
+       AND solutions.user_id = user_id;
+
+    ------------------------
+    -- Hole/Lang Specific --
+    ------------------------
+
+    -- 💼 Interview Ready
+    IF hole = 'fizz-buzz' THEN
+        earned := earn(earned, 'interview-ready', user_id); END IF;
+
+    -- 🪛 Assembly Required.
+    IF hole = 'seven-segment' AND lang = 'assembly' THEN
+        earned := earn(earned, 'assembly-required', user_id); END IF;
+
+    -- ☕ Caffeinated
+    IF langs @> '{java,javascript}' THEN
+        earned := earn(earned, 'caffeinated', user_id); END IF;
+
+    -- 🎳 COBOWL
+    IF hole = 'ten-pin-bowling' AND lang = 'cobol' THEN
+        earned := earn(earned, 'cobowl', user_id); END IF;
+
+    -- 🐘 ElePHPant in the Room
+    IF lang = 'php' THEN
+        earned := earn(earned, 'elephpant-in-the-room', user_id); END IF;
+
+    -- 🐟 Fish ’n’ Chips
+    IF hole = 'poker' AND lang = 'fish' THEN
+        earned := earn(earned, 'fish-n-chips', user_id); END IF;
+
+    -- 🧠 Inception
+    IF hole = 'brainfuck' AND lang = 'brainfuck' THEN
+        earned := earn(earned, 'inception', user_id); END IF;
+
+    -- 😛 Just Kidding
+    IF langs @> '{j,k}' THEN
+        earned := earn(earned, 'just-kidding', user_id); END IF;
+
+    -- 📴 Off-the-grid
+    IF hole IN ('sudoku', 'sudoku-v2') AND lang = 'hexagony' THEN
+        earned = earn(earned, 'off-the-grid', user_id); END IF;
+
+    -- 🐍 Ouroboros
+    IF hole = 'quine' AND lang = 'python' THEN
+        earned := earn(earned, 'ouroboros', user_id); END IF;
+
+    -- 🪞 Solve Quine
+    IF hole = 'quine' THEN
+        earned := earn(earned, 'solve-quine', user_id); END IF;
+
+    -- 🎺 Sounds Quite Nice
+    IF hole = 'musical-chords' AND langs @> '{c,c-sharp,f-sharp}' THEN
+        earned := earn(earned, 'sounds-quite-nice', user_id); END IF;
+
+    -- 🐪 Tim Toady
+    IF langs @> '{perl,raku}' THEN
+        earned := earn(earned, 'tim-toady', user_id); END IF;
+
+    -- 🗜 Under Pressure
+    IF hole = 'pascals-triangle' AND lang = 'pascal' THEN
+        earned := earn(earned, 'under-pressure', user_id); END IF;
+
+    -------------------
+    -- Miscellaneous --
+    -------------------
+
+    -- 🌈 Different Strokes
+    IF (SELECT COUNT(DISTINCT solutions.code) > 1 FROM solutions
+         WHERE solutions.user_id = user_id
+           AND solutions.hole    = hole
+           AND solutions.lang    = lang) THEN
+        earned := earn(earned, 'different-strokes', user_id);
+    END IF;
+
+    -- 🔣 Polyglot
+    IF array_length(langs, 1) >= 12 THEN
+        earned := earn(earned, 'polyglot', user_id); END IF;
+
+    -- 🍖 Polyglutton
+    IF array_length(langs, 1) >= 24 THEN
+        earned := earn(earned, 'polyglutton', user_id); END IF;
+
+    -- 🕉️ Omniglot
+    IF array_length(langs, 1) >= 36 THEN
+        earned := earn(earned, 'omniglot', user_id); END IF;
+
+    -----------------
+    -- Progression --
+    -----------------
 
     IF holes >= 1  THEN earned := earn(earned, 'hello-world',       user_id); END IF;
     IF holes >= 11 THEN earned := earn(earned, 'up-to-eleven',      user_id); END IF;
@@ -155,57 +250,9 @@ BEGIN
     IF holes >= 34 THEN earned := earn(earned, 'rule-34',           user_id); END IF;
     IF holes >= 40 THEN earned := earn(earned, 'forty-winks',       user_id); END IF;
     IF holes >= 42 THEN earned := earn(earned, 'dont-panic',        user_id); END IF;
-    if holes >= 50 THEN earned := earn(earned, 'bullseye',          user_id); END IF;
-    if holes >= 60 THEN earned := earn(earned, 'gone-in-60-holes',  user_id); END IF;
-
-    IF hole = 'brainfuck' AND lang = 'brainfuck' THEN
-        earned := earn(earned, 'inception', user_id);
-    END IF;
-
-    IF hole = 'fizz-buzz' THEN
-        earned := earn(earned, 'interview-ready', user_id);
-    END IF;
-
-    IF hole = 'quine' THEN
-        earned := earn(earned, 'solve-quine', user_id);
-
-        IF lang = 'python' THEN
-            earned := earn(earned, 'ouroboros', user_id);
-        END IF;
-    END IF;
-
-    IF hole = 'poker' AND lang = 'fish' THEN
-        earned := earn(earned, 'fish-n-chips', user_id);
-    END IF;
-
-    IF hole = 'ten-pin-bowling' AND lang = 'cobol' THEN
-        earned := earn(earned, 'cobowl', user_id);
-    END IF;
-
-    IF lang = 'php' THEN
-        earned := earn(earned, 'elephpant-in-the-room', user_id);
-    END IF;
-
-    IF hole = 'seven-segment' AND lang = 'assembly' THEN
-        earned := earn(earned, 'assembly-required', user_id);
-    END IF;
-
-    IF hole IN ('sudoku', 'sudoku-v2') AND lang = 'hexagony' THEN
-        earned = earn(earned, 'off-the-grid', user_id);
-    END IF;
-
-    IF (SELECT COUNT(DISTINCT solutions.code) > 1 FROM solutions
-         WHERE solutions.user_id = user_id
-           AND solutions.hole    = hole
-           AND solutions.lang    = lang) THEN
-        earned := earn(earned, 'different-strokes', user_id);
-    END IF;
-
-    IF (SELECT COUNT(DISTINCT solutions.lang) > 11 FROM solutions
-         WHERE solutions.user_id = user_id
-           AND solutions.hole    = hole) THEN
-        earned := earn(earned, 'polyglot', user_id);
-    END IF;
+    IF holes >= 50 THEN earned := earn(earned, 'bullseye',          user_id); END IF;
+    IF holes >= 60 THEN earned := earn(earned, 'gone-in-60-holes',  user_id); END IF;
+    IF holes >= 69 THEN earned := earn(earned, 'cunning-linguist',  user_id); END IF;
 
     ret.earned := earned;
 

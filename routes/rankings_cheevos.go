@@ -21,17 +21,15 @@ func RankingsCheevos(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := struct {
-		Cheevo  *config.Cheevo
-		Cheevos map[string][]*config.Cheevo
-		Pager   *pager.Pager
-		Rows    []row
-		Total   int
+		Cheevo *config.Cheevo
+		Pager  *pager.Pager
+		Rows   []row
+		Total  int
 	}{
-		Cheevo:  config.CheevoByID[cheevoID],
-		Cheevos: config.CheevoTree,
-		Pager:   pager.New(r),
-		Rows:    make([]row, 0, pager.PerPage),
-		Total:   len(config.CheevoList),
+		Cheevo: config.CheevoByID[cheevoID],
+		Pager:  pager.New(r),
+		Rows:   make([]row, 0, pager.PerPage),
+		Total:  len(config.CheevoList),
 	}
 
 	if cheevoID != "" && data.Cheevo == nil {

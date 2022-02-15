@@ -9,6 +9,7 @@ import (
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/oauth"
+	"github.com/lib/pq"
 	"gopkg.in/guregu/null.v4"
 )
 
@@ -28,7 +29,7 @@ type Golfer struct {
 	TimeZone                               *time.Location
 }
 
-// Earn the given cheevo, no-op if already earnt.
+// Earn the given cheevo, no-op if already earned.
 func (g *Golfer) Earn(db *sql.DB, cheevoID string) (earned *config.Cheevo) {
 	if res, err := db.Exec(
 		"INSERT INTO trophies VALUES (DEFAULT, $1, $2) ON CONFLICT DO NOTHING",
@@ -52,8 +53,8 @@ func (g *Golfer) Earn(db *sql.DB, cheevoID string) (earned *config.Cheevo) {
 	return
 }
 
-// Earnt returns whether the golfer has that cheevo.
-func (g *Golfer) Earnt(cheevoID string) bool {
+// Earned returns whether the golfer has that cheevo.
+func (g *Golfer) Earned(cheevoID string) bool {
 	i := sort.SearchStrings(g.Cheevos, cheevoID)
 	return i < len(g.Cheevos) && g.Cheevos[i] == cheevoID
 }
@@ -77,7 +78,7 @@ type GolferInfo struct {
 	Diamond, Gold, Silver, Bronze int
 
 	// Count of cheevos/holes/langs done
-	Cheevos, Holes, Langs int
+	Holes, Langs int
 
 	// Count of cheevos/holes/langs available
 	CheevosTotal, HolesTotal, LangsTotal int
@@ -131,6 +132,12 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 		 GROUP BY user_id
 		)  SELECT admin,
 		          COALESCE(bronze, 0),
+		          ARRAY(
+		            SELECT trophy
+		              FROM trophies
+		             WHERE user_id = users.id
+		          ORDER BY trophy
+		          ),
 		          COALESCE(CASE WHEN show_country THEN country END, ''),
 		          COALESCE(diamond, 0),
 		          COALESCE(gold, 0),
@@ -145,8 +152,7 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 		          COALESCE(bytes.points, 0),
 		          COALESCE(chars.points, 0),
 		          COALESCE(silver, 0),
-		          sponsor,
-		          (SELECT COUNT(*) FROM trophies WHERE user_id = id)
+		          sponsor
 		     FROM users
 		LEFT JOIN medals       ON id = medals.user_id
 		LEFT JOIN points bytes ON id = bytes.user_id AND bytes.scoring = 'bytes'
@@ -156,6 +162,7 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 	).Scan(
 		&info.Admin,
 		&info.Bronze,
+		pq.Array(&info.Cheevos),
 		&info.Country,
 		&info.Diamond,
 		&info.Gold,
@@ -167,7 +174,6 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 		&info.CharsPoints,
 		&info.Silver,
 		&info.Sponsor,
-		&info.Cheevos,
 	); errors.Is(err, sql.ErrNoRows) {
 		return nil
 	} else if err != nil {

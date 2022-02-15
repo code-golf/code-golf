@@ -66,22 +66,21 @@ func wordify(out *strings.Builder, i int) {
 }
 
 func spellingNumbers() ([]string, string) {
-	const max = 1000
+	const count = 1001
 
-	args := make([]string, max+1)
+	args := make([]string, count)
 	var out strings.Builder
 
 	// The strings "zero" to "one thousand", newline delimited, are this len.
 	out.Grow(25531)
 
-	for i, n := range rand.Perm(max + 1) {
+	for i, n := range rand.Perm(count) {
 		args[i] = strconv.Itoa(n)
 
-		wordify(&out, n)
-
-		if i < max {
+		if i > 0 {
 			out.WriteByte('\n')
 		}
+		wordify(&out, n)
 	}
 
 	return args, out.String()

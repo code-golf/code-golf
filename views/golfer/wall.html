@@ -18,13 +18,25 @@
             <p>
                 <a href="/golfers/{{ .Golfer }}">{{ .Golfer }}</a>
             {{ with .Cheevo }}
-                earnt the {{ .Emoji }} <a href="/rankings/cheevos/{{ .ID }}">
+                earned the {{ .Emoji }} <a href="/rankings/cheevos/{{ .ID }}">
                     {{ .Name }}</a> achievement.
             {{ else }}
                 solved <a href="/{{ .Hole.ID }}#{{ .Lang.ID }}">
                     {{ .Hole.Name }} in {{ .Lang.Name }}</a>.
             {{ end }}
         </div>
+{{ end }}
+    </div>
+    <div id=cheevos>
+        <h2>
+            {{ len .GolferInfo.Cheevos }} / {{ .GolferInfo.CheevosTotal }}
+            Achievements
+        </h2>
+{{ range $category, $cheevos := .Cheevos }}
+    {{ range $cheevos }}
+        <div {{ if $.GolferInfo.Earned .ID }} class="earned" {{ end }}
+            title="{{ .Name }} - {{ .Description }}">{{ .Emoji }}</div>
+    {{ end }}
 {{ end }}
     </div>
 </main>

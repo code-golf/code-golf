@@ -12,7 +12,7 @@ import (
 var (
 	//go:embed words.txt
 	wordsTxt string
-	words    = strings.Split(strings.TrimSpace(wordsTxt), "\n")
+	words    = strings.Fields(wordsTxt)
 )
 
 func randWord() string { return words[rand.Intn(len(words))] }

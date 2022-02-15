@@ -7,8 +7,6 @@ parserOptions:
   ecmaVersion:  latest
   sourceType:   module
 
-#extends: eslint:all
-
 rules:
   array-bracket-newline:       [ error, consistent ]
   arrow-parens:                [ error, as-needed ]

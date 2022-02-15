@@ -2,30 +2,36 @@
 {{ template "golfer" . }}
 
 <main>
-{{ range $category, $cheevos := .Data.Cheevos }}
+{{ range $category, $cheevos := .Cheevos }}
     <details open>
         <div>
         {{ $i := 0 }}
         {{ range $cheevos }}
-            {{ $earned := index $.Data.Earned .ID }}
+            {{ $progress := index $.Data .ID }}
 
-            <div class="cheevo {{ if $earned.Earned.Valid }} earned {{ end }}">
+            <div class="cheevo {{ if $progress.Earned }} earned {{ end }}">
                 <div>{{ .Emoji }}</div>
                 <h3>{{ .Name }}</h3>
                 <p>{{ .Description }}
                 <p>
+                {{ if and (not $progress.Earned) .Target }}
+                    <progress max="{{ .Target }}"
+                            value="{{ $progress.Progress }}"></progress>
+                {{ end }}
                     <span>
-                    {{ if $earned.Earned.Valid }}
+                    {{ if $progress.Earned }}
                         {{ $i = inc $i }}
-                        Earned {{ time $earned.Earned.Value }}
+                        Earned {{ time $progress.Earned }}
+                    {{ else if .Target }}
+                        {{ $progress.Progress }} / {{ .Target }}
                     {{ else }}
                         Not yet earned
                     {{ end }}
                     </span>
                     <a href="/rankings/cheevos/{{ .ID }}">
-                        {{ $earned.Count | comma }}
-                        golfer{{ if ne $earned.Count 1 }}s{{ end }}
-                        ({{ $earned.Percent }}%)
+                        {{ $progress.Count | comma }}
+                        golfer{{ if ne $progress.Count 1 }}s{{ end }}
+                        ({{ $progress.Percent }}%)
                     </a>
             </div>
         {{ end }}
