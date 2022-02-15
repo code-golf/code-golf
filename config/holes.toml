@@ -935,7 +935,7 @@ preamble = '''
     For each input pair (a,n) print the Jacobi symbol (a/n).
 <p>
 	For odd prime n, (a/n) defined as 0 for a=0 mod n, as 1 if a is a square mod n and -1 otherwise.<br>
-    For odd n=m×p, (a/n) is defined as (a/m)×(a/p).<br>
+    For odd n=m*p, (a/n) is defined as (a/m)*(a/p).<br>
     Note that calculating the symbol from the definition is not very efficient as it requires factorisation of n.
 '''
 
