@@ -5,3 +5,4 @@
 /dist/
 /docker/
 /langs/
+*.prev

@@ -241,6 +241,27 @@ ARGV.each do |arg|
 end
 '''
 
+[D]
+size    = '251 MiB'
+version = 'D 2.098.1 on LDC 1.28.1'
+website = 'https://dlang.org'
+example = '''
+import std.stdio;
+
+void main(string[] args) {
+    // Printing
+    writeln("Hello, World!");
+
+    // Looping
+    foreach (i; 0 .. 10)
+        writeln(i);
+
+    // Accessing arguments
+    foreach (arg; args)
+        writeln(arg);
+}
+'''
+
 ['F#']
 size    = '139 MiB'
 version = 'F# 6.0 on .NET 6.0.1'
@@ -290,7 +311,7 @@ end
 
 [Go]
 size    = '135 MiB'
-version = '1.17.6'
+version = '1.17.7'
 website = 'https://go.dev'
 example = '''
 package main
@@ -416,7 +437,7 @@ for (let arg of arguments)
 
 [Julia]
 size    = '278 MiB'
-version = '1.7.1'
+version = '1.7.2'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -468,8 +489,8 @@ example = '''
 '''
 
 [Lua]
-size    = '338 KiB'
-version = '5.4.3'
+size    = '342 KiB'
+version = '5.4.4'
 website = 'https://www.lua.org'
 example = '''
 -- Printing
@@ -487,8 +508,8 @@ end
 '''
 
 [Nim]
-size    = '13.2 MiB'
-version = '1.6.2'
+size    = '13.1 MiB'
+version = '1.6.4'
 website = 'https://nim-lang.org'
 example = '''
 import os
@@ -578,7 +599,7 @@ ForEach ($arg in $args) {
 '''
 
 [Prolog]
-size    = '28.7 MiB'
+size    = '31.7 MiB'
 version = 'SWI-Prolog 8.4.1'
 website = 'https://www.swi-prolog.org'
 example = '''
@@ -614,8 +635,8 @@ for arg in sys.argv[1:]:
 '''
 
 [Raku]
-size    = '46.8 MiB'
-version = 'Raku 6.d on Rakudo 2021.12'
+size    = '56.8 MiB'
+version = 'Raku 6.d on Rakudo 2022.02'
 website = 'https://raku.org'
 example = '''
 # Printing
@@ -649,7 +670,7 @@ end
 
 [Rust]
 size    = '604 MiB'
-version = '1.58.0'
+version = '1.58.1'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {

@@ -93,6 +93,8 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 		args, answer = qr(holeID == "qr-decoder")
 	case "quine":
 		answer = code
+	case "reverse-polish-notation":
+		args, answer = reversePolishNotation()
 	case "rock-paper-scissors-spock-lizard":
 		args, answer = rockPaperScissorsSpockLizard()
 	case "seven-segment":
@@ -162,6 +164,8 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	case "crystal":
 		cmd.Args = []string{"/usr/bin/crystal", "run", "--stdin-filename", "code.cr", "--"}
 		cmd.Env = []string{"CRYSTAL_CACHE_DIR=/tmp", "PATH=/usr/bin:/bin"}
+	case "d":
+		cmd.Args = []string{"/usr/bin/tmper", "--run", "/tmp/code.d"}
 	case "fish":
 		cmd.Args = []string{"/usr/bin/fish", "--no-prng", "-c", code, "-u"}
 	case "haskell", "php":

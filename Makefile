@@ -1,4 +1,4 @@
-GOFILES  := $(shell find . -name '*.go' ! -path './.go*')
+GOFILES  := $(shell findl . -name '*.go' ! -path './.go*')
 POSTGRES := postgres:13.5-alpine
 SHELL    := /bin/bash
 

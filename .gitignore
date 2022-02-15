@@ -8,3 +8,4 @@
 /localhost.pem
 /node_modules/
 /t/.precomp/
+*.prev
