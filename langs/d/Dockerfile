@@ -10,11 +10,6 @@ RUN rm -r                           \
     /usr/lib/libphobos2-ldc-debug*  \
     /usr/lib/libphobos2-ldc.a       \
     /usr/lib/libdruntime-ldc.a      
-#    /usr/lib/libatomic*             \
-#    /usr/lib/libcrypt*              \
-#    /usr/lib/libexecinfo*           \
-#    /usr/lib/libgomp*               \
-#    /usr/lib/libc.a
 
 # Symlink cleanup
 RUN find usr/bin -type l ! -name cc -delete
