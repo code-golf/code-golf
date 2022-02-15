@@ -9,7 +9,7 @@ import (
 )
 
 func randomOdd() *big.Int {
-	k := new(big.Int).Rand(rand.Reader, new(big.Int).SetUint64(^uint64(0)))
+	k := new(big.Int).SetUint64(mrand.Uint64())
 	return k.SetBit(k, 0, 1)
 }
 
@@ -26,7 +26,7 @@ func jacobiSymbol() ([]string, string) {
 		inputs[i] = new(big.Int).Mul(p1, p2)
 	}
 	for i := 2 * tests; i < 3*tests; i++ {
-		inputs[i] = new(big.Int).Rand(rand.Reader, new(big.Int).SetUint64(^uint64(0)))
+		inputs[i] = new(big.Int).SetUint64(mrand.Uint64())
 	}
 
 	mrand.Shuffle(len(inputs), func(i, j int) {
