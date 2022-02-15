@@ -15,6 +15,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f0cf.svg       `# Joker`                        \
     svg/1f308.svg       `# Rainbow`                      \
     svg/1f30c.svg       `# Milky Way`                    \
+    svg/1f356.svg       `# Meat on Bone`                 \
     svg/1f35e.svg       `# Bread`                        \
     svg/1f37a.svg       `# Beer Mug`                     \
     svg/1f382.svg       `# Birthday Cake`                \
@@ -22,6 +23,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f3af.svg       `# Direct Hit`                   \
     svg/1f3b3.svg       `# Bowling`                      \
     svg/1f3b8.svg       `# Guitar`                       \
+    svg/1f3ba.svg       `# Trumpet`                      \
     svg/1f3c6.svg       `# Trophy`                       \
     svg/1f409.svg       `# Dragon`                       \
     svg/1f40b.svg       `# Whale`                        \
@@ -29,6 +31,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f418.svg       `# Elephant`                     \
     svg/1f41f.svg       `# Fish`                         \
     svg/1f42a.svg       `# Camel`                        \
+    svg/1f445.svg       `# Tongue`                       \
     svg/1f44b.svg       `# Waving Hand`                  \
     svg/1f44d.svg       `# Thumbs Up`                    \
     svg/1f47f.svg       `# Angry Face with Horns`        \
@@ -43,7 +46,9 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f511.svg       `# Key`                          \
     svg/1f51e.svg       `# No One Under Eighteen`        \
     svg/1f523.svg       `# Input Symbols`                \
+    svg/1f549.svg       `# Om`                           \
     svg/1f596.svg       `# Vulcan Salute`                \
+    svg/1f5dc.svg       `# Compression`                  \
     svg/1f600.svg       `# Grinning Face`                \
     svg/1f602.svg       `# Face with Tears of Joy`       \
     svg/1f605.svg       `# Grinning Face with Sweat`     \

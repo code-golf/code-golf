@@ -1,6 +1,6 @@
 use t;
 
-constant %cheevos = <
+constant %holes = <
     1  {hello-world}
     11 {up-to-eleven}
     13 {bakers-dozen}
@@ -11,6 +11,13 @@ constant %cheevos = <
     42 {dont-panic}
     50 {bullseye}
     60 {gone-in-60-holes}
+    69 {cunning-linguist}
+>;
+
+constant %langs = <
+    12 {polyglot}
+    24 {polyglutton}
+    36 {omniglot}
 >;
 
 my $dbh = dbh;
@@ -24,7 +31,7 @@ is $dbh.execute('SELECT ARRAY(SELECT trophy FROM trophies)').row, '{rtfm}',
     'GET /about earns {rtfm}';
 
 for $dbh.execute('SELECT unnest(enum_range(null::hole))').allrows.flat {
-    my $cheevos = %cheevos{ my $i = ++$ } // '{}';
+    my $cheevos = %holes{ my $i = ++$ } // '{}';
 
     # Add hole-specific cheevos on the end.
     $cheevos.=subst: '}', ',interview-ready}' if $_ eq 'fizz-buzz';
@@ -37,13 +44,14 @@ for $dbh.execute('SELECT unnest(enum_range(null::hole))').allrows.flat {
 }
 
 for <
-    brainfuck       brainfuck {inception}
-    divisors        php       {elephpant-in-the-room}
-    poker           fish      {fish-n-chips}
-    quine           python    {ouroboros}
-    seven-segment   assembly  {assembly-required}
-    sudoku          hexagony  {off-the-grid}
-    ten-pin-bowling cobol     {cobowl}
+    brainfuck        brainfuck {inception}
+    divisors         php       {elephpant-in-the-room}
+    pascals-triangle pascal    {under-pressure}
+    poker            fish      {fish-n-chips}
+    quine            python    {ouroboros}
+    seven-segment    assembly  {assembly-required}
+    sudoku           hexagony  {off-the-grid}
+    ten-pin-bowling  cobol     {cobowl}
 > -> $hole, $lang, $cheevos {
     is $dbh.execute(
         "SELECT earned FROM save_solution(2, ?, 'ab', ?, ?, 1)",
@@ -55,12 +63,19 @@ is $dbh.execute(
     "SELECT earned FROM save_solution(3, 1, '⛳', 'π', 'c', 1)",
 ).row, '{different-strokes}', 'Earns {different-strokes}';
 
-for <c fish go j java lisp lua nim php sql v zig> {
-    my $i     = ++$;
-    my $earns = $i == 12 ?? '{polyglot}' !! '{}';
+for $dbh.execute('SELECT unnest(enum_range(null::lang))').allrows.flat {
+    my $earns = %langs{ my $i = ++$ } // '{}';
+
+    # Add hole-specific cheevos on the end.
+    $earns.=subst: '}', ',sounds-quite-nice}' if $_ eq 'f-sharp';
+    $earns.=subst: '}', ',caffeinated}'       if $_ eq 'javascript';
+    $earns.=subst: '}', ',just-kidding}'      if $_ eq 'k';
+    $earns.=subst: '}', ',tim-toady}'         if $_ eq 'raku';
+    $earns.=subst: '{,', '{';
 
     is $dbh.execute(
-        "SELECT earned FROM save_solution(2, 2, 'ab', 'λ', ?, 1)", $_,
+        "SELECT earned FROM save_solution(2, ?, 'ab', 'musical-chords', ?, 1)",
+        $_ eq 'assembly' ?? Nil !! 2, $_,
     ).row, $earns, "Lang $i earns $earns";
 }
 

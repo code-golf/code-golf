@@ -21,11 +21,11 @@ require (
 	github.com/shurcooL/githubv4 v0.0.0-20220115235240-a14260e6f8a2
 	github.com/shurcooL/graphql v0.0.0-20200928012149-18c5c3165e3a // indirect
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
-	github.com/tdewolff/minify/v2 v2.9.29
-	golang.org/x/crypto v0.0.0-20220112180741-5e0467b6c7ce
-	golang.org/x/net v0.0.0-20220121210141-e204ce36a2ba // indirect
+	github.com/tdewolff/minify/v2 v2.10.0
+	golang.org/x/crypto v0.0.0-20220210151621-f4118a5b28e2
+	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd // indirect
 	golang.org/x/oauth2 v0.0.0-20211104180415-d3ed0bb246c8
-	golang.org/x/sys v0.0.0-20220114195835-da31bd327af9 // indirect
+	golang.org/x/sys v0.0.0-20220209214540-3681064d5158 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect

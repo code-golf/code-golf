@@ -1,14 +1,14 @@
-FROM rust:1.58.0-alpine3.15 as builder
+FROM rust:1.58.1-alpine3.15 as builder
 
 RUN mkdir /empty
 
 # Delete the non rustc binaries.
 RUN find /usr/local/cargo/bin \
-    /usr/local/rustup/toolchains/1.58.0-x86_64-unknown-linux-musl/bin \
+    /usr/local/rustup/toolchains/1.58.1-x86_64-unknown-linux-musl/bin \
     -not -name rustc -delete
 
 # Strip the giant rust libs.
-RUN strip /usr/local/rustup/toolchains/1.58.0-x86_64-unknown-linux-musl/lib/*.so
+RUN strip /usr/local/rustup/toolchains/1.58.1-x86_64-unknown-linux-musl/lib/*.so
 
 FROM scratch
 

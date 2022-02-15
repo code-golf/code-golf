@@ -175,6 +175,7 @@ main > header nav {
 }
 
 #colors table, #morse table, #states table { break-inside: avoid-column }
+thead { user-select: none }
 
 #colors td:first-child { display: flex }
 

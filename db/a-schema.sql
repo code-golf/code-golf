@@ -2,15 +2,16 @@ CREATE EXTENSION citext;
 
 CREATE TYPE cheevo AS ENUM (
     'assembly-required', 'bakers-dozen', 'blackjack', 'bullseye',
-    'caffeinated', 'cobowl', 'different-strokes', 'dont-panic',
-    'elephpant-in-the-room', 'fish-n-chips', 'forty-winks',
+    'caffeinated', 'cobowl', 'cunning-linguist', 'different-strokes',
+    'dont-panic', 'elephpant-in-the-room', 'fish-n-chips', 'forty-winks',
     'gone-in-60-holes', 'happy-birthday-code-golf', 'hello-world',
     'inception', 'independence-day', 'interview-ready', 'its-over-9000',
     'just-kidding', 'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars',
-    'off-the-grid', 'ouroboros', 'patches-welcome', 'pi-day', 'polyglot',
-    'rtfm', 'rule-34', 'slowcoach', 'solve-quine', 'takeout',
-    'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
-    'twenty-kiloleagues', 'up-to-eleven', 'vampire-byte'
+    'off-the-grid', 'omniglot', 'ouroboros', 'patches-welcome', 'pi-day',
+    'polyglot', 'polyglutton', 'rtfm', 'rule-34', 'slowcoach', 'solve-quine',
+    'sounds-quite-nice', 'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr',
+    'twelvetide', 'twenty-kiloleagues', 'under-pressure', 'up-to-eleven',
+    'vampire-byte'
 );
 
 CREATE TYPE connection AS ENUM (
@@ -29,11 +30,12 @@ CREATE TYPE hole AS ENUM (
     'morse-encoder', 'musical-chords', 'niven-numbers', 'number-spiral',
     'odious-numbers', 'ordinal-numbers', 'pangram-grep', 'pascals-triangle',
     'pernicious-numbers', 'poker', 'prime-numbers', 'prime-numbers-long',
-    'qr-decoder', 'quine', 'recamán', 'rock-paper-scissors-spock-lizard',
-    'roman-to-arabic', 'rule-110', 'seven-segment', 'sierpiński-triangle',
-    'smith-numbers', 'spelling-numbers', 'star-wars-opening-crawl', 'sudoku',
-    'sudoku-v2', 'ten-pin-bowling', 'tongue-twisters', 'united-states',
-    'vampire-numbers', 'van-eck-sequence', 'λ', 'π', 'τ', 'φ', '√2', '𝑒'
+    'qr-decoder', 'quine', 'recamán', 'reverse-polish-notation',
+    'rock-paper-scissors-spock-lizard', 'roman-to-arabic', 'rule-110',
+    'seven-segment', 'sierpiński-triangle', 'smith-numbers',
+    'spelling-numbers', 'star-wars-opening-crawl', 'sudoku', 'sudoku-v2',
+    'ten-pin-bowling', 'tongue-twisters', 'united-states', 'vampire-numbers',
+    'van-eck-sequence', 'λ', 'π', 'τ', 'φ', '√2', '𝑒'
 );
 
 CREATE TYPE keymap AS ENUM ('default', 'vim');

@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"database/sql"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -208,54 +207,6 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 				golfer.Earn(db, "pi-day")
 			}
 		}
-
-		// COUNT(*) = 4 because langs x (bytes, chars)
-		// TODO Move these to save_solution() in db/b-functions.sql so they
-		//      can be tested by t/cheevos.t
-		switch in.Lang {
-		case "j", "k":
-			if queryBool(
-				db,
-				`SELECT COUNT(*) = 4
-				   FROM solutions
-				  WHERE NOT failing
-				    AND hole = $1
-				    AND lang IN ('j', 'k')
-				    AND user_id = $2`,
-				in.Hole,
-				golfer.ID,
-			) {
-				golfer.Earn(db, "just-kidding")
-			}
-		case "java", "javascript":
-			if queryBool(
-				db,
-				`SELECT COUNT(*) = 4
-				   FROM solutions
-				  WHERE NOT failing
-				    AND hole = $1
-				    AND lang IN ('java', 'javascript')
-				    AND user_id = $2`,
-				in.Hole,
-				golfer.ID,
-			) {
-				golfer.Earn(db, "caffeinated")
-			}
-		case "perl", "raku":
-			if queryBool(
-				db,
-				`SELECT COUNT(*) = 4
-				   FROM solutions
-				  WHERE NOT failing
-				    AND hole = $1
-				    AND lang IN ('perl', 'raku')
-				    AND user_id = $2`,
-				in.Hole,
-				golfer.ID,
-			) {
-				golfer.Earn(db, "tim-toady")
-			}
-		}
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -266,12 +217,4 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 	if err := enc.Encode(&out); err != nil {
 		panic(err)
 	}
-}
-
-func queryBool(db *sql.DB, query string, args ...interface{}) (b bool) {
-	if err := db.QueryRow(query, args...).Scan(&b); err != nil {
-		panic(err)
-	}
-
-	return
 }

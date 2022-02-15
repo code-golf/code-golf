@@ -194,6 +194,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...interfa
 	args := struct {
 		CSS                                             template.CSS
 		CheevoBanner                                    *CheevoBanner
+		Cheevos                                         map[string][]*config.Cheevo
 		Countries                                       map[string]*config.Country
 		Data, Description, Title                        interface{}
 		DarkModeMediaQuery, LogInURL, Name, Nonce, Path string
@@ -205,6 +206,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...interfa
 		Location                                        *time.Location
 		Request                                         *http.Request
 	}{
+		Cheevos:            config.CheevoTree,
 		Countries:          config.CountryByID,
 		CSS:                getThemeCSS(theme) + css["base"] + css[path.Dir(name)] + css[name],
 		Data:               data[0],
@@ -237,7 +239,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...interfa
 	}
 
 	// Vampire Byte cheevo banner. TODO Generalise.
-	if args.Golfer != nil && !args.Golfer.Earnt("twelvetide") {
+	if args.Golfer != nil && !args.Golfer.Earned("twelvetide") {
 		var (
 			now   = time.Now().UTC()
 			start = time.Date(2021, time.December, 25, 0, 0, 0, 0, time.UTC)

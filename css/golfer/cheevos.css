@@ -8,6 +8,20 @@ main {
     padding: 0;
 }
 
+progress {
+    -webkit-appearance: none;
+    appearance: none;
+    background: none;
+    border: 1px solid var(--color);
+    grid-column: span 2;
+    height: .5rem;
+    width: 100%;
+}
+
+progress::-moz-progress-bar      { background: var(--link-color) }
+progress::-webkit-progress-bar   { background: none              }
+progress::-webkit-progress-value { background: var(--link-color) }
+
 summary {
     background: var(--background);
     border: 0;
@@ -35,10 +49,11 @@ summary:hover { background: var(--background) !important }
 .cheevo > div:first-of-type { font-size: 4rem }
 
 .cheevo > p:last-of-type {
-    display: flex;
+    display: grid;
     font-size: .75rem;
     font-weight: bold;
-    justify-content: space-between;
+    gap: .25rem;
+    grid-template-columns: 1fr auto;
 }
 
 .cheevo:not(.earned) { background: var(--light-grey) }

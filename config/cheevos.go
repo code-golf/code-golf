@@ -17,6 +17,7 @@ type Cheevo struct {
 	Emoji       string        `json:"emoji"`
 	ID          string        `json:"-"`
 	Name        string        `json:"name"`
+	Target      int           `json:"-"`
 }
 
 func init() {
