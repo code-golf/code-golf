@@ -97,8 +97,6 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 		args, answer = reversePolishNotation()
 	case "rock-paper-scissors-spock-lizard":
 		args, answer = rockPaperScissorsSpockLizard()
-	case "reverse-polish-notation":
-		args, answer = reversePolishNotation()
 	case "seven-segment":
 		args, answer = sevenSegment()
 	case "spelling-numbers":
