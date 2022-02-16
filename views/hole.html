@@ -64,6 +64,9 @@
     <details id=details {{ if not .Data.HideDetails }}open{{ end }}>
         <summary>Details</summary>
         <div class=grid>{{ .Data.Hole.Preamble }}</div>
+        {{ if ne .Data.Hole.Transform "" }}
+        <div class="btn orange" onclick="copyToClipboard({{ .Data.Hole.Transform }})">Copy as JSON</div>        
+        {{ end }}
     </details>
     <nav class=tabs id=picker></nav>
     <nav class=tabs id=solutionPicker></nav>

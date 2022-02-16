@@ -22,6 +22,7 @@ type Hole struct {
 	Experiment                            int
 	ID, Name, Prev, Next                  string
 	Preamble                              template.HTML
+	Transform                             template.JSStr
 	Links                                 []struct{ Name, URL string }
 	Variants                              []*Hole
 }

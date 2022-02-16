@@ -399,3 +399,14 @@ async function refreshScores() {
 function getScoring(str, index) {
     return scorings[index] == 'Bytes' ? new TextEncoder().encode(str).length : strlen(str);
 }
+
+//https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
+function copyToClipboard(text) {
+    var input = document.createElement('textarea');
+    input.innerHTML = text;
+    document.body.appendChild(input);
+    input.select();
+    var result = document.execCommand('copy');
+    document.body.removeChild(input);
+    return result;
+}
