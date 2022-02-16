@@ -65,7 +65,7 @@
         <summary>Details</summary>
         <div class=grid>{{ .Data.Hole.Preamble }}</div>
         {{ if ne .Data.Hole.Transform "" }}
-        <div class="btn orange" onclick="copyToClipboard({{ .Data.Hole.Transform }})">Copy as JSON</div>        
+        <div class="btn orange" onclick="navigator.clipboard.writeText(({{ .Data.Hole.Transform }})">Copy as JSON</div>        
         {{ end }}
     </details>
     <nav class=tabs id=picker></nav>
