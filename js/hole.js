@@ -402,11 +402,11 @@ function getScoring(str, index) {
 
 //https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
 function copyToClipboard(text) {
-    let input = document.createElement('textarea');
+    const input = document.createElement('textarea');
     input.innerHTML = text;
     document.body.appendChild(input);
     input.select();
-    let result = document.execCommand('copy');
+    const result = document.execCommand('copy');
     document.body.removeChild(input);
     return result;
 }
