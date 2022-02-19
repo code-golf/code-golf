@@ -73,6 +73,8 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 		args, answer = isbn()
 	case "intersection":
 		args, answer = intersection()
+	case "jacobi-symbol":
+		args, answer = jacobiSymbol()
 	case "levenshtein-distance":
 		args, answer = levenshteinDistance()
 	case "lucky-tickets":
