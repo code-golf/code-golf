@@ -369,8 +369,8 @@ async function refreshScores() {
                 </a>
             </td>
             <td data-tooltip={tooltip(r, 'Bytes')}>{comma(r.bytes)}</td>
-        {r.chars !== null ?
-            <td data-tooltip={tooltip(r, 'Chars')}>{comma(r.chars)}</td> : ''}
+            {r.chars !== null ?
+                <td data-tooltip={tooltip(r, 'Chars')}>{comma(r.chars)}</td> : ''}
         </tr>)
     }{
         // Padding.
