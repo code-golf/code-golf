@@ -5,12 +5,14 @@ import (
 	"sort"
 )
 
-type Map []item
-type item struct {
-	Key   string
-	Value interface{}
-	pos   int
-}
+type (
+	Map  []item
+	item struct {
+		Key   string
+		Value interface{}
+		pos   int
+	}
+)
 
 func (m *Map) UnmarshalJSON(b []byte) error {
 	var items map[string]item
