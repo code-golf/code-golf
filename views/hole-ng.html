@@ -67,7 +67,12 @@
     </header>
     <details id=details {{ if not .Data.HideDetails }}open{{ end }}>
         <summary>Details</summary>
-        <div class=grid>{{ .Data.Hole.Preamble }}</div>
+        <div class=grid>
+            {{ .Data.Hole.Preamble }}
+        {{ if .Data.Hole.JSON }}
+            <div><button class="btn orange" id=copy>Copy as JSON</button></div>
+        {{ end }}
+        </div>
     </details>
     <section>
         <header>
@@ -187,6 +192,8 @@
 </main>
 
 <div id=popups></div>
+
+{{ with .Data.Hole.Data }}<script id=data type=application/json>{{ . }}</script>{{ end }}
 
 <script id=darkModeMediaQuery type=application/json>{{ .DarkModeMediaQuery }}</script>
 <script id=langs              type=application/json>{{ .Langs              }}</script>

@@ -111,6 +111,19 @@ preamble = '''
 
 [Arrows]
 category = 'Transform'
+data = '''
+{
+    "↙": [-1, -1], "↲": [-1, -1], "⇙": [-1, -1],
+    "←": [-1,  0], "⇐": [-1,  0], "⇦": [-1,  0],
+    "↖": [-1,  1], "↰": [-1,  1], "⇖": [-1,  1],
+    "↓": [ 0, -1], "⇓": [ 0, -1], "⇩": [ 0, -1],
+    "↔": [ 0,  0], "↕": [ 0,  0], "⇔": [ 0,  0],
+    "⇕": [ 0,  0], "⥀": [ 0,  0], "⥁": [ 0,  0],
+    "↑": [ 0,  1], "⇑": [ 0,  1], "⇧": [ 0,  1],
+    "↘": [ 1, -1], "↳": [ 1, -1], "⇘": [ 1, -1],
+    "→": [ 1,  0], "⇒": [ 1,  0], "⇨": [ 1,  0],
+    "↗": [ 1,  1], "↱": [ 1,  1], "⇗": [ 1,  1]
+}'''
 preamble = '''
 <p>
     Starting at <b>[0, 0]</b> print the result of applying each of the given
@@ -276,6 +289,83 @@ preamble = '''
 
 ['CSS Colors']
 category = 'Transform'
+data = '''
+{
+    "IndianRed":            "#cd5c5c", "LightCoral":      "#f08080",
+    "Salmon":               "#fa8072", "DarkSalmon":      "#e9967a",
+    "LightSalmon":          "#ffa07a", "Red":             "#ff0000",
+    "Crimson":              "#dc143c", "FireBrick":       "#b22222",
+    "DarkRed":              "#8b0000", "Pink":            "#ffc0cb",
+    "LightPink":            "#ffb6c1", "HotPink":         "#ff69b4",
+    "DeepPink":             "#ff1493", "MediumVioletRed": "#c71585",
+    "PaleVioletRed":        "#db7093", "Coral":           "#ff7f50",
+    "Tomato":               "#ff6347", "OrangeRed":       "#ff4500",
+    "DarkOrange":           "#ff8c00", "Orange":          "#ffa500",
+    "Gold":                 "#ffd700", "Yellow":          "#ffff00",
+    "LightYellow":          "#ffffe0", "LemonChiffon":    "#fffacd",
+    "LightGoldenRodYellow": "#fafad2", "PapayaWhip":      "#ffefd5",
+    "Moccasin":             "#ffe4b5", "PeachPuff":       "#ffdab9",
+    "PaleGoldenRod":        "#eee8aa", "Khaki":           "#f0e68c",
+    "DarkKhaki":            "#bdb76b", "Lavender":        "#e6e6fa",
+    "Thistle":              "#d8bfd8", "Plum":            "#dda0dd",
+    "Violet":               "#ee82ee", "Orchid":          "#da70d6",
+    "Fuchsia":              "#ff00ff", "Magenta":         "#ff00ff",
+    "MediumOrchid":         "#ba55d3", "MediumPurple":    "#9370db",
+    "BlueViolet":           "#8a2be2", "DarkViolet":      "#9400d3",
+    "DarkOrchid":           "#9932cc", "DarkMagenta":     "#8b008b",
+    "Purple":               "#800080", "Indigo":          "#4b0082",
+    "DarkSlateBlue":        "#483d8b", "SlateBlue":       "#6a5acd",
+    "MediumSlateBlue":      "#7b68ee", "RebeccaPurple":   "#663399",
+    "GreenYellow":          "#adff2f", "Chartreuse":      "#7fff00",
+    "LawnGreen":            "#7cfc00", "Lime":            "#00ff00",
+    "LimeGreen":            "#32cd32", "PaleGreen":       "#98fb98",
+    "LightGreen":           "#90ee90", "SpringGreen":     "#00ff7f",
+    "MediumSpringGreen":    "#00fa9a", "MediumSeaGreen":  "#3cb371",
+    "SeaGreen":             "#2e8b57", "ForestGreen":     "#228b22",
+    "Green":                "#008000", "DarkGreen":       "#006400",
+    "YellowGreen":          "#9acd32", "OliveDrab":       "#6b8e23",
+    "Olive":                "#808000", "DarkOliveGreen":  "#556b2f",
+    "MediumAquamarine":     "#66cdaa", "DarkSeaGreen":    "#8fbc8f",
+    "LightSeaGreen":        "#20b2aa", "DarkCyan":        "#008b8b",
+    "Teal":                 "#008080", "Aqua":            "#00ffff",
+    "Cyan":                 "#00ffff", "LightCyan":       "#e0ffff",
+    "PaleTurquoise":        "#afeeee", "Aquamarine":      "#7fffd4",
+    "Turquoise":            "#40e0d0", "MediumTurquoise": "#48d1cc",
+    "DarkTurquoise":        "#00ced1", "CadetBlue":       "#5f9ea0",
+    "SteelBlue":            "#4682b4", "LightSteelBlue":  "#b0c4de",
+    "PowderBlue":           "#b0e0e6", "LightBlue":       "#add8e6",
+    "SkyBlue":              "#87ceeb", "LightSkyBlue":    "#87cefa",
+    "DeepSkyBlue":          "#00bfff", "DodgerBlue":      "#1e90ff",
+    "CornflowerBlue":       "#6495ed", "RoyalBlue":       "#4169e1",
+    "Blue":                 "#0000ff", "MediumBlue":      "#0000cd",
+    "DarkBlue":             "#00008b", "Navy":            "#000080",
+    "MidnightBlue":         "#191970", "Cornsilk":        "#fff8dc",
+    "BlanchedAlmond":       "#ffebcd", "Bisque":          "#ffe4c4",
+    "NavajoWhite":          "#ffdead", "Wheat":           "#f5deb3",
+    "Burlywood":            "#deb887", "Tan":             "#d2b48c",
+    "RosyBrown":            "#bc8f8f", "SandyBrown":      "#f4a460",
+    "GoldenRod":            "#daa520", "DarkGoldenRod":   "#b8860b",
+    "Peru":                 "#cd853f", "Chocolate":       "#d2691e",
+    "SaddleBrown":          "#8b4513", "Sienna":          "#a0522d",
+    "Brown":                "#a52a2a", "Maroon":          "#800000",
+    "White":                "#ffffff", "Snow":            "#fffafa",
+    "Honeydew":             "#f0fff0", "MintCream":       "#f5fffa",
+    "Azure":                "#f0ffff", "AliceBlue":       "#f0f8ff",
+    "GhostWhite":           "#f8f8ff", "WhiteSmoke":      "#f5f5f5",
+    "SeaShell":             "#fff5ee", "Beige":           "#f5f5dc",
+    "OldLace":              "#fdf5e6", "FloralWhite":     "#fffaf0",
+    "Ivory":                "#fffff0", "AntiqueWhite":    "#faebd7",
+    "Linen":                "#faf0e6", "LavenderBlush":   "#fff0f5",
+    "MistyRose":            "#ffe4e1", "Gainsboro":       "#dcdcdc",
+    "LightGray":            "#d3d3d3", "LightGrey":       "#d3d3d3",
+    "Silver":               "#c0c0c0", "DarkGray":        "#a9a9a9",
+    "DarkGrey":             "#a9a9a9", "Gray":            "#808080",
+    "Grey":                 "#808080", "DimGray":         "#696969",
+    "DimGrey":              "#696969", "LightSlateGray":  "#778899",
+    "LightSlateGrey":       "#778899", "SlateGray":       "#708090",
+    "SlateGrey":            "#708090", "DarkSlateGray":   "#2f4f4f",
+    "DarkSlateGrey":        "#2f4f4f", "Black":           "#000000"
+}'''
 preamble = '''
 <svg class=hide>
     <symbol id="color" viewBox="0 0 1 1" xmlns="http://www.w3.org/2000/symbol">
@@ -287,322 +377,21 @@ Given each CSS color keyword print the corresponding hex value. The output
 will be checked case-insensitively. The full mapping is as follows:
 
 <div id=colors>
-    <table>
-        <thead>
-            <tr><th>Keyword<th>Hex
-        <tbody>
-            <tr><td><svg><use fill="#cd5c5c" href="#color"/></svg>IndianRed
-                <td>#cd5c5c
-            <tr><td><svg><use fill="#f08080" href="#color"/></svg>LightCoral
-                <td>#f08080
-            <tr><td><svg><use fill="#fa8072" href="#color"/></svg>Salmon
-                <td>#fa8072
-            <tr><td><svg><use fill="#e9967a" href="#color"/></svg>DarkSalmon
-                <td>#e9967a
-            <tr><td><svg><use fill="#ffa07a" href="#color"/></svg>LightSalmon
-                <td>#ffa07a
-            <tr><td><svg><use fill="#ff0000" href="#color"/></svg>Red
-                <td>#ff0000
-            <tr><td><svg><use fill="#dc143c" href="#color"/></svg>Crimson
-                <td>#dc143c
-            <tr><td><svg><use fill="#b22222" href="#color"/></svg>FireBrick
-                <td>#b22222
-            <tr><td><svg><use fill="#8b0000" href="#color"/></svg>DarkRed
-                <td>#8b0000
-            <tr><td><svg><use fill="#ffc0cb" href="#color"/></svg>Pink
-                <td>#ffc0cb
-            <tr><td><svg><use fill="#ffb6c1" href="#color"/></svg>LightPink
-                <td>#ffb6c1
-            <tr><td><svg><use fill="#ff69b4" href="#color"/></svg>HotPink
-                <td>#ff69b4
-            <tr><td><svg><use fill="#ff1493" href="#color"/></svg>DeepPink
-                <td>#ff1493
-            <tr><td><svg><use fill="#c71585" href="#color"/></svg>MediumVioletRed
-                <td>#c71585
-            <tr><td><svg><use fill="#db7093" href="#color"/></svg>PaleVioletRed
-                <td>#db7093
-            <tr><td><svg><use fill="#ff7f50" href="#color"/></svg>Coral
-                <td>#ff7f50
-            <tr><td><svg><use fill="#ff6347" href="#color"/></svg>Tomato
-                <td>#ff6347
-            <tr><td><svg><use fill="#ff4500" href="#color"/></svg>OrangeRed
-                <td>#ff4500
-            <tr><td><svg><use fill="#ff8c00" href="#color"/></svg>DarkOrange
-                <td>#ff8c00
-            <tr><td><svg><use fill="#ffa500" href="#color"/></svg>Orange
-                <td>#ffa500
-            <tr><td><svg><use fill="#ffd700" href="#color"/></svg>Gold
-                <td>#ffd700
-            <tr><td><svg><use fill="#ffff00" href="#color"/></svg>Yellow
-                <td>#ffff00
-            <tr><td><svg><use fill="#ffffe0" href="#color"/></svg>LightYellow
-                <td>#ffffe0
-            <tr><td><svg><use fill="#fffacd" href="#color"/></svg>LemonChiffon
-                <td>#fffacd
-            <tr><td><svg><use fill="#fafad2" href="#color"/></svg>LightGoldenRodYellow
-                <td>#fafad2
-            <tr><td><svg><use fill="#ffefd5" href="#color"/></svg>PapayaWhip
-                <td>#ffefd5
-            <tr><td><svg><use fill="#ffe4b5" href="#color"/></svg>Moccasin
-                <td>#ffe4b5
-            <tr><td><svg><use fill="#ffdab9" href="#color"/></svg>PeachPuff
-                <td>#ffdab9
-            <tr><td><svg><use fill="#eee8aa" href="#color"/></svg>PaleGoldenRod
-                <td>#eee8aa
-            <tr><td><svg><use fill="#f0e68c" href="#color"/></svg>Khaki
-                <td>#f0e68c
-            <tr><td><svg><use fill="#bdb76b" href="#color"/></svg>DarkKhaki
-                <td>#bdb76b
-            <tr><td><svg><use fill="#e6e6fa" href="#color"/></svg>Lavender
-                <td>#e6e6fa
-            <tr><td><svg><use fill="#d8bfd8" href="#color"/></svg>Thistle
-                <td>#d8bfd8
-            <tr><td><svg><use fill="#dda0dd" href="#color"/></svg>Plum
-                <td>#dda0dd
-            <tr><td><svg><use fill="#ee82ee" href="#color"/></svg>Violet
-                <td>#ee82ee
-            <tr><td><svg><use fill="#da70d6" href="#color"/></svg>Orchid
-                <td>#da70d6
-            <tr><td><svg><use fill="#ff00ff" href="#color"/></svg>Fuchsia
-                <td>#ff00ff
-    </table>
-    <table>
-        <thead>
-            <tr><th>Keyword<th>Hex
-        <tbody>
-            <tr><td><svg><use fill="#ff00ff" href="#color"/></svg>Magenta
-                <td>#ff00ff
-            <tr><td><svg><use fill="#ba55d3" href="#color"/></svg>MediumOrchid
-                <td>#ba55d3
-            <tr><td><svg><use fill="#9370db" href="#color"/></svg>MediumPurple
-                <td>#9370db
-            <tr><td><svg><use fill="#8a2be2" href="#color"/></svg>BlueViolet
-                <td>#8a2be2
-            <tr><td><svg><use fill="#9400d3" href="#color"/></svg>DarkViolet
-                <td>#9400d3
-            <tr><td><svg><use fill="#9932cc" href="#color"/></svg>DarkOrchid
-                <td>#9932cc
-            <tr><td><svg><use fill="#8b008b" href="#color"/></svg>DarkMagenta
-                <td>#8b008b
-            <tr><td><svg><use fill="#800080" href="#color"/></svg>Purple
-                <td>#800080
-            <tr><td><svg><use fill="#4b0082" href="#color"/></svg>Indigo
-                <td>#4b0082
-            <tr><td><svg><use fill="#483d8b" href="#color"/></svg>DarkSlateBlue
-                <td>#483d8b
-            <tr><td><svg><use fill="#6a5acd" href="#color"/></svg>SlateBlue
-                <td>#6a5acd
-            <tr><td><svg><use fill="#7b68ee" href="#color"/></svg>MediumSlateBlue
-                <td>#7b68ee
-            <tr><td><svg><use fill="#663399" href="#color"/></svg>RebeccaPurple
-                <td>#663399
-            <tr><td><svg><use fill="#adff2f" href="#color"/></svg>GreenYellow
-                <td>#adff2f
-            <tr><td><svg><use fill="#7fff00" href="#color"/></svg>Chartreuse
-                <td>#7fff00
-            <tr><td><svg><use fill="#7cfc00" href="#color"/></svg>LawnGreen
-                <td>#7cfc00
-            <tr><td><svg><use fill="#00ff00" href="#color"/></svg>Lime
-                <td>#00ff00
-            <tr><td><svg><use fill="#32cd32" href="#color"/></svg>LimeGreen
-                <td>#32cd32
-            <tr><td><svg><use fill="#98fb98" href="#color"/></svg>PaleGreen
-                <td>#98fb98
-            <tr><td><svg><use fill="#90ee90" href="#color"/></svg>LightGreen
-                <td>#90ee90
-            <tr><td><svg><use fill="#00ff7f" href="#color"/></svg>SpringGreen
-                <td>#00ff7f
-            <tr><td><svg><use fill="#00fa9a" href="#color"/></svg>MediumSpringGreen
-                <td>#00fa9a
-            <tr><td><svg><use fill="#3cb371" href="#color"/></svg>MediumSeaGreen
-                <td>#3cb371
-            <tr><td><svg><use fill="#2e8b57" href="#color"/></svg>SeaGreen
-                <td>#2e8b57
-            <tr><td><svg><use fill="#228b22" href="#color"/></svg>ForestGreen
-                <td>#228b22
-            <tr><td><svg><use fill="#008000" href="#color"/></svg>Green
-                <td>#008000
-            <tr><td><svg><use fill="#006400" href="#color"/></svg>DarkGreen
-                <td>#006400
-            <tr><td><svg><use fill="#9acd32" href="#color"/></svg>YellowGreen
-                <td>#9acd32
-            <tr><td><svg><use fill="#6b8e23" href="#color"/></svg>OliveDrab
-                <td>#6b8e23
-            <tr><td><svg><use fill="#808000" href="#color"/></svg>Olive
-                <td>#808000
-            <tr><td><svg><use fill="#556b2f" href="#color"/></svg>DarkOliveGreen
-                <td>#556b2f
-            <tr><td><svg><use fill="#66cdaa" href="#color"/></svg>MediumAquamarine
-                <td>#66cdaa
-            <tr><td><svg><use fill="#8fbc8f" href="#color"/></svg>DarkSeaGreen
-                <td>#8fbc8f
-            <tr><td><svg><use fill="#20b2aa" href="#color"/></svg>LightSeaGreen
-                <td>#20b2aa
-            <tr><td><svg><use fill="#008b8b" href="#color"/></svg>DarkCyan
-                <td>#008b8b
-            <tr><td><svg><use fill="#008080" href="#color"/></svg>Teal
-                <td>#008080
-            <tr><td><svg><use fill="#00ffff" href="#color"/></svg>Aqua
-                <td>#00ffff
-    </table>
-    <table>
-        <thead>
-            <tr><th>Keyword<th>Hex
-        <tbody>
-            <tr><td><svg><use fill="#00ffff" href="#color"/></svg>Cyan
-                <td>#00ffff
-            <tr><td><svg><use fill="#e0ffff" href="#color"/></svg>LightCyan
-                <td>#e0ffff
-            <tr><td><svg><use fill="#afeeee" href="#color"/></svg>PaleTurquoise
-                <td>#afeeee
-            <tr><td><svg><use fill="#7fffd4" href="#color"/></svg>Aquamarine
-                <td>#7fffd4
-            <tr><td><svg><use fill="#40e0d0" href="#color"/></svg>Turquoise
-                <td>#40e0d0
-            <tr><td><svg><use fill="#48d1cc" href="#color"/></svg>MediumTurquoise
-                <td>#48d1cc
-            <tr><td><svg><use fill="#00ced1" href="#color"/></svg>DarkTurquoise
-                <td>#00ced1
-            <tr><td><svg><use fill="#5f9ea0" href="#color"/></svg>CadetBlue
-                <td>#5f9ea0
-            <tr><td><svg><use fill="#4682b4" href="#color"/></svg>SteelBlue
-                <td>#4682b4
-            <tr><td><svg><use fill="#b0c4de" href="#color"/></svg>LightSteelBlue
-                <td>#b0c4de
-            <tr><td><svg><use fill="#b0e0e6" href="#color"/></svg>PowderBlue
-                <td>#b0e0e6
-            <tr><td><svg><use fill="#add8e6" href="#color"/></svg>LightBlue
-                <td>#add8e6
-            <tr><td><svg><use fill="#87ceeb" href="#color"/></svg>SkyBlue
-                <td>#87ceeb
-            <tr><td><svg><use fill="#87cefa" href="#color"/></svg>LightSkyBlue
-                <td>#87cefa
-            <tr><td><svg><use fill="#00bfff" href="#color"/></svg>DeepSkyBlue
-                <td>#00bfff
-            <tr><td><svg><use fill="#1e90ff" href="#color"/></svg>DodgerBlue
-                <td>#1e90ff
-            <tr><td><svg><use fill="#6495ed" href="#color"/></svg>CornflowerBlue
-                <td>#6495ed
-            <tr><td><svg><use fill="#4169e1" href="#color"/></svg>RoyalBlue
-                <td>#4169e1
-            <tr><td><svg><use fill="#0000ff" href="#color"/></svg>Blue
-                <td>#0000ff
-            <tr><td><svg><use fill="#0000cd" href="#color"/></svg>MediumBlue
-                <td>#0000cd
-            <tr><td><svg><use fill="#00008b" href="#color"/></svg>DarkBlue
-                <td>#00008b
-            <tr><td><svg><use fill="#000080" href="#color"/></svg>Navy
-                <td>#000080
-            <tr><td><svg><use fill="#191970" href="#color"/></svg>MidnightBlue
-                <td>#191970
-            <tr><td><svg><use fill="#fff8dc" href="#color"/></svg>Cornsilk
-                <td>#fff8dc
-            <tr><td><svg><use fill="#ffebcd" href="#color"/></svg>BlanchedAlmond
-                <td>#ffebcd
-            <tr><td><svg><use fill="#ffe4c4" href="#color"/></svg>Bisque
-                <td>#ffe4c4
-            <tr><td><svg><use fill="#ffdead" href="#color"/></svg>NavajoWhite
-                <td>#ffdead
-            <tr><td><svg><use fill="#f5deb3" href="#color"/></svg>Wheat
-                <td>#f5deb3
-            <tr><td><svg><use fill="#deb887" href="#color"/></svg>Burlywood
-                <td>#deb887
-            <tr><td><svg><use fill="#d2b48c" href="#color"/></svg>Tan
-                <td>#d2b48c
-            <tr><td><svg><use fill="#bc8f8f" href="#color"/></svg>RosyBrown
-                <td>#bc8f8f
-            <tr><td><svg><use fill="#f4a460" href="#color"/></svg>SandyBrown
-                <td>#f4a460
-            <tr><td><svg><use fill="#daa520" href="#color"/></svg>GoldenRod
-                <td>#daa520
-            <tr><td><svg><use fill="#b8860b" href="#color"/></svg>DarkGoldenRod
-                <td>#b8860b
-            <tr><td><svg><use fill="#cd853f" href="#color"/></svg>Peru
-                <td>#cd853f
-            <tr><td><svg><use fill="#d2691e" href="#color"/></svg>Chocolate
-                <td>#d2691e
-            <tr><td><svg><use fill="#8b4513" href="#color"/></svg>SaddleBrown
-                <td>#8b4513
-    </table>
-    <table>
-        <thead>
-            <tr><th>Keyword<th>Hex
-        <tbody>
-            <tr><td><svg><use fill="#a0522d" href="#color"/></svg>Sienna
-                <td>#a0522d
-            <tr><td><svg><use fill="#a52a2a" href="#color"/></svg>Brown
-                <td>#a52a2a
-            <tr><td><svg><use fill="#800000" href="#color"/></svg>Maroon
-                <td>#800000
-            <tr><td><svg><use fill="#ffffff" href="#color"/></svg>White
-                <td>#ffffff
-            <tr><td><svg><use fill="#fffafa" href="#color"/></svg>Snow
-                <td>#fffafa
-            <tr><td><svg><use fill="#f0fff0" href="#color"/></svg>Honeydew
-                <td>#f0fff0
-            <tr><td><svg><use fill="#f5fffa" href="#color"/></svg>MintCream
-                <td>#f5fffa
-            <tr><td><svg><use fill="#f0ffff" href="#color"/></svg>Azure
-                <td>#f0ffff
-            <tr><td><svg><use fill="#f0f8ff" href="#color"/></svg>AliceBlue
-                <td>#f0f8ff
-            <tr><td><svg><use fill="#f8f8ff" href="#color"/></svg>GhostWhite
-                <td>#f8f8ff
-            <tr><td><svg><use fill="#f5f5f5" href="#color"/></svg>WhiteSmoke
-                <td>#f5f5f5
-            <tr><td><svg><use fill="#fff5ee" href="#color"/></svg>SeaShell
-                <td>#fff5ee
-            <tr><td><svg><use fill="#f5f5dc" href="#color"/></svg>Beige
-                <td>#f5f5dc
-            <tr><td><svg><use fill="#fdf5e6" href="#color"/></svg>OldLace
-                <td>#fdf5e6
-            <tr><td><svg><use fill="#fffaf0" href="#color"/></svg>FloralWhite
-                <td>#fffaf0
-            <tr><td><svg><use fill="#fffff0" href="#color"/></svg>Ivory
-                <td>#fffff0
-            <tr><td><svg><use fill="#faebd7" href="#color"/></svg>AntiqueWhite
-                <td>#faebd7
-            <tr><td><svg><use fill="#faf0e6" href="#color"/></svg>Linen
-                <td>#faf0e6
-            <tr><td><svg><use fill="#fff0f5" href="#color"/></svg>LavenderBlush
-                <td>#fff0f5
-            <tr><td><svg><use fill="#ffe4e1" href="#color"/></svg>MistyRose
-                <td>#ffe4e1
-            <tr><td><svg><use fill="#dcdcdc" href="#color"/></svg>Gainsboro
-                <td>#dcdcdc
-            <tr><td><svg><use fill="#d3d3d3" href="#color"/></svg>LightGray
-                <td>#d3d3d3
-            <tr><td><svg><use fill="#d3d3d3" href="#color"/></svg>LightGrey
-                <td>#d3d3d3
-            <tr><td><svg><use fill="#c0c0c0" href="#color"/></svg>Silver
-                <td>#c0c0c0
-            <tr><td><svg><use fill="#a9a9a9" href="#color"/></svg>DarkGray
-                <td>#a9a9a9
-            <tr><td><svg><use fill="#a9a9a9" href="#color"/></svg>DarkGrey
-                <td>#a9a9a9
-            <tr><td><svg><use fill="#808080" href="#color"/></svg>Gray
-                <td>#808080
-            <tr><td><svg><use fill="#808080" href="#color"/></svg>Grey
-                <td>#808080
-            <tr><td><svg><use fill="#696969" href="#color"/></svg>DimGray
-                <td>#696969
-            <tr><td><svg><use fill="#696969" href="#color"/></svg>DimGrey
-                <td>#696969
-            <tr><td><svg><use fill="#778899" href="#color"/></svg>LightSlateGray
-                <td>#778899
-            <tr><td><svg><use fill="#778899" href="#color"/></svg>LightSlateGrey
-                <td>#778899
-            <tr><td><svg><use fill="#708090" href="#color"/></svg>SlateGray
-                <td>#708090
-            <tr><td><svg><use fill="#708090" href="#color"/></svg>SlateGrey
-                <td>#708090
-            <tr><td><svg><use fill="#2f4f4f" href="#color"/></svg>DarkSlateGray
-                <td>#2f4f4f
-            <tr><td><svg><use fill="#2f4f4f" href="#color"/></svg>DarkSlateGrey
-                <td>#2f4f4f
-            <tr><td><svg><use fill="#000000" href="#color"/></svg>Black
-                <td>#000000
-    </table>
+{{ range . }}
+    {{ if or (eq .Key "IndianRed") (eq .Key "Magenta")
+             (eq .Key "Cyan"     ) (eq .Key "Sienna" ) }}
+        <table><thead><tr><th>Keyword<th>Hex<tbody>
+    {{ end }}
+
+    <tr><td><svg><use fill="{{ .Value }}" href="#color"/></svg>{{ .Key }}
+        <td>{{ .Value }}
+
+    {{ if or (eq .Key "Fuchsia"    ) (eq .Key "Aqua" )
+             (eq .Key "SaddleBrown") (eq .Key "Black") }}
+        </table>
+    {{ end }}
+{{ end }}
+</div>
 '''
 
 [Cubes]
@@ -732,6 +521,14 @@ category = 'Transform'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/List_of_emoticons' },
 ]
+data = '''
+{
+    ":-D":  "😀", ":-)":  "🙂", ":-|":  "😐", ":-(":  "🙁", ":-\\": "😕",
+    ":-*":  "😗", ":-O":  "😮", ":-#":  "🤐", "':-D": "😅", "':-(": "😓",
+    ":'-)": "😂", ":'-(": "😢", ":-P":  "😛", ";-P":  "😜", "X-P":  "😝",
+    "X-)":  "😆", "O:-)": "😇", ";-)":  "😉", ":-$":  "😳", ":-":   "😶",
+    "B-)":  "😎", ":-J":  "😏", "}:-)": "😈", "}:-(": "👿", ":-@":  "😡"
+}'''
 preamble = '''
 <p>
     Given each of the following ASCII emoticons print the corresponding
@@ -740,31 +537,9 @@ preamble = '''
 <p>Note despite how they appear below, there are no spaces in the emoticons.
 
 <div id=emojify>
-    <div>😀<pre> :-D</pre></div>
-    <div>🙂<pre> :-)</pre></div>
-    <div>😐<pre> :-|</pre></div>
-    <div>🙁<pre> :-(</pre></div>
-    <div>😕<pre> :-\</pre></div>
-    <div>😗<pre> :-*</pre></div>
-    <div>😮<pre> :-O</pre></div>
-    <div>🤐<pre> :-#</pre></div>
-    <div>😅<pre>':-D</pre></div>
-    <div>😓<pre>':-(</pre></div>
-    <div>😂<pre>:'-)</pre></div>
-    <div>😢<pre>:'-(</pre></div>
-    <div>😛<pre> :-P</pre></div>
-    <div>😜<pre> ;-P</pre></div>
-    <div>😝<pre> X-P</pre></div>
-    <div>😆<pre> X-)</pre></div>
-    <div>😇<pre>O:-)</pre></div>
-    <div>😉<pre> ;-)</pre></div>
-    <div>😳<pre> :-$</pre></div>
-    <div>😶<pre> :- </pre></div>
-    <div>😎<pre> B-)</pre></div>
-    <div>😏<pre> :-J</pre></div>
-    <div>😈<pre>}:-)</pre></div>
-    <div>👿<pre>}:-(</pre></div>
-    <div>😡<pre> :-@</pre></div>
+{{ range . }}
+    <div>{{ .Value }}<pre>{{ .Key }}{{ if eq .Key ":-" }} {{ end }}</pre></div>
+{{ end }}
 </div>
 '''
 
@@ -1121,6 +896,22 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Morse_code' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Morse_code' },
 ]
+data = '''
+{
+    "A": "▄ ▄▄▄",           "B": "▄▄▄ ▄ ▄ ▄",         "C": "▄▄▄ ▄ ▄▄▄ ▄",
+    "D": "▄▄▄ ▄ ▄",         "E": "▄",                 "F": "▄ ▄ ▄▄▄ ▄",
+    "G": "▄▄▄ ▄▄▄ ▄",       "H": "▄ ▄ ▄ ▄",           "I": "▄ ▄",
+    "J": "▄ ▄▄▄ ▄▄▄ ▄▄▄",   "K": "▄▄▄ ▄ ▄▄▄",         "L": "▄ ▄▄▄ ▄ ▄",
+    "M": "▄▄▄ ▄▄▄",         "N": "▄▄▄ ▄",             "O": "▄▄▄ ▄▄▄ ▄▄▄",
+    "P": "▄ ▄▄▄ ▄▄▄ ▄",     "Q": "▄▄▄ ▄▄▄ ▄ ▄▄▄",     "R": "▄ ▄▄▄ ▄",
+    "S": "▄ ▄ ▄",           "T": "▄▄▄",               "U": "▄ ▄ ▄▄▄",
+    "V": "▄ ▄ ▄ ▄▄▄",       "W": "▄ ▄▄▄ ▄▄▄",         "X": "▄▄▄ ▄ ▄ ▄▄▄",
+    "Y": "▄▄▄ ▄ ▄▄▄ ▄▄▄",   "Z": "▄▄▄ ▄▄▄ ▄ ▄",       "1": "▄ ▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄",
+    "2": "▄ ▄ ▄▄▄ ▄▄▄ ▄▄▄", "3": "▄ ▄ ▄ ▄▄▄ ▄▄▄",     "4": "▄ ▄ ▄ ▄ ▄▄▄",
+    "5": "▄ ▄ ▄ ▄ ▄",       "6": "▄▄▄ ▄ ▄ ▄ ▄",       "7": "▄▄▄ ▄▄▄ ▄ ▄ ▄",
+    "8": "▄▄▄ ▄▄▄ ▄▄▄ ▄ ▄", "9": "▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄ ▄", "0": "▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄",
+    " ": "    "
+}'''
 preamble = '''
 <p>
     Using ▄ (U+2584 Lower Half Block) to represent a dot,
@@ -2142,6 +1933,26 @@ Then I'm sure she sells seashore shells.
 
 ['United States']
 category = 'Transform'
+data = '''
+{
+    "Alabama":        "AL", "Alaska":         "AK", "Arizona":              "AZ",
+    "Arkansas":       "AR", "California":     "CA", "Colorado":             "CO",
+    "Connecticut":    "CT", "Delaware":       "DE", "District of Columbia": "DC",
+    "Florida":        "FL", "Georgia":        "GA", "Hawaii":               "HI",
+    "Idaho":          "ID", "Illinois":       "IL", "Indiana":              "IN",
+    "Iowa":           "IA", "Kansas":         "KS", "Kentucky":             "KY",
+    "Louisiana":      "LA", "Maine":          "ME", "Maryland":             "MD",
+    "Massachusetts":  "MA", "Michigan":       "MI", "Minnesota":            "MN",
+    "Mississippi":    "MS", "Missouri":       "MO", "Montana":              "MT",
+    "Nebraska":       "NE", "Nevada":         "NV", "New Hampshire":        "NH",
+    "New Jersey":     "NJ", "New Mexico":     "NM", "New York":             "NY",
+    "North Carolina": "NC", "North Dakota":   "ND", "Ohio":                 "OH",
+    "Oklahoma":       "OK", "Oregon":         "OR", "Pennsylvania":         "PA",
+    "Rhode Island":   "RI", "South Carolina": "SC", "South Dakota":         "SD",
+    "Tennessee":      "TN", "Texas":          "TX", "Utah":                 "UT",
+    "Vermont":        "VT", "Virginia":       "VA", "Washington":           "WA",
+    "West Virginia":  "WV", "Wisconsin":      "WI", "Wyoming":              "WY"
+}'''
 preamble = '''
 <p>
     Given each US state (and a federal district) print the corresponding US
@@ -2150,77 +1961,19 @@ preamble = '''
 <p>The full mapping is as follows:
 
 <div id=states>
-    <table>
-        <thead>
-            <tr><th>State<th>Abbr.
-        <tbody>
-            <tr><td>Alabama<td>AL
-            <tr><td>Alaska<td>AK
-            <tr><td>Arizona<td>AZ
-            <tr><td>Arkansas<td>AR
-            <tr><td>California<td>CA
-            <tr><td>Colorado<td>CO
-            <tr><td>Connecticut<td>CT
-            <tr><td>Delaware<td>DE
-            <tr><td>District of Columbia<td>DC
-            <tr><td>Florida<td>FL
-            <tr><td>Georgia<td>GA
-            <tr><td>Hawaii<td>HI
-            <tr><td>Idaho<td>ID
-    </table>
-    <table>
-        <thead>
-            <tr><th>State<th>Abbr.
-        <tbody>
-            <tr><td>Illinois<td>IL
-            <tr><td>Indiana<td>IN
-            <tr><td>Iowa<td>IA
-            <tr><td>Kansas<td>KS
-            <tr><td>Kentucky<td>KY
-            <tr><td>Louisiana<td>LA
-            <tr><td>Maine<td>ME
-            <tr><td>Maryland<td>MD
-            <tr><td>Massachusetts<td>MA
-            <tr><td>Michigan<td>MI
-            <tr><td>Minnesota<td>MN
-            <tr><td>Mississippi<td>MS
-            <tr><td>Missouri<td>MO
-    </table>
-    <table>
-        <thead>
-            <tr><th>State<th>Abbr.
-        <tbody>
-            <tr><td>Montana<td>MT
-            <tr><td>Nebraska<td>NE
-            <tr><td>Nevada<td>NV
-            <tr><td>New Hampshire<td>NH
-            <tr><td>New Jersey<td>NJ
-            <tr><td>New Mexico<td>NM
-            <tr><td>New York<td>NY
-            <tr><td>North Carolina<td>NC
-            <tr><td>North Dakota<td>ND
-            <tr><td>Ohio<td>OH
-            <tr><td>Oklahoma<td>OK
-            <tr><td>Oregon<td>OR
-            <tr><td>Pennsylvania<td>PA
-    </table>
-    <table>
-        <thead>
-            <tr><th>State<th>Abbr.
-        <tbody>
-            <tr><td>Rhode Island<td>RI
-            <tr><td>South Carolina<td>SC
-            <tr><td>South Dakota<td>SD
-            <tr><td>Tennessee<td>TN
-            <tr><td>Texas<td>TX
-            <tr><td>Utah<td>UT
-            <tr><td>Vermont<td>VT
-            <tr><td>Virginia<td>VA
-            <tr><td>Washington<td>WA
-            <tr><td>West Virginia<td>WV
-            <tr><td>Wisconsin<td>WI
-            <tr><td>Wyoming<td>WY
-    </table>
+{{ range . }}
+    {{ if or (eq .Value "AL") (eq .Value "IL")
+             (eq .Value "MT") (eq .Value "RI") }}
+        <table><thead><tr><th>State<th>Abbr.<tbody>
+    {{ end }}
+
+    <tr><td>{{ .Key }}<td>{{ .Value }}
+
+    {{ if or (eq .Value "ID") (eq .Value "MO")
+             (eq .Value "PA") (eq .Value "WY") }}
+        </table>
+    {{ end }}
+{{ end }}
 </div>
 '''
 

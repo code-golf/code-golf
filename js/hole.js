@@ -1,6 +1,7 @@
-import CodeMirror from './_codemirror-legacy';
-import strlen     from './_strlen';
-import { attachDiff }   from './_diff';
+import CodeMirror     from './_codemirror-legacy';
+import                     './_copy-as-json';
+import strlen         from './_strlen';
+import { attachDiff } from './_diff';
 
 const chars              = document.querySelector('#chars');
 const darkModeMediaQuery = JSON.parse(document.querySelector('#darkModeMediaQuery').innerText);

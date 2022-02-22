@@ -63,7 +63,12 @@
     </header>
     <details id=details {{ if not .Data.HideDetails }}open{{ end }}>
         <summary>Details</summary>
-        <div class=grid>{{ .Data.Hole.Preamble }}</div>
+        <div class=grid>
+            {{ .Data.Hole.Preamble }}
+        {{ if .Data.Hole.Data }}
+            <div><button class="btn orange" id=copy>Copy as JSON</button></div>
+        {{ end }}
+        </div>
     </details>
     <nav class=tabs id=picker></nav>
     <nav class=tabs id=solutionPicker></nav>
@@ -170,6 +175,8 @@
 <script id=keymap type=application/json>
     {{ with .Golfer }}{{ .Keymap }}{{ else }}"default"{{ end }}
 </script>
+
+{{ with .Data.Hole.Data }}<script id=data type=application/json>{{ . }}</script>{{ end }}
 
 <script id=darkModeMediaQuery type=application/json>{{ .DarkModeMediaQuery }}</script>
 <script id=langs              type=application/json>{{ .Langs              }}</script>

@@ -1,6 +1,7 @@
 import { ASMStateField }                       from '@defasm/codemirror';
 import LZString                                from 'lz-string';
 import { EditorState, EditorView, extensions } from './_codemirror.js';
+import                                              './_copy-as-json';
 import pbm                                     from './_pbm.js';
 import strlen                                  from './_strlen.js';
 import { attachDiff }                          from './_diff';
