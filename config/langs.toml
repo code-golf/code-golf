@@ -1,5 +1,5 @@
 ['><>']
-size    = '4.98 MiB'
+size    = '4.99 MiB'
 version = '4808a6c'
 website = 'https://github.com/primo-ppcg/fish-jit'
 example = '''
@@ -106,7 +106,7 @@ done
 '''
 
 [brainfuck]
-size    = '4.56 MiB'
+size    = '4.57 MiB'
 version = 'c68db6c'
 website = 'https://github.com/primo-ppcg/bf-jit'
 example = '''
@@ -543,7 +543,7 @@ say for @ARGV;
 
 [PHP]
 size    = '10.5 MiB'
-version = '7.4.27'
+version = '7.4.28'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -629,8 +629,8 @@ say 'Hello, World!';
 '''
 
 [Ruby]
-size    = '22.8 MiB'
-version = '3.1.0'
+size    = '24.3 MiB'
+version = '3.1.1'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing
@@ -669,8 +669,8 @@ fn main() {
 '''
 
 [SQL]
-size    = '1.05 MiB'
-version = '3.37.2'
+size    = '1.09 MiB'
+version = '3.38.0'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
