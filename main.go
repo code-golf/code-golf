@@ -21,7 +21,7 @@ import (
 func main() {
 	log.SetFlags(log.Ltime)
 
-	rand.Seed(time.Now().UTC().UnixNano())
+	rand.Seed(time.Now().UnixNano())
 
 	db, err := sql.Open("postgres", "")
 	if err != nil {
