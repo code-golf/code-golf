@@ -242,7 +242,7 @@ end
 '''
 
 [D]
-size    = '251 MiB'
+size    = '241 MiB'
 version = 'D 2.098.1 on LDC 1.28.1'
 website = 'https://dlang.org'
 example = '''
@@ -253,12 +253,14 @@ void main(string[] args) {
     writeln("Hello, World!");
 
     // Looping
-    foreach (i; 0 .. 10)
+    foreach (i; 0 .. 10) {
         writeln(i);
+    }
 
     // Accessing arguments
-    foreach (arg; args)
+    foreach (arg; args) {
         writeln(arg);
+    }
 }
 '''
 
