@@ -93,6 +93,11 @@ select {
  #expected-tab:checked ~ #expected,
    #output-tab:checked ~ #output { display: block }
 
+#arrows code { font-size: 1.5rem }
+#arrows td   { font-family: emoji, 'Source Code Pro', monospace }
+#arrows td:first-child { white-space: pre }
+#arrows td:last-child  { width: 100% }
+
 #authors {
     display: flex;
     font-size: 1rem;

@@ -1,6 +1,7 @@
-import CodeMirror from './_codemirror-legacy';
-import strlen     from './_strlen';
-import { attachDiff }   from './_diff';
+import CodeMirror                       from './_codemirror-legacy';
+import                                       './_copy-as-json';
+import { attachDiff }                   from './_diff';
+import { byteLen, charLen, comma, ord } from './_util';
 
 const chars              = document.querySelector('#chars');
 const darkModeMediaQuery = JSON.parse(document.querySelector('#darkModeMediaQuery').innerText);
@@ -54,10 +55,6 @@ function setScoring(value) {
     localStorage.setItem('scoring', scorings[scoring = value]);
 }
 
-function formatScore(value) {
-    return value ? value.toLocaleString('en') : '&nbsp';
-}
-
 onload = () => {
     // Lock the editor's height in so we scroll.
     editor.style.height = `${editor.offsetHeight}px`;
@@ -83,7 +80,7 @@ onload = () => {
         for (let i = 0; i < scorings.length; i++) {
             if (i)
                 infoText += ', ';
-            infoText += `${getScoring(code, i).toLocaleString('en')} ${scorings[i].toLowerCase()}`;
+            infoText += `${comma(getScoring(code, i))} ${scorings[i].toLowerCase()}`;
         }
         chars.innerText = infoText;
 
@@ -295,7 +292,7 @@ function populateLanguagePicker() {
                 if (value && lastValue != value) {
                     if (lastValue)
                         name += '/';
-                    name += value.toLocaleString('en');
+                    name += comma(value);
                 }
                 lastValue = value;
             }
@@ -328,7 +325,7 @@ function populateSolutionPicker() {
 
             const solutionCode = getSolutionCode(lang, i);
             if (solutionCode) {
-                name += ` <sup>${getScoring(solutionCode, i).toLocaleString('en')}</sup>`;
+                name += ` <sup>${comma(getScoring(solutionCode, i))}</sup>`;
             }
 
             const child = document.createElement('a');
@@ -351,44 +348,35 @@ async function refreshScores() {
     populateLanguagePicker();
     populateSolutionPicker();
 
-    const path   = `/${hole}/${lang}/${scorings[scoring].toLowerCase()}`;
-    const res    = await fetch(`/scores${path}/mini`);
-    const scores = res.ok ? await res.json() : [];
+    const scoringID = scorings[scoring].toLowerCase();
+    const path      = `/${hole}/${lang}/${scoringID}`;
+    const res       = await fetch(`/scores${path}/mini`);
+    const rows      = res.ok ? await res.json() : [];
 
-    let html = '<thead><tr><th colspan=4><nav class=tabs>' +
+    table.querySelector('thead').innerHTML =
+        '<thead><tr><th colspan=4><nav class=tabs>' +
         scorings.map(s => `<a id=${s}>${s}</a>`).join('') +
         `</nav><a href=/rankings/holes${path}>All</a><tbody>`;
 
-    // Ordinal from https://codegolf.stackexchange.com/a/119563
-    for (let i = 0; i < 7; i++) {
-        const s = scores[i];
-
-        if (s) {
-            html += `<tr ${s.me ? 'class=me' : ''}>
-                <td>${s.rank}<sup>${[, 'st', 'nd', 'rd'][s.rank % 100 >> 3 ^ 1 && s.rank % 10] || 'th'}</sup>
-                <td><a href=/golfers/${s.login}>
-                    <img src="//avatars.githubusercontent.com/${s.login}?s=24">
-                    <span>${s.login}</span>
+    table.querySelector('tbody').replaceWith(<tbody class={scoringID}>{
+        // Rows.
+        rows.map(r => <tr class={r.me ? 'me' : ''}>
+            <td>{r.rank}<sup>{ord(r.rank)}</sup></td>
+            <td>
+                <a href={`/golfers/${r.login}`}>
+                    <img src={`//avatars.githubusercontent.com/${r.login}?s=24`}/>
+                    <span>{r.login}</span>
                 </a>
-                <td class=right><span${scorings[scoring] != 'Bytes' ? ' class=inactive' : ''}`;
-
-            if (s.bytes)
-                html += ` data-tooltip="Bytes solution is ${formatScore(s.bytes)} bytes, ${formatScore(s.bytes_chars)} chars."`;
-
-            html += `>${formatScore(s.bytes)}</span>
-                <td class=right><span${scorings[scoring] != 'Chars' ? ' class=inactive' : ''}`;
-
-            if (s.chars)
-                html +=
-                    ` data-tooltip="Chars solution is ${formatScore(s.chars_bytes)} bytes, ${formatScore(s.chars)} chars."`;
-
-            html += `>${formatScore(s.chars)}</span>`;
-        }
-        else
-            html += '<tr><td colspan=4>&nbsp';
-    }
-
-    table.innerHTML = html;
+            </td>
+            <td data-tooltip={tooltip(r, 'Bytes')}>{comma(r.bytes)}</td>
+            {r.chars !== null ?
+                <td data-tooltip={tooltip(r, 'Chars')}>{comma(r.chars)}</td> : ''}
+        </tr>)
+    }{
+        // Padding.
+        [...Array(7 - rows.length).keys()].map(() =>
+            <tr><td colspan="4">&nbsp;</td></tr>)
+    }</tbody>);
 
     const otherScoring = getOtherScoring(scoring);
     const switchScoring = table.querySelector(`#${scorings[otherScoring]}`);
@@ -396,6 +384,13 @@ async function refreshScores() {
     switchScoring.onclick = e => { e.preventDefault(); setScoring(otherScoring); refreshScores() };
 }
 
-function getScoring(str, index) {
-    return scorings[index] == 'Bytes' ? new TextEncoder().encode(str).length : strlen(str);
-}
+const tooltip = (row, scoring) => {
+    const bytes = scoring === 'Bytes' ? row.bytes : row.chars_bytes;
+    const chars = scoring === 'Chars' ? row.chars : row.bytes_chars;
+
+    return `${scoring} solution is ${comma(bytes)} bytes` +
+        (chars !== null ? `, ${comma(chars)} chars.` : '.');
+};
+
+const getScoring = (str, index) =>
+    scorings[index] == 'Bytes' ? byteLen(str) : charLen(str);

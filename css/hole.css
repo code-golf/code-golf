@@ -149,12 +149,16 @@ main > header nav {
 
 #run > span { margin: 0 1rem }
 
-#scores            { grid-row: span 2 }
-#scores td         { border-left: 0 }
-#scores th         { font-weight: normal }
-#scores th > a     { float: right }
-#scores th .tabs   { display: inline-flex }
-#scores th .tabs a { padding: 0 .5rem }
+#scores                   { grid-row: span 2 }
+#scores td                { border-left: 0 }
+#scores td:nth-child(n+3) { text-align: right }
+#scores th                { font-weight: normal }
+#scores th > a            { float: right }
+#scores th .tabs          { display: inline-flex }
+#scores th .tabs a        { padding: 0 .5rem }
+
+#scores .bytes td:nth-child(4),
+#scores .chars td:nth-child(3) { color: var(--grey) }
 
 #status {
     display: none;

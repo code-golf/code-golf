@@ -1,9 +1,10 @@
 import { ASMStateField }                       from '@defasm/codemirror';
 import LZString                                from 'lz-string';
 import { EditorState, EditorView, extensions } from './_codemirror.js';
-import pbm                                     from './_pbm.js';
-import strlen                                  from './_strlen.js';
+import                                              './_copy-as-json';
 import { attachDiff }                          from './_diff';
+import pbm                                     from './_pbm.js';
+import { byteLen, charLen, comma, ord }        from './_util';
 
 const all         = document.querySelector('#all');
 const hole        = decodeURI(location.pathname.slice(4));
@@ -37,8 +38,8 @@ const editor = new EditorView({
         else {
             const code = [...tr.state.doc].join('');
 
-            scorings.byte = new TextEncoder().encode(code).length;
-            scorings.char = strlen(code);
+            scorings.byte = byteLen(code);
+            scorings.char = charLen(code);
         }
 
         strokes.innerText = Object.keys(scorings)
@@ -78,15 +79,15 @@ async function update() {
 
     rankings.replaceChildren(<tbody>{
         // Rows.
-        rows.map(r => <tr class={ r.me ? 'me' : '' }>
-            <td>{ r.rank }<sup>{ ord(r.rank) }</sup></td>
+        rows.map(r => <tr class={r.me ? 'me' : ''}>
+            <td>{r.rank}<sup>{ord(r.rank)}</sup></td>
             <td>
-                <a href={ `/golfers/${r.login}` }>
-                    <img src={ `//avatars.githubusercontent.com/${r.login}?s=24` }/>
-                    <span>{ r.login }</span>
+                <a href={`/golfers/${r.login}`}>
+                    <img src={`//avatars.githubusercontent.com/${r.login}?s=24`}/>
+                    <span>{r.login}</span>
                 </a>
             </td>
-            <td class="right">{ r[scoring].toLocaleString('en') }</td>
+            <td class="right">{comma(r[scoring])}</td>
         </tr>)
     }{
         // Padding.
@@ -210,6 +211,3 @@ const runCode = document.querySelector('#run a').onclick = async () => {
 };
 
 onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter' ? runCode() : undefined;
-
-// Adapted from https://codegolf.stackexchange.com/a/119563
-const ord = i => [, 'st', 'nd', 'rd'][i % 100 >> 3 ^ 1 && i % 10] || 'th';

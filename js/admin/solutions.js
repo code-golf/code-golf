@@ -1,3 +1,5 @@
+import { comma } from '../_util';
+
 const form   = document.forms[0];
 const run    = document.querySelector('#run');
 const status = document.querySelector('#status');
@@ -54,7 +56,7 @@ form.onsubmit = async e => {
 
         if (!line.pass) failing++;
 
-        status.innerText = (++solutions).toLocaleString('en') + '/' + line.total.toLocaleString('en') +
+        status.innerText = comma(++solutions) + '/' + comma(line.total) +
             ` solutions (${failing} failing) in ` +
             new Date(Date.now() - start).toISOString().substr(14, 8).replace(/^00:/, '');
 
@@ -64,7 +66,7 @@ form.onsubmit = async e => {
                 make('td', holes[line.hole]),
                 make('td', langs[line.lang]),
                 make('td', `${line.golfer} (${line.golfer_id})`),
-                make('td', Math.round(line.took / 1e6).toLocaleString('en') + 'ms'),
+                make('td', comma(Math.round(line.took / 1e6)) + 'ms'),
                 make('td', (line.pass ? pass : fail).cloneNode(true)),
                 make('td', make('code', line.stderr)),
             ),
