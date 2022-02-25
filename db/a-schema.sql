@@ -2,15 +2,16 @@ CREATE EXTENSION citext;
 
 CREATE TYPE cheevo AS ENUM (
     'assembly-required', 'bakers-dozen', 'blackjack', 'bullseye',
-    'caffeinated', 'cobowl', 'cunning-linguist', 'different-strokes', 'dont-panic',
-    'elephpant-in-the-room', 'fish-n-chips', 'forty-winks',
+    'caffeinated', 'cobowl', 'cunning-linguist', 'different-strokes',
+    'dont-panic', 'elephpant-in-the-room', 'fish-n-chips', 'forty-winks',
     'gone-in-60-holes', 'happy-birthday-code-golf', 'hello-world',
     'inception', 'independence-day', 'interview-ready', 'its-over-9000',
     'just-kidding', 'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars',
     'off-the-grid', 'omniglot', 'ouroboros', 'patches-welcome', 'pi-day',
     'polyglot', 'polyglutton', 'rtfm', 'rule-34', 'slowcoach', 'solve-quine',
-    'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
-    'twenty-kiloleagues', 'up-to-eleven', 'vampire-byte'
+    'sounds-quite-nice', 'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr',
+    'twelvetide', 'twenty-kiloleagues', 'under-pressure', 'up-to-eleven',
+    'vampire-byte'
 );
 
 CREATE TYPE connection AS ENUM (
