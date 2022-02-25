@@ -327,8 +327,6 @@ thead th {
     gap: 1rem;
 }
 
-.inactive { color: var(--grey) }
-
 .me { background: var(--light-green) !important }
 
 [class^=nowrap-] { white-space: nowrap }

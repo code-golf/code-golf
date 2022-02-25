@@ -1,8 +1,8 @@
-FROM alpine:3.14 as builder
+FROM alpine:3.15 as builder
 
 RUN mkdir /empty
 
-ENV PY_VERSION=3.8-v7.3.7 VERSION=c68db6c
+ENV PY_VERSION=3.9-v7.3.8 VERSION=c68db6c
 
 RUN apk add --no-cache curl gcc libffi-dev linux-headers make musl-dev python2
 
@@ -22,4 +22,4 @@ COPY --from=0 /empty    /proc
 COPY --from=0 /empty    /tmp
 COPY --from=0 /bf-jit-c /usr/bin/brainfuck
 
-ENTRYPOINT ["/usr/bin/brainfuck"]
+ENTRYPOINT ["brainfuck"]

@@ -1,5 +1,12 @@
-// Adapted from https://mths.be/punycode
-export default str => {
+
+export const comma = i => i.toLocaleString('en');
+
+// Adapted from https://codegolf.stackexchange.com/a/119563.
+export const ord = i => [, 'st', 'nd', 'rd'][i % 100 >> 3 ^ 1 && i % 10] || 'th';
+
+// charLen adapted from https://mths.be/punycode.
+export const byteLen = str => new TextEncoder().encode(str).length;
+export const charLen = str => {
     let i = 0, len = 0;
 
     while (i < str.length) {
