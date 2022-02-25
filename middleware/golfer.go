@@ -12,8 +12,8 @@ import (
 	"github.com/lib/pq"
 )
 
-// GolferHandler adds the golfer to the context if logged in.
-func GolferHandler(next http.Handler) http.Handler {
+// Golfer adds the golfer to the context if logged in.
+func Golfer(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if cookie, _ := r.Cookie("__Host-session"); cookie != nil {
 			var golfer golfer.Golfer

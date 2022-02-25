@@ -38,8 +38,8 @@ func main() {
 		middleware.RedirectSlashes,
 		middleware.Compress(5),
 		// middleware.Downtime,
-		middleware.DatabaseHandler(db),
-		middleware.GolferHandler,
+		middleware.Database(db),
+		middleware.Golfer,
 	)
 
 	r.NotFound(routes.NotFound)
@@ -48,14 +48,12 @@ func main() {
 	r.Get("/{hole}", routes.Hole)
 	r.Get("/ng/{hole}", routes.HoleNG)
 	r.Get("/about", routes.About)
-	r.Route("/admin", func(r chi.Router) {
-		r.Use(middleware.AdminArea)
+	r.With(middleware.AdminArea).Route("/admin", func(r chi.Router) {
 		r.Get("/", routes.Admin)
 		r.Get("/solutions", routes.AdminSolutions)
 		r.Get("/solutions/run", routes.AdminSolutionsRun)
 	})
-	r.Route("/api", func(r chi.Router) {
-		r.Use(middleware.API)
+	r.With(middleware.API).Route("/api", func(r chi.Router) {
 		r.Get("/", routes.API)
 		r.Get("/langs", routes.APILangs)
 		r.Get("/langs/{lang}", routes.APILang)
@@ -65,8 +63,7 @@ func main() {
 	r.Get("/callback/dev", routes.CallbackDev)
 	r.Get("/feeds", routes.Feeds)
 	r.Get("/feeds/{feed}", routes.Feed)
-	r.Route("/golfer", func(r chi.Router) {
-		r.Use(middleware.GolferArea)
+	r.With(middleware.GolferArea).Route("/golfer", func(r chi.Router) {
 		r.Post("/cancel-delete", routes.GolferCancelDelete)
 		r.Get("/connect/{connection}", routes.GolferConnect)
 		r.Post("/delete", routes.GolferDelete)
@@ -75,8 +72,7 @@ func main() {
 		r.Get("/settings", routes.GolferSettings)
 		r.Post("/settings", routes.GolferSettingsPost)
 	})
-	r.Route("/golfers/{name}", func(r chi.Router) {
-		r.Use(middleware.GolferInfoHandler)
+	r.With(middleware.GolferInfo).Route("/golfers/{name}", func(r chi.Router) {
 		r.Get("/", routes.GolferWall)
 		r.Get("/cheevos", routes.GolferCheevos)
 		r.Get("/holes", routes.GolferHoles)
@@ -131,8 +127,7 @@ func main() {
 		Prompt: autocert.AcceptTOS,
 		HostPolicy: autocert.HostWhitelist(
 			"code.golf", "www.code.golf",
-			// Legacy domain.
-			"code-golf.io", "www.code-golf.io",
+			"code-golf.io", "www.code-golf.io", // Legacy domain.
 		),
 	}
 

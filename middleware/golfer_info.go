@@ -9,8 +9,8 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-// GolferInfoHandler adds the GolferInfo object handle to the context.
-func GolferInfoHandler(next http.Handler) http.Handler {
+// GolferInfo adds the GolferInfo object handle to the context.
+func GolferInfo(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		name := chi.URLParam(r, "name")
 		info := golfer.GetInfo(session.Database(r), name)
