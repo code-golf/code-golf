@@ -248,7 +248,7 @@ website = 'https://dlang.org'
 example = '''
 import std.stdio;
 
-void main(string[] args) {
+void main(string[] argv) {
     // Printing
     writeln("Hello, World!");
 
@@ -258,7 +258,7 @@ void main(string[] args) {
     }
 
     // Accessing arguments
-    foreach (arg; args) {
+    foreach (arg; argv[1 .. $]) {
         writeln(arg);
     }
 }
