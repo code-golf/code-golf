@@ -22,6 +22,7 @@ import { cobol }       from '@codemirror/legacy-modes/mode/cobol';
 import { commonLisp }  from '@codemirror/legacy-modes/mode/commonlisp';
 import { cpp }         from '@codemirror/lang-cpp';
 import { crystal }     from '@codemirror/legacy-modes/mode/crystal';
+import { d }           from '@codemirror/legacy-modes/mode/d'
 import { fortran }     from '@codemirror/legacy-modes/mode/fortran';
 import { fSharp }      from '@codemirror/legacy-modes/mode/mllike';
 import { go }          from '@codemirror/legacy-modes/mode/go';
@@ -95,6 +96,7 @@ export const extensions = {
     'cobol':      StreamLanguage.define(cobol),
     'cpp':        cpp(),
     'crystal':    StreamLanguage.define(crystal),
+    'd':          StreamLanguage.define(d),
     'f-sharp':    StreamLanguage.define(fSharp),
     // TODO fish
     'fortran':    StreamLanguage.define(fortran),

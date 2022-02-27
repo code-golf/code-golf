@@ -44,6 +44,7 @@ for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
             my $digits = $ver ~~ / <[\d.]>+ \d+ /;
 
             when 'C#'
+               | 'D'
                | 'F#'
                | 'PowerShell' { }
             when 'C'          { $ver = "Tiny C Compiler $digits" }

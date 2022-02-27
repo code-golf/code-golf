@@ -241,6 +241,29 @@ ARGV.each do |arg|
 end
 '''
 
+[D]
+size    = '241 MiB'
+version = 'D 2.098.1 on LDC 1.28.1'
+website = 'https://dlang.org'
+example = '''
+import std.stdio;
+
+void main(string[] args) {
+    // Printing
+    writeln("Hello, World!");
+
+    // Looping
+    foreach (i; 0 .. 10) {
+        writeln(i);
+    }
+
+    // Accessing arguments
+    foreach (arg; args) {
+        writeln(arg);
+    }
+}
+'''
+
 ['F#']
 size    = '139 MiB'
 version = 'F# 6.0 on .NET 6.0.1'

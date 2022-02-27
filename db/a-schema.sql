@@ -42,7 +42,7 @@ CREATE TYPE keymap AS ENUM ('default', 'vim');
 
 CREATE TYPE lang AS ENUM (
     'assembly', 'bash', 'brainfuck', 'c', 'c-sharp', 'cpp', 'cobol',
-    'crystal', 'f-sharp', 'fish', 'fortran', 'go', 'haskell', 'hexagony', 'j',
+    'crystal', 'd', 'f-sharp', 'fish', 'fortran', 'go', 'haskell', 'hexagony', 'j',
     'java', 'javascript', 'julia', 'k', 'lisp', 'lua', 'nim', 'pascal',
     'perl', 'php', 'powershell', 'prolog', 'python', 'raku', 'ruby', 'rust',
     'sql', 'swift', 'v', 'viml', 'zig'
