@@ -1,7 +1,6 @@
 package hole
 
 import (
-	"fmt"
 	"math/rand"
 	"strconv"
 	"strings"
@@ -12,8 +11,6 @@ type Unit struct {
 	singular string
 	plural   string
 }
-
-func randInt(a, b int) int { return rand.Intn(b-a+1) + a }
 
 func formatDistance(secs int) string {
 	units := []Unit{
