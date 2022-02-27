@@ -203,7 +203,9 @@ BEGIN
         earned := earn(earned, 'solve-quine', user_id); END IF;
 
     -- 🎺 Sounds Quite Nice
-    IF hole = 'musical-chords' AND langs @> '{c,c-sharp,f-sharp}' THEN
+    SELECT COUNT(*) >= 3 INTO found
+      FROM UNNEST(langs) WHERE unnest IN ('c', 'c-sharp', 'd', 'f-sharp');
+    IF hole = 'musical-chords' AND found THEN
         earned := earn(earned, 'sounds-quite-nice', user_id); END IF;
 
     -- 🐪 Tim Toady

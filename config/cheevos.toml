@@ -104,7 +104,7 @@ description = 'Solve <a href=/quine>Quine</a>.'
 [['Hole/Lang Specific']]
 name        = 'Sounds Quite Nice'
 emoji       = '🎺'
-description = 'Solve <a href=/musical-chords>Musical Chords</a> in C, C#, and F#.'
+description = 'Solve <a href=/musical-chords>Musical Chords</a> in any three of C, C#, D, or F#.'
 
 [['Hole/Lang Specific']]
 name        = 'Tim Toady'
