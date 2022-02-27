@@ -16,11 +16,11 @@ func RankingsMedals(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := struct {
-		HoleID, LangID, Scoring string
-		Holes                   []*config.Hole
-		Langs                   []*config.Lang
-		Pager                   *pager.Pager
-		Rows                    []row
+		HoleID, LangID, Query, Scoring string
+		Holes                          []*config.Hole
+		Langs                          []*config.Lang
+		Pager                          *pager.Pager
+		Rows                           []row
 	}{
 		HoleID:  param(r, "hole"),
 		Holes:   config.HoleList,

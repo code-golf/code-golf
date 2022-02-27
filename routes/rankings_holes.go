@@ -3,6 +3,7 @@ package routes
 import (
 	"database/sql"
 	"net/http"
+	"net/url"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
@@ -21,11 +22,12 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := struct {
-		HoleID, LangID, OtherScoring, Scoring string
-		Holes                                 []*config.Hole
-		Langs                                 []*config.Lang
-		Pager                                 *pager.Pager
-		Rows                                  []row
+		HoleID, LangID, OtherScoring, Query, Scoring, Sorting string
+		HolesSorting, PointsSorting, StrokesSorting           *url.URL
+		Holes                                                 []*config.Hole
+		Langs                                                 []*config.Lang
+		Pager                                                 *pager.Pager
+		Rows                                                  []row
 	}{
 		HoleID:  param(r, "hole"),
 		Holes:   config.HoleList,
@@ -34,6 +36,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 		Pager:   pager.New(r),
 		Rows:    make([]row, 0, pager.PerPage),
 		Scoring: param(r, "scoring"),
+		Sorting: r.FormValue("sorting"),
 	}
 
 	if data.HoleID != "all" && config.HoleByID[data.HoleID] == nil ||
@@ -49,8 +52,44 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 		data.OtherScoring = "bytes"
 	}
 
+	if data.Sorting != "holes" && data.Sorting != "points" && data.Sorting != "strokes" ||
+		data.HoleID != "all" && data.Sorting == "holes" ||
+		data.HoleID != "all" && data.LangID != "all" && data.Sorting != "points" {
+		data.Sorting = "points"
+	}
+
+	if data.Sorting != "points" {
+		// This is used when navigating between holes.
+		data.Query = "?sorting=" + data.Sorting
+	}
+
+	if data.HoleID == "all" && data.Sorting != "holes" {
+		data.HolesSorting = changeSorting(r.URL, "holes")
+	}
+
+	if data.HoleID == "all" || data.LangID == "all" {
+		if data.Sorting != "points" {
+			data.PointsSorting = changeSorting(r.URL, "points")
+		}
+		if data.Sorting != "strokes" {
+			data.StrokesSorting = changeSorting(r.URL, "strokes")
+		}
+	}
+
 	var rows *sql.Rows
 	var err error
+	var order string
+
+	if data.Sorting == "holes" {
+		order = "ORDER BY holes DESC, points DESC, strokes"
+	} else if data.Sorting == "points" {
+		order = "ORDER BY points DESC, strokes"
+	} else if data.Sorting == "strokes" && data.HoleID == "all" {
+		// Sorting by strokes doesn't seem to useful here. Sort by holes first.
+		order = "ORDER BY holes DESC, strokes, points DESC"
+	} else {
+		order = "ORDER BY strokes, points DESC"
+	}
 
 	// TODO Try and merge these SQL queries?
 	if data.HoleID == "all" && data.LangID == "all" {
@@ -76,7 +115,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 			         '',
 			         login,
 			         points,
-			         RANK() OVER (ORDER BY points DESC, strokes),
+			         RANK() OVER (`+order+`),
 			         strokes,
 			         NULL other_strokes,
 			         submitted,
@@ -106,7 +145,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 			         $1,
 			         login,
 			         points,
-			         RANK() OVER (ORDER BY points DESC, strokes),
+			         RANK() OVER (`+order+`),
 			         strokes,
 			         NULL other_strokes,
 			         submitted,
@@ -127,7 +166,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 			         lang,
 			         login,
 			         points,
-			         RANK() OVER (ORDER BY points DESC, strokes),
+			         RANK() OVER (`+order+`),
 			         strokes,
 			         other_strokes,
 			         submitted,
@@ -221,4 +260,19 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 	description += data.Scoring + "."
 
 	render(w, r, "rankings/holes", data, "Rankings: Holes", description)
+}
+
+func changeSorting(u *url.URL, sorting string) *url.URL {
+	q := u.Query()
+	q.Del("page")
+	if sorting == "points" {
+		q.Del("sorting")
+	} else {
+		q.Set("sorting", sorting)
+	}
+
+	new := *u
+	new.RawQuery = q.Encode()
+
+	return &new
 }

@@ -80,9 +80,23 @@
                 <th>#
                 <th>Golfer
                 <th class=right>
-                    {{ if eq .Data.HoleID "all" }}Holes{{ else }}Lang{{ end }}
-                <th class=right>Points
-                <th class=right>{{ title .Data.Scoring }}
+                    {{ if eq .Data.HoleID "all" }}
+                        {{ with .Data.HolesSorting }}<a href="{{ . }}">Holes</a>{{else}}Holes ▼{{ end }}
+                    {{ else }}
+                        Lang
+                    {{ end }}
+                <th class=right>
+                    {{ with .Data.PointsSorting }}
+                        <a href="{{ . }}">Points</a>
+                    {{else}}
+                        Points{{ if or (eq .Data.HoleID "all") (eq .Data.LangID "all") }} ▼{{end}}
+                    {{ end }}
+                <th class=right>
+                    {{ with .Data.StrokesSorting }}
+                        <a href="{{ . }}">{{ title $.Data.Scoring }}</a>
+                    {{else}}
+                        {{ title $.Data.Scoring }}{{ if or (eq .Data.HoleID "all") (eq .Data.LangID "all") }} ▼{{end}}
+                    {{end}}
                 <th class=right>Time
         <tbody>
     {{ $name := "" }}
