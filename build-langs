@@ -44,11 +44,14 @@ for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
             my $digits = $ver ~~ / <[\d.]>+ \d+ /;
 
             when 'C#'
-               | 'D'
                | 'F#'
                | 'PowerShell' { }
             when 'C'          { $ver = "Tiny C Compiler $digits" }
             when 'COBOL'      { $ver = "GnuCOBOL $digits" }
+            when 'D'          {
+                $ver ~~ m/ v (\S+) /;
+                $ver = "D $0 on LDC $digits";
+            }
             when 'Fortran'    { $ver = "GNU Fortran $digits" }
             when 'Haskell'    { $ver = "Glasgow Haskell Compiler $digits" }
             when 'JavaScript' { $ver = "V8 $digits" }
