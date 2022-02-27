@@ -14,13 +14,13 @@ type Unit struct {
 
 func formatDistance(secs int) string {
 	units := []Unit{
-		Unit{seconds: 60 * 60 * 24 * 365, singular: "a year", plural: "years"},
-		Unit{seconds: 60 * 60 * 24 * 30, singular: "a month", plural: "months"},
-		Unit{seconds: 60 * 60 * 24 * 7, singular: "a week", plural: "weeks"},
-		Unit{seconds: 60 * 60 * 24, singular: "a day", plural: "days"},
-		Unit{seconds: 60 * 60, singular: "an hour", plural: "hours"},
-		Unit{seconds: 60, singular: "a minute", plural: "minutes"},
-		Unit{seconds: 1, singular: "a second", plural: "seconds"},
+		Unit{60 * 60 * 24 * 365, "a year", "years"},
+		Unit{60 * 60 * 24 * 30, "a month", "months"},
+		Unit{60 * 60 * 24 * 7, "a week", "weeks"},
+		Unit{60 * 60 * 24, "a day", "days"},
+		Unit{60 * 60, "an hour", "hours"},
+		Unit{60, "a minute", "minutes"},
+		Unit{1, "a second", "seconds"},
 	}
 	past := secs < 0
 	if past {
