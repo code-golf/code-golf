@@ -15,11 +15,6 @@ RUN rm -r                           \
 # Symlink cleanup
 RUN find usr/bin -type l ! -name cc -delete
 
-# Introduce a wrapper for D
-COPY tmper.d /
-RUN ldc2 tmper.d
-RUN cp tmper /usr/bin/
-
 FROM scratch
 
 COPY --from=0 /empty                   /proc
@@ -33,6 +28,6 @@ COPY --from=0 /usr/libexec             /usr/libexec
 COPY --from=0 /usr/include             /usr/include
 COPY --from=0 /etc/ldc2.conf           /etc/
 
-ENTRYPOINT ["/usr/bin/tmper"]
+ENTRYPOINT ["ldc2"]
 
 CMD ["--version"]
