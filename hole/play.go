@@ -109,6 +109,8 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 		args, answer = sudoku(holeID == "sudoku-v2")
 	case "ten-pin-bowling":
 		args, answer = tenPinBowling()
+	case "time-distance":
+		args, answer = timeDistance()
 	case "united-states":
 		args, answer = unitedStates()
 	default:
