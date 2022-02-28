@@ -12,7 +12,6 @@
 #
 # Sequence
 #  - Fortunate Numbers
-#  - Lucky Numbers
 #  - Lucky Primes
 #  - Perfect Numbers
 #  - Semiprime Numbers
@@ -840,6 +839,18 @@ preamble = '''
     111221 would be 312211 (three ones, two twos and one one).
 
 <p>Print the first 20 elements of the Look and Say sequence.
+'''
+
+['Lucky Numbers']
+category = 'Sequence'
+links = [
+    { name = 'OEIS A000959', url = '//oeis.org/A000959' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Lucky_and_even_lucky_numbers' },
+    { name = 'Wikipedia', url = '//wikipedia.org/wiki/Lucky_number'}
+]
+experiment = -1
+preamble = '''
+<p> Output the first 1000 Lucky numbers.
 '''
 
 ['Lucky Tickets']
