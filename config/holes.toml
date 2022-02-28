@@ -848,7 +848,6 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Lucky_and_even_lucky_numbers' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Lucky_number'}
 ]
-experiment = -1
 preamble = '''
 <p>
     The <b>lucky numbers</b> are an integer sequence that results from a

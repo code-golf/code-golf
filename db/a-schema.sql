@@ -26,16 +26,16 @@ CREATE TYPE hole AS ENUM (
     'fizz-buzz', 'foo-fizz-buzz-bar', 'fractions', 'happy-numbers',
     'happy-numbers-long', 'intersection', 'isbn', 'kolakoski-constant',
     'kolakoski-sequence', 'leap-years', 'levenshtein-distance',
-    'leyland-numbers', 'look-and-say', 'lucky-tickets', 'morse-decoder',
-    'morse-encoder', 'musical-chords', 'niven-numbers', 'number-spiral',
-    'odious-numbers', 'ordinal-numbers', 'pangram-grep', 'pascals-triangle',
-    'pernicious-numbers', 'poker', 'prime-numbers', 'prime-numbers-long',
-    'qr-decoder', 'quine', 'recamán', 'reverse-polish-notation',
-    'rock-paper-scissors-spock-lizard', 'roman-to-arabic', 'rule-110',
-    'seven-segment', 'sierpiński-triangle', 'smith-numbers',
-    'spelling-numbers', 'star-wars-opening-crawl', 'sudoku', 'sudoku-v2',
-    'ten-pin-bowling', 'tongue-twisters', 'united-states', 'vampire-numbers',
-    'van-eck-sequence', 'λ', 'π', 'τ', 'φ', '√2', '𝑒'
+    'leyland-numbers', 'look-and-say', 'lucky-numbers', 'lucky-tickets',
+    'morse-decoder', 'morse-encoder', 'musical-chords', 'niven-numbers',
+    'number-spiral', 'odious-numbers', 'ordinal-numbers', 'pangram-grep',
+    'pascals-triangle', 'pernicious-numbers', 'poker', 'prime-numbers',
+    'prime-numbers-long', 'qr-decoder', 'quine', 'recamán',
+    'reverse-polish-notation', 'rock-paper-scissors-spock-lizard',
+    'roman-to-arabic', 'rule-110', 'seven-segment', 'sierpiński-triangle',
+    'smith-numbers', 'spelling-numbers', 'star-wars-opening-crawl', 'sudoku',
+    'sudoku-v2', 'ten-pin-bowling', 'tongue-twisters', 'united-states',
+    'vampire-numbers', 'van-eck-sequence', 'λ', 'π', 'τ', 'φ', '√2', '𝑒'
 );
 
 CREATE TYPE keymap AS ENUM ('default', 'vim');
