@@ -850,7 +850,21 @@ links = [
 ]
 experiment = -1
 preamble = '''
-<p> Output the first 1000 Lucky numbers.
+<p>The <b>lucky numbers</b> are an integer sequence that results from a certain "sieve" process:
+<p>Start from the odd natural numbers <b>a = 1 3 5 7 …</b> viewed as a 1-indexed infinite sequence.
+<p>For each <b>k = 2…∞</b>, replace <b>a</b> with the result of deleting every <b>a[k]</b>-th element from <b>a</b>.
+<p>Print the first <b>1000</b> numbers of the resulting sequence.
+<pre>
+Start:
+    1 3 5 7 9 11 13 15 …
+      ^
+Delete every 3rd element and advance:
+    1 3 7 9 13 15 19 21 …
+        ^
+Delete every 7th element and advance:
+    1 3 7 9 13 15 21 25 …
+          ^
+</pre>
 '''
 
 ['Lucky Tickets']
