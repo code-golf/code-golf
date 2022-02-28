@@ -851,7 +851,7 @@ links = [
 ]
 experiment = -1
 preamble = '''
-<p>Output all lucky numbers under 1000
+<p> Output the first 1000 Lucky numbers.
 '''
 
 ['Lucky Tickets']
