@@ -3,6 +3,7 @@ package middleware
 import (
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/go-chi/chi/v5/middleware"
@@ -30,6 +31,11 @@ var statusColours = [...]string{
 
 // Logger logs each request.
 func Logger(next http.Handler) http.Handler {
+	// Disable the access logs under e2e, they're just too noisy.
+	if _, e2e := os.LookupEnv("E2E"); e2e {
+		return next
+	}
+
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
 		ww := middleware.NewWrapResponseWriter(w, r.ProtoMajor)

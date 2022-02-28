@@ -2,7 +2,6 @@ package routes
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 	"time"
 
@@ -11,7 +10,6 @@ import (
 	"github.com/code-golf/code-golf/discord"
 	Golfer "github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/hole"
-	"github.com/code-golf/code-golf/pretty"
 	"github.com/code-golf/code-golf/session"
 	"github.com/lib/pq"
 )
@@ -135,30 +133,6 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			if rank.From.Strokes.Int64 == rank.To.Strokes.Int64 {
 				continue
 			}
-
-			var fromJoint, toJoint string
-			if rank.From.Joint.Bool {
-				fromJoint = "joint "
-			}
-			if rank.To.Joint.Bool {
-				toJoint = "joint "
-			}
-
-			log.Printf(
-				"%s: %s/%s/%s %d (%s%d%s) → %d (%s%d%s)\n",
-				golfer.Name,
-				in.Hole,
-				in.Lang,
-				rank.Scoring,
-				rank.From.Strokes.Int64,
-				fromJoint,
-				rank.From.Rank.Int64,
-				pretty.Ordinal(int(rank.From.Rank.Int64)),
-				rank.To.Strokes.Int64,
-				toJoint,
-				rank.To.Rank.Int64,
-				pretty.Ordinal(int(rank.To.Rank.Int64)),
-			)
 
 			// This keeps track of which updates (if any) represent new records
 			if !rank.To.Joint.Bool && rank.To.Rank.Int64 == 1 {
