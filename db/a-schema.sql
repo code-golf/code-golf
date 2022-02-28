@@ -26,7 +26,7 @@ CREATE TYPE hole AS ENUM (
     'fizz-buzz', 'foo-fizz-buzz-bar', 'fractions', 'happy-numbers',
     'happy-numbers-long', 'intersection', 'isbn', 'kolakoski-constant',
     'kolakoski-sequence', 'leap-years', 'levenshtein-distance',
-    'leyland-numbers', 'look-and-say', 'lucky-numbers', 'lucky-tickets', 'morse-decoder',
+    'leyland-numbers', 'look-and-say', 'lucky-tickets', 'morse-decoder',
     'morse-encoder', 'musical-chords', 'niven-numbers', 'number-spiral',
     'odious-numbers', 'ordinal-numbers', 'pangram-grep', 'pascals-triangle',
     'pernicious-numbers', 'poker', 'prime-numbers', 'prime-numbers-long',
