@@ -842,6 +842,18 @@ preamble = '''
 <p>Print the first 20 elements of the Look and Say sequence.
 '''
 
+['Lucky Numbers']
+category = 'Sequence'
+links = [
+    { name = 'OEIS A000959', url = '//oeis.org/A000959' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Lucky_and_even_lucky_numbers' },
+    { name = 'Wikipedia', url = '//wikipedia.org/wiki/Lucky_number'}
+]
+experiment = -1
+preamble = '''
+<p>Output all lucky numbers under 1000
+'''
+
 ['Lucky Tickets']
 category = 'Mathematics'
 links = [
