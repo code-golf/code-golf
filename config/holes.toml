@@ -1947,7 +1947,7 @@ preamble = '''
 	<li><strong>Positive</strong> values represent the <strong>future</strong>, to be printed with the <em>in</em> prefix,
 	<li> while <strong>negative</strong> values represent the <strong>past</strong>, to be printed with the <em>ago</em> suffix.
     </ul>
-    The largest possible unit of time among a second, a minute, an hour, a day, a week, a month and a year is always chosen
+    The largest possible unit of time among a second, a minute (60 seconds), an hour (60 minutes), a day (24 hours), a week (7 days), a month (30 days) and a year (365 days) is always chosen
     and the quantity is always rounded towards zero. Correct singular/plural of each unit must be used.
 '''
 
