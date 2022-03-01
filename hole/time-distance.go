@@ -13,6 +13,7 @@ type Unit struct {
 }
 
 var units = []Unit{
+	{60 * 60 * 24 * 365 * 1000, "a millenium", "millenia"},
 	{60 * 60 * 24 * 365, "a year", "years"},
 	{60 * 60 * 24 * 30, "a month", "months"},
 	{60 * 60 * 24 * 7, "a week", "weeks"},
@@ -51,15 +52,17 @@ func formatDistance(secs int) string {
 func timeDistance() ([]string, string) {
 	const rep = 2
 
-	tests := [rep*7*4 + 1]int{}
-	tests[0] = 0
+	tests := []int{0}
 
 	for j, v := range units {
+		if j == 0 {
+			continue
+		}
+		tests = append(tests, randInt(v.seconds, v.seconds*2-1))  // future singular
+		tests = append(tests, -randInt(v.seconds, v.seconds*2-1)) // past singular
 		for i := 0; i < rep; i++ {
-			tests[j*4*rep+4*i+1] = randInt(2*v.seconds, v.seconds*100)  // future plural
-			tests[j*4*rep+4*i+2] = randInt(v.seconds, v.seconds*2)      // future singular
-			tests[j*4*rep+4*i+3] = -randInt(2*v.seconds, v.seconds*100) // past plural
-			tests[j*4*rep+4*i+4] = -randInt(v.seconds, v.seconds*2)     // past singular
+			tests = append(tests, randInt(2*v.seconds, units[j-1].seconds-1))  // future plural
+			tests = append(tests, -randInt(2*v.seconds, units[j-1].seconds-1)) // past plural
 		}
 	}
 
