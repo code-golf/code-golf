@@ -12,15 +12,20 @@ type Unit struct {
 	plural   string
 }
 
+var units = []Unit{
+	{60 * 60 * 24 * 365 * 1000, "a millenium", "millenia"},
+	{60 * 60 * 24 * 365, "a year", "years"},
+	{60 * 60 * 24 * 30, "a month", "months"},
+	{60 * 60 * 24 * 7, "a week", "weeks"},
+	{60 * 60 * 24, "a day", "days"},
+	{60 * 60, "an hour", "hours"},
+	{60, "a minute", "minutes"},
+	{1, "a second", "seconds"},
+}
+
 func formatDistance(secs int) string {
-	units := []Unit{
-		{60 * 60 * 24 * 365, "a year", "years"},
-		{60 * 60 * 24 * 30, "a month", "months"},
-		{60 * 60 * 24 * 7, "a week", "weeks"},
-		{60 * 60 * 24, "a day", "days"},
-		{60 * 60, "an hour", "hours"},
-		{60, "a minute", "minutes"},
-		{1, "a second", "seconds"},
+	if secs == 0 {
+		return "now"
 	}
 	past := secs < 0
 	if past {
@@ -45,18 +50,32 @@ func formatDistance(secs int) string {
 }
 
 func timeDistance() ([]string, string) {
-	const rep = 2
+	const rep = 32
 
-	buckets := []int{1, 60, 60 * 60, 60 * 60 * 24, 60 * 60 * 24 * 7, 60 * 60 * 24 * 30, 60 * 60 * 24 * 365}
-	tests := [rep * 7 * 4]int{}
+	tests := []int{0}
 
-	for j, span := range buckets {
-		for i := 0; i < rep; i++ {
-			tests[j*4*rep+4*i] = randInt(2*span, span*100)    // future plural
-			tests[j*4*rep+4*i+1] = randInt(span, span*2)      // future singular
-			tests[j*4*rep+4*i+2] = -randInt(2*span, span*100) // past plural
-			tests[j*4*rep+4*i+3] = -randInt(span, span*2)     // past singular
+	unitsChosen := []int{1, 2, 3, 4, 5, 6, 7}
+	for i := 0; i <= rep; i++ {
+		unitsChosen = append(unitsChosen, randInt(1, 7)) // randomize which units will appear
+	}
+
+	for _, j := range unitsChosen {
+		secs := units[j].seconds
+		secsLarger := units[j-1].seconds
+		tests = append(tests, randInt(secs, secs*2-1))        // future singular
+		tests = append(tests, -randInt(secs, secs*2-1))       // past singular
+		tests = append(tests, randInt(2*secs, secsLarger-1))  // future plural
+		tests = append(tests, -randInt(2*secs, secsLarger-1)) // past plural
+		blimit := secs - 1
+		if blimit > 1000 {
+			blimit = 1000
 		}
+		a := randInt(2, 6)
+		b := randInt(-blimit, blimit)
+		tests = append(tests, a*secs+b) // future plural antiapproximation
+		a = -randInt(2, 6)
+		b = randInt(-blimit, blimit)
+		tests = append(tests, a*secs+b) // past plural antiapproximation
 	}
 
 	rand.Shuffle(len(tests), func(i, j int) {

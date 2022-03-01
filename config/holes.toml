@@ -1940,11 +1940,15 @@ category = 'Transform'
 experiment = -1
 preamble = '''
 <p>
-    Transform a time distance given as a number of seconds to a human friendly
-    string representation. Positive values represent the future, negative
-    values represent the past. The largest possible unit of time among a
-    seconds, a minute, an hour, a day, a week, a month and a year is always
-    chosen and the quantitiy is always rounded towards zero.
+    Transform a time distance given as a number of seconds to a human friendly string representation. 
+<p>
+    <ul>
+        <li><strong>Zero</strong> represents the <strong>current moment</strong>, to be printed as <em>now</em>.
+	<li><strong>Positive</strong> values represent the <strong>future</strong>, to be printed with the <em>in</em> prefix,
+	<li> while <strong>negative</strong> values represent the <strong>past</strong>, to be printed with the <em>ago</em> suffix.
+    </ul>
+    The largest possible unit of time among a second, a minute (60 seconds), an hour (60 minutes), a day (24 hours), a week (7 days), a month (30 days) and a year (365 days) is always chosen
+    and the quantity is always rounded towards zero. Correct singular/plural of each unit must be used.
 '''
 
 [Tongue-twisters]
