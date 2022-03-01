@@ -47,7 +47,7 @@ main nav {
     gap: .25rem .75rem;
     grid-row: span 2;
     justify-content: flex-end;
-    padding: .5rem .5rem .5rem 0;
+    padding: .5rem 1rem .5rem 0;
     width: 15rem;
 }
 
