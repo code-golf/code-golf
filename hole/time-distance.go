@@ -12,15 +12,19 @@ type Unit struct {
 	plural   string
 }
 
+var units = []Unit{
+	{60 * 60 * 24 * 365, "a year", "years"},
+	{60 * 60 * 24 * 30, "a month", "months"},
+	{60 * 60 * 24 * 7, "a week", "weeks"},
+	{60 * 60 * 24, "a day", "days"},
+	{60 * 60, "an hour", "hours"},
+	{60, "a minute", "minutes"},
+	{1, "a second", "seconds"},
+}
+
 func formatDistance(secs int) string {
-	units := []Unit{
-		{60 * 60 * 24 * 365, "a year", "years"},
-		{60 * 60 * 24 * 30, "a month", "months"},
-		{60 * 60 * 24 * 7, "a week", "weeks"},
-		{60 * 60 * 24, "a day", "days"},
-		{60 * 60, "an hour", "hours"},
-		{60, "a minute", "minutes"},
-		{1, "a second", "seconds"},
+	if secs == 0 {
+		return "now"
 	}
 	past := secs < 0
 	if past {
@@ -47,15 +51,15 @@ func formatDistance(secs int) string {
 func timeDistance() ([]string, string) {
 	const rep = 2
 
-	buckets := []int{1, 60, 60 * 60, 60 * 60 * 24, 60 * 60 * 24 * 7, 60 * 60 * 24 * 30, 60 * 60 * 24 * 365}
-	tests := [rep * 7 * 4]int{}
+	tests := [rep*7*4 + 1]int{}
+	tests[0] = 0
 
-	for j, span := range buckets {
+	for j, v := range units {
 		for i := 0; i < rep; i++ {
-			tests[j*4*rep+4*i] = randInt(2*span, span*100)    // future plural
-			tests[j*4*rep+4*i+1] = randInt(span, span*2)      // future singular
-			tests[j*4*rep+4*i+2] = -randInt(2*span, span*100) // past plural
-			tests[j*4*rep+4*i+3] = -randInt(span, span*2)     // past singular
+			tests[j*4*rep+4*i+1] = randInt(2*v.seconds, v.seconds*100)  // future plural
+			tests[j*4*rep+4*i+2] = randInt(v.seconds, v.seconds*2)      // future singular
+			tests[j*4*rep+4*i+3] = -randInt(2*v.seconds, v.seconds*100) // past plural
+			tests[j*4*rep+4*i+4] = -randInt(v.seconds, v.seconds*2)     // past singular
 		}
 	}
 
