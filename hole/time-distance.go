@@ -50,20 +50,32 @@ func formatDistance(secs int) string {
 }
 
 func timeDistance() ([]string, string) {
-	const rep = 2
+	const rep = 32
 
 	tests := []int{0}
 
-	for j, v := range units {
-		if j == 0 {
-			continue
+	unitsChosen := []int{1, 2, 3, 4, 5, 6, 7}
+	for i := 0; i <= rep; i++ {
+		unitsChosen = append(unitsChosen, randInt(1, 7)) // randomize which units will appear
+	}
+
+	for _, j := range unitsChosen {
+		secs := units[j].seconds
+		secsLarger := units[j-1].seconds
+		tests = append(tests, randInt(secs, secs*2-1))        // future singular
+		tests = append(tests, -randInt(secs, secs*2-1))       // past singular
+		tests = append(tests, randInt(2*secs, secsLarger-1))  // future plural
+		tests = append(tests, -randInt(2*secs, secsLarger-1)) // past plural
+		blimit := secs - 1
+		if blimit > 1000 {
+			blimit = 1000
 		}
-		tests = append(tests, randInt(v.seconds, v.seconds*2-1))  // future singular
-		tests = append(tests, -randInt(v.seconds, v.seconds*2-1)) // past singular
-		for i := 0; i < rep; i++ {
-			tests = append(tests, randInt(2*v.seconds, units[j-1].seconds-1))  // future plural
-			tests = append(tests, -randInt(2*v.seconds, units[j-1].seconds-1)) // past plural
-		}
+		a := randInt(2, 6)
+		b := randInt(-blimit, blimit)
+		tests = append(tests, a*secs+b) // future plural antiapproximation
+		a = -randInt(2, 6)
+		b = randInt(-blimit, blimit)
+		tests = append(tests, a*secs+b) // past plural antiapproximation
 	}
 
 	rand.Shuffle(len(tests), func(i, j int) {
