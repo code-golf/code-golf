@@ -12,6 +12,8 @@ import (
 var (
 	atomFeed, jsonFeed, rssFeed []byte
 	feed                        feeds.Feed
+	recentHoles                 []*config.Hole
+	recentHoleIDs               []string
 )
 
 // TZ=UTC git log --date='format-local:%Y-%m-%d %X' --format='%h %cd %s'
@@ -131,17 +133,18 @@ func init() {
 		{"c5468f0", "2017-06-12 23:34:47", "raku", false},
 		{"8029a96", "2017-05-08 23:06:22", "ruby", false},
 	} {
-		var name string
+		var name, link string
 		if i.hole {
-			name = config.HoleByID[i.id].Name
+			hole := config.HoleByID[i.id]
+			name = hole.Name
+			link = "https://code.golf/" + i.id
+
+			if len(recentHoles) < 10 {
+				recentHoles = append(recentHoles, hole)
+				recentHoleIDs = append(recentHoleIDs, hole.ID)
+			}
 		} else {
 			name = config.LangByID[i.id].Name
-		}
-
-		var link string
-		if i.hole {
-			link = "https://code.golf/" + i.id
-		} else {
 			link = "https://code.golf/rankings/holes/all/" + i.id + "/bytes"
 		}
 

@@ -2,15 +2,19 @@ package routes
 
 import (
 	"database/sql"
+	"html/template"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
+	"github.com/lib/pq"
 )
 
 // RankingsHoles serves GET /rankings/holes/{hole}/{lang}/{scoring}
+//           and GET /rankings/recent-holes/{hole}/{lang}/{scoring}
 func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 	type row struct {
 		Country, Login               string
@@ -25,6 +29,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 		Holes                                 []*config.Hole
 		Langs                                 []*config.Lang
 		Pager                                 *pager.Pager
+		Recent                                bool
 		Rows                                  []row
 	}{
 		HoleID:  param(r, "hole"),
@@ -32,8 +37,15 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 		LangID:  param(r, "lang"),
 		Langs:   config.LangList,
 		Pager:   pager.New(r),
+		Recent:  strings.HasPrefix(r.URL.Path, "/rankings/recent-holes"),
 		Rows:    make([]row, 0, pager.PerPage),
 		Scoring: param(r, "scoring"),
+	}
+
+	var holeIDs interface{}
+	if data.Recent {
+		data.HoleID = "all"
+		holeIDs = recentHoleIDs
 	}
 
 	if data.HoleID != "all" && config.HoleByID[data.HoleID] == nil ||
@@ -61,7 +73,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 			               PARTITION BY user_id, hole ORDER BY points DESC, strokes
 			           )
 			      FROM rankings
-			     WHERE scoring = $1
+			     WHERE scoring = $1 AND (hole = ANY($4) OR $4 IS NULL)
 			), summed AS (
 			    SELECT user_id,
 			           COUNT(*)       holes,
@@ -88,6 +100,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 			data.Scoring,
 			pager.PerPage,
 			data.Pager.Offset,
+			pq.Array(holeIDs),
 		)
 	} else if data.HoleID == "all" {
 		rows, err = session.Database(r).Query(
@@ -98,7 +111,8 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 			           SUM(strokes)         strokes,
 			           MAX(submitted)       submitted
 			      FROM rankings
-			     WHERE lang    = $1
+			     WHERE (hole = ANY($5) OR $5 IS NULL)
+			       AND lang    = $1
 			       AND scoring = $2
 			  GROUP BY user_id
 			) SELECT COALESCE(CASE WHEN show_country THEN country END, ''),
@@ -119,6 +133,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 			data.Scoring,
 			pager.PerPage,
 			data.Pager.Offset,
+			pq.Array(holeIDs),
 		)
 	} else if data.LangID == "all" {
 		rows, err = session.Database(r).Query(
@@ -205,20 +220,55 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	description := ""
+	var desc strings.Builder
 	if hole, ok := config.HoleByID[data.HoleID]; ok {
-		description += hole.Name + " in "
+		desc.WriteString(hole.Name)
+		desc.WriteString(" in ")
+	} else if data.Recent {
+		desc.WriteString("Ten most recent holes in ")
 	} else {
-		description += "All holes in "
+		desc.WriteString("All holes in ")
 	}
 
 	if lang, ok := config.LangByID[data.LangID]; ok {
-		description += lang.Name + " in "
+		desc.WriteString(lang.Name)
+		desc.WriteString(" in ")
 	} else {
-		description += "all languages in "
+		desc.WriteString("all languages in ")
 	}
 
-	description += data.Scoring + "."
+	desc.WriteString(data.Scoring)
 
-	render(w, r, "rankings/holes", data, "Rankings: Holes", description)
+	if data.Recent {
+		desc.WriteString(". <p>")
+
+		for i, hole := range recentHoles {
+			if i > 0 {
+				desc.WriteString(", ")
+			}
+
+			if i == len(recentHoles)-1 {
+				desc.WriteString("and ")
+			}
+
+			desc.WriteString(`<a href="/`)
+			desc.WriteString(hole.ID)
+			if data.LangID != "all" {
+				desc.WriteByte('#')
+				desc.WriteString(data.LangID)
+			}
+			desc.WriteString(`">`)
+			desc.WriteString(hole.Name)
+			desc.WriteString("</a>")
+		}
+	}
+
+	desc.WriteByte('.')
+
+	title := "Rankings: Holes"
+	if data.Recent {
+		title = "Rankings: Recent Holes"
+	}
+
+	render(w, r, "rankings/holes", data, title, template.HTML(desc.String()))
 }

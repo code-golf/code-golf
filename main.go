@@ -99,6 +99,7 @@ func main() {
 		r.Get("/cheevos/{cheevo}", routes.RankingsCheevos)
 
 		r.Get("/holes/{hole}/{lang}/{scoring}", routes.RankingsHoles)
+		r.Get("/recent-holes/{lang}/{scoring}", routes.RankingsHoles)
 
 		r.Get("/medals/{hole}/{lang}/{scoring}", routes.RankingsMedals)
 

@@ -1,10 +1,14 @@
 {{ template "header"   . }}
 {{ template "rankings" . }}
 
+{{ $base := "/rankings/holes" }}
+{{ if .Data.Recent }}{{ $base = "/rankings/recent-holes" }}{{ end }}
+
 <main>
     <form id=form-nav>
-        <input name=base type=hidden value=/rankings/holes>
+        <input name=base type=hidden value="{{ $base }}">
 
+    {{ if not .Data.Recent }}
         <select name=holes>
             <option value=all>All Holes
         {{ range .Data.Holes }}
@@ -12,6 +16,7 @@
                 {{ if eq $.Data.HoleID .ID }} selected {{ end }}>{{ .Name }}
         {{ end }}
         </select>
+    {{ end }}
 
         <select name=langs>
             <option value=all>All Languages
@@ -33,44 +38,51 @@
     </form>
 
     <nav>
+        {{ $baseAndHole := $base }}
+        {{ if not .Data.Recent }}
+            {{ $baseAndHole = (print $baseAndHole "/" .Data.HoleID )}}
+        {{ end }}
+
         <h2>Scoring</h2>
         <a {{ if ne .Data.Scoring "bytes" }}
-            href="/rankings/holes/{{ .Data.HoleID }}/{{ .Data.LangID }}/bytes"
+            href="{{ $baseAndHole }}/{{ .Data.LangID }}/bytes"
         {{ end }}>
             <span>Bytes</span>
         </a>
         <a {{ if ne .Data.Scoring "chars" }}
-            href="/rankings/holes/{{ .Data.HoleID }}/{{ .Data.LangID }}/chars"
+            href="{{ $baseAndHole }}/{{ .Data.LangID }}/chars"
         {{ end }}>
             <span>Chars</span>
         </a>
 
         <h2>Language</h2>
         <a {{ if ne .Data.LangID "all" }}
-            href="/rankings/holes/{{ .Data.HoleID }}/all/{{ .Data.Scoring }}"
+            href="{{ $baseAndHole }}/all/{{ .Data.Scoring }}"
         {{ end }}>
             <span>All</span>
         </a>
     {{ range .Data.Langs }}
         <a {{ if ne $.Data.LangID .ID }}
-            href="/rankings/holes/{{ $.Data.HoleID }}/{{ .ID }}/{{ $.Data.Scoring }}"
+            href="{{ $baseAndHole }}/{{ .ID }}/{{ $.Data.Scoring }}"
         {{ end }}>
             <span>{{ .Name }}</span>
         </a>
     {{ end }}
 
+    {{ if not .Data.Recent }}
         <h2>Hole</h2>
         <a {{ if ne .Data.HoleID "all" }}
-            href="/rankings/holes/all/{{ .Data.LangID }}/{{ .Data.Scoring }}"
+            href="{{ $base }}/all/{{ .Data.LangID }}/{{ .Data.Scoring }}"
         {{ end }}>
             <span>All</span>
         </a>
     {{ range .Data.Holes }}
         <a {{ if ne $.Data.HoleID .ID }}
-            href="/rankings/holes/{{ .ID }}/{{ $.Data.LangID }}/{{ $.Data.Scoring }}"
+            href="{{ $base }}/{{ .ID }}/{{ $.Data.LangID }}/{{ $.Data.Scoring }}"
         {{ end }}>
             <span>{{ .Name }}</span>
         </a>
+    {{ end }}
     {{ end }}
     </nav>
 
