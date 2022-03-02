@@ -20,11 +20,21 @@ func GolferWall(w http.ResponseWriter, r *http.Request) {
 		Lang   *config.Lang
 	}
 
-	data := make([]row, 0, limit)
+	data := struct {
+		Langs    []*config.Lang
+		Trophies map[string]map[string]int
+		Wall     []row
+	}{
+		Langs:    config.LangList,
+		Trophies: map[string]map[string]int{},
+		Wall:     make([]row, 0, limit),
+	}
+
+	db := session.Database(r)
 	golfer := session.GolferInfo(r).Golfer
 
 	// TODO Support friends/follow.
-	rows, err := session.Database(r).Query(
+	rows, err := db.Query(
 		`WITH data AS (
 		 -- Cheevos
 		    SELECT earned       date,
@@ -65,13 +75,52 @@ func GolferWall(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// TODO Parse date into viewers location.
-		data = append(data, row{
+		data.Wall = append(data.Wall, row{
 			Cheevo: config.CheevoByID[cheevo],
 			Date:   date,
 			Golfer: golfer,
 			Hole:   config.HoleByID[hole],
 			Lang:   config.LangByID[lang],
 		})
+	}
+
+	if err := rows.Err(); err != nil {
+		panic(err)
+	}
+
+	rows, err = db.Query(
+		`WITH summed AS (
+		    SELECT user_id, scoring, lang, SUM(points_for_lang)
+		      FROM rankings
+		  GROUP BY user_id, scoring, lang
+		), ranks AS (
+		    SELECT user_id, scoring, lang,
+		           RANK() OVER (PARTITION BY scoring, lang ORDER BY sum DESC)
+		      FROM summed
+		) SELECT lang, scoring, rank
+		    FROM ranks
+		   WHERE rank < 4 AND user_id = $1`,
+		golfer.ID,
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var lang, scoring string
+		var rank int
+
+		if err := rows.Scan(&lang, &scoring, &rank); err != nil {
+			panic(err)
+		}
+
+		if _, ok := data.Trophies[lang]; !ok {
+			data.Trophies[lang] = map[string]int{}
+		}
+
+		data.Trophies[lang][scoring] = rank
 	}
 
 	if err := rows.Err(); err != nil {

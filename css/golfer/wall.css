@@ -1,22 +1,39 @@
+aside {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+h2 {
+    border-bottom: 2px solid var(--color);
+    font-size: 1rem;
+    font-weight: 600;
+    grid-column: 1 / -1;
+}
+
 main {
-    column-gap: 3rem;
     display: grid;
+    gap: 2rem 3rem;
     grid-template-columns: auto 27rem;
 }
 
-#cheevos {
+section {
     align-content: start;
     display: grid;
     font-size: 2rem;
     grid-template-columns: repeat(auto-fit, minmax(3rem, 1fr));
 }
 
-#cheevos div {
+section > :not(h2) {
     display: grid;
     height: 3rem;
     place-content: center;
     min-width: 3rem;
 }
+
+.rank-1:not(:hover) { background: gold }
+.rank-2:not(:hover) { background: silver }
+.rank-3:not(:hover) { background: burlywood }
 
 #cheevos div:not(.earned) {
     background: var(--light-grey);
@@ -24,11 +41,12 @@ main {
     text-shadow: 0 0 var(--cheevo-not-earned);
 }
 
-#cheevos h2 {
-    border-bottom: 2px solid var(--color);
-    font-size: 1rem;
-    font-weight: 600;
-    grid-column: 1 / -1;
+#trophies a       { color: #343a40 }
+#trophies a:hover { color: var(--color) }
+
+#trophies svg {
+    height: 2rem;
+    width: 2rem;
 }
 
 #wall {
