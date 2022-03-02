@@ -44,7 +44,7 @@
 
             {{ if eq $bytes $chars }}
                 {{ $title = "Bytes & Chars" }}
-            {{ else if and $bytes (lt $bytes $chars) }}
+            {{ else if and $bytes (or (not $chars) (lt $bytes $chars)) }}
                 {{ $title = "Bytes" }}
             {{ else }}
                 {{ $rank    = $chars  }}
