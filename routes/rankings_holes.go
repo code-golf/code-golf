@@ -245,10 +245,10 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 		for i, hole := range recentHoles {
 			if i > 0 {
 				desc.WriteString(", ")
-			}
 
-			if i == len(recentHoles)-1 {
-				desc.WriteString("and ")
+				if i == len(recentHoles)-1 {
+					desc.WriteString("and ")
+				}
 			}
 
 			desc.WriteString(`<a href="/`)
