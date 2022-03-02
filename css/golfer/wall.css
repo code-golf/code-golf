@@ -75,4 +75,6 @@ section > :not(h2) {
 
 @media (max-width: 46rem) {
     main { grid-template-columns: auto }
+
+    #wall { grid-row: 2 }
 }
