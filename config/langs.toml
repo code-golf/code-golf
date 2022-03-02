@@ -421,8 +421,8 @@ class Main {
 '''
 
 [JavaScript]
-size    = '20.8 MiB'
-version = 'V8 9.6.180.15'
+size    = '21.5 MiB'
+version = 'V8 9.9.115.8'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -671,8 +671,8 @@ end
 '''
 
 [Rust]
-size    = '604 MiB'
-version = '1.58.1'
+size    = '531 MiB'
+version = '1.59.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -720,7 +720,7 @@ SELECT arg FROM argv
 
 [Swift]
 size    = '614 MiB'
-version = '5.5.2'
+version = '5.5.3'
 website = 'https://swift.org'
 example = '''
 // Printing
@@ -784,7 +784,7 @@ w
 
 [Zig]
 size    = '270 MiB'
-version = '0.9.0'
+version = '0.9.1'
 website = 'https://ziglang.org'
 example = '''
 // Notice: use spaces as indentation, since tab causes a compile-time error

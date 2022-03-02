@@ -6,7 +6,7 @@ RUN mkdir /empty /mydev \
 
 RUN apk add --no-cache binutils curl
 
-RUN curl https://ziglang.org/download/0.9.0/zig-linux-x86_64-0.9.0.tar.xz \
+RUN curl https://ziglang.org/download/0.9.1/zig-linux-x86_64-0.9.1.tar.xz \
   | tar xJC tmp --strip 1 \
  && strip /tmp/zig
 
