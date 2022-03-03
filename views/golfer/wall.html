@@ -76,15 +76,20 @@
         </section>
 
     {{ if gt (len .Data.Follows) 1 }}
+        {{ $me := "" }}
+        {{ with .Golfer }}{{ $me = .Name }}{{ end }}
         <table class=nowrap-second>
             <thead>
                 <tr>
-                    <th colspan=2>{{ len .Data.Follows }} Golfers Followed
+                    <th colspan=2>
+                    {{ with dec (len .Data.Follows) }}
+                        {{ . }} Golfer{{ if gt . 1 }}s{{ end }} Followed
+                    {{ end }}
                     <th class=right>Bytes
                     <th class=right>Chars
             <tbody>
             {{ range .Data.Follows }}
-                <tr>
+                <tr {{ if eq .Name $me }} class=me {{ end }}>
                     <td>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
                     <td>
                         <a href="/golfers/{{ .Name }}">
