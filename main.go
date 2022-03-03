@@ -74,6 +74,7 @@ func main() {
 	})
 	r.With(middleware.GolferInfo).Route("/golfers/{name}", func(r chi.Router) {
 		r.Get("/", routes.GolferWall)
+		r.Post("/{action:follow|unfollow}", routes.GolferAction)
 		r.Get("/cheevos", routes.GolferCheevos)
 		r.Get("/holes", routes.GolferHoles)
 		r.Get("/holes/{scoring}", routes.GolferHoles)
