@@ -83,7 +83,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 			      FROM foo
 			     WHERE row_number = 1
 			  GROUP BY user_id
-			) SELECT COALESCE(CASE WHEN show_country THEN country END, ''),
+			) SELECT country_flag,
 			         holes,
 			         '',
 			         login,
@@ -115,7 +115,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 			       AND lang    = $1
 			       AND scoring = $2
 			  GROUP BY user_id
-			) SELECT COALESCE(CASE WHEN show_country THEN country END, ''),
+			) SELECT country_flag,
 			         holes,
 			         $1,
 			         login,
@@ -137,7 +137,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 		)
 	} else if data.LangID == "all" {
 		rows, err = session.Database(r).Query(
-			` SELECT COALESCE(CASE WHEN show_country THEN country END, ''),
+			` SELECT country_flag,
 			         1,
 			         lang,
 			         login,
@@ -159,7 +159,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 		)
 	} else {
 		rows, err = session.Database(r).Query(
-			` SELECT COALESCE(CASE WHEN show_country THEN country END, ''),
+			` SELECT country_flag,
 			         1,
 			         lang,
 			         login,

@@ -81,6 +81,10 @@ CREATE TABLE users (
     started      timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
     referrer_id  int                REFERENCES users(id) ON DELETE SET NULL,
     theme        theme     NOT NULL DEFAULT 'auto',
+    -- TODO Make country_flag VIRTUAL not STORED when PostgreSQL supports it.
+    country_flag char(2)   NOT NULL GENERATED ALWAYS AS
+        (COALESCE(CASE WHEN show_country THEN country END, '')) STORED,
+    CHECK (country IS NULL OR country = UPPER(country)),
     CHECK (id != referrer_id)   -- Can't refer yourself
 );
 

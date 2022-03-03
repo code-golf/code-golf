@@ -43,10 +43,7 @@ func RankingsCheevos(w http.ResponseWriter, r *http.Request) {
 		      FROM trophies
 		     WHERE $1 IN ('', trophy::text)
 		  GROUP BY user_id
-		) SELECT count,
-		         COALESCE(CASE WHEN show_country THEN country END, ''),
-		         earned,
-		         login,
+		) SELECT count, country_flag, earned, login,
 		         CASE WHEN $1 = ''
 		            THEN RANK() OVER(ORDER BY count DESC)
 		            ELSE RANK() OVER(ORDER BY earned)

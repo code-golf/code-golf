@@ -53,7 +53,7 @@ func RankingsMedals(w http.ResponseWriter, r *http.Request) {
 		) SELECT RANK() OVER(
 		             ORDER BY gold DESC, diamond DESC, silver DESC, bronze DESC
 		         ),
-		         COALESCE(CASE WHEN show_country THEN country END, ''),
+		         country_flag,
 		         login,
 		         diamond,
 		         gold,

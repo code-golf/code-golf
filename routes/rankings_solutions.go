@@ -34,7 +34,7 @@ func RankingsSolutions(w http.ResponseWriter, r *http.Request) {
 		         chars,
 		         TO_CHAR(chars::decimal / count, 'FM999,990.0'),
 		         count,
-		         COALESCE(CASE WHEN show_country THEN country END, ''),
+		         country_flag,
 		         langs,
 		         login,
 		         RANK() OVER(ORDER BY count DESC),

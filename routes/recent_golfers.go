@@ -36,8 +36,7 @@ func RecentGolfers(w http.ResponseWriter, r *http.Request) {
 		  GROUP BY user_id
 		  ORDER BY date DESC
 		     LIMIT $1
-		)  SELECT COALESCE(CASE WHEN show_country THEN country END, ''),
-		          cheevos, date, login, langs
+		)  SELECT country_flag, cheevos, date, login, langs
 		     FROM recent
 		     JOIN users ON id = user_id
 		LEFT JOIN langs USING (user_id)

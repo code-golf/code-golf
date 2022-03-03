@@ -138,7 +138,7 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 		             WHERE user_id = users.id
 		          ORDER BY trophy
 		          ),
-		          COALESCE(CASE WHEN show_country THEN country END, ''),
+		          country_flag,
 		          COALESCE(diamond, 0),
 		          COALESCE(gold, 0),
 		          (SELECT COUNT(DISTINCT hole)
