@@ -9,6 +9,12 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE FUNCTION following(int) RETURNS int[] AS $$
+    SELECT array_append(array_agg(followee_id), $1)
+      FROM follows
+     WHERE follower_id = $1
+$$ LANGUAGE SQL STABLE;
+
 CREATE TYPE hole_rank_ret AS (strokes int, rank int, joint bool);
 
 CREATE FUNCTION hole_rank(hole hole, lang lang, scoring scoring, user_id int)

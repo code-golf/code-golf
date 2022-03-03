@@ -38,7 +38,7 @@
         {{ range .Rows }}
             <tr>
                 <td class=wide>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
-                <td><a href={{ .Route }}>{{ .Fact }}</a>
+                <td><a href={{ .Route }}><span>{{ .Fact }}</span></a>
                 <td class=right>{{ comma .Count }}
                 <td class=right>{{ comma .Golfers }}
                 <td class="right wide">{{ .PerGolfer }}

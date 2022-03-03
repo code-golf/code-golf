@@ -4,12 +4,16 @@ aside {
     gap: 2rem;
 }
 
-h2 {
+h2, time { padding: 0 .5rem }
+
+h2, thead, time {
     border-bottom: 2px solid var(--color);
     font-size: 1rem;
     font-weight: 600;
-    grid-column: 1 / -1;
+    line-height: 2rem;
 }
+
+h2 { grid-column: 1 / -1 }
 
 main {
     display: grid;
@@ -17,14 +21,7 @@ main {
     grid-template-columns: auto 27rem;
 }
 
-section {
-    align-content: start;
-    display: grid;
-    font-size: 2rem;
-    grid-template-columns: repeat(auto-fit, minmax(3rem, 1fr));
-}
-
-section > :not(h2) {
+section > a, section > div {
     display: grid;
     height: 3rem;
     place-content: center;
@@ -34,6 +31,13 @@ section > :not(h2) {
 .rank-1:not(:hover) { background: gold }
 .rank-2:not(:hover) { background: silver }
 .rank-3:not(:hover) { background: burlywood }
+
+#cheevos, #trophies {
+    align-content: start;
+    display: grid;
+    font-size: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(3rem, 1fr));
+}
 
 #cheevos div:not(.earned) {
     background: var(--light-grey);
@@ -66,11 +70,6 @@ section > :not(h2) {
     display: block;
     height: 1.5rem;
     width: 1.5rem;
-}
-
-#wall time {
-    font-weight: 600;
-    border-bottom: 2px solid var(--color);
 }
 
 @media (max-width: 46rem) {

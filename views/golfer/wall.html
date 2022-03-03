@@ -74,6 +74,31 @@
         {{ end }}
     {{ end }}
         </section>
+
+    {{ if gt (len .Data.Follows) 1 }}
+        <table class=nowrap-second>
+            <thead>
+                <tr>
+                    <th colspan=2>{{ len .Data.Follows }} Golfers Followed
+                    <th class=right>Bytes
+                    <th class=right>Chars
+            <tbody>
+            {{ range .Data.Follows }}
+                <tr>
+                    <td>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
+                    <td>
+                        <a href="/golfers/{{ .Name }}">
+                            <img loading=lazy src="//avatars.githubusercontent.com/{{ .Name }}?s=24">
+                            <span>{{ .Name }}</span>
+                        {{ with index $.Countries .Country }}
+                            <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
+                        {{ end }}
+                        </a>
+                    <td class=right>{{ comma .Bytes }}
+                    <td class=right>{{ comma .Chars }}
+            {{ end }}
+        </table>
+    {{ end }}
     </aside>
 </main>
 

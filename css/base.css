@@ -199,6 +199,7 @@ td, th {
 td > a {
     align-items: center;
     display: flex;
+    text-decoration: none;
 }
 
 td.right > a { justify-content: right }
@@ -215,6 +216,10 @@ td > a > span {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+td > a > span:nth-of-type(1) { flex: 1 }
+
+td > a:hover > span:first-of-type { text-decoration: underline }
 
 tfoot td { border: 0 }
 

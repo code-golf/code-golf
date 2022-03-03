@@ -12,6 +12,11 @@ import (
 func GolferWall(w http.ResponseWriter, r *http.Request) {
 	const limit = 100
 
+	type follow struct {
+		Bytes, Chars, Rank int
+		Country, Name      string
+	}
+
 	type row struct {
 		Cheevo *config.Cheevo
 		Date   time.Time
@@ -21,6 +26,7 @@ func GolferWall(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := struct {
+		Follows  []follow
 		Langs    []*config.Lang
 		Trophies map[string]map[string]int
 		Wall     []row
@@ -43,7 +49,7 @@ func GolferWall(w http.ResponseWriter, r *http.Request) {
 		           ''           lang,
 		           user_id
 		      FROM trophies
-		     WHERE user_id = $1
+		     WHERE user_id = ANY(following($1))
 		 UNION ALL
 		 -- Holes
 		    SELECT MAX(submitted) date,
@@ -52,7 +58,7 @@ func GolferWall(w http.ResponseWriter, r *http.Request) {
 		           lang::text     lang,
 		           user_id
 		      FROM solutions
-		     WHERE user_id = $1
+		     WHERE user_id = ANY(following($1))
 		  GROUP BY user_id, hole, lang
 		) SELECT cheevo, date, login, hole, lang
 		    FROM data JOIN users ON id = user_id
@@ -121,6 +127,46 @@ func GolferWall(w http.ResponseWriter, r *http.Request) {
 		}
 
 		data.Trophies[lang][scoring] = rank
+	}
+
+	if err := rows.Err(); err != nil {
+		panic(err)
+	}
+
+	rows, err = db.Query(
+		`WITH follows AS (
+		    SELECT country_flag, login,
+		           COALESCE((SELECT points FROM points
+		              WHERE scoring = 'bytes' AND user_id = id), 0) bytes,
+		           COALESCE((SELECT points FROM points
+		              WHERE scoring = 'chars' AND user_id = id), 0) chars
+		      FROM users
+		     WHERE id = ANY(following($1))
+		) SELECT *, RANK() OVER (ORDER BY bytes DESC, chars DESC)
+		    FROM follows
+		ORDER BY rank, login`,
+		golfer.ID,
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var f follow
+
+		if err := rows.Scan(
+			&f.Country,
+			&f.Name,
+			&f.Bytes,
+			&f.Chars,
+			&f.Rank,
+		); err != nil {
+			panic(err)
+		}
+
+		data.Follows = append(data.Follows, f)
 	}
 
 	if err := rows.Err(); err != nil {
