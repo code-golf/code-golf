@@ -41,16 +41,16 @@ h1 {
 
 #profile {
     font-variant: tabular-nums;
-    grid-row-gap: 0;
     grid-template: min-content 1fr min-content / min-content 1fr;
     padding: 1rem 1rem 0;
+    row-gap: 0;
 }
 
 #profile img {
     border-radius: 2rem;
     grid-row: span 3;
-    height: 6rem;
-    width: 6rem;
+    height: 5.5rem;
+    width: 5.5rem;
 }
 
 #profile p:first-of-type { font-size: 1.25rem }

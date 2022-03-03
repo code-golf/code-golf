@@ -1,15 +1,15 @@
 {{ with .GolferInfo }}
     <div class=grid id=profile>
-        <img src="//avatars.githubusercontent.com/{{ .Name }}?s=192">
+        <img src="//avatars.githubusercontent.com/{{ .Name }}?s=176">
         <h1>
             {{ .Name }}
         {{ with index $.Countries .Country }}
             <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
         {{ end }}
         </h1>
-        <p>
-            {{ comma .BytesPoints }} points (Bytes) •
-            {{ comma .CharsPoints }} points (Chars)
+        <p title="{{ comma .BytesPoints }} points in Bytes, {{/**/}}
+                 {{- comma .CharsPoints }} points in Chars">
+            {{ comma .BytesPoints }} • {{ comma .CharsPoints }}
         <p>
             <span title="Diamonds (uncontested gold medals)">
                 💎 {{ comma .Diamond }}
