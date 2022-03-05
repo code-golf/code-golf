@@ -6,8 +6,8 @@ require (
 	github.com/DATA-DOG/go-sqlmock v1.5.0
 	github.com/SeerUK/assert v1.0.0
 	github.com/agnivade/levenshtein v1.1.1
-	github.com/buildkite/terminal v3.2.0+incompatible
-	github.com/bwmarrin/discordgo v0.23.2
+	github.com/buildkite/terminal-to-html/v3 v3.6.1
+	github.com/bwmarrin/discordgo v0.24.0
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/gofrs/uuid v4.2.0+incompatible
 	github.com/gorilla/feeds v1.1.1

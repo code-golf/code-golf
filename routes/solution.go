@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/buildkite/terminal"
+	"github.com/buildkite/terminal-to-html/v3"
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/discord"
 	Golfer "github.com/code-golf/code-golf/golfer"

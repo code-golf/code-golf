@@ -37,7 +37,15 @@
 /* custom foreground/background combos for readability */
 .term-fg31.term-bg40 { color: #F8A39F; }
 
-/* high intensity color*/
+/* https://github.com/buildkite/terminal-to-html/issues/93 */
+.term-fgx0 { color: #000000; }
+.term-fgx1 { color: #800000; }
+.term-fgx2 { color: #008000; }
+.term-fgx3 { color: #808000; }
+.term-fgx4 { color: #000080; }
+.term-fgx5 { color: #800080; }
+.term-fgx6 { color: #008080; }
+.term-fgx7 { color: #c0c0c0; }
 .term-fgx8 { color: #808080; }
 .term-fgx9 { color: #ff0000; }
 .term-fgx10 { color: #00ff00; }
