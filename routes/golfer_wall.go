@@ -6,6 +6,7 @@ import (
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
+	"github.com/jackc/pgx/v4"
 )
 
 // GolferWall serves GET /golfers/{golfer}
@@ -36,11 +37,10 @@ func GolferWall(w http.ResponseWriter, r *http.Request) {
 		Wall:     make([]row, 0, limit),
 	}
 
-	db := session.Database(r)
 	golfer := session.GolferInfo(r).Golfer
 
-	// TODO Support friends/follow.
-	rows, err := db.Query(
+	var batch pgx.Batch
+	batch.Queue(
 		`WITH data AS (
 		 -- Cheevos
 		    SELECT earned       date,
@@ -66,10 +66,44 @@ func GolferWall(w http.ResponseWriter, r *http.Request) {
 		golfer.ID,
 		limit,
 	)
+
+	batch.Queue(
+		`WITH summed AS (
+		    SELECT user_id, scoring, lang, SUM(points_for_lang)
+		      FROM rankings
+		  GROUP BY user_id, scoring, lang
+		), ranks AS (
+		    SELECT user_id, scoring, lang,
+		           RANK() OVER (PARTITION BY scoring, lang ORDER BY sum DESC)
+		      FROM summed
+		) SELECT lang, scoring, rank
+		    FROM ranks
+		   WHERE rank < 4 AND user_id = $1`,
+		golfer.ID,
+	)
+
+	batch.Queue(
+		`WITH follows AS (
+		    SELECT country_flag, login,
+		           COALESCE((SELECT points FROM points
+		              WHERE scoring = 'bytes' AND user_id = id), 0) bytes,
+		           COALESCE((SELECT points FROM points
+		              WHERE scoring = 'chars' AND user_id = id), 0) chars
+		      FROM users
+		     WHERE id = ANY(following($1))
+		) SELECT *, RANK() OVER (ORDER BY bytes DESC, chars DESC)
+		    FROM follows
+		ORDER BY rank, login`,
+		golfer.ID,
+	)
+
+	res := session.Database(r).SendBatch(r.Context(), &batch)
+	defer res.Close()
+
+	rows, err := res.Query()
 	if err != nil {
 		panic(err)
 	}
-
 	defer rows.Close()
 
 	for rows.Next() {
@@ -94,24 +128,10 @@ func GolferWall(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	rows, err = db.Query(
-		`WITH summed AS (
-		    SELECT user_id, scoring, lang, SUM(points_for_lang)
-		      FROM rankings
-		  GROUP BY user_id, scoring, lang
-		), ranks AS (
-		    SELECT user_id, scoring, lang,
-		           RANK() OVER (PARTITION BY scoring, lang ORDER BY sum DESC)
-		      FROM summed
-		) SELECT lang, scoring, rank
-		    FROM ranks
-		   WHERE rank < 4 AND user_id = $1`,
-		golfer.ID,
-	)
+	rows, err = res.Query()
 	if err != nil {
 		panic(err)
 	}
-
 	defer rows.Close()
 
 	for rows.Next() {
@@ -133,24 +153,10 @@ func GolferWall(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	rows, err = db.Query(
-		`WITH follows AS (
-		    SELECT country_flag, login,
-		           COALESCE((SELECT points FROM points
-		              WHERE scoring = 'bytes' AND user_id = id), 0) bytes,
-		           COALESCE((SELECT points FROM points
-		              WHERE scoring = 'chars' AND user_id = id), 0) chars
-		      FROM users
-		     WHERE id = ANY(following($1))
-		) SELECT *, RANK() OVER (ORDER BY bytes DESC, chars DESC)
-		    FROM follows
-		ORDER BY rank, login`,
-		golfer.ID,
-	)
+	rows, err = res.Query()
 	if err != nil {
 		panic(err)
 	}
-
 	defer rows.Close()
 
 	for rows.Next() {

@@ -7,7 +7,6 @@ import (
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
-	"github.com/lib/pq"
 )
 
 // RecentGolfers serves GET /recent/golfers
@@ -25,8 +24,9 @@ func RecentGolfers(w http.ResponseWriter, r *http.Request) {
 	}{len(config.CheevoList), make([]golfer, 0, pager.PerPage)}
 
 	rows, err := session.Database(r).Query(
+		r.Context(),
 		`WITH langs AS (
-		    SELECT user_id, array_agg(DISTINCT lang) langs
+		    SELECT user_id, array_agg(DISTINCT lang)::text[] langs
 		      FROM solutions
 		     WHERE NOT failing
 		  GROUP BY user_id
@@ -46,6 +46,7 @@ func RecentGolfers(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
+	defer rows.Close()
 
 	for rows.Next() {
 		var g golfer
@@ -55,7 +56,7 @@ func RecentGolfers(w http.ResponseWriter, r *http.Request) {
 			&g.Cheevos,
 			&g.Date,
 			&g.Name,
-			pq.Array(&g.Langs),
+			&g.Langs,
 		); err != nil {
 			panic(err)
 		}

@@ -2,13 +2,13 @@ package github
 
 import (
 	"context"
-	"database/sql"
 	"time"
 
+	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/shurcooL/githubv4"
 )
 
-func stars(db *sql.DB) (limits []rateLimit) {
+func stars(db *pgxpool.Pool) (limits []rateLimit) {
 	stargazers := map[int]time.Time{}
 
 	var query struct {

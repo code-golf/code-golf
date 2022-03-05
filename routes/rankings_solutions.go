@@ -20,6 +20,7 @@ func RankingsSolutions(w http.ResponseWriter, r *http.Request) {
 	}{pager.New(r), make([]row, 0, pager.PerPage)}
 
 	rows, err := session.Database(r).Query(
+		r.Context(),
 		`WITH solutions AS (
 		    SELECT user_id,
 		           COUNT(*),
@@ -49,6 +50,7 @@ func RankingsSolutions(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
+	defer rows.Close()
 
 	for rows.Next() {
 		var r row

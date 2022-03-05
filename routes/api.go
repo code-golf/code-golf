@@ -40,6 +40,7 @@ func APISuggestionsGolfers(w http.ResponseWriter, r *http.Request) {
 	var json []byte
 
 	if err := session.Database(r).QueryRow(
+		r.Context(),
 		`WITH golfers AS (
 		    SELECT login
 		      FROM users

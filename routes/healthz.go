@@ -8,7 +8,7 @@ import (
 
 // Healthz serves GET /healthz.
 func Healthz(w http.ResponseWriter, r *http.Request) {
-	if err := session.Database(r).Ping(); err != nil {
+	if err := session.Database(r).Ping(r.Context()); err != nil {
 		panic(err)
 	}
 

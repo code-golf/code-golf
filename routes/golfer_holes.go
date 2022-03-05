@@ -35,6 +35,7 @@ func GolferHoles(w http.ResponseWriter, r *http.Request) {
 	}
 
 	rows, err := session.Database(r).Query(
+		r.Context(),
 		`SELECT hole::text || lang::text || scoring::text, rank
 		   FROM rankings WHERE user_id = $1`,
 		golfer.ID,
@@ -42,7 +43,6 @@ func GolferHoles(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-
 	defer rows.Close()
 
 	for rows.Next() {

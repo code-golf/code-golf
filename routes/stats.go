@@ -32,32 +32,35 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 	}
 
 	db := session.Database(r)
+	ctx := r.Context()
 
 	if err := db.QueryRow(
-		"SELECT COUNT(DISTINCT user_id) FROM trophies",
+		ctx, "SELECT COUNT(DISTINCT user_id) FROM trophies",
 	).Scan(&data.Golfers); err != nil {
 		panic(err)
 	}
 
 	if err := db.QueryRow(
-		"SELECT COALESCE(SUM(bytes), 0), COUNT(*) FROM solutions",
+		ctx, "SELECT COALESCE(SUM(bytes), 0), COUNT(*) FROM solutions",
 	).Scan(&data.Bytes, &data.Solutions); err != nil {
 		panic(err)
 	}
 
 	for i, fact := range [...]string{"hole", "lang"} {
 		rows, err := db.Query(
-			`SELECT RANK() OVER (ORDER BY COUNT(*) DESC, ` + fact + `),
-			         ` + fact + `,
+			ctx,
+			`SELECT RANK() OVER (ORDER BY COUNT(*) DESC, `+fact+`),
+			         `+fact+`,
 			         COUNT(*),
 			         COUNT(DISTINCT user_id)
 			    FROM solutions
 			   WHERE NOT failing
-			GROUP BY ` + fact,
+			GROUP BY `+fact,
 		)
 		if err != nil {
 			panic(err)
 		}
+		defer rows.Close()
 
 		var slices []pie.Slice
 

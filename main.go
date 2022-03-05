@@ -1,12 +1,13 @@
 package main
 
 import (
+	"context"
 	"crypto/tls"
-	"database/sql"
 	"log"
 	"math/rand"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/code-golf/code-golf/discord"
@@ -14,16 +15,54 @@ import (
 	"github.com/code-golf/code-golf/middleware"
 	"github.com/code-golf/code-golf/routes"
 	"github.com/go-chi/chi/v5"
-	_ "github.com/lib/pq"
+	"github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v4/pgxpool"
 	"golang.org/x/crypto/acme/autocert"
 )
+
+type dbLogger struct{}
+
+func (dl dbLogger) Log(_ context.Context, _ pgx.LogLevel, msg string, data map[string]interface{}) {
+	const (
+		blue    = "\033[34;1m"
+		magenta = "\033[35;1m"
+		reset   = "\033[0m"
+	)
+
+	// Limit to queries for now, to avoid REFRESH MAT VIEW exec spam.
+	if msg != "Query" {
+		return
+	}
+
+	sql := data["sql"].(string)
+	if i := strings.Index(sql, "\n"); i > 0 {
+		sql = sql[:i]
+	}
+
+	log.Printf(
+		blue+"%3d "+magenta+"ROWS "+reset+"%s "+magenta+"%v"+reset,
+		data["rowCount"],
+		strings.TrimSpace(sql),
+		data["time"].(time.Duration).Round(time.Millisecond),
+	)
+}
 
 func main() {
 	log.SetFlags(log.Ltime)
 
 	rand.Seed(time.Now().UnixNano())
 
-	db, err := sql.Open("postgres", "")
+	config, err := pgxpool.ParseConfig("")
+	if err != nil {
+		panic(err)
+	}
+
+	config.ConnConfig.Logger = dbLogger{}
+	config.LazyConnect = true
+	config.MaxConns = 8
+	config.MinConns = 8
+
+	db, err := pgxpool.ConnectConfig(context.Background(), config)
 	if err != nil {
 		panic(err)
 	}
@@ -161,7 +200,8 @@ func main() {
 		for range time.Tick(30 * time.Second) {
 			for _, view := range []string{"medals", "rankings", "points"} {
 				if _, err := db.Exec(
-					"REFRESH MATERIALIZED VIEW CONCURRENTLY " + view,
+					context.Background(),
+					"REFRESH MATERIALIZED VIEW CONCURRENTLY "+view,
 				); err != nil {
 					log.Println(err)
 				}
@@ -169,6 +209,7 @@ func main() {
 
 			// Once points is refreshed, award points based cheevos.
 			if _, err := db.Exec(
+				context.Background(),
 				`INSERT INTO trophies(user_id, trophy)
 				      SELECT user_id, 'its-over-9000'::cheevo
 				        FROM points
@@ -216,9 +257,9 @@ func main() {
 					"DELETE FROM users WHERE delete < TIMEZONE('UTC', NOW())",
 				},
 			} {
-				if res, err := db.Exec(job.sql); err != nil {
+				if res, err := db.Exec(context.Background(), job.sql); err != nil {
 					log.Println(err)
-				} else if rows, _ := res.RowsAffected(); rows != 0 {
+				} else if rows := res.RowsAffected(); rows != 0 {
 					log.Printf("Deleted %d %s\n", rows, job.name)
 				}
 			}

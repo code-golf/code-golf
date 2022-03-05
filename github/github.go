@@ -2,11 +2,11 @@ package github
 
 import (
 	"context"
-	"database/sql"
 	"log"
 	"os"
 	"time"
 
+	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/shurcooL/githubv4"
 	"golang.org/x/oauth2"
 )
@@ -30,7 +30,7 @@ type rateLimit struct {
 	ResetAt                time.Time
 }
 
-func Run(db *sql.DB) {
+func Run(db *pgxpool.Pool) {
 	if accessToken == "" {
 		return
 	}
@@ -40,7 +40,7 @@ func Run(db *sql.DB) {
 		limit rateLimit
 	)
 
-	for _, job := range []func(*sql.DB) []rateLimit{
+	for _, job := range []func(*pgxpool.Pool) []rateLimit{
 		ideas, pullRequests, sponsors, stars,
 	} {
 		for _, limit = range job(db) {
@@ -54,8 +54,9 @@ func Run(db *sql.DB) {
 	)
 }
 
-func awardCheevos(db *sql.DB, earnedUsers map[int]time.Time, cheevoID string) {
+func awardCheevos(db *pgxpool.Pool, earnedUsers map[int]time.Time, cheevoID string) {
 	rows, err := db.Query(
+		context.Background(),
 		"SELECT earned, user_id FROM trophies WHERE trophy = $1",
 		cheevoID,
 	)
@@ -77,6 +78,7 @@ func awardCheevos(db *sql.DB, earnedUsers map[int]time.Time, cheevoID string) {
 
 			if earned != newEarned {
 				if _, err := db.Exec(
+					context.Background(),
 					`UPDATE trophies
 					    SET earned  = $1
 					  WHERE trophy  = $2
@@ -89,6 +91,7 @@ func awardCheevos(db *sql.DB, earnedUsers map[int]time.Time, cheevoID string) {
 				}
 			}
 		} else if _, err := db.Exec(
+			context.Background(),
 			"DELETE FROM trophies WHERE trophy = $1 AND user_id = $2",
 			cheevoID,
 			userID,
@@ -103,6 +106,7 @@ func awardCheevos(db *sql.DB, earnedUsers map[int]time.Time, cheevoID string) {
 
 	for userID, earned := range earnedUsers {
 		if _, err := db.Exec(
+			context.Background(),
 			`INSERT INTO trophies SELECT $1, $2, $3
 			WHERE EXISTS (SELECT * FROM users WHERE id = $2)`,
 			earned,

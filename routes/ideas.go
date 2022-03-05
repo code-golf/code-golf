@@ -21,11 +21,12 @@ func Ideas(w http.ResponseWriter, r *http.Request) {
 	}{Holes: config.ExpHoleList}
 
 	rows, err := session.Database(r).Query(
-		"SELECT * FROM ideas ORDER BY thumbs_up - thumbs_down DESC, title")
+		r.Context(),
+		"SELECT * FROM ideas ORDER BY thumbs_up - thumbs_down DESC, title",
+	)
 	if err != nil {
 		panic(err)
 	}
-
 	defer rows.Close()
 
 	for rows.Next() {

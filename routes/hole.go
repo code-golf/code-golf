@@ -5,11 +5,11 @@ import (
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
-	"github.com/lib/pq"
 )
 
 // Hole serves GET /{hole}
 func Hole(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
 	data := struct {
 		Authors     []string
 		HideDetails bool
@@ -34,12 +34,13 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 	// Lookup the hole's author(s).
 	if data.Hole.Experiment == 0 {
 		if err := session.Database(r).QueryRow(
-			`SELECT array_agg(login ORDER BY login)
+			ctx,
+			`SELECT array_agg(login ORDER BY login)::text[]
 			   FROM authors
 			   JOIN users ON id = user_id
 			  WHERE hole = $1`,
 			data.Hole.ID,
-		).Scan(pq.Array(&data.Authors)); err != nil {
+		).Scan(&data.Authors); err != nil {
 			panic(err)
 		}
 	}
@@ -47,6 +48,7 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 	if golfer := session.Golfer(r); golfer != nil && data.Hole.Experiment == 0 {
 		// Fetch all the code per lang.
 		rows, err := session.Database(r).Query(
+			ctx,
 			`SELECT code, lang, scoring
 			   FROM solutions
 			  WHERE hole = $1 AND user_id = $2`,
@@ -55,7 +57,6 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			panic(err)
 		}
-
 		defer rows.Close()
 
 		for rows.Next() {
@@ -83,6 +84,7 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 
 // HoleNG serves GET /ng/{hole}
 func HoleNG(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
 	data := struct {
 		Authors     []string
 		HideDetails bool
@@ -109,12 +111,13 @@ func HoleNG(w http.ResponseWriter, r *http.Request) {
 	// Lookup the hole's author(s).
 	if data.Hole.Experiment == 0 {
 		if err := session.Database(r).QueryRow(
-			`SELECT array_agg(login ORDER BY login)
+			ctx,
+			`SELECT array_agg(login ORDER BY login)::text[]
 			   FROM authors
 			   JOIN users ON id = user_id
 			  WHERE hole = $1`,
 			data.Hole.ID,
-		).Scan(pq.Array(&data.Authors)); err != nil {
+		).Scan(&data.Authors); err != nil {
 			panic(err)
 		}
 	}
@@ -122,6 +125,7 @@ func HoleNG(w http.ResponseWriter, r *http.Request) {
 	if golfer := session.Golfer(r); golfer != nil && data.Hole.Experiment == 0 {
 		// Fetch all the code per lang.
 		rows, err := session.Database(r).Query(
+			ctx,
 			`SELECT code, lang, scoring
 			   FROM solutions
 			  WHERE hole = $1 AND user_id = $2`,
@@ -130,7 +134,6 @@ func HoleNG(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			panic(err)
 		}
-
 		defer rows.Close()
 
 		for rows.Next() {

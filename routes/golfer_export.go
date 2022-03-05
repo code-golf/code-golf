@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"database/sql"
 	"net/http"
 
 	"github.com/code-golf/code-golf/session"
@@ -9,9 +8,12 @@ import (
 
 // GolferExport serves GET /golfer/export
 func GolferExport(w http.ResponseWriter, r *http.Request) {
+	db := session.Database(r)
 	golfer := session.Golfer(r)
 
-	rows, err := session.Database(r).Query(
+	var json []byte
+	if err := db.QueryRow(
+		r.Context(),
 		`WITH cheevos AS (
 		    SELECT trophy cheevo, to_json(earned)#>>'{}' || 'Z' earned
 		      FROM trophies
@@ -31,28 +33,14 @@ func GolferExport(w http.ResponseWriter, r *http.Request) {
 		    'solutions', (SELECT COALESCE(json_agg(solutions), '[]'::json) FROM solutions)
 		) FROM users WHERE id = $1`,
 		golfer.ID,
-	)
-	if err != nil {
-		panic(err)
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var json sql.RawBytes
-
-		if err := rows.Scan(&json); err != nil {
-			panic(err)
-		}
-
-		w.Header().Set("Content-Disposition",
-			`attachment; filename="code-golf-export.json"`)
-		w.Header().Set("Content-Type", "application/json")
-		w.Write(json)
-	}
-
-	if err := rows.Err(); err != nil {
+	).Scan(&json); err != nil {
 		panic(err)
 	}
 
-	golfer.Earn(session.Database(r), "takeout")
+	w.Header().Set("Content-Disposition",
+		`attachment; filename="code-golf-export.json"`)
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(json)
+
+	golfer.Earn(db, "takeout")
 }

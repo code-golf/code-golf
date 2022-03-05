@@ -2,10 +2,11 @@ package github
 
 import (
 	"context"
-	"database/sql"
+
+	"github.com/jackc/pgx/v4/pgxpool"
 )
 
-func sponsors(db *sql.DB) (limits []rateLimit) {
+func sponsors(db *pgxpool.Pool) (limits []rateLimit) {
 	var query struct {
 		RateLimit rateLimit
 		Viewer    struct {
@@ -25,19 +26,22 @@ func sponsors(db *sql.DB) (limits []rateLimit) {
 
 	limits = append(limits, query.RateLimit)
 
-	tx, err := db.Begin()
+	tx, err := db.Begin(context.Background())
 	if err != nil {
 		panic(err)
 	}
+	defer tx.Rollback(context.Background())
 
-	defer tx.Rollback()
-
-	if _, err := tx.Exec("UPDATE users SET sponsor = false"); err != nil {
+	if _, err := tx.Exec(
+		context.Background(),
+		"UPDATE users SET sponsor = false",
+	); err != nil {
 		panic(err)
 	}
 
 	for _, node := range query.Viewer.SponsorshipsAsMaintainer.Nodes {
 		if _, err := tx.Exec(
+			context.Background(),
 			"UPDATE users SET sponsor = true WHERE id = $1",
 			node.SponsorEntity.User.DatabaseID,
 		); err != nil {
@@ -45,7 +49,7 @@ func sponsors(db *sql.DB) (limits []rateLimit) {
 		}
 	}
 
-	if err := tx.Commit(); err != nil {
+	if err := tx.Commit(context.Background()); err != nil {
 		panic(err)
 	}
 

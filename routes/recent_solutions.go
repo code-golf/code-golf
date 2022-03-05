@@ -46,6 +46,7 @@ func RecentSolutions(w http.ResponseWriter, r *http.Request) {
 	}
 
 	rows, err := session.Database(r).Query(
+		r.Context(),
 		` SELECT hole, lang, login, strokes, rank, submitted, tie_count
 		    FROM rankings
 		    JOIN users ON user_id = id
@@ -61,7 +62,6 @@ func RecentSolutions(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-
 	defer rows.Close()
 
 	for rows.Next() {

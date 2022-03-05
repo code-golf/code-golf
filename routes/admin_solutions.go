@@ -51,6 +51,7 @@ func play(ctx context.Context, holeID, langID, code string) (score hole.Scorecar
 
 // AdminSolutionsRun serves GET /admin/solutions/run
 func AdminSolutionsRun(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
 	db := session.Database(r)
 	solutions := getSolutions(r)
 
@@ -91,6 +92,7 @@ func AdminSolutionsRun(w http.ResponseWriter, r *http.Request) {
 				//      but past is called failing, so == is a mismatch.
 				if s.Pass == s.failing {
 					if _, err := db.Exec(
+						ctx,
 						`UPDATE solutions
 						    SET failing = $1
 						  WHERE code    = $2
@@ -136,7 +138,7 @@ func getSolutions(r *http.Request) chan solution {
 		holeID := r.FormValue("hole")
 		langID := r.FormValue("lang")
 
-		rows, err := session.Database(r).QueryContext(
+		rows, err := session.Database(r).Query(
 			r.Context(),
 			`WITH distinct_solutions AS (
 			  SELECT DISTINCT code, failing, login, user_id, hole, lang
@@ -156,7 +158,6 @@ func getSolutions(r *http.Request) chan solution {
 		if err != nil {
 			panic(err)
 		}
-
 		defer rows.Close()
 
 		for rows.Next() {

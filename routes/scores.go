@@ -40,6 +40,7 @@ func ScoresMini(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := session.Database(r).QueryRow(
+		r.Context(),
 		`WITH leaderboard AS (
 		    SELECT ROW_NUMBER() OVER (ORDER BY `+scoring+`, submitted),
 		           RANK()       OVER (ORDER BY `+scoring+`),
@@ -97,6 +98,7 @@ func ScoresAll(w http.ResponseWriter, r *http.Request) {
 	var json []byte
 
 	if err := session.Database(r).QueryRow(
+		r.Context(),
 		`WITH solution_lengths AS (
 		    SELECT hole,
 		           lang,

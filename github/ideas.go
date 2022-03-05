@@ -2,12 +2,12 @@ package github
 
 import (
 	"context"
-	"database/sql"
 
+	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/shurcooL/githubv4"
 )
 
-func ideas(db *sql.DB) (limits []rateLimit) {
+func ideas(db *pgxpool.Pool) (limits []rateLimit) {
 	type thumbs struct{ TotalCount int }
 
 	var query struct {
@@ -27,14 +27,14 @@ func ideas(db *sql.DB) (limits []rateLimit) {
 
 	variables := map[string]interface{}{"cursor": (*githubv4.String)(nil)}
 
-	tx, err := db.Begin()
+	tx, err := db.Begin(context.Background())
 	if err != nil {
 		panic(err)
 	}
 
-	defer tx.Rollback()
+	defer tx.Rollback(context.Background())
 
-	if _, err := tx.Exec("TRUNCATE ideas"); err != nil {
+	if _, err := tx.Exec(context.Background(), "TRUNCATE ideas"); err != nil {
 		panic(err)
 	}
 
@@ -47,6 +47,7 @@ func ideas(db *sql.DB) (limits []rateLimit) {
 
 		for _, node := range query.Repository.Issues.Nodes {
 			if _, err := tx.Exec(
+				context.Background(),
 				"INSERT INTO ideas VALUES ($1, $2, $3, $4)",
 				node.Number,
 				node.ThumbsDown.TotalCount,
@@ -64,7 +65,7 @@ func ideas(db *sql.DB) (limits []rateLimit) {
 		variables["cursor"] = &query.Repository.Issues.PageInfo.EndCursor
 	}
 
-	if err := tx.Commit(); err != nil {
+	if err := tx.Commit(context.Background()); err != nil {
 		panic(err)
 	}
 

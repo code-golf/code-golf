@@ -20,6 +20,7 @@ func GolferCheevos(w http.ResponseWriter, r *http.Request) {
 
 	db := session.Database(r)
 	rows, err := db.Query(
+		r.Context(),
 		`WITH count AS (
 		    SELECT trophy, COUNT(*) FROM trophies GROUP BY trophy
 		), earned AS (
@@ -31,6 +32,7 @@ func GolferCheevos(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
+	defer rows.Close()
 
 	for rows.Next() {
 		var cheevoID string
@@ -52,6 +54,7 @@ func GolferCheevos(w http.ResponseWriter, r *http.Request) {
 	// TODO Bake it into the cheevos table rather than calculating on the fly.
 	var count int
 	if err := db.QueryRow(
+		r.Context(),
 		`SELECT COUNT(DISTINCT hole)
 		   FROM solutions
 		  WHERE NOT failing AND user_id = $1`,
@@ -71,6 +74,7 @@ func GolferCheevos(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := db.QueryRow(
+		r.Context(),
 		`WITH langs AS (
 		    SELECT COUNT(DISTINCT lang)
 		      FROM solutions

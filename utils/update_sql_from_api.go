@@ -12,13 +12,13 @@ package main
 // Run 'docker-compose rm -f && docker-compose up' and then run this script.
 
 import (
-	"database/sql"
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
 	"strings"
 
-	_ "github.com/lib/pq"
+	"github.com/jackc/pgx/v4"
 )
 
 // Create a string containing the given number of characters and UTF-8 encoded bytes.
@@ -55,9 +55,11 @@ func testMakeCode() {
 }
 
 func main() {
+	ctx := context.Background()
+
 	testMakeCode()
 
-	db, err := sql.Open("postgres", "user=code-golf sslmode=disable")
+	db, err := pgx.Connect(ctx, "user=code-golf sslmode=disable")
 	if err != nil {
 		panic(err)
 	}
@@ -77,11 +79,11 @@ func main() {
 		panic(err)
 	}
 
-	tx, err := db.Begin()
+	tx, err := db.Begin(ctx)
 	if err != nil {
 		panic(err)
 	}
-	defer tx.Rollback()
+	defer tx.Rollback(ctx)
 
 	userMap := map[string]int{}
 	for _, info := range infoList {
@@ -91,7 +93,9 @@ func main() {
 	}
 
 	for login, userID := range userMap {
-		if _, err := tx.Exec("INSERT INTO users (id, login) VALUES($1, $2)",
+		if _, err := tx.Exec(
+			ctx,
+			"INSERT INTO users (id, login) VALUES($1, $2)",
 			userID, login,
 		); err != nil {
 			panic(err)
@@ -100,6 +104,7 @@ func main() {
 
 	for i, info := range infoList {
 		if _, err := tx.Exec(
+			ctx,
 			`INSERT INTO solutions (  bytes,     chars,    code, hole, lang,
 			                        scoring, submitted, user_id)
 			                VALUES (     $1,        $2,      $3,   $4,   $5,
@@ -121,7 +126,7 @@ func main() {
 		}
 	}
 
-	if err := tx.Commit(); err != nil {
+	if err := tx.Commit(ctx); err != nil {
 		panic(err)
 	}
 }

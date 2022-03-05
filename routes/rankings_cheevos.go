@@ -38,6 +38,7 @@ func RankingsCheevos(w http.ResponseWriter, r *http.Request) {
 	}
 
 	rows, err := session.Database(r).Query(
+		r.Context(),
 		`WITH count AS (
 		    SELECT user_id, COUNT(*), MAX(earned) earned
 		      FROM trophies
@@ -59,7 +60,6 @@ func RankingsCheevos(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-
 	defer rows.Close()
 
 	for rows.Next() {

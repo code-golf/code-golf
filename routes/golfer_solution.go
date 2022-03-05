@@ -1,14 +1,13 @@
 package routes
 
 import (
-	"database/sql"
-	"errors"
 	"net/http"
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/discord"
 	h "github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/session"
+	"github.com/jackc/pgx/v4"
 )
 
 // GolferSolution serves GET /golfers/{golfer}/{hole}/{lang}/{scoring}
@@ -32,6 +31,7 @@ func GolferSolution(w http.ResponseWriter, r *http.Request) {
 
 	golfer := session.GolferInfo(r).Golfer
 	if err := session.Database(r).QueryRow(
+		r.Context(),
 		`SELECT failing
 		   FROM solutions
 		  WHERE hole = $1 AND lang = $2 AND scoring = $3 AND user_id = $4`,
@@ -39,7 +39,7 @@ func GolferSolution(w http.ResponseWriter, r *http.Request) {
 		data.Lang.ID,
 		data.Scoring,
 		golfer.ID,
-	).Scan(&data.Failing); errors.Is(err, sql.ErrNoRows) {
+	).Scan(&data.Failing); err == pgx.ErrNoRows {
 		NotFound(w, r)
 		return
 	} else if err != nil {
@@ -65,7 +65,7 @@ func GolferSolutionPost(w http.ResponseWriter, r *http.Request) {
 	db := session.Database(r)
 	golfer := session.GolferInfo(r).Golfer
 
-	if err := db.QueryRowContext(
+	if err := db.QueryRow(
 		ctx,
 		`SELECT code
 		   FROM solutions
@@ -78,7 +78,7 @@ func GolferSolutionPost(w http.ResponseWriter, r *http.Request) {
 		lang.ID,
 		scoring,
 		golfer.ID,
-	).Scan(&code); errors.Is(err, sql.ErrNoRows) {
+	).Scan(&code); err == pgx.ErrNoRows {
 		NotFound(w, r)
 		return
 	} else if err != nil {
@@ -98,6 +98,7 @@ func GolferSolutionPost(w http.ResponseWriter, r *http.Request) {
 
 	if fails > passes {
 		res, err := db.Exec(
+			ctx,
 			`UPDATE solutions
 			    SET failing = true
 			  WHERE NOT failing AND code = $1 AND hole = $2 AND lang = $3`,
@@ -108,7 +109,7 @@ func GolferSolutionPost(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// FIXME Technically we can end up failing multiple golfers.
-		if rows, _ := res.RowsAffected(); rows > 0 {
+		if res.RowsAffected() > 0 {
 			go discord.LogFailedRejudge(&golfer, hole, lang, scoring)
 		}
 	}

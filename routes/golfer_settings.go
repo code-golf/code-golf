@@ -12,6 +12,7 @@ import (
 // GolferCancelDelete serves POST /golfer/cancel-delete
 func GolferCancelDelete(w http.ResponseWriter, r *http.Request) {
 	if _, err := session.Database(r).Exec(
+		r.Context(),
 		"UPDATE users SET delete = NULL WHERE id = $1",
 		session.Golfer(r).ID,
 	); err != nil {
@@ -24,6 +25,7 @@ func GolferCancelDelete(w http.ResponseWriter, r *http.Request) {
 // GolferDelete serves POST /golfer/delete
 func GolferDelete(w http.ResponseWriter, r *http.Request) {
 	if _, err := session.Database(r).Exec(
+		r.Context(),
 		"UPDATE users SET delete = TIMEZONE('UTC', NOW()) + INTERVAL '7 days' WHERE id = $1",
 		session.Golfer(r).ID,
 	); err != nil {
@@ -87,14 +89,15 @@ func GolferSettingsPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tx, err := session.Database(r).BeginTx(r.Context(), nil)
+	tx, err := session.Database(r).Begin(r.Context())
 	if err != nil {
 		panic(err)
 	}
-	defer tx.Rollback()
+	defer tx.Rollback(r.Context())
 
 	userID := session.Golfer(r).ID
 	if _, err := tx.Exec(
+		r.Context(),
 		`UPDATE users
 		    SET country = $1,
 		         keymap = $2,
@@ -118,6 +121,7 @@ func GolferSettingsPost(w http.ResponseWriter, r *http.Request) {
 	for _, c := range session.GolferInfo(r).Connections {
 		if show := r.Form.Get("show_"+c.Connection) == "on"; show != c.Public {
 			if _, err := tx.Exec(
+				r.Context(),
 				`UPDATE connections
 				    SET public = $1
 				  WHERE connection = $2 AND user_id = $3`,
@@ -130,7 +134,7 @@ func GolferSettingsPost(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if err := tx.Commit(); err != nil {
+	if err := tx.Commit(r.Context()); err != nil {
 		panic(err)
 	}
 

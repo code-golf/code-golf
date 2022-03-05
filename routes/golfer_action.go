@@ -28,7 +28,9 @@ func GolferAction(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if _, err := session.Database(r).Exec(sql, golfer.ID, target.ID); err != nil {
+	if _, err := session.Database(r).Exec(
+		r.Context(), sql, golfer.ID, target.ID,
+	); err != nil {
 		panic(err)
 	}
 

@@ -13,6 +13,7 @@ import (
 // GolferDisconnect serves GET /golfer/disconnect/{connection}
 func GolferDisconnect(w http.ResponseWriter, r *http.Request) {
 	if _, err := session.Database(r).Exec(
+		r.Context(),
 		"DELETE FROM connections WHERE connection::text = $1 AND user_id = $2",
 		param(r, "connection"), session.Golfer(r).ID,
 	); err != nil {
@@ -93,6 +94,7 @@ func GolferConnect(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if _, err := session.Database(r).Exec(
+		r.Context(),
 		`INSERT INTO connections (connection, discriminator, id, user_id, username)
 		      VALUES             (        $1,            $2, $3,      $4,       $5)
 		 ON CONFLICT             (connection, id)

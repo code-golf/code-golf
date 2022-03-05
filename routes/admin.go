@@ -34,9 +34,11 @@ func Admin(w http.ResponseWriter, r *http.Request) {
 		Tables    []Table
 	}{}
 
+	ctx := r.Context()
 	db := session.Database(r)
 
 	rows, err := db.Query(
+		ctx,
 		` SELECT login, MAX(last_used)
 		    FROM sessions JOIN users ON user_id = users.id
 		   WHERE user_id != $1
@@ -48,7 +50,6 @@ func Admin(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-
 	defer rows.Close()
 
 	for rows.Next() {
@@ -66,6 +67,7 @@ func Admin(w http.ResponseWriter, r *http.Request) {
 	}
 
 	rows, err = db.Query(
+		ctx,
 		` SELECT relname,
 		         CASE WHEN relkind = 'i' THEN 0 ELSE reltuples END,
 		         PG_TOTAL_RELATION_SIZE(c.oid)
@@ -99,13 +101,13 @@ func Admin(w http.ResponseWriter, r *http.Request) {
 	}
 
 	rows, err = db.Query(
+		ctx,
 		`SELECT COALESCE(country, ''), COUNT(*), COUNT(*) / SUM(COUNT(*)) OVER () * 100
 		   FROM users GROUP BY COALESCE(country, '')`,
 	)
 	if err != nil {
 		panic(err)
 	}
-
 	defer rows.Close()
 
 	for rows.Next() {

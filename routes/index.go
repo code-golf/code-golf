@@ -53,6 +53,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		}
 
 		rows, err := session.Database(r).Query(
+			r.Context(),
 			`WITH points AS (
 			    SELECT DISTINCT ON (hole) hole, lang, points
 			      FROM rankings
@@ -67,7 +68,6 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			panic(err)
 		}
-
 		defer rows.Close()
 
 		for rows.Next() {

@@ -39,6 +39,7 @@ func RankingsMedals(w http.ResponseWriter, r *http.Request) {
 	}
 
 	rows, err := session.Database(r).Query(
+		r.Context(),
 		`WITH counts AS (
 		    SELECT user_id,
 		           COUNT(*) FILTER (WHERE medal = 'diamond') diamond,
@@ -73,7 +74,6 @@ func RankingsMedals(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-
 	defer rows.Close()
 
 	for rows.Next() {

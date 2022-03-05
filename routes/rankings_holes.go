@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"database/sql"
 	"html/template"
 	"net/http"
 	"strings"
@@ -10,7 +9,7 @@ import (
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
-	"github.com/lib/pq"
+	"github.com/jackc/pgx/v4"
 )
 
 // RankingsHoles serves GET /rankings/holes/{hole}/{lang}/{scoring}
@@ -61,12 +60,13 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 		data.OtherScoring = "bytes"
 	}
 
-	var rows *sql.Rows
+	var rows pgx.Rows
 	var err error
 
 	// TODO Try and merge these SQL queries?
 	if data.HoleID == "all" && data.LangID == "all" {
 		rows, err = session.Database(r).Query(
+			r.Context(),
 			`WITH foo AS (
 			    SELECT user_id, hole, lang, points, strokes, submitted,
 			           ROW_NUMBER() OVER (
@@ -100,10 +100,11 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 			data.Scoring,
 			pager.PerPage,
 			data.Pager.Offset,
-			pq.Array(holeIDs),
+			holeIDs,
 		)
 	} else if data.HoleID == "all" {
 		rows, err = session.Database(r).Query(
+			r.Context(),
 			`WITH summed AS (
 			    SELECT user_id,
 			           COUNT(*)             holes,
@@ -133,10 +134,11 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 			data.Scoring,
 			pager.PerPage,
 			data.Pager.Offset,
-			pq.Array(holeIDs),
+			holeIDs,
 		)
 	} else if data.LangID == "all" {
 		rows, err = session.Database(r).Query(
+			r.Context(),
 			` SELECT country_flag,
 			         1,
 			         lang,
@@ -159,6 +161,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 		)
 	} else {
 		rows, err = session.Database(r).Query(
+			r.Context(),
 			` SELECT country_flag,
 			         1,
 			         lang,
@@ -184,7 +187,6 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-
 	defer rows.Close()
 
 	for rows.Next() {

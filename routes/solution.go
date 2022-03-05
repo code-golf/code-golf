@@ -11,7 +11,6 @@ import (
 	Golfer "github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/session"
-	"github.com/lib/pq"
 )
 
 // Solution serves POST /solution
@@ -79,9 +78,9 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 
 	if out.Pass && golfer != nil && !experimental {
 		var cheevos []string
-		if err := db.QueryRowContext(
+		if err := db.QueryRow(
 			r.Context(),
-			`SELECT earned,
+			`SELECT earned::text[],
 			        old_bytes_joint, old_bytes_rank, old_bytes,
 			        new_bytes_joint, new_bytes_rank, new_bytes,
 			        beat_bytes,
@@ -104,7 +103,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			        )`,
 			in.Code, in.Hole, in.Lang, golfer.ID, score.ASMBytes,
 		).Scan(
-			pq.Array(&cheevos),
+			&cheevos,
 			&out.RankUpdates[0].From.Joint,
 			&out.RankUpdates[0].From.Rank,
 			&out.RankUpdates[0].From.Strokes,

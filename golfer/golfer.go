@@ -1,15 +1,16 @@
 package golfer
 
 import (
+	"context"
 	"database/sql"
 	"encoding/json"
-	"errors"
 	"sort"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/oauth"
-	"github.com/lib/pq"
+	"github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v4/pgxpool"
 	"gopkg.in/guregu/null.v4"
 )
 
@@ -30,14 +31,15 @@ type Golfer struct {
 }
 
 // Earn the given cheevo, no-op if already earned.
-func (g *Golfer) Earn(db *sql.DB, cheevoID string) (earned *config.Cheevo) {
+func (g *Golfer) Earn(db *pgxpool.Pool, cheevoID string) (earned *config.Cheevo) {
 	if res, err := db.Exec(
+		context.Background(),
 		"INSERT INTO trophies VALUES (DEFAULT, $1, $2) ON CONFLICT DO NOTHING",
 		g.ID,
 		cheevoID,
 	); err != nil {
 		panic(err)
-	} else if rowsAffected, _ := res.RowsAffected(); rowsAffected == 1 {
+	} else if res.RowsAffected() == 1 {
 		earned = config.CheevoByID[cheevoID]
 	}
 
@@ -114,7 +116,7 @@ type RankUpdate struct {
 	Beat null.Int
 }
 
-func GetInfo(db *sql.DB, name string) *GolferInfo {
+func GetInfo(db *pgxpool.Pool, name string) *GolferInfo {
 	info := GolferInfo{
 		CheevosTotal: len(config.CheevoList),
 		HolesTotal:   len(config.HoleList),
@@ -122,6 +124,7 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 	}
 
 	if err := db.QueryRow(
+		context.Background(),
 		`WITH medals AS (
 		   SELECT user_id,
 		          COUNT(*) FILTER (WHERE medal = 'diamond') diamond,
@@ -133,7 +136,7 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 		)  SELECT admin,
 		          COALESCE(bronze, 0),
 		          ARRAY(
-		            SELECT trophy
+		            SELECT trophy::text
 		              FROM trophies
 		             WHERE user_id = users.id
 		          ORDER BY trophy
@@ -162,7 +165,7 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 	).Scan(
 		&info.Admin,
 		&info.Bronze,
-		pq.Array(&info.Cheevos),
+		&info.Cheevos,
 		&info.Country,
 		&info.Diamond,
 		&info.Gold,
@@ -174,7 +177,7 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 		&info.CharsPoints,
 		&info.Silver,
 		&info.Sponsor,
-	); errors.Is(err, sql.ErrNoRows) {
+	); err == pgx.ErrNoRows {
 		return nil
 	} else if err != nil {
 		panic(err)
@@ -184,6 +187,7 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 	info.TeedOff = time.Date(2019, time.July, 15, 20, 13, 21, 0, time.UTC)
 
 	rows, err := db.Query(
+		context.Background(),
 		` SELECT connection, discriminator, id, public, username
 		    FROM connections
 		   WHERE user_id = $1
@@ -193,6 +197,7 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 	if err != nil {
 		panic(err)
 	}
+	defer rows.Close()
 
 	for rows.Next() {
 		var c Connection

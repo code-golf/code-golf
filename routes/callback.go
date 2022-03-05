@@ -60,6 +60,7 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if err := session.Database(r).QueryRow(
+			r.Context(),
 			`SELECT COALESCE((SELECT id FROM users WHERE login = $1), COUNT(*) + 1) FROM users`,
 			user.Login,
 		).Scan(&user.ID); err != nil {
@@ -95,15 +96,16 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	tx, err := session.Database(r).BeginTx(r.Context(), nil)
+	tx, err := session.Database(r).Begin(r.Context())
 	if err != nil {
 		panic(err)
 	}
-	defer tx.Rollback()
+	defer tx.Rollback(r.Context())
 
 	// Create or update a user. For now user ID == GitHub user ID.
 	// This'll need to change for true multi connection OAuth support.
 	if _, err := tx.Exec(
+		r.Context(),
 		`INSERT INTO users (id, login, country, time_zone)
 		      VALUES       ($1,    $2,      $3,        $4)
 		 ON CONFLICT       (id)
@@ -118,6 +120,7 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 	// Create or update a connection. For now user ID == GitHub user ID.
 	// This'll need to change for true multi connection OAuth support.
 	if _, err := tx.Exec(
+		r.Context(),
 		`INSERT INTO connections (connection, id, user_id, username)
 		      VALUES             (  'github', $1,      $2,       $3)
 		 ON CONFLICT             (connection, id)
@@ -129,12 +132,13 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 
 	// Create a session, write cookie value.
 	if err := tx.QueryRow(
+		r.Context(),
 		"INSERT INTO sessions (user_id) VALUES ($1) RETURNING id", user.ID,
 	).Scan(&cookie.Value); err != nil {
 		panic(err)
 	}
 
-	if err := tx.Commit(); err != nil {
+	if err := tx.Commit(r.Context()); err != nil {
 		panic(err)
 	}
 

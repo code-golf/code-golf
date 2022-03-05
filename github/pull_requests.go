@@ -2,13 +2,13 @@ package github
 
 import (
 	"context"
-	"database/sql"
 	"time"
 
+	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/shurcooL/githubv4"
 )
 
-func pullRequests(db *sql.DB) (limits []rateLimit) {
+func pullRequests(db *pgxpool.Pool) (limits []rateLimit) {
 	pullRequests := map[int]time.Time{}
 
 	var query struct {

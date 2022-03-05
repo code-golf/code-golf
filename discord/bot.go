@@ -1,8 +1,7 @@
 package discord
 
 import (
-	"database/sql"
-	"errors"
+	"context"
 	"fmt"
 	"log"
 	"os"
@@ -12,6 +11,8 @@ import (
 	"github.com/code-golf/code-golf/config"
 	Golfer "github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/pretty"
+	"github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v4/pgxpool"
 )
 
 var (
@@ -112,7 +113,7 @@ func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
 }
 
 // AwardRoles awards Discord roles based on cheevos etc.
-func AwardRoles(db *sql.DB) error {
+func AwardRoles(db *pgxpool.Pool) error {
 	if bot == nil {
 		return nil
 	}
@@ -139,14 +140,14 @@ func AwardRoles(db *sql.DB) error {
 	}
 
 	rows, err := db.Query(
-		`SELECT id
+		context.Background(),
+		`SELECT id::text
 		   FROM connections JOIN trophies USING(user_id)
 		  WHERE connection = 'discord' AND trophy = 'patches-welcome'`,
 	)
 	if err != nil {
 		return err
 	}
-
 	defer rows.Close()
 
 	for rows.Next() {
@@ -175,14 +176,14 @@ func AwardRoles(db *sql.DB) error {
 
 	// TODO DRY DRY DRY
 	rows, err = db.Query(
-		`SELECT c.id
+		context.Background(),
+		`SELECT c.id::text
 		   FROM connections c JOIN users u ON user_id = u.id
 		  WHERE connection = 'discord' AND sponsor`,
 	)
 	if err != nil {
 		return err
 	}
-
 	defer rows.Close()
 
 	for rows.Next() {
@@ -230,7 +231,7 @@ func LogFailedRejudge(golfer *Golfer.Golfer, hole *config.Hole, lang *config.Lan
 
 // LogNewRecord logs a record breaking solution in Discord.
 func LogNewRecord(
-	golfer *Golfer.Golfer, hole *config.Hole, lang *config.Lang, updates []Golfer.RankUpdate, db *sql.DB,
+	golfer *Golfer.Golfer, hole *config.Hole, lang *config.Lang, updates []Golfer.RankUpdate, db *pgxpool.Pool,
 ) {
 	if bot == nil {
 		return
@@ -262,6 +263,7 @@ func LogNewRecord(
 	var sendErr error
 
 	if err := db.QueryRow(
+		context.Background(),
 		`SELECT message FROM discord_records WHERE hole = $1 AND lang = $2`,
 		hole.ID, lang.ID,
 	).Scan(&prevMessage); err == nil {
@@ -272,13 +274,14 @@ func LogNewRecord(
 				ChannelID: channelID,
 			},
 		})
-	} else if errors.Is(err, sql.ErrNoRows) {
+	} else if err == pgx.ErrNoRows {
 		newMessage, sendErr = bot.ChannelMessageSendEmbed(channelID, recAnnounceToEmbed(announcement))
 	} else {
 		log.Println(err)
 	}
 
 	if _, err := db.Exec(
+		context.Background(),
 		`INSERT INTO discord_records (hole, lang, message) VALUES
 			($1, $2, $3)
 			ON CONFLICT ON CONSTRAINT discord_records_pkey

@@ -2,14 +2,13 @@ package middleware
 
 import (
 	"database/sql"
-	"errors"
 	"net/http"
 	"time"
 
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/session"
 	"github.com/gofrs/uuid"
-	"github.com/lib/pq"
+	"github.com/jackc/pgx/v4"
 )
 
 // Golfer adds the golfer to the context if logged in.
@@ -20,6 +19,7 @@ func Golfer(next http.Handler) http.Handler {
 			var timeZone sql.NullString
 
 			if err := session.Database(r).QueryRow(
+				r.Context(),
 				`WITH golfer AS (
 				    UPDATE sessions SET last_used = DEFAULT WHERE id = $1
 				 RETURNING user_id
@@ -42,7 +42,7 @@ func Golfer(next http.Handler) http.Handler {
 				          u.theme,
 				          u.time_zone,
 				          ARRAY(
-				              SELECT trophy
+				              SELECT trophy::text
 				                FROM trophies
 				               WHERE user_id = u.id
 				            ORDER BY trophy
@@ -63,7 +63,7 @@ func Golfer(next http.Handler) http.Handler {
 				&golfer.ShowCountry,
 				&golfer.Theme,
 				&timeZone,
-				pq.Array(&golfer.Cheevos),
+				&golfer.Cheevos,
 			); err == nil {
 				golfer.TimeZone, _ = time.LoadLocation(timeZone.String)
 
@@ -79,7 +79,7 @@ func Golfer(next http.Handler) http.Handler {
 					Secure:   true,
 					Value:    cookie.Value,
 				})
-			} else if !errors.Is(err, sql.ErrNoRows) {
+			} else if err != pgx.ErrNoRows {
 				panic(err)
 			}
 		}

@@ -34,6 +34,7 @@ func RankingsLangs(w http.ResponseWriter, r *http.Request) {
 
 	if data.LangID != "all" {
 		rows, err := session.Database(r).Query(
+			r.Context(),
 			`WITH ranks AS (
 			    SELECT hole, lang,
 			           RANK() OVER (PARTITION BY hole ORDER BY points DESC)
@@ -49,6 +50,7 @@ func RankingsLangs(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			panic(err)
 		}
+		defer rows.Close()
 
 		for rows.Next() {
 			var r row
@@ -68,6 +70,7 @@ func RankingsLangs(w http.ResponseWriter, r *http.Request) {
 		}
 	} else {
 		rows, err := session.Database(r).Query(
+			r.Context(),
 			`WITH ranks AS (
 			    SELECT hole, lang, points, strokes,
 			           RANK()       OVER (PARTITION BY hole       ORDER BY points DESC),
@@ -92,6 +95,7 @@ func RankingsLangs(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			panic(err)
 		}
+		defer rows.Close()
 
 		for rows.Next() {
 			var r row
