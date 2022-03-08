@@ -42,11 +42,11 @@ func ToFraction(a Number) (int, int) {
 	n, d := 1, 1
 	for p, e := range a {
 		for e > 0 {
-			e -= 1
+			e--
 			n *= p
 		}
 		for e < 0 {
-			e += 1
+			e++
 			d *= p
 		}
 	}
