@@ -613,6 +613,25 @@ preamble = '''
 <p>For each fraction argument, reduce it to its simplest form.
 '''
 
+['FRACTRAN']
+category = 'Computing'
+links = [
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/FRACTRAN' },
+]
+experimental = 615
+preamble = '''
+<p>
+    FRACTRAN is an esoteric programming language invented by the mathematician John Conway. A FRACTRAN program is an ordered list of positive fractions together with an initial positive integer input n. The program is run by updating the integer n as follows:
+<ol>
+<lifor the first fraction f in the list for which nf is an integer, replace n by nf
+<li>repeat this rule until no fraction in the list produces an integer when multiplied by n, then halt.
+</ol>
+
+Each test case is a single line containing space separated values. The first value is a decimal integer - the initial value of n. The rest of the values are decimal fractions - the program. Output the last value of n after the program halts.
+Every integer literal on input and output is guaranteed to fit in int64.
+'''
+
+
 ['Happy Numbers']
 category = 'Sequence'
 variants = ['Happy Numbers', 'Happy Numbers (Long)']
