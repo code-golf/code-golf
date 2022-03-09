@@ -9,6 +9,39 @@ servers:
   - url: https://code.golf/api
 
 paths:
+  /cheevos:
+    get:
+      tags: [achievements]
+      summary: Get all achievements
+      responses:
+        '200':
+          description: A list of achievements
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Achievement'
+
+  /cheevos/{id}:
+    get:
+      parameters:
+        - name: id
+          description: Achievement ID
+          in: path
+          required: true
+          schema:
+            type: string
+      tags: [achievements]
+      summary: Get a achievements by ID
+      responses:
+        '200':
+          description: A single achievement
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Achievement'
+
   /langs:
     get:
       tags: [languages]
@@ -64,6 +97,18 @@ paths:
 
 components:
   schemas:
+    Achievement:
+      type: object
+      properties:
+        description:
+          type: string
+        emoji:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+
     Language:
       type: object
       properties:

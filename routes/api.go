@@ -13,11 +13,30 @@ import (
 var yml []byte
 
 // API serves GET /api
-func API(w http.ResponseWriter, r *http.Request) { w.Write(yml) }
+// Use text/plain to always render in browser unlike the YML content types.
+func API(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.Write(yml)
+}
+
+// APICheevos serves GET /api/cheevos
+func APICheevos(w http.ResponseWriter, _ *http.Request) {
+	if err := json.NewEncoder(w).Encode(config.CheevoList); err != nil {
+		panic(err)
+	}
+}
+
+// APICheevo serves GET /api/cheevos/{cheevo}
+func APICheevo(w http.ResponseWriter, r *http.Request) {
+	if cheevo, ok := config.CheevoByID[param(r, "cheevo")]; !ok {
+		APINotFound(w, r)
+	} else if err := json.NewEncoder(w).Encode(cheevo); err != nil {
+		panic(err)
+	}
+}
 
 // APILangs serves GET /api/langs
-func APILangs(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
+func APILangs(w http.ResponseWriter, _ *http.Request) {
 	if err := json.NewEncoder(w).Encode(config.LangList); err != nil {
 		panic(err)
 	}
@@ -25,15 +44,21 @@ func APILangs(w http.ResponseWriter, r *http.Request) {
 
 // APILang serves GET /api/langs/{lang}
 func APILang(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
-	if lang, ok := config.LangByID[param(r, "lang")]; ok {
-		w.WriteHeader(http.StatusNotFound)
-		w.Write([]byte{'{', '}'})
+	if lang, ok := config.LangByID[param(r, "lang")]; !ok {
+		APINotFound(w, r)
 	} else if err := json.NewEncoder(w).Encode(lang); err != nil {
 		panic(err)
 	}
 }
+
+// APINotFound serves an API 404.
+func APINotFound(w http.ResponseWriter, _ *http.Request) {
+	w.WriteHeader(http.StatusNotFound)
+	w.Write([]byte("null"))
+}
+
+// APIPanic serves GET /api/panic
+func APIPanic(_ http.ResponseWriter, _ *http.Request) { panic("") }
 
 // APISuggestionsGolfers serves GET /api/suggestions/golfers
 func APISuggestionsGolfers(w http.ResponseWriter, r *http.Request) {
@@ -53,7 +78,6 @@ func APISuggestionsGolfers(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	w.Header().Set("Content-Type", "application/json")
 	if _, err := w.Write(json); err != nil {
 		panic(err)
 	}

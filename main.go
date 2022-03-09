@@ -54,9 +54,14 @@ func main() {
 		r.Get("/solutions/run", routes.AdminSolutionsRun)
 	})
 	r.With(middleware.API).Route("/api", func(r chi.Router) {
+		r.NotFound(routes.APINotFound)
+
 		r.Get("/", routes.API)
+		r.Get("/cheevos", routes.APICheevos)
+		r.Get("/cheevos/{cheevo}", routes.APICheevo)
 		r.Get("/langs", routes.APILangs)
 		r.Get("/langs/{lang}", routes.APILang)
+		r.Get("/panic", routes.APIPanic)
 		r.Get("/suggestions/golfers", routes.APISuggestionsGolfers)
 	})
 	r.Get("/callback", routes.Callback)

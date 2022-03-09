@@ -13,9 +13,9 @@ var (
 )
 
 type Cheevo struct {
-	Description template.HTML `json:"-"`
+	Description template.HTML `json:"description"`
 	Emoji       string        `json:"emoji"`
-	ID          string        `json:"-"`
+	ID          string        `json:"id"`
 	Name        string        `json:"name"`
 	Target      int           `json:"-"`
 }
