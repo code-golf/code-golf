@@ -4,9 +4,9 @@ aside {
     gap: 2rem;
 }
 
-h2, time { padding: 0 .5rem }
+h2, #wall time { padding: 0 .5rem }
 
-h2, thead, time {
+h2, thead, #wall time {
     border-bottom: 2px solid var(--color);
     font-size: 1rem;
     font-weight: 600;
