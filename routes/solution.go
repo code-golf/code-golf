@@ -18,7 +18,7 @@ import (
 func StripCode(code, lang, hole string) string {
 	if hole != "quine" && lang == "brainfuck" {
 		reg, _ := regexp.Compile(`[^<>\+\-\[\]\.\,]`)
-        return reg.ReplaceAllString(code, "")
+		return reg.ReplaceAllString(code, "")
 	}
 	return code
 }
