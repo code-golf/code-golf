@@ -392,5 +392,13 @@ const tooltip = (row, scoring) => {
         (chars !== null ? `, ${comma(chars)} chars.` : '.');
 };
 
+function StripCode(code){
+    if hole != 'quine' && lang == 'brainfuck' {
+        const regex = /[^<>\+\-\[\]\.\,]/ig;
+        return code.replace(regex, '');
+    }
+    return code;
+}
+
 const getScoring = (str, index) =>
-    scorings[index] == 'Bytes' ? byteLen(str) : charLen(str);
+    scorings[index] == 'Bytes' ? byteLen(StripCode(str)) : charLen(StripCode(str));

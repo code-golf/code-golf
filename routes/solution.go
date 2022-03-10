@@ -15,19 +15,11 @@ import (
 	"github.com/lib/pq"
 )
 
-func StripBrainfuck(code string) string {
-	reg, _ := regexp.Compile(`[^<>\+\-\[\]\.\,]`)
-	return reg.ReplaceAllString(code, "")
-}
-
 func StripCode(code, lang, hole string) string {
-	if hole == "quine" {
-		return code
+	if hole != "quine" && lang == "brainfuck" {
+		reg, _ := regexp.Compile(`[^<>\+\-\[\]\.\,]`)
+        return reg.ReplaceAllString(code, "")
 	}
-	if lang == "brainfuck" {
-		return StripBrainfuck(code)
-	}
-	// TODO other languages can be added here
 	return code
 }
 
