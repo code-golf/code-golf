@@ -16,7 +16,7 @@ import (
 )
 
 func StripBrainfuck(code string) string {
-	reg, _ := regexp.Compile("[^<>\\+\\-\\[\\]\\.\\,]")
+	reg, _ := regexp.Compile(`[^<>\+\-\[\]\.\,]`)
 	return reg.ReplaceAllString(code, "")
 }
 
