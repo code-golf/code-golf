@@ -26,6 +26,5 @@ func TestLogOut(t *testing.T) {
 
 	assert.Equal(t, cookies, []string{
 		"__Host-session=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax",
-		"__Host-user=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax",
 	})
 }
