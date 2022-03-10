@@ -66,7 +66,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	score := hole.Play(r.Context(), in.Hole, in.Lang, in.Code)
+	score := hole.Play(r.Context(), in.Hole, in.Lang, strippedCode)
 
 	if score.Timeout && golfer != nil {
 		golfer.Earn(db, "slowcoach")
