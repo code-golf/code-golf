@@ -3,6 +3,7 @@ package routes
 import (
 	"encoding/json"
 	"net/http"
+	"regexp"
 	"time"
 
 	"github.com/buildkite/terminal-to-html/v3"
@@ -14,6 +15,22 @@ import (
 	"github.com/lib/pq"
 )
 
+func StripBrainfuck(code string) string {
+	reg, _ := regexp.Compile("[^<>\\+\\-\\[\\]\\.\\,]")
+	return reg.ReplaceAllString(code, "")
+}
+
+func StripCode(code, lang, hole string) string {
+	if hole == "quine" {
+		return code
+	}
+	if lang == "brainfuck" {
+		return StripBrainfuck(code)
+	}
+	// TODO other languages can be added here
+	return code
+}
+
 // Solution serves POST /solution
 func Solution(w http.ResponseWriter, r *http.Request) {
 	var in struct{ Code, Hole, Lang string }
@@ -22,6 +39,8 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	defer r.Body.Close()
+
+	strippedCode := StripCode(in.Code, in.Lang, in.Hole)
 
 	_, experimental := config.ExpHoleByID[in.Hole]
 	if !experimental && config.HoleByID[in.Hole] == nil {
@@ -91,18 +110,18 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 			   FROM save_solution(
 			            bytes   := CASE WHEN $3 = 'assembly'::lang
 			                            THEN $5
-			                            ELSE octet_length($1)
+			                            ELSE octet_length($6)
 			                            END,
 			            chars   := CASE WHEN $3 = 'assembly'::lang
 			                            THEN NULL
-			                            ELSE char_length($1)
+			                            ELSE char_length($6)
 			                            END,
 			            code    := $1,
 			            hole    := $2,
 			            lang    := $3,
 			            user_id := $4
 			        )`,
-			in.Code, in.Hole, in.Lang, golfer.ID, score.ASMBytes,
+			in.Code, in.Hole, in.Lang, golfer.ID, score.ASMBytes, strippedCode,
 		).Scan(
 			pq.Array(&cheevos),
 			&out.RankUpdates[0].From.Joint,
