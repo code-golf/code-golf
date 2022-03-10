@@ -393,7 +393,7 @@ const tooltip = (row, scoring) => {
 };
 
 function StripCode(code){
-    if hole != 'quine' && lang == 'brainfuck' {
+    if (hole != 'quine' && lang == 'brainfuck') {
         const regex = /[^<>\+\-\[\]\.\,]/ig;
         return code.replace(regex, '');
     }
