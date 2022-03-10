@@ -146,7 +146,6 @@ func AwardRoles(db *sql.DB) error {
 	if err != nil {
 		return err
 	}
-
 	defer rows.Close()
 
 	for rows.Next() {
@@ -182,7 +181,6 @@ func AwardRoles(db *sql.DB) error {
 	if err != nil {
 		return err
 	}
-
 	defer rows.Close()
 
 	for rows.Next() {

@@ -67,7 +67,6 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			panic(err)
 		}
-
 		defer rows.Close()
 
 		for rows.Next() {

@@ -156,7 +156,6 @@ func getSolutions(r *http.Request) chan solution {
 		if err != nil {
 			panic(err)
 		}
-
 		defer rows.Close()
 
 		for rows.Next() {

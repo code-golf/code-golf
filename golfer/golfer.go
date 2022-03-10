@@ -193,6 +193,7 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 	if err != nil {
 		panic(err)
 	}
+	defer rows.Close()
 
 	for rows.Next() {
 		var c Connection

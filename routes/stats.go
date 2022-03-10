@@ -58,6 +58,7 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			panic(err)
 		}
+		defer rows.Close()
 
 		var slices []pie.Slice
 

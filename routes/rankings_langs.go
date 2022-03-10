@@ -49,6 +49,7 @@ func RankingsLangs(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			panic(err)
 		}
+		defer rows.Close()
 
 		for rows.Next() {
 			var r row
@@ -92,6 +93,7 @@ func RankingsLangs(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			panic(err)
 		}
+		defer rows.Close()
 
 		for rows.Next() {
 			var r row
