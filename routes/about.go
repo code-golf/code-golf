@@ -7,8 +7,8 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-// About serves GET /about
-func About(w http.ResponseWriter, r *http.Request) {
+// GET /about
+func aboutGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Cheevo *config.Cheevo
 		Langs  []*config.Lang

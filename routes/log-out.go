@@ -2,8 +2,8 @@ package routes
 
 import "net/http"
 
-// LogOut serves GET /log-out
-func LogOut(w http.ResponseWriter, r *http.Request) {
+// GET /log-out
+func logOutGET(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		HttpOnly: true,
 		MaxAge:   -1,

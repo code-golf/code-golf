@@ -11,8 +11,8 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-// GolferSolution serves GET /golfers/{golfer}/{hole}/{lang}/{scoring}
-func GolferSolution(w http.ResponseWriter, r *http.Request) {
+// GET /golfers/{golfer}/{hole}/{lang}/{scoring}
+func golferSolutionGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Failing bool
 		Hole    *config.Hole
@@ -26,7 +26,7 @@ func GolferSolution(w http.ResponseWriter, r *http.Request) {
 
 	if data.Hole == nil || data.Lang == nil ||
 		(data.Scoring != "bytes" && data.Scoring != "chars") {
-		NotFound(w, r)
+		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
@@ -40,7 +40,7 @@ func GolferSolution(w http.ResponseWriter, r *http.Request) {
 		data.Scoring,
 		golfer.ID,
 	).Scan(&data.Failing); errors.Is(err, sql.ErrNoRows) {
-		NotFound(w, r)
+		w.WriteHeader(http.StatusNotFound)
 		return
 	} else if err != nil {
 		panic(err)
@@ -49,14 +49,14 @@ func GolferSolution(w http.ResponseWriter, r *http.Request) {
 	render(w, r, "golfer/solution", data, golfer.Name)
 }
 
-// GolferSolutionPost serves POST /golfers/{golfer}/{hole}/{lang}/{scoring}
-func GolferSolutionPost(w http.ResponseWriter, r *http.Request) {
+// POST /golfers/{golfer}/{hole}/{lang}/{scoring}
+func golferSolutionPOST(w http.ResponseWriter, r *http.Request) {
 	hole := config.HoleByID[param(r, "hole")]
 	lang := config.LangByID[param(r, "lang")]
 	scoring := param(r, "scoring")
 
 	if hole == nil || lang == nil || (scoring != "bytes" && scoring != "chars") {
-		NotFound(w, r)
+		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
@@ -79,7 +79,7 @@ func GolferSolutionPost(w http.ResponseWriter, r *http.Request) {
 		scoring,
 		golfer.ID,
 	).Scan(&code); errors.Is(err, sql.ErrNoRows) {
-		NotFound(w, r)
+		w.WriteHeader(http.StatusNotFound)
 		return
 	} else if err != nil {
 		panic(err)

@@ -28,8 +28,8 @@ type solution struct {
 	Total    int           `json:"total"`
 }
 
-// AdminSolutions serves GET /admin/solutions
-func AdminSolutions(w http.ResponseWriter, r *http.Request) {
+// GET /admin/solutions
+func adminSolutionsGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Holes []*config.Hole
 		Langs []*config.Lang
@@ -49,8 +49,8 @@ func play(ctx context.Context, holeID, langID, code string) (score hole.Scorecar
 	return hole.Play(ctx, holeID, langID, code)
 }
 
-// AdminSolutionsRun serves GET /admin/solutions/run
-func AdminSolutionsRun(w http.ResponseWriter, r *http.Request) {
+// GET /admin/solutions/run
+func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 	db := session.Database(r)
 	solutions := getSolutions(r)
 

@@ -10,8 +10,8 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-// RankingsCheevos serves GET /rankings/cheevos/{cheevo}
-func RankingsCheevos(w http.ResponseWriter, r *http.Request) {
+// GET /rankings/cheevos/{cheevo}
+func rankingsCheevosGET(w http.ResponseWriter, r *http.Request) {
 	cheevoID := param(r, "cheevo")
 
 	type row struct {
@@ -33,7 +33,7 @@ func RankingsCheevos(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if cheevoID != "" && data.Cheevo == nil {
-		NotFound(w, r)
+		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
@@ -83,7 +83,7 @@ func RankingsCheevos(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if data.Pager.Calculate() {
-		NotFound(w, r)
+		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 

@@ -311,13 +311,6 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...interfa
 		args.LogInURL = config.AuthCodeURL("")
 	}
 
-	switch name {
-	case "403":
-		w.WriteHeader(http.StatusForbidden)
-	case "404":
-		w.WriteHeader(http.StatusNotFound)
-	}
-
 	if err := tmpl.ExecuteTemplate(w, name, args); err != nil {
 		panic(err)
 	}

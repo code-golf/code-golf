@@ -7,8 +7,8 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-// GolferCheevos serves GET /golfers/{golfer}/cheevos
-func GolferCheevos(w http.ResponseWriter, r *http.Request) {
+// GET /golfers/{golfer}/cheevos
+func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 	golfer := session.GolferInfo(r).Golfer
 
 	type Progress struct {

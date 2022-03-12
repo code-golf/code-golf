@@ -8,8 +8,8 @@ import (
 	"github.com/code-golf/code-golf/config"
 )
 
-// Sitemap serves GET /sitemap.xml
-func Sitemap(w http.ResponseWriter, r *http.Request) {
+// GET /sitemap.xml
+func sitemapGET(w http.ResponseWriter, r *http.Request) {
 	type URL struct {
 		Loc string `xml:"loc"`
 	}

@@ -7,8 +7,8 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-// GolferHoles serves GET /golfers/{golfer}/holes
-func GolferHoles(w http.ResponseWriter, r *http.Request) {
+// GET /golfers/{golfer}/holes
+func golferHolesGET(w http.ResponseWriter, r *http.Request) {
 	golfer := session.GolferInfo(r).Golfer
 	data := struct {
 		Holes    []*config.Hole
@@ -30,7 +30,7 @@ func GolferHoles(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		NotFound(w, r)
+		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 

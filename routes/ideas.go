@@ -8,8 +8,8 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-// Ideas serves GET /ideas
-func Ideas(w http.ResponseWriter, r *http.Request) {
+// GET /ideas
+func ideasGET(w http.ResponseWriter, r *http.Request) {
 	type idea struct {
 		ID, ThumbsDown, ThumbsUp int
 		Title                    string

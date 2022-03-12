@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/code-golf/code-golf/golfer"
-	"github.com/code-golf/code-golf/routes"
 	"github.com/code-golf/code-golf/session"
 )
 
@@ -15,7 +14,7 @@ func GolferArea(next http.Handler) http.Handler {
 			info := golfer.GetInfo(session.Database(r), g.Name)
 			next.ServeHTTP(w, session.Set(r, "golfer-info", info))
 		} else {
-			routes.Forbidden(w, r)
+			w.WriteHeader(http.StatusForbidden)
 		}
 	})
 }

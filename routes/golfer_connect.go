@@ -10,8 +10,8 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-// GolferDisconnect serves GET /golfer/disconnect/{connection}
-func GolferDisconnect(w http.ResponseWriter, r *http.Request) {
+// GET /golfer/disconnect/{connection}
+func golferDisconnectGET(w http.ResponseWriter, r *http.Request) {
 	if _, err := session.Database(r).Exec(
 		"DELETE FROM connections WHERE connection::text = $1 AND user_id = $2",
 		param(r, "connection"), session.Golfer(r).ID,
@@ -22,8 +22,8 @@ func GolferDisconnect(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/golfer/settings", http.StatusSeeOther)
 }
 
-// GolferConnect serves GET /golfer/connect/{connection}
-func GolferConnect(w http.ResponseWriter, r *http.Request) {
+// GET /golfer/connect/{connection}
+func golferConnectGET(w http.ResponseWriter, r *http.Request) {
 	code := r.FormValue("code")
 	conn := param(r, "connection")
 	config := oauth.Connections[conn]

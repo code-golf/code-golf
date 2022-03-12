@@ -14,8 +14,8 @@ import (
 	"github.com/lib/pq"
 )
 
-// Solution serves POST /solution
-func Solution(w http.ResponseWriter, r *http.Request) {
+// POST /solution
+func solutionPOST(w http.ResponseWriter, r *http.Request) {
 	var in struct{ Code, Hole, Lang string }
 
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {

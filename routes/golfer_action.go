@@ -6,8 +6,8 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-// GolferAction serves GET /golfers/{golfer}/{action}
-func GolferAction(w http.ResponseWriter, r *http.Request) {
+// POST /golfers/{golfer}/{action}
+func golferActionPOST(w http.ResponseWriter, r *http.Request) {
 	golfer := session.Golfer(r)
 	target := session.GolferInfo(r)
 

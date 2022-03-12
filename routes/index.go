@@ -9,8 +9,8 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-// Index serves GET /
-func Index(w http.ResponseWriter, r *http.Request) {
+// GET /
+func indexGET(w http.ResponseWriter, r *http.Request) {
 	for _, param := range []string{"scoring", "sort"} {
 		if value := r.FormValue(param); value != "" {
 			http.SetCookie(w, &http.Cookie{

@@ -203,13 +203,13 @@ func init() {
 	}
 }
 
-// Feeds serves /feeds
-func Feeds(w http.ResponseWriter, r *http.Request) {
+// GET /feeds
+func feedsGET(w http.ResponseWriter, r *http.Request) {
 	render(w, r, "feeds", feed, "Feeds")
 }
 
-// Feed serves /feeds/{feed}
-func Feed(w http.ResponseWriter, r *http.Request) {
+// GET /feeds/{feed}
+func feedGET(w http.ResponseWriter, r *http.Request) {
 	switch param(r, "feed") {
 	case "atom":
 		w.Header().Set("Content-Type", "application/atom+xml; charset=utf-8")

@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/code-golf/code-golf/golfer"
-	"github.com/code-golf/code-golf/routes"
 	"github.com/code-golf/code-golf/session"
 	"github.com/go-chi/chi/v5"
 )
@@ -17,7 +16,7 @@ func GolferInfo(next http.Handler) http.Handler {
 
 		switch {
 		case info == nil:
-			routes.NotFound(w, r)
+			w.WriteHeader(http.StatusNotFound)
 		case info.Name != name:
 			// TODO Handle /holes suffix.
 			http.Redirect(w, r, "/golfers/"+info.Name, http.StatusPermanentRedirect)

@@ -11,9 +11,7 @@ import (
 
 	"github.com/code-golf/code-golf/discord"
 	"github.com/code-golf/code-golf/github"
-	"github.com/code-golf/code-golf/middleware"
 	"github.com/code-golf/code-golf/routes"
-	"github.com/go-chi/chi/v5"
 	_ "github.com/lib/pq"
 	"golang.org/x/crypto/acme/autocert"
 )
@@ -28,107 +26,6 @@ func main() {
 		panic(err)
 	}
 
-	r := chi.NewRouter()
-
-	r.Use(
-		middleware.Logger,
-		middleware.Recoverer,
-		middleware.RedirectHost,
-		middleware.Static,
-		middleware.RedirectSlashes,
-		middleware.Compress(5),
-		// middleware.Downtime,
-		middleware.Database(db),
-		middleware.Golfer,
-	)
-
-	r.NotFound(routes.NotFound)
-
-	r.Get("/", routes.Index)
-	r.Get("/{hole}", routes.Hole)
-	r.Get("/ng/{hole}", routes.HoleNG)
-	r.Get("/about", routes.About)
-	r.With(middleware.AdminArea).Route("/admin", func(r chi.Router) {
-		r.Get("/", routes.Admin)
-		r.Get("/solutions", routes.AdminSolutions)
-		r.Get("/solutions/run", routes.AdminSolutionsRun)
-	})
-	r.With(middleware.API).Route("/api", func(r chi.Router) {
-		r.NotFound(routes.APINotFound)
-
-		r.Get("/", routes.API)
-		r.Get("/cheevos", routes.APICheevos)
-		r.Get("/cheevos/{cheevo}", routes.APICheevo)
-		r.Get("/langs", routes.APILangs)
-		r.Get("/langs/{lang}", routes.APILang)
-		r.Get("/panic", routes.APIPanic)
-		r.Get("/suggestions/golfers", routes.APISuggestionsGolfers)
-	})
-	r.Get("/callback", routes.Callback)
-	r.Get("/callback/dev", routes.CallbackDev)
-	r.Get("/feeds", routes.Feeds)
-	r.Get("/feeds/{feed:atom|json|rss}", routes.Feed)
-	r.With(middleware.GolferArea).Route("/golfer", func(r chi.Router) {
-		r.Post("/cancel-delete", routes.GolferCancelDelete)
-		r.Get("/connect/{connection}", routes.GolferConnect)
-		r.Post("/delete", routes.GolferDelete)
-		r.Get("/disconnect/{connection}", routes.GolferDisconnect)
-		r.Get("/export", routes.GolferExport)
-		r.Get("/settings", routes.GolferSettings)
-		r.Post("/settings", routes.GolferSettingsPost)
-	})
-	r.With(middleware.GolferInfo).Route("/golfers/{name}", func(r chi.Router) {
-		r.Get("/", routes.GolferWall)
-		r.Post("/{action:follow|unfollow}", routes.GolferAction)
-		r.Get("/cheevos", routes.GolferCheevos)
-		r.Get("/holes", routes.GolferHoles)
-		r.Get("/holes/{scoring}", routes.GolferHoles)
-		r.Get("/{hole}/{lang}/{scoring}", routes.GolferSolution)
-		// r.Post("/{hole}/{lang}/{scoring}", routes.GolferSolutionPost)
-	})
-	r.Get("/healthz", routes.Healthz)
-	r.Get("/ideas", routes.Ideas)
-	r.Get("/log-out", routes.LogOut)
-	r.Get("/random", routes.Random)
-	r.Get("/ng/random", routes.NGRandom)
-	r.Route("/rankings", func(r chi.Router) {
-		// Redirect some old URLs that got out.
-		r.Get("/", redir("/rankings/holes/all/all/bytes"))
-		r.Get("/holes", redir("/rankings/holes/all/all/bytes"))
-		r.Get("/holes/all/all/all", redir("/rankings/holes/all/all/bytes"))
-		r.Get("/langs/bytes", redir("/rankings/langs/all/bytes"))
-		r.Get("/langs/chars", redir("/rankings/langs/all/chars"))
-		r.Get("/medals", redir("/rankings/medals/all/all/all"))
-
-		r.Get("/cheevos", routes.RankingsCheevos)
-		r.Get("/cheevos/all", redir("/rankings/cheevos"))
-		r.Get("/cheevos/{cheevo}", routes.RankingsCheevos)
-
-		r.Get("/holes/{hole}/{lang}/{scoring}", routes.RankingsHoles)
-		r.Get("/recent-holes/{lang}/{scoring}", routes.RankingsHoles)
-
-		r.Get("/medals/{hole}/{lang}/{scoring}", routes.RankingsMedals)
-
-		r.Get("/langs/{lang}/{scoring}", routes.RankingsLangs)
-		r.Get("/solutions", routes.RankingsSolutions)
-	})
-	r.Route("/recent", func(r chi.Router) {
-		r.Get("/", redir("/recent/solutions/all/all/bytes"))
-		r.Get("/{lang}", routes.Recent)
-
-		r.Get("/golfers", routes.RecentGolfers)
-		r.Get("/solutions/{hole}/{lang}/{scoring}", routes.RecentSolutions)
-	})
-	r.Get("/scores/{hole}/{lang}", routes.Scores)
-	r.Get("/scores/{hole}/{lang}/all", routes.ScoresAll)
-	r.Get("/scores/{hole}/{lang}/{scoring}", routes.Scores)
-	r.Get("/scores/{hole}/{lang}/{scoring}/{page}", routes.Scores)
-	r.Get("/scores/{hole}/{lang}/{scoring}/mini", routes.ScoresMini)
-	r.Get("/sitemap.xml", routes.Sitemap)
-	r.Post("/solution", routes.Solution)
-	r.Get("/stats", routes.Stats)
-	r.Get("/users/{name}", routes.User)
-
 	certManager := autocert.Manager{
 		Cache:  autocert.DirCache("certs"),
 		Prompt: autocert.AcceptTOS,
@@ -140,7 +37,7 @@ func main() {
 
 	server := http.Server{
 		Addr:    ":1443",
-		Handler: r,
+		Handler: routes.Router(db),
 		TLSConfig: &tls.Config{
 			CipherSuites: []uint16{
 				tls.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
@@ -239,8 +136,4 @@ func main() {
 
 	// Serve HTTPS.
 	panic(server.ListenAndServeTLS(crt, key))
-}
-
-func redir(url string) http.HandlerFunc {
-	return http.RedirectHandler(url, http.StatusPermanentRedirect).ServeHTTP
 }

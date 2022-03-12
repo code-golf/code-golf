@@ -8,8 +8,8 @@ import (
 	"github.com/lib/pq"
 )
 
-// Hole serves GET /{hole}
-func Hole(w http.ResponseWriter, r *http.Request) {
+// GET /{hole}
+func holeGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Authors     []string
 		HideDetails bool
@@ -22,7 +22,7 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 	var ok bool
 	if data.Hole, ok = config.HoleByID[param(r, "hole")]; !ok {
 		if data.Hole, ok = config.ExpHoleByID[param(r, "hole")]; !ok {
-			NotFound(w, r)
+			w.WriteHeader(http.StatusNotFound)
 			return
 		}
 	}
@@ -80,8 +80,8 @@ func Hole(w http.ResponseWriter, r *http.Request) {
 	render(w, r, "hole", data, data.Hole.Name)
 }
 
-// HoleNG serves GET /ng/{hole}
-func HoleNG(w http.ResponseWriter, r *http.Request) {
+// GET /ng/{hole}
+func holeNGGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Authors     []string
 		HideDetails bool
@@ -96,7 +96,7 @@ func HoleNG(w http.ResponseWriter, r *http.Request) {
 	var ok bool
 	if data.Hole, ok = config.HoleByID[param(r, "hole")]; !ok {
 		if data.Hole, ok = config.ExpHoleByID[param(r, "hole")]; !ok {
-			NotFound(w, r)
+			w.WriteHeader(http.StatusNotFound)
 			return
 		}
 	}

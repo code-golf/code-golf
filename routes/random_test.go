@@ -8,10 +8,10 @@ import (
 	"github.com/SeerUK/assert"
 )
 
-func TestRandom(t *testing.T) {
+func TestRandomGET(t *testing.T) {
 	w := httptest.NewRecorder()
 
-	Random(w, httptest.NewRequest("", "/random", nil))
+	randomGET(w, httptest.NewRequest("", "/random", nil))
 
 	assert.Equal(t, w.Code, http.StatusFound)
 }

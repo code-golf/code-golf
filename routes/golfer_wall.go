@@ -8,8 +8,8 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-// GolferWall serves GET /golfers/{golfer}
-func GolferWall(w http.ResponseWriter, r *http.Request) {
+// GET /golfers/{golfer}
+func golferGET(w http.ResponseWriter, r *http.Request) {
 	const limit = 100
 
 	type follow struct {

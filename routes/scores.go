@@ -7,8 +7,8 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-// ScoresMini serves GET /scores/{hole}/{lang}/{scoring}/mini
-func ScoresMini(w http.ResponseWriter, r *http.Request) {
+// GET /scores/{hole}/{lang}/{scoring}/mini
+func scoresMiniGET(w http.ResponseWriter, r *http.Request) {
 	if config.HoleByID[param(r, "hole")] == nil ||
 		config.LangByID[param(r, "lang")] == nil {
 		w.WriteHeader(http.StatusNotFound)
@@ -28,7 +28,7 @@ func ScoresMini(w http.ResponseWriter, r *http.Request) {
 	case "chars":
 		otherScoring = "bytes"
 	default:
-		NotFound(w, r)
+		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
@@ -92,8 +92,8 @@ func ScoresMini(w http.ResponseWriter, r *http.Request) {
 	w.Write(json)
 }
 
-// Scores serves GET /scores/{hole}/{lang}/all
-func ScoresAll(w http.ResponseWriter, r *http.Request) {
+// GET /scores/{hole}/{lang}/all
+func scoresAllGET(w http.ResponseWriter, r *http.Request) {
 	var json []byte
 
 	if err := session.Database(r).QueryRow(
@@ -121,8 +121,8 @@ func ScoresAll(w http.ResponseWriter, r *http.Request) {
 	w.Write(json)
 }
 
-// Scores redirects GET /scores/{hole}/{lang}/{scoring}
-func Scores(w http.ResponseWriter, r *http.Request) {
+// GET /scores/{hole}/{lang}/{scoring}
+func scoresGET(w http.ResponseWriter, r *http.Request) {
 	holeID := param(r, "hole")
 	langID := param(r, "lang")
 	scoring := param(r, "scoring")

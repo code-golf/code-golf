@@ -7,8 +7,8 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-// RankingsSolutions serves GET /rankings/solutions
-func RankingsSolutions(w http.ResponseWriter, r *http.Request) {
+// GET /rankings/solutions
+func rankingsSolutionsGET(w http.ResponseWriter, r *http.Request) {
 	type row struct {
 		BytesPer, CharsPer, Country, Login string
 		Bytes, Chars, Rank, Count, Langs   int
@@ -77,7 +77,7 @@ func RankingsSolutions(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if data.Pager.Calculate() {
-		NotFound(w, r)
+		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 

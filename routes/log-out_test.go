@@ -8,10 +8,10 @@ import (
 	"github.com/SeerUK/assert"
 )
 
-func TestLogOut(t *testing.T) {
+func TestLogOutGET(t *testing.T) {
 	w := httptest.NewRecorder()
 
-	LogOut(w, httptest.NewRequest("", "/", nil))
+	logOutGET(w, httptest.NewRequest("", "/", nil))
 
 	res := w.Result()
 	res.Body.Close()

@@ -15,7 +15,7 @@ for «
     200 /api/langs/raku               ｢ '{' .*?              '"Raku"'  .*? '}' ｣
     404 /api/langs/unknown            ｢ 'null'                                 ｣
     404 /api/not-found                ｢ 'null'                                 ｣
-    500 /api/panic                    ｢                                        ｣
+    500 /api/panic                    ｢ 'null'                                 ｣
     200 /api/suggestions/golfers      ｢ '["bar", "baz", "foo"]'                ｣
     200 /api/suggestions/golfers?q=ba ｢ '["bar", "baz"]'                       ｣
     200 /api/suggestions/golfers?q=x  ｢ '[]'                                   ｣
@@ -32,13 +32,7 @@ for «
                                            !! 'application/json';
         is %res<headers><content-type>, $content-type, 'content-type';
 
-        # FIXME 500s ought to return valid JSON rather than no body.
-        if $status == 500 {
-            ok !%res<content>.defined, 'content';
-        }
-        else {
-            like %res<content>.decode, /^ <$content> \n? $/, 'content';
-        }
+        like %res<content>.decode, /^ <$content> \n? $/, 'content';
     }
 }
 
