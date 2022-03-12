@@ -220,7 +220,5 @@ func Feed(w http.ResponseWriter, r *http.Request) {
 	case "rss":
 		w.Header().Set("Content-Type", "application/rss+xml; charset=utf-8")
 		w.Write(rssFeed)
-	default:
-		NotFound(w, r)
 	}
 }

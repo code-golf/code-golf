@@ -23,9 +23,6 @@ func GolferAction(w http.ResponseWriter, r *http.Request) {
 		sql = "INSERT INTO follows VALUES ($1, $2) ON CONFLICT DO NOTHING"
 	case "unfollow":
 		sql = "DELETE FROM follows WHERE follower_id = $1 AND followee_id = $2"
-	default:
-		NotFound(w, r)
-		return
 	}
 
 	if _, err := session.Database(r).Exec(sql, golfer.ID, target.ID); err != nil {

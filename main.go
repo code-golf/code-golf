@@ -67,7 +67,7 @@ func main() {
 	r.Get("/callback", routes.Callback)
 	r.Get("/callback/dev", routes.CallbackDev)
 	r.Get("/feeds", routes.Feeds)
-	r.Get("/feeds/{feed}", routes.Feed)
+	r.Get("/feeds/{feed:atom|json|rss}", routes.Feed)
 	r.With(middleware.GolferArea).Route("/golfer", func(r chi.Router) {
 		r.Post("/cancel-delete", routes.GolferCancelDelete)
 		r.Get("/connect/{connection}", routes.GolferConnect)
