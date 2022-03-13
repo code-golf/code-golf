@@ -16,7 +16,7 @@ import (
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/pretty"
 	"github.com/code-golf/code-golf/session"
-	min "github.com/tdewolff/minify/v2/minify"
+	"github.com/tdewolff/minify/v2/minify"
 )
 
 func colour(i int) string {
@@ -138,7 +138,7 @@ func init() {
 	// CSS.
 	for name, data := range slurp("css") {
 		var err error
-		if data, err = min.CSS(data); err != nil {
+		if data, err = minify.CSS(data); err != nil {
 			panic(err)
 		}
 
@@ -170,7 +170,7 @@ func init() {
 		// The real fix is https://github.com/tdewolff/minify/issues/35
 		if !uppercaseProps.MatchString(data) {
 			var err error
-			if data, err = min.HTML(data); err != nil {
+			if data, err = minify.HTML(data); err != nil {
 				panic(err)
 			}
 		}
