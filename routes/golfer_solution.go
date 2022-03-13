@@ -50,6 +50,7 @@ func golferSolutionGET(w http.ResponseWriter, r *http.Request) {
 }
 
 // POST /golfers/{golfer}/{hole}/{lang}/{scoring}
+//nolint deadcode
 func golferSolutionPOST(w http.ResponseWriter, r *http.Request) {
 	hole := config.HoleByID[param(r, "hole")]
 	lang := config.LangByID[param(r, "lang")]
