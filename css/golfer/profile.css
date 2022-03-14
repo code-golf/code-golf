@@ -16,8 +16,7 @@ h2, thead, #wall time {
 h2 { grid-column: 1 / -1 }
 
 main {
-    display: grid;
-    gap: 2rem 3rem;
+    column-gap: 3rem;
     grid-template-columns: auto 27rem;
 }
 
@@ -43,6 +42,44 @@ section > a, section > div {
     background: var(--light-grey);
     color: transparent;
     text-shadow: 0 0 var(--cheevo-not-earned);
+}
+
+#connections {
+    display: grid;
+    gap: .5rem;
+    grid-template-columns: repeat(auto-fit, minmax(calc(50% - .5rem), 1fr));
+}
+
+#connections a {
+    align-items: center;
+    background: var(--light-grey);
+    border: 1px solid var(--color);
+    color: var(--color);
+    display: flex;
+    font-weight: bold;
+    gap: .25rem;
+    height: auto;
+    justify-content: flex-start;
+    padding: 0 .25rem;
+}
+
+#connections a[href]:hover {
+    background: var(--color);
+    color: var(--background);
+    text-decoration: none;
+}
+
+#connections div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#connections span { font-weight: normal }
+
+#connections svg {
+    height: 2rem;
+    margin: -1px;
+    width: 2rem;
 }
 
 #trophies a       { color: #343a40 }
@@ -73,6 +110,8 @@ section > a, section > div {
 }
 
 @media (max-width: 46rem) {
+    aside { gap: 1rem }
+
     main { grid-template-columns: auto }
 
     #wall { grid-row: 2 }

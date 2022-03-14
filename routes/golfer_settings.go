@@ -36,16 +36,18 @@ func golferDeletePOST(w http.ResponseWriter, r *http.Request) {
 // GET /golfer/settings
 func golferSettingsGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		Connections map[string]*oauth.Config
-		Countries   map[string][]*config.Country
-		Keymaps     []string
-		OauthState  string
-		Themes      []string
-		TimeZones   []zone.Zone
+		Connections    []oauth.Connection
+		Countries      map[string][]*config.Country
+		Keymaps        []string
+		OAuthProviders map[string]*oauth.Config
+		OAuthState     string
+		Themes         []string
+		TimeZones      []zone.Zone
 	}{
-		oauth.Connections,
+		oauth.GetConnections(session.Database(r), session.Golfer(r).ID, false),
 		config.CountryTree,
 		[]string{"default", "vim"},
+		oauth.Providers,
 		nonce(),
 		[]string{"auto", "dark", "light"},
 		zone.List(),
@@ -57,7 +59,7 @@ func golferSettingsGET(w http.ResponseWriter, r *http.Request) {
 		Path:     "/",
 		SameSite: http.SameSiteLaxMode,
 		Secure:   true,
-		Value:    data.OauthState,
+		Value:    data.OAuthState,
 	})
 
 	render(w, r, "golfer/settings", data, "Settings")
@@ -115,7 +117,7 @@ func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Update connections' publicness if they differ from DB.
-	for _, c := range session.GolferInfo(r).Connections {
+	for _, c := range oauth.GetConnections(tx, userID, false) {
 		if show := r.Form.Get("show_"+c.Connection) == "on"; show != c.Public {
 			if _, err := tx.Exec(
 				`UPDATE connections

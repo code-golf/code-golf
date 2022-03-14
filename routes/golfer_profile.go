@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/oauth"
 	"github.com/code-golf/code-golf/session"
 )
 
@@ -25,19 +26,23 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		Lang   *config.Lang
 	}
 
-	data := struct {
-		Follows  []follow
-		Langs    []*config.Lang
-		Trophies map[string]map[string]int
-		Wall     []row
-	}{
-		Langs:    config.LangList,
-		Trophies: map[string]map[string]int{},
-		Wall:     make([]row, 0, limit),
-	}
-
 	db := session.Database(r)
 	golfer := session.GolferInfo(r).Golfer
+
+	data := struct {
+		Connections    []oauth.Connection
+		Follows        []follow
+		Langs          []*config.Lang
+		OAuthProviders map[string]*oauth.Config
+		Trophies       map[string]map[string]int
+		Wall           []row
+	}{
+		Connections:    oauth.GetConnections(db, golfer.ID, true),
+		Langs:          config.LangList,
+		OAuthProviders: oauth.Providers,
+		Trophies:       map[string]map[string]int{},
+		Wall:           make([]row, 0, limit),
+	}
 
 	// TODO Support friends/follow.
 	rows, err := db.Query(

@@ -1,6 +1,7 @@
 package oauth
 
 import (
+	"database/sql"
 	"net/url"
 	"os"
 	"strings"
@@ -17,7 +18,14 @@ type Config struct {
 	Name, UserEndpoint string
 }
 
-var Connections = map[string]*Config{
+type Connection struct {
+	Connection, Username string
+	Discriminator        sql.NullInt16
+	ID                   int
+	Public               bool
+}
+
+var Providers = map[string]*Config{
 	// https://discord.com/developers/applications
 	"discord": {
 		Name:         "Discord",
@@ -62,7 +70,7 @@ func init() {
 		host = "localhost"
 	}
 
-	for id, config := range Connections {
+	for id, config := range Providers {
 		prefix := strings.ReplaceAll(strings.ToUpper(id), "-", "_")
 
 		config.ClientID = os.Getenv(prefix + "_CLIENT_ID")
@@ -82,4 +90,46 @@ func init() {
 			config.UserEndpoint = u.String()
 		}
 	}
+}
+
+// *sql.DB or *sql.Tx - https://github.com/golang/go/issues/14468
+type DBTx interface {
+	Query(string, ...interface{}) (*sql.Rows, error)
+}
+
+func GetConnections(db DBTx, golferID int, onlyPublic bool) (conns []Connection) {
+	rows, err := db.Query(
+		` SELECT connection, discriminator, id, public, username
+		    FROM connections
+		   WHERE user_id = $1 AND (public = true OR public = $2)
+		ORDER BY connection`,
+		golferID,
+		onlyPublic,
+	)
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var conn Connection
+
+		if err := rows.Scan(
+			&conn.Connection,
+			&conn.Discriminator,
+			&conn.ID,
+			&conn.Public,
+			&conn.Username,
+		); err != nil {
+			panic(err)
+		}
+
+		conns = append(conns, conn)
+	}
+
+	if err := rows.Err(); err != nil {
+		panic(err)
+	}
+
+	return
 }

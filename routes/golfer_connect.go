@@ -26,7 +26,7 @@ func golferDisconnectGET(w http.ResponseWriter, r *http.Request) {
 func golferConnectGET(w http.ResponseWriter, r *http.Request) {
 	code := r.FormValue("code")
 	conn := param(r, "connection")
-	config := oauth.Connections[conn]
+	config := oauth.Providers[conn]
 
 	if code == "" || config == nil || config.Name == "GitHub" ||
 		cookie(r, "__Host-oauth-state") != r.FormValue("state") {

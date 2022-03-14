@@ -316,8 +316,6 @@ thead th {
 .color:nth-of-type(6n+5), .blue   { background: var(--blue)   }
 .color:nth-of-type(6n+6), .purple { background: var(--purple) }
 
-.light-grey { background: var(--light-grey) }
-
 .flag {
     margin-left: .5rem;
     overflow: visible;

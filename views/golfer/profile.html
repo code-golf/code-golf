@@ -29,6 +29,30 @@
     </div>
 
     <aside>
+    {{ with .Data.Connections }}
+        <section id=connections>
+        {{ range . }}
+            {{ $url := "" }}
+            {{ if or (eq .Connection "github") (eq .Connection "gitlab") }}
+                {{ $url = print "//" .Connection ".com/" .Username }}
+            {{ else if eq .Connection "stack-overflow" }}
+                {{ $url = print "//stackoverflow.com/users/" .ID }}
+            {{ end }}
+
+            <a {{ with $url }} href="{{ . }}" {{ end }}
+                title="{{ (index $.Data.OAuthProviders .Connection).Name }}">
+                {{ svg .Connection }}
+                <div>
+                    {{ .Username }}
+                {{- if .Discriminator.Valid -}}
+                    <span>{{ printf "#%04d" .Discriminator.Value }}</span>
+                {{- end -}}
+                </div>
+            </a>
+        {{ end }}
+        </section>
+    {{ end }}
+
     {{ with len .Data.Trophies }}
         <section id=trophies>
             <h2>{{ . }} Language Troph{{ if gt . 1 }}ies{{ else }}y{{ end }}</h2>

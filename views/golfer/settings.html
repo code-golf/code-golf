@@ -17,7 +17,7 @@
         connection.
 
         <ol id=connections>
-        {{ range .GolferInfo.Connections }}
+        {{ range .Data.Connections }}
             <li>
                 {{ svg .Connection }}
                 <h3>
@@ -42,15 +42,26 @@
         {{ end }}
         </ol>
 
-    {{ if .GolferInfo.MissingConnections }}
+{{ if ne (len .Data.Connections) (len .Data.OAuthProviders) }}
         <div id=missingConnections>
-        {{ range $id, $conn := .GolferInfo.MissingConnections }}
-            <a class="btn blue" href="{{ $conn.AuthCodeURL $.Data.OauthState }}">
+    {{ range $id, $conn := .Data.OAuthProviders }}
+        {{ $missing := true }}
+
+        {{ range $.Data.Connections }}
+            {{ if eq $id .Connection }}
+                {{ $missing = false }}
+                {{/* TODO Go 1.18+ use break to leave the loop */}}
+            {{ end }}
+        {{ end }}
+
+        {{ if $missing }}
+            <a class="btn blue" href="{{ $conn.AuthCodeURL $.Data.OAuthState }}">
                 {{ svg $id }} Add {{ $conn.Name }}
             </a>
         {{ end }}
-        </div>
     {{ end }}
+        </div>
+{{ end }}
 
         <h2>Country</h2>
 

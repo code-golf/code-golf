@@ -31,14 +31,6 @@ h1 {
     border-left: 0;
 }
 
-#badges span { font-weight: normal }
-
-#badges svg {
-    color: var(--background);
-    height: 1rem;
-    width: 1rem;
-}
-
 #profile {
     font-variant: tabular-nums;
     grid-template: min-content 1fr min-content / min-content 1fr;

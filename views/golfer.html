@@ -55,27 +55,6 @@
             <p class=blue>{{ len .Cheevos }} / {{ .CheevosTotal }} Cheevos
         </div>
         <!-- TODO <div><p>📅<p class=yellow>Teed off {{ time .TeedOff }}</div>-->
-
-{{ range .Connections }}
-    {{ if .Public }}
-        <div title="{{ .Connection }}">
-            <p>{{ svg .Connection }}
-            <p class=light-grey>
-            {{ if or (eq .Connection "github") (eq .Connection "gitlab") }}
-                <a href="//{{ .Connection }}.com/{{ .Username }}">
-                    {{ .Username }}</a>
-            {{ else if eq .Connection "stack-overflow" }}
-                <a href="//stackoverflow.com/users/{{ .ID }}">
-                    {{ .Username }}</a>
-            {{ else }}
-                {{ .Username }}
-                {{- if .Discriminator.Valid -}}
-                    <span>{{ printf "#%04d" .Discriminator.Value }}</span>
-                {{- end -}}
-            {{ end }}
-        </div>
-    {{ end }}
-{{ end }}
     </div>
 
     <nav class=tabs>
