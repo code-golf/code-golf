@@ -149,6 +149,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// TODO Use the golfer's timezone from /settings.
+		// TODO Move these to save_solution() in the DB.
 		var (
 			now   = time.Now().UTC()
 			month = now.Month()
@@ -156,29 +157,42 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		)
 
 		if month == time.October && day == 2 {
-			golfer.Earn(db, "happy-birthday-code-golf")
+			if c := golfer.Earn(db, "happy-birthday-code-golf"); c != nil {
+				out.Cheevos = append(out.Cheevos, c)
+			}
 		}
 
 		switch in.Hole {
 		case "12-days-of-christmas":
-			if (month == time.December && day >= 25) || (month == time.January && day <= 5) {
-				golfer.Earn(db, "twelvetide")
+			if (month == time.December && day >= 25) ||
+				(month == time.January && day <= 5) {
+				if c := golfer.Earn(db, "twelvetide"); c != nil {
+					out.Cheevos = append(out.Cheevos, c)
+				}
 			}
 		case "star-wars-opening-crawl":
 			if month == time.May && day == 4 {
-				golfer.Earn(db, "may-the-4ᵗʰ-be-with-you")
+				if c := golfer.Earn(db, "may-the-4ᵗʰ-be-with-you"); c != nil {
+					out.Cheevos = append(out.Cheevos, c)
+				}
 			}
 		case "united-states":
 			if month == time.July && day == 4 {
-				golfer.Earn(db, "independence-day")
+				if c := golfer.Earn(db, "independence-day"); c != nil {
+					out.Cheevos = append(out.Cheevos, c)
+				}
 			}
 		case "vampire-numbers":
 			if month == time.October && day == 31 {
-				golfer.Earn(db, "vampire-byte")
+				if c := golfer.Earn(db, "vampire-byte"); c != nil {
+					out.Cheevos = append(out.Cheevos, c)
+				}
 			}
 		case "π":
 			if month == time.March && day == 14 {
-				golfer.Earn(db, "pi-day")
+				if c := golfer.Earn(db, "pi-day"); c != nil {
+					out.Cheevos = append(out.Cheevos, c)
+				}
 			}
 		}
 	}
