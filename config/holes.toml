@@ -2101,6 +2101,7 @@ preamble = '''
 category = 'Mathematics'
 links = [
     { name = 'OEIS A000796', url = '//oeis.org/A000796' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Pi' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Pi' },
 ]
 preamble = '''
