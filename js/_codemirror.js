@@ -117,7 +117,7 @@ export const extensions = {
     'powershell': StreamLanguage.define(powerShell),
     // TODO prolog
     'python':     python(),
-    // TODO raku
+    'raku':       StreamLanguage.define(perl),  // TODO raku
     'ruby':       StreamLanguage.define(ruby),
     'rust':       rust(),
     'sql':        sql({ dialect: SQLite }),
