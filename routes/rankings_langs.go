@@ -36,7 +36,8 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 		rows, err := session.Database(r).Query(
 			`WITH ranks AS (
 			    SELECT hole, lang,
-			           RANK() OVER (PARTITION BY hole ORDER BY points DESC)
+			           RANK() OVER (PARTITION BY hole
+			                            ORDER BY points DESC, strokes)
 			      FROM rankings
 			     WHERE scoring = $1
 			) SELECT DISTINCT hole, rank
@@ -71,8 +72,10 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 		rows, err := session.Database(r).Query(
 			`WITH ranks AS (
 			    SELECT hole, lang, points, strokes,
-			           RANK()       OVER (PARTITION BY hole       ORDER BY points DESC),
-			           ROW_NUMBER() OVER (PARTITION BY hole, lang ORDER BY points DESC)
+			           RANK()       OVER (PARTITION BY hole
+			                                  ORDER BY points DESC, strokes),
+			           ROW_NUMBER() OVER (PARTITION BY hole, lang
+			                                  ORDER BY points DESC, strokes)
 			      FROM rankings
 			     WHERE scoring = $1
 			), medals AS (
