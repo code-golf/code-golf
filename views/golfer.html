@@ -80,7 +80,7 @@
 
     <nav class=tabs>
         {{ $slug := print "/golfers/" .Name }}
-        <a {{ if ne $.Path $slug }} href="{{ $slug }}" {{ end }}>Wall</a>
+        <a {{ if ne $.Path $slug }} href="{{ $slug }}" {{ end }}>Profile</a>
 
         {{ $slug = print "/golfers/" .Name "/cheevos" }}
         <a {{ if ne $.Path $slug }} href="{{ $slug }}" {{ end }}>Achievements</a>

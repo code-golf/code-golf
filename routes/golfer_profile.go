@@ -170,5 +170,5 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	render(w, r, "golfer/wall", data, golfer.Name)
+	render(w, r, "golfer/profile", data, golfer.Name)
 }
