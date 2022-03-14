@@ -46,6 +46,13 @@ h1 {
     row-gap: 0;
 }
 
+#profile div {
+    display: flex;
+    gap: .375rem;
+}
+
+#profile div div { gap: .25rem }
+
 #profile img {
     border-radius: 2rem;
     grid-row: span 3;
@@ -53,4 +60,7 @@ h1 {
     width: 5.5rem;
 }
 
-#profile p:first-of-type { font-size: 1.25rem }
+#profile svg {
+    height: 1.25rem;
+    width: 1.25rem;
+}
