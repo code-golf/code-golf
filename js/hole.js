@@ -24,8 +24,6 @@ let lang;
 let latestSubmissionID = 0;
 let solution = Math.max(scorings.indexOf(localStorage.getItem('solution')), 0);
 let scoring = Math.max(scorings.indexOf(localStorage.getItem('scoring')), 0);
-let setCodeForLangAndSolution;
-let updateRestoreLinkVisibility;
 
 // The loggedIn state is used to avoid saving solutions in localStorage when those solutions match the solutions in the
 // database. It's used to avoid restoring a solution from localStorage when the user has improved that solution on a
@@ -33,26 +31,6 @@ let updateRestoreLinkVisibility;
 // actually logged-in, because solutions dictionaries will initially be empty for users who aren't logged-in, so the
 // loggedIn state will not be used. By the time they are non-empty, the loggedIn state will have been updated.
 let loggedIn = true;
-
-function getAutoSaveKey(lang, solution) {
-    return `code_${hole}_${lang}_${solution}`;
-}
-
-function getSolutionCode(lang, solution) {
-    return lang in solutions[solution] ? solutions[solution][lang] : '';
-}
-
-function getOtherScoring(value) {
-    return 1 - value;
-}
-
-function setSolution(value) {
-    localStorage.setItem('solution', scorings[solution = value]);
-}
-
-function setScoring(value) {
-    localStorage.setItem('scoring', scorings[scoring = value]);
-}
 
 const keymap = JSON.parse(document.querySelector('#keymap').innerText);
 const cm     = new CodeMirror(document.querySelector('#editor'), {
@@ -63,11 +41,6 @@ const cm     = new CodeMirror(document.querySelector('#editor'), {
     theme:       darkMode ? 'material-ocean' : 'default',
     vimMode:     keymap == 'vim',
 });
-
-updateRestoreLinkVisibility = () => {
-    const serverCode = getSolutionCode(lang, solution);
-    restoreLink.style.display = serverCode && cm.getValue() != serverCode ? 'initial' : 'none';
-};
 
 cm.on('change', () => {
     const code = cm.getValue();
@@ -100,7 +73,163 @@ restoreLink.onclick = e => {
     e.preventDefault();
 };
 
-setCodeForLangAndSolution = () => {
+(onhashchange = () => {
+    lang = location.hash.slice(1) || localStorage.getItem('lang');
+
+    // Kick 'em to Python if we don't know the chosen language.
+    if (!langs[lang])
+        lang = 'python';
+
+    // Assembly only has bytes.
+    if (lang == 'assembly')
+        setSolution(0);
+
+    localStorage.setItem('lang', lang);
+
+    history.replaceState(null, '', '#' + lang);
+
+    setCodeForLangAndSolution();
+})();
+
+// Wire up submit to clicking, keyboard, and maybe vim shortcut.
+document.querySelector('#run a').onclick = submit;
+
+onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter' ? submit() : undefined;
+
+// Allow vim users to run code with :w or :write
+if (cm.getOption('vimMode')) CodeMirror.Vim.defineEx('write', 'w', submit);
+
+function getAutoSaveKey(lang, solution) {
+    return `code_${hole}_${lang}_${solution}`;
+}
+
+function getOtherScoring(value) {
+    return 1 - value;
+}
+
+function getScoring(str, index) {
+    return scorings[index] == 'Bytes' ? byteLen(str) : charLen(str);
+}
+
+function getSolutionCode(lang, solution) {
+    return lang in solutions[solution] ? solutions[solution][lang] : '';
+}
+
+function populateLanguagePicker() {
+    picker.innerHTML = '';
+    picker.open = false;
+
+    for (const l of Object.values(langs).sort((a, b) => a.name.localeCompare(b.name))) {
+        let name = l.name;
+
+        if (getSolutionCode(l.id, 0)) {
+            name += ' <sup>';
+
+            let lastValue = 0;
+            for (let i = 0; i < scorings.length; i++) {
+                const value = getScoring(getSolutionCode(l.id, i), i);
+                if (value && lastValue != value) {
+                    if (lastValue)
+                        name += '/';
+                    name += comma(value);
+                }
+                lastValue = value;
+            }
+
+            name += '</sup>';
+        }
+
+        picker.innerHTML += l.id == lang
+            ? `<a id="${l.name}">${name}</a>` : `<a id="${l.name}" href=#${l.id}>${name}</a>`;
+    }
+}
+
+function populateSolutionPicker() {
+    while (solutionPicker.firstChild)
+        solutionPicker.removeChild(solutionPicker.firstChild);
+
+    const code0 = getSolutionCode(lang, 0);
+    const code1 = getSolutionCode(lang, 1);
+    const autoSave0 = localStorage.getItem(getAutoSaveKey(lang, 0));
+    const autoSave1 = localStorage.getItem(getAutoSaveKey(lang, 1));
+
+    // Only show the solution picker when both solutions are actually used.
+    if (code0 && code1 && code0 != code1 || autoSave0 && autoSave1 && autoSave0 != autoSave1 ||
+        // If a logged-in user has an auto-saved solution for the other metric, that they have not
+        // submitted since logging in, they must be allowed to switch to it, so they can submit it.
+        (solution == 0 && code0 && autoSave1 && code0 != autoSave1) ||
+        (solution == 1 && autoSave0 && code1 && autoSave0 != code1)) {
+        for (let i = 0; i < scorings.length; i++) {
+            let name = `Fewest ${scorings[i]}`;
+
+            const solutionCode = getSolutionCode(lang, i);
+            if (solutionCode) {
+                name += ` <sup>${comma(getScoring(solutionCode, i))}</sup>`;
+            }
+
+            const child = document.createElement('a');
+            child.id = `${scorings[i]}Solution`;
+            child.innerHTML = name;
+            if (i != solution) {
+                child.href = '';
+                child.onclick = e => {
+                    e.preventDefault();
+                    setSolution(i);
+                    setCodeForLangAndSolution();
+                };
+            }
+            solutionPicker.appendChild(child);
+        }
+    }
+}
+
+async function refreshScores() {
+    populateLanguagePicker();
+    populateSolutionPicker();
+
+    const scoringID = scorings[scoring].toLowerCase();
+    const path      = `/${hole}/${lang}/${scoringID}`;
+    const res       = await fetch(`/scores${path}/mini`);
+    const rows      = res.ok ? await res.json() : [];
+
+    document.querySelector('#allLink').href = '/rankings/holes' + path;
+
+    table.replaceChildren(<tbody class={scoringID}>{
+        // Rows.
+        rows.map(r => <tr class={r.me ? 'me' : ''}>
+            <td>{r.rank}<sup>{ord(r.rank)}</sup></td>
+            <td>
+                <a href={`/golfers/${r.login}`}>
+                    <img src={`//avatars.githubusercontent.com/${r.login}?s=24`}/>
+                    <span>{r.login}</span>
+                </a>
+            </td>
+            <td data-tooltip={tooltip(r, 'Bytes')}>{comma(r.bytes)}</td>
+            {r.chars !== null ?
+                <td data-tooltip={tooltip(r, 'Chars')}>{comma(r.chars)}</td> : ''}
+        </tr>)
+    }{
+        // Padding.
+        [...Array(7 - rows.length).keys()].map(() =>
+            <tr><td colspan="4">&nbsp;</td></tr>)
+    }</tbody>);
+
+    for (let i = 0; i < scoringTabs.length; i++) {
+        const tab = scoringTabs[i];
+
+        if (tab.innerText == scorings[scoring]) {
+            tab.removeAttribute('href');
+            tab.onclick = '';
+        }
+        else {
+            tab.href = '';
+            tab.onclick =
+                e => { e.preventDefault(); setScoring(i); refreshScores() };
+        }
+    }
+}
+
+function setCodeForLangAndSolution() {
     if (solution != 0 && getSolutionCode(lang, 0) == getSolutionCode(lang, 1)) {
         const autoSave0 = localStorage.getItem(getAutoSaveKey(lang, 0));
         const autoSave1 = localStorage.getItem(getAutoSaveKey(lang, 1));
@@ -125,27 +254,17 @@ setCodeForLangAndSolution = () => {
 
     for (const info of document.querySelectorAll('main .info'))
         info.style.display = info.classList.contains(lang) ? 'block' : '';
-};
+}
 
-(onhashchange = () => {
-    lang = location.hash.slice(1) || localStorage.getItem('lang');
+function setScoring(value) {
+    localStorage.setItem('scoring', scorings[scoring = value]);
+}
 
-    // Kick 'em to Python if we don't know the chosen language.
-    if (!langs[lang])
-        lang = 'python';
+function setSolution(value) {
+    localStorage.setItem('solution', scorings[solution = value]);
+}
 
-    // Assembly only has bytes.
-    if (lang == 'assembly')
-        setSolution(0);
-
-    localStorage.setItem('lang', lang);
-
-    history.replaceState(null, '', '#' + lang);
-
-    setCodeForLangAndSolution();
-})();
-
-const submit = document.querySelector('#run a').onclick = async () => {
+async function submit() {
     document.querySelector('h2').innerText = '…';
     status.className = 'grey';
 
@@ -262,126 +381,6 @@ const submit = document.querySelector('#run a').onclick = async () => {
         <h3>Achievement Earned!</h3>
         { c.emoji }<p>{ c.name }</p>
     </div>));
-};
-
-onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter' ? submit() : undefined;
-
-// Allow vim users to run code with :w or :write
-if (cm.getOption('vimMode'))
-    CodeMirror.Vim.defineEx('write', 'w', submit);
-
-function populateLanguagePicker() {
-    picker.innerHTML = '';
-    picker.open = false;
-
-    for (const l of Object.values(langs).sort((a, b) => a.name.localeCompare(b.name))) {
-        let name = l.name;
-
-        if (getSolutionCode(l.id, 0)) {
-            name += ' <sup>';
-
-            let lastValue = 0;
-            for (let i = 0; i < scorings.length; i++) {
-                const value = getScoring(getSolutionCode(l.id, i), i);
-                if (value && lastValue != value) {
-                    if (lastValue)
-                        name += '/';
-                    name += comma(value);
-                }
-                lastValue = value;
-            }
-
-            name += '</sup>';
-        }
-
-        picker.innerHTML += l.id == lang
-            ? `<a id="${l.name}">${name}</a>` : `<a id="${l.name}" href=#${l.id}>${name}</a>`;
-    }
-}
-
-function populateSolutionPicker() {
-    while (solutionPicker.firstChild)
-        solutionPicker.removeChild(solutionPicker.firstChild);
-
-    const code0 = getSolutionCode(lang, 0);
-    const code1 = getSolutionCode(lang, 1);
-    const autoSave0 = localStorage.getItem(getAutoSaveKey(lang, 0));
-    const autoSave1 = localStorage.getItem(getAutoSaveKey(lang, 1));
-
-    // Only show the solution picker when both solutions are actually used.
-    if (code0 && code1 && code0 != code1 || autoSave0 && autoSave1 && autoSave0 != autoSave1 ||
-        // If a logged-in user has an auto-saved solution for the other metric, that they have not
-        // submitted since logging in, they must be allowed to switch to it, so they can submit it.
-        (solution == 0 && code0 && autoSave1 && code0 != autoSave1) ||
-        (solution == 1 && autoSave0 && code1 && autoSave0 != code1)) {
-        for (let i = 0; i < scorings.length; i++) {
-            let name = `Fewest ${scorings[i]}`;
-
-            const solutionCode = getSolutionCode(lang, i);
-            if (solutionCode) {
-                name += ` <sup>${comma(getScoring(solutionCode, i))}</sup>`;
-            }
-
-            const child = document.createElement('a');
-            child.id = `${scorings[i]}Solution`;
-            child.innerHTML = name;
-            if (i != solution) {
-                child.href = '';
-                child.onclick = e => {
-                    e.preventDefault();
-                    setSolution(i);
-                    setCodeForLangAndSolution();
-                };
-            }
-            solutionPicker.appendChild(child);
-        }
-    }
-}
-
-async function refreshScores() {
-    populateLanguagePicker();
-    populateSolutionPicker();
-
-    const scoringID = scorings[scoring].toLowerCase();
-    const path      = `/${hole}/${lang}/${scoringID}`;
-    const res       = await fetch(`/scores${path}/mini`);
-    const rows      = res.ok ? await res.json() : [];
-
-    document.querySelector('#allLink').href = '/rankings/holes' + path;
-
-    table.replaceChildren(<tbody class={scoringID}>{
-        // Rows.
-        rows.map(r => <tr class={r.me ? 'me' : ''}>
-            <td>{r.rank}<sup>{ord(r.rank)}</sup></td>
-            <td>
-                <a href={`/golfers/${r.login}`}>
-                    <img src={`//avatars.githubusercontent.com/${r.login}?s=24`}/>
-                    <span>{r.login}</span>
-                </a>
-            </td>
-            <td data-tooltip={tooltip(r, 'Bytes')}>{comma(r.bytes)}</td>
-            {r.chars !== null ?
-                <td data-tooltip={tooltip(r, 'Chars')}>{comma(r.chars)}</td> : ''}
-        </tr>)
-    }{
-        // Padding.
-        [...Array(7 - rows.length).keys()].map(() =>
-            <tr><td colspan="4">&nbsp;</td></tr>)
-    }</tbody>);
-
-    for (let i = 0; i < scoringTabs.length; i++) {
-        const tab = scoringTabs[i];
-
-        if (tab.innerText == scorings[scoring]) {
-            tab.removeAttribute('href');
-            tab.onclick = '';
-        }
-        else {
-            tab.href = '';
-            tab.onclick =
-                e => { e.preventDefault(); setScoring(i); refreshScores() };
-        }
-    }
 }
 
 function tooltip(row, scoring) {
@@ -392,6 +391,7 @@ function tooltip(row, scoring) {
         (chars !== null ? `, ${comma(chars)} chars.` : '.');
 }
 
-function getScoring(str, index) {
-    return scorings[index] == 'Bytes' ? byteLen(str) : charLen(str);
+function updateRestoreLinkVisibility() {
+    const serverCode = getSolutionCode(lang, solution);
+    restoreLink.style.display = serverCode && cm.getValue() != serverCode ? 'initial' : 'none';
 }
