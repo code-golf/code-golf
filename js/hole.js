@@ -5,7 +5,6 @@ import { byteLen, charLen, comma, ord } from './_util';
 
 const chars              = document.querySelector('#strokes');
 const darkModeMediaQuery = JSON.parse(document.querySelector('#darkModeMediaQuery').innerText);
-const details            = document.querySelector('#details');
 const hole               = decodeURI(location.pathname.slice(1));
 const langs              = JSON.parse(document.querySelector('#langs').innerText);
 const picker             = document.querySelector('#picker');
@@ -64,9 +63,9 @@ cm.on('change', () => {
     updateRestoreLinkVisibility();
 });
 
-details.ontoggle = () =>
-    document.cookie = 'hide-details=;SameSite=Lax;Secure' +
-        (details.open ? ';Max-Age=0' : '');
+// Set/clear the hide-details cookie on details toggling.
+document.querySelector('#details').ontoggle = e => document.cookie =
+    'hide-details=;SameSite=Lax;Secure' + (e.target.open ? ';Max-Age=0' : '');
 
 restoreLink.onclick = e => {
     cm.setValue(getSolutionCode(lang, solution));
