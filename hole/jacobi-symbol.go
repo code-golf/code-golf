@@ -32,31 +32,39 @@ func randomPrime(bits int) *big.Int {
 
 func jacobiSymbol() ([]string, string) {
 	const tests = 20
-	inputs := make([]*big.Int, 3*tests)
+	type Test struct {
+		n, k *big.Int
+	}
+	inputs := make([]Test, 4*tests)
 
 	for i := 0; i < tests; i++ {
-		inputs[i] = randomPrime(64)
+		inputs[i] = Test{randomPrime(64), randomOdd(64)}
 	}
 	for i := tests; i < 2*tests; i++ {
-		inputs[i] = new(big.Int).Mul(randomPrime(32), randomPrime(32))
+		inputs[i] = Test{new(big.Int).Mul(randomPrime(32), randomPrime(32)), randomOdd(64)}
 	}
 	for i := 2 * tests; i < 3*tests; i++ {
-		inputs[i] = randomNatural(64)
+		inputs[i] = Test{randomNatural(64), randomOdd(64)}
+	}
+	for i := 3 * tests; i < 4*tests; i++ {
+		common := randomOdd(32)
+		n := new(big.Int).Mul(randomOdd(32), common)
+		k := new(big.Int).Mul(randomOdd(32), common)
+		inputs[i] = Test{n, k}
 	}
 
 	rand.Shuffle(len(inputs), func(i, j int) {
 		inputs[i], inputs[j] = inputs[j], inputs[i]
 	})
 	var answer strings.Builder
-	args := make([]string, 3*tests)
+	args := make([]string, 4*tests)
 
-	for i, n := range inputs {
-		k := randomOdd(64)
-		args[i] = n.String() + " " + k.String()
+	for i, test := range inputs {
+		args[i] = test.n.String() + " " + test.k.String()
 		if i > 0 {
 			answer.WriteByte('\n')
 		}
-		answer.WriteString(strconv.Itoa(big.Jacobi(n, k)))
+		answer.WriteString(strconv.Itoa(big.Jacobi(test.n, test.k)))
 	}
 
 	return args, answer.String()
