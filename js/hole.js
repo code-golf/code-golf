@@ -22,13 +22,16 @@ const darkMode = matchMedia(darkModeMediaQuery).matches;
 let lang;
 let latestSubmissionID = 0;
 let solution = Math.max(scorings.indexOf(localStorage.getItem('solution')), 0);
-let scoring = Math.max(scorings.indexOf(localStorage.getItem('scoring')), 0);
+let scoring  = Math.max(scorings.indexOf(localStorage.getItem('scoring')),  0);
 
-// The loggedIn state is used to avoid saving solutions in localStorage when those solutions match the solutions in the
-// database. It's used to avoid restoring a solution from localStorage when the user has improved that solution on a
-// different browser. Assume the user is logged-in by default. At this point, it doesn't matter whether the user is
-// actually logged-in, because solutions dictionaries will initially be empty for users who aren't logged-in, so the
-// loggedIn state will not be used. By the time they are non-empty, the loggedIn state will have been updated.
+// The loggedIn state is used to avoid saving solutions in localStorage when
+// those solutions match the solutions in the database. It's used to avoid
+// restoring a solution from localStorage when the user has improved that
+// solution on a different browser. Assume the user is logged-in by default.
+// At this point, it doesn't matter whether the user is actually logged-in,
+// because solutions dictionaries will initially be empty for users who aren't
+// logged-in, so the loggedIn state will not be used. By the time they are
+// non-empty, the loggedIn state will have been updated.
 let loggedIn = true;
 
 const keymap = JSON.parse(document.querySelector('#keymap').innerText);
@@ -51,7 +54,8 @@ cm.on('change', () => {
     }
     chars.innerText = infoText;
 
-    // Avoid future conflicts by only storing code locally that's different from the server's copy.
+    // Avoid future conflicts by only storing code locally that's different
+    // from the server's copy.
     const serverCode = getSolutionCode(lang, solution);
 
     const key = getAutoSaveKey(lang, solution);
@@ -154,8 +158,9 @@ function populateSolutionPicker() {
 
     // Only show the solution picker when both solutions are actually used.
     if (code0 && code1 && code0 != code1 || autoSave0 && autoSave1 && autoSave0 != autoSave1 ||
-        // If a logged-in user has an auto-saved solution for the other metric, that they have not
-        // submitted since logging in, they must be allowed to switch to it, so they can submit it.
+        // If a logged-in user has an auto-saved solution for the other
+        // metric, that they have not submitted since logging in, they must be
+        // allowed to switch to it, so they can submit it.
         (solution == 0 && code0 && autoSave1 && code0 != autoSave1) ||
         (solution == 1 && autoSave0 && code1 && autoSave0 != code1)) {
         for (let i = 0; i < scorings.length; i++) {
@@ -296,8 +301,9 @@ async function submit() {
             if (!solutionCode || getScoring(code, i) <= getScoring(solutionCode, i)) {
                 solutions[i][codeLang] = code;
 
-                // Don't need to keep solution in local storage because it's stored on the site.
-                // This prevents conflicts when the solution is improved on another browser.
+                // Don't need to keep solution in local storage because it's
+                // stored on the site. This prevents conflicts when the
+                // solution is improved on another browser.
                 if (loggedIn && localStorage.getItem(getAutoSaveKey(codeLang, i)) == code)
                     localStorage.removeItem(getAutoSaveKey(codeLang, i));
             }
@@ -307,7 +313,8 @@ async function submit() {
     for (let i = 0; i < scorings.length; i++) {
         const key = getAutoSaveKey(codeLang, i);
         if (loggedIn) {
-            // If the auto-saved code matches either solution, remove it to avoid prompting the user to restore it.
+            // If the auto-saved code matches either solution, remove it to
+            // avoid prompting the user to restore it.
             const autoSaveCode = localStorage.getItem(key);
             for (let j = 0; j < scorings.length; j++) {
                 if (getSolutionCode(codeLang, j) == autoSaveCode)
@@ -315,8 +322,9 @@ async function submit() {
             }
         }
         else if (getSolutionCode(codeLang, i)) {
-            // Autosave the best solution for each scoring metric, but don't save two copies of the same solution,
-            // because that can lead to the solution picker being show unnecessarily.
+            // Autosave the best solution for each scoring metric, but don't
+            // save two copies of the same solution, because that can lead to
+            // the solution picker being show unnecessarily.
             if (i == 0 || getSolutionCode(codeLang, 0) != getSolutionCode(codeLang, i))
                 localStorage.setItem(key, getSolutionCode(codeLang, i));
             else
@@ -324,16 +332,18 @@ async function submit() {
         }
     }
 
-    // Automatically switch to the solution whose code matches the current code after a new solution is submitted.
-    // Don't change scoring. refreshScores will update the solution picker.
-    if (data.Pass && getSolutionCode(codeLang, solution) != code && getSolutionCode(codeLang, getOtherScoring(solution)) == code)
+    // Automatically switch to the solution whose code matches the current
+    // code after a new solution is submitted. Don't change scoring,
+    // refreshScores will update the solution picker.
+    if (data.Pass && getSolutionCode(codeLang, solution) != code &&
+        getSolutionCode(codeLang, getOtherScoring(solution)) == code)
         setSolution(getOtherScoring(solution));
 
-    // Update the restore link visibility, after possibly changing the active solution.
+    // Update the restore link visibility, after possibly changing the active
+    // solution.
     updateRestoreLinkVisibility();
 
-    document.querySelector('h2').innerText
-        = data.Pass ? 'Pass 😀' : 'Fail ☹️';
+    document.querySelector('h2').innerText = data.Pass ? 'Pass 😀' : 'Fail ☹️';
 
     // Show args if we have 'em.
     if (data.Argv.length) {
@@ -391,5 +401,6 @@ function tooltip(row, scoring) {
 
 function updateRestoreLinkVisibility() {
     const serverCode = getSolutionCode(lang, solution);
-    restoreLink.style.display = serverCode && cm.getValue() != serverCode ? 'initial' : 'none';
+    restoreLink.style.display =
+        serverCode && cm.getValue() != serverCode ? 'initial' : 'none';
 }
