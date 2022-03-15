@@ -72,25 +72,18 @@
     </details>
     <nav class=tabs id=picker></nav>
     <nav class=tabs id=solutionPicker></nav>
-    <div id=wrapper>
-        <div id=chars>0 bytes, 0 chars</div>
-        <div id=restore>
+    <section>
+        <header>
+            <div id=strokes>0 bytes, 0 chars</div>
             <a href id=restoreLink>Restore solution</a>
-        </div>
-        <table class="nowrap-second wide" id=scores>
-            <thead>
-                <tr><th>&nbsp;
-            <tbody>
-                <tr><td>&nbsp;
-                <tr><td>&nbsp;
-                <tr><td>&nbsp;
-                <tr><td>&nbsp;
-                <tr><td>&nbsp;
-                <tr><td>&nbsp;
-                <tr><td>&nbsp;
-        </table>
+        </header>
+        <header class=wide>
+            <nav class=tabs id=scoringTabs><a>Bytes</a><a href>Chars</a></nav>
+            <a href id=allLink>All</a>
+        </header>
         <div id=editor></div>
-    </div>
+        <table class="nowrap-second wide" id=scores><tr><td></table>
+    </section>
     <div class="info assembly">
         Compiled from
         <a href=//www.wikibooks.org/wiki/X86_Assembly/GAS_Syntax>

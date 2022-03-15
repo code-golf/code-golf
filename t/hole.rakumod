@@ -95,7 +95,8 @@ class HoleWebDriver is WebDriver is export {
 
     # Methods whose names begin with "is" do exactly one assertion.
     method isBytesAndChars(Int:D $bytes, Int:D $chars, Str:D $context) {
-        is $.find('#chars').text, "$bytes bytes, $chars chars", "Confirm byte and char counts, $context";
+        is $.find("#strokes").text, "$bytes bytes, $chars chars",
+            "Confirm byte and char counts, $context";
     }
 
     # Methods whose names begin with "is" do exactly one assertion.

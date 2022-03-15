@@ -3,17 +3,16 @@ import                                       './_copy-as-json';
 import { attachDiff }                   from './_diff';
 import { byteLen, charLen, comma, ord } from './_util';
 
-const chars              = document.querySelector('#chars');
+const chars              = document.querySelector('#strokes');
 const darkModeMediaQuery = JSON.parse(document.querySelector('#darkModeMediaQuery').innerText);
 const details            = document.querySelector('#details');
-const editor             = document.querySelector('#editor');
 const hole               = decodeURI(location.pathname.slice(1));
-const keymap             = JSON.parse(document.querySelector('#keymap').innerText);
 const langs              = JSON.parse(document.querySelector('#langs').innerText);
 const picker             = document.querySelector('#picker');
 const popups             = document.querySelector('#popups');
 const restoreLink        = document.querySelector('#restoreLink');
 const scorings           = ['Bytes', 'Chars'];
+const scoringTabs        = document.querySelectorAll('#scoringTabs a');
 const solutionPicker     = document.querySelector('#solutionPicker');
 const solutions          = JSON.parse(document.querySelector('#solutions').innerText);
 const status             = document.querySelector('#status');
@@ -56,17 +55,14 @@ function setScoring(value) {
 }
 
 onload = () => {
-    // Lock the editor's height in so we scroll.
-    editor.style.height = `${editor.offsetHeight}px`;
-
-    const vimMode = keymap == 'vim';
-    const cm      = new CodeMirror(editor, {
-        autofocus:    true,
-        indentUnit:   1,
-        lineNumbers:  true,
-        smartIndent:  false,
-        theme: darkMode ? 'material-ocean' : 'default',
-        vimMode,
+    const keymap = JSON.parse(document.querySelector('#keymap').innerText);
+    const cm     = new CodeMirror(document.querySelector('#editor'), {
+        autofocus:   true,
+        indentUnit:  1,
+        lineNumbers: true,
+        smartIndent: false,
+        theme:       darkMode ? 'material-ocean' : 'default',
+        vimMode:     keymap == 'vim',
     });
 
     updateRestoreLinkVisibility = () => {
@@ -272,7 +268,7 @@ onload = () => {
     onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter' ? submit() : undefined;
 
     // Allow vim users to run code with :w or :write
-    if (vimMode)
+    if (cm.getOption('vimMode'))
         CodeMirror.Vim.defineEx('write', 'w', submit);
 };
 
@@ -353,12 +349,9 @@ async function refreshScores() {
     const res       = await fetch(`/scores${path}/mini`);
     const rows      = res.ok ? await res.json() : [];
 
-    table.querySelector('thead').innerHTML =
-        '<thead><tr><th colspan=4><nav class=tabs>' +
-        scorings.map(s => `<a id=${s}>${s}</a>`).join('') +
-        `</nav><a href=/rankings/holes${path}>All</a><tbody>`;
+    document.querySelector('#allLink').href = '/rankings/holes' + path;
 
-    table.querySelector('tbody').replaceWith(<tbody class={scoringID}>{
+    table.replaceChildren(<tbody class={scoringID}>{
         // Rows.
         rows.map(r => <tr class={r.me ? 'me' : ''}>
             <td>{r.rank}<sup>{ord(r.rank)}</sup></td>
@@ -378,10 +371,19 @@ async function refreshScores() {
             <tr><td colspan="4">&nbsp;</td></tr>)
     }</tbody>);
 
-    const otherScoring = getOtherScoring(scoring);
-    const switchScoring = table.querySelector(`#${scorings[otherScoring]}`);
-    switchScoring.href = '';
-    switchScoring.onclick = e => { e.preventDefault(); setScoring(otherScoring); refreshScores() };
+    for (let i = 0; i < scoringTabs.length; i++) {
+        const tab = scoringTabs[i];
+
+        if (tab.innerText == scorings[scoring]) {
+            tab.removeAttribute('href');
+            tab.onclick = '';
+        }
+        else {
+            tab.href = '';
+            tab.onclick =
+                e => { e.preventDefault(); setScoring(i); refreshScores() };
+        }
+    }
 }
 
 const tooltip = (row, scoring) => {
