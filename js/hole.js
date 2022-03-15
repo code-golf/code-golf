@@ -17,6 +17,8 @@ const solutions          = JSON.parse(document.querySelector('#solutions').inner
 const status             = document.querySelector('#status');
 const table              = document.querySelector('#scores');
 const diff               = document.querySelector('#diff');
+const sortedLangs        =
+    Object.values(langs).sort((a, b) => a.name.localeCompare(b.name));
 
 const darkMode = matchMedia(darkModeMediaQuery).matches;
 let lang;
@@ -118,35 +120,6 @@ function getSolutionCode(lang, solution) {
     return lang in solutions[solution] ? solutions[solution][lang] : '';
 }
 
-function populateLanguagePicker() {
-    picker.innerHTML = '';
-    picker.open = false;
-
-    for (const l of Object.values(langs).sort((a, b) => a.name.localeCompare(b.name))) {
-        let name = l.name;
-
-        if (getSolutionCode(l.id, 0)) {
-            name += ' <sup>';
-
-            let lastValue = 0;
-            for (let i = 0; i < scorings.length; i++) {
-                const value = getScoring(getSolutionCode(l.id, i), i);
-                if (value && lastValue != value) {
-                    if (lastValue)
-                        name += '/';
-                    name += comma(value);
-                }
-                lastValue = value;
-            }
-
-            name += '</sup>';
-        }
-
-        picker.innerHTML += l.id == lang
-            ? `<a id="${l.name}">${name}</a>` : `<a id="${l.name}" href=#${l.id}>${name}</a>`;
-    }
-}
-
 function populateSolutionPicker() {
     while (solutionPicker.firstChild)
         solutionPicker.removeChild(solutionPicker.firstChild);
@@ -188,7 +161,23 @@ function populateSolutionPicker() {
 }
 
 async function refreshScores() {
-    populateLanguagePicker();
+    // Rebuild the language picker with accurate stroke counts.
+    picker.replaceChildren(...sortedLangs.map(l => {
+        const tab = <a href={l.id == lang ? null : '#'+l.id}>{l.name}</a>;
+
+        if (getSolutionCode(l.id, 0)) {
+            const bytes = byteLen(getSolutionCode(l.id, 0));
+            const chars = charLen(getSolutionCode(l.id, 1));
+
+            let text = comma(bytes);
+            if (chars && bytes != chars) text += '/' + comma(chars);
+
+            tab.append(' ', <sup>{text}</sup>);
+        }
+
+        return tab;
+    }));
+
     populateSolutionPicker();
 
     const scoringID = scorings[scoring].toLowerCase();

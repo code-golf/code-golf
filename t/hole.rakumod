@@ -60,7 +60,7 @@ class HoleWebDriver is WebDriver is export {
     }
 
     method getLangLink(Str:D $lang) {
-        $.findAndWait: "#$lang";
+        $.findAndWait: $lang, :using(PartialLinkText);
     }
 
     method getLanguageActive(Str:D $lang) {
