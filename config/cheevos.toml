@@ -119,6 +119,11 @@ description = 'Solve <a href=/pascals-triangle#pascal>Pascal’s triangle in Pas
 # Miscellaneous
 
 [[Miscellaneous]]
+name        = 'Black-box Testing'
+emoji       = '🧪'
+description = 'Solve an <a href=/ideas>experimental hole</a>.'
+
+[[Miscellaneous]]
 name        = 'Different Strokes'
 emoji       = '🌈'
 description = 'Solve any hole using different bytes and chars solutions.'

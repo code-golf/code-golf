@@ -77,7 +77,11 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		Took: score.Took,
 	}
 
-	if out.Pass && golfer != nil && !experimental {
+	if out.Pass && golfer != nil && experimental {
+		if c := golfer.Earn(db, "black-box-testing"); c != nil {
+			out.Cheevos = append(out.Cheevos, c)
+		}
+	} else if out.Pass && golfer != nil && !experimental {
 		var cheevos []string
 		if err := db.QueryRowContext(
 			r.Context(),
