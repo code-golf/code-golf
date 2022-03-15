@@ -54,223 +54,221 @@ function setScoring(value) {
     localStorage.setItem('scoring', scorings[scoring = value]);
 }
 
-onload = () => {
-    const keymap = JSON.parse(document.querySelector('#keymap').innerText);
-    const cm     = new CodeMirror(document.querySelector('#editor'), {
-        autofocus:   true,
-        indentUnit:  1,
-        lineNumbers: true,
-        smartIndent: false,
-        theme:       darkMode ? 'material-ocean' : 'default',
-        vimMode:     keymap == 'vim',
-    });
+const keymap = JSON.parse(document.querySelector('#keymap').innerText);
+const cm     = new CodeMirror(document.querySelector('#editor'), {
+    autofocus:   true,
+    indentUnit:  1,
+    lineNumbers: true,
+    smartIndent: false,
+    theme:       darkMode ? 'material-ocean' : 'default',
+    vimMode:     keymap == 'vim',
+});
 
-    updateRestoreLinkVisibility = () => {
-        const serverCode = getSolutionCode(lang, solution);
-        restoreLink.style.display = serverCode && cm.getValue() != serverCode ? 'initial' : 'none';
-    };
+updateRestoreLinkVisibility = () => {
+    const serverCode = getSolutionCode(lang, solution);
+    restoreLink.style.display = serverCode && cm.getValue() != serverCode ? 'initial' : 'none';
+};
 
-    cm.on('change', () => {
-        const code = cm.getValue();
-        let infoText = '';
-        for (let i = 0; i < scorings.length; i++) {
-            if (i)
-                infoText += ', ';
-            infoText += `${comma(getScoring(code, i))} ${scorings[i].toLowerCase()}`;
-        }
-        chars.innerText = infoText;
+cm.on('change', () => {
+    const code = cm.getValue();
+    let infoText = '';
+    for (let i = 0; i < scorings.length; i++) {
+        if (i)
+            infoText += ', ';
+        infoText += `${comma(getScoring(code, i))} ${scorings[i].toLowerCase()}`;
+    }
+    chars.innerText = infoText;
 
-        // Avoid future conflicts by only storing code locally that's different from the server's copy.
-        const serverCode = getSolutionCode(lang, solution);
+    // Avoid future conflicts by only storing code locally that's different from the server's copy.
+    const serverCode = getSolutionCode(lang, solution);
 
-        const key = getAutoSaveKey(lang, solution);
-        if (code && (code != serverCode || !loggedIn))
-            localStorage.setItem(key, code);
-        else
-            localStorage.removeItem(key);
+    const key = getAutoSaveKey(lang, solution);
+    if (code && (code != serverCode || !loggedIn))
+        localStorage.setItem(key, code);
+    else
+        localStorage.removeItem(key);
 
-        updateRestoreLinkVisibility();
-    });
+    updateRestoreLinkVisibility();
+});
 
-    details.ontoggle = () =>
-        document.cookie = 'hide-details=;SameSite=Lax;Secure' +
-            (details.open ? ';Max-Age=0' : '');
+details.ontoggle = () =>
+    document.cookie = 'hide-details=;SameSite=Lax;Secure' +
+        (details.open ? ';Max-Age=0' : '');
 
-    restoreLink.onclick = e => {
-        cm.setValue(getSolutionCode(lang, solution));
-        e.preventDefault();
-    };
+restoreLink.onclick = e => {
+    cm.setValue(getSolutionCode(lang, solution));
+    e.preventDefault();
+};
 
-    setCodeForLangAndSolution = () => {
-        if (solution != 0 && getSolutionCode(lang, 0) == getSolutionCode(lang, 1)) {
-            const autoSave0 = localStorage.getItem(getAutoSaveKey(lang, 0));
-            const autoSave1 = localStorage.getItem(getAutoSaveKey(lang, 1));
-            if (autoSave0 && !autoSave1)
-                setSolution(0);
-        }
-
-        const autoSaveCode = localStorage.getItem(getAutoSaveKey(lang, solution)) || '';
-        const code = getSolutionCode(lang, solution) || autoSaveCode;
-
-        cm.setOption('lineWrapping', lang != 'fish');
-        cm.setOption('matchBrackets', lang != 'brainfuck' && lang != 'j' && lang != 'hexagony');
-        cm.setOption('mode', {
-            name: 'text/x-' + lang,
-            startOpen: true,
-            multiLineStrings: lang == 'c', // TCC supports multi-line strings
-        });
-
-        cm.setValue(autoSaveCode || code || langs[lang].example);
-
-        refreshScores();
-
-        for (const info of document.querySelectorAll('main .info'))
-            info.style.display = info.classList.contains(lang) ? 'block' : '';
-    };
-
-    (onhashchange = () => {
-        lang = location.hash.slice(1) || localStorage.getItem('lang');
-
-        // Kick 'em to Python if we don't know the chosen language.
-        if (!langs[lang])
-            lang = 'python';
-
-        // Assembly only has bytes.
-        if (lang == 'assembly')
+setCodeForLangAndSolution = () => {
+    if (solution != 0 && getSolutionCode(lang, 0) == getSolutionCode(lang, 1)) {
+        const autoSave0 = localStorage.getItem(getAutoSaveKey(lang, 0));
+        const autoSave1 = localStorage.getItem(getAutoSaveKey(lang, 1));
+        if (autoSave0 && !autoSave1)
             setSolution(0);
+    }
 
-        localStorage.setItem('lang', lang);
+    const autoSaveCode = localStorage.getItem(getAutoSaveKey(lang, solution)) || '';
+    const code = getSolutionCode(lang, solution) || autoSaveCode;
 
-        history.replaceState(null, '', '#' + lang);
+    cm.setOption('lineWrapping', lang != 'fish');
+    cm.setOption('matchBrackets', lang != 'brainfuck' && lang != 'j' && lang != 'hexagony');
+    cm.setOption('mode', {
+        name: 'text/x-' + lang,
+        startOpen: true,
+        multiLineStrings: lang == 'c', // TCC supports multi-line strings
+    });
 
-        setCodeForLangAndSolution();
-    })();
+    cm.setValue(autoSaveCode || code || langs[lang].example);
 
-    const submit = document.querySelector('#run a').onclick = async () => {
-        document.querySelector('h2').innerText = '…';
-        status.className = 'grey';
+    refreshScores();
 
-        const code = cm.getValue();
-        const codeLang = lang;
-        const submissionID = ++latestSubmissionID;
+    for (const info of document.querySelectorAll('main .info'))
+        info.style.display = info.classList.contains(lang) ? 'block' : '';
+};
 
-        const res  = await fetch('/solution', {
-            method: 'POST',
-            body: JSON.stringify({
-                Code: code,
-                Hole: hole,
-                Lang: lang,
-            }),
-        });
+(onhashchange = () => {
+    lang = location.hash.slice(1) || localStorage.getItem('lang');
 
-        if (res.status != 200) {
-            alert('Error ' + res.status);
-            return;
-        }
+    // Kick 'em to Python if we don't know the chosen language.
+    if (!langs[lang])
+        lang = 'python';
 
-        const data = await res.json();
-        loggedIn = data.LoggedIn;
+    // Assembly only has bytes.
+    if (lang == 'assembly')
+        setSolution(0);
 
-        if (submissionID != latestSubmissionID)
-            return;
+    localStorage.setItem('lang', lang);
 
-        if (data.Pass) {
-            for (let i = 0; i < scorings.length; i++) {
-                const solutionCode = getSolutionCode(codeLang, i);
-                if (!solutionCode || getScoring(code, i) <= getScoring(solutionCode, i)) {
-                    solutions[i][codeLang] = code;
+    history.replaceState(null, '', '#' + lang);
 
-                    // Don't need to keep solution in local storage because it's stored on the site.
-                    // This prevents conflicts when the solution is improved on another browser.
-                    if (loggedIn && localStorage.getItem(getAutoSaveKey(codeLang, i)) == code)
-                        localStorage.removeItem(getAutoSaveKey(codeLang, i));
-                }
-            }
-        }
+    setCodeForLangAndSolution();
+})();
 
+const submit = document.querySelector('#run a').onclick = async () => {
+    document.querySelector('h2').innerText = '…';
+    status.className = 'grey';
+
+    const code = cm.getValue();
+    const codeLang = lang;
+    const submissionID = ++latestSubmissionID;
+
+    const res  = await fetch('/solution', {
+        method: 'POST',
+        body: JSON.stringify({
+            Code: code,
+            Hole: hole,
+            Lang: lang,
+        }),
+    });
+
+    if (res.status != 200) {
+        alert('Error ' + res.status);
+        return;
+    }
+
+    const data = await res.json();
+    loggedIn = data.LoggedIn;
+
+    if (submissionID != latestSubmissionID)
+        return;
+
+    if (data.Pass) {
         for (let i = 0; i < scorings.length; i++) {
-            const key = getAutoSaveKey(codeLang, i);
-            if (loggedIn) {
-                // If the auto-saved code matches either solution, remove it to avoid prompting the user to restore it.
-                const autoSaveCode = localStorage.getItem(key);
-                for (let j = 0; j < scorings.length; j++) {
-                    if (getSolutionCode(codeLang, j) == autoSaveCode)
-                        localStorage.removeItem(key);
-                }
+            const solutionCode = getSolutionCode(codeLang, i);
+            if (!solutionCode || getScoring(code, i) <= getScoring(solutionCode, i)) {
+                solutions[i][codeLang] = code;
+
+                // Don't need to keep solution in local storage because it's stored on the site.
+                // This prevents conflicts when the solution is improved on another browser.
+                if (loggedIn && localStorage.getItem(getAutoSaveKey(codeLang, i)) == code)
+                    localStorage.removeItem(getAutoSaveKey(codeLang, i));
             }
-            else if (getSolutionCode(codeLang, i)) {
-                // Autosave the best solution for each scoring metric, but don't save two copies of the same solution,
-                // because that can lead to the solution picker being show unnecessarily.
-                if (i == 0 || getSolutionCode(codeLang, 0) != getSolutionCode(codeLang, i))
-                    localStorage.setItem(key, getSolutionCode(codeLang, i));
-                else
+        }
+    }
+
+    for (let i = 0; i < scorings.length; i++) {
+        const key = getAutoSaveKey(codeLang, i);
+        if (loggedIn) {
+            // If the auto-saved code matches either solution, remove it to avoid prompting the user to restore it.
+            const autoSaveCode = localStorage.getItem(key);
+            for (let j = 0; j < scorings.length; j++) {
+                if (getSolutionCode(codeLang, j) == autoSaveCode)
                     localStorage.removeItem(key);
             }
         }
-
-        // Automatically switch to the solution whose code matches the current code after a new solution is submitted.
-        // Don't change scoring. refreshScores will update the solution picker.
-        if (data.Pass && getSolutionCode(codeLang, solution) != code && getSolutionCode(codeLang, getOtherScoring(solution)) == code)
-            setSolution(getOtherScoring(solution));
-
-        // Update the restore link visibility, after possibly changing the active solution.
-        updateRestoreLinkVisibility();
-
-        document.querySelector('h2').innerText
-            = data.Pass ? 'Pass 😀' : 'Fail ☹️';
-
-        // Show args if we have 'em.
-        if (data.Argv.length) {
-            document.querySelector('#arg').style.display = 'block';
-            const argDiv = document.querySelector('#arg div');
-            // Remove all arg spans
-            while (argDiv.firstChild) {
-                argDiv.removeChild(argDiv.firstChild);
-            }
-            // Add a span for each arg
-            for (const arg of data.Argv) {
-                argDiv.appendChild(document.createElement('span'));
-                argDiv.lastChild.innerText = arg;
-                argDiv.appendChild(document.createTextNode(' '));
-            }
+        else if (getSolutionCode(codeLang, i)) {
+            // Autosave the best solution for each scoring metric, but don't save two copies of the same solution,
+            // because that can lead to the solution picker being show unnecessarily.
+            if (i == 0 || getSolutionCode(codeLang, 0) != getSolutionCode(codeLang, i))
+                localStorage.setItem(key, getSolutionCode(codeLang, i));
+            else
+                localStorage.removeItem(key);
         }
-        else
-            document.querySelector('#arg').style.display = '';
+    }
 
-        // Show err if we have some and we're not passing.
-        if (data.Err && !data.Pass) {
-            document.querySelector('#err').style.display = 'block';
-            document.querySelector('#err div').innerHTML = data.Err.replace(/\n/g, '<br>');
+    // Automatically switch to the solution whose code matches the current code after a new solution is submitted.
+    // Don't change scoring. refreshScores will update the solution picker.
+    if (data.Pass && getSolutionCode(codeLang, solution) != code && getSolutionCode(codeLang, getOtherScoring(solution)) == code)
+        setSolution(getOtherScoring(solution));
+
+    // Update the restore link visibility, after possibly changing the active solution.
+    updateRestoreLinkVisibility();
+
+    document.querySelector('h2').innerText
+        = data.Pass ? 'Pass 😀' : 'Fail ☹️';
+
+    // Show args if we have 'em.
+    if (data.Argv.length) {
+        document.querySelector('#arg').style.display = 'block';
+        const argDiv = document.querySelector('#arg div');
+        // Remove all arg spans
+        while (argDiv.firstChild) {
+            argDiv.removeChild(argDiv.firstChild);
         }
-        else
-            document.querySelector('#err').style.display = '';
+        // Add a span for each arg
+        for (const arg of data.Argv) {
+            argDiv.appendChild(document.createElement('span'));
+            argDiv.lastChild.innerText = arg;
+            argDiv.appendChild(document.createTextNode(' '));
+        }
+    }
+    else
+        document.querySelector('#arg').style.display = '';
 
-        // Always show exp & out.
-        document.querySelector('#exp div').innerText = data.Exp;
-        document.querySelector('#out div').innerText = data.Out;
+    // Show err if we have some and we're not passing.
+    if (data.Err && !data.Pass) {
+        document.querySelector('#err').style.display = 'block';
+        document.querySelector('#err div').innerHTML = data.Err.replace(/\n/g, '<br>');
+    }
+    else
+        document.querySelector('#err').style.display = '';
 
-        const diffContent = document.querySelector('#diff-content');
-        const diffVisible = attachDiff(diffContent, hole, data.Exp, data.Out, data.Argv, false);
-        diff.style.display = diffVisible ? 'block' : 'none';
+    // Always show exp & out.
+    document.querySelector('#exp div').innerText = data.Exp;
+    document.querySelector('#out div').innerText = data.Out;
 
-        status.className = data.Pass ? 'green' : 'red';
-        status.style.display = 'block';
+    const diffContent = document.querySelector('#diff-content');
+    const diffVisible = attachDiff(diffContent, hole, data.Exp, data.Out, data.Argv, false);
+    diff.style.display = diffVisible ? 'block' : 'none';
 
-        refreshScores();
+    status.className = data.Pass ? 'green' : 'red';
+    status.style.display = 'block';
 
-        // Show cheevos.
-        popups.replaceChildren(...data.Cheevos.map(c => <div>
-            <h3>Achievement Earned!</h3>
-            { c.emoji }<p>{ c.name }</p>
-        </div>));
-    };
+    refreshScores();
 
-    onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter' ? submit() : undefined;
-
-    // Allow vim users to run code with :w or :write
-    if (cm.getOption('vimMode'))
-        CodeMirror.Vim.defineEx('write', 'w', submit);
+    // Show cheevos.
+    popups.replaceChildren(...data.Cheevos.map(c => <div>
+        <h3>Achievement Earned!</h3>
+        { c.emoji }<p>{ c.name }</p>
+    </div>));
 };
+
+onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter' ? submit() : undefined;
+
+// Allow vim users to run code with :w or :write
+if (cm.getOption('vimMode'))
+    CodeMirror.Vim.defineEx('write', 'w', submit);
 
 function populateLanguagePicker() {
     picker.innerHTML = '';
@@ -386,13 +384,14 @@ async function refreshScores() {
     }
 }
 
-const tooltip = (row, scoring) => {
+function tooltip(row, scoring) {
     const bytes = scoring === 'Bytes' ? row.bytes : row.chars_bytes;
     const chars = scoring === 'Chars' ? row.chars : row.bytes_chars;
 
     return `${scoring} solution is ${comma(bytes)} bytes` +
         (chars !== null ? `, ${comma(chars)} chars.` : '.');
-};
+}
 
-const getScoring = (str, index) =>
-    scorings[index] == 'Bytes' ? byteLen(str) : charLen(str);
+function getScoring(str, index) {
+    return scorings[index] == 'Bytes' ? byteLen(str) : charLen(str);
+}
