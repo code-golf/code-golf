@@ -222,8 +222,11 @@ async function refreshScores() {
         }
         else {
             tab.href = '';
-            tab.onclick =
-                e => { e.preventDefault(); setScoring(i); refreshScores() };
+            tab.onclick = e => {
+                e.preventDefault();
+                localStorage.setItem('scoring', scorings[scoring = i]);
+                refreshScores();
+            };
         }
     }
 }
@@ -253,10 +256,6 @@ function setCodeForLangAndSolution() {
 
     for (const info of document.querySelectorAll('main .info'))
         info.style.display = info.classList.contains(lang) ? 'block' : '';
-}
-
-function setScoring(value) {
-    localStorage.setItem('scoring', scorings[scoring = value]);
 }
 
 function setSolution(value) {
