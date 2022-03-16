@@ -1981,6 +1981,52 @@ Then I'm sure she sells seashore shells.
 </blockquote>
 '''
 
+[Turtle]
+category = "Art"
+experiment = 622 
+preamble = """
+<p>
+  Given a single argument containing multiple lines of space separated instructions containing distance and direction <b>(N, E, S, or W)</b>.
+</p>
+
+<p>
+  You must move the turtle 🐢 <b><(U+1F422) </b>corespondingly from the start 🏁 <b>(U+1F3C1)</b> and draw a path using ⬜ <b>(U+2B1C)</b> filing the empty squares with 🟩 <b>(U+1F7E9)</b>
+</p>
+
+<p>
+  <b><u>
+    Example:
+  </u></b>
+</p>
+
+<p>
+  <u>
+    Input:
+  </u>
+<pre>
+5 N
+3 W
+2 S
+7 E</pre>
+  <u>
+    Output:
+  </u>
+<pre>⬜⬜⬜⬜🟩🟩🟩🟩
+⬜🟩🟩⬜🟩🟩🟩🟩
+⬜⬜⬜⬜⬜⬜⬜🐢
+🟩🟩🟩⬜🟩🟩🟩🟩
+🟩🟩🟩⬜🟩🟩🟩🟩
+🟩🟩🟩🏁🟩🟩🟩🟩</pre>
+</p>
+
+<p>
+  The turtle starts at the flag and moves 5 units north, 3 units west, 2 units south, and 7 units east, intersecting the previous path. Keep in mind
+  <b>
+    if the turtle ends up at the beginning,  print the turtle but not the flag
+  </b>
+</p>
+"""
+
 ['United States']
 category = 'Transform'
 data = '''

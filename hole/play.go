@@ -113,6 +113,8 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 		args, answer = timeDistance()
 	case "united-states":
 		args, answer = unitedStates()
+	case "turtle":
+		args, answer = turtle()
 	default:
 		// ¯\_(ツ)_/¯ cannot embed file answers/√2.txt: invalid name √2.txt
 		if holeID == "√2" {
