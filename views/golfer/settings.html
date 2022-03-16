@@ -50,7 +50,7 @@
         {{ range $.Data.Connections }}
             {{ if eq $id .Connection }}
                 {{ $missing = false }}
-                {{/* TODO Go 1.18+ use break to leave the loop */}}
+                {{break}}
             {{ end }}
         {{ end }}
 

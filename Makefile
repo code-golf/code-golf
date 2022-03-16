@@ -82,8 +82,8 @@ font:
 lint:
 	@node_modules/.bin/eslint js
 
-	@docker run --rm -v $(CURDIR):/app -w /app \
-	    golangci/golangci-lint:v1.44.0 golangci-lint run
+	@docker build -t code-golf-lint -f docker/lint.Dockerfile .
+	@docker run --rm -v $(CURDIR):/app -w /app code-golf-lint golangci-lint run
 
 live:
 	@docker build --pull -f docker/live.Dockerfile -t codegolf/code-golf .

@@ -116,3 +116,8 @@ func Time(t time.Time) template.HTML {
 
 	return template.HTML(sb.String())
 }
+
+func Title(s string) string {
+	//nolint:staticcheck strings.Title is deprecated but good enough for us.
+	return strings.Title(s)
+}

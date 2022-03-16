@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strings"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/code-golf/code-golf/config"
@@ -101,7 +100,7 @@ func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
 	for _, scoring := range []string{"bytes", "chars", "bytes/chars"} {
 		if fieldValues[scoring] != "" {
 			embed.Fields = append(embed.Fields, &discordgo.MessageEmbedField{
-				Name:   strings.Title(scoring),
+				Name:   pretty.Title(scoring),
 				Value:  fieldValues[scoring],
 				Inline: true,
 			})

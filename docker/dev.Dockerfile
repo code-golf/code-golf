@@ -1,4 +1,4 @@
-FROM golang:1.17.8-alpine3.15
+FROM golang:1.18.0-alpine3.15
 
 ENV CGO_ENABLED=0 GOPATH= TZ=Europe/London
 
@@ -14,9 +14,9 @@ COPY --from=codegolf/lang-zig        ["/", "/langs/zig/rootfs/"       ] #  270 M
 COPY --from=codegolf/lang-d          ["/", "/langs/d/rootfs/"         ] #  253 MiB
 COPY --from=codegolf/lang-crystal    ["/", "/langs/crystal/rootfs/"   ] #  242 MiB
 COPY --from=codegolf/lang-powershell ["/", "/langs/powershell/rootfs/"] #  177 MiB
+COPY --from=codegolf/lang-go         ["/", "/langs/go/rootfs/"        ] #  145 MiB
 COPY --from=codegolf/lang-c-sharp    ["/", "/langs/c-sharp/rootfs/"   ] #  144 MiB
 COPY --from=codegolf/lang-f-sharp    ["/", "/langs/f-sharp/rootfs/"   ] #  139 MiB
-COPY --from=codegolf/lang-go         ["/", "/langs/go/rootfs/"        ] #  135 MiB
 COPY --from=codegolf/lang-cpp        ["/", "/langs/cpp/rootfs/"       ] #  115 MiB
 COPY --from=codegolf/lang-fortran    ["/", "/langs/fortran/rootfs/"   ] # 80.6 MiB
 COPY --from=codegolf/lang-assembly   ["/", "/langs/assembly/rootfs/"  ] # 77.6 MiB

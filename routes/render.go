@@ -60,7 +60,7 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 	"symbol": func(name string) template.HTML {
 		return template.HTML(strings.ReplaceAll(string(svg[name]), "svg", "symbol"))
 	},
-	"title":      strings.Title,
+	"title":      pretty.Title,
 	"time":       pretty.Time,
 	"trimPrefix": strings.TrimPrefix,
 })
