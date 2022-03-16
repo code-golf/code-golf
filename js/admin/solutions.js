@@ -1,5 +1,3 @@
-import { comma } from '../_util';
-
 const form   = document.forms[0];
 const run    = document.querySelector('#run');
 const status = document.querySelector('#status');

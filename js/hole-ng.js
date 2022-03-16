@@ -4,7 +4,7 @@ import { EditorState, EditorView, extensions } from './_codemirror.js';
 import                                              './_copy-as-json';
 import { attachDiff }                          from './_diff';
 import pbm                                     from './_pbm.js';
-import { byteLen, charLen, comma, ord }        from './_util';
+import { byteLen, charLen, ord }               from './_util';
 
 const all         = document.querySelector('#all');
 const hole        = decodeURI(location.pathname.slice(4));

@@ -1,6 +1,4 @@
 
-export const comma = i => i.toLocaleString('en');
-
 // Adapted from https://codegolf.stackexchange.com/a/119563.
 export const ord = i => [, 'st', 'nd', 'rd'][i % 100 >> 3 ^ 1 && i % 10] || 'th';
 
