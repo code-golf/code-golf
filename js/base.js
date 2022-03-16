@@ -26,13 +26,9 @@ for (const input of document.querySelectorAll('[list]')) {
 
         if (input.value != '')
             input.list.append(...(await (await fetch(
-                '/api/suggestions/' + input.list.id + '?' +
+                `/api/suggestions/${input.list.id}?` +
                     new URLSearchParams({ ...input.dataset, q: input.value }),
                 { signal: (controller = new AbortController()).signal },
-            )).json()).map(suggestion => {
-                const option = document.createElement('option');
-                option.value = suggestion;
-                return option;
-            }));
+            )).json()).map(suggestion => <option value={suggestion}/>));
     };
 }
