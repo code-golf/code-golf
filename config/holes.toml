@@ -106,6 +106,30 @@ links = [
 ]
 preamble = '''
 <p>For each Arabic numeral argument print the same number in Roman numerals.
+<p>The input ranges from 1 to 3999 inclusive.
+<p><div id=roman>
+<table>
+    <thead>
+        <tr>
+            <th>Arabic.
+            <th>Roman
+    <tbody>
+        <tr><td>1<td>Ⅰ
+        <tr><td>2<td>Ⅱ
+        <tr><td>3<td>Ⅲ
+        <tr><td>4<td>Ⅳ
+        <tr><td>5<td>Ⅴ
+        <tr><td>6<td>Ⅵ
+        <tr><td>7<td>Ⅶ
+        <tr><td>8<td>Ⅷ
+        <tr><td>9<td>Ⅸ
+        <tr><td>10<td>Ⅹ
+        <tr><td>50<td>Ⅼ
+        <tr><td>100<td>Ⅽ
+        <tr><td>500<td>Ⅾ
+        <tr><td>1000<td>Ⅿ
+</table>
+</div>
 '''
 
 [Arrows]
@@ -125,7 +149,7 @@ data = '''
 }'''
 preamble = '''
 <p>
-    Starting at <b>[0, 0]</b> print the result of applying each of the given
+    Starting at <b>[0, 0]</b> print the cumulative result of applying each of the given
     Unicode arrow arguments. The arrows will be a random combination of these:
 
 <table id=arrows>
@@ -693,7 +717,7 @@ preamble = '''
     If the check digit would be 10, write "X" instead.
 
 <p>
-    The check digit of <code>a-bcdef-ghi-<i>?</i></code> is computed as <b>11 − (10a + 9b + 8c + … + 2i)</b>, modulo 11.
+    The check digit of <code>a-bcdef-ghi-<i>?</i></code> is computed as <b>− 10a - 9b - 8c - … - 2i</b>, modulo 11.
     Dashes may occur in varying positions and are ignored.
 '''
 
@@ -1580,6 +1604,30 @@ links = [
 ]
 preamble = '''
 <p>For each Roman numeral argument print the same number in Arabic numerals.
+<p>The input ranges from 1 to 3999 inclusive.
+<p><div id=roman>
+<table>
+    <thead>
+        <tr>
+            <th>Arabic.
+            <th>Roman
+    <tbody>
+        <tr><td>1<td>Ⅰ
+        <tr><td>2<td>Ⅱ
+        <tr><td>3<td>Ⅲ
+        <tr><td>4<td>Ⅳ
+        <tr><td>5<td>Ⅴ
+        <tr><td>6<td>Ⅵ
+        <tr><td>7<td>Ⅶ
+        <tr><td>8<td>Ⅷ
+        <tr><td>9<td>Ⅸ
+        <tr><td>10<td>Ⅹ
+        <tr><td>50<td>Ⅼ
+        <tr><td>100<td>Ⅽ
+        <tr><td>500<td>Ⅾ
+        <tr><td>1000<td>Ⅿ
+</table>
+</div>
 '''
 
 ['Reverse Polish Notation']
