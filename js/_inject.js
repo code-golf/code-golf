@@ -1,5 +1,8 @@
 // Exports injected into every JS file by default.
 
+// Small util functions.
+export const $     = document.querySelector.bind(document);
+export const $$    = document.querySelectorAll.bind(document);
 export const comma = i => i.toLocaleString('en');
 
 // Our default JSX factory.

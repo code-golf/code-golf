@@ -1,9 +1,9 @@
 const form   = document.forms[0];
-const run    = document.querySelector('#run');
-const status = document.querySelector('#status');
-const stop   = document.querySelector('#stop');
-const table  = document.querySelector('table');
-const tbody  = document.querySelector('tbody');
+const run    = $('#run');
+const status = $('#status');
+const stop   = $('#stop');
+const table  = $('table');
+const tbody  = $('tbody');
 
 const reduce = (acc, cur) => ({ ...acc, [cur.value]: cur.label });
 const holes  = [...form.hole.options].reduce(reduce, {});

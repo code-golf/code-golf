@@ -1,7 +1,7 @@
 const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 // Add current time zone to the redirect URI of any log in links.
-for (const a of document.querySelectorAll('.log-in')) {
+for (const a of $$('.log-in')) {
     const url = new URL(a.href);
 
     const redirect = new URL(url.searchParams.get('redirect_uri'));
@@ -12,12 +12,11 @@ for (const a of document.querySelectorAll('.log-in')) {
 }
 
 // Wire up mobile form navigation.
-document.querySelector('#form-nav')?.addEventListener('change', e =>
-    location = [...new FormData(e.target.form).values()].filter(v =>
-        v.length).join('/'));
+$('#form-nav')?.addEventListener('change', e => location =
+    [...new FormData(e.target.form).values()].filter(v => v.length).join('/'));
 
 // Add suggestions to any input with a list.
-for (const input of document.querySelectorAll('[list]')) {
+for (const input of $$('[list]')) {
     let controller;
 
     input.oninput = async () => {

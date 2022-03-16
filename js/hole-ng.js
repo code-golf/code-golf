@@ -6,22 +6,22 @@ import { attachDiff }                          from './_diff';
 import pbm                                     from './_pbm.js';
 import { byteLen, charLen, ord }               from './_util';
 
-const all         = document.querySelector('#all');
+const all         = $('#all');
 const hole        = decodeURI(location.pathname.slice(4));
-const langs       = JSON.parse(document.querySelector('#langs').innerText);
-const popups      = document.querySelector('#popups');
-const rankings    = document.querySelector('#rankings');
-const scoringTabs = document.querySelectorAll('#scoringTabs a');
-const select      = document.querySelector('select');
-const solutions   = JSON.parse(document.querySelector('#solutions').innerText);
-const status      = document.querySelector('#status');
-const statusH2    = document.querySelector('#status h2');
-const strokes     = document.querySelector('#strokes');
-const thirdParty  = document.querySelector('#thirdParty');
-const diffContent = document.querySelector('#diff');
+const langs       = JSON.parse($('#langs').innerText);
+const popups      = $('#popups');
+const rankings    = $('#rankings');
+const scoringTabs = $$('#scoringTabs a');
+const select      = $('select');
+const solutions   = JSON.parse($('#solutions').innerText);
+const status      = $('#status');
+const statusH2    = $('#status h2');
+const strokes     = $('#strokes');
+const thirdParty  = $('#thirdParty');
+const diffContent = $('#diff');
 
-const darkMode = matchMedia(JSON.parse(document.querySelector(
-    '#darkModeMediaQuery').innerText)).matches;
+const darkMode =
+    matchMedia(JSON.parse($('#darkModeMediaQuery').innerText)).matches;
 
 const baseExtensions =
     darkMode ? [...extensions.dark, ...extensions.base] : extensions.base;
@@ -48,7 +48,7 @@ const editor = new EditorView({
 
         return result;
     },
-    parent: document.querySelector('#editor'),
+    parent: $('#editor'),
 });
 
 editor.contentDOM.setAttribute('data-gramm', 'false');  // Disable Grammarly.
@@ -56,7 +56,7 @@ editor.contentDOM.setAttribute('data-gramm', 'false');  // Disable Grammarly.
 // Update UI.
 async function update() {
     // From left to right... update lang select.
-    const svg = document.querySelector('#' + lang);
+    const svg = $('#' + lang);
     svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     const color = (darkMode ? '#1e2124' : '#fdfdfd').replaceAll('#', '%23');
     const data = svg.outerHTML.replaceAll('currentColor', color)
@@ -138,7 +138,7 @@ const switchLang = onhashchange = () => {
     else
         scoringTabs[1].style.display = '';
 
-    for (const info of document.querySelectorAll('main .info'))
+    for (const info of $$('main .info'))
         info.style.display = info.classList.contains(lang) ? 'block' : '';
 
     // Dispatch to update strokes.
@@ -155,8 +155,8 @@ select.onchange = () => {
 switchLang();
 
 // Run Code
-const runCode = document.querySelector('#run a').onclick = async () => {
-    document.querySelectorAll('canvas').forEach(e => e.remove());
+const runCode = $('#run a').onclick = async () => {
+    $$('canvas').forEach(e => e.remove());
 
     status.style.display = 'none';
 
@@ -180,15 +180,14 @@ const runCode = document.querySelector('#run a').onclick = async () => {
     status.style.background = data.Pass ? 'var(--green)' : 'var(--red)';
     statusH2.innerText      = data.Pass ? 'Pass 😀'      : 'Fail ☹️';
 
-    document.querySelector('#arguments').replaceChildren(...data.Argv.map(arg =>
-        <span>{arg}</span>,
-    ));
+    $('#arguments').replaceChildren(
+        ...data.Argv.map(arg => <span>{arg}</span>));
 
     attachDiff(diffContent, hole, data.Exp, data.Out, data.Argv, true);
 
-    document.querySelector('#errors').innerHTML   = data.Err;
-    document.querySelector('#expected').innerText = data.Exp;
-    document.querySelector('#output').innerText   = data.Out;
+    $('#errors').innerHTML   = data.Err;
+    $('#expected').innerText = data.Exp;
+    $('#output').innerText   = data.Out;
 
     // 3rd party integrations.
     thirdParty.replaceChildren( lang == 'hexagony' ? <a target="_blank" href={
@@ -197,7 +196,7 @@ const runCode = document.querySelector('#run a').onclick = async () => {
     }>Run on Hexagony.net</a> : '' );
 
     if (hole == 'julia-set')
-        document.querySelector('main').append(pbm(data.Exp), pbm(data.Out) ?? []);
+        $('main').append(pbm(data.Exp), pbm(data.Out) ?? []);
 
     status.style.display = 'grid';
 

@@ -3,21 +3,21 @@ import                                './_copy-as-json';
 import { attachDiff }            from './_diff';
 import { byteLen, charLen, ord } from './_util';
 
-const chars              = document.querySelector('#strokes');
-const darkModeMediaQuery = JSON.parse(document.querySelector('#darkModeMediaQuery').innerText);
-const experimental       = JSON.parse(document.querySelector('#experimental').innerText);
+const chars              = $('#strokes');
+const darkModeMediaQuery = JSON.parse($('#darkModeMediaQuery').innerText);
+const experimental       = JSON.parse($('#experimental').innerText);
 const hole               = decodeURI(location.pathname.slice(1));
-const langs              = JSON.parse(document.querySelector('#langs').innerText);
-const picker             = document.querySelector('#picker');
-const popups             = document.querySelector('#popups');
-const restoreLink        = document.querySelector('#restoreLink');
+const langs              = JSON.parse($('#langs').innerText);
+const picker             = $('#picker');
+const popups             = $('#popups');
+const restoreLink        = $('#restoreLink');
 const scorings           = ['Bytes', 'Chars'];
-const scoringTabs        = document.querySelectorAll('#scoringTabs a');
-const solutionPicker     = document.querySelector('#solutionPicker');
-const solutions          = JSON.parse(document.querySelector('#solutions').innerText);
-const status             = document.querySelector('#status');
-const table              = document.querySelector('#scores');
-const diff               = document.querySelector('#diff');
+const scoringTabs        = $$('#scoringTabs a');
+const solutionPicker     = $('#solutionPicker');
+const solutions          = JSON.parse($('#solutions').innerText);
+const status             = $('#status');
+const table              = $('#scores');
+const diff               = $('#diff');
 const sortedLangs        =
     Object.values(langs).sort((a, b) => a.name.localeCompare(b.name));
 
@@ -37,8 +37,8 @@ let scoring  = Math.max(scorings.indexOf(localStorage.getItem('scoring')),  0);
 // By the time they are non-empty, the savedInDB state will have been updated.
 let savedInDB = !experimental;
 
-const keymap = JSON.parse(document.querySelector('#keymap').innerText);
-const cm     = new CodeMirror(document.querySelector('#editor'), {
+const keymap = JSON.parse($('#keymap').innerText);
+const cm     = new CodeMirror($('#editor'), {
     autofocus:   true,
     indentUnit:  1,
     lineNumbers: true,
@@ -71,7 +71,7 @@ cm.on('change', () => {
 });
 
 // Set/clear the hide-details cookie on details toggling.
-document.querySelector('#details').ontoggle = e => document.cookie =
+$('#details').ontoggle = e => document.cookie =
     'hide-details=;SameSite=Lax;Secure' + (e.target.open ? ';Max-Age=0' : '');
 
 restoreLink.onclick = e => {
@@ -98,7 +98,7 @@ restoreLink.onclick = e => {
 })();
 
 // Wire up submit to clicking, keyboard, and maybe vim shortcut.
-document.querySelector('#run a').onclick = submit;
+$('#run a').onclick = submit;
 
 onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter' ? submit() : undefined;
 
@@ -186,7 +186,7 @@ async function refreshScores() {
     const res       = await fetch(`/scores${path}/mini`);
     const rows      = res.ok ? await res.json() : [];
 
-    document.querySelector('#allLink').href = '/rankings/holes' + path;
+    $('#allLink').href = '/rankings/holes' + path;
 
     table.replaceChildren(<tbody class={scoringID}>{
         // Rows.
@@ -249,7 +249,7 @@ function setCodeForLangAndSolution() {
 
     refreshScores();
 
-    for (const info of document.querySelectorAll('main .info'))
+    for (const info of $$('main .info'))
         info.style.display = info.classList.contains(lang) ? 'block' : '';
 }
 
@@ -258,7 +258,7 @@ function setSolution(value) {
 }
 
 async function submit() {
-    document.querySelector('h2').innerText = '…';
+    $('h2').innerText = '…';
     status.className = 'grey';
 
     const code = cm.getValue();
@@ -334,12 +334,12 @@ async function submit() {
     // solution.
     updateRestoreLinkVisibility();
 
-    document.querySelector('h2').innerText = data.Pass ? 'Pass 😀' : 'Fail ☹️';
+    $('h2').innerText = data.Pass ? 'Pass 😀' : 'Fail ☹️';
 
     // Show args if we have 'em.
     if (data.Argv.length) {
-        document.querySelector('#arg').style.display = 'block';
-        const argDiv = document.querySelector('#arg div');
+        $('#arg').style.display = 'block';
+        const argDiv = $('#arg div');
         // Remove all arg spans
         while (argDiv.firstChild) {
             argDiv.removeChild(argDiv.firstChild);
@@ -352,21 +352,21 @@ async function submit() {
         }
     }
     else
-        document.querySelector('#arg').style.display = '';
+        $('#arg').style.display = '';
 
     // Show err if we have some and we're not passing.
     if (data.Err && !data.Pass) {
-        document.querySelector('#err').style.display = 'block';
-        document.querySelector('#err div').innerHTML = data.Err.replace(/\n/g, '<br>');
+        $('#err').style.display = 'block';
+        $('#err div').innerHTML = data.Err.replace(/\n/g, '<br>');
     }
     else
-        document.querySelector('#err').style.display = '';
+        $('#err').style.display = '';
 
     // Always show exp & out.
-    document.querySelector('#exp div').innerText = data.Exp;
-    document.querySelector('#out div').innerText = data.Out;
+    $('#exp div').innerText = data.Exp;
+    $('#out div').innerText = data.Out;
 
-    const diffContent = document.querySelector('#diff-content');
+    const diffContent = $('#diff-content');
     const diffVisible = attachDiff(diffContent, hole, data.Exp, data.Out, data.Argv, false);
     diff.style.display = diffVisible ? 'block' : 'none';
 
