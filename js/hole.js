@@ -5,6 +5,7 @@ import { byteLen, charLen, comma, ord } from './_util';
 
 const chars              = document.querySelector('#strokes');
 const darkModeMediaQuery = JSON.parse(document.querySelector('#darkModeMediaQuery').innerText);
+const experimental       = JSON.parse(document.querySelector('#experimental').innerText);
 const hole               = decodeURI(location.pathname.slice(1));
 const langs              = JSON.parse(document.querySelector('#langs').innerText);
 const picker             = document.querySelector('#picker');
@@ -26,15 +27,15 @@ let latestSubmissionID = 0;
 let solution = Math.max(scorings.indexOf(localStorage.getItem('solution')), 0);
 let scoring  = Math.max(scorings.indexOf(localStorage.getItem('scoring')),  0);
 
-// The loggedIn state is used to avoid saving solutions in localStorage when
+// The savedInDB state is used to avoid saving solutions in localStorage when
 // those solutions match the solutions in the database. It's used to avoid
 // restoring a solution from localStorage when the user has improved that
-// solution on a different browser. Assume the user is logged-in by default.
-// At this point, it doesn't matter whether the user is actually logged-in,
-// because solutions dictionaries will initially be empty for users who aren't
-// logged-in, so the loggedIn state will not be used. By the time they are
-// non-empty, the loggedIn state will have been updated.
-let loggedIn = true;
+// solution on a different browser. Assume the user is logged-in by default
+// for non-experimental holes. At this point, it doesn't matter whether the
+// user is actually logged-in, because solutions dictionaries will be empty
+// for users who aren't logged-in, so the savedInDB state won't be used.
+// By the time they are non-empty, the savedInDB state will have been updated.
+let savedInDB = !experimental;
 
 const keymap = JSON.parse(document.querySelector('#keymap').innerText);
 const cm     = new CodeMirror(document.querySelector('#editor'), {
@@ -61,7 +62,7 @@ cm.on('change', () => {
     const serverCode = getSolutionCode(lang, solution);
 
     const key = getAutoSaveKey(lang, solution);
-    if (code && (code != serverCode || !loggedIn))
+    if (code && (code !== serverCode || !savedInDB) && code !== langs[lang].example)
         localStorage.setItem(key, code);
     else
         localStorage.removeItem(key);
@@ -279,7 +280,7 @@ async function submit() {
     }
 
     const data = await res.json();
-    loggedIn = data.LoggedIn;
+    savedInDB = data.LoggedIn && !experimental;
 
     if (submissionID != latestSubmissionID)
         return;
@@ -293,7 +294,7 @@ async function submit() {
                 // Don't need to keep solution in local storage because it's
                 // stored on the site. This prevents conflicts when the
                 // solution is improved on another browser.
-                if (loggedIn && localStorage.getItem(getAutoSaveKey(codeLang, i)) == code)
+                if (savedInDB && localStorage.getItem(getAutoSaveKey(codeLang, i)) == code)
                     localStorage.removeItem(getAutoSaveKey(codeLang, i));
             }
         }
@@ -301,7 +302,7 @@ async function submit() {
 
     for (let i = 0; i < scorings.length; i++) {
         const key = getAutoSaveKey(codeLang, i);
-        if (loggedIn) {
+        if (savedInDB) {
             // If the auto-saved code matches either solution, remove it to
             // avoid prompting the user to restore it.
             const autoSaveCode = localStorage.getItem(key);
@@ -314,7 +315,8 @@ async function submit() {
             // Autosave the best solution for each scoring metric, but don't
             // save two copies of the same solution, because that can lead to
             // the solution picker being show unnecessarily.
-            if (i == 0 || getSolutionCode(codeLang, 0) != getSolutionCode(codeLang, i))
+            if ((i == 0 || getSolutionCode(codeLang, 0) != getSolutionCode(codeLang, i)) &&
+                getSolutionCode(codeLang, i) !== langs[codeLang].example)
                 localStorage.setItem(key, getSolutionCode(codeLang, i));
             else
                 localStorage.removeItem(key);
