@@ -19,6 +19,6 @@ jobs:
       - run: npm install
       - run: make lint
       - run: make test
-      - run: go get filippo.io/mkcert
+      - run: go install filippo.io/mkcert@latest
       - run: make cert
       - run: make e2e
