@@ -68,9 +68,8 @@ class HoleWebDriver is WebDriver is export {
     }
 
     method getSolutionLink(Str:D $solution) {
-        # Use CSS to find links, because the link text also includes the number of bytes/chars.
         # Don't try again, if not found. Sometimes these links aren't present.
-        $.find("#{$solution.tc}Solution");
+        $.find("Fewest $solution.tc()", :using(PartialLinkText)).first(*.visible);
     }
 
     method getScoringLink(Str:D $scoring) {

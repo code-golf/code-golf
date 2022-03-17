@@ -13,7 +13,6 @@ const popups             = $('#popups');
 const restoreLink        = $('#restoreLink');
 const scorings           = ['Bytes', 'Chars'];
 const scoringTabs        = $$('#scoringTabs a');
-const solutionPicker     = $('#solutionPicker');
 const solutions          = JSON.parse($('#solutions').innerText);
 const status             = $('#status');
 const table              = $('#scores');
@@ -121,48 +120,8 @@ function getSolutionCode(lang, solution) {
     return lang in solutions[solution] ? solutions[solution][lang] : '';
 }
 
-function populateSolutionPicker() {
-    while (solutionPicker.firstChild)
-        solutionPicker.removeChild(solutionPicker.firstChild);
-
-    const code0 = getSolutionCode(lang, 0);
-    const code1 = getSolutionCode(lang, 1);
-    const autoSave0 = localStorage.getItem(getAutoSaveKey(lang, 0));
-    const autoSave1 = localStorage.getItem(getAutoSaveKey(lang, 1));
-
-    // Only show the solution picker when both solutions are actually used.
-    if (code0 && code1 && code0 != code1 || autoSave0 && autoSave1 && autoSave0 != autoSave1 ||
-        // If a logged-in user has an auto-saved solution for the other
-        // metric, that they have not submitted since logging in, they must be
-        // allowed to switch to it, so they can submit it.
-        (solution == 0 && code0 && autoSave1 && code0 != autoSave1) ||
-        (solution == 1 && autoSave0 && code1 && autoSave0 != code1)) {
-        for (let i = 0; i < scorings.length; i++) {
-            let name = `Fewest ${scorings[i]}`;
-
-            const solutionCode = getSolutionCode(lang, i);
-            if (solutionCode) {
-                name += ` <sup>${comma(getScoring(solutionCode, i))}</sup>`;
-            }
-
-            const child = document.createElement('a');
-            child.id = `${scorings[i]}Solution`;
-            child.innerHTML = name;
-            if (i != solution) {
-                child.href = '';
-                child.onclick = e => {
-                    e.preventDefault();
-                    setSolution(i);
-                    setCodeForLangAndSolution();
-                };
-            }
-            solutionPicker.appendChild(child);
-        }
-    }
-}
-
 async function refreshScores() {
-    // Rebuild the language picker with accurate stroke counts.
+    // Populate the language picker with accurate stroke counts.
     picker.replaceChildren(...sortedLangs.map(l => {
         const tab = <a href={l.id == lang ? null : '#'+l.id}>{l.name}</a>;
 
@@ -179,8 +138,45 @@ async function refreshScores() {
         return tab;
     }));
 
-    populateSolutionPicker();
+    // Populate (and show) the solution picker if necessary.
+    //
+    // We have two database solutions (or local solutions) and they differ.
+    // Or if a logged-in user has an auto-saved solution for the other metric,
+    // that they have not submitted since logging in, they must be allowed to
+    // switch to it, so they can submit it.
+    const dbBytes = getSolutionCode(lang, 0);
+    const dbChars = getSolutionCode(lang, 1);
+    const lsBytes = localStorage.getItem(getAutoSaveKey(lang, 0));
+    const lsChars = localStorage.getItem(getAutoSaveKey(lang, 1));
 
+    if ((dbBytes && dbChars && dbBytes != dbChars)
+     || (lsBytes && lsChars && lsBytes != lsChars)
+     || (dbBytes && lsChars && dbBytes != lsChars && solution == 0)
+     || (lsBytes && dbChars && lsBytes != dbChars && solution == 1)) {
+        $('#solutionPicker').replaceChildren(...scorings.map((scoring, i) => {
+            const a = <a>Fewest {scoring}</a>;
+
+            const code = getSolutionCode(lang, i);
+            if (code) a.append(' ', <sup>{comma(getScoring(code, i))}</sup>);
+
+            if (i != solution) {
+                a.href = '';
+                a.onclick = e => {
+                    e.preventDefault();
+                    setSolution(i);
+                    setCodeForLangAndSolution();
+                };
+            }
+
+            return a;
+        }));
+
+        $('#solutionPicker').style.display = '';
+    }
+    else
+        $('#solutionPicker').style.display = 'none';
+
+    // Populate the rankings table.
     const scoringID = scorings[scoring].toLowerCase();
     const path      = `/${hole}/${lang}/${scoringID}`;
     const res       = await fetch(`/scores${path}/mini`);
