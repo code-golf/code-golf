@@ -333,22 +333,8 @@ async function submit() {
     $('h2').innerText = data.Pass ? 'Pass 😀' : 'Fail ☹️';
 
     // Show args if we have 'em.
-    if (data.Argv.length) {
-        $('#arg').style.display = 'block';
-        const argDiv = $('#arg div');
-        // Remove all arg spans
-        while (argDiv.firstChild) {
-            argDiv.removeChild(argDiv.firstChild);
-        }
-        // Add a span for each arg
-        for (const arg of data.Argv) {
-            argDiv.appendChild(document.createElement('span'));
-            argDiv.lastChild.innerText = arg;
-            argDiv.appendChild(document.createTextNode(' '));
-        }
-    }
-    else
-        $('#arg').style.display = '';
+    $('#arg div').replaceChildren(...data.Argv.map(a => <span>{a}</span>));
+    $('#arg').style.display = data.Argv.length ? 'block' : '';
 
     // Show err if we have some and we're not passing.
     if (data.Err && !data.Pass) {
