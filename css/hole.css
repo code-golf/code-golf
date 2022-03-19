@@ -216,4 +216,8 @@ thead { user-select: none }
 
 #restoreLink { display: none }
 
-@media (max-width: 34rem) { section { grid-template-columns: 1fr } }
+@media (max-width: 34rem) {
+    section { grid-template-columns: 1fr }
+
+    #editor { border-width: 1px }
+}
