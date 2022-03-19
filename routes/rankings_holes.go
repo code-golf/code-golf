@@ -42,7 +42,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		Scoring: param(r, "scoring"),
 	}
 
-	var holeIDs interface{}
+	var holeIDs any
 	if data.Recent {
 		data.HoleID = "all"
 		holeIDs = recentHoleIDs

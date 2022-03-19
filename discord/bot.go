@@ -118,8 +118,8 @@ func AwardRoles(db *sql.DB) error {
 
 	// Make maps of members with contributor or sponsor roles. TODO Paginate.
 	var (
-		contributors = map[string]interface{}{}
-		sponsors     = map[string]interface{}{}
+		contributors = map[string]any{}
+		sponsors     = map[string]any{}
 	)
 	members, err := bot.GuildMembers(guildID, "", 1000)
 	if err != nil {

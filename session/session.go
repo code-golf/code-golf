@@ -10,7 +10,7 @@ import (
 
 type key string
 
-func Set(r *http.Request, k string, v interface{}) *http.Request {
+func Set(r *http.Request, k string, v any) *http.Request {
 	return r.WithContext(context.WithValue(r.Context(), key(k), v))
 }
 

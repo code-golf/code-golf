@@ -179,7 +179,7 @@ func init() {
 	}
 }
 
-func render(w http.ResponseWriter, r *http.Request, name string, data ...interface{}) {
+func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	type CheevoBanner struct {
 		Cheevo     *config.Cheevo
 		During     bool
@@ -197,7 +197,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...interfa
 		CheevoBanner                                    *CheevoBanner
 		Cheevos                                         map[string][]*config.Cheevo
 		Countries                                       map[string]*config.Country
-		Data, Description, Title                        interface{}
+		Data, Description, Title                        any
 		DarkModeMediaQuery, LogInURL, Name, Nonce, Path string
 		Golfer                                          *golfer.Golfer
 		GolferInfo                                      *golfer.GolferInfo

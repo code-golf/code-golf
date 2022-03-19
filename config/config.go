@@ -25,7 +25,7 @@ func id(name string) string {
 	return strings.ToLower(name)
 }
 
-func unmarshal(file string, value interface{}) {
+func unmarshal(file string, value any) {
 	if data, err := tomls.ReadFile(file); err != nil {
 		panic(err)
 	} else if err := toml.Unmarshal(data, value); err != nil {

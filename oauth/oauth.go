@@ -94,7 +94,7 @@ func init() {
 
 // *sql.DB or *sql.Tx - https://github.com/golang/go/issues/14468
 type DBTx interface {
-	Query(string, ...interface{}) (*sql.Rows, error)
+	Query(string, ...any) (*sql.Rows, error)
 }
 
 func GetConnections(db DBTx, golferID int, onlyPublic bool) (conns []Connection) {

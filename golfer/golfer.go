@@ -14,7 +14,7 @@ import (
 
 type FailingSolutions []struct{ Hole, Lang string }
 
-func (f *FailingSolutions) Scan(src interface{}) error {
+func (f *FailingSolutions) Scan(src any) error {
 	return json.Unmarshal(src.([]byte), f)
 }
 

@@ -87,7 +87,7 @@ func rankingsCheevosGET(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	description := interface{}("All achievements")
+	description := any("All achievements")
 	if cheevo := data.Cheevo; cheevo != nil {
 		description = template.HTML(cheevo.Emoji+" "+cheevo.Name+" - ") + cheevo.Description
 	}
