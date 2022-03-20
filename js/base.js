@@ -31,3 +31,6 @@ for (const input of $$('[list]')) {
             )).json()).map(suggestion => <option value={suggestion}/>));
     };
 }
+
+for (const dialog of $$('dialog'))
+    dialog.onclick = e => e.target == dialog ? dialog.close() : null;

@@ -125,6 +125,28 @@ body > header svg {
     width: 1.5rem;
 }
 
+dialog {
+    background: var(--background);
+    color: var(--color);
+    margin: auto;
+    max-width: 25rem;
+}
+
+dialog::backdrop { backdrop-filter: blur(.25rem) }
+
+dialog form {
+    display: grid;
+    gap: 1rem;
+}
+
+form menu {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 1rem;
+    justify-content: space-between;
+    padding: 0;
+}
+
 input:not([type]) {
     background: var(--background);
 }
@@ -264,7 +286,9 @@ thead th {
     white-space: nowrap;
 }
 
-.btn:hover {
+.btn[disabled] { opacity: .5 }
+
+.btn:not([disabled]):hover {
     background: none;
     color: var(--color);
     cursor: pointer;

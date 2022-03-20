@@ -54,6 +54,7 @@ func Router(db *sql.DB) http.Handler {
 		r.Post("/cancel-delete", golferCancelDeletePOST)
 		r.Get("/connect/{connection}", golferConnectGET)
 		r.Post("/delete", golferDeletePOST)
+		r.Post("/delete-solution", golferDeleteSolutionPOST)
 		r.Get("/disconnect/{connection}", golferDisconnectGET)
 		r.Get("/export", golferExportGET)
 		r.Get("/settings", golferSettingsGET)

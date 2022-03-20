@@ -121,6 +121,8 @@ section header {
     line-height: 2rem;
 }
 
+#deleteBtn { display: none }
+
 #editor {
     border: 1px solid var(--color);
     border-right-width: 0;
@@ -163,10 +165,14 @@ main > header nav {
 #run {
     align-items: center;
     display: flex;
+    gap: 1rem;
     justify-content: flex-end;
 }
 
-#run > span { margin: 0 1rem }
+#run span {
+    flex: 1;
+    text-align: right;
+}
 
 #scores {
     border-top: 2px solid var(--color);

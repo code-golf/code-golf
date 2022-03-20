@@ -96,12 +96,24 @@ restoreLink.onclick = e => {
 })();
 
 // Wire up submit to clicking, keyboard, and maybe vim shortcut.
-$('#run a').onclick = submit;
+$('#runBtn').onclick = submit;
 
 onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter' ? submit() : undefined;
 
 // Allow vim users to run code with :w or :write
 if (cm.getOption('vimMode')) CodeMirror.Vim.defineEx('write', 'w', submit);
+
+$('#deleteBtn').onclick = () => {
+    $('dialog b').innerText = langs[lang].name;
+    $('dialog [name=lang]').value = lang;
+    $('dialog [name=text]').value = '';
+    $('dialog').showModal();
+};
+
+$('dialog [name=text]').addEventListener('input', e => {
+    e.target.form.confirm.toggleAttribute('disabled',
+        e.target.value !== e.target.placeholder);
+});
 
 function getAutoSaveKey(lang, solution) {
     return `code_${hole}_${lang}_${solution}`;
@@ -174,6 +186,9 @@ async function refreshScores() {
     }
     else
         $('#solutionPicker').style.display = 'none';
+
+    // Show the delete button if we have solutions to delete.
+    $('#deleteBtn').style.display = dbBytes || dbChars ? 'block' : '';
 
     // Populate the rankings table.
     const scoringID = scorings[scoring].toLowerCase();

@@ -232,6 +232,6 @@ GRANT SELECT, INSERT, UPDATE         ON TABLE discord_records TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE follows         TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE ideas           TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE sessions        TO "code-golf";
-GRANT SELECT, INSERT, UPDATE         ON TABLE solutions       TO "code-golf";
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE solutions       TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE trophies        TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE users           TO "code-golf";

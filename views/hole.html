@@ -152,9 +152,9 @@
         script execution, write and quit the current buffer.
     </div>
     <div id=run>
-        ctrl + enter
-        <span>or</span>
-        <a class="btn blue">{{ svg "play-light" }} Run</a>
+        <button class="btn red" id=deleteBtn>{{ svg "trash" }} Delete</button>
+        <span>ctrl + enter</span> or
+        <button class="btn blue" id=runBtn>{{ svg "play-light" }} Run</button>
     </div>
     <div id=status>
         <h2></h2>
@@ -175,6 +175,28 @@
         </aside>
     </div>
 </main>
+
+<dialog>
+    <form action=/golfer/delete-solution autocomplete=off method=post>
+        <h2>Delete Solution</h2>
+        <p>
+            Are you sure you want to delete your <b></b> solution(s) for
+            <b>{{ .Data.Hole.Name }}</b>?
+        <p>
+            If you have seperate bytes and chars solutions then <b>both</b>
+            will be deleted.
+        <p>This is irreversible, please backup any code you care about.
+        <p>Type <b>I understand</b> and press confirm to continue.</p>
+        <input name=text placeholder="I understand">
+        <input name=hole value="{{ .Data.Hole.ID }}" type=hidden>
+        <input name=lang type=hidden>
+        <menu>
+            <!-- Enter submits the first button, we flip the order in CSS -->
+            <button class="btn green" disabled name=confirm>Confirm</button>
+            <button class="btn red" formmethod=dialog>Cancel</button>
+        </menu>
+    </form>
+</dialog>
 
 <div id=popups></div>
 
