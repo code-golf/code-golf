@@ -2,7 +2,7 @@ import { ASMStateField }                       from '@defasm/codemirror';
 import LZString                                from 'lz-string';
 import { EditorState, EditorView, extensions } from './_codemirror.js';
 import                                              './_copy-as-json';
-import { attachDiff }                          from './_diff';
+import diffTable                               from './_diff';
 import pbm                                     from './_pbm.js';
 import { byteLen, charLen, ord }               from './_util';
 
@@ -183,7 +183,8 @@ const runCode = $('#run a').onclick = async () => {
     $('#arguments').replaceChildren(
         ...data.Argv.map(arg => <span>{arg}</span>));
 
-    attachDiff(diffContent, hole, data.Exp, data.Out, data.Argv, true);
+    diffContent.replaceChildren(
+        diffTable(hole, data.Exp, data.Out, data.Argv) ?? '');
 
     $('#errors').innerHTML   = data.Err;
     $('#expected').innerText = data.Exp;

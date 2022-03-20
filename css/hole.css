@@ -73,7 +73,7 @@ section header {
 
 #arg, #err, #diff { display: none }
 
-#err, #exp, #out { white-space: pre }
+#err div, #exp div, #out div { white-space: pre }
 
 #arg div {
     align-content: flex-start;

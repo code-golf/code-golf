@@ -1,6 +1,6 @@
 import CodeMirror                from './_codemirror-legacy';
 import                                './_copy-as-json';
-import { attachDiff }            from './_diff';
+import diffTable                 from './_diff';
 import { byteLen, charLen, ord } from './_util';
 
 const chars              = $('#strokes');
@@ -16,7 +16,6 @@ const scoringTabs        = $$('#scoringTabs a');
 const solutions          = JSON.parse($('#solutions').innerText);
 const status             = $('#status');
 const table              = $('#scores');
-const diff               = $('#diff');
 const sortedLangs        =
     Object.values(langs).sort((a, b) => a.name.localeCompare(b.name));
 
@@ -348,9 +347,9 @@ async function submit() {
     $('#exp div').innerText = data.Exp;
     $('#out div').innerText = data.Out;
 
-    const diffContent = $('#diff-content');
-    const diffVisible = attachDiff(diffContent, hole, data.Exp, data.Out, data.Argv, false);
-    diff.style.display = diffVisible ? 'block' : 'none';
+    const diff = diffTable(hole, data.Exp, data.Out, data.Argv);
+    $('#diff-content').replaceChildren(diff);
+    $('#diff').style.display = diff ? 'block' : '';
 
     status.className = data.Pass ? 'green' : 'red';
     status.style.display = 'block';

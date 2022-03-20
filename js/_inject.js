@@ -9,13 +9,13 @@ export const comma = i => i.toLocaleString('en');
 export function createElement(tag, attrs, ...children) {
     const element = document.createElement(tag);
 
-    // Set all defined attributes.
+    // Set all defined/non-null attributes.
     Object.entries(attrs ?? {})
-        .filter(([     , value]) => value !== null)
+        .filter(([     , value]) => value != null)
         .forEach(([name, value]) => element.setAttribute(name, value));
 
-    // Set all defined children.
-    element.append(...children.flat().filter(e => e !== null));
+    // Set all defined/non-null children.
+    element.append(...children.flat().filter(e => e != null));
 
     return element;
 }
