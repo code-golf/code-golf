@@ -160,7 +160,7 @@ class HoleWebDriver is WebDriver is export {
     }
 
     method run {
-        $.find('Run', :using(WebDriver::Selector::LinkText)).click;
+        $.find("#runBtn").click;
     }
 
     method setScoring(Str:D $scoring) {
