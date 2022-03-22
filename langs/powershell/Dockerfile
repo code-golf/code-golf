@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0.101-alpine3.14 as builder
+FROM mcr.microsoft.com/dotnet/sdk:6.0.201-alpine3.15 as builder
 
 # /dev/urandom & /etc/passwd are needed.
 RUN mkdir /empty /mydev /myetc        \

@@ -1,10 +1,10 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0.101-alpine3.14 as builder
+FROM mcr.microsoft.com/dotnet/sdk:6.0.201-alpine3.15 as builder
 
 # /dev/urandom is needed.
 RUN mkdir /empty /mydev \
  && mknod -m 444 /mydev/urandom c 1 9
 
-ENV DOTNET_CLI_TELEMETRY_OPTOUT=1 VERSION=4.0.1
+ENV DOTNET_CLI_TELEMETRY_OPTOUT=1 VERSION=4.2.0-1.final
 
 WORKDIR /source
 

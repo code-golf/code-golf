@@ -1,12 +1,12 @@
-FROM alpine:3.14 as builder
+FROM alpine:3.15 as builder
 
 RUN mkdir /empty
 
 RUN apk add --no-cache build-base curl perl
 
-RUN curl http://www.cpan.org/src/5.0/perl-5.34.0.tar.xz | tar xJ
+RUN curl http://www.cpan.org/src/5.0/perl-5.34.1.tar.xz | tar xJ
 
-RUN mv perl-5.34.0 perl                                           \
+RUN mv perl-5.34.1 perl                                           \
  && cd perl                                                       \
  && perl -pe 's/default => \[/$& "say",/' regen/feature.pl | perl \
  && ./Configure                                                   \

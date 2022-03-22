@@ -151,8 +151,8 @@ int main(int argc, char* argv[]) {
 '''
 
 ['C#']
-size    = '144 MiB'
-version = 'C# 10.0 on .NET 6.0.1'
+size    = '145 MiB'
+version = 'C# 10.0 on .NET 6.0.3'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -265,8 +265,8 @@ void main(string[] argv) {
 '''
 
 ['F#']
-size    = '139 MiB'
-version = 'F# 6.0 on .NET 6.0.1'
+size    = '140 MiB'
+version = 'F# 6.0 on .NET 6.0.3'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -359,7 +359,7 @@ main = do
 '''
 
 [Hexagony]
-size    = '63.1 MiB'
+size    = '63.2 MiB'
 version = '4b30f58'
 website = 'https://github.com/SirBogman/Hexagony'
 example = '''
@@ -551,7 +551,7 @@ end.
 
 [Perl]
 size    = '4.32 MiB'
-version = '5.34.0'
+version = '5.34.1'
 website = 'https://www.perl.org'
 example = '''
 # Printing
@@ -583,7 +583,7 @@ for ($i = 1; $i < $argc; $i++)
 
 [PowerShell]
 size    = '177 MiB'
-version = 'PowerShell 7.2.1 on .NET 6.0.1'
+version = 'PowerShell 7.2.2 on .NET 6.0.3'
 website = 'https://docs.microsoft.com/powershell/scripting/overview'
 example = '''
 # Printing
@@ -618,8 +618,8 @@ example = '''
 '''
 
 [Python]
-size    = '57.2 MiB'
-version = '3.10.2'
+size    = '57.8 MiB'
+version = '3.10.3'
 website = 'https://www.python.org'
 example = '''
 import sys
@@ -637,8 +637,8 @@ for arg in sys.argv[1:]:
 '''
 
 [Raku]
-size    = '56.8 MiB'
-version = 'Raku 6.d on Rakudo 2022.02'
+size    = '57 MiB'
+version = 'Raku 6.d on Rakudo 2022.03'
 website = 'https://raku.org'
 example = '''
 # Printing
@@ -693,7 +693,7 @@ fn main() {
 
 [SQL]
 size    = '1.09 MiB'
-version = '3.38.0'
+version = '3.38.1'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
