@@ -2169,6 +2169,36 @@ preamble = '''
     on a new line.
 '''
 
+['Zodiac signs']
+category = 'Transform'
+experiment = 614
+links = [
+    { name = 'Wikipedia',  url = '//en.wikipedia.org/wiki/Zodiac_sign' },
+]
+preamble = '''
+<p>Given a <code>MM-DD</code> date, output the corresponding Zodiac sign symbol according to the following table.
+<p>
+<table>
+    <thead>
+        <tr><th>Sign<td>Symbol<td>Date
+    </thead>
+    <tbody>
+        <tr><td>Aries<td>♈<td>March 21 – April 19
+        <tr><td>Taurus<td>♉<td>April 20 – May 20
+        <tr><td>Gemini<td>♊<td>May 21 – June 21
+        <tr><td>Cancer<td>♋<td>June 22 – July 22
+        <tr><td>Leo<td>♌<td>July 23 – August 22
+        <tr><td>Virgo<td>♍<td>August 23 – September 22
+        <tr><td>Libra<td>♎<td>September 23 – October 22
+        <tr><td>Scorpio<td>♏<td>October 23 – November 22
+        <tr><td>Sagittarius<td>♐<td>November 23 – December 21
+        <tr><td>Capricorn<td>♑<td>December 22 – January 19
+        <tr><td>Aquarius<td>♒<td>January 20 – February 18
+        <tr><td>Pisces<td>♓<td>February 19 – March 20
+    </tbody>
+</table>
+'''
+
 ['λ']
 category = 'Mathematics'
 links = [

@@ -115,6 +115,8 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 		args, answer = unitedStates()
 	case "turtle":
 		args, answer = turtle()
+	case "zodiac-signs":
+		args, answer = zodiacSigns()
 	default:
 		// ¯\_(ツ)_/¯ cannot embed file answers/√2.txt: invalid name √2.txt
 		if holeID == "√2" {
