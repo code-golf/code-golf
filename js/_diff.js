@@ -279,16 +279,20 @@ function getDiffLines(hole, left, right, pos, argv, isArgDiff) {
     const padding = isUnchanged ? 3 : 20;
     const skipMiddle = numLines > 2 * padding + 1;
     for (let i=0; i<numLines; i++) {
-        if (skipMiddle && padding <= i && i < numLines - padding) continue;
-
         const row = <tr/>;
         rows.push(row);
 
-        if (skipMiddle && i === padding) {
-            row.append(<td class="diff-skip" colspan={isArgDiff ? 3 : 4}>
-                {`@@ ${numLines - 2 * padding} lines omitted @@`}
-            </td>);
-            continue;
+        if (skipMiddle) {
+            // In the middle; skip the line
+            if (padding < i && i < numLines - padding) continue;
+
+            // At the start of the middle; add a line saying lines omitted
+            if (i === padding) {
+                row.append(<td class="diff-skip" colspan={isArgDiff ? 3 : 4}>
+                    {`@@ ${numLines - 2 * padding} lines omitted @@`}
+                </td>);
+                continue;
+            }
         }
 
         const leftLine = leftSplit[i];
