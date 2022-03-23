@@ -8,16 +8,16 @@ for (const a of $$('.log-in')) {
 
     const redirect = new URL(url.searchParams.get('redirect_uri'));
     redirect.searchParams.set('time_zone', timeZone);
-    url.searchParams.set('redirect_uri', redirect as any);
+    url.searchParams.set('redirect_uri', redirect.href);
 
     a.href = url;
 }
 
 // Wire up mobile form navigation.
-$('#form-nav')?.addEventListener('change', e => location =
+$('#form-nav')?.addEventListener('change', e => location.href =
     [
-        ...(new FormData(e.target.form) as any).values(),
-    ].filter(v => v.length).join('/') as any);
+        ...new FormData(e.target.form).values(),
+    ].filter((v: string) => v.length).join('/'));
 
 // Add suggestions to any input with a list.
 for (const input of $$('[list]')) {

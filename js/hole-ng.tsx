@@ -32,7 +32,7 @@ let lang, scoring = 'bytes';
 const editor = new EditorView({
     dispatch: tr => {
         const result = editor.update([tr]);
-        const scorings = {} as any;
+        const scorings: {byte?: number, char?: number} = {};
 
         if (lang == 'assembly')
             scorings.byte = editor.state.field(ASMStateField).head.length();
