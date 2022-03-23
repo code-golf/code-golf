@@ -47,7 +47,7 @@ function diffWrapper(join, left, right, diffOpts) {
     // Wrapper for performance
     // Include characters until the first difference, then include 1000 characters
     // after that, and treat the rest as a single block
-    const d = firstDifference(left, right, diffOpts.shouldIgnoreCase);
+    const d = firstDifference(left, right, diffOpts.ignoreCase);
     const length = Math.min(1000, Math.max(left.length - d, right.length - d));
     // Concatenate a newline on line diff because Diff.diffLines counts
     // lines without trailing newlines as changed
@@ -208,10 +208,11 @@ function getLineChanges(hole, before, after, isArgDiff) {
         const splitBefore = lines(before);
         const splitAfter = lines(after);
         let currentUnchanged = [];
+        const ignoreCase = shouldIgnoreCase(hole);
         for (let i=0; i<Math.max(splitBefore.length, splitAfter.length); i++) {
             const a = splitBefore[i] ?? '';
             const b = splitAfter[i] ?? '';
-            const linesEqual = stringsEqual(a, b, hole);
+            const linesEqual = stringsEqual(a, b, ignoreCase);
             if (linesEqual) {
                 currentUnchanged.push(a);
             }
