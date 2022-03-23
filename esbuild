@@ -9,7 +9,6 @@ node_modules/.bin/esbuild "$@"        \
     --bundle                          \
     --entry-names=[dir]/[name]-[hash] \
     --format=esm                      \
-    --inject:js/_inject.js            \
     --jsx-factory=createElement       \
     --loader:.js=jsx                  \
     --loader:.woff2=file              \

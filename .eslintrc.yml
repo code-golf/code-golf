@@ -16,7 +16,12 @@ rules:
   indent:                      [ error ]
   keyword-spacing:             [ error ]
   no-trailing-spaces:          [ error ]
-  no-unused-vars:              [ error ]
+  no-unused-vars:              [
+    error,
+    {
+      "varsIgnorePattern": "^createElement$"
+    }
+  ]
   no-var:                      [ error ]
   prefer-const:                [ error ]
   quote-props:                 [ error, consistent-as-needed ]

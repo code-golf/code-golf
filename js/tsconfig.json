@@ -4,7 +4,9 @@
     "noEmit": true,
     "strict": false,
     "lib": ["es2020", "dom"],
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "jsx": "react",
+    "jsxFactory": "createElement"
   },
   "include": ["./**/*"]
 }

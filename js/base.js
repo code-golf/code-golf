@@ -1,3 +1,5 @@
+import { $, $$ } from './_inject';
+
 const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 // Add current time zone to the redirect URI of any log in links.

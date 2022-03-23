@@ -1,3 +1,4 @@
+import { $, $$, comma } from './_inject';
 import CodeMirror                from './_codemirror-legacy';
 import                                './_copy-as-json';
 import diffTable                 from './_diff';

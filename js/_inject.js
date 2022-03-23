@@ -1,4 +1,6 @@
-// Exports injected into every JS file by default.
+// Exports are no longer imported into each file by default,
+// to make Typescript happy.
+// Remember to import createElement if you need JSX
 
 // Small util functions.
 export const $     = document.querySelector.bind(document);

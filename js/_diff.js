@@ -1,3 +1,4 @@
+import { createElement } from './_inject';
 import * as Diff from 'diff';
 
 export default (hole, exp, out, argv) => {

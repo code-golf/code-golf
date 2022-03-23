@@ -1,3 +1,4 @@
+import { $, comma } from '../_inject';
 const form   = document.forms[0];
 const run    = $('#run');
 const status = $('#status');
