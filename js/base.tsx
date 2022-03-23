@@ -1,4 +1,5 @@
 import { $, $$, createElement } from './_inject';
+import dialogPolyfill from 'dialog-polyfill';
 
 const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -36,5 +37,8 @@ for (const input of $$('[list]')) {
     };
 }
 
-for (const dialog of $$('dialog'))
+for (const dialog of $$('dialog')) {
+    dialogPolyfill.registerDialog(dialog);
+
     dialog.onclick = e => e.target == dialog ? dialog.close() : null;
+}
