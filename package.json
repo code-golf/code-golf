@@ -24,5 +24,8 @@
     "eslint": "",
     "lz-string": "",
     "nim-codemirror-mode": ""
+  },
+  "devDependencies": {
+    "typescript": "^4.6.2"
   }
 }
