@@ -2,6 +2,10 @@ env: { browser: true }
 
 ignorePatterns: [ js/_codemirror.js, js/codemirror-legacy ]
 
+parser: "@typescript-eslint/parser"
+
+plugins: [ "@typescript-eslint" ]
+
 parserOptions:
   ecmaFeatures: { jsx: true }
   ecmaVersion:  latest
@@ -16,12 +20,7 @@ rules:
   indent:                      [ error ]
   keyword-spacing:             [ error ]
   no-trailing-spaces:          [ error ]
-  no-unused-vars:              [
-    error,
-    {
-      "varsIgnorePattern": "^createElement$"
-    }
-  ]
+  no-unused-vars:              [ error, { varsIgnorePattern: ^createElement$ } ]
   no-var:                      [ error ]
   prefer-const:                [ error ]
   quote-props:                 [ error, consistent-as-needed ]
