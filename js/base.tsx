@@ -1,4 +1,4 @@
-import { $, $$ } from './_inject';
+import { $, $$, createElement } from './_inject';
 
 const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -8,14 +8,16 @@ for (const a of $$('.log-in')) {
 
     const redirect = new URL(url.searchParams.get('redirect_uri'));
     redirect.searchParams.set('time_zone', timeZone);
-    url.searchParams.set('redirect_uri', redirect);
+    url.searchParams.set('redirect_uri', redirect as any);
 
     a.href = url;
 }
 
 // Wire up mobile form navigation.
 $('#form-nav')?.addEventListener('change', e => location =
-    [...new FormData(e.target.form).values()].filter(v => v.length).join('/'));
+    [
+        ...(new FormData(e.target.form) as any).values(),
+    ].filter(v => v.length).join('/') as any);
 
 // Add suggestions to any input with a list.
 for (const input of $$('[list]')) {

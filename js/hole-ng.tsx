@@ -32,7 +32,7 @@ let lang, scoring = 'bytes';
 const editor = new EditorView({
     dispatch: tr => {
         const result = editor.update([tr]);
-        const scorings = {};
+        const scorings = {} as any;
 
         if (lang == 'assembly')
             scorings.byte = editor.state.field(ASMStateField).head.length();
@@ -59,7 +59,7 @@ async function update() {
     // From left to right... update lang select.
     const svg = $('#' + lang);
     svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-    const color = (darkMode ? '#1e2124' : '#fdfdfd').replaceAll('#', '%23');
+    const color = (darkMode ? '#1e2124' : '#fdfdfd').replace(/#/g, '%23');
     const data = svg.outerHTML.replaceAll('currentColor', color)
         .replaceAll('#', '%23').replaceAll('"', '\'');
 

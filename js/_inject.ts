@@ -1,5 +1,4 @@
-// Exports are no longer imported into each file by default,
-// to make Typescript happy.
+// Exports are no longer imported into each file by default
 // Remember to import createElement if you need JSX
 
 // Small util functions.

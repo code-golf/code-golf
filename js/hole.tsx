@@ -1,4 +1,4 @@
-import { $, $$, comma } from './_inject';
+import { $, $$, createElement, comma } from './_inject';
 import CodeMirror                from './_codemirror-legacy';
 import                                './_copy-as-json';
 import diffTable                 from './_diff';
@@ -18,7 +18,7 @@ const solutions          = JSON.parse($('#solutions').innerText);
 const status             = $('#status');
 const table              = $('#scores');
 const sortedLangs        =
-    Object.values(langs).sort((a, b) => a.name.localeCompare(b.name));
+    Object.values(langs).sort((a: any, b: any) => a.name.localeCompare(b.name));
 
 const darkMode = matchMedia(darkModeMediaQuery).matches;
 let lang;
@@ -44,7 +44,7 @@ const cm     = new CodeMirror($('#editor'), {
     smartIndent: false,
     theme:       darkMode ? 'material-ocean' : 'default',
     vimMode:     keymap == 'vim',
-});
+}) as any;
 
 cm.on('change', () => {
     const code = cm.getValue();
@@ -102,7 +102,7 @@ $('#runBtn').onclick = submit;
 onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter' ? submit() : undefined;
 
 // Allow vim users to run code with :w or :write
-if (cm.getOption('vimMode')) CodeMirror.Vim.defineEx('write', 'w', submit);
+if (cm.getOption('vimMode')) (CodeMirror as any).Vim.defineEx('write', 'w', submit);
 
 $('#deleteBtn').onclick = () => {
     $('dialog b').innerText = langs[lang].name;
@@ -134,7 +134,7 @@ function getSolutionCode(lang, solution) {
 
 async function refreshScores() {
     // Populate the language picker with accurate stroke counts.
-    picker.replaceChildren(...sortedLangs.map(l => {
+    picker.replaceChildren(...sortedLangs.map((l: any) => {
         const tab = <a href={l.id == lang ? null : '#'+l.id}>{l.name}</a>;
 
         if (getSolutionCode(l.id, 0)) {

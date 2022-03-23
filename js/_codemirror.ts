@@ -50,11 +50,11 @@ const asmErrorTooltip = {
     'color':      'var(--background)',
 };
 
-const fontFamily = "'Source Code Pro', monospace";
+const fontFamily = '\'Source Code Pro\', monospace';
 
 export const extensions = {
     // Extensions.
-    base: [
+    'base': [
         carriageReturn, defaultHighlightStyle, history(),
         indentOnInput(), insertChar, lineNumbers(), showUnprintables,
         keymap.of([
@@ -70,8 +70,8 @@ export const extensions = {
             '.cm-tooltip-autocomplete': { fontFamily },
         }, { dark: false }),
     ],
-    bracketMatching: bracketMatching(),
-    dark: [
+    'bracketMatching': bracketMatching(),
+    'dark': [
         EditorView.theme({
             '&': { background: 'var(--background)', color: 'var(--color)' },
             '.cm-asm-dump':          { color: 'var(--asm-dump)' },

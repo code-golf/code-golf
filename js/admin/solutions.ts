@@ -8,7 +8,7 @@ const tbody  = $('tbody');
 
 const reduce = (acc, cur) => ({ ...acc, [cur.value]: cur.label });
 const holes  = [...form.hole.options].reduce(reduce, {});
-const langs  = [...form.lang.options].reduce(reduce, {});
+const langs  = [...(form.lang as any).options].reduce(reduce, {});
 
 const pass = document.createElement('span');
 pass.className = 'green';
@@ -27,7 +27,7 @@ function make(tag, ...children) {
 stop.onclick = () => alert('TODO');
 
 form.onchange = () => history.replaceState(
-    '', '', 'solutions?' + new URLSearchParams(new FormData(form)));
+    '', '', 'solutions?' + new URLSearchParams(new FormData(form) as any));
 
 form.onsubmit = async e => {
     e.preventDefault();
@@ -36,7 +36,7 @@ form.onsubmit = async e => {
     tbody.innerHTML = '';
 
     const res = await fetch('solutions/run?' +
-        new URLSearchParams(new FormData(form)));
+        new URLSearchParams(new FormData(form) as any));
 
     if (!res.ok) return;
 

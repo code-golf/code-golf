@@ -6,7 +6,8 @@
     "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "jsx": "react",
-    "jsxFactory": "createElement"
+    "jsxFactory": "createElement",
+    "downlevelIteration": true
   },
   "include": ["./**/*"]
 }

@@ -1,3 +1,4 @@
+import { createElement } from './_inject';
 // CodeMirror unprintable character extensions
 import { Decoration, EditorView, keymap, MatchDecorator, ViewPlugin, WidgetType } from '@codemirror/view';
 import { EditorState }                                                            from '@codemirror/state';
@@ -10,7 +11,7 @@ export const carriageReturn = [
             dispatch(state.replaceSelection('\r'));
             return true;
         },
-    }),
+    } as any),
     /* When all the newlines inserted in a transaction are preceded by a
     carriage return, remove the carriage returns. This fixes lines ending
     with a carriage return when copied and pasted on Windows. */
@@ -57,6 +58,8 @@ export const insertChar = EditorView.domEventHandlers({
 });
 
 class UnprintableWidget extends WidgetType {
+    value;
+
     constructor(value) {
         super();
         this.value = value;
@@ -75,6 +78,7 @@ const unprintableDecorator = new MatchDecorator({
 
 export const showUnprintables = ViewPlugin.fromClass(
     class {
+        decorations;
         constructor(view) {
             this.decorations = unprintableDecorator.createDeco(view);
         }
