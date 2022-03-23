@@ -1,6 +1,6 @@
 import { $, $$, createElement, comma } from './_inject';
 import { ASMStateField }                       from '@defasm/codemirror';
-import LZString                                from 'lz-string';
+import * as LZString                           from 'lz-string';
 import { EditorState, EditorView, extensions } from './_codemirror.js';
 import                                              './_copy-as-json';
 import diffTable                               from './_diff';
@@ -27,15 +27,16 @@ const darkMode =
 const baseExtensions =
     darkMode ? [...extensions.dark, ...extensions.base] : extensions.base;
 
-let lang, scoring = 'bytes';
+let lang: string = '';
+let scoring = 'bytes';
 
 const editor = new EditorView({
     dispatch: tr => {
-        const result = editor.update([tr]);
+        const result = editor.update([tr]) as unknown;
         const scorings: {byte?: number, char?: number} = {};
 
         if (lang == 'assembly')
-            scorings.byte = editor.state.field(ASMStateField).head.length();
+            scorings.byte = (editor.state.field(ASMStateField) as any).head.length();
         else {
             const code = [...tr.state.doc].join('');
 
@@ -44,7 +45,7 @@ const editor = new EditorView({
         }
 
         strokes.innerText = Object.keys(scorings)
-            .map(s => `${scorings[s]} ${s}${scorings[s] != 1 ? 's' : ''}`)
+            .map((s: keyof typeof scorings) => `${scorings[s]} ${s}${scorings[s] != 1 ? 's' : ''}`)
             .join(', ');
 
         return result;
@@ -76,7 +77,7 @@ async function update() {
     all.href = `/rankings/holes/${hole}/${lang}/${scoring}`;
 
     const res  = await fetch(`/scores/${hole}/${lang}/${scoring}/mini?ng=1`);
-    const rows = res.ok ? await res.json() : [];
+    const rows: any[] = res.ok ? await res.json() : [];
 
     rankings.replaceChildren(<tbody>{
         // Rows.
@@ -99,7 +100,7 @@ async function update() {
 
 // Switch scoring
 for (const tab of scoringTabs)
-    tab.onclick = e => { e.preventDefault(); scoring = tab.id; update() };
+    tab.onclick = (e: MouseEvent) => { e.preventDefault(); scoring = tab.id; update() };
 
 // Switch lang
 const switchLang = onhashchange = () => {
@@ -119,7 +120,7 @@ const switchLang = onhashchange = () => {
             extensions: [
                 ...baseExtensions,
 
-                extensions[lang] || [],
+                extensions[lang as keyof typeof extensions] || [],
 
                 // These languages shouldn't match brackets.
                 ['brainfuck', 'fish', 'j', 'hexagony'].includes(lang)
@@ -157,7 +158,7 @@ switchLang();
 
 // Run Code
 const runCode = $('#run a').onclick = async () => {
-    $$('canvas').forEach(e => e.remove());
+    $$('canvas').forEach((e: HTMLElement) => e.remove());
 
     status.style.display = 'none';
 
@@ -176,7 +177,17 @@ const runCode = $('#run a').onclick = async () => {
         return;
     }
 
-    const data = await res.json();
+    const data = await res.json() as {
+        Pass: boolean,
+        Out: string,
+        Exp: string,
+        Err: string,
+        Argv: string[],
+        Cheevos: {
+            emoji: string,
+            name: string
+        }[]
+    };
 
     status.style.background = data.Pass ? 'var(--green)' : 'var(--red)';
     statusH2.innerText      = data.Pass ? 'Pass 😀'      : 'Fail ☹️';

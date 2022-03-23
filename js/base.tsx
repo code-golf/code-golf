@@ -15,14 +15,15 @@ for (const a of $$('.log-in')) {
 }
 
 // Wire up mobile form navigation.
-$('#form-nav')?.addEventListener('change', e => location.href =
-    [
-        ...new FormData(e.target.form).values(),
-    ].filter((v: string) => v.length).join('/'));
+$('#form-nav')?.addEventListener('change',
+    (e: MouseEvent & {target: HTMLFormElement}) => location.href =
+        [
+            ...new FormData(e.target.form).values(),
+        ].filter((v: string) => v.length).join('/'));
 
 // Add suggestions to any input with a list.
 for (const input of $$('[list]')) {
-    let controller;
+    let controller: AbortController | undefined;
 
     input.oninput = async () => {
         controller?.abort();        // Abort the old request (if exists).
@@ -33,12 +34,12 @@ for (const input of $$('[list]')) {
                 `/api/suggestions/${input.list.id}?` +
                     new URLSearchParams({ ...input.dataset, q: input.value }),
                 { signal: (controller = new AbortController()).signal },
-            )).json()).map(suggestion => <option value={suggestion}/>));
+            )).json()).map((suggestion: string) => <option value={suggestion}/>));
     };
 }
 
 for (const dialog of $$('dialog')) {
     dialogPolyfill.registerDialog(dialog);
 
-    dialog.onclick = e => e.target == dialog ? dialog.close() : null;
+    dialog.onclick = (e: MouseEvent) => e.target == dialog ? dialog.close() : null;
 }

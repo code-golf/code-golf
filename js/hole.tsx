@@ -21,10 +21,10 @@ const sortedLangs        =
     Object.values(langs).sort((a: any, b: any) => a.name.localeCompare(b.name));
 
 const darkMode = matchMedia(darkModeMediaQuery).matches;
-let lang;
+let lang: string = '';
 let latestSubmissionID = 0;
-let solution = Math.max(scorings.indexOf(localStorage.getItem('solution')), 0);
-let scoring  = Math.max(scorings.indexOf(localStorage.getItem('scoring')),  0);
+let solution = Math.max(scorings.indexOf(localStorage.getItem('solution')), 0) as 0 | 1;
+let scoring  = Math.max(scorings.indexOf(localStorage.getItem('scoring')),  0) as 0 | 1;
 
 // The savedInDB state is used to avoid saving solutions in localStorage when
 // those solutions match the solutions in the database. It's used to avoid
@@ -52,7 +52,7 @@ cm.on('change', () => {
     for (let i = 0; i < scorings.length; i++) {
         if (i)
             infoText += ', ';
-        infoText += `${comma(getScoring(code, i))} ${scorings[i].toLowerCase()}`;
+        infoText += `${comma(getScoring(code, i as 0 | 1))} ${scorings[i].toLowerCase()}`;
     }
     chars.innerText = infoText;
 
@@ -70,10 +70,10 @@ cm.on('change', () => {
 });
 
 // Set/clear the hide-details cookie on details toggling.
-$('#details').ontoggle = e => document.cookie =
+$('#details').ontoggle = (e: MouseEvent & {target: HTMLDetailsElement}) => document.cookie =
     'hide-details=;SameSite=Lax;Secure' + (e.target.open ? ';Max-Age=0' : '');
 
-restoreLink.onclick = e => {
+restoreLink.onclick = (e: MouseEvent) => {
     cm.setValue(getSolutionCode(lang, solution));
     e.preventDefault();
 };
@@ -111,24 +111,24 @@ $('#deleteBtn').onclick = () => {
     $('dialog').showModal();
 };
 
-$('dialog [name=text]').addEventListener('input', e => {
+$('dialog [name=text]').addEventListener('input', (e: MouseEvent & { target: HTMLFormElement }) => {
     e.target.form.confirm.toggleAttribute('disabled',
         e.target.value !== e.target.placeholder);
 });
 
-function getAutoSaveKey(lang, solution) {
+function getAutoSaveKey(lang: string, solution: 0 | 1) {
     return `code_${hole}_${lang}_${solution}`;
 }
 
-function getOtherScoring(value) {
-    return 1 - value;
+function getOtherScoring(value: 0 | 1) {
+    return 1 - value as 0 | 1;
 }
 
-function getScoring(str, index) {
+function getScoring(str: string, index: 0 | 1) {
     return scorings[index] == 'Bytes' ? byteLen(str) : charLen(str);
 }
 
-function getSolutionCode(lang, solution) {
+function getSolutionCode(lang: string, solution: 0 | 1) {
     return lang in solutions[solution] ? solutions[solution][lang] : '';
 }
 
@@ -165,7 +165,7 @@ async function refreshScores() {
      || (lsBytes && lsChars && lsBytes != lsChars)
      || (dbBytes && lsChars && dbBytes != lsChars && solution == 0)
      || (lsBytes && dbChars && lsBytes != dbChars && solution == 1)) {
-        $('#solutionPicker').replaceChildren(...scorings.map((scoring, i) => {
+        $('#solutionPicker').replaceChildren(...scorings.map((scoring, i: 0 | 1) => {
             const a = <a>Fewest {scoring}</a>;
 
             const code = getSolutionCode(lang, i);
@@ -173,7 +173,7 @@ async function refreshScores() {
 
             if (i != solution) {
                 a.href = '';
-                a.onclick = e => {
+                a.onclick = (e: MouseEvent) => {
                     e.preventDefault();
                     setSolution(i);
                     setCodeForLangAndSolution();
@@ -201,7 +201,7 @@ async function refreshScores() {
 
     table.replaceChildren(<tbody class={scoringID}>{
         // Rows.
-        rows.map(r => <tr class={r.me ? 'me' : ''}>
+        rows.map((r: any) => <tr class={r.me ? 'me' : ''}>
             <td>{r.rank}<sup>{ord(r.rank)}</sup></td>
             <td>
                 <a href={`/golfers/${r.login}`}>
@@ -228,9 +228,10 @@ async function refreshScores() {
         }
         else {
             tab.href = '';
-            tab.onclick = e => {
+            tab.onclick = (e: MouseEvent) => {
                 e.preventDefault();
-                localStorage.setItem('scoring', scorings[scoring = i]);
+                scoring = i as 0 | 1;
+                localStorage.setItem('scoring', scorings[scoring]);
                 refreshScores();
             };
         }
@@ -264,8 +265,9 @@ function setCodeForLangAndSolution() {
         info.style.display = info.classList.contains(lang) ? 'block' : '';
 }
 
-function setSolution(value) {
-    localStorage.setItem('solution', scorings[solution = value]);
+function setSolution(value: 0 | 1) {
+    solution = value;
+    localStorage.setItem('solution', scorings[solution]);
 }
 
 async function submit() {
@@ -290,14 +292,25 @@ async function submit() {
         return;
     }
 
-    const data = await res.json();
+    const data = await res.json() as {
+        Pass: boolean,
+        Out: string,
+        Exp: string,
+        Err: string,
+        Argv: string[],
+        Cheevos: {
+            emoji: string,
+            name: string
+        }[],
+        LoggedIn: boolean
+    };
     savedInDB = data.LoggedIn && !experimental;
 
     if (submissionID != latestSubmissionID)
         return;
 
     if (data.Pass) {
-        for (let i = 0; i < scorings.length; i++) {
+        for (const i of [0, 1] as const) {
             const solutionCode = getSolutionCode(codeLang, i);
             if (!solutionCode || getScoring(code, i) <= getScoring(solutionCode, i)) {
                 solutions[i][codeLang] = code;
@@ -311,13 +324,13 @@ async function submit() {
         }
     }
 
-    for (let i = 0; i < scorings.length; i++) {
+    for (const i of [0, 1] as const) {
         const key = getAutoSaveKey(codeLang, i);
         if (savedInDB) {
             // If the auto-saved code matches either solution, remove it to
             // avoid prompting the user to restore it.
             const autoSaveCode = localStorage.getItem(key);
-            for (let j = 0; j < scorings.length; j++) {
+            for (const j of [0, 1] as const) {
                 if (getSolutionCode(codeLang, j) == autoSaveCode)
                     localStorage.removeItem(key);
             }
@@ -379,7 +392,7 @@ async function submit() {
     </div>));
 }
 
-function tooltip(row, scoring) {
+function tooltip(row: any, scoring: 'Bytes' | 'Chars') {
     const bytes = scoring === 'Bytes' ? row.bytes : row.chars_bytes;
     const chars = scoring === 'Chars' ? row.chars : row.bytes_chars;
 

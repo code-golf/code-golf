@@ -6,7 +6,7 @@ const stop   = $('#stop');
 const table  = $('table');
 const tbody  = $('tbody');
 
-const reduce = (acc, cur) => ({ ...acc, [cur.value]: cur.label });
+const reduce = (acc: any, cur: any) => ({ ...acc, [cur.value]: cur.label });
 const holes  = [...form.hole.options].reduce(reduce, {});
 const langs  = [...(form.lang as any).options].reduce(reduce, {});
 
@@ -18,7 +18,7 @@ const fail = document.createElement('span');
 fail.className = 'red';
 fail.innerText = 'FAIL';
 
-function make(tag, ...children) {
+function make(tag: string, ...children: (Node | string)[]) {
     const node = document.createElement(tag);
     node.append(...children);
     return node;
@@ -50,8 +50,8 @@ form.onsubmit = async e => {
 
     const decoder = new TextDecoder();
     const reader  = res.body.getReader();
-    const append  = line => {
-        line = JSON.parse(line);
+    const append  = (lineString: string) => {
+        const line = JSON.parse(lineString);
 
         if (!line.pass) failing++;
 

@@ -7,7 +7,7 @@ export const carriageReturn = [
     EditorState.lineSeparator.of('\n'), // Prevent CM from treating carriage return as newline
     keymap.of({
         key: 'Shift-Enter',
-        run: ({ state, dispatch }) => {
+        run: ({ state, dispatch }: any) => {
             dispatch(state.replaceSelection('\r'));
             return true;
         },
@@ -16,7 +16,7 @@ export const carriageReturn = [
     carriage return, remove the carriage returns. This fixes lines ending
     with a carriage return when copied and pasted on Windows. */
     EditorState.transactionFilter.of(transaction => {
-        const changes = [];
+        const changes: {from: number, to: number}[] = [];
         let allPrefixed = true;
         transaction.changes.iterChanges((fromA, toA, fromB, toB, inserted) => {
             if (!allPrefixed)
@@ -60,7 +60,7 @@ export const insertChar = EditorView.domEventHandlers({
 class UnprintableWidget extends WidgetType {
     value;
 
-    constructor(value) {
+    constructor(value: number) {
         super();
         this.value = value;
     }
@@ -79,10 +79,10 @@ const unprintableDecorator = new MatchDecorator({
 export const showUnprintables = ViewPlugin.fromClass(
     class {
         decorations;
-        constructor(view) {
+        constructor(view: any) {
             this.decorations = unprintableDecorator.createDeco(view);
         }
-        update(update) {
+        update(update: any) {
             this.decorations = unprintableDecorator.updateDeco(update, this.decorations);
         }
     },

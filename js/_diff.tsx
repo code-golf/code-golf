@@ -1,7 +1,13 @@
 import { createElement } from './_inject';
 import * as Diff from 'diff';
 
-export default (hole, exp, out, argv) => {
+interface DiffPos {
+    left: number;
+    right: number;
+    isLastDiff: boolean;
+}
+
+export default (hole: string, exp: string, out: string, argv: string[]) => {
     if (stringsEqual(exp, out, shouldIgnoreCase(hole))) return null;
 
     // Show args? Exclude holes with one big argument like QR Decoder.
@@ -21,7 +27,7 @@ export default (hole, exp, out, argv) => {
     </table>;
 };
 
-function pushToDiff(diff, entry, join) {
+function pushToDiff(diff: Diff.Change[], entry: Diff.Change, join: string) {
     // Mutate the given diff by pushing `entry`
     // If `entry` has the same type as the previous entry, then merge them together
     const last = diff[diff.length - 1];
@@ -40,7 +46,7 @@ function pushToDiff(diff, entry, join) {
     }
 }
 
-function diffWrapper(join, left, right, diffOpts) {
+function diffWrapper(join: string, left: string[], right: string[], diffOpts: Diff.BaseOptions) {
     // join = "\n" for line diff or "" for char diff
     // pass in left,right =  list of tokens;
     //   for char diff, this is a list of chars
@@ -58,7 +64,7 @@ function diffWrapper(join, left, right, diffOpts) {
         diffOpts,
     );
     const head = left.slice(0, d);
-    if (head !== '') {
+    if (head.length > 0) {
         const fst = diff[0];
         if (fst && !fst.added && !fst.removed) {
             fst.count += head.length;
@@ -75,7 +81,7 @@ function diffWrapper(join, left, right, diffOpts) {
     const ltString = leftTail.join(join);
     const rightTail = right.slice(d + length);
     const rtString = rightTail.join(join);
-    if (stringsEqual(ltString, rtString, diffOpts.shouldIgnoreCase)) {
+    if (stringsEqual(ltString, rtString, diffOpts.ignoreCase)) {
         pushToDiff(
             diff,
             {
@@ -114,7 +120,7 @@ function diffWrapper(join, left, right, diffOpts) {
     return diff;
 }
 
-function firstDifference(left, right, ignoreCase) {
+function firstDifference(left: string[], right: string[], ignoreCase: boolean) {
     for (let i=0; i<left.length || i<right.length; i++) {
         if (!stringsEqual(left[i], right[i], ignoreCase)) {
             return i;
@@ -123,8 +129,8 @@ function firstDifference(left, right, ignoreCase) {
     return Math.min(left.length, right.length) + 1;
 }
 
-function makeCols(isArgDiff, maxLineNum, argv) {
-    const col       = width => <col style={`width:${width}px`}/>;
+function makeCols(isArgDiff: boolean, maxLineNum: number, argv: string[]) {
+    const col       = (width: number) => <col style={`width:${width}px`}/>;
     const cols      = [];
     const numLength = String(maxLineNum).length + 1;
     const charWidth = 11;
@@ -147,7 +153,7 @@ function makeCols(isArgDiff, maxLineNum, argv) {
     return cols;
 }
 
-function diffHTMLRows(hole, exp, out, argv, isArgDiff) {
+function diffHTMLRows(hole: string, exp: string, out: string, argv: string[], isArgDiff: boolean) {
     const rows = [];
     const pos = {
         left: 1,
@@ -170,14 +176,14 @@ function diffHTMLRows(hole, exp, out, argv, isArgDiff) {
         }
         else {
             if (pendingChange) {
-                rows.push(...getDiffRow(hole, pendingChange, {}, pos, argv, isArgDiff));
+                rows.push(...getDiffRow(hole, pendingChange, {value: ''}, pos, argv, isArgDiff));
                 pendingChange = null;
             }
             rows.push(...getDiffLines(hole, change, change, pos, argv, isArgDiff));
         }
     }
     if (pendingChange) {
-        rows.push(...getDiffRow(hole, pendingChange, {}, pos, argv, isArgDiff));
+        rows.push(...getDiffRow(hole, pendingChange, {value: ''}, pos, argv, isArgDiff));
     }
     return {
         rows,
@@ -185,7 +191,7 @@ function diffHTMLRows(hole, exp, out, argv, isArgDiff) {
     };
 }
 
-function stringsEqual(a, b, ignoreCase) {
+function stringsEqual(a: string, b: string, ignoreCase: boolean) {
     // https://stackoverflow.com/a/2140723/7481517
     return (
         a !== undefined &&
@@ -203,7 +209,7 @@ function stringsEqual(a, b, ignoreCase) {
     );
 }
 
-function getLineChanges(hole, before, after, isArgDiff) {
+function getLineChanges(hole: string, before: string, after: string, isArgDiff: boolean) {
     if (isArgDiff) {
         const out = [];
         const splitBefore = lines(before);
@@ -255,7 +261,7 @@ function getLineChanges(hole, before, after, isArgDiff) {
     }
 }
 
-function getDiffRow(hole, change1, change2, pos, argv, isArgDiff) {
+function getDiffRow(hole: string, change1: Diff.Change, change2: Diff.Change, pos: DiffPos, argv: string[], isArgDiff: boolean) {
     change2.value ??= '';
     change2.count ??= 0;
     const left = change1.removed ? change1 : change2;
@@ -263,7 +269,7 @@ function getDiffRow(hole, change1, change2, pos, argv, isArgDiff) {
     return getDiffLines(hole, left, right, pos, argv, isArgDiff);
 }
 
-function getDiffLines(hole, left, right, pos, argv, isArgDiff) {
+function getDiffLines(hole: string, left: Diff.Change, right: Diff.Change, pos: DiffPos, argv: string[], isArgDiff: boolean) {
     const leftSplit = lines(left.value);
     const rightSplit = lines(right.value);
     if (!(pos.isLastDiff && hole === 'quine')) {
@@ -346,7 +352,7 @@ function getDiffLines(hole, left, right, pos, argv, isArgDiff) {
     return rows;
 }
 
-function renderCharDiff(className, charDiff, isRight) {
+function renderCharDiff(className: string, charDiff: Diff.Change[], isRight: boolean) {
     const td = <td class={className}/>;
 
     for (const change of charDiff)
@@ -360,10 +366,10 @@ function renderCharDiff(className, charDiff, isRight) {
     return td;
 }
 
-function shouldIgnoreCase(hole) {
+function shouldIgnoreCase(hole: string) {
     return hole === 'css-colors';
 }
 
-function lines(s) {
+function lines(s: string) {
     return s.split(/\r?\n/);
 }

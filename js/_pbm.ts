@@ -4,7 +4,7 @@
 // http://netpbm.sourceforge.net/doc/pgm.html
 // http://netpbm.sourceforge.net/doc/ppm.html
 
-export default pbm => {
+export default (pbm: any) => {
     if (!/^P[23](?:\s+\d+){3,}\s*$/.exec(pbm)) return;  // Basic sanity check.
 
     const [format, width, height, max, ...data] = pbm.trim().split(/\s+/);
