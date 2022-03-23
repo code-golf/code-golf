@@ -19,6 +19,7 @@
     "@codemirror/theme-one-dark": "",
     "@codemirror/view": "",
     "@defasm/codemirror": "",
+    "dialog-polyfill": "",
     "diff": "",
     "esbuild": "",
     "eslint": "",

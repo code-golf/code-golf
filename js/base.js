@@ -1,3 +1,5 @@
+import dialogPolyfill from 'dialog-polyfill';
+
 const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 // Add current time zone to the redirect URI of any log in links.
@@ -32,5 +34,8 @@ for (const input of $$('[list]')) {
     };
 }
 
-for (const dialog of $$('dialog'))
+for (const dialog of $$('dialog')) {
+    dialogPolyfill.registerDialog(dialog);
+
     dialog.onclick = e => e.target == dialog ? dialog.close() : null;
+}

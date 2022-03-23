@@ -127,16 +127,32 @@ body > header svg {
 
 dialog {
     background: var(--background);
+    border: 1px solid var(--color);
     color: var(--color);
-    margin: auto;
+    left: 50%;
     max-width: 25rem;
+    padding: 0;
+    position: fixed;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
-dialog::backdrop { backdrop-filter: blur(.25rem) }
+dialog:not([open]) { display: none }
+
+dialog::backdrop, dialog + .backdrop {
+    backdrop-filter: blur(.25rem);
+    background: rgba(0, 0, 0, .1);
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+}
 
 dialog form {
     display: grid;
     gap: 1rem;
+    padding: 1rem;
 }
 
 form menu {
