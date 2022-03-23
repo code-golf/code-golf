@@ -208,10 +208,11 @@ function getLineChanges(hole, before, after, isArgDiff) {
         const splitBefore = lines(before);
         const splitAfter = lines(after);
         let currentUnchanged = [];
+        const ignoreCase = shouldIgnoreCase(hole);
         for (let i=0; i<Math.max(splitBefore.length, splitAfter.length); i++) {
             const a = splitBefore[i] ?? '';
             const b = splitAfter[i] ?? '';
-            const linesEqual = stringsEqual(a, b, hole);
+            const linesEqual = stringsEqual(a, b, ignoreCase);
             if (linesEqual) {
                 currentUnchanged.push(a);
             }
