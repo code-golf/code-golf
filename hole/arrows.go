@@ -36,14 +36,9 @@ func arrows() ([]string, string) {
 		}
 	}
 
-	// Shuffle the args.
-	rand.Shuffle(len(args), func(i, j int) {
-		args[i], args[j] = args[j], args[i]
-	})
-
 	// Calculate the outs from the args.
 	outs := make([]string, len(args))
-	for i, arrow := range args {
+	for i, arrow := range shuffle(args) {
 		coord := arrowMap[arrow]
 		pos[0] += coord[0]
 		pos[1] += coord[1]

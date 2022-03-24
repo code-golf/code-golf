@@ -203,18 +203,8 @@ func poker() (args []string, out string) {
 		}})
 	}
 
-	// Shuffle the hands.
-	rand.Shuffle(len(hands), func(i, j int) {
-		hands[i], hands[j] = hands[j], hands[i]
-	})
-
-	for _, hand := range hands {
-		// Shuffle the cards in the hand.
-		rand.Shuffle(5, func(i, j int) {
-			hand.Cards[i], hand.Cards[j] = hand.Cards[j], hand.Cards[i]
-		})
-
-		args = append(args, string(hand.Cards))
+	for _, hand := range shuffle(hands) {
+		args = append(args, string(shuffle(hand.Cards)))
 
 		out += hand.Type + "\n"
 	}

@@ -25,7 +25,7 @@ func smallFracGen() fraction {
 
 	// Choose a random scale factor so that the largest value in the fraction
 	// does not exceed 250.
-	max := maxint(f.numerator, f.denominator)
+	max := max(f.numerator, f.denominator)
 	f.scale = rand.Intn(250/max-1) + 1
 
 	return f
@@ -49,7 +49,7 @@ func largeFracGen() fraction {
 	// Choose a random scale factor so that the largest value in the fraction
 	// does not exceed 250.
 	f.scale = 1
-	if max := maxint(f.numerator, f.denominator); max <= 125 {
+	if max := max(f.numerator, f.denominator); max <= 125 {
 		f.scale = rand.Intn(250/max-1) + 1
 	}
 
@@ -117,14 +117,10 @@ func fractions() ([]string, string) {
 		}
 	}
 
-	rand.Shuffle(len(fractions), func(i, j int) {
-		fractions[i], fractions[j] = fractions[j], fractions[i]
-	})
-
 	args := make([]string, len(fractions))
 	outs := make([]string, len(fractions))
 
-	for i, f := range fractions {
+	for i, f := range shuffle(fractions) {
 		args[i] = fmt.Sprintf("%d/%d", f.numerator*f.scale, f.denominator*f.scale)
 		outs[i] = fmt.Sprintf("%d/%d", f.numerator, f.denominator)
 	}

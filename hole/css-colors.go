@@ -1,9 +1,7 @@
 package hole
 
-import "math/rand"
-
 func cssColors() ([]string, string) {
-	tests := []test{
+	return outputTests(shuffle([]test{
 		{"AliceBlue", "#f0f8ff"}, {"AntiqueWhite", "#faebd7"},
 		{"Aqua", "#00ffff"}, {"Aquamarine", "#7fffd4"}, {"Azure", "#f0ffff"},
 		{"Beige", "#f5f5dc"}, {"Bisque", "#ffe4c4"}, {"Black", "#000000"},
@@ -72,11 +70,5 @@ func cssColors() ([]string, string) {
 		{"Turquoise", "#40e0d0"}, {"Violet", "#ee82ee"}, {"Wheat", "#f5deb3"},
 		{"White", "#ffffff"}, {"WhiteSmoke", "#f5f5f5"},
 		{"Yellow", "#ffff00"}, {"YellowGreen", "#9acd32"},
-	}
-
-	rand.Shuffle(len(tests), func(i, j int) {
-		tests[i], tests[j] = tests[j], tests[i]
-	})
-
-	return outputTests(tests)
+	}))
 }

@@ -54,9 +54,5 @@ func zodiacSigns() ([]string, string) {
 		tests = append(tests, sign.edgeDate(), sign.randomDate())
 	}
 
-	rand.Shuffle(len(tests), func(i, j int) {
-		tests[i], tests[j] = tests[j], tests[i]
-	})
-
-	return outputTests(tests)
+	return outputTests(shuffle(tests))
 }

@@ -101,12 +101,6 @@ func musicalChords() ([]string, string) {
 		}
 	}
 
-	rand.Shuffle(len(tests), func(i, j int) {
-		tests[i], tests[j] = tests[j], tests[i]
-	})
-
 	// Cut 3 tests.
-	tests = tests[3:]
-
-	return outputTests(tests)
+	return outputTests(shuffle(tests)[3:])
 }

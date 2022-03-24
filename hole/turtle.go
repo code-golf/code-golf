@@ -67,8 +67,8 @@ func turtle() (args []string, out string) {
 			currJ -= move
 		}
 
-		minI = minint(currI, minI)
-		minJ = minint(currJ, minJ)
+		minI = min(currI, minI)
+		minJ = min(currJ, minJ)
 	}
 
 	posHashNew := make(map[[2]int]int)
@@ -77,8 +77,8 @@ func turtle() (args []string, out string) {
 		i := pos[0]
 		j := pos[1]
 
-		iNew := maxint(i, i-minI)
-		jNew := maxint(j, j-minJ)
+		iNew := max(i, i-minI)
+		jNew := max(j, j-minJ)
 
 		if i == 0 && j == 0 {
 			startI = iNew
@@ -90,8 +90,8 @@ func turtle() (args []string, out string) {
 			endJ = jNew
 		}
 
-		maxI = maxint(iNew, maxI)
-		maxJ = maxint(jNew, maxJ)
+		maxI = max(iNew, maxI)
+		maxJ = max(jNew, maxJ)
 
 		posHashNew[[2]int{iNew, jNew}] = 1
 	}

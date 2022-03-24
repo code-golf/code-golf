@@ -25,9 +25,7 @@ func arabicToRoman(reverse bool) (args []string, out string) {
 		numbers = append(numbers, rand.Intn(3998)+1) // 1 - 3999 inclusive.
 	}
 
-	rand.Shuffle(len(numbers), func(i, j int) {
-		numbers[i], numbers[j] = numbers[j], numbers[i]
-	})
+	shuffle(numbers)
 
 	if reverse {
 		// Roman to Arabic.

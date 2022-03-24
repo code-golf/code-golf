@@ -30,30 +30,15 @@ func unbox(b bbox) (tlx, tly, brx, bry int) {
 	return
 }
 
-// til that go doesn't have built-in max/min for int
-func minint(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
-}
-
-func maxint(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
-}
-
 func calculateIntersection(b1, b2 bbox) int {
 	tlx1, tly1, brx1, bry1 := unbox(b1)
 	tlx2, tly2, brx2, bry2 := unbox(b2)
 
 	// find top-left and bottom-right intersection coordinates
-	itlx := maxint(tlx1, tlx2) // intersection top left x
-	itly := maxint(tly1, tly2)
-	ibrx := minint(brx1, brx2) // intersection bottom right x
-	ibry := minint(bry1, bry2)
+	itlx := max(tlx1, tlx2) // intersection top left x
+	itly := max(tly1, tly2)
+	ibrx := min(brx1, brx2) // intersection bottom right x
+	ibry := min(bry1, bry2)
 
 	// calculate intersection dimensions
 	iw := ibrx - itlx
@@ -179,9 +164,5 @@ func intersection() ([]string, string) {
 		}
 	}
 
-	rand.Shuffle(len(tests), func(i, j int) {
-		tests[i], tests[j] = tests[j], tests[i]
-	})
-
-	return outputTests(tests)
+	return outputTests(shuffle(tests))
 }
