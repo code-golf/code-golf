@@ -39,7 +39,8 @@ function pushToDiff(diff: Diff.Change[], entry: Diff.Change, join: string) {
     ) {
         // The value keeps a trailing newline when join="\n"
         last.value += entry.value + join;
-        last.count += entry.count;
+        last.count ??= 0;
+        last.count += entry.count ?? 0;
     }
     else {
         diff.push(entry);
@@ -54,7 +55,7 @@ function diffWrapper(join: string, left: string[], right: string[], diffOpts: Di
     // Wrapper for performance
     // Include characters until the first difference, then include 1000 characters
     // after that, and treat the rest as a single block
-    const d = firstDifference(left, right, diffOpts.ignoreCase);
+    const d = firstDifference(left, right, diffOpts.ignoreCase ?? false);
     const length = Math.min(1000, Math.max(left.length - d, right.length - d));
     // Concatenate a newline on line diff because Diff.diffLines counts
     // lines without trailing newlines as changed
@@ -67,6 +68,7 @@ function diffWrapper(join: string, left: string[], right: string[], diffOpts: Di
     if (head.length > 0) {
         const fst = diff[0];
         if (fst && !fst.added && !fst.removed) {
+            fst.count ??= 0;
             fst.count += head.length;
             fst.value += head.join(join) + join;
         }
@@ -81,7 +83,7 @@ function diffWrapper(join: string, left: string[], right: string[], diffOpts: Di
     const ltString = leftTail.join(join);
     const rightTail = right.slice(d + length);
     const rtString = rightTail.join(join);
-    if (stringsEqual(ltString, rtString, diffOpts.ignoreCase)) {
+    if (stringsEqual(ltString, rtString, diffOpts.ignoreCase ?? false)) {
         pushToDiff(
             diff,
             {
@@ -347,8 +349,8 @@ function getDiffLines(hole: string, left: Diff.Change, right: Diff.Change, pos: 
             row.append(<td/>, <td/>);
         }
     }
-    pos.left += left.count;
-    pos.right += right.count;
+    pos.left += left.count ?? 0;
+    pos.right += right.count ?? 0;
     return rows;
 }
 

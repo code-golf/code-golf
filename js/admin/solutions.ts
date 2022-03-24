@@ -38,7 +38,7 @@ form.onsubmit = async e => {
     const res = await fetch('solutions/run?' +
         new URLSearchParams(new FormData(form) as any));
 
-    if (!res.ok) return;
+    if (!res.ok || !res.body) return;
 
     run.style.display   = 'none';
     stop.style.display  = 'block';
@@ -84,7 +84,7 @@ form.onsubmit = async e => {
         }
 
         const lines = (buffer += decoder.decode(value)).split(/\n(?=.)/);
-        buffer = lines.pop();
+        buffer = lines.pop() ?? '';
         lines.forEach(append);
 
         reader.read().then(process);

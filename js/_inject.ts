@@ -2,8 +2,10 @@
 // Remember to import createElement if you need JSX
 
 // Small util functions.
-export const $     = document.querySelector.bind(document);
-export const $$    = document.querySelectorAll.bind(document);
+/** Assume $ always succeeds and returns an HTMLElement */
+export const $     = (selector: string) => document.querySelector(selector) as HTMLElement;
+/** Assume $$ returns HTMLElements only */
+export const $$    = (selector: string) => document.querySelectorAll(selector) as NodeListOf<HTMLElement>;
 export const comma = (i: number) => i.toLocaleString('en');
 
 // Our default JSX factory.

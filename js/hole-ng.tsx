@@ -7,13 +7,13 @@ import diffTable                               from './_diff';
 import pbm                                     from './_pbm.js';
 import { byteLen, charLen, ord }               from './_util';
 
-const all         = $('#all');
+const all         = $('#all') as HTMLLinkElement;
 const hole        = decodeURI(location.pathname.slice(4));
 const langs       = JSON.parse($('#langs').innerText);
 const popups      = $('#popups');
 const rankings    = $('#rankings');
-const scoringTabs = $$('#scoringTabs a');
-const select      = $('select');
+const scoringTabs = $$('#scoringTabs a') as NodeListOf<HTMLLinkElement>;
+const select      = $('select') as HTMLSelectElement;
 const solutions   = JSON.parse($('#solutions').innerText);
 const status      = $('#status');
 const statusH2    = $('#status h2');
@@ -34,6 +34,7 @@ const editor = new EditorView({
     dispatch: tr => {
         const result = editor.update([tr]) as unknown;
         const scorings: {byte?: number, char?: number} = {};
+        const scoringKeys = ['byte', 'char'] as const;
 
         if (lang == 'assembly')
             scorings.byte = (editor.state.field(ASMStateField) as any).head.length();
@@ -44,8 +45,8 @@ const editor = new EditorView({
             scorings.char = charLen(code);
         }
 
-        strokes.innerText = Object.keys(scorings)
-            .map((s: keyof typeof scorings) => `${scorings[s]} ${s}${scorings[s] != 1 ? 's' : ''}`)
+        strokes.innerText = scoringKeys
+            .map(s => `${scorings[s]} ${s}${scorings[s] != 1 ? 's' : ''}`)
             .join(', ');
 
         return result;
@@ -60,7 +61,7 @@ async function update() {
     // From left to right... update lang select.
     const svg = $('#' + lang);
     svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-    const color = (darkMode ? '#1e2124' : '#fdfdfd').replace(/#/g, '%23');
+    const color = (darkMode ? '#1e2124' : '#fdfdfd').replaceAll('#', '%23');
     const data = svg.outerHTML.replaceAll('currentColor', color)
         .replaceAll('#', '%23').replaceAll('"', '\'');
 
@@ -104,11 +105,8 @@ for (const tab of scoringTabs)
 
 // Switch lang
 const switchLang = onhashchange = () => {
-    lang = location.hash.slice(1) || localStorage.getItem('lang');
-
     // Kick 'em to Python if we don't know the chosen language.
-    if (!langs[lang])
-        lang = 'python';
+    lang = location.hash.slice(1) || localStorage.getItem('lang') || 'python';
 
     select.value = lang;
     localStorage.setItem('lang', lang);
@@ -209,7 +207,7 @@ const runCode = $('#run a').onclick = async () => {
     }>Run on Hexagony.net</a> : '' );
 
     if (hole == 'julia-set')
-        $('main').append(pbm(data.Exp), pbm(data.Out) ?? []);
+        $('main').append(pbm(data.Exp) as Node, pbm(data.Out) ?? [] as any);
 
     status.style.display = 'grid';
 

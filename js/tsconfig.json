@@ -2,9 +2,8 @@
   "compilerOptions": {
     "allowJs": true,
     "noEmit": true,
-    "strict": false,
-    "noImplicitAny": true,
-    "lib": ["es2020", "dom", "dom.iterable"],
+    "strict": true,
+    "lib": ["es2021", "dom", "dom.iterable"],
     "skipLibCheck": true,
     "jsx": "react",
     "jsxFactory": "createElement",

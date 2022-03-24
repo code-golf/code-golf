@@ -4,25 +4,26 @@ import dialogPolyfill from 'dialog-polyfill';
 const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 // Add current time zone to the redirect URI of any log in links.
-for (const a of $$('.log-in')) {
+for (const a of $$('.log-in') as NodeListOf<HTMLLinkElement>) {
     const url = new URL(a.href);
 
-    const redirect = new URL(url.searchParams.get('redirect_uri'));
+    // Assume a redirect is already present
+    const redirect = new URL(url.searchParams.get('redirect_uri') as string);
     redirect.searchParams.set('time_zone', timeZone);
     url.searchParams.set('redirect_uri', redirect.href);
 
-    a.href = url;
+    a.href = url.href;
 }
 
 // Wire up mobile form navigation.
 $('#form-nav')?.addEventListener('change',
-    (e: MouseEvent & {target: HTMLFormElement}) => location.href =
+    (e: Event) => location.href =
         [
-            ...new FormData(e.target.form).values(),
-        ].filter((v: string) => v.length).join('/'));
+            ...new FormData((e.target as HTMLFormElement).form).values(),
+        ].filter((v: string | FormDataEntryValue) => v).join('/'));
 
 // Add suggestions to any input with a list.
-for (const input of $$('[list]')) {
+for (const input of $$('[list]') as NodeListOf<any>) {
     let controller: AbortController | undefined;
 
     input.oninput = async () => {
@@ -41,5 +42,5 @@ for (const input of $$('[list]')) {
 for (const dialog of $$('dialog')) {
     dialogPolyfill.registerDialog(dialog);
 
-    dialog.onclick = (e: MouseEvent) => e.target == dialog ? dialog.close() : null;
+    dialog.onclick = (e: MouseEvent) => e.target == dialog ? (dialog as any).close() : null;
 }

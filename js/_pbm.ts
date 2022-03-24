@@ -18,7 +18,8 @@ export default (pbm: any) => {
     if (width * height * stride != data.length) return;
 
     const canvas  = document.createElement('canvas');
-    const ctx     = canvas.getContext('2d');
+    // getContext is not called earlier, so we know ctx can't be null
+    const ctx     = canvas.getContext('2d') as CanvasRenderingContext2D;
     canvas.width  = width;
     canvas.height = height;
 

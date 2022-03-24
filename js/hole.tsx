@@ -13,7 +13,7 @@ const picker             = $('#picker');
 const popups             = $('#popups');
 const restoreLink        = $('#restoreLink');
 const scorings           = ['Bytes', 'Chars'];
-const scoringTabs        = $$('#scoringTabs a');
+const scoringTabs        = $$('#scoringTabs a') as NodeListOf<HTMLLinkElement>;
 const solutions          = JSON.parse($('#solutions').innerText);
 const status             = $('#status');
 const table              = $('#scores');
@@ -23,8 +23,8 @@ const sortedLangs        =
 const darkMode = matchMedia(darkModeMediaQuery).matches;
 let lang: string = '';
 let latestSubmissionID = 0;
-let solution = Math.max(scorings.indexOf(localStorage.getItem('solution')), 0) as 0 | 1;
-let scoring  = Math.max(scorings.indexOf(localStorage.getItem('scoring')),  0) as 0 | 1;
+let solution = scorings.indexOf(localStorage.getItem('solution') ?? 'Bytes') as 0 | 1;
+let scoring  = scorings.indexOf(localStorage.getItem('scoring') ?? 'Bytes') as 0 | 1;
 
 // The savedInDB state is used to avoid saving solutions in localStorage when
 // those solutions match the solutions in the database. It's used to avoid
@@ -70,8 +70,8 @@ cm.on('change', () => {
 });
 
 // Set/clear the hide-details cookie on details toggling.
-$('#details').ontoggle = (e: MouseEvent & {target: HTMLDetailsElement}) => document.cookie =
-    'hide-details=;SameSite=Lax;Secure' + (e.target.open ? ';Max-Age=0' : '');
+$('#details').ontoggle = (e: Event) => document.cookie =
+    'hide-details=;SameSite=Lax;Secure' + ((e.target as HTMLDetailsElement).open ? ';Max-Age=0' : '');
 
 restoreLink.onclick = (e: MouseEvent) => {
     cm.setValue(getSolutionCode(lang, solution));
@@ -79,11 +79,8 @@ restoreLink.onclick = (e: MouseEvent) => {
 };
 
 (onhashchange = () => {
-    lang = location.hash.slice(1) || localStorage.getItem('lang');
-
     // Kick 'em to Python if we don't know the chosen language.
-    if (!langs[lang])
-        lang = 'python';
+    lang = location.hash.slice(1) || localStorage.getItem('lang') || 'python';
 
     // Assembly only has bytes.
     if (lang == 'assembly')
@@ -106,14 +103,16 @@ if (cm.getOption('vimMode')) (CodeMirror as any).Vim.defineEx('write', 'w', subm
 
 $('#deleteBtn').onclick = () => {
     $('dialog b').innerText = langs[lang].name;
-    $('dialog [name=lang]').value = lang;
-    $('dialog [name=text]').value = '';
-    $('dialog').showModal();
+    ($('dialog [name=lang]') as HTMLInputElement).value = lang;
+    ($('dialog [name=text]') as HTMLInputElement).value = '';
+    // Dialog typings are not available yet
+    ($('dialog') as any).showModal();
 };
 
-$('dialog [name=text]').addEventListener('input', (e: MouseEvent & { target: HTMLFormElement }) => {
-    e.target.form.confirm.toggleAttribute('disabled',
-        e.target.value !== e.target.placeholder);
+$('dialog [name=text]').addEventListener('input', (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    target.form!.confirm.toggleAttribute('disabled',
+        target.value !== target.placeholder);
 });
 
 function getAutoSaveKey(lang: string, solution: 0 | 1) {
@@ -165,7 +164,8 @@ async function refreshScores() {
      || (lsBytes && lsChars && lsBytes != lsChars)
      || (dbBytes && lsChars && dbBytes != lsChars && solution == 0)
      || (lsBytes && dbChars && lsBytes != dbChars && solution == 1)) {
-        $('#solutionPicker').replaceChildren(...scorings.map((scoring, i: 0 | 1) => {
+        $('#solutionPicker').replaceChildren(...scorings.map((scoring, iNumber) => {
+            const i = iNumber as 0 | 1;
             const a = <a>Fewest {scoring}</a>;
 
             const code = getSolutionCode(lang, i);
@@ -197,7 +197,7 @@ async function refreshScores() {
     const res       = await fetch(`/scores${path}/mini`);
     const rows      = res.ok ? await res.json() : [];
 
-    $('#allLink').href = '/rankings/holes' + path;
+    ($('#allLink') as HTMLLinkElement).href = '/rankings/holes' + path;
 
     table.replaceChildren(<tbody class={scoringID}>{
         // Rows.
@@ -224,7 +224,7 @@ async function refreshScores() {
 
         if (tab.innerText == scorings[scoring]) {
             tab.removeAttribute('href');
-            tab.onclick = '';
+            tab.onclick = () => {};
         }
         else {
             tab.href = '';
