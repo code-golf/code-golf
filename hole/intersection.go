@@ -107,8 +107,10 @@ func intersection() ([]string, string) {
 			continue
 		}
 
-		tests = append(tests, test{strconvbox(b1) + " " + strconvbox(b2),
-			strconv.Itoa(intersection)})
+		tests = append(tests, test{
+			strconvbox(b1) + " " + strconvbox(b2),
+			strconv.Itoa(intersection),
+		})
 	}
 
 	// 13x13 default side cases
@@ -156,8 +158,10 @@ func intersection() ([]string, string) {
 							in = strbigbox + " " + strconvbox(b)
 						}
 
-						tests = append(tests, test{in,
-							strconv.Itoa(calculateIntersection(b, bigbox))})
+						tests = append(tests, test{
+							in,
+							strconv.Itoa(calculateIntersection(b, bigbox)),
+						})
 					}
 				}
 			}

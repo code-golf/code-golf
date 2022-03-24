@@ -91,7 +91,8 @@ func musicalChords() ([]string, string) {
 						for _, ordering := range orderings {
 							rearrangedNotes := []string{chordNotes[ordering[0]], chordNotes[ordering[1]], chordNotes[ordering[2]]}
 							tests = append(tests, test{
-								strings.Join(rearrangedNotes, " "), chord})
+								strings.Join(rearrangedNotes, " "), chord,
+							})
 						}
 					}
 					combNum++
