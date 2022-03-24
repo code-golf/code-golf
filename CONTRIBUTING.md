@@ -6,8 +6,8 @@ Each section needs to define the following fields:
 
 In addition, each section may define the following fields:
 * `data` - JSON describing the data to be copied upon pressing "Copy as JSON". Relevant mainly for holes in the "Transform" category.
-* `link` - List of tables with keys `name` and `url`.
-* `experiment` - Id of the issue that suggested this hole or `-1` if the issue doesn't exist. Only defined for experimental holes.
+* `links` - List of tables with keys `name` and `url`.
+* `experiment` - ID of the issue that suggested this hole or `-1` if the issue doesn't exist. Only defined for experimental holes.
 * `variants` - List of names of the holes that are variants of this hole, including itself.
 
 If the hole has no inputs, the expected output needs to be placed in `/hole/answers/hole-name.txt`. The filename must be the [URLized](https://github.com/code-golf/code-golf/blob/master/config/config.go#L13) version of the hole name in the `holes.toml`.
