@@ -66,20 +66,20 @@ func genNotes(rootIdx int, rootNote string, steps [2]int) []string {
 	return []string{rootNote, thirdNote, fifthNote}
 }
 
-func musicalChords() (args []string, out string) {
-	var outs []string
+func musicalChords() ([]string, string) {
+	var tests []test
 
 	// Skip a random combination for anti-cheese
 	skipNum := rand.Intn(61)
 	combNum := 0
 
 	for rootIdx, rootNames := range notes {
-
 		// Loop once for each unique name the note has
 		uniqueNames := 2
 		if rootNames[0] == rootNames[1] {
 			uniqueNames = 1
 		}
+
 		for _, rootNote := range rootNames[:uniqueNames] {
 			for triadIdx := 0; triadIdx < 4; triadIdx++ {
 				triad := triadTypes[triadIdx]
@@ -90,8 +90,8 @@ func musicalChords() (args []string, out string) {
 						chord := rootNote + triad
 						for _, ordering := range orderings {
 							rearrangedNotes := []string{chordNotes[ordering[0]], chordNotes[ordering[1]], chordNotes[ordering[2]]}
-							args = append(args, strings.Join(rearrangedNotes, " "))
-							outs = append(outs, chord)
+							tests = append(tests, test{
+								strings.Join(rearrangedNotes, " "), chord})
 						}
 					}
 					combNum++
@@ -100,16 +100,13 @@ func musicalChords() (args []string, out string) {
 			}
 		}
 	}
-	// shuffle args and outputs in the same way
-	rand.Shuffle(len(args), func(i, j int) {
-		args[i], args[j] = args[j], args[i]
-		outs[i], outs[j] = outs[j], outs[i]
+
+	rand.Shuffle(len(tests), func(i, j int) {
+		tests[i], tests[j] = tests[j], tests[i]
 	})
 
-	// Cut 3 args
-	args = args[3:]
-	outs = outs[3:]
+	// Cut 3 tests.
+	tests = tests[3:]
 
-	out = strings.Join(outs, "\n")
-	return
+	return outputTests(tests)
 }
