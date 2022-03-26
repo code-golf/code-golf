@@ -90,10 +90,10 @@ func luckyTickets() ([]string, string) {
 
 	for i, item := range tickets {
 		tests[i] = test{
-            strconv.Itoa(item.digits) + " " + strconv.Itoa(item.base),
-            strconv.FormatInt(item.result, 10),
-        }
+			strconv.Itoa(item.digits) + " " + strconv.Itoa(item.base),
+			strconv.FormatInt(item.result, 10),
+		}
 	}
-    
-    return outputTests(shuffle(tests))
+
+	return outputTests(shuffle(tests))
 }
