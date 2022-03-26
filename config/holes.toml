@@ -198,7 +198,6 @@ preamble = '''
 
 ['ASCII Table']
 category = 'Art'
-experiment = -1
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Show_ASCII_table' },
 ]
