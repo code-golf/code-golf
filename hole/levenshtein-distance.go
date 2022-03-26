@@ -20,36 +20,22 @@ func randWord() string { return words[rand.Intn(len(words))] }
 func levenshteinDistance() ([]string, string) {
 	const count = 20
 
-	args := make([]string, count)
-	outs := make([]string, count)
-	perm := rand.Perm(count)
-
-	for i := 0; i < count; i++ {
-		switch i {
-		// Ensure we have at least one zero distance.
-		case perm[0]:
-			a := randWord()
-			args[i] = a + " " + a
-			outs[i] = "0"
-		// Add a test case that blocks an incorrect simplification to the
-		// algorithm from working.
-		case perm[1]:
-			args[i] = "open however"
-			outs[i] = "5"
-		case perm[2]:
-			args[i] = "however open"
-			outs[i] = "5"
-		// Ensure we have a double digit distance, TODO randomise the words?
-		case perm[3]:
-			args[i] = "large hypothetical"
-			outs[i] = "11"
-		default:
-			a := randWord()
-			b := randWord()
-			args[i] = a + " " + b
-			outs[i] = strconv.Itoa(levenshtein.ComputeDistance(a, b))
-		}
+	a := randWord()
+	tests := []test{
+		{a + " " + a, "0"},
+		{"open however", "5"},
+		{"however open", "5"},
+		{"large hypothetical", "11"},
 	}
 
-	return args, strings.Join(outs, "\n")
+	for i := len(tests); i < count; i++ {
+		a := randWord()
+		b := randWord()
+		tests = append(tests, test{
+			a + " " + b,
+			strconv.Itoa(levenshtein.ComputeDistance(a, b)),
+		})
+	}
+
+	return outputTests(shuffle(tests))
 }
