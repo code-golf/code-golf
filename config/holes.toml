@@ -2147,7 +2147,7 @@ preamble = '''
 <ol type=a>
     <li>The first term is zero.
     <li>If the last term is new then the next term is zero.
-    <li>Otherwise the next term is how far back the term occured previously.
+    <li>Otherwise the next term is how far back the term occurred previously.
 </ol>
 
 <p>The first few terms are as follows:
