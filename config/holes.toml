@@ -199,6 +199,9 @@ preamble = '''
 ['ASCII Table']
 category = 'Art'
 experiment = -1
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Show_ASCII_table' },
+]
 preamble = '''
 <p>Print the following ASCII table, taken from <code>man 7 ascii</code>
 '''
