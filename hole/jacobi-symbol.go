@@ -4,7 +4,6 @@ import (
 	"math/big"
 	"math/rand"
 	"strconv"
-	"strings"
 )
 
 func randomNatural(bits int) *big.Int {
@@ -31,41 +30,34 @@ func randomPrime(bits int) *big.Int {
 }
 
 func jacobiSymbol() ([]string, string) {
-	const tests = 20
-	type Test struct {
+	const mult = 20
+	type input struct {
 		n, k *big.Int
 	}
-	inputs := make([]Test, 4*tests)
+	inputs := make([]input, 4*mult)
+	tests := make([]test, 4*mult)
 
-	for i := 0; i < tests; i++ {
-		inputs[i] = Test{randomPrime(53), randomOdd(53)}
+	for i := 0; i < mult; i++ {
+		inputs[i] = input{randomPrime(53), randomOdd(53)}
 	}
-	for i := tests; i < 2*tests; i++ {
-		inputs[i] = Test{new(big.Int).Mul(randomPrime(26), randomPrime(27)), randomOdd(53)}
+	for i := mult; i < 2*mult; i++ {
+		inputs[i] = input{new(big.Int).Mul(randomPrime(26), randomPrime(27)), randomOdd(53)}
 	}
-	for i := 2 * tests; i < 3*tests; i++ {
-		inputs[i] = Test{randomNatural(53), randomOdd(53)}
+	for i := 2 * mult; i < 3*mult; i++ {
+		inputs[i] = input{randomNatural(53), randomOdd(53)}
 	}
-	for i := 3 * tests; i < 4*tests; i++ {
+	for i := 3 * mult; i < 4*mult; i++ {
 		common := randomOdd(26)
 		n := new(big.Int).Mul(randomOdd(27), common)
 		k := new(big.Int).Mul(randomOdd(27), common)
-		inputs[i] = Test{n, k}
+		inputs[i] = input{n, k}
 	}
 
-	rand.Shuffle(len(inputs), func(i, j int) {
-		inputs[i], inputs[j] = inputs[j], inputs[i]
-	})
-	var answer strings.Builder
-	args := make([]string, 4*tests)
-
-	for i, test := range inputs {
-		args[i] = test.n.String() + " " + test.k.String()
-		if i > 0 {
-			answer.WriteByte('\n')
+	for i, inp := range inputs {
+		tests[i] = test{
+			inp.n.String() + " " + inp.k.String(),
+			strconv.Itoa(big.Jacobi(inp.n, inp.k)),
 		}
-		answer.WriteString(strconv.Itoa(big.Jacobi(test.n, test.k)))
 	}
-
-	return args, answer.String()
+	return outputTests(shuffle(tests))
 }
