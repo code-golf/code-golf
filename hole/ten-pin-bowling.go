@@ -3,7 +3,6 @@ package hole
 import (
 	"math/rand"
 	"strconv"
-	"strings"
 )
 
 var games = [...]struct {

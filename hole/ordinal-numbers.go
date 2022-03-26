@@ -10,7 +10,7 @@ func ordinalNumbers() ([]string, string) {
 	const count = 1000
 	tests := make([]test, count)
 
-	for i := range count {
+	for i := 0; i < count; i++ {
 		tests[i] = test{
 			strconv.Itoa(i),
 			strconv.Itoa(i) + pretty.Ordinal(i),

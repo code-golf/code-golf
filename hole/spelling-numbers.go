@@ -1,7 +1,6 @@
 package hole
 
 import (
-	"math/rand"
 	"strconv"
 	"strings"
 )
@@ -42,7 +41,7 @@ var tens = [][]byte{
 	[]byte("ninety"),
 }
 
-func wordify(i int) {
+func wordify(i int) string {
 	var out strings.Builder
 	if i == 1000 {
 		out.WriteString("one thousand")
@@ -61,7 +60,7 @@ func wordify(i int) {
 
 		if j := i % 100; j > 0 {
 			out.WriteString(" and ")
-			wordify(out, j)
+			out.WriteString(wordify(j))
 		}
 	}
 	return out.String()
@@ -71,7 +70,7 @@ func spellingNumbers() ([]string, string) {
 	const count = 1001
 	tests := make([]test, count)
 
-	for i := range count {
+	for i := 0; i < count; i++ {
 		tests[i] = test{
 			strconv.Itoa(i),
 			wordify(i),

@@ -1,9 +1,7 @@
 package hole
 
 import (
-	"math/rand"
 	"strconv"
-	"strings"
 )
 
 type Unit struct {
@@ -80,7 +78,7 @@ func timeDistance() ([]string, string) {
 
 	tests := make([]test, len(inputs))
 	for i, inp := range inputs {
-		tests[i] = test{strconv.Itoa(secs), formatDistance(secs)}
+		tests[i] = test{strconv.Itoa(inp), formatDistance(inp)}
 	}
 
 	return outputTests(shuffle(tests))
