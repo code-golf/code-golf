@@ -42,7 +42,8 @@ var tens = [][]byte{
 	[]byte("ninety"),
 }
 
-func wordify(out *strings.Builder, i int) {
+func wordify(i int) {
+	var out strings.Builder
 	if i == 1000 {
 		out.WriteString("one thousand")
 	} else if i < 20 {
@@ -63,25 +64,19 @@ func wordify(out *strings.Builder, i int) {
 			wordify(out, j)
 		}
 	}
+	return out.String()
 }
 
 func spellingNumbers() ([]string, string) {
 	const count = 1001
+	tests := make([]test, count)
 
-	args := make([]string, count)
-	var out strings.Builder
-
-	// The strings "zero" to "one thousand", newline delimited, are this len.
-	out.Grow(25531)
-
-	for i, n := range rand.Perm(count) {
-		args[i] = strconv.Itoa(n)
-
-		if i > 0 {
-			out.WriteByte('\n')
+	for i := range count {
+		tests[i] = test{
+			strconv.Itoa(i),
+			wordify(i),
 		}
-		wordify(&out, n)
 	}
 
-	return args, out.String()
+	return outputTests(shuffle(tests))
 }
