@@ -196,6 +196,13 @@ preamble = '''
 </table>
 '''
 
+['ASCII Table']
+category = 'Art'
+experiment = -1
+preamble = '''
+<p>Print the following ASCII table, taken from <code>man 7 ascii</code>
+'''
+
 [brainfuck]
 category = 'Computing'
 links = [
