@@ -4,7 +4,6 @@ import (
 	"math"
 	"math/rand"
 	"strconv"
-	"strings"
 )
 
 func perimeter(ai, bi int) (p float64) {
@@ -27,7 +26,6 @@ func ellipsePerimeters() (args []string, out string) {
 
 	// some random tests
 	var a, b int
-	var p float64
 	for i := 0; i < randomCases; i++ {
 		a = rand.Intn(15) + 5
 		b = rand.Intn(5) + 1

@@ -1,10 +1,5 @@
 package hole
 
-import (
-	"math/rand"
-	"strings"
-)
-
 func unitedStates() ([]string, string) {
 	return outputTests(shuffle([]test{
 		{"Alabama", "AL"},
