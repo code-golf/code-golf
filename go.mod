@@ -17,7 +17,7 @@ require (
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 	github.com/tdewolff/minify/v2 v2.10.0
 	golang.org/x/crypto v0.0.0-20220321153916-2c7772ba3064
-	golang.org/x/exp v0.0.0-20220323204016-c86f0da35e87
+	golang.org/x/exp v0.0.0-20220325121720-054d8573a5d8
 	golang.org/x/oauth2 v0.0.0-20220309155454-6242fa91716a
 	gopkg.in/guregu/null.v4 v4.0.0
 )
@@ -30,8 +30,8 @@ require (
 	github.com/kr/text v0.2.0 // indirect
 	github.com/shurcooL/graphql v0.0.0-20200928012149-18c5c3165e3a // indirect
 	github.com/tdewolff/parse/v2 v2.5.27 // indirect
-	golang.org/x/net v0.0.0-20220225172249-27dd8689420f // indirect
-	golang.org/x/sys v0.0.0-20220319134239-a9b59b0215f8 // indirect
+	golang.org/x/net v0.0.0-20220325170049-de3da57026de // indirect
+	golang.org/x/sys v0.0.0-20220325203850-36772127a21f // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
