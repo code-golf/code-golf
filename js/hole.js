@@ -188,7 +188,8 @@ async function refreshScores() {
         $('#solutionPicker').style.display = 'none';
 
     // Show the delete button if we have solutions to delete.
-    $('#deleteBtn').style.display = dbBytes || dbChars ? 'block' : '';
+    $('#deleteBtn').style.display =
+        (dbBytes || dbChars) && !experimental ? 'block' : '';
 
     // Populate the rankings table.
     const scoringID = scorings[scoring].toLowerCase();
