@@ -1,4 +1,4 @@
-FROM alpine:3.14 as builder
+FROM alpine:3.15 as builder
 
 RUN mkdir /empty
 
@@ -20,6 +20,7 @@ RUN mkdir /usr/share/vim/vim82/ftdetect \
 FROM scratch
 
 COPY --from=0 /bin                      /bin
+COPY --from=0 /empty                    /dev
 COPY --from=0 /lib/ld-musl-x86_64.so.1  /lib/
 COPY --from=0 /usr/lib/libncurses.so    \
               /usr/lib/libncursesw.so.6 /usr/lib/

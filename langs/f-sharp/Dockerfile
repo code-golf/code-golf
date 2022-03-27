@@ -1,8 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0.201-alpine3.15 as builder
 
-# /dev/urandom is needed.
-RUN mkdir /empty /mydev \
- && mknod -m 444 /mydev/urandom c 1 9
+RUN mkdir /empty
 
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1 VERSION=41.0.3
 
@@ -22,7 +20,7 @@ RUN dotnet run
 
 FROM scratch
 
-COPY --from=0 /mydev                   /dev
+COPY --from=0 /empty                   /dev
 COPY --from=0 /lib/ld-musl-x86_64.so.1 \
               /lib/libcrypto.so.1.1    \
               /lib/libssl.so.1.1       /lib/

@@ -18,6 +18,7 @@ RUN LDFLAGS=-static python pypy$PY_VERSION-src/rpython/bin/rpython \
 
 FROM scratch
 
+COPY --from=0 /empty    /dev
 COPY --from=0 /empty    /proc
 COPY --from=0 /empty    /tmp
 COPY --from=0 /bf-jit-c /usr/bin/brainfuck

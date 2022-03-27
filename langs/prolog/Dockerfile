@@ -12,6 +12,7 @@ RUN gcc -s -o prolog prolog.c
 
 FROM scratch
 
+COPY --from=0 /empty                                             /dev
 COPY --from=0 /prolog /usr/bin/swipl                             /usr/bin/
 COPY --from=0 /lib                                               /lib
 COPY --from=0 /lib64                                             /lib64

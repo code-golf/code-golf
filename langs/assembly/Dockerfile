@@ -20,6 +20,7 @@ RUN mkdir /symlink \
 
 FROM scratch
 
+COPY --from=0 /empty                              /dev
 COPY --from=0 /lib/ld-musl-x86_64.so.1            \
               /lib/libz.so.1                      /lib/
 COPY --from=0 /empty                              /proc

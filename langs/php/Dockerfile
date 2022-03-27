@@ -22,6 +22,7 @@ RUN echo display_errors=stderr > /usr/lib/php.ini
 
 FROM scratch
 
+COPY --from=0 /empty           /dev
 COPY --from=0 /empty           /proc
 COPY --from=0 /empty           /tmp
 COPY --from=0 /usr/bin/php     /usr/bin/

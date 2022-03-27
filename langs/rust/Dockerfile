@@ -15,6 +15,7 @@ FROM scratch
 ENV RUSTUP_HOME /usr/local/rustup/10.3.1
 
 COPY --from=0 /bin/sh                       /bin/
+COPY --from=0 /empty                        /dev
 COPY --from=0 /lib/ld-musl-x86_64.so.1      \
               /lib/libz.so.1                /lib/
 COPY --from=0 /empty                        /proc

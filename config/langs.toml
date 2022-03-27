@@ -286,7 +286,7 @@ let main args =
 '''
 
 [Fortran]
-size    = '80.6 MiB'
+size    = '80.2 MiB'
 version = 'GNU Fortran 11.2.0'
 website = 'https://gcc.gnu.org/fortran/'
 example = '''
@@ -385,7 +385,7 @@ example = '''
 '''
 
 [J]
-size    = '4.77 MiB'
+size    = '4.84 MiB'
 version = '9.02.08'
 website = 'https://www.jsoftware.com'
 example = '''
@@ -529,7 +529,7 @@ for arg in commandLineParams():
 '''
 
 [Pascal]
-size    = '31.3 MiB'
+size    = '31.2 MiB'
 version = '3.2.2'
 website = 'https://freepascal.org'
 example = '''
@@ -738,7 +738,7 @@ for arg in CommandLine.arguments[1...] {
 '''
 
 [V]
-size    = '35.4 MiB'
+size    = '37.9 MiB'
 version = '0.2.4'
 website = 'https://vlang.io'
 example = '''

@@ -20,6 +20,7 @@ RUN mkdir /usr-lib-symlinks && cp -P /usr/lib/libc.so /usr-lib-symlinks
 FROM scratch
 
 COPY --from=0 /bin/sh                  /bin/
+COPY --from=0 /empty                   /dev
 COPY          /nim.cfg                 /etc/nim/
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
 COPY --from=0 /empty                   /proc

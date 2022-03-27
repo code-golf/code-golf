@@ -15,6 +15,7 @@ RUN gcc -static -s -o kwrapper kwrapper.c
 
 FROM scratch
 
+COPY --from=0 /empty         /dev
 COPY --from=0 /empty         /proc
 COPY --from=0 /empty         /tmp
 COPY --from=0 /k/k /kwrapper /usr/bin/

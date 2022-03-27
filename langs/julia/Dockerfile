@@ -1,8 +1,6 @@
 FROM alpine:3.15 as builder
 
-# /dev/urandom is needed.
-RUN mkdir /empty /mydev \
- && mknod -m 444 /mydev/urandom c 1 9
+RUN mkdir /empty
 
 RUN apk add --no-cache cmake curl g++ gfortran libexecinfo-dev \
     linux-headers m4 make musl-dev patch perl python3 tar xz
@@ -18,7 +16,7 @@ RUN make -C julia-$VER -j`nproc` prefix=/usr MARCH=x86-64 install \
 
 FROM scratch
 
-COPY --from=0 /mydev                        /dev
+COPY --from=0 /empty                        /dev
 COPY --from=0 /lib/ld-musl-x86_64.so.1      /lib/
 COPY --from=0 /empty                        /proc
 COPY --from=0 /empty                        /tmp

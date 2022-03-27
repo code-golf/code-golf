@@ -29,6 +29,7 @@ RUN mv perl-5.34.1 perl                                           \
 
 FROM scratch
 
+COPY --from=0 /empty                   /dev
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
 COPY --from=0 /empty                   /proc
 COPY --from=0 /empty                   /tmp

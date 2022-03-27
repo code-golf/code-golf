@@ -17,6 +17,7 @@ RUN find usr/bin -type l ! -name cc -delete
 
 FROM scratch
 
+COPY --from=0 /empty                   /dev
 COPY --from=0 /empty                   /proc
 COPY --from=0 /empty                   /tmp
 COPY --from=0 /lib/ld-musl-x86_64.so.1 \

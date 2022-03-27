@@ -8,7 +8,9 @@
 #include <stdio.h>
 #include <sys/mount.h>
 #include <sys/prctl.h>
+#include <sys/stat.h>
 #include <sys/syscall.h>
+#include <sys/sysmacros.h>
 #include <unistd.h>
 
 #define NOBODY 65534
@@ -45,6 +47,28 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         return 1;
     }
 
+    if (mount("tmpfs", "/dev", "tmpfs", MS_NOSUID, NULL) < 0) {
+        perror("mount dev");
+        return 1;
+    }
+
+    if (mknod("/dev/null", S_IFCHR|0666, makedev(1, 3)) < 0) {
+        perror("mknod");
+        return 1;
+    }
+
+    // FIXME This shouldn't be needed, 0666 should suffice, but without it Zig
+    //       fails with permission denied when opening /dev/null as O_RDWR.
+    if (chown("/dev/null", NOBODY, NOBODY) < 0) {
+        perror("chown /dev/null");
+        return 1;
+    }
+
+    if (mknod("/dev/urandom", S_IFCHR|0444, makedev(1, 9)) < 0) {
+        perror("mknod");
+        return 1;
+    }
+
     if (mount("proc", "/proc", "proc", MS_NODEV|MS_NOEXEC|MS_NOSUID|MS_RDONLY, NULL) < 0) {
         perror("mount proc");
         return 1;
@@ -62,7 +86,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
 
     // Allow /proc/self/fd/0 to be read by the lang after we change user.
     if (chown("/proc/self/fd/0", NOBODY, NOBODY) < 0) {
-        perror("chown");
+        perror("chown /proc/self/fd/0");
         return 1;
     }
 
