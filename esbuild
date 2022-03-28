@@ -10,7 +10,6 @@ node_modules/.bin/esbuild "$@"        \
     --entry-names=[dir]/[name]-[hash] \
     --format=esm                      \
     --jsx-factory=createElement       \
-    --loader:.js=jsx                  \
     --loader:.woff2=file              \
     --metafile=esbuild.json           \
     --minify                          \
