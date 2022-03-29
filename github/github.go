@@ -7,13 +7,14 @@ import (
 	"os"
 	"time"
 
-	"github.com/shurcooL/githubv4"
+	"github.com/shurcooL/graphql"
 	"golang.org/x/oauth2"
 )
 
 var accessToken = os.Getenv("GITHUB_ACCESS_TOKEN")
 
-var client = githubv4.NewClient(
+var client = graphql.NewClient(
+	"https://api.github.com/graphql",
 	oauth2.NewClient(
 		context.Background(),
 		oauth2.StaticTokenSource(&oauth2.Token{AccessToken: accessToken}),
@@ -21,7 +22,7 @@ var client = githubv4.NewClient(
 )
 
 type pageInfo struct {
-	EndCursor   githubv4.String
+	EndCursor   graphql.String
 	HasNextPage bool
 }
 
