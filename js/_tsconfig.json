@@ -7,7 +7,8 @@
     "skipLibCheck": true,
     "jsx": "react",
     "jsxFactory": "createElement",
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "esModuleInterop": true
   },
   "include": ["./**/*"]
 }

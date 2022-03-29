@@ -216,7 +216,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		Golfer:             theGolfer,
 		GolferInfo:         session.GolferInfo(r),
 		Holes:              config.HoleByID,
-		JS:                 []string{assets["js/base.js"]},
+		JS:                 []string{assets["js/base.tsx"]},
 		Langs:              config.LangByID,
 		Name:               name,
 		Nonce:              nonce(),
@@ -271,8 +271,10 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	// Append route specific JS.
 	// e.g. GET /foo/bar might add js/foo.js and/or js/foo/bar.js.
 	for _, path := range []string{path.Dir(name), name} {
-		if url, ok := assets["js/"+path+".js"]; ok {
-			args.JS = append(args.JS, url)
+		for _, ext := range []string{"js","ts","tsx"} {
+			if url, ok := assets["js/"+path+"."+ext]; ok {
+				args.JS = append(args.JS, url)
+			}
 		}
 	}
 

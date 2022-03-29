@@ -230,8 +230,10 @@ async function refreshScores() {
             tab.href = '';
             tab.onclick = (e: MouseEvent) => {
                 e.preventDefault();
-                scoring = i as 0 | 1;
-                localStorage.setItem('scoring', scorings[scoring]);
+                // Moving `scoring = i` to the line above, outside the list access,
+                // causes legacy CodeMirror (UMD) to be imported improperly.
+                // Leave as-is to avoid "CodeMirror is not a constructor".
+                localStorage.setItem('scoring', scorings[scoring = i as 0 | 1]);
                 refreshScores();
             };
         }
@@ -266,8 +268,10 @@ function setCodeForLangAndSolution() {
 }
 
 function setSolution(value: 0 | 1) {
-    solution = value;
-    localStorage.setItem('solution', scorings[solution]);
+    // Moving `solution = value` to the line above, outside the list access,
+    // causes legacy CodeMirror (UMD) to be imported improperly.
+    // Leave as-is to avoid "CodeMirror is not a constructor".
+    localStorage.setItem('solution', scorings[solution = value]);
 }
 
 async function submit() {

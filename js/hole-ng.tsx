@@ -1,6 +1,6 @@
 import { $, $$, createElement, comma } from './_inject';
 import { ASMStateField }                       from '@defasm/codemirror';
-import * as LZString                           from 'lz-string';
+import LZString                                from 'lz-string';
 import { EditorState, EditorView, extensions } from './_codemirror.js';
 import                                              './_copy-as-json';
 import diffTable                               from './_diff';

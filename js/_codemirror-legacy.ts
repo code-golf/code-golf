@@ -1,4 +1,4 @@
-import * as CodeMirror from './codemirror-legacy/_codemirror';
+import CodeMirror from './codemirror-legacy/_codemirror';
 
 export default CodeMirror;
 
