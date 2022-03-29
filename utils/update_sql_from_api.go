@@ -15,6 +15,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"math/rand"
 	"net/http"
 	"strings"
 
@@ -54,6 +55,45 @@ func testMakeCode() {
 	}
 }
 
+func getUserMap(db *sql.DB) (result map[string]int32) {
+	result = map[string]int32{}
+
+	rows, err := db.Query(`SELECT id, login FROM users`)
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var id int32
+		var login string
+
+		if err := rows.Scan(&id, &login); err != nil {
+			panic(err)
+		}
+
+		result[login] = id
+	}
+
+	return
+}
+
+func getUnusedUserID(userMap map[string]int32) (result int32) {
+	done := false
+	for !done {
+		done = true
+		result = rand.Int31()
+		for _, userID := range userMap {
+			if result == userID {
+				done = false
+				break
+			}
+		}
+	}
+
+	return
+}
+
 func main() {
 	testMakeCode()
 
@@ -83,18 +123,17 @@ func main() {
 	}
 	defer tx.Rollback()
 
-	userMap := map[string]int{}
+	userMap := getUserMap(db)
+
 	for _, info := range infoList {
 		if _, ok := userMap[info.Login]; !ok {
-			userMap[info.Login] = 1000 + len(userMap)
-		}
-	}
-
-	for login, userID := range userMap {
-		if _, err := tx.Exec("INSERT INTO users (id, login) VALUES($1, $2)",
-			userID, login,
-		); err != nil {
-			panic(err)
+			userID := getUnusedUserID(userMap)
+			userMap[info.Login] = userID
+			if _, err := tx.Exec("INSERT INTO users (id, login) VALUES($1, $2)",
+				userID, info.Login,
+			); err != nil {
+				panic(err)
+			}
 		}
 	}
 
@@ -103,7 +142,12 @@ func main() {
 			`INSERT INTO solutions (  bytes,     chars,    code, hole, lang,
 			                        scoring, submitted, user_id)
 			                VALUES (     $1,        $2,      $3,   $4,   $5,
-			                             $6,        $7,      $8)`,
+			                             $6,        $7,      $8)
+			ON CONFLICT            (user_id, hole, lang, scoring)
+			  DO UPDATE SET bytes = excluded.bytes,
+			                chars = excluded.chars,
+			                 code = excluded.code,
+			            submitted = excluded.submitted`,
 			info.Bytes,
 			info.Chars,
 			makeCode(info.Chars, info.Bytes),

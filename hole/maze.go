@@ -22,10 +22,7 @@ var (
 
 // http://weblog.jamisbuck.org/2010/12/27/maze-generation-recursive-backtracking
 func dig(i, j int, grid, dist [height][width]int) ([height][width]int, [height][width]int) {
-	directions := []int{north, south, west, east}
-	rand.Shuffle(len(directions), func(m, n int) {
-		directions[m], directions[n] = directions[n], directions[m]
-	})
+	directions := shuffle([]int{north, south, west, east})
 
 	for _, d := range directions {
 		newi := i + di[d]

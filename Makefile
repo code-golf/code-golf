@@ -83,8 +83,8 @@ lint:
 	@node_modules/typescript/bin/tsc --project tsconfig.json
 	@node_modules/.bin/eslint --ext js,jsx,ts,tsx js/
 
-	@docker build -t code-golf-lint -f docker/lint.Dockerfile .
-	@docker run --rm -v $(CURDIR):/app -w /app code-golf-lint golangci-lint run
+	@docker run --rm -v $(CURDIR):/app -w /app \
+	    golangci/golangci-lint:v1.45.2 golangci-lint run
 
 live:
 	@docker build --pull -f docker/live.Dockerfile -t codegolf/code-golf .

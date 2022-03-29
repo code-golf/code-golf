@@ -1,6 +1,4 @@
-FROM alpine:3.14 as builder
-
-RUN mkdir /empty
+FROM alpine:3.15 as builder
 
 RUN apk add --no-cache build-base curl gmp-dev
 

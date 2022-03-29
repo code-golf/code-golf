@@ -16,6 +16,7 @@ RUN cd lua-5.4.4      \
 
 FROM scratch
 
+COPY --from=0 /empty             /dev
 COPY --from=0 /empty             /proc
 COPY --from=0 /empty             /tmp
 COPY --from=0 /lua-5.4.4/src/lua /usr/bin/

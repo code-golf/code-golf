@@ -28,6 +28,7 @@ RUN gn gen out --args="                 \
 
 FROM scratch
 
+COPY --from=0 /empty                                /dev
 COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
               /lib/x86_64-linux-gnu/libgcc_s.so.1   \
               /lib/x86_64-linux-gnu/libm.so.6       \

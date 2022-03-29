@@ -12,6 +12,7 @@ RUN strip /usr/bin/swift
 
 FROM scratch
 
+COPY --from=0 /empty                    /dev
 COPY --from=0 /lib                      /lib
 COPY --from=0 /lib64                    /lib64
 COPY --from=0 /empty                    /proc

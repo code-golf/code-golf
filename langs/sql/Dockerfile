@@ -14,6 +14,7 @@ RUN gcc -DSQLITE_ENABLE_MATH_FUNCTIONS -DSQLITE_THREADSAFE=0 \
 
 FROM scratch
 
+COPY --from=0 /empty /dev
 COPY --from=0 /empty /proc
 COPY --from=0 /empty /tmp
 COPY --from=0 /sql   /usr/bin/

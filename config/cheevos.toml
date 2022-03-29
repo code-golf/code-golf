@@ -114,7 +114,7 @@ description = 'Solve any hole in both Perl and Raku.'
 [['Hole/Lang Specific']]
 name        = 'Under Pressure'
 emoji       = '🗜'
-description = 'Solve <a href=/pascals-triangle#pascal>Pascal’s triangle in Pascal</a>.'
+description = 'Solve <a href=/pascals-triangle#pascal>Pascal’s Triangle in Pascal</a>.'
 
 # Miscellaneous
 

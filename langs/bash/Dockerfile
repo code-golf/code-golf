@@ -24,6 +24,7 @@ RUN cd bash-5.1                \
 
 FROM scratch
 
+COPY --from=0 /empty         /dev
 COPY --from=0 /empty         /proc
 COPY --from=0 /empty         /tmp
 COPY --from=0 /bash-5.1/bash /usr/bin/

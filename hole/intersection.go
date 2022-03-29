@@ -30,30 +30,15 @@ func unbox(b bbox) (tlx, tly, brx, bry int) {
 	return
 }
 
-// til that go doesn't have built-in max/min for int
-func minint(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
-}
-
-func maxint(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
-}
-
 func calculateIntersection(b1, b2 bbox) int {
 	tlx1, tly1, brx1, bry1 := unbox(b1)
 	tlx2, tly2, brx2, bry2 := unbox(b2)
 
 	// find top-left and bottom-right intersection coordinates
-	itlx := maxint(tlx1, tlx2) // intersection top left x
-	itly := maxint(tly1, tly2)
-	ibrx := minint(brx1, brx2) // intersection bottom right x
-	ibry := minint(bry1, bry2)
+	itlx := max(tlx1, tlx2) // intersection top left x
+	itly := max(tly1, tly2)
+	ibrx := min(brx1, brx2) // intersection bottom right x
+	ibry := min(bry1, bry2)
 
 	// calculate intersection dimensions
 	iw := ibrx - itlx
@@ -76,8 +61,8 @@ func boxGen() bbox {
 	}
 }
 
-func intersection() (args []string, out string) {
-	var outs []string
+func intersection() ([]string, string) {
+	var tests []test
 
 	//// default cases
 	// define two non overlapping 1x1 boxes
@@ -90,47 +75,42 @@ func intersection() (args []string, out string) {
 	b7 := bbox{x: 2, y: 2, h: 2, w: 2}
 
 	// b1 and b2 overlap by 1 pixel
-	args = append(args, strconvbox(b1)+" "+strconvbox(b2))
-	outs = append(outs, "1")
+	tests = append(tests, test{strconvbox(b1) + " " + strconvbox(b2), "1"})
 
 	// b1 and b3 are far away and don't overlap
-	args = append(args, strconvbox(b1)+" "+strconvbox(b3))
-	outs = append(outs, "0")
+	tests = append(tests, test{strconvbox(b1) + " " + strconvbox(b3), "0"})
 
 	// b3 and b4 overlap on one horizontal side
-	args = append(args, strconvbox(b3)+" "+strconvbox(b4))
-	outs = append(outs, "2")
+	tests = append(tests, test{strconvbox(b3) + " " + strconvbox(b4), "2"})
 
 	// b4 and b5 overlap on one vertical side
-	args = append(args, strconvbox(b4)+" "+strconvbox(b5))
-	outs = append(outs, "3")
+	tests = append(tests, test{strconvbox(b4) + " " + strconvbox(b5), "3"})
 
 	// b4 is inside b6
-	args = append(args, strconvbox(b4)+" "+strconvbox(b6))
-	outs = append(outs, "6")
+	tests = append(tests, test{strconvbox(b4) + " " + strconvbox(b6), "6"})
 
 	// b2 and b7 are side by side but don't overlap
-	args = append(args, strconvbox(b2)+" "+strconvbox(b7))
-	outs = append(outs, "0")
+	tests = append(tests, test{strconvbox(b2) + " " + strconvbox(b7), "0"})
 
 	//// generate 100 random cases
-	zeros := 0
-	nonZeros := 0
-	for zeros+nonZeros < 100 {
-		b1 = boxGen()
-		b2 = boxGen()
+	for zeros, nonZeros := 0, 0; zeros+nonZeros < 100; {
+		b1 := boxGen()
+		b2 := boxGen()
 		intersection := calculateIntersection(b1, b2)
 
 		// compute 90 non-zero cases and 10 zero ones
 		if intersection > 0 && nonZeros < 90 {
-			args = append(args, strconvbox(b1)+" "+strconvbox(b2))
-			outs = append(outs, strconv.Itoa(intersection))
 			nonZeros++
 		} else if intersection == 0 && zeros < 10 {
-			args = append(args, strconvbox(b1)+" "+strconvbox(b2))
-			outs = append(outs, strconv.Itoa(intersection))
 			zeros++
+		} else {
+			continue
 		}
+
+		tests = append(tests, test{
+			strconvbox(b1) + " " + strconvbox(b2),
+			strconv.Itoa(intersection),
+		})
 	}
 
 	// 13x13 default side cases
@@ -170,24 +150,23 @@ func intersection() (args []string, out string) {
 					}
 					if rand.Float32() > 0.5 { // randomly add test ?
 						b := bbox{x: x, y: y, w: w, h: h}
+
+						var in string
 						if rand.Float32() > 0.5 { // randomly flip input
-							args = append(args, strconvbox(b)+" "+strbigbox)
+							in = strconvbox(b) + " " + strbigbox
 						} else {
-							args = append(args, strbigbox+" "+strconvbox(b))
+							in = strbigbox + " " + strconvbox(b)
 						}
-						outs = append(outs, strconv.Itoa(calculateIntersection(b, bigbox)))
+
+						tests = append(tests, test{
+							in,
+							strconv.Itoa(calculateIntersection(b, bigbox)),
+						})
 					}
 				}
 			}
 		}
 	}
 
-	// shuffle args and outputs in the same way
-	rand.Shuffle(len(args), func(i, j int) {
-		args[i], args[j] = args[j], args[i]
-		outs[i], outs[j] = outs[j], outs[i]
-	})
-
-	out = strings.Join(outs, "\n")
-	return
+	return outputTests(shuffle(tests))
 }

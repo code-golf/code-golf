@@ -1,7 +1,6 @@
 package hole
 
 import (
-	"math/rand"
 	"strings"
 	"unicode"
 )
@@ -13,11 +12,7 @@ var segments = [][]string{
 }
 
 func sevenSegment() (args []string, out string) {
-	digits := []byte{'0', '0', '1', '1', '2', '2', '3', '3', '4', '4', '5', '5', '6', '6', '7', '7', '8', '8', '9', '9'}
-
-	rand.Shuffle(len(digits), func(i, j int) {
-		digits[i], digits[j] = digits[j], digits[i]
-	})
+	digits := shuffle([]byte("00112233445566778899"))
 
 	args = append(args, string(digits))
 

@@ -1,4 +1,4 @@
-FROM alpine:3.14 as builder
+FROM alpine:3.15 as builder
 
 RUN mkdir /empty
 
@@ -49,17 +49,18 @@ RUN /src/gcc-11.2.0/configure     \
 FROM scratch
 
 COPY --from=0 /bin/cat /bin/rm /bin/sh      /bin/
+COPY --from=0 /empty                        /dev
 COPY --from=0 /lib/ld-musl-x86_64.so.1      \
               /lib/libz.so.1                /lib/
 COPY --from=0 /usr/bin/as /usr/bin/ld       /usr/bin/
 COPY --from=0 /usr/lib/crt1.o               \
               /usr/lib/crti.o               \
               /usr/lib/crtn.o               \
-              /usr/lib/libbfd-2.35.2.so     \
+              /usr/lib/libbfd-2.37.so       \
               /usr/lib/libc.so              \
               /usr/lib/libctf.so.0          \
               /usr/lib/libm.a               \
-              /usr/lib/libopcodes-2.35.2.so /usr/lib/
+              /usr/lib/libopcodes-2.37.so   /usr/lib/
 COPY --from=0 /usr/local/bin/gfortran       /usr/local/bin/
 COPY --from=0 /usr/local/lib                /usr/local/lib
 COPY --from=0 /usr/local/lib64              /usr/local/lib64

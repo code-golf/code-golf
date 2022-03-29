@@ -73,6 +73,7 @@ COPY --from=0 usr/lib/gcc/x86_64-alpine-linux-musl/10.3.1/libgcc.a    \
 
 COPY unbuffered.cpp                    /
 
+COPY --from=0 /empty                   /dev
 COPY --from=0 /empty                   /tmp
 COPY --from=0 /empty                   /proc
 
