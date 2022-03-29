@@ -10,5 +10,5 @@
     "downlevelIteration": true,
     "esModuleInterop": true
   },
-  "include": ["./**/*"]
+  "include": ["js/**/*"]
 }

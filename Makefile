@@ -80,7 +80,7 @@ font:
 	    docker rm $$id
 
 lint:
-	@node_modules/typescript/bin/tsc --project js/_tsconfig.json
+	@node_modules/typescript/bin/tsc --project tsconfig.json
 	@node_modules/.bin/eslint --ext js,jsx,ts,tsx js/
 
 	@docker build -t code-golf-lint -f docker/lint.Dockerfile .
