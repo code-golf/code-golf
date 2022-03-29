@@ -31,7 +31,7 @@ type rateLimit struct {
 	ResetAt                time.Time
 }
 
-func Run(db *sql.DB) {
+func Run(db *sql.DB, hourly bool) {
 	if accessToken == "" {
 		return
 	}
@@ -41,9 +41,14 @@ func Run(db *sql.DB) {
 		limit rateLimit
 	)
 
-	for _, job := range []func(*sql.DB) []rateLimit{
-		ideas, pullRequests, sponsors, stars,
-	} {
+	var jobs []func(*sql.DB) []rateLimit
+	if hourly {
+		jobs = append(jobs, updateUsernames)
+	} else {
+		jobs = append(jobs, ideas, pullRequests, sponsors, stars)
+	}
+
+	for _, job := range jobs {
 		for _, limit = range job(db) {
 			cost += limit.Cost
 		}
