@@ -3,7 +3,6 @@ package hole
 import (
 	"math/rand"
 	"strconv"
-	"strings"
 )
 
 var games = [...]struct {
@@ -64,13 +63,11 @@ func randReplacements(gFrames []rune) []rune {
 
 func tenPinBowling() ([]string, string) {
 	extraCases := 22
-	args := make([]string, len(games)+extraCases)
-	outs := make([]string, len(games)+extraCases)
+	tests := make([]test, len(games)+extraCases)
 
 	for i, game := range games {
 		frames := randReplacements(game.frames)
-		args[i] = string(frames)
-		outs[i] = game.score
+		tests[i] = test{string(frames), game.score}
 	}
 
 	for i := 0; i < extraCases; i++ {
@@ -150,14 +147,8 @@ func tenPinBowling() ([]string, string) {
 		}
 		r := []rune(arg)
 		frames := randReplacements(r)
-		args[i+len(games)] = string(frames)
-		outs[i+len(games)] = strconv.Itoa(score)
+		tests[i+len(games)] = test{string(frames), strconv.Itoa(score)}
 	}
 
-	rand.Shuffle(len(args), func(i, j int) {
-		args[i], args[j] = args[j], args[i]
-		outs[i], outs[j] = outs[j], outs[i]
-	})
-
-	return args, strings.Join(outs, "\n")
+	return outputTests(shuffle(tests))
 }
