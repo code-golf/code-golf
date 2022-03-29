@@ -1,3 +1,4 @@
+DATE     := $(shell date +%Y-%m-%d)
 GOFILES  := $(shell find . -name '*.go' ! -path './.go*')
 POSTGRES := postgres:14.2-alpine
 SHELL    := /bin/bash
@@ -39,10 +40,9 @@ db-dump:
 	@rm -f db/*.gz
 
 	@ssh rancher@code.golf "docker run --env-file /etc/code-golf.env \
-	    --rm $(POSTGRES) sh -c 'pg_dump -a | gzip -9'"               \
-	    > db/code-golf-`date +%Y-%m-%d`.sql.gz
+	    --rm $(POSTGRES) pg_dump -aZ9" > db/code-golf-$(DATE).sql.gz
 
-	@cp db/*.gz ~/Dropbox/code-golf/
+	@zcat db/*.gz | zstd -fqo ~/Dropbox/code-golf/code-golf-$(DATE).sql.zst
 
 dev:
 	@touch docker/.env
