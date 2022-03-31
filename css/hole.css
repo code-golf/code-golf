@@ -65,6 +65,7 @@ section {
 section header {
     align-items: center;
     display: flex;
+    height: 2rem;
     justify-content: space-between;
     padding-right: .5rem;
 }
@@ -224,6 +225,8 @@ thead { user-select: none }
 
 @media (max-width: 34rem) {
     section { grid-template-columns: 1fr }
+
+    section header { padding: 0 }
 
     #editor { border-width: 1px }
 }
