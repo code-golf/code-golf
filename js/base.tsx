@@ -1,4 +1,4 @@
-import { $, $$ } from './_inject';
+import { $, $$ } from './_util';
 import dialogPolyfill from 'dialog-polyfill';
 
 const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;

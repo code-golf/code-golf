@@ -1,4 +1,4 @@
-import { $, $$, comma } from './_inject';
+import { $, $$, comma } from './_util';
 import { ASMStateField }                       from '@defasm/codemirror';
 import LZString                                from 'lz-string';
 import { EditorState, EditorView, extensions } from './_codemirror.js';

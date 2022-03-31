@@ -1,4 +1,4 @@
-import { $, comma } from '../_inject';
+import { $, comma } from '../_util';
 const form   = document.forms[0];
 const run    = $('#run');
 const status = $('#status');

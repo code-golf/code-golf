@@ -1,12 +1,5 @@
 // Exports injected into every JS file by default
 
-// Small util functions.
-/** Assume $ always succeeds and returns an HTMLElement */
-export const $     = (selector: string) => document.querySelector(selector) as HTMLElement;
-/** Assume $$ returns HTMLElements only */
-export const $$    = (selector: string) => document.querySelectorAll(selector) as NodeListOf<HTMLElement>;
-export const comma = (i: number) => i.toLocaleString('en');
-
 // Our default JSX factory.
 export function createElement(
     tag: string,
