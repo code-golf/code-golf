@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	notes = [12][2]string{
+	notes = [...][2]string{
 		{"C", "B♯"},
 		{"C♯", "D♭"},
 		{"D", "D"},
@@ -20,16 +20,16 @@ var (
 		{"A♯", "B♭"},
 		{"B", "C♭"},
 	}
-	triadTypes = [4]string{
+	triadTypes = [...]string{
 		"°", "m", "", "+",
 	}
-	triadSteps = [4][2]int{
+	triadSteps = [...][2]int{
 		{3, 3},
 		{3, 4},
 		{4, 3},
 		{4, 4},
 	}
-	orderings = [6][3]int{
+	orderings = [...][3]int{
 		{0, 1, 2},
 		{0, 2, 1},
 		{1, 0, 2},
@@ -39,9 +39,7 @@ var (
 	}
 )
 
-func letterVal(note string) int {
-	return int(note[0]) - 65
-}
+func letterVal(note string) byte { return note[0] - 'A' }
 
 func genNotes(rootIdx int, rootNote string, steps [2]int) []string {
 	thirdIdx := (rootIdx + steps[0]) % 12
@@ -81,8 +79,7 @@ func musicalChords() ([]string, string) {
 		}
 
 		for _, rootNote := range rootNames[:uniqueNames] {
-			for triadIdx := 0; triadIdx < 4; triadIdx++ {
-				triad := triadTypes[triadIdx]
+			for triadIdx, triad := range triadTypes {
 				steps := triadSteps[triadIdx]
 				chordNotes := genNotes(rootIdx, rootNote, steps)
 				if len(chordNotes) > 0 {

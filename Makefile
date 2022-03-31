@@ -1,3 +1,4 @@
+DATE     := $(shell date +%Y-%m-%d)
 GOFILES  := $(shell find . -name '*.go' ! -path './.go*')
 POSTGRES := postgres:14.2-alpine
 SHELL    := /bin/bash
@@ -10,7 +11,7 @@ bench:
 
 bump:
 	@go get -u
-	@go mod tidy -compat=1.17
+	@go mod tidy -compat=1.18
 	@npm upgrade
 
 cert:
@@ -39,10 +40,9 @@ db-dump:
 	@rm -f db/*.gz
 
 	@ssh rancher@code.golf "docker run --env-file /etc/code-golf.env \
-	    --rm $(POSTGRES) sh -c 'pg_dump -a | gzip -9'"               \
-	    > db/code-golf-`date +%Y-%m-%d`.sql.gz
+	    --rm $(POSTGRES) pg_dump -aZ9" > db/code-golf-$(DATE).sql.gz
 
-	@cp db/*.gz ~/Dropbox/code-golf/
+	@zcat db/*.gz | zstd -fqo ~/Dropbox/code-golf/code-golf-$(DATE).sql.zst
 
 dev:
 	@touch docker/.env
@@ -87,9 +87,8 @@ lint:
 	    golangci/golangci-lint:v1.45.2 golangci-lint run
 
 live:
-	@docker build --pull -f docker/live.Dockerfile -t codegolf/code-golf .
-
-	@docker push codegolf/code-golf
+	@docker buildx build --pull --push \
+	    --file docker/live.Dockerfile --tag codegolf/code-golf .
 
 	@ssh rancher@code.golf "              \
 	    docker pull codegolf/code-golf && \

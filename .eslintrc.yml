@@ -1,6 +1,6 @@
 env: { browser: true }
 
-ignorePatterns: [ js/_codemirror.js, js/codemirror-legacy ]
+ignorePatterns: [ js/codemirror-legacy ]
 
 parser: "@typescript-eslint/parser"
 

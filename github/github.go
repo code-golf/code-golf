@@ -7,13 +7,14 @@ import (
 	"os"
 	"time"
 
-	"github.com/shurcooL/githubv4"
+	"github.com/shurcooL/graphql"
 	"golang.org/x/oauth2"
 )
 
 var accessToken = os.Getenv("GITHUB_ACCESS_TOKEN")
 
-var client = githubv4.NewClient(
+var client = graphql.NewClient(
+	"https://api.github.com/graphql",
 	oauth2.NewClient(
 		context.Background(),
 		oauth2.StaticTokenSource(&oauth2.Token{AccessToken: accessToken}),
@@ -21,7 +22,7 @@ var client = githubv4.NewClient(
 )
 
 type pageInfo struct {
-	EndCursor   githubv4.String
+	EndCursor   graphql.String
 	HasNextPage bool
 }
 
@@ -30,7 +31,7 @@ type rateLimit struct {
 	ResetAt                time.Time
 }
 
-func Run(db *sql.DB) {
+func Run(db *sql.DB, hourly bool) {
 	if accessToken == "" {
 		return
 	}
@@ -40,9 +41,14 @@ func Run(db *sql.DB) {
 		limit rateLimit
 	)
 
-	for _, job := range []func(*sql.DB) []rateLimit{
-		ideas, pullRequests, sponsors, stars,
-	} {
+	var jobs []func(*sql.DB) []rateLimit
+	if hourly {
+		jobs = append(jobs, updateUsernames)
+	} else {
+		jobs = append(jobs, ideas, pullRequests, sponsors, stars)
+	}
+
+	for _, job := range jobs {
 		for _, limit = range job(db) {
 			cost += limit.Cost
 		}

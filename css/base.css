@@ -130,11 +130,12 @@ dialog {
     border: 1px solid var(--color);
     color: var(--color);
     left: 50%;
-    max-width: 25rem;
+    max-width: calc(100vw - 2rem);
     padding: 0;
     position: fixed;
     top: 50%;
     transform: translate(-50%, -50%);
+    width: 30rem;
 }
 
 dialog:not([open]) { display: none }

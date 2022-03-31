@@ -53,10 +53,10 @@ func (sign zodiacSign) edgeDate() test {
 func zodiacSigns() ([]string, string) {
 	const (
 		randomCases = 20
-		totalcases  = randomCases + 2*len(signs)
+		totalCases  = randomCases + 2*len(signs)
 	)
 
-	tests := make([]test, randomCases, totalcases)
+	tests := make([]test, randomCases, totalCases)
 
 	for i := 0; i < randomCases; i++ {
 		tests[i] = signs[rand.Intn(len(signs))].randomDate()

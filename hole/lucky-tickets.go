@@ -3,7 +3,6 @@ package hole
 import (
 	"math/rand"
 	"strconv"
-	"strings"
 )
 
 type ticket struct {
@@ -87,18 +86,14 @@ func luckyTickets() ([]string, string) {
 		tickets[i] = ticket{digits, base, result}
 	}
 
-	args := make([]string, len(tickets))
-	outs := make([]string, len(tickets))
+	tests := make([]test, len(tickets))
 
 	for i, item := range tickets {
-		args[i] = strconv.Itoa(item.digits) + " " + strconv.Itoa(item.base)
-		outs[i] = strconv.FormatInt(item.result, 10)
+		tests[i] = test{
+			strconv.Itoa(item.digits) + " " + strconv.Itoa(item.base),
+			strconv.FormatInt(item.result, 10),
+		}
 	}
 
-	rand.Shuffle(len(args), func(i, j int) {
-		args[i], args[j] = args[j], args[i]
-		outs[i], outs[j] = outs[j], outs[i]
-	})
-
-	return args, strings.Join(outs, "\n")
+	return outputTests(shuffle(tests))
 }

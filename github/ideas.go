@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/shurcooL/githubv4"
+	"github.com/shurcooL/graphql"
 )
 
 func ideas(db *sql.DB) (limits []rateLimit) {
@@ -25,7 +25,7 @@ func ideas(db *sql.DB) (limits []rateLimit) {
 		} `graphql:"repository(name: \"code-golf\" owner: \"code-golf\")"`
 	}
 
-	variables := map[string]any{"cursor": (*githubv4.String)(nil)}
+	variables := map[string]any{"cursor": (*graphql.String)(nil)}
 
 	tx, err := db.Begin()
 	if err != nil {

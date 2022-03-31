@@ -90,7 +90,7 @@ func main() {
 	go func() {
 		for range time.Tick(5 * time.Minute) {
 			// Various GitHub API requests.
-			github.Run(db)
+			github.Run(db, false)
 
 			if err := discord.AwardRoles(db); err != nil {
 				log.Println(err)
@@ -101,6 +101,9 @@ func main() {
 	// Every hour.
 	go func() {
 		for range time.Tick(time.Hour) {
+			// Update GitHub usernames.
+			github.Run(db, true)
+
 			for _, job := range [...]struct{ name, sql string }{
 				{
 					"expired sessions",

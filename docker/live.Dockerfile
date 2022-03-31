@@ -14,8 +14,8 @@ RUN go build -ldflags -s -trimpath \
  && gcc -Wall -Werror -Wextra -o /usr/bin/run-lang -s -static run-lang.c
 
 RUN ./esbuild \
- && find dist \( -name '*.js' -or -name '*.map' \) -exec brotli {} + \
- && find dist \( -name '*.js' -or -name '*.map' \) -exec zopfli {} +
+ && find dist \( -name '*.js' -or -name '*.map' \) \
+  | xargs -i -n1 -P`nproc` sh -c 'brotli {} && zopfli {}'
 
 FROM scratch
 
