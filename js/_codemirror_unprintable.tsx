@@ -1,4 +1,3 @@
-import { createElement } from './_inject';
 // CodeMirror unprintable character extensions
 import { Decoration, EditorView, keymap, MatchDecorator, ViewPlugin, WidgetType } from '@codemirror/view';
 import { EditorState }                                                            from '@codemirror/state';

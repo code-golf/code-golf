@@ -1,5 +1,4 @@
-// Exports are no longer imported into each file by default
-// Remember to import createElement if you need JSX
+// Exports injected into every JS file by default
 
 // Small util functions.
 /** Assume $ always succeeds and returns an HTMLElement */

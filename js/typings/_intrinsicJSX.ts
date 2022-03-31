@@ -5,9 +5,13 @@
 
 /* eslint no-unused-vars: ["off"] */
 
-import { createElement } from '../_inject';
-
 declare global {
+  function createElement(
+      tag: string,
+      attrs: {[key: string]: string},
+      ...children: (Node | string)[]
+  ): HTMLElement;
+
   namespace JSX {
     interface IntrinsicElements {
       div: any;
@@ -32,3 +36,7 @@ declare global {
     }
   }
 }
+
+// Export {} to trick Typescript into thinking this is a module
+// https://stackoverflow.com/a/59499895/7481517
+export {};

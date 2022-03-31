@@ -1,4 +1,3 @@
-import { createElement } from './_inject';
 import * as Diff from 'diff';
 
 interface DiffPos {
