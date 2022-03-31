@@ -39,9 +39,7 @@ var (
 	}
 )
 
-func letterVal(note string) int {
-	return int(note[0]) - 65
-}
+func letterVal(note string) byte { return note[0] - 'A' }
 
 func genNotes(rootIdx int, rootNote string, steps [2]int) []string {
 	thirdIdx := (rootIdx + steps[0]) % 12
