@@ -63,7 +63,7 @@ async function update() {
     svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     const color = (darkMode ? '#1e2124' : '#fdfdfd').replaceAll('#', '%23');
     const data = svg.outerHTML.replaceAll('currentColor', color)
-        .replaceAll('#', '%23').replaceAll('"', '\'');
+        .replaceAll('#', '%23').replaceAll('"', "'");
 
     select.style.background = `url("data:image/svg+xml,${data}") no-repeat left .5rem center/1rem auto, url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path d='M2 0L0 2h4zm0 5L0 3h4' fill='${color}'/></svg>") no-repeat right .5rem center/auto calc(100% - 1.25rem), var(--color)`;
 

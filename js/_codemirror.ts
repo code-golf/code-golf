@@ -50,7 +50,7 @@ const asmErrorTooltip = {
     'color':      'var(--background)',
 };
 
-const fontFamily = '\'Source Code Pro\', monospace';
+const fontFamily = "'Source Code Pro', monospace";
 
 export const extensions = {
     // Extensions.

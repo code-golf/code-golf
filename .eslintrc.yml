@@ -24,6 +24,6 @@ rules:
   no-var:                      [ error ]
   prefer-const:                [ error ]
   quote-props:                 [ error, consistent-as-needed ]
-  quotes:                      [ error, single ]
+  quotes:                      [ error, single, { avoidEscape: true } ]
   semi:                        [ error, always, { omitLastInOneLineBlock: true } ]
   space-before-function-paren: [ error, { named: never } ]
