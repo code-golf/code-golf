@@ -75,7 +75,7 @@
     <section>
         <header>
             <div id=strokes>0 bytes, 0 chars</div>
-            <a href id=restoreLink>Restore solution</a>
+            <a class=hide href id=restoreLink>Restore solution</a>
         </header>
         <header class=wide>
             <nav class=tabs id=scoringTabs><a>Bytes</a><a href>Chars</a></nav>
@@ -99,64 +99,68 @@
         <a href=//docs.microsoft.com/en-us/dotnet/core/tutorials/top-level-templates#implicit-using-directives>
             Implicit using directives</a> for console applications are enabled.
     </div>
-    <div class="info brainfuck">
+    <div class="hide info brainfuck">
         Arguments are available via STDIN, each argument is NULL terminated.
         Taking input after EOF leaves the cell unchanged, the tape is circular
         with 65536 cells, and cells are 8-bit with wrapping.
     </div>
-    <div class="info cpp">
+    <div class="hide info cpp">
         Code is compiled with clang with <a href=//clang.llvm.org/cxx_status.html>-std=c++2b</a>.
     </div>
-    <div class="info d">
+    <div class="hide info d">
         Code is compiled with <a href=//wiki.dlang.org/LDC>LDC2</a>.
     </div>
-    <div class="info fish">
+    <div class="hide info fish">
         Arguments are available via STDIN, each argument is NULL terminated.
         <b>x</b> is a no-op.
     </div>
-    <div class="info hexagony">
+    <div class="hide info hexagony">
         Arguments are available via STDIN, each argument is NULL terminated.
     </div>
-    <div class="info javascript">
+    <div class="hide info javascript">
         <b>arguments</b> holds ARGV, <b>print()</b> to output with a newline,
         <b>write()</b> to output without a newline.
     </div>
 {{ if eq .Data.Hole.ID "quine" }}
-    <div class="info k">
+    <div class="hide info k">
         Implicit output is disabled for this hole. Code must end with a newline.
     </div>
 {{ end }}
-    <div class="info perl">
+    <div class="hide info perl">
         <b>say()</b> is available without any import.
     </div>
 {{ if eq .Data.Hole.ID "quine" }}
-    <div class="info powershell">
+    <div class="hide info powershell">
         Implicit output is disabled for this hole. Use <b>Out-Host</b> or
         <b>Write-Host</b> for output.
     </div>
 {{ else }}
-    <div class="info powershell">
+    <div class="hide info powershell">
         <b>$args</b> to access the arguments.
     </div>
 {{ end }}
-    <div class="info prolog">
+    <div class="hide info prolog">
         <b>prolog_flag(argv, Args)</b> to access the arguments.
     </div>
-    <div class="info sql">
+    <div class="hide info sql">
         <b>SELECT arg FROM argv</b> to access the arguments, only the first
         column of the first result set will be printed, NULL values will be
         skipped, and the dialect is <a href=//sqlite.org/index.html>SQLite</a>.
     </div>
-    <div class="info viml">
+    <div class="hide info viml">
         Arguments are available via <b>args</b> list variable. To terminate
         script execution, write and quit the current buffer.
     </div>
     <div id=run>
-        <button class="btn red" id=deleteBtn>{{ svg "trash" }} Delete</button>
+    {{ if .Golfer }}
+        <button class="btn hide red" id=deleteBtn>
+            {{ svg "trash" }} Delete
+        </button>
+    {{ end }}
         <span>ctrl + enter</span> or
         <button class="btn blue" id=runBtn>{{ svg "play-light" }} Run</button>
     </div>
-    <div id=status>
+    <div class=hide id=status>
         <h2></h2>
         <aside id=err>
             <h3 class="aside-title">Errors</h3><div></div>

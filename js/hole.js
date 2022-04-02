@@ -3,19 +3,12 @@ import                                './_copy-as-json';
 import diffTable                 from './_diff';
 import { byteLen, charLen, ord } from './_util';
 
-const chars              = $('#strokes');
 const darkModeMediaQuery = JSON.parse($('#darkModeMediaQuery').innerText);
 const experimental       = JSON.parse($('#experimental').innerText);
 const hole               = decodeURI(location.pathname.slice(1));
 const langs              = JSON.parse($('#langs').innerText);
-const picker             = $('#picker');
-const popups             = $('#popups');
-const restoreLink        = $('#restoreLink');
 const scorings           = ['Bytes', 'Chars'];
-const scoringTabs        = $$('#scoringTabs a');
 const solutions          = JSON.parse($('#solutions').innerText);
-const status             = $('#status');
-const table              = $('#scores');
 const sortedLangs        =
     Object.values(langs).sort((a, b) => a.name.localeCompare(b.name));
 
@@ -53,7 +46,7 @@ cm.on('change', () => {
             infoText += ', ';
         infoText += `${comma(getScoring(code, i))} ${scorings[i].toLowerCase()}`;
     }
-    chars.innerText = infoText;
+    $('#strokes').innerText = infoText;
 
     // Avoid future conflicts by only storing code locally that's different
     // from the server's copy.
@@ -72,7 +65,7 @@ cm.on('change', () => {
 $('#details').ontoggle = e => document.cookie =
     'hide-details=;SameSite=Lax;Secure' + (e.target.open ? ';Max-Age=0' : '');
 
-restoreLink.onclick = e => {
+$('#restoreLink').onclick = e => {
     cm.setValue(getSolutionCode(lang, solution));
     e.preventDefault();
 };
@@ -103,12 +96,12 @@ onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter' ? submit() : undef
 // Allow vim users to run code with :w or :write
 if (cm.getOption('vimMode')) CodeMirror.Vim.defineEx('write', 'w', submit);
 
-$('#deleteBtn').onclick = () => {
+$('#deleteBtn')?.addEventListener('click', () => {
     $('dialog b').innerText = langs[lang].name;
     $('dialog [name=lang]').value = lang;
     $('dialog [name=text]').value = '';
     $('dialog').showModal();
-};
+});
 
 $('dialog [name=text]').addEventListener('input', e => {
     e.target.form.confirm.toggleAttribute('disabled',
@@ -133,7 +126,7 @@ function getSolutionCode(lang, solution) {
 
 async function refreshScores() {
     // Populate the language picker with accurate stroke counts.
-    picker.replaceChildren(...sortedLangs.map(l => {
+    $('#picker').replaceChildren(...sortedLangs.map(l => {
         const tab = <a href={l.id == lang ? null : '#'+l.id}>{l.name}</a>;
 
         if (getSolutionCode(l.id, 0)) {
@@ -182,14 +175,14 @@ async function refreshScores() {
             return a;
         }));
 
-        $('#solutionPicker').style.display = '';
+        $('#solutionPicker').classList.remove('hide');
     }
     else
-        $('#solutionPicker').style.display = 'none';
+        $('#solutionPicker').classList.add('hide');
 
-    // Show the delete button if we have solutions to delete.
-    $('#deleteBtn').style.display =
-        (dbBytes || dbChars) && !experimental ? 'block' : '';
+    // Hide the delete button for exp holes or if we have no solutions.
+    $('#deleteBtn')?.classList.toggle('hide',
+        experimental || (!dbBytes && !dbChars));
 
     // Populate the rankings table.
     const scoringID = scorings[scoring].toLowerCase();
@@ -199,7 +192,7 @@ async function refreshScores() {
 
     $('#allLink').href = '/rankings/holes' + path;
 
-    table.replaceChildren(<tbody class={scoringID}>{
+    $('#scores').replaceChildren(<tbody class={scoringID}>{
         // Rows.
         rows.map(r => <tr class={r.me ? 'me' : ''}>
             <td>{r.rank}<sup>{ord(r.rank)}</sup></td>
@@ -219,9 +212,7 @@ async function refreshScores() {
             <tr><td colspan="4">&nbsp;</td></tr>)
     }</tbody>);
 
-    for (let i = 0; i < scoringTabs.length; i++) {
-        const tab = scoringTabs[i];
-
+    $$('#scoringTabs a').forEach((tab, i) => {
         if (tab.innerText == scorings[scoring]) {
             tab.removeAttribute('href');
             tab.onclick = '';
@@ -234,7 +225,7 @@ async function refreshScores() {
                 refreshScores();
             };
         }
-    }
+    });
 }
 
 function setCodeForLangAndSolution() {
@@ -260,8 +251,8 @@ function setCodeForLangAndSolution() {
 
     refreshScores();
 
-    for (const info of $$('main .info'))
-        info.style.display = info.classList.contains(lang) ? 'block' : '';
+    $$('main .info').forEach(
+        i => i.classList.toggle('hide', !i.classList.contains(lang)));
 }
 
 function setSolution(value) {
@@ -270,7 +261,7 @@ function setSolution(value) {
 
 async function submit() {
     $('h2').innerText = '…';
-    status.className = 'grey';
+    $('#status').className = 'grey';
 
     const code = cm.getValue();
     const codeLang = lang;
@@ -347,17 +338,13 @@ async function submit() {
 
     $('h2').innerText = data.Pass ? 'Pass 😀' : 'Fail ☹️';
 
-    // Show args if we have 'em.
+    // Hige arguments unless we have some.
     $('#arg div').replaceChildren(...data.Argv.map(a => <span>{a}</span>));
-    $('#arg').style.display = data.Argv.length ? 'block' : '';
+    $('#arg').classList.toggle('hide', !data.Argv.length);
 
-    // Show err if we have some and we're not passing.
-    if (data.Err && !data.Pass) {
-        $('#err').style.display = 'block';
-        $('#err div').innerHTML = data.Err.replace(/\n/g, '<br>');
-    }
-    else
-        $('#err').style.display = '';
+    // Hide stderr if we're passing of have no stderr output.
+    $('#err div').innerHTML = data.Err.replace(/\n/g, '<br>');
+    $('#err').classList.toggle('hide', data.Pass || !data.Err);
 
     // Always show exp & out.
     $('#exp div').innerText = data.Exp;
@@ -365,15 +352,14 @@ async function submit() {
 
     const diff = diffTable(hole, data.Exp, data.Out, data.Argv);
     $('#diff-content').replaceChildren(diff);
-    $('#diff').style.display = diff ? 'block' : '';
+    $('#diff').classList.toggle('hide', !diff);
 
-    status.className = data.Pass ? 'green' : 'red';
-    status.style.display = 'block';
+    $('#status').className = data.Pass ? 'green' : 'red';
 
     refreshScores();
 
     // Show cheevos.
-    popups.replaceChildren(...data.Cheevos.map(c => <div>
+    $('#popups').replaceChildren(...data.Cheevos.map(c => <div>
         <h3>Achievement Earned!</h3>
         { c.emoji }<p>{ c.name }</p>
     </div>));
@@ -389,6 +375,6 @@ function tooltip(row, scoring) {
 
 function updateRestoreLinkVisibility() {
     const serverCode = getSolutionCode(lang, solution);
-    restoreLink.style.display =
-        serverCode && cm.getValue() != serverCode ? 'initial' : 'none';
+    $('#restoreLink').classList.toggle('hide',
+        !serverCode || cm.getValue() == serverCode);
 }
