@@ -59,7 +59,7 @@ main .info {
 
 section {
     display: grid;
-    grid-template: auto 1fr / 1fr 16rem;
+    grid-template: auto 1fr / 1fr 17rem;
 }
 
 section header {
@@ -124,7 +124,8 @@ section header {
     border: 1px solid var(--color);
     border-right-width: 0;
     border-top-width: 2px;
-    height: calc((2rem + 1px) * 7 + 2px);
+    grid-row: span 2;
+    height: calc((2rem + 1px) * 8 + 2px);
     overflow-x: hidden;
 }
 
@@ -157,6 +158,27 @@ main > header nav {
     display: flex;
     flex-wrap: wrap;
     gap: .5rem;
+}
+
+#rankingsView {
+    background: var(--color);
+    border: 1px solid var(--color);
+    border-top: 0;
+    gap: 1px;
+}
+
+#rankingsView a {
+    align-items: center;
+    background: var(--light-grey);
+    display: flex;
+    flex: 1;
+    gap: .5rem;
+    justify-content: center;
+}
+
+#rankingsView svg {
+    height: 1rem;
+    width: 1rem;
 }
 
 #run {

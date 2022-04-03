@@ -83,6 +83,17 @@
         </header>
         <div id=editor></div>
         <table class="nowrap-second wide" id=scores><tr><td></table>
+        <nav class="tabs wide" id=rankingsView>
+            <a {{ if ne .Data.RankingsView "top" }} href {{ end }}>
+                {{ svg "trophy-fill" }} Top
+            </a>
+            <a {{ if ne .Data.RankingsView "me" }} href {{ end }}>
+                {{ svg "person-fill" }} Me
+            </a>
+            <a {{ if ne .Data.RankingsView "following" }} href {{ end }}>
+                {{ svg "people-fill" }} Following
+            </a>
+        </nav>
     </section>
     <div class="info assembly">
         Compiled from

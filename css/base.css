@@ -430,7 +430,7 @@ body > .tabs a {
 
 /* TODO .tabs a:is(.on, :hover, :not([href])) */
 .tabs .on, .tabs a:hover, .tabs a:not([href]) {
-    background: var(--color);
+    background: var(--color) !important;
     color: var(--background);
     text-decoration: none;
 }

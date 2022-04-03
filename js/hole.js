@@ -108,6 +108,18 @@ $('dialog [name=text]').addEventListener('input', e => {
         e.target.value !== e.target.placeholder);
 });
 
+$$('#rankingsView a').forEach(a => a.onclick = e => {
+    e.preventDefault();
+
+    $$('#rankingsView a').forEach(a => a.href = '');
+    a.removeAttribute('href');
+
+    document.cookie =
+        `rankings-view=${a.innerText.toLowerCase()};SameSite=Lax;Secure`;
+
+    refreshScores();
+});
+
 function getAutoSaveKey(lang, solution) {
     return `code_${hole}_${lang}_${solution}`;
 }
@@ -187,7 +199,8 @@ async function refreshScores() {
     // Populate the rankings table.
     const scoringID = scorings[scoring].toLowerCase();
     const path      = `/${hole}/${lang}/${scoringID}`;
-    const res       = await fetch(`/scores${path}/mini`);
+    const view      = $('#rankingsView a:not([href])').innerText.toLowerCase();
+    const res       = await fetch(`/api/mini-rankings${path}/${view}`);
     const rows      = res.ok ? await res.json() : [];
 
     $('#allLink').href = '/rankings/holes' + path;
@@ -197,9 +210,9 @@ async function refreshScores() {
         rows.map(r => <tr class={r.me ? 'me' : ''}>
             <td>{r.rank}<sup>{ord(r.rank)}</sup></td>
             <td>
-                <a href={`/golfers/${r.login}`}>
-                    <img src={`//avatars.githubusercontent.com/${r.login}?s=24`}/>
-                    <span>{r.login}</span>
+                <a href={`/golfers/${r.golfer.name}`}>
+                    <img src={`//avatars.githubusercontent.com/${r.golfer.name}?s=24`}/>
+                    <span>{r.golfer.name}</span>
                 </a>
             </td>
             <td data-tooltip={tooltip(r, 'Bytes')}>{comma(r.bytes)}</td>
