@@ -1,4 +1,11 @@
 {{ with .GolferInfo }}
+    {{ $me := false }}
+    {{ if $.Golfer }}
+        {{ if eq $.Golfer.ID .ID }}
+            {{ $me = true }}
+        {{ end }}
+    {{ end }}
+
     <div class=grid id=profile>
         <img src="//avatars.githubusercontent.com/{{ .Name }}?s=176">
         <h1>
@@ -7,6 +14,17 @@
             <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
         {{ end }}
         </h1>
+    {{ if or $me (not $.Golfer) }}
+        <form></form>
+    {{ else if $.Golfer.IsFollowing .ID }}
+        <form action="/golfers/{{ .Name }}/unfollow" method=post>
+            <button class="btn red">Unfollow Golfer</button>
+        </form>
+    {{ else }}
+        <form action="/golfers/{{ .Name }}/follow" method=post>
+            <button class="btn blue">Follow Golfer</button>
+        </form>
+    {{ end }}
         <div>
             <div title="{{ comma .BytesPoints }} points in bytes">
                 {{ svg "bytes" }}{{ comma .BytesPoints }}
@@ -69,12 +87,10 @@
             Holes
         </a>
 
-{{ if $.Golfer }}
-    {{ if eq $.Golfer.ID .ID }}
+    {{ if $me }}
         <a {{ if ne $.Path "/golfer/settings" }} href=/golfer/settings {{ end }}>
             Settings
         </a>
     {{ end }}
-{{ end }}
 </nav>
 {{ end }}

@@ -46,6 +46,12 @@ func Golfer(next http.Handler) http.Handler {
 				                FROM trophies
 				               WHERE user_id = u.id
 				            ORDER BY trophy
+				          ),
+				          ARRAY(
+				              SELECT followee_id
+				                FROM follows
+				               WHERE follower_id = u.id
+				            ORDER BY followee_id
 				          )
 				     FROM users  u
 				     JOIN golfer g ON u.id = g.user_id
@@ -64,6 +70,7 @@ func Golfer(next http.Handler) http.Handler {
 				&golfer.Theme,
 				&timeZone,
 				pq.Array(&golfer.Cheevos),
+				pq.Array(&golfer.Following),
 			); err == nil {
 				golfer.TimeZone, _ = time.LoadLocation(timeZone.String)
 
