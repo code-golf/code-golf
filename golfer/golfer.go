@@ -43,9 +43,7 @@ func (g *Golfer) Earn(db *sql.DB, cheevoID string) (earned *config.Cheevo) {
 
 	// Update g.Cheevos if necessary.
 	if i, ok := slices.BinarySearch(g.Cheevos, cheevoID); !ok {
-		g.Cheevos = append(g.Cheevos, "")
-		copy(g.Cheevos[i+1:], g.Cheevos[i:])
-		g.Cheevos[i] = cheevoID
+		g.Cheevos = slices.Insert(g.Cheevos, i, cheevoID)
 	}
 
 	return

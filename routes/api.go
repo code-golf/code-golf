@@ -7,6 +7,7 @@ import (
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
+	"golang.org/x/exp/slices"
 )
 
 //go:embed api.yml
@@ -170,13 +171,7 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 	// TODO It would simplify everything if we could fold this into the SQL.
 	if view == "me" {
 		for len(entries) > limit {
-			me := -1
-			for i, e := range entries {
-				if e.Me {
-					me = i
-					break
-				}
-			}
+			me := slices.IndexFunc(entries, func(e entry) bool { return e.Me })
 
 			// Trim from the left or right depending on where "me" is.
 			if me >= len(entries)/2 {
