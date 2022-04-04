@@ -97,8 +97,9 @@ CREATE TABLE authors (
 );
 
 CREATE TABLE follows (
-    follower_id int NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    followee_id int NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    follower_id int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    followee_id int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    followed    timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
     PRIMARY KEY (follower_id, followee_id),
     CHECK (follower_id != followee_id)  -- Can't follow yourself!
 );
@@ -230,7 +231,7 @@ ALTER MATERIALIZED VIEW rankings OWNER TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE authors         TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE connections     TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE discord_records TO "code-golf";
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE follows         TO "code-golf";
+GRANT SELECT, INSERT,         DELETE ON TABLE follows         TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE ideas           TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE sessions        TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE solutions       TO "code-golf";

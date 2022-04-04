@@ -23,7 +23,9 @@ is post('unfollow', 'bar')<status>, 303, 'Second unfollow does nothing';
 
 is-deeply follows, {}, 'DB is empty';
 
-sub follows { $dbh.execute('SELECT * FROM follows').row :hash }
+sub follows {
+    $dbh.execute('SELECT follower_id, followee_id FROM follows').row :hash;
+}
 
 sub post($action, $golfer) {
     state $ua = HTTP::Tiny.new :!max-redirect;

@@ -13,17 +13,25 @@
         <div>
             <a href="/golfers/{{ .Golfer }}">
                 <img loading=lazy
-                    src="//avatars.githubusercontent.com/{{ .Golfer }}?s=64">
+                    src="//avatars.githubusercontent.com/{{ .Golfer }}?s=48">
+                {{ .Golfer }}
             </a>
-            <p>
-                <a href="/golfers/{{ .Golfer }}">{{ .Golfer }}</a>
-            {{ with .Cheevo }}
-                earned the {{ .Emoji }} <a href="/rankings/cheevos/{{ .ID }}">
-                    {{ .Name }}</a> achievement.
-            {{ else }}
-                solved <a href="/{{ .Hole.ID }}#{{ .Lang.ID }}">
-                    {{ .Hole.Name }} in {{ .Lang.Name }}</a>.
-            {{ end }}
+
+        {{ if .Cheevo }}
+            earned <a href="/rankings/cheevos/{{ .Cheevo.ID }}">
+                {{ .Cheevo.Emoji }} {{ .Cheevo.Name }}
+            </a>
+        {{ else if .Hole }}
+            solved <a href="/{{ .Hole.ID }}#{{ .Lang.ID }}">
+                {{ .Hole.Name }} in {{ .Lang.Name }}
+            </a>
+        {{ else }}
+            followed <a href="/golfers/{{ $.GolferInfo.Name }}">
+                <img loading=lazy
+                    src="//avatars.githubusercontent.com/{{ $.GolferInfo.Name }}?s=48">
+                {{ $.GolferInfo.Name }}
+            </a>
+        {{ end }}
         </div>
 {{ end }}
     </div>
