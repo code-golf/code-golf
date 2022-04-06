@@ -1,7 +1,5 @@
 FROM alpine:3.15 as builder
 
-RUN mkdir /empty
-
 RUN apk add --no-cache ghc=9.0.1-r1
 
 RUN find /usr/lib -name '*.a' -delete
@@ -32,13 +30,10 @@ RUN find usr/lib/ghc-9.0.1/bin -type f -not \( -name ghc -or -name runghc \) -de
 # Delete all the /usr/bin files except gcc, ghc, runghc
 RUN find usr/bin -not \( -name gcc -or -name 'ghc*' -or -name 'runghc*' \) -delete
 
-FROM scratch
+FROM codegolf/lang-base
 
 COPY --from=0 /bin                     /bin
-COPY --from=0 /empty                   /dev
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /empty                   /proc
-COPY --from=0 /empty                   /tmp
 COPY --from=0 /usr/bin                 /usr/bin
 COPY --from=0 /usr/lib                 /usr/lib
 

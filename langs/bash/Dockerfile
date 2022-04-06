@@ -1,7 +1,5 @@
 FROM alpine:3.15 as builder
 
-RUN mkdir /empty
-
 RUN apk add --no-cache build-base curl patch
 
 RUN curl https://ftp.gnu.org/gnu/bash/bash-5.1.tar.gz | tar xz && cd bash-5.1 \
@@ -22,11 +20,8 @@ RUN cd bash-5.1                \
  && make                       \
  && strip bash
 
-FROM scratch
+FROM codegolf/lang-base
 
-COPY --from=0 /empty         /dev
-COPY --from=0 /empty         /proc
-COPY --from=0 /empty         /tmp
 COPY --from=0 /bash-5.1/bash /usr/bin/
 
 ENTRYPOINT ["bash"]

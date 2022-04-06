@@ -1,7 +1,5 @@
 FROM alpine:3.15 as builder
 
-RUN mkdir /empty
-
 RUN apk add --no-cache build-base curl libffi-dev zlib-dev
 
 RUN curl https://www.python.org/ftp/python/3.10.4/Python-3.10.4.tar.xz | tar xJ
@@ -22,12 +20,9 @@ RUN find /usr/lib/python3.10 -depth \( \
      -o \( -type f -a \( -name '*.a' \) \) \
     \) -exec rm -rf {} +
 
-FROM scratch
+FROM codegolf/lang-base
 
-COPY --from=0 /empty                   /dev
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /empty                   /proc
-COPY --from=0 /empty                   /tmp
 COPY --from=0 /usr/bin/python3.10      /usr/bin/python
 COPY --from=0 /usr/lib/python3.10      /usr/lib/python3.10
 

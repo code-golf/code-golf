@@ -1,7 +1,5 @@
 FROM alpine:3.15 as builder
 
-RUN mkdir /empty
-
 RUN apk add --no-cache build-base clang curl openssl-dev
 
 RUN curl https://cache.ruby-lang.org/pub/ruby/3.1/ruby-3.1.1.tar.xz | tar xJ
@@ -52,12 +50,9 @@ RUN cd /usr/lib/ruby/3.1.0 && rm -rf \
                       ripper.rb      \
     x86_64-linux-musl/ripper.so
 
-FROM scratch
+FROM codegolf/lang-base
 
-COPY --from=0 /empty                   /dev
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /empty                   /proc
-COPY --from=0 /empty                   /tmp
 COPY --from=0 /usr/bin/ruby            /usr/bin/
 COPY --from=0 /usr/lib/ruby            /usr/lib/ruby
 

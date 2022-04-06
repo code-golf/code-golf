@@ -1,5 +1,5 @@
 ['><>']
-size    = '4.99 MiB'
+size    = '4.98 MiB'
 version = '4808a6c'
 website = 'https://github.com/primo-ppcg/fish-jit'
 example = '''
@@ -106,7 +106,7 @@ done
 '''
 
 [brainfuck]
-size    = '4.57 MiB'
+size    = '4.56 MiB'
 version = 'c68db6c'
 website = 'https://github.com/primo-ppcg/bf-jit'
 example = '''
@@ -510,7 +510,7 @@ end
 '''
 
 [Nim]
-size    = '13.1 MiB'
+size    = '13.4 MiB'
 version = '1.6.4'
 website = 'https://nim-lang.org'
 example = '''

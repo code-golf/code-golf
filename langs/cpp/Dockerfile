@@ -1,7 +1,5 @@
 FROM alpine:3.15 as builder
 
-RUN mkdir /empty
-
 RUN apk add --no-cache bash build-base cmake curl file git make python3 tar xz zip
 
 RUN curl -L https://github.com/llvm/llvm-project/releases/download/llvmorg-13.0.0/llvm-13.0.0.src.tar.xz  | tar xJ \
@@ -41,7 +39,7 @@ WORKDIR /runner
 COPY cpp.c /runner/
 RUN gcc -s -o cpp cpp.c
 
-FROM scratch
+FROM codegolf/lang-base
 
 COPY --from=0 /llvm/bin/clang          \
               /usr/bin/ld              \
@@ -73,10 +71,6 @@ COPY --from=0 usr/lib/gcc/x86_64-alpine-linux-musl/10.3.1/libgcc.a    \
 
 COPY unbuffered.cpp                    /
 
-COPY --from=0 /empty                   /dev
-COPY --from=0 /empty                   /tmp
-COPY --from=0 /empty                   /proc
-
-ENTRYPOINT ["/usr/bin/cpp"]
+ENTRYPOINT ["cpp"]
 
 CMD ["--version"]

@@ -1,7 +1,5 @@
 FROM alpine:3.15 as builder
 
-RUN mkdir /empty
-
 RUN apk add --no-cache binutils curl
 
 ENV ARCH=x86_64-linux VERSION=3.2.2
@@ -23,15 +21,12 @@ RUN find /usr/lib/fpc/$VERSION/units/$ARCH \
     -not -name rtl-objpas                  \
     -exec rm -r {} +
 
-FROM scratch
+FROM codegolf/lang-base
 
 COPY --from=0 /bin                      /bin
-COPY --from=0 /empty                    /dev
 COPY --from=0 /lib/ld-musl-x86_64.so.1  \
               /lib/libz.so.1            /lib/
 COPY --from=0 /etc/fpc.cfg              /etc/
-COPY --from=0 /empty                    /proc
-COPY --from=0 /empty                    /tmp
 COPY --from=0 /usr/bin/fpc              \
               /usr/bin/ld               /usr/bin/
 COPY --from=0 /usr/lib/libbfd-2.37.so   \

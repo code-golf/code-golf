@@ -30,6 +30,6 @@ COPY --from=0 /usr/include/gmp.h    \
 COPY --from=0 /usr/include/libcob   /usr/include/libcob
 COPY --from=0 /usr/share/gnucobol   /usr/share/gnucobol
 
-ENTRYPOINT ["/usr/bin/cobol"]
+ENTRYPOINT ["cobol"]
 
 CMD ["--version"]

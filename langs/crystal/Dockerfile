@@ -1,18 +1,13 @@
 FROM crystallang/crystal:1.3.2-alpine as builder
 
-RUN mkdir /empty
-
 RUN strip /usr/bin/crystal
 
-FROM scratch
+FROM codegolf/lang-base
 
 ENV CRYSTAL_CACHE_DIR=/tmp PATH=/usr/bin:/bin
 
 COPY --from=0 /bin/sh                       /bin/
-COPY --from=0 /empty                        /dev
 COPY --from=0 /lib                          /lib
-COPY --from=0 /empty                        /proc
-COPY --from=0 /empty                        /tmp
 COPY --from=0 /usr/bin/cc /usr/bin/crystal  /usr/bin/
 COPY --from=0 /usr/include                  /usr/include
 COPY --from=0 /usr/lib                      /usr/lib

@@ -1,7 +1,5 @@
 FROM alpine:3.15 as builder
 
-RUN mkdir /empty
-
 RUN apk add --no-cache build-base curl
 
 RUN curl -L https://download.savannah.nongnu.org/releases/tinycc/tcc-0.9.27.tar.bz2 \
@@ -19,12 +17,9 @@ RUN mv tcc-* tcc             \
  && make                     \
  && make install
 
-FROM scratch
+FROM codegolf/lang-base
 
-COPY --from=0 /empty                     /dev
 COPY --from=0 /lib/ld-musl-x86_64.so.1   /lib/
-COPY --from=0 /empty                     /proc
-COPY --from=0 /empty                     /tmp
 COPY --from=0 /usr/bin/tcc               /usr/bin/
 COPY --from=0 /usr/include/alloca.h      \
               /usr/include/assert.h      \
