@@ -371,6 +371,8 @@ thead th {
     gap: 1rem;
 }
 
+.hide { display: none !important }
+
 .me { background: var(--light-green) !important }
 
 [class^=nowrap-] { white-space: nowrap }
@@ -428,7 +430,7 @@ body > .tabs a {
 
 /* TODO .tabs a:is(.on, :hover, :not([href])) */
 .tabs .on, .tabs a:hover, .tabs a:not([href]) {
-    background: var(--color);
+    background: var(--color) !important;
     color: var(--background);
     text-decoration: none;
 }

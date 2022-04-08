@@ -56,6 +56,15 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		      FROM trophies
 		     WHERE user_id = ANY(following($1))
 		 UNION ALL
+		 -- Follows
+		    SELECT followed    date,
+		           ''          cheevo,
+		           ''          hole,
+		           ''          lang,
+		           follower_id user_id
+		      FROM follows
+		     WHERE followee_id = $1
+		 UNION ALL
 		 -- Holes
 		    SELECT MAX(submitted) date,
 		           ''             cheevo,
@@ -67,7 +76,7 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		  GROUP BY user_id, hole, lang
 		) SELECT cheevo, date, login, hole, lang
 		    FROM data JOIN users ON id = user_id
-		ORDER BY date DESC LIMIT $2`,
+		ORDER BY date DESC, login LIMIT $2`,
 		golfer.ID,
 		limit,
 	)

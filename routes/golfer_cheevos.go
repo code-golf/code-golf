@@ -77,7 +77,7 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 		      FROM solutions
 		     WHERE NOT failing AND user_id = $1
 		  GROUP BY hole
-		) SELECT MAX(count) FROM langs`,
+		) SELECT COALESCE(MAX(count), 0) FROM langs`,
 		golfer.ID,
 	).Scan(&count); err != nil {
 		panic(err)

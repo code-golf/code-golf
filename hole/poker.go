@@ -2,8 +2,8 @@ package hole
 
 import (
 	"math/rand"
-	"reflect"
-	"sort"
+
+	"golang.org/x/exp/slices"
 )
 
 func cardRune(number, suit int) rune {
@@ -16,18 +16,17 @@ func cardRune(number, suit int) rune {
 }
 
 func straightCheck(numbers []int) bool {
-	sort.Ints(numbers)
-	if reflect.DeepEqual(numbers, []int{0, 9, 10, 11, 12}) {
-		return true
-	}
+	slices.Sort(numbers)
 
-	return numbers[1]-numbers[0] == 1 &&
-		numbers[2]-numbers[1] == 1 &&
-		numbers[3]-numbers[2] == 1 &&
-		numbers[4]-numbers[3] == 1
+	// After sorting we have an Ace-straight or the numbers are sequential.
+	return slices.Equal(numbers, []int{0, 9, 10, 11, 12}) ||
+		(numbers[1]-numbers[0] == 1 &&
+			numbers[2]-numbers[1] == 1 &&
+			numbers[3]-numbers[2] == 1 &&
+			numbers[4]-numbers[3] == 1)
 }
 
-func poker() (args []string, out string) {
+func poker() ([]string, string) {
 	type Hand struct {
 		Type  string
 		Cards []rune
@@ -203,14 +202,10 @@ func poker() (args []string, out string) {
 		}})
 	}
 
-	for _, hand := range shuffle(hands) {
-		args = append(args, string(shuffle(hand.Cards)))
-
-		out += hand.Type + "\n"
+	tests := make([]test, len(hands))
+	for i, hand := range shuffle(hands) {
+		tests[i] = test{string(shuffle(hand.Cards)), hand.Type}
 	}
 
-	// Drop the trailing newline.
-	out = out[:len(out)-1]
-
-	return
+	return outputTests(tests)
 }

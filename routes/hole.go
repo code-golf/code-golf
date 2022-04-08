@@ -11,12 +11,14 @@ import (
 // GET /{hole}
 func holeGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		Authors     []string
-		HideDetails bool
-		Hole        *config.Hole
-		Solutions   []map[string]string
+		Authors      []string
+		HideDetails  bool
+		Hole         *config.Hole
+		RankingsView string
+		Solutions    []map[string]string
 	}{
-		Solutions: []map[string]string{{}, {}},
+		RankingsView: "me",
+		Solutions:    []map[string]string{{}, {}},
 	}
 
 	var ok bool
@@ -29,6 +31,12 @@ func holeGET(w http.ResponseWriter, r *http.Request) {
 
 	if c, _ := r.Cookie("hide-details"); c != nil {
 		data.HideDetails = true
+	}
+
+	if c, _ := r.Cookie("rankings-view"); c != nil {
+		if c.Value == "top" || c.Value == "following" {
+			data.RankingsView = c.Value
+		}
 	}
 
 	// Lookup the hole's author(s).

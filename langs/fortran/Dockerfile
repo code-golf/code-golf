@@ -1,7 +1,5 @@
 FROM alpine:3.15 as builder
 
-RUN mkdir /empty
-
 RUN apk add --no-cache curl g++ libexecinfo-dev \
     linux-headers m4 make patch tar xz
 
@@ -46,10 +44,9 @@ RUN /src/gcc-11.2.0/configure     \
  && strip /usr/local/bin/gfortran \
     /usr/local/libexec/gcc/x86_64-pc-linux-musl/11.2.0/f951
 
-FROM scratch
+FROM codegolf/lang-base
 
 COPY --from=0 /bin/cat /bin/rm /bin/sh      /bin/
-COPY --from=0 /empty                        /dev
 COPY --from=0 /lib/ld-musl-x86_64.so.1      \
               /lib/libz.so.1                /lib/
 COPY --from=0 /usr/bin/as /usr/bin/ld       /usr/bin/
@@ -66,8 +63,6 @@ COPY --from=0 /usr/local/lib                /usr/local/lib
 COPY --from=0 /usr/local/lib64              /usr/local/lib64
 COPY --from=0 /usr/local/libexec/gcc/x86_64-pc-linux-musl/11.2.0/f951 \
               /usr/local/libexec/gcc/x86_64-pc-linux-musl/11.2.0/
-COPY --from=0 /empty                        /proc
-COPY --from=0 /empty                        /tmp
 
 COPY fortran /usr/bin/
 

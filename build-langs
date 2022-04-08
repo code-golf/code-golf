@@ -13,14 +13,16 @@ if my $unknown = @langs ∖ %langs {
     exit 1;
 }
 
+run «docker buildx build --pull --push
+        -f docker/lang-base.Dockerfile -t codegolf/lang-base .»;
+
 for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
     my $id  = id($name);
     my $img = "codegolf/lang-$id";
 
     # Tag the builder stage so "docker system prune" won't remove it.
-    run «docker build --pull --target builder -t "{$img}-builder" "langs/$id"»;
-
-    run «docker build -t $img "langs/$id"»;
+    run «docker buildx build -t "{$img}-builder" --pull --target builder "langs/$id"»;
+    run «docker buildx build -t $img "langs/$id"»;
 
     # Size.
     my $proc = run :out,

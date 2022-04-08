@@ -4,19 +4,12 @@ import                                './_copy-as-json';
 import diffTable                 from './_diff';
 import { byteLen, charLen, ord } from './_util';
 
-const chars              = $('#strokes');
 const darkModeMediaQuery = JSON.parse($('#darkModeMediaQuery').innerText);
 const experimental       = JSON.parse($('#experimental').innerText);
 const hole               = decodeURI(location.pathname.slice(1));
 const langs              = JSON.parse($('#langs').innerText);
-const picker             = $('#picker');
-const popups             = $('#popups');
-const restoreLink        = $('#restoreLink');
 const scorings           = ['Bytes', 'Chars'];
-const scoringTabs        = $$('#scoringTabs a') as NodeListOf<HTMLLinkElement>;
 const solutions          = JSON.parse($('#solutions').innerText);
-const status             = $('#status');
-const table              = $('#scores');
 const sortedLangs        =
     Object.values(langs).sort((a: any, b: any) => a.name.localeCompare(b.name));
 
@@ -54,7 +47,7 @@ cm.on('change', () => {
             infoText += ', ';
         infoText += `${comma(getScoring(code, i as 0 | 1))} ${scorings[i].toLowerCase()}`;
     }
-    chars.innerText = infoText;
+    $('#strokes').innerText = infoText;
 
     // Avoid future conflicts by only storing code locally that's different
     // from the server's copy.
@@ -73,7 +66,7 @@ cm.on('change', () => {
 $('#details').ontoggle = (e: Event) => document.cookie =
     'hide-details=;SameSite=Lax;Secure' + ((e.target as HTMLDetailsElement).open ? ';Max-Age=0' : '');
 
-restoreLink.onclick = (e: MouseEvent) => {
+$('#restoreLink').onclick = e => {
     cm.setValue(getSolutionCode(lang, solution));
     e.preventDefault();
 };
@@ -101,18 +94,30 @@ onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter' ? submit() : undef
 // Allow vim users to run code with :w or :write
 if (cm.getOption('vimMode')) (CodeMirror as any).Vim.defineEx('write', 'w', submit);
 
-$('#deleteBtn').onclick = () => {
+$('#deleteBtn')?.addEventListener('click', () => {
     $('dialog b').innerText = langs[lang].name;
     ($('dialog [name=lang]') as HTMLInputElement).value = lang;
     ($('dialog [name=text]') as HTMLInputElement).value = '';
     // Dialog typings are not available yet
     ($('dialog') as any).showModal();
-};
+});
 
 $('dialog [name=text]').addEventListener('input', (e: Event) => {
     const target = e.target as HTMLInputElement;
     target.form!.confirm.toggleAttribute('disabled',
         target.value !== target.placeholder);
+});
+
+$$('#rankingsView a').forEach(a => a.onclick = e => {
+    e.preventDefault();
+
+    ($$('#rankingsView a') as NodeListOf<HTMLAnchorElement>).forEach(a => a.href = '');
+    a.removeAttribute('href');
+
+    document.cookie =
+        `rankings-view=${a.innerText.toLowerCase()};SameSite=Lax;Secure`;
+
+    refreshScores();
 });
 
 function getAutoSaveKey(lang: string, solution: 0 | 1) {
@@ -133,7 +138,7 @@ function getSolutionCode(lang: string, solution: 0 | 1) {
 
 async function refreshScores() {
     // Populate the language picker with accurate stroke counts.
-    picker.replaceChildren(...sortedLangs.map((l: any) => {
+    $('#picker').replaceChildren(...sortedLangs.map((l: any) => {
         const tab = <a href={l.id == lang ? null : '#'+l.id}>{l.name}</a>;
 
         if (getSolutionCode(l.id, 0)) {
@@ -183,31 +188,32 @@ async function refreshScores() {
             return a;
         }));
 
-        $('#solutionPicker').style.display = '';
+        $('#solutionPicker').classList.remove('hide');
     }
     else
-        $('#solutionPicker').style.display = 'none';
+        $('#solutionPicker').classList.add('hide');
 
-    // Show the delete button if we have solutions to delete.
-    $('#deleteBtn').style.display =
-        (dbBytes || dbChars) && !experimental ? 'block' : '';
+    // Hide the delete button for exp holes or if we have no solutions.
+    $('#deleteBtn')?.classList.toggle('hide',
+        experimental || (!dbBytes && !dbChars));
 
     // Populate the rankings table.
     const scoringID = scorings[scoring].toLowerCase();
     const path      = `/${hole}/${lang}/${scoringID}`;
-    const res       = await fetch(`/scores${path}/mini`);
+    const view      = $('#rankingsView a:not([href])').innerText.toLowerCase();
+    const res       = await fetch(`/api/mini-rankings${path}/${view}`);
     const rows      = res.ok ? await res.json() : [];
 
-    ($('#allLink') as HTMLLinkElement).href = '/rankings/holes' + path;
+    ($('#allLink') as HTMLAnchorElement).href = '/rankings/holes' + path;
 
-    table.replaceChildren(<tbody class={scoringID}>{
+    $('#scores').replaceChildren(<tbody class={scoringID}>{
         // Rows.
         rows.map((r: any) => <tr class={r.me ? 'me' : ''}>
             <td>{r.rank}<sup>{ord(r.rank)}</sup></td>
             <td>
-                <a href={`/golfers/${r.login}`}>
-                    <img src={`//avatars.githubusercontent.com/${r.login}?s=24`}/>
-                    <span>{r.login}</span>
+                <a href={`/golfers/${r.golfer.name}`}>
+                    <img src={`//avatars.githubusercontent.com/${r.golfer.name}?s=24`}/>
+                    <span>{r.golfer.name}</span>
                 </a>
             </td>
             <td data-tooltip={tooltip(r, 'Bytes')}>{comma(r.bytes)}</td>
@@ -220,9 +226,7 @@ async function refreshScores() {
             <tr><td colspan="4">&nbsp;</td></tr>)
     }</tbody>);
 
-    for (let i = 0; i < scoringTabs.length; i++) {
-        const tab = scoringTabs[i];
-
+    ($$('#scoringTabs a') as NodeListOf<HTMLAnchorElement>).forEach((tab, i) => {
         if (tab.innerText == scorings[scoring]) {
             tab.removeAttribute('href');
             tab.onclick = () => {};
@@ -238,7 +242,7 @@ async function refreshScores() {
                 refreshScores();
             };
         }
-    }
+    });
 }
 
 function setCodeForLangAndSolution() {
@@ -264,8 +268,8 @@ function setCodeForLangAndSolution() {
 
     refreshScores();
 
-    for (const info of $$('main .info'))
-        info.style.display = info.classList.contains(lang) ? 'block' : '';
+    $$('main .info').forEach(
+        i => i.classList.toggle('hide', !i.classList.contains(lang)));
 }
 
 function setSolution(value: 0 | 1) {
@@ -277,7 +281,7 @@ function setSolution(value: 0 | 1) {
 
 async function submit() {
     $('h2').innerText = '…';
-    status.className = 'grey';
+    $('#status').className = 'grey';
 
     const code = cm.getValue();
     const codeLang = lang;
@@ -365,17 +369,13 @@ async function submit() {
 
     $('h2').innerText = data.Pass ? 'Pass 😀' : 'Fail ☹️';
 
-    // Show args if we have 'em.
+    // Hige arguments unless we have some.
     $('#arg div').replaceChildren(...data.Argv.map(a => <span>{a}</span>));
-    $('#arg').style.display = data.Argv.length ? 'block' : '';
+    $('#arg').classList.toggle('hide', !data.Argv.length);
 
-    // Show err if we have some and we're not passing.
-    if (data.Err && !data.Pass) {
-        $('#err').style.display = 'block';
-        $('#err div').innerHTML = data.Err.replace(/\n/g, '<br>');
-    }
-    else
-        $('#err').style.display = '';
+    // Hide stderr if we're passing of have no stderr output.
+    $('#err div').innerHTML = data.Err.replace(/\n/g, '<br>');
+    $('#err').classList.toggle('hide', data.Pass || !data.Err);
 
     // Always show exp & out.
     $('#exp div').innerText = data.Exp;
@@ -383,15 +383,14 @@ async function submit() {
 
     const diff = diffTable(hole, data.Exp, data.Out, data.Argv);
     $('#diff-content').replaceChildren(diff);
-    $('#diff').style.display = diff ? 'block' : '';
+    $('#diff').classList.toggle('hide', !diff);
 
-    status.className = data.Pass ? 'green' : 'red';
-    status.style.display = 'block';
+    $('#status').className = data.Pass ? 'green' : 'red';
 
     refreshScores();
 
     // Show cheevos.
-    popups.replaceChildren(...data.Cheevos.map(c => <div>
+    $('#popups').replaceChildren(...data.Cheevos.map(c => <div>
         <h3>Achievement Earned!</h3>
         { c.emoji }<p>{ c.name }</p>
     </div>));
@@ -407,6 +406,6 @@ function tooltip(row: any, scoring: 'Bytes' | 'Chars') {
 
 function updateRestoreLinkVisibility() {
     const serverCode = getSolutionCode(lang, solution);
-    restoreLink.style.display =
-        serverCode && cm.getValue() != serverCode ? 'initial' : 'none';
+    $('#restoreLink').classList.toggle('hide',
+        !serverCode || cm.getValue() == serverCode);
 }

@@ -43,6 +43,10 @@ func Router(db *sql.DB) http.Handler {
 		r.Get("/cheevos/{cheevo}", apiCheevoGET)
 		r.Get("/langs", apiLangsGET)
 		r.Get("/langs/{lang}", apiLangGET)
+		r.Get(
+			"/mini-rankings/{hole}/{lang}/{scoring:bytes|chars}/{view:top|me|following}",
+			apiMiniRankingsGET,
+		)
 		r.Get("/panic", apiPanicGET)
 		r.Get("/suggestions/golfers", apiSuggestionsGolfersGET)
 	})

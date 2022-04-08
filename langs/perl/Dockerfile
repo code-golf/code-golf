@@ -1,7 +1,5 @@
 FROM alpine:3.15 as builder
 
-RUN mkdir /empty
-
 RUN apk add --no-cache build-base curl perl
 
 RUN curl http://www.cpan.org/src/5.0/perl-5.34.1.tar.xz | tar xJ
@@ -27,12 +25,9 @@ RUN mv perl-5.34.1 perl                                           \
  && make -j`nproc`                                                \
  && strip -s perl
 
-FROM scratch
+FROM codegolf/lang-base
 
-COPY --from=0 /empty                   /dev
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /empty                   /proc
-COPY --from=0 /empty                   /tmp
 COPY --from=0 /perl/perl               /usr/bin/
 COPY --from=0 /perl/lib/Carp.pm        \
               /perl/lib/Config.pm      \

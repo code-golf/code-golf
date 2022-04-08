@@ -52,14 +52,14 @@ h3.aside-title {
 }
 
 main .info {
-    display: none;
+    display: block;
     margin: 0;
     padding: .5rem;
 }
 
 section {
     display: grid;
-    grid-template: auto 1fr / 1fr 16rem;
+    grid-template: auto 1fr / 1fr 17rem;
 }
 
 section header {
@@ -71,8 +71,6 @@ section header {
 }
 
 .text-red { color: var(--red-text) }
-
-#arg, #err, #diff { display: none }
 
 #err div, #exp div, #out div { white-space: pre }
 
@@ -122,13 +120,12 @@ section header {
     line-height: 2rem;
 }
 
-#deleteBtn { display: none }
-
 #editor {
     border: 1px solid var(--color);
     border-right-width: 0;
     border-top-width: 2px;
-    height: calc((2rem + 1px) * 7 + 2px);
+    grid-row: span 2;
+    height: calc((2rem + 1px) * 8 + 2px);
     overflow-x: hidden;
 }
 
@@ -163,6 +160,27 @@ main > header nav {
     gap: .5rem;
 }
 
+#rankingsView {
+    background: var(--color);
+    border: 1px solid var(--color);
+    border-top: 0;
+    gap: 1px;
+}
+
+#rankingsView a {
+    align-items: center;
+    background: var(--light-grey);
+    display: flex;
+    flex: 1;
+    gap: .5rem;
+    justify-content: center;
+}
+
+#rankingsView svg {
+    height: 1rem;
+    width: 1rem;
+}
+
 #run {
     align-items: center;
     display: flex;
@@ -180,15 +198,17 @@ main > header nav {
     height: 100%;
 }
 
+/* Shrink the padding compared to a normal table */
+#scores td               { padding: 0 .25rem }
+#scores td:first-child { padding-left: .5rem }
+#scores td:last-child { padding-right: .5rem }
+
 #scores td:nth-child(n+3) { text-align: right }
 
 #scores .bytes td:nth-child(4),
 #scores .chars td:nth-child(3) { color: var(--grey) }
 
-#status {
-    display: none;
-    padding: 1rem;
-}
+#status { padding: 1rem }
 
 #strokes { font-weight: bold }
 
@@ -220,8 +240,6 @@ thead { user-select: none }
 #states td:first-child {
     width: 100%;
 }
-
-#restoreLink { display: none }
 
 @media (max-width: 34rem) {
     section { grid-template-columns: 1fr }

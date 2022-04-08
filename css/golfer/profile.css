@@ -96,10 +96,10 @@ section > a, section > div {
     gap: .5rem;
 }
 
-#wall div {
+#wall a, #wall div {
     align-items: center;
     display: flex;
-    gap: .5rem;
+    gap: .375rem;
 }
 
 #wall img {

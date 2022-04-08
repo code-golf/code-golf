@@ -1,7 +1,5 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0.201-alpine3.15 as builder
 
-RUN mkdir /empty
-
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1 VERSION=41.0.3
 
 WORKDIR /source
@@ -18,14 +16,11 @@ COPY Trimmer.csproj Trimmer.cs ExtraTrimmingList.txt ./
 
 RUN dotnet run
 
-FROM scratch
+FROM codegolf/lang-base
 
-COPY --from=0 /empty                   /dev
 COPY --from=0 /lib/ld-musl-x86_64.so.1 \
               /lib/libcrypto.so.1.1    \
               /lib/libssl.so.1.1       /lib/
-COPY --from=0 /empty                   /proc
-COPY --from=0 /empty                   /tmp
 COPY --from=0 /usr/lib                 /usr/lib/
 COPY --from=0 /compiler                /compiler/
 

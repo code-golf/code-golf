@@ -4,11 +4,11 @@ import (
 	"database/sql"
 	"encoding/json"
 	"errors"
-	"sort"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/lib/pq"
+	"golang.org/x/exp/slices"
 	"gopkg.in/guregu/null.v4"
 )
 
@@ -24,6 +24,7 @@ type Golfer struct {
 	Country, Keymap, Name, Referrer, Theme string
 	Delete                                 sql.NullTime
 	FailingSolutions                       FailingSolutions
+	Following                              []int64
 	ID                                     int
 	TimeZone                               *time.Location
 }
@@ -41,12 +42,8 @@ func (g *Golfer) Earn(db *sql.DB, cheevoID string) (earned *config.Cheevo) {
 	}
 
 	// Update g.Cheevos if necessary.
-	if i := sort.SearchStrings(
-		g.Cheevos, cheevoID,
-	); i == len(g.Cheevos) || g.Cheevos[i] != cheevoID {
-		g.Cheevos = append(g.Cheevos, "")
-		copy(g.Cheevos[i+1:], g.Cheevos[i:])
-		g.Cheevos[i] = cheevoID
+	if i, ok := slices.BinarySearch(g.Cheevos, cheevoID); !ok {
+		g.Cheevos = slices.Insert(g.Cheevos, i, cheevoID)
 	}
 
 	return
@@ -54,8 +51,15 @@ func (g *Golfer) Earn(db *sql.DB, cheevoID string) (earned *config.Cheevo) {
 
 // Earned returns whether the golfer has that cheevo.
 func (g *Golfer) Earned(cheevoID string) bool {
-	i := sort.SearchStrings(g.Cheevos, cheevoID)
-	return i < len(g.Cheevos) && g.Cheevos[i] == cheevoID
+	_, ok := slices.BinarySearch(g.Cheevos, cheevoID)
+	return ok
+}
+
+// IsFollowing returns whether the golfer is following that golfer.
+// FIXME Ideally we'd scan into a []int not a []int64 but pq won't.
+func (g *Golfer) IsFollowing(userID int) bool {
+	_, ok := slices.BinarySearch(g.Following, int64(userID))
+	return ok
 }
 
 type GolferInfo struct {

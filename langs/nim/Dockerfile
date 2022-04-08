@@ -1,7 +1,5 @@
 FROM alpine:3.15 as builder
 
-RUN mkdir /empty
-
 RUN apk add -X http://dl-cdn.alpinelinux.org/alpine/edge/testing --no-cache \
     curl gcc musl-dev pcre tcc
 
@@ -17,14 +15,11 @@ RUN cd nim-1.6.4            \
 # Docker can only copy symlinks by copying the whole folder :-(
 RUN mkdir /usr-lib-symlinks && cp -P /usr/lib/libc.so /usr-lib-symlinks
 
-FROM scratch
+FROM codegolf/lang-base
 
 COPY --from=0 /bin/sh                  /bin/
-COPY --from=0 /empty                   /dev
 COPY          /nim.cfg                 /etc/nim/
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /empty                   /proc
-COPY --from=0 /empty                   /tmp
 COPY --from=0 /usr/bin/nim             \
               /usr/bin/tcc             /usr/bin/
 COPY --from=0 /usr/include             /usr/include/
