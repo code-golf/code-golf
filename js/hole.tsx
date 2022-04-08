@@ -72,8 +72,10 @@ $('#restoreLink').onclick = e => {
 };
 
 (onhashchange = () => {
-    // Kick 'em to Python if we don't know the chosen language.
-    lang = location.hash.slice(1) || localStorage.getItem('lang') || 'python';
+    const hashLang = location.hash.slice(1) || localStorage.getItem('lang');
+
+    // Kick 'em to Python if we don't know the chosen language, or if there is no given language.
+    lang = hashLang && langs[hashLang] ? hashLang : 'python';
 
     // Assembly only has bytes.
     if (lang == 'assembly')

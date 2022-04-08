@@ -4,7 +4,7 @@ import dialogPolyfill from 'dialog-polyfill';
 const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 // Add current time zone to the redirect URI of any log in links.
-for (const a of $$('.log-in') as NodeListOf<HTMLLinkElement>) {
+for (const a of $$<HTMLAnchorElement>('.log-in')) {
     const url = new URL(a.href);
 
     // Assume a redirect is already present
@@ -23,7 +23,7 @@ $('#form-nav')?.addEventListener('change',
         ].filter((v: string | FormDataEntryValue) => v).join('/'));
 
 // Add suggestions to any input with a list.
-for (const input of $$('[list]') as NodeListOf<any>) {
+for (const input of $$<any>('[list]')) {
     let controller: AbortController | undefined;
 
     input.oninput = async () => {
