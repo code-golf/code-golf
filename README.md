@@ -53,6 +53,18 @@ recent install of Raku installed and use Zef to install the dependencies:
 $ zef install --deps-only .
 ```
 
+## Linting
+
+Run `make lint` to lint the code before a pull request. This lints the Typescript code, then the Go code.
+
+In Visual Studio Code, the following settings are helpful for editor support for ESLint:
+
+```
+"eslint.validate": ["typescript", "typescriptreact"],
+"eslint.format.enable": true,
+"editor.defaultFormatter": "dbaeumer.vscode-eslint"
+```
+
 ## Testing
 
 1. Run the unit tests:

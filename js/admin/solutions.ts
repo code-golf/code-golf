@@ -1,3 +1,4 @@
+import { $, comma } from '../_util';
 const form   = document.forms[0];
 const run    = $('#run');
 const status = $('#status');
@@ -5,9 +6,9 @@ const stop   = $('#stop');
 const table  = $('table');
 const tbody  = $('tbody');
 
-const reduce = (acc, cur) => ({ ...acc, [cur.value]: cur.label });
+const reduce = (acc: any, cur: any) => ({ ...acc, [cur.value]: cur.label });
 const holes  = [...form.hole.options].reduce(reduce, {});
-const langs  = [...form.lang.options].reduce(reduce, {});
+const langs  = [...(form.lang as any).options].reduce(reduce, {});
 
 const pass = document.createElement('span');
 pass.className = 'green';
@@ -17,7 +18,7 @@ const fail = document.createElement('span');
 fail.className = 'red';
 fail.innerText = 'FAIL';
 
-function make(tag, ...children) {
+function make(tag: string, ...children: (Node | string)[]) {
     const node = document.createElement(tag);
     node.append(...children);
     return node;
@@ -26,7 +27,7 @@ function make(tag, ...children) {
 stop.onclick = () => alert('TODO');
 
 form.onchange = () => history.replaceState(
-    '', '', 'solutions?' + new URLSearchParams(new FormData(form)));
+    '', '', 'solutions?' + new URLSearchParams(new FormData(form) as any));
 
 form.onsubmit = async e => {
     e.preventDefault();
@@ -35,9 +36,9 @@ form.onsubmit = async e => {
     tbody.innerHTML = '';
 
     const res = await fetch('solutions/run?' +
-        new URLSearchParams(new FormData(form)));
+        new URLSearchParams(new FormData(form) as any));
 
-    if (!res.ok) return;
+    if (!res.ok || !res.body) return;
 
     run.style.display   = 'none';
     stop.style.display  = 'block';
@@ -49,8 +50,8 @@ form.onsubmit = async e => {
 
     const decoder = new TextDecoder();
     const reader  = res.body.getReader();
-    const append  = line => {
-        line = JSON.parse(line);
+    const append  = (lineString: string) => {
+        const line = JSON.parse(lineString);
 
         if (!line.pass) failing++;
 
@@ -83,7 +84,7 @@ form.onsubmit = async e => {
         }
 
         const lines = (buffer += decoder.decode(value)).split(/\n(?=.)/);
-        buffer = lines.pop();
+        buffer = lines.pop() ?? '';
         lines.forEach(append);
 
         reader.read().then(process);

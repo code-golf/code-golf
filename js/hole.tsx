@@ -1,3 +1,4 @@
+import { $, $$, comma } from './_util';
 import CodeMirror                from './_codemirror-legacy';
 import                                './_copy-as-json';
 import diffTable                 from './_diff';
@@ -10,13 +11,13 @@ const langs              = JSON.parse($('#langs').innerText);
 const scorings           = ['Bytes', 'Chars'];
 const solutions          = JSON.parse($('#solutions').innerText);
 const sortedLangs        =
-    Object.values(langs).sort((a, b) => a.name.localeCompare(b.name));
+    Object.values(langs).sort((a: any, b: any) => a.name.localeCompare(b.name));
 
 const darkMode = matchMedia(darkModeMediaQuery).matches;
-let lang;
+let lang: string = '';
 let latestSubmissionID = 0;
-let solution = Math.max(scorings.indexOf(localStorage.getItem('solution')), 0);
-let scoring  = Math.max(scorings.indexOf(localStorage.getItem('scoring')),  0);
+let solution = scorings.indexOf(localStorage.getItem('solution') ?? 'Bytes') as 0 | 1;
+let scoring  = scorings.indexOf(localStorage.getItem('scoring') ?? 'Bytes') as 0 | 1;
 
 // The savedInDB state is used to avoid saving solutions in localStorage when
 // those solutions match the solutions in the database. It's used to avoid
@@ -36,7 +37,7 @@ const cm     = new CodeMirror($('#editor'), {
     smartIndent: false,
     theme:       darkMode ? 'material-ocean' : 'default',
     vimMode:     keymap == 'vim',
-});
+}) as any;
 
 cm.on('change', () => {
     const code = cm.getValue();
@@ -44,7 +45,7 @@ cm.on('change', () => {
     for (let i = 0; i < scorings.length; i++) {
         if (i)
             infoText += ', ';
-        infoText += `${comma(getScoring(code, i))} ${scorings[i].toLowerCase()}`;
+        infoText += `${comma(getScoring(code, i as 0 | 1))} ${scorings[i].toLowerCase()}`;
     }
     $('#strokes').innerText = infoText;
 
@@ -62,8 +63,8 @@ cm.on('change', () => {
 });
 
 // Set/clear the hide-details cookie on details toggling.
-$('#details').ontoggle = e => document.cookie =
-    'hide-details=;SameSite=Lax;Secure' + (e.target.open ? ';Max-Age=0' : '');
+$('#details').ontoggle = (e: Event) => document.cookie =
+    'hide-details=;SameSite=Lax;Secure' + ((e.target as HTMLDetailsElement).open ? ';Max-Age=0' : '');
 
 $('#restoreLink').onclick = e => {
     cm.setValue(getSolutionCode(lang, solution));
@@ -71,11 +72,10 @@ $('#restoreLink').onclick = e => {
 };
 
 (onhashchange = () => {
-    lang = location.hash.slice(1) || localStorage.getItem('lang');
+    const hashLang = location.hash.slice(1) || localStorage.getItem('lang');
 
-    // Kick 'em to Python if we don't know the chosen language.
-    if (!langs[lang])
-        lang = 'python';
+    // Kick 'em to Python if we don't know the chosen language, or if there is no given language.
+    lang = hashLang && langs[hashLang] ? hashLang : 'python';
 
     // Assembly only has bytes.
     if (lang == 'assembly')
@@ -94,24 +94,26 @@ $('#runBtn').onclick = submit;
 onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter' ? submit() : undefined;
 
 // Allow vim users to run code with :w or :write
-if (cm.getOption('vimMode')) CodeMirror.Vim.defineEx('write', 'w', submit);
+if (cm.getOption('vimMode')) (CodeMirror as any).Vim.defineEx('write', 'w', submit);
 
 $('#deleteBtn')?.addEventListener('click', () => {
     $('dialog b').innerText = langs[lang].name;
-    $('dialog [name=lang]').value = lang;
-    $('dialog [name=text]').value = '';
-    $('dialog').showModal();
+    $<HTMLInputElement>('dialog [name=lang]').value = lang;
+    $<HTMLInputElement>('dialog [name=text]').value = '';
+    // Dialog typings are not available yet
+    $<any>('dialog').showModal();
 });
 
-$('dialog [name=text]').addEventListener('input', e => {
-    e.target.form.confirm.toggleAttribute('disabled',
-        e.target.value !== e.target.placeholder);
+$('dialog [name=text]').addEventListener('input', (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    target.form!.confirm.toggleAttribute('disabled',
+        target.value !== target.placeholder);
 });
 
 $$('#rankingsView a').forEach(a => a.onclick = e => {
     e.preventDefault();
 
-    $$('#rankingsView a').forEach(a => a.href = '');
+    $$<HTMLAnchorElement>('#rankingsView a').forEach(a => a.href = '');
     a.removeAttribute('href');
 
     document.cookie =
@@ -120,25 +122,25 @@ $$('#rankingsView a').forEach(a => a.onclick = e => {
     refreshScores();
 });
 
-function getAutoSaveKey(lang, solution) {
+function getAutoSaveKey(lang: string, solution: 0 | 1) {
     return `code_${hole}_${lang}_${solution}`;
 }
 
-function getOtherScoring(value) {
-    return 1 - value;
+function getOtherScoring(value: 0 | 1) {
+    return 1 - value as 0 | 1;
 }
 
-function getScoring(str, index) {
+function getScoring(str: string, index: 0 | 1) {
     return scorings[index] == 'Bytes' ? byteLen(str) : charLen(str);
 }
 
-function getSolutionCode(lang, solution) {
+function getSolutionCode(lang: string, solution: 0 | 1) {
     return lang in solutions[solution] ? solutions[solution][lang] : '';
 }
 
 async function refreshScores() {
     // Populate the language picker with accurate stroke counts.
-    $('#picker').replaceChildren(...sortedLangs.map(l => {
+    $('#picker').replaceChildren(...sortedLangs.map((l: any) => {
         const tab = <a href={l.id == lang ? null : '#'+l.id}>{l.name}</a>;
 
         if (getSolutionCode(l.id, 0)) {
@@ -169,7 +171,8 @@ async function refreshScores() {
      || (lsBytes && lsChars && lsBytes != lsChars)
      || (dbBytes && lsChars && dbBytes != lsChars && solution == 0)
      || (lsBytes && dbChars && lsBytes != dbChars && solution == 1)) {
-        $('#solutionPicker').replaceChildren(...scorings.map((scoring, i) => {
+        $('#solutionPicker').replaceChildren(...scorings.map((scoring, iNumber) => {
+            const i = iNumber as 0 | 1;
             const a = <a>Fewest {scoring}</a>;
 
             const code = getSolutionCode(lang, i);
@@ -177,7 +180,7 @@ async function refreshScores() {
 
             if (i != solution) {
                 a.href = '';
-                a.onclick = e => {
+                a.onclick = (e: MouseEvent) => {
                     e.preventDefault();
                     setSolution(i);
                     setCodeForLangAndSolution();
@@ -203,11 +206,11 @@ async function refreshScores() {
     const res       = await fetch(`/api/mini-rankings${path}/${view}`);
     const rows      = res.ok ? await res.json() : [];
 
-    $('#allLink').href = '/rankings/holes' + path;
+    $<HTMLAnchorElement>('#allLink').href = '/rankings/holes' + path;
 
     $('#scores').replaceChildren(<tbody class={scoringID}>{
         // Rows.
-        rows.map(r => <tr class={r.me ? 'me' : ''}>
+        rows.map((r: any) => <tr class={r.me ? 'me' : ''}>
             <td>{r.rank}<sup>{ord(r.rank)}</sup></td>
             <td>
                 <a href={`/golfers/${r.golfer.name}`}>
@@ -225,16 +228,19 @@ async function refreshScores() {
             <tr><td colspan="4">&nbsp;</td></tr>)
     }</tbody>);
 
-    $$('#scoringTabs a').forEach((tab, i) => {
+    $$<HTMLAnchorElement>('#scoringTabs a').forEach((tab, i) => {
         if (tab.innerText == scorings[scoring]) {
             tab.removeAttribute('href');
-            tab.onclick = '';
+            tab.onclick = () => {};
         }
         else {
             tab.href = '';
-            tab.onclick = e => {
+            tab.onclick = (e: MouseEvent) => {
                 e.preventDefault();
-                localStorage.setItem('scoring', scorings[scoring = i]);
+                // Moving `scoring = i` to the line above, outside the list access,
+                // causes legacy CodeMirror (UMD) to be imported improperly.
+                // Leave as-is to avoid "CodeMirror is not a constructor".
+                localStorage.setItem('scoring', scorings[scoring = i as 0 | 1]);
                 refreshScores();
             };
         }
@@ -268,7 +274,10 @@ function setCodeForLangAndSolution() {
         i => i.classList.toggle('hide', !i.classList.contains(lang)));
 }
 
-function setSolution(value) {
+function setSolution(value: 0 | 1) {
+    // Moving `solution = value` to the line above, outside the list access,
+    // causes legacy CodeMirror (UMD) to be imported improperly.
+    // Leave as-is to avoid "CodeMirror is not a constructor".
     localStorage.setItem('solution', scorings[solution = value]);
 }
 
@@ -294,14 +303,25 @@ async function submit() {
         return;
     }
 
-    const data = await res.json();
+    const data = await res.json() as {
+        Pass: boolean,
+        Out: string,
+        Exp: string,
+        Err: string,
+        Argv: string[],
+        Cheevos: {
+            emoji: string,
+            name: string
+        }[],
+        LoggedIn: boolean
+    };
     savedInDB = data.LoggedIn && !experimental;
 
     if (submissionID != latestSubmissionID)
         return;
 
     if (data.Pass) {
-        for (let i = 0; i < scorings.length; i++) {
+        for (const i of [0, 1] as const) {
             const solutionCode = getSolutionCode(codeLang, i);
             if (!solutionCode || getScoring(code, i) <= getScoring(solutionCode, i)) {
                 solutions[i][codeLang] = code;
@@ -315,13 +335,13 @@ async function submit() {
         }
     }
 
-    for (let i = 0; i < scorings.length; i++) {
+    for (const i of [0, 1] as const) {
         const key = getAutoSaveKey(codeLang, i);
         if (savedInDB) {
             // If the auto-saved code matches either solution, remove it to
             // avoid prompting the user to restore it.
             const autoSaveCode = localStorage.getItem(key);
-            for (let j = 0; j < scorings.length; j++) {
+            for (const j of [0, 1] as const) {
                 if (getSolutionCode(codeLang, j) == autoSaveCode)
                     localStorage.removeItem(key);
             }
@@ -378,7 +398,7 @@ async function submit() {
     </div>));
 }
 
-function tooltip(row, scoring) {
+function tooltip(row: any, scoring: 'Bytes' | 'Chars') {
     const bytes = scoring === 'Bytes' ? row.bytes : row.chars_bytes;
     const chars = scoring === 'Chars' ? row.chars : row.bytes_chars;
 

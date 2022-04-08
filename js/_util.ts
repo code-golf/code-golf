@@ -1,10 +1,10 @@
 
 // Adapted from https://codegolf.stackexchange.com/a/119563.
-export const ord = i => [, 'st', 'nd', 'rd'][i % 100 >> 3 ^ 1 && i % 10] || 'th';
+export const ord = (i: number) => [, 'st', 'nd', 'rd'][i % 100 >> 3 ^ 1 && i % 10] || 'th';
 
 // charLen adapted from https://mths.be/punycode.
-export const byteLen = str => new TextEncoder().encode(str).length;
-export const charLen = str => {
+export const byteLen = (str: string) => new TextEncoder().encode(str).length;
+export const charLen = (str: string) => {
     let i = 0, len = 0;
 
     while (i < str.length) {
@@ -33,3 +33,14 @@ export const charLen = str => {
 
     return len;
 };
+
+// Small util functions.
+/** Assume $ always succeeds and returns an HTMLElement */
+export function $<MatchType extends HTMLElement>(selector: string) {
+    return document.querySelector(selector) as MatchType;
+}
+/** Assume $$ returns HTMLElements only */
+export function $$<MatchType extends HTMLElement>(selector: string) {
+    return document.querySelectorAll(selector) as NodeListOf<MatchType>;
+}
+export const comma = (i: number) => i.toLocaleString('en');
