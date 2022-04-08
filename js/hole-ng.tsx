@@ -7,13 +7,13 @@ import diffTable                               from './_diff';
 import pbm                                     from './_pbm.js';
 import { byteLen, charLen, ord }               from './_util';
 
-const all         = $('#all') as HTMLLinkElement;
+const all         = $<HTMLAnchorElement>('#all');
 const hole        = decodeURI(location.pathname.slice(4));
 const langs       = JSON.parse($('#langs').innerText);
 const popups      = $('#popups');
 const rankings    = $('#rankings');
-const scoringTabs = $$('#scoringTabs a') as NodeListOf<HTMLLinkElement>;
-const select      = $('select') as HTMLSelectElement;
+const scoringTabs = $$<HTMLAnchorElement>('#scoringTabs a');
+const select      = $<HTMLSelectElement>('select');
 const solutions   = JSON.parse($('#solutions').innerText);
 const status      = $('#status');
 const statusH2    = $('#status h2');
@@ -156,7 +156,7 @@ switchLang();
 
 // Run Code
 const runCode = $('#run a').onclick = async () => {
-    $$('canvas').forEach((e: HTMLElement) => e.remove());
+    $$('canvas').forEach(e => e.remove());
 
     status.style.display = 'none';
 

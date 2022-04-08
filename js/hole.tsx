@@ -96,10 +96,10 @@ if (cm.getOption('vimMode')) (CodeMirror as any).Vim.defineEx('write', 'w', subm
 
 $('#deleteBtn')?.addEventListener('click', () => {
     $('dialog b').innerText = langs[lang].name;
-    ($('dialog [name=lang]') as HTMLInputElement).value = lang;
-    ($('dialog [name=text]') as HTMLInputElement).value = '';
+    $<HTMLInputElement>('dialog [name=lang]').value = lang;
+    $<HTMLInputElement>('dialog [name=text]').value = '';
     // Dialog typings are not available yet
-    ($('dialog') as any).showModal();
+    $<any>('dialog').showModal();
 });
 
 $('dialog [name=text]').addEventListener('input', (e: Event) => {
@@ -111,7 +111,7 @@ $('dialog [name=text]').addEventListener('input', (e: Event) => {
 $$('#rankingsView a').forEach(a => a.onclick = e => {
     e.preventDefault();
 
-    ($$('#rankingsView a') as NodeListOf<HTMLAnchorElement>).forEach(a => a.href = '');
+    $$<HTMLAnchorElement>('#rankingsView a').forEach(a => a.href = '');
     a.removeAttribute('href');
 
     document.cookie =
@@ -204,7 +204,7 @@ async function refreshScores() {
     const res       = await fetch(`/api/mini-rankings${path}/${view}`);
     const rows      = res.ok ? await res.json() : [];
 
-    ($('#allLink') as HTMLAnchorElement).href = '/rankings/holes' + path;
+    $<HTMLAnchorElement>('#allLink').href = '/rankings/holes' + path;
 
     $('#scores').replaceChildren(<tbody class={scoringID}>{
         // Rows.
@@ -226,7 +226,7 @@ async function refreshScores() {
             <tr><td colspan="4">&nbsp;</td></tr>)
     }</tbody>);
 
-    ($$('#scoringTabs a') as NodeListOf<HTMLAnchorElement>).forEach((tab, i) => {
+    $$<HTMLAnchorElement>('#scoringTabs a').forEach((tab, i) => {
         if (tab.innerText == scorings[scoring]) {
             tab.removeAttribute('href');
             tab.onclick = () => {};

@@ -36,7 +36,11 @@ export const charLen = (str: string) => {
 
 // Small util functions.
 /** Assume $ always succeeds and returns an HTMLElement */
-export const $     = (selector: string) => document.querySelector(selector) as HTMLElement;
+export function $<MatchType extends HTMLElement>(selector: string) {
+    return document.querySelector(selector) as MatchType;
+}
 /** Assume $$ returns HTMLElements only */
-export const $$    = (selector: string) => document.querySelectorAll(selector) as NodeListOf<HTMLElement>;
+export function $$<MatchType extends HTMLElement>(selector: string) {
+    return document.querySelectorAll(selector) as NodeListOf<MatchType>;
+}
 export const comma = (i: number) => i.toLocaleString('en');
