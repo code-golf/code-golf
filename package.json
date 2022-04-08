@@ -26,11 +26,11 @@
     "nim-codemirror-mode": ""
   },
   "devDependencies": {
-    "@types/diff": "^5.0.2",
-    "@types/lz-string": "^1.3.34",
-    "@typescript-eslint/eslint-plugin": "^5.16.0",
-    "@typescript-eslint/parser": "^5.16.0",
-    "eslint": "^8.11.0",
-    "typescript": "^4.6.2"
+    "@types/diff": "",
+    "@types/lz-string": "",
+    "@typescript-eslint/eslint-plugin": "",
+    "@typescript-eslint/parser": "",
+    "eslint": "",
+    "typescript": ""
   }
 }
