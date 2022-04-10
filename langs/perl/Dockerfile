@@ -35,6 +35,7 @@ COPY --from=0 /perl/lib/Carp.pm        \
               /perl/lib/Exporter.pm    \
               /perl/lib/XSLoader.pm    \
               /perl/lib/feature.pm     \
+              /perl/lib/integer.pm     \
               /perl/lib/strict.pm      \
               /perl/lib/utf8.pm        \
               /perl/lib/warnings.pm    /usr/lib/perl/
