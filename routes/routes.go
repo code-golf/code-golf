@@ -110,7 +110,6 @@ func Router(db *sql.DB) http.Handler {
 	r.Get("/scores/{hole}/{lang}/all", scoresAllGET)
 	r.Get("/scores/{hole}/{lang}/{scoring}", scoresGET)
 	r.Get("/scores/{hole}/{lang}/{scoring}/{page}", scoresGET)
-	r.Get("/scores/{hole}/{lang}/{scoring}/mini", scoresMiniGET)
 	r.Get("/sitemap.xml", sitemapGET)
 	r.Post("/solution", solutionPOST)
 	r.Get("/stats", statsGET)

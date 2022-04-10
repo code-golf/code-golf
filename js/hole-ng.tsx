@@ -77,7 +77,7 @@ async function update() {
     // Update "All" link.
     all.href = `/rankings/holes/${hole}/${lang}/${scoring}`;
 
-    const res  = await fetch(`/scores/${hole}/${lang}/${scoring}/mini?ng=1`);
+    const res  = await fetch(`/api/mini-rankings/${hole}/${lang}/${scoring}/me?ng=1`);
     const rows: any[] = res.ok ? await res.json() : [];
 
     rankings.replaceChildren(<tbody>{
@@ -85,9 +85,9 @@ async function update() {
         rows.map(r => <tr class={r.me ? 'me' : ''}>
             <td>{r.rank}<sup>{ord(r.rank)}</sup></td>
             <td>
-                <a href={`/golfers/${r.login}`}>
-                    <img src={`//avatars.githubusercontent.com/${r.login}?s=24`}/>
-                    <span>{r.login}</span>
+                <a href={`/golfers/${r.golfer.name}`}>
+                    <img src={`//avatars.githubusercontent.com/${r.golfer.name}?s=24`}/>
+                    <span>{r.golfer.name}</span>
                 </a>
             </td>
             <td class="right">{comma(r[scoring])}</td>
