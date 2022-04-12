@@ -69,6 +69,8 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 		args, answer = emojify()
 	case "fractions":
 		args, answer = fractions()
+	case "hexdump":
+		args, answer = hexdump()
 	case "isbn":
 		args, answer = isbn()
 	case "intersection":
