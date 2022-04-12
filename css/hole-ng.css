@@ -100,8 +100,10 @@ select {
 
 #authors {
     display: flex;
+    flex-wrap: wrap;
     font-size: 1rem;
     font-weight: normal;
+    gap: .25rem 0;
     padding-left: 1rem;
 }
 
