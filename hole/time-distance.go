@@ -1,16 +1,13 @@
 package hole
 
-import (
-	"strconv"
-)
+import "strconv"
 
 type Unit struct {
-	seconds  int
-	singular string
-	plural   string
+	seconds          int
+	singular, plural string
 }
 
-var units = []Unit{
+var units = [...]Unit{
 	{60 * 60 * 24 * 365 * 1000, "a millenium", "millenia"},
 	{60 * 60 * 24 * 365, "a year", "years"},
 	{60 * 60 * 24 * 30, "a month", "months"},
@@ -48,13 +45,12 @@ func formatDistance(secs int) string {
 }
 
 func timeDistance() ([]string, string) {
-	const rep = 32
-
 	inputs := []int{0}
 
 	unitsChosen := []int{1, 2, 3, 4, 5, 6, 7}
-	for i := 0; i <= rep; i++ {
-		unitsChosen = append(unitsChosen, randInt(1, 7)) // randomize which units will appear
+	for i := 0; i <= 32; i++ {
+		// Randomize which units will appear.
+		unitsChosen = append(unitsChosen, randInt(1, 7))
 	}
 
 	for _, j := range unitsChosen {
