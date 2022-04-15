@@ -64,6 +64,8 @@ func timeDistance() ([]string, string) {
 		inputs = append(inputs, -randInt(secs, secs*2-1))       // past singular
 		inputs = append(inputs, randInt(2*secs, secsLarger-1))  // future plural
 		inputs = append(inputs, -randInt(2*secs, secsLarger-1)) // past plural
+		inputs = append(inputs, 2*secs)                         // future exactly 2
+		inputs = append(inputs, -2*secs)                        // past exactly 2
 		blimit := secs - 1
 		if blimit > 1000 {
 			blimit = 1000
