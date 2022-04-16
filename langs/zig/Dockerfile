@@ -6,6 +6,12 @@ RUN curl https://ziglang.org/download/0.9.1/zig-linux-x86_64-0.9.1.tar.xz \
   | tar xJC tmp --strip 1 \
  && strip /tmp/zig
 
+# Remove some platforms we don't need.
+RUN rm -r /tmp/lib/libc/darwin \
+          /tmp/lib/libc/glibc  \
+          /tmp/lib/libc/mingw  \
+          /tmp/lib/libc/wasi
+
 FROM codegolf/lang-base
 
 COPY --from=0 /bin/cat /bin/rm /bin/sh /bin/

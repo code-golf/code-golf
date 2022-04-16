@@ -783,7 +783,7 @@ w
 '''
 
 [Zig]
-size    = '270 MiB'
+size    = '262 MiB'
 version = '0.9.1'
 website = 'https://ziglang.org'
 example = '''
