@@ -100,32 +100,46 @@ preamble = '''
 
 ['Arabic to Roman']
 category = 'Transform'
+variants = ['Arabic to Roman', 'Roman to Arabic']
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Roman_numerals/Encode' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Roman_numerals' },
 ]
 preamble = '''
-<p>For each Arabic numeral argument print the same number in Roman numerals.
-<p>The input ranges from 1 to 3999 inclusive.
+{{ if eq . "Arabic to Roman" }}
+<p>
+    For each numeric argument in Arabic numerals, print the same number in
+    Roman numerals.
+
+<p>You may use either ASCII or UTF-8 (U+2160 to U+2188) for Roman numerals.
+{{ else }}
+<p>
+    For each numeric argument in Roman numerals, print the same number in
+    Arabic numerals.
+{{ end }}
+
+<p>The numbers range from 1 to 3999 inclusive.
+
 <div>
-    <table>
-        <thead>
-            <tr><th>Arabic<th>Roman
-        <tbody>
-            <tr><td>1<td>Ⅰ
-            <tr><td>2<td>Ⅱ
-            <tr><td>3<td>Ⅲ
-            <tr><td>4<td>Ⅳ
-            <tr><td>5<td>Ⅴ
-            <tr><td>6<td>Ⅵ
-            <tr><td>7<td>Ⅶ
-            <tr><td>8<td>Ⅷ
-            <tr><td>9<td>Ⅸ
-            <tr><td>10<td>Ⅹ
-            <tr><td>50<td>Ⅼ
-            <tr><td>100<td>Ⅽ
-            <tr><td>500<td>Ⅾ
-            <tr><td>1000<td>Ⅿ
+    <table class=headless>
+        <tr>
+            <th>Arabic
+            <td>1
+            <td>5
+            <td>10
+            <td>50
+            <td>100
+            <td>500
+            <td>1000
+        <tr>
+            <th>Roman
+            <td>Ⅰ
+            <td>Ⅴ
+            <td>Ⅹ
+            <td>Ⅼ
+            <td>Ⅽ
+            <td>Ⅾ
+            <td>Ⅿ
     </table>
 </div>
 '''
@@ -1639,38 +1653,6 @@ preamble = '''
         Lizard is represented by
         <a href=//emojipedia.org/lizard/>“🦎” (U+1F98E Lizard)</a>.
 </ul>
-'''
-
-['Roman to Arabic']
-category = 'Transform'
-links = [
-    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Roman_numerals/Decode' },
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Roman_numerals' },
-]
-preamble = '''
-<p>For each Roman numeral argument print the same number in Arabic numerals.
-<p>The input ranges from 1 to 3999 inclusive.
-<div>
-    <table>
-        <thead>
-            <tr><th>Arabic<th>Roman
-        <tbody>
-            <tr><td>1<td>Ⅰ
-            <tr><td>2<td>Ⅱ
-            <tr><td>3<td>Ⅲ
-            <tr><td>4<td>Ⅳ
-            <tr><td>5<td>Ⅴ
-            <tr><td>6<td>Ⅵ
-            <tr><td>7<td>Ⅶ
-            <tr><td>8<td>Ⅷ
-            <tr><td>9<td>Ⅸ
-            <tr><td>10<td>Ⅹ
-            <tr><td>50<td>Ⅼ
-            <tr><td>100<td>Ⅽ
-            <tr><td>500<td>Ⅾ
-            <tr><td>1000<td>Ⅿ
-    </table>
-</div>
 '''
 
 ['Reverse Polish Notation']
