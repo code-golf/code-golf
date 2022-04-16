@@ -7,6 +7,14 @@ func BenchmarkISBN(b *testing.B)            { benchHole(b, isbn) }
 func BenchmarkOrdinalNumbers(b *testing.B)  { benchHole(b, ordinalNumbers) }
 func BenchmarkSpellingNumbers(b *testing.B) { benchHole(b, spellingNumbers) }
 
+func BenchmarkArabicToRoman(b *testing.B) {
+	benchHole(b, func() ([]string, string) { return arabicToRoman(false) })
+}
+
+func BenchmarkRomanToArabic(b *testing.B) {
+	benchHole(b, func() ([]string, string) { return arabicToRoman(true) })
+}
+
 func BenchmarkSudoku(b *testing.B) {
 	benchHole(b, func() ([]string, string) { return sudoku(false) })
 }
