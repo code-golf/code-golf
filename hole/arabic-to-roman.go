@@ -1,9 +1,6 @@
 package hole
 
-import (
-	"math/rand"
-	"strconv"
-)
+import "strconv"
 
 var (
 	r0 = [...]string{"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"}
@@ -13,13 +10,25 @@ var (
 )
 
 func arabicToRoman(reverse bool) ([]string, string) {
-	// The max roman numeral is 3,999. Test all of them.
-	const count = 3999
+	// Testing all ~4k is too slow and is too many arguments for J.
+	const count = 2000
+
+	// Start with the 6 special cases.
+	numbers := make([]int, count)
+	numbers[0] = 4
+	numbers[1] = 9
+	numbers[2] = 40
+	numbers[3] = 90
+	numbers[4] = 400
+	numbers[5] = 900
+
+	// Append another 1,994 random cases.
+	for i := 6; i < count; i++ {
+		numbers[i] = randInt(1, 3999)
+	}
 
 	tests := make([]test, count)
-	for i, n := range rand.Perm(count) {
-		n++
-
+	for i, n := range shuffle(numbers) {
 		arabic := strconv.Itoa(n)
 		roman := r3[n%10000/1000] + r2[n%1000/100] + r1[n%100/10] + r0[n%10]
 
