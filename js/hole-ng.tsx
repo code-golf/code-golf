@@ -203,7 +203,7 @@ const runCode = $('#run a').onclick = async () => {
     $('#output').innerText   = data.Out;
 
     // 3rd party integrations.
-    thirdParty.replaceChildren( lang == 'hexagony' ? <a target="_blank" href={
+    thirdParty.replaceChildren( lang == 'hexagony' ? <a href={
         '//hexagony.net#lz' + LZString.compressToBase64(JSON.stringify({
             code, input: data.Argv.join('\0') + '\0', inputMode: 'raw' }))
     }>Run on Hexagony.net</a> : '' );

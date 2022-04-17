@@ -1,8 +1,8 @@
-import { $, $$, comma } from './_util';
-import CodeMirror                from './_codemirror-legacy';
-import                                './_copy-as-json';
-import diffTable                 from './_diff';
-import { byteLen, charLen, ord } from './_util';
+import LZString                                from 'lz-string';
+import CodeMirror                              from './_codemirror-legacy';
+import                                              './_copy-as-json';
+import diffTable                               from './_diff';
+import { $, $$, byteLen, charLen, comma, ord } from './_util';
 
 const darkModeMediaQuery = JSON.parse($('#darkModeMediaQuery').innerText);
 const experimental       = JSON.parse($('#experimental').innerText);
@@ -394,13 +394,25 @@ async function submit() {
 
     $('#status').className = data.Pass ? 'green' : 'red';
 
-    refreshScores();
+    // 3rd party integrations.
+    let thirdParty = '';
+    if (lang == 'hexagony') {
+        const payload = LZString.compressToBase64(JSON.stringify({
+            code, input: data.Argv.join('\0') + '\0', inputMode: 'raw' }));
+
+        thirdParty = <a href={'//hexagony.net#lz' + payload}>
+            Run on Hexagony.net
+        </a>;
+    }
+    $('#thirdParty').replaceChildren(thirdParty);
 
     // Show cheevos.
     $('#popups').replaceChildren(...data.Cheevos.map(c => <div>
         <h3>Achievement Earned!</h3>
         { c.emoji }<p>{ c.name }</p>
     </div>));
+
+    refreshScores();
 }
 
 function tooltip(row: any, scoring: 'Bytes' | 'Chars') {
