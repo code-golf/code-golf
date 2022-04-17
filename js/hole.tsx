@@ -257,8 +257,14 @@ function setCodeForLangAndSolution() {
     const autoSaveCode = localStorage.getItem(getAutoSaveKey(lang, solution)) || '';
     const code = getSolutionCode(lang, solution) || autoSaveCode;
 
-    cm.setOption('lineWrapping', lang != 'fish');
-    cm.setOption('matchBrackets', lang != 'brainfuck' && lang != 'j' && lang != 'hexagony');
+    // These languages shouldn't wrap lines.
+    cm.setOption('lineWrapping',
+        !['assembly', 'fish', 'hexagony'].includes(lang));
+
+    // These languages shouldn't match brackets.
+    cm.setOption('matchBrackets',
+        !['brainfuck', 'fish', 'j', 'hexagony'].includes(lang));
+
     cm.setOption('mode', {
         name: 'text/x-' + lang,
         startOpen: true,
