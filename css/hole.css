@@ -38,7 +38,7 @@ aside > div {
     padding: .375rem;
 }
 
-h3 {
+aside > h3 {
     color: var(--background);
     background: var(--color);
     line-height: 2rem;
