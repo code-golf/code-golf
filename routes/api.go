@@ -82,7 +82,7 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	type entry struct {
-		Bytes      int  `json:"bytes"`
+		Bytes      *int `json:"bytes"`
 		BytesChars *int `json:"bytes_chars"`
 		Chars      *int `json:"chars"`
 		CharsBytes *int `json:"chars_bytes"`

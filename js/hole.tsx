@@ -219,8 +219,7 @@ async function refreshScores() {
                 </a>
             </td>
             <td data-tooltip={tooltip(r, 'Bytes')}>{comma(r.bytes)}</td>
-            {r.chars !== null ?
-                <td data-tooltip={tooltip(r, 'Chars')}>{comma(r.chars)}</td> : ''}
+            <td data-tooltip={tooltip(r, 'Chars')}>{comma(r.chars)}</td>
         </tr>)
     }{
         // Padding.
@@ -401,6 +400,8 @@ async function submit() {
 function tooltip(row: any, scoring: 'Bytes' | 'Chars') {
     const bytes = scoring === 'Bytes' ? row.bytes : row.chars_bytes;
     const chars = scoring === 'Chars' ? row.chars : row.bytes_chars;
+
+    if (bytes === null) return;
 
     return `${scoring} solution is ${comma(bytes)} bytes` +
         (chars !== null ? `, ${comma(chars)} chars.` : '.');
