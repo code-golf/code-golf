@@ -2,8 +2,8 @@ FROM debian:bullseye-slim as builder
 
 RUN apt-get update && apt-get install -y gcc git make
 
-RUN git clone https://github.com/vlang/v /opt/v \
- && cd /opt/v && git reset --hard 42a6783 && make && strip v
+RUN git clone -b weekly.2022.16 https://github.com/vlang/v /opt/v \
+ && cd /opt/v && make && strip v
 
 FROM debian:bullseye-slim
 
