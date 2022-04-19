@@ -14,7 +14,7 @@ const sortedLangs        =
     Object.values(langs).sort((a: any, b: any) => a.name.localeCompare(b.name));
 
 const darkMode = matchMedia(darkModeMediaQuery).matches;
-let lang: string = '';
+let lang = '';
 let latestSubmissionID = 0;
 let solution = scorings.indexOf(localStorage.getItem('solution') ?? 'Bytes') as 0 | 1;
 let scoring  = scorings.indexOf(localStorage.getItem('scoring') ?? 'Bytes') as 0 | 1;
@@ -234,7 +234,7 @@ async function refreshScores() {
         }
         else {
             tab.href = '';
-            tab.onclick = (e: MouseEvent) => {
+            tab.onclick = e => {
                 e.preventDefault();
                 // Moving `scoring = i` to the line above, outside the list access,
                 // causes legacy CodeMirror (UMD) to be imported improperly.
