@@ -53,6 +53,8 @@ func apiLangGET(w http.ResponseWriter, r *http.Request) {
 
 // GET /mini-rankings/{hole}/{lang}/{scoring:bytes|chars}/{view:top|me|following}
 func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
+	const limit = 7
+
 	var (
 		hole    = param(r, "hole")
 		lang    = param(r, "lang")
@@ -64,11 +66,6 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 	if config.HoleByID[hole] == nil || config.LangByID[lang] == nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
-	}
-
-	limit := 7
-	if r.FormValue("ng") == "1" {
-		limit = 15
 	}
 
 	otherScoring := "bytes"
