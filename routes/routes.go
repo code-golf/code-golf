@@ -30,7 +30,7 @@ func Router(db *sql.DB) http.Handler {
 
 	r.Get("/", indexGET)
 	r.Get("/{hole}", holeGET)
-	r.Get("/ng/{hole}", holeNGGET)
+	r.Get("/ng/{hole}", holeGET)
 	r.Get("/about", aboutGET)
 	r.With(middleware.AdminArea).Route("/admin", func(r chi.Router) {
 		r.Get("/", adminGET)
