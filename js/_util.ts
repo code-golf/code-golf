@@ -43,4 +43,4 @@ export function $<MatchType extends HTMLElement>(selector: string) {
 export function $$<MatchType extends HTMLElement>(selector: string) {
     return document.querySelectorAll(selector) as NodeListOf<MatchType>;
 }
-export const comma = (i: number) => i?.toLocaleString('en');
+export const comma = (i: number | undefined) => i?.toLocaleString('en');

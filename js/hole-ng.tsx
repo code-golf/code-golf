@@ -52,7 +52,7 @@ const editor = new EditorView({
 
         $('#strokes').innerText = scoringKeys
             .filter(s => s in scorings)
-            .map(s => `${scorings[s]} ${s}${scorings[s] != 1 ? 's' : ''}`)
+            .map(s => `${comma(scorings[s])} ${s}${scorings[s] != 1 ? 's' : ''}`)
             .join(', ');
 
         // Avoid future conflicts by only storing code locally that's
