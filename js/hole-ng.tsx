@@ -1,11 +1,10 @@
-import { $, $$, comma } from './_util';
 import { ASMStateField }                       from '@defasm/codemirror';
 import LZString                                from 'lz-string';
 import { EditorState, EditorView, extensions } from './_codemirror.js';
 import                                              './_copy-as-json';
 import diffTable                               from './_diff';
 import pbm                                     from './_pbm.js';
-import { byteLen, charLen, ord }               from './_util';
+import { $, $$, byteLen, charLen, comma, ord } from './_util';
 
 const all         = $<HTMLAnchorElement>('#all');
 const hole        = decodeURI(location.pathname.slice(4));
