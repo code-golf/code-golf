@@ -10,20 +10,20 @@ import (
 // GET /golfers/{golfer}/holes
 func golferHolesGET(w http.ResponseWriter, r *http.Request) {
 	golfer := session.GolferInfo(r).Golfer
-	type rank struct {
+	type rankMedal struct {
 		rank      int
 		isDiamond bool
 	}
 	data := struct {
 		Holes    []*config.Hole
 		Langs    []*config.Lang
-		Ranks    map[string]rank
+		Ranks    map[string]rankMedal
 		Scoring  string
 		Scorings []string
 	}{
 		Holes:    config.HoleList,
 		Langs:    config.LangList,
-		Ranks:    map[string]rank{},
+		Ranks:    map[string]rankMedal{},
 		Scoring:  param(r, "scoring"),
 		Scorings: []string{"bytes", "chars"},
 	}
@@ -57,7 +57,7 @@ func golferHolesGET(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
-		data.Ranks[key] = rank{rank, isDiamond}
+		data.Ranks[key] = rankMedal{rank, isDiamond}
 	}
 
 	if err := rows.Err(); err != nil {
