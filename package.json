@@ -1,9 +1,6 @@
 {
   "dependencies": {
     "@codemirror/commands": "",
-    "@codemirror/gutter": "",
-    "@codemirror/highlight": "",
-    "@codemirror/history": "",
     "@codemirror/lang-cpp": "",
     "@codemirror/lang-java": "",
     "@codemirror/lang-javascript": "",
@@ -13,9 +10,7 @@
     "@codemirror/lang-sql": "",
     "@codemirror/language": "",
     "@codemirror/legacy-modes": "",
-    "@codemirror/matchbrackets": "",
     "@codemirror/state": "",
-    "@codemirror/stream-parser": "",
     "@codemirror/theme-one-dark": "",
     "@codemirror/view": "",
     "@defasm/codemirror": "",

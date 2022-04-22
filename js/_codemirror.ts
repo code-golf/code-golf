@@ -1,18 +1,18 @@
-import { EditorState }        from '@codemirror/state';
-import { EditorView, keymap } from '@codemirror/view';
+import { EditorState }                     from '@codemirror/state';
+import { EditorView, keymap, lineNumbers } from '@codemirror/view';
 
 export { EditorState, EditorView };
 
 // Extensions.
-import { carriageReturn, insertChar, showUnprintables } from './_codemirror_unprintable.js';
-import { insertTab, standardKeymap }                    from '@codemirror/commands';
-import { lineNumbers }                                  from '@codemirror/gutter';
-import { defaultHighlightStyle, HighlightStyle, tags }  from '@codemirror/highlight';
-import { history, historyKeymap }                       from '@codemirror/history';
-import { indentOnInput }                                from '@codemirror/language';
-import { bracketMatching }                              from '@codemirror/matchbrackets';
-import { StreamLanguage }                               from '@codemirror/stream-parser';
-import { oneDarkTheme, oneDarkHighlightStyle }          from '@codemirror/theme-one-dark';
+import { carriageReturn, insertChar,
+         showUnprintables }                      from './_codemirror_unprintable.js';
+import { history, historyKeymap, insertTab,
+         standardKeymap }                        from '@codemirror/commands';
+import { tags }                                  from '@lezer/highlight';
+import { bracketMatching, defaultHighlightStyle,
+         HighlightStyle, indentOnInput,
+         StreamLanguage, syntaxHighlighting }    from '@codemirror/language';
+import { oneDarkTheme, oneDarkHighlightStyle }   from '@codemirror/theme-one-dark';
 
 // Languages.
 import { assembly }    from '@defasm/codemirror';
@@ -55,12 +55,13 @@ const fontFamily = "'Source Code Pro', monospace";
 export const extensions = {
     // Extensions.
     'base': [
-        carriageReturn, defaultHighlightStyle, history(),
+        carriageReturn, history(),
         indentOnInput(), insertChar, lineNumbers(), showUnprintables,
         keymap.of([
             { key: 'Tab', run: insertTab },
             ...historyKeymap, ...standardKeymap,
         ]),
+        syntaxHighlighting(defaultHighlightStyle),
         EditorView.theme({
             '.cm-asm-error': { textDecoration: 'underline var(--asm-error)' },
             '.cm-asm-error-tooltip':    asmErrorTooltip,
@@ -85,7 +86,6 @@ export const extensions = {
         oneDarkTheme,
         oneDarkHighlightStyle,
     ],
-    defaultHighlightStyle,
 
     // Languages.
     'assembly':   assembly(),
