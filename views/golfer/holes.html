@@ -34,12 +34,12 @@
         {{ if eq $.Data.Scoring "chars" }}{{ $rank = $chars }}{{ end }}
 
         {{ with $rank }}
-            <a class="{{ $lang.ID }} {{ colour .rank }}"
+            <a class="{{ $lang.ID }} {{ colour .Rank }}"
                 href="/rankings/holes/{{ $hole.ID }}/{{ $lang.ID }}/{{ $.Data.Scoring }}"
-                data-tooltip="Bytes rank is {{ $bytes.rank }}{{ ord $bytes.rank }}{{ if $chars }}, Chars rank is {{ $chars.rank }}{{ ord $chars.rank }}{{ end }}. View rankings of {{ $hole.Name }} in {{ $lang.Name }}."
+                data-tooltip="Bytes rank is {{ $bytes.Rank }}{{ ord $bytes.Rank }}{{ if $chars }}, Chars rank is {{ $chars.Rank }}{{ ord $chars.Rank }}{{ end }}. View rankings of {{ $hole.Name }} in {{ $lang.Name }}."
                 data-wide-tooltip=true>
                 <svg><use href="#{{ $lang.ID }}"/></svg>
-                <span>{{ .rank }}<sup>{{ ord .rank }}{{ if .isDiamond }}💎{{ end }}</sup></span>
+                <span>{{ if .IsDiamond }}<span class="isDiamond">💎</span>{{ end }}{{ .Rank }}<sup>{{ ord .Rank }}</sup></span>
             </a>
         {{ else }}
             <a class="{{ $lang.ID }} grey"

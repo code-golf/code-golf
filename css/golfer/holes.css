@@ -119,3 +119,10 @@ main svg:nth-of-type(2) {
         grid-column: auto;
     }
 }
+
+.isDiamond {
+    position: absolute;
+    left: 0px;
+    top: -3px;
+    font-size: 90%;
+}

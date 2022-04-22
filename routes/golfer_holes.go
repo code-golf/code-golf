@@ -11,8 +11,8 @@ import (
 func golferHolesGET(w http.ResponseWriter, r *http.Request) {
 	golfer := session.GolferInfo(r).Golfer
 	type rankMedal struct {
-		rank      int
-		isDiamond bool
+		Rank      int
+		IsDiamond bool
 	}
 	data := struct {
 		Holes    []*config.Hole
