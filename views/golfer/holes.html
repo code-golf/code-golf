@@ -32,15 +32,17 @@
 
         {{ $rank := $bytes }}
         {{ if eq $.Data.Scoring "chars" }}{{ $rank = $chars }}{{ end }}
-
-        {{ with $rank }}
-            <a class="{{ $lang.ID }} {{ colour .Rank }} {{ if .IsDiamond }}isDiamond{{ end }}"
-                href="/rankings/holes/{{ $hole.ID }}/{{ $lang.ID }}/{{ $.Data.Scoring }}"
-                data-tooltip="Bytes rank is {{ if $bytes.IsDiamond }}untied {{ end }}{{ $bytes.Rank }}{{ ord $bytes.Rank }}{{ if $chars }}, Chars rank is {{ if $chars.IsDiamond }}untied {{ end }}{{ $chars.Rank }}{{ ord $chars.Rank }}{{ end }}. View rankings of {{ $hole.Name }} in {{ $lang.Name }}."
-                data-wide-tooltip=true>
-                <svg><use href="#{{ $lang.ID }}"/></svg>
-                <span>{{ .Rank }}<sup>{{ ord .Rank }}</sup></span>
-            </a>
+        
+        {{ if $rank.Rank }}
+            {{ with $rank }}
+                <a class="{{ $lang.ID }} {{ colour .Rank }} {{ if .IsDiamond }}isDiamond{{ end }}"
+                    href="/rankings/holes/{{ $hole.ID }}/{{ $lang.ID }}/{{ $.Data.Scoring }}"
+                    data-tooltip="Bytes rank is {{ if $bytes.IsDiamond }}untied {{ end }}{{ $bytes.Rank }}{{ ord $bytes.Rank }}{{ if $chars }}, Chars rank is {{ if $chars.IsDiamond }}untied {{ end }}{{ $chars.Rank }}{{ ord $chars.Rank }}{{ end }}. View rankings of {{ $hole.Name }} in {{ $lang.Name }}."
+                    data-wide-tooltip=true>
+                    <svg><use href="#{{ $lang.ID }}"/></svg>
+                    <span>{{ .Rank }}<sup>{{ ord .Rank }}</sup></span>
+                </a>
+            {{ end }}
         {{ else }}
             <a class="{{ $lang.ID }} grey"
                 href="/{{ $hole.ID }}#{{ $lang.ID }}"
