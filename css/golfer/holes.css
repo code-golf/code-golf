@@ -120,9 +120,6 @@ main svg:nth-of-type(2) {
     }
 }
 
-.isDiamond {
-    position: absolute;
-    left: 0px;
-    top: -3px;
-    font-size: 90%;
+a.isDiamond {
+    box-shadow: inset 0 0 12px 2px gold, 0 0 10px 2px gold;
 }
