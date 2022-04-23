@@ -10,16 +10,20 @@ import (
 // GET /golfers/{golfer}/holes
 func golferHolesGET(w http.ResponseWriter, r *http.Request) {
 	golfer := session.GolferInfo(r).Golfer
+	type rankMedal struct {
+		Rank      int
+		IsDiamond bool
+	}
 	data := struct {
 		Holes    []*config.Hole
 		Langs    []*config.Lang
-		Ranks    map[string]int
+		Ranks    map[string]rankMedal
 		Scoring  string
 		Scorings []string
 	}{
 		Holes:    config.HoleList,
 		Langs:    config.LangList,
-		Ranks:    map[string]int{},
+		Ranks:    map[string]rankMedal{},
 		Scoring:  param(r, "scoring"),
 		Scorings: []string{"bytes", "chars"},
 	}
@@ -35,7 +39,7 @@ func golferHolesGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	rows, err := session.Database(r).Query(
-		`SELECT hole::text || lang::text || scoring::text, rank
+		`SELECT hole::text || lang::text || scoring::text, rank, rank = 1 AND tie_count = 1
 		   FROM rankings WHERE user_id = $1`,
 		golfer.ID,
 	)
@@ -47,12 +51,13 @@ func golferHolesGET(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		var key string
 		var rank int
+		var isDiamond bool
 
-		if err := rows.Scan(&key, &rank); err != nil {
+		if err := rows.Scan(&key, &rank, &isDiamond); err != nil {
 			panic(err)
 		}
 
-		data.Ranks[key] = rank
+		data.Ranks[key] = rankMedal{rank, isDiamond}
 	}
 
 	if err := rows.Err(); err != nil {
