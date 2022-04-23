@@ -5,13 +5,13 @@ export { EditorState, EditorView };
 
 // Extensions.
 import { carriageReturn, insertChar,
-         showUnprintables }                      from './_codemirror_unprintable.js';
+    showUnprintables }                           from './_codemirror_unprintable.js';
 import { history, historyKeymap, insertTab,
-         standardKeymap }                        from '@codemirror/commands';
+    standardKeymap }                             from '@codemirror/commands';
 import { tags }                                  from '@lezer/highlight';
 import { bracketMatching, defaultHighlightStyle,
-         HighlightStyle, indentOnInput,
-         StreamLanguage, syntaxHighlighting }    from '@codemirror/language';
+    HighlightStyle, indentOnInput,
+    StreamLanguage, syntaxHighlighting }         from '@codemirror/language';
 import { oneDarkTheme, oneDarkHighlightStyle }   from '@codemirror/theme-one-dark';
 
 // Languages.
