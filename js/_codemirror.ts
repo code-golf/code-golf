@@ -79,12 +79,12 @@ export const extensions = {
             '.cm-asm-error-tooltip': asmErrorTooltip,
             '.cm-gutters':           { background: 'var(--light-grey)' },
         }, { dark: true }),
-        HighlightStyle.define([
+        syntaxHighlighting(HighlightStyle.define([
             { color: '#98c379', tag: tags.literal },
             { color: '#e06c75', tag: tags.regexp  },
-        ]),
+        ])),
         oneDarkTheme,
-        oneDarkHighlightStyle,
+        syntaxHighlighting(oneDarkHighlightStyle),
     ],
 
     // Languages.
