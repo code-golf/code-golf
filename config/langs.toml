@@ -223,8 +223,8 @@ end-program.
 '''
 
 [Crystal]
-size    = '242 MiB'
-version = '1.3.2'
+size    = '221 MiB'
+version = '1.4.1'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
