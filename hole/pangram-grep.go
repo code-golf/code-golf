@@ -84,6 +84,17 @@ func pangramGrep() (args []string, out string) {
 		}
 	}
 
+	// Add alphabet with one letter missing
+	for del := 'a'; del <= 'z'; del++ {
+		str := []byte{}
+		for c := 'a'; c <= 'z'; c++ {
+			if c != del {
+				str = append(str, byte(c))
+			}
+		}
+		pangrams = append(pangrams, str)
+	}
+
 outer:
 	for _, pangram := range shuffle(pangrams) {
 		str := string(pangram)
