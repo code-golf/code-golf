@@ -90,6 +90,14 @@ func pangramGrep() (args []string, out string) {
 		for c := 'a'; c <= 'z'; c++ {
 			if c != del {
 				str = append(str, byte(c))
+				// Uppercase random letters
+				if rand.Intn(2) == 0 {
+					str[len(str)-1] -= 32
+				}
+				// Add random symbols
+				if rand.Intn(5) == 0 {
+					str = append(str, '!'+byte(rand.Intn(14)))
+				}
 			}
 		}
 		pangrams = append(pangrams, str)
