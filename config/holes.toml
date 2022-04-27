@@ -352,6 +352,35 @@ preamble = '''
 </pre>
 '''
 
+[Collatz]
+category = 'Sequence'
+experiment = -1
+links = [
+    { name = 'OEIS A006577', url = '//oeis.org/A006577' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Hailstone_sequence' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Collatz_conjecture' }
+]
+preamble = '''
+<p>
+    The Collatz conjecture states that, for any positive integer <b>n</b>, it
+    will eventually reach 1 by repeatedly applying the following procedure:
+
+<ul>
+    <li>If <b>n</b> is even, divide it by 2.
+    <li>If <b>n</b> is odd, multiply by 3 and then add 1.
+</ul>
+
+<p>
+    The number of steps needed for <b>n</b> to reach 1 is called its stopping
+    time. For example, the stopping time of <b>10</b> is six:
+
+<p><b>10 → 5 → 16 → 8 → 4 → 2 → 1</b>
+
+<p>
+    Print the stopping times of all the numbers from <b>1</b> to <b>1000</b>
+    inclusive, each on their own line.
+'''
+
 ['CSS Colors']
 category = 'Transform'
 data = '''
@@ -1136,12 +1165,12 @@ preamble = '''
 <p>
     For each set of three musical notes forming a triad, print the name of the chord they form, consisting of the root note and the type of triad.
 <p>
-    Each note is represented as an uppercase letter, optionally followed by a single accidental, either sharp (<b>♯</b> U+266F) or flat (<b>♭</b> U+266D). 
+    Each note is represented as an uppercase letter, optionally followed by a single accidental, either sharp (<b>♯</b> U+266F) or flat (<b>♭</b> U+266D).
 <p>
     Background:
 <p>
     There are twelve pitch classes in twelve-tone equal temperament, some of which have multiple names due to <b>♯</b> and <b>♭</b> raising and lowering the pitch, respectively. They are, in ascending order:
- 	
+
 	<div>
     	<table>
         	<thead>
@@ -1199,8 +1228,8 @@ preamble = '''
           </table>
 	</div>
 <p>
-	A triad consists of a root note on the bottom followed by two thirds stacked on top of it. Thirds describe the distance between the preceding and following note. A third can be either of two types: 
-    
+	A triad consists of a root note on the bottom followed by two thirds stacked on top of it. Thirds describe the distance between the preceding and following note. A third can be either of two types:
+
     <div>
         <table>
             <thead>
@@ -1218,8 +1247,8 @@ preamble = '''
         </table>
     </div>
 <p>
-    Being that there are 2 thirds in a triad and each third can be of 2 different types, there are 4 total “types” of triads. They are:  
-	
+    Being that there are 2 thirds in a triad and each third can be of 2 different types, there are 4 total “types” of triads. They are:
+
 	<div>
     	<table>
     	    <thead>
@@ -1246,18 +1275,18 @@ preamble = '''
 	</div>
 <p>
     Input:
-  	
+
   	<ul>
         <li>Triads of notes will always be written out so that the letters in the name used ascend by 2 between each third  (wrapping back to A after G). Therefore, a triad consisting of notes 3, 6, and 9 may be written as <b>B♯ D♯ F♯</b> or <b>C E♭ G♭</b>, but not, for example, as <b>C D♯ F♯</b>.
-        <li>The notes may appear in any order, e.g., <b>C E G</b> and <b>E C G</b> both may appear. 
+        <li>The notes may appear in any order, e.g., <b>C E G</b> and <b>E C G</b> both may appear.
 	</ul>
 
 <p>
 	Output:
-  
+
  	<ul>
-        <li>Chords are named by the root note followed by nothing for major, <b>m</b> for minor, <b>°</b> U+00B0 for diminished, and <b>+</b> for augmented. 
-        <li>The spelling of the root note in the output must match the input, e.g. the expected output for <b>C E♭ G♭</b> is <b>C°</b>, not <b>B♯°</b>. 
+        <li>Chords are named by the root note followed by nothing for major, <b>m</b> for minor, <b>°</b> U+00B0 for diminished, and <b>+</b> for augmented.
+        <li>The spelling of the root note in the output must match the input, e.g. the expected output for <b>C E♭ G♭</b> is <b>C°</b>, not <b>B♯°</b>.
   	</ul>
 
 <p>
@@ -1850,7 +1879,7 @@ Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliqu
     eiusmod          tempor
    incididunt  ut  labore et
    dolore magna aliqua.
-  
+
   Ut  enim  ad  minim veniam,
  quis   nostrud   exercitation
  ullamco   laboris   nisi   ut
@@ -2069,7 +2098,7 @@ Then I'm sure she sells seashore shells.
 
 [Turtle]
 category = "Art"
-experiment = 622 
+experiment = 622
 preamble = """
 <p>
   Given a single argument containing multiple lines of space separated instructions containing distance and direction <b>(N, E, S, or W)</b>.
@@ -2193,7 +2222,7 @@ links = [
     { name = 'OEIS A181391', url = '//oeis.org/A181391' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Van_Eck_sequence' },
 ]
-preamble = ''' 
+preamble = '''
 <p>The rules of the Van Eck sequence are as follows:
 
 <ol type=a>
