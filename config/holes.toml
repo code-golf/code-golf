@@ -352,6 +352,35 @@ preamble = '''
 </pre>
 '''
 
+[Collatz]
+category = 'Sequence'
+experiment = -1
+links = [
+    { name = 'OEIS A006577', url = '//oeis.org/A006577' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Hailstone_sequence' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Collatz_conjecture' }
+]
+preamble = '''
+<p>
+    The Collatz conjecture states that, for any positive integer <b>n</b>, it
+    will eventually reach 1 by repeatedly applying the following procedure:
+
+<ul>
+    <li>If <b>n</b> is even, divide it by 2.
+    <li>If <b>n</b> is odd, multiply by 3 and then add 1.
+</ul>
+
+<p>
+    The number of steps needed for <b>n</b> to reach 1 is called its stopping
+    time. For example, the stopping time of <b>10</b> is six:
+
+<p><b>10 → 5 → 16 → 8 → 4 → 2 → 1</b>
+
+<p>
+    Print the stopping times of all the numbers from <b>1</b> to <b>1000</b>
+    inclusive, each on their own line.
+'''
+
 ['CSS Colors']
 category = 'Transform'
 data = '''
