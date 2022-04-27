@@ -658,17 +658,19 @@ preamble = '''
     <a href=odious-numbers>odious numbers</a>.
 '''
 
-['Factorial factorisation']
+['Factorial Factorisation']
 experiment = -1
 category = 'Sequence'
 links = [
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Factorial' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Factorial' },
 ]
 preamble = '''
-<p>
-    Print the factorisation of 1000!,<br>
+<p>Print the factorisation of 1000!,
 
-<code>2⁹⁹⁴×3⁴⁹⁸×5²⁴⁹×7¹⁶⁴×11⁹⁸×13⁸¹×17⁶¹×19⁵⁴×23⁴⁴×29³⁵×31³³×...×983×991×997</code>.
+<p>
+    <code>
+        2⁹⁹⁴×3⁴⁹⁸×5²⁴⁹×7¹⁶⁴×11⁹⁸×13⁸¹×17⁶¹×19⁵⁴×23⁴⁴×29³⁵×31³³×...×983×991×997
+    </code>.
 '''
 
 [Fibonacci]
