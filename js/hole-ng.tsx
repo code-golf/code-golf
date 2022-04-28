@@ -403,15 +403,9 @@ async function submit() {
 
     $('h2').innerText = data.Pass ? 'Pass 😀' : 'Fail ☹️';
 
-    // Hige arguments unless we have some.
-    $('#arg div').replaceChildren(...data.Argv.map(a => <span>{a}</span>));
-    $('#arg').classList.toggle('hide', !data.Argv.length);
-
-    updateReadonlyPanels();
-
-    const diff = diffTable(hole, data.Exp, data.Out, data.Argv);
-    $('#diff-content').replaceChildren(diff);
-    $('#diff').classList.toggle('hide', !diff);
+    for (const name in readonlyAsides) {
+        updateReadonlyPanel(name);
+    }
 
     $('#status').className = data.Pass ? 'green' : 'red';
 
@@ -465,32 +459,48 @@ function updateRestoreLinkVisibility() {
 const layout = new GoldenLayout($<HTMLDivElement>('#golden-container'));
 layout.resizeWithContainerAutomatically = true;
 
-function updateReadonlyPanels() {
+function updateReadonlyPanel(name: string) {
     if (!subRes) return;
-    let aside = readonlyAsides.Err;
-    if (aside) {
+    const aside = readonlyAsides[name];
+    if (!aside) return;
+    switch (name) {
+    case 'err':
         // Hide stderr if we're passing or have no stderr output.
         aside.classList.toggle('hide', subRes.Pass || !subRes.Err);
         aside.querySelector('div')!.innerHTML = subRes.Err.replace(/\n/g,'<br>');
+        break;
+    case 'out':
+        aside.querySelector('div')!.innerText = subRes.Out;
+        break;
+    case 'exp':
+        aside.querySelector('div')!.innerText = subRes.Exp;
+        break;
+    case 'arg':
+        // Hide arguments unless we have some.
+        aside.querySelector('div')!.replaceChildren(
+            ...subRes.Argv.map(a => <span>{a}</span>),
+        );
+        aside.classList.toggle('hide', !subRes.Argv.length);
+        break;
+    case 'diff':
+        const diff = diffTable(hole, subRes.Exp, subRes.Out, subRes.Argv);
+        aside.querySelector('div')!.replaceChildren(diff);
+        aside.classList.toggle('hide', !diff);
     }
-    aside = readonlyAsides.Out;
-    if (aside) aside.querySelector('div')!.innerText = subRes.Out;
-    aside = readonlyAsides.Exp;
-    if (aside) aside.querySelector('div')!.innerText = subRes.Exp;
 }
 
-for (const i of [0,1,2]) {
-    const feed = ['Exp', 'Out', 'Err'][i];
-    const title = ['Expected', 'Output', 'Errors'][i];
-    layout.registerComponentFactoryFunction(feed, function (container){
+for (const i of [0,1,2,3,4]) {
+    const name = ['exp', 'out', 'err', 'arg', 'diff'][i];
+    const title = ['Expected', 'Output', 'Errors', 'Arguments', 'Diff'][i];
+    layout.registerComponentFactoryFunction(name, container => {
         container.setTitle(title);
-        const aside: HTMLElement = (<aside id={feed.toLowerCase()}>
+        const aside: HTMLElement = (<aside id={name}>
             <h3>{title}</h3>
             <div></div>
         </aside>);
         container.element.append(aside);
-        readonlyAsides[feed] = aside;
-        updateReadonlyPanels();
+        readonlyAsides[name] = aside;
+        updateReadonlyPanel(name);
     });
 }
 
@@ -500,15 +510,23 @@ layout.loadLayout({
         content: [
             {
                 type: 'component',
-                componentType: 'Err',
+                componentType: 'err',
             } as ComponentItemConfig,
             {
                 type: 'component',
-                componentType: 'Exp',
+                componentType: 'exp',
             } as ComponentItemConfig,
             {
                 type: 'component',
-                componentType: 'Out',
+                componentType: 'out',
+            } as ComponentItemConfig,
+            {
+                type: 'component',
+                componentType: 'arg',
+            } as ComponentItemConfig,
+            {
+                type: 'component',
+                componentType: 'diff',
             } as ComponentItemConfig,
         ],
     },
