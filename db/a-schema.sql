@@ -47,7 +47,7 @@ CREATE TYPE lang AS ENUM (
     'crystal', 'd', 'f-sharp', 'fish', 'fortran', 'go', 'haskell', 'hexagony', 'j',
     'java', 'javascript', 'julia', 'k', 'lisp', 'lua', 'nim', 'pascal',
     'perl', 'php', 'powershell', 'prolog', 'python', 'raku', 'ruby', 'rust',
-    'sql', 'swift', 'v', 'viml', 'zig'
+    'sed', 'sql', 'swift', 'v', 'viml', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('diamond', 'gold', 'silver', 'bronze');

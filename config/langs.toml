@@ -691,6 +691,30 @@ fn main() {
 }
 '''
 
+[Sed]
+size    = '222 KiB'
+version = '4.8'
+website = 'https://www.gnu.org/software/sed/'
+example = '''
+# Printing
+1i Hello, World!
+
+# Looping
+2,$ b
+
+h
+s/.*/1/
+:loop
+p
+y/123456789/23456789X/
+/X/ !b loop
+s/X/10/
+G
+
+# Accessing arguments
+# (... automatic, one per line ...)
+'''
+
 [SQL]
 size    = '1.09 MiB'
 version = '3.38.2'
