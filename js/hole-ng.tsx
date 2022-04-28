@@ -1,5 +1,5 @@
 import { ASMStateField }                       from '@defasm/codemirror';
-import { ComponentItemConfig, GoldenLayout } from 'golden-layout';
+import { ComponentItem, ComponentItemConfig, ContentItem, GoldenLayout } from 'golden-layout';
 import LZString                                from 'lz-string';
 import { EditorState, EditorView, extensions } from './_codemirror.js';
 import                                              './_copy-as-json';
@@ -498,21 +498,47 @@ layout.loadLayout({
     root: {
         type: 'column',
         content: [
-      {
-          type: 'component',
-          componentType: 'Err',
-      } as ComponentItemConfig,
-      {
-          type: 'component',
-          componentType: 'Exp',
-      } as ComponentItemConfig,
-      {
-          type: 'component',
-          componentType: 'Out',
-      } as ComponentItemConfig,
+            {
+                type: 'component',
+                componentType: 'Err',
+            } as ComponentItemConfig,
+            {
+                type: 'component',
+                componentType: 'Exp',
+            } as ComponentItemConfig,
+            {
+                type: 'component',
+                componentType: 'Out',
+            } as ComponentItemConfig,
         ],
     },
 });
+
+// Add an item to the tab pool when a component gets destroyed
+layout.addEventListener('itemDestroyed', e => {
+    const _target = e.target as ContentItem;
+    if (_target.isComponent) {
+        const target = _target as ComponentItem;
+        const el = (<span>{target.title}</span>);
+        $('#pool').appendChild(el);
+        layout.newDragSource(el, target.componentType);
+    }
+});
+
+// Remove an item from the tab pool when it gets added
+layout.addEventListener('itemCreated', e => {
+    const _target = e.target as ContentItem;
+    if (_target.isComponent) {
+        const target = _target as ComponentItem;
+        for (const poolItem of $$('#pool > span')) {
+            if (poolItem.innerText === target.title) {
+                poolItem.remove();
+                break;
+            }
+        }
+    }
+});
+
 
 /**
  * For some reason, Golden Layout doesn't handle scroll on the outer page.
