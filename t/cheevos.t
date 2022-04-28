@@ -24,7 +24,7 @@ my $dbh = dbh;
 createUser($dbh, 1);
 my $session = createSession($dbh, 1);
 
-$client.get: 'https://app:1443/about',
+$client.get: 'https://app/about',
     headers => { cookie => "__Host-session=$session" };
 
 is $dbh.execute('SELECT ARRAY(SELECT trophy FROM trophies)').row, '{rtfm}',

@@ -31,7 +31,7 @@ sub dbh is export {
 
 sub post-solution(:$code, :$hole = 'fizz-buzz', :$lang = 'raku', :$session = '') is export {
     $client.post(
-        'https://app:1443/solution',
+        'https://app/solution',
         content => to-json({ Code => $code, Hole => $hole, Lang => $lang }),
         headers => { cookie => "__Host-session=$session" },
     )<content>.decode.&from-json;

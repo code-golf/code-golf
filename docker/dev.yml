@@ -1,8 +1,8 @@
 services:
   app:
     ports:
-      - 80:1080
-      - 443:1443
+      - 80:80
+      - 443:443
   assets:
     image: node:17-alpine3.15
     command:

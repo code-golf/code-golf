@@ -1,7 +1,6 @@
 package main
 
 import (
-	"crypto/tls"
 	"database/sql"
 	"log"
 	"math/rand"
@@ -13,7 +12,6 @@ import (
 	"github.com/code-golf/code-golf/github"
 	"github.com/code-golf/code-golf/routes"
 	_ "github.com/lib/pq"
-	"golang.org/x/crypto/acme/autocert"
 )
 
 func main() {
@@ -24,38 +22,6 @@ func main() {
 	db, err := sql.Open("postgres", "")
 	if err != nil {
 		panic(err)
-	}
-
-	certManager := autocert.Manager{
-		Cache:  autocert.DirCache("certs"),
-		Prompt: autocert.AcceptTOS,
-		HostPolicy: autocert.HostWhitelist(
-			"code.golf", "www.code.golf",
-			"code-golf.io", "www.code-golf.io", // Legacy domain.
-		),
-	}
-
-	server := http.Server{
-		Addr:    ":1443",
-		Handler: routes.Router(db),
-		TLSConfig: &tls.Config{
-			CipherSuites: []uint16{
-				tls.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
-				tls.TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,
-				tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
-				tls.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, // HTTP/2-required.
-			},
-			CurvePreferences: []tls.CurveID{tls.CurveP256, tls.X25519},
-			MinVersion:       tls.VersionTLS12,
-		},
-	}
-
-	var crt, key string
-	if _, dev := os.LookupEnv("DEV"); dev {
-		crt = "localhost.pem"
-		key = "localhost-key.pem"
-	} else {
-		server.TLSConfig.GetCertificate = certManager.GetCertificate
 	}
 
 	// Every 30 seconds.
@@ -132,11 +98,22 @@ func main() {
 
 	log.Println("Listening…")
 
-	// Redirect HTTP to HTTPS and handle ACME challenges.
-	go func() {
-		panic(http.ListenAndServe(":1080", certManager.HTTPHandler(nil)))
-	}()
+	// Dev.
+	if _, dev := os.LookupEnv("DEV"); dev {
+		// Redirect HTTP to HTTPS.
+		go func() {
+			panic(http.ListenAndServe(":80",
+				http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+					http.Redirect(w, r, "https://localhost"+r.RequestURI,
+						http.StatusMovedPermanently)
+				})))
+		}()
 
-	// Serve HTTPS.
-	panic(server.ListenAndServeTLS(crt, key))
+		// Serve HTTPS.
+		panic(http.ListenAndServeTLS(
+			":443", "localhost.pem", "localhost-key.pem", routes.Router(db)))
+	}
+
+	// Live only listens on HTTP, TLS is handled by Caddy.
+	panic(http.ListenAndServe(":80", routes.Router(db)))
 }

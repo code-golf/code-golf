@@ -15,7 +15,7 @@ import (
 	"unicode"
 )
 
-const timeout = 7 * time.Second
+const timeout = 5 * time.Second
 
 //go:embed answers
 var answers embed.FS
@@ -250,7 +250,7 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 
 		if errors.Is(ctx.Err(), context.DeadlineExceeded) {
 			score.Timeout = true
-			stderr.WriteString("Killed for exceeding the 7s timeout.")
+			stderr.WriteString("Killed for exceeding the 5s timeout.")
 		} else {
 			stderr.WriteString(err.Error())
 			println(err.Error())
