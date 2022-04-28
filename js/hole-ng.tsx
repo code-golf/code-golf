@@ -26,6 +26,22 @@ let latestSubmissionID = 0;
 let solution = scorings.indexOf(localStorage.getItem('solution') ?? 'Bytes') as 0 | 1;
 let scoring  = scorings.indexOf(localStorage.getItem('scoring')  ?? 'Bytes') as 0 | 1;
 
+interface SubmitResponse {
+    Pass: boolean,
+    Out: string,
+    Exp: string,
+    Err: string,
+    Argv: string[],
+    Cheevos: {
+        emoji: string,
+        name: string
+    }[],
+    LoggedIn: boolean
+}
+
+let subRes: SubmitResponse | null = null;
+const readonlyAsides: {[key: string]: HTMLElement | undefined} = {};
+
 // The savedInDB state is used to avoid saving solutions in localStorage when
 // those solutions match the solutions in the database. It's used to avoid
 // restoring a solution from localStorage when the user has improved that
@@ -329,18 +345,8 @@ async function submit() {
         return;
     }
 
-    const data = await res.json() as {
-        Pass: boolean,
-        Out: string,
-        Exp: string,
-        Err: string,
-        Argv: string[],
-        Cheevos: {
-            emoji: string,
-            name: string
-        }[],
-        LoggedIn: boolean
-    };
+    const data = await res.json() as SubmitResponse;
+    subRes = data;
     savedInDB = data.LoggedIn && !experimental;
 
     if (submissionID != latestSubmissionID)
@@ -401,13 +407,7 @@ async function submit() {
     $('#arg div').replaceChildren(...data.Argv.map(a => <span>{a}</span>));
     $('#arg').classList.toggle('hide', !data.Argv.length);
 
-    // Hide stderr if we're passing of have no stderr output.
-    $('#err div').innerHTML = data.Err.replace(/\n/g, '<br>');
-    $('#err').classList.toggle('hide', data.Pass || !data.Err);
-
-    // Always show exp & out.
-    $('#exp div').innerText = data.Exp;
-    $('#out div').innerText = data.Out;
+    updateReadonlyPanels();
 
     const diff = diffTable(hole, data.Exp, data.Out, data.Argv);
     $('#diff-content').replaceChildren(diff);
@@ -462,38 +462,64 @@ function updateRestoreLinkVisibility() {
  *  https://golden-layout.github.io/golden-layout
  * golden-layout.com is for the old GL.
  */
-const layout = new GoldenLayout($<HTMLDivElement>('#golden-container'), ()=>(0 as any), ()=>{});
-console.log("layout",layout);
-// layout.resizeWithContainerAutomatically = true;
-layout.registerComponentFactoryFunction('testComponent', function (container, state){
-    console.log("container", container, "state", state);
-    const label = (state as any).label ?? 'Test';
-    return (<h2>{label}</h2>);
-});
+const layout = new GoldenLayout($<HTMLDivElement>('#golden-container'));
+layout.resizeWithContainerAutomatically = true;
+
+function updateReadonlyPanels() {
+    if (!subRes) return;
+    let aside = readonlyAsides.Err;
+    if (aside) {
+        // Hide stderr if we're passing or have no stderr output.
+        aside.classList.toggle('hide', subRes.Pass || !subRes.Err);
+        aside.querySelector('div')!.innerHTML = subRes.Err.replace(/\n/g,'<br>');
+    }
+    aside = readonlyAsides.Out;
+    if (aside) aside.querySelector('div')!.innerText = subRes.Out;
+    aside = readonlyAsides.Exp;
+    if (aside) aside.querySelector('div')!.innerText = subRes.Exp;
+}
+
+for (const i of [0,1,2]) {
+    const feed = ['Exp', 'Out', 'Err'][i];
+    const title = ['Expected', 'Output', 'Errors'][i];
+    layout.registerComponentFactoryFunction(feed, function (container){
+        container.setTitle(title);
+        const aside: HTMLElement = (<aside id={feed.toLowerCase()}>
+            <h3>{title}</h3>
+            <div></div>
+        </aside>);
+        container.element.append(aside);
+        readonlyAsides[feed] = aside;
+        updateReadonlyPanels();
+    });
+}
+
 layout.loadLayout({
-  root: {
-    type: "row",
-    content: [
+    root: {
+        type: 'column',
+        content: [
       {
-        type: "component",
-        componentType: "testComponent",
-        componentState: { label: "A" },
+          type: 'component',
+          componentType: 'Err',
       } as ComponentItemConfig,
       {
-        type: "column",
-        content: [
-          {
-            type: "component",
-            componentType: "testComponent",
-            componentState: { label: "B" },
-          } as ComponentItemConfig,
-          {
-            type: "component",
-            componentType: "testComponent",
-            componentState: { label: "C" },
-          } as ComponentItemConfig,
+          type: 'component',
+          componentType: 'Exp',
+      } as ComponentItemConfig,
+      {
+          type: 'component',
+          componentType: 'Out',
+      } as ComponentItemConfig,
         ],
-      },
-    ],
-  },
+    },
 });
+
+/**
+ * For some reason, Golden Layout doesn't handle scroll on the outer page.
+ * The following code handles rendering the drop target in the right place,
+ * but it doesn't fix the cursor position
+ */
+// document.addEventListener("scroll", () => {
+//     $(".lm_dropTargetIndicator").style.transform = `translateY(${window.scrollY}px)`;
+// })
+// layout.
