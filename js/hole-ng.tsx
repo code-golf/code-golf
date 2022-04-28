@@ -1,4 +1,5 @@
 import { ASMStateField }                       from '@defasm/codemirror';
+import { ComponentItemConfig, GoldenLayout } from 'golden-layout';
 import LZString                                from 'lz-string';
 import { EditorState, EditorView, extensions } from './_codemirror.js';
 import                                              './_copy-as-json';
@@ -453,3 +454,46 @@ function updateRestoreLinkVisibility() {
     $('#restoreLink').classList.toggle('hide',
         !serverCode || editor.state.doc.toString() == serverCode);
 }
+
+/* Temporary golden layout testing */
+
+/**
+ * Actual Golden Layout docs are at
+ *  https://golden-layout.github.io/golden-layout
+ * golden-layout.com is for the old GL.
+ */
+const layout = new GoldenLayout($<HTMLDivElement>('#golden-container'), ()=>(0 as any), ()=>{});
+console.log("layout",layout);
+// layout.resizeWithContainerAutomatically = true;
+layout.registerComponentFactoryFunction('testComponent', function (container, state){
+    console.log("container", container, "state", state);
+    const label = (state as any).label ?? 'Test';
+    return (<h2>{label}</h2>);
+});
+layout.loadLayout({
+  root: {
+    type: "row",
+    content: [
+      {
+        type: "component",
+        componentType: "testComponent",
+        componentState: { label: "A" },
+      } as ComponentItemConfig,
+      {
+        type: "column",
+        content: [
+          {
+            type: "component",
+            componentType: "testComponent",
+            componentState: { label: "B" },
+          } as ComponentItemConfig,
+          {
+            type: "component",
+            componentType: "testComponent",
+            componentState: { label: "C" },
+          } as ComponentItemConfig,
+        ],
+      },
+    ],
+  },
+});

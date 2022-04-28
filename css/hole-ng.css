@@ -259,3 +259,8 @@ thead { user-select: none }
 
     #thirdParty:empty { display: none }
 }
+
+#golden-container {
+    width: 100%;
+    height: 80vh;
+}

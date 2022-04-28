@@ -267,6 +267,11 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	if name == "hole" || name == "hole-ng" {
 		args.CSS += css["terminal"]
 	}
+	/* TODO: (GL) switch light/dark codemirror theme to getThemeCSS */
+	if name == "hole-ng" {
+		args.CSS += css["vendor/goldenlayout-base"] +
+			css["vendor/goldenlayout-themes/goldenlayout-light-theme"]
+	}
 
 	// Append route specific JS.
 	// e.g. GET /foo/bar might add js/foo.js and/or js/foo/bar.js.

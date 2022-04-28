@@ -17,6 +17,7 @@
     "dialog-polyfill": "",
     "diff": "",
     "esbuild": "",
+    "golden-layout": "^2.5.0",
     "lz-string": "",
     "nim-codemirror-mode": ""
   },
