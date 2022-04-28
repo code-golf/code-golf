@@ -24,6 +24,8 @@ hexadecimal digit represents four bits (binary digits), also known as a nibble
 (or nybble). For example, an 8-bit byte can have values ranging from 00000000 to
 11111111 in binary form, which can be conveniently represented as 00 to FF in
 hexadecimal.`,
+		"0123456789abcdef",
+		"Lorem ipsum dolor sit amet,\n\n consectetur adipiscing elit\n",
 	}
 
 	outs := []string{
