@@ -257,5 +257,14 @@ thead { user-select: none }
 
 #golden-container {
     width: 100%;
-    height: 80vh;
+    position: relative;
+}
+
+#golden-container > .lm_root {
+    /* Don't contribute to #golden-container's sizing to allow auto resizing */
+    position: absolute;
+}
+
+main {
+    grid-template-rows: max-content max-content 1fr
 }

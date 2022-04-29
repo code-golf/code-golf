@@ -61,108 +61,112 @@
             </a>
         </nav>
     </header>
-    <template id=template-details>
-        <div class=grid>
-            {{ .Data.Hole.Preamble }}
-        {{ if .Data.Hole.Data }}
-            <div><button class="btn orange" id=copy>Copy as JSON</button></div>
-        {{ end }}
+    <div>
+        <nav class=tabs id=picker></nav>
+        <nav class=tabs id=solutionPicker></nav>
+        <div id=pool class=hide></div>
+        <div class="info assembly">
+            Compiled from
+            <a href=//www.wikibooks.org/wiki/X86_Assembly/GAS_Syntax>
+                AT&T syntax</a> to x86-64 Linux. Use
+            <a href=//blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64>
+                syscalls</a> to write output.
         </div>
-    </template>
-    <nav class=tabs id=picker></nav>
-    <nav class=tabs id=solutionPicker></nav>
-    <div id=pool></div>
-    <template id=template-scoreboard>
-        <section id=scoreboard>
-            <header class=wide>
-                <nav class=tabs id=scoringTabs><a>Bytes</a><a href>Chars</a></nav>
-                <a href id=allLink>All</a>
-            </header>
-            <table class="nowrap-second wide" id=scores><tr><td></table>
-            <nav class="tabs wide" id=rankingsView>
-                <a {{ if ne .Data.RankingsView "top" }} href {{ end }}>
-                    {{ svg "trophy-fill" }} Top
-                </a>
-                <a {{ if ne .Data.RankingsView "me" }} href {{ end }}>
-                    {{ svg "person-fill" }} Me
-                </a>
-                <a {{ if ne .Data.RankingsView "following" }} href {{ end }}>
-                    {{ svg "people-fill" }} Following
-                </a>
-            </nav>
-        </section>
-    </template>
-    <div class="info assembly">
-        Compiled from
-        <a href=//www.wikibooks.org/wiki/X86_Assembly/GAS_Syntax>
-            AT&T syntax</a> to x86-64 Linux. Use
-        <a href=//blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64>
-            syscalls</a> to write output.
-    </div>
-    <div class="info c-sharp">
-        <a href=//devblogs.microsoft.com/dotnet/welcome-to-c-9-0/#top-level-programs>
-            Top-level programs</a> are supported, <b>args</b> holds ARGV.
-        <a href=//docs.microsoft.com/en-us/dotnet/core/tutorials/top-level-templates#implicit-using-directives>
-            Implicit using directives</a> for console applications are enabled.
-    </div>
-    <div class="hide info brainfuck">
-        Arguments are available via STDIN, each argument is NULL terminated.
-        Taking input after EOF leaves the cell unchanged, the tape is circular
-        with 65536 cells, and cells are 8-bit with wrapping.
-    </div>
-    <div class="hide info cpp">
-        Code is compiled with clang with <a href=//clang.llvm.org/cxx_status.html>-std=c++2b</a>.
-    </div>
-    <div class="hide info d">
-        Code is compiled with <a href=//wiki.dlang.org/LDC>LDC2</a>.
-    </div>
-    <div class="hide info fish">
-        Arguments are available via STDIN, each argument is NULL terminated.
-        <b>x</b> is a no-op.
-    </div>
-    <div class="hide info hexagony">
-        Arguments are available via STDIN, each argument is NULL terminated.
-    </div>
-    <div class="hide info javascript">
-        <b>arguments</b> holds ARGV, <b>print()</b> to output with a newline,
-        <b>write()</b> to output without a newline.
-    </div>
-{{ if eq .Data.Hole.ID "quine" }}
-    <div class="hide info k">
-        Implicit output is disabled for this hole. Code must end with a newline.
-    </div>
-{{ end }}
-    <div class="hide info perl">
-        <b>say()</b> is available without any import.
-    </div>
-{{ if eq .Data.Hole.ID "quine" }}
-    <div class="hide info powershell">
-        Implicit output is disabled for this hole. Use <b>Out-Host</b> or
-        <b>Write-Host</b> for output.
-    </div>
-{{ else }}
-    <div class="hide info powershell">
-        <b>$args</b> to access the arguments.
-    </div>
-{{ end }}
-    <div class="hide info prolog">
-        <b>prolog_flag(argv, Args)</b> to access the arguments.
-    </div>
-    <div class="hide info sql">
-        <b>SELECT arg FROM argv</b> to access the arguments, only the first
-        column of the first result set will be printed, NULL values will be
-        skipped, and the dialect is <a href=//sqlite.org/index.html>SQLite</a>.
-    </div>
-    <div class="hide info viml">
-        Arguments are available via <b>args</b> list variable. To terminate
-        script execution, write and quit the current buffer.
-    </div>
-    <div class=hide id=status>
-        <h2></h2>
-        <nav id=thirdParty></nav>
+        <div class="info c-sharp">
+            <a href=//devblogs.microsoft.com/dotnet/welcome-to-c-9-0/#top-level-programs>
+                Top-level programs</a> are supported, <b>args</b> holds ARGV.
+            <a href=//docs.microsoft.com/en-us/dotnet/core/tutorials/top-level-templates#implicit-using-directives>
+                Implicit using directives</a> for console applications are enabled.
+        </div>
+        <div class="hide info brainfuck">
+            Arguments are available via STDIN, each argument is NULL terminated.
+            Taking input after EOF leaves the cell unchanged, the tape is circular
+            with 65536 cells, and cells are 8-bit with wrapping.
+        </div>
+        <div class="hide info cpp">
+            Code is compiled with clang with <a href=//clang.llvm.org/cxx_status.html>-std=c++2b</a>.
+        </div>
+        <div class="hide info d">
+            Code is compiled with <a href=//wiki.dlang.org/LDC>LDC2</a>.
+        </div>
+        <div class="hide info fish">
+            Arguments are available via STDIN, each argument is NULL terminated.
+            <b>x</b> is a no-op.
+        </div>
+        <div class="hide info hexagony">
+            Arguments are available via STDIN, each argument is NULL terminated.
+        </div>
+        <div class="hide info javascript">
+            <b>arguments</b> holds ARGV, <b>print()</b> to output with a newline,
+            <b>write()</b> to output without a newline.
+        </div>
+    {{ if eq .Data.Hole.ID "quine" }}
+        <div class="hide info k">
+            Implicit output is disabled for this hole. Code must end with a newline.
+        </div>
+    {{ end }}
+        <div class="hide info perl">
+            <b>say()</b> is available without any import.
+        </div>
+    {{ if eq .Data.Hole.ID "quine" }}
+        <div class="hide info powershell">
+            Implicit output is disabled for this hole. Use <b>Out-Host</b> or
+            <b>Write-Host</b> for output.
+        </div>
+    {{ else }}
+        <div class="hide info powershell">
+            <b>$args</b> to access the arguments.
+        </div>
+    {{ end }}
+        <div class="hide info prolog">
+            <b>prolog_flag(argv, Args)</b> to access the arguments.
+        </div>
+        <div class="hide info sql">
+            <b>SELECT arg FROM argv</b> to access the arguments, only the first
+            column of the first result set will be printed, NULL values will be
+            skipped, and the dialect is <a href=//sqlite.org/index.html>SQLite</a>.
+        </div>
+        <div class="hide info viml">
+            Arguments are available via <b>args</b> list variable. To terminate
+            script execution, write and quit the current buffer.
+        </div>
+        <div class=hide id=status>
+            <h2></h2>
+            <nav id=thirdParty></nav>
+        </div>
     </div>
     <div id=golden-container></div>
 </main>
+
+<template id=template-details>
+    <div class=grid>
+        {{ .Data.Hole.Preamble }}
+    {{ if .Data.Hole.Data }}
+        <div><button class="btn orange" id=copy>Copy as JSON</button></div>
+    {{ end }}
+    </div>
+</template>
+
+<template id=template-scoreboard>
+    <section id=scoreboard>
+        <header class=wide>
+            <nav class=tabs id=scoringTabs><a>Bytes</a><a href>Chars</a></nav>
+            <a href id=allLink>All</a>
+        </header>
+        <table class="nowrap-second wide" id=scores><tr><td></table>
+        <nav class="tabs wide" id=rankingsView>
+            <a {{ if ne .Data.RankingsView "top" }} href {{ end }}>
+                {{ svg "trophy-fill" }} Top
+            </a>
+            <a {{ if ne .Data.RankingsView "me" }} href {{ end }}>
+                {{ svg "person-fill" }} Me
+            </a>
+            <a {{ if ne .Data.RankingsView "following" }} href {{ end }}>
+                {{ svg "people-fill" }} Following
+            </a>
+        </nav>
+    </section>
+</template>
 
 <template id=template-run>
     <div id=run>
