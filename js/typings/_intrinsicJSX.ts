@@ -34,6 +34,8 @@ declare global {
       td: any;
       col: any;
       aside: any;
+      section: any;
+      header: any;
     }
   }
 }

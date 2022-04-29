@@ -52,53 +52,11 @@ const readonlyAsides: {[key: string]: HTMLElement | undefined} = {};
 // By the time they are non-empty, the savedInDB state will have been updated.
 let savedInDB = !experimental;
 
-const editor = new EditorView({
-    dispatch: tr => {
-        const result = editor.update([tr]) as unknown;
-
-        const code = tr.state.doc.toString();
-        const scorings: {byte?: number, char?: number} = {};
-        const scoringKeys = ['byte', 'char'] as const;
-
-        if (lang == 'assembly')
-            scorings.byte = (editor.state.field(ASMStateField) as any).head.length();
-        else {
-            scorings.byte = byteLen(code);
-            scorings.char = charLen(code);
-        }
-
-        $('#strokes').innerText = scoringKeys
-            .filter(s => s in scorings)
-            .map(s => `${comma(scorings[s])} ${s}${scorings[s] != 1 ? 's' : ''}`)
-            .join(', ');
-
-        // Avoid future conflicts by only storing code locally that's
-        // different from the server's copy.
-        const serverCode = getSolutionCode(lang, solution);
-
-        const key = getAutoSaveKey(lang, solution);
-        if (code && (code !== serverCode || !savedInDB) && code !== langs[lang].example)
-            localStorage.setItem(key, code);
-        else
-            localStorage.removeItem(key);
-
-        updateRestoreLinkVisibility();
-
-        return result;
-    },
-    parent: $('#editor'),
-});
-
-editor.contentDOM.setAttribute('data-gramm', 'false');  // Disable Grammarly.
+let editor: EditorView | null = null;
 
 // Set/clear the hide-details cookie on details toggling.
 $('#details').ontoggle = (e: Event) => document.cookie =
     'hide-details=;SameSite=Lax;Secure' + ((e.target as HTMLDetailsElement).open ? ';Max-Age=0' : '');
-
-$('#restoreLink').onclick = e => {
-    setState(getSolutionCode(lang, solution));
-    e.preventDefault();
-};
 
 (onhashchange = () => {
     const hashLang = location.hash.slice(1) || localStorage.getItem('lang');
@@ -134,18 +92,6 @@ $('dialog [name=text]').addEventListener('input', (e: Event) => {
     const target = e.target as HTMLInputElement;
     target.form!.confirm.toggleAttribute('disabled',
         target.value !== target.placeholder);
-});
-
-$$('#rankingsView a').forEach(a => a.onclick = e => {
-    e.preventDefault();
-
-    $$<HTMLAnchorElement>('#rankingsView a').forEach(a => a.href = '');
-    a.removeAttribute('href');
-
-    document.cookie =
-        `rankings-view=${a.innerText.toLowerCase()};SameSite=Lax;Secure`;
-
-    refreshScores();
 });
 
 function getAutoSaveKey(lang: string, solution: 0 | 1) {
@@ -225,6 +171,11 @@ async function refreshScores() {
     $('#deleteBtn')?.classList.toggle('hide',
         experimental || (!dbBytes && !dbChars));
 
+    const scoreboard = $('#scoreboard');
+    if (scoreboard) await populateScores();
+}
+
+async function populateScores() {
     // Populate the rankings table.
     const scoringID = scorings[scoring].toLowerCase();
     const path      = `/${hole}/${lang}/${scoringID}`;
@@ -284,7 +235,10 @@ function setCodeForLangAndSolution() {
         getSolutionCode(lang, solution) || langs[lang].example);
 
     if (lang == 'assembly') scoring = 0;
-    $('#scoringTabs a:last-child').classList.toggle('hide', lang == 'assembly');
+    // TODO (GL) change
+    const charsTab = $('#scoringTabs a:last-child');
+    if (charsTab)
+        charsTab.classList.toggle('hide', lang == 'assembly');
 
     refreshScores();
 
@@ -300,6 +254,7 @@ function setSolution(value: 0 | 1) {
 }
 
 function setState(code: string) {
+    if (!editor) return;
     editor.setState(
         EditorState.create({
             doc: code,
@@ -323,6 +278,7 @@ function setState(code: string) {
 }
 
 async function submit() {
+    if (!editor) return;
     $('h2').innerText = '…';
     $('#status').className = 'grey';
     $$('canvas').forEach(e => e.remove());
@@ -504,10 +460,104 @@ for (const i of [0,1,2,3,4]) {
     });
 }
 
+function makeEditor(parent: HTMLDivElement) {
+    editor = new EditorView({
+        dispatch: tr => {
+            if (!editor) return;
+            const result = editor.update([tr]) as unknown;
+
+            const code = tr.state.doc.toString();
+            const scorings: {byte?: number, char?: number} = {};
+            const scoringKeys = ['byte', 'char'] as const;
+
+            if (lang == 'assembly')
+                scorings.byte = (editor.state.field(ASMStateField) as any).head.length();
+            else {
+                scorings.byte = byteLen(code);
+                scorings.char = charLen(code);
+            }
+
+            $('#strokes').innerText = scoringKeys
+                .filter(s => s in scorings)
+                .map(s => `${comma(scorings[s])} ${s}${scorings[s] != 1 ? 's' : ''}`)
+                .join(', ');
+
+            // Avoid future conflicts by only storing code locally that's
+            // different from the server's copy.
+            const serverCode = getSolutionCode(lang, solution);
+
+            const key = getAutoSaveKey(lang, solution);
+            if (code && (code !== serverCode || !savedInDB) && code !== langs[lang].example)
+                localStorage.setItem(key, code);
+            else
+                localStorage.removeItem(key);
+
+            updateRestoreLinkVisibility();
+
+            return result;
+        },
+        parent: parent,
+    });
+
+    editor.contentDOM.setAttribute('data-gramm', 'false');  // Disable Grammarly.
+}
+
+layout.registerComponentFactoryFunction('code', container => {
+    const restoreLinkOnClick = (e: MouseEvent) => {
+        // TODO (GL) check
+        setState(getSolutionCode(lang, solution));
+        e.preventDefault();
+    };
+    const section: HTMLElement = (<section>
+        <header>
+            <div id="strokes">0 bytes, 0 chars</div>
+            <a class="hide" href id="restoreLink" onclick={restoreLinkOnClick}>Restore solution</a>
+        </header>
+        <div id="editor"></div>
+    </section>);
+
+    makeEditor(section.querySelector('#editor') as HTMLDivElement);
+
+    container.element.append(section);
+});
+
+function afterDOM(fn: () => any) {
+    setTimeout(fn, 0);
+}
+
+function delinkRankingsView() {
+    $$('#rankingsView a').forEach(a => a.onclick = e => {
+        e.preventDefault();
+
+        $$<HTMLAnchorElement>('#rankingsView a').forEach(a => a.href = '');
+        a.removeAttribute('href');
+
+        document.cookie =
+            `rankings-view=${a.innerText.toLowerCase()};SameSite=Lax;Secure`;
+
+        refreshScores();
+    });
+}
+
+layout.registerComponentFactoryFunction('scoreboard', container => {
+    const section = $<HTMLTemplateElement>('#template-scoreboard').content.cloneNode(true);
+    container.element.append(section);
+    afterDOM(populateScores);
+    afterDOM(delinkRankingsView);
+});
+
 layout.loadLayout({
     root: {
         type: 'column',
         content: [
+            {
+                type: 'component',
+                componentType: 'code',
+            } as ComponentItemConfig,
+            {
+                type: 'component',
+                componentType: 'scoreboard',
+            } as ComponentItemConfig,
             {
                 type: 'component',
                 componentType: 'err',
@@ -566,4 +616,3 @@ layout.addEventListener('itemCreated', e => {
 // document.addEventListener("scroll", () => {
 //     $(".lm_dropTargetIndicator").style.transform = `translateY(${window.scrollY}px)`;
 // })
-// layout.

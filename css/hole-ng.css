@@ -56,11 +56,6 @@ main .info {
     padding: .5rem;
 }
 
-section {
-    display: grid;
-    grid-template: auto 1fr / 1fr 17rem;
-}
-
 section header {
     align-items: center;
     display: flex;
