@@ -71,18 +71,7 @@ let editor: EditorView | null = null;
     setCodeForLangAndSolution();
 })();
 
-// Wire submit to clicking a button and a keyboard shortcut.
-$('#runBtn').onclick = submit;
-
 onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter' ? submit() : undefined;
-
-$('#deleteBtn')?.addEventListener('click', () => {
-    $('dialog b').innerText = langs[lang].name;
-    $<HTMLInputElement>('dialog [name=lang]').value = lang;
-    $<HTMLInputElement>('dialog [name=text]').value = '';
-    // Dialog typings are not available yet
-    $<any>('dialog').showModal();
-});
 
 $('dialog [name=text]').addEventListener('input', (e: Event) => {
     const target = e.target as HTMLInputElement;
@@ -514,7 +503,22 @@ layout.registerComponentFactoryFunction('code', container => {
 
     makeEditor(section.querySelector('#editor') as HTMLDivElement);
 
+    section.append($<HTMLTemplateElement>('#template-run').content.cloneNode(true));
+
     container.element.append(section);
+
+    afterDOM(() => {
+        // Wire submit to clicking a button and a keyboard shortcut.
+        $('#runBtn').onclick = submit;
+
+        $('#deleteBtn')?.addEventListener('click', () => {
+            $('dialog b').innerText = langs[lang].name;
+            $<HTMLInputElement>('dialog [name=lang]').value = lang;
+            $<HTMLInputElement>('dialog [name=text]').value = '';
+            // Dialog typings are not available yet
+            $<any>('dialog').showModal();
+        });
+    });
 });
 
 function afterDOM(fn: () => any) {
