@@ -54,10 +54,6 @@ let savedInDB = !experimental;
 
 let editor: EditorView | null = null;
 
-// Set/clear the hide-details cookie on details toggling.
-$('#details').ontoggle = (e: Event) => document.cookie =
-    'hide-details=;SameSite=Lax;Secure' + ((e.target as HTMLDetailsElement).open ? ';Max-Age=0' : '');
-
 (onhashchange = () => {
     const hashLang = location.hash.slice(1) || localStorage.getItem('lang');
 
@@ -546,10 +542,19 @@ layout.registerComponentFactoryFunction('scoreboard', container => {
     afterDOM(delinkRankingsView);
 });
 
+layout.registerComponentFactoryFunction('details', container => {
+    const details = $<HTMLTemplateElement>('#template-details').content.cloneNode(true) as HTMLDetailsElement;
+    container.element.append(details);
+});
+
 layout.loadLayout({
     root: {
         type: 'column',
         content: [
+            {
+                type: 'component',
+                componentType: 'details',
+            } as ComponentItemConfig,
             {
                 type: 'component',
                 componentType: 'code',
