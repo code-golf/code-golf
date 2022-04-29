@@ -259,6 +259,8 @@ thead { user-select: none }
 #golden-container {
     width: 100%;
     position: relative;
+    /* Prevent overflow from maximized panels */
+    overflow: hidden;
 }
 
 #golden-container > .lm_root {
