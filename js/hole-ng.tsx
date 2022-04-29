@@ -552,6 +552,9 @@ layout.registerComponentFactoryFunction('details', container => {
 });
 
 layout.loadLayout({
+    settings: {
+        showPopoutIcon: false,
+    },
     root: {
         type: 'column',
         content: [

@@ -1,3 +1,5 @@
+/* Copied from node_modules/golden-layout/dist/css/goldenlayout-base.css */
+/* TODO: Use esbuild for all css */
 .lm_root {
   position: relative;
 }
