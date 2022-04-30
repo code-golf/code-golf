@@ -488,6 +488,8 @@ function makeEditor(parent: HTMLDivElement) {
 }
 
 layout.registerComponentFactoryFunction('code', container => {
+    container.setTitle('Code');
+
     const restoreLinkOnClick = (e: MouseEvent) => {
         // TODO (GL) check
         setState(getSolutionCode(lang, solution));
@@ -540,6 +542,7 @@ function delinkRankingsView() {
 }
 
 layout.registerComponentFactoryFunction('scoreboard', container => {
+    container.setTitle('Scoreboard');
     const section = $<HTMLTemplateElement>('#template-scoreboard').content.cloneNode(true);
     container.element.append(section);
     afterDOM(populateScores);
@@ -547,9 +550,17 @@ layout.registerComponentFactoryFunction('scoreboard', container => {
 });
 
 layout.registerComponentFactoryFunction('details', container => {
+    container.setTitle('Details');
     const details = $<HTMLTemplateElement>('#template-details').content.cloneNode(true) as HTMLDetailsElement;
     container.element.append(details);
 });
+
+function plainComponent(componentType: string): ComponentItemConfig {
+    return {
+        type: 'component',
+        componentType: componentType,
+    };
+}
 
 layout.loadLayout({
     settings: {
@@ -559,49 +570,48 @@ layout.loadLayout({
         type: 'column',
         content: [
             {
-                type: 'component',
-                componentType: 'details',
-            } as ComponentItemConfig,
-            {
-                type: 'component',
-                componentType: 'code',
-            } as ComponentItemConfig,
-            {
-                type: 'component',
-                componentType: 'scoreboard',
-            } as ComponentItemConfig,
-            {
-                type: 'component',
-                componentType: 'err',
-            } as ComponentItemConfig,
-            {
-                type: 'component',
-                componentType: 'exp',
-            } as ComponentItemConfig,
-            {
-                type: 'component',
-                componentType: 'out',
-            } as ComponentItemConfig,
-            {
-                type: 'component',
-                componentType: 'arg',
-            } as ComponentItemConfig,
-            {
-                type: 'component',
-                componentType: 'diff',
-            } as ComponentItemConfig,
+                type: 'row',
+                content: [
+                    plainComponent('code'),
+                    plainComponent('scoreboard'),
+                ],
+            }, {
+                type: 'row',
+                content: [
+                    {
+                        type: 'stack',
+                        content: [
+                            plainComponent('arg'),
+                            plainComponent('exp'),
+                        ],
+                    }, {
+                        type: 'stack',
+                        content: [
+                            plainComponent('out'),
+                            plainComponent('err'),
+                            plainComponent('diff'),
+                        ],
+                    },
+                ],
+            },
         ],
     },
 });
+
+addPoolItem('details', 'Details');
+
+function addPoolItem(componentType: string, title: string) {
+    const el = (<span>{title}</span>);
+    $('#pool').appendChild(el);
+    layout.newDragSource(el, componentType);
+}
 
 // Add an item to the tab pool when a component gets destroyed
 layout.addEventListener('itemDestroyed', e => {
     const _target = e.target as ContentItem;
     if (_target.isComponent) {
         const target = _target as ComponentItem;
-        const el = (<span>{target.title}</span>);
-        $('#pool').appendChild(el);
-        layout.newDragSource(el, target.componentType);
+        addPoolItem(target.componentType as string, target.title);
     }
 });
 
