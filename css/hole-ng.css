@@ -269,5 +269,33 @@ thead { user-select: none }
 }
 
 main {
-    grid-template-rows: max-content max-content 1fr
+    grid-template-rows: repeat(3, max-content) 1fr
+}
+
+#info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#solutionPickerPool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+#pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+}
+
+#pool span::after {
+    content: "+";
+    padding-left: 0.25rem;
+}
+
+#pool span {
+    background: var(--light-grey);
+    padding: 0.25rem 0.375rem;
 }
