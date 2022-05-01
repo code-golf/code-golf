@@ -152,7 +152,7 @@ int main(int argc, char* argv[]) {
 
 ['C#']
 size    = '145 MiB'
-version = 'C# 10.0 on .NET 6.0.3'
+version = 'C# 10.0 on .NET 6.0.4'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -266,7 +266,7 @@ void main(string[] argv) {
 
 ['F#']
 size    = '140 MiB'
-version = 'F# 6.0 on .NET 6.0.3'
+version = 'F# 6.0 on .NET 6.0.4'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -566,7 +566,7 @@ say for @ARGV;
 
 [PHP]
 size    = '10.5 MiB'
-version = '7.4.28'
+version = '7.4.29'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -583,7 +583,7 @@ for ($i = 1; $i < $argc; $i++)
 
 [PowerShell]
 size    = '177 MiB'
-version = 'PowerShell 7.2.2 on .NET 6.0.3'
+version = 'PowerShell 7.2.3 on .NET 6.0.4'
 website = 'https://docs.microsoft.com/powershell/scripting/overview'
 example = '''
 # Printing
@@ -653,7 +653,7 @@ say 'Hello, World!';
 
 [Ruby]
 size    = '24.3 MiB'
-version = '3.1.1'
+version = '3.1.2'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing
@@ -693,7 +693,7 @@ fn main() {
 
 [SQL]
 size    = '1.09 MiB'
-version = '3.38.2'
+version = '3.38.3'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
