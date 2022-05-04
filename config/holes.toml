@@ -354,7 +354,6 @@ preamble = '''
 
 [Collatz]
 category = 'Sequence'
-experiment = -1
 links = [
     { name = 'OEIS A006577', url = '//oeis.org/A006577' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Hailstone_sequence' },

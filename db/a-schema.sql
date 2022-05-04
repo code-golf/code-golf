@@ -22,8 +22,8 @@ CREATE TYPE connection AS ENUM (
 CREATE TYPE hole AS ENUM (
     '12-days-of-christmas', '99-bottles-of-beer', 'abundant-numbers',
     'arabic-to-roman', 'arrows', 'ascii-table', 'brainfuck',
-    'catalan-numbers', 'catalans-constant', 'christmas-trees', 'css-colors',
-    'cubes', 'diamonds', 'divisors', 'emirp-numbers', 'emojify',
+    'catalan-numbers', 'catalans-constant', 'christmas-trees', 'collatz',
+    'css-colors', 'cubes', 'diamonds', 'divisors', 'emirp-numbers', 'emojify',
     'evil-numbers', 'fibonacci', 'fizz-buzz', 'foo-fizz-buzz-bar',
     'fractions', 'happy-numbers', 'happy-numbers-long', 'hexdump',
     'intersection', 'isbn', 'kolakoski-constant', 'kolakoski-sequence',
