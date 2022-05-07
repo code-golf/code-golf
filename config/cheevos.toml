@@ -244,3 +244,9 @@ name        = 'Twenty Kiloleagues'
 emoji       = '🐋'
 description = 'Earn 20,000 points in either bytes or chars scoring.'
 target      = 20000
+
+[[Progression]]
+name        = 'Marathon Runner'
+emoji       = '🏃'
+description = 'Earn 42,195 points in either bytes or chars scoring.'
+target      = 42195

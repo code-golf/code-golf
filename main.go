@@ -45,6 +45,10 @@ func main() {
 				      SELECT user_id, 'twenty-kiloleagues'::cheevo
 				        FROM points
 				       WHERE points >= 20000
+				   UNION ALL
+				      SELECT user_id, 'marathon-runner'::cheevo
+				        FROM points
+				       WHERE points >= 42195
 				 ON CONFLICT DO NOTHING`,
 			); err != nil {
 				log.Println(err)

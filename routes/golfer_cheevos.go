@@ -103,7 +103,7 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, cheevoID := range []string{
-		"its-over-9000", "twenty-kiloleagues",
+		"its-over-9000", "twenty-kiloleagues", "marathon-runner",
 	} {
 		progress := data[cheevoID]
 		progress.Progress = count
