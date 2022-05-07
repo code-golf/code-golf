@@ -237,8 +237,10 @@ target      = 69
 name        = 'It’s Over 9000!'
 emoji       = '🐉'
 description = 'Earn over 9,000 points in either bytes or chars scoring.'
+target      = 9001
 
 [[Progression]]
 name        = 'Twenty Kiloleagues'
 emoji       = '🐋'
 description = 'Earn 20,000 points in either bytes or chars scoring.'
+target      = 20000

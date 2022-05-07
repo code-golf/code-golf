@@ -23,13 +23,13 @@
                         {{ $i = inc $i }}
                         Earned {{ time $progress.Earned }}
                     {{ else if .Target }}
-                        {{ $progress.Progress }} / {{ .Target }}
+                        {{ comma $progress.Progress }} / {{ comma .Target }}
                     {{ else }}
                         Not yet earned
                     {{ end }}
                     </span>
                     <a href="/rankings/cheevos/{{ .ID }}">
-                        {{ $progress.Count | comma }}
+                        {{ comma $progress.Count }}
                         golfer{{ if ne $progress.Count 1 }}s{{ end }}
                         ({{ $progress.Percent }}%)
                     </a>

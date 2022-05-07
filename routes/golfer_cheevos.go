@@ -95,5 +95,20 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
+	if err := db.QueryRow(
+		"SELECT COALESCE(MAX(points), 0) FROM points WHERE user_id = $1",
+		golfer.ID,
+	).Scan(&count); err != nil {
+		panic(err)
+	}
+
+	for _, cheevoID := range []string{
+		"its-over-9000", "twenty-kiloleagues",
+	} {
+		progress := data[cheevoID]
+		progress.Progress = count
+		data[cheevoID] = progress
+	}
+
 	render(w, r, "golfer/cheevos", data, golfer.Name)
 }
