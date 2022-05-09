@@ -839,16 +839,18 @@ links = [
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Jacobi_symbol' },
 ]
 preamble = '''
-<p>For each input pair (a,n) print the Jacobi symbol (a/n).
+<p>For each argument <code>a n</code>, print the value of the Jacobi symbol <b>J(a, n)</b>.
 
 <p>
-    For odd prime n, (a/n) defined as 0 for a=0 mod n, as 1 if a is a square
-    mod n and -1 otherwise.
+    Both inputs are non-negative integers, and <b>n</b> is odd.
     <br>
-    For odd n=m*p, (a/n) is defined as (a/m)*(a/p).
+    If <b>n</b> is prime, then <b>J(a, n)</b> is defined as <b>0</b> if <b>a=0 (mod n)</b>, as <b>1</b> if <b>a</b> is a square
+    modulo <b>n</b>, and <b>−1</b> otherwise.
+    <br>
+    If <b>n = x*y</b>, then <b>J(a, n)</b> is defined as <b>J(a, x)*J(a, y)</b>.
     <br>
     Note that calculating the symbol from the definition is not very efficient
-    as it requires factorisation of n.
+    as it requires factorisation of <b>n</b>.
 '''
 
 ['Kolakoski Constant']
