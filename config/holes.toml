@@ -839,7 +839,7 @@ links = [
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Jacobi_symbol' },
 ]
 preamble = '''
-<p>For each input pair <b>(a, n)</b> print the Jacobi symbol <b>J(a, n)</b>.
+<p>For each argument <code>a n</code>, print the value of the Jacobi symbol <b>J(a, n)</b>.
 
 <p>
     Both inputs are non-negative integers, and <b>n</b> is odd.
