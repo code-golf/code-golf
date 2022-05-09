@@ -38,13 +38,13 @@ func jacobiSymbol() ([]string, string) {
 	tests := make([]test, 4*mult)
 
 	for i := 0; i < mult; i++ {
-		inputs[i] = input{randomPrime(53), randomOdd(53)}
+		inputs[i] = input{randomNatural(53-2*i), randomOdd(53-2*i)}
 	}
 	for i := mult; i < 2*mult; i++ {
 		inputs[i] = input{new(big.Int).Mul(randomPrime(26), randomPrime(27)), randomOdd(53)}
 	}
 	for i := 2 * mult; i < 3*mult; i++ {
-		inputs[i] = input{randomNatural(53), randomOdd(53)}
+		inputs[i] = input{randomPrime(53), randomOdd(53)}
 	}
 	for i := 3 * mult; i < 4*mult; i++ {
 		common := randomOdd(26)
