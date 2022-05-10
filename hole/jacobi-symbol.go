@@ -51,21 +51,21 @@ func jacobiSymbol() ([]string, string) {
 		n2 := randomPrime(1 << 26)
 		inputs = append(inputs, input{a, n1 * n2})
 		// Prime n
+		a = randomNatural(1 << 53)
 		n = randomPrime(1 << 53)
-		a = randomOdd(1 << 53)
 		inputs = append(inputs, input{a, n})
 		// Common multiple
 		common := randomOdd(1 << 26)
-		n = randomOdd(1 << 27)
 		a = randomNatural(1 << 27)
+		n = randomOdd(1 << 27)
 		inputs = append(inputs, input{a * common, n * common})
 		// a multiple of n
-		n = randomOdd(1 << 27)
 		a = randomNatural(1 << 26)
+		n = randomOdd(1 << 27)
 		inputs = append(inputs, input{a * n, n})
 		// n multiple of a
+		a = randomOdd(1 << 26)
 		n = randomOdd(1 << 27)
-		a = randomNatural(1 << 26)
 		inputs = append(inputs, input{a, n * a})
 		// a is small
 		n = randomOdd(1 << 53)
@@ -78,8 +78,8 @@ func jacobiSymbol() ([]string, string) {
 	// Different residue classes
 	for i := 0; i < 4; i++ {
 		for j := 1; j < 8; j += 2 {
-			n := randomInClass(1<<53, 8, j)
-			a := randomInClass(1<<53, 4, i)
+			n = randomInClass(1<<53, 8, j)
+			a = randomInClass(1<<53, 4, i)
 			inputs = append(inputs, input{a, n})
 		}
 	}
