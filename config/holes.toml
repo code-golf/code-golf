@@ -842,7 +842,7 @@ preamble = '''
 <p>For each argument <code>a n</code>, print the value of the Jacobi symbol <b>J(a, n)</b>.
 
 <p>
-    Both inputs are non-negative integers, and <b>n</b> is odd.
+    Both inputs are non-negative integers, <b>n</b> is odd and at least <b>a</b>.
     <br>
     If <b>n</b> is prime, then <b>J(a, n)</b> is defined as <b>0</b> if <b>a=0 (mod n)</b>, as <b>1</b> if <b>a</b> is a square
     modulo <b>n</b>, and <b>−1</b> otherwise.
