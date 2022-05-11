@@ -82,8 +82,8 @@ func jacobiSymbol() ([]string, string) {
 	// Different residue classes
 	for i := 0; i < 4; i++ {
 		for j := 1; j < 8; j += 2 {
-			n = randomInClass(1<<53, 8, j)
 			a = randomInClass(1<<53, 4, i)
+			n = randomInClass(a, 8, j)
 			addTest(a, n)
 		}
 	}
