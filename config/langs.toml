@@ -457,8 +457,8 @@ end
 '''
 
 [K]
-size    = '258 KiB'
-version = 'cf753e859d'
+size    = '262 KiB'
+version = '7508b9ae11'
 website = 'https://codeberg.org/ngn/k'
 example = '''
 /Printing

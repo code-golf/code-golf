@@ -55,7 +55,7 @@ COPY --from=codegolf/lang-c          ["/", "/langs/c/rootfs/"         ] # 1.61 M
 COPY --from=codegolf/lang-bash       ["/", "/langs/bash/rootfs/"      ] # 1.19 MiB
 COPY --from=codegolf/lang-sql        ["/", "/langs/sql/rootfs/"       ] # 1.09 MiB
 COPY --from=codegolf/lang-lua        ["/", "/langs/lua/rootfs/"       ] #  342 KiB
-COPY --from=codegolf/lang-k          ["/", "/langs/k/rootfs/"         ] #  258 KiB
+COPY --from=codegolf/lang-k          ["/", "/langs/k/rootfs/"         ] #  262 KiB
 
 COPY --from=0 /go/code-golf /go/esbuild.json     /
 COPY          /css                               /css/
