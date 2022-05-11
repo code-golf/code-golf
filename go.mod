@@ -12,7 +12,7 @@ require (
 	github.com/gofrs/uuid v4.2.0+incompatible
 	github.com/gorilla/feeds v1.1.1
 	github.com/lib/pq v1.10.5
-	github.com/pelletier/go-toml/v2 v2.0.0
+	github.com/pelletier/go-toml/v2 v2.0.1
 	github.com/shurcooL/graphql v0.0.0-20200928012149-18c5c3165e3a
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 	github.com/tdewolff/minify/v2 v2.11.2
@@ -28,7 +28,7 @@ require (
 	github.com/kr/pretty v0.2.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/tdewolff/parse/v2 v2.5.29 // indirect
-	golang.org/x/crypto v0.0.0-20220507011949-2cf3adece122 // indirect
+	golang.org/x/crypto v0.0.0-20220511200225-c6db032c6c88 // indirect
 	golang.org/x/net v0.0.0-20220425223048-2871e0cb64e4 // indirect
 	golang.org/x/sys v0.0.0-20220503163025-988cb79eb6c6 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
