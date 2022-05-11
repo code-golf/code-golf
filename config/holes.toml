@@ -844,6 +844,8 @@ preamble = '''
 <p>
     Both inputs are non-negative integers, and <b>n</b> is odd.
     <br>
+    If <b>n=1</b>, then <b>J(a, n)</b> is defined as <b>1</b>.
+    <br>
     If <b>n</b> is prime, then <b>J(a, n)</b> is defined as <b>0</b> if <b>a=0 (mod n)</b>, as <b>1</b> if <b>a</b> is a square
     modulo <b>n</b>, and <b>−1</b> otherwise.
     <br>
