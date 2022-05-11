@@ -33,6 +33,14 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE FUNCTION pangramglot(langs lang[]) RETURNS int AS $$
+    WITH letters AS (
+        SELECT DISTINCT unnest(regexp_split_to_array(nullif(regexp_replace(
+               lang::text, '-sharp$|pp$|^fish$|[^a-z]', '', 'g'), ''), ''))
+          FROM unnest(langs) lang
+    ) SELECT COUNT(*) FROM letters
+$$ LANGUAGE SQL STABLE;
+
 CREATE TYPE save_solution_ret AS (
     beat_bytes      int,
     beat_chars      int,
@@ -203,6 +211,10 @@ BEGIN
     -- 🐍 Ouroboros
     IF hole = 'quine' AND lang = 'python' THEN
         earned := earn(earned, 'ouroboros', user_id); END IF;
+
+    -- 🔠 Pangramglot
+    IF hole = 'pangram-grep' AND pangramglot(langs) = 26 THEN
+        earned := earn(earned, 'pangramglot', user_id); END IF;
 
     -- 🪞 Solve Quine
     IF hole = 'quine' THEN

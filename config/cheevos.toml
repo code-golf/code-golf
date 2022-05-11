@@ -97,6 +97,12 @@ emoji       = '🐍'
 description = 'Solve <a href=/quine#python>Quine in Python</a>.'
 
 [['Hole/Lang Specific']]
+name        = 'Pangramglot'
+emoji       = '🔠'
+description = 'Solve <a href=/pangram-grep>Pangram Grep</a> in languages whose combined names form a pangram.'
+target      = 26
+
+[['Hole/Lang Specific']]
 name        = 'Solve Quine'
 emoji       = '🪞'
 description = 'Solve <a href=/quine>Quine</a>.'

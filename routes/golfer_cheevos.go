@@ -65,6 +65,13 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	cheevoProgress(
+		`SELECT pangramglot(array_agg(DISTINCT lang))
+		   FROM solutions
+		  WHERE NOT failing AND hole = 'pangram-grep' AND user_id = $1`,
+		"pangramglot",
+	)
+
+	cheevoProgress(
 		`SELECT COUNT(DISTINCT lang)
 		   FROM solutions
 		  WHERE NOT failing
