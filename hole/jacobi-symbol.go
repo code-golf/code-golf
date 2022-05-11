@@ -28,7 +28,7 @@ func randomPrime(max int) int {
 
 func jacobiSymbol() ([]string, string) {
 	const mult = 9
-	tests := []test{test{"0 1", "1"}}
+	tests := []test{{"0 1", "1"}}
 	addTest := func(a, n int) {
 		tests = append(tests, test{
 			strconv.Itoa(a) + " " + strconv.Itoa(n),
