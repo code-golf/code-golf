@@ -7,7 +7,10 @@ import (
 )
 
 func randomNatural(max int) int {
-	return rand.Intn(max - 1)
+	if max <= 0 {
+		return 0
+	}
+	return rand.Intn(max)
 }
 
 func randomInClass(max, mod, class int) int {
