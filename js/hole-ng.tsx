@@ -600,10 +600,15 @@ layout.loadLayout({
 
 addPoolItem('details', 'Details');
 
+function addItemFromPool(componentType: string) {
+    layout.newItem(plainComponent(componentType));
+}
+
 function addPoolItem(componentType: string, title: string) {
-    const el = (<span>{title}</span>);
+    const el = (<span class="btn">{title}</span>);
     $('#pool').appendChild(el);
     layout.newDragSource(el, componentType);
+    el.addEventListener('click', () => addItemFromPool(componentType));
 }
 
 // Add an item to the tab pool when a component gets destroyed
