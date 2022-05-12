@@ -1,10 +1,10 @@
 /* Modified from ../../node_modules/golden-layout/dist/css/themes/goldenlayout-light-theme.css */
 
 .lm_goldenlayout {
-  background: var(--background);
+  background: var(--light-grey);
 }
 .lm_content {
-  background: var(--light-grey);
+  background: var(--background);
   border: 1px solid var(--gl-border);
 }
 .lm_dragProxy .lm_content {
@@ -35,7 +35,7 @@
   font-family: Arial, sans-serif;
   font-size: 12px;
   color: var(--grey);
-  background: color(--background);
+  background: color(--light-grey);
   margin-right: 2px;
   padding-bottom: 4px;
   border: 1px solid var(--gl-border);
@@ -71,13 +71,13 @@
   box-shadow: 2px 2px 2px -2px rgba(0, 0, 0, 0.2);
 }
 .lm_selected .lm_header {
-  /* For selected tab headers, for inserting new contents is by selection,
+  /* For selected tab headers, when inserting new contents is by selection,
     not by drag */
   background-color: #452500;
 }
 .lm_tab:hover,
 .lm_tab.lm_active {
-  background: var(--light-grey);
+  background: var(--background);
   color: var(--grey);
 }
 .lm_header .lm_controls .lm_tabdropdown:before {

@@ -7,6 +7,11 @@
 /* include vendor/goldenlayout-base.css */
 /* include vendor/goldenlayout-theme.css */
 
+/* Body background --light-grey to allow code box etc contrast as --background */
+body {
+    background: var(--light-grey);
+}
+
 pre {
     font-family: emoji, 'Source Code Pro', monospace;
     line-height: 1.2;
@@ -301,6 +306,6 @@ main {
 }
 
 #pool span {
-    background: var(--light-grey);
+    background: var(--background);
     padding: 0.25rem 0.375rem;
 }
