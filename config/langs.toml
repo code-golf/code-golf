@@ -264,6 +264,21 @@ void main(string[] argv) {
 }
 '''
 
+[Elixir]
+size    = '277 MiB'
+version = '1.13.4'
+website = 'https://elixir-lang.org'
+example = '''
+# Printing
+IO.puts 'Hello, World!'
+
+# Looping
+for i <- 0..9, do: IO.puts i
+
+# Accessing arguments
+for arg <- System.argv, do: IO.puts arg
+'''
+
 ['F#']
 size    = '140 MiB'
 version = 'F# 6.0 on .NET 6.0.4'

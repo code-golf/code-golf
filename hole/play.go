@@ -179,6 +179,9 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	case "d":
 		cmd.Args = []string{"/usr/bin/ldc2", "--enable-color=true", "--run", "-"}
 		cmd.Env = []string{"PATH=/usr/bin"}
+	case "elixir":
+		cmd.Args = []string{"/usr/local/bin/elixir", "-e", code, "--"}
+		cmd.Env = []string{"LANG=C.UTF-8", "PATH=/usr/local/bin:/usr/bin:/bin"}
 	case "fish":
 		cmd.Args = []string{"/usr/bin/fish", "--no-prng", "-c", code, "-u"}
 	case "haskell", "php":
@@ -234,7 +237,7 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 
 	// Code
 	switch langID {
-	case "brainfuck", "fish", "javascript", "sed":
+	case "brainfuck", "elixir", "fish", "javascript", "sed":
 		// For these code is passed as an argument above.
 	case "k":
 		code = preprocessKCode(holeID, code)
