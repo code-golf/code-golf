@@ -691,7 +691,7 @@ fn main() {
 }
 '''
 
-[Sed]
+[sed]
 size    = '228 KiB'
 version = '4.8'
 website = 'https://www.gnu.org/software/sed/'
