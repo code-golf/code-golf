@@ -391,7 +391,7 @@ function tooltip(row: any, scoring: 'Bytes' | 'Chars') {
 function updateRestoreLinkVisibility() {
     const serverCode = getSolutionCode(lang, solution);
     $('#restoreLink').classList.toggle('hide',
-        !serverCode || editor.state.doc.toString() == serverCode);
+        !serverCode || editor?.state.doc.toString() == serverCode);
 }
 
 /* Temporary golden layout testing */
