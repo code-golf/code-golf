@@ -45,9 +45,10 @@ main .info {
 section header {
     align-items: center;
     display: flex;
-    height: 2rem;
+    height: 2.2rem;
     justify-content: space-between;
     padding-right: .5rem;
+    padding-left: .5rem;
 }
 
 .cm-editor { height: 100% }
@@ -104,12 +105,14 @@ section header {
     line-height: 2rem;
 }
 
+#editor-section {
+    height: 100%;
+}
+
 #editor {
-    border: 1px solid var(--color);
-    border-right-width: 0;
-    border-top-width: 2px;
+    /* Button = 1rem (contents) + 2*0.5 rem (padding) + 2px (border) */
+    height: calc(100% - (2rem + 2px));
     grid-row: span 2;
-    height: calc((2rem + 1px) * 8 + 2px);
     overflow-x: hidden;
 }
 
@@ -253,8 +256,6 @@ thead { user-select: none }
     section, #status { grid-template-columns: 1fr }
 
     section header { padding: 0 }
-
-    #editor { border-width: 1px }
 
     #thirdParty:empty { display: none }
 }

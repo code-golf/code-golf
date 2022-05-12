@@ -95,7 +95,7 @@ function getSolutionCode(lang: string, solution: 0 | 1) {
     return lang in solutions[solution] ? solutions[solution][lang] : '';
 }
 
-async function refreshScores() {
+function updateLangPicker() {
     // Populate the language picker with accurate stroke counts.
     $('#picker').replaceChildren(...sortedLangs.map((l: any) => {
         const tab = <a href={l.id == lang ? null : '#'+l.id}>{l.name}</a>;
@@ -112,6 +112,10 @@ async function refreshScores() {
 
         return tab;
     }));
+}
+
+async function refreshScores() {
+    updateLangPicker();
 
     // Populate (and show) the solution picker if necessary.
     //
@@ -225,7 +229,7 @@ function setCodeForLangAndSolution() {
     if (charsTab)
         charsTab.classList.toggle('hide', lang == 'assembly');
 
-    refreshScores();
+    updateLangPicker();
 
     $$('main .info').forEach(
         i => i.classList.toggle('hide', !i.classList.contains(lang)));
@@ -490,7 +494,7 @@ layout.registerComponentFactoryFunction('code', container => {
         setState(getSolutionCode(lang, solution));
         e.preventDefault();
     };
-    const section: HTMLElement = (<section>
+    const section: HTMLElement = (<section id="editor-section">
         <header>
             <div id="strokes">0 bytes, 0 chars</div>
             <a class="hide" href id="restoreLink" onclick={restoreLinkOnClick}>Restore solution</a>
@@ -500,7 +504,7 @@ layout.registerComponentFactoryFunction('code', container => {
 
     makeEditor(section.querySelector('#editor') as HTMLDivElement);
 
-    section.append($<HTMLTemplateElement>('#template-run').content.cloneNode(true));
+    section.querySelector('header')!.append($<HTMLTemplateElement>('#template-run').content.cloneNode(true));
 
     container.element.append(section);
 
@@ -515,6 +519,8 @@ layout.registerComponentFactoryFunction('code', container => {
             // Dialog typings are not available yet
             $<any>('dialog').showModal();
         });
+
+        setCodeForLangAndSolution();
     });
 });
 
@@ -623,13 +629,3 @@ layout.addEventListener('itemCreated', e => {
         }
     }
 });
-
-
-/**
- * For some reason, Golden Layout doesn't handle scroll on the outer page.
- * The following code handles rendering the drop target in the right place,
- * but it doesn't fix the cursor position
- */
-// document.addEventListener("scroll", () => {
-//     $(".lm_dropTargetIndicator").style.transform = `translateY(${window.scrollY}px)`;
-// })
