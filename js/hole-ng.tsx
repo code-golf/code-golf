@@ -486,7 +486,7 @@ function makeEditor(parent: HTMLDivElement) {
     editor.contentDOM.setAttribute('data-gramm', 'false');  // Disable Grammarly.
 }
 
-layout.registerComponentFactoryFunction('code', container => {
+layout.registerComponentFactoryFunction('code', async container => {
     container.setTitle('Code');
 
     const restoreLinkOnClick = (e: MouseEvent) => {
@@ -508,25 +508,23 @@ layout.registerComponentFactoryFunction('code', container => {
 
     container.element.append(section);
 
-    afterDOM(() => {
-        // Wire submit to clicking a button and a keyboard shortcut.
-        $('#runBtn').onclick = submit;
+    await afterDOM();
 
-        $('#deleteBtn')?.addEventListener('click', () => {
-            $('dialog b').innerText = langs[lang].name;
-            $<HTMLInputElement>('dialog [name=lang]').value = lang;
-            $<HTMLInputElement>('dialog [name=text]').value = '';
-            // Dialog typings are not available yet
-            $<any>('dialog').showModal();
-        });
+    // Wire submit to clicking a button and a keyboard shortcut.
+    $('#runBtn').onclick = submit;
 
-        setCodeForLangAndSolution();
+    $('#deleteBtn')?.addEventListener('click', () => {
+        $('dialog b').innerText = langs[lang].name;
+        $<HTMLInputElement>('dialog [name=lang]').value = lang;
+        $<HTMLInputElement>('dialog [name=text]').value = '';
+        // Dialog typings are not available yet
+        $<any>('dialog').showModal();
     });
+
+    setCodeForLangAndSolution();
 });
 
-function afterDOM(fn: () => any) {
-    setTimeout(fn, 0);
-}
+async function afterDOM() {}
 
 function delinkRankingsView() {
     $$('#rankingsView a').forEach(a => a.onclick = e => {
@@ -542,12 +540,13 @@ function delinkRankingsView() {
     });
 }
 
-layout.registerComponentFactoryFunction('scoreboard', container => {
+layout.registerComponentFactoryFunction('scoreboard', async container => {
     container.setTitle('Scoreboard');
     const section = $<HTMLTemplateElement>('#template-scoreboard').content.cloneNode(true);
     container.element.append(section);
-    afterDOM(populateScores);
-    afterDOM(delinkRankingsView);
+    await afterDOM();
+    populateScores();
+    delinkRankingsView();
 });
 
 layout.registerComponentFactoryFunction('details', container => {
