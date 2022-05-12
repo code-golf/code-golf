@@ -223,7 +223,7 @@ main > header nav {
     display: grid;
     gap: 1rem;
     grid-template-columns: 1fr auto;
-    padding: 1rem;
+    padding: 0.5rem;
 }
 
 #strokes { font-weight: bold }
@@ -278,20 +278,21 @@ thead { user-select: none }
 }
 
 main {
-    grid-template-rows: repeat(3, max-content) 1fr;
-    /* Free a little more room */
+    grid-template-rows: repeat(4, max-content) 1fr;
+    /* Free a little more room than the default 1rem gap */
     gap: 0.5rem;
+}
+
+#picker-status-row {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: max-content max-content 1fr;
+    align-items: center;
 }
 
 #info-container {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-}
-
-#solutionPickerPool {
-    display: flex;
-    flex-wrap: wrap;
     gap: 1rem;
 }
 
@@ -307,5 +308,4 @@ main {
 
 #pool span {
     background: var(--background);
-    padding: 0.25rem 0.375rem;
 }
