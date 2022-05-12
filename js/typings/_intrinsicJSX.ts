@@ -29,6 +29,7 @@ declare global {
       sup: any;
       table: any;
       tbody: any;
+      thead: any;
       tr: any;
       th: any;
       td: any;

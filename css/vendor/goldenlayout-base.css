@@ -7,7 +7,7 @@
   float: left;
 }
 .lm_content {
-  overflow: hidden;
+  overflow: auto;
   position: relative;
 }
 .lm_dragging,

@@ -29,7 +29,6 @@ pre {
     font-variant-ligatures: none;
     line-height: 1;
     padding: .375rem;
-    overflow: auto;
 }
 
 .readonly-output:empty::after {
@@ -116,8 +115,8 @@ section header {
 }
 
 #editor {
-    /* Button = 1rem (contents) + 2*0.5 rem (padding) + 2px (border) */
-    height: calc(100% - (2rem + 2px));
+    /* Button = 1rem (contents) + 2*0.5 rem (padding) + 2px (border) + 1px (idk) */
+    height: calc(100% - (2rem + 3px));
     grid-row: span 2;
     overflow-x: hidden;
 }

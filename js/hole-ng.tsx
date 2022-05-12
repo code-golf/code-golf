@@ -423,12 +423,10 @@ function updateReadonlyPanel(name: string) {
         output.replaceChildren(
             ...subRes.Argv.map(a => <span>{a}</span>),
         );
-        output.classList.toggle('hide', !subRes.Argv.length);
         break;
     case 'diff':
         const diff = diffTable(hole, subRes.Exp, subRes.Out, subRes.Argv);
         output.replaceChildren(diff);
-        output.classList.toggle('hide', !diff);
     }
 }
 

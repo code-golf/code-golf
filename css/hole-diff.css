@@ -1,3 +1,4 @@
+#diff:not(:empty),
 #diff-content {
     padding: 0;
 }
@@ -7,12 +8,6 @@
     border-spacing: 0;
     table-layout: fixed;
     width: 100%;
-}
-
-#diff th {
-    color: var(--background);
-    background: var(--color);
-    font-size: 1.25rem;
 }
 
 #diff td,
