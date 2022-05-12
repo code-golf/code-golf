@@ -94,7 +94,7 @@ main svg:nth-of-type(2) {
 
 @media (min-width: 95rem) {
     /* Increase this number when adding a language. */
-    main { grid-template-columns: 4fr repeat(37, 1fr) }
+    main { grid-template-columns: 4fr repeat(38, 1fr) }
 
     main a { height: 1.9rem }
 
