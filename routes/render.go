@@ -273,7 +273,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		// See above:
 		// 	 HACK Prepend font.css (with font URL) onto base.css.
 		//   TODO Use esbuild for all CSS? Still serve inline?
-		if themeCSS, ok := assets["node_modules/golden-layout/dist/css/themes/goldenlayout-light-theme.css"]; ok {
+		if themeCSS, ok := assets["css/vendor/goldenlayout-theme.css"]; ok {
 			cssBytes, err := os.ReadFile(themeCSS[1:])
 			if err != nil {
 				panic(err)

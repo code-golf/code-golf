@@ -13,6 +13,7 @@ node_modules/.bin/esbuild "$@"        \
     --jsx-factory=createElement       \
     --loader:.woff2=file              \
     --loader:.png=dataurl             \
+    --loader:.svg=dataurl             \
     --metafile=esbuild.json           \
     --minify                          \
     --outbase=.                       \

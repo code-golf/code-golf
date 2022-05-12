@@ -47,9 +47,6 @@
 .lm_header .lm_tab .lm_close_tab {
   width: 11px;
   height: 11px;
-  background-image: url('../../node_modules/golden-layout/dist/img/lm_close_black.png');
-  background-position: center center;
-  background-repeat: no-repeat;
   top: 4px;
   right: 6px;
   opacity: 0.4;
@@ -63,7 +60,7 @@
   padding-bottom: 5px;
 }
 .lm_header .lm_tab.lm_active .lm_close_tab {
-  opacity: 1;
+  opacity: 0.8;
 }
 .lm_dragProxy.lm_right .lm_header .lm_tab.lm_active,
 .lm_stack.lm_right .lm_header .lm_tab.lm_active {
@@ -96,39 +93,27 @@
 .lm_controls > *:hover {
   opacity: 1;
 }
-.lm_controls .lm_popout {
-  background-image: url('../../node_modules/golden-layout/dist/img/lm_popout_black.png');
+.lm_controls .lm_maximise{
+  background: var(--color); 
+  -webkit-mask: url(./img/lm_maximize.svg) center / 9px 9px no-repeat;
+  mask: url(./img/lm_maximize.svg) center / 9px 9px no-repeat;
 }
-.lm_controls .lm_maximise {
-  background-image: url('../../node_modules/golden-layout/dist/img/lm_maximise_black.png');
-}
-.lm_controls .lm_close {
-  background-image: url('../../node_modules/golden-layout/dist/img/lm_close_black.png');
+.lm_controls .lm_close,
+.lm_header .lm_tab .lm_close_tab {
+  background: var(--color);
+  -webkit-mask: url(./img/lm_close.svg) center / 9px 9px no-repeat;
+  mask: url(./img/lm_close.svg) center / 9px 9px no-repeat;
 }
 .lm_maximised .lm_header {
   background-color: var(--background);
 }
 .lm_maximised .lm_controls .lm_maximise {
-  background-image: url('../../node_modules/golden-layout/dist/img/lm_minimize_black.png');
+  background: var(--color);
+  -webkit-mask: url(./img/lm_minimize.svg) center / 9px 9px no-repeat;
+  mask: url(./img/lm_minimize.svg) center / 9px 9px no-repeat;
 }
 .lm_transition_indicator {
   /* TransitionIndicator is internal+deprecated+undocumented */
   background-color: var(--color);
   border: 1px dashed var(--grey);
-}
-.lm_popin {
-  cursor: pointer;
-}
-.lm_popin .lm_bg {
-  background: var(--color);
-  opacity: 0.7;
-}
-.lm_popin .lm_icon {
-  background-image: url('../../node_modules/golden-layout/dist/img/lm_popin_black.png');
-  background-position: center center;
-  background-repeat: no-repeat;
-  opacity: 0.7;
-}
-.lm_popin:hover .lm_icon {
-  opacity: 1;
 }
