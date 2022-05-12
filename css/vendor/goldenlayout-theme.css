@@ -83,14 +83,16 @@
 .lm_header .lm_controls .lm_tabdropdown:before {
   color: var(--color);
 }
-.lm_controls > * {
+.lm_controls > *,
+.main_close {
   position: relative;
   background-position: center center;
   background-repeat: no-repeat;
   opacity: 0.4;
   transition: opacity 300ms ease;
 }
-.lm_controls > *:hover {
+.lm_controls > *:hover,
+.main_close:hover {
   opacity: 1;
 }
 .lm_controls .lm_maximise{
@@ -99,7 +101,8 @@
   mask: url(./img/lm_maximize.svg) center / 9px 9px no-repeat;
 }
 .lm_controls .lm_close,
-.lm_header .lm_tab .lm_close_tab {
+.lm_header .lm_tab .lm_close_tab,
+.main_close {
   background: var(--color);
   -webkit-mask: url(./img/lm_close.svg) center / 9px 9px no-repeat;
   mask: url(./img/lm_close.svg) center / 9px 9px no-repeat;

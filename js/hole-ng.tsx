@@ -73,6 +73,21 @@ let editor: EditorView | null = null;
 
 onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter' ? submit() : undefined;
 
+// Handle showing/hiding alerts
+for (const alert of $$<HTMLDivElement>('.alert')) {
+    const closeBtn = alert.querySelector('.main_close') as HTMLDivElement | null;
+    if (!closeBtn) continue;
+    closeBtn.addEventListener('click', () => {
+        const child = (alert.querySelector('svg') as any).cloneNode(true);
+        $<HTMLDivElement>('#alert-pool').appendChild(child);
+        alert.classList.add('hide');
+        child.addEventListener('click', () => {
+            child.parentNode.removeChild(child);
+            alert.classList.remove('hide');
+        });
+    });
+}
+
 $('dialog [name=text]').addEventListener('input', (e: Event) => {
     const target = e.target as HTMLInputElement;
     target.form!.confirm.toggleAttribute('disabled',

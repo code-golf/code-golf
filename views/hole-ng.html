@@ -10,6 +10,7 @@
             <a href="//github.com/code-golf/code-golf/issues/{{ . }}">
                 GitHub issue</a>.
         {{ end }}
+        <div class=main_close></div>
     </div>
 {{ else }}{{ if not .Golfer }}
     <div class=alert>
@@ -18,6 +19,7 @@
             Please
             <a class=log-in href="{{ .LogInURL }}">log in with GitHub</a>
             in order to save solutions and appear on the leaderboards.
+        <div class=main_close></div>
     </div>
 {{ end }}{{ end }}
 

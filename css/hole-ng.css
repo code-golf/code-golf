@@ -309,3 +309,28 @@ main {
 #pool span {
     background: var(--background);
 }
+
+.alert {
+    position: relative;
+}
+
+.alert .main_close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+#alert-pool {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 0.4rem;
+    align-items: center;
+}
+
+#alert-pool svg {
+    fill: var(--background);
+    cursor: pointer;
+}
