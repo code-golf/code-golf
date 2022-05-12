@@ -30,6 +30,8 @@
     --red-text:           hsl(357, 70%, 50%);
     --summary-background: var(--light-grey);
     --summary-color:      #ddd;
+
+    --gl-border: hsl(214, 8%, 30%);
 }
 
 body > header {
