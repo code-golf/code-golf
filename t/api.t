@@ -22,7 +22,7 @@ for «
     200 /api/suggestions/golfers?q=z  ｢ '["baz"]'                              ｣
 » -> $status, $path, $content {
     subtest $path, {
-        my %res = $ua.get: "https://app:1443$path";
+        my %res = $ua.get: "https://app$path";
 
         is %res<status>, $status, 'status';
         is %res<headers><access-control-allow-origin>, '*', 'CORS';

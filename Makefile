@@ -20,27 +20,21 @@ cert:
 
 .PHONY: db
 db:
-	@ssh -t rancher@code.golf docker run -it --rm \
-	    --env-file /etc/code-golf.env $(POSTGRES) psql
-
-db-admin:
-	@ssh -t rancher@code.golf docker run -it --rm \
-	    --env-file /etc/code-golf.env $(POSTGRES) psql -W code-golf doadmin
+	@ssh -t root@code.golf sudo -iu postgres psql code-golf
 
 db-dev:
 	@docker-compose exec db psql -U postgres code-golf
 
 db-diff:
-	@diff --color --label live --label dev --strip-trailing-cr -su \
-	    <(ssh rancher@code.golf "docker run --rm                   \
-	    --env-file /etc/code-golf.env $(POSTGRES) pg_dump -Os")    \
+	@diff --color --label live --label dev --strip-trailing-cr -su    \
+	    <(ssh root@code.golf sudo -iu postgres pg_dump -Os code-golf) \
 	    <(docker-compose exec -T db pg_dump -OsU postgres code-golf)
 
 db-dump:
 	@rm -f db/*.gz
 
-	@ssh rancher@code.golf "docker run --env-file /etc/code-golf.env \
-	    --rm $(POSTGRES) pg_dump -aZ9" > db/code-golf-$(DATE).sql.gz
+	@ssh root@code.golf sudo -iu postgres pg_dump -aZ9 code-golf \
+	    > db/code-golf-$(DATE).sql.gz
 
 	@zcat db/*.gz | zstd -fqo ~/Dropbox/code-golf/code-golf-$(DATE).sql.zst
 
@@ -84,33 +78,32 @@ lint:
 	@node_modules/.bin/eslint --ext js,jsx,ts,tsx js/
 
 	@docker run --rm -v $(CURDIR):/app -w /app \
-	    golangci/golangci-lint:v1.45.2 golangci-lint run
+	    golangci/golangci-lint:v1.46.0 golangci-lint run
 
 live:
 	@docker buildx build --pull --push \
 	    --file docker/live.Dockerfile --tag codegolf/code-golf .
 
-	@ssh rancher@code.golf "              \
-	    docker pull codegolf/code-golf && \
-	    docker stop code-golf;            \
-	    docker rm code-golf;              \
-	    docker run                        \
-	    --detach                          \
-	    --env-file     /etc/code-golf.env \
-	    --init                            \
-	    --name         code-golf          \
-	    --pids-limit   1024               \
-	    --privileged                      \
-	    --publish       80:1080           \
-	    --publish      443:1443           \
-	    --read-only                       \
-	    --restart      always             \
-	    --volume       certs:/certs       \
-	    codegolf/code-golf &&             \
+	@ssh root@code.golf "                                        \
+	    docker pull codegolf/code-golf &&                        \
+	    docker stop code-golf;                                   \
+	    docker rm code-golf;                                     \
+	    docker run                                               \
+	        --detach                                             \
+	        --env-file   /etc/code-golf.env                      \
+	        --init                                               \
+	        --name       code-golf                               \
+	        --network    caddy                                   \
+	        --pids-limit 1024                                    \
+	        --privileged                                         \
+	        --read-only                                          \
+	        --restart    always                                  \
+	        --volume     /var/run/postgresql:/var/run/postgresql \
+	    codegolf/code-golf &&                                    \
 	    docker system prune -f"
 
 logs:
-	@ssh rancher@code.golf docker logs --tail 5 -f code-golf
+	@ssh root@code.golf docker logs --tail 5 -f code-golf
 
 test:
 	@go test ./...

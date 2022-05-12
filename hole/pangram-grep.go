@@ -62,6 +62,17 @@ func pangramGrep() (args []string, out string) {
 		pangrams = append(pangrams, clone)
 	}
 
+	// Add alphabet with one letter missing
+	for del := 'a'; del <= 'z'; del++ {
+		str := []byte{}
+		for c := 'a'; c <= 'z'; c++ {
+			if c != del {
+				str = append(str, byte(c))
+			}
+		}
+		pangrams = append(pangrams, shuffle(str))
+	}
+
 	// Uppercase random letters.
 	for _, pangram := range pangrams {
 		for j, letter := range pangram {
@@ -71,9 +82,9 @@ func pangramGrep() (args []string, out string) {
 		}
 	}
 
-	// Insert 0-3 random post-'z' characters
+	// Insert 2-5 random post-'z' characters
 	for i, pangram := range pangrams {
-		for times := rand.Intn(8) - 4; times > 0; times-- {
+		for times := rand.Intn(4) + 2; times > 0; times-- {
 			c := '{' + byte(rand.Intn(4))
 			pos := rand.Intn(len(pangram))
 
@@ -82,25 +93,6 @@ func pangramGrep() (args []string, out string) {
 			pangram[pos] = c
 			pangrams[i] = pangram
 		}
-	}
-
-	// Add alphabet with one letter missing
-	for del := 'a'; del <= 'z'; del++ {
-		str := []byte{}
-		for c := 'a'; c <= 'z'; c++ {
-			if c != del {
-				str = append(str, byte(c))
-				// Uppercase random letters
-				if rand.Intn(2) == 0 {
-					str[len(str)-1] -= 32
-				}
-				// Add random symbols
-				if rand.Intn(5) == 0 {
-					str = append(str, '!'+byte(rand.Intn(14)))
-				}
-			}
-		}
-		pangrams = append(pangrams, str)
 	}
 
 outer:

@@ -24,6 +24,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f3b3.svg       `# Bowling`                      \
     svg/1f3b8.svg       `# Guitar`                       \
     svg/1f3ba.svg       `# Trumpet`                      \
+    svg/1f3c3.svg       `# Person Running`               \
     svg/1f3c6.svg       `# Trophy`                       \
     svg/1f409.svg       `# Dragon`                       \
     svg/1f40b.svg       `# Whale`                        \
@@ -45,6 +46,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f4f4.svg       `# Mobile Phone Off`             \
     svg/1f511.svg       `# Key`                          \
     svg/1f51e.svg       `# No One Under Eighteen`        \
+    svg/1f520.svg       `# Input Latin Uppercase`        \
     svg/1f523.svg       `# Input Symbols`                \
     svg/1f549.svg       `# Om`                           \
     svg/1f596.svg       `# Vulcan Salute`                \

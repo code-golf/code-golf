@@ -148,11 +148,11 @@ class HoleWebDriver is WebDriver is export {
     }
 
     method loadFibonacci {
-        $.get: 'https://app:1443/fibonacci';
+        $.get: 'https://app/fibonacci';
     }
 
     method loadFizzBuzz {
-        $.get: 'https://app:1443/fizz-buzz';
+        $.get: 'https://app/fizz-buzz';
     }
 
     method restoreSolution {

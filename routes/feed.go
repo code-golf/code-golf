@@ -27,6 +27,9 @@ func init() {
 		sha, created, id string
 		hole             bool
 	}{
+		{"1c7c5fa", "2022-05-08 20:57:48", "jacobi-symbol", true},
+		{"a42a472", "2022-05-04 18:50:17", "collatz", true},
+		{"c3bda58", "2022-05-01 07:07:01", "hexdump", true},
 		{"8d5c78d", "2022-04-10 17:37:06", "time-distance", true},
 		{"69fd94c", "2022-03-26 18:07:19", "ascii-table", true},
 		{"8fb09fc", "2022-02-28 22:03:54", "lucky-numbers", true},

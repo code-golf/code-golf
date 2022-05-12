@@ -240,16 +240,16 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	}
 
 	// Current cheevo banner. TODO Generalise.
-	if args.Golfer != nil && !args.Golfer.Earned("pi-day") {
+	if args.Golfer != nil && !args.Golfer.Earned("may-the-4ᵗʰ-be-with-you") {
 		var (
 			now   = time.Now().UTC()
-			start = time.Date(2022, time.March, 14, 0, 0, 0, 0, time.UTC)
-			end   = time.Date(2022, time.March, 15, 0, 0, 0, 0, time.UTC)
+			start = time.Date(2022, time.May, 4, 0, 0, 0, 0, time.UTC)
+			end   = time.Date(2022, time.May, 5, 0, 0, 0, 0, time.UTC)
 		)
 
 		if now.Before(end) {
 			args.CheevoBanner = &CheevoBanner{
-				config.CheevoByID["pi-day"],
+				config.CheevoByID["may-the-4ᵗʰ-be-with-you"],
 				start.Before(now), start, end,
 			}
 		}
