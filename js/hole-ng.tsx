@@ -40,7 +40,7 @@ interface SubmitResponse {
 }
 
 let subRes: SubmitResponse | null = null;
-const readonlyAsides: {[key: string]: HTMLElement | undefined} = {};
+const readonlyOutputs: {[key: string]: HTMLElement | undefined} = {};
 
 // The savedInDB state is used to avoid saving solutions in localStorage when
 // those solutions match the solutions in the database. It's used to avoid
@@ -344,7 +344,7 @@ async function submit() {
 
     $('h2').innerText = data.Pass ? 'Pass 😀' : 'Fail ☹️';
 
-    for (const name in readonlyAsides) {
+    for (const name in readonlyOutputs) {
         updateReadonlyPanel(name);
     }
 
@@ -402,31 +402,29 @@ layout.resizeWithContainerAutomatically = true;
 
 function updateReadonlyPanel(name: string) {
     if (!subRes) return;
-    const aside = readonlyAsides[name];
-    if (!aside) return;
+    const output = readonlyOutputs[name];
+    if (!output) return;
     switch (name) {
     case 'err':
-        // Hide stderr if we're passing or have no stderr output.
-        aside.classList.toggle('hide', subRes.Pass || !subRes.Err);
-        aside.querySelector('div')!.innerHTML = subRes.Err.replace(/\n/g,'<br>');
+        output.innerHTML = subRes.Err.replace(/\n/g,'<br>');
         break;
     case 'out':
-        aside.querySelector('div')!.innerText = subRes.Out;
+        output.innerText = subRes.Out;
         break;
     case 'exp':
-        aside.querySelector('div')!.innerText = subRes.Exp;
+        output.innerText = subRes.Exp;
         break;
     case 'arg':
         // Hide arguments unless we have some.
-        aside.querySelector('div')!.replaceChildren(
+        output.replaceChildren(
             ...subRes.Argv.map(a => <span>{a}</span>),
         );
-        aside.classList.toggle('hide', !subRes.Argv.length);
+        output.classList.toggle('hide', !subRes.Argv.length);
         break;
     case 'diff':
         const diff = diffTable(hole, subRes.Exp, subRes.Out, subRes.Argv);
-        aside.querySelector('div')!.replaceChildren(diff);
-        aside.classList.toggle('hide', !diff);
+        output.replaceChildren(diff);
+        output.classList.toggle('hide', !diff);
     }
 }
 
@@ -435,12 +433,9 @@ for (const i of [0,1,2,3,4]) {
     const title = ['Expected', 'Output', 'Errors', 'Arguments', 'Diff'][i];
     layout.registerComponentFactoryFunction(name, container => {
         container.setTitle(title);
-        const aside: HTMLElement = (<aside id={name}>
-            <h3>{title}</h3>
-            <div></div>
-        </aside>);
-        container.element.append(aside);
-        readonlyAsides[name] = aside;
+        container.element.id = name;
+        container.element.classList.add('readonly-output');
+        readonlyOutputs[name] = container.element;
         updateReadonlyPanel(name);
     });
 }

@@ -6,12 +6,6 @@
 /* include hole-diff.css */
 /* include vendor/goldenlayout-base.css */
 
-aside {
-    display: flex;
-    grid-column: 1 / -1;
-    overflow: hidden;
-}
-
 pre {
     font-family: emoji, 'Source Code Pro', monospace;
     line-height: 1.2;
@@ -23,26 +17,17 @@ pre {
     font-family: emoji, 'Source Code Pro', monospace;
 }
 
-aside > div {
-    background: var(--background);
-    border: 1px solid var(--color);
-    border-left: 0;
+.readonly-output {
     flex: 1;
     font-family: emoji, 'Source Code Pro', monospace;
     font-variant-ligatures: none;
-    height: 8.75rem;
     line-height: 1;
-    overflow: auto;
     padding: .375rem;
+    overflow: auto;
 }
 
-aside > h3 {
-    color: var(--background);
-    background: var(--color);
-    line-height: 2rem;
-    padding: .5rem 0;
-    transform: rotate(.5turn);
-    writing-mode: vertical-rl;
+.readonly-output:empty::after {
+    content: "(Empty)";
 }
 
 canvas {
@@ -69,9 +54,9 @@ section header {
 
 .text-red { color: var(--red-text) }
 
-#err div, #exp div, #out div { white-space: pre }
+#err, #exp, #out { white-space: pre }
 
-#arg div {
+#arg {
     align-content: flex-start;
     align-items: flex-start;
     display: flex;
