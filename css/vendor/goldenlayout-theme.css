@@ -107,9 +107,6 @@
   -webkit-mask: url(./img/lm_close.svg) center / 9px 9px no-repeat;
   mask: url(./img/lm_close.svg) center / 9px 9px no-repeat;
 }
-.lm_maximised .lm_header {
-  background-color: var(--background);
-}
 .lm_maximised .lm_controls .lm_maximise {
   background: var(--color);
   -webkit-mask: url(./img/lm_minimize.svg) center / 9px 9px no-repeat;
