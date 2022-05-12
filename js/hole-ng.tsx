@@ -507,19 +507,19 @@ layout.registerComponentFactoryFunction('code', async container => {
         setState(getSolutionCode(lang, solution));
         e.preventDefault();
     };
-    const section: HTMLElement = (<section id="editor-section">
-        <header>
-            <div id="strokes">0 bytes, 0 chars</div>
-            <a class="hide" href id="restoreLink" onclick={restoreLinkOnClick}>Restore solution</a>
-        </header>
-        <div id="editor"></div>
-    </section>);
 
-    makeEditor(section.querySelector('#editor') as HTMLDivElement);
+    const header = (<header>
+        <div id="strokes">0 bytes, 0 chars</div>
+        <a class="hide" href id="restoreLink" onclick={restoreLinkOnClick}>Restore solution</a>
+    </header>) as HTMLElement;
+    const editor = <div id="editor"></div> as HTMLDivElement;
 
-    section.querySelector('header')!.append($<HTMLTemplateElement>('#template-run').content.cloneNode(true));
+    makeEditor(editor);
 
-    container.element.append(section);
+    header.append($<HTMLTemplateElement>('#template-run').content.cloneNode(true));
+
+    container.element.id = 'editor-section';
+    container.element.append(header, editor);
 
     await afterDOM();
 
@@ -557,6 +557,7 @@ layout.registerComponentFactoryFunction('scoreboard', async container => {
     container.setTitle('Scoreboard');
     const section = $<HTMLTemplateElement>('#template-scoreboard').content.cloneNode(true);
     container.element.append(section);
+    container.element.id = 'scoreboard-section';
     await afterDOM();
     populateScores();
     delinkRankingsView();

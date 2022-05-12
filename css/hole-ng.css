@@ -185,6 +185,11 @@ main > header nav {
     text-align: right;
 }
 
+#scoreboard-section {
+    /* Avoid scroll bars from tooltip overflow */
+    overflow-x: hidden;
+}
+
 #scores {
     width: 100%;
     height: 100%;
