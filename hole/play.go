@@ -15,7 +15,7 @@ import (
 	"unicode"
 )
 
-const timeout = 7 * time.Second
+const timeout = 5 * time.Second
 
 //go:embed answers
 var answers embed.FS
@@ -119,6 +119,8 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 		args, answer = turtle()
 	case "zodiac-signs":
 		args, answer = zodiacSigns()
+	case "zeckendorf-representation":
+		args, answer = zeckendorfRepresentation()
 	default:
 		// ¯\_(ツ)_/¯ cannot embed file answers/√2.txt: invalid name √2.txt
 		if holeID == "√2" {
@@ -256,7 +258,7 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 
 		if errors.Is(ctx.Err(), context.DeadlineExceeded) {
 			score.Timeout = true
-			stderr.WriteString("Killed for exceeding the 7s timeout.")
+			stderr.WriteString("Killed for exceeding the 5s timeout.")
 		} else {
 			stderr.WriteString(err.Error())
 			println(err.Error())

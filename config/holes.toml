@@ -354,7 +354,6 @@ preamble = '''
 
 [Collatz]
 category = 'Sequence'
-experiment = -1
 links = [
     { name = 'OEIS A006577', url = '//oeis.org/A006577' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Hailstone_sequence' },
@@ -755,20 +754,29 @@ preamble = '''
     inclusive, each on their own line.
 '''
 
-['Hexdump']
+[Hexdump]
 category = 'Transform'
-experiment = 644
-links = []
 preamble = '''
-Given a string, output the hexdump of the string as given by the xxd utility using the default settings, as described below.
+<p>
+    Given a string, output the hexdump of the string as given by the xxd
+    utility using the default settings, as described below.
 
-Divide up the input string into groups of 16 bytes (16 octets). For each group, print in order:
+<p>
+    Divide up the input string into groups of 16 bytes (16 octets). For each
+    group, print in order:
+
 <ul>
-    <li> The (hexadecimal, lowercase) index of the starting octet, padded with zeros to eight hexadecimal digits
-    <li> A single colon (<code>:</code>), followed by a single space.
-    <li> 8 space-separated pairs of octets, with each pair printed as 4 hexadecimal digits
-    <li> Spaces to pad to 51 bytes
-    <li> The original 16 bytes, except with newline replaced with full stop (<code>.</code>)
+    <li>
+        The (hexadecimal, lowercase) index of the starting octet, padded with
+        zeros to eight hexadecimal digits
+    <li>A single colon (<code>:</code>), followed by a single space.
+    <li>
+        8 space-separated pairs of octets, with each pair printed as 4
+        hexadecimal digits
+    <li>Spaces to pad to 51 bytes
+    <li>
+        The original 16 bytes, except with newline replaced with full stop
+        (<code>.</code>)
 </ul>
 '''
 
@@ -826,18 +834,23 @@ preamble = '''
 
 ['Jacobi Symbol']
 category = 'Mathematics'
-experiment = -1
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Jacobi_symbol' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Jacobi_symbol' },
 ]
 preamble = '''
+<p>For each argument <code>a n</code>, print the value of the Jacobi symbol <b>J(a, n)</b>.
+
 <p>
-    For each input pair (a,n) print the Jacobi symbol (a/n).
-<p>
-	For odd prime n, (a/n) defined as 0 for a=0 mod n, as 1 if a is a square mod n and -1 otherwise.<br>
-    For odd n=m*p, (a/n) is defined as (a/m)*(a/p).<br>
-    Note that calculating the symbol from the definition is not very efficient as it requires factorisation of n.
+    Both inputs are non-negative integers, and <b>n</b> is odd.
+    <br>
+    If <b>n</b> is prime, then <b>J(a, n)</b> is defined as <b>0</b> if <b>a=0 (mod n)</b>, as <b>1</b> if <b>a</b> is a square
+    modulo <b>n</b>, and <b>−1</b> otherwise.
+    <br>
+    If <b>n = x*y</b>, then <b>J(a, n)</b> is defined as <b>J(a, x)*J(a, y)</b>.
+    <br>
+    Note that calculating the symbol from the definition is not very efficient
+    as it requires factorisation of <b>n</b>.
 '''
 
 ['Kolakoski Constant']
@@ -1631,6 +1644,23 @@ preamble = '''
 </pre>
 
 <p>To encode a bit from the bitstream to a strip, determine the coordinates <b>(x, y)</b> of the current position in the bitmap with the origin <b>(0, 0)</b> at the top-left corner, invert the bit if <b>(x+y)%2 = 0</b>, and write the value to this position ("#" = 1, space = 0).
+'''
+
+['Zeckendorf Representation']
+category = 'Mathematics'
+experiment = 667
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Zeckendorf%27s_theorem' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Zeckendorf_number_representation' },
+]
+preamble = '''
+<p>
+Every natural number can be written uniquely as the sum of Fibonacci numbers in a way that avoids using consecutive Fibonacci numbers. For example, <b>10 = 8 + 2</b>, and <b>64 = 55 + 8 + 1</b>. This sum is called the Zeckendorf representation.
+</p>
+
+<p>
+Print the Zeckendorf representation for each input argument. Terms should be listed in decreasing order separated by ' + '. For example, input <b>10</b> should produce <b>8 + 2</b>.
+</p>
 '''
 
 [Quine]

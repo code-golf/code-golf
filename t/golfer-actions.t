@@ -30,7 +30,7 @@ sub follows {
 sub post($action, $golfer) {
     state $ua = HTTP::Tiny.new :!max-redirect;
 
-    $ua.post: "https://app:1443/golfers/$golfer/$action",
+    $ua.post: "https://app/golfers/$golfer/$action",
         headers => { cookie => "__Host-session=$session" };
 }
 

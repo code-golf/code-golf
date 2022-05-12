@@ -47,7 +47,7 @@ is-deeply export, {
 }, 'Third export has multiple cheevos & solutions';
 
 sub export {
-    my %res = $client.get: 'https://app:1443/golfer/export',
+    my %res = $client.get: 'https://app/golfer/export',
         headers => { cookie => "__Host-session=$session" };
 
     once {

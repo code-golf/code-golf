@@ -1,6 +1,6 @@
 use t;
 
-throws-like { $client.get: 'https://app:1443/golfer/settings' },
+throws-like { $client.get: 'https://app/golfer/settings' },
     Exception, message => /'403 Forbidden'/, '403 with no session';
 
 my $dbh = dbh;
@@ -48,7 +48,7 @@ sub settings { $dbh.execute(q:to/SQL/).row :hash }
 SQL
 
 sub post(%content) {
-    $client.post: 'https://app:1443/golfer/settings', :%content,
+    $client.post: 'https://app/golfer/settings', :%content,
         headers => { cookie => "__Host-session=$session" };
 }
 

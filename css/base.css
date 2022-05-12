@@ -288,8 +288,6 @@ thead th {
 .info    { background: var(--light-blue) }
 .success { background: var(--light-green) }
 
-.bold { font-weight: bold }
-
 .btn {
     border: solid 1px var(--color);
     color: var(--color);
@@ -347,8 +345,6 @@ thead th {
     height: 1rem;
     width: 1rem;
 }
-
-.center { text-align: center }
 
 .color:nth-of-type(6n+1), .red    { background: var(--red)    }
 .color:nth-of-type(6n+2), .orange { background: var(--orange) }

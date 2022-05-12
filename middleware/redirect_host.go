@@ -9,7 +9,7 @@ var host = "code.golf"
 
 func init() {
 	if _, e2e := os.LookupEnv("E2E"); e2e {
-		host = "app:1443"
+		host = "app"
 	} else if _, dev := os.LookupEnv("DEV"); dev {
 		host = "localhost"
 	}

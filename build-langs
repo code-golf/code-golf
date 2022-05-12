@@ -13,8 +13,10 @@ if my $unknown = @langs ∖ %langs {
     exit 1;
 }
 
-run «docker buildx build --pull --push
-        -f docker/lang-base.Dockerfile -t codegolf/lang-base .»;
+# Build (and maybe push) lang-base.
+my @args = <--pull -f docker/lang-base.Dockerfile -t codegolf/lang-base>;
+@args.push: '--push' unless $no-push;
+run <docker buildx build>, |@args, '.';
 
 for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
     my $id  = id($name);

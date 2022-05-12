@@ -24,7 +24,7 @@ my $dbh = dbh;
 createUser($dbh, 1);
 my $session = createSession($dbh, 1);
 
-$client.get: 'https://app:1443/about',
+$client.get: 'https://app/about',
     headers => { cookie => "__Host-session=$session" };
 
 is $dbh.execute('SELECT ARRAY(SELECT trophy FROM trophies)').row, '{rtfm}',
@@ -57,6 +57,15 @@ for <
         "SELECT earned FROM save_solution(2, ?, 'ab', ?, ?, 1)",
         $lang eq 'assembly' ?? Nil !! 2, $hole, $lang,
     ).row, $cheevos, "$hole/$lang earns $cheevos";
+}
+
+for <brainfuck d hexagony javascript nim swift sql zig> {
+    my $cheevos = $_ eq 'zig' ?? '{pangramglot}' !! '{}';
+
+    is $dbh.execute(
+        "SELECT earned FROM save_solution(2, 2, 'ab', 'pangram-grep', ?, 1)",
+        $_,
+    ).row, $cheevos, "pangram-grep/$_ earns $cheevos";
 }
 
 is $dbh.execute(
