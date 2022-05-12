@@ -703,12 +703,11 @@ example = '''
 2,$ b
 
 h
-s/.*/1/
+s/.*/0/
 :loop
 p
-y/123456789/23456789X/
-/X/ !b loop
-s/X/10/
+y/012345678/123456789/
+/9/ !b loop
 G
 
 # Accessing arguments
