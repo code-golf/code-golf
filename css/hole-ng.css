@@ -192,6 +192,18 @@ main > header nav {
 #scores .bytes td:nth-child(4),
 #scores .chars td:nth-child(3) { color: var(--grey) }
 
+#scores [data-tooltip]:after {
+    /* Override tooltip transform to avoid right-overflow */
+    transform: translate(-100%, -0.25rem);
+    left: 110%;
+    /* Override tooltip transform to avoid top-overflow */
+    bottom: 100%;
+}
+
+#scores [data-tooltip]:before {
+    bottom: calc(100% - 0.5rem);
+}
+
 /* Remove left and right borders from base.css */
 #scores tbody td {
     border-left: 0;
