@@ -25,8 +25,11 @@
 
 <main>
     <header>
-        <h1>
-            {{ .Data.Hole.Name }}
+        <div>
+            <div id="hole-lang">
+                <h1> {{ .Data.Hole.Name }} </h1>
+                <details open><summary> Language </summary></details>
+            </div>
         {{ with .Data.Authors }}
             <p id=authors>by
             {{- range $i, $author := . -}}
@@ -37,7 +40,7 @@
                 </a>
             {{- end -}}
         {{ end }}
-        </h1>
+        </div>
     {{ with .Data.Hole.Links }}
         <nav>
         {{ range $i, $link := . }}

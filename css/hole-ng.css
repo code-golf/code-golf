@@ -156,6 +156,21 @@ main > header nav {
     gap: .5rem;
 }
 
+#hole-lang {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+#hole-lang details {
+    cursor: pointer;
+    user-select: none;
+}
+
+#hole-lang summary {
+    line-height: 1.7rem;
+}
+
 #rankingsView {
     background: var(--color);
     border: 1px solid var(--color);

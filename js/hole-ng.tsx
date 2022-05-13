@@ -60,6 +60,8 @@ let editor: EditorView | null = null;
     // Kick 'em to Python if we don't know the chosen language, or if there is no given language.
     lang = hashLang && langs[hashLang] ? hashLang : 'python';
 
+    $('#hole-lang summary').innerHTML = langs[lang].name;
+
     // Assembly only has bytes.
     if (lang == 'assembly')
         setSolution(0);
@@ -87,6 +89,13 @@ for (const alert of $$<HTMLDivElement>('.alert')) {
         });
     });
 }
+
+// Handle showing/hiding lang picker
+// can't be done in CSS because the picker is one parent up
+const langToggle = $<HTMLDetailsElement>('#hole-lang details');
+langToggle.addEventListener('toggle', () => {
+    $('#picker').classList.toggle('hide', !langToggle.open);
+});
 
 $('dialog [name=text]').addEventListener('input', (e: Event) => {
     const target = e.target as HTMLInputElement;
