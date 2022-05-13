@@ -23,6 +23,10 @@ pre {
     font-family: emoji, 'Source Code Pro', monospace;
 }
 
+#details-content {
+    padding: .375rem;
+}
+
 .readonly-output {
     flex: 1;
     font-family: emoji, 'Source Code Pro', monospace;

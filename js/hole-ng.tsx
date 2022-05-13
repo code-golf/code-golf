@@ -567,6 +567,7 @@ layout.registerComponentFactoryFunction('details', container => {
     container.setTitle('Details');
     const details = $<HTMLTemplateElement>('#template-details').content.cloneNode(true) as HTMLDetailsElement;
     container.element.append(details);
+    container.element.id = 'details-content';
 });
 
 function plainComponent(componentType: string): ComponentItemConfig {
