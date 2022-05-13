@@ -76,12 +76,12 @@ let editor: EditorView | null = null;
 onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter' ? submit() : undefined;
 
 // Handle showing/hiding alerts
-for (const alert of $$<HTMLDivElement>('.alert')) {
-    const closeBtn = alert.querySelector('.main_close') as HTMLDivElement | null;
+for (const alert of $$('.alert')) {
+    const closeBtn = alert.querySelector('.main_close');
     if (!closeBtn) continue;
     closeBtn.addEventListener('click', () => {
         const child = (alert.querySelector('svg') as any).cloneNode(true);
-        $<HTMLDivElement>('#alert-pool').appendChild(child);
+        $('#alert-pool').appendChild(child);
         alert.classList.add('hide');
         child.addEventListener('click', () => {
             child.parentNode.removeChild(child);
@@ -425,7 +425,7 @@ function updateRestoreLinkVisibility() {
  *  https://golden-layout.github.io/golden-layout
  * golden-layout.com is for the old GL.
  */
-const layout = new GoldenLayout($<HTMLDivElement>('#golden-container'));
+const layout = new GoldenLayout($('#golden-container'));
 layout.resizeWithContainerAutomatically = true;
 
 function updateReadonlyPanel(name: string) {
