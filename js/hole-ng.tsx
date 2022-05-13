@@ -1,5 +1,5 @@
 import { ASMStateField }                       from '@defasm/codemirror';
-import { ComponentItem, ComponentItemConfig, ContentItem, GoldenLayout } from 'golden-layout';
+import { ComponentItem, ComponentItemConfig, ContentItem, GoldenLayout, RowOrColumn, Stack } from 'golden-layout';
 import LZString                                from 'lz-string';
 import { EditorState, EditorView, extensions } from './_codemirror.js';
 import                                              './_copy-as-json';
@@ -624,8 +624,136 @@ layout.loadLayout({
 
 addPoolItem('details', 'Details');
 
-function addItemFromPool(componentType: string) {
-    layout.newItem(plainComponent(componentType));
+/**
+ * Each entry is [columnIndex, rowIndex, stackIndex] in the default layout,
+ * but they could be [index, index, index] in general.
+ */
+const autoInsertConfig = {
+    details: [0,0,0],
+    code: [0,0,1],
+    scoreboard: [0,1,0],
+    arg: [1,0,0],
+    exp: [1,0,1],
+    out: [1,1,0],
+    err: [1,1,1],
+    diff: [1,1,2],
+} as {[key: string]: number[]};
+
+/**
+ * Example procedure:
+ *
+ * Adding a `code` component first looks for
+ * other [0,0,*], namely `details`. If there is a `details` component, `code` gets
+ * added after it in the stack since [0,0,1] > [0,0,0].
+ *
+ * If there is no `details` component, then adding `code` looks for other
+ * `[0,*,*]`. The only remaining is scoreboard = [0,1,0], so `code` gets added
+ * before it in the row since [0,0,...] < [0,1,...]
+ *
+ * If there is no `scoreboard` component, then adding `code` looks for other
+ * `[*,*,*]`, and it uses the first one it finds. Suppose it is arg=[1,0,0].
+ * Then adding `code` gets added before `arg` in the column since [0,...] < [1,...].
+ *
+ * This ended up much more complicated than I expected. :(
+ */
+function addItemFromPool(componentName: string) {
+    (window as any).layout = layout;
+    const newConfig = plainComponent(componentName);
+    if (!layout.rootItem) {
+        // Layout is empty: add to root
+        layout.addItem(newConfig);
+        return;
+    }
+
+    // Find the item which matches the most in the autoInsertConfig
+    const goalPath = autoInsertConfig[componentName];
+    let bestMatch = -1;
+    let bestMatchComponent = null;
+    let bestRelativePosition = 0;
+    for (const component of allComponents(layout.rootItem)) {
+        const componentPath = autoInsertConfig[component.componentType as string];
+        const match = tupleMatch(componentPath, goalPath);
+        const relativePosition = goalPath[match] - componentPath[match];
+        if (
+            match > bestMatch ||
+            match === bestMatch && Math.abs(relativePosition) < Math.abs(bestRelativePosition)
+        ) {
+            bestMatch = match;
+            bestMatchComponent = component;
+            bestRelativePosition = relativePosition;
+        }
+    }
+
+    if (!bestMatchComponent) {
+        // Should be unreachable, but just in case do the simplest insertion
+        layout.addItem(newConfig);
+        return;
+    }
+
+    // Go up to the parent in common with the bestMatchComponent
+    let prevParent: ContentItem | null | undefined = null;
+    let parent: ContentItem | null | undefined = bestMatchComponent;
+    for (let i=goalPath.length - bestMatch; i>0; i--) {
+        prevParent = parent;
+        parent = parent?.parent;
+    }
+
+    if (
+        parent &&
+        !parent.isGround
+        // Restrict to prefer sticking in the same row/column with the best
+        // match (and nothing else) instead of adding to a big column
+        && (parent.isStack || [...allComponents(parent)].every(
+            comp => bestMatch === tupleMatch(
+                autoInsertConfig[comp.componentType as string],
+                goalPath,
+            ),
+        ))
+    ) {
+        // TODO (GL): for some reason this index is not being respected
+        const index = (parent.contentItems.indexOf(prevParent!) ?? 0) + (bestRelativePosition > 0 ? 1: 0);
+        (parent as RowOrColumn | Stack).addItem(newConfig, index);
+    }
+    else {
+        // Not deep enough, so create a new row/column wrapping everything
+        // Every component is in a stack, so there is never need to make a stack
+        const oldParent = prevParent && !prevParent.isGround
+            ? prevParent
+            : layout.rootItem;
+        const newParent = (layout as any).createContentItem({
+            type:
+                oldParent.isRow ? 'column'
+                    : oldParent.isColumn ? 'row'
+                        : bestMatch === 1 ? 'row' : 'column',
+            content: [],
+        });
+        const oldParentParent = oldParent.parent!;
+        // removeChild(_, true): don't remove the node entirely, just remove
+        // it from the current tree before re-inserting
+        oldParentParent.removeChild(oldParent, true);
+        // TODO (GL): use an index here; it wasn't respected above though
+        oldParentParent.addChild(newParent);
+        newParent.addChild(oldParent);
+        newParent.addItem(newConfig);
+    }
+}
+
+function tupleMatch(a: number[], b: number[]) {
+    let i=0;
+    while (a[i] === b[i])
+        i++;
+    return i;
+}
+
+function* allComponents(item: ContentItem): Generator<ComponentItem> {
+    if (item.isComponent) {
+        yield item as ComponentItem;
+    }
+    for (const child of item.contentItems) {
+        for (const component of allComponents(child)) {
+            yield component;
+        }
+    }
 }
 
 function addPoolItem(componentType: string, title: string) {
