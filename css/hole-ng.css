@@ -253,6 +253,7 @@ main > header nav {
     gap: 1rem;
     grid-template-columns: 1fr auto;
     padding: 0.5rem;
+    grid-column: 3;
 }
 
 #strokes { font-weight: bold }
@@ -323,9 +324,12 @@ main {
 #picker-status-row {
     grid-row: 4 / 5;
     display: grid;
-    gap: 1rem;
     grid-template-columns: max-content max-content 1fr;
     align-items: center;
+}
+
+#picker-status-row > *:not(:last-child) {
+    margin-right: 1rem;
 }
 
 #info-container {
