@@ -275,7 +275,8 @@ thead { user-select: none }
 }
 
 #golden-container {
-    width: 100%;
+    grid-row: 5 / 6;
+    width: 100%; 
     position: relative;
     /* Prevent overflow from maximized panels */
     overflow: hidden;
@@ -287,12 +288,20 @@ thead { user-select: none }
 }
 
 main {
-    grid-template-rows: repeat(3, max-content) 1fr;
-    /* Free a little more room than the default 1rem gap */
-    gap: 0.5rem;
+    grid-template-rows: repeat(4, max-content) 1fr;
+    /* Remove gap so it could be margin instead: avoids excessive gap */
+    gap: 0;
+}
+
+#picker,
+#info-container .info,
+#picker-status-row > *:not(:empty),
+#golden-container {
+    margin-top: 0.5rem;
 }
 
 #picker-status-row {
+    grid-row: 4 / 5;
     display: grid;
     gap: 1rem;
     grid-template-columns: max-content max-content 1fr;
