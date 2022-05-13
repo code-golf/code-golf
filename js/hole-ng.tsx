@@ -414,7 +414,7 @@ function tooltip(row: any, scoring: 'Bytes' | 'Chars') {
 
 function updateRestoreLinkVisibility() {
     const serverCode = getSolutionCode(lang, solution);
-    $('#restoreLink').classList.toggle('hide',
+    $('#restoreLink')?.classList.toggle('hide',
         !serverCode || editor?.state.doc.toString() == serverCode);
 }
 
@@ -483,10 +483,12 @@ function makeEditor(parent: HTMLDivElement) {
                 scorings.char = charLen(code);
             }
 
-            $('#strokes').innerText = scoringKeys
-                .filter(s => s in scorings)
-                .map(s => `${comma(scorings[s])} ${s}${scorings[s] != 1 ? 's' : ''}`)
-                .join(', ');
+            const strokes = $('#strokes');
+            if (strokes)
+                strokes.innerText = scoringKeys
+                    .filter(s => s in scorings)
+                    .map(s => `${comma(scorings[s])} ${s}${scorings[s] != 1 ? 's' : ''}`)
+                    .join(', ');
 
             // Avoid future conflicts by only storing code locally that's
             // different from the server's copy.
