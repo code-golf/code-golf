@@ -528,7 +528,7 @@ layout.registerComponentFactoryFunction('code', async container => {
     header.append($<HTMLTemplateElement>('#template-run').content.cloneNode(true));
 
     container.element.id = 'editor-section';
-    container.element.append(header, editor);
+    container.element.append(editor, header);
 
     await afterDOM();
 

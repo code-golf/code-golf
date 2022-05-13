@@ -60,6 +60,11 @@ section header {
     padding-left: .5rem;
 }
 
+#editor-section header {
+    margin-top: 1px;
+    margin-bottom: 2px;
+}
+
 .cm-editor { height: 100% }
 
 .text-red { color: var(--red-text) }
@@ -119,8 +124,8 @@ section header {
 }
 
 #editor {
-    /* Button = 1rem (contents) + 2*0.5 rem (padding) + 2px (border) + 1px (idk) */
-    height: calc(100% - (2rem + 3px));
+    /* Button = 1rem (contents) + 2*0.5 rem (padding) + 2px (border) + 4px (margin) */
+    height: calc(100% - (2rem + 6px));
     grid-row: span 2;
     overflow-x: hidden;
 }
