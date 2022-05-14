@@ -210,13 +210,27 @@ main > header nav {
 }
 
 #scoreboard-section {
+    /* Grid needed in case the rows total height is shorter than the area */
+    display: grid;
+    grid-template-rows: 1fr max-content;
+}
+
+#scores-wrapper {
+    /* height: calc(100% - 2.2rem - 31px); */
+    overflow-y: auto;
     /* Avoid scroll bars from tooltip overflow */
     overflow-x: hidden;
 }
 
+#scores-wrapper header {
+    position: sticky;
+    top: 0;
+    background: var(--background);
+    z-index: 5;
+}
+
 #scores {
     width: 100%;
-    height: 100%;
 }
 
 /* Shrink the padding compared to a normal table */

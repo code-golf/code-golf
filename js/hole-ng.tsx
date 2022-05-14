@@ -70,6 +70,7 @@ let editor: EditorView | null = null;
 
     history.replaceState(null, '', '#' + lang);
 
+    refreshScores();
     setCodeForLangAndSolution();
 })();
 
@@ -184,8 +185,7 @@ async function refreshScores() {
     $('#deleteBtn')?.classList.toggle('hide',
         experimental || (!dbBytes && !dbChars));
 
-    const scoreboard = $('#scoreboard');
-    if (scoreboard) await populateScores();
+    if ($('#scoreboard-section')) await populateScores();
 }
 
 async function populateScores() {
@@ -193,14 +193,14 @@ async function populateScores() {
     const scoringID = scorings[scoring].toLowerCase();
     const path      = `/${hole}/${lang}/${scoringID}`;
     const view      = $('#rankingsView a:not([href])').innerText.toLowerCase();
-    const res       = await fetch(`/api/mini-rankings${path}/${view}`);
+    const res       = await fetch(`/api/mini-rankings${path}/${view}?ng=1`);
     const rows      = res.ok ? await res.json() : [];
 
     $<HTMLAnchorElement>('#allLink').href = '/rankings/holes' + path;
 
     $('#scores').replaceChildren(<tbody class={scoringID}>{
         // Rows.
-        rows.map((r: any) => <tr class={r.me ? 'me' : ''}>
+        rows.length ? rows.map((r: any) => <tr class={r.me ? 'me' : ''}>
             <td>{r.rank}<sup>{ord(r.rank)}</sup></td>
             <td>
                 <a href={`/golfers/${r.golfer.name}`}>
@@ -210,12 +210,15 @@ async function populateScores() {
             </td>
             <td data-tooltip={tooltip(r, 'Bytes')}>{comma(r.bytes)}</td>
             <td data-tooltip={tooltip(r, 'Chars')}>{comma(r.chars)}</td>
-        </tr>)
-    }{
-        // Padding.
-        [...Array(7 - rows.length).keys()].map(() =>
-            <tr><td colspan="4">&nbsp;</td></tr>)
+        </tr>): <tr><td colspan="4">(Empty)</td></tr>
     }</tbody>);
+
+    if (view === 'me') {
+        $('.me')?.scrollIntoView({block: 'center'});
+    }
+    else {
+        $('#scores-wrapper').scrollTop = 0;
+    }
 
     $$<HTMLAnchorElement>('#scoringTabs a').forEach((tab, i) => {
         if (tab.innerText == scorings[scoring]) {
