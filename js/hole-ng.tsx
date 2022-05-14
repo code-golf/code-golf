@@ -521,15 +521,9 @@ function makeEditor(parent: HTMLDivElement) {
 layout.registerComponentFactoryFunction('code', async container => {
     container.setTitle('Code');
 
-    const restoreLinkOnClick = (e: MouseEvent) => {
-        // TODO (GL) check
-        setState(getSolutionCode(lang, solution));
-        e.preventDefault();
-    };
-
     const header = (<header>
         <div id="strokes">0 bytes, 0 chars</div>
-        <a class="hide" href id="restoreLink" onclick={restoreLinkOnClick}>Restore solution</a>
+        <a class="hide" href="/" id="restoreLink">Restore solution</a>
     </header>) as HTMLElement;
     const editor = <div id="editor"></div> as HTMLDivElement;
 
@@ -541,6 +535,11 @@ layout.registerComponentFactoryFunction('code', async container => {
     container.element.append(editor, header);
 
     await afterDOM();
+
+    $('#restoreLink').onclick = (e: MouseEvent) => {
+        setState(getSolutionCode(lang, solution));
+        e.preventDefault();
+    };
 
     // Wire submit to clicking a button and a keyboard shortcut.
     $('#runBtn').onclick = submit;
