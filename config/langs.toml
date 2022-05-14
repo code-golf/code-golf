@@ -716,7 +716,7 @@ G
 
 [SQL]
 size    = '1.09 MiB'
-version = '3.38.4'
+version = '3.38.5'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
