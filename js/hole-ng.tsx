@@ -29,6 +29,8 @@ let latestSubmissionID = 0;
 let solution = scorings.indexOf(localStorage.getItem('solution') ?? 'Bytes') as 0 | 1;
 let scoring  = scorings.indexOf(localStorage.getItem('scoring')  ?? 'Bytes') as 0 | 1;
 
+let hideDeleteBtn: boolean = false;
+
 interface SubmitResponse {
     Pass: boolean,
     Out: string,
@@ -185,8 +187,8 @@ async function refreshScores() {
         $('#solutionPicker').classList.add('hide');
 
     // Hide the delete button for exp holes or if we have no solutions.
-    $('#deleteBtn')?.classList.toggle('hide',
-        experimental || (!dbBytes && !dbChars));
+    hideDeleteBtn = experimental || (!dbBytes && !dbChars);
+    $('#deleteBtn')?.classList.toggle('hide', hideDeleteBtn);
 
     if ($('#scoreboard-section')) await populateScores();
 }
@@ -543,13 +545,15 @@ layout.registerComponentFactoryFunction('code', async container => {
     // Wire submit to clicking a button and a keyboard shortcut.
     $('#runBtn').onclick = submit;
 
-    $('#deleteBtn')?.addEventListener('click', () => {
+    const deleteBtn = $('#deleteBtn')!;
+    deleteBtn.addEventListener('click', () => {
         $('dialog b').innerText = langs[lang].name;
         $<HTMLInputElement>('dialog [name=lang]').value = lang;
         $<HTMLInputElement>('dialog [name=text]').value = '';
         // Dialog typings are not available yet
         $<any>('dialog').showModal();
     });
+    deleteBtn.classList.toggle('hide', hideDeleteBtn);
 
     setCodeForLangAndSolution();
 });
