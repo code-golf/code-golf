@@ -1,5 +1,8 @@
 import { ASMStateField }                       from '@defasm/codemirror';
-import { ComponentItem, ComponentItemConfig, ContentItem, GoldenLayout, RowOrColumn, Stack } from 'golden-layout';
+import {
+    ComponentItem, ComponentItemConfig, ContentItem,
+    GoldenLayout, RowOrColumn, Stack,
+} from 'golden-layout';
 import LZString                                from 'lz-string';
 import { EditorState, EditorView, extensions } from './_codemirror.js';
 import                                              './_copy-as-json';
@@ -569,8 +572,9 @@ function delinkRankingsView() {
 
 layout.registerComponentFactoryFunction('scoreboard', async container => {
     container.setTitle('Scoreboard');
-    const section = $<HTMLTemplateElement>('#template-scoreboard').content.cloneNode(true);
-    container.element.append(section);
+    container.element.append(
+        $<HTMLTemplateElement>('#template-scoreboard').content.cloneNode(true),
+    );
     container.element.id = 'scoreboard-section';
     await afterDOM();
     populateScores();
@@ -579,8 +583,9 @@ layout.registerComponentFactoryFunction('scoreboard', async container => {
 
 layout.registerComponentFactoryFunction('details', container => {
     container.setTitle('Details');
-    const details = $<HTMLTemplateElement>('#template-details').content.cloneNode(true) as HTMLDetailsElement;
-    container.element.append(details);
+    container.element.append(
+        $<HTMLTemplateElement>('#template-details').content.cloneNode(true) as HTMLDetailsElement,
+    );
     container.element.id = 'details-content';
 });
 
@@ -805,6 +810,7 @@ layout.addEventListener('stateChanged', () => {
     document.addEventListener('mouseup', removeDragProxies);
     document.addEventListener('touchend', removeDragProxies);
 });
+
 function removeDragProxies() {
     $$('.lm_dragProxy').forEach(e => e.remove());
     document.removeEventListener('mouseup', removeDragProxies);

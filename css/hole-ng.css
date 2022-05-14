@@ -56,8 +56,7 @@ section header {
     display: flex;
     height: 2.2rem;
     justify-content: space-between;
-    padding-right: .5rem;
-    padding-left: .5rem;
+    padding: 0 .5rem;
 }
 
 #editor-section header {

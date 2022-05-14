@@ -183,7 +183,7 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 			// Impossible case?
 			entries = entries[length-limit:]
 		} else {
-			entries = entries[me-limit/2: me+(limit+1)/2]
+			entries = entries[me-limit/2 : me+(limit+1)/2]
 		}
 	}
 
