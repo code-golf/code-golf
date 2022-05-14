@@ -153,6 +153,11 @@
     <div class="hide info prolog">
         <b>prolog_flag(argv, Args)</b> to access the arguments.
     </div>
+    <div class="hide info sed">
+        Arguments are available via STDIN, each argument is seperated with a null byte.
+        The code is run with <b>-E</b> and <b>-z</b>.
+        Output replaces null bytes with newlines.
+    </div>
     <div class="hide info sql">
         <b>SELECT arg FROM argv</b> to access the arguments, only the first
         column of the first result set will be printed, NULL values will be
