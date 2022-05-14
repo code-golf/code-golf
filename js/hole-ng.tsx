@@ -787,3 +787,23 @@ layout.addEventListener('itemCreated', e => {
         }
     }
 });
+
+
+/**
+ * There's a bug with the dragging from layout.newDragSource where dragging up
+ * from the tab pool causes a .lm_dragProxy to appear, but it doesn't get
+ * removed due to an error "Ground node can only have a single child." Rather
+ * than fix the bug, just remove all .lm_dragProxy elements after mouseups that
+ * follow a state change.
+ *
+ * The error message still gets logged in console
+ */
+layout.addEventListener('stateChanged', () => {
+    document.addEventListener('mouseup', removeDragProxies);
+    document.addEventListener('touchend', removeDragProxies);
+});
+function removeDragProxies() {
+    $$('.lm_dragProxy').forEach(e => e.remove());
+    document.removeEventListener('mouseup', removeDragProxies);
+    document.removeEventListener('touchend', removeDragProxies);
+}
