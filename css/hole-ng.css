@@ -7,6 +7,11 @@
 /* include vendor/goldenlayout-base.css */
 /* include vendor/goldenlayout-theme.css */
 
+html {
+    /* Prevent lm_dragProxy from widening view on mobile */
+    overflow-x: hidden;
+}
+
 /* Body background --light-grey to allow code box etc contrast as --background */
 body {
     background: var(--light-grey);
@@ -156,8 +161,9 @@ main > header a { white-space: nowrap }
 
 main > header nav {
     display: flex;
-    flex-wrap: wrap;
     gap: .5rem;
+    max-width: 100%;
+    overflow-x: auto;
 }
 
 #hole-lang {
@@ -336,13 +342,18 @@ main {
 
 #picker-status-row {
     grid-row: 4 / 5;
-    display: grid;
-    grid-template-columns: max-content max-content 1fr;
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
 }
 
 #picker-status-row > *:not(:last-child) {
     margin-right: 1rem;
+}
+
+#status {
+    flex-grow: 1;
+    flex-basis: 20rem;
 }
 
 #info-container {

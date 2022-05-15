@@ -161,13 +161,13 @@
 
 <template id=template-scoreboard>
     <div id=scores-wrapper>
-        <header class=wide>
+        <header>
             <nav class=tabs id=scoringTabs><a>Bytes</a><a href>Chars</a></nav>
             <a href id=allLink>All</a>
         </header>
-        <table class="nowrap-second wide" id=scores><tr><td></table>
+        <table class="nowrap-second" id=scores><tr><td></table>
     </div>
-    <nav class="tabs wide" id=rankingsView>
+    <nav class=tabs id=rankingsView>
         <a {{ if ne .Data.RankingsView "top" }} href {{ end }}>
             {{ svg "trophy-fill" }} Top
         </a>

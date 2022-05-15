@@ -197,7 +197,7 @@ async function populateScores() {
     // Populate the rankings table.
     const scoringID = scorings[scoring].toLowerCase();
     const path      = `/${hole}/${lang}/${scoringID}`;
-    const view      = $('#rankingsView a:not([href])').innerText.toLowerCase();
+    const view      = $('#rankingsView a:not([href])').innerText.trim().toLowerCase();
     const res       = await fetch(`/api/mini-rankings${path}/${view}?ng=1`);
     const rows      = res.ok ? await res.json() : [];
 
