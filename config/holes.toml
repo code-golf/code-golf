@@ -1019,14 +1019,13 @@ Delete every 7th element and advance:
 ['Lucky Tickets']
 category = 'Mathematics'
 links = [
-    { name = 'OEIS A163269', url = '//oeis.org/A163269' },
-    { name = 'OEIS A077042', url = '//oeis.org/A077042' },
+    { name = 'OEIS', url = '//oeis.org/A174061' },
 ]
 preamble = '''
 <p>
     In Russia, bus ticket numbers consist of 6 decimal digits. It is considered lucky when the sum of the first three digits equals the sum of the last three digits. The concept of lucky tickets can be extended to ticket numbering systems with even numbers of digits and arbitrary bases.
 <p>
-    Each argument describes a ticket numbering system and consists of two numbers separated by a space. The first is the even number of digits. The second is the base of the numbering system (2-16). For each argument, output the total number of lucky tickets for the numbering system on a separate line.
+    Each argument describes a ticket numbering system and consists of two numbers separated by a space. The first is the even number of digits <b>2 ≤ d ≤ 14</b>. The second is the base of the numbering system <b>2 ≤ b ≤ 16</b>. For each argument, output the total number of lucky tickets for the numbering system on a separate line.
 '''
 
 [Mandelbrot]
