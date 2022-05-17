@@ -265,7 +265,7 @@ void main(string[] argv) {
 '''
 
 [Elixir]
-size    = '277 MiB'
+size    = '166 MiB'
 version = '1.13.4'
 website = 'https://elixir-lang.org'
 example = '''
