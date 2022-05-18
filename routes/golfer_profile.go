@@ -108,17 +108,13 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	rows, err = db.Query(
-		`WITH summed AS (
-		    SELECT user_id, scoring, lang, SUM(points_for_lang)
+		`WITH ranks AS (
+		    SELECT user_id, scoring, lang,
+		           RANK() OVER (PARTITION BY scoring, lang
+		                            ORDER BY SUM(points_for_lang) DESC)
 		      FROM rankings
 		  GROUP BY user_id, scoring, lang
-		), ranks AS (
-		    SELECT user_id, scoring, lang,
-		           RANK() OVER (PARTITION BY scoring, lang ORDER BY sum DESC)
-		      FROM summed
-		) SELECT lang, scoring, rank
-		    FROM ranks
-		   WHERE rank < 4 AND user_id = $1`,
+		) SELECT lang, scoring, rank FROM ranks WHERE user_id = $1`,
 		golfer.ID,
 	)
 	if err != nil {

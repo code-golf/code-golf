@@ -62,31 +62,26 @@
     {{ end }}
 
     {{ with len .Data.Trophies }}
-        <section id=trophies>
-            <h2>{{ . }} Language Troph{{ if gt . 1 }}ies{{ else }}y{{ end }}</h2>
+        <section class=icons>
+            <h2>{{ . }} / {{ len $.Data.Langs }} Languages</h2>
     {{ range $.Data.Langs }}
         {{ $trophy := index $.Data.Trophies .ID }}
         {{ if $trophy }}
             {{ $bytes := index $trophy "bytes" }}
             {{ $chars := index $trophy "chars" }}
 
-            {{ $rank    := $bytes }}
-            {{ $scoring := "bytes" }}
-            {{ $title   := "" }}
-
-            {{ if eq $bytes $chars }}
-                {{ $title = "Bytes & Chars" }}
-            {{ else if and $bytes (or (not $chars) (lt $bytes $chars)) }}
-                {{ $title = "Bytes" }}
-            {{ else }}
-                {{ $rank    = $chars  }}
-                {{ $scoring = "chars" }}
-                {{ $title   = "Chars" }}
+            {{/* Lowest non-zero rank */}}
+            {{ $rank := $bytes }}
+            {{ if and $chars (or (not $bytes) (lt $chars $bytes)) }}
+                {{ $rank = $chars }}
             {{ end }}
 
             <a class="rank-{{ $rank }}"
-                href="/rankings/holes/all/{{ .ID }}/{{ $scoring }}"
-               title="{{ $rank }}{{ ord $rank }} in {{ .Name }} in {{ $title }}">
+                href="/rankings/holes/all/{{ .ID }}/bytes"
+               title="{{ .Name }}: {{/* */}}
+                {{- with $bytes }}{{ . }}{{ ord . }} in Bytes{{ end }}
+                {{- if and $bytes $chars }}, {{ end }}
+                {{- with $chars }}{{ . }}{{ ord . }} in Chars{{ end }}.">
                 {{ svg .ID }}
             </a>
         {{ end }}
@@ -94,7 +89,7 @@
         </section>
     {{ end }}
 
-        <section id=cheevos>
+        <section class=icons>
             <h2>
                 {{ len .GolferInfo.Cheevos }} / {{ .GolferInfo.CheevosTotal }}
                 Achievements
