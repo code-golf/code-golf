@@ -33,9 +33,9 @@ preamble = '''
 <blockquote>On the First day of Christmas
 My true love sent to me
 A Partridge in a Pear Tree.
-
+<br><br>
 …
-
+<br><br>
 On the Twelfth day of Christmas
 My true love sent to me
 Twelve Drummers Drumming,
@@ -64,15 +64,15 @@ preamble = '''
 
 <blockquote>99 bottles of beer on the wall, 99 bottles of beer.
 Take one down and pass it around, 98 bottles of beer on the wall.
-
+<br><br>
 98 bottles of beer on the wall, 98 bottles of beer.
 Take one down and pass it around, 97 bottles of beer on the wall.
-
+<br><br>
 …
-
+<br><br>
 1 bottle of beer on the wall, 1 bottle of beer.
 Take one down and pass it around, no more bottles of beer on the wall.
-
+<br><br>
 No more bottles of beer on the wall, no more bottles of beer.
 Go to the store and buy some more, 99 bottles of beer on the wall.
 </blockquote>
@@ -589,8 +589,8 @@ links = [
 preamble = '''
 <p>
     An emirp (prime spelled backwards) is a prime number that results in a
-    different prime when its decimal digits are reversed. For example both
-    <b>13</b> and <b>31</b> are emirps.
+    <b>different</b> prime when its decimal digits are reversed. For example both
+    <b>13</b> and <b>31</b> are emirps, but <b>131</b> is not.
 
 <p>
     Print all the emirp numbers from <b>1</b> to <b>1000</b> inclusive, each
@@ -681,6 +681,9 @@ links = [
 ]
 preamble = '''
 <p>
+    The Fibonacci numbers are a numerical sequence in which each number is the sum of the
+    two preceding numbers: <b>0, 1, 1, 2, 3, 5, 8, 13…</b>
+<p>
     Print the first <b>31</b> Fibonacci numbers from <b>F<sub>0</sub> = 0</b>
     to <b>F<sub>30</sub> = 832040</b> (inclusive), each on a separate line.
 '''
@@ -695,7 +698,7 @@ links = [
 preamble = '''
 <p>
     Print the numbers from <b>1</b> to
-    <b>1{{ if eq . "Fizz Buzz" }}00{{ else }},000{{ end }}</b>
+    <b>{{ if eq . "Fizz Buzz" }}100{{ else }}1,000{{ end }}</b>
     inclusive, each on their own line.
 
 <p>
@@ -718,8 +721,11 @@ preamble = '''
 
 [Fractions]
 category = 'Mathematics'
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Fraction#Simplifying_(reducing)_fractions' },
+]
 preamble = '''
-<p>For each fraction argument, reduce it to its simplest form.
+<p>For each fraction argument <code>a/b</code>, reduce it to its simplest form.
 '''
 
 ['Happy Numbers']
@@ -828,7 +834,7 @@ preamble = '''
     If the check digit would be 10, write "X" instead.
 
 <p>
-    The check digit of <code>a-bcdef-ghi-<i>?</i></code> is computed as <b>− 10a - 9b - 8c - … - 2i</b>, modulo 11.
+    The check digit of <code>a-bcdef-ghi-<i>?</i></code> is computed as <b>− 10a − 9b − 8c − … − 2i</b>, modulo 11.
     Dashes may occur in varying positions and are ignored.
 '''
 
@@ -862,8 +868,8 @@ links = [
 preamble = '''
 <p>
     The Kolakoski constant is created by taking the
-    <a href=kolakoski-sequence>Kolakoski sequence</a> and subtracting one from
-    each element then interpreting it as a binary fraction.
+    <a href=kolakoski-sequence>Kolakoski sequence</a>, subtracting one from
+    each element, and then interpreting it as a binary fraction.
 
 <pre>
     1 221121221221121122121121…
@@ -1335,7 +1341,7 @@ links = [
 ]
 preamble = '''
 <p>
-    Print a <b>10x10</b> grid of the numbers <b>0</b> to <b>99</b> inclusive.
+    Print a <b>10×10</b> grid of the numbers <b>0</b> to <b>99</b> inclusive.
     Starting at the top left the numbers should spiral clockwise towards the
     centre, be right aligned, and have a space between each number.
 
@@ -1396,7 +1402,7 @@ links = [
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Ordinal_numeral' },
 ]
 preamble = '''
-<p>For each integer argument print the argument and its ordinal suffix.
+<p>For each integer argument, print the argument and its ordinal suffix (e.g. <code>1st</code>, <code>2nd</code>, <code>3rd</code>, <code>112th</code>).
 
 <p>The integers will be in the range of <b>0</b> to <b>999</b> inclusive.
 '''
@@ -1412,7 +1418,7 @@ preamble = '''
 
 <p>
     Write a program that will receive various sentences as arguments and print
-    those that are valid pangrams, meaning they use all letters from a-z, case
+    those that are valid pangrams, meaning they use all letters from A to Z, case
     insensitive.
 '''
 
@@ -1704,8 +1710,16 @@ links = [
 ]
 preamble = '''
 <p>
+    Judge games of "rock-paper-scissors" with additional weapons:
+
+<p>
     ✂ cuts 📄 covers 💎 crushes 🦎 poisons 🖖 smashes ✂ decapitates 🦎 eats 📄
     disproves 🖖 vaporizes 💎 crushes ✂.
+
+<p>
+    Each argument is a string of two emoji encoded in UTF-8.
+    For each argument, print a line like <code>🦎 poisons 🖖</code> describing the game outcome,
+    or <code>Tie</code> if they are equal.
 
 <ul>
     <li>
@@ -1831,7 +1845,7 @@ links = [
 ]
 preamble = '''
 <p>
-    The Sierpiński triangle is a fractal and attractive fixed set with the
+    The Sierpiński triangle is a fractal with the
     overall shape of an equilateral triangle, subdivided recursively into
     smaller equilateral triangles.
 
@@ -1871,12 +1885,12 @@ preamble = '''
     of the digits of its prime factors.
 
 <p>
-    One example of a Smith number is the beast number
+    One example of a Smith number is the number
     <b>666 = 2 × 3 × 3 × 37</b>, since
     <b>6 + 6 + 6 = 2 + 3 + 3 + (3 + 7) = 18</b>.
 
 <p>
-    Print all the Smith numbers from <b>1</b> to <b>10,000</b> inclusive,
+    Print all the Smith numbers from <b>4</b> to <b>10,000</b> inclusive,
     each on their own line.
 '''
 
@@ -1885,7 +1899,9 @@ category = 'Transform'
 preamble = '''
 <p>For each integer argument print the integer spelled out in English.
 
-<p>The integers will be in the range of <b>0</b> to <b>1,000</b> inclusive.
+<p>For example: <b>748</b> becomes <code>seven hundred and forty-eight</code>.
+
+<p>The integers will be in the range of <b>0</b> (<code>zero</code>) to <b>1,000</b> (<code>one thousand</code>) inclusive.
 '''
 
 ['Star Wars Opening Crawl']
@@ -1969,8 +1985,8 @@ links = [
 ]
 preamble = '''
 <p>
-    Sudoku is a number puzzle where a grid of 81 digits (9x9) is filled by the
-    digits 1-9 such that no row, column, or 3x3 subregion contains duplicate
+    Sudoku is a number puzzle where a grid of 81 digits (9×9) is filled by the
+    digits 1-9 such that no row, column, or 3×3 subregion contains duplicate
     digits.
 
 <p>
@@ -2029,7 +2045,10 @@ preamble = '''
 <p>
     If a player gets a spare in the final frame, they get one extra roll. If
     they get a spare in one of the first nine frames, the value of the
-    following roll is added as a bonus.<p>Each argument represents one game of
+    following roll is added as a bonus.
+    
+<p>
+    Each argument represents one game of
     bowling for one player. For each roll, a single character represents the
     number of pins knocked down. Frames are separated by spaces. The following
     symbols are used.
@@ -2080,7 +2099,7 @@ preamble = '''
 category = 'Transform'
 preamble = '''
 <p>
-    Transform a time distance given as a number of seconds to a human friendly
+    Transform a time distance given as a number of seconds to a human-friendly
     string representation.
 
 <ul>
@@ -2099,7 +2118,11 @@ preamble = '''
     The largest possible unit of time among a second, a minute (60 seconds),
     an hour (60 minutes), a day (24 hours), a week (7 days), a month (30 days)
     and a year (365 days) is always chosen and the quantity is always rounded
-    towards zero. Correct singular/plural of each unit must be used.
+    towards zero.
+
+<p>
+    The correct singular/plural of each unit must be used. If the quantity is 1,
+    print <code>a month</code> and <code>an hour</code> rather than <code>1 month</code> and <code>1 hour</code>.
 '''
 
 [Tongue-twisters]
@@ -2133,7 +2156,7 @@ category = "Art"
 experiment = 622
 preamble = """
 <p>
-  Given a single argument containing multiple lines of space separated instructions containing distance and direction <b>(N, E, S, or W)</b>.
+  Given a single argument containing multiple lines of space-separated instructions containing distance and direction <b>(N, E, S, or W)</b>.
 </p>
 
 <p>
@@ -2235,8 +2258,8 @@ preamble = '''
     not both fangs may have trailing zeros.
 
 <p>
-    For example <b>1260 = 21*60</b>, <b>1395 = 15*93</b>, <b>1435 = 35*41</b>,
-    <b>1530 = 30*51</b>, etc..
+    For example <b>1260 = 21×60</b>, <b>1395 = 15×93</b>, <b>1435 = 35×41</b>,
+    <b>1530 = 30×51</b>, etc.
 
 <p>
     Print all the vampire numbers from <b>1</b> to <b>1,000,000</b> inclusive,
@@ -2329,7 +2352,7 @@ links = [
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Pi' },
 ]
 preamble = '''
-<p>Print π (Pi) to the first 1,000 decimal places.
+<p>Print π (pi) to the first 1,000 decimal places.
 '''
 
 ['τ']
@@ -2338,7 +2361,7 @@ links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Tau_(mathematical_constant)' },
 ]
 preamble = '''
-<p>Print 2π=τ (Tau) to the first 1,000 decimal places.
+<p>Print 2π=τ (tau) to the first 1,000 decimal places.
 '''
 
 ['φ']
@@ -2348,7 +2371,7 @@ links = [
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Golden_ratio' },
 ]
 preamble = '''
-<p>Print the Golden ratio φ (Phi) to the first 1,000 decimal places.
+<p>Print the Golden ratio φ (phi) to the first 1,000 decimal places.
 '''
 
 ['√2']
