@@ -1019,7 +1019,7 @@ Delete every 7th element and advance:
 ['Lucky Tickets']
 category = 'Mathematics'
 links = [
-    { name = 'OEIS', url = '//oeis.org/A174061' },
+    { name = 'OEIS A174061', url = '//oeis.org/A174061' },
 ]
 preamble = '''
 <p>
