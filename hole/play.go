@@ -333,7 +333,8 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		return
 	}
 
-	if len(score.Stdout) != 0 {
+	// We do not allow stdout with only whitespace to pass to prevent suspicious sed "quines"
+	if len(bytes.TrimRightFunc(score.Stdout, unicode.IsSpace)) != 0 {
 		// TODO Generalise a case insensitive flag, should it apply to others?
 		if holeID == "css-colors" {
 			score.Pass = strings.EqualFold(score.Answer, string(score.Stdout))
