@@ -270,7 +270,7 @@ version = '1.13.4'
 website = 'https://elixir-lang.org'
 example = '''
 # Printing
-IO.puts 'Hello, World!'
+IO.puts "Hello, World!"
 
 # Looping
 for i <- 0..9, do: IO.puts i
