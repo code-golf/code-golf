@@ -560,15 +560,17 @@ layout.registerComponentFactoryFunction('code', async container => {
     // Wire submit to clicking a button and a keyboard shortcut.
     $('#runBtn').onclick = submit;
 
-    const deleteBtn = $('#deleteBtn')!;
-    deleteBtn.addEventListener('click', () => {
-        $('dialog b').innerText = langs[lang].name;
-        $<HTMLInputElement>('dialog [name=lang]').value = lang;
-        $<HTMLInputElement>('dialog [name=text]').value = '';
-        // Dialog typings are not available yet
-        $<any>('dialog').showModal();
-    });
-    deleteBtn.classList.toggle('hide', hideDeleteBtn);
+    const deleteBtn = $('#deleteBtn');
+    if (deleteBtn) {
+        deleteBtn.addEventListener('click', () => {
+            $('dialog b').innerText = langs[lang].name;
+            $<HTMLInputElement>('dialog [name=lang]').value = lang;
+            $<HTMLInputElement>('dialog [name=text]').value = '';
+            // Dialog typings are not available yet
+            $<any>('dialog').showModal();
+        });
+        deleteBtn.classList.toggle('hide', hideDeleteBtn);
+    }
 
     setCodeForLangAndSolution();
 });
