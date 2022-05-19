@@ -1,7 +1,7 @@
 import { ASMStateField }                       from '@defasm/codemirror';
 import {
-    ComponentItem, ComponentItemConfig, ContentItem,
-    GoldenLayout, RowOrColumn, Stack,
+    ComponentItem, ComponentItemConfig, ContentItem, GoldenLayout,
+    RowOrColumn, Stack, LayoutConfig, ResolvedRootItemConfig,
 } from 'golden-layout';
 import LZString                                from 'lz-string';
 import { EditorState, EditorView, extensions } from './_codemirror.js';
@@ -30,6 +30,22 @@ let solution = scorings.indexOf(localStorage.getItem('solution') ?? 'Bytes') as 
 let scoring  = scorings.indexOf(localStorage.getItem('scoring')  ?? 'Bytes') as 0 | 1;
 
 let hideDeleteBtn: boolean = false;
+
+/**
+ * Is mobile mode activated? Start at false as default since Golden Layout
+ * uses desktop as default. Change to true and apply changes if width is less
+ * than or equal to 768px (it seems to be a common breakpoint idk).
+ *
+ * Changes from mobile mode:
+ * - golden layout reflowed to columns-only
+ * - full page scrolling is enabled (TODO: compute height as a multiple of
+ *      the number of rows)
+ * - maximized windows take the full screen (TODO)
+ *
+ * TODO: respect "Request desktop site" from mobile browsers to force
+ * isMobile = false
+ */
+let isMobile = false;
 
 interface SubmitResponse {
     Pass: boolean,
@@ -609,8 +625,14 @@ layout.loadLayout({
             {
                 type: 'row',
                 content: [
-                    plainComponent('code'),
-                    plainComponent('scoreboard'),
+                    {
+                        ...plainComponent('code'),
+                        width: 75,
+                    },
+                    {
+                        ...plainComponent('scoreboard'),
+                        width: 25,
+                    },
                 ],
             }, {
                 type: 'row',
@@ -819,3 +841,41 @@ function removeDragProxies() {
     document.removeEventListener('mouseup', removeDragProxies);
     document.removeEventListener('touchend', removeDragProxies);
 }
+
+/**
+ * Mutate the given item recursively by replacing rows with columns.
+ */
+function replaceRowsWithColumns(item: ResolvedRootItemConfig) {
+    if (item.type === 'row') {
+        (item as any).type = 'column';
+    }
+    if (item.type === 'row' || item.type === 'column') {
+        item.content.forEach(child => replaceRowsWithColumns(child));
+    }
+}
+
+function toggleMobile(_isMobile: boolean) {
+    isMobile = _isMobile;
+    // This could be a CSS media query, but I'm keeping generality in case of
+    // other config options ("request desktop site", button config, etc.)
+    document.body.classList.toggle('mobile', isMobile);
+    if (isMobile) {
+        const currLayout = layout.saveLayout();
+        if (currLayout.root) {
+            replaceRowsWithColumns(currLayout.root);
+            // ResolvedLayoutConfig doesn't overlap with LayoutConfig, so we
+            // need this ugly "as" chain
+            layout.loadLayout(currLayout as any as LayoutConfig);
+        }
+    }
+}
+
+function checkMobile() {
+    if ((window.innerWidth < 768) !== isMobile) {
+        toggleMobile(!isMobile);
+    }
+}
+
+checkMobile();
+
+window.addEventListener('resize', checkMobile);

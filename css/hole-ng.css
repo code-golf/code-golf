@@ -163,7 +163,7 @@ main > header nav {
     display: flex;
     gap: .5rem;
     max-width: 100%;
-    overflow-x: auto;
+    flex-wrap: wrap;
 }
 
 #hole-lang {
@@ -399,4 +399,8 @@ main {
 #alert-pool svg {
     fill: var(--background);
     cursor: pointer;
+}
+
+body.mobile {
+    height: 200vh;
 }
