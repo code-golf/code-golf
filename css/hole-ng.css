@@ -414,6 +414,7 @@ main {
 }
 
 #layout-btns {
+    grid-row: 6;
     justify-self: center;
     margin-top: 0.25rem;
     margin-bottom: -0.5rem;
