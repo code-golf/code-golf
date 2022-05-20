@@ -329,7 +329,7 @@ thead { user-select: none }
 }
 
 main {
-    grid-template-rows: repeat(4, max-content) 1fr;
+    grid-template-rows: repeat(4, max-content) 1fr max-content;
     /* Remove gap so it could be margin instead: avoids excessive gap */
     gap: 0;
 }
@@ -411,4 +411,10 @@ main {
     causes many issues with the mobile iOS URL bar bug described at
     https://allthingssmitty.com/2020/05/11/css-fix-for-100vh-in-mobile-webkit  */
     height: 90vh;
+}
+
+#add-row {
+    justify-self: center;
+    margin-top: 0.25rem;
+    margin-bottom: -0.5rem;
 }

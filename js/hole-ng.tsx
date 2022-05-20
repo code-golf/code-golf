@@ -1,8 +1,8 @@
 import { ASMStateField }                       from '@defasm/codemirror';
 import {
     ComponentItem, ComponentItemConfig, ContentItem, GoldenLayout,
-    RowOrColumn, Stack, LayoutConfig, ResolvedRootItemConfig,
-    ResolvedLayoutConfig, DragSource,
+    RowOrColumn, LayoutConfig, ResolvedRootItemConfig,
+    ResolvedLayoutConfig, DragSource, LayoutManager, ComponentContainer,
 } from 'golden-layout';
 import LZString                                from 'lz-string';
 import { EditorState, EditorView, extensions } from './_codemirror.js';
@@ -487,6 +487,7 @@ for (const i of [0,1,2,3,4]) {
     const title = ['Expected', 'Output', 'Errors', 'Arguments', 'Diff'][i];
     layout.registerComponentFactoryFunction(name, container => {
         container.setTitle(title);
+        autoFocus(container);
         container.element.id = name;
         container.element.classList.add('readonly-output');
         readonlyOutputs[name] = container.element;
@@ -538,8 +539,14 @@ function makeEditor(parent: HTMLDivElement) {
     editor.contentDOM.setAttribute('data-gramm', 'false');  // Disable Grammarly.
 }
 
+function autoFocus(container: ComponentContainer) {
+    container.element.addEventListener('focusin', () => container.focus());
+    container.element.addEventListener('click', () => container.focus());
+}
+
 layout.registerComponentFactoryFunction('code', async container => {
     container.setTitle('Code');
+    autoFocus(container);
 
     const header = (<header>
         <div id="strokes">0 bytes, 0 chars</div>
@@ -597,6 +604,7 @@ function delinkRankingsView() {
 
 layout.registerComponentFactoryFunction('scoreboard', async container => {
     container.setTitle('Scoreboard');
+    autoFocus(container);
     container.element.append(
         $<HTMLTemplateElement>('#template-scoreboard').content.cloneNode(true),
     );
@@ -608,6 +616,7 @@ layout.registerComponentFactoryFunction('scoreboard', async container => {
 
 layout.registerComponentFactoryFunction('details', container => {
     container.setTitle('Details');
+    autoFocus(container);
     container.element.append(
         $<HTMLTemplateElement>('#template-details').content.cloneNode(true) as HTMLDetailsElement,
     );
@@ -667,142 +676,57 @@ layout.loadLayout({
 addPoolItem('details', 'Details');
 
 /**
- * Each entry is [columnIndex, rowIndex, stackIndex] in the default layout,
- * but they could be [index, index, index] in general.
- */
-const autoInsertConfig = {
-    details: [0,0,0],
-    code: [0,0,1],
-    scoreboard: [0,1,0],
-    arg: [1,0,0],
-    exp: [1,0,1],
-    out: [1,1,0],
-    err: [1,1,1],
-    diff: [1,1,2],
-} as {[key: string]: number[]};
-
-/**
- * Example procedure:
- *
- * Adding a `code` component first looks for
- * other [0,0,*], namely `details`. If there is a `details` component, `code` gets
- * added after it in the stack since [0,0,1] > [0,0,0].
- *
- * If there is no `details` component, then adding `code` looks for other
- * `[0,*,*]`. The only remaining is scoreboard = [0,1,0], so `code` gets added
- * before it in the row since [0,0,...] < [0,1,...]
- *
- * If there is no `scoreboard` component, then adding `code` looks for other
- * `[*,*,*]`, and it uses the first one it finds. Suppose it is arg=[1,0,0].
- * Then adding `code` gets added before `arg` in the column since [0,...] < [1,...].
- *
- * This ended up much more complicated than I expected. :(
+ * Try to add after selected item, with sensible defaults
  */
 function addItemFromPool(componentName: string) {
     (window as any).layout = layout;
-    const newConfig = plainComponent(componentName);
-    if (!layout.rootItem) {
-        // Layout is empty: add to root
-        layout.addItem(newConfig);
-        return;
-    }
+    layout.addItemAtLocation(
+        plainComponent(componentName),
+        LayoutManager.afterFocusedItemIfPossibleLocationSelectors,
+    );
+}
 
-    // Find the item which matches the most in the autoInsertConfig
-    const goalPath = autoInsertConfig[componentName];
-    let bestMatch = -1;
-    let bestMatchComponent = null;
-    let bestRelativePosition = 0;
-    for (const component of allComponents(layout.rootItem)) {
-        const componentPath = autoInsertConfig[component.componentType as string];
-        const match = tupleMatch(componentPath, goalPath);
-        const relativePosition = goalPath[match] - componentPath[match];
-        if (
-            match > bestMatch ||
-            match === bestMatch && Math.abs(relativePosition) < Math.abs(bestRelativePosition)
-        ) {
-            bestMatch = match;
-            bestMatchComponent = component;
-            bestRelativePosition = relativePosition;
-        }
-    }
-
-    if (!bestMatchComponent) {
-        // Should be unreachable, but just in case do the simplest insertion
-        layout.addItem(newConfig);
-        return;
-    }
-
-    // Go up to the parent in common with the bestMatchComponent
-    let prevParent: ContentItem | null | undefined = null;
-    let parent: ContentItem | null | undefined = bestMatchComponent;
-    for (let i=goalPath.length - bestMatch; i>0; i--) {
-        prevParent = parent;
-        parent = parent?.parent;
-    }
-
-    if (
-        parent &&
-        !parent.isGround
-        // Restrict to prefer sticking in the same row/column with the best
-        // match (and nothing else) instead of adding to a big column
-        && (parent.isStack || [...allComponents(parent)].every(
-            comp => bestMatch === tupleMatch(
-                autoInsertConfig[comp.componentType as string],
-                goalPath,
-            ),
-        ))
-    ) {
-        // TODO (GL): for some reason this index is not being respected
-        const index = (parent.contentItems.indexOf(prevParent!) ?? 0) + (bestRelativePosition > 0 ? 1: 0);
-        (parent as RowOrColumn | Stack).addItem(newConfig, index);
+/**
+ * Add the first element from the pool to the root column, or create a new
+ * column containing the root and the first pool element if non exist.
+ */
+function addRow() {
+    if (!layout.rootItem) return;
+    const newComponentName = Object.keys(poolElements)[0];
+    if (!newComponentName) return;
+    const newConfig = plainComponent(newComponentName);
+    if (layout.rootItem.type === 'column') {
+        // Add to existing column
+        (layout.rootItem as RowOrColumn).addItem(newConfig);
     }
     else {
-        // Not deep enough, so create a new row/column wrapping everything
-        // Every component is in a stack, so there is never need to make a stack
-        const oldParent = prevParent && !prevParent.isGround
-            ? prevParent
-            : layout.rootItem;
+        // Create new column
+        const oldParent = layout.rootItem;
         const newParent = (layout as any).createContentItem({
-            type:
-                oldParent.isRow ? 'column'
-                    : oldParent.isColumn ? 'row'
-                        : bestMatch === 1 ? 'row' : 'column',
+            type: 'column',
             content: [],
         });
         const oldParentParent = oldParent.parent!;
         // removeChild(_, true): don't remove the node entirely, just remove
         // it from the current tree before re-inserting
         oldParentParent.removeChild(oldParent, true);
-        // TODO (GL): use an index here; it wasn't respected above though
         oldParentParent.addChild(newParent);
         newParent.addChild(oldParent);
         newParent.addItem(newConfig);
     }
+    (layout as any).getAllContentItems().find(
+        (item: ComponentItem) => item.componentType === newComponentName,
+    )?.focus();
 }
 
-function tupleMatch(a: number[], b: number[]) {
-    let i=0;
-    while (a[i] === b[i])
-        i++;
-    return i;
-}
-
-function* allComponents(item: ContentItem): Generator<ComponentItem> {
-    if (item.isComponent) {
-        yield item as ComponentItem;
-    }
-    for (const child of item.contentItems) {
-        for (const component of allComponents(child)) {
-            yield component;
-        }
-    }
-}
+$('#add-row').addEventListener('click', addRow);
 
 function addPoolItem(componentType: string, title: string) {
     const el = (<span class="btn">{title}</span>);
     $('#pool').appendChild(el);
     poolDragSources[componentType] = layout.newDragSource(el, componentType);
     poolElements[componentType] = el;
+    checkShowAddRow();
     el.addEventListener('click', () => addItemFromPool(componentType));
 }
 
@@ -813,11 +737,24 @@ layout.addEventListener('itemDestroyed', e => {
         const target = _target as ComponentItem;
         addPoolItem(target.componentType as string, target.title);
     }
+    checkShowAddRow();
 });
 
 function removePoolItem(componentType: string) {
     poolElements[componentType].remove();
-    removeDragSource(componentType);
+    delete poolElements[componentType];
+    checkShowAddRow();
+    if (!isMobile) removeDragSource(componentType);
+}
+
+async function checkShowAddRow() {
+    // Await to ensure that rootItem === undefined after removing last item
+    await afterDOM();
+    $('#add-row').classList.toggle(
+        'hide',
+        Object.keys(poolElements).length === 0
+            || layout.rootItem === undefined,
+    );
 }
 
 function removeDragSource(componentType: string) {
@@ -927,6 +864,7 @@ window.addEventListener('resize', checkMobile);
  * callbacks. This is not supported behavior, but it works.
  */
 function deepCancelTouchStart(item: any) {
+    if (!item) return;
     if (item.type === 'stack') {
         item._header._closeButton.onTouchStart = () => {};
         item._header._maximiseButton.onTouchStart = () => {};
