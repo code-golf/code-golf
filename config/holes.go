@@ -19,13 +19,14 @@ var (
 	ExpHoleList []*Hole
 )
 
+type Link struct{ Name, URL, Variant string }
 type Hole struct {
 	Category, CategoryColor, CategoryIcon string
 	Data                                  template.JS
 	Experiment                            int
 	ID, Name, Prev, Next                  string
 	Preamble                              template.HTML
-	Links                                 []struct{ Name, URL string }
+	Links                                 []Link
 	Variants                              []*Hole
 }
 
@@ -102,6 +103,15 @@ func init() {
 		} else {
 			hole.Preamble = template.HTML(html)
 		}
+
+		// Filter out links that don't match this variant.
+		links := make([]Link, 0, len(hole.Links))
+		for _, link := range hole.Links {
+			if link.Variant == "" || link.Variant == name {
+				links = append(links, link)
+			}
+		}
+		hole.Links = links
 
 		switch hole.Category {
 		case "Art":

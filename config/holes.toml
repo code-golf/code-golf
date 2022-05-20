@@ -102,7 +102,8 @@ preamble = '''
 category = 'Transform'
 variants = ['Arabic to Roman', 'Roman to Arabic']
 links = [
-    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Roman_numerals/Encode' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Roman_numerals/Encode', variant = 'Arabic to Roman' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Roman_numerals/Decode', variant = 'Roman to Arabic' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Roman_numerals' },
 ]
 preamble = '''
@@ -638,12 +639,16 @@ preamble = '''
 
 ['Evil Numbers']
 category = 'Sequence'
+variants = ['Evil Numbers', 'Odious Numbers']
 links = [
-    { name = 'OEIS A001969', url = '//oeis.org/A001969' },
+    { name = 'OEIS A001969', url = '//oeis.org/A001969', variant = 'Evil Numbers' },
+    { name = 'OEIS A000069', url = '//oeis.org/A000069', variant = 'Odious Numbers' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Population_count' },
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Evil_number' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Evil_number',   variant = 'Evil Numbers' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Odious_number', variant = 'Odious Numbers' },
 ]
 preamble = '''
+{{ if eq . "Evil Numbers" }}
 <p>
     An evil number is a non-negative number that has an even number of 1s in
     its binary expansion.
@@ -651,10 +656,15 @@ preamble = '''
 <p>
     Print all the evil numbers from <b>0</b> to <b>50</b> inclusive, each on
     their own line.
+{{ else }}
+<p>
+    An odious number is a non-negative number that has an odd number of 1s in
+    its binary expansion.
 
 <p>
-    Numbers that are not evil are called
-    <a href=odious-numbers>odious numbers</a>.
+    Print all the odious numbers from <b>0</b> to <b>50</b> inclusive, each on
+    their own line.
+{{ end }}
 '''
 
 ['Factorial Factorisation']
@@ -1375,27 +1385,6 @@ preamble = '''
     tiled with the copies of the polyomino. It is even more challenging to
     find a so-called odd tiling for a given polyomino, especially covered
     rectangles with minimal size.
-'''
-
-['Odious Numbers']
-category = 'Sequence'
-links = [
-    { name = 'OEIS A000069', url = '//oeis.org/A000069' },
-    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Population_count' },
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Odious_number' },
-]
-preamble = '''
-<p>
-    An odious number is a non-negative number that has an odd number of 1s in
-    its binary expansion.
-
-<p>
-    Print all the odious numbers from <b>0</b> to <b>50</b> inclusive, each on
-    their own line.
-
-<p>
-    Numbers that are not odious are called
-    <a href=evil-numbers>evil numbers</a>.
 '''
 
 ['Ordinal Numbers']
