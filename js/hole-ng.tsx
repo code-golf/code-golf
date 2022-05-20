@@ -446,14 +446,14 @@ function updateRestoreLinkVisibility() {
         !serverCode || editor?.state.doc.toString() == serverCode);
 }
 
-/* Temporary golden layout testing */
+const goldenContainer = $('#golden-container');
 
 /**
  * Actual Golden Layout docs are at
  *  https://golden-layout.github.io/golden-layout
  * golden-layout.com is for the old GL.
  */
-const layout = new GoldenLayout($('#golden-container'));
+const layout = new GoldenLayout(goldenContainer);
 layout.resizeWithContainerAutomatically = true;
 
 function updateReadonlyPanel(name: string) {
@@ -631,7 +631,7 @@ function plainComponent(componentType: string): ComponentItemConfig {
     };
 }
 
-layout.loadLayout({
+const defaultLayout: LayoutConfig = {
     settings: {
         showPopoutIcon: false,
     },
@@ -671,9 +671,18 @@ layout.loadLayout({
             },
         ],
     },
-});
+};
 
-addPoolItem('details', 'Details');
+async function applyDefaultLayout() {
+    toggleMobile(false);
+    Object.keys(poolElements).map(removePoolItem);
+    layout.loadLayout(defaultLayout);
+    addPoolItem('details', 'Details');
+    await afterDOM();
+    checkMobile();
+}
+
+applyDefaultLayout();
 
 /**
  * Try to add after selected item, with sensible defaults
@@ -721,7 +730,10 @@ function addRow() {
 
 $('#add-row').addEventListener('click', addRow);
 
+$('#revert-layout').addEventListener('click', applyDefaultLayout);
+
 function addPoolItem(componentType: string, title: string) {
+    poolElements[componentType]?.remove();
     const el = (<span class="btn">{title}</span>);
     $('#pool').appendChild(el);
     poolDragSources[componentType] = layout.newDragSource(el, componentType);
@@ -741,6 +753,7 @@ layout.addEventListener('itemDestroyed', e => {
 });
 
 function removePoolItem(componentType: string) {
+    if (!poolElements[componentType]) return;
     poolElements[componentType].remove();
     delete poolElements[componentType];
     checkShowAddRow();
@@ -826,8 +839,8 @@ function toggleMobile(_isMobile: boolean) {
     const currLayout = layout.saveLayout() as DeepMutable<ResolvedLayoutConfig>;
     if (currLayout.root) {
         mutateDeep(currLayout.root, isMobile);
+        layout.loadLayout(currLayout as any as LayoutConfig);
     }
-    layout.loadLayout(currLayout as any as LayoutConfig);
     if (isMobile) {
         for (const componentType in poolDragSources)
             removeDragSource(componentType);
@@ -844,8 +857,6 @@ function checkMobile() {
         toggleMobile(!isMobile);
     }
 }
-
-checkMobile();
 
 window.addEventListener('resize', checkMobile);
 
@@ -893,8 +904,6 @@ function rowCount(item: ContentItem | undefined): number {
 }
 
 function updateMobileContainerHeight() {
-    $('#golden-container').style.height =
+    goldenContainer.style.height =
         isMobile ? rowCount(layout.rootItem) * 25 + 'rem' : '';
 }
-
-updateMobileContainerHeight();

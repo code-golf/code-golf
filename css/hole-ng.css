@@ -413,8 +413,10 @@ main {
     height: 90vh;
 }
 
-#add-row {
+#layout-btns {
     justify-self: center;
     margin-top: 0.25rem;
     margin-bottom: -0.5rem;
+    display: flex;
+    gap: 1rem;
 }
