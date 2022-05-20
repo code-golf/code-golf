@@ -42,13 +42,12 @@ let hideDeleteBtn: boolean = false;
  *
  * Changes on mobile mode:
  * - golden layout reflowed to columns-only
- * - full page scrolling is enabled (TODO: compute height as a multiple of
- *      the number of rows)
+ * - full-page scrolling is enabled
  * - dragging is disabled (incompatible with being able to scroll)
  * - maximized windows take the full screen
  *
  * TODO: respect "Request desktop site" from mobile browsers to force
- * isMobile = false
+ * isMobile = false. Or otherwise configuration option.
  */
 let isMobile = false;
 
@@ -900,6 +899,7 @@ function toggleMobile(_isMobile: boolean) {
         for (const componentType in poolElements)
             poolDragSources[componentType] = layout.newDragSource(poolElements[componentType], componentType);
     }
+    updateMobileContainerHeight();
 }
 
 function checkMobile() {
@@ -941,4 +941,22 @@ deepCancelTouchStart(layout.rootItem);
 
 layout.addEventListener('stateChanged', () => {
     deepCancelTouchStart(layout.rootItem);
+    updateMobileContainerHeight();
 });
+
+function rowCount(item: ContentItem | undefined): number {
+    if (!item) return 0;
+    if (item.type === 'row')
+        return Math.max(...item.contentItems.map(rowCount));
+    else if (item.type === 'column')
+        return item.contentItems.map(rowCount).reduce((a, b) => a + b);
+    else
+        return 1;
+}
+
+function updateMobileContainerHeight() {
+    $('#golden-container').style.height =
+        isMobile ? rowCount(layout.rootItem) * 25 + 'rem' : '';
+}
+
+updateMobileContainerHeight();
