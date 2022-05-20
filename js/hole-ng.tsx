@@ -2,6 +2,7 @@ import { ASMStateField }                       from '@defasm/codemirror';
 import {
     ComponentItem, ComponentItemConfig, ContentItem, GoldenLayout,
     RowOrColumn, Stack, LayoutConfig, ResolvedRootItemConfig,
+    ResolvedLayoutConfig, DragSource,
 } from 'golden-layout';
 import LZString                                from 'lz-string';
 import { EditorState, EditorView, extensions } from './_codemirror.js';
@@ -24,6 +25,9 @@ const darkMode =
 const baseExtensions =
     darkMode ? [...extensions.dark, ...extensions.base] : extensions.base;
 
+const poolDragSources: {[key: string]: DragSource} = {};
+const poolElements: {[key: string]: HTMLElement} = {};
+
 let lang = '';
 let latestSubmissionID = 0;
 let solution = scorings.indexOf(localStorage.getItem('solution') ?? 'Bytes') as 0 | 1;
@@ -40,6 +44,7 @@ let hideDeleteBtn: boolean = false;
  * - golden layout reflowed to columns-only
  * - full page scrolling is enabled (TODO: compute height as a multiple of
  *      the number of rows)
+ * - dragging is disabled (incompatible with being able to scroll)
  * - maximized windows take the full screen (TODO)
  *
  * TODO: respect "Request desktop site" from mobile browsers to force
@@ -614,6 +619,7 @@ function plainComponent(componentType: string): ComponentItemConfig {
     return {
         type: 'component',
         componentType: componentType,
+        reorderEnabled: !isMobile,
     };
 }
 
@@ -796,7 +802,8 @@ function* allComponents(item: ContentItem): Generator<ComponentItem> {
 function addPoolItem(componentType: string, title: string) {
     const el = (<span class="btn">{title}</span>);
     $('#pool').appendChild(el);
-    layout.newDragSource(el, componentType);
+    poolDragSources[componentType] = layout.newDragSource(el, componentType);
+    poolElements[componentType] = el;
     el.addEventListener('click', () => addItemFromPool(componentType));
 }
 
@@ -809,17 +816,21 @@ layout.addEventListener('itemDestroyed', e => {
     }
 });
 
+function removePoolItem(componentType: string) {
+    poolElements[componentType].remove();
+    removeDragSource(componentType);
+}
+
+function removeDragSource(componentType: string) {
+    layout.removeDragSource(poolDragSources[componentType]);
+    delete poolDragSources[componentType];
+}
+
 // Remove an item from the tab pool when it gets added
 layout.addEventListener('itemCreated', e => {
-    const _target = e.target as ContentItem;
-    if (_target.isComponent) {
-        const target = _target as ComponentItem;
-        for (const poolItem of $$('#pool > span')) {
-            if (poolItem.innerText === target.title) {
-                poolItem.remove();
-                break;
-            }
-        }
+    const target = e.target as ContentItem;
+    if (target.isComponent) {
+        removePoolItem((target as ComponentItem).componentType as string);
     }
 });
 
@@ -845,14 +856,28 @@ function removeDragProxies() {
 }
 
 /**
- * Mutate the given item recursively by replacing rows with columns.
+ * LayoutConfig has a bunch of optional properties, while ResolvedLayoutConfig
+ * marks everything as readonly for no reason. We converted ResolvedLayoutConfig
+ * to a superset of LayoutConfig by making everything mutable.
  */
-function replaceRowsWithColumns(item: ResolvedRootItemConfig) {
-    if (item.type === 'row') {
+type DeepMutable<T> = { -readonly [key in keyof T]: DeepMutable<T[key]> };
+
+/**
+ * Mutate the given item recursively to:
+ * - change reorderEnabled (false if isMobile, otherwise true)
+ * - change rows to columns (if isMobile, otherwise no change)
+ *
+ * I don't know what it's necessary to change reorderEnabled on a per-item
+ * basis. Should be able to just do currLayout.settings.reorderEnabled = ...,
+ * but that is not respected at all, even for new items.
+ */
+function mutateDeep(item: DeepMutable<ResolvedRootItemConfig>, isMobile: boolean) {
+    if (isMobile && item.type === 'row') {
         (item as any).type = 'column';
     }
-    if (item.type === 'row' || item.type === 'column') {
-        item.content.forEach(child => replaceRowsWithColumns(child));
+    (item as any).reorderEnabled = !isMobile;
+    if (item.content.length > 0) {
+        item.content.forEach(child => mutateDeep(child, isMobile));
     }
 }
 
@@ -861,14 +886,18 @@ function toggleMobile(_isMobile: boolean) {
     // This could be a CSS media query, but I'm keeping generality in case of
     // other config options ("request desktop site", button config, etc.)
     document.body.classList.toggle('mobile', isMobile);
+    const currLayout = layout.saveLayout() as DeepMutable<ResolvedLayoutConfig>;
+    if (currLayout.root) {
+        mutateDeep(currLayout.root, isMobile);
+    }
+    layout.loadLayout(currLayout as any as LayoutConfig);
     if (isMobile) {
-        const currLayout = layout.saveLayout();
-        if (currLayout.root) {
-            replaceRowsWithColumns(currLayout.root);
-            // ResolvedLayoutConfig doesn't overlap with LayoutConfig, so we
-            // need this ugly "as" chain
-            layout.loadLayout(currLayout as any as LayoutConfig);
-        }
+        for (const componentType in poolDragSources)
+            removeDragSource(componentType);
+    }
+    else {
+        for (const componentType in poolElements)
+            poolDragSources[componentType] = layout.newDragSource(poolElements[componentType], componentType);
     }
 }
 
