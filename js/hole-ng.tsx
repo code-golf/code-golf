@@ -911,3 +911,34 @@ function checkMobile() {
 checkMobile();
 
 window.addEventListener('resize', checkMobile);
+
+/**
+ * Golden Layout has handlers for both "touchstart" and "click," which is a
+ * problem because a touch on mobile triggers both events (example symptom:
+ * tapping "close" button closes two tabs instead of one).
+ *
+ * Duplicate handlers are present on:
+ * - header maximize/close buttons
+ * - tab "close" button
+ * - tab itself (doesn't matter because selection is idempotent)
+ * - header bar (doesn't matter because we don't use it)
+ *
+ * We work around this by going into GL internals and disabling the touchstart
+ * callbacks. This is not supported behavior, but it works.
+ */
+function deepCancelTouchStart(item: any) {
+    if (item.type === 'stack') {
+        item._header._closeButton.onTouchStart = () => {};
+        item._header._maximiseButton.onTouchStart = () => {};
+    }
+    else if (item.type === 'component') {
+        item._tab.onCloseTouchStart = () => {};
+    }
+    item._contentItems?.forEach((child: any) => deepCancelTouchStart(child));
+}
+
+deepCancelTouchStart(layout.rootItem);
+
+layout.addEventListener('stateChanged', () => {
+    deepCancelTouchStart(layout.rootItem);
+});
