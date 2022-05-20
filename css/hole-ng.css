@@ -125,6 +125,7 @@ section header {
 
 #editor-section {
     height: 100%;
+    overflow: hidden;
 }
 
 #editor {
@@ -401,6 +402,13 @@ main {
     cursor: pointer;
 }
 
-body.mobile {
-    height: 200vh;
+.mobile #golden-container {
+    height: 150vh;
+}
+
+.mobile.has_lm_maximised #golden-container {
+    /* Making this position fixed and occupying the whole viewport does not
+    causes many issues with the mobile iOS URL bar bug described at
+    https://allthingssmitty.com/2020/05/11/css-fix-for-100vh-in-mobile-webkit  */
+    height: 90vh;
 }

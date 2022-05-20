@@ -40,12 +40,12 @@ let hideDeleteBtn: boolean = false;
  * uses desktop as default. Change to true and apply changes if width is less
  * than or equal to 768px (it seems to be a common breakpoint idk).
  *
- * Changes from mobile mode:
+ * Changes on mobile mode:
  * - golden layout reflowed to columns-only
  * - full page scrolling is enabled (TODO: compute height as a multiple of
  *      the number of rows)
  * - dragging is disabled (incompatible with being able to scroll)
- * - maximized windows take the full screen (TODO)
+ * - maximized windows take the full screen
  *
  * TODO: respect "Request desktop site" from mobile browsers to force
  * isMobile = false
@@ -847,6 +847,7 @@ layout.addEventListener('itemCreated', e => {
 layout.addEventListener('stateChanged', () => {
     document.addEventListener('mouseup', removeDragProxies);
     document.addEventListener('touchend', removeDragProxies);
+    document.documentElement.classList.toggle('has_lm_maximised', !!$('.lm_maximised'));
 });
 
 function removeDragProxies() {
@@ -885,7 +886,7 @@ function toggleMobile(_isMobile: boolean) {
     isMobile = _isMobile;
     // This could be a CSS media query, but I'm keeping generality in case of
     // other config options ("request desktop site", button config, etc.)
-    document.body.classList.toggle('mobile', isMobile);
+    document.documentElement.classList.toggle('mobile', isMobile);
     const currLayout = layout.saveLayout() as DeepMutable<ResolvedLayoutConfig>;
     if (currLayout.root) {
         mutateDeep(currLayout.root, isMobile);
