@@ -850,10 +850,12 @@ preamble = '''
 <p>
     Both inputs are non-negative integers, and <b>n</b> is odd.
     <br>
+    <b>J(a, 1)</b> is defined as <b>1</b>.
+    <br>
     If <b>n</b> is prime, then <b>J(a, n)</b> is defined as <b>0</b> if <b>a=0 (mod n)</b>, as <b>1</b> if <b>a</b> is a square
     modulo <b>n</b>, and <b>−1</b> otherwise.
     <br>
-    If <b>n = x*y</b>, then <b>J(a, n)</b> is defined as <b>J(a, x)*J(a, y)</b>.
+    If <b>n = x*y, x,y>1</b>, then <b>J(a, n)</b> is defined as <b>J(a, x)*J(a, y)</b>.
     <br>
     Note that calculating the symbol from the definition is not very efficient
     as it requires factorisation of <b>n</b>.
