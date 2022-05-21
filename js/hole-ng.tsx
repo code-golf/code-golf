@@ -50,6 +50,7 @@ let hideDeleteBtn: boolean = false;
  * isMobile = false. Or otherwise configuration option.
  */
 let isMobile = false;
+let applyingDefault = false;
 
 interface SubmitResponse {
     Pass: boolean,
@@ -677,12 +678,14 @@ const defaultLayout: LayoutConfig = {
 };
 
 async function applyDefaultLayout() {
+    applyingDefault = true;
     toggleMobile(false);
     Object.keys(poolElements).map(removePoolItem);
-    layout.loadLayout(defaultLayout);
     addPoolItem('details', 'Details');
+    layout.loadLayout(defaultLayout);
     await afterDOM();
     checkMobile();
+    applyingDefault = false;
 }
 
 applyDefaultLayout();
@@ -755,6 +758,7 @@ function addPoolItem(componentType: string, title: string) {
 
 // Add an item to the tab pool when a component gets destroyed
 layout.addEventListener('itemDestroyed', e => {
+    if (applyingDefault) return;
     const _target = e.target as ContentItem;
     if (_target.isComponent) {
         const target = _target as ComponentItem;
@@ -788,6 +792,7 @@ function removeDragSource(componentType: string) {
 
 // Remove an item from the tab pool when it gets added
 layout.addEventListener('itemCreated', e => {
+    if (applyingDefault) return;
     const target = e.target as ContentItem;
     if (target.isComponent) {
         removePoolItem((target as ComponentItem).componentType as string);
