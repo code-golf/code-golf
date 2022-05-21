@@ -21,12 +21,8 @@ func levenshteinDistance() ([]string, string) {
 	const count = 20
 
 	a := randWord()
-	b := randWord()
-	c := randWord()
 	tests := []test{
 		{a + " " + a, "0"},
-		{"a " + b, strconv.Itoa(levenshtein.ComputeDistance("a", b))},
-		{"incomprehensible " + c, strconv.Itoa(levenshtein.ComputeDistance("incomprehensible ", c))},
 		{"open however", "5"},
 		{"however open", "5"},
 		{"large hypothetical", "11"},
