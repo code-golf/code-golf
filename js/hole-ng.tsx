@@ -86,7 +86,7 @@ let editor: EditorView | null = null;
     // Kick 'em to Python if we don't know the chosen language, or if there is no given language.
     lang = hashLang && langs[hashLang] ? hashLang : 'python';
 
-    $('#hole-lang summary').innerHTML = langs[lang].name;
+    $('#hole-lang summary').innerText = langs[lang].name;
 
     // Assembly only has bytes.
     if (lang == 'assembly')
