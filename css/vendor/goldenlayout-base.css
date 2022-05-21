@@ -62,8 +62,10 @@
 }
 .lm_header .lm_controls {
   position: absolute;
+  top: 6px;
   right: 3px;
   display: flex;
+  gap: 10px;
 }
 .lm_header .lm_controls > * {
   cursor: pointer;
@@ -81,8 +83,7 @@
   float: left;
   height: 14px;
   margin-top: 1px;
-  padding: 0px 10px 5px;
-  padding-right: 25px;
+  padding: 3px 25px 10px 10px;
   position: relative;
   touch-action: none;
 }
@@ -105,11 +106,11 @@
   text-overflow: ellipsis;
 }
 .lm_header .lm_tab .lm_close_tab {
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 7px;
+  right: 5px;
   text-align: center;
 }
 .lm_stack {

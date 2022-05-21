@@ -635,6 +635,9 @@ const defaultLayout: LayoutConfig = {
     settings: {
         showPopoutIcon: false,
     },
+    dimensions: {
+        headerHeight: 28,
+    },
     root: {
         type: 'column',
         content: [
