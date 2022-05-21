@@ -416,8 +416,8 @@ main {
 #layout-btns {
     grid-row: 6;
     justify-self: center;
-    margin-top: 0.25rem;
-    margin-bottom: -0.5rem;
+    margin-top: 5px;
+    margin-bottom: calc(5px - 1rem);
     display: flex;
     gap: 1rem;
 }
