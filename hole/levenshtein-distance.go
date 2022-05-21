@@ -26,7 +26,7 @@ func levenshteinDistance() ([]string, string) {
 	tests := []test{
 		{a + " " + a, "0"},
 		{"a " + b, levenshtein.ComputeDistance("a", b)},
-		{"incomprehensible " + c, levenshtein.ComputeDistance("incomprehensible ", c},
+		{"incomprehensible " + c, levenshtein.ComputeDistance("incomprehensible ", c)},
 		{"open however", "5"},
 		{"however open", "5"},
 		{"large hypothetical", "11"},
