@@ -735,6 +735,14 @@ $('#add-row').addEventListener('click', addRow);
 
 $('#revert-layout').addEventListener('click', applyDefaultLayout);
 
+$('#make-wide').addEventListener('click',
+    () => document.documentElement.classList.toggle('full-width', true),
+);
+
+$('#make-narrow').addEventListener('click',
+    () => document.documentElement.classList.toggle('full-width', false),
+);
+
 function addPoolItem(componentType: string, title: string) {
     poolElements[componentType]?.remove();
     const el = (<span class="btn">{title}</span>);

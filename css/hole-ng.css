@@ -421,3 +421,12 @@ main {
     display: flex;
     gap: 1rem;
 }
+
+@media only screen and (max-width: 1280px) {
+    #make-narrow, #make-wide { display: none; }
+}
+
+#make-narrow { display: none; }
+.full-width #make-narrow { display: unset; }
+.full-width #make-wide { display: none; }
+.full-width body { max-width: unset; }
