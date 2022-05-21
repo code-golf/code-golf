@@ -7,11 +7,6 @@
 /* include vendor/goldenlayout-base.css */
 /* include vendor/goldenlayout-theme.css */
 
-html {
-    /* Prevent lm_dragProxy from widening view on mobile */
-    overflow-x: hidden;
-}
-
 /* Body background --light-grey to allow code box etc contrast as --background */
 body {
     background: var(--light-grey);
@@ -184,8 +179,6 @@ main > header nav {
 
 #rankingsView {
     background: var(--color);
-    border: 1px solid var(--color);
-    border-top: 0;
     gap: 1px;
 }
 
