@@ -179,6 +179,9 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	case "d":
 		cmd.Args = []string{"/usr/bin/ldc2", "--enable-color=true", "--run", "-"}
 		cmd.Env = []string{"PATH=/usr/bin"}
+	case "elixir":
+		cmd.Args = []string{"/usr/local/bin/elixir", "-e", code, "--"}
+		cmd.Env = []string{"LANG=C.UTF-8", "PATH=/usr/local/bin:/usr/bin:/bin"}
 	case "fish":
 		cmd.Args = []string{"/usr/bin/fish", "--no-prng", "-c", code, "-u"}
 	case "haskell", "php":
@@ -209,7 +212,7 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		// Force the stdout and stderr streams to be unbuffered.
 		cmd.Args = []string{"/usr/bin/python", "-u", "-"}
 	case "sed":
-		cmd.Args = []string{"/usr/bin/sed", "-E", "-z", "--", code}
+		cmd.Args = []string{"/usr/bin/sed", "-E", "-z", "--sandbox", "-u", "--", code}
 	case "swift":
 		cmd.Args = []string{"/usr/bin/swift", "-module-cache-path", "/tmp", "-"}
 	default:
@@ -234,7 +237,7 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 
 	// Code
 	switch langID {
-	case "brainfuck", "fish", "javascript", "sed":
+	case "brainfuck", "elixir", "fish", "javascript", "sed":
 		// For these code is passed as an argument above.
 	case "k":
 		code = preprocessKCode(holeID, code)
@@ -278,18 +281,18 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	// Trim trailing whitespace.
 	score.Stderr = bytes.TrimRightFunc(stderr.Next(maxLength), unicode.IsSpace)
 
+	// Trim trailing spaces per line.
+	// FIXME This is all very hacky, but needed for Sierpiński.
+	stdoutContents := stdout.Next(maxLength)
+
+	// Postprocess sed output to turn null bytes into newlines
+	if langID == "sed" {
+		stdoutContents = bytes.ReplaceAll(stdoutContents, []byte("\x00"), []byte("\n"))
+	}
+
 	if holeID == "quine" {
-		score.Stdout = stdout.Next(maxLength)
+		score.Stdout = stdoutContents
 	} else {
-		// Trim trailing spaces per line.
-		// FIXME This is all very hacky, but needed for Sierpiński.
-		stdoutContents := stdout.Next(maxLength)
-
-		// Postprocess sed output to turn null bytes into newlines
-		if langID == "sed" {
-			stdoutContents = bytes.ReplaceAll(stdoutContents, []byte("\x00"), []byte("\n"))
-		}
-
 		scanner := bufio.NewScanner(bytes.NewReader(stdoutContents))
 		for scanner.Scan() {
 			score.Stdout = append(
@@ -330,7 +333,8 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		return
 	}
 
-	if len(score.Stdout) != 0 {
+	// We do not allow stdout with only whitespace to pass to prevent suspicious sed "quines"
+	if len(bytes.TrimRightFunc(score.Stdout, unicode.IsSpace)) != 0 {
 		// TODO Generalise a case insensitive flag, should it apply to others?
 		if holeID == "css-colors" {
 			score.Pass = strings.EqualFold(score.Answer, string(score.Stdout))

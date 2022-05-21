@@ -97,6 +97,7 @@ export const extensions = {
     'cpp':        cpp(),
     'crystal':    StreamLanguage.define(crystal),
     'd':          StreamLanguage.define(d),
+    // TODO elixir
     'f-sharp':    StreamLanguage.define(fSharp),
     // TODO fish
     'fortran':    StreamLanguage.define(fortran),
@@ -120,6 +121,7 @@ export const extensions = {
     'raku':       StreamLanguage.define(perl),  // TODO raku
     'ruby':       StreamLanguage.define(ruby),
     'rust':       rust(),
+    // TODO sed
     'sql':        sql({ dialect: SQLite }),
     'swift':      StreamLanguage.define(swift),
     // TODO v

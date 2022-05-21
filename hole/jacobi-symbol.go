@@ -6,57 +6,85 @@ import (
 	"strconv"
 )
 
-func randomNatural(bits int) *big.Int {
-	if bits == 64 {
-		return new(big.Int).SetUint64(rand.Uint64())
+func randomNatural(max int) int {
+	if max <= 0 {
+		return 0
 	}
-	if bits == 63 {
-		return new(big.Int).SetInt64(rand.Int63())
-	}
-	return new(big.Int).SetInt64(rand.Int63n((1 << bits) - 1))
+	return rand.Intn(max)
 }
 
-func randomOdd(bits int) *big.Int {
-	k := randomNatural(bits)
-	return k.SetBit(k, 0, 1)
+func randomInClass(max, mod, class int) int {
+	return (randomNatural(max-mod) &^ (mod - 1)) | class
 }
 
-func randomPrime(bits int) *big.Int {
-	k := randomOdd(bits)
-	for !k.ProbablyPrime(20) {
-		k = randomOdd(bits)
+func randomOdd(max int) int {
+	return randomInClass(max, 2, 1)
+}
+
+func randomPrime(max int) int {
+	k := randomInClass(max, 2, 1)
+	for !big.NewInt(int64(k)).ProbablyPrime(20) {
+		k = randomOdd(max)
 	}
 	return k
 }
 
 func jacobiSymbol() ([]string, string) {
-	const mult = 20
-	type input struct {
-		n, k *big.Int
+	const mult = 9
+	tests := []test{{"0 1", "1"}}
+	addTest := func(a, n int) {
+		tests = append(tests, test{
+			strconv.Itoa(a) + " " + strconv.Itoa(n),
+			strconv.Itoa(big.Jacobi(big.NewInt(int64(a)), big.NewInt(int64(n)))),
+		})
 	}
-	inputs := make([]input, 4*mult)
-	tests := make([]test, 4*mult)
+
+	var a, n int
 
 	for i := 0; i < mult; i++ {
-		inputs[i] = input{randomPrime(53), randomOdd(53)}
-	}
-	for i := mult; i < 2*mult; i++ {
-		inputs[i] = input{new(big.Int).Mul(randomPrime(26), randomPrime(27)), randomOdd(53)}
-	}
-	for i := 2 * mult; i < 3*mult; i++ {
-		inputs[i] = input{randomNatural(53), randomOdd(53)}
-	}
-	for i := 3 * mult; i < 4*mult; i++ {
-		common := randomOdd(26)
-		n := new(big.Int).Mul(randomOdd(27), common)
-		k := new(big.Int).Mul(randomOdd(27), common)
-		inputs[i] = input{n, k}
-	}
+		// Random numbers, varying size, a<n
+		n = randomOdd(1 << (53 - 2*i))
+		a = randomNatural(n)
+		addTest(a, n)
+		// Random numbers, varying size, a>n
+		a = randomNatural(1 << (53 - 2*i))
+		n = randomOdd(a)
+		addTest(a, n)
+		// Semiprime n
+		a = randomNatural(1 << 53)
+		n = randomPrime(1<<26) * randomPrime(1<<26)
+		addTest(a, n)
+		// Prime n
+		a = randomNatural(1 << 53)
+		n = randomPrime(1 << 53)
+		addTest(a, n)
+		// Common multiple
+		common := randomOdd(1 << 26)
+		a = randomNatural(1 << 27)
+		n = randomOdd(1 << 27)
+		addTest(a*common, n*common)
+		// a multiple of n
+		a = randomNatural(1 << 26)
+		n = randomOdd(1 << 27)
+		addTest(a*n, n)
+		// n multiple of a
+		a = randomOdd(1 << 26)
+		n = randomOdd(1 << 27)
+		addTest(a, n*a)
+		// a is small
+		n = randomOdd(1 << 53)
+		addTest(i, n)
+		// n is small
+		a = randomNatural(1 << 53)
+		addTest(a, 2*i+1)
 
-	for i, inp := range inputs {
-		tests[i] = test{
-			inp.n.String() + " " + inp.k.String(),
-			strconv.Itoa(big.Jacobi(inp.n, inp.k)),
+	}
+	// Different residue classes
+	for i := 0; i < 4; i++ {
+		for j := 1; j < 8; j += 2 {
+			a = randomInClass(1<<53, 4, i)
+			n = randomInClass(a, 8, j)
+			addTest(a, n)
 		}
 	}
 	return outputTests(shuffle(tests))

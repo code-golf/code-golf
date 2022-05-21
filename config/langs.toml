@@ -19,7 +19,7 @@ v               ~<
 
 [Assembly]
 size    = '79.9 MiB'
-version = 'DefAssembler 2.1.12'
+version = 'DefAssembler 2.2.0'
 website = 'https://www.npmjs.com/package/@defasm/core'
 example = '''
 SYS_WRITE = 1
@@ -264,6 +264,21 @@ void main(string[] argv) {
 }
 '''
 
+[Elixir]
+size    = '166 MiB'
+version = '1.13.4'
+website = 'https://elixir-lang.org'
+example = '''
+# Printing
+IO.puts "Hello, World!"
+
+# Looping
+for i <- 0..9, do: IO.puts i
+
+# Accessing arguments
+for arg <- System.argv, do: IO.puts arg
+'''
+
 ['F#']
 size    = '140 MiB'
 version = 'F# 6.0 on .NET 6.0.4'
@@ -313,7 +328,7 @@ end
 
 [Go]
 size    = '145 MiB'
-version = '1.18.1'
+version = '1.18.2'
 website = 'https://go.dev'
 example = '''
 package main
@@ -716,7 +731,7 @@ G
 
 [SQL]
 size    = '1.09 MiB'
-version = '3.38.4'
+version = '3.38.5'
 website = 'https://sqlite.org'
 example = '''
 -- Printing

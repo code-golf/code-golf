@@ -26,8 +26,9 @@ db-dev:
 	@docker-compose exec db psql -U postgres code-golf
 
 db-diff:
-	@diff --color --label live --label dev --strip-trailing-cr -su    \
-	    <(ssh root@code.golf sudo -iu postgres pg_dump -Os code-golf) \
+	@diff --color --label live --label dev --strip-trailing-cr -su   \
+	    <(ssh root@code.golf sudo -iu postgres pg_dump -Os code-golf \
+	    | sed -E 's/ \(Debian .+\)$//')                              \
 	    <(docker-compose exec -T db pg_dump -OsU postgres code-golf)
 
 db-dump:
@@ -78,7 +79,7 @@ lint:
 	@node_modules/.bin/eslint --ext js,jsx,ts,tsx js/
 
 	@docker run --rm -v $(CURDIR):/app -w /app \
-	    golangci/golangci-lint:v1.46.0 golangci-lint run
+	    golangci/golangci-lint:v1.46.2 golangci-lint run
 
 live:
 	@docker buildx build --pull --push \
