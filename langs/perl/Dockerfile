@@ -27,21 +27,35 @@ RUN mv perl-5.36.0-RC2 perl                                       \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /perl/perl               /usr/bin/
-COPY --from=0 /perl/lib/Carp.pm        \
-              /perl/lib/Config.pm      \
-              /perl/lib/DynaLoader.pm  \
-              /perl/lib/Exporter.pm    \
-              /perl/lib/XSLoader.pm    \
-              /perl/lib/feature.pm     \
-              /perl/lib/integer.pm     \
-              /perl/lib/strict.pm      \
-              /perl/lib/utf8.pm        \
-              /perl/lib/warnings.pm    /usr/lib/perl/
-COPY --from=0 /perl/lib/File/Glob.pm   /usr/lib/perl/File/
-COPY --from=0 /perl/lib/auto/File/Glob/Glob.so \
-          /usr/lib/perl/auto/File/Glob/
+COPY --from=0 /lib/ld-musl-x86_64.so.1         /lib/
+COPY --from=0 /perl/perl                       /usr/bin/
+COPY --from=0 /perl/lib/Carp.pm                \
+              /perl/lib/Config.pm              \
+              /perl/lib/DynaLoader.pm          \
+              /perl/lib/Exporter.pm            \
+              /perl/lib/XSLoader.pm            \
+              /perl/lib/bigint.pm              \
+              /perl/lib/bignum.pm              \
+              /perl/lib/constant.pm            \
+              /perl/lib/feature.pm             \
+              /perl/lib/integer.pm             \
+              /perl/lib/overload.pm            \
+              /perl/lib/overloading.pm         \
+              /perl/lib/strict.pm              \
+              /perl/lib/utf8.pm                \
+              /perl/lib/vars.pm                \
+              /perl/lib/warnings.pm            /usr/lib/perl/
+COPY --from=0 /perl/lib/Exporter/Heavy.pm      /usr/lib/perl/Exporter/
+COPY --from=0 /perl/lib/File/Glob.pm           /usr/lib/perl/File/
+COPY --from=0 /perl/lib/List/Util.pm           /usr/lib/perl/List/
+COPY --from=0 /perl/lib/Math/BigFloat.pm       \
+              /perl/lib/Math/BigInt.pm         /usr/lib/perl/Math/
+COPY --from=0 /perl/lib/Math/BigInt/Calc.pm    \
+              /perl/lib/Math/BigInt/Lib.pm     /usr/lib/perl/Math/BigInt/
+COPY --from=0 /perl/lib/Scalar/Util.pm         /usr/lib/perl/Scalar/
+COPY --from=0 /perl/lib/auto/File/Glob/Glob.so /usr/lib/perl/auto/File/Glob/
+COPY --from=0 /perl/lib/auto/List/Util/Util.so /usr/lib/perl/auto/List/Util/
+COPY --from=0 /perl/lib/warnings/register.pm   /usr/lib/perl/warnings/
 
 ENTRYPOINT ["perl"]
 
