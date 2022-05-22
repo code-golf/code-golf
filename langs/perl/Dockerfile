@@ -1,19 +1,19 @@
 FROM alpine:3.15 as builder
 
-RUN apk add --no-cache build-base curl perl
+RUN apk add --no-cache build-base curl
 
-RUN curl http://www.cpan.org/src/5.0/perl-5.34.1.tar.xz | tar xJ
+RUN curl https://www.cpan.org/src/5.0/perl-5.36.0-RC2.tar.xz | tar xJ
 
-RUN mv perl-5.34.1 perl                                           \
+RUN mv perl-5.36.0-RC2 perl                                       \
  && cd perl                                                       \
- && perl -pe 's/default => \[/$& "say",/' regen/feature.pl | perl \
  && ./Configure                                                   \
-    -Accflags='-DNO_LOCALE                                        \
-    -DNO_MATHOMS                                                  \
-    -DPERL_DISABLE_PMC                                            \
-    -DPERL_HASH_USE_SBOX32_ALSO=0                                 \
-    -DPERL_USE_SAFE_PUTENV                                        \
-    -DSILENT_NO_TAINT_SUPPORT'                                    \
+    -Accflags='                                                   \
+        -DNO_LOCALE                                               \
+        -DNO_MATHOMS                                              \
+        -DPERL_DISABLE_PMC                                        \
+        -DPERL_HASH_USE_SBOX32_ALSO=0                             \
+        -DPERL_USE_SAFE_PUTENV                                    \
+        -DSILENT_NO_TAINT_SUPPORT'                                \
     -des                                                          \
     -Darchlib=/usr/lib/perl                                       \
     -Dinc_version_list=none                                       \
@@ -45,4 +45,4 @@ COPY --from=0 /perl/lib/auto/File/Glob/Glob.so \
 
 ENTRYPOINT ["perl"]
 
-CMD ["-e", "say substr $^V, 1"]
+CMD ["-E", "say substr $^V, 1"]

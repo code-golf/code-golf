@@ -199,6 +199,8 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		cmd.Env = []string{"HOME=/"}
 	case "nim":
 		cmd.Args = []string{"/usr/bin/nim", "--colors:on", "-o:/tmp/code", "-r", "c", "-"}
+	case "perl":
+		cmd.Args = []string{"/usr/bin/perl", "-E", code, "--"}
 	case "powershell":
 		cmd.Args = []string{"/usr/bin/powershell"}
 
@@ -237,7 +239,7 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 
 	// Code
 	switch langID {
-	case "brainfuck", "elixir", "fish", "javascript", "sed":
+	case "brainfuck", "elixir", "fish", "javascript", "perl", "sed":
 		// For these code is passed as an argument above.
 	case "k":
 		code = preprocessKCode(holeID, code)
