@@ -2,9 +2,9 @@ FROM alpine:3.15 as builder
 
 RUN apk add --no-cache build-base curl
 
-RUN curl https://www.cpan.org/src/5.0/perl-5.36.0-RC2.tar.xz | tar xJ
+RUN curl https://www.cpan.org/src/5.0/perl-5.36.0-RC3.tar.xz | tar xJ
 
-RUN mv perl-5.36.0-RC2 perl                                       \
+RUN mv perl-5.36.0-RC3 perl                                       \
  && cd perl                                                       \
  && ./Configure                                                   \
     -Accflags='                                                   \
@@ -24,6 +24,10 @@ RUN mv perl-5.36.0-RC2 perl                                       \
     -Dvendorarch=/usr/lib/perl                                    \
  && make -j`nproc`                                                \
  && strip -s perl
+
+# Manually bump to fix https://rt.cpan.org/Ticket/Display.html?id=142859.
+RUN curl https://cpan.metacpan.org/authors/id/P/PJ/PJACKLAM/Math-BigInt-1.999833.tar.gz \
+  | tar --strip-components 2 -xzC /perl/lib Math-BigInt-1.999833/lib
 
 FROM codegolf/lang-base
 
