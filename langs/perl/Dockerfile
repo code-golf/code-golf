@@ -26,8 +26,8 @@ RUN mv perl-5.36.0-RC3 perl                                       \
  && strip -s perl
 
 # Manually bump to fix https://rt.cpan.org/Ticket/Display.html?id=142859.
-RUN curl https://cpan.metacpan.org/authors/id/P/PJ/PJACKLAM/Math-BigInt-1.999833.tar.gz \
-  | tar --strip-components 2 -xzC /perl/lib Math-BigInt-1.999833/lib
+RUN curl https://cpan.metacpan.org/authors/id/P/PJ/PJACKLAM/Math-BigInt-1.999835.tar.gz \
+  | tar --strip-components 2 -xzC /perl/lib Math-BigInt-1.999835/lib
 
 FROM codegolf/lang-base
 
