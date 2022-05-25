@@ -126,7 +126,7 @@ main a.isDiamond:not(:hover) {
     z-index: 1;
 }
 
-main a.grey {
+main a.grey:not(:hover) {
     border: none;
     color: var(--play-color)
 }
