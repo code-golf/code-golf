@@ -122,6 +122,13 @@ main svg:nth-of-type(2) {
     }
 }
 
-a.isDiamond {
-    box-shadow: inset 0 0 12px 2px gold, 0 0 10px 2px gold;
+main a.isDiamond:not(:hover) {
+    box-shadow: inset 0 0 12px 2px gold, 0 0 10px 2px var(--diamond-outglow);
+    font-weight: var(--diamond-weight);
+    z-index: 1;
+}
+
+main a.grey:not(:hover) {
+    border: none;
+    color: var(--play-color)
 }
