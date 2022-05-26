@@ -498,3 +498,7 @@ details.tabs a { display: inline-block }
     transition: all 0s;
     padding-left: 10px;
 }
+
+#copy {
+    display: inline
+}
