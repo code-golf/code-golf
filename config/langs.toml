@@ -1,6 +1,6 @@
 ['><>']
-size    = '4.98 MiB'
-version = '4808a6c'
+size    = '4.99 MiB'
+version = '888b90f'
 website = 'https://github.com/primo-ppcg/fish-jit'
 example = '''
 \ printing
@@ -152,7 +152,7 @@ int main(int argc, char* argv[]) {
 
 ['C#']
 size    = '145 MiB'
-version = 'C# 10.0 on .NET 6.0.4'
+version = 'C# 10.0 on .NET 6.0.5'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -168,7 +168,7 @@ foreach (String arg in args)
 '''
 
 ['C++']
-size    = '115 MiB'
+size    = '117 MiB'
 version = '13.0.0'
 website = 'https://clang.llvm.org'
 example = '''
@@ -242,8 +242,8 @@ end
 '''
 
 [D]
-size    = '253 MiB'
-version = 'D 2.098.0 on LDC 1.28.0'
+size    = '245 MiB'
+version = 'D 2.098.1 on LDC 1.28.1'
 website = 'https://dlang.org'
 example = '''
 import std.stdio;
@@ -281,7 +281,7 @@ for arg <- System.argv, do: IO.puts arg
 
 ['F#']
 size    = '140 MiB'
-version = 'F# 6.0 on .NET 6.0.4'
+version = 'F# 6.0 on .NET 6.0.5'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -301,7 +301,7 @@ let main args =
 '''
 
 [Fortran]
-size    = '80.2 MiB'
+size    = '77.1 MiB'
 version = 'GNU Fortran 11.2.0'
 website = 'https://gcc.gnu.org/fortran/'
 example = '''
@@ -453,8 +453,8 @@ for (let arg of arguments)
 '''
 
 [Julia]
-size    = '278 MiB'
-version = '1.7.2'
+size    = '279 MiB'
+version = '1.7.3'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -472,7 +472,7 @@ end
 '''
 
 [K]
-size    = '262 KiB'
+size    = '258 KiB'
 version = '7508b9ae11'
 website = 'https://codeberg.org/ngn/k'
 example = '''
@@ -487,7 +487,7 @@ example = '''
 '''
 
 [Lisp]
-size    = '33.6 MiB'
+size    = '30.9 MiB'
 version = 'GNU CLISP 2.49.92'
 website = 'https://clisp.sourceforge.io'
 example = '''
@@ -544,7 +544,7 @@ for arg in commandLineParams():
 '''
 
 [Pascal]
-size    = '31.2 MiB'
+size    = '31.3 MiB'
 version = '3.2.2'
 website = 'https://freepascal.org'
 example = '''
@@ -565,7 +565,7 @@ end.
 '''
 
 [Perl]
-size    = '5.33 MiB'
+size    = '5.32 MiB'
 version = '5.36.0'
 website = 'https://www.perl.org'
 example = '''
@@ -598,7 +598,7 @@ for ($i = 1; $i < $argc; $i++)
 
 [PowerShell]
 size    = '177 MiB'
-version = 'PowerShell 7.2.3 on .NET 6.0.4'
+version = 'PowerShell 7.2.4 on .NET 6.0.5'
 website = 'https://docs.microsoft.com/powershell/scripting/overview'
 example = '''
 # Printing
@@ -633,7 +633,7 @@ example = '''
 '''
 
 [Python]
-size    = '57.8 MiB'
+size    = '55.3 MiB'
 version = '3.10.4'
 website = 'https://www.python.org'
 example = '''
@@ -667,7 +667,7 @@ say 'Hello, World!';
 '''
 
 [Ruby]
-size    = '24.3 MiB'
+size    = '24.2 MiB'
 version = '3.1.2'
 website = 'https://www.ruby-lang.org'
 example = '''
