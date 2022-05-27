@@ -487,3 +487,18 @@ details.tabs a { display: inline-block }
 }
 
 @media (max-width: 34rem) { .wide { display: none !important } }
+
+#copy + span {
+    opacity: 0;
+    transition: all 2s;
+}
+
+#copy:active + span {
+    opacity: 1;
+    transition: all 0s;
+    padding-left: 10px;
+}
+
+#copy {
+    display: inline
+}
