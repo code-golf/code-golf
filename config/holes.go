@@ -24,6 +24,7 @@ type (
 	Hole struct {
 		Category, CategoryColor, CategoryIcon string
 		Data                                  template.JS
+		Output                                string
 		Experiment                            int
 		ID, Name, Prev, Next                  string
 		Preamble                              template.HTML
@@ -79,17 +80,31 @@ func init() {
 	for name, hole := range holes {
 		hole.ID = id(name)
 		hole.Name = name
+		holeID := hole.ID
+		hole.Output = ""
+		if holeID == "√2" {
+			holeID = "root-2"
+		}
 
-		// Process the templated preamble with the data.
-		if hole.Data != "" {
+		if b, err := answers.ReadFile("answers/" + holeID + ".txt"); err == nil {
+			hole.Output = string(bytes.TrimSuffix(b, []byte{'\n'}))
+		}
+
+		if hole.Data != "" or hole.Output != "" {
 			t, err := template.New("").Parse(string(hole.Preamble))
 			if err != nil {
 				panic(err)
 			}
 
-			var data ordered.Map
-			if err := json.Unmarshal([]byte(hole.Data), &data); err != nil {
-				panic(err)
+			var data struct {
+				Data ordered.Map
+				Output string
+			}
+			data.Output = hole.Output
+			if hole.Data != "" {
+				if err := json.Unmarshal([]byte(hole.Data), &data.Data); err != nil {
+					panic(err)
+				}
 			}
 
 			var b bytes.Buffer

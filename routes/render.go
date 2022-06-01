@@ -38,6 +38,14 @@ func colour(i int) string {
 	return "green"
 }
 
+func getLines(i int, text string) string {
+    lines := strings.Split(text, "\n")
+	if i >= 0{
+        return strings.Join(lines[:i], "\n")
+    }
+    return strings.Join(lines[len(lines)+i:], "\n")
+}
+
 var (
 	assets = map[string]string{}
 	css    = map[string]template.CSS{}
@@ -49,6 +57,7 @@ var (
 var tmpl = template.New("").Funcs(template.FuncMap{
 	"bytes":     pretty.Bytes,
 	"colour":    colour,
+    "lines":     getLines,
 	"comma":     pretty.Comma,
 	"dec":       func(i int) int { return i - 1 },
 	"hasPrefix": strings.HasPrefix,

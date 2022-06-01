@@ -1,4 +1,6 @@
 import { $ } from './_util';
 
-$('#copy')?.addEventListener('click', () =>
-    navigator.clipboard.writeText($('#data').innerText));
+$('#copyJson')?.addEventListener('click', () =>
+    navigator.clipboard.writeText($('#dataJson').innerText));
+$('#copyOutput')?.addEventListener('click', () =>
+    navigator.clipboard.writeText($('#dataOutput').innerText));
