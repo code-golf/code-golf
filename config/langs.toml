@@ -106,8 +106,8 @@ done
 '''
 
 [brainfuck]
-size    = '4.56 MiB'
-version = 'c68db6c'
+size    = '4.57 MiB'
+version = '3bdbd20'
 website = 'https://github.com/primo-ppcg/bf-jit'
 example = '''
 >>Printing
