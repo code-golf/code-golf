@@ -191,7 +191,7 @@ int main(int argc, char* argv[]) {
 '''
 
 [COBOL]
-size    = '4.1 MiB'
+size    = '4.09 MiB'
 version = 'GnuCOBOL 3.1.2.0'
 website = 'https://gnucobol.sourceforge.io'
 example = '''
@@ -328,7 +328,7 @@ end
 
 [Go]
 size    = '145 MiB'
-version = '1.18.2'
+version = '1.18.3'
 website = 'https://go.dev'
 example = '''
 package main
