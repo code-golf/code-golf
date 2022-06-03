@@ -40,7 +40,7 @@ type sunSign struct {
 	risingSymbols             []string
 }
 
-func outString(sunSymbol string, risingSymbol string) string {
+func symbolsToString(sunSymbol string, risingSymbol string) string {
 	if sunSymbol == risingSymbol {
 		return sunSymbol
 	}
@@ -50,7 +50,7 @@ func outString(sunSymbol string, risingSymbol string) string {
 func (sign sunSign) randomDate(hour int) test {
 	d := rand.Intn(sign.endDate-sign.startDate) + sign.startDate
 	m := rand.Intn(60)
-	return test{fmt.Sprintf("%02d-%02d %02d:%02d", sign.month, d, hour, m), outString(sign.symbol, sign.risingSymbols[hour])}
+	return test{fmt.Sprintf("%02d-%02d %02d:%02d", sign.month, d, hour, m), symbolsToString(sign.symbol, sign.risingSymbols[hour])}
 }
 
 func (sign sunSign) edgeDate(hour int) test {
@@ -59,7 +59,7 @@ func (sign sunSign) edgeDate(hour int) test {
 		d = sign.endDate
 	}
 	m := rand.Intn(60)
-	return test{fmt.Sprintf("%02d-%02d %02d:%02d", sign.month, d, hour, m), outString(sign.symbol, sign.risingSymbols[hour])}
+	return test{fmt.Sprintf("%02d-%02d %02d:%02d", sign.month, d, hour, m), symbolsToString(sign.symbol, sign.risingSymbols[hour])}
 }
 
 func zodiacSigns() ([]string, string) {
