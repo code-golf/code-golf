@@ -776,7 +776,7 @@ for arg in CommandLine.arguments[1...] {
 '''
 
 [V]
-size    = '38.1 MiB'
+size    = '38.5 MiB'
 version = '0.2.4'
 website = 'https://vlang.io'
 example = '''
