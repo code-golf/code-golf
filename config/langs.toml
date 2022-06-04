@@ -473,7 +473,7 @@ end
 
 [K]
 size    = '258 KiB'
-version = '7508b9ae11'
+version = 'e6cae27c61'
 website = 'https://codeberg.org/ngn/k'
 example = '''
 /Printing
