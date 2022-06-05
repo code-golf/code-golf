@@ -126,7 +126,8 @@ $ make db-dev
 ## Style
 
 URL slugs are consistently abbreviated (e.g. cheevos, langs, stats) but page
-titles aren't (e.g. Achievements, Languages, Statistics).
+titles aren't (e.g. Achievements, Languages, Statistics), tabs are sometimes
+abbreviated for space reasons.
 
 Paginated URLs use a trailing number but only on pages after the first (e.g.
 /rankings/medals/all, /rankings/medals/all/2, etc.).

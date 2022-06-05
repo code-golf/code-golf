@@ -80,12 +80,15 @@
         <a {{ if ne $.Path $slug }} href="{{ $slug }}" {{ end }}>Profile</a>
 
         {{ $slug = print "/golfers/" .Name "/cheevos" }}
-        <a {{ if ne $.Path $slug }} href="{{ $slug }}" {{ end }}>Achievements</a>
+        <a {{ if ne $.Path $slug }} href="{{ $slug }}" {{ end }}>Cheevos</a>
 
         {{ $slug = print "/golfers/" .Name "/holes" }}
         <a {{ if not (hasPrefix $.Path $slug) }} href="{{ $slug }}/bytes" {{ end }}>
             Holes
         </a>
+
+        {{ $slug = print "/golfers/" .Name "/langs" }}
+        <a {{ if ne $.Path $slug }} href="{{ $slug }}" {{ end }}>Langs</a>
 
     {{ if $me }}
         <a {{ if ne $.Path "/golfer/settings" }} href=/golfer/settings {{ end }}>

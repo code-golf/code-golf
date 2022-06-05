@@ -72,6 +72,7 @@ func Router(db *sql.DB) http.Handler {
 		r.Get("/holes/{scoring}", golferHolesGET)
 		r.Get("/{hole}/{lang}/{scoring}", golferSolutionGET)
 		// r.Post("/{hole}/{lang}/{scoring}", golferSolutionPOST)
+		r.Get("/langs", golferLangsGET)
 	})
 	r.Get("/healthz", healthzGET)
 	r.Get("/ideas", ideasGET)

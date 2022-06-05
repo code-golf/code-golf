@@ -1,0 +1,28 @@
+td div, th div {
+    align-items: center;
+    display: flex;
+    gap: .75rem;
+}
+
+th div:before, th div:after{
+    border-top: 2px solid var(--color);
+    content: '';
+    flex: 1;
+}
+
+td svg, th svg {
+    height: 1rem;
+    margin-right: -.5rem;
+    width: 1rem;
+}
+
+td:nth-child(n+3), th:nth-child(n+3) { text-align: right }
+
+td:nth-child(4n+3) { border-left: 1px solid var(--color) }
+
+tr:first-child th {
+    border: 0;
+    line-height: 1rem;
+}
+
+tr:first-child th:not(:first-child) { width: 33% }

@@ -1,0 +1,56 @@
+{{ template "header" . }}
+{{ template "golfer" . }}
+
+<main>
+    <table>
+        <thead>
+            <tr>
+                <th>
+                <th>
+                <th colspan=4><div>{{ svg "bytes" }}Bytes</div>
+                <th colspan=4><div>{{ svg "chars" }}Chars</div>
+            <tr>
+                <th>#
+                <th>Language
+
+                <th>Rank
+                <th>Points
+                <th>Strokes
+                <th>Holes
+
+                <th>Rank
+                <th>Points
+                <th>Strokes
+                <th>Holes
+        <tbody>
+            <tr>
+                <td>1<sup>st</sup>
+                <td><div>{{ svg "elixir" }}Elixir</div>
+
+                <td>3<sup>rd</sup>
+                <td>23,250
+                <td>79,519
+                <td>46 / 75
+
+                <td>3<sup>rd</sup>
+                <td>23,008
+                <td>72,491
+                <td>46 / 75
+
+            <tr>
+                <td>2<sup>nd</sup>
+                <td><div>{{ svg "perl" }}Perl</div>
+
+                <td>6<sup>th</sup>
+                <td>39,158
+                <td>40,598
+                <td>73 / 75
+
+                <td>6<sup>th</sup>
+                <td>33,746
+                <td>40,218
+                <td>73 / 75
+    </table>
+</main>
+
+{{ template "footer" }}
