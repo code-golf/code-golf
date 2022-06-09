@@ -117,7 +117,7 @@
 
 {{ end }}
 
-{{ with $.CheevoBanner }}
+{{ with .CheevoBanner }}
     <div class=info>
         {{ svg "info-circle" }}
         <p>
@@ -127,5 +127,14 @@
             {{ else }}
                 be available in {{ time (.Start.In $.Location) }}.
             {{ end }}
+    </div>
+{{ end }}
+
+{{ with .HoleBanner }}
+    <div class=info>
+        {{ svg "info-circle" }}
+        <p>
+            The <a href="{{ .ID }}">{{ .Name }}</a> hole is now live!
+            Why not try and solve it?
     </div>
 {{ end }}

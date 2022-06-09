@@ -20,7 +20,7 @@ func (f *FailingSolutions) Scan(src any) error {
 
 type Golfer struct {
 	Admin, ShowCountry                     bool
-	Cheevos                                []string
+	Cheevos, Holes                         []string
 	Country, Keymap, Name, Referrer, Theme string
 	Delete                                 sql.NullTime
 	FailingSolutions                       FailingSolutions
@@ -59,6 +59,12 @@ func (g *Golfer) Earned(cheevoID string) bool {
 // FIXME Ideally we'd scan into a []int not a []int64 but pq won't.
 func (g *Golfer) IsFollowing(userID int) bool {
 	_, ok := slices.BinarySearch(g.Following, int64(userID))
+	return ok
+}
+
+// Solved returns whether the golfer has solved that hole. Counts failing too.
+func (g *Golfer) Solved(holeID string) bool {
+	_, ok := slices.BinarySearch(g.Holes, holeID)
 	return ok
 }
 
