@@ -12,12 +12,12 @@ require (
 	github.com/gofrs/uuid v4.2.0+incompatible
 	github.com/gorilla/feeds v1.1.1
 	github.com/lib/pq v1.10.6
-	github.com/pelletier/go-toml/v2 v2.0.1
-	github.com/shurcooL/graphql v0.0.0-20220520033453-bdb1221e171e
+	github.com/pelletier/go-toml/v2 v2.0.2
+	github.com/shurcooL/graphql v0.0.0-20220606043923-3cf50f8a0a29
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
-	github.com/tdewolff/minify/v2 v2.11.8
-	golang.org/x/exp v0.0.0-20220602145555-4a0574d9293f
-	golang.org/x/oauth2 v0.0.0-20220524215830-622c5d57e401
+	github.com/tdewolff/minify/v2 v2.11.9
+	golang.org/x/exp v0.0.0-20220609121020-a51bd0440498
+	golang.org/x/oauth2 v0.0.0-20220608161450-d0670ef3b1eb
 	gopkg.in/guregu/null.v4 v4.0.0
 )
 
@@ -29,8 +29,8 @@ require (
 	github.com/kr/text v0.2.0 // indirect
 	github.com/tdewolff/parse/v2 v2.5.33 // indirect
 	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e // indirect
-	golang.org/x/net v0.0.0-20220531201128-c960675eff93 // indirect
-	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
+	golang.org/x/net v0.0.0-20220607020251-c690dde0001d // indirect
+	golang.org/x/sys v0.0.0-20220608164250-635b8c9b7f68 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
 )
