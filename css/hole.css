@@ -118,18 +118,18 @@ section header {
     line-height: 2rem;
 }
 
-#copy + span {
+.btn.copy + span {
     opacity: 0;
     transition: all 2s;
 }
 
-#copy:active + span {
+.btn.copy:active + span {
     opacity: 1;
     padding-left: 1rem;
     transition: all 0s;
 }
 
-#copy { display: inline }
+.btn.copy { display: inline }
 
 #editor {
     border: 1px solid var(--color);

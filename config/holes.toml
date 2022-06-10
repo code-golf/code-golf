@@ -30,26 +30,10 @@ links = [
 preamble = '''
 <p>Print the lyrics to the song <b>The 12 Days of Christmas</b>:</p>
 
-<blockquote>On the First day of Christmas
-My true love sent to me
-A Partridge in a Pear Tree.
-<br><br>
+<blockquote>
+{{ lines 5 .Output }}
 …
-<br><br>
-On the Twelfth day of Christmas
-My true love sent to me
-Twelve Drummers Drumming,
-Eleven Pipers Piping,
-Ten Lords-a-Leaping,
-Nine Ladies Dancing,
-Eight Maids-a-Milking,
-Seven Swans-a-Swimming,
-Six Geese-a-Laying,
-Five Gold Rings,
-Four Calling Birds,
-Three French Hens,
-Two Turtle Doves, and
-A Partridge in a Pear Tree.
+{{ lines -16 .Output }}
 </blockquote>
 '''
 
@@ -62,19 +46,10 @@ links = [
 preamble = '''
 <p>Print the lyrics to the song <b>99 Bottles of Beer</b>:</p>
 
-<blockquote>99 bottles of beer on the wall, 99 bottles of beer.
-Take one down and pass it around, 98 bottles of beer on the wall.
-<br><br>
-98 bottles of beer on the wall, 98 bottles of beer.
-Take one down and pass it around, 97 bottles of beer on the wall.
-<br><br>
+<blockquote>
+{{ lines 6 .Output }}
 …
-<br><br>
-1 bottle of beer on the wall, 1 bottle of beer.
-Take one down and pass it around, no more bottles of beer on the wall.
-<br><br>
-No more bottles of beer on the wall, no more bottles of beer.
-Go to the store and buy some more, 99 bottles of beer on the wall.
+{{ lines -6 .Output }}
 </blockquote>
 '''
 
@@ -219,26 +194,7 @@ links = [
 preamble = '''
 <p>Print the following ASCII table, taken from <code>man 7 ascii</code>
 
-<pre>
-   2 3 4 5 6 7
- -------------
-0:   0 @ P ` p
-1: ! 1 A Q a q
-2: " 2 B R b r
-3: # 3 C S c s
-4: $ 4 D T d t
-5: % 5 E U e u
-6: & 6 F V f v
-7: ' 7 G W g w
-8: ( 8 H X h x
-9: ) 9 I Y i y
-A: * : J Z j z
-B: + ; K [ k {
-C: , < L \ l |
-D: - = M ] m }
-E: . > N ^ n ~
-F: / ? O _ o DEL
-</pre>
+<pre>{{ .Output }}</pre>
 '''
 
 [brainfuck]
@@ -332,25 +288,12 @@ preamble = '''
     A size <b>3</b> tree should look like this, with a single centered
     asterisk for the trunk:
 
-<pre>   *
-  ***
- *****
-   *
+<pre>{{ lines 4 .Output }}
 </pre>
 
 <p>With the largest size <b>9</b> tree looking like this:
 
-<pre>         *
-        ***
-       *****
-      *******
-     *********
-    ***********
-   *************
-  ***************
- *****************
-         *
-</pre>
+<pre>{{ lines -10 .Output }}</pre>
 '''
 
 [Collatz]
@@ -471,7 +414,7 @@ Given each CSS color keyword print the corresponding hex value. The output
 will be checked case-insensitively. The full mapping is as follows:
 
 <div id=colors>
-{{ range . }}
+{{ range .Data }}
     {{ if or (eq .Key "IndianRed") (eq .Key "Magenta")
              (eq .Key "Cyan"     ) (eq .Key "Sienna" ) }}
         <table><thead><tr><th>Keyword<th>Hex<tbody>
@@ -498,41 +441,11 @@ preamble = '''
     range from size <b>1</b> to size <b>7</b> with a blank line between each
     cube. A size <b>1</b> cube should look like:
 
-<pre>  █────█
- ╱    ╱│
-█────█ │
-│    │ █
-│    │╱
-█────█
-</pre>
+<pre>{{ lines 6 .Output }}</pre>
 
 <p>And a size <b>7</b> cube should look like:
 
-<pre>        █────────────────────────────█
-       ╱                            ╱│
-      ╱                            ╱ │
-     ╱                            ╱  │
-    ╱                            ╱   │
-   ╱                            ╱    │
-  ╱                            ╱     │
- ╱                            ╱      │
-█────────────────────────────█       │
-│                            │       │
-│                            │       │
-│                            │       │
-│                            │       │
-│                            │       │
-│                            │       │
-│                            │       █
-│                            │      ╱
-│                            │     ╱
-│                            │    ╱
-│                            │   ╱
-│                            │  ╱
-│                            │ ╱
-│                            │╱
-█────────────────────────────█
-</pre>
+<pre>{{ lines -24 .Output }}</pre>
 '''
 
 [Diamonds]
@@ -544,28 +457,11 @@ preamble = '''
     separated by a blank line.<p>A size <b>1</b> diamond should look like
     this, a single centered <b>1</b>:
 
-<pre>         1</pre>
+<pre>{{ lines 1 .Output }}</pre>
 
 <p>With the largest size <b>9</b> diamond looking like this:
 
-<pre>         1
-        121
-       12321
-      1234321
-     123454321
-    12345654321
-   1234567654321
-  123456787654321
- 12345678987654321
-  123456787654321
-   1234567654321
-    12345654321
-     123454321
-      1234321
-       12321
-        121
-         1
-</pre>
+<pre>{{ lines -17 .Output }}</pre>
 '''
 
 [Divisors]
@@ -631,7 +527,7 @@ preamble = '''
 <p>Note despite how they appear below, there are no spaces in the emoticons.
 
 <div id=emojify>
-{{ range . }}
+{{ range .Data }}
     <div>{{ .Value }}<pre>{{ .Key }}{{ if eq .Key ":-" }} {{ end }}</pre></div>
 {{ end }}
 </div>
@@ -1360,16 +1256,7 @@ preamble = '''
 
 <p>The full grid should look like this:
 
-<pre> 0  1  2  3  4  5  6  7  8  9
-35 36 37 38 39 40 41 42 43 10
-34 63 64 65 66 67 68 69 44 11
-33 62 83 84 85 86 87 70 45 12
-32 61 82 95 96 97 88 71 46 13
-31 60 81 94 99 98 89 72 47 14
-30 59 80 93 92 91 90 73 48 15
-29 58 79 78 77 76 75 74 49 16
-28 57 56 55 54 53 52 51 50 17
-27 26 25 24 23 22 21 20 19 18</pre>
+<pre>{{ .Output }}</pre>
 '''
 
 ['Odd Polyomino Tiling']
@@ -1797,17 +1684,7 @@ preamble = '''
 where 1 is alive, 0 is dead, and the middle digit represents the previous state of the current cell.
 <p>
     The first 10 rows are shown here:
-<pre>         █
-        ██
-       ███
-      ██ █
-     █████
-    ██   █
-   ███  ██
-  ██ █ ███
- ███████ █
-██     ███
-</pre>
+<pre>{{ lines 10 .Output }}</pre>
 
 '''
 
@@ -1845,23 +1722,7 @@ preamble = '''
     A Sierpiński triangle of order 4 should look like this, print such an
     output:
 
-<pre>               ▲
-              ▲ ▲
-             ▲   ▲
-            ▲ ▲ ▲ ▲
-           ▲       ▲
-          ▲ ▲     ▲ ▲
-         ▲   ▲   ▲   ▲
-        ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲
-       ▲               ▲
-      ▲ ▲             ▲ ▲
-     ▲   ▲           ▲   ▲
-    ▲ ▲ ▲ ▲         ▲ ▲ ▲ ▲
-   ▲       ▲       ▲       ▲
-  ▲ ▲     ▲ ▲     ▲ ▲     ▲ ▲
- ▲   ▲   ▲   ▲   ▲   ▲   ▲   ▲
-▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲
-</pre>
+<pre>{{ .Output }}</pre>
 '''
 
 ['Smith Numbers']
@@ -2125,22 +1986,7 @@ links = [
 preamble = '''
 <p>Output the following tongue twisters with a blank line between each one:
 
-<blockquote>
-How much wood would a woodchuck chuck,
-If a woodchuck could chuck wood?
-A woodchuck would chuck all the wood he could chuck
-If a woodchuck would chuck wood.
-<br><br>
-Peter Piper picked a peck of pickled peppers.
-A peck of pickled peppers Peter Piper picked.
-If Peter Piper picked a peck of pickled peppers,
-Where's the peck of pickled peppers Peter Piper picked?
-<br><br>
-She sells seashells by the seashore,
-The shells she sells are seashells, I'm sure.
-So if she sells seashells on the seashore,
-Then I'm sure she sells seashore shells.
-</blockquote>
+<blockquote>{{ .Output }}</blockquote>
 '''
 
 [Turtle]
@@ -2219,7 +2065,7 @@ preamble = '''
 <p>The full mapping is as follows:
 
 <div id=states>
-{{ range . }}
+{{ range .Data }}
     {{ if or (eq .Value "AL") (eq .Value "IL")
              (eq .Value "MT") (eq .Value "RI") }}
         <table><thead><tr><th>State<th>Abbr.<tbody>
