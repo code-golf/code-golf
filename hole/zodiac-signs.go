@@ -32,8 +32,6 @@ var sunSigns = [...]sunSign{
 	{3, 1, 20, "♓", []string{"♑", "♑", "♒", "♒", "♓", "♓", "♈", "♈", "♉", "♉", "♊", "♊", "♋", "♋", "♌", "♌", "♍", "♍", "♎", "♎", "♏", "♏", "♐", "♐"}},
 }
 
-var hours = [...]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23}
-
 type sunSign struct {
 	month, startDate, endDate int
 	symbol                    string
@@ -48,36 +46,40 @@ func symbolsToString(sunSymbol string, risingSymbol string) string {
 }
 
 func (sign sunSign) randomDate(hour int) test {
-	d := rand.Intn(sign.endDate-sign.startDate) + sign.startDate
-	m := rand.Intn(60)
-	return test{fmt.Sprintf("%02d-%02d %02d:%02d", sign.month, d, hour, m), symbolsToString(sign.symbol, sign.risingSymbols[hour])}
+	day := randInt(sign.startDate, sign.endDate)
+	return sign.test(day, hour)
 }
 
 func (sign sunSign) edgeDate(hour int) test {
-	d := sign.startDate
-	if d == 1 {
-		d = sign.endDate
+	day := sign.startDate
+	if day == 1 {
+		day = sign.endDate
 	}
-	m := rand.Intn(60)
-	return test{fmt.Sprintf("%02d-%02d %02d:%02d", sign.month, d, hour, m), symbolsToString(sign.symbol, sign.risingSymbols[hour])}
+	return sign.test(day, hour)
+}
+
+func (sign sunSign) test(day int, hour int) test {
+	minute := rand.Intn(60)
+	return test{fmt.Sprintf("%02d-%02d %02d:%02d", sign.month, day, hour, minute), symbolsToString(sign.symbol, sign.risingSymbols[hour])}
 }
 
 func zodiacSigns() ([]string, string) {
 	const (
 		randomCases = 20
-		totalCases  = randomCases + len(sunSigns) + len(sunSigns)*len(hours)
+		hours       = 24
+		totalCases  = randomCases + len(sunSigns) + len(sunSigns)*hours
 	)
 
 	tests := make([]test, randomCases, totalCases)
 
 	for i := 0; i < randomCases; i++ {
-		tests[i] = sunSigns[rand.Intn(len(sunSigns))].randomDate(hours[rand.Intn(len(hours))])
+		tests[i] = randChoice(sunSigns[:]).randomDate(rand.Intn(hours))
 	}
 
 	for _, sunSign := range sunSigns {
-		tests = append(tests, sunSign.edgeDate(hours[rand.Intn(len(hours))]))
-		for _, hour := range hours {
-			tests = append(tests, sunSign.randomDate(hours[hour]))
+		tests = append(tests, sunSign.edgeDate(rand.Intn(hours)))
+		for hour := 0; hour < hours; hour++ {
+			tests = append(tests, sunSign.randomDate(hour))
 		}
 	}
 

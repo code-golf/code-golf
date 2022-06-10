@@ -46,3 +46,9 @@ func shuffle[E any](x []E) []E {
 	rand.Shuffle(len(x), func(i, j int) { x[i], x[j] = x[j], x[i] })
 	return x
 }
+
+func randChoice[E any](x []E) E {
+	return x[rand.Intn(len(x))]
+}
+
+func randInt(a, b int) int { return rand.Intn(b-a+1) + a }
