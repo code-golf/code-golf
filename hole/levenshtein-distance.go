@@ -2,7 +2,6 @@ package hole
 
 import (
 	_ "embed"
-	"math/rand"
 	"strconv"
 	"strings"
 
@@ -15,30 +14,25 @@ var (
 	words    = strings.Fields(wordsTxt)
 )
 
-func randWord() string { return words[rand.Intn(len(words))] }
+func randWord() string { return randChoice(words) }
+
+func levenshteinTest(a, b string) test {
+	return test{a + " " + b, strconv.Itoa(levenshtein.ComputeDistance(a, b))}
+}
 
 func levenshteinDistance() ([]string, string) {
-	const count = 20
-
-	a := randWord()
-	b := randWord()
-	c := randWord()
+	word := randWord()
 	tests := []test{
-		{a + " " + a, "0"},
-		{"a " + b, strconv.Itoa(levenshtein.ComputeDistance("a", b))},
-		{"incomprehensible " + c, strconv.Itoa(levenshtein.ComputeDistance("incomprehensible", c))},
-		{"open however", "5"},
-		{"however open", "5"},
-		{"large hypothetical", "11"},
+		levenshteinTest(word, word),
+		levenshteinTest("a", randWord()),
+		levenshteinTest("incomprehensible", randWord()),
+		levenshteinTest("open", "however"),
+		levenshteinTest("however", "open"),
+		levenshteinTest("large", "hypothetical"),
 	}
 
-	for i := len(tests); i < count; i++ {
-		a := randWord()
-		b := randWord()
-		tests = append(tests, test{
-			a + " " + b,
-			strconv.Itoa(levenshtein.ComputeDistance(a, b)),
-		})
+	for i := len(tests); i < 20; i++ {
+		tests = append(tests, levenshteinTest(randWord(), randWord()))
 	}
 
 	return outputTests(shuffle(tests))
