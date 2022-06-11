@@ -38,29 +38,28 @@ type sunSign struct {
 	risingSymbols             []string
 }
 
-func symbolsToString(sunSymbol string, risingSymbol string) string {
-	if sunSymbol == risingSymbol {
-		return sunSymbol
-	}
-	return sunSymbol + risingSymbol
+func (s sunSign) randomDate(hour int) test {
+	return s.test(randInt(s.startDate, s.endDate), hour)
 }
 
-func (sign sunSign) randomDate(hour int) test {
-	day := randInt(sign.startDate, sign.endDate)
-	return sign.test(day, hour)
-}
-
-func (sign sunSign) edgeDate(hour int) test {
-	day := sign.startDate
+func (s sunSign) edgeDate(hour int) test {
+	day := s.startDate
 	if day == 1 {
-		day = sign.endDate
+		day = s.endDate
 	}
-	return sign.test(day, hour)
+	return s.test(day, hour)
 }
 
-func (sign sunSign) test(day int, hour int) test {
-	minute := rand.Intn(60)
-	return test{fmt.Sprintf("%02d-%02d %02d:%02d", sign.month, day, hour, minute), symbolsToString(sign.symbol, sign.risingSymbols[hour])}
+func (s sunSign) test(day int, hour int) (t test) {
+	t.in = fmt.Sprintf("%02d-%02d %02d:%02d", s.month, day, hour, rand.Intn(60))
+
+	if risingSymbol := s.risingSymbols[hour]; risingSymbol == s.symbol {
+		t.out = s.symbol
+	} else {
+		t.out = s.symbol + risingSymbol
+	}
+
+	return
 }
 
 func zodiacSigns() ([]string, string) {
