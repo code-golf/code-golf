@@ -42,7 +42,7 @@ func symbolsToString(sunSymbol string, risingSymbol string) string {
 	if sunSymbol == risingSymbol {
 		return sunSymbol
 	}
-	return fmt.Sprintf("%s%s", sunSymbol, risingSymbol)
+	return sunSymbol + risingSymbol
 }
 
 func (sign sunSign) randomDate(hour int) test {
