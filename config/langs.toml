@@ -105,6 +105,25 @@ for arg; do
 done
 '''
 
+[BASIC]
+size    = '268 MiB'
+version = 'FreeBASIC 1.09.0'
+website = 'https://freebasic.net'
+example = '''
+' Printing
+Print "Hello, World!"
+
+' Looping
+For i As UInteger = 0 To 9
+    Print i
+Next
+
+' Accessing arguments
+For i As Integer = 1 To __FB_ARGC__ - 1
+    Print *__FB_ARGV__[i]
+Next
+'''
+
 [brainfuck]
 size    = '4.57 MiB'
 version = '3bdbd20'

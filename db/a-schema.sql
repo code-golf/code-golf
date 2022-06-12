@@ -44,7 +44,7 @@ CREATE TYPE hole AS ENUM (
 CREATE TYPE keymap AS ENUM ('default', 'vim');
 
 CREATE TYPE lang AS ENUM (
-    'assembly', 'bash', 'brainfuck', 'c', 'c-sharp', 'cpp', 'cobol',
+    'assembly', 'bash', 'basic', 'brainfuck', 'c', 'c-sharp', 'cpp', 'cobol',
     'crystal', 'd', 'elixir', 'f-sharp', 'fish', 'fortran', 'go', 'haskell',
     'hexagony', 'j', 'java', 'javascript', 'julia', 'k', 'lisp', 'lua', 'nim',
     'pascal', 'perl', 'php', 'powershell', 'prolog', 'python', 'raku', 'ruby',
