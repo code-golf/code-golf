@@ -184,6 +184,12 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		cmd.Env = []string{"LANG=C.UTF-8", "PATH=/usr/local/bin:/usr/bin:/bin"}
 	case "fish":
 		cmd.Args = []string{"/usr/bin/fish", "--no-prng", "-c", code, "-u"}
+	case "golfscript":
+		cmd.Args = []string{"/usr/bin/golfscript", "-n", "-e", code}
+		if holeID == "quine" {
+			cmd.Args = append(cmd.Args, "-q")
+		}
+		cmd.Args = append(cmd.Args, "--")
 	case "haskell", "php":
 		cmd.Args = []string{"/usr/bin/" + langID, "--"}
 	case "hexagony":
