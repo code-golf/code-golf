@@ -125,6 +125,16 @@
         Arguments are available via STDIN, each argument is NULL terminated.
         <b>x</b> is a no-op.
     </div>
+{{ if eq .Data.Hole.ID "quine" }}
+    <div class="hide info golfscript">
+        Implicit output is disabled for this hole.
+    </div>
+{{ else }}
+    <div class="hide info golfscript">
+        The stack is initialized with an array containing arguments, rather
+        than the contents of STDIN.
+    </div>
+{{ end }}
     <div class="hide info hexagony">
         Arguments are available via STDIN, each argument is NULL terminated.
     </div>
