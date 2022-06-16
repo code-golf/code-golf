@@ -1,10 +1,3 @@
-/**
- * NOTE: These includes are hardcoded in render.go, not inlined automatically
- * from comments like the *.js `include`s
- */
-
-/* include hole-diff.css */
-
 aside {
     display: flex;
     grid-column: 1 / -1;
@@ -135,6 +128,49 @@ section header {
 }
 
 #copy { display: inline }
+
+#diff-content { padding: 0 }
+
+#diff table {
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+    width: 100%;
+}
+
+#diff th {
+    color: var(--background);
+    background: var(--color);
+    font-size: 1.25rem;
+}
+
+#diff td, #diff th { line-height: 1.25rem }
+
+#diff td {
+    border: none;
+    vertical-align: top;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+#diff .diff-col-text { padding: 0 4px }
+
+/* Ref .CodeMirror-linenumber and .CodeMirror-gutters */
+#diff .diff-left-num,
+#diff .diff-right-num {
+    padding: 0 3px 0 5px;
+    min-width: 20px;
+    text-align: right;
+    white-space: nowrap;
+}
+
+#diff td:not(:last-child) { border-right: 1px solid var(--color) }
+
+#diff .diff-removal       { background-color: var(--diff-light-red) }
+#diff .diff-addition      { background-color: var(--diff-light-green) }
+#diff .diff-char-removal  { background-color: var(--red) }
+#diff .diff-char-addition { background-color: var(--green) }
+#diff .diff-skip          { background-color: var(--blue) }
 
 #editor {
     border: 1px solid var(--color);
