@@ -3,9 +3,6 @@
  * from comments like the *.js `include`s
  */
 
-/* include vendor/codemirror.css        */
-/* include vendor/codemirror-dialog.css */
-/* include vendor/codemirror-dark.css */
 /* include hole-diff.css */
 
 aside {
@@ -47,6 +44,12 @@ aside > h3 {
     writing-mode: vertical-rl;
 }
 
+canvas {
+    border: 1px solid var(--color);
+    image-rendering: crisp-edges;
+    width: 50%;
+}
+
 main .info {
     display: block;
     margin: 0;
@@ -65,6 +68,8 @@ section header {
     justify-content: space-between;
     padding-right: .5rem;
 }
+
+.cm-editor { height: 100% }
 
 .text-red { color: var(--red-text) }
 

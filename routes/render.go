@@ -263,15 +263,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 
 	// TODO CSS imports?
 	if name == "hole" {
-		args.CSS = css["vendor/codemirror"] + css["vendor/codemirror-dialog"] +
-			css["vendor/codemirror-dark"] + args.CSS
-	}
-	if name == "hole" || name == "hole-ng" {
-		args.CSS = css["hole-diff"] + args.CSS
-	}
-
-	if name == "hole" || name == "hole-ng" {
-		args.CSS += css["terminal"]
+		args.CSS = css["hole-diff"] + args.CSS + css["terminal"]
 	}
 
 	// Append route specific JS.
