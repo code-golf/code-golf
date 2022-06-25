@@ -63,11 +63,12 @@ func luckyTickets() ([]string, string) {
 		tickets[i] = data[j]
 	}
 
-	// Always add case 14 12.
+	// Always add cases 14 12 and 14 7
 	tickets[4] = ticket{14, 12, 39222848622984}
+	tickets[5] = ticket{14, 7, 35751527189}
 
 	// Randomly generate additional test cases.
-	for i := 5; i < 20; i++ {
+	for i := 6; i < 20; i++ {
 		digits := 2 + 2*rand.Intn(5)
 		base := 2 + rand.Intn(15)
 
