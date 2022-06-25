@@ -67,6 +67,8 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 		args, answer = ellipsePerimeters()
 	case "emojify":
 		args, answer = emojify()
+	case "flood-fill":
+		args, answer = floodFill()
 	case "fractions":
 		args, answer = fractions()
 	case "hexdump":
