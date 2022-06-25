@@ -1,5 +1,20 @@
-/* TODO Stop having "wide" pages, make everything consistent. */
+/* HACK Make the body extend to the full page width */
 body { max-width: 100% }
+
+/* HACK Keep the top sections that same size */
+body > div {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    max-width: 1280px;
+    width: 100%;
+}
+
+/* HACK Account for the margin in alert boxes */
+.alert, .info, .success { width: calc(min(1280px, 100vw) - 2rem) }
+
+/* HACK Pad the start of the tabs to make it consistent with thinner pages */
+body > .tabs                { padding-left: calc((100% - 1280px) / 2) }
+body > .tabs > :first-child { margin-left: 1rem }
 
 main {
     gap: .25rem;
