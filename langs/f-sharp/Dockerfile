@@ -1,6 +1,6 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0.202-alpine3.15 as builder
+FROM mcr.microsoft.com/dotnet/sdk:6.0.300-alpine3.15 as builder
 
-ENV DOTNET_CLI_TELEMETRY_OPTOUT=1 VERSION=41.0.3
+ENV DOTNET_CLI_TELEMETRY_OPTOUT=1 VERSION=41.0.4
 
 WORKDIR /source
 

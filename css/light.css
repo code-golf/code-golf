@@ -28,6 +28,10 @@
     --red-text:           var(--red);
     --summary-background: #343a40;
     --summary-color:      #fdfdfd;
+    
+    --diamond-weight: bold;
+    --diamond-outglow: #917f20;
+    --play-color: silver;
 }
 
 select {

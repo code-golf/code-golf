@@ -33,9 +33,9 @@ preamble = '''
 <blockquote>On the First day of Christmas
 My true love sent to me
 A Partridge in a Pear Tree.
-
+<br><br>
 …
-
+<br><br>
 On the Twelfth day of Christmas
 My true love sent to me
 Twelve Drummers Drumming,
@@ -64,15 +64,15 @@ preamble = '''
 
 <blockquote>99 bottles of beer on the wall, 99 bottles of beer.
 Take one down and pass it around, 98 bottles of beer on the wall.
-
+<br><br>
 98 bottles of beer on the wall, 98 bottles of beer.
 Take one down and pass it around, 97 bottles of beer on the wall.
-
+<br><br>
 …
-
+<br><br>
 1 bottle of beer on the wall, 1 bottle of beer.
 Take one down and pass it around, no more bottles of beer on the wall.
-
+<br><br>
 No more bottles of beer on the wall, no more bottles of beer.
 Go to the store and buy some more, 99 bottles of beer on the wall.
 </blockquote>
@@ -102,7 +102,8 @@ preamble = '''
 category = 'Transform'
 variants = ['Arabic to Roman', 'Roman to Arabic']
 links = [
-    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Roman_numerals/Encode' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Roman_numerals/Encode', variant = 'Arabic to Roman' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Roman_numerals/Decode', variant = 'Roman to Arabic' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Roman_numerals' },
 ]
 preamble = '''
@@ -589,8 +590,8 @@ links = [
 preamble = '''
 <p>
     An emirp (prime spelled backwards) is a prime number that results in a
-    different prime when its decimal digits are reversed. For example both
-    <b>13</b> and <b>31</b> are emirps.
+    <b>different</b> prime when its decimal digits are reversed. For example both
+    <b>13</b> and <b>31</b> are emirps, but <b>131</b> is not.
 
 <p>
     Print all the emirp numbers from <b>1</b> to <b>1000</b> inclusive, each
@@ -638,12 +639,16 @@ preamble = '''
 
 ['Evil Numbers']
 category = 'Sequence'
+variants = ['Evil Numbers', 'Odious Numbers']
 links = [
-    { name = 'OEIS A001969', url = '//oeis.org/A001969' },
+    { name = 'OEIS A001969', url = '//oeis.org/A001969', variant = 'Evil Numbers' },
+    { name = 'OEIS A000069', url = '//oeis.org/A000069', variant = 'Odious Numbers' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Population_count' },
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Evil_number' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Evil_number',   variant = 'Evil Numbers' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Odious_number', variant = 'Odious Numbers' },
 ]
 preamble = '''
+{{ if eq . "Evil Numbers" }}
 <p>
     An evil number is a non-negative number that has an even number of 1s in
     its binary expansion.
@@ -651,10 +656,15 @@ preamble = '''
 <p>
     Print all the evil numbers from <b>0</b> to <b>50</b> inclusive, each on
     their own line.
+{{ else }}
+<p>
+    An odious number is a non-negative number that has an odd number of 1s in
+    its binary expansion.
 
 <p>
-    Numbers that are not evil are called
-    <a href=odious-numbers>odious numbers</a>.
+    Print all the odious numbers from <b>0</b> to <b>50</b> inclusive, each on
+    their own line.
+{{ end }}
 '''
 
 ['Factorial Factorisation']
@@ -681,6 +691,9 @@ links = [
 ]
 preamble = '''
 <p>
+    The Fibonacci numbers are a numerical sequence in which each number is the sum of the
+    two preceding numbers: <b>0, 1, 1, 2, 3, 5, 8, 13…</b>
+<p>
     Print the first <b>31</b> Fibonacci numbers from <b>F<sub>0</sub> = 0</b>
     to <b>F<sub>30</sub> = 832040</b> (inclusive), each on a separate line.
 '''
@@ -695,7 +708,7 @@ links = [
 preamble = '''
 <p>
     Print the numbers from <b>1</b> to
-    <b>1{{ if eq . "Fizz Buzz" }}00{{ else }},000{{ end }}</b>
+    <b>{{ if eq . "Fizz Buzz" }}100{{ else }}1,000{{ end }}</b>
     inclusive, each on their own line.
 
 <p>
@@ -718,8 +731,11 @@ preamble = '''
 
 [Fractions]
 category = 'Mathematics'
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Fraction#Simplifying_(reducing)_fractions' },
+]
 preamble = '''
-<p>For each fraction argument, reduce it to its simplest form.
+<p>For each fraction argument <code>a/b</code>, reduce it to its simplest form.
 '''
 
 ['Happy Numbers']
@@ -828,24 +844,31 @@ preamble = '''
     If the check digit would be 10, write "X" instead.
 
 <p>
-    The check digit of <code>a-bcdef-ghi-<i>?</i></code> is computed as <b>− 10a - 9b - 8c - … - 2i</b>, modulo 11.
+    The check digit of <code>a-bcdef-ghi-<i>?</i></code> is computed as <b>− 10a − 9b − 8c − … − 2i</b>, modulo 11.
     Dashes may occur in varying positions and are ignored.
 '''
 
 ['Jacobi Symbol']
 category = 'Mathematics'
-experiment = -1
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Jacobi_symbol' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Jacobi_symbol' },
 ]
 preamble = '''
+<p>For each argument <code>a n</code>, print the value of the Jacobi symbol <b>J(a, n)</b>.
+
 <p>
-    For each input pair (a,n) print the Jacobi symbol (a/n).
-<p>
-	For odd prime n, (a/n) defined as 0 for a=0 mod n, as 1 if a is a square mod n and -1 otherwise.<br>
-    For odd n=m*p, (a/n) is defined as (a/m)*(a/p).<br>
-    Note that calculating the symbol from the definition is not very efficient as it requires factorisation of n.
+    Both inputs are non-negative integers, and <b>n</b> is odd.
+    <br>
+    <b>J(a, 1)</b> is defined as <b>1</b>.
+    <br>
+    If <b>n</b> is prime, then <b>J(a, n)</b> is defined as <b>0</b> if <b>a=0 (mod n)</b>, as <b>1</b> if <b>a</b> is a square
+    modulo <b>n</b>, and <b>−1</b> otherwise.
+    <br>
+    If <b>n = x*y, x,y>1</b>, then <b>J(a, n)</b> is defined as <b>J(a, x)*J(a, y)</b>.
+    <br>
+    Note that calculating the symbol from the definition is not very efficient
+    as it requires factorisation of <b>n</b>.
 '''
 
 ['Kolakoski Constant']
@@ -857,8 +880,8 @@ links = [
 preamble = '''
 <p>
     The Kolakoski constant is created by taking the
-    <a href=kolakoski-sequence>Kolakoski sequence</a> and subtracting one from
-    each element then interpreting it as a binary fraction.
+    <a href=kolakoski-sequence>Kolakoski sequence</a>, subtracting one from
+    each element, and then interpreting it as a binary fraction.
 
 <pre>
     1 221121221221121122121121…
@@ -1014,6 +1037,7 @@ Delete every 7th element and advance:
 ['Lucky Tickets']
 category = 'Mathematics'
 links = [
+    { name = 'OEIS A174061', url = '//oeis.org/A174061' },
     { name = 'OEIS A163269', url = '//oeis.org/A163269' },
     { name = 'OEIS A077042', url = '//oeis.org/A077042' },
 ]
@@ -1021,7 +1045,7 @@ preamble = '''
 <p>
     In Russia, bus ticket numbers consist of 6 decimal digits. It is considered lucky when the sum of the first three digits equals the sum of the last three digits. The concept of lucky tickets can be extended to ticket numbering systems with even numbers of digits and arbitrary bases.
 <p>
-    Each argument describes a ticket numbering system and consists of two numbers separated by a space. The first is the even number of digits. The second is the base of the numbering system (2-16). For each argument, output the total number of lucky tickets for the numbering system on a separate line.
+    Each argument describes a ticket numbering system and consists of two numbers separated by a space. The first is the even number of digits <b>2 ≤ d ≤ 14</b>. The second is the base of the numbering system <b>2 ≤ b ≤ 16</b>. For each argument, output the total number of lucky tickets for the numbering system on a separate line.
 '''
 
 [Mandelbrot]
@@ -1330,7 +1354,7 @@ links = [
 ]
 preamble = '''
 <p>
-    Print a <b>10x10</b> grid of the numbers <b>0</b> to <b>99</b> inclusive.
+    Print a <b>10×10</b> grid of the numbers <b>0</b> to <b>99</b> inclusive.
     Starting at the top left the numbers should spiral clockwise towards the
     centre, be right aligned, and have a space between each number.
 
@@ -1363,27 +1387,6 @@ preamble = '''
     rectangles with minimal size.
 '''
 
-['Odious Numbers']
-category = 'Sequence'
-links = [
-    { name = 'OEIS A000069', url = '//oeis.org/A000069' },
-    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Population_count' },
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Odious_number' },
-]
-preamble = '''
-<p>
-    An odious number is a non-negative number that has an odd number of 1s in
-    its binary expansion.
-
-<p>
-    Print all the odious numbers from <b>0</b> to <b>50</b> inclusive, each on
-    their own line.
-
-<p>
-    Numbers that are not odious are called
-    <a href=evil-numbers>evil numbers</a>.
-'''
-
 ['Ordinal Numbers']
 category = 'Transform'
 links = [
@@ -1391,7 +1394,7 @@ links = [
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Ordinal_numeral' },
 ]
 preamble = '''
-<p>For each integer argument print the argument and its ordinal suffix.
+<p>For each integer argument, print the argument and its ordinal suffix (e.g. <code>1st</code>, <code>2nd</code>, <code>3rd</code>, <code>112th</code>).
 
 <p>The integers will be in the range of <b>0</b> to <b>999</b> inclusive.
 '''
@@ -1407,7 +1410,7 @@ preamble = '''
 
 <p>
     Write a program that will receive various sentences as arguments and print
-    those that are valid pangrams, meaning they use all letters from a-z, case
+    those that are valid pangrams, meaning they use all letters from A to Z, case
     insensitive.
 '''
 
@@ -1641,6 +1644,23 @@ preamble = '''
 <p>To encode a bit from the bitstream to a strip, determine the coordinates <b>(x, y)</b> of the current position in the bitmap with the origin <b>(0, 0)</b> at the top-left corner, invert the bit if <b>(x+y)%2 = 0</b>, and write the value to this position ("#" = 1, space = 0).
 '''
 
+['Zeckendorf Representation']
+category = 'Mathematics'
+experiment = 667
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Zeckendorf%27s_theorem' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Zeckendorf_number_representation' },
+]
+preamble = '''
+<p>
+Every natural number can be written uniquely as the sum of Fibonacci numbers in a way that avoids using consecutive Fibonacci numbers. For example, <b>10 = 8 + 2</b>, and <b>64 = 55 + 8 + 1</b>. This sum is called the Zeckendorf representation.
+</p>
+
+<p>
+Print the Zeckendorf representation for each input argument. Terms should be listed in decreasing order separated by ' + '. For example, input <b>10</b> should produce <b>8 + 2</b>.
+</p>
+'''
+
 [Quine]
 category = 'Computing'
 links = [
@@ -1682,8 +1702,16 @@ links = [
 ]
 preamble = '''
 <p>
+    Judge games of "rock-paper-scissors" with additional weapons:
+
+<p>
     ✂ cuts 📄 covers 💎 crushes 🦎 poisons 🖖 smashes ✂ decapitates 🦎 eats 📄
     disproves 🖖 vaporizes 💎 crushes ✂.
+
+<p>
+    Each argument is a string of two emoji encoded in UTF-8.
+    For each argument, print a line like <code>🦎 poisons 🖖</code> describing the game outcome,
+    or <code>Tie</code> if they are equal.
 
 <ul>
     <li>
@@ -1809,7 +1837,7 @@ links = [
 ]
 preamble = '''
 <p>
-    The Sierpiński triangle is a fractal and attractive fixed set with the
+    The Sierpiński triangle is a fractal with the
     overall shape of an equilateral triangle, subdivided recursively into
     smaller equilateral triangles.
 
@@ -1849,12 +1877,12 @@ preamble = '''
     of the digits of its prime factors.
 
 <p>
-    One example of a Smith number is the beast number
+    One example of a Smith number is the number
     <b>666 = 2 × 3 × 3 × 37</b>, since
     <b>6 + 6 + 6 = 2 + 3 + 3 + (3 + 7) = 18</b>.
 
 <p>
-    Print all the Smith numbers from <b>1</b> to <b>10,000</b> inclusive,
+    Print all the Smith numbers from <b>4</b> to <b>10,000</b> inclusive,
     each on their own line.
 '''
 
@@ -1863,7 +1891,9 @@ category = 'Transform'
 preamble = '''
 <p>For each integer argument print the integer spelled out in English.
 
-<p>The integers will be in the range of <b>0</b> to <b>1,000</b> inclusive.
+<p>For example: <b>748</b> becomes <code>seven hundred and forty-eight</code>.
+
+<p>The integers will be in the range of <b>0</b> (<code>zero</code>) to <b>1,000</b> (<code>one thousand</code>) inclusive.
 '''
 
 ['Star Wars Opening Crawl']
@@ -1947,8 +1977,8 @@ links = [
 ]
 preamble = '''
 <p>
-    Sudoku is a number puzzle where a grid of 81 digits (9x9) is filled by the
-    digits 1-9 such that no row, column, or 3x3 subregion contains duplicate
+    Sudoku is a number puzzle where a grid of 81 digits (9×9) is filled by the
+    digits 1-9 such that no row, column, or 3×3 subregion contains duplicate
     digits.
 
 <p>
@@ -2007,7 +2037,10 @@ preamble = '''
 <p>
     If a player gets a spare in the final frame, they get one extra roll. If
     they get a spare in one of the first nine frames, the value of the
-    following roll is added as a bonus.<p>Each argument represents one game of
+    following roll is added as a bonus.
+    
+<p>
+    Each argument represents one game of
     bowling for one player. For each roll, a single character represents the
     number of pins knocked down. Frames are separated by spaces. The following
     symbols are used.
@@ -2058,7 +2091,7 @@ preamble = '''
 category = 'Transform'
 preamble = '''
 <p>
-    Transform a time distance given as a number of seconds to a human friendly
+    Transform a time distance given as a number of seconds to a human-friendly
     string representation.
 
 <ul>
@@ -2077,7 +2110,11 @@ preamble = '''
     The largest possible unit of time among a second, a minute (60 seconds),
     an hour (60 minutes), a day (24 hours), a week (7 days), a month (30 days)
     and a year (365 days) is always chosen and the quantity is always rounded
-    towards zero. Correct singular/plural of each unit must be used.
+    towards zero.
+
+<p>
+    The correct singular/plural of each unit must be used. If the quantity is 1,
+    print <code>a month</code> and <code>an hour</code> rather than <code>1 month</code> and <code>1 hour</code>.
 '''
 
 [Tongue-twisters]
@@ -2111,7 +2148,7 @@ category = "Art"
 experiment = 622
 preamble = """
 <p>
-  Given a single argument containing multiple lines of space separated instructions containing distance and direction <b>(N, E, S, or W)</b>.
+  Given a single argument containing multiple lines of space-separated instructions containing distance and direction <b>(N, E, S, or W)</b>.
 </p>
 
 <p>
@@ -2213,8 +2250,8 @@ preamble = '''
     not both fangs may have trailing zeros.
 
 <p>
-    For example <b>1260 = 21*60</b>, <b>1395 = 15*93</b>, <b>1435 = 35*41</b>,
-    <b>1530 = 30*51</b>, etc..
+    For example <b>1260 = 21×60</b>, <b>1395 = 15×93</b>, <b>1435 = 35×41</b>,
+    <b>1530 = 30×51</b>, etc.
 
 <p>
     Print all the vampire numbers from <b>1</b> to <b>1,000,000</b> inclusive,
@@ -2258,14 +2295,17 @@ preamble = '''
 
 ['Zodiac Signs']
 category = 'Transform'
-experiment = 614
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Zodiac_sign' },
+    { name = 'Zodiac Sign Wikipedia',    url = '//en.wikipedia.org/wiki/Zodiac_sign' },
+    { name = 'Ascending Sign Wikipedia', url = '//en.wikipedia.org/wiki/Ascendant' },
 ]
 preamble = '''
 <p>
-    Given a <code>MM-DD</code> date, output the corresponding Zodiac sign
-    symbol according to the following table.
+    Given a <code>MM-DD HH:MM</code> date and time, output the corresponding
+    Zodiac sign symbol according to the first table below. If the ascending
+    sign is different from the Zodiac sign (sun sign), output it as well.
+    Approximate the ascending sign using the sun sign and time according to
+    the second table below.
 <div>
     <table>
         <thead>
@@ -2283,6 +2323,38 @@ preamble = '''
             <tr><td>Capricorn<td>♑<td>December 22 – January 19
             <tr><td>Aquarius<td>♒<td>January 20 – February 18
             <tr><td>Pisces<td>♓<td>February 19 – March 20
+    </table>
+</div>
+<div>
+    <table>
+        <thead>
+            <tr><th>Time/Sun Symbol
+                <th>♈<th>♉<th>♊<th>♋<th>♌<th>♍<th>♎<th>♏<th>♐<th>♑<th>♒<th>♓
+        <tbody>
+            <tr><td>00:00 - 01:59
+                <td>♒<td>♓<td>♈<td>♉<td>♊<td>♋<td>♌<td>♍<td>♎<td>♏<td>♐<td>♑
+            <tr><td>02:00 - 03:59
+                <td>♓<td>♈<td>♉<td>♊<td>♋<td>♌<td>♍<td>♎<td>♏<td>♐<td>♑<td>♒
+            <tr><td>04:00 - 05:59
+                <td>♈<td>♉<td>♊<td>♋<td>♌<td>♍<td>♎<td>♏<td>♐<td>♑<td>♒<td>♓
+            <tr><td>06:00 - 07:59
+                <td>♉<td>♊<td>♋<td>♌<td>♍<td>♎<td>♏<td>♐<td>♑<td>♒<td>♓<td>♈
+            <tr><td>08:00 - 09:59
+                <td>♊<td>♋<td>♌<td>♍<td>♎<td>♏<td>♐<td>♑<td>♒<td>♓<td>♈<td>♉
+            <tr><td>10:00 - 11:59
+                <td>♋<td>♌<td>♍<td>♎<td>♏<td>♐<td>♑<td>♒<td>♓<td>♈<td>♉<td>♊
+            <tr><td>12:00 - 13:59
+                <td>♌<td>♍<td>♎<td>♏<td>♐<td>♑<td>♒<td>♓<td>♈<td>♉<td>♊<td>♋
+            <tr><td>14:00 - 15:59
+                <td>♍<td>♎<td>♏<td>♐<td>♑<td>♒<td>♓<td>♈<td>♉<td>♊<td>♋<td>♌
+            <tr><td>16:00 - 17:59
+                <td>♎<td>♏<td>♐<td>♑<td>♒<td>♓<td>♈<td>♉<td>♊<td>♋<td>♌<td>♍
+            <tr><td>18:00 - 19:59
+                <td>♏<td>♐<td>♑<td>♒<td>♓<td>♈<td>♉<td>♊<td>♋<td>♌<td>♍<td>♎
+            <tr><td>20:00 - 21:59
+                <td>♐<td>♑<td>♒<td>♓<td>♈<td>♉<td>♊<td>♋<td>♌<td>♍<td>♎<td>♏
+            <tr><td>22:00 - 23:59
+                <td>♑<td>♒<td>♓<td>♈<td>♉<td>♊<td>♋<td>♌<td>♍<td>♎<td>♏<td>♐
     </table>
 </div>
 '''
@@ -2307,7 +2379,7 @@ links = [
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Pi' },
 ]
 preamble = '''
-<p>Print π (Pi) to the first 1,000 decimal places.
+<p>Print π (pi) to the first 1,000 decimal places.
 '''
 
 ['τ']
@@ -2316,7 +2388,7 @@ links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Tau_(mathematical_constant)' },
 ]
 preamble = '''
-<p>Print 2π=τ (Tau) to the first 1,000 decimal places.
+<p>Print 2π=τ (tau) to the first 1,000 decimal places.
 '''
 
 ['φ']
@@ -2326,7 +2398,7 @@ links = [
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Golden_ratio' },
 ]
 preamble = '''
-<p>Print the Golden ratio φ (Phi) to the first 1,000 decimal places.
+<p>Print the Golden ratio φ (phi) to the first 1,000 decimal places.
 '''
 
 ['√2']

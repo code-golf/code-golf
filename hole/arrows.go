@@ -43,7 +43,7 @@ func arrows() ([]string, string) {
 		pos[0] += coord[0]
 		pos[1] += coord[1]
 
-		outs[i] = fmt.Sprintf("%d %d", pos[0], pos[1])
+		outs[i] = fmt.Sprint(pos[0], pos[1])
 	}
 
 	return args, strings.Join(outs, "\n")

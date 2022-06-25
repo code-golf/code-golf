@@ -16,7 +16,7 @@ import { oneDarkTheme, oneDarkHighlightStyle }   from '@codemirror/theme-one-dar
 
 // Languages.
 import { assembly }    from '@defasm/codemirror';
-import { brainfuck }   from '@codemirror/legacy-modes/mode/brainfuck';
+// import { brainfuck }   from '@codemirror/legacy-modes/mode/brainfuck';
 import { c, csharp }   from '@codemirror/legacy-modes/mode/clike';
 import { cobol }       from '@codemirror/legacy-modes/mode/cobol';
 import { commonLisp }  from '@codemirror/legacy-modes/mode/commonlisp';
@@ -90,13 +90,15 @@ export const extensions = {
     // Languages.
     'assembly':   assembly(),
     'bash':       StreamLanguage.define(shell),
-    'brainfuck':  StreamLanguage.define(brainfuck),
+    // Disable brainfuck as it has quadratic complexity.
+    // 'brainfuck':  StreamLanguage.define(brainfuck),
     'c':          StreamLanguage.define(c),
     'c-sharp':    StreamLanguage.define(csharp),
     'cobol':      StreamLanguage.define(cobol),
     'cpp':        cpp(),
     'crystal':    StreamLanguage.define(crystal),
     'd':          StreamLanguage.define(d),
+    // TODO elixir
     'f-sharp':    StreamLanguage.define(fSharp),
     // TODO fish
     'fortran':    StreamLanguage.define(fortran),
@@ -120,6 +122,7 @@ export const extensions = {
     'raku':       StreamLanguage.define(perl),  // TODO raku
     'ruby':       StreamLanguage.define(ruby),
     'rust':       rust(),
+    // TODO sed
     'sql':        sql({ dialect: SQLite }),
     'swift':      StreamLanguage.define(swift),
     // TODO v

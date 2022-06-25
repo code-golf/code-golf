@@ -1,9 +1,6 @@
 package hole
 
-import (
-	"strings"
-	"unicode"
-)
+import "strings"
 
 var segments = [][]string{
 	{" _ ", "   ", " _ ", " _ ", "   ", " _ ", " _ ", " _ ", " _ ", " _ "},
@@ -21,10 +18,11 @@ func sevenSegment() (args []string, out string) {
 			out += segments[row][digit-'0']
 		}
 
-		out = strings.TrimRightFunc(out, unicode.IsSpace) + "\n"
+		out = strings.TrimRight(out, " ")
+		if row < 2 {
+			out += "\n"
+		}
 	}
-
-	out = strings.TrimRightFunc(out, unicode.IsSpace)
 
 	return
 }

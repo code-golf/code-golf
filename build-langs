@@ -47,6 +47,7 @@ for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
         given $name {
             my $digits = $ver ~~ / <[\d.]>+ \d+ /;
 
+            when 'BASIC'      { $ver = "FreeBASIC $digits" }
             when 'C#'
                | 'F#'
                | 'PowerShell' { }

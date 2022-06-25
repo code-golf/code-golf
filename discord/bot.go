@@ -74,10 +74,10 @@ func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
 	fieldValues := make(map[string]string)
 	for _, pair := range announce.Updates {
 		for _, update := range pair {
-			if update.Beat.Valid {
-				if fieldValues[update.Scoring] == "" {
-					fieldValues[update.Scoring] = pretty.Comma(int(update.Beat.Int64))
-				}
+			if update.Beat.Valid && fieldValues[update.Scoring] == "" {
+				fieldValues[update.Scoring] = pretty.Comma(int(update.Beat.Int64))
+			}
+			if fieldValues[update.Scoring] != "" {
 				fieldValues[update.Scoring] += "  →  "
 			}
 			fieldValues[update.Scoring] += pretty.Comma(int(update.To.Strokes.Int64))
@@ -137,11 +137,29 @@ func AwardRoles(db *sql.DB) error {
 		}
 	}
 
-	rows, err := db.Query(
+	if err := awardRoles(
+		db, contributors, roleContribID,
 		`SELECT id
 		   FROM connections JOIN trophies USING(user_id)
 		  WHERE connection = 'discord' AND trophy = 'patches-welcome'`,
-	)
+	); err != nil {
+		return err
+	}
+
+	if err := awardRoles(
+		db, sponsors, roleSponsorID,
+		`SELECT c.id
+		   FROM connections c JOIN users u ON user_id = u.id
+		  WHERE connection = 'discord' AND sponsor`,
+	); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func awardRoles(db *sql.DB, members map[string]any, roleID, sql string) error {
+	rows, err := db.Query(sql)
 	if err != nil {
 		return err
 	}
@@ -153,9 +171,9 @@ func AwardRoles(db *sql.DB) error {
 			return err
 		}
 
-		if _, ok := contributors[userID]; ok {
-			delete(contributors, userID)
-		} else if err := bot.GuildMemberRoleAdd(guildID, userID, roleContribID); err != nil {
+		if _, ok := members[userID]; ok {
+			delete(members, userID)
+		} else if err := bot.GuildMemberRoleAdd(guildID, userID, roleID); err != nil {
 			log.Println(err)
 		}
 	}
@@ -165,42 +183,8 @@ func AwardRoles(db *sql.DB) error {
 	}
 
 	// Remove any stale roles.
-	for userID := range contributors {
-		if err := bot.GuildMemberRoleRemove(guildID, userID, roleContribID); err != nil {
-			log.Println(err)
-		}
-	}
-
-	// TODO DRY DRY DRY
-	rows, err = db.Query(
-		`SELECT c.id
-		   FROM connections c JOIN users u ON user_id = u.id
-		  WHERE connection = 'discord' AND sponsor`,
-	)
-	if err != nil {
-		return err
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var userID string
-		if err := rows.Scan(&userID); err != nil {
-			return err
-		}
-
-		if _, ok := sponsors[userID]; ok {
-			delete(sponsors, userID)
-		} else if err := bot.GuildMemberRoleAdd(guildID, userID, roleSponsorID); err != nil {
-			log.Println(err)
-		}
-	}
-
-	if err := rows.Err(); err != nil {
-		return err
-	}
-
-	for userID := range sponsors {
-		if err := bot.GuildMemberRoleRemove(guildID, userID, roleSponsorID); err != nil {
+	for userID := range members {
+		if err := bot.GuildMemberRoleRemove(guildID, userID, roleID); err != nil {
 			log.Println(err)
 		}
 	}

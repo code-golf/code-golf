@@ -39,7 +39,7 @@ for (const input of $$<any>('[list]')) {
     };
 }
 
-for (const dialog of $$('dialog')) {
+for (const dialog of $$<HTMLDialogElement>('dialog')) {
     dialogPolyfill.registerDialog(dialog);
 
     dialog.onclick = (e: MouseEvent) => e.target == dialog ? (dialog as any).close() : null;

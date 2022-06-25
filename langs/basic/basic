@@ -1,0 +1,13 @@
+#!/bin/sh -e
+
+[ "$1" = "--version" ] && exec /usr/bin/fbc "$@"
+
+# Compile
+cd /tmp
+cat - > code.bas
+/usr/bin/fbc code.bas >&2
+rm code.bas
+
+# Execute
+shift
+exec ./code "$@"

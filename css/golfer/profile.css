@@ -27,22 +27,34 @@ section > a, section > div {
     min-width: 3rem;
 }
 
-.rank-1:not(:hover) { background: gold }
-.rank-2:not(:hover) { background: silver }
-.rank-3:not(:hover) { background: burlywood }
-
-#cheevos, #trophies {
+.icons {
     align-content: start;
     display: grid;
     font-size: 2rem;
     grid-template-columns: repeat(auto-fit, minmax(3rem, 1fr));
 }
 
-#cheevos div:not(.earned) {
+.icons a { color: var(--color) }
+
+.icons a:hover {
+    background: var(--color);
+    color: var(--background);
+}
+
+.icons div:not(.earned) {
     background: var(--light-grey);
     color: transparent;
     text-shadow: 0 0 var(--cheevo-not-earned);
 }
+
+.icons svg {
+    height: 2rem;
+    width: 2rem;
+}
+
+.rank-1:not(:hover) { color: #343a40; background: gold }
+.rank-2:not(:hover) { color: #343a40; background: silver }
+.rank-3:not(:hover) { color: #343a40; background: burlywood }
 
 #connections {
     display: grid;
@@ -79,14 +91,6 @@ section > a, section > div {
 #connections svg {
     height: 2rem;
     margin: -1px;
-    width: 2rem;
-}
-
-#trophies a       { color: #343a40 }
-#trophies a:hover { color: var(--color) }
-
-#trophies svg {
-    height: 2rem;
     width: 2rem;
 }
 

@@ -35,7 +35,6 @@ func Golfer(next http.Handler) http.Handler {
 				          u.delete,
 				          (SELECT COALESCE(json_agg(failing), '[]') FROM failing),
 				          u.id,
-				          u.keymap,
 				          u.login,
 				          COALESCE(r.login, ''),
 				          u.show_country,
@@ -52,6 +51,12 @@ func Golfer(next http.Handler) http.Handler {
 				                FROM follows
 				               WHERE follower_id = u.id
 				            ORDER BY followee_id
+				          ),
+				          ARRAY(
+				              SELECT DISTINCT hole
+				                FROM solutions
+				               WHERE user_id = u.id
+				            ORDER BY hole
 				          )
 				     FROM users  u
 				     JOIN golfer g ON u.id = g.user_id
@@ -63,7 +68,6 @@ func Golfer(next http.Handler) http.Handler {
 				&golfer.Delete,
 				&golfer.FailingSolutions,
 				&golfer.ID,
-				&golfer.Keymap,
 				&golfer.Name,
 				&golfer.Referrer,
 				&golfer.ShowCountry,
@@ -71,6 +75,7 @@ func Golfer(next http.Handler) http.Handler {
 				&timeZone,
 				pq.Array(&golfer.Cheevos),
 				pq.Array(&golfer.Following),
+				pq.Array(&golfer.Holes),
 			); err == nil {
 				golfer.TimeZone, _ = time.LoadLocation(timeZone.String)
 

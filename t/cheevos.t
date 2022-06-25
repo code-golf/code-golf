@@ -59,6 +59,15 @@ for <
     ).row, $cheevos, "$hole/$lang earns $cheevos";
 }
 
+for <brainfuck d hexagony javascript nim swift sql zig> {
+    my $cheevos = $_ eq 'zig' ?? '{pangramglot}' !! '{}';
+
+    is $dbh.execute(
+        "SELECT earned FROM save_solution(2, 2, 'ab', 'pangram-grep', ?, 1)",
+        $_,
+    ).row, $cheevos, "pangram-grep/$_ earns $cheevos";
+}
+
 is $dbh.execute(
     "SELECT earned FROM save_solution(3, 1, '⛳', 'π', 'c', 1)",
 ).row, '{different-strokes}', 'Earns {different-strokes}';

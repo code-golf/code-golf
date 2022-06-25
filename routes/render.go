@@ -201,6 +201,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		DarkModeMediaQuery, LogInURL, Name, Nonce, Path string
 		Golfer                                          *golfer.Golfer
 		GolferInfo                                      *golfer.GolferInfo
+		HoleBanner                                      *config.Hole
 		Holes                                           map[string]*config.Hole
 		JS                                              []string
 		Langs                                           map[string]*config.Lang
@@ -255,17 +256,14 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		}
 	}
 
-	// TODO CSS imports?
-	if name == "hole" {
-		args.CSS = css["vendor/codemirror"] + css["vendor/codemirror-dialog"] +
-			css["vendor/codemirror-dark"] + args.CSS
-	}
-	if name == "hole" || name == "hole-ng" {
-		args.CSS = css["hole-diff"] + args.CSS
+	// Show a banner if they've not solved the latest hole.
+	if args.Golfer != nil && !args.Golfer.Solved(recentHoleIDs[0]) {
+		args.HoleBanner = recentHoles[0]
 	}
 
-	if name == "hole" || name == "hole-ng" {
-		args.CSS += css["terminal"]
+	// TODO CSS imports?
+	if name == "hole" {
+		args.CSS = args.CSS + css["terminal"]
 	}
 
 	// Append route specific JS.

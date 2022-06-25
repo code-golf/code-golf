@@ -83,10 +83,9 @@ func Time(t time.Time) template.HTML {
 	))
 
 	diff := time.Until(t)
-	past := false
-	if diff < 0 {
+	past := diff < 0
+	if past {
 		diff = -diff
-		past = true
 	}
 
 	if diff < 28*day {

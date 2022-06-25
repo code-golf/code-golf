@@ -2,12 +2,10 @@ package hole
 
 import "strconv"
 
-type Unit struct {
+var units = [...]struct {
 	seconds          int
 	singular, plural string
-}
-
-var units = [...]Unit{
+}{
 	{60 * 60 * 24 * 365 * 1000, "a millenium", "millenia"},
 	{60 * 60 * 24 * 365, "a year", "years"},
 	{60 * 60 * 24 * 30, "a month", "months"},

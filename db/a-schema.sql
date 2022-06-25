@@ -8,11 +8,11 @@ CREATE TYPE cheevo AS ENUM (
     'happy-birthday-code-golf', 'hello-world', 'inception',
     'independence-day', 'interview-ready', 'its-over-9000', 'just-kidding',
     'marathon-runner', 'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars',
-    'off-the-grid', 'omniglot', 'ouroboros', 'patches-welcome', 'pi-day',
-    'polyglot', 'polyglutton', 'rtfm', 'rule-34', 'slowcoach', 'solve-quine',
-    'sounds-quite-nice', 'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr',
-    'twelvetide', 'twenty-kiloleagues', 'under-pressure', 'up-to-eleven',
-    'vampire-byte'
+    'off-the-grid', 'omniglot', 'ouroboros', 'pangramglot', 'patches-welcome',
+    'pi-day', 'polyglot', 'polyglutton', 'rtfm', 'rule-34', 'slowcoach',
+    'solve-quine', 'sounds-quite-nice', 'takeout', 'the-watering-hole',
+    'tim-toady', 'tl-dr', 'twelvetide', 'twenty-kiloleagues',
+    'under-pressure', 'up-to-eleven', 'vampire-byte'
 );
 
 CREATE TYPE connection AS ENUM (
@@ -26,28 +26,27 @@ CREATE TYPE hole AS ENUM (
     'css-colors', 'cubes', 'diamonds', 'divisors', 'emirp-numbers', 'emojify',
     'evil-numbers', 'fibonacci', 'fizz-buzz', 'foo-fizz-buzz-bar',
     'fractions', 'happy-numbers', 'happy-numbers-long', 'hexdump',
-    'intersection', 'isbn', 'kolakoski-constant', 'kolakoski-sequence',
-    'leap-years', 'levenshtein-distance', 'leyland-numbers', 'look-and-say',
-    'lucky-numbers', 'lucky-tickets', 'morse-decoder', 'morse-encoder',
-    'musical-chords', 'niven-numbers', 'number-spiral', 'odious-numbers',
-    'ordinal-numbers', 'pangram-grep', 'pascals-triangle',
-    'pernicious-numbers', 'poker', 'prime-numbers', 'prime-numbers-long',
-    'qr-decoder', 'quine', 'recamán', 'reverse-polish-notation',
-    'rock-paper-scissors-spock-lizard', 'roman-to-arabic', 'rule-110',
-    'seven-segment', 'sierpiński-triangle', 'smith-numbers',
-    'spelling-numbers', 'star-wars-opening-crawl', 'sudoku', 'sudoku-v2',
-    'ten-pin-bowling', 'time-distance', 'tongue-twisters', 'united-states',
-    'vampire-numbers', 'van-eck-sequence', 'λ', 'π', 'τ', 'φ', '√2', '𝑒'
+    'intersection', 'isbn', 'jacobi-symbol', 'kolakoski-constant',
+    'kolakoski-sequence', 'leap-years', 'levenshtein-distance',
+    'leyland-numbers', 'look-and-say', 'lucky-numbers', 'lucky-tickets',
+    'morse-decoder', 'morse-encoder', 'musical-chords', 'niven-numbers',
+    'number-spiral', 'odious-numbers', 'ordinal-numbers', 'pangram-grep',
+    'pascals-triangle', 'pernicious-numbers', 'poker', 'prime-numbers',
+    'prime-numbers-long', 'qr-decoder', 'quine', 'recamán',
+    'reverse-polish-notation', 'rock-paper-scissors-spock-lizard',
+    'roman-to-arabic', 'rule-110', 'seven-segment', 'sierpiński-triangle',
+    'smith-numbers', 'spelling-numbers', 'star-wars-opening-crawl', 'sudoku',
+    'sudoku-v2', 'ten-pin-bowling', 'time-distance', 'tongue-twisters',
+    'united-states', 'vampire-numbers', 'van-eck-sequence', 'zodiac-signs',
+    'λ', 'π', 'τ', 'φ', '√2', '𝑒'
 );
 
-CREATE TYPE keymap AS ENUM ('default', 'vim');
-
 CREATE TYPE lang AS ENUM (
-    'assembly', 'bash', 'brainfuck', 'c', 'c-sharp', 'cpp', 'cobol',
-    'crystal', 'd', 'f-sharp', 'fish', 'fortran', 'go', 'haskell', 'hexagony', 'j',
-    'java', 'javascript', 'julia', 'k', 'lisp', 'lua', 'nim', 'pascal',
-    'perl', 'php', 'powershell', 'prolog', 'python', 'raku', 'ruby', 'rust',
-    'sql', 'swift', 'v', 'viml', 'zig'
+    'assembly', 'bash', 'basic', 'brainfuck', 'c', 'c-sharp', 'cpp', 'cobol',
+    'crystal', 'd', 'elixir', 'f-sharp', 'fish', 'fortran', 'go', 'haskell',
+    'hexagony', 'j', 'java', 'javascript', 'julia', 'k', 'lisp', 'lua', 'nim',
+    'pascal', 'perl', 'php', 'powershell', 'prolog', 'python', 'raku', 'ruby',
+    'rust', 'sed', 'sql', 'swift', 'v', 'viml', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('diamond', 'gold', 'silver', 'bronze');
@@ -77,7 +76,6 @@ CREATE TABLE users (
     login        citext    NOT NULL UNIQUE,
     time_zone    text,
     delete       timestamp,
-    keymap       keymap    NOT NULL DEFAULT 'default',
     country      char(2),
     show_country bool      NOT NULL DEFAULT false,
     started      timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),

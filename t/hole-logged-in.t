@@ -237,9 +237,9 @@ for (False, True) -> $loggedIn {
         setup $wd;
         $wd.getLangLink('Python').click;
         $wd.clearCode;
-        $wd.typeCode: $python121_121;
+        $wd.typeCode: $python125_125;
         $wd.isRestoreSolutionLinkVisible: False, 'after typing the bytes solution.';
-        $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
+        $wd.isBytesAndChars: 125, 125, 'after typing the bytes solution.';
         $wd.run;
         $wd.isPassing: 'after submitting the bytes solution.';
         $wd.isSolutionPickerState: '', 'after submitting the bytes solution.';
@@ -256,10 +256,10 @@ for (False, True) -> $loggedIn {
         $wd.loadFibonacci;
         $wd.getLangLink('Python').click;
         $wd.clearCode;
-        $wd.typeCode: $python_fibonacci_66_66;
+        $wd.typeCode: $python_fibonacci_70_70;
         $wd.run;
         $wd.isPassing: 'after submitting fibonacci bytes solution.';
-        $wd.isBytesAndChars: 66, 66, 'after submitting fibonacci bytes solution.';
+        $wd.isBytesAndChars: 70, 70, 'after submitting fibonacci bytes solution.';
         $wd.isSolutionPickerState: '', 'after submitting fibonacci bytes solution.';
         $wd.clearCode;
         $wd.typeCode: $python_fibonacci_126_60;
@@ -279,12 +279,12 @@ for (False, True) -> $loggedIn {
         $wd.isRestoreSolutionLinkVisible: False, 'after returning to Fizz Buzz the second  time.';
         $wd.isSolutionPickerState: 'chars', 'after returning to Fibonacci the first time.';
         $wd.setSolution: 'bytes';
-        $wd.isBytesAndChars: 66, 66, 'after switching to the bytes solution.';
+        $wd.isBytesAndChars: 70, 70, 'after switching to the bytes solution.';
         $wd.isRestoreSolutionLinkVisible: False, 'after returning to Fizz Buzz the second  time.';
         $wd.isSolutionPickerState: 'bytes', 'after switching to the bytes solution.';
         $wd.loadFizzBuzz;
         $wd.getLangLink('Python').click;
-        $wd.isBytesAndChars: 121, 121, 'after returning to Fizz Buzz the second time.';
+        $wd.isBytesAndChars: 125, 125, 'after returning to Fizz Buzz the second time.';
         $wd.isRestoreSolutionLinkVisible: False, 'after returning to Fizz Buzz the second  time.';
         $wd.isSolutionPickerState: 'bytes', 'after returning to Fizz Buzz the second time.';
     }
@@ -297,24 +297,24 @@ for (False, True) -> $loggedIn {
         $wd.getLangLink('Python').click;
         $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
         $wd.clearCode;
-        $wd.typeCode: $python121_121;
+        $wd.typeCode: $python125_125;
         $wd.isRestoreSolutionLinkVisible: False, 'before submitting code.';
         $wd.isSolutionPickerState: '', 'before submitting code.';
         $wd.run;
         $wd.isPassing: 'after submitting solution.';
-        $wd.isBytesAndChars: 121, 121, 'after submitting solution.';
+        $wd.isBytesAndChars: 125, 125, 'after submitting solution.';
         $wd.isSolutionPickerState: '', 'after submitting solution.';
         $wd.typeCode: 'abc';
-        $wd.isBytesAndChars: 124, 124, 'after typing code.';
+        $wd.isBytesAndChars: 128, 128, 'after typing code.';
         $wd.isRestoreSolutionLinkVisible: True, 'after typing code.';
         # Switch to another hole and enter bytes and chars solutions.
         $wd.loadFibonacci;
         $wd.getLangLink('Python').click;
         $wd.clearCode;
-        $wd.typeCode: $python_fibonacci_66_66;
+        $wd.typeCode: $python_fibonacci_70_70;
         $wd.run;
         $wd.isPassing: 'after submitting fibonacci bytes solution.';
-        $wd.isBytesAndChars: 66, 66, 'after submitting fibonacci bytes solution.';
+        $wd.isBytesAndChars: 70, 70, 'after submitting fibonacci bytes solution.';
         $wd.isSolutionPickerState: '', 'after submitting fibonacci bytes solution.';
         $wd.clearCode;
         $wd.typeCode: $python_fibonacci_126_60;
@@ -325,7 +325,7 @@ for (False, True) -> $loggedIn {
         # Leaving the chars solution active, go back to Fizz Buzz.
         $wd.loadFizzBuzz;
         $wd.getLangLink('Python').click;
-        $wd.isBytesAndChars: 124, 124, 'after navigating to a different hole and back.';
+        $wd.isBytesAndChars: 128, 128, 'after navigating to a different hole and back.';
         $wd.isRestoreSolutionLinkVisible: $loggedIn, 'after navigating to a different hole and back.';
         $wd.isSolutionPickerState: '', 'after navigating to a different hole and back.';
     }
@@ -392,9 +392,9 @@ for (False, True) -> $loggedIn {
             $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
             # Submit different solutions for bytes and chars.
             $wd.clearCode;
-            $wd.typeCode: $python121_121;
+            $wd.typeCode: $python125_125;
             $wd.isRestoreSolutionLinkVisible: False, 'after typing the bytes solution.';
-            $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
+            $wd.isBytesAndChars: 125, 125, 'after typing the bytes solution.';
             $wd.run;
             $wd.isPassing: 'after submitting the bytes solution.';
             $wd.isSolutionPickerState: '', 'after submitting the bytes solution.';
@@ -410,7 +410,7 @@ for (False, True) -> $loggedIn {
             # Modify the bytes solutions.
             $wd.setSolution: 'bytes';
             $wd.typeCode: 'A';
-            $wd.isBytesAndChars: 122, 122, 'after modifying the bytes solution.';
+            $wd.isBytesAndChars: 126, 126, 'after modifying the bytes solution.';
             $wd.isRestoreSolutionLinkVisible: True, 'after modifying the bytes solution.';
             $wd.isSolutionPickerState: 'bytes', 'after modifying the bytes solution.';
             if $switch {
@@ -425,7 +425,7 @@ for (False, True) -> $loggedIn {
             }
             else {
                 $wd.loadFizzBuzz;
-                $wd.isBytesAndChars: 122, 122, 'after reloading the page.';
+                $wd.isBytesAndChars: 126, 126, 'after reloading the page.';
                 $wd.isRestoreSolutionLinkVisible: $loggedIn, 'after reloading the page.';
                 $wd.isSolutionPickerState: 'bytes', 'after reloading the page.';
             }
@@ -440,9 +440,9 @@ for (False, True) -> $loggedIn {
             $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
             # Submit different solutions for bytes and chars.
             $wd.clearCode;
-            $wd.typeCode: $python121_121;
+            $wd.typeCode: $python125_125;
             $wd.isRestoreSolutionLinkVisible: False, 'after typing the bytes solution.';
-            $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
+            $wd.isBytesAndChars: 125, 125, 'after typing the bytes solution.';
             $wd.run;
             $wd.isPassing: 'after submitting the bytes solution.';
             $wd.isSolutionPickerState: '', 'after submitting the bytes solution.';
@@ -461,11 +461,11 @@ for (False, True) -> $loggedIn {
             $wd.isSolutionPickerState: 'chars', 'after switching to the chars solution.';
             if $switch {
                 $wd.setSolution: 'bytes';
-                $wd.isBytesAndChars: 121, 121, 'after switching to the bytes solution.';
+                $wd.isBytesAndChars: 125, 125, 'after switching to the bytes solution.';
                 $wd.isRestoreSolutionLinkVisible: False, 'after switching to the bytes solution.';
                 $wd.isSolutionPickerState: 'bytes', 'after switching to the bytes solution.';
                 $wd.loadFizzBuzz;
-                $wd.isBytesAndChars: 121, 121, 'after reloading the page.';
+                $wd.isBytesAndChars: 125, 125, 'after reloading the page.';
                 $wd.isRestoreSolutionLinkVisible: False, 'after reloading the page.';
                 $wd.isSolutionPickerState: 'bytes', 'after reloading the page.';
             }
@@ -492,8 +492,8 @@ for (False, True) -> $loggedIn {
         $wd.isSolutionPickerState: '', 'after submitting the chars solution';
         $wd.isScoringPickerState: 'bytes', 'after submitting the chars solution. The scoring should be the default, bytes.';
         $wd.clearCode;
-        $wd.typeCode: $python121_121;
-        $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
+        $wd.typeCode: $python125_125;
+        $wd.isBytesAndChars: 125, 125, 'after typing the bytes solution.';
         $wd.run;
         $wd.isPassing: 'after submitting the bytes solution.';
         $wd.isSolutionPickerState: 'bytes', 'after submitting the bytes solution.';
@@ -507,8 +507,8 @@ for (False, True) -> $loggedIn {
         setup $wd;
         $wd.getLangLink('Python').click;
         $wd.clearCode;
-        $wd.typeCode: $python121_121;
-        $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
+        $wd.typeCode: $python125_125;
+        $wd.isBytesAndChars: 125, 125, 'after typing the bytes solution.';
         $wd.run;
         $wd.isPassing: 'after submitting the bytes solution';
         $wd.isSolutionPickerState: '', 'after submitting the bytes solution';
@@ -529,8 +529,8 @@ for (False, True) -> $loggedIn {
         setup $wd;
         $wd.getLangLink('Python').click;
         $wd.clearCode;
-        $wd.typeCode: $python121_121;
-        $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
+        $wd.typeCode: $python125_125;
+        $wd.isBytesAndChars: 125, 125, 'after typing the bytes solution.';
         $wd.run;
         $wd.isPassing: 'after submitting the bytes solution.';
         $wd.clearCode;
@@ -542,7 +542,7 @@ for (False, True) -> $loggedIn {
         $wd.isScoringPickerState: 'bytes', 'after submitting the chars solution. The scoring should be the default, bytes.';
         $wd.isBytesAndChars: 210, 88, 'after running code';
         $wd.setSolution: 'bytes';
-        $wd.isBytesAndChars: 121, 121, 'after switching to the bytes solution.';
+        $wd.isBytesAndChars: 125, 125, 'after switching to the bytes solution.';
         $wd.isSolutionPickerState: 'bytes', 'after switching to the bytes solution.';
         $wd.isScoringPickerState: 'bytes', 'after switching to the bytes solution. The scoring should be the default, bytes.';
         $wd.setSolution: 'chars';
@@ -558,8 +558,8 @@ for (False, True) -> $loggedIn {
         setup $wd;
         $wd.getLangLink('Python').click;
         $wd.clearCode;
-        $wd.typeCode: $python121_121;
-        $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
+        $wd.typeCode: $python125_125;
+        $wd.isBytesAndChars: 125, 125, 'after typing the bytes solution.';
         $wd.run;
         $wd.isPassing: 'after submitting the bytes solution.';
         $wd.clearCode;
@@ -583,8 +583,8 @@ for (False, True) -> $loggedIn {
         setup $wd;
         $wd.getLangLink('Python').click;
         $wd.clearCode;
-        $wd.typeCode: $python121_121;
-        $wd.isBytesAndChars: 121, 121, 'after submitting the bytes solution.';
+        $wd.typeCode: $python125_125;
+        $wd.isBytesAndChars: 125, 125, 'after submitting the bytes solution.';
         $wd.run;
         $wd.isPassing: 'after submitting the bytes solution.';
         $wd.clearCode;
@@ -598,16 +598,16 @@ for (False, True) -> $loggedIn {
         $wd.isBytesAndChars: 210, 88, 'after reloading the page.';
         $wd.setSolution: 'bytes';
         $wd.isSolutionPickerState: 'bytes', 'after switching solutions.';
-        $wd.isBytesAndChars: 121, 121, 'after switching solutions.';
+        $wd.isBytesAndChars: 125, 125, 'after switching solutions.';
         $wd.loadFizzBuzz;
         $wd.isSolutionPickerState: 'bytes', 'after reloading the page again.';
-        $wd.isBytesAndChars: 121, 121, 'after reloading the page again.';
+        $wd.isBytesAndChars: 125, 125, 'after reloading the page again.';
         $wd.clearLocalStorage;
         $wd.loadFizzBuzz;
         $wd.getLangLink('Python').click;
         if $loggedIn {
             $wd.isSolutionPickerState: 'bytes', 'after clearing localStorage and reloading the page.';
-            $wd.isBytesAndChars: 121, 121, 'after clearing localStorage and reloading the page.';
+            $wd.isBytesAndChars: 125, 125, 'after clearing localStorage and reloading the page.';
             $wd.setSolution: 'chars';
             $wd.isSolutionPickerState: 'chars', 'after switching to the chars solution.';
             $wd.isBytesAndChars: 210, 88, 'after switching to the chars solution.';
@@ -626,9 +626,9 @@ for (False, True) -> $loggedIn {
             $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
             # Submit different solutions for bytes and chars.
             $wd.clearCode;
-            $wd.typeCode: $python121_121;
+            $wd.typeCode: $python125_125;
             $wd.isRestoreSolutionLinkVisible: False, 'after typing the bytes solution.';
-            $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
+            $wd.isBytesAndChars: 125, 125, 'after typing the bytes solution.';
             $wd.run;
             $wd.isPassing: 'after submitting the bytes solution.';
             $wd.isSolutionPickerState: '', 'after submitting the bytes solution.';
@@ -646,15 +646,15 @@ for (False, True) -> $loggedIn {
             $wd.isBytesAndChars: 211, 89, 'after modifying the chars solution.';
             $wd.isRestoreSolutionLinkVisible: True, 'after modifying the chars solution.';
             $wd.setSolution: 'bytes';
-            $wd.isBytesAndChars: 121, 121, 'after switching to the bytes solution.';
+            $wd.isBytesAndChars: 125, 125, 'after switching to the bytes solution.';
             $wd.isRestoreSolutionLinkVisible: False, 'after after switching to the bytes solution.';
             $wd.typeCode: 'A';
             # Restore the solutions.
             $wd.loadFizzBuzz if $reloadFirst;
-            $wd.isBytesAndChars: 122, 122, 'after modifying the bytes solution.';
+            $wd.isBytesAndChars: 126, 126, 'after modifying the bytes solution.';
             $wd.isRestoreSolutionLinkVisible: True, 'after modifying the bytes solution.';
             $wd.restoreSolution;
-            $wd.isBytesAndChars: 121, 121, 'after restoring the bytes solution.';
+            $wd.isBytesAndChars: 125, 125, 'after restoring the bytes solution.';
             $wd.isRestoreSolutionLinkVisible: False, 'after restoring the bytes solution.';
             $wd.setSolution: 'chars';
             $wd.isBytesAndChars: 211, 89, 'after switching to the chars solution.';
@@ -663,7 +663,7 @@ for (False, True) -> $loggedIn {
             $wd.isBytesAndChars: 210, 88, 'after restoring the bytes solution.';
             $wd.isRestoreSolutionLinkVisible: False, 'after restoring the bytes solution.';
             $wd.setSolution: 'bytes';
-            $wd.isBytesAndChars: 121, 121, 'after switching to the bytes solution again.';
+            $wd.isBytesAndChars: 125, 125, 'after switching to the bytes solution again.';
             $wd.isRestoreSolutionLinkVisible: False, 'after after switching to the bytes solution again.';
         }
     }
@@ -676,8 +676,8 @@ subtest 'When not logged in, after a user submits different bytes and chars solu
     $wd.loadFizzBuzz;
     $wd.getLangLink('Python').click;
     $wd.clearCode;
-    $wd.typeCode: $python121_121;
-    $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
+    $wd.typeCode: $python125_125;
+    $wd.isBytesAndChars: 125, 125, 'after typing the bytes solution.';
     $wd.run;
     $wd.isPassing: 'after submitting the bytes solution, while logged out.';
     $wd.clearCode;
@@ -695,7 +695,7 @@ subtest 'When not logged in, after a user submits different bytes and chars solu
     $wd.run;
     $wd.isPassing: 'after submitting the chars solution, while logged in.';
     $wd.setSolution: 'bytes';
-    $wd.isBytesAndChars: 121, 121, 'after switching to the bytes solution.';
+    $wd.isBytesAndChars: 125, 125, 'after switching to the bytes solution.';
     $wd.isSolutionPickerState: '', 'after switching to the bytes solution. There is only one submitted solution at this point.';
     # Submit the solution as a logged-in user.
     $wd.run;
@@ -705,7 +705,7 @@ subtest 'When not logged in, after a user submits different bytes and chars solu
     $wd.loadFizzBuzz;
     $wd.getLangLink('Python').click;
     $wd.isSolutionPickerState: 'bytes', 'after clearing localStorage and reloading the page.';
-    $wd.isBytesAndChars: 121, 121, 'after clearing localStorage and reloading the page.';
+    $wd.isBytesAndChars: 125, 125, 'after clearing localStorage and reloading the page.';
     $wd.setSolution: 'chars';
     $wd.isSolutionPickerState: 'chars', 'after switching to the chars solution.';
     $wd.isBytesAndChars: 210, 88, 'after switching to the chars solution.';
@@ -723,15 +723,15 @@ subtest 'When not logged in, after a user submits different bytes and chars solu
     $wd.run;
     $wd.isPassing: 'after submitting the chars solution, while logged out.';
     $wd.clearCode;
-    $wd.typeCode: $python121_121;
-    $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
+    $wd.typeCode: $python125_125;
+    $wd.isBytesAndChars: 125, 125, 'after typing the bytes solution.';
     $wd.run;
     $wd.isPassing: 'after submitting the bytes solution, while logged out.';
     $wd.isSolutionPickerState: 'bytes', 'after submitting the bytes solution, while logged out.';
     # Log in and reload the page.
     $wd.setSessionCookie: createUserAndSession;
     $wd.loadFizzBuzz;
-    $wd.isBytesAndChars: 121, 121, 'after reloading the page';
+    $wd.isBytesAndChars: 125, 125, 'after reloading the page';
     $wd.isSolutionPickerState: 'bytes', 'after reloading the page';
     # Submit the solution as a logged-in user.
     $wd.run;
@@ -747,7 +747,7 @@ subtest 'When not logged in, after a user submits different bytes and chars solu
     $wd.loadFizzBuzz;
     $wd.getLangLink('Python').click;
     $wd.isSolutionPickerState: 'bytes', 'after clearing localStorage and reloading the page.';
-    $wd.isBytesAndChars: 121, 121, 'after clearing localStorage and reloading the page.';
+    $wd.isBytesAndChars: 125, 125, 'after clearing localStorage and reloading the page.';
     $wd.setSolution: 'chars';
     $wd.isSolutionPickerState: 'chars', 'after switching to the chars solution.';
     $wd.isBytesAndChars: 210, 88, 'after switching to the chars solution.';
@@ -760,8 +760,8 @@ subtest 'When not logged in, after a user submits different bytes and chars solu
     $wd.loadFizzBuzz;
     $wd.getLangLink('Python').click;
     $wd.clearCode;
-    $wd.typeCode: $python121_121;
-    $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
+    $wd.typeCode: $python125_125;
+    $wd.isBytesAndChars: 125, 125, 'after typing the bytes solution.';
     $wd.run;
     $wd.isPassing: 'after submitting the bytes solution, while logged out.';
     $wd.clearCode;
@@ -779,7 +779,7 @@ subtest 'When not logged in, after a user submits different bytes and chars solu
     $wd.run;
     $wd.isPassing: 'after submitting the chars solution, while logged in.';
     $wd.setSolution: 'bytes';
-    $wd.isBytesAndChars: 121, 121, 'after switching to the bytes solution.';
+    $wd.isBytesAndChars: 125, 125, 'after switching to the bytes solution.';
     $wd.isSolutionPickerState: '', 'after switching to the bytes solution. There is only one submitted solution at this point.';
     $wd.restoreSolution;
     $wd.isBytesAndChars: 210, 88, 'after discarding the bytes solution.';
@@ -798,15 +798,15 @@ subtest 'When not logged in, after a user submits different bytes and chars solu
     $wd.run;
     $wd.isPassing: 'after submitting the chars solution, while logged out.';
     $wd.clearCode;
-    $wd.typeCode: $python121_121;
-    $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
+    $wd.typeCode: $python125_125;
+    $wd.isBytesAndChars: 125, 125, 'after typing the bytes solution.';
     $wd.run;
     $wd.isPassing: 'after submitting the bytes solution, while logged out.';
     $wd.isSolutionPickerState: 'bytes', 'after submitting the bytes solution, while logged out.';
     # Log in and reload the page.
     $wd.setSessionCookie: createUserAndSession;
     $wd.loadFizzBuzz;
-    $wd.isBytesAndChars: 121, 121, 'after reloading the page';
+    $wd.isBytesAndChars: 125, 125, 'after reloading the page';
     $wd.isSolutionPickerState: 'bytes', 'after reloading the page';
     # Submit the solution as a logged-in user.
     $wd.run;
@@ -815,7 +815,7 @@ subtest 'When not logged in, after a user submits different bytes and chars solu
     $wd.isBytesAndChars: 210, 88, 'after switching to the chars solution.';
     $wd.isSolutionPickerState: '', 'after switching to the chars solution. There is only one submitted solution at this point.';
     $wd.restoreSolution;
-    $wd.isBytesAndChars: 121, 121, 'after discarding the chars solution.';
+    $wd.isBytesAndChars: 125, 125, 'after discarding the chars solution.';
     $wd.isSolutionPickerState: '', 'after discarding the chars solution.';
 }
 
@@ -829,8 +829,8 @@ subtest 'If the user improves their solution on another browser, the restore sol
     $wd.loadFizzBuzz;
     $wd.getLangLink('Python').click;
     $wd.clearCode;
-    $wd.typeCode: $python121_121;
-    $wd.isBytesAndChars: 121, 121, 'after typing code.';
+    $wd.typeCode: $python125_125;
+    $wd.isBytesAndChars: 125, 125, 'after typing code.';
     $wd.run;
     $wd.isPassing: 'after running code.';
     $wd.isSolutionPickerState: '', 'after running code.';

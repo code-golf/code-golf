@@ -121,8 +121,8 @@ func fractions() ([]string, string) {
 	outs := make([]string, len(fractions))
 
 	for i, f := range shuffle(fractions) {
-		args[i] = fmt.Sprintf("%d/%d", f.numerator*f.scale, f.denominator*f.scale)
-		outs[i] = fmt.Sprintf("%d/%d", f.numerator, f.denominator)
+		args[i] = fmt.Sprint(f.numerator*f.scale, "/", f.denominator*f.scale)
+		outs[i] = fmt.Sprint(f.numerator, "/", f.denominator)
 	}
 
 	return args, strings.Join(outs, "\n")

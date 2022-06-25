@@ -15,8 +15,6 @@ type Node struct {
 
 func asNode(val int) *Node { return &Node{op: '=', value: val} }
 
-func randInt(a, b int) int { return rand.Intn(b-a+1) + a }
-
 func expand(node *Node) {
 	val := node.value
 	var left, right int
@@ -39,7 +37,7 @@ func expand(node *Node) {
 					factors = append(factors, i)
 				}
 			}
-			left = factors[rand.Intn(len(factors))]
+			left = randChoice(factors)
 			right = val / left
 		}
 		if rand.Intn(2) == 1 {
