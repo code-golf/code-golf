@@ -734,7 +734,7 @@ category = 'Computing'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Flooding_algorithm' },
 ]
-experimental = -1
+experiment = 697
 preamble = '''
 <p>For each 9x9 grid separated, by two new lines, fill with the flood distance in base62.
 
