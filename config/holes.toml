@@ -729,28 +729,6 @@ preamble = '''
     for example <b>15</b> should print <b>FizzBuzz</b>.
 '''
 
-['Flood Fill']
-category = 'Computing'
-links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Flooding_algorithm' },
-]
-experiment = 697
-preamble = '''
-<p>For each 9x9 grid separated, by two new lines, fill with the flood distance in base62.
-
-<p>Any number of points on the grid can be marked as a source notated with `0`
-
-<p>Any number of points on the grid can be marked as impassible notated with `#`
-
-<p>Any number of points on the grid can be marked as passible notated with `-`
-
-<p>Starting with each zero, fill all passible coordinates on the grid by using the next base62
-value. Fill can only happen vertically and horizontally, not diagonally.
-
-<p>Fill until no additional points can be modified on the grid.
-'''
-
-
 [Fractions]
 category = 'Mathematics'
 links = [
@@ -1081,6 +1059,27 @@ preamble = '''
 <p>
     Draw the Mandelbrot set (x∈[-2,0.5], y∈[-1,1]) in a 41x81 Unicode grid by using ▒ (U+2592)
     and █ (U+2588).
+'''
+
+['Manhattan Distance']
+category = 'Computing'
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Taxicab_geometry' },
+]
+experiment = 697
+preamble = '''
+<p>For each 9x9 grid separated, by two new lines, fill with the Manhattan distance in base62.
+
+<p>Any number of points on the grid can be marked as a source notated with `0`
+
+<p>Any number of points on the grid can be marked as impassible notated with `#`
+
+<p>Any number of points on the grid can be marked as passible notated with `-`
+
+<p>Starting with each zero, fill all passible coordinates on the grid by using the next base62
+value. Fill can only happen vertically and horizontally, not diagonally.
+
+<p>Fill until no additional points can be modified on the grid.
 '''
 
 [Maze]

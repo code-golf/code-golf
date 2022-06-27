@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func floodFill() ([]string, string) {
+func manhattanDistance() ([]string, string) {
 	args := []string{
 		"---------\n------0--\n---------\n---------\n---------\n---------\n---------\n---------\n---------",
 		"----####-\n----#-0#-\n----####-\n---------\n---------\n---------\n---------\n-----0---\n---------",

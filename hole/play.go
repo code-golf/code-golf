@@ -67,8 +67,6 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 		args, answer = ellipsePerimeters()
 	case "emojify":
 		args, answer = emojify()
-	case "flood-fill":
-		args, answer = floodFill()
 	case "fractions":
 		args, answer = fractions()
 	case "hexdump":
@@ -83,6 +81,8 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 		args, answer = levenshteinDistance()
 	case "lucky-tickets":
 		args, answer = luckyTickets()
+	case "manhattan-distance":
+		args, answer = manhattanDistance()
 	case "maze":
 		args, answer = maze()
 	case "morse-decoder", "morse-encoder":
