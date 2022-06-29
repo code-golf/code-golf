@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func manhattanDistance() ([]string, string) {
+func proximityGrid() ([]string, string) {
 	args := []string{
 		"---------\n------0--\n---------\n---------\n---------\n---------\n---------\n---------\n---------",
 		"----####-\n----#-0#-\n----####-\n---------\n---------\n---------\n---------\n-----0---\n---------",

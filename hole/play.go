@@ -81,8 +81,6 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 		args, answer = levenshteinDistance()
 	case "lucky-tickets":
 		args, answer = luckyTickets()
-	case "manhattan-distance":
-		args, answer = manhattanDistance()
 	case "maze":
 		args, answer = maze()
 	case "morse-decoder", "morse-encoder":
@@ -95,6 +93,8 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 		args, answer = pangramGrep()
 	case "poker":
 		args, answer = poker()
+	case "proximity-grid":
+		args, answer = proximityGrid()
 	case "qr-decoder", "qr-encoder":
 		args, answer = qr(holeID == "qr-decoder")
 	case "quine":
