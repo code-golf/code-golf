@@ -93,6 +93,8 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 		args, answer = pangramGrep()
 	case "poker":
 		args, answer = poker()
+	case "proximity-grid":
+		args, answer = proximityGrid()
 	case "qr-decoder", "qr-encoder":
 		args, answer = qr(holeID == "qr-decoder")
 	case "quine":
