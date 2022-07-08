@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func turtle() (args []string, out string) {
+func turtle() []Scorecard {
 	// set argVec might add the bigger numbers if you want
 	moveAllVec := []string{
 		"0 N", "0 E", "0 S", "0 W", "1 N", "1 E", "1 S", "1 W", "2 N", "2 E", "2 S", "2 W", "3 N", "3 E", "3 S", "3 W", "4 N", "4 E", "4 S", "4 W", "5 N", "5 E", "5 S", "5 W", "6 N", "6 E", "6 S", "6 W", "7 N", "7 E", "7 S", "7 W", "8 N", "8 E", "8 S", "8 W", "9 N", "9 E", "9 S", "9 W", "10 N", "10 E", "10 S", "10 W",
@@ -117,8 +117,8 @@ func turtle() (args []string, out string) {
 		outVec = append(outVec, line)
 	}
 
-	args = append(args, strings.Join(argVec[:], "\n"))
-	out = strings.Join(outVec[:], "\n")
-
-	return
+	return []Scorecard{{
+		Args:   []string{strings.Join(argVec[:], "\n")},
+		Answer: strings.Join(outVec[:], "\n"),
+	}}
 }

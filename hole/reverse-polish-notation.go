@@ -102,7 +102,7 @@ func genExpr(init int, expander func(*Node, int), expandCount int) *Node {
 	return node
 }
 
-func reversePolishNotation() ([]string, string) {
+func reversePolishNotation() []Scorecard {
 	const tests = 20
 
 	exprs := [tests]*Node{
@@ -133,5 +133,5 @@ func reversePolishNotation() ([]string, string) {
 		answer.WriteString(strconv.Itoa(expr.value))
 	}
 
-	return args, answer.String()
+	return []Scorecard{{Args: args, Answer: answer.String()}}
 }

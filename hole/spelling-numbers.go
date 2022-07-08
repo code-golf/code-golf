@@ -66,7 +66,7 @@ func wordify(i int) string {
 	return out.String()
 }
 
-func spellingNumbers() ([]string, string) {
+func spellingNumbers() []Scorecard {
 	const count = 1001
 	tests := make([]test, count)
 

@@ -9,7 +9,7 @@ var (
 	r3 = [...]string{"", "M", "MM", "MMM"}
 )
 
-func arabicToRoman(reverse bool) ([]string, string) {
+func arabicToRoman(reverse bool) []Scorecard {
 	// Testing all ~4k is too slow and is too many arguments for J.
 	const count = 2000
 

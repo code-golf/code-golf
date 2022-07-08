@@ -129,8 +129,12 @@ func draw(grid [height][width]int, si, sj, ei, ej int, path [height][width]int, 
 	return
 }
 
-func maze() (args []string, out string) {
-	nomazes := 5
+func maze() []Scorecard {
+	const nomazes = 5
+
+	args := make([]string, nomazes)
+	out := ""
+
 	for i := 0; i < nomazes; i++ {
 		var grid [height][width]int
 		var dist [height][width]int
@@ -146,10 +150,12 @@ func maze() (args []string, out string) {
 
 		mazeinput = mazeinput[:len(mazeinput)-1]
 
-		args = append(args, mazeinput)
+		args[i] = mazeinput
 
 		out += mazesolved + "\n"
 	}
+
 	out = out[:len(out)-2]
-	return
+
+	return []Scorecard{{Args: args, Answer: out}}
 }

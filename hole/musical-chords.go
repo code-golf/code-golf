@@ -64,7 +64,7 @@ func genNotes(rootIdx int, rootNote string, steps [2]int) []string {
 	return []string{rootNote, thirdNote, fifthNote}
 }
 
-func musicalChords() ([]string, string) {
+func musicalChords() []Scorecard {
 	var tests []test
 
 	// Skip a random combination for anti-cheese

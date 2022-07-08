@@ -6,7 +6,7 @@ import (
 	"github.com/code-golf/code-golf/pretty"
 )
 
-func ordinalNumbers() ([]string, string) {
+func ordinalNumbers() []Scorecard {
 	const count = 1000
 	tests := make([]test, count)
 

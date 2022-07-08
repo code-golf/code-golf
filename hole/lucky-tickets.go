@@ -55,7 +55,7 @@ func sumDigits(number, base int64) (result int64) {
 	return result
 }
 
-func luckyTickets() ([]string, string) {
+func luckyTickets() []Scorecard {
 	var tickets [20]ticket
 
 	// Add 4 random different fixed cases.

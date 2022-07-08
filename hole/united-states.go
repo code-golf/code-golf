@@ -1,7 +1,7 @@
 package hole
 
-func unitedStates() ([]string, string) {
-	return outputTests(shuffle([]test{
+func unitedStates() []Scorecard {
+	tests := shuffle([]test{
 		{"Alabama", "AL"},
 		{"Alaska", "AK"},
 		{"Arizona", "AZ"},
@@ -53,5 +53,8 @@ func unitedStates() ([]string, string) {
 		{"West Virginia", "WV"},
 		{"Wisconsin", "WI"},
 		{"Wyoming", "WY"},
-	}))
+	})
+
+	mid := len(tests) / 2
+	return outputTests(tests, tests[:mid], tests[mid:])
 }

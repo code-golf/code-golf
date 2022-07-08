@@ -1,6 +1,6 @@
 package hole
 
-func rockPaperScissorsSpockLizard() ([]string, string) {
+func rockPaperScissorsSpockLizard() []Scorecard {
 	return outputTests(shuffle([]test{
 		{"💎💎", "Tie"},
 		{"💎📄", "📄 covers 💎"},

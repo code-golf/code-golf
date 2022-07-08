@@ -20,7 +20,7 @@ func levenshteinTest(a, b string) test {
 	return test{a + " " + b, strconv.Itoa(levenshtein.ComputeDistance(a, b))}
 }
 
-func levenshteinDistance() ([]string, string) {
+func levenshteinDistance() []Scorecard {
 	word := randWord()
 	tests := []test{
 		levenshteinTest(word, word),

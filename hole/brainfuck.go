@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func brainfuck() ([]string, string) {
+func brainfuck() []Scorecard {
 	args := []string{
 		"+++++++++++++++[>++>+++>++++>+++++>++++++>+++++++>++++++++<<<<<<<-]+++++++++++++++>>>++++++.>>+++++++.>>-----.<-.<<<<<<-----.",
 		"+++++++++++++++[>++>+++>++++>+++++>++++++>+++++++>++++++++<<<<<<<-]+++++++++++++++>>>>-.>+++++++.>>--.<<.<+++++++++.>++.>>----.<.>--.++++.<<<<<<<-----.",
@@ -41,5 +41,5 @@ func brainfuck() ([]string, string) {
 		outs[i], outs[j] = outs[j], outs[i]
 	})
 
-	return args, strings.Join(outs, "\n")
+	return []Scorecard{{Args: args, Answer: strings.Join(outs, "\n")}}
 }
