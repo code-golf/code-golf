@@ -371,6 +371,4 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 			score.Pass = score.Answer == string(score.Stdout)
 		}
 	}
-
-	return
 }
