@@ -25,7 +25,7 @@ func init() {
 
 	for _, categories := range CheevoTree {
 		for _, cheevo := range categories {
-			cheevo.ID = id(cheevo.Name)
+			cheevo.ID = ID(cheevo.Name)
 
 			CheevoByID[cheevo.ID] = cheevo
 			CheevoList = append(CheevoList, cheevo)

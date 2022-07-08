@@ -25,7 +25,7 @@ func init() {
 
 	for name, lang := range langs {
 		lang.Example = strings.TrimSuffix(lang.Example, "\n")
-		lang.ID = id(name)
+		lang.ID = ID(name)
 		lang.Name = name
 
 		LangByID[lang.ID] = lang
