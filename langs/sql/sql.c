@@ -39,17 +39,24 @@ int main(int argc, char *argv[]) {
         len += fread(&sql[len], 1, size - len - 1, stdin);
     }
 
-    if (sqlite3_prepare_v2(db, sql, len, &res, 0) != SQLITE_OK) {
-        fprintf(stderr, "%s\n", sqlite3_errmsg(db));
-        sqlite3_close(db);
-        return 1;
+    const char* statement = sql;
+
+    while(*statement) {
+        if (sqlite3_prepare_v2(db, statement, len, &res, &statement) != SQLITE_OK) {
+            fprintf(stderr, "%s\n", sqlite3_errmsg(db));
+            sqlite3_close(db);
+            return 1;
+        }
+
+        while (sqlite3_step(res) == SQLITE_ROW)
+//          this would enable only taking the result of the final query
+//            if (!*statement)
+            if (sqlite3_column_type(res, 0) != SQLITE_NULL)
+                printf("%s\n", sqlite3_column_text(res, 0));
+
+        sqlite3_finalize(res);
     }
 
-    while (sqlite3_step(res) == SQLITE_ROW)
-        if (sqlite3_column_type(res, 0) != SQLITE_NULL)
-            printf("%s\n", sqlite3_column_text(res, 0));
-
-    sqlite3_finalize(res);
     sqlite3_close(db);
     return 0;
 }
