@@ -138,6 +138,13 @@ CREATE TABLE solutions (
     PRIMARY KEY (user_id, hole, lang, scoring)
 );
 
+CREATE TABLE wiki (
+    slug    text   NOT NULL PRIMARY KEY,
+    section text,
+    name    citext NOT NULL,
+    html    text   NOT NULL
+);
+
 CREATE TABLE trophies (
     earned  timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
     user_id int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -235,3 +242,4 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE sessions        TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE solutions       TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE trophies        TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE users           TO "code-golf";
+GRANT SELECT, INSERT, TRUNCATE       ON TABLE wiki            TO "code-golf";

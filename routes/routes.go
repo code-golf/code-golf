@@ -112,6 +112,8 @@ func Router(db *sql.DB) http.Handler {
 	r.Post("/solution", solutionPOST)
 	r.Get("/stats", statsGET)
 	r.Get("/users/{name}", userGET)
+	r.Get("/wiki", wikiGET)
+	r.Get("/wiki/*", wikiPageGET)
 
 	return r
 }
