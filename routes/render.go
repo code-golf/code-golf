@@ -190,6 +190,9 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	theGolfer := session.Golfer(r)
 	if theGolfer != nil {
 		theme = theGolfer.Theme
+		if name == "hole" && theGolfer.Layout == "tabs" {
+			name = "hole-ng"
+		}
 	}
 
 	args := struct {

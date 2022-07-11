@@ -43,6 +43,8 @@ CREATE TYPE hole AS ENUM (
 
 CREATE TYPE keymap AS ENUM ('default', 'vim');
 
+CREATE TYPE layout AS ENUM ('default', 'tabs');
+
 CREATE TYPE lang AS ENUM (
     'assembly', 'bash', 'brainfuck', 'c', 'c-sharp', 'cpp', 'cobol',
     'crystal', 'd', 'elixir', 'f-sharp', 'fish', 'fortran', 'go', 'haskell',
@@ -79,6 +81,7 @@ CREATE TABLE users (
     time_zone    text,
     delete       timestamp,
     keymap       keymap    NOT NULL DEFAULT 'default',
+    layout       layout    NOT NULL DEFAULT 'default',
     country      char(2),
     show_country bool      NOT NULL DEFAULT false,
     started      timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
