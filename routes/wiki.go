@@ -9,12 +9,14 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-type wikiPage struct{ Slug, Section, Name string }
-type wikiData struct {
-	HTML       template.HTML
-	Slug, Name string
-	Pages      []wikiPage
-}
+type (
+	wikiPage struct{ Slug, Section, Name string }
+	wikiData struct {
+		HTML       template.HTML
+		Slug, Name string
+		Pages      []wikiPage
+	}
+)
 
 // GET /wiki
 func wikiGET(w http.ResponseWriter, r *http.Request) {
