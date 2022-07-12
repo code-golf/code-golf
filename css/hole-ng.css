@@ -3,6 +3,7 @@
  * from comments like the *.js `include`s
  */
 
+/* include hole.css */
 /* include vendor/goldenlayout-base.css */
 /* include vendor/goldenlayout-theme.css */
 
@@ -11,50 +12,30 @@ body {
     background: var(--light-grey);
 }
 
-pre {
-    font-family: emoji, 'Source Code Pro', monospace;
-    line-height: 1.2;
-    overflow: auto hidden;
-}
-
-.qr-span span {
-    color: var(--grey);
-    font-family: emoji, 'Source Code Pro', monospace;
-}
-
-#details-content {
+#details-content{
     padding: .375rem;
 }
 
 .readonly-output {
-    flex: 1;
-    font-family: emoji, 'Source Code Pro', monospace;
-    font-variant-ligatures: none;
-    line-height: 1;
-    padding: .375rem;
-}
+     flex: 1;
+     font-family: emoji, 'Source Code Pro', monospace;
+     font-variant-ligatures: none;
+     line-height: 1;
+     padding: .375rem;
+ }
 
 .readonly-output:empty::after {
     content: "(Empty)";
 }
 
-canvas {
-    border: 1px solid var(--color);
-    image-rendering: crisp-edges;
-    width: 50%;
-}
-
-main .info {
+section {
+    /* undo display: grid */
     display: block;
-    margin: 0;
-    padding: .5rem;
 }
 
 section header {
-    align-items: center;
-    display: flex;
+    /* a little more space than default hole.css */
     height: 2.2rem;
-    justify-content: space-between;
     padding: 0 .5rem;
 }
 
@@ -63,10 +44,7 @@ section header {
     margin-bottom: 2px;
 }
 
-.cm-editor { height: 100% }
-
-.text-red { color: var(--red-text) }
-
+/* default hole.css selects divs inside these, but tab layout removed the divs */
 #err, #exp, #out { white-space: pre }
 
 #arg {
@@ -77,88 +55,26 @@ section header {
     gap: .375rem;
 }
 
-#arg span {
-    background: var(--arg-background);
-    border-radius: .5rem;
-    font-family: emoji, 'Source Code Pro', monospace;
-    padding: .25rem .375rem;
-    white-space: pre;
-}
-
-#arrows code { font-size: 1.5rem }
-#arrows td   { font-family: emoji, 'Source Code Pro', monospace }
-#arrows td:first-child { white-space: pre }
-#arrows td:last-child  { width: 100% }
-
-#authors {
-    display: flex;
-    flex-wrap: wrap;
-    font-size: 1rem;
-    font-weight: normal;
-    gap: .25rem 0;
-    padding-left: 1rem;
-}
-
-#authors a {
-    display: flex;
-    gap: .25rem;
-    margin-left: .25rem;
-}
-
-#authors img {
-    border-radius: 50%;
-    height: 1.25rem;
-    width: 1.25rem;
-}
-
-#chars {
-    border-bottom: 1px solid var(--color);
-    font-weight: bold;
-    line-height: 2rem;
-}
-
 #editor-section {
     height: 100%;
     overflow: hidden;
 }
 
+/* change (e.g. light theme) black-on-white back to white-on-black */
+#diff th {
+    color: var(--color);
+    background: var(--background);
+    font-size: 1rem;
+}
+
 #editor {
+    border: none;
     /* Button = 1rem (contents) + 2*0.5 rem (padding) + 2px (border) + 4px (margin) */
     height: calc(100% - (2rem + 6px));
-    grid-row: span 2;
-    overflow-x: hidden;
 }
-
-#emojify {
-    display: grid;
-    gap: .5rem;
-    grid-template-columns: repeat(auto-fill, minmax(4.5rem, 1fr));
-}
-
-#emojify div {
-    align-items: center;
-    background: var(--light-grey);
-    border: 1px solid var(--color);
-    display: flex;
-    justify-content: space-between;
-    padding: .25rem .4rem;
-}
-
-main > header {
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: space-between;
-}
-
-main > header a { white-space: nowrap }
 
 main > header nav {
-    display: flex;
-    gap: .5rem;
     max-width: 100%;
-    flex-wrap: wrap;
 }
 
 #hole-lang {
@@ -177,34 +93,7 @@ main > header nav {
 }
 
 #rankingsView {
-    background: var(--color);
-    gap: 1px;
-}
-
-#rankingsView a {
-    align-items: center;
-    background: var(--light-grey);
-    display: flex;
-    flex: 1;
-    gap: .5rem;
-    justify-content: center;
-}
-
-#rankingsView svg {
-    height: 1rem;
-    width: 1rem;
-}
-
-#run {
-    align-items: center;
-    display: flex;
-    gap: 1rem;
-    justify-content: flex-end;
-}
-
-#run span {
-    flex: 1;
-    text-align: right;
+    border: none;
 }
 
 #scoreboard-section {
@@ -214,7 +103,6 @@ main > header nav {
 }
 
 #scores-wrapper {
-    /* height: calc(100% - 2.2rem - 31px); */
     overflow-y: auto;
     /* Avoid scroll bars from tooltip overflow */
     overflow-x: hidden;
@@ -228,18 +116,10 @@ main > header nav {
 }
 
 #scores {
+    border: none;
     width: 100%;
+    height: unset;
 }
-
-/* Shrink the padding compared to a normal table */
-#scores td               { padding: 0 .25rem }
-#scores td:first-child { padding-left: .5rem }
-#scores td:last-child { padding-right: .5rem }
-
-#scores td:nth-child(n+3) { text-align: right }
-
-#scores .bytes td:nth-child(4),
-#scores .chars td:nth-child(3) { color: var(--grey) }
 
 #scores [data-tooltip]:after {
     /* Override tooltip transform to avoid right-overflow */
@@ -260,51 +140,8 @@ main > header nav {
 }
 
 #status {
-    align-items: center;
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: 1fr auto;
     padding: 0.5rem;
     grid-column: 3;
-}
-
-#strokes { font-weight: bold }
-
-/* TODO Generalise the hole mapping table CSS, lose the specific IDs. */
-                            #colors, #morse, #states { columns: 4 }
-@media (max-width: 54rem) { #colors, #morse, #states { columns: 2 } }
-@media (max-width: 30rem) { #colors, #morse, #states { columns: 1 } }
-
-#colors svg {
-    align-self: center;
-    border: 1px solid var(--color);
-    height: 1rem;
-    margin-right: .5rem;
-    width: 1rem;
-}
-
-#colors table, #morse table, #states table { break-inside: avoid-column }
-thead { user-select: none }
-
-#colors td:first-child { display: flex }
-
-#colors td:last-child {
-    text-align-last: justify;
-    text-justify: inter-character;
-}
-
-#colors th:first-child,
-#morse  td:last-child,
-#states td:first-child {
-    width: 100%;
-}
-
-@media (max-width: 34rem) {
-    section, #status { grid-template-columns: 1fr }
-
-    section header { padding: 0 }
-
-    #thirdParty:empty { display: none }
 }
 
 #golden-container {
@@ -419,46 +256,6 @@ main {
 }
 
 #make-narrow { display: none; }
-.full-width #make-narrow { display: unset; }
+.full-width #make-narrow { display: flex; }
 .full-width #make-wide { display: none; }
 .full-width body { max-width: unset; }
-
-#diff:not(:empty),
-#diff-content {
-    padding: 0;
-}
-
-#diff table {
-    border-collapse: separate;
-    border-spacing: 0;
-    table-layout: fixed;
-    width: 100%;
-}
-
-#diff td, #diff th { line-height: 1.25rem }
-
-#diff td {
-    border: none;
-    vertical-align: top;
-    white-space: pre-wrap;
-    word-break: break-all;
-}
-
-#diff .diff-col-text { padding: 0 4px }
-
-/* Ref .CodeMirror-linenumber and .CodeMirror-gutters */
-#diff .diff-left-num,
-#diff .diff-right-num {
-    padding: 0 3px 0 5px;
-    min-width: 20px;
-    text-align: right;
-    white-space: nowrap;
-}
-
-#diff td:not(:last-child) { border-right: 1px solid var(--color) }
-
-#diff .diff-removal       { background-color: var(--diff-light-red) }
-#diff .diff-addition      { background-color: var(--diff-light-green) }
-#diff .diff-char-removal  { background-color: var(--red) }
-#diff .diff-char-addition { background-color: var(--green) }
-#diff .diff-skip          { background-color: var(--blue) }
