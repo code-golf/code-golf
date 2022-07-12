@@ -192,7 +192,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	if theGolfer != nil {
 		theme = theGolfer.Theme
 		if name == "hole" && theGolfer.Layout == "tabs" {
-			name = "hole-ng"
+			name = "hole-tabs"
 			prependBeforeName = "hole"
 		}
 	}
@@ -267,10 +267,10 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	}
 
 	// TODO CSS imports?
-	if name == "hole" || name == "hole-ng" {
+	if name == "hole" || name == "hole-tabs" {
 		args.CSS = args.CSS + css["terminal"]
 	}
-	if name == "hole-ng" {
+	if name == "hole-tabs" {
 		args.CSS += css["vendor/goldenlayout-base"]
 		// TODO: (GL) switch light/dark codemirror theme to getThemeCSS
 		// See above:
