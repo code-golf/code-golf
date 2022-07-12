@@ -9,10 +9,10 @@ CREATE TYPE cheevo AS ENUM (
     'independence-day', 'interview-ready', 'its-over-9000', 'just-kidding',
     'marathon-runner', 'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars',
     'off-the-grid', 'omniglot', 'ouroboros', 'pangramglot', 'patches-welcome',
-    'pi-day', 'polyglot', 'polyglutton', 'rtfm', 'rule-34', 'slowcoach',
-    'solve-quine', 'sounds-quite-nice', 'takeout', 'the-watering-hole',
-    'tim-toady', 'tl-dr', 'twelvetide', 'twenty-kiloleagues',
-    'under-pressure', 'up-to-eleven', 'vampire-byte'
+    'phileas-fogg', 'pi-day', 'polyglot', 'polyglutton', 'rtfm', 'rule-34',
+    'slowcoach', 'solve-quine', 'sounds-quite-nice', 'takeout',
+    'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
+    'twenty-kiloleagues', 'under-pressure', 'up-to-eleven', 'vampire-byte'
 );
 
 CREATE TYPE connection AS ENUM (
@@ -37,16 +37,14 @@ CREATE TYPE hole AS ENUM (
     'roman-to-arabic', 'rule-110', 'seven-segment', 'sierpiński-triangle',
     'smith-numbers', 'spelling-numbers', 'star-wars-opening-crawl', 'sudoku',
     'sudoku-v2', 'ten-pin-bowling', 'time-distance', 'tongue-twisters',
-    'united-states', 'vampire-numbers', 'van-eck-sequence', 'λ', 'π', 'τ',
-    'φ', '√2', '𝑒'
+    'united-states', 'vampire-numbers', 'van-eck-sequence', 'zodiac-signs',
+    'λ', 'π', 'τ', 'φ', '√2', '𝑒'
 );
-
-CREATE TYPE keymap AS ENUM ('default', 'vim');
 
 CREATE TYPE layout AS ENUM ('default', 'tabs');
 
 CREATE TYPE lang AS ENUM (
-    'assembly', 'bash', 'brainfuck', 'c', 'c-sharp', 'cpp', 'cobol',
+    'assembly', 'bash', 'basic', 'brainfuck', 'c', 'c-sharp', 'cpp', 'cobol',
     'crystal', 'd', 'elixir', 'f-sharp', 'fish', 'fortran', 'go', 'haskell',
     'hexagony', 'j', 'java', 'javascript', 'julia', 'k', 'lisp', 'lua', 'nim',
     'pascal', 'perl', 'php', 'powershell', 'prolog', 'python', 'raku', 'ruby',
@@ -80,7 +78,6 @@ CREATE TABLE users (
     login        citext    NOT NULL UNIQUE,
     time_zone    text,
     delete       timestamp,
-    keymap       keymap    NOT NULL DEFAULT 'default',
     layout       layout    NOT NULL DEFAULT 'default',
     country      char(2),
     show_country bool      NOT NULL DEFAULT false,

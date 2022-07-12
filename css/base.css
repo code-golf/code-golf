@@ -483,7 +483,7 @@ details.tabs a { display: inline-block }
 
 @keyframes fade {
     0%   { opacity: 0; margin-top: -4rem }
-    100% { opacity: 1; maring-top: 0 }
+    100% { opacity: 1; margin-top: 0 }
 }
 
 @media (max-width: 34rem) { .wide { display: none !important } }

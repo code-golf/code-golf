@@ -15,23 +15,23 @@ our $raku57_55 is export = 'say "Fizz" x $_ %% 3 ~ "Buzz" x $_ %% 5 || $_ for 1�
 
 our $raku59_57 is export = 'say ("Fizz" x $_ %% 3) ~ "Buzz" x $_ %% 5 || $_ for 1…100';
 
-# For the final three lines, Code Mirror is expected to add a single leading space for auto-indentation.
-# For NG, the second line is also auto-indented and the leading space below should be removed.
-our $python121_121 is export = "for x in range(1,101):" ~
-    "{RETURN} if x%15==0:print('FizzBuzz')" ~
-    "{RETURN}elif x%3==0:print('Fizz')" ~
-    "{RETURN}elif x%5==0:print('Buzz')" ~
-    "{RETURN}else:print(x)";
+# The backspaces undo the auto-indent that incorrectly thinks we're nesting.
+# 125 bytes because auto-indent defaults to two spaces.
+our $python125_125 is export = "for x in range(1,101):" ~
+    "{RETURN}if x%15==0:print('FizzBuzz')" ~
+    "{RETURN}{BACKSPACE}elif x%3==0:print('Fizz')" ~
+    "{RETURN}{BACKSPACE}elif x%5==0:print('Buzz')" ~
+    "{RETURN}{BACKSPACE}else:print(x)";
 
 our $python210_88 is export = "exec('景爠砠楮⁲慮来⠱ⰱ〱⤺ਠ楦⁸┱㔽㴰㩰物湴⠧䙩空䉵空✩ਠ敬楦⁸┳㴽〺灲楮琨❆楺稧⤊⁥汩映砥㔽㴰㩰物湴⠧䉵空✩ਠ敬獥㩰物湴⡸⤠'.encode('utf-16be'))";
 
 our $python62_62 is export = 'for i in range(1,101):print("Fizz"*(i%3<1)+"Buzz"*(i%5<1)or i)';
 
-# For NG, the print(x) line is also auto-indented and the leading space below should be removed.
-our $python_fibonacci_66_66 is export = "x = 0" ~
+# 70 bytes because auto-indent defaults to two spaces.
+our $python_fibonacci_70_70 is export = "x = 0" ~
     "{RETURN}y = 1" ~
     "{RETURN}for i in range(31):" ~
-    "{RETURN} print(x)" ~
+    "{RETURN}print(x)" ~
     "{RETURN}z = x + y" ~
     "{RETURN}x = y" ~
     "{RETURN}y = z";
@@ -176,10 +176,13 @@ class HoleWebDriver is WebDriver is export {
     }
 
     method clearCode {
-        $.find('textarea').send-keys: CONTROL ~ 'a' ~ DELETE;
+        $.find('.cm-content').send-keys: CONTROL ~ 'a' ~ DELETE;
     }
 
     method typeCode(Str:D $code) {
-        $.find('textarea').send-keys: $code;
+        my $editor = $.find: '.cm-content';
+
+        # Pause between lines or CM6 gets confused. Also it is more human.
+        $editor.send-keys: $_ for $code.split: RETURN, :v;
     }
 }

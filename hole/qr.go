@@ -108,18 +108,16 @@ func qrToString(qr matrix, trimRight bool) string {
 	return buf.String()
 }
 
-func qr(decoder bool) (args []string, out string) {
+func qr(decoder bool) []Scorecard {
 	content, qr := getStandardQr()
 	qrString := qrToString(qr, !decoder)
 
 	if decoder {
-		args = []string{qrString}
-		out = content
-	} else {
-		arg := content + " " + hex.EncodeToString(getErrorCorrectionBlocks(qr))
-		args = []string{arg}
-		out = qrString
+		return []Scorecard{{Args: []string{qrString}, Answer: content}}
 	}
 
-	return
+	return []Scorecard{{
+		Args:   []string{content + " " + hex.EncodeToString(getErrorCorrectionBlocks(qr))},
+		Answer: qrString,
+	}}
 }

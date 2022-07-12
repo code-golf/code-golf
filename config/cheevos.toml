@@ -241,6 +241,12 @@ description = 'Solve your sixty-ninth hole.'
 target      = 69
 
 [[Progression]]
+name        = 'Phileas Fogg'
+emoji       = '🚢'
+description = 'Solve your eightieth hole.'
+target      = 80
+
+[[Progression]]
 name        = 'It’s Over 9000!'
 emoji       = '🐉'
 description = 'Earn over 9,000 points in either bytes or chars scoring.'

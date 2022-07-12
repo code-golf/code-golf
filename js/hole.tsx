@@ -1,23 +1,29 @@
+import { ASMStateField }                       from '@defasm/codemirror';
 import LZString                                from 'lz-string';
-import CodeMirror                              from './_codemirror-legacy';
+import { EditorState, EditorView, extensions } from './_codemirror.js';
 import                                              './_copy-as-json';
 import diffTable                               from './_diff';
+import pbm                                     from './_pbm.js';
 import { $, $$, byteLen, charLen, comma, ord } from './_util';
 
-const darkModeMediaQuery = JSON.parse($('#darkModeMediaQuery').innerText);
-const experimental       = JSON.parse($('#experimental').innerText);
-const hole               = decodeURI(location.pathname.slice(1));
-const langs              = JSON.parse($('#langs').innerText);
-const scorings           = ['Bytes', 'Chars'];
-const solutions          = JSON.parse($('#solutions').innerText);
-const sortedLangs        =
+const experimental = JSON.parse($('#experimental').innerText);
+const hole         = decodeURI(location.pathname.slice(1));
+const langs        = JSON.parse($('#langs').innerText);
+const scorings     = ['Bytes', 'Chars'];
+const solutions    = JSON.parse($('#solutions').innerText);
+const sortedLangs  =
     Object.values(langs).sort((a: any, b: any) => a.name.localeCompare(b.name));
 
-const darkMode = matchMedia(darkModeMediaQuery).matches;
+const darkMode =
+    matchMedia(JSON.parse($('#darkModeMediaQuery').innerText)).matches;
+
+const baseExtensions =
+    darkMode ? [...extensions.dark, ...extensions.base] : extensions.base;
+
 let lang = '';
 let latestSubmissionID = 0;
 let solution = scorings.indexOf(localStorage.getItem('solution') ?? 'Bytes') as 0 | 1;
-let scoring  = scorings.indexOf(localStorage.getItem('scoring') ?? 'Bytes') as 0 | 1;
+let scoring  = scorings.indexOf(localStorage.getItem('scoring')  ?? 'Bytes') as 0 | 1;
 
 // The savedInDB state is used to avoid saving solutions in localStorage when
 // those solutions match the solutions in the database. It's used to avoid
@@ -29,45 +35,51 @@ let scoring  = scorings.indexOf(localStorage.getItem('scoring') ?? 'Bytes') as 0
 // By the time they are non-empty, the savedInDB state will have been updated.
 let savedInDB = !experimental;
 
-const keymap = JSON.parse($('#keymap').innerText);
-const cm     = new CodeMirror($('#editor'), {
-    autofocus:   true,
-    indentUnit:  1,
-    lineNumbers: true,
-    smartIndent: false,
-    theme:       darkMode ? 'material-ocean' : 'default',
-    vimMode:     keymap == 'vim',
-}) as any;
+const editor = new EditorView({
+    dispatch: tr => {
+        const result = editor.update([tr]) as unknown;
 
-cm.on('change', () => {
-    const code = cm.getValue();
-    let infoText = '';
-    for (let i = 0; i < scorings.length; i++) {
-        if (i)
-            infoText += ', ';
-        infoText += `${comma(getScoring(code, i as 0 | 1))} ${scorings[i].toLowerCase()}`;
-    }
-    $('#strokes').innerText = infoText;
+        const code = tr.state.doc.toString();
+        const scorings: {byte?: number, char?: number} = {};
+        const scoringKeys = ['byte', 'char'] as const;
 
-    // Avoid future conflicts by only storing code locally that's different
-    // from the server's copy.
-    const serverCode = getSolutionCode(lang, solution);
+        if (lang == 'assembly')
+            scorings.byte = (editor.state.field(ASMStateField) as any).head.length();
+        else {
+            scorings.byte = byteLen(code);
+            scorings.char = charLen(code);
+        }
 
-    const key = getAutoSaveKey(lang, solution);
-    if (code && (code !== serverCode || !savedInDB) && code !== langs[lang].example)
-        localStorage.setItem(key, code);
-    else
-        localStorage.removeItem(key);
+        $('#strokes').innerText = scoringKeys
+            .filter(s => s in scorings)
+            .map(s => `${comma(scorings[s])} ${s}${scorings[s] != 1 ? 's' : ''}`)
+            .join(', ');
 
-    updateRestoreLinkVisibility();
+        // Avoid future conflicts by only storing code locally that's
+        // different from the server's copy.
+        const serverCode = getSolutionCode(lang, solution);
+
+        const key = getAutoSaveKey(lang, solution);
+        if (code && (code !== serverCode || !savedInDB) && code !== langs[lang].example)
+            localStorage.setItem(key, code);
+        else
+            localStorage.removeItem(key);
+
+        updateRestoreLinkVisibility();
+
+        return result;
+    },
+    parent: $('#editor'),
 });
+
+editor.contentDOM.setAttribute('data-gramm', 'false');  // Disable Grammarly.
 
 // Set/clear the hide-details cookie on details toggling.
 $('#details').ontoggle = (e: Event) => document.cookie =
     'hide-details=;SameSite=Lax;Secure' + ((e.target as HTMLDetailsElement).open ? ';Max-Age=0' : '');
 
 $('#restoreLink').onclick = e => {
-    cm.setValue(getSolutionCode(lang, solution));
+    setState(getSolutionCode(lang, solution));
     e.preventDefault();
 };
 
@@ -88,13 +100,10 @@ $('#restoreLink').onclick = e => {
     setCodeForLangAndSolution();
 })();
 
-// Wire up submit to clicking, keyboard, and maybe vim shortcut.
+// Wire submit to clicking a button and a keyboard shortcut.
 $('#runBtn').onclick = submit;
 
 onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter' ? submit() : undefined;
-
-// Allow vim users to run code with :w or :write
-if (cm.getOption('vimMode')) (CodeMirror as any).Vim.defineEx('write', 'w', submit);
 
 $('#deleteBtn')?.addEventListener('click', () => {
     $('dialog b').innerText = langs[lang].name;
@@ -234,7 +243,7 @@ async function refreshScores() {
         }
         else {
             tab.href = '';
-            tab.onclick = e => {
+            tab.onclick = e  => {
                 e.preventDefault();
                 // Moving `scoring = i` to the line above, outside the list access,
                 // causes legacy CodeMirror (UMD) to be imported improperly.
@@ -254,24 +263,11 @@ function setCodeForLangAndSolution() {
             setSolution(0);
     }
 
-    const autoSaveCode = localStorage.getItem(getAutoSaveKey(lang, solution)) || '';
-    const code = getSolutionCode(lang, solution) || autoSaveCode;
+    setState(localStorage.getItem(getAutoSaveKey(lang, solution)) ||
+        getSolutionCode(lang, solution) || langs[lang].example);
 
-    // These languages shouldn't wrap lines.
-    cm.setOption('lineWrapping',
-        !['assembly', 'fish', 'hexagony'].includes(lang));
-
-    // These languages shouldn't match brackets.
-    cm.setOption('matchBrackets',
-        !['brainfuck', 'fish', 'j', 'hexagony'].includes(lang));
-
-    cm.setOption('mode', {
-        name: 'text/x-' + lang,
-        startOpen: true,
-        multiLineStrings: lang == 'c', // TCC supports multi-line strings
-    });
-
-    cm.setValue(autoSaveCode || code || langs[lang].example);
+    if (lang == 'assembly') scoring = 0;
+    $('#scoringTabs a:last-child').classList.toggle('hide', lang == 'assembly');
 
     refreshScores();
 
@@ -286,11 +282,35 @@ function setSolution(value: 0 | 1) {
     localStorage.setItem('solution', scorings[solution = value]);
 }
 
+function setState(code: string) {
+    editor.setState(
+        EditorState.create({
+            doc: code,
+            extensions: [
+                ...baseExtensions,
+
+                extensions[lang as keyof typeof extensions] || [],
+
+                // These languages shouldn't match brackets.
+                ['brainfuck', 'fish', 'j', 'hexagony'].includes(lang)
+                    ? [] : extensions.bracketMatching,
+
+                // These languages shouldn't wrap lines.
+                ['assembly', 'fish', 'hexagony'].includes(lang)
+                    ? [] : EditorView.lineWrapping,
+            ],
+        }),
+    );
+
+    editor.dispatch();  // Dispatch to update strokes.
+}
+
 async function submit() {
     $('h2').innerText = '…';
     $('#status').className = 'grey';
+    $$('canvas').forEach(e => e.remove());
 
-    const code = cm.getValue();
+    const code = editor.state.doc.toString();
     const codeLang = lang;
     const submissionID = ++latestSubmissionID;
 
@@ -406,6 +426,9 @@ async function submit() {
     }
     $('#thirdParty').replaceChildren(thirdParty);
 
+    if (hole == 'julia-set')
+        $('main').append(pbm(data.Exp) as Node, pbm(data.Out) ?? [] as any);
+
     // Show cheevos.
     $('#popups').replaceChildren(...data.Cheevos.map(c => <div>
         <h3>Achievement Earned!</h3>
@@ -428,5 +451,5 @@ function tooltip(row: any, scoring: 'Bytes' | 'Chars') {
 function updateRestoreLinkVisibility() {
     const serverCode = getSolutionCode(lang, solution);
     $('#restoreLink').classList.toggle('hide',
-        !serverCode || cm.getValue() == serverCode);
+        !serverCode || editor.state.doc.toString() == serverCode);
 }

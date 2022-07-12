@@ -1,4 +1,4 @@
-FROM alpine:3.15 as builder
+FROM alpine:3.16 as builder
 
 RUN apk add --no-cache curl g++ libexecinfo-dev \
     linux-headers m4 make patch tar xz
@@ -53,11 +53,11 @@ COPY --from=0 /usr/bin/as /usr/bin/ld       /usr/bin/
 COPY --from=0 /usr/lib/crt1.o               \
               /usr/lib/crti.o               \
               /usr/lib/crtn.o               \
-              /usr/lib/libbfd-2.37.so       \
+              /usr/lib/libbfd-2.38.so       \
               /usr/lib/libc.so              \
               /usr/lib/libctf.so.0          \
               /usr/lib/libm.a               \
-              /usr/lib/libopcodes-2.37.so   /usr/lib/
+              /usr/lib/libopcodes-2.38.so   /usr/lib/
 COPY --from=0 /usr/local/bin/gfortran       /usr/local/bin/
 COPY --from=0 /usr/local/lib                /usr/local/lib
 COPY --from=0 /usr/local/lib64              /usr/local/lib64

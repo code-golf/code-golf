@@ -1,10 +1,11 @@
-FROM alpine:3.15 as builder
+FROM alpine:3.16 as builder
 
-ENV VERSION=7508b9ae11
+ENV VERSION=e6cae27c61
 
 RUN apk add --no-cache build-base curl
 
 RUN curl -L https://codeberg.org/ngn/k/archive/$VERSION.tar.gz | tar xz \
+ && sed -i s/march=native/march=x86-64-v3/ k/makefile                   \
  && make -C k CC="gcc -static"
 
 COPY kwrapper.c /

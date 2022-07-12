@@ -30,6 +30,10 @@
     --summary-color:      #fdfdfd;
 
     --gl-border: #ccc;
+    
+    --diamond-weight: bold;
+    --diamond-outglow: #917f20;
+    --play-color: silver;
 }
 
 select {

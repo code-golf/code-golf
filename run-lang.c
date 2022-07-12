@@ -575,7 +575,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(ustat),   // 136
 
         // Miscellaneous (privileged)
-        // ALLOW(ioperm),          // 173
+        ALLOW(ioperm),             // 173 (FreeBASIC)
         // ALLOW(iopl),            // 172
         // ALLOW(kexec_file_load), // 320
         // ALLOW(kexec_load),      // 246

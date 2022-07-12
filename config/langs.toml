@@ -1,6 +1,6 @@
 ['><>']
-size    = '4.98 MiB'
-version = '4808a6c'
+size    = '4.99 MiB'
+version = '888b90f'
 website = 'https://github.com/primo-ppcg/fish-jit'
 example = '''
 \ printing
@@ -105,9 +105,28 @@ for arg; do
 done
 '''
 
+[BASIC]
+size    = '268 MiB'
+version = 'FreeBASIC 1.09.0'
+website = 'https://freebasic.net'
+example = '''
+' Printing
+Print "Hello, World!"
+
+' Looping
+For i As UInteger = 0 To 9
+    Print i
+Next
+
+' Accessing arguments
+For i As Integer = 1 To __FB_ARGC__ - 1
+    Print *__FB_ARGV__[i]
+Next
+'''
+
 [brainfuck]
-size    = '4.56 MiB'
-version = 'c68db6c'
+size    = '4.57 MiB'
+version = '3bdbd20'
 website = 'https://github.com/primo-ppcg/bf-jit'
 example = '''
 >>Printing
@@ -152,7 +171,7 @@ int main(int argc, char* argv[]) {
 
 ['C#']
 size    = '145 MiB'
-version = 'C# 10.0 on .NET 6.0.4'
+version = 'C# 10.0 on .NET 6.0.5'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -168,7 +187,7 @@ foreach (String arg in args)
 '''
 
 ['C++']
-size    = '115 MiB'
+size    = '117 MiB'
 version = '13.0.0'
 website = 'https://clang.llvm.org'
 example = '''
@@ -191,7 +210,7 @@ int main(int argc, char* argv[]) {
 '''
 
 [COBOL]
-size    = '4.1 MiB'
+size    = '4.09 MiB'
 version = 'GnuCOBOL 3.1.2.0'
 website = 'https://gnucobol.sourceforge.io'
 example = '''
@@ -242,8 +261,8 @@ end
 '''
 
 [D]
-size    = '253 MiB'
-version = 'D 2.098.0 on LDC 1.28.0'
+size    = '245 MiB'
+version = 'D 2.098.1 on LDC 1.28.1'
 website = 'https://dlang.org'
 example = '''
 import std.stdio;
@@ -281,7 +300,7 @@ for arg <- System.argv, do: IO.puts arg
 
 ['F#']
 size    = '140 MiB'
-version = 'F# 6.0 on .NET 6.0.4'
+version = 'F# 6.0 on .NET 6.0.5'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -301,7 +320,7 @@ let main args =
 '''
 
 [Fortran]
-size    = '80.2 MiB'
+size    = '77.1 MiB'
 version = 'GNU Fortran 11.2.0'
 website = 'https://gcc.gnu.org/fortran/'
 example = '''
@@ -328,7 +347,7 @@ end
 
 [Go]
 size    = '145 MiB'
-version = '1.18.2'
+version = '1.18.3'
 website = 'https://go.dev'
 example = '''
 package main
@@ -453,8 +472,8 @@ for (let arg of arguments)
 '''
 
 [Julia]
-size    = '278 MiB'
-version = '1.7.2'
+size    = '279 MiB'
+version = '1.7.3'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -472,8 +491,8 @@ end
 '''
 
 [K]
-size    = '262 KiB'
-version = '7508b9ae11'
+size    = '258 KiB'
+version = 'e6cae27c61'
 website = 'https://codeberg.org/ngn/k'
 example = '''
 /Printing
@@ -487,7 +506,7 @@ example = '''
 '''
 
 [Lisp]
-size    = '33.6 MiB'
+size    = '30.9 MiB'
 version = 'GNU CLISP 2.49.92'
 website = 'https://clisp.sourceforge.io'
 example = '''
@@ -544,7 +563,7 @@ for arg in commandLineParams():
 '''
 
 [Pascal]
-size    = '31.2 MiB'
+size    = '31.3 MiB'
 version = '3.2.2'
 website = 'https://freepascal.org'
 example = '''
@@ -565,8 +584,8 @@ end.
 '''
 
 [Perl]
-size    = '4.32 MiB'
-version = '5.34.1'
+size    = '5.32 MiB'
+version = '5.36.0'
 website = 'https://www.perl.org'
 example = '''
 # Printing
@@ -581,7 +600,7 @@ say for @ARGV;
 
 [PHP]
 size    = '10.5 MiB'
-version = '7.4.29'
+version = '7.4.30'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -598,7 +617,7 @@ for ($i = 1; $i < $argc; $i++)
 
 [PowerShell]
 size    = '177 MiB'
-version = 'PowerShell 7.2.3 on .NET 6.0.4'
+version = 'PowerShell 7.2.4 on .NET 6.0.5'
 website = 'https://docs.microsoft.com/powershell/scripting/overview'
 example = '''
 # Printing
@@ -633,8 +652,8 @@ example = '''
 '''
 
 [Python]
-size    = '57.8 MiB'
-version = '3.10.4'
+size    = '55.4 MiB'
+version = '3.10.5'
 website = 'https://www.python.org'
 example = '''
 import sys
@@ -652,8 +671,8 @@ for arg in sys.argv[1:]:
 '''
 
 [Raku]
-size    = '57.4 MiB'
-version = 'Raku 6.d on Rakudo 2022.04'
+size    = '54.1 MiB'
+version = 'Raku 6.d on Rakudo 2022.06'
 website = 'https://raku.org'
 example = '''
 # Printing
@@ -667,7 +686,7 @@ say 'Hello, World!';
 '''
 
 [Ruby]
-size    = '24.3 MiB'
+size    = '24.2 MiB'
 version = '3.1.2'
 website = 'https://www.ruby-lang.org'
 example = '''
@@ -686,8 +705,8 @@ end
 '''
 
 [Rust]
-size    = '511 MiB'
-version = '1.60.0'
+size    = '513 MiB'
+version = '1.62.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -730,8 +749,8 @@ G
 '''
 
 [SQL]
-size    = '1.09 MiB'
-version = '3.38.5'
+size    = '1.11 MiB'
+version = '3.39.0'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
@@ -776,7 +795,7 @@ for arg in CommandLine.arguments[1...] {
 '''
 
 [V]
-size    = '38.1 MiB'
+size    = '38.5 MiB'
 version = '0.2.4'
 website = 'https://vlang.io'
 example = '''
@@ -797,8 +816,8 @@ for arg in os.args[1..] {
 '''
 
 [VimL]
-size    = '21.3 MiB'
-version = '8.2'
+size    = '22.3 MiB'
+version = '9.0'
 website = 'https://www.vim.org'
 example = '''
 " Printing

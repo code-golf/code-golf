@@ -12,7 +12,7 @@ import pbm                                     from './_pbm.js';
 import { $, $$, byteLen, charLen, comma, ord } from './_util';
 
 const experimental = JSON.parse($('#experimental').innerText);
-const hole         = decodeURI(location.pathname.slice(4));
+const hole         = decodeURI(location.pathname.slice(1));
 const langs        = JSON.parse($('#langs').innerText);
 const scorings     = ['Bytes', 'Chars'];
 const solutions    = JSON.parse($('#solutions').innerText);
@@ -219,7 +219,7 @@ async function populateScores() {
     const scoringID = scorings[scoring].toLowerCase();
     const path      = `/${hole}/${lang}/${scoringID}`;
     const view      = $('#rankingsView a:not([href])').innerText.trim().toLowerCase();
-    const res       = await fetch(`/api/mini-rankings${path}/${view}?ng=1`);
+    const res       = await fetch(`/api/mini-rankings${path}/${view}`);
     const rows      = res.ok ? await res.json() : [];
 
     $<HTMLAnchorElement>('#allLink').href = '/rankings/holes' + path;

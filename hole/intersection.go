@@ -61,7 +61,7 @@ func boxGen() bbox {
 	}
 }
 
-func intersection() ([]string, string) {
+func intersection() []Scorecard {
 	var tests []test
 
 	//// default cases

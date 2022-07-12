@@ -1,12 +1,12 @@
-FROM rust:1.60.0-alpine3.15 as builder
+FROM rust:1.62.0-alpine3.15 as builder
 
 # Delete the non rustc binaries.
 RUN find /usr/local/cargo/bin \
-    /usr/local/rustup/toolchains/1.60.0-x86_64-unknown-linux-musl/bin \
+    /usr/local/rustup/toolchains/1.62.0-x86_64-unknown-linux-musl/bin \
     -not -name rustc -delete
 
 # Strip the giant rust libs.
-RUN strip /usr/local/rustup/toolchains/1.60.0-x86_64-unknown-linux-musl/lib/*.so
+RUN strip /usr/local/rustup/toolchains/1.62.0-x86_64-unknown-linux-musl/lib/*.so
 
 FROM codegolf/lang-base
 
@@ -20,10 +20,10 @@ COPY --from=0 /usr/lib/libbfd-2.37.so         \
 COPY --from=0 /usr/local/cargo                /usr/local/cargo
 COPY --from=0 /usr/local/rustup/settings.toml /usr/local/rustup/
 
-COPY --from=0 /usr/local/rustup/toolchains/1.60.0-x86_64-unknown-linux-musl/bin \
-              /usr/local/rustup/toolchains/1.60.0-x86_64-unknown-linux-musl/bin
-COPY --from=0 /usr/local/rustup/toolchains/1.60.0-x86_64-unknown-linux-musl/lib \
-              /usr/local/rustup/toolchains/1.60.0-x86_64-unknown-linux-musl/lib
+COPY --from=0 /usr/local/rustup/toolchains/1.62.0-x86_64-unknown-linux-musl/bin \
+              /usr/local/rustup/toolchains/1.62.0-x86_64-unknown-linux-musl/bin
+COPY --from=0 /usr/local/rustup/toolchains/1.62.0-x86_64-unknown-linux-musl/lib \
+              /usr/local/rustup/toolchains/1.62.0-x86_64-unknown-linux-musl/lib
 
 COPY rust /usr/bin/
 

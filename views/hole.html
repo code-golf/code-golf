@@ -66,7 +66,7 @@
         <div class=grid>
             {{ .Data.Hole.Preamble }}
         {{ if .Data.Hole.Data }}
-            <div><button class="btn orange" id=copy>Copy as JSON</button></div>
+            <div><button class="btn orange" id=copy>Copy as JSON</button><span>Copied</span></div>
         {{ end }}
         </div>
     </details>
@@ -101,8 +101,6 @@
             AT&T syntax</a> to x86-64 Linux. Use
         <a href=//blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64>
             syscalls</a> to write output.
-        For accurate byte counts and syntax highlighting, please use the
-        <a href="/ng/{{ .Data.Hole.ID }}#assembly">new editor</a>.
     </div>
     <div class="info c-sharp">
         <a href=//devblogs.microsoft.com/dotnet/welcome-to-c-9-0/#top-level-programs>
@@ -138,7 +136,7 @@
     </div>
 {{ end }}
     <div class="hide info perl">
-        <b>say()</b> is available without any import.
+        Code is run under <b>-E</b>, all current features are enabled.
     </div>
 {{ if eq .Data.Hole.ID "quine" }}
     <div class="hide info powershell">
@@ -210,10 +208,6 @@
 </dialog>
 
 <div id=popups></div>
-
-<script id=keymap type=application/json>
-    {{ with .Golfer }}{{ .Keymap }}{{ else }}"default"{{ end }}
-</script>
 
 {{ with .Data.Hole.Data }}<script id=data type=application/json>{{ . }}</script>{{ end }}
 

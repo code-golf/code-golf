@@ -1525,6 +1525,28 @@ preamble = '''
     inclusive, each on their own line.
 '''
 
+['Proximity Grid']
+category = 'Computing'
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Taxicab_geometry' },
+]
+experiment = 697
+preamble = '''
+<p>Given a series of 9x9 grids, reproduce the grid with distance set to closest source for each passible point.
+
+<p>Use base62 (0-9 A-Z a-z) to represent distance.
+
+<p>A valid path to a source must move vertically or horiontally along passible points.
+
+<p>Impassible points and points which cannot form a valid path to a source should remain unchanged.
+
+<p>Points on the grid can be marked as a source notated with `0`.
+
+<p>Points on the grid can be marked as impassible notated with `#`.
+
+<p>Points on the grid can be marked as passible notated with `-`.
+'''
+
 ['QR Decoder']
 category = 'Transform'
 links = [
@@ -2295,14 +2317,17 @@ preamble = '''
 
 ['Zodiac Signs']
 category = 'Transform'
-experiment = 614
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Zodiac_sign' },
+    { name = 'Zodiac Sign Wikipedia',    url = '//en.wikipedia.org/wiki/Zodiac_sign' },
+    { name = 'Ascending Sign Wikipedia', url = '//en.wikipedia.org/wiki/Ascendant' },
 ]
 preamble = '''
 <p>
-    Given a <code>MM-DD</code> date, output the corresponding Zodiac sign
-    symbol according to the following table.
+    Given a <code>MM-DD HH:MM</code> date and time, output the corresponding
+    Zodiac sign symbol according to the first table below. If the ascending
+    sign is different from the Zodiac sign (sun sign), output it as well.
+    Approximate the ascending sign using the sun sign and time according to
+    the second table below.
 <div>
     <table>
         <thead>
@@ -2320,6 +2345,38 @@ preamble = '''
             <tr><td>Capricorn<td>♑<td>December 22 – January 19
             <tr><td>Aquarius<td>♒<td>January 20 – February 18
             <tr><td>Pisces<td>♓<td>February 19 – March 20
+    </table>
+</div>
+<div>
+    <table>
+        <thead>
+            <tr><th>Time/Sun Symbol
+                <th>♈<th>♉<th>♊<th>♋<th>♌<th>♍<th>♎<th>♏<th>♐<th>♑<th>♒<th>♓
+        <tbody>
+            <tr><td>00:00 - 01:59
+                <td>♒<td>♓<td>♈<td>♉<td>♊<td>♋<td>♌<td>♍<td>♎<td>♏<td>♐<td>♑
+            <tr><td>02:00 - 03:59
+                <td>♓<td>♈<td>♉<td>♊<td>♋<td>♌<td>♍<td>♎<td>♏<td>♐<td>♑<td>♒
+            <tr><td>04:00 - 05:59
+                <td>♈<td>♉<td>♊<td>♋<td>♌<td>♍<td>♎<td>♏<td>♐<td>♑<td>♒<td>♓
+            <tr><td>06:00 - 07:59
+                <td>♉<td>♊<td>♋<td>♌<td>♍<td>♎<td>♏<td>♐<td>♑<td>♒<td>♓<td>♈
+            <tr><td>08:00 - 09:59
+                <td>♊<td>♋<td>♌<td>♍<td>♎<td>♏<td>♐<td>♑<td>♒<td>♓<td>♈<td>♉
+            <tr><td>10:00 - 11:59
+                <td>♋<td>♌<td>♍<td>♎<td>♏<td>♐<td>♑<td>♒<td>♓<td>♈<td>♉<td>♊
+            <tr><td>12:00 - 13:59
+                <td>♌<td>♍<td>♎<td>♏<td>♐<td>♑<td>♒<td>♓<td>♈<td>♉<td>♊<td>♋
+            <tr><td>14:00 - 15:59
+                <td>♍<td>♎<td>♏<td>♐<td>♑<td>♒<td>♓<td>♈<td>♉<td>♊<td>♋<td>♌
+            <tr><td>16:00 - 17:59
+                <td>♎<td>♏<td>♐<td>♑<td>♒<td>♓<td>♈<td>♉<td>♊<td>♋<td>♌<td>♍
+            <tr><td>18:00 - 19:59
+                <td>♏<td>♐<td>♑<td>♒<td>♓<td>♈<td>♉<td>♊<td>♋<td>♌<td>♍<td>♎
+            <tr><td>20:00 - 21:59
+                <td>♐<td>♑<td>♒<td>♓<td>♈<td>♉<td>♊<td>♋<td>♌<td>♍<td>♎<td>♏
+            <tr><td>22:00 - 23:59
+                <td>♑<td>♒<td>♓<td>♈<td>♉<td>♊<td>♋<td>♌<td>♍<td>♎<td>♏<td>♐
     </table>
 </div>
 '''

@@ -1,4 +1,4 @@
-FROM alpine:3.15 as builder
+FROM alpine:3.16 as builder
 
 RUN apk add --no-cache build-base clang curl openssl-dev
 

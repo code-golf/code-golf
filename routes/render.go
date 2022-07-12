@@ -204,6 +204,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		DarkModeMediaQuery, LogInURL, Name, Nonce, Path string
 		Golfer                                          *golfer.Golfer
 		GolferInfo                                      *golfer.GolferInfo
+		HoleBanner                                      *config.Hole
 		Holes                                           map[string]*config.Hole
 		JS                                              []string
 		Langs                                           map[string]*config.Lang
@@ -243,32 +244,29 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	}
 
 	// Current cheevo banner. TODO Generalise.
-	if args.Golfer != nil && !args.Golfer.Earned("may-the-4ᵗʰ-be-with-you") {
+	if args.Golfer != nil && !args.Golfer.Earned("independence-day") {
 		var (
 			now   = time.Now().UTC()
-			start = time.Date(2022, time.May, 4, 0, 0, 0, 0, time.UTC)
-			end   = time.Date(2022, time.May, 5, 0, 0, 0, 0, time.UTC)
+			start = time.Date(2022, time.July, 4, 0, 0, 0, 0, time.UTC)
+			end   = time.Date(2022, time.July, 5, 0, 0, 0, 0, time.UTC)
 		)
 
 		if now.Before(end) {
 			args.CheevoBanner = &CheevoBanner{
-				config.CheevoByID["may-the-4ᵗʰ-be-with-you"],
+				config.CheevoByID["independence-day"],
 				start.Before(now), start, end,
 			}
 		}
 	}
 
-	// TODO CSS imports?
-	if name == "hole" {
-		args.CSS = css["vendor/codemirror"] + css["vendor/codemirror-dialog"] +
-			css["vendor/codemirror-dark"] + args.CSS
-	}
-	if name == "hole" || name == "hole-ng" {
-		args.CSS = css["hole-diff"] + args.CSS
+	// Show a banner if they've not solved the latest hole.
+	if args.Golfer != nil && !args.Golfer.Solved(recentHoleIDs[0]) {
+		args.HoleBanner = recentHoles[0]
 	}
 
-	if name == "hole" || name == "hole-ng" {
-		args.CSS += css["terminal"]
+	// TODO CSS imports?
+	if name == "hole" {
+		args.CSS = args.CSS + css["terminal"]
 	}
 	if name == "hole-ng" {
 		args.CSS += css["vendor/goldenlayout-base"]

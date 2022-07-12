@@ -56,7 +56,7 @@ func largeFracGen() fraction {
 	return f
 }
 
-func fractions() ([]string, string) {
+func fractions() []Scorecard {
 	// Default cases.
 	ra1 := rand.Intn(249) + 2
 	ra2 := rand.Intn(249) + 2
@@ -121,9 +121,9 @@ func fractions() ([]string, string) {
 	outs := make([]string, len(fractions))
 
 	for i, f := range shuffle(fractions) {
-		args[i] = fmt.Sprintf("%d/%d", f.numerator*f.scale, f.denominator*f.scale)
-		outs[i] = fmt.Sprintf("%d/%d", f.numerator, f.denominator)
+		args[i] = fmt.Sprint(f.numerator*f.scale, "/", f.denominator*f.scale)
+		outs[i] = fmt.Sprint(f.numerator, "/", f.denominator)
 	}
 
-	return args, strings.Join(outs, "\n")
+	return []Scorecard{{Args: args, Answer: strings.Join(outs, "\n")}}
 }

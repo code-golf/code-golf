@@ -24,7 +24,7 @@ func computeZeckendorf(n uint64) string {
 	return strings.Trim(strings.Replace(fmt.Sprint(out), " ", " + ", -1), "[]")
 }
 
-func zeckendorfRepresentation() ([]string, string) {
+func zeckendorfRepresentation() []Scorecard {
 	fixedCases := []test{
 		{"64", "55 + 8 + 1"},
 		{"89", "89"},

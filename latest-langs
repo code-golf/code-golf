@@ -5,6 +5,7 @@ use TOML::Thumb;
 
 constant @urls = (
     'Bash'       => 'Bash_(Unix_shell)',
+    'BASIC'      => 'FreeBASIC',
     'C'          => 'Tiny_C_Compiler',
     'C#'         => 'C_Sharp_(programming_language)',
     'COBOL'      => 'GnuCOBOL',

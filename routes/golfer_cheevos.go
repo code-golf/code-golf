@@ -87,7 +87,7 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 		  WHERE NOT failing AND user_id = $1`,
 		"up-to-eleven", "bakers-dozen", "the-watering-hole", "blackjack",
 		"rule-34", "forty-winks", "dont-panic", "bullseye",
-		"gone-in-60-holes", "cunning-linguist",
+		"gone-in-60-holes", "cunning-linguist", "phileas-fogg",
 	)
 
 	cheevoProgress(

@@ -28,7 +28,7 @@ db-dev:
 db-diff:
 	@diff --color --label live --label dev --strip-trailing-cr -su   \
 	    <(ssh root@code.golf sudo -iu postgres pg_dump -Os code-golf \
-	    | sed -E 's/ \(Debian .+\)$//')                              \
+	    | sed -E 's/ \(Debian .+//')                                 \
 	    <(docker-compose exec -T db pg_dump -OsU postgres code-golf)
 
 db-dump:

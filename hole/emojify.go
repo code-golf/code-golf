@@ -1,6 +1,6 @@
 package hole
 
-func emojify() ([]string, string) {
+func emojify() []Scorecard {
 	return outputTests(shuffle([]test{
 		{":-D", "😀"},
 		{":-)", "🙂"},

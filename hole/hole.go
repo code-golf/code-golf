@@ -9,20 +9,26 @@ import (
 
 type test struct{ in, out string }
 
-func outputTests(tests []test) ([]string, string) {
-	args := make([]string, len(tests))
-	var answer strings.Builder
+func outputTests(testRuns ...[]test) []Scorecard {
+	scores := make([]Scorecard, len(testRuns))
 
-	for i, t := range tests {
-		args[i] = t.in
+	for i, tests := range testRuns {
+		args := make([]string, len(tests))
+		var answer strings.Builder
 
-		if i > 0 {
-			answer.WriteByte('\n')
+		for i, t := range tests {
+			args[i] = t.in
+
+			if i > 0 {
+				answer.WriteByte('\n')
+			}
+			answer.WriteString(t.out)
 		}
-		answer.WriteString(t.out)
+
+		scores[i] = Scorecard{Args: args, Answer: answer.String()}
 	}
 
-	return args, answer.String()
+	return scores
 }
 
 // Doesn't handle any special cases, will be in the stdlib/x one day.
@@ -46,3 +52,9 @@ func shuffle[E any](x []E) []E {
 	rand.Shuffle(len(x), func(i, j int) { x[i], x[j] = x[j], x[i] })
 	return x
 }
+
+func randChoice[E any](x []E) E {
+	return x[rand.Intn(len(x))]
+}
+
+func randInt(a, b int) int { return rand.Intn(b-a+1) + a }

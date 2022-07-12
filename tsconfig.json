@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "allowJs": true,
     "noEmit": true,
     "strict": true,
     "lib": ["es2021", "dom", "dom.iterable"],

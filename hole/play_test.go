@@ -8,22 +8,22 @@ func BenchmarkOrdinalNumbers(b *testing.B)  { benchHole(b, ordinalNumbers) }
 func BenchmarkSpellingNumbers(b *testing.B) { benchHole(b, spellingNumbers) }
 
 func BenchmarkArabicToRoman(b *testing.B) {
-	benchHole(b, func() ([]string, string) { return arabicToRoman(false) })
+	benchHole(b, func() []Scorecard { return arabicToRoman(false) })
 }
 
 func BenchmarkRomanToArabic(b *testing.B) {
-	benchHole(b, func() ([]string, string) { return arabicToRoman(true) })
+	benchHole(b, func() []Scorecard { return arabicToRoman(true) })
 }
 
 func BenchmarkSudoku(b *testing.B) {
-	benchHole(b, func() ([]string, string) { return sudoku(false) })
+	benchHole(b, func() []Scorecard { return sudoku(false) })
 }
 
 func BenchmarkSudokuV2(b *testing.B) {
-	benchHole(b, func() ([]string, string) { return sudoku(true) })
+	benchHole(b, func() []Scorecard { return sudoku(true) })
 }
 
-func benchHole(b *testing.B, hole func() ([]string, string)) {
+func benchHole(b *testing.B, hole func() []Scorecard) {
 	for n := 0; n < b.N; n++ {
 		hole()
 	}

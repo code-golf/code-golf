@@ -1,4 +1,4 @@
-FROM alpine:3.15 as builder
+FROM alpine:3.16 as builder
 
 RUN apk add --no-cache bash build-base cmake curl file git make python3 tar xz zip
 
@@ -52,7 +52,7 @@ COPY --from=0 /llvm/lib/libLLVM-13.so  \
               /usr/lib/crti.o          \
               /usr/lib/crtn.o          \
               /usr/lib/libatomic.so    \
-              /usr/lib/libbfd-2.37.so  \
+              /usr/lib/libbfd-2.38.so  \
               /usr/lib/libc.so         \
               /usr/lib/libctf.so.0     \
               /usr/lib/libffi.so.8     \
@@ -63,13 +63,14 @@ COPY --from=0 /llvm/lib/libLLVM-13.so  \
               /usr/lib/libstdc++.so.6  \
               /usr/lib/Scrt1.o         /usr/lib/
 
-COPY --from=0 usr/lib/gcc/x86_64-alpine-linux-musl/10.3.1/libgcc.a    \
-              usr/lib/gcc/x86_64-alpine-linux-musl/10.3.1/crtbegin.o  \
-              usr/lib/gcc/x86_64-alpine-linux-musl/10.3.1/crtbeginS.o \
-              usr/lib/gcc/x86_64-alpine-linux-musl/10.3.1/crtend.o    \
-              usr/lib/gcc/x86_64-alpine-linux-musl/10.3.1/crtendS.o   /usr/lib/gcc/x86_64-alpine-linux-musl/10.3.1/
+COPY --from=0 /usr/lib/gcc/x86_64-alpine-linux-musl/11.2.1/libgcc.a    \
+              /usr/lib/gcc/x86_64-alpine-linux-musl/11.2.1/crtbegin.o  \
+              /usr/lib/gcc/x86_64-alpine-linux-musl/11.2.1/crtbeginS.o \
+              /usr/lib/gcc/x86_64-alpine-linux-musl/11.2.1/crtend.o    \
+              /usr/lib/gcc/x86_64-alpine-linux-musl/11.2.1/crtendS.o   \
+              /usr/lib/gcc/x86_64-alpine-linux-musl/11.2.1/
 
-COPY unbuffered.cpp                    /
+COPY unbuffered.cpp /
 
 ENTRYPOINT ["cpp"]
 
