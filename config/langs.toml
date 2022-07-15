@@ -242,8 +242,8 @@ end-program.
 '''
 
 [Crystal]
-size    = '221 MiB'
-version = '1.4.1'
+size    = '222 MiB'
+version = '1.5.0'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -777,7 +777,7 @@ SELECT arg FROM argv
 
 [Swift]
 size    = '561 MiB'
-version = '5.6.1'
+version = '5.6.2'
 website = 'https://swift.org'
 example = '''
 // Printing

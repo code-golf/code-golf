@@ -62,7 +62,12 @@
             href=/stats title=Statistics>
             {{ svg "graph-up" }}
         </a>
+        <a {{ if hasPrefix .Path "/wiki" }} class=on {{ end }}
+            href=/wiki title=Wiki>
+            {{ svg "journals" }}
+        </a>
         <div id=alert-pool></div>
+        <div></div>
     {{ if .Golfer }}
         {{ $slug := (print "/golfers/" .Golfer.Name) }}
 

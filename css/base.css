@@ -92,6 +92,7 @@ h3 { font-size: 1.25rem }
 body > header {
     background: var(--color);
     margin: 0 calc(50% - 50vw);
+    overflow: auto;
     position: sticky;
     top: 0;
     z-index: 7; /* Codemirror uses up to 6 */
@@ -103,7 +104,7 @@ body > header a {
     fill: var(--background);
     height: 2.75rem;
     justify-content: center;
-    width: 2.75rem;
+    min-width: 2.75rem;
 }
 
 body > header a:hover,
@@ -164,9 +165,7 @@ form menu {
     padding: 0;
 }
 
-input:not([type]) {
-    background: var(--background);
-}
+input:not([type]) { background: var(--background) }
 
 input:not([type]), select {
     border-radius: .25rem;
