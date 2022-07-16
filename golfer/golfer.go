@@ -19,14 +19,14 @@ func (f *FailingSolutions) Scan(src any) error {
 }
 
 type Golfer struct {
-	Admin, ShowCountry             bool
-	Cheevos, Holes                 []string
-	Country, Name, Referrer, Theme string
-	Delete                         sql.NullTime
-	FailingSolutions               FailingSolutions
-	Following                      []int64
-	ID                             int
-	TimeZone                       *time.Location
+	Admin, ShowCountry                     bool
+	Cheevos, Holes                         []string
+	Country, Keymap, Name, Referrer, Theme string
+	Delete                                 sql.NullTime
+	FailingSolutions                       FailingSolutions
+	Following                              []int64
+	ID                                     int
+	TimeZone                               *time.Location
 }
 
 // Earn the given cheevo, no-op if already earned.
