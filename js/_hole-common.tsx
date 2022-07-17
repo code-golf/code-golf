@@ -378,7 +378,7 @@ export function setCodeForLangAndSolution(editor: any) {
 
 export async function populateScores(editor: any) {
     // Populate the rankings table.
-    if (!$('#scoreboard-section')) return;
+    if (!$('#scores')) return;
     const scoringID = scorings[scoring].toLowerCase();
     const path      = `/${hole}/${lang}/${scoringID}`;
     const view      = $('#rankingsView a:not([href])').innerText.trim().toLowerCase();
