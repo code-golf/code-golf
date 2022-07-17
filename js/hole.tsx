@@ -1,4 +1,5 @@
 import { ASMStateField }                       from '@defasm/codemirror';
+import { Vim }                                 from '@replit/codemirror-vim';
 import LZString                                from 'lz-string';
 import { EditorState, EditorView, extensions } from './_codemirror.js';
 import diffTable                               from './_diff';
@@ -13,11 +14,14 @@ const solutions    = JSON.parse($('#solutions').innerText);
 const sortedLangs  =
     Object.values(langs).sort((a: any, b: any) => a.name.localeCompare(b.name));
 
+const vimMode: boolean = JSON.parse($('#keymap').innerText) === 'vim';
+const vimModeExtensions = vimMode ? [extensions.vim] : [];
+
 const darkMode =
     matchMedia(JSON.parse($('#darkModeMediaQuery').innerText)).matches;
+const darkModeExtensions = darkMode ? [...extensions.dark] : [];
 
-const baseExtensions =
-    darkMode ? [...extensions.dark, ...extensions.base] : extensions.base;
+const baseExtensions = [...vimModeExtensions, ...darkModeExtensions,  ...extensions.base];
 
 let lang = '';
 let latestSubmissionID = 0;
@@ -107,6 +111,8 @@ $('#restoreLink').onclick = e => {
 $('#runBtn').onclick = submit;
 
 onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter' ? submit() : undefined;
+
+if (vimMode) Vim.defineEx('write', 'w', submit);
 
 $('#deleteBtn')?.addEventListener('click', () => {
     $('dialog b').innerText = langs[lang].name;

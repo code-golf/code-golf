@@ -13,6 +13,7 @@ import { bracketMatching, defaultHighlightStyle,
     HighlightStyle, StreamLanguage,
     syntaxHighlighting }                         from '@codemirror/language';
 import { oneDarkTheme, oneDarkHighlightStyle }   from '@codemirror/theme-one-dark';
+import { vim }                                   from '@replit/codemirror-vim';
 
 // Languages.
 import { assembly }    from '@defasm/codemirror';
@@ -89,6 +90,7 @@ export const extensions = {
         oneDarkTheme,
         syntaxHighlighting(oneDarkHighlightStyle),
     ],
+    'vim': vim(),
 
     // Languages.
     'assembly':   assembly(),
