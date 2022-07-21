@@ -2,14 +2,13 @@ package routes
 
 import (
 	"net/http"
-	"strings"
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
 	"github.com/lib/pq"
 )
 
-// GET /{hole} & GET /ng/{hole}
+// GET /{hole}
 func holeGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Authors      []string
@@ -86,9 +85,5 @@ func holeGET(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if strings.HasPrefix(r.URL.Path, "/ng/") {
-		render(w, r, "hole-ng", data, data.Hole.Name)
-	} else {
-		render(w, r, "hole", data, data.Hole.Name)
-	}
+	render(w, r, "hole", data, data.Hole.Name)
 }

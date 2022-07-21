@@ -1,0 +1,53 @@
+{{ template "header" . }}
+
+<h1>Wiki{{ with .Data.Name }}: {{ . }}{{ end }}</h1>
+
+<main>
+    <form id=form-nav>
+        <input name=base type=hidden value=/wiki>
+
+        <select name=page>
+        {{ $section := "" }}
+        {{ range .Data.Pages }}
+            {{ if ne $section .Section }}
+                <optgroup label="{{ .Section }}">
+                {{ $section = .Section }}
+            {{ end }}
+
+            <option value="{{ .Slug }}"
+                {{ if eq $.Data.Slug .Slug }} selected {{ end }}>{{ .Name }}
+        {{ end }}
+        </select>
+    </form>
+
+    <nav>
+    {{ $section := "" }}
+    {{ range .Data.Pages }}
+        {{ if ne $section .Section }}
+            <h2>{{ .Section }}</h2>
+            {{ $section = .Section }}
+        {{ end }}
+
+        <a {{ if ne $.Data.Slug .Slug }} href="/wiki/{{ .Slug }}" {{ end }}
+           {{ if eq .Section "" }} style="width:100%" {{ end }} >
+            <span>{{ .Name }}</span>
+        </a>
+    {{ end }}
+    </nav>
+
+    <article>
+    {{ with .Data.HTML }}
+        {{ . }}
+    {{ else }}
+        <p>Welcome to the Code Golf wiki.
+
+        <p>
+            This is a work-in-progress read-only mirror of the
+            <a href=//github.com/code-golf/code-golf/wiki>
+                GitHub Code Golf wiki
+            </a>. All edits should continue to be done there for now.
+    {{ end }}
+    </article>
+</main>
+
+{{ template "footer" }}

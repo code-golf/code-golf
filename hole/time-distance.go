@@ -42,7 +42,7 @@ func formatDistance(secs int) string {
 	return "in " + result
 }
 
-func timeDistance() ([]string, string) {
+func timeDistance() []Scorecard {
 	inputs := []int{0}
 
 	unitsChosen := []int{1, 2, 3, 4, 5, 6, 7}

@@ -61,7 +61,7 @@ func randReplacements(gFrames []rune) []rune {
 	return frames
 }
 
-func tenPinBowling() ([]string, string) {
+func tenPinBowling() []Scorecard {
 	extraCases := 22
 	tests := make([]test, len(games)+extraCases)
 

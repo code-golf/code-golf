@@ -241,16 +241,16 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	}
 
 	// Current cheevo banner. TODO Generalise.
-	if args.Golfer != nil && !args.Golfer.Earned("may-the-4ᵗʰ-be-with-you") {
+	if args.Golfer != nil && !args.Golfer.Earned("independence-day") {
 		var (
 			now   = time.Now().UTC()
-			start = time.Date(2022, time.May, 4, 0, 0, 0, 0, time.UTC)
-			end   = time.Date(2022, time.May, 5, 0, 0, 0, 0, time.UTC)
+			start = time.Date(2022, time.July, 4, 0, 0, 0, 0, time.UTC)
+			end   = time.Date(2022, time.July, 5, 0, 0, 0, 0, time.UTC)
 		)
 
 		if now.Before(end) {
 			args.CheevoBanner = &CheevoBanner{
-				config.CheevoByID["may-the-4ᵗʰ-be-with-you"],
+				config.CheevoByID["independence-day"],
 				start.Before(now), start, end,
 			}
 		}
@@ -263,15 +263,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 
 	// TODO CSS imports?
 	if name == "hole" {
-		args.CSS = css["vendor/codemirror"] + css["vendor/codemirror-dialog"] +
-			css["vendor/codemirror-dark"] + args.CSS
-	}
-	if name == "hole" || name == "hole-ng" {
-		args.CSS = css["hole-diff"] + args.CSS
-	}
-
-	if name == "hole" || name == "hole-ng" {
-		args.CSS += css["terminal"]
+		args.CSS = args.CSS + css["terminal"]
 	}
 
 	// Append route specific JS.

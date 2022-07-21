@@ -9,10 +9,10 @@ CREATE TYPE cheevo AS ENUM (
     'independence-day', 'interview-ready', 'its-over-9000', 'just-kidding',
     'marathon-runner', 'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars',
     'off-the-grid', 'omniglot', 'ouroboros', 'pangramglot', 'patches-welcome',
-    'pi-day', 'polyglot', 'polyglutton', 'rtfm', 'rule-34', 'slowcoach',
-    'solve-quine', 'sounds-quite-nice', 'takeout', 'the-watering-hole',
-    'tim-toady', 'tl-dr', 'twelvetide', 'twenty-kiloleagues',
-    'under-pressure', 'up-to-eleven', 'vampire-byte'
+    'phileas-fogg', 'pi-day', 'polyglot', 'polyglutton', 'rtfm', 'rule-34',
+    'slowcoach', 'solve-quine', 'sounds-quite-nice', 'takeout',
+    'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
+    'twenty-kiloleagues', 'under-pressure', 'up-to-eleven', 'vampire-byte'
 );
 
 CREATE TYPE connection AS ENUM (
@@ -40,8 +40,6 @@ CREATE TYPE hole AS ENUM (
     'united-states', 'vampire-numbers', 'van-eck-sequence', 'zodiac-signs',
     'λ', 'π', 'τ', 'φ', '√2', '𝑒'
 );
-
-CREATE TYPE keymap AS ENUM ('default', 'vim');
 
 CREATE TYPE lang AS ENUM (
     'assembly', 'bash', 'basic', 'brainfuck', 'c', 'c-sharp', 'cpp', 'cobol',
@@ -78,7 +76,6 @@ CREATE TABLE users (
     login        citext    NOT NULL UNIQUE,
     time_zone    text,
     delete       timestamp,
-    keymap       keymap    NOT NULL DEFAULT 'default',
     country      char(2),
     show_country bool      NOT NULL DEFAULT false,
     started      timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
@@ -139,6 +136,13 @@ CREATE TABLE solutions (
     -- Solutions are limited to 400 KiB, TODO < 128 KiB (not <=).
     CHECK (octet_length(code) <= 409600),
     PRIMARY KEY (user_id, hole, lang, scoring)
+);
+
+CREATE TABLE wiki (
+    slug    text   NOT NULL PRIMARY KEY,
+    section text,
+    name    citext NOT NULL,
+    html    text   NOT NULL
 );
 
 CREATE TABLE trophies (
@@ -238,3 +242,4 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE sessions        TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE solutions       TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE trophies        TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE users           TO "code-golf";
+GRANT SELECT, INSERT, TRUNCATE       ON TABLE wiki            TO "code-golf";

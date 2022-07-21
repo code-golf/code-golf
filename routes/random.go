@@ -12,9 +12,3 @@ func randomGET(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r,
 		config.HoleList[rand.Intn(len(config.HoleList))].ID, http.StatusFound)
 }
-
-// GET /ng/random
-func ngRandomGET(w http.ResponseWriter, r *http.Request) {
-	http.Redirect(w, r,
-		"/ng/"+config.HoleList[rand.Intn(len(config.HoleList))].ID, http.StatusFound)
-}

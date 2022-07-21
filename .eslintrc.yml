@@ -1,7 +1,5 @@
 env: { browser: true }
 
-ignorePatterns: [ js/codemirror-legacy ]
-
 parser: "@typescript-eslint/parser"
 
 plugins: [ "@typescript-eslint" ]

@@ -26,7 +26,7 @@ func straightCheck(numbers []int) bool {
 			numbers[4]-numbers[3] == 1)
 }
 
-func poker() ([]string, string) {
+func poker() []Scorecard {
 	type Hand struct {
 		Type  string
 		Cards []rune

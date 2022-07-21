@@ -171,7 +171,7 @@ int main(int argc, char* argv[]) {
 
 ['C#']
 size    = '145 MiB'
-version = 'C# 10.0 on .NET 6.0.5'
+version = 'C# 10.0 on .NET 6.0.7'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -242,8 +242,8 @@ end-program.
 '''
 
 [Crystal]
-size    = '221 MiB'
-version = '1.4.1'
+size    = '222 MiB'
+version = '1.5.0'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -300,7 +300,7 @@ for arg <- System.argv, do: IO.puts arg
 
 ['F#']
 size    = '140 MiB'
-version = 'F# 6.0 on .NET 6.0.5'
+version = 'F# 6.0 on .NET 6.0.7'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -347,7 +347,7 @@ end
 
 [Go]
 size    = '145 MiB'
-version = '1.18.3'
+version = '1.18.4'
 website = 'https://go.dev'
 example = '''
 package main
@@ -408,7 +408,7 @@ main = do
 '''
 
 [Hexagony]
-size    = '63.2 MiB'
+size    = '63.4 MiB'
 version = '4b30f58'
 website = 'https://github.com/SirBogman/Hexagony'
 example = '''
@@ -615,7 +615,7 @@ say for @ARGV;
 
 [PHP]
 size    = '10.5 MiB'
-version = '7.4.29'
+version = '7.4.30'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -632,7 +632,7 @@ for ($i = 1; $i < $argc; $i++)
 
 [PowerShell]
 size    = '177 MiB'
-version = 'PowerShell 7.2.4 on .NET 6.0.5'
+version = 'PowerShell 7.2.5 on .NET 6.0.7'
 website = 'https://docs.microsoft.com/powershell/scripting/overview'
 example = '''
 # Printing
@@ -720,8 +720,8 @@ end
 '''
 
 [Rust]
-size    = '517 MiB'
-version = '1.61.0'
+size    = '513 MiB'
+version = '1.62.1'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -764,8 +764,8 @@ G
 '''
 
 [SQL]
-size    = '1.09 MiB'
-version = '3.38.5'
+size    = '1.11 MiB'
+version = '3.39.1'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
@@ -792,7 +792,7 @@ SELECT arg FROM argv
 
 [Swift]
 size    = '561 MiB'
-version = '5.6.1'
+version = '5.6.2'
 website = 'https://swift.org'
 example = '''
 // Printing
@@ -831,8 +831,8 @@ for arg in os.args[1..] {
 '''
 
 [VimL]
-size    = '21.3 MiB'
-version = '8.2'
+size    = '22.3 MiB'
+version = '9.0'
 website = 'https://www.vim.org'
 example = '''
 " Printing

@@ -6,17 +6,17 @@ export { EditorState, EditorView };
 // Extensions.
 import { carriageReturn, insertChar,
     showUnprintables }                           from './_codemirror_unprintable.js';
-import { history, historyKeymap, insertTab,
-    standardKeymap }                             from '@codemirror/commands';
+import { history, historyKeymap, insertNewline,
+    insertTab, standardKeymap }                  from '@codemirror/commands';
 import { tags }                                  from '@lezer/highlight';
 import { bracketMatching, defaultHighlightStyle,
-    HighlightStyle, indentOnInput,
-    StreamLanguage, syntaxHighlighting }         from '@codemirror/language';
+    HighlightStyle, StreamLanguage,
+    syntaxHighlighting }                         from '@codemirror/language';
 import { oneDarkTheme, oneDarkHighlightStyle }   from '@codemirror/theme-one-dark';
 
 // Languages.
 import { assembly }    from '@defasm/codemirror';
-import { brainfuck }   from '@codemirror/legacy-modes/mode/brainfuck';
+// import { brainfuck }   from '@codemirror/legacy-modes/mode/brainfuck';
 import { c, csharp }   from '@codemirror/legacy-modes/mode/clike';
 import { cobol }       from '@codemirror/legacy-modes/mode/cobol';
 import { commonLisp }  from '@codemirror/legacy-modes/mode/commonlisp';
@@ -55,11 +55,12 @@ const fontFamily = "'Source Code Pro', monospace";
 export const extensions = {
     // Extensions.
     'base': [
-        carriageReturn, history(),
-        indentOnInput(), insertChar, lineNumbers(), showUnprintables,
+        carriageReturn, history(), insertChar, lineNumbers(), showUnprintables,
         keymap.of([
-            { key: 'Tab', run: insertTab },
-            ...historyKeymap, ...standardKeymap,
+            // Replace "enter" with a non auto indenting action.
+            ...historyKeymap, ...standardKeymap.filter(k => k.key != 'Enter'),
+            { key: 'Enter', run: insertNewline },
+            { key: 'Tab',   run: insertTab },
         ]),
         syntaxHighlighting(defaultHighlightStyle),
         EditorView.theme({
@@ -90,7 +91,8 @@ export const extensions = {
     // Languages.
     'assembly':   assembly(),
     'bash':       StreamLanguage.define(shell),
-    'brainfuck':  StreamLanguage.define(brainfuck),
+    // Disable brainfuck as it has quadratic complexity.
+    // 'brainfuck':  StreamLanguage.define(brainfuck),
     'c':          StreamLanguage.define(c),
     'c-sharp':    StreamLanguage.define(csharp),
     'cobol':      StreamLanguage.define(cobol),

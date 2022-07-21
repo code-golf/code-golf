@@ -51,76 +51,79 @@ func preprocessKCode(holeID, code string) string {
 	}
 }
 
-func getAnswer(holeID, code string) (args []string, answer string) {
-	args = []string{}
+// Play a given hole, in a given lang, with given code and return a Scorecard.
+func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
+	var scores []Scorecard
 
 	switch holeID {
 	case "arabic-to-roman", "roman-to-arabic":
-		args, answer = arabicToRoman(holeID == "roman-to-arabic")
+		scores = arabicToRoman(holeID == "roman-to-arabic")
 	case "arrows":
-		args, answer = arrows()
+		scores = arrows()
 	case "brainfuck":
-		args, answer = brainfuck()
+		scores = brainfuck()
 	case "css-colors":
-		args, answer = cssColors()
+		scores = cssColors()
 	case "ellipse-perimeters":
-		args, answer = ellipsePerimeters()
+		scores = ellipsePerimeters()
 	case "emojify":
-		args, answer = emojify()
+		scores = emojify()
 	case "fractions":
-		args, answer = fractions()
+		scores = fractions()
 	case "hexdump":
-		args, answer = hexdump()
+		scores = hexdump()
 	case "isbn":
-		args, answer = isbn()
+		scores = isbn()
 	case "intersection":
-		args, answer = intersection()
+		scores = intersection()
 	case "jacobi-symbol":
-		args, answer = jacobiSymbol()
+		scores = jacobiSymbol()
 	case "levenshtein-distance":
-		args, answer = levenshteinDistance()
+		scores = levenshteinDistance()
 	case "lucky-tickets":
-		args, answer = luckyTickets()
+		scores = luckyTickets()
 	case "maze":
-		args, answer = maze()
+		scores = maze()
 	case "morse-decoder", "morse-encoder":
-		args, answer = morse(holeID == "morse-decoder")
+		scores = morse(holeID == "morse-decoder")
 	case "musical-chords":
-		args, answer = musicalChords()
+		scores = musicalChords()
 	case "ordinal-numbers":
-		args, answer = ordinalNumbers()
+		scores = ordinalNumbers()
 	case "pangram-grep":
-		args, answer = pangramGrep()
+		scores = pangramGrep()
 	case "poker":
-		args, answer = poker()
+		scores = poker()
+	case "proximity-grid":
+		scores = proximityGrid()
 	case "qr-decoder", "qr-encoder":
-		args, answer = qr(holeID == "qr-decoder")
+		scores = qr(holeID == "qr-decoder")
 	case "quine":
-		answer = code
+		scores = []Scorecard{{Args: []string{}, Answer: code}}
 	case "reverse-polish-notation":
-		args, answer = reversePolishNotation()
+		scores = reversePolishNotation()
 	case "rock-paper-scissors-spock-lizard":
-		args, answer = rockPaperScissorsSpockLizard()
+		scores = rockPaperScissorsSpockLizard()
 	case "seven-segment":
-		args, answer = sevenSegment()
+		scores = sevenSegment()
 	case "spelling-numbers":
-		args, answer = spellingNumbers()
+		scores = spellingNumbers()
 	case "star-wars-opening-crawl":
-		args, answer = starWarsOpeningCrawl()
+		scores = starWarsOpeningCrawl()
 	case "sudoku", "sudoku-v2":
-		args, answer = sudoku(holeID == "sudoku-v2")
+		scores = sudoku(holeID == "sudoku-v2")
 	case "ten-pin-bowling":
-		args, answer = tenPinBowling()
+		scores = tenPinBowling()
 	case "time-distance":
-		args, answer = timeDistance()
+		scores = timeDistance()
 	case "united-states":
-		args, answer = unitedStates()
+		scores = unitedStates()
 	case "turtle":
-		args, answer = turtle()
+		scores = turtle()
 	case "zodiac-signs":
-		args, answer = zodiacSigns()
+		scores = zodiacSigns()
 	case "zeckendorf-representation":
-		args, answer = zeckendorfRepresentation()
+		scores = zeckendorfRepresentation()
 	default:
 		// ¯\_(ツ)_/¯ cannot embed file answers/√2.txt: invalid name √2.txt
 		if holeID == "√2" {
@@ -130,16 +133,40 @@ func getAnswer(holeID, code string) (args []string, answer string) {
 		if b, err := answers.ReadFile("answers/" + holeID + ".txt"); err != nil {
 			panic(err)
 		} else {
-			answer = string(bytes.TrimSuffix(b, []byte{'\n'}))
+			answer := string(bytes.TrimSuffix(b, []byte{'\n'}))
+			scores = []Scorecard{{Args: []string{}, Answer: answer}}
 		}
 	}
 
-	return
+	// Fast path, only one scorecard? No need for goroutines and channels.
+	if len(scores) == 1 {
+		play(ctx, holeID, langID, code, &scores[0])
+		return scores[0]
+	}
+
+	done := make(chan Scorecard)
+
+	for _, score := range scores {
+		go func(score Scorecard) {
+			play(ctx, holeID, langID, code, &score)
+			done <- score
+		}(score)
+	}
+
+	// TODO Maybe return all runs (rather than last or failing) to the UI.
+	for range scores {
+		score = <-done
+
+		// We failed! Return that run.
+		if !score.Pass {
+			break
+		}
+	}
+
+	return // Return the last run.
 }
 
-func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
-	score.Args, score.Answer = getAnswer(holeID, code)
-
+func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 	var stderr, stdout bytes.Buffer
 	var asmBytesRead, asmBytesWrite *os.File
 
@@ -350,6 +377,4 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 			score.Pass = score.Answer == string(score.Stdout)
 		}
 	}
-
-	return
 }

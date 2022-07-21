@@ -25,7 +25,7 @@ var arrowMap = map[string][2]int8{
 	"⥀": {0, 0}, "⥁": {0, 0},
 }
 
-func arrows() ([]string, string) {
+func arrows() []Scorecard {
 	args := make([]string, 0, 3*len(arrowMap))
 	pos := [2]int8{}
 
@@ -46,5 +46,5 @@ func arrows() ([]string, string) {
 		outs[i] = fmt.Sprint(pos[0], pos[1])
 	}
 
-	return args, strings.Join(outs, "\n")
+	return []Scorecard{{Args: args, Answer: strings.Join(outs, "\n")}}
 }

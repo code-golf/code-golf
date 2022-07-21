@@ -30,7 +30,6 @@ func Router(db *sql.DB) http.Handler {
 
 	r.Get("/", indexGET)
 	r.Get("/{hole}", holeGET)
-	r.Get("/ng/{hole}", holeGET)
 	r.Get("/about", aboutGET)
 	r.With(middleware.AdminArea).Route("/admin", func(r chi.Router) {
 		r.Get("/", adminGET)
@@ -77,7 +76,6 @@ func Router(db *sql.DB) http.Handler {
 	r.Get("/ideas", ideasGET)
 	r.Get("/log-out", logOutGET)
 	r.Get("/random", randomGET)
-	r.Get("/ng/random", ngRandomGET)
 	r.Route("/rankings", func(r chi.Router) {
 		// Redirect some old URLs that got out.
 		r.Get("/", redir("/rankings/holes/all/all/bytes"))
@@ -114,6 +112,8 @@ func Router(db *sql.DB) http.Handler {
 	r.Post("/solution", solutionPOST)
 	r.Get("/stats", statsGET)
 	r.Get("/users/{name}", userGET)
+	r.Get("/wiki", wikiGET)
+	r.Get("/wiki/*", wikiPageGET)
 
 	return r
 }

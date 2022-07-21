@@ -77,7 +77,7 @@ func init() {
 	}
 
 	for name, hole := range holes {
-		hole.ID = id(name)
+		hole.ID = ID(name)
 		hole.Name = name
 
 		// Process the templated preamble with the data.

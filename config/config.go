@@ -10,7 +10,7 @@ import (
 //go:embed *.toml
 var tomls embed.FS
 
-func id(name string) string {
+func ID(name string) string {
 	name = strings.ReplaceAll(name, " ", "-")
 	name = strings.ReplaceAll(name, "!", "")
 	name = strings.ReplaceAll(name, "#", "-sharp")

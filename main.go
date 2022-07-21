@@ -62,6 +62,10 @@ func main() {
 			// Various GitHub API requests.
 			github.Run(db, false)
 
+			if err := github.Wiki(db); err != nil {
+				log.Println(err)
+			}
+
 			if err := discord.AwardRoles(db); err != nil {
 				log.Println(err)
 			}

@@ -76,6 +76,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f641.svg       `# Slightly Frowning Face`       \
     svg/1f642.svg       `# Slightly Smiling Face`        \
     svg/1f697.svg       `# Automobile`                   \
+    svg/1f6a2.svg       `# Ship`                         \
     svg/1f910.svg       `# Zipper-Mouth Face`            \
     svg/1f947.svg       `# 1st Place Medal`              \
     svg/1f948.svg       `# 2nd Place Medal`              \

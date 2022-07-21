@@ -62,7 +62,7 @@ func (s sunSign) test(day int, hour int) (t test) {
 	return
 }
 
-func zodiacSigns() ([]string, string) {
+func zodiacSigns() []Scorecard {
 	const (
 		randomCases = 20
 		hours       = 24

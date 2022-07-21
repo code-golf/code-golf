@@ -115,7 +115,7 @@ Numbers:
 	return false
 }
 
-func sudoku(v2 bool) (args []string, out string) {
+func sudoku(v2 bool) []Scorecard {
 	var board [boardSize][boardSize]int
 
 	var generate func(int) bool
@@ -173,7 +173,8 @@ func sudoku(v2 bool) (args []string, out string) {
 
 	generate(0)
 
-	out = printSudoku(board)
+	var args []string
+	out := printSudoku(board)
 
 	// Clear random cells while keeping a unique solution. Only clear up-to 50
 	// cells so that brute force solutions are unlikely to time out.
@@ -213,5 +214,5 @@ func sudoku(v2 bool) (args []string, out string) {
 		}
 	}
 
-	return
+	return []Scorecard{{Args: args, Answer: out}}
 }

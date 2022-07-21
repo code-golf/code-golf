@@ -11,7 +11,7 @@ services:
     healthcheck:
       test:     curl -fks https://app/healthz
       interval: 1s
-      retries:  20
+      retries:  30
   db:
     tmpfs: /var/lib/postgresql/data
   e2e:
