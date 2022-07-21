@@ -373,6 +373,21 @@ func main() {
 }
 '''
 
+[GolfScript]
+size    = '24.2 MiB'
+version = '2206dbe'
+website = 'http://www.golfscript.com/golfscript/'
+example = '''
+# Printing
+"Hello, World!"puts
+
+# Looping
+10,{p}/
+
+# The stack is initialized with one element, an array of arguments:
+n*
+'''
+
 [Haskell]
 size    = '309 MiB'
 version = 'Glasgow Haskell Compiler 9.0.1'
