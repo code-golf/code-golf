@@ -1,7 +1,7 @@
 package hole
 
 func emojify() []Scorecard {
-	return outputTests(shuffle([]test{
+	tests := shuffle([]test{
 		{":-D", "😀"},
 		{":-)", "🙂"},
 		{":-|", "😐"},
@@ -27,5 +27,8 @@ func emojify() []Scorecard {
 		{"}:-)", "😈"},
 		{"}:-(", "👿"},
 		{":-@", "😡"},
-	}))
+	})
+
+	mid := len(tests) / 2
+	return outputTests(tests, tests[:mid], tests[mid:])
 }
