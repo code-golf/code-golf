@@ -43,10 +43,11 @@ CREATE TYPE hole AS ENUM (
 
 CREATE TYPE lang AS ENUM (
     'assembly', 'bash', 'basic', 'brainfuck', 'c', 'c-sharp', 'cpp', 'cobol',
-    'crystal', 'd', 'elixir', 'f-sharp', 'fish', 'fortran', 'go', 'haskell',
-    'hexagony', 'j', 'java', 'javascript', 'julia', 'k', 'lisp', 'lua', 'nim',
-    'pascal', 'perl', 'php', 'powershell', 'prolog', 'python', 'raku', 'ruby',
-    'rust', 'sed', 'sql', 'swift', 'v', 'viml', 'zig'
+    'crystal', 'd', 'elixir', 'f-sharp', 'fish', 'fortran', 'go',
+    'golfscript', 'haskell', 'hexagony', 'j', 'java', 'javascript', 'julia',
+    'k', 'lisp', 'lua', 'nim', 'pascal', 'perl', 'php', 'powershell',
+    'prolog', 'python', 'raku', 'ruby', 'rust', 'sed', 'sql', 'swift', 'v',
+    'viml', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('diamond', 'gold', 'silver', 'bronze');

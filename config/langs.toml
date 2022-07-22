@@ -375,7 +375,7 @@ func main() {
 
 [GolfScript]
 size    = '24.2 MiB'
-version = '2206dbe'
+version = '6155e9f'
 website = 'http://www.golfscript.com/golfscript/'
 example = '''
 # Printing
