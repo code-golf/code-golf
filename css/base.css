@@ -130,11 +130,10 @@ dialog {
     background: var(--background);
     border: 1px solid var(--color);
     color: var(--color);
-    left: 50%;
+    inset: 50%;
     max-width: calc(100vw - 2rem);
     padding: 0;
     position: fixed;
-    top: 50%;
     transform: translate(-50%, -50%);
     width: 30rem;
 }
@@ -144,11 +143,8 @@ dialog:not([open]) { display: none }
 dialog::backdrop, dialog + .backdrop {
     backdrop-filter: blur(.25rem);
     background: rgba(0, 0, 0, .1);
-    bottom: 0;
-    left: 0;
+    inset: 0;
     position: fixed;
-    right: 0;
-    top: 0;
 }
 
 dialog form {
