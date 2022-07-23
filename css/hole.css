@@ -57,7 +57,6 @@ section {
 section header {
     align-items: center;
     display: flex;
-    height: 2rem;
     justify-content: space-between;
     padding-right: .5rem;
 }
