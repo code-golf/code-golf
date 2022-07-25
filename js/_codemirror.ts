@@ -29,6 +29,7 @@ import { go }          from '@codemirror/legacy-modes/mode/go';
 import { haskell }     from '@codemirror/legacy-modes/mode/haskell';
 import { java }        from '@codemirror/lang-java';
 import { javascript }  from '@codemirror/lang-javascript';
+import { j }           from 'codemirror-lang-j';
 import { julia }       from '@codemirror/legacy-modes/mode/julia';
 import { lua }         from '@codemirror/legacy-modes/mode/lua';
 import { nim }         from 'nim-codemirror-mode';
@@ -106,7 +107,7 @@ export const extensions = {
     'go':         StreamLanguage.define(go),
     'haskell':    StreamLanguage.define(haskell),
     // TODO hexagony
-    // TODO j
+    'j':          j(),
     'java':       java(),
     'javascript': javascript(),
     'julia':      StreamLanguage.define(julia),
