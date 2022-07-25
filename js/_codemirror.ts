@@ -27,6 +27,7 @@ import { fortran }     from '@codemirror/legacy-modes/mode/fortran';
 import { fSharp }      from '@codemirror/legacy-modes/mode/mllike';
 import { go }          from '@codemirror/legacy-modes/mode/go';
 import { haskell }     from '@codemirror/legacy-modes/mode/haskell';
+import { j }           from 'codemirror-lang-j';
 import { java }        from '@codemirror/lang-java';
 import { javascript }  from '@codemirror/lang-javascript';
 import { julia }       from '@codemirror/legacy-modes/mode/julia';
@@ -106,7 +107,7 @@ export const extensions = {
     'go':         StreamLanguage.define(go),
     'haskell':    StreamLanguage.define(haskell),
     // TODO hexagony
-    // TODO j
+    'j':          j(),
     'java':       java(),
     'javascript': javascript(),
     'julia':      StreamLanguage.define(julia),

@@ -292,7 +292,7 @@ function setState(code: string) {
                 extensions[lang as keyof typeof extensions] || [],
 
                 // These languages shouldn't match brackets.
-                ['brainfuck', 'fish', 'j', 'hexagony'].includes(lang)
+                ['brainfuck', 'fish', 'hexagony'].includes(lang)
                     ? [] : extensions.bracketMatching,
 
                 // These languages shouldn't wrap lines.
