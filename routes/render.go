@@ -180,12 +180,6 @@ func init() {
 }
 
 func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
-	type CheevoBanner struct {
-		Cheevo     *config.Cheevo
-		During     bool
-		Start, End time.Time
-	}
-
 	theme := "auto"
 	theGolfer := session.Golfer(r)
 	if theGolfer != nil {
@@ -193,21 +187,21 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	}
 
 	args := struct {
+		Banners                                         []banner
 		CSS                                             template.CSS
-		CheevoBanner                                    *CheevoBanner
 		Cheevos                                         map[string][]*config.Cheevo
 		Countries                                       map[string]*config.Country
 		Data, Description, Title                        any
 		DarkModeMediaQuery, LogInURL, Name, Nonce, Path string
 		Golfer                                          *golfer.Golfer
 		GolferInfo                                      *golfer.GolferInfo
-		HoleBanner                                      *config.Hole
 		Holes                                           map[string]*config.Hole
 		JS                                              []string
 		Langs                                           map[string]*config.Lang
 		Location                                        *time.Location
 		Request                                         *http.Request
 	}{
+		Banners:            banners(theGolfer),
 		Cheevos:            config.CheevoTree,
 		Countries:          config.CountryByID,
 		CSS:                getThemeCSS(theme) + css["base"] + css[path.Dir(name)] + css[name],
@@ -238,27 +232,6 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		args.Location = args.Golfer.TimeZone
 	} else {
 		args.Location = time.UTC
-	}
-
-	// Current cheevo banner. TODO Generalise.
-	if args.Golfer != nil && !args.Golfer.Earned("independence-day") {
-		var (
-			now   = time.Now().UTC()
-			start = time.Date(2022, time.July, 4, 0, 0, 0, 0, time.UTC)
-			end   = time.Date(2022, time.July, 5, 0, 0, 0, 0, time.UTC)
-		)
-
-		if now.Before(end) {
-			args.CheevoBanner = &CheevoBanner{
-				config.CheevoByID["independence-day"],
-				start.Before(now), start, end,
-			}
-		}
-	}
-
-	// Show a banner if they've not solved the latest hole.
-	if args.Golfer != nil && !args.Golfer.Solved(recentHoleIDs[0]) {
-		args.HoleBanner = recentHoles[0]
 	}
 
 	// TODO CSS imports?
