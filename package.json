@@ -14,6 +14,7 @@
     "@codemirror/theme-one-dark": "",
     "@codemirror/view": "",
     "@defasm/codemirror": "",
+    "codemirror-lang-golfscript": "",
     "codemirror-lang-j": "",
     "dialog-polyfill": "",
     "diff": "",

@@ -26,6 +26,7 @@ import { d }           from '@codemirror/legacy-modes/mode/d';
 import { fortran }     from '@codemirror/legacy-modes/mode/fortran';
 import { fSharp }      from '@codemirror/legacy-modes/mode/mllike';
 import { go }          from '@codemirror/legacy-modes/mode/go';
+import { golfScript }  from 'codemirror-lang-golfscript';
 import { haskell }     from '@codemirror/legacy-modes/mode/haskell';
 import { j }           from 'codemirror-lang-j';
 import { java }        from '@codemirror/lang-java';
@@ -105,6 +106,7 @@ export const extensions = {
     // TODO fish
     'fortran':    StreamLanguage.define(fortran),
     'go':         StreamLanguage.define(go),
+    'golfscript': golfScript(),
     'haskell':    StreamLanguage.define(haskell),
     // TODO hexagony
     'j':          j(),
