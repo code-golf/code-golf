@@ -79,7 +79,8 @@ $('#details').ontoggle = (e: Event) => document.cookie =
     'hide-details=;SameSite=Lax;Secure' + ((e.target as HTMLDetailsElement).open ? ';Max-Age=0' : '');
 
 $('#restoreLink').onclick = e => {
-    setState(getSolutionCode(lang, solution));
+    const insert = getSolutionCode(lang, solution);
+    editor.dispatch({ changes: { from: 0, to: editor.state.doc.length, insert }});
     e.preventDefault();
 };
 
