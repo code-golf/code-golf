@@ -138,7 +138,7 @@ function makeCols(isArgDiff: boolean, maxLineNum: number, argv: string[]) {
 
     if (isArgDiff) {
         const longestArgLength = Math.max(6, ...argv.map(arg => arg.length));
-        cols.push(col(Math.min(longestArgLength * charWidth, 350)));
+        cols.push(col(Math.min(longestArgLength * charWidth + 1, 350)));
     }
     else {
         cols.push(col(numLength * charWidth));
