@@ -1,7 +1,6 @@
 import { ASMStateField }                       from '@defasm/codemirror';
 import LZString                                from 'lz-string';
 import { EditorState, EditorView, extensions } from './_codemirror.js';
-import                                              './_copy-as-json';
 import diffTable                               from './_diff';
 import pbm                                     from './_pbm.js';
 import { $, $$, byteLen, charLen, comma, ord } from './_util';
@@ -73,6 +72,9 @@ const editor = new EditorView({
 });
 
 editor.contentDOM.setAttribute('data-gramm', 'false');  // Disable Grammarly.
+
+$('#copy')?.addEventListener('click', () =>
+    navigator.clipboard.writeText($('#data').innerText));
 
 // Set/clear the hide-details cookie on details toggling.
 $('#details').ontoggle = (e: Event) => document.cookie =
