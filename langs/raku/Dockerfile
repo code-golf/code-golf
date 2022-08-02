@@ -2,7 +2,7 @@ FROM alpine:3.16 as builder
 
 RUN apk add --no-cache build-base git perl
 
-RUN git clone -b 2022.06 https://github.com/rakudo/rakudo.git \
+RUN git clone -b 2022.07 https://github.com/rakudo/rakudo.git \
  && cd rakudo                                                 \
  && CFLAGS=-flto ./Configure.pl                               \
     --gen-moar                                                \
