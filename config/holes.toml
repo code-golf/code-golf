@@ -1530,7 +1530,6 @@ category = 'Computing'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Taxicab_geometry' },
 ]
-experiment = 697
 preamble = '''
 <p>Given a series of 9x9 grids, reproduce the grid with distance set to closest source for each passible point.
 

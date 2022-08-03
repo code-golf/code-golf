@@ -32,7 +32,7 @@ CREATE TYPE hole AS ENUM (
     'morse-decoder', 'morse-encoder', 'musical-chords', 'niven-numbers',
     'number-spiral', 'odious-numbers', 'ordinal-numbers', 'pangram-grep',
     'pascals-triangle', 'pernicious-numbers', 'poker', 'prime-numbers',
-    'prime-numbers-long', 'qr-decoder', 'quine', 'recamán',
+    'prime-numbers-long', 'proximity-grid', 'qr-decoder', 'quine', 'recamán',
     'reverse-polish-notation', 'rock-paper-scissors-spock-lizard',
     'roman-to-arabic', 'rule-110', 'seven-segment', 'sierpiński-triangle',
     'smith-numbers', 'spelling-numbers', 'star-wars-opening-crawl', 'sudoku',
