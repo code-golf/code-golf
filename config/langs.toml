@@ -650,8 +650,8 @@ ForEach ($arg in $args) {
 '''
 
 [Prolog]
-size    = '31.7 MiB'
-version = 'SWI-Prolog 8.4.1'
+size    = '50.8 MiB'
+version = 'SWI-Prolog 8.4.2'
 website = 'https://www.swi-prolog.org'
 example = '''
 % Printing
@@ -667,8 +667,8 @@ example = '''
 '''
 
 [Python]
-size    = '55.4 MiB'
-version = '3.10.5'
+size    = '55.7 MiB'
+version = '3.10.6'
 website = 'https://www.python.org'
 example = '''
 import sys
