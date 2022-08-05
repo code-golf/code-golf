@@ -173,11 +173,6 @@ input:not([type]), select {
     width: 100%;
 }
 
-input[type=text] {
-    color: inherit;
-    font: inherit;
-}
-
 main {
     align-content: start;
     display: grid;

@@ -21,7 +21,7 @@ const darkMode =
     matchMedia(JSON.parse($('#darkModeMediaQuery').innerText)).matches;
 const darkModeExtensions = darkMode ? [...extensions.dark] : [];
 
-const baseExtensions = [...vimModeExtensions, ...darkModeExtensions,  ...extensions.base];
+const baseExtensions = [...vimModeExtensions, ...darkModeExtensions, ...extensions.base];
 
 let lang = '';
 let latestSubmissionID = 0;
