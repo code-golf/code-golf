@@ -80,6 +80,12 @@ func init() {
 		hole.ID = ID(name)
 		hole.Name = name
 
+		switch hole.ID {
+		case "abundant-numbers-long", "emirp-numbers-long", "evil-numbers-long",
+			"niven-numbers-long", "odious-numbers-long", "pernicious-numbers-long":
+			hole.Experiment = -1
+		}
+
 		// Process the templated preamble with the data.
 		if hole.Data != "" {
 			t, err := template.New("").Parse(string(hole.Preamble))

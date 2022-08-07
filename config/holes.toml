@@ -80,6 +80,7 @@ Go to the store and buy some more, 99 bottles of beer on the wall.
 
 ['Abundant Numbers']
 category = 'Sequence'
+variants = ['Abundant Numbers', 'Abundant Numbers (Long)']
 links = [
     { name = 'OEIS A005101', url = '//oeis.org/A005101' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Abundant,_deficient_and_perfect_number_classifications' },
@@ -94,8 +95,9 @@ preamble = '''
     <b>16</b>.
 
 <p>
-    Print all the abundant numbers from <b>1</b> to <b>200</b> inclusive, each
-    on their own line.
+    Print all the abundant numbers from <b>1</b> to
+    <b>{{ if eq . "Abundant Numbers" }}200{{ else }}1,000{{ end }}</b>
+    inclusive, each on their own line.
 '''
 
 ['Arabic to Roman']
@@ -582,6 +584,7 @@ preamble = '''
 
 ['Emirp Numbers']
 category = 'Sequence'
+variants = ['Emirp Numbers', 'Emirp Numbers (Long)']
 links = [
     { name = 'OEIS A006567', url = '//oeis.org/A006567' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Emirp_primes' },
@@ -594,8 +597,9 @@ preamble = '''
     <b>13</b> and <b>31</b> are emirps, but <b>131</b> is not.
 
 <p>
-    Print all the emirp numbers from <b>1</b> to <b>1000</b> inclusive, each
-    on their own line.
+    Print all the emirp numbers from <b>1</b> to
+    <b>{{ if eq . "Emirp Numbers" }}1,000{{ else }}10,000{{ end }}</b>
+    inclusive, each on their own line.
 '''
 
 ['Ellipse Perimeters']
@@ -639,7 +643,7 @@ preamble = '''
 
 ['Evil Numbers']
 category = 'Sequence'
-variants = ['Evil Numbers', 'Odious Numbers']
+variants = ['Evil Numbers', 'Evil Numbers (Long)', 'Odious Numbers', 'Odious Numbers (Long)']
 links = [
     { name = 'OEIS A001969', url = '//oeis.org/A001969', variant = 'Evil Numbers' },
     { name = 'OEIS A000069', url = '//oeis.org/A000069', variant = 'Odious Numbers' },
@@ -648,22 +652,24 @@ links = [
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Odious_number', variant = 'Odious Numbers' },
 ]
 preamble = '''
-{{ if eq . "Evil Numbers" }}
+{{ if or (eq . "Evil Numbers") (eq . "Evil Numbers (Long)") }}
 <p>
     An evil number is a non-negative number that has an even number of 1s in
     its binary expansion.
 
 <p>
-    Print all the evil numbers from <b>0</b> to <b>50</b> inclusive, each on
-    their own line.
+    Print all the evil numbers from <b>0</b> to
+    <b>{{ if eq . "Evil Numbers" }}50{{ else }}1,000{{ end }}</b>
+    inclusive, each on their own line.
 {{ else }}
 <p>
     An odious number is a non-negative number that has an odd number of 1s in
     its binary expansion.
 
 <p>
-    Print all the odious numbers from <b>0</b> to <b>50</b> inclusive, each on
-    their own line.
+    Print all the odious numbers from <b>0</b> to
+    <b>{{ if eq . "Odious Numbers" }}50{{ else }}1,000{{ end }}</b>
+    inclusive, each on their own line.
 {{ end }}
 '''
 
@@ -1332,6 +1338,7 @@ preamble = '''
 
 ['Niven Numbers']
 category = 'Sequence'
+variants = ['Niven Numbers', 'Niven Numbers (Long)']
 links = [
     { name = 'OEIS A005349', url = '//oeis.org/A005349' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Harshad_or_Niven_series' },
@@ -1343,8 +1350,9 @@ preamble = '''
     its digits.
 
 <p>
-    Print all the Niven numbers from <b>1</b> to <b>100</b> inclusive, each on
-    their own line.
+    Print all the Niven numbers from <b>1</b> to
+    <b>{{ if eq . "Niven Numbers" }}100{{ else }}1,000{{ end }}</b>
+    inclusive, each on their own line.
 '''
 
 ['Number Spiral']
@@ -1427,6 +1435,7 @@ preamble = '''
 
 ['Pernicious Numbers']
 category = 'Sequence'
+variants = ['Pernicious Numbers', 'Pernicious Numbers (Long)']
 links = [
     { name = 'OEIS A052294', url = '//oeis.org/A052294' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Pernicious_numbers' },
@@ -1442,8 +1451,9 @@ preamble = '''
     <b>5 = 101<sub>2</sub></b> and <b>1 + 1 = 2</b>, which is prime.
 
 <p>
-    Print all the pernicious numbers from <b>0</b> to <b>50</b> inclusive,
-    each on their own line.
+    Print all the pernicious numbers from <b>0</b> to
+    <b>{{ if eq . "Pernicious Numbers" }}50{{ else }}1,000{{ end }}</b>
+    inclusive, each on their own line.
 '''
 
 [Poker]
