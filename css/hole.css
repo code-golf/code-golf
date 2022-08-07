@@ -63,6 +63,11 @@ section header {
 
 .cm-editor { height: 100% }
 
+.cm-editor input {
+    color: inherit;
+    font: inherit;
+}
+
 .text-red { color: var(--red-text) }
 
 #err div, #exp div, #out div { white-space: pre }

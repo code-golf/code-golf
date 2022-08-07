@@ -1,5 +1,6 @@
 import { EditorState }                     from '@codemirror/state';
-import { EditorView, keymap, lineNumbers } from '@codemirror/view';
+import { EditorView, keymap, lineNumbers,
+    drawSelection }                        from '@codemirror/view';
 
 export { EditorState, EditorView };
 
@@ -13,6 +14,7 @@ import { bracketMatching, defaultHighlightStyle,
     HighlightStyle, StreamLanguage,
     syntaxHighlighting }                         from '@codemirror/language';
 import { oneDarkTheme, oneDarkHighlightStyle }   from '@codemirror/theme-one-dark';
+import { vim }                                   from '@replit/codemirror-vim';
 
 // Languages.
 import { assembly }    from '@defasm/codemirror';
@@ -64,6 +66,7 @@ export const extensions = {
             { key: 'Enter', run: insertNewline },
             { key: 'Tab',   run: insertTab },
         ]),
+        drawSelection(),
         syntaxHighlighting(defaultHighlightStyle),
         EditorView.theme({
             '.cm-asm-error': { textDecoration: 'underline var(--asm-error)' },
@@ -89,6 +92,7 @@ export const extensions = {
         oneDarkTheme,
         syntaxHighlighting(oneDarkHighlightStyle),
     ],
+    'vim': vim({ status: true }),
 
     // Languages.
     'assembly':   assembly(),
