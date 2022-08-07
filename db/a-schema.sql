@@ -79,7 +79,6 @@ CREATE TABLE users (
     login        citext    NOT NULL UNIQUE,
     time_zone    text,
     delete       timestamp,
-    keymap       keymap    NOT NULL DEFAULT 'default',
     country      char(2),
     show_country bool      NOT NULL DEFAULT false,
     started      timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
@@ -88,6 +87,7 @@ CREATE TABLE users (
     -- TODO Make country_flag VIRTUAL not STORED when PostgreSQL supports it.
     country_flag char(2)   NOT NULL GENERATED ALWAYS AS
         (COALESCE(CASE WHEN show_country THEN country END, '')) STORED,
+    keymap       keymap    NOT NULL DEFAULT 'default',
     CHECK (country IS NULL OR country = UPPER(country)),
     CHECK (id != referrer_id)   -- Can't refer yourself
 );
