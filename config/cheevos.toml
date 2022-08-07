@@ -154,6 +154,11 @@ description = 'Solve any hole in three dozen different languages.'
 target      = 36
 
 [[Miscellaneous]]
+name        = 'Real Programmers'
+emoji       = '🦋'
+description = '<a href=//xkcd.com/378/>Real programmers</a> solve any hole in VimL while using the Vim keymap.'
+
+[[Miscellaneous]]
 name        = 'RTFM'
 emoji       = '📕'
 description = 'Visit the <a href=/about>About page</a>.'
