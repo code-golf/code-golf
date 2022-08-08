@@ -1351,7 +1351,7 @@ preamble = '''
 
 <p>
     Print all the Niven numbers from <b>1</b> to
-    <b>{{ if eq . "Niven Numbers" }}100{{ else }}1,000{{ end }}</b>
+    <b>{{ if eq . "Niven Numbers" }}100{{ else }}10,000{{ end }}</b>
     inclusive, each on their own line.
 '''
 
