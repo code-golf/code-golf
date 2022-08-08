@@ -82,7 +82,7 @@ func init() {
 
 		switch hole.ID {
 		case "abundant-numbers-long", "emirp-numbers-long", "evil-numbers-long",
-			"niven-numbers-long", "odious-numbers-long", "pernicious-numbers-long":
+			"odious-numbers-long", "pernicious-numbers-long":
 			hole.Experiment = -1
 		}
 
