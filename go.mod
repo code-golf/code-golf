@@ -6,7 +6,7 @@ require (
 	github.com/DATA-DOG/go-sqlmock v1.5.0
 	github.com/SeerUK/assert v1.0.0
 	github.com/agnivade/levenshtein v1.1.1
-	github.com/buildkite/terminal-to-html/v3 v3.6.1
+	github.com/buildkite/terminal-to-html/v3 v3.7.0
 	github.com/bwmarrin/discordgo v0.25.0
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/go-git/go-billy/v5 v5.3.1
@@ -20,13 +20,13 @@ require (
 	github.com/tdewolff/minify/v2 v2.12.0
 	github.com/yuin/goldmark v1.4.13
 	golang.org/x/exp v0.0.0-20220722155223-a9213eeb770e
-	golang.org/x/oauth2 v0.0.0-20220722155238-128564f6959c
+	golang.org/x/oauth2 v0.0.0-20220808172628-8227340efae7
 	gopkg.in/guregu/null.v4 v4.0.0
 )
 
 require (
 	github.com/Microsoft/go-winio v0.5.2 // indirect
-	github.com/ProtonMail/go-crypto v0.0.0-20220730123233-d6ffb7692adf // indirect
+	github.com/ProtonMail/go-crypto v0.0.0-20220810064516-de89276ce0f3 // indirect
 	github.com/acomagu/bufpipe v1.0.3 // indirect
 	github.com/cloudflare/circl v1.2.0 // indirect
 	github.com/dgryski/trifles v0.0.0-20210119233746-37d926d5de6c // indirect
@@ -42,8 +42,8 @@ require (
 	github.com/tdewolff/parse/v2 v2.6.2 // indirect
 	github.com/xanzy/ssh-agent v0.3.1 // indirect
 	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
-	golang.org/x/net v0.0.0-20220805013720-a33c5aa5df48 // indirect
-	golang.org/x/sys v0.0.0-20220804214406-8e32c043e418 // indirect
+	golang.org/x/net v0.0.0-20220809184613-07c6da5e1ced // indirect
+	golang.org/x/sys v0.0.0-20220808155132-1c4a2a72c664 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
