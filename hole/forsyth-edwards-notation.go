@@ -38,5 +38,5 @@ func forsythEdwardsNotation() []Scorecard {
 		}
 	}
 
-	return []Scorecard{{Args: args, Answer: buf.String()}}
+	return []Scorecard{{Args: args, Answer: strings.TrimRight(buf.String(), "\n")}}
 }
