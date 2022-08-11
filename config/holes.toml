@@ -736,26 +736,37 @@ preamble = '''
 '''
 
 ['Forsyth-Edwards Notation']
-category = 'Transform'
+category = 'Gaming'
 experiment = 645
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation' },
 ]
 preamble = '''
 <p>
-    Forsyth–Edwards Notation (FEN) is a standard notation for describing a particular board position of a chess game.
+    Forsyth–Edwards Notation (FEN) is a standard notation for describing a
+    particular board position of a chess game.
     <br>
     The standard starting chess position is encoded as
 
 <pre>rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1</pre>
 
 <p>
-    The first space separated groups is the main part which encodes the physical positions of the pieces on the board.
+    The first space separated groups is the main part which encodes the
+    physical positions of the pieces on the board.
     <br>
-    Each rank (row) is described, starting with rank 8 and ending with rank 1; within each rank, the contents of each square are described from file (column) "a" through file "h". Each piece is identified by a single letter taken from the standard English names (<b>P</b>awn, k<b>N</b>ight, <b>B</b>ishop, <b>R</b>ook, <b>Q</b>ueen, <b>K</b>ing). White pieces are designated using upper-case letters ("PNBRQK") while black pieces use lowercase ("pnbrqk"). Empty squares are noted using digits 1 through 8 (the number of empty squares), and "/" separates ranks.
+    Each rank (row) is described, starting with rank 8 and ending with rank 1;
+    within each rank, the contents of each square are described from file
+    (column) "a" through file "h". Each piece is identified by a single letter
+    taken from the standard English names (<b>P</b>awn, k<b>N</b>ight,
+    <b>B</b>ishop, <b>R</b>ook, <b>Q</b>ueen, <b>K</b>ing). White pieces are
+    designated using upper-case letters ("PNBRQK") while black pieces use
+    lowercase ("pnbrqk"). Empty squares are noted using digits 1 through 8
+    (the number of empty squares), and "/" separates ranks.
 
 <p>
-    Given a FEN, output the board using the chess unicode characters and “　” (U+3000 Ideographic Space) for empty squares. The output corresponding to the FEN of the starting position given above should be
+    Given a FEN, output the board using the chess unicode characters and “　”
+    (U+3000 Ideographic Space) for empty squares. The output corresponding to
+    the FEN of the starting position given above should be
 
 <pre>♜♞♝♛♚♝♞♜
 ♟︎♟︎♟︎♟︎♟︎♟︎♟︎♟︎
