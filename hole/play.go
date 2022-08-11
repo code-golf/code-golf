@@ -68,6 +68,8 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		scores = ellipsePerimeters()
 	case "emojify":
 		scores = emojify()
+	case "forsyth-edwards-notation":
+		scores = forsythEdwardsNotation()
 	case "fractions":
 		scores = fractions()
 	case "hexdump":

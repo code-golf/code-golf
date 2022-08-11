@@ -116,14 +116,10 @@ func reversePolishNotation() []Scorecard {
 		exprs[i] = genExpr(randInt(1, math.MaxInt16), expandRand, randInt(1, 31))
 	}
 
-	rand.Shuffle(len(exprs), func(i, j int) {
-		exprs[i], exprs[j] = exprs[j], exprs[i]
-	})
-
 	args := make([]string, tests)
 	var answer strings.Builder
 
-	for i, expr := range exprs {
+	for i, expr := range shuffle(exprs[:]) {
 		var arg strings.Builder
 		writeNode(&arg, expr)
 		args[i] = arg.String()
