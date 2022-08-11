@@ -21,14 +21,16 @@ func forsythEdwardsNotation() []Scorecard {
 		if i > 0 {
 			buf.WriteString("\n\n")
 		}
-		for _, c := range arg {
+		for i, c := range arg {
 			if c == ' ' {
 				break
 			} else if c == '/' {
 				buf.WriteByte('\n')
 			} else if '1' <= c && c <= '8' {
-				for n := c - '0'; n > 0; n-- {
-					buf.WriteRune('　') // U+3000
+				if arg[i+1] >= 'A' {
+					for n := c - '0'; n > 0; n-- {
+						buf.WriteRune('　') // U+3000
+					}
 				}
 			} else {
 				buf.WriteRune(pieceMap[c])
