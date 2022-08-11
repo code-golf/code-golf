@@ -735,11 +735,11 @@ preamble = '''
     for example <b>15</b> should print <b>FizzBuzz</b>.
 '''
 
-['Forsyth-Edwards Notation']
+['Forsyth–Edwards Notation']
 category = 'Gaming'
 experiment = 645
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Forsyth–Edwards_Notation' },
 ]
 preamble = '''
 <p>
