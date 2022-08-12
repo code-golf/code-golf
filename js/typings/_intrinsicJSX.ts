@@ -33,6 +33,7 @@ declare global {
       th: any;
       td: any;
       col: any;
+      code: any;
     }
   }
 }
