@@ -20,7 +20,7 @@ RUN ./esbuild \
 FROM scratch
 
 COPY --from=codegolf/lang-swift      ["/", "/langs/swift/rootfs/"     ] #  561 MiB
-COPY --from=codegolf/lang-rust       ["/", "/langs/rust/rootfs/"      ] #  513 MiB
+COPY --from=codegolf/lang-rust       ["/", "/langs/rust/rootfs/"      ] #  402 MiB
 COPY --from=codegolf/lang-haskell    ["/", "/langs/haskell/rootfs/"   ] #  309 MiB
 COPY --from=codegolf/lang-julia      ["/", "/langs/julia/rootfs/"     ] #  279 MiB
 COPY --from=codegolf/lang-basic      ["/", "/langs/basic/rootfs/"     ] #  268 MiB
