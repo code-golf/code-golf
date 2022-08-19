@@ -487,8 +487,8 @@ for (let arg of arguments)
 '''
 
 [Julia]
-size    = '279 MiB'
-version = '1.7.3'
+size    = '303 MiB'
+version = '1.8.0'
 website = 'https://julialang.org'
 example = '''
 # Printing

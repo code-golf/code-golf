@@ -3,7 +3,7 @@ FROM alpine:3.16 as builder
 RUN apk add --no-cache cmake curl g++ gfortran libexecinfo-dev \
     linux-headers m4 make musl-dev patch perl python3 tar xz
 
-ENV CXXFLAGS=-flto LDFLAGS=-flto VER=1.7.3
+ENV CXXFLAGS=-flto LDFLAGS=-flto VER=1.8.0
 
 RUN curl -L https://github.com/JuliaLang/julia/releases/download/v$VER/julia-$VER.tar.gz \
   | tar xz
