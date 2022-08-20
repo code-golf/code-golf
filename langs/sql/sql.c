@@ -38,11 +38,12 @@ int main(int argc, char *argv[]) {
         sql = realloc(sql, size *= 2);
         len += fread(&sql[len], 1, size - len - 1, stdin);
     }
+    sql[len] = '\0';
 
     const char* statement = sql;
 
     while(*statement) {
-        if (sqlite3_prepare_v2(db, statement, len, &res, &statement) != SQLITE_OK) {
+        if (sqlite3_prepare_v2(db, statement, -1, &res, &statement) != SQLITE_OK) {
             fprintf(stderr, "%s\n", sqlite3_errmsg(db));
             sqlite3_close(db);
             return 1;
