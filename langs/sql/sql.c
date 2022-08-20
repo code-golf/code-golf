@@ -50,8 +50,6 @@ int main(int argc, char *argv[]) {
         }
 
         while (sqlite3_step(res) == SQLITE_ROW)
-//          this would enable only taking the result of the final query
-//            if (!*statement)
             if (sqlite3_column_type(res, 0) != SQLITE_NULL)
                 printf("%s\n", sqlite3_column_text(res, 0));
 
