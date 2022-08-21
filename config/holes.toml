@@ -787,18 +787,21 @@ preamble = '''
 <p>For each fraction argument <code>a/b</code>, reduce it to its simplest form.
 '''
 
-['Gijswijt’s sequence']
+['Gijswijt’s Sequence']
 category = 'Sequence'
 experiment = 724
 links = [
     { name = 'OEIS A000045', url = '//oeis.org/A090822' },
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Gijswijt%27s_sequence' },
+    { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Gijswijt's_sequence" },
 ]
 preamble = '''
 <p>
-    Gijswijt's sequence is a slow-growing sequence where each term is given by the length of the longest string of repeating blocks of terms at the end of the sequence so far.
-<p>
-    For example, the sequence begins 1, 1, 2, 1, 1, 2, 2, 2, 3, ...
+    Gijswijt’s sequence is a slow-growing sequence where each term is given by
+    the length of the longest string of repeating blocks of terms at the end
+    of the sequence so far.
+
+<p>For example, the sequence begins 1, 1, 2, 1, 1, 2, 2, 2, 3, ...
+
 <pre>
 [1]
 [1],[1]
@@ -811,8 +814,11 @@ preamble = '''
  1 , 1 , 2 , 1 , 1 , 2 , 2 , 2,[3]
  1 , 1 , 2 , 1 , 1 , 2 , 2 , 2, 3 , 1
 </pre>
-On each line, the blocks that are used to get the next number in the sequence are marked in [].
-    Print the first <b>1000</b> terms of Gijswijt's sequence, each on a separate line.
+
+<p>
+    On each line, the blocks that are used to get the next number in the
+    sequence are marked in []. Print the first <b>1000</b> terms of Gijswijt’s
+    sequence, each on a separate line.
 '''
 
 ['Happy Numbers']
