@@ -796,16 +796,22 @@ links = [
 ]
 preamble = '''
 <p>
-    Gijswijt's sequence is a slow-growing variant of the Kolakoski sequence where each term is given by the length of the longest string of repeating blocks of terms at the end of the sequence so far.
+    Gijswijt's sequence is a slow-growing sequence where each term is given by the length of the longest string of repeating blocks of terms at the end of the sequence so far.
 <p>
     For example, the sequence begins 1, 1, 2, 1, 1, 2, 2, 2, 3, ...
-<p>
-    a(1) = 1 by definition<br>
-    a(2) = 1 because the block 1 repeats once and spans up to a(1)<br>
-    a(3) = 2 because the block 1 repeats twice and spans up to a(2)<br>
-    a(7) = 2 because the block 1 1 2 repeats twice and spans up to a(6)<br>
-    a(9) = 3 because the block 2 repeats thrice and spans up to a(8)
-<p>
+<pre>
+[1]
+[1],[1]
+[1 , 1 , 2]
+[1 , 1 , 2 , 1]
+ 1 , 1 , 2 ,[1],[1]
+[1 , 1 , 2],[1 , 1 , 2]
+ 1 , 1 , 2 , 1 , 1 ,[2],[2]
+ 1 , 1 , 2 , 1 , 1 ,[2],[2],[2]
+ 1 , 1 , 2 , 1 , 1 , 2 , 2 , 2,[3]
+ 1 , 1 , 2 , 1 , 1 , 2 , 2 , 2, 3 , 1
+</pre>
+On each line, the blocks that are used to get the next number in the sequence are marked in [].
     Print the first <b>1000</b> terms of Gijswijt's sequence, each on a separate line.
 '''
 
