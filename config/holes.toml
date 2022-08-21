@@ -796,17 +796,13 @@ links = [
 ]
 preamble = '''
 <p>
-    Gijswijt’s sequence is a slow-growing sequence where each term is given by
-    the length of the longest string of repeating blocks of terms at the end
-    of the sequence so far.
-
-<p>For example, the sequence begins 1, 1, 2, 1, 1, 2, 2, 2, 3, ...
-
+    Gijswijt’s sequence is a slow-growing sequence where each term counts the maximum number of repeated blocks of numbers in the sequence immediately preceding that term.
+<p>The sequence begins 1, 1, 2, 1, 1, 2, 2, 2, 3, 1 ... and its construction can be seen in the following figure.
 <pre>
 [1]
 [1],[1]
-[1 , 1 , 2]
-[1 , 1 , 2 , 1]
+ 1 , 1 ,[2]
+ 1 , 1 , 2 ,[1]
  1 , 1 , 2 ,[1],[1]
 [1 , 1 , 2],[1 , 1 , 2]
  1 , 1 , 2 , 1 , 1 ,[2],[2]
@@ -814,7 +810,6 @@ preamble = '''
  1 , 1 , 2 , 1 , 1 , 2 , 2 , 2,[3]
  1 , 1 , 2 , 1 , 1 , 2 , 2 , 2, 3 , 1
 </pre>
-
 <p>
     On each line, the blocks that are used to get the next number in the
     sequence are marked in []. Print the first <b>1000</b> terms of Gijswijt’s
