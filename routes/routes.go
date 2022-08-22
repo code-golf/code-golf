@@ -40,6 +40,8 @@ func Router(db *sql.DB) http.Handler {
 		r.Get("/", apiGET)
 		r.Get("/cheevos", apiCheevosGET)
 		r.Get("/cheevos/{cheevo}", apiCheevoGET)
+		r.Get("/holes", apiHolesGET)
+		r.Get("/holes/{hole}", apiHoleGET)
 		r.Get("/langs", apiLangsGET)
 		r.Get("/langs/{lang}", apiLangGET)
 		r.Get(

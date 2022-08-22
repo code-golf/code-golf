@@ -11,6 +11,9 @@ for «
     200 /api/cheevos                  ｢ '[' .*? '"RTFM"' .*? '"tl;dr"' .*? ']' ｣
     200 /api/cheevos/tl-dr            ｢ '{' .*?              '"tl;dr"' .*? '}' ｣
     404 /api/cheevos/unknown          ｢ 'null'                                 ｣
+    200 /api/holes                    ｢ '[' .*? '"ISBN"' .*? '"π"'     .*? ']' ｣
+    200 /api/holes/π                  ｢ '{' .*?              '"π"'     .*? '}' ｣
+    404 /api/holes/unknown            ｢ 'null'                                 ｣
     200 /api/langs                    ｢ '[' .*? '"Perl"' .*? '"Raku"'  .*? ']' ｣
     200 /api/langs/raku               ｢ '{' .*?              '"Raku"'  .*? '}' ｣
     404 /api/langs/unknown            ｢ 'null'                                 ｣

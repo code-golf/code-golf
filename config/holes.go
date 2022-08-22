@@ -20,15 +20,21 @@ var (
 )
 
 type (
-	Link struct{ Name, URL, Variant string }
+	Link struct {
+		Name    string `json:"name"`
+		URL     string `json:"url"`
+		Variant string `json:"-"`
+	}
 	Hole struct {
-		Category, CategoryColor, CategoryIcon string
-		Data                                  template.JS
-		Experiment                            int
-		ID, Name, Prev, Next                  string
-		Preamble                              template.HTML
-		Links                                 []Link
-		Variants                              []*Hole
+		Category                                string        `json:"category"`
+		CategoryColor, CategoryIcon, Prev, Next string        `json:"-"`
+		Data                                    template.JS   `json:"-"`
+		Experiment                              int           `json:"-"`
+		ID                                      string        `json:"id"`
+		Name                                    string        `json:"name"`
+		Preamble                                template.HTML `json:"preamble"`
+		Links                                   []Link        `json:"links"`
+		Variants                                []*Hole       `json:"-"`
 	}
 )
 

@@ -4,6 +4,7 @@ import (
 	_ "embed"
 	"encoding/json"
 	"net/http"
+	"reflect"
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
@@ -21,34 +22,32 @@ func apiGET(w http.ResponseWriter, r *http.Request) {
 
 // GET /api/cheevos
 func apiCheevosGET(w http.ResponseWriter, _ *http.Request) {
-	if err := json.NewEncoder(w).Encode(config.CheevoList); err != nil {
-		panic(err)
-	}
+	encodeJSON(w, config.CheevoList)
 }
 
 // GET /api/cheevos/{cheevo}
 func apiCheevoGET(w http.ResponseWriter, r *http.Request) {
-	if cheevo, ok := config.CheevoByID[param(r, "cheevo")]; !ok {
-		w.WriteHeader(http.StatusNotFound)
-	} else if err := json.NewEncoder(w).Encode(cheevo); err != nil {
-		panic(err)
-	}
+	encodeJSON(w, config.CheevoByID[param(r, "cheevo")])
+}
+
+// GET /api/holes
+func apiHolesGET(w http.ResponseWriter, _ *http.Request) {
+	encodeJSON(w, config.HoleList)
+}
+
+// GET /api/langs/{lang}
+func apiHoleGET(w http.ResponseWriter, r *http.Request) {
+	encodeJSON(w, config.HoleByID[param(r, "hole")])
 }
 
 // GET /api/langs
 func apiLangsGET(w http.ResponseWriter, _ *http.Request) {
-	if err := json.NewEncoder(w).Encode(config.LangList); err != nil {
-		panic(err)
-	}
+	encodeJSON(w, config.LangList)
 }
 
 // GET /api/langs/{lang}
 func apiLangGET(w http.ResponseWriter, r *http.Request) {
-	if lang, ok := config.LangByID[param(r, "lang")]; !ok {
-		w.WriteHeader(http.StatusNotFound)
-	} else if err := json.NewEncoder(w).Encode(lang); err != nil {
-		panic(err)
-	}
+	encodeJSON(w, config.LangByID[param(r, "lang")])
 }
 
 // GET /mini-rankings/{hole}/{lang}/{scoring:bytes|chars}/{view:top|me|following}
@@ -182,9 +181,7 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if err := json.NewEncoder(w).Encode(entries); err != nil {
-		panic(err)
-	}
+	encodeJSON(w, entries)
 }
 
 // GET /api/panic
@@ -209,6 +206,14 @@ func apiSuggestionsGolfersGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if _, err := w.Write(json); err != nil {
+		panic(err)
+	}
+}
+
+func encodeJSON(w http.ResponseWriter, v any) {
+	if v == nil || reflect.ValueOf(v).IsNil() {
+		w.WriteHeader(http.StatusNotFound)
+	} else if err := json.NewEncoder(w).Encode(v); err != nil {
 		panic(err)
 	}
 }
