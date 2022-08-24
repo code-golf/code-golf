@@ -2,7 +2,6 @@
 disable-all = true
 enable = [
     'bodyclose',
-    'deadcode',
     'gofumpt',
     'goimports',
     'gosimple',
@@ -11,12 +10,10 @@ enable = [
     'revive',
     'rowserrcheck',
     'staticcheck',
-    'structcheck',
     'typecheck',
     'unconvert',
     'unparam',
     'unused',
-    'varcheck',
 ]
 
 [linters-settings]
