@@ -7,19 +7,19 @@ require (
 	github.com/SeerUK/assert v1.0.0
 	github.com/agnivade/levenshtein v1.1.1
 	github.com/buildkite/terminal-to-html/v3 v3.7.0
-	github.com/bwmarrin/discordgo v0.26.0
+	github.com/bwmarrin/discordgo v0.26.1
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/go-git/go-billy/v5 v5.3.1
 	github.com/go-git/go-git/v5 v5.4.2
 	github.com/gofrs/uuid v4.2.0+incompatible
 	github.com/gorilla/feeds v1.1.1
 	github.com/lib/pq v1.10.6
-	github.com/pelletier/go-toml/v2 v2.0.3
+	github.com/pelletier/go-toml/v2 v2.0.5
 	github.com/shurcooL/graphql v0.0.0-20220606043923-3cf50f8a0a29
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
-	github.com/tdewolff/minify/v2 v2.12.0
-	github.com/yuin/goldmark v1.4.13
-	golang.org/x/exp v0.0.0-20220823124025-807a23277127
+	github.com/tdewolff/minify/v2 v2.12.1
+	github.com/yuin/goldmark v1.4.14
+	golang.org/x/exp v0.0.0-20220827204233-334a2380cb91
 	golang.org/x/oauth2 v0.0.0-20220822191816-0ebed06d0094
 	gopkg.in/guregu/null.v4 v4.0.0
 )
@@ -39,11 +39,11 @@ require (
 	github.com/kevinburke/ssh_config v1.2.0 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/sergi/go-diff v1.2.0 // indirect
-	github.com/tdewolff/parse/v2 v2.6.2 // indirect
+	github.com/tdewolff/parse/v2 v2.6.3 // indirect
 	github.com/xanzy/ssh-agent v0.3.2 // indirect
-	golang.org/x/crypto v0.0.0-20220824171710-5757bc0c5503 // indirect
-	golang.org/x/net v0.0.0-20220822230855-b0a4917ee28c // indirect
-	golang.org/x/sys v0.0.0-20220823224334-20c2bfdbfe24 // indirect
+	golang.org/x/crypto v0.0.0-20220829220503-c86fa9a7ed90 // indirect
+	golang.org/x/net v0.0.0-20220826154423-83b083e8dc8b // indirect
+	golang.org/x/sys v0.0.0-20220829200755-d48e67d00261 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
