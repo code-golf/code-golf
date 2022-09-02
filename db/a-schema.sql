@@ -203,10 +203,10 @@ CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
       from strokes
       join bayesian_estimators using(hole, lang, scoring)
 ), ranks as (
-    select *, rank() over (
-               partition by hole, lang, scoring
-                   order by points_for_lang desc, strokes
-           )
+    select *,
+           count(*) over (partition by hole, lang, scoring) golfers,
+           rank()   over (partition by hole, lang, scoring
+                              order by points_for_lang desc, strokes)
       from points
 ), tie_count as (
     select hole, lang, scoring, strokes, count(*) tie_count
