@@ -7,9 +7,8 @@ services:
     image: node:18-alpine3.15
     command:
       - ./esbuild
-      - --watch
+      - --watch=forever
     stop_signal: SIGKILL
-    tty: true
     user: 1000:1000
     volumes:
       - ..:/code-golf
