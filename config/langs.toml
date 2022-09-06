@@ -120,7 +120,7 @@ Next
 
 ' Accessing arguments
 For i As Integer = 1 To __FB_ARGC__ - 1
-    Print *__FB_ARGV__[i]
+    Print Command(i)
 Next
 '''
 
