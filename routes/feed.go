@@ -27,6 +27,8 @@ func init() {
 		sha, created, id string
 		hole             bool
 	}{
+		{"005aa4e", "2022-09-06 20:03:30", "evil-numbers-long", true},
+		{"005aa4e", "2022-09-06 20:03:30", "odious-numbers-long", true},
 		{"2b98517", "2022-08-08 06:17:51", "niven-numbers-long", true},
 		{"ab7be37", "2022-08-03 23:20:30", "proximity-grid", true},
 		{"7ccb56c", "2022-07-21 21:23:32", "golfscript", false},
