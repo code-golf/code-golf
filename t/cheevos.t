@@ -12,6 +12,7 @@ constant %holes = <
     50 {bullseye}
     60 {gone-in-60-holes}
     69 {cunning-linguist}
+    80 {phileas-fogg}
 >;
 
 constant %langs = <
@@ -33,7 +34,7 @@ is $dbh.execute('SELECT ARRAY(SELECT trophy FROM trophies)').row, '{rtfm}',
 for $dbh.execute('SELECT unnest(enum_range(null::hole))').allrows.flat {
     my $cheevos = %holes{ my $i = ++$ } // '{}';
 
-    # Add hole-specific cheevos on the end.
+    # Add hole-specific cheevos to the start.
     $cheevos.=subst: '{', '{interview-ready,' if $_ eq 'fizz-buzz';
     $cheevos.=subst: '{', '{solve-quine,'     if $_ eq 'quine';
     $cheevos.=subst: ',}', '}';

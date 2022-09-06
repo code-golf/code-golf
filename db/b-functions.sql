@@ -273,6 +273,7 @@ BEGIN
     IF holes >= 50 THEN earned := earn(earned, 'bullseye',          user_id); END IF;
     IF holes >= 60 THEN earned := earn(earned, 'gone-in-60-holes',  user_id); END IF;
     IF holes >= 69 THEN earned := earn(earned, 'cunning-linguist',  user_id); END IF;
+    IF holes >= 80 THEN earned := earn(earned, 'phileas-fogg',      user_id); END IF;
 
     ret.earned := earned;
 
