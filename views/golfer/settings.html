@@ -142,9 +142,11 @@
         <p><button class="btn green">Save Changes</button>
     </form>
 
-    <h2>Export Data</h2>
+    <form>
+        <h2>Export Data</h2>
 
-    <p>You can export your data <a href=export>here</a>.
+        <p>You can export your data <a href=export>here</a>.
+    </form>
 
 {{ if .Golfer.Delete.Valid }}
     <form action=/golfer/cancel-delete method=post>

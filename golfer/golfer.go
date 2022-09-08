@@ -20,12 +20,12 @@ func (f *FailingSolutions) Scan(src any) error {
 
 type Golfer struct {
 	Admin, ShowCountry                     bool
+	BytesPoints, CharsPoints, ID           int
 	Cheevos, Holes                         []string
 	Country, Keymap, Name, Referrer, Theme string
 	Delete                                 sql.NullTime
 	FailingSolutions                       FailingSolutions
 	Following                              []int64
-	ID                                     int
 	TimeZone                               *time.Location
 }
 
@@ -72,9 +72,6 @@ type GolferInfo struct {
 	Golfer
 
 	Sponsor bool
-
-	// Overall points
-	BytesPoints, CharsPoints int
 
 	// Count of medals
 	Diamond, Gold, Silver, Bronze int

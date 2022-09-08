@@ -67,16 +67,15 @@
             {{ svg "journals" }}
         </a>
         <div></div>
-    {{ if .Golfer }}
-        {{ $slug := (print "/golfers/" .Golfer.Name) }}
+    {{ with .Golfer }}
+        {{ $slug := (print "/golfers/" .Name) }}
 
-        <a {{ if or (eq .Path $slug) (hasPrefix .Path "/golfer/")
-            (hasPrefix .Path (print $slug "/")) }} class=on {{ end }}
+        <a {{ if or (eq $.Path $slug) (hasPrefix $.Path "/golfer/")
+            (hasPrefix $.Path (print $slug "/")) }} class=on {{ end }}
             href="{{ $slug }}" title=Profile>
-            <img src="//avatars.githubusercontent.com/{{ .Golfer.Name }}?s=28">
-        </a>
-        <a href=/log-out title="Log Out">
-            {{ svg "sign-out-alt-light" }}
+            {{ svg "bytes" }}{{ comma .BytesPoints }}
+            <img src="//avatars.githubusercontent.com/{{ .Name }}?s=56">
+            {{ svg "chars" }}{{ comma .CharsPoints }}
         </a>
     {{ else }}
         <a class=log-in href="{{ .LogInURL }}" title="Log In">

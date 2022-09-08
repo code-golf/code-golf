@@ -77,7 +77,7 @@ func Router(db *sql.DB) http.Handler {
 	})
 	r.Get("/healthz", healthzGET)
 	r.Get("/ideas", ideasGET)
-	r.Get("/log-out", logOutGET)
+	r.Post("/log-out", logOutPost)
 	r.Get("/random", randomGET)
 	r.Route("/rankings", func(r chi.Router) {
 		// Redirect some old URLs that got out.

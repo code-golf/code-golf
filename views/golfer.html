@@ -14,15 +14,19 @@
             <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
         {{ end }}
         </h1>
-    {{ if or $me (not $.Golfer) }}
+    {{ if not $.Golfer }}
         <form></form>
+    {{ else if $me }}
+        <form action=/log-out method=post>
+            <button class="btn red">{{ svg "sign-out-alt-light" }} Log Out</button>
+        </form>
     {{ else if $.Golfer.IsFollowing .ID }}
         <form action="/golfers/{{ .Name }}/unfollow" method=post>
-            <button class="btn red">Unfollow Golfer</button>
+            <button class="btn red">{{ svg "person-dash" }} Unfollow Golfer</button>
         </form>
     {{ else }}
         <form action="/golfers/{{ .Name }}/follow" method=post>
-            <button class="btn blue">Follow Golfer</button>
+            <button class="btn blue">{{ svg "person-plus" }} Follow Golfer</button>
         </form>
     {{ end }}
         <div>

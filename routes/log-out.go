@@ -2,8 +2,8 @@ package routes
 
 import "net/http"
 
-// GET /log-out
-func logOutGET(w http.ResponseWriter, r *http.Request) {
+// POST /log-out
+func logOutPost(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		HttpOnly: true,
 		MaxAge:   -1,
@@ -13,5 +13,5 @@ func logOutGET(w http.ResponseWriter, r *http.Request) {
 		Secure:   true,
 	})
 
-	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
