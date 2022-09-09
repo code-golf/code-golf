@@ -139,8 +139,8 @@ func poker() []Scorecard {
 		cardRune(card, suits[0]),
 		cardRune(card, suits[1]),
 		cardRune(card, suits[2]),
-		cardRune(card + 1, rand.Intn(4)),
-		cardRune(card - 1, rand.Intn(4)),
+		cardRune(card+1, rand.Intn(4)),
+		cardRune(card-1, rand.Intn(4)),
 	}})
 	suits = rand.Perm(4)
 	hands = append(hands, Hand{"Three of a Kind", []rune{
