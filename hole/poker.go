@@ -33,7 +33,7 @@ func poker() []Scorecard {
 	}
 
 	var hands []Hand
-	const handCount = 3
+	const handCount = 5
 
 	// High card
 	for i := 0; i < handCount; i++ {
@@ -64,6 +64,30 @@ func poker() []Scorecard {
 			cardRune(cards[3], rand.Intn(4)),
 		}})
 	}
+	suits := rand.Perm(4)
+	hands = append(hands, Hand{"Pair", []rune{
+		cardRune(12, suits[0]),
+		cardRune(11, suits[1]),
+		cardRune(9, rand.Intn(4)),
+		cardRune(8, rand.Intn(4)),
+		cardRune(8, rand.Intn(4)),
+	}})
+	suits := rand.Perm(4)
+	hands = append(hands, Hand{"Pair", []rune{
+		cardRune(12, suits[0]),
+		cardRune(11, suits[1]),
+		cardRune(10, rand.Intn(4)),
+		cardRune(8, rand.Intn(4)),
+		cardRune(8, rand.Intn(4)),
+	}})
+	suits := rand.Perm(4)
+	hands = append(hands, Hand{"Pair", []rune{
+		cardRune(12, suits[0]),
+		cardRune(12, suits[1]),
+		cardRune(10, rand.Intn(4)),
+		cardRune(9, rand.Intn(4)),
+		cardRune(8, rand.Intn(4)),
+	}})
 
 	// Two Pair
 	for i := 0; i < handCount; i++ {
@@ -78,6 +102,24 @@ func poker() []Scorecard {
 			cardRune(cards[2], rand.Intn(4)),
 		}})
 	}
+	suit1 := rand.Perm(4)
+	suit2 := rand.Perm(4)
+	hands = append(hands, Hand{"Two Pair", []rune{
+		cardRune(12, suit1[0]),
+		cardRune(12, suit1[1]),
+		cardRune(8, suit2[0]),
+		cardRune(8, suit2[1]),
+		cardRune(9, rand.Intn(4)),
+	}})
+	suit1 := rand.Perm(4)
+	suit2 := rand.Perm(4)
+	hands = append(hands, Hand{"Two Pair", []rune{
+		cardRune(12, suit1[0]),
+		cardRune(12, suit1[1]),
+		cardRune(3, suit2[0]),
+		cardRune(3, suit2[1]),
+		cardRune(8, rand.Intn(4)),
+	}})
 
 	// Three of a Kind
 	for i := 0; i < handCount; i++ {
@@ -91,6 +133,31 @@ func poker() []Scorecard {
 			cardRune(cards[2], rand.Intn(4)),
 		}})
 	}
+	suits := rand.Perm(4)
+	card := 1 + rand.Intn(11)
+	hands = append(hands, Hand{"Three of a Kind", []rune{
+		cardRune(card, suits[0]),
+		cardRune(card, suits[1]),
+		cardRune(card, suits[2]),
+		cardRune(card + 1, rand.Intn(4)),
+		cardRune(card - 1, rand.Intn(4)),
+	}})
+	suits := rand.Perm(4)
+	hands = append(hands, Hand{"Three of a Kind", []rune{
+		cardRune(12, suits[0]),
+		cardRune(12, suits[1]),
+		cardRune(12, suits[2]),
+		cardRune(0, rand.Intn(4)),
+		cardRune(11, rand.Intn(4)),
+	}})
+	suits := rand.Perm(4)
+	hands = append(hands, Hand{"Three of a Kind", []rune{
+		cardRune(0, suits[0]),
+		cardRune(0, suits[1]),
+		cardRune(0, suits[2]),
+		cardRune(12, rand.Intn(4)),
+		cardRune(1, rand.Intn(4)),
+	}})
 
 	// Four of a Kind
 	for i := 0; i < handCount; i++ {
@@ -103,6 +170,34 @@ func poker() []Scorecard {
 			cardRune(cards[1], rand.Intn(4)),
 		}})
 	}
+	hands = append(hands, Hand{"Four of a Kind", []rune{
+		cardRune(12, 0),
+		cardRune(12, 1),
+		cardRune(12, 2),
+		cardRune(12, 3),
+		cardRune(11, rand.Intn(4)),
+	}})
+	hands = append(hands, Hand{"Four of a Kind", []rune{
+		cardRune(11, 0),
+		cardRune(11, 1),
+		cardRune(11, 2),
+		cardRune(11, 3),
+		cardRune(12, rand.Intn(4)),
+	}})
+	hands = append(hands, Hand{"Four of a Kind", []rune{
+		cardRune(12, 0),
+		cardRune(12, 1),
+		cardRune(12, 2),
+		cardRune(12, 3),
+		cardRune(0, rand.Intn(4)),
+	}})
+	hands = append(hands, Hand{"Four of a Kind", []rune{
+		cardRune(0, 0),
+		cardRune(0, 1),
+		cardRune(0, 2),
+		cardRune(0, 3),
+		cardRune(1, rand.Intn(4)),
+	}})
 
 	// Full House
 	for i := 0; i < handCount; i++ {
@@ -149,6 +244,22 @@ func poker() []Scorecard {
 			cardRune((lowCard+4)%13, rand.Intn(4)),
 		}})
 	}
+	suits := rand.Perm(4)
+	hands = append(hands, Hand{"Straight", []rune{
+		cardRune(0, suits[0]),
+		cardRune(1, suits[1]), // Avoid flush
+		cardRune(2, rand.Intn(4)),
+		cardRune(3, rand.Intn(4)),
+		cardRune(5, rand.Intn(4)),
+	}})
+	suits := rand.Perm(4)
+	hands = append(hands, Hand{"Straight", []rune{
+		cardRune(2, suits[0]),
+		cardRune(3, suits[1]), // Avoid flush
+		cardRune(4, rand.Intn(4)),
+		cardRune(5, rand.Intn(4)),
+		cardRune(7, rand.Intn(4)),
+	}})
 
 	// Straight Flush
 	lowCards = rand.Perm(9)
@@ -200,12 +311,68 @@ func poker() []Scorecard {
 			cardRune(2, suit+1),
 			cardRune(3, suit+1),
 		}})
+		hands = append(hands, Hand{"High Card", []rune{
+			cardRune(11, suit),
+			cardRune(12, suit),
+			cardRune(0, suit+1),
+			cardRune(1, suit+1),
+			cardRune(2, suit+1),
+		}})
+		hands = append(hands, Hand{"High Card", []rune{
+			cardRune(10, suit),
+			cardRune(11, suit),
+			cardRune(12, suit),
+			cardRune(0, suit+1),
+			cardRune(1, suit+1),
+		}})
+		hands = append(hands, Hand{"High Card", []rune{
+			cardRune(9, suit),
+			cardRune(10, suit),
+			cardRune(11, suit),
+			cardRune(12, suit),
+			cardRune(0, suit+1),
+		}})
 	}
+
+	// Flush, but could be mistaken for a straight.
+	suit := rand.Intn(4)
+	hands = append(hands, Hand{"Flush", []rune{
+		cardRune(12, suit),
+		cardRune(0, suit),
+		cardRune(1, suit),
+		cardRune(2, suit),
+		cardRune(3, suit),
+	}})
+	suit := rand.Intn(4)
+	hands = append(hands, Hand{"Flush", []rune{
+		cardRune(11, suit),
+		cardRune(12, suit),
+		cardRune(0, suit),
+		cardRune(1, suit),
+		cardRune(2, suit),
+	}})
+	suit := rand.Intn(4)
+	hands = append(hands, Hand{"Flush", []rune{
+		cardRune(10, suit),
+		cardRune(11, suit),
+		cardRune(12, suit),
+		cardRune(0, suit),
+		cardRune(1, suit),
+	}})
+	suit := rand.Intn(4)
+	hands = append(hands, Hand{"Flush", []rune{
+		cardRune(9, suit),
+		cardRune(10, suit),
+		cardRune(11, suit),
+		cardRune(12, suit),
+		cardRune(0, suit),
+	}})
 
 	tests := make([]test, len(hands))
 	for i, hand := range shuffle(hands) {
 		tests[i] = test{string(shuffle(hand.Cards)), hand.Type}
 	}
 
-	return outputTests(tests)
+	constant_iargc := 37
+	return outputTests(tests[:constant_iargc], tests[len(tests)-constant_iargc:])
 }
