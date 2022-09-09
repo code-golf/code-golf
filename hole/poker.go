@@ -325,13 +325,6 @@ func poker() []Scorecard {
 			cardRune(0, suit+1),
 			cardRune(1, suit+1),
 		}})
-		hands = append(hands, Hand{"High Card", []rune{
-			cardRune(9, suit),
-			cardRune(10, suit),
-			cardRune(11, suit),
-			cardRune(12, suit),
-			cardRune(0, suit+1),
-		}})
 	}
 
 	// Flush, but could be mistaken for a straight.
@@ -358,14 +351,6 @@ func poker() []Scorecard {
 		cardRune(12, suit),
 		cardRune(0, suit),
 		cardRune(1, suit),
-	}})
-	suit = rand.Intn(4)
-	hands = append(hands, Hand{"Flush", []rune{
-		cardRune(9, suit),
-		cardRune(10, suit),
-		cardRune(11, suit),
-		cardRune(12, suit),
-		cardRune(0, suit),
 	}})
 
 	tests := make([]test, len(hands))
