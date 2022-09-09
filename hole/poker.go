@@ -373,6 +373,6 @@ func poker() []Scorecard {
 		tests[i] = test{string(shuffle(hand.Cards)), hand.Type}
 	}
 
-	constantIargc := 37
-	return outputTests(tests[:constantIargc], tests[len(tests)-constantIargc:])
+	const argc := 37  // Preserve original argc
+	return outputTests(tests[:argc], tests[len(tests)-argc:])
 }
