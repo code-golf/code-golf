@@ -51,6 +51,22 @@ func poker() []Scorecard {
 			cardRune(cards[4], rand.Intn(4)),
 		}})
 	}
+	suits := rand.Perm(4)
+	hands = append(hands, Hand{"High Card", []rune{
+		cardRune(0, suits[0]),
+		cardRune(1, suits[1]), // Avoid flush
+		cardRune(2, rand.Intn(4)),
+		cardRune(3, rand.Intn(4)),
+		cardRune(5, rand.Intn(4)),
+	}})
+	suits = rand.Perm(4)
+	hands = append(hands, Hand{"High Card", []rune{
+		cardRune(2, suits[0]),
+		cardRune(3, suits[1]), // Avoid flush
+		cardRune(4, rand.Intn(4)),
+		cardRune(5, rand.Intn(4)),
+		cardRune(7, rand.Intn(4)),
+	}})
 
 	// Pair
 	for i := 0; i < handCount; i++ {
@@ -64,7 +80,7 @@ func poker() []Scorecard {
 			cardRune(cards[3], rand.Intn(4)),
 		}})
 	}
-	suits := rand.Perm(4)
+	suits = rand.Perm(4)
 	hands = append(hands, Hand{"Pair", []rune{
 		cardRune(12, suits[0]),
 		cardRune(11, suits[1]),
@@ -244,22 +260,6 @@ func poker() []Scorecard {
 			cardRune((lowCard+4)%13, rand.Intn(4)),
 		}})
 	}
-	suits = rand.Perm(4)
-	hands = append(hands, Hand{"Straight", []rune{
-		cardRune(0, suits[0]),
-		cardRune(1, suits[1]), // Avoid flush
-		cardRune(2, rand.Intn(4)),
-		cardRune(3, rand.Intn(4)),
-		cardRune(5, rand.Intn(4)),
-	}})
-	suits = rand.Perm(4)
-	hands = append(hands, Hand{"Straight", []rune{
-		cardRune(2, suits[0]),
-		cardRune(3, suits[1]), // Avoid flush
-		cardRune(4, rand.Intn(4)),
-		cardRune(5, rand.Intn(4)),
-		cardRune(7, rand.Intn(4)),
-	}})
 
 	// Straight Flush
 	lowCards = rand.Perm(9)
