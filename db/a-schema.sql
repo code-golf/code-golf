@@ -50,7 +50,7 @@ CREATE TYPE lang AS ENUM (
     'golfscript', 'haskell', 'hexagony', 'j', 'java', 'javascript', 'julia',
     'k', 'lisp', 'lua', 'nim', 'pascal', 'perl', 'php', 'powershell',
     'prolog', 'python', 'raku', 'ruby', 'rust', 'sed', 'sql', 'swift', 'v',
-    'viml', 'zig'
+    'viml', 'wren', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('diamond', 'gold', 'silver', 'bronze');

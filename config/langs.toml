@@ -848,6 +848,23 @@ endfo
 w
 '''
 
+[Wren]
+size    = '4.09 MiB'
+version = '0.4.0'
+website = 'https://wren.io'
+example = '''
+import "os" for Process
+
+// Printing
+System.print("Hello, World!")
+
+// Looping
+for (i in 0..9) System.print(i)
+
+// Accessing arguments
+for (a in Process.arguments) System.print(a)
+'''
+
 [Zig]
 size    = '262 MiB'
 version = '0.9.1'
