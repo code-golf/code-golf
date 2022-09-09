@@ -849,7 +849,7 @@ w
 '''
 
 [Wren]
-size    = '4.09 MiB'
+size    = '2.7 MiB'
 version = '0.4.0'
 website = 'https://wren.io'
 example = '''
