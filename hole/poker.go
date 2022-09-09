@@ -133,7 +133,7 @@ func poker() []Scorecard {
 			cardRune(cards[2], rand.Intn(4)),
 		}})
 	}
-	suits := rand.Perm(4)
+	suits = rand.Perm(4)
 	card := 1 + rand.Intn(11)
 	hands = append(hands, Hand{"Three of a Kind", []rune{
 		cardRune(card, suits[0]),
@@ -142,7 +142,7 @@ func poker() []Scorecard {
 		cardRune(card + 1, rand.Intn(4)),
 		cardRune(card - 1, rand.Intn(4)),
 	}})
-	suits := rand.Perm(4)
+	suits = rand.Perm(4)
 	hands = append(hands, Hand{"Three of a Kind", []rune{
 		cardRune(12, suits[0]),
 		cardRune(12, suits[1]),
@@ -150,7 +150,7 @@ func poker() []Scorecard {
 		cardRune(0, rand.Intn(4)),
 		cardRune(11, rand.Intn(4)),
 	}})
-	suits := rand.Perm(4)
+	suits = rand.Perm(4)
 	hands = append(hands, Hand{"Three of a Kind", []rune{
 		cardRune(0, suits[0]),
 		cardRune(0, suits[1]),
@@ -244,7 +244,7 @@ func poker() []Scorecard {
 			cardRune((lowCard+4)%13, rand.Intn(4)),
 		}})
 	}
-	suits := rand.Perm(4)
+	suits = rand.Perm(4)
 	hands = append(hands, Hand{"Straight", []rune{
 		cardRune(0, suits[0]),
 		cardRune(1, suits[1]), // Avoid flush
@@ -252,7 +252,7 @@ func poker() []Scorecard {
 		cardRune(3, rand.Intn(4)),
 		cardRune(5, rand.Intn(4)),
 	}})
-	suits := rand.Perm(4)
+	suits = rand.Perm(4)
 	hands = append(hands, Hand{"Straight", []rune{
 		cardRune(2, suits[0]),
 		cardRune(3, suits[1]), // Avoid flush
@@ -343,7 +343,7 @@ func poker() []Scorecard {
 		cardRune(2, suit),
 		cardRune(3, suit),
 	}})
-	suit := rand.Intn(4)
+	suit = rand.Intn(4)
 	hands = append(hands, Hand{"Flush", []rune{
 		cardRune(11, suit),
 		cardRune(12, suit),
@@ -351,7 +351,7 @@ func poker() []Scorecard {
 		cardRune(1, suit),
 		cardRune(2, suit),
 	}})
-	suit := rand.Intn(4)
+	suit = rand.Intn(4)
 	hands = append(hands, Hand{"Flush", []rune{
 		cardRune(10, suit),
 		cardRune(11, suit),
@@ -359,7 +359,7 @@ func poker() []Scorecard {
 		cardRune(0, suit),
 		cardRune(1, suit),
 	}})
-	suit := rand.Intn(4)
+	suit = rand.Intn(4)
 	hands = append(hands, Hand{"Flush", []rune{
 		cardRune(9, suit),
 		cardRune(10, suit),
