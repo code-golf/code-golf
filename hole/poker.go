@@ -72,7 +72,7 @@ func poker() []Scorecard {
 		cardRune(8, rand.Intn(4)),
 		cardRune(8, rand.Intn(4)),
 	}})
-	suits := rand.Perm(4)
+	suits = rand.Perm(4)
 	hands = append(hands, Hand{"Pair", []rune{
 		cardRune(12, suits[0]),
 		cardRune(11, suits[1]),
@@ -80,7 +80,7 @@ func poker() []Scorecard {
 		cardRune(8, rand.Intn(4)),
 		cardRune(8, rand.Intn(4)),
 	}})
-	suits := rand.Perm(4)
+	suits = rand.Perm(4)
 	hands = append(hands, Hand{"Pair", []rune{
 		cardRune(12, suits[0]),
 		cardRune(12, suits[1]),
@@ -111,8 +111,8 @@ func poker() []Scorecard {
 		cardRune(8, suit2[1]),
 		cardRune(9, rand.Intn(4)),
 	}})
-	suit1 := rand.Perm(4)
-	suit2 := rand.Perm(4)
+	suit1 = rand.Perm(4)
+	suit2 = rand.Perm(4)
 	hands = append(hands, Hand{"Two Pair", []rune{
 		cardRune(12, suit1[0]),
 		cardRune(12, suit1[1]),
