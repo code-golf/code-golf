@@ -116,6 +116,7 @@ body > header [title=Profile] {
     color: var(--background);
     display: grid;
     font-size: .75rem;
+    font-variant: tabular-nums;
     font-weight: bold;
     gap: 0 .25rem;
     grid-template-columns: auto 1fr auto;
