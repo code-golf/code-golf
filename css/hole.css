@@ -57,12 +57,16 @@ section {
 section header {
     align-items: center;
     display: flex;
-    height: 2rem;
     justify-content: space-between;
     padding-right: .5rem;
 }
 
 .cm-editor { height: 100% }
+
+.cm-editor input {
+    color: inherit;
+    font: inherit;
+}
 
 .text-red { color: var(--red-text) }
 

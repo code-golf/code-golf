@@ -10,20 +10,22 @@ import (
 //go:embed *.toml
 var tomls embed.FS
 
-func ID(name string) string {
-	name = strings.ReplaceAll(name, " ", "-")
-	name = strings.ReplaceAll(name, "!", "")
-	name = strings.ReplaceAll(name, "#", "-sharp")
-	name = strings.ReplaceAll(name, "+", "p")
-	name = strings.ReplaceAll(name, "(", "")
-	name = strings.ReplaceAll(name, ")", "")
-	name = strings.ReplaceAll(name, ",", "")
-	name = strings.ReplaceAll(name, ";", "-")
-	name = strings.ReplaceAll(name, "><>", "fish")
-	name = strings.ReplaceAll(name, "’", "")
+var id = strings.NewReplacer(
+	// Remove.
+	"!", "", "(", "", ")", "", ",", "", "’", "",
 
-	return strings.ToLower(name)
-}
+	// Hyphenate.
+	" ", "-", ";", "-", "–", "-",
+
+	// Special.
+	"#", "-sharp",
+	"+", "p",
+	"><>", "fish",
+)
+
+// ID is a lowercase simplified version of the name used in URLs and the DB.
+// Some characters (like "#") are changed to be safe in URLs.
+func ID(name string) string { return strings.ToLower(id.Replace(name)) }
 
 func unmarshal(file string, value any) {
 	if data, err := tomls.ReadFile(file); err != nil {

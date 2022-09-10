@@ -57,21 +57,21 @@ func Ordinal(i int) string {
 
 // Time returns a fuzzy HTML <time> tag of a time.Time.
 //
-//    a min ago
-//   2 mins ago
-//          ...
-//  59 mins ago
-//  an hour ago
-//  2 hours ago
-//          ...
-// 23 hours ago
-//    a day ago
-//   2 days ago
-//          ...
-//  28 days ago
-//   1 Jan 2020
-//          ...
-//  31 Dec 2020
+//	   a min ago
+//	  2 mins ago
+//	         ...
+//	 59 mins ago
+//	 an hour ago
+//	 2 hours ago
+//	         ...
+//	23 hours ago
+//	   a day ago
+//	  2 days ago
+//	         ...
+//	 28 days ago
+//	  1 Jan 2020
+//	         ...
+//	 31 Dec 2020
 func Time(t time.Time) template.HTML {
 	const day = 24 * time.Hour
 

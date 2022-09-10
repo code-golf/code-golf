@@ -9,9 +9,9 @@ CREATE TYPE cheevo AS ENUM (
     'independence-day', 'interview-ready', 'its-over-9000', 'just-kidding',
     'marathon-runner', 'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars',
     'off-the-grid', 'omniglot', 'ouroboros', 'pangramglot', 'patches-welcome',
-    'phileas-fogg', 'pi-day', 'polyglot', 'polyglutton', 'rtfm', 'rule-34',
-    'slowcoach', 'solve-quine', 'sounds-quite-nice', 'takeout',
-    'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
+    'phileas-fogg', 'pi-day', 'polyglot', 'polyglutton', 'real-programmers',
+    'rtfm', 'rule-34', 'slowcoach', 'solve-quine', 'sounds-quite-nice',
+    'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
     'twenty-kiloleagues', 'under-pressure', 'up-to-eleven', 'vampire-byte'
 );
 
@@ -24,15 +24,16 @@ CREATE TYPE hole AS ENUM (
     'arabic-to-roman', 'arrows', 'ascii-table', 'brainfuck',
     'catalan-numbers', 'catalans-constant', 'christmas-trees', 'collatz',
     'css-colors', 'cubes', 'diamonds', 'divisors', 'emirp-numbers', 'emojify',
-    'evil-numbers', 'fibonacci', 'fizz-buzz', 'foo-fizz-buzz-bar',
-    'fractions', 'happy-numbers', 'happy-numbers-long', 'hexdump',
-    'intersection', 'isbn', 'jacobi-symbol', 'kolakoski-constant',
+    'evil-numbers', 'evil-numbers-long', 'fibonacci', 'fizz-buzz',
+    'foo-fizz-buzz-bar', 'fractions', 'happy-numbers', 'happy-numbers-long',
+    'hexdump', 'intersection', 'isbn', 'jacobi-symbol', 'kolakoski-constant',
     'kolakoski-sequence', 'leap-years', 'levenshtein-distance',
     'leyland-numbers', 'look-and-say', 'lucky-numbers', 'lucky-tickets',
     'morse-decoder', 'morse-encoder', 'musical-chords', 'niven-numbers',
-    'number-spiral', 'odious-numbers', 'ordinal-numbers', 'pangram-grep',
+    'niven-numbers-long', 'number-spiral', 'odious-numbers',
+    'odious-numbers-long', 'ordinal-numbers', 'pangram-grep',
     'pascals-triangle', 'pernicious-numbers', 'poker', 'prime-numbers',
-    'prime-numbers-long', 'qr-decoder', 'quine', 'recamán',
+    'prime-numbers-long', 'proximity-grid', 'qr-decoder', 'quine', 'recamán',
     'reverse-polish-notation', 'rock-paper-scissors-spock-lizard',
     'roman-to-arabic', 'rule-110', 'seven-segment', 'sierpiński-triangle',
     'smith-numbers', 'spelling-numbers', 'star-wars-opening-crawl', 'sudoku',
@@ -43,12 +44,15 @@ CREATE TYPE hole AS ENUM (
 
 CREATE TYPE layout AS ENUM ('default', 'tabs');
 
+CREATE TYPE keymap AS ENUM ('default', 'vim');
+
 CREATE TYPE lang AS ENUM (
     'assembly', 'bash', 'basic', 'brainfuck', 'c', 'c-sharp', 'cpp', 'cobol',
-    'crystal', 'd', 'elixir', 'f-sharp', 'fish', 'fortran', 'go', 'haskell',
-    'hexagony', 'j', 'java', 'javascript', 'julia', 'k', 'lisp', 'lua', 'nim',
-    'pascal', 'perl', 'php', 'powershell', 'prolog', 'python', 'raku', 'ruby',
-    'rust', 'sed', 'sql', 'swift', 'v', 'viml', 'zig'
+    'crystal', 'd', 'elixir', 'f-sharp', 'fish', 'fortran', 'go',
+    'golfscript', 'haskell', 'hexagony', 'j', 'java', 'javascript', 'julia',
+    'k', 'lisp', 'lua', 'nim', 'pascal', 'perl', 'php', 'powershell',
+    'prolog', 'python', 'raku', 'ruby', 'rust', 'sed', 'sql', 'swift', 'v',
+    'viml', 'wren', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('diamond', 'gold', 'silver', 'bronze');
@@ -87,6 +91,7 @@ CREATE TABLE users (
     -- TODO Make country_flag VIRTUAL not STORED when PostgreSQL supports it.
     country_flag char(2)   NOT NULL GENERATED ALWAYS AS
         (COALESCE(CASE WHEN show_country THEN country END, '')) STORED,
+    keymap       keymap    NOT NULL DEFAULT 'default',
     CHECK (country IS NULL OR country = UPPER(country)),
     CHECK (id != referrer_id)   -- Can't refer yourself
 );
@@ -201,10 +206,10 @@ CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
       from strokes
       join bayesian_estimators using(hole, lang, scoring)
 ), ranks as (
-    select *, rank() over (
-               partition by hole, lang, scoring
-                   order by points_for_lang desc, strokes
-           )
+    select *,
+           count(*) over (partition by hole, lang, scoring) golfers,
+           rank()   over (partition by hole, lang, scoring
+                              order by points_for_lang desc, strokes)
       from points
 ), tie_count as (
     select hole, lang, scoring, strokes, count(*) tie_count

@@ -8,6 +8,7 @@ func TestID(t *testing.T) {
 		{"C#", "c-sharp"},
 		{"C++", "cpp"},
 		{"DON’T PANIC!", "dont-panic"},
+		{"Forsyth–Edwards Notation", "forsyth-edwards-notation"},
 		{"Happy Birthday, Code Golf", "happy-birthday-code-golf"},
 		{"May the 4ᵗʰ Be with You", "may-the-4ᵗʰ-be-with-you"},
 		{"Morse (Decoder)", "morse-decoder"},

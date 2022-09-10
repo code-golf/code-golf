@@ -40,6 +40,8 @@ func Router(db *sql.DB) http.Handler {
 		r.Get("/", apiGET)
 		r.Get("/cheevos", apiCheevosGET)
 		r.Get("/cheevos/{cheevo}", apiCheevoGET)
+		r.Get("/holes", apiHolesGET)
+		r.Get("/holes/{hole}", apiHoleGET)
 		r.Get("/langs", apiLangsGET)
 		r.Get("/langs/{lang}", apiLangGET)
 		r.Get(
@@ -69,12 +71,13 @@ func Router(db *sql.DB) http.Handler {
 		r.Get("/cheevos", golferCheevosGET)
 		r.Get("/holes", golferHolesGET)
 		r.Get("/holes/{scoring}", golferHolesGET)
+		r.Get("/rankings/{scoring:bytes|chars}", golferRankingsGET)
 		r.Get("/{hole}/{lang}/{scoring}", golferSolutionGET)
 		// r.Post("/{hole}/{lang}/{scoring}", golferSolutionPOST)
 	})
 	r.Get("/healthz", healthzGET)
 	r.Get("/ideas", ideasGET)
-	r.Get("/log-out", logOutGET)
+	r.Post("/log-out", logOutPost)
 	r.Get("/random", randomGET)
 	r.Route("/rankings", func(r chi.Router) {
 		// Redirect some old URLs that got out.

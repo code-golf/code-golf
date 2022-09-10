@@ -29,6 +29,11 @@ The certificate is at "./localhost.pem" and the key at "./localhost-key.pem" ✅
 ```
 
 3. Install the NPM packages:
+
+> *NOTE*: if your host OS is not the same architecture / executable format as
+> your Docker environment, this can result in incorrect format binaries installed
+> into `node_modules`, so you may want to skip this step.
+
 ```
 $ npm install
 ```

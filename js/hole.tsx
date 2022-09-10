@@ -1,13 +1,12 @@
 import { ASMStateField }                       from '@defasm/codemirror';
 import { EditorView } from './_codemirror.js';
-import                                              './_copy-as-json';
 import diffTable                               from './_diff';
 import { $, $$, byteLen, charLen, comma } from './_util';
 import {
     init, langs, getLang, hole, getAutoSaveKey, setSolution, getSolution,
-    setState, refreshScores, submit, getSavedInDB, updateRestoreLinkVisibility,
+    setCode, refreshScores, submit, getSavedInDB, updateRestoreLinkVisibility,
     SubmitResponse, setCodeForLangAndSolution, getCurrentSolutionCode,
-    initDeleteBtn,
+    initDeleteBtn, initCopyJSONBtn,
 } from './_hole-common';
 
 const editor = new EditorView({
@@ -56,13 +55,14 @@ $('#details').ontoggle = (e: Event) => document.cookie =
     'hide-details=;SameSite=Lax;Secure' + ((e.target as HTMLDetailsElement).open ? ';Max-Age=0' : '');
 
 $('#restoreLink').onclick = e => {
-    setState(getCurrentSolutionCode(), editor);
+    setCode(getCurrentSolutionCode(), editor);
     e.preventDefault();
 };
 
 // Wire submit to clicking a button and a keyboard shortcut.
 $('#runBtn').onclick = () => submit(editor, updateReadonlyPanels);
 
+initCopyJSONBtn($('#copy'));
 initDeleteBtn($('#deleteBtn'), langs);
 
 $$('#rankingsView a').forEach(a => a.onclick = e => {

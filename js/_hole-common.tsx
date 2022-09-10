@@ -1,4 +1,5 @@
 import { $, $$, byteLen, charLen, comma, ord } from './_util';
+import { Vim }                                 from '@replit/codemirror-vim';
 import { EditorState, EditorView, extensions } from './_codemirror.js';
 import pbm                                     from './_pbm.js';
 import LZString                                from 'lz-string';
@@ -7,9 +8,11 @@ let tabLayout: boolean = false;
 
 export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSolution: any, updateReadonlyPanels: any, getEditor: () => any) {
     tabLayout = _tabLayout;
+    const closuredSubmit = () => submit(getEditor(), updateReadonlyPanels);
     window.onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter'
-        ? submit(getEditor(), updateReadonlyPanels)
+        ? closuredSubmit()
         : undefined;
+    if (vimMode) Vim.defineEx('write', 'w', closuredSubmit);
 
     (onhashchange = () => {
         const hashLang = location.hash.slice(1) || localStorage.getItem('lang');
@@ -50,6 +53,11 @@ export function initDeleteBtn(deleteBtn: HTMLElement | undefined, langs: any) {
     });
 }
 
+export function initCopyJSONBtn(copyBtn: HTMLElement | undefined) {
+    copyBtn?.addEventListener('click', () =>
+        navigator.clipboard.writeText($('#data').innerText));
+}
+
 export const langs = JSON.parse($('#langs').innerText);
 const sortedLangs  =
     Object.values(langs).sort((a: any, b: any) => a.name.localeCompare(b.name));
@@ -64,18 +72,20 @@ export const hole         = decodeURI(location.pathname.slice(1));
 const scorings     = ['Bytes', 'Chars'];
 const solutions    = JSON.parse($('#solutions').innerText);
 
+const vimMode = JSON.parse($('#keymap').innerText) === 'vim';
+const vimModeExtensions = vimMode ? [extensions.vim] : [];
+
 const darkMode =
     matchMedia(JSON.parse($('#darkModeMediaQuery').innerText)).matches;
+const darkModeExtensions = darkMode ? [...extensions.dark] : [];
 
-const baseExtensions =
-    darkMode ? [...extensions.dark, ...extensions.base] : extensions.base;
+const baseExtensions = [...vimModeExtensions, ...darkModeExtensions, ...extensions.base];
 
 let latestSubmissionID = 0;
 let solution = scorings.indexOf(localStorage.getItem('solution') ?? 'Bytes') as 0 | 1;
 let scoring  = scorings.indexOf(localStorage.getItem('scoring')  ?? 'Bytes') as 0 | 1;
 
 let hideDeleteBtn: boolean = false;
-
 
 // The savedInDB state is used to avoid saving solutions in localStorage when
 // those solutions match the solutions in the database. It's used to avoid
@@ -123,7 +133,7 @@ export function getSolution() {
     return solution;
 }
 
-export function setState(code: string, editor: any) {
+export function setState(code: string, editor: EditorView) {
     if (!editor) return;
     editor.setState(
         EditorState.create({
@@ -132,7 +142,7 @@ export function setState(code: string, editor: any) {
                 ...baseExtensions,
                 extensions[lang as keyof typeof extensions] || [],
                 // These languages shouldn't match brackets.
-                ['brainfuck', 'fish', 'j', 'hexagony'].includes(lang)
+                ['brainfuck', 'fish', 'hexagony'].includes(lang)
                     ? [] : extensions.bracketMatching,
                 // These languages shouldn't wrap lines.
                 ['assembly', 'fish', 'hexagony'].includes(lang)
@@ -141,6 +151,12 @@ export function setState(code: string, editor: any) {
         }),
     );
     editor.dispatch();  // Dispatch to update strokes.
+}
+
+export function setCode(code: string, editor: EditorView | null) {
+    editor?.dispatch({
+        changes: { from: 0, to: editor.state.doc.length, insert: code },
+    });
 }
 
 

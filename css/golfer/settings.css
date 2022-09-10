@@ -4,17 +4,6 @@
     grid-template-columns: min-content min-content 1fr;
 }
 
-form {
-    display: grid;
-    gap: 1rem;
-    max-width: 30rem;
-}
-
-form + form {
-    border-top: 1px solid var(--grey);
-    padding-top: 1rem;
-}
-
 h2 { font-size: 1.25rem }
 
 label {
@@ -22,6 +11,17 @@ label {
     display: grid;
     gap: .5rem;
     grid-template-columns: min-content 1fr;
+}
+
+main > form {
+    display: grid;
+    gap: 1rem;
+    max-width: 30rem;
+}
+
+main > form + form {
+    border-top: 1px solid var(--grey);
+    padding-top: 1rem;
 }
 
 #connections {

@@ -83,6 +83,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f949.svg       `# 3rd Place Medal`              \
     svg/1f961.svg       `# Takeout Box`                  \
     svg/1f967.svg       `# Pie`                          \
+    svg/1f98b.svg       `# Butterfly`                    \
     svg/1f98e.svg       `# Lizard`                       \
     svg/1f9a5.svg       `# Sloth`                        \
     svg/1f9db.svg       `# Vampire`                      \

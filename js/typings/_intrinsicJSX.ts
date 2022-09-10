@@ -37,6 +37,7 @@ declare global {
       aside: any;
       section: any;
       header: any;
+      code: any;
     }
   }
 }

@@ -99,6 +99,20 @@
             </label>
         {{- end -}}
         </div>
+        
+        <h2>Keymap</h2>
+
+        Preferred keyboard mapping for the code editor.
+
+        <div role=group>
+        {{- range .Data.Keymaps -}}
+            <label>
+                <input name=keymap type=radio value="{{ . }}"
+                    {{- if eq . $.Golfer.Keymap }} checked{{ end }}>
+                    {{- title . -}}
+            </label>
+        {{- end -}}
+        </div>
 
         <h2>Referrer</h2>
 
@@ -142,9 +156,11 @@
         <p><button class="btn green">Save Changes</button>
     </form>
 
-    <h2>Export Data</h2>
+    <form>
+        <h2>Export Data</h2>
 
-    <p>You can export your data <a href=export>here</a>.
+        <p>You can export your data <a href=export>here</a>.
+    </form>
 
 {{ if .Golfer.Delete.Valid }}
     <form action=/golfer/cancel-delete method=post>

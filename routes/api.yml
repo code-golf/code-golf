@@ -42,6 +42,39 @@ paths:
               schema:
                 $ref: '#/components/schemas/Achievement'
 
+  /holes:
+    get:
+      tags: [holes]
+      summary: Get all holes
+      responses:
+        '200':
+          description: A list of holes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Hole'
+
+  /holes/{id}:
+    get:
+      parameters:
+        - name: id
+          description: Hole ID
+          in: path
+          required: true
+          schema:
+            type: string
+      tags: [holes]
+      summary: Get a hole by ID
+      responses:
+        '200':
+          description: A single hole
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hole'
+
   /langs:
     get:
       tags: [languages]
@@ -107,6 +140,29 @@ components:
         id:
           type: string
         name:
+          type: string
+
+    Hole:
+      type: object
+      properties:
+        category:
+          type: string
+          enum: [Art, Computing, Gaming, Mathematics, Sequence, Transform]
+        id:
+          type: string
+        links:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              url:
+                type: string
+                format: uri
+        name:
+          type: string
+        preamble:
           type: string
 
     Language:

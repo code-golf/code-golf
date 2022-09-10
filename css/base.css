@@ -35,9 +35,7 @@
     z-index: 99;
 }
 
-[data-tooltip][data-wide-tooltip="true"]:after {
-    min-width: 16em;
-}
+[data-tooltip][data-wide-tooltip]:after { min-width: 16em }
 
 [data-tooltip]:hover:before, [data-tooltip]:hover:after { display: block }
 
@@ -110,13 +108,34 @@ body > header a {
 body > header a:hover,
 body > header a.on {
     background: var(--background);
+    color: var(--color);
     fill: var(--color);
 }
 
-body > header img {
+body > header [title=Profile] {
+    color: var(--background);
+    display: grid;
+    font-size: .75rem;
+    font-variant: tabular-nums;
+    font-weight: bold;
+    gap: 0 .25rem;
+    grid-template-columns: auto 1fr auto;
+    min-width: auto;
+    padding: .25rem .5rem;
+    text-decoration: none;
+}
+
+body > header [title=Profile] img {
     border-radius: 50%;
+    grid-row: span 2;
     height: 1.75rem;
+    margin-left: .375rem;
     width: 1.75rem;
+}
+
+body > header [title=Profile] svg {
+    height: .875rem;
+    width: .875rem;
 }
 
 body > header nav { display: flex }
@@ -130,11 +149,10 @@ dialog {
     background: var(--background);
     border: 1px solid var(--color);
     color: var(--color);
-    left: 50%;
+    inset: 50%;
     max-width: calc(100vw - 2rem);
     padding: 0;
     position: fixed;
-    top: 50%;
     transform: translate(-50%, -50%);
     width: 30rem;
 }
@@ -144,11 +162,8 @@ dialog:not([open]) { display: none }
 dialog::backdrop, dialog + .backdrop {
     backdrop-filter: blur(.25rem);
     background: rgba(0, 0, 0, .1);
-    bottom: 0;
-    left: 0;
+    inset: 0;
     position: fixed;
-    right: 0;
-    top: 0;
 }
 
 dialog form {
@@ -289,13 +304,13 @@ thead th {
 .success { background: var(--light-green) }
 
 .btn {
+    align-items: center;
     border: solid 1px var(--color);
     color: var(--color);
     display: flex;
     font-size: 1rem;
     font-weight: bold;
-    gap: .25rem;
-    line-height: 1;
+    gap: .5rem;
     padding: .5rem;
     user-select: none;
     white-space: nowrap;

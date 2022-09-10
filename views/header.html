@@ -68,16 +68,15 @@
         </a>
         <div id=alert-pool></div>
         <div></div>
-    {{ if .Golfer }}
-        {{ $slug := (print "/golfers/" .Golfer.Name) }}
+    {{ with .Golfer }}
+        {{ $slug := (print "/golfers/" .Name) }}
 
-        <a {{ if or (eq .Path $slug) (hasPrefix .Path "/golfer/")
-            (hasPrefix .Path (print $slug "/")) }} class=on {{ end }}
+        <a {{ if or (eq $.Path $slug) (hasPrefix $.Path "/golfer/")
+            (hasPrefix $.Path (print $slug "/")) }} class=on {{ end }}
             href="{{ $slug }}" title=Profile>
-            <img src="//avatars.githubusercontent.com/{{ .Golfer.Name }}?s=28">
-        </a>
-        <a href=/log-out title="Log Out">
-            {{ svg "sign-out-alt-light" }}
+            {{ svg "bytes" }}{{ comma .BytesPoints }}
+            <img src="//avatars.githubusercontent.com/{{ .Name }}?s=56">
+            {{ svg "chars" }}{{ comma .CharsPoints }}
         </a>
     {{ else }}
         <a class=log-in href="{{ .LogInURL }}" title="Log In">
@@ -87,59 +86,13 @@
     </nav>
 </header>
 
-{{ with .Golfer }}
-
-{{ if .Delete.Valid }}
-    <div class=alert>
+{{ range .Banners }}
+    <div class="{{ .Type }}">
+    {{ if eq .Type "alert" }}
         {{ svg "exclamation-circle" }}
-        <p>
-            Your account will be permanently deleted on the
-            {{ .Delete.Value.Format "2 Jan 2006" }}.
-
-        <p>
-            If you wish to stop this, visit
-            <a href=/golfer/settings>settings</a>
-            and cancel the deletion.
-    </div>
-{{ end }}
-
-{{ with .FailingSolutions }}
-    <div class=alert>
-        {{ svg "exclamation-circle" }}
-        The following solutions of yours have been marked as failing and no
-        longer contribute to scoring; please update them to pass:
-        <ul>
-        {{ range . }}
-            <li>
-                <a href="/{{ .Hole }}#{{ .Lang }}">
-                    {{ ( index $.Holes .Hole ).Name }}
-                    ({{ ( index $.Langs .Lang ).Name }})
-                </a>
-        {{ end }}
-        </ul>
-    </div>
-{{ end }}
-
-{{ end }}
-
-{{ with .CheevoBanner }}
-    <div class=info>
+    {{ else if eq .Type "info" }}
         {{ svg "info-circle" }}
-        <p>
-            The {{ .Cheevo.Emoji }} <b>{{ .Cheevo.Name }}</b> achievement will
-            {{ if .During }}
-                stop being available in {{ time (.End.In $.Location) }}.
-            {{ else }}
-                be available in {{ time (.Start.In $.Location) }}.
-            {{ end }}
-    </div>
-{{ end }}
-
-{{ with .HoleBanner }}
-    <div class=info>
-        {{ svg "info-circle" }}
-        <p>
-            The <a href="/{{ .ID }}">{{ .Name }}</a> hole is now live!
-            Why not try and solve it?
+    {{ end }}
+        <p>{{ .Body }}
     </div>
 {{ end }}

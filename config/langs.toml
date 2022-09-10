@@ -120,7 +120,7 @@ Next
 
 ' Accessing arguments
 For i As Integer = 1 To __FB_ARGC__ - 1
-    Print *__FB_ARGV__[i]
+    Print Command(i)
 Next
 '''
 
@@ -171,7 +171,7 @@ int main(int argc, char* argv[]) {
 
 ['C#']
 size    = '145 MiB'
-version = 'C# 10.0 on .NET 6.0.5'
+version = 'C# 10.0 on .NET 6.0.7'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -300,7 +300,7 @@ for arg <- System.argv, do: IO.puts arg
 
 ['F#']
 size    = '140 MiB'
-version = 'F# 6.0 on .NET 6.0.5'
+version = 'F# 6.0 on .NET 6.0.7'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -346,8 +346,8 @@ end
 '''
 
 [Go]
-size    = '145 MiB'
-version = '1.18.3'
+size    = '150 MiB'
+version = '1.19'
 website = 'https://go.dev'
 example = '''
 package main
@@ -373,6 +373,21 @@ func main() {
 }
 '''
 
+[GolfScript]
+size    = '24.2 MiB'
+version = '6155e9f'
+website = 'http://www.golfscript.com/golfscript/'
+example = '''
+# Printing
+"Hello, World!"puts
+
+# Looping
+10,{p}/
+
+# The stack is initialized with one element, an array of arguments:
+n*
+'''
+
 [Haskell]
 size    = '309 MiB'
 version = 'Glasgow Haskell Compiler 9.0.1'
@@ -393,7 +408,7 @@ main = do
 '''
 
 [Hexagony]
-size    = '63.2 MiB'
+size    = '63.4 MiB'
 version = '4b30f58'
 website = 'https://github.com/SirBogman/Hexagony'
 example = '''
@@ -472,8 +487,8 @@ for (let arg of arguments)
 '''
 
 [Julia]
-size    = '279 MiB'
-version = '1.7.3'
+size    = '303 MiB'
+version = '1.8.0'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -617,7 +632,7 @@ for ($i = 1; $i < $argc; $i++)
 
 [PowerShell]
 size    = '177 MiB'
-version = 'PowerShell 7.2.4 on .NET 6.0.5'
+version = 'PowerShell 7.2.5 on .NET 6.0.7'
 website = 'https://docs.microsoft.com/powershell/scripting/overview'
 example = '''
 # Printing
@@ -635,8 +650,8 @@ ForEach ($arg in $args) {
 '''
 
 [Prolog]
-size    = '31.7 MiB'
-version = 'SWI-Prolog 8.4.1'
+size    = '50.8 MiB'
+version = 'SWI-Prolog 8.4.2'
 website = 'https://www.swi-prolog.org'
 example = '''
 % Printing
@@ -652,8 +667,8 @@ example = '''
 '''
 
 [Python]
-size    = '55.4 MiB'
-version = '3.10.5'
+size    = '55.7 MiB'
+version = '3.10.6'
 website = 'https://www.python.org'
 example = '''
 import sys
@@ -672,7 +687,7 @@ for arg in sys.argv[1:]:
 
 [Raku]
 size    = '54.1 MiB'
-version = 'Raku 6.d on Rakudo 2022.06'
+version = 'Raku 6.d on Rakudo 2022.07'
 website = 'https://raku.org'
 example = '''
 # Printing
@@ -705,8 +720,8 @@ end
 '''
 
 [Rust]
-size    = '513 MiB'
-version = '1.62.0'
+size    = '402 MiB'
+version = '1.63.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -750,29 +765,23 @@ G
 
 [SQL]
 size    = '1.11 MiB'
-version = '3.39.0'
+version = '3.39.3'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
-SELECT 'Hello, World!'
+SELECT 'Hello, World!';
 
-UNION ALL
-
-SELECT * FROM (
-    -- Looping
-    WITH loop(i) AS (
-        SELECT 0
-        UNION ALL
-        SELECT i+1 FROM loop
-        WHERE i<9
-    )
-    SELECT i FROM loop
+-- Looping
+WITH loop(i) AS (
+    SELECT 0
+    UNION ALL
+    SELECT i + 1 FROM loop
+    WHERE i < 9
 )
-
-UNION ALL
+SELECT i FROM loop;
 
 -- Accessing arguments
-SELECT arg FROM argv
+SELECT arg FROM argv;
 '''
 
 [Swift]
@@ -837,6 +846,23 @@ endfo
 
 " Make sure to save the file when you're done!
 w
+'''
+
+[Wren]
+size    = '2.7 MiB'
+version = '0.4.0'
+website = 'https://wren.io'
+example = '''
+import "os" for Process
+
+// Printing
+System.print("Hello, World!")
+
+// Looping
+for (i in 0..9) System.print(i)
+
+// Accessing arguments
+for (a in Process.arguments) System.print(a)
 '''
 
 [Zig]

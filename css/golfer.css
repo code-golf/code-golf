@@ -40,6 +40,7 @@ h1 {
 
 #profile div {
     display: flex;
+    flex-wrap: wrap;
     gap: .375rem;
 }
 

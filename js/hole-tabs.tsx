@@ -5,14 +5,13 @@ import {
     ResolvedLayoutConfig, DragSource, LayoutManager, ComponentContainer,
 } from 'golden-layout';
 import { EditorView } from './_codemirror.js';
-import                                              './_copy-as-json';
 import diffTable                               from './_diff';
 import { $, $$, byteLen, charLen, comma } from './_util';
 import {
     init, langs, getLang, hole, getAutoSaveKey, setSolution, getSolution,
-    setState, refreshScores, getHideDeleteBtn, submit, SubmitResponse,
+    setCode, refreshScores, getHideDeleteBtn, submit, SubmitResponse,
     updateRestoreLinkVisibility, getSavedInDB, setCodeForLangAndSolution,
-    populateScores, getCurrentSolutionCode, initDeleteBtn,
+    populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyJSONBtn,
 } from './_hole-common';
 
 const poolDragSources: {[key: string]: DragSource} = {};
@@ -175,7 +174,7 @@ layout.registerComponentFactoryFunction('code', async container => {
 
     const header = (<header>
         <div id="strokes">0 bytes, 0 chars</div>
-        <a class="hide" href="/" id="restoreLink">Restore solution</a>
+        <a class="hide" href="" id="restoreLink">Restore solution</a>
     </header>) as HTMLElement;
     const editorDiv = <div id="editor"></div> as HTMLDivElement;
 
@@ -189,8 +188,8 @@ layout.registerComponentFactoryFunction('code', async container => {
     await afterDOM();
 
     $('#restoreLink').onclick = (e: MouseEvent) => {
-        setState(getCurrentSolutionCode(), editorDiv);
         e.preventDefault();
+        setCode(getCurrentSolutionCode(), editor);
     };
 
     // Wire submit to clicking a button and a keyboard shortcut.
@@ -236,10 +235,10 @@ layout.registerComponentFactoryFunction('scoreboard', async container => {
 layout.registerComponentFactoryFunction('details', container => {
     container.setTitle('Details');
     autoFocus(container);
-    container.element.append(
-        $<HTMLTemplateElement>('#template-details').content.cloneNode(true) as HTMLDetailsElement,
-    );
+    const details = $<HTMLTemplateElement>('#template-details').content.cloneNode(true) as HTMLDetailsElement;
+    container.element.append(details);
     container.element.id = 'details-content';
+    initCopyJSONBtn(container.element.querySelector('#copy') as HTMLElement);
 });
 
 function plainComponent(componentType: string): ComponentItemConfig {

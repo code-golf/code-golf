@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0.300-alpine3.15 as builder
+FROM mcr.microsoft.com/dotnet/sdk:6.0.302-alpine3.15 as builder
 
 WORKDIR /source
 

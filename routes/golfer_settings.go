@@ -39,6 +39,7 @@ func golferSettingsGET(w http.ResponseWriter, r *http.Request) {
 		Connections    []oauth.Connection
 		Countries      map[string][]*config.Country
 		Layouts        []string
+		Keymaps        []string
 		OAuthProviders map[string]*oauth.Config
 		OAuthState     string
 		Themes         []string
@@ -47,6 +48,7 @@ func golferSettingsGET(w http.ResponseWriter, r *http.Request) {
 		oauth.GetConnections(session.Database(r), session.Golfer(r).ID, false),
 		config.CountryTree,
 		[]string{"default", "tabs"},
+		[]string{"default", "vim"},
 		oauth.Providers,
 		nonce(),
 		[]string{"auto", "dark", "light"},
@@ -78,6 +80,10 @@ func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid layout", http.StatusBadRequest)
 		return
 	}
+	if k := r.Form.Get("keymap"); k != "default" && k != "vim" {
+		http.Error(w, "Invalid keymap", http.StatusBadRequest)
+		return
+	}
 
 	if t := r.Form.Get("theme"); t != "auto" && t != "dark" && t != "light" {
 		http.Error(w, "Invalid theme", http.StatusBadRequest)
@@ -100,13 +106,15 @@ func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 		`UPDATE users
 		    SET country = $1,
 				     layout = $2,
-		    referrer_id = (SELECT id FROM users WHERE login = $3 AND id != $7),
-		   show_country = $4,
-		          theme = $5,
-		      time_zone = $6
-		  WHERE id = $7`,
+		         keymap = $3,
+		    referrer_id = (SELECT id FROM users WHERE login = $4 AND id != $8),
+		   show_country = $5,
+		          theme = $6,
+		      time_zone = $7
+		  WHERE id = $8`,
 		r.Form.Get("country"),
 		r.Form.Get("layout"),
+		r.Form.Get("keymap"),
 		r.Form.Get("referrer"),
 		r.Form.Get("show_country") == "on",
 		r.Form.Get("theme"),

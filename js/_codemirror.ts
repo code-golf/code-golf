@@ -1,5 +1,6 @@
 import { EditorState }                     from '@codemirror/state';
-import { EditorView, keymap, lineNumbers } from '@codemirror/view';
+import { EditorView, keymap, lineNumbers,
+    drawSelection }                        from '@codemirror/view';
 
 export { EditorState, EditorView };
 
@@ -13,6 +14,7 @@ import { bracketMatching, defaultHighlightStyle,
     HighlightStyle, StreamLanguage,
     syntaxHighlighting }                         from '@codemirror/language';
 import { oneDarkTheme, oneDarkHighlightStyle }   from '@codemirror/theme-one-dark';
+import { vim }                                   from '@replit/codemirror-vim';
 
 // Languages.
 import { assembly }    from '@defasm/codemirror';
@@ -26,7 +28,9 @@ import { d }           from '@codemirror/legacy-modes/mode/d';
 import { fortran }     from '@codemirror/legacy-modes/mode/fortran';
 import { fSharp }      from '@codemirror/legacy-modes/mode/mllike';
 import { go }          from '@codemirror/legacy-modes/mode/go';
+import { golfScript }  from 'codemirror-lang-golfscript';
 import { haskell }     from '@codemirror/legacy-modes/mode/haskell';
+import { j }           from 'codemirror-lang-j';
 import { java }        from '@codemirror/lang-java';
 import { javascript }  from '@codemirror/lang-javascript';
 import { julia }       from '@codemirror/legacy-modes/mode/julia';
@@ -62,6 +66,7 @@ export const extensions = {
             { key: 'Enter', run: insertNewline },
             { key: 'Tab',   run: insertTab },
         ]),
+        drawSelection(),
         syntaxHighlighting(defaultHighlightStyle),
         EditorView.theme({
             '.cm-asm-error': { textDecoration: 'underline var(--asm-error)' },
@@ -87,6 +92,7 @@ export const extensions = {
         oneDarkTheme,
         syntaxHighlighting(oneDarkHighlightStyle),
     ],
+    'vim': vim({ status: true }),
 
     // Languages.
     'assembly':   assembly(),
@@ -104,9 +110,10 @@ export const extensions = {
     // TODO fish
     'fortran':    StreamLanguage.define(fortran),
     'go':         StreamLanguage.define(go),
+    'golfscript': golfScript(),
     'haskell':    StreamLanguage.define(haskell),
     // TODO hexagony
-    // TODO j
+    'j':          j(),
     'java':       java(),
     'javascript': javascript(),
     'julia':      StreamLanguage.define(julia),
