@@ -1,52 +1,50 @@
 :root {
-  color-scheme: dark; /* Activate dark scrollbars */
+    color-scheme: dark; /* Activate dark scrollbars */
 
-  --background: hsl(210, 9%, 13%);
-  --color: #ebebeb;
-  --grey: #85888c; /* #85888c is 0.6 * #343a40 + 0.4 * #ffffff */
+    --background: hsl(210, 9%, 13%);
+    --color:      #ebebeb;
+    --grey:       #85888c; /* #85888c is 0.6 * #343a40 + 0.4 * #ffffff */
 
-  --red: hsl(357, 70%, 30%);
-  --orange: hsl(27, 80%, 36%);
-  --yellow: hsl(60, 80%, 28%);
+    --red:        hsl(357, 70%, 30%);
+    --orange:     hsl( 27, 80%, 36%);
+    --yellow:     hsl( 60, 80%, 28%);
 
-  --green: hsl(150, 80%, 25%);
-  --blue: hsl(205, 80%, 36%);
-  --purple: hsl(265, 60%, 36%);
+    --green:      hsl(150, 80%, 25%);
+    --blue:       hsl(205, 80%, 36%);
+    --purple:     hsl(265, 60%, 36%);
 
-  /* For dark mode, the light colors are darker than the typical ones. */
-  --light-blue: hsl(210, 50%, 15%);
-  --light-green: hsl(150, 80%, 15%);
-  --light-grey: hsl(214, 8%, 17%);
-  --light-yellow: hsl(58, 84%, 13%);
+    /* For dark mode, the light colors are darker than the typical ones. */
+    --light-blue:   hsl(210, 50%, 15%);
+    --light-green:  hsl(150, 80%, 15%);
+    --light-grey:   hsl(214,  8%, 17%);
+    --light-yellow: hsl( 58, 84%, 13%);
 
-  --diff-light-green: var(--light-green);
-  --diff-light-red: #400600;
+    --diff-light-green: var(--light-green);
+    --diff-light-red:   #400600;
 
-  --link-color: hsl(205, 87%, 61%);
+    --link-color: hsl(205, 87%, 61%);
 
-  --arg-background: hsl(210, 8%, 25%);
-  --asm-dump: hsl(210, 10%, 67%);
-  --asm-error: #f76970;
-  --badge-background: hsl(210, 8%, 25%);
-  --cheevo-not-earned: #343a40;
-  --red-text: hsl(357, 70%, 50%);
-  --summary-background: var(--light-grey);
-  --summary-color: #ddd;
+    --arg-background:     hsl(210, 8%, 25%);
+    --asm-dump:           hsl(210, 10%, 67%);
+    --asm-error:          #f76970;
+    --badge-background:   hsl(210, 8%, 25%);
+    --cheevo-not-earned:  #343a40;
+    --red-text:           hsl(357, 70%, 50%);
+    --summary-background: var(--light-grey);
+    --summary-color:      #ddd;
 
-  --gl-border: hsl(214, 8%, 30%);
+    --gl-border: hsl(214, 8%, 30%);
 
-  --diamond-weight: normal;
-  --diamond-outglow: gold;
-  --play-color: #444;
+    --diamond-weight: normal;
+    --diamond-outglow: gold;
+    --play-color: #444;
 }
 
 body > header {
-  --background: #ddd;
-  --color: #343a40;
+    --background: #ddd;
+    --color:      #343a40;
 }
 
 select {
-  background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path d='M2 0L0 2h4zm0 5L0 3h4' fill='%23ebebeb'/></svg>")
-      no-repeat right 0.5rem center/auto calc(100% - 1.5rem),
-    var(--background);
+    background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path d='M2 0L0 2h4zm0 5L0 3h4' fill='%23ebebeb'/></svg>") no-repeat right .5rem center/auto calc(100% - 1.5rem), var(--background);
 }
