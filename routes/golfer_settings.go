@@ -80,6 +80,7 @@ func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid layout", http.StatusBadRequest)
 		return
 	}
+	
 	if k := r.Form.Get("keymap"); k != "default" && k != "vim" {
 		http.Error(w, "Invalid keymap", http.StatusBadRequest)
 		return
