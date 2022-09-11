@@ -12,9 +12,7 @@ body {
     background: var(--light-grey);
 }
 
-#details-content{
-    padding: .375rem;
-}
+#details-content { padding: .375rem }
 
 .readonly-output {
      flex: 1;
@@ -73,9 +71,7 @@ section header {
     height: calc(100% - (2rem + 6px));
 }
 
-main > header nav {
-    max-width: 100%;
-}
+main > header nav { max-width: 100% }
 
 #hole-lang {
     display: flex;
@@ -88,13 +84,9 @@ main > header nav {
     user-select: none;
 }
 
-#hole-lang summary {
-    line-height: 1.7rem;
-}
+#hole-lang summary { line-height: 1.7rem }
 
-#rankingsView {
-    border: none;
-}
+#rankingsView { border: none }
 
 #scoreboard-section {
     /* Grid needed in case the rows total height is shorter than the area */
@@ -198,13 +190,9 @@ main {
     gap: 0.375rem;
 }
 
-#pool span::before {
-    content: "+";
-}
+#pool span::before { content: "+" }
 
-#pool span {
-    background: var(--background);
-}
+#pool span { background: var(--background) }
 
 .alert {
     position: relative;
@@ -231,9 +219,7 @@ main {
     cursor: pointer;
 }
 
-.mobile #golden-container {
-    height: 150vh;
-}
+.mobile #golden-container { height: 150vh }
 
 .mobile.has_lm_maximised #golden-container {
     /* Making this position fixed and occupying the whole viewport does not
@@ -252,7 +238,7 @@ main {
 }
 
 @media only screen and (max-width: 1280px) {
-    #make-narrow, #make-wide { display: none; }
+    #make-narrow, #make-wide { display: none }
 }
 
 #make-narrow { display: none; }
