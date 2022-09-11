@@ -9,9 +9,9 @@ services:
     environment:
       E2E: 1
     healthcheck:
-      test:     curl -fks https://app:1443/healthz
+      test:     curl -fks https://app/healthz
       interval: 1s
-      retries:  20
+      retries:  60
   db:
     tmpfs: /var/lib/postgresql/data
   e2e:

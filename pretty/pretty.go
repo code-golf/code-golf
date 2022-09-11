@@ -57,21 +57,21 @@ func Ordinal(i int) string {
 
 // Time returns a fuzzy HTML <time> tag of a time.Time.
 //
-//    a min ago
-//   2 mins ago
-//          ...
-//  59 mins ago
-//  an hour ago
-//  2 hours ago
-//          ...
-// 23 hours ago
-//    a day ago
-//   2 days ago
-//          ...
-//  28 days ago
-//   1 Jan 2020
-//          ...
-//  31 Dec 2020
+//	   a min ago
+//	  2 mins ago
+//	         ...
+//	 59 mins ago
+//	 an hour ago
+//	 2 hours ago
+//	         ...
+//	23 hours ago
+//	   a day ago
+//	  2 days ago
+//	         ...
+//	 28 days ago
+//	  1 Jan 2020
+//	         ...
+//	 31 Dec 2020
 func Time(t time.Time) template.HTML {
 	const day = 24 * time.Hour
 
@@ -83,10 +83,9 @@ func Time(t time.Time) template.HTML {
 	))
 
 	diff := time.Until(t)
-	past := false
-	if diff < 0 {
+	past := diff < 0
+	if past {
 		diff = -diff
-		past = true
 	}
 
 	if diff < 28*day {
@@ -115,4 +114,8 @@ func Time(t time.Time) template.HTML {
 	sb.WriteString("</time>")
 
 	return template.HTML(sb.String())
+}
+
+func Title(s string) string {
+	return strings.Title(s) //nolint:staticcheck
 }

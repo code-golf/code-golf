@@ -2,8 +2,8 @@ package routes
 
 import "net/http"
 
-// Recent serves GET /recent/{lang}
-func Recent(w http.ResponseWriter, r *http.Request) {
+// GET /recent/{lang}
+func recentGET(w http.ResponseWriter, r *http.Request) {
 	langID := param(r, "lang")
 	if langID == "all-langs" {
 		langID = "all"

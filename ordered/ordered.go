@@ -9,7 +9,7 @@ type (
 	Map  []item
 	item struct {
 		Key   string
-		Value interface{}
+		Value any
 		pos   int
 	}
 )

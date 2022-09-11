@@ -30,6 +30,10 @@
     --red-text:           hsl(357, 70%, 50%);
     --summary-background: var(--light-grey);
     --summary-color:      #ddd;
+    
+    --diamond-weight: normal;
+    --diamond-outglow: gold;
+    --play-color: #444;
 }
 
 body > header {

@@ -1,17 +1,18 @@
 CREATE EXTENSION citext;
 
 CREATE TYPE cheevo AS ENUM (
-    'assembly-required', 'bakers-dozen', 'blackjack', 'bullseye',
-    'caffeinated', 'cobowl', 'cunning-linguist', 'different-strokes',
-    'dont-panic', 'elephpant-in-the-room', 'fish-n-chips', 'forty-winks',
-    'gone-in-60-holes', 'happy-birthday-code-golf', 'hello-world',
-    'inception', 'independence-day', 'interview-ready', 'its-over-9000',
-    'just-kidding', 'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars',
-    'off-the-grid', 'omniglot', 'ouroboros', 'patches-welcome', 'pi-day',
-    'polyglot', 'polyglutton', 'rtfm', 'rule-34', 'slowcoach', 'solve-quine',
-    'sounds-quite-nice', 'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr',
-    'twelvetide', 'twenty-kiloleagues', 'under-pressure', 'up-to-eleven',
-    'vampire-byte'
+    'assembly-required', 'bakers-dozen', 'black-box-testing', 'blackjack',
+    'bullseye', 'caffeinated', 'cobowl', 'cunning-linguist',
+    'different-strokes', 'dont-panic', 'elephpant-in-the-room',
+    'fish-n-chips', 'forty-winks', 'gone-in-60-holes',
+    'happy-birthday-code-golf', 'hello-world', 'inception',
+    'independence-day', 'interview-ready', 'its-over-9000', 'just-kidding',
+    'marathon-runner', 'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars',
+    'off-the-grid', 'omniglot', 'ouroboros', 'pangramglot', 'patches-welcome',
+    'phileas-fogg', 'pi-day', 'polyglot', 'polyglutton', 'real-programmers',
+    'rtfm', 'rule-34', 'slowcoach', 'solve-quine', 'sounds-quite-nice',
+    'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
+    'twenty-kiloleagues', 'under-pressure', 'up-to-eleven', 'vampire-byte'
 );
 
 CREATE TYPE connection AS ENUM (
@@ -20,32 +21,36 @@ CREATE TYPE connection AS ENUM (
 
 CREATE TYPE hole AS ENUM (
     '12-days-of-christmas', '99-bottles-of-beer', 'abundant-numbers',
-    'arabic-to-roman', 'arrows', 'brainfuck', 'catalan-numbers',
-    'catalans-constant', 'christmas-trees', 'css-colors', 'cubes', 'diamonds',
-    'divisors', 'emirp-numbers', 'emojify', 'evil-numbers', 'fibonacci',
-    'fizz-buzz', 'foo-fizz-buzz-bar', 'fractions', 'happy-numbers',
-    'happy-numbers-long', 'intersection', 'isbn', 'kolakoski-constant',
+    'arabic-to-roman', 'arrows', 'ascii-table', 'brainfuck',
+    'catalan-numbers', 'catalans-constant', 'christmas-trees', 'collatz',
+    'css-colors', 'cubes', 'diamonds', 'divisors', 'emirp-numbers', 'emojify',
+    'evil-numbers', 'evil-numbers-long', 'fibonacci', 'fizz-buzz',
+    'foo-fizz-buzz-bar', 'fractions', 'happy-numbers', 'happy-numbers-long',
+    'hexdump', 'intersection', 'isbn', 'jacobi-symbol', 'kolakoski-constant',
     'kolakoski-sequence', 'leap-years', 'levenshtein-distance',
     'leyland-numbers', 'look-and-say', 'lucky-numbers', 'lucky-tickets',
     'morse-decoder', 'morse-encoder', 'musical-chords', 'niven-numbers',
-    'number-spiral', 'odious-numbers', 'ordinal-numbers', 'pangram-grep',
+    'niven-numbers-long', 'number-spiral', 'odious-numbers',
+    'odious-numbers-long', 'ordinal-numbers', 'pangram-grep',
     'pascals-triangle', 'pernicious-numbers', 'poker', 'prime-numbers',
-    'prime-numbers-long', 'qr-decoder', 'quine', 'recamán',
+    'prime-numbers-long', 'proximity-grid', 'qr-decoder', 'quine', 'recamán',
     'reverse-polish-notation', 'rock-paper-scissors-spock-lizard',
     'roman-to-arabic', 'rule-110', 'seven-segment', 'sierpiński-triangle',
     'smith-numbers', 'spelling-numbers', 'star-wars-opening-crawl', 'sudoku',
-    'sudoku-v2', 'ten-pin-bowling', 'tongue-twisters', 'united-states',
-    'vampire-numbers', 'van-eck-sequence', 'λ', 'π', 'τ', 'φ', '√2', '𝑒'
+    'sudoku-v2', 'ten-pin-bowling', 'time-distance', 'tongue-twisters',
+    'united-states', 'vampire-numbers', 'van-eck-sequence', 'zodiac-signs',
+    'λ', 'π', 'τ', 'φ', '√2', '𝑒'
 );
 
 CREATE TYPE keymap AS ENUM ('default', 'vim');
 
 CREATE TYPE lang AS ENUM (
-    'assembly', 'bash', 'brainfuck', 'c', 'c-sharp', 'cpp', 'cobol',
-    'crystal', 'd', 'f-sharp', 'fish', 'fortran', 'go', 'haskell', 'hexagony', 'j',
-    'java', 'javascript', 'julia', 'k', 'lisp', 'lua', 'nim', 'pascal',
-    'perl', 'php', 'powershell', 'prolog', 'python', 'raku', 'ruby', 'rust',
-    'sql', 'swift', 'v', 'viml', 'zig'
+    'assembly', 'bash', 'basic', 'brainfuck', 'c', 'c-sharp', 'cpp', 'cobol',
+    'crystal', 'd', 'elixir', 'f-sharp', 'fish', 'fortran', 'go',
+    'golfscript', 'haskell', 'hexagony', 'j', 'java', 'javascript', 'julia',
+    'k', 'lisp', 'lua', 'nim', 'pascal', 'perl', 'php', 'powershell',
+    'prolog', 'python', 'raku', 'ruby', 'rust', 'sed', 'sql', 'swift', 'v',
+    'viml', 'wren', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('diamond', 'gold', 'silver', 'bronze');
@@ -75,7 +80,6 @@ CREATE TABLE users (
     login        citext    NOT NULL UNIQUE,
     time_zone    text,
     delete       timestamp,
-    keymap       keymap    NOT NULL DEFAULT 'default',
     country      char(2),
     show_country bool      NOT NULL DEFAULT false,
     started      timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
@@ -84,6 +88,7 @@ CREATE TABLE users (
     -- TODO Make country_flag VIRTUAL not STORED when PostgreSQL supports it.
     country_flag char(2)   NOT NULL GENERATED ALWAYS AS
         (COALESCE(CASE WHEN show_country THEN country END, '')) STORED,
+    keymap       keymap    NOT NULL DEFAULT 'default',
     CHECK (country IS NULL OR country = UPPER(country)),
     CHECK (id != referrer_id)   -- Can't refer yourself
 );
@@ -95,8 +100,9 @@ CREATE TABLE authors (
 );
 
 CREATE TABLE follows (
-    follower_id int NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    followee_id int NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    follower_id int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    followee_id int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    followed    timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
     PRIMARY KEY (follower_id, followee_id),
     CHECK (follower_id != followee_id)  -- Can't follow yourself!
 );
@@ -135,6 +141,13 @@ CREATE TABLE solutions (
     -- Solutions are limited to 400 KiB, TODO < 128 KiB (not <=).
     CHECK (octet_length(code) <= 409600),
     PRIMARY KEY (user_id, hole, lang, scoring)
+);
+
+CREATE TABLE wiki (
+    slug    text   NOT NULL PRIMARY KEY,
+    section text,
+    name    citext NOT NULL,
+    html    text   NOT NULL
 );
 
 CREATE TABLE trophies (
@@ -190,10 +203,10 @@ CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
       from strokes
       join bayesian_estimators using(hole, lang, scoring)
 ), ranks as (
-    select *, rank() over (
-               partition by hole, lang, scoring
-                   order by points_for_lang desc, strokes
-           )
+    select *,
+           count(*) over (partition by hole, lang, scoring) golfers,
+           rank()   over (partition by hole, lang, scoring
+                              order by points_for_lang desc, strokes)
       from points
 ), tie_count as (
     select hole, lang, scoring, strokes, count(*) tie_count
@@ -228,9 +241,10 @@ ALTER MATERIALIZED VIEW rankings OWNER TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE authors         TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE connections     TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE discord_records TO "code-golf";
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE follows         TO "code-golf";
+GRANT SELECT, INSERT,         DELETE ON TABLE follows         TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE ideas           TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE sessions        TO "code-golf";
-GRANT SELECT, INSERT, UPDATE         ON TABLE solutions       TO "code-golf";
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE solutions       TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE trophies        TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE users           TO "code-golf";
+GRANT SELECT, INSERT, TRUNCATE       ON TABLE wiki            TO "code-golf";

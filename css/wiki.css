@@ -1,0 +1,79 @@
+article {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+body > h1 {
+    border-bottom: 2px solid var(--color);
+    padding: 1rem;
+}
+
+form { display: none }
+
+input { margin-right: .5rem }
+
+label { display: flex }
+
+main {
+    display: grid;
+    gap: 1rem 2rem;
+    grid-template: min-content 1fr / min-content 1fr;
+}
+
+main nav {
+    align-content: flex-start;
+    border-right: 2px solid var(--color);
+    display: flex;
+    flex-wrap: wrap;
+    gap: .25rem .75rem;
+    grid-row: span 2;
+    justify-content: flex-end;
+    padding: .5rem 1rem .5rem 0;
+    width: 15rem;
+}
+
+main nav > * {
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    white-space: nowrap;
+}
+
+main nav a:hover { text-decoration: none }
+
+main nav a[href]:hover span:first-child { text-decoration: underline }
+
+main nav a:not([href]) {
+    color: var(--color);
+    font-weight: bold;
+}
+
+main nav h2 {
+    font-size: 1rem;
+    text-decoration: underline;
+    width: 100%;
+}
+
+main nav h2:not(:first-child) { margin-top: 1rem }
+
+main nav span:nth-child(2) { margin-left: .5rem }
+
+pre {
+    overflow: auto;
+    white-space: pre-wrap;
+}
+
+select { grid-column: 1 / -1 }
+
+@media (max-width: 46rem) {
+    form {
+        display: grid;
+        gap: .5rem;
+        grid-template-columns: auto auto 1fr;
+    }
+
+    main { grid-template: min-content min-content 1fr / 1fr }
+
+    main nav { display: none }
+}

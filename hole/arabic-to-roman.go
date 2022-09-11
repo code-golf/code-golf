@@ -1,50 +1,43 @@
 package hole
 
-import (
-	"math/rand"
-	"strconv"
-)
+import "strconv"
 
 var (
-	roman0 = []string{"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"}
-	roman1 = []string{"", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"}
-	roman2 = []string{"", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"}
-	roman3 = []string{"", "M", "MM", "MMM"}
+	r0 = [...]string{"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"}
+	r1 = [...]string{"", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"}
+	r2 = [...]string{"", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"}
+	r3 = [...]string{"", "M", "MM", "MMM"}
 )
 
-func roman(n int) string {
-	return roman3[n%10000/1000] + roman2[n%1000/100] + roman1[n%100/10] + roman0[n%10]
-}
+func arabicToRoman(reverse bool) []Scorecard {
+	// Testing all ~4k is too slow and is too many arguments for J.
+	const count = 2000
 
-func arabicToRoman(reverse bool) (args []string, out string) {
-	// Start with the special cases.
-	numbers := []int{4, 9, 40, 90, 400, 900}
+	// Start with the 6 special cases.
+	numbers := make([]int, count)
+	numbers[0] = 4
+	numbers[1] = 9
+	numbers[2] = 40
+	numbers[3] = 90
+	numbers[4] = 400
+	numbers[5] = 900
 
-	// Append another 14 random ints.
-	for i := 0; i < 14; i++ {
-		numbers = append(numbers, rand.Intn(3998)+1) // 1 - 3999 inclusive.
+	// Append another 1,994 random cases.
+	for i := 6; i < count; i++ {
+		numbers[i] = randInt(1, 3999)
 	}
 
-	rand.Shuffle(len(numbers), func(i, j int) {
-		numbers[i], numbers[j] = numbers[j], numbers[i]
-	})
+	tests := make([]test, count)
+	for i, n := range shuffle(numbers) {
+		arabic := strconv.Itoa(n)
+		roman := r3[n%10000/1000] + r2[n%1000/100] + r1[n%100/10] + r0[n%10]
 
-	if reverse {
-		// Roman to Arabic.
-		for _, number := range numbers {
-			out += strconv.Itoa(number) + "\n"
-			args = append(args, roman(number))
-		}
-	} else {
-		// Arabic to Roman.
-		for _, number := range numbers {
-			out += roman(number) + "\n"
-			args = append(args, strconv.Itoa(number))
+		if reverse {
+			tests[i] = test{roman, arabic}
+		} else {
+			tests[i] = test{arabic, roman}
 		}
 	}
 
-	// Drop the trailing newline.
-	out = out[:len(out)-1]
-
-	return
+	return outputTests(tests)
 }

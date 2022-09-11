@@ -1,10 +1,8 @@
-FROM alpine:3.15 as builder
-
-RUN mkdir /empty
+FROM alpine:3.16 as builder
 
 RUN apk add --no-cache build-base git perl
 
-RUN git clone -b 2022.02 https://github.com/rakudo/rakudo.git \
+RUN git clone -b 2022.07 https://github.com/rakudo/rakudo.git \
  && cd rakudo                                                 \
  && CFLAGS=-flto ./Configure.pl                               \
     --gen-moar                                                \
@@ -18,11 +16,9 @@ RUN rm -r /usr/share/nqp/lib/profiler            \
     /usr/share/perl6/runtime/rakudo.moarvm       \
     /usr/share/perl6/runtime/perl6-debug.moarvm
 
-FROM scratch
+FROM codegolf/lang-base
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /empty                   /proc
-COPY --from=0 /empty                   /tmp
 COPY --from=0 /usr/bin/rakudo          /usr/bin/raku
 COPY --from=0 /usr/lib/libmoar.so      /usr/lib/
 COPY --from=0 /usr/share/nqp           /usr/share/nqp

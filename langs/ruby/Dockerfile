@@ -1,16 +1,14 @@
-FROM alpine:3.15 as builder
-
-RUN mkdir /empty
+FROM alpine:3.16 as builder
 
 RUN apk add --no-cache build-base clang curl openssl-dev
 
-RUN curl https://cache.ruby-lang.org/pub/ruby/3.1/ruby-3.1.1.tar.xz | tar xJ
+RUN curl https://cache.ruby-lang.org/pub/ruby/3.1/ruby-3.1.2.tar.xz | tar xJ
 
 # Clang produces the same size binary as using LTO with GCC, but GCC+LTO leads
 # to an issue where the stack size available for recursion is significantly
 # reduced. It may be worth trying to enable LTO for Clang. That appears to
 # require building the LLVMgold plugin.
-RUN cd ruby-3.1.1          \
+RUN cd ruby-3.1.2          \
  && CC=clang ./configure   \
     --disable-install-doc  \
     --disable-jit-support  \
@@ -52,11 +50,9 @@ RUN cd /usr/lib/ruby/3.1.0 && rm -rf \
                       ripper.rb      \
     x86_64-linux-musl/ripper.so
 
-FROM scratch
+FROM codegolf/lang-base
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /empty                   /proc
-COPY --from=0 /empty                   /tmp
 COPY --from=0 /usr/bin/ruby            /usr/bin/
 COPY --from=0 /usr/lib/ruby            /usr/lib/ruby
 

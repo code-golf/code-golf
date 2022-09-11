@@ -29,6 +29,11 @@ The certificate is at "./localhost.pem" and the key at "./localhost-key.pem" ✅
 ```
 
 3. Install the NPM packages:
+
+> *NOTE*: if your host OS is not the same architecture / executable format as
+> your Docker environment, this can result in incorrect format binaries installed
+> into `node_modules`, so you may want to skip this step.
+
 ```
 $ npm install
 ```
@@ -51,6 +56,18 @@ Some of ancillary scripts are written in Raku, to run these ensure you have a
 recent install of Raku installed and use Zef to install the dependencies:
 ```
 $ zef install --deps-only .
+```
+
+## Linting
+
+Run `make lint` to lint the code before a pull request. This lints the Typescript code, then the Go code.
+
+In Visual Studio Code, the following settings are helpful for editor support for ESLint:
+
+```
+"eslint.validate": ["typescript", "typescriptreact"],
+"eslint.format.enable": true,
+"editor.defaultFormatter": "dbaeumer.vscode-eslint"
 ```
 
 ## Testing

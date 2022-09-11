@@ -1,10 +1,6 @@
 package hole
 
-import (
-	"math/rand"
-	"strings"
-	"unicode"
-)
+import "strings"
 
 var segments = [][]string{
 	{" _ ", "   ", " _ ", " _ ", "   ", " _ ", " _ ", " _ ", " _ ", " _ "},
@@ -12,24 +8,20 @@ var segments = [][]string{
 	{"|_|", "  |", "|_ ", " _|", "  |", " _|", "|_|", "  |", "|_|", " _|"},
 }
 
-func sevenSegment() (args []string, out string) {
-	digits := []byte{'0', '0', '1', '1', '2', '2', '3', '3', '4', '4', '5', '5', '6', '6', '7', '7', '8', '8', '9', '9'}
-
-	rand.Shuffle(len(digits), func(i, j int) {
-		digits[i], digits[j] = digits[j], digits[i]
-	})
-
-	args = append(args, string(digits))
+func sevenSegment() []Scorecard {
+	digits := shuffle([]byte("00112233445566778899"))
+	score := Scorecard{Args: []string{string(digits)}}
 
 	for row := 0; row < 3; row++ {
 		for _, digit := range digits {
-			out += segments[row][digit-'0']
+			score.Answer += segments[row][digit-'0']
 		}
 
-		out = strings.TrimRightFunc(out, unicode.IsSpace) + "\n"
+		score.Answer = strings.TrimRight(score.Answer, " ")
+		if row < 2 {
+			score.Answer += "\n"
+		}
 	}
 
-	out = strings.TrimRightFunc(out, unicode.IsSpace)
-
-	return
+	return []Scorecard{score}
 }

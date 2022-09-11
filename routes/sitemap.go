@@ -6,10 +6,11 @@ import (
 	"net/url"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/session"
 )
 
-// Sitemap serves GET /sitemap.xml
-func Sitemap(w http.ResponseWriter, r *http.Request) {
+// GET /sitemap.xml
+func sitemapGET(w http.ResponseWriter, r *http.Request) {
 	type URL struct {
 		Loc string `xml:"loc"`
 	}
@@ -24,12 +25,30 @@ func Sitemap(w http.ResponseWriter, r *http.Request) {
 			{"https://code.golf"},
 			{"https://code.golf/about"},
 			{"https://code.golf/ideas"},
-			{"https://code.golf/rankings/cheevos"},
-			{"https://code.golf/rankings/holes/all/all/bytes"},
-			{"https://code.golf/rankings/medals/all/all/all"},
-			{"https://code.golf/rankings/solutions"},
 			{"https://code.golf/stats"},
+			{"https://code.golf/wiki"},
 		},
+	}
+
+	rows, err := session.Database(r).Query(
+		"SELECT 'https://code.golf/wiki/' || slug FROM wiki ORDER BY slug")
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var url URL
+
+		if err := rows.Scan(&url.Loc); err != nil {
+			panic(err)
+		}
+
+		sitemap.URLs = append(sitemap.URLs, url)
+	}
+
+	if err := rows.Err(); err != nil {
+		panic(err)
 	}
 
 	for _, hole := range config.HoleList {

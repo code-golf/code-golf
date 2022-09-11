@@ -1,6 +1,4 @@
-FROM alpine:3.15 as builder
-
-RUN mkdir /empty
+FROM alpine:3.16 as builder
 
 RUN apk add --no-cache ldc gcc musl-dev
 
@@ -15,13 +13,10 @@ RUN rm -r                           \
 # Symlink cleanup
 RUN find usr/bin -type l ! -name cc -delete
 
-FROM scratch
+FROM codegolf/lang-base
 
-COPY --from=0 /empty                   /proc
-COPY --from=0 /empty                   /tmp
 COPY --from=0 /lib/ld-musl-x86_64.so.1 \
-              /lib/libz.so.1           \
-              /lib/libz.so.1.2.11      /lib/
+              /lib/libz.so.1           /lib/
 COPY --from=0 /usr/bin                 /usr/bin
 COPY --from=0 /usr/lib                 /usr/lib
 COPY --from=0 /usr/libexec             /usr/libexec

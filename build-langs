@@ -13,14 +13,18 @@ if my $unknown = @langs ∖ %langs {
     exit 1;
 }
 
+# Build (and maybe push) lang-base.
+my @args = <--pull -f docker/lang-base.Dockerfile -t codegolf/lang-base>;
+@args.push: '--push' unless $no-push;
+run <docker buildx build>, |@args, '.';
+
 for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
     my $id  = id($name);
     my $img = "codegolf/lang-$id";
 
     # Tag the builder stage so "docker system prune" won't remove it.
-    run «docker build --pull --target builder -t "{$img}-builder" "langs/$id"»;
-
-    run «docker build -t $img "langs/$id"»;
+    run «docker buildx build -t "{$img}-builder" --pull --target builder "langs/$id"»;
+    run «docker buildx build -t $img "langs/$id"»;
 
     # Size.
     my $proc = run :out,
@@ -31,7 +35,7 @@ for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
     %lang<size> = $proc.out.slurp(:close).chomp.subst: /(.)B$/, {" {$0.uc}iB"};
 
     # Version.
-    if $id ~~ any <assembly brainfuck fish hexagony k> {
+    if $id ~~ any <assembly brainfuck fish golfscript hexagony k> {
         "langs/$id/Dockerfile".IO.slurp ~~ / ' VERSION=' (\S+) /;
         %lang<version> = $id eq 'assembly' ?? "DefAssembler $0" !! $0;
     }
@@ -43,6 +47,7 @@ for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
         given $name {
             my $digits = $ver ~~ / <[\d.]>+ \d+ /;
 
+            when 'BASIC'      { $ver = "FreeBASIC $digits" }
             when 'C#'
                | 'F#'
                | 'PowerShell' { }

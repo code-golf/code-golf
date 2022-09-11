@@ -7,8 +7,8 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-// RankingsLangs serves GET /rankings/langs/{scoring}
-func RankingsLangs(w http.ResponseWriter, r *http.Request) {
+// GET /rankings/langs/{scoring}
+func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 	type row struct {
 		Hole                    *config.Hole
 		Lang                    *config.Lang
@@ -28,7 +28,7 @@ func RankingsLangs(w http.ResponseWriter, r *http.Request) {
 
 	if data.LangID != "all" && config.LangByID[data.LangID] == nil ||
 		data.Scoring != "chars" && data.Scoring != "bytes" {
-		NotFound(w, r)
+		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
@@ -36,7 +36,8 @@ func RankingsLangs(w http.ResponseWriter, r *http.Request) {
 		rows, err := session.Database(r).Query(
 			`WITH ranks AS (
 			    SELECT hole, lang,
-			           RANK() OVER (PARTITION BY hole ORDER BY points DESC)
+			           RANK() OVER (PARTITION BY hole
+			                            ORDER BY points DESC, strokes)
 			      FROM rankings
 			     WHERE scoring = $1
 			) SELECT DISTINCT hole, rank
@@ -49,6 +50,7 @@ func RankingsLangs(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			panic(err)
 		}
+		defer rows.Close()
 
 		for rows.Next() {
 			var r row
@@ -70,8 +72,10 @@ func RankingsLangs(w http.ResponseWriter, r *http.Request) {
 		rows, err := session.Database(r).Query(
 			`WITH ranks AS (
 			    SELECT hole, lang, points, strokes,
-			           RANK()       OVER (PARTITION BY hole       ORDER BY points DESC),
-			           ROW_NUMBER() OVER (PARTITION BY hole, lang ORDER BY points DESC)
+			           RANK()       OVER (PARTITION BY hole
+			                                  ORDER BY points DESC, strokes),
+			           ROW_NUMBER() OVER (PARTITION BY hole, lang
+			                                  ORDER BY points DESC, strokes)
 			      FROM rankings
 			     WHERE scoring = $1
 			), medals AS (
@@ -92,6 +96,7 @@ func RankingsLangs(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			panic(err)
 		}
+		defer rows.Close()
 
 		for rows.Next() {
 			var r row

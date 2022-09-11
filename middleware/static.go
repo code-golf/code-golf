@@ -4,6 +4,7 @@ import (
 	"io/fs"
 	"mime"
 	"net/http"
+	"os"
 	"path"
 	"path/filepath"
 	"strings"
@@ -24,12 +25,12 @@ func ls(dir string) map[string]bool {
 	files := map[string]bool{}
 
 	if err := filepath.WalkDir(dir, func(file string, info fs.DirEntry, err error) error {
-		if !info.IsDir() {
+		if info != nil && !info.IsDir() {
 			files[file] = true
 		}
 
 		return err
-	}); err != nil {
+	}); err != nil && !os.IsNotExist(err) {
 		panic(err)
 	}
 

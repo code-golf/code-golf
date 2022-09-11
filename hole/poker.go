@@ -2,8 +2,8 @@ package hole
 
 import (
 	"math/rand"
-	"reflect"
-	"sort"
+
+	"golang.org/x/exp/slices"
 )
 
 func cardRune(number, suit int) rune {
@@ -16,25 +16,24 @@ func cardRune(number, suit int) rune {
 }
 
 func straightCheck(numbers []int) bool {
-	sort.Ints(numbers)
-	if reflect.DeepEqual(numbers, []int{0, 9, 10, 11, 12}) {
-		return true
-	}
+	slices.Sort(numbers)
 
-	return numbers[1]-numbers[0] == 1 &&
-		numbers[2]-numbers[1] == 1 &&
-		numbers[3]-numbers[2] == 1 &&
-		numbers[4]-numbers[3] == 1
+	// After sorting we have an Ace-straight or the numbers are sequential.
+	return slices.Equal(numbers, []int{0, 9, 10, 11, 12}) ||
+		(numbers[1]-numbers[0] == 1 &&
+			numbers[2]-numbers[1] == 1 &&
+			numbers[3]-numbers[2] == 1 &&
+			numbers[4]-numbers[3] == 1)
 }
 
-func poker() (args []string, out string) {
+func poker() []Scorecard {
 	type Hand struct {
 		Type  string
 		Cards []rune
 	}
 
 	var hands []Hand
-	const handCount = 3
+	const handCount = 5
 
 	// High card
 	for i := 0; i < handCount; i++ {
@@ -52,6 +51,22 @@ func poker() (args []string, out string) {
 			cardRune(cards[4], rand.Intn(4)),
 		}})
 	}
+	suits := rand.Perm(4)
+	hands = append(hands, Hand{"High Card", []rune{
+		cardRune(0, suits[0]),
+		cardRune(1, suits[1]), // Avoid flush
+		cardRune(2, rand.Intn(4)),
+		cardRune(3, rand.Intn(4)),
+		cardRune(5, rand.Intn(4)),
+	}})
+	suits = rand.Perm(4)
+	hands = append(hands, Hand{"High Card", []rune{
+		cardRune(2, suits[0]),
+		cardRune(3, suits[1]), // Avoid flush
+		cardRune(4, rand.Intn(4)),
+		cardRune(5, rand.Intn(4)),
+		cardRune(7, rand.Intn(4)),
+	}})
 
 	// Pair
 	for i := 0; i < handCount; i++ {
@@ -65,6 +80,30 @@ func poker() (args []string, out string) {
 			cardRune(cards[3], rand.Intn(4)),
 		}})
 	}
+	suits = rand.Perm(4)
+	hands = append(hands, Hand{"Pair", []rune{
+		cardRune(12, suits[0]),
+		cardRune(11, suits[1]),
+		cardRune(9, rand.Intn(4)),
+		cardRune(8, rand.Intn(4)),
+		cardRune(8, rand.Intn(4)),
+	}})
+	suits = rand.Perm(4)
+	hands = append(hands, Hand{"Pair", []rune{
+		cardRune(12, suits[0]),
+		cardRune(11, suits[1]),
+		cardRune(10, rand.Intn(4)),
+		cardRune(8, rand.Intn(4)),
+		cardRune(8, rand.Intn(4)),
+	}})
+	suits = rand.Perm(4)
+	hands = append(hands, Hand{"Pair", []rune{
+		cardRune(12, suits[0]),
+		cardRune(12, suits[1]),
+		cardRune(10, rand.Intn(4)),
+		cardRune(9, rand.Intn(4)),
+		cardRune(8, rand.Intn(4)),
+	}})
 
 	// Two Pair
 	for i := 0; i < handCount; i++ {
@@ -79,6 +118,24 @@ func poker() (args []string, out string) {
 			cardRune(cards[2], rand.Intn(4)),
 		}})
 	}
+	suit1 := rand.Perm(4)
+	suit2 := rand.Perm(4)
+	hands = append(hands, Hand{"Two Pair", []rune{
+		cardRune(12, suit1[0]),
+		cardRune(12, suit1[1]),
+		cardRune(8, suit2[0]),
+		cardRune(8, suit2[1]),
+		cardRune(9, rand.Intn(4)),
+	}})
+	suit1 = rand.Perm(4)
+	suit2 = rand.Perm(4)
+	hands = append(hands, Hand{"Two Pair", []rune{
+		cardRune(12, suit1[0]),
+		cardRune(12, suit1[1]),
+		cardRune(3, suit2[0]),
+		cardRune(3, suit2[1]),
+		cardRune(8, rand.Intn(4)),
+	}})
 
 	// Three of a Kind
 	for i := 0; i < handCount; i++ {
@@ -92,6 +149,31 @@ func poker() (args []string, out string) {
 			cardRune(cards[2], rand.Intn(4)),
 		}})
 	}
+	suits = rand.Perm(4)
+	card := 1 + rand.Intn(11)
+	hands = append(hands, Hand{"Three of a Kind", []rune{
+		cardRune(card, suits[0]),
+		cardRune(card, suits[1]),
+		cardRune(card, suits[2]),
+		cardRune(card+1, rand.Intn(4)),
+		cardRune(card-1, rand.Intn(4)),
+	}})
+	suits = rand.Perm(4)
+	hands = append(hands, Hand{"Three of a Kind", []rune{
+		cardRune(12, suits[0]),
+		cardRune(12, suits[1]),
+		cardRune(12, suits[2]),
+		cardRune(0, rand.Intn(4)),
+		cardRune(11, rand.Intn(4)),
+	}})
+	suits = rand.Perm(4)
+	hands = append(hands, Hand{"Three of a Kind", []rune{
+		cardRune(0, suits[0]),
+		cardRune(0, suits[1]),
+		cardRune(0, suits[2]),
+		cardRune(12, rand.Intn(4)),
+		cardRune(1, rand.Intn(4)),
+	}})
 
 	// Four of a Kind
 	for i := 0; i < handCount; i++ {
@@ -104,6 +186,34 @@ func poker() (args []string, out string) {
 			cardRune(cards[1], rand.Intn(4)),
 		}})
 	}
+	hands = append(hands, Hand{"Four of a Kind", []rune{
+		cardRune(12, 0),
+		cardRune(12, 1),
+		cardRune(12, 2),
+		cardRune(12, 3),
+		cardRune(11, rand.Intn(4)),
+	}})
+	hands = append(hands, Hand{"Four of a Kind", []rune{
+		cardRune(11, 0),
+		cardRune(11, 1),
+		cardRune(11, 2),
+		cardRune(11, 3),
+		cardRune(12, rand.Intn(4)),
+	}})
+	hands = append(hands, Hand{"Four of a Kind", []rune{
+		cardRune(12, 0),
+		cardRune(12, 1),
+		cardRune(12, 2),
+		cardRune(12, 3),
+		cardRune(0, rand.Intn(4)),
+	}})
+	hands = append(hands, Hand{"Four of a Kind", []rune{
+		cardRune(0, 0),
+		cardRune(0, 1),
+		cardRune(0, 2),
+		cardRune(0, 3),
+		cardRune(1, rand.Intn(4)),
+	}})
 
 	// Full House
 	for i := 0; i < handCount; i++ {
@@ -201,26 +311,53 @@ func poker() (args []string, out string) {
 			cardRune(2, suit+1),
 			cardRune(3, suit+1),
 		}})
+		hands = append(hands, Hand{"High Card", []rune{
+			cardRune(11, suit),
+			cardRune(12, suit),
+			cardRune(0, suit+1),
+			cardRune(1, suit+1),
+			cardRune(2, suit+1),
+		}})
+		hands = append(hands, Hand{"High Card", []rune{
+			cardRune(10, suit),
+			cardRune(11, suit),
+			cardRune(12, suit),
+			cardRune(0, suit+1),
+			cardRune(1, suit+1),
+		}})
 	}
 
-	// Shuffle the hands.
-	rand.Shuffle(len(hands), func(i, j int) {
-		hands[i], hands[j] = hands[j], hands[i]
-	})
+	// Flush, but could be mistaken for a straight.
+	suit := rand.Intn(4)
+	hands = append(hands, Hand{"Flush", []rune{
+		cardRune(12, suit),
+		cardRune(0, suit),
+		cardRune(1, suit),
+		cardRune(2, suit),
+		cardRune(3, suit),
+	}})
+	suit = rand.Intn(4)
+	hands = append(hands, Hand{"Flush", []rune{
+		cardRune(11, suit),
+		cardRune(12, suit),
+		cardRune(0, suit),
+		cardRune(1, suit),
+		cardRune(2, suit),
+	}})
+	suit = rand.Intn(4)
+	hands = append(hands, Hand{"Flush", []rune{
+		cardRune(10, suit),
+		cardRune(11, suit),
+		cardRune(12, suit),
+		cardRune(0, suit),
+		cardRune(1, suit),
+	}})
 
-	for _, hand := range hands {
-		// Shuffle the cards in the hand.
-		rand.Shuffle(5, func(i, j int) {
-			hand.Cards[i], hand.Cards[j] = hand.Cards[j], hand.Cards[i]
-		})
-
-		args = append(args, string(hand.Cards))
-
-		out += hand.Type + "\n"
+	tests := make([]test, len(hands))
+	for i, hand := range shuffle(hands) {
+		tests[i] = test{string(shuffle(hand.Cards)), hand.Type}
 	}
 
-	// Drop the trailing newline.
-	out = out[:len(out)-1]
-
-	return
+	const argc = 37 // Preserve original argc
+	return outputTests(tests[:argc], tests[len(tests)-argc:])
 }

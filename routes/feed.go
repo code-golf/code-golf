@@ -27,6 +27,21 @@ func init() {
 		sha, created, id string
 		hole             bool
 	}{
+		{"f7c0d8a", "2022-09-09 12:16:46", "wren", false},
+		{"005aa4e", "2022-09-06 20:03:30", "evil-numbers-long", true},
+		{"005aa4e", "2022-09-06 20:03:30", "odious-numbers-long", true},
+		{"2b98517", "2022-08-08 06:17:51", "niven-numbers-long", true},
+		{"ab7be37", "2022-08-03 23:20:30", "proximity-grid", true},
+		{"7ccb56c", "2022-07-21 21:23:32", "golfscript", false},
+		{"a64721b", "2022-06-12 23:58:06", "basic", false},
+		{"5f4cab9", "2022-06-09 16:48:53", "zodiac-signs", true},
+		{"52f641e", "2022-05-15 17:47:52", "elixir", false},
+		{"effe372", "2022-05-12 17:40:04", "sed", false},
+		{"1c7c5fa", "2022-05-08 20:57:48", "jacobi-symbol", true},
+		{"a42a472", "2022-05-04 18:50:17", "collatz", true},
+		{"c3bda58", "2022-05-01 07:07:01", "hexdump", true},
+		{"8d5c78d", "2022-04-10 17:37:06", "time-distance", true},
+		{"69fd94c", "2022-03-26 18:07:19", "ascii-table", true},
 		{"8fb09fc", "2022-02-28 22:03:54", "lucky-numbers", true},
 		{"fc3c0ef", "2022-02-27 19:09:58", "d", false},
 		{"71cad37", "2022-02-12 21:34:14", "reverse-polish-notation", true},
@@ -203,13 +218,13 @@ func init() {
 	}
 }
 
-// Feeds serves /feeds
-func Feeds(w http.ResponseWriter, r *http.Request) {
+// GET /feeds
+func feedsGET(w http.ResponseWriter, r *http.Request) {
 	render(w, r, "feeds", feed, "Feeds")
 }
 
-// Feed serves /feeds/{feed}
-func Feed(w http.ResponseWriter, r *http.Request) {
+// GET /feeds/{feed}
+func feedGET(w http.ResponseWriter, r *http.Request) {
 	switch param(r, "feed") {
 	case "atom":
 		w.Header().Set("Content-Type", "application/atom+xml; charset=utf-8")
@@ -220,7 +235,5 @@ func Feed(w http.ResponseWriter, r *http.Request) {
 	case "rss":
 		w.Header().Set("Content-Type", "application/rss+xml; charset=utf-8")
 		w.Write(rssFeed)
-	default:
-		NotFound(w, r)
 	}
 }

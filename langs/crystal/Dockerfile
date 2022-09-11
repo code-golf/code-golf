@@ -1,26 +1,21 @@
-FROM crystallang/crystal:1.3.2-alpine as builder
-
-# Crystal expects /dev/null to exist.
-RUN mkdir /empty /mydev && mknod -m 0666 /mydev/null c 1 3
+FROM crystallang/crystal:1.5.0-alpine as builder
 
 RUN strip /usr/bin/crystal
 
-FROM scratch
+FROM codegolf/lang-base
 
 ENV CRYSTAL_CACHE_DIR=/tmp PATH=/usr/bin:/bin
 
-COPY --from=0 /bin/sh                       /bin/
-COPY --from=0 /mydev                        /dev
-COPY --from=0 /lib                          /lib
-COPY --from=0 /empty                        /proc
-COPY --from=0 /empty                        /tmp
-COPY --from=0 /usr/bin/cc /usr/bin/crystal  /usr/bin/
-COPY --from=0 /usr/include                  /usr/include
-COPY --from=0 /usr/lib                      /usr/lib
-COPY --from=0 /usr/libexec                  /usr/libexec
-COPY --from=0 /usr/local                    /usr/local
-COPY --from=0 /usr/share                    /usr/share
-COPY --from=0 /usr/x86_64-alpine-linux-musl /usr/x86_64-alpine-linux-musl
+COPY --from=0 /bin/sh                              /bin/
+COPY --from=0 /lib/ld-musl-x86_64.so.1             \
+              /lib/libz.so.1                       /lib/
+COPY --from=0 /usr/bin/cc /usr/bin/crystal         /usr/bin/
+COPY --from=0 /usr/include                         /usr/include
+COPY --from=0 /usr/lib                             /usr/lib
+COPY --from=0 /usr/libexec/gcc                     /usr/libexec/gcc
+COPY --from=0 /usr/local/lib/libgc.a               /usr/local/lib/
+COPY --from=0 /usr/share/crystal                   /usr/share/crystal
+COPY --from=0 /usr/x86_64-alpine-linux-musl/bin/ld /usr/x86_64-alpine-linux-musl/bin/
 
 ENTRYPOINT ["crystal"]
 

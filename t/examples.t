@@ -3,9 +3,6 @@ use t;
 for 'config/langs.toml'.IO.&from-toml.map({
     .key.lc.trans( qw[# + ><>] => qw[-sharp p fish] ) => .value<example>;
 }).sort -> (:key($lang), :value($code)) {
-    # <built-in>: internal compiler error: Illegal instruction
-    todo 'intermittent error' if $lang eq 'fortran';
-
     for (
         # Pick a hole that will definitely have unicode arguments.
         'rock-paper-scissors-spock-lizard',

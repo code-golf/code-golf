@@ -1,9 +1,5 @@
 {
   "dependencies": {
-    "@codemirror/commands": "",
-    "@codemirror/gutter": "",
-    "@codemirror/highlight": "",
-    "@codemirror/history": "",
     "@codemirror/lang-cpp": "",
     "@codemirror/lang-java": "",
     "@codemirror/lang-javascript": "",
@@ -11,18 +7,28 @@
     "@codemirror/lang-python": "",
     "@codemirror/lang-rust": "",
     "@codemirror/lang-sql": "",
-    "@codemirror/language": "",
     "@codemirror/legacy-modes": "",
-    "@codemirror/matchbrackets": "",
-    "@codemirror/state": "",
-    "@codemirror/stream-parser": "",
     "@codemirror/theme-one-dark": "",
-    "@codemirror/view": "",
     "@defasm/codemirror": "",
+    "@replit/codemirror-vim": "",
+    "codemirror": "^6",
+    "codemirror-lang-golfscript": "",
+    "codemirror-lang-j": "",
+    "dialog-polyfill": "",
     "diff": "",
     "esbuild": "",
-    "eslint": "",
     "lz-string": "",
     "nim-codemirror-mode": ""
+  },
+  "devDependencies": {
+    "@types/diff": "",
+    "@types/lz-string": "",
+    "@typescript-eslint/eslint-plugin": "",
+    "@typescript-eslint/parser": "",
+    "eslint": "",
+    "typescript": ""
+  },
+  "overrides": {
+    "codemirror": "^6"
   }
 }

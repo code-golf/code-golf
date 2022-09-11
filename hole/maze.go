@@ -22,10 +22,7 @@ var (
 
 // http://weblog.jamisbuck.org/2010/12/27/maze-generation-recursive-backtracking
 func dig(i, j int, grid, dist [height][width]int) ([height][width]int, [height][width]int) {
-	directions := []int{north, south, west, east}
-	rand.Shuffle(len(directions), func(m, n int) {
-		directions[m], directions[n] = directions[n], directions[m]
-	})
+	directions := shuffle([]int{north, south, west, east})
 
 	for _, d := range directions {
 		newi := i + di[d]
@@ -132,8 +129,12 @@ func draw(grid [height][width]int, si, sj, ei, ej int, path [height][width]int, 
 	return
 }
 
-func maze() (args []string, out string) {
-	nomazes := 5
+func maze() []Scorecard {
+	const nomazes = 5
+
+	args := make([]string, nomazes)
+	out := ""
+
 	for i := 0; i < nomazes; i++ {
 		var grid [height][width]int
 		var dist [height][width]int
@@ -149,10 +150,12 @@ func maze() (args []string, out string) {
 
 		mazeinput = mazeinput[:len(mazeinput)-1]
 
-		args = append(args, mazeinput)
+		args[i] = mazeinput
 
 		out += mazesolved + "\n"
 	}
+
 	out = out[:len(out)-2]
-	return
+
+	return []Scorecard{{Args: args, Answer: out}}
 }

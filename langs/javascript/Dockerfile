@@ -1,7 +1,5 @@
 FROM debian:bullseye-slim as builder
 
-RUN mkdir /empty
-
 RUN apt-get update \
  && apt-get install -y curl g++ git pkg-config python python3
 
@@ -26,15 +24,13 @@ RUN gn gen out --args="                 \
  && ninja -C out d8                     \
  && strip out/d8
 
-FROM scratch
+FROM codegolf/lang-base
 
 COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
               /lib/x86_64-linux-gnu/libgcc_s.so.1   \
               /lib/x86_64-linux-gnu/libm.so.6       \
               /lib/x86_64-linux-gnu/libpthread.so.0 /lib/
 COPY --from=0 /lib64/ld-linux-x86-64.so.2           /lib64/
-COPY --from=0 /empty                                /proc
-COPY --from=0 /empty                                /tmp
 COPY --from=0 /v8/out/d8                            /usr/bin/
 
 ENTRYPOINT ["d8"]

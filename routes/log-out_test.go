@@ -8,15 +8,15 @@ import (
 	"github.com/SeerUK/assert"
 )
 
-func TestLogOut(t *testing.T) {
+func TestLogOutGET(t *testing.T) {
 	w := httptest.NewRecorder()
 
-	LogOut(w, httptest.NewRequest("", "/", nil))
+	logOutPost(w, httptest.NewRequest("POST", "/", nil))
 
 	res := w.Result()
 	res.Body.Close()
 
-	assert.Equal(t, res.StatusCode, http.StatusTemporaryRedirect)
+	assert.Equal(t, res.StatusCode, http.StatusSeeOther)
 	assert.Equal(t, res.Header.Get("Location"), "/")
 
 	var cookies []string
@@ -26,6 +26,5 @@ func TestLogOut(t *testing.T) {
 
 	assert.Equal(t, cookies, []string{
 		"__Host-session=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax",
-		"__Host-user=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax",
 	})
 }

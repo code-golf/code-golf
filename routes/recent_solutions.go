@@ -10,8 +10,8 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-// RecentSolutions serves GET /recent/solutions/{hole}/{lang}/{scoring}
-func RecentSolutions(w http.ResponseWriter, r *http.Request) {
+// GET /recent/solutions/{hole}/{lang}/{scoring}
+func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 	type row struct {
 		Hole                    *config.Hole
 		Lang                    *config.Lang
@@ -41,7 +41,7 @@ func RecentSolutions(w http.ResponseWriter, r *http.Request) {
 	if data.HoleID != "all" && config.HoleByID[data.HoleID] == nil ||
 		data.LangID != "all" && config.LangByID[data.LangID] == nil ||
 		data.Scoring != "chars" && data.Scoring != "bytes" {
-		NotFound(w, r)
+		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
@@ -61,7 +61,6 @@ func RecentSolutions(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-
 	defer rows.Close()
 
 	for rows.Next() {

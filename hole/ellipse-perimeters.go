@@ -4,7 +4,6 @@ import (
 	"math"
 	"math/rand"
 	"strconv"
-	"strings"
 )
 
 func perimeter(ai, bi int) (p float64) {
@@ -21,26 +20,20 @@ func perimeter(ai, bi int) (p float64) {
 	return
 }
 
-func ellipsePerimeters() (args []string, out string) {
-	var outs []string
+func ellipsePerimeters() []Scorecard {
+	const randomCases = 10
+	tests := make([]test, randomCases)
 
 	// some random tests
 	var a, b int
-	var p float64
-	for i := 0; i < 10; i++ {
+	for i := 0; i < randomCases; i++ {
 		a = rand.Intn(15) + 5
 		b = rand.Intn(5) + 1
-		args = append(args, strconv.Itoa(a)+" "+strconv.Itoa(b))
-
-		p = perimeter(a, b)
-		outs = append(outs, strconv.Itoa(int(p)))
+		tests[i] = test{
+			strconv.Itoa(a) + " " + strconv.Itoa(b),
+			strconv.Itoa(int(perimeter(a, b))),
+		}
 	}
 
-	rand.Shuffle(len(args), func(i, j int) {
-		args[i], args[j] = args[j], args[i]
-		outs[i], outs[j] = outs[j], outs[i]
-	})
-
-	out = strings.Join(outs, "\n")
-	return
+	return outputTests(shuffle(tests))
 }

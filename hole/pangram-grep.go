@@ -5,9 +5,9 @@ import (
 	"strings"
 )
 
-func pangramGrep() (args []string, out string) {
+func pangramGrep() []Scorecard {
 	// They all start lowercase and valid.
-	pangrams := [][]byte{
+	pangrams := shuffle([][]byte{
 		[]byte("6>_4\"gv9lb?2!ic7}=-m'fd30ph].o%@w+[8unk&t1es<az(x;${^y#)q,rj\\5/*:"),
 		[]byte(`a large fawn jumped quickly over white zinc boxes.`),
 		[]byte(`all questions asked by five watched experts amaze the judge.`),
@@ -33,10 +33,6 @@ func pangramGrep() (args []string, out string) {
 		[]byte(`the quick brown fox jumps over the lazy dog.`),
 		[]byte(`the wizard quickly jinxed the gnomes before they vaporized.`),
 		[]byte(`when zombies arrive, quickly fax judge pat.`),
-	}
-
-	rand.Shuffle(len(pangrams), func(i, j int) {
-		pangrams[i], pangrams[j] = pangrams[j], pangrams[i]
 	})
 
 	for i, pangram := range pangrams {
@@ -66,6 +62,17 @@ func pangramGrep() (args []string, out string) {
 		pangrams = append(pangrams, clone)
 	}
 
+	// Add alphabet with one letter missing
+	for del := 'a'; del <= 'z'; del++ {
+		str := []byte{}
+		for c := 'a'; c <= 'z'; c++ {
+			if c != del {
+				str = append(str, byte(c))
+			}
+		}
+		pangrams = append(pangrams, shuffle(str))
+	}
+
 	// Uppercase random letters.
 	for _, pangram := range pangrams {
 		for j, letter := range pangram {
@@ -75,9 +82,9 @@ func pangramGrep() (args []string, out string) {
 		}
 	}
 
-	// Insert 0-3 random post-'z' characters
+	// Insert 2-5 random post-'z' characters
 	for i, pangram := range pangrams {
-		for times := rand.Intn(8) - 4; times > 0; times-- {
+		for times := rand.Intn(4) + 2; times > 0; times-- {
 			c := '{' + byte(rand.Intn(4))
 			pos := rand.Intn(len(pangram))
 
@@ -88,12 +95,11 @@ func pangramGrep() (args []string, out string) {
 		}
 	}
 
-	rand.Shuffle(len(pangrams), func(i, j int) {
-		pangrams[i], pangrams[j] = pangrams[j], pangrams[i]
-	})
+	var args []string
+	var out string
 
 outer:
-	for _, pangram := range pangrams {
+	for _, pangram := range shuffle(pangrams) {
 		str := string(pangram)
 		args = append(args, str)
 
@@ -109,5 +115,5 @@ outer:
 	// Drop the trailing newline.
 	out = out[:len(out)-1]
 
-	return
+	return []Scorecard{{Args: args, Answer: out}}
 }

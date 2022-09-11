@@ -25,7 +25,7 @@ var arrowMap = map[string][2]int8{
 	"⥀": {0, 0}, "⥁": {0, 0},
 }
 
-func arrows() ([]string, string) {
+func arrows() []Scorecard {
 	args := make([]string, 0, 3*len(arrowMap))
 	pos := [2]int8{}
 
@@ -36,20 +36,15 @@ func arrows() ([]string, string) {
 		}
 	}
 
-	// Shuffle the args.
-	rand.Shuffle(len(args), func(i, j int) {
-		args[i], args[j] = args[j], args[i]
-	})
-
 	// Calculate the outs from the args.
 	outs := make([]string, len(args))
-	for i, arrow := range args {
+	for i, arrow := range shuffle(args) {
 		coord := arrowMap[arrow]
 		pos[0] += coord[0]
 		pos[1] += coord[1]
 
-		outs[i] = fmt.Sprintf("%d %d", pos[0], pos[1])
+		outs[i] = fmt.Sprint(pos[0], pos[1])
 	}
 
-	return args, strings.Join(outs, "\n")
+	return []Scorecard{{Args: args, Answer: strings.Join(outs, "\n")}}
 }

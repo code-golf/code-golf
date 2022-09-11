@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+    "strict": true,
+    "lib": ["es2021", "dom", "dom.iterable"],
+    "skipLibCheck": true,
+    "jsx": "react",
+    "jsxFactory": "createElement",
+    "downlevelIteration": true,
+    "esModuleInterop": true
+  },
+  "include": ["js/**/*"]
+}

@@ -1,0 +1,23 @@
+name: CodeQL
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: github/codeql-action/init@v1
+        with:
+          languages: go, javascript
+      - uses: github/codeql-action/analyze@v1

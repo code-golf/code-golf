@@ -3,7 +3,6 @@ package hole
 import (
 	"math/rand"
 	"strconv"
-	"strings"
 )
 
 type ticket struct {
@@ -56,7 +55,7 @@ func sumDigits(number, base int64) (result int64) {
 	return result
 }
 
-func luckyTickets() ([]string, string) {
+func luckyTickets() []Scorecard {
 	var tickets [20]ticket
 
 	// Add 4 random different fixed cases.
@@ -64,11 +63,12 @@ func luckyTickets() ([]string, string) {
 		tickets[i] = data[j]
 	}
 
-	// Always add case 14 12.
+	// Always add cases 14 12 and 14 7
 	tickets[4] = ticket{14, 12, 39222848622984}
+	tickets[5] = ticket{14, 7, 35751527189}
 
 	// Randomly generate additional test cases.
-	for i := 5; i < 20; i++ {
+	for i := 6; i < 20; i++ {
 		digits := 2 + 2*rand.Intn(5)
 		base := 2 + rand.Intn(15)
 
@@ -87,18 +87,14 @@ func luckyTickets() ([]string, string) {
 		tickets[i] = ticket{digits, base, result}
 	}
 
-	args := make([]string, len(tickets))
-	outs := make([]string, len(tickets))
+	tests := make([]test, len(tickets))
 
 	for i, item := range tickets {
-		args[i] = strconv.Itoa(item.digits) + " " + strconv.Itoa(item.base)
-		outs[i] = strconv.FormatInt(item.result, 10)
+		tests[i] = test{
+			strconv.Itoa(item.digits) + " " + strconv.Itoa(item.base),
+			strconv.FormatInt(item.result, 10),
+		}
 	}
 
-	rand.Shuffle(len(args), func(i, j int) {
-		args[i], args[j] = args[j], args[i]
-		outs[i], outs[j] = outs[j], outs[i]
-	})
-
-	return args, strings.Join(outs, "\n")
+	return outputTests(shuffle(tests))
 }

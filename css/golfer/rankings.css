@@ -1,0 +1,76 @@
+main nav { margin-left: auto }
+
+#holes {
+    display: grid;
+    grid-template-columns: auto repeat(var(--langs), 1fr);
+    max-height: calc(100vh - 10rem);
+    overflow: auto;
+}
+
+#holes a {
+    color: var(--color);
+    cursor: pointer;
+    padding: 0 .25rem;
+    text-decoration: none;
+}
+
+#holes a:hover { background: var(--background) }
+
+#holes a.grey:not(:hover) { color: var(--play-color) }
+
+#holes a, #holes .lang {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+#holes a svg {
+    height: .75rem;
+    width: .75rem;
+}
+
+#holes .hole {
+    border-right: 1px solid var(--color);
+    font-weight: bold;
+    left: 0;
+    line-height: 1.75rem;
+    max-width: 30vw;
+    overflow: hidden;
+    padding-right: .5rem;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 12rem;
+}
+
+#holes .hole, #holes .lang {
+    background: var(--background);
+    position: sticky;
+    z-index: 1;
+}
+
+#holes .lang {
+    border-bottom: 1px solid var(--color);
+    min-width: 2rem;
+    top: 0;
+}
+
+#holes .lang svg {
+    height: 1.25rem;
+    width: 1.25rem;
+}
+
+#holes > * { height: 2rem }
+
+#holes-wrapper { position: relative }
+
+#holes-wrapper > :last-child {
+    background: var(--background);
+    height: 2rem;
+    left: 0;
+    max-width: 30vw;
+    position: absolute;
+    top: 0;
+    width: 12rem;
+    z-index: 1;
+}

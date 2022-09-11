@@ -1,9 +1,6 @@
 package hole
 
-import (
-	"math/rand"
-	"strings"
-)
+import "strings"
 
 var morseMap = map[rune]string{
 	'A': "▄ ▄▄▄",
@@ -45,18 +42,8 @@ var morseMap = map[rune]string{
 	' ': "    ",
 }
 
-func shuffle(str string) string {
-	chars := []byte(str)
-
-	rand.Shuffle(len(chars), func(i, j int) {
-		chars[i], chars[j] = chars[j], chars[i]
-	})
-
-	return string(chars)
-}
-
-func morse(reverse bool) (args []string, out string) {
-	words := []string{
+func morse(reverse bool) []Scorecard {
+	words := shuffle([]string{
 		"BUD",
 		"FOR",
 		"JIGS",
@@ -64,15 +51,12 @@ func morse(reverse bool) (args []string, out string) {
 		"QUICK",
 		"VEX",
 		"WALTZ",
-		shuffle("0123456789"),
-		shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ"),
-	}
-
-	rand.Shuffle(len(words), func(i, j int) {
-		words[i], words[j] = words[j], words[i]
+		string(shuffle([]byte("0123456789"))),
+		string(shuffle([]byte("ABCDEFGHIJKLMNOPQRSTUVWXYZ"))),
 	})
 
-	args = []string{strings.Join(words, " ")}
+	args := []string{strings.Join(words, " ")}
+	out := ""
 
 	for _, char := range args[0] {
 		out += morseMap[char] + "   "
@@ -85,5 +69,5 @@ func morse(reverse bool) (args []string, out string) {
 		args[0], out = out, args[0]
 	}
 
-	return
+	return []Scorecard{{Args: args, Answer: out}}
 }

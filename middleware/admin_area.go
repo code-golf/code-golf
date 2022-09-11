@@ -3,7 +3,6 @@ package middleware
 import (
 	"net/http"
 
-	"github.com/code-golf/code-golf/routes"
 	"github.com/code-golf/code-golf/session"
 )
 
@@ -13,7 +12,7 @@ func AdminArea(next http.Handler) http.Handler {
 		if golfer := session.Golfer(r); golfer != nil && golfer.Admin {
 			next.ServeHTTP(w, r)
 		} else {
-			routes.Forbidden(w, r)
+			w.WriteHeader(http.StatusForbidden)
 		}
 	})
 }

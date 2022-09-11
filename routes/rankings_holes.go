@@ -13,9 +13,9 @@ import (
 	"github.com/lib/pq"
 )
 
-// RankingsHoles serves GET /rankings/holes/{hole}/{lang}/{scoring}
-//           and GET /rankings/recent-holes/{hole}/{lang}/{scoring}
-func RankingsHoles(w http.ResponseWriter, r *http.Request) {
+// GET        /rankings/holes/{hole}/{lang}/{scoring}
+// GET /rankings/recent-holes/{hole}/{lang}/{scoring}
+func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 	type row struct {
 		Country, Login               string
 		Holes, Rank, Points, Strokes int
@@ -42,7 +42,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 		Scoring: param(r, "scoring"),
 	}
 
-	var holeIDs interface{}
+	var holeIDs any
 	if data.Recent {
 		data.HoleID = "all"
 		holeIDs = recentHoleIDs
@@ -51,7 +51,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 	if data.HoleID != "all" && config.HoleByID[data.HoleID] == nil ||
 		data.LangID != "all" && config.LangByID[data.LangID] == nil ||
 		data.Scoring != "chars" && data.Scoring != "bytes" {
-		NotFound(w, r)
+		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
@@ -184,7 +184,6 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-
 	defer rows.Close()
 
 	for rows.Next() {
@@ -216,7 +215,7 @@ func RankingsHoles(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if data.Pager.Calculate() {
-		NotFound(w, r)
+		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 

@@ -9,8 +9,8 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-// Stats serves GET /stats
-func Stats(w http.ResponseWriter, r *http.Request) {
+// GET /stats
+func statsGET(w http.ResponseWriter, r *http.Request) {
 	type row struct {
 		Count, Golfers, Rank   int
 		Fact, PerGolfer, Route string
@@ -58,6 +58,7 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			panic(err)
 		}
+		defer rows.Close()
 
 		var slices []pie.Slice
 

@@ -10,8 +10,8 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-// Admin serves GET /admin
-func Admin(w http.ResponseWriter, r *http.Request) {
+// GET /admin
+func adminGET(w http.ResponseWriter, r *http.Request) {
 	type Country struct {
 		Flag, Name string
 		Golfers    int
@@ -48,7 +48,6 @@ func Admin(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-
 	defer rows.Close()
 
 	for rows.Next() {
@@ -81,7 +80,6 @@ func Admin(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-
 	defer rows.Close()
 
 	for rows.Next() {
@@ -105,7 +103,6 @@ func Admin(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-
 	defer rows.Close()
 
 	for rows.Next() {

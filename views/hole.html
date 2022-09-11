@@ -66,39 +66,41 @@
         <div class=grid>
             {{ .Data.Hole.Preamble }}
         {{ if .Data.Hole.Data }}
-            <div><button class="btn orange" id=copy>Copy as JSON</button></div>
+            <div><button class="btn orange" id=copy>Copy as JSON</button><span>Copied</span></div>
         {{ end }}
         </div>
     </details>
     <nav class=tabs id=picker></nav>
     <nav class=tabs id=solutionPicker></nav>
-    <div id=wrapper>
-        <div id=chars>0 bytes, 0 chars</div>
-        <div id=restore>
-            <a href id=restoreLink>Restore solution</a>
-        </div>
-        <table class="nowrap-second wide" id=scores>
-            <thead>
-                <tr><th>&nbsp;
-            <tbody>
-                <tr><td>&nbsp;
-                <tr><td>&nbsp;
-                <tr><td>&nbsp;
-                <tr><td>&nbsp;
-                <tr><td>&nbsp;
-                <tr><td>&nbsp;
-                <tr><td>&nbsp;
-        </table>
+    <section>
+        <header>
+            <div id=strokes>0 bytes, 0 chars</div>
+            <a class=hide href id=restoreLink>Restore solution</a>
+        </header>
+        <header class=wide>
+            <nav class=tabs id=scoringTabs><a>Bytes</a><a href>Chars</a></nav>
+            <a href id=allLink>All</a>
+        </header>
         <div id=editor></div>
-    </div>
+        <table class="nowrap-second wide" id=scores><tr><td></table>
+        <nav class="tabs wide" id=rankingsView>
+            <a {{ if ne .Data.RankingsView "top" }} href {{ end }}>
+                {{ svg "trophy-fill" }} Top
+            </a>
+            <a {{ if ne .Data.RankingsView "me" }} href {{ end }}>
+                {{ svg "person-fill" }} Me
+            </a>
+            <a {{ if ne .Data.RankingsView "following" }} href {{ end }}>
+                {{ svg "people-fill" }} Following
+            </a>
+        </nav>
+    </section>
     <div class="info assembly">
         Compiled from
         <a href=//www.wikibooks.org/wiki/X86_Assembly/GAS_Syntax>
             AT&T syntax</a> to x86-64 Linux. Use
         <a href=//blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64>
             syscalls</a> to write output.
-        For accurate byte counts and syntax highlighting, please use the
-        <a href="/ng/{{ .Data.Hole.ID }}#assembly">new editor</a>.
     </div>
     <div class="info c-sharp">
         <a href=//devblogs.microsoft.com/dotnet/welcome-to-c-9-0/#top-level-programs>
@@ -106,72 +108,114 @@
         <a href=//docs.microsoft.com/en-us/dotnet/core/tutorials/top-level-templates#implicit-using-directives>
             Implicit using directives</a> for console applications are enabled.
     </div>
-    <div class="info brainfuck">
+    <div class="hide info brainfuck">
         Arguments are available via STDIN, each argument is NULL terminated.
         Taking input after EOF leaves the cell unchanged, the tape is circular
         with 65536 cells, and cells are 8-bit with wrapping.
     </div>
-    <div class="info cpp">
+    <div class="hide info cpp">
         Code is compiled with clang with <a href=//clang.llvm.org/cxx_status.html>-std=c++2b</a>.
     </div>
-    <div class="info d">
+    <div class="hide info d">
         Code is compiled with <a href=//wiki.dlang.org/LDC>LDC2</a>.
     </div>
-    <div class="info fish">
+    <div class="hide info fish">
         Arguments are available via STDIN, each argument is NULL terminated.
         <b>x</b> is a no-op.
     </div>
-    <div class="info hexagony">
+{{ if eq .Data.Hole.ID "quine" }}
+    <div class="hide info golfscript">
+        Implicit output is disabled for this hole.
+    </div>
+{{ else }}
+    <div class="hide info golfscript">
+        The stack is initialized with an array containing arguments, rather
+        than the contents of STDIN.
+    </div>
+{{ end }}
+    <div class="hide info hexagony">
         Arguments are available via STDIN, each argument is NULL terminated.
     </div>
-    <div class="info javascript">
+    <div class="hide info javascript">
         <b>arguments</b> holds ARGV, <b>print()</b> to output with a newline,
         <b>write()</b> to output without a newline.
     </div>
 {{ if eq .Data.Hole.ID "quine" }}
-    <div class="info k">
+    <div class="hide info k">
         Implicit output is disabled for this hole. Code must end with a newline.
     </div>
 {{ end }}
-    <div class="info perl">
-        <b>say()</b> is available without any import.
+    <div class="hide info perl">
+        Code is run under <b>-E</b>, all current features are enabled.
     </div>
 {{ if eq .Data.Hole.ID "quine" }}
-    <div class="info powershell">
+    <div class="hide info powershell">
         Implicit output is disabled for this hole. Use <b>Out-Host</b> or
         <b>Write-Host</b> for output.
     </div>
 {{ else }}
-    <div class="info powershell">
+    <div class="hide info powershell">
         <b>$args</b> to access the arguments.
     </div>
 {{ end }}
-    <div class="info prolog">
+    <div class="hide info prolog">
         <b>prolog_flag(argv, Args)</b> to access the arguments.
     </div>
-    <div class="info sql">
+    <div class="hide info sed">
+        Arguments are available via STDIN, each argument is seperated with a null byte.
+        The code is run with <b>-E</b> and <b>-z</b>.
+        Output replaces null bytes with newlines.
+    </div>
+    <div class="hide info sql">
         <b>SELECT arg FROM argv</b> to access the arguments, only the first
         column of the first result set will be printed, NULL values will be
         skipped, and the dialect is <a href=//sqlite.org/index.html>SQLite</a>.
     </div>
-    <div class="info viml">
+    <div class="hide info viml">
         Arguments are available via <b>args</b> list variable. To terminate
         script execution, write and quit the current buffer.
     </div>
     <div id=run>
-        ctrl + enter
-        <span>or</span>
-        <a class="btn blue">{{ svg "play-light" }} Run</a>
+    {{ if .Golfer }}
+        <button class="btn hide red" id=deleteBtn>
+            {{ svg "trash" }} Delete
+        </button>
+    {{ end }}
+        <span>ctrl + enter</span> or
+        <button class="btn blue" id=runBtn>{{ svg "play-light" }} Run</button>
     </div>
-    <div id=status>
+    <div class=hide id=status>
         <h2></h2>
-        <aside id=err><h3 class='aside-title'>Errors</h3><div></div></aside>
-        <aside id=arg><h3 class='aside-title'>Arguments</h3><div></div></aside>
-        <aside id=exp><h3 class='aside-title'>Expected</h3><div></div></aside>
-        <aside id=out><h3 class='aside-title'>Output</h3><div></div></aside>
-        <aside id=diff><h3 class='aside-title'>Diff</h3><div id=diff-content class="diff-content"></div></aside>
+        <nav id=thirdParty></nav>
+        <aside id=err><h3>Errors</h3><div></div></aside>
+        <aside id=arg><h3>Arguments</h3><div></div></aside>
+        <aside id=exp><h3>Expected</h3><div></div></aside>
+        <aside id=out><h3>Output</h3><div></div></aside>
+        <aside id=diff><h3>Diff</h3><div id=diff-content></div></aside>
     </div>
 </main>
+
+<dialog>
+    <form action=/golfer/delete-solution autocomplete=off method=post>
+        <h2>Delete Solution</h2>
+        <p>
+            Are you sure you want to delete your <b></b> solution(s) for
+            <b>{{ .Data.Hole.Name }}</b>?
+        <p>
+            If you have seperate bytes and chars solutions then <b>both</b>
+            will be deleted.
+        <p>This is irreversible, please backup any code you care about.
+        <p>Type <b>I understand</b> and press confirm to continue.</p>
+        <input name=text placeholder="I understand">
+        <input name=hole value="{{ .Data.Hole.ID }}" type=hidden>
+        <input name=lang type=hidden>
+        <menu>
+            <!-- Enter submits the first button, we flip the order in CSS -->
+            <button class="btn green" disabled name=confirm>Confirm</button>
+            <button class="btn red" formmethod=dialog>Cancel</button>
+        </menu>
+    </form>
+</dialog>
 
 <div id=popups></div>
 
@@ -181,8 +225,9 @@
 
 {{ with .Data.Hole.Data }}<script id=data type=application/json>{{ . }}</script>{{ end }}
 
-<script id=darkModeMediaQuery type=application/json>{{ .DarkModeMediaQuery }}</script>
-<script id=langs              type=application/json>{{ .Langs              }}</script>
-<script id=solutions          type=application/json>{{ .Data.Solutions     }}</script>
+<script id=experimental       type=application/json>{{ ne .Data.Hole.Experiment 0 }}</script>
+<script id=darkModeMediaQuery type=application/json>{{ .DarkModeMediaQuery   }}</script>
+<script id=langs              type=application/json>{{ .Langs                }}</script>
+<script id=solutions          type=application/json>{{ .Data.Solutions       }}</script>
 
 {{ template "footer" }}

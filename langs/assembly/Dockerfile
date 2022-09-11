@@ -1,8 +1,6 @@
-FROM node:17-alpine3.15 as builder
+FROM node:18-alpine3.15 as builder
 
-ENV VERSION=2.1.10
-
-RUN mkdir /empty
+ENV VERSION=2.2.0
 
 RUN apk add --no-cache binutils
 
@@ -18,12 +16,10 @@ RUN sed -i '1c#!/usr/bin/node' /usr/local/lib/node_modules/@defasm/cli/cli.js
 RUN mkdir /symlink \
  && ln -s /usr/lib/node_modules/@defasm/cli/cli.js /symlink/defasm
 
-FROM scratch
+FROM codegolf/lang-base
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1            \
               /lib/libz.so.1                      /lib/
-COPY --from=0 /empty                              /proc
-COPY --from=0 /empty                              /tmp
 COPY --from=0 /symlink                            /usr/bin
 COPY --from=0 /usr/local/bin/node                 /usr/bin/
 COPY --from=0 /usr/lib/libgcc_s.so.1              \

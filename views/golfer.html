@@ -1,4 +1,11 @@
 {{ with .GolferInfo }}
+    {{ $me := false }}
+    {{ if $.Golfer }}
+        {{ if eq $.Golfer.ID .ID }}
+            {{ $me = true }}
+        {{ end }}
+    {{ end }}
+
     <div class=grid id=profile>
         <img src="//avatars.githubusercontent.com/{{ .Name }}?s=176">
         <h1>
@@ -7,16 +14,47 @@
             <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
         {{ end }}
         </h1>
-        <p title="{{ comma .BytesPoints }} points in Bytes, {{/**/}}
-                 {{- comma .CharsPoints }} points in Chars">
-            {{ comma .BytesPoints }} • {{ comma .CharsPoints }}
-        <p>
-            <span title="Diamonds (uncontested gold medals)">
-                💎 {{ comma .Diamond }}
-            </span>
-            • <span title="Gold medals"  >🥇 {{ comma .Gold    }}</span>
-            • <span title="Silver medals">🥈 {{ comma .Silver  }}</span>
-            • <span title="Bronze medals">🥉 {{ comma .Bronze  }}</span>
+    {{ if not $.Golfer }}
+        <form></form>
+    {{ else if $me }}
+        <form action=/log-out method=post>
+            <button class="btn red">{{ svg "sign-out-alt-light" }} Log Out</button>
+        </form>
+    {{ else if $.Golfer.IsFollowing .ID }}
+        <form action="/golfers/{{ .Name }}/unfollow" method=post>
+            <button class="btn red">{{ svg "person-dash" }} Unfollow Golfer</button>
+        </form>
+    {{ else }}
+        <form action="/golfers/{{ .Name }}/follow" method=post>
+            <button class="btn blue">{{ svg "person-plus" }} Follow Golfer</button>
+        </form>
+    {{ end }}
+        <div>
+            <div title="{{ comma .BytesPoints }} points in bytes">
+                {{ svg "bytes" }}{{ comma .BytesPoints }}
+            </div>
+            •
+            <div title="{{ comma .CharsPoints }} points in chars">
+                {{ svg "chars" }}{{ comma .CharsPoints }}
+            </div>
+        </div>
+        <div>
+            <div title="{{ comma .Diamond }} diamond medals (uncontested gold medals)">
+                <span>💎</span>{{ comma .Diamond }}
+            </div>
+            •
+            <div title="{{ comma .Gold }} gold medals">
+                <span>🥇</span>{{ comma .Gold }}
+            </div>
+            •
+            <div title="{{ comma .Silver }} silver medals">
+                <span>🥈</span>{{ comma .Silver  }}
+            </div>
+            •
+            <div title="{{ comma .Bronze }} bronze medals">
+                <span>🥉</span>{{ comma .Bronze  }}
+            </div>
+        </div>
     </div>
 
     <div id=badges>
@@ -39,47 +77,29 @@
             <p class=blue>{{ len .Cheevos }} / {{ .CheevosTotal }} Cheevos
         </div>
         <!-- TODO <div><p>📅<p class=yellow>Teed off {{ time .TeedOff }}</div>-->
-
-{{ range .Connections }}
-    {{ if .Public }}
-        <div title="{{ .Connection }}">
-            <p>{{ svg .Connection }}
-            <p class=light-grey>
-            {{ if or (eq .Connection "github") (eq .Connection "gitlab") }}
-                <a href="//{{ .Connection }}.com/{{ .Username }}">
-                    {{ .Username }}</a>
-            {{ else if eq .Connection "stack-overflow" }}
-                <a href="//stackoverflow.com/users/{{ .ID }}">
-                    {{ .Username }}</a>
-            {{ else }}
-                {{ .Username }}
-                {{- if .Discriminator.Valid -}}
-                    <span>{{ printf "#%04d" .Discriminator.Value }}</span>
-                {{- end -}}
-            {{ end }}
-        </div>
-    {{ end }}
-{{ end }}
     </div>
 
     <nav class=tabs>
         {{ $slug := print "/golfers/" .Name }}
-        <a {{ if ne $.Path $slug }} href="{{ $slug }}" {{ end }}>Wall</a>
+        <a {{ if ne $.Path $slug }} href="{{ $slug }}" {{ end }}>Profile</a>
 
         {{ $slug = print "/golfers/" .Name "/cheevos" }}
         <a {{ if ne $.Path $slug }} href="{{ $slug }}" {{ end }}>Achievements</a>
 
-        {{ $slug = print "/golfers/" .Name "/holes" }}
-        <a {{ if not (hasPrefix $.Path $slug) }} href="{{ $slug }}/bytes" {{ end }}>
+        {{ $slug = print "/golfers/" .Name "/holes/" }}
+        <a {{ if not (hasPrefix $.Path $slug) }} href="{{ $slug }}bytes" {{ end }}>
             Holes
         </a>
 
-{{ if $.Golfer }}
-    {{ if eq $.Golfer.ID .ID }}
+        {{ $slug = print "/golfers/" .Name "/rankings/" }}
+        <a {{ if not (hasPrefix $.Path $slug) }} href="{{ $slug }}bytes" {{ end }}>
+            Rankings (WIP)
+        </a>
+
+    {{ if $me }}
         <a {{ if ne $.Path "/golfer/settings" }} href=/golfer/settings {{ end }}>
             Settings
         </a>
     {{ end }}
-{{ end }}
-</nav>
+    </nav>
 {{ end }}

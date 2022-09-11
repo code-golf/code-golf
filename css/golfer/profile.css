@@ -1,0 +1,122 @@
+aside {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+h2, #wall time { padding: 0 .5rem }
+
+h2, thead, #wall time {
+    border-bottom: 2px solid var(--color);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 2rem;
+}
+
+h2 { grid-column: 1 / -1 }
+
+main {
+    column-gap: 3rem;
+    grid-template-columns: auto 27rem;
+}
+
+section > a, section > div {
+    display: grid;
+    height: 3rem;
+    place-content: center;
+    min-width: 3rem;
+}
+
+.icons {
+    align-content: start;
+    display: grid;
+    font-size: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(3rem, 1fr));
+}
+
+.icons a { color: var(--color) }
+
+.icons a:hover {
+    background: var(--color);
+    color: var(--background);
+}
+
+.icons div:not(.earned) {
+    background: var(--light-grey);
+    color: transparent;
+    text-shadow: 0 0 var(--cheevo-not-earned);
+}
+
+.icons svg {
+    height: 2rem;
+    width: 2rem;
+}
+
+.rank-1:not(:hover) { color: #343a40; background: gold }
+.rank-2:not(:hover) { color: #343a40; background: silver }
+.rank-3:not(:hover) { color: #343a40; background: burlywood }
+
+#connections {
+    display: grid;
+    gap: .5rem;
+    grid-template-columns: repeat(auto-fit, minmax(calc(50% - .5rem), 1fr));
+}
+
+#connections a {
+    align-items: center;
+    background: var(--light-grey);
+    border: 1px solid var(--color);
+    color: var(--color);
+    display: flex;
+    font-weight: bold;
+    gap: .25rem;
+    height: auto;
+    justify-content: flex-start;
+    padding: 0 .25rem;
+}
+
+#connections a[href]:hover {
+    background: var(--color);
+    color: var(--background);
+    text-decoration: none;
+}
+
+#connections div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#connections span { font-weight: normal }
+
+#connections svg {
+    height: 2rem;
+    margin: -1px;
+    width: 2rem;
+}
+
+#wall {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+#wall a, #wall div {
+    align-items: center;
+    display: flex;
+    gap: .375rem;
+}
+
+#wall img {
+    border-radius: 50%;
+    display: block;
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+@media (max-width: 46rem) {
+    aside { gap: 1rem }
+
+    main { grid-template-columns: auto }
+
+    #wall { grid-row: 2 }
+}

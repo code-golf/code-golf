@@ -1,15 +1,28 @@
 package routes
 
-import "net/http"
+import (
+	"fmt"
+	"net/http"
 
-// Forbidden serves a 403.
-func Forbidden(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("X-Robots-Tag", "noindex")
+	"github.com/code-golf/code-golf/middleware"
+)
 
-	render(w, r, "403", nil, "403 Forbidden")
-}
+// errorMiddleware writes HTML/JSON bodies for 4xx/5xx status codes.
+// Can't be in middleware as it uses routes.render and that would be a cycle.
+func errorMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ww := middleware.NewWrapResponseWriter(w, r.ProtoMajor)
 
-// NotFound serves a 404.
-func NotFound(w http.ResponseWriter, r *http.Request) {
-	render(w, r, "404", nil, "404 Not Found")
+		next.ServeHTTP(ww, r)
+
+		// Write an error body for 4xx & 5xx if we have yet to write a body.
+		if code := ww.Status(); code >= 400 && ww.BytesWritten() == 0 {
+			if ww.Header().Get("Content-Type") == "application/json" {
+				ww.Write([]byte("null\n"))
+			} else {
+				render(w, r, "error",
+					fmt.Sprintf("%d %s", code, http.StatusText(code)))
+			}
+		}
+	})
 }

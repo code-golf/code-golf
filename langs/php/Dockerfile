@@ -1,14 +1,12 @@
-FROM alpine:3.15 as builder
-
-RUN mkdir /empty
+FROM alpine:3.16 as builder
 
 RUN apk add --no-cache build-base curl
 
-RUN curl -L https://php.net/distributions/php-7.4.28.tar.xz | tar xJ
+RUN curl -L https://php.net/distributions/php-7.4.30.tar.xz | tar xJ
 
 ENV CFLAGS='-O2 -flto' LDFLAGS='-O2 -flto'
 
-RUN cd php-7.4.28                                             \
+RUN cd php-7.4.30                                             \
  && ./configure                                               \
     --disable-all                                             \
     --disable-gcc-global-regs                                 \
@@ -20,10 +18,8 @@ RUN cd php-7.4.28                                             \
 
 RUN echo display_errors=stderr > /usr/lib/php.ini
 
-FROM scratch
+FROM codegolf/lang-base
 
-COPY --from=0 /empty           /proc
-COPY --from=0 /empty           /tmp
 COPY --from=0 /usr/bin/php     /usr/bin/
 COPY --from=0 /usr/lib/php.ini /usr/lib/
 

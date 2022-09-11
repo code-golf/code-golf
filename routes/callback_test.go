@@ -8,10 +8,10 @@ import (
 	"github.com/SeerUK/assert"
 )
 
-func TestCallbackNoCode(t *testing.T) {
+func TestCallbackGETNoCode(t *testing.T) {
 	w := httptest.NewRecorder()
 
-	Callback(w, httptest.NewRequest("", "/callback", nil))
+	callbackGET(w, httptest.NewRequest("", "/callback", nil))
 
 	assert.Equal(t, w.Code, http.StatusBadRequest)
 }

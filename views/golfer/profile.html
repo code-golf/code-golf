@@ -1,0 +1,137 @@
+{{ template "header" . }}
+{{ template "golfer" . }}
+
+<main>
+    <div id=wall>
+{{ $lastDay := "" }}
+{{ range .Data.Wall }}
+    {{ $day := .Date.Format "Mon 2 Jan 2006" }}
+    {{ if ne $day $lastDay }}
+        <time>{{ $day }}</time>
+        {{ $lastDay = $day }}
+    {{ end }}
+        <div>
+            <a href="/golfers/{{ .Golfer }}">
+                <img loading=lazy
+                    src="//avatars.githubusercontent.com/{{ .Golfer }}?s=48">
+                {{ .Golfer }}
+            </a>
+
+        {{ if .Cheevo }}
+            earned <a href="/rankings/cheevos/{{ .Cheevo.ID }}">
+                {{ .Cheevo.Emoji }} {{ .Cheevo.Name }}
+            </a>
+        {{ else if .Hole }}
+            solved <a href="/{{ .Hole.ID }}#{{ .Lang.ID }}">
+                {{ .Hole.Name }} in {{ .Lang.Name }}
+            </a>
+        {{ else }}
+            followed <a href="/golfers/{{ $.GolferInfo.Name }}">
+                <img loading=lazy
+                    src="//avatars.githubusercontent.com/{{ $.GolferInfo.Name }}?s=48">
+                {{ $.GolferInfo.Name }}
+            </a>
+        {{ end }}
+        </div>
+{{ end }}
+    </div>
+
+    <aside>
+    {{ with .Data.Connections }}
+        <section id=connections>
+        {{ range . }}
+            {{ $url := "" }}
+            {{ if or (eq .Connection "github") (eq .Connection "gitlab") }}
+                {{ $url = print "//" .Connection ".com/" .Username }}
+            {{ else if eq .Connection "stack-overflow" }}
+                {{ $url = print "//stackoverflow.com/users/" .ID }}
+            {{ end }}
+
+            <a {{ with $url }} href="{{ . }}" {{ end }}
+                title="{{ (index $.Data.OAuthProviders .Connection).Name }}">
+                {{ svg .Connection }}
+                <div>
+                    {{ .Username }}
+                {{- if .Discriminator.Valid -}}
+                    <span>{{ printf "#%04d" .Discriminator.Value }}</span>
+                {{- end -}}
+                </div>
+            </a>
+        {{ end }}
+        </section>
+    {{ end }}
+
+    {{ with len .Data.Trophies }}
+        <section class=icons>
+            <h2>{{ . }} / {{ len $.Data.Langs }} Languages</h2>
+    {{ range $.Data.Langs }}
+        {{ $trophy := index $.Data.Trophies .ID }}
+        {{ if $trophy }}
+            {{ $bytes := index $trophy "bytes" }}
+            {{ $chars := index $trophy "chars" }}
+
+            {{/* Lowest non-zero rank */}}
+            {{ $rank := $bytes }}
+            {{ if and $chars (or (not $bytes) (lt $chars $bytes)) }}
+                {{ $rank = $chars }}
+            {{ end }}
+
+            <a class="rank-{{ $rank }}"
+                href="/rankings/holes/all/{{ .ID }}/bytes"
+               title="{{ .Name }}: {{/* */}}
+                {{- with $bytes }}{{ . }}{{ ord . }} in Bytes{{ end }}
+                {{- if and $bytes $chars }}, {{ end }}
+                {{- with $chars }}{{ . }}{{ ord . }} in Chars{{ end }}.">
+                {{ svg .ID }}
+            </a>
+        {{ end }}
+    {{ end }}
+        </section>
+    {{ end }}
+
+        <section class=icons>
+            <h2>
+                {{ len .GolferInfo.Cheevos }} / {{ .GolferInfo.CheevosTotal }}
+                Achievements
+            </h2>
+    {{ range $category, $cheevos := .Cheevos }}
+        {{ range $cheevos }}
+            <div {{ if $.GolferInfo.Earned .ID }} class="earned" {{ end }}
+                title="{{ .Name }} - {{ .Description }}">{{ .Emoji }}</div>
+        {{ end }}
+    {{ end }}
+        </section>
+
+    {{ if gt (len .Data.Follows) 1 }}
+        {{ $me := "" }}
+        {{ with .Golfer }}{{ $me = .Name }}{{ end }}
+        <table class=nowrap-second>
+            <thead>
+                <tr>
+                    <th colspan=2>
+                    {{ with dec (len .Data.Follows) }}
+                        {{ . }} Golfer{{ if gt . 1 }}s{{ end }} Followed
+                    {{ end }}
+                    <th class=right>Bytes
+                    <th class=right>Chars
+            <tbody>
+            {{ range .Data.Follows }}
+                <tr {{ if eq .Name $me }} class=me {{ end }}>
+                    <td>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
+                    <td>
+                        <a href="/golfers/{{ .Name }}">
+                            <img loading=lazy src="//avatars.githubusercontent.com/{{ .Name }}?s=24">
+                            <span>{{ .Name }}</span>
+                        {{ with index $.Countries .Country }}
+                            <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
+                        {{ end }}
+                        </a>
+                    <td class=right>{{ comma .Bytes }}
+                    <td class=right>{{ comma .Chars }}
+            {{ end }}
+        </table>
+    {{ end }}
+    </aside>
+</main>
+
+{{ template "footer" }}

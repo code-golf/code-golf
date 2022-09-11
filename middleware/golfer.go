@@ -31,6 +31,8 @@ func Golfer(next http.Handler) http.Handler {
 				  GROUP BY hole, lang
 				  ORDER BY hole, lang
 				)  SELECT u.admin,
+				          COALESCE(bytes.points, 0),
+				          COALESCE(chars.points, 0),
 				          COALESCE(u.country, ''),
 				          u.delete,
 				          (SELECT COALESCE(json_agg(failing), '[]') FROM failing),
@@ -46,13 +48,29 @@ func Golfer(next http.Handler) http.Handler {
 				                FROM trophies
 				               WHERE user_id = u.id
 				            ORDER BY trophy
+				          ),
+				          ARRAY(
+				              SELECT followee_id
+				                FROM follows
+				               WHERE follower_id = u.id
+				            ORDER BY followee_id
+				          ),
+				          ARRAY(
+				              SELECT DISTINCT hole
+				                FROM solutions
+				               WHERE user_id = u.id
+				            ORDER BY hole
 				          )
 				     FROM users  u
 				     JOIN golfer g ON u.id = g.user_id
-				LEFT JOIN users  r ON r.id = u.referrer_id`,
+				LEFT JOIN users  r ON r.id = u.referrer_id
+				LEFT JOIN points bytes ON u.id = bytes.user_id AND bytes.scoring = 'bytes'
+				LEFT JOIN points chars ON u.id = chars.user_id AND chars.scoring = 'chars'`,
 				uuid.FromStringOrNil(cookie.Value),
 			).Scan(
 				&golfer.Admin,
+				&golfer.BytesPoints,
+				&golfer.CharsPoints,
 				&golfer.Country,
 				&golfer.Delete,
 				&golfer.FailingSolutions,
@@ -64,6 +82,8 @@ func Golfer(next http.Handler) http.Handler {
 				&golfer.Theme,
 				&timeZone,
 				pq.Array(&golfer.Cheevos),
+				pq.Array(&golfer.Following),
+				pq.Array(&golfer.Holes),
 			); err == nil {
 				golfer.TimeZone, _ = time.LoadLocation(timeZone.String)
 

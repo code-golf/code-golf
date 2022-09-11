@@ -1,27 +1,20 @@
-FROM alpine:3.15 as builder
-
-# /dev/urandom is needed.
-RUN mkdir /empty /mydev \
- && mknod -m 444 /mydev/urandom c 1 9
+FROM alpine:3.16 as builder
 
 RUN apk add --no-cache cmake curl g++ gfortran libexecinfo-dev \
     linux-headers m4 make musl-dev patch perl python3 tar xz
 
-ENV CXXFLAGS=-flto LDFLAGS=-flto VER=1.7.2
+ENV CXXFLAGS=-flto LDFLAGS=-flto VER=1.8.0
 
 RUN curl -L https://github.com/JuliaLang/julia/releases/download/v$VER/julia-$VER.tar.gz \
   | tar xz
 
-RUN make -C julia-$VER -j`nproc` prefix=/usr MARCH=x86-64 install \
- && strip -s /usr/bin/julia /usr/lib/julia/*.so                   \
+RUN make -C julia-$VER -j`nproc` prefix=/usr MARCH=x86-64-v3 install \
+ && strip -s /usr/bin/julia /usr/lib/julia/*.so                      \
  && rm -r julia-$VER
 
-FROM scratch
+FROM codegolf/lang-base
 
-COPY --from=0 /mydev                        /dev
 COPY --from=0 /lib/ld-musl-x86_64.so.1      /lib/
-COPY --from=0 /empty                        /proc
-COPY --from=0 /empty                        /tmp
 COPY --from=0 /usr/bin/julia                /usr/bin/
 COPY --from=0 /usr/lib/julia                /usr/lib/julia/
 COPY --from=0 /usr/lib/libcurl.so.4         /usr/lib/libcurl.so

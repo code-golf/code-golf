@@ -1,6 +1,4 @@
-FROM alpine:3.15 as builder
-
-RUN mkdir /empty
+FROM alpine:3.16 as builder
 
 RUN apk add --no-cache build-base curl patch
 
@@ -22,10 +20,8 @@ RUN cd bash-5.1                \
  && make                       \
  && strip bash
 
-FROM scratch
+FROM codegolf/lang-base
 
-COPY --from=0 /empty         /proc
-COPY --from=0 /empty         /tmp
 COPY --from=0 /bash-5.1/bash /usr/bin/
 
 ENTRYPOINT ["bash"]

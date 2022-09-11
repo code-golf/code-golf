@@ -19,15 +19,24 @@ var (
 	ExpHoleList []*Hole
 )
 
-type Hole struct {
-	Category, CategoryColor, CategoryIcon string
-	Data                                  template.JS
-	Experiment                            int
-	ID, Name, Prev, Next                  string
-	Preamble                              template.HTML
-	Links                                 []struct{ Name, URL string }
-	Variants                              []*Hole
-}
+type (
+	Link struct {
+		Name    string `json:"name"`
+		URL     string `json:"url"`
+		Variant string `json:"-"`
+	}
+	Hole struct {
+		Category                                string        `json:"category"`
+		CategoryColor, CategoryIcon, Prev, Next string        `json:"-"`
+		Data                                    template.JS   `json:"-"`
+		Experiment                              int           `json:"-"`
+		ID                                      string        `json:"id"`
+		Name                                    string        `json:"name"`
+		Preamble                                template.HTML `json:"preamble"`
+		Links                                   []Link        `json:"links"`
+		Variants                                []*Hole       `json:"-"`
+	}
+)
 
 func init() {
 	var holes map[string]*struct {
@@ -74,8 +83,13 @@ func init() {
 	}
 
 	for name, hole := range holes {
-		hole.ID = id(name)
+		hole.ID = ID(name)
 		hole.Name = name
+
+		switch hole.ID {
+		case "abundant-numbers-long", "emirp-numbers-long", "pernicious-numbers-long":
+			hole.Experiment = -1
+		}
 
 		// Process the templated preamble with the data.
 		if hole.Data != "" {
@@ -102,6 +116,15 @@ func init() {
 		} else {
 			hole.Preamble = template.HTML(html)
 		}
+
+		// Filter out links that don't match this variant.
+		links := make([]Link, 0, len(hole.Links))
+		for _, link := range hole.Links {
+			if link.Variant == "" || link.Variant == name {
+				links = append(links, link)
+			}
+		}
+		hole.Links = links
 
 		switch hole.Category {
 		case "Art":

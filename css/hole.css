@@ -1,17 +1,7 @@
-/**
- * NOTE: These includes are hardcoded in render.go, not inlined automatically
- * from comments like the *.js `include`s
- */
-
-/* include vendor/codemirror.css        */
-/* include vendor/codemirror-dialog.css */
-/* include vendor/codemirror-dark.css */
-/* include hole-diff.css */
-
 aside {
-    border-left: 2rem solid var(--color);
-    margin-top: 1rem;
-    position: relative;
+    display: flex;
+    grid-column: 1 / -1;
+    overflow: hidden;
 }
 
 pre {
@@ -29,47 +19,72 @@ aside > div {
     background: var(--background);
     border: 1px solid var(--color);
     border-left: 0;
+    flex: 1;
     font-family: emoji, 'Source Code Pro', monospace;
     font-variant-ligatures: none;
-    height: 140px;
+    height: 8.75rem;
     line-height: 1;
     overflow: auto;
-    padding: 5px;
+    padding: .375rem;
 }
 
-h3 {
+aside > h3 {
     color: var(--background);
     background: var(--color);
+    line-height: 2rem;
+    padding: .5rem 0;
+    transform: rotate(.5turn);
+    writing-mode: vertical-rl;
 }
 
-h3.aside-title {
-    bottom: -1.5rem;
-    left: -2rem;
-    line-height: 2rem;
-    position: absolute;
-    transform-origin: 0 0;
-    transform: rotate(-90deg);
+canvas {
+    border: 1px solid var(--color);
+    image-rendering: crisp-edges;
+    width: 50%;
 }
 
 main .info {
-    display: none;
+    display: block;
     margin: 0;
     padding: .5rem;
 }
 
+section {
+    display: grid;
+    grid-template: auto 1fr / 1fr 17rem;
+}
+
+section header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    padding-right: .5rem;
+}
+
+.cm-editor { height: 100% }
+
+.cm-editor input {
+    color: inherit;
+    font: inherit;
+}
+
 .text-red { color: var(--red-text) }
 
-#arg, #err, #diff { display: none }
+#err div, #exp div, #out div { white-space: pre }
 
-#err, #exp, #out { white-space: pre }
+#arg div {
+    align-content: flex-start;
+    align-items: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .375rem;
+}
 
 #arg span {
     background: var(--arg-background);
     border-radius: .5rem;
-    display: inline-block;
     font-family: emoji, 'Source Code Pro', monospace;
-    margin-bottom: .5rem;
-    padding: 3px 7px;
+    padding: .25rem .375rem;
     white-space: pre;
 }
 
@@ -80,8 +95,10 @@ main .info {
 
 #authors {
     display: flex;
+    flex-wrap: wrap;
     font-size: 1rem;
     font-weight: normal;
+    gap: .25rem 0;
     padding-left: 1rem;
 }
 
@@ -103,10 +120,68 @@ main .info {
     line-height: 2rem;
 }
 
+#copy + span {
+    opacity: 0;
+    transition: all 2s;
+}
+
+#copy:active + span {
+    opacity: 1;
+    padding-left: 1rem;
+    transition: all 0s;
+}
+
+#copy { display: inline }
+
+#diff-content { padding: 0 }
+
+#diff table {
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+    width: 100%;
+}
+
+#diff th {
+    color: var(--background);
+    background: var(--color);
+    font-size: 1.25rem;
+}
+
+#diff td, #diff th { line-height: 1.25rem }
+
+#diff td {
+    border: none;
+    vertical-align: top;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+#diff .diff-col-text { padding: 0 4px }
+
+/* Ref .CodeMirror-linenumber and .CodeMirror-gutters */
+#diff .diff-left-num,
+#diff .diff-right-num {
+    padding: 0 3px 0 5px;
+    min-width: 20px;
+    text-align: right;
+    white-space: nowrap;
+}
+
+#diff td:not(:last-child) { border-right: 1px solid var(--color) }
+
+#diff .diff-removal       { background-color: var(--diff-light-red) }
+#diff .diff-addition      { background-color: var(--diff-light-green) }
+#diff .diff-char-removal  { background-color: var(--red) }
+#diff .diff-char-addition { background-color: var(--green) }
+#diff .diff-skip          { background-color: var(--blue) }
+
 #editor {
     border: 1px solid var(--color);
-    grid-column: 1/3;
-    min-height: 200px;
+    border-right-width: 0;
+    border-top-width: 2px;
+    grid-row: span 2;
+    height: calc((2rem + 1px) * 8 + 2px);
     overflow-x: hidden;
 }
 
@@ -141,29 +216,63 @@ main > header nav {
     gap: .5rem;
 }
 
+#rankingsView {
+    background: var(--color);
+    border: 1px solid var(--color);
+    border-top: 0;
+    gap: 1px;
+}
+
+#rankingsView a {
+    align-items: center;
+    background: var(--light-grey);
+    display: flex;
+    flex: 1;
+    gap: .5rem;
+    justify-content: center;
+}
+
+#rankingsView svg {
+    height: 1rem;
+    width: 1rem;
+}
+
 #run {
     align-items: center;
     display: flex;
+    gap: 1rem;
     justify-content: flex-end;
 }
 
-#run > span { margin: 0 1rem }
+#run span {
+    flex: 1;
+    text-align: right;
+}
 
-#scores                   { grid-row: span 2 }
-#scores td                { border-left: 0 }
+#scores {
+    border-top: 2px solid var(--color);
+    height: 100%;
+}
+
+/* Shrink the padding compared to a normal table */
+#scores td               { padding: 0 .25rem }
+#scores td:first-child { padding-left: .5rem }
+#scores td:last-child { padding-right: .5rem }
+
 #scores td:nth-child(n+3) { text-align: right }
-#scores th                { font-weight: normal }
-#scores th > a            { float: right }
-#scores th .tabs          { display: inline-flex }
-#scores th .tabs a        { padding: 0 .5rem }
 
 #scores .bytes td:nth-child(4),
 #scores .chars td:nth-child(3) { color: var(--grey) }
 
 #status {
-    display: none;
+    align-items: center;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr auto;
     padding: 1rem;
 }
+
+#strokes { font-weight: bold }
 
 /* TODO Generalise the hole mapping table CSS, lose the specific IDs. */
                             #colors, #morse, #states { columns: 4 }
@@ -194,20 +303,12 @@ thead { user-select: none }
     width: 100%;
 }
 
-#restore {
-    border-bottom: 1px solid var(--color);
-    line-height: 2rem;
-}
+@media (max-width: 34rem) {
+    section, #status { grid-template-columns: 1fr }
 
-#restoreLink {
-    display: none;
-    margin: 0 1rem 0 0.5rem;
-}
+    section header { padding: 0 }
 
-#wrapper {
-    display: grid;
-    grid-template-columns: 1fr auto 16rem;
-    grid-template-rows: min-content 1fr;
-}
+    #editor { border-width: 1px }
 
-@media (max-width: 34rem) { #wrapper { grid-template-columns: 1fr auto } }
+    #thirdParty:empty { display: none }
+}

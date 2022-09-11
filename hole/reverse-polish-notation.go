@@ -15,8 +15,6 @@ type Node struct {
 
 func asNode(val int) *Node { return &Node{op: '=', value: val} }
 
-func randInt(a, b int) int { return rand.Intn(b-a+1) + a }
-
 func expand(node *Node) {
 	val := node.value
 	var left, right int
@@ -39,7 +37,7 @@ func expand(node *Node) {
 					factors = append(factors, i)
 				}
 			}
-			left = factors[rand.Intn(len(factors))]
+			left = randChoice(factors)
 			right = val / left
 		}
 		if rand.Intn(2) == 1 {
@@ -104,7 +102,7 @@ func genExpr(init int, expander func(*Node, int), expandCount int) *Node {
 	return node
 }
 
-func reversePolishNotation() ([]string, string) {
+func reversePolishNotation() []Scorecard {
 	const tests = 20
 
 	exprs := [tests]*Node{
@@ -118,14 +116,10 @@ func reversePolishNotation() ([]string, string) {
 		exprs[i] = genExpr(randInt(1, math.MaxInt16), expandRand, randInt(1, 31))
 	}
 
-	rand.Shuffle(len(exprs), func(i, j int) {
-		exprs[i], exprs[j] = exprs[j], exprs[i]
-	})
-
 	args := make([]string, tests)
 	var answer strings.Builder
 
-	for i, expr := range exprs {
+	for i, expr := range shuffle(exprs[:]) {
 		var arg strings.Builder
 		writeNode(&arg, expr)
 		args[i] = arg.String()
@@ -135,5 +129,5 @@ func reversePolishNotation() ([]string, string) {
 		answer.WriteString(strconv.Itoa(expr.value))
 	}
 
-	return args, answer.String()
+	return []Scorecard{{Args: args, Answer: answer.String()}}
 }

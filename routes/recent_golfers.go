@@ -10,8 +10,8 @@ import (
 	"github.com/lib/pq"
 )
 
-// RecentGolfers serves GET /recent/golfers
-func RecentGolfers(w http.ResponseWriter, r *http.Request) {
+// GET /recent/golfers
+func recentGolfersGET(w http.ResponseWriter, r *http.Request) {
 	type golfer struct {
 		Cheevos       int
 		Country, Name string
@@ -46,6 +46,7 @@ func RecentGolfers(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
+	defer rows.Close()
 
 	for rows.Next() {
 		var g golfer

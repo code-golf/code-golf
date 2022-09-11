@@ -9,8 +9,7 @@ sub EXPORT { %( Test::EXPORT::DEFAULT::, TOML::Thumb::EXPORT::DEFAULT:: ) }
 
 unit module t;
 
-# TODO Remove :!max-redirect once https://gitlab.com/jjatria/http-tiny/-/issues/12
-our $client is export = HTTP::Tiny.new :!max-redirect :throw-exceptions;
+our $client is export = HTTP::Tiny.new :throw-exceptions;
 
 sub createSession($dbh, int $userId) is export {
     $dbh.execute("INSERT INTO sessions (user_id) VALUES ($userId) RETURNING id").row.head;
@@ -31,7 +30,7 @@ sub dbh is export {
 
 sub post-solution(:$code, :$hole = 'fizz-buzz', :$lang = 'raku', :$session = '') is export {
     $client.post(
-        'https://app:1443/solution',
+        'https://app/solution',
         content => to-json({ Code => $code, Hole => $hole, Lang => $lang }),
         headers => { cookie => "__Host-session=$session" },
     )<content>.decode.&from-json;

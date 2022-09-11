@@ -16,7 +16,7 @@ import (
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/pretty"
 	"github.com/code-golf/code-golf/session"
-	min "github.com/tdewolff/minify/v2/minify"
+	"github.com/tdewolff/minify/v2/minify"
 )
 
 func colour(i int) string {
@@ -60,7 +60,7 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 	"symbol": func(name string) template.HTML {
 		return template.HTML(strings.ReplaceAll(string(svg[name]), "svg", "symbol"))
 	},
-	"title":      strings.Title,
+	"title":      pretty.Title,
 	"time":       pretty.Time,
 	"trimPrefix": strings.TrimPrefix,
 })
@@ -138,7 +138,7 @@ func init() {
 	// CSS.
 	for name, data := range slurp("css") {
 		var err error
-		if data, err = min.CSS(data); err != nil {
+		if data, err = minify.CSS(data); err != nil {
 			panic(err)
 		}
 
@@ -170,7 +170,7 @@ func init() {
 		// The real fix is https://github.com/tdewolff/minify/issues/35
 		if !uppercaseProps.MatchString(data) {
 			var err error
-			if data, err = min.HTML(data); err != nil {
+			if data, err = minify.HTML(data); err != nil {
 				panic(err)
 			}
 		}
@@ -179,13 +179,7 @@ func init() {
 	}
 }
 
-func render(w http.ResponseWriter, r *http.Request, name string, data ...interface{}) {
-	type CheevoBanner struct {
-		Cheevo     *config.Cheevo
-		During     bool
-		Start, End time.Time
-	}
-
+func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	theme := "auto"
 	theGolfer := session.Golfer(r)
 	if theGolfer != nil {
@@ -193,11 +187,11 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...interfa
 	}
 
 	args := struct {
+		Banners                                         []banner
 		CSS                                             template.CSS
-		CheevoBanner                                    *CheevoBanner
 		Cheevos                                         map[string][]*config.Cheevo
 		Countries                                       map[string]*config.Country
-		Data, Description, Title                        interface{}
+		Data, Description, Title                        any
 		DarkModeMediaQuery, LogInURL, Name, Nonce, Path string
 		Golfer                                          *golfer.Golfer
 		GolferInfo                                      *golfer.GolferInfo
@@ -207,6 +201,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...interfa
 		Location                                        *time.Location
 		Request                                         *http.Request
 	}{
+		Banners:            banners(theGolfer),
 		Cheevos:            config.CheevoTree,
 		Countries:          config.CountryByID,
 		CSS:                getThemeCSS(theme) + css["base"] + css[path.Dir(name)] + css[name],
@@ -216,7 +211,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...interfa
 		Golfer:             theGolfer,
 		GolferInfo:         session.GolferInfo(r),
 		Holes:              config.HoleByID,
-		JS:                 []string{assets["js/base.js"]},
+		JS:                 []string{assets["js/base.tsx"]},
 		Langs:              config.LangByID,
 		Name:               name,
 		Nonce:              nonce(),
@@ -239,40 +234,18 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...interfa
 		args.Location = time.UTC
 	}
 
-	// Vampire Byte cheevo banner. TODO Generalise.
-	if args.Golfer != nil && !args.Golfer.Earned("twelvetide") {
-		var (
-			now   = time.Now().UTC()
-			start = time.Date(2021, time.December, 25, 0, 0, 0, 0, time.UTC)
-			end   = time.Date(2022, time.January, 5, 0, 0, 0, 0, time.UTC)
-		)
-
-		if now.Before(end) {
-			args.CheevoBanner = &CheevoBanner{
-				config.CheevoByID["twelvetide"],
-				start.Before(now), start, end,
-			}
-		}
-	}
-
 	// TODO CSS imports?
 	if name == "hole" {
-		args.CSS = css["vendor/codemirror"] + css["vendor/codemirror-dialog"] +
-			css["vendor/codemirror-dark"] + args.CSS
-	}
-	if name == "hole" || name == "hole-ng" {
-		args.CSS = css["hole-diff"] + args.CSS
-	}
-
-	if name == "hole" || name == "hole-ng" {
-		args.CSS += css["terminal"]
+		args.CSS = args.CSS + css["terminal"]
 	}
 
 	// Append route specific JS.
 	// e.g. GET /foo/bar might add js/foo.js and/or js/foo/bar.js.
 	for _, path := range []string{path.Dir(name), name} {
-		if url, ok := assets["js/"+path+".js"]; ok {
-			args.JS = append(args.JS, url)
+		for _, ext := range []string{"js", "ts", "tsx"} {
+			if url, ok := assets["js/"+path+"."+ext]; ok {
+				args.JS = append(args.JS, url)
+			}
 		}
 	}
 
@@ -309,13 +282,6 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...interfa
 
 		// TODO State is a token to protect the user from CSRF attacks.
 		args.LogInURL = config.AuthCodeURL("")
-	}
-
-	switch name {
-	case "403":
-		w.WriteHeader(http.StatusForbidden)
-	case "404":
-		w.WriteHeader(http.StatusNotFound)
 	}
 
 	if err := tmpl.ExecuteTemplate(w, name, args); err != nil {

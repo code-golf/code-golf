@@ -8,12 +8,13 @@ is run('say $*KERNEL.hostname'), 'code-golf', 'Hostname';
 
 my $mounts = run('say slurp "/proc/mounts"');
 
-$mounts ~~ s/ ',inode64'       //;  # Older kernels wont have this flag.
-$mounts ~~ s/ ',lowerdir=' \S+ //;  # Strip the Docker specific crap.
+$mounts ~~ s:g/ ',inode64'       //;  # Older kernels wont have this flag.
+$mounts ~~ s:g/ ',lowerdir=' \S+ //;  # Strip the Docker specific crap.
 
 # Note on live root is read-only but doing that on dev breaks go build.
 is $mounts, Q:to/MOUNTS/.chomp, '/proc/mounts';
     overlay / overlay rw,relatime 0 0
+    tmpfs /dev tmpfs rw,nosuid,relatime 0 0
     proc /proc proc ro,nosuid,nodev,noexec,relatime 0 0
     tmpfs /tmp tmpfs rw,nosuid,nodev,relatime 0 0
     MOUNTS

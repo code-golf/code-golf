@@ -4,28 +4,28 @@ import (
 	"database/sql"
 	"encoding/json"
 	"errors"
-	"sort"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
-	"github.com/code-golf/code-golf/oauth"
 	"github.com/lib/pq"
+	"golang.org/x/exp/slices"
 	"gopkg.in/guregu/null.v4"
 )
 
 type FailingSolutions []struct{ Hole, Lang string }
 
-func (f *FailingSolutions) Scan(src interface{}) error {
+func (f *FailingSolutions) Scan(src any) error {
 	return json.Unmarshal(src.([]byte), f)
 }
 
 type Golfer struct {
 	Admin, ShowCountry                     bool
-	Cheevos                                []string
+	BytesPoints, CharsPoints, ID           int
+	Cheevos, Holes                         []string
 	Country, Keymap, Name, Referrer, Theme string
 	Delete                                 sql.NullTime
 	FailingSolutions                       FailingSolutions
-	ID                                     int
+	Following                              []int64
 	TimeZone                               *time.Location
 }
 
@@ -42,12 +42,8 @@ func (g *Golfer) Earn(db *sql.DB, cheevoID string) (earned *config.Cheevo) {
 	}
 
 	// Update g.Cheevos if necessary.
-	if i := sort.SearchStrings(
-		g.Cheevos, cheevoID,
-	); i == len(g.Cheevos) || g.Cheevos[i] != cheevoID {
-		g.Cheevos = append(g.Cheevos, "")
-		copy(g.Cheevos[i+1:], g.Cheevos[i:])
-		g.Cheevos[i] = cheevoID
+	if i, ok := slices.BinarySearch(g.Cheevos, cheevoID); !ok {
+		g.Cheevos = slices.Insert(g.Cheevos, i, cheevoID)
 	}
 
 	return
@@ -55,24 +51,27 @@ func (g *Golfer) Earn(db *sql.DB, cheevoID string) (earned *config.Cheevo) {
 
 // Earned returns whether the golfer has that cheevo.
 func (g *Golfer) Earned(cheevoID string) bool {
-	i := sort.SearchStrings(g.Cheevos, cheevoID)
-	return i < len(g.Cheevos) && g.Cheevos[i] == cheevoID
+	_, ok := slices.BinarySearch(g.Cheevos, cheevoID)
+	return ok
 }
 
-type Connection struct {
-	Connection, Username string
-	Discriminator        sql.NullInt16
-	ID                   int
-	Public               bool
+// IsFollowing returns whether the golfer is following that golfer.
+// FIXME Ideally we'd scan into a []int not a []int64 but pq won't.
+func (g *Golfer) IsFollowing(userID int) bool {
+	_, ok := slices.BinarySearch(g.Following, int64(userID))
+	return ok
+}
+
+// Solved returns whether the golfer has solved that hole. Counts failing too.
+func (g *Golfer) Solved(holeID string) bool {
+	_, ok := slices.BinarySearch(g.Holes, holeID)
+	return ok
 }
 
 type GolferInfo struct {
 	Golfer
 
 	Sponsor bool
-
-	// Overall points
-	BytesPoints, CharsPoints int
 
 	// Count of medals
 	Diamond, Gold, Silver, Bronze int
@@ -85,24 +84,6 @@ type GolferInfo struct {
 
 	// Start date
 	TeedOff time.Time
-
-	Connections []Connection
-}
-
-// MissingConnections returns which connections are missing.
-func (g *GolferInfo) MissingConnections() map[string]*oauth.Config {
-	missing := map[string]*oauth.Config{}
-
-	for id, config := range oauth.Connections {
-		i := sort.Search(len(g.Connections),
-			func(i int) bool { return g.Connections[i].Connection >= id })
-
-		if i >= len(g.Connections) || g.Connections[i].Connection != id {
-			missing[id] = config
-		}
-	}
-
-	return missing
 }
 
 type RankUpdate struct {
@@ -182,37 +163,6 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 
 	// TODO
 	info.TeedOff = time.Date(2019, time.July, 15, 20, 13, 21, 0, time.UTC)
-
-	rows, err := db.Query(
-		` SELECT connection, discriminator, id, public, username
-		    FROM connections
-		   WHERE user_id = $1
-		ORDER BY connection`,
-		info.ID,
-	)
-	if err != nil {
-		panic(err)
-	}
-
-	for rows.Next() {
-		var c Connection
-
-		if err := rows.Scan(
-			&c.Connection,
-			&c.Discriminator,
-			&c.ID,
-			&c.Public,
-			&c.Username,
-		); err != nil {
-			panic(err)
-		}
-
-		info.Connections = append(info.Connections, c)
-	}
-
-	if err := rows.Err(); err != nil {
-		panic(err)
-	}
 
 	return &info
 }

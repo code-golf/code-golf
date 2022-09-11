@@ -14,8 +14,8 @@ import (
 	"github.com/lib/pq"
 )
 
-// Solution serves POST /solution
-func Solution(w http.ResponseWriter, r *http.Request) {
+// POST /solution
+func solutionPOST(w http.ResponseWriter, r *http.Request) {
 	var in struct{ Code, Hole, Lang string }
 
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
@@ -77,7 +77,11 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		Took: score.Took,
 	}
 
-	if out.Pass && golfer != nil && !experimental {
+	if out.Pass && golfer != nil && experimental {
+		if c := golfer.Earn(db, "black-box-testing"); c != nil {
+			out.Cheevos = append(out.Cheevos, c)
+		}
+	} else if out.Pass && golfer != nil && !experimental {
 		var cheevos []string
 		if err := db.QueryRowContext(
 			r.Context(),
@@ -149,6 +153,7 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// TODO Use the golfer's timezone from /settings.
+		// TODO Move these to save_solution() in the DB.
 		var (
 			now   = time.Now().UTC()
 			month = now.Month()
@@ -156,29 +161,48 @@ func Solution(w http.ResponseWriter, r *http.Request) {
 		)
 
 		if month == time.October && day == 2 {
-			golfer.Earn(db, "happy-birthday-code-golf")
+			if c := golfer.Earn(db, "happy-birthday-code-golf"); c != nil {
+				out.Cheevos = append(out.Cheevos, c)
+			}
 		}
 
 		switch in.Hole {
 		case "12-days-of-christmas":
-			if (month == time.December && day >= 25) || (month == time.January && day <= 5) {
-				golfer.Earn(db, "twelvetide")
+			if (month == time.December && day >= 25) ||
+				(month == time.January && day <= 5) {
+				if c := golfer.Earn(db, "twelvetide"); c != nil {
+					out.Cheevos = append(out.Cheevos, c)
+				}
 			}
 		case "star-wars-opening-crawl":
 			if month == time.May && day == 4 {
-				golfer.Earn(db, "may-the-4ᵗʰ-be-with-you")
+				if c := golfer.Earn(db, "may-the-4ᵗʰ-be-with-you"); c != nil {
+					out.Cheevos = append(out.Cheevos, c)
+				}
 			}
 		case "united-states":
 			if month == time.July && day == 4 {
-				golfer.Earn(db, "independence-day")
+				if c := golfer.Earn(db, "independence-day"); c != nil {
+					out.Cheevos = append(out.Cheevos, c)
+				}
 			}
 		case "vampire-numbers":
 			if month == time.October && day == 31 {
-				golfer.Earn(db, "vampire-byte")
+				if c := golfer.Earn(db, "vampire-byte"); c != nil {
+					out.Cheevos = append(out.Cheevos, c)
+				}
 			}
 		case "π":
 			if month == time.March && day == 14 {
-				golfer.Earn(db, "pi-day")
+				if c := golfer.Earn(db, "pi-day"); c != nil {
+					out.Cheevos = append(out.Cheevos, c)
+				}
+			}
+		}
+
+		if golfer.Keymap == "vim" && in.Lang == "viml" {
+			if c := golfer.Earn(db, "real-programmers"); c != nil {
+				out.Cheevos = append(out.Cheevos, c)
 			}
 		}
 	}

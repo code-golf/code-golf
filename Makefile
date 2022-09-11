@@ -1,3 +1,4 @@
+DATE     := $(shell date +%Y-%m-%d)
 GOFILES  := $(shell find . -name '*.go' ! -path './.go*')
 POSTGRES := postgres:14.2-alpine
 SHELL    := /bin/bash
@@ -10,7 +11,7 @@ bench:
 
 bump:
 	@go get -u
-	@go mod tidy -compat=1.17
+	@go mod tidy -compat=1.19
 	@npm upgrade
 
 cert:
@@ -19,30 +20,24 @@ cert:
 
 .PHONY: db
 db:
-	@ssh -t rancher@code.golf docker run -it --rm \
-	    --env-file /etc/code-golf.env $(POSTGRES) psql
-
-db-admin:
-	@ssh -t rancher@code.golf docker run -it --rm \
-	    --env-file /etc/code-golf.env $(POSTGRES) psql -W code-golf doadmin
+	@ssh -t root@code.golf sudo -iu postgres psql code-golf
 
 db-dev:
 	@docker-compose exec db psql -U postgres code-golf
 
 db-diff:
-	@diff --color --label live --label dev --strip-trailing-cr -su \
-	    <(ssh rancher@code.golf "docker run --rm                   \
-	    --env-file /etc/code-golf.env $(POSTGRES) pg_dump -Os")    \
+	@diff --color --label live --label dev --strip-trailing-cr -su   \
+	    <(ssh root@code.golf sudo -iu postgres pg_dump -Os code-golf \
+	    | sed -E 's/ \(Debian .+//')                                 \
 	    <(docker-compose exec -T db pg_dump -OsU postgres code-golf)
 
 db-dump:
 	@rm -f db/*.gz
 
-	@ssh rancher@code.golf "docker run --env-file /etc/code-golf.env \
-	    --rm $(POSTGRES) sh -c 'pg_dump -a | gzip -9'"               \
-	    > db/code-golf-`date +%Y-%m-%d`.sql.gz
+	@ssh root@code.golf sudo -iu postgres pg_dump -aZ9 code-golf \
+	    > db/code-golf-$(DATE).sql.gz
 
-	@cp db/*.gz ~/Dropbox/code-golf/
+	@zcat db/*.gz | zstd -fqo ~/Dropbox/code-golf/code-golf-$(DATE).sql.zst
 
 dev:
 	@touch docker/.env
@@ -80,37 +75,36 @@ font:
 	    docker rm $$id
 
 lint:
-	@node_modules/.bin/eslint js
+	@node_modules/typescript/bin/tsc --project tsconfig.json
+	@node_modules/.bin/eslint --ext js,jsx,ts,tsx js/
 
 	@docker run --rm -v $(CURDIR):/app -w /app \
-	    golangci/golangci-lint:v1.44.0 golangci-lint run
+	    golangci/golangci-lint:v1.49.0 golangci-lint run
 
 live:
-	@docker build --pull -f docker/live.Dockerfile -t codegolf/code-golf .
+	@docker buildx build --pull --push \
+	    --file docker/live.Dockerfile --tag codegolf/code-golf .
 
-	@docker push codegolf/code-golf
-
-	@ssh rancher@code.golf "              \
-	    docker pull codegolf/code-golf && \
-	    docker stop code-golf;            \
-	    docker rm code-golf;              \
-	    docker run                        \
-	    --detach                          \
-	    --env-file     /etc/code-golf.env \
-	    --init                            \
-	    --name         code-golf          \
-	    --pids-limit   1024               \
-	    --privileged                      \
-	    --publish       80:1080           \
-	    --publish      443:1443           \
-	    --read-only                       \
-	    --restart      always             \
-	    --volume       certs:/certs       \
-	    codegolf/code-golf &&             \
+	@ssh root@code.golf "                                        \
+	    docker pull codegolf/code-golf &&                        \
+	    docker stop code-golf;                                   \
+	    docker rm code-golf;                                     \
+	    docker run                                               \
+	        --detach                                             \
+	        --env-file   /etc/code-golf.env                      \
+	        --init                                               \
+	        --name       code-golf                               \
+	        --network    caddy                                   \
+	        --pids-limit 1024                                    \
+	        --privileged                                         \
+	        --read-only                                          \
+	        --restart    always                                  \
+	        --volume     /var/run/postgresql:/var/run/postgresql \
+	    codegolf/code-golf &&                                    \
 	    docker system prune -f"
 
 logs:
-	@ssh rancher@code.golf docker logs --tail 5 -f code-golf
+	@ssh root@code.golf docker logs --tail 5 -f code-golf
 
 test:
 	@go test ./...

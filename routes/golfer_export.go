@@ -7,8 +7,8 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-// GolferExport serves GET /golfer/export
-func GolferExport(w http.ResponseWriter, r *http.Request) {
+// GET /golfer/export
+func golferExportGET(w http.ResponseWriter, r *http.Request) {
 	golfer := session.Golfer(r)
 
 	rows, err := session.Database(r).Query(
