@@ -11,6 +11,7 @@ label {
     display: grid;
     gap: .5rem;
     grid-template-columns: min-content 1fr;
+    white-space: nowrap;
 }
 
 main > form {

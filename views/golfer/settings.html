@@ -95,7 +95,7 @@
             <label>
                 <input name=layout type=radio value="{{ . }}"
                     {{- if eq . $.Golfer.Layout }} checked{{ end }}>
-                    {{- title . -}}
+                    {{- title . }} {{ if eq . "tabs" }}(WIP){{ end -}}
             </label>
         {{- end -}}
         </div>
