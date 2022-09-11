@@ -133,7 +133,10 @@ section header {
 
 #copy { display: inline }
 
-#diff-content { padding: 0 }
+#diff:not(:empty),
+#diff-content {
+    padding: 0;
+}
 
 #diff table {
     border-collapse: separate;

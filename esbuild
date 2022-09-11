@@ -12,6 +12,8 @@ node_modules/.bin/esbuild "$@"        \
     --inject:js/_inject.ts            \
     --jsx-factory=createElement       \
     --loader:.woff2=file              \
+    --loader:.png=dataurl             \
+    --loader:.svg=dataurl             \
     --metafile=esbuild.json           \
     --minify                          \
     --outbase=.                       \
@@ -19,4 +21,9 @@ node_modules/.bin/esbuild "$@"        \
     --public-path=/dist               \
     --sourcemap                       \
     --target=es2020                   \
-    `find css/font.css js -type f -not -name '_*'`
+    `find \
+        css/font.css \
+        css/vendor/goldenlayout-theme.css \
+        js \
+        -type f \
+        -not -name '_*'`

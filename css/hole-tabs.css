@@ -1,0 +1,261 @@
+/**
+ * NOTE: These includes are hardcoded in render.go, not inlined automatically
+ * from comments like the *.js `include`s
+ */
+
+/* include hole.css */
+/* include vendor/goldenlayout-base.css */
+/* include vendor/goldenlayout-theme.css */
+
+/* Body background --light-grey to allow code box etc contrast as --background */
+body {
+    background: var(--light-grey);
+}
+
+#details-content{
+    padding: .375rem;
+}
+
+.readonly-output {
+     flex: 1;
+     font-family: emoji, 'Source Code Pro', monospace;
+     font-variant-ligatures: none;
+     line-height: 1;
+     padding: .375rem;
+ }
+
+.readonly-output:empty::after {
+    content: "(Empty)";
+}
+
+section {
+    /* undo display: grid */
+    display: block;
+}
+
+section header {
+    /* a little more space than default hole.css */
+    height: 2.2rem;
+    padding: 0 .5rem;
+}
+
+#editor-section header {
+    margin-top: 1px;
+    margin-bottom: 2px;
+}
+
+/* default hole.css selects divs inside these, but tab layout removed the divs */
+#err, #exp, #out { white-space: pre }
+
+#arg {
+    align-content: flex-start;
+    align-items: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .375rem;
+}
+
+#editor-section {
+    height: 100%;
+    overflow: hidden;
+}
+
+/* change (e.g. light theme) black-on-white back to white-on-black */
+#diff th {
+    color: var(--color);
+    background: var(--background);
+    font-size: 1rem;
+}
+
+#editor {
+    border: none;
+    /* Button = 1rem (contents) + 2*0.5 rem (padding) + 2px (border) + 4px (margin) */
+    height: calc(100% - (2rem + 6px));
+}
+
+main > header nav {
+    max-width: 100%;
+}
+
+#hole-lang {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+#hole-lang details {
+    cursor: pointer;
+    user-select: none;
+}
+
+#hole-lang summary {
+    line-height: 1.7rem;
+}
+
+#rankingsView {
+    border: none;
+}
+
+#scoreboard-section {
+    /* Grid needed in case the rows total height is shorter than the area */
+    display: grid;
+    grid-template-rows: 1fr max-content;
+}
+
+#scores-wrapper {
+    overflow-y: auto;
+    /* Avoid scroll bars from tooltip overflow */
+    overflow-x: hidden;
+}
+
+#scores-wrapper header {
+    position: sticky;
+    top: 0;
+    background: var(--background);
+    z-index: 5;
+}
+
+#scores {
+    border: none;
+    width: 100%;
+    height: unset;
+}
+
+#scores [data-tooltip]:after {
+    /* Override tooltip transform to avoid right-overflow */
+    transform: translate(-100%, -0.25rem);
+    left: 110%;
+    /* Override tooltip transform to avoid top-overflow */
+    bottom: 100%;
+}
+
+#scores [data-tooltip]:before {
+    bottom: calc(100% - 0.5rem);
+}
+
+/* Remove left and right borders from base.css */
+#scores tbody td {
+    border-left: 0;
+    border-right: 0;
+}
+
+#status {
+    padding: 0.5rem;
+    grid-column: 3;
+}
+
+#golden-container {
+    grid-row: 5 / 6;
+    width: 100%; 
+    position: relative;
+    /* Prevent overflow from maximized panels */
+    overflow: hidden;
+}
+
+#golden-container > .lm_root {
+    /* Don't contribute to #golden-container's sizing to allow auto resizing */
+    position: absolute;
+}
+
+main {
+    grid-template-rows: repeat(4, max-content) 1fr max-content;
+    /* Remove gap so it could be margin instead: avoids excessive gap */
+    gap: 0;
+}
+
+#picker,
+#info-container .info,
+#picker-status-row > *:not(:empty),
+#golden-container {
+    margin-top: 0.5rem;
+}
+
+#picker-status-row {
+    grid-row: 4 / 5;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+#picker-status-row > *:not(:last-child) {
+    margin-right: 1rem;
+}
+
+#status {
+    flex-grow: 1;
+    flex-basis: 20rem;
+}
+
+#info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+#pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+}
+
+#pool span::before {
+    content: "+";
+}
+
+#pool span {
+    background: var(--background);
+}
+
+.alert {
+    position: relative;
+}
+
+.alert .main_close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+#alert-pool {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 0.4rem;
+    align-items: center;
+}
+
+#alert-pool svg {
+    fill: var(--background);
+    cursor: pointer;
+}
+
+.mobile #golden-container {
+    height: 150vh;
+}
+
+.mobile.has_lm_maximised #golden-container {
+    /* Making this position fixed and occupying the whole viewport does not
+    causes many issues with the mobile iOS URL bar bug described at
+    https://allthingssmitty.com/2020/05/11/css-fix-for-100vh-in-mobile-webkit  */
+    height: 90vh;
+}
+
+#layout-btns {
+    grid-row: 6;
+    justify-self: center;
+    margin-top: 5px;
+    margin-bottom: calc(5px - 1rem);
+    display: flex;
+    gap: 1rem;
+}
+
+@media only screen and (max-width: 1280px) {
+    #make-narrow, #make-wide { display: none; }
+}
+
+#make-narrow { display: none; }
+.full-width #make-narrow { display: flex; }
+.full-width #make-wide { display: none; }
+.full-width body { max-width: unset; }

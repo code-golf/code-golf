@@ -86,6 +86,20 @@
             Show my country publicly?
         </label>
 
+        <h2>Layout</h2>
+
+        Preferred layout for the development environment.
+
+        <div role=group>
+        {{- range .Data.Layouts -}}
+            <label>
+                <input name=layout type=radio value="{{ . }}"
+                    {{- if eq . $.Golfer.Layout }} checked{{ end }}>
+                    {{- title . -}}
+            </label>
+        {{- end -}}
+        </div>
+        
         <h2>Keymap</h2>
 
         Preferred keyboard mapping for the code editor.

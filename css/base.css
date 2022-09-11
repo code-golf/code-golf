@@ -201,6 +201,7 @@ main {
     padding: 1rem;
 }
 
+nav #alert-pool,
 nav > :empty { flex: 1 }
 
 select {

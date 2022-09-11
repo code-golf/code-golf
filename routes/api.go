@@ -52,7 +52,10 @@ func apiLangGET(w http.ResponseWriter, r *http.Request) {
 
 // GET /mini-rankings/{hole}/{lang}/{scoring:bytes|chars}/{view:top|me|following}
 func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
-	const limit = 7
+	limit := 7
+	if r.FormValue("long") == "1" {
+		limit = 99
+	}
 
 	var (
 		hole    = param(r, "hole")
@@ -168,16 +171,18 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 
 	// Trim the rows to limit with "me" as close to the middle as possible.
 	// TODO It would simplify everything if we could fold this into the SQL.
-	if view == "me" {
-		for len(entries) > limit {
-			me := slices.IndexFunc(entries, func(e entry) bool { return e.Me })
-
-			// Trim from the left or right depending on where "me" is.
-			if me >= len(entries)/2 {
-				entries = entries[1:]
-			} else {
-				entries = entries[:len(entries)-1]
-			}
+	length := len(entries)
+	if view == "me" && length > limit {
+		me := slices.IndexFunc(entries, func(e entry) bool { return e.Me })
+		// Before: me entries, then "me" entry, then len(entries)-me-1 entries
+		// 	with me <= limit; len(entries) <= 2*limit; len(entries)-me-1 <= limit-1
+		if me <= limit/2 {
+			entries = entries[:limit]
+		} else if me >= length-(limit+1)/2 {
+			// Impossible case?
+			entries = entries[length-limit:]
+		} else {
+			entries = entries[me-limit/2 : me+(limit+1)/2]
 		}
 	}
 

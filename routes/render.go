@@ -181,9 +181,14 @@ func init() {
 
 func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	theme := "auto"
+	prependBeforeName := ""
 	theGolfer := session.Golfer(r)
 	if theGolfer != nil {
 		theme = theGolfer.Theme
+		if name == "hole" && theGolfer.Layout == "tabs" {
+			name = "hole-tabs"
+			prependBeforeName = "hole"
+		}
 	}
 
 	args := struct {
@@ -204,7 +209,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		Banners:            banners(theGolfer),
 		Cheevos:            config.CheevoTree,
 		Countries:          config.CountryByID,
-		CSS:                getThemeCSS(theme) + css["base"] + css[path.Dir(name)] + css[name],
+		CSS:                getThemeCSS(theme) + css["base"] + css[path.Dir(name)] + css[prependBeforeName] + css[name],
 		Data:               data[0],
 		DarkModeMediaQuery: getDarkModeMediaQuery(theme),
 		Description:        "Code Golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.",
@@ -235,8 +240,22 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	}
 
 	// TODO CSS imports?
-	if name == "hole" {
+	if name == "hole" || name == "hole-tabs" {
 		args.CSS = args.CSS + css["terminal"]
+	}
+	if name == "hole-tabs" {
+		args.CSS += css["vendor/goldenlayout-base"]
+		// TODO: (GL) switch light/dark codemirror theme to getThemeCSS
+		// See above:
+		// 	 HACK Prepend font.css (with font URL) onto base.css.
+		//   TODO Use esbuild for all CSS? Still serve inline?
+		if themeCSS, ok := assets["css/vendor/goldenlayout-theme.css"]; ok {
+			cssBytes, err := os.ReadFile(themeCSS[1:])
+			if err != nil {
+				panic(err)
+			}
+			css["base"] = template.CSS(cssBytes) + css["base"]
+		}
 	}
 
 	// Append route specific JS.

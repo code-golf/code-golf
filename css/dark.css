@@ -1,4 +1,6 @@
 :root {
+    color-scheme: dark; /* Activate dark scrollbars */
+
     --background: hsl(210, 9%, 13%);
     --color:      #ebebeb;
     --grey:       #85888c; /* #85888c is 0.6 * #343a40 + 0.4 * #ffffff */
@@ -30,7 +32,9 @@
     --red-text:           hsl(357, 70%, 50%);
     --summary-background: var(--light-grey);
     --summary-color:      #ddd;
-    
+
+    --gl-border: hsl(214, 8%, 30%);
+
     --diamond-weight: normal;
     --diamond-outglow: gold;
     --play-color: #444;

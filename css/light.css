@@ -28,6 +28,8 @@
     --red-text:           var(--red);
     --summary-background: #343a40;
     --summary-color:      #fdfdfd;
+
+    --gl-border: #ccc;
     
     --diamond-weight: bold;
     --diamond-outglow: #917f20;

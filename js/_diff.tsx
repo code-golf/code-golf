@@ -7,7 +7,7 @@ interface DiffPos {
 }
 
 export default (hole: string, exp: string, out: string, argv: string[]) => {
-    if (stringsEqual(exp, out, shouldIgnoreCase(hole))) return null;
+    if (stringsEqual(exp, out, shouldIgnoreCase(hole))) return '';
 
     // Show args? Exclude holes with one big argument like QR Decoder.
     const isArgDiff = argv.length > 1 && argv.length == lines(exp).length;
@@ -16,12 +16,12 @@ export default (hole: string, exp: string, out: string, argv: string[]) => {
 
     return <table>
         {makeCols(isArgDiff, maxLineNum, argv)}
-        <tr>
+        <thead>
             {isArgDiff ? <th class="right">Args</th> : <th/>}
             <th>Output</th>
             {isArgDiff ? null : <th/>}
             <th>Expected</th>
-        </tr>
+        </thead>
         {rows}
     </table>;
 };
