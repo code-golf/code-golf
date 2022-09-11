@@ -40,7 +40,9 @@ func statsGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := db.QueryRow(
-		"SELECT COALESCE(SUM(bytes), 0), COUNT(*) FROM solutions",
+		`SELECT COALESCE(SUM(bytes), 0), COUNT(*)
+		   FROM solutions
+		  WHERE NOT failing`,
 	).Scan(&data.Bytes, &data.Solutions); err != nil {
 		panic(err)
 	}
