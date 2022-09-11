@@ -85,20 +85,6 @@
                 {{ if .Golfer.ShowCountry }}checked{{ end }}>
             Show my country publicly?
         </label>
-
-        <h2>Layout</h2>
-
-        Preferred layout for the development environment.
-
-        <div role=group>
-        {{- range .Data.Layouts -}}
-            <label>
-                <input name=layout type=radio value="{{ . }}"
-                    {{- if eq . $.Golfer.Layout }} checked{{ end }}>
-                    {{- title . }} {{ if eq . "tabs" }}(WIP){{ end -}}
-            </label>
-        {{- end -}}
-        </div>
         
         <h2>Keymap</h2>
 
@@ -110,6 +96,20 @@
                 <input name=keymap type=radio value="{{ . }}"
                     {{- if eq . $.Golfer.Keymap }} checked{{ end }}>
                     {{- title . -}}
+            </label>
+        {{- end -}}
+        </div>
+
+        <h2>Layout</h2>
+
+        Preferred layout for the development environment.
+
+        <div role=group>
+        {{- range .Data.Layouts -}}
+            <label>
+                <input name=layout type=radio value="{{ . }}"
+                    {{- if eq . $.Golfer.Layout }} checked{{ end }}>
+                    {{- title . }} {{ if eq . "tabs" }}(WIP){{ end -}}
             </label>
         {{- end -}}
         </div>
