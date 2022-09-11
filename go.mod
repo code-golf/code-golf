@@ -11,16 +11,16 @@ require (
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/go-git/go-billy/v5 v5.3.1
 	github.com/go-git/go-git/v5 v5.4.2
-	github.com/gofrs/uuid v4.2.0+incompatible
+	github.com/gofrs/uuid v4.3.0+incompatible
 	github.com/gorilla/feeds v1.1.1
-	github.com/lib/pq v1.10.6
+	github.com/lib/pq v1.10.7
 	github.com/pelletier/go-toml/v2 v2.0.5
 	github.com/shurcooL/graphql v0.0.0-20220606043923-3cf50f8a0a29
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 	github.com/tdewolff/minify/v2 v2.12.1
 	github.com/yuin/goldmark v1.4.14
-	golang.org/x/exp v0.0.0-20220906200021-fcb1a314c389
-	golang.org/x/oauth2 v0.0.0-20220822191816-0ebed06d0094
+	golang.org/x/exp v0.0.0-20220909182711-5c715a9e8561
+	golang.org/x/oauth2 v0.0.0-20220909003341-f21342109be1
 	gopkg.in/guregu/null.v4 v4.0.0
 )
 
@@ -42,8 +42,8 @@ require (
 	github.com/tdewolff/parse/v2 v2.6.3 // indirect
 	github.com/xanzy/ssh-agent v0.3.2 // indirect
 	golang.org/x/crypto v0.0.0-20220829220503-c86fa9a7ed90 // indirect
-	golang.org/x/net v0.0.0-20220906165146-f3363e06e74c // indirect
-	golang.org/x/sys v0.0.0-20220906165534-d0df966e6959 // indirect
+	golang.org/x/net v0.0.0-20220909164309-bea034e7d591 // indirect
+	golang.org/x/sys v0.0.0-20220909162455-aba9fc2a8ff2 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
