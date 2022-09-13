@@ -48,14 +48,14 @@ func banners(golfer *golfer.Golfer) (banners []banner) {
 			hole := config.HoleByID[solution.Hole]
 			lang := config.LangByID[solution.Lang]
 
-			if prevHole == hole {
+			if prevHole == hole.ID {
 				banner.Body += template.HTML(`, <a href="/` + hole.ID + "#" +
 					lang.ID + `">` + lang.Name + "</a>")
 			} else {
-				banner.Body += template.HTML("<li>" + lang.Name + `: <a href="/` + hole.ID + "#" +
+				banner.Body += template.HTML("<li>" + hole.Name + `: <a href="/` + hole.ID + "#" +
 					lang.ID + `">` + lang.Name + "</a>")
 			}
-			prevHole = hole
+			prevHole = hole.ID
 		}
 
 		banner.Body += "</ul>"
