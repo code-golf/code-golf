@@ -43,19 +43,19 @@ func banners(golfer *golfer.Golfer) (banners []banner) {
 				"please update them to pass:<ul>",
 		}
 
-		prevHole := "none"
+		prevHoleID := ""
 		for _, solution := range failing {
 			hole := config.HoleByID[solution.Hole]
 			lang := config.LangByID[solution.Lang]
 
-			if prevHole == hole.ID {
+			if prevHoleID == hole.ID {
 				banner.Body += template.HTML(`, <a href="/` + hole.ID + "#" +
 					lang.ID + `">` + lang.Name + "</a>")
 			} else {
 				banner.Body += template.HTML("<li>" + hole.Name + `: <a href="/` + hole.ID + "#" +
 					lang.ID + `">` + lang.Name + "</a>")
 			}
-			prevHole = hole.ID
+			prevHoleID = hole.ID
 		}
 
 		banner.Body += "</ul>"
