@@ -284,8 +284,8 @@ void main(string[] argv) {
 '''
 
 [Elixir]
-size    = '166 MiB'
-version = '1.13.4'
+size    = '167 MiB'
+version = '1.14.0'
 website = 'https://elixir-lang.org'
 example = '''
 # Printing
@@ -347,7 +347,7 @@ end
 
 [Go]
 size    = '150 MiB'
-version = '1.19'
+version = '1.19.1'
 website = 'https://go.dev'
 example = '''
 package main
@@ -488,7 +488,7 @@ for (let arg of arguments)
 
 [Julia]
 size    = '303 MiB'
-version = '1.8.0'
+version = '1.8.1'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -668,7 +668,7 @@ example = '''
 
 [Python]
 size    = '55.7 MiB'
-version = '3.10.6'
+version = '3.10.7'
 website = 'https://www.python.org'
 example = '''
 import sys
