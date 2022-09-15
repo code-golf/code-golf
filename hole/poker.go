@@ -33,7 +33,7 @@ func poker() []Scorecard {
 	}
 
 	var hands []Hand
-	const handCount = 5
+	const handCount = 3
 
 	// High card
 	for i := 0; i < handCount; i++ {
@@ -66,6 +66,14 @@ func poker() []Scorecard {
 		cardRune(4, rand.Intn(4)),
 		cardRune(5, rand.Intn(4)),
 		cardRune(7, rand.Intn(4)),
+	}})
+	suits = rand.Perm(4)
+	hands = append(hands, Hand{"High Card", []rune{
+		cardRune(3, suits[0]),
+		cardRune(4, suits[1]), // Avoid flush
+		cardRune(5, rand.Intn(4)),
+		cardRune(6, rand.Intn(4)),
+		cardRune(8, rand.Intn(4)),
 	}})
 
 	// Pair
@@ -135,6 +143,15 @@ func poker() []Scorecard {
 		cardRune(3, suit2[0]),
 		cardRune(3, suit2[1]),
 		cardRune(8, rand.Intn(4)),
+	}})
+	suit1 = rand.Perm(4)
+	suit2 = rand.Perm(4)
+	hands = append(hands, Hand{"Two Pair", []rune{
+		cardRune(11, suit1[0]),
+		cardRune(11, suit1[1]),
+		cardRune(9, suit2[0]),
+		cardRune(9, suit2[1]),
+		cardRune(10, rand.Intn(4)),
 	}})
 
 	// Three of a Kind
@@ -213,6 +230,27 @@ func poker() []Scorecard {
 		cardRune(0, 2),
 		cardRune(0, 3),
 		cardRune(1, rand.Intn(4)),
+	}})
+	hands = append(hands, Hand{"Four of a Kind", []rune{
+		cardRune(9, 0),
+		cardRune(9, 1),
+		cardRune(9, 2),
+		cardRune(9, 3),
+		cardRune(0, rand.Intn(4)),
+	}})
+	hands = append(hands, Hand{"Four of a Kind", []rune{
+		cardRune(9, 0),
+		cardRune(9, 1),
+		cardRune(9, 2),
+		cardRune(9, 3),
+		cardRune(1, rand.Intn(4)),
+	}})
+	hands = append(hands, Hand{"Four of a Kind", []rune{
+		cardRune(9, 0),
+		cardRune(9, 1),
+		cardRune(9, 2),
+		cardRune(9, 3),
+		cardRune(12, rand.Intn(4)),
 	}})
 
 	// Full House
