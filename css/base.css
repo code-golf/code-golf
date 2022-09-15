@@ -287,8 +287,6 @@ thead th {
     display: grid;
     gap: .5rem;
     margin: 1rem 1rem 0;
-    max-height: 30vh;
-    overflow-y: auto;
     padding: 1rem 1rem 1rem 3rem;
     position: relative;
 }
@@ -299,6 +297,11 @@ thead th {
     position: absolute;
     top: calc(50% - .75rem);
     width: 1.5rem;
+}
+
+.alert ul, .info ul, .success ul {
+    max-height: 30vh;
+    overflow-y: auto;
 }
 
 .alert   { background: var(--light-yellow) }
