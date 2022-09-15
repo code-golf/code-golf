@@ -287,6 +287,8 @@ thead th {
     display: grid;
     gap: .5rem;
     margin: 1rem 1rem 0;
+    max-height: 30vh;
+    overflow-y: auto;
     padding: 1rem 1rem 1rem 3rem;
     position: relative;
 }
