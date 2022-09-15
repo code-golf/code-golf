@@ -8,3 +8,11 @@ td:nth-child(3) div {
     flex: 1;
     text-align: right;
 }
+
+td > a > svg {
+    color: var(--color);
+    display: none;
+    margin-right: .5rem;
+}
+
+@media (max-width: 34rem) { td > a > svg { display: block } }

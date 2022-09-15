@@ -95,6 +95,7 @@
             <tr{{ if eq $name .Login }} class="me"{{ end }}>
                 <td>
                     <a href="/{{ .Hole.ID }}#{{ .Lang.ID }}">
+                        <svg><use href="#{{ .Lang.ID }}"/></svg>
                         <span>{{ .Hole.Name }}</span>
                     </a>
                 <td>
