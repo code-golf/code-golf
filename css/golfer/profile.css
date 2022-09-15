@@ -27,6 +27,8 @@ section > a, section > div {
     min-width: 3rem;
 }
 
+[colspan] { max-width: 0 } /* #722 WebKit fix */
+
 .icons {
     align-content: start;
     display: grid;
