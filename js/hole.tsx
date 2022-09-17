@@ -1,6 +1,6 @@
-import { ASMStateField }                       from '@defasm/codemirror';
-import { EditorView } from './_codemirror.js';
-import diffTable                               from './_diff';
+import { ASMStateField }                  from '@defasm/codemirror';
+import { EditorView }                     from './_codemirror';
+import diffTable                          from './_diff';
 import { $, $$, byteLen, charLen, comma } from './_util';
 import {
     init, langs, getLang, hole, getAutoSaveKey, setSolution, getSolution,

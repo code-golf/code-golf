@@ -1,7 +1,7 @@
 import { $, $$, byteLen, charLen, comma, ord } from './_util';
 import { Vim }                                 from '@replit/codemirror-vim';
-import { EditorState, EditorView, extensions } from './_codemirror.js';
-import pbm                                     from './_pbm.js';
+import { EditorState, EditorView, extensions } from './_codemirror';
+import pbm                                     from './_pbm';
 import LZString                                from 'lz-string';
 
 let tabLayout: boolean = false;

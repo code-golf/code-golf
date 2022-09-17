@@ -6,7 +6,7 @@ export { EditorState, EditorView };
 
 // Extensions.
 import { carriageReturn, insertChar,
-    showUnprintables }                           from './_codemirror_unprintable.js';
+    showUnprintables }                           from './_codemirror_unprintable';
 import { history, historyKeymap, insertNewline,
     insertTab, standardKeymap }                  from '@codemirror/commands';
 import { tags }                                  from '@lezer/highlight';

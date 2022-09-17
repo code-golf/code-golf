@@ -76,7 +76,7 @@ font:
 
 lint:
 	@node_modules/typescript/bin/tsc --project tsconfig.json
-	@node_modules/.bin/eslint --ext js,jsx,ts,tsx js/
+	@node_modules/.bin/eslint --ext ts,tsx js/
 
 	@docker run --rm -v $(CURDIR):/app -w /app \
 	    golangci/golangci-lint:v1.49.0 golangci-lint run

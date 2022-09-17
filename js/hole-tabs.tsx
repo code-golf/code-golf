@@ -4,8 +4,8 @@ import {
     RowOrColumn, LayoutConfig, ResolvedRootItemConfig,
     ResolvedLayoutConfig, DragSource, LayoutManager, ComponentContainer,
 } from 'golden-layout';
-import { EditorView } from './_codemirror.js';
-import diffTable                               from './_diff';
+import { EditorView }                     from './_codemirror';
+import diffTable                          from './_diff';
 import { $, $$, byteLen, charLen, comma } from './_util';
 import {
     init, langs, getLang, hole, getAutoSaveKey, setSolution, getSolution,

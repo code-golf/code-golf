@@ -259,9 +259,9 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	}
 
 	// Append route specific JS.
-	// e.g. GET /foo/bar might add js/foo.js and/or js/foo/bar.js.
+	// e.g. GET /foo/bar might add js/foo.ts and/or js/foo/bar.tsx.
 	for _, path := range []string{path.Dir(name), name} {
-		for _, ext := range []string{"js", "ts", "tsx"} {
+		for _, ext := range []string{"ts", "tsx"} {
 			if url, ok := assets["js/"+path+"."+ext]; ok {
 				args.JS = append(args.JS, url)
 			}

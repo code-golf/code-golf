@@ -1,4 +1,4 @@
-// Exports injected into every JS file by default
+// Exports injected into every TS/TSX file by default.
 
 // Our default JSX factory.
 export function createElement(

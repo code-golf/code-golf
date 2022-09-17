@@ -58,6 +58,12 @@ recent install of Raku installed and use Zef to install the dependencies:
 $ zef install --deps-only .
 ```
 
+## TypeScript
+
+The `js/` directory contains the TypeScript files which will be transpiled by
+`esbuild` into JavaScript files for serving. `.tsx` files can additionally
+make use of [JSX](https://www.typescriptlang.org/docs/handbook/jsx.html).
+
 ## Linting
 
 Run `make lint` to lint the code before a pull request. This lints the Typescript code, then the Go code.
