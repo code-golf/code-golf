@@ -1,0 +1,42 @@
+--- wren/src/cli/vm.c
++++ wren/src/cli/vm.c
+@@ -303,11 +303,35 @@ static void freeVM()
+ 
+ WrenInterpretResult runFile(const char* path)
+ {
+-  char* source = readFile(path);
+-  if (source == NULL)
++  char* source;
++
++  if (strcmp(path, "-") == 0)
++  {
++    size_t limit = 128 * 1024; // 128 KiB.
++
++    source = (char*)malloc(limit + 1);
++    if (source == NULL)
++    {
++      fprintf(stderr, "Failed to malloc for stdin.\n");
++      exit(1);
++    }
++
++    size_t bytesRead = fread(source, 1, limit, stdin);
++    if (bytesRead < 0)
++    {
++      fprintf(stderr, "Failed to slurp stdin.\n");
++      exit(1);
++    }
++    source[bytesRead] = '\0';
++  }
++  else
+   {
+-    fprintf(stderr, "Could not find file \"%s\".\n", path);
+-    exit(66);
++    source = readFile(path);
++    if (source == NULL)
++    {
++      fprintf(stderr, "Could not find file \"%s\".\n", path);
++      exit(66);
++    }
+   }
+ 
+   // If it looks like a relative path, make it explicitly relative so that we

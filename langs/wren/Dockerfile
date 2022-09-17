@@ -5,15 +5,15 @@ RUN apk add --no-cache build-base curl
 RUN curl -L https://github.com/wren-lang/wren-cli/archive/refs/tags/0.4.0.tar.gz \
   | tar xz
 
-RUN cd wren-cli-0.4.0/projects/make && make
+COPY stdin.patch /
+
+RUN mv wren-* wren         \
+ && patch -p0 <stdin.patch \
+ && LDFLAGS=-static make -C /wren/projects/make
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/cat /bin/sh             /bin/
-COPY --from=0 /lib/ld-musl-x86_64.so.1     /lib/
-COPY --from=0 /wren-cli-0.4.0/bin/wren_cli /usr/bin/
-
-COPY wren /usr/bin/
+COPY --from=0 /wren/bin/wren_cli /usr/bin/wren
 
 ENTRYPOINT ["wren"]
 

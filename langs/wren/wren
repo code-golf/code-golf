@@ -1,8 +1,0 @@
-#!/bin/sh -e
-
-[ "$1" = "--version" ] && exec wren_cli "$@"
-
-cat - > /tmp/code.wren
-
-shift
-exec wren_cli /tmp/code.wren "$@"
