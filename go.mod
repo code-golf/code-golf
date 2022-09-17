@@ -19,7 +19,7 @@ require (
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 	github.com/tdewolff/minify/v2 v2.12.1
 	github.com/yuin/goldmark v1.4.14
-	golang.org/x/exp v0.0.0-20220915210609-840b3808d824
+	golang.org/x/exp v0.0.0-20220916125017-b168a2c6b86b
 	golang.org/x/oauth2 v0.0.0-20220909003341-f21342109be1
 	gopkg.in/guregu/null.v4 v4.0.0
 )
