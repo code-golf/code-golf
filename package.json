@@ -10,6 +10,7 @@
     "@codemirror/legacy-modes": "",
     "@codemirror/theme-one-dark": "",
     "@defasm/codemirror": "",
+    "@exercism/codemirror-lang-wren": "github:exercism/codemirror-lang-wren#wip",
     "@replit/codemirror-vim": "",
     "codemirror": "^6",
     "codemirror-lang-golfscript": "",
