@@ -1,6 +1,6 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0.302-alpine3.15 as builder
+FROM mcr.microsoft.com/dotnet/sdk:6.0.401-alpine3.16 as builder
 
-ENV DOTNET_CLI_TELEMETRY_OPTOUT=1 VERSION=4.2.0
+ENV DOTNET_CLI_TELEMETRY_OPTOUT=1 VERSION=4.3.0
 
 WORKDIR /source
 
@@ -15,6 +15,7 @@ COPY --from=0 /lib/ld-musl-x86_64.so.1 \
               /lib/libcrypto.so.1.1    \
               /lib/libssl.so.1.1       /lib/
 COPY --from=0 /usr/lib                 /usr/lib/
+COPY --from=0 /usr/share/icu           /usr/share/icu
 COPY --from=0 /compiler                /compiler/
 
 ENTRYPOINT ["/compiler/Compiler"]

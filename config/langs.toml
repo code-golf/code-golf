@@ -170,8 +170,8 @@ int main(int argc, char* argv[]) {
 '''
 
 ['C#']
-size    = '145 MiB'
-version = 'C# 10.0 on .NET 6.0.7'
+size    = '148 MiB'
+version = 'C# 10.0 on .NET 6.0.9'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -299,8 +299,8 @@ for arg <- System.argv, do: IO.puts arg
 '''
 
 ['F#']
-size    = '140 MiB'
-version = 'F# 6.0 on .NET 6.0.7'
+size    = '142 MiB'
+version = 'F# 6.0 on .NET 6.0.9'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -631,8 +631,8 @@ for ($i = 1; $i < $argc; $i++)
 '''
 
 [PowerShell]
-size    = '177 MiB'
-version = 'PowerShell 7.2.5 on .NET 6.0.7'
+size    = '179 MiB'
+version = 'PowerShell 7.2.6 on .NET 6.0.9'
 website = 'https://docs.microsoft.com/powershell/scripting/overview'
 example = '''
 # Printing
