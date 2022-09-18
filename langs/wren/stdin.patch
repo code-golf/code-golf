@@ -20,7 +20,7 @@
 +    }
 +
 +    size_t bytesRead = fread(source, 1, limit, stdin);
-+    if (bytesRead < 0)
++    if (ferror(stdin))
 +    {
 +      fprintf(stderr, "Failed to slurp stdin.\n");
 +      exit(1);
