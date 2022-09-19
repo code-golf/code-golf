@@ -42,10 +42,9 @@ let editor: EditorView | null = null;
 init(true, setSolution, setCodeForLangAndSolution, updateReadonlyPanels, () => editor);
 
 // Handle showing/hiding alerts
-for (const alert of $$('.alert')) {
-    const closeBtn = alert.querySelector('.main_close');
-    if (!closeBtn) continue;
-    closeBtn.addEventListener('click', () => {
+for (const alertCloseBtn of $$('.main_close')) {
+    const alert = alertCloseBtn.parentNode as HTMLDivElement;
+    alertCloseBtn.addEventListener('click', () => {
         const child = (alert.querySelector('svg') as any).cloneNode(true);
         $('#alert-pool').appendChild(child);
         alert.classList.add('hide');
