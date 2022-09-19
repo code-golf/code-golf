@@ -320,8 +320,8 @@ let main args =
 '''
 
 [Fortran]
-size    = '77.1 MiB'
-version = 'GNU Fortran 11.2.0'
+size    = '85.6 MiB'
+version = 'GNU Fortran 12.2.0'
 website = 'https://gcc.gnu.org/fortran/'
 example = '''
 character(len=32) :: s
