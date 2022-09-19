@@ -201,10 +201,7 @@ main {
     padding: 1rem;
 }
 
-nav #alert-pool {
-    flex: 1;
-    margin-right: 0.5em;
-}
+nav > :empty { flex: 1 }
 
 select {
     -webkit-appearance: none;
@@ -460,6 +457,11 @@ body > .tabs a {
 /* Hacky, remove once we no longer use links inside <details>. */
 details.tabs   { display: initial }
 details.tabs a { display: inline-block }
+
+#alert-pool {
+    flex: 1;
+    margin-right: 0.5em;
+}
 
 #error h1 { text-align: center }
 
