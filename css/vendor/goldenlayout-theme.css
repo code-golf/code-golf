@@ -36,7 +36,6 @@
   color: var(--grey);
   margin-right: 2px;
   border: 1px solid var(--gl-border);
-  border-bottom: none;
 }
 .lm_header .lm_tab .lm_title {
   padding-top: 1px;
@@ -94,7 +93,7 @@
   opacity: 1;
 }
 .lm_controls .lm_maximise {
-  background: var(--color); 
+  background: var(--color);
   -webkit-mask: url(./img/lm_maximize.svg) center / 12px 12px no-repeat;
   mask: url(./img/lm_maximize.svg) center / 12px 12px no-repeat;
 }
