@@ -115,7 +115,7 @@ Numbers:
 	return false
 }
 
-func sudoku(v2 bool) []Scorecard {
+func sudokuBoard(v2 bool) Scorecard {
 	var board [boardSize][boardSize]int
 
 	var generate func(int) bool
@@ -214,5 +214,13 @@ func sudoku(v2 bool) []Scorecard {
 		}
 	}
 
-	return []Scorecard{{Args: args, Answer: out}}
+	return Scorecard{Args: args, Answer: out}
+}
+
+func sudoku(v2 bool) []Scorecard {
+	cards := make([]Scorecard, 3)
+	for i := 0; i < len(cards); i++ {
+		cards[i] = sudokuBoard(v2)
+	}
+	return cards
 }
