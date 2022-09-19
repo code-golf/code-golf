@@ -254,6 +254,7 @@
   clear: both;
   padding-right: 10px;
   margin: 0;
+  background: var(--background);
 }
 .lm_header .lm_tabdropdown_list .lm_tab .lm_title {
   width: 100px;
