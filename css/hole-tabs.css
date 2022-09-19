@@ -198,7 +198,7 @@ main {
     position: relative;
 }
 
-.alert .main_close {
+.main_close {
     position: absolute;
     top: 0;
     right: 0;

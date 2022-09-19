@@ -201,8 +201,10 @@ main {
     padding: 1rem;
 }
 
-nav #alert-pool,
-nav > :empty { flex: 1 }
+nav #alert-pool {
+    flex: 1;
+    margin-right: 0.5em;
+}
 
 select {
     -webkit-appearance: none;
