@@ -242,7 +242,6 @@
   border-top: 5px dashed;
   border-right: 5px solid transparent;
   border-left: 5px solid transparent;
-  color: white;
 }
 .lm_header .lm_tabdropdown_list {
   position: absolute;
@@ -255,6 +254,7 @@
   clear: both;
   padding-right: 10px;
   margin: 0;
+  background: var(--background);
 }
 .lm_header .lm_tabdropdown_list .lm_tab .lm_title {
   width: 100px;
