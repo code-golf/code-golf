@@ -1,7 +1,6 @@
 package hole
 
 import (
-	"bufio"
 	"bytes"
 	"context"
 	"embed"
@@ -9,6 +8,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"regexp"
 	"strings"
 	"syscall"
 	"time"
@@ -19,6 +19,9 @@ const timeout = 5 * time.Second
 
 //go:embed answers
 var answers embed.FS
+
+// All whitespace except newline, up to a newline or the end.
+var stdoutTrimmer = regexp.MustCompile(`[^\S\n]+(?:\n|$)`)
 
 type Scorecard struct {
 	ASMBytes, ExitCode int
@@ -318,30 +321,20 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 	// Trim trailing whitespace.
 	score.Stderr = bytes.TrimRightFunc(stderr.Next(maxLength), unicode.IsSpace)
 
-	// Trim trailing spaces per line.
-	// FIXME This is all very hacky, but needed for Sierpiński.
 	stdoutContents := stdout.Next(maxLength)
 
-	// Postprocess sed output to turn null bytes into newlines
+	// Postprocess sed output to turn null bytes into newlines.
 	if langID == "sed" {
 		stdoutContents = bytes.ReplaceAll(stdoutContents, []byte("\x00"), []byte("\n"))
 	}
 
+	// Trim trailing whitespace on each line, and then trailing empty lines.
+	// Quine solutions are obviously left untouched.
 	if holeID == "quine" {
 		score.Stdout = stdoutContents
 	} else {
-		scanner := bufio.NewScanner(bytes.NewReader(stdoutContents))
-		for scanner.Scan() {
-			score.Stdout = append(
-				score.Stdout, bytes.TrimRightFunc(scanner.Bytes(), unicode.IsSpace)...)
-			score.Stdout = append(score.Stdout, '\n')
-		}
-
-		if err := scanner.Err(); err != nil {
-			panic(err)
-		}
-
-		score.Stdout = bytes.TrimRightFunc(score.Stdout, unicode.IsSpace)
+		score.Stdout = bytes.TrimRight(stdoutTrimmer.ReplaceAll(
+			stdoutContents, []byte{'\n'}), "\n")
 	}
 
 	// ASCII-ify roman numerals
