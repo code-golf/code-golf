@@ -805,7 +805,7 @@ for arg in CommandLine.arguments[1...] {
 
 [Tcl]
 size    = '4.73 MiB'
-version = '8.6.2'
+version = '8.6.12'
 website = 'https://www.tcl-lang.org'
 example = '''
 # Printing
