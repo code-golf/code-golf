@@ -813,7 +813,7 @@ puts "Hello, World!"
 
 # Looping
 for {set x 0} {$x < 10} {incr x} {
-    puts x
+    puts $x
 }
 
 # Accessing arguments
