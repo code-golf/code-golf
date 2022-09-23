@@ -1,0 +1,9 @@
+#!/bin/sh -e
+
+[ "$1" = "--version" ] && exec sh -c 'echo "puts \$tcl_version" | tclsh'
+
+cat - > /tmp/code.tcl
+
+# Execute
+shift
+exec /usr/bin/tclsh /tmp/code.tcl "$@"
