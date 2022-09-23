@@ -572,6 +572,9 @@ preamble = '''
 
 [Divisors]
 category = 'Sequence'
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Proper_divisors' },
+]
 preamble = '''
 <p>
     A number is a divisor of another number if it can divide into it with no
