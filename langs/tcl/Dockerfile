@@ -17,15 +17,10 @@ RUN cd tcl-core-8-6-12/unix \
 
 FROM codegolf/lang-base
 
-COPY --from=builder /bin/cat /bin/echo /bin/sh /bin/
-COPY --from=builder /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=builder tcl-core-8-6-12/unix/tclsh /usr/bin/
+COPY --from=builder /lib/ld-musl-x86_64.so.1   /lib/
+COPY --from=builder tcl-core-8-6-12/unix/tclsh /usr/bin/tcl
 
-# create empty init.tcl to avoid "can't find usable init.tcl" error
+# Create empty init.tcl to avoid "can't find usable init.tcl" error
 COPY --from=builder /empty /library/init.tcl
 
-COPY tcl /usr/bin/
-
 ENTRYPOINT ["tcl"]
-
-CMD ["--version"]
