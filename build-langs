@@ -40,7 +40,10 @@ for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
         %lang<version> = $id eq 'assembly' ?? "DefAssembler $0" !! $0;
     }
     else {
-        ( my $proc = run «docker run --rm --tmpfs '/tmp:exec' $img», :out ).sink;
+        my $proc = run «docker run -i --rm --tmpfs '/tmp:exec' $img», :in, :out;
+
+        $proc.in.say: 'puts [info patchlevel]' if $id eq 'tcl';
+        $proc.in.close;
 
         my $ver = $proc.out.slurp(:close).chomp.trans: "\n" => ' ';
 

@@ -803,6 +803,25 @@ for arg in CommandLine.arguments[1...] {
 }
 '''
 
+[Tcl]
+size    = '2.44 MiB'
+version = '8.6.12'
+website = 'https://www.tcl-lang.org'
+example = '''
+# Printing
+puts "Hello, World!"
+
+# Looping
+for {set x 0} {$x < 10} {incr x} {
+    puts $x
+}
+
+# Accessing arguments
+foreach arg $argv {
+    puts $arg
+}
+'''
+
 [V]
 size    = '38.5 MiB'
 version = '0.2.4'
