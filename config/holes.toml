@@ -1285,137 +1285,145 @@ links = [
 ]
 preamble = '''
 <p>
-    For each set of three musical notes forming a triad, print the name of the chord they form, consisting of the root note and the type of triad.
-<p>
-    Each note is represented as an uppercase letter, optionally followed by a single accidental, either sharp (<b>♯</b> U+266F) or flat (<b>♭</b> U+266D).
-<p>
-    Background:
-<p>
-    There are twelve pitch classes in twelve-tone equal temperament, some of which have multiple names due to <b>♯</b> and <b>♭</b> raising and lowering the pitch, respectively. They are, in ascending order:
-
-	<div>
-    	<table>
-        	<thead>
-            	<tr>
-                	<th>#<th>Name 1<th>Name 2
-        	<tbody>
-            	<tr>
-                	<td>0
-                	<td><b>A</b>
-                	<td>
-            	<tr>
-                	<td>1
-                	<td><b>A♯</b>
-                	<td><b>B♭</b>
-            	<tr>
-                	<td>2
-                	<td><b>B</b>
-                	<td><b>C♭</b>
-            	<tr>
-                	<td>3
-                	<td><b>C</b>
-                	<td><b>B♯</b>
-            	<tr>
-                	<td>4
-                	<td><b>C♯</b>
-                	<td><b>D♭</b>
-            	<tr>
-                	<td>5
-                	<td><b>D</b>
-                	<td>
-            	<tr>
-                	<td>6
-                	<td><b>D♯</b>
-                	<td><b>E♭</b>
-            	<tr>
-                	<td>7
-                	<td><b>E</b>
-                	<td><b>F♭</b>
-            	<tr>
-                	<td>8
-                	<td><b>F</b>
-                	<td><b>E♯</b>
-            	<tr>
-                	<td>9
-                	<td><b>F♯</b>
-                	<td><b>G♭</b>
-            	<tr>
-                	<td>10
-                	<td><b>G</b>
-                	<td>
-            	<tr>
-                	<td>11
-                	<td><b>G♯</b>
-                	<td><b>A♭</b>
-          </table>
-	</div>
-<p>
-	A triad consists of a root note on the bottom followed by two thirds stacked on top of it. Thirds describe the distance between the preceding and following note. A third can be either of two types:
-
-    <div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name<th>Distance<th>Example
-            <tbody>
-                <tr>
-                    <td>Minor third
-                    <td>3
-                    <td><b>A C</b> (note 0 to note 3)
-                <tr>
-                    <td>Major third
-                    <td>4
-                    <td><b>C E</b> (note 3 to note 7)
-        </table>
-    </div>
-<p>
-    Being that there are 2 thirds in a triad and each third can be of 2 different types, there are 4 total “types” of triads. They are:
-
-	<div>
-    	<table>
-    	    <thead>
-				<tr>
-    	            <th>Triad Name<th>Thirds (Bottom to Top)<th>Example
-    	    <tbody>
-    	        <tr>
-    	            <td>Diminished Triad
-    	            <td>Minor, Minor
-   	 	 	        <td><b>B D F</b>
-    	        <tr>
-    	 	         <td>Minor Triad
-    	            <td>Minor, Major
-    	            <td><b>E G B</b>
-    	        <tr>
-    	            <td>Major Triad
-    	            <td>Major, Minor
-    	            <td><b>C E G</b>
-   	 	        <tr>
-    	            <td>Augmented Triad
-    	            <td>Major, Major
-    	            <td><b>D F♯ A♯</b>
-   	 	</table>
-	</div>
-<p>
-    Input:
-
-  	<ul>
-        <li>Triads of notes will always be written out so that the letters in the name used ascend by 2 between each third  (wrapping back to A after G). Therefore, a triad consisting of notes 3, 6, and 9 may be written as <b>B♯ D♯ F♯</b> or <b>C E♭ G♭</b>, but not, for example, as <b>C D♯ F♯</b>.
-        <li>The notes may appear in any order, e.g., <b>C E G</b> and <b>E C G</b> both may appear.
-	</ul>
+    For each set of three musical notes forming a triad, print the name of the
+    chord they form, consisting of the root note and the type of triad.
 
 <p>
-	Output:
+    Each note is represented as an uppercase letter, optionally followed by a
+    single accidental, either sharp (<b>♯</b> U+266F) or flat (<b>♭</b> U+266D).
 
- 	<ul>
-        <li>Chords are named by the root note followed by nothing for major, <b>m</b> for minor, <b>°</b> U+00B0 for diminished, and <b>+</b> for augmented.
-        <li>The spelling of the root note in the output must match the input, e.g. the expected output for <b>C E♭ G♭</b> is <b>C°</b>, not <b>B♯°</b>.
-  	</ul>
+<p>Background:
 
 <p>
-    Note: to find the root, look <em>only</em> at the letters.
-    <b>E G♯ C</b> and <b>E G♯ B♯</b> cannot be told apart by a method that only considers note distances.
-    The root is the note whose letter comes 2 and 4 letters before the other two letters in the chord.
-    The expected outputs are <b>C+</b> and <b>E+</b> respectively.
+    There are twelve pitch classes in twelve-tone equal temperament, some of
+    which have multiple names due to <b>♯</b> and <b>♭</b> raising and
+    lowering the pitch, respectively. They are, in ascending order:
+
+<div>
+    <table>
+        <thead>
+            <tr><th>#
+                <th>Name 1
+                <th>Name 2
+        <tbody>
+            <tr><td>0
+                <td><b>A</b>
+                <td>
+            <tr><td>1
+                <td><b>A♯</b>
+                <td><b>B♭</b>
+            <tr><td>2
+                <td><b>B</b>
+                <td><b>C♭</b>
+            <tr><td>3
+                <td><b>C</b>
+                <td><b>B♯</b>
+            <tr><td>4
+                <td><b>C♯</b>
+                <td><b>D♭</b>
+            <tr><td>5
+                <td><b>D</b>
+                <td>
+            <tr><td>6
+                <td><b>D♯</b>
+                <td><b>E♭</b>
+            <tr><td>7
+                <td><b>E</b>
+                <td><b>F♭</b>
+            <tr><td>8
+                <td><b>F</b>
+                <td><b>E♯</b>
+            <tr><td>9
+                <td><b>F♯</b>
+                <td><b>G♭</b>
+            <tr><td>10
+                <td><b>G</b>
+                <td>
+            <tr><td>11
+                <td><b>G♯</b>
+                <td><b>A♭</b>
+    </table>
+</div>
+
+<p>
+    A triad consists of a root note on the bottom followed by two thirds
+    stacked on top of it. Thirds describe the distance between the preceding
+    and following note. A third can be either of two types:
+
+<div>
+    <table>
+        <thead>
+            <tr><th>Name
+                <th>Distance
+                <th>Example
+        <tbody>
+            <tr><td>Minor third
+                <td>3
+                <td><b>A C</b> (note 0 to note 3)
+            <tr><td>Major third
+                <td>4
+                <td><b>C E</b> (note 3 to note 7)
+    </table>
+</div>
+
+<p>
+    Being that there are 2 thirds in a triad and each third can be of 2
+    different types, there are 4 total “types” of triads. They are:
+
+<div>
+    <table>
+        <thead>
+            <tr><th>Triad Name
+                <th>Thirds (Bottom to Top)
+                <th>Example
+        <tbody>
+            <tr><td>Diminished Triad
+                <td>Minor, Minor
+                <td><b>B D F</b>
+            <tr><td>Minor Triad
+                <td>Minor, Major
+                <td><b>E G B</b>
+            <tr><td>Major Triad
+                <td>Major, Minor
+                <td><b>C E G</b>
+            <tr><td>Augmented Triad
+                <td>Major, Major
+                <td><b>D F♯ A♯</b>
+    </table>
+</div>
+
+<p>Input:
+
+<ul>
+    <li>
+        Triads of notes will always be written out so that the letters in the
+        name used ascend by 2 between each third (wrapping back to A after G).
+        Therefore, a triad consisting of notes 3, 6, and 9 may be written as
+        <b>B♯ D♯ F♯</b> or <b>C E♭ G♭</b>, but not, for example, as
+        <b>C D♯ F♯</b>.
+    <li>
+        The notes may appear in any order, e.g., <b>C E G</b> and <b>E C G</b>
+        both may appear.
+</ul>
+
+<p>Output:
+
+<ul>
+    <li>
+        Chords are named by the root note followed by nothing for major,
+        <b>m</b> for minor, <b>°</b> U+00B0 for diminished, and <b>+</b> for
+        augmented.
+    <li>
+        The spelling of the root note in the output must match the input, e.g.
+        the expected output for <b>C E♭ G♭</b> is <b>C°</b>, not <b>B♯°</b>.
+</ul>
+
+<p>
+    Note: to find the root, look <em>only</em> at the letters. <b>E G♯ C</b>
+    and <b>E G♯ B♯</b> cannot be told apart by a method that only considers
+    note distances. The root is the note whose letter comes 2 and 4 letters
+    before the other two letters in the chord. The expected outputs are
+    <b>C+</b> and <b>E+</b> respectively.
 '''
 
 ['Niven Numbers']
@@ -1817,8 +1825,7 @@ links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Rock_paper_scissors#Additional_weapons' },
 ]
 preamble = '''
-<p>
-    Judge games of "rock-paper-scissors" with additional weapons:
+<p>Judge games of "rock-paper-scissors" with additional weapons:
 
 <p>
     ✂ cuts 📄 covers 💎 crushes 🦎 poisons 🖖 smashes ✂ decapitates 🦎 eats 📄
@@ -1829,47 +1836,38 @@ preamble = '''
     For each argument, print a line like <code>🦎 poisons 🖖</code> describing the game outcome,
     or <code>Tie</code> if they are equal.
 
-<p>
-    The weapons are represented and encoded as follows:
+<p>The weapons are represented and encoded as follows:
 
 <div>
     <table>
         <thead>
-            <tr>
-	        <th>Weapon
+            <tr><th>Weapon
                 <th>Emoji
-		<th>Codepoint
-                <th>UTF-8 sequence
+                <th>Codepoint
+                <th>UTF-8 Sequence
         <tbody>
-            <tr>
-	        <th>Rock
+            <tr><th>Rock
                 <td>💎
-		<td><a href=//emojipedia.org/gem-stone/>U+1F48E</a>
+                <td><a href=//emojipedia.org/gem-stone/>U+1F48E</a>
                 <td><pre>f0 9f 92 8e</pre>
-            <tr>
-	        <th>Paper
+            <tr><th>Paper
                 <td>📄
-		<td><a href=//emojipedia.org/page-facing-up/>U+1F4C4</a>
+                <td><a href=//emojipedia.org/page-facing-up/>U+1F4C4</a>
                 <td><pre>f0 9f 93 84</pre>
-            <tr>
-	        <th>Scissors
+            <tr><th>Scissors
                 <td>✂
-		<td><a href=//emojipedia.org/black-scissors/>U+2702</a>
+                <td><a href=//emojipedia.org/black-scissors/>U+2702</a>
                 <td><pre>e2 9c 82</pre>
-            <tr>
-	        <th>Spock
-		<td>🖖
-		<td><a href=//emojipedia.org/raised-hand-with-part-between-middle-and-ring-fingers/>U+1F596</a>
+            <tr><th>Spock
+                <td>🖖
+                <td><a href=//emojipedia.org/raised-hand-with-part-between-middle-and-ring-fingers/>U+1F596</a>
                 <td><pre>f0 9f 96 96</pre>
-            <tr>
-	        <th>Lizard
-		<td>🦎
-		<td><a href=//emojipedia.org/lizard/>U+1F98E</a>
+            <tr><th>Lizard
+                <td>🦎
+                <td><a href=//emojipedia.org/lizard/>U+1F98E</a>
                 <td><pre>f0 9f a6 8e</pre>
     </table>
 </div>
-
-
 '''
 
 ['Reverse Polish Notation']
