@@ -10,6 +10,7 @@ jobs:
 
       - uses: actions/setup-go@v3
         with:
+          cache: true
           go-version-file: go.mod
 
       - uses: actions/setup-node@v3
