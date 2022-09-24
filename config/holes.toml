@@ -1826,7 +1826,7 @@ preamble = '''
 
 <p>
     Each argument is a string of two emoji encoded in UTF-8.
-    For each argument print a line like <code>🦎 poisons 🖖</code> describing the game outcome,
+    For each argument, print a line like <code>🦎 poisons 🖖</code> describing the game outcome,
     or <code>Tie</code> if they are equal.
 
 <p>
@@ -1854,7 +1854,7 @@ preamble = '''
             <tr>
 	        <th>Scissors
                 <td>✂
-		<td><a href=//emojipedia.org/black-scissors/>U+2702</a>,
+		<td><a href=//emojipedia.org/black-scissors/>U+2702</a>
                 <td><pre>e2 9c 82</pre>
             <tr>
 	        <th>Spock
