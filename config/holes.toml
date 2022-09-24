@@ -1829,26 +1829,47 @@ preamble = '''
     For each argument, print a line like <code>🦎 poisons 🖖</code> describing the game outcome,
     or <code>Tie</code> if they are equal.
 
-<ul>
-    <li>
-        Rock is represented by
-        <a href=//emojipedia.org/gem-stone/>“💎” (U+1F48E Gem Stone)</a>.
-    <li>
-        Paper is represented by
-        <a href=//emojipedia.org/page-facing-up/>“📄” (U+1F4C4 Page Facing Up)</a>.
-    <li>
-        Scissors are represented by
-        <a href=//emojipedia.org/black-scissors/>“✂” (U+2702 Black Scissors)</a>,
-        note <b>without</b> the U+FE0F variation selector.
-    <li>
-        Spock is represented by
-        <a href=//emojipedia.org/raised-hand-with-part-between-middle-and-ring-fingers/>
-            “🖖” (U+1F596 Raised Hand With Part Between Middle and Ring Fingers)
-        </a>.
-    <li>
-        Lizard is represented by
-        <a href=//emojipedia.org/lizard/>“🦎” (U+1F98E Lizard)</a>.
-</ul>
+<p>
+    The weapons are represented and encoded as follows:
+
+<div>
+    <table>
+        <thead>
+            <tr>
+	        <th>Weapon
+                <th>Emoji
+		<th>Codepoint
+                <th>UTF-8 sequence
+        <tbody>
+            <tr>
+	        <th>Rock
+                <td>💎
+		<td><a href=//emojipedia.org/gem-stone/>U+1F48E</a>
+                <td><pre>f0 9f 92 8e</pre>
+            <tr>
+	        <th>Paper
+                <td>📄
+		<td><a href=//emojipedia.org/page-facing-up/>U+1F4C4</a>
+                <td><pre>f0 9f 93 84</pre>
+            <tr>
+	        <th>Scissors
+                <td>✂
+		<td><a href=//emojipedia.org/black-scissors/>U+2702</a>
+                <td><pre>e2 9c 82</pre>
+            <tr>
+	        <th>Spock
+		<td>🖖
+		<td><a href=//emojipedia.org/raised-hand-with-part-between-middle-and-ring-fingers/>U+1F596</a>
+                <td><pre>f0 9f 96 96</pre>
+            <tr>
+	        <th>Lizard
+		<td>🦎
+		<td><a href=//emojipedia.org/lizard/>U+1F98E</a>
+                <td><pre>f0 9f a6 8e</pre>
+    </table>
+</div>
+
+
 '''
 
 ['Reverse Polish Notation']
