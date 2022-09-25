@@ -26,7 +26,7 @@ func main() {
 
 	// Every 30 seconds.
 	go func() {
-		for range time.Tick(30 * time.Second) {
+		for range time.Tick(10 * time.Second) {
 			for _, view := range []string{"medals", "rankings", "points"} {
 				if _, err := db.Exec(
 					"REFRESH MATERIALIZED VIEW CONCURRENTLY " + view,
