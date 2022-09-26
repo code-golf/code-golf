@@ -73,17 +73,17 @@ var (
 )
 
 var tmpl = template.New("").Funcs(template.FuncMap{
-	"bytes":     pretty.Bytes,
-	"colour":    colour,
+	"bytes":       pretty.Bytes,
+	"colour":      colour,
 	"colour_rank": colour_rank,
-	"comma":     pretty.Comma,
-	"dec":       func(i int) int { return i - 1 },
-	"hasPrefix": strings.HasPrefix,
-	"hasSuffix": strings.HasSuffix,
-	"html":      func(html string) template.HTML { return template.HTML(html) },
-	"inc":       func(i int) int { return i + 1 },
-	"ord":       pretty.Ordinal,
-	"svg":       func(name string) template.HTML { return svg[name] },
+	"comma":       pretty.Comma,
+	"dec":         func(i int) int { return i - 1 },
+	"hasPrefix":   strings.HasPrefix,
+	"hasSuffix":   strings.HasSuffix,
+	"html":        func(html string) template.HTML { return template.HTML(html) },
+	"inc":         func(i int) int { return i + 1 },
+	"ord":         pretty.Ordinal,
+	"svg":         func(name string) template.HTML { return svg[name] },
 	"symbol": func(name string) template.HTML {
 		return template.HTML(strings.ReplaceAll(string(svg[name]), "svg", "symbol"))
 	},

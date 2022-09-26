@@ -42,7 +42,7 @@ func redir(url string) http.HandlerFunc {
 
 func redirTemplate(templateURL string) http.HandlerFunc {
 	re := regexp.MustCompile("{[^{}]*}")
-	return func (w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
 		url := re.ReplaceAllStringFunc(templateURL, func(s string) string {
 			// slice to remove the surrounding {}
 			return param(r, s[1:len(s)-1])
