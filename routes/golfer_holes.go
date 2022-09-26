@@ -7,8 +7,8 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-// GET /golfers/{golfer}/rankings/{scoring}
-func golferRankingsGET(w http.ResponseWriter, r *http.Request) {
+// GET /golfer/{golfer}/holes/{display}/{scope}/{scoring}
+func golferHolesGET(w http.ResponseWriter, r *http.Request) {
 	type ranking struct {
 		Diamond               bool
 		Golfers, Rank, Points int
@@ -81,5 +81,5 @@ func golferRankingsGET(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	render(w, r, "golfer/rankings", data, golfer.Name)
+	render(w, r, "golfer/holes", data, golfer.Name)
 }
