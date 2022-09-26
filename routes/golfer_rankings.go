@@ -40,13 +40,14 @@ func golferRankingsGET(w http.ResponseWriter, r *http.Request) {
 
 	golfer := session.GolferInfo(r).Golfer
 	var points = "points_for_lang"
+	var rank = "rank"
 	if data.Scope == "overall" {
-		// TODO: also change rank to overall points rank
 		points = "points"
+		rank = "rank_overall"
 	}
 	rows, err := session.Database(r).Query(
-		"SELECT hole, lang, golfers, rank, rank = 1 AND tie_count = 1, "+points+
-			" FROM rankings WHERE user_id = $1 AND scoring = $2",
+		"SELECT hole, lang, golfers, "+rank+", "+rank+" = 1 AND tie_count = 1, "+
+			points+" FROM rankings WHERE user_id = $1 AND scoring = $2",
 		golfer.ID,
 		data.Scoring,
 	)

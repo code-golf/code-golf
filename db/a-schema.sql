@@ -209,7 +209,9 @@ CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
     select *,
            count(*) over (partition by hole, lang, scoring) golfers,
            rank()   over (partition by hole, lang, scoring
-                              order by points_for_lang desc, strokes)
+                              order by points_for_lang desc, strokes),
+           rank()   over (partition by hole, scoring
+                              order by points desc, strokes) rank_overall
       from points
 ), tie_count as (
     select hole, lang, scoring, strokes, count(*) tie_count
