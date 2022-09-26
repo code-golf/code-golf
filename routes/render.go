@@ -75,6 +75,7 @@ var (
 var tmpl = template.New("").Funcs(template.FuncMap{
 	"bytes":     pretty.Bytes,
 	"colour":    colour,
+	"colour_rank": colour_rank,
 	"comma":     pretty.Comma,
 	"dec":       func(i int) int { return i - 1 },
 	"hasPrefix": strings.HasPrefix,
