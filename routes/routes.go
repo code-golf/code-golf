@@ -69,8 +69,6 @@ func Router(db *sql.DB) http.Handler {
 		r.Get("/", golferGET)
 		r.Post("/{action:follow|unfollow}", golferActionPOST)
 		r.Get("/cheevos", golferCheevosGET)
-		r.Get("/holes", golferHolesGET)
-		r.Get("/holes/{scoring}", golferHolesGET)
 		r.Get("/{display:rankings|points}/{scope:lang|overall}/{scoring:bytes|chars}", golferRankingsGET)
 		r.Get("/{hole}/{lang}/{scoring}", golferSolutionGET)
 		// r.Post("/{hole}/{lang}/{scoring}", golferSolutionPOST)
