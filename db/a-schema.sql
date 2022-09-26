@@ -210,6 +210,7 @@ CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
            count(*) over (partition by hole, lang, scoring) golfers,
            rank()   over (partition by hole, lang, scoring
                               order by points_for_lang desc, strokes),
+           count(*) over (partition by hole, scoring) golfers_overall,
            rank()   over (partition by hole, scoring
                               order by points desc, strokes) rank_overall
       from points
