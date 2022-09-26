@@ -61,7 +61,7 @@
                         data-tooltip="{{ comma .Rank }}{{ ord .Rank }} of {{ comma .Golfers }} golfers"
                         data-wide-tooltip>
                     {{ if eq $.Data.Display "points" }}
-                        <span> {{ .Points }} </span>
+                        {{ comma .Points }}
                     {{ else if .Diamond }}
                         💎
                     {{ else }}
