@@ -5,6 +5,7 @@ import (
 	"math/rand"
 	"net/http"
 	"net/url"
+	"regexp"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -37,4 +38,15 @@ func param(r *http.Request, key string) string {
 
 func redir(url string) http.HandlerFunc {
 	return http.RedirectHandler(url, http.StatusPermanentRedirect).ServeHTTP
+}
+
+func redirTemplate(templateURL string) http.HandlerFunc {
+	re := regexp.MustCompile("{[^{}]*}")
+	return func (w http.ResponseWriter, r *http.Request) {
+		url := re.ReplaceAllStringFunc(templateURL, func(s string) string {
+			// slice to remove the surrounding {}
+			return param(r, s[1:len(s)-1])
+		})
+		http.Redirect(w, r, url, http.StatusPermanentRedirect)
+	}
 }
