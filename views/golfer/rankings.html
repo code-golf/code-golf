@@ -52,7 +52,7 @@
                 {{ end }}
 
                 {{ with (index $holeRanks $lang.ID) }}
-                    <a class="{{ $lang.ID }} {{ colour .Rank }}"
+                    <a class="{{ $lang.ID }} {{ colour .Rank .Points $.Data.Display }}"
                         href="/rankings/holes/{{ $hole.ID }}/{{ $lang.ID }}/{{ $.Data.Scoring }}"
                         data-tooltip="{{ comma .Rank }}{{ ord .Rank }} of {{ comma .Golfers }} golfers"
                         data-wide-tooltip>

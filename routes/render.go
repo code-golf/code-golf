@@ -19,7 +19,14 @@ import (
 	"github.com/tdewolff/minify/v2/minify"
 )
 
-func colour(i int) string {
+func colour(rank int, points int, display string) string {
+	if display == "points" {
+		return colour_points(points)
+	}
+	return colour_rank(rank)
+}
+
+func colour_rank(i int) string {
 	if i <= 1 {
 		return "yellow"
 	}
@@ -33,6 +40,25 @@ func colour(i int) string {
 		return "purple"
 	}
 	if i <= 100 {
+		return "blue"
+	}
+	return "green"
+}
+
+func colour_points(i int) string {
+	if i >= 950 {
+		return "yellow"
+	}
+	if i >= 900 {
+		return "orange"
+	}
+	if i >= 800 {
+		return "red"
+	}
+	if i >= 700 {
+		return "purple"
+	}
+	if i >= 500 {
 		return "blue"
 	}
 	return "green"
