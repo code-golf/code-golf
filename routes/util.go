@@ -36,11 +36,7 @@ func param(r *http.Request, key string) string {
 	return value
 }
 
-func redir(url string) http.HandlerFunc {
-	return http.RedirectHandler(url, http.StatusPermanentRedirect).ServeHTTP
-}
-
-func redirTemplate(templateURL string) http.HandlerFunc {
+func redir(templateURL string) http.HandlerFunc {
 	re := regexp.MustCompile("{[^{}]*}")
 	return func(w http.ResponseWriter, r *http.Request) {
 		url := re.ReplaceAllStringFunc(templateURL, func(s string) string {
