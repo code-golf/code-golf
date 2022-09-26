@@ -92,8 +92,8 @@
         </a>
 
         {{ $slug = print "/golfers/" .Name "/rankings/" }}
-        <a {{ if not (hasPrefix $.Path $slug) }} href="{{ $slug }}bytes" {{ end }}>
-            Rankings (WIP)
+        <a {{ if not (hasPrefix $.Path $slug) }} href="{{ $slug }}rankings/lang/bytes" {{ end }}>
+            Rankings
         </a>
 
     {{ if $me }}

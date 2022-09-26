@@ -5,6 +5,26 @@
 
 <main>
     <nav class=tabs>
+    {{ range .Data.Displays }}
+        <a {{ if ne . $.Data.Display }}
+            href="../../{{ . }}/{{ $.Data.Scope }}/{{ $.Data.Scoring }}"
+        {{ end }}>
+            {{ title . }}
+        </a>
+    {{ end }}
+    </nav>
+
+    <nav class=tabs>
+    {{ range .Data.Scopes }}
+        <a {{ if ne . $.Data.Scope }}
+            href="../{{ . }}/{{ $.Data.Scoring }}"
+        {{ end }}>
+            {{ title . }}
+        </a>
+    {{ end }}
+    </nav>
+    
+    <nav class=tabs>
     {{ range .Data.Scorings }}
         <a {{ if ne . $.Data.Scoring }} href="{{ . }}" {{ end }}>
             {{ title . }}
@@ -36,7 +56,9 @@
                         href="/rankings/holes/{{ $hole.ID }}/{{ $lang.ID }}/{{ $.Data.Scoring }}"
                         data-tooltip="{{ comma .Rank }}{{ ord .Rank }} of {{ comma .Golfers }} golfers"
                         data-wide-tooltip>
-                    {{ if .Diamond }}
+                    {{ if eq $.Data.Display "points" }}
+                        <span> {{ .Points }} </span>
+                    {{ else if .Diamond }}
                         💎
                     {{ else }}
                         <span>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup></span>

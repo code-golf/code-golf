@@ -10,8 +10,8 @@ import (
 // GET /golfers/{golfer}/rankings/{scoring}
 func golferRankingsGET(w http.ResponseWriter, r *http.Request) {
 	type ranking struct {
-		Diamond       bool
-		Golfers, Rank int
+		Diamond               bool
+		Golfers, Rank, Points int
 	}
 
 	data := struct {
@@ -19,6 +19,10 @@ func golferRankingsGET(w http.ResponseWriter, r *http.Request) {
 		Langs     []*config.Lang
 		LangsUsed map[string]bool
 		Rankings  map[string]map[string]*ranking
+		Display   string
+		Displays  []string
+		Scope     string
+		Scopes    []string
 		Scoring   string
 		Scorings  []string
 	}{
@@ -26,14 +30,23 @@ func golferRankingsGET(w http.ResponseWriter, r *http.Request) {
 		Langs:     config.LangList,
 		LangsUsed: map[string]bool{},
 		Rankings:  map[string]map[string]*ranking{},
+		Display:   param(r, "display"),
+		Displays:  []string{"rankings", "points"},
+		Scope:     param(r, "scope"),
+		Scopes:    []string{"lang", "overall"},
 		Scoring:   param(r, "scoring"),
 		Scorings:  []string{"bytes", "chars"},
 	}
 
 	golfer := session.GolferInfo(r).Golfer
+	var points = "points_for_lang"
+	if data.Scope == "overall" {
+		// TODO: also change rank to overall points rank
+		points = "points"
+	}
 	rows, err := session.Database(r).Query(
-		`SELECT hole, lang, golfers, rank, rank = 1 AND tie_count = 1
-		   FROM rankings WHERE user_id = $1 AND scoring = $2`,
+		"SELECT hole, lang, golfers, rank, rank = 1 AND tie_count = 1, "+points+
+			" FROM rankings WHERE user_id = $1 AND scoring = $2",
 		golfer.ID,
 		data.Scoring,
 	)
@@ -47,7 +60,7 @@ func golferRankingsGET(w http.ResponseWriter, r *http.Request) {
 		var r ranking
 
 		if err := rows.Scan(
-			&hole, &lang, &r.Golfers, &r.Rank, &r.Diamond,
+			&hole, &lang, &r.Golfers, &r.Rank, &r.Diamond, &r.Points,
 		); err != nil {
 			panic(err)
 		}
