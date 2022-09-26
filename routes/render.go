@@ -21,12 +21,12 @@ import (
 
 func colour(rank int, points int, display string) string {
 	if display == "points" {
-		return colour_points(points)
+		return colourPoints(points)
 	}
-	return colour_rank(rank)
+	return colourRank(rank)
 }
 
-func colour_rank(i int) string {
+func colourRank(i int) string {
 	if i <= 1 {
 		return "yellow"
 	}
@@ -45,7 +45,7 @@ func colour_rank(i int) string {
 	return "green"
 }
 
-func colour_points(i int) string {
+func colourPoints(i int) string {
 	if i >= 950 {
 		return "yellow"
 	}
@@ -73,17 +73,17 @@ var (
 )
 
 var tmpl = template.New("").Funcs(template.FuncMap{
-	"bytes":       pretty.Bytes,
-	"colour":      colour,
-	"colour_rank": colour_rank,
-	"comma":       pretty.Comma,
-	"dec":         func(i int) int { return i - 1 },
-	"hasPrefix":   strings.HasPrefix,
-	"hasSuffix":   strings.HasSuffix,
-	"html":        func(html string) template.HTML { return template.HTML(html) },
-	"inc":         func(i int) int { return i + 1 },
-	"ord":         pretty.Ordinal,
-	"svg":         func(name string) template.HTML { return svg[name] },
+	"bytes":      pretty.Bytes,
+	"colour":     colour,
+	"colourRank": colourRank,
+	"comma":      pretty.Comma,
+	"dec":        func(i int) int { return i - 1 },
+	"hasPrefix":  strings.HasPrefix,
+	"hasSuffix":  strings.HasSuffix,
+	"html":       func(html string) template.HTML { return template.HTML(html) },
+	"inc":        func(i int) int { return i + 1 },
+	"ord":        pretty.Ordinal,
+	"svg":        func(name string) template.HTML { return svg[name] },
 	"symbol": func(name string) template.HTML {
 		return template.HTML(strings.ReplaceAll(string(svg[name]), "svg", "symbol"))
 	},

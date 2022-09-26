@@ -39,9 +39,9 @@ func golferRankingsGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	golfer := session.GolferInfo(r).Golfer
-	var points = "points_for_lang"
-	var rank = "rank"
-	var golfers = "golfers"
+	points := "points_for_lang"
+	rank := "rank"
+	golfers := "golfers"
 	if data.Scope == "overall" {
 		points = "points"
 		rank = "rank_overall"
