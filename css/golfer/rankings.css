@@ -1,4 +1,7 @@
-main nav { margin-left: auto }
+main nav {
+    column-gap: 1rem;
+    row-gap: 1rem;
+}
 
 #holes {
     display: grid;

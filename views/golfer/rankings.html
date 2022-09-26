@@ -5,31 +5,31 @@
 
 <main>
     <nav class=tabs>
-    {{ range .Data.Displays }}
-        <a {{ if ne . $.Data.Display }}
-            href="../../{{ . }}/{{ $.Data.Scope }}/{{ $.Data.Scoring }}"
-        {{ end }}>
-            {{ title . }}
-        </a>
-    {{ end }}
-    </nav>
-
-    <nav class=tabs>
-    {{ range .Data.Scopes }}
-        <a {{ if ne . $.Data.Scope }}
-            href="../{{ . }}/{{ $.Data.Scoring }}"
-        {{ end }}>
-            {{ title . }}
-        </a>
-    {{ end }}
-    </nav>
-    
-    <nav class=tabs>
-    {{ range .Data.Scorings }}
-        <a {{ if ne . $.Data.Scoring }} href="{{ . }}" {{ end }}>
-            {{ title . }}
-        </a>
-    {{ end }}
+        <div>
+        {{ range .Data.Displays }}
+            <a {{ if ne . $.Data.Display }}
+                href="../../{{ . }}/{{ $.Data.Scope }}/{{ $.Data.Scoring }}"
+            {{ end }}>
+                {{ title . }}
+            </a>
+        {{ end }}
+        </div>
+        <div>
+        {{ range .Data.Scopes }}
+            <a {{ if ne . $.Data.Scope }}
+                href="../{{ . }}/{{ $.Data.Scoring }}"
+            {{ end }}>
+                {{ title . }}
+            </a>
+        {{ end }}
+        </div>
+        <div>
+        {{ range .Data.Scorings }}
+            <a {{ if ne . $.Data.Scoring }} href="{{ . }}" {{ end }}>
+                {{ title . }}
+            </a>
+        {{ end }}
+        </div>
     </nav>
 
     <div id=holes-wrapper>
