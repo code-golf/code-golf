@@ -1,7 +1,4 @@
-main nav {
-    column-gap: 1.5rem;
-    row-gap: 1rem;
-}
+main nav { gap: 1rem 1.5rem }
 
 #holes {
     display: grid;
