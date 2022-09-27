@@ -7,7 +7,7 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-// GET /golfer/{golfer}/holes/{display}/{scope}/{scoring}
+// GET /golfers/{golfer}/holes/{display}/{scope}/{scoring}
 func golferHolesGET(w http.ResponseWriter, r *http.Request) {
 	type ranking struct {
 		Diamond               bool
