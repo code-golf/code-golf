@@ -15,16 +15,12 @@ func golferHolesGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := struct {
-		Holes     []*config.Hole
-		Langs     []*config.Lang
-		LangsUsed map[string]bool
-		Rankings  map[string]map[string]*ranking
-		Display   string
-		Displays  []string
-		Scope     string
-		Scopes    []string
-		Scoring   string
-		Scorings  []string
+		Holes                      []*config.Hole
+		Langs                      []*config.Lang
+		LangsUsed                  map[string]bool
+		Rankings                   map[string]map[string]*ranking
+		Display, Scope, Scoring    string
+		Displays, Scopes, Scorings []string
 	}{
 		Holes:     config.HoleList,
 		Langs:     config.LangList,
