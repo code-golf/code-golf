@@ -19,25 +19,6 @@ import (
 	"github.com/tdewolff/minify/v2/minify"
 )
 
-func colour(i int) string {
-	if i <= 1 {
-		return "yellow"
-	}
-	if i <= 2 {
-		return "orange"
-	}
-	if i <= 3 {
-		return "red"
-	}
-	if i <= 10 {
-		return "purple"
-	}
-	if i <= 100 {
-		return "blue"
-	}
-	return "green"
-}
-
 var (
 	assets = map[string]string{}
 	css    = map[string]template.CSS{}
@@ -47,16 +28,17 @@ var (
 )
 
 var tmpl = template.New("").Funcs(template.FuncMap{
-	"bytes":     pretty.Bytes,
-	"colour":    colour,
-	"comma":     pretty.Comma,
-	"dec":       func(i int) int { return i - 1 },
-	"hasPrefix": strings.HasPrefix,
-	"hasSuffix": strings.HasSuffix,
-	"html":      func(html string) template.HTML { return template.HTML(html) },
-	"inc":       func(i int) int { return i + 1 },
-	"ord":       pretty.Ordinal,
-	"svg":       func(name string) template.HTML { return svg[name] },
+	"bytes":      pretty.Bytes,
+	"colour":     colour,
+	"colourRank": colourRank,
+	"comma":      pretty.Comma,
+	"dec":        func(i int) int { return i - 1 },
+	"hasPrefix":  strings.HasPrefix,
+	"hasSuffix":  strings.HasSuffix,
+	"html":       func(html string) template.HTML { return template.HTML(html) },
+	"inc":        func(i int) int { return i + 1 },
+	"ord":        pretty.Ordinal,
+	"svg":        func(name string) template.HTML { return svg[name] },
 	"symbol": func(name string) template.HTML {
 		return template.HTML(strings.ReplaceAll(string(svg[name]), "svg", "symbol"))
 	},

@@ -7,41 +7,51 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-// GET /golfers/{golfer}/holes/{scoring}
+// GET /golfer/{golfer}/holes/{display}/{scope}/{scoring}
 func golferHolesGET(w http.ResponseWriter, r *http.Request) {
-	golfer := session.GolferInfo(r).Golfer
-	type rankMedal struct {
-		Rank      int
-		IsDiamond bool
+	type ranking struct {
+		Diamond               bool
+		Golfers, Rank, Points int
 	}
+
 	data := struct {
-		Holes    []*config.Hole
-		Langs    []*config.Lang
-		Ranks    map[string]rankMedal
-		Scoring  string
-		Scorings []string
+		Holes     []*config.Hole
+		Langs     []*config.Lang
+		LangsUsed map[string]bool
+		Rankings  map[string]map[string]*ranking
+		Display   string
+		Displays  []string
+		Scope     string
+		Scopes    []string
+		Scoring   string
+		Scorings  []string
 	}{
-		Holes:    config.HoleList,
-		Langs:    config.LangList,
-		Ranks:    map[string]rankMedal{},
-		Scoring:  param(r, "scoring"),
-		Scorings: []string{"bytes", "chars"},
+		Holes:     config.HoleList,
+		Langs:     config.LangList,
+		LangsUsed: map[string]bool{},
+		Rankings:  map[string]map[string]*ranking{},
+		Display:   param(r, "display"),
+		Displays:  []string{"rankings", "points"},
+		Scope:     param(r, "scope"),
+		Scopes:    []string{"lang", "overall"},
+		Scoring:   param(r, "scoring"),
+		Scorings:  []string{"bytes", "chars"},
 	}
 
-	if data.Scoring != "bytes" && data.Scoring != "chars" {
-		if data.Scoring == "" {
-			http.Redirect(w, r, "/golfers/"+golfer.Name+"/holes/chars", http.StatusPermanentRedirect)
-			return
-		}
-
-		w.WriteHeader(http.StatusNotFound)
-		return
+	golfer := session.GolferInfo(r).Golfer
+	points := "points_for_lang"
+	rank := "rank"
+	golfers := "golfers"
+	if data.Scope == "overall" {
+		points = "points"
+		rank = "rank_overall"
+		golfers = "golfers_overall"
 	}
-
 	rows, err := session.Database(r).Query(
-		`SELECT hole::text || lang::text || scoring::text, rank, rank = 1 AND tie_count = 1
-		   FROM rankings WHERE user_id = $1`,
+		"SELECT hole, lang, "+golfers+", "+rank+", "+rank+" = 1 AND tie_count = 1, "+
+			points+" FROM rankings WHERE user_id = $1 AND scoring = $2",
 		golfer.ID,
+		data.Scoring,
 	)
 	if err != nil {
 		panic(err)
@@ -49,15 +59,22 @@ func golferHolesGET(w http.ResponseWriter, r *http.Request) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var key string
-		var rank int
-		var isDiamond bool
+		var hole, lang string
+		var r ranking
 
-		if err := rows.Scan(&key, &rank, &isDiamond); err != nil {
+		if err := rows.Scan(
+			&hole, &lang, &r.Golfers, &r.Rank, &r.Diamond, &r.Points,
+		); err != nil {
 			panic(err)
 		}
 
-		data.Ranks[key] = rankMedal{rank, isDiamond}
+		data.LangsUsed[lang] = true
+
+		if _, ok := data.Rankings[hole]; !ok {
+			data.Rankings[hole] = map[string]*ranking{}
+		}
+
+		data.Rankings[hole][lang] = &r
 	}
 
 	if err := rows.Err(); err != nil {

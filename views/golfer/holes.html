@@ -1,59 +1,84 @@
 {{ template "header" . }}
 {{ template "golfer" . }}
 
-<svg>
-    {{ symbol "play-light" }}
-{{ range .Data.Langs }}
-    {{ symbol .ID }}
-{{ end }}
-</svg>
+<svg>{{ symbol "play-light" }}</svg>
 
 <main>
     <nav class=tabs>
-    {{ range .Data.Scorings }}
-        <a {{ if ne . $.Data.Scoring }} href="{{ . }}" {{ end }}>
-            {{ title . }}
-        </a>
-    {{ end }}
-    </nav>
-
-{{ range .Data.Langs }}
-    <input checked class={{ .ID }} id="{{ .ID }}Check" type=checkbox>
-    <label for="{{ .ID }}Check" title="Toggle {{ .Name }}">
-        <svg><use href="#{{ .ID }}"/></svg>
-    </label>
-{{ end }}
-
-{{ range $i, $hole := .Data.Holes }}
-    <h3 class=span>{{ .Name }}</h3>
-    {{ range $j, $lang := $.Data.Langs }}
-        {{ $bytes := index $.Data.Ranks (print $hole.ID $lang.ID "bytes") }}
-        {{ $chars := index $.Data.Ranks (print $hole.ID $lang.ID "chars") }}
-
-        {{ $rank := $bytes }}
-        {{ if eq $.Data.Scoring "chars" }}{{ $rank = $chars }}{{ end }}
-        
-        {{ if $rank.Rank }}
-            {{ with $rank }}
-                <a class="{{ $lang.ID }} {{ colour .Rank }} {{ if .IsDiamond }}isDiamond{{ end }}"
-                    href="/rankings/holes/{{ $hole.ID }}/{{ $lang.ID }}/{{ $.Data.Scoring }}"
-                    data-tooltip="Bytes rank is {{ if $bytes.IsDiamond }}untied {{ end }}{{ $bytes.Rank }}{{ ord $bytes.Rank }}{{ if $chars }}, Chars rank is {{ if $chars.IsDiamond }}untied {{ end }}{{ $chars.Rank }}{{ ord $chars.Rank }}{{ end }}. View rankings of {{ $hole.Name }} in {{ $lang.Name }}."
-                    data-wide-tooltip=true>
-                    <svg><use href="#{{ $lang.ID }}"/></svg>
-                    <span>{{ .Rank }}<sup>{{ ord .Rank }}</sup></span>
-                </a>
-            {{ end }}
-        {{ else }}
-            <a class="{{ $lang.ID }} grey"
-                href="/{{ $hole.ID }}#{{ $lang.ID }}"
-                data-tooltip="Play {{ $hole.Name }} in {{ $lang.Name }}."
-                data-wide-tooltip=true>
-                <svg><use href="#{{ $lang.ID }}"/></svg>
-                <svg><use href="#play"/></svg>
+        <div>
+        {{ range .Data.Displays }}
+            <a {{ if ne . $.Data.Display }}
+                href="../../{{ . }}/{{ $.Data.Scope }}/{{ $.Data.Scoring }}"
+            {{ end }}>
+                {{ title . }}
             </a>
         {{ end }}
-    {{ end }}
-{{ end }}
+        </div>
+        <div>
+        {{ range .Data.Scopes }}
+            <a {{ if ne . $.Data.Scope }}
+                href="../{{ . }}/{{ $.Data.Scoring }}"
+            {{ end }}>
+                {{ title . }}
+            </a>
+        {{ end }}
+        </div>
+        <div>
+        {{ range .Data.Scorings }}
+            <a {{ if ne . $.Data.Scoring }} href="{{ . }}" {{ end }}>
+                {{ title . }}
+            </a>
+        {{ end }}
+        </div>
+    </nav>
+
+    <div id=holes-wrapper>
+        <div id=holes style="--langs: {{ len .Data.LangsUsed }}">
+            <div></div>
+            {{ range .Data.Langs }}
+                {{ if (index $.Data.LangsUsed .ID) }}
+                    <div class=lang title="{{ .Name }}">{{ svg .ID }}</div>
+                {{ end }}
+            {{ end }}
+
+        {{ range $i, $hole := .Data.Holes }}
+            {{ $holeRanks := index $.Data.Rankings $hole.ID }}
+            {{ if not $holeRanks }}{{ continue }}{{ end }}
+
+            <div class=hole>{{ .Name }}</div>
+            {{ range $j, $lang := $.Data.Langs }}
+                {{ if not (index $.Data.LangsUsed $lang.ID) }}
+                    {{ continue }}
+                {{ end }}
+
+                {{ with (index $holeRanks $lang.ID) }}
+                    <a class="{{ $lang.ID }} {{ colour .Rank .Points $.Data.Display }}"
+                        {{ if eq $.Data.Scope "overall" }}
+                            href="/rankings/holes/{{ $hole.ID }}/all/{{ $.Data.Scoring }}"
+                        {{ else }}
+                            href="/rankings/holes/{{ $hole.ID }}/{{ $lang.ID }}/{{ $.Data.Scoring }}"
+                        {{ end }}
+                        data-tooltip="{{ comma .Rank }}{{ ord .Rank }} of {{ comma .Golfers }} golfers"
+                        data-wide-tooltip>
+                    {{ if eq $.Data.Display "points" }}
+                        {{ comma .Points }}
+                    {{ else if .Diamond }}
+                        💎
+                    {{ else }}
+                        <span>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup></span>
+                    {{ end }}
+                    </a>
+                {{ else }}
+                    <a class="{{ $lang.ID }} grey"
+                        href="/{{ $hole.ID }}#{{ $lang.ID }}">
+                        <svg><use href="#play"/></svg>
+                    </a>
+                {{ end }}
+            {{ end }}
+        {{ end }}
+        </div>
+        <div>{{/* Absolutely positioned top left black cell */}}</div>
+    </div>
 </main>
 
 {{ template "footer" }}
