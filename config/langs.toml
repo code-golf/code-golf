@@ -487,8 +487,8 @@ for (let arg of arguments)
 '''
 
 [Julia]
-size    = '303 MiB'
-version = '1.8.1'
+size    = '298 MiB'
+version = '1.8.2'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -560,7 +560,7 @@ end
 
 [Nim]
 size    = '13.5 MiB'
-version = '1.6.6'
+version = '1.6.8'
 website = 'https://nim-lang.org'
 example = '''
 import os
