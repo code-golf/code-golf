@@ -1,4 +1,4 @@
-// +build none
+//go:build none
 
 #define _GNU_SOURCE
 #include <linux/filter.h>
