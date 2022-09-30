@@ -6,6 +6,7 @@
 #include <sched.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/mount.h>
 #include <sys/prctl.h>
 #include <sys/stat.h>
@@ -19,86 +20,57 @@
     BPF_JUMP(BPF_JMP+BPF_JEQ+BPF_K, __NR_##name, 0, 1), \
     BPF_STMT(BPF_RET+BPF_K, SECCOMP_RET_ALLOW)
 
+#define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 #define STR_WITH_LEN(str) str, sizeof(str) - 1
 
 int main(__attribute__((unused)) int argc, char *argv[]) {
-    if (mount(NULL, "/", NULL, MS_PRIVATE|MS_REC, NULL) < 0) {
-        perror("mount private");
-        return 1;
-    }
+    if (mount(NULL, "/", NULL, MS_PRIVATE|MS_REC, NULL) < 0)
+        ERR_AND_EXIT("mount private");
 
-    if (mount("rootfs", "rootfs", "bind", MS_BIND|MS_REC, NULL) < 0) {
-        perror("mount bind");
-        return 1;
-    }
+    if (mount("rootfs", "rootfs", "bind", MS_BIND|MS_REC, NULL) < 0)
+        ERR_AND_EXIT("mount bind");
 
-    if (syscall(SYS_pivot_root, "rootfs", "rootfs") < 0) {
-        perror("pivot_root");
-        return 1;
-    }
+    if (syscall(SYS_pivot_root, "rootfs", "rootfs") < 0)
+        ERR_AND_EXIT("pivot_root");
 
-    if (chdir("/") < 0) {
-        perror("chdir");
-        return 1;
-    }
+    if (chdir("/") < 0)
+        ERR_AND_EXIT("chdir");
 
-    if (umount2("/", MNT_DETACH) < 0) {
-        perror("umount2");
-        return 1;
-    }
+    if (umount2("/", MNT_DETACH) < 0)
+        ERR_AND_EXIT("umount2");
 
-    if (mount("tmpfs", "/dev", "tmpfs", MS_NOSUID, NULL) < 0) {
-        perror("mount dev");
-        return 1;
-    }
+    if (mount("tmpfs", "/dev", "tmpfs", MS_NOSUID, NULL) < 0)
+        ERR_AND_EXIT("mount dev");
 
-    if (mknod("/dev/null", S_IFCHR|0666, makedev(1, 3)) < 0) {
-        perror("mknod");
-        return 1;
-    }
+    if (mknod("/dev/null", S_IFCHR|0666, makedev(1, 3)) < 0)
+        ERR_AND_EXIT("mknod");
 
     // FIXME This shouldn't be needed, 0666 should suffice, but without it Zig
     //       fails with permission denied when opening /dev/null as O_RDWR.
-    if (chown("/dev/null", NOBODY, NOBODY) < 0) {
-        perror("chown /dev/null");
-        return 1;
-    }
+    if (chown("/dev/null", NOBODY, NOBODY) < 0)
+        ERR_AND_EXIT("chown /dev/null");
 
-    if (mknod("/dev/urandom", S_IFCHR|0444, makedev(1, 9)) < 0) {
-        perror("mknod");
-        return 1;
-    }
+    if (mknod("/dev/urandom", S_IFCHR|0444, makedev(1, 9)) < 0)
+        ERR_AND_EXIT("mknod");
 
-    if (mount("proc", "/proc", "proc", MS_NODEV|MS_NOEXEC|MS_NOSUID|MS_RDONLY, NULL) < 0) {
-        perror("mount proc");
-        return 1;
-    }
+    if (mount("proc", "/proc", "proc", MS_NODEV|MS_NOEXEC|MS_NOSUID|MS_RDONLY, NULL) < 0)
+        ERR_AND_EXIT("mount proc");
 
-    if (mount("tmpfs", "/tmp", "tmpfs", MS_NODEV|MS_NOSUID, NULL) < 0) {
-        perror("mount tmp");
-        return 1;
-    }
+    if (mount("tmpfs", "/tmp", "tmpfs", MS_NODEV|MS_NOSUID, NULL) < 0)
+        ERR_AND_EXIT("mount tmp");
 
-    if (sethostname(STR_WITH_LEN("code-golf")) < 0) {
-        perror("sethostname");
-        return 1;
-    }
+    if (sethostname(STR_WITH_LEN("code-golf")) < 0)
+        ERR_AND_EXIT("sethostname");
 
     // Allow /proc/self/fd/0 to be read by the lang after we change user.
-    if (chown("/proc/self/fd/0", NOBODY, NOBODY) < 0) {
-        perror("chown /proc/self/fd/0");
-        return 1;
-    }
+    if (chown("/proc/self/fd/0", NOBODY, NOBODY) < 0)
+        ERR_AND_EXIT("chown /proc/self/fd/0");
 
-    if (setgid(NOBODY) < 0) {
-        perror("setgid");
-        return 1;
-    }
+    if (setgid(NOBODY) < 0)
+        ERR_AND_EXIT("setgid");
 
-    if (setuid(NOBODY) < 0) {
-        perror("setuid");
-        return 1;
-    }
+    if (setuid(NOBODY) < 0)
+        ERR_AND_EXIT("setuid");
 
     // sudo journalctl -f _AUDIT_TYPE_NAME=SECCOMP
     // ... SECCOMP ... syscall=xxx ...
@@ -622,17 +594,12 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         filter,
     };
 
-    if (prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0)) {
-        perror("prctl(NO_NEW_PRIVS)");
-        return 1;
-    }
+    if (prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0) < 0)
+        ERR_AND_EXIT("prctl(NO_NEW_PRIVS)");
 
-    if (prctl(PR_SET_SECCOMP, SECCOMP_MODE_FILTER, &fprog)) {
-        perror("prctl(SECCOMP)");
-        return 1;
-    }
+    if (prctl(PR_SET_SECCOMP, SECCOMP_MODE_FILTER, &fprog) < 0)
+        ERR_AND_EXIT("prctl(SECCOMP)");
 
     execvp(argv[0], argv);
-    perror("execvp");
-    return 1;
+    ERR_AND_EXIT("execvp");
 }
