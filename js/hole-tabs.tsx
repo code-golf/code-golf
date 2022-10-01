@@ -1,4 +1,3 @@
-import { ASMStateField }                       from '@defasm/codemirror';
 import {
     ComponentItem, ComponentItemConfig, ContentItem, GoldenLayout,
     RowOrColumn, LayoutConfig, ResolvedRootItemConfig,
@@ -12,6 +11,7 @@ import {
     setCode, refreshScores, getHideDeleteBtn, submit, SubmitResponse,
     updateRestoreLinkVisibility, getSavedInDB, setCodeForLangAndSolution,
     populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyJSONBtn,
+    getScorings,
 } from './_hole-common';
 
 const poolDragSources: {[key: string]: DragSource} = {};
@@ -125,22 +125,21 @@ function makeEditor(parent: HTMLDivElement) {
             const result = editor.update([tr]) as unknown;
 
             const code = tr.state.doc.toString();
-            const scorings: {byte?: number, char?: number} = {};
+            const scorings: {total: {byte?: number, char?: number}, selection?: {byte?: number, char?: number}} = getScorings(tr, editor);
             const scoringKeys = ['byte', 'char'] as const;
 
-            if (getLang() == 'assembly')
-                scorings.byte = (editor.state.field(ASMStateField) as any).head.length();
-            else {
-                scorings.byte = byteLen(code);
-                scorings.char = charLen(code);
+            function formatScore(scoring) {
+                return scoringKeys
+                    .filter(s => s in scoring)
+                    .map(s => `${comma(scoring[s])} ${s}${scoring[s] != 1 ? 's' : ''}`)
+                    .join(', ');
             }
 
-            const strokes = $('#strokes');
-            if (strokes)
-                strokes.innerText = scoringKeys
-                    .filter(s => s in scorings)
-                    .map(s => `${comma(scorings[s])} ${s}${scorings[s] != 1 ? 's' : ''}`)
-                    .join(', ');
+            if (scorings.selection) {
+                $('#strokes').innerText = `${formatScore(scorings.total)} (${formatScore(scorings.selection)} selected)`;
+            } else {
+                $('#strokes').innerText = formatScore(scorings.total);
+            }
 
             // Avoid future conflicts by only storing code locally that's
             // different from the server's copy.

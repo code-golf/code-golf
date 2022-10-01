@@ -1,3 +1,4 @@
+import { ASMStateField }                       from '@defasm/codemirror';
 import { $, $$, byteLen, charLen, comma, ord } from './_util';
 import { Vim }                                 from '@replit/codemirror-vim';
 import { EditorState, EditorView, extensions } from './_codemirror';
@@ -444,4 +445,34 @@ export async function populateScores(editor: any) {
             };
         }
     });
+}
+
+export function getScorings(tr: any, editor: any) {
+    const code = tr.state.doc.toString();
+    const total: {byte?: number, char?: number} = {};
+    const selection: {byte?: number, char?: number} = {};
+
+    if (getLang() == 'assembly')
+        total.byte = (editor.state.field(ASMStateField) as any).head.length();
+    else {
+        total.byte = byteLen(code);
+        total.char = charLen(code);
+
+        if (tr.selection) {
+            selection.byte = 0;
+            selection.char = 0;
+
+            for (const range of tr.selection.ranges) {
+                const contents = code.slice(range.from, range.to);
+                selection.byte += byteLen(contents);
+                selection.char += charLen(contents);
+            }
+        }
+    }
+
+    if (selection.byte || selection.char) {
+        return {total, selection};
+    } else {
+        return {total};
+    }
 }
