@@ -74,7 +74,7 @@ $$('#rankingsView a').forEach(a => a.onclick = e => {
     document.cookie =
         `rankings-view=${a.innerText.toLowerCase()};SameSite=Lax;Secure`;
 
-    refreshScores(setCodeForLangAndSolution);
+    refreshScores(editor);
 });
 
 function updateReadonlyPanels(data: SubmitResponse) {

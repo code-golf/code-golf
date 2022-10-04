@@ -214,7 +214,7 @@ function delinkRankingsView() {
         document.cookie =
             `rankings-view=${a.innerText.toLowerCase()};SameSite=Lax;Secure`;
 
-        refreshScores(setCodeForLangAndSolution);
+        refreshScores(editor);
     });
 }
 
