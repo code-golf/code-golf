@@ -1769,6 +1769,8 @@ preamble = '''
     (4)   (17)      (17-byte ASCII message)            (0)   (7 error correction bytes)
 </pre>
 
+<p>The 7 error correction bytes must be calculated using a form of <b>Reed-Solomon error correction</b>. 
+
 <p>To encode a bit from the bitstream to a strip, determine the coordinates <b>(x, y)</b> of the current position in the bitmap with the origin <b>(0, 0)</b> at the top-left corner, invert the bit if <b>(x+y)%2 = 0</b>, and write the value to this position ("#" = 1, space = 0).
 '''
 

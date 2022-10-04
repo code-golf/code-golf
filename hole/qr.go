@@ -116,8 +116,5 @@ func qr(decoder bool) []Scorecard {
 		return []Scorecard{{Args: []string{qrString}, Answer: content}}
 	}
 
-	return []Scorecard{{
-		Args:   []string{content + " " + hex.EncodeToString(getErrorCorrectionBlocks(qr))},
-		Answer: qrString,
-	}}
+	return []Scorecard{{Args: []string{content}, Answer: qrString}}
 }
