@@ -5,7 +5,7 @@
 
 int main(int argc, char *argv[]) {
     if (argc > 1 && strcmp(argv[1], "-v") == 0) {
-        printf("SQLite %s\n", sqlite3_libversion());
+        puts(sqlite3_libversion());
         return 0;
     }
 
@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
 
         while (sqlite3_step(res) == SQLITE_ROW)
             if (sqlite3_column_type(res, 0) != SQLITE_NULL)
-                printf("%s\n", sqlite3_column_text(res, 0));
+                puts(sqlite3_column_text(res, 0));
 
         sqlite3_finalize(res);
     }
