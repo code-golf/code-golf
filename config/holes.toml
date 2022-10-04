@@ -1653,6 +1653,8 @@ preamble = '''
 category = 'Transform'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/QR_code#Encoding' },
+    { name = 'Nayuki', url = '//www.nayuki.io/page/creating-a-qr-code-step-by-step' },
+    { name = 'Thonky', url = '//www.thonky.com/qr-code-tutorial/' },
 ]
 preamble = '''
 <div class=qr-span>
@@ -1714,6 +1716,8 @@ category = 'Transform'
 experiment = -1
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/QR_code#Encoding' },
+    { name = 'Nayuki', url = '//www.nayuki.io/page/creating-a-qr-code-step-by-step' },
+    { name = 'Thonky', url = '//www.thonky.com/qr-code-tutorial/' },
 ]
 preamble = '''
 <div class=qr-span>
