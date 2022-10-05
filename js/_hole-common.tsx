@@ -470,9 +470,5 @@ export function getScorings(tr: any, editor: any) {
         }
     }
 
-    if (selection.byte || selection.char) {
-        return {total, selection};
-    } else {
-        return {total};
-    }
+    return (selection.byte || selection.char) ? {total, selection} : {total};
 }

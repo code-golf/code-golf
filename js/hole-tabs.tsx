@@ -3,9 +3,9 @@ import {
     RowOrColumn, LayoutConfig, ResolvedRootItemConfig,
     ResolvedLayoutConfig, DragSource, LayoutManager, ComponentContainer,
 } from 'golden-layout';
-import { EditorView }                     from './_codemirror';
-import diffTable                          from './_diff';
-import { $, $$, byteLen, charLen, comma } from './_util';
+import { EditorView }   from './_codemirror';
+import diffTable        from './_diff';
+import { $, $$, comma } from './_util';
 import {
     init, langs, getLang, hole, getAutoSaveKey, setSolution, getSolution,
     setCode, refreshScores, getHideDeleteBtn, submit, SubmitResponse,
@@ -128,18 +128,16 @@ function makeEditor(parent: HTMLDivElement) {
             const scorings: {total: {byte?: number, char?: number}, selection?: {byte?: number, char?: number}} = getScorings(tr, editor);
             const scoringKeys = ['byte', 'char'] as const;
 
-            function formatScore(scoring) {
+            function formatScore(scoring: any) {
                 return scoringKeys
                     .filter(s => s in scoring)
                     .map(s => `${comma(scoring[s])} ${s}${scoring[s] != 1 ? 's' : ''}`)
                     .join(', ');
             }
 
-            if (scorings.selection) {
-                $('#strokes').innerText = `${formatScore(scorings.total)} (${formatScore(scorings.selection)} selected)`;
-            } else {
-                $('#strokes').innerText = formatScore(scorings.total);
-            }
+            $('#strokes').innerText = scorings.selection
+                ? `${formatScore(scorings.total)} (${formatScore(scorings.selection)} selected)`
+                : formatScore(scorings.total);
 
             // Avoid future conflicts by only storing code locally that's
             // different from the server's copy.
