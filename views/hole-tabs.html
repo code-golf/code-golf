@@ -77,7 +77,7 @@
         </div>
         <div class="info c-sharp">
             <a href=//devblogs.microsoft.com/dotnet/welcome-to-c-9-0/#top-level-programs>
-                Top-level programs</a> are supported, <b>args</b> holds ARGV.
+                Top-level programs</a> are supported.
             <a href=//docs.microsoft.com/en-us/dotnet/core/tutorials/top-level-templates#implicit-using-directives>
                 Implicit using directives</a> for console applications are enabled.
         </div>
@@ -116,14 +116,7 @@
             Implicit output is disabled for this hole. Use <b>Out-Host</b> or
             <b>Write-Host</b> for output.
         </div>
-    {{ else }}
-        <div class="hide info powershell">
-            <b>$args</b> to access the arguments.
-        </div>
     {{ end }}
-        <div class="hide info prolog">
-            <b>prolog_flag(argv, Args)</b> to access the arguments.
-        </div>
         <div class="hide info sed">
             Arguments are available via STDIN, each argument is seperated with a null byte.
             The code is run with <b>-E</b> and <b>-z</b>.
