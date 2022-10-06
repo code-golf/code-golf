@@ -2,16 +2,20 @@ FROM alpine:3.16 as builder
 
 RUN apk add --no-cache build-base curl patch
 
-RUN curl https://ftp.gnu.org/gnu/bash/bash-5.1.tar.gz | tar xz && cd bash-5.1 \
- && curl https://ftp.gnu.org/gnu/bash/bash-5.1-patches/bash51-0[01-16] | patch -p0
+RUN curl https://ftp.gnu.org/gnu/bash/bash-5.2.tar.gz | tar xz && cd bash-5.2 \
+ && curl https://ftp.gnu.org/gnu/bash/bash-5.2-patches/bash52-00[1-2] | patch -p0
 
-# FIXME bash51-10 patch breaks --disable-job-control.
-RUN cd bash-5.1                \
+COPY strtoimax.patch /
+
+RUN mv bash-* bash             \
+ && patch -p0 <strtoimax.patch \
+ && cd bash                    \
  && ./configure                \
     --disable-command-timing   \
     --disable-debugger         \
     --disable-directory-stack  \
     --disable-help-builtin     \
+    --disable-job-control      \
     --disable-net-redirections \
     --disable-progcomp         \
     --disable-select           \
@@ -22,7 +26,7 @@ RUN cd bash-5.1                \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bash-5.1/bash /usr/bin/
+COPY --from=0 /bash/bash /usr/bin/
 
 ENTRYPOINT ["bash"]
 

@@ -1,0 +1,23 @@
+--- /bash/configure
++++ /bash/configure
+@@ -20443,7 +20443,7 @@ fi
+
+ { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $bash_cv_func_strtoimax" >&5
+ printf "%s\n" "$bash_cv_func_strtoimax" >&6; }
+-if test $bash_cv_func_strtoimax = yes; then
++if test $bash_cv_func_strtoimax = no ; then
+ case " $LIBOBJS " in
+   *" strtoimax.$ac_objext "* ) ;;
+   *) LIBOBJS="$LIBOBJS strtoimax.$ac_objext"
+
+--- /bash/m4/strtoimax.m4
++++ /bash/m4/strtoimax.m4
+@@ -29,7 +29,7 @@ AC_CACHE_VAL(bash_cv_func_strtoimax,
+   fi
+ ])
+ AC_MSG_RESULT($bash_cv_func_strtoimax)
+-if test $bash_cv_func_strtoimax = yes; then
++if test $bash_cv_func_strtoimax = no; then
+ AC_LIBOBJ(strtoimax)
+ fi
+ ])
