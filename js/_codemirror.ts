@@ -83,9 +83,11 @@ export const extensions = {
     'dark': [
         EditorView.theme({
             '&': { background: 'var(--background)', color: 'var(--color)' },
-            '.cm-asm-dump':          { color: 'var(--asm-dump)' },
-            '.cm-asm-error-tooltip': asmErrorTooltip,
-            '.cm-gutters':           { background: 'var(--light-grey)' },
+            '.cm-asm-dump':               { color: 'var(--asm-dump)' },
+            '.cm-asm-error-tooltip':      asmErrorTooltip,
+            '.cm-gutters':                { background: 'var(--light-grey)' },
+            '.cm-content':                { caretColor: 'var(--color)' },
+            '.cm-cursor, .cm-dropCursor': { borderLeftColor: 'var(--color)' },
         }, { dark: true }),
         syntaxHighlighting(HighlightStyle.define([
             { color: '#98c379', tag: tags.literal },
