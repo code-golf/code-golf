@@ -6,9 +6,11 @@ package main
 // This is helpful for working on features that affect the appearance of the
 // leaderboards, users page, recent page, and more.
 // Run this script after running 'make dev' to start the server.
+// When this script is run additional times, it will process solutions newer
+// than the most recent one in the database. This only makes sense
+// when all of the solutions in the database come from this script.
 // Note that the database will be deleted when running 'make dev' again.
 // To avoid this, restart the server directly using 'docker-compose up'.
-// This script only works for a nearly empty database.
 // Run 'docker-compose rm -f && docker-compose up' and then run this script.
 
 import (
@@ -17,6 +19,7 @@ import (
 	"fmt"
 	"math/rand"
 	"net/http"
+	"sort"
 	"strings"
 
 	_ "github.com/lib/pq"
@@ -53,6 +56,19 @@ func testMakeCode() {
 			}
 		}
 	}
+}
+
+func getLatestTimestamp(db *sql.DB) (result string) {
+	var value *string
+	if err := db.QueryRow(`SELECT max(submitted) FROM solutions`).Scan(&value); err != nil {
+		panic(err)
+	}
+
+	if value != nil {
+		result = *value
+	}
+
+	return
 }
 
 func getUserMap(db *sql.DB) (result map[string]int32) {
@@ -117,6 +133,11 @@ func main() {
 		panic(err)
 	}
 
+	// Sort by submitted time so that trophies are awarded at the earliest submission times.
+	sort.Slice(infoList, func(i, j int) bool {
+		return infoList[i].Submitted < infoList[j].Submitted
+	})
+
 	tx, err := db.Begin()
 	if err != nil {
 		panic(err)
@@ -134,10 +155,32 @@ func main() {
 			); err != nil {
 				panic(err)
 			}
+
+			// Users need trophies to avoid being superfluous.
+			if _, err := tx.Exec("INSERT INTO trophies (earned, user_id, trophy) VALUES ($1, $2, $3)",
+				info.Submitted, userID, "hello-world",
+			); err != nil {
+				panic(err)
+			}
 		}
 	}
 
+	lastUpdateTime := getLatestTimestamp(db)
+	updateCount := 0
+
 	for i, info := range infoList {
+		if i%1000 == 0 {
+			fmt.Printf("Progress %d/%d\n", i+1, len(infoList))
+		}
+
+		if info.Submitted <= lastUpdateTime {
+			// Ignore old solutions. This is only correct when all solutions
+			// come from this script. But it's useful in that case.
+			continue
+		}
+
+		updateCount++
+
 		if _, err := tx.Exec(
 			`INSERT INTO solutions (  bytes,     chars,    code, hole, lang,
 			                        scoring, submitted, user_id)
@@ -159,13 +202,11 @@ func main() {
 		); err != nil {
 			panic(err)
 		}
-
-		if i%1000 == 0 {
-			fmt.Printf("Progress %d/%d\n", i+1, len(infoList))
-		}
 	}
 
 	if err := tx.Commit(); err != nil {
 		panic(err)
 	}
+
+	fmt.Printf("Update count: %d\n", updateCount)
 }
