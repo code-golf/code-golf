@@ -16,11 +16,10 @@ import { bracketMatching, defaultHighlightStyle,
 import { oneDarkTheme, oneDarkHighlightStyle }   from '@codemirror/theme-one-dark';
 import { vim }                                   from '@replit/codemirror-vim';
 
-// Languages.
 import { assembly }        from '@defasm/codemirror';
-// import { brainfuck }    from '@codemirror/legacy-modes/mode/brainfuck';
+// import { brainfuck }       from '@codemirror/legacy-modes/mode/brainfuck';
 import { c, csharp, dart } from '@codemirror/legacy-modes/mode/clike';
-import { cobol }           from '@codemirror/legacy-modes/mode/cobol';
+import { cobol }           from './vendor/codemirror-cobol';
 import { commonLisp }      from '@codemirror/legacy-modes/mode/commonlisp';
 import { cpp }             from '@codemirror/lang-cpp';
 import { crystal }         from '@codemirror/legacy-modes/mode/crystal';
@@ -41,6 +40,7 @@ import { perl }            from '@codemirror/legacy-modes/mode/perl';
 import { php }             from '@codemirror/lang-php';
 import { powerShell }      from '@codemirror/legacy-modes/mode/powershell';
 import { python }          from '@codemirror/lang-python';
+import { raku }            from './vendor/codemirror-raku';
 import { ruby }            from '@codemirror/legacy-modes/mode/ruby';
 import { rust }            from '@codemirror/lang-rust';
 import { shell }           from '@codemirror/legacy-modes/mode/shell';
@@ -132,7 +132,7 @@ export const extensions = {
     'powershell': StreamLanguage.define(powerShell),
     // TODO prolog
     'python':     python(),
-    'raku':       StreamLanguage.define(perl),  // TODO raku
+    'raku':       StreamLanguage.define(raku),
     'ruby':       StreamLanguage.define(ruby),
     'rust':       rust(),
     // TODO sed
