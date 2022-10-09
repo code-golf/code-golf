@@ -114,7 +114,7 @@ export const extensions = {
     // TODO elixir
     'f-sharp':    StreamLanguage.define(fSharp),
     // TODO fish
-    'fortran':    StreamLanguage.define(fortran),
+    'fortran':    StreamLanguage.define({ ...fortran, languageData: { commentTokens: { line: '!' } } }),
     'go':         StreamLanguage.define(go),
     'golfscript': golfScript(),
     'haskell':    StreamLanguage.define(haskell),
@@ -126,7 +126,7 @@ export const extensions = {
     // TODO k
     'lisp':       StreamLanguage.define(commonLisp),
     'lua':        StreamLanguage.define(lua),
-    'nim':        StreamLanguage.define(nim( {}, {} )),
+    'nim':        StreamLanguage.define({ ...nim( {}, {} ), languageData: { commentTokens: { line: '#' } } }),
     'pascal':     StreamLanguage.define(pascal),
     'perl':       StreamLanguage.define(perl),
     'php':        php({ plain: true }),
