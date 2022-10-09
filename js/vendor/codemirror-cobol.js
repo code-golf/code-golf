@@ -220,4 +220,7 @@ export const cobol = {
         if (state.indentStack == null) return state.indentation;
         return state.indentStack.indent;
     },
+    languageData: {
+        commentTokens: { line: "*>" },
+    },
 };

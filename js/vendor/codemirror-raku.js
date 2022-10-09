@@ -779,4 +779,7 @@ export const raku = {
         return (state.tokenize||tokenPerl)(stream,state);
     },
     electricChars:'{}',
+    languageData: {
+        commentTokens: { line: "#" },
+    },
 };
