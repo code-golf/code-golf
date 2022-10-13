@@ -5,4 +5,4 @@
 cat - > /tmp/code.dart
 
 shift
-exec /usr/lib/dart/bin/dart "$@"
+exec /usr/lib/dart/bin/dart /tmp/code.dart "$@"
