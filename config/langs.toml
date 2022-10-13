@@ -298,7 +298,7 @@ void main(string[] argv) {
 '''
 
 [Dart]
-size    = '532 MiB'
+size    = '558 MiB'
 version = '2.18.2'
 website = 'https://dart.dev/'
 example = '''
