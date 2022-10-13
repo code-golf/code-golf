@@ -19,7 +19,7 @@ import { vim }                                   from '@replit/codemirror-vim';
 // Languages.
 import { assembly }    from '@defasm/codemirror';
 // import { brainfuck }   from '@codemirror/legacy-modes/mode/brainfuck';
-import { c, csharp }   from '@codemirror/legacy-modes/mode/clike';
+import { c, csharp }   from './vendor/codemirror-clike';
 import { cobol }       from './vendor/codemirror-cobol';
 import { commonLisp }  from '@codemirror/legacy-modes/mode/commonlisp';
 import { cpp }         from '@codemirror/lang-cpp';
