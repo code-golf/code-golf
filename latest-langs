@@ -11,6 +11,7 @@ constant @urls = (
     'COBOL'      => 'GnuCOBOL',
     'Crystal'    => 'Crystal_(programming_language)',
     'D'          => 'D_(programming_language)',
+    'Dart'       => 'Dart_(programming_language)',
     'Elixir'     => 'Elixir_(programming_language)',
     'F#'         => 'F_Sharp_(programming_language)',
     'Fortran'    => 'GNU_Fortran',

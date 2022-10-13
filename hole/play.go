@@ -211,6 +211,8 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 	case "d":
 		cmd.Args = []string{"/usr/bin/ldc2", "--enable-color=true", "--run", "-"}
 		cmd.Env = []string{"PATH=/usr/bin"}
+	case "dart":
+		cmd.Args = []string{"/bin/dart-wrapper", "/tmp/code.dart"}
 	case "elixir":
 		cmd.Args = []string{"/usr/local/bin/elixir", "-e", code, "--"}
 		cmd.Env = []string{"LANG=C.UTF-8", "PATH=/usr/local/bin:/usr/bin:/bin"}
