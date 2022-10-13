@@ -68,69 +68,25 @@
     </header>
     <nav class=tabs id=picker></nav>
     <div id=info-container>
-        <div class="info assembly">
+        <div class="hide info assembly">
             Compiled from
             <a href=//www.wikibooks.org/wiki/X86_Assembly/GAS_Syntax>
                 AT&T syntax</a> to x86-64 Linux. Use
             <a href=//blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64>
                 syscalls</a> to write output.
         </div>
-        <div class="info c-sharp">
-            <a href=//devblogs.microsoft.com/dotnet/welcome-to-c-9-0/#top-level-programs>
-                Top-level programs</a> are supported.
-            <a href=//docs.microsoft.com/en-us/dotnet/core/tutorials/top-level-templates#implicit-using-directives>
-                Implicit using directives</a> for console applications are enabled.
-        </div>
-        <div class="hide info brainfuck">
-            Arguments are available via STDIN, each argument is NULL terminated.
-            Taking input after EOF leaves the cell unchanged, the tape is circular
-            with 65536 cells, and cells are 8-bit with wrapping.
-        </div>
-        <div class="hide info cpp">
-            Code is compiled with clang with <a href=//clang.llvm.org/cxx_status.html>-std=c++2b</a>.
-        </div>
-        <div class="hide info d">
-            Code is compiled with <a href=//wiki.dlang.org/LDC>LDC2</a>.
-        </div>
-        <div class="hide info fish">
-            Arguments are available via STDIN, each argument is NULL terminated.
-            <b>x</b> is a no-op.
-        </div>
-        <div class="hide info hexagony">
-            Arguments are available via STDIN, each argument is NULL terminated.
-        </div>
-        <div class="hide info javascript">
-            <b>arguments</b> holds ARGV, <b>print()</b> to output with a newline,
-            <b>write()</b> to output without a newline.
-        </div>
     {{ if eq .Data.Hole.ID "quine" }}
+        <div class="hide info golfscript">
+            Implicit output is disabled for this hole.
+        </div>
         <div class="hide info k">
             Implicit output is disabled for this hole. Code must end with a newline.
         </div>
-    {{ end }}
-        <div class="hide info perl">
-            <b>say()</b> is available without any import.
-        </div>
-    {{ if eq .Data.Hole.ID "quine" }}
         <div class="hide info powershell">
             Implicit output is disabled for this hole. Use <b>Out-Host</b> or
             <b>Write-Host</b> for output.
         </div>
     {{ end }}
-        <div class="hide info sed">
-            Arguments are available via STDIN, each argument is seperated with a null byte.
-            The code is run with <b>-E</b> and <b>-z</b>.
-            Output replaces null bytes with newlines.
-        </div>
-        <div class="hide info sql">
-            <b>SELECT arg FROM argv</b> to access the arguments, only the first
-            column of the first result set will be printed, NULL values will be
-            skipped, and the dialect is <a href=//sqlite.org/index.html>SQLite</a>.
-        </div>
-        <div class="hide info viml">
-            Arguments are available via <b>args</b> list variable. To terminate
-            script execution, write and quit the current buffer.
-        </div>
     </div>
     <div id="picker-status-row">
         <nav class="tabs hide" id=solutionPicker></nav>
