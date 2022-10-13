@@ -15,6 +15,7 @@
     "codemirror": "^6",
     "codemirror-lang-golfscript": "",
     "codemirror-lang-j": "",
+    "codemirror-lang-k": "",
     "dialog-polyfill": "",
     "diff": "",
     "esbuild": "",

@@ -34,6 +34,7 @@ import { j }           from 'codemirror-lang-j';
 import { java }        from '@codemirror/lang-java';
 import { javascript }  from '@codemirror/lang-javascript';
 import { julia }       from '@codemirror/legacy-modes/mode/julia';
+import { k }           from 'codemirror-lang-k';
 import { lua }         from '@codemirror/legacy-modes/mode/lua';
 import { nim }         from 'nim-codemirror-mode';
 import { pascal }      from '@codemirror/legacy-modes/mode/pascal';
@@ -123,7 +124,7 @@ export const extensions = {
     'java':       java(),
     'javascript': javascript(),
     'julia':      StreamLanguage.define(julia),
-    // TODO k
+    'k':          k(),
     'lisp':       StreamLanguage.define(commonLisp),
     'lua':        StreamLanguage.define(lua),
     'nim':        StreamLanguage.define({ ...nim( {}, {} ), languageData: { commentTokens: { line: '#' } } }),
