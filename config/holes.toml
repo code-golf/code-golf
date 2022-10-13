@@ -2222,6 +2222,38 @@ preamble = '''
     is the total number of pins knocked down plus strike and spare bonuses.
 '''
 
+['The Name Game']
+category = 'Art'
+experiment = 753
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/The_Name_Game#Rules' },
+]
+preamble = '''
+<p>Print the lyrics to the song <b>The Name Game</b>:</p>
+
+<blockquote>The name game!
+
+Shirley!
+Shirley, Shirley, bo Birley
+Bonana fanna fo Firley
+Fee fy mo Mirley, Shirley!
+
+Lincoln!
+Lincoln, Lincoln, bo Bincoln
+Bonana fanna fo Fincoln
+Fee fy mo Mincoln, Lincoln!
+
+...
+
+A little trick with Nick!
+Nick, Nick, bo Bick
+Bonana fanna fo Fick
+Fee fy mo Mick, Nick!
+
+The name game!
+</blockquote>
+'''
+
 ['Time Distance']
 category = 'Transform'
 preamble = '''
