@@ -2,9 +2,9 @@ FROM alpine:3.16 as builder
 
 RUN apk add --no-cache build-base curl libffi-dev zlib-dev
 
-RUN curl https://www.python.org/ftp/python/3.10.7/Python-3.10.7.tar.xz | tar xJ
+RUN curl https://www.python.org/ftp/python/3.10.8/Python-3.10.8.tar.xz | tar xJ
 
-RUN cd Python-3.10.7       \
+RUN cd Python-3.10.8       \
  && ./configure            \
     --disable-test-modules \
     --prefix=/usr          \
