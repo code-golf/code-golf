@@ -15,6 +15,10 @@ v               ~<
         o       o
         ~
 ^       <       <
+
+Arguments are available via STDIN,
+each argument is NULL terminated.
+x is a no-op.
 '''
 
 [Assembly]
@@ -144,6 +148,10 @@ example = '''
     ++++++++++.
     [-],
 ]
+
+Arguments are available via STDIN; each argument is NULL terminated;
+Taking input after EOF leaves the cell unchanged; the tape is circular
+with 65536 cells; and cells are 8-bit with wrapping;
 '''
 
 [C]
@@ -184,6 +192,9 @@ for (int i = 0; i < 10; i++)
 // Accessing arguments
 foreach (String arg in args)
     Console.WriteLine(arg);
+
+// Implicit using directives for console applications are enabled.
+// See: https://docs.microsoft.com/en-us/dotnet/core/tutorials/top-level-templates#implicit-using-directives
 '''
 
 ['C++']
@@ -207,6 +218,9 @@ int main(int argc, char* argv[]) {
 
     return 0;
 }
+
+// Code is compiled with clang with -std=c++2b
+// See: https://clang.llvm.org/cxx_status.html
 '''
 
 [COBOL]
@@ -449,9 +463,9 @@ example = '''
      . . . . . . > \ . @ . . . . .
       . > $ > , < \ ) < . . . . .
        . . \ . ; / $ 0 / . . . .
-        . . . . . . . . . . . .
-         . . . . . . . . . . .
-          . . . . . . . . . .
+        . A r g u m e n t s . .
+         . a r e . N U L L . .
+          t e r m i n a t e d
 '''
 
 [J]
@@ -505,6 +519,8 @@ for (let i = 0; i < 10; i++)
 // Accessing arguments
 for (let arg of arguments)
     print(arg);
+
+// write() outputs without a newline.
 '''
 
 [Julia]
@@ -632,11 +648,13 @@ say for 0..9;
 
 # Accessing arguments
 say for @ARGV;
+
+# Code is run under -E, all current features are enabled.
 '''
 
 [PHP]
 size    = '10.5 MiB'
-version = '7.4.30'
+version = '7.4.32'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -782,6 +800,11 @@ G
 
 # Accessing arguments
 # (... automatic, one per line ...)
+
+# Arguments are available via STDIN,
+# each argument is seperated with a null byte.
+# The code is run with -E and -z options.
+# Output replaces null bytes with newlines.
 '''
 
 [SQL]
@@ -803,6 +826,9 @@ SELECT i FROM loop;
 
 -- Accessing arguments
 SELECT arg FROM argv;
+
+-- Only the first column of the first result set will be printed,
+-- NULL values will be skipped, and the dialect is SQLite.
 '''
 
 [Swift]

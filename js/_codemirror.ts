@@ -8,7 +8,7 @@ export { EditorState, EditorView };
 import { carriageReturn, insertChar,
     showUnprintables }                           from './_codemirror_unprintable';
 import { history, historyKeymap, insertNewline,
-    insertTab, standardKeymap }                  from '@codemirror/commands';
+    insertTab, standardKeymap, toggleComment }   from '@codemirror/commands';
 import { tags }                                  from '@lezer/highlight';
 import { bracketMatching, defaultHighlightStyle,
     HighlightStyle, StreamLanguage,
@@ -16,6 +16,7 @@ import { bracketMatching, defaultHighlightStyle,
 import { oneDarkTheme, oneDarkHighlightStyle }   from '@codemirror/theme-one-dark';
 import { vim }                                   from '@replit/codemirror-vim';
 
+// Languages.
 import { assembly }        from '@defasm/codemirror';
 // import { brainfuck }       from '@codemirror/legacy-modes/mode/brainfuck';
 import { c, csharp, dart } from '@codemirror/legacy-modes/mode/clike';
@@ -33,6 +34,7 @@ import { j }               from 'codemirror-lang-j';
 import { java }            from '@codemirror/lang-java';
 import { javascript }      from '@codemirror/lang-javascript';
 import { julia }           from '@codemirror/legacy-modes/mode/julia';
+import { k }               from 'codemirror-lang-k';
 import { lua }             from '@codemirror/legacy-modes/mode/lua';
 import { nim }             from 'nim-codemirror-mode';
 import { pascal }          from '@codemirror/legacy-modes/mode/pascal';
@@ -67,6 +69,7 @@ export const extensions = {
             ...historyKeymap, ...standardKeymap.filter(k => k.key != 'Enter'),
             { key: 'Enter', run: insertNewline },
             { key: 'Tab',   run: insertTab },
+            { key: 'Mod-/', run: toggleComment },
         ]),
         drawSelection(),
         syntaxHighlighting(defaultHighlightStyle),
@@ -113,7 +116,7 @@ export const extensions = {
     // TODO elixir
     'f-sharp':    StreamLanguage.define(fSharp),
     // TODO fish
-    'fortran':    StreamLanguage.define(fortran),
+    'fortran':    StreamLanguage.define({ ...fortran, languageData: { commentTokens: { line: '!' } } }),
     'go':         StreamLanguage.define(go),
     'golfscript': golfScript(),
     'haskell':    StreamLanguage.define(haskell),
@@ -122,10 +125,10 @@ export const extensions = {
     'java':       java(),
     'javascript': javascript(),
     'julia':      StreamLanguage.define(julia),
-    // TODO k
+    'k':          k(),
     'lisp':       StreamLanguage.define(commonLisp),
     'lua':        StreamLanguage.define(lua),
-    'nim':        StreamLanguage.define(nim( {}, {} )),
+    'nim':        StreamLanguage.define({ ...nim( {}, {} ), languageData: { commentTokens: { line: '#' } } }),
     'pascal':     StreamLanguage.define(pascal),
     'perl':       StreamLanguage.define(perl),
     'php':        php({ plain: true }),

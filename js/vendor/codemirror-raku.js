@@ -643,7 +643,7 @@ function tokenPerl(stream,state){
         return tokenChain(stream,state,[ch],'variable-2');
     }
     if (ch=='/'){
-        if (!/~\s*$/.test(prefix(stream.prefix)))
+        if (!/~\s*$/.test(prefix(stream)))
             return 'operator';
         else
             return tokenChain(stream,state,[ch],RXstyle,RXmodifiers);
@@ -779,4 +779,7 @@ export const raku = {
         return (state.tokenize||tokenPerl)(stream,state);
     },
     electricChars:'{}',
+    languageData: {
+        commentTokens: { line: "#" },
+    },
 };
