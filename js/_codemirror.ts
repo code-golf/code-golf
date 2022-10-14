@@ -18,7 +18,7 @@ import { vim }                                   from '@replit/codemirror-vim';
 
 // Languages.
 import { assembly }        from '@defasm/codemirror';
-// import { brainfuck }       from '@codemirror/legacy-modes/mode/brainfuck';
+import { brainfuck }       from 'codemirror-lang-brainfuck';
 import { c, csharp, dart } from '@codemirror/legacy-modes/mode/clike';
 import { cobol }           from './vendor/codemirror-cobol';
 import { commonLisp }      from '@codemirror/legacy-modes/mode/commonlisp';
@@ -104,8 +104,7 @@ export const extensions = {
     // Languages.
     'assembly':   assembly(),
     'bash':       StreamLanguage.define(shell),
-    // Disable brainfuck as it has quadratic complexity.
-    // 'brainfuck':  StreamLanguage.define(brainfuck),
+    'brainfuck':  brainfuck(),
     'c':          StreamLanguage.define(c),
     'c-sharp':    StreamLanguage.define(csharp),
     'cobol':      StreamLanguage.define(cobol),

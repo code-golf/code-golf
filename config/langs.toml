@@ -151,7 +151,7 @@ example = '''
 
 Arguments are available via STDIN; each argument is NULL terminated;
 Taking input after EOF leaves the cell unchanged; the tape is circular
-with 65536 cells; and cells are 8-bit with wrapping;
+with 65536 cells; and cells are 8 bit with wrapping;
 '''
 
 [C]

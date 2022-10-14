@@ -143,7 +143,7 @@ export function setState(code: string, editor: EditorView) {
                 ...baseExtensions,
                 extensions[lang as keyof typeof extensions] || [],
                 // These languages shouldn't match brackets.
-                ['brainfuck', 'fish', 'hexagony'].includes(lang)
+                ['fish', 'hexagony'].includes(lang)
                     ? [] : extensions.bracketMatching,
                 // These languages shouldn't wrap lines.
                 ['assembly', 'fish', 'hexagony'].includes(lang)
