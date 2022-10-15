@@ -303,18 +303,18 @@ version = '2.18.2'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
-    // Printing
-    print("Hello, World!");
+  // Printing
+  print("Hello, World!");
 
-    // Looping
-    for (var i = 0; i < 10; i++) {
-        print(i);
-    }
+  // Looping
+  for (var i = 0; i < 10; i++) {
+    print(i);
+  }
 
-    // Accessing arguments
-    for (final arg in argv) {
-        print(arg);
-    }
+  // Accessing arguments
+  for (final arg in argv) {
+    print(arg);
+  }
 }
 '''
 
