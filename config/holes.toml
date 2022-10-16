@@ -1126,8 +1126,6 @@ Delete every 7th element and advance:
 category = 'Mathematics'
 links = [
     { name = 'OEIS A174061', url = '//oeis.org/A174061' },
-    { name = 'OEIS A163269', url = '//oeis.org/A163269' },
-    { name = 'OEIS A077042', url = '//oeis.org/A077042' },
 ]
 preamble = '''
 <p>
