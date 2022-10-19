@@ -43,6 +43,7 @@ import { php }             from '@codemirror/lang-php';
 import { powerShell }      from '@codemirror/legacy-modes/mode/powershell';
 import { python }          from '@codemirror/lang-python';
 import { raku }            from './vendor/codemirror-raku';
+import { r }               from '@codemirror/legacy-modes/mode/r';
 import { ruby }            from '@codemirror/legacy-modes/mode/ruby';
 import { rust }            from '@codemirror/lang-rust';
 import { shell }           from '@codemirror/legacy-modes/mode/shell';
@@ -134,6 +135,7 @@ export const extensions = {
     'powershell': StreamLanguage.define(powerShell),
     // TODO prolog
     'python':     python(),
+    'r':          StreamLanguage.define(r),
     'raku':       StreamLanguage.define(raku),
     'ruby':       StreamLanguage.define(ruby),
     'rust':       rust(),

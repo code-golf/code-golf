@@ -29,6 +29,7 @@ constant @urls = (
     'PowerShell' => 'PowerShell',
     'Prolog'     => 'SWI-Prolog',
     'Python'     => 'Python_(programming_language)',
+    'R'          => 'R_(programming_language)',
     'Raku'       => 'Rakudo',
     'Ruby'       => 'Ruby_(programming_language)',
     'Rust'       => 'Rust_(programming_language)',

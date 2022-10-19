@@ -724,6 +724,25 @@ for arg in sys.argv[1:]:
     print(arg)
 '''
 
+[R]
+size    = '83.1 MiB'
+version = '4.2.1'
+website = 'https://www.r-project.org'
+example = '''
+# Printing
+write("Hello, World!", 1)
+
+# Looping
+for (i in 0:9) {
+    write(i, 1)
+}
+
+# Accessing arguments
+for (arg in commandArgs(TRUE)) {
+    write(arg, 1)
+}
+'''
+
 [Raku]
 size    = '54.1 MiB'
 version = 'Raku 6.d on Rakudo 2022.07'

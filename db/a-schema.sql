@@ -51,7 +51,7 @@ CREATE TYPE lang AS ENUM (
     'crystal', 'd', 'dart', 'elixir', 'f-sharp', 'fish', 'fortran', 'go',
     'golfscript', 'haskell', 'hexagony', 'j', 'java', 'javascript', 'julia',
     'k', 'lisp', 'lua', 'nim', 'pascal', 'perl', 'php', 'powershell',
-    'prolog', 'python', 'raku', 'ruby', 'rust', 'sed', 'sql', 'swift', 'tcl',
+    'prolog', 'python', 'r', 'raku', 'ruby', 'rust', 'sed', 'sql', 'swift', 'tcl',
     'v', 'viml', 'wren', 'zig'
 );
 
