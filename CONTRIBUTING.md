@@ -21,7 +21,7 @@ In addition, each section may define the following fields:
 
 Example:
 
-```
+```toml
 ['Hole Name']
 category = 'hole category'
 experiment = github-issue-number
@@ -58,7 +58,7 @@ For computed solutions, a case switch needs to be added to `/hole/play.go`. The 
 
 ```go
 func holeName() []Scorecard {
-    // Create Args and Answer
+	// Create Args and Answer
 
 	return []Scorecard{{Args: args, Answer: out}}
 }
