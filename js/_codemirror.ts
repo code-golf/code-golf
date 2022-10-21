@@ -41,6 +41,7 @@ import { pascal }          from '@codemirror/legacy-modes/mode/pascal';
 import { perl }            from '@codemirror/legacy-modes/mode/perl';
 import { php }             from '@codemirror/lang-php';
 import { powerShell }      from '@codemirror/legacy-modes/mode/powershell';
+import { prolog }          from 'codemirror-lang-prolog';
 import { python }          from '@codemirror/lang-python';
 import { raku }            from './vendor/codemirror-raku';
 import { ruby }            from '@codemirror/legacy-modes/mode/ruby';
@@ -132,7 +133,7 @@ export const extensions = {
     'perl':       StreamLanguage.define(perl),
     'php':        php({ plain: true }),
     'powershell': StreamLanguage.define(powerShell),
-    // TODO prolog
+    'prolog':     prolog(),
     'python':     python(),
     'raku':       StreamLanguage.define(raku),
     'ruby':       StreamLanguage.define(ruby),
