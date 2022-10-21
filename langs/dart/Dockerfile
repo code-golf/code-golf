@@ -1,4 +1,4 @@
-FROM dart:2.18.2-sdk as builder
+FROM dart:2.18.3-sdk as builder
 
 FROM codegolf/lang-base
 
