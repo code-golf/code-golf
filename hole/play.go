@@ -74,7 +74,9 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 	case "forsyth-edwards-notation":
 		scores = forsythEdwardsNotation()
 	case "fractions":
-		scores = fractions()
+		args, answer = fractions()
+	case "fractran":
+		args, answer = fractran()
 	case "hexdump":
 		scores = hexdump()
 	case "isbn":
