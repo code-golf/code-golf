@@ -188,7 +188,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		Location                                        *time.Location
 		Request                                         *http.Request
 	}{
-		Banners:            banners(theGolfer),
+		Banners:            banners(theGolfer, time.Now().UTC()),
 		Cheevos:            config.CheevoTree,
 		Countries:          config.CountryByID,
 		CSS:                getThemeCSS(theme) + css["base"] + css[path.Dir(name)] + css[prependBeforeName] + css[name],

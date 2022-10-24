@@ -15,7 +15,7 @@ type banner struct {
 }
 
 // TODO Allow a golfer to hide individual banners #709.
-func banners(golfer *golfer.Golfer) (banners []banner) {
+func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 	// Currently all the global banners require a golfer.
 	if golfer == nil {
 		return
@@ -63,35 +63,41 @@ func banners(golfer *golfer.Golfer) (banners []banner) {
 		banners = append(banners, banner)
 	}
 
-	// Current cheevo. TODO Generalise.
-	if !golfer.Earned("independence-day") {
-		var (
-			now   = time.Now().UTC()
-			start = time.Date(2022, time.July, 4, 0, 0, 0, 0, time.UTC)
-			end   = time.Date(2022, time.July, 5, 0, 0, 0, 0, time.UTC)
-		)
+	// Our date-specific cheevos are set around the year 2000.
+	delta := now.Year() - 2000
 
-		if now.Before(end) {
-			banner := banner{Type: "info"}
-			cheevo := config.CheevoByID["independence-day"]
+	location := golfer.TimeZone
+	if location == nil {
+		location = time.UTC
+	}
 
-			location := golfer.TimeZone
-			if location == nil {
-				location = time.UTC
-			}
+Cheevo:
+	for _, cheevo := range config.CheevoList {
+		if golfer.Earned(cheevo.ID) {
+			continue
+		}
 
-			banner.Body = template.HTML("The " + cheevo.Emoji + " <b>" +
-				cheevo.Name + "</b> achievement will ")
+		for i := 0; i < len(cheevo.Times); i += 2 {
+			start := cheevo.Times[i].AddDate(delta, 0, 0)
+			end := cheevo.Times[i+1].AddDate(delta, 0, 0)
 
-			if start.Before(now) {
-				banner.Body += "stop being available in " +
-					pretty.Time(end.In(location)) + "."
-			} else {
-				banner.Body += "be available in " +
+			var body template.HTML
+			if start.AddDate(0, 0, -7).Before(now) && now.Before(start) {
+				body = "be available in " +
 					pretty.Time(start.In(location)) + "."
+			} else if start.Before(now) && now.Before(end) {
+				body = "stop being available in " +
+					pretty.Time(end.In(location)) + "."
 			}
 
-			banners = append(banners, banner)
+			if body != "" {
+				body = template.HTML("The "+cheevo.Emoji+" <b>"+
+					cheevo.Name+"</b> achievement will ") + body
+
+				banners = append(banners, banner{body, "info"})
+
+				break Cheevo
+			}
 		}
 	}
 
