@@ -706,8 +706,8 @@ example = '''
 '''
 
 [Python]
-size    = '55.8 MiB'
-version = '3.10.8'
+size    = '74.2 MiB'
+version = '3.11.0'
 website = 'https://www.python.org'
 example = '''
 import sys
