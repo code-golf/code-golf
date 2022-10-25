@@ -53,7 +53,8 @@ COPY --from=codegolf/lang-sed        ["/", "/langs/sed/rootfs/"       ] #  228 K
 
 COPY run-lang.c ./
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/run-lang -s -static run-lang.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/run-lang -s -static run-lang.c \
+ && chmod u+s /usr/bin/run-lang
 
 # reflex reruns a command when files change.
 CMD reflex -sd none -r '\.(css|go|html|json|pem|svg|toml)$' -R '_test\.go$' -- go run .

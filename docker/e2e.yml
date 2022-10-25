@@ -26,6 +26,8 @@ services:
     entrypoint:
       - prove6
       - -It
+      - -v
+      - t/timeout.t
     environment:
       PGDATABASE: code-golf
       PGHOST:     db

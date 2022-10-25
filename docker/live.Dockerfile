@@ -11,7 +11,8 @@ RUN go mod download
 COPY . ./
 
 RUN go build -ldflags -s -trimpath \
- && gcc -Wall -Werror -Wextra -o /usr/bin/run-lang -s -static run-lang.c
+ && gcc -Wall -Werror -Wextra -o /usr/bin/run-lang -s -static run-lang.c \
+ && chmod u+s /usr/bin/run-lang
 
 RUN ./esbuild \
  && find dist \( -name '*.js' -or -name '*.map' \) \

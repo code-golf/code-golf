@@ -10,7 +10,6 @@ import (
 	"os/exec"
 	"regexp"
 	"strings"
-	"syscall"
 	"time"
 	"unicode"
 )
@@ -183,9 +182,6 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 	cmd.Env = []string{}
 	cmd.Stderr = &stderr
 	cmd.Stdout = &stdout
-	cmd.SysProcAttr = &syscall.SysProcAttr{
-		Cloneflags: syscall.CLONE_NEWIPC | syscall.CLONE_NEWNET | syscall.CLONE_NEWNS | syscall.CLONE_NEWPID | syscall.CLONE_NEWUTS,
-	}
 
 	// Interpreter
 	switch langID {

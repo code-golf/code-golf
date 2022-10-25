@@ -6,11 +6,14 @@ services:
     env_file: .env  # Used for testing with prod secrets, NEVER committed.
     environment:
       DEV:       1
+      GOCACHE:   /tmp
+      GOPATH:    /tmp
       PGHOST:    db
       PGSSLMODE: disable
       PGUSER:    code-golf
     pids_limit: 1024
     privileged: true
+    user: 1000:1000
     volumes:
       - ..:/go
   db:

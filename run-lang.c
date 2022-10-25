@@ -2,8 +2,10 @@
 
 #define _GNU_SOURCE
 #include <linux/filter.h>
+#include <linux/sched.h>
 #include <linux/seccomp.h>
 #include <sched.h>
+#include <spawn.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,6 +14,7 @@
 #include <sys/stat.h>
 #include <sys/syscall.h>
 #include <sys/sysmacros.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 #define NOBODY 65534
@@ -24,6 +27,28 @@
 #define STR_WITH_LEN(str) str, sizeof(str) - 1
 
 int main(__attribute__((unused)) int argc, char *argv[]) {
+    struct clone_args args = {
+        .exit_signal = SIGCHLD,
+        .flags       = CLONE_NEWIPC | CLONE_NEWNET | CLONE_NEWNS
+                     | CLONE_NEWPID | CLONE_NEWUTS,
+    };
+
+    pid_t pid = syscall(__NR_clone3, &args, sizeof(struct clone_args));
+    if (pid < 0)
+        ERR_AND_EXIT("clone");
+
+    if (pid) {
+        int status;
+        do {
+            if (waitpid(pid, &status, 0) < 0)
+                ERR_AND_EXIT("waitpid");
+        } while (!WIFEXITED(status) && !WIFSIGNALED(status));
+
+        puts("parent end");
+
+        return WEXITSTATUS(status);
+    }
+
     if (mount(NULL, "/", NULL, MS_PRIVATE|MS_REC, NULL) < 0)
         ERR_AND_EXIT("mount private");
 
