@@ -25,6 +25,7 @@ import { commonLisp }      from '@codemirror/legacy-modes/mode/commonlisp';
 import { cpp }             from '@codemirror/lang-cpp';
 import { crystal }         from '@codemirror/legacy-modes/mode/crystal';
 import { d }               from '@codemirror/legacy-modes/mode/d';
+import { elm }             from '@codemirror/legacy-modes/mode/elm';
 import { fortran }         from '@codemirror/legacy-modes/mode/fortran';
 import { fSharp }          from '@codemirror/legacy-modes/mode/mllike';
 import { go }              from '@codemirror/legacy-modes/mode/go';
@@ -113,6 +114,7 @@ export const extensions = {
     'crystal':    StreamLanguage.define(crystal),
     'd':          StreamLanguage.define(d),
     'dart':       StreamLanguage.define(dart),
+    'elm':        StreamLanguage.define(elm),
     // TODO elixir
     'f-sharp':    StreamLanguage.define(fSharp),
     // TODO fish

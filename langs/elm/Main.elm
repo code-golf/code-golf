@@ -1,4 +1,4 @@
-port module Main exposing (..)
+port module Main exposing (run)
 
 import M exposing(run)
 
