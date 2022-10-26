@@ -333,6 +333,23 @@ for i <- 0..9, do: IO.puts i
 for arg <- System.argv, do: IO.puts arg
 '''
 
+[Elm]
+size    = '111 MiB'
+version = '0.19.1'
+website = 'https://elm-lang.org/'
+example = '''
+module M exposing (..)
+
+run : List String -> String
+run args =
+    let
+        numbers =
+            List.range 0 10
+                |> List.map String.fromInt
+    in
+    String.join "\n" ("Hello, World!" :: numbers ++ args)
+'''
+
 ['F#']
 size    = '142 MiB'
 version = 'F# 6.0 on .NET 6.0.9'
