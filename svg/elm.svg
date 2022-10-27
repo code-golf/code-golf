@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+
+<svg
+   version="1.1"
+   id="Layer_1"
+   x="0px"
+   y="0px"
+   viewBox="0 0 323.141 322.95"
+   enable-background="new 0 0 323.141 322.95"
+   xml:space="preserve"
+   sodipodi:docname="elm.svg"
+   inkscape:version="1.2.1 (9c6d41e4, 2022-07-14)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs21"><filter
+     style="color-interpolation-filters:sRGB;"
+     inkscape:label="Fade to Black or White"
+     id="filter129"
+     x="0"
+     y="0"
+     width="1"
+     height="1"><feColorMatrix
+       values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0"
+       id="feColorMatrix127" /></filter></defs><sodipodi:namedview
+   id="namedview19"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   showgrid="false"
+   inkscape:zoom="3.1800587"
+   inkscape:cx="165.72021"
+   inkscape:cy="168.39312"
+   inkscape:window-width="1538"
+   inkscape:window-height="1267"
+   inkscape:window-x="326"
+   inkscape:window-y="111"
+   inkscape:window-maximized="0"
+   inkscape:current-layer="g16" />
+<g
+   id="g16"
+   style="filter:url(#filter129)">
+  <polygon
+   fill="#F0AD00"
+   points="161.649,152.782 231.514,82.916 91.783,82.916"
+   id="polygon2"
+   style="fill:#000000" />
+
+  <polygon
+   fill="#7FD13B"
+   points="8.867,0 79.241,70.375 232.213,70.375 161.838,0"
+   id="polygon4"
+   style="fill:#000000" />
+
+  <rect
+   fill="#7FD13B"
+   x="192.99"
+   y="107.392"
+   transform="matrix(0.7071 0.7071 -0.7071 0.7071 186.4727 -127.2386)"
+   width="107.676"
+   height="108.167"
+   id="rect6"
+   style="fill:#000000" />
+
+  <polygon
+   fill="#60B5CC"
+   points="323.298,143.724 323.298,0 179.573,0"
+   id="polygon8"
+   style="fill:#000000" />
+
+  <polygon
+   fill="#5A6378"
+   points="152.781,161.649 0,8.868 0,314.432"
+   id="polygon10"
+   style="fill:#000000" />
+
+  <polygon
+   fill="#F0AD00"
+   points="255.522,246.655 323.298,314.432 323.298,178.879"
+   id="polygon12"
+   style="fill:#000000" />
+
+  <polygon
+   fill="#60B5CC"
+   points="161.649,170.517 8.869,323.298 314.43,323.298"
+   id="polygon14"
+   style="fill:#000000" />
+</g>
+</svg>
