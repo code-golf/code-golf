@@ -1,6 +1,6 @@
-port module Main exposing (run)
+port module Main exposing (main)
 
-import M exposing(run)
+import M
 
 port send : String -> Cmd msg
 
