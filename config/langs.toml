@@ -359,7 +359,7 @@ for arg <- System.argv, do: IO.puts arg
 '''
 
 [Elm]
-size    = '111 MiB'
+size    = '119 MiB'
 version = '0.19.1'
 website = 'https://elm-lang.org/'
 example = '''
@@ -367,6 +367,9 @@ module M exposing (..)
 
 run : List String -> String
 run args =
+    -- The output is the result of the run function
+    -- Looping: use recursion or a function like foldl or map
+    -- Arguments are provided as a parameter of the run function
     let
         numbers =
             List.range 0 10
