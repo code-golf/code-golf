@@ -97,11 +97,11 @@ website = 'https://www.gnu.org/software/gawk/'
 example = '''
 BEGIN {
     # Printing
-    print("Hello, World")
+    print("Hello, World!")
 
     # Looping
-    for (i=0; i<=10; i++) {
-        printf("%i\n", i)
+    for (i = 0; i < 10; i++) {
+        print(i)
     }
 }
 
