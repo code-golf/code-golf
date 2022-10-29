@@ -27,6 +27,7 @@ func init() {
 		sha, created, id string
 		hole             bool
 	}{
+		{"dbbab51", "2022-10-29 09:21:35", "awk", false},
 		{"c6a93a7", "2022-10-29 08:23:32", "emirp-numbers-long", true},
 		{"ce89eb5", "2022-10-13 20:29:29", "dart", false},
 		{"03769f1", "2022-09-24 00:21:26", "tcl", false},
