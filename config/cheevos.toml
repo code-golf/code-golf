@@ -5,31 +5,37 @@
 [['Date Specific']]
 name        = 'Happy Birthday, Code Golf'
 emoji       = '🎂'
+dates       = [2000-10-02, 2000-10-03]
 description = 'Solve any hole on <a href=//github.com/code-golf/code-golf/commit/4b44>2 Oct</a>.'
 
 [['Date Specific']]
 name        = 'Independence Day'
 emoji       = '🇺🇸'
+dates       = [2000-07-04, 2000-07-05]
 description = 'Solve <a href=/united-states>United States</a> on <a href=//www.wikipedia.org/wiki/Independence_Day_(United_States)>4 Jul</a>.'
 
 [['Date Specific']]
 name        = 'May the 4ᵗʰ Be with You'
 emoji       = '🌌'
+dates       = [2000-05-04, 2000-05-05]
 description = 'Solve <a href=/star-wars-opening-crawl>Star Wars Opening Crawl</a> on <a href=//www.wikipedia.org/wiki/Star_Wars_Day>4 May</a>.'
 
 [['Date Specific']]
 name        = 'Pi Day'
 emoji       = '🥧'
+dates       = [2000-03-14, 2000-03-15]
 description = 'Solve <a href=/π>π</a> on <a href=//www.wikipedia.org/wiki/Pi_Day>14 Mar</a>.'
 
 [['Date Specific']]
 name        = 'Twelvetide'
 emoji       = '🎅'
+dates       = [1999-12-25, 2000-01-06, 2000-12-25, 2001-01-06]
 description = 'Solve <a href=/12-days-of-christmas>12 Days of Christmas</a> during <a href=//www.wikipedia.org/wiki/Twelvetide>25 Dec – 5 Jan</a>.'
 
 [['Date Specific']]
 name        = 'Vampire Byte'
 emoji       = '🧛'
+dates       = [2000-10-31, 2000-11-01]
 description = 'Solve <a href=/vampire-numbers>Vampire Numbers</a> on <a href=//www.wikipedia.org/wiki/Halloween>31 Oct</a>.'
 
 # GitHub

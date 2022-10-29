@@ -23,23 +23,24 @@ CREATE TYPE hole AS ENUM (
     '12-days-of-christmas', '99-bottles-of-beer', 'abundant-numbers',
     'arabic-to-roman', 'arrows', 'ascii-table', 'brainfuck',
     'catalan-numbers', 'catalans-constant', 'christmas-trees', 'collatz',
-    'css-colors', 'cubes', 'diamonds', 'divisors', 'emirp-numbers', 'emojify',
-    'evil-numbers', 'evil-numbers-long', 'fibonacci', 'fizz-buzz',
-    'foo-fizz-buzz-bar', 'fractions', 'happy-numbers', 'happy-numbers-long',
-    'hexdump', 'intersection', 'isbn', 'jacobi-symbol', 'kolakoski-constant',
-    'kolakoski-sequence', 'leap-years', 'levenshtein-distance',
-    'leyland-numbers', 'look-and-say', 'lucky-numbers', 'lucky-tickets',
-    'morse-decoder', 'morse-encoder', 'musical-chords', 'niven-numbers',
-    'niven-numbers-long', 'number-spiral', 'odious-numbers',
-    'odious-numbers-long', 'ordinal-numbers', 'pangram-grep',
-    'pascals-triangle', 'pernicious-numbers', 'poker', 'prime-numbers',
-    'prime-numbers-long', 'proximity-grid', 'qr-decoder', 'quine', 'recamán',
-    'reverse-polish-notation', 'rock-paper-scissors-spock-lizard',
-    'roman-to-arabic', 'rule-110', 'seven-segment', 'sierpiński-triangle',
-    'smith-numbers', 'spelling-numbers', 'star-wars-opening-crawl', 'sudoku',
-    'sudoku-v2', 'ten-pin-bowling', 'time-distance', 'tongue-twisters',
-    'united-states', 'vampire-numbers', 'van-eck-sequence', 'zodiac-signs',
-    'λ', 'π', 'τ', 'φ', '√2', '𝑒'
+    'css-colors', 'cubes', 'diamonds', 'divisors', 'emirp-numbers',
+    'emirp-numbers-long', 'emojify', 'evil-numbers', 'evil-numbers-long',
+    'fibonacci', 'fizz-buzz', 'foo-fizz-buzz-bar', 'fractions',
+    'happy-numbers', 'happy-numbers-long', 'hexdump', 'intersection', 'isbn',
+    'jacobi-symbol', 'kolakoski-constant', 'kolakoski-sequence', 'leap-years',
+    'levenshtein-distance', 'leyland-numbers', 'look-and-say',
+    'lucky-numbers', 'lucky-tickets', 'morse-decoder', 'morse-encoder',
+    'musical-chords', 'niven-numbers', 'niven-numbers-long', 'number-spiral',
+    'odious-numbers', 'odious-numbers-long', 'ordinal-numbers',
+    'pangram-grep', 'pascals-triangle', 'pernicious-numbers', 'poker',
+    'prime-numbers', 'prime-numbers-long', 'proximity-grid', 'qr-decoder',
+    'quine', 'recamán', 'reverse-polish-notation',
+    'rock-paper-scissors-spock-lizard', 'roman-to-arabic', 'rule-110',
+    'seven-segment', 'sierpiński-triangle', 'smith-numbers',
+    'spelling-numbers', 'star-wars-opening-crawl', 'sudoku', 'sudoku-v2',
+    'ten-pin-bowling', 'time-distance', 'tongue-twisters', 'united-states',
+    'vampire-numbers', 'van-eck-sequence', 'zodiac-signs', 'λ', 'π', 'τ', 'φ',
+    '√2', '𝑒'
 );
 
 CREATE TYPE layout AS ENUM ('default', 'tabs');
@@ -47,7 +48,7 @@ CREATE TYPE layout AS ENUM ('default', 'tabs');
 CREATE TYPE keymap AS ENUM ('default', 'vim');
 
 CREATE TYPE lang AS ENUM (
-    'assembly', 'bash', 'basic', 'brainfuck', 'c', 'c-sharp', 'cpp', 'cobol',
+    'assembly', 'awk', 'bash', 'basic', 'brainfuck', 'c', 'c-sharp', 'cpp', 'cobol',
     'crystal', 'd', 'dart', 'elm', 'elixir', 'f-sharp', 'fish', 'fortran', 'go',
     'golfscript', 'haskell', 'hexagony', 'j', 'java', 'javascript', 'julia',
     'k', 'lisp', 'lua', 'nim', 'pascal', 'perl', 'php', 'powershell',

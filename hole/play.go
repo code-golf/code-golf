@@ -197,6 +197,8 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 
 		cmd.Args = []string{"/usr/bin/defasm", "--size-out=3", "-w", "-r"}
 		cmd.ExtraFiles = []*os.File{asmBytesWrite}
+	case "awk":
+		cmd.Args = []string{"/usr/bin/gawk", "-v", "RS=\\0", code}
 	case "bash":
 		cmd.Args = []string{"/usr/bin/bash", "-s", "-"}
 	case "brainfuck":
@@ -265,7 +267,8 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 
 	// Args
 	switch langID {
-	case "brainfuck", "fish":
+	case "awk", "brainfuck", "fish":
+		// Hole args passed through stdin for these langs separated by a null byte
 		args := ""
 		for _, arg := range score.Args {
 			args += arg + "\x00"
@@ -281,8 +284,8 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 
 	// Code
 	switch langID {
-	case "brainfuck", "elixir", "fish", "golfscript", "javascript", "perl", "sed":
-		// For these code is passed as an argument above.
+	case "awk", "brainfuck", "elixir", "fish", "golfscript", "javascript", "perl", "sed":
+		// For these langs, code is passed as an argument above.
 	case "k":
 		code = preprocessKCode(holeID, code)
 		cmd.Stdin = strings.NewReader(code)
