@@ -1,0 +1,20 @@
+Dockerfile  -- The Dockerfile
+            -- installs Elm and node
+            -- copies the necessary files for running an Elm project
+
+elm.sh      -- Injects the arguments into Main.elm
+            -- Compiles and runs the code
+
+main.js     -- javascript code that can be run by node
+            -- passes the I/O along to Elm
+
+Pre.elm     -- Minimal compilable program
+            -- Only used once when building the Docker image
+            -- So no dependencies need to be downloaded later on
+
+Main.elm    -- The actual Main Elm module that gets used at runtime
+            -- Handles the I/O on the Elm side
+            -- Calls on the run function from the M module (given by the user)
+
+elm.json    -- Necessary config file
+            -- Specifies the available packages
