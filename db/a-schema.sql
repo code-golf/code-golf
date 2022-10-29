@@ -48,7 +48,7 @@ CREATE TYPE layout AS ENUM ('default', 'tabs');
 CREATE TYPE keymap AS ENUM ('default', 'vim');
 
 CREATE TYPE lang AS ENUM (
-    'assembly', 'bash', 'basic', 'brainfuck', 'c', 'c-sharp', 'cpp', 'cobol',
+    'assembly', 'awk', 'bash', 'basic', 'brainfuck', 'c', 'c-sharp', 'cpp', 'cobol',
     'crystal', 'd', 'dart', 'elixir', 'f-sharp', 'fish', 'fortran', 'go',
     'golfscript', 'haskell', 'hexagony', 'j', 'java', 'javascript', 'julia',
     'k', 'lisp', 'lua', 'nim', 'pascal', 'perl', 'php', 'powershell',

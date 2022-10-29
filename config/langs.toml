@@ -90,6 +90,31 @@ mov $0, %edi
 syscall
 '''
 
+[AWK]
+size    = '707 KiB'
+version = '5.2.0'
+website = 'https://www.gnu.org/software/gawk/'
+example = '''
+BEGIN {
+    # Printing
+    print("Hello, World")
+
+    # Looping
+    for (i=0; i<=10; i++) {
+        printf("%i\n", i)
+    }
+}
+
+# Arguments are available via STDIN in the form of records
+# Each record is NULL terminated
+# By default, AWK automatically performs actions on each record
+{
+    # $0 is the full record while $1-$NF accesses individual fields in the record,
+    # where NF is the number of fields in the current record
+    print($0)
+}
+'''
+
 [Bash]
 size    = '1.17 MiB'
 version = '5.2.2'
