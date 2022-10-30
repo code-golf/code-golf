@@ -14,6 +14,7 @@
     "@replit/codemirror-vim": "",
     "codemirror": "^6",
     "codemirror-lang-brainfuck": "",
+    "codemirror-lang-elixir": "^3",
     "codemirror-lang-golfscript": "",
     "codemirror-lang-j": "",
     "codemirror-lang-k": "",
