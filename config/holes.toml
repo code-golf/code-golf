@@ -826,6 +826,26 @@ preamble = '''
     sequence, each on a separate line.
 '''
 
+['Gray Code']
+category = 'Transform'
+variants = ['Gray Code Decoder', 'Gray Code Encoder']
+experiment = github-issue-number
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Gray_code' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Gray_code' },
+]
+preamble = '''
+<p>
+{{ if eq . "Gray Code Decoder" }}
+For each argument in reflected binary (Gray code) form, print the same number in decimal form.
+{{ else }}
+For each numeric argument in decimal form, print the same number in reflected binary (Gray code) form.
+{{ end }}
+</p>
+
+<p>The numbers range from 0 to 4096 inclusive.</p>
+'''
+
 ['Happy Numbers']
 category = 'Sequence'
 variants = ['Happy Numbers', 'Happy Numbers (Long)']
