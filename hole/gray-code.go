@@ -9,11 +9,11 @@ func grayCode(reverse bool) []Scorecard {
 	numbers := make([]int, count)
 	numbers[0] = 0
 	numbers[1] = 1
-	numbers[2] = 4096
+	numbers[2] = 4095
 
 	// Append another random cases.
 	for i := 3; i < count; i++ {
-		numbers[i] = randInt(1, 4096)
+		numbers[i] = randInt(1, 4095)
 	}
 
 	tests := make([]test, count)

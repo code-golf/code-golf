@@ -850,7 +850,7 @@ For each numeric argument in decimal form, print the same number in reflected bi
 {{ end }}
 </p>
 
-<p>The numbers range from 0 to 4096 inclusive.</p>
+<p>The numbers range from 0 to 4095 inclusive.</p>
 '''
 
 ['Happy Numbers']
