@@ -1,3 +1,7 @@
+package hole
+
+import "strconv"
+
 func grayCode(reverse bool) []Scorecard {
 	const count = 2000
 
@@ -15,7 +19,7 @@ func grayCode(reverse bool) []Scorecard {
 	tests := make([]test, count)
 	for i, n := range shuffle(numbers) {
 		dec := strconv.Itoa(n)
-		rbc := strconv.FormatInt(n ^ n>>1, 2)
+		rbc := strconv.FormatInt(int64(n^n>>1), 2)
 
 		if reverse {
 			tests[i] = test{rbc, dec}

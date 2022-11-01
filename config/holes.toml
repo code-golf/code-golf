@@ -829,12 +829,19 @@ preamble = '''
 ['Gray Code']
 category = 'Transform'
 variants = ['Gray Code Decoder', 'Gray Code Encoder']
-experiment = github-issue-number
+experiment = 779
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Gray_code' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Gray_code' },
 ]
 preamble = '''
+<p>The reflected binary code (RBC), also known as Gray code, is an ordering of the binary numeral system
+such that two successive values differ in only one bit (binary digit).</p>
+
+<p>For example, the representation of the decimal value <tt>1</tt> in binary would normally be <tt>001</tt> and
+<tt>2</tt> would be <tt>010</tt>. In Gray code, these values are represented as <tt>001</tt> and <tt>011</tt>.
+That way, incrementing a value from 1 to 2 requires only one bit to change, instead of two.</p>
+
 <p>
 {{ if eq . "Gray Code Decoder" }}
 For each argument in reflected binary (Gray code) form, print the same number in decimal form.
