@@ -7,7 +7,6 @@
 #  - Deadfish
 #
 # Mathematics
-#  - γ (Euler–Mascheroni constant)
 #  - K (Khinchin's constant)
 #
 # Sequence
@@ -2549,6 +2548,18 @@ preamble = '''
                 <td>♑<td>♒<td>♓<td>♈<td>♉<td>♊<td>♋<td>♌<td>♍<td>♎<td>♏<td>♐
     </table>
 </div>
+'''
+
+['γ']
+category = 'Mathematics'
+experiment = -1
+links = [
+    { name = 'OEIS A001620', url = '//oeis.org/A001620' },
+    { name = 'Rosetta Code', url = "//rosettacode.org/wiki/Euler's_constant_0.5772..." },
+    { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Euler's_constant" },
+]
+preamble = '''
+<p>Print the Euler–Mascheroni constant γ (gamma) to the first 1,000 decimal places.
 '''
 
 ['λ']
