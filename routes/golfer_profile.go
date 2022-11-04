@@ -44,7 +44,6 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		Wall:           make([]row, 0, limit),
 	}
 
-	// TODO Support friends/follow.
 	rows, err := db.Query(
 		`WITH data AS (
 		 -- Cheevos
