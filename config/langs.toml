@@ -324,7 +324,7 @@ void main(string[] argv) {
 
 [Dart]
 size    = '534 MiB'
-version = '2.18.3'
+version = '2.18.4'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -784,8 +784,8 @@ end
 '''
 
 [Rust]
-size    = '404 MiB'
-version = '1.64.0'
+size    = '427 MiB'
+version = '1.65.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {

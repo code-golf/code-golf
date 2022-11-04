@@ -21,7 +21,7 @@ FROM scratch
 
 COPY --from=codegolf/lang-swift      ["/", "/langs/swift/rootfs/"     ] #  561 MiB
 COPY --from=codegolf/lang-dart       ["/", "/langs/dart/rootfs/"      ] #  534 MiB
-COPY --from=codegolf/lang-rust       ["/", "/langs/rust/rootfs/"      ] #  404 MiB
+COPY --from=codegolf/lang-rust       ["/", "/langs/rust/rootfs/"      ] #  427 MiB
 COPY --from=codegolf/lang-haskell    ["/", "/langs/haskell/rootfs/"   ] #  309 MiB
 COPY --from=codegolf/lang-julia      ["/", "/langs/julia/rootfs/"     ] #  298 MiB
 COPY --from=codegolf/lang-d          ["/", "/langs/d/rootfs/"         ] #  293 MiB
