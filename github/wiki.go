@@ -12,6 +12,7 @@ import (
 	"github.com/go-git/go-git/v5/storage/memory"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/extension"
+	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/renderer/html"
 )
 
@@ -48,6 +49,7 @@ func Wiki(db *sql.DB) error {
 
 	markdown := goldmark.New(
 		goldmark.WithExtensions(extension.GFM),
+		goldmark.WithParserOptions(parser.WithAutoHeadingID()),
 		goldmark.WithRendererOptions(html.WithUnsafe()),
 	)
 
