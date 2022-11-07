@@ -4,7 +4,6 @@ use HTTP::Tiny;
 use TOML::Thumb;
 
 constant @urls = (
-    'AWK'        => 'AWK',
     'Bash'       => 'Bash_(Unix_shell)',
     'BASIC'      => 'FreeBASIC',
     'C'          => 'Tiny_C_Compiler',
