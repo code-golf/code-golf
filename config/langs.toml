@@ -117,7 +117,7 @@ BEGIN {
 
 [Bash]
 size    = '1.17 MiB'
-version = '5.2.2'
+version = '5.2.9'
 website = 'https://www.gnu.org/software/bash/'
 example = '''
 # Printing
@@ -204,7 +204,7 @@ int main(int argc, char* argv[]) {
 
 ['C#']
 size    = '148 MiB'
-version = 'C# 10.0 on .NET 6.0.9'
+version = 'C# 10.0 on .NET 6.0.10'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -282,7 +282,7 @@ end-program.
 
 [Crystal]
 size    = '203 MiB'
-version = '1.6.0'
+version = '1.6.2'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -360,7 +360,7 @@ for arg <- System.argv, do: IO.puts arg
 
 ['F#']
 size    = '142 MiB'
-version = 'F# 6.0 on .NET 6.0.9'
+version = 'F# 6.0 on .NET 6.0.10'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -679,7 +679,7 @@ say for @ARGV;
 
 [PHP]
 size    = '10.5 MiB'
-version = '7.4.32'
+version = '7.4.33'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -696,7 +696,7 @@ for ($i = 1; $i < $argc; $i++)
 
 [PowerShell]
 size    = '179 MiB'
-version = 'PowerShell 7.2.6 on .NET 6.0.9'
+version = 'PowerShell 7.2.7 on .NET 6.0.10'
 website = 'https://docs.microsoft.com/powershell/scripting/overview'
 example = '''
 # Printing
