@@ -958,7 +958,7 @@ for (a in Process.arguments) System.print(a)
 
 [Zig]
 size    = '262 MiB'
-version = '0.9.1'
+version = '0.10.0'
 website = 'https://ziglang.org'
 example = '''
 // Notice: use spaces as indentation, since tab causes a compile-time error
