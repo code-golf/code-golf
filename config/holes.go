@@ -35,6 +35,7 @@ type (
 		Preamble                                template.HTML `json:"preamble"`
 		Links                                   []Link        `json:"links"`
 		Variants                                []*Hole       `json:"-"`
+		Version                                 int           `json:"-"`
 	}
 )
 

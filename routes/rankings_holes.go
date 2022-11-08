@@ -22,6 +22,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		OtherStrokes                 *int
 		Lang                         *config.Lang
 		Submitted                    time.Time
+		Took                         *time.Duration
 	}
 
 	data := struct {
@@ -92,7 +93,8 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			         strokes,
 			         NULL other_strokes,
 			         submitted,
-			         COUNT(*) OVER()
+			         COUNT(*) OVER(),
+			         NULL
 			    FROM summed
 			    JOIN users ON user_id = id
 			ORDER BY rank, submitted
@@ -124,7 +126,8 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			         strokes,
 			         NULL other_strokes,
 			         submitted,
-			         COUNT(*) OVER()
+			         COUNT(*) OVER(),
+			         NULL
 			    FROM summed
 			    JOIN users ON user_id = id
 			ORDER BY rank, submitted
@@ -146,7 +149,8 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			         strokes,
 			         other_strokes,
 			         submitted,
-			         COUNT(*) OVER()
+			         COUNT(*) OVER(),
+			         NULL
 			    FROM rankings
 			    JOIN users ON user_id = id
 			   WHERE hole = $1 AND scoring = $2
@@ -168,7 +172,8 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			         strokes,
 			         other_strokes,
 			         submitted,
-			         COUNT(*) OVER()
+			         COUNT(*) OVER(),
+			         took
 			    FROM rankings
 			    JOIN users ON user_id = id
 			   WHERE hole = $1 AND lang = $2 AND scoring = $3
@@ -201,6 +206,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			&r.OtherStrokes,
 			&r.Submitted,
 			&data.Pager.Total,
+			&r.Took,
 		); err != nil {
 			panic(err)
 		}

@@ -55,6 +55,14 @@ func Ordinal(i int) string {
 	return "th"
 }
 
+// Duration returns a HTML <time> tag of a time.Duration in seconds.
+func Duration(d time.Duration) template.HTML {
+	return template.HTML(fmt.Sprintf(
+		`<time data-tooltip="%v">%.3f</time>`,
+		d.Truncate(time.Microsecond), d.Seconds(),
+	))
+}
+
 // Time returns a fuzzy HTML <time> tag of a time.Time.
 //
 //	   a min ago

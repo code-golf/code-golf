@@ -138,6 +138,7 @@ CREATE TABLE solutions (
     scoring   scoring   NOT NULL,
     failing   bool      NOT NULL DEFAULT false,
     code      text      NOT NULL,
+    took      bigint,
     -- Assembly can only be scored on bytes, and they are compiled bytes.
     CHECK ((lang  = 'assembly' AND chars IS NULL AND scoring = 'bytes')
         OR (lang != 'assembly' AND bytes = octet_length(code)
@@ -182,7 +183,7 @@ GROUP BY hole, lang, scoring
   HAVING COUNT(*) = 1;
 
 CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
-    select hole, lang, scoring, user_id, submitted,
+    select hole, lang, scoring, user_id, submitted, took,
            case when scoring = 'bytes' then bytes else chars end strokes,
            case when scoring = 'bytes' then chars else bytes end other_strokes
       from solutions
@@ -201,7 +202,7 @@ CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
       from min
       join min_per_lang using(hole, scoring)
 ), points as (
-    select hole, lang, scoring, user_id, strokes, other_strokes, submitted,
+    select hole, lang, scoring, user_id, strokes, other_strokes, submitted, took,
            round(Sb / strokes * 1000) points,
            round(S  / strokes * 1000) points_for_lang
       from strokes

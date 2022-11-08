@@ -2,17 +2,20 @@ package routes
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 
 	"github.com/buildkite/terminal-to-html/v3"
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/discord"
-	Golfer "github.com/code-golf/code-golf/golfer"
-	"github.com/code-golf/code-golf/hole"
+	golferPkg "github.com/code-golf/code-golf/golfer"
+	holePkg "github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/session"
 	"github.com/lib/pq"
 )
+
+const platformVersion = 0 // Bump this when hardware changes.
 
 // POST /solution
 func solutionPOST(w http.ResponseWriter, r *http.Request) {
@@ -23,13 +26,13 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	_, experimental := config.ExpHoleByID[in.Hole]
-	if !experimental && config.HoleByID[in.Hole] == nil {
-		w.WriteHeader(http.StatusNotFound)
-		return
+	hole := config.HoleByID[in.Hole]
+	lang := config.LangByID[in.Lang]
+	if hole == nil {
+		hole = config.ExpHoleByID[in.Hole]
 	}
 
-	if _, ok := config.LangByID[in.Lang]; !ok {
+	if hole == nil || lang == nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
@@ -47,7 +50,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	score := hole.Play(r.Context(), in.Hole, in.Lang, in.Code)
+	score := holePkg.Play(r.Context(), in.Hole, in.Lang, in.Code)
 
 	if score.Timeout && golfer != nil {
 		golfer.Earn(db, "slowcoach")
@@ -59,7 +62,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		Err, Exp, Out  string
 		ExitCode       int
 		Pass, LoggedIn bool
-		RankUpdates    []Golfer.RankUpdate
+		RankUpdates    []golferPkg.RankUpdate
 		Took           time.Duration
 	}{
 		Argv:     score.Args,
@@ -70,18 +73,18 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		LoggedIn: golfer != nil,
 		Out:      string(score.Stdout),
 		Pass:     score.Pass,
-		RankUpdates: []Golfer.RankUpdate{
+		RankUpdates: []golferPkg.RankUpdate{
 			{Scoring: "bytes"},
 			{Scoring: "chars"},
 		},
 		Took: score.Took,
 	}
 
-	if out.Pass && golfer != nil && experimental {
+	if out.Pass && golfer != nil && hole.Experiment != 0 {
 		if c := golfer.Earn(db, "black-box-testing"); c != nil {
 			out.Cheevos = append(out.Cheevos, c)
 		}
-	} else if out.Pass && golfer != nil && !experimental {
+	} else if out.Pass && golfer != nil && hole.Experiment == 0 {
 		var cheevos []string
 		if err := db.QueryRowContext(
 			r.Context(),
@@ -93,20 +96,23 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			        new_chars_joint, new_chars_rank, new_chars,
 			        beat_chars
 			   FROM save_solution(
-			            bytes   := CASE WHEN $3 = 'assembly'::lang
+			            bytes        := CASE WHEN $3 = 'assembly'::lang
 			                            THEN $5
 			                            ELSE octet_length($1)
 			                            END,
-			            chars   := CASE WHEN $3 = 'assembly'::lang
+			            chars        := CASE WHEN $3 = 'assembly'::lang
 			                            THEN NULL
 			                            ELSE char_length($1)
 			                            END,
-			            code    := $1,
-			            hole    := $2,
-			            lang    := $3,
-			            user_id := $4
+			            code         := $1,
+			            hole         := $2,
+			            lang         := $3,
+			            user_id      := $4,
+			            took         := $6,
+			            took_version := $7
 			        )`,
-			in.Code, in.Hole, in.Lang, golfer.ID, score.ASMBytes,
+			in.Code, in.Hole, in.Lang, golfer.ID, score.ASMBytes, score.Took,
+			fmt.Sprint(platformVersion, ":", hole.Version, ":", lang.Version),
 		).Scan(
 			pq.Array(&cheevos),
 			&out.RankUpdates[0].From.Joint,
@@ -131,7 +137,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			out.Cheevos = append(out.Cheevos, config.CheevoByID[cheevo])
 		}
 
-		recordUpdates := make([]Golfer.RankUpdate, 0, 2)
+		recordUpdates := make([]golferPkg.RankUpdate, 0, 2)
 
 		for _, rank := range out.RankUpdates {
 			if rank.From.Strokes.Int64 == rank.To.Strokes.Int64 {

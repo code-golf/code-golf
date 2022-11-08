@@ -60,7 +60,8 @@ CREATE TYPE save_solution_ret AS (
 );
 
 CREATE FUNCTION save_solution(
-    bytes int, chars int, code text, hole hole, lang lang, user_id int
+    bytes int, chars int, code text, hole hole, lang lang, user_id int,
+    took bigint default null, took_version text default null
 ) RETURNS save_solution_ret AS $$
 #variable_conflict use_variable
 DECLARE
@@ -85,11 +86,13 @@ BEGIN
         ret.old_chars_rank  := rank.rank;
     END IF;
 
+    -- TODO Use took_version, add logic to chars too.
+
     -- Update the code if it's the same length or less, but only update the
     -- submitted time if the solution is shorter. This avoids a user moving
     -- down the leaderboard by matching their personal best.
-    INSERT INTO solutions (bytes, chars, code, hole, lang, scoring, user_id)
-         VALUES           (bytes, chars, code, hole, lang, 'bytes', user_id)
+    INSERT INTO solutions (bytes, chars, code, hole, lang, scoring, user_id, took)
+         VALUES           (bytes, chars, code, hole, lang, 'bytes', user_id, took)
     ON CONFLICT ON CONSTRAINT solutions_pkey
     DO UPDATE SET failing = false,
                     bytes = CASE
@@ -103,7 +106,12 @@ BEGIN
                     THEN excluded.code ELSE solutions.code END,
                 submitted = CASE
                     WHEN solutions.failing OR excluded.bytes < solutions.bytes
-                    THEN excluded.submitted ELSE solutions.submitted END;
+                    THEN excluded.submitted ELSE solutions.submitted END,
+                     took = CASE
+                    WHEN solutions.failing
+                      OR (excluded.bytes <= solutions.bytes
+                     AND (solutions.took IS NULL OR excluded.took < solutions.took))
+                    THEN excluded.took ELSE solutions.took END;
 
     IF chars IS NOT NULL THEN
         INSERT INTO solutions (bytes, chars, code, hole, lang, scoring, user_id)

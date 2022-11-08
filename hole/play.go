@@ -160,15 +160,21 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		}(score)
 	}
 
+	var maxTook time.Duration
+
 	// TODO Maybe return all runs (rather than last or failing) to the UI.
 	for range scores {
 		score = <-done
+
+		maxTook = max(maxTook, score.Took)
 
 		// We failed! Return that run.
 		if !score.Pass {
 			break
 		}
 	}
+
+	score.Took = maxTook
 
 	return // Return the last run.
 }
