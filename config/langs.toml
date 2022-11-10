@@ -894,6 +894,32 @@ foreach arg $argv {
 }
 '''
 
+[TeX]
+size    = '588 MiB'
+version = '3.141592653'
+website = 'https://tug.org/'
+example = '''
+% Printing
+Hello, World!
+
+% Looping
+\newcount\i
+\loop\ifnum\i<10
+    \the\i\endgraf
+    \advance\i by1
+\repeat
+
+% Accessing arguments
+\newcount\j
+\loop\ifnum\j<\argc
+    \argv[\the\j]\endgraf
+    \advance\j by1
+\repeat
+
+% Finish off
+\bye
+'''
+
 [V]
 size    = '38.5 MiB'
 version = '0.2.4'

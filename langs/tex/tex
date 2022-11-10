@@ -1,0 +1,13 @@
+#!/bin/sh -e
+
+if [ "$1" = "-v" ]
+then
+  /bin/tex -v
+  exit
+fi
+
+cd /tmp
+
+/bin/tex "\relax" "$1" 1>&2 1>/dev/null
+
+cat texput.dvi
