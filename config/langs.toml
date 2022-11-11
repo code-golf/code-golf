@@ -695,8 +695,8 @@ for ($i = 1; $i < $argc; $i++)
 '''
 
 [PowerShell]
-size    = '179 MiB'
-version = 'PowerShell 7.2.7 on .NET 6.0.10'
+size    = '174 MiB'
+version = 'PowerShell 7.3.0 on .NET 7.0.0'
 website = 'https://docs.microsoft.com/powershell/scripting/overview'
 example = '''
 # Printing
