@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 
 if [ "$1" = "-v" ]
 then
@@ -6,8 +6,31 @@ then
   exit
 fi
 
+function join_by {
+  # https://stackoverflow.com/a/17841619/7481517
+  local sep=${1-} f=${2-}
+  if shift 2; then
+    printf %s "$f" "${@/#/$sep}"
+  fi
+}
+
 cd /tmp
 
-/bin/tex "\relax" "$1" 1>&2 1>/dev/null
+code="$1"
+shift
+
+args=$(join_by "\or " "$@")
+init="\def\argc{$#} \def\argv[#1]{\ifcase#1\relax $args\else\fi}"
+
+# \footline={} disables page numbers
+# \end marks the end of the document (TeX ignores stdin EOF)
+#   \bye is preferred over \end, but it's not strictly necessary, so I went with
+#   \end to close out the file instead of \bye
+code_to_run="\footline={}
+$init
+$code
+\end"
+
+/bin/tex "$code_to_run" 1>&2 1>/dev/null
 
 dvi-to-text texput.dvi

@@ -899,9 +899,6 @@ size    = '592 MiB'
 version = '3.141592653'
 website = 'https://tug.org/'
 example = '''
-% Disable page numbers
-\footline={}
-
 % Printing
 Hello, World!
 
@@ -918,9 +915,6 @@ Hello, World!
     \argv[\the\j]\endgraf
     \advance\j by1
 \repeat
-
-% Finish off
-\bye
 '''
 
 [V]
