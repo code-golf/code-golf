@@ -10,4 +10,4 @@ cd /tmp
 
 /bin/tex "\relax" "$1" 1>&2 1>/dev/null
 
-cat texput.dvi
+dvi-to-text texput.dvi

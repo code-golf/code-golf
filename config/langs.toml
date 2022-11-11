@@ -895,10 +895,13 @@ foreach arg $argv {
 '''
 
 [TeX]
-size    = '588 MiB'
+size    = '592 MiB'
 version = '3.141592653'
 website = 'https://tug.org/'
 example = '''
+% Disable page numbers
+\footline={}
+
 % Printing
 Hello, World!
 
