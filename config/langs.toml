@@ -203,8 +203,8 @@ int main(int argc, char* argv[]) {
 '''
 
 ['C#']
-size    = '148 MiB'
-version = 'C# 10.0 on .NET 6.0.10'
+size    = '146 MiB'
+version = 'C# 10.0 on .NET 7.0.0'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -359,8 +359,8 @@ for arg <- System.argv, do: IO.puts arg
 '''
 
 ['F#']
-size    = '142 MiB'
-version = 'F# 6.0 on .NET 6.0.10'
+size    = '135 MiB'
+version = 'F# 6.0 on .NET 6.0.11'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]

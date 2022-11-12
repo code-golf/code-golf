@@ -30,10 +30,10 @@ let compileArgs =
         "--targetprofile:netcore";
         "--target:exe";
         "--optimize";
-        "-r:/compiler/FSharp.Core.dll";
-        "-r:/compiler/System.Private.CoreLib.dll";
-        "-r:/compiler/System.Runtime.dll";
-        "-r:/compiler/netstandard.dll";
+        "-r:/usr/bin/FSharp.Core.dll";
+        "-r:/usr/bin/System.Private.CoreLib.dll";
+        "-r:/usr/bin/System.Runtime.dll";
+        "-r:/usr/bin/netstandard.dll";
         "--nowin32manifest";
     |]
 

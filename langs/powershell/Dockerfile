@@ -1,15 +1,15 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0.100-alpine3.16 as builder
 
-WORKDIR /source
+WORKDIR /work
 
 COPY powershell.cs powershell.csproj ./
 
-RUN dotnet publish -c Release -o /mybin
+RUN dotnet publish -c Release -o /out
 
 FROM codegolf/lang-base
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1  /lib/
-COPY --from=0 /mybin                    /usr/bin
+COPY --from=0 /out                      /usr/bin
 COPY --from=0 /usr/lib/libgcc_s.so.1    \
               /usr/lib/libicudata.so.71 \
               /usr/lib/libicui18n.so.71 \

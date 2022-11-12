@@ -11,7 +11,7 @@ var lines = File.ReadAllLines(listPath);
 
 foreach (var filename in lines)
 {
-	var path = $"/compiler/{filename}";
+	var path = $"/out/{filename}";
 	if (!File.Exists(path))
 	{
 		Console.Error.WriteLine($"File specified in {listPath} not found: {path}");
@@ -21,7 +21,7 @@ foreach (var filename in lines)
 	_removeSet.Add(filename);
 }
 
-var jsonPath = "/compiler/Compiler.deps.json";
+var jsonPath = "/out/f-sharp.deps.json";
 var text = File.ReadAllText(jsonPath);
 var data = JObject.Parse(text);
 Walk(data);

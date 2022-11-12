@@ -207,8 +207,6 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 		cmd.Args = []string{"/usr/bin/brainfuck", "-c", code}
 	case "c":
 		cmd.Args = []string{"/usr/bin/tcc", "-run", "-"}
-	case "c-sharp", "f-sharp":
-		cmd.Args = []string{"/compiler/Compiler", "-"}
 	case "crystal":
 		cmd.Args = []string{"/usr/bin/crystal", "run", "--stdin-filename", "code.cr", "--"}
 		cmd.Env = []string{"CRYSTAL_CACHE_DIR=/tmp", "PATH=/usr/bin:/bin"}
