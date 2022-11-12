@@ -200,7 +200,7 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 		cmd.Args = []string{"/usr/bin/defasm", "--size-out=3", "-w", "-r"}
 		cmd.ExtraFiles = []*os.File{asmBytesWrite}
 	case "awk":
-		cmd.Args = []string{"/usr/bin/gawk", "-v", "RS=\\0", code}
+		cmd.Args = []string{"/usr/local/bin/gawk", "-v", "RS=\\0", code}
 	case "bash":
 		cmd.Args = []string{"/usr/bin/bash", "-s", "-"}
 	case "brainfuck":
