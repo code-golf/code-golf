@@ -1,7 +1,6 @@
-DATE     := $(shell date +%Y-%m-%d)
-GOFILES  := $(shell find . -name '*.go' ! -path './.go*')
-POSTGRES := postgres:14.2-alpine
-SHELL    := /bin/bash
+DATE    := $(shell date +%Y-%m-%d)
+GOFILES := $(shell find . -name '*.go' ! -path './.go*')
+SHELL   := /bin/bash
 
 export COMPOSE_PATH_SEPARATOR=:
 export COMPOSE_FILE=docker/core.yml:docker/dev.yml
