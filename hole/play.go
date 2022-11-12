@@ -229,7 +229,7 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 	case "haskell", "php":
 		cmd.Args = []string{"/usr/bin/" + langID, "--"}
 	case "hexagony":
-		cmd.Args = []string{"/hexagony/Hexagony", "-d", "-"}
+		cmd.Args = []string{"/usr/bin/hexagony", "-d", "-"}
 	case "j":
 		cmd.Args = []string{"/usr/bin/j", "/tmp/code.ijs"}
 	case "k":
