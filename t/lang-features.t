@@ -1,6 +1,7 @@
 use t;
 
 is post-solution(|.value)<Err>, '', .key for
+    awk-ordchr  => \(:lang<awk>    :code('@load "ordchr"')),
     nim-re      => \(:lang<nim>    :code('import re;echo "a".match(re"a")')),
     perl-bigint => \(:lang<perl>   :code('use bigint')),
     perl-bignum => \(:lang<perl>   :code('use bignum')),

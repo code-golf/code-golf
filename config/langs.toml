@@ -91,7 +91,7 @@ syscall
 '''
 
 [AWK]
-size    = '707 KiB'
+size    = '1.72 MiB'
 version = '5.2.0'
 website = 'https://www.gnu.org/software/gawk/'
 example = '''
