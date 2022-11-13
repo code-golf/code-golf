@@ -4,12 +4,12 @@ RUN apk add --no-cache build-base curl
 
 RUN curl https://ftp.gnu.org/gnu/gawk/gawk-5.2.0.tar.xz | tar xJ
 
-RUN mv gawk-* gawk \
- && cd gawk        \
- && ./configure    \
-   --disable-lint  \
- && make install   \
- && strip gawk
+RUN mv gawk-* gawk            \
+ && cd gawk                   \
+ && ./configure               \
+   --disable-lint             \
+ && make install              \
+ && strip /usr/local/bin/gawk
 
 FROM codegolf/lang-base
 
