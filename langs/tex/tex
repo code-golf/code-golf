@@ -32,8 +32,10 @@ $init
 $code
 \bye"
 
-echo "$code_to_run" | /usr/local/bin/tex >/dev/null
+echo "$code_to_run" | /usr/local/bin/tex >&2
 
 dvi-to-text texput.dvi
+
+echo "-----------" >&2
 
 cat texput.log >&2
