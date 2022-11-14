@@ -23,13 +23,14 @@ args=$(join_by "\or " "$@")
 init="\def\argc{$#} \def\argv[#1]{\ifcase#1\relax $args\else\fi}"
 
 # \footline={} disables page numbers
-# \end marks the end of the document (TeX ignores stdin EOF)
-#   \bye is preferred over \end, but it's not strictly necessary, so I went with
-#   \end to close out the file instead of \bye
-code_to_run="\footline={}
+# \parindex=0pt prevents per-paragraph indentation
+# \hsize and \vsize set the page dimensions. I set them a bit less than the
+#   maximum legal dimension which is less than 16384pt.
+# \bye closes the document (TeX doesn't handle EOF how you might expect)
+code_to_run="\footline={}\parindent=0pt\hsize=16000pt\vsize=16000pt\relax
 $init
 $code
-\end"
+\bye"
 
 echo "$code_to_run" | /usr/local/bin/tex >/dev/null
 
