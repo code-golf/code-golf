@@ -34,7 +34,9 @@ $code
 
 echo "$code_to_run" | /usr/local/bin/tex >&2
 
-dvi-to-text texput.dvi
+if [[ -f texput.dvi ]]; then
+  dvi-to-text texput.dvi
+fi
 
 echo "-----------" >&2
 
