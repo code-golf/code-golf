@@ -2,7 +2,7 @@
 
 if [ "$1" = "-v" ]
 then
-  /bin/tex -v
+  /usr/local/bin/tex -v
   exit
 fi
 
@@ -31,7 +31,7 @@ $init
 $code
 \end"
 
-echo "$code_to_run" | /bin/tex >/dev/null
+echo "$code_to_run" | /usr/local/bin/tex >/dev/null
 
 dvi-to-text texput.dvi
 
