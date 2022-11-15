@@ -20,7 +20,7 @@ code="$1"
 shift
 
 args=$(join_by "\or " "$@")
-init="\def\argc{$#} \def\argv[#1]{\ifcase#1\relax $args\else\fi}"
+init="\def\argc{$#} \def\argv[#1]{\ifcase#1$args\else\fi}"
 
 # \footline={} disables page numbers
 # \parindex=0pt prevents per-paragraph indentation
