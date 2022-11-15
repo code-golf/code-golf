@@ -9,8 +9,14 @@ FROM reitzig/texlive-base:2022.7 as texlive
 
 # Add a full 8-bit font to allow emitting non-ascii bytes
 COPY octet.mf /usr/local/texlive/2022/texmf-dist/fonts/source/public/cm
+# update kpathsea file database
 RUN ls -R /usr/local/texlive/2022/texmf-dist > /usr/local/texlive/2022/texmf-dist/ls-R && \
+  # remove all ligatures
+  rm -r /usr/local/texlive/2022/texmf-dist/fonts/tfm/public/cm/*.tfm && \
+  sed -i 's/ligs:=./ligs:=0/g' /usr/local/texlive/2022/texmf-dist/fonts/source/public/cm/*.mf && \
+  # load octet font
   echo "\font\octet=octet" >> /usr/local/texlive/2022/texmf-dist/tex/plain/base/plain.tex && \
+  # apply changes
   mktexfmt tex.fmt
 
 # Prune unneeded stuff
