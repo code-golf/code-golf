@@ -7,11 +7,15 @@ RUN USER=root cargo install dvi-to-text --version 0.2.0
 
 FROM reitzig/texlive-base:2022.7 as texlive
 
+# Add a full 8-bit font to allow emitting non-ascii bytes
+COPY octet.mf /usr/local/texlive/2022/texmf-dist/fonts/source/public/cm
+RUN ls -R /usr/local/texlive/2022/texmf-dist > /usr/local/texlive/2022/texmf-dist/ls-R && \
+  echo "\font\octet=octet" >> /usr/local/texlive/2022/texmf-dist/tex/plain/base/plain.tex && \
+  mktexfmt tex.fmt
+
+# Prune unneeded stuff
 RUN bash -c "rm -r /usr/local/texlive/2022/texmf-dist/{doc,source,scripts,bibtex,dvips}" && \
-  mv /usr/local/texlive/2022/texmf-dist/fonts/source/public/cm /tmp/cm && \
-  rm -r /usr/local/texlive/2022/texmf-dist/fonts && \
-  bash -c "rm -r /usr/local/texlive/2022/texmf-dist/tex/{*tex*,generic}" && \
-  bash -c "rm -r /usr/local/texlive/2022/texmf-dist/{xdvi,metafont,makeindex,mft,dvipdfmx}" && \
+  bash -c "rm -r /usr/local/texlive/2022/texmf-dist/{tex,fonts,xdvi,metafont,makeindex,mft,dvipdfmx}" && \
   bash -c "rm -r /usr/local/texlive/2022/bin/x86_64-linuxmusl/{lua*,pdf*,*dvi*,mf-nowin,bibtex}" && \
   bash -c "rm -r /usr/local/texlive/2022/texmf-var/web2c/{lua*,pdftex,metafont}" && \
   rm -r /usr/local/texlive/2022/texmf-var/fonts && \
@@ -26,7 +30,6 @@ COPY --from=texlive /usr/local/bin /usr/local/bin
 COPY --from=texlive /usr/local/texlive/2022 /usr/local/texlive/2022
 COPY --from=texlive /usr/lib/libreadline.so.8 /usr/lib/libreadline.so.8
 COPY --from=texlive /usr/lib/libncursesw.so.6 /usr/lib/libncursesw.so.6
-COPY --from=texlive /tmp/cm /usr/local/texlive/2022/texmf-dist/fonts/source/public/cm
 COPY tex /usr/bin/
 
 ENTRYPOINT ["/usr/bin/tex"]
