@@ -344,8 +344,8 @@ void main(List<String> argv) {
 '''
 
 [Elixir]
-size    = '167 MiB'
-version = '1.14.0'
+size    = '168 MiB'
+version = '1.14.1'
 website = 'https://elixir-lang.org'
 example = '''
 # Printing
@@ -549,8 +549,8 @@ for (let arg of arguments)
 '''
 
 [Julia]
-size    = '298 MiB'
-version = '1.8.2'
+size    = '282 MiB'
+version = '1.8.3'
 website = 'https://julialang.org'
 example = '''
 # Printing
