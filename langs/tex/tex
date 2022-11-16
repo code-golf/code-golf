@@ -21,17 +21,22 @@ shift
 
 # To pass in values, we need to escape some special characters
 # All the special characters \{}%&#^_%~ are set to catcode 12 ("other")
+# Also set the whitespace characters to catcode 12, unlike \dospecials
 # But we still need access to some to finish the definition, so we use
-#   byte 1 = {
-#   byte 2 = }
-#   byte 5 = \
-#   byte 6 = #
+#   byte 1 = begin group (previously {)
+#   byte 2 = end group (previously })
+#   byte 4 = space
+#   byte 5 = escape (previously \)
+#   byte 6 = parameter (previously #)
 # The end of the group resets all the catcodes for future tokenizing, but it
 # does not change the catcodes of the tokens already created
-args=$(join_by "or " "$@")
+args=$(join_by "or" "$@")
 init="\def\argc{$#}
-"'{\catcode`$=12\catcode`&=12\catcode`^=12\catcode`_=12\catcode37=12\catcode`~=12\catcode`#=12\catcode6=6\catcode`{=12\catcode1=1\catcode`}=12\catcode2=2\catcode5=0\catcode92=12
-globaldefargv[1]ifcase1 '"$args"'elsefi'
+"'{\catcode1=1\catcode2=2\catcode5=0\catcode6=6\catcode4=10
+\catcode`$=12\catcode`&=12\catcode`^=12\catcode`_=12\catcode37=12
+\catcode`~=12\catcode`#=12\catcode`{=12\catcode`}=12\catcode9=12
+\catcode32=12\catcode10=12\catcode12=12\catcode13=13\catcode92=12
+globaldefargv[1]ifcase1'"$args"'elsefi'
 
 # \footline={} disables page numbers
 # \parindex=0pt prevents per-paragraph indentation
