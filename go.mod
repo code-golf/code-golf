@@ -14,12 +14,12 @@ require (
 	github.com/gofrs/uuid v4.3.1+incompatible
 	github.com/gorilla/feeds v1.1.1
 	github.com/lib/pq v1.10.7
-	github.com/pelletier/go-toml/v2 v2.0.5
+	github.com/pelletier/go-toml/v2 v2.0.6
 	github.com/shurcooL/graphql v0.0.0-20220606043923-3cf50f8a0a29
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 	github.com/tdewolff/minify/v2 v2.12.4
-	github.com/yuin/goldmark v1.5.2
-	golang.org/x/exp v0.0.0-20221111204811-129d8d6c17ab
+	github.com/yuin/goldmark v1.5.3
+	golang.org/x/exp v0.0.0-20221114191408-850992195362
 	golang.org/x/oauth2 v0.2.0
 	gopkg.in/guregu/null.v4 v4.0.0
 )
@@ -41,7 +41,7 @@ require (
 	github.com/sergi/go-diff v1.2.0 // indirect
 	github.com/tdewolff/parse/v2 v2.6.4 // indirect
 	github.com/xanzy/ssh-agent v0.3.2 // indirect
-	golang.org/x/crypto v0.2.0 // indirect
+	golang.org/x/crypto v0.3.0 // indirect
 	golang.org/x/mod v0.7.0 // indirect
 	golang.org/x/net v0.2.0 // indirect
 	golang.org/x/sys v0.2.0 // indirect
