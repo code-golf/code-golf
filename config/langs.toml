@@ -804,6 +804,25 @@ fn main() {
 }
 '''
 
+[Rockstar]
+size    = '23 MiB'
+version = 'Rocky 2.1.1'
+website = 'https://codewithrockstar.com'
+example = '''
+(Printing)
+Shout "Hello, World!"
+
+(Looping)
+Let i be 0
+While i is less than 10
+Shout i
+Build i up
+
+(Accessing arguments)
+While args alike arg
+Shout arg
+'''
+
 [sed]
 size    = '228 KiB'
 version = '4.8'

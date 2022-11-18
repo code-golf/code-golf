@@ -1,0 +1,44 @@
+#!/bin/sh -e
+
+export PATH=/usr/bin:/bin
+
+if [ "$1" = "-v" ]; then
+  exec /usr/bin/rocky
+  exit 0
+fi
+
+cd /tmp
+
+shift
+
+# Since escape sequences don't seem to work, use variables to escape characters
+echo "cast 10 into newline" > code.rock
+echo "cast 92 into backslash" >> code.rock
+echo "cast 34 into quote" >> code.rock
+
+# Inject args variable into code
+while [[ $# -gt 0 ]]; do
+
+  # Use the variables to "escape" backslashes, newlines, and quotes
+  escaped="$(\
+    printf '%s' "$1" \
+      | sed -e 's/"/"+quote+"/g' \
+      | sed -e 's/\\/"+backslash+"/g' \
+      | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/"+newline+"/g' \
+  )"
+
+  printf 'rock "%s" into args\n' "$escaped" >> code.rock
+
+  shift
+done
+
+# Unset variables
+echo "let newline be mysterious" >> code.rock
+echo "let backslash be mysterious" >> code.rock
+echo "let quote be mysterious" >> code.rock
+
+# Write code to .rock file
+cat - >> code.rock
+
+# Execute
+exec /usr/bin/rocky run -X code.rock

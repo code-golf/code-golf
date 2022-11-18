@@ -31,6 +31,7 @@ COPY --from=codegolf/lang-crystal    ["/", "/langs/crystal/rootfs/"   ] #  203 M
 COPY --from=codegolf/lang-powershell ["/", "/langs/powershell/rootfs/"] #  174 MiB
 COPY --from=codegolf/lang-elixir     ["/", "/langs/elixir/rootfs/"    ] #  168 MiB
 COPY --from=codegolf/lang-go         ["/", "/langs/go/rootfs/"        ] #  150 MiB
+COPY --from=codegolf/lang-rockstar   ["/", "/langs/rockstar/rootfs/"  ] #  147 MiB
 COPY --from=codegolf/lang-c-sharp    ["/", "/langs/c-sharp/rootfs/"   ] #  146 MiB
 COPY --from=codegolf/lang-f-sharp    ["/", "/langs/f-sharp/rootfs/"   ] #  135 MiB
 COPY --from=codegolf/lang-cpp        ["/", "/langs/cpp/rootfs/"       ] #  117 MiB
