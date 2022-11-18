@@ -48,12 +48,13 @@ $init
 $code
 \bye"
 
-echo "$code_to_run" | /usr/local/bin/tex >&2
+# don't stop the bash script if /usr/local/bin/tex errors
+set +e
+
+echo "$code_to_run" | /usr/local/bin/tex >/dev/null
+
+cat texput.log >&2
 
 if [[ -f texput.dvi ]]; then
   dvi-to-text texput.dvi
 fi
-
-echo "-----------" >&2
-
-cat texput.log >&2

@@ -2,9 +2,6 @@ FROM rust:1.65-alpine as builder
 WORKDIR /dvi-to-text
 RUN USER=root cargo install dvi-to-text --version 0.2.0
 
-# Not sure if texlive should be tagged as well
-# (see build-langs `Tag the builder stage so "docker system prune" won't remove it.`)
-
 FROM reitzig/texlive-base:2022.7 as texlive
 
 # Add a full 8-bit font to allow emitting non-ascii bytes
