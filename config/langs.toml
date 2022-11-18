@@ -902,6 +902,9 @@ example = '''
 % Printing
 Hello, World!
 
+% Expanded font
+{\octet 🏌️ \char226\char155\char179}
+
 % Looping
 \newcount\i
 \loop\ifnum\i<10
