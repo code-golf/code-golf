@@ -937,7 +937,6 @@ preamble = '''
 
 ['Inventory Sequence']
 category = 'Sequence'
-experiment = 788
 links = [
     { name = 'Numberphile',  url = '//www.numberphile.com/videos/the-inventory-sequence' },
     { name = 'OEIS A342585', url = '//oeis.org/A342585' },
