@@ -793,7 +793,7 @@ preamble = '''
 category = 'Sequence'
 experiment = 724
 links = [
-    { name = 'OEIS A000045', url = '//oeis.org/A090822' },
+    { name = 'OEIS A090822', url = '//oeis.org/A090822' },
     { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Gijswijt's_sequence" },
 ]
 preamble = '''
@@ -815,8 +815,8 @@ preamble = '''
 [1 , 1 , 2],[1 , 1 , 2]
  1 , 1 , 2 , 1 , 1 ,[2],[2]
  1 , 1 , 2 , 1 , 1 ,[2],[2],[2]
- 1 , 1 , 2 , 1 , 1 , 2 , 2 , 2,[3]
- 1 , 1 , 2 , 1 , 1 , 2 , 2 , 2, 3 , 1
+ 1 , 1 , 2 , 1 , 1 , 2 , 2 , 2 ,[3]
+ 1 , 1 , 2 , 1 , 1 , 2 , 2 , 2 , 3 , 1
 </pre>
 
 <p>
