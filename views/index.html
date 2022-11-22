@@ -27,6 +27,16 @@
 <main id=index>
 {{ if .Golfer }}
     <nav class="span tabs">
+        <form id=form-config>
+            <select name=lang>
+                <option value=all>All Languages
+            {{ range .Data.Langs }}
+                <option value="{{ .ID }}"
+                    {{ if eq $.Data.LangID .ID }} selected {{ end }}>{{ .Name }}
+            {{ end }}
+            </select>
+        </form>
+
     {{ with .Data.Scoring }}
         <a {{ if ne . "bytes" }} href="?scoring=bytes" {{ end }}>Bytes</a>
         <a {{ if ne . "chars" }} href="?scoring=chars" {{ end }}>Chars</a>

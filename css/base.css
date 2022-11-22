@@ -465,6 +465,11 @@ details.tabs a { display: inline-block }
 
 #error h1 { text-align: center }
 
+#form-config {
+    flex-grow: 0.2;
+    padding-right: 1rem;
+}
+
 #ideas, #index { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
 
 #index > .grid {

@@ -15,6 +15,10 @@ for (const a of $$<HTMLAnchorElement>('.log-in')) {
     a.href = url.href;
 }
 
+// Wire up the language selector on /
+$('#form-config')?.addEventListener('change', (e: Event) =>
+    (e.target as HTMLFormElement).form.submit());
+
 // Wire up mobile form navigation.
 $('#form-nav')?.addEventListener('change',
     (e: Event) => location.href =
