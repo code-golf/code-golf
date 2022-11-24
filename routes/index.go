@@ -88,7 +88,7 @@ func indexGET(w http.ResponseWriter, r *http.Request) {
 				    SELECT DISTINCT ON (hole) hole, lang, points_for_lang
 				      FROM rankings
 				     WHERE scoring = $1 AND user_id = $2 AND lang = $3
-				  ORDER BY hole, points DESC, lang
+				  ORDER BY hole, points_for_lang DESC, lang
 				)  SELECT hole, COALESCE(lang::text, ''), COALESCE(points_for_lang, 0)
 				     FROM unnest(enum_range(NULL::hole)) hole
 				LEFT JOIN points USING(hole)`,
