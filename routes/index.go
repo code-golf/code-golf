@@ -12,6 +12,8 @@ import (
 
 // GET /
 func indexGET(w http.ResponseWriter, r *http.Request) {
+	redirect := false
+
 	for _, param := range []string{"lang", "scoring", "sort"} {
 		if value := r.FormValue(param); value != "" {
 			http.SetCookie(w, &http.Cookie{
@@ -23,9 +25,13 @@ func indexGET(w http.ResponseWriter, r *http.Request) {
 				Value:    value,
 			})
 
-			http.Redirect(w, r, "/", http.StatusFound)
-			return
+			redirect = true
 		}
+	}
+
+	if redirect {
+		http.Redirect(w, r, "/", http.StatusFound)
+		return
 	}
 
 	type Card struct {
