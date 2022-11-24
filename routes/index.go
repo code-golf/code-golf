@@ -85,10 +85,10 @@ func indexGET(w http.ResponseWriter, r *http.Request) {
 		} else {
 			rows, err = session.Database(r).Query(
 				`WITH points AS (
-				    SELECT DISTINCT ON (hole) hole, lang, points_for_lang
+				    SELECT hole, lang, points_for_lang
 				      FROM rankings
 				     WHERE scoring = $1 AND user_id = $2 AND lang = $3
-				  ORDER BY hole, points_for_lang DESC
+				  ORDER BY hole
 				)  SELECT hole, COALESCE(lang::text, ''), COALESCE(points_for_lang, 0)
 				     FROM unnest(enum_range(NULL::hole)) hole
 				LEFT JOIN points USING(hole)`,
