@@ -1686,22 +1686,9 @@ links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Taxicab_geometry' },
 ]
 preamble = '''
-<p>Given a series of 9x9 grids, reproduce the grid with distance set to closest source for each passible point.
+<p>A grid is a 9x9 square of characters representing an arrangement of points, some of which are walls, denoted by #'s, or sources, denoted by 0's; every other point is passible, denoted with -'s.
 
-<p> <a href=//oeis.org/A331968/>OEIS on maximum snake-like path length in a NxN box</a>.
-
-<p>Use base62 (0-9 A-Z a-z) to represent distance.
-
-<p>A valid path to a source must move vertically or horiontally along passible points.
-
-<p>Impassible points and points which cannot form a valid path to a source should remain unchanged.
-
-<p>Points on the grid can be marked as a source notated with 0.
-
-<p>Points on the grid can be marked as impassible notated with #.
-
-<p>Points on the grid can be marked as passible notated with -.
-
+<p>For a series of grids, compute the length of the shortest path connecting each passible point to a source. A path must move horizontally or vertically through the grid and cannot pass through walls. Output each grid with every passible point replaced by its distance to a source written in base62 (0-9 A-Z a-z); points which cannot be connected to a source should remain unchanged.
 '''
 
 ['QR Decoder']
