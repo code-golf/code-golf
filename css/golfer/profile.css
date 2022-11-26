@@ -54,9 +54,9 @@ section > a, section > div {
     width: 2rem;
 }
 
-.rank-1:not(:hover) { color: #343a40; background: gold }
-.rank-2:not(:hover) { color: #343a40; background: silver }
-.rank-3:not(:hover) { color: #343a40; background: burlywood }
+.rank-1:not(:hover) { color: #343a40; background: gold; box-shadow: var(--rank-1-glow); }
+.rank-2:not(:hover) { color: #343a40; background: silver; box-shadow: var(--rank-2-glow); }
+.rank-3:not(:hover) { color: #343a40; background: burlywood; box-shadow: var(--rank-3-glow); }
 
 #connections {
     display: grid;
