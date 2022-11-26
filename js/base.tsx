@@ -15,6 +15,14 @@ for (const a of $$<HTMLAnchorElement>('.log-in')) {
     a.href = url.href;
 }
 
+// Wire up the config button, if present.
+$('#configBtn')?.addEventListener('click', () => {
+    $<HTMLFormElement>('#form-config')?.reset();
+
+    // Dialog typings are not available yet
+    $<any>('dialog').showModal();
+});
+
 // Wire up mobile form navigation.
 $('#form-nav')?.addEventListener('change',
     (e: Event) => location.href =

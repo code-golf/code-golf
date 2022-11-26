@@ -27,10 +27,9 @@
 <main id=index>
 {{ if .Golfer }}
     <nav class="span tabs">
-    {{ with .Data.Scoring }}
-        <a {{ if ne . "bytes" }} href="?scoring=bytes" {{ end }}>Bytes</a>
-        <a {{ if ne . "chars" }} href="?scoring=chars" {{ end }}>Chars</a>
-    {{ end }}
+        <button class="btn blue" id=configBtn title=Configure>
+            {{ svg "gear" }}
+        </button>
 
         <div></div>
 
@@ -50,7 +49,7 @@
 {{ range .Data.Cards }}
     <a class="card {{ .Hole.CategoryColor }}"
     {{ if .Points }}
-        href="rankings/holes/{{ .Hole.ID }}/all/{{ $.Data.Scoring }}"
+        href="rankings/holes/{{ .Hole.ID }}/{{ $.Data.LangID }}/{{ $.Data.Scoring }}"
     {{ else }}
         href="{{ .Hole.ID }}"
     {{ end }}
@@ -65,5 +64,38 @@
     </a>
 {{ end }}
 </main>
+
+<dialog>
+    <form id=form-config>
+        <h2>Configure</h2>
+        <p>Point values shown:
+        <select name=lang>
+            <option value=all>All Languages
+        {{ range .Data.Langs }}
+            <option value="{{ .ID }}"
+                {{ if eq $.Data.LangID .ID }} selected {{ end }}>{{ .Name }}
+        {{ end }}
+        </select>
+        <div role=group>
+        {{ with .Data.Scoring }}
+            <label>
+                <input name=scoring type=radio value=bytes
+                    {{ if eq . "bytes" }} checked{{ end }}>
+                    Bytes
+            </label>
+            <label>
+                <input name=scoring type=radio value=chars
+                    {{ if eq . "chars" }} checked{{ end }}>
+                    Chars
+            </label>
+        {{ end }}
+        </div>
+        <menu>
+            <!-- Enter submits the first button, we flip the order in CSS -->
+            <button class="btn green">OK</button>
+            <button class="btn red" formmethod=dialog>Cancel</button>
+        </menu>
+    </form>
+</dialog>
 
 {{ template "footer" }}
