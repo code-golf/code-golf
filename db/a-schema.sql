@@ -12,7 +12,8 @@ CREATE TYPE cheevo AS ENUM (
     'phileas-fogg', 'pi-day', 'polyglot', 'polyglutton', 'real-programmers',
     'rtfm', 'rule-34', 'slowcoach', 'solve-quine', 'sounds-quite-nice',
     'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
-    'twenty-kiloleagues', 'under-pressure', 'up-to-eleven', 'vampire-byte'
+    'twenty-kiloleagues', 'under-pressure', 'up-to-eleven', 'vampire-byte',
+    'x86'
 );
 
 CREATE TYPE connection AS ENUM (
