@@ -49,7 +49,7 @@
 {{ range .Data.Cards }}
     <a class="card {{ .Hole.CategoryColor }}"
     {{ if .Points }}
-        href="rankings/holes/{{ .Hole.ID }}/all/{{ $.Data.Scoring }}"
+        href="rankings/holes/{{ .Hole.ID }}/{{ $.Data.LangID }}/{{ $.Data.Scoring }}"
     {{ else }}
         href="{{ .Hole.ID }}"
     {{ end }}
