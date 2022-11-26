@@ -1,4 +1,4 @@
-FROM alpine:3.16 as builder
+FROM alpine:3.17 as builder
 
 RUN apk add --no-cache binutils curl
 
@@ -29,7 +29,7 @@ COPY --from=0 /lib/ld-musl-x86_64.so.1  \
 COPY --from=0 /etc/fpc.cfg              /etc/
 COPY --from=0 /usr/bin/fpc              \
               /usr/bin/ld               /usr/bin/
-COPY --from=0 /usr/lib/libbfd-2.38.so   \
+COPY --from=0 /usr/lib/libbfd-2.39.so   \
               /usr/lib/libctf.so.0      /usr/lib/
 COPY --from=0 /usr/lib/fpc              /usr/lib/fpc
 
