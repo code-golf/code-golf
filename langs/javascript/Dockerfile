@@ -10,7 +10,7 @@ RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git \
 
 WORKDIR /v8
 
-RUN git checkout 9.9.115.8 && gclient sync -D
+RUN git checkout 10.7.193.22 && gclient sync -D
 
 RUN gn gen out --args="                 \
     is_debug=false                      \
@@ -27,6 +27,7 @@ RUN gn gen out --args="                 \
 FROM codegolf/lang-base
 
 COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
+              /lib/x86_64-linux-gnu/libdl.so.2      \
               /lib/x86_64-linux-gnu/libgcc_s.so.1   \
               /lib/x86_64-linux-gnu/libm.so.6       \
               /lib/x86_64-linux-gnu/libpthread.so.0 /lib/
