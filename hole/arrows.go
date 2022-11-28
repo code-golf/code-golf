@@ -25,6 +25,16 @@ var arrowMap = map[string][2]int8{
 	"⥀": {0, 0}, "⥁": {0, 0},
 }
 
+var arrowMapDownAndLeft = map[string][2]int8{
+	"←": {-1, 0}, "↓": {0, -1}, "↔": {0, 0},
+	"↕": {0, 0}, "↙": {-1, -1},
+	"↲": {-1, -1},
+	"⇐": {-1, 0}, "⇓": {0, -1}, "⇔": {0, 0},
+	"⇕": {0, 0}, "⇙": {-1, -1},
+	"⇦": {-1, 0}, "⇩": {0, -1},
+	"⥀": {0, 0}, "⥁": {0, 0},
+}
+
 func arrows() []Scorecard {
 	args := make([]string, 0, 3*len(arrowMap))
 	pos := [2]int8{}
@@ -46,5 +56,29 @@ func arrows() []Scorecard {
 		outs[i] = fmt.Sprint(pos[0], pos[1])
 	}
 
-	return []Scorecard{{Args: args, Answer: strings.Join(outs, "\n")}}
+	// Additional test to force Cartesian quadrant 3
+	argsDL := make([]string, 0, 9*len(arrowMapDownAndLeft))
+	posDL := [2]int8{}
+
+	// 7-9 of each arrow.
+	for arrow := range arrowMapDownAndLeft {
+		for times := 6 + rand.Intn(3); times >= 0; times-- {
+			argsDL = append(argsDL, arrow)
+		}
+	}
+
+	// Calculate the outs from the args.
+	outsDL := make([]string, len(argsDL))
+	for i, arrow := range shuffle(argsDL) {
+		coord := arrowMap[arrow]
+		posDL[0] += coord[0]
+		posDL[1] += coord[1]
+
+		outsDL[i] = fmt.Sprint(posDL[0], posDL[1])
+	}
+
+	return []Scorecard{
+		{Args: args, Answer: strings.Join(outs, "\n")},
+		{Args: argsDL, Answer: strings.Join(outsDL, "\n")},
+	}
 }
