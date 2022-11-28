@@ -57,7 +57,7 @@ func arrows() []Scorecard {
 	}
 
 	// Additional test to force Cartesian quadrant 3
-	argsDL := make([]string, 0, 3*len(arrowMapDownAndLeft))
+	argsDL := make([]string, 0, 9*len(arrowMapDownAndLeft))
 	posDL := [2]int8{}
 
 	// 7-9 of each arrow.
