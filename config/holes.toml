@@ -1810,23 +1810,6 @@ preamble = '''
 <p>To encode a bit from the bitstream to a strip, determine the coordinates <b>(x, y)</b> of the current position in the bitmap with the origin <b>(0, 0)</b> at the top-left corner, invert the bit if <b>(x+y)%2 = 0</b>, and write the value to this position ("#" = 1, space = 0).
 '''
 
-['Zeckendorf Representation']
-category = 'Mathematics'
-experiment = 667
-links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Zeckendorf%27s_theorem' },
-    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Zeckendorf_number_representation' },
-]
-preamble = '''
-<p>
-Every natural number can be written uniquely as the sum of Fibonacci numbers in a way that avoids using consecutive Fibonacci numbers. For example, <b>10 = 8 + 2</b>, and <b>64 = 55 + 8 + 1</b>. This sum is called the Zeckendorf representation.
-</p>
-
-<p>
-Print the Zeckendorf representation for each input argument. Terms should be listed in decreasing order separated by ' + '. For example, input <b>10</b> should produce <b>8 + 2</b>.
-</p>
-'''
-
 [Quine]
 category = 'Computing'
 links = [
@@ -2503,6 +2486,23 @@ preamble = '''
 <p>
     Print the first <b>1000</b> terms of the Van Eck sequence, with each term
     on a new line.
+'''
+
+['Zeckendorf Representation']
+category = 'Mathematics'
+experiment = 667
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Zeckendorf%27s_theorem' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Zeckendorf_number_representation' },
+]
+preamble = '''
+<p>
+Every natural number can be written uniquely as the sum of Fibonacci numbers in a way that avoids using consecutive Fibonacci numbers. For example, <b>10 = 8 + 2</b>, and <b>64 = 55 + 8 + 1</b>. This sum is called the Zeckendorf representation.
+</p>
+
+<p>
+Print the Zeckendorf representation for each input argument. Terms should be listed in decreasing order separated by ' + '. For example, input <b>10</b> should produce <b>8 + 2</b>.
+</p>
 '''
 
 ['Zodiac Signs']
