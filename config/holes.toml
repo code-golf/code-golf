@@ -1812,6 +1812,7 @@ preamble = '''
 
 [Quine]
 category = 'Computing'
+variants = ['Quine', 'Palindromic Quine']
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Quine' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Quine_(computing)' },
@@ -1821,6 +1822,12 @@ preamble = '''
     A <b>quine</b> is a non-empty computer program which takes no input and
     produces a copy of its own source code as its only output. Produce such a
     program.
+
+{{ if eq . "Palindromic Quine" }}
+<p>
+    Additionaly, a <b>palindromic quine</b> is a <b>quine</b> where the source
+    code reads the same forwards and backwards.
+{{ end }}
 
 <p>
     Trailing whitespace is <b>NOT</b> stripped from the output for this hole.

@@ -86,6 +86,10 @@ func init() {
 		hole.ID = ID(name)
 		hole.Name = name
 
+		if hole.ID == "palindromic-quine" {
+			hole.Experiment = 365
+		}
+
 		// Process the templated preamble with the data.
 		if hole.Data != "" {
 			t, err := template.New("").Parse(string(hole.Preamble))

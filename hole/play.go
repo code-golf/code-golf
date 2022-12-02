@@ -105,7 +105,7 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		scores = proximityGrid()
 	case "qr-decoder", "qr-encoder":
 		scores = qr(holeID == "qr-decoder")
-	case "quine":
+	case "quine", "palindromic-quine":
 		scores = []Scorecard{{Args: []string{}, Answer: code}}
 	case "reverse-polish-notation":
 		scores = reversePolishNotation()
@@ -335,7 +335,7 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 
 	// Trim trailing whitespace on each line, and then trailing empty lines.
 	// Quine solutions are obviously left untouched.
-	if holeID == "quine" {
+	if holeID == "quine" || holeID == "palindromic-quine" {
 		score.Stdout = stdoutContents
 	} else {
 		score.Stdout = bytes.TrimRight(stdoutTrimmer.ReplaceAll(
@@ -370,10 +370,19 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 
 	// We do not allow stdout with only whitespace to pass to prevent suspicious sed "quines"
 	if len(bytes.TrimRightFunc(score.Stdout, unicode.IsSpace)) != 0 {
-		// TODO Generalise a case insensitive flag, should it apply to others?
-		if holeID == "css-colors" {
+		switch holeID {
+		case "css-colors":
+			// TODO Generalise case insensitivity, should it apply to others?
 			score.Pass = strings.EqualFold(score.Answer, string(score.Stdout))
-		} else {
+		case "palindromic-quine":
+			reversed := []rune(score.Answer)
+			for i, j := 0, len(reversed)-1; i < j; i, j = i+1, j-1 {
+				reversed[i], reversed[j] = reversed[j], reversed[i]
+			}
+
+			score.Pass = score.Answer == string(score.Stdout) &&
+				score.Answer == string(reversed)
+		default:
 			score.Pass = score.Answer == string(score.Stdout)
 		}
 	}
