@@ -196,6 +196,10 @@ BEGIN
     IF hole = 'poker' AND lang = 'fish' THEN
         earned := earn(earned, 'fish-n-chips', user_id); END IF;
 
+    -- 🍯 Hextreme Agony
+    IF hole = 'hexdump' AND lang = 'hexagony' THEN
+        earned := earn(earned, 'hextreme-agony', user_id); END IF;
+
     -- 🧠 Inception
     IF hole = 'brainfuck' AND lang = 'brainfuck' THEN
         earned := earn(earned, 'inception', user_id); END IF;

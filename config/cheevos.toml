@@ -83,6 +83,11 @@ emoji       = '🐟'
 description = 'Solve <a href=/poker#fish>Poker in &gt;&lt;&gt;</a>.'
 
 [['Hole/Lang Specific']]
+name        = 'Hextreme Agony'
+emoji       = '🍯'
+description = 'Solve <a href=/hexdump#hexagony>Hexdump in Hexagony</a>.'
+
+[['Hole/Lang Specific']]
 name        = 'Inception'
 emoji       = '🧠'
 description = 'Solve <a href=/brainfuck#brainfuck>brainfuck in brainfuck</a>.'
