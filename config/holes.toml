@@ -1839,7 +1839,10 @@ preamble = '''
     produces a copy of its own source code as its only output. Produce such a
     program.
 
-<p>Trailing whitespace is <b>NOT</b> stripped from the output for this hole. (Consequently, if your submission doesn't pass, try adding a line break at the end.)
+<p>
+    Trailing whitespace is <b>NOT</b> stripped from the output for this hole.
+    (Consequently, if your submission doesn't pass, try adding a line break at
+    the end.)
 '''
 
 ['Recamán']
