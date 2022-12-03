@@ -1999,6 +1999,29 @@ preamble = '''
 </pre>
 '''
 
+['Shī Shì shí shī shǐ']
+category = 'Art'
+experiment = -1
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Lion-Eating_Poet_in_the_Stone_Den' },
+]
+preamble = '''
+<p>Print the poem <b>Lion-Eating Poet in the Stone Den</b> in Pinyin:
+
+<blockquote>
+Shíshì shīshì Shī Shì, shì shī, shì shí shí shī.
+Shì shíshí shì shì shì shī.
+Shí shí, shì shí shī shì shì.
+Shì shí, shì Shī Shì shì shì.
+Shì shì shì shí shī, shì shǐ shì, shǐ shì shí shī shìshì.
+Shì shí shì shí shī shī, shì shíshì.
+Shíshì shī, Shì shǐ shì shì shíshì.
+Shíshì shì, Shì shǐ shì shí shì shí shī.
+Shí shí, shǐ shí shì shí shī shī, shí shí shí shī shī.
+Shì shì shì shì.
+</blockquote>
+'''
+
 ['Sierpiński Triangle']
 category = 'Art'
 links = [
