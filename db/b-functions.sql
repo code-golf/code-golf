@@ -64,11 +64,12 @@ CREATE FUNCTION save_solution(
 ) RETURNS save_solution_ret AS $$
 #variable_conflict use_variable
 DECLARE
-    earned cheevo[] := '{}'::cheevo[];
-    holes  int;
-    langs  lang[];
-    rank   hole_rank_ret;
-    ret    save_solution_ret;
+    earned         cheevo[] := '{}'::cheevo[];
+    holes          int;
+    holes_for_lang hole[];
+    langs_for_hole lang[];
+    rank           hole_rank_ret;
+    ret            save_solution_ret;
 BEGIN
     -- Ensure we're the only one messing with solutions.
     LOCK TABLE solutions IN EXCLUSIVE MODE;
@@ -162,7 +163,13 @@ BEGIN
     SELECT COUNT(DISTINCT solutions.hole) INTO holes
       FROM solutions WHERE NOT failing AND solutions.user_id = user_id;
 
-    SELECT array_agg(DISTINCT solutions.lang) INTO langs
+    SELECT array_agg(DISTINCT solutions.hole) INTO holes_for_lang
+      FROM solutions
+     WHERE NOT failing
+       AND solutions.lang    = lang
+       AND solutions.user_id = user_id;
+
+    SELECT array_agg(DISTINCT solutions.lang) INTO langs_for_hole
       FROM solutions
      WHERE NOT failing
        AND solutions.hole    = hole
@@ -177,8 +184,8 @@ BEGIN
         earned := earn(earned, 'interview-ready', user_id); END IF;
 
     -- 📚 Archivist
-    SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs) WHERE unnest IN (
-        'basic', 'cobol', 'fortran', 'lisp');
+    SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs_for_hole)
+     WHERE unnest IN ('basic', 'cobol', 'fortran', 'lisp');
     IF hole = 'isbn' AND found THEN
         earned := earn(earned, 'archivist', user_id); END IF;
 
@@ -187,13 +194,13 @@ BEGIN
         earned := earn(earned, 'assembly-required', user_id); END IF;
 
     -- 🐦 Bird Is the Word.
-    SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs) WHERE unnest IN (
-        'awk', 'prolog', 'sql', 'swift', 'tcl', 'wren');
+    SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs_for_hole)
+     WHERE unnest IN ('awk', 'prolog', 'sql', 'swift', 'tcl', 'wren');
     IF hole = 'levenshtein-distance' AND found THEN
         earned := earn(earned, 'bird-is-the-word', user_id); END IF;
 
     -- ☕ Caffeinated
-    IF langs @> '{java,javascript}' THEN
+    IF langs_for_hole @> '{java,javascript}' THEN
         earned := earn(earned, 'caffeinated', user_id); END IF;
 
     -- 🎳 COBOWL
@@ -208,6 +215,10 @@ BEGIN
     IF hole = 'poker' AND lang = 'fish' THEN
         earned := earn(earned, 'fish-n-chips', user_id); END IF;
 
+    -- 🍀 Happy-Go-Lucky
+    IF holes_for_lang @> '{happy-numbers,lucky-numbers}' AND lang = 'go' THEN
+        earned := earn(earned, 'happy-go-lucky', user_id); END IF;
+
     -- 🍯 Hextreme Agony
     IF hole = 'hexdump' AND lang = 'hexagony' THEN
         earned := earn(earned, 'hextreme-agony', user_id); END IF;
@@ -217,11 +228,11 @@ BEGIN
         earned := earn(earned, 'inception', user_id); END IF;
 
     -- 💍 Jeweler
-    IF hole = 'diamonds' AND langs @> '{crystal,ruby}' THEN
+    IF hole = 'diamonds' AND langs_for_hole @> '{crystal,ruby}' THEN
         earned := earn(earned, 'jeweler', user_id); END IF;
 
     -- 😛 Just Kidding
-    IF langs @> '{j,k}' THEN
+    IF langs_for_hole @> '{j,k}' THEN
         earned := earn(earned, 'just-kidding', user_id); END IF;
 
     -- 📴 Off-the-grid
@@ -233,7 +244,7 @@ BEGIN
         earned := earn(earned, 'ouroboros', user_id); END IF;
 
     -- 🔠 Pangramglot
-    IF hole = 'pangram-grep' AND pangramglot(langs) = 26 THEN
+    IF hole = 'pangram-grep' AND pangramglot(langs_for_hole) = 26 THEN
         earned := earn(earned, 'pangramglot', user_id); END IF;
 
     -- 🪞 Solve Quine
@@ -241,13 +252,13 @@ BEGIN
         earned := earn(earned, 'solve-quine', user_id); END IF;
 
     -- 🎺 Sounds Quite Nice
-    SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs) WHERE unnest IN (
-        'c', 'c-sharp', 'd', 'f-sharp');
+    SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs_for_hole)
+     WHERE unnest IN ('c', 'c-sharp', 'd', 'f-sharp');
     IF hole = 'musical-chords' AND found THEN
         earned := earn(earned, 'sounds-quite-nice', user_id); END IF;
 
     -- 🐪 Tim Toady
-    IF langs @> '{perl,raku}' THEN
+    IF langs_for_hole @> '{perl,raku}' THEN
         earned := earn(earned, 'tim-toady', user_id); END IF;
 
     -- 🗜 Under Pressure
@@ -267,15 +278,15 @@ BEGIN
     END IF;
 
     -- 🔣 Polyglot
-    IF array_length(langs, 1) >= 12 THEN
+    IF array_length(langs_for_hole, 1) >= 12 THEN
         earned := earn(earned, 'polyglot', user_id); END IF;
 
     -- 🍖 Polyglutton
-    IF array_length(langs, 1) >= 24 THEN
+    IF array_length(langs_for_hole, 1) >= 24 THEN
         earned := earn(earned, 'polyglutton', user_id); END IF;
 
     -- 🕉️ Omniglot
-    IF array_length(langs, 1) >= 36 THEN
+    IF array_length(langs_for_hole, 1) >= 36 THEN
         earned := earn(earned, 'omniglot', user_id); END IF;
 
     -----------------
