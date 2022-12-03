@@ -38,6 +38,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f44b.svg       `# Waving Hand`                  \
     svg/1f44d.svg       `# Thumbs Up`                    \
     svg/1f47f.svg       `# Angry Face with Horns`        \
+    svg/1f48d.svg       `# Ring`                         \
     svg/1f48e.svg       `# Gem Stone`                    \
     svg/1f4b0.svg       `# Money Bag`                    \
     svg/1f4bc.svg       `# Briefcase`                    \

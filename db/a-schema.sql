@@ -7,7 +7,7 @@ CREATE TYPE cheevo AS ENUM (
     'elephpant-in-the-room', 'fish-n-chips', 'forty-winks',
     'gone-in-60-holes', 'happy-birthday-code-golf', 'hello-world',
     'hextreme-agony', 'inception', 'independence-day', 'interview-ready',
-    'its-over-9000', 'just-kidding', 'marathon-runner',
+    'its-over-9000', 'jeweler', 'just-kidding', 'marathon-runner',
     'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars', 'off-the-grid',
     'omniglot', 'ouroboros', 'pangramglot', 'patches-welcome', 'phileas-fogg',
     'pi-day', 'polyglot', 'polyglutton', 'real-programmers', 'rtfm',

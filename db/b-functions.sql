@@ -210,6 +210,10 @@ BEGIN
     IF hole = 'brainfuck' AND lang = 'brainfuck' THEN
         earned := earn(earned, 'inception', user_id); END IF;
 
+    -- 💍 Jeweler
+    IF hole = 'diamonds' AND langs @> '{crystal,ruby}' THEN
+        earned := earn(earned, 'jeweler', user_id); END IF;
+
     -- 😛 Just Kidding
     IF langs @> '{j,k}' THEN
         earned := earn(earned, 'just-kidding', user_id); END IF;
