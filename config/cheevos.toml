@@ -213,99 +213,114 @@ name        = 'tl;dr'
 emoji       = '🧶'
 description = 'Submit a solution that is rejected for being too long.'
 
-# Progression
+# Total Holes
 
-[[Progression]]
+[['Total Holes']]
 name        = 'Hello, World!'
 emoji       = '👋'
 description = 'Solve your first hole.'
 
-[[Progression]]
+[['Total Holes']]
 name        = 'Up to Eleven'
 emoji       = '🎸'
 description = 'Solve your eleventh hole.'
 target      = 11
 
-[[Progression]]
+[['Total Holes']]
 name        = 'Baker’s Dozen'
 emoji       = '🍞'
 description = 'Solve your thirteenth hole.'
 target      = 13
 
-[[Progression]]
+[['Total Holes']]
 name        = 'The Watering Hole'
 emoji       = '🍺'
 description = 'Solve your nineteenth hole.'
 target      = 19
 
-[[Progression]]
+[['Total Holes']]
 name        = 'Blackjack'
 emoji       = '🃏'
 description = 'Solve your twenty-first hole.'
 target      = 21
 
-[[Progression]]
+[['Total Holes']]
 name        = 'Rule 34'
 emoji       = '🔞'
 description = 'Solve your thirty-fourth hole.'
 target      = 34
 
-[[Progression]]
+[['Total Holes']]
 name        = 'Forty Winks'
 emoji       = '😴'
 description = 'Solve your fortieth hole.'
 target      = 40
 
-[[Progression]]
+[['Total Holes']]
 name        = 'DON’T PANIC!'
 emoji       = '👍'
 description = 'Solve your forty-second hole.'
 target      = 42
 
-[[Progression]]
+[['Total Holes']]
 name        = 'Bullseye'
 emoji       = '🎯'
 description = 'Solve your fiftieth hole.'
 target      = 50
 
-[[Progression]]
+[['Total Holes']]
 name        = 'Gone in 60 Holes'
 emoji       = '🚗'
 description = 'Solve your sixtieth hole.'
 target      = 60
 
-[[Progression]]
+[['Total Holes']]
 name        = 'Cunning Linguist'
 emoji       = '👅'
 description = 'Solve your sixty-ninth hole.'
 target      = 69
 
-[[Progression]]
+[['Total Holes']]
 name        = 'Phileas Fogg'
 emoji       = '🚢'
 description = 'Solve your eightieth hole.'
 target      = 80
 
-[[Progression]]
+[['Total Holes']]
 name        = 'x86'
 emoji       = '🖥️'
 description = 'Solve your eighty-sixth hole.'
 target      = 86
 
-[[Progression]]
+# Total Points
+
+[['Total Points']]
+name        = 'Big Brother'
+emoji       = '👁️'
+description = 'Earn 1,984 total points in either bytes or chars scoring.'
+target      = 1984
+
+
+[['Total Points']]
 name        = 'It’s Over 9000!'
 emoji       = '🐉'
-description = 'Earn over 9,000 points in either bytes or chars scoring.'
+description = 'Earn over 9,000 total points in either bytes or chars scoring.'
 target      = 9001
 
-[[Progression]]
+[['Total Points']]
 name        = 'Twenty Kiloleagues'
 emoji       = '🐋'
-description = 'Earn 20,000 points in either bytes or chars scoring.'
+description = 'Earn 20,000 total points in either bytes or chars scoring.'
 target      = 20000
 
-[[Progression]]
+[['Total Points']]
 name        = 'Marathon Runner'
 emoji       = '🏃'
-description = 'Earn 42,195 points in either bytes or chars scoring.'
+description = 'Earn 42,195 total points in either bytes or chars scoring.'
 target      = 42195
+
+[['Total Points']]
+name        = '0xDEAD'
+emoji       = '🪦'
+description = 'Earn 57,005 total points in either bytes or chars scoring.'
+target      = 57005

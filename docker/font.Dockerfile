@@ -35,6 +35,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f41f.svg       `# Fish`                         \
     svg/1f426.svg       `# Bird`                         \
     svg/1f42a.svg       `# Camel`                        \
+    svg/1f441.svg       `# Eye`                          \
     svg/1f445.svg       `# Tongue`                       \
     svg/1f44b.svg       `# Waving Hand`                  \
     svg/1f44d.svg       `# Thumbs Up`                    \
@@ -98,6 +99,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f9f6.svg       `# Yarn`                         \
     svg/1fa9b.svg       `# Screwdriver`                  \
     svg/1fa9e.svg       `# Mirror`                       \
+    svg/1faa6.svg       `# Headstone`                    \
     svg/2615.svg        `# Hot Beverage`                 \
     svg/2639.svg        `# Frowning Face`                \
     svg/26f3.svg        `# Flag in Hole`                 \

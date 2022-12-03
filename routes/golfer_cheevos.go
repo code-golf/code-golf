@@ -142,7 +142,8 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 
 	cheevoProgress(
 		"SELECT COALESCE(MAX(points), 0) FROM points WHERE user_id = $1",
-		"its-over-9000", "twenty-kiloleagues", "marathon-runner",
+		"big-brother", "its-over-9000", "twenty-kiloleagues",
+		"marathon-runner", "0xdead",
 	)
 
 	render(w, r, "golfer/cheevos", data, golfer.Name)
