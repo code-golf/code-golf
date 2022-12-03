@@ -176,6 +176,12 @@ BEGIN
     IF hole = 'fizz-buzz' THEN
         earned := earn(earned, 'interview-ready', user_id); END IF;
 
+    -- 📚 Archivist
+    SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs) WHERE unnest IN (
+        'basic', 'cobol', 'fortran', 'lisp');
+    IF hole = 'isbn' AND found THEN
+        earned := earn(earned, 'archivist', user_id); END IF;
+
     -- 🪛 Assembly Required.
     IF hole = 'seven-segment' AND lang = 'assembly' THEN
         earned := earn(earned, 'assembly-required', user_id); END IF;

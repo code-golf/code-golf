@@ -58,6 +58,12 @@ emoji       = '💼'
 description = 'Solve <a href=/fizz-buzz>Fizz Buzz</a>.'
 
 [['Hole/Lang Specific']]
+name        = 'Archivist'
+emoji       = '📚'
+description = 'Solve <a href=/isbn>ISBN</a> in any three languages that predate ISBN.'
+target      = 3
+
+[['Hole/Lang Specific']]
 name        = 'Assembly Required'
 emoji       = '🪛'
 description = 'Solve <a href=/seven-segment#assembly>Seven Segment in Assembly</a>.'
