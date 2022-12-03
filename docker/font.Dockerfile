@@ -32,6 +32,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f40d.svg       `# Sanke`                        \
     svg/1f418.svg       `# Elephant`                     \
     svg/1f41f.svg       `# Fish`                         \
+    svg/1f426.svg       `# Bird`                         \
     svg/1f42a.svg       `# Camel`                        \
     svg/1f445.svg       `# Tongue`                       \
     svg/1f44b.svg       `# Waving Hand`                  \

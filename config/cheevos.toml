@@ -63,6 +63,12 @@ emoji       = '🪛'
 description = 'Solve <a href=/seven-segment#assembly>Seven Segment in Assembly</a>.'
 
 [['Hole/Lang Specific']]
+name        = 'Bird Is the Word'
+emoji       = '🐦'
+description = 'Solve <a href=/levenshtein-distance>Levenshtein Distance</a> in any three of AWK, Prolog, SQL, Swift, Tcl, or Wren'
+target      = 3
+
+[['Hole/Lang Specific']]
 name        = 'Caffeinated'
 emoji       = '☕'
 description = 'Solve any hole in both Java and JavaScript.'

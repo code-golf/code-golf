@@ -180,6 +180,12 @@ BEGIN
     IF hole = 'seven-segment' AND lang = 'assembly' THEN
         earned := earn(earned, 'assembly-required', user_id); END IF;
 
+    -- 🐦 Bird Is the Word.
+    SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs) WHERE unnest IN (
+        'awk', 'prolog', 'sql', 'swift', 'tcl', 'wren');
+    IF hole = 'levenshtein-distance' AND found THEN
+        earned := earn(earned, 'bird-is-the-word', user_id); END IF;
+
     -- ☕ Caffeinated
     IF langs @> '{java,javascript}' THEN
         earned := earn(earned, 'caffeinated', user_id); END IF;
@@ -225,8 +231,8 @@ BEGIN
         earned := earn(earned, 'solve-quine', user_id); END IF;
 
     -- 🎺 Sounds Quite Nice
-    SELECT COUNT(*) >= 3 INTO found
-      FROM UNNEST(langs) WHERE unnest IN ('c', 'c-sharp', 'd', 'f-sharp');
+    SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs) WHERE unnest IN (
+        'c', 'c-sharp', 'd', 'f-sharp');
     IF hole = 'musical-chords' AND found THEN
         earned := earn(earned, 'sounds-quite-nice', user_id); END IF;
 

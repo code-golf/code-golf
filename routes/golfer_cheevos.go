@@ -75,6 +75,16 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 		`SELECT COUNT(DISTINCT lang)
 		   FROM solutions
 		  WHERE NOT failing
+		    AND hole = 'levenshtein-distance'
+		    AND lang IN ('awk', 'prolog', 'sql', 'swift', 'tcl', 'wren')
+		    AND user_id = $1`,
+		"bird-is-the-word",
+	)
+
+	cheevoProgress(
+		`SELECT COUNT(DISTINCT lang)
+		   FROM solutions
+		  WHERE NOT failing
 		    AND hole = 'musical-chords'
 		    AND lang IN ('c', 'c-sharp', 'd', 'f-sharp')
 		    AND user_id = $1`,
