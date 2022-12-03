@@ -2001,7 +2001,7 @@ preamble = '''
 
 ['Shī Shì shí shī shǐ']
 category = 'Art'
-experiment = -1
+experiment = 824
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Lion-Eating_Poet_in_the_Stone_Den' },
 ]
