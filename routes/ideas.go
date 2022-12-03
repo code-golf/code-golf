@@ -47,7 +47,9 @@ rows:
 			}
 		}
 
-		if strings.Contains(strings.ToLower(i.Title), "lang") {
+		if strings.HasPrefix(i.Title, "Add ") && strings.HasSuffix(i.Title, " Lang") {
+			i.Title = i.Title[len("Add ") : len(i.Title)-len(" Lang")]
+
 			data.Langs = append(data.Langs, i)
 		} else {
 			data.Ideas = append(data.Ideas, i)
