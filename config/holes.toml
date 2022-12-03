@@ -609,7 +609,7 @@ category = 'Mathematics'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Ellipse' },
 ]
-experiment = -1
+experiment = 811
 preamble = '''
 <p>
     Given the two radii of an ellipse, compute its perimeter and print
@@ -676,7 +676,7 @@ preamble = '''
 '''
 
 ['Factorial Factorisation']
-experiment = -1
+experiment = 812
 category = 'Sequence'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Factorial' },
@@ -968,7 +968,7 @@ preamble = '''
 
 ['Julia Set']
 category = 'Art'
-experiment = -1
+experiment = 814
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Julia_set' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Julia_set' },
@@ -1193,7 +1193,7 @@ preamble = '''
 
 [Mandelbrot]
 category = 'Art'
-experiment = -1
+experiment = 813
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Mandelbrot_set' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Mandelbrot_set' },
@@ -1527,7 +1527,7 @@ preamble = '''
 
 ['Odd Polyomino Tiling']
 category = 'Art'
-experiment = -1
+experiment = 815
 links = [
     { name = 'Rectifiable Polyomino', url = '//cflmath.com/Polyomino/rectifiable_data.html' },
     { name = 'Wikipedia',             url = '//en.wikipedia.org/wiki/Polyomino' },
@@ -1753,7 +1753,7 @@ preamble = '''
 
 ['QR Encoder']
 category = 'Transform'
-experiment = -1
+experiment = 816
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/QR_code#Encoding' },
 ]
@@ -2580,7 +2580,7 @@ preamble = '''
 
 ['γ']
 category = 'Mathematics'
-experiment = -1
+experiment = 817
 links = [
     { name = 'OEIS A001620', url = '//oeis.org/A001620' },
     { name = 'Rosetta Code', url = "//rosettacode.org/wiki/Euler's_constant_0.5772..." },
