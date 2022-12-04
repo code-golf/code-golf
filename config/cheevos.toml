@@ -140,7 +140,7 @@ target      = 26
 [['Hole/Lang Specific']]
 name        = 'Solve Quine'
 emoji       = '🪞'
-description = 'Solve <a href=/quine>Quine</a>.'
+description = 'Solve <a href=/quine>Quine</a>'
 
 [['Hole/Lang Specific']]
 name        = 'Sounds Quite Nice'
