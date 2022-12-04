@@ -33,6 +33,27 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE TYPE hole_best_ret AS (strokes int, rank int, joint bool, user_id int);
+
+CREATE FUNCTION hole_best(hole hole, lang lang, scoring scoring)
+RETURNS SETOF hole_best_ret AS $$
+BEGIN
+    RETURN QUERY EXECUTE FORMAT(
+        'WITH ranks AS (
+            SELECT %I, RANK() OVER (ORDER BY %I), user_id
+              FROM solutions
+             WHERE NOT failing AND hole = $1 AND lang = $2 AND scoring = $3
+        ) SELECT %I, rank::int,
+                 (SELECT COUNT(*) != 1 FROM ranks r WHERE r.rank = ranks.rank),
+                 user_id
+            FROM ranks
+        ORDER BY rank
+           LIMIT 1',
+        scoring, scoring, scoring
+    ) USING hole, lang, scoring;
+END;
+$$ LANGUAGE plpgsql;
+
 CREATE FUNCTION pangramglot(langs lang[]) RETURNS int AS $$
     WITH letters AS (
         SELECT DISTINCT unnest(regexp_split_to_array(nullif(regexp_replace(
@@ -42,21 +63,25 @@ CREATE FUNCTION pangramglot(langs lang[]) RETURNS int AS $$
 $$ LANGUAGE SQL STABLE;
 
 CREATE TYPE save_solution_ret AS (
-    beat_bytes      int,
-    beat_chars      int,
-    earned          cheevo[],
-    new_bytes       int,
-    new_bytes_joint bool,
-    new_bytes_rank  int,
-    new_chars       int,
-    new_chars_joint bool,
-    new_chars_rank  int,
-    old_bytes       int,
-    old_bytes_joint bool,
-    old_bytes_rank  int,
-    old_chars       int,
-    old_chars_joint bool,
-    old_chars_rank  int
+    beat_bytes           int,
+    beat_chars           int,
+    earned               cheevo[],
+    new_bytes            int,
+    new_bytes_joint      bool,
+    new_bytes_rank       int,
+    new_chars            int,
+    new_chars_joint      bool,
+    new_chars_rank       int,
+    old_bytes            int,
+    old_bytes_joint      bool,
+    old_bytes_rank       int,
+    old_chars            int,
+    old_chars_joint      bool,
+    old_chars_rank       int,
+    old_best_bytes       int,
+    old_best_bytes_joint bool,
+    old_best_chars       int,
+    old_best_chars_joint bool
 );
 
 CREATE FUNCTION save_solution(
@@ -68,6 +93,7 @@ DECLARE
     holes          int;
     holes_for_lang hole[];
     langs_for_hole lang[];
+    old_best       hole_best_ret;
     rank           hole_rank_ret;
     ret            save_solution_ret;
 BEGIN
@@ -79,11 +105,19 @@ BEGIN
     ret.old_bytes_joint := rank.joint;
     ret.old_bytes_rank  := rank.rank;
 
+    old_best                 := hole_best(hole, lang, 'bytes');
+    ret.old_best_bytes       := old_best.strokes;
+    ret.old_best_bytes_joint := old_best.joint;
+
     IF chars IS NOT NULL THEN
         rank                := hole_rank(hole, lang, 'chars', user_id);
         ret.old_chars       := rank.strokes;
         ret.old_chars_joint := rank.joint;
         ret.old_chars_rank  := rank.rank;
+
+        old_best                 := hole_best(hole, lang, 'chars');
+        ret.old_best_chars       := old_best.strokes;
+        ret.old_best_chars_joint := old_best.joint;
     END IF;
 
     -- Update the code if it's the same length or less, but only update the

@@ -89,9 +89,13 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			        old_bytes_joint, old_bytes_rank, old_bytes,
 			        new_bytes_joint, new_bytes_rank, new_bytes,
 			        beat_bytes,
+			        old_best_bytes_joint,
+			        old_best_bytes,
 			        old_chars_joint, old_chars_rank, old_chars,
 			        new_chars_joint, new_chars_rank, new_chars,
-			        beat_chars
+			        beat_chars,
+			        old_best_chars_joint,
+			        old_best_chars
 			   FROM save_solution(
 			            bytes   := CASE WHEN $3 = 'assembly'::lang
 			                            THEN $5
@@ -116,6 +120,8 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			&out.RankUpdates[0].To.Rank,
 			&out.RankUpdates[0].To.Strokes,
 			&out.RankUpdates[0].Beat,
+			&out.RankUpdates[0].OldBestJoint,
+			&out.RankUpdates[0].OldBestStrokes,
 			&out.RankUpdates[1].From.Joint,
 			&out.RankUpdates[1].From.Rank,
 			&out.RankUpdates[1].From.Strokes,
@@ -123,6 +129,8 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			&out.RankUpdates[1].To.Rank,
 			&out.RankUpdates[1].To.Strokes,
 			&out.RankUpdates[1].Beat,
+			&out.RankUpdates[1].OldBestJoint,
+			&out.RankUpdates[1].OldBestStrokes,
 		); err != nil {
 			panic(err)
 		}
@@ -139,8 +147,12 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			}
 
 			// This keeps track of which updates (if any) represent new records
-			if !rank.To.Joint.Bool && rank.To.Rank.Int64 == 1 {
-				recordUpdates = append(recordUpdates, rank)
+			if rank.To.Rank.Int64 == 1 {
+				if !rank.To.Joint.Bool {
+					recordUpdates = append(recordUpdates, rank)
+				}
+				// TODO else if !rank.OldBestJoint.Bool { do discord post for matched diamonds }
+				// Github #629
 			}
 		}
 

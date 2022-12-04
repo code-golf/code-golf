@@ -493,7 +493,7 @@ details.tabs a { display: inline-block }
     background: var(--color);
     box-shadow: 0 0 1rem #07b;
     color: var(--background);
-    display: grid;
+    display: default;
     gap: .25rem .5rem;
     grid-column: 2;
     grid-template-columns: auto 1fr;
