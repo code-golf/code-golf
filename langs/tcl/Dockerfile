@@ -4,8 +4,6 @@ RUN apk add --no-cache build-base curl
 
 RUN curl -L https://github.com/tcltk/tcl/archive/refs/tags/core-8-6-13.tar.gz | tar xz
 
-RUN touch /empty
-
 ENV LDFLAGS -static
 
 RUN mv /tcl-* /tcl   \
@@ -19,8 +17,7 @@ RUN mv /tcl-* /tcl   \
 
 FROM codegolf/lang-base
 
-# Create empty init.tcl to avoid "can't find usable init.tcl" error.
-COPY --from=0 /empty          /library/init.tcl
+COPY --from=0 /tcl/library/   /library/
 COPY --from=0 /tcl/unix/tclsh /usr/bin/tcl
 
 ENTRYPOINT ["tcl"]
