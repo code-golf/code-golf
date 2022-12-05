@@ -92,7 +92,6 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
-		// TODO Parse date into viewers location.
 		data.Wall = append(data.Wall, row{
 			Cheevo: config.CheevoByID[cheevo],
 			Date:   date,
