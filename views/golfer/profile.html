@@ -5,7 +5,7 @@
     <div id=wall>
 {{ $lastDay := "" }}
 {{ range .Data.Wall }}
-    {{ $day := .Date.Format "Mon 2 Jan 2006" }}
+    {{ $day := (.Date.In $.Location).Format "Mon 2 Jan 2006" }}
     {{ if ne $day $lastDay }}
         <time>{{ $day }}</time>
         {{ $lastDay = $day }}
