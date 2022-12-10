@@ -895,8 +895,8 @@ foreach arg $argv {
 '''
 
 [V]
-size    = '38.5 MiB'
-version = '0.2.4'
+size    = '46.1 MiB'
+version = '0.3.2'
 website = 'https://vlang.io'
 example = '''
 import os

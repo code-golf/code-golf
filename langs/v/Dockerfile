@@ -2,12 +2,12 @@ FROM debian:bullseye-slim as builder
 
 RUN apt-get update && apt-get install -y gcc git make
 
-RUN git clone -b weekly.2022.22 https://github.com/vlang/v /opt/v \
+RUN git clone -b weekly.2022.45 https://github.com/vlang/v /opt/v \
  && cd /opt/v && make && strip v
 
 FROM debian:bullseye-slim
 
-RUN apt-get update && apt-get install -y libc-dev
+RUN apt-get update && apt-get install -y libc-dev libgc-dev
 
 COPY --from=0 /opt/v/thirdparty/tcc /opt/v/thirdparty/tcc
 COPY --from=0 /opt/v/v              /opt/v/v
@@ -26,7 +26,9 @@ COPY --from=0 /usr/lib/x86_64-linux-gnu/crt1.o           \
               /usr/lib/x86_64-linux-gnu/libatomic.so.1   \
               /usr/lib/x86_64-linux-gnu/libc.so          \
               /usr/lib/x86_64-linux-gnu/libc_nonshared.a \
-              /usr/lib/x86_64-linux-gnu/libm.so          /usr/lib/x86_64-linux-gnu/
+              /usr/lib/x86_64-linux-gnu/libdl.so         \
+              /usr/lib/x86_64-linux-gnu/libm.so          \
+              /usr/lib/x86_64-linux-gnu/libpthread.so    /usr/lib/x86_64-linux-gnu/
 
 COPY v /usr/bin/
 
