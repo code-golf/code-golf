@@ -253,6 +253,8 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 	case "python":
 		// Force the stdout and stderr streams to be unbuffered.
 		cmd.Args = []string{"/usr/bin/python", "-u", "-"}
+	case "r":
+		cmd.Args = []string{"/usr/bin/Rscript", "-"}
 	case "sed":
 		cmd.Args = []string{"/usr/bin/sed", "-E", "-z", "--sandbox", "-u", "--", code}
 	case "swift":
