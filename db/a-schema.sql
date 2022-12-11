@@ -51,12 +51,12 @@ CREATE TYPE layout AS ENUM ('default', 'tabs');
 CREATE TYPE keymap AS ENUM ('default', 'vim');
 
 CREATE TYPE lang AS ENUM (
-    'assembly', 'awk', 'bash', 'basic', 'brainfuck', 'c', 'c-sharp', 'cpp', 'cobol',
-    'crystal', 'd', 'dart', 'elixir', 'f-sharp', 'fish', 'fortran', 'go',
-    'golfscript', 'haskell', 'hexagony', 'j', 'java', 'javascript', 'julia',
-    'k', 'lisp', 'lua', 'nim', 'pascal', 'perl', 'php', 'powershell',
-    'prolog', 'python', 'r', 'raku', 'ruby', 'rust', 'sed', 'sql', 'swift', 'tcl',
-    'v', 'viml', 'wren', 'zig'
+    'assembly', 'awk', 'bash', 'basic', 'brainfuck', 'c', 'c-sharp', 'cpp',
+    'cobol', 'crystal', 'd', 'dart', 'elixir', 'f-sharp', 'fish', 'fortran',
+    'go', 'golfscript', 'haskell', 'hexagony', 'j', 'java', 'javascript',
+    'julia', 'k', 'lisp', 'lua', 'nim', 'pascal', 'perl', 'php', 'powershell',
+    'prolog', 'python', 'r', 'raku', 'ruby', 'rust', 'sed', 'sql', 'swift',
+    'tcl', 'v', 'viml', 'wren', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('diamond', 'gold', 'silver', 'bronze');
