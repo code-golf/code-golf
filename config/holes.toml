@@ -789,6 +789,34 @@ preamble = '''
 <p>For each fraction argument <code>a/b</code>, reduce it to its simplest form.
 '''
 
+['Game of Life']
+category = 'Gaming'
+experiment = 836
+links = [
+    { name = 'Rosetta Code', url = "//rosettacode.org/wiki/Conway's_Game_of_Life" },
+    { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Conway's_Game_of_Life" },
+]
+preamble = '''
+<p>
+    The universe of the Game of Life is a grid of square cells, each of which
+    is either alive ("#") or dead ("."). Every cell interacts with its eight
+    neighbours, which are the cells that are horizontally, vertically, or
+    diagonally adjacent. At each step in time, the following transitions occur:
+
+<ol>
+    <li>Any dead cell with exactly three live neighbours becomes a live cell.
+    <li>All other dead cells stay dead.
+    <li>Any live cell with two or three live neighbours survives.
+    <li>All other live cells die.
+</ol>
+
+<p>
+    The grid wraps around, i.e. the top and bottom edges are connected, and the
+    left and right sides are connected.
+
+<p>Given a 32×32 grid, output the state in the next step.
+'''
+
 ['Gijswijt’s Sequence']
 category = 'Sequence'
 experiment = 724
