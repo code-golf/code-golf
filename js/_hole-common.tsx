@@ -341,7 +341,7 @@ const diamondPopups = (updates: RankUpdate[]) => {
 
     for (const i of [0, 1] as const) {
         const update = updates[i];
-        if (update.to.rank == 1) {
+        if (update.from.rank != 1 && update.to.rank == 1) {
             if (!update.to.joint) {
                 newDiamonds.push(update.scoring);
             }
