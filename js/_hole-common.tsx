@@ -306,7 +306,7 @@ const scorePopups = (updates: RankUpdate[]) => {
         else {
             for (const i of [0, 1] as const) {
                 if (strokes[i] > 0) {
-                    amount += (i == 1 ? '/' : '') + `${strokes[i]} ${makeSingular(strokes[i], updates[i].scoring)}`;
+                    amount += (i == 1 && strokes[0] > 0 ? '/' : '') + `${strokes[i]} ${makeSingular(strokes[i], updates[i].scoring)}`;
                 }
             }
         }
