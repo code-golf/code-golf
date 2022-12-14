@@ -811,10 +811,8 @@ preamble = '''
 </ol>
 
 <p>
-    The grid wraps around, i.e. the top and bottom edges are connected, and the
-    left and right sides are connected.
-
-<p>Given a 32×32 grid, output the state in the next step.
+    Given a 32×32 grid, output the state in the next step. Assume that every
+    cell outside the grid is dead.
 '''
 
 ['Gijswijt’s Sequence']
