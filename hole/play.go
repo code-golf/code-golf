@@ -255,6 +255,11 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 		cmd.Args = []string{"/usr/bin/python", "-u", "-"}
 	case "r":
 		cmd.Args = []string{"/usr/bin/Rscript", "-"}
+
+		// Disable implicit output for Quine to prevent trivial solutions.
+		if holeID == "quine" {
+			cmd.Args = []string{"/usr/bin/Rscript", "-e", "source('stdin')"}
+		}
 	case "sed":
 		cmd.Args = []string{"/usr/bin/sed", "-E", "-z", "--sandbox", "-u", "--", code}
 	case "swift":
