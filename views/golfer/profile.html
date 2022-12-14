@@ -131,6 +131,19 @@
             {{ end }}
         </table>
     {{ end }}
+
+    {{ with .Data.Followers }}
+        <section class=icons>
+            <h2>
+                {{ len . }} Golfer{{ if gt (len .) 1 }}s{{ end }} Following
+            </h2>
+        {{ range . }}
+            <a href="{{ . }}" title="{{ . }}">
+                <img loading=lazy src="//avatars.githubusercontent.com/{{ . }}?s=72">
+            </a>
+        {{ end }}
+        </section>
+    {{ end }}
     </aside>
 </main>
 

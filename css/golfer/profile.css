@@ -49,6 +49,12 @@ section > a, section > div {
     text-shadow: 0 0 var(--cheevo-not-earned);
 }
 
+.icons img {
+    border-radius: 50%;
+    height: 2.25rem;
+    width: 2.25rem;
+}
+
 .icons svg {
     height: 2rem;
     width: 2rem;
