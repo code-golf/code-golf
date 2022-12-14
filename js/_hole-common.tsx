@@ -318,7 +318,7 @@ const scorePopups = (updates: RankUpdate[]) => {
         else {
             for (const i of [0, 1] as const) {
                 if (points[i] > 0) {
-                    pointsNodes.push(<p>Earned {points[0]} {makeSingular(points[0], 'points')} for {updates[i].scoring}</p>);
+                    pointsNodes.push(<p>Earned {points[i]} {makeSingular(points[i], 'points')} for {updates[i].scoring}</p>);
                 }
             }
         }
