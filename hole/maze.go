@@ -77,7 +77,7 @@ func tracePath(dist [height][width]int, ei, ej int) (path [height][width]int) {
 }
 
 func draw(grid [height][width]int, si, sj, ei, ej int, path [height][width]int, drawpath bool) (mazestr string) {
-	const wall = "█"
+	const wall = "#"
 
 	var track, top, bottom, cell, eastboundary, southboundary string
 
@@ -130,12 +130,10 @@ func draw(grid [height][width]int, si, sj, ei, ej int, path [height][width]int, 
 }
 
 func maze() []Scorecard {
-	const nomazes = 5
+	const count = 5
+	runs := make([]Scorecard, count)
 
-	args := make([]string, nomazes)
-	out := ""
-
-	for i := 0; i < nomazes; i++ {
+	for i := 0; i < count; i++ {
 		var grid [height][width]int
 		var dist [height][width]int
 
@@ -148,14 +146,11 @@ func maze() []Scorecard {
 		mazeinput := draw(grid, si, sj, ei, ej, path, false)
 		mazesolved := draw(grid, si, sj, ei, ej, path, true)
 
-		mazeinput = mazeinput[:len(mazeinput)-1]
-
-		args[i] = mazeinput
-
-		out += mazesolved + "\n"
+		runs[i] = Scorecard{
+			Args:   []string{mazeinput[:len(mazeinput)-1]},
+			Answer: mazesolved[:len(mazesolved)-1],
+		}
 	}
 
-	out = out[:len(out)-2]
-
-	return []Scorecard{{Args: args, Answer: out}}
+	return runs
 }
