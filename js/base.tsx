@@ -18,9 +18,7 @@ for (const a of $$<HTMLAnchorElement>('.log-in')) {
 // Wire up the config button, if present.
 $('#configBtn')?.addEventListener('click', () => {
     $<HTMLFormElement>('#form-config')?.reset();
-
-    // Dialog typings are not available yet
-    $<any>('dialog').showModal();
+    $<HTMLDialogElement>('dialog').showModal();
 });
 
 // Wire up mobile form navigation.
@@ -50,5 +48,5 @@ for (const input of $$<any>('[list]')) {
 for (const dialog of $$<HTMLDialogElement>('dialog')) {
     dialogPolyfill.registerDialog(dialog);
 
-    dialog.onclick = (e: MouseEvent) => e.target == dialog ? (dialog as any).close() : null;
+    dialog.onclick = e => e.target == dialog ? dialog.close() : null;
 }

@@ -49,8 +49,7 @@ export function initDeleteBtn(deleteBtn: HTMLElement | undefined, langs: any) {
         $('dialog b').innerText = langs[lang].name;
         $<HTMLInputElement>('dialog [name=lang]').value = lang;
         $<HTMLInputElement>('dialog [name=text]').value = '';
-        // Dialog typings are not available yet
-        $<any>('dialog').showModal();
+        $<HTMLDialogElement>('dialog').showModal();
     });
 }
 
