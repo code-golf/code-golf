@@ -69,7 +69,7 @@ func init() {
 		}
 
 		// Parse the templated synopsis.
-		synopsis, err := templateTxt.New("").Funcs(funcs).Parse(string(hole.Synopsis))
+		synopsis, err := templateTxt.New("").Funcs(funcs).Parse(hole.Synopsis)
 		if err != nil {
 			panic(err)
 		}
