@@ -241,6 +241,8 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 		cmd.Env = []string{"HOME=/"}
 	case "nim":
 		cmd.Args = []string{"/usr/bin/nim", "--colors:on", "-o:/tmp/code", "-r", "c", "-"}
+	case "ocaml":
+		cmd.Args = []string{"/usr/bin/ocaml", "/proc/self/fd/0"}
 	case "perl":
 		cmd.Args = []string{"/usr/bin/perl", "-E", code, "--"}
 	case "powershell":

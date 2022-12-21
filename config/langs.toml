@@ -639,6 +639,26 @@ for arg in commandLineParams():
     echo arg
 '''
 
+[OCaml]
+size = '207 MiB'
+version = '4.14.0'
+website = 'https://ocaml.org'
+example = '''
+(* Printing *)
+print_endline "Hello, World!";
+
+(* Looping *)
+for i = 0 to 9 do
+  Printf.printf "%d\n" i
+done;
+
+(* Accessing arguments *)
+Sys.argv
+  |> Array.to_list
+  |> List.tl
+  |> List.iter print_endline;
+'''
+
 [Pascal]
 size    = '30.9 MiB'
 version = '3.2.2'
