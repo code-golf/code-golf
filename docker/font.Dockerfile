@@ -18,9 +18,9 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f340.svg       `# Four Leaf Clover`             \
     svg/1f356.svg       `# Meat on Bone`                 \
     svg/1f35e.svg       `# Bread`                        \
+    svg/1f36f.svg       `# Honey Pot`                    \
     svg/1f37a.svg       `# Beer Mug`                     \
     svg/1f382.svg       `# Birthday Cake`                \
-    svg/1f36f.svg       `# Honey Pot`                    \
     svg/1f385.svg       `# Santa Claus`                  \
     svg/1f3af.svg       `# Direct Hit`                   \
     svg/1f3b3.svg       `# Bowling`                      \
@@ -28,6 +28,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f3ba.svg       `# Trumpet`                      \
     svg/1f3c3.svg       `# Person Running`               \
     svg/1f3c6.svg       `# Trophy`                       \
+    svg/1f3e5.svg       `# Hospital`                     \
     svg/1f409.svg       `# Dragon`                       \
     svg/1f40b.svg       `# Whale`                        \
     svg/1f40d.svg       `# Sanke`                        \
@@ -47,8 +48,8 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f4be.svg       `# Floppy Disk`                  \
     svg/1f4c4.svg       `# Page Facing Up`               \
     svg/1f4c5.svg       `# Calendar`                     \
-    svg/1f4da.svg       `# Books`                        \
     svg/1f4d5.svg       `# Closed Book`                  \
+    svg/1f4da.svg       `# Books`                        \
     svg/1f4f4.svg       `# Mobile Phone Off`             \
     svg/1f511.svg       `# Key`                          \
     svg/1f51e.svg       `# No One Under Eighteen`        \

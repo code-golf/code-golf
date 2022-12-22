@@ -90,6 +90,11 @@ emoji       = '🐘'
 description = 'Solve any hole in PHP.'
 
 [['Hole/Lang Specific']]
+name        = 'Emergency Room'
+emoji       = '🏥'
+description = 'Solve <a href=/𝑒#r>𝑒 in R</a>.'
+
+[['Hole/Lang Specific']]
 name        = 'Fish ’n’ Chips'
 emoji       = '🐟'
 description = 'Solve <a href=/poker#fish>Poker in &gt;&lt;&gt;</a>.'

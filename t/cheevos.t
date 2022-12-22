@@ -55,6 +55,7 @@ for <
     seven-segment    assembly  {assembly-required}
     sudoku           hexagony  {off-the-grid}
     ten-pin-bowling  cobol     {cobowl}
+    𝑒                r         {emergency-room}
 > -> $hole, $lang, $cheevos {
     is $dbh.execute(
         "SELECT earned FROM save_solution(2, ?, 'ab', ?, ?, 1)",

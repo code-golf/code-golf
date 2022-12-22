@@ -245,6 +245,10 @@ BEGIN
     IF lang = 'php' THEN
         earned := earn(earned, 'elephpant-in-the-room', user_id); END IF;
 
+    -- 🏥 Emergency Room
+    IF hole = '𝑒' AND lang = 'r' THEN
+        earned := earn(earned, 'emergency-room', user_id); END IF;
+
     -- 🐟 Fish ’n’ Chips
     IF hole = 'poker' AND lang = 'fish' THEN
         earned := earn(earned, 'fish-n-chips', user_id); END IF;
