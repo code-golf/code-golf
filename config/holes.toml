@@ -839,7 +839,6 @@ preamble = '''
 
 ['Game of Life']
 category = 'Gaming'
-experiment = 836
 links = [
     { name = 'Rosetta Code', url = "//rosettacode.org/wiki/Conway's_Game_of_Life" },
     { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Conway's_Game_of_Life" },
