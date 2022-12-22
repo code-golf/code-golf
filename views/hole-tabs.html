@@ -23,23 +23,37 @@
     </div>
 {{ end }}{{ end }}
 
+{{ with .Data.Authors }}
+    <dialog id=authors-dialog>
+        <h1>{{ $.Data.Hole.Name }} Authors</h1>
+        <ul>
+        {{ range . }}
+            <li>
+                <a href="/golfers/{{ . }}">
+                    <img src="//avatars.githubusercontent.com/{{ . }}?s=48">
+                    {{ . }}
+                </a>
+        {{ end }}
+        </ul>
+    </dialog>
+{{ end }}
+
 <main>
     <header>
         <div>
             <div id="hole-lang">
-                <h1> {{ .Data.Hole.Name }} </h1>
+                <h1>
+                {{ with .Data.Authors }}
+                    <button id=authors-btn>
+                    {{ range . }}
+                        <img src="//avatars.githubusercontent.com/{{ . }}?s=56">
+                    {{ end }}
+                    </button>
+                {{ end }}
+                    {{ .Data.Hole.Name }}
+                </h1>
                 <details open><summary> Language </summary></details>
             </div>
-        {{ with .Data.Authors }}
-            <p id=authors>by
-            {{- range $i, $author := . -}}
-                {{- if $i }},{{ end }}
-                <a href="/golfers/{{ . }}">
-                    <img src="//avatars.githubusercontent.com/{{ $author }}?s=40">
-                    <span>{{ $author }}</span>
-                </a>
-            {{- end -}}
-        {{ end }}
         </div>
     {{ with .Data.Hole.Links }}
         <nav>

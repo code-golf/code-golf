@@ -235,7 +235,7 @@ main > header {
 
 main > header a { white-space: nowrap }
 
-main > header > h1 {
+main > header h1 {
     display: flex;
     gap: .5rem;
     overflow-x: auto;
