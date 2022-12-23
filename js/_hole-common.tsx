@@ -49,10 +49,10 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
 
 export function initDeleteBtn(deleteBtn: HTMLElement | undefined, langs: any) {
     deleteBtn?.addEventListener('click', () => {
-        $('dialog b').innerText = langs[lang].name;
-        $<HTMLInputElement>('dialog [name=lang]').value = lang;
-        $<HTMLInputElement>('dialog [name=text]').value = '';
-        $<HTMLDialogElement>('dialog').showModal();
+        $('#delete-dialog b').innerText = langs[lang].name;
+        $<HTMLInputElement>('#delete-dialog [name=lang]').value = lang;
+        $<HTMLInputElement>('#delete-dialog [name=text]').value = '';
+        $<HTMLDialogElement>('#delete-dialog').showModal();
     });
 }
 
