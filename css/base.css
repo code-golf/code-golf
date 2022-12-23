@@ -458,11 +458,6 @@ body > .tabs a {
 details.tabs   { display: initial }
 details.tabs a { display: inline-block }
 
-#alert-pool {
-    flex: 1;
-    margin-right: 0.5em;
-}
-
 #error h1 { text-align: center }
 
 #ideas, #index { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
