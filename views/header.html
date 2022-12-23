@@ -93,6 +93,8 @@
         {{ svg "info-circle" }}
     {{ end }}
         <p>{{ .Body }}
+    {{ if eq $.Name "hole-tabs" }}
         <div class=main_close></div>
+    {{ end }}
     </div>
 {{ end }}
