@@ -50,7 +50,7 @@ var arrowMapUpAndRight = map[string][2]int8{
 	"↕": {0, 0}, "↗": {1, 1},
 	"↱": {1, 1},
 	"⇑": {0, 1}, "⇒": {1, 0}, "⇔": {0, 0},
-	"⇕": {0, 0},"⇗": {1, 1},
+	"⇕": {0, 0}, "⇗": {1, 1},
 	"⇧": {0, 1}, "⇨": {1, 0},
 	"⥀": {0, 0}, "⥁": {0, 0},
 }
@@ -136,7 +136,7 @@ func arrows() []Scorecard {
 
 		outsUL[i] = fmt.Sprint(posUL[0], posUL[1])
 	}
-	
+
 	outsDR := make([]string, len(argsDR))
 	for i, arrow := range shuffle(argsDR) {
 		coord := arrowMap[arrow]
