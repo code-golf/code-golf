@@ -23,6 +23,7 @@ constant %paths = (
     'Lisp'       => 'CLISP',
     'Lua'        => 'Lua_(programming_language)',
     'Nim'        => 'Nim_(programming_language)',
+    'OCaml'      => 'OCaml',
     'PHP'        => 'PHP',
     'Pascal'     => 'Free_Pascal',
     'Perl'       => 'Perl',

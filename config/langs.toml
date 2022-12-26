@@ -640,8 +640,8 @@ for arg in commandLineParams():
 '''
 
 [OCaml]
-size    = '207 MiB'
-version = '4.14.0'
+size    = '99.1 MiB'
+version = '5.0.0'
 website = 'https://ocaml.org'
 example = '''
 (* Printing *)
