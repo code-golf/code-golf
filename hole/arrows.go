@@ -92,7 +92,6 @@ func arrows() []Scorecard {
 	argsUR := make([]string, 0, 4*len(arrowMapUpAndRight))
 	posUR := [2]int8{}
 
-	
 	timesDL := 2 + rand.Intn(2)
 	timesUL := 5 - timesDL
 	timesDR := 2 + rand.Intn(2)
