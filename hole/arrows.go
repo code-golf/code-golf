@@ -96,7 +96,7 @@ func arrows() []Scorecard {
 	timesUL := 5 - timesDL
 	timesDR := 2 + rand.Intn(2)
 	timesUR := 5 - timesDR
-	
+
 	// 3 or 4 of each arrow.
 	for arrow := range arrowMapDownAndLeft {
 		for times := timesDL; times >= 0; times-- {
