@@ -26,43 +26,39 @@ var arrowMap = map[string][2]int8{
 }
 
 var arrowMapDownAndLeft = map[string][2]int8{
-	"←": {-1, 0}, "↓": {0, -1}, "↔": {0, 0},
-	"↕": {0, 0}, "↙": {-1, -1},
+	"←": {-1, 0}, "↓": {0, -1},
+	"↙": {-1, -1},
 	"↲": {-1, -1},
-	"⇐": {-1, 0}, "⇓": {0, -1}, "⇔": {0, 0},
-	"⇕": {0, 0}, "⇙": {-1, -1},
+	"⇐": {-1, 0}, "⇓": {0, -1},
+	"⇙": {-1, -1},
 	"⇦": {-1, 0}, "⇩": {0, -1},
-	"⥀": {0, 0}, "⥁": {0, 0},
 }
 
 var arrowMapUpAndLeft = map[string][2]int8{
-	"←": {-1, 0}, "↑": {0, 1}, "↔": {0, 0},
-	"↕": {0, 0}, "↖": {-1, 1},
+	"←": {-1, 0}, "↑": {0, 1},
+	"↖": {-1, 1},
 	"↰": {-1, 1},
-	"⇐": {-1, 0}, "⇑": {0, 1}, "⇔": {0, 0},
-	"⇕": {0, 0}, "⇖": {-1, 1},
+	"⇐": {-1, 0}, "⇑": {0, 1},
+	"⇖": {-1, 1},
 	"⇦": {-1, 0}, "⇧": {0, 1},
-	"⥀": {0, 0}, "⥁": {0, 0},
 }
 
 var arrowMapUpAndRight = map[string][2]int8{
-	"↑": {0, 1}, "→": {1, 0}, "↔": {0, 0},
-	"↕": {0, 0}, "↗": {1, 1},
+	"↑": {0, 1}, "→": {1, 0},
+	"↗": {1, 1},
 	"↱": {1, 1},
-	"⇑": {0, 1}, "⇒": {1, 0}, "⇔": {0, 0},
-	"⇕": {0, 0}, "⇗": {1, 1},
+	"⇑": {0, 1}, "⇒": {1, 0},
+	"⇗": {1, 1},
 	"⇧": {0, 1}, "⇨": {1, 0},
-	"⥀": {0, 0}, "⥁": {0, 0},
 }
 
 var arrowMapDownAndRight = map[string][2]int8{
-	"→": {1, 0}, "↓": {0, -1}, "↔": {0, 0},
-	"↕": {0, 0}, "↘": {1, -1},
+	"→": {1, 0}, "↓": {0, -1},
+	"↘": {1, -1},
 	"↳": {1, -1},
-	"⇒": {1, 0}, "⇓": {0, -1}, "⇔": {0, 0},
-	"⇕": {0, 0}, "⇘": {1, -1},
+	"⇒": {1, 0}, "⇓": {0, -1},
+	"⇘": {1, -1},
 	"⇨": {1, 0}, "⇩": {0, -1},
-	"⥀": {0, 0}, "⥁": {0, 0},
 }
 
 func arrows() []Scorecard {
@@ -87,33 +83,39 @@ func arrows() []Scorecard {
 	}
 
 	// Additional test to force all Cartesian quadrants
-	argsDL := make([]string, 0, 9*len(arrowMapDownAndLeft))
+	argsDL := make([]string, 0, 4*len(arrowMapDownAndLeft))
 	posDL := [2]int8{}
-	argsUL := make([]string, 0, 9*len(arrowMapUpAndLeft))
+	argsUL := make([]string, 0, 4*len(arrowMapUpAndLeft))
 	posUL := [2]int8{}
-	argsDR := make([]string, 0, 9*len(arrowMapDownAndRight))
+	argsDR := make([]string, 0, 4*len(arrowMapDownAndRight))
 	posDR := [2]int8{}
-	argsUR := make([]string, 0, 9*len(arrowMapUpAndRight))
+	argsUR := make([]string, 0, 4*len(arrowMapUpAndRight))
 	posUR := [2]int8{}
 
-	// 7-9 of each arrow.
+	
+	timesDL = 2 + rand.Intn(2)
+	timesUL = 5 - timesDL
+	timesDR = 2 + rand.Intn(2)
+	timesUR = 5 - timesDR
+	
+	// 3 or 4 of each arrow.
 	for arrow := range arrowMapDownAndLeft {
-		for times := 6 + rand.Intn(3); times >= 0; times-- {
+		for times := timesDL; times >= 0; times-- {
 			argsDL = append(argsDL, arrow)
 		}
 	}
 	for arrow := range arrowMapUpAndLeft {
-		for times := 6 + rand.Intn(3); times >= 0; times-- {
+		for times := timesUL; times >= 0; times-- {
 			argsUL = append(argsUL, arrow)
 		}
 	}
 	for arrow := range arrowMapDownAndRight {
-		for times := 6 + rand.Intn(3); times >= 0; times-- {
+		for times := timesDR; times >= 0; times-- {
 			argsDR = append(argsDR, arrow)
 		}
 	}
 	for arrow := range arrowMapUpAndRight {
-		for times := 6 + rand.Intn(3); times >= 0; times-- {
+		for times := timesUR; times >= 0; times-- {
 			argsUR = append(argsUR, arrow)
 		}
 	}
