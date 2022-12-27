@@ -93,10 +93,10 @@ func arrows() []Scorecard {
 	posUR := [2]int8{}
 
 	
-	timesDL = 2 + rand.Intn(2)
-	timesUL = 5 - timesDL
-	timesDR = 2 + rand.Intn(2)
-	timesUR = 5 - timesDR
+	timesDL := 2 + rand.Intn(2)
+	timesUL := 5 - timesDL
+	timesDR := 2 + rand.Intn(2)
+	timesUR := 5 - timesDR
 	
 	// 3 or 4 of each arrow.
 	for arrow := range arrowMapDownAndLeft {
