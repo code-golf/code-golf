@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0.403-alpine3.16 as builder
+FROM mcr.microsoft.com/dotnet/sdk:7.0.100-alpine3.16 as builder
 
 WORKDIR /work
 
@@ -15,7 +15,9 @@ RUN dotnet run
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1  /lib/
+COPY --from=0 /lib/ld-musl-x86_64.so.1  \
+              /lib/libcrypto.so.1.1     \
+              /lib/libssl.so.1.1        /lib/
 COPY --from=0 /out                      /usr/bin
 COPY --from=0 /usr/lib/libgcc_s.so.1    \
               /usr/lib/libicudata.so.71 \
