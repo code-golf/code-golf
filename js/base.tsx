@@ -15,12 +15,6 @@ for (const a of $$<HTMLAnchorElement>('.log-in')) {
     a.href = url.href;
 }
 
-// Wire up the config button, if present.
-$('#configBtn')?.addEventListener('click', () => {
-    $<HTMLFormElement>('#form-config')?.reset();
-    $<HTMLDialogElement>('dialog').showModal();
-});
-
 // Wire up mobile form navigation.
 $('#form-nav')?.addEventListener('change',
     (e: Event) => location.href =
@@ -45,8 +39,19 @@ for (const input of $$<any>('[list]')) {
     };
 }
 
+// Polyfill dialog support, mainly for iOS.
 for (const dialog of $$<HTMLDialogElement>('dialog')) {
     dialogPolyfill.registerDialog(dialog);
 
     dialog.onclick = e => e.target == dialog ? dialog.close() : null;
 }
+
+// Wire up any dialog buttons.
+for (const btn of $$<HTMLElement>('[data-dialog]'))
+    btn.onclick = () => {
+        const dialog = $<HTMLDialogElement>('#' + btn.dataset.dialog);
+
+        // If the dialog contains a form then reset it first.
+        dialog.querySelector('form')?.reset();
+        dialog.showModal();
+    };

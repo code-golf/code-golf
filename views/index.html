@@ -27,7 +27,7 @@
 <main id=index>
 {{ if .Golfer }}
     <nav class="span tabs">
-        <button class="btn blue" id=configBtn title=Configure>
+        <button class="btn blue" data-dialog=config-dialog title=Configure>
             {{ svg "gear-fill" }}
         </button>
 
@@ -65,8 +65,8 @@
 {{ end }}
 </main>
 
-<dialog>
-    <form id=form-config>
+<dialog id=config-dialog>
+    <form>
         <h2>Configure</h2>
         <p>Point values shown:
         <select name=lang>

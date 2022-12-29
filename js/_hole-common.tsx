@@ -42,9 +42,6 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
         target.form!.confirm.toggleAttribute('disabled',
             target.value !== target.placeholder);
     });
-
-    $('#authors-btn')?.addEventListener(
-        'click', () => $<HTMLDialogElement>('#authors-dialog').showModal());
 }
 
 export function initDeleteBtn(deleteBtn: HTMLElement | undefined, langs: any) {
