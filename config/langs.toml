@@ -203,8 +203,8 @@ int main(int argc, char* argv[]) {
 '''
 
 ['C#']
-size    = '146 MiB'
-version = 'C# 11.0 on .NET 7.0.0'
+size    = '149 MiB'
+version = 'C# 11.0 on .NET 7.0.1'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -468,7 +468,7 @@ main = do
 '''
 
 [Hexagony]
-size    = '27.5 MiB'
+size    = '28 MiB'
 version = '770406a'
 website = 'https://github.com/SirBogman/Hexagony'
 example = '''
@@ -715,8 +715,8 @@ for ($i = 1; $i < $argc; $i++)
 '''
 
 [PowerShell]
-size    = '174 MiB'
-version = 'PowerShell 7.3.0 on .NET 7.0.0'
+size    = '176 MiB'
+version = 'PowerShell 7.3.0 on .NET 7.0.1'
 website = 'https://docs.microsoft.com/powershell/scripting/overview'
 example = '''
 # Printing
