@@ -359,8 +359,8 @@ for arg <- System.argv, do: IO.puts arg
 '''
 
 ['F#']
-size    = '147 MiB'
-version = 'F# 7.0 on .NET 7.0.0'
+size    = '150 MiB'
+version = 'F# 7.0 on .NET 7.0.1'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
