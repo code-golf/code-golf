@@ -14,7 +14,6 @@ System.Diagnostics.Process.dll
 System.Diagnostics.StackTrace.dll
 System.Drawing.Primitives.dll
 System.IO.Compression.Brotli.dll
-System.IO.Compression.dll
 System.IO.Compression.ZipFile.dll
 System.Linq.Expressions.dll
 System.Linq.Parallel.dll
