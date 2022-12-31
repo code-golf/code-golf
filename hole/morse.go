@@ -68,7 +68,9 @@ func morse(reverse bool) []Scorecard {
 
 		// Randomly remove a few characters for Morse Decoder.
 		if reverse {
-			arg = string(shuffle([]byte(arg)))[:len(arg)-4]
+			for _, x := range shuffle([]byte("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"))[:3] {
+				arg = strings.ReplaceAll(arg, string(x), "")
+			}
 		}
 
 		for _, char := range arg {
