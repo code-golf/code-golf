@@ -1380,7 +1380,7 @@ preamble = '''
 <p>
     Using ▄ (U+2584 Lower Half Block) to represent a dot,
 {{ if eq . "Morse Decoder" }}
-    decode the argument from International Morse Code to alphanumeric.
+    decode each argument from International Morse Code to alphanumeric.
 {{ else }}
     encode the argument from alphanumeric into International Morse Code.
 {{ end }}
