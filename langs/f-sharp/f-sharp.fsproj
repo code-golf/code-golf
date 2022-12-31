@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <ItemGroup>
         <Compile Include="f-sharp.fs"/>
-        <PackageReference Include="FSharp.Compiler.Service" Version="41.0.7"/>
+        <PackageReference Include="FSharp.Compiler.Service" Version="42.7.101"/>
     </ItemGroup>
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <PublishReadyToRun>true</PublishReadyToRun>
         <RuntimeIdentifier>linux-musl-x64</RuntimeIdentifier>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net7.0</TargetFramework>
     </PropertyGroup>
 </Project>

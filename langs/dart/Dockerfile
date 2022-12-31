@@ -1,8 +1,8 @@
-FROM dart:2.18.4-sdk as builder
+FROM dart:2.18.5-sdk as builder
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin                                  /bin
+COPY --from=0 /bin/cat /bin/sh                      /bin/
 COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
               /lib/x86_64-linux-gnu/libdl.so.2      \
               /lib/x86_64-linux-gnu/libm.so.6       \

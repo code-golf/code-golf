@@ -38,12 +38,14 @@ import { julia }           from '@codemirror/legacy-modes/mode/julia';
 import { k }               from 'codemirror-lang-k';
 import { lua }             from '@codemirror/legacy-modes/mode/lua';
 import { nim }             from 'nim-codemirror-mode';
+import { oCaml }           from '@codemirror/legacy-modes/mode/mllike';
 import { pascal }          from '@codemirror/legacy-modes/mode/pascal';
 import { perl }            from '@codemirror/legacy-modes/mode/perl';
 import { php }             from '@codemirror/lang-php';
 import { powerShell }      from '@codemirror/legacy-modes/mode/powershell';
 import { prolog }          from 'codemirror-lang-prolog';
 import { python }          from '@codemirror/lang-python';
+import { r }               from '@codemirror/legacy-modes/mode/r';
 import { raku }            from './vendor/codemirror-raku';
 import { ruby }            from '@codemirror/legacy-modes/mode/ruby';
 import { rust }            from '@codemirror/lang-rust';
@@ -130,12 +132,14 @@ export const extensions = {
     'lisp':       StreamLanguage.define(commonLisp),
     'lua':        StreamLanguage.define(lua),
     'nim':        StreamLanguage.define({ ...nim( {}, {} ), languageData: { commentTokens: { line: '#' } } }),
+    'ocaml':      StreamLanguage.define(oCaml),
     'pascal':     StreamLanguage.define(pascal),
     'perl':       StreamLanguage.define(perl),
     'php':        php({ plain: true }),
     'powershell': StreamLanguage.define(powerShell),
     'prolog':     prolog(),
     'python':     python(),
+    'r':          StreamLanguage.define(r),
     'raku':       StreamLanguage.define(raku),
     'ruby':       StreamLanguage.define(ruby),
     'rust':       rust(),

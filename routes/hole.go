@@ -85,5 +85,5 @@ func holeGET(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	render(w, r, "hole", data, data.Hole.Name)
+	render(w, r, "hole", data, data.Hole.Name, data.Hole.Synopsis)
 }

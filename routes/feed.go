@@ -27,6 +27,12 @@ func init() {
 		sha, created, id string
 		hole             bool
 	}{
+		{"68bebc5", "2022-12-25 18:41:31", "ocaml", false},
+		{"70e87ab", "2022-12-22 01:40:23", "game-of-life", true},
+		{"4dad4e3", "2022-12-11 22:52:07", "r", false},
+		{"b574dc5", "2022-11-19 22:40:19", "abundant-numbers-long", true},
+		{"b574dc5", "2022-11-19 22:40:19", "inventory-sequence", true},
+		{"b574dc5", "2022-11-19 22:40:19", "pernicious-numbers-long", true},
 		{"dbbab51", "2022-10-29 09:21:35", "awk", false},
 		{"c6a93a7", "2022-10-29 08:23:32", "emirp-numbers-long", true},
 		{"ce89eb5", "2022-10-13 20:29:29", "dart", false},

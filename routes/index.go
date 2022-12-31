@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"database/sql"
 	"net/http"
 	"sort"
 	"strings"
@@ -11,7 +12,9 @@ import (
 
 // GET /
 func indexGET(w http.ResponseWriter, r *http.Request) {
-	for _, param := range []string{"scoring", "sort"} {
+	redirect := false
+
+	for _, param := range []string{"lang", "scoring", "sort"} {
 		if value := r.FormValue(param); value != "" {
 			http.SetCookie(w, &http.Cookie{
 				HttpOnly: true,
@@ -22,9 +25,13 @@ func indexGET(w http.ResponseWriter, r *http.Request) {
 				Value:    value,
 			})
 
-			http.Redirect(w, r, "/", http.StatusFound)
-			return
+			redirect = true
 		}
+	}
+
+	if redirect {
+		http.Redirect(w, r, "/", http.StatusFound)
+		return
 	}
 
 	type Card struct {
@@ -34,11 +41,14 @@ func indexGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := struct {
-		Cards         []Card
-		Scoring, Sort string
-		Sorts         []string
+		Cards                 []Card
+		LangID, Scoring, Sort string
+		Langs                 []*config.Lang
+		Sorts                 []string
 	}{
 		Cards:   make([]Card, 0, len(config.HoleList)),
+		LangID:  "all",
+		Langs:   config.LangList,
 		Scoring: "bytes",
 		Sorts:   []string{"alphabetical", "category", "points"},
 	}
@@ -52,18 +62,41 @@ func indexGET(w http.ResponseWriter, r *http.Request) {
 			data.Scoring = "chars"
 		}
 
-		rows, err := session.Database(r).Query(
-			`WITH points AS (
-			    SELECT DISTINCT ON (hole) hole, lang, points
-			      FROM rankings
-			     WHERE scoring = $1 AND user_id = $2
-			  ORDER BY hole, points DESC, lang
-			)  SELECT hole, COALESCE(lang::text, ''), COALESCE(points, 0)
-			     FROM unnest(enum_range(NULL::hole)) hole
-			LEFT JOIN points USING(hole)`,
-			data.Scoring,
-			golfer.ID,
-		)
+		if lang, ok := config.LangByID[cookie(r, "__Host-lang")]; ok {
+			data.LangID = lang.ID
+		}
+
+		var rows *sql.Rows
+		var err error
+
+		if data.LangID == "all" {
+			rows, err = session.Database(r).Query(
+				`WITH points AS (
+				    SELECT DISTINCT ON (hole) hole, lang, points
+				      FROM rankings
+				     WHERE scoring = $1 AND user_id = $2
+				  ORDER BY hole, points DESC, lang
+				)  SELECT hole, COALESCE(lang::text, ''), COALESCE(points, 0)
+				     FROM unnest(enum_range(NULL::hole)) hole
+				LEFT JOIN points USING(hole)`,
+				data.Scoring,
+				golfer.ID,
+			)
+		} else {
+			rows, err = session.Database(r).Query(
+				`WITH points AS (
+				    SELECT hole, lang, points_for_lang
+				      FROM rankings
+				     WHERE scoring = $1 AND user_id = $2 AND lang = $3
+				)  SELECT hole, COALESCE(lang::text, ''), COALESCE(points_for_lang, 0)
+				     FROM unnest(enum_range(NULL::hole)) hole
+				LEFT JOIN points USING(hole)`,
+				data.Scoring,
+				golfer.ID,
+				data.LangID,
+			)
+		}
+
 		if err != nil {
 			panic(err)
 		}

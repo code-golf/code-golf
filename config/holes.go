@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"sort"
 	"strings"
+	templateTxt "text/template"
 
 	"github.com/code-golf/code-golf/ordered"
 	"github.com/tdewolff/minify/v2/minify"
@@ -33,6 +34,7 @@ type (
 		ID                                      string        `json:"id"`
 		Name                                    string        `json:"name"`
 		Preamble                                template.HTML `json:"preamble"`
+		Synopsis                                string        `json:"synopsis"`
 		Links                                   []Link        `json:"links"`
 		Variants                                []*Hole       `json:"-"`
 	}
@@ -45,6 +47,11 @@ func init() {
 	}
 	unmarshal("holes.toml", &holes)
 
+	funcs := template.FuncMap{
+		"hasPrefix": strings.HasPrefix,
+		"hasSuffix": strings.HasSuffix,
+	}
+
 	// Expand variants.
 	for name, hole := range holes {
 		// Don't process holes without variants or already processed variants.
@@ -56,7 +63,13 @@ func init() {
 		delete(holes, name)
 
 		// Parse the templated preamble.
-		t, err := template.New("").Parse(string(hole.Preamble))
+		preamble, err := template.New("").Funcs(funcs).Parse(string(hole.Preamble))
+		if err != nil {
+			panic(err)
+		}
+
+		// Parse the templated synopsis.
+		synopsis, err := templateTxt.New("").Funcs(funcs).Parse(hole.Synopsis)
 		if err != nil {
 			panic(err)
 		}
@@ -67,10 +80,17 @@ func init() {
 
 			// Process the templated preamble with the current variant.
 			var b bytes.Buffer
-			if err := t.Execute(&b, variant); err != nil {
+			if err := preamble.Execute(&b, variant); err != nil {
 				panic(err)
 			}
 			hole.Preamble = template.HTML(b.String())
+
+			// Process the templated synopsis with the current variant.
+			b.Reset()
+			if err := synopsis.Execute(&b, variant); err != nil {
+				panic(err)
+			}
+			hole.Synopsis = b.String()
 
 			holes[variant] = &hole
 			variants = append(variants, &hole.Hole)
@@ -86,9 +106,8 @@ func init() {
 		hole.ID = ID(name)
 		hole.Name = name
 
-		switch hole.ID {
-		case "abundant-numbers-long", "pernicious-numbers-long":
-			hole.Experiment = -1
+		if hole.ID == "palindromic-quine" {
+			hole.Experiment = 365
 		}
 
 		// Process the templated preamble with the data.

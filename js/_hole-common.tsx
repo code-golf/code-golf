@@ -46,11 +46,10 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
 
 export function initDeleteBtn(deleteBtn: HTMLElement | undefined, langs: any) {
     deleteBtn?.addEventListener('click', () => {
-        $('dialog b').innerText = langs[lang].name;
-        $<HTMLInputElement>('dialog [name=lang]').value = lang;
-        $<HTMLInputElement>('dialog [name=text]').value = '';
-        // Dialog typings are not available yet
-        $<any>('dialog').showModal();
+        $('#delete-dialog b').innerText = langs[lang].name;
+        $<HTMLInputElement>('#delete-dialog [name=lang]').value = lang;
+        $<HTMLInputElement>('#delete-dialog [name=text]').value = '';
+        $<HTMLDialogElement>('#delete-dialog').showModal();
     });
 }
 
@@ -243,6 +242,21 @@ function tooltip(row: any, scoring: 'Bytes' | 'Chars') {
         (chars !== null ? `, ${comma(chars)} chars.` : '.');
 }
 
+export interface RankFromTo {
+    joint: boolean | null,
+    rank: number | null,
+    strokes: number | null,
+}
+
+export interface RankUpdate {
+    scoring: string,
+    from: RankFromTo,
+    to: RankFromTo,
+    beat: number | null,
+    oldBestJoint: boolean | null,
+    oldBestStrokes: number | null,
+}
+
 export interface SubmitResponse {
     Pass: boolean,
     Out: string,
@@ -253,8 +267,105 @@ export interface SubmitResponse {
         emoji: string,
         name: string
     }[],
-    LoggedIn: boolean
+    LoggedIn: boolean,
+    RankUpdates: RankUpdate[],
 }
+
+const makeSingular = (strokes: number, units: string) =>
+    strokes == 1 ? units.substring(0, units.length - 1) : units;
+
+const scorePopups = (updates: RankUpdate[]) => {
+    const popups: Node[] = [];
+
+    const strokes = [0, 0];
+    const points = [0, 0];
+
+    for (const i of [0, 1] as const) {
+        const update = updates[i];
+        if (update.from.strokes && update.to.strokes) {
+            strokes[i] = update.from.strokes - update.to.strokes;
+            if (update.oldBestStrokes) {
+                const newBest = Math.min(update.oldBestStrokes, update.to.strokes);
+                points[i] = Math.round(newBest / update.to.strokes * 1000) - Math.round(update.oldBestStrokes / update.from.strokes * 1000);
+            }
+        }
+    }
+
+    if (strokes[0] > 0 || strokes[1] > 0) {
+        let amount = '';
+        if (strokes[0] > 0 && strokes[0] == strokes[1]) {
+            const delta = strokes[0];
+            let units = '';
+            for (const i of [0, 1] as const) {
+                units += (i == 1 ? '/' : '') + makeSingular(delta, updates[i].scoring);
+            }
+
+            amount = `${delta} ${units}`;
+        }
+        else {
+            for (const i of [0, 1] as const) {
+                if (strokes[i] > 0) {
+                    amount += (i == 1 && strokes[0] > 0 ? '/' : '') + `${strokes[i]} ${makeSingular(strokes[i], updates[i].scoring)}`;
+                }
+            }
+        }
+
+        const pointsNodes: Node[] = [];
+        if (points[0] > 0 && points[1] == points[0]) {
+            pointsNodes.push(<p>Earned {points[0]} {makeSingular(points[0], 'points')} for {updates[0].scoring}/{updates[1].scoring}</p>);
+        }
+        else {
+            for (const i of [0, 1] as const) {
+                if (points[i] > 0) {
+                    pointsNodes.push(<p>Earned {points[i]} {makeSingular(points[i], 'points')} for {updates[i].scoring}</p>);
+                }
+            }
+        }
+
+        popups.push(<div>
+            <h3>Score Improved</h3>
+            <p>Saved {amount}</p>
+            {pointsNodes}
+        </div>);
+    }
+
+    return popups;
+};
+
+const diamondPopups = (updates: RankUpdate[]) => {
+    const popups: Node[] = [];
+
+    const newDiamonds: string[] = [];
+    const matchedDiamonds: string[] = [];
+
+    for (const i of [0, 1] as const) {
+        const update = updates[i];
+        if (update.from.rank != 1 && update.to.rank == 1) {
+            if (!update.to.joint) {
+                newDiamonds.push(update.scoring);
+            }
+            else if (!update.oldBestJoint) {
+                matchedDiamonds.push(update.scoring);
+            }
+        }
+    }
+
+    if (newDiamonds.length) {
+        popups.push(<div>
+            <h3>Diamond Earned</h3>
+            <p>New {newDiamonds.join('/')} 💎!</p>
+        </div>);
+    }
+
+    if (matchedDiamonds.length) {
+        popups.push(<div>
+            <h3>Diamond Matched</h3>
+            <p>Matched {matchedDiamonds.join('/')} 💎!</p>
+        </div>);
+    }
+
+    return popups;
+};
 
 export async function submit(editor: any, updateReadonlyPanels: any) {
     if (!editor) return;
@@ -357,10 +468,12 @@ export async function submit(editor: any, updateReadonlyPanels: any) {
         $('main').append(pbm(data.Exp) as Node, pbm(data.Out) ?? [] as any);
 
     // Show cheevos.
-    $('#popups').replaceChildren(...data.Cheevos.map(c => <div>
-        <h3>Achievement Earned!</h3>
-        { c.emoji }<p>{ c.name }</p>
-    </div>));
+    $('#popups').replaceChildren(...scorePopups(data.RankUpdates),
+        ...diamondPopups(data.RankUpdates),
+        ...data.Cheevos.map(c => <div>
+            <h3>Achievement Earned!</h3>
+            { c.emoji }<p>{ c.name }</p>
+        </div>));
 
     refreshScores(editor);
 }

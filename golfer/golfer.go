@@ -86,13 +86,19 @@ type GolferInfo struct {
 	TeedOff time.Time
 }
 
+type RankUpdateFromTo struct {
+	Joint   null.Bool `json:"joint"`
+	Rank    null.Int  `json:"rank"`
+	Strokes null.Int  `json:"strokes"`
+}
+
 type RankUpdate struct {
-	Scoring  string
-	From, To struct {
-		Joint         null.Bool
-		Rank, Strokes null.Int
-	}
-	Beat null.Int
+	Scoring        string           `json:"scoring"`
+	From           RankUpdateFromTo `json:"from"`
+	To             RankUpdateFromTo `json:"to"`
+	Beat           null.Int         `json:"beat"`
+	OldBestJoint   null.Bool        `json:"oldBestJoint"`
+	OldBestStrokes null.Int         `json:"oldBestStrokes"`
 }
 
 func GetInfo(db *sql.DB, name string) *GolferInfo {

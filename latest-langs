@@ -3,11 +3,11 @@
 use HTTP::Tiny;
 use TOML::Thumb;
 
-constant @urls = (
-    'Bash'       => 'Bash_(Unix_shell)',
+constant %paths = (
     'BASIC'      => 'FreeBASIC',
     'C'          => 'Tiny_C_Compiler',
     'C#'         => 'C_Sharp_(programming_language)',
+    'C++'        => 'Clang',
     'COBOL'      => 'GnuCOBOL',
     'Crystal'    => 'Crystal_(programming_language)',
     'D'          => 'D_(programming_language)',
@@ -23,12 +23,14 @@ constant @urls = (
     'Lisp'       => 'CLISP',
     'Lua'        => 'Lua_(programming_language)',
     'Nim'        => 'Nim_(programming_language)',
+    'OCaml'      => 'OCaml',
     'PHP'        => 'PHP',
     'Pascal'     => 'Free_Pascal',
     'Perl'       => 'Perl',
     'PowerShell' => 'PowerShell',
     'Prolog'     => 'SWI-Prolog',
     'Python'     => 'Python_(programming_language)',
+    'R'          => 'R_(programming_language)',
     'Raku'       => 'Rakudo',
     'Ruby'       => 'Ruby_(programming_language)',
     'Rust'       => 'Rust_(programming_language)',
@@ -41,13 +43,24 @@ constant @urls = (
 
 my %langs = from-toml 'config/langs.toml'.IO;
 
-for @urls -> (:key($lang), :value($path)) {
-    state $ua = HTTP::Tiny.new :throw-exceptions;
+for %langs.sort: *.key.fc -> (:key($name), :value(%lang)) {
+    my $new;
+    if my $path = %paths{$name} {
+        state $ua = HTTP::Tiny.new :throw-exceptions;
 
-    my $old = %langs{$lang}<version> ~~ / <[\d.]>+ \d+ /;
-    my $new = $ua.get("https://en.wikipedia.org/wiki/$path")<content>.decode
-        ~~ / < Stable Preview > ' release' .+? '>' ( '#' \d+ ' "' )? <(<[\d.]>+)> /;
+        $new = $ua.get("https://en.wikipedia.org/wiki/$path")<content>.decode ~~ /
+            < Stable Preview > ' release' .+? '>' ( '#' \d+ ' "' )?
+            <(\d+ <[\d.]>+)>
+        /;
+    }
 
-    printf " %*s %s → %s\n", INIT { @urls».key».chars.max }, $lang, $old, $new
-        unless $old eq $new or $old.starts-with("$new.");
+    my $old = %lang<version> ~~ / <[\d.]>+ \d+ /;
+    $new //= '?';
+
+    printf "%11s \e[%dm%11s → %s\e[0m\n",
+        $name,
+           $new eq '?'                               ?? 33
+        !! $old eq $new || $old.starts-with("$new.") ?? 32
+        !!                                              31,
+        $old, $new;
 }

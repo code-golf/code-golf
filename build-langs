@@ -18,7 +18,7 @@ my @args = <--pull -f docker/lang-base.Dockerfile -t codegolf/lang-base>;
 @args.push: '--push' unless $no-push;
 run <docker buildx build>, |@args, '.';
 
-for %langs{ @langs || * }:p.sort -> (:key($name), :value(%lang)) {
+for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
     my $id  = id($name);
     my $img = "codegolf/lang-$id";
 

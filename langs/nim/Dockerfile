@@ -1,11 +1,11 @@
-FROM alpine:3.16 as builder
+FROM alpine:3.17 as builder
 
 RUN apk add -X http://dl-cdn.alpinelinux.org/alpine/edge/testing --no-cache \
     curl gcc musl-dev pcre tcc
 
-RUN curl https://nim-lang.org/download/nim-1.6.8.tar.xz | tar xJ
+RUN curl https://nim-lang.org/download/nim-1.6.10.tar.xz | tar xJ
 
-RUN cd nim-1.6.8            \
+RUN cd nim-1.6.10           \
  && ./build.sh              \
  && ./bin/nim c koch        \
  && ./koch boot -d:release  \

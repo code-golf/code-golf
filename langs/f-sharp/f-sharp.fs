@@ -3,7 +3,8 @@ open System.IO
 open System.Reflection
 open FSharp.Compiler.CodeAnalysis
 
-let runCode (assembly: Assembly) (args: string[]) =
+let runCode (assemblyPath: string) (args: string[]) =
+    let assembly = Assembly.LoadFile assemblyPath
     let entryPoint =
         assembly.GetTypes()
         |> Seq.map (fun t -> t.GetMethods())
@@ -23,28 +24,27 @@ let runCode (assembly: Assembly) (args: string[]) =
         main.Invoke(null, [| |]) |> ignore
         0
 
-let compileArgs =
-    [|
-        "-o"; "/tmp/Code.exe";
-        "/tmp/Code.fs";
-        "--targetprofile:netcore";
-        "--target:exe";
-        "--optimize";
-        "-r:/usr/bin/FSharp.Core.dll";
-        "-r:/usr/bin/System.Private.CoreLib.dll";
-        "-r:/usr/bin/System.Runtime.dll";
-        "-r:/usr/bin/netstandard.dll";
-        "--nowin32manifest";
-    |]
-
-let compile(checker: FSharpChecker) =
-    let info, result, assembly =
-        checker.CompileToDynamicAssembly(compileArgs, None)
+let compile(checker: FSharpChecker) (codeFile: string) (assemblyPath: string) =
+    let compileArgs =
+        [|
+            "fsi.exe";
+            "-o"; assemblyPath;
+            codeFile;
+            "--targetprofile:netcore";
+            "--target:exe";
+            "--optimize";
+            "-r:/usr/bin/FSharp.Core.dll";
+            "-r:/usr/bin/System.Private.CoreLib.dll";
+            "-r:/usr/bin/System.Runtime.dll";
+            "-r:/usr/bin/netstandard.dll";
+            "--nowin32manifest";
+        |]
+    let info, result =
+        checker.Compile(compileArgs)
         |> Async.RunSynchronously
     info |> Seq.iter (fprintfn stderr "%O")
     if result <> 0 then
         Environment.Exit result
-    assembly.Value
 
 [<EntryPoint>]
 let main args =
@@ -61,8 +61,9 @@ let main args =
         0
     else
         let codeFile = "/tmp/Code.fs"
+        let assemblyPath = "/tmp/Code.exe"
         File.WriteAllText(codeFile, stdin.ReadToEnd())
         let checker = FSharpChecker.Create()
-        let assembly = compile checker
+        compile checker codeFile assemblyPath
         File.Delete codeFile
-        runCode assembly args.[1..]
+        runCode assemblyPath args.[1..]

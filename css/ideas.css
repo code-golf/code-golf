@@ -18,4 +18,4 @@
     width: 1rem;
 }
 
-.card svg:last-of-type { grid-column: 4 }
+.card :not(h2) { justify-self: center }

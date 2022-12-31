@@ -1,4 +1,4 @@
-FROM alpine:3.16 as builder
+FROM alpine:3.17 as builder
 
 ENV FORCE_UNSAFE_CONFIGURE 1
 

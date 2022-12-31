@@ -13,6 +13,7 @@ constant %holes = <
     60 {gone-in-60-holes}
     69 {cunning-linguist}
     80 {phileas-fogg}
+    86 {x86}
 >;
 
 constant %langs = <
@@ -47,12 +48,14 @@ for $dbh.execute('SELECT unnest(enum_range(null::hole))').allrows.flat {
 for <
     brainfuck        brainfuck {inception}
     divisors         php       {elephpant-in-the-room}
+    hexdump          hexagony  {hextreme-agony}
     pascals-triangle pascal    {under-pressure}
     poker            fish      {fish-n-chips}
     quine            python    {ouroboros}
     seven-segment    assembly  {assembly-required}
     sudoku           hexagony  {off-the-grid}
     ten-pin-bowling  cobol     {cobowl}
+    𝑒                r         {emergency-room}
 > -> $hole, $lang, $cheevos {
     is $dbh.execute(
         "SELECT earned FROM save_solution(2, ?, 'ab', ?, ?, 1)",

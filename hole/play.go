@@ -75,6 +75,8 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		scores = forsythEdwardsNotation()
 	case "fractions":
 		scores = fractions()
+	case "game-of-life":
+		scores = gameOfLife()
 	case "gray-code-encoder", "gray-code-decoder":
 		scores = grayCode(holeID == "gray-code-decoder")
 	case "hexdump":
@@ -105,7 +107,7 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		scores = proximityGrid()
 	case "qr-decoder", "qr-encoder":
 		scores = qr(holeID == "qr-decoder")
-	case "quine":
+	case "quine", "palindromic-quine":
 		scores = []Scorecard{{Args: []string{}, Answer: code}}
 	case "reverse-polish-notation":
 		scores = reversePolishNotation()
@@ -239,6 +241,8 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 		cmd.Env = []string{"HOME=/"}
 	case "nim":
 		cmd.Args = []string{"/usr/bin/nim", "--colors:on", "-o:/tmp/code", "-r", "c", "-"}
+	case "ocaml":
+		cmd.Args = []string{"/usr/bin/ocaml", "/proc/self/fd/0"}
 	case "perl":
 		cmd.Args = []string{"/usr/bin/perl", "-E", code, "--"}
 	case "powershell":
@@ -253,6 +257,13 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 	case "python":
 		// Force the stdout and stderr streams to be unbuffered.
 		cmd.Args = []string{"/usr/bin/python", "-u", "-"}
+	case "r":
+		cmd.Args = []string{"/usr/bin/Rscript", "-"}
+
+		// Disable implicit output for Quine to prevent trivial solutions.
+		if holeID == "quine" {
+			cmd.Args = []string{"/usr/bin/Rscript", "-e", "source('stdin')"}
+		}
 	case "sed":
 		cmd.Args = []string{"/usr/bin/sed", "-E", "-z", "--sandbox", "-u", "--", code}
 	case "swift":
@@ -335,7 +346,7 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 
 	// Trim trailing whitespace on each line, and then trailing empty lines.
 	// Quine solutions are obviously left untouched.
-	if holeID == "quine" {
+	if holeID == "quine" || holeID == "palindromic-quine" {
 		score.Stdout = stdoutContents
 	} else {
 		score.Stdout = bytes.TrimRight(stdoutTrimmer.ReplaceAll(
@@ -370,10 +381,19 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 
 	// We do not allow stdout with only whitespace to pass to prevent suspicious sed "quines"
 	if len(bytes.TrimRightFunc(score.Stdout, unicode.IsSpace)) != 0 {
-		// TODO Generalise a case insensitive flag, should it apply to others?
-		if holeID == "css-colors" {
+		switch holeID {
+		case "css-colors":
+			// TODO Generalise case insensitivity, should it apply to others?
 			score.Pass = strings.EqualFold(score.Answer, string(score.Stdout))
-		} else {
+		case "palindromic-quine":
+			reversed := []rune(score.Answer)
+			for i, j := 0, len(reversed)-1; i < j; i, j = i+1, j-1 {
+				reversed[i], reversed[j] = reversed[j], reversed[i]
+			}
+
+			score.Pass = score.Answer == string(score.Stdout) &&
+				score.Answer == string(reversed)
+		default:
 			score.Pass = score.Answer == string(score.Stdout)
 		}
 	}

@@ -35,8 +35,10 @@
 
     --gl-border: hsl(214, 8%, 30%);
 
-    --diamond-weight: normal;
-    --diamond-outglow: gold;
+    --rank-1-glow: 0 0 10px 2px gold;
+    --rank-2-glow: 0 0 10px 2px silver;
+    --rank-3-glow: 0 0 10px 2px burlywood;
+
     --play-color: #444;
 }
 
