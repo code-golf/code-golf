@@ -23,16 +23,18 @@
 
 {{ with .Data.Authors }}
     <dialog id=authors-dialog>
-        <h1>{{ $.Data.Hole.Name }} Authors</h1>
-        <ul>
-        {{ range . }}
-            <li>
-                <a href="/golfers/{{ . }}">
-                    <img src="//avatars.githubusercontent.com/{{ . }}?s=48">
-                    {{ . }}
-                </a>
-        {{ end }}
-        </ul>
+        <div>
+            <h1>{{ $.Data.Hole.Name }} Authors</h1>
+            <ul>
+            {{ range . }}
+                <li>
+                    <a href="/golfers/{{ . }}">
+                        <img src="//avatars.githubusercontent.com/{{ . }}?s=48">
+                        {{ . }}
+                    </a>
+            {{ end }}
+            </ul>
+        </div>
     </dialog>
 {{ end }}
 

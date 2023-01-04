@@ -58,12 +58,16 @@
     </div>
 
     <div id=badges>
-    {{ if .Admin }}
-        <div><p>🔑<p class=orange>Admin</div>
+    {{ if .Admin   }}<div><p>🔑<p class=orange>Admin  </div>{{ end }}
+    {{ if .Sponsor }}<div><p>💰<p class=yellow>Sponsor</div>{{ end }}
+
+    {{ with len .Referrals }}
+        <button data-dialog=referrals-dialog>
+            <p>📣
+            <p class=purple>{{ . }} Referral{{ if gt . 1 }}s{{ end }}
+        </button>
     {{ end }}
-    {{ if .Sponsor }}
-        <div><p>💰<p class=yellow>Sponsor</div>
-    {{ end }}
+
         <div>
             <p>⛳
             <p class=red>{{ .Holes }} / {{ .HolesTotal }} Holes
@@ -99,4 +103,21 @@
         </a>
     {{ end }}
     </nav>
+
+    {{ with .Referrals }}
+        <dialog id=referrals-dialog>
+            <div>
+                <h1>Referrals</h1>
+                <ul>
+                {{ range . }}
+                    <li>
+                        <a href="/golfers/{{ . }}">
+                            <img src="//avatars.githubusercontent.com/{{ . }}?s=48">
+                            {{ . }}
+                        </a>
+                {{ end }}
+                </ul>
+            </div>
+        </dialog>
+    {{ end }}
 {{ end }}
