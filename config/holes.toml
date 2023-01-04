@@ -1325,9 +1325,9 @@ preamble = '''
 
 [Maze]
 category = 'Gaming'
-experiment = 338
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Maze_solving_algorithm' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Maze_solving' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Maze_solving_algorithm' },
 ]
 synopsis = 'Draw the route through the maze.'
 preamble = '''
