@@ -322,7 +322,7 @@ Note: 1 °C = 1 K when we talk about difference of temperatures.
         <tr><td>d	<td>10^-1
         <tr><td>c	<td>10^-2
         <tr><td>m	<td>10^-3
-        <tr><td>μ/µ	<td>10^-6
+        <tr><td>μ	<td>10^-6
         <tr><td>n	<td>10^-9
         <tr><td>p	<td>10^-12
         <tr><td>f	<td>10^-15
@@ -332,7 +332,6 @@ Note: 1 °C = 1 K when we talk about difference of temperatures.
         <tr><td>r	<td>10^-27
         <tr><td>q	<td>10^-30
 </table>
-Note: there are two characters corresponding to 10^-6. You need to support both.
 
 <p>Each input comprises of a (optional) prefix and one of the base or derived units symbol. Each such input should be convert to product of a power of 10 and a product of base units, as described in the tables above.<br>
 For example, "MJ" should be converted to "10^6 kg m^2 s^-2".
