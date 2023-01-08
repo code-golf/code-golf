@@ -1,7 +1,7 @@
 package hole
 
 func unitedStates() []Scorecard {
-	tests := shuffle([]test{
+	return outputMultirunTests([]test{
 		{"Alabama", "AL"},
 		{"Alaska", "AK"},
 		{"Arizona", "AZ"},
@@ -54,7 +54,4 @@ func unitedStates() []Scorecard {
 		{"Wisconsin", "WI"},
 		{"Wyoming", "WY"},
 	})
-
-	mid := len(tests) / 2
-	return outputTests(tests, tests[:mid], tests[mid:])
 }
