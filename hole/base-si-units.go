@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-var prefixes = [...]struct {
+var siPrefixes = [...]struct {
 	symbol   string
 	exponent int
 }{
@@ -37,7 +37,7 @@ var prefixes = [...]struct {
 	{"q", -30},
 }
 
-var units = [...]struct {
+var siUnits = [...]struct {
 	symbol    string
 	expansion string
 }{
@@ -73,8 +73,8 @@ var units = [...]struct {
 
 func baseSiUnits() []Scorecard {
 	tests := []test{}
-	for _, prefix := range prefixes {
-		for _, unit := range units {
+	for _, prefix := range siPrefixes {
+		for _, unit := range siUnits {
 			out := strings.Trim("10^"+strconv.Itoa(prefix.exponent)+" "+unit.expansion, " ")
 			out = strings.Replace(strings.Replace(out, "10^1", "10", -1), "10^0", "1", -1)
 			tests = append(tests, test{prefix.symbol + unit.symbol, out})
