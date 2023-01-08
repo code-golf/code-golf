@@ -43,7 +43,7 @@ var siUnits = [...]struct {
 }{
 	{"s", "s"},
 	{"m", "m"},
-	{"kg", "kg"},
+	{"g", "kg"},
 	{"A", "A"},
 	{"K", "K"},
 	{"mol", "mol"},
@@ -75,7 +75,11 @@ func baseSiUnits() []Scorecard {
 	tests := []test{}
 	for _, prefix := range siPrefixes {
 		for _, unit := range siUnits {
-			out := strings.Trim("10^"+strconv.Itoa(prefix.exponent)+" "+unit.expansion, " ")
+			exp := prefix.exponent
+			if unit.symbol == "g" {
+				exp = exp - 3
+			}
+			out := strings.Trim("10^"+strconv.Itoa(exp)+" "+unit.expansion, " ")
 			out = strings.Replace(strings.Replace(out, "10^1", "10", -1), "10^0", "1", -1)
 			tests = append(tests, test{prefix.symbol + unit.symbol, out})
 		}
