@@ -84,6 +84,5 @@ func baseSiUnits() []Scorecard {
 			tests = append(tests, test{prefix.symbol + unit.symbol, out})
 		}
 	}
-
-	return outputTests(shuffle(tests))
+	return outputMultirunTests(tests)
 }

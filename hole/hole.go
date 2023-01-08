@@ -31,6 +31,12 @@ func outputTests(testRuns ...[]test) []Scorecard {
 	return scores
 }
 
+func outputMultirunTests(tests []test) []Scorecard {
+    shuffle(tests)
+	mid := len(tests) / 2
+	return outputTests(tests, tests[:mid], tests[mid:])
+}
+
 // Doesn't handle any special cases, will be in the stdlib/x one day.
 func max[T constraints.Ordered](x, y T) T {
 	if x > y {
