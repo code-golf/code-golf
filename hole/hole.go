@@ -32,7 +32,7 @@ func outputTests(testRuns ...[]test) []Scorecard {
 }
 
 func outputMultirunTests(tests []test) []Scorecard {
-    shuffle(tests)
+	shuffle(tests)
 	mid := len(tests) / 2
 	return outputTests(tests, tests[:mid], tests[mid:])
 }
