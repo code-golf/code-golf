@@ -111,6 +111,8 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		scores = qr(holeID == "qr-decoder")
 	case "quine", "palindromic-quine":
 		scores = []Scorecard{{Args: []string{}, Answer: code}}
+	case "repeating-decimal":
+		scores = repeatingDecimal()
 	case "reverse-polish-notation":
 		scores = reversePolishNotation()
 	case "rock-paper-scissors-spock-lizard":

@@ -2110,6 +2110,21 @@ preamble = '''
 <p>Print the first <b>250</b> terms of the sequence one per line.
 '''
 
+['Repeating Decimal']
+category = 'Mathematics'
+experiment = 694
+links = [
+    { name = 'Rosetta Code', url = "//rosettacode.org/wiki/Integer_long_division" },
+    { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Repeating_decimal" },
+]
+synopsis = 'Convert fractions to repeating decimals.'
+preamble = '''
+<p>
+    For each fraction argument <code>a/b</code>, print its decimal expansion.
+    If the decimal expands infinitely, print the finite part followed by the
+    repeating part in parenthesis.
+'''
+
 [Rock-paper-scissors-Spock-lizard]
 category = 'Gaming'
 links = [
