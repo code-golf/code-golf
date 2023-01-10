@@ -1,7 +1,7 @@
 package hole
 
 func cssColors() []Scorecard {
-	return outputTests(shuffle([]test{
+	return outputMultirunTests([]test{
 		{"AliceBlue", "#f0f8ff"},
 		{"AntiqueWhite", "#faebd7"},
 		{"Aqua", "#00ffff"},
@@ -150,5 +150,5 @@ func cssColors() []Scorecard {
 		{"WhiteSmoke", "#f5f5f5"},
 		{"Yellow", "#ffff00"},
 		{"YellowGreen", "#9acd32"},
-	}))
+	})
 }
