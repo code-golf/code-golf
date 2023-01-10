@@ -284,9 +284,9 @@ main > header nav {
 #strokes { font-weight: bold }
 
 /* TODO Generalise the hole mapping table CSS, lose the specific IDs. */
-                            #colors, #morse, #states { columns: 4 }
-@media (max-width: 54rem) { #colors, #morse, #states { columns: 2 } }
-@media (max-width: 30rem) { #colors, #morse, #states { columns: 1 } }
+                            .tables-4col { columns: 4 }
+@media (max-width: 54rem) { .tables-4col { columns: 2 } }
+@media (max-width: 30rem) { .tables-4col { columns: 1 } }
 
 #colors svg {
     align-self: center;
@@ -296,7 +296,7 @@ main > header nav {
     width: 1rem;
 }
 
-#colors table, #morse table, #states table { break-inside: avoid-column }
+.tables-4col table { break-inside: avoid-column }
 thead { user-select: none }
 
 #colors td:first-child { display: flex }
