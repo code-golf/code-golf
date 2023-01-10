@@ -78,9 +78,9 @@ func baseSiUnits() []Scorecard {
 			if unit.symbol == "g" {
 				exp = exp - 3
 			}
-			out := strings.Trim("10^"+strconv.Itoa(exp)+" "+unit.expansion, " ")
-			out = strings.Replace(strings.Replace(out, "10^1", "10", -1), "10^0", "1", -1)
-			tests = append(tests, test{prefix.symbol + unit.symbol, out})
+			out := "10^" + strconv.Itoa(exp) + " " + unit.expansion
+			out = strings.Replace(strings.Replace(out, "10^1 ", "10 ", -1), "10^0 ", "1 ", -1)
+			tests = append(tests, test{prefix.symbol + unit.symbol, strings.Trim(out, " ")})
 		}
 	}
 	return outputMultirunTests(tests)
