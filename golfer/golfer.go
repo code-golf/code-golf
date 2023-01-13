@@ -82,6 +82,9 @@ type GolferInfo struct {
 	// Count of cheevos/holes/langs available
 	CheevosTotal, HolesTotal, LangsTotal int
 
+	// Slice of golfers referred
+	Referrals []string
+
 	// Start date
 	TeedOff time.Time
 }
@@ -138,6 +141,12 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 		          login,
 		          COALESCE(bytes.points, 0),
 		          COALESCE(chars.points, 0),
+		          ARRAY(
+		            SELECT login
+		              FROM users u
+		             WHERE referrer_id = users.id
+		          ORDER BY login
+		          ),
 		          COALESCE(silver, 0),
 		          sponsor
 		     FROM users
@@ -159,6 +168,7 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 		&info.Name,
 		&info.BytesPoints,
 		&info.CharsPoints,
+		pq.Array(&info.Referrals),
 		&info.Silver,
 		&info.Sponsor,
 	); errors.Is(err, sql.ErrNoRows) {

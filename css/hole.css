@@ -97,7 +97,6 @@ section header {
     align-items: center;
     background: 0;
     border: 0;
-    cursor: pointer;
     display: flex;
     padding: 0;
 }
@@ -112,28 +111,6 @@ section header {
 #authors-btn img:not(:first-child) {
     border: .25rem solid var(--background);
     margin-left: -.75rem;
-}
-
-#authors-dialog { padding: 1rem }
-
-#authors-dialog img {
-    border-radius: 50%;
-    height: 1.5rem;
-    width: 1.5rem;
-}
-
-#authors-dialog a {
-    align-items: center;
-    display: flex;
-    gap: .5rem;
-}
-
-#authors-dialog ul {
-    display: flex;
-    flex-direction: column;
-    gap: .5rem;
-    list-style: none;
-    padding: 1rem 0 0;
 }
 
 #chars {
@@ -307,9 +284,9 @@ main > header nav {
 #strokes { font-weight: bold }
 
 /* TODO Generalise the hole mapping table CSS, lose the specific IDs. */
-                            #colors, #morse, #states { columns: 4 }
-@media (max-width: 54rem) { #colors, #morse, #states { columns: 2 } }
-@media (max-width: 30rem) { #colors, #morse, #states { columns: 1 } }
+                            .tables-4col { columns: 4 }
+@media (max-width: 54rem) { .tables-4col { columns: 2 } }
+@media (max-width: 30rem) { .tables-4col { columns: 1 } }
 
 #colors svg {
     align-self: center;
@@ -319,7 +296,7 @@ main > header nav {
     width: 1rem;
 }
 
-#colors table, #morse table, #states table { break-inside: avoid-column }
+.tables-4col table { break-inside: avoid-column }
 thead { user-select: none }
 
 #colors td:first-child { display: flex }

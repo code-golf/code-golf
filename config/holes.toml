@@ -258,6 +258,130 @@ F: / ? O _ o DEL
 </pre>
 '''
 
+['Base SI Units']
+category = 'Transform'
+experiment = 862
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/International_System_of_Units' },
+]
+synopsis = 'Express SI units using the 7 base units.'
+preamble = '''
+
+<p>SI defines 7 base units: s, m, kg, A, K, mol, cd. There are 22 of derived units with their own symbols defined. These correspond to the base ones like so:
+<div class="tables-4col">
+    <table>
+        <thead>
+            <tr>
+                <th>Derived unit
+                <th>Equivalent using base units
+        <tbody>
+            <tr><td>rad	<td>1
+            <tr><td>sr	<td>1
+            <tr><td>Hz	<td>s^-1
+            <tr><td>N	<td>kg m s^-2
+            <tr><td>Pa	<td>kg m^-1 s^-2
+            <tr><td>J	<td>kg m^2 s^-2
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Derived unit
+                <th>Equivalent using base units
+        <tbody>
+            <tr><td>W	<td>kg m^2 s^-3
+            <tr><td>C	<td>s A
+            <tr><td>V	<td>kg m^2 s^-3 A^-1
+            <tr><td>F	<td>kg^-1 m^-2 s^4 A^2
+            <tr><td>Ω	<td>kg m^2 s^-3 A^-2
+            <tr><td>S	<td>kg^-1 m^-2 s^3 A^2
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Derived unit
+                <th>Equivalent using base units
+        <tbody>
+            <tr><td>Wb	<td>kg m^2 s^-2 A^-1
+            <tr><td>T	<td>kg s^-2 A^-1
+            <tr><td>H	<td>kg m^2 s^-2 A^-2
+            <tr><td>°C	<td>K
+            <tr><td>lm	<td>cd
+            <tr><td>lx	<td>cd m^-2
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Derived unit
+                <th>Equivalent using base units
+        <tbody>
+            <tr><td>Bq	<td>s^-1
+            <tr><td>Gy	<td>m^2 s^-2
+            <tr><td>Sv	<td>m^2 s^-2
+            <tr><td>kat	<td>mol s^-1
+    </table>
+</div>
+Note: 1 °C = 1 K when we talk about difference of temperatures.
+
+<p>SI further defines 24 prefixes denoting exponents of 10:
+<div class="tables-4col">
+    <table>
+        <thead>
+            <tr>
+                <th>Symbol
+                <th>Quantity
+        <tbody>
+            <tr><td>Q	<td>10^30
+            <tr><td>R	<td>10^27
+            <tr><td>Y	<td>10^24
+            <tr><td>Z	<td>10^21
+            <tr><td>E	<td>10^18
+            <tr><td>P	<td>10^15
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Symbol
+                <th>Quantity
+        <tbody>
+            <tr><td>T	<td>10^12
+            <tr><td>G	<td>10^9
+            <tr><td>M	<td>10^6
+            <tr><td>k	<td>10^3
+            <tr><td>h	<td>10^2
+            <tr><td>da	<td>10
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Symbol
+                <th>Quantity
+        <tbody>
+            <tr><td>d	<td>10^-1
+            <tr><td>c	<td>10^-2
+            <tr><td>m	<td>10^-3
+            <tr><td>μ	<td>10^-6
+            <tr><td>n	<td>10^-9
+            <tr><td>p	<td>10^-12
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Symbol
+                <th>Quantity
+        <tbody>
+            <tr><td>f	<td>10^-15
+            <tr><td>a	<td>10^-18
+            <tr><td>z	<td>10^-21
+            <tr><td>y	<td>10^-24
+            <tr><td>r	<td>10^-27
+            <tr><td>q	<td>10^-30
+    </table>
+</div>
+
+<p>Each input comprises of a (optional) prefix and one of the base or derived units symbol. Each such input should be convert to product of a power of 10 and a product of base units, as described in the tables above. Missing prefix should be mapped to 1.<br>
+For example, "MJ" should be converted to "10^6 kg m^2 s^-2".
+'''
+
 [brainfuck]
 category = 'Computing'
 links = [
@@ -499,7 +623,7 @@ preamble = '''
 Given each CSS color keyword print the corresponding hex value. The output
 will be checked case-insensitively. The full mapping is as follows:
 
-<div id=colors>
+<div id=colors class="tables-4col">
 {{ range . }}
     {{ if or (eq .Key "IndianRed") (eq .Key "Magenta")
              (eq .Key "Cyan"     ) (eq .Key "Sienna" ) }}
@@ -1325,9 +1449,9 @@ preamble = '''
 
 [Maze]
 category = 'Gaming'
-experiment = 338
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Maze_solving_algorithm' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Maze_solving' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Maze_solving_algorithm' },
 ]
 synopsis = 'Draw the route through the maze.'
 preamble = '''
@@ -1393,7 +1517,7 @@ preamble = '''
     <li>The space between words is ten units.
 </ol>
 
-<div id=morse>
+<div id=morse class="tables-4col">
     <table>
         <thead>
             <tr>
@@ -2031,6 +2155,21 @@ preamble = '''
 <p>Print the first <b>250</b> terms of the sequence one per line.
 '''
 
+['Repeating Decimal']
+category = 'Mathematics'
+experiment = 694
+links = [
+    { name = 'Rosetta Code', url = "//rosettacode.org/wiki/Integer_long_division" },
+    { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Repeating_decimal" },
+]
+synopsis = 'Convert fractions to repeating decimals.'
+preamble = '''
+<p>
+    For each fraction argument <code>a/b</code>, print its decimal expansion.
+    If the decimal expands infinitely, print the finite part followed by the
+    repeating part in parenthesis.
+'''
+
 [Rock-paper-scissors-Spock-lizard]
 category = 'Gaming'
 links = [
@@ -2642,7 +2781,7 @@ preamble = '''
 
 <p>The full mapping is as follows:
 
-<div id=states>
+<div id=states class="tables-4col">
 {{ range . }}
     {{ if or (eq .Value "AL") (eq .Value "IL")
              (eq .Value "MT") (eq .Value "RI") }}
