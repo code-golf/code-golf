@@ -43,35 +43,28 @@ var morseMap = map[rune]string{
 }
 
 func morse(reverse bool) []Scorecard {
-	runs := 1
+	words := shuffle([]string{
+		"BUD",
+		"FOR",
+		"JIGS",
+		"NYMPH",
+		"QUICK",
+		"VEX",
+		"WALTZ",
+		string(shuffle([]byte("0123456789"))),
+		string(shuffle([]byte("ABCDEFGHIJKLMNOPQRSTUVWXYZ"))),
+	})
+
+	args := []string{strings.Join(words, " ")}
+
 	if reverse {
-		runs = 3
+		args = []string{strings.TrimSpace(args[0][:36]), strings.TrimSpace(args[0][36:])}
 	}
 
-	scorecards := make([]Scorecard, runs)
+	scorecards := make([]Scorecard, len(args))
 
-	for i := 0; i < runs; i++ {
-		words := shuffle([]string{
-			"BUD",
-			"FOR",
-			"JIGS",
-			"NYMPH",
-			"QUICK",
-			"VEX",
-			"WALTZ",
-			string(shuffle([]byte("0123456789"))),
-			string(shuffle([]byte("ABCDEFGHIJKLMNOPQRSTUVWXYZ"))),
-		})
-
-		arg := strings.Join(words, " ")
+	for i, arg := range args {
 		out := ""
-
-		// Randomly remove a few characters for Morse Decoder.
-		if reverse {
-			for _, x := range shuffle([]byte("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"))[:3] {
-				arg = strings.ReplaceAll(arg, string(x), "")
-			}
-		}
 
 		for _, char := range arg {
 			out += morseMap[char] + "   "
