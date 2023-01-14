@@ -61,7 +61,7 @@ func morse(reverse bool) []Scorecard {
 
 	for i := 0; i < 2; i++ {
 		out := ""
-		arg := text[:36]
+		arg := strings.TrimSpace(text[:36])
 
 		for _, char := range arg {
 			out += morseMap[char] + "   "
