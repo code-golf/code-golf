@@ -55,19 +55,28 @@ func morse(reverse bool) []Scorecard {
 		string(shuffle([]byte("ABCDEFGHIJKLMNOPQRSTUVWXYZ"))),
 	})
 
-	args := []string{strings.Join(words, " ")}
-	out := ""
+	text := strings.Join(words, " ")
 
-	for _, char := range args[0] {
-		out += morseMap[char] + "   "
+	scorecards := make([]Scorecard, 2)
+
+	for i := 0; i < 2; i++ {
+		out := ""
+		arg := strings.TrimSpace(text[:36])
+
+		for _, char := range arg {
+			out += morseMap[char] + "   "
+		}
+
+		// Knock off the trailing three spaces.
+		out = out[:len(out)-3]
+
+		if reverse {
+			arg, out = out, arg
+		}
+		scorecards[i] = Scorecard{Args: []string{arg}, Answer: out}
+
+		text = text[36:]
 	}
 
-	// Knock off the trailing three spaces.
-	out = out[:len(out)-3]
-
-	if reverse {
-		args[0], out = out, args[0]
-	}
-
-	return []Scorecard{{Args: args, Answer: out}}
+	return scorecards
 }
