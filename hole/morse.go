@@ -43,7 +43,7 @@ var morseMap = map[rune]string{
 }
 
 func morse(reverse bool) []Scorecard {
-	words := shuffle([]string{
+	text := strings.Join(shuffle([]string{
 		"BUD",
 		"FOR",
 		"JIGS",
@@ -53,9 +53,7 @@ func morse(reverse bool) []Scorecard {
 		"WALTZ",
 		string(shuffle([]byte("0123456789"))),
 		string(shuffle([]byte("ABCDEFGHIJKLMNOPQRSTUVWXYZ"))),
-	})
-
-	text := strings.Join(words, " ")
+	}), " ")
 
 	scorecards := make([]Scorecard, 2)
 
