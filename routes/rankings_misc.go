@@ -26,8 +26,7 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 	switch param(r, "type") {
 	case "holes-authored":
 		desc = "Total holes authored."
-		sql =
-			`WITH holes AS (
+		sql = `WITH holes AS (
 			    SELECT user_id, COUNT(*) FROM authors GROUP BY user_id
 			) SELECT 0, 0,
 			         country_flag,
@@ -43,8 +42,7 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 			   LIMIT $1 OFFSET $2`
 	case "oldest-diamonds":
 		desc = "Oldest diamond medals."
-		sql =
-			`WITH diamonds AS (
+		sql = `WITH diamonds AS (
 			    SELECT hole, lang, scoring, submitted, user_id
 			      FROM rankings
 			     WHERE rank = 1 AND tie_count = 1
@@ -64,8 +62,7 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 			   LIMIT $1 OFFSET $2`
 	case "referrals":
 		desc = "Total referrals."
-		sql =
-			`WITH referrals AS (
+		sql = `WITH referrals AS (
 			    SELECT referrer_id, COUNT(*) FROM users GROUP BY referrer_id
 			) SELECT 0, 0,
 			         country_flag,
@@ -81,8 +78,7 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 			   LIMIT $1 OFFSET $2`
 	case "solutions":
 		desc = "Total solutions."
-		sql =
-			`WITH solutions AS (
+		sql = `WITH solutions AS (
 			    SELECT user_id,
 			           COUNT(*),
 			           SUM(bytes)              bytes,
