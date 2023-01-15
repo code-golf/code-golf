@@ -112,6 +112,13 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 	)
 
 	cheevoProgress(
+		`SELECT EXTRACT(days FROM TIMEZONE('UTC', NOW()) - MIN(submitted))
+		   FROM solutions
+		  WHERE NOT FAILING AND user_id = $1`,
+		"aged-like-fine-wine",
+	)
+
+	cheevoProgress(
 		`SELECT COUNT(DISTINCT hole)
 		   FROM solutions
 		  WHERE NOT failing AND user_id = $1`,

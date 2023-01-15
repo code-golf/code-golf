@@ -166,6 +166,12 @@ description = 'Solve <a href=/pascals-triangle#pascal>Pascal’s Triangle in Pas
 # Miscellaneous
 
 [[Miscellaneous]]
+name        = 'Aged like Fine Wine'
+emoji       = '🍷'
+description = 'Leave a passing solution alone for one year.'
+target      = 365
+
+[[Miscellaneous]]
 name        = 'Black-box Testing'
 emoji       = '🧪'
 description = 'Solve an <a href=/ideas>experimental hole</a>.'

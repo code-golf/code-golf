@@ -1,20 +1,21 @@
 CREATE EXTENSION citext;
 
 CREATE TYPE cheevo AS ENUM (
-    '0xdead', 'archivist', 'assembly-required', 'bakers-dozen', 'big-brother',
-    'bird-is-the-word', 'black-box-testing', 'blackjack', 'bullseye',
-    'caffeinated', 'cobowl', 'cunning-linguist', 'different-strokes',
-    'dont-panic', 'elephpant-in-the-room', 'emergency-room', 'fish-n-chips',
-    'forty-winks', 'gone-in-60-holes', 'happy-birthday-code-golf',
-    'happy-go-lucky', 'hello-world', 'hextreme-agony', 'inception',
-    'independence-day', 'interview-ready', 'its-over-9000', 'jeweler',
-    'just-kidding', 'marathon-runner', 'may-the-4ᵗʰ-be-with-you',
-    'my-god-its-full-of-stars', 'off-the-grid', 'omniglot', 'ouroboros',
-    'pangramglot', 'patches-welcome', 'phileas-fogg', 'pi-day', 'polyglot',
-    'polyglutton', 'real-programmers', 'rtfm', 'rule-34', 'slowcoach',
-    'solve-quine', 'sounds-quite-nice', 'takeout', 'the-watering-hole',
-    'tim-toady', 'tl-dr', 'twelvetide', 'twenty-kiloleagues',
-    'under-pressure', 'up-to-eleven', 'vampire-byte', 'x86'
+    '0xdead', 'aged-like-fine-wine', 'archivist', 'assembly-required',
+    'bakers-dozen', 'big-brother', 'bird-is-the-word', 'black-box-testing',
+    'blackjack', 'bullseye', 'caffeinated', 'cobowl', 'cunning-linguist',
+    'different-strokes', 'dont-panic', 'elephpant-in-the-room',
+    'emergency-room', 'fish-n-chips', 'forty-winks', 'gone-in-60-holes',
+    'happy-birthday-code-golf', 'happy-go-lucky', 'hello-world',
+    'hextreme-agony', 'inception', 'independence-day', 'interview-ready',
+    'its-over-9000', 'jeweler', 'just-kidding', 'marathon-runner',
+    'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars', 'off-the-grid',
+    'omniglot', 'ouroboros', 'pangramglot', 'patches-welcome', 'phileas-fogg',
+    'pi-day', 'polyglot', 'polyglutton', 'real-programmers', 'rtfm',
+    'rule-34', 'slowcoach', 'solve-quine', 'sounds-quite-nice', 'takeout',
+    'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
+    'twenty-kiloleagues', 'under-pressure', 'up-to-eleven', 'vampire-byte',
+    'x86'
 );
 
 CREATE TYPE connection AS ENUM (

@@ -109,6 +109,18 @@ func main() {
 					log.Printf("Deleted %d %s\n", rows, job.name)
 				}
 			}
+
+			if _, err := db.Exec(
+				`INSERT INTO trophies(user_id, trophy)
+				 SELECT user_id, 'aged-like-fine-wine'
+				   FROM solutions
+				  WHERE NOT failing
+				  GROUP BY user_id
+				 HAVING EXTRACT(days FROM TIMEZONE('UTC', NOW()) - MIN(submitted)) >= 365
+					 ON CONFLICT DO NOTHING`,
+			); err != nil {
+				log.Println(err)
+			}
 		}
 	}()
 
