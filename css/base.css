@@ -428,7 +428,9 @@ thead th {
 }
 
 .nowrap-first-second td:nth-child(1),
-.nowrap-first-second td:nth-child(2) {
+.nowrap-first-second td:nth-child(2),
+.nowrap-second-third td:nth-child(2),
+.nowrap-second-third td:nth-child(3) {
     max-width: 0;
     width: 50%;
 }
