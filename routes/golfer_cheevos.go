@@ -112,7 +112,7 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 	)
 
 	cheevoProgress(
-		`SELECT EXTRACT(days FROM TIMEZONE('UTC', NOW()) - MIN(submitted))
+		`SELECT COALESCE(EXTRACT(days FROM TIMEZONE('UTC', NOW()) - MIN(submitted)), 0)
 		   FROM solutions
 		  WHERE NOT FAILING AND user_id = $1`,
 		"aged-like-fine-wine",
