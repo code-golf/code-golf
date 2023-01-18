@@ -3036,6 +3036,7 @@ preamble = '''
 '''
 ['Rijndael S-boxes']
  category = 'Number theory'
+ experiment = 857
  links = [
      { name = 'Wikipedia', url = 'https://en.wikipedia.org/wiki/Rijndael_S-box'},
  ]
