@@ -3043,7 +3043,7 @@ preamble = '''
  experiment = 857
  links = [
      { name = 'Wikipedia', url = 'https://en.wikipedia.org/wiki/Rijndael_S-box'},
- ]
+     { name = "OEIS", url = "https://oeis.org/A354500"}]
  preamble = '''
  <p>Print the <b>normal and inverse Rijndael S-boxes</b> in a series of hex bytes::
 
