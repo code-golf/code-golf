@@ -282,7 +282,7 @@ end-program.
 
 [Crystal]
 size    = '201 MiB'
-version = '1.7.0'
+version = '1.7.1'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -345,7 +345,7 @@ void main(List<String> argv) {
 
 [Elixir]
 size    = '168 MiB'
-version = '1.14.2'
+version = '1.14.3'
 website = 'https://elixir-lang.org'
 example = '''
 # Printing
