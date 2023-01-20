@@ -50,5 +50,8 @@ type Queryable interface {
 	SelectContext(context.Context, any, string, ...any) error
 }
 
-var _ Queryable = (*sqlx.DB)(nil)
-var _ Queryable = (*sqlx.Tx)(nil)
+// Ensure they satisfy the interface.
+var (
+	_ Queryable = (*sqlx.DB)(nil)
+	_ Queryable = (*sqlx.Tx)(nil)
+)
