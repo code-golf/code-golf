@@ -1,9 +1,9 @@
 /.vagrant/
-/db/
 /dist/
 /docker/.env
 /esbuild.json
 /localhost-key.pem
 /localhost.pem
 /node_modules/
+/sql/
 /t/.precomp/

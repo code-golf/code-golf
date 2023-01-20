@@ -2,11 +2,11 @@ package github
 
 import (
 	"context"
-	"database/sql"
 	"log"
 	"os"
 	"time"
 
+	"github.com/jmoiron/sqlx"
 	"github.com/shurcooL/graphql"
 	"golang.org/x/oauth2"
 )
@@ -31,7 +31,7 @@ type rateLimit struct {
 	ResetAt                time.Time
 }
 
-func Run(db *sql.DB, hourly bool) {
+func Run(db *sqlx.DB, hourly bool) {
 	if accessToken == "" {
 		return
 	}
@@ -41,7 +41,7 @@ func Run(db *sql.DB, hourly bool) {
 		limit rateLimit
 	)
 
-	var jobs []func(*sql.DB) []rateLimit
+	var jobs []func(*sqlx.DB) []rateLimit
 	if hourly {
 		jobs = append(jobs, updateUsernames)
 	} else {
@@ -60,7 +60,7 @@ func Run(db *sql.DB, hourly bool) {
 	)
 }
 
-func awardCheevos(db *sql.DB, earnedUsers map[int]time.Time, cheevoID string) {
+func awardCheevos(db *sqlx.DB, earnedUsers map[int]time.Time, cheevoID string) {
 	rows, err := db.Query(
 		"SELECT earned, user_id FROM trophies WHERE trophy = $1",
 		cheevoID,

@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/jmoiron/sqlx"
 	"github.com/lib/pq"
 	"golang.org/x/exp/slices"
 	"gopkg.in/guregu/null.v4"
@@ -30,7 +31,7 @@ type Golfer struct {
 }
 
 // Earn the given cheevo, no-op if already earned.
-func (g *Golfer) Earn(db *sql.DB, cheevoID string) (earned *config.Cheevo) {
+func (g *Golfer) Earn(db *sqlx.DB, cheevoID string) (earned *config.Cheevo) {
 	if res, err := db.Exec(
 		"INSERT INTO trophies VALUES (DEFAULT, $1, $2) ON CONFLICT DO NOTHING",
 		g.ID,
@@ -104,7 +105,7 @@ type RankUpdate struct {
 	OldBestStrokes null.Int         `json:"oldBestStrokes"`
 }
 
-func GetInfo(db *sql.DB, name string) *GolferInfo {
+func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 	info := GolferInfo{
 		CheevosTotal: len(config.CheevoList),
 		HolesTotal:   len(config.HoleList),

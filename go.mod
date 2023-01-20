@@ -13,6 +13,7 @@ require (
 	github.com/go-git/go-git/v5 v5.5.2
 	github.com/gofrs/uuid v4.3.1+incompatible
 	github.com/gorilla/feeds v1.1.1
+	github.com/jmoiron/sqlx v1.3.5
 	github.com/lib/pq v1.10.7
 	github.com/pelletier/go-toml/v2 v2.0.6
 	github.com/shurcooL/graphql v0.0.0-20220606043923-3cf50f8a0a29

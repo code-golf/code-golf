@@ -2,13 +2,13 @@ package github
 
 import (
 	"context"
-	"database/sql"
 	"time"
 
+	"github.com/jmoiron/sqlx"
 	"github.com/shurcooL/graphql"
 )
 
-func stars(db *sql.DB) (limits []rateLimit) {
+func stars(db *sqlx.DB) (limits []rateLimit) {
 	stargazers := map[int]time.Time{}
 
 	var query struct {

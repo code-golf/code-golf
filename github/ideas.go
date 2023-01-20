@@ -2,12 +2,12 @@ package github
 
 import (
 	"context"
-	"database/sql"
 
+	"github.com/jmoiron/sqlx"
 	"github.com/shurcooL/graphql"
 )
 
-func ideas(db *sql.DB) (limits []rateLimit) {
+func ideas(db *sqlx.DB) (limits []rateLimit) {
 	type thumbs struct{ TotalCount int }
 
 	var query struct {

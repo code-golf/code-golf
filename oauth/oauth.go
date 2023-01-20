@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/code-golf/code-golf/db"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/github"
 	"golang.org/x/oauth2/gitlab"
@@ -92,12 +93,7 @@ func init() {
 	}
 }
 
-// *sql.DB or *sql.Tx - https://github.com/golang/go/issues/14468
-type DBTx interface {
-	Query(string, ...any) (*sql.Rows, error)
-}
-
-func GetConnections(db DBTx, golferID int, onlyPublic bool) (conns []Connection) {
+func GetConnections(db db.Queryable, golferID int, onlyPublic bool) (conns []Connection) {
 	rows, err := db.Query(
 		` SELECT connection, discriminator, id, public, username
 		    FROM connections

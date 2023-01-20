@@ -1,14 +1,14 @@
 package routes
 
 import (
-	"database/sql"
 	"net/http"
 
 	"github.com/code-golf/code-golf/middleware"
 	"github.com/go-chi/chi/v5"
+	"github.com/jmoiron/sqlx"
 )
 
-func Router(db *sql.DB) http.Handler {
+func Router(db *sqlx.DB) http.Handler {
 	r := chi.NewRouter()
 
 	r.Use(
