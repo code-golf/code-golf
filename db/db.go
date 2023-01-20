@@ -51,7 +51,5 @@ type Queryable interface {
 }
 
 // Ensure they satisfy the interface.
-var (
-	_ Queryable = (*sqlx.DB)(nil)
-	_ Queryable = (*sqlx.Tx)(nil)
-)
+var _ Queryable = (*sqlx.DB)(nil)
+var _ Queryable = (*sqlx.Tx)(nil)

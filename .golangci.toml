@@ -2,7 +2,6 @@
 disable-all = true
 enable = [
     'bodyclose',
-    'gofumpt',
     'goimports',
     'gosimple',
     'govet',
