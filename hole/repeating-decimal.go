@@ -3,12 +3,11 @@ package hole
 import (
 	"fmt"
 	"math/rand"
-	"strconv"
 )
 
 func genRepeatingDecimalTest(p, q int) test {
 	in := fmt.Sprint(p, "/", q)
-	out := strconv.Itoa(p / q)
+	out := fmt.Sprint(p / q)
 	p %= q
 	if p > 0 {
 		buf := []byte{}
