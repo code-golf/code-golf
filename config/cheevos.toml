@@ -303,6 +303,13 @@ emoji       = '🖥️'
 description = 'Solve your eighty-sixth hole.'
 target      = 86
 
+# TODO
+# [['Total Holes']]
+# name        = 'That’s Gross!'
+# emoji       = '🤮'
+# description = 'Solve your <a href=//en.wikipedia.org/wiki/Gross_(unit)>one hundred and forty-fourth</a> hole.'
+# target      = 144
+
 # Total Points
 
 [['Total Points']]
