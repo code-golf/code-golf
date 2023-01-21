@@ -2,12 +2,13 @@ package github
 
 import (
 	"context"
-	"database/sql"
 	"log"
+
+	"github.com/jmoiron/sqlx"
 )
 
 // Updates the usernames of every GitHub connection.
-func updateUsernames(db *sql.DB) (limits []rateLimit) {
+func updateUsernames(db *sqlx.DB) (limits []rateLimit) {
 	const batchSize = 100 // GitHub limits us to 100 nodes per query.
 
 	var ids []string
@@ -55,7 +56,7 @@ func updateUsernames(db *sql.DB) (limits []rateLimit) {
 	return
 }
 
-func updateUsernamesBatch(db *sql.DB, ids []string) (*rateLimit, error) {
+func updateUsernamesBatch(db *sqlx.DB, ids []string) (*rateLimit, error) {
 	var query struct {
 		RateLimit rateLimit
 		Nodes     []struct {

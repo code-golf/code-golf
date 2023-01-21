@@ -23,6 +23,12 @@ var answers embed.FS
 // All whitespace except newline, up to a newline or the end.
 var stdoutTrimmer = regexp.MustCompile(`[^\S\n]+(?:\n|$)`)
 
+var romanToASCII = strings.NewReplacer(
+	"Ⅰ", "I", "Ⅱ", "II", "Ⅲ", "III", "Ⅳ", "IV", "Ⅴ", "V",
+	"Ⅵ", "VI", "Ⅶ", "VII", "Ⅷ", "VIII", "Ⅸ", "IX", "Ⅹ", "X",
+	"Ⅺ", "XI", "Ⅻ", "XII", "Ⅼ", "L", "Ⅽ", "C", "Ⅾ", "D", "Ⅿ", "M",
+)
+
 type Scorecard struct {
 	ASMBytes, ExitCode int
 	Answer             string
@@ -359,22 +365,7 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 
 	// ASCII-ify roman numerals
 	if holeID == "arabic-to-roman" {
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅰ"), []byte("I"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅱ"), []byte("II"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅲ"), []byte("III"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅳ"), []byte("IV"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅴ"), []byte("V"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅵ"), []byte("VI"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅶ"), []byte("VII"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅷ"), []byte("VIII"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅸ"), []byte("IX"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅹ"), []byte("X"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅺ"), []byte("XI"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅻ"), []byte("XII"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅼ"), []byte("L"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅽ"), []byte("C"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅾ"), []byte("D"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅿ"), []byte("M"))
+		score.Stdout = []byte(romanToASCII.Replace(string(score.Stdout)))
 	}
 
 	// Timeouts do not pass, no matter what they output

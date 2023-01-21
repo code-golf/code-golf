@@ -1,9 +1,9 @@
 package hole
 
 import (
+	"fmt"
 	"math/big"
 	"math/rand"
-	"strconv"
 )
 
 func randomNatural(max int) int {
@@ -34,8 +34,8 @@ func jacobiSymbol() []Scorecard {
 	tests := []test{{"0 1", "1"}}
 	addTest := func(a, n int) {
 		tests = append(tests, test{
-			strconv.Itoa(a) + " " + strconv.Itoa(n),
-			strconv.Itoa(big.Jacobi(big.NewInt(int64(a)), big.NewInt(int64(n)))),
+			fmt.Sprint(a, n),
+			fmt.Sprint(big.Jacobi(big.NewInt(int64(a)), big.NewInt(int64(n)))),
 		})
 	}
 

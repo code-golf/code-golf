@@ -1,13 +1,13 @@
 package main
 
 import (
-	"database/sql"
 	"log"
 	"math/rand"
 	"net/http"
 	"os"
 	"time"
 
+	"github.com/code-golf/code-golf/db"
 	"github.com/code-golf/code-golf/discord"
 	"github.com/code-golf/code-golf/github"
 	"github.com/code-golf/code-golf/routes"
@@ -19,10 +19,7 @@ func main() {
 
 	rand.Seed(time.Now().UnixNano())
 
-	db, err := sql.Open("postgres", "")
-	if err != nil {
-		panic(err)
-	}
+	db := db.Open()
 
 	// Every 30 seconds.
 	go func() {

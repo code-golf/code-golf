@@ -19,4 +19,4 @@ services:
       POSTGRES_DB: code-golf
       POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
-      - ../db:/docker-entrypoint-initdb.d
+      - ../sql:/docker-entrypoint-initdb.d
