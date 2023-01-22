@@ -949,6 +949,8 @@ Hello, World!
     \advance\i by1
 \repeat
 
+% Use \octet to switch to a font that supports all bytes
+\octet
 % Accessing arguments
 \newcount\j
 \loop\ifnum\j<\argc\relax
