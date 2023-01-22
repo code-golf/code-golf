@@ -22,7 +22,7 @@ var (
 
 type Lang struct {
 	Example    string `json:"example"`
-	Experiment int    `json:"experiment,omitempty"`
+	Experiment int    `json:"-"`
 	ID         string `json:"id"`
 	Name       string `json:"name"`
 	Size       string `json:"size"`

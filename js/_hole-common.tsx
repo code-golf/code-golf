@@ -162,9 +162,7 @@ export function setCode(code: string, editor: EditorView | null) {
 function updateLangPicker() {
     // Populate the language picker with accurate stroke counts.
     $('#picker').replaceChildren(...sortedLangs.map((l: any) => {
-        const tab = <a href={l.id == lang ? null : '#'+l.id}>
-            {l.experiment ? '🧪 ' : null}{l.name}
-        </a>;
+        const tab = <a href={l.id == lang ? null : '#'+l.id}>{l.name}</a>;
 
         if (getSolutionCode(l.id, 0)) {
             const bytes = byteLen(getSolutionCode(l.id, 0));
