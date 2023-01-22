@@ -53,6 +53,7 @@ import { shell }           from '@codemirror/legacy-modes/mode/shell';
 import { sql, SQLite }     from '@codemirror/lang-sql';
 import { swift }           from '@codemirror/legacy-modes/mode/swift';
 import { tcl }             from '@codemirror/legacy-modes/mode/tcl';
+import { stex }            from '@codemirror/legacy-modes/mode/stex';
 import { wren }            from '@exercism/codemirror-lang-wren';
 
 // For some reason, this doesn't fully work unless added to both themes.
@@ -147,6 +148,7 @@ export const extensions = {
     'sql':        sql({ dialect: SQLite }),
     'swift':      StreamLanguage.define(swift),
     'tcl':        StreamLanguage.define(tcl),
+    'tex':        StreamLanguage.define(stex),
     // TODO v
     // TODO viml
     'wren':       wren(),

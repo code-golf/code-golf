@@ -1,0 +1,13 @@
+font_size 10pt#;
+mode_setup;
+
+font_identifier "octet";
+font_coding_scheme "raw";
+
+for code=0 upto 255:
+beginchar(code,10pt#,10pt#,0);
+pickup pencircle scaled .3pt; draw unitsquare scaled 1pt;
+endchar;
+endfor
+
+bye

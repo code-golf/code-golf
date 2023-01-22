@@ -934,6 +934,32 @@ foreach arg $argv {
 }
 '''
 
+[TeX]
+size    = '9.57 MiB'
+experiment = 877
+version = '3.141592653'
+website = 'https://tug.org'
+example = '''
+% Printing
+Hello, World!
+
+% Looping
+\newcount\i
+\loop\ifnum\i<10
+    \the\i\endgraf
+    \advance\i by1
+\repeat
+
+% Use \octet to switch to a font that supports all bytes
+\octet
+% Accessing arguments
+\newcount\j
+\loop\ifnum\j<\argc\relax
+    \argv[\the\j]\endgraf
+    \advance\j by1
+\repeat
+'''
+
 [V]
 size    = '46.1 MiB'
 version = '0.3.2'

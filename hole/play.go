@@ -280,6 +280,8 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 		cmd.Args = []string{"/usr/bin/swift", "-module-cache-path", "/tmp", "-"}
 	case "tcl":
 		cmd.Args = []string{"/usr/bin/tcl", "/proc/self/fd/0"}
+	case "tex":
+		cmd.Args = []string{"/usr/bin/tex", code}
 	default:
 		cmd.Args = []string{"/usr/bin/" + langID, "-"}
 	}
@@ -303,7 +305,7 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 
 	// Code
 	switch langID {
-	case "awk", "brainfuck", "elixir", "fish", "golfscript", "javascript", "perl", "sed":
+	case "awk", "brainfuck", "elixir", "fish", "golfscript", "javascript", "perl", "sed", "tex":
 		// For these langs, code is passed as an argument above.
 	case "k":
 		code = preprocessKCode(holeID, code)
