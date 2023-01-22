@@ -173,7 +173,7 @@ func init() {
 		}
 
 		AllHoleByID[hole.ID] = &hole.Hole
-		AllHoleList = append(ExpHoleList, &hole.Hole)
+		AllHoleList = append(AllHoleList, &hole.Hole)
 
 		if hole.Experiment == 0 {
 			HoleByID[hole.ID] = &hole.Hole

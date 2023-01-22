@@ -40,14 +40,14 @@ func init() {
 		lang.Name = name
 
 		AllLangByID[lang.ID] = lang
-		AllLangList = append(LangList, lang)
+		AllLangList = append(AllLangList, lang)
 
 		if lang.Experiment == 0 {
 			LangByID[lang.ID] = lang
 			LangList = append(LangList, lang)
 		} else {
 			ExpLangByID[lang.ID] = lang
-			ExpLangList = append(LangList, lang)
+			ExpLangList = append(ExpLangList, lang)
 		}
 	}
 
