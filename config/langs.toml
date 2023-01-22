@@ -936,7 +936,7 @@ foreach arg $argv {
 [TeX]
 size    = '9.57 MiB'
 version = '3.141592653'
-website = 'https://tug.org/'
+website = 'https://tug.org'
 example = '''
 % Printing
 Hello, World!
