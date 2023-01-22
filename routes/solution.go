@@ -23,16 +23,13 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	_, experimental := config.ExpHoleByID[in.Hole]
-	if !experimental && config.HoleByID[in.Hole] == nil {
+	holeObj := config.AllHoleByID[in.Hole]
+	langObj := config.AllLangByID[in.Lang]
+	if holeObj == nil || langObj == nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
-
-	if _, ok := config.LangByID[in.Lang]; !ok {
-		w.WriteHeader(http.StatusNotFound)
-		return
-	}
+	experimental := holeObj.Experiment != 0 || langObj.Experiment != 0
 
 	db := session.Database(r)
 	golfer := session.Golfer(r)

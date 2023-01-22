@@ -14,19 +14,19 @@ func holeGET(w http.ResponseWriter, r *http.Request) {
 		Authors      []string
 		HideDetails  bool
 		Hole         *config.Hole
+		Langs        map[string]*config.Lang
 		RankingsView string
 		Solutions    []map[string]string
 	}{
+		Langs:        config.AllLangByID,
 		RankingsView: "me",
 		Solutions:    []map[string]string{{}, {}},
 	}
 
 	var ok bool
-	if data.Hole, ok = config.HoleByID[param(r, "hole")]; !ok {
-		if data.Hole, ok = config.ExpHoleByID[param(r, "hole")]; !ok {
-			w.WriteHeader(http.StatusNotFound)
-			return
-		}
+	if data.Hole, ok = config.AllHoleByID[param(r, "hole")]; !ok {
+		w.WriteHeader(http.StatusNotFound)
+		return
 	}
 
 	if c, _ := r.Cookie("hide-details"); c != nil {

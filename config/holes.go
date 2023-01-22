@@ -4,20 +4,26 @@ import (
 	"bytes"
 	"encoding/json"
 	"html/template"
-	"sort"
 	"strings"
 	templateTxt "text/template"
 
 	"github.com/code-golf/code-golf/ordered"
 	"github.com/tdewolff/minify/v2/minify"
+	"golang.org/x/exp/slices"
 )
 
 var (
+	// Standard holes.
 	HoleByID = map[string]*Hole{}
 	HoleList []*Hole
 
+	// Experimental holes.
 	ExpHoleByID = map[string]*Hole{}
 	ExpHoleList []*Hole
+
+	// All holes.
+	AllHoleByID = map[string]*Hole{}
+	AllHoleList []*Hole
 )
 
 type (
@@ -166,6 +172,9 @@ func init() {
 			hole.CategoryIcon = "shuffle"
 		}
 
+		AllHoleByID[hole.ID] = &hole.Hole
+		AllHoleList = append(ExpHoleList, &hole.Hole)
+
 		if hole.Experiment == 0 {
 			HoleByID[hole.ID] = &hole.Hole
 			HoleList = append(HoleList, &hole.Hole)
@@ -175,41 +184,25 @@ func init() {
 		}
 	}
 
-	// Case-insensitive sort.
-	sort.Slice(HoleList, func(i, j int) bool {
-		return strings.ToLower(HoleList[i].Name) <
-			strings.ToLower(HoleList[j].Name)
-	})
-	sort.Slice(ExpHoleList, func(i, j int) bool {
-		return strings.ToLower(ExpHoleList[i].Name) <
-			strings.ToLower(ExpHoleList[j].Name)
-	})
+	for _, holes := range [][]*Hole{HoleList, ExpHoleList, AllHoleList} {
+		// Case-insensitive sort.
+		slices.SortFunc(holes, func(a, b *Hole) bool {
+			return strings.ToLower(a.Name) < strings.ToLower(b.Name)
+		})
 
-	// Set Prev, Next.
-	for i, hole := range HoleList {
-		if i == 0 {
-			hole.Prev = HoleList[len(HoleList)-1].ID
-		} else {
-			hole.Prev = HoleList[i-1].ID
-		}
+		// Set Prev, Next.
+		for i, hole := range holes {
+			if i == 0 {
+				hole.Prev = holes[len(holes)-1].ID
+			} else {
+				hole.Prev = holes[i-1].ID
+			}
 
-		if i == len(HoleList)-1 {
-			hole.Next = HoleList[0].ID
-		} else {
-			hole.Next = HoleList[i+1].ID
-		}
-	}
-	for i, hole := range ExpHoleList {
-		if i == 0 {
-			hole.Prev = ExpHoleList[len(ExpHoleList)-1].ID
-		} else {
-			hole.Prev = ExpHoleList[i-1].ID
-		}
-
-		if i == len(ExpHoleList)-1 {
-			hole.Next = ExpHoleList[0].ID
-		} else {
-			hole.Next = ExpHoleList[i+1].ID
+			if i == len(holes)-1 {
+				hole.Next = holes[0].ID
+			} else {
+				hole.Next = holes[i+1].ID
+			}
 		}
 	}
 }

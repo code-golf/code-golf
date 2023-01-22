@@ -126,6 +126,14 @@
         <b>Write-Host</b> for output.
     </div>
 {{ end }}
+{{ range .Data.Langs }}{{ if .Experiment }}
+    <div class="hide info {{ .ID }}">
+        {{ .Name }} is an experimental language, no solutions will be saved.
+        Please leave feedback on the
+        <a href="//github.com/code-golf/code-golf/issues/{{ .Experiment }}">
+            GitHub issue</a>.
+    </div>
+{{ end }}{{ end }}
     <div id=run>
     {{ if .Golfer }}
         <button class="btn hide red" id=deleteBtn>
@@ -178,7 +186,7 @@
 
 <script id=experimental       type=application/json>{{ ne .Data.Hole.Experiment 0 }}</script>
 <script id=darkModeMediaQuery type=application/json>{{ .DarkModeMediaQuery   }}</script>
-<script id=langs              type=application/json>{{ .Langs                }}</script>
+<script id=langs              type=application/json>{{ .Data.Langs           }}</script>
 <script id=solutions          type=application/json>{{ .Data.Solutions       }}</script>
 
 {{ template "footer" }}

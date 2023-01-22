@@ -58,15 +58,20 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var (
-		hole    = param(r, "hole")
-		lang    = param(r, "lang")
+		holeID  = param(r, "hole")
+		langID  = param(r, "lang")
 		scoring = param(r, "scoring")
 		view    = param(r, "view")
 	)
 
 	// No need to check scoring & view, they're covered by chi.
-	if config.HoleByID[hole] == nil || config.LangByID[lang] == nil {
+	hole := config.AllHoleByID[holeID]
+	lang := config.AllLangByID[langID]
+	if hole == nil || lang == nil {
 		w.WriteHeader(http.StatusNotFound)
+		return
+	} else if hole.Experiment != 0 || lang.Experiment != 0 {
+		w.Write([]byte("[]"))
 		return
 	}
 
@@ -134,8 +139,8 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 		  ORDER BY row
 		     LIMIT `+sqlLimit,
 		userID,
-		hole,
-		lang,
+		holeID,
+		langID,
 		scoring,
 		otherScoring,
 		limit,
