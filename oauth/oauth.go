@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/code-golf/code-golf/db"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/github"
 	"golang.org/x/oauth2/gitlab"
@@ -92,42 +93,16 @@ func init() {
 	}
 }
 
-// *sql.DB or *sql.Tx - https://github.com/golang/go/issues/14468
-type DBTx interface {
-	Query(string, ...any) (*sql.Rows, error)
-}
-
-func GetConnections(db DBTx, golferID int, onlyPublic bool) (conns []Connection) {
-	rows, err := db.Query(
+func GetConnections(db db.Queryable, golferID int, onlyPublic bool) (c []Connection) {
+	if err := db.Select(
+		&c,
 		` SELECT connection, discriminator, id, public, username
 		    FROM connections
-		   WHERE user_id = $1 AND (public = true OR public = $2)
+		   WHERE user_id = $1 AND public IN (true, $2)
 		ORDER BY connection`,
 		golferID,
 		onlyPublic,
-	)
-	if err != nil {
-		panic(err)
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var conn Connection
-
-		if err := rows.Scan(
-			&conn.Connection,
-			&conn.Discriminator,
-			&conn.ID,
-			&conn.Public,
-			&conn.Username,
-		); err != nil {
-			panic(err)
-		}
-
-		conns = append(conns, conn)
-	}
-
-	if err := rows.Err(); err != nil {
+	); err != nil {
 		panic(err)
 	}
 

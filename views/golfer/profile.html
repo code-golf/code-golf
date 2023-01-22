@@ -5,7 +5,7 @@
     <div id=wall>
 {{ $lastDay := "" }}
 {{ range .Data.Wall }}
-    {{ $day := .Date.Format "Mon 2 Jan 2006" }}
+    {{ $day := (.Date.In $.Location).Format "Mon 2 Jan 2006" }}
     {{ if ne $day $lastDay }}
         <time>{{ $day }}</time>
         {{ $lastDay = $day }}
@@ -130,6 +130,19 @@
                     <td class=right>{{ comma .Chars }}
             {{ end }}
         </table>
+    {{ end }}
+
+    {{ with .Data.Followers }}
+        <section class=icons>
+            <h2>
+                {{ len . }} Golfer{{ if gt (len .) 1 }}s{{ end }} Following
+            </h2>
+        {{ range . }}
+            <a href="{{ . }}" title="{{ . }}">
+                <img loading=lazy src="//avatars.githubusercontent.com/{{ . }}?s=72">
+            </a>
+        {{ end }}
+        </section>
     {{ end }}
     </aside>
 </main>

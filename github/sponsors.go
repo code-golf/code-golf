@@ -2,10 +2,11 @@ package github
 
 import (
 	"context"
-	"database/sql"
+
+	"github.com/jmoiron/sqlx"
 )
 
-func sponsors(db *sql.DB) (limits []rateLimit) {
+func sponsors(db *sqlx.DB) (limits []rateLimit) {
 	var query struct {
 		RateLimit rateLimit
 		Viewer    struct {

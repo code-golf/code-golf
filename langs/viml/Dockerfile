@@ -1,8 +1,8 @@
-FROM alpine:3.16 as builder
+FROM alpine:3.17 as builder
 
 RUN apk add --no-cache build-base git ncurses-dev
 
-RUN git clone --branch v9.0.0000 --depth 1 https://github.com/vim/vim.git
+RUN git clone --branch v9.0.1046 --depth 1 https://github.com/vim/vim.git
 
 RUN cd vim/src \
  && ./configure --enable-multibyte --prefix=/usr --with-features=normal \

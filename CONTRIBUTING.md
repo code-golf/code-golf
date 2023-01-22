@@ -16,7 +16,7 @@ In addition, each section may define the following fields:
 
 - `data` - JSON describing the data to be copied upon pressing "Copy as JSON". Relevant mainly for holes in the "Transform" category.
 - `links` - List of tables with keys `name` and `url`.
-- `experiment` - ID of the issue that suggested this hole or `-1` if the issue doesn't exist. Only defined for experimental holes.
+- `experiment` - ID of the issue that suggested this hole. All experimental holes need to link to an issue so that the community can vote and suggest improvements.
 - `variants` - List of names of the holes that are variants of this hole, including itself.
 
 Example:
@@ -36,7 +36,7 @@ preamble = '''
 
 ## Hole inputs and expected answers
 
-Depending on the new hole design, the answers could be hardcoded (99 bottles, 12 days, etc...) or computed on the fly with a function (sudoku, interception, etc...).
+Depending on the new hole design, the answers could be hardcoded (99 bottles, 12 days, etc...) or computed on the fly with a function (sudoku, intersection, etc...).
 
 ### Holes with hardcoded solutions
 

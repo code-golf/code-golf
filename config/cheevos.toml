@@ -58,9 +58,21 @@ emoji       = '💼'
 description = 'Solve <a href=/fizz-buzz>Fizz Buzz</a>.'
 
 [['Hole/Lang Specific']]
+name        = 'Archivist'
+emoji       = '📚'
+description = 'Solve <a href=/isbn>ISBN</a> in any three languages that predate ISBN.'
+target      = 3
+
+[['Hole/Lang Specific']]
 name        = 'Assembly Required'
 emoji       = '🪛'
 description = 'Solve <a href=/seven-segment#assembly>Seven Segment in Assembly</a>.'
+
+[['Hole/Lang Specific']]
+name        = 'Bird Is the Word'
+emoji       = '🐦'
+description = 'Solve <a href=/levenshtein-distance>Levenshtein Distance</a> in any three of AWK, Prolog, SQL, Swift, Tcl, or Wren'
+target      = 3
 
 [['Hole/Lang Specific']]
 name        = 'Caffeinated'
@@ -78,14 +90,36 @@ emoji       = '🐘'
 description = 'Solve any hole in PHP.'
 
 [['Hole/Lang Specific']]
+name        = 'Emergency Room'
+emoji       = '🏥'
+description = 'Solve <a href=/𝑒#r>𝑒 in R</a>.'
+
+[['Hole/Lang Specific']]
 name        = 'Fish ’n’ Chips'
 emoji       = '🐟'
 description = 'Solve <a href=/poker#fish>Poker in &gt;&lt;&gt;</a>.'
 
 [['Hole/Lang Specific']]
+name        = 'Happy-Go-Lucky'
+emoji       = '🍀'
+description = 'Solve <a href=/happy-numbers#go>Happy Numbers</a> and <a href=/lucky-numbers#go>Lucky Numbers</a> in Go.'
+target      = 2
+
+[['Hole/Lang Specific']]
+name        = 'Hextreme Agony'
+emoji       = '🍯'
+description = 'Solve <a href=/hexdump#hexagony>Hexdump in Hexagony</a>.'
+
+[['Hole/Lang Specific']]
 name        = 'Inception'
 emoji       = '🧠'
 description = 'Solve <a href=/brainfuck#brainfuck>brainfuck in brainfuck</a>.'
+
+[['Hole/Lang Specific']]
+name        = 'Jeweler'
+emoji       = '💍'
+description = 'Solve <a href=/diamonds>Diamonds</a> in Crystal and Ruby.'
+target      = 2
 
 [['Hole/Lang Specific']]
 name        = 'Just Kidding'
@@ -111,7 +145,7 @@ target      = 26
 [['Hole/Lang Specific']]
 name        = 'Solve Quine'
 emoji       = '🪞'
-description = 'Solve <a href=/quine>Quine</a>.'
+description = 'Solve <a href=/quine>Quine</a>'
 
 [['Hole/Lang Specific']]
 name        = 'Sounds Quite Nice'
@@ -132,9 +166,15 @@ description = 'Solve <a href=/pascals-triangle#pascal>Pascal’s Triangle in Pas
 # Miscellaneous
 
 [[Miscellaneous]]
+name        = 'Aged like Fine Wine'
+emoji       = '🍷'
+description = 'Leave a passing solution alone for one year.'
+target      = 365
+
+[[Miscellaneous]]
 name        = 'Black-box Testing'
 emoji       = '🧪'
-description = 'Solve an <a href=/ideas>experimental hole</a>.'
+description = 'Solve an <a href=/ideas>experimental hole</a> or language.'
 
 [[Miscellaneous]]
 name        = 'Different Strokes'
@@ -184,93 +224,121 @@ name        = 'tl;dr'
 emoji       = '🧶'
 description = 'Submit a solution that is rejected for being too long.'
 
-# Progression
+# Total Holes
 
-[[Progression]]
+[['Total Holes']]
 name        = 'Hello, World!'
 emoji       = '👋'
 description = 'Solve your first hole.'
 
-[[Progression]]
+[['Total Holes']]
 name        = 'Up to Eleven'
 emoji       = '🎸'
 description = 'Solve your eleventh hole.'
 target      = 11
 
-[[Progression]]
+[['Total Holes']]
 name        = 'Baker’s Dozen'
 emoji       = '🍞'
 description = 'Solve your thirteenth hole.'
 target      = 13
 
-[[Progression]]
+[['Total Holes']]
 name        = 'The Watering Hole'
 emoji       = '🍺'
 description = 'Solve your nineteenth hole.'
 target      = 19
 
-[[Progression]]
+[['Total Holes']]
 name        = 'Blackjack'
 emoji       = '🃏'
 description = 'Solve your twenty-first hole.'
 target      = 21
 
-[[Progression]]
+[['Total Holes']]
 name        = 'Rule 34'
 emoji       = '🔞'
 description = 'Solve your thirty-fourth hole.'
 target      = 34
 
-[[Progression]]
+[['Total Holes']]
 name        = 'Forty Winks'
 emoji       = '😴'
 description = 'Solve your fortieth hole.'
 target      = 40
 
-[[Progression]]
+[['Total Holes']]
 name        = 'DON’T PANIC!'
 emoji       = '👍'
 description = 'Solve your forty-second hole.'
 target      = 42
 
-[[Progression]]
+[['Total Holes']]
 name        = 'Bullseye'
 emoji       = '🎯'
 description = 'Solve your fiftieth hole.'
 target      = 50
 
-[[Progression]]
+[['Total Holes']]
 name        = 'Gone in 60 Holes'
 emoji       = '🚗'
 description = 'Solve your sixtieth hole.'
 target      = 60
 
-[[Progression]]
+[['Total Holes']]
 name        = 'Cunning Linguist'
 emoji       = '👅'
 description = 'Solve your sixty-ninth hole.'
 target      = 69
 
-[[Progression]]
+[['Total Holes']]
 name        = 'Phileas Fogg'
 emoji       = '🚢'
 description = 'Solve your eightieth hole.'
 target      = 80
 
-[[Progression]]
+[['Total Holes']]
+name        = 'x86'
+emoji       = '🖥️'
+description = 'Solve your eighty-sixth hole.'
+target      = 86
+
+# TODO
+# [['Total Holes']]
+# name        = 'That’s Gross!'
+# emoji       = '🤮'
+# description = 'Solve your <a href=//en.wikipedia.org/wiki/Gross_(unit)>one hundred and forty-fourth</a> hole.'
+# target      = 144
+
+# Total Points
+
+[['Total Points']]
+name        = 'Big Brother'
+emoji       = '👁️'
+description = 'Earn 1,984 total points in either bytes or chars scoring.'
+target      = 1984
+
+
+[['Total Points']]
 name        = 'It’s Over 9000!'
 emoji       = '🐉'
-description = 'Earn over 9,000 points in either bytes or chars scoring.'
+description = 'Earn over 9,000 total points in either bytes or chars scoring.'
 target      = 9001
 
-[[Progression]]
+[['Total Points']]
 name        = 'Twenty Kiloleagues'
 emoji       = '🐋'
-description = 'Earn 20,000 points in either bytes or chars scoring.'
+description = 'Earn 20,000 total points in either bytes or chars scoring.'
 target      = 20000
 
-[[Progression]]
+[['Total Points']]
 name        = 'Marathon Runner'
 emoji       = '🏃'
-description = 'Earn 42,195 points in either bytes or chars scoring.'
+description = 'Earn 42,195 total points in either bytes or chars scoring.'
 target      = 42195
+
+[['Total Points']]
+name        = '0xDEAD'
+emoji       = '🪦'
+description = 'Earn 57,005 total points in either bytes or chars scoring.'
+target      = 57005

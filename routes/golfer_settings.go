@@ -96,7 +96,7 @@ func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tx, err := session.Database(r).BeginTx(r.Context(), nil)
+	tx, err := session.Database(r).BeginTxx(r.Context(), nil)
 	if err != nil {
 		panic(err)
 	}

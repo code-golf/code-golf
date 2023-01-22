@@ -91,8 +91,8 @@ syscall
 '''
 
 [AWK]
-size    = '707 KiB'
-version = '5.2.0'
+size    = '1.72 MiB'
+version = '5.2.1'
 website = 'https://www.gnu.org/software/gawk/'
 example = '''
 BEGIN {
@@ -116,8 +116,8 @@ BEGIN {
 '''
 
 [Bash]
-size    = '1.17 MiB'
-version = '5.2.9'
+size    = '1.19 MiB'
+version = '5.2.15'
 website = 'https://www.gnu.org/software/bash/'
 example = '''
 # Printing
@@ -180,7 +180,7 @@ with 65536 cells; and cells are 8 bit with wrapping;
 '''
 
 [C]
-size    = '1.61 MiB'
+size    = '1.63 MiB'
 version = 'Tiny C Compiler 0.9.27'
 website = 'https://bellard.org/tcc/'
 example = '''
@@ -203,8 +203,8 @@ int main(int argc, char* argv[]) {
 '''
 
 ['C#']
-size    = '148 MiB'
-version = 'C# 10.0 on .NET 6.0.10'
+size    = '149 MiB'
+version = 'C# 11.0 on .NET 7.0.1'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -223,8 +223,8 @@ foreach (String arg in args)
 '''
 
 ['C++']
-size    = '117 MiB'
-version = '13.0.0'
+size    = '118 MiB'
+version = '14.0.6'
 website = 'https://clang.llvm.org'
 example = '''
 #include <iostream>
@@ -249,7 +249,7 @@ int main(int argc, char* argv[]) {
 '''
 
 [COBOL]
-size    = '4.09 MiB'
+size    = '4.12 MiB'
 version = 'GnuCOBOL 3.1.2.0'
 website = 'https://gnucobol.sourceforge.io'
 example = '''
@@ -281,8 +281,8 @@ end-program.
 '''
 
 [Crystal]
-size    = '203 MiB'
-version = '1.6.2'
+size    = '201 MiB'
+version = '1.7.1'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -323,8 +323,8 @@ void main(string[] argv) {
 '''
 
 [Dart]
-size    = '534 MiB'
-version = '2.18.4'
+size    = '529 MiB'
+version = '2.18.6'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -344,8 +344,8 @@ void main(List<String> argv) {
 '''
 
 [Elixir]
-size    = '167 MiB'
-version = '1.14.0'
+size    = '168 MiB'
+version = '1.14.3'
 website = 'https://elixir-lang.org'
 example = '''
 # Printing
@@ -359,8 +359,8 @@ for arg <- System.argv, do: IO.puts arg
 '''
 
 ['F#']
-size    = '142 MiB'
-version = 'F# 6.0 on .NET 6.0.10'
+size    = '150 MiB'
+version = 'F# 7.0 on .NET 7.0.1'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -407,7 +407,7 @@ end
 
 [Go]
 size    = '150 MiB'
-version = '1.19.3'
+version = '1.19.5'
 website = 'https://go.dev'
 example = '''
 package main
@@ -449,8 +449,8 @@ n*
 '''
 
 [Haskell]
-size    = '309 MiB'
-version = 'Glasgow Haskell Compiler 9.0.1'
+size    = '310 MiB'
+version = 'Glasgow Haskell Compiler 9.0.2'
 website = 'https://www.haskell.org/ghc/'
 example = '''
 import System.Environment
@@ -468,8 +468,8 @@ main = do
 '''
 
 [Hexagony]
-size    = '63.4 MiB'
-version = '4b30f58'
+size    = '28 MiB'
+version = '770406a'
 website = 'https://github.com/SirBogman/Hexagony'
 example = '''
           \ P r i n t i n g .
@@ -530,8 +530,8 @@ class Main {
 '''
 
 [JavaScript]
-size    = '21.5 MiB'
-version = 'V8 9.9.115.8'
+size    = '22.5 MiB'
+version = 'V8 10.7.193.22'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -549,8 +549,8 @@ for (let arg of arguments)
 '''
 
 [Julia]
-size    = '298 MiB'
-version = '1.8.2'
+size    = '286 MiB'
+version = '1.8.5'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -621,8 +621,8 @@ end
 '''
 
 [Nim]
-size    = '13.5 MiB'
-version = '1.6.8'
+size    = '13.6 MiB'
+version = '1.6.10'
 website = 'https://nim-lang.org'
 example = '''
 import os
@@ -639,8 +639,28 @@ for arg in commandLineParams():
     echo arg
 '''
 
+[OCaml]
+size    = '99.1 MiB'
+version = '5.0.0'
+website = 'https://ocaml.org'
+example = '''
+(* Printing *)
+print_endline "Hello, World!";
+
+(* Looping *)
+for i = 0 to 9 do
+  Printf.printf "%d\n" i
+done;
+
+(* Accessing arguments *)
+Sys.argv
+  |> Array.to_list
+  |> List.tl
+  |> List.iter print_endline;
+'''
+
 [Pascal]
-size    = '31.3 MiB'
+size    = '30.9 MiB'
 version = '3.2.2'
 website = 'https://freepascal.org'
 example = '''
@@ -661,7 +681,7 @@ end.
 '''
 
 [Perl]
-size    = '5.32 MiB'
+size    = '5.34 MiB'
 version = '5.36.0'
 website = 'https://www.perl.org'
 example = '''
@@ -695,8 +715,8 @@ for ($i = 1; $i < $argc; $i++)
 '''
 
 [PowerShell]
-size    = '179 MiB'
-version = 'PowerShell 7.2.7 on .NET 6.0.10'
+size    = '176 MiB'
+version = 'PowerShell 7.3.0 on .NET 7.0.1'
 website = 'https://docs.microsoft.com/powershell/scripting/overview'
 example = '''
 # Printing
@@ -731,8 +751,8 @@ example = '''
 '''
 
 [Python]
-size    = '74.2 MiB'
-version = '3.11.0'
+size    = '74.1 MiB'
+version = '3.11.1'
 website = 'https://www.python.org'
 example = '''
 import sys
@@ -749,9 +769,28 @@ for arg in sys.argv[1:]:
     print(arg)
 '''
 
+[R]
+size    = '76.4 MiB'
+version = '4.2.2'
+website = 'https://www.r-project.org'
+example = '''
+# Printing
+write("Hello, World!", 1)
+
+# Looping
+for (i in 0:9) {
+    write(i, 1)
+}
+
+# Accessing arguments
+for (arg in commandArgs(TRUE)) {
+    write(arg, 1)
+}
+'''
+
 [Raku]
-size    = '54.1 MiB'
-version = 'Raku 6.d on Rakudo 2022.07'
+size    = '58.1 MiB'
+version = 'Raku 6.d on Rakudo 2022.12'
 website = 'https://raku.org'
 example = '''
 # Printing
@@ -765,8 +804,8 @@ say 'Hello, World!';
 '''
 
 [Ruby]
-size    = '24.2 MiB'
-version = '3.1.2'
+size    = '24.1 MiB'
+version = '3.2.0'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing
@@ -784,8 +823,8 @@ end
 '''
 
 [Rust]
-size    = '427 MiB'
-version = '1.65.0'
+size    = '430 MiB'
+version = '1.66.1'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -805,8 +844,8 @@ fn main() {
 '''
 
 [sed]
-size    = '228 KiB'
-version = '4.8'
+size    = '232 KiB'
+version = '4.9'
 website = 'https://www.gnu.org/software/sed/'
 example = '''
 # Printing
@@ -834,7 +873,7 @@ G
 
 [SQL]
 size    = '1.11 MiB'
-version = '3.39.4'
+version = '3.40.1'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
@@ -857,8 +896,8 @@ SELECT arg FROM argv;
 '''
 
 [Swift]
-size    = '561 MiB'
-version = '5.6.2'
+size    = '494 MiB'
+version = '5.7.1'
 website = 'https://swift.org'
 example = '''
 // Printing
@@ -876,8 +915,8 @@ for arg in CommandLine.arguments[1...] {
 '''
 
 [Tcl]
-size    = '1.81 MiB'
-version = '8.6.12'
+size    = '5.23 MiB'
+version = '8.6.13'
 website = 'https://www.tcl-lang.org'
 example = '''
 # Printing
@@ -921,8 +960,8 @@ Hello, World!
 '''
 
 [V]
-size    = '38.5 MiB'
-version = '0.2.4'
+size    = '46.1 MiB'
+version = '0.3.2'
 website = 'https://vlang.io'
 example = '''
 import os
@@ -942,7 +981,7 @@ for arg in os.args[1..] {
 '''
 
 [VimL]
-size    = '22.3 MiB'
+size    = '23.1 MiB'
 version = '9.0'
 website = 'https://www.vim.org'
 example = '''

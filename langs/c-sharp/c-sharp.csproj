@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.4.0"/>
+    </ItemGroup>
+    <PropertyGroup>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <OutputType>Exe</OutputType>
+        <PublishReadyToRun>true</PublishReadyToRun>
+        <RuntimeIdentifier>linux-musl-x64</RuntimeIdentifier>
+        <TargetFramework>net7.0</TargetFramework>
+    </PropertyGroup>
+</Project>

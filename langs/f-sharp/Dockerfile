@@ -1,13 +1,10 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0.402-alpine3.16 as builder
+FROM mcr.microsoft.com/dotnet/sdk:7.0.101-alpine3.17 as builder
 
-ENV DOTNET_CLI_TELEMETRY_OPTOUT=1 VERSION=41.0.7
+WORKDIR /work
 
-WORKDIR /source
+COPY f-sharp.fs f-sharp.fsproj ./
 
-COPY Compiler.fsproj Compiler.fs ./
-
-RUN dotnet add package FSharp.Compiler.Service -v $VERSION \
- && dotnet publish -c Release -r linux-musl-x64 --self-contained -o /compiler
+RUN dotnet publish -c Release -o /out
 
 # Trim additional things to improve F# compiler startup performance.
 WORKDIR /trimmer
@@ -18,13 +15,18 @@ RUN dotnet run
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 \
-              /lib/libcrypto.so.1.1    \
-              /lib/libssl.so.1.1       /lib/
-COPY --from=0 /usr/lib                 /usr/lib/
-COPY --from=0 /usr/share/icu           /usr/share/icu
-COPY --from=0 /compiler                /compiler/
+COPY --from=0 /lib/ld-musl-x86_64.so.1  \
+              /lib/libcrypto.so.3       \
+              /lib/libssl.so.3          /lib/
+COPY --from=0 /out                      /usr/bin
+COPY --from=0 /usr/lib/libgcc_s.so.1    \
+              /usr/lib/libicudata.so.72 \
+              /usr/lib/libicui18n.so.72 \
+              /usr/lib/libicuio.so.72   \
+              /usr/lib/libicuuc.so.72   \
+              /usr/lib/libstdc++.so.6   /usr/lib/
+COPY --from=0 /usr/share/icu            /usr/share/icu
 
-ENTRYPOINT ["/compiler/Compiler"]
+ENTRYPOINT ["f-sharp"]
 
 CMD ["--version"]

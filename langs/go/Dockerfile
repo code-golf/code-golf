@@ -1,4 +1,4 @@
-FROM golang:1.19.3-alpine3.16 as builder
+FROM golang:1.19.5-alpine3.17 as builder
 
 RUN apk add --no-cache build-base gmp-dev
 

@@ -208,11 +208,13 @@ main {
 }
 
 #alert-pool {
+    align-items: center;
     display: flex;
     flex-direction: row-reverse;
     gap: 0.4rem;
-    align-items: center;
 }
+
+#alert-pool:not(:empty) { padding-right: 0.5em }
 
 #alert-pool svg {
     fill: var(--background);

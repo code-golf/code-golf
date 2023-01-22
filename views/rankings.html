@@ -51,9 +51,9 @@
         Medals
     </a>
 
-    <a {{ if not (hasPrefix .Path "/rankings/solutions") }}
-        href=/rankings/solutions
+    <a {{ if not (hasPrefix .Path "/rankings/misc/") }}
+        href=/rankings/misc/holes-authored
     {{ end }}>
-        Solutions
+        Misc
     </a>
 </nav>

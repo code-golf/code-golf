@@ -1,0 +1,19 @@
+main nav {
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+main nav a { width: 100% }
+
+td > a > svg {
+    color: var(--color);
+    height: 1rem;
+    margin-right: .5rem;
+    width: 1rem;
+}
+
+@media (max-width: 40rem) {
+    td:nth-child(3) { border-right: 1px solid var(--color) }
+
+    tr > :nth-child(n+4) { display: none }
+}

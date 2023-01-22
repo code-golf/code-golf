@@ -1,18 +1,21 @@
 CREATE EXTENSION citext;
 
 CREATE TYPE cheevo AS ENUM (
-    'assembly-required', 'bakers-dozen', 'black-box-testing', 'blackjack',
-    'bullseye', 'caffeinated', 'cobowl', 'cunning-linguist',
+    '0xdead', 'aged-like-fine-wine', 'archivist', 'assembly-required',
+    'bakers-dozen', 'big-brother', 'bird-is-the-word', 'black-box-testing',
+    'blackjack', 'bullseye', 'caffeinated', 'cobowl', 'cunning-linguist',
     'different-strokes', 'dont-panic', 'elephpant-in-the-room',
-    'fish-n-chips', 'forty-winks', 'gone-in-60-holes',
-    'happy-birthday-code-golf', 'hello-world', 'inception',
-    'independence-day', 'interview-ready', 'its-over-9000', 'just-kidding',
-    'marathon-runner', 'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars',
-    'off-the-grid', 'omniglot', 'ouroboros', 'pangramglot', 'patches-welcome',
-    'phileas-fogg', 'pi-day', 'polyglot', 'polyglutton', 'real-programmers',
-    'rtfm', 'rule-34', 'slowcoach', 'solve-quine', 'sounds-quite-nice',
-    'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
-    'twenty-kiloleagues', 'under-pressure', 'up-to-eleven', 'vampire-byte'
+    'emergency-room', 'fish-n-chips', 'forty-winks', 'gone-in-60-holes',
+    'happy-birthday-code-golf', 'happy-go-lucky', 'hello-world',
+    'hextreme-agony', 'inception', 'independence-day', 'interview-ready',
+    'its-over-9000', 'jeweler', 'just-kidding', 'marathon-runner',
+    'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars', 'off-the-grid',
+    'omniglot', 'ouroboros', 'pangramglot', 'patches-welcome', 'phileas-fogg',
+    'pi-day', 'polyglot', 'polyglutton', 'real-programmers', 'rtfm',
+    'rule-34', 'slowcoach', 'solve-quine', 'sounds-quite-nice', 'takeout',
+    'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
+    'twenty-kiloleagues', 'under-pressure', 'up-to-eleven', 'vampire-byte',
+    'x86'
 );
 
 CREATE TYPE connection AS ENUM (
@@ -21,26 +24,27 @@ CREATE TYPE connection AS ENUM (
 
 CREATE TYPE hole AS ENUM (
     '12-days-of-christmas', '99-bottles-of-beer', 'abundant-numbers',
-    'arabic-to-roman', 'arrows', 'ascii-table', 'brainfuck',
-    'catalan-numbers', 'catalans-constant', 'christmas-trees', 'collatz',
-    'css-colors', 'cubes', 'diamonds', 'divisors', 'emirp-numbers',
+    'abundant-numbers-long', 'arabic-to-roman', 'arrows', 'ascii-table',
+    'brainfuck', 'catalan-numbers', 'catalans-constant', 'christmas-trees',
+    'collatz', 'css-colors', 'cubes', 'diamonds', 'divisors', 'emirp-numbers',
     'emirp-numbers-long', 'emojify', 'evil-numbers', 'evil-numbers-long',
     'fibonacci', 'fizz-buzz', 'foo-fizz-buzz-bar', 'fractions',
-    'happy-numbers', 'happy-numbers-long', 'hexdump', 'intersection', 'isbn',
-    'jacobi-symbol', 'kolakoski-constant', 'kolakoski-sequence', 'leap-years',
+    'game-of-life', 'happy-numbers', 'happy-numbers-long', 'hexdump',
+    'intersection', 'inventory-sequence', 'isbn', 'jacobi-symbol',
+    'kolakoski-constant', 'kolakoski-sequence', 'leap-years',
     'levenshtein-distance', 'leyland-numbers', 'look-and-say',
-    'lucky-numbers', 'lucky-tickets', 'morse-decoder', 'morse-encoder',
-    'musical-chords', 'niven-numbers', 'niven-numbers-long', 'number-spiral',
-    'odious-numbers', 'odious-numbers-long', 'ordinal-numbers',
-    'pangram-grep', 'pascals-triangle', 'pernicious-numbers', 'poker',
-    'prime-numbers', 'prime-numbers-long', 'proximity-grid', 'qr-decoder',
-    'quine', 'recamán', 'reverse-polish-notation',
-    'rock-paper-scissors-spock-lizard', 'roman-to-arabic', 'rule-110',
-    'seven-segment', 'sierpiński-triangle', 'smith-numbers',
-    'spelling-numbers', 'star-wars-opening-crawl', 'sudoku', 'sudoku-v2',
-    'ten-pin-bowling', 'time-distance', 'tongue-twisters', 'united-states',
-    'vampire-numbers', 'van-eck-sequence', 'zodiac-signs', 'λ', 'π', 'τ', 'φ',
-    '√2', '𝑒'
+    'lucky-numbers', 'lucky-tickets', 'maze', 'morse-decoder',
+    'morse-encoder', 'musical-chords', 'niven-numbers', 'niven-numbers-long',
+    'number-spiral', 'odious-numbers', 'odious-numbers-long',
+    'ordinal-numbers', 'pangram-grep', 'pascals-triangle',
+    'pernicious-numbers', 'pernicious-numbers-long', 'poker', 'prime-numbers',
+    'prime-numbers-long', 'proximity-grid', 'qr-decoder', 'quine', 'recamán',
+    'reverse-polish-notation', 'rock-paper-scissors-spock-lizard',
+    'roman-to-arabic', 'rule-110', 'seven-segment', 'sierpiński-triangle',
+    'smith-numbers', 'spelling-numbers', 'star-wars-opening-crawl', 'sudoku',
+    'sudoku-v2', 'ten-pin-bowling', 'time-distance', 'tongue-twisters',
+    'united-states', 'vampire-numbers', 'van-eck-sequence', 'zodiac-signs',
+    'λ', 'π', 'τ', 'φ', '√2', '𝑒'
 );
 
 CREATE TYPE layout AS ENUM ('default', 'tabs');
@@ -48,12 +52,12 @@ CREATE TYPE layout AS ENUM ('default', 'tabs');
 CREATE TYPE keymap AS ENUM ('default', 'vim');
 
 CREATE TYPE lang AS ENUM (
-    'assembly', 'awk', 'bash', 'basic', 'brainfuck', 'c', 'c-sharp', 'cpp', 'cobol',
-    'crystal', 'd', 'dart', 'elixir', 'f-sharp', 'fish', 'fortran', 'go',
-    'golfscript', 'haskell', 'hexagony', 'j', 'java', 'javascript', 'julia',
-    'k', 'lisp', 'lua', 'nim', 'pascal', 'perl', 'php', 'powershell',
-    'prolog', 'python', 'raku', 'ruby', 'rust', 'sed', 'sql', 'swift', 'tcl',
-    'tex', 'v', 'viml', 'wren', 'zig'
+    'assembly', 'awk', 'bash', 'basic', 'brainfuck', 'c', 'c-sharp', 'cpp',
+    'cobol', 'crystal', 'd', 'dart', 'elixir', 'f-sharp', 'fish', 'fortran',
+    'go', 'golfscript', 'haskell', 'hexagony', 'j', 'java', 'javascript',
+    'julia', 'k', 'lisp', 'lua', 'nim', 'ocaml', 'pascal', 'perl', 'php', 'powershell',
+    'prolog', 'python', 'r', 'raku', 'ruby', 'rust', 'sed', 'sql', 'swift',
+    'tcl', 'tex', 'v', 'viml', 'wren', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('diamond', 'gold', 'silver', 'bronze');

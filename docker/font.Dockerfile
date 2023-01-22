@@ -15,8 +15,11 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f0cf.svg       `# Joker`                        \
     svg/1f308.svg       `# Rainbow`                      \
     svg/1f30c.svg       `# Milky Way`                    \
+    svg/1f340.svg       `# Four Leaf Clover`             \
     svg/1f356.svg       `# Meat on Bone`                 \
     svg/1f35e.svg       `# Bread`                        \
+    svg/1f36f.svg       `# Honey Pot`                    \
+    svg/1f377.svg       `# Wine Glass`                   \
     svg/1f37a.svg       `# Beer Mug`                     \
     svg/1f382.svg       `# Birthday Cake`                \
     svg/1f385.svg       `# Santa Claus`                  \
@@ -26,16 +29,20 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f3ba.svg       `# Trumpet`                      \
     svg/1f3c3.svg       `# Person Running`               \
     svg/1f3c6.svg       `# Trophy`                       \
+    svg/1f3e5.svg       `# Hospital`                     \
     svg/1f409.svg       `# Dragon`                       \
     svg/1f40b.svg       `# Whale`                        \
     svg/1f40d.svg       `# Sanke`                        \
     svg/1f418.svg       `# Elephant`                     \
     svg/1f41f.svg       `# Fish`                         \
+    svg/1f426.svg       `# Bird`                         \
     svg/1f42a.svg       `# Camel`                        \
+    svg/1f441.svg       `# Eye`                          \
     svg/1f445.svg       `# Tongue`                       \
     svg/1f44b.svg       `# Waving Hand`                  \
     svg/1f44d.svg       `# Thumbs Up`                    \
     svg/1f47f.svg       `# Angry Face with Horns`        \
+    svg/1f48d.svg       `# Ring`                         \
     svg/1f48e.svg       `# Gem Stone`                    \
     svg/1f4b0.svg       `# Money Bag`                    \
     svg/1f4bc.svg       `# Briefcase`                    \
@@ -43,6 +50,8 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f4c4.svg       `# Page Facing Up`               \
     svg/1f4c5.svg       `# Calendar`                     \
     svg/1f4d5.svg       `# Closed Book`                  \
+    svg/1f4da.svg       `# Books`                        \
+    svg/1f4e3.svg       `# Megaphone`                    \
     svg/1f4f4.svg       `# Mobile Phone Off`             \
     svg/1f511.svg       `# Key`                          \
     svg/1f51e.svg       `# No One Under Eighteen`        \
@@ -50,6 +59,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f523.svg       `# Input Symbols`                \
     svg/1f549.svg       `# Om`                           \
     svg/1f596.svg       `# Vulcan Salute`                \
+    svg/1f5a5.svg       `# Desktop Computer`             \
     svg/1f5dc.svg       `# Compression`                  \
     svg/1f600.svg       `# Grinning Face`                \
     svg/1f602.svg       `# Face with Tears of Joy`       \
@@ -92,6 +102,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f9f6.svg       `# Yarn`                         \
     svg/1fa9b.svg       `# Screwdriver`                  \
     svg/1fa9e.svg       `# Mirror`                       \
+    svg/1faa6.svg       `# Headstone`                    \
     svg/2615.svg        `# Hot Beverage`                 \
     svg/2639.svg        `# Frowning Face`                \
     svg/26f3.svg        `# Flag in Hole`                 \

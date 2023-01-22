@@ -23,6 +23,12 @@ var answers embed.FS
 // All whitespace except newline, up to a newline or the end.
 var stdoutTrimmer = regexp.MustCompile(`[^\S\n]+(?:\n|$)`)
 
+var romanToASCII = strings.NewReplacer(
+	"Ⅰ", "I", "Ⅱ", "II", "Ⅲ", "III", "Ⅳ", "IV", "Ⅴ", "V",
+	"Ⅵ", "VI", "Ⅶ", "VII", "Ⅷ", "VIII", "Ⅸ", "IX", "Ⅹ", "X",
+	"Ⅺ", "XI", "Ⅻ", "XII", "Ⅼ", "L", "Ⅽ", "C", "Ⅾ", "D", "Ⅿ", "M",
+)
+
 type Scorecard struct {
 	ASMBytes, ExitCode int
 	Answer             string
@@ -63,6 +69,8 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		scores = arabicToRoman(holeID == "roman-to-arabic")
 	case "arrows":
 		scores = arrows()
+	case "base-si-units":
+		scores = baseSiUnits()
 	case "brainfuck":
 		scores = brainfuck()
 	case "css-colors":
@@ -75,6 +83,8 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		scores = forsythEdwardsNotation()
 	case "fractions":
 		scores = fractions()
+	case "game-of-life":
+		scores = gameOfLife()
 	case "gray-code-encoder", "gray-code-decoder":
 		scores = grayCode(holeID == "gray-code-decoder")
 	case "hexdump":
@@ -105,8 +115,10 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		scores = proximityGrid()
 	case "qr-decoder", "qr-encoder":
 		scores = qr(holeID == "qr-decoder")
-	case "quine":
+	case "quine", "palindromic-quine":
 		scores = []Scorecard{{Args: []string{}, Answer: code}}
+	case "repeating-decimal":
+		scores = repeatingDecimal()
 	case "reverse-polish-notation":
 		scores = reversePolishNotation()
 	case "rock-paper-scissors-spock-lizard":
@@ -207,8 +219,6 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 		cmd.Args = []string{"/usr/bin/brainfuck", "-c", code}
 	case "c":
 		cmd.Args = []string{"/usr/bin/tcc", "-run", "-"}
-	case "c-sharp", "f-sharp":
-		cmd.Args = []string{"/compiler/Compiler", "-"}
 	case "crystal":
 		cmd.Args = []string{"/usr/bin/crystal", "run", "--stdin-filename", "code.cr", "--"}
 		cmd.Env = []string{"CRYSTAL_CACHE_DIR=/tmp", "PATH=/usr/bin:/bin"}
@@ -229,7 +239,7 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 	case "haskell", "php":
 		cmd.Args = []string{"/usr/bin/" + langID, "--"}
 	case "hexagony":
-		cmd.Args = []string{"/hexagony/Hexagony", "-d", "-"}
+		cmd.Args = []string{"/usr/bin/hexagony", "-d", "-"}
 	case "j":
 		cmd.Args = []string{"/usr/bin/j", "/tmp/code.ijs"}
 	case "k":
@@ -241,6 +251,8 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 		cmd.Env = []string{"HOME=/"}
 	case "nim":
 		cmd.Args = []string{"/usr/bin/nim", "--colors:on", "-o:/tmp/code", "-r", "c", "-"}
+	case "ocaml":
+		cmd.Args = []string{"/usr/bin/ocaml", "/proc/self/fd/0"}
 	case "perl":
 		cmd.Args = []string{"/usr/bin/perl", "-E", code, "--"}
 	case "powershell":
@@ -255,6 +267,13 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 	case "python":
 		// Force the stdout and stderr streams to be unbuffered.
 		cmd.Args = []string{"/usr/bin/python", "-u", "-"}
+	case "r":
+		cmd.Args = []string{"/usr/bin/Rscript", "-"}
+
+		// Disable implicit output for Quine to prevent trivial solutions.
+		if holeID == "quine" {
+			cmd.Args = []string{"/usr/bin/Rscript", "-e", "source('stdin')"}
+		}
 	case "sed":
 		cmd.Args = []string{"/usr/bin/sed", "-E", "-z", "--sandbox", "-u", "--", code}
 	case "swift":
@@ -339,7 +358,7 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 
 	// Trim trailing whitespace on each line, and then trailing empty lines.
 	// Quine solutions are obviously left untouched.
-	if holeID == "quine" {
+	if holeID == "quine" || holeID == "palindromic-quine" {
 		score.Stdout = stdoutContents
 	} else {
 		score.Stdout = bytes.TrimRight(stdoutTrimmer.ReplaceAll(
@@ -348,22 +367,7 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 
 	// ASCII-ify roman numerals
 	if holeID == "arabic-to-roman" {
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅰ"), []byte("I"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅱ"), []byte("II"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅲ"), []byte("III"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅳ"), []byte("IV"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅴ"), []byte("V"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅵ"), []byte("VI"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅶ"), []byte("VII"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅷ"), []byte("VIII"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅸ"), []byte("IX"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅹ"), []byte("X"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅺ"), []byte("XI"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅻ"), []byte("XII"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅼ"), []byte("L"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅽ"), []byte("C"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅾ"), []byte("D"))
-		score.Stdout = bytes.ReplaceAll(score.Stdout, []byte("Ⅿ"), []byte("M"))
+		score.Stdout = []byte(romanToASCII.Replace(string(score.Stdout)))
 	}
 
 	// Timeouts do not pass, no matter what they output
@@ -374,10 +378,19 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 
 	// We do not allow stdout with only whitespace to pass to prevent suspicious sed "quines"
 	if len(bytes.TrimRightFunc(score.Stdout, unicode.IsSpace)) != 0 {
-		// TODO Generalise a case insensitive flag, should it apply to others?
-		if holeID == "css-colors" {
+		switch holeID {
+		case "css-colors":
+			// TODO Generalise case insensitivity, should it apply to others?
 			score.Pass = strings.EqualFold(score.Answer, string(score.Stdout))
-		} else {
+		case "palindromic-quine":
+			reversed := []rune(score.Answer)
+			for i, j := 0, len(reversed)-1; i < j; i, j = i+1, j-1 {
+				reversed[i], reversed[j] = reversed[j], reversed[i]
+			}
+
+			score.Pass = score.Answer == string(score.Stdout) &&
+				score.Answer == string(reversed)
+		default:
 			score.Pass = score.Answer == string(score.Stdout)
 		}
 	}

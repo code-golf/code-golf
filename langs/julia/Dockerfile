@@ -1,9 +1,8 @@
-FROM alpine:3.16 as builder
+FROM alpine:3.17 as builder
 
-RUN apk add --no-cache cmake curl g++ gfortran libexecinfo-dev \
-    linux-headers m4 make musl-dev patch perl python3 tar xz
+RUN apk add --no-cache autoconf build-base cmake curl gfortran linux-headers python3
 
-ENV CXXFLAGS=-flto LDFLAGS=-flto VER=1.8.2
+ENV CXXFLAGS=-flto LDFLAGS=-flto VER=1.8.5
 
 RUN curl -L https://github.com/JuliaLang/julia/releases/download/v$VER/julia-$VER.tar.gz \
   | tar xz
@@ -16,17 +15,16 @@ FROM codegolf/lang-base
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1      /lib/
 COPY --from=0 /usr/bin/julia                /usr/bin/
-COPY --from=0 /usr/lib/julia                /usr/lib/julia/
-COPY --from=0 /usr/lib/libcurl.so.4         /usr/lib/libcurl.so
+COPY --from=0 /usr/lib/julia                /usr/lib/julia
 COPY --from=0 /usr/lib/libbrotlicommon.so.1 \
               /usr/lib/libbrotlidec.so.1    \
-              /usr/lib/libcrypto.so.1.1     \
-              /usr/lib/libexecinfo.so.1     \
+              /usr/lib/libcrypto.so.3       \
+              /usr/lib/libcurl.so.4         \
               /usr/lib/libgcc_s.so.1        \
               /usr/lib/libgfortran.so.5     \
               /usr/lib/libjulia.so.1        \
               /usr/lib/libquadmath.so.0     \
-              /usr/lib/libssl.so.1.1        \
+              /usr/lib/libssl.so.3          \
               /usr/lib/libstdc++.so.6       /usr/lib/
 
 ENTRYPOINT ["julia"]

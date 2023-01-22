@@ -1,7 +1,6 @@
-DATE     := $(shell date +%Y-%m-%d)
-GOFILES  := $(shell find . -name '*.go' ! -path './.go*')
-POSTGRES := postgres:14.2-alpine
-SHELL    := /bin/bash
+DATE    := $(shell date +%Y-%m-%d)
+GOFILES := $(shell find . -name '*.go' ! -path './.go*')
+SHELL   := /bin/bash
 
 export COMPOSE_PATH_SEPARATOR=:
 export COMPOSE_FILE=docker/core.yml:docker/dev.yml
@@ -32,12 +31,12 @@ db-diff:
 	    <(docker-compose exec -T db pg_dump -OsU postgres code-golf)
 
 db-dump:
-	@rm -f db/*.gz
+	@rm -f sql/*.gz
 
 	@ssh root@code.golf sudo -iu postgres pg_dump -aZ9 code-golf \
-	    > db/code-golf-$(DATE).sql.gz
+	    > sql/code-golf-$(DATE).sql.gz
 
-	@zcat db/*.gz | zstd -fqo ~/Dropbox/code-golf/code-golf-$(DATE).sql.zst
+	@zcat sql/*.gz | zstd -fqo ~/Dropbox/code-golf/code-golf-$(DATE).sql.zst
 
 dev:
 	@touch docker/.env

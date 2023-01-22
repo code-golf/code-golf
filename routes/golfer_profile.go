@@ -7,6 +7,7 @@ import (
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/oauth"
 	"github.com/code-golf/code-golf/session"
+	"github.com/lib/pq"
 )
 
 // GET /golfers/{golfer}
@@ -31,6 +32,7 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 
 	data := struct {
 		Connections    []oauth.Connection
+		Followers      []string
 		Follows        []follow
 		Langs          []*config.Lang
 		OAuthProviders map[string]*oauth.Config
@@ -92,7 +94,6 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
-		// TODO Parse date into viewers location.
 		data.Wall = append(data.Wall, row{
 			Cheevo: config.CheevoByID[cheevo],
 			Date:   date,
@@ -176,6 +177,16 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := rows.Err(); err != nil {
+		panic(err)
+	}
+
+	if err := db.QueryRow(
+		`SELECT array_agg(login ORDER BY login)
+		   FROM follows
+		   JOIN users ON id = follower_id
+		  WHERE followee_id = $1`,
+		golfer.ID,
+	).Scan(pq.Array(&data.Followers)); err != nil {
 		panic(err)
 	}
 

@@ -1,24 +1,18 @@
-h1 {
-    align-items: center;
-    display: flex;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
 #badges {
     display: flex;
     flex-wrap: wrap;
-    font-weight: bold;
     margin-bottom: -.25rem;
     padding: .75rem .75rem 0;
 }
 
-#badges div {
+#badges > * {
     align-items: center;
     background: var(--badge-background);
+    border: 0;
     display: flex;
+    font-weight: bold;
     margin: .25rem;
+    padding: 0;
 }
 
 #badges p {
@@ -49,6 +43,14 @@ h1 {
 #profile form {
     align-self: start;
     grid-row: span 3;
+}
+
+#profile > h1 {
+    align-items: center;
+    display: flex;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 #profile img {

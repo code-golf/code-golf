@@ -145,6 +145,12 @@ body > header svg {
     width: 1.5rem;
 }
 
+button {
+    color: var(--color);
+    cursor: pointer;
+    font: inherit;
+}
+
 dialog {
     background: var(--background);
     border: 1px solid var(--color);
@@ -166,10 +172,31 @@ dialog::backdrop, dialog + .backdrop {
     position: fixed;
 }
 
-dialog form {
-    display: grid;
+dialog > * {
+    display: flex;
+    flex-direction: column;
     gap: 1rem;
     padding: 1rem;
+}
+
+dialog a {
+    align-items: center;
+    display: flex;
+    gap: .5rem;
+}
+
+dialog img {
+    border-radius: 50%;
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+dialog ul {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    list-style: none;
+    padding: 0;
 }
 
 form menu {
@@ -401,7 +428,9 @@ thead th {
 }
 
 .nowrap-first-second td:nth-child(1),
-.nowrap-first-second td:nth-child(2) {
+.nowrap-first-second td:nth-child(2),
+.nowrap-second-third td:nth-child(2),
+.nowrap-second-third td:nth-child(3) {
     max-width: 0;
     width: 50%;
 }
@@ -458,11 +487,6 @@ body > .tabs a {
 details.tabs   { display: initial }
 details.tabs a { display: inline-block }
 
-#alert-pool {
-    flex: 1;
-    margin-right: 0.5em;
-}
-
 #error h1 { text-align: center }
 
 #ideas, #index { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
@@ -493,7 +517,7 @@ details.tabs a { display: inline-block }
     background: var(--color);
     box-shadow: 0 0 1rem #07b;
     color: var(--background);
-    display: grid;
+    display: default;
     gap: .25rem .5rem;
     grid-column: 2;
     grid-template-columns: auto 1fr;

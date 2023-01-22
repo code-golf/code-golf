@@ -31,8 +31,10 @@
 
     --gl-border: #ccc;
     
-    --diamond-weight: bold;
-    --diamond-outglow: #917f20;
+    --rank-1-glow: none;
+    --rank-2-glow: none;
+    --rank-3-glow: none;
+
     --play-color: silver;
 }
 

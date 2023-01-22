@@ -26,6 +26,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/The_Twelve_Days_of_Christmas' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/The_Twelve_Days_of_Christmas_(song)' },
 ]
+synopsis = 'Print the lyrics to the song “The 12 Days of Christmas”.'
 preamble = '''
 <p>Print the lyrics to the song <b>The 12 Days of Christmas</b>:</p>
 
@@ -58,6 +59,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/99_Bottles_of_Beer' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/99_Bottles_of_Beer' },
 ]
+synopsis = 'Print the lyrics to the song “99 Bottles of Beer”.'
 preamble = '''
 <p>Print the lyrics to the song <b>99 Bottles of Beer</b>:</p>
 
@@ -85,6 +87,10 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Abundant,_deficient_and_perfect_number_classifications' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Abundant_number' },
 ]
+synopsis = '''
+Print all the abundant numbers from 1 to
+{{- if eq . "Abundant Numbers" }} 200.{{ else }} 1,000.{{ end -}}
+'''
 preamble = '''
 <p>
     An abundant number is a number for which the sum of its proper divisors
@@ -107,6 +113,13 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Roman_numerals/Decode', variant = 'Roman to Arabic' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Roman_numerals' },
 ]
+synopsis = '''
+{{ if eq . "Arabic to Roman" -}}
+    Convert Arabic numerals to Roman numerals.
+{{- else -}}
+    Convert Roman numerals to Arabic numerals.
+{{- end -}}
+'''
 preamble = '''
 {{ if eq . "Arabic to Roman" }}
 <p>
@@ -161,10 +174,12 @@ data = '''
     "→": [ 1,  0], "⇒": [ 1,  0], "⇨": [ 1,  0],
     "↗": [ 1,  1], "↱": [ 1,  1], "⇗": [ 1,  1]
 }'''
+synopsis = 'Print the cumulative result of following Unicode arrows.'
 preamble = '''
 <p>
-    Starting at <b>[0, 0]</b> print the cumulative result of applying each of the given
-    Unicode arrow arguments. The arrows will be a random combination of these:
+    Starting at <b>[0, 0]</b> print the cumulative result of applying each of
+    the given Unicode arrow arguments. The arrows will be a random combination
+    of these:
 
 <table id=arrows>
     <thead>
@@ -217,8 +232,9 @@ category = 'Art'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Show_ASCII_table' },
 ]
+synopsis = 'Print the hex ASCII table from “man 7 ascii”.'
 preamble = '''
-<p>Print the following ASCII table, taken from <code>man 7 ascii</code>
+<p>Print the following hex ASCII table, taken from <code>man 7 ascii</code>.
 
 <pre>
    2 3 4 5 6 7
@@ -242,12 +258,137 @@ F: / ? O _ o DEL
 </pre>
 '''
 
+['Base SI Units']
+category = 'Transform'
+experiment = 862
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/International_System_of_Units' },
+]
+synopsis = 'Express SI units using the 7 base units.'
+preamble = '''
+
+<p>SI defines 7 base units: s, m, kg, A, K, mol, cd. There are 22 of derived units with their own symbols defined. These correspond to the base ones like so:
+<div class="tables-4col">
+    <table>
+        <thead>
+            <tr>
+                <th>Derived unit
+                <th>Equivalent using base units
+        <tbody>
+            <tr><td>rad	<td>1
+            <tr><td>sr	<td>1
+            <tr><td>Hz	<td>s^-1
+            <tr><td>N	<td>kg m s^-2
+            <tr><td>Pa	<td>kg m^-1 s^-2
+            <tr><td>J	<td>kg m^2 s^-2
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Derived unit
+                <th>Equivalent using base units
+        <tbody>
+            <tr><td>W	<td>kg m^2 s^-3
+            <tr><td>C	<td>s A
+            <tr><td>V	<td>kg m^2 s^-3 A^-1
+            <tr><td>F	<td>kg^-1 m^-2 s^4 A^2
+            <tr><td>Ω	<td>kg m^2 s^-3 A^-2
+            <tr><td>S	<td>kg^-1 m^-2 s^3 A^2
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Derived unit
+                <th>Equivalent using base units
+        <tbody>
+            <tr><td>Wb	<td>kg m^2 s^-2 A^-1
+            <tr><td>T	<td>kg s^-2 A^-1
+            <tr><td>H	<td>kg m^2 s^-2 A^-2
+            <tr><td>°C	<td>K
+            <tr><td>lm	<td>cd
+            <tr><td>lx	<td>cd m^-2
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Derived unit
+                <th>Equivalent using base units
+        <tbody>
+            <tr><td>Bq	<td>s^-1
+            <tr><td>Gy	<td>m^2 s^-2
+            <tr><td>Sv	<td>m^2 s^-2
+            <tr><td>kat	<td>mol s^-1
+    </table>
+</div>
+Note: 1 °C = 1 K when we talk about difference of temperatures.
+
+<p>SI further defines 24 prefixes denoting exponents of 10:
+<div class="tables-4col">
+    <table>
+        <thead>
+            <tr>
+                <th>Symbol
+                <th>Quantity
+        <tbody>
+            <tr><td>Q	<td>10^30
+            <tr><td>R	<td>10^27
+            <tr><td>Y	<td>10^24
+            <tr><td>Z	<td>10^21
+            <tr><td>E	<td>10^18
+            <tr><td>P	<td>10^15
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Symbol
+                <th>Quantity
+        <tbody>
+            <tr><td>T	<td>10^12
+            <tr><td>G	<td>10^9
+            <tr><td>M	<td>10^6
+            <tr><td>k	<td>10^3
+            <tr><td>h	<td>10^2
+            <tr><td>da	<td>10
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Symbol
+                <th>Quantity
+        <tbody>
+            <tr><td>d	<td>10^-1
+            <tr><td>c	<td>10^-2
+            <tr><td>m	<td>10^-3
+            <tr><td>μ	<td>10^-6
+            <tr><td>n	<td>10^-9
+            <tr><td>p	<td>10^-12
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Symbol
+                <th>Quantity
+        <tbody>
+            <tr><td>f	<td>10^-15
+            <tr><td>a	<td>10^-18
+            <tr><td>z	<td>10^-21
+            <tr><td>y	<td>10^-24
+            <tr><td>r	<td>10^-27
+            <tr><td>q	<td>10^-30
+    </table>
+</div>
+
+<p>Each input comprises of a (optional) prefix and one of the base or derived units symbol. Each such input should be convert to product of a power of 10 and a product of base units, as described in the tables above. Missing prefix should be mapped to 1.<br>
+For example, "MJ" should be converted to "10^6 kg m^2 s^-2".
+'''
+
 [brainfuck]
 category = 'Computing'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Execute_Brain****' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Brainfuck' },
 ]
+synopsis = 'Write a Brainfuck interpreter.'
 preamble = '''
 <p>
     Brainfuck is a minimalistic esoteric programming language created by
@@ -300,10 +441,13 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Catalan_numbers' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Catalan_number' },
 ]
+synopsis = 'Print the first 100 Catalan numbers.'
 preamble = '''
 <p>The nth Catalan number can be expressed as C(n) = binomial(2n,n)/(n+1).
 
-<p>Print the first 100 Catalan numbers, from C(0) to C(99) inclusive, each on their own line.
+<p>
+    Print the first 100 Catalan numbers, from C(0) to C(99) inclusive, each on
+    their own line.
 
 <p>Note: C(99) is 57 digits long, and is greater than 2<sup>187</sup>.
 '''
@@ -314,19 +458,25 @@ links = [
    { name = 'OEIS A006752', url = '//oeis.org/A006752' },
    { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Catalan's_constant" },
 ]
+synopsis = 'Print Catalan’s constant to the first 1,000 decimal places.'
 preamble = '''
-<p>Catalan’s constant is a mathematical constant equal to <b>1/1 − 1/3² + 1/5² − 1/7² + 1/9² − …</b>
+<p>
+    Catalan’s constant is a mathematical constant equal to
+    <b>1/1 − 1/3² + 1/5² − 1/7² + 1/9² − …</b>
 
-<p>It is unrelated to the <a href=catalan-numbers>Catalan numbers</a> except by name.
+<p>
+    It is unrelated to the <a href=catalan-numbers>Catalan numbers</a> except
+    by name.
 
 <p>Print Catalan’s constant to the first 1,000 decimal places.
 '''
 
 ['Christmas Trees']
 category = 'Art'
+synopsis = 'Draw a size ascending range of Christmas trees using asterisks.'
 preamble = '''
 <p>
-    Print a size ascending range of Christmas trees using asterisks, ranging
+    Draw a size ascending range of Christmas trees using asterisks, ranging
     from size <b>3</b> to size <b>9</b>, each tree separated by a blank line.
 
 <p>
@@ -361,6 +511,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Hailstone_sequence' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Collatz_conjecture' }
 ]
+synopsis = 'Print the Collatz stopping times of all the numbers from 1 to 1,000.'
 preamble = '''
 <p>
     The Collatz conjecture states that, for any positive integer <b>n</b>, it
@@ -378,7 +529,7 @@ preamble = '''
 <p><b>10 → 5 → 16 → 8 → 4 → 2 → 1</b>
 
 <p>
-    Print the stopping times of all the numbers from <b>1</b> to <b>1000</b>
+    Print the stopping times of all the numbers from <b>1</b> to <b>1,000</b>
     inclusive, each on their own line.
 '''
 
@@ -461,6 +612,7 @@ data = '''
     "SlateGrey":            "#708090", "DarkSlateGray":   "#2f4f4f",
     "DarkSlateGrey":        "#2f4f4f", "Black":           "#000000"
 }'''
+synopsis = 'Convert CSS color keywords to their hex values.'
 preamble = '''
 <svg class=hide>
     <symbol id="color" viewBox="0 0 1 1" xmlns="http://www.w3.org/2000/symbol">
@@ -471,7 +623,7 @@ preamble = '''
 Given each CSS color keyword print the corresponding hex value. The output
 will be checked case-insensitively. The full mapping is as follows:
 
-<div id=colors>
+<div id=colors class="tables-4col">
 {{ range . }}
     {{ if or (eq .Key "IndianRed") (eq .Key "Magenta")
              (eq .Key "Cyan"     ) (eq .Key "Sienna" ) }}
@@ -491,6 +643,7 @@ will be checked case-insensitively. The full mapping is as follows:
 
 [Cubes]
 category = 'Art'
+synopsis = 'Draw a size ascending range of isometric cubes.'
 preamble = '''
 <p>
     Draw <b>7</b> cubes in increasing size using "╱" (U+2571) for the diagonal
@@ -538,9 +691,10 @@ preamble = '''
 
 [Diamonds]
 category = 'Art'
+synopsis = 'Draw a size ascending range of diamonds using the numbers 1 to 9.'
 preamble = '''
 <p>
-    Print a size ascending range of Diamonds using the numbers <b>1</b> to
+    Draw a size ascending range of diamonds using the numbers <b>1</b> to
     <b>9</b>, ranging from size <b>1</b> to size <b>9</b>, each diamond
     separated by a blank line.<p>A size <b>1</b> diamond should look like
     this, a single centered <b>1</b>:
@@ -574,6 +728,7 @@ category = 'Sequence'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Proper_divisors' },
 ]
+synopsis = 'Print the positive divisors of each number from 1 to 100.'
 preamble = '''
 <p>
     A number is a divisor of another number if it can divide into it with no
@@ -592,6 +747,10 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Emirp_primes' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Emirp' },
 ]
+synopsis = '''
+Print all the emirp numbers from 1 to
+{{- if eq . "Emirp Numbers" }} 1,000.{{ else }} 10,000.{{ end -}}
+'''
 preamble = '''
 <p>
     An emirp (prime spelled backwards) is a prime number that results in a
@@ -609,7 +768,8 @@ category = 'Mathematics'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Ellipse' },
 ]
-experiment = -1
+experiment = 811
+synopsis = 'Compute the perimeter of an ellipse.'
 preamble = '''
 <p>
     Given the two radii of an ellipse, compute its perimeter and print
@@ -629,6 +789,7 @@ data = '''
     "X-)":  "😆", "O:-)": "😇", ";-)":  "😉", ":-$":  "😳", ":-":   "😶",
     "B-)":  "😎", ":-J":  "😏", "}:-)": "😈", "}:-(": "👿", ":-@":  "😡"
 }'''
+synopsis = 'Convert ASCII emoticons to Unicode emojis.'
 preamble = '''
 <p>
     Given each of the following ASCII emoticons print the corresponding
@@ -653,6 +814,12 @@ links = [
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Evil_number',   variant = 'Evil Numbers' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Odious_number', variant = 'Odious Numbers' },
 ]
+synopsis = '''
+Print all the
+{{- if hasPrefix . "Evil" }} evil {{ else }} odious {{ end -}}
+numbers from 0 to
+{{- if hasSuffix . "(Long)" }} 1,000.{{ else }} 50.{{ end -}}
+'''
 preamble = '''
 {{ if or (eq . "Evil Numbers") (eq . "Evil Numbers (Long)") }}
 <p>
@@ -676,11 +843,12 @@ preamble = '''
 '''
 
 ['Factorial Factorisation']
-experiment = -1
+experiment = 812
 category = 'Sequence'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Factorial' },
 ]
+synopsis = 'Print the factorisation of 1000!.'
 preamble = '''
 <p>Print the factorisation of 1000!,
 
@@ -697,10 +865,11 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Fibonacci_sequence' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Fibonacci_number' },
 ]
+synopsis = 'Print the first 31 Fibonacci numbers.'
 preamble = '''
 <p>
-    The Fibonacci numbers are a numerical sequence in which each number is the sum of the
-    two preceding numbers: <b>0, 1, 1, 2, 3, 5, 8, 13…</b>
+    The Fibonacci numbers are a numerical sequence in which each number is the
+    sum of the two preceding numbers: <b>0, 1, 1, 2, 3, 5, 8, 13…</b>
 <p>
     Print the first <b>31</b> Fibonacci numbers from <b>F<sub>0</sub> = 0</b>
     to <b>F<sub>30</sub> = 832040</b> (inclusive), each on a separate line.
@@ -713,6 +882,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/FizzBuzz' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Fizz_buzz' },
 ]
+synopsis = 'Print {{ . }}.'
 preamble = '''
 <p>
     Print the numbers from <b>1</b> to
@@ -743,6 +913,7 @@ experiment = 645
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Forsyth–Edwards_Notation' },
 ]
+synopsis = 'Output a Unicode chess board from Forsyth–Edwards Notation.'
 preamble = '''
 <p>
     Forsyth–Edwards Notation (FEN) is a standard notation for describing a
@@ -785,17 +956,45 @@ category = 'Mathematics'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Fraction#Simplifying_(reducing)_fractions' },
 ]
+synopsis = 'Reduce fractions to their simplest form.'
 preamble = '''
 <p>For each fraction argument <code>a/b</code>, reduce it to its simplest form.
+'''
+
+['Game of Life']
+category = 'Gaming'
+links = [
+    { name = 'Rosetta Code', url = "//rosettacode.org/wiki/Conway's_Game_of_Life" },
+    { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Conway's_Game_of_Life" },
+]
+synopsis = 'Output the state in the next step of the Game of Life.'
+preamble = '''
+<p>
+    The universe of the Game of Life is a grid of square cells, each of which
+    is either alive ("#") or dead ("."). Every cell interacts with its eight
+    neighbours, which are the cells that are horizontally, vertically, or
+    diagonally adjacent. At each step in time, the following transitions occur:
+
+<ol>
+    <li>Any dead cell with exactly three live neighbours becomes a live cell.
+    <li>All other dead cells stay dead.
+    <li>Any live cell with two or three live neighbours survives.
+    <li>All other live cells die.
+</ol>
+
+<p>
+    Given a 32×32 grid, output the state in the next step. Assume that every
+    cell outside the grid is dead.
 '''
 
 ['Gijswijt’s Sequence']
 category = 'Sequence'
 experiment = 724
 links = [
-    { name = 'OEIS A000045', url = '//oeis.org/A090822' },
+    { name = 'OEIS A090822', url = '//oeis.org/A090822' },
     { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Gijswijt's_sequence" },
 ]
+synopsis = 'Print the first 1,000 terms of Gijswijt’s sequence.'
 preamble = '''
 <p>
     Gijswijt’s sequence is a slow-growing sequence where each term counts the
@@ -815,14 +1014,14 @@ preamble = '''
 [1 , 1 , 2],[1 , 1 , 2]
  1 , 1 , 2 , 1 , 1 ,[2],[2]
  1 , 1 , 2 , 1 , 1 ,[2],[2],[2]
- 1 , 1 , 2 , 1 , 1 , 2 , 2 , 2,[3]
- 1 , 1 , 2 , 1 , 1 , 2 , 2 , 2, 3 , 1
+ 1 , 1 , 2 , 1 , 1 , 2 , 2 , 2 ,[3]
+ 1 , 1 , 2 , 1 , 1 , 2 , 2 , 2 , 3 , 1
 </pre>
 
 <p>
     On each line, the blocks that are used to get the next number in the
-    sequence are marked in []. Print the first <b>1000</b> terms of Gijswijt’s
-    sequence, each on a separate line.
+    sequence are marked in []. Print the first <b>1,000</b> terms of
+    Gijswijt’s sequence, each on a separate line.
 '''
 
 ['Gray Code']
@@ -833,23 +1032,36 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Gray_code' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Gray_code' },
 ]
+synopsis = '''
+{{- if eq . "Gray Code Decoder" -}}
+    Decode Gray code into denary numbers.
+{{- else -}}
+    Encode denary numbers into Gray code.
+{{- end -}}
+'''
 preamble = '''
-<p>The reflected binary code (RBC), also known as Gray code, is an ordering of the binary numeral system
-such that two successive values differ in only one bit (binary digit).</p>
+<p>
+    The reflected binary code (RBC), also known as Gray code, is an ordering
+    of the binary numeral system such that two successive values differ in
+    only one bit (binary digit).
 
-<p>For example, the representation of the decimal value <tt>1</tt> in binary would normally be <tt>001</tt> and
-<tt>2</tt> would be <tt>010</tt>. In Gray code, these values are represented as <tt>001</tt> and <tt>011</tt>.
-That way, incrementing a value from 1 to 2 requires only one bit to change, instead of two.</p>
+<p>
+    For example, the representation of the decimal value <tt>1</tt> in binary
+    would normally be <tt>001</tt> and <tt>2</tt> would be <tt>010</tt>. In
+    Gray code, these values are represented as <tt>001</tt> and <tt>011</tt>.
+    That way, incrementing a value from 1 to 2 requires only one bit to
+    change, instead of two.
 
 <p>
 {{ if eq . "Gray Code Decoder" }}
-For each argument in reflected binary (Gray code) form, print the same number in decimal form.
+    For each argument in reflected binary (Gray code) form, print the same
+    number in decimal form.
 {{ else }}
-For each numeric argument in decimal form, print the same number in reflected binary (Gray code) form.
+    For each numeric argument in decimal form, print the same number in
+    reflected binary (Gray code) form.
 {{ end }}
-</p>
 
-<p>The numbers range from 0 to 4095 inclusive.</p>
+<p>The numbers range from 0 to 4095 inclusive.
 '''
 
 ['Happy Numbers']
@@ -860,6 +1072,10 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Happy_numbers' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Happy_number' },
 ]
+synopsis = '''
+Print all the happy numbers from 1 to
+{{- if hasSuffix . "(Long)" }} 1,000.{{ else }} 200.{{ end -}}
+'''
 preamble = '''
 <p>
     A happy number is defined by the following Sequence: Starting with any
@@ -886,6 +1102,7 @@ preamble = '''
 
 [Hexdump]
 category = 'Transform'
+synopsis = 'Convert strings to their hexdump equivalents.'
 preamble = '''
 <p>
     Given a string, output the hexdump of the string as given by the xxd
@@ -915,6 +1132,7 @@ category = 'Mathematics'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Intersection' },
 ]
+synopsis = 'Compute the intersection area between two boxes.'
 preamble = '''
 <p>A box is defined via <b>x</b>, <b>y</b>, <b>w</b> and <b>h</b> as
 
@@ -935,16 +1153,36 @@ preamble = '''
 <pre>x1 y1 w1 h1 x2 y2 w2 h2</pre>
 '''
 
-['Julia Set']
-category = 'Art'
-experiment = -1
+['Inventory Sequence']
+category = 'Sequence'
 links = [
-    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Julia_set' },
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Julia_set' },
+    { name = 'Numberphile',  url = '//www.numberphile.com/videos/the-inventory-sequence' },
+    { name = 'OEIS A342585', url = '//oeis.org/A342585' },
 ]
+synopsis = 'Print the first 1,000 terms of the Inventory sequence.'
 preamble = '''
 <p>
-    In a 500x500px canvas, draw the Julia set for f(z) = z^2 + c, where c = -0.4 + 0.6i. Output the image in ppm grayscale format.
+    We will build a sequence by repeatedly taking inventory.
+    We take inventory each time we add 0 to the sequence.
+    To take inventory we start by counting the number of zeros in the sequence
+    and add the number to the end of the sequence, then we continue by
+    counting the number of ones and add that to the sequence and so on.
+    We stop when we reach a number that is not in the sequence and we add 0 to
+    the sequence then start over.
+
+<p>The first few terms are as follows:
+
+<pre>
+0 1 2 3 4 5
+-----------
+0
+1 1 0
+2 2 2 0
+3 2 4 1 1 0
+4 4 4 1 4 0
+</pre>
+
+<p>Print the first 1,000 terms of the inventory sequence, each on their own line.
 '''
 
 [ISBN]
@@ -952,13 +1190,15 @@ category = 'Transform'
 links = [
     { name  = 'Wikipedia', url = '//en.wikipedia.org/wiki/International_Standard_Book_Number#ISBN-10_check_digit_calculation' }
 ]
+synopsis = 'Calculate the check digit for these incomplete ISBNs.'
 preamble = '''
 <p>
     Calculate the check digit for these incomplete ISBNs.
     If the check digit would be 10, write "X" instead.
 
 <p>
-    The check digit of <code>a-bcdef-ghi-<i>?</i></code> is computed as <b>− 10a − 9b − 8c − … − 2i</b>, modulo 11.
+    The check digit of <code>a-bcdef-ghi-<i>?</i></code> is computed as
+    <b>− 10a − 9b − 8c − … − 2i</b>, modulo 11.
     Dashes may occur in varying positions and are ignored.
 '''
 
@@ -968,8 +1208,11 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Jacobi_symbol' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Jacobi_symbol' },
 ]
+synopsis = 'Calculate the values of Jacobi symbols.'
 preamble = '''
-<p>For each argument <code>a n</code>, print the value of the Jacobi symbol <b>J(a, n)</b>.
+<p>
+    For each argument <code>a n</code>, print the value of the Jacobi symbol
+    <b>J(a, n)</b>.
 
 <p>
     Both inputs are non-negative integers, and <b>n</b> is odd.
@@ -985,12 +1228,27 @@ preamble = '''
     as it requires factorisation of <b>n</b>.
 '''
 
+['Julia Set']
+category = 'Art'
+experiment = 814
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Julia_set' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Julia_set' },
+]
+synopsis = 'Draw the Julia set.'
+preamble = '''
+<p>
+    In a 500x500px canvas, draw the Julia set for f(z) = z^2 + c,
+    where c = -0.4 + 0.6i. Output the image in PPM grayscale format.
+'''
+
 ['Kolakoski Constant']
 category = 'Mathematics'
 links = [
    { name = 'OEIS A118270', url = '//oeis.org/A118270' },
    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Kolakoski_sequence#Kolakoski_Constant' },
 ]
+synopsis = 'Print the Kolakoski constant to the first 1,000 decimal places.'
 preamble = '''
 <p>
     The Kolakoski constant is created by taking the
@@ -1012,6 +1270,7 @@ links = [
     { name = 'OEIS A000002', url = '//oeis.org/A000002' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Kolakoski_sequence' },
 ]
+synopsis = 'Print the first 1,000 elements in the Kolakoski sequence.'
 preamble = '''
 <p>
     The Kolakoski sequence is a self referential sequence where the nth
@@ -1026,7 +1285,7 @@ preamble = '''
 </pre>
 
 <p>
-    Beginning with (1, 2) output the first 1000 elements in the Kolakoski
+    Beginning with (1, 2) print the first 1,000 elements in the Kolakoski
     sequence, separated by spaces.
 '''
 
@@ -1035,6 +1294,7 @@ category = 'Sequence'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Leap_year' },
 ]
+synopsis = 'Print all the leap years from the year 1800 to 2400.'
 preamble = '''
 <p>
     In the Gregorian calendar, a leap year is created by extending February
@@ -1054,6 +1314,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Levenshtein_distance' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Levenshtein_distance' },
 ]
+synopsis = 'Calculate the Levenshtein distance between two words.'
 preamble = '''
 <p>
     The Levenshtein distance is the minimum number of single character edits
@@ -1082,6 +1343,7 @@ links = [
     { name = 'OEIS A076980', url = '//oeis.org/A076980' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Leyland_number' },
 ]
+synopsis = 'Print all the Leyland numbers from 1 to 100,000,000,000.'
 preamble = '''
 <p>
     A Leyland number is of the form <b>x<sup>y</sup> + y<sup>x</sup></b> where
@@ -1103,14 +1365,15 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Look-and-say_sequence' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Look-and-say_sequence' },
 ]
+synopsis = 'Print the first 20 terms of the Look and Say sequence.'
 preamble = '''
 <p>
     The Look and Say sequence starts with 1 and is continued by looking
-    at each of the runs of the same number in the previous element and combining
-    the length with the original number. For example the next element after
+    at each of the runs of the same number in the previous term and combining
+    the length with the original number. For example the next term after
     111221 would be 312211 (three ones, two twos and one one).
 
-<p>Print the first 20 elements of the Look and Say sequence.
+<p>Print the first 20 terms of the Look and Say sequence.
 '''
 
 ['Lucky Numbers']
@@ -1120,6 +1383,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Lucky_and_even_lucky_numbers' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Lucky_number'}
 ]
+synopsis = 'Print the first 1,000 Lucky numbers.'
 preamble = '''
 <p>
     The <b>lucky numbers</b> are an integer sequence that results from a
@@ -1131,18 +1395,18 @@ preamble = '''
 
 <p>
     For each <b>k = 2…∞</b>, replace <b>a</b> with the result of deleting
-    every <b>a[k]</b>-th element from <b>a</b>.
+    every <b>a[k]</b>-th term from <b>a</b>.
 
-<p>Print the first <b>1000</b> numbers of the resulting sequence.
+<p>Print the first <b>1,000</b> terms of the resulting sequence.
 
 <pre>
 Start:
     1 3 5 7 9 11 13 15 …
       ^
-Delete every 3rd element and advance:
+Delete every 3rd term and advance:
     1 3 7 9 13 15 19 21 …
         ^
-Delete every 7th element and advance:
+Delete every 7th term and advance:
     1 3 7 9 13 15 21 25 …
           ^
 </pre>
@@ -1153,44 +1417,60 @@ category = 'Mathematics'
 links = [
     { name = 'OEIS A174061', url = '//oeis.org/A174061' },
 ]
+synopsis = 'Calculate the total number of lucky tickets.'
 preamble = '''
 <p>
-    In Russia, bus ticket numbers consist of 6 decimal digits. It is considered lucky when the sum of the first three digits equals the sum of the last three digits. The concept of lucky tickets can be extended to ticket numbering systems with even numbers of digits and arbitrary bases.
+    In Russia, bus ticket numbers consist of 6 decimal digits. It is
+    considered lucky when the sum of the first three digits equals the sum of
+    the last three digits. The concept of lucky tickets can be extended to
+    ticket numbering systems with even numbers of digits and arbitrary bases.
+
 <p>
-    Each argument describes a ticket numbering system and consists of two numbers separated by a space. The first is the even number of digits <b>2 ≤ d ≤ 14</b>. The second is the base of the numbering system <b>2 ≤ b ≤ 16</b>. For each argument, output the total number of lucky tickets for the numbering system on a separate line.
+    Each argument describes a ticket numbering system and consists of two
+    numbers separated by a space. The first is the even number of digits
+    <b>2 ≤ d ≤ 14</b>. The second is the base of the numbering system
+    <b>2 ≤ b ≤ 16</b>. For each argument, output the total number of lucky
+    tickets for the numbering system on a separate line.
 '''
 
 [Mandelbrot]
 category = 'Art'
-experiment = -1
+experiment = 813
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Mandelbrot_set' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Mandelbrot_set' },
 ]
+synopsis = 'Draw the Mandelbrot set.'
 preamble = '''
 <p>
-    Draw the Mandelbrot set (x∈[-2,0.5], y∈[-1,1]) in a 41x81 Unicode grid by using ▒ (U+2592)
-    and █ (U+2588).
+    The Mandelbrot set is the set of complex numbers <b>c</b> for which the sequence <b>a(1) = 0, a(n+1) = a(n)² + c</b> does not diverge to infinity.
+
+<p>
+    Consider the section of the complex plane where <b>-2 ≤ Re c ≤ 0.5, -1 ≤ Im c ≤ 1</b> divided into a 41×81 lattice.
+    Draw the Mandelbrot set using this grid. That is, for each such lattice point, print █ (U+2588) if it belongs to the set and ▒ (U+2592) if it doesn't.
+    Note that for each of the lattice points, 1063 iterations are enough to determine whether the sequence corresponding to the point is unbounded or not.
 '''
 
 [Maze]
 category = 'Gaming'
-experiment = 338
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Maze_solving_algorithm' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Maze_solving' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Maze_solving_algorithm' },
 ]
+synopsis = 'Draw the route through the maze.'
 preamble = '''
 <p>
-    For each input maze, find the shortest path from <b>S</b>tart to <b>E</b>nd points. Output the path in the maze with dots. For example:
+    For a given maze, find the shortest path from <b>S</b>tart to <b>E</b>nd
+    points. Output the path in the maze with dots. For example:
 
 <pre>
-███████████       ███████████
-█S█      E█       █S█  ....E█
-█ ███ █████       █.███.█████
-█   █     █   →   █...█.....█
-███ █████ █       ███.█████.█
-█         █       █  .......█
-███████████       ███████████
+###########       ###########
+#S#      E#       #S#  ....E#
+# ### #####       #.###.#####
+#   #     #   →   #...#.....#
+### ##### #       ###.#####.#
+#         #       #  .......#
+###########       ###########
 </pre>
 '''
 
@@ -1217,6 +1497,13 @@ data = '''
     "8": "▄▄▄ ▄▄▄ ▄▄▄ ▄ ▄", "9": "▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄ ▄", "0": "▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄",
     " ": "    "
 }'''
+synopsis = '''
+{{- if eq . "Morse Decoder" -}}
+    Decode alphanumeric strings into International Morse Code.
+{{- else -}}
+    Encode alphanumeric strings into International Morse Code.
+{{- end -}}
+'''
 preamble = '''
 <p>
     Using ▄ (U+2584 Lower Half Block) to represent a dot,
@@ -1234,7 +1521,7 @@ preamble = '''
     <li>The space between words is ten units.
 </ol>
 
-<div id=morse>
+<div id=morse class="tables-4col">
     <table>
         <thead>
             <tr>
@@ -1305,8 +1592,9 @@ preamble = '''
 ['Musical Chords']
 category = 'Transform'
 links = [
-    { name = 'Wikipedia', url = 'https://en.wikipedia.org/wiki/Triad_(music)' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Triad_(music)' },
 ]
+synopsis = 'Print the name of the chords formed from triads.'
 preamble = '''
 <p>
     For each set of three musical notes forming a triad, print the name of the
@@ -1458,6 +1746,10 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Harshad_or_Niven_series' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Niven_number' },
 ]
+synopsis = '''
+Print all the Niven numbers from 1 to
+{{- if hasSuffix . "(Long)" }} 10,000.{{ else }} 100.{{ end -}}
+'''
 preamble = '''
 <p>
     A Niven number is a positive integer that is divisible by the sum of
@@ -1474,6 +1766,7 @@ category = 'Art'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Spiral_matrix' },
 ]
+synopsis = 'Draw an ascending clockwise number spiral from 0 to 99.'
 preamble = '''
 <p>
     Print a <b>10×10</b> grid of the numbers <b>0</b> to <b>99</b> inclusive.
@@ -1496,11 +1789,12 @@ preamble = '''
 
 ['Odd Polyomino Tiling']
 category = 'Art'
-experiment = -1
+experiment = 815
 links = [
     { name = 'Rectifiable Polyomino', url = '//cflmath.com/Polyomino/rectifiable_data.html' },
     { name = 'Wikipedia',             url = '//en.wikipedia.org/wiki/Polyomino' },
 ]
+synopsis = 'Find odd tiling for a given polyomino.'
 preamble = '''
 <p>
     A polyomino is called rectifiable if there exists a rectangle that can be
@@ -1515,8 +1809,11 @@ links = [
     { name = 'Rosetta Code', url = "//rosettacode.org/wiki/N'th" },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Ordinal_numeral' },
 ]
+synopsis = 'Print the ordinal suffix for all numbers from 0 to 999.'
 preamble = '''
-<p>For each integer argument, print the argument and its ordinal suffix (e.g. <code>1st</code>, <code>2nd</code>, <code>3rd</code>, <code>112th</code>).
+<p>
+    For each integer argument, print the argument and its ordinal suffix
+    (e.g. <code>1st</code>, <code>2nd</code>, <code>3rd</code>, <code>112th</code>).
 
 <p>The integers will be in the range of <b>0</b> to <b>999</b> inclusive.
 '''
@@ -1527,13 +1824,14 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Pangram_checker' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Pangram' },
 ]
+synopsis = 'Grep pangram sentences from a list of arguments.'
 preamble = '''
 <p>A pangram is a sentence that uses every letter of a given alphabet.
 
 <p>
     Write a program that will receive various sentences as arguments and print
-    those that are valid pangrams, meaning they use all letters from A to Z, case
-    insensitive.
+    those that are valid pangrams, meaning they use all letters from A to Z,
+    case insensitive.
 '''
 
 ['Pascal’s Triangle']
@@ -1542,8 +1840,12 @@ links = [
     { name = 'Rosetta Code', url = "//rosettacode.org/wiki/Pascal's_triangle" },
     { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Pascal's_triangle" },
 ]
+synopsis = 'Print the first 20 rows of Pascal’s triangle.'
 preamble = '''
-<p>Pascal’s triangle is a triangular pattern of integers formed by the binomial coefficients.
+<p>
+    Pascal’s triangle is a triangular pattern of integers formed by the
+    binomial coefficients.
+
 <p>Print the first <b>20 rows</b> of Pascal’s triangle.
 '''
 
@@ -1555,6 +1857,10 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Pernicious_numbers' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Pernicious_number' },
 ]
+synopsis = '''
+Print all the Pernicious numbers from 0 to
+{{- if hasSuffix . "(Long)" }} 10,000.{{ else }} 50.{{ end -}}
+'''
 preamble = '''
 <p>
     A pernicious number is a positive number where the sum of its binary
@@ -1566,7 +1872,7 @@ preamble = '''
 
 <p>
     Print all the pernicious numbers from <b>0</b> to
-    <b>{{ if eq . "Pernicious Numbers" }}50{{ else }}1,000{{ end }}</b>
+    <b>{{ if hasSuffix . "(Long)" }}10,000{{ else }}50{{ end }}</b>
     inclusive, each on their own line.
 '''
 
@@ -1576,6 +1882,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Poker_hand_analyser' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/List_of_poker_hands' },
 ]
+synopsis = 'Calculate the Poker hand from five cards.'
 preamble = '''
 <p>
     Given various poker hands as arguments, print what type of hand each
@@ -1642,10 +1949,14 @@ links = [
     { name = 'OEIS A000040', url = '//oeis.org/A000040' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Prime_number' },
 ]
+synopsis = '''
+Print all the prime numbers from 1 to
+{{- if hasSuffix . "(Long)" }} 10,000.{{ else }} 100.{{ end -}}
+'''
 preamble = '''
 <p>
     Print all the prime numbers from <b>1</b> to
-    <b>{{ if eq . "Prime Numbers" }}100{{ else }}10,000{{ end }}</b>
+    <b>{{ if hasSuffix . "(Long)" }}10,000{{ else }}100{{ end }}</b>
     inclusive, each on their own line.
 '''
 
@@ -1654,23 +1965,20 @@ category = 'Computing'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Taxicab_geometry' },
 ]
+synopsis = 'Calculate the length of the shortest path in a grid.'
 preamble = '''
-<p>Given a series of 9x9 grids, reproduce the grid with distance set to closest source for each passible point.
+<p>
+    A grid is a 9x9 square of characters representing an arrangement of points,
+    some of which are walls, denoted by #'s, or sources, denoted by 0's; every
+    other point is passible, denoted with -'s.
 
-<p> <a href=//oeis.org/A331968/>OEIS on maximum snake-like path length in a NxN box</a>.
-
-<p>Use base62 (0-9 A-Z a-z) to represent distance.
-
-<p>A valid path to a source must move vertically or horiontally along passible points.
-
-<p>Impassible points and points which cannot form a valid path to a source should remain unchanged.
-
-<p>Points on the grid can be marked as a source notated with 0.
-
-<p>Points on the grid can be marked as impassible notated with #.
-
-<p>Points on the grid can be marked as passible notated with -.
-
+<p>
+    For a series of grids, compute the length of the shortest path connecting
+    each passible point to a source. A path must move horizontally or
+    vertically through the grid and cannot pass through walls. Output each
+    grid with every passible point replaced by its distance to a source
+    written in base62 (0-9 A-Z a-z); points which cannot be connected to a
+    source should remain unchanged.
 '''
 
 ['QR Decoder']
@@ -1678,12 +1986,14 @@ category = 'Transform'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/QR_code#Encoding' },
 ]
+synopsis = 'Decode a Version-1 ASCII QR code.'
 preamble = '''
-<div class=qr-span>
-<p>Decode a Version-1 QR code given in this ASCII-art format, where all the <span>v</span> and <span>^</span> are filled with "#" and spaces, encoding a message.
-</div>
+<p class=qr-span>
+    Decode a Version-1 QR code given in this ASCII-art format, where all the
+    <span>v</span> and <span>^</span> are filled with "#" and spaces, encoding
+    a message.
 
-<div class=qr-span><pre>
+<pre class=qr-span>
     #######  <span>vv^^</span> #######
     #     #  <span>vv^^</span> #     #
     # ### # #<span>vv^^</span> # ### #
@@ -1705,22 +2015,28 @@ preamble = '''
     # ### # #<span>vv^^vv^^vv^^</span>
     #     # #<span>vv^^vv^^vv^^</span>
     ####### #<span>vv^^vv^^vv^^</span>
-</div>
+</pre>
 
-<div class=qr-span>
-<p>The 10 vertical "strips" of <span>^^</span> or <span>vv</span> must be read from right to left. The bits in a strip are stored in a zig-zag order: <span>^^</span> zig-zags upwards, and <span>vv</span> zig-zags downwards. The bit on the right always precedes the one on its left.
-</div>
+<p class=qr-span>
+    The 10 vertical "strips" of <span>^^</span> or <span>vv</span> must be
+    read from right to left. The bits in a strip are stored in a zig-zag
+    order: <span>^^</span> zig-zags upwards, and <span>vv</span> zig-zags
+    downwards. The bit on the right always precedes the one on its left.
 
-<div class=qr-span><pre>
-      <span>^^</span> ..       <span>vv</span> 10
-      <span>^^</span> 98       <span>vv</span> 32
-      <span>^^</span> 76       <span>vv</span> 54
-      <span>^^</span> 54       <span>vv</span> 76
-      <span>^^</span> 32       <span>vv</span> 98
-      <span>^^</span> 10       <span>vv</span> ..
-</div>
+<pre class=qr-span>
+    <span>^^</span> ..    <span>vv</span> 10
+    <span>^^</span> 98    <span>vv</span> 32
+    <span>^^</span> 76    <span>vv</span> 54
+    <span>^^</span> 54    <span>vv</span> 76
+    <span>^^</span> 32    <span>vv</span> 98
+    <span>^^</span> 10    <span>vv</span> ..
+</pre>
 
-<p>To decode a bit off of a strip, read the value from the QR code bitmap ("#" = 1, space = 0) and invert it if <b>(x+y)%2 = 0</b>, where <b>(x, y)</b> are the coordinates of the bit in the bitmap with the origin <b>(0, 0)</b> at the top-left corner.
+<p>
+    To decode a bit off of a strip, read the value from the QR code bitmap
+    ("#" = 1, space = 0) and invert it if <b>(x+y)%2 = 0</b>, where
+    <b>(x, y)</b> are the coordinates of the bit in the bitmap with the origin
+    <b>(0, 0)</b> at the top-left corner.
 
 <p>This will yield a bitstream like:
 
@@ -1735,16 +2051,17 @@ preamble = '''
 
 ['QR Encoder']
 category = 'Transform'
-experiment = -1
+experiment = 816
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/QR_code#Encoding' },
 ]
+synopsis = 'Encode a Version-1 ASCII QR code.'
 preamble = '''
-<div class=qr-span>
-<p>Encode ASCII string to a Version-1 QR code of this ASCII-art format, where all the <span>v</span> and <span>^</span> must be filled with "#" and spaces.
-</div>
+<p class=qr-span>
+    Encode ASCII string to a Version-1 QR code of this ASCII-art format, where
+    all the <span>v</span> and <span>^</span> must be filled with "#" and spaces.
 
-<div class=qr-span><pre>
+<pre class=qr-span>
     #######  <span>vv^^</span> #######
     #     #  <span>vv^^</span> #     #
     # ### # #<span>vv^^</span> # ### #
@@ -1766,20 +2083,22 @@ preamble = '''
     # ### # #<span>vv^^vv^^vv^^</span>
     #     # #<span>vv^^vv^^vv^^</span>
     ####### #<span>vv^^vv^^vv^^</span>
-</div>
+</pre>
 
-<div class=qr-span>
-<p>The 10 vertical "strips" of <span>^^</span> or <span>vv</span> must be written from right to left. The bits in a strip are written in a zig-zag order: <span>^^</span> zig-zags upwards, and <span>vv</span> zig-zags downwards. The bit on the right always precedes the one on its left.
-</div>
+<p class=qr-span>
+    The 10 vertical "strips" of <span>^^</span> or <span>vv</span> must be
+    written from right to left. The bits in a strip are written in a zig-zag
+    order: <span>^^</span> zig-zags upwards, and <span>vv</span> zig-zags
+    downwards. The bit on the right always precedes the one on its left.
 
-<div class=qr-span><pre>
-      <span>^^</span> ..       <span>vv</span> 10
-      <span>^^</span> 98       <span>vv</span> 32
-      <span>^^</span> 76       <span>vv</span> 54
-      <span>^^</span> 54       <span>vv</span> 76
-      <span>^^</span> 32       <span>vv</span> 98
-      <span>^^</span> 10       <span>vv</span> ..
-</div>
+<pre class=qr-span>
+    <span>^^</span> ..    <span>vv</span> 10
+    <span>^^</span> 98    <span>vv</span> 32
+    <span>^^</span> 76    <span>vv</span> 54
+    <span>^^</span> 54    <span>vv</span> 76
+    <span>^^</span> 32    <span>vv</span> 98
+    <span>^^</span> 10    <span>vv</span> ..
+</pre>
 
 <p>The strips are filled with data from a bitstream:
 
@@ -1789,39 +2108,37 @@ preamble = '''
     (4)   (17)      (17-byte ASCII message)            (0)   (7 error correction bytes)
 </pre>
 
-<p>To encode a bit from the bitstream to a strip, determine the coordinates <b>(x, y)</b> of the current position in the bitmap with the origin <b>(0, 0)</b> at the top-left corner, invert the bit if <b>(x+y)%2 = 0</b>, and write the value to this position ("#" = 1, space = 0).
-'''
-
-['Zeckendorf Representation']
-category = 'Mathematics'
-experiment = 667
-links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Zeckendorf%27s_theorem' },
-    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Zeckendorf_number_representation' },
-]
-preamble = '''
 <p>
-Every natural number can be written uniquely as the sum of Fibonacci numbers in a way that avoids using consecutive Fibonacci numbers. For example, <b>10 = 8 + 2</b>, and <b>64 = 55 + 8 + 1</b>. This sum is called the Zeckendorf representation.
-</p>
-
-<p>
-Print the Zeckendorf representation for each input argument. Terms should be listed in decreasing order separated by ' + '. For example, input <b>10</b> should produce <b>8 + 2</b>.
-</p>
+    To encode a bit from the bitstream to a strip, determine the coordinates
+    <b>(x, y)</b> of the current position in the bitmap with the origin
+    <b>(0, 0)</b> at the top-left corner, invert the bit if <b>(x+y)%2 = 0</b>,
+    and write the value to this position ("#" = 1, space = 0).
 '''
 
 [Quine]
 category = 'Computing'
+variants = ['Quine', 'Palindromic Quine']
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Quine' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Quine_(computing)' },
 ]
+synopsis = 'Write a non-empty program to produce its own source code.'
 preamble = '''
 <p>
     A <b>quine</b> is a non-empty computer program which takes no input and
     produces a copy of its own source code as its only output. Produce such a
     program.
 
-<p>Trailing whitespace is <b>NOT</b> stripped from the output for this hole. (Consequently, if your submission doesn't pass, try adding a line break at the end.)
+{{ if eq . "Palindromic Quine" }}
+<p>
+    Additionaly, a <b>palindromic quine</b> is a <b>quine</b> where the source
+    code reads the same forwards and backwards.
+{{ end }}
+
+<p>
+    Trailing whitespace is <b>NOT</b> stripped from the output for this hole.
+    (Consequently, if your submission doesn't pass, try adding a line break at
+    the end.)
 '''
 
 ['Recamán']
@@ -1832,6 +2149,7 @@ links = [
     { name = 'Rosetta Code', url = "//rosettacode.org/wiki/Recaman's_sequence" },
     { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Recamán's_sequence" },
 ]
+synopsis = 'Print the first 250 terms of the Recamán sequence.'
 preamble = '''
 <p>
     Starting from <b>a(0) = 0</b>, each term of the sequence is <b>a(n) = a(n-1) − n</b>
@@ -1841,6 +2159,20 @@ preamble = '''
 <p>Print the first <b>250</b> terms of the sequence one per line.
 '''
 
+['Repeating Decimal']
+category = 'Mathematics'
+experiment = 694
+links = [
+    { name = 'Rosetta Code', url = "//rosettacode.org/wiki/Integer_long_division" },
+    { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Repeating_decimal" },
+]
+synopsis = 'Convert fractions to repeating decimals.'
+preamble = '''
+<p>
+    For each fraction argument <code>a/b</code>, print its decimal expansion.
+    If the decimal expands infinitely, print the finite part followed by the
+    repeating part in parenthesis.
+'''
 
 [Rock-paper-scissors-Spock-lizard]
 category = 'Gaming'
@@ -1848,6 +2180,7 @@ links = [
     { name = 'Rules',     url = 'http://www.samkass.com/theories/RPSSL.html' },
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Rock_paper_scissors#Additional_weapons' },
 ]
+synopsis = 'Print the outcome of games of Rock-paper-scissors-Spock-lizard.'
 preamble = '''
 <p>Judge games of "rock-paper-scissors" with additional weapons:
 
@@ -1856,8 +2189,8 @@ preamble = '''
     disproves 🖖 vaporizes 💎 crushes ✂.
 
 <p>
-    Each argument is a string of two emoji encoded in UTF-8.
-    For each argument, print a line like <code>🦎 poisons 🖖</code> describing the game outcome,
+    Each argument is a string of two emoji encoded in UTF-8. For each argument,
+    print a line like <code>🦎 poisons 🖖</code> describing the game outcome,
     or <code>Tie</code> if they are equal.
 
 <p>The weapons are represented and encoded as follows:
@@ -1900,12 +2233,73 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Parsing/RPN_calculator_algorithm' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Reverse_Polish_notation' },
 ]
+synopsis = 'Calculate the result of Reverse Polish notation expressions.'
 preamble = '''
-<p>RPN (Reverse Polish notation) is a way of writing expressions such that operators are written after their operands: <code>3 2 +</code> rather than <code>(3+2)</code>.
-<p>Each argument is an RPN expression, given as a space-separated list of tokens: either a number <code>0</code>…<code>32767</code> or an operator (addition <code>+</code>, subtraction <code>-</code>, multiplication <code>*</code> or integer division <code>/</code>).
-<p>Evaluate and print the result of each expression on its own line.
-<p>The result of each operation is a non-negative integer not exceeding 32,767. Division is guaranteed to have an exact integer result.
+<p>
+    RPN (Reverse Polish notation) is a way of writing expressions such that
+    operators are written after their operands: <code>3 2 +</code> rather than
+    <code>(3+2)</code>.
 
+<p>
+    Each argument is an RPN expression, given as a space-separated list of
+    tokens: either a number <code>0</code>…<code>32767</code> or an operator
+    (addition <code>+</code>, subtraction <code>-</code>, multiplication
+    <code>*</code> or integer division <code>/</code>).
+
+<p>Evaluate and print the result of each expression on its own line.
+
+<p>
+    The result of each operation is a non-negative integer not exceeding
+    32,767. Division is guaranteed to have an exact integer result.
+'''
+
+['Rijndael S-boxes']
+category = 'Mathematics'
+experiment = 857
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Rijndael_S-box' },
+]
+synopsis = 'Print Rijndael S-boxes as a series of hex bytes.'
+preamble = '''
+<p>
+    Print the <b>normal and inverse Rijndael S-boxes</b> as a series of hex
+    bytes:
+
+<pre>
+63 7c 77 7b f2 6b 6f c5 30 01 67 2b fe d7 ab 76
+ca 82 c9 7d fa 59 47 f0 ad d4 a2 af 9c a4 72 c0
+b7 fd 93 26 36 3f f7 cc 34 a5 e5 f1 71 d8 31 15
+04 c7 23 c3 18 96 05 9a 07 12 80 e2 eb 27 b2 75
+09 83 2c 1a 1b 6e 5a a0 52 3b d6 b3 29 e3 2f 84
+53 d1 00 ed 20 fc b1 5b 6a cb be 39 4a 4c 58 cf
+d0 ef aa fb 43 4d 33 85 45 f9 02 7f 50 3c 9f a8
+51 a3 40 8f 92 9d 38 f5 bc b6 da 21 10 ff f3 d2
+cd 0c 13 ec 5f 97 44 17 c4 a7 7e 3d 64 5d 19 73
+60 81 4f dc 22 2a 90 88 46 ee b8 14 de 5e 0b db
+e0 32 3a 0a 49 06 24 5c c2 d3 ac 62 91 95 e4 79
+e7 c8 37 6d 8d d5 4e a9 6c 56 f4 ea 65 7a ae 08
+ba 78 25 2e 1c a6 b4 c6 e8 dd 74 1f 4b bd 8b 8a
+70 3e b5 66 48 03 f6 0e 61 35 57 b9 86 c1 1d 9e
+e1 f8 98 11 69 d9 8e 94 9b 1e 87 e9 ce 55 28 df
+8c a1 89 0d bf e6 42 68 41 99 2d 0f b0 54 bb 16
+
+52 09 6a d5 30 36 a5 38 bf 40 a3 9e 81 f3 d7 fb
+7c e3 39 82 9b 2f ff 87 34 8e 43 44 c4 de e9 cb
+54 7b 94 32 a6 c2 23 3d ee 4c 95 0b 42 fa c3 4e
+08 2e a1 66 28 d9 24 b2 76 5b a2 49 6d 8b d1 25
+72 f8 f6 64 86 68 98 16 d4 a4 5c cc 5d 65 b6 92
+6c 70 48 50 fd ed b9 da 5e 15 46 57 a7 8d 9d 84
+90 d8 ab 00 8c bc d3 0a f7 e4 58 05 b8 b3 45 06
+d0 2c 1e 8f ca 3f 0f 02 c1 af bd 03 01 13 8a 6b
+3a 91 11 41 4f 67 dc ea 97 f2 cf ce f0 b4 e6 73
+96 ac 74 22 e7 ad 35 85 e2 f9 37 e8 1c 75 df 6e
+47 f1 1a 71 1d 29 c5 89 6f b7 62 0e aa 18 be 1b
+fc 56 3e 4b c6 d2 79 20 9a db c0 fe 78 cd 5a f4
+1f dd a8 33 88 07 c7 31 b1 12 10 59 27 80 ec 5f
+60 51 7f a9 19 b5 4a 0d 2d e5 7a 9f 93 c9 9c ef
+a0 e0 3b 4d ae 2a f5 b0 c8 eb bb 3c 83 53 99 61
+17 2b 04 7e ba 77 d6 26 e1 69 14 63 55 21 0c 7d
+</pre>
 '''
 
 ['Rule 110']
@@ -1913,49 +2307,46 @@ category = 'Computing'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Rule_110' },
 ]
+synopsis = 'Print the first 100 rows in the Rule 110 cellular automaton.'
 preamble = '''
 <p>
     Print the first <b>100</b> rows in the Rule 110 cellular automaton
     starting from an initial single living cell.
+
 <p>
-    Each new row in the life of the automaton should be a new line, and the rules for whether a cell is alive or dead depends on whether it was alive on the previous iteration, as well as the state of the two neighbouring cells.
-    The rules which dictate whether a cell is alive or dead in the next iteration are as follows:
+    Each new row in the life of the automaton should be a new line, and the
+    rules for whether a cell is alive or dead depends on whether it was alive
+    on the previous iteration, as well as the state of the two neighbouring
+    cells.
+
+<p>
+    The rules which dictate whether a cell is alive or dead in the next
+    iteration are as follows:
+
 <div>
     <table>
         <thead>
             <tr>
-                <th>Previous cells
-                <th>New centre cell
+                <th>Previous Cells
+                <th>New Centre Cell
         <tbody>
-            <tr>
-                <th>111
-                <th>0
-            <tr>
-                <th>110
-                <th>1
-            <tr>
-                <th>101
-                <th>1
-            <tr>
-                <th>100
-                <th>0
-            <tr>
-                <th>011
-                <th>1
-            <tr>
-                <th>010
-                <th>1
-            <tr>
-                <th>001
-                <th>1
-            <tr>
-                <th>000
-                <th>0
+            <tr><td class=right>111<td class=right>0
+            <tr><td class=right>110<td class=right>1
+            <tr><td class=right>101<td class=right>1
+            <tr><td class=right>100<td class=right>0
+            <tr><td class=right>011<td class=right>1
+            <tr><td class=right>010<td class=right>1
+            <tr><td class=right>001<td class=right>1
+            <tr><td class=right>000<td class=right>0
     </table>
 </div>
-where 1 is alive, 0 is dead, and the middle digit represents the previous state of the current cell.
+
 <p>
-    The first 10 rows are shown here:
+    where 1 is alive, 0 is dead, and the middle digit represents the previous
+    state of the current cell.
+
+<p>The first 10 rows are shown here:
+
 <pre>         █
         ██
        ███
@@ -1967,7 +2358,6 @@ where 1 is alive, 0 is dead, and the middle digit represents the previous state 
  ███████ █
 ██     ███
 </pre>
-
 '''
 
 ['Seven Segment']
@@ -1975,6 +2365,7 @@ category = 'Transform'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Seven-segment_display' },
 ]
+synopsis = 'Draw numbers on an ASCII seven segment display.'
 preamble = '''
 <p>
     Using pipes and underscores print the argument as if it were displayed on
@@ -1988,17 +2379,42 @@ preamble = '''
 </pre>
 '''
 
+['Shī Shì shí shī shǐ']
+category = 'Art'
+experiment = 824
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Lion-Eating_Poet_in_the_Stone_Den' },
+]
+synopsis = 'Print the poem “Lion-Eating Poet in the Stone Den” in Pinyin.'
+preamble = '''
+<p>Print the poem <b>Lion-Eating Poet in the Stone Den</b> in Pinyin:
+
+<blockquote>
+Shíshì shīshì Shī Shì, shì shī, shì shí shí shī.
+Shì shíshí shì shì shì shī.
+Shí shí, shì shí shī shì shì.
+Shì shí, shì Shī Shì shì shì.
+Shì shì shì shí shī, shì shǐ shì, shǐ shì shí shī shìshì.
+Shì shí shì shí shī shī, shì shíshì.
+Shíshì shī, Shì shǐ shì shì shíshì.
+Shíshì shì, Shì shǐ shì shí shì shí shī.
+Shí shí, shǐ shí shì shí shī shī, shí shí shí shī shī.
+Shì shì shì shì.
+</blockquote>
+'''
+
 ['Sierpiński Triangle']
 category = 'Art'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Sierpinski_triangle' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Sierpiński_triangle' },
 ]
+synopsis = 'Draw the Sierpiński triangle.'
 preamble = '''
 <p>
-    The Sierpiński triangle is a fractal with the
-    overall shape of an equilateral triangle, subdivided recursively into
-    smaller equilateral triangles.
+    The Sierpiński triangle is a fractal with the overall shape of an
+    equilateral triangle, subdivided recursively into smaller equilateral
+    triangles.
 
 <p>
     A Sierpiński triangle of order 4 should look like this, print such an
@@ -2030,6 +2446,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Smith_numbers' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Smith_number' },
 ]
+synopsis = 'Print all the Smith numbers from 0 to 10,000.'
 preamble = '''
 <p>
     A Smith number is a composite number whose digit sum is equal to the sum
@@ -2041,18 +2458,21 @@ preamble = '''
     <b>6 + 6 + 6 = 2 + 3 + 3 + (3 + 7) = 18</b>.
 
 <p>
-    Print all the Smith numbers from <b>4</b> to <b>10,000</b> inclusive,
+    Print all the Smith numbers from <b>0</b> to <b>10,000</b> inclusive,
     each on their own line.
 '''
 
 ['Spelling Numbers']
 category = 'Transform'
+synopsis = 'Spell numbers out in English.'
 preamble = '''
 <p>For each integer argument print the integer spelled out in English.
 
 <p>For example: <b>748</b> becomes <code>seven hundred and forty-eight</code>.
 
-<p>The integers will be in the range of <b>0</b> (<code>zero</code>) to <b>1,000</b> (<code>one thousand</code>) inclusive.
+<p>
+    The integers will be in the range of <b>0</b> (<code>zero</code>) to
+    <b>1,000</b> (<code>one thousand</code>) inclusive.
 '''
 
 ['Star Wars Opening Crawl']
@@ -2060,6 +2480,7 @@ category = 'Transform'
 links = [
     { name = 'Wookieepedia', url = '//starwars.fandom.com/wiki/Opening_crawl' },
 ]
+synopsis = 'Format a piece of text in the style of Star Wars opening crawl.'
 preamble = '''
 <p>
     Format a piece of text in the style of Star Wars opening crawl. Here is an
@@ -2134,6 +2555,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Sudoku' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Sudoku' },
 ]
+synopsis = 'Solve a Sudoku grid.'
 preamble = '''
 <p>
     Sudoku is a number puzzle where a grid of 81 digits (9×9) is filled by the
@@ -2178,6 +2600,7 @@ category = 'Gaming'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Ten-pin_bowling' },
 ]
+synopsis = 'Calculate the final score in games of Ten-pin bowling.'
 preamble = '''
 <p>
     Given a series of ten-pin bowling scoreboards, determine the final scores
@@ -2252,8 +2675,9 @@ experiment = 753
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/The_Name_Game#Rules' },
 ]
+synopsis = 'Print the lyrics to the song “The Name Game”.'
 preamble = '''
-<p>Print the lyrics to the song <b>The Name Game</b>:</p>
+<p>Print the lyrics to the song <b>The Name Game</b>:
 
 <blockquote>The name game!
 
@@ -2267,7 +2691,7 @@ Lincoln, Lincoln, bo Bincoln
 Bonana fanna fo Fincoln
 Fee fy mo Mincoln, Lincoln!
 
-...
+…
 
 A little trick with Nick!
 Nick, Nick, bo Bick
@@ -2280,6 +2704,7 @@ The name game!
 
 ['Time Distance']
 category = 'Transform'
+synopsis = 'Convert a quantity of seconds to a human-friendly string.'
 preamble = '''
 <p>
     Transform a time distance given as a number of seconds to a human-friendly
@@ -2304,8 +2729,9 @@ preamble = '''
     towards zero.
 
 <p>
-    The correct singular/plural of each unit must be used. If the quantity is 1,
-    print <code>a month</code> and <code>an hour</code> rather than <code>1 month</code> and <code>1 hour</code>.
+    The correct singular/plural of each unit must be used. If the quantity is
+    1, print <code>a month</code> and <code>an hour</code> rather than
+    <code>1 month</code> and <code>1 hour</code>.
 '''
 
 [Tongue-twisters]
@@ -2313,8 +2739,9 @@ category = 'Art'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Tongue-twister' },
 ]
+synopsis = 'Print a few tongue twisters.'
 preamble = '''
-<p>Output the following tongue twisters with a blank line between each one:
+<p>Print the following tongue twisters with a blank line between each one:
 
 <blockquote>
 How much wood would a woodchuck chuck,
@@ -2335,50 +2762,47 @@ Then I'm sure she sells seashore shells.
 '''
 
 [Turtle]
-category = "Art"
+category = 'Art'
 experiment = 622
-preamble = """
+synopsis = 'Move the Unicode turtle according to directions.'
+preamble = '''
 <p>
-  Given a single argument containing multiple lines of space-separated instructions containing distance and direction <b>(N, E, S, or W)</b>.
-</p>
+    Given a single argument containing multiple lines of space-separated
+    instructions containing distance and direction <b>(N, E, S, or W)</b>.
 
 <p>
-  You must move the turtle 🐢 <b><(U+1F422) </b>corespondingly from the start 🏁 <b>(U+1F3C1)</b> and draw a path using ⬜ <b>(U+2B1C)</b> filing the empty squares with 🟩 <b>(U+1F7E9)</b>
-</p>
+    You must move the turtle 🐢 <b>(U+1F422)</b> corespondingly from the
+    start 🏁 <b>(U+1F3C1)</b> and draw a path using ⬜ <b>(U+2B1C)</b> filling
+    the empty squares with 🟩 <b>(U+1F7E9)</b>.
 
-<p>
-  <b><u>
-    Example:
-  </u></b>
-</p>
+<p><b><u>Example:</u></b>
 
-<p>
-  <u>
-    Input:
-  </u>
+<p><u>Input:</u>
+
 <pre>
 5 N
 3 W
 2 S
-7 E</pre>
-  <u>
-    Output:
-  </u>
-<pre>⬜⬜⬜⬜🟩🟩🟩🟩
+7 E
+</pre>
+
+<p><u>Output:</u>
+
+<pre>
+⬜⬜⬜⬜🟩🟩🟩🟩
 ⬜🟩🟩⬜🟩🟩🟩🟩
 ⬜⬜⬜⬜⬜⬜⬜🐢
 🟩🟩🟩⬜🟩🟩🟩🟩
 🟩🟩🟩⬜🟩🟩🟩🟩
-🟩🟩🟩🏁🟩🟩🟩🟩</pre>
-</p>
+🟩🟩🟩🏁🟩🟩🟩🟩
+</pre>
 
 <p>
-  The turtle starts at the flag and moves 5 units north, 3 units west, 2 units south, and 7 units east, intersecting the previous path. Keep in mind
-  <b>
-    if the turtle ends up at the beginning,  print the turtle but not the flag
-  </b>
-</p>
-"""
+    The turtle starts at the flag and moves 5 units north, 3 units west, 2
+    units south, and 7 units east, intersecting the previous path. Keep in
+    mind <b>if the turtle ends up at the beginning,  print the turtle but not
+    the flag</b>.
+'''
 
 ['United States']
 category = 'Transform'
@@ -2402,6 +2826,7 @@ data = '''
     "Vermont":        "VT", "Virginia":       "VA", "Washington":           "WA",
     "West Virginia":  "WV", "Wisconsin":      "WI", "Wyoming":              "WY"
 }'''
+synopsis = 'Convert US states to their Postal Service abbreviations.'
 preamble = '''
 <p>
     Given each US state (and a federal district) print the corresponding US
@@ -2409,7 +2834,7 @@ preamble = '''
 
 <p>The full mapping is as follows:
 
-<div id=states>
+<div id=states class="tables-4col">
 {{ range . }}
     {{ if or (eq .Value "AL") (eq .Value "IL")
              (eq .Value "MT") (eq .Value "RI") }}
@@ -2433,6 +2858,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Vampire_number' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Vampire_number' },
 ]
+synopsis = 'Print all the vampire numbers from 1 to 1,000,000.'
 preamble = '''
 <p>
     A vampire number is a non-negative number that can be factored into two
@@ -2460,6 +2886,7 @@ links = [
     { name = 'OEIS A181391', url = '//oeis.org/A181391' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Van_Eck_sequence' },
 ]
+synopsis = 'Print the first 1,000 terms of the Van Eck sequence.'
 preamble = '''
 <p>The rules of the Van Eck sequence are as follows:
 
@@ -2480,8 +2907,29 @@ preamble = '''
 </pre>
 
 <p>
-    Print the first <b>1000</b> terms of the Van Eck sequence, with each term
+    Print the first <b>1,000</b> terms of the Van Eck sequence, with each term
     on a new line.
+'''
+
+['Zeckendorf Representation']
+category = 'Mathematics'
+experiment = 667
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Zeckendorf_number_representation' },
+    { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Zeckendorf's_theorem" },
+]
+synopsis = 'Calculate the Zeckendorf representation of numbers.'
+preamble = '''
+<p>
+    Every natural number can be written uniquely as the sum of Fibonacci
+    numbers in a way that avoids using consecutive Fibonacci numbers.
+    For example, <b>10 = 8 + 2</b>, and <b>64 = 55 + 8 + 1</b>.
+    This sum is called the Zeckendorf representation.
+
+<p>
+    Print the Zeckendorf representation for each input argument. Terms should
+    be listed in decreasing order separated by ' + '.
+    For example, input <b>10</b> should produce <b>8 + 2</b>.
 '''
 
 ['Zodiac Signs']
@@ -2490,6 +2938,7 @@ links = [
     { name = 'Zodiac Sign Wikipedia',    url = '//en.wikipedia.org/wiki/Zodiac_sign' },
     { name = 'Ascending Sign Wikipedia', url = '//en.wikipedia.org/wiki/Ascendant' },
 ]
+synopsis = 'Calculate Zodiac signs from dates and times.'
 preamble = '''
 <p>
     Given a <code>MM-DD HH:MM</code> date and time, output the corresponding
@@ -2497,6 +2946,7 @@ preamble = '''
     sign is different from the Zodiac sign (sun sign), output it as well.
     Approximate the ascending sign using the sun sign and time according to
     the second table below.
+
 <div>
     <table>
         <thead>
@@ -2516,6 +2966,7 @@ preamble = '''
             <tr><td>Pisces<td>♓<td>February 19 – March 20
     </table>
 </div>
+
 <div>
     <table>
         <thead>
@@ -2552,12 +3003,13 @@ preamble = '''
 
 ['γ']
 category = 'Mathematics'
-experiment = -1
+experiment = 817
 links = [
     { name = 'OEIS A001620', url = '//oeis.org/A001620' },
     { name = 'Rosetta Code', url = "//rosettacode.org/wiki/Euler's_constant_0.5772..." },
     { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Euler's_constant" },
 ]
+synopsis = 'Print γ to the first 1,000 decimal places.'
 preamble = '''
 <p>Print the Euler–Mascheroni constant γ (gamma) to the first 1,000 decimal places.
 '''
@@ -2568,9 +3020,16 @@ links = [
     { name = 'OEIS A014715', url = '//oeis.org/A014715' },
     { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Conway's_constant" },
 ]
+synopsis = 'Print λ to the first 1,000 decimal places.'
 preamble = '''
-<p>Conway’s constant λ is a mathematical constant related to the growth of the <a href=look-and-say>look-and-say sequence</a>.
-<p>It is the unique positive root of <a href="https://en.wikipedia.org/wiki/Look-and-say_sequence#Conway's_constant_as_a_polynomial_root">this large polynomial</a>.
+<p>
+    Conway’s constant λ is a mathematical constant related to the growth of
+    the <a href=look-and-say>look-and-say sequence</a>.
+
+<p>
+    It is the unique positive root of
+    <a href="//en.wikipedia.org/wiki/Look-and-say_sequence#Conway's_constant_as_a_polynomial_root">this large polynomial</a>.
+
 <p>Print λ to the first 1,000 decimal places.
 '''
 
@@ -2581,6 +3040,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Pi' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Pi' },
 ]
+synopsis = 'Print π to the first 1,000 decimal places.'
 preamble = '''
 <p>Print π (pi) to the first 1,000 decimal places.
 '''
@@ -2590,6 +3050,7 @@ category = 'Mathematics'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Tau_(mathematical_constant)' },
 ]
+synopsis = 'Print τ to the first 1,000 decimal places.'
 preamble = '''
 <p>Print 2π=τ (tau) to the first 1,000 decimal places.
 '''
@@ -2600,6 +3061,7 @@ links = [
     { name = 'OEIS A001622', url = '//oeis.org/A001622' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Golden_ratio' },
 ]
+synopsis = 'Print φ to the first 1,000 decimal places.'
 preamble = '''
 <p>Print the Golden ratio φ (phi) to the first 1,000 decimal places.
 '''
@@ -2610,6 +3072,7 @@ links = [
     { name = 'OEIS A002193', url = '//oeis.org/A002193' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Square_root_of_2' },
 ]
+synopsis = 'Print √2 to the first 1,000 decimal places.'
 preamble = '''
 <p>Print √2 (Pythagoras’ constant) to the first 1,000 decimal places.
 '''
@@ -2620,6 +3083,7 @@ links = [
     { name = 'OEIS A001113', url = '//oeis.org/A001113' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/E_(mathematical_constant)' },
 ]
+synopsis = 'Print 𝑒 to the first 1,000 decimal places.'
 preamble = '''
 <p>Print 𝑒 (Euler’s number) to the first 1,000 decimal places.
 '''

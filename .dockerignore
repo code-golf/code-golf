@@ -1,12 +1,11 @@
 /.git/
 /.github/
 /.vagrant/
+/Makefile
 /code-golf
-/db/
 /dist/
 /docker/
 /langs/
+/sql/
 /t/
 /xt/
-
-/Makefile

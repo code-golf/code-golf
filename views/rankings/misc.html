@@ -1,0 +1,97 @@
+{{ template "header"   . }}
+{{ template "rankings" . }}
+
+{{ $oldestDiamonds := eq .Path "/rankings/misc/oldest-diamonds" }}
+{{ $solutions      := eq .Path "/rankings/misc/solutions" }}
+
+<main>
+    <form id=form-nav>
+        <input name=base type=hidden value=/rankings/misc>
+
+        <select name=page>
+            <option {{ if eq .Path "/rankings/misc/holes-authored" }} selected {{ end }}
+                value=holes-authored>Holes Authored
+            <option {{ if eq .Path "/rankings/misc/oldest-diamonds" }} selected {{ end }}
+                value=oldest-diamonds>Oldest Diamonds
+            <option {{ if eq .Path "/rankings/misc/referrals" }} selected {{ end }}
+                value=referrals>Referrals
+            <option {{ if eq .Path "/rankings/misc/solutions" }} selected {{ end }}
+                value=solutions>Solutions
+        </select>
+    </form>
+
+    <nav>
+        <a {{ if ne .Path "/rankings/misc/holes-authored" }} href=holes-authored {{ end }}>
+            <span>Holes Authored</span>
+        </a>
+        <a {{ if ne .Path "/rankings/misc/oldest-diamonds" }} href=oldest-diamonds {{ end }}>
+            <span>Oldest Diamonds</span>
+        </a>
+        <a {{ if ne .Path "/rankings/misc/referrals" }} href=referrals {{ end }}>
+            <span>Referrals</span>
+        </a>
+        <a {{ if ne .Path "/rankings/misc/solutions" }} href=solutions {{ end }}>
+            <span>Solutions</span>
+        </a>
+    </nav>
+
+    <table class="nowrap-second{{ if $oldestDiamonds }}-third{{ end }} sticky">
+        <thead>
+            <tr>
+                <th>#
+                <th>Golfer
+            {{ if $oldestDiamonds }}
+                <th>Hole
+                <th class=right>Submitted
+            {{ else }}
+                <th class=right>Total
+            {{ end }}
+            {{ if $solutions }}
+                <th class=right>Bytes
+                <th class=right>Chars
+            {{ end }}
+        <tbody>
+        {{ $name := "" }}
+        {{ with .Golfer }}{{ $name = .Name }}{{ end }}
+
+        {{ range .Data.Rows }}
+            <tr{{ if eq $name .Login }} class=me {{ end }}>
+                <td>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup>
+                <td>
+                    <a href="/golfers/{{ .Login }}">
+                        <img loading=lazy src="//avatars.githubusercontent.com/{{ .Login }}?s=24">
+                        <span>{{ .Login }}</span>
+                    {{ with index $.Countries .Country }}
+                        <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
+                    {{ end }}
+                    </a>
+            {{ if $oldestDiamonds }}
+                <td>
+                    <a href="/rankings/holes/{{ .Hole }}/{{ .Lang }}/{{ .Scoring }}">
+                        <svg><use href="#{{ .Lang }}"/></svg>
+                        <svg><use href="#{{ .Scoring }}"/></svg>
+                        <span>{{ (index $.Holes .Hole).Name }}</span>
+                    </a>
+                <td class=right>{{ time .Submitted }}
+            {{ else }}
+                <td class=right>{{ comma .Total }}
+            {{ end }}
+            {{ if $solutions }}
+                <td class=right>{{ comma .Bytes }}
+                <td class=right>{{ comma .Chars }}
+            {{ end }}
+        {{ end }}
+    </table>
+
+    {{ template "pagination" .Data.Pager }}
+</main>
+
+<svg>
+    {{ symbol "bytes" }}
+    {{ symbol "chars" }}
+{{ range .Langs }}
+    {{ symbol .ID }}
+{{ end }}
+</svg>
+
+{{ template "footer" }}

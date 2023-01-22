@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/jmoiron/sqlx"
 	"github.com/lib/pq"
 	"golang.org/x/exp/slices"
 	"gopkg.in/guregu/null.v4"
@@ -30,7 +31,7 @@ type Golfer struct {
 }
 
 // Earn the given cheevo, no-op if already earned.
-func (g *Golfer) Earn(db *sql.DB, cheevoID string) (earned *config.Cheevo) {
+func (g *Golfer) Earn(db *sqlx.DB, cheevoID string) (earned *config.Cheevo) {
 	if res, err := db.Exec(
 		"INSERT INTO trophies VALUES (DEFAULT, $1, $2) ON CONFLICT DO NOTHING",
 		g.ID,
@@ -82,20 +83,29 @@ type GolferInfo struct {
 	// Count of cheevos/holes/langs available
 	CheevosTotal, HolesTotal, LangsTotal int
 
+	// Slice of golfers referred
+	Referrals []string
+
 	// Start date
 	TeedOff time.Time
 }
 
-type RankUpdate struct {
-	Scoring  string
-	From, To struct {
-		Joint         null.Bool
-		Rank, Strokes null.Int
-	}
-	Beat null.Int
+type RankUpdateFromTo struct {
+	Joint   null.Bool `json:"joint"`
+	Rank    null.Int  `json:"rank"`
+	Strokes null.Int  `json:"strokes"`
 }
 
-func GetInfo(db *sql.DB, name string) *GolferInfo {
+type RankUpdate struct {
+	Scoring        string           `json:"scoring"`
+	From           RankUpdateFromTo `json:"from"`
+	To             RankUpdateFromTo `json:"to"`
+	Beat           null.Int         `json:"beat"`
+	OldBestJoint   null.Bool        `json:"oldBestJoint"`
+	OldBestStrokes null.Int         `json:"oldBestStrokes"`
+}
+
+func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 	info := GolferInfo{
 		CheevosTotal: len(config.CheevoList),
 		HolesTotal:   len(config.HoleList),
@@ -132,6 +142,12 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 		          login,
 		          COALESCE(bytes.points, 0),
 		          COALESCE(chars.points, 0),
+		          ARRAY(
+		            SELECT login
+		              FROM users u
+		             WHERE referrer_id = users.id
+		          ORDER BY login
+		          ),
 		          COALESCE(silver, 0),
 		          sponsor
 		     FROM users
@@ -153,6 +169,7 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 		&info.Name,
 		&info.BytesPoints,
 		&info.CharsPoints,
+		pq.Array(&info.Referrals),
 		&info.Silver,
 		&info.Sponsor,
 	); errors.Is(err, sql.ErrNoRows) {
