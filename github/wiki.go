@@ -58,7 +58,7 @@ func Wiki(db *sqlx.DB) error {
 		slug := config.ID(name)
 		section := ""
 
-		if lang := config.LangByID[slug]; lang != nil {
+		if lang := config.AllLangByID[slug]; lang != nil {
 			slug = "langs/" + slug
 			section = "Languages"
 			name = lang.Name
