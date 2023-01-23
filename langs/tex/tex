@@ -53,15 +53,16 @@ set +e
 
 # The randoms might not actually prevent reading the file, but they do
 # certainly help avoid grepping out the wrong line
-FILENAME="solution_$RANDOM_$RANDOM_$RANDOM_$RANDOM"
+FILENAME="solution_${RANDOM}_${RANDOM}_${RANDOM}_${RANDOM}"
 
 echo "$code_to_run" > "$FILENAME.tex"
 
 /usr/local/bin/tex "$FILENAME.tex" >/dev/null
 
 cat "$FILENAME.log" \
-  | grep -v "$FILENAME." \
-  | grep -v "This is TeX, Version 3.141592653" \
+  | grep -Fv "$FILENAME." \
+  | grep -Fv "This is TeX, Version 3.141592653" \
+  | grep -Fv " [1] )" \
   >&2
 
 if [[ -f "$FILENAME.dvi" ]]; then
