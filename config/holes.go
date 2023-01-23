@@ -184,24 +184,26 @@ func init() {
 		}
 	}
 
-	for _, holes := range [][]*Hole{HoleList, ExpHoleList, AllHoleList} {
+	for i, holes := range [][]*Hole{HoleList, ExpHoleList, AllHoleList} {
 		// Case-insensitive sort.
 		slices.SortFunc(holes, func(a, b *Hole) bool {
 			return strings.ToLower(a.Name) < strings.ToLower(b.Name)
 		})
 
-		// Set Prev, Next.
-		for i, hole := range holes {
-			if i == 0 {
-				hole.Prev = holes[len(holes)-1].ID
-			} else {
-				hole.Prev = holes[i-1].ID
-			}
+		// Set Prev, Next. Not for "AllHoleList" as it would overwrite.
+		if i < 2 {
+			for j, hole := range holes {
+				if j == 0 {
+					hole.Prev = holes[len(holes)-1].ID
+				} else {
+					hole.Prev = holes[j-1].ID
+				}
 
-			if i == len(holes)-1 {
-				hole.Next = holes[0].ID
-			} else {
-				hole.Next = holes[i+1].ID
+				if j == len(holes)-1 {
+					hole.Next = holes[0].ID
+				} else {
+					hole.Next = holes[j+1].ID
+				}
 			}
 		}
 	}
