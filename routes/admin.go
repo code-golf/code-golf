@@ -3,11 +3,11 @@ package routes
 import (
 	"database/sql"
 	"net/http"
-	"sort"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
+	"golang.org/x/exp/slices"
 )
 
 // GET /admin
@@ -121,12 +121,12 @@ func adminGET(w http.ResponseWriter, r *http.Request) {
 		data.Countries = append(data.Countries, c)
 	}
 
-	sort.Slice(data.Countries, func(i, j int) bool {
-		if data.Countries[i].Golfers != data.Countries[j].Golfers {
-			return data.Countries[i].Golfers > data.Countries[j].Golfers
+	slices.SortStableFunc(data.Countries, func(a, b Country) bool {
+		if a.Golfers != b.Golfers {
+			return a.Golfers > b.Golfers
 		}
 
-		return data.Countries[i].Name < data.Countries[j].Name
+		return a.Name < b.Name
 	})
 
 	if err := rows.Err(); err != nil {
