@@ -935,11 +935,11 @@ foreach arg $argv {
 '''
 
 [TeX]
-size    = '9.57 MiB'
 experiment = 877
-version = '3.141592653'
-website = 'https://tug.org'
-example = '''
+size       = '9.57 MiB'
+version    = '3.141592653'
+website    = 'https://tug.org'
+example    = '''
 % Printing
 Hello, World!
 
