@@ -898,7 +898,7 @@ SELECT arg FROM argv;
 
 [Swift]
 size    = '494 MiB'
-version = '5.7.1'
+version = '5.7.3'
 website = 'https://swift.org'
 example = '''
 // Printing
@@ -1024,7 +1024,7 @@ for (a in Process.arguments) System.print(a)
 
 [Zig]
 size    = '262 MiB'
-version = '0.10.0'
+version = '0.10.1'
 website = 'https://ziglang.org'
 example = '''
 // Notice: use spaces as indentation, since tab causes a compile-time error
