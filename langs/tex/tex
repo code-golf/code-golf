@@ -51,10 +51,20 @@ $code
 # don't stop the bash script if /usr/local/bin/tex errors
 set +e
 
-echo "$code_to_run" | /usr/local/bin/tex >/dev/null
+# The randoms might not actually prevent reading the file, but they do
+# certainly help avoid grepping out the wrong line
+FILENAME="solution_${RANDOM}_${RANDOM}_${RANDOM}_${RANDOM}"
 
-cat texput.log >&2
+echo "$code_to_run" > "$FILENAME.tex"
 
-if [[ -f texput.dvi ]]; then
-  dvi-to-text texput.dvi
+/usr/local/bin/tex "$FILENAME.tex" >/dev/null
+
+cat "$FILENAME.log" \
+  | grep -Fv "$FILENAME." \
+  | grep -Fv "This is TeX, Version 3.141592653" \
+  | grep -Fv " [1] )" \
+  >&2
+
+if [[ -f "$FILENAME.dvi" ]]; then
+  dvi-to-text "$FILENAME.dvi"
 fi
