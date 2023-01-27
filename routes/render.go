@@ -226,7 +226,6 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		args.CSS = args.CSS + css["terminal"]
 	}
 	if name == "hole-tabs" {
-		args.CSS += css["vendor/goldenlayout-base"]
 		// TODO: (GL) switch light/dark codemirror theme to getThemeCSS
 		// See above:
 		// 	 HACK Prepend font.css (with font URL) onto base.css.
@@ -236,7 +235,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 			if err != nil {
 				panic(err)
 			}
-			css["base"] = template.CSS(cssBytes) + css["base"]
+			args.CSS = css["vendor/goldenlayout-base"] + template.CSS(cssBytes) + args.CSS
 		}
 	}
 
