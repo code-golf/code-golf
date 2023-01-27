@@ -235,7 +235,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 			if err != nil {
 				panic(err)
 			}
-			args.CSS = css["vendor/goldenlayout-base"] + template.CSS(cssBytes)  + args.CSS;
+			args.CSS = css["vendor/goldenlayout-base"] + template.CSS(cssBytes) + args.CSS
 		}
 	}
 
