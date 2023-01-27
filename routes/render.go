@@ -226,18 +226,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		args.CSS = args.CSS + css["terminal"]
 	}
 	if name == "hole-tabs" {
-		args.CSS += css["vendor/goldenlayout-base"]
-		// TODO: (GL) switch light/dark codemirror theme to getThemeCSS
-		// See above:
-		// 	 HACK Prepend font.css (with font URL) onto base.css.
-		//   TODO Use esbuild for all CSS? Still serve inline?
-		if themeCSS, ok := assets["css/vendor/goldenlayout-theme.css"]; ok {
-			cssBytes, err := os.ReadFile(themeCSS[1:])
-			if err != nil {
-				panic(err)
-			}
-			css["base"] = template.CSS(cssBytes) + css["base"]
-		}
+		args.CSS += css["vendor/goldenlayout-theme"] + css["vendor/goldenlayout-base"]
 	}
 
 	// Append route specific JS.
