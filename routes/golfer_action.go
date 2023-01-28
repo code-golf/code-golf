@@ -20,10 +20,7 @@ func golferActionPOST(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tx, err := session.Database(r).BeginTx(r.Context(), nil)
-	if err != nil {
-		panic(err)
-	}
+	tx := session.Database(r).MustBeginTx(r.Context(), nil)
 	defer tx.Rollback()
 
 	// Check we're not going to hit the follow limit.
@@ -51,9 +48,7 @@ func golferActionPOST(w http.ResponseWriter, r *http.Request) {
 		sql = "DELETE FROM follows WHERE follower_id = $1 AND followee_id = $2"
 	}
 
-	if _, err := tx.Exec(sql, golfer.ID, target.ID); err != nil {
-		panic(err)
-	}
+	tx.MustExec(sql, golfer.ID, target.ID)
 
 	if err := tx.Commit(); err != nil {
 		panic(err)

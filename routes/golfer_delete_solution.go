@@ -16,12 +16,10 @@ func golferDeleteSolutionPOST(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 	}
 
-	if _, err := session.Database(r).Exec(
+	session.Database(r).MustExec(
 		"DELETE FROM solutions WHERE hole = $1 AND lang = $2 AND user_id = $3",
 		hole, lang, session.Golfer(r).ID,
-	); err != nil {
-		panic(err)
-	}
+	)
 
 	http.Redirect(w, r, "/"+hole+"#"+lang, http.StatusSeeOther)
 }

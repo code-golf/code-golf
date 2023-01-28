@@ -93,15 +93,12 @@ func callbackGET(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	tx, err := session.Database(r).BeginTx(r.Context(), nil)
-	if err != nil {
-		panic(err)
-	}
+	tx := session.Database(r).MustBeginTx(r.Context(), nil)
 	defer tx.Rollback()
 
 	// Create or update a user. For now user ID == GitHub user ID.
 	// This'll need to change for true multi connection OAuth support.
-	if _, err := tx.Exec(
+	tx.MustExec(
 		`INSERT INTO users (id, login, country, time_zone)
 		      VALUES       ($1,    $2,      $3,        $4)
 		 ON CONFLICT       (id)
@@ -109,21 +106,17 @@ func callbackGET(w http.ResponseWriter, r *http.Request) {
 		     country = COALESCE(users.country,   excluded.country),
 		   time_zone = COALESCE(users.time_zone, excluded.time_zone)`,
 		user.ID, user.Login, country, timeZone,
-	); err != nil {
-		panic(err)
-	}
+	)
 
 	// Create or update a connection. For now user ID == GitHub user ID.
 	// This'll need to change for true multi connection OAuth support.
-	if _, err := tx.Exec(
+	tx.MustExec(
 		`INSERT INTO connections (connection, id, user_id, username)
 		      VALUES             (  'github', $1,      $2,       $3)
 		 ON CONFLICT             (connection, id)
 		   DO UPDATE SET username = excluded.username`,
 		user.ID, user.ID, user.Login,
-	); err != nil {
-		panic(err)
-	}
+	)
 
 	// Create a session, write cookie value.
 	if err := tx.QueryRow(

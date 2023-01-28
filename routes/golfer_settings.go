@@ -11,24 +11,20 @@ import (
 
 // POST /golfer/cancel-delete
 func golferCancelDeletePOST(w http.ResponseWriter, r *http.Request) {
-	if _, err := session.Database(r).Exec(
+	session.Database(r).MustExec(
 		"UPDATE users SET delete = NULL WHERE id = $1",
 		session.Golfer(r).ID,
-	); err != nil {
-		panic(err)
-	}
+	)
 
 	http.Redirect(w, r, "/golfer/settings", http.StatusSeeOther)
 }
 
 // POST /golfer/delete
 func golferDeletePOST(w http.ResponseWriter, r *http.Request) {
-	if _, err := session.Database(r).Exec(
+	session.Database(r).MustExec(
 		"UPDATE users SET delete = TIMEZONE('UTC', NOW()) + INTERVAL '7 days' WHERE id = $1",
 		session.Golfer(r).ID,
-	); err != nil {
-		panic(err)
-	}
+	)
 
 	http.Redirect(w, r, "/golfer/settings", http.StatusSeeOther)
 }
@@ -96,17 +92,14 @@ func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tx, err := session.Database(r).BeginTxx(r.Context(), nil)
-	if err != nil {
-		panic(err)
-	}
+	tx := session.Database(r).MustBeginTx(r.Context(), nil)
 	defer tx.Rollback()
 
 	userID := session.Golfer(r).ID
-	if _, err := tx.Exec(
+	tx.MustExec(
 		`UPDATE users
 		    SET country = $1,
-				     layout = $2,
+		         layout = $2,
 		         keymap = $3,
 		    referrer_id = (SELECT id FROM users WHERE login = $4 AND id != $8),
 		   show_country = $5,
@@ -121,23 +114,19 @@ func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 		r.Form.Get("theme"),
 		r.Form.Get("time_zone"),
 		userID,
-	); err != nil {
-		panic(err)
-	}
+	)
 
 	// Update connections' publicness if they differ from DB.
 	for _, c := range oauth.GetConnections(tx, userID, false) {
 		if show := r.Form.Get("show_"+c.Connection) == "on"; show != c.Public {
-			if _, err := tx.Exec(
+			tx.MustExec(
 				`UPDATE connections
 				    SET public = $1
 				  WHERE connection = $2 AND user_id = $3`,
 				show,
 				c.Connection,
 				userID,
-			); err != nil {
-				panic(err)
-			}
+			)
 		}
 	}
 

@@ -98,15 +98,12 @@ func golferSolutionPOST(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if fails > passes {
-		res, err := db.Exec(
+		res := db.MustExec(
 			`UPDATE solutions
 			    SET failing = true
 			  WHERE NOT failing AND code = $1 AND hole = $2 AND lang = $3`,
 			code, hole.ID, lang.ID,
 		)
-		if err != nil {
-			panic(err)
-		}
 
 		// FIXME Technically we can end up failing multiple golfers.
 		if rows, _ := res.RowsAffected(); rows > 0 {

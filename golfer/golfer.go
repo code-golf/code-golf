@@ -32,13 +32,11 @@ type Golfer struct {
 
 // Earn the given cheevo, no-op if already earned.
 func (g *Golfer) Earn(db *sqlx.DB, cheevoID string) (earned *config.Cheevo) {
-	if res, err := db.Exec(
+	if rowsAffected, _ := db.MustExec(
 		"INSERT INTO trophies VALUES (DEFAULT, $1, $2) ON CONFLICT DO NOTHING",
 		g.ID,
 		cheevoID,
-	); err != nil {
-		panic(err)
-	} else if rowsAffected, _ := res.RowsAffected(); rowsAffected == 1 {
+	).RowsAffected(); rowsAffected == 1 {
 		earned = config.CheevoByID[cheevoID]
 	}
 
