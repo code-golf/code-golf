@@ -1,3 +1,6 @@
+/* dark.css is loaded for golfers with the dark or auto theme, and this is only
+ * applied for dark theme or auto theme and matching the media query */
+
 :root {
     color-scheme: dark; /* Activate dark scrollbars */
 

@@ -1,4 +1,6 @@
-@import "./_font.css";
+/* base.css is loaded for all routes */
+
+@import "../_font.css";
 
 * {
     box-sizing: border-box;

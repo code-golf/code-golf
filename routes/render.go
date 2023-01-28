@@ -63,11 +63,11 @@ func getDarkModeMediaQuery(theme string) string {
 func getThemeCSSLink(theme string) string {
 	switch theme {
 	case "dark":
-		return assets["css/dark.css"]
+		return assets["css/common/dark.css"]
 	case "light":
-		return assets["css/light.css"]
+		return assets["css/common/light.css"]
 	}
-	return assets["css/light.css"]
+	return assets["css/common/light.css"]
 }
 
 // The dark theme is loaded on auto theme in a <link media="..."> query
@@ -78,7 +78,7 @@ func getAutoDarkCSSLink(theme string) string {
 	case "light":
 		return ""
 	}
-	return assets["css/dark.css"]
+	return assets["css/common/dark.css"]
 }
 
 func slurp(dir string) map[string]string {
@@ -165,7 +165,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	}
 
 	var cssLinks = []string{
-		assets["css/base.css"],
+		assets["css/common/base.css"],
 		assets["css/" + name + ".css"],
 		getThemeCSSLink(theme),
 	}
