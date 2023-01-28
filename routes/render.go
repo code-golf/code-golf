@@ -165,7 +165,8 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 
 	args := struct {
 		Banners                                         []banner
-		CSS                                             template.CSS
+		CSS                                             []string
+		CSSText																					template.CSS
 		Cheevos                                         map[string][]*config.Cheevo
 		Countries                                       map[string]*config.Country
 		Data, Description, Title                        any
@@ -181,7 +182,8 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		Banners:            banners(theGolfer, time.Now().UTC()),
 		Cheevos:            config.CheevoTree,
 		Countries:          config.CountryByID,
-		CSS:                getThemeCSS(theme) + css["base"] + css[path.Dir(name)] + css[name],
+		CSS:                []string{assets["css/base.css"], assets["css/" + path.Dir(name) + ".css"], assets["css/" + name + ".css"]},
+		CSSText:            getThemeCSS(theme),
 		Data:               data[0],
 		DarkModeMediaQuery: getDarkModeMediaQuery(theme),
 		Description:        "Code Golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.",
@@ -237,7 +239,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 			"frame-ancestors 'none';"+
 			"img-src 'self' data: avatars.githubusercontent.com;"+
 			"script-src 'self' 'nonce-"+args.Nonce+"';"+
-			"style-src 'unsafe-inline'",
+			"style-src 'self' 'unsafe-inline';",
 	)
 
 	if args.Golfer == nil {

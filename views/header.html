@@ -34,7 +34,11 @@
     <script nonce="{{ $.Nonce }}" src="{{ . }}" type=module></script>
 {{ end -}}
 
-<style>{{ .CSS }}</style>
+<style nonce="{{ $.Nonce }}">{{ .CSSText }}</style>
+
+{{ range .CSS -}}
+    <link nonce="{{ $.Nonce }}" rel="stylesheet" href="{{ . }}">
+{{ end -}}
 
 <header>
     <nav>
