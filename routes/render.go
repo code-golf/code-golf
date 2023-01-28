@@ -21,7 +21,6 @@ import (
 
 var (
 	assets = map[string]string{}
-	css    = map[string]template.CSS{}
 	svg    = map[string]template.HTML{}
 
 	dev bool
@@ -166,14 +165,14 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 
 	var cssLinks = []string{
 		assets["css/common/base.css"],
-		assets["css/" + name + ".css"],
+		assets["css/"+name+".css"],
 		getThemeCSSLink(theme),
 	}
 
 	args := struct {
 		Banners                                         []banner
 		CSS                                             []string
-		AutoDarkCSSLink 																string
+		AutoDarkCSSLink                                 string
 		Cheevos                                         map[string][]*config.Cheevo
 		Countries                                       map[string]*config.Country
 		Data, Description, Title                        any
