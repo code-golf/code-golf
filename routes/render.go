@@ -166,7 +166,6 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 
 	var cssLinks = []string{
 		assets["css/base.css"],
-		assets["css/" + path.Dir(name) + ".css"],
 		assets["css/" + name + ".css"],
 		getThemeCSSLink(theme),
 	}

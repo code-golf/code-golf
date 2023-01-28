@@ -1,3 +1,5 @@
+@import "./_rankings.css";
+
 @media (max-width: 34rem) {
     td:nth-child(5) { border-right: 1px solid var(--color) }
 

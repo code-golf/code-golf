@@ -1,4 +1,4 @@
-@import "terminal.css";
+@import "./_terminal.css";
 
 aside {
     display: flex;

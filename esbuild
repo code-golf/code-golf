@@ -25,4 +25,5 @@ node_modules/.bin/esbuild "$@"        \
         css \
         js \
         -type f \
-        -not -name '_*'`
+        -not -name '_*'
+        -not -name '*.svg'`
