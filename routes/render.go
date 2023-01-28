@@ -113,28 +113,20 @@ func init() {
 		for dist, src := range esbuild.Outputs {
 			if src.EntryPoint != "" {
 				assets[src.EntryPoint] = "/" + dist
+				if strings.HasPrefix(src.EntryPoint, "css/") {
+					var err error
+					var cssBytes []byte
+					if cssBytes, err = os.ReadFile(dist); err != nil {
+						panic(err)
+					}
+					cssText := string(cssBytes)
+					if cssText, err = minify.CSS(cssText); err != nil {
+						panic(err)
+					}
+					css[src.EntryPoint[4:len(src.EntryPoint)-4]] = template.CSS(cssText)
+				}
 			}
 		}
-	}
-
-	// CSS.
-	for name, data := range slurp("css") {
-		var err error
-		if data, err = minify.CSS(data); err != nil {
-			panic(err)
-		}
-
-		css[name] = template.CSS(data)
-	}
-
-	// HACK Prepend font.css (with font URL) onto base.css.
-	// TODO Use esbuild for all CSS? Still serve inline?
-	if fontCSS, ok := assets["css/font.css"]; ok {
-		cssBytes, err := os.ReadFile(fontCSS[1:])
-		if err != nil {
-			panic(err)
-		}
-		css["base"] = template.CSS(cssBytes) + css["base"]
 	}
 
 	// SVG.
