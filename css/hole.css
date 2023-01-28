@@ -1,3 +1,5 @@
+@import "terminal.css";
+
 aside {
     display: flex;
     grid-column: 1 / -1;
