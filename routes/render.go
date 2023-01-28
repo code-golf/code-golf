@@ -57,15 +57,28 @@ func getDarkModeMediaQuery(theme string) string {
 	return "(prefers-color-scheme:dark)"
 }
 
-func getThemeCSS(theme string) template.CSS {
+// If theme is "dark" or "light", only that CSS file is loaded as you expect
+// If theme is auto, then the light theme is loaded, and the dark theme might
+// be loaded based on a <link media="..."> query
+func getThemeCSSLink(theme string) string {
 	switch theme {
 	case "dark":
-		return css["dark"]
+		return assets["css/dark.css"]
 	case "light":
-		return css["light"]
+		return assets["css/light.css"]
 	}
+	return assets["css/light.css"]
+}
 
-	return css["light"] + "@media(prefers-color-scheme:dark){" + css["dark"] + "}"
+// The dark theme is loaded on auto theme in a <link media="..."> query
+func getAutoDarkCSSLink(theme string) string {
+	switch theme {
+	case "dark":
+		return ""
+	case "light":
+		return ""
+	}
+	return assets["css/dark.css"]
 }
 
 func slurp(dir string) map[string]string {
@@ -113,18 +126,6 @@ func init() {
 		for dist, src := range esbuild.Outputs {
 			if src.EntryPoint != "" {
 				assets[src.EntryPoint] = "/" + dist
-				if strings.HasPrefix(src.EntryPoint, "css/") {
-					var err error
-					var cssBytes []byte
-					if cssBytes, err = os.ReadFile(dist); err != nil {
-						panic(err)
-					}
-					cssText := string(cssBytes)
-					if cssText, err = minify.CSS(cssText); err != nil {
-						panic(err)
-					}
-					css[src.EntryPoint[4:len(src.EntryPoint)-4]] = template.CSS(cssText)
-				}
 			}
 		}
 	}
@@ -163,10 +164,17 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		}
 	}
 
+	var cssLinks = []string{
+		assets["css/base.css"],
+		assets["css/" + path.Dir(name) + ".css"],
+		assets["css/" + name + ".css"],
+		getThemeCSSLink(theme),
+	}
+
 	args := struct {
 		Banners                                         []banner
 		CSS                                             []string
-		CSSText																					template.CSS
+		AutoDarkCSSLink 																string
 		Cheevos                                         map[string][]*config.Cheevo
 		Countries                                       map[string]*config.Country
 		Data, Description, Title                        any
@@ -182,8 +190,8 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		Banners:            banners(theGolfer, time.Now().UTC()),
 		Cheevos:            config.CheevoTree,
 		Countries:          config.CountryByID,
-		CSS:                []string{assets["css/base.css"], assets["css/" + path.Dir(name) + ".css"], assets["css/" + name + ".css"]},
-		CSSText:            getThemeCSS(theme),
+		CSS:                cssLinks,
+		AutoDarkCSSLink:    getAutoDarkCSSLink(theme),
 		Data:               data[0],
 		DarkModeMediaQuery: getDarkModeMediaQuery(theme),
 		Description:        "Code Golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.",

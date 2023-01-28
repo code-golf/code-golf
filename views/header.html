@@ -34,10 +34,12 @@
     <script nonce="{{ $.Nonce }}" src="{{ . }}" type=module></script>
 {{ end -}}
 
-<style nonce="{{ $.Nonce }}">{{ .CSSText }}</style>
-
 {{ range .CSS -}}
-    <link nonce="{{ $.Nonce }}" rel="stylesheet" href="{{ . }}">
+    <link rel="stylesheet" href="{{ . }}">
+{{ end -}}
+
+{{ if .AutoDarkCSSLink -}}
+    <link media="(prefers-color-scheme:dark)" rel="stylesheet" href="{{ .AutoDarkCSSLink }}">
 {{ end -}}
 
 <header>
