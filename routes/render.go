@@ -155,13 +155,11 @@ func init() {
 
 func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	theme := "auto"
-	prependBeforeName := ""
 	theGolfer := session.Golfer(r)
 	if theGolfer != nil {
 		theme = theGolfer.Theme
 		if name == "hole" && theGolfer.Layout == "tabs" {
 			name = "hole-tabs"
-			prependBeforeName = "hole"
 		}
 	}
 
@@ -183,7 +181,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		Banners:            banners(theGolfer, time.Now().UTC()),
 		Cheevos:            config.CheevoTree,
 		Countries:          config.CountryByID,
-		CSS:                getThemeCSS(theme) + css["base"] + css[path.Dir(name)] + css[prependBeforeName] + css[name],
+		CSS:                getThemeCSS(theme) + css["base"] + css[path.Dir(name)] + css[name],
 		Data:               data[0],
 		DarkModeMediaQuery: getDarkModeMediaQuery(theme),
 		Description:        "Code Golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.",
