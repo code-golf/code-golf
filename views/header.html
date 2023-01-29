@@ -30,13 +30,13 @@
 <meta property=og:title        content="{{ .Title }}">
 <meta property=og:url          content="https://code.golf{{ with .Path }}{{ . }}{{ end }}">
 
+{{ range .CSS -}}
+    <link rel=stylesheet href="{{ .Path }}" {{- with .Media }} media="{{ . }}" {{- end }}>
+{{ end }}
+
 {{ range .JS -}}
     <script nonce="{{ $.Nonce }}" src="{{ . }}" type=module></script>
-{{ end -}}
-
-{{ range .CSS -}}
-    <link rel="stylesheet" href="{{ .Href }}" media="{{ .Media }}">
-{{ end -}}
+{{ end }}
 
 <header>
     <nav>

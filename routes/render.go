@@ -56,31 +56,27 @@ func getDarkModeMediaQuery(theme string) string {
 	return "(prefers-color-scheme:dark)"
 }
 
-type cssLink struct {
-	Href  string
-	Media string
-}
+type cssLink struct{ Path, Media string }
 
 func getCSSLinks(name string, theme string) []cssLink {
-	var links = []cssLink{
-		{Href: assets["css/common/base.css"]},
-		{Href: assets["css/"+name+".css"]},
+	var links = []cssLink{{assets["css/common/base.css"], ""}}
+
+	if path, ok := assets["css/"+name+".css"]; ok {
+		links = append(links, cssLink{Path: path})
 	}
+
 	// If theme is "dark" or "light", only that CSS file is loaded as you expect
 	// If theme is auto, then the light theme is loaded, and the dark theme might
 	// be loaded based on a <link media="..."> query
-	switch theme {
-	case "dark":
-		return append(links, cssLink{Href: assets["css/common/dark.css"]})
-	case "light":
-		return append(links, cssLink{Href: assets["css/common/light.css"]})
-	default:
-		return append(
-			links,
-			cssLink{Href: assets["css/common/light.css"]},
-			cssLink{Href: assets["css/common/dark.css"], Media: "(prefers-color-scheme:dark)"},
-		)
+	if theme == "dark" || theme == "light" {
+		return append(links, cssLink{assets["css/common/"+theme+".css"], ""})
 	}
+
+	return append(
+		links,
+		cssLink{assets["css/common/light.css"], ""},
+		cssLink{assets["css/common/dark.css"], "(prefers-color-scheme:dark)"},
+	)
 }
 
 func slurp(dir string) map[string]string {
