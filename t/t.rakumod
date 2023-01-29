@@ -15,8 +15,8 @@ sub createSession($dbh, int $userId) is export {
     $dbh.execute("INSERT INTO sessions (user_id) VALUES ($userId) RETURNING id").row.head;
 }
 
-sub createUser($dbh, int $id) is export {
-    $dbh.execute: "INSERT INTO users (id, login) VALUES ($id, 'Bob')";
+sub createUser($dbh, $id, $name = 'Bob') is export {
+    $dbh.execute: 'INSERT INTO users (id, login) VALUES ($1, $2)', $id, $name;
 }
 
 sub dbh is export {
