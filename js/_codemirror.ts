@@ -11,7 +11,7 @@ import { history, historyKeymap, insertNewline,
     insertTab, standardKeymap, toggleComment }   from '@codemirror/commands';
 import { tags }                                  from '@lezer/highlight';
 import { bracketMatching, defaultHighlightStyle,
-    HighlightStyle, StreamLanguage,
+    HighlightStyle, LanguageSupport, StreamLanguage,
     syntaxHighlighting }                         from '@codemirror/language';
 import { oneDarkTheme, oneDarkHighlightStyle }   from '@codemirror/theme-one-dark';
 import { vim }                                   from '@replit/codemirror-vim';
@@ -41,7 +41,7 @@ import { nim }             from 'nim-codemirror-mode';
 import { oCaml }           from '@codemirror/legacy-modes/mode/mllike';
 import { pascal }          from '@codemirror/legacy-modes/mode/pascal';
 import { perl }            from '@codemirror/legacy-modes/mode/perl';
-import { php }             from '@codemirror/lang-php';
+import { phpLanguage }     from '@codemirror/lang-php';
 import { powerShell }      from '@codemirror/legacy-modes/mode/powershell';
 import { prolog }          from 'codemirror-lang-prolog';
 import { python }          from '@codemirror/lang-python';
@@ -136,7 +136,8 @@ export const extensions = {
     'ocaml':      StreamLanguage.define(oCaml),
     'pascal':     StreamLanguage.define(pascal),
     'perl':       StreamLanguage.define(perl),
-    'php':        php({ plain: true }),
+    // Bypass php() so that lang-html & lang-css imports are tree-shaken out.
+    'php':        new LanguageSupport(phpLanguage.configure({ top: 'Program' })),
     'powershell': StreamLanguage.define(powerShell),
     'prolog':     prolog(),
     'python':     python(),
