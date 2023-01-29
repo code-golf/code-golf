@@ -35,11 +35,7 @@
 {{ end -}}
 
 {{ range .CSS -}}
-    <link rel="stylesheet" href="{{ . }}">
-{{ end -}}
-
-{{ if .AutoDarkCSSLink -}}
-    <link media="(prefers-color-scheme:dark)" rel="stylesheet" href="{{ .AutoDarkCSSLink }}">
+    <link rel="stylesheet" href="{{ .Href }}" media="{{ .Media }}">
 {{ end -}}
 
 <header>
