@@ -245,7 +245,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 			"frame-ancestors 'none';"+
 			"img-src 'self' data: avatars.githubusercontent.com;"+
 			"script-src 'self' 'nonce-"+args.Nonce+"';"+
-			"style-src 'self' 'unsafe-inline';",
+			"style-src 'self' 'unsafe-inline'",
 	)
 
 	if args.Golfer == nil {
