@@ -44,7 +44,7 @@ import { perl }            from '@codemirror/legacy-modes/mode/perl';
 import { phpLanguage }     from '@codemirror/lang-php';
 import { powerShell }      from '@codemirror/legacy-modes/mode/powershell';
 import { prolog }          from 'codemirror-lang-prolog';
-import { python }          from '@codemirror/lang-python';
+import { pythonLanguage }  from '@codemirror/lang-python';
 import { r }               from '@codemirror/legacy-modes/mode/r';
 import { raku }            from './vendor/codemirror-raku';
 import { ruby }            from '@codemirror/legacy-modes/mode/ruby';
@@ -140,7 +140,8 @@ export const extensions = {
     'php':        new LanguageSupport(phpLanguage.configure({ top: 'Program' })),
     'powershell': StreamLanguage.define(powerShell),
     'prolog':     prolog(),
-    'python':     python(),
+    // Bypass python() so that autocomplete imports are tree-shaken out.
+    'python':     new LanguageSupport(pythonLanguage),
     'r':          StreamLanguage.define(r),
     'raku':       StreamLanguage.define(raku),
     'ruby':       StreamLanguage.define(ruby),
