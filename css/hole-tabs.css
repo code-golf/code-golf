@@ -1,11 +1,6 @@
-/**
- * NOTE: These includes are hardcoded in render.go, not inlined automatically
- * from comments like the *.js `include`s
- */
-
-/* include hole.css */
-/* include vendor/goldenlayout-base.css */
-/* include vendor/goldenlayout-theme.css */
+@import "./hole.css";
+@import "./vendor/_goldenlayout-base.css";
+@import "./vendor/_goldenlayout-theme.css";
 
 /* Body background --light-grey to allow code box etc contrast as --background */
 body {

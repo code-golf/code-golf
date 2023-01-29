@@ -1,0 +1,29 @@
+@import "../../node_modules/golden-layout/dist/css/goldenlayout-base.css";
+
+.lm_content {
+  overflow: auto;
+}
+
+.lm_header .lm_controls {
+  top: 6px;
+  gap: 10px;
+}
+
+.lm_header .lm_tab {
+  padding: 3px 25px 10px 10px;
+}
+
+.lm_header .lm_tab .lm_close_tab {
+  width: 12px;
+  height: 12px;
+  top: 7px;
+  right: 5px;
+}
+
+.lm_drop_tab_placeholder {
+  height: 10px;
+}
+
+.lm_header .lm_tabdropdown_list .lm_tab {
+  background: var(--background);
+}

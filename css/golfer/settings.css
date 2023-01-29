@@ -1,3 +1,5 @@
+@import "./_golfer.css";
+
 [role=group] {
     display: grid;
     gap: 1rem;

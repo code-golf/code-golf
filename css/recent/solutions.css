@@ -1,3 +1,5 @@
+@import "./_recent.css";
+
 td:nth-child(3) {
     align-items: center;
     display: flex;
