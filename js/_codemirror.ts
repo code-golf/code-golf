@@ -17,44 +17,44 @@ import { oneDarkTheme, oneDarkHighlightStyle }   from '@codemirror/theme-one-dar
 import { vim }                                   from '@replit/codemirror-vim';
 
 // Languages.
-import { assembly }        from '@defasm/codemirror';
-import { brainfuck }       from 'codemirror-lang-brainfuck';
-import { c, csharp, dart } from './vendor/codemirror-clike';
-import { cobol }           from './vendor/codemirror-cobol';
-import { commonLisp }      from '@codemirror/legacy-modes/mode/commonlisp';
-import { cpp }             from '@codemirror/lang-cpp';
-import { crystal }         from '@codemirror/legacy-modes/mode/crystal';
-import { d }               from '@codemirror/legacy-modes/mode/d';
-import { elixir }          from 'codemirror-lang-elixir';
-import { fortran }         from '@codemirror/legacy-modes/mode/fortran';
-import { fSharp }          from '@codemirror/legacy-modes/mode/mllike';
-import { go }              from '@codemirror/legacy-modes/mode/go';
-import { golfScript }      from 'codemirror-lang-golfscript';
-import { haskell }         from '@codemirror/legacy-modes/mode/haskell';
-import { j }               from 'codemirror-lang-j';
-import { java }            from '@codemirror/lang-java';
-import { javascript }      from '@codemirror/lang-javascript';
-import { julia }           from '@codemirror/legacy-modes/mode/julia';
-import { k }               from 'codemirror-lang-k';
-import { lua }             from '@codemirror/legacy-modes/mode/lua';
-import { nim }             from 'nim-codemirror-mode';
-import { oCaml }           from '@codemirror/legacy-modes/mode/mllike';
-import { pascal }          from '@codemirror/legacy-modes/mode/pascal';
-import { perl }            from '@codemirror/legacy-modes/mode/perl';
-import { phpLanguage }     from '@codemirror/lang-php';
-import { powerShell }      from '@codemirror/legacy-modes/mode/powershell';
-import { prolog }          from 'codemirror-lang-prolog';
-import { pythonLanguage }  from '@codemirror/lang-python';
-import { r }               from '@codemirror/legacy-modes/mode/r';
-import { raku }            from './vendor/codemirror-raku';
-import { ruby }            from '@codemirror/legacy-modes/mode/ruby';
-import { rust }            from '@codemirror/lang-rust';
-import { shell }           from '@codemirror/legacy-modes/mode/shell';
-import { sql, SQLite }     from '@codemirror/lang-sql';
-import { swift }           from '@codemirror/legacy-modes/mode/swift';
-import { tcl }             from '@codemirror/legacy-modes/mode/tcl';
-import { stex }            from '@codemirror/legacy-modes/mode/stex';
-import { wren }            from '@exercism/codemirror-lang-wren';
+import { assembly }           from '@defasm/codemirror';
+import { brainfuck }          from 'codemirror-lang-brainfuck';
+import { c, csharp, dart }    from './vendor/codemirror-clike';
+import { cobol }              from './vendor/codemirror-cobol';
+import { commonLisp }         from '@codemirror/legacy-modes/mode/commonlisp';
+import { cpp }                from '@codemirror/lang-cpp';
+import { crystal }            from '@codemirror/legacy-modes/mode/crystal';
+import { d }                  from '@codemirror/legacy-modes/mode/d';
+import { elixir }             from 'codemirror-lang-elixir';
+import { fortran }            from '@codemirror/legacy-modes/mode/fortran';
+import { fSharp }             from '@codemirror/legacy-modes/mode/mllike';
+import { go }                 from '@codemirror/legacy-modes/mode/go';
+import { golfScript }         from 'codemirror-lang-golfscript';
+import { haskell }            from '@codemirror/legacy-modes/mode/haskell';
+import { j }                  from 'codemirror-lang-j';
+import { java }               from '@codemirror/lang-java';
+import { javascriptLanguage } from '@codemirror/lang-javascript';
+import { julia }              from '@codemirror/legacy-modes/mode/julia';
+import { k }                  from 'codemirror-lang-k';
+import { lua }                from '@codemirror/legacy-modes/mode/lua';
+import { nim }                from 'nim-codemirror-mode';
+import { oCaml }              from '@codemirror/legacy-modes/mode/mllike';
+import { pascal }             from '@codemirror/legacy-modes/mode/pascal';
+import { perl }               from '@codemirror/legacy-modes/mode/perl';
+import { phpLanguage }        from '@codemirror/lang-php';
+import { powerShell }         from '@codemirror/legacy-modes/mode/powershell';
+import { prolog }             from 'codemirror-lang-prolog';
+import { pythonLanguage }     from '@codemirror/lang-python';
+import { r }                  from '@codemirror/legacy-modes/mode/r';
+import { raku }               from './vendor/codemirror-raku';
+import { ruby }               from '@codemirror/legacy-modes/mode/ruby';
+import { rust }               from '@codemirror/lang-rust';
+import { shell }              from '@codemirror/legacy-modes/mode/shell';
+import { sql, SQLite }        from '@codemirror/lang-sql';
+import { swift }              from '@codemirror/legacy-modes/mode/swift';
+import { tcl }                from '@codemirror/legacy-modes/mode/tcl';
+import { stex }               from '@codemirror/legacy-modes/mode/stex';
+import { wren }               from '@exercism/codemirror-lang-wren';
 
 // For some reason, this doesn't fully work unless added to both themes.
 const asmErrorTooltip = {
@@ -127,7 +127,8 @@ export const extensions = {
     // TODO hexagony
     'j':          j(),
     'java':       java(),
-    'javascript': javascript(),
+    // Bypass javascript() so that autocomplete imports are tree-shaken out.
+    'javascript': new LanguageSupport(javascriptLanguage),
     'julia':      StreamLanguage.define(julia),
     'k':          k(),
     'lisp':       StreamLanguage.define(commonLisp),
