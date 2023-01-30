@@ -10,6 +10,11 @@ import (
 	"github.com/lib/pq"
 )
 
+const (
+	followLimit        = 10
+	followLimitSponsor = 24
+)
+
 // GET /golfers/{golfer}
 func golferGET(w http.ResponseWriter, r *http.Request) {
 	const limit = 100
@@ -29,6 +34,10 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 
 	db := session.Database(r)
 	golfer := session.GolferInfo(r).Golfer
+	golferInfo := session.GolferInfo(r)
+
+	followLimitGolfer := followLimit
+	if golferInfo.Sponsor { followLimitGolfer = followLimitSponsor }
 
 	data := struct {
 		Connections    []oauth.Connection
@@ -55,7 +64,7 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		           ''           lang,
 		           user_id
 		      FROM trophies
-		     WHERE user_id = ANY(following($1))
+		     WHERE user_id = ANY(following($1,$2))
 		 UNION ALL
 		 -- Follows
 		    SELECT followed    date,
@@ -73,13 +82,14 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		           lang::text     lang,
 		           user_id
 		      FROM solutions
-		     WHERE user_id = ANY(following($1))
+		     WHERE user_id = ANY(following($1,$2))
 		  GROUP BY user_id, hole, lang
 		) SELECT cheevo, date, login, hole, lang
 		    FROM data JOIN users ON id = user_id
 		ORDER BY date DESC, login LIMIT $2`,
 		golfer.ID,
 		limit,
+		followLimitGolfer,
 	)
 	if err != nil {
 		panic(err)
@@ -149,11 +159,12 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		           COALESCE((SELECT points FROM points
 		              WHERE scoring = 'chars' AND user_id = id), 0) chars
 		      FROM users
-		     WHERE id = ANY(following($1))
+		     WHERE id = ANY(following($1,$2))
 		) SELECT *, RANK() OVER (ORDER BY bytes DESC, chars DESC)
 		    FROM follows
 		ORDER BY rank, login`,
 		golfer.ID,
+		followLimitGolfer,
 	)
 	if err != nil {
 		panic(err)

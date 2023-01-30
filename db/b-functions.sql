@@ -9,10 +9,11 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE FUNCTION following(int) RETURNS int[] AS $$
+CREATE FUNCTION following(int, int) RETURNS int[] AS $$
     SELECT array_append(array_agg(followee_id), $1)
       FROM follows
      WHERE follower_id = $1
+     LIMIT $2
 $$ LANGUAGE SQL STABLE;
 
 CREATE TYPE hole_rank_ret AS (strokes int, rank int, joint bool);
