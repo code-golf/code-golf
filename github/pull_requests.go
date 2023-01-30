@@ -2,13 +2,13 @@ package github
 
 import (
 	"context"
-	"database/sql"
 	"time"
 
+	"github.com/jmoiron/sqlx"
 	"github.com/shurcooL/graphql"
 )
 
-func pullRequests(db *sql.DB) (limits []rateLimit) {
+func pullRequests(db *sqlx.DB) (limits []rateLimit) {
 	pullRequests := map[int]time.Time{}
 
 	var query struct {

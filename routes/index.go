@@ -3,11 +3,11 @@ package routes
 import (
 	"database/sql"
 	"net/http"
-	"sort"
 	"strings"
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
+	"golang.org/x/exp/slices"
 )
 
 // GET /
@@ -124,48 +124,48 @@ func indexGET(w http.ResponseWriter, r *http.Request) {
 
 		switch data.Sort = cookie(r, "__Host-sort"); data.Sort {
 		case "alphabetical-desc":
-			sort.Slice(data.Cards, func(i, j int) bool {
-				return strings.ToLower(data.Cards[i].Hole.Name) >
-					strings.ToLower(data.Cards[j].Hole.Name)
+			slices.SortFunc(data.Cards, func(a, b Card) bool {
+				return strings.ToLower(a.Hole.Name) >
+					strings.ToLower(b.Hole.Name)
 			})
 		case "category-asc":
-			sort.Slice(data.Cards, func(i, j int) bool {
-				if data.Cards[i].Hole.Category == data.Cards[j].Hole.Category {
-					return strings.ToLower(data.Cards[i].Hole.Name) <
-						strings.ToLower(data.Cards[j].Hole.Name)
+			slices.SortFunc(data.Cards, func(a, b Card) bool {
+				if a.Hole.Category == b.Hole.Category {
+					return strings.ToLower(a.Hole.Name) <
+						strings.ToLower(b.Hole.Name)
 				}
-				return data.Cards[i].Hole.Category < data.Cards[j].Hole.Category
+				return a.Hole.Category < b.Hole.Category
 			})
 		case "category-desc":
-			sort.Slice(data.Cards, func(i, j int) bool {
-				if data.Cards[i].Hole.Category == data.Cards[j].Hole.Category {
-					return strings.ToLower(data.Cards[i].Hole.Name) >
-						strings.ToLower(data.Cards[j].Hole.Name)
+			slices.SortFunc(data.Cards, func(a, b Card) bool {
+				if a.Hole.Category == b.Hole.Category {
+					return strings.ToLower(a.Hole.Name) >
+						strings.ToLower(b.Hole.Name)
 				}
-				return data.Cards[i].Hole.Category > data.Cards[j].Hole.Category
+				return a.Hole.Category > b.Hole.Category
 			})
 		case "points-asc":
-			sort.Slice(data.Cards, func(i, j int) bool {
-				if data.Cards[i].Points == data.Cards[j].Points {
-					return strings.ToLower(data.Cards[i].Hole.Name) <
-						strings.ToLower(data.Cards[j].Hole.Name)
+			slices.SortFunc(data.Cards, func(a, b Card) bool {
+				if a.Points == b.Points {
+					return strings.ToLower(a.Hole.Name) <
+						strings.ToLower(b.Hole.Name)
 				}
-				return data.Cards[i].Points < data.Cards[j].Points
+				return a.Points < b.Points
 			})
 		case "points-desc":
-			sort.Slice(data.Cards, func(i, j int) bool {
-				if data.Cards[i].Points == data.Cards[j].Points {
-					return strings.ToLower(data.Cards[i].Hole.Name) >
-						strings.ToLower(data.Cards[j].Hole.Name)
+			slices.SortFunc(data.Cards, func(a, b Card) bool {
+				if a.Points == b.Points {
+					return strings.ToLower(a.Hole.Name) >
+						strings.ToLower(b.Hole.Name)
 				}
-				return data.Cards[i].Points > data.Cards[j].Points
+				return a.Points > b.Points
 			})
 		default:
 			data.Sort = "alphabetical-asc"
 
-			sort.Slice(data.Cards, func(i, j int) bool {
-				return strings.ToLower(data.Cards[i].Hole.Name) <
-					strings.ToLower(data.Cards[j].Hole.Name)
+			slices.SortFunc(data.Cards, func(a, b Card) bool {
+				return strings.ToLower(a.Hole.Name) <
+					strings.ToLower(b.Hole.Name)
 			})
 		}
 	}

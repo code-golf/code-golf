@@ -90,7 +90,7 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 				// NOTE It's a little confusing that present is called pass
 				//      but past is called failing, so == is a mismatch.
 				if s.Pass == s.failing {
-					if _, err := db.Exec(
+					db.MustExec(
 						`UPDATE solutions
 						    SET failing = $1
 						  WHERE code    = $2
@@ -102,9 +102,7 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 						s.HoleID,
 						s.LangID,
 						s.GolferID,
-					); err != nil {
-						panic(err)
-					}
+					)
 				}
 
 				b, err := json.Marshal(s)

@@ -134,6 +134,10 @@ If you have [PostgreSQL](https://www.postgresql.org/download/) installed You can
 $ make db-dev
 ```
 
+## API
+
+Validate API definition with [vacuum](https://api.quobix.com/report?url=https://code.golf/api).
+
 ## Style
 
 URL slugs are consistently abbreviated (e.g. cheevos, langs, stats) but page

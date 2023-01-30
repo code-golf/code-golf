@@ -1,22 +1,24 @@
 FROM alpine:3.17 as builder
 
-RUN apk add --no-cache R
+RUN apk add --no-cache R=4.2.2-r0 build-base curl perl
+
+RUN curl https://busybox.net/downloads/busybox-1.36.0.tar.bz2 | tar xj
+
+RUN mv busybox-1.36.0 busybox
+
+COPY busybox-config busybox/.config
+
+RUN cd busybox && make install
 
 FROM codegolf/lang-base
 
-# FIXME rm, sed, sh, uname, which are all copies of the entire busybox.
-#       They were symlinks but that's how docker copy works.
-#       Ideally we'd build just those parts of busybox in non-symlink mode?
-COPY --from=0 /bin/rm                    \
-              /bin/sed                   \
-              /bin/sh                    \
-              /bin/uname                 /bin/
+COPY --from=0 /busybox/_install/bin      /bin
 COPY --from=0 /etc/R                     /etc/R
 COPY --from=0 /lib/ld-musl-x86_64.so.1   \
               /lib/libz.so.1             /lib/
+COPY --from=0 /busybox/_install/usr/bin  /usr/bin
 COPY --from=0 /usr/bin/R                 \
-              /usr/bin/Rscript           \
-              /usr/bin/which             /usr/bin/
+              /usr/bin/Rscript           /usr/bin/
 COPY --from=0 /usr/lib/R                 /usr/lib/R
 COPY --from=0 /usr/lib/libbz2.so.1       \
               /usr/lib/libgcc_s.so.1     \

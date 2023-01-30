@@ -2,10 +2,10 @@ package session
 
 import (
 	"context"
-	"database/sql"
 	"net/http"
 
 	"github.com/code-golf/code-golf/golfer"
+	"github.com/jmoiron/sqlx"
 )
 
 type key string
@@ -15,8 +15,8 @@ func Set(r *http.Request, k string, v any) *http.Request {
 }
 
 // Database gets the database handle from the request context.
-func Database(r *http.Request) *sql.DB {
-	return r.Context().Value(key("database")).(*sql.DB)
+func Database(r *http.Request) *sqlx.DB {
+	return r.Context().Value(key("database")).(*sqlx.DB)
 }
 
 // Golfer gets the golfer from the request context.

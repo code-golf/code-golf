@@ -21,7 +21,6 @@ import (
 
 var (
 	assets = map[string]string{}
-	css    = map[string]template.CSS{}
 	svg    = map[string]template.HTML{}
 
 	dev bool
@@ -57,15 +56,27 @@ func getDarkModeMediaQuery(theme string) string {
 	return "(prefers-color-scheme:dark)"
 }
 
-func getThemeCSS(theme string) template.CSS {
-	switch theme {
-	case "dark":
-		return css["dark"]
-	case "light":
-		return css["light"]
+type cssLink struct{ Path, Media string }
+
+func getCSSLinks(name string, theme string) []cssLink {
+	var links = []cssLink{{assets["css/common/base.css"], ""}}
+
+	if path, ok := assets["css/"+name+".css"]; ok {
+		links = append(links, cssLink{Path: path})
 	}
 
-	return css["light"] + "@media(prefers-color-scheme:dark){" + css["dark"] + "}"
+	// If theme is "dark" or "light", only that CSS file is loaded as you expect
+	// If theme is auto, then the light theme is loaded, and the dark theme might
+	// be loaded based on a <link media="..."> query
+	if theme == "dark" || theme == "light" {
+		return append(links, cssLink{assets["css/common/"+theme+".css"], ""})
+	}
+
+	return append(
+		links,
+		cssLink{assets["css/common/light.css"], ""},
+		cssLink{assets["css/common/dark.css"], "(prefers-color-scheme:dark)"},
+	)
 }
 
 func slurp(dir string) map[string]string {
@@ -117,26 +128,6 @@ func init() {
 		}
 	}
 
-	// CSS.
-	for name, data := range slurp("css") {
-		var err error
-		if data, err = minify.CSS(data); err != nil {
-			panic(err)
-		}
-
-		css[name] = template.CSS(data)
-	}
-
-	// HACK Prepend font.css (with font URL) onto base.css.
-	// TODO Use esbuild for all CSS? Still serve inline?
-	if fontCSS, ok := assets["css/font.css"]; ok {
-		cssBytes, err := os.ReadFile(fontCSS[1:])
-		if err != nil {
-			panic(err)
-		}
-		css["base"] = template.CSS(cssBytes) + css["base"]
-	}
-
 	// SVG.
 	for name, data := range slurp("svg") {
 		// Trim namespace as it's not needed for inline SVG under HTML 5.
@@ -163,19 +154,15 @@ func init() {
 
 func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	theme := "auto"
-	prependBeforeName := ""
 	theGolfer := session.Golfer(r)
 	if theGolfer != nil {
 		theme = theGolfer.Theme
-		if name == "hole" && theGolfer.Layout == "tabs" {
-			name = "hole-tabs"
-			prependBeforeName = "hole"
-		}
 	}
 
 	args := struct {
 		Banners                                         []banner
-		CSS                                             template.CSS
+		CSS                                             []cssLink
+		AutoDarkCSSLink                                 string
 		Cheevos                                         map[string][]*config.Cheevo
 		Countries                                       map[string]*config.Country
 		Data, Description, Title                        any
@@ -191,7 +178,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		Banners:            banners(theGolfer, time.Now().UTC()),
 		Cheevos:            config.CheevoTree,
 		Countries:          config.CountryByID,
-		CSS:                getThemeCSS(theme) + css["base"] + css[path.Dir(name)] + css[prependBeforeName] + css[name],
+		CSS:                getCSSLinks(name, theme),
 		Data:               data[0],
 		DarkModeMediaQuery: getDarkModeMediaQuery(theme),
 		Description:        "Code Golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.",
@@ -221,25 +208,6 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		args.Location = time.UTC
 	}
 
-	// TODO CSS imports?
-	if name == "hole" || name == "hole-tabs" {
-		args.CSS = args.CSS + css["terminal"]
-	}
-	if name == "hole-tabs" {
-		args.CSS += css["vendor/goldenlayout-base"]
-		// TODO: (GL) switch light/dark codemirror theme to getThemeCSS
-		// See above:
-		// 	 HACK Prepend font.css (with font URL) onto base.css.
-		//   TODO Use esbuild for all CSS? Still serve inline?
-		if themeCSS, ok := assets["css/vendor/goldenlayout-theme.css"]; ok {
-			cssBytes, err := os.ReadFile(themeCSS[1:])
-			if err != nil {
-				panic(err)
-			}
-			css["base"] = template.CSS(cssBytes) + css["base"]
-		}
-	}
-
 	// Append route specific JS.
 	// e.g. GET /foo/bar might add js/foo.ts and/or js/foo/bar.tsx.
 	for _, path := range []string{path.Dir(name), name} {
@@ -266,7 +234,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 			"frame-ancestors 'none';"+
 			"img-src 'self' data: avatars.githubusercontent.com;"+
 			"script-src 'self' 'nonce-"+args.Nonce+"';"+
-			"style-src 'unsafe-inline'",
+			"style-src 'self' 'unsafe-inline'",
 	)
 
 	if args.Golfer == nil {

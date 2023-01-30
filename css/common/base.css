@@ -1,3 +1,7 @@
+/* base.css is loaded for all routes */
+
+@import "../_font.css";
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -145,6 +149,12 @@ body > header svg {
     width: 1.5rem;
 }
 
+button {
+    color: var(--color);
+    cursor: pointer;
+    font: inherit;
+}
+
 dialog {
     background: var(--background);
     border: 1px solid var(--color);
@@ -166,10 +176,31 @@ dialog::backdrop, dialog + .backdrop {
     position: fixed;
 }
 
-dialog form {
-    display: grid;
+dialog > * {
+    display: flex;
+    flex-direction: column;
     gap: 1rem;
     padding: 1rem;
+}
+
+dialog a {
+    align-items: center;
+    display: flex;
+    gap: .5rem;
+}
+
+dialog img {
+    border-radius: 50%;
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+dialog ul {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    list-style: none;
+    padding: 0;
 }
 
 form menu {
@@ -401,7 +432,9 @@ thead th {
 }
 
 .nowrap-first-second td:nth-child(1),
-.nowrap-first-second td:nth-child(2) {
+.nowrap-first-second td:nth-child(2),
+.nowrap-second-third td:nth-child(2),
+.nowrap-second-third td:nth-child(3) {
     max-width: 0;
     width: 50%;
 }

@@ -25,16 +25,18 @@
 
 {{ with .Data.Authors }}
     <dialog id=authors-dialog>
-        <h1>{{ $.Data.Hole.Name }} Authors</h1>
-        <ul>
-        {{ range . }}
-            <li>
-                <a href="/golfers/{{ . }}">
-                    <img src="//avatars.githubusercontent.com/{{ . }}?s=48">
-                    {{ . }}
-                </a>
-        {{ end }}
-        </ul>
+        <div>
+            <h1>{{ $.Data.Hole.Name }} Authors</h1>
+            <ul>
+            {{ range . }}
+                <li>
+                    <a href="/golfers/{{ . }}">
+                        <img src="//avatars.githubusercontent.com/{{ . }}?s=48">
+                        {{ . }}
+                    </a>
+            {{ end }}
+            </ul>
+        </div>
     </dialog>
 {{ end }}
 
@@ -44,7 +46,7 @@
             <div id="hole-lang">
                 <h1>
                 {{ with .Data.Authors }}
-                    <button id=authors-btn>
+                    <button data-dialog=authors-dialog id=authors-btn>
                     {{ range . }}
                         <img src="//avatars.githubusercontent.com/{{ . }}?s=56">
                     {{ end }}
@@ -101,6 +103,14 @@
             <b>Write-Host</b> for output.
         </div>
     {{ end }}
+    {{ range .Data.Langs }}{{ if .Experiment }}
+        <div class="hide info {{ .ID }}">
+            {{ .Name }} is an experimental language, no solutions will be saved.
+            Please leave feedback on the
+            <a href="//github.com/code-golf/code-golf/issues/{{ .Experiment }}">
+                GitHub issue</a>.
+        </div>
+    {{ end }}{{ end }}
     </div>
     <div id="picker-status-row">
         <nav class="tabs hide" id=solutionPicker></nav>
@@ -193,7 +203,7 @@
 
 <script id=experimental       type=application/json>{{ ne .Data.Hole.Experiment 0 }}</script>
 <script id=darkModeMediaQuery type=application/json>{{ .DarkModeMediaQuery   }}</script>
-<script id=langs              type=application/json>{{ .Langs                }}</script>
+<script id=langs              type=application/json>{{ .Data.Langs           }}</script>
 <script id=solutions          type=application/json>{{ .Data.Solutions       }}</script>
 
 {{ template "footer" }}

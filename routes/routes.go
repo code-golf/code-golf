@@ -1,14 +1,14 @@
 package routes
 
 import (
-	"database/sql"
 	"net/http"
 
 	"github.com/code-golf/code-golf/middleware"
 	"github.com/go-chi/chi/v5"
+	"github.com/jmoiron/sqlx"
 )
 
-func Router(db *sql.DB) http.Handler {
+func Router(db *sqlx.DB) http.Handler {
 	r := chi.NewRouter()
 
 	r.Use(
@@ -87,6 +87,7 @@ func Router(db *sql.DB) http.Handler {
 		r.Get("/langs/bytes", redir("/rankings/langs/all/bytes"))
 		r.Get("/langs/chars", redir("/rankings/langs/all/chars"))
 		r.Get("/medals", redir("/rankings/medals/all/all/all"))
+		r.Get("/solutions", redir("/rankings/misc/solutions"))
 
 		r.Get("/cheevos", rankingsCheevosGET)
 		r.Get("/cheevos/all", redir("/rankings/cheevos"))
@@ -96,9 +97,8 @@ func Router(db *sql.DB) http.Handler {
 		r.Get("/recent-holes/{lang}/{scoring}", rankingsHolesGET)
 
 		r.Get("/medals/{hole}/{lang}/{scoring}", rankingsMedalsGET)
-
 		r.Get("/langs/{lang}/{scoring}", rankingsLangsGET)
-		r.Get("/solutions", rankingsSolutionsGET)
+		r.Get("/misc/{type}", rankingsMiscGET)
 	})
 	r.Route("/recent", func(r chi.Router) {
 		r.Get("/", redir("/recent/solutions/all/all/bytes"))

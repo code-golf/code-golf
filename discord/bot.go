@@ -11,6 +11,7 @@ import (
 	"github.com/code-golf/code-golf/config"
 	Golfer "github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/pretty"
+	"github.com/jmoiron/sqlx"
 )
 
 var (
@@ -111,7 +112,7 @@ func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
 }
 
 // AwardRoles awards Discord roles based on cheevos etc.
-func AwardRoles(db *sql.DB) error {
+func AwardRoles(db *sqlx.DB) error {
 	if bot == nil {
 		return nil
 	}
@@ -158,7 +159,7 @@ func AwardRoles(db *sql.DB) error {
 	return nil
 }
 
-func awardRoles(db *sql.DB, members map[string]any, roleID, sql string) error {
+func awardRoles(db *sqlx.DB, members map[string]any, roleID, sql string) error {
 	rows, err := db.Query(sql)
 	if err != nil {
 		return err
@@ -211,7 +212,7 @@ func LogFailedRejudge(golfer *Golfer.Golfer, hole *config.Hole, lang *config.Lan
 
 // LogNewRecord logs a record breaking solution in Discord.
 func LogNewRecord(
-	golfer *Golfer.Golfer, hole *config.Hole, lang *config.Lang, updates []Golfer.RankUpdate, db *sql.DB,
+	golfer *Golfer.Golfer, hole *config.Hole, lang *config.Lang, updates []Golfer.RankUpdate, db *sqlx.DB,
 ) {
 	if bot == nil {
 		return

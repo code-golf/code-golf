@@ -3,71 +3,53 @@ package routes
 import (
 	"database/sql"
 	"net/http"
-	"sort"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
+	"golang.org/x/exp/slices"
 )
 
 // GET /admin
 func adminGET(w http.ResponseWriter, r *http.Request) {
-	type Country struct {
-		Flag, Name string
-		Golfers    int
-		Percent    float64
-	}
-
-	type Session struct {
-		Golfer   string
-		LastUsed time.Time
-	}
-
-	type Table struct {
-		Name       sql.NullString
-		Rows, Size int
+	type country struct {
+		Flag, ID, Name string
+		Golfers        int
+		Percent        float64
 	}
 
 	data := struct {
-		Countries []Country
-		Sessions  []Session
-		Tables    []Table
+		Countries []*country
+		Sessions  []struct {
+			Golfer   string
+			LastUsed time.Time
+		}
+		Tables []struct {
+			Name       sql.NullString
+			Rows, Size int
+		}
 	}{}
 
 	db := session.Database(r)
 
-	rows, err := db.Query(
-		` SELECT login, MAX(last_used)
+	if err := db.Select(
+		&data.Sessions,
+		` SELECT login golfer, MAX(last_used) last_used
 		    FROM sessions JOIN users ON user_id = users.id
 		   WHERE user_id != $1
 		     AND last_used > TIMEZONE('UTC', NOW()) - INTERVAL '1 day'
 		GROUP BY login
-		ORDER BY max DESC`,
+		ORDER BY last_used DESC`,
 		session.Golfer(r).ID,
-	)
-	if err != nil {
-		panic(err)
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var session Session
-
-		if err := rows.Scan(&session.Golfer, &session.LastUsed); err != nil {
-			panic(err)
-		}
-
-		data.Sessions = append(data.Sessions, session)
-	}
-
-	if err := rows.Err(); err != nil {
+	); err != nil {
 		panic(err)
 	}
 
-	rows, err = db.Query(
-		` SELECT relname,
-		         CASE WHEN relkind = 'i' THEN 0 ELSE reltuples END,
-		         PG_TOTAL_RELATION_SIZE(c.oid)
+	if err := db.Select(
+		&data.Tables,
+		` SELECT relname                                           name,
+		         CASE WHEN relkind = 'i' THEN 0 ELSE reltuples END rows,
+		         PG_TOTAL_RELATION_SIZE(c.oid)                     size
 		    FROM pg_class     c
 		    JOIN pg_namespace n
 		      ON n.oid = relnamespace
@@ -75,63 +57,36 @@ func adminGET(w http.ResponseWriter, r *http.Request) {
 		   WHERE reltuples != 0
 		   UNION
 		  SELECT NULL, 0, PG_DATABASE_SIZE('code-golf')
-		ORDER BY relname`,
-	)
-	if err != nil {
-		panic(err)
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var table Table
-
-		if err := rows.Scan(&table.Name, &table.Rows, &table.Size); err != nil {
-			panic(err)
-		}
-
-		data.Tables = append(data.Tables, table)
-	}
-
-	if err := rows.Err(); err != nil {
+		ORDER BY name`,
+	); err != nil {
 		panic(err)
 	}
 
-	rows, err = db.Query(
-		`SELECT COALESCE(country, ''), COUNT(*), COUNT(*) / SUM(COUNT(*)) OVER () * 100
-		   FROM users GROUP BY COALESCE(country, '')`,
-	)
-	if err != nil {
+	if err := db.Select(
+		&data.Countries,
+		` SELECT COALESCE(country, '')                  id,
+		         COUNT(*)                               golfers,
+		         COUNT(*) / SUM(COUNT(*)) OVER () * 100 percent
+		    FROM users
+		GROUP BY COALESCE(country, '')`,
+	); err != nil {
 		panic(err)
 	}
-	defer rows.Close()
 
-	for rows.Next() {
-		var c Country
-		var id string
-
-		if err := rows.Scan(&id, &c.Golfers, &c.Percent); err != nil {
-			panic(err)
-		}
-
-		if country, ok := config.CountryByID[id]; ok {
+	for _, c := range data.Countries {
+		if country, ok := config.CountryByID[c.ID]; ok {
 			c.Flag = country.Flag
 			c.Name = country.Name
 		}
-
-		data.Countries = append(data.Countries, c)
 	}
 
-	sort.Slice(data.Countries, func(i, j int) bool {
-		if data.Countries[i].Golfers != data.Countries[j].Golfers {
-			return data.Countries[i].Golfers > data.Countries[j].Golfers
+	slices.SortStableFunc(data.Countries, func(a, b *country) bool {
+		if a.Golfers != b.Golfers {
+			return a.Golfers > b.Golfers
 		}
 
-		return data.Countries[i].Name < data.Countries[j].Name
+		return a.Name < b.Name
 	})
-
-	if err := rows.Err(); err != nil {
-		panic(err)
-	}
 
 	render(w, r, "admin/info", data, "Admin Info")
 }

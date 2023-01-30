@@ -2,7 +2,7 @@ package hole
 
 import "strconv"
 
-var units = [...]struct {
+var timeUnits = [...]struct {
 	seconds          int
 	singular, plural string
 }{
@@ -25,7 +25,7 @@ func formatDistance(secs int) string {
 		secs = -secs
 	}
 	result := ""
-	for _, v := range units {
+	for _, v := range timeUnits {
 		if v.seconds <= secs {
 			q := secs / v.seconds
 			if q == 1 {
@@ -45,15 +45,15 @@ func formatDistance(secs int) string {
 func timeDistance() []Scorecard {
 	inputs := []int{0}
 
-	unitsChosen := []int{1, 2, 3, 4, 5, 6, 7}
+	timeUnitsChosen := []int{1, 2, 3, 4, 5, 6, 7}
 	for i := 0; i <= 32; i++ {
-		// Randomize which units will appear.
-		unitsChosen = append(unitsChosen, randInt(1, 7))
+		// Randomize which timeUnits will appear.
+		timeUnitsChosen = append(timeUnitsChosen, randInt(1, 7))
 	}
 
-	for _, j := range unitsChosen {
-		secs := units[j].seconds
-		secsLarger := units[j-1].seconds
+	for _, j := range timeUnitsChosen {
+		secs := timeUnits[j].seconds
+		secsLarger := timeUnits[j-1].seconds
 		inputs = append(inputs, randInt(secs, secs*2-1))        // future singular
 		inputs = append(inputs, -randInt(secs, secs*2-1))       // past singular
 		inputs = append(inputs, randInt(2*secs, secsLarger-1))  // future plural

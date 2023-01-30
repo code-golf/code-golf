@@ -2,7 +2,6 @@ package github
 
 import (
 	"bytes"
-	"database/sql"
 	"io"
 	"strings"
 
@@ -10,6 +9,7 @@ import (
 	"github.com/go-git/go-billy/v5/memfs"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/storage/memory"
+	"github.com/jmoiron/sqlx"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
@@ -17,7 +17,7 @@ import (
 )
 
 // TODO Make our own minimal wiki that doesn't use GitHub. Reward contrib.
-func Wiki(db *sql.DB) error {
+func Wiki(db *sqlx.DB) error {
 	fs := memfs.New()
 
 	if _, err := git.Clone(memory.NewStorage(), fs, &git.CloneOptions{
@@ -58,7 +58,7 @@ func Wiki(db *sql.DB) error {
 		slug := config.ID(name)
 		section := ""
 
-		if lang := config.LangByID[slug]; lang != nil {
+		if lang := config.AllLangByID[slug]; lang != nil {
 			slug = "langs/" + slug
 			section = "Languages"
 			name = lang.Name

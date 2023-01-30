@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/jmoiron/sqlx"
 	"github.com/lib/pq"
 	"golang.org/x/exp/slices"
 	"gopkg.in/guregu/null.v4"
@@ -30,14 +31,12 @@ type Golfer struct {
 }
 
 // Earn the given cheevo, no-op if already earned.
-func (g *Golfer) Earn(db *sql.DB, cheevoID string) (earned *config.Cheevo) {
-	if res, err := db.Exec(
+func (g *Golfer) Earn(db *sqlx.DB, cheevoID string) (earned *config.Cheevo) {
+	if rowsAffected, _ := db.MustExec(
 		"INSERT INTO trophies VALUES (DEFAULT, $1, $2) ON CONFLICT DO NOTHING",
 		g.ID,
 		cheevoID,
-	); err != nil {
-		panic(err)
-	} else if rowsAffected, _ := res.RowsAffected(); rowsAffected == 1 {
+	).RowsAffected(); rowsAffected == 1 {
 		earned = config.CheevoByID[cheevoID]
 	}
 
@@ -82,6 +81,9 @@ type GolferInfo struct {
 	// Count of cheevos/holes/langs available
 	CheevosTotal, HolesTotal, LangsTotal int
 
+	// Slice of golfers referred
+	Referrals []string
+
 	// Start date
 	TeedOff time.Time
 }
@@ -101,7 +103,7 @@ type RankUpdate struct {
 	OldBestStrokes null.Int         `json:"oldBestStrokes"`
 }
 
-func GetInfo(db *sql.DB, name string) *GolferInfo {
+func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 	info := GolferInfo{
 		CheevosTotal: len(config.CheevoList),
 		HolesTotal:   len(config.HoleList),
@@ -138,6 +140,12 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 		          login,
 		          COALESCE(bytes.points, 0),
 		          COALESCE(chars.points, 0),
+		          ARRAY(
+		            SELECT login
+		              FROM users u
+		             WHERE referrer_id = users.id
+		          ORDER BY login
+		          ),
 		          COALESCE(silver, 0),
 		          sponsor
 		     FROM users
@@ -159,6 +167,7 @@ func GetInfo(db *sql.DB, name string) *GolferInfo {
 		&info.Name,
 		&info.BytesPoints,
 		&info.CharsPoints,
+		pq.Array(&info.Referrals),
 		&info.Silver,
 		&info.Sponsor,
 	); errors.Is(err, sql.ErrNoRows) {

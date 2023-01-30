@@ -8,9 +8,16 @@ info:
 servers:
   - url: https://code.golf/api
 
+tags:
+  - name: achievements
+  - name: holes
+  - name: languages
+  - name: suggestions
+
 paths:
   /cheevos:
     get:
+      operationId: getAchievements
       tags: [achievements]
       summary: Get all achievements
       responses:
@@ -25,6 +32,7 @@ paths:
 
   /cheevos/{id}:
     get:
+      operationId: getAchievementsByID
       parameters:
         - name: id
           description: Achievement ID
@@ -44,6 +52,7 @@ paths:
 
   /holes:
     get:
+      operationId: getHoles
       tags: [holes]
       summary: Get all holes
       responses:
@@ -58,6 +67,7 @@ paths:
 
   /holes/{id}:
     get:
+      operationId: getHolesByID
       parameters:
         - name: id
           description: Hole ID
@@ -77,6 +87,7 @@ paths:
 
   /langs:
     get:
+      operationId: getLanguages
       tags: [languages]
       summary: Get all languages
       responses:
@@ -91,6 +102,7 @@ paths:
 
   /langs/{id}:
     get:
+      operationId: getLanguagesByID
       parameters:
         - name: id
           description: Language ID
@@ -110,6 +122,7 @@ paths:
 
   /suggestions/golfers:
     get:
+      operationId: suggestGolfers
       parameters:
         - name: q
           description: Case-insensitive substring to search for

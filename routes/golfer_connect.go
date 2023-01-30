@@ -12,12 +12,10 @@ import (
 
 // GET /golfer/disconnect/{connection}
 func golferDisconnectGET(w http.ResponseWriter, r *http.Request) {
-	if _, err := session.Database(r).Exec(
+	session.Database(r).MustExec(
 		"DELETE FROM connections WHERE connection::text = $1 AND user_id = $2",
 		param(r, "connection"), session.Golfer(r).ID,
-	); err != nil {
-		panic(err)
-	}
+	)
 
 	http.Redirect(w, r, "/golfer/settings", http.StatusSeeOther)
 }
@@ -92,7 +90,7 @@ func golferConnectGET(w http.ResponseWriter, r *http.Request) {
 		user.Username = info.Items[0].DisplayName
 	}
 
-	if _, err := session.Database(r).Exec(
+	session.Database(r).MustExec(
 		`INSERT INTO connections (connection, discriminator, id, user_id, username)
 		      VALUES             (        $1,            $2, $3,      $4,       $5)
 		 ON CONFLICT             (connection, id)
@@ -103,9 +101,7 @@ func golferConnectGET(w http.ResponseWriter, r *http.Request) {
 		user.ID,
 		session.Golfer(r).ID,
 		user.Username,
-	); err != nil {
-		panic(err)
-	}
+	)
 
 	http.Redirect(w, r, "/golfer/settings", http.StatusSeeOther)
 }

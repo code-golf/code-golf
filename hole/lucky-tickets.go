@@ -1,8 +1,8 @@
 package hole
 
 import (
+	"fmt"
 	"math/rand"
-	"strconv"
 )
 
 type ticket struct {
@@ -91,8 +91,8 @@ func luckyTickets() []Scorecard {
 
 	for i, item := range tickets {
 		tests[i] = test{
-			strconv.Itoa(item.digits) + " " + strconv.Itoa(item.base),
-			strconv.FormatInt(item.result, 10),
+			fmt.Sprint(item.digits, item.base),
+			fmt.Sprint(item.result),
 		}
 	}
 

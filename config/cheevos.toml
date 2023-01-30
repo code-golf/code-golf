@@ -166,9 +166,15 @@ description = 'Solve <a href=/pascals-triangle#pascal>Pascal’s Triangle in Pas
 # Miscellaneous
 
 [[Miscellaneous]]
+name        = 'Aged like Fine Wine'
+emoji       = '🍷'
+description = 'Leave a passing solution alone for one year.'
+target      = 365
+
+[[Miscellaneous]]
 name        = 'Black-box Testing'
 emoji       = '🧪'
-description = 'Solve an <a href=/ideas>experimental hole</a>.'
+description = 'Solve an <a href=/ideas>experimental hole</a> or language.'
 
 [[Miscellaneous]]
 name        = 'Different Strokes'
@@ -296,6 +302,13 @@ name        = 'x86'
 emoji       = '🖥️'
 description = 'Solve your eighty-sixth hole.'
 target      = 86
+
+# TODO
+# [['Total Holes']]
+# name        = 'That’s Gross!'
+# emoji       = '🤮'
+# description = 'Solve your <a href=//en.wikipedia.org/wiki/Gross_(unit)>one hundred and forty-fourth</a> hole.'
+# target      = 144
 
 # Total Points
 

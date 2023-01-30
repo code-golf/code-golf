@@ -2,11 +2,11 @@ package routes
 
 import (
 	"net/http"
-	"sort"
 	"strings"
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
+	"golang.org/x/exp/slices"
 )
 
 // GET /ideas
@@ -25,20 +25,16 @@ func ideasGET(w http.ResponseWriter, r *http.Request) {
 		data.Holes[i] = idea{Hole: hole, ID: hole.Experiment, Title: hole.Name}
 	}
 
-	rows, err := session.Database(r).Query(
-		"SELECT * FROM ideas ORDER BY thumbs_up - thumbs_down DESC, title")
-	if err != nil {
+	var ideas []idea
+	if err := session.Database(r).Select(
+		&ideas,
+		"SELECT * FROM ideas ORDER BY thumbs_up - thumbs_down DESC, title",
+	); err != nil {
 		panic(err)
 	}
-	defer rows.Close()
 
 rows:
-	for rows.Next() {
-		var i idea
-		if err := rows.Scan(&i.ID, &i.ThumbsDown, &i.ThumbsUp, &i.Title); err != nil {
-			panic(err)
-		}
-
+	for _, i := range ideas {
 		for j, hole := range data.Holes {
 			if hole.ID == i.ID {
 				data.Holes[j].ThumbsDown = i.ThumbsDown
@@ -56,13 +52,8 @@ rows:
 		}
 	}
 
-	if err := rows.Err(); err != nil {
-		panic(err)
-	}
-
-	sort.SliceStable(data.Holes, func(i, j int) bool {
-		return data.Holes[i].ThumbsUp-data.Holes[i].ThumbsDown >
-			data.Holes[j].ThumbsUp-data.Holes[j].ThumbsDown
+	slices.SortStableFunc(data.Holes, func(a, b idea) bool {
+		return a.ThumbsUp-a.ThumbsDown > b.ThumbsUp-b.ThumbsDown
 	})
 
 	render(w, r, "ideas", data, "Ideas")

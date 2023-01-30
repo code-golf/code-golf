@@ -1,3 +1,6 @@
+/* light.css is loaded and applied for golfers with the light or auto theme,
+ * but will get overriden for auto theme and matching the dark media query */
+
 :root {
     --background: #fdfdfd;
     --color:      #343a40;

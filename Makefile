@@ -31,12 +31,12 @@ db-diff:
 	    <(docker-compose exec -T db pg_dump -OsU postgres code-golf)
 
 db-dump:
-	@rm -f db/*.gz
+	@rm -f sql/*.gz
 
 	@ssh root@code.golf sudo -iu postgres pg_dump -aZ9 code-golf \
-	    > db/code-golf-$(DATE).sql.gz
+	    > sql/code-golf-$(DATE).sql.gz
 
-	@zcat db/*.gz | zstd -fqo ~/Dropbox/code-golf/code-golf-$(DATE).sql.zst
+	@zcat sql/*.gz | zstd -fqo ~/Dropbox/code-golf/code-golf-$(DATE).sql.zst
 
 dev:
 	@touch docker/.env

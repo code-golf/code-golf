@@ -159,7 +159,6 @@ export function setCode(code: string, editor: EditorView | null) {
     });
 }
 
-
 function updateLangPicker() {
     // Populate the language picker with accurate stroke counts.
     $('#picker').replaceChildren(...sortedLangs.map((l: any) => {

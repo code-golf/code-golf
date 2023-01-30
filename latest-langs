@@ -37,6 +37,7 @@ constant %paths = (
     'SQL'        => 'SQLite',
     'Swift'      => 'Swift_(programming_language)',
     'Tcl'        => 'Tcl',
+    'TeX'        => 'TeX',
     'VimL'       => 'Vim_(text_editor)',
     'Zig'        => 'Zig_(programming_language)',
 );

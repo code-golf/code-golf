@@ -16,9 +16,9 @@ for 'config/langs.toml'.IO.&from-toml.map({
 
             $exp ~= "\n" if $hole eq 'quine';
 
-            # Pascal prints lots of info to STDERR.
+            # Pascal & TeX prints lots of info to STDERR.
             is $got<Out>, $exp, 'Out';
-            is $got<Err>,   '', 'Err' if $lang ne 'pascal';
+            is $got<Err>,   '', 'Err' if $lang ne 'pascal' | 'tex';
         }
     }
 }

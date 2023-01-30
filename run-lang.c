@@ -89,7 +89,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         // File Operations
         ALLOW(close),             // 3
         ALLOW(close_range),       // 436
-        ALLOW(creat),             // 85
+        // ALLOW(creat),          // 85 (Replaced by open)
         ALLOW(fallocate),         // 285
         ALLOW(ftruncate),         // 77
         ALLOW(memfd_create),      // 319
@@ -107,26 +107,26 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(userfaultfd),       // 323
 
         // Directory Operations
-        ALLOW(chdir),          // 80
-        ALLOW(chroot),         // 161
-        ALLOW(fchdir),         // 81
-        ALLOW(getcwd),         // 79
-        ALLOW(getdents64),     // 217
-        ALLOW(getdents),       // 78
-        ALLOW(lookup_dcookie), // 212
-        ALLOW(mkdir),          // 83
-        ALLOW(mkdirat),        // 258
-        ALLOW(rmdir),          // 84
+        ALLOW(chdir),             // 80
+        // ALLOW(chroot),         // 161
+        ALLOW(fchdir),            // 81
+        ALLOW(getcwd),            // 79
+        ALLOW(getdents64),        // 217
+        // ALLOW(getdents),       // 78 (Replaced by getdents64)
+        // ALLOW(lookup_dcookie), // 212
+        ALLOW(mkdir),             // 83
+        ALLOW(mkdirat),           // 258
+        ALLOW(rmdir),             // 84
 
         // Link Operations
-        ALLOW(link),       // 86
-        ALLOW(linkat),     // 265
-        ALLOW(readlink),   // 89
-        ALLOW(readlinkat), // 267
-        ALLOW(symlink),    // 88
-        ALLOW(symlinkat),  // 266
-        ALLOW(unlink),     // 87
-        ALLOW(unlinkat),   // 263
+        // ALLOW(link),      // 86
+        // ALLOW(linkat),    // 265
+        ALLOW(readlink),     // 89
+        ALLOW(readlinkat),   // 267
+        ALLOW(symlink),      // 88 (Used by Swift)
+        // ALLOW(symlinkat), // 266
+        ALLOW(unlink),       // 87
+        ALLOW(unlinkat),     // 263
 
         // Basic File Attributes
         ALLOW(access),     // 21
@@ -151,18 +151,18 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(utimes),     // 235
 
         // Extended File Attributes
-        ALLOW(fgetxattr),    // 193
-        ALLOW(flistxattr),   // 196
-        ALLOW(fremovexattr), // 199
-        ALLOW(fsetxattr),    // 190
-        ALLOW(getxattr),     // 191
-        ALLOW(lgetxattr),    // 192
-        ALLOW(listxattr),    // 194
-        ALLOW(llistxattr),   // 195
-        ALLOW(lremovexattr), // 198
-        ALLOW(lsetxattr),    // 189
-        ALLOW(removexattr),  // 197
-        ALLOW(setxattr),     // 188
+        // ALLOW(fgetxattr),    // 193
+        // ALLOW(flistxattr),   // 196
+        // ALLOW(fremovexattr), // 199
+        // ALLOW(fsetxattr),    // 190
+        // ALLOW(getxattr),     // 191
+        // ALLOW(lgetxattr),    // 192
+        // ALLOW(listxattr),    // 194
+        // ALLOW(llistxattr),   // 195
+        // ALLOW(lremovexattr), // 198
+        // ALLOW(lsetxattr),    // 189
+        // ALLOW(removexattr),  // 197
+        // ALLOW(setxattr),     // 188
 
         // File Descriptor Manipulations
         ALLOW(dup2),  // 33
@@ -183,7 +183,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(pwritev),         // 296
         ALLOW(read),            // 0
         ALLOW(readv),           // 19
-        ALLOW(sendfile),        // 40
+        ALLOW(sendfile),        // 40 (Used by cat in wrappers, TODO remove)
         ALLOW(write),           // 1
         ALLOW(writev),          // 20
 
@@ -226,16 +226,16 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         // ALLOW(inotify_rm_watch),  // 255
 
         // Miscellaneous
-        ALLOW(fadvise64), // 221
-        ALLOW(getrandom), // 318
-        ALLOW(readahead), // 187
+        ALLOW(fadvise64),    // 221
+        ALLOW(getrandom),    // 318
+        // ALLOW(readahead), // 187
 
         /*********\
         | Network |
         \*********/
 
         // Socket Operations
-        ALLOW(accept),      // 43
+        // ALLOW(accept),   // 43 (Replaced by accept4)
         ALLOW(accept4),     // 288
         ALLOW(bind),        // 49
         ALLOW(connect),     // 42
@@ -410,7 +410,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(prctl),                // 157
         // ALLOW(process_vm_readv),  // 310
         // ALLOW(process_vm_writev), // 311
-        ALLOW(ptrace),               // 101
+        ALLOW(ptrace),               // 101 (Used by DefAssembler)
         // ALLOW(seccomp),           // 317
         // ALLOW(unshare),           // 272
         // ALLOW(uselib),            // 134
@@ -496,11 +496,11 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         // ALLOW(getcpu), // 309
 
         // Memory Node
-        ALLOW(get_mempolicy), // 239
-        ALLOW(mbind),         // 237
-        ALLOW(migrate_pages), // 256
-        ALLOW(move_pages),    // 279
-        ALLOW(set_mempolicy), // 238
+        ALLOW(get_mempolicy),    // 239
+        ALLOW(mbind),            // 237
+        // ALLOW(migrate_pages), // 256
+        // ALLOW(move_pages),    // 279
+        ALLOW(set_mempolicy),    // 238
 
         /****************\
         | Key Management |
@@ -547,7 +547,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(ustat),   // 136
 
         // Miscellaneous (privileged)
-        ALLOW(ioperm),             // 173 (FreeBASIC)
+        ALLOW(ioperm),             // 173 (Used by FreeBASIC)
         // ALLOW(iopl),            // 172
         // ALLOW(kexec_file_load), // 320
         // ALLOW(kexec_load),      // 246

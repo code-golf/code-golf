@@ -1,7 +1,0 @@
-main { grid-template-columns: 1fr }
-
-@media (max-width: 40rem) {
-    td:nth-child(3) { border-right: 1px solid var(--color) }
-
-    tr > :nth-child(n+4) { display: none }
-}

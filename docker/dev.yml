@@ -4,7 +4,7 @@ services:
       - 80:80
       - 443:443
   assets:
-    image: node:18-alpine3.15
+    image: node:19-alpine
     command:
       - ./esbuild
       - --watch=forever

@@ -2,11 +2,11 @@ package config
 
 import (
 	"html/template"
-	"sort"
 	"strings"
 	"time"
 
 	"github.com/pelletier/go-toml/v2"
+	"golang.org/x/exp/slices"
 )
 
 var (
@@ -42,8 +42,7 @@ func init() {
 	}
 
 	// Case-insensitive sort.
-	sort.Slice(CheevoList, func(i, j int) bool {
-		return strings.ToLower(CheevoList[i].Name) <
-			strings.ToLower(CheevoList[j].Name)
+	slices.SortFunc(CheevoList, func(a, b *Cheevo) bool {
+		return strings.ToLower(a.Name) < strings.ToLower(b.Name)
 	})
 }

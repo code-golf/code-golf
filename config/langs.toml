@@ -117,7 +117,7 @@ BEGIN {
 
 [Bash]
 size    = '1.19 MiB'
-version = '5.2.12'
+version = '5.2.15'
 website = 'https://www.gnu.org/software/bash/'
 example = '''
 # Printing
@@ -278,11 +278,12 @@ accept a from argument-value
 display a
 end-perform.
 end-program.
+
 '''
 
 [Crystal]
-size    = '203 MiB'
-version = '1.6.2'
+size    = '201 MiB'
+version = '1.7.1'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -324,7 +325,7 @@ void main(string[] argv) {
 
 [Dart]
 size    = '529 MiB'
-version = '2.18.5'
+version = '2.18.6'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -345,7 +346,7 @@ void main(List<String> argv) {
 
 [Elixir]
 size    = '168 MiB'
-version = '1.14.1'
+version = '1.14.3'
 website = 'https://elixir-lang.org'
 example = '''
 # Printing
@@ -407,7 +408,7 @@ end
 
 [Go]
 size    = '150 MiB'
-version = '1.19.4'
+version = '1.19.5'
 website = 'https://go.dev'
 example = '''
 package main
@@ -549,8 +550,8 @@ for (let arg of arguments)
 '''
 
 [Julia]
-size    = '282 MiB'
-version = '1.8.3'
+size    = '286 MiB'
+version = '1.8.5'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -770,7 +771,7 @@ for arg in sys.argv[1:]:
 '''
 
 [R]
-size    = '80.5 MiB'
+size    = '76.4 MiB'
 version = '4.2.2'
 website = 'https://www.r-project.org'
 example = '''
@@ -824,7 +825,7 @@ end
 
 [Rust]
 size    = '430 MiB'
-version = '1.66.0'
+version = '1.66.1'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -897,7 +898,7 @@ SELECT arg FROM argv;
 
 [Swift]
 size    = '494 MiB'
-version = '5.7.1'
+version = '5.7.3'
 website = 'https://swift.org'
 example = '''
 // Printing
@@ -931,6 +932,32 @@ for {set x 0} {$x < 10} {incr x} {
 foreach arg $argv {
     puts $arg
 }
+'''
+
+[TeX]
+experiment = 877
+size       = '9.57 MiB'
+version    = '3.141592653'
+website    = 'https://tug.org'
+example    = '''
+% Printing
+Hello, World!
+
+% Looping
+\newcount\i
+\loop\ifnum\i<10
+    \the\i\endgraf
+    \advance\i by1
+\repeat
+
+% Use \octet to switch to a font that supports all bytes
+\octet
+% Accessing arguments
+\newcount\j
+\loop\ifnum\j<\argc\relax
+    \argv[\the\j]\endgraf
+    \advance\j by1
+\repeat
 '''
 
 [V]
@@ -997,11 +1024,9 @@ for (a in Process.arguments) System.print(a)
 
 [Zig]
 size    = '262 MiB'
-version = '0.10.0'
+version = '0.10.1'
 website = 'https://ziglang.org'
 example = '''
-// Notice: use spaces as indentation, since tab causes a compile-time error
-
 const std = @import("std");
 
 pub fn main() !void {

@@ -14,19 +14,19 @@ func holeGET(w http.ResponseWriter, r *http.Request) {
 		Authors      []string
 		HideDetails  bool
 		Hole         *config.Hole
+		Langs        map[string]*config.Lang
 		RankingsView string
 		Solutions    []map[string]string
 	}{
+		Langs:        config.AllLangByID,
 		RankingsView: "me",
 		Solutions:    []map[string]string{{}, {}},
 	}
 
 	var ok bool
-	if data.Hole, ok = config.HoleByID[param(r, "hole")]; !ok {
-		if data.Hole, ok = config.ExpHoleByID[param(r, "hole")]; !ok {
-			w.WriteHeader(http.StatusNotFound)
-			return
-		}
+	if data.Hole, ok = config.AllHoleByID[param(r, "hole")]; !ok {
+		w.WriteHeader(http.StatusNotFound)
+		return
 	}
 
 	if c, _ := r.Cookie("hide-details"); c != nil {
@@ -52,7 +52,9 @@ func holeGET(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if golfer := session.Golfer(r); golfer != nil && data.Hole.Experiment == 0 {
+	golfer := session.Golfer(r)
+
+	if golfer != nil && data.Hole.Experiment == 0 {
 		// Fetch all the code per lang.
 		rows, err := session.Database(r).Query(
 			`SELECT code, lang, scoring
@@ -85,5 +87,10 @@ func holeGET(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	render(w, r, "hole", data, data.Hole.Name, data.Hole.Synopsis)
+	view := "hole"
+	if golfer != nil && golfer.Layout == "tabs" {
+		view = "hole-tabs"
+	}
+
+	render(w, r, view, data, data.Hole.Name, data.Hole.Synopsis)
 }

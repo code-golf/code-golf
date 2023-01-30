@@ -5,8 +5,9 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"sort"
 	"time"
+
+	"golang.org/x/exp/slices"
 )
 
 type Zone struct {
@@ -78,11 +79,11 @@ func List() []Zone {
 		zones[i] = Zone{location.String(), offset}
 	}
 
-	sort.Slice(zones, func(i, j int) bool {
-		if zones[i].Offset != zones[j].Offset {
-			return zones[i].Offset < zones[j].Offset
+	slices.SortFunc(zones, func(a, b Zone) bool {
+		if a.Offset != b.Offset {
+			return a.Offset < b.Offset
 		}
-		return zones[i].Name < zones[j].Name
+		return a.Name < b.Name
 	})
 
 	return zones

@@ -5,10 +5,12 @@ import (
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
+	"github.com/jmoiron/sqlx"
 )
 
 func TestEarn(t *testing.T) {
-	db, mock, _ := sqlmock.New()
+	mockDB, mock, _ := sqlmock.New()
+	db := sqlx.NewDb(mockDB, "sqlmock")
 
 	golfer := Golfer{ID: 123}
 	cheevos := []string{"foo", "bar", "bar", "baz"}
