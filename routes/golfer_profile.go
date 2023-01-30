@@ -37,7 +37,9 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 	golferInfo := session.GolferInfo(r)
 
 	followLimitGolfer := followLimit
-	if golferInfo.Sponsor { followLimitGolfer = followLimitSponsor }
+	if golferInfo.Sponsor {
+		followLimitGolfer = followLimitSponsor
+	}
 
 	data := struct {
 		Connections    []oauth.Connection
