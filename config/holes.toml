@@ -795,11 +795,9 @@ preamble = '''
     Given each of the following ASCII emoticons print the corresponding
     Unicode emoji.
 
-<p>Note despite how they appear below, there are no spaces in the emoticons.
-
 <div id=emojify>
 {{ range . }}
-    <div>{{ .Value }}<pre>{{ .Key }}{{ if eq .Key ":-" }} {{ end }}</pre></div>
+    <div><pre>{{ .Key }}</pre>{{ .Value }}</div>
 {{ end }}
 </div>
 '''
