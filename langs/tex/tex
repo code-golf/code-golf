@@ -38,12 +38,13 @@ init="\def\argc{$#}
 \catcode32=12\catcode10=12\catcode12=12\catcode13=13\catcode92=12
 globaldefargv[1]ifcase1'"$args"'elsefi'
 
+# \octet enables the octet font
 # \footline={} disables page numbers
 # \parindex=0pt prevents per-paragraph indentation
 # \hsize and \vsize set the page dimensions. I set them a bit less than the
 #   maximum legal dimension which is less than 16384pt.
 # \bye closes the document (TeX doesn't handle EOF how you might expect)
-code_to_run="\footline={}\parindent=0pt\hsize=16000pt\vsize=16000pt\relax
+code_to_run="\octet\footline={}\parindent=0pt\hsize=16000pt\vsize=16000pt\relax
 $init
 $code
 \bye"
