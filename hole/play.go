@@ -305,7 +305,8 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 
 	// Code
 	switch langID {
-	case "awk", "brainfuck", "elixir", "fish", "golfscript", "javascript", "perl", "sed", "tex":
+	case "awk", "brainfuck", "elixir", "fish", "golfscript", "javascript",
+		"perl", "sed", "tex":
 		// For these langs, code is passed as an argument above.
 	case "k":
 		code = preprocessKCode(holeID, code)
@@ -318,10 +319,10 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 	}
 
 	// We do not allow quine in TeX to pass without at least one backslash
-	if langID == "tex" && holeID == "quine" && !strings.Contains(code, "\\") {
+	if langID == "tex" && holeID == "quine" && !strings.Contains(code, `\`) {
 		// don't even run the code; just mark error and return
 		score.Pass = false
-		score.Stderr = []byte("Quine in TeX must have at least one '\\' character.")
+		score.Stderr = []byte(`Quine in TeX must have at least one '\' character.`)
 		return
 	}
 
