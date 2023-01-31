@@ -797,7 +797,7 @@ preamble = '''
 
 <div id=emojify>
 {{ range . }}
-    <div>{{ .Value }}<pre>{{ .Key }}</pre></div>
+    <div><pre>{{ .Key }}</pre>{{ .Value }}</div>
 {{ end }}
 </div>
 '''
