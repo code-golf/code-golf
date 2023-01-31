@@ -13,21 +13,21 @@ var repeatingFractions = [...]struct{ p, q int }{
 	{40, 2}, {83, 60}, {97, 6}, {97, 7}, {98, 49}, {99, 1}, {99, 3},
 }
 
-func repeatingDecimal() []Scorecard {
+func repeatingDecimals() []Scorecard {
 	tests := make([]test, 100)
 
 	for i, fraction := range repeatingFractions {
-		tests[i] = repeatingDecimalTest(fraction.p, fraction.q)
+		tests[i] = repeatingDecimalsTest(fraction.p, fraction.q)
 	}
 
 	for i := len(repeatingFractions); i < len(tests); i++ {
-		tests[i] = repeatingDecimalTest(rand.Intn(100), 1+rand.Intn(99))
+		tests[i] = repeatingDecimalsTest(rand.Intn(100), 1+rand.Intn(99))
 	}
 
 	return outputTests(shuffle(tests))
 }
 
-func repeatingDecimalTest(p, q int) test {
+func repeatingDecimalsTest(p, q int) test {
 	in := fmt.Sprint(p, "/", q)
 	out := fmt.Sprint(p / q)
 	p %= q

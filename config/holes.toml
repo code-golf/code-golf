@@ -2157,12 +2157,12 @@ preamble = '''
 <p>Print the first <b>250</b> terms of the sequence one per line.
 '''
 
-['Repeating Decimal']
+['Repeating Decimals']
 category = 'Mathematics'
 experiment = 694
 links = [
-    { name = 'Rosetta Code', url = "//rosettacode.org/wiki/Integer_long_division" },
-    { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Repeating_decimal" },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Integer_long_division' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Repeating_decimal' },
 ]
 synopsis = 'Convert fractions to repeating decimals.'
 preamble = '''
