@@ -4,6 +4,14 @@ mode_setup;
 font_identifier "octet";
 font_coding_scheme "raw";
 
+font_size 10pt#;
+font_slant 0;
+font_normal_space 126/36pt#;
+font_normal_stretch 0;
+font_normal_shrink 0;
+font_quad 378/36pt#;
+font_x_height 155/36pt#;
+
 for code=0 upto 255:
 beginchar(code,10pt#,10pt#,0);
 pickup pencircle scaled .3pt; draw unitsquare scaled 1pt;
