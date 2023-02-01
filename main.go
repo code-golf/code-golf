@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"math/rand"
 	"net/http"
 	"os"
 	"time"
@@ -16,8 +15,6 @@ import (
 
 func main() {
 	log.SetFlags(log.Ltime)
-
-	rand.Seed(time.Now().UnixNano())
 
 	db := db.Open()
 

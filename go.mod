@@ -1,6 +1,6 @@
 module github.com/code-golf/code-golf
 
-go 1.19
+go 1.20
 
 require (
 	github.com/DATA-DOG/go-sqlmock v1.5.0
@@ -20,16 +20,16 @@ require (
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 	github.com/tdewolff/minify/v2 v2.12.4
 	github.com/yuin/goldmark v1.5.3
-	golang.org/x/exp v0.0.0-20230127193734-31bee513bff7
+	golang.org/x/exp v0.0.0-20230131160201-f062dba9d201
 	golang.org/x/oauth2 v0.4.0
 	gopkg.in/guregu/null.v4 v4.0.0
 )
 
 require (
 	github.com/Microsoft/go-winio v0.6.0 // indirect
-	github.com/ProtonMail/go-crypto v0.0.0-20230127150802-22e9f3c8043c // indirect
+	github.com/ProtonMail/go-crypto v0.0.0-20230201104953-d1d05f4e2bfb // indirect
 	github.com/acomagu/bufpipe v1.0.3 // indirect
-	github.com/cloudflare/circl v1.3.1 // indirect
+	github.com/cloudflare/circl v1.3.2 // indirect
 	github.com/dgryski/trifles v0.0.0-20210119233746-37d926d5de6c // indirect
 	github.com/emirpasic/gods v1.18.1 // indirect
 	github.com/go-git/gcfg v1.5.0 // indirect

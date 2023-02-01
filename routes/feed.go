@@ -194,7 +194,7 @@ func init() {
 			i.sha + ">" + i.sha + "</a>."
 
 		var err error
-		if item.Created, err = time.Parse("2006-01-02 15:04:05", i.created); err != nil {
+		if item.Created, err = time.Parse(time.DateTime, i.created); err != nil {
 			panic(err)
 		}
 
