@@ -2159,7 +2159,6 @@ preamble = '''
 
 ['Repeating Decimals']
 category = 'Mathematics'
-experiment = 694
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Integer_long_division' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Repeating_decimal' },
