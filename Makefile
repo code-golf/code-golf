@@ -77,9 +77,8 @@ lint:
 	@node_modules/typescript/bin/tsc --project tsconfig.json
 	@node_modules/.bin/eslint --ext ts,tsx js/
 
-# FIXME https://github.com/golangci/golangci-lint/issues/3533
-#	@docker build -t code-golf-lint -f docker/lint.Dockerfile .
-#	@docker run --rm -v $(CURDIR):/app -w /app code-golf-lint golangci-lint run
+	@docker run --rm -v $(CURDIR):/app -w /app \
+	    golangci/golangci-lint:v1.51.0 golangci-lint run
 
 live:
 	@docker buildx build --pull --push \
