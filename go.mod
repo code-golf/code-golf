@@ -19,8 +19,8 @@ require (
 	github.com/shurcooL/graphql v0.0.0-20220606043923-3cf50f8a0a29
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 	github.com/tdewolff/minify/v2 v2.12.4
-	github.com/yuin/goldmark v1.5.3
-	golang.org/x/exp v0.0.0-20230131160201-f062dba9d201
+	github.com/yuin/goldmark v1.5.4
+	golang.org/x/exp v0.0.0-20230202163644-54bba9f4231b
 	golang.org/x/oauth2 v0.4.0
 	gopkg.in/guregu/null.v4 v4.0.0
 )
