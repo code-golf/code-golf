@@ -1,8 +1,8 @@
 package routes
 
 import (
+	"crypto/rand"
 	"encoding/base64"
-	"math/rand"
 	"net/http"
 	"net/url"
 	"regexp"
