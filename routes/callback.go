@@ -88,6 +88,10 @@ func callbackGET(w http.ResponseWriter, r *http.Request) {
 		}
 		defer res.Body.Close()
 
+		if res.StatusCode != 200 {
+			panic(res.Status)
+		}
+
 		if err := json.NewDecoder(res.Body).Decode(&user); err != nil {
 			panic(err)
 		}
