@@ -23,7 +23,7 @@ func isbn() []Scorecard {
 	for i, perm := range rand.Perm(100) {
 		var digits [9]int
 
-		for j := 0; j < 9; j++ {
+		for j := range digits {
 			digits[j] = rand.Intn(10)
 		}
 
