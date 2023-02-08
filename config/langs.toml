@@ -204,7 +204,7 @@ int main(int argc, char* argv[]) {
 
 ['C#']
 size    = '149 MiB'
-version = 'C# 11.0 on .NET 7.0.1'
+version = 'C# 11.0 on .NET 7.0.2'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -283,7 +283,7 @@ end-program.
 
 [Crystal]
 size    = '201 MiB'
-version = '1.7.1'
+version = '1.7.2'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -361,7 +361,7 @@ for arg <- System.argv, do: IO.puts arg
 
 ['F#']
 size    = '150 MiB'
-version = 'F# 7.0 on .NET 7.0.1'
+version = 'F# 7.0 on .NET 7.0.2'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -717,7 +717,7 @@ for ($i = 1; $i < $argc; $i++)
 
 [PowerShell]
 size    = '176 MiB'
-version = 'PowerShell 7.3.0 on .NET 7.0.1'
+version = 'PowerShell 7.3.2 on .NET 7.0.2'
 website = 'https://docs.microsoft.com/powershell/scripting/overview'
 example = '''
 # Printing
@@ -752,8 +752,8 @@ example = '''
 '''
 
 [Python]
-size    = '74.1 MiB'
-version = '3.11.1'
+size    = '74 MiB'
+version = '3.11.2'
 website = 'https://www.python.org'
 example = '''
 import sys
@@ -806,7 +806,7 @@ say 'Hello, World!';
 
 [Ruby]
 size    = '24.1 MiB'
-version = '3.2.0'
+version = '3.2.1'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing
@@ -824,8 +824,8 @@ end
 '''
 
 [Rust]
-size    = '430 MiB'
-version = '1.66.1'
+size    = '431 MiB'
+version = '1.67.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
