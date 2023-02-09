@@ -83,8 +83,8 @@ func jacobiSymbol() []Scorecard {
 	for i := 0; i < 4; i++ {
 		for j := 1; j < 8; j += 2 {
 			if i == 3 && j == 7 {
-                                break
-                        }
+				break
+			}
 			a = randomInClass(1<<53, 4, i)
 			n = randomInClass(a, 8, j)
 			addTest(a, n)
