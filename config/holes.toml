@@ -620,7 +620,7 @@ preamble = '''
     </symbol>
 </svg>
 
-Given each CSS color keyword print the corresponding hex value. The output
+Given a list of all the CSS color keywords print the hex values in the corresponding order. The output
 will be checked case-insensitively. The full mapping is as follows:
 
 <div id=colors class="tables-4col">
