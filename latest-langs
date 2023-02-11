@@ -1,62 +1,64 @@
 #!/usr/bin/env perl6
 
 use HTTP::Tiny;
+use JSON::Fast;
 use TOML::Thumb;
 
 constant %paths = (
-    'BASIC'      => 'FreeBASIC',
-    'C'          => 'Tiny_C_Compiler',
-    'C#'         => 'C_Sharp_(programming_language)',
-    'C++'        => 'Clang',
-    'COBOL'      => 'GnuCOBOL',
-    'Crystal'    => 'Crystal_(programming_language)',
-    'D'          => 'D_(programming_language)',
-    'Dart'       => 'Dart_(programming_language)',
-    'Elixir'     => 'Elixir_(programming_language)',
-    'F#'         => 'F_Sharp_(programming_language)',
-    'Fortran'    => 'GNU_Fortran',
-    'Go'         => 'Go_(programming_language)',
-    'Haskell'    => 'Glasgow_Haskell_Compiler',
-    'Java'       => 'Java_Development_Kit',
-    'JavaScript' => 'V8_(JavaScript_engine)',
-    'Julia'      => 'Julia_(programming_language)',
-    'Lisp'       => 'CLISP',
-    'Lua'        => 'Lua_(programming_language)',
-    'Nim'        => 'Nim_(programming_language)',
-    'OCaml'      => 'OCaml',
-    'PHP'        => 'PHP',
-    'Pascal'     => 'Free_Pascal',
-    'Perl'       => 'Perl',
-    'PowerShell' => 'PowerShell',
-    'Prolog'     => 'SWI-Prolog',
-    'Python'     => 'Python_(programming_language)',
-    'R'          => 'R_(programming_language)',
-    'Raku'       => 'Rakudo',
-    'Ruby'       => 'Ruby_(programming_language)',
-    'Rust'       => 'Rust_(programming_language)',
-    'SQL'        => 'SQLite',
-    'Swift'      => 'Swift_(programming_language)',
-    'Tcl'        => 'Tcl',
-    'TeX'        => 'TeX',
-    'VimL'       => 'Vim_(text_editor)',
-    'Zig'        => 'Zig_(programming_language)',
+    'BASIC'      => 'en.wikipedia.org/wiki/FreeBASIC',
+    'C'          => 'en.wikipedia.org/wiki/Tiny_C_Compiler',
+    'C#'         => 'en.wikipedia.org/wiki/C_Sharp_(programming_language)',
+    'C++'        => 'en.wikipedia.org/wiki/Clang',
+    'COBOL'      => 'en.wikipedia.org/wiki/GnuCOBOL',
+    'Crystal'    => 'en.wikipedia.org/wiki/Crystal_(programming_language)',
+    'D'          => 'en.wikipedia.org/wiki/D_(programming_language)',
+    'Dart'       => 'en.wikipedia.org/wiki/Dart_(programming_language)',
+    'Elixir'     => 'en.wikipedia.org/wiki/Elixir_(programming_language)',
+    'F#'         => 'en.wikipedia.org/wiki/F_Sharp_(programming_language)',
+    'Fortran'    => 'en.wikipedia.org/wiki/GNU_Fortran',
+    'Go'         => 'endoflife.date/api/go.json',
+    'Haskell'    => 'en.wikipedia.org/wiki/Glasgow_Haskell_Compiler',
+    'Java'       => 'endoflife.date/api/java.json',
+    'JavaScript' => 'en.wikipedia.org/wiki/V8_(JavaScript_engine)',
+    'Julia'      => 'en.wikipedia.org/wiki/Julia_(programming_language)',
+    'Lisp'       => 'en.wikipedia.org/wiki/CLISP',
+    'Lua'        => 'en.wikipedia.org/wiki/Lua_(programming_language)',
+    'Nim'        => 'en.wikipedia.org/wiki/Nim_(programming_language)',
+    'OCaml'      => 'en.wikipedia.org/wiki/OCaml',
+    'PHP'        => 'endoflife.date/api/php.json',
+    'Pascal'     => 'en.wikipedia.org/wiki/Free_Pascal',
+    'Perl'       => 'endoflife.date/api/perl.json',
+    'PowerShell' => 'endoflife.date/api/powershell.json',
+    'Prolog'     => 'en.wikipedia.org/wiki/SWI-Prolog',
+    'Python'     => 'endoflife.date/api/python.json',
+    'R'          => 'en.wikipedia.org/wiki/R_(programming_language)',
+    'Raku'       => 'en.wikipedia.org/wiki/Rakudo',
+    'Ruby'       => 'endoflife.date/api/ruby.json',
+    'Rust'       => 'en.wikipedia.org/wiki/Rust_(programming_language)',
+    'SQL'        => 'en.wikipedia.org/wiki/SQLite',
+    'Swift'      => 'en.wikipedia.org/wiki/Swift_(programming_language)',
+    'Tcl'        => 'en.wikipedia.org/wiki/Tcl',
+    'TeX'        => 'en.wikipedia.org/wiki/TeX',
+    'VimL'       => 'en.wikipedia.org/wiki/Vim_(text_editor)',
+    'Zig'        => 'en.wikipedia.org/wiki/Zig_(programming_language)',
 );
 
 my %langs = from-toml 'config/langs.toml'.IO;
 
 for %langs.sort: *.key.fc -> (:key($name), :value(%lang)) {
-    my $new;
-    if my $path = %paths{$name} {
-        state $ua = HTTP::Tiny.new :throw-exceptions;
-
-        $new = $ua.get("https://en.wikipedia.org/wiki/$path")<content>.decode ~~ /
-            < Stable Preview > ' release' .+? '>' ( '#' \d+ ' "' )?
-            <(\d+ <[\d.]>+)>
-        /;
-    }
-
     my $old = %lang<version> ~~ / <[\d.]>+ \d+ /;
-    $new //= '?';
+    my $new = do with %paths{$name} {
+        state $ua  = HTTP::Tiny.new :throw-exceptions;
+        my    $res = $ua.get("https://$_")<content>.decode;
+
+        when / 'endoflife' / { $res.&from-json[0]<latest> }
+        when / 'wikipedia' / {
+            $res ~~ /
+                < Stable Preview > ' release' .+? '>' ( '#' \d+ ' "' )?
+                <(\d+ <[\d.]>+)>
+            /;
+        }
+    } // '?';
 
     printf "%11s \e[%dm%11s → %s\e[0m\n",
         $name,
