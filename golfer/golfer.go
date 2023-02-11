@@ -116,7 +116,7 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		CheevosTotal: len(config.CheevoList),
 		HolesTotal:   len(config.HoleList),
 		LangsTotal:   len(config.LangList),
-
+	}
 
 	if err := db.QueryRow(
 		`WITH medals AS (
@@ -184,7 +184,7 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		panic(err)
 	}
 
-	info.FollowLimit := followLimit
+	info.FollowLimit = followLimit
 	if info.Sponsor {
 		info.FollowLimit = followLimit
 	}
