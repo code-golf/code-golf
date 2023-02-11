@@ -6,11 +6,6 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-const (
-	followLimit        = 10
-	followLimitSponsor = 24
-)
-
 // POST /golfers/{golfer}/{action}
 func golferActionPOST(w http.ResponseWriter, r *http.Request) {
 	action := param(r, "action")
@@ -36,7 +31,7 @@ func golferActionPOST(w http.ResponseWriter, r *http.Request) {
 			golfer.ID,
 		).Scan(&count); err != nil {
 			panic(err)
-		} else if count >= followLimitSponsor || (!target.Sponsor && count >= followLimit) {
+		} else if count >= target.FollowLimit {
 			w.WriteHeader(http.StatusBadRequest)
 			render(w, r, "golfer/follow-limit", nil, target.Name)
 			return
