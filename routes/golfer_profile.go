@@ -10,11 +10,6 @@ import (
 	"github.com/lib/pq"
 )
 
-const (
-	followLimit        = 10
-	followLimitSponsor = 24
-)
-
 // GET /golfers/{golfer}
 func golferGET(w http.ResponseWriter, r *http.Request) {
 	const limit = 100
@@ -36,10 +31,7 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 	golfer := session.GolferInfo(r).Golfer
 	golferInfo := session.GolferInfo(r)
 
-	followLimitGolfer := followLimit
-	if golferInfo.Sponsor {
-		followLimitGolfer = followLimitSponsor
-	}
+	followLimitGolfer := golferInfo.FollowLimit
 
 	data := struct {
 		Connections    []oauth.Connection
