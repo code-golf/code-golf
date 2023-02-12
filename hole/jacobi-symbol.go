@@ -31,7 +31,7 @@ func randomPrime(max int) int {
 
 func jacobiSymbol() []Scorecard {
 	const mult = 9
-	tests := []test{{"0 1", "1"}}
+	tests := []test{{"0 1", "1"}, {"4622568476421908 4170463869060991", "1"}}
 	addTest := func(a, n int) {
 		tests = append(tests, test{
 			fmt.Sprint(a, n),
@@ -82,6 +82,9 @@ func jacobiSymbol() []Scorecard {
 	// Different residue classes
 	for i := 0; i < 4; i++ {
 		for j := 1; j < 8; j += 2 {
+			if i == 0 && j == 7 {
+				continue // this matches the static case
+			}
 			a = randomInClass(1<<53, 4, i)
 			n = randomInClass(a, 8, j)
 			addTest(a, n)
