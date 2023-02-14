@@ -390,6 +390,12 @@ thead th {
     white-space: normal;
 }
 
+.card span {
+    align-items: center;
+    display: flex;
+    gap: .25rem;
+}
+
 .card svg {
     fill: var(--color);
     height: 1rem;

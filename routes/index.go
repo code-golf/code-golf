@@ -44,13 +44,15 @@ func indexGET(w http.ResponseWriter, r *http.Request) {
 		Cards                 []Card
 		LangID, Scoring, Sort string
 		Langs                 []*config.Lang
+		LangsUsed             map[string]bool
 		Sorts                 []string
 	}{
-		Cards:   make([]Card, 0, len(config.HoleList)),
-		LangID:  "all",
-		Langs:   config.LangList,
-		Scoring: "bytes",
-		Sorts:   []string{"alphabetical", "category", "points"},
+		Cards:     make([]Card, 0, len(config.HoleList)),
+		LangID:    "all",
+		Langs:     config.LangList,
+		LangsUsed: map[string]bool{},
+		Scoring:   "bytes",
+		Sorts:     []string{"alphabetical", "category", "points"},
 	}
 
 	if golfer := session.Golfer(r); golfer == nil {
@@ -109,6 +111,8 @@ func indexGET(w http.ResponseWriter, r *http.Request) {
 			if err := rows.Scan(&holeID, &langID, &card.Points); err != nil {
 				panic(err)
 			}
+
+			data.LangsUsed[langID] = true
 
 			if hole, ok := config.HoleByID[holeID]; ok {
 				card.Hole = hole

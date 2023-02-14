@@ -22,6 +22,7 @@
     {{ symbol "joystick" }}
     {{ symbol "shuffle" }}
     {{ symbol "sort-numeric-down" }}
+    {{ range $k, $v := .Data.LangsUsed }}{{ symbol $k }}{{ end }}
 </svg>
 
 <main id=index>
@@ -58,7 +59,8 @@
         <svg><use href="#{{ .Hole.CategoryIcon }}"/></svg>
     {{ if .Lang }}
         <span title="{{ comma .Points }} points in {{ .Lang.Name }}">
-            {{ comma .Points }} pts.
+            {{ comma .Points }}
+            <svg><use href="#{{ .Lang.ID }}"/></svg>
         </span>
     {{ end }}
     </a>
