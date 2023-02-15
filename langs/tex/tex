@@ -43,9 +43,11 @@ init+='
 '
 # The following line reads something like
 #   \global\def\argv[#1]{
-#     \ifnum0<#1
+#     \ifnum#1=0
+#       arg0
+#     \else
 #       \ifcase#1 \or arg1 \or arg2 \or ... \or argN \fi
-#     \else arg0 \fi
+#     \fi
 #   }
 # we handle 0 separately to avoid it starting with a space:
 #   \ifcase#1arg0\or...    doesn't read the index right
@@ -53,13 +55,13 @@ init+='
 #   \ifcase#1{}arg0\or...  starts with an empty group (invisible but brutal)
 #   \ifcase#1\relax arg0\or...  starts with a \relax (invisible but brutal)
 # no easy way directly in the \ifcase, so use the extra \ifnum wrapper
-#   \ifnum#1>0 \ifcase\or arg1\or arg2\fi \else arg0\fi
-# ensures that every argument is preceded by a macro that doesn't get
-# expanded, so the space before the argument is ignored.
+#   \ifnum#1=0 arg0\else\ifcase\or arg1\or arg2\fi\fi
+# ensures that arg0 is preceded by a digit (which removes the space), or a 
+# macro which doesn't get expanded (which removes the space)
 #
 # Note: If you ever come back to this, make sure it works for
 # argv[\the\i], argv[\i], and argv[\count0], and hole args starting with digits
-init+='globaldefargv[1]ifnum1>0ifcase1or'"$args"'fielse'"$arg0"'fi'
+init+='globaldefargv[1]ifnum1=0'"$arg0"'elseifcase1or'"$args"'fifi'
 
 # \octet enables the octet font
 # \footline={} disables page numbers
