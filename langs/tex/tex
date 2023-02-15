@@ -19,49 +19,53 @@ cd /tmp
 code="$1"
 shift
 
-# separate arg0 from the rest of the args
-arg0="$1"
 init="\def\argc{$#}"
-shift
-args=$(join_by "or" "$@")
-# To pass in values, we need to escape some special characters
-# All the special characters \{}%&#^_%~ are set to catcode 12 ("other")
-# Also set the whitespace characters to catcode 12, unlike \dospecials
-# But we still need access to some to finish the definition, so we use
-#   byte 1 = begin group (previously {)
-#   byte 2 = end group (previously })
-#   byte 4 = space
-#   byte 5 = escape (previously \)
-#   byte 6 = parameter (previously #)
-# The end of the group resets all the catcodes for future tokenizing, but it
-# does not change the catcodes of the tokens already created
-init+='
+if [ $# -eq 0 ]; then
+  init+='\global\def\argv[#1]{}'
+else
+  # separate arg0 from the rest of the args
+  arg0="$1"
+  shift
+  args=$(join_by "or" "$@")
+  # To pass in values, we need to escape some special characters
+  # All the special characters \{}%&#^_%~ are set to catcode 12 ("other")
+  # Also set the whitespace characters to catcode 12, unlike \dospecials
+  # But we still need access to some to finish the definition, so we use
+  #   byte 1 = begin group (previously {)
+  #   byte 2 = end group (previously })
+  #   byte 4 = space
+  #   byte 5 = escape (previously \)
+  #   byte 6 = parameter (previously #)
+  # The end of the group resets all the catcodes for future tokenizing, but it
+  # does not change the catcodes of the tokens already created
+  init+='
 {\catcode1=1\catcode2=2\catcode5=0\catcode6=6\catcode4=10
 \catcode`$=12\catcode`&=12\catcode`^=12\catcode`_=12\catcode37=12
 \catcode`~=12\catcode`#=12\catcode`{=12\catcode`}=12\catcode9=12
 \catcode32=12\catcode10=12\catcode12=12\catcode13=13\catcode92=12
 '
-# The following line reads something like
-#   \global\def\argv[#1]{
-#     \ifnum#1=0
-#       arg0
-#     \else
-#       \ifcase#1 \or arg1 \or arg2 \or ... \or argN \fi
-#     \fi
-#   }
-# we handle 0 separately to avoid it starting with a space:
-#   \ifcase#1arg0\or...    doesn't read the index right
-#   \ifcase#1 arg0\or...   starts with an space
-#   \ifcase#1{}arg0\or...  starts with an empty group (invisible but brutal)
-#   \ifcase#1\relax arg0\or...  starts with a \relax (invisible but brutal)
-# no easy way directly in the \ifcase, so use the extra \ifnum wrapper
-#   \ifnum#1=0 arg0\else\ifcase\or arg1\or arg2\fi\fi
-# ensures that arg0 is preceded by a digit (which removes the space), or a 
-# macro which doesn't get expanded (which removes the space)
-#
-# Note: If you ever come back to this, make sure it works for
-# argv[\the\i], argv[\i], and argv[\count0], and hole args starting with digits
-init+='globaldefargv[1]ifnum1=0'"$arg0"'elseifcase1or'"$args"'fifi'
+  # The following line reads something like
+  #   \global\def\argv[#1]{
+  #     \ifnum#1=0
+  #       arg0
+  #     \else
+  #       \ifcase#1 \or arg1 \or arg2 \or ... \or argN \fi
+  #     \fi
+  #   }
+  # we handle 0 separately to avoid it starting with a space:
+  #   \ifcase#1arg0\or...    doesn't read the index right
+  #   \ifcase#1 arg0\or...   starts with an space
+  #   \ifcase#1{}arg0\or...  starts with an empty group (invisible but brutal)
+  #   \ifcase#1\relax arg0\or...  starts with a \relax (invisible but brutal)
+  # no easy way directly in the \ifcase, so use the extra \ifnum wrapper
+  #   \ifnum#1=0 arg0\else\ifcase\or arg1\or arg2\fi\fi
+  # ensures that arg0 is preceded by a digit (which removes the space), or a 
+  # macro which doesn't get expanded (which removes the space)
+  #
+  # Note: If you ever come back to this, make sure it works for
+  # argv[\the\i], argv[\i], and argv[\count0], and hole args starting with digits
+  init+='globaldefargv[1]ifnum1=0'"$arg0"'elseifcase1or'"$args"'fifi'
+fi
 
 # \octet enables the octet font
 # \footline={} disables page numbers
