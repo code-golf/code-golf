@@ -21,7 +21,7 @@ shift
 
 init="\def\argc{$#}"
 if [ $# -eq 0 ]; then
-  init+='\global\def\argv[#1]{}'
+  init+='\global\def\argv#1{}'
 else
   # separate arg0 from the rest of the args
   arg0="$1"
@@ -45,7 +45,7 @@ else
 \catcode32=12\catcode10=12\catcode12=12\catcode13=13\catcode92=12
 '
   # The following line reads something like
-  #   \global\def\argv[#1]{
+  #   \global\def\argv#1{
   #     \ifnum#1=0
   #       arg0
   #     \else
@@ -63,8 +63,8 @@ else
   # macro which doesn't get expanded (which removes the space)
   #
   # Note: If you ever come back to this, make sure it works for
-  # argv[\the\i], argv[\i], and argv[\count0], and hole args starting with digits
-  init+='globaldefargv[1]ifnum1=0'"$arg0"'elseifcase1or'"$args"'fifi'
+  # argv{\the\i}, argv\i, and argv{\count0}, and hole args starting with digits
+  init+='globaldefargv1ifnum1=0'"$arg0"'elseifcase1or'"$args"'fifi'
 fi
 
 # \octet enables the octet font
