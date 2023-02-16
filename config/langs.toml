@@ -953,7 +953,7 @@ Hello, World!
 % Accessing arguments
 \newcount\j
 \loop\ifnum\j<\argc\relax
-    \argv[\the\j]\endgraf
+    \argv\j\endgraf
     \advance\j by1
 \repeat
 '''
