@@ -20,14 +20,14 @@ require (
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 	github.com/tdewolff/minify/v2 v2.12.4
 	github.com/yuin/goldmark v1.5.4
-	golang.org/x/exp v0.0.0-20230212135524-a684f29349b6
+	golang.org/x/exp v0.0.0-20230213192124-5e25df0256eb
 	golang.org/x/oauth2 v0.5.0
 	gopkg.in/guregu/null.v4 v4.0.0
 )
 
 require (
 	github.com/Microsoft/go-winio v0.6.0 // indirect
-	github.com/ProtonMail/go-crypto v0.0.0-20230201104953-d1d05f4e2bfb // indirect
+	github.com/ProtonMail/go-crypto v0.0.0-20230214155104-81033d7f4442 // indirect
 	github.com/acomagu/bufpipe v1.0.3 // indirect
 	github.com/cloudflare/circl v1.3.2 // indirect
 	github.com/dgryski/trifles v0.0.0-20210119233746-37d926d5de6c // indirect
@@ -45,7 +45,7 @@ require (
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	golang.org/x/crypto v0.6.0 // indirect
 	golang.org/x/mod v0.8.0 // indirect
-	golang.org/x/net v0.6.0 // indirect
+	golang.org/x/net v0.7.0 // indirect
 	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/tools v0.6.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
