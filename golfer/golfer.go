@@ -13,6 +13,11 @@ import (
 	"gopkg.in/guregu/null.v4"
 )
 
+const (
+	followLimit        = 10
+	followLimitSponsor = 24
+)
+
 type FailingSolutions []struct{ Hole, Lang string }
 
 func (f *FailingSolutions) Scan(src any) error {
@@ -80,6 +85,9 @@ type GolferInfo struct {
 
 	// Count of cheevos/holes/langs available
 	CheevosTotal, HolesTotal, LangsTotal int
+
+	// Golfers this golfer can follow
+	FollowLimit int
 
 	// Slice of golfers referred
 	Referrals []string
@@ -174,6 +182,11 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		return nil
 	} else if err != nil {
 		panic(err)
+	}
+
+	info.FollowLimit = followLimit
+	if info.Sponsor {
+		info.FollowLimit = followLimitSponsor
 	}
 
 	// TODO
