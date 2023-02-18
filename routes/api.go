@@ -3,6 +3,7 @@ package routes
 import (
 	_ "embed"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"reflect"
 
@@ -80,8 +81,11 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 		otherScoring = "chars"
 	}
 
-	var userID int
+	var followLimit, userID int
 	if golfer := session.Golfer(r); golfer != nil {
+		fmt.Println(golfer)
+
+		followLimit = golfer.FollowLimit()
 		userID = golfer.ID
 	}
 
@@ -104,7 +108,7 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 		sqlWhere = "row > COALESCE((SELECT row FROM ranks WHERE me), 0) - $6"
 		sqlLimit = "$6 * 2"
 	case "following":
-		sqlWhere = "user_id = ANY(following($1))"
+		sqlWhere = fmt.Sprint("user_id = ANY(following($1, ", followLimit, "))")
 	}
 
 	// We don't use the rankings view as we want instant updates upon solution

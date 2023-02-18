@@ -79,7 +79,7 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		    FROM data JOIN users ON id = user_id
 		ORDER BY date DESC, login LIMIT $3`,
 		golfer.ID,
-		golfer.FollowLimit,
+		golfer.FollowLimit(),
 		limit,
 	)
 	if err != nil {
@@ -155,7 +155,7 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		    FROM follows
 		ORDER BY rank, login`,
 		golfer.ID,
-		golfer.FollowLimit,
+		golfer.FollowLimit(),
 	)
 	if err != nil {
 		panic(err)

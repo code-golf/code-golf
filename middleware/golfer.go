@@ -42,6 +42,7 @@ func Golfer(next http.Handler) http.Handler {
 				          u.login,
 				          COALESCE(r.login, ''),
 				          u.show_country,
+				          u.sponsor,
 				          u.theme,
 				          u.time_zone,
 				          ARRAY(
@@ -81,6 +82,7 @@ func Golfer(next http.Handler) http.Handler {
 				&golfer.Name,
 				&golfer.Referrer,
 				&golfer.ShowCountry,
+				&golfer.Sponsor,
 				&golfer.Theme,
 				&timeZone,
 				pq.Array(&golfer.Cheevos),

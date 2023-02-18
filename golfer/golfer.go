@@ -25,7 +25,7 @@ func (f *FailingSolutions) Scan(src any) error {
 }
 
 type Golfer struct {
-	Admin, ShowCountry                             bool
+	Admin, ShowCountry, Sponsor                    bool
 	BytesPoints, CharsPoints, ID                   int
 	Cheevos, Holes                                 []string
 	Country, Layout, Keymap, Name, Referrer, Theme string
@@ -59,6 +59,14 @@ func (g *Golfer) Earned(cheevoID string) bool {
 	return ok
 }
 
+// FollowLimit returns the max number of golfers this golfer can follow.
+func (g *Golfer) FollowLimit() int {
+	if g.Sponsor {
+		return followLimitSponsor
+	}
+	return followLimit
+}
+
 // IsFollowing returns whether the golfer is following that golfer.
 // FIXME Ideally we'd scan into a []int not a []int64 but pq won't.
 func (g *Golfer) IsFollowing(userID int) bool {
@@ -75,8 +83,6 @@ func (g *Golfer) Solved(holeID string) bool {
 type GolferInfo struct {
 	Golfer
 
-	Sponsor bool
-
 	// Count of medals
 	Diamond, Gold, Silver, Bronze int
 
@@ -85,9 +91,6 @@ type GolferInfo struct {
 
 	// Count of cheevos/holes/langs available
 	CheevosTotal, HolesTotal, LangsTotal int
-
-	// Golfers this golfer can follow
-	FollowLimit int
 
 	// Slice of golfers referred
 	Referrals []string
@@ -182,11 +185,6 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		return nil
 	} else if err != nil {
 		panic(err)
-	}
-
-	info.FollowLimit = followLimit
-	if info.Sponsor {
-		info.FollowLimit = followLimitSponsor
 	}
 
 	// TODO
