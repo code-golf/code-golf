@@ -77,10 +77,10 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		  GROUP BY user_id, hole, lang
 		) SELECT cheevo, date, login, hole, lang
 		    FROM data JOIN users ON id = user_id
-		ORDER BY date DESC, login LIMIT $2`,
+		ORDER BY date DESC, login LIMIT $3`,
 		golfer.ID,
-		limit,
 		golfer.FollowLimit,
+		limit,
 	)
 	if err != nil {
 		panic(err)
