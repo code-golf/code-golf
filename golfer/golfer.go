@@ -14,8 +14,8 @@ import (
 )
 
 const (
-	followLimit        = 10
-	followLimitSponsor = 24
+	FollowLimit        = 10
+	FollowLimitSponsor = 24
 )
 
 type FailingSolutions []struct{ Hole, Lang string }
@@ -62,9 +62,9 @@ func (g *Golfer) Earned(cheevoID string) bool {
 // FollowLimit returns the max number of golfers this golfer can follow.
 func (g *Golfer) FollowLimit() int {
 	if g.Sponsor {
-		return followLimitSponsor
+		return FollowLimitSponsor
 	}
-	return followLimit
+	return FollowLimit
 }
 
 // IsFollowing returns whether the golfer is following that golfer.
