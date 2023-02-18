@@ -74,7 +74,7 @@ CREATE TABLE discord_records (
     PRIMARY KEY (hole, lang)
 );
 
-CREATE TABLE ideas (
+CREATE UNLOGGED TABLE ideas (
     id          int  NOT NULL PRIMARY KEY,
     thumbs_down int  NOT NULL,
     thumbs_up   int  NOT NULL,
@@ -152,7 +152,7 @@ CREATE TABLE solutions (
     PRIMARY KEY (user_id, hole, lang, scoring)
 );
 
-CREATE TABLE wiki (
+CREATE UNLOGGED TABLE wiki (
     slug    text   NOT NULL PRIMARY KEY,
     section text,
     name    citext NOT NULL,
