@@ -2,11 +2,10 @@ CREATE FUNCTION following(int, int) RETURNS int[] AS $$
   WITH follows AS (
     SELECT followee_id
       FROM follows
-      WHERE follower_id = $1
-      ORDER BY followed
-      LIMIT $2
-  )
-  SELECT array_append(array(SELECT * FROM follows), $1)
+     WHERE follower_id = $1
+  ORDER BY followed
+     LIMIT $2
+  ) SELECT array_append(array(SELECT * FROM follows), $1)
 $$ LANGUAGE SQL STABLE;
 
 CREATE TYPE hole_rank_ret AS (strokes int, rank int, joint bool);
