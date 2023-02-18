@@ -6,7 +6,7 @@ CREATE FUNCTION following(int, int) RETURNS int[] AS $$
       ORDER BY followed
       LIMIT $2
   )
-  SELECT array_append(array_agg(SELECT * FROM follows), $1)
+  SELECT array_append(array(SELECT * FROM follows), $1)
 $$ LANGUAGE SQL STABLE;
 
 CREATE TYPE hole_rank_ret AS (strokes int, rank int, joint bool);

@@ -28,8 +28,7 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	db := session.Database(r)
-	golferInfo := session.GolferInfo(r)
-	golfer := golferInfo.Golfer
+	golfer := session.GolferInfo(r)
 
 	data := struct {
 		Connections    []oauth.Connection
@@ -81,7 +80,7 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		ORDER BY date DESC, login LIMIT $2`,
 		golfer.ID,
 		limit,
-		golferInfo.FollowLimit,
+		golfer.FollowLimit,
 	)
 	if err != nil {
 		panic(err)
@@ -156,7 +155,7 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		    FROM follows
 		ORDER BY rank, login`,
 		golfer.ID,
-		golferInfo.FollowLimit,
+		golfer.FollowLimit,
 	)
 	if err != nil {
 		panic(err)

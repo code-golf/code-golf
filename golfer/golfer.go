@@ -186,7 +186,7 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 
 	info.FollowLimit = followLimit
 	if info.Sponsor {
-		info.FollowLimit = followLimit
+		info.FollowLimit = followLimitSponsor
 	}
 
 	// TODO
