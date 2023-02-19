@@ -26,12 +26,6 @@ func golferActionPOST(w http.ResponseWriter, r *http.Request) {
 	if action == "follow" {
 		count := 0
 
-		data := struct {
-			FollowLimit int
-		}{
-			golfer.FollowLimit(),
-		}
-
 		if err := tx.QueryRow(
 			"SELECT COUNT(*) FROM follows WHERE follower_id = $1",
 			golfer.ID,
@@ -39,7 +33,7 @@ func golferActionPOST(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		} else if count >= golfer.FollowLimit() {
 			w.WriteHeader(http.StatusBadRequest)
-			render(w, r, "golfer/follow-limit", data, target.Name)
+			render(w, r, "golfer/follow-limit", golfer.FollowLimit(), target.Name)
 			return
 		}
 	}

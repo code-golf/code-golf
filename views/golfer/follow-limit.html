@@ -2,7 +2,7 @@
 {{ template "golfer" . }}
 
 <main>
-    <h1>You can't follow more than {{ $.Data.FollowLimit }} golfers.</h1>
+    <h1>You can't follow more than {{ .Data }} golfers.</h1>
 </main>
 
 {{ template "footer" }}
