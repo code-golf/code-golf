@@ -31,9 +31,9 @@ func golferActionPOST(w http.ResponseWriter, r *http.Request) {
 			golfer.ID,
 		).Scan(&count); err != nil {
 			panic(err)
-		} else if count >= golfer.FollowLimit() {
+		} else if limit := golfer.FollowLimit(); count >= limit {
 			w.WriteHeader(http.StatusBadRequest)
-			render(w, r, "golfer/follow-limit", nil, target.Name)
+			render(w, r, "golfer/follow-limit", limit, target.Name)
 			return
 		}
 	}
