@@ -1818,6 +1818,7 @@ preamble = '''
 
 ['p-adic Expansion']
 category = 'Mathematics'
+experiment = 882
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/P-Adic_numbers,_basic' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/P-adic_number#p-adic_expansion_of_rational_numbers' },
