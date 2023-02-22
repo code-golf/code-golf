@@ -1,6 +1,6 @@
 FROM golang:1.19.5-alpine3.17 as builder
 
-RUN apk add --no-cache build-base gmp-dev
+RUN apk add --no-cache build-base
 
 COPY go.c /go/
 
