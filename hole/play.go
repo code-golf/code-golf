@@ -107,6 +107,8 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		scores = musicalChords()
 	case "ordinal-numbers":
 		scores = ordinalNumbers()
+	case "p-adic-expansion":
+		scores = pAdicExpansion()
 	case "pangram-grep":
 		scores = pangramGrep()
 	case "poker":
