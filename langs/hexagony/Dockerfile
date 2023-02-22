@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0.102-alpine3.17 as builder
+FROM mcr.microsoft.com/dotnet/sdk:8.0.100-preview.1-alpine3.17 as builder
 
 RUN apk add --no-cache build-base zlib-dev
 
@@ -6,8 +6,10 @@ ENV DOTNET_CLI_TELEMETRY_OPTOUT=1 VERSION=770406a
 
 RUN curl -L https://github.com/SirBogman/Hexagony/tarball/$VERSION | tar xz \
  && cd /SirBogman-Hexagony-$VERSION                                         \
- && VERSION= dotnet publish -c Release -r linux-musl-x64 -o /               \
-    -p:InvariantGlobalization=true -p:PublishAot=true
+ && sed -i s/net7/net8/ Hexagony.csproj                                     \
+ && VERSION= dotnet publish -c Release -r linux-musl-x64                    \
+    -p:InvariantGlobalization=true -p:PublishAot=true -p:PublishDir=/       \
+    -p:StripSymbols=true
 
 FROM codegolf/lang-base
 
