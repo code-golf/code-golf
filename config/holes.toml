@@ -1865,10 +1865,9 @@ preamble = '''
 <p>
     Given a prime number <b>p (2 ≤ p ≤ 61)</b> and a reduced fraction
     <b>r</b>, print the <b>p</b>-adic expansion of <b>r</b> in quote notation.
-    If a digit extends the usual digit set of 0 to 9, first use the lowercase
-    ASCII letters and then the uppercase ASCII letters:
+    Use Base62 characters (0-9 A-Z a-z) as digits:
 
-<pre>61 -85/24 → x2'wY</pre>
+<pre>61 -85/24 → X2'Wy</pre>
 '''
 
 ['Pangram Grep']

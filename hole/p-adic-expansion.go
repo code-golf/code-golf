@@ -9,7 +9,7 @@ func reverseBytes(s []byte) []byte {
 	return s
 }
 
-const pAdicDigits = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXY"
+const pAdicDigits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxy"
 
 func pAdicTest(p, n, d int) test {
 	in := fmt.Sprint(p, n, "/", d)
