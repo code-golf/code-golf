@@ -790,8 +790,8 @@ for (arg in commandArgs(TRUE)) {
 '''
 
 [Raku]
-size    = '58.1 MiB'
-version = 'Raku 6.d on Rakudo 2022.12'
+size    = '67.4 MiB'
+version = 'Raku 6.d on Rakudo 2023.02'
 website = 'https://raku.org'
 example = '''
 # Printing
