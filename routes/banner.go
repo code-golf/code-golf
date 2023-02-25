@@ -16,11 +16,11 @@ type banner struct {
 
 // TODO Allow a golfer to hide individual banners #709.
 func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
-	// banners = append(banners, banner{
-	//	Type: "info",
-	//	Body: "The <a href=/repeating-decimals>Repeating Decimals</a>" +
-	//		" hole will go live on the 1 Feb 2023. Why not try and solve it ahead of time?",
-	// })
+	banners = append(banners, banner{
+		Type: "info",
+		Body: "The <a href=/γ>γ (Euler–Mascheroni Constant)</a>" +
+			" hole will go live on the 1 Mar 2023. Why not try and solve it ahead of time?",
+	})
 
 	// Currently all the global banners require a golfer.
 	if golfer == nil {
