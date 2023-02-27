@@ -25,41 +25,10 @@ var arrowMap = map[string][2]int8{
 	"⥀": {0, 0}, "⥁": {0, 0},
 }
 
-var arrowMapDownAndLeft = map[string][2]int8{
-	"←": {-1, 0}, "↓": {0, -1},
-	"↙": {-1, -1},
-	"↲": {-1, -1},
-	"⇐": {-1, 0}, "⇓": {0, -1},
-	"⇙": {-1, -1},
-	"⇦": {-1, 0}, "⇩": {0, -1},
-}
-
-var arrowMapUpAndLeft = map[string][2]int8{
-	"←": {-1, 0}, "↑": {0, 1},
-	"↖": {-1, 1},
-	"↰": {-1, 1},
-	"⇐": {-1, 0}, "⇑": {0, 1},
-	"⇖": {-1, 1},
-	"⇦": {-1, 0}, "⇧": {0, 1},
-}
-
-var arrowMapUpAndRight = map[string][2]int8{
-	"↑": {0, 1}, "→": {1, 0},
-	"↗": {1, 1},
-	"↱": {1, 1},
-	"⇑": {0, 1}, "⇒": {1, 0},
-	"⇗": {1, 1},
-	"⇧": {0, 1}, "⇨": {1, 0},
-}
-
-var arrowMapDownAndRight = map[string][2]int8{
-	"→": {1, 0}, "↓": {0, -1},
-	"↘": {1, -1},
-	"↳": {1, -1},
-	"⇒": {1, 0}, "⇓": {0, -1},
-	"⇘": {1, -1},
-	"⇨": {1, 0}, "⇩": {0, -1},
-}
+var arrowMapDownAndLeft = [...]string{"←", "↓", "↙", "↲", "⇐", "⇓", "⇙", "⇦", "⇩"}
+var arrowMapUpAndLeft = [...]string{"←", "↑", "↖", "↰", "⇐", "⇑", "⇖", "⇦", "⇧"}
+var arrowMapUpAndRight = [...]string{"↑", "→", "↗", "↱", "⇑", "⇒", "⇗", "⇧", "⇨"}
+var arrowMapDownAndRight = [...]string{"→", "↓", "↘", "↳", "⇒", "⇓", "⇘", "⇨", "⇩"}
 
 func arrows() []Scorecard {
 	args := make([]string, 0, 3*len(arrowMap))
@@ -98,22 +67,22 @@ func arrows() []Scorecard {
 	timesUR := 5 - timesDR
 
 	// 3 or 4 of each arrow.
-	for arrow := range arrowMapDownAndLeft {
+	for _, arrow := range arrowMapDownAndLeft {
 		for times := timesDL; times >= 0; times-- {
 			argsDL = append(argsDL, arrow)
 		}
 	}
-	for arrow := range arrowMapUpAndLeft {
+	for _, arrow := range arrowMapUpAndLeft {
 		for times := timesUL; times >= 0; times-- {
 			argsUL = append(argsUL, arrow)
 		}
 	}
-	for arrow := range arrowMapDownAndRight {
+	for _, arrow := range arrowMapDownAndRight {
 		for times := timesDR; times >= 0; times-- {
 			argsDR = append(argsDR, arrow)
 		}
 	}
-	for arrow := range arrowMapUpAndRight {
+	for _, arrow := range arrowMapUpAndRight {
 		for times := timesUR; times >= 0; times-- {
 			argsUR = append(argsUR, arrow)
 		}
