@@ -83,8 +83,6 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 
 	var followLimit, userID int
 	if golfer := session.Golfer(r); golfer != nil {
-		fmt.Println(golfer)
-
 		followLimit = golfer.FollowLimit()
 		userID = golfer.ID
 	}
