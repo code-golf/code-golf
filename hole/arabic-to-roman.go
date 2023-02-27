@@ -13,17 +13,9 @@ func arabicToRoman(reverse bool) []Scorecard {
 	// Testing all ~4k is too slow and is too many arguments for J.
 	const count = 2000
 
-	// Start with the 6 special cases.
+	// Hardcode some special cases, randomise the rest.
 	numbers := make([]int, count)
-	numbers[0] = 4
-	numbers[1] = 9
-	numbers[2] = 40
-	numbers[3] = 90
-	numbers[4] = 400
-	numbers[5] = 900
-
-	// Append another 1,994 random cases.
-	for i := 6; i < count; i++ {
+	for i := copy(numbers, []int{4, 9, 40, 90, 400, 900}); i < count; i++ {
 		numbers[i] = randInt(1, 3999)
 	}
 
