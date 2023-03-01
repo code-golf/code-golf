@@ -3054,7 +3054,6 @@ preamble = '''
 
 ['γ']
 category = 'Mathematics'
-experiment = 817
 links = [
     { name = 'OEIS A001620', url = '//oeis.org/A001620' },
     { name = 'Rosetta Code', url = "//rosettacode.org/wiki/Euler's_constant_0.5772..." },
@@ -3062,7 +3061,9 @@ links = [
 ]
 synopsis = 'Print γ to the first 1,000 decimal places.'
 preamble = '''
-<p>Print the Euler–Mascheroni constant γ (gamma) to the first 1,000 decimal places.
+<p>
+    Print the Euler–Mascheroni constant γ (gamma) to the first 1,000 decimal
+    places.
 '''
 
 ['λ']
