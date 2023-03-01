@@ -104,6 +104,7 @@ section header {
 }
 
 #authors-btn img {
+    background: var(--background);
     border-radius: 50%;
     box-sizing: content-box;
     height: 1.75rem;
