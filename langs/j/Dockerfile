@@ -1,17 +1,13 @@
-FROM alpine:3.15 as builder
+FROM debian:bullseye-slim as builder
 
-RUN apk add --no-cache build-base clang curl fts-dev
+RUN apt-get update && apt-get install -y curl gcc
 
-RUN curl -L https://github.com/jsoftware/jsource/archive/j902-release-b.tar.gz \
+RUN curl https://www.jsoftware.com/download/j9.4/install/j9.4.1_linux64.tar.gz \
   | tar xz
 
-ENV CC=clang j64x=j64
-
-RUN mv jsource-* jsource \
- && cd jsource/make2     \
- && ./build_jconsole.sh  \
- && ./build_libj.sh      \
- && strip ../bin/linux/j64/jconsole ../bin/linux/j64/libj.so
+# FIXME Don't run updatejs.sh as it tries to update to AVX512 because my build
+# laptop supports it. But prod servers do not. Is there an override flag?
+# RUN cd j9.4 && ./updateje.sh
 
 COPY j.c /
 
@@ -19,12 +15,19 @@ RUN gcc -s -o j j.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1          /lib/
-COPY --from=0 /jsource/jlibrary/bin/profile.ijs /usr/bin/profile.ijs
-COPY --from=0 /jsource/jlibrary/system          /usr/system
-COPY --from=0 /j                                \
-              /jsource/bin/linux/j64/jconsole   \
-              /jsource/bin/linux/j64/libj.so    /usr/bin/
+COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
+              /lib/x86_64-linux-gnu/libdl.so.2      \
+              /lib/x86_64-linux-gnu/libgcc_s.so.1   \
+              /lib/x86_64-linux-gnu/libm.so.6       \
+              /lib/x86_64-linux-gnu/libpthread.so.0 /lib/
+COPY --from=0 /lib64/ld-linux-x86-64.so.2           /lib64/
+COPY --from=0 /j                                    /usr/bin/
+COPY --from=0 /j9.4/addons/dev                      /opt/j/addons/dev
+COPY --from=0 /j9.4/bin/jconsole                    \
+              /j9.4/bin/libgmp.so                   \
+              /j9.4/bin/libj.so                     \
+              /j9.4/bin/profile.ijs                 /opt/j/bin/
+COPY --from=0 /j9.4/system                          /opt/j/system
 
 ENTRYPOINT ["j"]
 

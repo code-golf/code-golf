@@ -22,6 +22,6 @@ int main (int argc, char *argv[]) {
 
     fclose(fp);
 
-    execv("/usr/bin/jconsole", argv);
+    execv("/opt/j/bin/jconsole", argv);
     perror("execv");
 }

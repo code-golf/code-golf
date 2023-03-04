@@ -10,4 +10,8 @@ is post-solution(|.value)<Err>, '', .key for
     raku-exp    => \(:lang<raku>   :code('use experimental')),
     tcl-min     => \(:lang<tcl>    :code('puts [expr min(5,6)]'));
 
+# AVX 512 wouldn't work on live, yet.
+like post-solution(:lang<j> :code('echo JVERSION'))<Out>, / '/j64/linux' /,
+    'J engine is baseline AMD 64 (no AVX 512)';
+
 done-testing;

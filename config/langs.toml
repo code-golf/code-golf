@@ -495,8 +495,8 @@ example = '''
 '''
 
 [J]
-size    = '4.84 MiB'
-version = '9.02.08'
+size    = '11 MiB'
+version = '9.4.20'
 website = 'https://www.jsoftware.com'
 example = '''
 NB.Printing
