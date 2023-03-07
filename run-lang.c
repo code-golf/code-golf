@@ -56,6 +56,10 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
     if (mount("proc", "/proc", "proc", MS_NODEV|MS_NOEXEC|MS_NOSUID|MS_RDONLY, NULL) < 0)
         ERR_AND_EXIT("mount proc");
 
+    // Clobber /proc/sys. It can be used to inject state.
+    if (mount("tmpfs", "/proc/sys", "tmpfs", MS_NODEV|MS_NOEXEC|MS_NOSUID|MS_RDONLY, NULL) < 0)
+        ERR_AND_EXIT("mount /proc/sys");
+
     if (mount("tmpfs", "/tmp", "tmpfs", MS_NODEV|MS_NOSUID, NULL) < 0)
         ERR_AND_EXIT("mount tmp");
 
