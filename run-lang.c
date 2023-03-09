@@ -564,7 +564,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
 
         // Miscellaneous (unprivileged)
         ALLOW(rseq),    // 334
-        ALLOW(sysinfo), // 99
+        // ALLOW(sysinfo), // 99
         ALLOW(uname),   // 63
 
         /************\
