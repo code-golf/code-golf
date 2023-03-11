@@ -71,7 +71,15 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 
 				// Best of three runs.
 				for j := 0; passes < 2 && fails < 2; j++ {
-					score := play(r.Context(), s.HoleID, s.LangID, s.code)
+					score := func() hole.Scorecard {
+						defer func() {
+							if r := recover(); r != nil {
+								log.Println(r)
+							}
+						}()
+
+						return play(r.Context(), s.HoleID, s.LangID, s.code)
+					}()
 
 					s.Took = score.Took
 
