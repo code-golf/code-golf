@@ -22,8 +22,8 @@ x is a no-op.
 '''
 
 [Assembly]
-size    = '79.9 MiB'
-version = 'DefAssembler 2.2.0'
+size    = '87.4 MiB'
+version = 'DefAssembler 2.3.0'
 website = 'https://www.npmjs.com/package/@defasm/core'
 example = '''
 SYS_WRITE = 1
