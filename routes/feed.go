@@ -27,6 +27,7 @@ func init() {
 		sha, created, id string
 		hole             bool
 	}{
+		{"9426e29", "2023-03-12 10:10:19", "tex", false},
 		{"b1fc58d", "2023-03-01 00:02:04", "γ", true},
 		{"9d31f36", "2023-02-01 00:11:23", "repeating-decimals", true},
 		{"ab5e373", "2023-01-04 02:53:22", "maze", true},
