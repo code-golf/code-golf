@@ -204,7 +204,7 @@ int main(int argc, char* argv[]) {
 
 ['C#']
 size    = '149 MiB'
-version = 'C# 11.0 on .NET 7.0.2'
+version = 'C# 11.0 on .NET 7.0.3'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -283,7 +283,7 @@ end-program.
 
 [Crystal]
 size    = '201 MiB'
-version = '1.7.2'
+version = '1.7.3'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -361,7 +361,7 @@ for arg <- System.argv, do: IO.puts arg
 
 ['F#']
 size    = '150 MiB'
-version = 'F# 7.0 on .NET 7.0.2'
+version = 'F# 7.0 on .NET 7.0.3'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -623,7 +623,7 @@ end
 
 [Nim]
 size    = '13.6 MiB'
-version = '1.6.10'
+version = '1.6.12'
 website = 'https://nim-lang.org'
 example = '''
 import os
@@ -717,7 +717,7 @@ for ($i = 1; $i < $argc; $i++)
 
 [PowerShell]
 size    = '176 MiB'
-version = 'PowerShell 7.3.2 on .NET 7.0.2'
+version = 'PowerShell 7.3.3 on .NET 7.0.3'
 website = 'https://docs.microsoft.com/powershell/scripting/overview'
 example = '''
 # Printing
@@ -824,8 +824,8 @@ end
 '''
 
 [Rust]
-size    = '431 MiB'
-version = '1.67.1'
+size    = '434 MiB'
+version = '1.68.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -874,7 +874,7 @@ G
 
 [SQL]
 size    = '1.13 MiB'
-version = '3.41.0'
+version = '3.41.1'
 website = 'https://sqlite.org'
 example = '''
 -- Printing

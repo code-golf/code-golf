@@ -3,9 +3,9 @@ FROM alpine:3.17 as builder
 RUN apk add -X http://dl-cdn.alpinelinux.org/alpine/edge/testing --no-cache \
     curl gcc musl-dev pcre tcc
 
-RUN curl https://nim-lang.org/download/nim-1.6.10.tar.xz | tar xJ
+RUN curl https://nim-lang.org/download/nim-1.6.12.tar.xz | tar xJ
 
-RUN cd nim-1.6.10           \
+RUN cd nim-1.6.12           \
  && ./build.sh              \
  && ./bin/nim c koch        \
  && ./koch boot -d:release  \
@@ -22,7 +22,7 @@ COPY          /nim.cfg                 /etc/nim/
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
 COPY --from=0 /usr/bin/nim             \
               /usr/bin/tcc             /usr/bin/
-COPY --from=0 /usr/include             /usr/include/
+COPY --from=0 /usr/include             /usr/include
 COPY --from=0 /usr-lib-symlinks        /usr/lib
 COPY --from=0 /usr/lib/crt1.o          \
               /usr/lib/crti.o          \
