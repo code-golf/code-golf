@@ -935,10 +935,10 @@ foreach arg $argv {
 '''
 
 [TeX]
-size       = '9.58 MiB'
-version    = '3.141592653'
-website    = 'https://tug.org'
-example    = '''
+size    = '9.58 MiB'
+version = '3.141592653'
+website = 'https://tug.org'
+example = '''
 % Printing
 Hello, World!
 
