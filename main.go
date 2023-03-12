@@ -18,9 +18,16 @@ func main() {
 
 	db := db.Open()
 
-	// Every 30 seconds.
+	// Every 10 seconds.
 	go func() {
-		for range time.Tick(10 * time.Second) {
+		// Refreshing the mat views every 10 seconds is overkill on dev.
+		// FIXME Maybe it would be better to do something with NOTIFY/TRIGGER.
+		duration := 10 * time.Second
+		if _, dev := os.LookupEnv("DEV"); dev {
+			duration = 5 * time.Minute
+		}
+
+		for range time.Tick(duration) {
 			for _, view := range []string{"medals", "rankings", "points"} {
 				if _, err := db.Exec(
 					"REFRESH MATERIALIZED VIEW CONCURRENTLY " + view,
