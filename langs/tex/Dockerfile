@@ -1,4 +1,4 @@
-FROM reitzig/texlive-base:2022.7 as builder
+FROM reitzig/texlive-base:2022.8 as builder
 
 # Download dvi-to-text
 ENV VERSION=v0.2.1
@@ -29,13 +29,14 @@ RUN bash -c "rm -r /usr/local/texlive/2022/texmf-dist/{doc,source,scripts,bibtex
 
 FROM codegolf/lang-base
 
-COPY --from=builder /dvi-to-text /usr/bin/
-COPY --from=builder /bin /bin
-COPY --from=builder /lib/ld-musl-x86_64.so.1 /lib/ld-musl-x86_64.so.1
-COPY --from=builder /usr/local/bin /usr/local/bin
-COPY --from=builder /usr/local/texlive/2022 /usr/local/texlive/2022
-COPY --from=builder /usr/lib/libreadline.so.8 /usr/lib/libreadline.so.8
-COPY --from=builder /usr/lib/libncursesw.so.6 /usr/lib/libncursesw.so.6
+COPY --from=builder /bin                      /bin
+COPY --from=builder /lib/ld-musl-x86_64.so.1  /lib/ld-musl-x86_64.so.1
+COPY --from=builder /dvi-to-text              /usr/bin/
+COPY --from=builder /usr/lib/libncursesw.so.6 \
+                    /usr/lib/libreadline.so.8 /usr/lib/
+COPY --from=builder /usr/local/bin            /usr/local/bin
+COPY --from=builder /usr/local/texlive/2022   /usr/local/texlive/2022
+
 COPY tex /usr/bin/
 
 ENTRYPOINT ["/usr/bin/tex"]
