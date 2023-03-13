@@ -2308,7 +2308,8 @@ preamble = '''
 category = 'Mathematics'
 experiment = 857
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Rijndael_S-box' },
+    { name = 'OEIS A354500', url = '//oeis.org/A354500' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Rijndael_S-box' },
 ]
 synopsis = 'Print Rijndael S-boxes as a series of hex bytes.'
 preamble = '''
