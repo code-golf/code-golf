@@ -1,4 +1,4 @@
-FROM dart:2.18.6-sdk as builder
+FROM dart:2.19.4-sdk as builder
 
 FROM codegolf/lang-base
 
@@ -8,7 +8,14 @@ COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
               /lib/x86_64-linux-gnu/libm.so.6       \
               /lib/x86_64-linux-gnu/libpthread.so.0 /lib/
 COPY --from=0 /lib64/ld-linux-x86-64.so.2           /lib64/
-COPY --from=0 /usr/lib/dart                         /usr/lib/dart
+COPY --from=0 /usr/lib/dart/bin/dart                /usr/lib/dart/bin/
+COPY --from=0 /usr/lib/dart/include                 /usr/lib/dart/include
+COPY --from=0 /usr/lib/dart/lib                     /usr/lib/dart/lib
+
+COPY --from=0 /usr/lib/dart/bin/snapshots/dartdev.dart.snapshot        \
+              /usr/lib/dart/bin/snapshots/kernel-service.dart.snapshot \
+              /usr/lib/dart/bin/snapshots/kernel_worker.dart.snapshot  \
+              /usr/lib/dart/bin/snapshots/
 
 COPY dart /usr/bin/
 
