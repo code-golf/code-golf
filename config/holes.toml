@@ -455,8 +455,8 @@ preamble = '''
 ['Catalan’s Constant']
 category = 'Mathematics'
 links = [
-   { name = 'OEIS A006752', url = '//oeis.org/A006752' },
-   { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Catalan's_constant" },
+    { name = 'OEIS A006752', url = '//oeis.org/A006752' },
+    { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Catalan's_constant" },
 ]
 synopsis = 'Print Catalan’s constant to the first 1,000 decimal places.'
 preamble = '''
@@ -1243,8 +1243,8 @@ preamble = '''
 ['Kolakoski Constant']
 category = 'Mathematics'
 links = [
-   { name = 'OEIS A118270', url = '//oeis.org/A118270' },
-   { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Kolakoski_sequence#Kolakoski_Constant' },
+    { name = 'OEIS A118270', url = '//oeis.org/A118270' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Kolakoski_sequence#Kolakoski_Constant' },
 ]
 synopsis = 'Print the Kolakoski constant to the first 1,000 decimal places.'
 preamble = '''
