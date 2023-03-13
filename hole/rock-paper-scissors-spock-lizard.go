@@ -28,7 +28,7 @@ func rockPaperScissorsSpockLizard() []Scorecard {
 		{"🦎🖖", "🦎 poisons 🖖"},
 		{"🦎🦎", "Tie"},
 	})
-	
+
 	mid := len(tests) / 2
 	return outputTests(tests, tests[:mid], tests[mid:])
 }
