@@ -1,7 +1,7 @@
 package hole
 
 func rockPaperScissorsSpockLizard() []Scorecard {
-	return outputTests(shuffle([]test{
+	tests := shuffle([]test{
 		{"💎💎", "Tie"},
 		{"💎📄", "📄 covers 💎"},
 		{"💎✂", "💎 crushes ✂"},
@@ -27,5 +27,8 @@ func rockPaperScissorsSpockLizard() []Scorecard {
 		{"🦎✂", "✂ decapitates 🦎"},
 		{"🦎🖖", "🦎 poisons 🖖"},
 		{"🦎🦎", "Tie"},
-	}))
+	})
+
+	mid := len(tests) / 2
+	return outputTests(tests, tests[:mid], tests[mid:])
 }
