@@ -28,7 +28,6 @@
   },
   "devDependencies": {
     "@types/diff": "",
-    "@types/lz-string": "",
     "@typescript-eslint/eslint-plugin": "",
     "@typescript-eslint/parser": "",
     "eslint": "",
