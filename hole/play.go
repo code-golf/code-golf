@@ -69,7 +69,7 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		scores = arabicToRoman(holeID == "roman-to-arabic")
 	case "arrows":
 		scores = arrows()
-	case "base-si-units":
+	case "si-units":
 		scores = baseSiUnits()
 	case "brainfuck":
 		scores = brainfuck()

@@ -258,12 +258,12 @@ F: / ? O _ o DEL
 </pre>
 '''
 
-['Base SI Units']
+['SI Units']
 category = 'Transform'
 experiment = 862
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/International_System_of_Units' },
     { name = 'NIST', url = '//www.nist.gov/pml/special-publication-330/sp-330-section-2#2.3.4' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/International_System_of_Units' },
 ]
 synopsis = 'Express SI units using the 7 base units.'
 preamble = '''
