@@ -69,8 +69,6 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		scores = arabicToRoman(holeID == "roman-to-arabic")
 	case "arrows":
 		scores = arrows()
-	case "base-si-units":
-		scores = baseSiUnits()
 	case "brainfuck":
 		scores = brainfuck()
 	case "css-colors":
@@ -127,6 +125,8 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		scores = rockPaperScissorsSpockLizard()
 	case "seven-segment":
 		scores = sevenSegment()
+	case "si-units":
+		scores = siUnits()
 	case "spelling-numbers":
 		scores = spellingNumbers()
 	case "star-wars-opening-crawl":

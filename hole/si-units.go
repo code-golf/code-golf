@@ -36,7 +36,7 @@ var siPrefixes = [...]struct {
 	{"q", -30},
 }
 
-var siUnits = [...]struct {
+var siUnitsMap = [...]struct {
 	symbol    string
 	expansion string
 }{
@@ -70,10 +70,10 @@ var siUnits = [...]struct {
 	{"kat", "mol s^-1"},
 }
 
-func baseSiUnits() []Scorecard {
+func siUnits() []Scorecard {
 	tests := []test{}
 	for _, prefix := range siPrefixes {
-		for _, unit := range siUnits {
+		for _, unit := range siUnitsMap {
 			exp := prefix.exponent
 			if unit.symbol == "g" {
 				exp = exp - 3
