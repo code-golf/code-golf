@@ -263,6 +263,7 @@ category = 'Transform'
 experiment = 862
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/International_System_of_Units' },
+    { name = 'NIST', url = '//www.nist.gov/pml/special-publication-330/sp-330-section-2#2.3.4' },
 ]
 synopsis = 'Express SI units using the 7 base units.'
 preamble = '''
@@ -289,7 +290,7 @@ preamble = '''
                 <th>Equivalent using base units
         <tbody>
             <tr><td>W	<td>kg m^2 s^-3
-            <tr><td>C	<td>s A
+            <tr><td>C	<td>A s
             <tr><td>V	<td>kg m^2 s^-3 A^-1
             <tr><td>F	<td>kg^-1 m^-2 s^4 A^2
             <tr><td>Ω	<td>kg m^2 s^-3 A^-2
