@@ -169,6 +169,12 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 
 	for _, score := range scores {
 		go func(score Scorecard) {
+			defer func() {
+				if r := recover(); r != nil {
+					log.Println(r)
+				}
+			}()
+
 			play(ctx, holeID, langID, code, &score)
 			done <- score
 		}(score)
