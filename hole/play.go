@@ -343,7 +343,6 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 			stderr.WriteString("Killed for exceeding the 5s timeout.")
 		} else {
 			stderr.WriteString(err.Error())
-			println(err.Error())
 		}
 	}
 
