@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/code-golf/code-golf/session"
@@ -9,8 +10,9 @@ import (
 // GET /healthz.
 func healthzGET(w http.ResponseWriter, r *http.Request) {
 	if err := session.Database(r).Ping(); err != nil {
-		panic(err)
+		log.Println(err)
+		w.WriteHeader(http.StatusServiceUnavailable)
+	} else {
+		w.WriteHeader(http.StatusNoContent)
 	}
-
-	w.WriteHeader(http.StatusNoContent)
 }
