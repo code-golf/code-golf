@@ -6,6 +6,7 @@ import (
 	"embed"
 	"errors"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"regexp"
@@ -15,7 +16,14 @@ import (
 	"unicode"
 )
 
-const timeout = 5 * time.Second
+var timeout = 5 * time.Second
+
+// Increase the timeout under E2E as the hardware is less powerful than live.
+func init() {
+	if _, e2e := os.LookupEnv("E2E"); e2e {
+		timeout = 10 * time.Second
+	}
+}
 
 //go:embed answers
 var answers embed.FS
@@ -346,7 +354,7 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 
 		if errors.Is(ctx.Err(), context.DeadlineExceeded) {
 			score.Timeout = true
-			stderr.WriteString("Killed for exceeding the 5s timeout.")
+			fmt.Fprint(&stderr, "Killed for exceeding the ", timeout, " timeout.")
 		} else {
 			stderr.WriteString(err.Error())
 		}
