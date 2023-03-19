@@ -91,6 +91,10 @@ func getUserMap(db *sql.DB) (result map[string]int32) {
 		result[login] = id
 	}
 
+	if err := rows.Err(); err != nil {
+		panic(err)
+	}
+
 	return
 }
 
