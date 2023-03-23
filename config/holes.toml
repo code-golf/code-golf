@@ -1118,6 +1118,7 @@ preamble = '''
 
 ['Kolakoski Constant']
 category = 'Mathematics'
+variants = ['Kolakoski Sequence', 'Kolakoski Constant']
 links = [
     { name = 'OEIS A118270', url = '//oeis.org/A118270' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Kolakoski_sequence#Kolakoski_Constant' },
@@ -1140,6 +1141,7 @@ preamble = '''
 
 ['Kolakoski Sequence']
 category = 'Sequence'
+variants = ['Kolakoski Sequence', 'Kolakoski Constant']
 links = [
     { name = 'OEIS A000002', url = '//oeis.org/A000002' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Kolakoski_sequence' },
