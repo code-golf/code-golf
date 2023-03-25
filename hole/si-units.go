@@ -1,7 +1,7 @@
 package hole
 
 import (
-	"strconv"
+	"fmt"
 	"strings"
 )
 
@@ -36,10 +36,7 @@ var siPrefixes = [...]struct {
 	{"q", -30},
 }
 
-var siUnitsMap = [...]struct {
-	symbol    string
-	expansion string
-}{
+var siUnitsMap = [...]struct{ symbol, expansion string }{
 	{"s", "s"},
 	{"m", "m"},
 	{"g", "kg"},
@@ -76,10 +73,10 @@ func siUnits() []Scorecard {
 		for _, unit := range siUnitsMap {
 			exp := prefix.exponent
 			if unit.symbol == "g" {
-				exp = exp - 3
+				exp -= 3
 			}
-			out := "10^" + strconv.Itoa(exp) + " " + unit.expansion
-			out = strings.Replace(strings.Replace(out, "10^1 ", "10 ", -1), "10^0 ", "1 ", -1)
+			out := fmt.Sprint("10^", exp, " ", unit.expansion)
+			out = strings.ReplaceAll(strings.ReplaceAll(out, "10^1 ", "10 "), "10^0 ", "1 ")
 			tests = append(tests, test{prefix.symbol + unit.symbol, strings.Trim(out, " ")})
 		}
 	}
