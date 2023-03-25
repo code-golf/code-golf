@@ -325,7 +325,7 @@ void main(string[] argv) {
 
 [Dart]
 size    = '240 MiB'
-version = '2.19.4'
+version = '2.19.5'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -408,7 +408,7 @@ end
 
 [Go]
 size    = '150 MiB'
-version = '1.19.5'
+version = '1.19.7'
 website = 'https://go.dev'
 example = '''
 package main
@@ -825,7 +825,7 @@ end
 
 [Rust]
 size    = '434 MiB'
-version = '1.68.0'
+version = '1.68.1'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -874,7 +874,7 @@ G
 
 [SQL]
 size    = '1.13 MiB'
-version = '3.41.1'
+version = '3.41.2'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
