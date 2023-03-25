@@ -6,10 +6,10 @@ font_coding_scheme "raw";
 
 font_size 10pt#;
 font_slant 0;
-font_normal_space 126/36pt#;
+font_normal_space 120/36pt#;
 font_normal_stretch 0;
 font_normal_shrink 0;
-font_quad 378/36pt#;
+font_quad 360/36pt#;
 font_x_height 155/36pt#;
 
 for code=0 upto 255:
