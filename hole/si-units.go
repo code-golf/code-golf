@@ -58,6 +58,7 @@ var siUnitsMap = [...]struct{ symbol, expansion string }{
 	{"S", "kg^-1 m^-2 s^3 A^2"},
 	{"Wb", "kg m^2 s^-2 A^-1"},
 	{"T", "kg s^-2 A^-1"},
+	{"H", "kg m^2 s^-2 A^-2"},
 	{"°C", "K"},
 	{"lm", "cd"},
 	{"lx", "cd m^-2"},
