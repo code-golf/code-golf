@@ -78,7 +78,7 @@ lint:
 	@node_modules/.bin/eslint --ext ts,tsx js/
 
 	@docker run --rm -v $(CURDIR):/app -w /app \
-	    golangci/golangci-lint:v1.52.0 golangci-lint run
+	    golangci/golangci-lint:v1.52.2 golangci-lint run
 
 live:
 	@docker buildx build --pull --push \
