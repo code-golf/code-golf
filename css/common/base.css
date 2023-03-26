@@ -109,8 +109,7 @@ body > header a {
     min-width: 2.75rem;
 }
 
-body > header a:hover,
-body > header a.on {
+body > header a:is(.on, :hover) {
     background: var(--background);
     color: var(--color);
     fill: var(--color);
@@ -127,19 +126,19 @@ body > header [title=Profile] {
     min-width: auto;
     padding: .25rem .5rem;
     text-decoration: none;
-}
 
-body > header [title=Profile] img {
-    border-radius: 50%;
-    grid-row: span 2;
-    height: 1.75rem;
-    margin-left: .375rem;
-    width: 1.75rem;
-}
+    > img {
+        border-radius: 50%;
+        grid-row: span 2;
+        height: 1.75rem;
+        margin-left: .375rem;
+        width: 1.75rem;
+    }
 
-body > header [title=Profile] svg {
-    height: .875rem;
-    width: .875rem;
+    > svg {
+        height: .875rem;
+        width: .875rem;
+    }
 }
 
 body > header nav { display: flex }
@@ -280,28 +279,28 @@ td, th {
     text-align: left;
 }
 
+td.right > a { justify-content: right }
+
 td > a {
     align-items: center;
     display: flex;
     text-decoration: none;
+
+    > img {
+        border-radius: 50%;
+        flex-shrink: 0;
+        height: 1.5rem;
+        margin-right: .5rem;
+        width: 1.5rem;
+    }
+
+    > span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    > span:nth-of-type(1) { flex: 1 }
 }
-
-td.right > a { justify-content: right }
-
-td > a > img {
-    border-radius: 50%;
-    flex-shrink: 0;
-    height: 1.5rem;
-    margin-right: .5rem;
-    width: 1.5rem;
-}
-
-td > a > span {
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-td > a > span:nth-of-type(1) { flex: 1 }
 
 td > a:hover > span:first-of-type { text-decoration: underline }
 
@@ -312,26 +311,26 @@ thead th {
     border-bottom-width: 2px;
 }
 
-.alert, .info, .success {
+:is(.alert, .info, .success) {
     border: 1px solid var(--color);
     display: grid;
     gap: .5rem;
     margin: 1rem 1rem 0;
     padding: 1rem 1rem 1rem 3rem;
     position: relative;
-}
 
-.alert svg, .info svg, .success svg {
-    fill: var(--color);
-    left: .75rem;
-    position: absolute;
-    top: calc(50% - .75rem);
-    width: 1.5rem;
-}
+    > svg {
+        fill: var(--color);
+        left: .75rem;
+        position: absolute;
+        top: calc(50% - .75rem);
+        width: 1.5rem;
+    }
 
-.alert ul, .info ul, .success ul {
-    max-height: 30vh;
-    overflow-y: auto;
+    > ul {
+        max-height: 30vh;
+        overflow-y: auto;
+    }
 }
 
 .alert   { background: var(--light-yellow) }

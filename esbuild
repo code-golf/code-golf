@@ -20,7 +20,7 @@ node_modules/.bin/esbuild "$@"        \
     --outdir=dist                     \
     --public-path=/dist               \
     --sourcemap                       \
-    --target=es2020                   \
+    --target=es2020,chrome88          \
     `find \
         css \
         js \
