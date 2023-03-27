@@ -41,6 +41,11 @@ description = 'Solve <a href=/vampire-numbers>Vampire Numbers</a> on <a href=//w
 # GitHub
 
 [[GitHub]]
+name        = 'Like, Comment, Subscribe'
+emoji       = '🗳️'
+description = 'Vote for (or against) an <a href=/ideas>idea</a>.'
+
+[[GitHub]]
 name        = 'My God, It’s Full of Stars'
 emoji       = '⭐'
 description = 'Star <a href=//github.com/code-golf/code-golf>the Code Golf repository</a>.'

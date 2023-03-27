@@ -45,7 +45,7 @@ func Run(db *sqlx.DB, hourly bool) {
 	if hourly {
 		jobs = append(jobs, updateUsernames)
 	} else {
-		jobs = append(jobs, ideas, pullRequests, sponsors, stars)
+		jobs = append(jobs, ideas, pullRequests, sponsors, stars, votes)
 	}
 
 	for _, job := range jobs {

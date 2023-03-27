@@ -8,12 +8,12 @@ CREATE TYPE cheevo AS ENUM (
     'emergency-room', 'fish-n-chips', 'forty-winks', 'gone-in-60-holes',
     'happy-birthday-code-golf', 'happy-go-lucky', 'hello-world',
     'hextreme-agony', 'inception', 'independence-day', 'interview-ready',
-    'its-over-9000', 'jeweler', 'just-kidding', 'marathon-runner',
-    'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars', 'off-the-grid',
-    'omniglot', 'ouroboros', 'pangramglot', 'patches-welcome', 'phileas-fogg',
-    'pi-day', 'polyglot', 'polyglutton', 'real-programmers', 'rtfm',
-    'rule-34', 'slowcoach', 'solve-quine', 'sounds-quite-nice', 'takeout',
-    'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
+    'its-over-9000', 'jeweler', 'just-kidding', 'like-comment-subscribe',
+    'marathon-runner', 'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars',
+    'off-the-grid', 'omniglot', 'ouroboros', 'pangramglot', 'patches-welcome',
+    'phileas-fogg', 'pi-day', 'polyglot', 'polyglutton', 'real-programmers',
+    'rtfm', 'rule-34', 'slowcoach', 'solve-quine', 'sounds-quite-nice',
+    'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
     'twenty-kiloleagues', 'under-pressure', 'up-to-eleven', 'vampire-byte',
     'x86'
 );

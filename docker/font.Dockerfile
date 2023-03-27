@@ -61,6 +61,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f596.svg       `# Vulcan Salute`                \
     svg/1f5a5.svg       `# Desktop Computer`             \
     svg/1f5dc.svg       `# Compression`                  \
+    svg/1f5f3.svg       `# Ballot Box with Ballot`       \
     svg/1f600.svg       `# Grinning Face`                \
     svg/1f602.svg       `# Face with Tears of Joy`       \
     svg/1f605.svg       `# Grinning Face with Sweat`     \
