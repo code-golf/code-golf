@@ -16,14 +16,7 @@ import (
 	"unicode"
 )
 
-var timeout = 5 * time.Second
-
-// Increase the timeout under E2E as the hardware is less powerful than live.
-func init() {
-	if _, e2e := os.LookupEnv("E2E"); e2e {
-		timeout = 10 * time.Second
-	}
-}
+const timeout = 5 * time.Second
 
 //go:embed answers
 var answers embed.FS
@@ -213,6 +206,7 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 	cmd.Env = []string{}
 	cmd.Stderr = &stderr
 	cmd.Stdout = &stdout
+	cmd.WaitDelay = time.Second
 	cmd.SysProcAttr = &syscall.SysProcAttr{
 		Cloneflags: syscall.CLONE_NEWIPC | syscall.CLONE_NEWNET | syscall.CLONE_NEWNS | syscall.CLONE_NEWPID | syscall.CLONE_NEWUTS,
 	}

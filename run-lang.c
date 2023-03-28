@@ -40,7 +40,11 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ERR_AND_EXIT("umount2");
 
     if (mount("tmpfs", "/dev", "tmpfs", MS_NOSUID, NULL) < 0)
-        ERR_AND_EXIT("mount dev");
+        ERR_AND_EXIT("mount /dev");
+
+    // Elixir walks /dev/fd on exit closing each handle.
+    if (symlink("/proc/self/fd", "/dev/fd") < 0)
+        ERR_AND_EXIT("symlink /dev/fd");
 
     if (mknod("/dev/null", S_IFCHR|0666, makedev(1, 3)) < 0)
         ERR_AND_EXIT("mknod");
