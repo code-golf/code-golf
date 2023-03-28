@@ -16,7 +16,14 @@ import (
 	"unicode"
 )
 
-const timeout = 5 * time.Second
+var timeout = 5 * time.Second
+
+// Increase the timeout under e2e as the hardware is less powerful than live.
+func init() {
+	if _, e2e := os.LookupEnv("E2E"); e2e {
+		timeout = 10 * time.Second
+	}
+}
 
 //go:embed answers
 var answers embed.FS
