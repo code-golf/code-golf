@@ -7,7 +7,7 @@ import (
 
 func mahjong() []Scorecard {
 
-	complete_hands := []string{
+	completeHands := []string{
 		"🀊🀋🀌🀕🀕🀕🀖🀖🀗🀗🀘🀞🀟🀠",
 		"🀄🀄🀄🀚🀚🀚🀞🀞🀞🀟🀟🀠🀠🀡",
 		"🀌🀍🀎🀒🀒🀓🀔🀔🀔🀕🀕🀕🀖🀖",
@@ -59,7 +59,7 @@ func mahjong() []Scorecard {
 		"🀇🀈🀉🀋🀌🀍🀐🀐🀕🀕🀕🀛🀜🀝",
 		"🀀🀁🀂🀃🀄🀅🀆🀆🀇🀏🀐🀘🀙🀡",
 	}
-	incomplete_hands := []string{
+	incompleteHands := []string{
 		"🀊🀋🀌🀕🀕🀖🀖🀗🀗🀘🀜🀞🀟🀠",
 		"🀄🀄🀄🀕🀚🀚🀚🀞🀞🀟🀟🀠🀠🀡",
 		"🀌🀌🀍🀎🀒🀓🀔🀔🀔🀕🀕🀕🀖🀖",
@@ -214,15 +214,15 @@ func mahjong() []Scorecard {
 
 	scorecards := make([]Scorecard, 5)
 
-	for scorecardNum, _ := range scorecards {
-		tests := append(append([]string{}, complete_hands...), incomplete_hands...)
-		testValidity := make([]bool, len(complete_hands) + len(incomplete_hands))
+	for scorecardNum := range scorecards {
+		tests := append(append([]string{}, completeHands...), incompleteHands...)
+		testValidity := make([]bool, len(completeHands)+len(incompleteHands))
 
-		for i := 0; i < len(complete_hands); i++ {
+		for i := 0; i < len(completeHands); i++ {
 			testValidity[i] = true
 		}
 
-		for i := len(complete_hands); i < len(testValidity); i++ {
+		for i := len(completeHands); i < len(testValidity); i++ {
 			testValidity[i] = false
 		}
 
@@ -237,8 +237,8 @@ func mahjong() []Scorecard {
 		for i, t := range tests {
 			runes := []rune(t)
 			rand.Shuffle(len(runes), func(i, j int) {
-		        runes[i], runes[j] = runes[j], runes[i]
-		    })
+				runes[i], runes[j] = runes[j], runes[i]
+			})
 			args[i] = string(runes)
 
 			if testValidity[i] {
