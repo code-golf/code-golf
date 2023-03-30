@@ -1325,6 +1325,52 @@ preamble = '''
     Note that for each of the lattice points, 1063 iterations are enough to determine whether the sequence corresponding to the point is unbounded or not.
 '''
 
+[Mahjong]
+category = 'Gaming'
+links = [
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Japanese_mahjong' },
+]
+synopsis = 'Print the completed mahjong hands.'
+preamble = '''
+<p>
+    Given a list of mahjong hands, print out all of the hands which are complete under the rules of Riichi Mahjong.
+
+<p>
+    Mahjong tiles are divided into three suits of <b>number tiles</b> from 1 to 9, and seven <b>honor tiles</b>, which are not numbered.
+    These are the Unicode characters representing the tiles in each suit, from 1 to 9:
+    <ul>
+        <li> Characters 🀇🀈🀉🀊🀋🀌🀍🀎🀏
+        <li> Bamboo 🀐🀑🀒🀓🀔🀕🀖🀗🀘
+        <li> Circles 🀙🀚🀛🀜🀝🀞🀟🀠🀡
+    </ul>
+
+<p>
+    These are the Unicode characters representing honor tiles: 🀀🀁🀂🀃🀄🀅🀆
+
+<p>
+    A <b>triplet</b> is a group of three identical tiles, e.g. 🀓🀓🀓 or 🀅🀅🀅.
+    A <b>sequence</b> is a group of three number tiles of the same suit and with consecutive numbers, e.g. 🀇🀈🀉 or 🀜🀝🀞.
+    A <b>meld</b> is either a triplet or a sequence.
+    A <b>pair</b> is a group of two identical tiles.
+
+<p>
+    A mahjong hand is <b>complete</b> if it consists of one of the following:
+    <ul>
+        <li> Four melds and a pair.
+        <li> Seven pairs.
+        <li> All seven honor tiles and the 1 and 9 of each suit, plus one duplicate tile that forms a pair.
+    </ul>
+
+<p>
+    The tiles in a mahjong hand are not ordered. For example, the hand 🀇🀈🀈🀈🀉🀓🀔🀕🀚🀛🀜🀀🀀🀀 is complete, as it can be split into the groups 🀇🀈🀉 🀓🀔🀕 🀚🀛🀜 🀀🀀🀀 🀈🀈.
+    You may assume that no hand contains more than 4 of a single tile.
+
+<p>
+    The input consists of a sequence of arguments, each containing a string of 14 Unicode characters which represent the tiles in the hand.
+    Output the arguments that represent complete mahjong hands, in the same order as they appear in the argument list.
+'''
+
+
 [Maze]
 category = 'Gaming'
 links = [

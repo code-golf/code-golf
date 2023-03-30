@@ -105,6 +105,8 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		scores = levenshteinDistance()
 	case "lucky-tickets":
 		scores = luckyTickets()
+	case "mahjong":
+		scores = mahjong()
 	case "maze":
 		scores = maze()
 	case "morse-decoder", "morse-encoder":
