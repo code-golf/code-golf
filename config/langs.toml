@@ -325,7 +325,7 @@ void main(string[] argv) {
 
 [Dart]
 size    = '240 MiB'
-version = '2.19.5'
+version = '2.19.6'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -531,8 +531,8 @@ class Main {
 '''
 
 [JavaScript]
-size    = '22.5 MiB'
-version = 'V8 10.7.193.22'
+size    = '23.8 MiB'
+version = 'V8 11.1.277.17'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -806,7 +806,7 @@ say 'Hello, World!';
 
 [Ruby]
 size    = '24.1 MiB'
-version = '3.2.1'
+version = '3.2.2'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing
@@ -825,7 +825,7 @@ end
 
 [Rust]
 size    = '434 MiB'
-version = '1.68.1'
+version = '1.68.2'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {

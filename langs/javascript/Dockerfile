@@ -10,7 +10,7 @@ RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git \
 
 WORKDIR /v8
 
-RUN git checkout 10.7.193.22 && gclient sync -D
+RUN git checkout 11.1.277.17 && gclient sync -D
 
 RUN gn gen out --args="                 \
     is_debug=false                      \
