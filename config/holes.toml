@@ -2335,8 +2335,8 @@ Shì shì shì shì.
 category = 'Transform'
 experiment = 862
 links = [
-    { name = 'NIST', url = '//www.nist.gov/pml/special-publication-330/sp-330-section-2#2.3.4' },
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/International_System_of_Units' },
+    { name = 'NIST (Units)', url = '//www.nist.gov/pml/special-publication-330/sp-330-section-2#2.3.4' },
+    { name = 'NIST (Prefixes)', url = '//www.nist.gov/pml/owm/metric-si-prefixes' },
 ]
 synopsis = 'Express SI units using the 7 base units.'
 preamble = '''
@@ -2394,7 +2394,6 @@ preamble = '''
             <tr><td>kat	<td>mol s^-1
     </table>
 </div>
-Note: 1 °C = 1 K when we talk about difference of temperatures.
 
 <p>SI further defines 24 prefixes denoting exponents of 10:
 <div class="tables-4col">
@@ -2452,7 +2451,11 @@ Note: 1 °C = 1 K when we talk about difference of temperatures.
     </table>
 </div>
 
-<p>Each input comprises of a (optional) prefix and one of the base or derived units symbol. Each such input should be convert to product of a power of 10 and a product of base units, as described in the tables above. Missing prefix should be mapped to 1.<br>
+<p>Each input comprises of a (optional) prefix and one of the base or derived units symbol,
+except that symbols for decimal multiples and sub-multiples of "kg" are formed by attaching prefixes to the unit symbol "g".
+For example, "10^−6 kg" is written as "mg", not as "µkg".
+Each such input should be convert to product of a power of 10 and a product of base units, as described in the tables above.
+"10^1" should be printed as "10" and "10^0" as "1". Furthermore, if both the power of ten and the base unit is "1", only a single "1" should be printed.<br>
 For example, "MJ" should be converted to "10^6 kg m^2 s^-2".
 '''
 
