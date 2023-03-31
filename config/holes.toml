@@ -1330,7 +1330,7 @@ category = 'Gaming'
 links = [
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Japanese_mahjong' },
 ]
-experiment = 925
+experiment = 927
 synopsis = 'Print the completed mahjong hands.'
 preamble = '''
 <p>
