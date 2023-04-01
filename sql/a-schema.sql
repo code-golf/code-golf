@@ -41,7 +41,7 @@ CREATE TYPE hole AS ENUM (
     'prime-numbers-long', 'proximity-grid', 'qr-decoder', 'quine', 'recamán',
     'repeating-decimals', 'reverse-polish-notation',
     'rock-paper-scissors-spock-lizard', 'roman-to-arabic', 'rule-110',
-    'seven-segment', 'sierpiński-triangle', 'smith-numbers',
+    'seven-segment', 'si-units', 'sierpiński-triangle', 'smith-numbers',
     'spelling-numbers', 'star-wars-opening-crawl', 'sudoku', 'sudoku-v2',
     'ten-pin-bowling', 'time-distance', 'tongue-twisters', 'united-states',
     'vampire-numbers', 'van-eck-sequence', 'zodiac-signs', 'γ', 'λ', 'π', 'τ',

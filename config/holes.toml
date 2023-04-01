@@ -2333,16 +2333,18 @@ Shì shì shì shì.
 
 ['SI Units']
 category = 'Transform'
-experiment = 862
 links = [
-    { name = 'NIST (Units)', url = '//www.nist.gov/pml/special-publication-330/sp-330-section-2#2.3.4' },
     { name = 'NIST (Prefixes)', url = '//www.nist.gov/pml/owm/metric-si-prefixes' },
+    { name = 'NIST (Units)',    url = '//www.nist.gov/pml/special-publication-330/sp-330-section-2#2.3.4' },
 ]
 synopsis = 'Express SI units using the 7 base units.'
 preamble = '''
+<p>
+    SI defines 7 base units: s, m, kg, A, K, mol, cd.
+    There are 22 of derived units with their own symbols defined.
+    These correspond to the base ones like so:
 
-<p>SI defines 7 base units: s, m, kg, A, K, mol, cd. There are 22 of derived units with their own symbols defined. These correspond to the base ones like so:
-<div class="tables-4col">
+<div class=tables-4col>
     <table>
         <thead>
             <tr>
@@ -2396,7 +2398,8 @@ preamble = '''
 </div>
 
 <p>SI further defines 24 prefixes denoting exponents of 10:
-<div class="tables-4col">
+
+<div class=tables-4col>
     <table>
         <thead>
             <tr>
@@ -2451,12 +2454,15 @@ preamble = '''
     </table>
 </div>
 
-<p>Each input comprises of a (optional) prefix and one of the base or derived units symbol,
-except that symbols for decimal multiples and sub-multiples of "kg" are formed by attaching prefixes to the unit symbol "g".
-For example, "10^−6 kg" is written as "mg", not as "µkg".
-Each such input should be convert to product of a power of 10 and a product of base units, as described in the tables above.
-If the unit is "1", only the power of ten should be printed. Furthermore, "10^1" should be printed as "10" and "10^0" as "1".<br>
-For example, "MJ" should be converted to "10^6 kg m^2 s^-2".
+<p>
+    Each input comprises of a (optional) prefix and one of the base or derived
+    units symbol, except that symbols for decimal multiples and sub-multiples
+    of "kg" are formed by attaching prefixes to the unit symbol "g". For
+    example, "10^−6 kg" is written as "mg", not as "µkg". Each such input
+    should be convert to product of a power of 10 and a product of base units,
+    as described in the tables above. If the unit is "1", only the power of
+    ten should be printed. Furthermore, "10^1" should be printed as "10" and
+    "10^0" as "1". For example, "MJ" should be converted to "10^6 kg m^2 s^-2".
 '''
 
 ['Sierpiński Triangle']

@@ -2,7 +2,6 @@ package routes
 
 import (
 	"html/template"
-	"strings"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
@@ -17,7 +16,7 @@ type banner struct {
 
 // TODO Allow a golfer to hide individual banners #709.
 func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
-	in := "in " + pretty.Time(time.Date(2023, time.April, 1, 0, 0, 0, 0, time.UTC))
+	/* in := "in " + pretty.Time(time.Date(2023, time.April, 1, 0, 0, 0, 0, time.UTC))
 	if strings.Contains(string(in), "ago") {
 		in = "momentarily"
 	}
@@ -26,7 +25,7 @@ func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 		Type: "info",
 		Body: "The <a href=/si-units>SI Units</a> hole will go live " + in +
 			". Why not try and solve it ahead of time?",
-	})
+	}) */
 
 	// Currently all the global banners require a golfer.
 	if golfer == nil {
