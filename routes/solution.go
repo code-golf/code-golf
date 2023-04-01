@@ -2,6 +2,7 @@ package routes
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -13,6 +14,9 @@ import (
 	"github.com/code-golf/code-golf/session"
 	"github.com/lib/pq"
 )
+
+// Bump this to invalidate solution durations, i.e. a more powerful server.
+const platformVersion = 0
 
 // POST /solution
 func solutionPOST(w http.ResponseWriter, r *http.Request) {
@@ -79,6 +83,10 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			out.Cheevos = append(out.Cheevos, c)
 		}
 	} else if out.Pass && golfer != nil && !experimental {
+		// Join hole, lang, platform versions with the unit separator.
+		version := fmt.Sprint(
+			holeObj.Version, "\x1f", langObj.Version, "\x1f", platformVersion)
+
 		var cheevos []string
 		if err := db.QueryRowContext(
 			r.Context(),
@@ -95,7 +103,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			        old_best_chars
 			   FROM save_solution(
 			            bytes   := CASE WHEN $3 = 'assembly'::lang
-			                            THEN $5
+			                            THEN $7
 			                            ELSE octet_length($1)
 			                            END,
 			            chars   := CASE WHEN $3 = 'assembly'::lang
@@ -105,9 +113,12 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			            code    := $1,
 			            hole    := $2,
 			            lang    := $3,
-			            user_id := $4
+			            took    := $4,
+			            user_id := $5,
+			            version := $6
 			        )`,
-			in.Code, in.Hole, in.Lang, golfer.ID, score.ASMBytes,
+			in.Code, in.Hole, in.Lang, out.Took.Milliseconds(), golfer.ID,
+			version, score.ASMBytes,
 		).Scan(
 			pq.Array(&cheevos),
 			&out.RankUpdates[0].From.Joint,

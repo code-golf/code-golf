@@ -143,6 +143,8 @@ CREATE TABLE solutions (
     scoring   scoring   NOT NULL,
     failing   bool      NOT NULL DEFAULT false,
     code      text      NOT NULL,
+    took      int,
+    version   text,
     -- Assembly can only be scored on bytes, and they are compiled bytes.
     CHECK ((lang  = 'assembly' AND chars IS NULL AND scoring = 'bytes')
         OR (lang != 'assembly' AND bytes = octet_length(code)

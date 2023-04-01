@@ -78,14 +78,24 @@ CREATE TYPE save_solution_ret AS (
 );
 
 CREATE FUNCTION save_solution(
-    bytes int, chars int, code text, hole hole, lang lang, user_id int
+    bytes     int,
+    chars     int,
+    code      text,
+    hole      hole,
+    lang      lang,
+    took      int,
+    user_id   int,
+    version   text
 ) RETURNS save_solution_ret AS $$
 #variable_conflict use_variable
 DECLARE
     old_best    hole_best_ret;
     old_bytes   int;
     old_chars   int;
+    old_code    text;
     old_strokes int;
+    old_took    int;
+    old_version text;
     rank        hole_rank_ret;
     ret         save_solution_ret;
     scoring     scoring;
@@ -123,8 +133,8 @@ BEGIN
         IF strokes IS NULL THEN CONTINUE; END IF;
 
         -- Select information about the current (non-failing) solution.
-        SELECT sol.bytes, sol.chars
-          INTO old_bytes, old_chars
+        SELECT sol.bytes, sol.chars, sol.code, sol.took, sol.version
+          INTO old_bytes, old_chars, old_code, old_took, old_version
           FROM solutions sol
          WHERE sol.failing = false
            AND sol.hole    = hole
@@ -138,13 +148,16 @@ BEGIN
         -- No existing solution, or it was failing, or the new one is shorter.
         -- Insert or update everything. Also add a history entry.
         IF NOT FOUND OR strokes < old_strokes THEN
-            INSERT INTO solutions (bytes, chars, code, hole, lang, scoring, user_id)
-                 VALUES           (bytes, chars, code, hole, lang, scoring, user_id)
+            INSERT INTO solutions
+                        (bytes, chars, code, hole, lang, scoring, took, user_id, version)
+                 VALUES (bytes, chars, code, hole, lang, scoring, took, user_id, version)
             ON CONFLICT ON CONSTRAINT solutions_pkey
               DO UPDATE SET bytes     = excluded.bytes,
                             chars     = excluded.chars,
                             code      = excluded.code,
-                            submitted = excluded.submitted;
+                            submitted = excluded.submitted,
+                            took      = excluded.took,
+                            version   = excluded.version;
 
             INSERT INTO solutions_log (bytes, chars, hole, lang, scoring, user_id)
                  VALUES               (bytes, chars, hole, lang, scoring, user_id);
@@ -152,14 +165,33 @@ BEGIN
         -- The new solution is the same length. Keep old submitted, this stops
         -- a user moving down the leaderboard by matching their personal best.
         ELSIF strokes = old_strokes THEN
-            UPDATE solutions
-               SET bytes   = bytes,
-                   chars   = chars,
-                   code    = code
-             WHERE solutions.hole    = hole
-               AND solutions.lang    = lang
-               AND solutions.scoring = scoring
-               AND solutions.user_id = user_id;
+
+            -- If the code or version differs we must update the took.
+            -- TODO Remove null check once took is not nulled.
+            IF code != old_code OR version != old_version OR old_took IS NULL THEN
+
+                UPDATE solutions
+                   SET bytes   = bytes,
+                       chars   = chars,
+                       code    = code,
+                       took    = took,
+                       version = version
+                 WHERE solutions.hole    = hole
+                   AND solutions.lang    = lang
+                   AND solutions.scoring = scoring
+                   AND solutions.user_id = user_id;
+
+            -- The code is identical and version matches, update took if shorter.
+            ELSIF took < old_took THEN
+
+                UPDATE solutions
+                   SET took = took
+                 WHERE solutions.hole    = hole
+                   AND solutions.lang    = lang
+                   AND solutions.scoring = scoring
+                   AND solutions.user_id = user_id;
+
+            END IF;
 
         -- Else, the solution is bigger so don't save it.
         END IF;

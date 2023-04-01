@@ -43,6 +43,7 @@ type (
 		Synopsis                                string        `json:"synopsis"`
 		Links                                   []Link        `json:"links"`
 		Variants                                []*Hole       `json:"-"`
+		Version                                 int           `json:"-"`
 	}
 )
 
