@@ -1118,12 +1118,23 @@ preamble = '''
 
 ['Kolakoski Constant']
 category = 'Mathematics'
+variants = ['Kolakoski Constant', 'Kolakoski Sequence']
 links = [
-    { name = 'OEIS A118270', url = '//oeis.org/A118270' },
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Kolakoski_sequence#Kolakoski_Constant' },
+    { v = [0], name = 'OEIS A118270', url = '//oeis.org/A118270' },
+    { v = [0], name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Kolakoski_sequence#Kolakoski_Constant' },
+    { v = [1], name = 'OEIS A000002', url = '//oeis.org/A000002' },
+    { v = [1], name = 'Rosetta Code', url = '//rosettacode.org/wiki/Kolakoski_sequence' },
+    { v = [1], name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Kolakoski_sequence' },
 ]
-synopsis = 'Print the Kolakoski constant to the first 1,000 decimal places.'
+synopsis = '''
+{{- if eq . "Kolakoski Constant" -}}
+    Print the Kolakoski constant to the first 1,000 decimal places.
+{{- else -}}
+    Print the first 1,000 elements in the Kolakoski sequence.
+{{- end -}}
+'''
 preamble = '''
+{{- if eq . "Kolakoski Constant" -}}
 <p>
     The Kolakoski constant is created by taking the
     <a href=kolakoski-sequence>Kolakoski sequence</a>, subtracting one from
@@ -1136,16 +1147,7 @@ preamble = '''
 </pre>
 
 <p>Print the Kolakoski constant to the first 1,000 decimal places.
-'''
-
-['Kolakoski Sequence']
-category = 'Sequence'
-links = [
-    { name = 'OEIS A000002', url = '//oeis.org/A000002' },
-    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Kolakoski_sequence' },
-]
-synopsis = 'Print the first 1,000 elements in the Kolakoski sequence.'
-preamble = '''
+{{- else -}}
 <p>
     The Kolakoski sequence is a self referential sequence where the nth
     element is the length of the nth run of same numbers in the sequence.
@@ -1161,6 +1163,7 @@ preamble = '''
 <p>
     Beginning with (1, 2) print the first 1,000 elements in the Kolakoski
     sequence, separated by spaces.
+{{- end -}}
 '''
 
 ['Leap Years']
@@ -3098,24 +3101,20 @@ preamble = '''
 
 ['π']
 category = 'Mathematics'
+variants = ['π', 'τ']
 links = [
-    { name = 'OEIS A000796', url = '//oeis.org/A000796' },
-    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Pi' },
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Pi' },
+    { v = [0], name = 'OEIS A000796', url = '//oeis.org/A000796' },
+    { v = [0], name = 'Rosetta Code', url = '//rosettacode.org/wiki/Pi' },
+    { v = [0], name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Pi' },
+    { v = [1], name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Tau_(mathematical_constant)' },
 ]
-synopsis = 'Print π to the first 1,000 decimal places.'
+synopsis = 'Print {{ . }} to the first 1,000 decimal places.'
 preamble = '''
+{{- if eq . "π" -}}
 <p>Print π (pi) to the first 1,000 decimal places.
-'''
-
-['τ']
-category = 'Mathematics'
-links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Tau_(mathematical_constant)' },
-]
-synopsis = 'Print τ to the first 1,000 decimal places.'
-preamble = '''
+{{- else -}}
 <p>Print 2π=τ (tau) to the first 1,000 decimal places.
+{{- end -}}
 '''
 
 ['φ']
