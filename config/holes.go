@@ -28,9 +28,9 @@ var (
 
 type (
 	Link struct {
-		Name    string `json:"name"`
-		URL     string `json:"url"`
-		Variant string `json:"-"`
+		Name string `json:"name"`
+		URL  string `json:"url"`
+		V    []int  `json:"-"`
 	}
 	Hole struct {
 		Category                                string        `json:"category"`
@@ -145,7 +145,9 @@ func init() {
 		// Filter out links that don't match this variant.
 		links := make([]Link, 0, len(hole.Links))
 		for _, link := range hole.Links {
-			if link.Variant == "" || link.Variant == name {
+			if len(link.V) == 0 || slices.ContainsFunc(
+				link.V, func(i int) bool { return hole.Variants[i] == name },
+			) {
 				links = append(links, link)
 			}
 		}

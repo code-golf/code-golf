@@ -109,9 +109,9 @@ preamble = '''
 category = 'Transform'
 variants = ['Arabic to Roman', 'Roman to Arabic']
 links = [
-    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Roman_numerals/Encode', variant = 'Arabic to Roman' },
-    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Roman_numerals/Decode', variant = 'Roman to Arabic' },
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Roman_numerals' },
+    { v = [0], name = 'Rosetta Code', url = '//rosettacode.org/wiki/Roman_numerals/Encode' },
+    { v = [1], name = 'Rosetta Code', url = '//rosettacode.org/wiki/Roman_numerals/Decode' },
+    {          name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Roman_numerals' },
 ]
 synopsis = '''
 {{ if eq . "Arabic to Roman" -}}
@@ -682,11 +682,11 @@ preamble = '''
 category = 'Sequence'
 variants = ['Evil Numbers', 'Evil Numbers (Long)', 'Odious Numbers', 'Odious Numbers (Long)']
 links = [
-    { name = 'OEIS A001969', url = '//oeis.org/A001969', variant = 'Evil Numbers' },
-    { name = 'OEIS A000069', url = '//oeis.org/A000069', variant = 'Odious Numbers' },
-    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Population_count' },
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Evil_number',   variant = 'Evil Numbers' },
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Odious_number', variant = 'Odious Numbers' },
+    { v = [0, 1], name = 'OEIS A001969', url = '//oeis.org/A001969' },
+    { v = [2, 3], name = 'OEIS A000069', url = '//oeis.org/A000069' },
+    {             name = 'Rosetta Code', url = '//rosettacode.org/wiki/Population_count' },
+    { v = [0, 1], name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Evil_number' },
+    { v = [2, 3], name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Odious_number' },
 ]
 synopsis = '''
 Print all the
