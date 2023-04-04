@@ -24,6 +24,7 @@ func scoresAllGET(w http.ResponseWriter, r *http.Request) {
 		     WHERE NOT failing
 		       AND $1 IN ('all-holes', hole::text)
 		       AND $2 IN ('all-langs', lang::text)
+		  ORDER BY submitted DESC
 		) SELECT COALESCE(JSON_AGG(solution_lengths), '[]') FROM solution_lengths`,
 		param(r, "hole"),
 		param(r, "lang"),
