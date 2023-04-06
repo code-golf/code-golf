@@ -82,9 +82,14 @@ CREATE FUNCTION save_solution(
 ) RETURNS save_solution_ret AS $$
 #variable_conflict use_variable
 DECLARE
-    old_best hole_best_ret;
-    rank     hole_rank_ret;
-    ret      save_solution_ret;
+    old_best    hole_best_ret;
+    old_bytes   int;
+    old_chars   int;
+    old_strokes int;
+    rank        hole_rank_ret;
+    ret         save_solution_ret;
+    scoring     scoring;
+    strokes     int;
 BEGIN
     -- Ensure we're the only one messing with solutions.
     LOCK TABLE solutions IN EXCLUSIVE MODE;
@@ -109,44 +114,53 @@ BEGIN
         ret.old_best_chars_joint := old_best.joint;
     END IF;
 
-    -- Update the code if it's the same length or less, but only update the
-    -- submitted time if the solution is shorter. This avoids a user moving
-    -- down the leaderboard by matching their personal best.
-    INSERT INTO solutions (bytes, chars, code, hole, lang, scoring, user_id)
-         VALUES           (bytes, chars, code, hole, lang, 'bytes', user_id)
-    ON CONFLICT ON CONSTRAINT solutions_pkey
-    DO UPDATE SET failing = false,
-                    bytes = CASE
-                    WHEN solutions.failing OR excluded.bytes <= solutions.bytes
-                    THEN excluded.bytes ELSE solutions.bytes END,
-                    chars = CASE
-                    WHEN solutions.failing OR excluded.bytes <= solutions.bytes
-                    THEN excluded.chars ELSE solutions.chars END,
-                     code = CASE
-                    WHEN solutions.failing OR excluded.bytes <= solutions.bytes
-                    THEN excluded.code ELSE solutions.code END,
-                submitted = CASE
-                    WHEN solutions.failing OR excluded.bytes < solutions.bytes
-                    THEN excluded.submitted ELSE solutions.submitted END;
+    -- Update solutions. First bytes, then chars.
+    FOREACH scoring IN ARRAY '{bytes, chars}'::scoring[] LOOP
+        strokes := bytes;
+        IF scoring = 'chars' THEN strokes := chars; END IF;
 
-    IF chars IS NOT NULL THEN
-        INSERT INTO solutions (bytes, chars, code, hole, lang, scoring, user_id)
-             VALUES           (bytes, chars, code, hole, lang, 'chars', user_id)
-        ON CONFLICT ON CONSTRAINT solutions_pkey
-        DO UPDATE SET failing = false,
-                        bytes = CASE
-                        WHEN solutions.failing OR excluded.chars <= solutions.chars
-                        THEN excluded.bytes ELSE solutions.bytes END,
-                        chars = CASE
-                        WHEN solutions.failing OR excluded.chars <= solutions.chars
-                        THEN excluded.chars ELSE solutions.chars END,
-                         code = CASE
-                        WHEN solutions.failing OR excluded.chars <= solutions.chars
-                        THEN excluded.code ELSE solutions.code END,
-                    submitted = CASE
-                        WHEN solutions.failing OR excluded.chars < solutions.chars
-                        THEN excluded.submitted ELSE solutions.submitted END;
-    END IF;
+        -- Not all langs support all scorings. e.g. Asm has no char scoring.
+        IF strokes IS NULL THEN CONTINUE; END IF;
+
+        -- Select information about the current (non-failing) solution.
+        SELECT sol.bytes, sol.chars
+          INTO old_bytes, old_chars
+          FROM solutions sol
+         WHERE sol.failing = false
+           AND sol.hole    = hole
+           AND sol.lang    = lang
+           AND sol.scoring = scoring
+           AND sol.user_id = user_id;
+
+        old_strokes := old_bytes;
+        IF scoring = 'chars' THEN old_strokes := old_chars; END IF;
+
+        -- No existing solution, or it was failing, or the new one is shorter.
+        -- Insert or update everything.
+        IF NOT FOUND OR strokes < old_strokes THEN
+            INSERT INTO solutions (bytes, chars, code, hole, lang, scoring, user_id)
+                 VALUES           (bytes, chars, code, hole, lang, scoring, user_id)
+            ON CONFLICT ON CONSTRAINT solutions_pkey
+              DO UPDATE SET bytes     = excluded.bytes,
+                            chars     = excluded.chars,
+                            code      = excluded.code,
+                            submitted = excluded.submitted;
+
+        -- The new solution is the same length. Keep old submitted, this stops
+        -- a user moving down the leaderboard by matching their personal best.
+        ELSIF strokes = old_strokes THEN
+            UPDATE solutions
+               SET bytes   = bytes,
+                   chars   = chars,
+                   code    = code
+             WHERE solutions.hole    = hole
+               AND solutions.lang    = lang
+               AND solutions.scoring = scoring
+               AND solutions.user_id = user_id;
+
+        -- Else, the solution is bigger so don't save it.
+        END IF;
+    END LOOP;
 
     rank                := hole_rank(hole, lang, 'bytes', user_id);
     ret.new_bytes       := rank.strokes;
