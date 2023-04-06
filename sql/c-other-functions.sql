@@ -136,7 +136,7 @@ BEGIN
         IF scoring = 'chars' THEN old_strokes := old_chars; END IF;
 
         -- No existing solution, or it was failing, or the new one is shorter.
-        -- Insert or update everything.
+        -- Insert or update everything. Also add a history entry.
         IF NOT FOUND OR strokes < old_strokes THEN
             INSERT INTO solutions (bytes, chars, code, hole, lang, scoring, user_id)
                  VALUES           (bytes, chars, code, hole, lang, scoring, user_id)
@@ -145,6 +145,9 @@ BEGIN
                             chars     = excluded.chars,
                             code      = excluded.code,
                             submitted = excluded.submitted;
+
+            INSERT INTO solutions_log (bytes, chars, hole, lang, scoring, user_id)
+                 VALUES               (bytes, chars, hole, lang, scoring, user_id);
 
         -- The new solution is the same length. Keep old submitted, this stops
         -- a user moving down the leaderboard by matching their personal best.

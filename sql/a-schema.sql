@@ -152,6 +152,16 @@ CREATE TABLE solutions (
     PRIMARY KEY (user_id, hole, lang, scoring)
 );
 
+CREATE TABLE solutions_log (
+    submitted timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
+    bytes     int       NOT NULL,
+    chars     int,
+    user_id   int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    hole      hole      NOT NULL,
+    lang      lang      NOT NULL,
+    scoring   scoring   NOT NULL
+);
+
 CREATE UNLOGGED TABLE wiki (
     slug    text   NOT NULL PRIMARY KEY,
     section text,
@@ -257,6 +267,7 @@ GRANT SELECT, INSERT,         DELETE ON TABLE follows         TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE ideas           TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE sessions        TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE solutions       TO "code-golf";
+GRANT SELECT, INSERT                 ON TABLE solutions_log   TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE trophies        TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE users           TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE wiki            TO "code-golf";
