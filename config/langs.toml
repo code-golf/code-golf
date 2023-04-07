@@ -469,7 +469,7 @@ main = do
 '''
 
 [Hexagony]
-size    = '8.45 MiB'
+size    = '8.5 MiB'
 version = '770406a'
 website = 'https://github.com/SirBogman/Hexagony'
 example = '''
