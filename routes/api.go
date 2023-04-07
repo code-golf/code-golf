@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
+	"time"
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
@@ -198,6 +199,41 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 
 // GET /api/panic
 func apiPanicGET(_ http.ResponseWriter, _ *http.Request) { panic("") }
+
+// GET /api/solutions-log
+func apiSolutionsLogGET(w http.ResponseWriter, r *http.Request) {
+	hole := config.HoleByID[r.FormValue("hole")]
+	lang := config.LangByID[r.FormValue("lang")]
+	if hole == nil || lang == nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	var rows []struct {
+		Bytes     int       `json:"bytes"`
+		Chars     int       `json:"chars"`
+		Golfer    string    `json:"golfer"`
+		Hole      string    `json:"hole"`
+		Lang      string    `json:"lang"`
+		Scoring   string    `json:"scoring"`
+		Submitted time.Time `json:"submitted"`
+	}
+	if err := session.Database(r).SelectContext(
+		r.Context(),
+		&rows,
+		` SELECT bytes, chars, login golfer, hole, lang, scoring, submitted
+		    FROM solutions_log
+		    JOIN users ON id = user_id
+		   WHERE hole = $1 AND lang = $2
+		ORDER BY submitted, scoring`,
+		hole.ID,
+		lang.ID,
+	); err != nil {
+		panic(err)
+	}
+
+	encodeJSON(w, rows)
+}
 
 // GET /api/suggestions/golfers
 func apiSuggestionsGolfersGET(w http.ResponseWriter, r *http.Request) {

@@ -12,6 +12,7 @@ tags:
   - name: achievements
   - name: holes
   - name: languages
+  - name: misc
   - name: suggestions
 
 paths:
@@ -141,6 +142,34 @@ paths:
                 items:
                   type: string
 
+  /solutions-log:
+    get:
+      operationId: solutionsLog
+      parameters:
+        - name: hole
+          description: Hole ID
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: lang
+          description: Lang ID
+          in: query
+          required: true
+          schema:
+            type: string
+      tags: [misc]
+      summary: List solutions over time
+      responses:
+        '200':
+          description: A JSON array of solutions over time
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SolutionsLog'
+
 components:
   schemas:
     Achievement:
@@ -194,3 +223,22 @@ components:
         website:
           type: string
           format: uri
+
+    SolutionsLog:
+      type: object
+      properties:
+        bytes:
+          type: integer
+        chars:
+          type: integer
+        golfer:
+          type: string
+        hole:
+          type: string
+        lang:
+          type: string
+        scoring:
+          type: string
+        submitted:
+          type: string
+          format: date-time

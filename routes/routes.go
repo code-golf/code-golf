@@ -49,6 +49,7 @@ func Router(db *sqlx.DB) http.Handler {
 			apiMiniRankingsGET,
 		)
 		r.Get("/panic", apiPanicGET)
+		r.Get("/solutions-log", apiSolutionsLogGET)
 		r.Get("/suggestions/golfers", apiSuggestionsGolfersGET)
 	})
 	r.Get("/callback", callbackGET)
