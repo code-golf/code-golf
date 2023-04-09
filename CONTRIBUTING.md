@@ -11,6 +11,7 @@ Each section needs to define the following fields:
 
 - `category` - One of 'Art', 'Computing', 'Gaming', 'Mathematics', 'Sequence', 'Transform'.
 - `preamble` - HTML description of the hole. May include go templating marks. The root `.` is the data from the `data` field.
+- `synopsis` - Short overview of the hole.
 
 In addition, each section may define the following fields:
 
@@ -44,7 +45,8 @@ If the hole has no inputs, the expected output needs to be placed in `/hole/answ
 
 ### Holes with computed solutions
 
-For computed solutions, a case switch needs to be added to `/hole/play.go`. The value needs to match the URLized version of the hole name. When a case matches, a function defined in its own file in `/holes/` is called. This function must return randomized list of inputs and the corresponding output (the output takes a form of a single string).
+For computed solutions, a case switch needs to be added to `/hole/play.go`. The value needs to match the URLized version of the hole name. When a case matches, a function defined in its own file in `/holes/` is called.
+This function must return data for at least one test run. Data for each run takes form of a list of inputs and a single string containing the expected output.
 
 `/hole/play.go`
 
@@ -70,7 +72,8 @@ The point of multiple random tests is to avoid cheating solutions that only impl
 Therefore:
 
 - There should be a fixed amount of tests.
-- If the set of possible outputs (or some obvious groups of the outputs) is finite (and low), each case should be represented a random number of times but at least once.
+- If the set of possible outputs (or some obvious groups of the outputs) is finite (and low), each case should be represented.
+- The set of all possible inputs must not be included in a single test - use the `outputMultirunTests` helper function to split the list of tests into two test runs.
 - Pairs of inputs that are (in some sense) close but their corresponding outputs are different (or even far) should be included.
 - The order of the tests should be randomized.
 
