@@ -81,6 +81,8 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		scores = brainfuck()
 	case "css-colors":
 		scores = cssColors()
+	case "day-of-week":
+		scores = dayOfWeek()
 	case "ellipse-perimeters":
 		scores = ellipsePerimeters()
 	case "emojify":
