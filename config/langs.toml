@@ -897,8 +897,8 @@ SELECT arg FROM argv;
 '''
 
 [Swift]
-size    = '494 MiB'
-version = '5.7.3'
+size    = '484 MiB'
+version = '5.8'
 website = 'https://swift.org'
 example = '''
 // Printing
