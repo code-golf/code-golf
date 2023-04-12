@@ -1,6 +1,6 @@
 FROM golang:1.20.3-alpine3.17
 
-ENV CGO_ENABLED=0 GOPATH=
+ENV CGO_ENABLED=0 GOAMD64=v4 GOPATH=
 
 RUN apk add --no-cache brotli build-base linux-headers npm tzdata zopfli
 
