@@ -753,7 +753,7 @@ example = '''
 
 [Python]
 size    = '74 MiB'
-version = '3.11.2'
+version = '3.11.3'
 website = 'https://www.python.org'
 example = '''
 import sys
