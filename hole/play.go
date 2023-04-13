@@ -219,7 +219,8 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 	cmd.Stdout = &stdout
 	cmd.WaitDelay = time.Second
 	cmd.SysProcAttr = &syscall.SysProcAttr{
-		Cloneflags: syscall.CLONE_NEWIPC | syscall.CLONE_NEWNET | syscall.CLONE_NEWNS | syscall.CLONE_NEWPID | syscall.CLONE_NEWUTS,
+		Cloneflags: syscall.CLONE_NEWIPC | syscall.CLONE_NEWNET |
+			syscall.CLONE_NEWNS | syscall.CLONE_NEWPID | syscall.CLONE_NEWUTS,
 	}
 
 	// Interpreter
