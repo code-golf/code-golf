@@ -397,18 +397,12 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 		score.Stdout = []byte(romanToASCII.Replace(string(score.Stdout)))
 	}
 
-	// Timeouts do not pass, no matter what they output
-	if score.Timeout {
-		return
-	}
-
-	// We do not allow stdout with only whitespace to pass to prevent suspicious sed "quines"
-	if len(bytes.TrimRightFunc(score.Stdout, unicode.IsSpace)) != 0 {
-		switch holeID {
-		case "css-colors":
+	// Timeouts and whitespace only output never pass.
+	if !score.Timeout && len(bytes.TrimSpace(score.Stdout)) != 0 {
+		if holeID == "css-colors" {
 			// TODO Generalise case insensitivity, should it apply to others?
 			score.Pass = strings.EqualFold(score.Answer, string(score.Stdout))
-		default:
+		} else {
 			score.Pass = score.Answer == string(score.Stdout)
 		}
 	}
