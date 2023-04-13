@@ -304,6 +304,14 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 		cmd.Args = []string{"/usr/bin/tcl", "/proc/self/fd/0"}
 	case "tex":
 		cmd.Args = []string{"/usr/bin/tex", code}
+
+		// Require a backslash for Quine to prevent trivial solutions.
+		// Don't even run the code; just mark error and return.
+		if holeID == "quine" && !strings.Contains(code, `\`) {
+			score.Pass = false
+			score.Stderr = []byte(`Quine in TeX must have at least one '\' character.`)
+			return
+		}
 	default:
 		cmd.Args = []string{"/usr/bin/" + langID, "-"}
 	}
@@ -336,14 +344,6 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 		cmd.Stdin = strings.NewReader("<?php " + code + " ;")
 	default:
 		cmd.Stdin = strings.NewReader(code)
-	}
-
-	// We do not allow quine in TeX to pass without at least one backslash
-	if langID == "tex" && holeID == "quine" && !strings.Contains(code, `\`) {
-		// don't even run the code; just mark error and return
-		score.Pass = false
-		score.Stderr = []byte(`Quine in TeX must have at least one '\' character.`)
-		return
 	}
 
 	err := cmd.Run()

@@ -14,4 +14,12 @@ is post-solution(|.value)<Err>, '', .key for
 like post-solution(:lang<j> :code('echo JVERSION'))<Out>, / '/j64/linux' /,
     'J engine is baseline AMD 64 (no AVX 512)';
 
+# Trivial Tex Quine.
+my $code = "Trivial\n";
+my $err  = 'Quine in TeX must have at least one &#39;\&#39; character.';
+my %res  = post-solution :hole<quine> :lang<tex> :$code;
+
+is-deeply %res<Err Exp Pass>:p, ( :Err($err) :Exp($code) :!Pass ),
+    'Trivial Tex Quine is blocked';
+
 done-testing;
