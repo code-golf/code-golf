@@ -331,11 +331,9 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 		"perl", "sed", "tex":
 		// For these langs, code is passed as an argument above.
 	case "k":
-		code = preprocessKCode(holeID, code)
-		cmd.Stdin = strings.NewReader(code)
+		cmd.Stdin = strings.NewReader(preprocessKCode(holeID, code))
 	case "php":
-		code = "<?php " + code + " ;"
-		fallthrough
+		cmd.Stdin = strings.NewReader("<?php " + code + " ;")
 	default:
 		cmd.Stdin = strings.NewReader(code)
 	}
