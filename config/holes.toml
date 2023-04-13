@@ -568,10 +568,12 @@ preamble = '''
 ['Day of Week']
 category = 'Transform'
 experiment = 930
-synopsis = 'Given a date, output the day of week.'
+synopsis = 'Given a date, output the day of the week.'
 preamble = '''
 <p>
-    Given a date in the <strong>YYYY-MM-DD</strong> format between 1583-01-01 and 9999-12-31 inclusive, output the English name of the corresponding day of week.
+    Given a date in the <b>YYYY-MM-DD</b> format between 1583-01-01 and
+    9999-12-31 inclusive, output the English name of the corresponding day
+    of the week.
 '''
 
 [Diamonds]
