@@ -308,7 +308,6 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 		// Require a backslash for Quine to prevent trivial solutions.
 		// Don't even run the code; just mark error and return.
 		if holeID == "quine" && !strings.Contains(code, `\`) {
-			score.Pass = false
 			score.Stderr = []byte(`Quine in TeX must have at least one '\' character.`)
 			return
 		}
@@ -400,7 +399,6 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 
 	// Timeouts do not pass, no matter what they output
 	if score.Timeout {
-		score.Pass = false
 		return
 	}
 
