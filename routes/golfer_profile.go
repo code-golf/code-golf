@@ -14,11 +14,6 @@ import (
 func golferGET(w http.ResponseWriter, r *http.Request) {
 	const limit = 100
 
-	type follow struct {
-		Bytes, Chars, Rank int
-		Country, Name      string
-	}
-
 	type row struct {
 		Cheevo *config.Cheevo
 		Date   time.Time
@@ -31,9 +26,12 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 	golfer := session.GolferInfo(r)
 
 	data := struct {
-		Connections    []oauth.Connection
-		Followers      []string
-		Follows        []follow
+		Connections []oauth.Connection
+		Followers   []string
+		Following   []struct {
+			Bytes, Chars, Rank int
+			CountryFlag, Login string
+		}
 		Langs          []*config.Lang
 		OAuthProviders map[string]*oauth.Config
 		Trophies       map[string]map[string]int
@@ -142,7 +140,8 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	rows, err = db.Query(
+	if err := db.Select(
+		&data.Following,
 		`WITH follows AS (
 		    SELECT country_flag, login,
 		           COALESCE((SELECT points FROM points
@@ -156,29 +155,7 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		ORDER BY rank, login`,
 		golfer.ID,
 		golfer.FollowLimit(),
-	)
-	if err != nil {
-		panic(err)
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var f follow
-
-		if err := rows.Scan(
-			&f.Country,
-			&f.Name,
-			&f.Bytes,
-			&f.Chars,
-			&f.Rank,
-		); err != nil {
-			panic(err)
-		}
-
-		data.Follows = append(data.Follows, f)
-	}
-
-	if err := rows.Err(); err != nil {
+	); err != nil {
 		panic(err)
 	}
 

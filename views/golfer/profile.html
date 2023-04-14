@@ -102,27 +102,27 @@
     {{ end }}
         </section>
 
-    {{ if gt (len .Data.Follows) 1 }}
+    {{ if gt (len .Data.Following) 1 }}
         {{ $me := "" }}
         {{ with .Golfer }}{{ $me = .Name }}{{ end }}
         <table class=nowrap-second>
             <thead>
                 <tr>
                     <th colspan=2>
-                    {{ with dec (len .Data.Follows) }}
-                        {{ . }} Golfer{{ if gt . 1 }}s{{ end }} Followed
+                    {{ with dec (len .Data.Following) }}
+                        {{ . }} Following
                     {{ end }}
                     <th class=right>Bytes
                     <th class=right>Chars
             <tbody>
-            {{ range .Data.Follows }}
-                <tr {{ if eq .Name $me }} class=me {{ end }}>
+            {{ range .Data.Following }}
+                <tr {{ if eq .Login $me }} class=me {{ end }}>
                     <td>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
                     <td>
-                        <a href="/golfers/{{ .Name }}">
-                            <img loading=lazy src="//avatars.githubusercontent.com/{{ .Name }}?s=24">
-                            <span>{{ .Name }}</span>
-                        {{ with index $.Countries .Country }}
+                        <a href="/golfers/{{ .Login }}">
+                            <img loading=lazy src="//avatars.githubusercontent.com/{{ .Login }}?s=24">
+                            <span>{{ .Login }}</span>
+                        {{ with index $.Countries .CountryFlag }}
                             <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
                         {{ end }}
                         </a>
@@ -135,7 +135,7 @@
     {{ with .Data.Followers }}
         <section class=icons>
             <h2>
-                {{ len . }} Golfer{{ if gt (len .) 1 }}s{{ end }} Following
+                {{ len . }} Follower{{ if gt (len .) 1 }}s{{ end }}
             </h2>
         {{ range . }}
             <a href="{{ . }}" title="{{ . }}">
