@@ -9,6 +9,8 @@
         <input name=base type=hidden value=/rankings/misc>
 
         <select name=page>
+            <option {{ if eq .Path "/rankings/misc/followers" }} selected {{ end }}
+                value=followers>Followers
             <option {{ if eq .Path "/rankings/misc/holes-authored" }} selected {{ end }}
                 value=holes-authored>Holes Authored
             <option {{ if eq .Path "/rankings/misc/oldest-diamonds" }} selected {{ end }}
@@ -21,6 +23,9 @@
     </form>
 
     <nav>
+        <a {{ if ne .Path "/rankings/misc/followers" }} href=followers {{ end }}>
+            <span>Followers</span>
+        </a>
         <a {{ if ne .Path "/rankings/misc/holes-authored" }} href=holes-authored {{ end }}>
             <span>Holes Authored</span>
         </a>

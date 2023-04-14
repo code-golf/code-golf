@@ -13,6 +13,17 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 	var desc, sql string
 
 	switch param(r, "type") {
+	case "followers":
+		desc = "Total followers."
+		sql = `WITH followers AS (
+			    SELECT followee_id, COUNT(*) FROM follows GROUP BY followee_id
+			) SELECT count, country_flag, login,
+			         RANK() OVER(ORDER BY count DESC),
+			         COUNT(*) OVER () total
+			    FROM followers
+			    JOIN users ON id = followee_id
+			ORDER BY rank, login
+			   LIMIT $1 OFFSET $2`
 	case "holes-authored":
 		desc = "Total holes authored."
 		sql = `WITH holes AS (
