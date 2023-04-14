@@ -10,17 +10,6 @@ import (
 
 // GET /rankings/misc/{type}
 func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
-	type row struct {
-		Bytes, Chars, Rank, Total           int
-		Country, Hole, Lang, Login, Scoring string
-		Submitted                           *time.Time
-	}
-
-	data := struct {
-		Pager *pager.Pager
-		Rows  []row
-	}{pager.New(r), make([]row, 0, pager.PerPage)}
-
 	var desc, sql string
 
 	switch param(r, "type") {
@@ -28,14 +17,9 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 		desc = "Total holes authored."
 		sql = `WITH holes AS (
 			    SELECT user_id, COUNT(*) FROM authors GROUP BY user_id
-			) SELECT 0, 0,
-			         country_flag,
-			         '', '',
-			         login,
+			) SELECT count, country_flag, login,
 			         RANK() OVER(ORDER BY count DESC),
-			         '', NULL,
-			         count,
-			         COUNT(*) OVER ()
+			         COUNT(*) OVER () total
 			    FROM holes
 			    JOIN users ON id = user_id
 			ORDER BY rank, login
@@ -46,16 +30,9 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 			    SELECT hole, lang, scoring, submitted, user_id
 			      FROM rankings
 			     WHERE rank = 1 AND tie_count = 1
-			) SELECT 0, 0,
-			         country_flag,
-			         hole,
-			         lang,
-			         login,
+			) SELECT country_flag, hole, lang, login, scoring, submitted,
 			         RANK() OVER(ORDER BY submitted),
-			         scoring,
-			         submitted,
-			         0,
-			         COUNT(*) OVER ()
+			         COUNT(*) OVER () total
 			    FROM diamonds
 			    JOIN users ON id = user_id
 			ORDER BY rank, hole, lang, scoring, login
@@ -64,14 +41,9 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 		desc = "Total referrals."
 		sql = `WITH referrals AS (
 			    SELECT referrer_id, COUNT(*) FROM users GROUP BY referrer_id
-			) SELECT 0, 0,
-			         country_flag,
-			         '', '',
-			         login,
+			) SELECT count, country_flag, login,
 			         RANK() OVER(ORDER BY count DESC),
-			         '', NULL,
-			         count,
-			         COUNT(*) OVER ()
+			         COUNT(*) OVER () total
 			    FROM referrals
 			    JOIN users ON id = referrals.referrer_id
 			ORDER BY rank, login
@@ -86,15 +58,9 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 			      FROM solutions
 			     WHERE NOT failing
 			  GROUP BY user_id
-			) SELECT bytes,
-			         chars,
-			         country_flag,
-			         '', '',
-			         login,
+			) SELECT bytes, chars, count, country_flag, login,
 			         RANK() OVER(ORDER BY count DESC),
-			         '', NULL,
-			         count,
-			         COUNT(*) OVER ()
+			         COUNT(*) OVER () total
 			    FROM solutions
 			    JOIN users ON id = user_id
 			ORDER BY rank, bytes, chars, login
@@ -104,36 +70,23 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	rows, err := session.Database(r).Query(sql, pager.PerPage, data.Pager.Offset)
-	if err != nil {
-		panic(err)
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var r row
-
-		if err := rows.Scan(
-			&r.Bytes,
-			&r.Chars,
-			&r.Country,
-			&r.Hole,
-			&r.Lang,
-			&r.Login,
-			&r.Rank,
-			&r.Scoring,
-			&r.Submitted,
-			&r.Total,
-			&data.Pager.Total,
-		); err != nil {
-			panic(err)
+	data := struct {
+		Pager *pager.Pager
+		Rows  []struct {
+			Bytes, Chars, Count, Rank, Total        int
+			CountryFlag, Hole, Lang, Login, Scoring string
+			Submitted                               time.Time
 		}
+	}{Pager: pager.New(r)}
 
-		data.Rows = append(data.Rows, r)
+	if err := session.Database(r).Select(
+		&data.Rows, sql, pager.PerPage, data.Pager.Offset,
+	); err != nil {
+		panic(err)
 	}
 
-	if err := rows.Err(); err != nil {
-		panic(err)
+	if len(data.Rows) > 0 {
+		data.Pager.Total = data.Rows[0].Total
 	}
 
 	if data.Pager.Calculate() {

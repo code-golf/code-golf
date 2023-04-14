@@ -61,7 +61,7 @@
                     <a href="/golfers/{{ .Login }}">
                         <img loading=lazy src="//avatars.githubusercontent.com/{{ .Login }}?s=24">
                         <span>{{ .Login }}</span>
-                    {{ with index $.Countries .Country }}
+                    {{ with index $.Countries .CountryFlag }}
                         <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
                     {{ end }}
                     </a>
@@ -74,7 +74,7 @@
                     </a>
                 <td class=right>{{ time .Submitted }}
             {{ else }}
-                <td class=right>{{ comma .Total }}
+                <td class=right>{{ comma .Count }}
             {{ end }}
             {{ if $solutions }}
                 <td class=right>{{ comma .Bytes }}
