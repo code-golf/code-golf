@@ -164,6 +164,16 @@ dialog {
     position: fixed;
     transform: translate(-50%, -50%);
     width: 30rem;
+
+    [role=group] {
+        display: flex;
+        flex-direction: column;
+
+        > label {
+            display: flex;
+            gap: .25rem;
+        }
+    }
 }
 
 dialog:not([open]) { display: none }
@@ -460,6 +470,11 @@ nav + main .sticky th { top: calc(5.75rem + 1px) }
 .tabs {
     display: flex;
     flex-wrap: wrap;
+
+    > button {
+        border-width: 2px 0 0 2px;
+        padding: .375rem;
+    }
 }
 
 /* Tabs outside <main> should be bold, sticky, & underlined. */

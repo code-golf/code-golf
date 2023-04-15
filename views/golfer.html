@@ -85,7 +85,14 @@
 
     <nav class=tabs>
         {{ $slug := print "/golfers/" .Name }}
-        <a {{ if ne $.Path $slug }} href="{{ $slug }}" {{ end }}>Profile</a>
+        {{ if and $.Golfer (eq $.Path $slug) }}
+            <button class="btn blue" data-dialog=config-dialog title=Configure>
+                {{ svg "gear-fill" }}
+            </button>
+        {{ end }}
+        <a {{ if ne $.Path $slug }} href="{{ $slug }}" {{ end }}>
+            Profile
+        </a>
 
         {{ $slug = print "/golfers/" .Name "/cheevos" }}
         <a {{ if ne $.Path $slug }} href="{{ $slug }}" {{ end }}>Achievements</a>

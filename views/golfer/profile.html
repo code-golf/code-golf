@@ -147,4 +147,31 @@
     </aside>
 </main>
 
+{{ with .Golfer }}
+    <dialog id=config-dialog>
+        <form>
+            <h2>Configure</h2>
+            <div role=group>
+                <label>
+                    <input name=feed-followers type=radio checked>
+                    Always show followed golfers on feeds.
+                </label>
+                <label>
+                    <input name=feed-followers type=radio>
+                    Only show followed golfers on my feed.
+                </label>
+                <label>
+                    <input name=feed-followers type=radio>
+                    Never show followed golfers on feeds.
+                </label>
+            </div>
+            <menu>
+                <!-- Enter submits the first button, we flip the order in CSS -->
+                <button class="btn green">Save</button>
+                <button class="btn red" formmethod=dialog>Cancel</button>
+            </menu>
+        </form>
+    </dialog>
+{{ end }}
+
 {{ template "footer" }}
