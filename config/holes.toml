@@ -822,16 +822,16 @@ preamble = '''
     (the number of empty squares), and "/" separates ranks.
 
 <p>
-    Given a FEN, output the board using the chess unicode characters and “　”
-    (U+3000 Ideographic Space) for empty squares. The output corresponding to
-    the FEN of the starting position given above should be
+    Given a FEN, output the board using the chess unicode characters and “ ”
+    (U+0020 Space) for empty squares. The output corresponding to the FEN of
+    the starting position given above should be
 
 <pre>♜♞♝♛♚♝♞♜
 ♟♟♟♟♟♟♟♟
-　　　　　　　　
-　　　　　　　　
-　　　　　　　　
-　　　　　　　　
+
+
+
+
 ♙♙♙♙♙♙♙♙
 ♖♘♗♕♔♗♘♖</pre>
 '''

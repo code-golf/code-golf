@@ -29,7 +29,7 @@ func forsythEdwardsNotation() []Scorecard {
 			} else if '1' <= c && c <= '8' {
 				if arg[i+1] >= 'A' {
 					for n := c - '0'; n > 0; n-- {
-						buf.WriteRune('　') // U+3000
+						buf.WriteByte(' ')
 					}
 				}
 			} else {

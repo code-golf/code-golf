@@ -30,6 +30,11 @@ aside > div {
     padding: .375rem;
 }
 
+/* Ensure FEN has consistent aligned display. See #645 for details */
+#hole-forsyth-edwards-notation {
+    & aside > div, & pre { font-family: chess, monospace }
+}
+
 aside > h3 {
     color: var(--background);
     background: var(--color);
