@@ -17,6 +17,9 @@ body {
      padding: .375rem;
  }
 
+/* Ensure FEN has consistent aligned display. See #645 for details */
+#hole-forsyth-edwards-notation .readonly-output { font-family: chess, monospace }
+
 .readonly-output:empty::after {
     content: "(Empty)";
 }
