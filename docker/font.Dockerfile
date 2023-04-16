@@ -99,6 +99,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f98b.svg       `# Butterfly`                    \
     svg/1f98e.svg       `# Lizard`                       \
     svg/1f9a5.svg       `# Sloth`                        \
+	svg/1f9d9.svg       `# Mage`                         \
     svg/1f9db.svg       `# Vampire`                      \
     svg/1f9e0.svg       `# Brain`                        \
     svg/1f9ea.svg       `# Test Tube`                    \
