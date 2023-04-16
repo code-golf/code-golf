@@ -264,6 +264,8 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 		cmd.Args = []string{"/usr/bin/hexagony", "-d", "-"}
 	case "j":
 		cmd.Args = []string{"/usr/bin/j", "/tmp/code.ijs"}
+	case "janet":
+		cmd.Args = []string{"/usr/bin/janet", "/proc/self/fd/0"}
 	case "k":
 		cmd.Args = []string{"/usr/bin/kwrapper", "/tmp/code.k"}
 	case "javascript":

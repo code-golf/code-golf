@@ -32,6 +32,7 @@ import { go }                 from '@codemirror/legacy-modes/mode/go';
 import { golfScript }         from 'codemirror-lang-golfscript';
 import { haskell }            from '@codemirror/legacy-modes/mode/haskell';
 import { j }                  from 'codemirror-lang-j';
+import { janet }              from 'codemirror-lang-janet';
 import { java }               from '@codemirror/lang-java';
 import { javascriptLanguage } from '@codemirror/lang-javascript';
 import { julia }              from '@codemirror/legacy-modes/mode/julia';
@@ -126,6 +127,7 @@ export const extensions = {
     'haskell':    StreamLanguage.define(haskell),
     // TODO hexagony
     'j':          j(),
+    'janet':      janet(),
     'java':       java(),
     // Bypass javascript() so that autocomplete imports are tree-shaken out.
     'javascript': new LanguageSupport(javascriptLanguage),
