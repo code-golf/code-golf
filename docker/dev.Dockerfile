@@ -56,7 +56,6 @@ COPY --from=codegolf/lang-wren       ["/", "/langs/wren/rootfs/"      ] #  484 K
 COPY --from=codegolf/lang-lua        ["/", "/langs/lua/rootfs/"       ] #  342 KiB
 COPY --from=codegolf/lang-sed        ["/", "/langs/sed/rootfs/"       ] #  232 KiB
 
-
 COPY run-lang.c ./
 
 RUN gcc -Wall -Werror -Wextra -o /usr/bin/run-lang -s -static run-lang.c
