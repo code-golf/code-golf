@@ -509,6 +509,21 @@ NB.Accessing arguments
 echo each 2}.ARGV
 '''
 
+[Janet]
+website = 'https://janet-lang.org'
+example = '''
+# Printing
+(print "Hello, World!")
+
+# Looping
+(for i 0 10
+  (print i))
+
+# Accessing arguments
+(each arg (dyn :args)
+  (print arg))
+'''
+
 [Java]
 size    = '51.1 MiB'
 version = '17.0.1'
