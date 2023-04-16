@@ -510,6 +510,8 @@ echo each 2}.ARGV
 '''
 
 [Janet]
+size    = '1.35 MiB'
+version = '1.27.0'
 website = 'https://janet-lang.org'
 example = '''
 # Printing
@@ -520,7 +522,7 @@ example = '''
   (print i))
 
 # Accessing arguments
-(each arg (dyn :args)
+(each arg (tuple/slice (dyn :args) 1)
   (print arg))
 '''
 
