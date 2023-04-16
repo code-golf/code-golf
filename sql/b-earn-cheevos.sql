@@ -170,6 +170,8 @@ BEGIN
 
     IF holes >= 1  THEN 
 	    earned := earn(earned, 'hello-world',               user_id); END IF;
+	IF holes >= 4 THEN
+	    earned := earn(earned, 'fore',                      user_id); END IF;
     IF holes >= 11 THEN
 	    earned := earn(earned, 'up-to-eleven',              user_id); END IF;
     IF holes >= 13 THEN

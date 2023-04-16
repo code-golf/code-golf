@@ -247,6 +247,12 @@ emoji       = '👋'
 description = 'Solve your first hole.'
 
 [['Total Holes']]
+name        = 'Fore!'
+emoji       = '🏌️'
+description = 'Solve your fourth hole.'
+target      = 4
+
+[['Total Holes']]
 name        = 'Up to Eleven'
 emoji       = '🎸'
 description = 'Solve your eleventh hole.'

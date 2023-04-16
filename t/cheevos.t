@@ -2,6 +2,7 @@ use t;
 
 constant %holes = <
     1  {hello-world}
+	4  {fore}
     11 {up-to-eleven}
     13 {bakers-dozen}
     19 {the-watering-hole}
