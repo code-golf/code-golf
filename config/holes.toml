@@ -567,7 +567,6 @@ preamble = '''
 
 ['Day of Week']
 category = 'Transform'
-experiment = 930
 synopsis = 'Given a date, output the day of the week.'
 preamble = '''
 <p>

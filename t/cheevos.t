@@ -14,6 +14,7 @@ constant %holes = <
     69 {cunning-linguist}
     80 {phileas-fogg}
     86 {x86}
+    90 {right-on}
 >;
 
 constant %langs = <
