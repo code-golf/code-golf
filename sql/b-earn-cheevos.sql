@@ -173,6 +173,7 @@ BEGIN
     IF holes >= 69 THEN earned := earn(earned, 'cunning-linguist',  user_id); END IF;
     IF holes >= 80 THEN earned := earn(earned, 'phileas-fogg',      user_id); END IF;
     IF holes >= 86 THEN earned := earn(earned, 'x86',               user_id); END IF;
+    IF holes >= 90 THEN earned := earn(earned, 'right-on',          user_id); END IF;
 
     RETURN earned;
 END;

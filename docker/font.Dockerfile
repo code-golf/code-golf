@@ -49,6 +49,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f4be.svg       `# Floppy Disk`                  \
     svg/1f4c4.svg       `# Page Facing Up`               \
     svg/1f4c5.svg       `# Calendar`                     \
+    svg/1f4d0.svg       `# Triangular Ruler`             \
     svg/1f4d5.svg       `# Closed Book`                  \
     svg/1f4da.svg       `# Books`                        \
     svg/1f4e3.svg       `# Megaphone`                    \

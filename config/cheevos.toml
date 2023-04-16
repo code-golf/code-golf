@@ -308,6 +308,12 @@ emoji       = '🖥️'
 description = 'Solve your eighty-sixth hole.'
 target      = 86
 
+[['Total Holes']]
+name        = 'Right On!'
+emoji       = '📐'
+description = 'Solve your ninetieth hole.'
+target      = 90
+
 # TODO
 # [['Total Holes']]
 # name        = 'That’s Gross!'
@@ -322,7 +328,6 @@ name        = 'Big Brother'
 emoji       = '👁️'
 description = 'Earn 1,984 total points in either bytes or chars scoring.'
 target      = 1984
-
 
 [['Total Points']]
 name        = 'It’s Over 9000!'
