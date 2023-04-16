@@ -319,6 +319,12 @@ description = 'Solve your eighty-sixth hole.'
 target      = 86
 
 [['Total Holes']]
+name        = 'Nine O’clock on a Saturday'
+emoji       = '🎹'
+description = 'Solve your eighty-eighth hole.'
+target      = 88
+
+[['Total Holes']]
 name        = 'Right On!'
 emoji       = '📐'
 description = 'Solve your ninetieth hole.'
