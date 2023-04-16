@@ -70,6 +70,10 @@ BEGIN
     IF hole = 'ten-pin-bowling' AND lang = 'cobol' THEN
         earned := earn(earned, 'cobowl', user_id); END IF;
 
+    -- 👄 Dammit, Janet!
+    IF hole = 'rock-paper-scissors-spock-lizard' AND lang = 'janet' THEN
+        earned := earn(earned, 'dammit-janet', user_id); END IF;
+
     -- 🐘 ElePHPant in the Room
     IF lang = 'php' THEN
         earned := earn(earned, 'elephpant-in-the-room', user_id); END IF;

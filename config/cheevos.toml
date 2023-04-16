@@ -90,6 +90,11 @@ emoji       = '🎳'
 description = 'Solve <a href=/ten-pin-bowling#cobol>Ten-pin Bowling in COBOL</a>.'
 
 [['Hole/Lang Specific']]
+name        = 'Dammit, Janet!'
+emoji       = '👄'
+description = 'Solve <a href=/rock-paper-scissors-spock-lizard#janet>Rock-paper-scissors-Spock-lizard in Janet</a>.'
+
+[['Hole/Lang Specific']]
 name        = 'ElePHPant in the Room'
 emoji       = '🐘'
 description = 'Solve any hole in PHP.'
