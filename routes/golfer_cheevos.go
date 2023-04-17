@@ -126,8 +126,8 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 		`SELECT COUNT(DISTINCT hole)
 		   FROM solutions
 		  WHERE NOT failing AND user_id = $1`,
-		"up-to-eleven", "bakers-dozen", "the-watering-hole", "blackjack",
-		"rule-34", "forty-winks", "dont-panic", "bullseye",
+		"fore", "up-to-eleven", "bakers-dozen", "the-watering-hole",
+		"blackjack", "rule-34", "forty-winks", "dont-panic", "bullseye",
 		"gone-in-60-holes", "cunning-linguist", "phileas-fogg", "x86",
 		"right-on",
 	)

@@ -63,6 +63,11 @@ emoji       = '💼'
 description = 'Solve <a href=/fizz-buzz>Fizz Buzz</a>.'
 
 [['Hole/Lang Specific']]
+name        = 'Alchemist'
+emoji       = '🧙'
+description = 'Solve <a href=/game-of-life#elixir>Game of Life in Elixir</a>.'
+
+[['Hole/Lang Specific']]
 name        = 'Archivist'
 emoji       = '📚'
 description = 'Solve <a href=/isbn>ISBN</a> in any three languages that predate ISBN.'
@@ -240,6 +245,12 @@ description = 'Submit a solution that is rejected for being too long.'
 name        = 'Hello, World!'
 emoji       = '👋'
 description = 'Solve your first hole.'
+
+[['Total Holes']]
+name        = 'Fore!'
+emoji       = '🏌️'
+description = 'Solve your fourth hole.'
+target      = 4
 
 [['Total Holes']]
 name        = 'Up to Eleven'

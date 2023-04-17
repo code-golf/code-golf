@@ -45,6 +45,10 @@ BEGIN
     -- 💼 Interview Ready
     IF hole = 'fizz-buzz' THEN
         earned := earn(earned, 'interview-ready', user_id); END IF;
+        
+    -- 🧙 Alchemist
+    IF hole = 'game-of-life' AND lang = 'elixir' THEN
+        earned := earn(earned, 'alchemist', user_id); END IF;
 
     -- 📚 Archivist
     SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs_for_hole)
@@ -165,6 +169,7 @@ BEGIN
     -----------------
 
     IF holes >= 1  THEN earned := earn(earned, 'hello-world',       user_id); END IF;
+    IF holes >= 4  THEN earned := earn(earned, 'fore',              user_id); END IF;
     IF holes >= 11 THEN earned := earn(earned, 'up-to-eleven',      user_id); END IF;
     IF holes >= 13 THEN earned := earn(earned, 'bakers-dozen',      user_id); END IF;
     IF holes >= 19 THEN earned := earn(earned, 'the-watering-hole', user_id); END IF;
