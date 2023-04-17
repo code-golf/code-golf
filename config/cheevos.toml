@@ -63,7 +63,7 @@ emoji       = '💼'
 description = 'Solve <a href=/fizz-buzz>Fizz Buzz</a>.'
 
 [['Hole/Lang Specific']]
-name        = 'Alcemist'
+name        = 'Alchemist'
 emoji       = '🧙'
 description = 'Solve <a href=/game-of-life#elixir>Game of Life in Elixir</a>.'
 
