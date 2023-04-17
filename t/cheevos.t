@@ -2,7 +2,7 @@ use t;
 
 constant %holes = <
     1  {hello-world}
-	4  {fore}
+    4  {fore}
     11 {up-to-eleven}
     13 {bakers-dozen}
     19 {the-watering-hole}
@@ -15,7 +15,7 @@ constant %holes = <
     69 {cunning-linguist}
     80 {phileas-fogg}
     86 {x86}
-	88 {nine-oclock-on-a-saturday}
+    88 {nine-oclock-on-a-saturday}
     90 {right-on}
 >;
 
@@ -51,7 +51,7 @@ for $dbh.execute('SELECT unnest(enum_range(null::hole))').allrows.flat {
 for <
     brainfuck                        brainfuck {inception}
     divisors                         php       {elephpant-in-the-room}
-	game-of-life                     elixir    {alchemist}
+    game-of-life                     elixir    {alchemist}
     hexdump                          hexagony  {hextreme-agony}
     pascals-triangle                 pascal    {under-pressure}
     poker                            fish      {fish-n-chips}

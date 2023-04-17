@@ -26,11 +26,11 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f3af.svg       `# Direct Hit`                   \
     svg/1f3b3.svg       `# Bowling`                      \
     svg/1f3b8.svg       `# Guitar`                       \
-	svg/1f3b9.svg       `# Piano`                        \
+    svg/1f3b9.svg       `# Piano`                        \
     svg/1f3ba.svg       `# Trumpet`                      \
     svg/1f3c3.svg       `# Person Running`               \
     svg/1f3c6.svg       `# Trophy`                       \
-	svg/1f3cc.svg       `# Person Golfing`               \
+    svg/1f3cc.svg       `# Person Golfing`               \
     svg/1f3e5.svg       `# Hospital`                     \
     svg/1f409.svg       `# Dragon`                       \
     svg/1f40b.svg       `# Whale`                        \
@@ -101,7 +101,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f98b.svg       `# Butterfly`                    \
     svg/1f98e.svg       `# Lizard`                       \
     svg/1f9a5.svg       `# Sloth`                        \
-	svg/1f9d9.svg       `# Mage`                         \
+    svg/1f9d9.svg       `# Mage`                         \
     svg/1f9db.svg       `# Vampire`                      \
     svg/1f9e0.svg       `# Brain`                        \
     svg/1f9ea.svg       `# Test Tube`                    \
