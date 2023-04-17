@@ -11,13 +11,12 @@ CREATE TYPE cheevo AS ENUM (
     'independence-day', 'interview-ready', 'its-over-9000', 'jeweler',
     'just-kidding', 'like-comment-subscribe', 'marathon-runner',
     'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars',
-    'nine-oclock-on-a-saturday', 'off-the-grid', 'omniglot', 'ouroboros',
-    'pangramglot', 'patches-welcome', 'phileas-fogg', 'pi-day', 'polyglot',
-    'polyglutton', 'real-programmers', 'right-on', 'rtfm', 'rule-34',
-    'slowcoach', 'solve-quine', 'sounds-quite-nice', 'takeout',
-    'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
-    'twenty-kiloleagues', 'under-pressure', 'up-to-eleven', 'vampire-byte',
-    'x86'
+    'off-the-grid', 'omniglot', 'ouroboros', 'pangramglot', 'patches-welcome',
+    'phileas-fogg', 'pi-day', 'polyglot', 'polyglutton', 'real-programmers',
+    'right-on', 'rtfm', 'rule-34', 'slowcoach', 'solve-quine',
+    'sounds-quite-nice', 'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr',
+    'twelvetide', 'twenty-kiloleagues', 'under-pressure', 'up-to-eleven',
+    'vampire-byte', 'x86'
 );
 
 CREATE TYPE connection AS ENUM (

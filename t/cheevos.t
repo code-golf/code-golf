@@ -15,7 +15,6 @@ constant %holes = <
     69 {cunning-linguist}
     80 {phileas-fogg}
     86 {x86}
-    88 {nine-oclock-on-a-saturday}
     90 {right-on}
 >;
 
