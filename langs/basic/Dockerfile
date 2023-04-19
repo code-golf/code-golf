@@ -13,7 +13,10 @@ FROM codegolf/lang-base
 COPY --from=0 /bin         /bin
 COPY --from=0 /lib         /lib
 COPY --from=0 /lib64       /lib64
-COPY --from=0 /usr/bin     /usr/bin
+COPY --from=0 /usr/bin/as  \
+              /usr/bin/fbc \
+              /usr/bin/gcc \
+              /usr/bin/ld  /usr/bin/
 COPY --from=0 /usr/include /usr/include
 COPY --from=0 /usr/lib     /usr/lib
 COPY --from=0 /usr/libexec /usr/libexec
