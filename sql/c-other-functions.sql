@@ -144,6 +144,7 @@ BEGIN
               DO UPDATE SET bytes     = excluded.bytes,
                             chars     = excluded.chars,
                             code      = excluded.code,
+                            failing   = false,
                             submitted = excluded.submitted;
 
             INSERT INTO solutions_log (bytes, chars, hole, lang, scoring, user_id)
