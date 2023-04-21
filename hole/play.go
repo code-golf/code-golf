@@ -127,6 +127,8 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		scores = proximityGrid()
 	case "qr-decoder", "qr-encoder":
 		scores = qr(holeID == "qr-decoder")
+	case "quadratic-formula":
+		scores = quadraticFormula()
 	case "quine":
 		scores = []Scorecard{{Args: []string{}, Answer: code}}
 	case "repeating-decimals":
