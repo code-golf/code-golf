@@ -1,6 +1,6 @@
-FROM rust:1.68.2-alpine3.17 as builder
+FROM rust:1.69.0-alpine3.17 as builder
 
-WORKDIR /usr/local/rustup/toolchains/1.68.2-x86_64-unknown-linux-musl
+WORKDIR /usr/local/rustup/toolchains/1.69.0-x86_64-unknown-linux-musl
 
 # Delete unused binaries.
 RUN find /usr/local/cargo/bin bin -not -name rustc -delete \
@@ -24,10 +24,10 @@ COPY --from=0 /usr/lib/libbfd-2.39.so         \
 COPY --from=0 /usr/local/cargo                /usr/local/cargo
 COPY --from=0 /usr/local/rustup/settings.toml /usr/local/rustup/
 
-COPY --from=0 /usr/local/rustup/toolchains/1.68.2-x86_64-unknown-linux-musl/bin \
-              /usr/local/rustup/toolchains/1.68.2-x86_64-unknown-linux-musl/bin
-COPY --from=0 /usr/local/rustup/toolchains/1.68.2-x86_64-unknown-linux-musl/lib \
-              /usr/local/rustup/toolchains/1.68.2-x86_64-unknown-linux-musl/lib
+COPY --from=0 /usr/local/rustup/toolchains/1.69.0-x86_64-unknown-linux-musl/bin \
+              /usr/local/rustup/toolchains/1.69.0-x86_64-unknown-linux-musl/bin
+COPY --from=0 /usr/local/rustup/toolchains/1.69.0-x86_64-unknown-linux-musl/lib \
+              /usr/local/rustup/toolchains/1.69.0-x86_64-unknown-linux-musl/lib
 
 COPY rust /usr/bin/
 

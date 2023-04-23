@@ -807,8 +807,8 @@ for (arg in commandArgs(TRUE)) {
 '''
 
 [Raku]
-size    = '67.4 MiB'
-version = 'Raku 6.d on Rakudo 2023.02'
+size    = '68.9 MiB'
+version = 'Raku 6.d on Rakudo 2023.04'
 website = 'https://raku.org'
 example = '''
 # Printing
@@ -841,8 +841,8 @@ end
 '''
 
 [Rust]
-size    = '434 MiB'
-version = '1.68.2'
+size    = '426 MiB'
+version = '1.69.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
