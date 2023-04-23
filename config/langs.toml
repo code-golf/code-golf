@@ -678,7 +678,7 @@ Sys.argv
 '''
 
 [Pascal]
-size    = '30.9 MiB'
+size    = '30 MiB'
 version = '3.2.2'
 website = 'https://freepascal.org'
 example = '''
