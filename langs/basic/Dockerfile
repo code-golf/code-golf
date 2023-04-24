@@ -8,20 +8,23 @@ RUN curl -L http://downloads.sourceforge.net/fbc/FreeBASIC-1.09.0-linux-x86_64.t
 
 RUN cd FreeBASIC-1.09.0-linux-x86_64 && ./install.sh -i /usr
 
+COPY basic.c .
+
+RUN gcc -Wall -Werror -Wextra -o basic -s basic.c
+
 FROM codegolf/lang-base
 
-COPY --from=0 /bin         /bin
+COPY --from=0 /bin/sh      /bin/
 COPY --from=0 /lib         /lib
 COPY --from=0 /lib64       /lib64
-COPY --from=0 /usr/bin/as  \
+COPY --from=0 /basic       \
+              /usr/bin/as  \
               /usr/bin/fbc \
               /usr/bin/gcc \
               /usr/bin/ld  /usr/bin/
 COPY --from=0 /usr/include /usr/include
 COPY --from=0 /usr/lib     /usr/lib
 COPY --from=0 /usr/libexec /usr/libexec
-
-COPY basic /usr/bin/
 
 ENTRYPOINT ["basic"]
 
