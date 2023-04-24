@@ -12,7 +12,7 @@ int main(int argc, char* argv[]) {
 
     if (argc > 1 && strcmp(argv[1], "--version") == 0) {
         execl("/usr/bin/fpc", "fpc", "-iV", NULL);
-        ERR_AND_EXIT("execv");
+        ERR_AND_EXIT("execl");
     }
 
     if(chdir("/tmp"))
