@@ -55,6 +55,7 @@ import { sql, SQLite }        from '@codemirror/lang-sql';
 import { swift }              from '@codemirror/legacy-modes/mode/swift';
 import { tcl }                from '@codemirror/legacy-modes/mode/tcl';
 import { stex }               from '@codemirror/legacy-modes/mode/stex';
+import { vb }                 from '@codemirror/legacy-modes/mode/vb';
 import { wren }               from '@exercism/codemirror-lang-wren';
 
 // For some reason, this doesn't fully work unless added to both themes.
@@ -110,6 +111,7 @@ export const extensions = {
     // Languages.
     'assembly':   assembly(),
     'bash':       StreamLanguage.define(shell),
+    'basic':      StreamLanguage.define(vb),
     'brainfuck':  brainfuck(),
     'c':          StreamLanguage.define(c),
     'c-sharp':    StreamLanguage.define(csharp),
