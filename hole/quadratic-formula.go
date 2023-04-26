@@ -7,9 +7,7 @@ import (
 	"strings"
 )
 
-const DEBUG = false
-
-type solution struct {
+type quadraticSolution struct {
 	n1, d1, n2, d2 int
 	sq, im         bool
 }
@@ -39,7 +37,7 @@ func sq_reduce(n int, d int) (int, int) {
 	return n, d
 }
 
-func solve(a int, b int, c int) solution {
+func solve(a int, b int, c int) quadraticSolution {
 	if a != 0 {
 		disc := b*b - 4*a*c
 		im := disc < 0
@@ -56,7 +54,7 @@ func solve(a int, b int, c int) solution {
 			disc = int(root)
 			n2, d2 = reduce(disc, 2*a)
 		}
-		return solution{
+		return quadraticSolution{
 			n1: n1,
 			d1: d1,
 			n2: n2,
@@ -66,7 +64,7 @@ func solve(a int, b int, c int) solution {
 		}
 	} else {
 		n, d := reduce(-c, b)
-		return solution{
+		return quadraticSolution{
 			n1: n,
 			d1: d,
 			n2: 0,
@@ -77,7 +75,7 @@ func solve(a int, b int, c int) solution {
 	}
 }
 
-func (s solution) String() string {
+func (s quadraticSolution) String() string {
 	if s.d1 == 0 {
 		if s.n1 == 0 {
 			return "indeterminate"
@@ -98,9 +96,7 @@ func (s solution) String() string {
 		} else {
 			st = fmt.Sprint(st, " ± ")
 		}
-
 	}
-
 	if s.im {
 		st = fmt.Sprint(st, "i")
 	}
@@ -118,25 +114,20 @@ func (s solution) String() string {
 	if st == "" {
 		st = "0"
 	}
-	if DEBUG {
-		st = fmt.Sprint(st, "  ", s.n1, s.d1, s.n2, s.d2, s.sq, s.im)
-	}
 	return st
 }
 
-const NUM_TESTS = 200
-
 func quadraticFormula() []Scorecard {
-	args := make([]string, NUM_TESTS)
-	solstrings := make([]string, NUM_TESTS)
-	for i := 0; i < NUM_TESTS; i++ {
+	numTests := 200
+	args := make([]string, numTests)
+	solstrings := make([]string, numTests)
+	for i := 0; i < numTests; i++ {
 		a := rand.Intn(20) - 10
 		b := rand.Intn(20) - 10
 		c := rand.Intn(50) - 25
 		s := solve(a, b, c)
-		args[i] = fmt.Sprintf("%d %d %d", a, b, c)
+		args[i] = fmt.Sprint(a, b, c)
 		solstrings[i] = fmt.Sprint(s)
 	}
-
 	return []Scorecard{{Args: args, Answer: strings.Join(solstrings, "\n")}}
 }
