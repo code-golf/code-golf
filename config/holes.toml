@@ -2103,6 +2103,35 @@ preamble = '''
     and write the value to this position ("#" = 1, space = 0).
 '''
 
+['Quadratic Formula']
+category = 'Mathematics'
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Quadratic_formula' },
+]
+experiment = 939
+synopsis = 'Compute and display exact roots of a quadratic equation with integer coefficients.'
+preamble = '''
+<p>
+    Given integer coefficients
+    <pre>a b c</pre>
+<p>
+    of a quadratic equation
+    <pre> ax^2 + bx + c = 0</pre>,
+<p>
+    output the corresponding root(s) in exact simplified form
+    <pre> [n1[/d1]] [±] [[i][√]n2[/d2]]</pre>
+<p>
+    where each bracketed element must be omitted if possible.
+<p>
+    If n1 is 0 but n2 is not, remove the space after the ± like so:
+    <pre>1 0 -5 => ±√5</pre>
+<p>
+    If the solution comes to 0/0, output <pre>indeterminate</pre>
+<p>
+    If the solution comes to x/0, where x≠0, output <pre>undefined</pre>
+
+'''
+
 [Quine]
 category = 'Computing'
 links = [
