@@ -2,9 +2,9 @@ FROM alpine:3.17 as builder
 
 RUN apk add --no-cache build-base curl
 
-RUN curl https://www.cpan.org/src/5.0/perl-5.36.0.tar.xz | tar xJ
+RUN curl https://www.cpan.org/src/5.0/perl-5.36.1.tar.xz | tar xJ
 
-RUN mv perl-5.36.0 perl                                           \
+RUN mv perl-5.36.1 perl                                           \
  && cd perl                                                       \
  && ./Configure                                                   \
     -Accflags='                                                   \
