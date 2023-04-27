@@ -12,7 +12,7 @@ type quadraticSolution struct {
 	sq, im         bool
 }
 
-func reduce(n int, d int) (int, int) {
+func reduce(n, d int) (int, int) {
 	if d < 0 {
 		d = -d
 		n = -n
@@ -25,7 +25,7 @@ func reduce(n int, d int) (int, int) {
 	return n, d
 }
 
-func sq_reduce(n int, d int) (int, int) {
+func sqReduce(n, d int) (int, int) {
 	if d < 0 {
 		d = -d
 	}
@@ -37,7 +37,7 @@ func sq_reduce(n int, d int) (int, int) {
 	return n, d
 }
 
-func solve(a int, b int, c int) quadraticSolution {
+func solve(a, b, c int) quadraticSolution {
 	if a != 0 {
 		disc := b*b - 4*a*c
 		im := disc < 0
@@ -49,7 +49,7 @@ func solve(a int, b int, c int) quadraticSolution {
 		n1, d1 := reduce(-b, 2*a)
 		var n2, d2 int
 		if sq {
-			n2, d2 = sq_reduce(disc, 2*a)
+			n2, d2 = sqReduce(disc, 2*a)
 		} else {
 			disc = int(root)
 			n2, d2 = reduce(disc, 2*a)
@@ -92,16 +92,16 @@ func (s quadraticSolution) String() string {
 	}
 	if s.n2 != 0 {
 		if st == "" {
-			st = fmt.Sprint(st, "±")
+			st = "±"
 		} else {
-			st = fmt.Sprint(st, " ± ")
+			st += " ± "
 		}
 	}
 	if s.im {
-		st = fmt.Sprint(st, "i")
+		st += "i"
 	}
 	if s.sq {
-		st = fmt.Sprint(st, "√")
+		st += "√"
 	}
 	if s.n2 != 0 {
 		if !(s.n2 == 1 && s.d2 == 1 && s.im) {
@@ -118,16 +118,15 @@ func (s quadraticSolution) String() string {
 }
 
 func quadraticFormula() []Scorecard {
-	numTests := 200
+	const numTests = 200
 	args := make([]string, numTests)
 	solstrings := make([]string, numTests)
 	for i := 0; i < numTests; i++ {
 		a := rand.Intn(20) - 10
 		b := rand.Intn(20) - 10
 		c := rand.Intn(50) - 25
-		s := solve(a, b, c)
 		args[i] = fmt.Sprint(a, b, c)
-		solstrings[i] = fmt.Sprint(s)
+		solstrings[i] = solve(a, b, c).String()
 	}
 	return []Scorecard{{Args: args, Answer: strings.Join(solstrings, "\n")}}
 }
