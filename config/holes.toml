@@ -793,7 +793,6 @@ preamble = '''
 
 ['Forsyth–Edwards Notation']
 category = 'Gaming'
-experiment = 645
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Forsyth–Edwards_Notation' },
 ]
