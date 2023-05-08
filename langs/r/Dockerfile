@@ -1,6 +1,6 @@
-FROM alpine:3.17 as builder
+FROM alpine:edge as builder
 
-RUN apk add --no-cache R=4.2.2-r0 build-base curl perl
+RUN apk add --no-cache R=4.3.0-r0 build-base curl perl
 
 RUN curl https://busybox.net/downloads/busybox-1.36.0.tar.bz2 | tar xj
 
@@ -24,9 +24,9 @@ COPY --from=0 /usr/lib/libbz2.so.1       \
               /usr/lib/libgcc_s.so.1     \
               /usr/lib/libgfortran.so.5  \
               /usr/lib/libgomp.so.1      \
-              /usr/lib/libicudata.so.72  \
-              /usr/lib/libicui18n.so.72  \
-              /usr/lib/libicuuc.so.72    \
+              /usr/lib/libicudata.so.73  \
+              /usr/lib/libicui18n.so.73  \
+              /usr/lib/libicuuc.so.73    \
               /usr/lib/liblzma.so.5      \
               /usr/lib/libncursesw.so.6  \
               /usr/lib/libopenblas.so.3  \
