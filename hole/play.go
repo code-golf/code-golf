@@ -28,8 +28,8 @@ func init() {
 //go:embed answers
 var answers embed.FS
 
-// All whitespace except newline, up to a newline or the end.
-var stdoutTrimmer = regexp.MustCompile(`[^\S\n]+(?:\n|$)`)
+// All ASCII whitespace except newline, up to a newline or the end.
+var stdoutTrimmer = regexp.MustCompile(`[\t\x0B\f\r ]+(?:\n|$)`)
 
 var romanToASCII = strings.NewReplacer(
 	"Ⅰ", "I", "Ⅱ", "II", "Ⅲ", "III", "Ⅳ", "IV", "Ⅴ", "V",
