@@ -1,4 +1,4 @@
-FROM rust:1.69.0-alpine3.17 as builder
+FROM rust:1.69.0-alpine3.17 AS builder
 
 WORKDIR /usr/local/rustup/toolchains/1.69.0-x86_64-unknown-linux-musl
 

@@ -1,7 +1,7 @@
 # FIXME Staying on 3.15 for python2.
-FROM alpine:3.15 as builder
+FROM alpine:3.15 AS builder
 
-ENV PY_VERSION=3.9-v7.3.9 VERSION=3bdbd20
+ENV PY_VERSION=3.9-v7.3.11 VERSION=3bdbd20
 
 RUN apk add --no-cache curl gcc libffi-dev linux-headers make musl-dev python2
 

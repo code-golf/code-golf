@@ -1,4 +1,4 @@
-FROM alpine:3.17 as builder
+FROM alpine:3.17 AS builder
 
 RUN apk add --no-cache ghc=9.0.2-r1
 

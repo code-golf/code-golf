@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim as builder
+FROM debian:bullseye-slim AS builder
 
 RUN apt-get update \
  && apt-get install -y binutils curl libatomic1 libc6-dev libedit2 libz3-4

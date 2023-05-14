@@ -1,4 +1,4 @@
-FROM reitzig/texlive-base:2022.8 as builder
+FROM reitzig/texlive-base:2022.8 AS builder
 
 # Download dvi-to-text
 ENV VERSION=v0.2.1

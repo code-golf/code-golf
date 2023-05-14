@@ -1,4 +1,4 @@
-FROM alpine:3.16 as builder
+FROM alpine:3.16 AS builder
 
 RUN apk add --no-cache curl g++ libexecinfo-dev \
     linux-headers m4 make patch tar xz

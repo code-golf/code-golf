@@ -1,8 +1,8 @@
-FROM alpine:3.17 as builder
+FROM alpine:3.18 AS builder
 
 RUN apk add --no-cache build-base curl
 
-RUN curl https://ftp.gnu.org/gnu/gawk/gawk-5.2.1.tar.xz | tar xJ
+RUN curl https://ftp.gnu.org/gnu/gawk/gawk-5.2.2.tar.xz | tar xJ
 
 RUN mv gawk-* gawk      \
  && cd gawk             \

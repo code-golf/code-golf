@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim as builder
+FROM debian:bullseye-slim AS builder
 
 RUN apt-get update \
  && apt-get install -y curl gcc libncurses-dev libtinfo5 xz-utils

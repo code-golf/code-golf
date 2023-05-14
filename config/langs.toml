@@ -1,5 +1,5 @@
 ['><>']
-size    = '4.99 MiB'
+size    = '4.92 MiB'
 version = '888b90f'
 website = 'https://github.com/primo-ppcg/fish-jit'
 example = '''
@@ -22,7 +22,7 @@ x is a no-op.
 '''
 
 [Assembly]
-size    = '87.6 MiB'
+size    = '90.9 MiB'
 version = 'DefAssembler 2.3.1'
 website = 'https://www.npmjs.com/package/@defasm/core'
 example = '''
@@ -92,7 +92,7 @@ syscall
 
 [AWK]
 size    = '1.72 MiB'
-version = '5.2.1'
+version = '5.2.2'
 website = 'https://www.gnu.org/software/gawk/'
 example = '''
 BEGIN {
@@ -154,7 +154,7 @@ Next
 '''
 
 [brainfuck]
-size    = '4.57 MiB'
+size    = '4.5 MiB'
 version = '3bdbd20'
 website = 'https://github.com/primo-ppcg/bf-jit'
 example = '''
@@ -204,7 +204,7 @@ int main(int argc, char* argv[]) {
 
 ['C#']
 size    = '149 MiB'
-version = 'C# 11.0 on .NET 7.0.3'
+version = 'C# 11.0 on .NET 7.0.5'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -301,8 +301,8 @@ end
 '''
 
 [D]
-size    = '293 MiB'
-version = 'D 2.100.1 on LDC 1.30.0'
+size    = '296 MiB'
+version = 'D 2.102.2 on LDC 1.32.0'
 website = 'https://dlang.org'
 example = '''
 import std.stdio;
@@ -361,7 +361,7 @@ for arg <- System.argv, do: IO.puts arg
 
 ['F#']
 size    = '150 MiB'
-version = 'F# 7.0 on .NET 7.0.3'
+version = 'F# 7.0 on .NET 7.0.5'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -469,7 +469,7 @@ main = do
 '''
 
 [Hexagony]
-size    = '8.5 MiB'
+size    = '7.98 MiB'
 version = '770406a'
 website = 'https://github.com/SirBogman/Hexagony'
 example = '''
@@ -496,7 +496,7 @@ example = '''
 
 [J]
 size    = '11 MiB'
-version = '9.4.20'
+version = '9.4.21'
 website = 'https://www.jsoftware.com'
 example = '''
 NB.Printing
@@ -510,8 +510,8 @@ echo each 2}.ARGV
 '''
 
 [Janet]
-size    = '1.35 MiB'
-version = '1.27.0'
+size    = '1.37 MiB'
+version = '1.28.0'
 website = 'https://janet-lang.org'
 example = '''
 # Printing
@@ -548,8 +548,8 @@ class Main {
 '''
 
 [JavaScript]
-size    = '23.8 MiB'
-version = 'V8 11.1.277.17'
+size    = '24.3 MiB'
+version = 'V8 11.3.244.11'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -586,8 +586,8 @@ end
 '''
 
 [K]
-size    = '530 KiB'
-version = '53b33a9f8b'
+size    = '526 KiB'
+version = 'c8f24002b1'
 website = 'https://codeberg.org/ngn/k'
 example = '''
 /Printing
@@ -658,7 +658,7 @@ for arg in commandLineParams():
 '''
 
 [OCaml]
-size    = '99.1 MiB'
+size    = '99.2 MiB'
 version = '5.0.0'
 website = 'https://ocaml.org'
 example = '''
@@ -678,7 +678,7 @@ Sys.argv
 '''
 
 [Pascal]
-size    = '30 MiB'
+size    = '30.7 MiB'
 version = '3.2.2'
 website = 'https://freepascal.org'
 example = '''
@@ -734,7 +734,7 @@ for ($i = 1; $i < $argc; $i++)
 
 [PowerShell]
 size    = '176 MiB'
-version = 'PowerShell 7.3.3 on .NET 7.0.3'
+version = 'PowerShell 7.3.4 on .NET 7.0.5'
 website = 'https://docs.microsoft.com/powershell/scripting/overview'
 example = '''
 # Printing
@@ -752,7 +752,7 @@ ForEach ($arg in $args) {
 '''
 
 [Prolog]
-size    = '50.8 MiB'
+size    = '50.9 MiB'
 version = 'SWI-Prolog 8.4.2'
 website = 'https://www.swi-prolog.org'
 example = '''

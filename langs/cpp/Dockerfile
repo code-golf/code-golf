@@ -1,4 +1,4 @@
-FROM alpine:3.17 as builder
+FROM alpine:3.18 AS builder
 
 RUN apk add --no-cache build-base cmake curl python3
 
@@ -54,15 +54,17 @@ COPY --from=0 /llvm/lib/libLLVM-14.so  \
               /usr/lib/crti.o          \
               /usr/lib/crtn.o          \
               /usr/lib/libatomic.so    \
-              /usr/lib/libbfd-2.39.so  \
+              /usr/lib/libbfd-2.40.so  \
               /usr/lib/libc.so         \
               /usr/lib/libctf.so.0     \
               /usr/lib/libffi.so.8     \
               /usr/lib/libgcc_s.so     \
               /usr/lib/libgcc_s.so.1   \
               /usr/lib/liblzma.so.5    \
+              /usr/lib/libsframe.so.0  \
               /usr/lib/libstdc++.so    \
               /usr/lib/libstdc++.so.6  \
+              /usr/lib/libzstd.so.1    \
               /usr/lib/Scrt1.o         /usr/lib/
 
 COPY --from=0 /usr/lib/gcc/x86_64-alpine-linux-musl/12.2.1/libgcc.a    \

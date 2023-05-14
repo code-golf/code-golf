@@ -1,8 +1,8 @@
-FROM alpine:3.17 AS builder
+FROM alpine:3.18 AS builder
 
 RUN apk add --no-cache build-base curl
 
-RUN curl -L https://github.com/janet-lang/janet/archive/refs/tags/v1.27.0.tar.gz | tar xz
+RUN curl -L https://github.com/janet-lang/janet/archive/refs/tags/v1.28.0.tar.gz | tar xz
 
 RUN mv janet-* janet \
  && cd janet         \

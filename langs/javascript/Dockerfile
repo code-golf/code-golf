@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim as builder
+FROM debian:bullseye-slim AS builder
 
 RUN apt-get update \
  && apt-get install -y curl g++ git pkg-config python python3
@@ -10,7 +10,7 @@ RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git \
 
 WORKDIR /v8
 
-RUN git checkout 11.1.277.17 && gclient sync -D
+RUN git checkout 11.3.244.11 && gclient sync -D
 
 RUN gn gen out --args="                 \
     is_debug=false                      \

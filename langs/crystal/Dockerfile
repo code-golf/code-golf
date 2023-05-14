@@ -1,4 +1,4 @@
-FROM crystallang/crystal:1.8.1-alpine as builder
+FROM crystallang/crystal:1.8.1-alpine AS builder
 
 RUN strip /usr/bin/crystal
 

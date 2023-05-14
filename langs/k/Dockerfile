@@ -1,6 +1,6 @@
-FROM alpine:3.17 as builder
+FROM alpine:3.18 AS builder
 
-ENV VERSION=53b33a9f8b
+ENV VERSION=c8f24002b1
 
 RUN apk add --no-cache build-base curl
 

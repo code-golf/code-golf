@@ -1,4 +1,4 @@
-FROM alpine:edge as builder
+FROM alpine:3.18 AS builder
 
 RUN apk add --no-cache R=4.3.0-r0 build-base curl perl
 

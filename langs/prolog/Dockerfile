@@ -1,4 +1,4 @@
-FROM swipl:8.4.2 as builder
+FROM swipl:8.4.2 AS builder
 
 RUN apt-get update && apt-get install -y gcc
 
