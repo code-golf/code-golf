@@ -450,8 +450,8 @@ n*
 '''
 
 [Haskell]
-size    = '310 MiB'
-version = 'Glasgow Haskell Compiler 9.0.2'
+size    = '406 MiB'
+version = 'Glasgow Haskell Compiler 9.4.4'
 website = 'https://www.haskell.org/ghc/'
 example = '''
 import System.Environment
