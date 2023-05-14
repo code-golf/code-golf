@@ -67,10 +67,8 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 
 			i := 0
 			for s := range solutions {
-				var passes, fails int
-
-				// Best of three runs.
-				for j := 0; passes < 2 && fails < 2; j++ {
+				// Run each solution up to three times.
+				for j := 0; j < 3; j++ {
 					score := func() hole.Scorecard {
 						defer func() {
 							if r := recover(); r != nil {
@@ -81,17 +79,14 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 						return play(r.Context(), s.HoleID, s.LangID, s.code)
 					}()
 
+					s.Stderr = string(score.Stderr)
 					s.Took = score.Took
 
 					if score.Pass {
-						passes++
-					} else {
-						fails++
-						s.Stderr = string(score.Stderr)
+						s.Pass = true
+						break
 					}
 				}
-
-				s.Pass = passes > fails
 
 				// If the last run differs from the DB, update the database.
 				//
