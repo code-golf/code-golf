@@ -47,13 +47,13 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE FUNCTION pangramglot(langs lang[]) RETURNS int AS $$
+CREATE FUNCTION pangramglot(langs lang[]) RETURNS int IMMUTABLE RETURN (
     WITH letters AS (
         SELECT DISTINCT unnest(regexp_split_to_array(nullif(regexp_replace(
                lang::text, '-sharp$|pp$|^fish$|[^a-z]', '', 'g'), ''), ''))
           FROM unnest(langs) lang
     ) SELECT COUNT(*) FROM letters
-$$ LANGUAGE SQL STABLE;
+);
 
 CREATE TYPE save_solution_ret AS (
     beat_bytes           int,
