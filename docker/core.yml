@@ -14,7 +14,7 @@ services:
     volumes:
       - ..:/go
   db:
-    image: postgres:15.2-alpine
+    image: postgres:15.3-alpine
     environment:
       POSTGRES_DB: code-golf
       POSTGRES_HOST_AUTH_METHOD: trust
