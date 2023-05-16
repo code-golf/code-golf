@@ -57,8 +57,12 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
     if (mknod("/dev/urandom", S_IFCHR|0444, makedev(1, 9)) < 0)
         ERR_AND_EXIT("mknod");
 
-    if (mount("proc", "/proc", "proc", MS_NODEV|MS_NOEXEC|MS_NOSUID|MS_RDONLY, NULL) < 0)
+    if (mount("proc", "/proc", "proc", MS_NODEV|MS_NOEXEC|MS_NOSUID, NULL) < 0)
         ERR_AND_EXIT("mount proc");
+
+    // Clobber /proc/meminfo. It can be used to inject state.
+    if (chmod("/proc/meminfo", 0) < 0)
+        ERR_AND_EXIT("chmod /proc/meminfo");
 
     // Clobber /proc/sys. It can be used to inject state.
     if (mount("tmpfs", "/proc/sys", "tmpfs", MS_NODEV|MS_NOEXEC|MS_NOSUID|MS_RDONLY, NULL) < 0)
