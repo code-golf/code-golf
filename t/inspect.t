@@ -15,7 +15,7 @@ $mounts ~~ s:g/ ',lowerdir=' \S+ //;  # Strip the Docker specific crap.
 is $mounts, Q:to/MOUNTS/.chomp, '/proc/mounts';
     overlay / overlay rw,relatime 0 0
     tmpfs /dev tmpfs rw,nosuid,relatime 0 0
-    proc /proc proc ro,nosuid,nodev,noexec,relatime 0 0
+    proc /proc proc rw,nosuid,nodev,noexec,relatime 0 0
     tmpfs /proc/sys tmpfs ro,nosuid,nodev,noexec,relatime 0 0
     tmpfs /tmp tmpfs rw,nosuid,nodev,relatime 0 0
     MOUNTS
