@@ -621,7 +621,7 @@ example = '''
 
 [Lua]
 size    = '342 KiB'
-version = '5.4.4'
+version = '5.4.6'
 website = 'https://www.lua.org'
 example = '''
 -- Printing
@@ -890,8 +890,8 @@ G
 '''
 
 [SQL]
-size    = '1.13 MiB'
-version = '3.41.2'
+size    = '1.14 MiB'
+version = '3.42.0'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
