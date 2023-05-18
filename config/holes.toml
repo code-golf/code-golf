@@ -1126,7 +1126,7 @@ preamble = '''
 '''
 
 ['Kolakoski Constant']
-category = 'Mathematics'
+categories = ['Mathematics', 'Sequence']
 variants = ['Kolakoski Constant', 'Kolakoski Sequence']
 links = [
     { v = [0], name = 'OEIS A118270', url = '//oeis.org/A118270' },

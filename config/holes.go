@@ -33,6 +33,7 @@ type (
 		V    []int  `json:"-"`
 	}
 	Hole struct {
+		Categories                              []string      `json:"-"`
 		Category                                string        `json:"category"`
 		CategoryColor, CategoryIcon, Prev, Next string        `json:"-"`
 		Data                                    template.JS   `json:"-"`
@@ -81,7 +82,7 @@ func init() {
 		}
 
 		var variants []*Hole
-		for _, variant := range hole.Variants {
+		for i, variant := range hole.Variants {
 			hole := *hole
 
 			// Process the templated preamble with the current variant.
@@ -100,6 +101,10 @@ func init() {
 
 			holes[variant] = &hole
 			variants = append(variants, &hole.Hole)
+
+			if len(hole.Categories) > 0 {
+				hole.Category = hole.Categories[i]
+			}
 		}
 
 		// Reference the variants from each variant.
