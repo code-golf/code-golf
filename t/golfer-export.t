@@ -1,9 +1,8 @@
 use t;
 use JSON::Fast;
 
-my $dbh = dbh;
-createUser($dbh, 1);
-my $session = createSession($dbh, 1);
+my $code    = 'say "Fizz" x $_ %% 3 ~ "Buzz" x $_ %% 5 || $_ for 1 .. 100';
+my $session = new-golfer;
 
 is-deeply export, {
     name      => 'Bob',
@@ -20,8 +19,6 @@ is-deeply export, {
     cheevos   => [ { :cheevo<takeout> :earned<datetime> }, ],
     solutions => [],
 }, 'Second export has takeout cheevo';
-
-my $code = 'say "Fizz" x $_ %% 3 ~ "Buzz" x $_ %% 5 || $_ for 1 .. 100';
 
 post-solution :$code :$session;
 

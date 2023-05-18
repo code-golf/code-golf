@@ -5,13 +5,6 @@ use t;
 
 plan 53;
 
-sub createUserAndSession {
-    my $dbh = dbh;
-    my $userId = 1;
-    createUser($dbh, $userId);
-    my $session = createSession($dbh, $userId);
-}
-
 for (False, True) -> $loggedIn {
     my $loggedInContext = $loggedIn ?? 'logged in' !! 'not logged in';
 
@@ -23,7 +16,7 @@ for (False, True) -> $loggedIn {
     sub setup(HoleWebDriver:D $wd) {
         $wd.loadFizzBuzz;
         if $loggedIn {
-            $wd.setSessionCookie: createUserAndSession;
+            $wd.setSessionCookie: new-golfer;
             $wd.loadFizzBuzz;
         }
     }
@@ -687,7 +680,7 @@ subtest 'When not logged in, after a user submits different bytes and chars solu
     $wd.isPassing: 'after submitting the chars solution, while logged out.';
     $wd.isSolutionPickerState: 'chars', 'after submitting the chars solution, while logged out.';
     # Log in and reload the page.
-    $wd.setSessionCookie: createUserAndSession;
+    $wd.setSessionCookie: new-golfer;
     $wd.loadFizzBuzz;
     $wd.isBytesAndChars: 210, 88, 'after reloading the page';
     $wd.isSolutionPickerState: 'chars', 'after reloading the page';
@@ -729,7 +722,7 @@ subtest 'When not logged in, after a user submits different bytes and chars solu
     $wd.isPassing: 'after submitting the bytes solution, while logged out.';
     $wd.isSolutionPickerState: 'bytes', 'after submitting the bytes solution, while logged out.';
     # Log in and reload the page.
-    $wd.setSessionCookie: createUserAndSession;
+    $wd.setSessionCookie: new-golfer;
     $wd.loadFizzBuzz;
     $wd.isBytesAndChars: 121, 121, 'after reloading the page';
     $wd.isSolutionPickerState: 'bytes', 'after reloading the page';
@@ -771,7 +764,7 @@ subtest 'When not logged in, after a user submits different bytes and chars solu
     $wd.isPassing: 'after submitting the chars solution, while logged out.';
     $wd.isSolutionPickerState: 'chars', 'after submitting the chars solution, while logged out.';
     # Log in and reload the page.
-    $wd.setSessionCookie: createUserAndSession;
+    $wd.setSessionCookie: new-golfer;
     $wd.loadFizzBuzz;
     $wd.isBytesAndChars: 210, 88, 'after logging in and reloading the page.';
     $wd.isSolutionPickerState: 'chars', 'after logging in and reloading the page.';
@@ -804,7 +797,7 @@ subtest 'When not logged in, after a user submits different bytes and chars solu
     $wd.isPassing: 'after submitting the bytes solution, while logged out.';
     $wd.isSolutionPickerState: 'bytes', 'after submitting the bytes solution, while logged out.';
     # Log in and reload the page.
-    $wd.setSessionCookie: createUserAndSession;
+    $wd.setSessionCookie: new-golfer;
     $wd.loadFizzBuzz;
     $wd.isBytesAndChars: 121, 121, 'after reloading the page';
     $wd.isSolutionPickerState: 'bytes', 'after reloading the page';
@@ -824,7 +817,7 @@ subtest 'If the user improves their solution on another browser, the restore sol
     my $wd = HoleWebDriver.create;
     LEAVE $wd.delete-session;
     $wd.loadFizzBuzz;
-    my $session = createUserAndSession;
+    my $session = new-golfer;
     $wd.setSessionCookie: $session;
     $wd.loadFizzBuzz;
     $wd.getLangLink('Python').click;

@@ -3,12 +3,9 @@ use t;
 throws-like { $client.get: 'https://app/golfer/settings' },
     Exception, message => /'403 Forbidden'/, '403 with no session';
 
-my $dbh = dbh;
-
-$dbh.execute: "INSERT INTO users (id, login) VALUES (123, 'foo'), (456, 'bar')";
-
-my $session = $dbh.execute(
-    'INSERT INTO sessions (user_id) VALUES (123) RETURNING id').row.head;
+my $dbh     = dbh;
+my $session = new-golfer :$dbh :id(123) :name<foo>;
+              new-golfer :$dbh :id(456) :name<bar>;
 
 is-deeply settings, {
     :country(Str), :layout<default>, :keymap<default>, :referrer_id(Int),

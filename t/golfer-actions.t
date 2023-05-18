@@ -1,12 +1,9 @@
 use t;
 use HTTP::Tiny;
 
-my $dbh = dbh;
-
-$dbh.execute: "INSERT INTO users (id, login) VALUES (123, 'foo'), (456, 'bar')";
-
-my $session = $dbh.execute(
-    'INSERT INTO sessions (user_id) VALUES (123) RETURNING id').row.head;
+my $dbh     = dbh;
+my $session = new-golfer :$dbh :id(123) :name<foo>;
+              new-golfer :$dbh :id(456) :name<bar>;
 
 is post('follow', 'foo')<status>, 400, "Can't follow yourself";
 is post('unfollow', 'foo')<status>, 400, "Can't unfollow yourself";

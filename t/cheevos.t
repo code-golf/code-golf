@@ -24,9 +24,8 @@ constant %langs = <
     36 {omniglot}
 >;
 
-my $dbh = dbh;
-createUser($dbh, 1);
-my $session = createSession($dbh, 1);
+my $dbh     = dbh;
+my $session = new-golfer :$dbh;
 
 $client.get: 'https://app/about',
     headers => { cookie => "__Host-session=$session" };

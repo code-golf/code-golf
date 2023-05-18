@@ -11,14 +11,7 @@ unit module t;
 
 our $client is export = HTTP::Tiny.new :throw-exceptions;
 
-sub createSession($dbh, int $userId) is export {
-    $dbh.execute("INSERT INTO sessions (user_id) VALUES ($userId) RETURNING id").row.head;
-}
-
-sub createUser($dbh, $id, $name = 'Bob') is export {
-    $dbh.execute: 'INSERT INTO users (id, login) VALUES ($1, $2)', $id, $name;
-}
-
+# Connect to the DB, truncate solutions & users, return the handle.
 sub dbh is export {
     my $dbh = DBIish.connect: 'Pg';
 
@@ -28,6 +21,14 @@ sub dbh is export {
     $dbh;
 }
 
+# Create a new Golfer, log them in, and return the session ID.
+# If called with no DB handle then it'll implicitly connect & truncate tables.
+sub new-golfer(:$dbh = dbh, :$id = 1, :$name = 'Bob') is export {
+    $dbh.execute('INSERT INTO users (id, login) VALUES ($1, $2)', $id, $name);
+    $dbh.execute('INSERT INTO sessions (user_id) VALUES ($1) RETURNING id', $id).row.head;
+}
+
+# Submit a solution and return the deserialised response.
 sub post-solution(:$code, :$hole = 'fizz-buzz', :$lang = 'raku', :$session = '') is export {
     $client.post(
         'https://app/solution',

@@ -7,11 +7,8 @@ my $dbh = dbh;
 # Setup #
 #########
 
-createUser($dbh, 1, 'Alice');
-createUser($dbh, 2, 'Bob');
-
-createSession($dbh, 1);
-createSession($dbh, 2);
+new-golfer :$dbh :id(1) :name<Alice>;
+new-golfer :$dbh :id(2) :name<Bob>;
 
 # Alice authored Fizz Buzz.
 $dbh.execute: "INSERT INTO authors VALUES ('fizz-buzz', 1)";
