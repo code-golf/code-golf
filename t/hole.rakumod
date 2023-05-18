@@ -2,9 +2,10 @@ use Test;
 use WebDriver;
 
 # https://www.w3.org/TR/webdriver/#keyboard-actions
-constant BACKSPACE = "\xe003";
-constant CONTROL   = "\xe009";
-constant DELETE    = "\xe017";
+constant WD-BACKSPACE = "\xe003";
+constant WD-CONTROL   = "\xe009";
+constant WD-END       = "\xe010";
+constant WD-DELETE    = "\xe017";
 
 our $raku57_55 is export = 'say "Fizz" x $_ %% 3 ~ "Buzz" x $_ %% 5 || $_ for 1…100';
 
@@ -167,10 +168,10 @@ class HoleWebDriver is WebDriver is export {
     }
 
     method clearCode {
-        $.find('.cm-content').send-keys: CONTROL ~ 'a' ~ DELETE;
+        $.find('.cm-content').click.send-keys: WD-CONTROL ~ 'a' ~ WD-DELETE;
     }
 
     method typeCode(Str:D $code) {
-        $.find('.cm-content').send-keys: $code;
+        $.find('.cm-content').click.send-keys(WD-CONTROL ~ WD-END).send-keys($code);
     }
 }

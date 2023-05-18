@@ -88,7 +88,7 @@ for (False, True) -> $loggedIn {
         $wd.typeCode: 'abc';
         $wd.isBytesAndChars: 60, 58, 'after modifying code.';
         $wd.isRestoreSolutionLinkVisible: True, 'after modifying code.';
-        $wd.typeCode: BACKSPACE x 3;
+        $wd.typeCode: WD-BACKSPACE x 3;
         $wd.isBytesAndChars: 57, 55, 'after manually reverting changes.';
         $wd.isRestoreSolutionLinkVisible: False, 'after manually reverting changes.';
     }

@@ -32,7 +32,7 @@ subtest 'Run button cancels running solutions.' => {
     $wd.isBytesAndChars: 7, 7, 'after typing a failing solution.';
     $wd.run;
     # Submit a correct solution that finishes much faster than the failing one.
-    $wd.typeCode: BACKSPACE x 7 ~ $raku57_55;
+    $wd.typeCode: WD-BACKSPACE x 7 ~ $raku57_55;
     $wd.isBytesAndChars: 57, 55, 'after typing a passing solution.';
     $wd.run;
     $wd.isPassing: 'after running the correct solution.';

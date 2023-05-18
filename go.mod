@@ -6,7 +6,7 @@ require (
 	github.com/DATA-DOG/go-sqlmock v1.5.0
 	github.com/SeerUK/assert v1.0.0
 	github.com/agnivade/levenshtein v1.1.1
-	github.com/buildkite/terminal-to-html/v3 v3.7.0
+	github.com/buildkite/terminal-to-html/v3 v3.8.0
 	github.com/bwmarrin/discordgo v0.27.1
 	github.com/go-chi/chi/v5 v5.0.8
 	github.com/go-git/go-billy/v5 v5.4.1
