@@ -22,7 +22,7 @@ x is a no-op.
 '''
 
 [Assembly]
-size    = '90.9 MiB'
+size    = '89.9 MiB'
 version = 'DefAssembler 2.3.1'
 website = 'https://www.npmjs.com/package/@defasm/core'
 example = '''
