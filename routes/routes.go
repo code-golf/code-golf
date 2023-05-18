@@ -12,6 +12,7 @@ func Router(db *sqlx.DB) http.Handler {
 	r := chi.NewRouter()
 
 	r.Use(
+		middleware.Session,
 		middleware.Logger,
 		errorMiddleware,
 		middleware.Recoverer,

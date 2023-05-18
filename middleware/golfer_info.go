@@ -21,7 +21,8 @@ func GolferInfo(next http.Handler) http.Handler {
 			// TODO Handle /holes suffix.
 			http.Redirect(w, r, "/golfers/"+info.Name, http.StatusPermanentRedirect)
 		default:
-			next.ServeHTTP(w, session.Set(r, "golfer-info", info))
+			session.Get(r).GolferInfo = info
+			next.ServeHTTP(w, r)
 		}
 	})
 }

@@ -91,7 +91,7 @@ func Golfer(next http.Handler) http.Handler {
 			); err == nil {
 				golfer.TimeZone, _ = time.LoadLocation(timeZone.String)
 
-				r = session.Set(r, "golfer", &golfer)
+				session.Get(r).Golfer = &golfer
 
 				// Refresh the cookie.
 				http.SetCookie(w, &http.Cookie{
