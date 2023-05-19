@@ -17,14 +17,7 @@
 
         {{ range .Data.Golfers }}
             <tr{{ if eq $name .Name }} class=me {{ end }}>
-                <td>
-                    <a href="/golfers/{{ .Name }}">
-                        <img loading=lazy src="//avatars.githubusercontent.com/{{ .Name }}?s=48">
-                        <span>{{ .Name }}</span>
-                    {{ with index $.Countries .Country }}
-                        <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
-                    {{ end }}
-                    </a>
+                <td>{{ template "golfer-link" . }}
                 <td>
                     <div>
                     {{ range .Langs }}

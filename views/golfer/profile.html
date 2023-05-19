@@ -103,8 +103,8 @@
         </section>
 
     {{ if gt (len .Data.Following) 1 }}
-        {{ $me := "" }}
-        {{ with .Golfer }}{{ $me = .Name }}{{ end }}
+        {{ $name := "" }}
+        {{ with .Golfer }}{{ $name = .Name }}{{ end }}
         <table class=nowrap-second>
             <thead>
                 <tr>
@@ -116,16 +116,9 @@
                     <th class=right>Chars
             <tbody>
             {{ range .Data.Following }}
-                <tr {{ if eq .Login $me }} class=me {{ end }}>
+                <tr {{ if eq $name .Name }} class=me {{ end }}>
                     <td>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
-                    <td>
-                        <a href="/golfers/{{ .Login }}">
-                            <img loading=lazy src="//avatars.githubusercontent.com/{{ .Login }}?s=48">
-                            <span>{{ .Login }}</span>
-                        {{ with index $.Countries .CountryFlag }}
-                            <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
-                        {{ end }}
-                        </a>
+                    <td>{{ template "golfer-link" . }}
                     <td class=right>{{ comma .Bytes }}
                     <td class=right>{{ comma .Chars }}
             {{ end }}

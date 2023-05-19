@@ -101,16 +101,9 @@
     {{ with .Golfer }}{{ $name = .Name }}{{ end }}
 
     {{ range .Data.Rows }}
-        <tr{{ if eq $name .Login }} class=me {{ end }}>
+        <tr{{ if eq $name .Name }} class=me {{ end }}>
             <td>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup>
-            <td>
-                <a href="/golfers/{{ .Login }}">
-                    <img loading=lazy src="//avatars.githubusercontent.com/{{ .Login }}?s=48">
-                    <span>{{ .Login }}</span>
-                {{ with index $.Countries .Country }}
-                    <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
-                {{ end }}
-                </a>
+            <td>{{ template "golfer-link" . }}
             <td class=right>
             {{ if eq $.Data.HoleID "all" }}
                 {{ .Holes }}
@@ -122,7 +115,7 @@
             {{ if eq $.Data.HoleID "all" }}
                 {{ comma .Strokes }}
             {{ else }}
-                <a href="/golfers/{{ .Login }}/{{ $.Data.HoleID }}/{{ .Lang.ID }}/{{ $.Data.Scoring }}"
+                <a href="/golfers/{{ .Name }}/{{ $.Data.HoleID }}/{{ .Lang.ID }}/{{ $.Data.Scoring }}"
                 {{ if .OtherStrokes }}
                    data-tooltip="{{ title $.Data.Scoring }} solution is {{ comma .Strokes }} {{ $.Data.Scoring }}, {{ comma .OtherStrokes }} {{ $.Data.OtherScoring }}."
                 {{ end }}>

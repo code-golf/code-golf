@@ -92,17 +92,13 @@
         {{ with .Golfer }}{{ $name = .Name }}{{ end }}
 
         {{ range .Data.Rows }}
-            <tr{{ if eq $name .Login }} class="me"{{ end }}>
+            <tr{{ if eq $name .Name }} class="me"{{ end }}>
                 <td>
                     <a href="/{{ .Hole.ID }}#{{ .Lang.ID }}">
                         <svg><use href="#{{ .Lang.ID }}"/></svg>
                         <span>{{ .Hole.Name }}</span>
                     </a>
-                <td>
-                    <a href="/golfers/{{ .Login }}">
-                        <img loading=lazy src="//avatars.githubusercontent.com/{{ .Login }}?s=48">
-                        <span>{{ .Login }}</span>
-                    </a>
+                <td>{{ template "golfer-link" . }}
                 <td class=wide title="{{ if eq .TieCount 1 }}Uncontested{{ else }}Joint{{ end }} {{ .Rank }}{{ ord .Rank }} with {{ comma .Strokes }} {{ $.Data.Scoring }} in {{ .Lang.Name }}">
                     {{ if and (eq .Rank 1) (eq .TieCount 1) }}💎
                     {{ else if eq .Rank 1                   }}🥇

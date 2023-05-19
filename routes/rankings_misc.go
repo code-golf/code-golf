@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
 )
@@ -84,9 +85,11 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Pager *pager.Pager
 		Rows  []struct {
-			Bytes, Chars, Count, Rank, Total        int
-			CountryFlag, Hole, Lang, Login, Scoring string
-			Submitted                               time.Time
+			Bytes, Chars, Count, Rank, Total int
+			Country                          config.NullCountry `db:"country_flag"`
+			Hole, Lang, Scoring              string
+			Name                             string `db:"login"`
+			Submitted                        time.Time
 		}
 	}{Pager: pager.New(r)}
 

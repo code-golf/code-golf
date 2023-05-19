@@ -30,7 +30,8 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		Followers   []string
 		Following   []struct {
 			Bytes, Chars, Rank int
-			CountryFlag, Login string
+			Country            config.NullCountry
+			Name               string
 		}
 		Langs          []*config.Lang
 		OAuthProviders map[string]*oauth.Config
@@ -143,7 +144,7 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 	if err := db.Select(
 		&data.Following,
 		`WITH follows AS (
-		    SELECT country_flag, login,
+		    SELECT country_flag country, login name,
 		           COALESCE((SELECT points FROM points
 		              WHERE scoring = 'bytes' AND user_id = id), 0) bytes,
 		           COALESCE((SELECT points FROM points
@@ -152,7 +153,7 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		     WHERE id = ANY(following($1, $2))
 		) SELECT *, RANK() OVER (ORDER BY bytes DESC, chars DESC)
 		    FROM follows
-		ORDER BY rank, login`,
+		ORDER BY rank, name`,
 		golfer.ID,
 		golfer.FollowLimit(),
 	); err != nil {

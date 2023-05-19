@@ -13,9 +13,10 @@ import (
 // GET /recent/solutions/{hole}/{lang}/{scoring}
 func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 	type row struct {
+		Country                 config.NullCountry
+		Name                    string
 		Hole                    *config.Hole
 		Lang                    *config.Lang
-		Login                   string
 		Rank, Strokes, TieCount int
 		Submitted               time.Time
 	}
@@ -70,7 +71,7 @@ func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 		if err := rows.Scan(
 			&holeID,
 			&langID,
-			&r.Login,
+			&r.Name,
 			&r.Strokes,
 			&r.Rank,
 			&r.Submitted,

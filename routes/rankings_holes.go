@@ -17,10 +17,11 @@ import (
 // GET /rankings/recent-holes/{hole}/{lang}/{scoring}
 func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 	type row struct {
-		Country, Login               string
+		Country                      config.NullCountry
 		Holes, Rank, Points, Strokes int
-		OtherStrokes                 *int
 		Lang                         *config.Lang
+		Name                         string
+		OtherStrokes                 *int
 		Submitted                    time.Time
 	}
 
@@ -194,7 +195,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			&r.Country,
 			&r.Holes,
 			&langID,
-			&r.Login,
+			&r.Name,
 			&r.Points,
 			&r.Rank,
 			&r.Strokes,

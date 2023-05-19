@@ -60,16 +60,9 @@
         {{ with .Golfer }}{{ $name = .Name }}{{ end }}
 
         {{ range .Data.Rows }}
-            <tr{{ if eq $name .Login }} class=me {{ end }}>
+            <tr{{ if eq $name .Name }} class=me {{ end }}>
                 <td>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup>
-                <td>
-                    <a href="/golfers/{{ .Login }}">
-                        <img loading=lazy src="//avatars.githubusercontent.com/{{ .Login }}?s=48">
-                        <span>{{ .Login }}</span>
-                    {{ with index $.Countries .CountryFlag }}
-                        <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
-                    {{ end }}
-                    </a>
+                <td>{{ template "golfer-link" . }}
             {{ if $oldestDiamonds }}
                 <td>
                     <a href="/rankings/holes/{{ .Hole }}/{{ .Lang }}/{{ .Scoring }}">

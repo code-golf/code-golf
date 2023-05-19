@@ -11,7 +11,8 @@ import (
 // GET /rankings/medals/{hole}/{lang}
 func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 	type row struct {
-		Country, Login                      string
+		Country                             config.NullCountry
+		Name                                string
 		Rank, Diamond, Gold, Silver, Bronze int
 	}
 
@@ -81,7 +82,7 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 		if err := rows.Scan(
 			&r.Rank,
 			&r.Country,
-			&r.Login,
+			&r.Name,
 			&r.Diamond,
 			&r.Gold,
 			&r.Silver,

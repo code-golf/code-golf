@@ -9,11 +9,7 @@
         <tbody>
         {{ range .Data.Sessions }}
             <tr>
-                <td>
-                    <a href="/golfers/{{ .Golfer }}">
-                        <img loading=lazy src="//avatars.githubusercontent.com/{{ .Golfer }}?s=48">
-                        <span>{{ .Golfer }}</span>
-                    </a>
+                <td>{{ template "golfer-link" . }}
                 <td>{{ time .LastUsed }}
         {{ end }}
     </table>

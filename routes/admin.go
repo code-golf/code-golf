@@ -21,8 +21,9 @@ func adminGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Countries []*country
 		Sessions  []struct {
-			Golfer   string
+			Country  config.NullCountry
 			LastUsed time.Time
+			Name     string
 		}
 		Tables []struct {
 			Name       sql.NullString
@@ -34,11 +35,15 @@ func adminGET(w http.ResponseWriter, r *http.Request) {
 
 	if err := db.Select(
 		&data.Sessions,
-		` SELECT login golfer, MAX(last_used) last_used
-		    FROM sessions JOIN users ON user_id = users.id
-		   WHERE user_id != $1
-		     AND last_used > TIMEZONE('UTC', NOW()) - INTERVAL '1 day'
-		GROUP BY login
+		`WITH grouped_sessions AS (
+		    SELECT user_id, MAX(last_used) last_used
+		      FROM sessions
+		     WHERE user_id != $1
+		       AND last_used > TIMEZONE('UTC', NOW()) - INTERVAL '1 day'
+		  GROUP BY user_id
+		) SELECT country_flag country, last_used, login name
+		    FROM grouped_sessions
+		    JOIN users ON id = user_id
 		ORDER BY last_used DESC`,
 		session.Golfer(r).ID,
 	); err != nil {

@@ -13,10 +13,11 @@ import (
 // GET /recent/golfers
 func recentGolfersGET(w http.ResponseWriter, r *http.Request) {
 	type golfer struct {
-		Cheevos       int
-		Country, Name string
-		Date          time.Time
-		Langs         []string
+		Cheevos int
+		Country config.NullCountry
+		Name    string
+		Date    time.Time
+		Langs   []string
 	}
 
 	data := struct {

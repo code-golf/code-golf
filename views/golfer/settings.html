@@ -70,11 +70,13 @@
 
         <select name=country>
             <option value>Rather not say
+        {{ $country := "" }}
+        {{ with .Golfer.Country.Country }}{{ $country = .ID }}{{ end }}
         {{- range $continent, $countries := .Data.Countries -}}
             <optgroup label="{{ $continent }}">
             {{- range $countries -}}
                 <option value="{{ .ID }}"
-                    {{- if eq .ID $.Golfer.Country }} selected{{ end }}>
+                    {{- if eq .ID $country }} selected{{ end }}>
                     {{- .Flag }}&ensp;{{ .Name -}}
             {{- end -}}
         {{- end -}}

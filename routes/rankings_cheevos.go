@@ -15,9 +15,10 @@ func rankingsCheevosGET(w http.ResponseWriter, r *http.Request) {
 	cheevoID := param(r, "cheevo")
 
 	type row struct {
-		Country, Login string
-		Earned         time.Time
-		Rank, Count    int
+		Country     config.NullCountry
+		Earned      time.Time
+		Name        string
+		Rank, Count int
 	}
 
 	data := struct {
@@ -68,7 +69,7 @@ func rankingsCheevosGET(w http.ResponseWriter, r *http.Request) {
 			&r.Count,
 			&r.Country,
 			&r.Earned,
-			&r.Login,
+			&r.Name,
 			&r.Rank,
 			&data.Pager.Total,
 		); err != nil {

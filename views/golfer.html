@@ -10,7 +10,7 @@
         <img src="//avatars.githubusercontent.com/{{ .Name }}?s=176">
         <h1>
             {{ .Name }}
-        {{ with index $.Countries .Country }}
+        {{ with .Country.Country }}
             <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
         {{ end }}
         </h1>

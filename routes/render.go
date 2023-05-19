@@ -164,7 +164,6 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		CSS                                             []cssLink
 		AutoDarkCSSLink                                 string
 		Cheevos                                         map[string][]*config.Cheevo
-		Countries                                       map[string]*config.Country
 		Data, Description, Title                        any
 		DarkModeMediaQuery, LogInURL, Name, Nonce, Path string
 		Golfer                                          *golfer.Golfer
@@ -177,7 +176,6 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	}{
 		Banners:            banners(theGolfer, time.Now().UTC()),
 		Cheevos:            config.CheevoTree,
-		Countries:          config.CountryByID,
 		CSS:                getCSSLinks(name, theme),
 		Data:               data[0],
 		DarkModeMediaQuery: getDarkModeMediaQuery(theme),
