@@ -135,7 +135,7 @@ done
 '''
 
 [BASIC]
-size    = '216 MiB'
+size    = '205 MiB'
 version = 'FreeBASIC 1.10.0'
 website = 'https://freebasic.net'
 example = '''
