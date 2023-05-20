@@ -7,16 +7,6 @@ var (
 
 type Country struct{ ID, Flag, Name string }
 
-type NullCountry struct {
-	Country *Country
-	Valid   bool
-}
-
-func (n *NullCountry) Scan(id any) error {
-	n.Country, n.Valid = CountryByID[string(id.([]byte))]
-	return nil
-}
-
 func init() {
 	unmarshal("countries.toml", &CountryTree)
 

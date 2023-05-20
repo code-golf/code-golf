@@ -78,7 +78,7 @@ func indexGET(w http.ResponseWriter, r *http.Request) {
 				      FROM rankings
 				     WHERE scoring = $1 AND user_id = $2
 				  ORDER BY hole, points DESC, lang
-				)  SELECT hole, COALESCE(lang::text, ''), COALESCE(points, 0)
+				)  SELECT hole, lang, COALESCE(points, 0)
 				     FROM unnest(enum_range(NULL::hole)) hole
 				LEFT JOIN points USING(hole)`,
 				data.Scoring,
@@ -90,7 +90,7 @@ func indexGET(w http.ResponseWriter, r *http.Request) {
 				    SELECT hole, lang, points_for_lang
 				      FROM rankings
 				     WHERE scoring = $1 AND user_id = $2 AND lang = $3
-				)  SELECT hole, COALESCE(lang::text, ''), COALESCE(points_for_lang, 0)
+				)  SELECT hole, lang, COALESCE(points_for_lang, 0)
 				     FROM unnest(enum_range(NULL::hole)) hole
 				LEFT JOIN points USING(hole)`,
 				data.Scoring,
@@ -106,18 +106,20 @@ func indexGET(w http.ResponseWriter, r *http.Request) {
 
 		for rows.Next() {
 			var card Card
-			var holeID, langID string
+			var hole config.NullHole // NULL when DB updated before config.
+			var lang config.NullLang // NULL when not solved.
 
-			if err := rows.Scan(&holeID, &langID, &card.Points); err != nil {
+			if err := rows.Scan(&hole, &lang, &card.Points); err != nil {
 				panic(err)
 			}
 
-			data.LangsUsed[langID] = true
+			if lang.Valid {
+				data.LangsUsed[lang.Lang.ID] = true
+			}
 
-			if hole, ok := config.HoleByID[holeID]; ok {
-				card.Hole = hole
-				card.Lang = config.LangByID[langID]
-
+			if hole.Valid {
+				card.Hole = hole.Hole
+				card.Lang = lang.Lang
 				data.Cards = append(data.Cards, card)
 			}
 		}

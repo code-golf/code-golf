@@ -33,7 +33,8 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if data.LangID != "all" {
-		rows, err := session.Database(r).Query(
+		if err := session.Database(r).Select(
+			&data.Rows,
 			`WITH ranks AS (
 			    SELECT hole, lang,
 			           RANK() OVER (PARTITION BY hole
@@ -46,30 +47,12 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 			ORDER BY hole, rank`,
 			data.Scoring,
 			data.LangID,
-		)
-		if err != nil {
-			panic(err)
-		}
-		defer rows.Close()
-
-		for rows.Next() {
-			var r row
-			var holeID string
-
-			if err := rows.Scan(&holeID, &r.Rank); err != nil {
-				panic(err)
-			}
-
-			r.Hole = config.HoleByID[holeID]
-
-			data.Rows = append(data.Rows, r)
-		}
-
-		if err := rows.Err(); err != nil {
+		); err != nil {
 			panic(err)
 		}
 	} else {
-		rows, err := session.Database(r).Query(
+		if err := session.Database(r).Select(
+			&data.Rows,
 			`WITH ranks AS (
 			    SELECT hole, lang, points, strokes,
 			           RANK()       OVER (PARTITION BY hole
@@ -81,45 +64,18 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 			), medals AS (
 			    SELECT DISTINCT hole, lang, rank FROM ranks WHERE rank < 4
 			) SELECT lang,
-			         SUM(points),
-			         SUM(strokes),
+			         SUM(points)  points,
+			         SUM(strokes) strokes,
 			         RANK() OVER(ORDER BY SUM(points) DESC, SUM(strokes) DESC),
-			         (SELECT COUNT(*) FROM medals WHERE lang = ranks.lang AND rank = 1),
-			         (SELECT COUNT(*) FROM medals WHERE lang = ranks.lang AND rank = 2),
-			         (SELECT COUNT(*) FROM medals WHERE lang = ranks.lang AND rank = 3)
+			         (SELECT COUNT(*) FROM medals WHERE lang = ranks.lang AND rank = 1) golds,
+			         (SELECT COUNT(*) FROM medals WHERE lang = ranks.lang AND rank = 2) silvers,
+			         (SELECT COUNT(*) FROM medals WHERE lang = ranks.lang AND rank = 3) bronzes
 			    FROM ranks
 			   WHERE row_number = 1
 			GROUP BY lang
 			ORDER BY rank, lang`,
 			data.Scoring,
-		)
-		if err != nil {
-			panic(err)
-		}
-		defer rows.Close()
-
-		for rows.Next() {
-			var r row
-			var langID string
-
-			if err := rows.Scan(
-				&langID,
-				&r.Points,
-				&r.Strokes,
-				&r.Rank,
-				&r.Golds,
-				&r.Silvers,
-				&r.Bronzes,
-			); err != nil {
-				panic(err)
-			}
-
-			r.Lang = config.LangByID[langID]
-
-			data.Rows = append(data.Rows, r)
-		}
-
-		if err := rows.Err(); err != nil {
+		); err != nil {
 			panic(err)
 		}
 	}

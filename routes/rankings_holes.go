@@ -86,7 +86,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			  GROUP BY user_id
 			) SELECT country_flag,
 			         holes,
-			         '',
+			         NULL,
 			         login,
 			         points,
 			         RANK() OVER (ORDER BY points DESC, strokes),
@@ -189,12 +189,12 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 
 	for rows.Next() {
 		var r row
-		var langID string
+		var lang config.NullLang
 
 		if err := rows.Scan(
 			&r.Country,
 			&r.Holes,
-			&langID,
+			&lang,
 			&r.Name,
 			&r.Points,
 			&r.Rank,
@@ -206,8 +206,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
-		r.Lang = config.LangByID[langID]
-
+		r.Lang = lang.Lang
 		data.Rows = append(data.Rows, r)
 	}
 

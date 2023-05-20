@@ -46,8 +46,9 @@ func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	rows, err := session.Database(r).Query(
-		` SELECT hole, lang, login, strokes, rank, submitted, tie_count
+	if err := session.Database(r).Select(
+		&data.Rows,
+		` SELECT hole, lang, login name, strokes, rank, submitted, tie_count
 		    FROM rankings
 		    JOIN users ON user_id = id
 		   WHERE (hole = $1 OR $1 IS NULL)
@@ -58,37 +59,12 @@ func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 		sql.NullString{String: data.LangID, Valid: data.LangID != "all"},
 		data.Scoring,
 		pager.PerPage,
-	)
-	if err != nil {
+	); err != nil {
 		panic(err)
 	}
-	defer rows.Close()
 
-	for rows.Next() {
-		var holeID, langID string
-		var r row
-
-		if err := rows.Scan(
-			&holeID,
-			&langID,
-			&r.Name,
-			&r.Strokes,
-			&r.Rank,
-			&r.Submitted,
-			&r.TieCount,
-		); err != nil {
-			panic(err)
-		}
-
-		r.Hole = config.HoleByID[holeID]
-		r.Lang = config.LangByID[langID]
-
-		data.LangsShown[langID] = true
-		data.Rows = append(data.Rows, r)
-	}
-
-	if err := rows.Err(); err != nil {
-		panic(err)
+	for _, row := range data.Rows {
+		data.LangsShown[row.Lang.ID] = true
 	}
 
 	render(w, r, "recent/solutions", data, "Recent Solutions")
