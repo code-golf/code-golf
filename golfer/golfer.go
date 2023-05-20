@@ -27,11 +27,11 @@ func (f *FailingSolutions) Scan(src any) error {
 type Golfer struct {
 	Admin, ShowCountry, Sponsor           bool
 	BytesPoints, CharsPoints, ID          int
-	Cheevos, Holes                        []string
+	Cheevos, Holes                        pq.StringArray
 	Country                               config.NullCountry
 	Delete                                sql.NullTime
 	FailingSolutions                      FailingSolutions
-	Following                             []int64
+	Following                             pq.Int64Array
 	Keymap, Layout, Name, Referrer, Theme string
 	TimeZone                              *time.Location
 }
@@ -94,7 +94,7 @@ type GolferInfo struct {
 	CheevosTotal, HolesTotal, LangsTotal int
 
 	// Slice of golfers referred
-	Referrals []string
+	Referrals pq.StringArray
 
 	// Start date
 	TeedOff time.Time
@@ -122,7 +122,8 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		LangsTotal:   len(config.LangList),
 	}
 
-	if err := db.QueryRow(
+	if err := db.Get(
+		&info,
 		`WITH medals AS (
 		   SELECT user_id,
 		          COUNT(*) FILTER (WHERE medal = 'diamond') diamond,
@@ -132,33 +133,33 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		     FROM medals
 		 GROUP BY user_id
 		)  SELECT admin,
-		          COALESCE(bronze, 0),
+		          COALESCE(bronze, 0)                   bronze,
 		          ARRAY(
 		            SELECT trophy
 		              FROM trophies
 		             WHERE user_id = users.id
 		          ORDER BY trophy
-		          ),
-		          country_flag,
-		          COALESCE(diamond, 0),
-		          COALESCE(gold, 0),
+		          )                                     cheevos,
+		          country_flag                          country,
+		          COALESCE(diamond, 0)                  diamond,
+		          COALESCE(gold, 0)                     gold,
 		          (SELECT COUNT(DISTINCT hole)
 		             FROM solutions
-		            WHERE user_id = id AND NOT FAILING),
+		            WHERE user_id = id AND NOT FAILING) holes,
 		          id,
 		          (SELECT COUNT(DISTINCT lang)
 		             FROM solutions
-		            WHERE user_id = id AND NOT FAILING),
-		          login,
-		          COALESCE(bytes.points, 0),
-		          COALESCE(chars.points, 0),
+		            WHERE user_id = id AND NOT FAILING) langs,
+		          login                                 name,
+		          COALESCE(bytes.points, 0)             bytes_points,
+		          COALESCE(chars.points, 0)             chars_points,
 		          ARRAY(
 		            SELECT login
 		              FROM users u
 		             WHERE referrer_id = users.id
 		          ORDER BY login
-		          ),
-		          COALESCE(silver, 0),
+		          )                                     referrals,
+		          COALESCE(silver, 0)                   silver,
 		          sponsor
 		     FROM users
 		LEFT JOIN medals       ON id = medals.user_id
@@ -166,22 +167,6 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		LEFT JOIN points chars ON id = chars.user_id AND chars.scoring = 'chars'
 		    WHERE login = $1`,
 		name,
-	).Scan(
-		&info.Admin,
-		&info.Bronze,
-		pq.Array(&info.Cheevos),
-		&info.Country,
-		&info.Diamond,
-		&info.Gold,
-		&info.Holes,
-		&info.ID,
-		&info.Langs,
-		&info.Name,
-		&info.BytesPoints,
-		&info.CharsPoints,
-		pq.Array(&info.Referrals),
-		&info.Silver,
-		&info.Sponsor,
 	); errors.Is(err, sql.ErrNoRows) {
 		return nil
 	} else if err != nil {

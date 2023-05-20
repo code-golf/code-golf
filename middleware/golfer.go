@@ -9,7 +9,6 @@ import (
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/session"
 	"github.com/gofrs/uuid"
-	"github.com/lib/pq"
 )
 
 // Golfer adds the golfer to the context if logged in.
@@ -85,9 +84,9 @@ func Golfer(next http.Handler) http.Handler {
 				&golfer.Sponsor,
 				&golfer.Theme,
 				&timeZone,
-				pq.Array(&golfer.Cheevos),
-				pq.Array(&golfer.Following),
-				pq.Array(&golfer.Holes),
+				&golfer.Cheevos,
+				&golfer.Following,
+				&golfer.Holes,
 			); err == nil {
 				golfer.TimeZone, _ = time.LoadLocation(timeZone.String)
 
