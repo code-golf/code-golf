@@ -77,10 +77,7 @@ func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 	// Our date-specific cheevos are set around the year 2000.
 	delta := now.Year() - 2000
 
-	location := golfer.TimeZone
-	if location == nil {
-		location = time.UTC
-	}
+	location := golfer.Location()
 
 Cheevo:
 	for _, cheevo := range config.CheevoList {

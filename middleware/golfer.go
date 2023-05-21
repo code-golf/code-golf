@@ -1,8 +1,6 @@
 package middleware
 
 import (
-	"database/sql"
-	"errors"
 	"net/http"
 	"time"
 
@@ -15,82 +13,9 @@ import (
 func Golfer(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if cookie, _ := r.Cookie("__Host-session"); cookie != nil {
-			var golfer golfer.Golfer
-			var timeZone sql.NullString
-
-			if err := session.Database(r).QueryRow(
-				`WITH golfer AS (
-				    UPDATE sessions SET last_used = DEFAULT WHERE id = $1
-				 RETURNING user_id
-				), failing AS (
-				    SELECT hole, lang
-				      FROM solutions
-				      JOIN golfer USING(user_id)
-				     WHERE failing
-				  GROUP BY hole, lang
-				  ORDER BY hole, lang
-				)  SELECT u.admin,
-				          COALESCE(bytes.points, 0),
-				          COALESCE(chars.points, 0),
-				          COALESCE(u.country, ''),
-				          u.delete,
-				          (SELECT COALESCE(json_agg(failing), '[]') FROM failing),
-				          u.id,
-				          u.layout,
-				          u.keymap,
-				          u.login,
-				          COALESCE(r.login, ''),
-				          u.show_country,
-				          u.sponsor,
-				          u.theme,
-				          u.time_zone,
-				          ARRAY(
-				              SELECT trophy
-				                FROM trophies
-				               WHERE user_id = u.id
-				            ORDER BY trophy
-				          ),
-				          ARRAY(
-				              SELECT followee_id
-				                FROM follows
-				               WHERE follower_id = u.id
-				            ORDER BY followee_id
-				          ),
-				          ARRAY(
-				              SELECT DISTINCT hole
-				                FROM solutions
-				               WHERE user_id = u.id
-				            ORDER BY hole
-				          )
-				     FROM users  u
-				     JOIN golfer g ON u.id = g.user_id
-				LEFT JOIN users  r ON r.id = u.referrer_id
-				LEFT JOIN points bytes ON u.id = bytes.user_id AND bytes.scoring = 'bytes'
-				LEFT JOIN points chars ON u.id = chars.user_id AND chars.scoring = 'chars'`,
-				uuid.FromStringOrNil(cookie.Value),
-			).Scan(
-				&golfer.Admin,
-				&golfer.BytesPoints,
-				&golfer.CharsPoints,
-				&golfer.Country,
-				&golfer.Delete,
-				&golfer.FailingSolutions,
-				&golfer.ID,
-				&golfer.Layout,
-				&golfer.Keymap,
-				&golfer.Name,
-				&golfer.Referrer,
-				&golfer.ShowCountry,
-				&golfer.Sponsor,
-				&golfer.Theme,
-				&timeZone,
-				&golfer.Cheevos,
-				&golfer.Following,
-				&golfer.Holes,
-			); err == nil {
-				golfer.TimeZone, _ = time.LoadLocation(timeZone.String)
-
-				session.Get(r).Golfer = &golfer
+			sessionID := uuid.FromStringOrNil(cookie.Value)
+			if golfer := golfer.Get(session.Database(r), sessionID); golfer != nil {
+				session.Get(r).Golfer = golfer
 
 				// Refresh the cookie.
 				http.SetCookie(w, &http.Cookie{
@@ -102,8 +27,6 @@ func Golfer(next http.Handler) http.Handler {
 					Secure:   true,
 					Value:    cookie.Value,
 				})
-			} else if !errors.Is(err, sql.ErrNoRows) {
-				panic(err)
 			}
 		}
 

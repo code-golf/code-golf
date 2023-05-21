@@ -200,8 +200,8 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		args.Description = data[2]
 	}
 
-	if args.Golfer != nil && args.Golfer.TimeZone != nil {
-		args.Location = args.Golfer.TimeZone
+	if args.Golfer != nil {
+		args.Location = args.Golfer.Location()
 	} else {
 		args.Location = time.UTC
 	}

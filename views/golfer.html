@@ -80,7 +80,10 @@
             <p>🏆
             <p class=blue>{{ len .Cheevos }} / {{ .CheevosTotal }} Cheevos
         </div>
-        <!-- TODO <div><p>📅<p class=yellow>Teed off {{ time .TeedOff }}</div>-->
+        <div>
+            <p>📅
+            <p class=yellow>{{ time (.Started.In $.Location) }}
+        </div>
     </div>
 
     <nav class=tabs>
