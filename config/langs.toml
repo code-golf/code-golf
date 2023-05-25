@@ -548,8 +548,8 @@ class Main {
 '''
 
 [JavaScript]
-size    = '24.3 MiB'
-version = 'V8 11.3.244.11'
+size    = '37.8 MiB'
+version = 'V8 11.3.244.12'
 website = 'https://v8.dev'
 example = '''
 // Printing

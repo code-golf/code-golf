@@ -10,14 +10,13 @@ RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git \
 
 WORKDIR /v8
 
-RUN git checkout 11.3.244.11 && gclient sync -D
+RUN git checkout 11.3.244.12 && gclient sync -D
 
 RUN gn gen out --args="                 \
     is_debug=false                      \
     symbol_level=0                      \
     use_thin_lto=true                   \
     v8_enable_gdbjit=false              \
-    v8_enable_i18n_support=false        \
     v8_enable_webassembly=false         \
     v8_monolithic=true                  \
     v8_use_external_startup_data=false" \
@@ -32,7 +31,7 @@ COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
               /lib/x86_64-linux-gnu/libm.so.6       \
               /lib/x86_64-linux-gnu/libpthread.so.0 /lib/
 COPY --from=0 /lib64/ld-linux-x86-64.so.2           /lib64/
-COPY --from=0 /v8/out/d8                            /usr/bin/
+COPY --from=0 /v8/out/d8 /v8/out/icudtl.dat         /usr/bin/
 
 ENTRYPOINT ["d8"]
 
