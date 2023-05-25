@@ -260,8 +260,6 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 			cmd.Args = append(cmd.Args, "-q")
 		}
 		cmd.Args = append(cmd.Args, "--")
-	case "haskell", "php":
-		cmd.Args = []string{"/usr/bin/" + langID, "--"}
 	case "hexagony":
 		cmd.Args = []string{"/usr/bin/hexagony", "-d", "-"}
 	case "j":
@@ -281,6 +279,8 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 		cmd.Args = []string{"/usr/bin/ocaml", "/proc/self/fd/0"}
 	case "perl":
 		cmd.Args = []string{"/usr/bin/perl", "-E", code, "--"}
+	case "php":
+		cmd.Args = []string{"/usr/bin/" + langID, "--"}
 	case "powershell":
 		cmd.Args = []string{"/usr/bin/powershell"}
 

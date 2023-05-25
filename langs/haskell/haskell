@@ -1,7 +1,0 @@
-#!/bin/sh -e
-
-[ "$1" = "--version" ] && exec /usr/bin/ghc --version
-
-cat - > /tmp/code.hs
-
-exec /usr/bin/runghc --ghc-arg=-fdiagnostics-color=always /tmp/code.hs "$@"

@@ -450,7 +450,7 @@ n*
 '''
 
 [Haskell]
-size    = '406 MiB'
+size    = '405 MiB'
 version = 'Glasgow Haskell Compiler 9.4.4'
 website = 'https://www.haskell.org/ghc/'
 example = '''
