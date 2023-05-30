@@ -111,6 +111,8 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 		scores = mahjong()
 	case "maze":
 		scores = maze()
+	case "medal-tally":
+		scores = medalTally()
 	case "morse-decoder", "morse-encoder":
 		scores = morse(holeID == "morse-decoder")
 	case "musical-chords":
