@@ -2540,8 +2540,9 @@ preamble = '''
 <p>
     Each argument generally contains a prefix and a unit, either base or derived,
     with the exception of symbols representing decimal multiples and sub-multiples
-    of "kg" because those are formed by prepending the letter "g" with a prefix
-    symbol. For example: "10^−6 kg" results in printing "mg" instead of "µkg".
+    of kilogram because those are formed by prepending the letter "g" with a prefix
+    symbol. For example: "10^-6 kg" and "10^-9 kg" are the representations of "mg"
+    and "μg", respectively.
 
 <p>
     Convert each argument and print its respective prefix factor notation, joined
