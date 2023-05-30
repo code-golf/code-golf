@@ -1407,6 +1407,16 @@ preamble = '''
 </pre>
 '''
 
+['Medal Tally']
+category = 'Transform'
+experiment = 950
+synopsis = 'Tally code golf medals.'
+preamble = '''
+<p>
+    Given a list of space separated scores in ascending order, print the total number of diamonds and medals handed
+    out.
+'''
+
 [Morse]
 category = 'Transform'
 variants = ['Morse Decoder', 'Morse Encoder']
@@ -2763,7 +2773,7 @@ preamble = '''
     If a player gets a spare in the final frame, they get one extra roll. If
     they get a spare in one of the first nine frames, the value of the
     following roll is added as a bonus.
-    
+
 <p>
     Each argument represents one game of
     bowling for one player. For each roll, a single character represents the
