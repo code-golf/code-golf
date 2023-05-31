@@ -1,9 +1,8 @@
 package hole
 
 import (
+	"fmt"
 	"math/rand"
-	"strconv"
-	"strings"
 )
 
 // a bounding box (bbox) is defined in
@@ -11,15 +10,7 @@ import (
 // (x, y) and its width and height (w, h).
 type bbox struct{ x, y, w, h int }
 
-// couldn't find a quick way to loop a struct
-func strconvbox(box bbox) (out string) {
-	var outs []string
-	outs = append(outs, strconv.Itoa(box.x))
-	outs = append(outs, strconv.Itoa(box.y))
-	outs = append(outs, strconv.Itoa(box.w))
-	outs = append(outs, strconv.Itoa(box.h))
-	return strings.Join(outs, " ")
-}
+func (b bbox) String() string { return fmt.Sprint(b.x, b.y, b.w, b.h) }
 
 // compute bottom-right (br) bbox coordinates
 func unbox(b bbox) (tlx, tly, brx, bry int) {
@@ -75,22 +66,22 @@ func intersection() []Scorecard {
 	b7 := bbox{x: 2, y: 2, h: 2, w: 2}
 
 	// b1 and b2 overlap by 1 pixel
-	tests = append(tests, test{strconvbox(b1) + " " + strconvbox(b2), "1"})
+	tests = append(tests, test{b1.String() + " " + b2.String(), "1"})
 
 	// b1 and b3 are far away and don't overlap
-	tests = append(tests, test{strconvbox(b1) + " " + strconvbox(b3), "0"})
+	tests = append(tests, test{b1.String() + " " + b3.String(), "0"})
 
 	// b3 and b4 overlap on one horizontal side
-	tests = append(tests, test{strconvbox(b3) + " " + strconvbox(b4), "2"})
+	tests = append(tests, test{b3.String() + " " + b4.String(), "2"})
 
 	// b4 and b5 overlap on one vertical side
-	tests = append(tests, test{strconvbox(b4) + " " + strconvbox(b5), "3"})
+	tests = append(tests, test{b4.String() + " " + b5.String(), "3"})
 
 	// b4 is inside b6
-	tests = append(tests, test{strconvbox(b4) + " " + strconvbox(b6), "6"})
+	tests = append(tests, test{b4.String() + " " + b6.String(), "6"})
 
 	// b2 and b7 are side by side but don't overlap
-	tests = append(tests, test{strconvbox(b2) + " " + strconvbox(b7), "0"})
+	tests = append(tests, test{b2.String() + " " + b7.String(), "0"})
 
 	//// generate 100 random cases
 	for zeros, nonZeros := 0, 0; zeros+nonZeros < 100; {
@@ -108,8 +99,8 @@ func intersection() []Scorecard {
 		}
 
 		tests = append(tests, test{
-			strconvbox(b1) + " " + strconvbox(b2),
-			strconv.Itoa(intersection),
+			b1.String() + " " + b2.String(),
+			fmt.Sprint(intersection),
 		})
 	}
 
@@ -128,7 +119,7 @@ func intersection() []Scorecard {
 	//   |   |-
 	//   |   | -
 	bigbox := bbox{x: 2, y: 2, w: 3, h: 3}
-	strbigbox := strconvbox(bigbox)
+	strbigbox := bigbox.String()
 
 	xs := []int{0, 2, 3, 5, 6}
 	ys := []int{0, 2, 3, 5, 6}
@@ -153,14 +144,14 @@ func intersection() []Scorecard {
 
 						var in string
 						if rand.Float32() > 0.5 { // randomly flip input
-							in = strconvbox(b) + " " + strbigbox
+							in = b.String() + " " + strbigbox
 						} else {
-							in = strbigbox + " " + strconvbox(b)
+							in = strbigbox + " " + b.String()
 						}
 
 						tests = append(tests, test{
 							in,
-							strconv.Itoa(calculateIntersection(b, bigbox)),
+							fmt.Sprint(calculateIntersection(b, bigbox)),
 						})
 					}
 				}
