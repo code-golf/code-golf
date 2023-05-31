@@ -6,6 +6,13 @@ import (
 )
 
 func pangramGrep() []Scorecard {
+	return []Scorecard{
+		pangramGrepTests(2, 5),
+		pangramGrepTests(0, 0),
+	}
+}
+
+func pangramGrepTests(l int, r int) Scorecard {
 	// They all start lowercase and valid.
 	pangrams := shuffle([][]byte{
 		[]byte("6>_4\"gv9lb?2!ic7}=-m'fd30ph].o%@w+[8unk&t1es<az(x;${^y#)q,rj\\5/*:"),
@@ -82,9 +89,9 @@ func pangramGrep() []Scorecard {
 		}
 	}
 
-	// Insert 2-5 random post-'z' characters
+	// Insert l-r random post-'z' characters
 	for i, pangram := range pangrams {
-		for times := rand.Intn(4) + 2; times > 0; times-- {
+		for times := rand.Intn(r-l+1) + l; times > 0; times-- {
 			c := '{' + byte(rand.Intn(4))
 			pos := rand.Intn(len(pangram))
 
@@ -115,5 +122,5 @@ outer:
 	// Drop the trailing newline.
 	out = out[:len(out)-1]
 
-	return []Scorecard{{Args: args, Answer: out}}
+	return Scorecard{Args: args, Answer: out}
 }
