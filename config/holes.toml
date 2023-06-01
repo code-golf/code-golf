@@ -1409,12 +1409,11 @@ preamble = '''
 
 ['Medal Tally']
 category = 'Transform'
-experiment = 950
 synopsis = 'Tally code golf medals.'
 preamble = '''
 <p>
-    Given a list of space separated scores in ascending order, print the total number of diamonds and medals handed
-    out.
+    Given a list of space separated scores in ascending order, print the total
+    number of diamonds and medals handed out.
 '''
 
 [Morse]
