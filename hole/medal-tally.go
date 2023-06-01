@@ -12,7 +12,7 @@ func medalTally() []Scorecard {
 	for size := 3; size <= 10; size++ {
 		// 3-10 golds
 		for j := 3; j <= size; j++ {
-			for i := 0; i <= size - j; i++ {
+			for i := 0; i <= size-j; i++ {
 				tests = append(tests, medalTallyTest(size, j, 0, 0, i))
 			}
 		}
