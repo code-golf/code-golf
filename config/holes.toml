@@ -165,6 +165,7 @@ experiment = 954
 variants = ['Arithmetic Numbers', 'Arithmetic Numbers (Long)']
 links = [
     { name = 'OEIS A003601', url = '//oeis.org/A003601' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Arithmetic_numbers' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Arithmetic_number' },
 ]
 synopsis = '''
