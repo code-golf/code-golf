@@ -10,9 +10,11 @@ func medalTally() []Scorecard {
 	tests := []test{}
 
 	for size := 3; size <= 10; size++ {
-		// 3 golds
-		for i := 1; i <= size-3; i++ {
-			tests = append(tests, medalTallyTest(size, 3, 0, 0, i))
+		// 3-10 golds
+		for j := 3, j <= 10; j++ {
+			for i := 0; i <= size - j; i++ {
+				tests = append(tests, medalTallyTest(size, j, 0, 0, i))
+			}
 		}
 
 		// 2 golds, 1+ bronze
