@@ -66,7 +66,7 @@ make use of [JSX](https://www.typescriptlang.org/docs/handbook/jsx.html).
 
 ## Linting
 
-Run `make lint` to lint the code before a pull request. This lints the Typescript code, then the Go code.
+Run `make lint` to lint the code before a pull request. This lints the TypeScript code, then the Go code.
 
 In Visual Studio Code, the following settings are helpful for editor support for ESLint:
 
