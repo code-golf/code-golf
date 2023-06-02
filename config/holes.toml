@@ -162,27 +162,21 @@ preamble = '''
 ['Arithmetic Numbers']
 category = 'Sequence'
 experiment = 954
-variants = ['Arithmetic Numbers', 'Arithmetic Numbers (Long)']
 links = [
     { name = 'OEIS A003601', url = '//oeis.org/A003601' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Arithmetic_numbers' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Arithmetic_number' },
 ]
-synopsis = '''
-Print the arithmetic number sequence from 1 to
-{{- if hasSuffix . "(Long)" }} 1,000.{{ else }} 100.{{ end -}}
-'''
+synopsis = 'Print the arithmetic number sequence.'
 preamble = '''
 <p>
-    An arithmetic number is a number for which the average of its divisors
-    has no remainder. For example, the number <b>6</b> is arithmetic because
-    the sum of its divisors <b>1</b>, <b>2</b>, <b>3</b> and <b>6</b> averages
-    <b>3</b>.
+    An arithmetic number is a number for which the average of its divisors has no
+    remainder. For example, number <b>6</b> is arithmetic because the sum of its
+    divisors <b>1</b>, <b>2</b>, <b>3</b> and <b>6</b> averages <b>3</b>.
 
 <p>
-    Print the arithmetic number sequence, separated by new lines, from <b>1</b>
-    to <b>{{ if eq . "Arithmetic Numbers" }}100{{ else }}1,000{{ end }}</b>,
-    including the latter.
+    Print the arithmetic number sequence, separated by new lines, ranging
+    from <b>1</b> to <b>10,000</b>, including the latter.
 '''
 
 [Arrows]
