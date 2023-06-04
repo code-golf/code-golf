@@ -145,8 +145,9 @@ export const extensions = {
     // TODO zig
 };
 
+// Order matters, unshift the dark stuff onto the front.
 if (matchMedia(JSON.parse($('#dark-mode-media-query').innerText)).matches)
-    extensions.base.push(
+    extensions.base.unshift(
         EditorView.theme({
             '&': { background: 'var(--background)', color: 'var(--color)' },
             '.cm-asm-dump':               { color: 'var(--asm-dump)' },
