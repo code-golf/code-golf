@@ -1,7 +1,7 @@
 article {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    overflow: auto;
+
+    > *:not(:first-child), details > * { margin-top: 1rem }
 }
 
 body > h1 {
@@ -58,11 +58,6 @@ main nav h2 {
 main nav h2:not(:first-child) { margin-top: 1rem }
 
 main nav span:nth-child(2) { margin-left: .5rem }
-
-pre {
-    overflow: auto;
-    white-space: pre-wrap;
-}
 
 select { grid-column: 1 / -1 }
 

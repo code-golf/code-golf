@@ -138,7 +138,7 @@ export function setState(code: string, editor: EditorView) {
             doc: code,
             extensions: [
                 ...baseExtensions,
-                extensions[lang as keyof typeof extensions] || [],
+                extensions[lang as keyof typeof extensions] ?? [],
                 // These languages shouldn't match brackets.
                 ['fish', 'hexagony'].includes(lang)
                     ? [] : extensions.bracketMatching,
