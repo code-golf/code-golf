@@ -110,6 +110,7 @@ export const extensions = {
     // Languages.
     'assembly':   assembly(),
     'bash':       StreamLanguage.define(shell),
+    // TODO basic
     'brainfuck':  brainfuck(),
     'c':          StreamLanguage.define(c),
     'c-sharp':    StreamLanguage.define(csharp),
