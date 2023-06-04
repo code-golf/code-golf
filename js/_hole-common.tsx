@@ -1,9 +1,9 @@
-import { ASMStateField }                                 from '@defasm/codemirror';
-import { $, $$, byteLen, charLen, comma, darkMode, ord } from './_util';
-import { Vim }                                           from '@replit/codemirror-vim';
-import { EditorState, EditorView, extensions }           from './_codemirror';
-import pbm                                               from './_pbm';
-import LZString                                          from 'lz-string';
+import { ASMStateField }                       from '@defasm/codemirror';
+import { $, $$, byteLen, charLen, comma, ord } from './_util';
+import { Vim }                                 from '@replit/codemirror-vim';
+import { EditorState, EditorView, extensions } from './_codemirror';
+import pbm                                     from './_pbm';
+import LZString                                from 'lz-string';
 
 let tabLayout: boolean = false;
 
@@ -75,9 +75,7 @@ const solutions    = JSON.parse($('#solutions').innerText);
 const vimMode = JSON.parse($('#keymap').innerText) === 'vim';
 const vimModeExtensions = vimMode ? [extensions.vim] : [];
 
-const darkModeExtensions = darkMode ? extensions.dark : [];
-
-const baseExtensions = [...vimModeExtensions, ...darkModeExtensions, ...extensions.base];
+const baseExtensions = [...vimModeExtensions, ...extensions.base];
 
 let latestSubmissionID = 0;
 let solution = scorings.indexOf(localStorage.getItem('solution') ?? 'Bytes') as 0 | 1;
