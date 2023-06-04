@@ -6,7 +6,6 @@ if (darkMode) baseExtensions.push(extensions.dark);
 
 for (const code of $$('pre > code')) {
     let lang = code.className.slice('language-'.length).toLowerCase();
-    let pre  = code.parentElement!;
 
     // FIXME Is there a better way to do this mapping?
     if (lang == 'asm') lang = 'assembly';
@@ -18,6 +17,7 @@ for (const code of $$('pre > code')) {
     if (lang == 'assembly') continue;
 
     // Clear the existing code and replace with a read-only editor.
+    const pre  = code.parentElement!;
     pre.innerHTML = '';
     new EditorView({
         parent: pre,
