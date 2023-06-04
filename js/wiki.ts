@@ -1,8 +1,7 @@
 import { EditorState, EditorView, extensions } from './_codemirror';
-import { $$, darkMode }                        from './_util';
+import { $$ }                                  from './_util';
 
 const baseExtensions = [...extensions.base, EditorState.readOnly.of(true)];
-if (darkMode) baseExtensions.push(extensions.dark);
 
 for (const code of $$('pre > code')) {
     let lang = code.className.slice('language-'.length).toLowerCase();
