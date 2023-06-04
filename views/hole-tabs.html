@@ -201,9 +201,8 @@
 
 {{ with .Data.Hole.Data }}<script id=data type=application/json>{{ . }}</script>{{ end }}
 
-<script id=experimental       type=application/json>{{ ne .Data.Hole.Experiment 0 }}</script>
-<script id=darkModeMediaQuery type=application/json>{{ .DarkModeMediaQuery   }}</script>
-<script id=langs              type=application/json>{{ .Data.Langs           }}</script>
-<script id=solutions          type=application/json>{{ .Data.Solutions       }}</script>
+<script id=experimental type=application/json>{{ ne .Data.Hole.Experiment 0 }}</script>
+<script id=langs        type=application/json>{{ .Data.Langs                }}</script>
+<script id=solutions    type=application/json>{{ .Data.Solutions            }}</script>
 
 {{ template "footer" }}

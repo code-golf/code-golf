@@ -13,7 +13,7 @@
 
 <title>{{ .Title }}</title>
 
-{{/* FIXME theme-color won't change for dark themes */ -}}
+<!-- FIXME theme-color won't change for dark themes -->
 <meta name=description  content="{{ .Description }}">
 <meta name=theme-color  content=#343A40>
 <meta name=twitter:card content=summary>
@@ -37,6 +37,17 @@
 {{ range .JS -}}
     <script nonce="{{ $.Nonce }}" src="{{ . }}" type=module></script>
 {{ end }}
+
+<!-- Convert server-side theme into a client-side media query -->
+<script id=dark-mode-media-query type=application/json>
+{{- if eq .Theme "dark" -}}
+    "all"
+{{- else if eq .Theme "light" -}}
+    "not all"
+{{- else -}}
+    "(prefers-color-scheme: dark)"
+{{- end -}}
+</script>
 
 <header>
     <nav>

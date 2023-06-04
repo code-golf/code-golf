@@ -1,9 +1,9 @@
-import { ASMStateField }                       from '@defasm/codemirror';
-import { $, $$, byteLen, charLen, comma, ord } from './_util';
-import { Vim }                                 from '@replit/codemirror-vim';
-import { EditorState, EditorView, extensions } from './_codemirror';
-import pbm                                     from './_pbm';
-import LZString                                from 'lz-string';
+import { ASMStateField }                                 from '@defasm/codemirror';
+import { $, $$, byteLen, charLen, comma, darkMode, ord } from './_util';
+import { Vim }                                           from '@replit/codemirror-vim';
+import { EditorState, EditorView, extensions }           from './_codemirror';
+import pbm                                               from './_pbm';
+import LZString                                          from 'lz-string';
 
 let tabLayout: boolean = false;
 
@@ -75,9 +75,7 @@ const solutions    = JSON.parse($('#solutions').innerText);
 const vimMode = JSON.parse($('#keymap').innerText) === 'vim';
 const vimModeExtensions = vimMode ? [extensions.vim] : [];
 
-const darkMode =
-    matchMedia(JSON.parse($('#darkModeMediaQuery').innerText)).matches;
-const darkModeExtensions = darkMode ? [...extensions.dark] : [];
+const darkModeExtensions = darkMode ? extensions.dark : [];
 
 const baseExtensions = [...vimModeExtensions, ...darkModeExtensions, ...extensions.base];
 

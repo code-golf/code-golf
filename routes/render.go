@@ -46,16 +46,6 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 	"trimPrefix": strings.TrimPrefix,
 })
 
-func getDarkModeMediaQuery(theme string) string {
-	switch theme {
-	case "dark":
-		return "all"
-	case "light":
-		return "not all"
-	}
-	return "(prefers-color-scheme:dark)"
-}
-
 type cssLink struct{ Path, Media string }
 
 func getCSSLinks(name string, theme string) []cssLink {
@@ -160,36 +150,36 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	}
 
 	args := struct {
-		Banners                                         []banner
-		CSS                                             []cssLink
-		AutoDarkCSSLink                                 string
-		Cheevos                                         map[string][]*config.Cheevo
-		Data, Description, Title                        any
-		DarkModeMediaQuery, LogInURL, Name, Nonce, Path string
-		Golfer                                          *golfer.Golfer
-		GolferInfo                                      *golfer.GolferInfo
-		Holes                                           map[string]*config.Hole
-		JS                                              []string
-		Langs                                           map[string]*config.Lang
-		Location                                        *time.Location
-		Request                                         *http.Request
+		Banners                            []banner
+		CSS                                []cssLink
+		AutoDarkCSSLink                    string
+		Cheevos                            map[string][]*config.Cheevo
+		Data, Description, Title           any
+		LogInURL, Name, Nonce, Path, Theme string
+		Golfer                             *golfer.Golfer
+		GolferInfo                         *golfer.GolferInfo
+		Holes                              map[string]*config.Hole
+		JS                                 []string
+		Langs                              map[string]*config.Lang
+		Location                           *time.Location
+		Request                            *http.Request
 	}{
-		Banners:            banners(theGolfer, time.Now().UTC()),
-		Cheevos:            config.CheevoTree,
-		CSS:                getCSSLinks(name, theme),
-		Data:               data[0],
-		DarkModeMediaQuery: getDarkModeMediaQuery(theme),
-		Description:        "Code Golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.",
-		Golfer:             theGolfer,
-		GolferInfo:         session.GolferInfo(r),
-		Holes:              config.HoleByID,
-		JS:                 []string{assets["js/base.tsx"]},
-		Langs:              config.LangByID,
-		Name:               name,
-		Nonce:              nonce(),
-		Path:               r.URL.Path,
-		Request:            r,
-		Title:              "Code Golf",
+		Banners:     banners(theGolfer, time.Now().UTC()),
+		Cheevos:     config.CheevoTree,
+		CSS:         getCSSLinks(name, theme),
+		Data:        data[0],
+		Description: "Code Golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.",
+		Golfer:      theGolfer,
+		GolferInfo:  session.GolferInfo(r),
+		Holes:       config.HoleByID,
+		JS:          []string{assets["js/base.tsx"]},
+		Langs:       config.LangByID,
+		Name:        name,
+		Nonce:       nonce(),
+		Path:        r.URL.Path,
+		Request:     r,
+		Theme:       theme,
+		Title:       "Code Golf",
 	}
 
 	if len(data) > 1 {

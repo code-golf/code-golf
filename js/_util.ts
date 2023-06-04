@@ -1,4 +1,7 @@
 
+export const darkMode
+    = matchMedia(JSON.parse($('#dark-mode-media-query').innerText)).matches;
+
 // Adapted from https://codegolf.stackexchange.com/a/119563.
 export const ord = (i: number) => [, 'st', 'nd', 'rd'][i % 100 >> 3 ^ 1 && i % 10] || 'th';
 
