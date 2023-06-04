@@ -2273,7 +2273,7 @@ links = [
 synopsis = 'Calculate the result of Reverse Polish notation expressions.'
 preamble = '''
 <p>
-    RPN (Reverse Polish notation) is a way of writing expressions such that
+    RPN (<b>R</b>everse <b>P</b>olish <b>N</b>otation) is a way of writing expressions such that
     operators are written after their operands: <code>3 2 +</code> rather than
     <code>(3+2)</code>.
 
@@ -2450,16 +2450,18 @@ links = [
 synopsis = 'Express SI units using the 7 base units.'
 preamble = '''
 <p>
-    SI defines 7 base units: s, m, kg, A, K, mol, cd.
-    There are 22 of derived units with their own symbols defined.
-    These correspond to the base ones like so:
+    The International System of Units (SI) defines 7 <b>base</b> units: <b>s</b>
+    (second), <b>m</b> (meter), <b>kg</b> (kilogram), <b>A</b> (ampere), <b>K</b>
+    (kelvin), <b>mol</b> (mole) and <b>cd</b> (candela). In addition to base units,
+    there are 22 units with different notations, all of which represent an equivalent
+    to base. These representations are known as <b>derived</b> units.
 
 <div class=tables-4col>
     <table>
         <thead>
             <tr>
                 <th>Derived unit
-                <th>Equivalent using base units
+                <th>Base unit equivalent
         <tbody>
             <tr><td>rad	<td>1
             <tr><td>sr	<td>1
@@ -2472,7 +2474,7 @@ preamble = '''
         <thead>
             <tr>
                 <th>Derived unit
-                <th>Equivalent using base units
+                <th>Base unit equivalent
         <tbody>
             <tr><td>W	<td>kg m^2 s^-3
             <tr><td>C	<td>A s
@@ -2485,7 +2487,7 @@ preamble = '''
         <thead>
             <tr>
                 <th>Derived unit
-                <th>Equivalent using base units
+                <th>Base unit equivalent
         <tbody>
             <tr><td>Wb	<td>kg m^2 s^-2 A^-1
             <tr><td>T	<td>kg s^-2 A^-1
@@ -2498,7 +2500,7 @@ preamble = '''
         <thead>
             <tr>
                 <th>Derived unit
-                <th>Equivalent using base units
+                <th>Base unit equivalent
         <tbody>
             <tr><td>Bq	<td>s^-1
             <tr><td>Gy	<td>m^2 s^-2
@@ -2507,14 +2509,14 @@ preamble = '''
     </table>
 </div>
 
-<p>SI further defines 24 prefixes denoting exponents of 10:
+<p>SI also defines 24 symbols known as <b>prefixes</b>, denoting powers of 10.
 
 <div class=tables-4col>
     <table>
         <thead>
             <tr>
                 <th>Symbol
-                <th>Quantity
+                <th>Factor
         <tbody>
             <tr><td>Q	<td>10^30
             <tr><td>R	<td>10^27
@@ -2527,20 +2529,20 @@ preamble = '''
         <thead>
             <tr>
                 <th>Symbol
-                <th>Quantity
+                <th>Factor
         <tbody>
             <tr><td>T	<td>10^12
             <tr><td>G	<td>10^9
             <tr><td>M	<td>10^6
             <tr><td>k	<td>10^3
             <tr><td>h	<td>10^2
-            <tr><td>da	<td>10
+            <tr><td>da	<td>10^1
     </table>
     <table>
         <thead>
             <tr>
                 <th>Symbol
-                <th>Quantity
+                <th>Factor
         <tbody>
             <tr><td>d	<td>10^-1
             <tr><td>c	<td>10^-2
@@ -2553,7 +2555,7 @@ preamble = '''
         <thead>
             <tr>
                 <th>Symbol
-                <th>Quantity
+                <th>Factor
         <tbody>
             <tr><td>f	<td>10^-15
             <tr><td>a	<td>10^-18
@@ -2565,14 +2567,19 @@ preamble = '''
 </div>
 
 <p>
-    Each input comprises of a (optional) prefix and one of the base or derived
-    units symbol, except that symbols for decimal multiples and sub-multiples
-    of "kg" are formed by attaching prefixes to the unit symbol "g". For
-    example, "10^−6 kg" is written as "mg", not as "µkg". Each such input
-    should be convert to product of a power of 10 and a product of base units,
-    as described in the tables above. If the unit is "1", only the power of
-    ten should be printed. Furthermore, "10^1" should be printed as "10" and
-    "10^0" as "1". For example, "MJ" should be converted to "10^6 kg m^2 s^-2".
+    Each argument generally contains a prefix and a unit, either base or derived,
+    with the exception of symbols representing decimal multiples and sub-multiples
+    of kilogram because those are formed by prepending the letter "g" with a prefix
+    symbol. For example: "10^-6 kg" and "10^-9 kg" are the representations of "mg"
+    and "μg", respectively.
+
+<p>
+    Convert each argument and print its respective prefix factor notation, joined
+    by the derivatives equivalent expressed in terms of base units. Derived units
+    evaluating to "1" should be omitted from the output. Additionally, print "10^1"
+    as "10" and "10^0" as "1". Notations that don't require alternative formatting
+    should resemble their default output so "MJ" becomes "10^6 kg m^2 s^-2", for
+    example.
 '''
 
 ['Sierpiński Triangle']
