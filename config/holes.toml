@@ -1416,7 +1416,7 @@ preamble = '''
     In addition, an uncontested 1st place solution is awarded a diamond (💎). Tied solutions are all awarded the same medal.
 
 <p>
-    Given a list of space-separated solution scores in ascending order, print the number of diamonds and medals handed out.
+    Given a list of space-separated solution scores in ascending order, print the corresponding diamonds and medals.
 '''
 
 [Morse]
