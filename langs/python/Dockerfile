@@ -2,9 +2,11 @@ FROM alpine:3.18 AS builder
 
 RUN apk add --no-cache build-base curl libffi-dev zlib-dev
 
-RUN curl https://www.python.org/ftp/python/3.11.3/Python-3.11.3.tar.xz | tar xJ
+ENV VER 3.11.4
 
-RUN cd Python-3.11.3           \
+RUN curl https://www.python.org/ftp/python/$VER/Python-$VER.tar.xz | tar xJ
+
+RUN cd Python-$VER             \
  && ./configure                \
     --disable-test-modules     \
     --prefix=/usr              \

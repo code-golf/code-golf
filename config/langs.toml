@@ -769,8 +769,8 @@ example = '''
 '''
 
 [Python]
-size    = '74 MiB'
-version = '3.11.3'
+size    = '74.1 MiB'
+version = '3.11.4'
 website = 'https://www.python.org'
 example = '''
 import sys
@@ -841,8 +841,8 @@ end
 '''
 
 [Rust]
-size    = '426 MiB'
-version = '1.69.0'
+size    = '432 MiB'
+version = '1.70.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -914,8 +914,8 @@ SELECT arg FROM argv;
 '''
 
 [Swift]
-size    = '484 MiB'
-version = '5.8'
+size    = '485 MiB'
+version = '5.8.1'
 website = 'https://swift.org'
 example = '''
 // Printing
