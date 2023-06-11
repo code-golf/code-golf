@@ -88,12 +88,14 @@ func luckyTickets() []Scorecard {
 
 	tests := make([]test, len(tickets))
 
-	for i, item := range shuffle(tickets) {
+	for i, item := range tickets {
 		tests[i] = test{
 			fmt.Sprint(item.digits, item.base),
 			fmt.Sprint(item.result),
 		}
 	}
+
+	tests = shuffle(tests)
 
 	const argc = 20 // Preserve original argc
 	return outputTests(tests[:argc], tests[len(tests)-argc:])
