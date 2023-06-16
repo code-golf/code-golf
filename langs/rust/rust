@@ -8,7 +8,7 @@ export RUST_BACKTRACE=1
 [ "$1" = "--version" ] && exec rustc --version
 
 # Compile
-rustc --edition 2021 -C linker=ld -o /tmp/code --color always -
+rustc --edition 2021 -C linker=ld -C opt-level=2 -o /tmp/code --color always -
 
 # Execute
 shift
