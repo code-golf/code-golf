@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"encoding/json"
 	"errors"
-	"log"
 	"net/http"
 	"sync"
 	"time"
@@ -38,25 +37,6 @@ func adminSolutionsGET(w http.ResponseWriter, r *http.Request) {
 	render(w, r, "admin/solutions", data, "Admin Solutions")
 }
 
-// Wrap hole.Play so we can recover from panics.
-func play(ctx context.Context, holeID, langID, code string) (run hole.Run) {
-	defer func() {
-		if r := recover(); r != nil {
-			log.Println(r)
-		}
-	}()
-
-	// FIXME Returning just the first failing run is kinda hacky.
-	for _, r := range hole.Play(ctx, holeID, langID, code) {
-		run = r
-		if !r.Pass {
-			break
-		}
-	}
-
-	return run
-}
-
 // GET /admin/solutions/run
 func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 	db := session.Database(r)
@@ -77,20 +57,19 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 			for s := range solutions {
 				// Run each solution up to three times.
 				for j := 0; j < 3; j++ {
-					score := func() hole.Run {
-						defer func() {
-							if r := recover(); r != nil {
-								log.Println(r)
-							}
-						}()
+					// Get the first failing (or last overall) run.
+					var run hole.Run
+					for _, r := range hole.Play(r.Context(), s.HoleID, s.LangID, s.code) {
+						run = r
+						if !r.Pass {
+							break
+						}
+					}
 
-						return play(r.Context(), s.HoleID, s.LangID, s.code)
-					}()
+					s.Stderr = run.Stderr
+					s.Took = run.Time
 
-					s.Stderr = string(score.Stderr)
-					s.Took = score.Time
-
-					if score.Pass {
+					if run.Pass {
 						s.Pass = true
 						break
 					}
