@@ -7,7 +7,6 @@ import (
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/discord"
-	h "github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/session"
 )
 
@@ -88,14 +87,14 @@ func golferSolutionPOST(w http.ResponseWriter, r *http.Request) {
 
 	// Best of three runs. Given they're fickle, timeouts count as passes.
 	var passes, fails int
-	for i := 0; passes < 2 && fails < 2; i++ {
+	/* FIXME for i := 0; passes < 2 && fails < 2; i++ {
 		score := h.Play(ctx, hole.ID, lang.ID, code)
 		if score.Pass || score.Timeout || score.ExitCode != 0 {
 			passes++
 		} else {
 			fails++
 		}
-	}
+	} */
 
 	if fails > passes {
 		res := db.MustExec(

@@ -115,7 +115,7 @@ Numbers:
 	return false
 }
 
-func sudokuBoard(v2 bool) Scorecard {
+func sudokuBoard(v2 bool) Run {
 	var board [boardSize][boardSize]int
 
 	var generate func(int) bool
@@ -214,13 +214,13 @@ func sudokuBoard(v2 bool) Scorecard {
 		}
 	}
 
-	return Scorecard{Args: args, Answer: out}
+	return Run{Args: args, Answer: out}
 }
 
-func sudoku(v2 bool) []Scorecard {
-	cards := make([]Scorecard, 3)
-	for i := 0; i < len(cards); i++ {
-		cards[i] = sudokuBoard(v2)
+func sudoku(v2 bool) []Run {
+	runs := make([]Run, 3)
+	for i := range runs {
+		runs[i] = sudokuBoard(v2)
 	}
-	return cards
+	return runs
 }

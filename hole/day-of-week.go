@@ -2,7 +2,7 @@ package hole
 
 import "time"
 
-func dayOfWeek() []Scorecard {
+func dayOfWeek() []Run {
 	tests := []test{
 		{"1583-01-01", "Saturday"}, {"1999-12-31", "Friday"},
 		{"2000-01-01", "Saturday"}, {"2000-12-31", "Sunday"},

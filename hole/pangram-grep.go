@@ -5,14 +5,14 @@ import (
 	"strings"
 )
 
-func pangramGrep() []Scorecard {
-	return []Scorecard{
+func pangramGrep() []Run {
+	return []Run{
 		pangramGrepTests(2, 5),
 		pangramGrepTests(0, 0),
 	}
 }
 
-func pangramGrepTests(l, r int) Scorecard {
+func pangramGrepTests(l, r int) Run {
 	// They all start lowercase and valid.
 	pangrams := shuffle([][]byte{
 		[]byte("6>_4\"gv9lb?2!ic7}=-m'fd30ph].o%@w+[8unk&t1es<az(x;${^y#)q,rj\\5/*:"),
@@ -122,5 +122,5 @@ outer:
 	// Drop the trailing newline.
 	out = out[:len(out)-1]
 
-	return Scorecard{Args: args, Answer: out}
+	return Run{Args: args, Answer: out}
 }

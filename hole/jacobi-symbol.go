@@ -29,7 +29,7 @@ func randomPrime(max int) int {
 	return k
 }
 
-func jacobiSymbol() []Scorecard {
+func jacobiSymbol() []Run {
 	const mult = 9
 	tests := []test{{"0 1", "1"}, {"4622568476421908 4170463869060991", "1"}}
 	addTest := func(a, n int) {

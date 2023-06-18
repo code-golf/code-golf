@@ -6,11 +6,10 @@ import (
 	"github.com/code-golf/code-golf/pretty"
 )
 
-func ordinalNumbers() []Scorecard {
-	const count = 1000
-	tests := make([]test, count)
+func ordinalNumbers() []Run {
+	tests := make([]test, 1000)
 
-	for i := 0; i < count; i++ {
+	for i := range tests {
 		tests[i] = test{
 			strconv.Itoa(i),
 			strconv.Itoa(i) + pretty.Ordinal(i),

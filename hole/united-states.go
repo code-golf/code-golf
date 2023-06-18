@@ -1,6 +1,6 @@
 package hole
 
-func unitedStates() []Scorecard {
+func unitedStates() []Run {
 	return outputMultirunTests([]test{
 		{"Alabama", "AL"},
 		{"Alaska", "AK"},

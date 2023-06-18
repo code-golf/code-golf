@@ -49,7 +49,7 @@ func gcd(a, b int) int {
 	return a
 }
 
-func pAdicExpansion() []Scorecard {
+func pAdicExpansion() []Run {
 	tests := make([]test, len(pAdicTests), 100)
 
 	for i, test := range pAdicTests {

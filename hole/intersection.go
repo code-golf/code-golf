@@ -52,7 +52,7 @@ func boxGen() bbox {
 	}
 }
 
-func intersection() []Scorecard {
+func intersection() []Run {
 	var tests []test
 
 	//// default cases

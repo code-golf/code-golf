@@ -1,6 +1,6 @@
 package hole
 
-func emojify() []Scorecard {
+func emojify() []Run {
 	return outputMultirunTests([]test{
 		{":-D", "😀"}, {":-)", "🙂"}, {":-|", "😐"}, {":-(", "🙁"},
 		{`:-\`, "😕"}, {":-*", "😗"}, {":-O", "😮"}, {":-#", "🤐"},

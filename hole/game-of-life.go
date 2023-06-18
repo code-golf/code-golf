@@ -90,9 +90,9 @@ func (grid grid) toString() string {
 	return strings.Join(grid, "\n")
 }
 
-func gameOfLife() []Scorecard {
+func gameOfLife() []Run {
 	grid := randGrid()
-	return []Scorecard{{
+	return []Run{{
 		Args:   []string{grid.toString()},
 		Answer: grid.step().toString(),
 	}}

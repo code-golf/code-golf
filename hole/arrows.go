@@ -29,7 +29,7 @@ var arrowMapUpAndLeft = [...]string{"←", "↑", "↖", "↰", "⇐", "⇑", "�
 var arrowMapUpAndRight = [...]string{"↑", "→", "↗", "↱", "⇑", "⇒", "⇗", "⇧", "⇨"}
 var arrowMapDownAndRight = [...]string{"→", "↓", "↘", "↳", "⇒", "⇓", "⇘", "⇨", "⇩"}
 
-func arrows() []Scorecard {
+func arrows() []Run {
 	args := make([]string, 0, 3*len(arrowMap))
 
 	// 1-3 of each arrow.

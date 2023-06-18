@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func starWarsOpeningCrawl() []Scorecard {
+func starWarsOpeningCrawl() []Run {
 	args := []string{
 		"7 37\nTurmoil has engulfed the Galactic Republic. The taxation of trade routes to outlying star systems is in dispute.\nHoping to resolve the matter with a blockade of deadly battleships, the greedy Trade Federation has stopped all shipping to the small planet of Naboo.\nWhile the Congress of the Republic endlessly debates this alarming chain of events, the Supreme Chancellor has secretly dispatched two Jedi Knights, the guardians of peace and justice in the galaxy, to settle the conflict....",
 		"11 14\nThere is unrest in the Galactic Senate. Several thousand solar systems have declared their intentions to leave the Republic.\nThis separatist movement, under the leadership of the mysterious Count Dooku, has made it difficult for the limited number of Jedi Knights to maintain peace and order in the galaxy.\nSenator Amidala, the former Queen of Naboo, is returning to the Galactic Senate to vote on the critical issue of creating an ARMY OF THE REPUBLIC to assist the overwhelmed Jedi....",
@@ -35,5 +35,5 @@ func starWarsOpeningCrawl() []Scorecard {
 		outs[i], outs[j] = outs[j], outs[i]
 	})
 
-	return []Scorecard{{Args: args, Answer: strings.Join(outs, "\n\n")}}
+	return []Run{{Args: args, Answer: strings.Join(outs, "\n\n")}}
 }

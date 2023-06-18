@@ -42,7 +42,7 @@ var morseMap = map[rune]string{
 	' ': "    ",
 }
 
-func morse(reverse bool) []Scorecard {
+func morse(reverse bool) []Run {
 	text := strings.Join(shuffle([]string{
 		"BUD",
 		"FOR",
@@ -55,9 +55,9 @@ func morse(reverse bool) []Scorecard {
 		string(shuffle([]byte("ABCDEFGHIJKLMNOPQRSTUVWXYZ"))),
 	}), " ")
 
-	scorecards := make([]Scorecard, 2)
+	runs := make([]Run, 2)
 
-	for i := 0; i < 2; i++ {
+	for i := range runs {
 		out := ""
 		arg := strings.TrimSpace(text[:36])
 
@@ -71,10 +71,10 @@ func morse(reverse bool) []Scorecard {
 		if reverse {
 			arg, out = out, arg
 		}
-		scorecards[i] = Scorecard{Args: []string{arg}, Answer: out}
+		runs[i] = Run{Args: []string{arg}, Answer: out}
 
 		text = text[36:]
 	}
 
-	return scorecards
+	return runs
 }

@@ -14,7 +14,7 @@ var repeatingFractions = [...]struct{ p, q int }{
 	{87, 9}, {97, 6}, {97, 7}, {98, 49}, {99, 1}, {99, 3},
 }
 
-func repeatingDecimals() []Scorecard {
+func repeatingDecimals() []Run {
 	tests := make([]test, 100)
 
 	for i, fraction := range repeatingFractions {

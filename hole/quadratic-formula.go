@@ -117,7 +117,7 @@ func (s quadraticSolution) String() string {
 	return st
 }
 
-func quadraticFormula() []Scorecard {
+func quadraticFormula() []Run {
 	const numTests = 200
 	args := make([]string, numTests)
 	solstrings := make([]string, numTests)
@@ -128,5 +128,5 @@ func quadraticFormula() []Scorecard {
 		args[i] = fmt.Sprint(a, b, c)
 		solstrings[i] = solve(a, b, c).String()
 	}
-	return []Scorecard{{Args: args, Answer: strings.Join(solstrings, "\n")}}
+	return []Run{{Args: args, Answer: strings.Join(solstrings, "\n")}}
 }

@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func proximityGrid() []Scorecard {
+func proximityGrid() []Run {
 	args := []string{
 		"---------\n------0--\n---------\n---------\n---------\n---------\n---------\n---------\n---------",
 		"----####-\n----#-0#-\n----####-\n---------\n---------\n---------\n---------\n-----0---\n---------",
@@ -55,5 +55,5 @@ func proximityGrid() []Scorecard {
 		outs[i], outs[j] = outs[j], outs[i]
 	})
 
-	return []Scorecard{{Args: args, Answer: strings.Join(outs, "\n\n")}}
+	return []Run{{Args: args, Answer: strings.Join(outs, "\n\n")}}
 }

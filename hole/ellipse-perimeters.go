@@ -20,7 +20,7 @@ func perimeter(ai, bi int) (p float64) {
 	return
 }
 
-func ellipsePerimeters() []Scorecard {
+func ellipsePerimeters() []Run {
 	const randomCases = 10
 	tests := make([]test, randomCases)
 

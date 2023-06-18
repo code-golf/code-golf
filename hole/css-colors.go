@@ -1,6 +1,6 @@
 package hole
 
-func cssColors() []Scorecard {
+func cssColors() []Run {
 	return outputTests(shuffle([]test{
 		{"AliceBlue", "#f0f8ff"},
 		{"AntiqueWhite", "#faebd7"},

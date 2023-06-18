@@ -11,6 +11,7 @@ import (
 	"os/exec"
 	"regexp"
 	"strings"
+	"sync"
 	"syscall"
 	"time"
 	"unicode"
@@ -37,13 +38,20 @@ var romanToASCII = strings.NewReplacer(
 	"Ⅺ", "XI", "Ⅻ", "XII", "Ⅼ", "L", "Ⅽ", "C", "Ⅾ", "D", "Ⅿ", "M",
 )
 
-type Scorecard struct {
-	ASMBytes, ExitCode int
-	Answer             string
-	Args               []string
-	Pass, Timeout      bool
-	Stderr, Stdout     []byte
-	Took               time.Duration
+// Run holds the results of running a given solution once.
+type Run struct {
+	Answer   string        `json:"answer"`
+	Args     []string      `json:"args"`
+	ExitCode int           `json:"exit_code"`
+	Pass     bool          `json:"pass"`
+	Stderr   string        `json:"stderr"`
+	Stdout   string        `json:"stdout"`
+	Time     time.Duration `json:"time_ns"`
+	Timeout  bool          `json:"timeout"`
+
+	// This is a bit hacky, the only way to discover how long an assembly
+	// solution is is to compile it so we store it here but don't JSON it.
+	ASMBytes int `json:"-"`
 }
 
 func preprocessKCode(holeID, code string) string {
@@ -68,99 +76,97 @@ func preprocessKCode(holeID, code string) string {
 	}
 }
 
-// Play a given hole, in a given lang, with given code and return a Scorecard.
-func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
-	var scores []Scorecard
-
+// Play a given hole, in a given lang, with given code and return the runs.
+func Play(ctx context.Context, holeID, langID, code string) (runs []Run) {
 	switch holeID {
 	case "arabic-to-roman", "roman-to-arabic":
-		scores = arabicToRoman(holeID == "roman-to-arabic")
+		runs = arabicToRoman(holeID == "roman-to-arabic")
 	case "arrows":
-		scores = arrows()
+		runs = arrows()
 	case "brainfuck":
-		scores = brainfuck()
+		runs = brainfuck()
 	case "css-colors":
-		scores = cssColors()
+		runs = cssColors()
 	case "day-of-week":
-		scores = dayOfWeek()
+		runs = dayOfWeek()
 	case "ellipse-perimeters":
-		scores = ellipsePerimeters()
+		runs = ellipsePerimeters()
 	case "emojify":
-		scores = emojify()
+		runs = emojify()
 	case "forsyth-edwards-notation":
-		scores = forsythEdwardsNotation()
+		runs = forsythEdwardsNotation()
 	case "fractions":
-		scores = fractions()
+		runs = fractions()
 	case "game-of-life":
-		scores = gameOfLife()
+		runs = gameOfLife()
 	case "gray-code-encoder", "gray-code-decoder":
-		scores = grayCode(holeID == "gray-code-decoder")
+		runs = grayCode(holeID == "gray-code-decoder")
 	case "hexdump":
-		scores = hexdump()
+		runs = hexdump()
 	case "isbn":
-		scores = isbn()
+		runs = isbn()
 	case "intersection":
-		scores = intersection()
+		runs = intersection()
 	case "jacobi-symbol":
-		scores = jacobiSymbol()
+		runs = jacobiSymbol()
 	case "levenshtein-distance":
-		scores = levenshteinDistance()
+		runs = levenshteinDistance()
 	case "lucky-tickets":
-		scores = luckyTickets()
+		runs = luckyTickets()
 	case "mahjong":
-		scores = mahjong()
+		runs = mahjong()
 	case "maze":
-		scores = maze()
+		runs = maze()
 	case "medal-tally":
-		scores = medalTally()
+		runs = medalTally()
 	case "morse-decoder", "morse-encoder":
-		scores = morse(holeID == "morse-decoder")
+		runs = morse(holeID == "morse-decoder")
 	case "musical-chords":
-		scores = musicalChords()
+		runs = musicalChords()
 	case "ordinal-numbers":
-		scores = ordinalNumbers()
+		runs = ordinalNumbers()
 	case "p-adic-expansion":
-		scores = pAdicExpansion()
+		runs = pAdicExpansion()
 	case "pangram-grep":
-		scores = pangramGrep()
+		runs = pangramGrep()
 	case "poker":
-		scores = poker()
+		runs = poker()
 	case "proximity-grid":
-		scores = proximityGrid()
+		runs = proximityGrid()
 	case "qr-decoder", "qr-encoder":
-		scores = qr(holeID == "qr-decoder")
+		runs = qr(holeID == "qr-decoder")
 	case "quadratic-formula":
-		scores = quadraticFormula()
+		runs = quadraticFormula()
 	case "quine":
-		scores = []Scorecard{{Args: []string{}, Answer: code}}
+		runs = []Run{{Args: []string{}, Answer: code}}
 	case "repeating-decimals":
-		scores = repeatingDecimals()
+		runs = repeatingDecimals()
 	case "reverse-polish-notation":
-		scores = reversePolishNotation()
+		runs = reversePolishNotation()
 	case "rock-paper-scissors-spock-lizard":
-		scores = rockPaperScissorsSpockLizard()
+		runs = rockPaperScissorsSpockLizard()
 	case "seven-segment":
-		scores = sevenSegment()
+		runs = sevenSegment()
 	case "si-units":
-		scores = siUnits()
+		runs = siUnits()
 	case "spelling-numbers":
-		scores = spellingNumbers()
+		runs = spellingNumbers()
 	case "star-wars-opening-crawl":
-		scores = starWarsOpeningCrawl()
+		runs = starWarsOpeningCrawl()
 	case "sudoku", "sudoku-v2":
-		scores = sudoku(holeID == "sudoku-v2")
+		runs = sudoku(holeID == "sudoku-v2")
 	case "ten-pin-bowling":
-		scores = tenPinBowling()
+		runs = tenPinBowling()
 	case "time-distance":
-		scores = timeDistance()
+		runs = timeDistance()
 	case "united-states":
-		scores = unitedStates()
+		runs = unitedStates()
 	case "turtle":
-		scores = turtle()
+		runs = turtle()
 	case "zodiac-signs":
-		scores = zodiacSigns()
+		runs = zodiacSigns()
 	case "zeckendorf-representation":
-		scores = zeckendorfRepresentation()
+		runs = zeckendorfRepresentation()
 	default:
 		// ¯\_(ツ)_/¯ cannot embed file answers/√2.txt: invalid name √2.txt
 		if holeID == "√2" {
@@ -171,45 +177,30 @@ func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
 			panic(err)
 		} else {
 			answer := string(bytes.TrimSuffix(b, []byte{'\n'}))
-			scores = []Scorecard{{Args: []string{}, Answer: answer}}
+			runs = []Run{{Args: []string{}, Answer: answer}}
 		}
 	}
 
-	// Fast path, only one scorecard? No need for goroutines and channels.
-	if len(scores) == 1 {
-		play(ctx, holeID, langID, code, &scores[0])
-		return scores[0]
+	// Run all the runs in parallel to reduce the wall clock time.
+	var wg sync.WaitGroup
+	wg.Add(len(runs))
+
+	for i := range runs {
+		go func(run *Run) {
+			if err := play(ctx, holeID, langID, code, run); err != nil {
+				log.Println(err)
+			}
+
+			wg.Done()
+		}(&runs[i])
 	}
 
-	done := make(chan Scorecard)
+	wg.Wait()
 
-	for _, score := range scores {
-		go func(score Scorecard) {
-			defer func() {
-				if r := recover(); r != nil {
-					log.Println(r)
-				}
-			}()
-
-			play(ctx, holeID, langID, code, &score)
-			done <- score
-		}(score)
-	}
-
-	// TODO Maybe return all runs (rather than last or failing) to the UI.
-	for range scores {
-		score = <-done
-
-		// We failed! Return that run.
-		if !score.Pass {
-			break
-		}
-	}
-
-	return // Return the last run.
+	return
 }
 
-func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
+func play(ctx context.Context, holeID, langID, code string, run *Run) error {
 	var stderr, stdout bytes.Buffer
 	var asmBytesRead, asmBytesWrite *os.File
 
@@ -232,7 +223,7 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 	case "assembly":
 		var err error
 		if asmBytesRead, asmBytesWrite, err = os.Pipe(); err != nil {
-			panic(err)
+			return err
 		}
 
 		cmd.Args = []string{"/usr/bin/defasm", "--size-out=3", "-w", "-r"}
@@ -314,8 +305,8 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 		// Require a backslash for Quine to prevent trivial solutions.
 		// Don't even run the code; just mark error and return.
 		if holeID == "quine" && !strings.Contains(code, `\`) {
-			score.Stderr = []byte(`Quine in TeX must have at least one '\' character.`)
-			return
+			run.Stderr = `Quine in TeX must have at least one '\' character.`
+			return nil
 		}
 	default:
 		cmd.Args = []string{"/usr/bin/" + langID, "-"}
@@ -326,16 +317,16 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 	case "awk", "brainfuck", "fish":
 		// Hole args passed through stdin for these langs separated by a null byte
 		args := ""
-		for _, arg := range score.Args {
+		for _, arg := range run.Args {
 			args += arg + "\x00"
 		}
 		cmd.Stdin = strings.NewReader(args)
 	case "sed":
 		// For sed we always need to append a null byte, even if no args exist
-		args := strings.Join(score.Args, "\x00") + "\x00"
+		args := strings.Join(run.Args, "\x00") + "\x00"
 		cmd.Stdin = strings.NewReader(args)
 	default:
-		cmd.Args = append(cmd.Args, score.Args...)
+		cmd.Args = append(cmd.Args, run.Args...)
 	}
 
 	// Code
@@ -354,15 +345,15 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 	err := cmd.Run()
 
 	deadline, _ := ctx.Deadline()
-	score.Took = timeout - time.Until(deadline)
+	run.Time = timeout - time.Until(deadline)
 
 	if err != nil {
 		if err, ok := err.(*exec.ExitError); ok {
-			score.ExitCode = err.ExitCode()
+			run.ExitCode = err.ExitCode()
 		}
 
 		if errors.Is(ctx.Err(), context.DeadlineExceeded) {
-			score.Timeout = true
+			run.Timeout = true
 			fmt.Fprint(&stderr, "Killed for exceeding the ", timeout, " timeout.")
 		} else {
 			stderr.WriteString(err.Error())
@@ -371,8 +362,8 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 
 	// Actual byte count is printed by the assembler.
 	if langID == "assembly" {
-		if _, err := fmt.Fscanf(asmBytesRead, "%d", &score.ASMBytes); err != nil {
-			panic(err)
+		if _, err := fmt.Fscanf(asmBytesRead, "%d", &run.ASMBytes); err != nil {
+			return err
 		}
 		asmBytesRead.Close()
 	}
@@ -380,7 +371,7 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 	const maxLength = 128 * 1024 // 128 KiB
 
 	// Trim trailing whitespace.
-	score.Stderr = bytes.TrimRightFunc(stderr.Next(maxLength), unicode.IsSpace)
+	run.Stderr = string(bytes.TrimRightFunc(stderr.Next(maxLength), unicode.IsSpace))
 
 	stdoutContents := stdout.Next(maxLength)
 
@@ -392,24 +383,26 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 	// Trim trailing whitespace on each line, and then trailing empty lines.
 	// Quine solutions are obviously left untouched.
 	if holeID == "quine" {
-		score.Stdout = stdoutContents
+		run.Stdout = string(stdoutContents)
 	} else {
-		score.Stdout = bytes.TrimRight(stdoutTrimmer.ReplaceAll(
-			stdoutContents, []byte{'\n'}), "\n")
+		run.Stdout = string(bytes.TrimRight(stdoutTrimmer.ReplaceAll(
+			stdoutContents, []byte{'\n'}), "\n"))
 	}
 
 	// ASCII-ify roman numerals
 	if holeID == "arabic-to-roman" {
-		score.Stdout = []byte(romanToASCII.Replace(string(score.Stdout)))
+		run.Stdout = romanToASCII.Replace(run.Stdout)
 	}
 
 	// Timeouts and whitespace only output never pass.
-	if !score.Timeout && len(bytes.TrimSpace(score.Stdout)) != 0 {
+	if !run.Timeout && len(strings.TrimSpace(run.Stdout)) != 0 {
 		if holeID == "css-colors" {
 			// TODO Generalise case insensitivity, should it apply to others?
-			score.Pass = strings.EqualFold(score.Answer, string(score.Stdout))
+			run.Pass = strings.EqualFold(run.Answer, run.Stdout)
 		} else {
-			score.Pass = score.Answer == string(score.Stdout)
+			run.Pass = run.Answer == run.Stdout
 		}
 	}
+
+	return nil
 }

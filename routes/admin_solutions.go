@@ -39,14 +39,22 @@ func adminSolutionsGET(w http.ResponseWriter, r *http.Request) {
 }
 
 // Wrap hole.Play so we can recover from panics.
-func play(ctx context.Context, holeID, langID, code string) (score hole.Scorecard) {
+func play(ctx context.Context, holeID, langID, code string) (run hole.Run) {
 	defer func() {
 		if r := recover(); r != nil {
 			log.Println(r)
 		}
 	}()
 
-	return hole.Play(ctx, holeID, langID, code)
+	// FIXME Returning just the first failing run is kinda hacky.
+	for _, r := range hole.Play(ctx, holeID, langID, code) {
+		run = r
+		if !r.Pass {
+			break
+		}
+	}
+
+	return run
 }
 
 // GET /admin/solutions/run
@@ -69,7 +77,7 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 			for s := range solutions {
 				// Run each solution up to three times.
 				for j := 0; j < 3; j++ {
-					score := func() hole.Scorecard {
+					score := func() hole.Run {
 						defer func() {
 							if r := recover(); r != nil {
 								log.Println(r)
@@ -80,7 +88,7 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 					}()
 
 					s.Stderr = string(score.Stderr)
-					s.Took = score.Took
+					s.Took = score.Time
 
 					if score.Pass {
 						s.Pass = true

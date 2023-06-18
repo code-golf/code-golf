@@ -108,15 +108,15 @@ func (qr matrix) toString(trimRight bool) string {
 	return buf.String()
 }
 
-func qr(decoder bool) []Scorecard {
+func qr(decoder bool) []Run {
 	content, qr := getStandardQr()
 	qrString := qr.toString(!decoder)
 
 	if decoder {
-		return []Scorecard{{Args: []string{qrString}, Answer: content}}
+		return []Run{{Args: []string{qrString}, Answer: content}}
 	}
 
-	return []Scorecard{{
+	return []Run{{
 		Args:   []string{content + " " + hex.EncodeToString(qr.getErrorCorrectionBlocks())},
 		Answer: qrString,
 	}}

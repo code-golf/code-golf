@@ -16,7 +16,7 @@ func checkDigit(digits [9]int) int {
 	return (11 - (sum % 11)) % 11
 }
 
-func isbn() []Scorecard {
+func isbn() []Run {
 	args := make([]string, 100)
 	outs := make([]string, 100)
 
@@ -68,5 +68,5 @@ func isbn() []Scorecard {
 		outs[i] = id.String()
 	}
 
-	return []Scorecard{{Args: args, Answer: strings.Join(outs, "\n")}}
+	return []Run{{Args: args, Answer: strings.Join(outs, "\n")}}
 }

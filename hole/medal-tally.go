@@ -6,8 +6,8 @@ import (
 	"sort"
 )
 
-func medalTally() []Scorecard {
-	tests := []test{}
+func medalTally() []Run {
+	var tests []test
 
 	for size := 3; size <= 10; size++ {
 		// 3 golds

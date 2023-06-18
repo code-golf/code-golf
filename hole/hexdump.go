@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func hexdump() []Scorecard {
+func hexdump() []Run {
 	args := []string{
 		"Code Golf",
 		" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~",
@@ -109,5 +109,5 @@ hexadecimal.`,
 		outs[i], outs[j] = outs[j], outs[i]
 	})
 
-	return []Scorecard{{Args: args, Answer: strings.Join(outs, "\n\n")}}
+	return []Run{{Args: args, Answer: strings.Join(outs, "\n\n")}}
 }

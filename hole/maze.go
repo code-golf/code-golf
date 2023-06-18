@@ -129,13 +129,11 @@ func draw(grid [height][width]int, si, sj, ei, ej int, path [height][width]int, 
 	return
 }
 
-func maze() []Scorecard {
-	const count = 5
-	runs := make([]Scorecard, count)
+func maze() []Run {
+	runs := make([]Run, 5)
 
-	for i := 0; i < count; i++ {
-		var grid [height][width]int
-		var dist [height][width]int
+	for i := range runs {
+		var grid, dist [height][width]int
 
 		sj := rand.Intn(width)
 		si := rand.Intn(height)
@@ -146,7 +144,7 @@ func maze() []Scorecard {
 		mazeinput := draw(grid, si, sj, ei, ej, path, false)
 		mazesolved := draw(grid, si, sj, ei, ej, path, true)
 
-		runs[i] = Scorecard{
+		runs[i] = Run{
 			Args:   []string{mazeinput[:len(mazeinput)-1]},
 			Answer: mazesolved[:len(mazesolved)-1],
 		}

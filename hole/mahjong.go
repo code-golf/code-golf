@@ -197,11 +197,10 @@ func isHandValid(tileCounts map[rune]int) bool {
 	return hasPair
 }
 
-func mahjong() []Scorecard {
+func mahjong() []Run {
+	runs := make([]Run, 10)
 
-	scorecards := make([]Scorecard, 10)
-
-	for scorecardNum := range scorecards {
+	for i := range runs {
 		args := make([]string, 100)
 		var answer strings.Builder
 
@@ -225,8 +224,8 @@ func mahjong() []Scorecard {
 			}
 		}
 
-		scorecards[scorecardNum] = Scorecard{Args: args, Answer: answer.String()}
+		runs[i] = Run{Args: args, Answer: answer.String()}
 	}
 
-	return scorecards
+	return runs
 }

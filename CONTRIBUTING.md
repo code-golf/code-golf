@@ -59,10 +59,10 @@ This function must return data for at least one test run. Data for each run take
 `/hole/hole-name.go`
 
 ```go
-func holeName() []Scorecard {
+func holeName() []Run {
 	// Create Args and Answer
 
-	return []Scorecard{{Args: args, Answer: out}}
+	return []Run{{Args: args, Answer: out}}
 }
 ```
 

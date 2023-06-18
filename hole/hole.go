@@ -9,8 +9,8 @@ import (
 
 type test struct{ in, out string }
 
-func outputTests(testRuns ...[]test) []Scorecard {
-	scores := make([]Scorecard, len(testRuns))
+func outputTests(testRuns ...[]test) []Run {
+	runs := make([]Run, len(testRuns))
 
 	for i, tests := range testRuns {
 		args := make([]string, len(tests))
@@ -25,13 +25,13 @@ func outputTests(testRuns ...[]test) []Scorecard {
 			answer.WriteString(t.out)
 		}
 
-		scores[i] = Scorecard{Args: args, Answer: answer.String()}
+		runs[i] = Run{Args: args, Answer: answer.String()}
 	}
 
-	return scores
+	return runs
 }
 
-func outputMultirunTests(tests []test) []Scorecard {
+func outputMultirunTests(tests []test) []Run {
 	shuffle(tests)
 	mid := len(tests) / 2
 	return outputTests(tests, tests[:mid], tests[mid:])

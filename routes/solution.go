@@ -44,13 +44,25 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	score := hole.Play(r.Context(), in.Hole, in.Lang, in.Code)
+	runs := hole.Play(r.Context(), in.Hole, in.Lang, in.Code)
 
-	if score.Timeout && golfer != nil {
+	// The legacy single run we display, first failing or last overall.
+	var displayedRun hole.Run
+	for _, run := range runs {
+		displayedRun = run
+		if !run.Pass {
+			break
+		}
+	}
+
+	// FIXME This should really be based on any of the runs but until we
+	//       display all runs it's best to use only the one we display.
+	if displayedRun.Timeout && golfer != nil {
 		golfer.Earn(db, "slowcoach")
 	}
 
 	out := struct {
+		// Legacy TitleCase attributes.
 		Argv           []string
 		Cheevos        []*config.Cheevo
 		Err, Exp, Out  string
@@ -58,20 +70,24 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		Pass, LoggedIn bool
 		RankUpdates    []Golfer.RankUpdate
 		Took           time.Duration
+
+		// Modern lowercase attributes.
+		Runs []hole.Run `json:"runs"`
 	}{
-		Argv:     score.Args,
+		Argv:     displayedRun.Args,
 		Cheevos:  []*config.Cheevo{},
-		Err:      string(terminal.Render(score.Stderr)),
-		ExitCode: score.ExitCode,
-		Exp:      score.Answer,
+		Err:      string(terminal.Render([]byte(displayedRun.Stderr))),
+		ExitCode: displayedRun.ExitCode,
+		Exp:      displayedRun.Answer,
 		LoggedIn: golfer != nil,
-		Out:      string(score.Stdout),
-		Pass:     score.Pass,
+		Out:      string(displayedRun.Stdout),
+		Pass:     displayedRun.Pass,
+		Runs:     runs,
 		RankUpdates: []Golfer.RankUpdate{
 			{Scoring: "bytes"},
 			{Scoring: "chars"},
 		},
-		Took: score.Took,
+		Took: displayedRun.Time,
 	}
 
 	if out.Pass && golfer != nil && experimental {
@@ -107,7 +123,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			            lang    := $3,
 			            user_id := $4
 			        )`,
-			in.Code, in.Hole, in.Lang, golfer.ID, score.ASMBytes,
+			in.Code, in.Hole, in.Lang, golfer.ID, displayedRun.ASMBytes,
 		).Scan(
 			pq.Array(&cheevos),
 			&out.RankUpdates[0].From.Joint,
