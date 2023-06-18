@@ -80,7 +80,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		ExitCode: displayedRun.ExitCode,
 		Exp:      displayedRun.Answer,
 		LoggedIn: golfer != nil,
-		Out:      string(displayedRun.Stdout),
+		Out:      displayedRun.Stdout,
 		Pass:     displayedRun.Pass,
 		Runs:     runs,
 		RankUpdates: []Golfer.RankUpdate{
