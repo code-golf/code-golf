@@ -46,6 +46,9 @@ form.onsubmit = async e => {
             ` solutions (${failing} failing) in ` +
             new Date(Date.now() - start).toISOString().substr(14, 8).replace(/^00:/, '');
 
+        const stderr = <code></code>;
+        stderr.innerHTML = line.stderr;
+
         tbody.append(<tr>
             <td>{holes[line.hole]}</td>
             <td>{langs[line.lang]}</td>
@@ -54,7 +57,7 @@ form.onsubmit = async e => {
             <td><span class={line.pass ? 'green' : 'red'}>
                 {line.pass ? 'PASS' : 'FAIL'}
             </span></td>
-            <td><code>{line.stderr}</code></td>
+            <td>{stderr}</td>
         </tr>);
     };
 

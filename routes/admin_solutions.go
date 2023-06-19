@@ -9,6 +9,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/buildkite/terminal-to-html/v3"
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/session"
@@ -66,7 +67,7 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 						}
 					}
 
-					s.Stderr = run.Stderr
+					s.Stderr = string(terminal.Render([]byte(run.Stderr)))
 					s.Took = run.Time
 
 					if run.Pass {
