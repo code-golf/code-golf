@@ -75,6 +75,14 @@ func poker() []Run {
 		cardRune(6, rand.Intn(4)),
 		cardRune(8, rand.Intn(4)),
 	}})
+	suits = rand.Perm(4)
+	hands = append(hands, Hand{"High Card", []rune{
+		cardRune(3, suits[0]),
+		cardRune(5, suits[1]),
+		cardRune(7, suits[0]),
+		cardRune(9, suits[1]),
+		cardRune(11, rand.Intn(4)),
+	}})
 
 	// Pair
 	for i := 0; i < handCount; i++ {
