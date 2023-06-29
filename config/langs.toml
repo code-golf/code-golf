@@ -975,8 +975,8 @@ Hello, World!
 '''
 
 [V]
-size    = '48.5 MiB'
-version = '0.3.4'
+size    = '49 MiB'
+version = '0.3.5'
 website = 'https://vlang.io'
 example = '''
 import os
