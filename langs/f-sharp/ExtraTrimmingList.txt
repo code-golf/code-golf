@@ -9,7 +9,6 @@ System.ComponentModel.EventBasedAsync.dll
 System.ComponentModel.Primitives.dll
 System.ComponentModel.TypeConverter.dll
 System.Data.Common.dll
-System.Diagnostics.DiagnosticSource.dll
 System.Diagnostics.Process.dll
 System.Diagnostics.StackTrace.dll
 System.Drawing.Primitives.dll

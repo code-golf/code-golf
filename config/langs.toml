@@ -1,5 +1,5 @@
 ['><>']
-size    = '4.92 MiB'
+size    = '4.88 MiB'
 version = '888b90f'
 website = 'https://github.com/primo-ppcg/fish-jit'
 example = '''
@@ -154,7 +154,7 @@ Next
 '''
 
 [brainfuck]
-size    = '4.5 MiB'
+size    = '4.47 MiB'
 version = '3bdbd20'
 website = 'https://github.com/primo-ppcg/bf-jit'
 example = '''
@@ -203,8 +203,8 @@ int main(int argc, char* argv[]) {
 '''
 
 ['C#']
-size    = '149 MiB'
-version = 'C# 11.0 on .NET 7.0.5'
+size    = '150 MiB'
+version = 'C# 11.0 on .NET 7.0.8'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -360,8 +360,8 @@ for arg <- System.argv, do: IO.puts arg
 '''
 
 ['F#']
-size    = '150 MiB'
-version = 'F# 7.0 on .NET 7.0.5'
+size    = '144 MiB'
+version = 'F# 7.0 on .NET 7.0.8'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -469,7 +469,7 @@ main = do
 '''
 
 [Hexagony]
-size    = '7.98 MiB'
+size    = '8.09 MiB'
 version = '770406a'
 website = 'https://github.com/SirBogman/Hexagony'
 example = '''
@@ -640,7 +640,7 @@ end
 
 [Nim]
 size    = '13.6 MiB'
-version = '1.6.12'
+version = '1.6.14'
 website = 'https://nim-lang.org'
 example = '''
 import os
@@ -734,7 +734,7 @@ for ($i = 1; $i < $argc; $i++)
 
 [PowerShell]
 size    = '176 MiB'
-version = 'PowerShell 7.3.4 on .NET 7.0.5'
+version = 'PowerShell 7.3.5 on .NET 7.0.8'
 website = 'https://docs.microsoft.com/powershell/scripting/overview'
 example = '''
 # Printing
