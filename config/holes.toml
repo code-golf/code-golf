@@ -892,7 +892,6 @@ preamble = '''
 
 ['Gijswijt’s Sequence']
 category = 'Sequence'
-experiment = 724
 links = [
     { name = 'OEIS A090822', url = '//oeis.org/A090822' },
     { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Gijswijt's_sequence" },
