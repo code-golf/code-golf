@@ -1,4 +1,4 @@
-FROM swipl:8.4.2 AS builder
+FROM swipl:9.0.4 AS builder
 
 RUN apt-get update && apt-get install -y gcc
 
@@ -18,6 +18,7 @@ COPY --from=0 /usr/lib/locale                                    /usr/lib/locale
 COPY --from=0 /usr/lib/x86_64-linux-gnu/libcrypto.so.1.1         \
               /usr/lib/x86_64-linux-gnu/libtcmalloc_minimal.so.4 \
               /usr/lib/x86_64-linux-gnu/libgmp.so.10             \
+              /usr/lib/x86_64-linux-gnu/libpcre2-8.so.0          \
               /usr/lib/x86_64-linux-gnu/libstdc++.so.6           /usr/lib/
 
 ENTRYPOINT ["prolog"]
