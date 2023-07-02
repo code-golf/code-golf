@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
     pid_t pid = fork();
     if (!pid) {
         dup2(2, 1);
-        execl(fortran, fortran, "-fbackslash", "-o", bin, code, NULL);
+        execl(fortran, fortran, "-o", bin, code, NULL);
         perror("execl");
         return 3;
     }
