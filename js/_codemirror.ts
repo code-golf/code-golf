@@ -66,6 +66,9 @@ const asmErrorTooltip = {
 
 const fontFamily = "'Source Code Pro', monospace";
 
+// Bypass php() so that lang-html & lang-css imports are tree-shaken out.
+const php = new LanguageSupport(phpLanguage.configure({ top: 'Program' }));
+
 export const extensions = {
     // Extensions.
     'base': [
@@ -124,8 +127,8 @@ export const extensions = {
     'ocaml':      StreamLanguage.define(oCaml),
     'pascal':     StreamLanguage.define(pascal),
     'perl':       StreamLanguage.define(perl),
-    // Bypass php() so that lang-html & lang-css imports are tree-shaken out.
-    'php':        new LanguageSupport(phpLanguage.configure({ top: 'Program' })),
+    'php':        php,
+    'php-7':      php,
     'powershell': StreamLanguage.define(powerShell),
     'prolog':     prolog(),
     // Bypass python() so that autocomplete imports are tree-shaken out.

@@ -1,7 +1,7 @@
 use t;
 
 for 'config/langs.toml'.IO.&from-toml.map({
-    .key.lc.trans( qw[# + ><>] => qw[-sharp p fish] ) => .value<example>;
+    .key.lc.subst(' ', '-').trans( qw[# + ><>] => qw[-sharp p fish] ) => .value<example>;
 }).sort -> (:key($lang), :value($code)) {
     for (
         # Pick a hole that will definitely have unicode arguments.

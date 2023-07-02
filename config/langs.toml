@@ -716,6 +716,23 @@ say for @ARGV;
 '''
 
 [PHP]
+size    = '8.4 MiB'
+version = '8.2.7'
+website = 'https://www.php.net'
+example = '''
+# Printing
+echo "Hello, World!\n";
+
+# Looping
+for ($i = 0; $i < 10; $i++)
+    echo "$i\n";
+
+# Accessing arguments
+for ($i = 1; $i < $argc; $i++)
+    echo "$argv[$i]\n";
+'''
+
+['PHP 7']
 size    = '10.5 MiB'
 version = '7.4.33'
 website = 'https://www.php.net'
