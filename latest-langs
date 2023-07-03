@@ -18,6 +18,7 @@ constant %paths = (
     'Fortran'    => 'en.wikipedia.org/wiki/GNU_Fortran',
     'Go'         => 'endoflife.date/api/go.json',
     'Haskell'    => 'en.wikipedia.org/wiki/Glasgow_Haskell_Compiler',
+    'Janet'      => 'github.com/janet-lang/janet/releases/latest',
     'Java'       => 'endoflife.date/api/java.json',
     'JavaScript' => 'en.wikipedia.org/wiki/V8_(JavaScript_engine)',
     'Julia'      => 'en.wikipedia.org/wiki/Julia_(programming_language)',
@@ -39,6 +40,7 @@ constant %paths = (
     'Swift'      => 'en.wikipedia.org/wiki/Swift_(programming_language)',
     'Tcl'        => 'en.wikipedia.org/wiki/Tcl',
     'TeX'        => 'en.wikipedia.org/wiki/TeX',
+    'V'          => 'github.com/vlang/v/releases/latest',
     'VimL'       => 'en.wikipedia.org/wiki/Vim_(text_editor)',
     'Zig'        => 'en.wikipedia.org/wiki/Zig_(programming_language)',
 );
@@ -52,6 +54,7 @@ for %langs.sort: *.key.fc -> (:key($name), :value(%lang)) {
         my    $res = $ua.get("https://$_")<content>.decode;
 
         when / 'endoflife' / { $res.&from-json[0]<latest> }
+        when / 'github'    / { $res ~~ / $name ' ' <(\d+ <[\d.]>+)> / }
         when / 'wikipedia' / {
             $res ~~ /
                 < Stable Preview > ' release' .+? '>' ( '#' \d+ ' "' )?
