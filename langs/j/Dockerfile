@@ -2,7 +2,7 @@ FROM debian:bullseye-slim AS builder
 
 RUN apt-get update && apt-get install -y curl gcc
 
-RUN curl https://www.jsoftware.com/download/j9.4/install/j9.4.1_linux64.tar.gz \
+RUN curl https://www.jsoftware.com/download/j9.4/install/j9.4.2_linux64.tar.gz \
   | tar xz
 
 # FIXME Don't run updatejs.sh as it tries to update to AVX512 because my build

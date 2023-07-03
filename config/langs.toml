@@ -496,7 +496,7 @@ example = '''
 
 [J]
 size    = '11 MiB'
-version = '9.4.21'
+version = '9.4.22'
 website = 'https://www.jsoftware.com'
 example = '''
 NB.Printing
@@ -699,8 +699,8 @@ end.
 '''
 
 [Perl]
-size    = '5.34 MiB'
-version = '5.36.1'
+size    = '5.43 MiB'
+version = '5.38.0'
 website = 'https://www.perl.org'
 example = '''
 # Printing
