@@ -59,5 +59,6 @@ main > form + form {
 
 #missingConnections {
     display: flex;
+    flex-wrap: wrap;
     gap: .5rem;
 }
