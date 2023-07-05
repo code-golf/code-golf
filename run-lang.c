@@ -61,6 +61,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ERR_AND_EXIT("mount proc");
 
     // Clobber /proc/meminfo. It can be used to inject state.
+    // FIXME This escapes the container and affects ALL /proc mounts inc host.
     if (chmod("/proc/meminfo", 0) < 0)
         ERR_AND_EXIT("chmod /proc/meminfo");
 
