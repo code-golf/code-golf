@@ -342,7 +342,7 @@ preamble = '''
 <p>The nth Catalan number can be expressed as C(n) = binomial(2n,n)/(n+1).
 
 <p>
-    Print the first 100 Catalan numbers, from C(0) to C(99) inclusive, each on
+    Print the first <b>100</b> Catalan numbers, from <b>C(0)</b> to <b>C(99)</b> inclusive, each on
     their own line.
 
 <p>Note: C(99) is 57 digits long, and is greater than 2<sup>187</sup>.
@@ -1084,7 +1084,7 @@ preamble = '''
 4 4 4 1 4 0
 </pre>
 
-<p>Print the first 1,000 terms of the inventory sequence, each on their own line.
+<p>Print the first <b>1,000</b> terms of the inventory sequence, each on their own line.
 '''
 
 [ISBN]
@@ -1189,7 +1189,7 @@ preamble = '''
 </pre>
 
 <p>
-    Beginning with (1, 2) print the first 1,000 elements in the Kolakoski
+    Beginning with (1, 2) print the first <b>1,000</b> elements in the Kolakoski
     sequence, separated by spaces.
 {{- end -}}
 '''
@@ -1290,7 +1290,7 @@ preamble = '''
     the length with the original number. For example the next term after
     111221 would be 312211 (three ones, two twos and one one).
 
-<p>Print the first 20 terms of the Look and Say sequence.
+<p>Print the first <b>20</b> terms of the Look and Say sequence.
 '''
 
 ['Lucky Numbers']
@@ -1876,7 +1876,7 @@ preamble = '''
     Pascal’s triangle is a triangular pattern of integers formed by the
     binomial coefficients.
 
-<p>Print the first <b>20 rows</b> of Pascal’s triangle.
+<p>Print the first <b>20</b> rows of Pascal’s triangle.
 '''
 
 ['Pernicious Numbers']
