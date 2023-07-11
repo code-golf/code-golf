@@ -354,7 +354,7 @@ links = [
     { name = 'OEIS A006752', url = '//oeis.org/A006752' },
     { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Catalan's_constant" },
 ]
-synopsis = 'Print Catalan’s constant to the first 1,000 decimal places.'
+synopsis = 'Print the first 1,000 digits of Catalan’s constant.'
 preamble = '''
 <p>
     Catalan’s constant is a mathematical constant equal to
@@ -364,7 +364,7 @@ preamble = '''
     It is unrelated to the <a href=catalan-numbers>Catalan numbers</a> except
     by name.
 
-<p>Print Catalan’s constant to the first 1,000 decimal places.
+<p>Print the first <b>1,000</b> decimal digits of Catalan’s constant.
 '''
 
 ['Christmas Trees']
@@ -1156,7 +1156,7 @@ links = [
 ]
 synopsis = '''
 {{- if eq . "Kolakoski Constant" -}}
-    Print the Kolakoski constant to the first 1,000 decimal places.
+    Print the first 1,000 digits of the Kolakoski constant.
 {{- else -}}
     Print the first 1,000 elements in the Kolakoski sequence.
 {{- end -}}
@@ -1174,7 +1174,7 @@ preamble = '''
     0.7945071927…
 </pre>
 
-<p>Print the Kolakoski constant to the first 1,000 decimal places.
+<p>Print the first <b>1,000</b> decimal digits of the Kolakoski constant.
 {{- else -}}
 <p>
     The Kolakoski sequence is a self referential sequence where the nth
@@ -1270,9 +1270,9 @@ links = [
     { name = 'OEIS A001113', url = '//oeis.org/A002162' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Natural_logarithm_of_2' },
 ]
-synopsis = 'Print ln 2 to the first 1,000 decimal places.'
+synopsis = 'Print the first 1,000 digits of ln 2.'
 preamble = '''
-<p>Print ln 2 (the natural logarithm of 2) to the first 1,000 decimal places.
+<p>Print the first <b>1,000</b> decimal digits of ln 2 (the natural logarithm of 2).
 '''
 
 ['Look and Say']
@@ -3201,11 +3201,10 @@ links = [
     { name = 'Rosetta Code', url = "//rosettacode.org/wiki/Euler's_constant_0.5772..." },
     { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Euler's_constant" },
 ]
-synopsis = 'Print γ to the first 1,000 decimal places.'
+synopsis = 'Print the first 1,000 digits of γ.'
 preamble = '''
 <p>
-    Print the Euler–Mascheroni constant γ (gamma) to the first 1,000 decimal
-    places.
+    Print the first <b>1,000</b> decimal digits of the Euler–Mascheroni constant γ (gamma).
 '''
 
 ['λ']
@@ -3214,7 +3213,7 @@ links = [
     { name = 'OEIS A014715', url = '//oeis.org/A014715' },
     { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Conway's_constant" },
 ]
-synopsis = 'Print λ to the first 1,000 decimal places.'
+synopsis = 'Print the first 1,000 digits of λ.'
 preamble = '''
 <p>
     Conway’s constant λ is a mathematical constant related to the growth of
@@ -3224,7 +3223,7 @@ preamble = '''
     It is the unique positive root of
     <a href="//en.wikipedia.org/wiki/Look-and-say_sequence#Conway's_constant_as_a_polynomial_root">this large polynomial</a>.
 
-<p>Print λ to the first 1,000 decimal places.
+<p>Print the first <b>1,000</b> decimal digits of λ.
 '''
 
 ['π']
@@ -3236,12 +3235,12 @@ links = [
     { v = [0], name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Pi' },
     { v = [1], name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Tau_(mathematical_constant)' },
 ]
-synopsis = 'Print {{ . }} to the first 1,000 decimal places.'
+synopsis = 'Print the first 1,000 digits of {{ . }}.'
 preamble = '''
 {{- if eq . "π" -}}
-<p>Print π (pi) to the first 1,000 decimal places.
+<p>Print the first <b>1,000</b> decimal digits of π (pi).
 {{- else -}}
-<p>Print 2π=τ (tau) to the first 1,000 decimal places.
+<p>Print the first <b>1,000</b> decimal digits of 2π=τ (tau).
 {{- end -}}
 '''
 
@@ -3251,9 +3250,9 @@ links = [
     { name = 'OEIS A001622', url = '//oeis.org/A001622' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Golden_ratio' },
 ]
-synopsis = 'Print φ to the first 1,000 decimal places.'
+synopsis = 'Print the first 1,000 digits of φ.'
 preamble = '''
-<p>Print the Golden ratio φ (phi) to the first 1,000 decimal places.
+<p>Print the first <b>1,000</b> decimal digits of the Golden ratio φ (phi).
 '''
 
 ['√2']
@@ -3262,9 +3261,9 @@ links = [
     { name = 'OEIS A002193', url = '//oeis.org/A002193' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Square_root_of_2' },
 ]
-synopsis = 'Print √2 to the first 1,000 decimal places.'
+synopsis = 'Print the first 1,000 digits of √2.'
 preamble = '''
-<p>Print √2 (Pythagoras’ constant) to the first 1,000 decimal places.
+<p>Print the first <b>1,000</b> decimal digits of √2 (Pythagoras’ constant).
 '''
 
 ['𝑒']
@@ -3273,7 +3272,7 @@ links = [
     { name = 'OEIS A001113', url = '//oeis.org/A001113' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/E_(mathematical_constant)' },
 ]
-synopsis = 'Print 𝑒 to the first 1,000 decimal places.'
+synopsis = 'Print the first 1,000 digits of 𝑒.'
 preamble = '''
-<p>Print 𝑒 (Euler’s number) to the first 1,000 decimal places.
+<p>Print the first <b>1,000</b> decimal digits of 𝑒 (Euler’s number).
 '''
