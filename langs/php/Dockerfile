@@ -2,11 +2,13 @@ FROM alpine:3.18 AS builder
 
 RUN apk add --no-cache build-base curl
 
-RUN curl -L https://php.net/distributions/php-8.2.7.tar.xz | tar xJ
+ENV VER 8.2.8
+
+RUN curl -L https://php.net/distributions/php-$VER.tar.xz | tar xJ
 
 ENV CFLAGS='-O2 -flto' LDFLAGS='-O2 -flto -all-static'
 
-RUN cd php-8.2.7               \
+RUN cd php-$VER                \
  && LDFLAGS= ./configure       \
     --disable-all              \
     --disable-gcc-global-regs  \

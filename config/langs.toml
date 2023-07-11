@@ -568,7 +568,7 @@ for (let arg of arguments)
 
 [Julia]
 size    = '302 MiB'
-version = '1.9.1'
+version = '1.9.2'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -717,7 +717,7 @@ say for @ARGV;
 
 [PHP]
 size    = '8.4 MiB'
-version = '8.2.7'
+version = '8.2.8'
 website = 'https://www.php.net'
 example = '''
 # Printing
