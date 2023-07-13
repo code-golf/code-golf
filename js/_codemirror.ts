@@ -26,6 +26,7 @@ import { cpp }                from '@codemirror/lang-cpp';
 import { crystal }            from '@codemirror/legacy-modes/mode/crystal';
 import { d }                  from '@codemirror/legacy-modes/mode/d';
 import { elixir }             from 'codemirror-lang-elixir';
+import { forth }              from '@codemirror/legacy-modes/mode/forth';
 import { fortran }            from '@codemirror/legacy-modes/mode/fortran';
 import { fSharp }             from '@codemirror/legacy-modes/mode/mllike';
 import { go }                 from '@codemirror/legacy-modes/mode/go';
@@ -109,6 +110,7 @@ export const extensions = {
     'elixir':     StreamLanguage.define(elixir),
     'f-sharp':    StreamLanguage.define(fSharp),
     // TODO fish
+    'forth':      StreamLanguage.define(forth),
     'fortran':    StreamLanguage.define({ ...fortran, languageData: { commentTokens: { line: '!' } } }),
     'go':         StreamLanguage.define(go),
     'golfscript': golfScript(),

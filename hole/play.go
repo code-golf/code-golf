@@ -247,6 +247,8 @@ func play(ctx context.Context, holeID, langID, code string, run *Run) error {
 		cmd.Env = []string{"LANG=C.UTF-8", "PATH=/usr/local/bin:/usr/bin:/bin"}
 	case "fish":
 		cmd.Args = []string{"/usr/bin/fish", "--no-prng", "-c", code, "-u"}
+	case "forth":
+		cmd.Args = []string{"/usr/bin/forth", "/proc/self/fd/0"}
 	case "golfscript":
 		cmd.Args = []string{"/usr/bin/golfscript", "-n", "-e", code}
 		if holeID == "quine" {

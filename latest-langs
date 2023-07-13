@@ -15,6 +15,7 @@ constant %paths = (
     'Dart'       => 'en.wikipedia.org/wiki/Dart_(programming_language)',
     'Elixir'     => 'en.wikipedia.org/wiki/Elixir_(programming_language)',
     'F#'         => 'en.wikipedia.org/wiki/F_Sharp_(programming_language)',
+    'Forth'      => 'en.wikipedia.org/wiki/Gforth',
     'Fortran'    => 'en.wikipedia.org/wiki/GNU_Fortran',
     'Go'         => 'endoflife.date/api/go.json',
     'Haskell'    => 'en.wikipedia.org/wiki/Glasgow_Haskell_Compiler',

@@ -380,6 +380,27 @@ let main args =
     0
 '''
 
+[Forth]
+size    = '2.89 MiB'
+version = 'GNU Forth 0.7.3'
+website = 'https://www.gnu.org/software/gforth/'
+example = '''
+\ Printing
+.( Hello, World!) CR
+
+\ Looping
+: looping
+    10 0 do i 0 .r cr loop ;
+looping
+
+\ Accessing arguments
+: accessing-arguments
+    begin next-arg 2dup 0 0 d<> while type CR repeat 2drop ;
+accessing-arguments
+
+bye
+'''
+
 [Fortran]
 size    = '87.3 MiB'
 version = 'GNU Fortran 13.1.0'

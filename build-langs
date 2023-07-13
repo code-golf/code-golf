@@ -40,7 +40,9 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         %lang<version> = $id eq 'assembly' ?? "DefAssembler $0" !! $0;
     }
     else {
-        my $proc = run «docker run -i --rm --tmpfs '/tmp:exec' $img», :in, :out;
+        # Forth outputs it's version number over stderr.
+        my $proc = run «docker run -i --rm --tmpfs '/tmp:exec' $img»,
+            :in, :out, :merge($id eq 'forth');
 
         $proc.in.say: 'puts [info patchlevel]' if $id eq 'tcl';
         $proc.in.close;
@@ -60,7 +62,8 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
                 $ver ~~ m/ v (\S+) /;
                 $ver = "D $0 on LDC $digits";
             }
-            when 'Fortran'    { $ver = "GNU Fortran $digits" }
+            when 'Forth'
+               | 'Fortran'    { $ver = "GNU $name $digits" }
             when 'Haskell'    { $ver = "Glasgow Haskell Compiler $digits" }
             when 'JavaScript' { $ver = "V8 $digits" }
             when 'Lisp'       { $ver = "GNU CLISP $digits" }
