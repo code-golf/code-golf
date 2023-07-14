@@ -27,6 +27,10 @@ RUN mv perl-$VER perl                                           \
  && make -j`nproc`                                                \
  && strip -s perl
 
+# Manually bump to fix https://rt.cpan.org/Ticket/Display.html?id=148953.
+RUN curl https://cpan.metacpan.org/authors/id/P/PJ/PJACKLAM/Math-BigInt-1.999839.tar.gz \
+  | tar --strip-components 2 -xzC /perl/lib Math-BigInt-1.999839/lib
+
 FROM codegolf/lang-base
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1         /lib/
