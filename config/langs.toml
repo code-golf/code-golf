@@ -381,7 +381,7 @@ let main args =
 '''
 
 [Forth]
-size    = '2.89 MiB'
+size    = '2.83 MiB'
 version = 'GNU Forth 0.7.3'
 website = 'https://www.gnu.org/software/gforth/'
 example = '''
