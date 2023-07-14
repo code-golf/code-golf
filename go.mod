@@ -8,19 +8,19 @@ require (
 	github.com/agnivade/levenshtein v1.1.1
 	github.com/buildkite/terminal-to-html/v3 v3.8.0
 	github.com/bwmarrin/discordgo v0.27.1
-	github.com/go-chi/chi/v5 v5.0.8
+	github.com/go-chi/chi/v5 v5.0.10
 	github.com/go-git/go-billy/v5 v5.4.1
 	github.com/go-git/go-git/v5 v5.7.0
 	github.com/gofrs/uuid v4.4.0+incompatible
 	github.com/gorilla/feeds v1.1.1
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/lib/pq v1.10.9
-	github.com/pelletier/go-toml/v2 v2.0.8
-	github.com/shurcooL/graphql v0.0.0-20230712132842-85bf0c3c277e
+	github.com/pelletier/go-toml/v2 v2.0.9
+	github.com/shurcooL/graphql v0.0.0-20230714182844-3e04114ae69a
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 	github.com/tdewolff/minify/v2 v2.12.7
 	github.com/yuin/goldmark v1.5.4
-	golang.org/x/exp v0.0.0-20230711153332-06a737ee72cb
+	golang.org/x/exp v0.0.0-20230713183714-613f0c0eb8a1
 	golang.org/x/oauth2 v0.10.0
 	gopkg.in/guregu/null.v4 v4.0.0
 )
