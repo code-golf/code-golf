@@ -110,7 +110,7 @@ export const extensions = {
     'elixir':     StreamLanguage.define(elixir),
     'f-sharp':    StreamLanguage.define(fSharp),
     // TODO fish
-    'forth':      StreamLanguage.define(forth),
+    'forth':      StreamLanguage.define({ ...forth, languageData: { commentTokens: { line: '\\' } } }),
     'fortran':    StreamLanguage.define({ ...fortran, languageData: { commentTokens: { line: '!' } } }),
     'go':         StreamLanguage.define(go),
     'golfscript': golfScript(),
