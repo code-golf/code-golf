@@ -395,7 +395,7 @@ looping
 
 \ Accessing arguments
 : accessing-arguments
-    begin next-arg 2dup 0 0 d<> while type CR repeat 2drop ;
+    begin next-arg 2dup d0<> while type CR repeat 2drop ;
 accessing-arguments
 
 bye
