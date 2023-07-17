@@ -125,8 +125,6 @@ preamble = '''
 <p>
     For each numeric argument in Arabic numerals, print the same number in
     Roman numerals.
-
-<p>You may use either ASCII or UTF-8 (U+2160 to U+2188) for Roman numerals.
 {{ else }}
 <p>
     For each numeric argument in Roman numerals, print the same number in
@@ -148,13 +146,13 @@ preamble = '''
             <td>1000
         <tr>
             <th>Roman
-            <td>Ⅰ
-            <td>Ⅴ
-            <td>Ⅹ
-            <td>Ⅼ
-            <td>Ⅽ
-            <td>Ⅾ
-            <td>Ⅿ
+            <td>I
+            <td>V
+            <td>X
+            <td>L
+            <td>C
+            <td>D
+            <td>M
     </table>
 </div>
 '''
