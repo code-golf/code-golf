@@ -21,6 +21,7 @@
 #  - £sd
 
 ['12 Days of Christmas']
+date = 2017-12-11
 category = 'Art'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/The_Twelve_Days_of_Christmas' },
@@ -54,6 +55,7 @@ A Partridge in a Pear Tree.
 '''
 
 ['99 Bottles of Beer']
+date = 2017-09-30
 category = 'Art'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/99_Bottles_of_Beer' },
@@ -80,6 +82,7 @@ Go to the store and buy some more, 99 bottles of beer on the wall.
 '''
 
 ['Abundant Numbers']
+date = 2019-11-17
 category = 'Sequence'
 variants = ['Abundant Numbers', 'Abundant Numbers (Long)']
 links = [
@@ -106,6 +109,7 @@ preamble = '''
 '''
 
 ['Arabic to Roman']
+date = 2017-11-28
 category = 'Transform'
 variants = ['Arabic to Roman', 'Roman to Arabic']
 links = [
@@ -248,6 +252,7 @@ preamble = '''
 '''
 
 ['ASCII Table']
+date = 2022-03-26
 category = 'Art'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Show_ASCII_table' },
@@ -331,6 +336,7 @@ preamble = '''
 '''
 
 ['Catalan Numbers']
+date = 2022-01-29
 category = 'Sequence'
 links = [
     { name = 'OEIS A000108', url = '//oeis.org/A000108' },
@@ -349,6 +355,7 @@ preamble = '''
 '''
 
 ['Catalan’s Constant']
+date = 2022-01-02
 category = 'Mathematics'
 links = [
     { name = 'OEIS A006752', url = '//oeis.org/A006752' },
@@ -368,6 +375,7 @@ preamble = '''
 '''
 
 ['Christmas Trees']
+date = 2017-12-07
 category = 'Art'
 synopsis = 'Draw a size ascending range of Christmas trees using asterisks.'
 preamble = '''
@@ -430,6 +438,7 @@ preamble = '''
 '''
 
 ['CSS Colors']
+date = 2020-06-25
 category = 'Transform'
 data = '''
 {
@@ -586,6 +595,7 @@ preamble = '''
 '''
 
 ['Day of Week']
+date = 2023-04-16
 category = 'Transform'
 synopsis = 'Given a date, output the day of the week.'
 preamble = '''
@@ -646,6 +656,7 @@ preamble = '''
 '''
 
 ['Emirp Numbers']
+date = 2017-11-11
 category = 'Sequence'
 variants = ['Emirp Numbers', 'Emirp Numbers (Long)']
 links = [
@@ -709,6 +720,7 @@ preamble = '''
 '''
 
 ['Evil Numbers']
+date = 2017-10-19
 category = 'Sequence'
 variants = ['Evil Numbers', 'Evil Numbers (Long)', 'Odious Numbers', 'Odious Numbers (Long)']
 links = [
@@ -780,6 +792,7 @@ preamble = '''
 '''
 
 ['Fizz Buzz']
+date = 2017-09-20
 category = 'Sequence'
 variants = ['Fizz Buzz', 'Foo Fizz Buzz Bar']
 links = [
@@ -812,6 +825,7 @@ preamble = '''
 '''
 
 ['Forsyth–Edwards Notation']
+date = 2023-05-01
 category = 'Gaming'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Forsyth–Edwards_Notation' },
@@ -865,6 +879,7 @@ preamble = '''
 '''
 
 ['Game of Life']
+date = 2022-12-22
 category = 'Gaming'
 links = [
     { name = 'Rosetta Code', url = "//rosettacode.org/wiki/Conway's_Game_of_Life" },
@@ -891,6 +906,7 @@ preamble = '''
 '''
 
 ['Gijswijt’s Sequence']
+date = 2023-07-01
 category = 'Sequence'
 links = [
     { name = 'OEIS A090822', url = '//oeis.org/A090822' },
@@ -967,6 +983,7 @@ preamble = '''
 '''
 
 ['Happy Numbers']
+date = 2017-12-02
 category = 'Sequence'
 variants = ['Happy Numbers', 'Happy Numbers (Long)']
 links = [
@@ -1056,6 +1073,7 @@ preamble = '''
 '''
 
 ['Inventory Sequence']
+date = 2022-11-19
 category = 'Sequence'
 links = [
     { name = 'Numberphile',  url = '//www.numberphile.com/videos/the-inventory-sequence' },
@@ -1105,6 +1123,7 @@ preamble = '''
 '''
 
 ['Jacobi Symbol']
+date = 2022-05-08
 category = 'Mathematics'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Jacobi_symbol' },
@@ -1145,6 +1164,7 @@ preamble = '''
 '''
 
 ['Kolakoski Constant']
+date = 2021-01-16
 categories = ['Mathematics', 'Sequence']
 variants = ['Kolakoski Constant', 'Kolakoski Sequence']
 links = [
@@ -1195,6 +1215,7 @@ preamble = '''
 '''
 
 ['Leap Years']
+date = 2018-12-04
 category = 'Sequence'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Leap_year' },
@@ -1214,6 +1235,7 @@ preamble = '''
 '''
 
 ['Levenshtein Distance']
+date = 2020-11-10
 category = 'Transform'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Levenshtein_distance' },
@@ -1243,6 +1265,7 @@ preamble = '''
 '''
 
 ['Leyland Numbers']
+date = 2020-07-26
 category = 'Sequence'
 links = [
     { name = 'OEIS A076980', url = '//oeis.org/A076980' },
@@ -1276,6 +1299,7 @@ preamble = '''
 '''
 
 ['Look and Say']
+date = 2020-12-01
 category = 'Sequence'
 links = [
     { name = 'OEIS A005150', url = '//oeis.org/A005150' },
@@ -1294,6 +1318,7 @@ preamble = '''
 '''
 
 ['Lucky Numbers']
+date = 2022-02-28
 category = 'Sequence'
 links = [
     { name = 'OEIS A000959', url = '//oeis.org/A000959' },
@@ -1330,6 +1355,7 @@ Delete every 7th term and advance:
 '''
 
 ['Lucky Tickets']
+date = 2020-04-19
 category = 'Mathematics'
 links = [
     { name = 'OEIS A174061', url = '//oeis.org/A174061' },
@@ -1439,6 +1465,7 @@ preamble = '''
 '''
 
 ['Medal Tally']
+date = 2023-06-01
 category = 'Transform'
 synopsis = 'Tally code golf medals.'
 preamble = '''
@@ -1566,6 +1593,7 @@ preamble = '''
 '''
 
 ['Musical Chords']
+date = 2021-11-02
 category = 'Transform'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Triad_(music)' },
@@ -1715,6 +1743,7 @@ preamble = '''
 '''
 
 ['Niven Numbers']
+date = 2018-05-03
 category = 'Sequence'
 variants = ['Niven Numbers', 'Niven Numbers (Long)']
 links = [
@@ -1738,6 +1767,7 @@ preamble = '''
 '''
 
 ['Number Spiral']
+date = 2022-01-25
 category = 'Art'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Spiral_matrix' },
@@ -1780,6 +1810,7 @@ preamble = '''
 '''
 
 ['Ordinal Numbers']
+date = 2019-07-11
 category = 'Transform'
 links = [
     { name = 'Rosetta Code', url = "//rosettacode.org/wiki/N'th" },
@@ -1849,6 +1880,7 @@ preamble = '''
 '''
 
 ['Pangram Grep']
+date = 2017-12-02
 category = 'Transform'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Pangram_checker' },
@@ -1865,6 +1897,7 @@ preamble = '''
 '''
 
 ['Pascal’s Triangle']
+date = 2017-07-22
 category = 'Sequence'
 links = [
     { name = 'Rosetta Code', url = "//rosettacode.org/wiki/Pascal's_triangle" },
@@ -1880,6 +1913,7 @@ preamble = '''
 '''
 
 ['Pernicious Numbers']
+date = 2017-12-02
 category = 'Sequence'
 variants = ['Pernicious Numbers', 'Pernicious Numbers (Long)']
 links = [
@@ -1973,6 +2007,7 @@ preamble = '''
 '''
 
 ['Prime Numbers']
+date = 2017-10-21
 category = 'Sequence'
 variants = ['Prime Numbers', 'Prime Numbers (Long)']
 links = [
@@ -1991,6 +2026,7 @@ preamble = '''
 '''
 
 ['Proximity Grid']
+date = 2022-08-03
 category = 'Computing'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Taxicab_geometry' },
@@ -2012,6 +2048,7 @@ preamble = '''
 '''
 
 ['QR Decoder']
+date = 2021-09-18
 category = 'Transform'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/QR_code#Encoding' },
@@ -2194,6 +2231,7 @@ preamble = '''
 '''
 
 ['Recamán']
+date = 2020-12-26
 category = 'Sequence'
 links = [
     { name = 'Numberphile',  url = '//www.numberphile.com/videos/slightly-spooky-recaman-sequence' },
@@ -2212,6 +2250,7 @@ preamble = '''
 '''
 
 ['Repeating Decimals']
+date = 2023-02-01
 category = 'Mathematics'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Integer_long_division' },
@@ -2279,6 +2318,7 @@ preamble = '''
 '''
 
 ['Reverse Polish Notation']
+date = 2022-02-12
 category = 'Computing'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Parsing/RPN_calculator_algorithm' },
@@ -2355,6 +2395,7 @@ a0 e0 3b 4d ae 2a f5 b0 c8 eb bb 3c 83 53 99 61
 '''
 
 ['Rule 110']
+date = 2018-07-09
 category = 'Computing'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Rule_110' },
@@ -2413,6 +2454,7 @@ preamble = '''
 '''
 
 ['Seven Segment']
+date = 2017-10-04
 category = 'Transform'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Seven-segment_display' },
@@ -2456,6 +2498,7 @@ Shì shì shì shì.
 '''
 
 ['SI Units']
+date = 2023-04-01
 category = 'Transform'
 links = [
     { name = 'NIST (Prefixes)', url = '//www.nist.gov/pml/owm/metric-si-prefixes' },
@@ -2597,6 +2640,7 @@ preamble = '''
 '''
 
 ['Sierpiński Triangle']
+date = 2017-11-11
 category = 'Art'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Sierpinski_triangle' },
@@ -2633,6 +2677,7 @@ preamble = '''
 '''
 
 ['Smith Numbers']
+date = 2021-10-05
 category = 'Sequence'
 links = [
     { name = 'OEIS A006753', url = '//oeis.org/A006753' },
@@ -2656,6 +2701,7 @@ preamble = '''
 '''
 
 ['Spelling Numbers']
+date = 2018-01-09
 category = 'Transform'
 synopsis = 'Spell numbers out in English.'
 preamble = '''
@@ -2669,6 +2715,7 @@ preamble = '''
 '''
 
 ['Star Wars Opening Crawl']
+date = 2021-05-03
 category = 'Transform'
 links = [
     { name = 'Wookieepedia', url = '//starwars.fandom.com/wiki/Opening_crawl' },
@@ -2789,6 +2836,7 @@ preamble = '''
 '''
 
 ['Ten-pin Bowling']
+date = 2019-08-05
 category = 'Gaming'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Ten-pin_bowling' },
@@ -2896,6 +2944,7 @@ The name game!
 '''
 
 ['Time Distance']
+date = 2022-04-10
 category = 'Transform'
 synopsis = 'Convert a quantity of seconds to a human-friendly string.'
 preamble = '''
@@ -2998,6 +3047,7 @@ preamble = '''
 '''
 
 ['United States']
+date = 2020-01-28
 category = 'Transform'
 data = '''
 {
@@ -3045,6 +3095,7 @@ preamble = '''
 '''
 
 ['Vampire Numbers']
+date = 2020-10-30
 category = 'Sequence'
 links = [
     { name = 'OEIS A014575', url = '//oeis.org/A014575' },
@@ -3073,6 +3124,7 @@ preamble = '''
 '''
 
 ['Van Eck Sequence']
+date = 2021-05-01
 category = 'Sequence'
 links = [
     { name = 'Numberphile',  url = '//www.numberphile.com/videos/van-eck-sequence' },
@@ -3126,6 +3178,7 @@ preamble = '''
 '''
 
 ['Zodiac Signs']
+date = 2022-06-09
 category = 'Transform'
 links = [
     { name = 'Zodiac Sign Wikipedia',    url = '//en.wikipedia.org/wiki/Zodiac_sign' },
@@ -3195,6 +3248,7 @@ preamble = '''
 '''
 
 ['γ']
+date = 2023-03-01
 category = 'Mathematics'
 links = [
     { name = 'OEIS A001620', url = '//oeis.org/A001620' },
@@ -3209,6 +3263,7 @@ preamble = '''
 '''
 
 ['λ']
+date = 2018-06-16
 category = 'Mathematics'
 links = [
     { name = 'OEIS A014715', url = '//oeis.org/A014715' },
@@ -3228,6 +3283,7 @@ preamble = '''
 '''
 
 ['π']
+date = 2017-07-15
 category = 'Mathematics'
 variants = ['π', 'τ']
 links = [
@@ -3246,6 +3302,7 @@ preamble = '''
 '''
 
 ['φ']
+date = 2017-11-17
 category = 'Mathematics'
 links = [
     { name = 'OEIS A001622', url = '//oeis.org/A001622' },
@@ -3257,6 +3314,7 @@ preamble = '''
 '''
 
 ['√2']
+date = 2019-05-25
 category = 'Mathematics'
 links = [
     { name = 'OEIS A002193', url = '//oeis.org/A002193' },
@@ -3268,6 +3326,7 @@ preamble = '''
 '''
 
 ['𝑒']
+date = 2017-11-17
 category = 'Mathematics'
 links = [
     { name = 'OEIS A001113', url = '//oeis.org/A001113' },
