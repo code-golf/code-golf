@@ -2651,9 +2651,9 @@ preamble = '''
         For <b>rad</b> and <b>sr</b>, only print a power of ten. (Example: for
         <code>Mrad</b>, print <code>10^6</code>, not <code>10^6 1</code>.)
     <li>
-        There is no fixed order among the base units. For <b>C</b>, you must
+        There is no universal order among the base units. For <b>C</b>, you must
         output <code>A s</code> rather than <code>s A</code>. We follow the
-        conventions of [NIST](https://www.nist.gov/pml/special-publication-330/sp-330-section-2#2.3.4).
+        conventions of <a href="https://www.nist.gov/pml/special-publication-330/sp-330-section-2#2.3.4">NIST</a>.
     <li>
         <code>μ</code> is U+03BC GREEK SMALL LETTER MU (UTF-8: <code>ce bc</code>).
     <li>
