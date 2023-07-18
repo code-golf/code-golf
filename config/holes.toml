@@ -2649,7 +2649,7 @@ preamble = '''
         Instead of <code>10^0</code>, print <code>1</code>.
     <li>
         For <b>rad</b> and <b>sr</b>, only print a power of ten. (Example: for
-        <code>Mrad</b>, print <code>10^6</code>, not <code>10^6 1</code>.)
+        <code>Mrad</code>, print <code>10^6</code>, not <code>10^6 1</code>.)
     <li>
         There is no universal order among the base units. For <b>C</b>, you must
         output <code>A s</code> rather than <code>s A</code>. We follow the
