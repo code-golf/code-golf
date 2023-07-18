@@ -2457,6 +2457,58 @@ Shì shì shì shì.
 
 ['SI Units']
 category = 'Transform'
+data = '''{
+  "units": {
+    "rad": "1",
+    "sr": "1",
+    "Hz": "s^-1",
+    "N": "kg m s^-2",
+    "Pa": "kg m^-1 s^-2",
+    "J": "kg m^2 s^-2",
+    "W": "kg m^2 s^-3",
+    "C": "A s",
+    "V": "kg m^2 s^-3 A^-1",
+    "F": "kg^-1 m^-2 s^4 A^2",
+    "Ω": "kg m^2 s^-3 A^-2",
+    "S": "kg^-1 m^-2 s^3 A^2",
+    "Wb": "kg m^2 s^-2 A^-1",
+    "T": "kg s^-2 A^-1",
+    "H": "kg m^2 s^-2 A^-2",
+    "°C": "K",
+    "lm": "cd",
+    "lx": "cd m^-2",
+    "Bq": "s^-1",
+    "Gy": "m^2 s^-2",
+    "Sv": "m^2 s^-2",
+    "kat": "mol s^-1"
+  },
+  "prefixes": {
+    "Q": 30,
+    "R": 27,
+    "Y": 24,
+    "Z": 21,
+    "E": 18,
+    "P": 15,
+    "T": 12,
+    "G": 9,
+    "M": 6,
+    "k": 3,
+    "h": 2,
+    "da": 1,
+    "d": -1,
+    "c": -2,
+    "m": -3,
+    "μ": -6,
+    "n": -9,
+    "p": -12,
+    "f": -15,
+    "a": -18,
+    "z": -21,
+    "y": -24,
+    "r": -27,
+    "q": -30
+  }
+}'''
 links = [
     { name = 'NIST (Prefixes)', url = '//www.nist.gov/pml/owm/metric-si-prefixes' },
     { name = 'NIST (Units)',    url = '//www.nist.gov/pml/special-publication-330/sp-330-section-2#2.3.4' },
@@ -2467,8 +2519,8 @@ preamble = '''
     The International System of Units (SI) defines 7 <b>base</b> units: <b>s</b>
     (second), <b>m</b> (meter), <b>kg</b> (kilogram), <b>A</b> (ampere), <b>K</b>
     (kelvin), <b>mol</b> (mole) and <b>cd</b> (candela). In addition to base units,
-    there are 22 units with different notations, all of which represent an equivalent
-    to base. These representations are known as <b>derived</b> units.
+    there are 22 <b>derived</b> units, which can all be represented as products of
+    powers of these base units.
 
 <div class=tables-4col>
     <table>
@@ -2523,7 +2575,7 @@ preamble = '''
     </table>
 </div>
 
-<p>SI also defines 24 symbols known as <b>prefixes</b>, denoting powers of 10.
+<p>SI also defines 24 symbols known as <b>prefixes</b>, denoting powers of ten.
 
 <div class=tables-4col>
     <table>
@@ -2581,19 +2633,34 @@ preamble = '''
 </div>
 
 <p>
-    Each argument generally contains a prefix and a unit, either base or derived,
-    with the exception of symbols representing decimal multiples and sub-multiples
-    of kilogram because those are formed by prepending the letter "g" with a prefix
-    symbol. For example: "10^-6 kg" and "10^-9 kg" are the representations of "mg"
-    and "μg", respectively.
+    Each argument is an SI unit with a possible prefix. Print it as a product of a
+    power of ten and its base units. For example, <code>GW</code> (gigawatt) becomes
+    <code>10^9 kg m^2 s^-3</code>. Keep in mind the following exceptions:
 
-<p>
-    Convert each argument and print its respective prefix factor notation, joined
-    by the derivatives equivalent expressed in terms of base units. Derived units
-    evaluating to "1" should be omitted from the output. Additionally, print "10^1"
-    as "10" and "10^0" as "1". Notations that don't require alternative formatting
-    should resemble their default output so "MJ" becomes "10^6 kg m^2 s^-2", for
-    example.
+<ul>
+    <li>
+        The kilogram is a base unit with an inherent prefix. Other prefixes attach
+        to <b>g</b> (gram), and you should print their values relative to the
+        kilogram: <code>g</code> is <code>10^-3 kg</code> and <code>Mg</code>
+        is <code>10^3 kg</code>.
+    <li>
+        Instead of <code>10^1</code>, print <code>10</code>.
+    <li>
+        Instead of <code>10^0</code>, print <code>1</code>.
+    <li>
+        For <b>rad</b> and <b>sr</b>, only print a power of ten. (Example: for
+        <code>Mrad</b>, print <code>10^6</code>, not <code>10^6 1</code>.)
+    <li>
+        There is no universal order among the base units. For <b>C</b>, you must
+        output <code>A s</code> rather than <code>s A</code>. We follow the
+        conventions of <a href="https://www.nist.gov/pml/special-publication-330/sp-330-section-2#2.3.4">NIST</a>.
+    <li>
+        <code>μ</code> is U+03BC GREEK SMALL LETTER MU (UTF-8: <code>ce bc</code>).
+    <li>
+        <code>Ω</code> is U+03A9 GREEK CAPITAL LETTER OMEGA (UTF-8: <code>ce a9</code>).
+    <li>
+        <code>°</code> is U+00B0 DEGREE SIGN (UTF-8: <code>c2 b0</code>).
+</ul>
 '''
 
 ['Sierpiński Triangle']
