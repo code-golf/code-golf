@@ -3,12 +3,12 @@ package golfer
 import (
 	"database/sql"
 	"encoding/json"
+	"slices"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/jmoiron/sqlx"
 	"github.com/lib/pq"
-	"golang.org/x/exp/slices"
 	"gopkg.in/guregu/null.v4"
 )
 

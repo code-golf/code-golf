@@ -1,9 +1,9 @@
 package config
 
 import (
+	"cmp"
+	"slices"
 	"strings"
-
-	"golang.org/x/exp/slices"
 )
 
 var (
@@ -53,8 +53,8 @@ func init() {
 
 	// Case-insensitive sort.
 	for _, langs := range [][]*Lang{LangList, ExpLangList, AllLangList} {
-		slices.SortFunc(langs, func(a, b *Lang) bool {
-			return strings.ToLower(a.Name) < strings.ToLower(b.Name)
+		slices.SortFunc(langs, func(a, b *Lang) int {
+			return cmp.Compare(strings.ToLower(a.Name), strings.ToLower(b.Name))
 		})
 	}
 }

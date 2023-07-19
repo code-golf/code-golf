@@ -10,7 +10,7 @@ bench:
 
 bump:
 	@go get -u
-	@go mod tidy -compat=1.20
+	@go mod tidy -compat=1.21
 	@npm upgrade
 
 cert:
@@ -77,8 +77,9 @@ lint:
 	@node_modules/typescript/bin/tsc --project tsconfig.json
 	@node_modules/.bin/eslint --ext ts,tsx js/
 
-	@docker run --rm -v $(CURDIR):/app -w /app \
-	    golangci/golangci-lint:v1.53.3 golangci-lint run
+# FIXME Go 1.21 support https://github.com/golangci/golangci-lint/pull/3922
+#	@docker run --rm -v $(CURDIR):/app -w /app \
+#	    golangci/golangci-lint:v1.53.3 golangci-lint run
 
 live:
 	@docker buildx build --pull --push \

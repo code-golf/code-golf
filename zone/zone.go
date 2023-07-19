@@ -1,13 +1,13 @@
 package zone
 
 import (
+	"cmp"
 	"encoding/csv"
 	"fmt"
 	"io"
 	"os"
+	"slices"
 	"time"
-
-	"golang.org/x/exp/slices"
 )
 
 type Zone struct {
@@ -79,11 +79,11 @@ func List() []Zone {
 		zones[i] = Zone{location.String(), offset}
 	}
 
-	slices.SortFunc(zones, func(a, b Zone) bool {
-		if a.Offset != b.Offset {
-			return a.Offset < b.Offset
+	slices.SortFunc(zones, func(a, b Zone) int {
+		if c := cmp.Compare(a.Offset, b.Offset); c != 0 {
+			return c
 		}
-		return a.Name < b.Name
+		return cmp.Compare(a.Name, b.Name)
 	})
 
 	return zones

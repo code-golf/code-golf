@@ -1,13 +1,14 @@
 package routes
 
 import (
+	"cmp"
 	"database/sql"
 	"net/http"
+	"slices"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
-	"golang.org/x/exp/slices"
 )
 
 // GET /admin
@@ -85,12 +86,12 @@ func adminGET(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	slices.SortStableFunc(data.Countries, func(a, b *country) bool {
-		if a.Golfers != b.Golfers {
-			return a.Golfers > b.Golfers
+	// Sort by golfers desc, name asc.
+	slices.SortStableFunc(data.Countries, func(a, b *country) int {
+		if c := cmp.Compare(b.Golfers, a.Golfers); c != 0 {
+			return c
 		}
-
-		return a.Name < b.Name
+		return cmp.Compare(a.Name, b.Name)
 	})
 
 	render(w, r, "admin/info", data, "Admin Info")

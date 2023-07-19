@@ -3,8 +3,6 @@ package hole
 import (
 	"math/rand"
 	"strings"
-
-	"golang.org/x/exp/constraints"
 )
 
 type test struct{ in, out string }
@@ -35,22 +33,6 @@ func outputMultirunTests(tests []test) []Run {
 	shuffle(tests)
 	mid := len(tests) / 2
 	return outputTests(tests, tests[:mid], tests[mid:])
-}
-
-// Doesn't handle any special cases, will be in the stdlib/x one day.
-func max[T constraints.Ordered](x, y T) T {
-	if x > y {
-		return x
-	}
-	return y
-}
-
-// Doesn't handle any special cases, will be in the stdlib/x one day.
-func min[T constraints.Ordered](x, y T) T {
-	if x < y {
-		return x
-	}
-	return y
 }
 
 // Returning the slice is a convenience, the shuffle is still in-place.

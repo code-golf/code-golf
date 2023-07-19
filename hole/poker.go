@@ -2,8 +2,7 @@ package hole
 
 import (
 	"math/rand"
-
-	"golang.org/x/exp/slices"
+	"slices"
 )
 
 func cardRune(number, suit int) rune {

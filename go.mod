@@ -1,6 +1,6 @@
 module github.com/code-golf/code-golf
 
-go 1.20
+go 1.21
 
 require (
 	github.com/DATA-DOG/go-sqlmock v1.5.0
@@ -20,7 +20,6 @@ require (
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 	github.com/tdewolff/minify/v2 v2.12.7
 	github.com/yuin/goldmark v1.5.4
-	golang.org/x/exp v0.0.0-20230713183714-613f0c0eb8a1
 	golang.org/x/oauth2 v0.10.0
 	gopkg.in/guregu/null.v4 v4.0.0
 )

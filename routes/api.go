@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
+	"slices"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
-	"golang.org/x/exp/slices"
 )
 
 //go:embed api.yml

@@ -1,12 +1,13 @@
 package routes
 
 import (
+	"cmp"
 	"net/http"
+	"slices"
 	"strings"
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
-	"golang.org/x/exp/slices"
 )
 
 // GET /ideas
@@ -52,8 +53,8 @@ rows:
 		}
 	}
 
-	slices.SortStableFunc(data.Holes, func(a, b idea) bool {
-		return a.ThumbsUp-a.ThumbsDown > b.ThumbsUp-b.ThumbsDown
+	slices.SortStableFunc(data.Holes, func(a, b idea) int {
+		return cmp.Compare(b.ThumbsUp-b.ThumbsDown, a.ThumbsUp-a.ThumbsDown)
 	})
 
 	render(w, r, "ideas", data, "Ideas")

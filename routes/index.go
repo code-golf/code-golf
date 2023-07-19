@@ -1,13 +1,14 @@
 package routes
 
 import (
+	"cmp"
 	"database/sql"
 	"net/http"
+	"slices"
 	"strings"
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
-	"golang.org/x/exp/slices"
 )
 
 // GET /
@@ -128,51 +129,48 @@ func indexGET(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
+		cmpHoleNameLowercase := func(a, b Card) int {
+			return cmp.Compare(strings.ToLower(a.Hole.Name),
+				strings.ToLower(b.Hole.Name))
+		}
+
 		switch data.Sort = cookie(r, "__Host-sort"); data.Sort {
-		case "alphabetical-desc":
-			slices.SortFunc(data.Cards, func(a, b Card) bool {
-				return strings.ToLower(a.Hole.Name) >
-					strings.ToLower(b.Hole.Name)
+		case "alphabetical-desc": // name desc.
+			slices.SortFunc(data.Cards, func(a, b Card) int {
+				return cmpHoleNameLowercase(b, a)
 			})
-		case "category-asc":
-			slices.SortFunc(data.Cards, func(a, b Card) bool {
-				if a.Hole.Category == b.Hole.Category {
-					return strings.ToLower(a.Hole.Name) <
-						strings.ToLower(b.Hole.Name)
+		case "category-asc": // category asc, name asc.
+			slices.SortFunc(data.Cards, func(a, b Card) int {
+				if c := cmp.Compare(a.Hole.Category, b.Hole.Category); c != 0 {
+					return c
 				}
-				return a.Hole.Category < b.Hole.Category
+				return cmpHoleNameLowercase(a, b)
 			})
-		case "category-desc":
-			slices.SortFunc(data.Cards, func(a, b Card) bool {
-				if a.Hole.Category == b.Hole.Category {
-					return strings.ToLower(a.Hole.Name) >
-						strings.ToLower(b.Hole.Name)
+		case "category-desc": // category desc, name asc.
+			slices.SortFunc(data.Cards, func(a, b Card) int {
+				if c := cmp.Compare(b.Hole.Category, a.Hole.Category); c != 0 {
+					return c
 				}
-				return a.Hole.Category > b.Hole.Category
+				return cmpHoleNameLowercase(a, b)
 			})
-		case "points-asc":
-			slices.SortFunc(data.Cards, func(a, b Card) bool {
-				if a.Points == b.Points {
-					return strings.ToLower(a.Hole.Name) <
-						strings.ToLower(b.Hole.Name)
+		case "points-asc": // points asc, name asc.
+			slices.SortFunc(data.Cards, func(a, b Card) int {
+				if c := cmp.Compare(a.Points, b.Points); c != 0 {
+					return c
 				}
-				return a.Points < b.Points
+				return cmpHoleNameLowercase(a, b)
 			})
-		case "points-desc":
-			slices.SortFunc(data.Cards, func(a, b Card) bool {
-				if a.Points == b.Points {
-					return strings.ToLower(a.Hole.Name) >
-						strings.ToLower(b.Hole.Name)
+		case "points-desc": // points desc, name asc.
+			slices.SortFunc(data.Cards, func(a, b Card) int {
+				if c := cmp.Compare(b.Points, a.Points); c != 0 {
+					return c
 				}
-				return a.Points > b.Points
+				return cmpHoleNameLowercase(a, b)
 			})
-		default:
+		default: // name desc.
 			data.Sort = "alphabetical-asc"
 
-			slices.SortFunc(data.Cards, func(a, b Card) bool {
-				return strings.ToLower(a.Hole.Name) <
-					strings.ToLower(b.Hole.Name)
-			})
+			slices.SortFunc(data.Cards, cmpHoleNameLowercase)
 		}
 	}
 

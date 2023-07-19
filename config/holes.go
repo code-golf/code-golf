@@ -2,14 +2,15 @@ package config
 
 import (
 	"bytes"
+	"cmp"
 	"encoding/json"
 	"html/template"
+	"slices"
 	"strings"
 	templateTxt "text/template"
 
 	"github.com/code-golf/code-golf/ordered"
 	"github.com/tdewolff/minify/v2/minify"
-	"golang.org/x/exp/slices"
 )
 
 var (
@@ -189,8 +190,8 @@ func init() {
 
 	for i, holes := range [][]*Hole{HoleList, ExpHoleList, AllHoleList} {
 		// Case-insensitive sort.
-		slices.SortFunc(holes, func(a, b *Hole) bool {
-			return strings.ToLower(a.Name) < strings.ToLower(b.Name)
+		slices.SortFunc(holes, func(a, b *Hole) int {
+			return cmp.Compare(strings.ToLower(a.Name), strings.ToLower(b.Name))
 		})
 
 		// Set Prev, Next. Not for "AllHoleList" as it would overwrite.
