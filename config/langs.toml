@@ -204,7 +204,7 @@ int main(int argc, char* argv[]) {
 
 ['C#']
 size    = '150 MiB'
-version = 'C# 11.0 on .NET 7.0.8'
+version = 'C# 11.0 on .NET 7.0.9'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -283,7 +283,7 @@ end-program.
 
 [Crystal]
 size    = '249 MiB'
-version = '1.8.2'
+version = '1.9.1'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -361,7 +361,7 @@ for arg <- System.argv, do: IO.puts arg
 
 ['F#']
 size    = '144 MiB'
-version = 'F# 7.0 on .NET 7.0.8'
+version = 'F# 7.0 on .NET 7.0.9'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -490,7 +490,7 @@ main = do
 '''
 
 [Hexagony]
-size    = '8.09 MiB'
+size    = '8.17 MiB'
 version = '770406a'
 website = 'https://github.com/SirBogman/Hexagony'
 example = '''
@@ -772,7 +772,7 @@ for ($i = 1; $i < $argc; $i++)
 
 [PowerShell]
 size    = '176 MiB'
-version = 'PowerShell 7.3.5 on .NET 7.0.8'
+version = 'PowerShell 7.3.6 on .NET 7.0.9'
 website = 'https://docs.microsoft.com/powershell/scripting/overview'
 example = '''
 # Printing
