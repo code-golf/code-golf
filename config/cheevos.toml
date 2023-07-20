@@ -115,6 +115,11 @@ emoji       = '🐟'
 description = 'Solve <a href=/poker#fish>Poker in &gt;&lt;&gt;</a>.'
 
 [['Hole/Lang Specific']]
+name        = 'Go Forth!'
+emoji       = '🏞️'
+description = 'Solve any hole in both Go and Forth.'
+
+[['Hole/Lang Specific']]
 name        = 'Happy-Go-Lucky'
 emoji       = '🍀'
 description = 'Solve <a href=/happy-numbers#go>Happy Numbers</a> and <a href=/lucky-numbers#go>Lucky Numbers</a> in Go.'

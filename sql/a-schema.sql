@@ -6,7 +6,7 @@ CREATE TYPE cheevo AS ENUM (
     'black-box-testing', 'blackjack', 'bullseye', 'caffeinated', 'cobowl',
     'cunning-linguist', 'dammit-janet', 'different-strokes', 'dont-panic',
     'elephpant-in-the-room', 'emergency-room', 'fish-n-chips', 'fore',
-    'forty-winks', 'gone-in-60-holes', 'happy-birthday-code-golf',
+    'forty-winks', 'go-forth', 'gone-in-60-holes', 'happy-birthday-code-golf',
     'happy-go-lucky', 'hello-world', 'hextreme-agony', 'inception',
     'independence-day', 'interview-ready', 'its-over-9000', 'jeweler',
     'just-kidding', 'like-comment-subscribe', 'marathon-runner',

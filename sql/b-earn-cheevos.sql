@@ -90,6 +90,10 @@ BEGIN
     IF hole = 'poker' AND lang = 'fish' THEN
         earned := earn(earned, 'fish-n-chips', user_id); END IF;
 
+    -- 🏞️ Go Forth!
+    IF langs_for_hole @> '{go,forth}' THEN
+        earned := earn(earned, 'go-forth', user_id); END IF;
+
     -- 🍀 Happy-Go-Lucky
     IF holes_for_lang @> '{happy-numbers,lucky-numbers}' AND lang = 'go' THEN
         earned := earn(earned, 'happy-go-lucky', user_id); END IF;

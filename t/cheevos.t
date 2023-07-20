@@ -85,6 +85,7 @@ for $dbh.execute('SELECT unnest(enum_range(null::lang))').allrows.flat {
     # Add hole-specific cheevos on the end.
     $earns.=subst: '{', '{sounds-quite-nice,' if $_ eq 'd';
     $earns.=subst: '{', '{caffeinated,'       if $_ eq 'javascript';
+    $earns.=subst: '{', '{go-forth,'          if $_ eq 'forth';
     $earns.=subst: '{', '{just-kidding,'      if $_ eq 'k';
     $earns.=subst: '{', '{tim-toady,'         if $_ eq 'raku';
     $earns.=subst: ',}', '}';
