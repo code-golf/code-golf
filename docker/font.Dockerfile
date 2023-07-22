@@ -30,6 +30,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f3c3.svg       `# Person Running`               \
     svg/1f3c6.svg       `# Trophy`                       \
     svg/1f3cc.svg       `# Person Golfing`               \
+    svg/1f3de.svg       `# National Park`                \
     svg/1f3e5.svg       `# Hospital`                     \
     svg/1f409.svg       `# Dragon`                       \
     svg/1f40b.svg       `# Whale`                        \
