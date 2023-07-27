@@ -6,11 +6,11 @@ require (
 	github.com/DATA-DOG/go-sqlmock v1.5.0
 	github.com/SeerUK/assert v1.0.0
 	github.com/agnivade/levenshtein v1.1.1
-	github.com/buildkite/terminal-to-html/v3 v3.8.0
+	github.com/buildkite/terminal-to-html/v3 v3.9.0
 	github.com/bwmarrin/discordgo v0.27.1
 	github.com/go-chi/chi/v5 v5.0.10
 	github.com/go-git/go-billy/v5 v5.4.1
-	github.com/go-git/go-git/v5 v5.8.0
+	github.com/go-git/go-git/v5 v5.8.1
 	github.com/gofrs/uuid v4.4.0+incompatible
 	github.com/gorilla/feeds v1.1.1
 	github.com/jmoiron/sqlx v1.3.5
@@ -19,12 +19,13 @@ require (
 	github.com/shurcooL/graphql v0.0.0-20230722043721-ed46e5a46466
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 	github.com/tdewolff/minify/v2 v2.12.7
-	github.com/yuin/goldmark v1.5.4
+	github.com/yuin/goldmark v1.5.5
 	golang.org/x/oauth2 v0.10.0
 	gopkg.in/guregu/null.v4 v4.0.0
 )
 
 require (
+	dario.cat/mergo v1.0.0 // indirect
 	github.com/Microsoft/go-winio v0.6.1 // indirect
 	github.com/ProtonMail/go-crypto v0.0.0-20230717121422-5aa5874ade95 // indirect
 	github.com/acomagu/bufpipe v1.0.4 // indirect
@@ -35,7 +36,6 @@ require (
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
-	github.com/imdario/mergo v0.3.16 // indirect
 	github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99 // indirect
 	github.com/kevinburke/ssh_config v1.2.0 // indirect
 	github.com/pjbgf/sha1cd v0.3.0 // indirect
