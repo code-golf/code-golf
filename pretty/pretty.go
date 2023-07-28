@@ -3,7 +3,6 @@ package pretty
 import (
 	"fmt"
 	"html/template"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -31,7 +30,7 @@ func Comma(i int) string {
 	case i >= 1e3:
 		return fmt.Sprintf("%d,%03d", i/1e3, i%1e3)
 	default:
-		return strconv.Itoa(i)
+		return fmt.Sprint(i)
 	}
 }
 
