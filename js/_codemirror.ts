@@ -7,7 +7,7 @@ export { EditorState, EditorView };
 // Extensions.
 import { carriageReturn, insertChar,
     showUnprintables }                           from './_codemirror_unprintable';
-import { history, historyKeymap, insertNewline,
+import { history, historyKeymap, indentLess, insertNewline,
     insertTab, standardKeymap, toggleComment }   from '@codemirror/commands';
 import { tags }                                  from '@lezer/highlight';
 import { bracketMatching, defaultHighlightStyle,
@@ -78,7 +78,7 @@ export const extensions = {
             // Replace "enter" with a non auto indenting action.
             ...historyKeymap, ...standardKeymap.filter(k => k.key != 'Enter'),
             { key: 'Enter', run: insertNewline },
-            { key: 'Tab',   run: insertTab },
+            { key: 'Tab',   run: insertTab, shift: indentLess },
             { key: 'Mod-/', run: toggleComment },
         ]),
         drawSelection(),
