@@ -249,8 +249,8 @@ int main(int argc, char* argv[]) {
 '''
 
 [COBOL]
-size    = '4.12 MiB'
-version = 'GnuCOBOL 3.1.2.0'
+size    = '4.48 MiB'
+version = 'GnuCOBOL 3.2.0'
 website = 'https://gnucobol.sourceforge.io'
 example = '''
 program-id.example.
