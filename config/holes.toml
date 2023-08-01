@@ -1265,7 +1265,6 @@ preamble = '''
 
 ['ln 2']
 category = 'Mathematics'
-experiment = 967
 links = [
     { name = 'OEIS A001113', url = '//oeis.org/A002162' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Natural_logarithm_of_2' },

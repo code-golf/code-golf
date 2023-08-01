@@ -34,7 +34,7 @@ CREATE TYPE hole AS ENUM (
     'gijswijts-sequence', 'happy-numbers', 'happy-numbers-long', 'hexdump',
     'intersection', 'inventory-sequence', 'isbn', 'jacobi-symbol',
     'kolakoski-constant', 'kolakoski-sequence', 'leap-years',
-    'levenshtein-distance', 'leyland-numbers', 'look-and-say', 'ln-2',
+    'levenshtein-distance', 'leyland-numbers', 'ln-2', 'look-and-say',
     'lucky-numbers', 'lucky-tickets', 'maze', 'medal-tally', 'morse-decoder',
     'morse-encoder', 'musical-chords', 'niven-numbers', 'niven-numbers-long',
     'number-spiral', 'odious-numbers', 'odious-numbers-long',
