@@ -336,7 +336,9 @@ function getViewState(): ViewState {
 }
 
 const saveLayout = debounce(() => {
-    localStorage.setItem('lastViewState', JSON.stringify(getViewState()));
+    const state = getViewState();
+    if (!state.config.root) return;
+    localStorage.setItem('lastViewState', JSON.stringify(state));
 }, 2000);
 
 
