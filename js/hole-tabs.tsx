@@ -60,8 +60,13 @@ for (const alertCloseBtn of $$('.main_close')) {
 // can't be done in CSS because the picker is one parent up
 const langToggle = $<HTMLDetailsElement>('#hole-lang details');
 langToggle.addEventListener('toggle', () => {
-    $('#picker').classList.toggle('hide', !langToggle.open);
+    setLangPickerOpen(langToggle.open);
 });
+function setLangPickerOpen(open: boolean) {
+    langToggle.open = open;
+    $('#picker').classList.toggle('hide', !open);
+    saveLayout();
+}
 
 const goldenContainer = $('#golden-container');
 
@@ -309,6 +314,7 @@ const defaultViewState: ViewState = {
     config: defaultLayout,
     poolNames: ['details'],
     isWide: false,
+    langPickerOpen: true,
 };
 
 interface ViewState {
@@ -316,6 +322,7 @@ interface ViewState {
     config: ResolvedLayoutConfig | LayoutConfig;
     poolNames: string[];
     isWide: boolean;
+    langPickerOpen: boolean;
 }
 
 function getViewState(): ViewState {
@@ -324,6 +331,7 @@ function getViewState(): ViewState {
         config: layout.saveLayout(),
         poolNames: Object.keys(poolElements),
         isWide: isWide,
+        langPickerOpen: langToggle.open,
     };
 }
 
@@ -346,6 +354,7 @@ async function applyViewState(viewState: ViewState) {
     Object.keys(poolElements).map(removePoolItem);
     viewState.poolNames.forEach(addPoolItem);
     setWide(viewState.isWide);
+    setLangPickerOpen(viewState.langPickerOpen);
     let config = viewState.config;
     if (LayoutConfig.isResolved(config))
         config = LayoutConfig.fromResolved(config);
