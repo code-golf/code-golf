@@ -16,6 +16,7 @@ import {
 
 const poolDragSources: {[key: string]: DragSource} = {};
 const poolElements: {[key: string]: HTMLElement} = {};
+let isWide = false;
 
 /**
  * Is mobile mode activated? Start at false as default since Golden Layout
@@ -307,19 +308,22 @@ const defaultViewState: ViewState = {
     version: 1,
     config: defaultLayout,
     poolNames: ['details'],
+    isWide: false,
 };
 
 interface ViewState {
     version: 1;
     config: ResolvedLayoutConfig | LayoutConfig;
     poolNames: string[];
+    isWide: boolean;
 }
 
-function getViewState() {
+function getViewState(): ViewState {
     return {
         version: 1,
         config: layout.saveLayout(),
         poolNames: Object.keys(poolElements),
+        isWide: isWide,
     };
 }
 
@@ -336,11 +340,13 @@ async function applyInitialLayout() {
     await applyViewState(viewState);
 }
 
-async function applyViewState({config, poolNames}: ViewState) {
+async function applyViewState(viewState: ViewState) {
     applyingDefault = true;
     toggleMobile(false);
     Object.keys(poolElements).map(removePoolItem);
-    poolNames.forEach(addPoolItem);
+    viewState.poolNames.forEach(addPoolItem);
+    setWide(viewState.isWide);
+    let config = viewState.config;
     if (LayoutConfig.isResolved(config))
         config = LayoutConfig.fromResolved(config);
     layout.loadLayout(config);
@@ -398,13 +404,14 @@ $('#add-row').addEventListener('click', addRow);
 
 $('#revert-layout').addEventListener('click', () => applyViewState(defaultViewState));
 
-$('#make-wide').addEventListener('click',
-    () => document.documentElement.classList.toggle('full-width', true),
-);
+function setWide(b: boolean) {
+    isWide = b;
+    document.documentElement.classList.toggle('full-width', b);
+}
 
-$('#make-narrow').addEventListener('click',
-    () => document.documentElement.classList.toggle('full-width', false),
-);
+$('#make-wide').addEventListener('click', () => setWide(true));
+
+$('#make-narrow').addEventListener('click', () => setWide(false));
 
 function addPoolItem(componentType: string) {
     poolElements[componentType]?.remove();
