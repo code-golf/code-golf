@@ -1,11 +1,11 @@
 import {
     ComponentItem, ComponentItemConfig, ContentItem, GoldenLayout,
     RowOrColumn, LayoutConfig, ResolvedRootItemConfig,
-    ResolvedLayoutConfig, DragSource, LayoutManager, ComponentContainer,
+    DragSource, LayoutManager, ComponentContainer,
 } from 'golden-layout';
 import { EditorView }   from './_codemirror';
 import diffTable        from './_diff';
-import { $, $$, comma } from './_util';
+import { $, $$, comma, debounce } from './_util';
 import {
     init, langs, getLang, hole, getAutoSaveKey, setSolution, getSolution,
     setCode, refreshScores, getHideDeleteBtn, submit, SubmitResponse,
@@ -290,24 +290,32 @@ const defaultLayout: LayoutConfig = {
     },
 };
 
-async function applyDefaultLayout() {
+
+async function applyInitialLayout() {
+    const saved = localStorage.getItem('savedLayout');
+    const theLayout = saved
+        ? LayoutConfig.fromResolved(JSON.parse(saved))
+        : defaultLayout;
+    await applyLayout(theLayout);
+}
+
+async function applyLayout(theLayout: LayoutConfig) {
     applyingDefault = true;
     toggleMobile(false);
     Object.keys(poolElements).map(removePoolItem);
     addPoolItem('details', 'Details');
-    layout.loadLayout(defaultLayout);
+    layout.loadLayout(theLayout);
     await afterDOM();
     checkMobile();
     applyingDefault = false;
 }
 
-applyDefaultLayout();
+applyInitialLayout();
 
 /**
  * Try to add after selected item, with sensible defaults
  */
 function addItemFromPool(componentName: string) {
-    (window as any).layout = layout;
     layout.addItemAtLocation(
         plainComponent(componentName),
         LayoutManager.afterFocusedItemIfPossibleLocationSelectors,
@@ -349,7 +357,7 @@ function addRow() {
 
 $('#add-row').addEventListener('click', addRow);
 
-$('#revert-layout').addEventListener('click', applyDefaultLayout);
+$('#revert-layout').addEventListener('click', () => applyLayout(defaultLayout));
 
 $('#make-wide').addEventListener('click',
     () => document.documentElement.classList.toggle('full-width', true),
@@ -412,6 +420,10 @@ layout.addEventListener('itemCreated', e => {
     }
 });
 
+const saveLayout = debounce(() => {
+    const state = JSON.stringify(layout.saveLayout());
+    localStorage.setItem('savedLayout', state);
+}, 2000);
 
 /**
  * There's a bug with the dragging from layout.newDragSource where dragging up
@@ -425,6 +437,7 @@ layout.addEventListener('itemCreated', e => {
 layout.addEventListener('stateChanged', () => {
     document.addEventListener('mouseup', removeDragProxies);
     document.addEventListener('touchend', removeDragProxies);
+    saveLayout();
     document.documentElement.classList.toggle('has_lm_maximised', !!$('.lm_maximised'));
 });
 
@@ -452,7 +465,7 @@ type DeepMutable<T> = { -readonly [key in keyof T]: DeepMutable<T[key]> };
  */
 function mutateDeep(item: DeepMutable<ResolvedRootItemConfig>, isMobile: boolean) {
     if (isMobile && item.type === 'row') {
-        (item as any).type = 'column';
+        item.type = 'column';
     }
     (item as any).reorderEnabled = !isMobile;
     if (item.content.length > 0) {
@@ -465,10 +478,10 @@ function toggleMobile(_isMobile: boolean) {
     // This could be a CSS media query, but I'm keeping generality in case of
     // other config options ("request desktop site", button config, etc.)
     document.documentElement.classList.toggle('mobile', isMobile);
-    const currLayout = layout.saveLayout() as DeepMutable<ResolvedLayoutConfig>;
+    const currLayout = layout.saveLayout();
     if (currLayout.root) {
-        mutateDeep(currLayout.root, isMobile);
-        layout.loadLayout(currLayout as any as LayoutConfig);
+        mutateDeep(currLayout.root as DeepMutable<ResolvedRootItemConfig>, isMobile);
+        layout.loadLayout(LayoutConfig.fromResolved(currLayout));
     }
     if (isMobile) {
         for (const componentType in poolDragSources)
