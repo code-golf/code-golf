@@ -1,0 +1,11 @@
+--- cobc/codegen.c
++++ cobc/codegen.c
+@@ -2107,7 +2107,7 @@
+ 			   which makes the whole purpose of the fence useless */
+ 		}
+ 		if (fld->index_type == CB_INT_INDEX) {
+-			output_local ("int		%s%d;",
++			output_local ("static int	%s%d;",
+ 				      CB_PREFIX_BASE, fld->id);
+ 		} else if (fld->index_type == CB_STATIC_INT_INDEX) {
+ 			output_local ("static int	%s%d;",
