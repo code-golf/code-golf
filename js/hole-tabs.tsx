@@ -1,11 +1,11 @@
 import {
     ComponentItem, ComponentItemConfig, ContentItem, GoldenLayout,
     RowOrColumn, LayoutConfig, ResolvedRootItemConfig,
-    ResolvedLayoutConfig, DragSource, LayoutManager, ComponentContainer,
+    DragSource, LayoutManager, ComponentContainer, ResolvedLayoutConfig,
 } from 'golden-layout';
 import { EditorView }   from './_codemirror';
 import diffTable        from './_diff';
-import { $, $$, comma } from './_util';
+import { $, $$, comma, debounce } from './_util';
 import {
     init, langs, getLang, hole, getAutoSaveKey, setSolution, getSolution,
     setCode, refreshScores, getHideDeleteBtn, submit, SubmitResponse,
@@ -16,6 +16,7 @@ import {
 
 const poolDragSources: {[key: string]: DragSource} = {};
 const poolElements: {[key: string]: HTMLElement} = {};
+let isWide = false;
 
 /**
  * Is mobile mode activated? Start at false as default since Golden Layout
@@ -59,8 +60,13 @@ for (const alertCloseBtn of $$('.main_close')) {
 // can't be done in CSS because the picker is one parent up
 const langToggle = $<HTMLDetailsElement>('#hole-lang details');
 langToggle.addEventListener('toggle', () => {
-    $('#picker').classList.toggle('hide', !langToggle.open);
+    setLangPickerOpen(langToggle.open);
 });
+function setLangPickerOpen(open: boolean) {
+    langToggle.open = open;
+    $('#picker').classList.toggle('hide', !open);
+    saveLayout();
+}
 
 const goldenContainer = $('#golden-container');
 
@@ -105,11 +111,9 @@ function updateReadonlyPanels(data: SubmitResponse) {
     }
 }
 
-for (const i of [0,1,2,3,4]) {
-    const name = ['exp', 'out', 'err', 'arg', 'diff'][i];
-    const title = ['Expected', 'Output', 'Errors', 'Arguments', 'Diff'][i];
+for (const name of ['exp', 'out', 'err', 'arg', 'diff']) {
     layout.registerComponentFactoryFunction(name, container => {
-        container.setTitle(title);
+        container.setTitle(getTitle(name));
         autoFocus(container);
         container.element.id = name;
         container.element.classList.add('readonly-output');
@@ -165,7 +169,7 @@ function autoFocus(container: ComponentContainer) {
 }
 
 layout.registerComponentFactoryFunction('code', async container => {
-    container.setTitle('Code');
+    container.setTitle(getTitle('code'));
     autoFocus(container);
 
     const header = (<header>
@@ -217,7 +221,7 @@ function delinkRankingsView() {
 }
 
 layout.registerComponentFactoryFunction('scoreboard', async container => {
-    container.setTitle('Scoreboard');
+    container.setTitle(getTitle('scoreboard'));
     autoFocus(container);
     container.element.append(
         $<HTMLTemplateElement>('#template-scoreboard').content.cloneNode(true),
@@ -229,13 +233,28 @@ layout.registerComponentFactoryFunction('scoreboard', async container => {
 });
 
 layout.registerComponentFactoryFunction('details', container => {
-    container.setTitle('Details');
+    container.setTitle(getTitle('details'));
     autoFocus(container);
     const details = $<HTMLTemplateElement>('#template-details').content.cloneNode(true) as HTMLDetailsElement;
     container.element.append(details);
     container.element.id = 'details-content';
     initCopyJSONBtn(container.element.querySelector('#copy') as HTMLElement);
 });
+
+const titles: Record<string, string | undefined> = {
+    details: 'Details',
+    scoreboard: 'Scoreboard',
+    exp: 'Expected',
+    out: 'Output',
+    err: 'Errors',
+    arg: 'Arguments',
+    diff: 'Diff',
+    code: 'Code',
+};
+
+function getTitle(name: string) {
+    return titles[name] ?? name;
+}
 
 function plainComponent(componentType: string): ComponentItemConfig {
     return {
@@ -290,24 +309,69 @@ const defaultLayout: LayoutConfig = {
     },
 };
 
-async function applyDefaultLayout() {
+const defaultViewState: ViewState = {
+    version: 1,
+    config: defaultLayout,
+    poolNames: ['details'],
+    isWide: false,
+    langPickerOpen: true,
+};
+
+interface ViewState {
+    version: 1;
+    config: ResolvedLayoutConfig | LayoutConfig;
+    poolNames: string[];
+    isWide: boolean;
+    langPickerOpen: boolean;
+}
+
+function getViewState(): ViewState {
+    return {
+        version: 1,
+        config: layout.saveLayout(),
+        poolNames: Object.keys(poolElements),
+        isWide: isWide,
+        langPickerOpen: langToggle.open,
+    };
+}
+
+const saveLayout = debounce(() => {
+    const state = getViewState();
+    if (!state.config.root) return;
+    localStorage.setItem('lastViewState', JSON.stringify(state));
+}, 2000);
+
+
+async function applyInitialLayout() {
+    const saved = localStorage.getItem('lastViewState');
+    const viewState = saved
+        ? JSON.parse(saved) as ViewState
+        : defaultViewState;
+    await applyViewState(viewState);
+}
+
+async function applyViewState(viewState: ViewState) {
     applyingDefault = true;
     toggleMobile(false);
     Object.keys(poolElements).map(removePoolItem);
-    addPoolItem('details', 'Details');
-    layout.loadLayout(defaultLayout);
+    viewState.poolNames.forEach(addPoolItem);
+    setWide(viewState.isWide);
+    setLangPickerOpen(viewState.langPickerOpen);
+    let config = viewState.config;
+    if (LayoutConfig.isResolved(config))
+        config = LayoutConfig.fromResolved(config);
+    layout.loadLayout(config);
     await afterDOM();
     checkMobile();
     applyingDefault = false;
 }
 
-applyDefaultLayout();
+applyInitialLayout();
 
 /**
  * Try to add after selected item, with sensible defaults
  */
 function addItemFromPool(componentName: string) {
-    (window as any).layout = layout;
     layout.addItemAtLocation(
         plainComponent(componentName),
         LayoutManager.afterFocusedItemIfPossibleLocationSelectors,
@@ -349,19 +413,20 @@ function addRow() {
 
 $('#add-row').addEventListener('click', addRow);
 
-$('#revert-layout').addEventListener('click', applyDefaultLayout);
+$('#revert-layout').addEventListener('click', () => applyViewState(defaultViewState));
 
-$('#make-wide').addEventListener('click',
-    () => document.documentElement.classList.toggle('full-width', true),
-);
+function setWide(b: boolean) {
+    isWide = b;
+    document.documentElement.classList.toggle('full-width', b);
+}
 
-$('#make-narrow').addEventListener('click',
-    () => document.documentElement.classList.toggle('full-width', false),
-);
+$('#make-wide').addEventListener('click', () => setWide(true));
 
-function addPoolItem(componentType: string, title: string) {
+$('#make-narrow').addEventListener('click', () => setWide(false));
+
+function addPoolItem(componentType: string) {
     poolElements[componentType]?.remove();
-    const el = (<span class="btn">{title}</span>);
+    const el = (<span class="btn">{getTitle(componentType)}</span>);
     $('#pool').appendChild(el);
     poolDragSources[componentType] = layout.newDragSource(el, componentType);
     poolElements[componentType] = el;
@@ -375,7 +440,7 @@ layout.addEventListener('itemDestroyed', e => {
     const _target = e.target as ContentItem;
     if (_target.isComponent) {
         const target = _target as ComponentItem;
-        addPoolItem(target.componentType as string, target.title);
+        addPoolItem(target.componentType as string);
     }
     checkShowAddRow();
 });
@@ -412,7 +477,6 @@ layout.addEventListener('itemCreated', e => {
     }
 });
 
-
 /**
  * There's a bug with the dragging from layout.newDragSource where dragging up
  * from the tab pool causes a .lm_dragProxy to appear, but it doesn't get
@@ -425,6 +489,7 @@ layout.addEventListener('itemCreated', e => {
 layout.addEventListener('stateChanged', () => {
     document.addEventListener('mouseup', removeDragProxies);
     document.addEventListener('touchend', removeDragProxies);
+    saveLayout();
     document.documentElement.classList.toggle('has_lm_maximised', !!$('.lm_maximised'));
 });
 
@@ -452,7 +517,7 @@ type DeepMutable<T> = { -readonly [key in keyof T]: DeepMutable<T[key]> };
  */
 function mutateDeep(item: DeepMutable<ResolvedRootItemConfig>, isMobile: boolean) {
     if (isMobile && item.type === 'row') {
-        (item as any).type = 'column';
+        item.type = 'column';
     }
     (item as any).reorderEnabled = !isMobile;
     if (item.content.length > 0) {
@@ -465,10 +530,10 @@ function toggleMobile(_isMobile: boolean) {
     // This could be a CSS media query, but I'm keeping generality in case of
     // other config options ("request desktop site", button config, etc.)
     document.documentElement.classList.toggle('mobile', isMobile);
-    const currLayout = layout.saveLayout() as DeepMutable<ResolvedLayoutConfig>;
+    const currLayout = layout.saveLayout();
     if (currLayout.root) {
-        mutateDeep(currLayout.root, isMobile);
-        layout.loadLayout(currLayout as any as LayoutConfig);
+        mutateDeep(currLayout.root as DeepMutable<ResolvedRootItemConfig>, isMobile);
+        layout.loadLayout(LayoutConfig.fromResolved(currLayout));
     }
     if (isMobile) {
         for (const componentType in poolDragSources)

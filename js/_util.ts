@@ -43,3 +43,27 @@ export function $$<MatchType extends HTMLElement>(selector: string) {
     return document.querySelectorAll(selector) as NodeListOf<MatchType>;
 }
 export const comma = (i: number | undefined) => i?.toLocaleString('en');
+
+/**
+ * Debounce in the following sense:
+ *  - never fire more than once in any consecutive `interval` ms
+ *  - always fire at least once within the first `interval` ms after the call
+ *  - always fire as soon as possible, subject to these restrictions
+ */
+export function debounce(fn: () => void, interval: number) {
+    let pendingTimeout: number | undefined;
+    let needsAnother = false;
+    return () => {
+        if (pendingTimeout) {
+            needsAnother = true;
+            return;
+        }
+        else {
+            pendingTimeout = setTimeout(() => {
+                pendingTimeout = undefined;
+                if (needsAnother) fn();
+            }, interval);
+            fn();
+        }
+    };
+}
