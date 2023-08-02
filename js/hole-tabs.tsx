@@ -1,7 +1,7 @@
 import {
     ComponentItem, ComponentItemConfig, ContentItem, GoldenLayout,
     RowOrColumn, LayoutConfig, ResolvedRootItemConfig,
-    DragSource, LayoutManager, ComponentContainer,
+    DragSource, LayoutManager, ComponentContainer, ResolvedLayoutConfig,
 } from 'golden-layout';
 import { EditorView }   from './_codemirror';
 import diffTable        from './_diff';
@@ -105,11 +105,9 @@ function updateReadonlyPanels(data: SubmitResponse) {
     }
 }
 
-for (const i of [0,1,2,3,4]) {
-    const name = ['exp', 'out', 'err', 'arg', 'diff'][i];
-    const title = ['Expected', 'Output', 'Errors', 'Arguments', 'Diff'][i];
+for (const name of ['exp', 'out', 'err', 'arg', 'diff']) {
     layout.registerComponentFactoryFunction(name, container => {
-        container.setTitle(title);
+        container.setTitle(getTitle(name));
         autoFocus(container);
         container.element.id = name;
         container.element.classList.add('readonly-output');
@@ -165,7 +163,7 @@ function autoFocus(container: ComponentContainer) {
 }
 
 layout.registerComponentFactoryFunction('code', async container => {
-    container.setTitle('Code');
+    container.setTitle(getTitle('code'));
     autoFocus(container);
 
     const header = (<header>
@@ -217,7 +215,7 @@ function delinkRankingsView() {
 }
 
 layout.registerComponentFactoryFunction('scoreboard', async container => {
-    container.setTitle('Scoreboard');
+    container.setTitle(getTitle('scoreboard'));
     autoFocus(container);
     container.element.append(
         $<HTMLTemplateElement>('#template-scoreboard').content.cloneNode(true),
@@ -229,13 +227,28 @@ layout.registerComponentFactoryFunction('scoreboard', async container => {
 });
 
 layout.registerComponentFactoryFunction('details', container => {
-    container.setTitle('Details');
+    container.setTitle(getTitle('details'));
     autoFocus(container);
     const details = $<HTMLTemplateElement>('#template-details').content.cloneNode(true) as HTMLDetailsElement;
     container.element.append(details);
     container.element.id = 'details-content';
     initCopyJSONBtn(container.element.querySelector('#copy') as HTMLElement);
 });
+
+const titles: Record<string, string | undefined> = {
+    details: 'Details',
+    scoreboard: 'Scoreboard',
+    exp: 'Expected',
+    out: 'Output',
+    err: 'Errors',
+    arg: 'Arguments',
+    diff: 'Diff',
+    code: 'Code',
+};
+
+function getTitle(name: string) {
+    return titles[name] ?? name;
+}
 
 function plainComponent(componentType: string): ComponentItemConfig {
     return {
@@ -290,21 +303,47 @@ const defaultLayout: LayoutConfig = {
     },
 };
 
+const defaultViewState: ViewState = {
+    version: 1,
+    config: defaultLayout,
+    poolNames: ['details'],
+};
 
-async function applyInitialLayout() {
-    const saved = localStorage.getItem('savedLayout');
-    const theLayout = saved
-        ? LayoutConfig.fromResolved(JSON.parse(saved))
-        : defaultLayout;
-    await applyLayout(theLayout);
+interface ViewState {
+    version: 1;
+    config: ResolvedLayoutConfig | LayoutConfig;
+    poolNames: string[];
 }
 
-async function applyLayout(theLayout: LayoutConfig) {
+function getViewState() {
+    return {
+        version: 1,
+        config: layout.saveLayout(),
+        poolNames: Object.keys(poolElements),
+    };
+}
+
+const saveLayout = debounce(() => {
+    localStorage.setItem('lastViewState', JSON.stringify(getViewState()));
+}, 2000);
+
+
+async function applyInitialLayout() {
+    const saved = localStorage.getItem('lastViewState');
+    const viewState = saved
+        ? JSON.parse(saved) as ViewState
+        : defaultViewState;
+    await applyViewState(viewState);
+}
+
+async function applyViewState({config, poolNames}: ViewState) {
     applyingDefault = true;
     toggleMobile(false);
     Object.keys(poolElements).map(removePoolItem);
-    addPoolItem('details', 'Details');
-    layout.loadLayout(theLayout);
+    poolNames.forEach(addPoolItem);
+    if (LayoutConfig.isResolved(config))
+        config = LayoutConfig.fromResolved(config);
+    layout.loadLayout(config);
     await afterDOM();
     checkMobile();
     applyingDefault = false;
@@ -357,7 +396,7 @@ function addRow() {
 
 $('#add-row').addEventListener('click', addRow);
 
-$('#revert-layout').addEventListener('click', () => applyLayout(defaultLayout));
+$('#revert-layout').addEventListener('click', () => applyViewState(defaultViewState));
 
 $('#make-wide').addEventListener('click',
     () => document.documentElement.classList.toggle('full-width', true),
@@ -367,9 +406,9 @@ $('#make-narrow').addEventListener('click',
     () => document.documentElement.classList.toggle('full-width', false),
 );
 
-function addPoolItem(componentType: string, title: string) {
+function addPoolItem(componentType: string) {
     poolElements[componentType]?.remove();
-    const el = (<span class="btn">{title}</span>);
+    const el = (<span class="btn">{getTitle(componentType)}</span>);
     $('#pool').appendChild(el);
     poolDragSources[componentType] = layout.newDragSource(el, componentType);
     poolElements[componentType] = el;
@@ -383,7 +422,7 @@ layout.addEventListener('itemDestroyed', e => {
     const _target = e.target as ContentItem;
     if (_target.isComponent) {
         const target = _target as ComponentItem;
-        addPoolItem(target.componentType as string, target.title);
+        addPoolItem(target.componentType as string);
     }
     checkShowAddRow();
 });
@@ -419,11 +458,6 @@ layout.addEventListener('itemCreated', e => {
         removePoolItem((target as ComponentItem).componentType as string);
     }
 });
-
-const saveLayout = debounce(() => {
-    const state = JSON.stringify(layout.saveLayout());
-    localStorage.setItem('savedLayout', state);
-}, 2000);
 
 /**
  * There's a bug with the dragging from layout.newDragSource where dragging up
