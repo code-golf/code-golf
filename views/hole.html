@@ -57,11 +57,6 @@
         {{ end }}
         </nav>
         <nav>
-        {{ range .Data.Hole.Variants }}
-            {{ if ne . $.Data.Hole }}
-                <a class="btn blue" href="{{ .ID }}">{{ .Name }}</a>
-            {{ end }}
-        {{ end }}
             <a class="btn orange" href="{{ .Data.Hole.Prev }}">
                 {{ svg "chevron-double-left-light" }} Prev
             </a>
@@ -73,6 +68,17 @@
             </a>
         </nav>
     </header>
+{{ with .Data.Hole.Variants }}
+    <header>
+        <nav>
+        {{ range . }}
+            {{ if ne . $.Data.Hole }}
+                <a class="btn blue" href="{{ .ID }}">{{ .Name }}</a>
+            {{ end }}
+        {{ end }}
+        </nav>
+    </header>
+{{ end }}
     <details id=details {{ if not .Data.HideDetails }}open{{ end }}>
         <summary>Details</summary>
         <div class=grid>

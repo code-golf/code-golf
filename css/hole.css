@@ -206,6 +206,10 @@ main > header {
     gap: 1rem;
     justify-content: space-between;
 }
+main > header:nth-child(2) {
+    justify-content: end;
+    margin-top: 1rem;
+}
 
 main > header a { white-space: nowrap }
 
