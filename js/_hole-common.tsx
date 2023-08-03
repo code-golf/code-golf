@@ -470,6 +470,10 @@ export async function submit(
             Out: run.stdout,
         });
 
+        const ms = Math.round(run.time_ns / 10**6);
+        // Only show runtime if it's more than 1000ms, for a bit less clutter in general.
+        $('#runtime').innerText = ms > 1000 ? `(${ms}ms)` : '';
+
         // 3rd party integrations.
         let thirdParty = '';
         if (lang == 'hexagony') {
@@ -487,7 +491,8 @@ export async function submit(
     }
 
     // Default run: first failing, else last overall.
-    const defaultRun = data.runs.find(run => !run.pass) ?? data.runs[data.runs.length-1];
+    let defaultRunIndex = data.runs.findIndex(run => !run.pass);
+    if (defaultRunIndex === -1) defaultRunIndex = data.runs.length - 1;
 
     const btns = data.runs.map((run, i) => {
         const [emoji, label] = run.pass ? ['😀', 'Pass']
@@ -503,17 +508,17 @@ export async function submit(
             $$<HTMLButtonElement>('.run-result-btn').forEach(b => b.disabled = false);
             btn.disabled = true;
         };
-        if (run === defaultRun) onPickRun();
         btn.addEventListener('click', onPickRun);
         return btn;
     });
 
     $('h2').replaceWith(<h2>
         {data.Pass ? 'Pass' : 'Fail'}
+        <span id="runtime"></span>
         <span class="btns">{btns}</span>
     </h2>);
 
-    showRun(data.runs[0]);
+    btns[defaultRunIndex].click();
 
     $('#status').className = data.Pass ? 'green' : 'red';
 
