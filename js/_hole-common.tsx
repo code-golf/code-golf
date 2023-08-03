@@ -490,9 +490,12 @@ export async function submit(
             $('main').append(pbm(run.answer) as Node, pbm(run.stdout) ?? [] as any);
     }
 
-    // Default run: first failing, else last overall.
-    let defaultRunIndex = data.runs.findIndex(run => !run.pass);
-    if (defaultRunIndex === -1) defaultRunIndex = data.runs.length - 1;
+    // Default run: first failing non-timeout, else first timeout, else last overall.
+    let defaultRunIndex = data.runs.findIndex(run => !run.pass && !run.timeout);
+    if (defaultRunIndex === -1)
+        defaultRunIndex = data.runs.findIndex(run => !run.pass);
+    if (defaultRunIndex === -1)
+        defaultRunIndex = data.runs.length - 1;
 
     const btns = data.runs.map((run, i) => {
         const [emoji, label] = run.pass ? ['😀', 'Pass']
@@ -506,17 +509,18 @@ export async function submit(
         function onPickRun() {
             showRun(run);
             $$<HTMLButtonElement>('.run-result-btn').forEach(b => b.disabled = false);
+            $('#pass-fail-msg').innerText = label;
             btn.disabled = true;
         };
         btn.addEventListener('click', onPickRun);
         return btn;
     });
 
-    $('h2').replaceWith(<h2>
-        {data.Pass ? 'Pass' : 'Fail'}
-        <span id="runtime"></span>
-        <span class="btns">{btns}</span>
-    </h2>);
+    $('h2').replaceChildren(
+        <span class="btns">{btns}</span>,
+        <span id="pass-fail-msg"></span>,
+        <span id="runtime"></span>,
+    );
 
     btns[defaultRunIndex].click();
 
