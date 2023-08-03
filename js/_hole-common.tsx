@@ -517,7 +517,7 @@ export async function submit(
     });
 
     $('h2').replaceChildren(
-        <span class="btns">{btns}</span>,
+        <span id="run-result-btns">{btns}</span>,
         <span id="pass-fail-msg"></span>,
         <span id="runtime"></span>,
     );
