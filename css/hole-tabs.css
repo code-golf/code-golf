@@ -68,6 +68,8 @@ section header {
 
 main > header nav { max-width: 100% }
 
+main > header:nth-child(2) { margin-top: 0.5rem }
+
 #hole-lang {
     display: flex;
     gap: 1rem;
