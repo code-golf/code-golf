@@ -320,3 +320,13 @@ thead { user-select: none }
 
     #thirdParty:empty { display: none }
 }
+
+.run-result-btn {
+    border: none;
+    background: none;
+}
+
+.run-result-btn:is(:hover, :active, :focus, [disabled]:not(:only-child)) {
+    border-bottom: 2px solid var(--background);
+    margin-bottom: -2px;
+}

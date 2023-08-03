@@ -18,6 +18,7 @@ declare global {
       span: any;
       img: any;
       a: any;
+      button: any;
       h1: any;
       h2: any;
       h3: any;

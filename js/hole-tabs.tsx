@@ -8,7 +8,7 @@ import diffTable        from './_diff';
 import { $, $$, comma, debounce } from './_util';
 import {
     init, langs, getLang, hole, getAutoSaveKey, setSolution, getSolution,
-    setCode, refreshScores, getHideDeleteBtn, submit, SubmitResponse,
+    setCode, refreshScores, getHideDeleteBtn, submit, ReadonlyPanelsData,
     updateRestoreLinkVisibility, getSavedInDB, setCodeForLangAndSolution,
     populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyJSONBtn,
     getScorings,
@@ -35,7 +35,7 @@ let isWide = false;
 let isMobile = false;
 let applyingDefault = false;
 
-let subRes: SubmitResponse | null = null;
+let subRes: ReadonlyPanelsData | null = null;
 const readonlyOutputs: {[key: string]: HTMLElement | undefined} = {};
 
 let editor: EditorView | null = null;
@@ -104,7 +104,7 @@ function updateReadonlyPanel(name: string) {
     }
 }
 
-function updateReadonlyPanels(data: SubmitResponse) {
+function updateReadonlyPanels(data: ReadonlyPanelsData) {
     subRes = data;
     for (const name in readonlyOutputs) {
         updateReadonlyPanel(name);

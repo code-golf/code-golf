@@ -4,7 +4,7 @@ import { $, $$, comma } from './_util';
 import {
     init, langs, getLang, hole, getAutoSaveKey, setSolution, getSolution,
     setCode, refreshScores, submit, getSavedInDB, updateRestoreLinkVisibility,
-    SubmitResponse, setCodeForLangAndSolution, getCurrentSolutionCode,
+    ReadonlyPanelsData, setCodeForLangAndSolution, getCurrentSolutionCode,
     initDeleteBtn, initCopyJSONBtn, getScorings,
 } from './_hole-common';
 
@@ -75,7 +75,7 @@ $$('#rankingsView a').forEach(a => a.onclick = e => {
     refreshScores(editor);
 });
 
-function updateReadonlyPanels(data: SubmitResponse) {
+function updateReadonlyPanels(data: ReadonlyPanelsData) {
     // Hide arguments unless we have some.
     $('#arg div').replaceChildren(...data.Argv.map(a => <span>{a}</span>));
     $('#arg').classList.toggle('hide', !data.Argv.length);
