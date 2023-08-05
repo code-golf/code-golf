@@ -1093,8 +1093,7 @@ pub fn main() !void {
         try stdout.print("{}\n", .{i});
 
     // Accessing arguments
-    for (std.os.argv) |arg, index|
-        if (index > 0)
-            try stdout.print("{s}\n", .{arg});
+    for (std.os.argv[1..]) |arg|
+        try stdout.print("{s}\n", .{arg});
 }
 '''
