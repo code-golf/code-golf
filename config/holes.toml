@@ -1266,7 +1266,7 @@ preamble = '''
 ['ln 2']
 category = 'Mathematics'
 links = [
-    { name = 'OEIS A001113', url = '//oeis.org/A002162' },
+    { name = 'OEIS A002162', url = '//oeis.org/A002162' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Natural_logarithm_of_2' },
 ]
 synopsis = 'Print the first 1,000 digits of ln 2.'
