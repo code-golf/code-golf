@@ -1272,6 +1272,7 @@ links = [
 synopsis = 'Print the first 1,000 digits of ln 2.'
 preamble = '''
 <p>Print the first <b>1,000</b> decimal digits of ln 2 (the natural logarithm of 2).
+This constant is related to <a href=γ>γ</a>.
 '''
 
 ['Look and Say']
@@ -3271,6 +3272,7 @@ synopsis = 'Print the first 1,000 digits of γ.'
 preamble = '''
 <p>
     Print the first <b>1,000</b> decimal digits of the Euler–Mascheroni constant γ (gamma).
+    This constant is related to <a href=ln-2>ln 2</a>.
 '''
 
 ['λ']
