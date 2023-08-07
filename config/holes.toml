@@ -2303,14 +2303,14 @@ preamble = '''
     32,767. Division is guaranteed to have an exact integer result.
 '''
 
-['Rijndael S-boxes']
+['Rijndael S-box']
 category = 'Mathematics'
 experiment = 857
 links = [
     { name = 'OEIS A354500', url = '//oeis.org/A354500' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Rijndael_S-box' },
 ]
-synopsis = 'Print Rijndael S-boxes as a series of hex bytes.'
+synopsis = 'Print Rijndael S-box as a series of hex bytes.'
 preamble = '''
 <p>
     Print the <b>Rijndael S-box</b> as a series of hex
