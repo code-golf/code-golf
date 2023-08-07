@@ -2313,7 +2313,7 @@ links = [
 synopsis = 'Print Rijndael S-boxes as a series of hex bytes.'
 preamble = '''
 <p>
-    Print the <b>Rijndael S-boxe</b> as a series of hex
+    Print the <b>Rijndael S-box</b> as a series of hex
     bytes:
 
 <pre>
