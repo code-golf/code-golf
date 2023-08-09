@@ -77,9 +77,9 @@ lint:
 	@node_modules/typescript/bin/tsc --project tsconfig.json
 	@node_modules/.bin/eslint --ext ts,tsx js/
 
-# FIXME Go 1.21 support https://github.com/golangci/golangci-lint/pull/3922
+# FIXME main.go:1: : error obtaining VCS status: exit status 128
 #	@docker run --rm -v $(CURDIR):/app -w /app \
-#	    golangci/golangci-lint:v1.53.3 golangci-lint run
+#	    golangci/golangci-lint:v1.54.0 golangci-lint run
 
 live:
 	@docker buildx build --pull --push \
