@@ -14,6 +14,12 @@
 #include <sys/sysmacros.h>
 #include <unistd.h>
 
+// Not defined in alpine yet :-(
+#define __NR_epoll_wait2  441
+#define __NR_memfd_secret 447
+#define __NR_futex_waitv  449
+#define __NR_cachestat    451
+
 #define NOBODY 65534
 
 #define ALLOW(name) \
@@ -95,6 +101,9 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         #define __NR_julia 1008
         ALLOW(julia),
 
+        // Syscall 424 or higher can be found here:
+        // https://github.com/torvalds/linux/blob/master/include/uapi/asm-generic/unistd.h
+
         /*************\
         | File System |
         \*************/
@@ -106,6 +115,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(fallocate),         // 285
         ALLOW(ftruncate),         // 77
         ALLOW(memfd_create),      // 319
+        ALLOW(memfd_secret),      // 447
         ALLOW(mknod),             // 133
         ALLOW(mknodat),           // 259
         ALLOW(name_to_handle_at), // 303
@@ -225,6 +235,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(epoll_ctl),     // 233
         ALLOW(epoll_pwait),   // 281
         ALLOW(epoll_wait),    // 232
+        ALLOW(epoll_wait2),   // 441
         ALLOW(poll),          // 7
         ALLOW(ppoll),         // 271
         ALLOW(pselect6),      // 270
@@ -393,6 +404,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
 
         // Virtual Memory
         ALLOW(brk),           // 12
+        ALLOW(cachestat),     // 451
         ALLOW(madvise),       // 28
         ALLOW(membarrier),    // 324
         ALLOW(mincore),       // 27
@@ -419,14 +431,19 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(set_tid_address), // 218
 
         // Miscellaneous
-        // ALLOW(kcmp),              // 312
-        ALLOW(prctl),                // 157
-        // ALLOW(process_vm_readv),  // 310
-        // ALLOW(process_vm_writev), // 311
-        ALLOW(ptrace),               // 101 (Used by DefAssembler)
-        // ALLOW(seccomp),           // 317
-        // ALLOW(unshare),           // 272
-        // ALLOW(uselib),            // 134
+        // ALLOW(kcmp),                    // 312
+        // ALLOW(landlock_add_rule),       // 445
+        // ALLOW(landlock_create_ruleset), // 444
+        // ALLOW(landlock_restrict_self),  // 446
+        ALLOW(prctl),                      // 157
+        // ALLOW(process_madvise)          // 440
+        // ALLOW(process_mrelease)         // 448
+        // ALLOW(process_vm_readv),        // 310
+        // ALLOW(process_vm_writev),       // 311
+        ALLOW(ptrace),                     // 101 (Used by DefAssembler)
+        // ALLOW(seccomp),                 // 317
+        // ALLOW(unshare),                 // 272
+        // ALLOW(uselib),                  // 134
 
         /*********\
         | Signals |
@@ -484,6 +501,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
 
         // Futexes
         ALLOW(futex),           // 202
+        ALLOW(futex_waitv),     // 449
         ALLOW(get_robust_list), // 274
         ALLOW(set_robust_list), // 273
 
@@ -509,11 +527,12 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         // ALLOW(getcpu), // 309
 
         // Memory Node
-        ALLOW(get_mempolicy),    // 239
-        ALLOW(mbind),            // 237
-        // ALLOW(migrate_pages), // 256
-        // ALLOW(move_pages),    // 279
-        ALLOW(set_mempolicy),    // 238
+        ALLOW(get_mempolicy),              // 239
+        ALLOW(mbind),                      // 237
+        // ALLOW(migrate_pages),           // 256
+        // ALLOW(move_pages),              // 279
+        ALLOW(set_mempolicy),              // 238
+        // ALLOW(set_mempolicy_home_node), // 450
 
         /****************\
         | Key Management |
@@ -536,22 +555,24 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         // ALLOW(query_module),    // 178
 
         // Accounting and Quota
-        // ALLOW(acct),     // 163
-        // ALLOW(quotactl), // 179
+        // ALLOW(acct),        // 163
+        // ALLOW(quotactl),    // 179
+        // ALLOW(quotactl_fd), // 443
 
         // Filesystem (privileged)
-        // ALLOW(fsconfig),   // 431
-        // ALLOW(fsmount),    // 432
-        // ALLOW(fsopen),     // 430
-        // ALLOW(fspick),     // 433
-        // ALLOW(mount),      // 165
-        // ALLOW(move_mount), // 429
-        // ALLOW(nfsservctl), // 180
-        // ALLOW(open_tree),  // 428
-        // ALLOW(pivot_root), // 155
-        // ALLOW(swapoff),    // 168
-        // ALLOW(swapon),     // 167
-        // ALLOW(umount2),    // 166
+        // ALLOW(fsconfig),      // 431
+        // ALLOW(fsmount),       // 432
+        // ALLOW(fsopen),        // 430
+        // ALLOW(fspick),        // 433
+        // ALLOW(mount),         // 165
+        // ALLOW(mount_setattr), // 442
+        // ALLOW(move_mount),    // 429
+        // ALLOW(nfsservctl),    // 180
+        // ALLOW(open_tree),     // 428
+        // ALLOW(pivot_root),    // 155
+        // ALLOW(swapoff),       // 168
+        // ALLOW(swapon),        // 167
+        // ALLOW(umount2),       // 166
 
         // Filesystem (unprivileged)
         ALLOW(fstatfs), // 138
