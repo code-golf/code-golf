@@ -1,0 +1,10 @@
+#!/bin/sh -e
+
+export GOCACHE=/cache GOPATH=/tmp
+
+[ "$1" = "version" ] && exec /usr/local/go/bin/go version
+
+cat - > /tmp/code.go
+
+shift
+exec /usr/local/go/bin/go run /tmp/code.go "$@"
