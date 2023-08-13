@@ -1,8 +1,12 @@
 #!/bin/sh -e
 
-export GOCACHE=/cache GOPATH=/tmp
+export GOCACHE=/tmp/.cache GOPATH=/tmp
 
 [ "$1" = "version" ] && exec /usr/local/go/bin/go version
+
+# Copy the cache to /tmp so it's mutable, this is hacky but faster than
+# running Go without the stdlib cached.
+cp -r /cache /tmp/.cache
 
 cat - > /tmp/code.go
 
