@@ -6,7 +6,8 @@
          /* local('Segoe UI Emoji'), Microsoft don't support country flags */
          local('Twemoji Mozilla'),
          url(../fonts/twemoji.woff2);
-    unicode-range: U+2600-2653,   /* Miscellaneous Symbols                 */
+    unicode-range: U+2300-23FF,   /* Miscellaneous Technical               */
+                   U+2600-2653,   /* Miscellaneous Symbols                 */
                 /* U+2654-265F,      Exclude Chess Pieces for FEN          */
                    U+2660-26FF,   /* Miscellaneous Symbols                 */
                    U+2700-27BF,   /* Dingbats                              */

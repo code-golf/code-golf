@@ -109,6 +109,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1fa9b.svg       `# Screwdriver`                  \
     svg/1fa9e.svg       `# Mirror`                       \
     svg/1faa6.svg       `# Headstone`                    \
+    svg/23f1.svg        `# Stopwatch`                    \
     svg/2615.svg        `# Hot Beverage`                 \
     svg/2639.svg        `# Frowning Face`                \
     svg/26f3.svg        `# Flag in Hole`                 \
