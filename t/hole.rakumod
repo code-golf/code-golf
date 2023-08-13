@@ -97,12 +97,12 @@ class HoleWebDriver is WebDriver is export {
 
     # Methods whose names begin with "is" do exactly one assertion.
     method isFailing(Str:D $context) {
-        $.isResult: 'Fail ☹️', $context;
+        $.isResult: "☹️\nFail", $context;
     }
 
     # Methods whose names begin with "is" do exactly one assertion.
     method isPassing(Str:D $context) {
-        $.isResult: 'Pass 😀', $context;
+        $.isResult: "😀\nPass", $context;
     }
 
     # Methods whose names begin with "is" do exactly one assertion.

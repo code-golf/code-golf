@@ -252,18 +252,34 @@ export interface RankUpdate {
     oldBestStrokes: number | null,
 }
 
-export interface SubmitResponse {
+export interface Run {
+    answer: string,
+    args: string[],
+    exit_code: number,
+    pass: boolean,
+    stderr: string,
+    stdout: string,
+    time_ns: number,
+    timeout: boolean
+}
+
+export interface ReadonlyPanelsData {
     Pass: boolean,
     Out: string,
     Exp: string,
     Err: string,
     Argv: string[],
+}
+
+export interface SubmitResponse {
+    Pass: boolean,
     Cheevos: {
         emoji: string,
         name: string
     }[],
     LoggedIn: boolean,
     RankUpdates: RankUpdate[],
+    runs: Run[]
 }
 
 const makeSingular = (strokes: number, units: string) =>
@@ -362,7 +378,11 @@ const diamondPopups = (updates: RankUpdate[]) => {
     return popups;
 };
 
-export async function submit(editor: any, updateReadonlyPanels: any) {
+export async function submit(
+    editor: any,
+    // eslint-disable-next-line no-unused-vars
+    updateReadonlyPanels: (d: ReadonlyPanelsData) => void,
+) {
     if (!editor) return;
     $('h2').innerText = '…';
     $('#status').className = 'grey';
@@ -441,26 +461,70 @@ export async function submit(editor: any, updateReadonlyPanels: any) {
     // solution.
     updateRestoreLinkVisibility(editor);
 
-    $('h2').innerText = data.Pass ? 'Pass 😀' : 'Fail ☹️';
+    function showRun(run: Run) {
+        updateReadonlyPanels({
+            Pass: run.pass,
+            Argv: run.args,
+            Exp: run.answer,
+            Err: run.stderr,
+            Out: run.stdout,
+        });
 
-    updateReadonlyPanels(data);
+        const ms = Math.round(run.time_ns / 10**6);
+        // Only show runtime if it's more than 1000ms, for a bit less clutter in general.
+        $('#runtime').innerText = ms > 1000 ? `(${ms}ms)` : '';
+
+        // 3rd party integrations.
+        let thirdParty = '';
+        if (lang == 'hexagony') {
+            const payload = LZString.compressToBase64(JSON.stringify({
+                code, input: run.args.join('\0') + '\0', inputMode: 'raw' }));
+
+            thirdParty = <a href={'//hexagony.net#lz' + payload}>
+                Run on Hexagony.net
+            </a>;
+        }
+        $('#thirdParty').replaceChildren(thirdParty);
+
+        if (hole == 'julia-set')
+            $('main').append(pbm(run.answer) as Node, pbm(run.stdout) ?? [] as any);
+    }
+
+    // Default run: first failing non-timeout, else first timeout, else last overall.
+    let defaultRunIndex = data.runs.findIndex(run => !run.pass && !run.timeout);
+    if (defaultRunIndex === -1)
+        defaultRunIndex = data.runs.findIndex(run => !run.pass);
+    if (defaultRunIndex === -1)
+        defaultRunIndex = data.runs.length - 1;
+
+    const btns = data.runs.map((run, i) => {
+        const [emoji, label] = run.pass ? ['😀', 'Pass']
+            : run.timeout ? ['⏱️', 'Timeout']
+                : ['☹️', 'Fail'];
+        const btn = (
+            <button class="run-result-btn" aria-label={`Run ${i + 1}: ${label}`}>
+                {emoji}
+            </button>
+        );
+        function onPickRun() {
+            showRun(run);
+            $$<HTMLButtonElement>('.run-result-btn').forEach(b => b.disabled = false);
+            $('#pass-fail-msg').innerText = label;
+            btn.disabled = true;
+        };
+        btn.addEventListener('click', onPickRun);
+        return btn;
+    });
+
+    $('h2').replaceChildren(
+        <span id="run-result-btns">{btns}</span>,
+        <span id="pass-fail-msg"></span>,
+        <span id="runtime"></span>,
+    );
+
+    btns[defaultRunIndex].click();
 
     $('#status').className = data.Pass ? 'green' : 'red';
-
-    // 3rd party integrations.
-    let thirdParty = '';
-    if (lang == 'hexagony') {
-        const payload = LZString.compressToBase64(JSON.stringify({
-            code, input: data.Argv.join('\0') + '\0', inputMode: 'raw' }));
-
-        thirdParty = <a href={'//hexagony.net#lz' + payload}>
-            Run on Hexagony.net
-        </a>;
-    }
-    $('#thirdParty').replaceChildren(thirdParty);
-
-    if (hole == 'julia-set')
-        $('main').append(pbm(data.Exp) as Node, pbm(data.Out) ?? [] as any);
 
     // Show cheevos.
     $('#popups').replaceChildren(...scorePopups(data.RankUpdates),
