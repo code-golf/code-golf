@@ -153,9 +153,7 @@ button {
     font: inherit;
 }
 
-button:not(:disabled) {
-    cursor: pointer;
-}
+button:not(:disabled) { cursor: pointer }
 
 dialog {
     background: var(--background);
