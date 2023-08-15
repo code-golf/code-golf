@@ -12,19 +12,19 @@
 <main>
     <h1>About</h1>
     <dl>
-        <dt>Do I Need to Log in to Play?
+        <dt>Do I need to log in to play?
         <dd>
             No. Submitted solutions will be executed and checked without
             logging in, but nothing will be saved and you won't appear on the
             <a href=rankings/holes/all/all/bytes>leaderboards</a>.
 
-        <dt>Is Code Golf Free as in Speech?
+        <dt>Is code.golf free as in speech?
         <dd>
             Yes! It is written in <a href=//golang.org>Go</a>, licensed under
             <a href=//opensource.org/licenses/MIT>MIT</a>, and available on
             <a href=//github.com/code-golf/code-golf>GitHub</a>; patches welcome!
 
-        <dt>Is Code Golf Free as in Beer?
+        <dt>Is code.golf free as in beer?
         <dd>
             <p>
                 Yes! However hosting isn't, so if you enjoy Code Golf consider
@@ -53,7 +53,7 @@
                         <td>{{ .Data.FollowLimitSponsor }}
             </table>
 
-        <dt>What Languages Are Supported?
+        <dt>What languages are supported?
         <dd id=langs>
         {{ range .Data.Langs }}
             <section>
@@ -71,17 +71,38 @@
             <p>
                 If you'd like to see another language added then raise an
                 <a href=//github.com/code-golf/code-golf/issues/new>issue</a>.
-        <dt>Are Warnings Ignored?
+        <dt>Are warnings ignored?
         <dd>
             Yes. Only STDOUT is checked against the solution, STDERR is
             however shown back to you to ease debugging.
 
-        <dt>How Are Arguments Passed to My Program?
+        <dt>How are arguments passed to my program?
         <dd>
             Some holes pass arguments, for those your program should read them
             from the command line arguments (ARGV).
 
-        <dt>How Are Solutions Ranked?
+        <dt>How do I print Unicode characters?
+        <dd>
+            <p>
+                Your source code is sent to the interpreter encoded in UTF-8,
+                and is expected to write output encoded in UTF-8 to STDOUT.
+                For languages where it matters, your code is run in the
+                <code>en_US</code> locale with a UTF-8 output encoding.
+            <p>
+                In Unicode-aware languages like Python, this means
+                <code>print("🙂")</code> and <code>print(chr(0x1f642))</code>
+                both produce the emoji U+1F642 "Slightly Smiling Face" 🙂, which
+                is encoded as <code>f0 9f 99 82</code> in UTF-8.
+            <p>
+                In less Unicode-aware languages where strings are byte strings,
+                you might still get away with UTF-8 in string literals. For
+                example, OCaml treats <code>"🙂"</code> as a string of length 4
+                (four bytes), but <code>Char.chr 0x1f642</code> is an error.
+            <p>
+                In yet other languages, like brainfuck, you have to print the
+                individual bytes <code>f0 9f 99 82</code> one by one.
+
+        <dt>How are solutions ranked?
         <dd>
             There are two scorings in use, bytes and chars. Bytes is the
             number of bytes of a solution encoded in UTF-8. Chars is the
@@ -93,7 +114,7 @@
             (U+1F609 Winking Face) cost the same despite the 1:4 ratio in byte
             count in UTF-8.
 
-        <dt>How Are Solutions Scored?
+        <dt>How are solutions scored?
         <dd>
             For each hole, in each language, up to 1,000 points are available.
             The formula is:
@@ -121,14 +142,14 @@
                 Your overall score is the sum of your highest points in each
                 hole.
 
-        <dt>Are Submissions Resource Constrained?
+        <dt>Are submissions resource-constrained?
         <dd>
             Yes. Execution time is limited to 5 seconds, CPU & RAM usage is
             unbounded but this will probably change soon. The length of each
             solution must be lower than 128 KiB as that's the maximum length
             of any program argument under Linux.
 
-        <dt>Is There an API?
+        <dt>Is there an API?
         <dd>
             An API is currently being developed and documented in standard
             <a href="https://petstore.swagger.io/?url=https://code.golf/api">
@@ -139,7 +160,7 @@
             Note that all-holes and all-langs may be replaced by the names of
             specific holes and languages.
 
-        <dt>Can I See Other People's Solutions?
+        <dt>Can I see other people's solutions?
         <dd>
             No, that way all holes stay competitive. If you're stuck on how to
             shave a couple of strokes off your solution then why not visit
