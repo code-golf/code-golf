@@ -61,6 +61,11 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		golfer.Earn(db, "slowcoach")
 	}
 
+	// TODO Should this be pushed lower?
+	for i, run := range runs {
+		runs[i].Stderr = string(terminal.Render([]byte(run.Stderr)))
+	}
+
 	out := struct {
 		// Legacy TitleCase attributes.
 		Argv           []string
@@ -76,7 +81,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 	}{
 		Argv:     displayedRun.Args,
 		Cheevos:  []*config.Cheevo{},
-		Err:      string(terminal.Render([]byte(displayedRun.Stderr))),
+		Err:      displayedRun.Stderr,
 		ExitCode: displayedRun.ExitCode,
 		Exp:      displayedRun.Answer,
 		LoggedIn: golfer != nil,
