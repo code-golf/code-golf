@@ -1,6 +1,6 @@
 # Code Golf
 
-This is the repository behind https://code.golf
+This is the repository behind the website and community https://code.golf
 
 ## Quickstart
 
