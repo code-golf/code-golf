@@ -46,11 +46,15 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 
 	runs := hole.Play(r.Context(), in.Hole, in.Lang, in.Code)
 
+	// TODO Should this be pushed lower?
+	for i, run := range runs {
+		runs[i].Stderr = string(terminal.Render([]byte(run.Stderr)))
+	}
+
 	// The legacy single run we display, first failing or last overall.
 	var displayedRun hole.Run
-	for _, run := range runs {
-		displayedRun = run
-		if !run.Pass {
+	for _, displayedRun = range runs {
+		if !displayedRun.Pass {
 			break
 		}
 	}
@@ -59,11 +63,6 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 	//       display all runs it's best to use only the one we display.
 	if displayedRun.Timeout && golfer != nil {
 		golfer.Earn(db, "slowcoach")
-	}
-
-	// TODO Should this be pushed lower?
-	for i, run := range runs {
-		runs[i].Stderr = string(terminal.Render([]byte(run.Stderr)))
 	}
 
 	out := struct {
