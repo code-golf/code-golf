@@ -97,19 +97,19 @@ func poker() []Run {
 	}
 	suits = rand.Perm(4)
 	hands = append(hands, Hand{"Pair", []rune{
-		cardRune(12, suits[0]),
-		cardRune(11, suits[1]),
+		cardRune(8, suits[0]),
+		cardRune(8, suits[1]),
 		cardRune(9, rand.Intn(4)),
-		cardRune(8, rand.Intn(4)),
-		cardRune(8, rand.Intn(4)),
+		cardRune(11, rand.Intn(4)),
+		cardRune(12, rand.Intn(4)),
 	}})
 	suits = rand.Perm(4)
 	hands = append(hands, Hand{"Pair", []rune{
-		cardRune(12, suits[0]),
-		cardRune(11, suits[1]),
+		cardRune(8, suits[0]),
+		cardRune(8, suits[1]),
 		cardRune(10, rand.Intn(4)),
-		cardRune(8, rand.Intn(4)),
-		cardRune(8, rand.Intn(4)),
+		cardRune(11, rand.Intn(4)),
+		cardRune(12, rand.Intn(4)),
 	}})
 	suits = rand.Perm(4)
 	hands = append(hands, Hand{"Pair", []rune{
