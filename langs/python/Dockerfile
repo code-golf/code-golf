@@ -2,7 +2,7 @@ FROM alpine:3.18 AS builder
 
 RUN apk add --no-cache build-base curl libffi-dev zlib-dev
 
-ENV VER 3.11.4
+ENV VER 3.11.5
 
 RUN curl https://www.python.org/ftp/python/$VER/Python-$VER.tar.xz | tar xJ
 

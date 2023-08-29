@@ -589,7 +589,7 @@ for (let arg of arguments)
 
 [Julia]
 size    = '302 MiB'
-version = '1.9.2'
+version = '1.9.3'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -808,7 +808,7 @@ example = '''
 
 [Python]
 size    = '74.1 MiB'
-version = '3.11.4'
+version = '3.11.5'
 website = 'https://www.python.org'
 example = '''
 import sys
@@ -879,8 +879,8 @@ end
 '''
 
 [Rust]
-size    = '426 MiB'
-version = '1.71.0'
+size    = '431 MiB'
+version = '1.72.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -928,8 +928,8 @@ G
 '''
 
 [SQL]
-size    = '1.14 MiB'
-version = '3.42.0'
+size    = '1.15 MiB'
+version = '3.43.0'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
