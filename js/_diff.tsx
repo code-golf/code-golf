@@ -368,7 +368,7 @@ function renderCharDiff(className: string, charDiff: Diff.Change[], isRight: boo
 }
 
 function shouldIgnoreCase(hole: string) {
-    return hole === 'css-colors';
+    return hole === 'css-colors' || hole === 'rijndael-s-box';
 }
 
 function lines(s: string) {
