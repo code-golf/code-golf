@@ -398,7 +398,7 @@ func play(ctx context.Context, holeID, langID, code string, run *Run) error {
 
 	// Timeouts and whitespace only output never pass.
 	if !run.Timeout && len(strings.TrimSpace(run.Stdout)) != 0 {
-		if holeID == "css-colors" {
+		if holeID == "css-colors" || holeID == "rijndael-s-box" {
 			// TODO Generalise case insensitivity, should it apply to others?
 			run.Pass = strings.EqualFold(run.Answer, run.Stdout)
 		} else {
