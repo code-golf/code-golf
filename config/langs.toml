@@ -1013,8 +1013,8 @@ Hello, World!
 '''
 
 [V]
-size    = '49 MiB'
-version = '0.4.0'
+size    = '49.1 MiB'
+version = '0.4.1'
 website = 'https://vlang.io'
 example = '''
 import os
