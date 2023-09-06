@@ -428,8 +428,8 @@ end
 '''
 
 [Go]
-size    = '334 MiB'
-version = '1.21.0'
+size    = '335 MiB'
+version = '1.21.1'
 website = 'https://go.dev'
 example = '''
 package main
