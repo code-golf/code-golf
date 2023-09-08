@@ -1075,8 +1075,8 @@ for (a in Process.arguments) System.print(a)
 '''
 
 [Zig]
-size    = '262 MiB'
-version = '0.10.1'
+size    = '279 MiB'
+version = '0.11.0'
 website = 'https://ziglang.org'
 example = '''
 const std = @import("std");
@@ -1088,8 +1088,7 @@ pub fn main() !void {
     try stdout.print("Hello, World!\n", .{});
 
     // Looping
-    var i: i32 = 0;
-    while (i < 10) : (i += 1)
+    for (0..10) |i|
         try stdout.print("{}\n", .{i});
 
     // Accessing arguments
