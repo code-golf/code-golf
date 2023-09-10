@@ -57,6 +57,7 @@ import { swift }              from '@codemirror/legacy-modes/mode/swift';
 import { tcl }                from '@codemirror/legacy-modes/mode/tcl';
 import { stex }               from '@codemirror/legacy-modes/mode/stex';
 import { wren }               from '@exercism/codemirror-lang-wren';
+import { zig }                from 'codemirror-lang-zig';
 
 // For some reason, this doesn't fully work unless added to both themes.
 const asmErrorTooltip = {
@@ -147,7 +148,7 @@ export const extensions = {
     // TODO v
     // TODO viml
     'wren':       wren(),
-    // TODO zig
+    'zig':        zig(),
 };
 
 // Order matters, unshift the dark stuff onto the front.
