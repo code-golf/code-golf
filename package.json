@@ -20,6 +20,7 @@
     "codemirror-lang-janet": "^0.7.2",
     "codemirror-lang-k": "",
     "codemirror-lang-prolog": "",
+    "codemirror-lang-zig": "^0.1.0",
     "dialog-polyfill": "",
     "diff": "",
     "esbuild": "",
