@@ -380,6 +380,21 @@ let main args =
     0
 '''
 
+[Factor]
+size    = '319 MiB'
+version = '0.99'
+website = 'https://factorcode.org'
+example = '''
+! Printing
+"Hello, World!" print
+
+! Looping
+10 [0..b) [ . ] each
+
+! Accessing arguments
+command-line get-global [ print ] each
+'''
+
 [Forth]
 size    = '2.83 MiB'
 version = 'GNU Forth 0.7.3'

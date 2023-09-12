@@ -53,15 +53,18 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ERR_AND_EXIT("symlink /dev/fd");
 
     if (mknod("/dev/null", S_IFCHR|0666, makedev(1, 3)) < 0)
-        ERR_AND_EXIT("mknod");
+        ERR_AND_EXIT("mknod /dev/null");
 
     // FIXME This shouldn't be needed, 0666 should suffice, but without it Zig
     //       fails with permission denied when opening /dev/null as O_RDWR.
     if (chown("/dev/null", NOBODY, NOBODY) < 0)
         ERR_AND_EXIT("chown /dev/null");
 
+    if (mknod("/dev/random", S_IFCHR|0444, makedev(1, 8)) < 0)
+        ERR_AND_EXIT("mknod /dev/random");
+
     if (mknod("/dev/urandom", S_IFCHR|0444, makedev(1, 9)) < 0)
-        ERR_AND_EXIT("mknod");
+        ERR_AND_EXIT("mknod /dev/urandom");
 
     if (mount("proc", "/proc", "proc", MS_NODEV|MS_NOEXEC|MS_NOSUID, NULL) < 0)
         ERR_AND_EXIT("mount proc");

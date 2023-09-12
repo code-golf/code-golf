@@ -245,6 +245,9 @@ func play(ctx context.Context, holeID, langID, code string, run *Run) error {
 	case "elixir":
 		cmd.Args = []string{"/usr/local/bin/elixir", "-e", code, "--"}
 		cmd.Env = []string{"LANG=C.UTF-8", "PATH=/usr/local/bin:/usr/bin:/bin"}
+	case "factor":
+		cmd.Args = []string{"/factor/factor", "/proc/self/fd/0"}
+		cmd.Env = []string{"XDG_CACHE_HOME=/tmp"}
 	case "fish":
 		cmd.Args = []string{"/usr/bin/fish", "--no-prng", "-c", code, "-u"}
 	case "forth":
