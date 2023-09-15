@@ -89,6 +89,8 @@ func Play(ctx context.Context, holeID, langID, code string) (runs []Run) {
 		runs = cssColors()
 	case "day-of-week":
 		runs = dayOfWeek()
+	case "dfa-simulator":
+		runs = dfaSimulator()
 	case "ellipse-perimeters":
 		runs = ellipsePerimeters()
 	case "emojify":
