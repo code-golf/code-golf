@@ -600,7 +600,7 @@ category = 'Computing'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Deterministic_finite_automaton' },
 ]
-synopsis = 'Execute an input string on a given state machine'
+synopsis = 'Execute an input string on a given state machine.'
 preamble = '''
 <p>
     The Deterministic Finite Automaton is encoded as an annotated transition table and the input as a string. This example DFA is encoded as
