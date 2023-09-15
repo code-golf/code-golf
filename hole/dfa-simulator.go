@@ -16,7 +16,7 @@ type DFAStateTransition struct {
 	stateName string
 }
 
-func solve(g string) string {
+func solveDFA(g string) string {
 	var startState DFAState
 	stateMap := map[DFAStateTransition]DFAState{}
 	nameToState := map[string]DFAState{}
@@ -60,7 +60,7 @@ func solve(g string) string {
 	return currentState.name + " Reject"
 }
 
-func generate() string {
+func generateDFA() string {
 	alphabet := []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
 	alphabetLength := rand.Intn(35) + 1
 	alphabet = alphabet[:alphabetLength]
@@ -189,9 +189,9 @@ func dfaSimulator() []Run {
 	}
 
 	for i := 0; i < 50; i++ {
-		generatedTest := generate()
+		generatedTest := generateDFA()
 		args = append(args, generatedTest)
-		results = append(results, solve(generatedTest))
+		results = append(results, solveDFA(generatedTest))
 	}
 
 	rand.Shuffle(len(args), func(i, j int) {
