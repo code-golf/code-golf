@@ -5,6 +5,8 @@ RUN apt-get update && apt-get install -y curl
 RUN curl https://downloads.factorcode.org/releases/0.99/factor-linux-x86-64-0.99.tar.gz \
   | tar xz
 
+RUN rm -r /factor/extra/99-bottles /factor/misc
+
 FROM codegolf/lang-base
 
 COPY --from=0 /factor                              /factor

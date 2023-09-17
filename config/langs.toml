@@ -381,7 +381,7 @@ let main args =
 '''
 
 [Factor]
-size    = '217 MiB'
+size    = '214 MiB'
 version = '0.99'
 website = 'https://factorcode.org'
 example = '''
