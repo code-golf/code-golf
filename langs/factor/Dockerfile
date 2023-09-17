@@ -9,12 +9,15 @@ RUN rm -r /factor/extra/99-bottles /factor/misc
 
 FROM codegolf/lang-base
 
-COPY --from=0 /factor                              /factor
-COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6      \
-              /lib/x86_64-linux-gnu/libm.so.6      \
-              /lib/x86_64-linux-gnu/libgcc_s.so.1  \
-              /lib/x86_64-linux-gnu/libstdc++.so.6 /lib/x86_64-linux-gnu/
-COPY --from=0 /lib64/ld-linux-x86-64.so.2          /lib64/
+COPY --from=0 /factor                               /factor
+COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
+              /lib/x86_64-linux-gnu/libdl.so.2      \
+              /lib/x86_64-linux-gnu/libm.so.6       \
+              /lib/x86_64-linux-gnu/libgcc_s.so.1   \
+              /lib/x86_64-linux-gnu/libpthread.so.0 \
+              /lib/x86_64-linux-gnu/librt.so.1      \
+              /lib/x86_64-linux-gnu/libstdc++.so.6  /lib/x86_64-linux-gnu/
+COPY --from=0 /lib64/ld-linux-x86-64.so.2           /lib64/
 
 ENTRYPOINT ["/factor/factor"]
 
