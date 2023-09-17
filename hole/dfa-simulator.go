@@ -153,7 +153,7 @@ func dfaSimulator() []Run {
 		"0 Reject",
 		"0 Reject",
 		"0 Accept",
-		"0 Accept",
+		"9 Accept",
 		"2 Accept",
 		"2 Accept",
 		"3 Accept",
