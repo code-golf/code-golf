@@ -597,6 +597,7 @@ preamble = '''
 
 ['DFA Simulator']
 category = 'Computing'
+experiment = 1006
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Deterministic_finite_automaton' },
 ]
