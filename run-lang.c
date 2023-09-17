@@ -249,7 +249,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         // ALLOW(fanotify_mark),     // 301
         // ALLOW(inotify_add_watch), // 254
         // ALLOW(inotify_init1),     // 294
-        // ALLOW(inotify_init),      // 253
+        ALLOW(inotify_init),         // 253 (Used by Factor)
         // ALLOW(inotify_rm_watch),  // 255
 
         // Miscellaneous
