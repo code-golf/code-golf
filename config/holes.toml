@@ -595,6 +595,40 @@ preamble = '''
     of the week.
 '''
 
+['DFA Simulator']
+category = 'Computing'
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Deterministic_finite_automaton' },
+]
+synopsis = 'Execute an input string on a given state machine.'
+preamble = '''
+<p>
+    The Deterministic Finite Automaton is encoded as an annotated transition table and the input as a string. This example DFA is encoded as
+
+    0 1
+>F1 2 1
+  2 1 2
+
+Thus, the letters of the input alphabet appear in the first row, the states appear in the third column, and the table entries encode q' = delta(q,a). Here, the > indicates state 1 is the start state and F indicates that is an accept state. There may be zero or more accept states.
+
+On input 110101, the automaton above has the state trajectory
+
+1, 1, 1, 2, 2, 1, 1
+
+Since the final state is an accept, the input string is accepted.
+
+The automaton should report the ending state and decision. Thus, it should report "1 Accept" for the input "110101" and "2 Reject" for "000".
+
+The following automaton accepts strings of a's whose length is *not* a multiple of three:
+
+    a
+> 0 1
+ F1 2
+ F2 0
+
+Input characters can be digits or lowercase letters: 0-9 or a-z.  State names can be integers 0-9.
+'''
+
 [Diamonds]
 category = 'Art'
 synopsis = 'Draw a size ascending range of diamonds using the numbers 1 to 9.'
