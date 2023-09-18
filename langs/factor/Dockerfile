@@ -5,11 +5,12 @@ RUN apt-get update && apt-get install -y curl
 RUN curl https://downloads.factorcode.org/releases/0.99/factor-linux-x86-64-0.99.tar.gz \
   | tar xz
 
-RUN rm -r /factor/extra /factor/misc
-
 FROM codegolf/lang-base
 
-COPY --from=0 /factor                               /factor
+COPY --from=0 /factor/basis                         /factor/basis
+COPY --from=0 /factor/core                          /factor/core
+COPY --from=0 /factor/factor                        \
+              /factor/factor.image                  /factor/
 COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
               /lib/x86_64-linux-gnu/libdl.so.2      \
               /lib/x86_64-linux-gnu/libm.so.6       \
