@@ -279,7 +279,7 @@ func play(ctx context.Context, holeID, langID, code string, run *Run) error {
 		cmd.Args = []string{"/usr/bin/ocaml", "/proc/self/fd/0"}
 	case "perl":
 		cmd.Args = []string{"/usr/bin/perl", "-E", code, "--"}
-	case "php", "php-7":
+	case "php":
 		cmd.Args = []string{"/usr/bin/php", "--"}
 	case "powershell":
 		cmd.Args = []string{"/usr/bin/powershell"}
@@ -343,7 +343,7 @@ func play(ctx context.Context, holeID, langID, code string, run *Run) error {
 		// For these langs, code is passed as an argument above.
 	case "k":
 		cmd.Stdin = strings.NewReader(preprocessKCode(holeID, code))
-	case "php", "php-7":
+	case "php":
 		cmd.Stdin = strings.NewReader("<?php " + code + " ;")
 	default:
 		cmd.Stdin = strings.NewReader(code)
