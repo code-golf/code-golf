@@ -324,8 +324,8 @@ void main(string[] argv) {
 '''
 
 [Dart]
-size    = '240 MiB'
-version = '2.19.6'
+size    = '215 MiB'
+version = '3.1.2'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
