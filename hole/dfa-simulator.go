@@ -2,7 +2,6 @@ package hole
 
 import (
 	"math/rand"
-	"strconv"
 	"strings"
 )
 
@@ -65,42 +64,41 @@ func generateDFA() string {
 	alphabetLength := rand.Intn(35) + 1
 	alphabet = alphabet[:alphabetLength]
 
-	inputDFA := "    " + strings.Join(alphabet, " ") + "\n"
+	var inputDFA strings.Builder
+
+	inputDFA.WriteString("    " + strings.Join(alphabet, " ") + "\n")
 
 	stateLength := rand.Intn(10) + 1
 	startState := rand.Intn(stateLength)
 	for i := 0; i < stateLength; i++ {
-		stateRow := ""
-
 		if i == startState {
-			stateRow += ">"
+			inputDFA.WriteByte('>')
 		} else {
-			stateRow += " "
+			inputDFA.WriteByte(' ')
 		}
 
 		if rand.Intn(2) == 0 {
-			stateRow += "F"
+			inputDFA.WriteByte('F')
 		} else {
-			stateRow += " "
+			inputDFA.WriteByte(' ')
 		}
 
-		stateRow += strconv.Itoa(i) + " "
+		inputDFA.WriteByte(byte('0' + i))
 
-		transitions := []string{}
 		for j := 0; j < alphabetLength; j++ {
-			transitions = append(transitions, strconv.Itoa(rand.Intn(stateLength)))
+		    inputDFA.WriteByte(' ')
+		    inputDFA.WriteByte(byte('0' + rand.Intn(stateLength)))
 		}
-		stateRow += strings.Join(transitions, " ") + "\n"
-		inputDFA += stateRow
+		inputDFA.WriteByte('\n')
 
 	}
-	inputDFA += "\""
+	inputDFA.WriteByte('"')
 	for i := 0; i < rand.Intn(2*alphabetLength); i++ {
-		inputDFA += alphabet[rand.Intn(alphabetLength)]
+		inputDFA.WriteString(alphabet[rand.Intn(alphabetLength)])
 	}
-	inputDFA += "\""
+	inputDFA.WriteByte('"')
 
-	return inputDFA
+	return inputDFA.String()
 }
 
 func dfaSimulator() []Run {
