@@ -10,10 +10,7 @@ type DFAState struct {
 	accepted bool
 }
 
-type DFAStateTransition struct {
-	input     string
-	stateName string
-}
+type DFAStateTransition struct{ input, stateName string }
 
 func solveDFA(g string) string {
 	var startState DFAState
@@ -60,10 +57,12 @@ func solveDFA(g string) string {
 }
 
 func generateDFA() string {
-	alphabet := []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
-	states := []string{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
-	shuffle(alphabet)
-	shuffle(states)
+	alphabet := shuffle([]string{
+		"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
+		"n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
+		"0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+	})
+	states := shuffle([]string{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"})
 
 	alphabetLength := rand.Intn(len(alphabet)-1) + 1
 	alphabet = alphabet[:alphabetLength]
