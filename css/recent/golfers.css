@@ -1,7 +1,5 @@
 @import "./_recent.css";
 
-main { grid-template-columns: 1fr }
-
 td div {
     align-items: center;
     display: flex;

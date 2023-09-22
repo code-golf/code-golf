@@ -324,8 +324,8 @@ void main(string[] argv) {
 '''
 
 [Dart]
-size    = '240 MiB'
-version = '2.19.6'
+size    = '215 MiB'
+version = '3.1.2'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -381,7 +381,7 @@ let main args =
 '''
 
 [Factor]
-size    = '217 MiB'
+size    = '172 MiB'
 version = '0.99'
 website = 'https://factorcode.org'
 example = '''
@@ -546,8 +546,8 @@ echo each 2}.ARGV
 '''
 
 [Janet]
-size    = '811 KiB'
-version = '1.30.0'
+size    = '815 KiB'
+version = '1.31.0'
 website = 'https://janet-lang.org'
 example = '''
 # Printing
@@ -694,8 +694,8 @@ for arg in commandLineParams():
 '''
 
 [OCaml]
-size    = '99.2 MiB'
-version = '5.0.0'
+size    = '85.1 MiB'
+version = '5.1.0'
 website = 'https://ocaml.org'
 example = '''
 (* Printing *)
@@ -754,23 +754,6 @@ say for @ARGV;
 [PHP]
 size    = '8.4 MiB'
 version = '8.2.10'
-website = 'https://www.php.net'
-example = '''
-# Printing
-echo "Hello, World!\n";
-
-# Looping
-for ($i = 0; $i < 10; $i++)
-    echo "$i\n";
-
-# Accessing arguments
-for ($i = 1; $i < $argc; $i++)
-    echo "$argv[$i]\n";
-'''
-
-['PHP 7']
-size    = '10.5 MiB'
-version = '7.4.33'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -895,7 +878,7 @@ end
 
 [Rust]
 size    = '431 MiB'
-version = '1.72.0'
+version = '1.72.1'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -967,8 +950,8 @@ SELECT arg FROM argv;
 '''
 
 [Swift]
-size    = '485 MiB'
-version = '5.8.1'
+size    = '548 MiB'
+version = '5.9'
 website = 'https://swift.org'
 example = '''
 // Printing

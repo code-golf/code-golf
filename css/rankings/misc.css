@@ -1,12 +1,5 @@
 @import "./_rankings.css";
 
-main nav {
-    flex-direction: column;
-    justify-content: flex-start;
-}
-
-main nav a { width: 100% }
-
 td > a > svg {
     color: var(--color);
     height: 1rem;
