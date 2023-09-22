@@ -62,8 +62,8 @@ func solveDFA(g string) string {
 func generateDFA() string {
 	alphabet := []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
 	states := []string{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
-	rand.Shuffle(len(alphabet), func(i, j int) { alphabet[i], alphabet[j] = alphabet[j], alphabet[i] })
-	rand.Shuffle(len(states), func(i, j int) { states[i], states[j] = states[j], states[i] })
+	shuffle(alphabet)
+	shuffle(states)
 
 	alphabetLength := rand.Intn(len(alphabet)-1) + 1
 	alphabet = alphabet[:alphabetLength]
