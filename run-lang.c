@@ -245,12 +245,12 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(select),        // 23
 
         // Monitoring File Events
-        // ALLOW(fanotify_init),     // 300
-        // ALLOW(fanotify_mark),     // 301
-        // ALLOW(inotify_add_watch), // 254
-        // ALLOW(inotify_init1),     // 294
-        // ALLOW(inotify_init),      // 253
-        // ALLOW(inotify_rm_watch),  // 255
+        // ALLOW(fanotify_init),  // 300
+        // ALLOW(fanotify_mark),  // 301
+        ALLOW(inotify_add_watch), // 254 (Used by Factor)
+        ALLOW(inotify_init1),     // 294 (Used by Factor)
+        ALLOW(inotify_init),      // 253 (Used by Factor)
+        ALLOW(inotify_rm_watch),  // 255 (Used by Factor)
 
         // Miscellaneous
         ALLOW(fadvise64),    // 221

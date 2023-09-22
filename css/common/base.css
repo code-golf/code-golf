@@ -539,9 +539,87 @@ details.tabs a { display: inline-block }
 
 #popups h3 { grid-column: span 2 }
 
+#two-pane {
+    display: grid;
+    gap: 1rem 2rem;
+    grid-template: min-content 1fr / min-content 1fr;
+
+    & > form { display: none }
+
+    & > nav {
+        align-content: flex-start;
+        border-right: 2px solid var(--color);
+        display: flex;
+        flex-wrap: wrap;
+        gap: .25rem .75rem;
+        grid-row: span 2;
+        justify-content: flex-end;
+        padding: .5rem 2rem .5rem 0;
+        width: 18rem;
+
+        & > * {
+            align-items: center;
+            display: flex;
+            gap: .5rem;
+            justify-content: flex-end;
+            white-space: nowrap;
+        }
+
+        & > a:hover { text-decoration: none }
+
+        & > a[href]:hover span:first-child { text-decoration: underline }
+
+        & > a:not([href]) {
+            color: var(--color);
+            font-weight: bold;
+        }
+
+        & > h2 {
+            font-size: 1rem;
+            text-decoration: underline;
+            width: 100%;
+
+            &:not(:first-child) { margin-top: 1rem }
+        }
+    }
+
+    & > nav#one-per-row {
+        flex-direction: column;
+        justify-content: flex-start;
+
+        & > a { width: 100% }
+    }
+}
+
 @keyframes fade {
     0%   { opacity: 0; margin-top: -4rem }
     100% { opacity: 1; margin-top: 0 }
 }
 
 @media (max-width: 34rem) { .wide { display: none !important } }
+
+@media (max-width: 46rem) {
+    #two-pane {
+        grid-template: min-content min-content 1fr / 1fr;
+
+        & > form {
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+
+            & > fieldset {
+                border: 0;
+                display: flex;
+                gap: .75rem;
+                padding: 0;
+
+                & > label {
+                    display: flex;
+                    gap: .25rem;
+                }
+            }
+        }
+
+        & > nav { display: none }
+    }
+}

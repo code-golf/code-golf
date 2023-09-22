@@ -4,7 +4,7 @@
 {{ $id := "" }}
 {{ with $.Data.Cheevo }}{{ $id = .ID }}{{ end }}
 
-<main>
+<main id=two-pane>
     <form id=form-nav>
         <input name=base type=hidden value=/rankings/cheevos>
 
@@ -20,7 +20,7 @@
         </select>
     </form>
 
-    <nav>
+    <nav id=one-per-row>
         <a {{ if $id }} href=/rankings/cheevos {{ end }}>
             <span>All</span>
         </a>
