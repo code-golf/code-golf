@@ -3,8 +3,6 @@ body { max-width: 60rem }
 
 body > p { margin: 1rem 1rem 0 }
 
-form { display: none }
-
 h1 {
     display: flex;
     flex-wrap: wrap;
@@ -21,56 +19,6 @@ h1 nav {
 
 h1 span { flex: 1 }
 
-h2 {
-    font-size: 1rem;
-    text-decoration: underline;
-    width: 100%;
-}
-
-h2:not(:first-child) { margin-top: 1rem }
-
-input { margin-right: .5rem }
-
-label { display: flex }
-
-main {
-    display: grid;
-    gap: 1rem 2rem;
-    grid-template: min-content 1fr / min-content 1fr;
-}
-
-main nav {
-    align-content: flex-start;
-    border-right: 2px solid var(--color);
-    display: flex;
-    flex-wrap: wrap;
-    gap: .25rem .75rem;
-    grid-row: span 2;
-    justify-content: flex-end;
-    padding: .5rem 2rem .5rem 0;
-    width: 18rem;
-}
-
-main nav > * {
-    align-items: center;
-    display: flex;
-    justify-content: flex-end;
-    white-space: nowrap;
-}
-
-main nav a:hover { text-decoration: none }
-
-main nav a[href]:hover span:first-child { text-decoration: underline }
-
-main nav a:not([href]) {
-    color: var(--color);
-    font-weight: bold;
-}
-
-main nav span:nth-child(2) { margin-left: .5rem }
-
-select { grid-column: 1 / -1 }
-
 table { flex: 1 }
 
 #pagination { display: flex }
@@ -82,16 +30,4 @@ table { flex: 1 }
 #pagination > :nth-child(2) {
     font-variant: tabular-nums;
     margin: 0 .5rem;
-}
-
-@media (max-width: 46rem) {
-    form {
-        display: grid;
-        gap: .5rem;
-        grid-template-columns: auto auto 1fr;
-    }
-
-    main { grid-template: min-content min-content 1fr / 1fr }
-
-    main nav { display: none }
 }

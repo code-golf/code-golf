@@ -4,7 +4,7 @@
 {{ $oldestDiamonds := eq .Path "/rankings/misc/oldest-diamonds" }}
 {{ $solutions      := eq .Path "/rankings/misc/solutions" }}
 
-<main>
+<main id=two-pane>
     <form id=form-nav>
         <input name=base type=hidden value=/rankings/misc>
 
@@ -22,7 +22,7 @@
         </select>
     </form>
 
-    <nav>
+    <nav id=one-per-row>
         <a {{ if ne .Path "/rankings/misc/followers" }} href=followers {{ end }}>
             <span>Followers</span>
         </a>

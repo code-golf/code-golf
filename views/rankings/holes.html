@@ -4,7 +4,7 @@
 {{ $base := "/rankings/holes" }}
 {{ if .Data.Recent }}{{ $base = "/rankings/recent-holes" }}{{ end }}
 
-<main>
+<main id=two-pane>
     <form id=form-nav>
         <input name=base type=hidden value="{{ $base }}">
 
@@ -26,15 +26,16 @@
         {{ end }}
         </select>
 
-        <label>
-            <input {{ if eq .Data.Scoring "bytes" }} checked {{ end }}
-                name=scoring type=radio value=bytes>Bytes
-        </label>
-
-        <label>
-            <input {{ if eq .Data.Scoring "chars" }} checked {{ end }}
-                name=scoring type=radio value=chars>Chars
-        </label>
+        <fieldset>
+            <label>
+                <input {{ if eq .Data.Scoring "bytes" }} checked {{ end }}
+                    name=scoring type=radio value=bytes>Bytes
+            </label>
+            <label>
+                <input {{ if eq .Data.Scoring "chars" }} checked {{ end }}
+                    name=scoring type=radio value=chars>Chars
+            </label>
+        </fieldset>
     </form>
 
     <nav>
