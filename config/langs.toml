@@ -301,8 +301,8 @@ end
 '''
 
 [D]
-size    = '296 MiB'
-version = 'D 2.102.2 on LDC 1.32.0'
+size    = '309 MiB'
+version = 'D 2.103.1 on LDC 1.33.0'
 website = 'https://dlang.org'
 example = '''
 import std.stdio;

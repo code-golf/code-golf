@@ -1,6 +1,6 @@
-FROM alpine:3.18 AS builder
+FROM alpine:edge AS builder
 
-RUN apk add --no-cache gcc ldc=1.32.1-r0 musl-dev
+RUN apk add --no-cache gcc ldc=1.33.0-r0 musl-dev
 
 # Delete some libraries
 RUN rm -r                           \
