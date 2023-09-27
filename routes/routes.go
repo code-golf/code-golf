@@ -2,6 +2,7 @@ package routes
 
 import (
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/code-golf/code-golf/middleware"
@@ -18,7 +19,14 @@ func Router(db *sqlx.DB) http.Handler {
 		middleware.Logger,
 		errorMiddleware,
 		middleware.Recoverer,
-		httprate.LimitByRealIP(60, time.Minute),
+	)
+
+	// Disable rate-limiting under e2e.
+	if _, e2e := os.LookupEnv("E2E"); !e2e {
+		r.Use(httprate.LimitByRealIP(60, time.Minute))
+	}
+
+	r.Use(
 		middleware.Static,
 		middleware.RedirectSlashes,
 		middleware.Compress(5),
