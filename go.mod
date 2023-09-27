@@ -9,6 +9,7 @@ require (
 	github.com/buildkite/terminal-to-html/v3 v3.9.1
 	github.com/bwmarrin/discordgo v0.27.1
 	github.com/go-chi/chi/v5 v5.0.10
+	github.com/go-chi/httprate v0.7.4
 	github.com/go-git/go-billy/v5 v5.5.0
 	github.com/go-git/go-git/v5 v5.9.0
 	github.com/gofrs/uuid v4.4.0+incompatible
@@ -29,6 +30,7 @@ require (
 	github.com/Microsoft/go-winio v0.6.1 // indirect
 	github.com/ProtonMail/go-crypto v0.0.0-20230828082145-3c4c8a2d2371 // indirect
 	github.com/acomagu/bufpipe v1.0.4 // indirect
+	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/cloudflare/circl v1.3.3 // indirect
 	github.com/cyphar/filepath-securejoin v0.2.4 // indirect
 	github.com/dgryski/trifles v0.0.0-20210119233746-37d926d5de6c // indirect

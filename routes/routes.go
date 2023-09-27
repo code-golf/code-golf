@@ -2,9 +2,11 @@ package routes
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/code-golf/code-golf/middleware"
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/httprate"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -16,6 +18,7 @@ func Router(db *sqlx.DB) http.Handler {
 		middleware.Logger,
 		errorMiddleware,
 		middleware.Recoverer,
+		httprate.LimitByRealIP(60, time.Minute),
 		middleware.Static,
 		middleware.RedirectSlashes,
 		middleware.Compress(5),
