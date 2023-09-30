@@ -1,41 +1,8 @@
 {{ template "header"   . }}
 {{ template "rankings" . }}
 
-{{ $id := "" }}
-{{ with $.Data.Cheevo }}{{ $id = .ID }}{{ end }}
-
 <main id=two-pane>
-    <form id=form-nav>
-        <input name=base type=hidden value=/rankings/cheevos>
-
-        <select name=cheevo>
-            <option value>All
-        {{ range $category, $cheevos := .Cheevos }}
-            <optgroup label="{{ $category }}">
-            {{ range $cheevos }}
-                <option value="{{ .ID }}" {{ if eq $id .ID }} selected {{ end }}>
-                    {{ .Emoji }}&ensp;{{ .Name }}
-            {{ end }}
-        {{ end }}
-        </select>
-    </form>
-
-    <nav id=one-per-row>
-        <a {{ if $id }} href=/rankings/cheevos {{ end }}>
-            <span>All</span>
-        </a>
-{{ range $category, $cheevos := .Cheevos }}
-        <h2>{{ $category }}</h2>
-    {{ range $cheevos }}
-        <a {{ if ne $id .ID }}
-            href="/rankings/cheevos/{{ .ID }}"
-        {{ end }} title="{{ .Description }}">
-            <span>{{ .Name }}</span>
-            <span>{{ .Emoji }}</span>
-        </a>
-    {{ end }}
-{{ end }}
-    </nav>
+    {{ template "nav" . }}
 
     <table class="nowrap-second sticky">
         <thead>

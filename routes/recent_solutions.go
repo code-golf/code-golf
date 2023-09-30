@@ -23,16 +23,12 @@ func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 
 	data := struct {
 		HoleID, LangID, Scoring string
-		Holes                   []*config.Hole
-		Langs                   []*config.Lang
 		LangsShown              map[string]bool
 		Pager                   *pager.Pager
 		Rows                    []row
 	}{
 		HoleID:     param(r, "hole"),
-		Holes:      config.HoleList,
 		LangID:     param(r, "lang"),
-		Langs:      config.LangList,
 		LangsShown: map[string]bool{},
 		Pager:      pager.New(r),
 		Rows:       make([]row, 0, pager.PerPage),

@@ -264,10 +264,12 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 
 	desc.WriteByte('.')
 
+	name := "rankings/holes"
 	title := "Rankings: Holes"
 	if data.Recent {
+		name = "rankings/recent-holes"
 		title = "Rankings: Recent Holes"
 	}
 
-	render(w, r, "rankings/holes", data, title, template.HTML(desc.String()))
+	render(w, r, name, data, title, template.HTML(desc.String()))
 }

@@ -33,7 +33,7 @@ func rankingsCheevosGET(w http.ResponseWriter, r *http.Request) {
 		Total:  len(config.CheevoList),
 	}
 
-	if cheevoID != "" && data.Cheevo == nil {
+	if cheevoID != "all" && data.Cheevo == nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
@@ -42,7 +42,7 @@ func rankingsCheevosGET(w http.ResponseWriter, r *http.Request) {
 		`WITH count AS (
 		    SELECT user_id, COUNT(*), MAX(earned) earned
 		      FROM trophies
-		     WHERE $1 IN ('', trophy::text)
+		     WHERE $1 IN ('all', trophy::text)
 		  GROUP BY user_id
 		) SELECT count, country_flag, earned, login,
 		         CASE WHEN $1 = ''

@@ -5,40 +5,7 @@
 {{ $solutions      := eq .Path "/rankings/misc/solutions" }}
 
 <main id=two-pane>
-    <form id=form-nav>
-        <input name=base type=hidden value=/rankings/misc>
-
-        <select name=page>
-            <option {{ if eq .Path "/rankings/misc/followers" }} selected {{ end }}
-                value=followers>Followers
-            <option {{ if eq .Path "/rankings/misc/holes-authored" }} selected {{ end }}
-                value=holes-authored>Holes Authored
-            <option {{ if eq .Path "/rankings/misc/oldest-diamonds" }} selected {{ end }}
-                value=oldest-diamonds>Oldest Diamonds
-            <option {{ if eq .Path "/rankings/misc/referrals" }} selected {{ end }}
-                value=referrals>Referrals
-            <option {{ if eq .Path "/rankings/misc/solutions" }} selected {{ end }}
-                value=solutions>Solutions
-        </select>
-    </form>
-
-    <nav id=one-per-row>
-        <a {{ if ne .Path "/rankings/misc/followers" }} href=followers {{ end }}>
-            <span>Followers</span>
-        </a>
-        <a {{ if ne .Path "/rankings/misc/holes-authored" }} href=holes-authored {{ end }}>
-            <span>Holes Authored</span>
-        </a>
-        <a {{ if ne .Path "/rankings/misc/oldest-diamonds" }} href=oldest-diamonds {{ end }}>
-            <span>Oldest Diamonds</span>
-        </a>
-        <a {{ if ne .Path "/rankings/misc/referrals" }} href=referrals {{ end }}>
-            <span>Referrals</span>
-        </a>
-        <a {{ if ne .Path "/rankings/misc/solutions" }} href=solutions {{ end }}>
-            <span>Solutions</span>
-        </a>
-    </nav>
+    {{ template "nav" . }}
 
     <table class="nowrap-second{{ if $oldestDiamonds }}-third{{ end }} sticky">
         <thead>

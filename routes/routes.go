@@ -94,6 +94,7 @@ func Router(db *sqlx.DB) http.Handler {
 	r.Route("/rankings", func(r chi.Router) {
 		// Redirect some old URLs that got out.
 		r.Get("/", redir("/rankings/holes/all/all/bytes"))
+		r.Get("/cheevos", redir("/rankings/cheevos/all"))
 		r.Get("/holes", redir("/rankings/holes/all/all/bytes"))
 		r.Get("/holes/all/all/all", redir("/rankings/holes/all/all/bytes"))
 		r.Get("/langs/bytes", redir("/rankings/langs/all/bytes"))
@@ -101,13 +102,10 @@ func Router(db *sqlx.DB) http.Handler {
 		r.Get("/medals", redir("/rankings/medals/all/all/all"))
 		r.Get("/solutions", redir("/rankings/misc/solutions"))
 
-		r.Get("/cheevos", rankingsCheevosGET)
-		r.Get("/cheevos/all", redir("/rankings/cheevos"))
-		r.Get("/cheevos/{cheevo}", rankingsCheevosGET)
-
 		r.Get("/holes/{hole}/{lang}/{scoring}", rankingsHolesGET)
 		r.Get("/recent-holes/{lang}/{scoring}", rankingsHolesGET)
 
+		r.Get("/cheevos/{cheevo}", rankingsCheevosGET)
 		r.Get("/medals/{hole}/{lang}/{scoring}", rankingsMedalsGET)
 		r.Get("/langs/{lang}/{scoring}", rankingsLangsGET)
 		r.Get("/misc/{type}", rankingsMiscGET)
@@ -128,7 +126,7 @@ func Router(db *sqlx.DB) http.Handler {
 	r.Get("/stats", statsGET)
 	r.Get("/users/{name}", userGET)
 	r.Get("/wiki", wikiGET)
-	r.Get("/wiki/*", wikiPageGET)
+	r.Get("/wiki/*", wikiGET)
 
 	return r
 }

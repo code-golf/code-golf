@@ -21,8 +21,8 @@
 <p>{{ .Description }}
 
 <nav class=tabs>
-    <a {{ if not (hasPrefix .Path "/rankings/cheevos") }}
-        href=/rankings/cheevos
+    <a {{ if not (hasPrefix .Path "/rankings/cheevos/") }}
+        href=/rankings/cheevos/all
     {{ end }}>
         Cheevos
     </a>

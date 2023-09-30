@@ -8,78 +8,7 @@
 </svg>
 
 <main id=two-pane>
-    <form id=form-nav>
-        <input name=base type=hidden value=/recent/solutions>
-
-        <select name=holes>
-            <option value=all>All Holes
-        {{ range .Data.Holes }}
-            <option value="{{ .ID }}"
-                {{ if eq $.Data.HoleID .ID }} selected {{ end }}>{{ .Name }}
-        {{ end }}
-        </select>
-
-        <select name=langs>
-            <option value=all>All Languages
-        {{ range .Data.Langs }}
-            <option value="{{ .ID }}"
-                {{ if eq $.Data.LangID .ID }} selected {{ end }}>{{ .Name }}
-        {{ end }}
-        </select>
-
-        <fieldset>
-            <label>
-                <input {{ if eq .Data.Scoring "bytes" }} checked {{ end }}
-                    name=scoring type=radio value=bytes>Bytes
-            </label>
-            <label>
-                <input {{ if eq .Data.Scoring "chars" }} checked {{ end }}
-                    name=scoring type=radio value=chars>Chars
-            </label>
-        </fieldset>
-    </form>
-
-    <nav>
-        <h2>Scoring</h2>
-        <a {{ if ne .Data.Scoring "bytes" }}
-            href="/recent/solutions/{{ .Data.HoleID }}/{{ .Data.LangID }}/bytes"
-        {{ end }}>
-            <span>Bytes</span>
-        </a>
-        <a {{ if ne .Data.Scoring "chars" }}
-            href="/recent/solutions/{{ .Data.HoleID }}/{{ .Data.LangID }}/chars"
-        {{ end }}>
-            <span>Chars</span>
-        </a>
-
-        <h2>Language</h2>
-        <a {{ if ne .Data.LangID "all" }}
-            href="/recent/solutions/{{ .Data.HoleID }}/all/{{ .Data.Scoring }}"
-        {{ end }}>
-            <span>All</span>
-        </a>
-    {{ range .Data.Langs }}
-        <a {{ if ne $.Data.LangID .ID }}
-            href="/recent/solutions/{{ $.Data.HoleID }}/{{ .ID }}/{{ $.Data.Scoring }}"
-        {{ end }}>
-            <span>{{ .Name }}</span>
-        </a>
-    {{ end }}
-
-        <h2>Hole</h2>
-        <a {{ if ne .Data.HoleID "all" }}
-            href="/recent/solutions/all/{{ .Data.LangID }}/{{ .Data.Scoring }}"
-        {{ end }}>
-            <span>All</span>
-        </a>
-    {{ range .Data.Holes }}
-        <a {{ if ne $.Data.HoleID .ID }}
-            href="/recent/solutions/{{ .ID }}/{{ $.Data.LangID }}/{{ $.Data.Scoring }}"
-        {{ end }}>
-            <span>{{ .Name }}</span>
-        </a>
-    {{ end }}
-    </nav>
+    {{ template "nav" . }}
 
     <table class="nowrap-first-second sticky">
         <thead>

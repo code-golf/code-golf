@@ -37,6 +37,7 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 	"html":       func(html string) template.HTML { return template.HTML(html) },
 	"inc":        func(i int) int { return i + 1 },
 	"ord":        pretty.Ordinal,
+	"param":      param,
 	"svg":        func(name string) template.HTML { return svg[name] },
 	"symbol": func(name string) template.HTML {
 		return template.HTML(strings.ReplaceAll(string(svg[name]), "svg", "symbol"))
@@ -162,6 +163,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		JS                                 []string
 		Langs                              map[string]*config.Lang
 		Location                           *time.Location
+		Nav                                *config.Navigaton
 		Request                            *http.Request
 	}{
 		Banners:     banners(theGolfer, time.Now().UTC()),
@@ -175,6 +177,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		JS:          []string{assets["js/base.tsx"]},
 		Langs:       config.LangByID,
 		Name:        name,
+		Nav:         config.Nav[name],
 		Nonce:       nonce(),
 		Path:        r.URL.Path,
 		Request:     r,
