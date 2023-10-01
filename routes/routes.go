@@ -2,6 +2,7 @@ package routes
 
 import (
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/code-golf/code-golf/middleware"
@@ -118,8 +119,12 @@ func Router(db *sqlx.DB) http.Handler {
 	r.Get("/wiki", wikiGET)
 	r.Get("/wiki/*", wikiGET)
 
-	// Rate-limit solution spamming to avoid running out of FDs.
-	r.With(httprate.LimitByRealIP(60, time.Minute)).Post("/solution", solutionPOST)
+	// Rate-limit solutions to avoid running out of FDs. Disable under e2e.
+	if _, e2e := os.LookupEnv("E2E"); e2e {
+		r.Post("/solution", solutionPOST)
+	} else {
+		r.With(httprate.LimitByRealIP(60, time.Minute)).Post("/solution", solutionPOST)
+	}
 
 	return r
 }
