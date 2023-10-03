@@ -23,8 +23,8 @@
                 <h3>
                     <span>{{ .Connection }}/</span>
                     {{- .Username -}}
-                {{- if .Discriminator.Valid -}}
-                    <span>{{ printf "#%04d" .Discriminator.Value }}</span>
+                {{- with .Discriminator.Value -}}
+                    <span>{{ printf "#%04d" . }}</span>
                 {{- end -}}
                 </h3>
                 <div>

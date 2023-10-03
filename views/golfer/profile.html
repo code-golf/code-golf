@@ -52,8 +52,8 @@
                 {{ svg .Connection }}
                 <div>
                     {{ .Username }}
-                {{- if .Discriminator.Valid -}}
-                    <span>{{ printf "#%04d" .Discriminator.Value }}</span>
+                {{- with .Discriminator.Value -}}
+                    <span>{{ printf "#%04d" . }}</span>
                 {{- end -}}
                 </div>
             </a>
