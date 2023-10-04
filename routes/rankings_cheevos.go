@@ -45,7 +45,7 @@ func rankingsCheevosGET(w http.ResponseWriter, r *http.Request) {
 		     WHERE $1 IN ('all', trophy::text)
 		  GROUP BY user_id
 		) SELECT count, country_flag, earned, login,
-		         CASE WHEN $1 = ''
+		         CASE WHEN $1 = 'all'
 		            THEN RANK() OVER(ORDER BY count DESC)
 		            ELSE RANK() OVER(ORDER BY earned)
 		         END,
