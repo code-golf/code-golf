@@ -153,6 +153,25 @@ For i As Integer = 1 To __FB_ARGC__ - 1
 Next
 '''
 
+[Berry]
+size    = '923 KiB'
+version = '1.1.0'
+website = 'https://berry-lang.github.io'
+example = '''
+# Printing
+print('Hello, World!')
+
+# Looping
+for i : 0 .. 9
+    print(i)
+end
+
+# Accessing arguments
+for a : _argv[1..]
+    print(a)
+end
+'''
+
 [brainfuck]
 size    = '4.47 MiB'
 version = '3bdbd20'
