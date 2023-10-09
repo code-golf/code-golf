@@ -39,6 +39,9 @@ static void push_args(bvm *vm, int argc, char *argv[]) {
 }
 
 int main(int argc, char *argv[]) {
+    setvbuf(stderr, NULL, _IONBF, 0);
+    setvbuf(stdout, NULL, _IONBF, 0);
+
     if (argc > 1 && strcmp(argv[1], "-v") == 0) {
         be_writestring(BERRY_VERSION "\n");
         return 0;
