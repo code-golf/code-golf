@@ -39,7 +39,7 @@ static void push_args(bvm *vm, int argc, char *argv[]) {
 }
 
 int main(int argc, char *argv[]) {
-    setvbuf(stdin, NULL, _IONBF, 0);
+    setvbuf(stderr, NULL, _IONBF, 0);
     setvbuf(stdout, NULL, _IONBF, 0);
 
     if (argc > 1 && strcmp(argv[1], "-v") == 0) {
