@@ -7,7 +7,7 @@
 static int handle_result(bvm *vm, int res) {
     switch (res) {
     case BE_OK: /* everything is OK */
-        return be_pcall(vm, 0);
+        return 0;
     case BE_EXCEPTION: /* uncatched exception */
         be_dumpexcept(vm);
         return 1;
@@ -62,6 +62,9 @@ int main(int argc, char *argv[]) {
     code[len] = '\0';
 
     res = be_loadstring(vm, code);
+    if (res == BE_OK) { /* parsing succeeded */
+        res = be_pcall(vm, 0); /* execute */
+    }
     res = handle_result(vm, res);
 
     be_vm_delete(vm);
