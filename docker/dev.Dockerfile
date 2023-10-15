@@ -7,7 +7,7 @@ RUN apk add --no-cache build-base curl git linux-headers tzdata \
  && GOBIN=/bin go install github.com/cespare/reflex@latest
 
 COPY --from=codegolf/lang-swift      ["/", "/langs/swift/rootfs/"     ] #  548 MiB
-COPY --from=codegolf/lang-rust       ["/", "/langs/rust/rootfs/"      ] #  431 MiB
+COPY --from=codegolf/lang-rust       ["/", "/langs/rust/rootfs/"      ] #  439 MiB
 COPY --from=codegolf/lang-haskell    ["/", "/langs/haskell/rootfs/"   ] #  405 MiB
 COPY --from=codegolf/lang-go         ["/", "/langs/go/rootfs/"        ] #  335 MiB
 COPY --from=codegolf/lang-d          ["/", "/langs/d/rootfs/"         ] #  309 MiB
@@ -53,7 +53,7 @@ COPY --from=codegolf/lang-c          ["/", "/langs/c/rootfs/"         ] # 1.63 M
 COPY --from=codegolf/lang-bash       ["/", "/langs/bash/rootfs/"      ] # 1.19 MiB
 COPY --from=codegolf/lang-sql        ["/", "/langs/sql/rootfs/"       ] # 1.15 MiB
 COPY --from=codegolf/lang-berry      ["/", "/langs/berry/rootfs/"     ] #  923 KiB
-COPY --from=codegolf/lang-janet      ["/", "/langs/janet/rootfs/"     ] #  815 KiB
+COPY --from=codegolf/lang-janet      ["/", "/langs/janet/rootfs/"     ] #  820 KiB
 COPY --from=codegolf/lang-k          ["/", "/langs/k/rootfs/"         ] #  526 KiB
 COPY --from=codegolf/lang-wren       ["/", "/langs/wren/rootfs/"      ] #  484 KiB
 COPY --from=codegolf/lang-lua        ["/", "/langs/lua/rootfs/"       ] #  342 KiB

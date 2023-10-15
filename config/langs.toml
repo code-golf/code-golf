@@ -565,8 +565,8 @@ echo each 2}.ARGV
 '''
 
 [Janet]
-size    = '815 KiB'
-version = '1.31.0'
+size    = '820 KiB'
+version = '1.32.0'
 website = 'https://janet-lang.org'
 example = '''
 # Printing
@@ -896,8 +896,8 @@ end
 '''
 
 [Rust]
-size    = '431 MiB'
-version = '1.72.1'
+size    = '439 MiB'
+version = '1.73.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -946,7 +946,7 @@ G
 
 [SQL]
 size    = '1.15 MiB'
-version = '3.43.1'
+version = '3.43.2'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
