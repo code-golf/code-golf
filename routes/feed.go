@@ -12,7 +12,6 @@ import (
 var (
 	atomFeed, jsonFeed, rssFeed []byte
 	feed                        feeds.Feed
-	recentHoles                 []*config.Hole
 )
 
 // TZ=UTC git log --date='format-local:%Y-%m-%d %X' --format='%h %cd %s'
@@ -178,10 +177,6 @@ func init() {
 			hole := config.HoleByID[i.id]
 			name = hole.Name
 			link = "https://code.golf/" + i.id
-
-			if len(recentHoles) < 10 {
-				recentHoles = append(recentHoles, hole)
-			}
 		} else {
 			name = config.LangByID[i.id].Name
 			link = "https://code.golf/rankings/holes/all/" + i.id + "/bytes"

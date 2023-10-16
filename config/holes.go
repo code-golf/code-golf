@@ -10,6 +10,7 @@ import (
 	templateTxt "text/template"
 
 	"github.com/code-golf/code-golf/ordered"
+	"github.com/pelletier/go-toml/v2"
 	"github.com/tdewolff/minify/v2/minify"
 )
 
@@ -25,6 +26,9 @@ var (
 	// All holes.
 	AllHoleByID = map[string]*Hole{}
 	AllHoleList []*Hole
+
+	// Ten most recent holes, used for /rankings/recent-holes.
+	RecentHoles []*Hole
 )
 
 type (
@@ -34,17 +38,19 @@ type (
 		V    []int  `json:"-"`
 	}
 	Hole struct {
-		Categories                              []string      `json:"-"`
-		Category                                string        `json:"category"`
-		CategoryColor, CategoryIcon, Prev, Next string        `json:"-"`
-		Data                                    template.JS   `json:"-"`
-		Experiment                              int           `json:"-"`
-		ID                                      string        `json:"id"`
-		Name                                    string        `json:"name"`
-		Preamble                                template.HTML `json:"preamble"`
-		Synopsis                                string        `json:"synopsis"`
-		Links                                   []Link        `json:"links"`
-		Variants                                []*Hole       `json:"-"`
+		Categories                              []string         `json:"-"`
+		Category                                string           `json:"category"`
+		CategoryColor, CategoryIcon, Prev, Next string           `json:"-"`
+		Data                                    template.JS      `json:"-"`
+		Experiment                              int              `json:"-"`
+		ID                                      string           `json:"id"`
+		Links                                   []Link           `json:"links"`
+		Name                                    string           `json:"name"`
+		Preamble                                template.HTML    `json:"preamble"`
+		Released                                toml.LocalDate   `json:"released"`
+		Releases                                []toml.LocalDate `json:"-"`
+		Synopsis                                string           `json:"synopsis"`
+		Variants                                []*Hole          `json:"-"`
 	}
 )
 
@@ -105,6 +111,10 @@ func init() {
 
 			if len(hole.Categories) > 0 {
 				hole.Category = hole.Categories[i]
+			}
+
+			if len(hole.Releases) > 0 {
+				hole.Released = hole.Releases[i]
 			}
 		}
 
@@ -187,6 +197,17 @@ func init() {
 			ExpHoleList = append(ExpHoleList, &hole.Hole)
 		}
 	}
+
+	// Ten most recent holes.
+	RecentHoles = make([]*Hole, len(HoleList))
+	copy(RecentHoles, HoleList)
+	slices.SortFunc(RecentHoles, func(a, b *Hole) int {
+		if c := cmp.Compare(b.Released.String(), a.Released.String()); c != 0 {
+			return c
+		}
+		return cmp.Compare(strings.ToLower(a.Name), strings.ToLower(b.Name))
+	})
+	RecentHoles = RecentHoles[:10]
 
 	for i, holes := range [][]*Hole{HoleList, ExpHoleList, AllHoleList} {
 		// Case-insensitive sort.

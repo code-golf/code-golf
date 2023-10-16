@@ -110,7 +110,7 @@ Cheevo:
 	}
 
 	// Latest hole (if unsolved).
-	if hole := recentHoles[0]; !golfer.Solved(hole.ID) {
+	if hole := config.RecentHoles[0]; !golfer.Solved(hole.ID) {
 		banners = append(banners, banner{
 			Type: "info",
 			Body: template.HTML(`The <a href="/` + hole.ID + `">` +

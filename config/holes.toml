@@ -26,6 +26,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/The_Twelve_Days_of_Christmas' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/The_Twelve_Days_of_Christmas_(song)' },
 ]
+released = 2017-12-08
 synopsis = 'Print the lyrics to the song “The 12 Days of Christmas”.'
 preamble = '''
 <p>Print the lyrics to the song <b>The 12 Days of Christmas</b>:</p>
@@ -59,6 +60,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/99_Bottles_of_Beer' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/99_Bottles_of_Beer' },
 ]
+released = 2017-07-06
 synopsis = 'Print the lyrics to the song “99 Bottles of Beer”.'
 preamble = '''
 <p>Print the lyrics to the song <b>99 Bottles of Beer</b>:</p>
@@ -81,6 +83,7 @@ Go to the store and buy some more, 99 bottles of beer on the wall.
 
 ['Abundant Numbers']
 category = 'Sequence'
+releases = [2019-11-17, 2022-11-19]
 variants = ['Abundant Numbers', 'Abundant Numbers (Long)']
 links = [
     { name = 'OEIS A005101', url = '//oeis.org/A005101' },
@@ -107,6 +110,7 @@ preamble = '''
 
 ['Arabic to Roman']
 category = 'Transform'
+releases = [2017-07-22, 2017-11-10]
 variants = ['Arabic to Roman', 'Roman to Arabic']
 links = [
     { v = [0], name = 'Rosetta Code', url = '//rosettacode.org/wiki/Roman_numerals/Encode' },
@@ -166,6 +170,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Arithmetic_numbers' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Arithmetic_number' },
 ]
+released = 2023-10-01
 synopsis = 'Print all the arithmetic numbers from 1 to 10,000.'
 preamble = '''
 <p>
@@ -193,6 +198,7 @@ data = '''
     "→": [ 1,  0], "⇒": [ 1,  0], "⇨": [ 1,  0],
     "↗": [ 1,  1], "↱": [ 1,  1], "⇗": [ 1,  1]
 }'''
+released = 2021-08-22
 synopsis = 'Print the cumulative result of following Unicode arrows.'
 preamble = '''
 <p>
@@ -251,6 +257,7 @@ category = 'Art'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Show_ASCII_table' },
 ]
+released = 2022-03-26
 synopsis = 'Print the hex ASCII table from “man 7 ascii”.'
 preamble = '''
 <p>Print the following hex ASCII table, taken from <code>man 7 ascii</code>.
@@ -283,6 +290,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Execute_Brain****' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Brainfuck' },
 ]
+released = 2018-01-27
 synopsis = 'Write a Brainfuck interpreter.'
 preamble = '''
 <p>
@@ -336,6 +344,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Catalan_numbers' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Catalan_number' },
 ]
+released = 2022-01-29
 synopsis = 'Print the first 100 Catalan numbers.'
 preamble = '''
 <p>The nth Catalan number can be expressed as C(n) = binomial(2n,n)/(n+1).
@@ -353,6 +362,7 @@ links = [
     { name = 'OEIS A006752', url = '//oeis.org/A006752' },
     { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Catalan's_constant" },
 ]
+released = 2022-01-02
 synopsis = 'Print the first 1,000 digits of Catalan’s constant.'
 preamble = '''
 <p>
@@ -368,6 +378,7 @@ preamble = '''
 
 ['Christmas Trees']
 category = 'Art'
+released = 2017-12-05
 synopsis = 'Draw a size ascending range of Christmas trees using asterisks.'
 preamble = '''
 <p>
@@ -406,6 +417,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Hailstone_sequence' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Collatz_conjecture' }
 ]
+released = 2022-05-04
 synopsis = 'Print the Collatz stopping times of all the numbers from 1 to 1,000.'
 preamble = '''
 <p>
@@ -507,6 +519,7 @@ data = '''
     "SlateGrey":            "#708090", "DarkSlateGray":   "#2f4f4f",
     "DarkSlateGrey":        "#2f4f4f", "Black":           "#000000"
 }'''
+released = 2020-06-21
 synopsis = 'Convert CSS color keywords to their hex values.'
 preamble = '''
 <svg class=hide>
@@ -538,6 +551,7 @@ will be checked case-insensitively. The full mapping is as follows:
 
 [Cubes]
 category = 'Art'
+released = 2019-01-13
 synopsis = 'Draw a size ascending range of isometric cubes.'
 preamble = '''
 <p>
@@ -586,6 +600,7 @@ preamble = '''
 
 ['Day of Week']
 category = 'Transform'
+released = 2023-04-16
 synopsis = 'Given a date, output the day of the week.'
 preamble = '''
 <p>
@@ -681,6 +696,7 @@ preamble = '''
 
 [Diamonds]
 category = 'Art'
+released = 2018-06-06
 synopsis = 'Draw a size ascending range of diamonds using the numbers 1 to 9.'
 preamble = '''
 <p>
@@ -718,6 +734,7 @@ category = 'Sequence'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Proper_divisors' },
 ]
+released = 2018-01-10
 synopsis = 'Print the positive divisors of each number from 1 to 100.'
 preamble = '''
 <p>
@@ -731,6 +748,7 @@ preamble = '''
 
 ['Emirp Numbers']
 category = 'Sequence'
+releases = [2017-10-08, 2022-10-29]
 variants = ['Emirp Numbers', 'Emirp Numbers (Long)']
 links = [
     { name = 'OEIS A006567', url = '//oeis.org/A006567' },
@@ -779,6 +797,7 @@ data = '''
     "X-)":  "😆", "O:-)": "😇", ";-)":  "😉", ":-$":  "😳", ":-":   "😶",
     "B-)":  "😎", ":-J":  "😏", "}:-)": "😈", "}:-(": "👿", ":-@":  "😡"
 }'''
+released = 2020-11-25
 synopsis = 'Convert ASCII emoticons to Unicode emojis.'
 preamble = '''
 <p>
@@ -794,6 +813,7 @@ preamble = '''
 
 ['Evil Numbers']
 category = 'Sequence'
+releases = [2017-10-18, 2022-09-06, 2017-10-18, 2022-09-06]
 variants = ['Evil Numbers', 'Evil Numbers (Long)', 'Odious Numbers', 'Odious Numbers (Long)']
 links = [
     { v = [0, 1], name = 'OEIS A001969', url = '//oeis.org/A001969' },
@@ -853,6 +873,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Fibonacci_sequence' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Fibonacci_number' },
 ]
+released = 2017-09-16
 synopsis = 'Print the first 31 Fibonacci numbers.'
 preamble = '''
 <p>
@@ -865,6 +886,7 @@ preamble = '''
 
 ['Fizz Buzz']
 category = 'Sequence'
+releases = [2017-05-22, 2021-11-21]
 variants = ['Fizz Buzz', 'Foo Fizz Buzz Bar']
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/FizzBuzz' },
@@ -900,6 +922,7 @@ category = 'Gaming'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Forsyth–Edwards_Notation' },
 ]
+released = 2023-05-01
 synopsis = 'Output a Unicode chess board from Forsyth–Edwards Notation.'
 preamble = '''
 <p>
@@ -943,6 +966,7 @@ category = 'Mathematics'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Fraction#Simplifying_(reducing)_fractions' },
 ]
+released = 2021-09-03
 synopsis = 'Reduce fractions to their simplest form.'
 preamble = '''
 <p>For each fraction argument <code>a/b</code>, reduce it to its simplest form.
@@ -954,6 +978,7 @@ links = [
     { name = 'Rosetta Code', url = "//rosettacode.org/wiki/Conway's_Game_of_Life" },
     { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Conway's_Game_of_Life" },
 ]
+released = 2022-12-22
 synopsis = 'Output the state in the next step of the Game of Life.'
 preamble = '''
 <p>
@@ -980,6 +1005,7 @@ links = [
     { name = 'OEIS A090822', url = '//oeis.org/A090822' },
     { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Gijswijt's_sequence" },
 ]
+released = 2023-06-30
 synopsis = 'Print the first 1,000 terms of Gijswijt’s sequence.'
 preamble = '''
 <p>
@@ -1052,6 +1078,7 @@ preamble = '''
 
 ['Happy Numbers']
 category = 'Sequence'
+releases = [2017-10-31, 2021-09-19]
 variants = ['Happy Numbers', 'Happy Numbers (Long)']
 links = [
     { name = 'OEIS A007770', url = '//oeis.org/A007770' },
@@ -1088,6 +1115,7 @@ preamble = '''
 
 [Hexdump]
 category = 'Transform'
+released = 2022-05-01
 synopsis = 'Convert strings to their hexdump equivalents.'
 preamble = '''
 <p>
@@ -1118,6 +1146,7 @@ category = 'Mathematics'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Intersection' },
 ]
+released = 2020-10-04
 synopsis = 'Compute the intersection area between two boxes.'
 preamble = '''
 <p>A box is defined via <b>x</b>, <b>y</b>, <b>w</b> and <b>h</b> as
@@ -1145,6 +1174,7 @@ links = [
     { name = 'Numberphile',  url = '//www.numberphile.com/videos/the-inventory-sequence' },
     { name = 'OEIS A342585', url = '//oeis.org/A342585' },
 ]
+released = 2022-11-19
 synopsis = 'Print the first 1,000 terms of the Inventory sequence.'
 preamble = '''
 <p>
@@ -1176,6 +1206,7 @@ category = 'Transform'
 links = [
     { name  = 'Wikipedia', url = '//en.wikipedia.org/wiki/International_Standard_Book_Number#ISBN-10_check_digit_calculation' }
 ]
+released = 2022-01-10
 synopsis = 'Calculate the check digit for these incomplete ISBNs.'
 preamble = '''
 <p>
@@ -1194,6 +1225,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Jacobi_symbol' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Jacobi_symbol' },
 ]
+released = 2022-05-08
 synopsis = 'Calculate the values of Jacobi symbols.'
 preamble = '''
 <p>
@@ -1228,8 +1260,9 @@ preamble = '''
     where c = -0.4 + 0.6i. Output the image in PPM grayscale format.
 '''
 
-['Kolakoski Constant']
+[Kolakoski]
 categories = ['Mathematics', 'Sequence']
+released = 2021-01-16
 variants = ['Kolakoski Constant', 'Kolakoski Sequence']
 links = [
     { v = [0], name = 'OEIS A118270', url = '//oeis.org/A118270' },
@@ -1283,6 +1316,7 @@ category = 'Sequence'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Leap_year' },
 ]
+released = 2018-12-03
 synopsis = 'Print all the leap years from the year 1800 to 2400.'
 preamble = '''
 <p>
@@ -1303,6 +1337,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Levenshtein_distance' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Levenshtein_distance' },
 ]
+released = 2020-11-11
 synopsis = 'Calculate the Levenshtein distance between two words.'
 preamble = '''
 <p>
@@ -1332,6 +1367,7 @@ links = [
     { name = 'OEIS A076980', url = '//oeis.org/A076980' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Leyland_number' },
 ]
+released = 2020-07-26
 synopsis = 'Print all the Leyland numbers from 1 to 100,000,000,000.'
 preamble = '''
 <p>
@@ -1353,6 +1389,7 @@ links = [
     { name = 'OEIS A002162', url = '//oeis.org/A002162' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Natural_logarithm_of_2' },
 ]
+released = 2023-08-01
 synopsis = 'Print the first 1,000 digits of ln 2.'
 preamble = '''
 <p>Print the first <b>1,000</b> decimal digits of ln 2 (the natural logarithm of 2).
@@ -1365,6 +1402,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Look-and-say_sequence' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Look-and-say_sequence' },
 ]
+released = 2020-12-01
 synopsis = 'Print the first 20 terms of the Look and Say sequence.'
 preamble = '''
 <p>
@@ -1383,6 +1421,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Lucky_and_even_lucky_numbers' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Lucky_number'}
 ]
+released = 2022-02-28
 synopsis = 'Print the first 1,000 Lucky numbers.'
 preamble = '''
 <p>
@@ -1417,6 +1456,7 @@ category = 'Mathematics'
 links = [
     { name = 'OEIS A174061', url = '//oeis.org/A174061' },
 ]
+released = 2020-04-14
 synopsis = 'Calculate the total number of lucky tickets.'
 preamble = '''
 <p>
@@ -1504,6 +1544,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Maze_solving' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Maze_solving_algorithm' },
 ]
+released = 2023-01-04
 synopsis = 'Draw the route through the maze.'
 preamble = '''
 <p>
@@ -1523,6 +1564,7 @@ preamble = '''
 
 ['Medal Tally']
 category = 'Transform'
+released = 2023-06-01
 synopsis = 'Tally code golf medals.'
 preamble = '''
 <p>
@@ -1535,6 +1577,7 @@ preamble = '''
 
 [Morse]
 category = 'Transform'
+released = 2018-02-18
 variants = ['Morse Decoder', 'Morse Encoder']
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Morse_code' },
@@ -1653,6 +1696,7 @@ category = 'Transform'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Triad_(music)' },
 ]
+released = 2021-11-02
 synopsis = 'Print the name of the chords formed from triads.'
 preamble = '''
 <p>
@@ -1799,6 +1843,7 @@ preamble = '''
 
 ['Niven Numbers']
 category = 'Sequence'
+releases = [2018-05-03, 2022-08-08]
 variants = ['Niven Numbers', 'Niven Numbers (Long)']
 links = [
     { name = 'OEIS A005349', url = '//oeis.org/A005349' },
@@ -1825,6 +1870,7 @@ category = 'Art'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Spiral_matrix' },
 ]
+released = 2022-01-25
 synopsis = 'Draw an ascending clockwise number spiral from 0 to 99.'
 preamble = '''
 <p>
@@ -1868,6 +1914,7 @@ links = [
     { name = 'Rosetta Code', url = "//rosettacode.org/wiki/N'th" },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Ordinal_numeral' },
 ]
+released = 2019-07-11
 synopsis = 'Print the ordinal suffix for all numbers from 0 to 999.'
 preamble = '''
 <p>
@@ -1937,6 +1984,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Pangram_checker' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Pangram' },
 ]
+released = 2017-11-30
 synopsis = 'Grep pangram sentences from a list of arguments.'
 preamble = '''
 <p>A pangram is a sentence that uses every letter of a given alphabet.
@@ -1953,6 +2001,7 @@ links = [
     { name = 'Rosetta Code', url = "//rosettacode.org/wiki/Pascal's_triangle" },
     { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Pascal's_triangle" },
 ]
+released = 2017-07-15
 synopsis = 'Print the first 20 rows of Pascal’s triangle.'
 preamble = '''
 <p>
@@ -1964,6 +2013,7 @@ preamble = '''
 
 ['Pernicious Numbers']
 category = 'Sequence'
+releases = [2017-10-18, 2022-11-19]
 variants = ['Pernicious Numbers', 'Pernicious Numbers (Long)']
 links = [
     { name = 'OEIS A052294', url = '//oeis.org/A052294' },
@@ -1995,6 +2045,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Poker_hand_analyser' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/List_of_poker_hands' },
 ]
+released = 2018-07-25
 synopsis = 'Calculate the Poker hand from five cards.'
 preamble = '''
 <p>
@@ -2057,6 +2108,7 @@ preamble = '''
 
 ['Prime Numbers']
 category = 'Sequence'
+releases = [2017-10-04, 2021-12-05]
 variants = ['Prime Numbers', 'Prime Numbers (Long)']
 links = [
     { name = 'OEIS A000040', url = '//oeis.org/A000040' },
@@ -2078,6 +2130,7 @@ category = 'Computing'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Taxicab_geometry' },
 ]
+released = 2022-08-03
 synopsis = 'Calculate the length of the shortest path in a grid.'
 preamble = '''
 <p>
@@ -2099,6 +2152,7 @@ category = 'Transform'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/QR_code#Encoding' },
 ]
+released = 2021-09-17
 synopsis = 'Decode a Version-1 ASCII QR code.'
 preamble = '''
 <p class=qr-span>
@@ -2263,6 +2317,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Quine' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Quine_(computing)' },
 ]
+released = 2017-11-07
 synopsis = 'Write a non-empty program to produce its own source code.'
 preamble = '''
 <p>
@@ -2284,6 +2339,7 @@ links = [
     { name = 'Rosetta Code', url = "//rosettacode.org/wiki/Recaman's_sequence" },
     { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Recamán's_sequence" },
 ]
+released = 2020-12-26
 synopsis = 'Print the first 250 terms of the Recamán sequence.'
 preamble = '''
 <p>
@@ -2300,6 +2356,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Integer_long_division' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Repeating_decimal' },
 ]
+released = 2023-02-01
 synopsis = 'Convert fractions to repeating decimals.'
 preamble = '''
 <p>
@@ -2314,6 +2371,7 @@ links = [
     { name = 'Rules',     url = 'http://www.samkass.com/theories/RPSSL.html' },
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Rock_paper_scissors#Additional_weapons' },
 ]
+released = 2019-06-17
 synopsis = 'Print the outcome of games of Rock-paper-scissors-Spock-lizard.'
 preamble = '''
 <p>Judge games of "rock-paper-scissors" with additional weapons:
@@ -2367,6 +2425,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Parsing/RPN_calculator_algorithm' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Reverse_Polish_notation' },
 ]
+released = 2022-02-12
 synopsis = 'Calculate the result of Reverse Polish notation expressions.'
 preamble = '''
 <p>
@@ -2393,6 +2452,7 @@ links = [
     { name = 'OEIS A354500', url = '//oeis.org/A354500' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Rijndael_S-box' },
 ]
+released = 2023-09-01
 synopsis = 'Print Rijndael S-box as a series of hex bytes.'
 preamble = '''
 <p>Print the <b>Rijndael S-box</b> as a series of hex bytes:
@@ -2422,6 +2482,7 @@ category = 'Computing'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Rule_110' },
 ]
+released = 2018-07-06
 synopsis = 'Print the first 100 rows in the Rule 110 cellular automaton.'
 preamble = '''
 <p>
@@ -2480,6 +2541,7 @@ category = 'Transform'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Seven-segment_display' },
 ]
+released = 2017-08-27
 synopsis = 'Draw numbers on an ASCII seven segment display.'
 preamble = '''
 <p>
@@ -2552,6 +2614,7 @@ links = [
     { name = 'NIST (Prefixes)', url = '//www.nist.gov/pml/owm/metric-si-prefixes' },
     { name = 'NIST (Units)',    url = '//www.nist.gov/pml/special-publication-330/sp-330-section-2#2.3.4' },
 ]
+released = 2023-04-01
 synopsis = 'Express SI units using the 7 base units.'
 preamble = '''
 <p>
@@ -2708,6 +2771,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Sierpinski_triangle' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Sierpiński_triangle' },
 ]
+released = 2017-10-08
 synopsis = 'Draw the Sierpiński triangle.'
 preamble = '''
 <p>
@@ -2745,6 +2809,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Smith_numbers' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Smith_number' },
 ]
+released = 2021-10-05
 synopsis = 'Print all the Smith numbers from 0 to 10,000.'
 preamble = '''
 <p>
@@ -2763,6 +2828,7 @@ preamble = '''
 
 ['Spelling Numbers']
 category = 'Transform'
+released = 2017-09-29
 synopsis = 'Spell numbers out in English.'
 preamble = '''
 <p>For each integer argument print the integer spelled out in English.
@@ -2779,6 +2845,7 @@ category = 'Transform'
 links = [
     { name = 'Wookieepedia', url = '//starwars.fandom.com/wiki/Opening_crawl' },
 ]
+released = 2021-05-03
 synopsis = 'Format a piece of text in the style of Star Wars opening crawl.'
 preamble = '''
 <p>
@@ -2849,6 +2916,7 @@ consequat.</pre>
 
 [Sudoku]
 category = 'Gaming'
+releases = [2018-11-15, 2021-04-25]
 variants = ['Sudoku', 'Sudoku v2']
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Sudoku' },
@@ -2899,6 +2967,7 @@ category = 'Gaming'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Ten-pin_bowling' },
 ]
+released = 2019-06-12
 synopsis = 'Calculate the final score in games of Ten-pin bowling.'
 preamble = '''
 <p>
@@ -3003,6 +3072,7 @@ The name game!
 
 ['Time Distance']
 category = 'Transform'
+released = 2022-04-10
 synopsis = 'Convert a quantity of seconds to a human-friendly string.'
 preamble = '''
 <p>
@@ -3038,6 +3108,7 @@ category = 'Art'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Tongue-twister' },
 ]
+released = 2020-09-29
 synopsis = 'Print a few tongue twisters.'
 preamble = '''
 <p>Print the following tongue twisters with a blank line between each one:
@@ -3125,6 +3196,7 @@ data = '''
     "Vermont":        "VT", "Virginia":       "VA", "Washington":           "WA",
     "West Virginia":  "WV", "Wisconsin":      "WI", "Wyoming":              "WY"
 }'''
+released = 2020-01-28
 synopsis = 'Convert US states to their Postal Service abbreviations.'
 preamble = '''
 <p>
@@ -3157,6 +3229,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Vampire_number' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Vampire_number' },
 ]
+released = 2020-10-30
 synopsis = 'Print all the vampire numbers from 1 to 1,000,000.'
 preamble = '''
 <p>
@@ -3185,6 +3258,7 @@ links = [
     { name = 'OEIS A181391', url = '//oeis.org/A181391' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Van_Eck_sequence' },
 ]
+released = 2021-05-01
 synopsis = 'Print the first 1,000 terms of the Van Eck sequence.'
 preamble = '''
 <p>The rules of the Van Eck sequence are as follows:
@@ -3237,6 +3311,7 @@ links = [
     { name = 'Zodiac Sign Wikipedia',    url = '//en.wikipedia.org/wiki/Zodiac_sign' },
     { name = 'Ascending Sign Wikipedia', url = '//en.wikipedia.org/wiki/Ascendant' },
 ]
+released = 2022-06-09
 synopsis = 'Calculate Zodiac signs from dates and times.'
 preamble = '''
 <p>
@@ -3307,6 +3382,7 @@ links = [
     { name = 'Rosetta Code', url = "//rosettacode.org/wiki/Euler's_constant_0.5772..." },
     { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Euler's_constant" },
 ]
+released = 2023-03-01
 synopsis = 'Print the first 1,000 digits of γ.'
 preamble = '''
 <p>
@@ -3319,6 +3395,7 @@ links = [
     { name = 'OEIS A014715', url = '//oeis.org/A014715' },
     { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Conway's_constant" },
 ]
+released = 2018-06-07
 synopsis = 'Print the first 1,000 digits of λ.'
 preamble = '''
 <p>
@@ -3334,6 +3411,7 @@ preamble = '''
 
 ['π']
 category = 'Mathematics'
+releases = [2017-07-02, 2017-11-28]
 variants = ['π', 'τ']
 links = [
     { v = [0], name = 'OEIS A000796', url = '//oeis.org/A000796' },
@@ -3356,6 +3434,7 @@ links = [
     { name = 'OEIS A001622', url = '//oeis.org/A001622' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Golden_ratio' },
 ]
+released = 2017-11-11
 synopsis = 'Print the first 1,000 digits of φ.'
 preamble = '''
 <p>Print the first <b>1,000</b> decimal digits of the Golden ratio φ (phi).
@@ -3367,6 +3446,7 @@ links = [
     { name = 'OEIS A002193', url = '//oeis.org/A002193' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Square_root_of_2' },
 ]
+released = 2019-05-25
 synopsis = 'Print the first 1,000 digits of √2.'
 preamble = '''
 <p>Print the first <b>1,000</b> decimal digits of √2 (Pythagoras’ constant).
@@ -3378,6 +3458,7 @@ links = [
     { name = 'OEIS A001113', url = '//oeis.org/A001113' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/E_(mathematical_constant)' },
 ]
+released = 2017-09-20
 synopsis = 'Print the first 1,000 digits of 𝑒.'
 preamble = '''
 <p>Print the first <b>1,000</b> decimal digits of 𝑒 (Euler’s number).

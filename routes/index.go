@@ -53,7 +53,7 @@ func indexGET(w http.ResponseWriter, r *http.Request) {
 		Langs:     config.LangList,
 		LangsUsed: map[string]bool{},
 		Scoring:   "bytes",
-		Sorts:     []string{"alphabetical", "category", "points"},
+		Sorts:     []string{"alphabetical", "category", "points", "released"},
 	}
 
 	if golfer := session.Golfer(r); golfer == nil {
@@ -163,6 +163,24 @@ func indexGET(w http.ResponseWriter, r *http.Request) {
 		case "points-desc": // points desc, name asc.
 			slices.SortFunc(data.Cards, func(a, b Card) int {
 				if c := cmp.Compare(b.Points, a.Points); c != 0 {
+					return c
+				}
+				return cmpHoleNameLowercase(a, b)
+			})
+		case "released-asc": // released asc, name asc.
+			slices.SortFunc(data.Cards, func(a, b Card) int {
+				if c := cmp.Compare(
+					a.Hole.Released.String(), b.Hole.Released.String(),
+				); c != 0 {
+					return c
+				}
+				return cmpHoleNameLowercase(a, b)
+			})
+		case "released-desc": // released desc, name asc.
+			slices.SortFunc(data.Cards, func(a, b Card) int {
+				if c := cmp.Compare(
+					b.Hole.Released.String(), a.Hole.Released.String(),
+				); c != 0 {
 					return c
 				}
 				return cmpHoleNameLowercase(a, b)

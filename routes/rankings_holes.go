@@ -46,7 +46,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 	var holeWhere any
 	if data.Recent {
 		data.HoleID = "all"
-		holeWhere = pq.Array(recentHoles)
+		holeWhere = pq.Array(config.RecentHoles)
 	}
 
 	if data.HoleID != "all" && config.HoleByID[data.HoleID] == nil ||
@@ -241,11 +241,11 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 	if data.Recent {
 		desc.WriteString(". <p>")
 
-		for i, hole := range recentHoles {
+		for i, hole := range config.RecentHoles {
 			if i > 0 {
 				desc.WriteString(", ")
 
-				if i == len(recentHoles)-1 {
+				if i == len(config.RecentHoles)-1 {
 					desc.WriteString("and ")
 				}
 			}

@@ -501,6 +501,8 @@ details.tabs a { display: inline-block }
 
 #ideas, #index { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
 
+#index > .tabs { gap: .5rem 0 }
+
 #index > .grid {
     border: 2px solid var(--color);
     padding: 1rem;
