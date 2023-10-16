@@ -43,10 +43,10 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		Scoring: param(r, "scoring"),
 	}
 
-	var holeIDs any
+	var holeWhere any
 	if data.Recent {
 		data.HoleID = "all"
-		holeIDs = recentHoleIDs
+		holeWhere = pq.Array(recentHoles)
 	}
 
 	if data.HoleID != "all" && config.HoleByID[data.HoleID] == nil ||
@@ -101,7 +101,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			data.Scoring,
 			pager.PerPage,
 			data.Pager.Offset,
-			pq.Array(holeIDs),
+			holeWhere,
 		)
 	} else if data.HoleID == "all" {
 		rows, err = session.Database(r).Query(
@@ -134,7 +134,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			data.Scoring,
 			pager.PerPage,
 			data.Pager.Offset,
-			pq.Array(holeIDs),
+			holeWhere,
 		)
 	} else if data.LangID == "all" {
 		rows, err = session.Database(r).Query(

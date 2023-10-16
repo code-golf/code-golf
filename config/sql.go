@@ -1,5 +1,7 @@
 package config
 
+import "database/sql/driver"
+
 type NullCountry struct {
 	Country *Country
 	Valid   bool
@@ -34,6 +36,8 @@ func (h *Hole) Scan(id any) error {
 	*h = *HoleByID[asString(id)]
 	return nil
 }
+
+func (h *Hole) Value() (driver.Value, error) { return h.ID, nil }
 
 func (l *Lang) Scan(id any) error {
 	*l = *LangByID[asString(id)]

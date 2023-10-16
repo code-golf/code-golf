@@ -13,7 +13,6 @@ var (
 	atomFeed, jsonFeed, rssFeed []byte
 	feed                        feeds.Feed
 	recentHoles                 []*config.Hole
-	recentHoleIDs               []string
 )
 
 // TZ=UTC git log --date='format-local:%Y-%m-%d %X' --format='%h %cd %s'
@@ -182,7 +181,6 @@ func init() {
 
 			if len(recentHoles) < 10 {
 				recentHoles = append(recentHoles, hole)
-				recentHoleIDs = append(recentHoleIDs, hole.ID)
 			}
 		} else {
 			name = config.LangByID[i.id].Name
