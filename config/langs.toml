@@ -302,7 +302,7 @@ end-program.
 
 [Crystal]
 size    = '249 MiB'
-version = '1.9.2'
+version = '1.10.1'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
