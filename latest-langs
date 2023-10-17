@@ -1,4 +1,4 @@
-#!/usr/bin/env perl6
+#!/usr/bin/env raku
 
 use HTTP::Tiny;
 use JSON::Fast;
@@ -6,6 +6,7 @@ use TOML::Thumb;
 
 constant %paths = (
     'BASIC'      => 'en.wikipedia.org/wiki/FreeBASIC',
+    'Berry'      => 'github.com/berry-lang/berry/releases/latest',
     'C'          => 'en.wikipedia.org/wiki/Tiny_C_Compiler',
     'C#'         => 'en.wikipedia.org/wiki/C_Sharp_(programming_language)',
     'C++'        => 'en.wikipedia.org/wiki/Clang',
@@ -55,7 +56,7 @@ for %langs.sort: *.key.fc -> (:key($name), :value(%lang)) {
         my    $res = $ua.get("https://$_")<content>.decode;
 
         when / 'endoflife' / { $res.&from-json[0]<latest> }
-        when / 'github'    / { $res ~~ / $name ' ' <(\d+ <[\d.]>+)> / }
+        when / 'github'    / { $res ~~ / [ $name || 'Release' ] ' ' v? <(\d+ <[\d.]>+)> / }
         when / 'wikipedia' / {
             $res ~~ /
                 < Stable Preview > ' release' .+? '>' ( '#' \d+ ' "' )?
