@@ -566,7 +566,7 @@ echo each 2}.ARGV
 
 [Janet]
 size    = '820 KiB'
-version = '1.32.0'
+version = '1.32.1'
 website = 'https://janet-lang.org'
 example = '''
 # Printing
@@ -789,7 +789,7 @@ for ($i = 1; $i < $argc; $i++)
 
 [PowerShell]
 size    = '176 MiB'
-version = 'PowerShell 7.3.7 on .NET 7.0.11'
+version = 'PowerShell 7.3.8 on .NET 7.0.11'
 website = 'https://docs.microsoft.com/powershell/scripting/overview'
 example = '''
 # Printing
