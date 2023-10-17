@@ -27,16 +27,10 @@ func ideas(db *sqlx.DB) (limits []rateLimit) {
 
 	variables := map[string]any{"cursor": (*graphql.String)(nil)}
 
-	tx, err := db.Begin()
-	if err != nil {
-		panic(err)
-	}
-
+	tx := db.MustBegin()
 	defer tx.Rollback()
 
-	if _, err := tx.Exec("TRUNCATE ideas"); err != nil {
-		panic(err)
-	}
+	tx.MustExec("TRUNCATE ideas")
 
 	for {
 		if err := client.Query(context.Background(), &query, variables); err != nil {
@@ -46,15 +40,13 @@ func ideas(db *sqlx.DB) (limits []rateLimit) {
 		limits = append(limits, query.RateLimit)
 
 		for _, node := range query.Repository.Issues.Nodes {
-			if _, err := tx.Exec(
+			tx.MustExec(
 				"INSERT INTO ideas VALUES ($1, $2, $3, $4)",
 				node.Number,
 				node.ThumbsDown.TotalCount,
 				node.ThumbsUp.TotalCount,
 				node.Title,
-			); err != nil {
-				panic(err)
-			}
+			)
 		}
 
 		if !query.Repository.Issues.PageInfo.HasNextPage {
