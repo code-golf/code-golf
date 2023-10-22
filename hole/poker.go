@@ -8,19 +8,19 @@ import (
 type cardValue int
 
 const (
-	ace   cardValue = 0
-	two   cardValue = 1
-	three cardValue = 2
-	four  cardValue = 3
-	five  cardValue = 4
-	six   cardValue = 5
-	seven cardValue = 6
-	eight cardValue = 7
-	nine  cardValue = 8
-	ten   cardValue = 9
-	jack  cardValue = 10
-	queen cardValue = 11
-	king  cardValue = 12
+	ace cardValue = 1 + iota
+	two
+	three
+	four
+	five
+	six
+	seven
+	eight
+	nine
+	ten
+	jack
+	queen
+	king
 )
 
 func cardRune[T int | cardValue](number T, suit int) rune {
