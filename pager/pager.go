@@ -16,9 +16,7 @@ type Pager struct {
 
 func New(r *http.Request) *Pager {
 	page, _ := strconv.Atoi(r.FormValue("page"))
-	if page < 1 {
-		page = 1
-	}
+	page = max(page, 1)
 
 	return &Pager{base: r.URL, Offset: (page - 1) * PerPage, Page: page}
 }
