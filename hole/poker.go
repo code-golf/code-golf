@@ -7,8 +7,9 @@ import (
 
 type cardValue int
 
+// Off-by-one (two == 1), see cardRune() for details.
 const (
-	ace cardValue = 1 + iota
+	ace cardValue = iota
 	two
 	three
 	four
