@@ -141,6 +141,38 @@ func poker() []Run {
 		cardRune(queen, rand.Intn(4)),
 		cardRune(king, suits[1]),
 	}})
+	suits = rand.Perm(4)
+	hands = append(hands, Hand{"High Card", []rune{
+		cardRune(five, suits[0]),
+		cardRune(six, suits[1]),
+		cardRune(eight, suits[0]),
+		cardRune(nine, suits[1]),
+		cardRune(ten, rand.Intn(4)),
+	}})
+	suits = rand.Perm(4)
+	hands = append(hands, Hand{"High Card", []rune{
+		cardRune(six, suits[0]),
+		cardRune(eight, suits[1]),
+		cardRune(nine, rand.Intn(4)),
+		cardRune(ten, suits[1]),
+		cardRune(jack, suits[0]),
+	}})
+	suits = rand.Perm(4)
+	hands = append(hands, Hand{"High Card", []rune{
+		cardRune(five, suits[0]),
+		cardRune(six, suits[1]),
+		cardRune(seven, suits[0]),
+		cardRune(eight, suits[1]),
+		cardRune(ten, rand.Intn(4)),
+	}})
+	suits = rand.Perm(4)
+	hands = append(hands, Hand{"High Card", []rune{
+		cardRune(six, suits[0]),
+		cardRune(seven, suits[0]),
+		cardRune(eight, suits[1]),
+		cardRune(ten, rand.Intn(4)),
+		cardRune(jack, suits[1]),
+	}})
 
 	// Pair
 	for i := 0; i < handCount; i++ {
@@ -349,6 +381,38 @@ func poker() []Run {
 			cardRune(cards[4], suit),
 		}})
 	}
+	suit := rand.Intn(4)
+	hands = append(hands, Hand{"Flush", []rune{
+		cardRune(ace, suit),
+		cardRune(four, suit),
+		cardRune(nine, suit),
+		cardRune(ten, suit),
+		cardRune(queen, suit),
+	}})
+	suit = rand.Intn(4)
+	hands = append(hands, Hand{"Flush", []rune{
+		cardRune(ace, suit),
+		cardRune(nine, suit),
+		cardRune(ten, suit),
+		cardRune(queen, suit),
+		cardRune(king, suit),
+	}})
+	suit = rand.Intn(4)
+	hands = append(hands, Hand{"Flush", []rune{
+		cardRune(ace, suit),
+		cardRune(seven, suit),
+		cardRune(eight, suit),
+		cardRune(nine, suit),
+		cardRune(ten, suit),
+	}})
+	suit = rand.Intn(4)
+	hands = append(hands, Hand{"Flush", []rune{
+		cardRune(six, suit),
+		cardRune(eight, suit),
+		cardRune(nine, suit),
+		cardRune(ten, suit),
+		cardRune(jack, suit),
+	}})
 
 	// Straight
 	lowCards := rand.Perm(9)
@@ -457,7 +521,7 @@ func poker() []Run {
 	}
 
 	// Flush, but could be mistaken for a straight.
-	suit := rand.Intn(4)
+	suit = rand.Intn(4)
 	hands = append(hands, Hand{"Flush", []rune{
 		cardRune(king, suit),
 		cardRune(ace, suit),
