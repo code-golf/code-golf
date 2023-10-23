@@ -141,6 +141,38 @@ func poker() []Run {
 		cardRune(queen, rand.Intn(4)),
 		cardRune(king, suits[1]),
 	}})
+	suits = rand.Perm(4)
+	hands = append(hands, Hand{"High Card", []rune{
+		cardRune(five, suits[0]),
+		cardRune(six, suits[1]),
+		cardRune(eight, suits[0]),
+		cardRune(nine, suits[1]),
+		cardRune(ten, rand.Intn(4)),
+	}})
+	suits = rand.Perm(4)
+	hands = append(hands, Hand{"High Card", []rune{
+		cardRune(six, suits[0]),
+		cardRune(eight, suits[1]),
+		cardRune(nine, rand.Intn(4)),
+		cardRune(ten, suits[1]),
+		cardRune(jack, suits[0]),
+	}})
+	suits = rand.Perm(4)
+	hands = append(hands, Hand{"High Card", []rune{
+		cardRune(five, suits[0]),
+		cardRune(six, suits[1]),
+		cardRune(seven, suits[0]),
+		cardRune(eight, suits[1]),
+		cardRune(ten, rand.Intn(4)),
+	}})
+	suits = rand.Perm(4)
+	hands = append(hands, Hand{"High Card", []rune{
+		cardRune(six, suits[0]),
+		cardRune(seven, suits[0]),
+		cardRune(eight, suits[1]),
+		cardRune(ten, rand.Intn(4)),
+		cardRune(jack, suits[1]),
+	}})
 
 	// Pair
 	for i := 0; i < handCount; i++ {
