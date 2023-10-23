@@ -349,6 +349,38 @@ func poker() []Run {
 			cardRune(cards[4], suit),
 		}})
 	}
+	suit := rand.Intn(4)
+	hands = append(hands, Hand{"Flush", []rune{
+		cardRune(ace, suit),
+		cardRune(four, suit),
+		cardRune(nine, suit),
+		cardRune(ten, suit),
+		cardRune(queen, suit),
+	}})
+	suit = rand.Intn(4)
+	hands = append(hands, Hand{"Flush", []rune{
+		cardRune(ace, suit),
+		cardRune(nine, suit),
+		cardRune(ten, suit),
+		cardRune(queen, suit),
+		cardRune(king, suit),
+	}})
+	suit = rand.Intn(4)
+	hands = append(hands, Hand{"Flush", []rune{
+		cardRune(ace, suit),
+		cardRune(seven, suit),
+		cardRune(eight, suit),
+		cardRune(nine, suit),
+		cardRune(ten, suit),
+	}})
+	suit = rand.Intn(4)
+	hands = append(hands, Hand{"Flush", []rune{
+		cardRune(six, suit),
+		cardRune(eight, suit),
+		cardRune(nine, suit),
+		cardRune(ten, suit),
+		cardRune(jack, suit),
+	}})
 
 	// Straight
 	lowCards := rand.Perm(9)
@@ -457,7 +489,7 @@ func poker() []Run {
 	}
 
 	// Flush, but could be mistaken for a straight.
-	suit := rand.Intn(4)
+	suit = rand.Intn(4)
 	hands = append(hands, Hand{"Flush", []rune{
 		cardRune(king, suit),
 		cardRune(ace, suit),
