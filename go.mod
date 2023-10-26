@@ -11,7 +11,7 @@ require (
 	github.com/go-chi/chi/v5 v5.0.10
 	github.com/go-chi/httprate v0.7.4
 	github.com/go-git/go-billy/v5 v5.5.0
-	github.com/go-git/go-git/v5 v5.9.0
+	github.com/go-git/go-git/v5 v5.10.0
 	github.com/gofrs/uuid v4.4.0+incompatible
 	github.com/gorilla/feeds v1.1.1
 	github.com/jmoiron/sqlx v1.3.5
