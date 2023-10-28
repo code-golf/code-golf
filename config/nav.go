@@ -67,8 +67,9 @@ func init() {
 			OnePerRow: true,
 			Path:      "/rankings/misc/{type}",
 			Groups: []*LinkGroup{
-				group("", "type", "Followers", "Holes Authored",
-					"Oldest Diamonds", "Referrals", "Solutions"),
+				group("", "type", "Diamond Deltas", "Followers",
+					"Holes Authored", "Oldest Diamonds", "Referrals",
+					"Solutions"),
 			},
 		},
 

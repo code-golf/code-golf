@@ -1,19 +1,24 @@
 {{ template "header"   . }}
 {{ template "rankings" . }}
 
+{{ $diamondDeltas  := eq .Path "/rankings/misc/diamond-deltas" }}
 {{ $oldestDiamonds := eq .Path "/rankings/misc/oldest-diamonds" }}
 {{ $solutions      := eq .Path "/rankings/misc/solutions" }}
+
+{{ $hasHole := or $diamondDeltas $oldestDiamonds }}
 
 <main id=two-pane>
     {{ template "nav" . }}
 
-    <table class="nowrap-second{{ if $oldestDiamonds }}-third{{ end }} sticky">
+    <table class="nowrap-second{{ if $hasHole }}-third{{ end }} sticky">
         <thead>
             <tr>
                 <th>#
                 <th>Golfer
-            {{ if $oldestDiamonds }}
+            {{ if $hasHole }}
                 <th>Hole
+            {{ end }}
+            {{ if $oldestDiamonds }}
                 <th class=right>Submitted
             {{ else }}
                 <th class=right>Total
@@ -30,13 +35,15 @@
             <tr{{ if eq $name .Name }} class=me {{ end }}>
                 <td>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup>
                 <td>{{ template "golfer-link" . }}
-            {{ if $oldestDiamonds }}
+            {{ if $hasHole }}
                 <td>
                     <a href="/rankings/holes/{{ .Hole }}/{{ .Lang }}/{{ .Scoring }}">
                         <svg><use href="#{{ .Lang }}"/></svg>
                         <svg><use href="#{{ .Scoring }}"/></svg>
                         <span>{{ (index $.Holes .Hole).Name }}</span>
                     </a>
+            {{ end }}
+            {{ if $oldestDiamonds }}
                 <td class=right>{{ time .Submitted }}
             {{ else }}
                 <td class=right>{{ comma .Count }}
