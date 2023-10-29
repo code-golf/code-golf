@@ -15,19 +15,19 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 
 	switch param(r, "type") {
 	case "diamond-deltas":
-		desc = "Deltas between diamonds and bronzes."
+		desc = "Deltas between diamonds and silvers."
 		sql = `WITH diamonds AS (
 			    SELECT * FROM rankings WHERE rank = 1 AND tie_count = 1
-			), bronzes AS (
+			), silvers AS (
 			    SELECT DISTINCT hole, lang, scoring, strokes
 			      FROM rankings
 			     WHERE rank = 2
-			)  SELECT country_flag, hole, lang, login, scoring,
-			          bronzes.strokes - diamonds.strokes count,
-			          RANK() OVER(ORDER BY bronzes.strokes - diamonds.strokes DESC),
-			          COUNT(*) OVER () total
+			) SELECT country_flag, hole, lang, login, scoring,
+			         silvers.strokes - diamonds.strokes count,
+			         RANK() OVER(ORDER BY silvers.strokes - diamonds.strokes DESC),
+			         COUNT(*) OVER () total
 			    FROM diamonds
-			    JOIN bronzes USING (hole, lang, scoring)
+			    JOIN silvers USING (hole, lang, scoring)
 			    JOIN users ON id = user_id
 			ORDER BY rank, scoring
 			   LIMIT $1 OFFSET $2`
