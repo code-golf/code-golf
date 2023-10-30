@@ -95,10 +95,8 @@ func Time(t time.Time) template.HTML {
 			fmt.Fprintf(&sb, "%d mins", diff/time.Minute)
 		case diff < 2*time.Hour:
 			sb.WriteString("an hour")
-		case diff < day:
-			fmt.Fprintf(&sb, "%d hours", diff/time.Hour)
 		case diff < 2*day:
-			sb.WriteString("a day")
+			fmt.Fprintf(&sb, "%d hours", diff/time.Hour)
 		default:
 			fmt.Fprintf(&sb, "%d days", diff/day)
 		}
