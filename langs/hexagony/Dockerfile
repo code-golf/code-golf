@@ -11,7 +11,7 @@ RUN curl -L https://github.com/SirBogman/Hexagony/tarball/$VERSION | tar xz \
     -p:InvariantGlobalization=true -p:PublishAot=true -p:PublishDir=/       \
     -p:StripSymbols=true
 
-FROM codegolf/lang-base
+FROM codegolf/lang-base-no-proc
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
 COPY --from=0 /usr/lib/libgcc_s.so.1   \

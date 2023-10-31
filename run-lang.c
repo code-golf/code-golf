@@ -1,6 +1,7 @@
 //go:build none
 
 #define _GNU_SOURCE
+#include <errno.h>
 #include <linux/filter.h>
 #include <linux/seccomp.h>
 #include <sched.h>
@@ -66,27 +67,29 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
     if (mknod("/dev/urandom", S_IFCHR|0444, makedev(1, 9)) < 0)
         ERR_AND_EXIT("mknod /dev/urandom");
 
-    if (mount("proc", "/proc", "proc", MS_NODEV|MS_NOEXEC|MS_NOSUID, NULL) < 0)
+    // Not every lang has /proc.
+    if (mount("proc", "/proc", "proc", MS_NODEV|MS_NOEXEC|MS_NOSUID, NULL) == 0) {
+        // Clobber /proc/meminfo. It can be used to inject state.
+        // FIXME This escapes the container and affects ALL /proc mounts inc host.
+        if (chmod("/proc/meminfo", 0) < 0)
+            ERR_AND_EXIT("chmod /proc/meminfo");
+
+        // Clobber /proc/sys. It can be used to inject state.
+        if (mount("tmpfs", "/proc/sys", "tmpfs", MS_NODEV|MS_NOEXEC|MS_NOSUID|MS_RDONLY, NULL) < 0)
+            ERR_AND_EXIT("mount /proc/sys");
+
+        // Allow /proc/self/fd/0 to be read by the lang after we change user.
+        if (chown("/proc/self/fd/0", NOBODY, NOBODY) < 0)
+            ERR_AND_EXIT("chown /proc/self/fd/0");
+    }
+    else if (errno != ENOENT)
         ERR_AND_EXIT("mount proc");
-
-    // Clobber /proc/meminfo. It can be used to inject state.
-    // FIXME This escapes the container and affects ALL /proc mounts inc host.
-    if (chmod("/proc/meminfo", 0) < 0)
-        ERR_AND_EXIT("chmod /proc/meminfo");
-
-    // Clobber /proc/sys. It can be used to inject state.
-    if (mount("tmpfs", "/proc/sys", "tmpfs", MS_NODEV|MS_NOEXEC|MS_NOSUID|MS_RDONLY, NULL) < 0)
-        ERR_AND_EXIT("mount /proc/sys");
 
     if (mount("tmpfs", "/tmp", "tmpfs", MS_NODEV|MS_NOSUID, NULL) < 0)
         ERR_AND_EXIT("mount tmp");
 
     if (sethostname(STR_WITH_LEN("code-golf")) < 0)
         ERR_AND_EXIT("sethostname");
-
-    // Allow /proc/self/fd/0 to be read by the lang after we change user.
-    if (chown("/proc/self/fd/0", NOBODY, NOBODY) < 0)
-        ERR_AND_EXIT("chown /proc/self/fd/0");
 
     if (setgid(NOBODY) < 0)
         ERR_AND_EXIT("setgid");

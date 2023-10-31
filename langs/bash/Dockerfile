@@ -24,7 +24,7 @@ RUN mv bash-* bash             \
  && make                       \
  && strip bash
 
-FROM codegolf/lang-base
+FROM codegolf/lang-base-no-proc
 
 COPY --from=0 /bash/bash /usr/bin/
 

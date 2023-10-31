@@ -12,7 +12,7 @@ RUN mv gawk-* gawk      \
  && make install        \
  && strip /usr/bin/gawk
 
-FROM codegolf/lang-base
+FROM codegolf/lang-base-no-proc
 
 COPY --from=0 /usr/bin/gawk            /usr/bin/gawk
 COPY --from=0 /usr/lib/gawk/           /usr/lib/gawk/

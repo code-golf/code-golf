@@ -31,7 +31,7 @@ RUN mv perl-$VER perl                                           \
 RUN curl https://cpan.metacpan.org/authors/id/P/PJ/PJACKLAM/Math-BigInt-1.999839.tar.gz \
   | tar --strip-components 2 -xzC /perl/lib Math-BigInt-1.999839/lib
 
-FROM codegolf/lang-base
+FROM codegolf/lang-base-no-proc
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1         /lib/
 COPY --from=0 /perl/perl                       /usr/bin/

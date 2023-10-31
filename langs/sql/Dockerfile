@@ -10,7 +10,7 @@ COPY sql.c /
 RUN gcc -DSQLITE_ENABLE_MATH_FUNCTIONS -DSQLITE_THREADSAFE=0 \
     -static -s -o sql sql.c sqlite3.c
 
-FROM codegolf/lang-base
+FROM codegolf/lang-base-no-proc
 
 COPY --from=0 /sql /usr/bin/
 

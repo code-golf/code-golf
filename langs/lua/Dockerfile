@@ -12,7 +12,7 @@ RUN cd lua-5.4.6      \
     RANLIB=gcc-ranlib \
  && strip src/lua
 
-FROM codegolf/lang-base
+FROM codegolf/lang-base-no-proc
 
 COPY --from=0 /lua-5.4.6/src/lua /usr/bin/
 

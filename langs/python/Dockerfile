@@ -16,7 +16,7 @@ RUN cd Python-$VER             \
  && make -j`nproc` install     \
  && strip /usr/bin/python3.12
 
-FROM codegolf/lang-base
+FROM codegolf/lang-base-no-proc
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
 COPY --from=0 /usr/bin/python3.12      /usr/bin/python
