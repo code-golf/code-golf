@@ -222,15 +222,15 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(syncfs),          // 306
 
         // Asynchronous I/O
-        ALLOW(io_pgetevents),        // 333
-        ALLOW(io_cancel),            // 210
-        ALLOW(io_destroy),           // 207
-        ALLOW(io_getevents),         // 208
-        ALLOW(io_setup),             // 206
-        ALLOW(io_submit),            // 209
-        // ALLOW(io_uring_enter),    // 426
-        // ALLOW(io_uring_register), // 427
-        // ALLOW(io_uring_setup),    // 425
+        ALLOW(io_pgetevents),     // 333
+        ALLOW(io_cancel),         // 210
+        ALLOW(io_destroy),        // 207
+        ALLOW(io_getevents),      // 208
+        ALLOW(io_setup),          // 206
+        ALLOW(io_submit),         // 209
+        ALLOW(io_uring_enter),    // 426
+        ALLOW(io_uring_register), // 427
+        ALLOW(io_uring_setup),    // 425
 
         // Multiplexed I/O
         ALLOW(epoll_create),  // 213
