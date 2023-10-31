@@ -173,8 +173,8 @@ end
 '''
 
 [brainfuck]
-size    = '4.47 MiB'
-version = '3bdbd20'
+size    = '4.39 MiB'
+version = 'fad9a10'
 website = 'https://github.com/primo-ppcg/bf-jit'
 example = '''
 >>Printing
