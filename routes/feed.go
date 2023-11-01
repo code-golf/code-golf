@@ -25,6 +25,7 @@ func init() {
 		sha, created, id string
 		hole             bool
 	}{
+		{"befe8fa", "2023-11-01 00:00:13", "dfa-simulator", true},
 		{"b5fc39d", "2023-10-08 21:31:55", "berry", false},
 		{"94068d3", "2023-10-01 00:00:04", "arithmetic-numbers", true},
 		{"9a98efe", "2023-09-12 23:41:38", "factor", false},
