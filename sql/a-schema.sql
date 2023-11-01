@@ -28,7 +28,7 @@ CREATE TYPE hole AS ENUM (
     'abundant-numbers-long', 'arabic-to-roman', 'arithmetic-numbers',
     'arrows', 'ascii-table', 'brainfuck', 'catalan-numbers',
     'catalans-constant', 'christmas-trees', 'collatz', 'css-colors', 'cubes',
-    'day-of-week', 'diamonds', 'divisors', 'emirp-numbers',
+    'day-of-week', 'dfa-simulator', 'diamonds', 'divisors', 'emirp-numbers',
     'emirp-numbers-long', 'emojify', 'evil-numbers', 'evil-numbers-long',
     'fibonacci', 'fizz-buzz', 'foo-fizz-buzz-bar', 'forsyth-edwards-notation',
     'fractions', 'game-of-life', 'gijswijts-sequence', 'happy-numbers',
