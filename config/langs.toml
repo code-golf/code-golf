@@ -945,8 +945,8 @@ G
 '''
 
 [SQL]
-size    = '1.15 MiB'
-version = '3.43.2'
+size    = '1.16 MiB'
+version = '3.44.0'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
