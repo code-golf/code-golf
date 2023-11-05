@@ -37,7 +37,7 @@ func solveDFA(g string) string {
 		stateName := transitions[0]
 
 		for i, transition := range transitions[1:] {
-			alphabetWord := string(alphabet[i])
+			alphabetWord := alphabet[i]
 			newStateTransition := DFAStateTransition{alphabetWord, stateName}
 			stateMap[newStateTransition] = nameToState[transition]
 		}
