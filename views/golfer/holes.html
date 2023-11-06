@@ -53,13 +53,9 @@
 
                 {{ with (index $holeRanks $lang.ID) }}
                     <a class="{{ $lang.ID }} {{ colour .Rank .Points $.Data.Display }}"
-                        {{ if eq $.Data.Scope "overall" }}
-                            href="/rankings/holes/{{ $hole.ID }}/all/{{ $.Data.Scoring }}"
-                        {{ else }}
-                            href="/rankings/holes/{{ $hole.ID }}/{{ $lang.ID }}/{{ $.Data.Scoring }}"
-                        {{ end }}
-                        data-tooltip="{{ comma .Rank }}{{ ord .Rank }} of {{ comma .Golfers }} golfers"
-                        data-wide-tooltip>
+                        href="../../../{{ $hole.ID }}/{{ $lang.ID }}/{{ $.Data.Scoring }}"
+                data-tooltip="{{ comma .Rank }}{{ ord .Rank }} of {{ comma .Golfers }} golfers"
+           data-wide-tooltip>
                     {{ if eq $.Data.Display "points" }}
                         {{ comma .Points }}
                     {{ else if .Diamond }}

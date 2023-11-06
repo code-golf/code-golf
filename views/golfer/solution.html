@@ -4,15 +4,13 @@
 <main>
     <h1>{{ .Data.Hole.Name }} in {{ .Data.Lang.Name }} in {{ title .Data.Scoring }}</h1>
 
-{{ if .Data.Failing }}
-    <p>Status: <span class=text-red>Failing</span>
-{{ else }}
-    <p>Status: Passing
+    <p>
+        <a href="/rankings/holes/{{ .Data.Hole.ID }}/{{ .Data.Lang.ID }}/{{ .Data.Scoring }}">
+            {{ .Data.Rank }}<sup>{{ ord .Data.Rank }}</sup> in {{ .Data.Lang.Name }}</a>
+        and
+        <a href="/rankings/holes/{{ .Data.Hole.ID }}/all/{{ .Data.Scoring }}">
+            {{ .Data.RankOverall }}<sup>{{ ord .Data.RankOverall }}</sup> overall</a>.
 
-    <!--<form method=post>
-        <button class="btn blue" name=rejudge>Rejudge</button>
-    </form>-->
-{{ end }}
     <div>
         <table>
             <thead>
