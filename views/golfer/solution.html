@@ -2,7 +2,7 @@
 {{ template "golfer" . }}
 
 <main>
-    <h1>{{ .Data.Hole.Name }} in {{ .Data.Lang.Name }}</h1>
+    <h1>{{ .Data.Hole.Name }} in {{ .Data.Lang.Name }} in {{ title .Data.Scoring }}</h1>
 
 {{ if .Data.Failing }}
     <p>Status: <span class=text-red>Failing</span>
