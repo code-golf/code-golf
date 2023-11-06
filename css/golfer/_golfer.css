@@ -48,6 +48,7 @@
 #profile > h1 {
     align-items: center;
     display: flex;
+    gap: .5rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
