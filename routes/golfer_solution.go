@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"net/http"
+	"time"
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/discord"
@@ -16,6 +17,10 @@ func golferSolutionGET(w http.ResponseWriter, r *http.Request) {
 		Failing bool
 		Hole    *config.Hole
 		Lang    *config.Lang
+		Log     []struct {
+			Bytes, Chars int
+			Submitted    time.Time
+		}
 		Scoring string
 	}{
 		Hole:    config.HoleByID[param(r, "hole")],
@@ -42,6 +47,20 @@ func golferSolutionGET(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	} else if err != nil {
+		panic(err)
+	}
+
+	if err := session.Database(r).Select(
+		&data.Log,
+		` SELECT bytes, chars, submitted
+		    FROM solutions_log
+		   WHERE hole = $1 AND lang = $2 AND scoring = $3 AND user_id = $4
+		ORDER BY submitted DESC`,
+		data.Hole.ID,
+		data.Lang.ID,
+		data.Scoring,
+		golfer.ID,
+	); err != nil {
 		panic(err)
 	}
 

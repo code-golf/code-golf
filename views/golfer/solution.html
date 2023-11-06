@@ -13,6 +13,22 @@
         <button class="btn blue" name=rejudge>Rejudge</button>
     </form>-->
 {{ end }}
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th class=right>Bytes
+                    <th class=right>Chars
+                    <th class=right>Submitted
+            <tbody>
+            {{ range .Data.Log }}
+                <tr>
+                    <td class=right>{{ comma .Bytes }}
+                    <td class=right>{{ comma .Chars }}
+                    <td class=right>{{ time .Submitted }}
+            {{ end }}
+        </table>
+    </div>
 </main>
 
 {{ template "footer" }}
