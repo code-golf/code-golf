@@ -143,7 +143,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			         lang,
 			         login,
 			         points,
-			         RANK() OVER (ORDER BY points DESC, strokes),
+			         rank_overall,
 			         strokes,
 			         other_strokes,
 			         submitted,
@@ -151,7 +151,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			    FROM rankings
 			    JOIN users ON user_id = id
 			   WHERE hole = $1 AND scoring = $2
-			ORDER BY rank, submitted
+			ORDER BY rank_overall, submitted
 			   LIMIT $3 OFFSET $4`,
 			data.HoleID,
 			data.Scoring,
