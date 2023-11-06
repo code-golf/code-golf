@@ -2,7 +2,7 @@ FROM alpine:3.18 AS builder
 
 RUN apk add --no-cache build-base curl
 
-ENV VER 8.2.11
+ENV VER 8.2.12
 
 RUN curl -L https://php.net/distributions/php-$VER.tar.xz | tar xJ
 
