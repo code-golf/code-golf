@@ -20,8 +20,3 @@ h1 nav {
 h1 span { flex: 1 }
 
 table { flex: 1 }
-
-td svg {
-    height: 1rem;
-    width: 1rem;
-}

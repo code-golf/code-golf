@@ -285,25 +285,32 @@ td.right > a { justify-content: right }
 td > a {
     align-items: center;
     display: flex;
+    gap: .5rem;
     text-decoration: none;
 
     > img {
         border-radius: 50%;
         flex-shrink: 0;
         height: 1.5rem;
-        margin-right: .5rem;
         width: 1.5rem;
     }
 
-    > span {
+    /* :first-of-type because of <span class=flag> */
+    > span:first-of-type {
+        flex: 1;
         overflow: hidden;
         text-overflow: ellipsis;
     }
 
-    > span:nth-of-type(1) { flex: 1 }
+    > svg { color: var(--color) }
 }
 
 td > a:hover > span:first-of-type { text-decoration: underline }
+
+td svg {
+    height: 1rem;
+    width: 1rem;
+}
 
 tfoot td { border: 0 }
 
@@ -410,7 +417,6 @@ thead th {
 .color:nth-of-type(6n+6), .purple { background: var(--purple) }
 
 .flag {
-    margin-left: .5rem;
     overflow: visible;
     text-shadow: var(--color) 1px 1px 2px;
 }
@@ -598,7 +604,8 @@ details.tabs a { display: inline-block }
     100% { opacity: 1; margin-top: 0 }
 }
 
-@media (max-width: 34rem) { .wide { display: none !important } }
+@media     (max-width: 34rem) { .wide { display: none !important } }
+@media not (max-width: 34rem) { .thin { display: none !important } }
 
 @media (max-width: 46rem) {
     #two-pane {

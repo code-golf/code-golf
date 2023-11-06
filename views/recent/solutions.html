@@ -25,18 +25,20 @@
             <tr{{ if eq $name .Name }} class="me"{{ end }}>
                 <td>
                     <a href="/{{ .Hole.ID }}#{{ .Lang.ID }}">
-                        <svg><use href="#{{ .Lang.ID }}"/></svg>
+                        <svg class=thin><use href="#{{ .Lang.ID }}"/></svg>
                         <span>{{ .Hole.Name }}</span>
                     </a>
                 <td>{{ template "golfer-link" . }}
                 <td class=wide title="{{ if eq .TieCount 1 }}Uncontested{{ else }}Joint{{ end }} {{ .Rank }}{{ ord .Rank }} with {{ comma .Strokes }} {{ $.Data.Scoring }} in {{ .Lang.Name }}">
-                    {{ if and (eq .Rank 1) (eq .TieCount 1) }}💎
-                    {{ else if eq .Rank 1                   }}🥇
-                    {{ else if eq .Rank 2                   }}🥈
-                    {{ else if eq .Rank 3                   }}🥉
-                    {{ end }}
-                    <div>{{ comma .Strokes }}</div>
-                    <svg><use href="#{{ .Lang.ID }}"/></svg>
+                    <a href="/golfers/{{ .Name }}/{{ .Hole.ID }}/{{ .Lang.ID }}/{{ $.Data.Scoring }}">
+                        {{ if and (eq .Rank 1) (eq .TieCount 1) }}💎
+                        {{ else if eq .Rank 1                   }}🥇
+                        {{ else if eq .Rank 2                   }}🥈
+                        {{ else if eq .Rank 3                   }}🥉
+                        {{ end }}
+                        <span class=right>{{ comma .Strokes }}</span>
+                        <svg><use href="#{{ .Lang.ID }}"/></svg>
+                    </a>
                 <td class=right>{{ time .Submitted }}
         {{ end }}
     </table>
