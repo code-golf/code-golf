@@ -5,10 +5,12 @@
     <h1>{{ .Data.Hole.Name }} in {{ .Data.Lang.Name }} in {{ title .Data.Scoring }}</h1>
 
     <p>
-        <a href="/rankings/holes/{{ .Data.Hole.ID }}/{{ .Data.Lang.ID }}/{{ .Data.Scoring }}">
+        <a href="/rankings/holes/{{ .Data.Hole.ID }}/{{ .Data.Lang.ID }}/{{ .Data.Scoring -}}
+            ?page={{ page .Data.Row }}">
             {{ .Data.Rank }}<sup>{{ ord .Data.Rank }}</sup> in {{ .Data.Lang.Name }}</a>
         and
-        <a href="/rankings/holes/{{ .Data.Hole.ID }}/all/{{ .Data.Scoring }}">
+        <a href="/rankings/holes/{{ .Data.Hole.ID }}/all/{{ .Data.Scoring -}}
+            ?page={{ page .Data.RowOverall }}">
             {{ .Data.RankOverall }}<sup>{{ ord .Data.RankOverall }}</sup> overall</a>.
 
     <div>

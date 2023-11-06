@@ -14,6 +14,7 @@ import (
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/golfer"
+	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/pretty"
 	"github.com/code-golf/code-golf/session"
 	"github.com/tdewolff/minify/v2/minify"
@@ -37,6 +38,7 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 	"html":       func(html string) template.HTML { return template.HTML(html) },
 	"inc":        func(i int) int { return i + 1 },
 	"ord":        pretty.Ordinal,
+	"page":       func(i int) int { return i/pager.PerPage + 1 },
 	"param":      param,
 	"svg":        func(name string) template.HTML { return svg[name] },
 	"symbol": func(name string) template.HTML {
