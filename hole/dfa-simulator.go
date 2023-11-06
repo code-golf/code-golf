@@ -64,7 +64,7 @@ func generateDFA() string {
 	})
 	states := shuffle([]string{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"})
 
-	alphabetLength := rand.Intn(len(alphabet)-1) + 1
+	alphabetLength := rand.Intn(len(alphabet)-11) + 1
 	alphabet = alphabet[:alphabetLength]
 
 	var inputDFA strings.Builder
@@ -73,7 +73,7 @@ func generateDFA() string {
 	inputDFA.WriteString(strings.Join(alphabet, " "))
 	inputDFA.WriteByte('\n')
 
-	stateLength := rand.Intn(10) + 1
+	stateLength := rand.Intn(8) + 1
 	startState := rand.Intn(stateLength)
 	for i := 0; i < stateLength; i++ {
 		if i == startState {
