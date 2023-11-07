@@ -3,13 +3,7 @@ package hole
 import "time"
 
 func dayOfWeek() []Run {
-	tests := []test{
-		{"1583-01-01", "Saturday"}, {"1999-12-31", "Friday"},
-		{"2000-01-01", "Saturday"}, {"2000-12-31", "Sunday"},
-		{"2001-01-01", "Monday"}, {"2001-01-02", "Tuesday"},
-		{"2001-01-03", "Wednesday"}, {"2001-01-04", "Thursday"},
-		{"9999-12-31", "Friday"},
-	}
+	tests := fixedTests("day-of-week")
 
 	var years []int
 	for year := 1583; year <= 2082; year++ {

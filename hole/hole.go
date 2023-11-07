@@ -1,11 +1,51 @@
 package hole
 
 import (
+	"embed"
 	"math/rand"
+	"path"
 	"strings"
 )
 
 type test struct{ in, out string }
+
+var fixedTestsMap = map[string][]test{}
+
+//go:embed fixed-tests
+var fixedTestsFS embed.FS
+
+func init() {
+	const dir = "fixed-tests"
+
+	files, err := fixedTestsFS.ReadDir(dir)
+	if err != nil {
+		panic(err)
+	}
+
+	for _, file := range files {
+		name := file.Name()
+
+		txt, err := fixedTestsFS.ReadFile(path.Join(dir, name))
+		if err != nil {
+			panic(err)
+		}
+
+		tokens := strings.Split(strings.Trim(string(txt), "\n"), "\n\n")
+		tests := make([]test, 0, len(tokens)/2)
+
+		for i := 0; i < len(tokens); i += 2 {
+			tests = append(tests, test{tokens[i], tokens[i+1]})
+		}
+
+		fixedTestsMap[strings.TrimSuffix(name, path.Ext(name))] = tests
+	}
+}
+
+// Return a copy so holes are free to append, shuffle, etc.
+func fixedTests(holeID string) []test {
+	// return fixedTestsMap[holeID]
+	return append([]test(nil), fixedTestsMap[holeID]...)
+}
 
 func outputTests(testRuns ...[]test) []Run {
 	runs := make([]Run, len(testRuns))
