@@ -1,4 +1,4 @@
-FROM golang:1.21.3-alpine3.18
+FROM golang:1.21.4-alpine3.18
 
 ENV CGO_ENABLED=0 GOAMD64=v4 GOPATH=
 
@@ -22,7 +22,7 @@ FROM scratch
 COPY --from=codegolf/lang-swift      ["/", "/langs/swift/rootfs/"     ] #  548 MiB
 COPY --from=codegolf/lang-rust       ["/", "/langs/rust/rootfs/"      ] #  439 MiB
 COPY --from=codegolf/lang-haskell    ["/", "/langs/haskell/rootfs/"   ] #  405 MiB
-COPY --from=codegolf/lang-go         ["/", "/langs/go/rootfs/"        ] #  335 MiB
+COPY --from=codegolf/lang-go         ["/", "/langs/go/rootfs/"        ] #  334 MiB
 COPY --from=codegolf/lang-d          ["/", "/langs/d/rootfs/"         ] #  309 MiB
 COPY --from=codegolf/lang-julia      ["/", "/langs/julia/rootfs/"     ] #  302 MiB
 COPY --from=codegolf/lang-zig        ["/", "/langs/zig/rootfs/"       ] #  279 MiB
