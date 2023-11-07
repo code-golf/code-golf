@@ -24,7 +24,7 @@
             {{ range .Data.Log }}
                 <tr>
                     <td class=right>{{ comma .Bytes }}
-                    <td class=right>{{ comma .Chars }}
+                    <td class=right>{{ with .Chars }}{{ comma . }}{{ end }}
                     <td class=right>{{ time .Submitted }}
             {{ end }}
         </table>

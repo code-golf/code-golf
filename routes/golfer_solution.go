@@ -17,8 +17,9 @@ func golferSolutionGET(w http.ResponseWriter, r *http.Request) {
 		Hole *config.Hole
 		Lang *config.Lang
 		Log  []struct {
-			Bytes, Chars int
-			Submitted    time.Time
+			Bytes     int
+			Chars     *int
+			Submitted time.Time
 		}
 		Rank, RankOverall, Row, RowOverall int
 		Scoring                            string
