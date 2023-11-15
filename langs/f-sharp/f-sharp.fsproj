@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <ItemGroup>
         <Compile Include="f-sharp.fs"/>
-        <PackageReference Include="FSharp.Compiler.Service" Version="43.7.400"/>
+        <PackageReference Include="FSharp.Compiler.Service" Version="43.7.402"/>
     </ItemGroup>
     <PropertyGroup>
         <OutputType>Exe</OutputType>

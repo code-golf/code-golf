@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0.401-alpine3.18 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:7.0.404-alpine3.18 AS builder
 
 WORKDIR /work
 
