@@ -2,7 +2,13 @@
 {{ template "golfer" . }}
 
 <main>
-    <h1>{{ .Data.Hole.Name }} in {{ .Data.Lang.Name }} in {{ title .Data.Scoring }}</h1>
+    <h1>
+        {{ .Data.Hole.Name }} in {{ .Data.Lang.Name }} in {{ title .Data.Scoring }}
+
+        <a class="btn purple" href="/{{ .Data.Hole.ID }}#{{ .Data.Lang.ID }}">
+            {{ svg "play-light" }} Play Hole
+        </a>
+    </h1>
 
     <p>
         <a href="/rankings/holes/{{ .Data.Hole.ID }}/{{ .Data.Lang.ID }}/{{ .Data.Scoring -}}
