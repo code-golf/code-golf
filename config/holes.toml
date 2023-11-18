@@ -1841,6 +1841,22 @@ preamble = '''
     <b>C+</b> and <b>E+</b> respectively.
 '''
 
+['NFA Simulator']
+category = 'Computing'
+experiment = 1100
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Nondeterministic_finite_automaton' },
+]
+synopsis = 'Execute an input string on a given state machine.'
+preamble = '''
+<p>
+    A <strong>non-deterministic finite automaton</strong> or NFA is a
+    finite-state machine that moves between states as it reads characters
+    from a string.
+
+
+'''
+
 ['Niven Numbers']
 category = 'Sequence'
 releases = [2018-05-03, 2022-08-08]
