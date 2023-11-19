@@ -866,6 +866,24 @@ preamble = '''
     </code>.
 '''
 
+['Farey Sequence']
+experiment = 1020
+category = 'Sequence'
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Farey_sequence' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Farey_sequence' },
+]
+synopsis = 'Print the Farey sequence of order 99 in ascending order.'
+preamble = '''
+<p>
+    The Farey sequence of order <b>n</b> is the sequence of all reduced
+    fractions within the range [0, 1], where each denominator is at most
+    <b>n</b>.
+<p>
+    Print the Farey sequence of order 99 in ascending order. The sequence
+    begins <code>0/1</code>, <code>1/99</code>, <code>1/98</code>, ....
+'''
+
 [Fibonacci]
 category = 'Sequence'
 links = [
