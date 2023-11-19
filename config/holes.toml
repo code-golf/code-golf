@@ -1843,18 +1843,75 @@ preamble = '''
 
 ['NFA Simulator']
 category = 'Computing'
-experiment = 1100
+experiment = 1032
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Nondeterministic_finite_automaton' },
 ]
-synopsis = 'Execute an input string on a given state machine.'
+synopsis = 'Execute a set of input strings on a given state machine.'
 preamble = '''
 <p>
-    A <strong>non-deterministic finite automaton</strong> or NFA is a
-    finite-state machine that moves between states as it reads characters
-    from a string.
+    A <strong>nondeterministic finite automaton</strong> or NFA is a 
+    finite-state machine that may nondeterministically move to any 
+    of a set of states as it reads characters from a string.
 
+<p>
+    Each input consists of a table describing the NFA, and a quoted input
+    string, like so:
 
+<pre><code>    | a | b | c |
+→ 0 |{0}|{0}|{0,1}| 
+  1 |{2}| ∅ |  ∅ |
+  2 | ∅ |{3}|  ∅ |
+ F3 | ∅ | ∅ | ∅ |
+acbcab</code></pre>
+
+<p>
+    In this table, we can find the following information:
+
+<ul>
+<li>
+    There are four states, called <code>0</code>, <code>1</code>,
+    <code>2</code>, and <code>3</code>.
+    <ul>
+    <li>States are always digits <code>0-9</code>. There may be up to 10
+    states.</li>
+    </ul></li>
+<li>
+    There are three characters in the input alphabet: <code>a</code>,
+    <code>b</code>, and <code>c</code>.
+    <ul>
+    <li>Input characters may be lowercase letters <code>a-z</code> or digits
+    <code>0-9</code>.</li>
+    </ul></li>
+<li>
+    The table entries describe the set of states the NFA may transition to for each (current state, character) pair.
+    <ul>
+    <li>For example, if the current state is <code>0</code>, and a c is read, the set of possible next states is {0,1}.</li>
+    </ul></li>
+<li>
+    The row describing state <code>0</code> is marked with
+    <code>→</code> so it is the <strong>initial state</strong>. There is
+    exactly one initial state.</li>
+<li>
+    The row describing state <code>3</code> is marked with
+    <code>F</code> so it is an <strong>accept state</strong>. There may be
+    multiple accept states, or none at all.</li>
+</ul>
+
+<p>
+    Use the table to move the NFA between sets of valid states by 
+    feeding it characters from the input string.  Once the set of
+    possible states is the empty set, it remains so.
+<p>
+    In our example:
+<ul>
+    <li>The initial state is 0. The first character is a. Looking at the table, we see the new set of possible states is {0}, so the NFA must be in state 0.</li>
+    <li>The current state is 0. The next character is c. Looking at the table, we see that the set of possible next states is {0,1}.  Thus, the NFA may nondeterministically move to either 0 or 1. or, alternatively, its set of possible locations is {0,1}.</li>
+    <li>The current state is either 0 or 1 . The next character is b. Looking at the table, we see that if the state had been 0, it can be 0 next, while if it had been 1, it has no next state -- and that computation path dies.  Thus, the set of reachable states after seeing substring "acb" is {0,1}.</li>
+</ul>
+
+<p>
+    Finally, print the set of reachable states after processing the entire string, followed by a space, followed by either Accept (if the NFA can reach any accept state by processing the string, or, in other words, if the final set of valid states contains an accept state) or Reject (otherwise). In this case, we may end at either 0 or 3 and one of them is an accept state (3), so we print {0,3} Accept.  When printing a set, its elements should be sorted numerically.
 '''
 
 ['Niven Numbers']

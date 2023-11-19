@@ -125,6 +125,8 @@ func Play(ctx context.Context, holeID, langID, code string) (runs []Run) {
 		runs = morse(holeID == "morse-decoder")
 	case "musical-chords":
 		runs = musicalChords()
+	case "nfa-simulator":
+		runs = nfaSimulator()
 	case "ordinal-numbers":
 		runs = ordinalNumbers()
 	case "p-adic-expansion":

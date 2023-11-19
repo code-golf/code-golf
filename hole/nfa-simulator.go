@@ -66,7 +66,6 @@ func solveNFA(test string) string {
 
 			stateTransitionData := strings.Split(potentialStates[1:len(potentialStates)-1], ",")
 			for _, targetState := range stateTransitionData {
-				// fmt.Println("innest",targetState, nameToState[targetState])
 				stateMap[newStateTransition] = append(stateMap[newStateTransition], nameToState[targetState])
 			}
 		}
@@ -108,7 +107,8 @@ func solveNFA(test string) string {
 		}
 	}
 
-	return output.String()
+	resultString := output.String()
+	return resultString[:len(resultString)-1]
 }
 
 // solve recursively
@@ -223,12 +223,31 @@ func generateNFA() string {
 }
 
 func nfaSimulator() []Run {
-	tests := fixedTests("nfa-simulator")
-
-	for i := 0; i < 32; i++ {
-		dfa := generateNFA()
-		tests = append(tests, test{dfa, solveNFA(dfa)})
+	args := []string{
+		"    | a | b | c |\n→ 0 |{0}|{0}|{0,1}| \n  1 |{2}| ∅ |  ∅ |\n  2 | ∅ |{3}|  ∅ |\n F3 | ∅ | ∅ | ∅ |\nacbcab\nacbca",
+		"    | a | b | c |\n→ 0 |{0}|{0}|{0,1}| \n  1 |{2}| ∅ |  ∅ |\n  2 | ∅ |{3}|  ∅ |\n F3 |{3}|{3}|{3}|\nacbcababc",
+		"    | a | b | c |\n→ 0 | ∅ | ∅ |{1}| \n  1 |{2}| ∅ |  ∅ |\n  2 | ∅ |{3}|  ∅ |\n F3 |{3}|{3}|{3}|\ncab\nacbcab",
+		"    | a | b | c |\n→ 0 |{0}|{0}|{0,1}| \n  1 |{2}|{2}|{2}|\n  2 |{3}|{3}|{3}|\n F3 | ∅ | ∅ | ∅ |\nacbcabcba\ncabca",
+		"    | w | e | b | a | y | x |\n→ 1 |{1,2}|{1,5}|{1}|{1}|{1}|{1}|\n  2 | ∅ |{3}| ∅ | ∅ | ∅ | ∅ |\n  3 | ∅ | ∅ |{4}| ∅ | ∅ | ∅ |\n F4 | ∅ | ∅ | ∅ | ∅ | ∅ | ∅ |\n  5 | ∅ | ∅ |{6}| ∅ | ∅ | ∅ |\n  6 | ∅ | ∅ | ∅ |{7}| ∅ | ∅ |\n  7 | ∅ | ∅ | ∅ | ∅ |{8}| ∅ |\n F8 | ∅ | ∅ | ∅ | ∅ | ∅ | ∅ |\nebay\nwwweb\nxwe",
+	}
+	results := []string{
+		"{0,3} Accept\n{0,2} Reject",
+		"{0,1,3} Accept",
+		"{3} Accept\n∅ Reject",
+		"{0,3} Accept\n{0,2} Reject",
+		"{1,8} Accept\n{1,4,6} Accept\n{1,3,5} Reject",
 	}
 
-	return outputTests(shuffle(tests))
+	for i := 0; i < 12; i++ {
+		dfa := generateNFA()
+		args = append(args, dfa)
+		results = append(results, solveNFA(dfa))
+	}
+
+	rand.Shuffle(len(args), func(i, j int) {
+		args[i], args[j] = args[j], args[i]
+		results[i], results[j] = results[j], results[i]
+	})
+
+	return []Run{{Args: args, Answer: strings.Join(results, "\n\n")}}
 }
