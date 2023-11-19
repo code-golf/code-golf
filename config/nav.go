@@ -2,6 +2,7 @@ package config
 
 import (
 	"net/http"
+	"net/url"
 	"regexp"
 	"slices"
 	"strings"
@@ -109,7 +110,8 @@ var PathSlug = regexp.MustCompile("{[a-z]+}")
 
 func (l NavLink) PopulatePath(r *http.Request) string {
 	if Path := PathSlug.ReplaceAllStringFunc(l.Path, func(s string) string {
-		return chi.URLParam(r, s[1:len(s)-1])
+		value, _ := url.QueryUnescape(chi.URLParam(r, s[1:len(s)-1]))
+		return value
 	}); Path != r.URL.Path {
 		return Path
 	}
