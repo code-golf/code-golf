@@ -1843,7 +1843,7 @@ preamble = '''
 
 ['NFA Simulator']
 category = 'Computing'
-experiment = 1032
+experiment = 1036
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Nondeterministic_finite_automaton' },
 ]

@@ -224,14 +224,14 @@ func generateNFA() string {
 
 func nfaSimulator() []Run {
 	args := []string{
-		"    | a | b | c |\n→ 0 |{0}|{0}|{0,1}| \n  1 |{2}| ∅ |  ∅ |\n  2 | ∅ |{3}|  ∅ |\n F3 | ∅ | ∅ | ∅ |\nacbcab\nacbca",
+		"    | a | b | c |\n→ 0 |{0}|{0}|{0,1}| \n  1 |{2}| ∅ |  ∅ |\n  2 | ∅ |{3}|  ∅ |\n F3 | ∅ | ∅ | ∅ |\nacbcab\nε\nacbca",
 		"    | a | b | c |\n→ 0 |{0}|{0}|{0,1}| \n  1 |{2}| ∅ |  ∅ |\n  2 | ∅ |{3}|  ∅ |\n F3 |{3}|{3}|{3}|\nacbcababc",
 		"    | a | b | c |\n→ 0 | ∅ | ∅ |{1}| \n  1 |{2}| ∅ |  ∅ |\n  2 | ∅ |{3}|  ∅ |\n F3 |{3}|{3}|{3}|\ncab\nacbcab",
 		"    | a | b | c |\n→ 0 |{0}|{0}|{0,1}| \n  1 |{2}|{2}|{2}|\n  2 |{3}|{3}|{3}|\n F3 | ∅ | ∅ | ∅ |\nacbcabcba\ncabca",
 		"    | w | e | b | a | y | x |\n→ 1 |{1,2}|{1,5}|{1}|{1}|{1}|{1}|\n  2 | ∅ |{3}| ∅ | ∅ | ∅ | ∅ |\n  3 | ∅ | ∅ |{4}| ∅ | ∅ | ∅ |\n F4 | ∅ | ∅ | ∅ | ∅ | ∅ | ∅ |\n  5 | ∅ | ∅ |{6}| ∅ | ∅ | ∅ |\n  6 | ∅ | ∅ | ∅ |{7}| ∅ | ∅ |\n  7 | ∅ | ∅ | ∅ | ∅ |{8}| ∅ |\n F8 | ∅ | ∅ | ∅ | ∅ | ∅ | ∅ |\nebay\nwwweb\nxwe",
 	}
 	results := []string{
-		"{0,3} Accept\n{0,2} Reject",
+		"{0,3} Accept\n{0} Reject\n{0,2} Reject",
 		"{0,1,3} Accept",
 		"{3} Accept\n∅ Reject",
 		"{0,3} Accept\n{0,2} Reject",
