@@ -1542,7 +1542,7 @@ preamble = '''
     A mahjong hand is <b>complete</b> if it consists of one of the following:
     <ul>
         <li> Four melds and a pair.
-        <li> Seven pairs.
+        <li> Seven distinct pairs. Four of the same tile do not count as two pairs.
         <li> All seven honor tiles and the 1 and 9 of each suit, plus one duplicate tile that forms a pair.
     </ul>
 
