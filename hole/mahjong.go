@@ -198,34 +198,32 @@ func isHandValid(tileCounts map[rune]int) bool {
 }
 
 func mahjong() []Run {
-	runs := make([]Run, 10)
+	runs := make([]Run, 2)
 
-	for i := 0; i < len(runs)-1; i++ {
-		args := make([]string, 100)
-		var answer strings.Builder
+	args := make([]string, 100)
+	var answer strings.Builder
 
-		for i := range args {
-			hand := genValidHand()
-			mutCount := rand.Intn(4)
-			if mutCount > 0 {
-				hand = genInvalidHand(mutCount)
-			}
-			runes := []rune(hand)
-			rand.Shuffle(len(runes), func(i, j int) {
-				runes[i], runes[j] = runes[j], runes[i]
-			})
-			args[i] = string(runes)
-
-			if mutCount == 0 {
-				if answer.Len() > 0 {
-					answer.WriteByte('\n')
-				}
-				answer.WriteString(string(runes))
-			}
+	for i := range args {
+		hand := genValidHand()
+		mutCount := rand.Intn(4)
+		if mutCount > 0 {
+			hand = genInvalidHand(mutCount)
 		}
+		runes := []rune(hand)
+		rand.Shuffle(len(runes), func(i, j int) {
+			runes[i], runes[j] = runes[j], runes[i]
+		})
+		args[i] = string(runes)
 
-		runs[i] = Run{Args: args, Answer: answer.String()}
+		if mutCount == 0 {
+			if answer.Len() > 0 {
+				answer.WriteByte('\n')
+			}
+			answer.WriteString(string(runes))
+		}
 	}
+
+	runs[0] = Run{Args: args, Answer: answer.String()}
 
 	// For the last run, use a set of static test cases
 	completeHands := []string{
@@ -298,8 +296,8 @@ func mahjong() []Run {
 		testValidity[i], testValidity[j] = testValidity[j], testValidity[i]
 	})
 
-	args := make([]string, len(tests))
-	var answer strings.Builder
+	args2 := make([]string, len(tests))
+	var answer2 strings.Builder
 
 	for i, t := range tests {
 		// Shuffle tiles within each hand
@@ -307,18 +305,18 @@ func mahjong() []Run {
 		rand.Shuffle(len(runes), func(i, j int) {
 			runes[i], runes[j] = runes[j], runes[i]
 		})
-		args[i] = string(runes)
+		args2[i] = string(runes)
 
 		// Add hand to answer, if complete
 		if testValidity[i] {
-			if answer.Len() > 0 {
-				answer.WriteByte('\n')
+			if answer2.Len() > 0 {
+				answer2.WriteByte('\n')
 			}
-			answer.WriteString(string(runes))
+			answer2.WriteString(string(runes))
 		}
 	}
 
-	runs[len(runs)-1] = Run{Args: args, Answer: answer.String()}
+	runs[1] = Run{Args: args2, Answer: answer2.String()}
 
 	return runs
 }
