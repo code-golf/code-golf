@@ -130,9 +130,7 @@ func recurseNFA(currentState NFAState, input string, stateMap map[NFAStateTransi
 
 		// cache result
 		resultMap[nfaResultObject] = result
-		for _, nfaState := range result {
-			results = append(results, nfaState)
-		}
+		results = append(results, result...)
 	}
 
 	return results
@@ -159,9 +157,7 @@ func generateNFA() string {
 	startState := rand.Intn(stateLength)
 
 	shuffleStates := make([]string, stateLength)
-	for j, state := range states[:stateLength] {
-		shuffleStates[j] = state
-	}
+	copy(shuffleStates, states[:stateLength])
 
 	for i := 0; i < stateLength; i++ {
 		if i == startState {
@@ -187,9 +183,7 @@ func generateNFA() string {
 				possibleStatesCount := rand.Intn(len(shuffleStates)) + 1
 
 				chosenStates := make([]string, possibleStatesCount)
-				for j, state := range shuffleStates[:possibleStatesCount] {
-					chosenStates[j] = state
-				}
+				copy(chosenStates, shuffleStates[:possibleStatesCount])
 
 				sort.Strings(chosenStates)
 
@@ -229,6 +223,9 @@ func nfaSimulator() []Run {
 		"    | a | b | c |\n→ 0 | ∅ | ∅ |{1}| \n  1 |{2}| ∅ |  ∅ |\n  2 | ∅ |{3}|  ∅ |\n F3 |{3}|{3}|{3}|\ncab\nacbcab",
 		"    | a | b | c |\n→ 0 |{0}|{0}|{0,1}| \n  1 |{2}|{2}|{2}|\n  2 |{3}|{3}|{3}|\n F3 | ∅ | ∅ | ∅ |\nacbcabcba\ncabca",
 		"    | w | e | b | a | y | x |\n→ 1 |{1,2}|{1,5}|{1}|{1}|{1}|{1}|\n  2 | ∅ |{3}| ∅ | ∅ | ∅ | ∅ |\n  3 | ∅ | ∅ |{4}| ∅ | ∅ | ∅ |\n F4 | ∅ | ∅ | ∅ | ∅ | ∅ | ∅ |\n  5 | ∅ | ∅ |{6}| ∅ | ∅ | ∅ |\n  6 | ∅ | ∅ | ∅ |{7}| ∅ | ∅ |\n  7 | ∅ | ∅ | ∅ | ∅ |{8}| ∅ |\n F8 | ∅ | ∅ | ∅ | ∅ | ∅ | ∅ |\nebay\nwwweb\nxwe",
+		"    | y | 8 | z | 1 | r | v | 7 | u | i | h | b | j | 3 | n | w | x | 0 | a |\n F2 |{1,2,4}| ∅ |{1,2,4}|{1,4}|{1,2}|{1,2,4}|{1,4}|{1,2,4}|{4}|{1,4}|{4}| ∅ |{1,2}| ∅ |{1,2,4}| ∅ | ∅ |{1,2,4}|\n  1 |{1,2,4}|{1,2,4}|{1}|{1,2,4}|{1,2,4}| ∅ |{2,4}|{2,4}|{1,2,4}|{1,2,4}|{2}|{1,2}|{1,2,4}|{2,4}|{2}|{1,2,4}| ∅ |{1,4}|\n→F4 |{2,4}|{2}|{1,4}|{2,4}|{1,2,4}|{1,2,4}|{4}|{1,2,4}| ∅ |{4}| ∅ |{1,2}|{1,2}|{1,2,4}|{1,2,4}|{1,2}|{4}|{1,2,4}|\n0x037azy71uwnh7jnxin\nx7j1b017au0unr3xwrbv8uu8xrr",
+		"    | j | p |\n→ 0 |{8}|{2,4,8}|\n F2 | ∅ | ∅ |\n  8 | ∅ | ∅ |\n F7 |{4,7}|{0,2,4,7,8}|\n F4 |{0,2,8}|{0,7}|\nppj\npjp\nε\nε",
+		"    | a | h | p |\n  1 |{1}|{1,9}|{9}|\n→F9 | ∅ |{1}|{1}|\nε\naa",
 	}
 	results := []string{
 		"{0,3} Accept\n{0} Reject\n{0,2} Reject",
@@ -236,6 +233,9 @@ func nfaSimulator() []Run {
 		"{3} Accept\n∅ Reject",
 		"{0,3} Accept\n{0,2} Reject",
 		"{1,8} Accept\n{1,4,6} Accept\n{1,3,5} Reject",
+		"∅ Reject\n{1,2,4} Accept",
+		"{4,7,8} Accept\n{2,4,8} Accept\n{0} Reject\n{0} Reject",
+		"{9} Accept\n∅ Reject",
 	}
 
 	for i := 0; i < 12; i++ {
