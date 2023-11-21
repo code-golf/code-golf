@@ -1850,24 +1850,20 @@ links = [
 synopsis = 'Execute a set of input strings on a given state machine.'
 preamble = '''
 <p>
-    A <strong>nondeterministic finite automaton</strong> or NFA is a 
-    finite-state machine that may nondeterministically move to any 
+    A <strong>nondeterministic finite automaton</strong> or NFA is a
+    finite-state machine that may nondeterministically move to any
     of a set of states as it reads characters from a string.
-
 <p>
     Each input consists of a table describing the NFA, and a quoted input
     string, like so:
-
 <pre><code>    | a | b | c |
-→ 0 |{0}|{0}|{0,1}| 
+→ 0 |{0}|{0}|{0,1}|
   1 |{2}| ∅ |  ∅ |
   2 | ∅ |{3}|  ∅ |
  F3 | ∅ | ∅ | ∅ |
 acbcab</code></pre>
-
 <p>
     In this table, we can find the following information:
-
 <ul>
 <li>
     There are four states, called <code>0</code>, <code>1</code>,
@@ -1897,21 +1893,21 @@ acbcab</code></pre>
     <code>F</code> so it is an <strong>accept state</strong>. There may be
     multiple accept states, or none at all.</li>
 </ul>
-
 <p>
-    Use the table to move the NFA between sets of valid states by 
+    Use the table to move the NFA between sets of valid states by
     feeding it characters from the input string.  Once the set of
     possible states is the empty set, it remains so.
 <p>
     In our example:
 <ul>
-    <li>The initial state is 0. The first character is a. Looking at the table, we see the new set of possible states is {0}, so the NFA must be in state 0.</li>
-    <li>The current state is 0. The next character is c. Looking at the table, we see that the set of possible next states is {0,1}.  Thus, the NFA may nondeterministically move to either 0 or 1. or, alternatively, its set of possible locations is {0,1}.</li>
-    <li>The current state is either 0 or 1 . The next character is b. Looking at the table, we see that if the state had been 0, it can be 0 next, while if it had been 1, it has no next state -- and that computation path dies.  Thus, the set of reachable states after seeing substring "acb" is {0,1}.</li>
+    <li>The initial state is <code>0</code>. The first character is <code>a</code>. Looking at the table, we see the new set of possible states is <code>{0}</code>, so the NFA must be in state <code>0</code>.</li>
+    <li>The current state is <code>0</code>. The next character is <code>c</code>. Looking at the table, we see that the set of possible next states is <code>{0,1}</code>.  Thus, the NFA may nondeterministically move to either <code>0</code> or <code>1</code>. or, alternatively, its set of possible locations is <code>{0,1}</code>.</li>
+    <li>The current state is either <code>0</code> or <code>1</code>. The next character is <code>b</code>. Looking at the table, we see that if the state had been <code>0</code>, it can be <code>0</code> next, while if it had been <code>1</code>, it has no next state -- and that computation path dies.  Thus, the set of reachable states after seeing substring <code>acb</code> is <code>{0,1}</code>.</li>
 </ul>
-
 <p>
-    Finally, print the set of reachable states after processing the entire string, followed by a space, followed by either Accept (if the NFA can reach any accept state by processing the string, or, in other words, if the final set of valid states contains an accept state) or Reject (otherwise). In this case, we may end at either 0 or 3 and one of them is an accept state (3), so we print {0,3} Accept.  When printing a set, its elements should be sorted numerically.
+    Finally, print on <b>separate lines</b> the set of reachable states after processing the entirety of <b>each</b> input string, followed by a space, followed by either <code>Accept</code> (if the NFA can reach any accept state by processing the string, or, in other words, if the final set of valid states contains an accept state) or <code>Accept</code> (otherwise). In this case, we may end at either <code>0</code> or <code>3</code> and one of them is an accept state (<code>3</code>), so we print <code>{0,3} Accept</code>.
+<p>
+    There may be multiple input strings presented on separate lines; print their respective outputs on separate lines. When printing a set, sort its elements numerically and use <code>∅</code> to denote the empty set. The empty string in the input is denoted by <code>ε</code>.
 '''
 
 ['Niven Numbers']
