@@ -157,7 +157,7 @@ function makeEditor(parent: HTMLDivElement) {
 
             return result;
         },
-        parent: parent,
+        parent,
     });
 
     editor.contentDOM.setAttribute('data-gramm', 'false');  // Disable Grammarly.
@@ -259,7 +259,7 @@ function getTitle(name: string) {
 function plainComponent(componentType: string): ComponentItemConfig {
     return {
         type: 'component',
-        componentType: componentType,
+        componentType,
         reorderEnabled: !isMobile,
     };
 }
@@ -330,7 +330,7 @@ function getViewState(): ViewState {
         version: 1,
         config: layout.saveLayout(),
         poolNames: Object.keys(poolElements),
-        isWide: isWide,
+        isWide,
         langPickerOpen: langToggle.open,
     };
 }
@@ -357,7 +357,7 @@ async function applyViewState(viewState: ViewState) {
     viewState.poolNames.forEach(addPoolItem);
     setWide(viewState.isWide);
     setLangPickerOpen(viewState.langPickerOpen);
-    let config = viewState.config;
+    let { config } = viewState;
     if (LayoutConfig.isResolved(config))
         config = LayoutConfig.fromResolved(config);
     layout.loadLayout(config);

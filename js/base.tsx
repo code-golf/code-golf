@@ -1,7 +1,7 @@
 import { $, $$ } from './_util';
 import dialogPolyfill from 'dialog-polyfill';
 
-const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+const { timeZone } = Intl.DateTimeFormat().resolvedOptions();
 
 // Add current time zone to the redirect URI of any log in links.
 for (const a of $$<HTMLAnchorElement>('.log-in')) {
