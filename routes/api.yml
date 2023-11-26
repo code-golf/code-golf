@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.1.0
 
 info:
   title: Code Golf API
@@ -42,7 +42,7 @@ paths:
           schema:
             type: string
       tags: [achievements]
-      summary: Get a achievements by ID
+      summary: Get an achievement by ID
       responses:
         '200':
           description: A single achievement
@@ -50,6 +50,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Achievement'
+
+  /golfers/{name}:
+    get:
+      operationId: getGolfersByName
+      parameters:
+        - name: name
+          description: Golfer Name
+          in: path
+          required: true
+          schema:
+            type: string
+      tags: [golfers]
+      summary: Get a golfer by name
+      responses:
+        '200':
+          description: A single golfer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Golfer'
 
   /holes:
     get:
@@ -183,6 +203,25 @@ components:
           type: string
         name:
           type: string
+
+    Golfer:
+      type: object
+      properties:
+        admin:
+          type: boolean
+        country:
+          type:
+            - string
+            - 'null'
+        id:
+          type: integer
+        name:
+          type: string
+        sponsor:
+          type: boolean
+        started:
+          type: string
+          format: date-time
 
     Hole:
       type: object

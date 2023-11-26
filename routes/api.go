@@ -1,8 +1,10 @@
 package routes
 
 import (
+	"database/sql"
 	_ "embed"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"reflect"
@@ -30,6 +32,33 @@ func apiCheevosGET(w http.ResponseWriter, _ *http.Request) {
 // GET /api/cheevos/{cheevo}
 func apiCheevoGET(w http.ResponseWriter, r *http.Request) {
 	encodeJSON(w, config.CheevoByID[param(r, "cheevo")])
+}
+
+// GET /api/golfers/{golfer}
+func apiGolferGET(w http.ResponseWriter, r *http.Request) {
+	golfer := &struct {
+		Admin   bool      `json:"admin"`
+		Country *string   `json:"country"`
+		ID      int       `json:"id"`
+		Name    string    `json:"name"`
+		Sponsor bool      `json:"sponsor"`
+		Started time.Time `json:"started"`
+	}{}
+
+	if err := session.Database(r).Get(
+		golfer,
+		`SELECT admin, id, login name, sponsor, started,
+		        CASE WHEN show_country THEN country END country
+		   FROM users
+		  WHERE login = $1`,
+		param(r, "golfer"),
+	); errors.Is(err, sql.ErrNoRows) {
+		golfer = nil
+	} else if err != nil {
+		panic(err)
+	}
+
+	encodeJSON(w, golfer)
 }
 
 // GET /api/holes
