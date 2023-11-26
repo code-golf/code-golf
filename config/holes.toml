@@ -1859,6 +1859,75 @@ preamble = '''
     <b>C+</b> and <b>E+</b> respectively.
 '''
 
+['NFA Simulator']
+category = 'Computing'
+experiment = 1036
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Nondeterministic_finite_automaton' },
+]
+synopsis = 'Execute a set of input strings on a given state machine.'
+preamble = '''
+<p>
+    A <strong>nondeterministic finite automaton</strong> or NFA is a
+    finite-state machine that may nondeterministically move to any
+    of a set of states as it reads characters from a string.
+<p>
+    Each input consists of a table describing the NFA, and a quoted input
+    string, like so:
+<pre><code>    | a | b | c |
+→ 0 |{0}|{0}|{0,1}|
+  1 |{2}| ∅ |  ∅ |
+  2 | ∅ |{3}|  ∅ |
+ F3 | ∅ | ∅ | ∅ |
+acbcab</code></pre>
+<p>
+    In this table, we can find the following information:
+<ul>
+<li>
+    There are four states, called <code>0</code>, <code>1</code>,
+    <code>2</code>, and <code>3</code>.
+    <ul>
+    <li>States are always digits <code>0-9</code>. There may be up to 10
+    states.</li>
+    </ul></li>
+<li>
+    There are three characters in the input alphabet: <code>a</code>,
+    <code>b</code>, and <code>c</code>.
+    <ul>
+    <li>Input characters may be lowercase letters <code>a-z</code> or digits
+    <code>0-9</code>.</li>
+    </ul></li>
+<li>
+    The table entries describe the set of states the NFA may transition to for each (current state, character) pair.
+    <ul>
+    <li>For example, if the current state is <code>0</code>, and a c is read, the set of possible next states is {0,1}.</li>
+    </ul></li>
+<li>
+    The row describing state <code>0</code> is marked with
+    <code>→</code> so it is the <strong>initial state</strong>. There is
+    exactly one initial state.</li>
+<li>
+    The row describing state <code>3</code> is marked with
+    <code>F</code> so it is an <strong>accept state</strong>. There may be
+    multiple accept states, or none at all.</li>
+</ul>
+<p>
+    Use the table to move the NFA between sets of valid states by
+    feeding it characters from the input string.  Once the set of
+    possible states is the empty set, it remains so.
+<p>
+    In our example:
+<ul>
+    <li>The initial state is <code>0</code>. The first character is <code>a</code>. Looking at the table, we see the new set of possible states is <code>{0}</code>, so the NFA must be in state <code>0</code>.</li>
+    <li>The current state is <code>0</code>. The next character is <code>c</code>. Looking at the table, we see that the set of possible next states is <code>{0,1}</code>.  Thus, the NFA may nondeterministically move to either <code>0</code> or <code>1</code>. or, alternatively, its set of possible locations is <code>{0,1}</code>.</li>
+    <li>The current state is either <code>0</code> or <code>1</code>. The next character is <code>b</code>. Looking at the table, we see that if the state had been <code>0</code>, it can be <code>0</code> next, while if it had been <code>1</code>, it has no next state -- and that computation path dies.  Thus, the set of reachable states after seeing substring <code>acb</code> is <code>{0,1}</code>.</li>
+</ul>
+<p>
+    Finally, print on <b>separate lines</b> the set of reachable states after processing the entirety of <b>each</b> input string, followed by a space, followed by either <code>Accept</code> (if the NFA can reach any accept state by processing the string, or, in other words, if the final set of valid states contains an accept state) or <code>Accept</code> (otherwise). In this case, we may end at either <code>0</code> or <code>3</code> and one of them is an accept state (<code>3</code>), so we print <code>{0,3} Accept</code>.
+<p>
+    There may be multiple input strings presented on separate lines; print their respective outputs on separate lines. When printing a set, sort its elements numerically and use <code>∅</code> to denote the empty set. The empty string in the input is denoted by <code>ε</code>.
+'''
+
 ['Niven Numbers']
 category = 'Sequence'
 releases = [2018-05-03, 2022-08-08]
