@@ -582,7 +582,7 @@ export async function populateScores(editor: any) {
             <td>{r.rank}<sup>{ord(r.rank)}</sup></td>
             <td>
                 <a href={`/golfers/${r.golfer.name}`}>
-                    <img src={`//avatars.githubusercontent.com/${r.golfer.name}?s=48`}/>
+                    <img src={`/golfers/${r.golfer.name}/avatar/48`}/>
                     <span>{r.golfer.name}</span>
                 </a>
             </td>

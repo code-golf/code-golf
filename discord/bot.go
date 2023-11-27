@@ -60,7 +60,7 @@ func init() {
 // recAnnounceToEmbed parses a recAnnouncement object and turns it into a Discord embed
 func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
 	hole, lang, golfer := announce.Hole, announce.Lang, announce.Golfer
-	imageURL := "https://avatars.githubusercontent.com/" + golfer.Name
+	imageURL := "https://code.golf/golfers/" + golfer.Name + "/avatar"
 	golferURL := "https://code.golf/golfers/" + golfer.Name
 
 	// Creating the basic embed
@@ -198,7 +198,7 @@ func LogFailedRejudge(golfer *Golfer.Golfer, hole *config.Hole, lang *config.Lan
 		return
 	}
 
-	imageURL := "https://avatars.githubusercontent.com/" + golfer.Name
+	imageURL := "https://code.golf/golfers/" + golfer.Name + "/avatar"
 	golferURL := "https://code.golf/golfers/" + golfer.Name
 
 	if _, err := bot.ChannelMessageSendEmbed(channelID, &discordgo.MessageEmbed{

@@ -13,7 +13,7 @@
         <div>
             <a href="/golfers/{{ .Golfer }}">
                 <img loading=lazy
-                    src="//avatars.githubusercontent.com/{{ .Golfer }}?s=48">
+                    src="/golfers/{{ .Golfer }}/avatar/48">
                 {{ .Golfer }}
             </a>
 
@@ -28,7 +28,7 @@
         {{ else }}
             followed <a href="/golfers/{{ $.GolferInfo.Name }}">
                 <img loading=lazy
-                    src="//avatars.githubusercontent.com/{{ $.GolferInfo.Name }}?s=48">
+                    src="/golfers/{{ $.GolferInfo.Name }}/avatar/48">
                 {{ $.GolferInfo.Name }}
             </a>
         {{ end }}
@@ -132,7 +132,7 @@
             </h2>
         {{ range . }}
             <a href="{{ . }}" title="{{ . }}">
-                <img loading=lazy src="//avatars.githubusercontent.com/{{ . }}?s=72">
+                <img loading=lazy src="/golfers/{{ . }}/avatar/72">
             </a>
         {{ end }}
         </section>

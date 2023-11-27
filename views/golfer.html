@@ -7,7 +7,7 @@
     {{ end }}
 
     <div class=grid id=profile>
-        <img src="//avatars.githubusercontent.com/{{ .Name }}?s=176">
+        <img src="/golfers/{{ .Name }}/avatar/176">
         <h1>
             {{ .Name }}
         {{ with .Country.Country }}
@@ -115,7 +115,7 @@
                 {{ range . }}
                     <li>
                         <a href="/golfers/{{ . }}">
-                            <img src="//avatars.githubusercontent.com/{{ . }}?s=48">
+                            <img loading=lazy src="/golfers/{{ . }}/avatar/48">
                             {{ . }}
                         </a>
                 {{ end }}

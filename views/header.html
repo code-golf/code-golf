@@ -21,7 +21,7 @@
 
 <meta property=og:description  content="{{ .Description }}">
 <meta property=og:image        content="{{ with .GolferInfo -}}
-    https://avatars.githubusercontent.com/{{ .Name }}?s=200
+    https://code.golf/golfers/{{ .Name }}/avatar/200
 {{- else -}}
     https://code.golf/icon-180.png
 {{- end }}">
@@ -90,7 +90,7 @@
             (hasPrefix $.Path (print $slug "/")) }} class=on {{ end }}
             href="{{ $slug }}" title=Profile>
             {{ svg "bytes" }}{{ comma .BytesPoints }}
-            <img src="//avatars.githubusercontent.com/{{ .Name }}?s=56">
+            <img src="/golfers/{{ .Name }}/avatar/56">
             {{ svg "chars" }}{{ comma .CharsPoints }}
         </a>
     {{ else }}

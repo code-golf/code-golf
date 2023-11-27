@@ -33,6 +33,8 @@ func Router(db *sqlx.DB) http.Handler {
 	// Simple routes that don't need middleware.Golfer.
 	r.Get("/callback/dev", callbackDevGET)
 	r.Get("/feeds/{feed:atom|json|rss}", feedGET)
+	r.Get("/golfers/{name}/avatar", golferAvatarGET)
+	r.Get(`/golfers/{name}/avatar/{size:\d+}`, golferAvatarGET)
 	r.Get("/healthz", healthzGET)
 	r.Post("/log-out", logOutPost)
 	r.Get("/random", randomGET)
