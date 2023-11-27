@@ -106,7 +106,8 @@ CREATE TABLE users (
     layout       layout    NOT NULL DEFAULT 'default',
     pronouns     pronouns,
     CHECK (country IS NULL OR country = UPPER(country)),
-    CHECK (id != referrer_id)   -- Can't refer yourself
+    CHECK (id != referrer_id),              -- Can't refer yourself!
+    CHECK (login ~ '^[A-Za-z0-9_-]{1,42}$') -- 1 - 42 ASCII word/hyphen chars.
 );
 
 CREATE TABLE authors (
