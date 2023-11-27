@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"database/sql"
 	"net/http"
 
 	"github.com/code-golf/code-golf/config"
@@ -38,6 +39,7 @@ func golferSettingsGET(w http.ResponseWriter, r *http.Request) {
 		Keymaps        []string
 		OAuthProviders map[string]*oauth.Config
 		OAuthState     string
+		Pronouns       []string
 		Themes         []string
 		TimeZones      []zone.Zone
 	}{
@@ -47,6 +49,7 @@ func golferSettingsGET(w http.ResponseWriter, r *http.Request) {
 		[]string{"default", "vim"},
 		oauth.Providers,
 		nonce(),
+		[]string{"he/him", "she/her", "they/them"},
 		[]string{"auto", "dark", "light"},
 		zone.List(),
 	}
@@ -82,6 +85,13 @@ func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	switch r.Form.Get("pronouns") {
+	case "", "he/him", "she/her", "they/them":
+	default:
+		http.Error(w, "Invalid pronouns", http.StatusBadRequest)
+		return
+	}
+
 	if t := r.Form.Get("theme"); t != "auto" && t != "dark" && t != "light" {
 		http.Error(w, "Invalid theme", http.StatusBadRequest)
 		return
@@ -101,14 +111,16 @@ func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 		    SET country = $1,
 		         layout = $2,
 		         keymap = $3,
-		    referrer_id = (SELECT id FROM users WHERE login = $4 AND id != $8),
-		   show_country = $5,
-		          theme = $6,
-		      time_zone = $7
-		  WHERE id = $8`,
+		       pronouns = $4,
+		    referrer_id = (SELECT id FROM users WHERE login = $5 AND id != $9),
+		   show_country = $6,
+		          theme = $7,
+		      time_zone = $8
+		  WHERE id = $9`,
 		r.Form.Get("country"),
 		r.Form.Get("layout"),
 		r.Form.Get("keymap"),
+		sql.NullString{r.Form.Get("pronouns"), r.Form.Get("pronouns") != ""},
 		r.Form.Get("referrer"),
 		r.Form.Get("show_country") == "on",
 		r.Form.Get("theme"),

@@ -67,6 +67,8 @@ CREATE TYPE lang AS ENUM (
 
 CREATE TYPE medal AS ENUM ('diamond', 'gold', 'silver', 'bronze');
 
+CREATE TYPE pronouns AS ENUM ('he/him', 'she/her', 'they/them');
+
 CREATE TYPE scoring AS ENUM ('bytes', 'chars');
 
 CREATE TYPE theme AS ENUM ('auto', 'dark', 'light');
@@ -102,6 +104,7 @@ CREATE TABLE users (
         (COALESCE(CASE WHEN show_country THEN country END, '')) STORED,
     keymap       keymap    NOT NULL DEFAULT 'default',
     layout       layout    NOT NULL DEFAULT 'default',
+    pronouns     pronouns,
     CHECK (country IS NULL OR country = UPPER(country)),
     CHECK (id != referrer_id)   -- Can't refer yourself
 );

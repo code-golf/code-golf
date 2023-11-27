@@ -37,17 +37,18 @@ func apiCheevoGET(w http.ResponseWriter, r *http.Request) {
 // GET /api/golfers/{golfer}
 func apiGolferGET(w http.ResponseWriter, r *http.Request) {
 	golfer := &struct {
-		Admin   bool      `json:"admin"`
-		Country *string   `json:"country"`
-		ID      int       `json:"id"`
-		Name    string    `json:"name"`
-		Sponsor bool      `json:"sponsor"`
-		Started time.Time `json:"started"`
+		Admin    bool      `json:"admin"`
+		Country  *string   `json:"country"`
+		ID       int       `json:"id"`
+		Name     string    `json:"name"`
+		Pronouns *string   `json:"pronouns"`
+		Sponsor  bool      `json:"sponsor"`
+		Started  time.Time `json:"started"`
 	}{}
 
 	if err := session.Database(r).Get(
 		golfer,
-		`SELECT admin, id, login name, sponsor, started,
+		`SELECT admin, id, login name, pronouns, sponsor, started,
 		        CASE WHEN show_country THEN country END country
 		   FROM users
 		  WHERE login = $1`,

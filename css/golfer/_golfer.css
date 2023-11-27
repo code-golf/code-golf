@@ -48,7 +48,7 @@
 #profile > h1 {
     align-items: center;
     display: flex;
-    gap: .5rem;
+    gap: .75rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -64,6 +64,11 @@
 #profile svg {
     height: 1.25rem;
     width: 1.25rem;
+}
+
+#pronouns {
+    color: var(--grey);
+    font-size: 1.25rem;
 }
 
 @media (max-width: 34rem) {

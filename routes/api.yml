@@ -217,6 +217,10 @@ components:
           type: integer
         name:
           type: string
+        pronouns:
+          type:
+            - string
+            - 'null'
         sponsor:
           type: boolean
         started:

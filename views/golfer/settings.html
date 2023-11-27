@@ -116,6 +116,18 @@
         {{- end -}}
         </div>
 
+        <h2>Pronouns</h2>
+
+        Preferred pronouns.
+
+        <select name=pronouns>
+            <option value>Rather not say
+        {{- range .Data.Pronouns -}}
+            <option {{- if eq . $.Golfer.Pronouns.String }} selected{{ end }}>
+                {{- . -}}
+        {{- end -}}
+        </select>
+
         <h2>Referrer</h2>
 
         Which golfer referred you to Code Golf?
@@ -144,13 +156,11 @@
         Affects how times are displayed and might eventually affect when date
         specific achievements are awarded.
 
-        {{ $tz := "" }}
-        {{ with $.Golfer.TimeZone }}{{ $tz = .String }}{{ end }}
         <select name=time_zone>
             <option value>Rather not say
         {{- range .Data.TimeZones -}}
             <option value="{{ .Name }}"
-                {{- if eq .Name $tz }} selected{{ end }}>
+                {{- if eq .Name $.Golfer.TimeZone.String }} selected{{ end }}>
                 {{- . -}}
         {{- end -}}
         </select>

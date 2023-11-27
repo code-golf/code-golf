@@ -27,7 +27,7 @@ type Golfer struct {
 	FailingSolutions                      FailingSolutions
 	Following                             pq.Int64Array
 	Keymap, Layout, Name, Referrer, Theme string
-	TimeZone                              sql.NullString
+	Pronouns, TimeZone                    sql.NullString
 }
 
 // GolferInfo is populated when looking at a /golfers/xxx route.

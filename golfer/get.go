@@ -36,6 +36,7 @@ func Get(db *sqlx.DB, sessionID uuid.UUID) *Golfer {
 		          u.layout                                  layout,
 		          u.keymap                                  keymap,
 		          u.login                                   name,
+		          u.pronouns                                pronouns,
 		          COALESCE(r.login, '')                     referrer,
 		          u.show_country                            show_country,
 		          u.sponsor                                 sponsor,
@@ -106,6 +107,7 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		          login                                 name,
 		          COALESCE(bytes.points, 0)             bytes_points,
 		          COALESCE(chars.points, 0)             chars_points,
+		          pronouns                              pronouns,
 		          ARRAY(
 		            SELECT login
 		              FROM users u
