@@ -11,7 +11,7 @@ body {
 
 .readonly-output {
      flex: 1;
-     font-family: emoji, 'Source Code Pro', monospace;
+     font-family: emoji, mahjong, 'Source Code Pro', monospace;
      font-variant-ligatures: none;
      line-height: 1;
      padding: .375rem;

@@ -7,14 +7,14 @@ aside {
 }
 
 pre {
-    font-family: emoji, 'Source Code Pro', monospace;
+    font-family: emoji, mahjong, 'Source Code Pro', monospace;
     line-height: 1.2;
     overflow: auto hidden;
 }
 
 .qr-span span {
     color: var(--grey);
-    font-family: emoji, 'Source Code Pro', monospace;
+    font-family: emoji, mahjong, 'Source Code Pro', monospace;
 }
 
 aside > div {
@@ -22,7 +22,7 @@ aside > div {
     border: 1px solid var(--color);
     border-left: 0;
     flex: 1;
-    font-family: emoji, 'Source Code Pro', monospace;
+    font-family: emoji, mahjong, 'Source Code Pro', monospace;
     font-variant-ligatures: none;
     height: 8.75rem;
     line-height: 1;
@@ -85,13 +85,13 @@ section header {
 #arg span {
     background: var(--arg-background);
     border-radius: .5rem;
-    font-family: emoji, 'Source Code Pro', monospace;
+    font-family: emoji, mahjong, 'Source Code Pro', monospace;
     padding: .25rem .375rem;
     white-space: pre;
 }
 
 #arrows code { font-size: 1.5rem }
-#arrows td   { font-family: emoji, 'Source Code Pro', monospace }
+#arrows td   { font-family: emoji, mahjong, 'Source Code Pro', monospace }
 #arrows td:first-child { white-space: pre }
 #arrows td:last-child  { width: 100% }
 

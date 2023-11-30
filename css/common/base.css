@@ -58,7 +58,7 @@ body {
     color: var(--color);
     display: flex;
     flex-direction: column;
-    font: 16px emoji, system-ui, -apple-system, sans-serif;
+    font: 16px emoji, mahjong, system-ui, -apple-system, sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
 }
