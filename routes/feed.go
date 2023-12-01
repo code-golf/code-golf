@@ -25,6 +25,8 @@ func init() {
 		sha, created, id string
 		hole             bool
 	}{
+		{"6bd24c1", "2023-12-01 00:00:07", "farey-sequence", true},
+		{"6bd24c1", "2023-12-01 00:00:07", "mahjong", true},
 		{"befe8fa", "2023-11-01 00:00:13", "dfa-simulator", true},
 		{"b5fc39d", "2023-10-08 21:31:55", "berry", false},
 		{"94068d3", "2023-10-01 00:00:04", "arithmetic-numbers", true},
