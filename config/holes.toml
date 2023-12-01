@@ -867,21 +867,22 @@ preamble = '''
 '''
 
 ['Farey Sequence']
-experiment = 1020
 category = 'Sequence'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Farey_sequence' },
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Farey_sequence' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Farey_sequence' },
 ]
+released = 2023-12-01
 synopsis = 'Print the Farey sequence of order 50 in ascending order.'
 preamble = '''
 <p>
     The Farey sequence of order <b>n</b> is the sequence of all reduced
     fractions within the range [0, 1], where each denominator is at most
     <b>n</b>.
+
 <p>
     Print the Farey sequence of order 50 in ascending order. The sequence
-    begins <code>0/1</code>, <code>1/50</code>, <code>1/49</code>, ....
+    begins <code>0/1</code>, <code>1/50</code>, <code>1/49</code>, ...
 '''
 
 [Fibonacci]
@@ -1512,9 +1513,9 @@ preamble = '''
 [Mahjong]
 category = 'Gaming'
 links = [
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Japanese_mahjong' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Japanese_mahjong' },
 ]
-experiment = 927
+released = 2023-12-01
 synopsis = 'Print the completed mahjong hands.'
 preamble = '''
 <p>
