@@ -46,7 +46,7 @@ func solveNFA(test string) string {
 		newState := NFAState{stateName, []rune(stateRow)[1] == 'F'}
 		nameToState[stateName] = newState
 
-		if []rune(stateRow)[0] == '→' {
+		if []rune(stateRow)[0] == '>' {
 			startState = newState
 		}
 	}
@@ -60,7 +60,7 @@ func solveNFA(test string) string {
 			newStateTransition := NFAStateTransition{input, stateName}
 			stateMap[newStateTransition] = make([]NFAState, 0)
 
-			if potentialStates == " ∅ " {
+			if potentialStates == " {} " {
 				continue
 			}
 
@@ -89,7 +89,7 @@ func solveNFA(test string) string {
 		}
 
 		if len(nfaResult) == 0 {
-			output.WriteString("∅")
+			output.WriteString("{}")
 		} else {
 			resultStateNames := make([]string, 0)
 			for stateName := range resultStateNamesMap {
@@ -161,7 +161,7 @@ func generateNFA() string {
 
 	for i := 0; i < stateLength; i++ {
 		if i == startState {
-			inputNFA.WriteString("→")
+			inputNFA.WriteString(">")
 		} else {
 			inputNFA.WriteByte(' ')
 		}
@@ -177,7 +177,7 @@ func generateNFA() string {
 		for j := 0; j < alphabetLength; j++ {
 
 			if rand.Intn(4) == 0 {
-				inputNFA.WriteString(" ∅ ")
+				inputNFA.WriteString(" {} ")
 			} else {
 				shuffle(shuffleStates)
 				possibleStatesCount := rand.Intn(len(shuffleStates)) + 1
@@ -218,24 +218,24 @@ func generateNFA() string {
 
 func nfaSimulator() []Run {
 	args := []string{
-		"    | a | b | c |\n→ 0 |{0}|{0}|{0,1}| \n  1 |{2}| ∅ |  ∅ |\n  2 | ∅ |{3}|  ∅ |\n F3 | ∅ | ∅ | ∅ |\nacbcab\nε\nacbca",
-		"    | a | b | c |\n→ 0 |{0}|{0}|{0,1}| \n  1 |{2}| ∅ |  ∅ |\n  2 | ∅ |{3}|  ∅ |\n F3 |{3}|{3}|{3}|\nacbcababc",
-		"    | a | b | c |\n→ 0 | ∅ | ∅ |{1}| \n  1 |{2}| ∅ |  ∅ |\n  2 | ∅ |{3}|  ∅ |\n F3 |{3}|{3}|{3}|\ncab\nacbcab",
-		"    | a | b | c |\n→ 0 |{0}|{0}|{0,1}| \n  1 |{2}|{2}|{2}|\n  2 |{3}|{3}|{3}|\n F3 | ∅ | ∅ | ∅ |\nacbcabcba\ncabca",
-		"    | w | e | b | a | y | x |\n→ 1 |{1,2}|{1,5}|{1}|{1}|{1}|{1}|\n  2 | ∅ |{3}| ∅ | ∅ | ∅ | ∅ |\n  3 | ∅ | ∅ |{4}| ∅ | ∅ | ∅ |\n F4 | ∅ | ∅ | ∅ | ∅ | ∅ | ∅ |\n  5 | ∅ | ∅ |{6}| ∅ | ∅ | ∅ |\n  6 | ∅ | ∅ | ∅ |{7}| ∅ | ∅ |\n  7 | ∅ | ∅ | ∅ | ∅ |{8}| ∅ |\n F8 | ∅ | ∅ | ∅ | ∅ | ∅ | ∅ |\nebay\nwwweb\nxwe",
-		"    | y | 8 | z | 1 | r | v | 7 | u | i | h | b | j | 3 | n | w | x | 0 | a |\n F2 |{1,2,4}| ∅ |{1,2,4}|{1,4}|{1,2}|{1,2,4}|{1,4}|{1,2,4}|{4}|{1,4}|{4}| ∅ |{1,2}| ∅ |{1,2,4}| ∅ | ∅ |{1,2,4}|\n  1 |{1,2,4}|{1,2,4}|{1}|{1,2,4}|{1,2,4}| ∅ |{2,4}|{2,4}|{1,2,4}|{1,2,4}|{2}|{1,2}|{1,2,4}|{2,4}|{2}|{1,2,4}| ∅ |{1,4}|\n→F4 |{2,4}|{2}|{1,4}|{2,4}|{1,2,4}|{1,2,4}|{4}|{1,2,4}| ∅ |{4}| ∅ |{1,2}|{1,2}|{1,2,4}|{1,2,4}|{1,2}|{4}|{1,2,4}|\n0x037azy71uwnh7jnxin\nx7j1b017au0unr3xwrbv8uu8xrr",
-		"    | j | p |\n→ 0 |{8}|{2,4,8}|\n F2 | ∅ | ∅ |\n  8 | ∅ | ∅ |\n F7 |{4,7}|{0,2,4,7,8}|\n F4 |{0,2,8}|{0,7}|\nppj\npjp\nε\nε",
-		"    | a | h | p |\n  1 |{1}|{1,9}|{9}|\n→F9 | ∅ |{1}|{1}|\nε\naa",
+		"    | a | b | c |\n> 0 |{0}|{0}|{0,1}| \n  1 |{2}| {} |  {} |\n  2 | {} |{3}|  {} |\n F3 | {} | {} | {} |\nacbcab\nε\nacbca",
+		"    | a | b | c |\n> 0 |{0}|{0}|{0,1}| \n  1 |{2}| {} |  {} |\n  2 | {} |{3}|  {} |\n F3 |{3}|{3}|{3}|\nacbcababc",
+		"    | a | b | c |\n> 0 | {} | {} |{1}| \n  1 |{2}| {} |  {} |\n  2 | {} |{3}|  {} |\n F3 |{3}|{3}|{3}|\ncab\nacbcab",
+		"    | a | b | c |\n> 0 |{0}|{0}|{0,1}| \n  1 |{2}|{2}|{2}|\n  2 |{3}|{3}|{3}|\n F3 | {} | {} | {} |\nacbcabcba\ncabca",
+		"    | w | e | b | a | y | x |\n> 1 |{1,2}|{1,5}|{1}|{1}|{1}|{1}|\n  2 | {} |{3}| {} | {} | {} | {} |\n  3 | {} | {} |{4}| {} | {} | {} |\n F4 | {} | {} | {} | {} | {} | {} |\n  5 | {} | {} |{6}| {} | {} | {} |\n  6 | {} | {} | {} |{7}| {} | {} |\n  7 | {} | {} | {} | {} |{8}| {} |\n F8 | {} | {} | {} | {} | {} | {} |\nebay\nwwweb\nxwe",
+		"    | y | 8 | z | 1 | r | v | 7 | u | i | h | b | j | 3 | n | w | x | 0 | a |\n F2 |{1,2,4}| {} |{1,2,4}|{1,4}|{1,2}|{1,2,4}|{1,4}|{1,2,4}|{4}|{1,4}|{4}| {} |{1,2}| {} |{1,2,4}| {} | {} |{1,2,4}|\n  1 |{1,2,4}|{1,2,4}|{1}|{1,2,4}|{1,2,4}| {} |{2,4}|{2,4}|{1,2,4}|{1,2,4}|{2}|{1,2}|{1,2,4}|{2,4}|{2}|{1,2,4}| {} |{1,4}|\n>F4 |{2,4}|{2}|{1,4}|{2,4}|{1,2,4}|{1,2,4}|{4}|{1,2,4}| {} |{4}| {} |{1,2}|{1,2}|{1,2,4}|{1,2,4}|{1,2}|{4}|{1,2,4}|\n0x037azy71uwnh7jnxin\nx7j1b017au0unr3xwrbv8uu8xrr",
+		"    | j | p |\n> 0 |{8}|{2,4,8}|\n F2 | {} | {} |\n  8 | {} | {} |\n F7 |{4,7}|{0,2,4,7,8}|\n F4 |{0,2,8}|{0,7}|\nppj\npjp\nε\nε",
+		"    | a | h | p |\n  1 |{1}|{1,9}|{9}|\n>F9 | {} |{1}|{1}|\nε\naa",
 	}
 	results := []string{
 		"{0,3} Accept\n{0} Reject\n{0,2} Reject",
 		"{0,1,3} Accept",
-		"{3} Accept\n∅ Reject",
+		"{3} Accept\n{} Reject",
 		"{0,3} Accept\n{0,2} Reject",
 		"{1,8} Accept\n{1,4,6} Accept\n{1,3,5} Reject",
-		"∅ Reject\n{1,2,4} Accept",
+		"{} Reject\n{1,2,4} Accept",
 		"{4,7,8} Accept\n{2,4,8} Accept\n{0} Reject\n{0} Reject",
-		"{9} Accept\n∅ Reject",
+		"{9} Accept\n{} Reject",
 	}
 
 	for i := 0; i < 12; i++ {
