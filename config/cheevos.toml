@@ -335,6 +335,12 @@ emoji       = '📐'
 description = 'Solve your ninetieth hole.'
 target      = 90
 
+[['Total Holes']]
+name        = 'Centenarian'
+emoji       = '💯'
+description = 'Solve your hundredth hole.'
+target      = 100
+
 # TODO
 # [['Total Holes']]
 # name        = 'That’s Gross!'
