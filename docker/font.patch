@@ -1,0 +1,67 @@
+From e63e4fa60b80053b87f32b7089c2a1debe7beec9 Mon Sep 17 00:00:00 2001
+From: SpacingBat3 <git@spacingbat3.anonaddy.com>
+Date: Sat, 4 Nov 2023 17:48:55 +0100
+Subject: [PATCH] Fix deps for modern Node.js versions.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+• Replace `unzip` package with `unzipper`.
+• Remove `rmdir` package (literally once-liner in Node API can replace,
+  maybe in the past it was useful but now it's literally junk library).
+• Overall update dependencies to the latest version available (except
+  devDependencies for now).
+---
+ layerize.js  |  5 ++---
+ package.json | 10 +++-------
+ 2 files changed, 5 insertions(+), 10 deletions(-)
+
+diff --git a/layerize.js b/layerize.js
+index 2fe5dc9..277a2ac 100644
+--- a/layerize.js
++++ b/layerize.js
+@@ -1,6 +1,5 @@
+ var fs = require('fs'),
+-    rmdir = require('rmdir'),
+-    unzip = require('unzip'),
++    unzip = require('unzipper'),
+     xmlbuilder = require('xmlbuilder'),
+     xml2js = require('xml2js');
+ 
+@@ -718,7 +717,7 @@ function generateTTX() {
+ }
+ 
+ // Delete and re-create target directory, to remove any pre-existing junk
+-rmdir(targetDir, function () {
++fs.rm(targetDir, {recursive:true,force:true}, function () {
+     fs.mkdirSync(targetDir);
+     fs.mkdirSync(targetDir + "/glyphs");
+     fs.mkdirSync(targetDir + "/colorGlyphs");
+diff --git a/package.json b/package.json
+index 406e81f..6855044 100644
+--- a/package.json
++++ b/package.json
+@@ -21,11 +21,10 @@
+   "dependencies": {
+     "grunt": "^1.4.1",
+     "grunt-cli": "^1.4.3",
+-    "grunt-webfonts": "^4.0.2",
++    "grunt-webfonts": "^5.0.0",
+     "load-grunt-tasks": "^5.1.0",
+-    "rmdir": "^1.2.0",
+-    "unzip": "^0.1.11",
+-    "xml2js": "^0.4.23",
++    "unzipper": "^0.10.14",
++    "xml2js": "^0.6.2",
+     "xmlbuilder": "^15.1.1"
+   },
+   "keywords": [
+@@ -41,8 +40,5 @@
+   },
+   "scripts": {
+     "grunt": "grunt"
+-  },
+-  "resolutions": {
+-    "graceful-fs": "^4.2.9"
+   }
+ }

@@ -1,11 +1,15 @@
-FROM node:10.24.1-buster-slim
+FROM node:21.4.0-bookworm-slim
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
-    ca-certificates fontforge fonttools git make python-fontforge unzip woff2 zip
+    ca-certificates fontforge fonttools git make python3-fontforge unzip woff2 zip
 
-RUN git clone -b v0.6.0 https://github.com/mozilla/twemoji-colr.git
+RUN git clone -b v0.7.0 https://github.com/mozilla/twemoji-colr.git
 
 WORKDIR twemoji-colr
+
+# https://github.com/mozilla/twemoji-colr/pull/72
+COPY font.patch /tmp/
+RUN git apply /tmp/font.patch
 
 RUN npm install
 
