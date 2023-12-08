@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
 )
 
@@ -68,6 +69,14 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	cheevoIDs := func(cheevos []*config.Cheevo) []string {
+		ids := make([]string, len(cheevos))
+		for i, cheevo := range cheevos {
+			ids[i] = cheevo.ID
+		}
+		return ids
+	}
+
 	cheevoProgress(
 		`SELECT pangramglot(array_agg(DISTINCT lang))
 		   FROM solutions
@@ -126,10 +135,7 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 		`SELECT COUNT(DISTINCT hole)
 		   FROM solutions
 		  WHERE NOT failing AND user_id = $1`,
-		"fore", "up-to-eleven", "bakers-dozen", "the-watering-hole",
-		"blackjack", "rule-34", "forty-winks", "dont-panic", "bullseye",
-		"gone-in-60-holes", "cunning-linguist", "phileas-fogg", "x86",
-		"right-on",
+		cheevoIDs(config.CheevoTree["Total Holes"])...,
 	)
 
 	cheevoProgress(
@@ -154,8 +160,7 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 
 	cheevoProgress(
 		"SELECT COALESCE(MAX(points), 0) FROM points WHERE user_id = $1",
-		"big-brother", "its-over-9000", "twenty-kiloleagues",
-		"marathon-runner", "0xdead",
+		cheevoIDs(config.CheevoTree["Total Points"])...,
 	)
 
 	render(w, r, "golfer/cheevos", data, golfer.Name)
