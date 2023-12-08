@@ -58,7 +58,7 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 	// TODO Bake it into the cheevos table rather than calculating on the fly.
 	cheevoProgress := func(sql string, cheevoIDs ...string) {
 		var count int
-		if err := db.QueryRow(sql, golfer.ID).Scan(&count); err != nil {
+		if err := db.Get(&count, sql, golfer.ID); err != nil {
 			panic(err)
 		}
 
