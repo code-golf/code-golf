@@ -1,6 +1,6 @@
-FROM alpine:3.18 AS builder
+FROM alpine:3.19 AS builder
 
-ENV VERSION=79722e2999
+ENV VERSION=2780e5eb57
 
 RUN apk add --no-cache build-base curl
 
@@ -12,7 +12,7 @@ COPY kwrapper.c /
 
 RUN gcc -static -s -o kwrapper kwrapper.c
 
-FROM codegolf/lang-base
+FROM codegolf/lang-base-no-proc
 
 COPY --from=0 /k/k /kwrapper /usr/bin/
 
