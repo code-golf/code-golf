@@ -754,8 +754,8 @@ end.
 '''
 
 [Perl]
-size    = '5.43 MiB'
-version = '5.38.1'
+size    = '5.46 MiB'
+version = '5.38.2'
 website = 'https://www.perl.org'
 example = '''
 # Printing

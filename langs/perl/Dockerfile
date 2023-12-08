@@ -1,8 +1,8 @@
-FROM alpine:3.18 AS builder
+FROM alpine:3.19 AS builder
 
 RUN apk add --no-cache build-base curl
 
-ENV VER 5.38.1
+ENV VER 5.38.2
 
 RUN curl https://www.cpan.org/src/5.0/perl-$VER.tar.xz | tar xJ
 
