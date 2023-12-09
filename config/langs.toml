@@ -824,8 +824,8 @@ example = '''
 '''
 
 [Python]
-size    = '70.4 MiB'
-version = '3.12.0'
+size    = '71 MiB'
+version = '3.12.1'
 website = 'https://www.python.org'
 example = '''
 import sys
