@@ -11,6 +11,7 @@ constant %paths = (
     'C#'         => 'en.wikipedia.org/wiki/C_Sharp_(programming_language)',
     'C++'        => 'en.wikipedia.org/wiki/Clang',
     'COBOL'      => 'en.wikipedia.org/wiki/GnuCOBOL',
+    'Clojure'    => 'en.wikipedia.org/wiki/Clojure',
     'Crystal'    => 'en.wikipedia.org/wiki/Crystal_(programming_language)',
     'D'          => 'en.wikipedia.org/wiki/D_(programming_language)',
     'Dart'       => 'en.wikipedia.org/wiki/Dart_(programming_language)',

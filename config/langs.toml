@@ -267,6 +267,23 @@ int main(int argc, char* argv[]) {
 // See: https://clang.llvm.org/cxx_status.html
 '''
 
+[Clojure]
+size    = '377 MiB'
+version = '1.11.1'
+website = 'https://clojure.org'
+example = '''
+; Printing
+(println "Hello, World!")
+
+; Looping
+(dotimes [i 10]
+  (println i))
+
+; Accessing arguments
+(doseq [arg *command-line-args*]
+  (println arg))
+'''
+
 [COBOL]
 size    = '4.48 MiB'
 version = 'GnuCOBOL 3.2.0'

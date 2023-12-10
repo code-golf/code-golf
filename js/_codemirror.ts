@@ -20,6 +20,7 @@ import { vim }                                   from '@replit/codemirror-vim';
 import { assembly }           from '@defasm/codemirror';
 import { brainfuck }          from 'codemirror-lang-brainfuck';
 import { c, csharp, dart }    from './vendor/codemirror-clike';
+import { clojure }            from '@codemirror/legacy-modes/mode/clojure';
 import { cobol }              from './vendor/codemirror-cobol';
 import { commonLisp }         from '@codemirror/legacy-modes/mode/commonlisp';
 import { cpp }                from '@codemirror/lang-cpp';
@@ -100,6 +101,7 @@ export const extensions = {
     'brainfuck':  brainfuck(),
     'c':          StreamLanguage.define(c),
     'c-sharp':    StreamLanguage.define(csharp),
+    'clojure':    StreamLanguage.define(clojure),
     'cobol':      StreamLanguage.define(cobol),
     'cpp':        cpp(),
     'crystal':    StreamLanguage.define(crystal),
