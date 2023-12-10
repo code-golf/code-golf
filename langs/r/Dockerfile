@@ -1,10 +1,9 @@
-FROM alpine:3.18 AS builder
+FROM alpine:3.19 AS builder
 
-RUN apk add --no-cache R=4.3.0-r0 build-base curl perl
+RUN apk add --no-cache R=4.3.1-r1 build-base curl perl
 
-RUN curl https://busybox.net/downloads/busybox-1.36.0.tar.bz2 | tar xj
-
-RUN mv busybox-1.36.0 busybox
+RUN curl https://busybox.net/downloads/busybox-1.36.1.tar.bz2 | tar xj \
+ && mv busybox-* busybox
 
 COPY busybox-config busybox/.config
 
@@ -24,9 +23,9 @@ COPY --from=0 /usr/lib/libbz2.so.1       \
               /usr/lib/libgcc_s.so.1     \
               /usr/lib/libgfortran.so.5  \
               /usr/lib/libgomp.so.1      \
-              /usr/lib/libicudata.so.73  \
-              /usr/lib/libicui18n.so.73  \
-              /usr/lib/libicuuc.so.73    \
+              /usr/lib/libicudata.so.74  \
+              /usr/lib/libicui18n.so.74  \
+              /usr/lib/libicuuc.so.74    \
               /usr/lib/liblzma.so.5      \
               /usr/lib/libncursesw.so.6  \
               /usr/lib/libopenblas.so.3  \

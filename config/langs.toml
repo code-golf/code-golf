@@ -860,8 +860,8 @@ for arg in sys.argv[1:]:
 '''
 
 [R]
-size    = '76.8 MiB'
-version = '4.3.0'
+size    = '79.2 MiB'
+version = '4.3.1'
 website = 'https://www.r-project.org'
 example = '''
 # Printing
