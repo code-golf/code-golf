@@ -147,6 +147,12 @@ emoji       = '😛'
 description = 'Solve any hole in both J and K.'
 
 [['Hole/Lang Specific']]
+name        = 'Mary Had a Little Lambda'
+emoji       = '🐑'
+description = 'Solve <a href=/λ>λ</a> in Clojure, Haskell, and Lisp.'
+target      = 3
+
+[['Hole/Lang Specific']]
 name        = 'Off-the-grid'
 emoji       = '📴'
 description = 'Solve <a href=/sudoku#hexagony>Sudoku</a> or <a href=/sudoku-v2#hexagony>Sudoku v2</a> in Hexagony.'

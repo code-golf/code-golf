@@ -118,6 +118,16 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 		`SELECT COUNT(DISTINCT lang)
 		   FROM solutions
 		  WHERE NOT failing
+		    AND hole = 'λ'
+		    AND lang IN ('clojure', 'haskell', 'lisp')
+		    AND user_id = $1`,
+		"mary-had-a-little-lambda",
+	)
+
+	cheevoProgress(
+		`SELECT COUNT(DISTINCT lang)
+		   FROM solutions
+		  WHERE NOT failing
 		    AND hole = 'musical-chords'
 		    AND lang IN ('c', 'c-sharp', 'd', 'f-sharp')
 		    AND user_id = $1`,

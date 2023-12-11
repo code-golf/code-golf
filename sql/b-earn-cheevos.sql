@@ -114,6 +114,10 @@ BEGIN
     IF langs_for_hole @> '{j,k}' THEN
         earned := earn(earned, 'just-kidding', user_id); END IF;
 
+    -- 🐑 Mary Had a Little Lambda
+    IF hole = 'λ' AND langs_for_hole @> '{clojure,haskell,lisp}' THEN
+        earned := earn(earned, 'mary-had-a-little-lambda', user_id); END IF;
+
     -- 📴 Off-the-grid
     IF hole IN ('sudoku', 'sudoku-v2') AND lang = 'hexagony' THEN
         earned = earn(earned, 'off-the-grid', user_id); END IF;
