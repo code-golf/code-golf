@@ -241,6 +241,10 @@ func play(ctx context.Context, holeID, langID, code string, run *Run) error {
 	case "c":
 		cmd.Args = []string{"/usr/bin/tcc", "-run", "-"}
 	case "clojure":
+		if holeID == "quine" {
+			// Prevent trivial solutions for Quine.
+			code += "(print)"
+		}
 		cmd.Args = []string{"/usr/bin/clojure", "-e", code}
 	case "crystal":
 		cmd.Args = []string{"/usr/bin/crystal", "run", "--stdin-filename", "code.cr", "--"}
