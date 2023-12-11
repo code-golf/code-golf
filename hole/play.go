@@ -241,8 +241,7 @@ func play(ctx context.Context, holeID, langID, code string, run *Run) error {
 	case "c":
 		cmd.Args = []string{"/usr/bin/tcc", "-run", "-"}
 	case "clojure":
-		cmd.Args = []string{"/usr/local/bin/clojure", "-M", "-"}
-		cmd.Env = []string{"HOME=/root", "JAVA_HOME=/opt/java/openjdk", "PATH=/bin:/usr/bin"}
+		cmd.Args = []string{"/usr/bin/clojure", "-e", code}
 	case "crystal":
 		cmd.Args = []string{"/usr/bin/crystal", "run", "--stdin-filename", "code.cr", "--"}
 		cmd.Env = []string{"CRYSTAL_CACHE_DIR=/tmp", "PATH=/usr/bin:/bin"}

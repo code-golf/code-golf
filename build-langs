@@ -63,6 +63,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
                | 'F#'
                | 'PowerShell' { }
             when 'C'          { $ver = "Tiny C Compiler $digits" }
+            when 'Clojure'    { $ver = "Babashka $digits" }
             when 'COBOL'      { $ver = "GnuCOBOL $digits" }
             when 'D'          {
                 $ver ~~ m/ v (\S+) /;

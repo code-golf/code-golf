@@ -1,13 +1,13 @@
-FROM clojure:temurin-21-tools-deps-alpine as builder
+FROM alpine:3.19 AS builder
 
-RUN chown -R nobody: /root
+RUN apk add --no-cache curl
+
+RUN curl -L https://github.com/babashka/babashka/releases/download/v1.3.186/babashka-1.3.186-linux-amd64-static.tar.gz | tar xz
 
 FROM codegolf/lang-base
 
-ENV JAVA_HOME /opt/java/openjdk
-
-COPY --from=0 / /
+COPY --from=0 /bb /usr/bin/clojure
 
 ENTRYPOINT ["clojure"]
 
-CMD ["-M", "-e", "(println (clojure-version))"]
+CMD ["--version"]
