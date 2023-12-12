@@ -260,7 +260,7 @@ links = [
 synopsis = 'Print all primes with distinct digits in ascending order.'
 preamble = '''
 <p>Print all primes whose decimal digits are distinct and appear in ascending
-order. There are 100 such primes, the largest being <b>23456789</b>.
+order. There are <b>100</b> such primes, the largest being <b>23456789</b>.
 '''
 
 ['ASCII Table']
