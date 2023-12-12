@@ -252,6 +252,17 @@ preamble = '''
 </table>
 '''
 
+['Ascending Primes']
+category = 'Sequence'
+links = [
+    { name = 'OEIS A052015', url = '//oeis.org/A052015' },
+]
+synopsis = 'Print all primes with distinct digits in ascending order.'
+preamble = '''
+<p>Print all primes whose decimal digits are distinct and appear in ascending
+order. There are <b>100</b> such primes, the largest being <b>23456789</b>.
+'''
+
 ['ASCII Table']
 category = 'Art'
 links = [
