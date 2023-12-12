@@ -253,6 +253,7 @@ preamble = '''
 '''
 
 ['Ascending Primes']
+experiment = 1050
 category = 'Sequence'
 links = [
     { name = 'OEIS A052015', url = '//oeis.org/A052015' },
