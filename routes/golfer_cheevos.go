@@ -58,13 +58,22 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 	// Caclulate progress
 	// TODO Bake it into the cheevos table rather than calculating on the fly.
 	cheevoProgress := func(sql string, cheevoIDs []string, args ...any) {
-		var count int
-		if err := db.Get(&count, sql, append(args, golfer.ID)...); err != nil {
-			panic(err)
-		}
+		count := -1
 
 		for _, cheevoID := range cheevoIDs {
 			progress := data[cheevoID]
+
+			// No need to calculate progress if they've already earnt it.
+			if progress.Earned != nil {
+				continue
+			}
+
+			if count == -1 {
+				if err := db.Get(&count, sql, append(args, golfer.ID)...); err != nil {
+					panic(err)
+				}
+			}
+
 			progress.Progress = count
 			data[cheevoID] = progress
 		}
