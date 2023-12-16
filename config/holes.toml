@@ -878,8 +878,8 @@ preamble = '''
     </code>.
 '''
 
-['Factorial Factorisation (ascii)']
-experiment = 812
+['Factorial Factorisation ascii']
+experiment = 1055
 category = 'Sequence'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Factorial' },
