@@ -878,6 +878,22 @@ preamble = '''
     </code>.
 '''
 
+['Factorial Factorisation (ascii)']
+experiment = 812
+category = 'Sequence'
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Factorial' },
+]
+synopsis = 'Print the factorisation of 1000!.'
+preamble = '''
+<p>Print the factorisation of 1000!,
+
+<p>
+    <code>
+        2^994*3^498*5^249*7^164*11^98*13^81*17^61*19^54*23^44*...*983*991*997
+    </code>.
+'''
+
 ['Farey Sequence']
 category = 'Sequence'
 links = [
