@@ -241,11 +241,10 @@ func play(ctx context.Context, holeID, langID, code string, run *Run) error {
 	case "c":
 		cmd.Args = []string{"/usr/bin/tcc", "-run", "-"}
 	case "clojure":
-		if holeID == "quine" {
-			// Prevent trivial solutions for Quine.
-			code += "(print)"
-		}
-		cmd.Args = []string{"/usr/bin/clojure", "-e", code}
+		// Appending (print) prevents implicit output of the last form, if it is not nil.
+		// This seems to be a quirk of the Babashka interpreter that only occurs when
+		// providing code via a command line argument.
+		cmd.Args = []string{"/usr/bin/clojure", "-e", code + "(print)"}
 	case "crystal":
 		cmd.Args = []string{"/usr/bin/crystal", "run", "--stdin-filename", "code.cr", "--"}
 		cmd.Env = []string{"CRYSTAL_CACHE_DIR=/tmp", "PATH=/usr/bin:/bin"}
