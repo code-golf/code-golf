@@ -43,6 +43,7 @@ section > a, section > div {
 .icons a:hover {
     background: var(--color);
     color: var(--background);
+    text-decoration: none;
 }
 
 .icons div:not(.earned) {
