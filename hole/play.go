@@ -237,7 +237,7 @@ func play(ctx context.Context, holeID, langID, code string, run *Run) error {
 	case "bash":
 		cmd.Args = []string{"/usr/bin/bash", "-s", "-"}
 	case "brainfuck":
-		cmd.Args = []string{"/usr/bin/brainfuck", "-c", code}
+		cmd.Args = []string{"/usr/bin/brainfuck", "-xc", code}
 	case "c":
 		cmd.Args = []string{"/usr/bin/tcc", "-run", "-"}
 	case "clojure":

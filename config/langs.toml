@@ -173,9 +173,9 @@ end
 '''
 
 [brainfuck]
-size    = '4.39 MiB'
-version = 'fad9a10'
-website = 'https://github.com/primo-ppcg/bf-jit'
+size    = '47 KiB'
+version = '874e785'
+website = 'https://github.com/primo-ppcg/bfci'
 example = '''
 >>Printing
 +[-->-[>>+>-----<<]<--<---]>-.>>>+.>>..+++[.>]<<<<.+++.------.<<-.>>>>+.[<->-]<-.>

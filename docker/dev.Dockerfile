@@ -47,7 +47,6 @@ COPY --from=codegolf/lang-perl       ["/", "/langs/perl/rootfs/"      ] # 5.46 M
 COPY --from=codegolf/lang-tcl        ["/", "/langs/tcl/rootfs/"       ] # 5.23 MiB
 COPY --from=codegolf/lang-fish       ["/", "/langs/fish/rootfs/"      ] # 4.76 MiB
 COPY --from=codegolf/lang-cobol      ["/", "/langs/cobol/rootfs/"     ] # 4.48 MiB
-COPY --from=codegolf/lang-brainfuck  ["/", "/langs/brainfuck/rootfs/" ] # 4.39 MiB
 COPY --from=codegolf/lang-forth      ["/", "/langs/forth/rootfs/"     ] # 2.83 MiB
 COPY --from=codegolf/lang-awk        ["/", "/langs/awk/rootfs/"       ] # 1.77 MiB
 COPY --from=codegolf/lang-c          ["/", "/langs/c/rootfs/"         ] # 1.63 MiB
@@ -59,6 +58,7 @@ COPY --from=codegolf/lang-k          ["/", "/langs/k/rootfs/"         ] #  629 K
 COPY --from=codegolf/lang-wren       ["/", "/langs/wren/rootfs/"      ] #  484 KiB
 COPY --from=codegolf/lang-lua        ["/", "/langs/lua/rootfs/"       ] #  342 KiB
 COPY --from=codegolf/lang-sed        ["/", "/langs/sed/rootfs/"       ] #  232 KiB
+COPY --from=codegolf/lang-brainfuck  ["/", "/langs/brainfuck/rootfs/" ] #   47 KiB
 
 COPY run-lang.c ./
 
