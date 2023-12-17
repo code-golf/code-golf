@@ -81,7 +81,7 @@ description = 'Solve <a href=/seven-segment#assembly>Seven Segment in Assembly</
 [['Hole/Lang Specific']]
 name        = 'Bird Is the Word'
 emoji       = '🐦'
-description = 'Solve <a href=/levenshtein-distance>Levenshtein Distance</a> in any three of AWK, Prolog, SQL, Swift, Tcl, or Wren'
+description = 'Solve <a href=/levenshtein-distance>Levenshtein Distance</a> in any three of <a href=/levenshtein-distance#awk>AWK</a>, <a href=/levenshtein-distance#prolog>Prolog</a>, <a href=/levenshtein-distance#sql>SQL</a>, <a href=/levenshtein-distance#swift>Swift</a>, <a href=/levenshtein-distance#tcl>Tcl</a>, or <a href=/levenshtein-distance#wren>Wren</a>'
 target      = 3
 
 [['Hole/Lang Specific']]
@@ -138,7 +138,7 @@ description = 'Solve <a href=/brainfuck#brainfuck>brainfuck in brainfuck</a>.'
 [['Hole/Lang Specific']]
 name        = 'Jeweler'
 emoji       = '💍'
-description = 'Solve <a href=/diamonds>Diamonds</a> in Crystal and Ruby.'
+description = 'Solve <a href=/diamonds>Diamonds</a> in <a href=/diamonds#crystal>Crystal</a> and <a href=/diamonds#ruby>Ruby</a>.'
 target      = 2
 
 [['Hole/Lang Specific']]
@@ -149,7 +149,7 @@ description = 'Solve any hole in both J and K.'
 [['Hole/Lang Specific']]
 name        = 'Mary Had a Little Lambda'
 emoji       = '🐑'
-description = 'Solve <a href=/λ>λ</a> in Clojure, Haskell, and Lisp.'
+description = 'Solve <a href=/λ>λ</a> in <a href=/λ#clojure>Clojure</a>, <a href=/λ#haskell>Haskell</a>, and <a href=/λ#lisp>Lisp</a>.'
 target      = 3
 
 [['Hole/Lang Specific']]
@@ -176,7 +176,7 @@ description = 'Solve <a href=/quine>Quine</a>'
 [['Hole/Lang Specific']]
 name        = 'Sounds Quite Nice'
 emoji       = '🎺'
-description = 'Solve <a href=/musical-chords>Musical Chords</a> in any three of C, C#, D, or F#.'
+description = 'Solve <a href=/musical-chords>Musical Chords</a> in any three of <a href=/musical-chords#c>C</a>, <a href=/musical-chords#c-sharp>C#</a>, <a href=/musical-chords#d>D</a>, or <a href=/musical-chords#f-sharp>F#</a>.'
 target      = 3
 
 [['Hole/Lang Specific']]

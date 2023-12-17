@@ -96,8 +96,9 @@
             </h2>
     {{ range $category, $cheevos := .Cheevos }}
         {{ range $cheevos }}
-            <div {{ if $.GolferInfo.Earned .ID }} class="earned" {{ end }}
-                title="{{ .Name }} - {{ .Description }}">{{ .Emoji }}</div>
+            <a {{ if $.GolferInfo.Earned .ID }} class="earned" {{ end }}
+                href="/rankings/cheevos/{{ .ID }}"
+                title="{{ .Name }} - {{ .Description }}">{{ .Emoji }}</a>
         {{ end }}
     {{ end }}
         </section>
