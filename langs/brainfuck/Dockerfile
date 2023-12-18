@@ -1,6 +1,6 @@
 FROM alpine:3.18 AS builder
 
-ENV VERSION=b49afe4
+ENV VERSION=35fbeb3
 
 RUN apk add --no-cache curl gcc musl-dev
 

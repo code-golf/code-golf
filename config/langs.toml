@@ -174,7 +174,7 @@ end
 
 [brainfuck]
 size    = '47 KiB'
-version = 'b49afe4'
+version = '35fbeb3'
 website = 'https://github.com/primo-ppcg/bfci'
 example = '''
 >>Printing
