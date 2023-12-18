@@ -46,7 +46,7 @@ section > a, section > div {
     text-decoration: none;
 }
 
-.icons div:not(.earned) {
+#cheevos a:not(.earned) {
     background: var(--light-grey);
     color: transparent;
     text-shadow: 0 0 var(--cheevo-not-earned);
