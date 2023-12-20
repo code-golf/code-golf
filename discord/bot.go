@@ -57,8 +57,19 @@ func init() {
 	}()
 }
 
+func getUsername(id int64, db *sqlx.DB) (name string) {
+	if err := db.QueryRow(
+		`SELECT login FROM users WHERE id = $1`,
+		id,
+	).Scan(&name); err != nil {
+		log.Println(err)
+	}
+
+	return
+}
+
 // recAnnounceToEmbed parses a recAnnouncement object and turns it into a Discord embed
-func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
+func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.MessageEmbed {
 	hole, lang, golfer := announce.Hole, announce.Lang, announce.Golfer
 	imageURL := "https://code.golf/golfers/" + golfer.Name + "/avatar"
 	golferURL := "https://code.golf/golfers/" + golfer.Name
@@ -77,6 +88,14 @@ func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
 		for _, update := range pair {
 			if update.Beat.Valid && fieldValues[update.Scoring] == "" {
 				fieldValues[update.Scoring] = pretty.Comma(int(update.Beat.Int64))
+				if update.OldBestGolferCount.Valid && update.OldBestGolferCount.Int64 > 1 {
+					fieldValues[update.Scoring] += fmt.Sprintf(" (%d golfers)", update.OldBestGolferCount.Int64)
+				} else if update.OldBestGolferID.Valid && update.OldBestGolferID.Int64 != int64(announce.Golfer.ID) {
+					name := getUsername(update.OldBestGolferID.Int64, db)
+					if name != "" {
+						fieldValues[update.Scoring] += fmt.Sprintf(" (%s)", name)
+					}
+				}
 			}
 			if fieldValues[update.Scoring] != "" {
 				fieldValues[update.Scoring] += "  →  "
@@ -233,7 +252,7 @@ func LogNewRecord(
 		if _, err := bot.ChannelMessageEditEmbed(
 			lastAnnouncement.Message.ChannelID,
 			lastAnnouncement.Message.ID,
-			recAnnounceToEmbed(lastAnnouncement),
+			recAnnounceToEmbed(lastAnnouncement, db),
 		); err == nil { // Note that we only return if the embed was edited successfully;
 			return // otherwise, we'll continue forward and send it as a new message
 		}
@@ -248,14 +267,14 @@ func LogNewRecord(
 		hole.ID, lang.ID,
 	).Scan(&prevMessage); err == nil {
 		newMessage, sendErr = bot.ChannelMessageSendComplex(channelID, &discordgo.MessageSend{
-			Embed: recAnnounceToEmbed(announcement),
+			Embed: recAnnounceToEmbed(announcement, db),
 			Reference: &discordgo.MessageReference{
 				MessageID: prevMessage,
 				ChannelID: channelID,
 			},
 		})
 	} else if errors.Is(err, sql.ErrNoRows) {
-		newMessage, sendErr = bot.ChannelMessageSendEmbed(channelID, recAnnounceToEmbed(announcement))
+		newMessage, sendErr = bot.ChannelMessageSendEmbed(channelID, recAnnounceToEmbed(announcement, db))
 	} else {
 		log.Println(err)
 	}
