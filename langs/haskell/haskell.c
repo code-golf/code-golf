@@ -5,7 +5,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-#define VERSION "9.4.4"
+#define VERSION "9.4.7" // FIXME Derive this from GHC somehow.
 
 int main(int argc, char* argv[]) {
     if (argc > 1 && strcmp(argv[1], "--version") == 0) {

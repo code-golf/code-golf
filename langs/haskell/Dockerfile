@@ -1,6 +1,6 @@
-FROM alpine:3.18 AS builder
+FROM alpine:3.19 AS builder
 
-RUN apk add --no-cache build-base ghc=9.4.4-r1
+RUN apk add --no-cache build-base ghc=9.4.7-r1
 
 COPY haskell.c .
 
@@ -18,8 +18,8 @@ RUN find /usr/lib -not \(                    \
     \) -delete
 
 # Delete all the GHC binaries except ghc, runghc
-RUN find /usr/lib/ghc-9.4.4/bin -type f \
-    -not \( -name ghc-9.4.4 -or -name runghc-9.4.4 \) -delete
+RUN find /usr/lib/ghc-9.4.7/bin -type f \
+    -not \( -name ghc-9.4.7 -or -name runghc-9.4.7 \) -delete
 
 FROM codegolf/lang-base
 

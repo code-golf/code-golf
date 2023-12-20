@@ -522,8 +522,8 @@ n*
 '''
 
 [Haskell]
-size    = '405 MiB'
-version = 'Glasgow Haskell Compiler 9.4.4'
+size    = '410 MiB'
+version = 'Glasgow Haskell Compiler 9.4.7'
 website = 'https://www.haskell.org/ghc/'
 example = '''
 import System.Environment
@@ -730,8 +730,8 @@ for arg in commandLineParams():
 '''
 
 [OCaml]
-size    = '85.1 MiB'
-version = '5.1.0'
+size    = '80.6 MiB'
+version = '5.1.1'
 website = 'https://ocaml.org'
 example = '''
 (* Printing *)
