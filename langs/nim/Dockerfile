@@ -1,7 +1,7 @@
-FROM alpine:3.18 AS builder
+FROM alpine:3.19 AS builder
 
 RUN apk add -X http://dl-cdn.alpinelinux.org/alpine/edge/testing --no-cache \
-    curl gcc musl-dev pcre tcc
+    curl gcc musl-dev pcre tcc tcc-libs-static
 
 ENV VER 2.0.0
 
@@ -32,7 +32,8 @@ COPY --from=0 /usr/lib/crt1.o          \
               /usr/lib/libdl.a         \
               /usr/lib/libm.a          \
               /usr/lib/libpcre.so.1    \
-              /usr/lib/librt.a         /usr/lib/
+              /usr/lib/librt.a         \
+              /usr/lib/libtcc.so       /usr/lib/
 COPY --from=0 /nim/lib                 /usr/lib/nim/lib
 COPY --from=0 /usr/lib/tcc             /usr/lib/tcc
 

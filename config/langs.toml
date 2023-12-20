@@ -154,7 +154,7 @@ Next
 '''
 
 [Berry]
-size    = '923 KiB'
+size    = '956 KiB'
 version = '1.1.0'
 website = 'https://berry-lang.github.io'
 example = '''
@@ -173,7 +173,7 @@ end
 '''
 
 [brainfuck]
-size    = '47 KiB'
+size    = '51.1 KiB'
 version = '35fbeb3'
 website = 'https://github.com/primo-ppcg/bfci'
 example = '''
@@ -199,7 +199,7 @@ with 65536 cells; and cells are 8 bit with wrapping;
 '''
 
 [C]
-size    = '1.63 MiB'
+size    = '1.7 MiB'
 version = 'Tiny C Compiler 0.9.27'
 website = 'https://bellard.org/tcc/'
 example = '''
@@ -285,7 +285,7 @@ example = '''
 '''
 
 [COBOL]
-size    = '4.48 MiB'
+size    = '4.56 MiB'
 version = 'GnuCOBOL 3.2.0'
 website = 'https://gnucobol.sourceforge.io'
 example = '''
@@ -432,7 +432,7 @@ command-line get-global [ print ] each
 '''
 
 [Forth]
-size    = '2.83 MiB'
+size    = '2.86 MiB'
 version = 'GNU Forth 0.7.3'
 website = 'https://www.gnu.org/software/gforth/'
 example = '''
@@ -582,7 +582,7 @@ echo each 2}.ARGV
 '''
 
 [Janet]
-size    = '820 KiB'
+size    = '832 KiB'
 version = '1.32.1'
 website = 'https://janet-lang.org'
 example = '''
@@ -673,7 +673,7 @@ example = '''
 '''
 
 [Lisp]
-size    = '30.9 MiB'
+size    = '31.1 MiB'
 version = 'GNU CLISP 2.49.92'
 website = 'https://clisp.sourceforge.io'
 example = '''
@@ -692,7 +692,7 @@ example = '''
 '''
 
 [Lua]
-size    = '342 KiB'
+size    = '354 KiB'
 version = '5.4.6'
 website = 'https://www.lua.org'
 example = '''
@@ -711,7 +711,7 @@ end
 '''
 
 [Nim]
-size    = '15 MiB'
+size    = '14.9 MiB'
 version = '2.0.0'
 website = 'https://nim-lang.org'
 example = '''
@@ -750,7 +750,7 @@ Sys.argv
 '''
 
 [Pascal]
-size    = '30.7 MiB'
+size    = '31.1 MiB'
 version = '3.2.2'
 website = 'https://freepascal.org'
 example = '''
@@ -894,7 +894,7 @@ say 'Hello, World!';
 '''
 
 [Ruby]
-size    = '24.1 MiB'
+size    = '24.2 MiB'
 version = '3.2.2'
 website = 'https://www.ruby-lang.org'
 example = '''
@@ -934,7 +934,7 @@ fn main() {
 '''
 
 [sed]
-size    = '232 KiB'
+size    = '236 KiB'
 version = '4.9'
 website = 'https://www.gnu.org/software/sed/'
 example = '''
@@ -962,7 +962,7 @@ G
 '''
 
 [SQL]
-size    = '1.16 MiB'
+size    = '1.17 MiB'
 version = '3.44.2'
 website = 'https://sqlite.org'
 example = '''
@@ -1005,7 +1005,7 @@ for arg in CommandLine.arguments[1...] {
 '''
 
 [Tcl]
-size    = '5.23 MiB'
+size    = '5.24 MiB'
 version = '8.6.13'
 website = 'https://www.tcl-lang.org'
 example = '''
@@ -1092,7 +1092,7 @@ w
 '''
 
 [Wren]
-size    = '484 KiB'
+size    = '496 KiB'
 version = '0.4.0'
 website = 'https://wren.io'
 example = '''

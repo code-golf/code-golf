@@ -1,4 +1,4 @@
-FROM alpine:3.18 AS builder
+FROM alpine:3.19 AS builder
 
 RUN apk add --no-cache curl gcc make musl-dev python3 readline-dev
 
