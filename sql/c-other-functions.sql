@@ -26,7 +26,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TYPE hole_best_ret AS (strokes int, rank int, joint bool, user_id int);
+CREATE TYPE hole_best_ret AS (strokes int, rank int, golfer_count int, user_id int);
 
 CREATE FUNCTION hole_best(hole hole, lang lang, scoring scoring)
 RETURNS SETOF hole_best_ret AS $$
@@ -37,7 +37,7 @@ BEGIN
               FROM solutions
              WHERE NOT failing AND hole = $1 AND lang = $2 AND scoring = $3
         ) SELECT %I, rank::int,
-                 (SELECT COUNT(*) != 1 FROM ranks r WHERE r.rank = ranks.rank),
+                 (SELECT COUNT(*)::int FROM ranks r WHERE r.rank = ranks.rank),
                  user_id
             FROM ranks
         ORDER BY rank
@@ -56,25 +56,27 @@ CREATE FUNCTION pangramglot(langs lang[]) RETURNS int IMMUTABLE RETURN (
 );
 
 CREATE TYPE save_solution_ret AS (
-    beat_bytes           int,
-    beat_chars           int,
-    earned               cheevo[],
-    new_bytes            int,
-    new_bytes_joint      bool,
-    new_bytes_rank       int,
-    new_chars            int,
-    new_chars_joint      bool,
-    new_chars_rank       int,
-    old_bytes            int,
-    old_bytes_joint      bool,
-    old_bytes_rank       int,
-    old_chars            int,
-    old_chars_joint      bool,
-    old_chars_rank       int,
-    old_best_bytes       int,
-    old_best_bytes_joint bool,
-    old_best_chars       int,
-    old_best_chars_joint bool
+    beat_bytes                  int,
+    beat_chars                  int,
+    earned                      cheevo[],
+    new_bytes                   int,
+    new_bytes_joint             bool,
+    new_bytes_rank              int,
+    new_chars                   int,
+    new_chars_joint             bool,
+    new_chars_rank              int,
+    old_bytes                   int,
+    old_bytes_joint             bool,
+    old_bytes_rank              int,
+    old_chars                   int,
+    old_chars_joint             bool,
+    old_chars_rank              int,
+    old_best_bytes              int,
+    old_best_bytes_golfer_count int,
+    old_best_bytes_golfer_id    int,
+    old_best_chars              int,
+    old_best_chars_golfer_count int,
+    old_best_chars_golfer_id    int
 );
 
 CREATE FUNCTION save_solution(
@@ -99,9 +101,12 @@ BEGIN
     ret.old_bytes_joint := rank.joint;
     ret.old_bytes_rank  := rank.rank;
 
-    old_best                 := hole_best(hole, lang, 'bytes');
-    ret.old_best_bytes       := old_best.strokes;
-    ret.old_best_bytes_joint := old_best.joint;
+    old_best                        := hole_best(hole, lang, 'bytes');
+    ret.old_best_bytes              := old_best.strokes;
+    ret.old_best_bytes_golfer_count := old_best.golfer_count;
+    IF old_best.golfer_count = 1 THEN
+        ret.old_best_bytes_golfer_id := old_best.user_id;
+    END IF;
 
     IF chars IS NOT NULL THEN
         rank                := hole_rank(hole, lang, 'chars', user_id);
@@ -109,9 +114,12 @@ BEGIN
         ret.old_chars_joint := rank.joint;
         ret.old_chars_rank  := rank.rank;
 
-        old_best                 := hole_best(hole, lang, 'chars');
-        ret.old_best_chars       := old_best.strokes;
-        ret.old_best_chars_joint := old_best.joint;
+        old_best                        := hole_best(hole, lang, 'chars');
+        ret.old_best_chars              := old_best.strokes;
+        ret.old_best_chars_golfer_count := old_best.golfer_count;
+        IF old_best.golfer_count = 1 THEN
+            ret.old_best_chars_golfer_id := old_best.user_id;
+        END IF;
     END IF;
 
     -- Update solutions. First bytes, then chars.

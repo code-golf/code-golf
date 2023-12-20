@@ -106,12 +106,14 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			        old_bytes_joint, old_bytes_rank, old_bytes,
 			        new_bytes_joint, new_bytes_rank, new_bytes,
 			        beat_bytes,
-			        old_best_bytes_joint,
+			        old_best_bytes_golfer_count,
+			        old_best_bytes_golfer_id,
 			        old_best_bytes,
 			        old_chars_joint, old_chars_rank, old_chars,
 			        new_chars_joint, new_chars_rank, new_chars,
 			        beat_chars,
-			        old_best_chars_joint,
+			        old_best_chars_golfer_count,
+			        old_best_chars_golfer_id,
 			        old_best_chars
 			   FROM save_solution(
 			            bytes   := CASE WHEN $3 = 'assembly'::lang
@@ -137,7 +139,8 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			&out.RankUpdates[0].To.Rank,
 			&out.RankUpdates[0].To.Strokes,
 			&out.RankUpdates[0].Beat,
-			&out.RankUpdates[0].OldBestJoint,
+			&out.RankUpdates[0].OldBestGolferCount,
+			&out.RankUpdates[0].OldBestGolferID,
 			&out.RankUpdates[0].OldBestStrokes,
 			&out.RankUpdates[1].From.Joint,
 			&out.RankUpdates[1].From.Rank,
@@ -146,7 +149,8 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			&out.RankUpdates[1].To.Rank,
 			&out.RankUpdates[1].To.Strokes,
 			&out.RankUpdates[1].Beat,
-			&out.RankUpdates[1].OldBestJoint,
+			&out.RankUpdates[1].OldBestGolferCount,
+			&out.RankUpdates[1].OldBestGolferID,
 			&out.RankUpdates[1].OldBestStrokes,
 		); err != nil {
 			panic(err)
@@ -168,7 +172,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 				if !rank.To.Joint.Bool {
 					recordUpdates = append(recordUpdates, rank)
 				}
-				// TODO else if !rank.OldBestJoint.Bool { do discord post for matched diamonds }
+				// TODO else if rank.OldBestGolferCount.Valid && rank.OldBestGolferCount.Int64 == 1 { do discord post for matched diamonds }
 				// Github #629
 			}
 		}

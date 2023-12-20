@@ -60,12 +60,13 @@ type RankUpdateFromTo struct {
 }
 
 type RankUpdate struct {
-	Scoring        string           `json:"scoring"`
-	From           RankUpdateFromTo `json:"from"`
-	To             RankUpdateFromTo `json:"to"`
-	Beat           null.Int         `json:"beat"`
-	OldBestJoint   null.Bool        `json:"oldBestJoint"`
-	OldBestStrokes null.Int         `json:"oldBestStrokes"`
+	Scoring            string           `json:"scoring"`
+	From               RankUpdateFromTo `json:"from"`
+	To                 RankUpdateFromTo `json:"to"`
+	Beat               null.Int         `json:"beat"`
+	OldBestGolferCount null.Int         `json:"oldBestGolferCount"` // Number of golfers that previously held the gold medal.
+	OldBestGolferID    null.Int         `json:"oldBestGolferID"`    // ID of the golfer that previously held the diamond.
+	OldBestStrokes     null.Int         `json:"oldBestStrokes"`
 }
 
 func (f *FailingSolutions) Scan(src any) error {
