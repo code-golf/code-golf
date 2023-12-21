@@ -26,24 +26,24 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TYPE hole_best_ret AS (strokes int, rank int, golfer_count int, user_id int);
+CREATE TYPE hole_best_except_user_ret AS (strokes int, golfer_count int, user_id int);
 
-CREATE FUNCTION hole_best(hole hole, lang lang, scoring scoring)
-RETURNS SETOF hole_best_ret AS $$
+CREATE FUNCTION hole_best_except_user(hole hole, lang lang, scoring scoring, user_id int)
+RETURNS SETOF hole_best_except_user_ret AS $$
 BEGIN
     RETURN QUERY EXECUTE FORMAT(
         'WITH ranks AS (
             SELECT %I, RANK() OVER (ORDER BY %I), user_id
               FROM solutions
-             WHERE NOT failing AND hole = $1 AND lang = $2 AND scoring = $3
-        ) SELECT %I, rank::int,
+             WHERE NOT failing AND hole = $1 AND lang = $2 AND scoring = $3 AND user_id != $4
+        ) SELECT %I,
                  (SELECT COUNT(*)::int FROM ranks r WHERE r.rank = ranks.rank),
                  user_id
             FROM ranks
         ORDER BY rank
            LIMIT 1',
         scoring, scoring, scoring
-    ) USING hole, lang, scoring;
+    ) USING hole, lang, scoring, user_id;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -56,8 +56,6 @@ CREATE FUNCTION pangramglot(langs lang[]) RETURNS int IMMUTABLE RETURN (
 );
 
 CREATE TYPE save_solution_ret AS (
-    beat_bytes                  int,
-    beat_chars                  int,
     earned                      cheevo[],
     new_bytes                   int,
     new_bytes_joint             bool,
@@ -84,7 +82,7 @@ CREATE FUNCTION save_solution(
 ) RETURNS save_solution_ret AS $$
 #variable_conflict use_variable
 DECLARE
-    old_best    hole_best_ret;
+    old_best    hole_best_except_user_ret;
     old_bytes   int;
     old_chars   int;
     old_strokes int;
@@ -101,11 +99,17 @@ BEGIN
     ret.old_bytes_joint := rank.joint;
     ret.old_bytes_rank  := rank.rank;
 
-    old_best                        := hole_best(hole, lang, 'bytes');
-    ret.old_best_bytes              := old_best.strokes;
-    ret.old_best_bytes_golfer_count := old_best.golfer_count;
-    IF old_best.golfer_count = 1 THEN
-        ret.old_best_bytes_golfer_id := old_best.user_id;
+    SELECT MIN(solutions.bytes) INTO ret.old_best_bytes
+      FROM solutions
+     WHERE solutions.hole  = hole
+       AND solutions.lang  = lang;
+
+    old_best := hole_best_except_user(hole, lang, 'bytes', user_id);
+    IF old_best.strokes = ret.old_best_bytes THEN
+        ret.old_best_bytes_golfer_count := old_best.golfer_count;
+        IF old_best.golfer_count = 1 THEN
+            ret.old_best_bytes_golfer_id := old_best.user_id;
+        END IF;
     END IF;
 
     IF chars IS NOT NULL THEN
@@ -114,11 +118,17 @@ BEGIN
         ret.old_chars_joint := rank.joint;
         ret.old_chars_rank  := rank.rank;
 
-        old_best                        := hole_best(hole, lang, 'chars');
-        ret.old_best_chars              := old_best.strokes;
-        ret.old_best_chars_golfer_count := old_best.golfer_count;
-        IF old_best.golfer_count = 1 THEN
-            ret.old_best_chars_golfer_id := old_best.user_id;
+        SELECT MIN(solutions.chars) INTO ret.old_best_chars
+          FROM solutions
+         WHERE solutions.hole  = hole
+           AND solutions.lang  = lang;
+
+        old_best := hole_best_except_user(hole, lang, 'chars', user_id);
+        IF old_best.strokes = ret.old_best_chars THEN
+            ret.old_best_chars_golfer_count := old_best.golfer_count;
+            IF old_best.golfer_count = 1 THEN
+                ret.old_best_chars_golfer_id := old_best.user_id;
+            END IF;
         END IF;
     END IF;
 
@@ -184,28 +194,6 @@ BEGIN
         ret.new_chars       := rank.strokes;
         ret.new_chars_joint := rank.joint;
         ret.new_chars_rank  := rank.rank;
-    END IF;
-
-    IF ret.new_bytes_rank = ret.old_bytes_rank THEN
-        ret.beat_bytes = ret.old_bytes;
-    ELSE
-        SELECT MIN(solutions.bytes) INTO ret.beat_bytes
-          FROM solutions
-         WHERE solutions.hole  = hole
-           AND solutions.lang  = lang
-           AND solutions.bytes > bytes;
-    END IF;
-
-    IF chars IS NOT NULL THEN
-        IF ret.new_chars_rank = ret.old_chars_rank THEN
-             ret.beat_chars = ret.old_chars;
-        ELSE
-            SELECT MIN(solutions.chars) INTO ret.beat_chars
-              FROM solutions
-             WHERE solutions.hole  = hole
-               AND solutions.lang  = lang
-               AND solutions.chars > chars;
-        END IF;
     END IF;
 
     ret.earned := earn_cheevos(hole, lang, user_id);

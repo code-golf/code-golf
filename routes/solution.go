@@ -105,13 +105,11 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			`SELECT earned,
 			        old_bytes_joint, old_bytes_rank, old_bytes,
 			        new_bytes_joint, new_bytes_rank, new_bytes,
-			        beat_bytes,
 			        old_best_bytes_golfer_count,
 			        old_best_bytes_golfer_id,
 			        old_best_bytes,
 			        old_chars_joint, old_chars_rank, old_chars,
 			        new_chars_joint, new_chars_rank, new_chars,
-			        beat_chars,
 			        old_best_chars_golfer_count,
 			        old_best_chars_golfer_id,
 			        old_best_chars
@@ -138,7 +136,6 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			&out.RankUpdates[0].To.Joint,
 			&out.RankUpdates[0].To.Rank,
 			&out.RankUpdates[0].To.Strokes,
-			&out.RankUpdates[0].Beat,
 			&out.RankUpdates[0].OldBestGolferCount,
 			&out.RankUpdates[0].OldBestGolferID,
 			&out.RankUpdates[0].OldBestStrokes,
@@ -148,7 +145,6 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			&out.RankUpdates[1].To.Joint,
 			&out.RankUpdates[1].To.Rank,
 			&out.RankUpdates[1].To.Strokes,
-			&out.RankUpdates[1].Beat,
 			&out.RankUpdates[1].OldBestGolferCount,
 			&out.RankUpdates[1].OldBestGolferID,
 			&out.RankUpdates[1].OldBestStrokes,
@@ -160,6 +156,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			out.Cheevos = append(out.Cheevos, config.CheevoByID[cheevo])
 		}
 
+		diamondMatches := make([]Golfer.RankUpdate, 0, 2)
 		recordUpdates := make([]Golfer.RankUpdate, 0, 2)
 
 		for _, rank := range out.RankUpdates {
@@ -171,17 +168,17 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			if rank.To.Rank.Int64 == 1 {
 				if !rank.To.Joint.Bool {
 					recordUpdates = append(recordUpdates, rank)
+				} else if rank.OldBestGolferCount.Valid && rank.OldBestGolferCount.Int64 == 1 {
+					diamondMatches = append(diamondMatches, rank)
 				}
-				// TODO else if rank.OldBestGolferCount.Valid && rank.OldBestGolferCount.Int64 == 1 { do discord post for matched diamonds }
-				// Github #629
 			}
 		}
 
 		// If any of the updates are record breakers, announce them on Discord
-		if len(recordUpdates) > 0 {
+		if len(diamondMatches) > 0 || len(recordUpdates) > 0 {
 			go discord.LogNewRecord(
 				golfer, config.HoleByID[in.Hole], config.LangByID[in.Lang],
-				recordUpdates, db,
+				recordUpdates, diamondMatches, db,
 			)
 		}
 

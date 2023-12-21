@@ -247,7 +247,6 @@ export interface RankUpdate {
     scoring: string,
     from: RankFromTo,
     to: RankFromTo,
-    beat: number | null,
     oldBestGolferId: number | null,
     oldBestGolferCount: number | null,
     oldBestStrokes: number | null,
@@ -352,13 +351,21 @@ const diamondPopups = (updates: RankUpdate[]) => {
 
     for (const i of [0, 1] as const) {
         const update = updates[i];
-        if (update.from.rank != 1 && update.to.rank == 1) {
+        if (update.to.rank !== 1) {
+            continue;
+        }
+
+        if (update.from.rank !== 1) {
             if (!update.to.joint) {
                 newDiamonds.push(update.scoring);
             }
             else if (update.oldBestGolferCount === 1) {
                 matchedDiamonds.push(update.scoring);
             }
+        }
+        else if (update.from.joint && !update.to.joint) {
+            // Transition from golf to a new diamond.
+            newDiamonds.push(update.scoring);
         }
     }
 
