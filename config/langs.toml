@@ -789,7 +789,7 @@ say for @ARGV;
 
 [PHP]
 size    = '8.4 MiB'
-version = '8.3.0'
+version = '8.3.1'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -914,7 +914,7 @@ end
 
 [Rust]
 size    = '429 MiB'
-version = '1.74.0'
+version = '1.74.1'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
