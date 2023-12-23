@@ -74,11 +74,11 @@ font:
 	    docker rm $$id
 
 lint:
-	@node_modules/typescript/bin/tsc --project tsconfig.json
-	@node_modules/.bin/eslint --ext ts,tsx js/
-
 	@docker run --rm -v $(CURDIR):/app -w /app \
 	    golangci/golangci-lint:v1.55.2 golangci-lint run
+
+	@node_modules/typescript/bin/tsc --project tsconfig.json
+	@node_modules/.bin/eslint --ext ts,tsx js/
 
 live:
 	@docker buildx build --pull --push \
