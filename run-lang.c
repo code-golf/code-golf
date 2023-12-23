@@ -20,6 +20,7 @@
 #define __NR_memfd_secret 447
 #define __NR_futex_waitv  449
 #define __NR_cachestat    451
+#define __NR_fchmodat2    452
 
 #define NOBODY 65534
 
@@ -165,6 +166,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(faccessat2), // 439
         ALLOW(fchmod),     // 91
         ALLOW(fchmodat),   // 268
+        ALLOW(fchmodat2),  // 452
         ALLOW(fchown),     // 93
         ALLOW(fchownat),   // 260
         ALLOW(fstat),      // 5
