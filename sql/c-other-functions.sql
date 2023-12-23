@@ -104,11 +104,13 @@ BEGIN
      WHERE solutions.hole  = hole
        AND solutions.lang  = lang;
 
-    old_best := hole_best_except_user(hole, lang, 'bytes', user_id);
-    IF old_best.strokes = ret.old_best_bytes THEN
-        ret.old_best_bytes_golfer_count := old_best.golfer_count;
-        IF old_best.golfer_count = 1 THEN
-            ret.old_best_bytes_golfer_id := old_best.user_id;
+    IF bytes <= ret.old_best_bytes THEN
+        old_best := hole_best_except_user(hole, lang, 'bytes', user_id);
+        IF old_best.strokes = ret.old_best_bytes THEN
+            ret.old_best_bytes_golfer_count := old_best.golfer_count;
+            IF old_best.golfer_count = 1 THEN
+                ret.old_best_bytes_golfer_id := old_best.user_id;
+            END IF;
         END IF;
     END IF;
 
@@ -123,11 +125,13 @@ BEGIN
          WHERE solutions.hole  = hole
            AND solutions.lang  = lang;
 
-        old_best := hole_best_except_user(hole, lang, 'chars', user_id);
-        IF old_best.strokes = ret.old_best_chars THEN
-            ret.old_best_chars_golfer_count := old_best.golfer_count;
-            IF old_best.golfer_count = 1 THEN
-                ret.old_best_chars_golfer_id := old_best.user_id;
+        IF chars <= ret.old_best_chars THEN
+            old_best := hole_best_except_user(hole, lang, 'chars', user_id);
+            IF old_best.strokes = ret.old_best_chars THEN
+                ret.old_best_chars_golfer_count := old_best.golfer_count;
+                IF old_best.golfer_count = 1 THEN
+                    ret.old_best_chars_golfer_id := old_best.user_id;
+                END IF;
             END IF;
         END IF;
     END IF;
