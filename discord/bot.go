@@ -27,11 +27,12 @@ var (
 
 // Represents a new record announcement message
 type RecAnnouncement struct {
-	Message *discordgo.Message
-	Updates [][]Golfer.RankUpdate
-	Golfer  *Golfer.Golfer
-	Hole    *config.Hole
-	Lang    *config.Lang
+	Message        *discordgo.Message
+	Updates        [][]Golfer.RankUpdate
+	Golfer         *Golfer.Golfer
+	Hole           *config.Hole
+	Lang           *config.Lang
+	IsDiamondMatch bool
 }
 
 var lastAnnouncement *RecAnnouncement
@@ -69,14 +70,19 @@ func getUsername(id int64, db *sqlx.DB) (name string) {
 }
 
 // recAnnounceToEmbed parses a recAnnouncement object and turns it into a Discord embed
-func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.MessageEmbed {
+func recAnnounceToEmbed(announce *RecAnnouncement, isDiamondMatch bool, db *sqlx.DB) *discordgo.MessageEmbed {
 	hole, lang, golfer := announce.Hole, announce.Lang, announce.Golfer
 	imageURL := "https://code.golf/golfers/" + golfer.Name + "/avatar"
 	golferURL := "https://code.golf/golfers/" + golfer.Name
 
+	titlePrefix := "New 💎"
+	if isDiamondMatch {
+		titlePrefix = "💎 Match"
+	}
+
 	// Creating the basic embed
 	embed := &discordgo.MessageEmbed{
-		Title:  fmt.Sprintf("New 🥇 on %s in %s!", hole.Name, lang.Name),
+		Title:  fmt.Sprintf("%s on %s in %s!", titlePrefix, hole.Name, lang.Name),
 		URL:    "https://code.golf/rankings/holes/" + hole.ID + "/" + lang.ID + "/",
 		Fields: make([]*discordgo.MessageEmbedField, 0, 2),
 		Author: &discordgo.MessageEmbedAuthor{Name: golfer.Name, IconURL: imageURL, URL: golferURL},
@@ -86,21 +92,26 @@ func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.Messa
 	fieldValues := make(map[string]string)
 	for _, pair := range announce.Updates {
 		for _, update := range pair {
-			if update.Beat.Valid && fieldValues[update.Scoring] == "" {
-				fieldValues[update.Scoring] = pretty.Comma(int(update.Beat.Int64))
+			if update.OldBestStrokes.Valid && fieldValues[update.Scoring] == "" {
+				fieldValues[update.Scoring] = pretty.Comma(int(update.OldBestStrokes.Int64))
 				if update.OldBestGolferCount.Valid && update.OldBestGolferCount.Int64 > 1 {
+					// Display the number of golfers, excluding the current golfer, that previously held this record.
 					fieldValues[update.Scoring] += fmt.Sprintf(" (%d golfers)", update.OldBestGolferCount.Int64)
 				} else if update.OldBestGolferID.Valid && update.OldBestGolferID.Int64 != int64(announce.Golfer.ID) {
 					name := getUsername(update.OldBestGolferID.Int64, db)
 					if name != "" {
+						// Display the user name of the single golfer, excluding the current golfer, that previously held this record.
 						fieldValues[update.Scoring] += fmt.Sprintf(" (%s)", name)
 					}
 				}
 			}
-			if fieldValues[update.Scoring] != "" {
-				fieldValues[update.Scoring] += "  →  "
+
+			if !update.OldBestStrokes.Valid || update.To.Strokes.Int64 < update.OldBestStrokes.Int64 {
+				if fieldValues[update.Scoring] != "" {
+					fieldValues[update.Scoring] += "  →  "
+				}
+				fieldValues[update.Scoring] += pretty.Comma(int(update.To.Strokes.Int64))
 			}
-			fieldValues[update.Scoring] += pretty.Comma(int(update.To.Strokes.Int64))
 		}
 	}
 
@@ -231,28 +242,49 @@ func LogFailedRejudge(golfer *Golfer.Golfer, hole *config.Hole, lang *config.Lan
 
 // LogNewRecord logs a record breaking solution in Discord.
 func LogNewRecord(
-	golfer *Golfer.Golfer, hole *config.Hole, lang *config.Lang, updates []Golfer.RankUpdate, db *sqlx.DB,
+	golfer *Golfer.Golfer, hole *config.Hole, lang *config.Lang, updates []Golfer.RankUpdate, diamondMatches []Golfer.RankUpdate, db *sqlx.DB,
+) {
+	// If there is a diamond match at the same time as a new diamond, then one is for bytes and
+	// the other is for chars. Log the diamond match first, because the message won't be updated.
+	// Diamond match messages are only modified when there is another diamond match for a different
+	// type of scoring, but there is already a new diamond for the other type of scoring. Because
+	// only the last message may be modified. This ordering reduces the number of total messages in
+	// the case where a diamond is matched and then further improvements are made.
+	if len(diamondMatches) > 0 {
+		logNewRecord(golfer, hole, lang, diamondMatches, true, db)
+	}
+
+	if len(updates) > 0 {
+		logNewRecord(golfer, hole, lang, updates, false, db)
+	}
+}
+
+func logNewRecord(
+	golfer *Golfer.Golfer, hole *config.Hole, lang *config.Lang, updates []Golfer.RankUpdate,
+	isDiamondMatch bool, db *sqlx.DB,
 ) {
 	if bot == nil {
 		return
 	}
 
 	announcement := &RecAnnouncement{
-		Hole:    hole,
-		Lang:    lang,
-		Golfer:  golfer,
-		Updates: [][]Golfer.RankUpdate{updates},
+		Hole:           hole,
+		Lang:           lang,
+		Golfer:         golfer,
+		Updates:        [][]Golfer.RankUpdate{updates},
+		IsDiamondMatch: isDiamondMatch,
 	}
 
 	if lastAnnouncement != nil &&
 		announcement.Lang.ID == lastAnnouncement.Lang.ID &&
 		announcement.Hole.ID == lastAnnouncement.Hole.ID &&
-		announcement.Golfer.ID == lastAnnouncement.Golfer.ID {
+		announcement.Golfer.ID == lastAnnouncement.Golfer.ID &&
+		announcement.IsDiamondMatch == lastAnnouncement.IsDiamondMatch {
 		lastAnnouncement.Updates = append(lastAnnouncement.Updates, updates)
 		if _, err := bot.ChannelMessageEditEmbed(
 			lastAnnouncement.Message.ChannelID,
 			lastAnnouncement.Message.ID,
-			recAnnounceToEmbed(lastAnnouncement, db),
+			recAnnounceToEmbed(lastAnnouncement, isDiamondMatch, db),
 		); err == nil { // Note that we only return if the embed was edited successfully;
 			return // otherwise, we'll continue forward and send it as a new message
 		}
@@ -267,14 +299,14 @@ func LogNewRecord(
 		hole.ID, lang.ID,
 	).Scan(&prevMessage); err == nil {
 		newMessage, sendErr = bot.ChannelMessageSendComplex(channelID, &discordgo.MessageSend{
-			Embed: recAnnounceToEmbed(announcement, db),
+			Embed: recAnnounceToEmbed(announcement, isDiamondMatch, db),
 			Reference: &discordgo.MessageReference{
 				MessageID: prevMessage,
 				ChannelID: channelID,
 			},
 		})
 	} else if errors.Is(err, sql.ErrNoRows) {
-		newMessage, sendErr = bot.ChannelMessageSendEmbed(channelID, recAnnounceToEmbed(announcement, db))
+		newMessage, sendErr = bot.ChannelMessageSendEmbed(channelID, recAnnounceToEmbed(announcement, isDiamondMatch, db))
 	} else {
 		log.Println(err)
 	}
