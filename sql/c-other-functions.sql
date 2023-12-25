@@ -101,8 +101,9 @@ BEGIN
 
     SELECT MIN(solutions.bytes) INTO ret.old_best_bytes
       FROM solutions
-     WHERE solutions.hole  = hole
-       AND solutions.lang  = lang;
+     WHERE solutions.failing = false
+       AND solutions.hole    = hole
+       AND solutions.lang    = lang;
 
     IF bytes <= ret.old_best_bytes THEN
         old_best := hole_best_except_user(hole, lang, 'bytes', user_id);
@@ -122,8 +123,9 @@ BEGIN
 
         SELECT MIN(solutions.chars) INTO ret.old_best_chars
           FROM solutions
-         WHERE solutions.hole  = hole
-           AND solutions.lang  = lang;
+         WHERE solutions.failing = false
+           AND solutions.hole    = hole
+           AND solutions.lang    = lang;
 
         IF chars <= ret.old_best_chars THEN
             old_best := hole_best_except_user(hole, lang, 'chars', user_id);
