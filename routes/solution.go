@@ -156,7 +156,6 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			out.Cheevos = append(out.Cheevos, config.CheevoByID[cheevo])
 		}
 
-		diamondMatches := make([]Golfer.RankUpdate, 0, 2)
 		recordUpdates := make([]Golfer.RankUpdate, 0, 2)
 
 		for _, rank := range out.RankUpdates {
@@ -164,21 +163,20 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 				continue
 			}
 
-			// This keeps track of which updates (if any) represent new records
+			// This keeps track of which updates (if any) represent new records or diamond matches.
 			if rank.To.Rank.Int64 == 1 {
-				if !rank.To.Joint.Bool {
+				if !rank.To.Joint.Bool ||
+					rank.OldBestGolferCount.Valid && rank.OldBestGolferCount.Int64 == 1 {
 					recordUpdates = append(recordUpdates, rank)
-				} else if rank.OldBestGolferCount.Valid && rank.OldBestGolferCount.Int64 == 1 {
-					diamondMatches = append(diamondMatches, rank)
 				}
 			}
 		}
 
 		// If any of the updates are record breakers, announce them on Discord
-		if len(diamondMatches) > 0 || len(recordUpdates) > 0 {
+		if len(recordUpdates) > 0 {
 			go discord.LogNewRecord(
 				golfer, config.HoleByID[in.Hole], config.LangByID[in.Lang],
-				recordUpdates, diamondMatches, db,
+				recordUpdates, db,
 			)
 		}
 
