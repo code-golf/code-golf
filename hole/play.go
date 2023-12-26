@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"embed"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -322,6 +323,8 @@ func play(ctx context.Context, holeID, langID, code string, run *Run) error {
 			run.Stderr = `Quine in TeX must have at least one '\' character.`
 			return nil
 		}
+	case "typescript":
+		cmd.Args = []string{"/usr/bin/node", "/typescript"}
 	default:
 		cmd.Args = []string{"/usr/bin/" + langID, "-"}
 	}
@@ -339,6 +342,7 @@ func play(ctx context.Context, holeID, langID, code string, run *Run) error {
 		// For sed we always need to append a null byte, even if no args exist
 		args := strings.Join(run.Args, "\x00") + "\x00"
 		cmd.Stdin = strings.NewReader(args)
+	case "typescript":
 	default:
 		cmd.Args = append(cmd.Args, run.Args...)
 	}
@@ -352,6 +356,18 @@ func play(ctx context.Context, holeID, langID, code string, run *Run) error {
 		cmd.Stdin = strings.NewReader(preprocessKCode(holeID, code))
 	case "php":
 		cmd.Stdin = strings.NewReader("<?php " + code + " ;")
+	case "typescript":
+		typescriptStdin := &struct {
+			Code string   `json:"code"`
+			Args []string `json:"args"`
+		}{code, run.Args}
+
+		stdin, err := json.Marshal(typescriptStdin)
+		if err != nil {
+			return err
+		}
+
+		cmd.Stdin = bytes.NewReader(stdin)
 	default:
 		cmd.Stdin = strings.NewReader(code)
 	}

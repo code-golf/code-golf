@@ -1046,6 +1046,27 @@ Hello, World!
 \repeat
 '''
 
+[TypeScript]
+size    = '126 MiB'
+version = '5.3.3'
+website = 'https://www.typescriptlang.org/'
+example = '''
+// Printing
+type helloWorld = 'Hello, World\n'
+
+// Looping
+type counterExample<output extends string = '', counter extends 0[] = []> = counter['length'] extends 10
+    ? output
+    : counterExample<`${output}${counter['length']}\n`, [...counter, 0]>
+
+// Accessing arguments
+type arguments<output extends string = '', pos extends 0[] = []> = pos['length'] extends args['length']
+    ? output
+    : arguments<`${output}${args[pos['length']]}\n`, [...pos, 0]>
+
+type output = `${helloWorld}${counterExample}${arguments}`
+'''
+
 [V]
 size    = '49.8 MiB'
 version = '0.4.3'
