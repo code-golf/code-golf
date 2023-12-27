@@ -46,7 +46,9 @@ function checkTypes(wrappedProgram) {
 	const diagnostics = ts.getPreEmitDiagnostics(program)
 	if(diagnostics.length) {
 		throw new Error(diagnostics
-			.map(e => `T${e.code}: ${e.messageText}`)
+			.map(e => `TS${e.code}: ${typeof e.messageText === 'string'
+				? e.messageText
+				: e.messageText.messageText}`)
 			.join('\n'))
 	}
 	
@@ -72,6 +74,9 @@ function checkTypes(wrappedProgram) {
 	let parsedType
 	try {
 		parsedType = JSON.parse(typeString)
+		if(typeof parsedType !== 'string') {
+			throw new Error(typeString)
+		}
 	} catch(err) {
 		throw new Error(typeString)
 	}
