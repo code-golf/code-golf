@@ -28,3 +28,6 @@ rules:
   quotes:                      [ error, single, { avoidEscape: true } ]
   semi:                        [ error, always, { omitLastInOneLineBlock: true } ]
   space-before-function-paren: [ error, { named: never } ]
+
+ignorePatterns:
+  - langs/**/*

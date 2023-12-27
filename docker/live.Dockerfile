@@ -34,6 +34,7 @@ COPY --from=codegolf/lang-elixir     ["/", "/langs/elixir/rootfs/"    ] #  174 M
 COPY --from=codegolf/lang-factor     ["/", "/langs/factor/rootfs/"    ] #  172 MiB
 COPY --from=codegolf/lang-c-sharp    ["/", "/langs/c-sharp/rootfs/"   ] #  151 MiB
 COPY --from=codegolf/lang-f-sharp    ["/", "/langs/f-sharp/rootfs/"   ] #  145 MiB
+COPY --from=codegolf/lang-typescript ["/", "/langs/typescript/rootfs/"] #  126 MiB
 COPY --from=codegolf/lang-cpp        ["/", "/langs/cpp/rootfs/"       ] #  118 MiB
 COPY --from=codegolf/lang-assembly   ["/", "/langs/assembly/rootfs/"  ] # 94.4 MiB
 COPY --from=codegolf/lang-fortran    ["/", "/langs/fortran/rootfs/"   ] # 87.3 MiB
