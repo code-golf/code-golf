@@ -8,3 +8,8 @@
 /sql/
 /t/.precomp/
 .DS_Store
+
+# .NET temporary folders for IDEs
+/langs/c-sharp/obj
+/langs/f-sharp/obj
+/langs/powershell/obj

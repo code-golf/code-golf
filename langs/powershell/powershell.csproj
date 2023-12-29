@@ -4,15 +4,15 @@
         <Nullable>enable</Nullable>
         <OutputType>Exe</OutputType>
         <PublishReadyToRun>true</PublishReadyToRun>
-        <RuntimeIdentifier>linux-musl-x64</RuntimeIdentifier>
-        <TargetFramework>net7.0</TargetFramework>
+        <SelfContained>true</SelfContained>
+        <TargetFramework>net8.0</TargetFramework>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.PowerShell.Commands.Diagnostics" Version="7.3.9"/>
-        <PackageReference Include="Microsoft.PowerShell.Commands.Management"  Version="7.3.9"/>
-        <PackageReference Include="Microsoft.PowerShell.Commands.Utility"     Version="7.3.9"/>
-        <PackageReference Include="Microsoft.PowerShell.ConsoleHost"          Version="7.3.9"/>
-        <PackageReference Include="Microsoft.WSMan.Management"                Version="7.3.9"/>
-        <PackageReference Include="System.Management.Automation"              Version="7.3.9"/>
+        <PackageReference Include="Microsoft.PowerShell.Commands.Diagnostics" Version="7.4.0"/>
+        <PackageReference Include="Microsoft.PowerShell.Commands.Management"  Version="7.4.0"/>
+        <PackageReference Include="Microsoft.PowerShell.Commands.Utility"     Version="7.4.0"/>
+        <PackageReference Include="Microsoft.PowerShell.ConsoleHost"          Version="7.4.0"/>
+        <PackageReference Include="Microsoft.WSMan.Management"                Version="7.4.0"/>
+        <PackageReference Include="System.Management.Automation"              Version="7.4.0"/>
     </ItemGroup>
 </Project>
