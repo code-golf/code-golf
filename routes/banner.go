@@ -2,12 +2,15 @@ package routes
 
 import (
 	"html/template"
+	"strings"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/pretty"
 )
+
+const nextHole = "ascending-primes"
 
 type banner struct {
 	Body template.HTML
@@ -16,18 +19,19 @@ type banner struct {
 
 // TODO Allow a golfer to hide individual banners #709.
 func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
-	/* in := "in " + pretty.Time(time.Date(2023, time.November, 1, 0, 0, 0, 0, time.UTC))
-	if strings.Contains(string(in), "ago") {
-		in = "momentarily"
-	}
+	if hole, ok := config.ExpHoleByID[nextHole]; ok {
+		in := "in " + pretty.Time(hole.Released.AsTime(time.UTC))
+		if strings.Contains(string(in), "ago") {
+			in = "momentarily"
+		}
 
-	hole := config.ExpHoleByID["dfa-simulator"]
-	banners = append(banners, banner{
-		Type: "info",
-		Body: "The <a href=/" + template.HTML(hole.ID) + ">" +
-			template.HTML(hole.Name) + "</a> hole will go live " + in +
-			". Why not try and solve it ahead of time?",
-	}) */
+		banners = append(banners, banner{
+			Type: "info",
+			Body: "The <a href=/" + template.HTML(hole.ID) + ">" +
+				template.HTML(hole.Name) + "</a> hole will go live " + in +
+				". Why not try and solve it ahead of time?",
+		})
+	}
 
 	// Currently all the global banners require a golfer.
 	if golfer == nil {

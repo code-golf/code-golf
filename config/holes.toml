@@ -258,6 +258,7 @@ category = 'Sequence'
 links = [
     { name = 'OEIS A052015', url = '//oeis.org/A052015' },
 ]
+released = 2024-01-01
 synopsis = 'Print all primes with distinct digits in ascending order.'
 preamble = '''
 <p>Print all primes whose decimal digits are distinct and appear in ascending
