@@ -27,6 +27,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f37a.svg       `# Beer Mug`                     \
     svg/1f382.svg       `# Birthday Cake`                \
     svg/1f385.svg       `# Santa Claus`                  \
+    svg/1f388.svg       `# Balloon`                      \
     svg/1f3af.svg       `# Direct Hit`                   \
     svg/1f3b3.svg       `# Bowling`                      \
     svg/1f3b8.svg       `# Guitar`                       \

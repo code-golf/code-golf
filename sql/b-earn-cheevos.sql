@@ -176,22 +176,23 @@ BEGIN
     -- Progression --
     -----------------
 
-    IF holes >= 1   THEN earned := earn(earned, 'hello-world',       user_id); END IF;
-    IF holes >= 4   THEN earned := earn(earned, 'fore',              user_id); END IF;
-    IF holes >= 11  THEN earned := earn(earned, 'up-to-eleven',      user_id); END IF;
-    IF holes >= 13  THEN earned := earn(earned, 'bakers-dozen',      user_id); END IF;
-    IF holes >= 19  THEN earned := earn(earned, 'the-watering-hole', user_id); END IF;
-    IF holes >= 21  THEN earned := earn(earned, 'blackjack',         user_id); END IF;
-    IF holes >= 34  THEN earned := earn(earned, 'rule-34',           user_id); END IF;
-    IF holes >= 40  THEN earned := earn(earned, 'forty-winks',       user_id); END IF;
-    IF holes >= 42  THEN earned := earn(earned, 'dont-panic',        user_id); END IF;
-    IF holes >= 50  THEN earned := earn(earned, 'bullseye',          user_id); END IF;
-    IF holes >= 60  THEN earned := earn(earned, 'gone-in-60-holes',  user_id); END IF;
-    IF holes >= 69  THEN earned := earn(earned, 'cunning-linguist',  user_id); END IF;
-    IF holes >= 80  THEN earned := earn(earned, 'phileas-fogg',      user_id); END IF;
-    IF holes >= 86  THEN earned := earn(earned, 'x86',               user_id); END IF;
-    IF holes >= 90  THEN earned := earn(earned, 'right-on',          user_id); END IF;
-    IF holes >= 100 THEN earned := earn(earned, 'centenarian',       user_id); END IF;
+    IF holes >=   1 THEN earned := earn(earned, 'hello-world',                user_id); END IF;
+    IF holes >=   4 THEN earned := earn(earned, 'fore',                       user_id); END IF;
+    IF holes >=  11 THEN earned := earn(earned, 'up-to-eleven',               user_id); END IF;
+    IF holes >=  13 THEN earned := earn(earned, 'bakers-dozen',               user_id); END IF;
+    IF holes >=  19 THEN earned := earn(earned, 'the-watering-hole',          user_id); END IF;
+    IF holes >=  21 THEN earned := earn(earned, 'blackjack',                  user_id); END IF;
+    IF holes >=  34 THEN earned := earn(earned, 'rule-34',                    user_id); END IF;
+    IF holes >=  40 THEN earned := earn(earned, 'forty-winks',                user_id); END IF;
+    IF holes >=  42 THEN earned := earn(earned, 'dont-panic',                 user_id); END IF;
+    IF holes >=  50 THEN earned := earn(earned, 'bullseye',                   user_id); END IF;
+    IF holes >=  60 THEN earned := earn(earned, 'gone-in-60-holes',           user_id); END IF;
+    IF holes >=  69 THEN earned := earn(earned, 'cunning-linguist',           user_id); END IF;
+    IF holes >=  80 THEN earned := earn(earned, 'phileas-fogg',               user_id); END IF;
+    IF holes >=  86 THEN earned := earn(earned, 'x86',                        user_id); END IF;
+    IF holes >=  90 THEN earned := earn(earned, 'right-on',                   user_id); END IF;
+    IF holes >=  99 THEN earned := earn(earned, 'neunundneunzig-luftballons', user_id); END IF;
+    IF holes >= 100 THEN earned := earn(earned, 'centenarian',                user_id); END IF;
 
     RETURN earned;
 END;

@@ -342,6 +342,12 @@ description = 'Solve your ninetieth hole.'
 target      = 90
 
 [['Total Holes']]
+name        = 'Neunundneunzig Luftballons'
+emoji       = '🎈'
+description = 'Solve your ninety-ninth hole.'
+target      = 99
+
+[['Total Holes']]
 name        = 'Centenarian'
 emoji       = '💯'
 description = 'Solve your hundredth hole.'
