@@ -1,21 +1,23 @@
 use t;
 
 constant %holes = <
-    1  {hello-world}
-    4  {fore}
-    11 {up-to-eleven}
-    13 {bakers-dozen}
-    19 {the-watering-hole}
-    21 {blackjack}
-    34 {rule-34}
-    40 {forty-winks}
-    42 {dont-panic}
-    50 {bullseye}
-    60 {gone-in-60-holes}
-    69 {cunning-linguist}
-    80 {phileas-fogg}
-    86 {x86}
-    90 {right-on}
+      1 {hello-world}
+      4 {fore}
+     11 {up-to-eleven}
+     13 {bakers-dozen}
+     19 {the-watering-hole}
+     21 {blackjack}
+     34 {rule-34}
+     40 {forty-winks}
+     42 {dont-panic}
+     50 {bullseye}
+     60 {gone-in-60-holes}
+     69 {cunning-linguist}
+     80 {phileas-fogg}
+     86 {x86}
+     90 {right-on}
+     99 {neunundneunzig-luftballons}
+    100 {centenarian}
 >;
 
 constant %langs = <
