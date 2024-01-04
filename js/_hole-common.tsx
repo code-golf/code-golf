@@ -285,27 +285,57 @@ export interface SubmitResponse {
 const makeSingular = (strokes: number, units: string) =>
     strokes == 1 ? units.substring(0, units.length - 1) : units;
 
-const scorePopups = (updates: RankUpdate[]) => {
-    const popups: Node[] = [];
+const getDisplayRank = (rank: number) => rank < 4 ? ['🥇','🥈','🥉'][rank - 1] : `${rank}${ord(rank)} place`;
 
-    const strokes = [0, 0];
+// Don't show the delta, if it's the first time playing this hole.
+const getDisplayRankChange = (rank: number, delta: number) =>
+    getDisplayRank(rank) + (delta > 0 ? ` (was ${getDisplayRank(rank + delta)})` : '');
+
+const getDisplayPointsChange = (points: number, delta: number) =>
+    `${points} points` + (delta > 0 && delta < points ? ` (+${delta})` : '');
+
+const scorePopups = (updates: RankUpdate[]) => {
+    const strokesDelta = [0, 0];
+    const pointsDelta = [0, 0];
     const points = [0, 0];
+    const rankDelta = [0, 0];
+    const rank = [0, 0];
+    let newSolution = false;
 
     for (const i of [0, 1] as const) {
         const update = updates[i];
-        if (update.from.strokes && update.to.strokes) {
-            strokes[i] = update.from.strokes - update.to.strokes;
-            if (update.oldBestStrokes) {
-                const newBest = Math.min(update.oldBestStrokes, update.to.strokes);
-                points[i] = Math.round(newBest / update.to.strokes * 1000) - Math.round(update.oldBestStrokes / update.from.strokes * 1000);
+        if (update.to.strokes) {
+            const newBest = update.oldBestStrokes != null ?
+                Math.min(update.oldBestStrokes, update.to.strokes) :
+                update.to.strokes;
+            points[i] = Math.round(newBest / update.to.strokes * 1000);
+
+            if (update.from.strokes) {
+                strokesDelta[i] = update.from.strokes - update.to.strokes;
+                if (update.oldBestStrokes) {
+                    pointsDelta[i] = points[i] - Math.round(update.oldBestStrokes / update.from.strokes * 1000);
+                }
             }
+            else {
+                newSolution = true;
+                pointsDelta[i] = points[i];
+            }
+        }
+
+        if (update.to.rank) {
+            rank[i] = update.to.rank;
+            rankDelta[i] = (update.from.rank || 0) - update.to.rank;
         }
     }
 
-    if (strokes[0] > 0 || strokes[1] > 0) {
+    const nodes: Node[] = [];
+
+    if (strokesDelta[0] > 0 || strokesDelta[1] > 0) {
         let amount = '';
-        if (strokes[0] > 0 && strokes[0] == strokes[1]) {
-            const delta = strokes[0];
+
+        // Show the decrease in strokes.
+        if (strokesDelta[0] > 0 && strokesDelta[0] == strokesDelta[1]) {
+            const delta = strokesDelta[0];
             let units = '';
             for (const i of [0, 1] as const) {
                 units += (i == 1 ? '/' : '') + makeSingular(delta, updates[i].scoring);
@@ -315,32 +345,44 @@ const scorePopups = (updates: RankUpdate[]) => {
         }
         else {
             for (const i of [0, 1] as const) {
-                if (strokes[i] > 0) {
-                    amount += (i == 1 && strokes[0] > 0 ? '/' : '') + `${strokes[i]} ${makeSingular(strokes[i], updates[i].scoring)}`;
+                if (strokesDelta[i] > 0) {
+                    amount += (i == 1 && strokesDelta[0] > 0 ? '/' : '') + `${strokesDelta[i]} ${makeSingular(strokesDelta[i], updates[i].scoring)}`;
                 }
             }
         }
 
-        const pointsNodes: Node[] = [];
-        if (points[0] > 0 && points[1] == points[0]) {
-            pointsNodes.push(<p>Earned {points[0]} {makeSingular(points[0], 'points')} for {updates[0].scoring}/{updates[1].scoring}</p>);
-        }
-        else {
-            for (const i of [0, 1] as const) {
-                if (points[i] > 0) {
-                    pointsNodes.push(<p>Earned {points[i]} {makeSingular(points[i], 'points')} for {updates[i].scoring}</p>);
-                }
-            }
-        }
-
-        popups.push(<div>
-            <h3>Score Improved</h3>
-            <p>Saved {amount}</p>
-            {pointsNodes}
-        </div>);
+        nodes.push(<h3>Score Improved</h3>);
+        nodes.push(<p>Saved {amount}</p>);
+    }
+    else if (newSolution) {
+        nodes.push(<h3>New Solution</h3>);
     }
 
-    return popups;
+    // Show points updates, including the current number of points, because this is not show on the mini-scoreboard.
+    if (pointsDelta[0] != 0 && pointsDelta[0] == pointsDelta[1] && points[0] == points[1]) {
+        nodes.push(<p>{getDisplayPointsChange(points[0], pointsDelta[0])} for {updates[0].scoring}/{updates[1].scoring}</p>);
+    }
+    else {
+        for (const i of [0, 1] as const) {
+            if (pointsDelta[i] != 0) {
+                nodes.push(<p>{getDisplayPointsChange(points[i], pointsDelta[i])} for {updates[i].scoring}</p>);
+            }
+        }
+    }
+
+    // Show rank update.
+    if (rankDelta[0] != 0 && rankDelta[0] == rankDelta[1] && rank[0] == rank[1]) {
+        nodes.push(<p>{getDisplayRankChange(rank[0], rankDelta[0])} for {updates[0].scoring}/{updates[1].scoring}</p>);
+    }
+    else {
+        for (const i of [0, 1] as const) {
+            if (rankDelta[i] != 0) {
+                nodes.push(<p>{getDisplayRankChange(rank[i], rankDelta[i])} for {updates[i].scoring}</p>);
+            }
+        }
+    }
+
+    return nodes.length > 1 ? [<div>{nodes}</div>] : [];
 };
 
 const diamondPopups = (updates: RankUpdate[]) => {
