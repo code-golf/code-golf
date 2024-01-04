@@ -620,8 +620,8 @@ class Main {
 '''
 
 [JavaScript]
-size    = '37.8 MiB'
-version = 'V8 11.3.244.12'
+size    = '39.9 MiB'
+version = 'V8 12.0.267.14'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1068,8 +1068,8 @@ for arg in os.args[1..] {
 '''
 
 [VimL]
-size    = '23.1 MiB'
-version = '9.0'
+size    = '24 MiB'
+version = '9.1'
 website = 'https://www.vim.org'
 example = '''
 " Printing
