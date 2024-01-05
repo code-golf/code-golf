@@ -32,6 +32,11 @@ func (n *NullLang) Scan(id any) error {
 	return nil
 }
 
+func (c *Cheevo) Scan(id any) error {
+	*c = *CheevoByID[asString(id)]
+	return nil
+}
+
 func (h *Hole) Scan(id any) error {
 	*h = *HoleByID[asString(id)]
 	return nil

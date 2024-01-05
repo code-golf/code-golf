@@ -48,28 +48,28 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 	rows, err := db.Query(
 		`WITH data AS (
 		 -- Cheevos
-		    SELECT earned       date,
-		           trophy::text cheevo,
-		           ''           hole,
-		           ''           lang,
+		    SELECT earned     date,
+		           trophy     cheevo,
+		           NULL::hole hole,
+		           NULL::lang lang,
 		           user_id
 		      FROM trophies
 		     WHERE user_id = ANY(following($1, $2))
 		 UNION ALL
 		 -- Follows
-		    SELECT followed    date,
-		           ''          cheevo,
-		           ''          hole,
-		           ''          lang,
-		           follower_id user_id
+		    SELECT followed     date,
+		           NULL::cheevo cheevo,
+		           NULL::hole   hole,
+		           NULL::lang   lang,
+		           follower_id  user_id
 		      FROM follows
 		     WHERE followee_id = $1
 		 UNION ALL
 		 -- Holes
 		    SELECT MAX(submitted) date,
-		           ''             cheevo,
-		           hole::text     hole,
-		           lang::text     lang,
+		           NULL::cheevo   cheevo,
+		           hole           hole,
+		           lang           lang,
 		           user_id
 		      FROM solutions
 		     WHERE user_id = ANY(following($1, $2))
@@ -87,20 +87,12 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var cheevo, golfer, hole, lang string
-		var date time.Time
-
-		if err := rows.Scan(&cheevo, &date, &golfer, &hole, &lang); err != nil {
+		var r row
+		if err := rows.Scan(&r.Cheevo, &r.Date, &r.Golfer, &r.Hole, &r.Lang); err != nil {
 			panic(err)
 		}
 
-		data.Wall = append(data.Wall, row{
-			Cheevo: config.CheevoByID[cheevo],
-			Date:   date,
-			Golfer: golfer,
-			Hole:   config.HoleByID[hole],
-			Lang:   config.LangByID[lang],
-		})
+		data.Wall = append(data.Wall, r)
 	}
 
 	if err := rows.Err(); err != nil {
