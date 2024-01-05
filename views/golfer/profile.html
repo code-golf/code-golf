@@ -10,27 +10,21 @@
         <time>{{ $day }}</time>
         {{ $lastDay = $day }}
     {{ end }}
+        <img loading=lazy src="/golfers/{{ .Golfer }}/avatar/48">
+
         <div>
-            <a href="/golfers/{{ .Golfer }}">
-                <img loading=lazy
-                    src="/golfers/{{ .Golfer }}/avatar/48">
-                {{ .Golfer }}
-            </a>
+            <a href="/golfers/{{ .Golfer }}">{{ .Golfer }}</a>
 
         {{ if .Cheevo }}
-            earned <a href="/rankings/cheevos/{{ .Cheevo.ID }}">
-                {{ .Cheevo.Emoji }} {{ .Cheevo.Name }}
-            </a>
+            earned {{ .Cheevo.Emoji }}
+            <a href="/rankings/cheevos/{{ .Cheevo.ID }}">
+                {{ .Cheevo.Name }}</a>
         {{ else if .Hole }}
             solved <a href="/{{ .Hole.ID }}#{{ .Lang.ID }}">
-                {{ .Hole.Name }} in {{ .Lang.Name }}
-            </a>
+                {{ .Hole.Name }} in {{ .Lang.Name }}</a>
         {{ else }}
             followed <a href="/golfers/{{ $.GolferInfo.Name }}">
-                <img loading=lazy
-                    src="/golfers/{{ $.GolferInfo.Name }}/avatar/48">
-                {{ $.GolferInfo.Name }}
-            </a>
+                {{ $.GolferInfo.Name }}</a>
         {{ end }}
         </div>
 {{ end }}

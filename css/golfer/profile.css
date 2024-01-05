@@ -106,22 +106,21 @@ section > a, section > div {
 }
 
 #wall {
-    display: flex;
-    flex-direction: column;
+    display: grid;
     gap: .5rem;
-}
+    grid-template-columns: auto 1fr;
+    height: fit-content;
 
-#wall a, #wall div {
-    align-items: center;
-    display: flex;
-    gap: .375rem;
-}
+    > div { line-height: 1.5rem }
 
-#wall img {
-    border-radius: 50%;
-    display: block;
-    height: 1.5rem;
-    width: 1.5rem;
+    > img {
+        border-radius: 50%;
+        display: block;
+        height: 1.5rem;
+        width: 1.5rem;
+    }
+
+    > time { grid-column: span 2 }
 }
 
 @media (max-width: 46rem) {
