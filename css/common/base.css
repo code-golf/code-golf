@@ -499,10 +499,6 @@ body > .tabs a {
 
 .text-red { color: var(--red-text) }
 
-/* Hacky, remove once we no longer use links inside <details>. */
-details.tabs   { display: initial }
-details.tabs a { display: inline-block }
-
 #error h1 { text-align: center }
 
 #ideas, #index { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
