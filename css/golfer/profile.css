@@ -111,7 +111,17 @@ section > a, section > div {
     grid-template-columns: auto 1fr;
     height: fit-content;
 
-    > div { line-height: 1.5rem }
+    div { line-height: 1.5rem }
+
+    details > div { margin-top: .5rem }
+
+    summary {
+        background: none;
+        border: 0;
+        color: inherit;
+        line-height: 1.5rem;
+        padding: 0;
+    }
 
     > img {
         border-radius: 50%;

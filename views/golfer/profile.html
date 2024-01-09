@@ -3,23 +3,40 @@
 
 <main>
     <div id=wall>
-{{ $lastDay := "" }}
+{{ $lastDate := "" }}
 {{ range .Data.Wall }}
-    {{ $day := (.Date.In $.Location).Format "Mon 2 Jan 2006" }}
-    {{ if ne $day $lastDay }}
-        <time>{{ $day }}</time>
-        {{ $lastDay = $day }}
+    {{ if ne .Date $lastDate }}
+        <time>{{ .Date }}</time>
+        {{ $lastDate = .Date }}
     {{ end }}
-        <img loading=lazy src="/golfers/{{ .Golfer }}/avatar/48">
+        {{ $golfer := .Golfer }}
+        <img loading=lazy src="/golfers/{{ $golfer }}/avatar/48">
 
+    {{ if gt (len .Cheevos ) 1 }}
+        <details>
+            <summary>
+                <a href="/golfers/{{ $golfer }}">{{ $golfer }}</a>
+                earned {{ len .Cheevos }} achievements:
+                {{ range.Cheevos }}
+                    <span title="{{ .Name }}: {{.Description }}">{{ .Emoji }}</span>
+                {{ end }}
+            </summary>
+        {{ range .Cheevos }}
+            <div>
+                <a href="/golfers/{{ $golfer }}">{{ $golfer }}</a>
+                earned {{ .Emoji }}
+                <a href="/rankings/cheevos/{{ .ID }}">{{ .Name }}</a>
+            </div>
+        {{ end }}
+        </details>
+    {{ else }}
         <div>
             <a href="/golfers/{{ .Golfer }}">{{ .Golfer }}</a>
 
-        {{ if .Cheevo }}
-            earned {{ .Cheevo.Emoji }}
-            <a href="/rankings/cheevos/{{ .Cheevo.ID }}">
-                {{ .Cheevo.Name }}</a>
-        {{ else if .Hole }}
+        {{ if .Cheevos }}{{ with index .Cheevos 0 }}
+            earned {{ .Emoji }}
+            <a href="/rankings/cheevos/{{ .ID }}">{{ .Name }}</a>
+        {{ end }}{{ else if .Hole }}
             solved <a href="/{{ .Hole.ID }}#{{ .Lang.ID }}">
                 {{ .Hole.Name }} in {{ .Lang.Name }}</a>
         {{ else }}
@@ -27,6 +44,7 @@
                 {{ $.GolferInfo.Name }}</a>
         {{ end }}
         </div>
+    {{ end }}
 {{ end }}
     </div>
 

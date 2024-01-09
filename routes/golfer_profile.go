@@ -15,15 +15,19 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 	const limit = 100
 
 	type row struct {
-		Cheevo *config.Cheevo
-		Date   time.Time
-		Golfer string
-		Hole   *config.Hole
-		Lang   *config.Lang
+		Cheevos      []*config.Cheevo
+		Date, Golfer string
+		Hole         *config.Hole
+		Lang         *config.Lang
 	}
 
 	db := session.Database(r)
 	golfer := session.GolferInfo(r)
+
+	location := time.UTC
+	if golfer := session.Golfer(r); golfer != nil {
+		location = golfer.Location()
+	}
 
 	data := struct {
 		Connections []oauth.Connection
@@ -86,10 +90,28 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 	}
 	defer rows.Close()
 
+rows:
 	for rows.Next() {
+		var cheevo *config.Cheevo
+		var time time.Time
+
 		var r row
-		if err := rows.Scan(&r.Cheevo, &r.Date, &r.Golfer, &r.Hole, &r.Lang); err != nil {
+		if err := rows.Scan(&cheevo, &time, &r.Golfer, &r.Hole, &r.Lang); err != nil {
 			panic(err)
+		}
+
+		r.Date = time.In(location).Format("Mon 2 Jan 2006")
+
+		if cheevo != nil {
+			// Try and find a place in the current day to append the cheevo.
+			for i := len(data.Wall) - 1; i >= 0 && data.Wall[i].Date == r.Date; i-- {
+				if data.Wall[i].Cheevos != nil && data.Wall[i].Golfer == r.Golfer {
+					data.Wall[i].Cheevos = append(data.Wall[i].Cheevos, cheevo)
+					continue rows
+				}
+			}
+
+			r.Cheevos = append(r.Cheevos, cheevo)
 		}
 
 		data.Wall = append(data.Wall, r)
