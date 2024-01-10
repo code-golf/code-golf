@@ -69,6 +69,16 @@ func Router(db *sqlx.DB) http.Handler {
 			r.Get("/panic", apiPanicGET)
 			r.Get("/solutions-log", apiSolutionsLogGET)
 			r.Get("/suggestions/golfers", apiSuggestionsGolfersGET)
+
+			// API routes that require a logged-in golfer.
+			r.Group(func(r chi.Router) {
+				r.With(middleware.GolferArea)
+
+				r.Get("/notes", apiNotesGET)
+				r.Delete("/notes/{hole}/{lang}", apiNoteDELETE)
+				r.Get("/notes/{hole}/{lang}", apiNoteGET)
+				r.Put("/notes/{hole}/{lang}", apiNotePUT)
+			})
 		})
 		r.Get("/callback", callbackGET)
 		r.Get("/feeds", feedsGET)

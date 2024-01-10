@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"reflect"
 	"slices"
@@ -225,6 +226,104 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	encodeJSON(w, entries)
+}
+
+// GET /api/notes
+func apiNotesGET(w http.ResponseWriter, r *http.Request) {
+	notes := []struct {
+		Hole string `json:"hole"`
+		Lang string `json:"lang"`
+		Note string `json:"note"`
+	}{}
+
+	if err := session.Database(r).Select(
+		&notes,
+		"SELECT hole, lang, note FROM notes WHERE user_id = $1",
+		session.Golfer(r).ID,
+	); err != nil {
+		panic(err)
+	}
+
+	encodeJSON(w, notes)
+}
+
+// DELETE /api/notes/{hole}/{lang}
+func apiNoteDELETE(w http.ResponseWriter, r *http.Request) {
+	hole := config.HoleByID[r.FormValue("hole")]
+	lang := config.LangByID[r.FormValue("lang")]
+	if hole == nil || lang == nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	session.Database(r).MustExec(
+		`DELETE FROM notes
+		  WHERE user_id = $1 AND hole = $2 AND lang = $3`,
+		session.Golfer(r).ID,
+		hole.ID,
+		lang.ID,
+	)
+
+	w.WriteHeader(http.StatusNoContent)
+}
+
+// GET /api/notes/{hole}/{lang}
+func apiNoteGET(w http.ResponseWriter, r *http.Request) {
+	hole := config.HoleByID[r.FormValue("hole")]
+	lang := config.LangByID[r.FormValue("lang")]
+	if hole == nil || lang == nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	var note []byte
+
+	if err := session.Database(r).Get(
+		&note,
+		`SELECT note
+		   FROM notes
+		  WHERE user_id = $1 AND hole = $2 AND lang = $3`,
+		session.Golfer(r).ID,
+		hole.ID,
+		lang.ID,
+	); err != nil {
+		panic(err)
+	}
+
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.Write(note)
+}
+
+// PUT /api/notes/{hole}/{lang}
+func apiNotePUT(w http.ResponseWriter, r *http.Request) {
+	hole := config.HoleByID[r.FormValue("hole")]
+	lang := config.LangByID[r.FormValue("lang")]
+	note, _ := io.ReadAll(r.Body)
+
+	if hole == nil || lang == nil || len(note) == 0 || len(note) >= 128*1024 {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	// Only sponsors can create or update notes, the can still read & delete.
+	golfer := session.Golfer(r)
+	if !golfer.Sponsor {
+		w.WriteHeader(http.StatusPaymentRequired)
+		return
+	}
+
+	session.Database(r).MustExec(
+		`INSERT INTO notes (user_id, hole, lang, note)
+		      VALUES       (     $1,   $2,   $3,   $4)
+		 ON CONFLICT       (user_id, hole, lang)
+		   DO UPDATE SET note = excluded.note`,
+		golfer.ID,
+		hole.ID,
+		lang.ID,
+		note,
+	)
+
+	w.WriteHeader(http.StatusNoContent)
 }
 
 // GET /api/panic

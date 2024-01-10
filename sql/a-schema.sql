@@ -138,6 +138,15 @@ CREATE TABLE connections (
     UNIQUE (connection, user_id)
 );
 
+CREATE TABLE notes (
+    user_id int  NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    hole    hole NOT NULL,
+    lang    lang NOT NULL,
+    note    text NOT NULL,
+    CHECK (octet_length(note) <= 128 * 1024),
+    PRIMARY KEY (user_id, hole, lang)
+);
+
 CREATE TABLE sessions (
     id        uuid      NOT NULL DEFAULT GEN_RANDOM_UUID() PRIMARY KEY,
     last_used timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
@@ -280,6 +289,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE connections     TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE discord_records TO "code-golf";
 GRANT SELECT, INSERT,         DELETE ON TABLE follows         TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE ideas           TO "code-golf";
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE notes           TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE sessions        TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE solutions       TO "code-golf";
 GRANT SELECT, INSERT                 ON TABLE solutions_log   TO "code-golf";
