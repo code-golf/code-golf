@@ -1,4 +1,4 @@
-FROM crystallang/crystal:1.10.1-alpine AS builder
+FROM crystallang/crystal:1.11.0-alpine AS builder
 
 RUN strip /usr/bin/crystal
 
@@ -9,11 +9,12 @@ ENV CRYSTAL_CACHE_DIR=/tmp PATH=/usr/bin:/bin
 COPY --from=0 /bin/sh                              /bin/
 COPY --from=0 /lib/ld-musl-x86_64.so.1             \
               /lib/libz.so.1                       /lib/
-COPY --from=0 /usr/bin/cc /usr/bin/crystal         /usr/bin/
+COPY --from=0 /usr/bin/cc                          \
+              /usr/bin/crystal                     \
+              /usr/bin/pkg-config                  /usr/bin/
 COPY --from=0 /usr/include                         /usr/include
 COPY --from=0 /usr/lib                             /usr/lib
 COPY --from=0 /usr/libexec/gcc                     /usr/libexec/gcc
-COPY --from=0 /usr/local/lib/libgc.a               /usr/local/lib/
 COPY --from=0 /usr/share/crystal                   /usr/share/crystal
 COPY --from=0 /usr/x86_64-alpine-linux-musl/bin/ld /usr/x86_64-alpine-linux-musl/bin/
 
