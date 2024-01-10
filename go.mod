@@ -19,9 +19,9 @@ require (
 	github.com/pelletier/go-toml/v2 v2.1.1
 	github.com/shurcooL/graphql v0.0.0-20230722043721-ed46e5a46466
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
-	github.com/tdewolff/minify/v2 v2.20.10
+	github.com/tdewolff/minify/v2 v2.20.12
 	github.com/yuin/goldmark v1.6.0
-	golang.org/x/oauth2 v0.15.0
+	golang.org/x/oauth2 v0.16.0
 	gopkg.in/guregu/null.v4 v4.0.0
 )
 
@@ -45,10 +45,10 @@ require (
 	github.com/skeema/knownhosts v1.2.1 // indirect
 	github.com/tdewolff/parse/v2 v2.7.7 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
-	golang.org/x/crypto v0.17.0 // indirect
+	golang.org/x/crypto v0.18.0 // indirect
 	golang.org/x/mod v0.14.0 // indirect
-	golang.org/x/net v0.19.0 // indirect
-	golang.org/x/sys v0.15.0 // indirect
+	golang.org/x/net v0.20.0 // indirect
+	golang.org/x/sys v0.16.0 // indirect
 	golang.org/x/tools v0.16.1 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/protobuf v1.32.0 // indirect
