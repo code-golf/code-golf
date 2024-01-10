@@ -3,7 +3,7 @@ FROM debian:bullseye-slim AS builder
 RUN apt-get update \
  && apt-get install -y binutils curl libatomic1 libc6-dev libedit2 libz3-4
 
-RUN curl https://download.swift.org/swift-5.9-release/ubuntu2004/swift-5.9-RELEASE/swift-5.9-RELEASE-ubuntu20.04.tar.gz \
+RUN curl https://download.swift.org/swift-5.9.2-release/ubuntu2004/swift-5.9.2-RELEASE/swift-5.9.2-RELEASE-ubuntu20.04.tar.gz \
   | tar xz --directory / --strip-components 1
 
 RUN strip /usr/bin/swift

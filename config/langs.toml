@@ -268,8 +268,8 @@ int main(int argc, char* argv[]) {
 '''
 
 [Clojure]
-size    = '65.9 MiB'
-version = 'Babashka 1.3.186'
+size    = '66 MiB'
+version = 'Babashka 1.3.187'
 website = 'https://babashka.org'
 example = '''
 ; Printing
@@ -360,8 +360,8 @@ void main(string[] argv) {
 '''
 
 [Dart]
-size    = '208 MiB'
-version = '3.1.3'
+size    = '231 MiB'
+version = '3.2.4'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -480,7 +480,7 @@ end
 
 [Go]
 size    = '334 MiB'
-version = '1.21.5'
+version = '1.21.6'
 website = 'https://go.dev'
 example = '''
 package main
@@ -582,8 +582,8 @@ echo each 2}.ARGV
 '''
 
 [Janet]
-size    = '832 KiB'
-version = '1.32.1'
+size    = '836 KiB'
+version = '1.33.0'
 website = 'https://janet-lang.org'
 example = '''
 # Printing
@@ -913,8 +913,8 @@ end
 '''
 
 [Rust]
-size    = '429 MiB'
-version = '1.74.1'
+size    = '426 MiB'
+version = '1.75.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -986,8 +986,8 @@ SELECT arg FROM argv;
 '''
 
 [Swift]
-size    = '548 MiB'
-version = '5.9'
+size    = '549 MiB'
+version = '5.9.2'
 website = 'https://swift.org'
 example = '''
 // Printing

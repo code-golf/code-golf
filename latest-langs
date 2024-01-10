@@ -11,12 +11,13 @@ constant %paths = (
     'C#'         => 'en.wikipedia.org/wiki/C_Sharp_(programming_language)',
     'C++'        => 'en.wikipedia.org/wiki/Clang',
     'COBOL'      => 'en.wikipedia.org/wiki/GnuCOBOL',
-    'Clojure'    => 'en.wikipedia.org/wiki/Clojure',
+    'Clojure'    => 'github.com/babashka/babashka/releases/latest',
     'Crystal'    => 'en.wikipedia.org/wiki/Crystal_(programming_language)',
     'D'          => 'en.wikipedia.org/wiki/D_(programming_language)',
     'Dart'       => 'en.wikipedia.org/wiki/Dart_(programming_language)',
     'Elixir'     => 'en.wikipedia.org/wiki/Elixir_(programming_language)',
     'F#'         => 'en.wikipedia.org/wiki/F_Sharp_(programming_language)',
+    'Factor'     => 'github.com/factor/factor/releases/latest',
     'Forth'      => 'en.wikipedia.org/wiki/Gforth',
     'Fortran'    => 'en.wikipedia.org/wiki/GNU_Fortran',
     'Go'         => 'endoflife.date/api/go.json',
@@ -45,6 +46,7 @@ constant %paths = (
     'TeX'        => 'en.wikipedia.org/wiki/TeX',
     'V'          => 'github.com/vlang/v/releases/latest',
     'VimL'       => 'en.wikipedia.org/wiki/Vim_(text_editor)',
+    'Wren'       => 'github.com/wren-lang/wren/releases/latest',
     'Zig'        => 'en.wikipedia.org/wiki/Zig_(programming_language)',
 );
 
