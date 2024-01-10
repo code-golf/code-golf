@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"database/sql"
 	"net/http"
 
 	"github.com/code-golf/code-golf/config"
@@ -110,7 +111,7 @@ func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 		    SET country = $1,
 		         layout = $2,
 		         keymap = $3,
-		       pronouns = NULLIF($4, ""),
+		       pronouns = $4,
 		    referrer_id = (SELECT id FROM users WHERE login = $5 AND id != $9),
 		   show_country = $6,
 		          theme = $7,
@@ -119,7 +120,7 @@ func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 		r.Form.Get("country"),
 		r.Form.Get("layout"),
 		r.Form.Get("keymap"),
-		r.Form.Get("pronouns"),
+		sql.NullString{String: r.Form.Get("pronouns"), Valid: r.Form.Get("pronouns") != ""},
 		r.Form.Get("referrer"),
 		r.Form.Get("show_country") == "on",
 		r.Form.Get("theme"),
