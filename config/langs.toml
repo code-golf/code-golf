@@ -322,19 +322,18 @@ size    = '0.0 MiB'
 version = '3.0.4'
 website = 'https://coconut-lang.org/'
 example = '''
-
 import sys
 
 # Printing
-print('Hello, World!')
+'Hello, World!' |> print
 
 # Looping
 for i in range(10):
-    print(i)
+    i |> print
 
 # Accessing arguments
 for arg in sys.argv[1:]:
-    print(arg)
+    arg |> print
 '''
 
 [Crystal]
