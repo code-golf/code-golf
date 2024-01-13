@@ -246,7 +246,7 @@ func play(ctx context.Context, holeID, langID, code string, run *Run) error {
 		// providing code via a command line argument.
 		cmd.Args = []string{"/usr/bin/clojure", "-e", code + "(print)"}
 	case "coconut":
-		cmd.Args = []string{"/usr/bin/coconut", "--quiet", "--target", "sys", "--keep-lines", "--code", code, "--argv"}
+		cmd.Args = []string{"/usr/bin/coconut", "--quiet", "--target", "sys", "--keep-lines", "--argv" }
 	case "crystal":
 		cmd.Args = []string{"/usr/bin/crystal", "run", "--stdin-filename", "code.cr", "--"}
 		cmd.Env = []string{"CRYSTAL_CACHE_DIR=/tmp", "PATH=/usr/bin:/bin"}
