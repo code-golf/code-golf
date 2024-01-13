@@ -103,6 +103,7 @@ export const extensions = {
     'c-sharp':    StreamLanguage.define(csharp),
     'clojure':    StreamLanguage.define(clojure),
     'cobol':      StreamLanguage.define(cobol),
+    'coconut':    new LanguageSupport(pythonLanguage),
     'cpp':        cpp(),
     'crystal':    StreamLanguage.define(crystal),
     'd':          StreamLanguage.define(d),

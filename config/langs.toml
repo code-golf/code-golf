@@ -317,6 +317,26 @@ end-program.
 
 '''
 
+[Coconut]
+size    = '0.0 MiB'
+version = '3.0.4'
+website = 'https://coconut-lang.org/'
+example = '''
+
+import sys
+
+# Printing
+print('Hello, World!')
+
+# Looping
+for i in range(10):
+    print(i)
+
+# Accessing arguments
+for arg in sys.argv[1:]:
+    print(arg)
+'''
+
 [Crystal]
 size    = '252 MiB'
 version = '1.11.0'
