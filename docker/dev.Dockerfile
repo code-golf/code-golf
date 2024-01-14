@@ -21,6 +21,7 @@ COPY --from=codegolf/lang-elixir     ["/", "/langs/elixir/rootfs/"    ] #  174 M
 COPY --from=codegolf/lang-factor     ["/", "/langs/factor/rootfs/"    ] #  172 MiB
 COPY --from=codegolf/lang-c-sharp    ["/", "/langs/c-sharp/rootfs/"   ] #  152 MiB
 COPY --from=codegolf/lang-f-sharp    ["/", "/langs/f-sharp/rootfs/"   ] #  147 MiB
+COPY --from=codegolf/lang-coconut    ["/", "/langs/coconut/rootfs/"   ] #  135 MiB
 COPY --from=codegolf/lang-cpp        ["/", "/langs/cpp/rootfs/"       ] #  118 MiB
 COPY --from=codegolf/lang-assembly   ["/", "/langs/assembly/rootfs/"  ] # 94.4 MiB
 COPY --from=codegolf/lang-fortran    ["/", "/langs/fortran/rootfs/"   ] # 87.8 MiB
@@ -59,7 +60,6 @@ COPY --from=codegolf/lang-wren       ["/", "/langs/wren/rootfs/"      ] #  496 K
 COPY --from=codegolf/lang-lua        ["/", "/langs/lua/rootfs/"       ] #  354 KiB
 COPY --from=codegolf/lang-sed        ["/", "/langs/sed/rootfs/"       ] #  236 KiB
 COPY --from=codegolf/lang-brainfuck  ["/", "/langs/brainfuck/rootfs/" ] # 51.1 KiB
-COPY --from=codegolf/lang-coconut    ["/", "/langs/coconut/rootfs/"   ] # 0.0 MiB
 
 COPY run-lang.c ./
 
