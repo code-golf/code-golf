@@ -18,6 +18,8 @@ RUN cd Python-$PYVER           \
 
 RUN python3 -m pip install coconut==$VER
 
+RUN rm -r /usr/lib/python3.12/site-packages/pip
+
 FROM codegolf/lang-base-no-proc
 
 COPY --from=0 /lib/ld-musl-*.so.1   \
