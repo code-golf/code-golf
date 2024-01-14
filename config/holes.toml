@@ -54,6 +54,31 @@ A Partridge in a Pear Tree.
 </blockquote>
 '''
 
+['24 Game']
+experiment = 1068
+category = 'Sequence'
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/24_game' },
+    { name = 'More Rosetta Code', url = '//rosettacode.org/wiki/24_game/Solve' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/24_(puzzle)' },
+]
+synopsis = 'Print all solvable quadruples in the 24 game.'
+preamble = '''
+<p>
+    The 24 game is an arithmetical puzzle in which the objective is to find a way to combine
+    four integers using only basic arithmetic operations (+, -, ×, ÷) to get a result of 24.
+    Each integer must be used exactly once.
+
+<p>
+    The original version of 24 is played with integers from 1 to 10. Print all solvable
+    quadruples of integers. The integers of each quadruple should be printed in non-decreasing
+    order.
+
+<p>
+    Keep in mind that some solutions involve fractions. For example, the only solution to
+    <code>1 3 4 6</code> is <code>6/(1-3/4)</code>.
+'''
+
 ['99 Bottles of Beer']
 category = 'Art'
 links = [
