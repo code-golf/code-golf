@@ -174,7 +174,7 @@ end
 
 [brainfuck]
 size    = '51.1 KiB'
-version = '35fbeb3'
+version = '9cd183f'
 website = 'https://github.com/primo-ppcg/bfci'
 example = '''
 >>Printing
@@ -269,7 +269,7 @@ int main(int argc, char* argv[]) {
 
 [Clojure]
 size    = '66 MiB'
-version = 'Babashka 1.3.187'
+version = 'Babashka 1.3.188'
 website = 'https://babashka.org'
 example = '''
 ; Printing
