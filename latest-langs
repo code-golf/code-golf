@@ -11,6 +11,7 @@ constant %paths = (
     'C#'         => 'en.wikipedia.org/wiki/C_Sharp_(programming_language)',
     'C++'        => 'en.wikipedia.org/wiki/Clang',
     'COBOL'      => 'en.wikipedia.org/wiki/GnuCOBOL',
+    'Coconut'    => 'github.com/evhub/coconut/releases/latest',
     'Clojure'    => 'github.com/babashka/babashka/releases/latest',
     'Crystal'    => 'github.com/crystal-lang/crystal/releases/latest',
     'D'          => 'en.wikipedia.org/wiki/D_(programming_language)',
