@@ -320,7 +320,7 @@ end-program.
 [Coconut]
 size    = '121 MiB'
 version = '3.0.4'
-website = 'https://coconut-lang.org/'
+website = 'https://coconut-lang.org'
 example = '''
 import sys
 
