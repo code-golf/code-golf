@@ -149,7 +149,7 @@ description = 'Solve any hole in both J and K.'
 [['Hole/Lang Specific']]
 name        = 'Mary Had a Little Lambda'
 emoji       = '🐑'
-description = 'Solve <a href=/λ>λ</a> in <a href=/λ#clojure>Clojure</a>, <a href=/λ#haskell>Haskell</a>, and <a href=/λ#lisp>Lisp</a>.'
+description = 'Solve <a href=/λ>λ</a> in any three of <a href=/λ#clojure>Clojure</a>, <a href=/λ#coconut>Coconut</a>, <a href=/λ#haskell>Haskell</a>, or <a href=/λ#lisp>Lisp</a>.'
 target      = 3
 
 [['Hole/Lang Specific']]

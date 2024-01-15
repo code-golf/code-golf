@@ -114,7 +114,7 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 		{
 			cheevo: "mary-had-a-little-lambda",
 			holes:  []any{"λ"},
-			langs:  []any{"clojure", "haskell", "lisp"},
+			langs:  []any{"clojure", "coconut", "haskell", "lisp"},
 		},
 		{
 			cheevo: "sounds-quite-nice",

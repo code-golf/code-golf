@@ -115,7 +115,9 @@ BEGIN
         earned := earn(earned, 'just-kidding', user_id); END IF;
 
     -- 🐑 Mary Had a Little Lambda
-    IF hole = 'λ' AND langs_for_hole @> '{clojure,haskell,lisp}' THEN
+    SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs_for_hole)
+     WHERE unnest IN ('clojure', 'coconut', 'haskell', 'lisp');
+    IF hole = 'λ' AND found THEN
         earned := earn(earned, 'mary-had-a-little-lambda', user_id); END IF;
 
     -- 📴 Off-the-grid
