@@ -25,6 +25,7 @@ func init() {
 		sha, created, id string
 		hole             bool
 	}{
+		{"b66e4a0", "2024-01-15 17:41:18", "coconut", false},
 		{"f5599de", "2024-01-01 00:18:14", "ascending-primes", true},
 		{"79dcb1e", "2023-12-10 13:40:21", "clojure", false},
 		{"6bd24c1", "2023-12-01 00:00:07", "farey-sequence", true},
