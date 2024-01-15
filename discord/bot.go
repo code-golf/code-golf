@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sync"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/code-golf/code-golf/config"
@@ -16,6 +17,7 @@ import (
 
 var (
 	bot *discordgo.Session
+	mux sync.Mutex
 
 	// All the config keys!
 	botToken      = os.Getenv("DISCORD_BOT_TOKEN")       // Caddie
@@ -243,6 +245,14 @@ func LogFailedRejudge(golfer *Golfer.Golfer, hole *config.Hole, lang *config.Lan
 
 // LogNewRecord logs a record breaking solution in Discord.
 func LogNewRecord(
+	golfer *Golfer.Golfer, hole *config.Hole, lang *config.Lang, updates []Golfer.RankUpdate, db *sqlx.DB,
+) {
+	mux.Lock()
+	logNewRecord(golfer, hole, lang, updates, db)
+	mux.Unlock()
+}
+
+func logNewRecord(
 	golfer *Golfer.Golfer, hole *config.Hole, lang *config.Lang, updates []Golfer.RankUpdate, db *sqlx.DB,
 ) {
 	if bot == nil {
