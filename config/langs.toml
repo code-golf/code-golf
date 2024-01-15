@@ -318,7 +318,7 @@ end-program.
 '''
 
 [Coconut]
-size    = '0.0 MiB'
+size    = '121 MiB'
 version = '3.0.4'
 website = 'https://coconut-lang.org/'
 example = '''
