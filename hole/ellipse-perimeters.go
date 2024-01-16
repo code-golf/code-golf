@@ -3,7 +3,6 @@ package hole
 import (
 	"fmt"
 	"math"
-	"math/rand"
 )
 
 func perimeter(ai, bi int) (p float64) {
@@ -19,13 +18,17 @@ func perimeter(ai, bi int) (p float64) {
 }
 
 func ellipsePerimeters() []Run {
-	const randomCases = 10
-	tests := make([]test, randomCases)
+	const aMin = 5
+	const aMax = 19
+	const bMin = 1
+	const bMax = 5
+	const cases = (aMax - aMin + 1) * (bMax - bMin + 1)
+	tests := make([]test, cases)
 
-	// some random tests
+	// test every a,b combination
 	for i := range tests {
-		a := rand.Intn(15) + 5
-		b := rand.Intn(5) + 1
+		a := aMin + i / (bMax - bMin + 1)
+		b := bMin + i % (bMax - bMin + 1)
 		tests[i] = test{fmt.Sprint(a, b), fmt.Sprint(int(perimeter(a, b)))}
 	}
 
