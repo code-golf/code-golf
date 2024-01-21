@@ -338,7 +338,7 @@ for arg in sys.argv[1:]:
 
 [Crystal]
 size    = '252 MiB'
-version = '1.11.0'
+version = '1.11.2'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -380,7 +380,7 @@ void main(string[] argv) {
 
 [Dart]
 size    = '231 MiB'
-version = '3.2.4'
+version = '3.2.5'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -808,7 +808,7 @@ say for @ARGV;
 
 [PHP]
 size    = '8.4 MiB'
-version = '8.3.1'
+version = '8.3.2'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -981,8 +981,8 @@ G
 '''
 
 [SQL]
-size    = '1.17 MiB'
-version = '3.44.2'
+size    = '1.18 MiB'
+version = '3.45.0'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
