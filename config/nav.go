@@ -90,17 +90,34 @@ func init() {
 				groupHoles(),
 			},
 		},
+
+		"stats": {
+			OnePerRow: true,
+			Path:      "/stats/{page}",
+			Groups: []*LinkGroup{
+				{
+					Slug: "page",
+					Links: []*NavLink{
+						{Name: "Overview", Path: "/stats"},
+						{Name: "Holes", Slug: "holes"},
+						{Name: "Languages", Slug: "langs"},
+					},
+				},
+			},
+		},
 	}
 
 	// Set the link Path template and pre-fill the one slug we can.
 	for _, nav := range Nav {
 		for _, group := range nav.Groups {
 			for _, link := range group.Links {
-				link.Path = strings.ReplaceAll(
-					nav.Path,
-					"{"+group.Slug+"}",
-					link.Slug,
-				)
+				if link.Path == "" {
+					link.Path = strings.ReplaceAll(
+						nav.Path,
+						"{"+group.Slug+"}",
+						link.Slug,
+					)
+				}
 			}
 		}
 	}

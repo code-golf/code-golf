@@ -1,35 +1,15 @@
 package routes
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/code-golf/code-golf/config"
-	"github.com/code-golf/code-golf/pie"
 	"github.com/code-golf/code-golf/session"
 )
 
 // GET /stats
 func statsGET(w http.ResponseWriter, r *http.Request) {
-	type row struct {
-		Count, Golfers, Rank   int
-		Fact, PerGolfer, Route string
-	}
-
-	type table struct {
-		Fact string
-		Rows []row
-	}
-
-	data := struct {
-		Bytes, Golfers, Holes, Langs, Solutions int
-		SolutionsByHole, SolutionsByLang        pie.Pie
-		Tables                                  []table
-	}{
-		Holes:  len(config.HoleList),
-		Langs:  len(config.LangList),
-		Tables: []table{{Fact: "Hole"}, {Fact: "Language"}},
-	}
+	var data struct{ Bytes, Golfers, Solutions int }
 
 	db := session.Database(r)
 
@@ -47,68 +27,44 @@ func statsGET(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	for i, fact := range [...]string{"hole", "lang"} {
-		rows, err := db.Query(
-			`SELECT RANK() OVER (ORDER BY COUNT(*) DESC, ` + fact + `),
-			         ` + fact + `,
-			         COUNT(*),
-			         COUNT(DISTINCT user_id)
-			    FROM solutions
-			   WHERE NOT failing
-			GROUP BY ` + fact,
-		)
-		if err != nil {
-			panic(err)
-		}
-		defer rows.Close()
+	render(w, r, "stats", data, "Statistics")
+}
 
-		var slices []pie.Slice
-
-		for rows.Next() {
-			var row row
-
-			if err := rows.Scan(
-				&row.Rank,
-				&row.Fact,
-				&row.Count,
-				&row.Golfers,
-			); err != nil {
-				panic(err)
-			}
-
-			if fact == "hole" {
-				row.Route = "/" + row.Fact
-				row.Fact = config.HoleByID[row.Fact].Name
-			} else {
-				row.Route = "/recent/" + row.Fact
-				row.Fact = config.LangByID[row.Fact].Name
-			}
-
-			row.PerGolfer = fmt.Sprintf("%.2f", float64(row.Count)/float64(row.Golfers))
-
-			data.Tables[i].Rows = append(data.Tables[i].Rows, row)
-
-			// Pie chart
-			switch len(slices) {
-			case 6:
-				slices[5].Quantity += row.Count
-			case 5:
-				slices = append(slices, pie.Slice{Label: "Other", Quantity: row.Count})
-			default:
-				slices = append(slices, pie.Slice{Label: row.Fact, Quantity: row.Count})
-			}
-		}
-
-		if err := rows.Err(); err != nil {
-			panic(err)
-		}
-
-		if fact == "hole" {
-			data.SolutionsByHole = pie.New(slices)
-		} else {
-			data.SolutionsByLang = pie.New(slices)
+// GET /stats/{page:holes|langs}
+func statsTableGET(w http.ResponseWriter, r *http.Request) {
+	var data struct {
+		Fact string
+		Rows []struct {
+			Count, Golfers, Rank int
+			PerGolfer            string
+			Hole                 *config.Hole
+			Lang                 *config.Lang
 		}
 	}
 
-	render(w, r, "stats", data, "Stats")
+	column := ""
+	switch param(r, "page") {
+	case "holes":
+		column = "hole"
+		data.Fact = "Hole"
+	case "langs":
+		column = "lang"
+		data.Fact = "Language"
+	}
+
+	if err := session.Database(r).Select(
+		&data.Rows,
+		` SELECT RANK() OVER (ORDER BY COUNT(*) DESC, `+column+`),
+		         `+column+`,
+		         COUNT(*),
+		         COUNT(DISTINCT user_id) golfers,
+		         ROUND(COUNT(*)::decimal / COUNT(DISTINCT user_id), 2) per_golfer
+		    FROM solutions
+		   WHERE NOT failing
+		GROUP BY `+column,
+	); err != nil {
+		panic(err)
+	}
+
+	render(w, r, "stats", data, "Statistics: "+data.Fact+"s")
 }

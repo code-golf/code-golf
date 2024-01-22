@@ -71,7 +71,7 @@
             href=/rankings/holes/all/all/bytes title=Rankings>
             {{ svg "trophy" }}
         </a>
-        <a {{ if eq .Path "/stats" }} class=on {{ end }}
+        <a {{ if hasPrefix .Path "/stats" }} class=on {{ end }}
             href=/stats title=Statistics>
             {{ svg "graph-up" }}
         </a>

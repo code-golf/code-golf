@@ -1,44 +1,44 @@
 {{ template "header" . }}
 
-<main>
-    <h1 class=span>Statistics</h1>
+<h1>{{ .Title }}</h1>
 
-    <div><h2>Languages</h2>{{ .Data.Langs }}</div>
-    <div><h2>Holes</h2>{{ .Data.Holes }}</div>
-    <div><h2>Golfers</h2>{{ comma .Data.Golfers }}</div>
+<main id=two-pane>
+    {{ template "nav" . }}
 
-    <div>
-        <h2>Solutions</h2>
-        <span>
-            {{ comma .Data.Solutions }}
-            <small>({{ bytes .Data.Bytes }})</small>
-        </span>
+{{ if eq .Title "Statistics" }}
+    <div id=overview>
+        <div><h2>Holes</h2>{{ len .Holes }}</div>
+        <div><h2>Languages</h2>{{ len .Langs }}</div>
+        <div><h2>Golfers</h2>{{ comma .Data.Golfers }}</div>
+
+        <div>
+            <h2>Solutions</h2>
+            <span>
+                {{ comma .Data.Solutions }}
+                <small>({{ bytes .Data.Bytes }})</small>
+            </span>
+        </div>
     </div>
-
-    <div class=pie>
-        <h2 class=span>Solutions by Hole</h2>
-        {{ .Data.SolutionsByHole.HTML }}
-    </div>
-
-    <div class=pie>
-        <h2 class=span>Solutions by Language</h2>
-        {{ .Data.SolutionsByLang.HTML }}
-    </div>
-
-{{ range .Data.Tables }}
+{{ else }}
     <table class="nowrap-second sticky">
         <thead>
             <tr>
-                <th class=wide>#
-                <th>{{ .Fact }}
+                <th>#
+                <th>{{ .Data.Fact }}
                 <th class=right>Solutions
                 <th class=right>Golfers
                 <th class="right wide">Per Golfer
         <tbody>
-        {{ range .Rows }}
+        {{ range .Data.Rows }}
             <tr>
-                <td class=wide>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
-                <td><a href={{ .Route }}><span>{{ .Fact }}</span></a>
+                <td>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
+                <td>
+                {{ with .Hole }}
+                    <a href="/{{ .ID }}"><span>{{ .Name }}</span></a>
+                {{ end }}
+                {{ with .Lang }}
+                    <a href="/recent/{{ .ID }}"><span>{{ .Name }}</span></a>
+                {{ end }}
                 <td class=right>{{ comma .Count }}
                 <td class=right>{{ comma .Golfers }}
                 <td class="right wide">{{ .PerGolfer }}
