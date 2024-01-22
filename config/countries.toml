@@ -88,6 +88,7 @@ Asia = [
     { id = 'KG', name = 'Kyrgyzstan' },
     { id = 'LA', name = 'Laos' },
     { id = 'LB', name = 'Lebanon' },
+    { id = 'MO', name = 'Macau' },
     { id = 'MY', name = 'Malaysia' },
     { id = 'MV', name = 'Maldives' },
     { id = 'MN', name = 'Mongolia' },

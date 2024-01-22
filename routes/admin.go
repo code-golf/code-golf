@@ -1,10 +1,8 @@
 package routes
 
 import (
-	"cmp"
 	"database/sql"
 	"net/http"
-	"slices"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
@@ -13,15 +11,8 @@ import (
 
 // GET /admin
 func adminGET(w http.ResponseWriter, r *http.Request) {
-	type country struct {
-		Flag, ID, Name string
-		Golfers        int
-		Percent        float64
-	}
-
 	data := struct {
-		Countries []*country
-		Sessions  []struct {
+		Sessions []struct {
 			Country  config.NullCountry
 			LastUsed time.Time
 			Name     string
@@ -67,32 +58,6 @@ func adminGET(w http.ResponseWriter, r *http.Request) {
 	); err != nil {
 		panic(err)
 	}
-
-	if err := db.Select(
-		&data.Countries,
-		` SELECT COALESCE(country, '')                  id,
-		         COUNT(*)                               golfers,
-		         COUNT(*) / SUM(COUNT(*)) OVER () * 100 percent
-		    FROM users
-		GROUP BY COALESCE(country, '')`,
-	); err != nil {
-		panic(err)
-	}
-
-	for _, c := range data.Countries {
-		if country, ok := config.CountryByID[c.ID]; ok {
-			c.Flag = country.Flag
-			c.Name = country.Name
-		}
-	}
-
-	// Sort by golfers desc, name asc.
-	slices.SortStableFunc(data.Countries, func(a, b *country) int {
-		if c := cmp.Compare(b.Golfers, a.Golfers); c != 0 {
-			return c
-		}
-		return cmp.Compare(a.Name, b.Name)
-	})
 
 	render(w, r, "admin/info", data, "Admin Info")
 }

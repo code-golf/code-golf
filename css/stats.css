@@ -6,6 +6,8 @@ body > h1 {
     padding: 1rem;
 }
 
+.flag { margin-right: .5rem }
+
 #overview {
     align-items: start;
     display: grid;

@@ -27,19 +27,6 @@
                 <td>{{ bytes .Size }}
         {{ end }}
     </table>
-    <table class="nowrap-first sticky">
-        <thead>
-            <th>Country
-            <th>Golfers
-            <th>%
-        <tbody>
-        {{ range .Data.Countries }}
-            <tr>
-                <td><span class=flag>{{ .Flag }}</span>{{ .Name }}
-                <td>{{ comma .Golfers }}
-                <td>{{ printf "%.2f" .Percent }}%
-        {{ end }}
-    </table>
 </main>
 
 {{ template "footer" }}

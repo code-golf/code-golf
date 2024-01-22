@@ -19,6 +19,29 @@
             </span>
         </div>
     </div>
+{{ else if eq .Title "Statistics: Countries" }}
+    <table class="nowrap-second sticky">
+        <thead>
+            <tr>
+                <th>#
+                <th>Country
+                <th class=right>Golfers
+                <th class=right>Percent
+        <tbody>
+        {{ range .Data }}
+            <tr>
+                <td>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
+                <td>
+                    {{ with .Country.Country }}
+                        <span class=flag title="{{ .ID }}">{{ .Flag }}</span>
+                        {{- .Name }}
+                    {{ else }}
+                        Rather not say
+                    {{ end }}
+                <td class=right>{{ comma .Golfers }}
+                <td class=right>{{ .Percent }}%
+        {{ end }}
+    </table>
 {{ else }}
     <table class="nowrap-second sticky">
         <thead>
