@@ -440,6 +440,8 @@ thead th {
 .nowrap-first  td:nth-child(1),
 .nowrap-second td:nth-child(2) {
     max-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
     width: 100%;
 }
 
@@ -448,6 +450,8 @@ thead th {
 .nowrap-second-third td:nth-child(2),
 .nowrap-second-third td:nth-child(3) {
     max-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
     width: 50%;
 }
 
