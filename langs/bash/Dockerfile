@@ -3,7 +3,7 @@ FROM alpine:3.19 AS builder
 RUN apk add --no-cache build-base curl patch
 
 RUN curl https://ftp.gnu.org/gnu/bash/bash-5.2.tar.gz | tar xz && cd bash-5.2 \
- && curl https://ftp.gnu.org/gnu/bash/bash-5.2-patches/bash52-0[01-21] | patch -p0
+ && curl https://ftp.gnu.org/gnu/bash/bash-5.2-patches/bash52-0[01-26] | patch -p0
 
 COPY strtoimax.patch /
 

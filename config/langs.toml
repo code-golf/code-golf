@@ -117,7 +117,7 @@ BEGIN {
 
 [Bash]
 size    = '1.19 MiB'
-version = '5.2.21'
+version = '5.2.26'
 website = 'https://www.gnu.org/software/bash/'
 example = '''
 # Printing
@@ -222,8 +222,8 @@ int main(int argc, char* argv[]) {
 '''
 
 ['C#']
-size    = '152 MiB'
-version = 'C# 12.0 on .NET 8.0.0'
+size    = '151 MiB'
+version = 'C# 12.0 on .NET 8.0.1'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -400,8 +400,8 @@ void main(List<String> argv) {
 '''
 
 [Elixir]
-size    = '174 MiB'
-version = '1.15.4'
+size    = '175 MiB'
+version = '1.16.0'
 website = 'https://elixir-lang.org'
 example = '''
 # Printing
@@ -415,8 +415,8 @@ for arg <- System.argv, do: IO.puts arg
 '''
 
 ['F#']
-size    = '147 MiB'
-version = 'F# 8.0 on .NET 8.0.0'
+size    = '146 MiB'
+version = 'F# 8.0 on .NET 8.0.1'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -560,7 +560,7 @@ main = do
 '''
 
 [Hexagony]
-size    = '8.46 MiB'
+size    = '8.82 MiB'
 version = '770406a'
 website = 'https://github.com/SirBogman/Hexagony'
 example = '''
@@ -639,8 +639,8 @@ class Main {
 '''
 
 [JavaScript]
-size    = '39.9 MiB'
-version = 'V8 12.0.267.14'
+size    = '39.6 MiB'
+version = 'V8 12.1.285.27'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -825,7 +825,7 @@ for ($i = 1; $i < $argc; $i++)
 
 [PowerShell]
 size    = '178 MiB'
-version = 'PowerShell 7.4.0 on .NET 8.0.0'
+version = 'PowerShell 7.4.1 on .NET 8.0.1'
 website = 'https://docs.microsoft.com/powershell/scripting/overview'
 example = '''
 # Printing
