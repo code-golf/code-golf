@@ -564,8 +564,9 @@ preamble = '''
     </symbol>
 </svg>
 
-Given a list of all the CSS color keywords print the hex values in the corresponding order. The output
-will be checked case-insensitively. The full mapping is as follows:
+<p>
+    Given a list of all the CSS color keywords print the hex values in the
+    corresponding order. The full mapping is as follows:
 
 <div id=colors class="tables-4col">
 {{ range . }}

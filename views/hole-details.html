@@ -1,5 +1,8 @@
 <div class=grid>
     {{ .Data.Hole.Preamble }}
+{{ if .Data.Hole.CaseFold }}
+    <div class=info>The output will be checked case-insensitively.</div>
+{{ end }}
 {{ if .Data.Hole.Data }}
     <div>
         <button class="btn orange" id=copy>Copy as JSON</button>
