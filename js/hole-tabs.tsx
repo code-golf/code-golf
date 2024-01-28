@@ -11,7 +11,7 @@ import {
     setCode, refreshScores, getHideDeleteBtn, submit, ReadonlyPanelsData,
     updateRestoreLinkVisibility, getSavedInDB, setCodeForLangAndSolution,
     populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyJSONBtn,
-    getScorings,
+    getScorings, replaceUnprintablesInOutput,
 } from './_hole-common';
 
 const poolDragSources: {[key: string]: DragSource} = {};
@@ -87,7 +87,7 @@ function updateReadonlyPanel(name: string) {
         output.innerHTML = subRes.Err.replace(/\n/g,'<br>');
         break;
     case 'out':
-        output.innerText = subRes.Out;
+        output.innerHTML = replaceUnprintablesInOutput(subRes.Out);
         break;
     case 'exp':
         output.innerText = subRes.Exp;
