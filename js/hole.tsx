@@ -88,7 +88,8 @@ function updateReadonlyPanels(data: ReadonlyPanelsData) {
     $('#exp div').innerText = data.Exp;
     $('#out div').innerHTML = replaceUnprintablesInOutput(data.Out);
 
-    const diff = diffTable(hole, data.Exp, data.Out, data.Argv);
+    const ignoreCase = hole === 'css-colors' || hole === 'rijndael-s-box';
+    const diff = diffTable(hole, data.Exp, data.Out, data.Argv, ignoreCase);
     $('#diff-content').replaceChildren(diff);
     $('#diff').classList.toggle('hide', !diff);
 }

@@ -99,7 +99,8 @@ function updateReadonlyPanel(name: string) {
         );
         break;
     case 'diff':
-        const diff = diffTable(hole, subRes.Exp, subRes.Out, subRes.Argv);
+        const ignoreCase = hole === 'css-colors' || hole === 'rijndael-s-box';
+        const diff = diffTable(hole, subRes.Exp, subRes.Out, subRes.Argv, ignoreCase);
         output.replaceChildren(diff);
     }
 }

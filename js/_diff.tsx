@@ -6,13 +6,13 @@ interface DiffPos {
     isLastDiff: boolean;
 }
 
-export default (hole: string, exp: string, out: string, argv: string[]) => {
-    if (stringsEqual(exp, out, shouldIgnoreCase(hole))) return '';
+export default (hole: string, exp: string, out: string, argv: string[], ignoreCase: boolean) => {
+    if (stringsEqual(exp, out, ignoreCase)) return '';
 
     // Show args? Exclude holes with one big argument like QR Decoder.
     const isArgDiff = argv.length > 1 && argv.length == lines(exp).length;
 
-    const {rows, maxLineNum} = diffHTMLRows(hole, exp, out, argv, isArgDiff);
+    const {rows, maxLineNum} = diffHTMLRows(hole, exp, out, argv, ignoreCase, isArgDiff);
 
     return <table>
         {makeCols(isArgDiff, maxLineNum, argv)}
@@ -154,14 +154,14 @@ function makeCols(isArgDiff: boolean, maxLineNum: number, argv: string[]) {
     return cols;
 }
 
-function diffHTMLRows(hole: string, exp: string, out: string, argv: string[], isArgDiff: boolean) {
+function diffHTMLRows(hole: string, exp: string, out: string, argv: string[], ignoreCase: boolean, isArgDiff: boolean) {
     const rows = [];
     const pos = {
         left: 1,
         right: 1,
         isLastDiff: false,
     };
-    const changes = getLineChanges(hole, out, exp, isArgDiff);
+    const changes = getLineChanges(out, exp, ignoreCase, isArgDiff);
     let pendingChange = null;
     for (let i = 0; i < changes.length; i++) {
         const change = changes[i];
@@ -171,20 +171,20 @@ function diffHTMLRows(hole: string, exp: string, out: string, argv: string[], is
                 pendingChange = change;
             }
             else {
-                rows.push(...getDiffRow(hole, pendingChange, change, pos, argv, isArgDiff));
+                rows.push(...getDiffRow(hole, pendingChange, change, pos, argv, ignoreCase, isArgDiff));
                 pendingChange = null;
             }
         }
         else {
             if (pendingChange) {
-                rows.push(...getDiffRow(hole, pendingChange, {value: ''}, pos, argv, isArgDiff));
+                rows.push(...getDiffRow(hole, pendingChange, {value: ''}, pos, argv, ignoreCase, isArgDiff));
                 pendingChange = null;
             }
-            rows.push(...getDiffLines(hole, change, change, pos, argv, isArgDiff));
+            rows.push(...getDiffLines(hole, change, change, pos, argv, ignoreCase, isArgDiff));
         }
     }
     if (pendingChange) {
-        rows.push(...getDiffRow(hole, pendingChange, {value: ''}, pos, argv, isArgDiff));
+        rows.push(...getDiffRow(hole, pendingChange, {value: ''}, pos, argv, ignoreCase, isArgDiff));
     }
     return {
         rows,
@@ -201,22 +201,17 @@ function stringsEqual(a: string, b: string, ignoreCase: boolean) {
         a.localeCompare(
             b,
             undefined,
-            ignoreCase
-                ? {
-                    sensitivity: 'accent',
-                }
-                : undefined,
+            ignoreCase ? { sensitivity: 'accent' } : undefined,
         )
     );
 }
 
-function getLineChanges(hole: string, before: string, after: string, isArgDiff: boolean) {
+function getLineChanges(before: string, after: string, ignoreCase: boolean, isArgDiff: boolean) {
     if (isArgDiff) {
         const out = [];
         const splitBefore = lines(before);
         const splitAfter = lines(after);
         let currentUnchanged = [];
-        const ignoreCase = shouldIgnoreCase(hole);
         for (let i=0; i<Math.max(splitBefore.length, splitAfter.length); i++) {
             const a = splitBefore[i] ?? '';
             const b = splitAfter[i] ?? '';
@@ -256,21 +251,19 @@ function getLineChanges(hole: string, before: string, after: string, isArgDiff: 
         return out;
     }
     else {
-        return diffWrapper('\n', lines(before), lines(after), {
-            ignoreCase: shouldIgnoreCase(hole),
-        });
+        return diffWrapper('\n', lines(before), lines(after), { ignoreCase });
     }
 }
 
-function getDiffRow(hole: string, change1: Diff.Change, change2: Diff.Change, pos: DiffPos, argv: string[], isArgDiff: boolean) {
+function getDiffRow(hole: string, change1: Diff.Change, change2: Diff.Change, pos: DiffPos, argv: string[], ignoreCase: boolean, isArgDiff: boolean) {
     change2.value ??= '';
     change2.count ??= 0;
     const left = change1.removed ? change1 : change2;
     const right = change1.added ? change1 : change2;
-    return getDiffLines(hole, left, right, pos, argv, isArgDiff);
+    return getDiffLines(hole, left, right, pos, argv, ignoreCase, isArgDiff);
 }
 
-function getDiffLines(hole: string, left: Diff.Change, right: Diff.Change, pos: DiffPos, argv: string[], isArgDiff: boolean) {
+function getDiffLines(hole: string, left: Diff.Change, right: Diff.Change, pos: DiffPos, argv: string[], ignoreCase: boolean, isArgDiff: boolean) {
     const leftSplit = lines(left.value);
     const rightSplit = lines(right.value);
     if (!(pos.isLastDiff && hole === 'quine')) {
@@ -278,9 +271,7 @@ function getDiffLines(hole: string, left: Diff.Change, right: Diff.Change, pos: 
         if (leftSplit[leftSplit.length - 1] === '') leftSplit.pop();
         if (rightSplit[rightSplit.length - 1] === '') rightSplit.pop();
     }
-    const diffOpts = {
-        ignoreCase: shouldIgnoreCase(hole),
-    };
+    const diffOpts = { ignoreCase };
     const rows = [];
     const numLines = Math.max(leftSplit.length, rightSplit.length);
     const isUnchanged = !left.removed && !right.added;
@@ -365,10 +356,6 @@ function renderCharDiff(className: string, charDiff: Diff.Change[], isRight: boo
             td.append(change.value);
 
     return td;
-}
-
-function shouldIgnoreCase(hole: string) {
-    return hole === 'css-colors' || hole === 'rijndael-s-box';
 }
 
 function lines(s: string) {
