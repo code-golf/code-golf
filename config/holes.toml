@@ -476,6 +476,7 @@ preamble = '''
 '''
 
 ['CSS Colors']
+case-fold = true
 category = 'Transform'
 data = '''
 {
@@ -2586,6 +2587,7 @@ preamble = '''
 '''
 
 ['Rijndael S-box']
+case-fold = true
 category = 'Mathematics'
 links = [
     { name = 'OEIS A354500', url = '//oeis.org/A354500' },

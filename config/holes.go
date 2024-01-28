@@ -38,6 +38,7 @@ type Link struct {
 }
 
 type Hole struct {
+	CaseFold                                bool             `json:"-" toml:"case-fold"`
 	Categories                              []string         `json:"-"`
 	Category                                string           `json:"category"`
 	CategoryColor, CategoryIcon, Prev, Next string           `json:"-"`

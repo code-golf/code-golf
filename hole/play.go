@@ -407,8 +407,7 @@ func play(
 
 	// Timeouts and whitespace only output never pass.
 	if !run.Timeout && len(strings.TrimSpace(run.Stdout)) != 0 {
-		if hole.ID == "css-colors" || hole.ID == "rijndael-s-box" {
-			// TODO Generalise case insensitivity, should it apply to others?
+		if hole.CaseFold {
 			run.Pass = strings.EqualFold(run.Answer, run.Stdout)
 		} else {
 			run.Pass = run.Answer == run.Stdout

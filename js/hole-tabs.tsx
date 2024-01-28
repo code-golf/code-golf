@@ -99,7 +99,7 @@ function updateReadonlyPanel(name: string) {
         );
         break;
     case 'diff':
-        const ignoreCase = hole === 'css-colors' || hole === 'rijndael-s-box';
+        const ignoreCase = JSON.parse($('#case-fold').innerText);
         const diff = diffTable(hole, subRes.Exp, subRes.Out, subRes.Argv, ignoreCase);
         output.replaceChildren(diff);
     }
