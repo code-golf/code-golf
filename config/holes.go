@@ -31,28 +31,27 @@ var (
 	RecentHoles []*Hole
 )
 
-type (
-	Link struct {
-		Name string `json:"name"`
-		URL  string `json:"url"`
-		V    []int  `json:"-"`
-	}
-	Hole struct {
-		Categories                              []string         `json:"-"`
-		Category                                string           `json:"category"`
-		CategoryColor, CategoryIcon, Prev, Next string           `json:"-"`
-		Data                                    template.JS      `json:"-"`
-		Experiment                              int              `json:"-"`
-		ID                                      string           `json:"id"`
-		Links                                   []Link           `json:"links"`
-		Name                                    string           `json:"name"`
-		Preamble                                template.HTML    `json:"preamble"`
-		Released                                toml.LocalDate   `json:"released"`
-		Releases                                []toml.LocalDate `json:"-"`
-		Synopsis                                string           `json:"synopsis"`
-		Variants                                []*Hole          `json:"-"`
-	}
-)
+type Link struct {
+	Name string `json:"name"`
+	URL  string `json:"url"`
+	V    []int  `json:"-"`
+}
+
+type Hole struct {
+	Categories                              []string         `json:"-"`
+	Category                                string           `json:"category"`
+	CategoryColor, CategoryIcon, Prev, Next string           `json:"-"`
+	Data                                    template.JS      `json:"-"`
+	Experiment                              int              `json:"-"`
+	ID                                      string           `json:"id"`
+	Links                                   []Link           `json:"links"`
+	Name                                    string           `json:"name"`
+	Preamble                                template.HTML    `json:"preamble"`
+	Released                                toml.LocalDate   `json:"released"`
+	Releases                                []toml.LocalDate `json:"-"`
+	Synopsis                                string           `json:"synopsis"`
+	Variants                                []*Hole          `json:"-"`
+}
 
 func init() {
 	var holes map[string]*struct {
