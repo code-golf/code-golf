@@ -15,6 +15,8 @@ import (
 	"syscall"
 	"time"
 	"unicode"
+
+	"github.com/code-golf/code-golf/config"
 )
 
 var timeout = 5 * time.Second
@@ -71,10 +73,12 @@ func preprocessKCode(holeID, code string) string {
 }
 
 // Play a given hole, in a given lang, with given code and return the runs.
-func Play(ctx context.Context, holeID, langID, code string) (runs []Run) {
-	switch holeID {
+func Play(
+	ctx context.Context, hole *config.Hole, lang *config.Lang, code string,
+) (runs []Run) {
+	switch hole.ID {
 	case "arabic-to-roman", "roman-to-arabic":
-		runs = arabicToRoman(holeID == "roman-to-arabic")
+		runs = arabicToRoman(hole.ID == "roman-to-arabic")
 	case "arrows":
 		runs = arrows()
 	case "brainfuck":
@@ -96,7 +100,7 @@ func Play(ctx context.Context, holeID, langID, code string) (runs []Run) {
 	case "game-of-life":
 		runs = gameOfLife()
 	case "gray-code-encoder", "gray-code-decoder":
-		runs = grayCode(holeID == "gray-code-decoder")
+		runs = grayCode(hole.ID == "gray-code-decoder")
 	case "hexdump":
 		runs = hexdump()
 	case "isbn":
@@ -116,7 +120,7 @@ func Play(ctx context.Context, holeID, langID, code string) (runs []Run) {
 	case "medal-tally":
 		runs = medalTally()
 	case "morse-decoder", "morse-encoder":
-		runs = morse(holeID == "morse-decoder")
+		runs = morse(hole.ID == "morse-decoder")
 	case "musical-chords":
 		runs = musicalChords()
 	case "nfa-simulator":
@@ -132,7 +136,7 @@ func Play(ctx context.Context, holeID, langID, code string) (runs []Run) {
 	case "proximity-grid":
 		runs = proximityGrid()
 	case "qr-decoder", "qr-encoder":
-		runs = qr(holeID == "qr-decoder")
+		runs = qr(hole.ID == "qr-decoder")
 	case "quadratic-formula":
 		runs = quadraticFormula()
 	case "quine":
@@ -152,7 +156,7 @@ func Play(ctx context.Context, holeID, langID, code string) (runs []Run) {
 	case "star-wars-opening-crawl":
 		runs = starWarsOpeningCrawl()
 	case "sudoku", "sudoku-v2":
-		runs = sudoku(holeID == "sudoku-v2")
+		runs = sudoku(hole.ID == "sudoku-v2")
 	case "ten-pin-bowling":
 		runs = tenPinBowling()
 	case "time-distance":
@@ -167,11 +171,11 @@ func Play(ctx context.Context, holeID, langID, code string) (runs []Run) {
 		runs = zeckendorfRepresentation()
 	default:
 		// ¯\_(ツ)_/¯ cannot embed file answers/√2.txt: invalid name √2.txt
-		if holeID == "√2" {
-			holeID = "root-2"
+		if hole.ID == "√2" {
+			hole.ID = "root-2"
 		}
 
-		if b, err := answers.ReadFile("answers/" + holeID + ".txt"); err != nil {
+		if b, err := answers.ReadFile("answers/" + hole.ID + ".txt"); err != nil {
 			panic(err)
 		} else {
 			answer := string(bytes.TrimSuffix(b, []byte{'\n'}))
@@ -185,7 +189,7 @@ func Play(ctx context.Context, holeID, langID, code string) (runs []Run) {
 
 	for i := range runs {
 		go func(run *Run) {
-			if err := play(ctx, holeID, langID, code, run); err != nil {
+			if err := play(ctx, hole, lang, code, run); err != nil {
 				log.Println(err)
 			}
 
@@ -198,7 +202,9 @@ func Play(ctx context.Context, holeID, langID, code string) (runs []Run) {
 	return
 }
 
-func play(ctx context.Context, holeID, langID, code string, run *Run) error {
+func play(
+	ctx context.Context, hole *config.Hole, lang *config.Lang, code string, run *Run,
+) error {
 	var stderr, stdout bytes.Buffer
 	var asmBytesRead, asmBytesWrite *os.File
 
@@ -206,7 +212,7 @@ func play(ctx context.Context, holeID, langID, code string, run *Run) error {
 	defer cancel()
 
 	cmd := exec.CommandContext(ctx, "/usr/bin/run-lang")
-	cmd.Dir = "/langs/" + langID
+	cmd.Dir = "/langs/" + lang.ID
 	cmd.Env = []string{}
 	cmd.Stderr = &stderr
 	cmd.Stdout = &stdout
@@ -217,7 +223,7 @@ func play(ctx context.Context, holeID, langID, code string, run *Run) error {
 	}
 
 	// Interpreter
-	switch langID {
+	switch lang.ID {
 	case "assembly":
 		var err error
 		if asmBytesRead, asmBytesWrite, err = os.Pipe(); err != nil {
@@ -259,7 +265,7 @@ func play(ctx context.Context, holeID, langID, code string, run *Run) error {
 		cmd.Args = []string{"/usr/bin/forth", "/proc/self/fd/0"}
 	case "golfscript":
 		cmd.Args = []string{"/usr/bin/golfscript", "-n", "-e", code}
-		if holeID == "quine" {
+		if hole.ID == "quine" {
 			cmd.Args = append(cmd.Args, "-q")
 		}
 		cmd.Args = append(cmd.Args, "--")
@@ -288,7 +294,7 @@ func play(ctx context.Context, holeID, langID, code string, run *Run) error {
 		cmd.Args = []string{"/usr/bin/powershell"}
 
 		// Require explicit output for Quine to prevent trivial solutions.
-		if holeID == "quine" {
+		if hole.ID == "quine" {
 			cmd.Args = append(cmd.Args, "--explicit")
 		}
 	case "prolog":
@@ -300,7 +306,7 @@ func play(ctx context.Context, holeID, langID, code string, run *Run) error {
 		cmd.Args = []string{"/usr/bin/Rscript", "-"}
 
 		// Disable implicit output for Quine to prevent trivial solutions.
-		if holeID == "quine" {
+		if hole.ID == "quine" {
 			cmd.Args = []string{"/usr/bin/Rscript", "-e", "source('stdin')"}
 		}
 	case "sed":
@@ -314,16 +320,16 @@ func play(ctx context.Context, holeID, langID, code string, run *Run) error {
 
 		// Require a backslash for Quine to prevent trivial solutions.
 		// Don't even run the code; just mark error and return.
-		if holeID == "quine" && !strings.Contains(code, `\`) {
+		if hole.ID == "quine" && !strings.Contains(code, `\`) {
 			run.Stderr = `Quine in TeX must have at least one '\' character.`
 			return nil
 		}
 	default:
-		cmd.Args = []string{"/usr/bin/" + langID, "-"}
+		cmd.Args = []string{"/usr/bin/" + lang.ID, "-"}
 	}
 
 	// Args
-	switch langID {
+	switch lang.ID {
 	case "awk", "brainfuck", "fish":
 		// Hole args passed through stdin for these langs separated by a null byte
 		args := ""
@@ -340,12 +346,12 @@ func play(ctx context.Context, holeID, langID, code string, run *Run) error {
 	}
 
 	// Code
-	switch langID {
+	switch lang.ID {
 	case "awk", "brainfuck", "elixir", "fish", "golfscript", "javascript",
 		"perl", "sed", "tex":
 		// For these langs, code is passed as an argument above.
 	case "k":
-		cmd.Stdin = strings.NewReader(preprocessKCode(holeID, code))
+		cmd.Stdin = strings.NewReader(preprocessKCode(hole.ID, code))
 	case "php":
 		cmd.Stdin = strings.NewReader("<?php " + code + " ;")
 	default:
@@ -371,7 +377,7 @@ func play(ctx context.Context, holeID, langID, code string, run *Run) error {
 	}
 
 	// Actual byte count is printed by the assembler.
-	if langID == "assembly" {
+	if lang.ID == "assembly" {
 		if _, err := fmt.Fscanf(asmBytesRead, "%d", &run.ASMBytes); err != nil {
 			return err
 		}
@@ -386,13 +392,13 @@ func play(ctx context.Context, holeID, langID, code string, run *Run) error {
 	stdoutContents := stdout.Next(maxLength)
 
 	// Postprocess sed output to turn null bytes into newlines.
-	if langID == "sed" {
+	if lang.ID == "sed" {
 		stdoutContents = bytes.ReplaceAll(stdoutContents, []byte("\x00"), []byte("\n"))
 	}
 
 	// Trim trailing whitespace on each line, and then trailing empty lines.
 	// Quine solutions are obviously left untouched.
-	if holeID == "quine" {
+	if hole.ID == "quine" {
 		run.Stdout = string(stdoutContents)
 	} else {
 		run.Stdout = string(bytes.TrimRight(stdoutTrimmer.ReplaceAll(
@@ -401,7 +407,7 @@ func play(ctx context.Context, holeID, langID, code string, run *Run) error {
 
 	// Timeouts and whitespace only output never pass.
 	if !run.Timeout && len(strings.TrimSpace(run.Stdout)) != 0 {
-		if holeID == "css-colors" || holeID == "rijndael-s-box" {
+		if hole.ID == "css-colors" || hole.ID == "rijndael-s-box" {
 			// TODO Generalise case insensitivity, should it apply to others?
 			run.Pass = strings.EqualFold(run.Answer, run.Stdout)
 		} else {

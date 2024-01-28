@@ -60,7 +60,12 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 				for j := 0; j < 3; j++ {
 					// Get the first failing (or last overall) run.
 					var run hole.Run
-					for _, r := range hole.Play(r.Context(), s.HoleID, s.LangID, s.code) {
+					for _, r := range hole.Play(
+						r.Context(),
+						config.AllHoleByID[s.HoleID],
+						config.AllLangByID[s.LangID],
+						s.code,
+					) {
 						run = r
 						if !r.Pass {
 							break

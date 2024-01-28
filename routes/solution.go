@@ -44,7 +44,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	runs := hole.Play(r.Context(), in.Hole, in.Lang, in.Code)
+	runs := hole.Play(r.Context(), holeObj, langObj, in.Code)
 
 	// TODO Should this be pushed lower?
 	for i, run := range runs {
