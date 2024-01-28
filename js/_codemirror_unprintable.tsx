@@ -69,7 +69,7 @@ class UnprintableWidget extends WidgetType {
 }
 
 const unprintableDecorator = new MatchDecorator({
-    regexp: /[\x01-\x08\x0B-\x1F]/g,
+    regexp: /[\x01-\x08\x0B-\x1F\x7F]/g,
     decoration: match => Decoration.replace({
         widget: new UnprintableWidget(match[0].charCodeAt(0)),
     }),
