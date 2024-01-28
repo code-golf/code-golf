@@ -32,12 +32,6 @@ var answers embed.FS
 // All ASCII whitespace except newline, up to a newline or the end.
 var stdoutTrimmer = regexp.MustCompile(`[\t\x0B\f\r ]+(?:\n|$)`)
 
-var romanToASCII = strings.NewReplacer(
-	"Ⅰ", "I", "Ⅱ", "II", "Ⅲ", "III", "Ⅳ", "IV", "Ⅴ", "V",
-	"Ⅵ", "VI", "Ⅶ", "VII", "Ⅷ", "VIII", "Ⅸ", "IX", "Ⅹ", "X",
-	"Ⅺ", "XI", "Ⅻ", "XII", "Ⅼ", "L", "Ⅽ", "C", "Ⅾ", "D", "Ⅿ", "M",
-)
-
 // Run holds the results of running a given solution once.
 type Run struct {
 	Answer   string        `json:"answer"`
@@ -403,11 +397,6 @@ func play(ctx context.Context, holeID, langID, code string, run *Run) error {
 	} else {
 		run.Stdout = string(bytes.TrimRight(stdoutTrimmer.ReplaceAll(
 			stdoutContents, []byte{'\n'}), "\n"))
-	}
-
-	// ASCII-ify roman numerals
-	if holeID == "arabic-to-roman" {
-		run.Stdout = romanToASCII.Replace(run.Stdout)
 	}
 
 	// Timeouts and whitespace only output never pass.
