@@ -1,0 +1,12 @@
+<script id=keymap type=application/json>
+    {{ with .Golfer }}{{ .Keymap }}{{ else }}"default"{{ end }}
+</script>
+
+{{ with .Data.Hole }}
+    <script id=case-fold type=application/json>{{ .CaseFold }}</script>
+    <script id=data      type=application/json>{{ .Data     }}</script>
+{{ end }}
+
+<script id=experimental type=application/json>{{ ne .Data.Hole.Experiment 0 }}</script>
+<script id=langs        type=application/json>{{ .Data.Langs                }}</script>
+<script id=solutions    type=application/json>{{ .Data.Solutions            }}</script>
