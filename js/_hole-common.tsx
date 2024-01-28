@@ -611,7 +611,7 @@ export function setCodeForLangAndSolution(editor: any) {
 
     refreshScores(editor);
 
-    $$('main .info').forEach(
+    $$('#info-container .info').forEach(
         i => i.classList.toggle('hide', !i.classList.contains(lang)));
 }
 

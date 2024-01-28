@@ -81,12 +81,7 @@
 {{ end }}
     <details id=details {{ if not .Data.HideDetails }}open{{ end }}>
         <summary>Details</summary>
-        <div class=grid>
-            {{ .Data.Hole.Preamble }}
-        {{ if .Data.Hole.Data }}
-            <div><button class="btn orange" id=copy>Copy as JSON</button><span>Copied</span></div>
-        {{ end }}
-        </div>
+        {{ template "hole-details" . }}
     </details>
     <nav class=tabs id=picker></nav>
     <nav class=tabs id=solutionPicker></nav>
@@ -113,33 +108,7 @@
             </a>
         </nav>
     </section>
-    <div class="hide info assembly">
-        Compiled from
-        <a href=//www.wikibooks.org/wiki/X86_Assembly/GAS_Syntax>
-            AT&T syntax</a> to x86-64 Linux. Use
-        <a href=//blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64>
-            syscalls</a> to write output.
-    </div>
-{{ if eq .Data.Hole.ID "quine" }}
-    <div class="hide info golfscript r">
-        Implicit output is disabled for this hole.
-    </div>
-    <div class="hide info k">
-        Implicit output is disabled for this hole. Code must end with a newline.
-    </div>
-    <div class="hide info powershell">
-        Implicit output is disabled for this hole. Use <b>Out-Host</b> or
-        <b>Write-Host</b> for output.
-    </div>
-{{ end }}
-{{ range .Data.Langs }}{{ if .Experiment }}
-    <div class="hide info {{ .ID }}">
-        {{ .Name }} is an experimental language, no solutions will be saved.
-        Please leave feedback on the
-        <a href="//github.com/code-golf/code-golf/issues/{{ .Experiment }}">
-            GitHub issue</a>.
-    </div>
-{{ end }}{{ end }}
+    {{ template "hole-info" . }}
     <div id=run>
     {{ if .Golfer }}
         <button class="btn hide red" id=deleteBtn>
