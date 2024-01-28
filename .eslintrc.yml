@@ -21,7 +21,6 @@ rules:
   no-trailing-spaces:          [ error ]
   no-unused-vars:              [ error, { varsIgnorePattern: ^createElement$ } ]
   no-var:                      [ error ]
-  object-shorthand:            [ error ]
   prefer-const:                [ error ]
   prefer-destructuring:        [ error, { object: true } ]
   quote-props:                 [ error, consistent-as-needed ]
