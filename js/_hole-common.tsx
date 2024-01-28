@@ -696,6 +696,6 @@ export function getScorings(tr: any, editor: any) {
 }
 
 export function replaceUnprintablesInOutput(output: string) {
-    return output.replace(/[\x01-\x08\x0B-\x1F\x7F]/g,
+    return output.replace(/[\x00-\x08\x0B-\x1F\x7F]/g,
         x => `<span title=${'\\u' + x.charCodeAt(0).toString(16)}>•</span>`);
 }
