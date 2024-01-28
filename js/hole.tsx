@@ -5,7 +5,7 @@ import {
     init, langs, getLang, hole, getAutoSaveKey, setSolution, getSolution,
     setCode, refreshScores, submit, getSavedInDB, updateRestoreLinkVisibility,
     ReadonlyPanelsData, setCodeForLangAndSolution, getCurrentSolutionCode,
-    initDeleteBtn, initCopyJSONBtn, getScorings,
+    initDeleteBtn, initCopyJSONBtn, getScorings, replaceUnprintablesInOutput,
 } from './_hole-common';
 
 const editor = new EditorView({
@@ -86,7 +86,7 @@ function updateReadonlyPanels(data: ReadonlyPanelsData) {
 
     // Always show exp & out.
     $('#exp div').innerText = data.Exp;
-    $('#out div').innerText = data.Out;
+    $('#out div').innerHTML = replaceUnprintablesInOutput(data.Out);
 
     const diff = diffTable(hole, data.Exp, data.Out, data.Argv);
     $('#diff-content').replaceChildren(diff);
