@@ -108,7 +108,7 @@ export const extensions = {
     'crystal':    StreamLanguage.define(crystal),
     'd':          StreamLanguage.define(d),
     'dart':       StreamLanguage.define(dart),
-    'elixir':     StreamLanguage.define(elixir),
+    'elixir':     elixir(),
     'f-sharp':    StreamLanguage.define(fSharp),
     'factor':     StreamLanguage.define(factor),
     // TODO fish

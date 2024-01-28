@@ -22,6 +22,14 @@ var ByID = map[string]bool{}
 
 var Country = map[string]string{}
 
+// Zones that exist in zone.tab but not zone1970.tab.
+var Obsolete = map[string]struct{ Country, Zone string }{
+	"Asia/Muscat":       {"OM", "Asia/Dubai"},
+	"Europe/Copenhagen": {"DK", "Europe/Berlin"},
+	"Europe/Ljubljana":  {"SI", "Europe/Belgrade"},
+	"Europe/Zagreb":     {"HR", "Europe/Belgrade"},
+}
+
 func init() {
 	file, err := os.Open("/usr/share/zoneinfo/zone1970.tab")
 	if err != nil {
