@@ -26,7 +26,7 @@ import { commonLisp }         from '@codemirror/legacy-modes/mode/commonlisp';
 import { cpp }                from '@codemirror/lang-cpp';
 import { crystal }            from '@codemirror/legacy-modes/mode/crystal';
 import { d }                  from '@codemirror/legacy-modes/mode/d';
-import { elixir }             from 'codemirror-lang-elixir';
+import { elixirLanguage }     from 'codemirror-lang-elixir';
 import { factor }             from '@codemirror/legacy-modes/mode/factor';
 import { forth }              from '@codemirror/legacy-modes/mode/forth';
 import { fortran }            from '@codemirror/legacy-modes/mode/fortran';
@@ -53,12 +53,20 @@ import { raku }               from './vendor/codemirror-raku';
 import { ruby }               from '@codemirror/legacy-modes/mode/ruby';
 import { rust }               from '@codemirror/lang-rust';
 import { shell }              from '@codemirror/legacy-modes/mode/shell';
-import { sql, SQLite }        from '@codemirror/lang-sql';
+import { SQLite }             from '@codemirror/lang-sql';
 import { swift }              from '@codemirror/legacy-modes/mode/swift';
 import { tcl }                from '@codemirror/legacy-modes/mode/tcl';
 import { stex }               from '@codemirror/legacy-modes/mode/stex';
-import { wren }               from '@exercism/codemirror-lang-wren';
+import { wrenLanguage }       from '@exercism/codemirror-lang-wren';
 import { zig }                from 'codemirror-lang-zig';
+
+// Bypass default constructors so we only get highlighters and not extensions.
+const elixir     = new LanguageSupport(elixirLanguage);
+const javascript = new LanguageSupport(javascriptLanguage);
+const php        = new LanguageSupport(phpLanguage.configure({ top: 'Program' }));
+const python     = new LanguageSupport(pythonLanguage);
+const sql        = new LanguageSupport(SQLite.language);
+const wren       = new LanguageSupport(wrenLanguage);
 
 // For some reason, this doesn't fully work unless added to both themes.
 const asmErrorTooltip = {
@@ -103,12 +111,12 @@ export const extensions = {
     'c-sharp':    StreamLanguage.define(csharp),
     'clojure':    StreamLanguage.define(clojure),
     'cobol':      StreamLanguage.define(cobol),
-    'coconut':    new LanguageSupport(pythonLanguage),
+    'coconut':    python,
     'cpp':        cpp(),
     'crystal':    StreamLanguage.define(crystal),
     'd':          StreamLanguage.define(d),
     'dart':       StreamLanguage.define(dart),
-    'elixir':     elixir(),
+    'elixir':     elixir,
     'f-sharp':    StreamLanguage.define(fSharp),
     'factor':     StreamLanguage.define(factor),
     // TODO fish
@@ -121,8 +129,7 @@ export const extensions = {
     'j':          j(),
     'janet':      janet(),
     'java':       java(),
-    // Bypass javascript() so that autocomplete imports are tree-shaken out.
-    'javascript': new LanguageSupport(javascriptLanguage),
+    'javascript': javascript,
     'julia':      StreamLanguage.define(julia),
     'k':          k(),
     'lisp':       StreamLanguage.define(commonLisp),
@@ -131,24 +138,22 @@ export const extensions = {
     'ocaml':      StreamLanguage.define(oCaml),
     'pascal':     StreamLanguage.define(pascal),
     'perl':       StreamLanguage.define(perl),
-    // Bypass php() so that lang-html & lang-css imports are tree-shaken out.
-    'php':        new LanguageSupport(phpLanguage.configure({ top: 'Program' })),
+    'php':        php,
     'powershell': StreamLanguage.define(powerShell),
     'prolog':     prolog(),
-    // Bypass python() so that autocomplete imports are tree-shaken out.
-    'python':     new LanguageSupport(pythonLanguage),
+    'python':     python,
     'r':          StreamLanguage.define(r),
     'raku':       StreamLanguage.define(raku),
     'ruby':       StreamLanguage.define(ruby),
     'rust':       rust(),
     // TODO sed
-    'sql':        sql({ dialect: SQLite }),
+    'sql':        sql,
     'swift':      StreamLanguage.define(swift),
     'tcl':        StreamLanguage.define(tcl),
     'tex':        StreamLanguage.define(stex),
     // TODO v
     // TODO viml
-    'wren':       wren(),
+    'wren':       wren,
     'zig':        zig(),
 };
 
