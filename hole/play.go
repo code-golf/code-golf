@@ -171,11 +171,12 @@ func Play(
 		runs = zeckendorfRepresentation()
 	default:
 		// ¯\_(ツ)_/¯ cannot embed file answers/√2.txt: invalid name √2.txt
-		if hole.ID == "√2" {
-			hole.ID = "root-2"
+		id := hole.ID
+		if id == "√2" {
+			id = "root-2"
 		}
 
-		if b, err := answers.ReadFile("answers/" + hole.ID + ".txt"); err != nil {
+		if b, err := answers.ReadFile("answers/" + id + ".txt"); err != nil {
 			panic(err)
 		} else {
 			answer := string(bytes.TrimSuffix(b, []byte{'\n'}))
