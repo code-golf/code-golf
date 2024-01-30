@@ -78,6 +78,10 @@ func getClosestAnswer(anyAnswer, stdout, delimiter string) string {
 	expectedItems := strings.Split(anyAnswer, delimiter)
 	expectedItemsReordered := []string{}
 	userItems := strings.Split(stdout, delimiter)
+	
+	if len(userItems) > 2*len(expectedItems) {
+		return anyAnswer
+	}
 
 	n := max(len(expectedItems), len(userItems))
 	dist := make([][]int, n)
