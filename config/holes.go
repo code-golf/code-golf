@@ -38,7 +38,6 @@ type Link struct {
 }
 
 type Hole struct {
-	ItemDelimiter                           string           `json:"-" toml:"item-delimiter"`
 	CaseFold                                bool             `json:"-" toml:"case-fold"`
 	Categories                              []string         `json:"-"`
 	Category                                string           `json:"category"`
@@ -46,6 +45,7 @@ type Hole struct {
 	Data                                    template.JS      `json:"-"`
 	Experiment                              int              `json:"-"`
 	ID                                      string           `json:"id"`
+	ItemDelimiter                           string           `json:"-" toml:"item-delimiter"`
 	Links                                   []Link           `json:"links"`
 	Name                                    string           `json:"name"`
 	Preamble                                template.HTML    `json:"preamble"`

@@ -2680,14 +2680,11 @@ preamble = '''
 
 ['Multiset Judge Demo']
 category = 'Mathematics'
-experiment = 1
+experiment = -1
 synopsis = 'Order agnostic judge demo.'
-item-delimiter = '''
-
-'''
+item-delimiter = "\n"
 preamble = '''
-<p>
-    Output each number 1..19 exactly once and 0 twice.
+<p>Output each number 1..19 exactly once and 0 twice.
 '''
 
 ['Seven Segment']
