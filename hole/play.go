@@ -81,9 +81,9 @@ func getClosestAnswer(anyAnswer, stdout, delimiter string) string {
 
 	n := max(len(expectedItems), len(userItems))
 	dist := make([][]int, n)
-	for i, _ := range dist {
+	for i := range dist {
 		dist[i] = make([]int, n)
-		for j, _ := range dist {
+		for j := range dist {
 			if i >= len(expectedItems) {
 				dist[i][j] = len(userItems[j])
 			} else if j >= len(userItems) {
