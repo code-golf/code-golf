@@ -38,21 +38,22 @@ type Link struct {
 }
 
 type Hole struct {
-	CaseFold                                bool             `json:"-" toml:"case-fold"`
-	Categories                              []string         `json:"-"`
-	Category                                string           `json:"category"`
-	CategoryColor, CategoryIcon, Prev, Next string           `json:"-"`
-	Data                                    template.JS      `json:"-"`
-	Experiment                              int              `json:"-"`
-	ID                                      string           `json:"id"`
-	ItemDelimiter                           string           `json:"-" toml:"item-delimiter"`
-	Links                                   []Link           `json:"links"`
-	Name                                    string           `json:"name"`
-	Preamble                                template.HTML    `json:"preamble"`
-	Released                                toml.LocalDate   `json:"released"`
-	Releases                                []toml.LocalDate `json:"-"`
-	Synopsis                                string           `json:"synopsis"`
-	Variants                                []*Hole          `json:"-"`
+	CaseFold                    bool             `json:"-" toml:"case-fold"`
+	Categories                  []string         `json:"-"`
+	Category                    string           `json:"category"`
+	CategoryColor, CategoryIcon string           `json:"-"`
+	Data                        template.JS      `json:"-"`
+	Experiment                  int              `json:"-"`
+	ID                          string           `json:"id"`
+	ItemDelimiter               string           `json:"-" toml:"item-delimiter"`
+	Links                       []Link           `json:"links"`
+	Name                        string           `json:"name"`
+	Preamble                    template.HTML    `json:"preamble"`
+	Prev, Next                  *Hole            `json:"-"`
+	Released                    toml.LocalDate   `json:"released"`
+	Releases                    []toml.LocalDate `json:"-"`
+	Synopsis                    string           `json:"synopsis"`
+	Variants                    []*Hole          `json:"-"`
 }
 
 func init() {
@@ -220,15 +221,15 @@ func init() {
 		if i < 2 {
 			for j, hole := range holes {
 				if j == 0 {
-					hole.Prev = holes[len(holes)-1].ID
+					hole.Prev = holes[len(holes)-1]
 				} else {
-					hole.Prev = holes[j-1].ID
+					hole.Prev = holes[j-1]
 				}
 
 				if j == len(holes)-1 {
-					hole.Next = holes[0].ID
+					hole.Next = holes[0]
 				} else {
-					hole.Next = holes[j+1].ID
+					hole.Next = holes[j+1]
 				}
 			}
 		}

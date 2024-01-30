@@ -4,13 +4,18 @@
 {{ if or (eq .Name "rankings/holes") (eq .Name "rankings/medals") }}
     {{ with index .Holes .Data.HoleID }}
     <nav>
-        <a class="btn orange" href="/{{ $.Name }}/{{ .Prev }}/{{ $.Data.LangID }}/{{ $.Data.Scoring }}">
+        <a class="btn orange"
+            href="/{{ $.Name }}/{{ .Prev.ID }}/{{ $.Data.LangID }}/{{ $.Data.Scoring }}"
+           title="{{ .Prev.Name }}">
             {{ svg "chevron-double-left-light" }} Prev Hole
         </a>
-        <a class="btn purple" href='/{{ .ID }}{{ if ne $.Data.LangID "all" }}#{{ $.Data.LangID }}{{ end }}'>
+        <a class="btn purple"
+            href='/{{ .ID }}{{ if ne $.Data.LangID "all" }}#{{ $.Data.LangID }}{{ end }}'>
             {{ svg "play-light" }} Play Hole
         </a>
-        <a class="btn orange" href="/{{ $.Name }}/{{ .Next }}/{{ $.Data.LangID }}/{{ $.Data.Scoring }}">
+        <a class="btn orange"
+            href="/{{ $.Name }}/{{ .Next.ID }}/{{ $.Data.LangID }}/{{ $.Data.Scoring }}"
+           title="{{ .Next.Name }}">
             {{ svg "chevron-double-right-light" }} Next Hole
         </a>
     </nav>

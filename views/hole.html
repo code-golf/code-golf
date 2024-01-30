@@ -57,15 +57,19 @@
         {{ end }}
         </nav>
         <nav>
-            <a class="btn orange" href="{{ .Data.Hole.Prev }}">
+        {{ with .Data.Hole.Prev }}
+            <a class="btn orange" href="{{ .ID }}" title="{{ .Name }}">
                 {{ svg "chevron-double-left-light" }} Prev
             </a>
+        {{ end }}
             <a class="btn purple" href=random>
                 {{ svg "dice-light" }} Random
             </a>
-            <a class="btn orange" href="{{ .Data.Hole.Next }}">
+        {{ with .Data.Hole.Next }}
+            <a class="btn orange" href="{{ .ID }}" title="{{ .Name }}">
                 {{ svg "chevron-double-right-light" }} Next
             </a>
+        {{ end }}
         </nav>
     </header>
 {{ with .Data.Hole.Variants }}
