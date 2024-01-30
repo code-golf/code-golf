@@ -5,7 +5,7 @@ import (
 	"errors"
 
 	"github.com/code-golf/code-golf/config"
-	"github.com/gofrs/uuid"
+	"github.com/gofrs/uuid/v5"
 	"github.com/jmoiron/sqlx"
 )
 

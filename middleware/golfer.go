@@ -6,7 +6,7 @@ import (
 
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/session"
-	"github.com/gofrs/uuid"
+	"github.com/gofrs/uuid/v5"
 )
 
 // Golfer adds the golfer to the context if logged in.
