@@ -3,6 +3,9 @@
 {{ if .Data.Hole.CaseFold }}
     <div class=info>The output will be checked case-insensitively.</div>
 {{ end }}
+{{ if .Data.Hole.ItemDelimiter }}
+    <div class=info>The output judge is order agnostic. The expected output shown is one of many valid outputs.</div>
+{{ end }}
 {{ if .Data.Hole.Data }}
     <div>
         <button class="btn orange" id=copy>Copy as JSON</button>
