@@ -18,7 +18,7 @@ import (
 
 	"github.com/agnivade/levenshtein"
 	"github.com/code-golf/code-golf/config"
-	"github.com/oddg/hungarian-algorithm"
+	hungarianAlgorithm "github.com/oddg/hungarian-algorithm"
 )
 
 var timeout = 5 * time.Second
