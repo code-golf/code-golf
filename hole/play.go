@@ -16,7 +16,9 @@ import (
 	"time"
 	"unicode"
 
+	"github.com/agnivade/levenshtein"
 	"github.com/code-golf/code-golf/config"
+	hungarianAlgorithm "github.com/oddg/hungarian-algorithm"
 )
 
 var timeout = 5 * time.Second
@@ -70,6 +72,41 @@ func preprocessKCode(holeID, code string) string {
 	} else {
 		return code + "\n"
 	}
+}
+
+func getClosestAnswer(anyAnswer, stdout, delimiter string) string {
+	expectedItems := strings.Split(anyAnswer, delimiter)
+	expectedItemsReordered := []string{}
+	userItems := strings.Split(stdout, delimiter)
+
+	n := max(len(expectedItems), len(userItems))
+	dist := make([][]int, n)
+	for i := range dist {
+		dist[i] = make([]int, n)
+		for j := range dist {
+			if i >= len(expectedItems) {
+				dist[i][j] = len(userItems[j])
+			} else if j >= len(userItems) {
+				dist[i][j] = len(expectedItems[i])
+			} else {
+				dist[i][j] = levenshtein.ComputeDistance(expectedItems[i], userItems[j])
+			}
+		}
+	}
+
+	permutation, _ := hungarianAlgorithm.Solve(dist)
+	inverse := make([]int, n)
+	for i, j := range permutation {
+		inverse[j] = i
+	}
+
+	for _, i := range inverse {
+		if i < len(expectedItems) {
+			expectedItemsReordered = append(expectedItemsReordered, expectedItems[i])
+		}
+	}
+
+	return strings.Join(expectedItemsReordered, delimiter)
 }
 
 // Play a given hole, in a given lang, with given code and return the runs.
@@ -408,6 +445,10 @@ func play(
 
 	// Timeouts and whitespace only output never pass.
 	if !run.Timeout && len(strings.TrimSpace(run.Stdout)) != 0 {
+		if hole.ItemDelimiter != "" {
+			run.Answer = getClosestAnswer(run.Answer, run.Stdout, hole.ItemDelimiter)
+		}
+
 		if hole.CaseFold {
 			run.Pass = strings.EqualFold(run.Answer, run.Stdout)
 		} else {
