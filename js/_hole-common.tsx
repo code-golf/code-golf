@@ -35,6 +35,8 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
             refreshScores(editor);
         }
         setCodeForLangAndSolution(editor);
+
+        ($('#wiki-link') as HTMLAnchorElement).href = `/wiki/langs/${lang}`;
     })();
 
     $('dialog [name=text]').addEventListener('input', (e: Event) => {
