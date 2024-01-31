@@ -144,6 +144,9 @@ func getClosestAnswer(anyAnswer, stdout, delimiter string) string {
 
 		k := 0
 		for _, i := range permutation {
+			if k >= len(expectedItemsReordered) {
+				break
+			}
 			if i < len(unmatchedExpectedIndices) {
 				for expectedItemsReordered[k] != "" {
 					k++
