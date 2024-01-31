@@ -76,6 +76,8 @@ CREATE TYPE scoring AS ENUM ('bytes', 'chars');
 
 CREATE TYPE theme AS ENUM ('auto', 'dark', 'light');
 
+CREATE TYPE idea_kind AS ENUM ('other', 'hole', 'cheevo', 'lang');
+
 CREATE TABLE discord_records (
     hole    hole NOT NULL,
     lang    lang NOT NULL,
@@ -84,10 +86,11 @@ CREATE TABLE discord_records (
 );
 
 CREATE UNLOGGED TABLE ideas (
-    id          int  NOT NULL PRIMARY KEY,
-    thumbs_down int  NOT NULL,
-    thumbs_up   int  NOT NULL,
-    title       text NOT NULL UNIQUE
+    id          int       NOT NULL PRIMARY KEY,
+    thumbs_down int       NOT NULL,
+    thumbs_up   int       NOT NULL,
+    title       text      NOT NULL UNIQUE,
+    kind        idea_kind NOT NULL DEFAULT 'other'  
 );
 
 CREATE TABLE users (
