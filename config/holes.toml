@@ -2684,7 +2684,7 @@ experiment = -1
 synopsis = 'Order agnostic judge demo.'
 item-delimiter = "\n"
 preamble = '''
-<p>Output each number 1..19 exactly once and 0 twice.
+<p>Output each number 0..9 exactly twice and 10..29 exactly once.
 '''
 
 ['Seven Segment']

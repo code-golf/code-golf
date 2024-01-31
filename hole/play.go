@@ -76,37 +76,83 @@ func preprocessKCode(holeID, code string) string {
 
 func getClosestAnswer(anyAnswer, stdout, delimiter string) string {
 	expectedItems := strings.Split(anyAnswer, delimiter)
-	expectedItemsReordered := []string{}
+	expectedItemsReordered := make([]string, len(expectedItems))
 	userItems := strings.Split(stdout, delimiter)
 
-	if len(userItems) > 2*len(expectedItems) {
-		return anyAnswer
+	expectedItemsMap := make(map[string]int)
+	for _, expected := range expectedItems {
+		expectedItemsMap[expected]++
 	}
 
-	n := max(len(expectedItems), len(userItems))
-	dist := make([][]int, n)
-	for i := range dist {
-		dist[i] = make([]int, n)
-		for j := range dist {
-			if i >= len(expectedItems) {
-				dist[i][j] = len(userItems[j])
-			} else if j >= len(userItems) {
-				dist[i][j] = len(expectedItems[i])
-			} else {
-				dist[i][j] = levenshtein.ComputeDistance(expectedItems[i], userItems[j])
-			}
+	// Match items that are correct
+	matches := 0
+	for i, user := range userItems {
+		if i < len(expectedItems) && expectedItemsMap[user] > 0 {
+			expectedItemsReordered[i] = user
+			expectedItemsMap[user]--
+			userItems[i] = ""
+			matches++
 		}
 	}
 
-	permutation, _ := hungarianAlgorithm.Solve(dist)
-	inverse := make([]int, n)
-	for i, j := range permutation {
-		inverse[j] = i
-	}
+	// Process mismatched items
+	if matches < len(expectedItems) {
 
-	for _, i := range inverse {
-		if i < len(expectedItems) {
-			expectedItemsReordered = append(expectedItemsReordered, expectedItems[i])
+		// Calculate indices of expected & user items that couldn't be matched be equality
+		unmatchedExpectedIndices := []int{}
+		unmatchedUserIndices := []int{}
+
+		for i, expected := range expectedItems {
+			if expectedItemsMap[expected] > 0 {
+				unmatchedExpectedIndices = append(unmatchedExpectedIndices, i)
+				expectedItemsMap[expected]--
+			}
+		}
+
+		for i, user := range userItems {
+			if user != "" {
+				unmatchedUserIndices = append(unmatchedUserIndices, i)
+			}
+		}
+
+		n := max(len(unmatchedExpectedIndices), len(unmatchedUserIndices))
+
+		permutation := make([]int, n)
+		for i := range permutation {
+			permutation[i] = i
+		}
+
+		// If there are not many wrong items, try to match them
+		// otherwise, use the above identity permutation
+		if n <= 32 {
+			dist := make([][]int, n)
+			for i := range dist {
+				dist[i] = make([]int, n)
+				for j := range dist {
+					if j >= len(unmatchedExpectedIndices) {
+						dist[i][j] = len(userItems[unmatchedUserIndices[i]])
+					} else if i >= len(unmatchedUserIndices) {
+						dist[i][j] = len(expectedItems[unmatchedExpectedIndices[j]])
+					} else {
+						dist[i][j] = levenshtein.ComputeDistance(expectedItems[unmatchedExpectedIndices[j]], userItems[unmatchedUserIndices[i]])
+					}
+				}
+			}
+
+			permutation, _ = hungarianAlgorithm.Solve(dist)
+		}
+
+		k := 0
+		for _, i := range permutation {
+			if k >= len(expectedItemsReordered) {
+				break
+			}
+			if i < len(unmatchedExpectedIndices) {
+				for expectedItemsReordered[k] != "" {
+					k++
+				}
+				expectedItemsReordered[k] = expectedItems[unmatchedExpectedIndices[i]]
+			}
 		}
 	}
 
