@@ -3,8 +3,8 @@ import {
     RowOrColumn, LayoutConfig, ResolvedRootItemConfig,
     DragSource, LayoutManager, ComponentContainer, ResolvedLayoutConfig,
 } from 'golden-layout';
-import { EditorView }   from './_codemirror';
-import diffTable        from './_diff';
+import { EditorView } from './_codemirror';
+import diffTable from './_diff';
 import { $, $$, comma, debounce } from './_util';
 import {
     init, langs, getLang, hole, getAutoSaveKey, setSolution, getSolution,
@@ -14,8 +14,8 @@ import {
     getScorings, replaceUnprintablesInOutput,
 } from './_hole-common';
 
-const poolDragSources: {[key: string]: DragSource} = {};
-const poolElements: {[key: string]: HTMLElement} = {};
+const poolDragSources: { [key: string]: DragSource } = {};
+const poolElements: { [key: string]: HTMLElement } = {};
 let isWide = false;
 
 /**
@@ -37,7 +37,7 @@ let applyingDefault = false;
 let isSandbox = $("#hole-sandbox") != null;
 
 let subRes: ReadonlyPanelsData | null = null;
-const readonlyOutputs: {[key: string]: HTMLElement | undefined} = {};
+const readonlyOutputs: { [key: string]: HTMLElement | undefined } = {};
 
 let editor: EditorView | null = null;
 
@@ -84,25 +84,25 @@ function updateReadonlyPanel(name: string) {
     const output = readonlyOutputs[name];
     if (!output) return;
     switch (name) {
-    case 'err':
-        output.innerHTML = subRes.Err.replace(/\n/g,'<br>');
-        break;
-    case 'out':
-        output.innerHTML = replaceUnprintablesInOutput(subRes.Out);
-        break;
-    case 'exp':
-        output.innerText = subRes.Exp;
-        break;
-    case 'arg':
-        // Hide arguments unless we have some.
-        output.replaceChildren(
-            ...subRes.Argv.map(a => <span>{a}</span>),
-        );
-        break;
-    case 'diff':
-        const ignoreCase = JSON.parse($('#case-fold').innerText);
-        const diff = diffTable(hole, subRes.Exp, subRes.Out, subRes.Argv, ignoreCase);
-        output.replaceChildren(diff);
+        case 'err':
+            output.innerHTML = subRes.Err.replace(/\n/g, '<br>');
+            break;
+        case 'out':
+            output.innerHTML = replaceUnprintablesInOutput(subRes.Out);
+            break;
+        case 'exp':
+            output.innerText = subRes.Exp;
+            break;
+        case 'arg':
+            // Hide arguments unless we have some.
+            output.replaceChildren(
+                ...subRes.Argv.map(a => isSandbox || true ? <span contenteditable>{a}</span> : <span>{a}</span>),
+            );
+            break;
+        case 'diff':
+            const ignoreCase = JSON.parse($('#case-fold').innerText);
+            const diff = diffTable(hole, subRes.Exp, subRes.Out, subRes.Argv, ignoreCase);
+            output.replaceChildren(diff);
     }
 }
 
@@ -113,7 +113,7 @@ function updateReadonlyPanels(data: ReadonlyPanelsData) {
     }
 }
 
-for (const name of isSandbox ? ['out', 'err', 'arg'] : ['exp', 'out', 'err', 'arg', 'diff']) {
+for (const name of isSandbox ? ['out', 'err'] : ['exp', 'out', 'err', 'diff']) {
     layout.registerComponentFactoryFunction(name, container => {
         container.setTitle(getTitle(name));
         autoFocus(container);
@@ -124,6 +124,28 @@ for (const name of isSandbox ? ['out', 'err', 'arg'] : ['exp', 'out', 'err', 'ar
     });
 }
 
+layout.registerComponentFactoryFunction("arg", async container => {
+    container.setTitle(getTitle("arg"));
+    autoFocus(container);
+    container.element.id = "arg";
+    const items = <div id="arg-items" class="readonly-output"></div> 
+    container.element.replaceChildren(
+        <button id="addArg">+</button>,
+        <button id="removeArg">-</button>,
+        <button id="pasteArgs">Paste</button>,
+        <button id="copyArgs">Copy</button>,
+        items
+    )
+    
+    await afterDOM();
+    if ($('#addArg')){
+        $('#addArg').onclick = () => {items.append(<span contenteditable></span>)}
+        $('#removeArg').onclick = () => {items.removeChild(items.lastElementChild)}
+    }
+    readonlyOutputs["arg"] = items;
+    updateReadonlyPanel("arg");
+});
+
 function makeEditor(parent: HTMLDivElement) {
     editor = new EditorView({
         dispatch: tr => {
@@ -131,7 +153,7 @@ function makeEditor(parent: HTMLDivElement) {
             const result = editor.update([tr]) as unknown;
 
             const code = tr.state.doc.toString();
-            const scorings: {total: {byte?: number, char?: number}, selection?: {byte?: number, char?: number}} = getScorings(tr, editor);
+            const scorings: { total: { byte?: number, char?: number }, selection?: { byte?: number, char?: number } } = getScorings(tr, editor);
             const scoringKeys = ['byte', 'char'] as const;
 
             function formatScore(scoring: any) {
@@ -188,7 +210,7 @@ layout.registerComponentFactoryFunction('code', async container => {
     container.element.append(editorDiv, header);
 
     await afterDOM();
-    
+
     if ($('#restoreLink')) {
         $('#restoreLink').onclick = (e: MouseEvent) => {
             e.preventDefault();
@@ -208,7 +230,7 @@ layout.registerComponentFactoryFunction('code', async container => {
     setCodeForLangAndSolution(editor);
 });
 
-async function afterDOM() {}
+async function afterDOM() { }
 
 function delinkRankingsView() {
     $$('#rankingsView a').forEach(a => a.onclick = e => {
@@ -470,7 +492,7 @@ async function checkShowAddRow() {
     $('#add-row').classList.toggle(
         'hide',
         Object.keys(poolElements).length === 0
-            || layout.rootItem === undefined,
+        || layout.rootItem === undefined,
     );
 }
 
@@ -582,11 +604,11 @@ window.addEventListener('resize', checkMobile);
 function deepCancelTouchStart(item: any) {
     if (!item) return;
     if (item.type === 'stack') {
-        item._header._closeButton.onTouchStart = () => {};
-        item._header._maximiseButton.onTouchStart = () => {};
+        item._header._closeButton.onTouchStart = () => { };
+        item._header._maximiseButton.onTouchStart = () => { };
     }
     else if (item.type === 'component') {
-        item._tab.onCloseTouchStart = () => {};
+        item._tab.onCloseTouchStart = () => { };
     }
     item._contentItems?.forEach((child: any) => deepCancelTouchStart(child));
 }
