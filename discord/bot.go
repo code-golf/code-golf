@@ -2,6 +2,7 @@ package discord
 
 import (
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -29,11 +30,13 @@ var (
 
 // Represents a new record announcement message
 type RecAnnouncement struct {
-	Message *discordgo.Message
-	Updates [][]Golfer.RankUpdate
-	Golfer  *Golfer.Golfer
-	Hole    *config.Hole
-	Lang    *config.Lang
+	MessageChannelID string                `json:"messageChannelID"`
+	MessageID        string                `json:"messageID"`
+	Updates          [][]Golfer.RankUpdate `json:"updates"`
+	Golfer           *Golfer.Golfer        `json:"-"`
+	GolferID         int                   `json:"golfer"`
+	Hole             *config.Hole          `json:"hole"`
+	Lang             *config.Lang          `json:"lang"`
 }
 
 var lastAnnouncement *RecAnnouncement
@@ -56,6 +59,8 @@ func init() {
 		} else {
 			bot.AddHandler(handleMessage)
 		}
+
+		loadLastAnnouncement()
 	}()
 }
 
@@ -98,7 +103,7 @@ func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.Messa
 				if update.OldBestGolferCount.Valid && update.OldBestGolferCount.Int64 > 1 {
 					// Display the number of golfers, excluding the current golfer, that previously held this record.
 					fieldValues[update.Scoring] += fmt.Sprintf(" (%d golfers)", update.OldBestGolferCount.Int64)
-				} else if update.OldBestGolferID.Valid && update.OldBestGolferID.Int64 != int64(announce.Golfer.ID) {
+				} else if update.OldBestGolferID.Valid && update.OldBestGolferID.Int64 != int64(golfer.ID) {
 					name := getUsername(update.OldBestGolferID.Int64, db)
 					if name != "" {
 						// Display the user name of the single golfer, excluding the current golfer, that previously held this record.
@@ -260,20 +265,23 @@ func logNewRecord(
 	}
 
 	announcement := &RecAnnouncement{
-		Hole:    hole,
-		Lang:    lang,
-		Golfer:  golfer,
-		Updates: [][]Golfer.RankUpdate{updates},
+		Hole:     hole,
+		Lang:     lang,
+		Golfer:   golfer,
+		GolferID: golfer.ID,
+		Updates:  [][]Golfer.RankUpdate{updates},
 	}
 
 	if lastAnnouncement != nil &&
 		announcement.Lang.ID == lastAnnouncement.Lang.ID &&
 		announcement.Hole.ID == lastAnnouncement.Hole.ID &&
-		announcement.Golfer.ID == lastAnnouncement.Golfer.ID {
+		announcement.GolferID == lastAnnouncement.GolferID {
+		// We need the full golfer information, if the announcement was loaded from disk.
+		lastAnnouncement.Golfer = golfer
 		lastAnnouncement.Updates = append(lastAnnouncement.Updates, updates)
 		if _, err := bot.ChannelMessageEditEmbed(
-			lastAnnouncement.Message.ChannelID,
-			lastAnnouncement.Message.ID,
+			lastAnnouncement.MessageChannelID,
+			lastAnnouncement.MessageID,
 			recAnnounceToEmbed(lastAnnouncement, db),
 		); err == nil { // Note that we only return if the embed was edited successfully;
 			return // otherwise, we'll continue forward and send it as a new message
@@ -315,7 +323,9 @@ func logNewRecord(
 		log.Println(sendErr)
 	} else {
 		lastAnnouncement = announcement
-		lastAnnouncement.Message = newMessage
+		lastAnnouncement.MessageChannelID = newMessage.ChannelID
+		lastAnnouncement.MessageID = newMessage.ID
+		saveLastAnnouncement()
 	}
 }
 
@@ -328,5 +338,35 @@ func handleMessage(session *discordgo.Session, event *discordgo.MessageCreate) {
 	// Discard the last announcement if another message was sent after it
 	if event.ChannelID == channelID {
 		lastAnnouncement = nil
+	}
+}
+
+func loadLastAnnouncement() {
+	bytes, err := os.ReadFile("last-announcement")
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	var announcement RecAnnouncement
+	err = json.Unmarshal(bytes, &announcement)
+	if err != nil {
+		log.Println(err)
+	} else {
+		lastAnnouncement = &announcement
+	}
+}
+
+func saveLastAnnouncement() {
+	bytes, err := json.Marshal(lastAnnouncement)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	// Don't use a file extension to avoid restarting the server in the dev environment.
+	err = os.WriteFile("last-announcement", bytes, 0444)
+	if err != nil {
+		log.Println(err)
 	}
 }
