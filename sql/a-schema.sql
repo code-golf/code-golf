@@ -84,6 +84,11 @@ CREATE TABLE discord_records (
     PRIMARY KEY (hole, lang)
 );
 
+CREATE TABLE discord_state (
+    key   text NOT NULL PRIMARY KEY,
+    value text NOT NULL
+);
+
 CREATE UNLOGGED TABLE ideas (
     id          int           NOT NULL PRIMARY KEY,
     thumbs_down int           NOT NULL,
@@ -289,6 +294,7 @@ ALTER MATERIALIZED VIEW rankings OWNER TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE authors         TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE connections     TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE discord_records TO "code-golf";
+GRANT SELECT, INSERT, UPDATE         ON TABLE discord_state   TO "code-golf";
 GRANT SELECT, INSERT,         DELETE ON TABLE follows         TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE ideas           TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE notes           TO "code-golf";

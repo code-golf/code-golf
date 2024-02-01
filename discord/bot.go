@@ -2,6 +2,7 @@ package discord
 
 import (
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -33,11 +34,13 @@ var (
 
 // Represents a new record announcement message
 type RecAnnouncement struct {
-	Message *discordgo.Message
-	Updates [][]Golfer.RankUpdate
-	Golfer  *Golfer.Golfer
-	Hole    *config.Hole
-	Lang    *config.Lang
+	MessageChannelID string                `json:"messageChannelID"`
+	MessageID        string                `json:"messageID"`
+	Updates          [][]Golfer.RankUpdate `json:"updates"`
+	Golfer           *Golfer.Golfer        `json:"-"`
+	GolferID         int                   `json:"golfer"`
+	Hole             *config.Hole          `json:"hole"`
+	Lang             *config.Lang          `json:"lang"`
 }
 
 func init() {
@@ -55,8 +58,6 @@ func init() {
 		} else if err = bot.Open(); err != nil {
 			log.Println(err)
 			bot = nil
-		} else {
-			bot.AddHandler(handleMessage)
 		}
 	}()
 }
@@ -287,22 +288,40 @@ func logNewRecord(
 	}
 
 	announcement := &RecAnnouncement{
-		Hole:    hole,
-		Lang:    lang,
-		Golfer:  golfer,
-		Updates: [][]Golfer.RankUpdate{updates},
+		Hole:     hole,
+		Lang:     lang,
+		Golfer:   golfer,
+		GolferID: golfer.ID,
+		Updates:  [][]Golfer.RankUpdate{updates},
+	}
+
+	if lastAnnouncement == nil {
+		loadLastAnnouncement(db)
+	}
+
+	if lastAnnouncement != nil {
+		if channel, err := bot.Channel(channelID); err == nil {
+			if channel.LastMessageID != lastAnnouncement.MessageID {
+				// Discard the last announcement if another message was sent after it
+				lastAnnouncement = nil
+			}
+		} else {
+			log.Println(err)
+		}
 	}
 
 	if lastAnnouncement != nil &&
 		announcement.Lang.ID == lastAnnouncement.Lang.ID &&
 		announcement.Hole.ID == lastAnnouncement.Hole.ID &&
-		announcement.Golfer.ID == lastAnnouncement.Golfer.ID {
+		announcement.GolferID == lastAnnouncement.GolferID {
+		lastAnnouncement.Golfer = golfer
 		lastAnnouncement.Updates = append(lastAnnouncement.Updates, updates)
 		if _, err := bot.ChannelMessageEditEmbed(
-			lastAnnouncement.Message.ChannelID,
-			lastAnnouncement.Message.ID,
+			lastAnnouncement.MessageChannelID,
+			lastAnnouncement.MessageID,
 			recAnnounceToEmbed(lastAnnouncement, db),
 		); err == nil { // Note that we only return if the embed was edited successfully;
+			saveLastAnnouncement(lastAnnouncement, db)
 			return // otherwise, we'll continue forward and send it as a new message
 		}
 	}
@@ -342,18 +361,44 @@ func logNewRecord(
 		log.Println(sendErr)
 	} else {
 		lastAnnouncement = announcement
-		lastAnnouncement.Message = newMessage
+		lastAnnouncement.MessageChannelID = newMessage.ChannelID
+		lastAnnouncement.MessageID = newMessage.ID
+		saveLastAnnouncement(lastAnnouncement, db)
 	}
 }
 
-// handleMessage handles a message received by the bot
-func handleMessage(session *discordgo.Session, event *discordgo.MessageCreate) {
-	if event.Author.Bot {
+func loadLastAnnouncement(db *sqlx.DB) {
+	var bytes []byte
+
+	if err := db.QueryRow(
+		`SELECT value FROM discord_state WHERE key = 'lastAnnouncement'`,
+	).Scan(&bytes); err != nil {
+		log.Println(err)
 		return
 	}
 
-	// Discard the last announcement if another message was sent after it
-	if event.ChannelID == channelID {
-		lastAnnouncement = nil
+	var announcement RecAnnouncement
+	if err := json.Unmarshal(bytes, &announcement); err != nil {
+		log.Println(err)
+	} else {
+		lastAnnouncement = &announcement
+	}
+}
+
+func saveLastAnnouncement(announce *RecAnnouncement, db *sqlx.DB) {
+	bytes, err := json.Marshal(announce)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	if _, err := db.Exec(
+		`INSERT INTO discord_state (key, value) VALUES
+			('lastAnnouncement', $1)
+			ON CONFLICT ON CONSTRAINT discord_state_pkey
+			DO UPDATE SET value = $1`,
+		bytes,
+	); err != nil {
+		log.Println(err)
 	}
 }
