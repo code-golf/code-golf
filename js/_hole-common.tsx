@@ -1,9 +1,9 @@
-import { ASMStateField }                       from '@defasm/codemirror';
+import { ASMStateField } from '@defasm/codemirror';
 import { $, $$, byteLen, charLen, comma, ord } from './_util';
-import { Vim }                                 from '@replit/codemirror-vim';
+import { Vim } from '@replit/codemirror-vim';
 import { EditorState, EditorView, extensions } from './_codemirror';
-import pbm                                     from './_pbm';
-import LZString                                from 'lz-string';
+import pbm from './_pbm';
+import LZString from 'lz-string';
 
 let tabLayout: boolean = false;
 
@@ -59,7 +59,7 @@ export function initCopyJSONBtn(copyBtn: HTMLElement | undefined) {
 }
 
 export const langs = JSON.parse($('#langs').innerText);
-const sortedLangs  =
+const sortedLangs =
     Object.values(langs).sort((a: any, b: any) => a.name.localeCompare(b.name));
 let lang: string = '';
 
@@ -68,9 +68,9 @@ export function getLang() {
 }
 
 const experimental = JSON.parse($('#experimental').innerText);
-export const hole         = decodeURI(location.pathname.slice(1));
-const scorings     = ['Bytes', 'Chars'];
-const solutions    = JSON.parse($('#solutions').innerText);
+export const hole = decodeURI(location.pathname.slice(1));
+const scorings = ['Bytes', 'Chars'];
+const solutions = JSON.parse($('#solutions').innerText);
 
 const vimMode = JSON.parse($('#keymap').innerText) === 'vim';
 const vimModeExtensions = vimMode ? [extensions.vim] : [];
@@ -79,7 +79,7 @@ const baseExtensions = [...vimModeExtensions, ...extensions.base];
 
 let latestSubmissionID = 0;
 let solution = scorings.indexOf(localStorage.getItem('solution') ?? 'Bytes') as 0 | 1;
-let scoring  = scorings.indexOf(localStorage.getItem('scoring')  ?? 'Bytes') as 0 | 1;
+let scoring = scorings.indexOf(localStorage.getItem('scoring') ?? 'Bytes') as 0 | 1;
 
 let hideDeleteBtn: boolean = false;
 
@@ -110,7 +110,7 @@ function getScoring(str: string, index: 0 | 1) {
 }
 
 function getSolutionCode(lang: string, solution: 0 | 1) {
-    return lang in solutions[solution] ? solutions[solution][lang] : '';
+    return solutions && lang in solutions[solution] ? solutions[solution][lang] : '';
 }
 
 /**
@@ -158,7 +158,7 @@ export function setCode(code: string, editor: EditorView | null) {
 function updateLangPicker() {
     // Populate the language picker with accurate stroke counts.
     $('#picker').replaceChildren(...sortedLangs.map((l: any) => {
-        const tab = <a href={l.id == lang ? null : '#'+l.id}>{l.name}</a>;
+        const tab = <a href={l.id == lang ? null : '#' + l.id}>{l.name}</a>;
 
         if (getSolutionCode(l.id, 0)) {
             const bytes = byteLen(getSolutionCode(l.id, 0));
@@ -189,9 +189,9 @@ export async function refreshScores(editor: any) {
     const lsChars = localStorage.getItem(getAutoSaveKey(lang, 1));
 
     if ((dbBytes && dbChars && dbBytes != dbChars)
-     || (lsBytes && lsChars && lsBytes != lsChars)
-     || (dbBytes && lsChars && dbBytes != lsChars && solution == 0)
-     || (lsBytes && dbChars && lsBytes != dbChars && solution == 1)) {
+        || (lsBytes && lsChars && lsBytes != lsChars)
+        || (dbBytes && lsChars && dbBytes != lsChars && solution == 0)
+        || (lsBytes && dbChars && lsBytes != dbChars && solution == 1)) {
         $('#solutionPicker').replaceChildren(...scorings.map((scoring, iNumber) => {
             const i = iNumber as 0 | 1;
             const a = <a>Fewest {scoring}</a>;
@@ -285,7 +285,7 @@ export interface SubmitResponse {
 const makeSingular = (strokes: number, units: string) =>
     strokes == 1 ? units.substring(0, units.length - 1) : units;
 
-const getDisplayRank = (rank: number) => rank < 4 ? ['🥇','🥈','🥉'][rank - 1] : `${rank}${ord(rank)} place`;
+const getDisplayRank = (rank: number) => rank < 4 ? ['🥇', '🥈', '🥉'][rank - 1] : `${rank}${ord(rank)} place`;
 
 // Don't show the delta, if it's the first time playing this hole.
 const getDisplayRankChange = (rank: number, delta: number) =>
@@ -442,7 +442,7 @@ export async function submit(
     const codeLang = lang;
     const submissionID = ++latestSubmissionID;
 
-    const res  = await fetch('/solution', {
+    const res = await fetch('/solution', {
         method: 'POST',
         body: JSON.stringify({
             Code: code,
@@ -520,7 +520,7 @@ export async function submit(
             Out: run.stdout,
         });
 
-        const ms = Math.round(run.time_ns / 10**6);
+        const ms = Math.round(run.time_ns / 10 ** 6);
         // Only show runtime if it's more than 1000ms, for a bit less clutter in general.
         $('#runtime').innerText = ms > 1000 ? `(${ms}ms)` : '';
 
@@ -528,7 +528,8 @@ export async function submit(
         let thirdParty = '';
         if (lang == 'hexagony') {
             const payload = LZString.compressToBase64(JSON.stringify({
-                code, input: run.args.join('\0') + '\0', inputMode: 'raw' }));
+                code, input: run.args.join('\0') + '\0', inputMode: 'raw'
+            }));
 
             thirdParty = <a href={'//hexagony.net#lz' + payload}>
                 Run on Hexagony.net
@@ -581,7 +582,7 @@ export async function submit(
         ...diamondPopups(data.RankUpdates),
         ...data.Cheevos.map(c => <div>
             <h3>Achievement Earned!</h3>
-            { c.emoji }<p>{ c.name }</p>
+            {c.emoji}<p>{c.name}</p>
         </div>));
 
     refreshScores(editor);
@@ -619,10 +620,10 @@ export async function populateScores(editor: any) {
     // Populate the rankings table.
     if (!$('#scores')) return;
     const scoringID = scorings[scoring].toLowerCase();
-    const path      = `/${hole}/${lang}/${scoringID}`;
-    const view      = $('#rankingsView a:not([href])').innerText.trim().toLowerCase();
-    const res       = await fetch(`/api/mini-rankings${path}/${view}` + (tabLayout ? '?long=1' : ''));
-    const rows      = res.ok ? await res.json() : [];
+    const path = `/${hole}/${lang}/${scoringID}`;
+    const view = $('#rankingsView a:not([href])').innerText.trim().toLowerCase();
+    const res = await fetch(`/api/mini-rankings${path}/${view}` + (tabLayout ? '?long=1' : ''));
+    const rows = res.ok ? await res.json() : [];
 
     $<HTMLAnchorElement>('#allLink').href = '/rankings/holes' + path;
 
@@ -632,22 +633,22 @@ export async function populateScores(editor: any) {
             <td>{r.rank}<sup>{ord(r.rank)}</sup></td>
             <td>
                 <a href={`/golfers/${r.golfer.name}`}>
-                    <img src={`/golfers/${r.golfer.name}/avatar/48`}/>
+                    <img src={`/golfers/${r.golfer.name}/avatar/48`} />
                     <span>{r.golfer.name}</span>
                 </a>
             </td>
             <td data-tooltip={tooltip(r, 'Bytes')}>{comma(r.bytes)}</td>
             <td data-tooltip={tooltip(r, 'Chars')}>{comma(r.chars)}</td>
-        </tr>): <tr><td colspan="4">(Empty)</td></tr>
+        </tr>) : <tr><td colspan="4">(Empty)</td></tr>
     }{
-        // Padding.
-        tabLayout ? [] : [...Array(7 - rows.length).keys()].map(() =>
-            <tr><td colspan="4">&nbsp;</td></tr>)
-    }</tbody>);
+            // Padding.
+            tabLayout ? [] : [...Array(7 - rows.length).keys()].map(() =>
+                <tr><td colspan="4">&nbsp;</td></tr>)
+        }</tbody>);
 
     if (tabLayout) {
         if (view === 'me')
-            $('.me')?.scrollIntoView({block: 'center'});
+            $('.me')?.scrollIntoView({ block: 'center' });
         else
             $('#scores-wrapper').scrollTop = 0;
     }
@@ -655,11 +656,11 @@ export async function populateScores(editor: any) {
     $$<HTMLAnchorElement>('#scoringTabs a').forEach((tab, i) => {
         if (tab.innerText == scorings[scoring]) {
             tab.removeAttribute('href');
-            tab.onclick = () => {};
+            tab.onclick = () => { };
         }
         else {
             tab.href = '';
-            tab.onclick = e  => {
+            tab.onclick = e => {
                 e.preventDefault();
                 scoring = i as 0 | 1;
                 localStorage.setItem('scoring', scorings[scoring]);
@@ -671,8 +672,8 @@ export async function populateScores(editor: any) {
 
 export function getScorings(tr: any, editor: any) {
     const code = tr.state.doc.toString();
-    const total: {byte?: number, char?: number} = {};
-    const selection: {byte?: number, char?: number} = {};
+    const total: { byte?: number, char?: number } = {};
+    const selection: { byte?: number, char?: number } = {};
 
     if (getLang() == 'assembly')
         total.byte = (editor.state.field(ASMStateField) as any).head.length();
@@ -692,7 +693,7 @@ export function getScorings(tr: any, editor: any) {
         }
     }
 
-    return (selection.byte || selection.char) ? {total, selection} : {total};
+    return (selection.byte || selection.char) ? { total, selection } : { total };
 }
 
 export function replaceUnprintablesInOutput(output: string) {

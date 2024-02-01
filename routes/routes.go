@@ -47,6 +47,7 @@ func Router(db *sqlx.DB) http.Handler {
 
 		r.Get("/", indexGET)
 		r.Get("/{hole}", holeGET)
+		r.Get("/sandbox", sandboxGET)
 		r.Get("/about", aboutGET)
 		r.With(middleware.AdminArea).Route("/admin", func(r chi.Router) {
 			r.Get("/", adminGET)

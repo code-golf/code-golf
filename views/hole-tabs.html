@@ -1,43 +1,45 @@
 {{ template "header" . }}
 
-{{ with .Data.Hole.Experiment }}
-    <div class=alert>
-        {{ svg "flask-light" }}
-        <p>
-            This hole is experimental, no solutions will be saved.
-        {{ if ne . -1 }}
-            Please leave feedback on the
-            <a href="//github.com/code-golf/code-golf/issues/{{ . }}">
-                GitHub issue</a>.
-        {{ end }}
-        <div class=main_close></div>
-    </div>
-{{ else }}{{ if not .Golfer }}
-    <div class=alert>
-        {{ svg "exclamation-circle" }}
-        <p>
-            Please
-            <a class=log-in href="{{ .LogInURL }}">log in with GitHub</a>
-            in order to save solutions and appear on the leaderboards.
-        <div class=main_close></div>
-    </div>
-{{ end }}{{ end }}
-
-{{ with .Data.Authors }}
-    <dialog id=authors-dialog>
-        <div>
-            <h1>{{ $.Data.Hole.Name }} Authors</h1>
-            <ul>
-            {{ range . }}
-                <li>
-                    <a href="/golfers/{{ . }}">
-                        <img src="/golfers/{{ . }}/avatar/48">
-                        {{ . }}
-                    </a>
+{{ if ne .Data.Hole.ID "sandbox"}}
+    {{ with .Data.Hole.Experiment }}
+        <div class=alert>
+            {{ svg "flask-light" }}
+            <p>
+                This hole is experimental, no solutions will be saved.
+            {{ if ne . -1 }}
+                Please leave feedback on the
+                <a href="//github.com/code-golf/code-golf/issues/{{ . }}">
+                    GitHub issue</a>.
             {{ end }}
-            </ul>
+            <div class=main_close></div>
         </div>
-    </dialog>
+    {{ else }}{{ if not .Golfer }}
+        <div class=alert>
+            {{ svg "exclamation-circle" }}
+            <p>
+                Please
+                <a class=log-in href="{{ .LogInURL }}">log in with GitHub</a>
+                in order to save solutions and appear on the leaderboards.
+            <div class=main_close></div>
+        </div>
+    {{ end }}{{ end }}
+
+    {{ with .Data.Authors }}
+        <dialog id=authors-dialog>
+            <div>
+                <h1>{{ $.Data.Hole.Name }} Authors</h1>
+                <ul>
+                {{ range . }}
+                    <li>
+                        <a href="/golfers/{{ . }}">
+                            <img src="/golfers/{{ . }}/avatar/48">
+                            {{ . }}
+                        </a>
+                {{ end }}
+                </ul>
+            </div>
+        </dialog>
+    {{ end }}
 {{ end }}
 
 <main id="hole-{{ .Data.Hole.ID }}">
@@ -71,9 +73,11 @@
                 {{ svg "chevron-double-left-light" }} Prev
             </a>
         {{ end }}
+        {{ if ne .Data.Hole.ID "sandbox" }}
             <a class="btn purple" href=random>
                 {{ svg "dice-light" }} Random
             </a>
+        {{ end }}
         {{ with .Data.Hole.Next }}
             <a class="btn orange" href="{{ .ID }}" title="{{ .Name }}">
                 {{ svg "chevron-double-right-light" }} Next
@@ -111,28 +115,30 @@
     </div>
 </main>
 
-<template id=template-details>{{ template "hole-details" . }}</template>
+{{ if ne .Data.Hole.ID "sandbox" }}
+    <template id=template-details>{{ template "hole-details" . }}</template>
 
-<template id=template-scoreboard>
-    <div id=scores-wrapper>
-        <header>
-            <nav class=tabs id=scoringTabs><a>Bytes</a><a href>Chars</a></nav>
-            <a href id=allLink>All</a>
-        </header>
-        <table class="nowrap-second" id=scores><tr><td></table>
-    </div>
-    <nav class=tabs id=rankingsView>
-        <a {{ if ne .Data.RankingsView "top" }} href {{ end }}>
-            {{ svg "trophy-fill" }} Top
-        </a>
-        <a {{ if ne .Data.RankingsView "me" }} href {{ end }}>
-            {{ svg "person-fill" }} Me
-        </a>
-        <a {{ if ne .Data.RankingsView "following" }} href {{ end }}>
-            {{ svg "people-fill" }} Following
-        </a>
-    </nav>
-</template>
+    <template id=template-scoreboard>
+        <div id=scores-wrapper>
+            <header>
+                <nav class=tabs id=scoringTabs><a>Bytes</a><a href>Chars</a></nav>
+                <a href id=allLink>All</a>
+            </header>
+            <table class="nowrap-second" id=scores><tr><td></table>
+        </div>
+        <nav class=tabs id=rankingsView>
+            <a {{ if ne .Data.RankingsView "top" }} href {{ end }}>
+                {{ svg "trophy-fill" }} Top
+            </a>
+            <a {{ if ne .Data.RankingsView "me" }} href {{ end }}>
+                {{ svg "person-fill" }} Me
+            </a>
+            <a {{ if ne .Data.RankingsView "following" }} href {{ end }}>
+                {{ svg "people-fill" }} Following
+            </a>
+        </nav>
+    </template>
+{{ end }}
 
 <template id=template-run>
     <div id=run>

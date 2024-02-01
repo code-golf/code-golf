@@ -34,6 +34,7 @@ let isWide = false;
  */
 let isMobile = false;
 let applyingDefault = false;
+let isSandbox = $("#hole-sandbox") != null;
 
 let subRes: ReadonlyPanelsData | null = null;
 const readonlyOutputs: {[key: string]: HTMLElement | undefined} = {};
@@ -112,7 +113,7 @@ function updateReadonlyPanels(data: ReadonlyPanelsData) {
     }
 }
 
-for (const name of ['exp', 'out', 'err', 'arg', 'diff']) {
+for (const name of isSandbox ? ['out', 'err', 'arg'] : ['exp', 'out', 'err', 'arg', 'diff']) {
     layout.registerComponentFactoryFunction(name, container => {
         container.setTitle(getTitle(name));
         autoFocus(container);
@@ -187,11 +188,13 @@ layout.registerComponentFactoryFunction('code', async container => {
     container.element.append(editorDiv, header);
 
     await afterDOM();
-
-    $('#restoreLink').onclick = (e: MouseEvent) => {
-        e.preventDefault();
-        setCode(getCurrentSolutionCode(), editor);
-    };
+    
+    if ($('#restoreLink')) {
+        $('#restoreLink').onclick = (e: MouseEvent) => {
+            e.preventDefault();
+            setCode(getCurrentSolutionCode(), editor);
+        };
+    }
 
     // Wire submit to clicking a button and a keyboard shortcut.
     $('#runBtn').onclick = () => submit(editor, updateReadonlyPanels);
@@ -221,26 +224,28 @@ function delinkRankingsView() {
     });
 }
 
-layout.registerComponentFactoryFunction('scoreboard', async container => {
-    container.setTitle(getTitle('scoreboard'));
-    autoFocus(container);
-    container.element.append(
-        $<HTMLTemplateElement>('#template-scoreboard').content.cloneNode(true),
-    );
-    container.element.id = 'scoreboard-section';
-    await afterDOM();
-    populateScores(editor);
-    delinkRankingsView();
-});
+if (!isSandbox) {
+    layout.registerComponentFactoryFunction('scoreboard', async container => {
+        container.setTitle(getTitle('scoreboard'));
+        autoFocus(container);
+        container.element.append(
+            $<HTMLTemplateElement>('#template-scoreboard').content.cloneNode(true),
+        );
+        container.element.id = 'scoreboard-section';
+        await afterDOM();
+        populateScores(editor);
+        delinkRankingsView();
+    });
 
-layout.registerComponentFactoryFunction('details', container => {
-    container.setTitle(getTitle('details'));
-    autoFocus(container);
-    const details = $<HTMLTemplateElement>('#template-details').content.cloneNode(true) as HTMLDetailsElement;
-    container.element.append(details);
-    container.element.id = 'details-content';
-    initCopyJSONBtn(container.element.querySelector('#copy') as HTMLElement);
-});
+    layout.registerComponentFactoryFunction('details', container => {
+        container.setTitle(getTitle('details'));
+        autoFocus(container);
+        const details = $<HTMLTemplateElement>('#template-details').content.cloneNode(true) as HTMLDetailsElement;
+        container.element.append(details);
+        container.element.id = 'details-content';
+        initCopyJSONBtn(container.element.querySelector('#copy') as HTMLElement);
+    });
+}
 
 const titles: Record<string, string | undefined> = {
     details: 'Details',
@@ -277,7 +282,12 @@ const defaultLayout: LayoutConfig = {
         content: [
             {
                 type: 'row',
-                content: [
+                content: isSandbox ? [
+                    {
+                        ...plainComponent('code'),
+                        width: 100,
+                    }
+                ] : [
                     {
                         ...plainComponent('code'),
                         width: 75,
@@ -294,14 +304,14 @@ const defaultLayout: LayoutConfig = {
                         type: 'stack',
                         content: [
                             plainComponent('arg'),
-                            plainComponent('exp'),
+                            ...(isSandbox ? [] : [plainComponent('exp')]),
                         ],
                     }, {
                         type: 'stack',
                         content: [
                             plainComponent('out'),
                             plainComponent('err'),
-                            plainComponent('diff'),
+                            ...(isSandbox ? [] : [plainComponent('diff')]),
                         ],
                     },
                 ],
@@ -313,7 +323,7 @@ const defaultLayout: LayoutConfig = {
 const defaultViewState: ViewState = {
     version: 1,
     config: defaultLayout,
-    poolNames: ['details'],
+    poolNames: isSandbox ? [] : ['details'],
     isWide: false,
     langPickerOpen: true,
 };
@@ -339,12 +349,12 @@ function getViewState(): ViewState {
 const saveLayout = debounce(() => {
     const state = getViewState();
     if (!state.config.root) return;
-    localStorage.setItem('lastViewState', JSON.stringify(state));
+    localStorage.setItem('lastViewState' + (isSandbox ? "Sandbox" : ""), JSON.stringify(state));
 }, 2000);
 
 
 async function applyInitialLayout() {
-    const saved = localStorage.getItem('lastViewState');
+    const saved = localStorage.getItem('lastViewState' + (isSandbox ? "Sandbox" : ""));
     const viewState = saved
         ? JSON.parse(saved) as ViewState
         : defaultViewState;
