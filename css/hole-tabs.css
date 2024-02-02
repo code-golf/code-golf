@@ -48,6 +48,10 @@ section header {
     gap: .375rem;
 }
 
+:has(#arg) button {
+    min-width: 2rem;
+}
+
 #editor-section {
     height: 100%;
     overflow: hidden;
