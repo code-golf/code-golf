@@ -27,7 +27,7 @@ func sandboxGET(w http.ResponseWriter, r *http.Request) {
 		},
 	}
 
-	render(w, r, "hole-tabs", data, "Sandbox", "XYZ123")
+	render(w, r, "hole-tabs", data, "Sandbox", "Sandbox")
 }
 
 // POST /sandbox
