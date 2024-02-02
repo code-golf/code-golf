@@ -586,8 +586,8 @@ example = '''
 '''
 
 [J]
-size    = '11 MiB'
-version = '9.4.22'
+size    = '11.2 MiB'
+version = '9.5.5'
 website = 'https://www.jsoftware.com'
 example = '''
 NB.Printing
@@ -982,7 +982,7 @@ G
 
 [SQL]
 size    = '1.18 MiB'
-version = '3.45.0'
+version = '3.45.1'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
