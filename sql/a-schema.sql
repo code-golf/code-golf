@@ -54,19 +54,21 @@ CREATE TYPE hole AS ENUM (
     'φ', '√2', '𝑒'
 );
 
-CREATE TYPE layout AS ENUM ('default', 'tabs');
+CREATE TYPE idea_category AS ENUM ('cheevo', 'hole', 'lang', 'other');
 
 CREATE TYPE keymap AS ENUM ('default', 'vim');
 
 CREATE TYPE lang AS ENUM (
     'assembly', 'awk', 'bash', 'basic', 'berry', 'brainfuck', 'c', 'c-sharp',
-    'clojure',  'cpp', 'cobol', 'coconut', 'crystal', 'd', 'dart', 'elixir', 'f-sharp',
-    'factor', 'fish', 'forth', 'fortran', 'go', 'golfscript', 'haskell',
-    'hexagony', 'j', 'janet', 'java', 'javascript', 'julia', 'k', 'lisp',
-    'lua', 'nim', 'ocaml', 'pascal', 'perl', 'php', 'powershell', 'prolog',
-    'python', 'r', 'raku', 'ruby', 'rust', 'sed', 'sql', 'swift', 'tcl',
-    'tex', 'v', 'viml', 'wren', 'zig'
+    'clojure',  'cpp', 'cobol', 'coconut', 'crystal', 'd', 'dart', 'elixir',
+    'f-sharp', 'factor', 'fish', 'forth', 'fortran', 'go', 'golfscript',
+    'haskell', 'hexagony', 'j', 'janet', 'java', 'javascript', 'julia', 'k',
+    'lisp', 'lua', 'nim', 'ocaml', 'pascal', 'perl', 'php', 'powershell',
+    'prolog', 'python', 'r', 'raku', 'ruby', 'rust', 'sed', 'sql', 'swift',
+    'tcl', 'tex', 'v', 'viml', 'wren', 'zig'
 );
+
+CREATE TYPE layout AS ENUM ('default', 'tabs');
 
 CREATE TYPE medal AS ENUM ('diamond', 'gold', 'silver', 'bronze');
 
@@ -75,8 +77,6 @@ CREATE TYPE pronouns AS ENUM ('he/him', 'she/her', 'they/them');
 CREATE TYPE scoring AS ENUM ('bytes', 'chars');
 
 CREATE TYPE theme AS ENUM ('auto', 'dark', 'light');
-
-CREATE TYPE idea_category AS ENUM ('other', 'hole', 'cheevo', 'lang');
 
 CREATE TABLE discord_records (
     hole    hole NOT NULL,
