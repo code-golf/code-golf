@@ -277,7 +277,7 @@ func Play(
 
 	for i := range runs {
 		go func(run *Run) {
-			if err := play(ctx, hole, lang, code, run); err != nil {
+			if err := playRun(ctx, hole, lang, code, run); err != nil {
 				log.Println(err)
 			}
 
@@ -290,9 +290,14 @@ func Play(
 	return
 }
 
-func play(
+func playRun(
 	ctx context.Context, hole *config.Hole, lang *config.Lang, code string, run *Run,
 ) error {
+	holeID := "sandbox"
+	if hole != nil {
+		holeID = hole.ID
+	}
+
 	var stderr, stdout bytes.Buffer
 	var asmBytesRead, asmBytesWrite *os.File
 
@@ -353,7 +358,7 @@ func play(
 		cmd.Args = []string{"/usr/bin/forth", "/proc/self/fd/0"}
 	case "golfscript":
 		cmd.Args = []string{"/usr/bin/golfscript", "-n", "-e", code}
-		if hole.ID == "quine" {
+		if holeID == "quine" {
 			cmd.Args = append(cmd.Args, "-q")
 		}
 		cmd.Args = append(cmd.Args, "--")
@@ -382,7 +387,7 @@ func play(
 		cmd.Args = []string{"/usr/bin/powershell"}
 
 		// Require explicit output for Quine to prevent trivial solutions.
-		if hole.ID == "quine" {
+		if holeID == "quine" {
 			cmd.Args = append(cmd.Args, "--explicit")
 		}
 	case "prolog":
@@ -394,7 +399,7 @@ func play(
 		cmd.Args = []string{"/usr/bin/Rscript", "-"}
 
 		// Disable implicit output for Quine to prevent trivial solutions.
-		if hole.ID == "quine" {
+		if holeID == "quine" {
 			cmd.Args = []string{"/usr/bin/Rscript", "-e", "source('stdin')"}
 		}
 	case "sed":
@@ -408,7 +413,7 @@ func play(
 
 		// Require a backslash for Quine to prevent trivial solutions.
 		// Don't even run the code; just mark error and return.
-		if hole.ID == "quine" && !strings.Contains(code, `\`) {
+		if holeID == "quine" && !strings.Contains(code, `\`) {
 			run.Stderr = `Quine in TeX must have at least one '\' character.`
 			return nil
 		}
@@ -486,7 +491,7 @@ func play(
 
 	// Trim trailing whitespace on each line, and then trailing empty lines.
 	// Quine solutions are obviously left untouched.
-	if hole.ID == "quine" {
+	if holeID == "quine" {
 		run.Stdout = string(stdoutContents)
 	} else {
 		run.Stdout = string(bytes.TrimRight(stdoutTrimmer.ReplaceAll(
@@ -494,7 +499,7 @@ func play(
 	}
 
 	// Timeouts and whitespace only output never pass.
-	if !run.Timeout && len(strings.TrimSpace(run.Stdout)) != 0 {
+	if hole != nil && !run.Timeout && len(strings.TrimSpace(run.Stdout)) != 0 {
 		if hole.ItemDelimiter != "" {
 			run.Answer = getClosestAnswer(run.Answer, run.Stdout, hole.ItemDelimiter)
 		}
@@ -507,4 +512,15 @@ func play(
 	}
 
 	return nil
+}
+
+func PlaySandbox(ctx context.Context, lang *config.Lang, code string, args []string) *Run {
+	run := Run{Args: args, Answer: ""}
+
+	if err := playRun(ctx, nil, lang, code, &run); err != nil {
+		log.Println(err)
+	}
+
+	run.Pass = !run.Timeout
+	return &run
 }

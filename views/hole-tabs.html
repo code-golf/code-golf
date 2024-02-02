@@ -1,6 +1,6 @@
 {{ template "header" . }}
 
-{{ if ne .Data.Hole.ID "sandbox"}}
+{{ if ne .Data.Hole.ID "sandbox" }}
     {{ with .Data.Hole.Experiment }}
         <div class=alert>
             {{ svg "flask-light" }}
@@ -152,27 +152,29 @@
     </div>
 </template>
 
-<dialog id=delete-dialog>
-    <form action=/golfer/delete-solution autocomplete=off method=post>
-        <h2>Delete Solution</h2>
-        <p>
-            Are you sure you want to delete your <b></b> solution(s) for
-            <b>{{ .Data.Hole.Name }}</b>?
-        <p>
-            If you have seperate bytes and chars solutions then <b>both</b>
-            will be deleted.
-        <p>This is irreversible, please backup any code you care about.
-        <p>Type <b>I understand</b> and press confirm to continue.</p>
-        <input name=text placeholder="I understand">
-        <input name=hole value="{{ .Data.Hole.ID }}" type=hidden>
-        <input name=lang type=hidden>
-        <menu>
-            <!-- Enter submits the first button, we flip the order in CSS -->
-            <button class="btn green" disabled name=confirm>Confirm</button>
-            <button class="btn red" formmethod=dialog>Cancel</button>
-        </menu>
-    </form>
-</dialog>
+{{ if ne .Data.Hole.ID "sandbox" }}
+    <dialog id=delete-dialog>
+        <form action=/golfer/delete-solution autocomplete=off method=post>
+            <h2>Delete Solution</h2>
+            <p>
+                Are you sure you want to delete your <b></b> solution(s) for
+                <b>{{ .Data.Hole.Name }}</b>?
+            <p>
+                If you have seperate bytes and chars solutions then <b>both</b>
+                will be deleted.
+            <p>This is irreversible, please backup any code you care about.
+            <p>Type <b>I understand</b> and press confirm to continue.</p>
+            <input name=text placeholder="I understand">
+            <input name=hole value="{{ .Data.Hole.ID }}" type=hidden>
+            <input name=lang type=hidden>
+            <menu>
+                <!-- Enter submits the first button, we flip the order in CSS -->
+                <button class="btn green" disabled name=confirm>Confirm</button>
+                <button class="btn red" formmethod=dialog>Cancel</button>
+            </menu>
+        </form>
+    </dialog>
+{{ end }}
 
 <div id=popups></div>
 

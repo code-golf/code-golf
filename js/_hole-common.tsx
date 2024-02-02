@@ -37,7 +37,7 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
         setCodeForLangAndSolution(editor);
     })();
 
-    $('dialog [name=text]').addEventListener('input', (e: Event) => {
+    $('dialog [name=text]')?.addEventListener('input', (e: Event) => {
         const target = e.target as HTMLInputElement;
         target.form!.confirm.toggleAttribute('disabled',
             target.value !== target.placeholder);
@@ -214,7 +214,7 @@ export async function refreshScores(editor: any) {
         $('#solutionPicker').classList.remove('hide');
     }
     else
-        $('#solutionPicker').classList.add('hide');
+        $('#solutionPicker')?.classList.add('hide');
 
     // Hide the delete button for exp holes or if we have no solutions.
     hideDeleteBtn = experimental || (!dbBytes && !dbChars);
@@ -295,6 +295,8 @@ const getDisplayPointsChange = (points: number, delta: number) =>
     `${points} points` + (delta > 0 && delta < points ? ` (+${delta})` : '');
 
 const scorePopups = (updates: RankUpdate[]) => {
+    if (!updates) return [];
+
     const strokesDelta = [0, 0];
     const pointsDelta = [0, 0];
     const points = [0, 0];
@@ -386,6 +388,8 @@ const scorePopups = (updates: RankUpdate[]) => {
 };
 
 const diamondPopups = (updates: RankUpdate[]) => {
+    if (!updates) return [];
+
     const popups: Node[] = [];
 
     const newDiamonds: string[] = [];
@@ -436,7 +440,7 @@ export async function submit(
 ) {
     if (!editor) return;
     $('h2').innerText = '…';
-    $('#status').className = 'grey';
+    if ($('#status')) $('#status').className = 'grey';
     $$('canvas').forEach(e => e.remove());
 
     const code = editor.state.doc.toString();
@@ -448,12 +452,12 @@ export async function submit(
         Hole: hole,
         Lang: lang,
     }
-    
-    if (hole === "sandbox" && getArgs) {
+
+    if (hole === 'sandbox' && getArgs) {
         request.Args = getArgs();
     }
 
-    const res = await fetch('/solution', {
+    const res = await fetch(hole === 'sandbox' ? '/sandbox' : '/solution', {
         method: 'POST',
         body: JSON.stringify(request),
     });
@@ -469,7 +473,7 @@ export async function submit(
     if (submissionID != latestSubmissionID)
         return;
 
-    if (data.Pass) {
+    if (data.Pass && hole !== 'sandbox') {
         for (const i of [0, 1] as const) {
             const solutionCode = getSolutionCode(codeLang, i);
             if (!solutionCode || getScoring(code, i) <= getScoring(solutionCode, i)) {
