@@ -3,8 +3,8 @@ import {
     RowOrColumn, LayoutConfig, ResolvedRootItemConfig,
     DragSource, LayoutManager, ComponentContainer, ResolvedLayoutConfig,
 } from 'golden-layout';
-import { EditorView } from './_codemirror';
-import diffTable from './_diff';
+import { EditorView }   from './_codemirror';
+import diffTable        from './_diff';
 import { $, $$, comma, debounce } from './_util';
 import {
     init, langs, getLang, hole, getAutoSaveKey, setSolution, getSolution,
@@ -14,8 +14,8 @@ import {
     getScorings, replaceUnprintablesInOutput, getArgs, serializeArgs, deserializeArgs
 } from './_hole-common';
 
-const poolDragSources: { [key: string]: DragSource } = {};
-const poolElements: { [key: string]: HTMLElement } = {};
+const poolDragSources: {[key: string]: DragSource} = {};
+const poolElements: {[key: string]: HTMLElement} = {};
 let isWide = false;
 
 /**
@@ -37,7 +37,7 @@ let applyingDefault = false;
 let isSandbox = $("#hole-sandbox") != null;
 
 let subRes: ReadonlyPanelsData | null = null;
-const readonlyOutputs: { [key: string]: HTMLElement | undefined } = {};
+const readonlyOutputs: {[key: string]: HTMLElement | undefined} = {};
 
 let editor: EditorView | null = null;
 
@@ -84,25 +84,25 @@ function updateReadonlyPanel(name: string) {
     const output = readonlyOutputs[name];
     if (!output) return;
     switch (name) {
-        case 'err':
-            output.innerHTML = subRes.Err.replace(/\n/g, '<br>');
-            break;
-        case 'out':
-            output.innerHTML = replaceUnprintablesInOutput(subRes.Out);
-            break;
-        case 'exp':
-            output.innerText = subRes.Exp;
-            break;
-        case 'arg':
-            // Hide arguments unless we have some.
-            output.replaceChildren(
-                ...subRes.Argv.map(a => isSandbox ? <span contenteditable>{a}</span> : <span>{a}</span>),
-            );
-            break;
-        case 'diff':
-            const ignoreCase = JSON.parse($('#case-fold').innerText);
-            const diff = diffTable(hole, subRes.Exp, subRes.Out, subRes.Argv, ignoreCase);
-            output.replaceChildren(diff);
+    case 'err':
+        output.innerHTML = subRes.Err.replace(/\n/g,'<br>');
+        break;
+    case 'out':
+        output.innerHTML = replaceUnprintablesInOutput(subRes.Out);
+        break;
+    case 'exp':
+        output.innerText = subRes.Exp;
+        break;
+    case 'arg':
+        // Hide arguments unless we have some.
+        output.replaceChildren(
+            ...subRes.Argv.map(a => <span>{a}</span>),
+        );
+        break;
+    case 'diff':
+        const ignoreCase = JSON.parse($('#case-fold').innerText);
+        const diff = diffTable(hole, subRes.Exp, subRes.Out, subRes.Argv, ignoreCase);
+        output.replaceChildren(diff);
     }
 }
 
@@ -179,7 +179,7 @@ function makeEditor(parent: HTMLDivElement) {
             const result = editor.update([tr]) as unknown;
 
             const code = tr.state.doc.toString();
-            const scorings: { total: { byte?: number, char?: number }, selection?: { byte?: number, char?: number } } = getScorings(tr, editor);
+            const scorings: {total: {byte?: number, char?: number}, selection?: {byte?: number, char?: number}} = getScorings(tr, editor);
             const scoringKeys = ['byte', 'char'] as const;
 
             function formatScore(scoring: any) {
@@ -256,7 +256,7 @@ layout.registerComponentFactoryFunction('code', async container => {
     setCodeForLangAndSolution(editor);
 });
 
-async function afterDOM() { }
+async function afterDOM() {}
 
 function delinkRankingsView() {
     $$('#rankingsView a').forEach(a => a.onclick = e => {
@@ -630,11 +630,11 @@ window.addEventListener('resize', checkMobile);
 function deepCancelTouchStart(item: any) {
     if (!item) return;
     if (item.type === 'stack') {
-        item._header._closeButton.onTouchStart = () => { };
-        item._header._maximiseButton.onTouchStart = () => { };
+        item._header._closeButton.onTouchStart = () => {};
+        item._header._maximiseButton.onTouchStart = () => {};
     }
     else if (item.type === 'component') {
-        item._tab.onCloseTouchStart = () => { };
+        item._tab.onCloseTouchStart = () => {};
     }
     item._contentItems?.forEach((child: any) => deepCancelTouchStart(child));
 }
