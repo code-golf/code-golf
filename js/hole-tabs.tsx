@@ -35,7 +35,7 @@ let isWide = false;
  */
 let isMobile = false;
 let applyingDefault = false;
-let isSandbox = $("#hole-sandbox") != null;
+let isSandbox = $('#hole-sandbox') != null;
 
 let subRes: ReadonlyPanelsData | null = null;
 const readonlyOutputs: {[key: string]: HTMLElement | undefined} = {};
@@ -125,19 +125,19 @@ for (const name of isSandbox ? ['out', 'err'] : ['exp', 'out', 'err', 'diff']) {
     });
 }
 
-layout.registerComponentFactoryFunction("arg", async container => {
-    container.setTitle(getTitle("arg"));
+layout.registerComponentFactoryFunction('arg', async container => {
+    container.setTitle(getTitle('arg'));
     autoFocus(container);
-    const items = <div id="arg" class="readonly-output"></div>
+    const items = <div id='arg' class='readonly-output'></div>;
     if (isSandbox)
         container.element.replaceChildren(
-            <button id="addArgBtn">+</button>,
-            <button id="removeArgBtn">-</button>,
-            <button id="pasteArgsBtn">Paste</button>,
-            <button id="copyArgsBtn">Copy</button>
+            <button id='addArgBtn'>+</button>,
+            <button id='removeArgBtn'>-</button>,
+            <button id='pasteArgsBtn'>Paste</button>,
+            <button id='copyArgsBtn'>Copy</button>
         );
     else container.element.replaceChildren(
-        <button id="takeToSandboxBtn">Take to sandbox</button>,
+        <button id='takeToSandboxBtn'>Take to sandbox</button>,
     );
     container.element.append(
         items,
@@ -163,10 +163,10 @@ layout.registerComponentFactoryFunction("arg", async container => {
             location.href = '/sandbox';
         };
     }
-    readonlyOutputs["arg"] = items;
-    updateReadonlyPanel("arg");
+    readonlyOutputs['arg'] = items;
+    updateReadonlyPanel('arg');
 
-    const args = sessionStorage.getItem('args')
+    const args = sessionStorage.getItem('args');
     if (args) {
         items.replaceChildren(...deserializeArgs(args).map(a => <span contenteditable>{a}</span>));
         sessionStorage.removeItem('arg');
@@ -335,7 +335,7 @@ const defaultLayout: LayoutConfig = {
                     {
                         ...plainComponent('code'),
                         width: 100,
-                    }
+                    },
                 ] : [
                     {
                         ...plainComponent('code'),
@@ -398,12 +398,12 @@ function getViewState(): ViewState {
 const saveLayout = debounce(() => {
     const state = getViewState();
     if (!state.config.root) return;
-    localStorage.setItem('lastViewState' + (isSandbox ? "Sandbox" : ""), JSON.stringify(state));
+    localStorage.setItem('lastViewState' + (isSandbox ? 'Sandbox' : ''), JSON.stringify(state));
 }, 2000);
 
 
 async function applyInitialLayout() {
-    const saved = localStorage.getItem('lastViewState' + (isSandbox ? "Sandbox" : ""));
+    const saved = localStorage.getItem('lastViewState' + (isSandbox ? 'Sandbox' : ''));
     const viewState = saved
         ? JSON.parse(saved) as ViewState
         : defaultViewState;
