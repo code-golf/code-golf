@@ -128,6 +128,26 @@ function getArgs() {
     return [...$$('#arg span')].map((x: any) => x.innerText);
 }
 
+function serializeArgs(args: string[]){
+    let res = args.some(x => x.includes("\n")) ? "[]" : args.join("\n")
+    try {
+        JSON.parse(res)
+        res = JSON.stringify(args)
+    }
+    catch {}
+    return res;
+}
+function deserializeArgs(text: string){
+    let args = text.split("\n")
+    try {
+        const x = JSON.parse(text)
+        if (Array.isArray(x) && x.every(x => typeof x === "string"))
+            args = x;
+    }
+    catch{}
+    return args
+}
+
 layout.registerComponentFactoryFunction("arg", async container => {
     container.setTitle(getTitle("arg"));
     autoFocus(container);
@@ -138,6 +158,9 @@ layout.registerComponentFactoryFunction("arg", async container => {
             <button id="removeArgBtn">-</button>,
             <button id="pasteArgsBtn">Paste</button>,
         );
+    else container.element.replaceChildren(
+        <button id="takeToSandboxBtn">Take to sandbox</button>,
+    );
     container.element.append(
         <button id="copyArgsBtn">Copy</button>,
         items,
@@ -147,32 +170,30 @@ layout.registerComponentFactoryFunction("arg", async container => {
     if (isSandbox){
         $('#addArgBtn').onclick = () => {items.append(<span contenteditable></span>)};
         $('#removeArgBtn').onclick = () => {
-            if (items.lastElementChild) items.removeChild(items.lastElementChild)
+            if (items.lastElementChild) items.removeChild(items.lastElementChild);
         };
         $('#pasteArgsBtn').onclick = async () => {
-            const clipboard = await navigator.clipboard.readText();
-            let args = clipboard.split("\n")
-            try {
-                const x = JSON.parse(clipboard)
-                if (Array.isArray(x) && x.every(x => typeof x === "string"))
-                    args = x;
-            }
-            catch{}
-            items.replaceChildren(...args.map(a => <span contenteditable>{a}</span>))
+            const args = deserializeArgs(await navigator.clipboard.readText());            
+            items.replaceChildren(...args.map(a => <span contenteditable>{a}</span>));
         };
         $('#copyArgsBtn').onclick = () => {
-            let args = getArgs();
-            let res = args.some(x => x.includes("\n")) ? "[]" : args.join("\n")
-            try {
-                JSON.parse(res)
-                res = JSON.stringify(args)
-            }
-            catch {}
-            navigator.clipboard.writeText(res)
+            navigator.clipboard.writeText(serializeArgs(getArgs()));
+        };
+    }
+    else {        
+        $('#takeToSandboxBtn').onclick = () => {
+            sessionStorage.setItem('args', serializeArgs(getArgs()));
+            location.href = '/sandbox';
         };
     }
     readonlyOutputs["arg"] = items;
     updateReadonlyPanel("arg");
+
+    const args = sessionStorage.getItem('args')
+    if (args) {
+        items.replaceChildren(...deserializeArgs(args).map(a => <span contenteditable>{a}</span>));
+        sessionStorage.removeItem('arg');
+    }
 });
 
 function makeEditor(parent: HTMLDivElement) {
