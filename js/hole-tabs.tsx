@@ -41,7 +41,7 @@ const readonlyOutputs: { [key: string]: HTMLElement | undefined } = {};
 
 let editor: EditorView | null = null;
 
-init(true, setSolution, setCodeForLangAndSolution, updateReadonlyPanels, () => editor);
+init(true, setSolution, setCodeForLangAndSolution, updateReadonlyPanels, () => editor, getArgs);
 
 // Handle showing/hiding alerts
 for (const alertCloseBtn of $$('.main_close')) {
@@ -96,7 +96,7 @@ function updateReadonlyPanel(name: string) {
         case 'arg':
             // Hide arguments unless we have some.
             output.replaceChildren(
-                ...subRes.Argv.map(a => isSandbox || true ? <span contenteditable>{a}</span> : <span>{a}</span>),
+                ...subRes.Argv.map(a => isSandbox ? <span contenteditable>{a}</span> : <span>{a}</span>),
             );
             break;
         case 'diff':
@@ -124,23 +124,52 @@ for (const name of isSandbox ? ['out', 'err'] : ['exp', 'out', 'err', 'diff']) {
     });
 }
 
+function getArgs() {
+    return [...$$('#arg span')].map((x: any) => x.innerText);
+}
+
 layout.registerComponentFactoryFunction("arg", async container => {
     container.setTitle(getTitle("arg"));
     autoFocus(container);
-    container.element.id = "arg";
-    const items = <div id="arg-items" class="readonly-output"></div> 
-    container.element.replaceChildren(
-        <button id="addArg">+</button>,
-        <button id="removeArg">-</button>,
-        <button id="pasteArgs">Paste</button>,
-        <button id="copyArgs">Copy</button>,
-        items
-    )
+    const items = <div id="arg" class="readonly-output"></div>
+    if (isSandbox)
+        container.element.replaceChildren(
+            <button id="addArgBtn">+</button>,
+            <button id="removeArgBtn">-</button>,
+            <button id="pasteArgsBtn">Paste</button>,
+        );
+    container.element.append(
+        <button id="copyArgsBtn">Copy</button>,
+        items,
+    );
     
     await afterDOM();
-    if ($('#addArg')){
-        $('#addArg').onclick = () => {items.append(<span contenteditable></span>)}
-        $('#removeArg').onclick = () => {items.removeChild(items.lastElementChild)}
+    if (isSandbox){
+        $('#addArgBtn').onclick = () => {items.append(<span contenteditable></span>)};
+        $('#removeArgBtn').onclick = () => {
+            if (items.lastElementChild) items.removeChild(items.lastElementChild)
+        };
+        $('#pasteArgsBtn').onclick = async () => {
+            const clipboard = await navigator.clipboard.readText();
+            let args = clipboard.split("\n")
+            try {
+                const x = JSON.parse(clipboard)
+                if (Array.isArray(x) && x.every(x => typeof x === "string"))
+                    args = x;
+            }
+            catch{}
+            items.replaceChildren(...args.map(a => <span contenteditable>{a}</span>))
+        };
+        $('#copyArgsBtn').onclick = () => {
+            let args = getArgs();
+            let res = args.some(x => x.includes("\n")) ? "[]" : args.join("\n")
+            try {
+                JSON.parse(res)
+                res = JSON.stringify(args)
+            }
+            catch {}
+            navigator.clipboard.writeText(res)
+        };
     }
     readonlyOutputs["arg"] = items;
     updateReadonlyPanel("arg");
@@ -219,7 +248,7 @@ layout.registerComponentFactoryFunction('code', async container => {
     }
 
     // Wire submit to clicking a button and a keyboard shortcut.
-    $('#runBtn').onclick = () => submit(editor, updateReadonlyPanels);
+    $('#runBtn').onclick = () => submit(editor, updateReadonlyPanels, getArgs);
 
     const deleteBtn = $('#deleteBtn');
     if (deleteBtn) {

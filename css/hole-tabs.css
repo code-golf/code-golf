@@ -244,3 +244,7 @@ main {
 .full-width #make-narrow { display: flex; }
 .full-width #make-wide { display: none; }
 .full-width body { max-width: unset; }
+
+:has(#arg) button{
+    margin: 3px;
+}

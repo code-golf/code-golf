@@ -7,9 +7,9 @@ import LZString from 'lz-string';
 
 let tabLayout: boolean = false;
 
-export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSolution: any, updateReadonlyPanels: any, getEditor: () => any) {
+export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSolution: any, updateReadonlyPanels: any, getEditor: () => any, getArgs?: any) {
     tabLayout = _tabLayout;
-    const closuredSubmit = () => submit(getEditor(), updateReadonlyPanels);
+    const closuredSubmit = () => submit(getEditor(), updateReadonlyPanels, getArgs);
     window.onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter'
         ? closuredSubmit()
         : undefined;
@@ -432,6 +432,7 @@ export async function submit(
     editor: any,
     // eslint-disable-next-line no-unused-vars
     updateReadonlyPanels: (d: ReadonlyPanelsData) => void,
+    getArgs?: () => string[]
 ) {
     if (!editor) return;
     $('h2').innerText = '…';
@@ -442,13 +443,19 @@ export async function submit(
     const codeLang = lang;
     const submissionID = ++latestSubmissionID;
 
+    const request: any = {
+        Code: code,
+        Hole: hole,
+        Lang: lang,
+    }
+    
+    if (hole === "sandbox" && getArgs) {
+        request.Args = getArgs();
+    }
+
     const res = await fetch('/solution', {
         method: 'POST',
-        body: JSON.stringify({
-            Code: code,
-            Hole: hole,
-            Lang: lang,
-        }),
+        body: JSON.stringify(request),
     });
 
     if (res.status != 200) {
