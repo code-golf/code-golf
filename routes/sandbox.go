@@ -20,10 +20,10 @@ func sandboxGET(w http.ResponseWriter, r *http.Request) {
 		RankingsView string
 		Solutions    []map[string]string
 	}{
-		Langs:       config.AllLangByID,
-		Hole:        &config.Hole {
+		Langs: config.AllLangByID,
+		Hole: &config.Hole{
 			Name: "Sandbox",
-			ID: "sandbox",
+			ID:   "sandbox",
 		},
 	}
 
@@ -82,7 +82,7 @@ func sandboxPOST(w http.ResponseWriter, r *http.Request) {
 		Out:      run.Stdout,
 		Pass:     run.Pass,
 		Runs:     []hole.Run{*run},
-		Took: run.Time,
+		Took:     run.Time,
 	}
 
 	w.Header().Set("Content-Type", "application/json")
