@@ -6,7 +6,7 @@ import {
     setCode, refreshScores, submit, getSavedInDB, updateRestoreLinkVisibility,
     ReadonlyPanelsData, setCodeForLangAndSolution, getCurrentSolutionCode,
     initDeleteBtn, initCopyJSONBtn, getScorings, replaceUnprintablesInOutput,
-    getArgs, serializeArgs
+    getArgs, serializeArgs,
 } from './_hole-common';
 
 const editor = new EditorView({

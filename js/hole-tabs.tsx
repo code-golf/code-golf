@@ -35,7 +35,7 @@ let isWide = false;
  */
 let isMobile = false;
 let applyingDefault = false;
-let isSandbox = $('#hole-sandbox') != null;
+const isSandbox = $('#hole-sandbox') != null;
 
 let subRes: ReadonlyPanelsData | null = null;
 const readonlyOutputs: {[key: string]: HTMLElement | undefined} = {};
@@ -134,7 +134,7 @@ layout.registerComponentFactoryFunction('arg', async container => {
             <button id='addArgBtn'>+</button>,
             <button id='removeArgBtn'>-</button>,
             <button id='pasteArgsBtn'>Paste</button>,
-            <button id='copyArgsBtn'>Copy</button>
+            <button id='copyArgsBtn'>Copy</button>,
         );
     else container.element.replaceChildren(
         <button id='takeToSandboxBtn'>Take to sandbox</button>,
