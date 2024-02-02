@@ -436,7 +436,7 @@ export async function submit(
     editor: any,
     // eslint-disable-next-line no-unused-vars
     updateReadonlyPanels: (d: ReadonlyPanelsData) => void,
-    getArgs?: () => string[]
+    getArgs?: () => string[],
 ) {
     if (!editor) return;
     $('h2').innerText = '…';
@@ -643,7 +643,7 @@ export async function populateScores(editor: any) {
             <td>{r.rank}<sup>{ord(r.rank)}</sup></td>
             <td>
                 <a href={`/golfers/${r.golfer.name}`}>
-                <img src={`/golfers/${r.golfer.name}/avatar/48`} />
+                    <img src={`/golfers/${r.golfer.name}/avatar/48`} />
                     <span>{r.golfer.name}</span>
                 </a>
             </td>
@@ -717,7 +717,7 @@ export function getArgs() {
 }
 
 export function serializeArgs(args: string[]) {
-    let res = args.some(x => x.includes("\n")) ? "[]" : args.join("\n");
+    let res = args.some(x => x.includes('\n')) ? '[]' : args.join('\n');
     try {
         JSON.parse(res);
         res = JSON.stringify(args);
@@ -726,12 +726,12 @@ export function serializeArgs(args: string[]) {
     return res;
 }
 export function deserializeArgs(text: string) {
-    let args = text.split("\n")
+    let args = text.split('\n');
     try {
         const x = JSON.parse(text);
-        if (Array.isArray(x) && x.every(x => typeof x === "string"))
+        if (Array.isArray(x) && x.every(x => typeof x === 'string'))
             args = x;
     }
-    catch{}
+    catch {}
     return args;
 }

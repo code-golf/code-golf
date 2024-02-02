@@ -11,7 +11,8 @@ import {
     setCode, refreshScores, getHideDeleteBtn, submit, ReadonlyPanelsData,
     updateRestoreLinkVisibility, getSavedInDB, setCodeForLangAndSolution,
     populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyJSONBtn,
-    getScorings, replaceUnprintablesInOutput, getArgs, serializeArgs, deserializeArgs
+    getScorings, replaceUnprintablesInOutput, getArgs, serializeArgs,
+    deserializeArgs,
 } from './_hole-common';
 
 const poolDragSources: {[key: string]: DragSource} = {};
