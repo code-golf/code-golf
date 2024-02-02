@@ -6,6 +6,7 @@ import {
     setCode, refreshScores, submit, getSavedInDB, updateRestoreLinkVisibility,
     ReadonlyPanelsData, setCodeForLangAndSolution, getCurrentSolutionCode,
     initDeleteBtn, initCopyJSONBtn, getScorings, replaceUnprintablesInOutput,
+    getArgs, serializeArgs
 } from './_hole-common';
 
 const editor = new EditorView({
@@ -59,6 +60,10 @@ $('#restoreLink').onclick = e => {
 
 // Wire submit to clicking a button and a keyboard shortcut.
 $('#runBtn').onclick = () => submit(editor, updateReadonlyPanels);
+$('#takeToSandboxBtn').onclick = () => {
+    sessionStorage.setItem('args', serializeArgs(getArgs()));
+    location.href = '/sandbox';
+};
 
 initCopyJSONBtn($('#copy'));
 initDeleteBtn($('#deleteBtn'), langs);
@@ -77,7 +82,7 @@ $$('#rankingsView a').forEach(a => a.onclick = e => {
 
 function updateReadonlyPanels(data: ReadonlyPanelsData) {
     // Hide arguments unless we have some.
-    $('#arg div').replaceChildren(...data.Argv.map(a => <span>{a}</span>));
+    $('#arg div div').replaceChildren(...data.Argv.map(a => <span>{a}</span>));
     $('#arg').classList.toggle('hide', !data.Argv.length);
 
     // Hide stderr if we're passing or have no stderr output.

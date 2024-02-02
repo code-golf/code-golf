@@ -711,3 +711,28 @@ export function replaceUnprintablesInOutput(output: string) {
     return output.replace(/[\x00-\x08\x0B-\x1F\x7F]/g,
         x => `<span title=${'\\u' + x.charCodeAt(0).toString(16)}>•</span>`);
 }
+
+
+export function getArgs() {
+    return [...$$('#arg span')].map((x: any) => x.innerText);
+}
+
+export function serializeArgs(args: string[]) {
+    let res = args.some(x => x.includes("\n")) ? "[]" : args.join("\n");
+    try {
+        JSON.parse(res);
+        res = JSON.stringify(args);
+    }
+    catch {}
+    return res;
+}
+export function deserializeArgs(text: string) {
+    let args = text.split("\n")
+    try {
+        const x = JSON.parse(text);
+        if (Array.isArray(x) && x.every(x => typeof x === "string"))
+            args = x;
+    }
+    catch{}
+    return args;
+}

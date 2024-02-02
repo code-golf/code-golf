@@ -11,7 +11,7 @@ import {
     setCode, refreshScores, getHideDeleteBtn, submit, ReadonlyPanelsData,
     updateRestoreLinkVisibility, getSavedInDB, setCodeForLangAndSolution,
     populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyJSONBtn,
-    getScorings, replaceUnprintablesInOutput,
+    getScorings, replaceUnprintablesInOutput, getArgs, serializeArgs, deserializeArgs
 } from './_hole-common';
 
 const poolDragSources: { [key: string]: DragSource } = {};
@@ -124,30 +124,6 @@ for (const name of isSandbox ? ['out', 'err'] : ['exp', 'out', 'err', 'diff']) {
     });
 }
 
-function getArgs() {
-    return [...$$('#arg span')].map((x: any) => x.innerText);
-}
-
-function serializeArgs(args: string[]){
-    let res = args.some(x => x.includes("\n")) ? "[]" : args.join("\n")
-    try {
-        JSON.parse(res)
-        res = JSON.stringify(args)
-    }
-    catch {}
-    return res;
-}
-function deserializeArgs(text: string){
-    let args = text.split("\n")
-    try {
-        const x = JSON.parse(text)
-        if (Array.isArray(x) && x.every(x => typeof x === "string"))
-            args = x;
-    }
-    catch{}
-    return args
-}
-
 layout.registerComponentFactoryFunction("arg", async container => {
     container.setTitle(getTitle("arg"));
     autoFocus(container);
@@ -157,30 +133,30 @@ layout.registerComponentFactoryFunction("arg", async container => {
             <button id="addArgBtn">+</button>,
             <button id="removeArgBtn">-</button>,
             <button id="pasteArgsBtn">Paste</button>,
+            <button id="copyArgsBtn">Copy</button>
         );
     else container.element.replaceChildren(
         <button id="takeToSandboxBtn">Take to sandbox</button>,
     );
     container.element.append(
-        <button id="copyArgsBtn">Copy</button>,
         items,
     );
-    
+
     await afterDOM();
-    if (isSandbox){
-        $('#addArgBtn').onclick = () => {items.append(<span contenteditable></span>)};
+    if (isSandbox) {
+        $('#addArgBtn').onclick = () => { items.append(<span contenteditable></span>) };
         $('#removeArgBtn').onclick = () => {
             if (items.lastElementChild) items.removeChild(items.lastElementChild);
         };
         $('#pasteArgsBtn').onclick = async () => {
-            const args = deserializeArgs(await navigator.clipboard.readText());            
+            const args = deserializeArgs(await navigator.clipboard.readText());
             items.replaceChildren(...args.map(a => <span contenteditable>{a}</span>));
         };
         $('#copyArgsBtn').onclick = () => {
             navigator.clipboard.writeText(serializeArgs(getArgs()));
         };
     }
-    else {        
+    else {
         $('#takeToSandboxBtn').onclick = () => {
             sessionStorage.setItem('args', serializeArgs(getArgs()));
             location.href = '/sandbox';
