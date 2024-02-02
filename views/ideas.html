@@ -9,7 +9,7 @@
 {{ with .Hole }}
     <a class="card {{ .CategoryColor }}" href="/{{ .ID }}" title="{{ .Name }} ({{ .Category }})">
 {{ else }}
-    <a class="card {{ .KindColor }}" href="//github.com/code-golf/code-golf/issues/{{ .ID }}" title="{{ .Title }}">
+    <a class="card {{ .CategoryColor }}" href="//github.com/code-golf/code-golf/issues/{{ .ID }}" title="{{ .Title }}">
 {{ end }}
         <h2 class=span>{{ .Title }}</h2>
         <svg><use href="#thumbs-up"/></svg>

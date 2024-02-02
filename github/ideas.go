@@ -45,14 +45,14 @@ func ideas(db *sqlx.DB) (limits []rateLimit) {
 		limits = append(limits, query.RateLimit)
 
 		for _, node := range query.Repository.Issues.Nodes {
-			kind := "other"
+			category := "other"
 			for _, label := range node.Labels.Nodes {
 				if label.Name == "lang-idea" {
-					kind = "lang"
+					category = "lang"
 				} else if label.Name == "hole-idea" {
-					kind = "hole"
+					category = "hole"
 				} else if label.Name == "cheevo-idea" {
-					kind = "cheevo"
+					category = "cheevo"
 				}
 			}
 			tx.MustExec(
@@ -61,7 +61,7 @@ func ideas(db *sqlx.DB) (limits []rateLimit) {
 				node.ThumbsDown.TotalCount,
 				node.ThumbsUp.TotalCount,
 				node.Title,
-				kind,
+				category,
 			)
 		}
 

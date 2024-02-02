@@ -25,9 +25,9 @@ func ideaColor(kind string) string {
 // GET /ideas
 func ideasGET(w http.ResponseWriter, r *http.Request) {
 	type idea struct {
-		Hole                     *config.Hole
-		ID, ThumbsDown, ThumbsUp int
-		Title, Kind, KindColor   string
+		Category, CategoryColor, Title string
+		Hole                           *config.Hole
+		ID, ThumbsDown, ThumbsUp       int
 	}
 
 	data := struct {
@@ -60,7 +60,7 @@ rows:
 			i.Title = i.Title[len("Add ") : len(i.Title)-len(" Lang")]
 		}
 
-		i.KindColor = ideaColor(i.Kind)
+		i.CategoryColor = ideaColor(i.Category)
 		data.Ideas = append(data.Ideas, i)
 	}
 
