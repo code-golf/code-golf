@@ -105,10 +105,15 @@ function updateReadonlyPanel(name: string) {
     }
 }
 
-function updateReadonlyPanels(data: ReadonlyPanelsData) {
-    subRes = data;
-    for (const name in readonlyOutputs) {
-        updateReadonlyPanel(name);
+function updateReadonlyPanels(data: ReadonlyPanelsData | {langWiki: string}) {
+    if ('langWiki' in data) {
+        $('#langWiki').innerHTML = `<article>${data.langWiki}</article>`;
+    }
+    else {
+        subRes = data;
+        for (const name in data) {
+            updateReadonlyPanel(name);
+        }
     }
 }
 
@@ -122,6 +127,12 @@ for (const name of ['exp', 'out', 'err', 'arg', 'diff']) {
         updateReadonlyPanel(name);
     });
 }
+
+layout.registerComponentFactoryFunction('langWiki', container => {
+    container.setTitle(getTitle('langWiki'));
+    autoFocus(container);
+    container.element.id = 'langWiki';
+});
 
 function makeEditor(parent: HTMLDivElement) {
     editor = new EditorView({
@@ -251,6 +262,7 @@ const titles: Record<string, string | undefined> = {
     arg: 'Arguments',
     diff: 'Diff',
     code: 'Code',
+    langWiki: 'Language Wiki'
 };
 
 function getTitle(name: string) {
@@ -313,7 +325,7 @@ const defaultLayout: LayoutConfig = {
 const defaultViewState: ViewState = {
     version: 1,
     config: defaultLayout,
-    poolNames: ['details'],
+    poolNames: ['details', 'langWiki'],
     isWide: false,
     langPickerOpen: true,
 };
