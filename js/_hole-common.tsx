@@ -7,7 +7,7 @@ import LZString                                from 'lz-string';
 
 let tabLayout: boolean = false;
 
-const langWikiCache: Record<string, string> = {}
+const langWikiCache: Record<string, string> = {};
 async function getLangWikiContent(lang: string): Promise<string> {
     if (!(lang in langWikiCache)){
         const resp  = await fetch(`/api/wiki/langs/${lang}`, { method: 'GET' });
@@ -45,7 +45,7 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
         }
         setCodeForLangAndSolution(editor);
 
-        updateReadonlyPanels({langWiki: await getLangWikiContent(lang)})
+        updateReadonlyPanels({langWiki: await getLangWikiContent(lang)});
     })();
 
     $('dialog [name=text]').addEventListener('input', (e: Event) => {
