@@ -2,6 +2,7 @@ import {
     ComponentItem, ComponentItemConfig, ContentItem, GoldenLayout,
     RowOrColumn, LayoutConfig, ResolvedRootItemConfig,
     DragSource, LayoutManager, ComponentContainer, ResolvedLayoutConfig,
+    RootItemConfig,
 } from 'golden-layout';
 import { EditorView }   from './_codemirror';
 import diffTable        from './_diff';
@@ -337,10 +338,22 @@ const defaultLayout: LayoutConfig = {
     },
 };
 
+function getPoolFromLayoutConfig(config: LayoutConfig) {
+    const allComponents = ['code', 'scoreboard', 'arg', 'exp', 'out', 'err', 'diff', 'details', 'langWiki'];
+    const activeComponents = getComponentNamesRecursive(config.root!);
+    return allComponents.filter(x => !activeComponents.includes(x));
+}
+
+function getComponentNamesRecursive(config: RootItemConfig): string[] {
+    if (config.type === 'component'){
+        return [config.componentType as string];
+    }
+    return config.content.flatMap(getComponentNamesRecursive);
+}
+
 const defaultViewState: ViewState = {
     version: 1,
     config: defaultLayout,
-    poolNames: ['details', 'langWiki'],
     isWide: false,
     langPickerOpen: true,
 };
@@ -348,7 +361,6 @@ const defaultViewState: ViewState = {
 interface ViewState {
     version: 1;
     config: ResolvedLayoutConfig | LayoutConfig;
-    poolNames: string[];
     isWide: boolean;
     langPickerOpen: boolean;
 }
@@ -357,7 +369,6 @@ function getViewState(): ViewState {
     return {
         version: 1,
         config: layout.saveLayout(),
-        poolNames: Object.keys(poolElements),
         isWide,
         langPickerOpen: langToggle.open,
     };
@@ -382,13 +393,13 @@ async function applyViewState(viewState: ViewState) {
     applyingDefault = true;
     toggleMobile(false);
     Object.keys(poolElements).map(removePoolItem);
-    viewState.poolNames.forEach(addPoolItem);
     setWide(viewState.isWide);
     setLangPickerOpen(viewState.langPickerOpen);
     let { config } = viewState;
     if (LayoutConfig.isResolved(config))
         config = LayoutConfig.fromResolved(config);
     layout.loadLayout(config);
+    getPoolFromLayoutConfig(config).forEach(addPoolItem);
     await afterDOM();
     checkMobile();
     applyingDefault = false;
