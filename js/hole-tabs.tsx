@@ -13,6 +13,7 @@ import {
     populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyJSONBtn,
     getScorings, replaceUnprintablesInOutput,
 } from './_hole-common';
+import { highlightCodeBlocks } from './_wiki';
 
 const poolDragSources: {[key: string]: DragSource} = {};
 const poolElements: {[key: string]: HTMLElement} = {};
@@ -109,6 +110,7 @@ function updateReadonlyPanel(name: string) {
 function updateWikiContent() {
     if ($('#langWiki')) {
         $('#langWiki').innerHTML = `<article>${langWikiContent}</article>`;
+        highlightCodeBlocks('#langWiki pre > code');
     }
 }
 
