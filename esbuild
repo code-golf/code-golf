@@ -11,7 +11,6 @@ node_modules/.bin/esbuild "$@"        \
     --format=esm                      \
     --inject:js/_inject.ts            \
     --jsx-factory=createElement       \
-    --loader:.png=dataurl             \
     --loader:.svg=dataurl             \
     --loader:.woff2=file              \
     --metafile=esbuild.json           \
