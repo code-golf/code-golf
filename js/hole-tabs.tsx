@@ -121,7 +121,7 @@ function updateReadonlyPanels(data: ReadonlyPanelsData | {langWiki: string}) {
     }
     else {
         subRes = data;
-        for (const name in data) {
+        for (const name in readonlyOutputs) {
             updateReadonlyPanel(name);
         }
     }
@@ -138,10 +138,11 @@ for (const name of ['exp', 'out', 'err', 'arg', 'diff']) {
     });
 }
 
-layout.registerComponentFactoryFunction('langWiki', container => {
+layout.registerComponentFactoryFunction('langWiki', async container => {
     container.setTitle(getTitle('langWiki'));
     autoFocus(container);
     container.element.id = 'langWiki';
+    await afterDOM();
     updateWikiContent();
 });
 
