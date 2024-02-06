@@ -94,20 +94,20 @@
 }
 .lm_controls .lm_maximise {
   background: var(--color);
-  -webkit-mask: url(./img/lm_maximize.svg) center / 12px 12px no-repeat;
-  mask: url(./img/lm_maximize.svg) center / 12px 12px no-repeat;
+  -webkit-mask: url(./img/_lm_maximize.svg) center / 12px 12px no-repeat;
+  mask: url(./img/_lm_maximize.svg) center / 12px 12px no-repeat;
 }
 .lm_controls .lm_close,
 .lm_header .lm_tab .lm_close_tab,
 .main_close {
   background: var(--color);
-  -webkit-mask: url(./img/lm_close.svg) center / 12px 12px no-repeat;
-  mask: url(./img/lm_close.svg) center / 12px 12px no-repeat;
+  -webkit-mask: url(./img/_lm_close.svg) center / 12px 12px no-repeat;
+  mask: url(./img/_lm_close.svg) center / 12px 12px no-repeat;
 }
 .lm_maximised .lm_controls .lm_maximise {
   background: var(--color);
-  -webkit-mask: url(./img/lm_minimize.svg) center / 12px 12px no-repeat;
-  mask: url(./img/lm_minimize.svg) center / 12px 12px no-repeat;
+  -webkit-mask: url(./img/_lm_minimize.svg) center / 12px 12px no-repeat;
+  mask: url(./img/_lm_minimize.svg) center / 12px 12px no-repeat;
 }
 .lm_transition_indicator {
   /* TransitionIndicator is internal+deprecated+undocumented */
