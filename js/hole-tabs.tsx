@@ -13,6 +13,7 @@ import {
     populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyJSONBtn,
     getScorings, replaceUnprintablesInOutput,
 } from './_hole-common';
+import { highlightCodeBlocks } from './_wiki';
 
 const poolDragSources: {[key: string]: DragSource} = {};
 const poolElements: {[key: string]: HTMLElement} = {};
@@ -36,6 +37,7 @@ let isMobile = false;
 let applyingDefault = false;
 
 let subRes: ReadonlyPanelsData | null = null;
+let langWikiContent = '';
 const readonlyOutputs: {[key: string]: HTMLElement | undefined} = {};
 
 let editor: EditorView | null = null;
@@ -105,13 +107,21 @@ function updateReadonlyPanel(name: string) {
     }
 }
 
+function updateWikiContent() {
+    if ($('#langWiki')) {
+        $('#langWiki').innerHTML = `<article>${langWikiContent}</article>`;
+        highlightCodeBlocks('#langWiki pre > code');
+    }
+}
+
 function updateReadonlyPanels(data: ReadonlyPanelsData | {langWiki: string}) {
     if ('langWiki' in data) {
-        $('#langWiki').innerHTML = `<article>${data.langWiki}</article>`;
+        langWikiContent = data.langWiki;
+        updateWikiContent();
     }
     else {
         subRes = data;
-        for (const name in data) {
+        for (const name in readonlyOutputs) {
             updateReadonlyPanel(name);
         }
     }
@@ -128,10 +138,12 @@ for (const name of ['exp', 'out', 'err', 'arg', 'diff']) {
     });
 }
 
-layout.registerComponentFactoryFunction('langWiki', container => {
+layout.registerComponentFactoryFunction('langWiki', async container => {
     container.setTitle(getTitle('langWiki'));
     autoFocus(container);
     container.element.id = 'langWiki';
+    await afterDOM();
+    updateWikiContent();
 });
 
 function makeEditor(parent: HTMLDivElement) {
