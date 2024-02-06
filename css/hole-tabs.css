@@ -9,11 +9,11 @@ body {
 #details-content { padding: .375rem }
 
 .readonly-output {
-     flex: 1;
-     font-family: emoji, mahjong, 'Source Code Pro', monospace;
-     font-variant-ligatures: none;
-     line-height: 1;
-     padding: .375rem;
+    flex: 1;
+    font-family: emoji, mahjong, 'Source Code Pro', monospace;
+    font-variant-ligatures: none;
+    line-height: 1;
+    padding: .375rem;
 }
 
 .readonly-output:empty::after {
