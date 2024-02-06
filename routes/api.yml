@@ -190,6 +190,26 @@ paths:
                 items:
                   $ref: '#/components/schemas/SolutionsLog'
 
+  /wiki/{slug}:
+    get:
+      operationId: getWikiPage
+      parameters:
+        - name: slug
+          description: Wiki page ID
+          in: path
+          required: true
+          schema:
+            type: string
+      tags: [wiki]
+      summary: Get a wiki page by its slug
+      responses:
+        '200':
+          description: A single wiki page
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WikiPage'
+
 components:
   schemas:
     Achievement:
@@ -285,3 +305,11 @@ components:
         submitted:
           type: string
           format: date-time
+
+    WikiPage:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string

@@ -243,3 +243,11 @@ main {
 .full-width #make-narrow { display: flex; }
 .full-width #make-wide { display: none; }
 .full-width body { max-width: unset; }
+
+#langWiki {
+    padding: .75rem;
+}
+
+article>*:not(:first-child), article details>* {
+    margin-top: 1rem;
+}
