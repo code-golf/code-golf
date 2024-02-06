@@ -1,5 +1,6 @@
 import { EditorState }                                    from '@codemirror/state';
-import { EditorView, keymap, lineNumbers, drawSelection } from '@codemirror/view';
+import { EditorView, keymap, lineNumbers, drawSelection,
+    highlightWhitespace } from '@codemirror/view';
 import { $ }                                              from './_util';
 
 export { EditorState, EditorView };
@@ -89,6 +90,7 @@ export const extensions = {
             { key: 'Mod-/', run: toggleComment },
         ]),
         drawSelection(),
+        highlightWhitespace(),
         syntaxHighlighting(defaultHighlightStyle),
         EditorView.theme({
             '.cm-asm-error': { textDecoration: 'underline var(--asm-error)' },

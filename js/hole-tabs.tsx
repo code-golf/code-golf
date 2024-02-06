@@ -174,7 +174,10 @@ layout.registerComponentFactoryFunction('code', async container => {
     autoFocus(container);
 
     const header = (<header>
-        <div id="strokes">0 bytes, 0 chars</div>
+        <div>
+            <span id="strokes">0 bytes, 0 chars</span>
+            <input type="checkbox" id="showWhitespaceCheckbox" checked/><label for="showWhitespaceCheckbox">Show whitespace</label>
+        </div>
         <a class="hide" href="" id="restoreLink">Restore solution</a>
     </header>) as HTMLElement;
     const editorDiv = <div id="editor"></div> as HTMLDivElement;
