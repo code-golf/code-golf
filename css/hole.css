@@ -359,5 +359,5 @@ h2 {
 }
 
 :has(#showWhitespaceCheckbox:checked) .cm-highlightSpace {
-    opacity: .25;
+    opacity: .5;
 }
