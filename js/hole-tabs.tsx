@@ -36,6 +36,7 @@ let isMobile = false;
 let applyingDefault = false;
 
 let subRes: ReadonlyPanelsData | null = null;
+let langWikiContent = '';
 const readonlyOutputs: {[key: string]: HTMLElement | undefined} = {};
 
 let editor: EditorView | null = null;
@@ -105,9 +106,16 @@ function updateReadonlyPanel(name: string) {
     }
 }
 
+function updateWikiContent() {
+    if ($('#langWiki')) {
+        $('#langWiki').innerHTML = `<article>${langWikiContent}</article>`;
+    }
+}
+
 function updateReadonlyPanels(data: ReadonlyPanelsData | {langWiki: string}) {
     if ('langWiki' in data) {
-        $('#langWiki').innerHTML = `<article>${data.langWiki}</article>`;
+        langWikiContent = data.langWiki;
+        updateWikiContent();
     }
     else {
         subRes = data;
@@ -132,6 +140,7 @@ layout.registerComponentFactoryFunction('langWiki', container => {
     container.setTitle(getTitle('langWiki'));
     autoFocus(container);
     container.element.id = 'langWiki';
+    updateWikiContent();
 });
 
 function makeEditor(parent: HTMLDivElement) {
