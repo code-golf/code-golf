@@ -1,4 +1,32 @@
-/* Modified from ../../node_modules/golden-layout/dist/css/themes/goldenlayout-light-theme.css */
+@import "../../node_modules/golden-layout/dist/css/goldenlayout-base.css";
+
+.lm_content {
+  overflow: auto;
+}
+
+.lm_header .lm_controls {
+  top: 6px;
+  gap: 10px;
+}
+
+.lm_header .lm_tab {
+  padding: 3px 25px 10px 10px;
+}
+
+.lm_header .lm_tab .lm_close_tab {
+  width: 12px;
+  height: 12px;
+  top: 7px;
+  right: 5px;
+}
+
+.lm_drop_tab_placeholder {
+  height: 10px;
+}
+
+.lm_header .lm_tabdropdown_list .lm_tab {
+  background: var(--background);
+}
 
 .lm_goldenlayout {
   background: var(--light-grey);
@@ -94,20 +122,20 @@
 }
 .lm_controls .lm_maximise {
   background: var(--color);
-  -webkit-mask: url(./img/_lm_maximize.svg) center / 12px 12px no-repeat;
-  mask: url(./img/_lm_maximize.svg) center / 12px 12px no-repeat;
+  -webkit-mask: url(_maximise.svg) center / 12px 12px no-repeat;
+  mask: url(_maximise.svg) center / 12px 12px no-repeat;
 }
 .lm_controls .lm_close,
 .lm_header .lm_tab .lm_close_tab,
 .main_close {
   background: var(--color);
-  -webkit-mask: url(./img/_lm_close.svg) center / 12px 12px no-repeat;
-  mask: url(./img/_lm_close.svg) center / 12px 12px no-repeat;
+  -webkit-mask: url(_close.svg) center / 12px 12px no-repeat;
+  mask: url(_close.svg) center / 12px 12px no-repeat;
 }
 .lm_maximised .lm_controls .lm_maximise {
   background: var(--color);
-  -webkit-mask: url(./img/_lm_minimize.svg) center / 12px 12px no-repeat;
-  mask: url(./img/_lm_minimize.svg) center / 12px 12px no-repeat;
+  -webkit-mask: url(_minimise.svg) center / 12px 12px no-repeat;
+  mask: url(_minimise.svg) center / 12px 12px no-repeat;
 }
 .lm_transition_indicator {
   /* TransitionIndicator is internal+deprecated+undocumented */

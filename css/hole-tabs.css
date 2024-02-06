@@ -1,6 +1,5 @@
 @import "./hole.css";
-@import "./vendor/_goldenlayout-base.css";
-@import "./vendor/_goldenlayout-theme.css";
+@import "./golden-layout/_base.css";
 
 /* Body background --light-grey to allow code box etc contrast as --background */
 body {
