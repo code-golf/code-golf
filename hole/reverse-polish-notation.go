@@ -19,7 +19,7 @@ func expand(node *Node) {
 	val := node.value
 	var left, right int
 
-	switch node.op = "+-*/"[rand.Intn(4)]; node.op {
+	switch node.op = randChoice([]byte("+-*/")); node.op {
 	case '+':
 		left = randInt(0, val)
 		right = val - left
