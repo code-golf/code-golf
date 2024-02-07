@@ -653,8 +653,6 @@ for (let i = 0; i < 10; i++)
 // Accessing arguments
 for (let arg of arguments)
     print(arg);
-
-// write() outputs without a newline.
 '''
 
 [Julia]
