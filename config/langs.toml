@@ -498,8 +498,8 @@ end
 '''
 
 [Go]
-size    = '334 MiB'
-version = '1.21.6'
+size    = '353 MiB'
+version = '1.22.0'
 website = 'https://go.dev'
 example = '''
 package main
@@ -514,7 +514,7 @@ func main() {
     fmt.Println("Hello, World!")
 
     // Looping
-    for i := 0; i < 10; i++ {
+    for i := range 10 {
         fmt.Println(i)
     }
 
