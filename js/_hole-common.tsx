@@ -86,7 +86,7 @@ const solutions    = JSON.parse($('#solutions').innerText);
 const vimMode = JSON.parse($('#keymap').innerText) === 'vim';
 const vimModeExtensions = vimMode ? [extensions.vim] : [];
 
-const baseExtensions = [...vimModeExtensions, ...extensions.base];
+const baseExtensions = [...vimModeExtensions, ...extensions.base, ...extensions.editor];
 
 let latestSubmissionID = 0;
 let solution = scorings.indexOf(localStorage.getItem('solution') ?? 'Bytes') as 0 | 1;

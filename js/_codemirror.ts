@@ -81,16 +81,8 @@ const fontFamily = "'Source Code Pro', monospace";
 export const extensions = {
     // Extensions.
     'base': [
-        carriageReturn, history(), insertChar, lineNumbers(), showUnprintables,
-        keymap.of([
-            // Replace "enter" with a non auto indenting action.
-            ...historyKeymap, ...standardKeymap.filter(k => k.key != 'Enter'),
-            { key: 'Enter', run: insertNewline },
-            { key: 'Tab',   run: insertTab, shift: indentLess },
-            { key: 'Mod-/', run: toggleComment },
-        ]),
+        carriageReturn, showUnprintables,
         drawSelection(),
-        highlightWhitespace(),
         syntaxHighlighting(defaultHighlightStyle),
         EditorView.theme({
             '.cm-asm-error': { textDecoration: 'underline var(--asm-error)' },
@@ -100,6 +92,19 @@ export const extensions = {
             '.cm-tooltip':              { fontFamily },
             '.cm-tooltip-autocomplete': { fontFamily },
         }, { dark: false }),
+    ],
+    'editor': [
+        history(),
+        insertChar,
+        keymap.of([
+            // Replace "enter" with a non auto indenting action.
+            ...historyKeymap, ...standardKeymap.filter(k => k.key != 'Enter'),
+            { key: 'Enter', run: insertNewline },
+            { key: 'Tab',   run: insertTab, shift: indentLess },
+            { key: 'Mod-/', run: toggleComment },
+        ]),
+        highlightWhitespace(),
+        lineNumbers(),
     ],
     'bracketMatching': bracketMatching(),
     'vim': vim({ status: true }),
