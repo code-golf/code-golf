@@ -83,7 +83,6 @@ export const extensions = {
     'base': [
         carriageReturn, showUnprintables,
         drawSelection(),
-        highlightWhitespace(),
         syntaxHighlighting(defaultHighlightStyle),
         EditorView.theme({
             '.cm-asm-error': { textDecoration: 'underline var(--asm-error)' },
@@ -104,6 +103,7 @@ export const extensions = {
             { key: 'Tab',   run: insertTab, shift: indentLess },
             { key: 'Mod-/', run: toggleComment },
         ]),
+        highlightWhitespace(),
         lineNumbers(),
     ],
     'bracketMatching': bracketMatching(),
