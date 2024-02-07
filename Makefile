@@ -60,7 +60,7 @@ e2e:
 	@touch docker/.env
 	@docker-compose rm -fsv &>/dev/null
 	@docker-compose build --pull -q
-	@docker-compose run e2e || (docker-compose logs; false)
+	@docker-compose run --quiet-pull e2e || (docker-compose logs; false)
 	@docker-compose rm -fsv &>/dev/null
 
 fmt:
