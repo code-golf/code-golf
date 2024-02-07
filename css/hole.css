@@ -353,11 +353,3 @@ h2 {
     margin-left: .5rem;
     margin-right: .5rem;
 }
-
-.cm-highlightSpace {
-    opacity: 0;
-}
-
-:has(#showWhitespaceCheckbox:checked) .cm-highlightSpace {
-    opacity: .5;
-}
