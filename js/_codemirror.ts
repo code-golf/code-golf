@@ -81,7 +81,7 @@ const fontFamily = "'Source Code Pro', monospace";
 export const extensions = {
     // Extensions.
     'base': [
-        carriageReturn, showUnprintables,        
+        carriageReturn, showUnprintables,
         drawSelection(),
         highlightWhitespace(),
         syntaxHighlighting(defaultHighlightStyle),
@@ -104,7 +104,7 @@ export const extensions = {
             { key: 'Tab',   run: insertTab, shift: indentLess },
             { key: 'Mod-/', run: toggleComment },
         ]),
-        lineNumbers()
+        lineNumbers(),
     ],
     'bracketMatching': bracketMatching(),
     'vim': vim({ status: true }),
