@@ -632,12 +632,3 @@ body > .tabs a {
         & > nav { display: none }
     }
 }
-
-.cm-highlightSpace, .cm-highlightTab {
-    opacity: 0;
-}
-
-:has(#showWhitespaceCheckbox:checked) .cm-highlightSpace,
-:has(#showWhitespaceCheckbox:checked) .cm-highlightTab {
-    opacity: .5;
-}
