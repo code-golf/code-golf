@@ -10,7 +10,7 @@ bench:
 
 bump:
 	@go get -u
-	@go mod tidy -compat=1.21
+	@go mod tidy -compat=1.22
 	@npm upgrade
 
 cert:
@@ -78,7 +78,7 @@ lint:
 	@node_modules/.bin/eslint --ext ts,tsx js/
 
 	@docker run --rm -v $(CURDIR):/app -w /app \
-	    golangci/golangci-lint:v1.55.2 golangci-lint run
+	    golangci/golangci-lint:v1.56.0 golangci-lint run
 
 live:
 	@docker buildx build --pull --push \

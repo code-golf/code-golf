@@ -9,7 +9,7 @@
 {{ with .Hole }}
     <a class="card {{ .CategoryColor }}" href="/{{ .ID }}" title="{{ .Name }} ({{ .Category }})">
 {{ else }}
-    <a class="card color" href="//github.com/code-golf/code-golf/issues/{{ .ID }}" title="{{ .Title }}">
+    <a class="card {{ .CategoryColor }}" href="//github.com/code-golf/code-golf/issues/{{ .ID }}" title="{{ .Title }}">
 {{ end }}
         <h2 class=span>{{ .Title }}</h2>
         <svg><use href="#thumbs-up"/></svg>
@@ -28,9 +28,6 @@
 
     <h1 class=span>Ideas</h1>
     {{ template "ideaGrid" .Data.Ideas }}
-
-    <h1 class=span>Language Suggestions</h1>
-    {{ template "ideaGrid" .Data.Langs }}
 
     <p class="right span">
         <a href="//github.com/code-golf/code-golf/issues/new/choose">

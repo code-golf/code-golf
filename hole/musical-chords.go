@@ -1,7 +1,7 @@
 package hole
 
 import (
-	"math/rand"
+	"math/rand/v2"
 	"strings"
 )
 
@@ -68,7 +68,7 @@ func musicalChords() []Run {
 	var tests []test
 
 	// Skip a random combination for anti-cheese
-	skipNum := rand.Intn(61)
+	skipNum := rand.IntN(61)
 	combNum := 0
 
 	for rootIdx, rootNames := range notes {

@@ -2,7 +2,7 @@ package hole
 
 import (
 	"fmt"
-	"math/rand"
+	"math/rand/v2"
 )
 
 var sunSigns = [...]sunSign{
@@ -51,7 +51,7 @@ func (s sunSign) edgeDate(hour int) test {
 }
 
 func (s sunSign) test(day int, hour int) (t test) {
-	t.in = fmt.Sprintf("%02d-%02d %02d:%02d", s.month, day, hour, rand.Intn(60))
+	t.in = fmt.Sprintf("%02d-%02d %02d:%02d", s.month, day, hour, rand.IntN(60))
 
 	if risingSymbol := s.risingSymbols[hour]; risingSymbol == s.symbol {
 		t.out = s.symbol
@@ -72,11 +72,11 @@ func zodiacSigns() []Run {
 	tests := make([]test, randomCases, totalCases)
 
 	for i := 0; i < randomCases; i++ {
-		tests[i] = randChoice(sunSigns[:]).randomDate(rand.Intn(hours))
+		tests[i] = randChoice(sunSigns[:]).randomDate(rand.IntN(hours))
 	}
 
 	for _, sunSign := range sunSigns {
-		tests = append(tests, sunSign.edgeDate(rand.Intn(hours)))
+		tests = append(tests, sunSign.edgeDate(rand.IntN(hours)))
 		for hour := 0; hour < hours; hour++ {
 			tests = append(tests, sunSign.randomDate(hour))
 		}

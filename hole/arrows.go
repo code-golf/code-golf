@@ -2,7 +2,7 @@ package hole
 
 import (
 	"fmt"
-	"math/rand"
+	"math/rand/v2"
 )
 
 var arrowMap = map[string][2]int8{
@@ -34,7 +34,7 @@ func arrows() []Run {
 
 	// 1-3 of each arrow.
 	for arrow := range arrowMap {
-		for times := rand.Intn(3); times >= 0; times-- {
+		for times := rand.IntN(3); times >= 0; times-- {
 			args = append(args, arrow)
 		}
 	}
@@ -45,9 +45,9 @@ func arrows() []Run {
 	argsDR := make([]string, 0, 4*len(arrowMapDownAndRight))
 	argsUR := make([]string, 0, 4*len(arrowMapUpAndRight))
 
-	timesDL := 2 + rand.Intn(2)
+	timesDL := 2 + rand.IntN(2)
 	timesUL := 5 - timesDL
-	timesDR := 2 + rand.Intn(2)
+	timesDR := 2 + rand.IntN(2)
 	timesUR := 5 - timesDR
 
 	// 3 or 4 of each arrow.

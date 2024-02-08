@@ -1,7 +1,7 @@
 package hole
 
 import (
-	"math/rand"
+	"math/rand/v2"
 	"strconv"
 )
 
@@ -54,7 +54,7 @@ func randReplacements(gFrames []rune) []rune {
 			continue
 		}
 
-		if rand.Intn(2) == 0 {
+		if rand.IntN(2) == 0 {
 			frames[j] = replacement
 		}
 	}
@@ -80,7 +80,7 @@ func tenPinBowling() []Run {
 				maxRoll = 10 - rolls[rollNum-1]
 			}
 			// Roll with bias towards strikes/spares and misses
-			roll := rand.Intn(maxRoll+2) - 1
+			roll := rand.IntN(maxRoll+2) - 1
 			if roll > maxRoll {
 				roll = maxRoll
 			} else if roll < 0 {

@@ -1,9 +1,6 @@
 package hole
 
-import (
-	"math/rand"
-	"strings"
-)
+import "strings"
 
 const lifeSize = 32
 
@@ -51,7 +48,7 @@ func randGrid() grid {
 		for j := 0; j < lifeSize; j++ {
 			c := lifeTemplate[i][j]
 			if c == '?' {
-				c = ".#"[rand.Int31()&1]
+				c = randChoice([]byte(".#"))
 			}
 			array[j] = c
 		}

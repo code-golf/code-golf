@@ -1,6 +1,5 @@
 @import "./hole.css";
-@import "./vendor/_goldenlayout-base.css";
-@import "./vendor/_goldenlayout-theme.css";
+@import "./golden-layout/_base.css";
 
 /* Body background --light-grey to allow code box etc contrast as --background */
 body {
@@ -10,11 +9,11 @@ body {
 #details-content { padding: .375rem }
 
 .readonly-output {
-     flex: 1;
-     font-family: emoji, mahjong, 'Source Code Pro', monospace;
-     font-variant-ligatures: none;
-     line-height: 1;
-     padding: .375rem;
+    flex: 1;
+    font-family: emoji, mahjong, 'Source Code Pro', monospace;
+    font-variant-ligatures: none;
+    line-height: 1;
+    padding: .375rem;
 }
 
 .readonly-output:empty::after {
@@ -249,6 +248,13 @@ main {
 .full-width #make-wide { display: none; }
 .full-width body { max-width: unset; }
 
-:has(#arg) button{
+:has(#arg) button {
     margin: 3px;
+}
+#langWiki {
+    padding: .75rem;
+}
+
+article>*:not(:first-child), article details>* {
+    margin-top: 1rem;
 }

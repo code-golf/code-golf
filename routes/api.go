@@ -387,6 +387,26 @@ func apiSuggestionsGolfersGET(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// GET /api/wiki/{slug}
+func apiWikiPageGET(w http.ResponseWriter, r *http.Request) {
+	page := &struct {
+		HTML string `json:"content"`
+		Name string `json:"title"`
+	}{}
+
+	if err := session.Database(r).Get(
+		page,
+		"SELECT html, name FROM wiki WHERE slug = $1",
+		param(r, "*"),
+	); errors.Is(err, sql.ErrNoRows) {
+		page = nil
+	} else if err != nil {
+		panic(err)
+	}
+
+	encodeJSON(w, page)
+}
+
 func encodeJSON(w http.ResponseWriter, v any) {
 	if v == nil || reflect.ValueOf(v).IsNil() {
 		w.WriteHeader(http.StatusNotFound)

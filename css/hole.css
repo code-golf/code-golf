@@ -348,3 +348,17 @@ h2 {
     font-weight: normal;
     padding-bottom: 0.1rem;
 }
+
+#showWhitespaceCheckbox {
+    margin-left: .5rem;
+    margin-right: .5rem;
+}
+
+.cm-highlightSpace, .cm-highlightTab {
+    opacity: 0;
+}
+
+:has(#showWhitespaceCheckbox:checked) .cm-highlightSpace,
+:has(#showWhitespaceCheckbox:checked) .cm-highlightTab {
+    opacity: .5;
+}

@@ -2,6 +2,7 @@ import {
     ComponentItem, ComponentItemConfig, ContentItem, GoldenLayout,
     RowOrColumn, LayoutConfig, ResolvedRootItemConfig,
     DragSource, LayoutManager, ComponentContainer, ResolvedLayoutConfig,
+    RootItemConfig,
 } from 'golden-layout';
 import { EditorView }   from './_codemirror';
 import diffTable        from './_diff';
@@ -14,6 +15,7 @@ import {
     getScorings, replaceUnprintablesInOutput, getArgs, serializeArgs,
     deserializeArgs,
 } from './_hole-common';
+import { highlightCodeBlocks } from './_wiki';
 
 const poolDragSources: {[key: string]: DragSource} = {};
 const poolElements: {[key: string]: HTMLElement} = {};
@@ -38,6 +40,7 @@ let applyingDefault = false;
 const isSandbox = $('#hole-sandbox') != null;
 
 let subRes: ReadonlyPanelsData | null = null;
+let langWikiContent = '';
 const readonlyOutputs: {[key: string]: HTMLElement | undefined} = {};
 
 let editor: EditorView | null = null;
@@ -107,10 +110,23 @@ function updateReadonlyPanel(name: string) {
     }
 }
 
-function updateReadonlyPanels(data: ReadonlyPanelsData) {
-    subRes = data;
-    for (const name in readonlyOutputs) {
-        updateReadonlyPanel(name);
+function updateWikiContent() {
+    if ($('#langWiki')) {
+        $('#langWiki').innerHTML = `<article>${langWikiContent}</article>`;
+        highlightCodeBlocks('#langWiki pre > code');
+    }
+}
+
+function updateReadonlyPanels(data: ReadonlyPanelsData | {langWiki: string}) {
+    if ('langWiki' in data) {
+        langWikiContent = data.langWiki;
+        updateWikiContent();
+    }
+    else {
+        subRes = data;
+        for (const name in readonlyOutputs) {
+            updateReadonlyPanel(name);
+        }
     }
 }
 
@@ -173,6 +189,14 @@ layout.registerComponentFactoryFunction('arg', async container => {
     }
 });
 
+layout.registerComponentFactoryFunction('langWiki', async container => {
+    container.setTitle(getTitle('langWiki'));
+    autoFocus(container);
+    container.element.id = 'langWiki';
+    await afterDOM();
+    updateWikiContent();
+});
+
 function makeEditor(parent: HTMLDivElement) {
     editor = new EditorView({
         dispatch: tr => {
@@ -224,7 +248,10 @@ layout.registerComponentFactoryFunction('code', async container => {
     autoFocus(container);
 
     const header = (<header>
-        <div id="strokes">0 bytes, 0 chars</div>
+        <div>
+            <span id="strokes">0 bytes, 0 chars</span>
+            <input type="checkbox" id="showWhitespaceCheckbox" checked/><label for="showWhitespaceCheckbox">Show whitespace</label>
+        </div>
         <a class="hide" href="" id="restoreLink">Restore solution</a>
     </header>) as HTMLElement;
     const editorDiv = <div id="editor"></div> as HTMLDivElement;
@@ -305,6 +332,7 @@ const titles: Record<string, string | undefined> = {
     arg: 'Arguments',
     diff: 'Diff',
     code: 'Code',
+    langWiki: 'Language Wiki',
 };
 
 function getTitle(name: string) {
@@ -369,10 +397,22 @@ const defaultLayout: LayoutConfig = {
     },
 };
 
+function getPoolFromLayoutConfig(config: LayoutConfig) {
+    const allComponents = ['code', 'scoreboard', 'arg', 'exp', 'out', 'err', 'diff', 'langWiki', ...(isSandbox ? [] : ['details'])];
+    const activeComponents = getComponentNamesRecursive(config.root!);
+    return allComponents.filter(x => !activeComponents.includes(x));
+}
+
+function getComponentNamesRecursive(config: RootItemConfig): string[] {
+    if (config.type === 'component'){
+        return [config.componentType as string];
+    }
+    return config.content.flatMap(getComponentNamesRecursive);
+}
+
 const defaultViewState: ViewState = {
     version: 1,
     config: defaultLayout,
-    poolNames: isSandbox ? [] : ['details'],
     isWide: false,
     langPickerOpen: true,
 };
@@ -380,7 +420,6 @@ const defaultViewState: ViewState = {
 interface ViewState {
     version: 1;
     config: ResolvedLayoutConfig | LayoutConfig;
-    poolNames: string[];
     isWide: boolean;
     langPickerOpen: boolean;
 }
@@ -389,7 +428,6 @@ function getViewState(): ViewState {
     return {
         version: 1,
         config: layout.saveLayout(),
-        poolNames: Object.keys(poolElements),
         isWide,
         langPickerOpen: langToggle.open,
     };
@@ -414,13 +452,13 @@ async function applyViewState(viewState: ViewState) {
     applyingDefault = true;
     toggleMobile(false);
     Object.keys(poolElements).map(removePoolItem);
-    viewState.poolNames.forEach(addPoolItem);
     setWide(viewState.isWide);
     setLangPickerOpen(viewState.langPickerOpen);
     let { config } = viewState;
     if (LayoutConfig.isResolved(config))
         config = LayoutConfig.fromResolved(config);
     layout.loadLayout(config);
+    getPoolFromLayoutConfig(config).forEach(addPoolItem);
     await afterDOM();
     checkMobile();
     applyingDefault = false;

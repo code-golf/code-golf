@@ -1,7 +1,7 @@
 package hole
 
 import (
-	"math/rand"
+	"math/rand/v2"
 	"strings"
 )
 
@@ -135,8 +135,8 @@ func maze() []Run {
 	for i := range runs {
 		var grid, dist [height][width]int
 
-		sj := rand.Intn(width)
-		si := rand.Intn(height)
+		sj := rand.IntN(width)
+		si := rand.IntN(height)
 
 		grid, dist = dig(si, sj, grid, dist)
 		ei, ej := findExit(dist)

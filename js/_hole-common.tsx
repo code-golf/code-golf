@@ -7,6 +7,15 @@ import LZString                                from 'lz-string';
 
 let tabLayout: boolean = false;
 
+const langWikiCache: Record<string, string> = {};
+async function getLangWikiContent(lang: string): Promise<string> {
+    if (!(lang in langWikiCache)){
+        const resp  = await fetch(`/api/wiki/langs/${lang}`, { method: 'GET' });
+        langWikiCache[lang] = resp.status === 200 ? (await resp.json()).content : null;
+    }
+    return langWikiCache[lang] ?? 'No data for current lang.';
+}
+
 export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSolution: any, updateReadonlyPanels: any, getEditor: () => any, getArgs?: any) {
     tabLayout = _tabLayout;
     const closuredSubmit = () => submit(getEditor(), updateReadonlyPanels, getArgs);
@@ -15,7 +24,7 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
         : undefined;
     if (vimMode) Vim.defineEx('write', 'w', closuredSubmit);
 
-    (onhashchange = () => {
+    (onhashchange = async () => {
         const hashLang = location.hash.slice(1) || localStorage.getItem('lang');
 
         // Kick 'em to Python if we don't know the chosen language, or if there is no given language.
@@ -35,6 +44,8 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
             refreshScores(editor);
         }
         setCodeForLangAndSolution(editor);
+
+        updateReadonlyPanels({langWiki: await getLangWikiContent(lang)});
     })();
 
     $('dialog [name=text]')?.addEventListener('input', (e: Event) => {
@@ -75,7 +86,7 @@ const solutions = JSON.parse($('#solutions').innerText);
 const vimMode = JSON.parse($('#keymap').innerText) === 'vim';
 const vimModeExtensions = vimMode ? [extensions.vim] : [];
 
-const baseExtensions = [...vimModeExtensions, ...extensions.base];
+const baseExtensions = [...vimModeExtensions, ...extensions.base, ...extensions.editor];
 
 let latestSubmissionID = 0;
 let solution = scorings.indexOf(localStorage.getItem('solution') ?? 'Bytes') as 0 | 1;

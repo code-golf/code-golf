@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"math/rand"
+	"math/rand/v2"
 	"net/http"
 
 	"github.com/code-golf/code-golf/config"
@@ -10,5 +10,5 @@ import (
 // GET /random
 func randomGET(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r,
-		config.HoleList[rand.Intn(len(config.HoleList))].ID, http.StatusFound)
+		config.HoleList[rand.IntN(len(config.HoleList))].ID, http.StatusFound)
 }

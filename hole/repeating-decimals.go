@@ -2,7 +2,7 @@ package hole
 
 import (
 	"fmt"
-	"math/rand"
+	"math/rand/v2"
 )
 
 var repeatingFractions = [...]struct{ p, q int }{
@@ -22,7 +22,7 @@ func repeatingDecimals() []Run {
 	}
 
 	for i := len(repeatingFractions); i < len(tests); i++ {
-		tests[i] = repeatingDecimalsTest(rand.Intn(100), 1+rand.Intn(99))
+		tests[i] = repeatingDecimalsTest(rand.IntN(100), 1+rand.IntN(99))
 	}
 
 	return outputTests(shuffle(tests))

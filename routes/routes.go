@@ -70,6 +70,7 @@ func Router(db *sqlx.DB) http.Handler {
 			r.Get("/panic", apiPanicGET)
 			r.Get("/solutions-log", apiSolutionsLogGET)
 			r.Get("/suggestions/golfers", apiSuggestionsGolfersGET)
+			r.Get("/wiki/*", apiWikiPageGET)
 
 			// API routes that require a logged-in golfer.
 			r.Group(func(r chi.Router) {

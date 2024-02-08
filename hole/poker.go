@@ -1,7 +1,7 @@
 package hole
 
 import (
-	"math/rand"
+	"math/rand/v2"
 	"slices"
 )
 
@@ -64,42 +64,42 @@ func poker() []Run {
 		hands = append(hands, Hand{"High Card", []rune{
 			cardRune(cards[0], suits[0]),
 			cardRune(cards[1], suits[1]), // Avoid flush
-			cardRune(cards[2], rand.Intn(4)),
-			cardRune(cards[3], rand.Intn(4)),
-			cardRune(cards[4], rand.Intn(4)),
+			cardRune(cards[2], rand.IntN(4)),
+			cardRune(cards[3], rand.IntN(4)),
+			cardRune(cards[4], rand.IntN(4)),
 		}})
 	}
 	suits := rand.Perm(4)
 	hands = append(hands, Hand{"High Card", []rune{
 		cardRune(ace, suits[0]),
 		cardRune(two, suits[1]), // Avoid flush
-		cardRune(three, rand.Intn(4)),
-		cardRune(four, rand.Intn(4)),
-		cardRune(six, rand.Intn(4)),
+		cardRune(three, rand.IntN(4)),
+		cardRune(four, rand.IntN(4)),
+		cardRune(six, rand.IntN(4)),
 	}})
 	suits = rand.Perm(4)
 	hands = append(hands, Hand{"High Card", []rune{
-		cardRune(two, rand.Intn(4)),
+		cardRune(two, rand.IntN(4)),
 		cardRune(three, suits[0]),
-		cardRune(four, rand.Intn(4)),
-		cardRune(six, rand.Intn(4)),
+		cardRune(four, rand.IntN(4)),
+		cardRune(six, rand.IntN(4)),
 		cardRune(eight, suits[1]), // Avoid flush
 	}})
 	suits = rand.Perm(4)
 	hands = append(hands, Hand{"High Card", []rune{
 		cardRune(three, suits[0]),
 		cardRune(four, suits[1]), // Avoid flush
-		cardRune(five, rand.Intn(4)),
-		cardRune(six, rand.Intn(4)),
-		cardRune(eight, rand.Intn(4)),
+		cardRune(five, rand.IntN(4)),
+		cardRune(six, rand.IntN(4)),
+		cardRune(eight, rand.IntN(4)),
 	}})
 	suits = rand.Perm(4)
 	hands = append(hands, Hand{"High Card", []rune{
 		cardRune(four, suits[0]),
 		cardRune(five, suits[1]), // Avoid flush
-		cardRune(six, rand.Intn(4)),
-		cardRune(seven, rand.Intn(4)),
-		cardRune(nine, rand.Intn(4)),
+		cardRune(six, rand.IntN(4)),
+		cardRune(seven, rand.IntN(4)),
+		cardRune(nine, rand.IntN(4)),
 	}})
 	suits = rand.Perm(4)
 	hands = append(hands, Hand{"High Card", []rune{
@@ -107,7 +107,7 @@ func poker() []Run {
 		cardRune(six, suits[1]),
 		cardRune(eight, suits[0]),
 		cardRune(ten, suits[1]),
-		cardRune(queen, rand.Intn(4)),
+		cardRune(queen, rand.IntN(4)),
 	}})
 	suits = rand.Perm(4)
 	hands = append(hands, Hand{"High Card", []rune{
@@ -115,7 +115,7 @@ func poker() []Run {
 		cardRune(six, suits[1]),
 		cardRune(seven, suits[0]),
 		cardRune(nine, suits[1]),
-		cardRune(jack, rand.Intn(4)),
+		cardRune(jack, rand.IntN(4)),
 	}})
 	suits = rand.Perm(4)
 	hands = append(hands, Hand{"High Card", []rune{
@@ -123,7 +123,7 @@ func poker() []Run {
 		cardRune(nine, suits[1]),
 		cardRune(ten, suits[0]),
 		cardRune(jack, suits[1]),
-		cardRune(queen, rand.Intn(4)),
+		cardRune(queen, rand.IntN(4)),
 	}})
 	suits = rand.Perm(4)
 	hands = append(hands, Hand{"High Card", []rune{
@@ -131,14 +131,14 @@ func poker() []Run {
 		cardRune(nine, suits[1]),
 		cardRune(jack, suits[0]),
 		cardRune(queen, suits[1]),
-		cardRune(king, rand.Intn(4)),
+		cardRune(king, rand.IntN(4)),
 	}})
 	suits = rand.Perm(4)
 	hands = append(hands, Hand{"High Card", []rune{
 		cardRune(eight, suits[0]),
 		cardRune(ten, suits[0]),
 		cardRune(jack, suits[1]),
-		cardRune(queen, rand.Intn(4)),
+		cardRune(queen, rand.IntN(4)),
 		cardRune(king, suits[1]),
 	}})
 	suits = rand.Perm(4)
@@ -147,13 +147,13 @@ func poker() []Run {
 		cardRune(six, suits[1]),
 		cardRune(eight, suits[0]),
 		cardRune(nine, suits[1]),
-		cardRune(ten, rand.Intn(4)),
+		cardRune(ten, rand.IntN(4)),
 	}})
 	suits = rand.Perm(4)
 	hands = append(hands, Hand{"High Card", []rune{
 		cardRune(six, suits[0]),
 		cardRune(eight, suits[1]),
-		cardRune(nine, rand.Intn(4)),
+		cardRune(nine, rand.IntN(4)),
 		cardRune(ten, suits[1]),
 		cardRune(jack, suits[0]),
 	}})
@@ -163,14 +163,14 @@ func poker() []Run {
 		cardRune(six, suits[1]),
 		cardRune(seven, suits[0]),
 		cardRune(eight, suits[1]),
-		cardRune(ten, rand.Intn(4)),
+		cardRune(ten, rand.IntN(4)),
 	}})
 	suits = rand.Perm(4)
 	hands = append(hands, Hand{"High Card", []rune{
 		cardRune(six, suits[0]),
 		cardRune(seven, suits[0]),
 		cardRune(eight, suits[1]),
-		cardRune(ten, rand.Intn(4)),
+		cardRune(ten, rand.IntN(4)),
 		cardRune(jack, suits[1]),
 	}})
 
@@ -181,34 +181,34 @@ func poker() []Run {
 		hands = append(hands, Hand{"Pair", []rune{
 			cardRune(cards[0], suits[0]),
 			cardRune(cards[0], suits[1]),
-			cardRune(cards[1], rand.Intn(4)),
-			cardRune(cards[2], rand.Intn(4)),
-			cardRune(cards[3], rand.Intn(4)),
+			cardRune(cards[1], rand.IntN(4)),
+			cardRune(cards[2], rand.IntN(4)),
+			cardRune(cards[3], rand.IntN(4)),
 		}})
 	}
 	suits = rand.Perm(4)
 	hands = append(hands, Hand{"Pair", []rune{
 		cardRune(nine, suits[0]),
 		cardRune(nine, suits[1]),
-		cardRune(ten, rand.Intn(4)),
-		cardRune(queen, rand.Intn(4)),
-		cardRune(king, rand.Intn(4)),
+		cardRune(ten, rand.IntN(4)),
+		cardRune(queen, rand.IntN(4)),
+		cardRune(king, rand.IntN(4)),
 	}})
 	suits = rand.Perm(4)
 	hands = append(hands, Hand{"Pair", []rune{
 		cardRune(nine, suits[0]),
 		cardRune(nine, suits[1]),
-		cardRune(jack, rand.Intn(4)),
-		cardRune(queen, rand.Intn(4)),
-		cardRune(king, rand.Intn(4)),
+		cardRune(jack, rand.IntN(4)),
+		cardRune(queen, rand.IntN(4)),
+		cardRune(king, rand.IntN(4)),
 	}})
 	suits = rand.Perm(4)
 	hands = append(hands, Hand{"Pair", []rune{
 		cardRune(king, suits[0]),
 		cardRune(king, suits[1]),
-		cardRune(jack, rand.Intn(4)),
-		cardRune(ten, rand.Intn(4)),
-		cardRune(nine, rand.Intn(4)),
+		cardRune(jack, rand.IntN(4)),
+		cardRune(ten, rand.IntN(4)),
+		cardRune(nine, rand.IntN(4)),
 	}})
 
 	// Two Pair
@@ -221,7 +221,7 @@ func poker() []Run {
 			cardRune(cards[0], suit1[1]),
 			cardRune(cards[1], suit2[0]),
 			cardRune(cards[1], suit2[1]),
-			cardRune(cards[2], rand.Intn(4)),
+			cardRune(cards[2], rand.IntN(4)),
 		}})
 	}
 	suit1 := rand.Perm(4)
@@ -231,7 +231,7 @@ func poker() []Run {
 		cardRune(king, suit1[1]),
 		cardRune(nine, suit2[0]),
 		cardRune(nine, suit2[1]),
-		cardRune(ten, rand.Intn(4)),
+		cardRune(ten, rand.IntN(4)),
 	}})
 	suit1 = rand.Perm(4)
 	suit2 = rand.Perm(4)
@@ -240,7 +240,7 @@ func poker() []Run {
 		cardRune(king, suit1[1]),
 		cardRune(four, suit2[0]),
 		cardRune(four, suit2[1]),
-		cardRune(nine, rand.Intn(4)),
+		cardRune(nine, rand.IntN(4)),
 	}})
 	suit1 = rand.Perm(4)
 	suit2 = rand.Perm(4)
@@ -249,7 +249,7 @@ func poker() []Run {
 		cardRune(queen, suit1[1]),
 		cardRune(ten, suit2[0]),
 		cardRune(ten, suit2[1]),
-		cardRune(jack, rand.Intn(4)),
+		cardRune(jack, rand.IntN(4)),
 	}})
 
 	// Three of a Kind
@@ -260,34 +260,34 @@ func poker() []Run {
 			cardRune(cards[0], suits[0]),
 			cardRune(cards[0], suits[1]),
 			cardRune(cards[0], suits[2]),
-			cardRune(cards[1], rand.Intn(4)),
-			cardRune(cards[2], rand.Intn(4)),
+			cardRune(cards[1], rand.IntN(4)),
+			cardRune(cards[2], rand.IntN(4)),
 		}})
 	}
 	suits = rand.Perm(4)
-	card := 1 + rand.Intn(11)
+	card := 1 + rand.IntN(11)
 	hands = append(hands, Hand{"Three of a Kind", []rune{
 		cardRune(card, suits[0]),
 		cardRune(card, suits[1]),
 		cardRune(card, suits[2]),
-		cardRune(card+1, rand.Intn(4)),
-		cardRune(card-1, rand.Intn(4)),
+		cardRune(card+1, rand.IntN(4)),
+		cardRune(card-1, rand.IntN(4)),
 	}})
 	suits = rand.Perm(4)
 	hands = append(hands, Hand{"Three of a Kind", []rune{
 		cardRune(king, suits[0]),
 		cardRune(king, suits[1]),
 		cardRune(king, suits[2]),
-		cardRune(ace, rand.Intn(4)),
-		cardRune(queen, rand.Intn(4)),
+		cardRune(ace, rand.IntN(4)),
+		cardRune(queen, rand.IntN(4)),
 	}})
 	suits = rand.Perm(4)
 	hands = append(hands, Hand{"Three of a Kind", []rune{
 		cardRune(ace, suits[0]),
 		cardRune(ace, suits[1]),
 		cardRune(ace, suits[2]),
-		cardRune(king, rand.Intn(4)),
-		cardRune(two, rand.Intn(4)),
+		cardRune(king, rand.IntN(4)),
+		cardRune(two, rand.IntN(4)),
 	}})
 
 	// Four of a Kind
@@ -298,7 +298,7 @@ func poker() []Run {
 			cardRune(cards[0], 1),
 			cardRune(cards[0], 2),
 			cardRune(cards[0], 3),
-			cardRune(cards[1], rand.Intn(4)),
+			cardRune(cards[1], rand.IntN(4)),
 		}})
 	}
 	hands = append(hands, Hand{"Four of a Kind", []rune{
@@ -306,49 +306,49 @@ func poker() []Run {
 		cardRune(king, 1),
 		cardRune(king, 2),
 		cardRune(king, 3),
-		cardRune(queen, rand.Intn(4)),
+		cardRune(queen, rand.IntN(4)),
 	}})
 	hands = append(hands, Hand{"Four of a Kind", []rune{
 		cardRune(queen, 0),
 		cardRune(queen, 1),
 		cardRune(queen, 2),
 		cardRune(queen, 3),
-		cardRune(king, rand.Intn(4)),
+		cardRune(king, rand.IntN(4)),
 	}})
 	hands = append(hands, Hand{"Four of a Kind", []rune{
 		cardRune(king, 0),
 		cardRune(king, 1),
 		cardRune(king, 2),
 		cardRune(king, 3),
-		cardRune(ace, rand.Intn(4)),
+		cardRune(ace, rand.IntN(4)),
 	}})
 	hands = append(hands, Hand{"Four of a Kind", []rune{
 		cardRune(ace, 0),
 		cardRune(ace, 1),
 		cardRune(ace, 2),
 		cardRune(ace, 3),
-		cardRune(two, rand.Intn(4)),
+		cardRune(two, rand.IntN(4)),
 	}})
 	hands = append(hands, Hand{"Four of a Kind", []rune{
 		cardRune(ten, 0),
 		cardRune(ten, 1),
 		cardRune(ten, 2),
 		cardRune(ten, 3),
-		cardRune(ace, rand.Intn(4)),
+		cardRune(ace, rand.IntN(4)),
 	}})
 	hands = append(hands, Hand{"Four of a Kind", []rune{
 		cardRune(ten, 0),
 		cardRune(ten, 1),
 		cardRune(ten, 2),
 		cardRune(ten, 3),
-		cardRune(two, rand.Intn(4)),
+		cardRune(two, rand.IntN(4)),
 	}})
 	hands = append(hands, Hand{"Four of a Kind", []rune{
 		cardRune(ten, 0),
 		cardRune(ten, 1),
 		cardRune(ten, 2),
 		cardRune(ten, 3),
-		cardRune(king, rand.Intn(4)),
+		cardRune(king, rand.IntN(4)),
 	}})
 
 	// Full House
@@ -372,7 +372,7 @@ func poker() []Run {
 			i--
 			continue
 		}
-		suit := rand.Intn(4)
+		suit := rand.IntN(4)
 		hands = append(hands, Hand{"Flush", []rune{
 			cardRune(cards[0], suit),
 			cardRune(cards[1], suit),
@@ -381,7 +381,7 @@ func poker() []Run {
 			cardRune(cards[4], suit),
 		}})
 	}
-	suit := rand.Intn(4)
+	suit := rand.IntN(4)
 	hands = append(hands, Hand{"Flush", []rune{
 		cardRune(ace, suit),
 		cardRune(four, suit),
@@ -389,7 +389,7 @@ func poker() []Run {
 		cardRune(ten, suit),
 		cardRune(queen, suit),
 	}})
-	suit = rand.Intn(4)
+	suit = rand.IntN(4)
 	hands = append(hands, Hand{"Flush", []rune{
 		cardRune(ace, suit),
 		cardRune(nine, suit),
@@ -397,7 +397,7 @@ func poker() []Run {
 		cardRune(queen, suit),
 		cardRune(king, suit),
 	}})
-	suit = rand.Intn(4)
+	suit = rand.IntN(4)
 	hands = append(hands, Hand{"Flush", []rune{
 		cardRune(ace, suit),
 		cardRune(seven, suit),
@@ -405,7 +405,7 @@ func poker() []Run {
 		cardRune(nine, suit),
 		cardRune(ten, suit),
 	}})
-	suit = rand.Intn(4)
+	suit = rand.IntN(4)
 	hands = append(hands, Hand{"Flush", []rune{
 		cardRune(six, suit),
 		cardRune(eight, suit),
@@ -423,9 +423,9 @@ func poker() []Run {
 		hands = append(hands, Hand{"Straight", []rune{
 			cardRune(lowCard, suits[0]),
 			cardRune(lowCard+1, suits[1]), // Avoid flush
-			cardRune(lowCard+2, rand.Intn(4)),
-			cardRune(lowCard+3, rand.Intn(4)),
-			cardRune((lowCard+4)%13, rand.Intn(4)),
+			cardRune(lowCard+2, rand.IntN(4)),
+			cardRune(lowCard+3, rand.IntN(4)),
+			cardRune((lowCard+4)%13, rand.IntN(4)),
 		}})
 	}
 
@@ -433,24 +433,24 @@ func poker() []Run {
 	hands = append(hands, Hand{"Straight", []rune{
 		cardRune(two, suits[0]), // Avoid flush
 		cardRune(three, suits[1]),
-		cardRune(four, rand.Intn(4)),
-		cardRune(five, rand.Intn(4)),
-		cardRune(six, rand.Intn(4)),
+		cardRune(four, rand.IntN(4)),
+		cardRune(five, rand.IntN(4)),
+		cardRune(six, rand.IntN(4)),
 	}})
 	suits = rand.Perm(4)
 	hands = append(hands, Hand{"Straight", []rune{
 		cardRune(five, suits[0]), // Avoid flush
 		cardRune(six, suits[1]),
-		cardRune(seven, rand.Intn(4)),
-		cardRune(eight, rand.Intn(4)),
-		cardRune(nine, rand.Intn(4)),
+		cardRune(seven, rand.IntN(4)),
+		cardRune(eight, rand.IntN(4)),
+		cardRune(nine, rand.IntN(4)),
 	}})
 	suits = rand.Perm(4)
 	hands = append(hands, Hand{"Straight", []rune{
-		cardRune(eight, rand.Intn(4)),
+		cardRune(eight, rand.IntN(4)),
 		cardRune(nine, suits[0]),
-		cardRune(ten, rand.Intn(4)),
-		cardRune(jack, rand.Intn(4)),
+		cardRune(ten, rand.IntN(4)),
+		cardRune(jack, rand.IntN(4)),
 		cardRune(queen, suits[1]), // Avoid flush
 	}})
 
@@ -459,7 +459,7 @@ func poker() []Run {
 	lowCards[0] = 0 // Ensure at least one low ace
 	lowCards[1] = 8 // Ensure at least one 9 through king, because it could be mistaken for a royal flush.
 	for _, lowCard := range lowCards[:handCount] {
-		suit := rand.Intn(4)
+		suit := rand.IntN(4)
 		var hand []rune
 		for card := lowCard; card < lowCard+5; card++ {
 			hand = append(hand, cardRune(card%13, suit))
@@ -482,10 +482,10 @@ func poker() []Run {
 		// Start near the top of the range on one of the lower three suits.
 		// The hand will have cards with two different suits and five different face values.
 		// The start card is at least 10 to avoid a straight.
-		startCard := 12 - rand.Intn(3)
+		startCard := 12 - rand.IntN(3)
 		// The offset of the end card from the start card must be at least 4.
 		// It should be at most 11 to ensure that the range in codepoints doesn't exceed 13.
-		endOffset := 4 + rand.Intn(7)
+		endOffset := 4 + rand.IntN(7)
 		offsets := rand.Perm(endOffset)
 		hand := []rune{cardRune(startCard, suit)}
 		for _, offset := range offsets[:4] {
@@ -521,7 +521,7 @@ func poker() []Run {
 	}
 
 	// Flush, but could be mistaken for a straight.
-	suit = rand.Intn(4)
+	suit = rand.IntN(4)
 	hands = append(hands, Hand{"Flush", []rune{
 		cardRune(king, suit),
 		cardRune(ace, suit),
@@ -529,7 +529,7 @@ func poker() []Run {
 		cardRune(three, suit),
 		cardRune(four, suit),
 	}})
-	suit = rand.Intn(4)
+	suit = rand.IntN(4)
 	hands = append(hands, Hand{"Flush", []rune{
 		cardRune(queen, suit),
 		cardRune(king, suit),
@@ -537,7 +537,7 @@ func poker() []Run {
 		cardRune(two, suit),
 		cardRune(three, suit),
 	}})
-	suit = rand.Intn(4)
+	suit = rand.IntN(4)
 	hands = append(hands, Hand{"Flush", []rune{
 		cardRune(jack, suit),
 		cardRune(queen, suit),
@@ -545,7 +545,7 @@ func poker() []Run {
 		cardRune(ace, suit),
 		cardRune(two, suit),
 	}})
-	suit = rand.Intn(4)
+	suit = rand.IntN(4)
 	hands = append(hands, Hand{"Flush", []rune{
 		cardRune(ace, suit),
 		cardRune(seven, suit),
@@ -553,7 +553,7 @@ func poker() []Run {
 		cardRune(nine, suit),
 		cardRune(ten, suit),
 	}})
-	suit = rand.Intn(4)
+	suit = rand.IntN(4)
 	hands = append(hands, Hand{"Flush", []rune{
 		cardRune(ace, suit),
 		cardRune(eight, suit),
@@ -561,7 +561,7 @@ func poker() []Run {
 		cardRune(ten, suit),
 		cardRune(jack, suit),
 	}})
-	suit = rand.Intn(4)
+	suit = rand.IntN(4)
 	hands = append(hands, Hand{"Flush", []rune{
 		cardRune(ace, suit),
 		cardRune(nine, suit),

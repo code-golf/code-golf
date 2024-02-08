@@ -1,7 +1,7 @@
 package hole
 
 import (
-	"math/rand"
+	"math/rand/v2"
 	"strings"
 )
 
@@ -48,7 +48,7 @@ func pangramGrepTests(l, r int) Run {
 
 		// Replace letter `i` with a different random letter.
 		old := 'a' + byte(i)
-		new := 'a' + byte((i+rand.Intn(25)+1)%26)
+		new := 'a' + byte((i+rand.IntN(25)+1)%26)
 		for j, letter := range clone {
 			if letter == old {
 				clone[j] = new
@@ -56,9 +56,9 @@ func pangramGrepTests(l, r int) Run {
 		}
 
 		// Replace 0-4 other letters with random letters.
-		for times := rand.Intn(5); times > 0; times-- {
-			old := 'a' + byte(rand.Intn(26))
-			new := 'a' + byte(rand.Intn(26))
+		for times := rand.IntN(5); times > 0; times-- {
+			old := 'a' + byte(rand.IntN(26))
+			new := 'a' + byte(rand.IntN(26))
 			for j, letter := range clone {
 				if letter == old {
 					clone[j] = new
@@ -83,7 +83,7 @@ func pangramGrepTests(l, r int) Run {
 	// Uppercase random letters.
 	for _, pangram := range pangrams {
 		for j, letter := range pangram {
-			if 'a' <= letter && letter <= 'z' && rand.Intn(2) == 0 {
+			if 'a' <= letter && letter <= 'z' && rand.IntN(2) == 0 {
 				pangram[j] -= 32
 			}
 		}
@@ -91,9 +91,9 @@ func pangramGrepTests(l, r int) Run {
 
 	// Insert l-r random post-'z' characters
 	for i, pangram := range pangrams {
-		for times := rand.Intn(r-l+1) + l; times > 0; times-- {
-			c := '{' + byte(rand.Intn(4))
-			pos := rand.Intn(len(pangram))
+		for times := rand.IntN(r-l+1) + l; times > 0; times-- {
+			c := '{' + byte(rand.IntN(4))
+			pos := rand.IntN(len(pangram))
 
 			pangram = append(pangram, 0)
 			copy(pangram[pos+1:], pangram[pos:])

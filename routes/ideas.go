@@ -10,16 +10,28 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
+func ideaColor(kind string) string {
+	switch kind {
+	case "hole":
+		return "purple"
+	case "lang":
+		return "yellow"
+	case "cheevo":
+		return "green"
+	}
+	return "red"
+}
+
 // GET /ideas
 func ideasGET(w http.ResponseWriter, r *http.Request) {
 	type idea struct {
-		Hole                     *config.Hole
-		ID, ThumbsDown, ThumbsUp int
-		Title                    string
+		Category, CategoryColor, Title string
+		Hole                           *config.Hole
+		ID, ThumbsDown, ThumbsUp       int
 	}
 
 	data := struct {
-		Holes, Ideas, Langs []idea
+		Holes, Ideas []idea
 	}{Holes: make([]idea, len(config.ExpHoleList))}
 
 	for i, hole := range config.ExpHoleList {
@@ -46,11 +58,10 @@ rows:
 
 		if strings.HasPrefix(i.Title, "Add ") && strings.HasSuffix(i.Title, " Lang") {
 			i.Title = i.Title[len("Add ") : len(i.Title)-len(" Lang")]
-
-			data.Langs = append(data.Langs, i)
-		} else {
-			data.Ideas = append(data.Ideas, i)
 		}
+
+		i.CategoryColor = ideaColor(i.Category)
+		data.Ideas = append(data.Ideas, i)
 	}
 
 	slices.SortStableFunc(data.Holes, func(a, b idea) int {

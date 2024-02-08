@@ -3,14 +3,14 @@ package hole
 import (
 	"fmt"
 	"math/big"
-	"math/rand"
+	"math/rand/v2"
 )
 
 func randomNatural(max int) int {
 	if max <= 0 {
 		return 0
 	}
-	return rand.Intn(max)
+	return rand.IntN(max)
 }
 
 func randomInClass(max, mod, class int) int {

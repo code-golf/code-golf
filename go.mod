@@ -1,6 +1,6 @@
 module github.com/code-golf/code-golf
 
-go 1.21
+go 1.22
 
 require (
 	github.com/DATA-DOG/go-sqlmock v1.5.2
@@ -21,7 +21,7 @@ require (
 	github.com/shurcooL/graphql v0.0.0-20230722043721-ed46e5a46466
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 	github.com/tdewolff/minify/v2 v2.20.16
-	github.com/yuin/goldmark v1.6.0
+	github.com/yuin/goldmark v1.7.0
 	golang.org/x/oauth2 v0.16.0
 	gopkg.in/guregu/null.v4 v4.0.0
 )
@@ -47,9 +47,9 @@ require (
 	github.com/tdewolff/parse/v2 v2.7.11 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	golang.org/x/crypto v0.18.0 // indirect
-	golang.org/x/mod v0.14.0 // indirect
+	golang.org/x/mod v0.15.0 // indirect
 	golang.org/x/net v0.20.0 // indirect
-	golang.org/x/sys v0.16.0 // indirect
+	golang.org/x/sys v0.17.0 // indirect
 	golang.org/x/tools v0.17.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/protobuf v1.32.0 // indirect

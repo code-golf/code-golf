@@ -2,7 +2,7 @@ package hole
 
 import (
 	"fmt"
-	"math/rand"
+	"math/rand/v2"
 )
 
 type ticket struct {
@@ -68,8 +68,8 @@ func luckyTickets() []Run {
 
 	// Randomly generate additional test cases.
 	for i := 22; i < 40; i++ {
-		digits := 2 + 2*rand.Intn(5)
-		base := 2 + rand.Intn(15)
+		digits := 2 + 2*rand.IntN(5)
+		base := 2 + rand.IntN(15)
 
 		halfValue := iPow(int64(base), int64(digits/2))
 		maxSum := (base - 1) * digits / 2
