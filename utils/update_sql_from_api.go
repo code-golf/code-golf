@@ -102,7 +102,7 @@ func getUnusedUserID(userMap map[string]int32) (result int32) {
 	done := false
 	for !done {
 		done = true
-		result = rand.Int31()
+		result = rand.Int32()
 		for _, userID := range userMap {
 			if result == userID {
 				done = false
