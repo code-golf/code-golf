@@ -1,7 +1,7 @@
 package hole
 
 import (
-	"math/rand"
+	"math/rand/v2"
 	"strings"
 )
 
@@ -24,7 +24,7 @@ func isbn() []Run {
 		var digits [9]int
 
 		for j := range digits {
-			digits[j] = rand.Intn(10)
+			digits[j] = rand.IntN(10)
 		}
 
 		// Guarantee at least 5 arguments end with 'X'
@@ -46,7 +46,7 @@ func isbn() []Run {
 
 		// This here logic is for varying the second two parts of the ISBN.
 		// Sure, it's cosmetic, but it might mess some people up.
-		difference := 7 - rand.Intn(5)
+		difference := 7 - rand.IntN(5)
 		for j, digit := range digits {
 			id.WriteByte(byte('0' + digit))
 

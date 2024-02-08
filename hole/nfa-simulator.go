@@ -2,7 +2,7 @@ package hole
 
 import (
 	"fmt"
-	"math/rand"
+	"math/rand/v2"
 	"sort"
 	"strings"
 )
@@ -144,7 +144,7 @@ func generateNFA() string {
 	})
 	states := shuffle([]string{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"})
 
-	alphabetLength := rand.Intn(len(alphabet)-18) + 1
+	alphabetLength := rand.IntN(len(alphabet)-18) + 1
 	alphabet = alphabet[:alphabetLength]
 
 	var inputNFA strings.Builder
@@ -153,8 +153,8 @@ func generateNFA() string {
 	inputNFA.WriteString(strings.Join(alphabet, " | "))
 	inputNFA.WriteString(" |\n")
 
-	stateLength := rand.Intn(6) + 1
-	startState := rand.Intn(stateLength)
+	stateLength := rand.IntN(6) + 1
+	startState := rand.IntN(stateLength)
 
 	shuffleStates := make([]string, stateLength)
 	copy(shuffleStates, states[:stateLength])
@@ -166,7 +166,7 @@ func generateNFA() string {
 			inputNFA.WriteByte(' ')
 		}
 
-		if rand.Intn(2) == 0 {
+		if rand.IntN(2) == 0 {
 			inputNFA.WriteByte('F')
 		} else {
 			inputNFA.WriteByte(' ')
@@ -176,11 +176,11 @@ func generateNFA() string {
 		inputNFA.WriteString(" |")
 		for j := 0; j < alphabetLength; j++ {
 
-			if rand.Intn(4) == 0 {
+			if rand.IntN(4) == 0 {
 				inputNFA.WriteString(" ∅ ")
 			} else {
 				shuffle(shuffleStates)
-				possibleStatesCount := rand.Intn(len(shuffleStates)) + 1
+				possibleStatesCount := rand.IntN(len(shuffleStates)) + 1
 
 				chosenStates := make([]string, possibleStatesCount)
 				copy(chosenStates, shuffleStates[:possibleStatesCount])
@@ -197,15 +197,15 @@ func generateNFA() string {
 
 	}
 
-	inputStringCount := rand.Intn(4) + 1
+	inputStringCount := rand.IntN(4) + 1
 
 	for m := 0; m < inputStringCount; m++ {
-		inputLength := rand.Intn(2 * alphabetLength)
+		inputLength := rand.IntN(2 * alphabetLength)
 		if inputLength == 0 {
 			inputNFA.WriteString("ε")
 		} else {
 			for i := 0; i < inputLength; i++ {
-				inputNFA.WriteString(alphabet[rand.Intn(alphabetLength)])
+				inputNFA.WriteString(alphabet[rand.IntN(alphabetLength)])
 			}
 		}
 		if m+1 < inputStringCount {

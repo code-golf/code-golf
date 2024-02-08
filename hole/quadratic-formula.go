@@ -3,7 +3,7 @@ package hole
 import (
 	"fmt"
 	"math"
-	"math/rand"
+	"math/rand/v2"
 	"strings"
 )
 
@@ -122,9 +122,9 @@ func quadraticFormula() []Run {
 	args := make([]string, numTests)
 	solstrings := make([]string, numTests)
 	for i := 0; i < numTests; i++ {
-		a := rand.Intn(20) - 10
-		b := rand.Intn(20) - 10
-		c := rand.Intn(50) - 25
+		a := rand.IntN(20) - 10
+		b := rand.IntN(20) - 10
+		c := rand.IntN(50) - 25
 		args[i] = fmt.Sprint(a, b, c)
 		solstrings[i] = solve(a, b, c).String()
 	}

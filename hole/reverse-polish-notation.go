@@ -2,7 +2,7 @@ package hole
 
 import (
 	"math"
-	"math/rand"
+	"math/rand/v2"
 	"strconv"
 	"strings"
 )
@@ -40,7 +40,7 @@ func expand(node *Node) {
 			left = randChoice(factors)
 			right = val / left
 		}
-		if rand.Intn(2) == 1 {
+		if rand.IntN(2) == 1 {
 			left, right = right, left
 		}
 	case '/':
@@ -74,7 +74,7 @@ func expandRight(init *Node, count int) {
 func expandRand(init *Node, count int) {
 	valueNodes := []*Node{init}
 	for nodesCount := 1; nodesCount <= count; nodesCount++ {
-		nodeIdx := rand.Intn(nodesCount)
+		nodeIdx := rand.IntN(nodesCount)
 		node := valueNodes[nodeIdx]
 		expand(node)
 		valueNodes[nodeIdx] = node.left

@@ -2,7 +2,7 @@ package hole
 
 import (
 	"embed"
-	"math/rand"
+	"math/rand/v2"
 	"path"
 	"strings"
 )
@@ -76,10 +76,10 @@ func outputMultirunTests(tests []test) []Run {
 }
 
 // Return a random element from the given slice. Panics on empty slice.
-func randChoice[E any](x []E) E { return x[rand.Intn(len(x))] }
+func randChoice[E any](x []E) E { return x[rand.IntN(len(x))] }
 
 // Return a random integer between min and max inclusive.
-func randInt(min, max int) int { return min + rand.Intn(max-min+1) }
+func randInt(min, max int) int { return min + rand.IntN(max-min+1) }
 
 // Returning the slice is a convenience, the shuffle is still in-place.
 func shuffle[E any](x []E) []E {

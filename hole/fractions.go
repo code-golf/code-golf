@@ -2,7 +2,7 @@ package hole
 
 import (
 	"fmt"
-	"math/rand"
+	"math/rand/v2"
 	"strings"
 )
 
@@ -21,25 +21,25 @@ func (f fraction) isIrreducible() bool {
 
 // Generates a fraction with numerator and denominator both less than 16
 func smallFracGen() fraction {
-	f := fraction{numerator: rand.Intn(16), denominator: rand.Intn(15) + 1}
+	f := fraction{numerator: rand.IntN(16), denominator: rand.IntN(15) + 1}
 
 	// Choose a random scale factor so that the largest value in the fraction
 	// does not exceed 250.
 	max := max(f.numerator, f.denominator)
-	f.scale = rand.Intn(250/max-1) + 1
+	f.scale = rand.IntN(250/max-1) + 1
 
 	return f
 }
 
 // Generates a fraction with at least one value greater than 15
 func largeFracGen() fraction {
-	f := fraction{numerator: rand.Intn(251), denominator: rand.Intn(250) + 1}
+	f := fraction{numerator: rand.IntN(251), denominator: rand.IntN(250) + 1}
 
 	// If neither value is greater than 15, reassign one chosen at random to a
 	// larger number.
 	if f.numerator <= 15 && f.denominator <= 15 {
-		newVal := rand.Intn(235) + 16
-		if rand.Intn(2) == 0 {
+		newVal := rand.IntN(235) + 16
+		if rand.IntN(2) == 0 {
 			f.numerator = newVal
 		} else {
 			f.denominator = newVal
@@ -50,7 +50,7 @@ func largeFracGen() fraction {
 	// does not exceed 250.
 	f.scale = 1
 	if max := max(f.numerator, f.denominator); max <= 125 {
-		f.scale = rand.Intn(250/max-1) + 1
+		f.scale = rand.IntN(250/max-1) + 1
 	}
 
 	return f
@@ -58,10 +58,10 @@ func largeFracGen() fraction {
 
 func fractions() []Run {
 	// Default cases.
-	ra1 := rand.Intn(249) + 2
-	ra2 := rand.Intn(249) + 2
-	ra3 := rand.Intn(249) + 2
-	ra4 := rand.Intn(151) + 100
+	ra1 := rand.IntN(249) + 2
+	ra2 := rand.IntN(249) + 2
+	ra3 := rand.IntN(249) + 2
+	ra4 := rand.IntN(151) + 100
 
 	fractions := []fraction{
 		{numerator: 1, denominator: 1, scale: 1},

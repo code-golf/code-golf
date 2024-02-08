@@ -1,7 +1,7 @@
 package hole
 
 import (
-	"math/rand"
+	"math/rand/v2"
 	"strings"
 )
 
@@ -67,25 +67,25 @@ func hasGroupCounts(tileCounts map[rune]int, pairCount int, meldCount int) bool 
 }
 
 func genRandomPair() string {
-	tile := '🀀' + rune(rand.Intn(34))
+	tile := '🀀' + rune(rand.IntN(34))
 	return string(tile) + string(tile)
 }
 
 func genRandomTriplet() string {
-	tile := '🀀' + rune(rand.Intn(34))
+	tile := '🀀' + rune(rand.IntN(34))
 	return string(tile) + string(tile) + string(tile)
 }
 
 func genRandomSequence() string {
-	suit := rand.Intn(3)
-	tile := '🀇' + rune(rand.Intn(7)+suit*9)
+	suit := rand.IntN(3)
+	tile := '🀇' + rune(rand.IntN(7)+suit*9)
 	return string(tile) + string(tile+1) + string(tile+2)
 }
 
 func genRandomStandardHand() string {
 	var hand strings.Builder
 	for i := 0; i < 4; i++ {
-		if rand.Intn(3) > 0 {
+		if rand.IntN(3) > 0 {
 			hand.WriteString(genRandomTriplet())
 		} else {
 			hand.WriteString(genRandomSequence())
@@ -115,14 +115,14 @@ func genRandomSevenPairs() string {
 
 func genRandomThirteenOrphans() string {
 	terminalsHonors := []rune("🀇🀏🀐🀘🀙🀡🀀🀁🀂🀃🀄🀅🀆")
-	duplicateTile := terminalsHonors[rand.Intn(len(terminalsHonors))]
+	duplicateTile := terminalsHonors[rand.IntN(len(terminalsHonors))]
 	return string(terminalsHonors) + string(duplicateTile)
 }
 
 func genValidHand() string {
-	if rand.Intn(8) > 0 {
+	if rand.IntN(8) > 0 {
 		return genRandomStandardHand()
-	} else if rand.Intn(3) > 0 {
+	} else if rand.IntN(3) > 0 {
 		return genRandomSevenPairs()
 	} else {
 		return genRandomThirteenOrphans()
@@ -133,8 +133,8 @@ func genInvalidHand(mutationCount int) string {
 	hand := genValidHand()
 	runes := []rune(hand)
 	for i := 0; i < mutationCount; i++ {
-		mutPos := rand.Intn(len(runes))
-		mutTile := '🀀' + rune(rand.Intn(34))
+		mutPos := rand.IntN(len(runes))
+		mutTile := '🀀' + rune(rand.IntN(34))
 		runes[mutPos] = mutTile
 	}
 	hand = string(runes)
@@ -205,7 +205,7 @@ func mahjong() []Run {
 
 	for i := range args {
 		hand := genValidHand()
-		mutCount := rand.Intn(4)
+		mutCount := rand.IntN(4)
 		if mutCount > 0 {
 			hand = genInvalidHand(mutCount)
 		}

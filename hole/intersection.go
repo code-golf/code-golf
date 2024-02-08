@@ -2,7 +2,7 @@ package hole
 
 import (
 	"fmt"
-	"math/rand"
+	"math/rand/v2"
 )
 
 // a bounding box (bbox) is defined in
@@ -45,10 +45,10 @@ func calculateIntersection(b1, b2 bbox) int {
 // generator of random non-null boxes (i.e. with area != 0)
 func boxGen() bbox {
 	return bbox{
-		x: rand.Intn(101),
-		y: rand.Intn(101),
-		w: rand.Intn(50) + 1,
-		h: rand.Intn(50) + 1,
+		x: rand.IntN(101),
+		y: rand.IntN(101),
+		w: rand.IntN(50) + 1,
+		h: rand.IntN(50) + 1,
 	}
 }
 

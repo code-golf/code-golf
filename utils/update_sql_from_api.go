@@ -17,7 +17,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	"math/rand"
+	"math/rand/v2"
 	"net/http"
 	"sort"
 	"strings"

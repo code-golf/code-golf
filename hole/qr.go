@@ -2,7 +2,7 @@ package hole
 
 import (
 	"encoding/hex"
-	"math/rand"
+	"math/rand/v2"
 	"strings"
 
 	"github.com/skip2/go-qrcode"
@@ -11,7 +11,7 @@ import (
 func randStr(len int) string {
 	buf := make([]byte, len)
 	for i := range buf {
-		buf[i] = byte(33 + rand.Intn(94)) // randPrintableAscii: [33; 126]
+		buf[i] = byte(33 + rand.IntN(94)) // randPrintableAscii: [33; 126]
 	}
 	return string(buf)
 }
