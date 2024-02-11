@@ -136,7 +136,7 @@ done
 
 [BASIC]
 size    = '205 MiB'
-version = 'FreeBASIC 1.10.0'
+version = 'FreeBASIC 1.10.1'
 website = 'https://freebasic.net'
 example = '''
 ' Printing
@@ -380,7 +380,7 @@ void main(string[] argv) {
 
 [Dart]
 size    = '231 MiB'
-version = '3.2.5'
+version = '3.2.6'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -859,7 +859,7 @@ example = '''
 
 [Python]
 size    = '71 MiB'
-version = '3.12.1'
+version = '3.12.2'
 website = 'https://www.python.org'
 example = '''
 import sys
@@ -896,8 +896,8 @@ for (arg in commandArgs(TRUE)) {
 '''
 
 [Raku]
-size    = '73.3 MiB'
-version = 'Raku 6.d on Rakudo 2023.12'
+size    = '73.5 MiB'
+version = 'Raku 6.d on Rakudo 2024.01'
 website = 'https://raku.org'
 example = '''
 # Printing
@@ -931,7 +931,7 @@ end
 
 [Rust]
 size    = '426 MiB'
-version = '1.75.0'
+version = '1.76.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {

@@ -3,10 +3,10 @@ FROM debian:bullseye-slim AS builder
 RUN apt-get update \
  && apt-get install -y curl gcc libncurses-dev libtinfo5 xz-utils
 
-RUN curl -L http://downloads.sourceforge.net/fbc/FreeBASIC-1.10.0-linux-x86_64.tar.xz \
+RUN curl -L http://downloads.sourceforge.net/fbc/FreeBASIC-1.10.1-linux-x86_64.tar.xz \
   | tar xJ
 
-RUN cd FreeBASIC-1.10.0-linux-x86_64 && ./install.sh -i /usr
+RUN cd FreeBASIC-1.10.1-linux-x86_64 && ./install.sh -i /usr
 
 COPY basic.c .
 
