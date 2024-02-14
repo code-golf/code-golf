@@ -783,6 +783,56 @@ preamble = '''
     inclusive, on their own line, with each divisor separated by a space.
 '''
 
+['Eight Queens']
+category = 'Mathematics'
+experiment = 1109
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/N-queens_problem' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Eight_queens_puzzle' },
+]
+item-delimiter = "\n"
+synopsis = 'Print all solutions to the Eight queens problem.'
+preamble = '''
+<p>
+    In chess, pieces move on a board of 8 ranks and 8 files. A chess queen can attack along a file a rank or a diagonal.
+    It is possible to place 8 queens on the board, such that no queen is under attack by another one.
+    When we list the rank on which the queen is for each file, one solution looks like this
+
+<p>
+    <pre>63571428</pre>
+<p>
+    Print all 92 solutions, one per a line.
+'''
+
+['Eight Queens Formatted']
+category = 'Mathematics'
+experiment = 1110
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/N-queens_problem' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Eight_queens_puzzle' },
+]
+item-delimiter = "\n\n"
+synopsis = 'Print all solutions to the Eight queens problem.'
+preamble = '''
+<p>
+    In chess, pieces move on a board of 8 ranks and 8 files. A chess queen can attack along a file a rank or a diagonal.
+    It is possible to place 8 queens on the board, such that no queen is under attack by another one.
+    One solution looks like this
+
+<p>
+    <pre>.......Q
+...Q....
+Q.......
+..Q.....
+.....Q..
+.Q......
+......Q.
+....Q...</pre>
+
+<p>
+    Print all 92 solutions separated by a blank line.
+'''
+
 ['Emirp Numbers']
 category = 'Sequence'
 releases = [2017-10-08, 2022-10-29]
