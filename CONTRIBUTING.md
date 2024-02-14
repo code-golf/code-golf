@@ -19,6 +19,8 @@ In addition, each section may define the following fields:
 - `links` - List of tables with keys `name` and `url`.
 - `experiment` - ID of the issue that suggested this hole. All experimental holes need to link to an issue so that the community can vote and suggest improvements.
 - `variants` - List of names of the holes that are variants of this hole, including itself.
+- `case-fold` - A flag indicating that the output should be checked case insensitively.
+- `item-delimiter` - If set, indicates that the output should be understood as a collection of items that can appear in any order and that the items should be delimited by the provided token.
 
 Example:
 
