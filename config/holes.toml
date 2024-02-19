@@ -784,13 +784,14 @@ preamble = '''
 '''
 
 ['Eight Queens']
-category = 'Mathematics'
+category = 'Gaming'
 experiment = 1109
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/N-queens_problem' },
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Eight_queens_puzzle' },
 ]
 item-delimiter = "\n"
+multiset-delimiter = "\n\n"
 synopsis = 'Print all solutions to the Eight queens problem.'
 preamble = '''
 <p>
@@ -801,17 +802,18 @@ preamble = '''
 <p>
     <pre>63571428</pre>
 <p>
-    Print all 92 solutions, one per a line.
+    Print all 2, 10, 4, 40 and 92 solutions, one per a line for boards of sizes 4-8, respectively. Separate each size by a blank line.
 '''
 
 ['Eight Queens Formatted']
-category = 'Mathematics'
+category = 'Gaming'
 experiment = 1110
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/N-queens_problem' },
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Eight_queens_puzzle' },
 ]
 item-delimiter = "\n\n"
+multiset-delimiter = "\n\n\n"
 synopsis = 'Print all solutions to the Eight queens problem.'
 preamble = '''
 <p>
@@ -830,7 +832,7 @@ Q.......
 ....Q...</pre>
 
 <p>
-    Print all 92 solutions separated by a blank line.
+    Print all 2, 10, 4, 40 and 92 solutions, separated by a blank line for boards of sizes 4-8, respectively. Separate each size by a double blank line.
 '''
 
 ['Emirp Numbers']

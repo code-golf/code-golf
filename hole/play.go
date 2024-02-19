@@ -74,10 +74,29 @@ func preprocessKCode(holeID, code string) string {
 	}
 }
 
-func getClosestAnswer(anyAnswer, stdout, delimiter string) string {
-	expectedItems := strings.Split(anyAnswer, delimiter)
+func getClosestAnswer(anyAnswer, stdout, itemDelimiter, multisetDelimiter string) string {
+	answerMultisets := []string{anyAnswer}
+	stdoutMultisets := []string{stdout}
+	if multisetDelimiter != "" {
+		answerMultisets = strings.Split(anyAnswer, multisetDelimiter)
+		stdoutMultisets = strings.Split(stdout, multisetDelimiter)
+	}
+	closestMultisets := make([]string, len(answerMultisets))
+
+	for i, answerMultiset := range answerMultisets {
+		stdoutMultiset := ""
+		if i < len(stdoutMultisets) {
+			stdoutMultiset = stdoutMultisets[i]
+		}
+		closestMultisets[i] = getClosestMultiset(answerMultiset, stdoutMultiset, itemDelimiter)
+	}
+	return strings.Join(closestMultisets, multisetDelimiter)
+}
+
+func getClosestMultiset(anyAnswer, stdout, itemDelimiter string) string {
+	expectedItems := strings.Split(anyAnswer, itemDelimiter)
 	expectedItemsReordered := make([]string, len(expectedItems))
-	userItems := strings.Split(stdout, delimiter)
+	userItems := strings.Split(stdout, itemDelimiter)
 
 	expectedItemsMap := make(map[string]int)
 	for _, expected := range expectedItems {
@@ -156,7 +175,7 @@ func getClosestAnswer(anyAnswer, stdout, delimiter string) string {
 		}
 	}
 
-	return strings.Join(expectedItemsReordered, delimiter)
+	return strings.Join(expectedItemsReordered, itemDelimiter)
 }
 
 // Play a given hole, in a given lang, with given code and return the runs.
@@ -496,7 +515,7 @@ func play(
 	// Timeouts and whitespace only output never pass.
 	if !run.Timeout && len(strings.TrimSpace(run.Stdout)) != 0 {
 		if hole.ItemDelimiter != "" {
-			run.Answer = getClosestAnswer(run.Answer, run.Stdout, hole.ItemDelimiter)
+			run.Answer = getClosestAnswer(run.Answer, run.Stdout, hole.ItemDelimiter, hole.MultisetDelimiter)
 		}
 
 		if hole.CaseFold {
