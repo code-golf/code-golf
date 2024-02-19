@@ -6,8 +6,6 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-
-	"github.com/go-chi/chi/v5"
 )
 
 func cookie(r *http.Request, name string) (value string) {
@@ -32,7 +30,7 @@ func nonce() string {
 }
 
 func param(r *http.Request, key string) string {
-	value, _ := url.QueryUnescape(chi.URLParam(r, key))
+	value, _ := url.QueryUnescape(r.PathValue(key))
 	return value
 }
 

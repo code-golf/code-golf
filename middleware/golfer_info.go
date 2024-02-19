@@ -5,13 +5,12 @@ import (
 
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/session"
-	"github.com/go-chi/chi/v5"
 )
 
 // GolferInfo adds the GolferInfo object handle to the context.
 func GolferInfo(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		name := chi.URLParam(r, "name")
+		name := r.PathValue("name")
 		info := golfer.GetInfo(session.Database(r), name)
 
 		switch {
