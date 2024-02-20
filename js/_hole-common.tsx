@@ -17,8 +17,8 @@ async function getLangWikiContent(lang: string): Promise<string> {
 }
 
 const renamedHoles: Record<string, string> = {
-    "eight-queens": "n-queens",
-    "eight-queens-formatted": "n-queens-formatted",
+    'eight-queens': 'n-queens',
+    'eight-queens-formatted': 'n-queens-formatted',
 }
 
 export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSolution: any, updateReadonlyPanels: any, getEditor: () => any) {
