@@ -19,7 +19,7 @@ async function getLangWikiContent(lang: string): Promise<string> {
 const renamedHoles: Record<string, string> = {
     'eight-queens': 'n-queens',
     'eight-queens-formatted': 'n-queens-formatted',
-}
+};
 
 export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSolution: any, updateReadonlyPanels: any, getEditor: () => any) {
     tabLayout = _tabLayout;
@@ -61,7 +61,7 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
 
     for (const [key, value] of Object.entries(localStorage)) {
         if (key.startsWith('code_')) {
-            const hole = key.split('_')[1]
+            const hole = key.split('_')[1];
             if (hole in renamedHoles) {
                 localStorage.setItem(key.replace(hole, renamedHoles[hole]), value);
                 localStorage.removeItem(key);
