@@ -791,7 +791,6 @@ links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Eight_queens_puzzle' },
 ]
 item-delimiter = "\n"
-multiset-delimiter = "\n\n"
 synopsis = 'Print all solutions to the N queens problem.'
 preamble = '''
 <p>
@@ -813,7 +812,6 @@ links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Eight_queens_puzzle' },
 ]
 item-delimiter = "\n\n"
-multiset-delimiter = "\n\n\n"
 synopsis = 'Print all solutions to the N queens problem.'
 preamble = '''
 <p>
