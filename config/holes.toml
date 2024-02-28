@@ -801,7 +801,7 @@ preamble = '''
 <p>
     <pre>63571428</pre>
 <p>
-    Print all 2, 10, 4, 40 and 92 solutions, one per a line for boards of sizes 4-8, respectively. Separate each size by a blank line.
+    Print all solutions to the N queens problem, one per a line, for boards of sizes 4-8.
 '''
 
 ['N Queens Formatted']
@@ -830,7 +830,7 @@ Q.......
 ....Q...</pre>
 
 <p>
-    Print all 2, 10, 4, 40 and 92 solutions, separated by a blank line for boards of sizes 4-8, respectively. Separate each size by a double blank line.
+    Print all solutions to the N queens problem, separated by a blank line, for boards of sizes 4-8.
 '''
 
 ['Emirp Numbers']
