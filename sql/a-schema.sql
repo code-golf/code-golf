@@ -26,12 +26,12 @@ CREATE TYPE connection AS ENUM (
 );
 
 CREATE TYPE hole AS ENUM (
-    '12-days-of-christmas', '99-bottles-of-beer', 'abundant-numbers',
-    'abundant-numbers-long', 'arabic-to-roman', 'arithmetic-numbers',
-    'arrows', 'ascending-primes', 'ascii-table', 'brainfuck',
-    'catalan-numbers', 'catalans-constant', 'christmas-trees', 'collatz',
-    'css-colors', 'cubes', 'day-of-week', 'dfa-simulator', 'diamonds',
-    'divisors', 'emirp-numbers', 'emirp-numbers-long', 'emojify',
+    '12-days-of-christmas', '24-game', '99-bottles-of-beer',
+    'abundant-numbers', 'abundant-numbers-long', 'arabic-to-roman',
+    'arithmetic-numbers', 'arrows', 'ascending-primes', 'ascii-table',
+    'brainfuck', 'catalan-numbers', 'catalans-constant', 'christmas-trees',
+    'collatz', 'css-colors', 'cubes', 'day-of-week', 'dfa-simulator',
+    'diamonds', 'divisors', 'emirp-numbers', 'emirp-numbers-long', 'emojify',
     'evil-numbers', 'evil-numbers-long', 'farey-sequence', 'fibonacci',
     'fizz-buzz', 'foo-fizz-buzz-bar', 'forsyth-edwards-notation', 'fractions',
     'game-of-life', 'gijswijts-sequence', 'happy-numbers',

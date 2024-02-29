@@ -55,13 +55,13 @@ A Partridge in a Pear Tree.
 '''
 
 ['24 Game']
-experiment = 1068
 category = 'Gaming'
 links = [
-    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/24_game' },
-    { name = 'More Rosetta Code', url = '//rosettacode.org/wiki/24_game/Solve' },
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/24_(puzzle)' },
+    { name = 'Rosetta Code',     url = '//rosettacode.org/wiki/24_game' },
+    { name = 'Rosetta Code (2)', url = '//rosettacode.org/wiki/24_game/Solve' },
+    { name = 'Wikipedia',        url = '//en.wikipedia.org/wiki/24_(puzzle)' },
 ]
+released = 2024-02-29
 synopsis = 'Print all solvable quadruples in the 24 game.'
 preamble = '''
 <p>
