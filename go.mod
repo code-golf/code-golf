@@ -6,10 +6,10 @@ require (
 	github.com/DATA-DOG/go-sqlmock v1.5.2
 	github.com/SeerUK/assert v1.0.0
 	github.com/agnivade/levenshtein v1.1.1
-	github.com/buildkite/terminal-to-html/v3 v3.10.1
+	github.com/buildkite/terminal-to-html/v3 v3.11.0
 	github.com/bwmarrin/discordgo v0.27.1
 	github.com/go-chi/chi/v5 v5.0.12
-	github.com/go-chi/httprate v0.8.0
+	github.com/go-chi/httprate v0.9.0
 	github.com/go-git/go-billy/v5 v5.5.0
 	github.com/go-git/go-git/v5 v5.11.0
 	github.com/gofrs/uuid/v5 v5.0.0
@@ -20,7 +20,7 @@ require (
 	github.com/pelletier/go-toml/v2 v2.1.1
 	github.com/shurcooL/graphql v0.0.0-20230722043721-ed46e5a46466
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
-	github.com/tdewolff/minify/v2 v2.20.17
+	github.com/tdewolff/minify/v2 v2.20.18
 	github.com/yuin/goldmark v1.7.0
 	golang.org/x/oauth2 v0.17.0
 	gopkg.in/guregu/null.v4 v4.0.0
@@ -46,7 +46,7 @@ require (
 	github.com/skeema/knownhosts v1.2.1 // indirect
 	github.com/tdewolff/parse/v2 v2.7.12 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
-	golang.org/x/crypto v0.19.0 // indirect
+	golang.org/x/crypto v0.20.0 // indirect
 	golang.org/x/mod v0.15.0 // indirect
 	golang.org/x/net v0.21.0 // indirect
 	golang.org/x/sys v0.17.0 // indirect
