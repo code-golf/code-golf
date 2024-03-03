@@ -783,15 +783,15 @@ preamble = '''
     inclusive, on their own line, with each divisor separated by a space.
 '''
 
-['Eight Queens']
-category = 'Mathematics'
+['N Queens']
+category = 'Gaming'
 experiment = 1109
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/N-queens_problem' },
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Eight_queens_puzzle' },
 ]
 item-delimiter = "\n"
-synopsis = 'Print all solutions to the Eight queens problem.'
+synopsis = 'Print all solutions to the N queens problem.'
 preamble = '''
 <p>
     In chess, pieces move on a board of 8 ranks and 8 files. A chess queen can attack along a file a rank or a diagonal.
@@ -801,18 +801,18 @@ preamble = '''
 <p>
     <pre>63571428</pre>
 <p>
-    Print all 92 solutions, one per a line.
+    Print all solutions to the N queens problem, one per a line, for boards of sizes 4-8.
 '''
 
-['Eight Queens Formatted']
-category = 'Mathematics'
+['N Queens Formatted']
+category = 'Gaming'
 experiment = 1110
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/N-queens_problem' },
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Eight_queens_puzzle' },
 ]
 item-delimiter = "\n\n"
-synopsis = 'Print all solutions to the Eight queens problem.'
+synopsis = 'Print all solutions to the N queens problem.'
 preamble = '''
 <p>
     In chess, pieces move on a board of 8 ranks and 8 files. A chess queen can attack along a file a rank or a diagonal.
@@ -830,7 +830,7 @@ Q.......
 ....Q...</pre>
 
 <p>
-    Print all 92 solutions separated by a blank line.
+    Print all solutions to the N queens problem, separated by a blank line, for boards of sizes 4-8.
 '''
 
 ['Emirp Numbers']

@@ -46,6 +46,7 @@ type Hole struct {
 	Experiment                  int              `json:"-"`
 	ID                          string           `json:"id"`
 	ItemDelimiter               string           `json:"-" toml:"item-delimiter"`
+	MultisetDelimiter           string           `json:"-" toml:"multiset-delimiter"`
 	Links                       []Link           `json:"links"`
 	Name                        string           `json:"name"`
 	Preamble                    template.HTML    `json:"preamble"`

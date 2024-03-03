@@ -21,6 +21,7 @@ In addition, each section may define the following fields:
 - `variants` - List of names of the holes that are variants of this hole, including itself.
 - `case-fold` - A flag indicating that the output should be checked case insensitively.
 - `item-delimiter` - If set, indicates that the output should be understood as a collection of items that can appear in any order and that the items should be delimited by the provided token.
+- `multiset-delimiter` - If set, treats output as fixed order collection of multiple multisets, each separated by `item-delimiter`. Otherwise, output is treated as a single multiset.
 
 Example:
 
