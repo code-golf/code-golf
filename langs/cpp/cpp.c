@@ -32,10 +32,11 @@ int main(int argc, char* argv[]) {
     pid_t pid = fork();
     if (!pid) {
         // See https://clang.llvm.org/cxx_status.html for valid -std values.
-        execl(clang, clang, "-std=c++2b", "-target", "x86_64-alpine-linux-musl", "-O2", "-lstdc++",
-            "-fcolor-diagnostics", "-I/usr/include/c++/12.2.1/",
-            "-I/usr/include/c++/12.2.1/x86_64-alpine-linux-musl/",
-            "-I/usr/include/c++/12.2.1/backward/", "-o", bin, code, "/unbuffered.cpp", NULL);
+        execl(
+            clang, clang, "-std=c++23", "-target", "x86_64-alpine-linux-musl",
+            "-O2", "-lstdc++", "-fcolor-diagnostics", "-o", bin, code,
+            "/unbuffered.cpp", NULL
+        );
         perror("execl");
         return 3;
     }

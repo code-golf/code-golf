@@ -242,8 +242,8 @@ foreach (String arg in args)
 '''
 
 ['C++']
-size    = '118 MiB'
-version = '14.0.6'
+size    = '132 MiB'
+version = '17.0.6'
 website = 'https://clang.llvm.org'
 example = '''
 #include <iostream>
