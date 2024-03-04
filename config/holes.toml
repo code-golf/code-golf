@@ -3332,6 +3332,17 @@ Then I'm sure she sells seashore shells.
 </blockquote>
 '''
 
+['Trinomial Triangle']
+experiment = 1117
+category = 'Sequence'
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Trinomial_triangle' },
+]
+synopsis = 'Print the first 20 rows of the trinomial triangle.'
+preamble = '''
+<p>Print the first <b>20</b> rows of the trinomial triangle.
+'''
+
 [Turtle]
 category = 'Art'
 experiment = 622
