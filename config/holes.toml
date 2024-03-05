@@ -938,22 +938,6 @@ preamble = '''
 '''
 
 ['Factorial Factorisation']
-experiment = 812
-category = 'Sequence'
-links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Factorial' },
-]
-synopsis = 'Print the factorisation of 1000!.'
-preamble = '''
-<p>Print the factorisation of 1000!,
-
-<p>
-    <code>
-        2⁹⁹⁴×3⁴⁹⁸×5²⁴⁹×7¹⁶⁴×11⁹⁸×13⁸¹×17⁶¹×19⁵⁴×23⁴⁴×29³⁵×31³³×...×983×991×997
-    </code>.
-'''
-
-['Factorial Factorisation ascii']
 experiment = 1055
 category = 'Sequence'
 links = [
