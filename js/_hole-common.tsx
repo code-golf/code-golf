@@ -49,7 +49,8 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
         }
         setCodeForLangAndSolution(editor);
 
-        updateReadonlyPanels({langWiki: await getLangWikiContent(lang)});
+        if (tabLayout)
+            updateReadonlyPanels({langWiki: await getLangWikiContent(lang)});
     })();
 
     $('dialog [name=text]').addEventListener('input', (e: Event) => {
