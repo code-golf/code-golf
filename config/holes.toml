@@ -1368,20 +1368,6 @@ preamble = '''
     as it requires factorisation of <b>n</b>.
 '''
 
-['Julia Set']
-category = 'Art'
-experiment = 814
-links = [
-    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Julia_set' },
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Julia_set' },
-]
-synopsis = 'Draw the Julia set.'
-preamble = '''
-<p>
-    In a 500x500px canvas, draw the Julia set for f(z) = z^2 + c,
-    where c = -0.4 + 0.6i. Output the image in PPM grayscale format.
-'''
-
 [Kolakoski]
 categories = ['Mathematics', 'Sequence']
 released = 2021-01-16

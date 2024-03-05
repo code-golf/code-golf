@@ -2,7 +2,6 @@ import { ASMStateField }                       from '@defasm/codemirror';
 import { $, $$, byteLen, charLen, comma, ord } from './_util';
 import { Vim }                                 from '@replit/codemirror-vim';
 import { EditorState, EditorView, extensions } from './_codemirror';
-import pbm                                     from './_pbm';
 import LZString                                from 'lz-string';
 
 let tabLayout: boolean = false;
@@ -561,9 +560,6 @@ export async function submit(
             </a>;
         }
         $('#thirdParty').replaceChildren(thirdParty);
-
-        if (hole == 'julia-set')
-            $('main').append(pbm(run.answer) as Node, pbm(run.stdout) ?? [] as any);
     }
 
     // Default run: first failing non-timeout, else first timeout, else last overall.
