@@ -91,7 +91,7 @@ function updateReadonlyPanels(data: ReadonlyPanelsData) {
 
     // Always show exp & out.
     $('#exp div').innerText = data.Exp;
-    $('#out div').innerHTML = replaceUnprintablesInOutput(data.Out);
+    $('#out div').innerText = replaceUnprintablesInOutput(data.Out);
 
     const ignoreCase = JSON.parse($('#case-fold').innerText);
     const diff = diffTable(hole, data.Exp, data.Out, data.Argv, ignoreCase);

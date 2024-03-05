@@ -55,13 +55,13 @@ A Partridge in a Pear Tree.
 '''
 
 ['24 Game']
-experiment = 1068
 category = 'Gaming'
 links = [
-    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/24_game' },
-    { name = 'More Rosetta Code', url = '//rosettacode.org/wiki/24_game/Solve' },
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/24_(puzzle)' },
+    { name = 'Rosetta Code',     url = '//rosettacode.org/wiki/24_game' },
+    { name = 'Rosetta Code (2)', url = '//rosettacode.org/wiki/24_game/Solve' },
+    { name = 'Wikipedia',        url = '//en.wikipedia.org/wiki/24_(puzzle)' },
 ]
+released = 2024-02-29
 synopsis = 'Print all solvable quadruples in the 24 game.'
 preamble = '''
 <p>
@@ -783,6 +783,56 @@ preamble = '''
     inclusive, on their own line, with each divisor separated by a space.
 '''
 
+['N Queens']
+category = 'Gaming'
+experiment = 1109
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/N-queens_problem' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Eight_queens_puzzle' },
+]
+item-delimiter = "\n"
+synopsis = 'Print all solutions to the N queens problem.'
+preamble = '''
+<p>
+    In chess, pieces move on a board of 8 ranks and 8 files. A chess queen can attack along a file a rank or a diagonal.
+    It is possible to place 8 queens on the board, such that no queen is under attack by another one.
+    When we list the rank on which the queen is for each file, one solution looks like this
+
+<p>
+    <pre>63571428</pre>
+<p>
+    Print all solutions to the N queens problem, one per a line, for boards of sizes 4-8.
+'''
+
+['N Queens Formatted']
+category = 'Gaming'
+experiment = 1110
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/N-queens_problem' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Eight_queens_puzzle' },
+]
+item-delimiter = "\n\n"
+synopsis = 'Print all solutions to the N queens problem.'
+preamble = '''
+<p>
+    In chess, pieces move on a board of 8 ranks and 8 files. A chess queen can attack along a file a rank or a diagonal.
+    It is possible to place 8 queens on the board, such that no queen is under attack by another one.
+    One solution looks like this
+
+<p>
+    <pre>.......Q
+...Q....
+Q.......
+..Q.....
+.....Q..
+.Q......
+......Q.
+....Q...</pre>
+
+<p>
+    Print all solutions to the N queens problem, separated by a blank line, for boards of sizes 4-8.
+'''
+
 ['Emirp Numbers']
 category = 'Sequence'
 releases = [2017-10-08, 2022-10-29]
@@ -1316,20 +1366,6 @@ preamble = '''
     <br>
     Note that calculating the symbol from the definition is not very efficient
     as it requires factorisation of <b>n</b>.
-'''
-
-['Julia Set']
-category = 'Art'
-experiment = 814
-links = [
-    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Julia_set' },
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Julia_set' },
-]
-synopsis = 'Draw the Julia set.'
-preamble = '''
-<p>
-    In a 500x500px canvas, draw the Julia set for f(z) = z^2 + c,
-    where c = -0.4 + 0.6i. Output the image in PPM grayscale format.
 '''
 
 [Kolakoski]
@@ -3280,6 +3316,17 @@ The shells she sells are seashells, I'm sure.
 So if she sells seashells on the seashore,
 Then I'm sure she sells seashore shells.
 </blockquote>
+'''
+
+['Trinomial Triangle']
+experiment = 1117
+category = 'Sequence'
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Trinomial_triangle' },
+]
+synopsis = 'Print the first 20 rows of the trinomial triangle.'
+preamble = '''
+<p>Print the first <b>20</b> rows of the trinomial triangle.
 '''
 
 [Turtle]

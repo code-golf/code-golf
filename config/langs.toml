@@ -136,7 +136,7 @@ done
 
 [BASIC]
 size    = '205 MiB'
-version = 'FreeBASIC 1.10.0'
+version = 'FreeBASIC 1.10.1'
 website = 'https://freebasic.net'
 example = '''
 ' Printing
@@ -242,8 +242,8 @@ foreach (String arg in args)
 '''
 
 ['C++']
-size    = '118 MiB'
-version = '14.0.6'
+size    = '132 MiB'
+version = '17.0.6'
 website = 'https://clang.llvm.org'
 example = '''
 #include <iostream>
@@ -268,8 +268,8 @@ int main(int argc, char* argv[]) {
 '''
 
 [Clojure]
-size    = '66 MiB'
-version = 'Babashka 1.3.188'
+size    = '65.8 MiB'
+version = 'Babashka 1.3.189'
 website = 'https://babashka.org'
 example = '''
 ; Printing
@@ -319,7 +319,7 @@ end-program.
 
 [Coconut]
 size    = '121 MiB'
-version = '3.0.4'
+version = '3.1.0'
 website = 'https://coconut-lang.org'
 example = '''
 import sys
@@ -379,8 +379,8 @@ void main(string[] argv) {
 '''
 
 [Dart]
-size    = '231 MiB'
-version = '3.2.5'
+size    = '235 MiB'
+version = '3.3.0'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -400,8 +400,8 @@ void main(List<String> argv) {
 '''
 
 [Elixir]
-size    = '175 MiB'
-version = '1.16.0'
+size    = '158 MiB'
+version = '1.16.1'
 website = 'https://elixir-lang.org'
 example = '''
 # Printing
@@ -499,7 +499,7 @@ end
 
 [Go]
 size    = '353 MiB'
-version = '1.22.0'
+version = '1.22.1'
 website = 'https://go.dev'
 example = '''
 package main
@@ -656,8 +656,8 @@ for (let arg of arguments)
 '''
 
 [Julia]
-size    = '312 MiB'
-version = '1.10.0'
+size    = '313 MiB'
+version = '1.10.2'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -806,7 +806,7 @@ say for @ARGV;
 
 [PHP]
 size    = '8.4 MiB'
-version = '8.3.2'
+version = '8.3.3'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -841,8 +841,8 @@ ForEach ($arg in $args) {
 '''
 
 [Prolog]
-size    = '52.3 MiB'
-version = 'SWI-Prolog 9.0.4'
+size    = '49.2 MiB'
+version = 'SWI-Prolog 9.2.2'
 website = 'https://www.swi-prolog.org'
 example = '''
 % Printing
@@ -859,7 +859,7 @@ example = '''
 
 [Python]
 size    = '71 MiB'
-version = '3.12.1'
+version = '3.12.2'
 website = 'https://www.python.org'
 example = '''
 import sys
@@ -896,8 +896,8 @@ for (arg in commandArgs(TRUE)) {
 '''
 
 [Raku]
-size    = '73.3 MiB'
-version = 'Raku 6.d on Rakudo 2023.12'
+size    = '73.5 MiB'
+version = 'Raku 6.d on Rakudo 2024.01'
 website = 'https://raku.org'
 example = '''
 # Printing
@@ -931,7 +931,7 @@ end
 
 [Rust]
 size    = '426 MiB'
-version = '1.75.0'
+version = '1.76.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -1022,8 +1022,8 @@ for arg in CommandLine.arguments[1...] {
 '''
 
 [Tcl]
-size    = '5.24 MiB'
-version = '8.6.13'
+size    = '5.25 MiB'
+version = '8.6.14'
 website = 'https://www.tcl-lang.org'
 example = '''
 # Printing

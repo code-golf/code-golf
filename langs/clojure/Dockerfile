@@ -2,7 +2,9 @@ FROM alpine:3.19 AS builder
 
 RUN apk add --no-cache curl
 
-RUN curl -L https://github.com/babashka/babashka/releases/download/v1.3.188/babashka-1.3.188-linux-amd64-static.tar.gz | tar xz
+ENV VER 1.3.189
+
+RUN curl -L https://github.com/babashka/babashka/releases/download/v$VER/babashka-$VER-linux-amd64-static.tar.gz | tar xz
 
 FROM codegolf/lang-base
 
