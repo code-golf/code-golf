@@ -90,7 +90,7 @@ function updateReadonlyPanel(name: string) {
         output.innerHTML = subRes.Err.replace(/\n/g,'<br>');
         break;
     case 'out':
-        output.innerText = replaceUnprintablesInOutput(subRes.Out);
+        output.innerHTML = replaceUnprintablesInOutput(subRes.Out);
         break;
     case 'exp':
         output.innerText = subRes.Exp;
