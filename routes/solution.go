@@ -2,7 +2,6 @@ package routes
 
 import (
 	"encoding/json"
-	"html"
 	"net/http"
 	"time"
 
@@ -48,10 +47,8 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 	runs := hole.Play(r.Context(), holeObj, langObj, in.Code)
 
 	// TODO Should this be pushed lower?
-	// Escape HTML & process Stderr ASNI escape codes.
 	for i, run := range runs {
 		runs[i].Stderr = string(terminal.Render([]byte(run.Stderr)))
-		runs[i].Stdout = html.EscapeString(runs[i].Stdout)
 	}
 
 	// The legacy single run we display, first failing or last overall.
