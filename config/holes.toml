@@ -2623,6 +2623,45 @@ preamble = '''
     32,767. Division is guaranteed to have an exact integer result.
 '''
 
+['Reversi']
+experiment = 1117
+category = 'Games'
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Reversi' },
+]
+synopsis = 'Output possible moves for white on a reversi board.'
+preamble = '''
+<p>Output the possible moves for white on a reversi board.</p>
+<p>In Reversi, you can only place a tile if there are one or more opponent
+tiles between it and an opponents tile, either horizontally, vertically, or
+diogonally.</p>
+<p>For example, given:</p>
+<pre>
+.....
+.○●●x
+..●..
+...x.
+</pre>
+<p>White could only place on the spots marked with <code>x</code></p>
+
+<p>You may assume a board sice of 8x8 and a position reachable, on whites turn, from the following starting position:</p>
+
+<pre>
+........
+........
+........
+...●○...
+...○●...
+........
+........
+........
+</pre>
+
+<p>Black moves first so you can assume an odd number of tiles on the board.</p>
+
+<p>Your program should output the board with valid position replaced with <code>x</code>
+'''
+
 ['Rijndael S-box']
 case-fold = true
 category = 'Mathematics'
