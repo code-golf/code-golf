@@ -166,7 +166,7 @@ func reversi() []Run {
 	answer := []string{}
 
 	for run := range runs {
-		grid := genReversiBoard((run/2 + 1) * 2)
+		grid := genReversiBoard((run+1)/2*2 + 1)
 
 		args = append(args, drawReverssiBoard(grid))
 		answer = append(answer, drawReverssiBoard(highlightCorrectAnswersReversiBoard(grid)))
