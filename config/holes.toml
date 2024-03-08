@@ -2625,7 +2625,7 @@ preamble = '''
 
 ['Reversi']
 experiment = 1117
-category = 'Games'
+category = 'Gaming'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Reversi' },
 ]
