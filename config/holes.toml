@@ -2613,46 +2613,49 @@ category = 'Gaming'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Reversi' },
 ]
-synopsis = 'Output possible moves for white on a Reversi board.'
+synopsis = 'Output possible moves for O on a Reversi board.'
 preamble = '''
-<p>Output the possible moves for white on a Reversi board.
+<p>Output the possible moves for O on a Reversi board.
 
 <p>
     In Reversi, you can only place a tile if there are one or more opponent
     tiles between it and an opponent's tile either horizontally, vertically,
     or diagonally.
 
-<p>For example, given:
+<p>
+    For example, given:
 
 <pre>
 .....
-.○●●x
-..●..
-...x.
+.OXX!
+..X..
+...!.
 </pre>
 
-<p>White can only place on spots marked with <code>x</code>.
+<p>
+    <pre>O</pre> can only place on spots marked with <code>!</code>.
 
 <p>
-    Assume a board size of 8x8 and a position reachable on white's turn,
+    Assume a board size of 8x8 and a position reachable on <code>O</code>'s turn,
     from the following starting position:
 
 <pre>
 ........
 ........
 ........
-...●○...
-...○●...
+...OX...
+...XO...
 ........
 ........
 ........
 </pre>
 
-<p>Black moves first so you can assume an odd number of tiles on the board.
+<p>
+    <pre>X</pre> moves first so you can assume an odd number of tiles on the board.
 
 <p>
     Your program should output the board with valid position replaced with
-    <code>x</code>.
+    <code>!</code>. Each output should be seperated by a blank line.
 '''
 
 ['Rijndael S-box']

@@ -128,9 +128,10 @@ func genReversiBoard(steps int) [reversiGridSize][reversiGridSize]ReversiTile {
 }
 
 func drawReversiBoard(board [reversiGridSize][reversiGridSize]ReversiTile) string {
-	const blackChar string = "○"
-	const whiteChar string = "●"
+	const blackChar string = "x"
+	const whiteChar string = "o"
 	const emptyChar string = "."
+	const potentialSpotChar string = "!"
 
 	reversiString := ""
 
@@ -143,10 +144,13 @@ func drawReversiBoard(board [reversiGridSize][reversiGridSize]ReversiTile) strin
 			} else if board[i][j] == White {
 				reversiString += whiteChar
 			} else if board[i][j] == PotentialSpot {
-				reversiString += "x"
+				reversiString += potentialSpotChar
 			}
 		}
-		reversiString += "\n"
+
+		if reversiGridSize-1 != i {
+			reversiString += "\n"
+		}
 	}
 
 	return reversiString
