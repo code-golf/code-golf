@@ -2613,13 +2613,13 @@ category = 'Gaming'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Reversi' },
 ]
-synopsis = 'Output possible moves for white on a reversi board.'
+synopsis = 'Output possible moves for white on a Reversi board.'
 preamble = '''
-<p>Output the possible moves for white on a reversi board.
+<p>Output the possible moves for white on a Reversi board.
 
 <p>
     In Reversi, you can only place a tile if there are one or more opponent
-    tiles between it and an opponents tile, either horizontally, vertically,
+    tiles between it and an opponent's tile either horizontally, vertically,
     or diagonally.
 
 <p>For example, given:
@@ -2631,11 +2631,11 @@ preamble = '''
 ...x.
 </pre>
 
-<p>White could only place on the spots marked with <code>x</code>
+<p>White can only place on spots marked with <code>x</code>.
 
 <p>
-    You may assume a board sice of 8x8 and a position reachable, on whites
-    turn, from the following starting position:
+    Assume a board size of 8x8 and a position reachable on white's turn,
+    from the following starting position:
 
 <pre>
 ........
