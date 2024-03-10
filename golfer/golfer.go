@@ -66,6 +66,7 @@ type RankUpdate struct {
 	OldBestGolferCount null.Int         `json:"oldBestGolferCount"` // Number of golfers that previously held the gold medal (except current golfer).
 	OldBestGolferID    null.Int         `json:"oldBestGolferID"`    // ID of the golfer that previously held the diamond (except current golfer).
 	OldBestStrokes     null.Int         `json:"oldBestStrokes"`     // Number of strokes for previous diamond (including current golfer).
+	OldBestSubmitted   null.Time        `json:"oldBestSubmitted"`   // Timestamp for previous diamond (including current golfer).
 }
 
 func (f *FailingSolutions) Scan(src any) error {

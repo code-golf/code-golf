@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"sync"
+	"time"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/code-golf/code-golf/config"
@@ -25,6 +26,8 @@ var (
 	guildID       = os.Getenv("DISCORD_GUILD_ID")        // Code Golf
 	roleContribID = os.Getenv("DISCORD_ROLE_CONTRIB_ID") // Contributor
 	roleSponsorID = os.Getenv("DISCORD_ROLE_SPONSOR_ID") // Sponsor
+
+	minElapsedTimeToShowDate = 30 * 24 * time.Hour
 )
 
 // Represents a new record announcement message
@@ -95,6 +98,13 @@ func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.Messa
 
 			if update.OldBestStrokes.Valid && fieldValues[update.Scoring] == "" {
 				fieldValues[update.Scoring] = pretty.Comma(int(update.OldBestStrokes.Int64))
+
+				timestamp := update.OldBestSubmitted.Time
+				if -time.Until(timestamp) > minElapsedTimeToShowDate {
+					// Show the data using a locale-specific short date format.
+					fieldValues[update.Scoring] += fmt.Sprintf(" (<t:%d:d>)", timestamp.Unix())
+				}
+
 				if update.OldBestGolferCount.Valid && update.OldBestGolferCount.Int64 > 1 {
 					// Display the number of golfers, excluding the current golfer, that previously held this record.
 					fieldValues[update.Scoring] += fmt.Sprintf(" (%d golfers)", update.OldBestGolferCount.Int64)
