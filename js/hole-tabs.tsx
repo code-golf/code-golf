@@ -12,7 +12,7 @@ import {
     setCode, refreshScores, getHideDeleteBtn, submit, ReadonlyPanelsData,
     updateRestoreLinkVisibility, getSavedInDB, setCodeForLangAndSolution,
     populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyJSONBtn,
-    getScorings, replaceUnprintablesInOutput,
+    getScorings, replaceUnprintablesInOutput, initOutputDiv,
 } from './_hole-common';
 import { highlightCodeBlocks } from './_wiki';
 
@@ -135,6 +135,9 @@ for (const name of ['exp', 'out', 'err', 'arg', 'diff']) {
         autoFocus(container);
         container.element.id = name;
         container.element.classList.add('readonly-output');
+        if (name === 'out') {
+            initOutputDiv(container.element);
+        }
         readonlyOutputs[name] = container.element;
         updateReadonlyPanel(name);
     });

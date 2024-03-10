@@ -5,7 +5,7 @@ import {
     init, langs, getLang, hole, getAutoSaveKey, setSolution, getSolution,
     setCode, refreshScores, submit, getSavedInDB, updateRestoreLinkVisibility,
     ReadonlyPanelsData, setCodeForLangAndSolution, getCurrentSolutionCode,
-    initDeleteBtn, initCopyJSONBtn, getScorings, replaceUnprintablesInOutput,
+    initDeleteBtn, initCopyJSONBtn, initOutputDiv, getScorings, replaceUnprintablesInOutput,
 } from './_hole-common';
 
 const editor = new EditorView({
@@ -47,6 +47,7 @@ const editor = new EditorView({
 editor.contentDOM.setAttribute('data-gramm', 'false');  // Disable Grammarly.
 
 init(false, setSolution, setCodeForLangAndSolution, updateReadonlyPanels, () => editor);
+initOutputDiv($('#out div'));
 
 // Set/clear the hide-details cookie on details toggling.
 $('#details').ontoggle = (e: Event) => document.cookie =

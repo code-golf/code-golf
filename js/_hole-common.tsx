@@ -80,6 +80,20 @@ export function initDeleteBtn(deleteBtn: HTMLElement | undefined, langs: any) {
     });
 }
 
+export function initOutputDiv(outputDiv: HTMLElement | undefined) {
+    outputDiv?.addEventListener('copy', event => {
+        const selection = document.getSelection();
+        if (selection?.rangeCount !== undefined && selection.rangeCount > 0) {
+            let text = '';
+            for (let index = 0; index < selection.rangeCount; index++) {
+                text += replacePlaceholdersInRange(selection, selection.getRangeAt(index));
+            }
+            event.clipboardData?.setData('text/plain', text);
+            event.preventDefault();
+        }
+    });
+}
+
 export function initCopyJSONBtn(copyBtn: HTMLElement | undefined) {
     copyBtn?.addEventListener('click', () =>
         navigator.clipboard.writeText($('#data').innerText));
@@ -722,4 +736,39 @@ export function getScorings(tr: any, editor: any) {
 export function replaceUnprintablesInOutput(output: string) {
     return output.replace(/[\x00-\x08\x0B-\x1F\x7F]/g,
         x => `<span title=${'\\u' + x.charCodeAt(0).toString(16)}>•</span>`);
+}
+
+// Extracts the text, replacing any unprintable placeholders with the actual text.
+function replacePlaceholdersInRange(selection: Selection, range: Range) {
+    let containers = [];
+    if (range.startContainer === range.endContainer) {
+        if (range.startContainer.parentElement instanceof HTMLSpanElement) {
+            containers.push(range.startContainer.parentElement);
+        }
+        else {
+            containers.push(range.startContainer);
+        }
+    }
+    else {
+        containers = Array.from(range.commonAncestorContainer.childNodes).filter(node => selection.containsNode(node, true));
+    }
+
+    let text = '';
+    for (const container of containers) {
+        if (container instanceof HTMLSpanElement) {
+            // Decode placeholder character.
+            text += String.fromCharCode(parseInt(container.title.substring(2), 16));
+        }
+        else if (container instanceof HTMLBRElement) {
+            text += '\n';
+        }
+        else {
+            const childText = container.textContent || '';
+            const start = container === containers[0] ? range.startOffset : 0;
+            const end = container === containers[containers.length - 1] ? range.endOffset : childText.length;
+            text += childText.substring(start, end);
+        }
+    }
+
+    return text;
 }
