@@ -127,7 +127,7 @@ func genReversiBoard(steps int) [reversiGridSize][reversiGridSize]ReversiTile {
 	return out
 }
 
-func drawReverssiBoard(board [reversiGridSize][reversiGridSize]ReversiTile) string {
+func drawReversiBoard(board [reversiGridSize][reversiGridSize]ReversiTile) string {
 	const blackChar string = "○"
 	const whiteChar string = "●"
 	const emptyChar string = "."
@@ -168,8 +168,8 @@ func reversi() []Run {
 	for run := range runs {
 		grid := genReversiBoard((run+1)/2*2 + 1)
 
-		args = append(args, drawReverssiBoard(grid))
-		answer = append(answer, drawReverssiBoard(highlightCorrectAnswersReversiBoard(grid)))
+		args = append(args, drawReversiBoard(grid))
+		answer = append(answer, drawReversiBoard(highlightCorrectAnswersReversiBoard(grid)))
 	}
 
 	return []Run{
