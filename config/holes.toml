@@ -2633,7 +2633,7 @@ preamble = '''
 </pre>
 
 <p>
-    <pre>O</pre> can only place on spots marked with <code>!</code>.
+    <code>O</code> can only place on spots marked with <code>!</code>.
 
 <p>
     Assume a board size of 8x8 and a position reachable on <code>O</code>'s turn,
@@ -2651,7 +2651,7 @@ preamble = '''
 </pre>
 
 <p>
-    <pre>X</pre> moves first so you can assume an odd number of tiles on the board.
+    <code>X</code> moves first so you can assume an odd number of tiles on the board.
 
 <p>
     Your program should output the board with valid position replaced with
