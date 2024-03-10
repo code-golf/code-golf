@@ -70,9 +70,11 @@ CREATE TYPE save_solution_ret AS (
     old_chars_joint             bool,
     old_chars_rank              int,
     old_best_bytes              int,
+    old_best_bytes_submitted    timestamp,
     old_best_bytes_golfer_count int,
     old_best_bytes_golfer_id    int,
     old_best_chars              int,
+    old_best_chars_submitted    timestamp,
     old_best_chars_golfer_count int,
     old_best_chars_golfer_id    int
 );
@@ -99,11 +101,14 @@ BEGIN
     ret.old_bytes_joint := rank.joint;
     ret.old_bytes_rank  := rank.rank;
 
-    SELECT MIN(solutions.bytes) INTO ret.old_best_bytes
+    SELECT solutions.bytes, solutions.submitted
+      INTO ret.old_best_bytes, ret.old_best_bytes_submitted
       FROM solutions
      WHERE solutions.failing = false
        AND solutions.hole    = hole
-       AND solutions.lang    = lang;
+       AND solutions.lang    = lang
+  ORDER BY solutions.bytes, solutions.submitted
+     LIMIT 1;
 
     IF bytes <= ret.old_best_bytes THEN
         old_best := hole_best_except_user(hole, lang, 'bytes', user_id);
@@ -121,11 +126,14 @@ BEGIN
         ret.old_chars_joint := rank.joint;
         ret.old_chars_rank  := rank.rank;
 
-        SELECT MIN(solutions.chars) INTO ret.old_best_chars
+        SELECT solutions.chars, solutions.submitted
+          INTO ret.old_best_chars, ret.old_best_chars_submitted
           FROM solutions
          WHERE solutions.failing = false
            AND solutions.hole    = hole
-           AND solutions.lang    = lang;
+           AND solutions.lang    = lang
+      ORDER BY solutions.chars, solutions.submitted
+         LIMIT 1;
 
         IF chars <= ret.old_best_chars THEN
             old_best := hole_best_except_user(hole, lang, 'chars', user_id);
