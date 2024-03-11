@@ -100,7 +100,7 @@ func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.Messa
 				fieldValues[update.Scoring] = pretty.Comma(int(update.OldBestStrokes.Int64))
 
 				timestamp := update.OldBestSubmitted.Time
-				if -time.Until(timestamp) > minElapsedTimeToShowDate {
+				if time.Since(timestamp) > minElapsedTimeToShowDate {
 					// Show the data using a locale-specific short date format.
 					fieldValues[update.Scoring] += fmt.Sprintf(" (<t:%d:d>)", timestamp.Unix())
 				}
