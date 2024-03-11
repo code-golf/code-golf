@@ -41,6 +41,8 @@ declare global {
       code: any;
       input: any;
       label: any;
+      svg: any;
+      use: any;
     }
   }
 }

@@ -201,6 +201,9 @@ function updateLangPicker() {
     $('#picker').replaceChildren(...sortedLangs.map((l: any) => {
         const tab = <a href={l.id == lang ? null : '#'+l.id}>{l.name}</a>;
 
+        if (l.experiment)
+            tab.prepend(<svg><use href="#flask"/></svg>);
+
         if (getSolutionCode(l.id, 0)) {
             const bytes = byteLen(getSolutionCode(l.id, 0));
             const chars = charLen(getSolutionCode(l.id, 1));

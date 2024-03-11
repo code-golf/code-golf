@@ -342,6 +342,17 @@ h2 {
     gap: 0.2rem;
 }
 
+#picker a {
+    align-items: center;
+    display: flex;
+    gap: .25rem;
+
+    svg {
+        height: 1rem;
+        width: 1rem;
+    }
+}
+
 #runtime {
     font-size: 80%;
     text-align: center;
