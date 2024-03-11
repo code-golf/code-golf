@@ -16,9 +16,12 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+const minElapsedTimeToShowDate = 30 * 24 * time.Hour
+
 var (
-	bot *discordgo.Session
-	mux sync.Mutex
+	bot              *discordgo.Session
+	lastAnnouncement *RecAnnouncement
+	mux              sync.Mutex
 
 	// All the config keys!
 	botToken      = os.Getenv("DISCORD_BOT_TOKEN")       // Caddie
@@ -26,8 +29,6 @@ var (
 	guildID       = os.Getenv("DISCORD_GUILD_ID")        // Code Golf
 	roleContribID = os.Getenv("DISCORD_ROLE_CONTRIB_ID") // Contributor
 	roleSponsorID = os.Getenv("DISCORD_ROLE_SPONSOR_ID") // Sponsor
-
-	minElapsedTimeToShowDate = 30 * 24 * time.Hour
 )
 
 // Represents a new record announcement message
@@ -38,8 +39,6 @@ type RecAnnouncement struct {
 	Hole    *config.Hole
 	Lang    *config.Lang
 }
-
-var lastAnnouncement *RecAnnouncement
 
 func init() {
 	// Ensure we have all our config.
