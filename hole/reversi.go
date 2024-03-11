@@ -5,11 +5,12 @@ import (
 	"strings"
 )
 
-const (
-	reversiGridSize = 8
-)
+const reversiGridSize = 8
 
-type ReversiTile int64
+type (
+	ReversiTile  int8
+	ReversiBoard [reversiGridSize][reversiGridSize]ReversiTile
+)
 
 const (
 	Empty ReversiTile = iota
@@ -37,10 +38,10 @@ type ReversiSpot struct {
 	Tiles [][2]int
 }
 
-func getPotentialSpots(team ReversiTile, grid [reversiGridSize][reversiGridSize]ReversiTile) []ReversiSpot {
+func getPotentialSpots(team ReversiTile, grid ReversiBoard) []ReversiSpot {
 	out := []ReversiSpot{}
 
-	directions := [8][2]int{
+	directions := [...][2]int{
 		{-1, -1},
 		{-1, 0},
 		{-1, 1},
@@ -97,9 +98,7 @@ func getPotentialSpots(team ReversiTile, grid [reversiGridSize][reversiGridSize]
 	return out
 }
 
-func getReversiInitialState() [reversiGridSize][reversiGridSize]ReversiTile {
-	var out [reversiGridSize][reversiGridSize]ReversiTile
-
+func getReversiInitialState() (out ReversiBoard) {
 	out[3][4] = Black
 	out[4][3] = Black
 	out[3][3] = White
@@ -107,7 +106,7 @@ func getReversiInitialState() [reversiGridSize][reversiGridSize]ReversiTile {
 	return out
 }
 
-func genReversiBoard(steps int) [reversiGridSize][reversiGridSize]ReversiTile {
+func genReversiBoard(steps int) ReversiBoard {
 	out := getReversiInitialState()
 
 	for i := range steps {
@@ -127,36 +126,31 @@ func genReversiBoard(steps int) [reversiGridSize][reversiGridSize]ReversiTile {
 	return out
 }
 
-func drawReversiBoard(board [reversiGridSize][reversiGridSize]ReversiTile) string {
-	const blackChar string = "x"
-	const whiteChar string = "o"
-	const emptyChar string = "."
-	const potentialSpotChar string = "!"
+func drawReversiBoard(board ReversiBoard) string {
+	var sb strings.Builder
 
-	reversiString := ""
-
-	for i := 0; i < reversiGridSize; i++ {
-		for j := 0; j < reversiGridSize; j++ {
-			if board[i][j] == Empty {
-				reversiString += emptyChar
-			} else if board[i][j] == Black {
-				reversiString += blackChar
-			} else if board[i][j] == White {
-				reversiString += whiteChar
-			} else if board[i][j] == PotentialSpot {
-				reversiString += potentialSpotChar
-			}
+	for i := range reversiGridSize {
+		if i != 0 {
+			sb.WriteByte('\n')
 		}
 
-		if reversiGridSize-1 != i {
-			reversiString += "\n"
+		for j := range reversiGridSize {
+			if board[i][j] == Empty {
+				sb.WriteByte('.')
+			} else if board[i][j] == Black {
+				sb.WriteByte('x')
+			} else if board[i][j] == White {
+				sb.WriteByte('o')
+			} else if board[i][j] == PotentialSpot {
+				sb.WriteByte('!')
+			}
 		}
 	}
 
-	return reversiString
+	return sb.String()
 }
 
-func highlightCorrectAnswersReversiBoard(board [reversiGridSize][reversiGridSize]ReversiTile) [reversiGridSize][reversiGridSize]ReversiTile {
+func highlightCorrectAnswersReversiBoard(board ReversiBoard) ReversiBoard {
 	for _, spot := range getPotentialSpots(White, board) {
 		board[spot.Pos[0]][spot.Pos[1]] = PotentialSpot
 	}
@@ -166,20 +160,15 @@ func highlightCorrectAnswersReversiBoard(board [reversiGridSize][reversiGridSize
 func reversi() []Run {
 	const runs = 20
 
-	args := []string{}
-	answer := []string{}
+	args := make([]string, runs)
+	answer := make([]string, runs)
 
-	for run := range runs {
-		grid := genReversiBoard((run+1)/2*2 + 1)
+	for i := range runs {
+		grid := genReversiBoard((i+1)/2*2 + 1)
 
-		args = append(args, drawReversiBoard(grid))
-		answer = append(answer, drawReversiBoard(highlightCorrectAnswersReversiBoard(grid)))
+		args[i] = drawReversiBoard(grid)
+		answer[i] = drawReversiBoard(highlightCorrectAnswersReversiBoard(grid))
 	}
 
-	return []Run{
-		{
-			Args:   args,
-			Answer: strings.Join(answer, "\n\n"),
-		},
-	}
+	return []Run{{Args: args, Answer: strings.Join(answer, "\n\n")}}
 }
