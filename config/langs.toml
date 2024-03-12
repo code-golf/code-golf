@@ -910,6 +910,26 @@ say 'Hello, World!';
 .say for @*ARGS;
 '''
 
+[Rockstar]
+experiment = 114
+size       = '167 MiB'
+version    = '2.1.0'
+website    = 'https://github.com/gaborsch/rocky'
+example    = '''
+(Printing)
+Shout "Hello, World!"
+
+(Looping)
+Let i be 0
+While i is less than 10
+Shout i
+Build i up
+
+(Accessing arguments)
+While args alike arg
+Shout arg
+'''
+
 [Ruby]
 size    = '27.7 MiB'
 version = '3.3.0'

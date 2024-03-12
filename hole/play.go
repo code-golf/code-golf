@@ -251,6 +251,8 @@ func Play(
 		runs = repeatingDecimals()
 	case "reverse-polish-notation":
 		runs = reversePolishNotation()
+	case "reversi":
+		runs = reversi()
 	case "rock-paper-scissors-spock-lizard":
 		runs = rockPaperScissorsSpockLizard()
 	case "seven-segment":

@@ -12,7 +12,7 @@ import {
     setCode, refreshScores, getHideDeleteBtn, submit, ReadonlyPanelsData,
     updateRestoreLinkVisibility, getSavedInDB, setCodeForLangAndSolution,
     populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyJSONBtn,
-    getScorings, replaceUnprintablesInOutput, getArgs, serializeArgs,
+    getScorings, replaceUnprintablesInOutput, initOutputDiv, getArgs, serializeArgs,
     deserializeArgs,
 } from './_hole-common';
 import { highlightCodeBlocks } from './_wiki';
@@ -92,7 +92,8 @@ function updateReadonlyPanel(name: string) {
         output.innerHTML = subRes.Err.replace(/\n/g,'<br>');
         break;
     case 'out':
-        output.innerText = replaceUnprintablesInOutput(subRes.Out);
+        output.innerText = subRes.Out;
+        output.innerHTML = replaceUnprintablesInOutput(output.innerHTML);
         break;
     case 'exp':
         output.innerText = subRes.Exp;
@@ -136,6 +137,9 @@ for (const name of isSandbox ? ['out', 'err'] : ['exp', 'out', 'err', 'diff']) {
         autoFocus(container);
         container.element.id = name;
         container.element.classList.add('readonly-output');
+        if (name === 'out') {
+            initOutputDiv(container.element);
+        }
         readonlyOutputs[name] = container.element;
         updateReadonlyPanel(name);
     });

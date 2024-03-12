@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"sync"
+	"time"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/code-golf/code-golf/config"
@@ -15,9 +16,12 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+const minElapsedTimeToShowDate = 30 * 24 * time.Hour
+
 var (
-	bot *discordgo.Session
-	mux sync.Mutex
+	bot              *discordgo.Session
+	lastAnnouncement *RecAnnouncement
+	mux              sync.Mutex
 
 	// All the config keys!
 	botToken      = os.Getenv("DISCORD_BOT_TOKEN")       // Caddie
@@ -35,8 +39,6 @@ type RecAnnouncement struct {
 	Hole    *config.Hole
 	Lang    *config.Lang
 }
-
-var lastAnnouncement *RecAnnouncement
 
 func init() {
 	// Ensure we have all our config.
@@ -95,6 +97,13 @@ func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.Messa
 
 			if update.OldBestStrokes.Valid && fieldValues[update.Scoring] == "" {
 				fieldValues[update.Scoring] = pretty.Comma(int(update.OldBestStrokes.Int64))
+
+				timestamp := update.OldBestSubmitted.Time
+				if time.Since(timestamp) > minElapsedTimeToShowDate {
+					// Show the data using a locale-specific short date format.
+					fieldValues[update.Scoring] += fmt.Sprintf(" (<t:%d:d>)", timestamp.Unix())
+				}
+
 				if update.OldBestGolferCount.Valid && update.OldBestGolferCount.Int64 > 1 {
 					// Display the number of golfers, excluding the current golfer, that previously held this record.
 					fieldValues[update.Scoring] += fmt.Sprintf(" (%d golfers)", update.OldBestGolferCount.Int64)

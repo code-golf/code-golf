@@ -34,7 +34,7 @@ func arrows() []Run {
 
 	// 1-3 of each arrow.
 	for arrow := range arrowMap {
-		for times := rand.IntN(3); times >= 0; times-- {
+		for range randInt(1, 3) {
 			args = append(args, arrow)
 		}
 	}

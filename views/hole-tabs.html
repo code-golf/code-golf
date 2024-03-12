@@ -1,5 +1,8 @@
 {{ template "header" . }}
 
+<!-- For experimental lang picker -->
+<svg>{{ symbol "flask-light" }}</svg>
+
 {{ if ne .Data.Hole.ID "sandbox" }}
     {{ with .Data.Hole.Experiment }}
         <div class=alert>

@@ -938,22 +938,6 @@ preamble = '''
 '''
 
 ['Factorial Factorisation']
-experiment = 812
-category = 'Sequence'
-links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Factorial' },
-]
-synopsis = 'Print the factorisation of 1000!.'
-preamble = '''
-<p>Print the factorisation of 1000!,
-
-<p>
-    <code>
-        2⁹⁹⁴×3⁴⁹⁸×5²⁴⁹×7¹⁶⁴×11⁹⁸×13⁸¹×17⁶¹×19⁵⁴×23⁴⁴×29³⁵×31³³×...×983×991×997
-    </code>.
-'''
-
-['Factorial Factorisation ascii']
 experiment = 1055
 category = 'Sequence'
 links = [
@@ -2621,6 +2605,57 @@ preamble = '''
 <p>
     The result of each operation is a non-negative integer not exceeding
     32,767. Division is guaranteed to have an exact integer result.
+'''
+
+['Reversi']
+experiment = 1123
+category = 'Gaming'
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Reversi' },
+]
+synopsis = 'Output possible moves for O on a Reversi board.'
+preamble = '''
+<p>Output the possible moves for O on a Reversi board.
+
+<p>
+    In Reversi, you can only place a tile if there are one or more opponent
+    tiles between it and an opponent's tile either horizontally, vertically,
+    or diagonally.
+
+<p>
+    For example, given:
+
+<pre>
+.....
+.OXX!
+..X..
+...!.
+</pre>
+
+<p>
+    <code>O</code> can only place on spots marked with <code>!</code>.
+
+<p>
+    Assume a board size of 8x8 and a position reachable on <code>O</code>'s turn,
+    from the following starting position:
+
+<pre>
+........
+........
+........
+...OX...
+...XO...
+........
+........
+........
+</pre>
+
+<p>
+    <code>X</code> moves first so you can assume an odd number of tiles on the board.
+
+<p>
+    Your program should output the board with valid position replaced with
+    <code>!</code>. Each output should be seperated by a blank line.
 '''
 
 ['Rijndael S-box']

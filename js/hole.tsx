@@ -5,7 +5,7 @@ import {
     init, langs, getLang, hole, getAutoSaveKey, setSolution, getSolution,
     setCode, refreshScores, submit, getSavedInDB, updateRestoreLinkVisibility,
     ReadonlyPanelsData, setCodeForLangAndSolution, getCurrentSolutionCode,
-    initDeleteBtn, initCopyJSONBtn, getScorings, replaceUnprintablesInOutput,
+    initDeleteBtn, initCopyJSONBtn, initOutputDiv, getScorings, replaceUnprintablesInOutput,
     getArgs, serializeArgs,
 } from './_hole-common';
 
@@ -48,6 +48,7 @@ const editor = new EditorView({
 editor.contentDOM.setAttribute('data-gramm', 'false');  // Disable Grammarly.
 
 init(false, setSolution, setCodeForLangAndSolution, updateReadonlyPanels, () => editor);
+initOutputDiv($('#out div'));
 
 // Set/clear the hide-details cookie on details toggling.
 $('#details').ontoggle = (e: Event) => document.cookie =
@@ -91,7 +92,8 @@ function updateReadonlyPanels(data: ReadonlyPanelsData) {
 
     // Always show exp & out.
     $('#exp div').innerText = data.Exp;
-    $('#out div').innerText = replaceUnprintablesInOutput(data.Out);
+    $('#out div').innerText = data.Out;
+    $('#out div').innerHTML = replaceUnprintablesInOutput($('#out div').innerHTML);
 
     const ignoreCase = JSON.parse($('#case-fold').innerText);
     const diff = diffTable(hole, data.Exp, data.Out, data.Argv, ignoreCase);

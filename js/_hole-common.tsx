@@ -18,6 +18,7 @@ async function getLangWikiContent(lang: string): Promise<string> {
 const renamedHoles: Record<string, string> = {
     'eight-queens': 'n-queens',
     'eight-queens-formatted': 'n-queens-formatted',
+    'factorial-factorisation-ascii': 'factorial-factorisation',
 };
 
 export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSolution: any, updateReadonlyPanels: any, getEditor: () => any, getArgs?: any) {
@@ -76,6 +77,20 @@ export function initDeleteBtn(deleteBtn: HTMLElement | undefined, langs: any) {
         $<HTMLInputElement>('#delete-dialog [name=lang]').value = lang;
         $<HTMLInputElement>('#delete-dialog [name=text]').value = '';
         $<HTMLDialogElement>('#delete-dialog').showModal();
+    });
+}
+
+export function initOutputDiv(outputDiv: HTMLElement | undefined) {
+    outputDiv?.addEventListener('copy', event => {
+        const selection = document.getSelection();
+        if (selection?.rangeCount !== undefined && selection.rangeCount > 0) {
+            let text = '';
+            for (let index = 0; index < selection.rangeCount; index++) {
+                text += replacePlaceholdersInRange(selection, selection.getRangeAt(index));
+            }
+            event.clipboardData?.setData('text/plain', text);
+            event.preventDefault();
+        }
     });
 }
 
@@ -185,6 +200,9 @@ function updateLangPicker() {
     // Populate the language picker with accurate stroke counts.
     $('#picker').replaceChildren(...sortedLangs.map((l: any) => {
         const tab = <a href={l.id == lang ? null : '#' + l.id}>{l.name}</a>;
+
+        if (l.experiment)
+            tab.prepend(<svg><use href="#flask"/></svg>);
 
         if (getSolutionCode(l.id, 0)) {
             const bytes = byteLen(getSolutionCode(l.id, 0));
@@ -734,7 +752,6 @@ export function replaceUnprintablesInOutput(output: string) {
         x => `<span title=${'\\u' + x.charCodeAt(0).toString(16)}>•</span>`);
 }
 
-
 export function getArgs() {
     return [...$$('#arg span')].map((x: any) => x.innerText);
 }
@@ -757,4 +774,39 @@ export function deserializeArgs(text: string) {
     }
     catch {}
     return args;
+}
+
+// Extracts the text, replacing any unprintable placeholders with the actual text.
+function replacePlaceholdersInRange(selection: Selection, range: Range) {
+    let containers = [];
+    if (range.startContainer === range.endContainer) {
+        if (range.startContainer.parentElement instanceof HTMLSpanElement) {
+            containers.push(range.startContainer.parentElement);
+        }
+        else {
+            containers.push(range.startContainer);
+        }
+    }
+    else {
+        containers = Array.from(range.commonAncestorContainer.childNodes).filter(node => selection.containsNode(node, true));
+    }
+
+    let text = '';
+    for (const container of containers) {
+        if (container instanceof HTMLSpanElement) {
+            // Decode placeholder character.
+            text += String.fromCharCode(parseInt(container.title.substring(2), 16));
+        }
+        else if (container instanceof HTMLBRElement) {
+            text += '\n';
+        }
+        else {
+            const childText = container.textContent || '';
+            const start = container === containers[0] ? range.startOffset : 0;
+            const end = container === containers[containers.length - 1] ? range.endOffset : childText.length;
+            text += childText.substring(start, end);
+        }
+    }
+
+    return text;
 }

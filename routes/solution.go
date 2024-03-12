@@ -108,11 +108,13 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			        old_best_bytes_golfer_count,
 			        old_best_bytes_golfer_id,
 			        old_best_bytes,
+			        old_best_bytes_submitted,
 			        old_chars_joint, old_chars_rank, old_chars,
 			        new_chars_joint, new_chars_rank, new_chars,
 			        old_best_chars_golfer_count,
 			        old_best_chars_golfer_id,
-			        old_best_chars
+			        old_best_chars,
+			        old_best_chars_submitted
 			   FROM save_solution(
 			            bytes   := CASE WHEN $3 = 'assembly'::lang
 			                            THEN $5
@@ -139,6 +141,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			&out.RankUpdates[0].OldBestGolferCount,
 			&out.RankUpdates[0].OldBestGolferID,
 			&out.RankUpdates[0].OldBestStrokes,
+			&out.RankUpdates[0].OldBestSubmitted,
 			&out.RankUpdates[1].From.Joint,
 			&out.RankUpdates[1].From.Rank,
 			&out.RankUpdates[1].From.Strokes,
@@ -148,6 +151,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			&out.RankUpdates[1].OldBestGolferCount,
 			&out.RankUpdates[1].OldBestGolferID,
 			&out.RankUpdates[1].OldBestStrokes,
+			&out.RankUpdates[1].OldBestSubmitted,
 		); err != nil {
 			panic(err)
 		}
