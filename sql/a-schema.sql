@@ -64,8 +64,8 @@ CREATE TYPE lang AS ENUM (
     'f-sharp', 'factor', 'fish', 'forth', 'fortran', 'go', 'golfscript',
     'haskell', 'hexagony', 'j', 'janet', 'java', 'javascript', 'julia', 'k',
     'lisp', 'lua', 'nim', 'ocaml', 'pascal', 'perl', 'php', 'powershell',
-    'prolog', 'python', 'r', 'raku', 'ruby', 'rust', 'sed', 'sql', 'swift',
-    'tcl', 'tex', 'v', 'viml', 'wren', 'zig'
+    'prolog', 'python', 'r', 'raku', 'rockstar', 'ruby', 'rust', 'sed', 'sql',
+    'swift', 'tcl', 'tex', 'v', 'viml', 'wren', 'zig'
 );
 
 CREATE TYPE layout AS ENUM ('default', 'tabs');

@@ -2,10 +2,7 @@
 
 export PATH=/usr/bin:/bin
 
-if [ "$1" = "-v" ]; then
-  exec /usr/bin/rocky
-  exit 0
-fi
+[ "$1" = "-v" ] && exec rocky
 
 cd /tmp
 
@@ -41,4 +38,4 @@ echo "let quote be mysterious" >> code.rock
 cat - >> code.rock
 
 # Execute
-exec /usr/bin/rocky run -X code.rock
+exec rocky run --infinite-loops --rocky code.rock

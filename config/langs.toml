@@ -911,11 +911,10 @@ say 'Hello, World!';
 '''
 
 [Rockstar]
-experiment = 114
-size       = '167 MiB'
-version    = '2.1.0'
-website    = 'https://github.com/gaborsch/rocky'
-example    = '''
+size    = '167 MiB'
+version = '2.1.2'
+website = 'https://github.com/gaborsch/rocky'
+example = '''
 (Printing)
 Shout "Hello, World!"
 
