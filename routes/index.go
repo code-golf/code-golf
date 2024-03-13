@@ -41,19 +41,30 @@ func indexGET(w http.ResponseWriter, r *http.Request) {
 		Points int
 	}
 
+	type Option struct{ ID, Name string }
+
 	data := struct {
 		Cards                 []Card
 		LangID, Scoring, Sort string
 		Langs                 []*config.Lang
 		LangsUsed             map[string]bool
-		Sorts                 []string
+		Sorts                 []Option
 	}{
 		Cards:     make([]Card, 0, len(config.HoleList)),
 		LangID:    "all",
 		Langs:     config.LangList,
 		LangsUsed: map[string]bool{},
 		Scoring:   "bytes",
-		Sorts:     []string{"alphabetical", "category", "points", "released"},
+		Sorts: []Option{
+			{ID: "alphabetical-asc", Name: "Alphabetical (ascending)"},
+			{ID: "alphabetical-desc", Name: "Alphabetical (descending)"},
+			{ID: "category-asc", Name: "Category (ascending)"},
+			{ID: "category-desc", Name: "Category (descending)"},
+			{ID: "points-asc", Name: "Points (ascending)"},
+			{ID: "points-desc", Name: "Points (descending)"},
+			{ID: "released-asc", Name: "Released (ascending)"},
+			{ID: "released-desc", Name: "Released (descending)"},
+		},
 	}
 
 	if golfer := session.Golfer(r); golfer == nil {

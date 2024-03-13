@@ -435,6 +435,30 @@ thead th {
 
 .me { background: var(--light-green) !important }
 
+.new-form {
+    fieldset {
+        border: 0;
+        display: flex;
+        gap: .5rem;
+        padding: 0;
+    }
+
+    label {
+        display: flex;
+        flex-direction: column;
+        font-weight: bold;
+        gap: .25rem;
+
+        > * { font-weight: normal }
+
+        /* labels with checkboxes/radios directly inside them go horizontal */
+        &:has(> :is([type=checkbox], [type=radio])) {
+            flex-direction: row;
+            font-weight: normal;
+        }
+    }
+}
+
 [class^=nowrap-] { white-space: nowrap }
 
 .nowrap-first  td:nth-child(1),
@@ -507,7 +531,7 @@ body > .tabs a {
 
 #ideas, #index { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
 
-#index > .tabs { gap: .5rem 0 }
+#index > .tabs { justify-content: flex-end }
 
 #index > .grid {
     border: 2px solid var(--color);

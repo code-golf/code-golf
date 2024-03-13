@@ -28,23 +28,10 @@
 <main id=index>
 {{ if .Golfer }}
     <nav class="span tabs">
-        <button class="btn blue" data-dialog=config-dialog title=Configure>
+        <button class="btn blue" data-dialog=settings-dialog title=Settings>
             {{ svg "gear-fill" }}
+            Settings
         </button>
-
-        <div></div>
-
-    {{ $sort := .Data.Sort }}
-
-    {{ range .Data.Sorts }}
-        {{ $asc := hasSuffix $sort "asc" }}
-        {{ $on  := hasPrefix $sort . }}
-
-        <a {{ if $on }} class=on {{ end }} href="?sort={{ . }}-{{ if and $on $asc }}desc{{ else }}asc{{ end }}">
-            {{ if and $on (not $asc) }}⌄{{ else }}⌃{{ end }}
-            {{ title . }}
-        </a>
-    {{ end }}
     </nav>
 {{ end }}
 {{ range .Data.Cards }}
@@ -67,31 +54,50 @@
 {{ end }}
 </main>
 
-<dialog id=config-dialog>
-    <form>
-        <h2>Configure</h2>
-        <p>Point values shown:
-        <select name=lang>
-            <option value=all>All Languages
-        {{ range .Data.Langs }}
-            <option value="{{ .ID }}"
-                {{ if eq $.Data.LangID .ID }} selected {{ end }}>{{ .Name }}
-        {{ end }}
-        </select>
-        <div role=group>
-        {{ with .Data.Scoring }}
-            <label>
-                <input name=scoring type=radio value=bytes
-                    {{ if eq . "bytes" }} checked{{ end }}>
-                    Bytes
-            </label>
-            <label>
-                <input name=scoring type=radio value=chars
-                    {{ if eq . "chars" }} checked{{ end }}>
-                    Chars
-            </label>
-        {{ end }}
-        </div>
+{{ if .Golfer }}
+<dialog id=settings-dialog>
+    <form class=new-form>
+        <h2>Settings</h2>
+
+        <label>
+            Order By
+            <select name=sort>
+            {{ range .Data.Sorts }}
+                <option value="{{ .ID }}"
+                    {{ if eq .ID $.Data.Sort }} selected {{ end }}>{{ .Name }}
+            {{ end }}
+            </select>
+        </label>
+
+        <label>
+            Points For
+            <select name=lang>
+                <option value=all>All Languages
+            {{ range .Data.Langs }}
+                <option value="{{ .ID }}"
+                    {{ if eq .ID $.Data.LangID }} selected {{ end }}>{{ .Name }}
+            {{ end }}
+            </select>
+        </label>
+
+        <label>
+            Scoring
+            <fieldset>
+            {{ with .Data.Scoring }}
+                <label>
+                    <input name=scoring type=radio value=bytes
+                        {{ if eq . "bytes" }} checked{{ end }}>
+                        Bytes
+                </label>
+                <label>
+                    <input name=scoring type=radio value=chars
+                        {{ if eq . "chars" }} checked{{ end }}>
+                        Chars
+                </label>
+            {{ end }}
+            </fieldset>
+        </label>
+
         <menu>
             <!-- Enter submits the first button, we flip the order in CSS -->
             <button class="btn green">OK</button>
@@ -99,5 +105,6 @@
         </menu>
     </form>
 </dialog>
+{{ end }}
 
 {{ template "footer" }}
