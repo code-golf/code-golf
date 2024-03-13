@@ -101,7 +101,7 @@ func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.Messa
 				timestamp := update.OldBestSubmitted.Time
 				if time.Since(timestamp) > minElapsedTimeToShowDate {
 					// Show the data using a locale-specific short date format.
-					fieldValues[update.Scoring] += fmt.Sprintf(" (<t:%d:d>)", timestamp.Unix())
+					fieldValues[update.Scoring] += fmt.Sprintf(" (<t:%d:R>)", timestamp.Unix())
 				}
 
 				if update.OldBestGolferCount.Valid && update.OldBestGolferCount.Int64 > 1 {
