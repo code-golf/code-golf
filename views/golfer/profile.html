@@ -53,7 +53,9 @@
         <section id=connections>
         {{ range . }}
             {{ $url := "" }}
-            {{ if or (eq .Connection "github") (eq .Connection "gitlab") }}
+            {{ if eq .Connection "discord" }}
+                {{ $url = print "//discord.com/users/" .ID }}
+            {{ else if or (eq .Connection "github") (eq .Connection "gitlab") }}
                 {{ $url = print "//" .Connection ".com/" .Username }}
             {{ else if eq .Connection "stack-overflow" }}
                 {{ $url = print "//stackoverflow.com/users/" .ID }}
