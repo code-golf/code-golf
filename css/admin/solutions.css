@@ -5,7 +5,6 @@ code { white-space: normal }
 form {
     align-items: center;
     display: grid;
-    gap: 1rem;
     grid-template-columns: min-content 1fr;
     margin: auto;
 }
@@ -16,8 +15,6 @@ form > div {
     grid-column: span 2;
     justify-content: flex-end;
 }
-
-label { font-weight: bold }
 
 table {
     display: none;

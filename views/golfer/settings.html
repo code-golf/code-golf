@@ -92,7 +92,7 @@
 
         Preferred keyboard mapping for the solution editor.
 
-        <div role=group>
+        <fieldset>
         {{- range .Data.Keymaps -}}
             <label>
                 <input name=keymap type=radio value="{{ . }}"
@@ -100,13 +100,13 @@
                     {{- title . -}}
             </label>
         {{- end -}}
-        </div>
+        </fieldset>
 
         <h2>Layout</h2>
 
         Preferred layout for the hole page.
 
-        <div role=group>
+        <fieldset>
         {{- range .Data.Layouts -}}
             <label>
                 <input name=layout type=radio value="{{ . }}"
@@ -114,7 +114,7 @@
                     {{- title . }} {{ if eq . "tabs" }}(WIP){{ end -}}
             </label>
         {{- end -}}
-        </div>
+        </fieldset>
 
         <h2>Pronouns</h2>
 
@@ -141,7 +141,7 @@
 
         Preferred set of colors for the user interface.
 
-        <div role=group>
+        <fieldset>
             {{- range .Data.Themes -}}
                 <label>
                     <input name=theme type=radio value="{{ . }}"
@@ -149,7 +149,7 @@
                         {{- title . -}}
                 </label>
             {{- end -}}
-        </div>
+        </fieldset>
 
         <h2>Time Zone</h2>
 

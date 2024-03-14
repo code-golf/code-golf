@@ -203,24 +203,63 @@ dialog ul {
     padding: 0;
 }
 
-form menu {
+form {
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: column;
     gap: 1rem;
-    justify-content: space-between;
-    padding: 0;
-}
 
-input:not([type]) { background: var(--background) }
+    fieldset {
+        border: 0;
+        display: flex;
+        gap: .5rem .75rem;
+        padding: 0;
 
-input:not([type]), select {
-    border-radius: .25rem;
-    border: 1px solid var(--grey);
-    color: var(--color);
-    font: inherit;
-    line-height: 1.5;
-    padding: .375rem .5rem;
-    width: 100%;
+        /* fieldsets with checkboxes go vertical */
+        &:has([type=checkbox]) { flex-direction: column }
+    }
+
+    input:not([type]) { background: var(--background) }
+
+    input:not([type]), select {
+        border-radius: .25rem;
+        border: 1px solid var(--grey);
+        color: var(--color);
+        font-family: inherit;
+        font-size: 1rem;
+        line-height: 1.5;
+        padding: .375rem .5rem;
+        width: 100%;
+    }
+
+    label {
+        display: flex;
+        flex-direction: column;
+        font-weight: bold;
+        gap: .375rem;
+
+        > * { font-weight: normal }
+
+        /* labels with checkboxes/radios directly inside them go horizontal */
+        &:has(> :is([type=checkbox], [type=radio])) {
+            align-items: center;
+            flex-direction: row;
+            font-weight: normal;
+        }
+    }
+
+    menu {
+        display: flex;
+        flex-direction: row-reverse;
+        gap: 1rem;
+        justify-content: space-between;
+        padding: 0;
+    }
+
+    select {
+        -webkit-appearance: none;
+        appearance: none;
+        padding-right: .75rem;
+    }
 }
 
 main {
@@ -233,12 +272,6 @@ main {
 }
 
 nav > :empty { flex: 1 }
-
-select {
-    -webkit-appearance: none;
-    appearance: none;
-    padding-right: .75rem;
-}
 
 summary {
     background: var(--summary-background);
@@ -435,30 +468,6 @@ thead th {
 
 .me { background: var(--light-green) !important }
 
-.new-form {
-    fieldset {
-        border: 0;
-        display: flex;
-        gap: .5rem;
-        padding: 0;
-    }
-
-    label {
-        display: flex;
-        flex-direction: column;
-        font-weight: bold;
-        gap: .25rem;
-
-        > * { font-weight: normal }
-
-        /* labels with checkboxes/radios directly inside them go horizontal */
-        &:has(> :is([type=checkbox], [type=radio])) {
-            flex-direction: row;
-            font-weight: normal;
-        }
-    }
-}
-
 [class^=nowrap-] { white-space: nowrap }
 
 .nowrap-first  td:nth-child(1),
@@ -637,20 +646,7 @@ body > .tabs a {
 
         & > form {
             display: flex;
-            flex-direction: column;
             gap: .5rem;
-
-            & > fieldset {
-                border: 0;
-                display: flex;
-                gap: .75rem;
-                padding: 0;
-
-                & > label {
-                    display: flex;
-                    gap: .25rem;
-                }
-            }
         }
 
         & > nav { display: none }

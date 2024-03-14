@@ -1,20 +1,6 @@
 @import "./_golfer.css";
 
-[role=group] {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: min-content min-content 1fr;
-}
-
 h2 { font-size: 1.25rem }
-
-label {
-    align-items: center;
-    display: grid;
-    gap: .5rem;
-    grid-template-columns: min-content 1fr;
-    white-space: nowrap;
-}
 
 main > form {
     display: grid;
