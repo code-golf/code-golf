@@ -629,9 +629,16 @@ export async function submit(
 }
 
 export function updateRestoreLinkVisibility(editor: any) {
-    const serverCode = getSolutionCode(lang, solution);
-    $('#restoreLink')?.classList.toggle('hide',
-        !serverCode || editor?.state.doc.toString() == serverCode);
+    const restoreLink = $('#restoreLink');
+    if (restoreLink instanceof HTMLAnchorElement) {
+        const serverCode = getSolutionCode(lang, solution);
+        const sampleCode = langs[lang].example;
+        const currentCode = editor?.state.doc.toString();
+        restoreLink.classList.toggle('hide',
+            (!serverCode && currentCode !== sampleCode) || currentCode === serverCode);
+        restoreLink.textContent =
+            currentCode === sampleCode ? 'Clear sample code' : 'Restore solution';
+    }
 }
 
 export function setCodeForLangAndSolution(editor: any) {
