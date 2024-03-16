@@ -2618,10 +2618,9 @@ preamble = '''
 <p>Output the possible moves for O on a Reversi board.
 
 <p>
-    In Reversi, you can only place a tile if there are one or more opponent
-    tiles between it and an opponent's tile either horizontally, vertically,
-    or diagonally.
-
+    In Reversi, you can only place a tile in a free spot such that there are
+    one or more opponents tiles between the spot and a friendly tile in at least
+    one direction. Directions are either horizontal, vertical, or diagonal.
 <p>
     For example, given:
 
