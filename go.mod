@@ -20,7 +20,7 @@ require (
 	github.com/pelletier/go-toml/v2 v2.1.1
 	github.com/shurcooL/graphql v0.0.0-20230722043721-ed46e5a46466
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
-	github.com/tdewolff/minify/v2 v2.20.18
+	github.com/tdewolff/minify/v2 v2.20.19
 	github.com/yuin/goldmark v1.7.0
 	golang.org/x/oauth2 v0.18.0
 	gopkg.in/guregu/null.v4 v4.0.0
@@ -43,7 +43,7 @@ require (
 	github.com/kevinburke/ssh_config v1.2.0 // indirect
 	github.com/pjbgf/sha1cd v0.3.0 // indirect
 	github.com/sergi/go-diff v1.3.1 // indirect
-	github.com/skeema/knownhosts v1.2.1 // indirect
+	github.com/skeema/knownhosts v1.2.2 // indirect
 	github.com/tdewolff/parse/v2 v2.7.12 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	golang.org/x/crypto v0.21.0 // indirect
