@@ -42,6 +42,7 @@
 
 #profile form {
     align-self: start;
+    display: block;
     grid-row: span 3;
 }
 
