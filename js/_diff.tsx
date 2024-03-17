@@ -193,16 +193,16 @@ function diffHTMLRows(hole: string, exp: string, out: string, argv: string[], ig
 }
 
 function stringsEqual(a: string, b: string, ignoreCase: boolean) {
-    // https://stackoverflow.com/a/2140723/7481517
+    // Note: localeCompare ignores non-printable characters.
+    if (!ignoreCase) {
+        return a === b;
+    }
     return (
         a !== undefined &&
         a !== null &&
-        0 ===
-        a.localeCompare(
-            b,
-            undefined,
-            ignoreCase ? { sensitivity: 'accent' } : undefined,
-        )
+        b !== undefined &&
+        b !== null &&
+        a.toLowerCase() === b.toLowerCase()
     );
 }
 
