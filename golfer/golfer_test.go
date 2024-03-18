@@ -1,7 +1,7 @@
 package golfer
 
 import (
-	"reflect"
+	"slices"
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
@@ -27,7 +27,7 @@ func TestEarn(t *testing.T) {
 	}
 
 	want := pq.StringArray{"bar", "baz", "foo"}
-	if !reflect.DeepEqual(golfer.Cheevos, want) {
+	if !slices.Equal(golfer.Cheevos, want) {
 		t.Errorf("golfer.Cheevos = %v; want %v", golfer.Cheevos, want)
 	}
 }
