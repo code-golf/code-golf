@@ -618,8 +618,8 @@ example = '''
 '''
 
 [Java]
-size    = '51.1 MiB'
-version = '17.0.1'
+size    = '58.2 MiB'
+version = '21.0.2'
 website = 'https://openjdk.java.net'
 example = '''
 class Main {
@@ -806,7 +806,7 @@ say for @ARGV;
 
 [PHP]
 size    = '8.4 MiB'
-version = '8.3.3'
+version = '8.3.4'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -1083,8 +1083,8 @@ Hello, World!
 '''
 
 [V]
-size    = '52.5 MiB'
-version = '0.4.4'
+size    = '59.8 MiB'
+version = '0.4.5'
 website = 'https://vlang.io'
 example = '''
 import os
