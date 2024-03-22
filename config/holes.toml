@@ -3362,7 +3362,9 @@ synopsis = 'Print the first 20 rows of the trinomial triangle.'
 preamble = '''
 <p>The trinomial triangle is a triangular array of numbers similar to Pascal's triangle.
 The top row consists of a single 1, and each subsequent row contains 2 more numbers than the last.
-Each number is the sum of the number right above it and the two left and right of that.
+Each number is the sum of the 3 numbers above it, i.e.
+<pre>1 2 3
+  6</pre>
 <p>Print the first <b>20</b> rows of the trinomial triangle.
 '''
 
