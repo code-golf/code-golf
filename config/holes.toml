@@ -3360,6 +3360,7 @@ links = [
 ]
 synopsis = 'Print the first 20 rows of the trinomial triangle.'
 preamble = '''
+<p>The trinomial triangle is a triangular array of numbers. The nth row consists of the coefficients of (1+x+x²)ⁿ.
 <p>Print the first <b>20</b> rows of the trinomial triangle.
 '''
 
