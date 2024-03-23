@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@codemirror/lang-cpp": "",
+    "@codemirror/lang-go": "",
     "@codemirror/lang-java": "",
     "@codemirror/lang-javascript": "",
     "@codemirror/lang-php": "",

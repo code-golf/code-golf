@@ -32,7 +32,7 @@ import { factor }             from '@codemirror/legacy-modes/mode/factor';
 import { forth }              from '@codemirror/legacy-modes/mode/forth';
 import { fortran }            from '@codemirror/legacy-modes/mode/fortran';
 import { fSharp, oCaml }      from '@codemirror/legacy-modes/mode/mllike';
-import { go }                 from '@codemirror/legacy-modes/mode/go';
+import { goLanguage }         from '@codemirror/lang-go';
 import { golfScript }         from 'codemirror-lang-golfscript';
 import { haskell }            from '@codemirror/legacy-modes/mode/haskell';
 import { j }                  from 'codemirror-lang-j';
@@ -63,6 +63,7 @@ import { zig }                from 'codemirror-lang-zig';
 
 // Bypass default constructors so we only get highlighters and not extensions.
 const elixir     = new LanguageSupport(elixirLanguage);
+const go         = new LanguageSupport(goLanguage);
 const javascript = new LanguageSupport(javascriptLanguage);
 const php        = new LanguageSupport(phpLanguage.configure({ top: 'Program' }));
 const python     = new LanguageSupport(pythonLanguage);
@@ -129,7 +130,7 @@ export const extensions = {
     // TODO fish
     'forth':      StreamLanguage.define({ ...forth, languageData: { commentTokens: { line: '\\' } } }),
     'fortran':    StreamLanguage.define({ ...fortran, languageData: { commentTokens: { line: '!' } } }),
-    'go':         StreamLanguage.define(go),
+    'go':         go,
     'golfscript': golfScript(),
     'haskell':    StreamLanguage.define(haskell),
     // TODO hexagony
@@ -151,6 +152,7 @@ export const extensions = {
     'python':     python,
     'r':          StreamLanguage.define(r),
     'raku':       StreamLanguage.define(raku),
+    // TODO rockstar
     'ruby':       StreamLanguage.define(ruby),
     'rust':       rust(),
     // TODO sed
