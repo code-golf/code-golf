@@ -21,7 +21,6 @@ func Router(db *sqlx.DB) http.Handler {
 		middleware.Recoverer,
 		middleware.Static,
 		middleware.RedirectSlashes,
-		middleware.Compress(5),
 		// middleware.Downtime,
 		middleware.Database(db),
 	)
