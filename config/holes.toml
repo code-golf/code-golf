@@ -1023,6 +1023,20 @@ preamble = '''
     for example <b>15</b> should print <b>FizzBuzz</b>.
 '''
 
+['Floyd-Steinberg Dithering']
+category = 'Computing'
+experiment = 1138
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Floyd–Steinberg_dithering' },
+]
+synopsis = 'Apply the Floyd-Steinberg algorithm to a 64x64 grayscale image.'
+preamble = '''
+<p>
+    Given a 64x64 grayscale image in plain PGM format, convert it to a palette
+    of black (0) and white (255) using the Floyd-Steinberg algorithm. Print
+    the result, using "#" for black and spaces for white.
+'''
+
 ['Forsyth–Edwards Notation']
 category = 'Gaming'
 links = [
