@@ -199,6 +199,8 @@ func Play(
 		runs = ellipsePerimeters()
 	case "emojify":
 		runs = emojify()
+	case "floyd-steinberg-dithering":
+		runs = floydSteinbergDithering()
 	case "forsyth-edwards-notation":
 		runs = forsythEdwardsNotation()
 	case "fractions":
