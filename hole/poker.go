@@ -364,6 +364,15 @@ func poker() []Run {
 			cardRune(cards[1], suit2[1]),
 		}})
 	}
+	suit1 = rand.Perm(4)
+	suit2 = rand.Perm(4)
+	hands = append(hands, Hand{"Full House", []rune{
+		cardRune(four, suit1[0]),
+		cardRune(four, suit1[1]),
+		cardRune(king, suit2[0]),
+		cardRune(king, suit2[1]),
+		cardRune(king, suit2[2]),
+	}})
 
 	// Flush
 	for i := 0; i < handCount; i++ {
@@ -518,6 +527,13 @@ func poker() []Run {
 			cardRune(ace, suit+1),
 			cardRune(two, suit+1),
 		}})
+		hands = append(hands, Hand{"High Card", []rune{
+			cardRune(three, suit+1),
+			cardRune(eight, suit),
+			cardRune(jack, suit),
+			cardRune(queen, suit),
+			cardRune(king, suit),
+		}})
 	}
 
 	// Flush, but could be mistaken for a straight.
@@ -568,6 +584,14 @@ func poker() []Run {
 		cardRune(ten, suit),
 		cardRune(jack, suit),
 		cardRune(queen, suit),
+	}})
+	suit = rand.IntN(4)
+	hands = append(hands, Hand{"Flush", []rune{
+		cardRune(two, suit),
+		cardRune(nine, suit),
+		cardRune(jack, suit),
+		cardRune(queen, suit),
+		cardRune(king, suit),
 	}})
 
 	tests := make([]test, len(hands))
