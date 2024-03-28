@@ -21,9 +21,9 @@ const renamedHoles: Record<string, string> = {
     'factorial-factorisation-ascii': 'factorial-factorisation',
 };
 
-export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSolution: any, updateReadonlyPanels: any, getEditor: () => any) {
+export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSolution: any, updateReadonlyPanels: any, getEditor: () => any, getArgs?: any) {
     tabLayout = _tabLayout;
-    const closuredSubmit = () => submit(getEditor(), updateReadonlyPanels);
+    const closuredSubmit = () => submit(getEditor(), updateReadonlyPanels, getArgs);
     window.onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter'
         ? closuredSubmit()
         : undefined;
@@ -54,7 +54,7 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
             updateReadonlyPanels({langWiki: await getLangWikiContent(lang)});
     })();
 
-    $('dialog [name=text]').addEventListener('input', (e: Event) => {
+    $('dialog [name=text]')?.addEventListener('input', (e: Event) => {
         const target = e.target as HTMLInputElement;
         target.form!.confirm.toggleAttribute('disabled',
             target.value !== target.placeholder);
@@ -100,7 +100,7 @@ export function initCopyJSONBtn(copyBtn: HTMLElement | undefined) {
 }
 
 export const langs = JSON.parse($('#langs').innerText);
-const sortedLangs  =
+const sortedLangs =
     Object.values(langs).sort((a: any, b: any) => a.name.localeCompare(b.name));
 let lang: string = '';
 
@@ -109,9 +109,9 @@ export function getLang() {
 }
 
 const experimental = JSON.parse($('#experimental').innerText);
-export const hole         = decodeURI(location.pathname.slice(1));
-const scorings     = ['Bytes', 'Chars'];
-const solutions    = JSON.parse($('#solutions').innerText);
+export const hole = decodeURI(location.pathname.slice(1));
+const scorings = ['Bytes', 'Chars'];
+const solutions = JSON.parse($('#solutions').innerText);
 
 const vimMode = JSON.parse($('#keymap').innerText) === 'vim';
 const vimModeExtensions = vimMode ? [extensions.vim] : [];
@@ -120,7 +120,7 @@ const baseExtensions = [...vimModeExtensions, ...extensions.base, ...extensions.
 
 let latestSubmissionID = 0;
 let solution = scorings.indexOf(localStorage.getItem('solution') ?? 'Bytes') as 0 | 1;
-let scoring  = scorings.indexOf(localStorage.getItem('scoring')  ?? 'Bytes') as 0 | 1;
+let scoring = scorings.indexOf(localStorage.getItem('scoring') ?? 'Bytes') as 0 | 1;
 
 let hideDeleteBtn: boolean = false;
 
@@ -151,7 +151,7 @@ function getScoring(str: string, index: 0 | 1) {
 }
 
 function getSolutionCode(lang: string, solution: 0 | 1) {
-    return lang in solutions[solution] ? solutions[solution][lang] : '';
+    return solutions && lang in solutions[solution] ? solutions[solution][lang] : '';
 }
 
 /**
@@ -199,7 +199,7 @@ export function setCode(code: string, editor: EditorView | null) {
 function updateLangPicker() {
     // Populate the language picker with accurate stroke counts.
     $('#picker').replaceChildren(...sortedLangs.map((l: any) => {
-        const tab = <a href={l.id == lang ? null : '#'+l.id}>{l.name}</a>;
+        const tab = <a href={l.id == lang ? null : '#' + l.id}>{l.name}</a>;
 
         if (l.experiment)
             tab.prepend(<svg><use href="#flask"/></svg>);
@@ -233,9 +233,9 @@ export async function refreshScores(editor: any) {
     const lsChars = localStorage.getItem(getAutoSaveKey(lang, 1));
 
     if ((dbBytes && dbChars && dbBytes != dbChars)
-     || (lsBytes && lsChars && lsBytes != lsChars)
-     || (dbBytes && lsChars && dbBytes != lsChars && solution == 0)
-     || (lsBytes && dbChars && lsBytes != dbChars && solution == 1)) {
+    || (lsBytes && lsChars && lsBytes != lsChars)
+    || (dbBytes && lsChars && dbBytes != lsChars && solution == 0)
+    || (lsBytes && dbChars && lsBytes != dbChars && solution == 1)) {
         $('#solutionPicker').replaceChildren(...scorings.map((scoring, iNumber) => {
             const i = iNumber as 0 | 1;
             const a = <a>Fewest {scoring}</a>;
@@ -258,7 +258,7 @@ export async function refreshScores(editor: any) {
         $('#solutionPicker').classList.remove('hide');
     }
     else
-        $('#solutionPicker').classList.add('hide');
+        $('#solutionPicker')?.classList.add('hide');
 
     // Hide the delete button for exp holes or if we have no solutions.
     hideDeleteBtn = experimental || (!dbBytes && !dbChars);
@@ -339,6 +339,8 @@ const getDisplayPointsChange = (points: number, delta: number) =>
     `${points} points` + (delta > 0 && delta < points ? ` (+${delta})` : '');
 
 const scorePopups = (updates: RankUpdate[]) => {
+    if (!updates) return [];
+
     const strokesDelta = [0, 0];
     const pointsDelta = [0, 0];
     const points = [0, 0];
@@ -430,6 +432,8 @@ const scorePopups = (updates: RankUpdate[]) => {
 };
 
 const diamondPopups = (updates: RankUpdate[]) => {
+    if (!updates) return [];
+
     const popups: Node[] = [];
 
     const newDiamonds: string[] = [];
@@ -476,23 +480,30 @@ export async function submit(
     editor: any,
     // eslint-disable-next-line no-unused-vars
     updateReadonlyPanels: (d: ReadonlyPanelsData) => void,
+    getArgs?: () => string[],
 ) {
     if (!editor) return;
     $('h2').innerText = '…';
-    $('#status').className = 'grey';
+    if ($('#status')) $('#status').className = 'grey';
     $$('canvas').forEach(e => e.remove());
 
     const code = editor.state.doc.toString();
     const codeLang = lang;
     const submissionID = ++latestSubmissionID;
 
-    const res  = await fetch('/solution', {
+    const request: any = {
+        Code: code,
+        Hole: hole,
+        Lang: lang,
+    };
+
+    if (hole === 'sandbox' && getArgs) {
+        request.Args = getArgs();
+    }
+
+    const res = await fetch(hole === 'sandbox' ? '/sandbox' : '/solution', {
         method: 'POST',
-        body: JSON.stringify({
-            Code: code,
-            Hole: hole,
-            Lang: lang,
-        }),
+        body: JSON.stringify(request),
     });
 
     if (res.status != 200) {
@@ -506,7 +517,7 @@ export async function submit(
     if (submissionID != latestSubmissionID)
         return;
 
-    if (data.Pass) {
+    if (data.Pass && hole !== 'sandbox') {
         for (const i of [0, 1] as const) {
             const solutionCode = getSolutionCode(codeLang, i);
             if (!solutionCode || getScoring(code, i) <= getScoring(solutionCode, i)) {
@@ -680,13 +691,13 @@ export async function populateScores(editor: any) {
             <td>{r.rank}<sup>{ord(r.rank)}</sup></td>
             <td>
                 <a href={`/golfers/${r.golfer.name}`}>
-                    <img src={`/golfers/${r.golfer.name}/avatar/48`}/>
+                    <img src={`/golfers/${r.golfer.name}/avatar/48`} />
                     <span>{r.golfer.name}</span>
                 </a>
             </td>
             <td data-tooltip={tooltip(r, 'Bytes')}>{comma(r.bytes)}</td>
             <td data-tooltip={tooltip(r, 'Chars')}>{comma(r.chars)}</td>
-        </tr>): <tr><td colspan="4">(Empty)</td></tr>
+        </tr>) : <tr><td colspan="4">(Empty)</td></tr>
     }{
         // Padding.
         tabLayout ? [] : [...Array(7 - rows.length).keys()].map(() =>
@@ -707,7 +718,7 @@ export async function populateScores(editor: any) {
         }
         else {
             tab.href = '';
-            tab.onclick = e  => {
+            tab.onclick = e => {
                 e.preventDefault();
                 scoring = i as 0 | 1;
                 localStorage.setItem('scoring', scorings[scoring]);
@@ -746,6 +757,30 @@ export function getScorings(tr: any, editor: any) {
 export function replaceUnprintablesInOutput(output: string) {
     return output.replace(/[\x00-\x08\x0B-\x1F\x7F]/g,
         x => `<span title=${'\\u' + x.charCodeAt(0).toString(16)}>•</span>`);
+}
+
+export function getArgs() {
+    return [...$$('#arg span')].map((x: any) => x.innerText);
+}
+
+export function serializeArgs(args: string[]) {
+    let res = args.some(x => x.includes('\n')) ? '[]' : args.join('\n');
+    try {
+        JSON.parse(res);
+        res = JSON.stringify(args);
+    }
+    catch {}
+    return res;
+}
+export function deserializeArgs(text: string) {
+    let args = text.split('\n');
+    try {
+        const x = JSON.parse(text);
+        if (Array.isArray(x) && x.every(x => typeof x === 'string'))
+            args = x;
+    }
+    catch {}
+    return args;
 }
 
 // Extracts the text, replacing any unprintable placeholders with the actual text.
