@@ -1,0 +1,26 @@
+[[home]]
+id      = 'sort'
+name    = 'Order By'
+options = [
+    { id = 'alphabetical-asc',  name = 'Alphabetical (ascending)'  },
+    { id = 'alphabetical-desc', name = 'Alphabetical (descending)' },
+    { id = 'category-asc',      name = 'Category (ascending)'      },
+    { id = 'category-desc',     name = 'Category (descending)'     },
+    { id = 'points-asc',        name = 'Points (ascending)'        },
+    { id = 'points-desc',       name = 'Points (descending)'       },
+    { id = 'released-asc',      name = 'Release Date (ascending)'  },
+    { id = 'released-desc',     name = 'Release Date (descending)' },
+]
+
+[[home]]
+id      = 'lang'
+name    = 'Points For'
+options = [ { id = 'all', name = 'All Languages' } ]
+
+[[home]]
+id      = 'scoring'
+name    = 'Scoring'
+options = [
+    { id = 'bytes', name = 'Bytes' },
+    { id = 'chars', name = 'Chars' },
+]

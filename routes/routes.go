@@ -45,6 +45,7 @@ func Router(db *sqlx.DB) http.Handler {
 		r.Use(middleware.Golfer)
 
 		r.Get("/", indexGET)
+		r.Post("/", indexPost)
 		r.Get("/{hole}", holeGET)
 		r.Get("/about", aboutGET)
 		r.With(middleware.AdminArea).Route("/admin", func(r chi.Router) {

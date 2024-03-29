@@ -1,0 +1,34 @@
+{{ range $i, $setting := .Data.Settings }}
+    {{ $value := index $.Data.SettingsValues .ID }}
+
+{{ if .Checkbox }}
+    <fieldset>
+        <label>
+            <input name="{{ .ID }}" type=checkbox>{{ .Name }}
+        </label>
+    </fieldset>
+{{ else }}
+    <label>
+        {{ .Name }}
+
+    {{ if gt (len .Options) 3 }}
+        <select name="{{ .ID }}">
+        {{ range .Options }}
+            <option value="{{ .ID }}" {{ if eq $value .ID }} selected {{ end }}>
+                {{ .Name }}
+        {{ end }}
+        </select>
+    {{ else }}
+        <fieldset>
+        {{ range .Options }}
+            <label>
+                <input name="{{ $setting.ID }}" type=radio value="{{ .ID }}"
+                    {{ if eq $value .ID }} checked {{ end }}>
+                {{ .Name }}
+            </label>
+        {{ end }}
+        </fieldset>
+    {{ end }}
+    </label>
+{{ end }}
+{{ end }}

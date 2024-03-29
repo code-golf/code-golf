@@ -11,60 +11,42 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
+var homeSettings = config.Settings["home"]
+
+// POST /
+func indexPost(w http.ResponseWriter, r *http.Request) {
+	for _, setting := range homeSettings {
+		http.SetCookie(w, &http.Cookie{
+			HttpOnly: true,
+			Name:     "__Host-" + setting.ID,
+			Path:     "/",
+			SameSite: http.SameSiteLaxMode,
+			Secure:   true,
+			Value:    r.FormValue(setting.ID),
+		})
+	}
+
+	http.Redirect(w, r, "/", http.StatusFound)
+}
+
 // GET /
 func indexGET(w http.ResponseWriter, r *http.Request) {
-	redirect := false
-
-	for _, param := range []string{"lang", "scoring", "sort"} {
-		if value := r.FormValue(param); value != "" {
-			http.SetCookie(w, &http.Cookie{
-				HttpOnly: true,
-				Name:     "__Host-" + param,
-				Path:     "/",
-				SameSite: http.SameSiteLaxMode,
-				Secure:   true,
-				Value:    value,
-			})
-
-			redirect = true
-		}
-	}
-
-	if redirect {
-		http.Redirect(w, r, "/", http.StatusFound)
-		return
-	}
-
 	type Card struct {
 		Hole   *config.Hole
 		Lang   *config.Lang
 		Points int
 	}
 
-	type Option struct{ ID, Name string }
-
 	data := struct {
-		Cards                 []Card
-		LangID, Scoring, Sort string
-		Langs                 []*config.Lang
-		LangsUsed             map[string]bool
-		Sorts                 []Option
+		Cards          []Card
+		LangsUsed      map[string]bool
+		Settings       []*config.Setting
+		SettingsValues map[string]string
 	}{
-		Cards:     make([]Card, 0, len(config.HoleList)),
-		LangID:    "all",
-		Langs:     config.LangList,
-		LangsUsed: map[string]bool{},
-		Scoring:   "bytes",
-		Sorts: []Option{
-			{ID: "alphabetical-asc", Name: "Alphabetical (ascending)"},
-			{ID: "alphabetical-desc", Name: "Alphabetical (descending)"},
-			{ID: "category-asc", Name: "Category (ascending)"},
-			{ID: "category-desc", Name: "Category (descending)"},
-			{ID: "points-asc", Name: "Points (ascending)"},
-			{ID: "points-desc", Name: "Points (descending)"},
-			{ID: "released-asc", Name: "Released (ascending)"},
-			{ID: "released-desc", Name: "Released (descending)"},
-		},
+		Cards:          make([]Card, 0, len(config.HoleList)),
+		LangsUsed:      map[string]bool{},
+		Settings:       homeSettings,
+		SettingsValues: map[string]string{},
 	}
 
 	if golfer := session.Golfer(r); golfer == nil {
@@ -72,18 +54,15 @@ func indexGET(w http.ResponseWriter, r *http.Request) {
 			data.Cards = append(data.Cards, Card{Hole: hole})
 		}
 	} else {
-		if cookie(r, "__Host-scoring") == "chars" {
-			data.Scoring = "chars"
-		}
-
-		if lang, ok := config.LangByID[cookie(r, "__Host-lang")]; ok {
-			data.LangID = lang.ID
+		for _, setting := range data.Settings {
+			data.SettingsValues[setting.ID] =
+				setting.ValueOrDefault(cookie(r, "__Host-"+setting.ID))
 		}
 
 		var rows *sql.Rows
 		var err error
 
-		if data.LangID == "all" {
+		if lang := config.LangByID[data.SettingsValues["lang"]]; lang == nil {
 			rows, err = session.Database(r).Query(
 				`WITH points AS (
 				    SELECT DISTINCT ON (hole) hole, lang, points
@@ -93,7 +72,7 @@ func indexGET(w http.ResponseWriter, r *http.Request) {
 				)  SELECT hole, lang, COALESCE(points, 0)
 				     FROM unnest(enum_range(NULL::hole)) hole
 				LEFT JOIN points USING(hole)`,
-				data.Scoring,
+				data.SettingsValues["scoring"],
 				golfer.ID,
 			)
 		} else {
@@ -105,9 +84,9 @@ func indexGET(w http.ResponseWriter, r *http.Request) {
 				)  SELECT hole, lang, COALESCE(points_for_lang, 0)
 				     FROM unnest(enum_range(NULL::hole)) hole
 				LEFT JOIN points USING(hole)`,
-				data.Scoring,
+				data.SettingsValues["scoring"],
 				golfer.ID,
-				data.LangID,
+				lang.ID,
 			)
 		}
 
@@ -145,7 +124,9 @@ func indexGET(w http.ResponseWriter, r *http.Request) {
 				strings.ToLower(b.Hole.Name))
 		}
 
-		switch data.Sort = cookie(r, "__Host-sort"); data.Sort {
+		switch data.SettingsValues["sort"] {
+		case "alphabetical-asc": // name desc.
+			slices.SortFunc(data.Cards, cmpHoleNameLowercase)
 		case "alphabetical-desc": // name desc.
 			slices.SortFunc(data.Cards, func(a, b Card) int {
 				return cmpHoleNameLowercase(b, a)
@@ -196,10 +177,6 @@ func indexGET(w http.ResponseWriter, r *http.Request) {
 				}
 				return cmpHoleNameLowercase(a, b)
 			})
-		default: // name desc.
-			data.Sort = "alphabetical-asc"
-
-			slices.SortFunc(data.Cards, cmpHoleNameLowercase)
 		}
 	}
 

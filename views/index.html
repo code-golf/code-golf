@@ -37,7 +37,9 @@
 {{ range .Data.Cards }}
     <a class="card {{ .Hole.CategoryColor }}"
     {{ if .Points }}
-        href="rankings/holes/{{ .Hole.ID }}/{{ $.Data.LangID }}/{{ $.Data.Scoring }}"
+        {{ $lang    := index $.Data.SettingsValues "lang"    }}
+        {{ $scoring := index $.Data.SettingsValues "scoring" }}
+        href="rankings/holes/{{ .Hole.ID }}/{{ $lang }}/{{ $scoring }}"
     {{ else }}
         href="{{ .Hole.ID }}"
     {{ end }}
@@ -56,47 +58,10 @@
 
 {{ if .Golfer }}
 <dialog id=settings-dialog>
-    <form>
+    <form method=post>
         <h2>Settings</h2>
 
-        <label>
-            Order By
-            <select name=sort>
-            {{ range .Data.Sorts }}
-                <option value="{{ .ID }}"
-                    {{ if eq .ID $.Data.Sort }} selected {{ end }}>{{ .Name }}
-            {{ end }}
-            </select>
-        </label>
-
-        <label>
-            Points For
-            <select name=lang>
-                <option value=all>All Languages
-            {{ range .Data.Langs }}
-                <option value="{{ .ID }}"
-                    {{ if eq .ID $.Data.LangID }} selected {{ end }}>{{ .Name }}
-            {{ end }}
-            </select>
-        </label>
-
-        <label>
-            Scoring
-            <fieldset>
-            {{ with .Data.Scoring }}
-                <label>
-                    <input name=scoring type=radio value=bytes
-                        {{ if eq . "bytes" }} checked{{ end }}>
-                        Bytes
-                </label>
-                <label>
-                    <input name=scoring type=radio value=chars
-                        {{ if eq . "chars" }} checked{{ end }}>
-                        Chars
-                </label>
-            {{ end }}
-            </fieldset>
-        </label>
+        {{ template "settings" . }}
 
         <menu>
             <!-- Enter submits the first button, we flip the order in CSS -->
