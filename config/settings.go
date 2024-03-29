@@ -26,8 +26,13 @@ func init() {
 				setting.Default = setting.Options[0].ID
 			}
 
-			// A bit hacky, append all language options onto "All Languages".
+			// A bit hacky, append all something options onto "All Something".
 			switch setting.Options[0].Name {
+			case "All Holes":
+				for _, hole := range HoleList {
+					setting.Options = append(setting.Options,
+						&Option{ID: hole.ID, Name: hole.Name})
+				}
 			case "All Languages":
 				for _, lang := range LangList {
 					setting.Options = append(setting.Options,
