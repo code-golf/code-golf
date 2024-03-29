@@ -3,7 +3,7 @@ package hole
 import (
 	"fmt"
 	"math/rand/v2"
-	"sort"
+	"slices"
 	"strings"
 )
 
@@ -96,7 +96,7 @@ func solveNFA(test string) string {
 				resultStateNames = append(resultStateNames, stateName)
 			}
 
-			sort.Strings(resultStateNames)
+			slices.Sort(resultStateNames)
 			output.WriteString(fmt.Sprintf("{%s}", strings.Join(resultStateNames, ",")))
 		}
 
@@ -185,7 +185,7 @@ func generateNFA() string {
 				chosenStates := make([]string, possibleStatesCount)
 				copy(chosenStates, shuffleStates[:possibleStatesCount])
 
-				sort.Strings(chosenStates)
+				slices.Sort(chosenStates)
 
 				inputNFA.WriteString("{" + strings.Join(chosenStates, ",") + "}")
 

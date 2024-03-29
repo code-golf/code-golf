@@ -3,7 +3,7 @@ package hole
 import (
 	"fmt"
 	"math/rand/v2"
-	"sort"
+	"slices"
 )
 
 func medalTally() []Run {
@@ -43,7 +43,7 @@ func medalTally() []Run {
 
 func medalTallyTest(size, g, s, b, tie int) test {
 	uniqueScores := rand.Perm(99)[:size+4]
-	sort.Ints(uniqueScores)
+	slices.Sort(uniqueScores)
 
 	for i := range uniqueScores {
 		uniqueScores[i]++
