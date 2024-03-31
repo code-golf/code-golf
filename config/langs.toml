@@ -618,8 +618,8 @@ example = '''
 '''
 
 [Java]
-size    = '58.2 MiB'
-version = '21.0.2'
+size    = '58.1 MiB'
+version = '22'
 website = 'https://openjdk.java.net'
 example = '''
 class Main {
