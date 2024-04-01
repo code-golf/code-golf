@@ -433,6 +433,7 @@ func poker() []Run {
 		flushHand(three, four, six, queen, king),
 		flushHand(three, five, seven, nine, queen),
 		flushHand(four, eight, ten, jack, queen),
+		flushHand(five, seven, eight, nine, jack),
 		flushHand(six, eight, nine, ten, jack),
 	)
 
