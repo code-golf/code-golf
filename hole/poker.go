@@ -173,6 +173,14 @@ func poker() []Run {
 		cardRune(ten, rand.IntN(4)),
 		cardRune(jack, suits[1]),
 	}})
+	suits = rand.Perm(4)
+	hands = append(hands, Hand{"High Card", []rune{
+		cardRune(ace, suits[0]),
+		cardRune(three, suits[0]),
+		cardRune(five, suits[0]),
+		cardRune(eight, suits[0]),
+		cardRune(ten, suits[1]),
+	}})
 
 	// Pair
 	for i := 0; i < handCount; i++ {
@@ -198,6 +206,14 @@ func poker() []Run {
 	hands = append(hands, Hand{"Pair", []rune{
 		cardRune(nine, suits[0]),
 		cardRune(nine, suits[1]),
+		cardRune(jack, rand.IntN(4)),
+		cardRune(queen, rand.IntN(4)),
+		cardRune(king, rand.IntN(4)),
+	}})
+	suits = rand.Perm(4)
+	hands = append(hands, Hand{"Pair", []rune{
+		cardRune(ten, suits[0]),
+		cardRune(ten, suits[1]),
 		cardRune(jack, rand.IntN(4)),
 		cardRune(queen, rand.IntN(4)),
 		cardRune(king, rand.IntN(4)),
@@ -390,38 +406,35 @@ func poker() []Run {
 			cardRune(cards[4], suit),
 		}})
 	}
-	suit := rand.IntN(4)
-	hands = append(hands, Hand{"Flush", []rune{
-		cardRune(ace, suit),
-		cardRune(four, suit),
-		cardRune(nine, suit),
-		cardRune(ten, suit),
-		cardRune(queen, suit),
-	}})
-	suit = rand.IntN(4)
-	hands = append(hands, Hand{"Flush", []rune{
-		cardRune(ace, suit),
-		cardRune(nine, suit),
-		cardRune(ten, suit),
-		cardRune(queen, suit),
-		cardRune(king, suit),
-	}})
-	suit = rand.IntN(4)
-	hands = append(hands, Hand{"Flush", []rune{
-		cardRune(ace, suit),
-		cardRune(seven, suit),
-		cardRune(eight, suit),
-		cardRune(nine, suit),
-		cardRune(ten, suit),
-	}})
-	suit = rand.IntN(4)
-	hands = append(hands, Hand{"Flush", []rune{
-		cardRune(six, suit),
-		cardRune(eight, suit),
-		cardRune(nine, suit),
-		cardRune(ten, suit),
-		cardRune(jack, suit),
-	}})
+
+	flushHand := func(a, b, c, d, e cardValue) Hand {
+		suit := rand.IntN(4)
+
+		return Hand{"Flush", []rune{
+			cardRune(a, suit),
+			cardRune(b, suit),
+			cardRune(c, suit),
+			cardRune(d, suit),
+			cardRune(e, suit),
+		}}
+	}
+
+	hands = append(
+		hands,
+		flushHand(ace, two, three, seven, jack),
+		flushHand(ace, two, four, seven, nine),
+		flushHand(ace, four, nine, ten, queen),
+		flushHand(ace, four, five, seven, nine),
+		flushHand(ace, four, five, jack, queen),
+		flushHand(ace, nine, ten, queen, king),
+		flushHand(ace, seven, eight, nine, ten),
+		flushHand(two, three, four, eight, nine),
+		flushHand(two, three, nine, queen, king),
+		flushHand(three, four, six, queen, king),
+		flushHand(three, five, seven, nine, queen),
+		flushHand(four, eight, ten, jack, queen),
+		flushHand(six, eight, nine, ten, jack),
+	)
 
 	// Straight
 	lowCards := rand.Perm(9)
@@ -537,62 +550,24 @@ func poker() []Run {
 	}
 
 	// Flush, but could be mistaken for a straight.
-	suit = rand.IntN(4)
-	hands = append(hands, Hand{"Flush", []rune{
-		cardRune(king, suit),
-		cardRune(ace, suit),
-		cardRune(two, suit),
-		cardRune(three, suit),
-		cardRune(four, suit),
-	}})
-	suit = rand.IntN(4)
-	hands = append(hands, Hand{"Flush", []rune{
-		cardRune(queen, suit),
-		cardRune(king, suit),
-		cardRune(ace, suit),
-		cardRune(two, suit),
-		cardRune(three, suit),
-	}})
-	suit = rand.IntN(4)
-	hands = append(hands, Hand{"Flush", []rune{
-		cardRune(jack, suit),
-		cardRune(queen, suit),
-		cardRune(king, suit),
-		cardRune(ace, suit),
-		cardRune(two, suit),
-	}})
-	suit = rand.IntN(4)
-	hands = append(hands, Hand{"Flush", []rune{
-		cardRune(ace, suit),
-		cardRune(seven, suit),
-		cardRune(eight, suit),
-		cardRune(nine, suit),
-		cardRune(ten, suit),
-	}})
-	suit = rand.IntN(4)
-	hands = append(hands, Hand{"Flush", []rune{
-		cardRune(ace, suit),
-		cardRune(eight, suit),
-		cardRune(nine, suit),
-		cardRune(ten, suit),
-		cardRune(jack, suit),
-	}})
-	suit = rand.IntN(4)
-	hands = append(hands, Hand{"Flush", []rune{
-		cardRune(ace, suit),
-		cardRune(nine, suit),
-		cardRune(ten, suit),
-		cardRune(jack, suit),
-		cardRune(queen, suit),
-	}})
-	suit = rand.IntN(4)
-	hands = append(hands, Hand{"Flush", []rune{
-		cardRune(two, suit),
-		cardRune(nine, suit),
-		cardRune(jack, suit),
-		cardRune(queen, suit),
-		cardRune(king, suit),
-	}})
+	hands = append(
+		hands,
+		flushHand(king, ace, two, three, four),
+		flushHand(queen, king, ace, two, three),
+		flushHand(jack, queen, king, ace, two),
+		flushHand(ace, two, three, four, seven),
+		flushHand(ace, two, three, four, eight),
+		flushHand(ace, three, four, five, seven),
+		flushHand(ace, five, six, seven, eight),
+		flushHand(ace, seven, eight, nine, ten),
+		flushHand(ace, eight, nine, ten, jack),
+		flushHand(ace, nine, ten, jack, queen),
+		flushHand(ace, nine, ten, jack, king),
+		flushHand(ace, nine, jack, queen, king),
+		flushHand(two, nine, jack, queen, king),
+		flushHand(six, seven, eight, jack, queen),
+		flushHand(six, seven, jack, queen, king),
+	)
 
 	tests := make([]test, len(hands))
 	for i, hand := range shuffle(hands) {
