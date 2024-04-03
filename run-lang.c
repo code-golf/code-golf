@@ -8,6 +8,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/mount.h>
 #include <sys/prctl.h>
 #include <sys/stat.h>
@@ -69,6 +70,11 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         // Clobber /proc/meminfo. It can be used to inject state.
         if (mount("/dev/null", "/proc/meminfo", NULL, MS_BIND, NULL) < 0)
             ERR_AND_EXIT("mount /proc/meminfo");
+
+        // Clobber /proc/stat. It can be used to inject state. V panics :-(
+        if (strcmp(argv[0], "/usr/bin/v") != 0)
+            if (mount("/dev/null", "/proc/stat", NULL, MS_BIND, NULL) < 0)
+                ERR_AND_EXIT("mount /proc/stat");
 
         // Clobber /proc/sys. It can be used to inject state.
         if (mount("tmpfs", "/proc/sys", "tmpfs", MS_NODEV|MS_NOEXEC|MS_NOSUID|MS_RDONLY, NULL) < 0)
