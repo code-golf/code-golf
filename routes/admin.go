@@ -44,9 +44,9 @@ func adminGET(w http.ResponseWriter, r *http.Request) {
 
 	if err := db.Select(
 		&data.Tables,
-		` SELECT relname                                           name,
-		         CASE WHEN relkind = 'i' THEN 0 ELSE reltuples END rows,
-		         PG_TOTAL_RELATION_SIZE(c.oid)                     size
+		` SELECT relname                                                name,
+		         CASE WHEN relkind = 'i' THEN 0 ELSE reltuples::int END rows,
+		         PG_TOTAL_RELATION_SIZE(c.oid)                          size
 		    FROM pg_class     c
 		    JOIN pg_namespace n
 		      ON n.oid = relnamespace
