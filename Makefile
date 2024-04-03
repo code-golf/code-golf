@@ -22,13 +22,13 @@ db:
 	@ssh -t root@code.golf sudo -iu postgres psql code-golf
 
 db-dev:
-	@docker-compose exec db psql -U postgres code-golf
+	@docker compose exec db psql -U postgres code-golf
 
 db-diff:
 	@diff --color --label live --label dev --strip-trailing-cr -su   \
 	    <(ssh root@code.golf sudo -iu postgres pg_dump -Os code-golf \
 	    | sed -E 's/ \(Debian .+//')                                 \
-	    <(docker-compose exec -T db pg_dump -OsU postgres code-golf)
+	    <(docker compose exec -T db pg_dump -OsU postgres code-golf)
 
 db-dump:
 	@rm -f sql/*.gz
@@ -40,8 +40,8 @@ db-dump:
 
 dev:
 	@touch docker/.env
-	@docker-compose rm -f
-	@docker-compose up --build
+	@docker compose rm -f
+	@docker compose up --build
 
 # e2e-iterate is useful when you have made a small change to test code only
 # and want to re-run. Note that logs are not automatically shown when tests
@@ -50,7 +50,7 @@ dev:
 e2e-iterate: export COMPOSE_FILE=docker/core.yml:docker/e2e.yml
 e2e-iterate: export COMPOSE_PROJECT_NAME=code-golf-e2e
 e2e-iterate:
-	@docker-compose run e2e
+	@docker compose run e2e
 
 e2e: export COMPOSE_FILE=docker/core.yml:docker/e2e.yml
 e2e: export COMPOSE_PROJECT_NAME=code-golf-e2e
@@ -58,10 +58,10 @@ e2e:
 # TODO Pass arguments to run specific tests.
 	@./esbuild
 	@touch docker/.env
-	@docker-compose rm -fsv &>/dev/null
-	@docker-compose build --pull -q
-	@docker-compose run e2e || (docker-compose logs; false)
-	@docker-compose rm -fsv &>/dev/null
+	@docker compose rm -fsv &>/dev/null
+	@docker compose build --pull -q
+	@docker compose run e2e || (docker compose logs; false)
+	@docker compose rm -fsv &>/dev/null
 
 fmt:
 	@gofmt -s  -w $(GOFILES)
