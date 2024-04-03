@@ -50,10 +50,6 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
     if (mount("tmpfs", "/dev", "tmpfs", MS_NOSUID, NULL) < 0)
         ERR_AND_EXIT("mount /dev");
 
-    // Elixir walks /dev/fd on exit closing each handle.
-    if (symlink("/proc/self/fd", "/dev/fd") < 0)
-        ERR_AND_EXIT("symlink /dev/fd");
-
     if (mknod("/dev/null", S_IFCHR|0666, makedev(1, 3)) < 0)
         ERR_AND_EXIT("mknod /dev/null");
 
@@ -77,6 +73,10 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         // Clobber /proc/sys. It can be used to inject state.
         if (mount("tmpfs", "/proc/sys", "tmpfs", MS_NODEV|MS_NOEXEC|MS_NOSUID|MS_RDONLY, NULL) < 0)
             ERR_AND_EXIT("mount /proc/sys");
+
+        // Elixir walks /dev/fd on exit closing each handle.
+        if (symlink("/proc/self/fd", "/dev/fd") < 0)
+            ERR_AND_EXIT("symlink /dev/fd");
 
         // Allow /proc/self/fd/0 to be read by the lang after we change user.
         if (chown("/proc/self/fd/0", NOBODY, NOBODY) < 0)
