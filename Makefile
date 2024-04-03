@@ -106,7 +106,7 @@ logs:
 	@ssh root@code.golf docker logs --tail 5 -f code-golf
 
 svgo:
-	@svgo --final-newline -f svg
+	@svgo -f svg
 
 test:
 	@go test ./...
