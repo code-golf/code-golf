@@ -422,6 +422,7 @@ func play(
 		cmd.Args = []string{"/usr/bin/sed", "-E", "-z", "--sandbox", "-u", "--", code}
 	case "swift":
 		cmd.Args = []string{"/usr/bin/swift", "-module-cache-path", "/tmp", "-"}
+		cmd.Env = []string{"HOME=/"}
 	case "tcl":
 		cmd.Args = []string{"/usr/bin/tcl", "/proc/self/fd/0"}
 	case "tex":
