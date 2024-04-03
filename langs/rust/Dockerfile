@@ -1,13 +1,13 @@
-FROM rust:1.76.0-alpine3.19 AS builder
+FROM rust:1.77.1-alpine3.19 AS builder
 
-WORKDIR /usr/local/rustup/toolchains/1.76.0-x86_64-unknown-linux-musl
+WORKDIR /usr/local/rustup/toolchains/1.77.1-x86_64-unknown-linux-musl
 
 # Delete unused binaries.
 RUN find /usr/local/cargo/bin bin -not -name rustc -delete \
  && rm lib/rustlib/x86_64-unknown-linux-musl/bin/rust-lld
 
-# Delete unused libs.
-RUN rm lib/libtest-*.so
+# Delete unused sanitizers.
+RUN find . -name '*.?san.a' -delete
 
 # Strip the giant rust libs.
 RUN strip lib/*.so
@@ -27,10 +27,10 @@ COPY --from=0 /usr/lib/libbfd-2.41.so         \
 COPY --from=0 /usr/local/cargo                /usr/local/cargo
 COPY --from=0 /usr/local/rustup/settings.toml /usr/local/rustup/
 
-COPY --from=0 /usr/local/rustup/toolchains/1.76.0-x86_64-unknown-linux-musl/bin \
-              /usr/local/rustup/toolchains/1.76.0-x86_64-unknown-linux-musl/bin
-COPY --from=0 /usr/local/rustup/toolchains/1.76.0-x86_64-unknown-linux-musl/lib \
-              /usr/local/rustup/toolchains/1.76.0-x86_64-unknown-linux-musl/lib
+COPY --from=0 /usr/local/rustup/toolchains/1.77.1-x86_64-unknown-linux-musl/bin \
+              /usr/local/rustup/toolchains/1.77.1-x86_64-unknown-linux-musl/bin
+COPY --from=0 /usr/local/rustup/toolchains/1.77.1-x86_64-unknown-linux-musl/lib \
+              /usr/local/rustup/toolchains/1.77.1-x86_64-unknown-linux-musl/lib
 
 COPY rust /usr/bin/
 
