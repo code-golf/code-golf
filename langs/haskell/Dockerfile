@@ -18,7 +18,8 @@ RUN find /usr/lib -not \(                    \
     \) -delete
 
 # Delete all the GHC binaries except ghc, runghc
-RUN find /usr/lib/ghc-9.4.7/bin -type f \
+RUN rm -r /usr/lib/ghc-9.4.7/lib/bin    \
+ && find /usr/lib/ghc-9.4.7/bin -type f \
     -not \( -name ghc-9.4.7 -or -name runghc-9.4.7 \) -delete
 
 FROM codegolf/lang-base
