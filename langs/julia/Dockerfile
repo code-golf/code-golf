@@ -11,6 +11,9 @@ RUN make -C julia-$VER -j`nproc` prefix=/usr MARCH=x86-64-v3 install \
  && strip -s /usr/bin/julia /usr/lib/julia/*.so                      \
  && rm -r julia-$VER
 
+# Delete unused libraries.
+RUN rm /usr/lib/julia/libcurl.so* /usr/lib/julia/libgfortran.so*
+
 FROM codegolf/lang-base
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1      /lib/
