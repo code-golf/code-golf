@@ -33,7 +33,10 @@ func cardRune[T int | cardValue](number T, suit int) rune {
 	return 0x1f0a1 + 16*rune(suit) + rune(number)
 }
 
-func straightCheck(numbers []int) bool {
+func straightCheck(cards []int) bool {
+	// Copy before sorting to avoid mutating the original.
+	numbers := make([]int, len(cards))
+	copy(numbers, cards)
 	slices.Sort(numbers)
 
 	// After sorting we have an Ace-straight or the numbers are sequential.
