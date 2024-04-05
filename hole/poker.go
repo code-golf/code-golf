@@ -423,25 +423,32 @@ func poker() []Run {
 		hands,
 		flushHand(ace, two, three, seven, jack),
 		flushHand(ace, two, four, seven, nine),
-		flushHand(ace, four, nine, ten, queen),
 		flushHand(ace, four, five, seven, nine),
 		flushHand(ace, four, five, jack, queen),
-		flushHand(ace, nine, ten, queen, king),
+		flushHand(ace, four, seven, ten, queen),
+		flushHand(ace, four, seven, ten, king),
+		flushHand(ace, four, nine, ten, queen),
+		flushHand(ace, five, six, eight, nine),
+		flushHand(ace, five, seven, queen, king),
 		flushHand(ace, seven, eight, nine, ten),
+		flushHand(ace, eight, nine, ten, king),
+		flushHand(ace, nine, ten, queen, king),
 		flushHand(two, three, four, eight, nine),
+		flushHand(two, three, five, seven, jack),
+		flushHand(two, three, eight, ten, king),
 		flushHand(two, three, nine, queen, king),
+		flushHand(two, five, six, eight, king),
 		flushHand(three, four, six, queen, king),
+		flushHand(three, four, six, eight, queen),
 		flushHand(three, five, seven, nine, queen),
+		flushHand(three, five, nine, queen, king),
 		flushHand(four, eight, ten, jack, queen),
 		flushHand(five, seven, eight, nine, jack),
 		flushHand(six, eight, nine, ten, jack),
 	)
 
 	// Straight
-	lowCards := rand.Perm(9)
-	lowCards[0] = 0 // Ensure at least one low ace
-	lowCards[1] = 9 // Ensure at least one high ace
-	for _, lowCard := range lowCards[:handCount] {
+	for lowCard := range 10 {
 		suits := rand.Perm(4)
 		hands = append(hands, Hand{"Straight", []rune{
 			cardRune(lowCard, suits[0]),
@@ -452,36 +459,8 @@ func poker() []Run {
 		}})
 	}
 
-	suits = rand.Perm(4)
-	hands = append(hands, Hand{"Straight", []rune{
-		cardRune(two, suits[0]), // Avoid flush
-		cardRune(three, suits[1]),
-		cardRune(four, rand.IntN(4)),
-		cardRune(five, rand.IntN(4)),
-		cardRune(six, rand.IntN(4)),
-	}})
-	suits = rand.Perm(4)
-	hands = append(hands, Hand{"Straight", []rune{
-		cardRune(five, suits[0]), // Avoid flush
-		cardRune(six, suits[1]),
-		cardRune(seven, rand.IntN(4)),
-		cardRune(eight, rand.IntN(4)),
-		cardRune(nine, rand.IntN(4)),
-	}})
-	suits = rand.Perm(4)
-	hands = append(hands, Hand{"Straight", []rune{
-		cardRune(eight, rand.IntN(4)),
-		cardRune(nine, suits[0]),
-		cardRune(ten, rand.IntN(4)),
-		cardRune(jack, rand.IntN(4)),
-		cardRune(queen, suits[1]), // Avoid flush
-	}})
-
 	// Straight Flush
-	lowCards = rand.Perm(9)
-	lowCards[0] = 0 // Ensure at least one low ace
-	lowCards[1] = 8 // Ensure at least one 9 through king, because it could be mistaken for a royal flush.
-	for _, lowCard := range lowCards[:handCount] {
+	for lowCard := range 9 {
 		suit := rand.IntN(4)
 		var hand []rune
 		for card := lowCard; card < lowCard+5; card++ {
@@ -491,7 +470,7 @@ func poker() []Run {
 	}
 
 	// Royal Flush
-	for suit := 0; suit < 4; suit++ {
+	for suit := range 4 {
 		var hand []rune
 		for card := 9; card < 14; card++ {
 			hand = append(hand, cardRune(card%13, suit))
@@ -501,7 +480,7 @@ func poker() []Run {
 
 	// For a flush, the highest minus lowest codepoint is at most 13, but this is not sufficient
 	// for detecting a flush. Generate hands that meet this criteria that aren't flushes.
-	for suit := 0; suit < 3; suit++ {
+	for suit := range 3 {
 		// Start near the top of the range on one of the lower three suits.
 		// The hand will have cards with two different suits and five different face values.
 		// The start card is at least 10 to avoid a straight.
@@ -519,7 +498,7 @@ func poker() []Run {
 	}
 
 	// High Card, but could be mistaken for a straight.
-	for suit := 0; suit < 3; suit++ {
+	for suit := range 3 {
 		hands = append(hands, Hand{"High Card", []rune{
 			cardRune(king, suit),
 			cardRune(ace, suit+1),
@@ -558,16 +537,34 @@ func poker() []Run {
 		flushHand(jack, queen, king, ace, two),
 		flushHand(ace, two, three, four, seven),
 		flushHand(ace, two, three, four, eight),
+		flushHand(ace, two, three, eight, queen),
+		flushHand(ace, two, ten, jack, queen),
 		flushHand(ace, three, four, five, seven),
+		flushHand(ace, three, five, seven, nine),
+		flushHand(ace, four, five, six, seven),
 		flushHand(ace, five, six, seven, eight),
 		flushHand(ace, seven, eight, nine, ten),
 		flushHand(ace, eight, nine, ten, jack),
 		flushHand(ace, nine, ten, jack, queen),
 		flushHand(ace, nine, ten, jack, king),
 		flushHand(ace, nine, jack, queen, king),
+		flushHand(two, four, six, eight, ten),
 		flushHand(two, nine, jack, queen, king),
+		flushHand(two, ten, jack, queen, king),
+		flushHand(three, four, five, seven, eight),
+		flushHand(three, five, seven, nine, jack),
+		flushHand(three, ten, jack, queen, king),
+		flushHand(four, five, six, seven, king),
+		flushHand(four, ten, jack, queen, king),
+		flushHand(five, ten, jack, queen, king),
 		flushHand(six, seven, eight, jack, queen),
+		flushHand(six, seven, eight, nine, king),
 		flushHand(six, seven, jack, queen, king),
+		flushHand(six, eight, nine, ten, queen),
+		flushHand(six, ten, jack, queen, king),
+		flushHand(seven, ten, jack, queen, king),
+		flushHand(eight, nine, ten, jack, king),
+		flushHand(eight, nine, ten, queen, king),
 	)
 
 	tests := make([]test, len(hands))
@@ -576,5 +573,5 @@ func poker() []Run {
 	}
 
 	const argc = 37 // Preserve original argc
-	return outputTests(tests[:argc], tests[argc:2*argc], tests[len(tests)-argc:])
+	return outputTests(tests[:argc], tests[argc:2*argc], tests[2*argc:3*argc], tests[len(tests)-argc:])
 }
