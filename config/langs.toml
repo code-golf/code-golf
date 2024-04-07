@@ -450,6 +450,25 @@ example = '''
 command-line get-global [ print ] each
 '''
 
+[Fennel]
+experiment = 1144
+size       = '620 KiB'
+version    = '1.4.2'
+website    = 'https://fennel-lang.org'
+example    = '''
+;; Printing
+(print "Hello, World!")
+
+;; Looping
+(for [i 0 9]
+  (print i))
+
+;; Accessing arguments
+(each [i a (ipairs arg)]
+  (if (> i 1)
+    (print a)))
+'''
+
 [Forth]
 size    = '2.86 MiB'
 version = 'GNU Forth 0.7.3'
