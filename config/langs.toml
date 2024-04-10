@@ -338,7 +338,7 @@ for arg in sys.argv[1:]:
 
 [Crystal]
 size    = '252 MiB'
-version = '1.11.2'
+version = '1.12.0'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -380,7 +380,7 @@ void main(string[] argv) {
 
 [Dart]
 size    = '235 MiB'
-version = '3.3.0'
+version = '3.3.3'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -877,8 +877,8 @@ example = '''
 '''
 
 [Python]
-size    = '71 MiB'
-version = '3.12.2'
+size    = '71.1 MiB'
+version = '3.12.3'
 website = 'https://www.python.org'
 example = '''
 import sys
