@@ -943,6 +943,7 @@ category = 'Sequence'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Factorial' },
 ]
+released = 2024-04-13
 synopsis = 'Print the factorisation of 1000!.'
 preamble = '''
 <p>Print the factorisation of 1000!,

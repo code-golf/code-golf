@@ -10,7 +10,7 @@ import (
 	"github.com/code-golf/code-golf/pretty"
 )
 
-const nextHole = "ascending-primes"
+const nextHole = "factorial-factorisation"
 
 type banner struct {
 	Body template.HTML
