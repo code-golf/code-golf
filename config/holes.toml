@@ -938,7 +938,6 @@ preamble = '''
 '''
 
 ['Factorial Factorisation']
-experiment = 1055
 category = 'Sequence'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Factorial' },
