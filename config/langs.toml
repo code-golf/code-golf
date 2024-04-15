@@ -338,7 +338,7 @@ for arg in sys.argv[1:]:
 
 [Crystal]
 size    = '252 MiB'
-version = '1.12.0'
+version = '1.12.1'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -621,7 +621,7 @@ echo each 2}.ARGV
 
 [Janet]
 size    = '836 KiB'
-version = '1.33.0'
+version = '1.34.0'
 website = 'https://janet-lang.org'
 example = '''
 # Printing
@@ -825,7 +825,7 @@ say for @ARGV;
 
 [PHP]
 size    = '8.4 MiB'
-version = '8.3.4'
+version = '8.3.6'
 website = 'https://www.php.net'
 example = '''
 # Printing
