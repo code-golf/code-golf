@@ -8,9 +8,9 @@
 
     <div class=grid id=profile>
         <img src="/golfers/{{ .Name }}/avatar/176">
-        <h1 title="{{ .Name }}{{ with .Pronouns.String }} ({{ . }}){{ end }}">
+        <h1 title="{{ .Name }}{{ with .Pronouns.V }} ({{ . }}){{ end }}">
             {{ .Name }}
-            {{ with .Pronouns.String }}<span id=pronouns>({{ . }})</span>{{ end }}
+            {{ with .Pronouns.V }}<span id=pronouns>({{ . }})</span>{{ end }}
         {{ with .Country.Country }}
             <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
         {{ end }}

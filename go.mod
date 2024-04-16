@@ -23,7 +23,6 @@ require (
 	github.com/tdewolff/minify/v2 v2.20.19
 	github.com/yuin/goldmark v1.7.1
 	golang.org/x/oauth2 v0.19.0
-	gopkg.in/guregu/null.v4 v4.0.0
 )
 
 require (

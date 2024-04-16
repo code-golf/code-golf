@@ -123,7 +123,7 @@
         <select name=pronouns>
             <option value>Rather not say
         {{- range .Data.Pronouns -}}
-            <option {{- if eq . $.Golfer.Pronouns.String }} selected{{ end }}>
+            <option {{- if eq . $.Golfer.Pronouns.V }} selected{{ end }}>
                 {{- . -}}
         {{- end -}}
         </select>
@@ -160,7 +160,7 @@
             <option value>Rather not say
         {{- range .Data.TimeZones -}}
             <option value="{{ .Name }}"
-                {{- if eq .Name $.Golfer.TimeZone.String }} selected{{ end }}>
+                {{- if eq .Name $.Golfer.TimeZone.V }} selected{{ end }}>
                 {{- . -}}
         {{- end -}}
         </select>

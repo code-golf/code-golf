@@ -61,7 +61,7 @@ func init() {
 	}()
 }
 
-func getUsername(id int64, db *sqlx.DB) (name string) {
+func getUsername(id int, db *sqlx.DB) (name string) {
 	if err := db.QueryRow(
 		"SELECT login FROM users WHERE id = $1",
 		id,
@@ -91,24 +91,24 @@ func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.Messa
 	fieldValues := make(map[string]string)
 	for _, pair := range announce.Updates {
 		for _, update := range pair {
-			if !update.To.Joint.Bool {
+			if !update.To.Joint.V {
 				titlePrefix = "New 💎"
 			}
 
 			if update.OldBestStrokes.Valid && fieldValues[update.Scoring] == "" {
-				fieldValues[update.Scoring] = pretty.Comma(int(update.OldBestStrokes.Int64))
+				fieldValues[update.Scoring] = pretty.Comma(int(update.OldBestStrokes.V))
 
-				timestamp := update.OldBestSubmitted.Time
+				timestamp := update.OldBestSubmitted.V
 				if time.Since(timestamp) > minElapsedTimeToShowDate {
 					// Show the data using a locale-specific short date format.
 					fieldValues[update.Scoring] += fmt.Sprintf(" (<t:%d:R>)", timestamp.Unix())
 				}
 
-				if update.OldBestGolferCount.Valid && update.OldBestGolferCount.Int64 > 1 {
+				if update.OldBestGolferCount.Valid && update.OldBestGolferCount.V > 1 {
 					// Display the number of golfers, excluding the current golfer, that previously held this record.
-					fieldValues[update.Scoring] += fmt.Sprintf(" (%d golfers)", update.OldBestGolferCount.Int64)
-				} else if update.OldBestGolferID.Valid && update.OldBestGolferID.Int64 != int64(announce.Golfer.ID) {
-					name := getUsername(update.OldBestGolferID.Int64, db)
+					fieldValues[update.Scoring] += fmt.Sprintf(" (%d golfers)", update.OldBestGolferCount.V)
+				} else if update.OldBestGolferID.Valid && update.OldBestGolferID.V != announce.Golfer.ID {
+					name := getUsername(update.OldBestGolferID.V, db)
 					if name != "" {
 						// Display the user name of the single golfer, excluding the current golfer, that previously held this record.
 						fieldValues[update.Scoring] += fmt.Sprintf(" (%s)", name)
@@ -116,11 +116,11 @@ func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.Messa
 				}
 			}
 
-			if !update.OldBestStrokes.Valid || update.To.Strokes.Int64 < update.OldBestStrokes.Int64 {
+			if !update.OldBestStrokes.Valid || update.To.Strokes.V < update.OldBestStrokes.V {
 				if fieldValues[update.Scoring] != "" {
 					fieldValues[update.Scoring] += "  →  "
 				}
-				fieldValues[update.Scoring] += pretty.Comma(int(update.To.Strokes.Int64))
+				fieldValues[update.Scoring] += pretty.Comma(update.To.Strokes.V)
 			}
 		}
 	}

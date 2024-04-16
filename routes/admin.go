@@ -1,11 +1,11 @@
 package routes
 
 import (
-	"database/sql"
 	"net/http"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/null"
 	"github.com/code-golf/code-golf/session"
 )
 
@@ -18,7 +18,7 @@ func adminGET(w http.ResponseWriter, r *http.Request) {
 			Name     string
 		}
 		Tables []struct {
-			Name       sql.NullString
+			Name       null.String
 			Rows, Size int
 		}
 	}{}

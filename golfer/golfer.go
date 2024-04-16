@@ -1,15 +1,14 @@
 package golfer
 
 import (
-	"database/sql"
 	"encoding/json"
 	"slices"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/null"
 	"github.com/jmoiron/sqlx"
 	"github.com/lib/pq"
-	"gopkg.in/guregu/null.v4"
 )
 
 const (
@@ -23,11 +22,11 @@ type Golfer struct {
 	BytesPoints, CharsPoints, ID          int
 	Cheevos, Holes                        pq.StringArray
 	Country                               config.NullCountry
-	Delete                                sql.NullTime
+	Delete                                null.Time
 	FailingSolutions                      FailingSolutions
 	Following                             pq.Int64Array
 	Keymap, Layout, Name, Referrer, Theme string
-	Pronouns, TimeZone                    sql.NullString
+	Pronouns, TimeZone                    null.String
 }
 
 // GolferInfo is populated when looking at a /golfers/xxx route.
@@ -113,7 +112,7 @@ func (g *Golfer) IsFollowing(userID int) bool {
 }
 
 func (g *Golfer) Location() (loc *time.Location) {
-	if loc, _ = time.LoadLocation(g.TimeZone.String); loc == nil {
+	if loc, _ = time.LoadLocation(g.TimeZone.V); loc == nil {
 		loc = time.UTC
 	}
 	return

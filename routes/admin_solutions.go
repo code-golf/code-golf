@@ -2,7 +2,6 @@ package routes
 
 import (
 	"context"
-	"database/sql"
 	"encoding/json"
 	"errors"
 	"net/http"
@@ -12,6 +11,7 @@ import (
 	"github.com/buildkite/terminal-to-html/v3"
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/hole"
+	"github.com/code-golf/code-golf/null"
 	"github.com/code-golf/code-golf/session"
 )
 
@@ -144,8 +144,8 @@ func getSolutions(r *http.Request) chan solution {
 			) SELECT *, COUNT(*) OVER () FROM distinct_solutions`,
 			r.FormValue("failing") == "on",
 			r.FormValue("golfer"),
-			sql.NullString{String: holeID, Valid: holeID != ""},
-			sql.NullString{String: langID, Valid: langID != ""},
+			null.New(holeID, holeID != ""),
+			null.New(langID, langID != ""),
 		)
 		if err != nil {
 			panic(err)

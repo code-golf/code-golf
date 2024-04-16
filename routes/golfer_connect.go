@@ -1,11 +1,11 @@
 package routes
 
 import (
-	"database/sql"
 	"encoding/json"
 	"net/http"
 	"strconv"
 
+	"github.com/code-golf/code-golf/null"
 	"github.com/code-golf/code-golf/oauth"
 	"github.com/code-golf/code-golf/session"
 )
@@ -97,7 +97,7 @@ func golferConnectGET(w http.ResponseWriter, r *http.Request) {
 		   DO UPDATE SET discriminator = excluded.discriminator,
 		                      username = excluded.username`,
 		conn,
-		sql.NullString{String: user.Discriminator, Valid: user.Discriminator != ""},
+		null.New(user.Discriminator, user.Discriminator != ""),
 		user.ID,
 		session.Golfer(r).ID,
 		user.Username,

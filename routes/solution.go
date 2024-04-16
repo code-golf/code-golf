@@ -163,14 +163,14 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		recordUpdates := make([]Golfer.RankUpdate, 0, 2)
 
 		for _, rank := range out.RankUpdates {
-			if rank.From.Strokes.Int64 == rank.To.Strokes.Int64 {
+			if rank.From.Strokes.V == rank.To.Strokes.V {
 				continue
 			}
 
 			// This keeps track of which updates (if any) represent new records or diamond matches.
-			if rank.To.Rank.Int64 == 1 {
-				if !rank.To.Joint.Bool ||
-					rank.OldBestGolferCount.Valid && rank.OldBestGolferCount.Int64 == 1 {
+			if rank.To.Rank.V == 1 {
+				if !rank.To.Joint.V ||
+					rank.OldBestGolferCount.Valid && rank.OldBestGolferCount.V == 1 {
 					recordUpdates = append(recordUpdates, rank)
 				}
 			}

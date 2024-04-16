@@ -44,7 +44,7 @@ func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 			Type: "alert",
 			Body: template.HTML(
 				"Your account will be permanently deleted on the " +
-					delete.Time.Format("2 Jan 2006") + "." +
+					delete.V.Format("2 Jan 2006") + "." +
 					"<p>If you wish to stop this, visit " +
 					"<a href=/golfer/settings>settings</a> " +
 					"and cancel the deletion."),
