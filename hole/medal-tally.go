@@ -52,22 +52,22 @@ func medalTallyTest(size, g, s, b, tie int) test {
 	scores := make([]int, size)
 	idx := 0
 
-	for i := 0; i < g; i++ {
+	for range g {
 		scores[idx] = uniqueScores[0]
 		idx++
 	}
 
-	for i := 0; i < s; i++ {
+	for range s {
 		scores[idx] = uniqueScores[1]
 		idx++
 	}
 
-	for i := 0; i < b; i++ {
+	for range b {
 		scores[idx] = uniqueScores[2]
 		idx++
 	}
 
-	for i := 0; i < tie; i++ {
+	for range tie {
 		scores[idx] = uniqueScores[3]
 		idx++
 	}
@@ -79,7 +79,7 @@ func medalTallyTest(size, g, s, b, tie int) test {
 
 	var in, out string
 
-	for i := 0; i < size; i++ {
+	for i := range size {
 		if i != 0 {
 			in += " "
 		}

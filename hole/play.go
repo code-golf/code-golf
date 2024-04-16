@@ -59,7 +59,7 @@ func preprocessKCode(holeID, code string) string {
 
 		// Disable implicit output by inserting a ';' before all newlines,
 		// except when the next line begins with a space (for a continuation).
-		for i := 0; i < length; i++ {
+		for i := range length {
 			x := code[i]
 			if x != '\n' || i+1 < length && code[i+1] == ' ' {
 				newCode = append(newCode, x)

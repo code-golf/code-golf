@@ -48,7 +48,7 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/x-ndjson")
 
-	for i := 0; i < 3; i++ {
+	for range 3 {
 		wg.Add(1)
 
 		go func() {

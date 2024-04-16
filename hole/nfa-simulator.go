@@ -159,7 +159,7 @@ func generateNFA() string {
 	shuffleStates := make([]string, stateLength)
 	copy(shuffleStates, states[:stateLength])
 
-	for i := 0; i < stateLength; i++ {
+	for i := range stateLength {
 		if i == startState {
 			inputNFA.WriteString("→")
 		} else {
@@ -174,8 +174,8 @@ func generateNFA() string {
 
 		inputNFA.WriteString(states[i])
 		inputNFA.WriteString(" |")
-		for j := 0; j < alphabetLength; j++ {
 
+		for range alphabetLength {
 			if rand.IntN(4) == 0 {
 				inputNFA.WriteString(" ∅ ")
 			} else {
@@ -188,23 +188,21 @@ func generateNFA() string {
 				slices.Sort(chosenStates)
 
 				inputNFA.WriteString("{" + strings.Join(chosenStates, ",") + "}")
-
 			}
 			inputNFA.WriteString("|")
-
 		}
-		inputNFA.WriteByte('\n')
 
+		inputNFA.WriteByte('\n')
 	}
 
 	inputStringCount := rand.IntN(4) + 1
 
-	for m := 0; m < inputStringCount; m++ {
+	for m := range inputStringCount {
 		inputLength := rand.IntN(2 * alphabetLength)
 		if inputLength == 0 {
 			inputNFA.WriteString("ε")
 		} else {
-			for i := 0; i < inputLength; i++ {
+			for range inputLength {
 				inputNFA.WriteString(alphabet[rand.IntN(alphabetLength)])
 			}
 		}
@@ -238,7 +236,7 @@ func nfaSimulator() []Run {
 		"{9} Accept\n∅ Reject",
 	}
 
-	for i := 0; i < 12; i++ {
+	for range 12 {
 		dfa := generateNFA()
 		args = append(args, dfa)
 		results = append(results, solveNFA(dfa))

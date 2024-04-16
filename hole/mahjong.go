@@ -84,7 +84,7 @@ func genRandomSequence() string {
 
 func genRandomStandardHand() string {
 	var hand strings.Builder
-	for i := 0; i < 4; i++ {
+	for range 4 {
 		if rand.IntN(3) > 0 {
 			hand.WriteString(genRandomTriplet())
 		} else {
@@ -102,7 +102,7 @@ func genRandomStandardHand() string {
 
 func genRandomSevenPairs() string {
 	var hand strings.Builder
-	for i := 0; i < 7; i++ {
+	for range 7 {
 		hand.WriteString(genRandomPair())
 	}
 	res := hand.String()
@@ -132,7 +132,7 @@ func genValidHand() string {
 func genInvalidHand(mutationCount int) string {
 	hand := genValidHand()
 	runes := []rune(hand)
-	for i := 0; i < mutationCount; i++ {
+	for range mutationCount {
 		mutPos := rand.IntN(len(runes))
 		mutTile := '🀀' + rune(rand.IntN(34))
 		runes[mutPos] = mutTile
@@ -327,7 +327,7 @@ func mahjong() []Run {
 	tests := append(append([]string{}, completeHands...), incompleteHands...)
 	testValidity := make([]bool, len(completeHands)+len(incompleteHands))
 
-	for i := 0; i < len(completeHands); i++ {
+	for i := range completeHands {
 		testValidity[i] = true
 	}
 

@@ -183,7 +183,7 @@ func poker() []Run {
 	}})
 
 	// Pair
-	for i := 0; i < handCount; i++ {
+	for range handCount {
 		cards := rand.Perm(13)
 		suits := rand.Perm(4)
 		hands = append(hands, Hand{"Pair", []rune{
@@ -228,7 +228,7 @@ func poker() []Run {
 	}})
 
 	// Two Pair
-	for i := 0; i < handCount; i++ {
+	for range handCount {
 		cards := rand.Perm(13)
 		suit1 := rand.Perm(4)
 		suit2 := rand.Perm(4)
@@ -269,7 +269,7 @@ func poker() []Run {
 	}})
 
 	// Three of a Kind
-	for i := 0; i < handCount; i++ {
+	for range handCount {
 		cards := rand.Perm(13)
 		suits := rand.Perm(4)
 		hands = append(hands, Hand{"Three of a Kind", []rune{
@@ -307,7 +307,7 @@ func poker() []Run {
 	}})
 
 	// Four of a Kind
-	for i := 0; i < handCount; i++ {
+	for range handCount {
 		cards := rand.Perm(13)
 		hands = append(hands, Hand{"Four of a Kind", []rune{
 			cardRune(cards[0], 0),
@@ -368,7 +368,7 @@ func poker() []Run {
 	}})
 
 	// Full House
-	for i := 0; i < handCount; i++ {
+	for range handCount {
 		cards := rand.Perm(13)
 		suit1 := rand.Perm(4)
 		suit2 := rand.Perm(4)

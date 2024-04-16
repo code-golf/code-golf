@@ -34,18 +34,18 @@ func randReplacements(gFrames []rune) []rune {
 	frames := make([]rune, len(gFrames))
 	copy(frames, gFrames)
 
-	for j, char := range frames {
+	for i, char := range frames {
 		var replacement rune
 
 		switch char {
 		case '0':
-			frames[j] = '-'
+			frames[i] = '-'
 			replacement = 'F'
 		case '-':
 			replacement = 'F'
 		case '5', '6', '7', '8':
 			// Only split on the first ball of the frame.
-			if j%3 == 0 {
+			if i%3 == 0 {
 				replacement = '①' - '1' + char
 			} else {
 				continue
@@ -55,7 +55,7 @@ func randReplacements(gFrames []rune) []rune {
 		}
 
 		if rand.IntN(2) == 0 {
-			frames[j] = replacement
+			frames[i] = replacement
 		}
 	}
 	return frames
@@ -70,11 +70,11 @@ func tenPinBowling() []Run {
 		tests[i] = test{string(frames), game.score}
 	}
 
-	for i := 0; i < extraCases; i++ {
+	for i := range extraCases {
 		rolls := make([]int, 24)
 
 		// Generate some random rolls
-		for rollNum := 0; rollNum < 23; rollNum++ {
+		for rollNum := range 23 {
 			maxRoll := 10
 			if rollNum%2 == 1 {
 				maxRoll = 10 - rolls[rollNum-1]
@@ -96,7 +96,7 @@ func tenPinBowling() []Run {
 		// Now let's score the rolls and format the input
 		arg := ""
 		score := 0
-		for frame := 0; frame < 12; frame++ {
+		for frame := range 12 {
 			// Skip the bonus rolls if necessary
 			if frame > 9 {
 				if rolls[18]+rolls[19] != 10 {

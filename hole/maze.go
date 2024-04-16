@@ -40,8 +40,8 @@ func dig(i, j int, grid, dist [height][width]int) ([height][width]int, [height][
 
 func findExit(dist [height][width]int) (ei, ej int) {
 	maxd := -1
-	for i := 0; i < height; i++ {
-		for j := 0; j < width; j++ {
+	for i := range height {
+		for j := range width {
 			if dist[i][j] > maxd {
 				maxd = dist[i][j]
 				ei, ej = i, j
@@ -88,10 +88,10 @@ func draw(grid [height][width]int, si, sj, ei, ej int, path [height][width]int, 
 	}
 
 	mazestr = wall + strings.Repeat(strings.Repeat(wall, 2), width) + "\n"
-	for i := 0; i < height; i++ {
+	for i := range height {
 		top = wall
 		bottom = wall
-		for j := 0; j < width; j++ {
+		for j := range width {
 			if i == si && j == sj {
 				cell = "S"
 			} else if i == ei && j == ej {

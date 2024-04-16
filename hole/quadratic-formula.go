@@ -121,7 +121,7 @@ func quadraticFormula() []Run {
 	const numTests = 200
 	args := make([]string, numTests)
 	solstrings := make([]string, numTests)
-	for i := 0; i < numTests; i++ {
+	for i := range numTests {
 		a := rand.IntN(20) - 10
 		b := rand.IntN(20) - 10
 		c := rand.IntN(50) - 25
