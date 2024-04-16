@@ -222,8 +222,8 @@ int main(int argc, char* argv[]) {
 '''
 
 ['C#']
-size    = '151 MiB'
-version = 'C# 12.0 on .NET 8.0.1'
+size    = '150 MiB'
+version = 'C# 12.0 on .NET 8.0.3'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -416,7 +416,7 @@ for arg <- System.argv, do: IO.puts arg
 
 ['F#']
 size    = '146 MiB'
-version = 'F# 8.0 on .NET 8.0.1'
+version = 'F# 8.0 on .NET 8.0.3'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -842,7 +842,7 @@ for ($i = 1; $i < $argc; $i++)
 
 [PowerShell]
 size    = '178 MiB'
-version = 'PowerShell 7.4.1 on .NET 8.0.1'
+version = 'PowerShell 7.4.2 on .NET 8.0.3'
 website = 'https://docs.microsoft.com/powershell/scripting/overview'
 example = '''
 # Printing
@@ -969,7 +969,7 @@ end
 
 [Rust]
 size    = '327 MiB'
-version = '1.77.1'
+version = '1.77.2'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -1018,7 +1018,7 @@ G
 
 [SQL]
 size    = '1.19 MiB'
-version = '3.45.2'
+version = '3.45.3'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
