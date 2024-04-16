@@ -96,7 +96,7 @@ func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.Messa
 			}
 
 			if update.OldBestStrokes.Valid && fieldValues[update.Scoring] == "" {
-				fieldValues[update.Scoring] = pretty.Comma(int(update.OldBestStrokes.V))
+				fieldValues[update.Scoring] = pretty.Comma(update.OldBestStrokes.V)
 
 				timestamp := update.OldBestSubmitted.V
 				if time.Since(timestamp) > minElapsedTimeToShowDate {
