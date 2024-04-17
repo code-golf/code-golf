@@ -62,10 +62,8 @@ func init() {
 }
 
 func getUsername(id int, db *sqlx.DB) (name string) {
-	if err := db.QueryRow(
-		"SELECT login FROM users WHERE id = $1",
-		id,
-	).Scan(&name); err != nil {
+	err := db.Select(&name, "SELECT login FROM users WHERE id = $1", id)
+	if err != nil {
 		log.Println(err)
 	}
 
