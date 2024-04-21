@@ -2,7 +2,7 @@ FROM alpine:3.19 AS builder
 
 RUN apk add --no-cache binutils curl
 
-ENV VER 0.11.0
+ENV VER 0.12.0
 
 RUN curl https://ziglang.org/download/$VER/zig-linux-x86_64-$VER.tar.xz \
   | tar xJC tmp --strip 1 \
