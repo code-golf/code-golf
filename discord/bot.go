@@ -132,7 +132,8 @@ func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.Messa
 	// Find the dominant scoring (only "chars" if there were no improvements on bytes)
 	if fieldValues["bytes"] == "" && fieldValues["bytes/chars"] == "" {
 		embed.URL += "chars"
-		fieldValues["bytes"] = "​" // Display the bytes column in any case, to avoid confusion
+		// Zero-width space to always show bytes column, to avoid confusion.
+		fieldValues["bytes"] = "\u200b"
 	} else {
 		embed.URL += "bytes"
 	}
