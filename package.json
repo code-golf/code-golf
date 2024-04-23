@@ -13,6 +13,8 @@
     "@defasm/codemirror": "",
     "@exercism/codemirror-lang-wren": "github:exercism/codemirror-lang-wren#3bde996",
     "@replit/codemirror-vim": "",
+    "chart.js": "",
+    "chartjs-adapter-luxon": "",
     "codemirror": "^6",
     "codemirror-lang-brainfuck": "",
     "codemirror-lang-elixir": "",
@@ -26,6 +28,7 @@
     "diff": "",
     "esbuild": "",
     "golden-layout": "^2.6.0",
+    "luxon": "",
     "lz-string": "",
     "nim-codemirror-mode": ""
   },

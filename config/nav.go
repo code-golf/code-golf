@@ -98,6 +98,7 @@ func init() {
 					Links: []*NavLink{
 						{Name: "Overview", Path: "/stats"},
 						{Name: "Countries", Slug: "countries"},
+						{Name: "Golfers", Slug: "golfers"},
 						{Name: "Holes", Slug: "holes"},
 						{Name: "Languages", Slug: "langs"},
 					},

@@ -42,6 +42,32 @@
                 <td class=right>{{ .Percent }}%
         {{ end }}
     </table>
+{{ else if eq .Title "Statistics: Golfers" }}
+    <script id=chart-data type="application/json">[
+        {{- range $i, $d := .Data -}}
+            {{- if ne $i 0 }},{{ end -}}
+            { "x": {{ .Date.UnixMilli }}, "y": {{ .Sum }} }
+        {{- end -}}
+    ]</script>
+
+    <div id=chart-container><canvas></canvas></div>
+
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Year
+                    <th class=right>Golfers
+                    <th class=right>∑
+            <tbody>
+            {{ range slice .Data 1 }}
+                <tr>
+                    <td>{{ .Date.Year }}
+                    <td class=right>{{ comma .Count }}
+                    <td class=right>{{ comma .Sum }}
+            {{ end }}
+        </table>
+    </div>
 {{ else }}
     <table class="nowrap-second sticky">
         <thead>

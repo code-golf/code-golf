@@ -6,7 +6,11 @@ body > h1 {
     padding: 1rem;
 }
 
+table { width: 100% }
+
 .flag { margin-right: .5rem }
+
+#chart-container { min-width: 0 }
 
 #overview {
     align-items: start;

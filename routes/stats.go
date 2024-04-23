@@ -4,6 +4,7 @@ import (
 	"cmp"
 	"net/http"
 	"slices"
+	"time"
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
@@ -70,6 +71,42 @@ func statsCountriesGET(w http.ResponseWriter, r *http.Request) {
 	})
 
 	render(w, r, "stats", data, "Statistics: Countries")
+}
+
+// GET /stats/{page:golfers}
+func statsGolfersGET(w http.ResponseWriter, r *http.Request) {
+	var data []struct {
+		Count, Sum int
+		Date       time.Time
+	}
+
+	if err := session.Database(r).Select(
+		&data,
+		`-- Only consider golfers that have a cheevo (i.e here to stay).
+		WITH earnt_golfers AS (
+		    SELECT DISTINCT id, started FROM users JOIN trophies ON id = user_id
+		), first_golfer AS (
+		    SELECT started date, 1 count, 1 sum
+		      FROM earnt_golfers
+		  ORDER BY started
+		     LIMIT 1
+		), counts AS (
+		    SELECT LEAST(
+		               DATE_TRUNC('year', started)
+		                   + INTERVAL '1 year' - INTERVAL '1 microsecond',
+		               TIMEZONE('UTC', NOW())
+		           ) date,
+		           COUNT(*)
+		      FROM earnt_golfers
+		  GROUP BY date
+		) SELECT * FROM first_golfer
+		   UNION ALL
+		  SELECT *, SUM(count) OVER (ORDER BY date) FROM counts`,
+	); err != nil {
+		panic(err)
+	}
+
+	render(w, r, "stats", data, "Statistics: Golfers")
 }
 
 // GET /stats/{page:holes|langs}
