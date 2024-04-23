@@ -62,7 +62,7 @@ func init() {
 }
 
 func getUsername(id int, db *sqlx.DB) (name string) {
-	err := db.Select(&name, "SELECT login FROM users WHERE id = $1", id)
+	err := db.Get(&name, "SELECT login FROM users WHERE id = $1", id)
 	if err != nil {
 		log.Println(err)
 	}
