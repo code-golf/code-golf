@@ -748,7 +748,7 @@ end
 
 [Nim]
 size    = '15 MiB'
-version = '2.0.2'
+version = '2.0.4'
 website = 'https://nim-lang.org'
 example = '''
 import os
@@ -949,8 +949,8 @@ Shout arg
 '''
 
 [Ruby]
-size    = '27.7 MiB'
-version = '3.3.0'
+size    = '27.9 MiB'
+version = '3.3.1'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing

@@ -3,11 +3,9 @@ FROM alpine:3.19 AS builder
 RUN apk add -X http://dl-cdn.alpinelinux.org/alpine/edge/testing --no-cache \
     curl gcc musl-dev pcre tcc tcc-libs-static
 
-ENV VER 2.0.2
+RUN curl https://nim-lang.org/download/nim-2.0.4.tar.xz | tar xJ
 
-RUN curl https://nim-lang.org/download/nim-$VER.tar.xz | tar xJ
-
-RUN cd nim-$VER             \
+RUN cd nim-*                \
  && ./build.sh              \
  && ./bin/nim c koch        \
  && ./koch boot -d:release  \
