@@ -123,6 +123,24 @@ func (g *Golfer) Location() (loc *time.Location) {
 	return
 }
 
+// SaveSettings saves golfer.Settings back to the DB.
+func (g *Golfer) SaveSettings(db *sqlx.DB) {
+	// Optimisation, trim the default values from the maps before saving.
+	for page, settings := range config.Settings {
+		for _, setting := range settings {
+			if g.Settings[page][setting.ID] == setting.Default {
+				delete(g.Settings[page], setting.ID)
+			}
+		}
+
+		if len(g.Settings[page]) == 0 {
+			delete(g.Settings, page)
+		}
+	}
+
+	db.MustExec("UPDATE users SET settings = $1 WHERE id = $2", g.Settings, g.ID)
+}
+
 // Solved returns whether the golfer has solved that hole. Counts failing too.
 func (g *Golfer) Solved(holeID string) bool {
 	_, ok := slices.BinarySearch(g.Holes, holeID)

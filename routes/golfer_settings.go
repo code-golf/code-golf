@@ -78,23 +78,19 @@ func golferSettingsPagePOST(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Optimisation, trim the default values from the maps before saving.
-	for page, settings := range config.Settings {
-		for _, setting := range settings {
-			if golfer.Settings[page][setting.ID] == setting.Default {
-				delete(golfer.Settings[page], setting.ID)
-			}
-		}
+	golfer.SaveSettings(session.Database(r))
 
-		if len(golfer.Settings[page]) == 0 {
-			delete(golfer.Settings, page)
-		}
-	}
+	// TODO Redirect based on page. Note page hasn't been validated yet.
+	http.Redirect(w, r, "/", http.StatusFound)
+}
 
-	session.Database(r).MustExec(
-		"UPDATE users SET settings = $1 WHERE id = $2",
-		golfer.Settings, golfer.ID,
-	)
+// POST /golfer/settings/{page}/reset
+func golferSettingsPageResetPOST(w http.ResponseWriter, r *http.Request) {
+	golfer := session.Golfer(r)
+
+	delete(golfer.Settings, param(r, "page"))
+
+	golfer.SaveSettings(session.Database(r))
 
 	// TODO Redirect based on page. Note page hasn't been validated yet.
 	http.Redirect(w, r, "/", http.StatusFound)
