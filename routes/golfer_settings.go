@@ -129,13 +129,13 @@ func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 	tx.MustExec(
 		`UPDATE users
 		    SET country = $1,
-		         keymap = $3,
-		       pronouns = $4,
-		    referrer_id = (SELECT id FROM users WHERE login = $5 AND id != $9),
-		   show_country = $6,
-		          theme = $7,
-		      time_zone = $8
-		  WHERE id = $9`,
+		         keymap = $2,
+		       pronouns = $3,
+		    referrer_id = (SELECT id FROM users WHERE login = $4 AND id != $8),
+		   show_country = $5,
+		          theme = $6,
+		      time_zone = $7
+		  WHERE id = $8`,
 		r.Form.Get("country"),
 		r.Form.Get("keymap"),
 		null.New(r.Form.Get("pronouns"), r.Form.Get("pronouns") != ""),
