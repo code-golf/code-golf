@@ -36,7 +36,7 @@
 {{ end }}
 {{ range .Data.Cards }}
     <a class="card {{ .Hole.CategoryColor }}"
-    {{ if .Points }}
+    {{ if and $.Golfer (eq (index $.Golfer.Settings "home" "navigate-to") "rankings") }}
         {{ $lang    := index $.Golfer.Settings "home" "points-for" }}
         {{ $scoring := index $.Golfer.Settings "home" "scoring"    }}
         href="rankings/holes/{{ .Hole.ID }}/{{ $lang }}/{{ $scoring }}"

@@ -18,6 +18,14 @@ name    = 'Points For'
 options = [ { id = 'all', name = 'All Languages' } ]
 
 [[home]]
+id      = 'navigate-to'
+name    = 'Navigate To'
+options = [
+    { id = 'hole',     name = 'Hole' },
+    { id = 'rankings', name = 'Rankings' },
+]
+
+[[home]]
 id      = 'scoring'
 name    = 'Scoring'
 options = [
