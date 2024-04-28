@@ -245,6 +245,11 @@ form {
             flex-direction: row;
             font-weight: normal;
         }
+
+        &:has(> [type=checkbox]) {
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+        }
     }
 
     menu {

@@ -167,6 +167,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		Location                           *time.Location
 		Nav                                *config.Navigaton
 		Request                            *http.Request
+		Settings                           []*config.Setting
 	}{
 		Banners:     banners(theGolfer, time.Now().UTC()),
 		Cheevos:     config.CheevoTree,
@@ -183,6 +184,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		Nonce:       nonce(),
 		Path:        r.URL.Path,
 		Request:     r,
+		Settings:    config.Settings[strings.TrimSuffix(name, "-tabs")],
 		Theme:       theme,
 		Title:       "Code Golf",
 	}

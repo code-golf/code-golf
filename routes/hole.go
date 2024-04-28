@@ -88,7 +88,7 @@ func holeGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	view := "hole"
-	if golfer != nil && golfer.Layout == "tabs" {
+	if golfer != nil && golfer.Settings["hole"]["multi-window-layout"].(bool) {
 		view = "hole-tabs"
 	}
 

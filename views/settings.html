@@ -1,5 +1,8 @@
-{{ range $i, $setting := .Data.Settings }}
-    {{ $value := index $.Golfer.Settings $.Name .ID }}
+{{ $name := $.Name }}
+{{ if eq $name "hole-tabs" }}{{ $name = "hole" }}{{ end }}
+
+{{ range $i, $setting := .Settings }}
+    {{ $value := index $.Golfer.Settings $name .ID }}
 
 {{ if .Checkbox }}
     <fieldset>
@@ -18,6 +21,8 @@
                 {{ .Name }}
         {{ end }}
         </select>
+    {{ else if eq (len .Options) 0 }}
+        <input name="{{ .ID }}" type=checkbox {{ if $value }} checked {{ end }}>
     {{ else }}
         <fieldset>
         {{ range .Options }}

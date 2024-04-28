@@ -69,8 +69,6 @@ CREATE TYPE lang AS ENUM (
     'swift', 'tcl', 'tex', 'v', 'viml', 'wren', 'zig'
 );
 
-CREATE TYPE layout AS ENUM ('default', 'tabs');
-
 CREATE TYPE medal AS ENUM ('diamond', 'gold', 'silver', 'bronze');
 
 CREATE TYPE pronouns AS ENUM ('he/him', 'she/her', 'they/them');
@@ -110,7 +108,6 @@ CREATE TABLE users (
     country_flag char(2)   NOT NULL GENERATED ALWAYS AS
         (COALESCE(CASE WHEN show_country THEN country END, '')) STORED,
     keymap       keymap    NOT NULL DEFAULT 'default',
-    layout       layout    NOT NULL DEFAULT 'default',
     pronouns     pronouns,
     settings     jsonb     NOT NULL DEFAULT '{}'::jsonb,
     CHECK (country IS NULL OR country = UPPER(country)),

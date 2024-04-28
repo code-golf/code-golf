@@ -35,7 +35,6 @@ func golferSettingsGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Connections    []oauth.Connection
 		Countries      map[string][]*config.Country
-		Layouts        []string
 		Keymaps        []string
 		OAuthProviders map[string]*oauth.Config
 		OAuthState     string
@@ -45,7 +44,6 @@ func golferSettingsGET(w http.ResponseWriter, r *http.Request) {
 	}{
 		oauth.GetConnections(session.Database(r), session.Golfer(r).ID, false),
 		config.CountryTree,
-		[]string{"default", "tabs"},
 		[]string{"default", "vim"},
 		oauth.Providers,
 		nonce(),
@@ -73,15 +71,13 @@ func golferSettingsPagePOST(w http.ResponseWriter, r *http.Request) {
 
 	// If the posted value is valid, update the golfer's settings map.
 	for _, setting := range config.Settings[page] {
-		if value := r.FormValue(setting.ID); setting.ValidValue(value) {
-			golfer.Settings[page][setting.ID] = value
-		}
+		golfer.Settings[page][setting.ID] =
+			setting.FromFormValue(r.FormValue(setting.ID))
 	}
 
 	golfer.SaveSettings(session.Database(r))
 
-	// TODO Redirect based on page. Note page hasn't been validated yet.
-	http.Redirect(w, r, "/", http.StatusFound)
+	http.Redirect(w, r, r.FormValue("path"), http.StatusFound)
 }
 
 // POST /golfer/settings/{page}/reset
@@ -92,8 +88,7 @@ func golferSettingsPageResetPOST(w http.ResponseWriter, r *http.Request) {
 
 	golfer.SaveSettings(session.Database(r))
 
-	// TODO Redirect based on page. Note page hasn't been validated yet.
-	http.Redirect(w, r, "/", http.StatusFound)
+	http.Redirect(w, r, r.FormValue("path"), http.StatusFound)
 }
 
 // POST /golfer/settings
@@ -102,11 +97,6 @@ func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 
 	if c := r.Form.Get("country"); c != "" && config.CountryByID[c] == nil {
 		http.Error(w, "Invalid country", http.StatusBadRequest)
-		return
-	}
-
-	if k := r.Form.Get("layout"); k != "default" && k != "tabs" {
-		http.Error(w, "Invalid layout", http.StatusBadRequest)
 		return
 	}
 
@@ -139,7 +129,6 @@ func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 	tx.MustExec(
 		`UPDATE users
 		    SET country = $1,
-		         layout = $2,
 		         keymap = $3,
 		       pronouns = $4,
 		    referrer_id = (SELECT id FROM users WHERE login = $5 AND id != $9),
@@ -148,7 +137,6 @@ func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 		      time_zone = $8
 		  WHERE id = $9`,
 		r.Form.Get("country"),
-		r.Form.Get("layout"),
 		r.Form.Get("keymap"),
 		null.New(r.Form.Get("pronouns"), r.Form.Get("pronouns") != ""),
 		r.Form.Get("referrer"),

@@ -5,9 +5,10 @@ import "slices"
 type Option struct{ ID, Name string }
 
 type Setting struct {
-	Checkbox          bool
-	Default, ID, Name string
-	Options           []*Option
+	Checkbox bool
+	Default  any
+	ID, Name string
+	Options  []*Option
 }
 
 var Settings map[string][]*Setting
@@ -17,12 +18,18 @@ func init() {
 
 	for _, settings := range Settings {
 		for _, setting := range settings {
+			// Simple boolean settings.
 			if len(setting.Options) == 0 {
+				// Default to false.
+				if setting.Default == nil {
+					setting.Default = false
+				}
+
 				continue
 			}
 
 			// Default to the first option.
-			if setting.Default == "" {
+			if setting.Default == nil {
 				setting.Default = setting.Options[0].ID
 			}
 
@@ -43,7 +50,16 @@ func init() {
 	}
 }
 
-func (s *Setting) ValidValue(value string) bool {
+func (s *Setting) FromFormValue(value string) any {
+	// Simple boolean settings.
+	if len(s.Options) == 0 {
+		return value != ""
+	}
+
 	// TODO Consider something more effecient like a hash?
-	return slices.ContainsFunc(s.Options, func(o *Option) bool { return o.ID == value })
+	if slices.ContainsFunc(s.Options, func(o *Option) bool { return o.ID == value }) {
+		return value
+	}
+
+	return s.Default
 }

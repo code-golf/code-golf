@@ -61,6 +61,8 @@
     <form action=/golfer/settings/home method=post>
         <h2>Settings</h2>
 
+        <input name=path type=hidden value="{{ .Path }}">
+
         {{ template "settings" . }}
 
         <menu>

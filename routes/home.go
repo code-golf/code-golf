@@ -22,11 +22,9 @@ func homeGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Cards     []Card
 		LangsUsed map[string]bool
-		Settings  []*config.Setting
 	}{
 		Cards:     make([]Card, 0, len(config.HoleList)),
 		LangsUsed: map[string]bool{},
-		Settings:  config.Settings["home"],
 	}
 
 	if golfer := session.Golfer(r); golfer == nil {

@@ -39,8 +39,6 @@ declare global {
       section: any;
       header: any;
       code: any;
-      input: any;
-      label: any;
       svg: any;
       use: any;
     }

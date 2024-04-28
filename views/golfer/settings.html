@@ -102,20 +102,6 @@
         {{- end -}}
         </fieldset>
 
-        <h2>Layout</h2>
-
-        Preferred layout for the hole page.
-
-        <fieldset>
-        {{- range .Data.Layouts -}}
-            <label>
-                <input name=layout type=radio value="{{ . }}"
-                    {{- if eq . $.Golfer.Layout }} checked{{ end }}>
-                    {{- title . }} {{ if eq . "tabs" }}(WIP){{ end -}}
-            </label>
-        {{- end -}}
-        </fieldset>
-
         <h2>Pronouns</h2>
 
         Preferred pronouns.

@@ -41,7 +41,8 @@
     </dialog>
 {{ end }}
 
-<main id="hole-{{ .Data.Hole.ID }}">
+{{ $showWhitespace := and .Golfer (index .Golfer.Settings "hole" "show-whitespace") }}
+<main id="hole-{{ .Data.Hole.ID }}" {{ if $showWhitespace }} class=show-whitespace {{ end }}>
     <header>
         <h1>
         {{ with .Data.Authors }}
@@ -75,13 +76,19 @@
         {{ end }}
         </nav>
     </header>
-{{ with .Data.Hole.Variants }}
+{{ if or .Golfer .Data.Hole.Variants }}
     <header>
         <nav>
-        {{ range . }}
+        {{ range .Data.Hole.Variants }}
             {{ if ne . $.Data.Hole }}
                 <a class="btn blue" href="{{ .ID }}">{{ .Name }}</a>
             {{ end }}
+        {{ end }}
+        {{ if .Golfer }}
+            <button class="btn blue" data-dialog=settings-dialog title=Settings>
+                {{ svg "gear-fill" }}
+                Settings
+            </button>
         {{ end }}
         </nav>
     </header>
@@ -94,10 +101,7 @@
     <nav class=tabs id=solutionPicker></nav>
     <section>
         <header>
-            <div>
-                <span id=strokes>0 bytes, 0 chars</span>
-                <input type=checkbox id=showWhitespaceCheckbox checked><label for=showWhitespaceCheckbox>Show whitespace</label>
-            </div>
+            <div id=strokes>0 bytes, 0 chars</div>
             <a class=hide href id=restoreLink>Restore solution</a>
         </header>
         <header class=wide>
@@ -162,6 +166,27 @@
 </dialog>
 
 <div id=popups></div>
+
+{{ if .Golfer }}
+<dialog id=settings-dialog>
+    <form action=/golfer/settings/hole method=post>
+        <h2>Settings</h2>
+
+        <input name=path type=hidden value="{{ .Path }}">
+
+        {{ template "settings" . }}
+
+        <menu>
+            <!-- Enter submits the first button, we flip the order in CSS -->
+            <button class="btn green">Save</button>
+            <button class="btn" formaction=/golfer/settings/hole/reset>
+                Reset Defaults
+            </button>
+            <button class="btn red" formmethod=dialog>Cancel</button>
+        </menu>
+    </form>
+</dialog>
+{{ end }}
 
 {{ template "hole-json" . }}
 {{ template "footer"      }}

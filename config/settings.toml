@@ -1,3 +1,12 @@
+[[hole]]
+id   = 'multi-window-layout'
+name = 'Multi-Window Layout (WIP)'
+
+[[hole]]
+id      = 'show-whitespace'
+name    = 'Show Whitespace'
+default = true
+
 [[home]]
 id      = 'order-by'
 name    = 'Order By'

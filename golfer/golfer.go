@@ -71,7 +71,7 @@ type RankUpdate struct {
 }
 
 // Settings is page → setting → value.
-type Settings map[string]map[string]string
+type Settings map[string]map[string]any
 
 func (f *FailingSolutions) Scan(src any) error {
 	return json.Unmarshal(src.([]byte), f)

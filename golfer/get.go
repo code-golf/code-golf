@@ -70,7 +70,7 @@ func Get(db *sqlx.DB, sessionID uuid.UUID) *Golfer {
 	// Populate missing settings with default values.
 	for page, settings := range config.Settings {
 		if _, ok := golfer.Settings[page]; !ok {
-			golfer.Settings[page] = map[string]string{}
+			golfer.Settings[page] = map[string]any{}
 		}
 
 		for _, setting := range settings {

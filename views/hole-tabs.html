@@ -43,7 +43,8 @@
     </dialog>
 {{ end }}
 
-<main id="hole-{{ .Data.Hole.ID }}">
+{{ $showWhitespace := and .Golfer (index .Golfer.Settings "hole" "show-whitespace") }}
+<main id="hole-{{ .Data.Hole.ID }}" {{ if $showWhitespace }} class=show-whitespace {{ end }}>
     <header>
         <div>
             <div id="hole-lang">
@@ -84,13 +85,19 @@
         {{ end }}
         </nav>
     </header>
-{{ with .Data.Hole.Variants }}
+{{ if or .Golfer .Data.Hole.Variants }}
     <header>
         <nav>
-        {{ range . }}
+        {{ range .Data.Hole.Variants }}
             {{ if ne . $.Data.Hole }}
                 <a class="btn blue" href="{{ .ID }}">{{ .Name }}</a>
             {{ end }}
+        {{ end }}
+        {{ if .Golfer }}
+            <button class="btn blue" data-dialog=settings-dialog title=Settings>
+                {{ svg "gear-fill" }}
+                Settings
+            </button>
         {{ end }}
         </nav>
     </header>
@@ -172,6 +179,27 @@
 </dialog>
 
 <div id=popups></div>
+
+{{ if .Golfer }}
+<dialog id=settings-dialog>
+    <form action=/golfer/settings/hole method=post>
+        <h2>Settings</h2>
+
+        <input name=path type=hidden value="{{ .Path }}">
+
+        {{ template "settings" . }}
+
+        <menu>
+            <!-- Enter submits the first button, we flip the order in CSS -->
+            <button class="btn green">Save</button>
+            <button class="btn" formaction=/golfer/settings/hole/reset>
+                Reset Defaults
+            </button>
+            <button class="btn red" formmethod=dialog>Cancel</button>
+        </menu>
+    </form>
+</dialog>
+{{ end }}
 
 {{ template "hole-json" . }}
 {{ template "footer"      }}
