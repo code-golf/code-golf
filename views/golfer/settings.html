@@ -35,9 +35,9 @@
                 {{ end }}
                 </div>
                 <label>
+                    Show this connection publicly?
                     <input name="show_{{ .Connection }}" type=checkbox
                         {{ if .Public }}checked{{ end }}>
-                    Show this connection publicly?
                 </label>
         {{ end }}
         </ol>
@@ -83,9 +83,9 @@
         </select>
 
         <label>
+            Show my country publicly?
             <input name=show_country type=checkbox
                 {{ if .Golfer.ShowCountry }}checked{{ end }}>
-            Show my country publicly?
         </label>
         
         <h2>Keymap</h2>
