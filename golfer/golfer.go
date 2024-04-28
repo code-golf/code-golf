@@ -19,16 +19,16 @@ const (
 
 // Golfer is the info of a logged in golfer we need on every request.
 type Golfer struct {
-	Admin, ShowCountry, Sponsor           bool
-	BytesPoints, CharsPoints, ID          int
-	Cheevos, Holes                        pq.StringArray
-	Country                               config.NullCountry
-	Delete                                null.Time
-	FailingSolutions                      FailingSolutions
-	Following                             pq.Int64Array
-	Keymap, Layout, Name, Referrer, Theme string
-	Pronouns, TimeZone                    null.String
-	Settings                              Settings
+	Admin, ShowCountry, Sponsor   bool
+	BytesPoints, CharsPoints, ID  int
+	Cheevos, Holes                pq.StringArray
+	Country                       config.NullCountry
+	Delete                        null.Time
+	FailingSolutions              FailingSolutions
+	Following                     pq.Int64Array
+	Keymap, Name, Referrer, Theme string
+	Pronouns, TimeZone            null.String
+	Settings                      Settings
 }
 
 // GolferInfo is populated when looking at a /golfers/xxx route.

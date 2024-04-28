@@ -31,7 +31,6 @@ func Get(db *sqlx.DB, sessionID uuid.UUID) *Golfer {
 		          u.country                                 country,
 		          u.delete                                  delete,
 		          u.id                                      id,
-		          u.layout                                  layout,
 		          u.keymap                                  keymap,
 		          u.login                                   name,
 		          u.pronouns                                pronouns,
