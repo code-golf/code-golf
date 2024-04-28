@@ -167,26 +167,6 @@
 
 <div id=popups></div>
 
-{{ if .Golfer }}
-<dialog id=settings-dialog>
-    <form action=/golfer/settings/hole method=post>
-        <h2>Settings</h2>
-
-        <input name=path type=hidden value="{{ .Path }}">
-
-        {{ template "settings" . }}
-
-        <menu>
-            <!-- Enter submits the first button, we flip the order in CSS -->
-            <button class="btn green">Save</button>
-            <button class="btn" formaction=/golfer/settings/hole/reset>
-                Reset Defaults
-            </button>
-            <button class="btn red" formmethod=dialog>Cancel</button>
-        </menu>
-    </form>
-</dialog>
-{{ end }}
-
-{{ template "hole-json" . }}
-{{ template "footer"      }}
+{{ template "settings-dialog" . }}
+{{ template "hole-json"       . }}
+{{ template "footer"            }}
