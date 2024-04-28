@@ -1,5 +1,5 @@
 [[home]]
-id      = 'sort'
+id      = 'order-by'
 name    = 'Order By'
 options = [
     { id = 'alphabetical-asc',  name = 'Alphabetical (ascending)'  },
@@ -13,7 +13,7 @@ options = [
 ]
 
 [[home]]
-id      = 'lang'
+id      = 'points-for'
 name    = 'Points For'
 options = [ { id = 'all', name = 'All Languages' } ]
 

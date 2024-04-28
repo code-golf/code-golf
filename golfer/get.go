@@ -30,14 +30,13 @@ func Get(db *sqlx.DB, sessionID uuid.UUID) *Golfer {
 		          COALESCE(chars.points, 0)                 chars_points,
 		          u.country                                 country,
 		          u.delete                                  delete,
-		          (SELECT COALESCE(json_agg(failing), '[]')
-		             FROM failing)                          failing_solutions,
 		          u.id                                      id,
 		          u.layout                                  layout,
 		          u.keymap                                  keymap,
 		          u.login                                   name,
 		          u.pronouns                                pronouns,
 		          COALESCE(r.login, '')                     referrer,
+		          u.settings                                settings,
 		          u.show_country                            show_country,
 		          u.sponsor                                 sponsor,
 		          u.theme                                   theme,
@@ -46,6 +45,8 @@ func Get(db *sqlx.DB, sessionID uuid.UUID) *Golfer {
 		                  FROM trophies
 		                 WHERE user_id = u.id
 		              ORDER BY trophy)                      cheevos,
+		          (SELECT COALESCE(json_agg(failing), '[]')
+		             FROM failing)                          failing_solutions,
 		          ARRAY(SELECT followee_id
 		                  FROM follows
 		                 WHERE follower_id = u.id
@@ -64,6 +65,19 @@ func Get(db *sqlx.DB, sessionID uuid.UUID) *Golfer {
 		return nil
 	} else if err != nil {
 		panic(err)
+	}
+
+	// Populate missing settings with default values.
+	for page, settings := range config.Settings {
+		if _, ok := golfer.Settings[page]; !ok {
+			golfer.Settings[page] = map[string]string{}
+		}
+
+		for _, setting := range settings {
+			if _, ok := golfer.Settings[page][setting.ID]; !ok {
+				golfer.Settings[page][setting.ID] = setting.Default
+			}
+		}
 	}
 
 	return &golfer

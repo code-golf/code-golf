@@ -43,11 +43,7 @@ func init() {
 	}
 }
 
-func (s *Setting) ValueOrDefault(value string) string {
+func (s *Setting) ValidValue(value string) bool {
 	// TODO Consider something more effecient like a hash?
-	if slices.ContainsFunc(s.Options, func(o *Option) bool { return o.ID == value }) {
-		return value
-	}
-
-	return s.Default
+	return slices.ContainsFunc(s.Options, func(o *Option) bool { return o.ID == value })
 }

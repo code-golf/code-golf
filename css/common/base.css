@@ -538,11 +538,11 @@ body > .tabs a {
 
 #error h1 { text-align: center }
 
-#ideas, #index { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
+#home, #ideas { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
 
-#index > .tabs { justify-content: flex-end }
+#home > .tabs { justify-content: flex-end }
 
-#index > .grid {
+#home > .grid {
     border: 2px solid var(--color);
     padding: 1rem;
 }

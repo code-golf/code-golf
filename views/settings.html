@@ -1,5 +1,5 @@
 {{ range $i, $setting := .Data.Settings }}
-    {{ $value := index $.Data.SettingsValues .ID }}
+    {{ $value := index $.Golfer.Settings $.Name .ID }}
 
 {{ if .Checkbox }}
     <fieldset>

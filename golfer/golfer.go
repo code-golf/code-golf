@@ -1,6 +1,7 @@
 package golfer
 
 import (
+	"database/sql/driver"
 	"encoding/json"
 	"slices"
 	"time"
@@ -27,6 +28,7 @@ type Golfer struct {
 	Following                             pq.Int64Array
 	Keymap, Layout, Name, Referrer, Theme string
 	Pronouns, TimeZone                    null.String
+	Settings                              Settings
 }
 
 // GolferInfo is populated when looking at a /golfers/xxx route.
@@ -67,6 +69,9 @@ type RankUpdate struct {
 	OldBestStrokes     null.Int         `json:"oldBestStrokes"`     // Number of strokes for previous diamond (including current golfer).
 	OldBestSubmitted   null.Time        `json:"oldBestSubmitted"`   // Timestamp for previous diamond (including current golfer).
 }
+
+// Settings is page → setting → value.
+type Settings map[string]map[string]string
 
 func (f *FailingSolutions) Scan(src any) error {
 	return json.Unmarshal(src.([]byte), f)
@@ -123,3 +128,7 @@ func (g *Golfer) Solved(holeID string) bool {
 	_, ok := slices.BinarySearch(g.Holes, holeID)
 	return ok
 }
+
+func (s *Settings) Scan(v any) error { return json.Unmarshal(v.([]byte), &s) }
+
+func (s Settings) Value() (driver.Value, error) { return json.Marshal(s) }

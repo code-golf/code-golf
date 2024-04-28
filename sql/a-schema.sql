@@ -112,6 +112,7 @@ CREATE TABLE users (
     keymap       keymap    NOT NULL DEFAULT 'default',
     layout       layout    NOT NULL DEFAULT 'default',
     pronouns     pronouns,
+    settings     jsonb     NOT NULL DEFAULT '{}'::jsonb,
     CHECK (country IS NULL OR country = UPPER(country)),
     CHECK (id != referrer_id),              -- Can't refer yourself!
     CHECK (login ~ '^[A-Za-z0-9_-]{1,42}$') -- 1 - 42 ASCII word/hyphen chars.

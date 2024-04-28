@@ -66,6 +66,40 @@ func golferSettingsGET(w http.ResponseWriter, r *http.Request) {
 	render(w, r, "golfer/settings", data, "Settings")
 }
 
+// POST /golfer/settings/{page}
+func golferSettingsPagePOST(w http.ResponseWriter, r *http.Request) {
+	golfer := session.Golfer(r)
+	page := param(r, "page")
+
+	// If the posted value is valid, update the golfer's settings map.
+	for _, setting := range config.Settings[page] {
+		if value := r.FormValue(setting.ID); setting.ValidValue(value) {
+			golfer.Settings[page][setting.ID] = value
+		}
+	}
+
+	// Optimisation, trim the default values from the maps before saving.
+	for page, settings := range config.Settings {
+		for _, setting := range settings {
+			if golfer.Settings[page][setting.ID] == setting.Default {
+				delete(golfer.Settings[page], setting.ID)
+			}
+		}
+
+		if len(golfer.Settings[page]) == 0 {
+			delete(golfer.Settings, page)
+		}
+	}
+
+	session.Database(r).MustExec(
+		"UPDATE users SET settings = $1 WHERE id = $2",
+		golfer.Settings, golfer.ID,
+	)
+
+	// TODO Redirect based on page. Note page hasn't been validated yet.
+	http.Redirect(w, r, "/", http.StatusFound)
+}
+
 // POST /golfer/settings
 func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()

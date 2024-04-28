@@ -44,8 +44,7 @@ func Router(db *sqlx.DB) http.Handler {
 	r.Group(func(r chi.Router) {
 		r.Use(middleware.Golfer)
 
-		r.Get("/", indexGET)
-		r.Post("/", indexPost)
+		r.Get("/", homeGET)
 		r.Get("/{hole}", holeGET)
 		r.Get("/about", aboutGET)
 		r.With(middleware.AdminArea).Route("/admin", func(r chi.Router) {
@@ -92,6 +91,7 @@ func Router(db *sqlx.DB) http.Handler {
 			r.Get("/export", golferExportGET)
 			r.Get("/settings", golferSettingsGET)
 			r.Post("/settings", golferSettingsPOST)
+			r.Post("/settings/{page}", golferSettingsPagePOST)
 		})
 		r.With(middleware.GolferInfo).Route("/golfers/{name}", func(r chi.Router) {
 			r.Get("/", golferGET)

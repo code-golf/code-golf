@@ -11,26 +11,8 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-var homeSettings = config.Settings["home"]
-
-// POST /
-func indexPost(w http.ResponseWriter, r *http.Request) {
-	for _, setting := range homeSettings {
-		http.SetCookie(w, &http.Cookie{
-			HttpOnly: true,
-			Name:     "__Host-" + setting.ID,
-			Path:     "/",
-			SameSite: http.SameSiteLaxMode,
-			Secure:   true,
-			Value:    r.FormValue(setting.ID),
-		})
-	}
-
-	http.Redirect(w, r, "/", http.StatusFound)
-}
-
 // GET /
-func indexGET(w http.ResponseWriter, r *http.Request) {
+func homeGET(w http.ResponseWriter, r *http.Request) {
 	type Card struct {
 		Hole   *config.Hole
 		Lang   *config.Lang
@@ -38,15 +20,13 @@ func indexGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := struct {
-		Cards          []Card
-		LangsUsed      map[string]bool
-		Settings       []*config.Setting
-		SettingsValues map[string]string
+		Cards     []Card
+		LangsUsed map[string]bool
+		Settings  []*config.Setting
 	}{
-		Cards:          make([]Card, 0, len(config.HoleList)),
-		LangsUsed:      map[string]bool{},
-		Settings:       homeSettings,
-		SettingsValues: map[string]string{},
+		Cards:     make([]Card, 0, len(config.HoleList)),
+		LangsUsed: map[string]bool{},
+		Settings:  config.Settings["home"],
 	}
 
 	if golfer := session.Golfer(r); golfer == nil {
@@ -54,15 +34,10 @@ func indexGET(w http.ResponseWriter, r *http.Request) {
 			data.Cards = append(data.Cards, Card{Hole: hole})
 		}
 	} else {
-		for _, setting := range data.Settings {
-			data.SettingsValues[setting.ID] =
-				setting.ValueOrDefault(cookie(r, "__Host-"+setting.ID))
-		}
-
 		var rows *sql.Rows
 		var err error
 
-		if lang := config.LangByID[data.SettingsValues["lang"]]; lang == nil {
+		if lang := golfer.Settings["home"]["points-for"]; lang == "all" {
 			rows, err = session.Database(r).Query(
 				`WITH points AS (
 				    SELECT DISTINCT ON (hole) hole, lang, points
@@ -72,7 +47,7 @@ func indexGET(w http.ResponseWriter, r *http.Request) {
 				)  SELECT hole, lang, COALESCE(points, 0)
 				     FROM unnest(enum_range(NULL::hole)) hole
 				LEFT JOIN points USING(hole)`,
-				data.SettingsValues["scoring"],
+				golfer.Settings["home"]["scoring"],
 				golfer.ID,
 			)
 		} else {
@@ -84,9 +59,9 @@ func indexGET(w http.ResponseWriter, r *http.Request) {
 				)  SELECT hole, lang, COALESCE(points_for_lang, 0)
 				     FROM unnest(enum_range(NULL::hole)) hole
 				LEFT JOIN points USING(hole)`,
-				data.SettingsValues["scoring"],
+				golfer.Settings["home"]["scoring"],
 				golfer.ID,
-				lang.ID,
+				lang,
 			)
 		}
 
@@ -124,7 +99,7 @@ func indexGET(w http.ResponseWriter, r *http.Request) {
 				strings.ToLower(b.Hole.Name))
 		}
 
-		switch data.SettingsValues["sort"] {
+		switch golfer.Settings["home"]["order-by"] {
 		case "alphabetical-asc": // name desc.
 			slices.SortFunc(data.Cards, cmpHoleNameLowercase)
 		case "alphabetical-desc": // name desc.
@@ -184,5 +159,5 @@ func indexGET(w http.ResponseWriter, r *http.Request) {
 		"Strict-Transport-Security",
 		"max-age=31536000;includeSubDomains;preload",
 	)
-	render(w, r, "index", data)
+	render(w, r, "home", data)
 }

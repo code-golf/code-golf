@@ -25,7 +25,7 @@
     {{ range $k, $v := .Data.LangsUsed }}{{ symbol $k }}{{ end }}
 </svg>
 
-<main id=index>
+<main id=home>
 {{ if .Golfer }}
     <nav class="span tabs">
         <button class="btn blue" data-dialog=settings-dialog title=Settings>
@@ -37,8 +37,8 @@
 {{ range .Data.Cards }}
     <a class="card {{ .Hole.CategoryColor }}"
     {{ if .Points }}
-        {{ $lang    := index $.Data.SettingsValues "lang"    }}
-        {{ $scoring := index $.Data.SettingsValues "scoring" }}
+        {{ $lang    := index $.Golfer.Settings "home" "points-for" }}
+        {{ $scoring := index $.Golfer.Settings "home" "scoring"    }}
         href="rankings/holes/{{ .Hole.ID }}/{{ $lang }}/{{ $scoring }}"
     {{ else }}
         href="{{ .Hole.ID }}"
@@ -58,7 +58,7 @@
 
 {{ if .Golfer }}
 <dialog id=settings-dialog>
-    <form method=post>
+    <form action=/golfer/settings/home method=post>
         <h2>Settings</h2>
 
         {{ template "settings" . }}
