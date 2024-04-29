@@ -49,29 +49,6 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 	"trimPrefix": strings.TrimPrefix,
 })
 
-type cssLink struct{ Path, Media string }
-
-func getCSSLinks(name string, theme string) []cssLink {
-	var links = []cssLink{{assets["css/common/base.css"], ""}}
-
-	if path, ok := assets["css/"+name+".css"]; ok {
-		links = append(links, cssLink{Path: path})
-	}
-
-	// If theme is "dark" or "light", only that CSS file is loaded as you expect
-	// If theme is auto, then the light theme is loaded, and the dark theme might
-	// be loaded based on a <link media="..."> query
-	if theme == "dark" || theme == "light" {
-		return append(links, cssLink{assets["css/common/"+theme+".css"], ""})
-	}
-
-	return append(
-		links,
-		cssLink{assets["css/common/light.css"], ""},
-		cssLink{assets["css/common/dark.css"], "(prefers-color-scheme:dark)"},
-	)
-}
-
 func slurp(dir string) map[string]string {
 	files := map[string]string{}
 
@@ -152,6 +129,8 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		theme = theGolfer.Theme
 	}
 
+	type cssLink struct{ Path, Media string }
+
 	args := struct {
 		Banners                            []banner
 		CSS                                []cssLink
@@ -171,7 +150,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	}{
 		Banners:     banners(theGolfer, time.Now().UTC()),
 		Cheevos:     config.CheevoTree,
-		CSS:         getCSSLinks(name, theme),
+		CSS:         []cssLink{{assets["css/common/base.css"], ""}},
 		Data:        data[0],
 		Description: "Code Golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.",
 		Golfer:      theGolfer,
@@ -180,7 +159,6 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		JS:          []string{assets["js/base.tsx"]},
 		Langs:       config.LangByID,
 		Name:        name,
-		Nav:         config.Nav[name],
 		Nonce:       nonce(),
 		Path:        r.URL.Path,
 		Request:     r,
@@ -203,14 +181,38 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		args.Location = time.UTC
 	}
 
-	// Append route specific JS.
-	// e.g. GET /foo/bar might add js/foo.ts and/or js/foo/bar.tsx.
-	for _, path := range []string{path.Dir(name), name} {
+	// Get route specific CSS, JS, and navigation by splitting the name.
+	// e.g. foo/bar/baz → foo, foo/bar, foo/bar/baz.
+	subName := ""
+	for _, part := range strings.Split(name, "/") {
+		subName = path.Join(subName, part)
+
+		if nav, ok := config.Nav[subName]; ok {
+			args.Nav = nav
+		}
+
+		if url, ok := assets["css/"+subName+".css"]; ok {
+			args.CSS = append(args.CSS, cssLink{Path: url})
+		}
+
 		for _, ext := range []string{"ts", "tsx"} {
-			if url, ok := assets["js/"+path+"."+ext]; ok {
+			if url, ok := assets["js/"+subName+"."+ext]; ok {
 				args.JS = append(args.JS, url)
 			}
 		}
+	}
+
+	// If theme is "dark" or "light", only that CSS file is loaded as you expect
+	// If theme is auto, then the light theme is loaded, and the dark theme might
+	// be loaded based on a <link media="..."> query
+	if theme == "auto" {
+		args.CSS = append(
+			args.CSS,
+			cssLink{assets["css/common/light.css"], ""},
+			cssLink{assets["css/common/dark.css"], "(prefers-color-scheme:dark)"},
+		)
+	} else {
+		args.CSS = append(args.CSS, cssLink{assets["css/common/"+theme+".css"], ""})
 	}
 
 	header := w.Header()
