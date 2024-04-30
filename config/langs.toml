@@ -930,7 +930,7 @@ say 'Hello, World!';
 '''
 
 [Rockstar]
-size    = '167 MiB'
+size    = '165 MiB'
 version = '2.1.2'
 website = 'https://github.com/gaborsch/rocky'
 example = '''
