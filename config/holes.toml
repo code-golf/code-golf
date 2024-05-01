@@ -785,12 +785,12 @@ preamble = '''
 
 ['N Queens']
 category = 'Gaming'
-experiment = 1109
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/N-queens_problem' },
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Eight_queens_puzzle' },
 ]
 item-delimiter = "\n"
+released = 2024-05-01
 synopsis = 'Print all solutions to the N queens problem.'
 preamble = '''
 <p>
@@ -802,35 +802,6 @@ preamble = '''
     <pre>63571428</pre>
 <p>
     Print all solutions to the N queens problem, one per a line, for boards of sizes 4-8.
-'''
-
-['N Queens Formatted']
-category = 'Gaming'
-experiment = 1110
-links = [
-    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/N-queens_problem' },
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Eight_queens_puzzle' },
-]
-item-delimiter = "\n\n"
-synopsis = 'Print all solutions to the N queens problem.'
-preamble = '''
-<p>
-    In chess, pieces move on a board of 8 ranks and 8 files. A chess queen can attack along a file a rank or a diagonal.
-    It is possible to place 8 queens on the board, such that no queen is under attack by another one.
-    One solution looks like this
-
-<p>
-    <pre>.......Q
-...Q....
-Q.......
-..Q.....
-.....Q..
-.Q......
-......Q.
-....Q...</pre>
-
-<p>
-    Print all solutions to the N queens problem, separated by a blank line, for boards of sizes 4-8.
 '''
 
 ['Emirp Numbers']
