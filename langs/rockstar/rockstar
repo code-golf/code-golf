@@ -16,8 +16,8 @@ while [[ $# -gt 0 ]]; do
   # Escape backslashes, newlines, and quotes
   escaped="$(\
     printf '%s' "$1" \
-      | sed -e 's/"/\\"/g' \
       | sed -e 's/\\/\\\\/g' \
+      | sed -e 's/"/\\"/g' \
       | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/\\n/g' \
   )"
 
