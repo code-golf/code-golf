@@ -8,6 +8,9 @@ cd /tmp
 
 shift
 
+# Since \" isn't supported, use a variable to escape quotes.
+echo "cast 34 into quote" >> code.rock
+
 echo 'rock args' >> code.rock
 
 # Inject args variable into code
@@ -17,7 +20,7 @@ while [[ $# -gt 0 ]]; do
   escaped="$(\
     printf '%s' "$1" \
       | sed -e 's/\\/\\\\/g' \
-      | sed -e 's/"/\\"/g' \
+      | sed -e 's/"/"+quote+"/g' \
       | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/\\n/g' \
   )"
 
@@ -25,6 +28,9 @@ while [[ $# -gt 0 ]]; do
 
   shift
 done
+
+# Unset variables
+echo "let quote be mysterious" >> code.rock
 
 # Write code to .rock file
 cat - >> code.rock

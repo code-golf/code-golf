@@ -2,7 +2,7 @@ FROM eclipse-temurin:22.0.1_8-jre-alpine as builder
 
 RUN apk add --no-cache curl
 
-RUN curl -L https://github.com/gaborsch/rocky/archive/66606af.tar.gz  | tar xz \
+RUN curl -L https://github.com/gaborsch/rocky/archive/b471381.tar.gz  | tar xz \
  && cd rocky-*                                                                 \
  && ( echo '#!/bin/sh'                                                         \
       && echo 'exec /opt/java/openjdk/bin/java -jar $0 "$@"'                   \
