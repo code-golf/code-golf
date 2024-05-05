@@ -2,12 +2,12 @@ FROM eclipse-temurin:22.0.1_8-jre-alpine as builder
 
 RUN apk add --no-cache curl
 
-RUN curl -L https://github.com/gaborsch/rocky/archive/b471381.tar.gz  | tar xz \
- && cd rocky-*                                                                 \
- && ( echo '#!/bin/sh'                                                         \
-      && echo 'exec /opt/java/openjdk/bin/java -jar $0 "$@"'                   \
-      && cat rocky.jar                                                         \
-    ) > /usr/bin/rocky                                                         \
+RUN curl -L https://github.com/gaborsch/rocky/archive/c86573f.tar.gz | tar xz \
+ && cd rocky-*                                                                \
+ && ( echo '#!/bin/sh'                                                        \
+      && echo 'exec /opt/java/openjdk/bin/java -jar $0 "$@"'                  \
+      && cat rocky.jar                                                        \
+    ) > /usr/bin/rocky                                                        \
  && chmod +x /usr/bin/rocky
 
 FROM codegolf/lang-base
