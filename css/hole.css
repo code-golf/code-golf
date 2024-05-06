@@ -74,7 +74,7 @@ section header {
 
 #err div, #exp div, #out div { white-space: pre }
 
-#arg div {
+#arg div div {
     align-content: flex-start;
     align-items: flex-start;
     display: flex;

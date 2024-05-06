@@ -46,6 +46,7 @@ func Router(db *sqlx.DB) http.Handler {
 
 		r.Get("/", homeGET)
 		r.Get("/{hole}", holeGET)
+		r.Get("/sandbox", sandboxGET)
 		r.Get("/about", aboutGET)
 		r.With(middleware.AdminArea).Route("/admin", func(r chi.Router) {
 			r.Get("/", adminGET)
@@ -145,8 +146,10 @@ func Router(db *sqlx.DB) http.Handler {
 		// Rate-limit solutions to avoid running out of FDs. Disable under e2e.
 		if _, e2e := os.LookupEnv("E2E"); e2e {
 			r.Post("/solution", solutionPOST)
+			r.Post("/sandbox", sandboxPOST)
 		} else {
 			r.With(httprate.LimitByRealIP(60, time.Minute)).Post("/solution", solutionPOST)
+			r.With(httprate.LimitByRealIP(60, time.Minute)).Post("/sandbox", sandboxPOST)
 		}
 	})
 
