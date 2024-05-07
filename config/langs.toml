@@ -1011,7 +1011,7 @@ G
 # (... automatic, one per line ...)
 
 # Arguments are available via STDIN,
-# each argument is seperated with a null byte.
+# each argument is separated with a null byte.
 # The code is run with -E and -z options.
 # Output replaces null bytes with newlines.
 '''
