@@ -48,7 +48,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 
 	// TODO Should this be pushed lower?
 	for i, run := range runs {
-		runs[i].Stderr = string(terminal.Render([]byte(run.Stderr)))
+		runs[i].Stderr = terminal.Render([]byte(run.Stderr))
 	}
 
 	// The legacy single run we display, first failing or last overall.

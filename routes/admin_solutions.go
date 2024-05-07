@@ -72,7 +72,7 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 						}
 					}
 
-					s.Stderr = string(terminal.Render([]byte(run.Stderr)))
+					s.Stderr = terminal.Render([]byte(run.Stderr))
 					s.Took = run.Time
 
 					if run.Pass {

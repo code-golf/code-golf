@@ -518,7 +518,7 @@ end
 
 [Go]
 size    = '353 MiB'
-version = '1.22.2'
+version = '1.22.3'
 website = 'https://go.dev'
 example = '''
 package main
