@@ -3323,6 +3323,34 @@ Then I'm sure she sells seashore shells.
 </blockquote>
 '''
 
+['Semiprime Numbers']
+experiment = 1154
+category = 'Sequence'
+links = [
+    { name = 'OEIS A001358', url = '//oeis.org/A001358' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Semiprime' },
+]
+synopsis = 'Print all the semiprime numbers from 1 to 10,000.'
+preamble = '''
+<p>A <b>semiprime number</b> is a number that is the product of two prime numbers. Note that the prime factors do not necessarily have to be distinct.
+
+<p>Print all the semiprime numbers from <b>1</b> to <b>10,000</b> inclusive, each on their own line.
+'''
+
+['Sphenic Numbers']
+experiment = 1154
+category = 'Sequence'
+links = [
+    { name = 'OEIS A007304', url = '//oeis.org/A007304' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Sphenic_number' },
+]
+synopsis = 'Print all the sphenic numbers from 1 to 10,000.'
+preamble = '''
+<p>A <b>sphenic number</b> is a number that is the product of three <b>distinct</b> prime numbers.
+
+<p>Print all the sphenic numbers from <b>1</b> to <b>10,000</b> inclusive, each on their own line.
+'''
+
 ['Trinomial Triangle']
 experiment = 1117
 category = 'Sequence'
