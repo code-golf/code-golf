@@ -46,13 +46,11 @@ func ideasGET(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-rows:
 	for _, i := range ideas {
 		for j, hole := range data.Holes {
 			if hole.ID == i.ID {
 				data.Holes[j].ThumbsDown = i.ThumbsDown
 				data.Holes[j].ThumbsUp = i.ThumbsUp
-				continue rows
 			}
 		}
 
