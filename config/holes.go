@@ -131,6 +131,11 @@ func init() {
 		hole.ID = ID(name)
 		hole.Name = name
 
+		// FIXME Variants can't yet have different experiment IDs.
+		if hole.ID == "gray-code-encoder" {
+			hole.Experiment = 1157
+		}
+
 		// Process the templated preamble with the data.
 		if hole.Data != "" {
 			t, err := template.New("").Parse(string(hole.Preamble))
