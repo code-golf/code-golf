@@ -38,8 +38,5 @@
     "@typescript-eslint/parser": "",
     "eslint": "",
     "typescript": ""
-  },
-  "overrides": {
-    "codemirror": "^6"
   }
 }
