@@ -8,7 +8,6 @@ import (
 	"os"
 	"path"
 	"path/filepath"
-	"regexp"
 	"strings"
 	"time"
 
@@ -17,7 +16,6 @@ import (
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/pretty"
 	"github.com/code-golf/code-golf/session"
-	"github.com/tdewolff/minify/v2/minify"
 )
 
 var (
@@ -107,17 +105,7 @@ func init() {
 	}
 
 	// Views.
-	uppercaseProps := regexp.MustCompile(`{{.+?[A-Z].*?}}`)
 	for name, data := range slurp("views") {
-		// Minify templates without uppercase properties.
-		// The real fix is https://github.com/tdewolff/minify/issues/35
-		if !uppercaseProps.MatchString(data) {
-			var err error
-			if data, err = minify.HTML(data); err != nil {
-				panic(err)
-			}
-		}
-
 		tmpl = template.Must(tmpl.New(name).Parse(data))
 	}
 }

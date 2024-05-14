@@ -11,7 +11,6 @@ import (
 
 	"github.com/code-golf/code-golf/ordered"
 	"github.com/pelletier/go-toml/v2"
-	"github.com/tdewolff/minify/v2/minify"
 )
 
 var (
@@ -153,13 +152,6 @@ func init() {
 				panic(err)
 			}
 			hole.Preamble = template.HTML(b.String())
-		}
-
-		// Minify preamble.
-		if html, err := minify.HTML(string(hole.Preamble)); err != nil {
-			panic(err)
-		} else {
-			hole.Preamble = template.HTML(html)
 		}
 
 		// Filter out links that don't match this variant.
