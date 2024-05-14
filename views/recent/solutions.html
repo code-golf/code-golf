@@ -22,7 +22,7 @@
         {{ with .Golfer }}{{ $name = .Name }}{{ end }}
 
         {{ range .Data.Rows }}
-            <tr{{ if eq $name .Name }} class="me"{{ end }}>
+            <tr {{ if eq $name .Name }} class=me {{ end }}>
                 <td>
                     <a href="/{{ .Hole.ID }}#{{ .Lang.ID }}">
                         <svg class=thin><use href="#{{ .Lang.ID }}"/></svg>

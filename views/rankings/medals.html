@@ -18,7 +18,7 @@
         {{ with .Golfer }}{{ $name = .Name }}{{ end }}
 
         {{ range .Data.Rows }}
-            <tr{{ if eq $name .Name }} class=me {{ end }}>
+            <tr {{ if eq $name .Name }} class=me {{ end }}>
                 <td>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup>
                 <td>{{ template "golfer-link" . }}
                 <td class=right> {{ comma .Gold    }}

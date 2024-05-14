@@ -16,7 +16,7 @@
         {{ with .Golfer }}{{ $name = .Name }}{{ end }}
 
         {{ range .Data.Golfers }}
-            <tr{{ if eq $name .Name }} class=me {{ end }}>
+            <tr {{ if eq $name .Name }} class=me {{ end }}>
                 <td>{{ template "golfer-link" . }}
                 <td>
                     <div>
