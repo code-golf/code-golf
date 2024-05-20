@@ -26,20 +26,17 @@ var (
 )
 
 var tmpl = template.New("").Funcs(template.FuncMap{
-	"bytes":     pretty.Bytes,
-	"comma":     pretty.Comma,
-	"dec":       func(i int) int { return i - 1 },
-	"hasPrefix": strings.HasPrefix,
-	"hasSuffix": strings.HasSuffix,
-	"html":      func(html string) template.HTML { return template.HTML(html) },
-	"inc":       func(i int) int { return i + 1 },
-	"ord":       pretty.Ordinal,
-	"page":      func(i int) int { return i/pager.PerPage + 1 },
-	"param":     param,
-	"svg":       func(name string) template.HTML { return svg[name] },
-	"symbol": func(name string) template.HTML {
-		return template.HTML(strings.ReplaceAll(string(svg[name]), "svg", "symbol"))
-	},
+	"bytes":      pretty.Bytes,
+	"comma":      pretty.Comma,
+	"dec":        func(i int) int { return i - 1 },
+	"hasPrefix":  strings.HasPrefix,
+	"hasSuffix":  strings.HasSuffix,
+	"html":       func(html string) template.HTML { return template.HTML(html) },
+	"inc":        func(i int) int { return i + 1 },
+	"ord":        pretty.Ordinal,
+	"page":       func(i int) int { return i/pager.PerPage + 1 },
+	"param":      param,
+	"svg":        func(name string) template.HTML { return svg[name] },
 	"title":      pretty.Title,
 	"time":       pretty.Time,
 	"trimPrefix": strings.TrimPrefix,

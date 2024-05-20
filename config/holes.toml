@@ -559,9 +559,9 @@ released = 2020-06-21
 synopsis = 'Convert CSS color keywords to their hex values.'
 preamble = '''
 <svg class=hide>
-    <symbol id="color" viewBox="0 0 1 1" xmlns="http://www.w3.org/2000/symbol">
+    <svg id="color" viewBox="0 0 1 1">
         <rect width="1" height="1"/>
-    </symbol>
+    </svg>
 </svg>
 
 <p>

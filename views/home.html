@@ -16,13 +16,13 @@
 {{ end }}
 
 <svg>
-    {{ symbol "brush" }}
-    {{ symbol "calculator" }}
-    {{ symbol "cpu" }}
-    {{ symbol "joystick" }}
-    {{ symbol "shuffle" }}
-    {{ symbol "sort-numeric-down" }}
-    {{ range $k, $v := .Data.LangsUsed }}{{ symbol $k }}{{ end }}
+    {{ svg "brush" }}
+    {{ svg "calculator" }}
+    {{ svg "cpu" }}
+    {{ svg "joystick" }}
+    {{ svg "shuffle" }}
+    {{ svg "sort-numeric-down" }}
+    {{ range $k, $v := .Data.LangsUsed }}{{ svg $k }}{{ end }}
 </svg>
 
 <main id=home>
