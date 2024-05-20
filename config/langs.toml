@@ -380,7 +380,7 @@ void main(string[] argv) {
 
 [Dart]
 size    = '235 MiB'
-version = '3.3.3'
+version = '3.4.0'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -825,7 +825,7 @@ say for @ARGV;
 
 [PHP]
 size    = '8.4 MiB'
-version = '8.3.6'
+version = '8.3.7'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -968,8 +968,8 @@ end
 '''
 
 [Rust]
-size    = '327 MiB'
-version = '1.77.2'
+size    = '325 MiB'
+version = '1.78.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -1102,8 +1102,8 @@ Hello, World!
 '''
 
 [V]
-size    = '59.8 MiB'
-version = '0.4.5'
+size    = '60.2 MiB'
+version = '0.4.6'
 website = 'https://vlang.io'
 example = '''
 import os

@@ -1,6 +1,10 @@
-FROM rust:1.77.2-alpine3.19 AS builder
+ARG VER=1.78.0
 
-WORKDIR /usr/local/rustup/toolchains/1.77.2-x86_64-unknown-linux-musl
+FROM rust:$VER-alpine3.19 AS builder
+
+ARG VER
+
+WORKDIR /usr/local/rustup/toolchains/$VER-x86_64-unknown-linux-musl
 
 # Delete unused binaries.
 RUN find /usr/local/cargo/bin bin -not -name rustc -delete \
@@ -13,6 +17,8 @@ RUN find . -name '*.?san.a' -delete
 RUN strip lib/*.so
 
 FROM codegolf/lang-base
+
+ARG VER
 
 COPY --from=0 /bin/sh                         /bin/
 COPY --from=0 /lib/ld-musl-x86_64.so.1        \
@@ -27,10 +33,10 @@ COPY --from=0 /usr/lib/libbfd-2.41.so         \
 COPY --from=0 /usr/local/cargo                /usr/local/cargo
 COPY --from=0 /usr/local/rustup/settings.toml /usr/local/rustup/
 
-COPY --from=0 /usr/local/rustup/toolchains/1.77.2-x86_64-unknown-linux-musl/bin \
-              /usr/local/rustup/toolchains/1.77.2-x86_64-unknown-linux-musl/bin
-COPY --from=0 /usr/local/rustup/toolchains/1.77.2-x86_64-unknown-linux-musl/lib \
-              /usr/local/rustup/toolchains/1.77.2-x86_64-unknown-linux-musl/lib
+COPY --from=0 /usr/local/rustup/toolchains/$VER-x86_64-unknown-linux-musl/bin \
+              /usr/local/rustup/toolchains/$VER-x86_64-unknown-linux-musl/bin
+COPY --from=0 /usr/local/rustup/toolchains/$VER-x86_64-unknown-linux-musl/lib \
+              /usr/local/rustup/toolchains/$VER-x86_64-unknown-linux-musl/lib
 
 COPY rust /usr/bin/
 
