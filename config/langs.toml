@@ -574,7 +574,7 @@ main = do
   mapM print [0..9]
 
   -- Accessing arguments
-  args <- tail <$> getArgs
+  args <- drop 1 <$> getArgs
   mapM putStrLn args
 '''
 
