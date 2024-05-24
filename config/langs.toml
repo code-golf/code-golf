@@ -560,8 +560,8 @@ n*
 '''
 
 [Haskell]
-size    = '350 MiB'
-version = 'Glasgow Haskell Compiler 9.4.7'
+size    = '388 MiB'
+version = 'Glasgow Haskell Compiler 9.8.2'
 website = 'https://www.haskell.org/ghc/'
 example = '''
 import System.Environment
@@ -676,7 +676,7 @@ for (let arg of arguments)
 
 [Julia]
 size    = '309 MiB'
-version = '1.10.2'
+version = '1.10.3'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -766,8 +766,8 @@ for arg in commandLineParams():
 '''
 
 [OCaml]
-size    = '80.6 MiB'
-version = '5.1.1'
+size    = '91.4 MiB'
+version = '5.2.0'
 website = 'https://ocaml.org'
 example = '''
 (* Printing *)
@@ -896,8 +896,8 @@ for arg in sys.argv[1:]:
 '''
 
 [R]
-size    = '79.2 MiB'
-version = '4.3.1'
+size    = '81.9 MiB'
+version = '4.4.0'
 website = 'https://www.r-project.org'
 example = '''
 # Printing
@@ -1017,8 +1017,8 @@ G
 '''
 
 [SQL]
-size    = '1.19 MiB'
-version = '3.45.3'
+size    = '1.2 MiB'
+version = '3.46.0'
 website = 'https://sqlite.org'
 example = '''
 -- Printing

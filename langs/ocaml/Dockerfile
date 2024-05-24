@@ -1,10 +1,10 @@
-FROM alpine:3.19 AS builder
+FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache build-base curl
 
-RUN curl -L https://github.com/ocaml/ocaml/archive/refs/tags/5.1.1.tar.gz | tar xz
+RUN curl -L https://github.com/ocaml/ocaml/archive/refs/tags/5.2.0.tar.gz | tar xz
 
-RUN cd ocaml-5.1.1          \
+RUN cd ocaml-*              \
  && ./configure             \
     --bindir /usr/bin       \
     --libdir /usr/lib/ocaml \

@@ -1,6 +1,6 @@
-FROM alpine:3.19 AS builder
+FROM alpine:3.20 AS builder
 
-RUN apk add --no-cache R=4.3.1-r1 build-base curl perl
+RUN apk add --no-cache R=4.4.0-r0 build-base curl perl
 
 RUN curl https://busybox.net/downloads/busybox-1.36.1.tar.bz2 | tar xj \
  && mv busybox-* busybox
@@ -20,6 +20,7 @@ COPY --from=0 /usr/bin/R                 \
               /usr/bin/Rscript           /usr/bin/
 COPY --from=0 /usr/lib/R                 /usr/lib/R
 COPY --from=0 /usr/lib/libbz2.so.1       \
+              /usr/lib/libdeflate.so.0   \
               /usr/lib/libgcc_s.so.1     \
               /usr/lib/libgfortran.so.5  \
               /usr/lib/libgomp.so.1      \
