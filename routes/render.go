@@ -2,73 +2,28 @@ package routes
 
 import (
 	"encoding/json"
-	"html/template"
 	"net/http"
 	"net/url"
 	"os"
 	"path"
-	"path/filepath"
 	"strings"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/golfer"
-	"github.com/code-golf/code-golf/pager"
-	"github.com/code-golf/code-golf/pretty"
 	"github.com/code-golf/code-golf/session"
+	"github.com/code-golf/code-golf/views"
 )
 
-var (
-	assets = map[string]string{}
-	svg    = map[string]template.HTML{}
+var assets = map[string]string{}
 
-	dev bool
-)
-
-var tmpl = template.New("").Funcs(template.FuncMap{
-	"bytes":      pretty.Bytes,
-	"comma":      pretty.Comma,
-	"dec":        func(i int) int { return i - 1 },
-	"hasPrefix":  strings.HasPrefix,
-	"hasSuffix":  strings.HasSuffix,
-	"html":       func(html string) template.HTML { return template.HTML(html) },
-	"inc":        func(i int) int { return i + 1 },
-	"ord":        pretty.Ordinal,
-	"page":       func(i int) int { return i/pager.PerPage + 1 },
-	"param":      param,
-	"svg":        func(name string) template.HTML { return svg[name] },
-	"title":      pretty.Title,
-	"time":       pretty.Time,
-	"trimPrefix": strings.TrimPrefix,
-})
-
-func slurp(dir string) map[string]string {
-	files := map[string]string{}
-
-	if err := filepath.Walk(dir, func(file string, info os.FileInfo, err error) error {
-		if !info.IsDir() {
-			data, err := os.ReadFile(file)
-			if err != nil {
-				return err
-			}
-
-			name := file[len(dir)+1 : len(file)-len(path.Ext(file))]
-			files[name] = string(data)
-		}
-
-		return err
-	}); err != nil {
-		panic(err)
-	}
-
-	return files
-}
+var dev bool
 
 func init() {
 	_, dev = os.LookupEnv("DEV")
 
 	// HACK Tests are run from the package directory, walk a dir up.
-	if _, err := os.Stat("css"); os.IsNotExist(err) {
+	if _, err := os.Stat("esbuild.json"); os.IsNotExist(err) {
 		os.Chdir("..")
 	}
 
@@ -89,19 +44,6 @@ func init() {
 				assets[src.EntryPoint] = "/" + dist
 			}
 		}
-	}
-
-	// SVG.
-	for name, data := range slurp("svg") {
-		// Trim namespace as it's not needed for inline SVG under HTML 5.
-		data = strings.ReplaceAll(data, ` xmlns="http://www.w3.org/2000/svg"`, "")
-
-		svg[name] = template.HTML(data)
-	}
-
-	// Views.
-	for name, data := range slurp("views") {
-		tmpl = template.Must(tmpl.New(name).Parse(data))
 	}
 }
 
@@ -233,7 +175,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		args.LogInURL = config.AuthCodeURL("")
 	}
 
-	if err := tmpl.ExecuteTemplate(w, name, args); err != nil {
+	if err := views.Render(w, name, args); err != nil {
 		panic(err)
 	}
 }
