@@ -107,6 +107,7 @@ BEGIN
      WHERE solutions.failing = false
        AND solutions.hole    = hole
        AND solutions.lang    = lang
+       AND solutions.scoring = 'bytes'
   ORDER BY solutions.bytes, solutions.submitted
      LIMIT 1;
 
@@ -132,6 +133,7 @@ BEGIN
          WHERE solutions.failing = false
            AND solutions.hole    = hole
            AND solutions.lang    = lang
+           AND solutions.scoring = 'chars'
       ORDER BY solutions.chars, solutions.submitted
          LIMIT 1;
 
