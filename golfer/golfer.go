@@ -61,13 +61,14 @@ type RankUpdateFromTo struct {
 }
 
 type RankUpdate struct {
-	Scoring            string           `json:"scoring"`
-	From               RankUpdateFromTo `json:"from"`
-	To                 RankUpdateFromTo `json:"to"`
-	OldBestGolferCount null.Int         `json:"oldBestGolferCount"` // Number of golfers that previously held the gold medal (except current golfer).
-	OldBestGolferID    null.Int         `json:"oldBestGolferID"`    // ID of the golfer that previously held the diamond (except current golfer).
-	OldBestStrokes     null.Int         `json:"oldBestStrokes"`     // Number of strokes for previous diamond (including current golfer).
-	OldBestSubmitted   null.Time        `json:"oldBestSubmitted"`   // Timestamp for previous diamond (including current golfer).
+	Scoring                   string           `json:"scoring"`
+	From                      RankUpdateFromTo `json:"from"`
+	To                        RankUpdateFromTo `json:"to"`
+	OldBestCurrentGolferCount null.Int         `json:"oldBestCurrentGolferCount"` // Number of golfers that previously held the gold medal (except current golfer).
+	OldBestCurrentGolferID    null.Int         `json:"oldBestCurrentGolferID"`    // ID of the golfer that previously held the diamond (except current golfer), if there is exactly one.
+	OldBestFirstGolferID      null.Int         `json:"oldBestFirstGolferID"`      // ID of the first golfer that obtained the previous diamond (including current golfer).
+	OldBestStrokes            null.Int         `json:"oldBestStrokes"`            // Number of strokes for previous gold medal (including current golfer).
+	OldBestSubmitted          null.Time        `json:"oldBestSubmitted"`          // Timestamp for previous diamond (including current golfer).
 }
 
 // Settings is page → setting → value.

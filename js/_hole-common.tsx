@@ -291,9 +291,11 @@ export interface RankUpdate {
     scoring: string,
     from: RankFromTo,
     to: RankFromTo,
-    oldBestGolferId: number | null,
-    oldBestGolferCount: number | null,
+    oldBestCurrentGolferCount: number | null,
+    oldBestCurrentGolferId: number | null,
+    oldBestFirstGolferID: number | null,
     oldBestStrokes: number | null,
+    oldBestSubmitted: string | null,
 }
 
 export interface Run {
@@ -445,7 +447,7 @@ const diamondPopups = (updates: RankUpdate[]) => {
             if (!update.to.joint) {
                 newDiamonds.push(update.scoring);
             }
-            else if (update.oldBestGolferCount === 1) {
+            else if (update.oldBestCurrentGolferCount === 1) {
                 matchedDiamonds.push(update.scoring);
             }
         }

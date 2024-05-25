@@ -110,12 +110,14 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			`SELECT earned,
 			        old_bytes_joint, old_bytes_rank, old_bytes,
 			        new_bytes_joint, new_bytes_rank, new_bytes,
+			        old_best_bytes_first_golfer_id,
 			        old_best_bytes_golfer_count,
 			        old_best_bytes_golfer_id,
 			        old_best_bytes,
 			        old_best_bytes_submitted,
 			        old_chars_joint, old_chars_rank, old_chars,
 			        new_chars_joint, new_chars_rank, new_chars,
+			        old_best_chars_first_golfer_id,
 			        old_best_chars_golfer_count,
 			        old_best_chars_golfer_id,
 			        old_best_chars,
@@ -143,8 +145,9 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			&out.RankUpdates[0].To.Joint,
 			&out.RankUpdates[0].To.Rank,
 			&out.RankUpdates[0].To.Strokes,
-			&out.RankUpdates[0].OldBestGolferCount,
-			&out.RankUpdates[0].OldBestGolferID,
+			&out.RankUpdates[0].OldBestFirstGolferID,
+			&out.RankUpdates[0].OldBestCurrentGolferCount,
+			&out.RankUpdates[0].OldBestCurrentGolferID,
 			&out.RankUpdates[0].OldBestStrokes,
 			&out.RankUpdates[0].OldBestSubmitted,
 			&out.RankUpdates[1].From.Joint,
@@ -153,8 +156,9 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			&out.RankUpdates[1].To.Joint,
 			&out.RankUpdates[1].To.Rank,
 			&out.RankUpdates[1].To.Strokes,
-			&out.RankUpdates[1].OldBestGolferCount,
-			&out.RankUpdates[1].OldBestGolferID,
+			&out.RankUpdates[1].OldBestFirstGolferID,
+			&out.RankUpdates[1].OldBestCurrentGolferCount,
+			&out.RankUpdates[1].OldBestCurrentGolferID,
 			&out.RankUpdates[1].OldBestStrokes,
 			&out.RankUpdates[1].OldBestSubmitted,
 		); err != nil {
@@ -175,7 +179,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			// This keeps track of which updates (if any) represent new records or diamond matches.
 			if rank.To.Rank.V == 1 {
 				if !rank.To.Joint.V ||
-					rank.OldBestGolferCount.Valid && rank.OldBestGolferCount.V == 1 {
+					rank.OldBestCurrentGolferCount.Valid && rank.OldBestCurrentGolferCount.V == 1 {
 					recordUpdates = append(recordUpdates, rank)
 				}
 			}
