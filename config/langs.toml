@@ -380,7 +380,7 @@ void main(string[] argv) {
 
 [Dart]
 size    = '235 MiB'
-version = '3.4.0'
+version = '3.4.1'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
