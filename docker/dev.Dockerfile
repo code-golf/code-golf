@@ -65,7 +65,7 @@ COPY --from=codegolf/lang-brainfuck  ["/", "/langs/brainfuck/rootfs/" ] # 51.1 K
 
 COPY run-lang.c ./
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/run-lang -s -static run-lang.c
+RUN gcc -Wall -Werror -Wextra -DDISABLE_SECCOMP -o /usr/bin/run-lang -s -static run-lang.c
 
 # reflex reruns a command when files change.
 CMD reflex -sd none -r '\.(css|go|html|json|pem|svg|toml)$' -R '_test\.go$' -- go run .
