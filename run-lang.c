@@ -670,7 +670,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
     if (prctl(PR_SET_SECCOMP, SECCOMP_MODE_FILTER, &fprog) < 0)
         ERR_AND_EXIT("prctl(SECCOMP)");
 #else
-    fputs("seccomp is disabled!", stderr);
+    fputs("seccomp is disabled!\n", stderr);
 #endif
 
     execvp(argv[0], argv);
