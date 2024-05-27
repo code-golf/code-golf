@@ -915,8 +915,8 @@ for (arg in commandArgs(TRUE)) {
 '''
 
 [Raku]
-size    = '73.5 MiB'
-version = 'Raku 6.d on Rakudo 2024.01'
+size    = '74 MiB'
+version = 'Raku 6.d on Rakudo 2024.04'
 website = 'https://raku.org'
 example = '''
 # Printing

@@ -1,8 +1,8 @@
-FROM alpine:3.19 AS builder
+FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache build-base git perl
 
-RUN git clone -b 2024.01 https://github.com/rakudo/rakudo.git \
+RUN git clone -b 2024.04 https://github.com/rakudo/rakudo.git \
  && cd rakudo                                                 \
  && CFLAGS=-flto ./Configure.pl                               \
     --gen-moar                                                \
