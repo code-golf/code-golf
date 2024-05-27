@@ -145,3 +145,36 @@ titles aren't (e.g. Achievements, Languages, Statistics).
 
 Paginated URLs use a trailing number but only on pages after the first (e.g.
 /rankings/medals/all, /rankings/medals/all/2, etc.).
+
+## arm64/aarch64 Architecture (Ex: Apple Silicon)
+
+If your machine has arm64 architecture, then there are a few options for running a local instance of the site.
+You can attempt to use QEMU emulation which is supported by Docker Desktop, but may be slower.
+The default when you `make dev` is that the docker images will be built with arm64 architecture.
+
+You may be able to use some languages without building them locally.
+Here is a list of some of the languages that are able to run the sample code, without rebuilding individual docker containers:
+AWK
+Bash
+Berry
+Lua
+Perl
+PHP
+Python
+Raku
+Ruby
+sed
+SQL
+Wren
+
+For other languages, you will need to build them locally. For example:
+```
+$ ./build-langs --no-push C
+```
+
+Otherwise, you may see the following error:
+```
+assertion failed [!result.is_error]: Unable to open /proc/sys/vm/mmap_min_addr
+(VMAllocationTracker.cpp:281 init)
+ signal: trace/breakpoint trap
+ ```
