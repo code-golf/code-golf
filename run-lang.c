@@ -115,8 +115,8 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
     if (setuid(NOBODY) < 0)
         ERR_AND_EXIT("setuid");
 
-// Syscalls are architecture-specific.
-#if !defined(__aarch64__)
+// Syscalls are architecture-specific and we only deploy on x86-64.
+#if defined(__x86_64__)
     // sudo journalctl -f _AUDIT_TYPE_NAME=SECCOMP
     // ... SECCOMP ... syscall=xxx ...
     struct sock_filter filter[] = {
@@ -669,6 +669,8 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
 
     if (prctl(PR_SET_SECCOMP, SECCOMP_MODE_FILTER, &fprog) < 0)
         ERR_AND_EXIT("prctl(SECCOMP)");
+#else
+    fputs("seccomp is disabled!", stderr);
 #endif
 
     execvp(argv[0], argv);
