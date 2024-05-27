@@ -96,21 +96,46 @@ func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.Messa
 			if update.OldBestStrokes.Valid && fieldValues[update.Scoring] == "" {
 				fieldValues[update.Scoring] = pretty.Comma(update.OldBestStrokes.V)
 
+				dateString := ""
 				timestamp := update.OldBestSubmitted.V
 				if time.Since(timestamp) > minElapsedTimeToShowDate {
 					// Show the data using a locale-specific short date format.
-					fieldValues[update.Scoring] += fmt.Sprintf(" (<t:%d:R>)", timestamp.Unix())
+					dateString = fmt.Sprintf("<t:%d:R>", timestamp.Unix())
 				}
 
-				if update.OldBestGolferCount.Valid && update.OldBestGolferCount.V > 1 {
+				// Determine the name or number of other golfers associated with the old record.
+				othersString := ""
+				if update.OldBestCurrentGolferCount.Valid && update.OldBestCurrentGolferCount.V > 1 {
 					// Display the number of golfers, excluding the current golfer, that previously held this record.
-					fieldValues[update.Scoring] += fmt.Sprintf(" (%d golfers)", update.OldBestGolferCount.V)
-				} else if update.OldBestGolferID.Valid && update.OldBestGolferID.V != announce.Golfer.ID {
-					name := getUsername(update.OldBestGolferID.V, db)
-					if name != "" {
-						// Display the user name of the single golfer, excluding the current golfer, that previously held this record.
-						fieldValues[update.Scoring] += fmt.Sprintf(" (%s)", name)
+					othersString = fmt.Sprintf("%d golfers", update.OldBestCurrentGolferCount.V)
+				} else if update.OldBestCurrentGolferID.Valid && update.OldBestCurrentGolferID.V != golfer.ID {
+					// Display the user name of the single golfer, excluding the current golfer, that previously held this record.
+					othersString = getUsername(update.OldBestCurrentGolferID.V, db)
+				}
+
+				currentGolferFirst := update.OldBestFirstGolferID.Valid && update.OldBestFirstGolferID.V == golfer.ID
+				parenthetical := ""
+
+				if othersString == "" {
+					parenthetical = dateString
+				} else {
+					if dateString == "" {
+						if currentGolferFirst {
+							parenthetical = "tied by " + othersString
+						} else {
+							parenthetical = othersString
+						}
+					} else {
+						if currentGolferFirst {
+							parenthetical = fmt.Sprintf("%s by %s, tied by %s", dateString, golfer.Name, othersString)
+						} else {
+							parenthetical = fmt.Sprintf("%s by %s", dateString, othersString)
+						}
 					}
+				}
+
+				if parenthetical != "" {
+					fieldValues[update.Scoring] += fmt.Sprintf(" (%s)", parenthetical)
 				}
 			}
 

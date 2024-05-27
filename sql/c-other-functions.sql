@@ -56,27 +56,29 @@ CREATE FUNCTION pangramglot(langs lang[]) RETURNS int IMMUTABLE RETURN (
 );
 
 CREATE TYPE save_solution_ret AS (
-    earned                      cheevo[],
-    new_bytes                   int,
-    new_bytes_joint             bool,
-    new_bytes_rank              int,
-    new_chars                   int,
-    new_chars_joint             bool,
-    new_chars_rank              int,
-    old_bytes                   int,
-    old_bytes_joint             bool,
-    old_bytes_rank              int,
-    old_chars                   int,
-    old_chars_joint             bool,
-    old_chars_rank              int,
-    old_best_bytes              int,
-    old_best_bytes_submitted    timestamp,
-    old_best_bytes_golfer_count int,
-    old_best_bytes_golfer_id    int,
-    old_best_chars              int,
-    old_best_chars_submitted    timestamp,
-    old_best_chars_golfer_count int,
-    old_best_chars_golfer_id    int
+    earned                         cheevo[],
+    new_bytes                      int,
+    new_bytes_joint                bool,
+    new_bytes_rank                 int,
+    new_chars                      int,
+    new_chars_joint                bool,
+    new_chars_rank                 int,
+    old_bytes                      int,
+    old_bytes_joint                bool,
+    old_bytes_rank                 int,
+    old_chars                      int,
+    old_chars_joint                bool,
+    old_chars_rank                 int,
+    old_best_bytes                 int,
+    old_best_bytes_submitted       timestamp,
+    old_best_bytes_first_golfer_id int,
+    old_best_bytes_golfer_count    int,
+    old_best_bytes_golfer_id       int,
+    old_best_chars                 int,
+    old_best_chars_submitted       timestamp,
+    old_best_chars_first_golfer_id int,
+    old_best_chars_golfer_count    int,
+    old_best_chars_golfer_id       int
 );
 
 CREATE FUNCTION save_solution(
@@ -101,8 +103,8 @@ BEGIN
     ret.old_bytes_joint := rank.joint;
     ret.old_bytes_rank  := rank.rank;
 
-    SELECT solutions.bytes, solutions.submitted
-      INTO ret.old_best_bytes, ret.old_best_bytes_submitted
+    SELECT solutions.bytes, solutions.submitted, solutions.user_id
+      INTO ret.old_best_bytes, ret.old_best_bytes_submitted, ret.old_best_bytes_first_golfer_id
       FROM solutions
      WHERE solutions.failing = false
        AND solutions.hole    = hole
@@ -127,8 +129,8 @@ BEGIN
         ret.old_chars_joint := rank.joint;
         ret.old_chars_rank  := rank.rank;
 
-        SELECT solutions.chars, solutions.submitted
-          INTO ret.old_best_chars, ret.old_best_chars_submitted
+        SELECT solutions.chars, solutions.submitted, solutions.user_id
+          INTO ret.old_best_chars, ret.old_best_chars_submitted, ret.old_best_chars_first_golfer_id
           FROM solutions
          WHERE solutions.failing = false
            AND solutions.hole    = hole
