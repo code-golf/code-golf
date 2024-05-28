@@ -2584,6 +2584,7 @@ category = 'Gaming'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Reversi' },
 ]
+released = 2024-06-01
 synopsis = 'Output possible moves for O on a Reversi board.'
 preamble = '''
 <p>Output the possible moves for O on a Reversi board.

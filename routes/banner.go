@@ -10,7 +10,7 @@ import (
 	"github.com/code-golf/code-golf/pretty"
 )
 
-const nextHole = "factorial-factorisation"
+const nextHole = "reversi"
 
 type banner struct {
 	Body template.HTML
