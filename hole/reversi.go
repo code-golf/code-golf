@@ -138,9 +138,9 @@ func drawReversiBoard(board ReversiBoard) string {
 			if board[i][j] == Empty {
 				sb.WriteByte('.')
 			} else if board[i][j] == Black {
-				sb.WriteByte('x')
+				sb.WriteByte('X')
 			} else if board[i][j] == White {
-				sb.WriteByte('o')
+				sb.WriteByte('O')
 			} else if board[i][j] == PotentialSpot {
 				sb.WriteByte('!')
 			}
