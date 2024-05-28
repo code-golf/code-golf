@@ -1,8 +1,8 @@
-FROM alpine:3.19 AS builder
+FROM alpine:3.20 AS builder
 
-RUN apk add --no-cache build-base cmake curl python3
+RUN apk add --no-cache build-base cmake curl linux-headers python3
 
-ENV VER 17.0.6
+ENV VER 18.1.6
 
 RUN curl -L https://github.com/llvm/llvm-project/releases/download/llvmorg-$VER/llvm-project-$VER.src.tar.xz | tar xJ
 
@@ -33,7 +33,7 @@ RUN cmake                            \
     .. \
     && make -j`nproc` install
 
-RUN strip /llvm/bin/clang /llvm/lib/libLLVM-17.so
+RUN strip /llvm/bin/clang /llvm/lib/libLLVM-18.so
 
 WORKDIR /runner
 
@@ -48,12 +48,12 @@ COPY --from=0 /llvm/bin/clang          \
 COPY --from=0 /lib/ld-musl-x86_64.so.1 \
               /lib/libz.so.1           /lib/
 COPY --from=0 /usr/include/            /usr/include/
-COPY --from=0 /llvm/lib/libLLVM-17.so  \
+COPY --from=0 /llvm/lib/libLLVM-18.so  \
               /usr/lib/crt1.o          \
               /usr/lib/crti.o          \
               /usr/lib/crtn.o          \
               /usr/lib/libatomic.so    \
-              /usr/lib/libbfd-2.41.so  \
+              /usr/lib/libbfd-2.42.so  \
               /usr/lib/libc.so         \
               /usr/lib/libctf.so.0     \
               /usr/lib/libffi.so.8     \
