@@ -199,7 +199,7 @@ with 65536 cells; and cells are 8 bit with wrapping;
 '''
 
 [C]
-size    = '1.7 MiB'
+size    = '1.70 MiB'
 version = 'Tiny C Compiler 0.9.27'
 website = 'https://bellard.org/tcc/'
 example = '''
@@ -747,7 +747,7 @@ end
 '''
 
 [Nim]
-size    = '15 MiB'
+size    = '15.0 MiB'
 version = '2.0.4'
 website = 'https://nim-lang.org'
 example = '''
@@ -824,7 +824,7 @@ say for @ARGV;
 '''
 
 [PHP]
-size    = '8.4 MiB'
+size    = '8.40 MiB'
 version = '8.3.7'
 website = 'https://www.php.net'
 example = '''
@@ -915,7 +915,7 @@ for (arg in commandArgs(TRUE)) {
 '''
 
 [Raku]
-size    = '74 MiB'
+size    = '74.0 MiB'
 version = 'Raku 6.d on Rakudo 2024.04'
 website = 'https://raku.org'
 example = '''
@@ -1017,7 +1017,7 @@ G
 '''
 
 [SQL]
-size    = '1.2 MiB'
+size    = '1.20 MiB'
 version = '3.46.0'
 website = 'https://sqlite.org'
 example = '''
