@@ -64,6 +64,7 @@ func init() {
 func getUsername(id int, db *sqlx.DB) (name string) {
 	err := db.Get(&name, "SELECT login FROM users WHERE id = $1", id)
 	if err != nil {
+		name = "unknown golfer"
 		log.Println(err)
 	}
 
@@ -113,25 +114,18 @@ func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.Messa
 					othersString = getUsername(update.OldBestCurrentGolferID.V, db)
 				}
 
-				currentGolferFirst := update.OldBestFirstGolferID.Valid && update.OldBestFirstGolferID.V == golfer.ID
-				parenthetical := ""
+				if othersString != "" && update.OldBestFirstGolferID.Valid && update.OldBestFirstGolferID.V == golfer.ID {
+					// Report that the current golfer was the first to obtain the old record.
+					othersString = fmt.Sprintf("%s, tied by %s", golfer.Name, othersString)
+				}
 
+				parenthetical := ""
 				if othersString == "" {
 					parenthetical = dateString
+				} else if dateString == "" {
+					parenthetical = othersString
 				} else {
-					if dateString == "" {
-						if currentGolferFirst {
-							parenthetical = "tied by " + othersString
-						} else {
-							parenthetical = othersString
-						}
-					} else {
-						if currentGolferFirst {
-							parenthetical = fmt.Sprintf("%s by %s, tied by %s", dateString, golfer.Name, othersString)
-						} else {
-							parenthetical = fmt.Sprintf("%s by %s", dateString, othersString)
-						}
-					}
+					parenthetical = fmt.Sprintf("%s by %s", dateString, othersString)
 				}
 
 				if parenthetical != "" {
