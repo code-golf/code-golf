@@ -70,7 +70,7 @@
         </nav>
     {{ end }}
         <nav>
-        {{ with .Data.Hole.Prev }}
+        {{ with .Data.PrevHole }}
             <a class="btn orange" href="{{ .ID }}" title="{{ .Name }}">
                 {{ svg "chevron-double-left-light" }} Prev
             </a>
@@ -78,7 +78,7 @@
             <a class="btn purple" href=random>
                 {{ svg "dice-light" }} Random
             </a>
-        {{ with .Data.Hole.Next }}
+        {{ with .Data.NextHole }}
             <a class="btn orange" href="{{ .ID }}" title="{{ .Name }}">
                 {{ svg "chevron-double-right-light" }} Next
             </a>

@@ -49,7 +49,6 @@ type Hole struct {
 	Links                       []Link           `json:"links"`
 	Name                        string           `json:"name"`
 	Preamble                    template.HTML    `json:"preamble"`
-	Prev, Next                  *Hole            `json:"-"`
 	Released                    toml.LocalDate   `json:"released"`
 	Releases                    []toml.LocalDate `json:"-"`
 	Synopsis                    string           `json:"synopsis"`
@@ -209,27 +208,10 @@ func init() {
 	})
 	RecentHoles = RecentHoles[:10]
 
-	for i, holes := range [][]*Hole{HoleList, ExpHoleList, AllHoleList} {
+	for _, holes := range [][]*Hole{HoleList, ExpHoleList, AllHoleList} {
 		// Case-insensitive sort.
 		slices.SortFunc(holes, func(a, b *Hole) int {
 			return cmp.Compare(strings.ToLower(a.Name), strings.ToLower(b.Name))
 		})
-
-		// Set Prev, Next. Not for "AllHoleList" as it would overwrite.
-		if i < 2 {
-			for j, hole := range holes {
-				if j == 0 {
-					hole.Prev = holes[len(holes)-1]
-				} else {
-					hole.Prev = holes[j-1]
-				}
-
-				if j == len(holes)-1 {
-					hole.Next = holes[0]
-				} else {
-					hole.Next = holes[j+1]
-				}
-			}
-		}
 	}
 }

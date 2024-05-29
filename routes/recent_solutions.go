@@ -22,10 +22,11 @@ func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := struct {
-		HoleID, LangID, Scoring string
-		LangsShown              map[string]bool
-		Pager                   *pager.Pager
-		Rows                    []row
+		Hole, PrevHole, NextHole *config.Hole
+		HoleID, LangID, Scoring  string
+		LangsShown               map[string]bool
+		Pager                    *pager.Pager
+		Rows                     []row
 	}{
 		HoleID:     param(r, "hole"),
 		LangID:     param(r, "lang"),
@@ -40,6 +41,10 @@ func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 		data.Scoring != "chars" && data.Scoring != "bytes" {
 		w.WriteHeader(http.StatusNotFound)
 		return
+	}
+
+	if data.Hole = config.HoleByID[data.HoleID]; data.Hole != nil {
+		data.PrevHole, data.NextHole = getPrevNextHole(r, data.Hole)
 	}
 
 	if err := session.Database(r).Select(

@@ -17,11 +17,12 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := struct {
-		HoleID, LangID, Scoring string
-		Holes                   []*config.Hole
-		Langs                   []*config.Lang
-		Pager                   *pager.Pager
-		Rows                    []row
+		Hole, PrevHole, NextHole *config.Hole
+		HoleID, LangID, Scoring  string
+		Holes                    []*config.Hole
+		Langs                    []*config.Lang
+		Pager                    *pager.Pager
+		Rows                     []row
 	}{
 		HoleID:  param(r, "hole"),
 		Holes:   config.HoleList,
@@ -37,6 +38,10 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 		data.Scoring != "all" && data.Scoring != "chars" && data.Scoring != "bytes" {
 		w.WriteHeader(http.StatusNotFound)
 		return
+	}
+
+	if data.Hole = config.HoleByID[data.HoleID]; data.Hole != nil {
+		data.PrevHole, data.NextHole = getPrevNextHole(r, data.Hole)
 	}
 
 	rows, err := session.Database(r).Query(

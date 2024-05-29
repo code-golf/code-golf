@@ -26,6 +26,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := struct {
+		Hole, PrevHole, NextHole              *config.Hole
 		HoleID, LangID, OtherScoring, Scoring string
 		Holes                                 []*config.Hole
 		Langs                                 []*config.Lang
@@ -54,6 +55,10 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		data.Scoring != "chars" && data.Scoring != "bytes" {
 		w.WriteHeader(http.StatusNotFound)
 		return
+	}
+
+	if data.Hole = config.HoleByID[data.HoleID]; data.Hole != nil {
+		data.PrevHole, data.NextHole = getPrevNextHole(r, data.Hole)
 	}
 
 	if data.Scoring == "bytes" {

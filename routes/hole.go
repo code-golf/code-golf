@@ -11,12 +11,12 @@ import (
 // GET /{hole}
 func holeGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		Authors      []string
-		HideDetails  bool
-		Hole         *config.Hole
-		Langs        map[string]*config.Lang
-		RankingsView string
-		Solutions    []map[string]string
+		Authors                  []string
+		HideDetails              bool
+		Hole, PrevHole, NextHole *config.Hole
+		Langs                    map[string]*config.Lang
+		RankingsView             string
+		Solutions                []map[string]string
 	}{
 		Langs:        config.AllLangByID,
 		RankingsView: "me",
@@ -28,6 +28,8 @@ func holeGET(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
+
+	data.PrevHole, data.NextHole = getPrevNextHole(r, data.Hole)
 
 	if c, _ := r.Cookie("hide-details"); c != nil {
 		data.HideDetails = true
