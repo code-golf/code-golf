@@ -2625,8 +2625,8 @@ preamble = '''
     <code>X</code> moves first so you can assume an odd number of tiles on the board.
 
 <p>
-    Your program should output the board with valid position replaced with
-    <code>!</code>. Each output should be separated by a blank line.
+    Your program should output the board with each possible legal <code>O</code> move
+    replaced with <code>!</code>. Each output should be separated by a blank line.
 '''
 
 ['Rijndael S-box']
