@@ -401,7 +401,7 @@ void main(List<String> argv) {
 
 [Elixir]
 size    = '158 MiB'
-version = '1.16.1'
+version = '1.16.3'
 website = 'https://elixir-lang.org'
 example = '''
 # Printing
