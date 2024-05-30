@@ -145,7 +145,6 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	header.Set("Content-Language", "en")
 	header.Set("Content-Type", "text/html; charset=utf-8")
 	header.Set("Referrer-Policy", "no-referrer")
-	header.Set("X-Frame-Options", "DENY")
 	header.Set("Content-Security-Policy",
 		"base-uri 'none';"+
 			"connect-src 'self';"+
