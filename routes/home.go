@@ -15,9 +15,5 @@ func homeGET(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	w.Header().Set(
-		"Strict-Transport-Security",
-		"max-age=31536000;includeSubDomains;preload",
-	)
 	render(w, r, "home", data)
 }
