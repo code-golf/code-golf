@@ -338,7 +338,7 @@ for arg in sys.argv[1:]:
 
 [Crystal]
 size    = '252 MiB'
-version = '1.12.1'
+version = '1.12.2'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
