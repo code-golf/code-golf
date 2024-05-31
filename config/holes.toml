@@ -2587,24 +2587,26 @@ links = [
 released = 2024-06-01
 synopsis = 'Output possible moves for O on a Reversi board.'
 preamble = '''
-<p>Output the possible moves for O on a Reversi board.
+<p>Output the possible moves for <code>O</code> on a Reversi board.
 
 <p>
-    In Reversi, you can only place a tile in a free spot such that there are
-    one or more opponents tiles between the spot and a friendly tile in at least
-    one direction. Directions are either horizontal, vertical, or diagonal.
+    In Reversi, <code>X</code> and <code>O</code> take turns placing tiles
+    on empty squares on the board. To determine if a move is legal, draw
+    a straight line in any direction (horizontal, vertical, or diagonal)
+    starting from the square. If the line intersects another friendly tile,
+    separated from the square by only opponent tiles, that square is a legal move.
 <p>
     For example, given:
 
 <pre>
-.....
-.OXX!
-..X..
-...!.
+......
+.OXX!.
+..X...
+...!..
 </pre>
 
 <p>
-    <code>O</code> can only place on spots marked with <code>!</code>.
+    <code>O</code> can only place on squares marked with <code>!</code>.
 
 <p>
     Assume a board size of 8x8 and a position reachable on <code>O</code>'s turn,
@@ -2622,7 +2624,7 @@ preamble = '''
 </pre>
 
 <p>
-    <code>X</code> moves first so you can assume an odd number of tiles on the board.
+    <code>X</code> moves first, so you may assume an odd number of tiles on the board.
 
 <p>
     Your program should output the board with each possible legal <code>O</code> move
