@@ -1101,6 +1101,20 @@ Hello, World!
 \repeat
 '''
 
+[Uiua]
+size    = '142 MiB'
+version = '0.10.3'
+website = 'https://www.uiua.org/'
+example = '''
+# Printing
+"Hello World"
+
+# Looping
+⍥(+1.)9 0
+
+# Accessing arguments TODO
+'''
+
 [V]
 size    = '60.2 MiB'
 version = '0.4.6'

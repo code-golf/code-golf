@@ -160,6 +160,7 @@ export const extensions = {
     'swift':      StreamLanguage.define(swift),
     'tcl':        StreamLanguage.define(tcl),
     'tex':        StreamLanguage.define(stex),
+    // TODO uiua
     // TODO v
     // TODO viml
     'wren':       wren,
