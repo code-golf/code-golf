@@ -26,3 +26,18 @@ func (n Null[T]) MarshalJSON() ([]byte, error) {
 
 	return json.Marshal(n.V)
 }
+
+func (n *Null[T]) UnmarshalJSON(data []byte) error {
+	if len(data) > 0 && data[0] == 'n' {
+		n.Valid = false
+		return nil
+	}
+
+	if err := json.Unmarshal(data, &n.V); err != nil {
+		n.Valid = false
+		return err
+	}
+
+	n.Valid = true
+	return nil
+}
