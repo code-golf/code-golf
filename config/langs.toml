@@ -318,7 +318,7 @@ end-program.
 '''
 
 [Coconut]
-size    = '121 MiB'
+size    = '122 MiB'
 version = '3.1.0'
 website = 'https://coconut-lang.org'
 example = '''
@@ -338,7 +338,7 @@ for arg in sys.argv[1:]:
 
 [Crystal]
 size    = '252 MiB'
-version = '1.12.1'
+version = '1.12.2'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -915,8 +915,8 @@ for (arg in commandArgs(TRUE)) {
 '''
 
 [Raku]
-size    = '74.0 MiB'
-version = 'Raku 6.d on Rakudo 2024.04'
+size    = '73.6 MiB'
+version = 'Raku 6.d on Rakudo 2024.05'
 website = 'https://raku.org'
 example = '''
 # Printing
@@ -949,8 +949,8 @@ Shout arg
 '''
 
 [Ruby]
-size    = '27.9 MiB'
-version = '3.3.1'
+size    = '27.8 MiB'
+version = '3.3.2'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing
