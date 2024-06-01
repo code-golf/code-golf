@@ -1103,10 +1103,10 @@ Hello, World!
 
 [Uiua]
 experiment = 1115
-size    = '28.5 MiB'
-version = '0.10.3'
-website = 'https://www.uiua.org/'
-example = '''
+size       = '28.5 MiB'
+version    = '0.10.3'
+website    = 'https://www.uiua.org/'
+example    = '''
 # Printing
 &p"Hello, World!"
 
