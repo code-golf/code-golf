@@ -116,7 +116,7 @@ BEGIN {
 '''
 
 [Bash]
-size    = '1.19 MiB'
+size    = '1.20 MiB'
 version = '5.2.26'
 website = 'https://www.gnu.org/software/bash/'
 example = '''
@@ -675,7 +675,7 @@ for (let arg of arguments)
 '''
 
 [Julia]
-size    = '309 MiB'
+size    = '310 MiB'
 version = '1.10.3'
 website = 'https://julialang.org'
 example = '''

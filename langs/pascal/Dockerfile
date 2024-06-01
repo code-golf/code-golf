@@ -1,4 +1,4 @@
-FROM alpine:3.19 AS builder
+FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache build-base curl
 
@@ -33,7 +33,7 @@ COPY --from=0 /etc/fpc.cfg             /etc/
 COPY --from=0 /pascal                  \
               /usr/bin/fpc             \
               /usr/bin/ld              /usr/bin/
-COPY --from=0 /usr/lib/libbfd-2.41.so  \
+COPY --from=0 /usr/lib/libbfd-2.42.so  \
               /usr/lib/libctf.so.0     \
               /usr/lib/libjansson.so.4 \
               /usr/lib/libsframe.so.1  \

@@ -1,4 +1,4 @@
-FROM alpine:3.19 AS builder
+FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache autoconf build-base cmake curl gfortran linux-headers python3
 
@@ -28,10 +28,12 @@ COPY --from=0 /usr/lib/libbrotlicommon.so.1 \
               /usr/lib/libgfortran.so.5     \
               /usr/lib/libidn2.so.0         \
               /usr/lib/libjulia.so.1.10     \
+              /usr/lib/libpsl.so.5          \
               /usr/lib/libquadmath.so.0     \
               /usr/lib/libssl.so.3          \
               /usr/lib/libstdc++.so.6       \
-              /usr/lib/libunistring.so.5    /usr/lib/
+              /usr/lib/libunistring.so.5    \
+              /usr/lib/libzstd.so.1         /usr/lib/
 
 ENTRYPOINT ["julia"]
 

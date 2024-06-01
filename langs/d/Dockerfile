@@ -1,4 +1,4 @@
-FROM alpine:edge AS builder
+FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache gcc ldc=1.33.0-r0 musl-dev
 
