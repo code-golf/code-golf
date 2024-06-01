@@ -2578,8 +2578,7 @@ preamble = '''
     32,767. Division is guaranteed to have an exact integer result.
 '''
 
-['Reversi']
-experiment = 1123
+[Reversi]
 category = 'Gaming'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Reversi' },
