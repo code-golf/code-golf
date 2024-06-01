@@ -331,7 +331,7 @@ func logNewRecord(
 	var sendErr error
 
 	if err := db.QueryRow(
-		`SELECT message FROM discord_records WHERE hole = $1 AND lang = $2`,
+		"SELECT message FROM discord_records WHERE hole = $1 AND lang = $2",
 		hole.ID, lang.ID,
 	).Scan(&prevMessage); err == nil {
 		newMessage, sendErr = bot.ChannelMessageSendComplex(channelID, &discordgo.MessageSend{
@@ -371,7 +371,7 @@ func loadLastAnnouncement(db *sqlx.DB) {
 	var bytes []byte
 
 	if err := db.QueryRow(
-		`SELECT value FROM discord_state WHERE key = 'lastAnnouncement'`,
+		"SELECT value FROM discord_state WHERE key = 'lastAnnouncement'",
 	).Scan(&bytes); err != nil {
 		log.Println(err)
 		return
