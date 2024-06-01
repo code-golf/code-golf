@@ -491,8 +491,8 @@ bye
 '''
 
 [Fortran]
-size    = '87.8 MiB'
-version = 'GNU Fortran 13.2.0'
+size    = '94.1 MiB'
+version = 'GNU Fortran 14.1.0'
 website = 'https://gcc.gnu.org/fortran/'
 example = '''
 character(len=32) :: s
