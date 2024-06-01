@@ -435,7 +435,7 @@ func play(
 			return nil
 		}
 	case "uiua":
-		cmd.Args = []string{"/usr/local/bin/uiua", "eval", code}
+		cmd.Args = []string{"/usr/bin/uiua", "eval", code}
 	default:
 		cmd.Args = []string{"/usr/bin/" + lang.ID, "-"}
 	}
