@@ -17,7 +17,7 @@ func aboutGET(w http.ResponseWriter, r *http.Request) {
 	}{
 		FollowLimit:        golfer.FollowLimit,
 		FollowLimitSponsor: golfer.FollowLimitSponsor,
-		Langs:              config.LangList,
+		Langs:              config.AllLangList,
 	}
 
 	if golfer := session.Golfer(r); golfer != nil {
