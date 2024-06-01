@@ -434,6 +434,8 @@ func play(
 			run.Stderr = `Quine in TeX must have at least one '\' character.`
 			return nil
 		}
+	case "uiua":
+		cmd.Args = []string{"/usr/bin/uiua", "eval", code}
 	default:
 		cmd.Args = []string{"/usr/bin/" + lang.ID, "-"}
 	}
@@ -458,7 +460,7 @@ func play(
 	// Code
 	switch lang.ID {
 	case "awk", "brainfuck", "elixir", "fish", "golfscript", "javascript",
-		"perl", "sed", "tex":
+		"perl", "sed", "tex", "uiua":
 		// For these langs, code is passed as an argument above.
 	case "k":
 		cmd.Stdin = strings.NewReader(preprocessKCode(hole.ID, code))

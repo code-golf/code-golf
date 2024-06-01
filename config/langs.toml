@@ -1101,6 +1101,22 @@ Hello, World!
 \repeat
 '''
 
+[Uiua]
+experiment = 1115
+size       = '28.5 MiB'
+version    = '0.10.3'
+website    = 'https://www.uiua.org'
+example    = '''
+# Printing
+&p"Hello, World!"
+
+# Looping
+∵&p⇡10
+
+# Accessing arguments
+∵&p↘1&args
+'''
+
 [V]
 size    = '60.2 MiB'
 version = '0.4.6'
