@@ -45,6 +45,7 @@ constant %paths = (
     'Swift'      => 'en.wikipedia.org/wiki/Swift_(programming_language)',
     'Tcl'        => 'en.wikipedia.org/wiki/Tcl',
     'TeX'        => 'en.wikipedia.org/wiki/TeX',
+    'Uiua'       => 'github.com/uiua-lang/uiua/releases/latest',
     'V'          => 'github.com/vlang/v/releases/latest',
     'VimL'       => 'en.wikipedia.org/wiki/Vim_(text_editor)',
     'Wren'       => 'github.com/wren-lang/wren/releases/latest',
