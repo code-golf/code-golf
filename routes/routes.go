@@ -2,12 +2,9 @@ package routes
 
 import (
 	"net/http"
-	"os"
-	"time"
 
 	"github.com/code-golf/code-golf/middleware"
 	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/httprate"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -135,19 +132,13 @@ func Router(db *sqlx.DB) http.Handler {
 		r.Get("/scores/{hole}/{lang}/all", scoresAllGET)
 		r.Get("/scores/{hole}/{lang}/{scoring}", scoresGET)
 		r.Get("/scores/{hole}/{lang}/{scoring}/{page}", scoresGET)
+		r.Post("/solution", solutionPOST)
 		r.Get("/stats", statsGET)
 		r.Get("/stats/{page:countries}", statsCountriesGET)
 		r.Get("/stats/{page:golfers}", statsGolfersGET)
 		r.Get("/stats/{page:holes|langs}", statsTableGET)
 		r.Get("/wiki", wikiGET)
 		r.Get("/wiki/*", wikiGET)
-
-		// Rate-limit solutions to avoid running out of FDs. Disable under e2e.
-		if _, e2e := os.LookupEnv("E2E"); e2e {
-			r.Post("/solution", solutionPOST)
-		} else {
-			r.With(httprate.LimitByRealIP(60, time.Minute)).Post("/solution", solutionPOST)
-		}
 	})
 
 	return r
