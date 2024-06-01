@@ -133,23 +133,32 @@ func flipReversiBoard(board ReversiBoard, bottomLeft, bottomRight bool) ReversiB
 }
 
 func genReversiBoard(steps int) ReversiBoard {
-	out := getReversiInitialState()
+	for {
+		out := getReversiInitialState()
+		valid := true
 
-	for i := range steps {
-		team := []ReversiTile{Black, White}[i%2]
+		for i := range steps {
+			team := []ReversiTile{Black, White}[i%2]
 
-		spots := getPotentialSpots(team, out)
+			spots := getPotentialSpots(team, out)
+			if len(spots) == 0 {
+				valid = false
+				break
+			}
 
-		spot := spots[rand.IntN(len(spots))]
+			spot := spots[rand.IntN(len(spots))]
 
-		out[spot.Pos[0]][spot.Pos[1]] = team
-		for _, reversedSpot := range spot.Tiles {
-			out[reversedSpot[0]][reversedSpot[1]] = team
+			out[spot.Pos[0]][spot.Pos[1]] = team
+			for _, reversedSpot := range spot.Tiles {
+				out[reversedSpot[0]][reversedSpot[1]] = team
+			}
+
 		}
 
+		if valid {
+			return out
+		}
 	}
-
-	return out
 }
 
 func drawReversiBoard(board ReversiBoard) string {
