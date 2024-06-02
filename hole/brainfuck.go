@@ -20,7 +20,9 @@ func brainfuck() []Run {
 		tests = append(tests, randomBFCase(jumpSize, buckets, initialBucketSize, bucketSizeChange, charShift))
 	}
 
-	return outputTests(shuffle(tests))
+	shuffle(tests)
+	const argc = 12 // Preserve original argc
+	return outputTests(tests[:argc], tests[len(tests)-argc:])
 }
 
 func fixedBFCases() []test {
