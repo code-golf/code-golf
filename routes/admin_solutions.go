@@ -81,25 +81,19 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 					}
 				}
 
-				// If the last run differs from the DB, update the database.
-				//
-				// NOTE It's a little confusing that present is called pass
-				//      but past is called failing, so == is a mismatch.
-				if s.Pass == s.Failing {
-					db.MustExec(
-						`UPDATE solutions
-						    SET failing = $1
-						  WHERE code    = $2
-						    AND hole    = $3
-						    AND lang    = $4
-						    AND user_id = $5`,
-						!s.Pass,
-						s.Code,
-						s.HoleID,
-						s.LangID,
-						s.GolferID,
-					)
-				}
+				db.MustExec(
+					`UPDATE solutions
+					    SET failing = $1, tested = DEFAULT
+					  WHERE code    = $2
+					    AND hole    = $3
+					    AND lang    = $4
+					    AND user_id = $5`,
+					!s.Pass,
+					s.Code,
+					s.HoleID,
+					s.LangID,
+					s.GolferID,
+				)
 
 				b, err := json.Marshal(s)
 				if err != nil {

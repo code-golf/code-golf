@@ -181,7 +181,8 @@ BEGIN
                             chars     = excluded.chars,
                             code      = excluded.code,
                             failing   = false,
-                            submitted = excluded.submitted;
+                            submitted = excluded.submitted,
+                            tested    = excluded.tested;
 
             INSERT INTO solutions_log (bytes, chars, hole, lang, scoring, user_id)
                  VALUES               (bytes, chars, hole, lang, scoring, user_id);
@@ -192,7 +193,8 @@ BEGIN
             UPDATE solutions
                SET bytes   = bytes,
                    chars   = chars,
-                   code    = code
+                   code    = code,
+                   tested  = DEFAULT
              WHERE solutions.hole    = hole
                AND solutions.lang    = lang
                AND solutions.scoring = scoring
