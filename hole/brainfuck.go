@@ -60,8 +60,8 @@ func intToBFString(n int) string {
 }
 
 func randomBFCase(jumpSize, buckets, initialBucketSize, bucketSizeChange, charShift int) test {
-	const ASCII_MIN = 32
-	const ASCII_MAX = 126
+	const AsciiMin = 32
+	const AsciiMax = 126
 
 	bucketString := ""
 	out := ""
@@ -76,8 +76,8 @@ func randomBFCase(jumpSize, buckets, initialBucketSize, bucketSizeChange, charSh
 	for i := 0; i < buckets; i++ {
 		// Choose a base for this bucket that ensures all chars remain in the printable ASCII range
 		totalShift := charShift * (bucketSize - 1)
-		minChar := ASCII_MIN
-		maxChar := ASCII_MAX
+		minChar := AsciiMin
+		maxChar := AsciiMax
 		if totalShift > 0 {
 			maxChar -= totalShift
 		} else {
