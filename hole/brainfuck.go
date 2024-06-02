@@ -53,10 +53,6 @@ func fixedBFCases() []test {
 	}
 }
 
-func randInt(min, max int) int {
-	return rand.IntN(max-min+1) + min
-}
-
 func intToBFString(n int) string {
 	if n < 1 {
 		return strings.Repeat("-", -n)
