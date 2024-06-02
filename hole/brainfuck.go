@@ -13,8 +13,8 @@ func brainfuck() []Run {
 
 	for i := 0; i < 3; i++ {
 		jumpSize := randInt(5, 12)
-		buckets := randInt(2, 9)
-		initialBucketSize := randInt(1, 8)
+		buckets := randInt(2, 8)
+		initialBucketSize := randInt(1, 7)
 		bucketSizeChange := randInt(-1, 2)
 		charShift := randInt(-3, 3)
 		tests = append(tests, randomBFCase(jumpSize, buckets, initialBucketSize, bucketSizeChange, charShift))
@@ -49,8 +49,8 @@ func fixedBFCases() []test {
 			"eL34NfeOL454KdeJ44JOdefePK55gQ67ShfTL787KegJ77JTeghfUK88iV9:XjgYL:;:KfiJ::JYfijgZK;;k[<=]lh^L=>=KgkJ==J^gklh_K>>m`?@bnicL@A@KhmJ@@JchmnidKAA"},
 		test{"++++++++++[>++++++++++>++++++++++++<<-]>--->++>+++++++++++++[<.-<.+>>-]++++[<<-------------------------.>>-]",
 			"zaybxcwdveuftgshriqjpkolnmU<#"},
-		test{"++++++++++[>+++>+++++++++>+<<<-]>++>++++[<.+>-]>.",
-			" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}"},
+		test{"++++++++++[>+++++>+++++++>+<<<-]>+>++[-<.+>]>.",
+			"3456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz"},
 	}
 }
 
@@ -62,8 +62,9 @@ func intToBFString(n int) string {
 }
 
 func randomBFCase(jumpSize, buckets, initialBucketSize, bucketSizeChange, charShift int) test {
-	const ASCIIMin = 32
-	const ASCIIMax = 126
+	// Only generates ASCII values in a range that was already used by fixed cases before random cases were added, in order to not break legacy solutions.
+	const ASCIIMin = 50
+	const ASCIIMax = 122
 
 	bucketString := ""
 	out := ""
