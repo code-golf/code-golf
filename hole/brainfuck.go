@@ -2,7 +2,6 @@ package hole
 
 import (
 	"fmt"
-	"math/rand/v2"
 	"strings"
 )
 
