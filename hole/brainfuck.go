@@ -50,7 +50,7 @@ func fixedBFCases() []test {
 		test{"++++++++++[>++++++++++>++++++++++++<<-]>--->++>+++++++++++++[<.-<.+>>-]++++[<<-------------------------.>>-]",
 			"zaybxcwdveuftgshriqjpkolnmU<#"},
 		test{"++++++++++[>+++>+++++++++>+<<<-]>++>++++[<.+>-]>.",
-		     	" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}"},
+			" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}"},
 	}
 }
 
