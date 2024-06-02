@@ -16,13 +16,13 @@ import (
 )
 
 type solution struct {
-	failing  bool          `json:"-"`
-	Pass     bool          `json:"pass"`
-	GolferID int           `json:"golfer_id"`
-	code     string        `json:"-"`
+	Code     string        `json:"-"`
+	Failing  bool          `json:"-"`
 	Golfer   string        `json:"golfer"`
+	GolferID int           `json:"golfer_id"`
 	HoleID   string        `json:"hole"`
 	LangID   string        `json:"lang"`
+	Pass     bool          `json:"pass"`
 	Stderr   string        `json:"stderr"`
 	Took     time.Duration `json:"took"`
 	Total    int           `json:"total"`
@@ -64,7 +64,7 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 						r.Context(),
 						config.AllHoleByID[s.HoleID],
 						config.AllLangByID[s.LangID],
-						s.code,
+						s.Code,
 					) {
 						run = r
 						if !r.Pass {
@@ -85,7 +85,7 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 				//
 				// NOTE It's a little confusing that present is called pass
 				//      but past is called failing, so == is a mismatch.
-				if s.Pass == s.failing {
+				if s.Pass == s.Failing {
 					db.MustExec(
 						`UPDATE solutions
 						    SET failing = $1
@@ -94,7 +94,7 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 						    AND lang    = $4
 						    AND user_id = $5`,
 						!s.Pass,
-						s.code,
+						s.Code,
 						s.HoleID,
 						s.LangID,
 						s.GolferID,
@@ -130,10 +130,11 @@ func getSolutions(r *http.Request) chan solution {
 		holeID := r.FormValue("hole")
 		langID := r.FormValue("lang")
 
-		rows, err := session.Database(r).QueryContext(
+		rows, err := session.Database(r).QueryxContext(
 			r.Context(),
 			`WITH distinct_solutions AS (
-			  SELECT DISTINCT code, failing, login, user_id, hole, lang
+			  SELECT DISTINCT code, failing, login golfer, user_id golfer_id,
+			                  hole hole_id, lang lang_id
 			    FROM solutions
 			    JOIN users   ON id = user_id
 			   WHERE failing IN (true, $1)
@@ -141,7 +142,7 @@ func getSolutions(r *http.Request) chan solution {
 			     AND (hole  = $3 OR $3 IS NULL)
 			     AND (lang  = $4 OR $4 IS NULL)
 			ORDER BY hole, lang, login
-			) SELECT *, COUNT(*) OVER () FROM distinct_solutions`,
+			) SELECT *, COUNT(*) OVER () total FROM distinct_solutions`,
 			r.FormValue("failing") == "on",
 			r.FormValue("golfer"),
 			null.New(holeID, holeID != ""),
@@ -154,16 +155,7 @@ func getSolutions(r *http.Request) chan solution {
 
 		for rows.Next() {
 			var s solution
-
-			if err := rows.Scan(
-				&s.code,
-				&s.failing,
-				&s.Golfer,
-				&s.GolferID,
-				&s.HoleID,
-				&s.LangID,
-				&s.Total,
-			); err != nil {
+			if err := rows.StructScan(&s); err != nil {
 				panic(err)
 			}
 
