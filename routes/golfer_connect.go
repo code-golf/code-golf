@@ -97,7 +97,7 @@ func golferConnectGET(w http.ResponseWriter, r *http.Request) {
 		   DO UPDATE SET discriminator = excluded.discriminator,
 		                      username = excluded.username`,
 		conn,
-		null.New(user.Discriminator, user.Discriminator != ""),
+		null.NullIfZero(user.Discriminator),
 		user.ID,
 		session.Golfer(r).ID,
 		user.Username,

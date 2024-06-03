@@ -19,6 +19,10 @@ func New[T any](value T, valid bool) Null[T] {
 	return Null[T]{sql.Null[T]{V: value, Valid: valid}}
 }
 
+func NullIfZero[T comparable](value T) Null[T] {
+	return New(value, value != *new(T))
+}
+
 func (n Null[T]) MarshalJSON() ([]byte, error) {
 	if !n.Valid {
 		return []byte("null"), nil

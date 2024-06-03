@@ -120,9 +120,6 @@ func getSolutions(r *http.Request) chan solution {
 	go func() {
 		defer close(solutions)
 
-		holeID := r.FormValue("hole")
-		langID := r.FormValue("lang")
-
 		rows, err := session.Database(r).QueryxContext(
 			r.Context(),
 			`WITH distinct_solutions AS (
@@ -138,8 +135,8 @@ func getSolutions(r *http.Request) chan solution {
 			) SELECT *, COUNT(*) OVER () total FROM distinct_solutions`,
 			r.FormValue("failing") == "on",
 			r.FormValue("golfer"),
-			null.New(holeID, holeID != ""),
-			null.New(langID, langID != ""),
+			null.NullIfZero(r.FormValue("hole")),
+			null.NullIfZero(r.FormValue("lang")),
 		)
 		if err != nil {
 			panic(err)

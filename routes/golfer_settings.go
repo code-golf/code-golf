@@ -138,7 +138,7 @@ func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 		  WHERE id = $8`,
 		r.Form.Get("country"),
 		r.Form.Get("keymap"),
-		null.New(r.Form.Get("pronouns"), r.Form.Get("pronouns") != ""),
+		null.NullIfZero(r.Form.Get("pronouns")),
 		r.Form.Get("referrer"),
 		r.Form.Get("show_country") == "on",
 		r.Form.Get("theme"),
