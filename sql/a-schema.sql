@@ -170,7 +170,7 @@ CREATE TABLE solutions (
     scoring   scoring   NOT NULL,
     failing   bool      NOT NULL DEFAULT false,
     code      text      NOT NULL,
-    tested    timestamp          DEFAULT TIMEZONE('UTC', NOW()),
+    tested    timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
     -- Assembly can only be scored on bytes, and they are compiled bytes.
     CHECK ((lang  = 'assembly' AND chars IS NULL AND scoring = 'bytes')
         OR (lang != 'assembly' AND bytes = octet_length(code)

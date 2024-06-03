@@ -19,7 +19,7 @@
             ?page={{ page .Data.RowOverall }}">
             {{ comma .Data.RankOverall }}<sup>{{ ord .Data.RankOverall }}</sup> overall</a>.
 
-    {{ with .Data.Tested }}<p>Last tested {{ time . }}.{{ end }}
+    <p>Last tested {{ time .Data.Tested }}.
 
     <div>
         <table>
