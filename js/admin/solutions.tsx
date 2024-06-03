@@ -43,7 +43,7 @@ form.onsubmit = async e => {
         if (!line.pass) failing++;
 
         status.innerText = comma(++solutions) + '/' + comma(line.total) +
-            ` solutions (${failing} failing) in ` +
+            ` solutions (${comma(failing)} failing) in ` +
             new Date(Date.now() - start).toISOString().substr(14, 8).replace(/^00:/, '');
 
         const stderr = <code></code>;
