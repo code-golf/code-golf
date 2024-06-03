@@ -108,6 +108,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		if err := db.QueryRowContext(
 			r.Context(),
 			`SELECT earned,
+			        failing_bytes,
 			        old_bytes_joint, old_bytes_rank, old_bytes,
 			        new_bytes_joint, new_bytes_rank, new_bytes,
 			        old_best_bytes_first_golfer_id,
@@ -115,6 +116,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			        old_best_bytes_golfer_id,
 			        old_best_bytes,
 			        old_best_bytes_submitted,
+			        failing_chars,
 			        old_chars_joint, old_chars_rank, old_chars,
 			        new_chars_joint, new_chars_rank, new_chars,
 			        old_best_chars_first_golfer_id,
@@ -139,6 +141,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			in.Code, in.Hole, in.Lang, golfer.ID, displayedRun.ASMBytes,
 		).Scan(
 			pq.Array(&cheevos),
+			&out.RankUpdates[0].FailingStrokes,
 			&out.RankUpdates[0].From.Joint,
 			&out.RankUpdates[0].From.Rank,
 			&out.RankUpdates[0].From.Strokes,
@@ -150,6 +153,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			&out.RankUpdates[0].OldBestCurrentGolferID,
 			&out.RankUpdates[0].OldBestStrokes,
 			&out.RankUpdates[0].OldBestSubmitted,
+			&out.RankUpdates[1].FailingStrokes,
 			&out.RankUpdates[1].From.Joint,
 			&out.RankUpdates[1].From.Rank,
 			&out.RankUpdates[1].From.Strokes,

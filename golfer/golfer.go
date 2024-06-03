@@ -62,6 +62,7 @@ type RankUpdateFromTo struct {
 
 type RankUpdate struct {
 	Scoring                   string           `json:"scoring"`
+	FailingStrokes            null.Int         `json:"failingStrokes"` // The length of the previous failing solution, if any,
 	From                      RankUpdateFromTo `json:"from"`
 	To                        RankUpdateFromTo `json:"to"`
 	OldBestCurrentGolferCount null.Int         `json:"oldBestCurrentGolferCount"` // Number of golfers that previously held the gold medal (except current golfer).

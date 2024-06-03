@@ -289,6 +289,7 @@ export interface RankFromTo {
 
 export interface RankUpdate {
     scoring: string,
+    failingStrokes: number | null,
     from: RankFromTo,
     to: RankFromTo,
     oldBestCurrentGolferCount: number | null,
