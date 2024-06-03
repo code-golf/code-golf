@@ -10,7 +10,7 @@ func brainfuck() []Run {
 	tests = append(tests, randomBFCase(5, 3, 8, -3, 2))
 	tests = append(tests, randomBFCase(10, 5, 1, 1, -3))
 
-	for i := 0; i < 3; i++ {
+	for range 3 {
 		jumpSize := randInt(5, 12)
 		buckets := randInt(2, 8)
 		initialBucketSize := randInt(1, 7)
@@ -46,7 +46,7 @@ func randomBFCase(jumpSize, buckets, initialBucketSize, bucketSizeChange, charSh
 
 	// Populate buckets
 	bucketSize := initialBucketSize
-	for i := 0; i < buckets; i++ {
+	for range buckets {
 		// Choose a base for this bucket that ensures all chars remain in the printable ASCII range
 		totalShift := charShift * (bucketSize - 1)
 		minChar := ASCIIMin
@@ -61,7 +61,7 @@ func randomBFCase(jumpSize, buckets, initialBucketSize, bucketSizeChange, charSh
 
 		// Add all the chars in the bucket to the solution
 		char := base * jumpSize
-		for j := 0; j < bucketSize; j++ {
+		for range bucketSize {
 			out += fmt.Sprintf("%c", char)
 			char += charShift
 		}
