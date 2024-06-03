@@ -218,9 +218,9 @@ form {
         &:has([type=checkbox]) { flex-direction: column }
     }
 
-    input:not([type]) { background: var(--background) }
+    input:not([type]), input[type=number] { background: var(--background) }
 
-    input:not([type]), select {
+    input:not([type]), input[type=number], select {
         border-radius: .25rem;
         border: 1px solid var(--grey);
         color: var(--color);

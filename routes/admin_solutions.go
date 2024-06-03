@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	"strconv"
 	"sync"
 	"time"
 
@@ -48,16 +49,16 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/x-ndjson")
 
-	for range 3 {
+	workers, _ := strconv.Atoi(r.FormValue("workers"))
+	for range workers {
 		wg.Add(1)
 
 		go func() {
 			defer wg.Done()
 
-			i := 0
 			for s := range solutions {
 				// Run each solution up to three times.
-				for j := 0; j < 3; j++ {
+				for range 3 {
 					// Get the first failing (or last overall) run.
 					var run hole.Run
 					for _, r := range hole.Play(
@@ -104,9 +105,7 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 
 				mux.Lock()
 				w.Write(b)
-				if i++; i%10 == 0 {
-					w.(http.Flusher).Flush()
-				}
+				w.(http.Flusher).Flush()
 				mux.Unlock()
 			}
 		}()

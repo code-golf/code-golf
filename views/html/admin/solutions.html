@@ -28,6 +28,10 @@
         {{ end }}
         </select>
 
+        <label for=workers>Workers</label>
+        <input id=workers name=workers type=number
+            value='{{ with .Request.FormValue "workers" }}{{ . }}{{ else }}3{{ end }}'>
+
         <label for=failing>Failing</label>
         <input {{ if eq "on" (.Request.FormValue "failing") }}checked{{ end }}
             id=failing name=failing type=checkbox>
