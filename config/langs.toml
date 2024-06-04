@@ -518,7 +518,7 @@ end
 
 [Gleam]
 experiment = 1129
-size       = '???? MiB'
+size       = '0 MiB'
 version    = '1.2.1'
 website    = 'https://gleam.run/'
 example    = '''
