@@ -2,7 +2,6 @@ package hole
 
 import (
 	_ "embed"
-	"math/rand/v2"
 	"strings"
 )
 
@@ -146,7 +145,7 @@ func genReversiBoard(steps int) ReversiBoard {
 				break
 			}
 
-			spot := spots[rand.IntN(len(spots))]
+			spot := randChoice(spots)
 
 			out[spot.Pos[0]][spot.Pos[1]] = team
 			for _, reversedSpot := range spot.Tiles {
