@@ -11,8 +11,8 @@ COPY --from=0 /cache                   /cache
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
 
 RUN mkdir -p /gleam/src
-COPY --from=0 gleam.toml /gleam
-COPY --from=0 gleam /usr/bin/
+COPY gleam.toml /gleam
+COPY gleam /usr/bin/
 
 ENTRYPOINT ["gleam"]
 
