@@ -1,591 +1,443 @@
-AliceBlue
+< AliceBlue
+> #f0f8ff
 
-#f0f8ff
+< AntiqueWhite
+> #faebd7
 
-AntiqueWhite
+< Aqua
+> #00ffff
 
-#faebd7
+< Aquamarine
+> #7fffd4
 
-Aqua
+< Azure
+> #f0ffff
 
-#00ffff
+< Beige
+> #f5f5dc
 
-Aquamarine
+< Bisque
+> #ffe4c4
 
-#7fffd4
+< Black
+> #000000
 
-Azure
+< BlanchedAlmond
+> #ffebcd
 
-#f0ffff
+< Blue
+> #0000ff
 
-Beige
+< BlueViolet
+> #8a2be2
 
-#f5f5dc
+< Brown
+> #a52a2a
 
-Bisque
+< Burlywood
+> #deb887
 
-#ffe4c4
+< CadetBlue
+> #5f9ea0
 
-Black
+< Chartreuse
+> #7fff00
 
-#000000
+< Chocolate
+> #d2691e
 
-BlanchedAlmond
+< Coral
+> #ff7f50
 
-#ffebcd
+< CornflowerBlue
+> #6495ed
 
-Blue
+< Cornsilk
+> #fff8dc
 
-#0000ff
+< Crimson
+> #dc143c
 
-BlueViolet
+< Cyan
+> #00ffff
 
-#8a2be2
+< DarkBlue
+> #00008b
 
-Brown
+< DarkCyan
+> #008b8b
 
-#a52a2a
+< DarkGoldenRod
+> #b8860b
 
-Burlywood
+< DarkGray
+> #a9a9a9
 
-#deb887
+< DarkGreen
+> #006400
 
-CadetBlue
+< DarkGrey
+> #a9a9a9
 
-#5f9ea0
+< DarkKhaki
+> #bdb76b
 
-Chartreuse
+< DarkMagenta
+> #8b008b
 
-#7fff00
+< DarkOliveGreen
+> #556b2f
 
-Chocolate
+< DarkOrange
+> #ff8c00
 
-#d2691e
+< DarkOrchid
+> #9932cc
 
-Coral
+< DarkRed
+> #8b0000
 
-#ff7f50
+< DarkSalmon
+> #e9967a
 
-CornflowerBlue
+< DarkSeaGreen
+> #8fbc8f
 
-#6495ed
+< DarkSlateBlue
+> #483d8b
 
-Cornsilk
+< DarkSlateGray
+> #2f4f4f
 
-#fff8dc
+< DarkSlateGrey
+> #2f4f4f
 
-Crimson
+< DarkTurquoise
+> #00ced1
 
-#dc143c
+< DarkViolet
+> #9400d3
 
-Cyan
+< DeepPink
+> #ff1493
 
-#00ffff
+< DeepSkyBlue
+> #00bfff
 
-DarkBlue
+< DimGray
+> #696969
 
-#00008b
+< DimGrey
+> #696969
 
-DarkCyan
+< DodgerBlue
+> #1e90ff
 
-#008b8b
+< FireBrick
+> #b22222
 
-DarkGoldenRod
+< FloralWhite
+> #fffaf0
 
-#b8860b
+< ForestGreen
+> #228b22
 
-DarkGray
+< Fuchsia
+> #ff00ff
 
-#a9a9a9
+< Gainsboro
+> #dcdcdc
 
-DarkGreen
+< GhostWhite
+> #f8f8ff
 
-#006400
+< Gold
+> #ffd700
 
-DarkGrey
+< GoldenRod
+> #daa520
 
-#a9a9a9
+< Gray
+> #808080
 
-DarkKhaki
+< Green
+> #008000
 
-#bdb76b
+< GreenYellow
+> #adff2f
 
-DarkMagenta
+< Grey
+> #808080
 
-#8b008b
+< Honeydew
+> #f0fff0
 
-DarkOliveGreen
+< HotPink
+> #ff69b4
 
-#556b2f
+< IndianRed
+> #cd5c5c
 
-DarkOrange
+< Indigo
+> #4b0082
 
-#ff8c00
+< Ivory
+> #fffff0
 
-DarkOrchid
+< Khaki
+> #f0e68c
 
-#9932cc
+< Lavender
+> #e6e6fa
 
-DarkRed
+< LavenderBlush
+> #fff0f5
 
-#8b0000
+< LawnGreen
+> #7cfc00
 
-DarkSalmon
+< LemonChiffon
+> #fffacd
 
-#e9967a
+< LightBlue
+> #add8e6
 
-DarkSeaGreen
+< LightCoral
+> #f08080
 
-#8fbc8f
+< LightCyan
+> #e0ffff
 
-DarkSlateBlue
+< LightGoldenRodYellow
+> #fafad2
 
-#483d8b
+< LightGray
+> #d3d3d3
 
-DarkSlateGray
+< LightGreen
+> #90ee90
 
-#2f4f4f
+< LightGrey
+> #d3d3d3
 
-DarkSlateGrey
+< LightPink
+> #ffb6c1
 
-#2f4f4f
+< LightSalmon
+> #ffa07a
 
-DarkTurquoise
+< LightSeaGreen
+> #20b2aa
 
-#00ced1
+< LightSkyBlue
+> #87cefa
 
-DarkViolet
+< LightSlateGray
+> #778899
 
-#9400d3
+< LightSlateGrey
+> #778899
 
-DeepPink
+< LightSteelBlue
+> #b0c4de
 
-#ff1493
+< LightYellow
+> #ffffe0
 
-DeepSkyBlue
+< Lime
+> #00ff00
 
-#00bfff
+< LimeGreen
+> #32cd32
 
-DimGray
+< Linen
+> #faf0e6
 
-#696969
+< Magenta
+> #ff00ff
 
-DimGrey
+< Maroon
+> #800000
 
-#696969
+< MediumAquamarine
+> #66cdaa
 
-DodgerBlue
+< MediumBlue
+> #0000cd
 
-#1e90ff
+< MediumOrchid
+> #ba55d3
 
-FireBrick
+< MediumPurple
+> #9370db
 
-#b22222
+< MediumSeaGreen
+> #3cb371
 
-FloralWhite
+< MediumSlateBlue
+> #7b68ee
 
-#fffaf0
+< MediumSpringGreen
+> #00fa9a
 
-ForestGreen
+< MediumTurquoise
+> #48d1cc
 
-#228b22
+< MediumVioletRed
+> #c71585
 
-Fuchsia
+< MidnightBlue
+> #191970
 
-#ff00ff
+< MintCream
+> #f5fffa
 
-Gainsboro
+< MistyRose
+> #ffe4e1
 
-#dcdcdc
+< Moccasin
+> #ffe4b5
 
-GhostWhite
+< NavajoWhite
+> #ffdead
 
-#f8f8ff
+< Navy
+> #000080
 
-Gold
+< OldLace
+> #fdf5e6
 
-#ffd700
+< Olive
+> #808000
 
-GoldenRod
+< OliveDrab
+> #6b8e23
 
-#daa520
+< Orange
+> #ffa500
 
-Gray
+< OrangeRed
+> #ff4500
 
-#808080
+< Orchid
+> #da70d6
 
-Green
+< PaleGoldenRod
+> #eee8aa
 
-#008000
+< PaleGreen
+> #98fb98
 
-GreenYellow
+< PaleTurquoise
+> #afeeee
 
-#adff2f
+< PaleVioletRed
+> #db7093
 
-Grey
+< PapayaWhip
+> #ffefd5
 
-#808080
+< PeachPuff
+> #ffdab9
 
-Honeydew
+< Peru
+> #cd853f
 
-#f0fff0
+< Pink
+> #ffc0cb
 
-HotPink
+< Plum
+> #dda0dd
 
-#ff69b4
+< PowderBlue
+> #b0e0e6
 
-IndianRed
+< Purple
+> #800080
 
-#cd5c5c
+< RebeccaPurple
+> #663399
 
-Indigo
+< Red
+> #ff0000
 
-#4b0082
+< RosyBrown
+> #bc8f8f
 
-Ivory
+< RoyalBlue
+> #4169e1
 
-#fffff0
+< SaddleBrown
+> #8b4513
 
-Khaki
+< Salmon
+> #fa8072
 
-#f0e68c
+< SandyBrown
+> #f4a460
 
-Lavender
+< SeaGreen
+> #2e8b57
 
-#e6e6fa
+< SeaShell
+> #fff5ee
 
-LavenderBlush
+< Sienna
+> #a0522d
 
-#fff0f5
+< Silver
+> #c0c0c0
 
-LawnGreen
+< SkyBlue
+> #87ceeb
 
-#7cfc00
+< SlateBlue
+> #6a5acd
 
-LemonChiffon
+< SlateGray
+> #708090
 
-#fffacd
+< SlateGrey
+> #708090
 
-LightBlue
+< Snow
+> #fffafa
 
-#add8e6
+< SpringGreen
+> #00ff7f
 
-LightCoral
+< SteelBlue
+> #4682b4
 
-#f08080
+< Tan
+> #d2b48c
 
-LightCyan
+< Teal
+> #008080
 
-#e0ffff
+< Thistle
+> #d8bfd8
 
-LightGoldenRodYellow
+< Tomato
+> #ff6347
 
-#fafad2
+< Turquoise
+> #40e0d0
 
-LightGray
+< Violet
+> #ee82ee
 
-#d3d3d3
+< Wheat
+> #f5deb3
 
-LightGreen
+< White
+> #ffffff
 
-#90ee90
+< WhiteSmoke
+> #f5f5f5
 
-LightGrey
+< Yellow
+> #ffff00
 
-#d3d3d3
-
-LightPink
-
-#ffb6c1
-
-LightSalmon
-
-#ffa07a
-
-LightSeaGreen
-
-#20b2aa
-
-LightSkyBlue
-
-#87cefa
-
-LightSlateGray
-
-#778899
-
-LightSlateGrey
-
-#778899
-
-LightSteelBlue
-
-#b0c4de
-
-LightYellow
-
-#ffffe0
-
-Lime
-
-#00ff00
-
-LimeGreen
-
-#32cd32
-
-Linen
-
-#faf0e6
-
-Magenta
-
-#ff00ff
-
-Maroon
-
-#800000
-
-MediumAquamarine
-
-#66cdaa
-
-MediumBlue
-
-#0000cd
-
-MediumOrchid
-
-#ba55d3
-
-MediumPurple
-
-#9370db
-
-MediumSeaGreen
-
-#3cb371
-
-MediumSlateBlue
-
-#7b68ee
-
-MediumSpringGreen
-
-#00fa9a
-
-MediumTurquoise
-
-#48d1cc
-
-MediumVioletRed
-
-#c71585
-
-MidnightBlue
-
-#191970
-
-MintCream
-
-#f5fffa
-
-MistyRose
-
-#ffe4e1
-
-Moccasin
-
-#ffe4b5
-
-NavajoWhite
-
-#ffdead
-
-Navy
-
-#000080
-
-OldLace
-
-#fdf5e6
-
-Olive
-
-#808000
-
-OliveDrab
-
-#6b8e23
-
-Orange
-
-#ffa500
-
-OrangeRed
-
-#ff4500
-
-Orchid
-
-#da70d6
-
-PaleGoldenRod
-
-#eee8aa
-
-PaleGreen
-
-#98fb98
-
-PaleTurquoise
-
-#afeeee
-
-PaleVioletRed
-
-#db7093
-
-PapayaWhip
-
-#ffefd5
-
-PeachPuff
-
-#ffdab9
-
-Peru
-
-#cd853f
-
-Pink
-
-#ffc0cb
-
-Plum
-
-#dda0dd
-
-PowderBlue
-
-#b0e0e6
-
-Purple
-
-#800080
-
-RebeccaPurple
-
-#663399
-
-Red
-
-#ff0000
-
-RosyBrown
-
-#bc8f8f
-
-RoyalBlue
-
-#4169e1
-
-SaddleBrown
-
-#8b4513
-
-Salmon
-
-#fa8072
-
-SandyBrown
-
-#f4a460
-
-SeaGreen
-
-#2e8b57
-
-SeaShell
-
-#fff5ee
-
-Sienna
-
-#a0522d
-
-Silver
-
-#c0c0c0
-
-SkyBlue
-
-#87ceeb
-
-SlateBlue
-
-#6a5acd
-
-SlateGray
-
-#708090
-
-SlateGrey
-
-#708090
-
-Snow
-
-#fffafa
-
-SpringGreen
-
-#00ff7f
-
-SteelBlue
-
-#4682b4
-
-Tan
-
-#d2b48c
-
-Teal
-
-#008080
-
-Thistle
-
-#d8bfd8
-
-Tomato
-
-#ff6347
-
-Turquoise
-
-#40e0d0
-
-Violet
-
-#ee82ee
-
-Wheat
-
-#f5deb3
-
-White
-
-#ffffff
-
-WhiteSmoke
-
-#f5f5f5
-
-Yellow
-
-#ffff00
-
-YellowGreen
-
-#9acd32
+< YellowGreen
+> #9acd32
