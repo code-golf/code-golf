@@ -242,15 +242,15 @@ func reversi() []Run {
 		getStaticTestCases(),
 	}
 
-	for run := range runs {
-		args := make([]string, len(boards[run]))
-		answer := make([]string, len(boards[run]))
-		for i, grid := range boards[run] {
-			args[i] = drawReversiBoard(grid)
-			answer[i] = drawReversiBoard(highlightCorrectAnswersReversiBoard(grid))
+	for i, board := range boards {
+		args := make([]string, len(board))
+		answer := make([]string, len(board))
+		for j, grid := range board {
+			args[j] = drawReversiBoard(grid)
+			answer[j] = drawReversiBoard(highlightCorrectAnswersReversiBoard(grid))
 		}
 
-		runs[run] = Run{Args: args, Answer: strings.Join(answer, "\n\n")}
+		runs[i] = Run{Args: args, Answer: strings.Join(answer, "\n\n")}
 	}
 
 	return runs
