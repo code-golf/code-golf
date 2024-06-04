@@ -67,7 +67,9 @@ func fixedTests(holeID string) []test {
 	return append([]test(nil), fixedTestsMap[holeID]...)
 }
 
-func outputTests(testRuns ...[]test) []Run {
+func outputTests(tests ...[]test) []Run { return outputTestsWithSep("\n", tests...) }
+
+func outputTestsWithSep(sep string, testRuns ...[]test) []Run {
 	runs := make([]Run, len(testRuns))
 
 	for i, tests := range testRuns {
@@ -78,7 +80,7 @@ func outputTests(testRuns ...[]test) []Run {
 			args[i] = t.in
 
 			if i > 0 {
-				answer.WriteByte('\n')
+				answer.WriteString(sep)
 			}
 			answer.WriteString(t.out)
 		}
