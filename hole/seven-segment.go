@@ -12,9 +12,9 @@ func sevenSegment() []Run {
 	digits := shuffle([]byte("00112233445566778899"))
 	run := Run{Args: []string{string(digits)}}
 
-	for row := 0; row < 3; row++ {
+	for row, segment := range segments {
 		for _, digit := range digits {
-			run.Answer += segments[row][digit-'0']
+			run.Answer += segment[digit-'0']
 		}
 
 		run.Answer = strings.TrimRight(run.Answer, " ")
