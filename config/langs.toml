@@ -516,6 +516,23 @@ end do
 end
 '''
 
+[Gleam]
+experiment = 1129
+size       = '???? MiB'
+version    = '1.2.1'
+website    = 'https://gleam.run/'
+example    = '''
+import argv
+import gleam/io
+import gleam/list
+
+pub fn main() {
+    io.println("Hello, world!")
+    list.each(list.range(0, 9), io.debug)
+    list.each(argv.load().arguments, io.println)
+}
+'''
+
 [Go]
 size    = '353 MiB'
 version = '1.22.3'
