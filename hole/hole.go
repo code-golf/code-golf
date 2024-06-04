@@ -43,7 +43,6 @@ func init() {
 
 // Return a copy so holes are free to append, shuffle, etc.
 func fixedTests(holeID string) []test {
-	// return fixedTestsMap[holeID]
 	return append([]test(nil), fixedTestsMap[holeID]...)
 }
 
