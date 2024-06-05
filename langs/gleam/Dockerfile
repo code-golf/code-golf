@@ -12,7 +12,7 @@ COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
 RUN mkdir -p /tmp/gleam/src
 COPY gleam.toml /tmp/gleam
 COPY gleam /usr/bin/
-RUN cd /tmp/gleam && gleam deps download
+RUN cd /tmp/gleam && /usr/bin/gleam deps download
 
 ENTRYPOINT ["gleam"]
 
