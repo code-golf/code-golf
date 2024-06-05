@@ -2,8 +2,8 @@
 
 [ "$1" = "version" ] && exec /usr/bin/gleam --version
 
-cd /gleam
-cat - > /gleam/src/main.gleam
+cd /tmp/gleam
+cat - > src/main.gleam
 
 shift
 exec /usr/bin/gleam run -t javascript "$@"
