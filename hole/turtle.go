@@ -98,8 +98,8 @@ func turtle() []Run {
 		outVec = append(outVec, line)
 	}
 
-	return []Run{{
-		Args:   []string{strings.Join(argVec[:], "\n")},
-		Answer: strings.Join(outVec[:], "\n"),
-	}}
+	return outputTests([]test{{
+		in:  strings.Join(argVec[:], "\n"),
+		out: strings.Join(outVec[:], "\n"),
+	}})
 }

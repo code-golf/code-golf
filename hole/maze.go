@@ -76,7 +76,7 @@ func tracePath(dist [height][width]int, ei, ej int) (path [height][width]int) {
 	return
 }
 
-func draw(grid [height][width]int, si, sj, ei, ej int, path [height][width]int, drawpath bool) (mazestr string) {
+func draw(grid [height][width]int, si, sj, ei, ej int, path [height][width]int, drawpath bool) string {
 	const wall = "#"
 
 	var track, top, bottom, cell, eastboundary, southboundary string
@@ -87,7 +87,8 @@ func draw(grid [height][width]int, si, sj, ei, ej int, path [height][width]int, 
 		track = " "
 	}
 
-	mazestr = wall + strings.Repeat(strings.Repeat(wall, 2), width) + "\n"
+	mazestr := strings.Repeat(wall, 2*width+1) + "\n"
+
 	for i := range height {
 		top = wall
 		bottom = wall
@@ -126,11 +127,13 @@ func draw(grid [height][width]int, si, sj, ei, ej int, path [height][width]int, 
 		}
 		mazestr += top + "\n" + bottom + "\n"
 	}
-	return
+
+	// Trim trailing newline.
+	return mazestr[:len(mazestr)-1]
 }
 
 func maze() []Run {
-	runs := make([]Run, 5)
+	runs := make([][]test, 5)
 
 	for i := range runs {
 		var grid, dist [height][width]int
@@ -141,14 +144,12 @@ func maze() []Run {
 		grid, dist = dig(si, sj, grid, dist)
 		ei, ej := findExit(dist)
 		path := tracePath(dist, ei, ej)
-		mazeinput := draw(grid, si, sj, ei, ej, path, false)
-		mazesolved := draw(grid, si, sj, ei, ej, path, true)
 
-		runs[i] = Run{
-			Args:   []string{mazeinput[:len(mazeinput)-1]},
-			Answer: mazesolved[:len(mazesolved)-1],
-		}
+		runs[i] = []test{{
+			in:  draw(grid, si, sj, ei, ej, path, false),
+			out: draw(grid, si, sj, ei, ej, path, true),
+		}}
 	}
 
-	return runs
+	return outputTests(runs...)
 }

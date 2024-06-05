@@ -10,18 +10,18 @@ var segments = [][]string{
 
 func sevenSegment() []Run {
 	digits := shuffle([]byte("00112233445566778899"))
-	run := Run{Args: []string{string(digits)}}
+	t := test{in: string(digits)}
 
 	for row, segment := range segments {
 		for _, digit := range digits {
-			run.Answer += segment[digit-'0']
+			t.out += segment[digit-'0']
 		}
 
-		run.Answer = strings.TrimRight(run.Answer, " ")
+		t.out = strings.TrimRight(t.out, " ")
 		if row < 2 {
-			run.Answer += "\n"
+			t.out += "\n"
 		}
 	}
 
-	return []Run{run}
+	return outputTests([]test{t})
 }

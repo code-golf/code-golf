@@ -3,7 +3,6 @@ package hole
 import (
 	"fmt"
 	"math/rand/v2"
-	"strings"
 )
 
 type fraction struct{ numerator, denominator, scale int }
@@ -117,13 +116,12 @@ func fractions() []Run {
 		}
 	}
 
-	args := make([]string, len(fractions))
-	outs := make([]string, len(fractions))
+	tests := make([]test, len(fractions))
 
 	for i, f := range shuffle(fractions) {
-		args[i] = fmt.Sprint(f.numerator*f.scale, "/", f.denominator*f.scale)
-		outs[i] = fmt.Sprint(f.numerator, "/", f.denominator)
+		tests[i].in = fmt.Sprint(f.numerator*f.scale, "/", f.denominator*f.scale)
+		tests[i].out = fmt.Sprint(f.numerator, "/", f.denominator)
 	}
 
-	return []Run{{Args: args, Answer: strings.Join(outs, "\n")}}
+	return outputTests(tests)
 }
