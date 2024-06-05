@@ -73,6 +73,10 @@ font:
 	    docker cp "$$id:twemoji-colr/build/Twemoji Mozilla.woff2" fonts/twemoji.woff2; \
 	    docker rm $$id
 
+mathjax-fonts:
+	@rm -rf public/mathjax-fonts
+	@cp -r node_modules/mathjax/es5/output/chtml/fonts/woff-v2 public/mathjax-fonts
+
 lint:
 	@docker run --rm -v $(CURDIR):/app -w /app \
 	    golangci/golangci-lint:v1.59.0 golangci-lint run

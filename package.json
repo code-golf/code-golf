@@ -30,6 +30,7 @@
     "golden-layout": "^2.6.0",
     "luxon": "",
     "lz-string": "",
+    "mathjax": "",
     "nim-codemirror-mode": ""
   },
   "devDependencies": {

@@ -1,5 +1,6 @@
 import { EditorState, EditorView, extensions } from './_codemirror';
 import { $$ }                                  from './_util';
+import 'mathjax/es5/tex-chtml.js';
 
 export function highlightCodeBlocks(selector: string){
     const baseExtensions = [...extensions.base, EditorState.readOnly.of(true)];

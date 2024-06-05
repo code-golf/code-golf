@@ -34,6 +34,15 @@
     <link rel=stylesheet href="{{ .Path }}" {{- with .Media }} media="{{ . }}" {{- end }}>
 {{ end }}
 
+{{ if eq .Name "wiki" }}
+    <script nonce="{{ $.Nonce }}">
+        MathJax = {
+            chtml: { fontURL: '/mathjax-fonts' },
+            tex: { inlineMath: [['$', '$']] },
+        };
+    </script>
+{{ end }}
+
 {{ range .JS -}}
     <script nonce="{{ $.Nonce }}" src="{{ . }}" type=module></script>
 {{ end }}
