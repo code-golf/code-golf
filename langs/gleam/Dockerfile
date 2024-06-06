@@ -1,4 +1,4 @@
-FROM alpine:3.20 AS builder
+FROM elixir:1.16.3-slim AS builder
 
 RUN apk add --no-cache curl
 

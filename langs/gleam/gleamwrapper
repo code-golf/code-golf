@@ -6,4 +6,4 @@ cd /tmp/gleam
 cat - > src/main.gleam
 
 shift
-exec /usr/bin/gleam run -t javascript "$@"
+exec /usr/bin/gleam run "$@"
