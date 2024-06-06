@@ -1,4 +1,4 @@
-FROM elixir:1.16.3-slim AS builder
+FROM erlang:26-slim AS builder
 
 RUN apk add --no-cache curl
 
