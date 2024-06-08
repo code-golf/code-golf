@@ -189,16 +189,12 @@ func Play(
 		runs = arrows()
 	case "brainfuck":
 		runs = brainfuck()
-	case "css-colors":
-		runs = cssColors()
 	case "day-of-week":
 		runs = dayOfWeek()
 	case "dfa-simulator":
 		runs = dfaSimulator()
 	case "ellipse-perimeters":
 		runs = ellipsePerimeters()
-	case "emojify":
-		runs = emojify()
 	case "forsyth-edwards-notation":
 		runs = forsythEdwardsNotation()
 	case "fractions":
@@ -207,8 +203,6 @@ func Play(
 		runs = gameOfLife()
 	case "gray-code-encoder", "gray-code-decoder":
 		runs = grayCode(hole.ID == "gray-code-decoder")
-	case "hexdump":
-		runs = hexdump()
 	case "isbn":
 		runs = isbn()
 	case "intersection":
@@ -239,8 +233,6 @@ func Play(
 		runs = pangramGrep()
 	case "poker":
 		runs = poker()
-	case "proximity-grid":
-		runs = proximityGrid()
 	case "qr-decoder", "qr-encoder":
 		runs = qr(hole.ID == "qr-decoder")
 	case "quadratic-formula":
@@ -253,30 +245,34 @@ func Play(
 		runs = reversePolishNotation()
 	case "reversi":
 		runs = reversi()
-	case "rock-paper-scissors-spock-lizard":
-		runs = rockPaperScissorsSpockLizard()
 	case "seven-segment":
 		runs = sevenSegment()
 	case "si-units":
 		runs = siUnits()
 	case "spelling-numbers":
 		runs = spellingNumbers()
-	case "star-wars-opening-crawl":
-		runs = starWarsOpeningCrawl()
 	case "sudoku", "sudoku-v2":
 		runs = sudoku(hole.ID == "sudoku-v2")
 	case "ten-pin-bowling":
 		runs = tenPinBowling()
 	case "time-distance":
 		runs = timeDistance()
-	case "united-states":
-		runs = unitedStates()
 	case "turtle":
 		runs = turtle()
 	case "zodiac-signs":
 		runs = zodiacSigns()
 	case "zeckendorf-representation":
 		runs = zeckendorfRepresentation()
+
+	// Holes with fixed test cases.
+	case "css-colors":
+		runs = outputTests(shuffle(fixedTests(hole.ID)))
+	case "emojify", "rock-paper-scissors-spock-lizard", "united-states":
+		runs = outputMultirunTests(fixedTests(hole.ID))
+	case "hexdump", "proximity-grid", "star-wars-opening-crawl":
+		runs = outputTestsWithSep("\n\n", shuffle(fixedTests(hole.ID)))
+
+	// Holes with no arguments and a static answer.
 	default:
 		// ¯\_(ツ)_/¯ cannot embed file answers/√2.txt: invalid name √2.txt
 		id := hole.ID
