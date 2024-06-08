@@ -9,7 +9,7 @@ import (
 func perimeter(ai, bi int) (p float64) {
 	a, b := float64(ai), float64(bi)
 	h := math.Pow(a-b, 2) / math.Pow(a+b, 2)
-	for ni := 0; ni < 100; ni++ {
+	for ni := range 100 {
 		n := float64(ni)
 		bin := math.Gamma(1.5) / (math.Gamma(1.0+n) * math.Gamma(1.5-n))
 		p += math.Pow(bin, 2) * math.Pow(h, n)
@@ -19,8 +19,7 @@ func perimeter(ai, bi int) (p float64) {
 }
 
 func ellipsePerimeters() []Run {
-	const randomCases = 10
-	tests := make([]test, randomCases)
+	tests := make([]test, 10)
 
 	// some random tests
 	for i := range tests {
@@ -29,5 +28,5 @@ func ellipsePerimeters() []Run {
 		tests[i] = test{fmt.Sprint(a, b), fmt.Sprint(int(perimeter(a, b)))}
 	}
 
-	return outputTests(shuffle(tests))
+	return outputTests(tests)
 }
