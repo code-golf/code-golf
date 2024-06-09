@@ -29,7 +29,7 @@
         </select>
 
         <label for=workers>Workers</label>
-        <input id=workers name=workers type=number
+        <input id=workers min=1 name=workers type=number
             value='{{ with .Request.FormValue "workers" }}{{ . }}{{ else }}3{{ end }}'>
 
         <label for=failing>Failing</label>
