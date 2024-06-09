@@ -807,8 +807,8 @@ end.
 '''
 
 [Perl]
-size    = '5.46 MiB'
-version = '5.38.2'
+size    = '5.51 MiB'
+version = '5.40.0'
 website = 'https://www.perl.org'
 example = '''
 # Printing

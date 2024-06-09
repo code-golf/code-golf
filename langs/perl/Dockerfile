@@ -2,34 +2,28 @@ FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache build-base curl
 
-ENV VER 5.38.2
+RUN curl https://cpan.metacpan.org/authors/id/H/HA/HAARG/perl-5.40.0.tar.gz \
+  | tar xz && mv perl-* perl
 
-RUN curl https://www.cpan.org/src/5.0/perl-$VER.tar.xz | tar xJ
-
-RUN mv perl-$VER perl                                           \
- && cd perl                                                       \
- && ./Configure                                                   \
-    -Accflags='                                                   \
-        -DNO_LOCALE                                               \
-        -DNO_MATHOMS                                              \
-        -DPERL_DISABLE_PMC                                        \
-        -DPERL_HASH_USE_SBOX32_ALSO=0                             \
-        -DPERL_USE_SAFE_PUTENV                                    \
-        -DSILENT_NO_TAINT_SUPPORT'                                \
-    -des                                                          \
-    -Darchlib=/usr/lib/perl                                       \
-    -Dinc_version_list=none                                       \
-    -Dprefix=/usr                                                 \
-    -Dprivlib=/usr/lib/perl                                       \
-    -Dsitearch=/usr/lib/perl                                      \
-    -Dsitelib=/usr/lib/perl                                       \
-    -Dvendorarch=/usr/lib/perl                                    \
- && make -j`nproc`                                                \
+RUN cd perl                           \
+ && ./Configure                       \
+    -Accflags='                       \
+        -DNO_LOCALE                   \
+        -DNO_MATHOMS                  \
+        -DPERL_DISABLE_PMC            \
+        -DPERL_HASH_USE_SBOX32_ALSO=0 \
+        -DPERL_USE_SAFE_PUTENV        \
+        -DSILENT_NO_TAINT_SUPPORT'    \
+    -des                              \
+    -Darchlib=/usr/lib/perl           \
+    -Dinc_version_list=none           \
+    -Dprefix=/usr                     \
+    -Dprivlib=/usr/lib/perl           \
+    -Dsitearch=/usr/lib/perl          \
+    -Dsitelib=/usr/lib/perl           \
+    -Dvendorarch=/usr/lib/perl        \
+ && make -j`nproc`                    \
  && strip -s perl
-
-# Manually bump to fix https://rt.cpan.org/Ticket/Display.html?id=148953.
-RUN curl https://cpan.metacpan.org/authors/id/P/PJ/PJACKLAM/Math-BigInt-1.999839.tar.gz \
-  | tar --strip-components 2 -xzC /perl/lib Math-BigInt-1.999839/lib
 
 FROM codegolf/lang-base-no-proc
 
@@ -42,6 +36,7 @@ COPY --from=0 /perl/lib/Carp.pm                \
               /perl/lib/XSLoader.pm            \
               /perl/lib/bigint.pm              \
               /perl/lib/bignum.pm              \
+              /perl/lib/builtin.pm             \
               /perl/lib/constant.pm            \
               /perl/lib/feature.pm             \
               /perl/lib/integer.pm             \
