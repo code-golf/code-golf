@@ -319,7 +319,7 @@ end-program.
 
 [Coconut]
 size    = '122 MiB'
-version = '3.1.0'
+version = '3.1.1'
 website = 'https://coconut-lang.org'
 example = '''
 import sys
@@ -878,7 +878,7 @@ example = '''
 
 [Python]
 size    = '71.1 MiB'
-version = '3.12.3'
+version = '3.12.4'
 website = 'https://www.python.org'
 example = '''
 import sys
