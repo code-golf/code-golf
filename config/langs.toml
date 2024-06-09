@@ -1103,8 +1103,8 @@ Hello, World!
 
 [Uiua]
 experiment = 1115
-size       = '28.5 MiB'
-version    = '0.10.3'
+size       = '30.8 MiB'
+version    = '0.11.1'
 website    = 'https://www.uiua.org'
 example    = '''
 # Printing
