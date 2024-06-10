@@ -687,8 +687,18 @@ export async function populateScores(editor: any) {
                     <span>{r.golfer.name}</span>
                 </a>
             </td>
-            <td data-tooltip={tooltip(r, 'Bytes')}>{comma(r.bytes)}</td>
-            <td data-tooltip={tooltip(r, 'Chars')}>{comma(r.chars)}</td>
+            <td data-tooltip={tooltip(r, 'Bytes')}>
+                {scoringID != 'bytes' ? comma(r.bytes) :
+                <a href={`/golfers/${r.golfer.name}/${hole}/${lang}/bytes`}>
+                    <span>{comma(r.bytes)}</span>
+                </a>}
+            </td>
+            <td data-tooltip={tooltip(r, 'Chars')}>
+                {scoringID != 'chars' ? comma(r.chars) :
+                <a href={`/golfers/${r.golfer.name}/${hole}/${lang}/chars`}>
+                    <span>{comma(r.chars)}</span>
+                </a>}
+            </td>
         </tr>): <tr><td colspan="4">(Empty)</td></tr>
     }{
         // Padding.
