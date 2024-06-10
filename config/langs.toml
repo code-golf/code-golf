@@ -1180,8 +1180,8 @@ for (a in Process.arguments) System.print(a)
 '''
 
 [Zig]
-size    = '298 MiB'
-version = '0.12.0'
+size    = '300 MiB'
+version = '0.13.0'
 website = 'https://ziglang.org'
 example = '''
 const std = @import("std");
