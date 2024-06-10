@@ -14,9 +14,6 @@ export function highlightCodeBlocks(selector: string){
         if (lang == 'fs' ) lang = 'f-sharp';
         if (lang == 'ijs') lang = 'j';
 
-        // Skip Assembly for now as the annoations break the layout.
-        if (lang == 'assembly') lang = '';
-
         // Clear the existing code and replace with a read-only editor.
         const pre = code.parentElement!;
         pre.innerHTML = '';
@@ -26,7 +23,7 @@ export function highlightCodeBlocks(selector: string){
                 doc: code.innerText.trim(),
                 extensions: [
                     baseExtensions,
-                    extensions[lang as keyof typeof extensions] ?? [],
+                    extensions[`${lang}-wiki`] ?? extensions[lang] ?? [],
                 ],
             }),
         });
