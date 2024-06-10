@@ -10,6 +10,9 @@
         </a>
     </h1>
 
+{{ if .Data.Failing }}
+    <p>Currently failing.
+{{ else }}
     <p>
         <a href="/rankings/holes/{{ .Data.Hole.ID }}/{{ .Data.Lang.ID }}/{{ .Data.Scoring -}}
             ?page={{ page .Data.Row }}">
@@ -18,6 +21,7 @@
         <a href="/rankings/holes/{{ .Data.Hole.ID }}/all/{{ .Data.Scoring -}}
             ?page={{ page .Data.RowOverall }}">
             {{ comma .Data.RankOverall }}<sup>{{ ord .Data.RankOverall }}</sup> overall</a>.
+{{ end }}
 
     <p>Last tested {{ time .Data.Tested }}.
 
