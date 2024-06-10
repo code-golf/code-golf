@@ -15,7 +15,7 @@ export function highlightCodeBlocks(selector: string){
         if (lang == 'ijs') lang = 'j';
 
         // Skip Assembly for now as the annoations break the layout.
-        if (lang == 'assembly') continue;
+        if (lang == 'assembly') lang = '';
 
         // Clear the existing code and replace with a read-only editor.
         const pre = code.parentElement!;
