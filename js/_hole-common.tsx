@@ -690,15 +690,15 @@ export async function populateScores(editor: any) {
             </td>
             <td data-tooltip={tooltip(r, 'Bytes')}>
                 {scoringID != 'bytes' ? comma(r.bytes) :
-                <a href={`/golfers/${r.golfer.name}/${hole}/${lang}/bytes`}>
-                    <span>{comma(r.bytes)}</span>
-                </a>}
+                    <a href={`/golfers/${r.golfer.name}/${hole}/${lang}/bytes`}>
+                        <span>{comma(r.bytes)}</span>
+                    </a>}
             </td>
             {lang == 'assembly' ? '' : <td data-tooltip={tooltip(r, 'Chars')}>
                 {scoringID != 'chars' ? comma(r.chars) :
-                <a href={`/golfers/${r.golfer.name}/${hole}/${lang}/chars`}>
-                    <span>{comma(r.chars)}</span>
-                </a>}
+                    <a href={`/golfers/${r.golfer.name}/${hole}/${lang}/chars`}>
+                        <span>{comma(r.chars)}</span>
+                    </a>}
             </td>}
         </tr>): <tr><td colspan={colspan}>(Empty)</td></tr>
     }{
