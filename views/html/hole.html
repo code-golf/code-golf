@@ -97,7 +97,10 @@
         <summary>Details</summary>
         {{ template "hole-details" . }}
     </details>
-    <nav class=tabs id=picker></nav>
+    <div id=pickerDiv>
+        <select id=langSelect></select>
+        <nav class=tabs id=picker></nav>
+    </div>
     <nav class=tabs id=solutionPicker></nav>
     <section>
         <header>

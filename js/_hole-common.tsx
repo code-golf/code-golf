@@ -197,8 +197,19 @@ export function setCode(code: string, editor: EditorView | null) {
 }
 
 function updateLangPicker() {
-    // Populate the language picker with accurate stroke counts.
-    $('#picker').replaceChildren(...sortedLangs.map((l: any) => {
+    const langSelect = $('#langSelect') as HTMLSelectElement;
+    if (langSelect.childElementCount === 0) {
+        for (const l of sortedLangs as any[]) {
+            const suffix = l.experiment ? ' (experimental)' : '';
+            langSelect.appendChild(<option value={l.id}>{l.name}{suffix}</option>);
+        }
+
+        langSelect.addEventListener('change', () => location.hash = '#' + langSelect.value);
+    }
+    langSelect.value = lang;
+
+    // Hybrid language selector: make it easy to see your existing solutions and their lengths.
+    $('#picker').replaceChildren(...sortedLangs.filter((l: any) => getSolutionCode(l.id, 0)).map((l: any) => {
         const tab = <a href={l.id == lang ? null : '#'+l.id}>{l.name}</a>;
 
         if (l.experiment)
