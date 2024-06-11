@@ -1,7 +1,7 @@
 {{ template "header" . }}
 {{ template "golfer" . }}
 
-<svg>{{ svg "play-light" }}</svg>
+<svg>{{ svg "exclamation-circle" }}{{ svg "play-light" }}</svg>
 
 <main>
     <nav class=tabs>
@@ -51,7 +51,9 @@
                     {{ continue }}
                 {{ end }}
 
-                {{ with (index $holeRanks $lang.ID) }}
+                {{ $r := index $holeRanks $lang.ID }}
+
+                {{ if and $r (not $r.Failing) }}{{ with $r }}
                     {{ $color := "green" }}
                     {{ if eq $.Data.Display "points" }}
                         {{      if ge .Points 950 }}{{ $color = "yellow" }}
@@ -79,6 +81,11 @@
                     {{ else }}
                         <span>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup></span>
                     {{ end }}
+                    </a>
+                {{ end }}{{ else if $r }}
+                    <a class="{{ $lang.ID }} dark-grey"
+                        href="../../../{{ $hole.ID }}/{{ $lang.ID }}/{{ $.Data.Scoring }}">
+                        <svg><use href="#exclamation"/></svg>
                     </a>
                 {{ else }}
                     <a class="{{ $lang.ID }} grey"

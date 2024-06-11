@@ -460,6 +460,7 @@ thead th {
 }
 
 .grey { background: var(--light-grey) }
+.dark-grey { background: var(--grey) }
 
 .grid {
     align-items: center;

@@ -9,7 +9,10 @@ import (
 
 // GET /golfers/{golfer}/holes/{display}/{scope}/{scoring}
 func golferHolesGET(w http.ResponseWriter, r *http.Request) {
-	type ranking struct{ Golfers, Points, Rank, TieCount int }
+	type ranking struct {
+		Failing                         bool
+		Golfers, Points, Rank, TieCount int
+	}
 
 	data := struct {
 		Holes                      []*config.Hole
@@ -33,12 +36,16 @@ func golferHolesGET(w http.ResponseWriter, r *http.Request) {
 
 	golfer := session.GolferInfo(r).Golfer
 	rows, err := session.Database(r).Query(
-		`SELECT hole, lang, tie_count,
+		`SELECT hole, lang, false, tie_count,
 		        CASE WHEN $1 THEN golfers_overall ELSE golfers         END,
 		        CASE WHEN $1 THEN points          ELSE points_for_lang END,
 		        CASE WHEN $1 THEN rank_overall    ELSE rank            END
 		   FROM rankings
-		  WHERE user_id = $2 AND scoring = $3`,
+		  WHERE user_id = $2 AND scoring = $3
+		  UNION ALL
+		 SELECT hole, lang, true, 0, 0, 0, 0
+		   FROM solutions
+		  WHERE failing AND user_id = $2 AND scoring = $3`,
 		data.Scope == "overall",
 		golfer.ID,
 		data.Scoring,
@@ -53,7 +60,7 @@ func golferHolesGET(w http.ResponseWriter, r *http.Request) {
 		var r ranking
 
 		if err := rows.Scan(
-			&hole, &lang, &r.TieCount, &r.Golfers, &r.Points, &r.Rank,
+			&hole, &lang, &r.Failing, &r.TieCount, &r.Golfers, &r.Points, &r.Rank,
 		); err != nil {
 			panic(err)
 		}

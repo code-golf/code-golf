@@ -20,6 +20,8 @@ main nav { gap: 1rem 1.5rem }
 
 #holes a.grey:not(:hover) { color: var(--play-color) }
 
+#holes a.dark-grey:not(:hover) { color: var(--background) }
+
 #holes a, #holes .lang {
     align-items: center;
     display: flex;
