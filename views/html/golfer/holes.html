@@ -74,7 +74,7 @@
            data-wide-tooltip>
                     {{ if eq $.Data.Display "points" }}
                         {{ comma .Points }}
-                    {{ else if .Diamond }}
+                    {{ else if and (eq .Rank 1) (eq .TieCount 1) }}
                         💎
                     {{ else }}
                         <span>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup></span>
