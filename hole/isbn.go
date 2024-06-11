@@ -17,8 +17,7 @@ func checkDigit(digits [9]int) int {
 }
 
 func isbn() []Run {
-	args := make([]string, 100)
-	outs := make([]string, 100)
+	tests := make([]test, 100)
 
 	for i, perm := range rand.Perm(100) {
 		var digits [9]int
@@ -57,7 +56,7 @@ func isbn() []Run {
 
 		id.WriteByte('-')
 
-		args[i] = id.String()
+		tests[i].in = id.String()
 
 		if digit := checkDigit(digits); digit == 10 {
 			id.WriteByte('X')
@@ -65,8 +64,8 @@ func isbn() []Run {
 			id.WriteByte(byte('0' + digit))
 		}
 
-		outs[i] = id.String()
+		tests[i].out = id.String()
 	}
 
-	return []Run{{Args: args, Answer: strings.Join(outs, "\n")}}
+	return outputTests(tests)
 }

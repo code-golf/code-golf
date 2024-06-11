@@ -10,8 +10,8 @@ import (
 // GET /golfers/{golfer}/holes/{display}/{scope}/{scoring}
 func golferHolesGET(w http.ResponseWriter, r *http.Request) {
 	type ranking struct {
-		Diamond               bool
-		Golfers, Rank, Points int
+		Failing                         bool
+		Golfers, Points, Rank, TieCount int
 	}
 
 	data := struct {
@@ -35,17 +35,18 @@ func golferHolesGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	golfer := session.GolferInfo(r).Golfer
-	points := "points_for_lang"
-	rank := "rank"
-	golfers := "golfers"
-	if data.Scope == "overall" {
-		points = "points"
-		rank = "rank_overall"
-		golfers = "golfers_overall"
-	}
 	rows, err := session.Database(r).Query(
-		"SELECT hole, lang, "+golfers+", "+rank+", "+rank+" = 1 AND tie_count = 1, "+
-			points+" FROM rankings WHERE user_id = $1 AND scoring = $2",
+		`SELECT hole, lang, false, tie_count,
+		        CASE WHEN $1 THEN golfers_overall ELSE golfers         END,
+		        CASE WHEN $1 THEN points          ELSE points_for_lang END,
+		        CASE WHEN $1 THEN rank_overall    ELSE rank            END
+		   FROM rankings
+		  WHERE user_id = $2 AND scoring = $3
+		  UNION ALL
+		 SELECT hole, lang, true, 0, 0, 0, 0
+		   FROM solutions
+		  WHERE failing AND user_id = $2 AND scoring = $3`,
+		data.Scope == "overall",
 		golfer.ID,
 		data.Scoring,
 	)
@@ -59,7 +60,7 @@ func golferHolesGET(w http.ResponseWriter, r *http.Request) {
 		var r ranking
 
 		if err := rows.Scan(
-			&hole, &lang, &r.Golfers, &r.Rank, &r.Diamond, &r.Points,
+			&hole, &lang, &r.Failing, &r.TieCount, &r.Golfers, &r.Points, &r.Rank,
 		); err != nil {
 			panic(err)
 		}

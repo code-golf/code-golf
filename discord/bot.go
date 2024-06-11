@@ -140,6 +140,10 @@ func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.Messa
 				}
 				fieldValues[update.Scoring] += pretty.Comma(update.To.Strokes.V)
 			}
+
+			if update.FailingStrokes.Valid && update.FailingStrokes.V <= update.To.Strokes.V {
+				fieldValues[update.Scoring] += fmt.Sprintf(" (replaced failing %d)", update.FailingStrokes.V)
+			}
 		}
 	}
 

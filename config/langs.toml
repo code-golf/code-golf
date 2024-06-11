@@ -319,7 +319,7 @@ end-program.
 
 [Coconut]
 size    = '122 MiB'
-version = '3.1.0'
+version = '3.1.1'
 website = 'https://coconut-lang.org'
 example = '''
 import sys
@@ -380,7 +380,7 @@ void main(string[] argv) {
 
 [Dart]
 size    = '235 MiB'
-version = '3.4.1'
+version = '3.4.3'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -535,7 +535,7 @@ pub fn main() {
 
 [Go]
 size    = '353 MiB'
-version = '1.22.3'
+version = '1.22.4'
 website = 'https://go.dev'
 example = '''
 package main
@@ -824,8 +824,8 @@ end.
 '''
 
 [Perl]
-size    = '5.46 MiB'
-version = '5.38.2'
+size    = '5.51 MiB'
+version = '5.40.0'
 website = 'https://www.perl.org'
 example = '''
 # Printing
@@ -842,7 +842,7 @@ say for @ARGV;
 
 [PHP]
 size    = '8.40 MiB'
-version = '8.3.7'
+version = '8.3.8'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -895,7 +895,7 @@ example = '''
 
 [Python]
 size    = '71.1 MiB'
-version = '3.12.3'
+version = '3.12.4'
 website = 'https://www.python.org'
 example = '''
 import sys
@@ -1120,8 +1120,8 @@ Hello, World!
 
 [Uiua]
 experiment = 1115
-size       = '28.5 MiB'
-version    = '0.10.3'
+size       = '30.8 MiB'
+version    = '0.11.1'
 website    = 'https://www.uiua.org'
 example    = '''
 # Printing
@@ -1197,8 +1197,8 @@ for (a in Process.arguments) System.print(a)
 '''
 
 [Zig]
-size    = '298 MiB'
-version = '0.12.0'
+size    = '300 MiB'
+version = '0.13.0'
 website = 'https://ziglang.org'
 example = '''
 const std = @import("std");

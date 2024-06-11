@@ -1,4 +1,4 @@
-FROM golang:1.22.3-alpine3.19
+FROM golang:1.22.4-alpine3.20
 
 ENV CGO_ENABLED=0 GOPATH= TZ=Europe/London
 
@@ -12,7 +12,7 @@ COPY --from=codegolf/lang-go         ["/", "/langs/go/rootfs/"        ] #  353 M
 COPY --from=codegolf/lang-rust       ["/", "/langs/rust/rootfs/"      ] #  325 MiB
 COPY --from=codegolf/lang-julia      ["/", "/langs/julia/rootfs/"     ] #  310 MiB
 COPY --from=codegolf/lang-d          ["/", "/langs/d/rootfs/"         ] #  309 MiB
-COPY --from=codegolf/lang-zig        ["/", "/langs/zig/rootfs/"       ] #  298 MiB
+COPY --from=codegolf/lang-zig        ["/", "/langs/zig/rootfs/"       ] #  300 MiB
 COPY --from=codegolf/lang-crystal    ["/", "/langs/crystal/rootfs/"   ] #  252 MiB
 COPY --from=codegolf/lang-dart       ["/", "/langs/dart/rootfs/"      ] #  235 MiB
 COPY --from=codegolf/lang-basic      ["/", "/langs/basic/rootfs/"     ] #  205 MiB
@@ -37,7 +37,7 @@ COPY --from=codegolf/lang-prolog     ["/", "/langs/prolog/rootfs/"    ] # 49.2 M
 COPY --from=codegolf/lang-javascript ["/", "/langs/javascript/rootfs/"] # 39.6 MiB
 COPY --from=codegolf/lang-lisp       ["/", "/langs/lisp/rootfs/"      ] # 31.1 MiB
 COPY --from=codegolf/lang-pascal     ["/", "/langs/pascal/rootfs/"    ] # 31.1 MiB
-COPY --from=codegolf/lang-uiua       ["/", "/langs/uiua/rootfs/"      ] # 28.5 MiB
+COPY --from=codegolf/lang-uiua       ["/", "/langs/uiua/rootfs/"      ] # 30.8 MiB
 COPY --from=codegolf/lang-golfscript ["/", "/langs/golfscript/rootfs/"] # 27.9 MiB
 COPY --from=codegolf/lang-ruby       ["/", "/langs/ruby/rootfs/"      ] # 27.8 MiB
 COPY --from=codegolf/lang-viml       ["/", "/langs/viml/rootfs/"      ] # 24.3 MiB
@@ -46,7 +46,7 @@ COPY --from=codegolf/lang-j          ["/", "/langs/j/rootfs/"         ] # 11.2 M
 COPY --from=codegolf/lang-tex        ["/", "/langs/tex/rootfs/"       ] # 9.67 MiB
 COPY --from=codegolf/lang-hexagony   ["/", "/langs/hexagony/rootfs/"  ] # 8.82 MiB
 COPY --from=codegolf/lang-php        ["/", "/langs/php/rootfs/"       ] # 8.40 MiB
-COPY --from=codegolf/lang-perl       ["/", "/langs/perl/rootfs/"      ] # 5.46 MiB
+COPY --from=codegolf/lang-perl       ["/", "/langs/perl/rootfs/"      ] # 5.51 MiB
 COPY --from=codegolf/lang-tcl        ["/", "/langs/tcl/rootfs/"       ] # 5.25 MiB
 COPY --from=codegolf/lang-fish       ["/", "/langs/fish/rootfs/"      ] # 4.66 MiB
 COPY --from=codegolf/lang-cobol      ["/", "/langs/cobol/rootfs/"     ] # 4.56 MiB
@@ -70,4 +70,4 @@ COPY run-lang.c ./
 RUN gcc -Wall -Werror -Wextra -o /usr/bin/run-lang -s -static run-lang.c
 
 # reflex reruns a command when files change.
-CMD reflex -sd none -r '\.(css|go|html|json|pem|svg|toml)$' -R '_test\.go$' -- go run .
+CMD reflex -sd none -r '\.(css|go|html|json|pem|svg|toml|txt)$' -R '_test\.go$' -- go run .

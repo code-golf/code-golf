@@ -289,6 +289,7 @@ export interface RankFromTo {
 
 export interface RankUpdate {
     scoring: string,
+    failingStrokes: number | null,
     from: RankFromTo,
     to: RankFromTo,
     oldBestCurrentGolferCount: number | null,
@@ -673,6 +674,7 @@ export async function populateScores(editor: any) {
     const view      = $('#rankingsView a:not([href])').innerText.trim().toLowerCase();
     const res       = await fetch(`/api/mini-rankings${path}/${view}` + (tabLayout ? '?long=1' : ''));
     const rows      = res.ok ? await res.json() : [];
+    const colspan   = lang == 'assembly' ? 3 : 4;
 
     $<HTMLAnchorElement>('#allLink').href = '/rankings/holes' + path;
 
@@ -686,13 +688,23 @@ export async function populateScores(editor: any) {
                     <span>{r.golfer.name}</span>
                 </a>
             </td>
-            <td data-tooltip={tooltip(r, 'Bytes')}>{comma(r.bytes)}</td>
-            <td data-tooltip={tooltip(r, 'Chars')}>{comma(r.chars)}</td>
-        </tr>): <tr><td colspan="4">(Empty)</td></tr>
+            <td data-tooltip={tooltip(r, 'Bytes')}>
+                {scoringID != 'bytes' ? comma(r.bytes) :
+                    <a href={`/golfers/${r.golfer.name}/${hole}/${lang}/bytes`}>
+                        <span>{comma(r.bytes)}</span>
+                    </a>}
+            </td>
+            {lang == 'assembly' ? '' : <td data-tooltip={tooltip(r, 'Chars')}>
+                {scoringID != 'chars' ? comma(r.chars) :
+                    <a href={`/golfers/${r.golfer.name}/${hole}/${lang}/chars`}>
+                        <span>{comma(r.chars)}</span>
+                    </a>}
+            </td>}
+        </tr>): <tr><td colspan={colspan}>(Empty)</td></tr>
     }{
         // Padding.
         tabLayout ? [] : [...Array(7 - rows.length).keys()].map(() =>
-            <tr><td colspan="4">&nbsp;</td></tr>)
+            <tr><td colspan={colspan}>&nbsp;</td></tr>)
     }</tbody>);
 
     if (tabLayout) {

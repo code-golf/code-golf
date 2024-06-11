@@ -89,8 +89,6 @@ func (grid grid) toString() string {
 
 func gameOfLife() []Run {
 	grid := randGrid()
-	return []Run{{
-		Args:   []string{grid.toString()},
-		Answer: grid.step().toString(),
-	}}
+
+	return outputTests([]test{{grid.toString(), grid.step().toString()}})
 }

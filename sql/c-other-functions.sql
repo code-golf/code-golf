@@ -57,6 +57,8 @@ CREATE FUNCTION pangramglot(langs lang[]) RETURNS int IMMUTABLE RETURN (
 
 CREATE TYPE save_solution_ret AS (
     earned                         cheevo[],
+    failing_bytes                  int,
+    failing_chars                  int,
     new_bytes                      int,
     new_bytes_joint                bool,
     new_bytes_rank                 int,
@@ -113,6 +115,16 @@ BEGIN
   ORDER BY solutions.bytes, solutions.submitted
      LIMIT 1;
 
+    -- If the user previously had a failing solution, get the number of strokes.
+    SELECT solutions.bytes
+      INTO ret.failing_bytes
+      FROM solutions
+     WHERE solutions.failing = true
+       AND solutions.hole    = hole
+       AND solutions.lang    = lang
+       AND solutions.scoring = 'bytes'
+       AND solutions.user_id = user_id;
+
     IF bytes <= ret.old_best_bytes THEN
         old_best := hole_best_except_user(hole, lang, 'bytes', user_id);
         IF old_best.strokes = ret.old_best_bytes THEN
@@ -138,6 +150,15 @@ BEGIN
            AND solutions.scoring = 'chars'
       ORDER BY solutions.chars, solutions.submitted
          LIMIT 1;
+
+        SELECT solutions.chars
+          INTO ret.failing_chars
+          FROM solutions
+         WHERE solutions.failing = true
+           AND solutions.hole    = hole
+           AND solutions.lang    = lang
+           AND solutions.scoring = 'chars'
+           AND solutions.user_id = user_id;
 
         IF chars <= ret.old_best_chars THEN
             old_best := hole_best_except_user(hole, lang, 'chars', user_id);

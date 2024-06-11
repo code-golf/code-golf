@@ -225,7 +225,7 @@ GROUP BY hole, lang, scoring
   HAVING COUNT(*) = 1;
 
 CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
-    select hole, lang, scoring, user_id, submitted, tested,
+    select hole, lang, scoring, user_id, submitted,
            case when scoring = 'bytes' then bytes else chars end strokes,
            case when scoring = 'bytes' then chars else bytes end other_strokes
       from solutions
@@ -244,7 +244,7 @@ CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
       from min
       join min_per_lang using(hole, scoring)
 ), points as (
-    select hole, lang, scoring, user_id, strokes, other_strokes, submitted, tested,
+    select hole, lang, scoring, user_id, strokes, other_strokes, submitted,
            round(Sb / strokes * 1000) points,
            round(S  / strokes * 1000) points_for_lang
       from strokes

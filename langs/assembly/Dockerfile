@@ -1,4 +1,4 @@
-FROM node:22-alpine3.19 AS builder
+FROM node:22-alpine3.20 AS builder
 
 ENV VERSION=2.4.2
 

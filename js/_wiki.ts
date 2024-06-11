@@ -1,5 +1,6 @@
 import { EditorState, EditorView, extensions } from './_codemirror';
 import { $$ }                                  from './_util';
+import 'mathjax/es5/tex-chtml.js';
 
 export function highlightCodeBlocks(selector: string){
     const baseExtensions = [...extensions.base, EditorState.readOnly.of(true)];
@@ -13,9 +14,6 @@ export function highlightCodeBlocks(selector: string){
         if (lang == 'fs' ) lang = 'f-sharp';
         if (lang == 'ijs') lang = 'j';
 
-        // Skip Assembly for now as the annoations break the layout.
-        if (lang == 'assembly') continue;
-
         // Clear the existing code and replace with a read-only editor.
         const pre = code.parentElement!;
         pre.innerHTML = '';
@@ -25,7 +23,7 @@ export function highlightCodeBlocks(selector: string){
                 doc: code.innerText.trim(),
                 extensions: [
                     baseExtensions,
-                    extensions[lang as keyof typeof extensions] ?? [],
+                    extensions[`${lang}-wiki`] ?? extensions[lang] ?? [],
                 ],
             }),
         });

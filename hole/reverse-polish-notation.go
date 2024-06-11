@@ -103,31 +103,26 @@ func genExpr(init int, expander func(*Node, int), expandCount int) *Node {
 }
 
 func reversePolishNotation() []Run {
-	const tests = 20
+	const count = 20
 
-	exprs := [tests]*Node{
+	exprs := [count]*Node{
 		genExpr(randInt(1, math.MaxInt16), expandLeft, randInt(16, 31)),
 		genExpr(randInt(1, math.MaxInt16), expandRight, randInt(16, 31)),
 		genExpr(randInt(1, math.MaxInt16), expandRight, 0),
 		genExpr(0, expandRand, randInt(16, 31)),
 	}
 
-	for i := 4; i < tests; i++ {
+	for i := 4; i < count; i++ {
 		exprs[i] = genExpr(randInt(1, math.MaxInt16), expandRand, randInt(1, 31))
 	}
 
-	args := make([]string, tests)
-	var answer strings.Builder
+	tests := make([]test, count)
 
-	for i, expr := range shuffle(exprs[:]) {
+	for i, expr := range exprs {
 		var arg strings.Builder
 		writeNode(&arg, expr)
-		args[i] = arg.String()
-		if i > 0 {
-			answer.WriteByte('\n')
-		}
-		answer.WriteString(strconv.Itoa(expr.value))
+		tests[i] = test{arg.String(), strconv.Itoa(expr.value)}
 	}
 
-	return []Run{{Args: args, Answer: answer.String()}}
+	return outputTests(shuffle(tests))
 }

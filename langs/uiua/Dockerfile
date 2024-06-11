@@ -1,6 +1,6 @@
 FROM rust:1.78-bookworm as builder
 
-RUN cargo install uiua --version 0.10.3
+RUN cargo install uiua --version 0.11.1
 
 FROM codegolf/lang-base
 

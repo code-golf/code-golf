@@ -1,6 +1,17 @@
 {{ template "header" . }}
 
-<h1>{{ .Data.Title }}</h1>
+<h1>
+    {{ .Data.Title }}
+
+{{ with .Data.Name }}
+    <div>
+        GitHub:
+        <a href="//github.com/code-golf/code-golf/wiki/{{ urlquery . }}/_edit">edit</a>
+        |
+        <a href="//github.com/code-golf/code-golf/wiki/{{ urlquery . }}">view</a>
+    </div>
+{{ end }}
+</h1>
 
 <main id=two-pane>
     {{ template "nav" . }}
@@ -14,8 +25,8 @@
         <p>
             This is a work-in-progress read-only mirror of the
             <a href=//github.com/code-golf/code-golf/wiki>
-                GitHub Code Golf wiki
-            </a>. All edits should continue to be done there for now.
+                GitHub Code Golf wiki</a>.
+            All edits should continue to be done there for now.
     {{ end }}
     </article>
 </main>
