@@ -10,7 +10,7 @@ subtest 'Run button works.' => {
     my $wd = HoleWebDriver.create;
     LEAVE $wd.delete-session;
     $wd.loadFizzBuzz;
-    $wd.getLangLink('Raku').click;
+    $wd.setLang: 'Raku';
     $wd.clearCode;
     $wd.typeCode: $raku57_55;
     $wd.isBytesAndChars: 57, 55, 'after typing code.';
@@ -25,7 +25,7 @@ subtest 'Run button cancels running solutions.' => {
     my $wd = HoleWebDriver.create;
     LEAVE $wd.delete-session;
     $wd.loadFizzBuzz;
-    $wd.getLangLink('Raku').click;
+    $wd.setLang: 'Raku';
     # Submit a solution that will fail after a couple seconds.
     $wd.clearCode;
     $wd.typeCode: "sleep 2";
@@ -47,7 +47,7 @@ subtest 'Language is preserved on reload.' => {
     LEAVE $wd.delete-session;
     $wd.loadFizzBuzz;
     is $wd.getLanguageActive('Raku'), False, "Raku shouldn't be the active language, because it's not the default language.";
-    $wd.getLangLink('Raku').click;
+    $wd.setLang: 'Raku';
     is $wd.getLanguageActive('Raku'), True, 'After clicking the link, Raku should be the active language.';
     $wd.loadFizzBuzz;
     is $wd.getLanguageActive('Raku'), True, 'After reloading the page, Raku should still be the active language.';
@@ -59,7 +59,7 @@ subtest 'Language is preserved when loading a different hole.' => {
     LEAVE $wd.delete-session;
     $wd.loadFizzBuzz;
     is $wd.getLanguageActive('Raku'), False, "Raku shouldn't be the active language, because it's not the default language.";
-    $wd.getLangLink('Raku').click;
+    $wd.setLang: 'Raku';
     is $wd.getLanguageActive('Raku'), True, 'After clicking the link, Raku should be the active language.';
     $wd.loadFibonacci;
     is $wd.getLanguageActive('Raku'), True, 'After loading a different hole, Raku should still be the active language.';
