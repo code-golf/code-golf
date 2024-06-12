@@ -342,16 +342,22 @@ h2 {
     gap: 0.2rem;
 }
 
-#picker a {
-    align-items: center;
-    display: flex;
-    gap: .25rem;
+#picker {
+    margin-top: .5rem;
 
-    svg {
-        height: 1rem;
-        width: 1rem;
+    > a {
+        align-items: center;
+        display: flex;
+        gap: .25rem;
+
+        svg {
+            height: 1rem;
+            width: 1rem;
+        }
     }
 }
+
+#picker:empty { margin: 0 }
 
 #runtime {
     font-size: 80%;

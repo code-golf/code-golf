@@ -218,18 +218,7 @@ form {
         &:has([type=checkbox]) { flex-direction: column }
     }
 
-    input:not([type]), input[type=number] { background: var(--background) }
-
-    input:not([type]), input[type=number], select {
-        border-radius: .25rem;
-        border: 1px solid var(--grey);
-        color: var(--color);
-        font-family: inherit;
-        font-size: 1rem;
-        line-height: 1.5;
-        padding: .375rem .5rem;
-        width: 100%;
-    }
+    input:not([type]), input[type=number], select { width: 100% }
 
     label {
         display: flex;
@@ -251,20 +240,32 @@ form {
             justify-content: flex-end;
         }
     }
+}
 
-    menu {
-        display: flex;
-        flex-direction: row-reverse;
-        gap: 1rem;
-        justify-content: space-between;
-        padding: 0;
-    }
+menu {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 1rem;
+    justify-content: space-between;
+    padding: 0;
+}
 
-    select {
-        -webkit-appearance: none;
-        appearance: none;
-        padding-right: .75rem;
-    }
+input:not([type]), input[type=number] { background: var(--background) }
+
+input:not([type]), input[type=number], select {
+    border-radius: .25rem;
+    border: 1px solid var(--grey);
+    color: var(--color);
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.5;
+    padding: .375rem .5rem;
+}
+
+select {
+    -webkit-appearance: none;
+    appearance: none;
+    padding-right: .75rem;
 }
 
 main {
