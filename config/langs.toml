@@ -949,8 +949,8 @@ Shout arg
 '''
 
 [Ruby]
-size    = '27.8 MiB'
-version = '3.3.2'
+size    = '27.9 MiB'
+version = '3.3.3'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing
