@@ -26,7 +26,7 @@ for (False, True) -> $loggedIn {
         my $wd = HoleWebDriver.create;
         LEAVE $wd.delete-session;
         setup $wd;
-        $wd.setLang: 'Raku';
+        $wd.setLang: 'raku';
         $wd.clearCode;
         $wd.typeCode: $raku57_55;
         $wd.isBytesAndChars: 57, 55, 'after typing code.';
@@ -36,7 +36,7 @@ for (False, True) -> $loggedIn {
         if $loggedIn {
             $wd.clearLocalStorage;
             $wd.loadFizzBuzz;
-            $wd.setLang: 'Raku';
+            $wd.setLang: 'raku';
             $wd.isBytesAndChars: 57, 55, 'after clearing localStorage and reloading the page.';
             $wd.isSolutionPickerState: '', 'after clearing localStorage and reloading the page.';
         }
@@ -47,7 +47,7 @@ for (False, True) -> $loggedIn {
         my $wd = HoleWebDriver.create;
         LEAVE $wd.delete-session;
         setup $wd;
-        $wd.setLang: 'Raku';
+        $wd.setLang: 'raku';
         $wd.clearCode;
         $wd.typeCode: 'abc';
         $wd.isBytesAndChars: 3, 3, 'after typing code.';
@@ -61,7 +61,7 @@ for (False, True) -> $loggedIn {
         my $wd = HoleWebDriver.create;
         LEAVE $wd.delete-session;
         setup $wd;
-        $wd.setLang: 'Raku';
+        $wd.setLang: 'raku';
         $wd.clearCode;
         $wd.typeCode: 'abc';
         $wd.isBytesAndChars: 3, 3, 'after typing a failing solution.';
@@ -76,7 +76,7 @@ for (False, True) -> $loggedIn {
         my $wd = HoleWebDriver.create;
         LEAVE $wd.delete-session;
         setup $wd;
-        $wd.setLang: 'Raku';
+        $wd.setLang: 'raku';
         $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
         $wd.clearCode;
         $wd.typeCode: $raku57_55;
@@ -98,7 +98,7 @@ for (False, True) -> $loggedIn {
         my $wd = HoleWebDriver.create;
         LEAVE $wd.delete-session;
         setup $wd;
-        $wd.setLang: 'Raku';
+        $wd.setLang: 'raku';
         $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
         $wd.clearCode;
         $wd.typeCode: $raku59_57;
@@ -124,7 +124,7 @@ for (False, True) -> $loggedIn {
             my $wd = HoleWebDriver.create;
             LEAVE $wd.delete-session;
             setup $wd;
-            $wd.setLang: 'Raku';
+            $wd.setLang: 'raku';
             $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
             $wd.clearCode;
             $wd.typeCode: $raku57_55;
@@ -153,7 +153,7 @@ for (False, True) -> $loggedIn {
             my $wd = HoleWebDriver.create;
             LEAVE $wd.delete-session;
             setup $wd;
-            $wd.setLang: 'Raku';
+            $wd.setLang: 'raku';
             $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
             $wd.clearCode;
             $wd.typeCode: $raku57_55;
@@ -187,7 +187,7 @@ for (False, True) -> $loggedIn {
             my $wd = HoleWebDriver.create;
             LEAVE $wd.delete-session;
             setup $wd;
-            $wd.setLang: 'Raku';
+            $wd.setLang: 'raku';
             $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
             $wd.clearCode;
             $wd.typeCode: $raku57_55;
@@ -228,7 +228,7 @@ for (False, True) -> $loggedIn {
         my $wd = HoleWebDriver.create;
         LEAVE $wd.delete-session;
         setup $wd;
-        $wd.setLang: 'Python';
+        $wd.setLang: 'python';
         $wd.clearCode;
         $wd.typeCode: $python121_121;
         $wd.isRestoreSolutionLinkVisible: False, 'after typing the bytes solution.';
@@ -247,7 +247,7 @@ for (False, True) -> $loggedIn {
         $wd.isRestoreSolutionLinkVisible: False, 'after submitting the chars solution.';
         # Switch to another hole and enter bytes and chars solutions.
         $wd.loadFibonacci;
-        $wd.setLang: 'Python';
+        $wd.setLang: 'python';
         $wd.clearCode;
         $wd.typeCode: $python_fibonacci_66_66;
         $wd.run;
@@ -262,12 +262,12 @@ for (False, True) -> $loggedIn {
         $wd.isSolutionPickerState: 'chars', 'after submitting fibonacci chars solution.';
         # Leaving the chars solution active, go back to Fizz Buzz.
         $wd.loadFizzBuzz;
-        $wd.setLang: 'Python';
+        $wd.setLang: 'python';
         $wd.isBytesAndChars: 210, 88, 'after returning to Fizz Buzz the first time.';
         $wd.isRestoreSolutionLinkVisible: False, 'after returning to Fizz Buzz the first time.';
         $wd.isSolutionPickerState: 'chars', 'after returning to Fizz Buzz the first time.';
         $wd.loadFibonacci;
-        $wd.setLang: 'Python';
+        $wd.setLang: 'python';
         $wd.isBytesAndChars: 126, 60, 'after returning to Fibonacci the first time.';
         $wd.isRestoreSolutionLinkVisible: False, 'after returning to Fizz Buzz the second  time.';
         $wd.isSolutionPickerState: 'chars', 'after returning to Fibonacci the first time.';
@@ -276,7 +276,7 @@ for (False, True) -> $loggedIn {
         $wd.isRestoreSolutionLinkVisible: False, 'after returning to Fizz Buzz the second  time.';
         $wd.isSolutionPickerState: 'bytes', 'after switching to the bytes solution.';
         $wd.loadFizzBuzz;
-        $wd.setLang: 'Python';
+        $wd.setLang: 'python';
         $wd.isBytesAndChars: 121, 121, 'after returning to Fizz Buzz the second time.';
         $wd.isRestoreSolutionLinkVisible: False, 'after returning to Fizz Buzz the second  time.';
         $wd.isSolutionPickerState: 'bytes', 'after returning to Fizz Buzz the second time.';
@@ -287,7 +287,7 @@ for (False, True) -> $loggedIn {
         my $wd = HoleWebDriver.create;
         LEAVE $wd.delete-session;
         setup $wd;
-        $wd.setLang: 'Python';
+        $wd.setLang: 'python';
         $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
         $wd.clearCode;
         $wd.typeCode: $python121_121;
@@ -302,7 +302,7 @@ for (False, True) -> $loggedIn {
         $wd.isRestoreSolutionLinkVisible: True, 'after typing code.';
         # Switch to another hole and enter bytes and chars solutions.
         $wd.loadFibonacci;
-        $wd.setLang: 'Python';
+        $wd.setLang: 'python';
         $wd.clearCode;
         $wd.typeCode: $python_fibonacci_66_66;
         $wd.run;
@@ -317,7 +317,7 @@ for (False, True) -> $loggedIn {
         $wd.isSolutionPickerState: 'chars', 'after submitting fibonacci chars solution.';
         # Leaving the chars solution active, go back to Fizz Buzz.
         $wd.loadFizzBuzz;
-        $wd.setLang: 'Python';
+        $wd.setLang: 'python';
         $wd.isBytesAndChars: 124, 124, 'after navigating to a different hole and back.';
         $wd.isRestoreSolutionLinkVisible: $loggedIn, 'after navigating to a different hole and back.';
         $wd.isSolutionPickerState: '', 'after navigating to a different hole and back.';
@@ -329,7 +329,7 @@ for (False, True) -> $loggedIn {
         my $wd = HoleWebDriver.create;
         LEAVE $wd.delete-session;
         setup $wd;
-        $wd.setLang: 'Raku';
+        $wd.setLang: 'raku';
         $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
         $wd.clearCode;
         $wd.typeCode: $raku57_55;
@@ -353,7 +353,7 @@ for (False, True) -> $loggedIn {
         my $wd = HoleWebDriver.create;
         LEAVE $wd.delete-session;
         setup $wd;
-        $wd.setLang: 'Raku';
+        $wd.setLang: 'raku';
         $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
         $wd.clearCode;
         $wd.typeCode: $raku57_55;
@@ -381,7 +381,7 @@ for (False, True) -> $loggedIn {
             my $wd = HoleWebDriver.create;
             LEAVE $wd.delete-session;
             setup $wd;
-            $wd.setLang: 'Python';
+            $wd.setLang: 'python';
             $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
             # Submit different solutions for bytes and chars.
             $wd.clearCode;
@@ -429,7 +429,7 @@ for (False, True) -> $loggedIn {
             my $wd = HoleWebDriver.create;
             LEAVE $wd.delete-session;
             setup $wd;
-            $wd.setLang: 'Python';
+            $wd.setLang: 'python';
             $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
             # Submit different solutions for bytes and chars.
             $wd.clearCode;
@@ -476,7 +476,7 @@ for (False, True) -> $loggedIn {
         my $wd = HoleWebDriver.create;
         LEAVE $wd.delete-session;
         setup $wd;
-        $wd.setLang: 'Python';
+        $wd.setLang: 'python';
         $wd.clearCode;
         $wd.typeCode: $python210_88;
         $wd.isBytesAndChars: 210, 88, 'after typing the chars solution.';
@@ -498,7 +498,7 @@ for (False, True) -> $loggedIn {
         my $wd = HoleWebDriver.create;
         LEAVE $wd.delete-session;
         setup $wd;
-        $wd.setLang: 'Python';
+        $wd.setLang: 'python';
         $wd.clearCode;
         $wd.typeCode: $python121_121;
         $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
@@ -520,7 +520,7 @@ for (False, True) -> $loggedIn {
         my $wd = HoleWebDriver.create;
         LEAVE $wd.delete-session;
         setup $wd;
-        $wd.setLang: 'Python';
+        $wd.setLang: 'python';
         $wd.clearCode;
         $wd.typeCode: $python121_121;
         $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
@@ -549,7 +549,7 @@ for (False, True) -> $loggedIn {
         my $wd = HoleWebDriver.create;
         LEAVE $wd.delete-session;
         setup $wd;
-        $wd.setLang: 'Python';
+        $wd.setLang: 'python';
         $wd.clearCode;
         $wd.typeCode: $python121_121;
         $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
@@ -574,7 +574,7 @@ for (False, True) -> $loggedIn {
         my $wd = HoleWebDriver.create;
         LEAVE $wd.delete-session;
         setup $wd;
-        $wd.setLang: 'Python';
+        $wd.setLang: 'python';
         $wd.clearCode;
         $wd.typeCode: $python121_121;
         $wd.isBytesAndChars: 121, 121, 'after submitting the bytes solution.';
@@ -597,7 +597,7 @@ for (False, True) -> $loggedIn {
         $wd.isBytesAndChars: 121, 121, 'after reloading the page again.';
         $wd.clearLocalStorage;
         $wd.loadFizzBuzz;
-        $wd.setLang: 'Python';
+        $wd.setLang: 'python';
         if $loggedIn {
             $wd.isSolutionPickerState: 'bytes', 'after clearing localStorage and reloading the page.';
             $wd.isBytesAndChars: 121, 121, 'after clearing localStorage and reloading the page.';
@@ -615,7 +615,7 @@ for (False, True) -> $loggedIn {
             my $wd = HoleWebDriver.create;
             LEAVE $wd.delete-session;
             setup $wd;
-            $wd.setLang: 'Python';
+            $wd.setLang: 'python';
             $wd.isRestoreSolutionLinkVisible: False, 'before typing code.';
             # Submit different solutions for bytes and chars.
             $wd.clearCode;
@@ -667,7 +667,7 @@ subtest 'When not logged in, after a user submits different bytes and chars solu
     my $wd = HoleWebDriver.create;
     LEAVE $wd.delete-session;
     $wd.loadFizzBuzz;
-    $wd.setLang: 'Python';
+    $wd.setLang: 'python';
     $wd.clearCode;
     $wd.typeCode: $python121_121;
     $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
@@ -696,7 +696,7 @@ subtest 'When not logged in, after a user submits different bytes and chars solu
     # Clear local storage just to prove that it's not required.
     $wd.clearLocalStorage;
     $wd.loadFizzBuzz;
-    $wd.setLang: 'Python';
+    $wd.setLang: 'python';
     $wd.isSolutionPickerState: 'bytes', 'after clearing localStorage and reloading the page.';
     $wd.isBytesAndChars: 121, 121, 'after clearing localStorage and reloading the page.';
     $wd.setSolution: 'chars';
@@ -709,7 +709,7 @@ subtest 'When not logged in, after a user submits different bytes and chars solu
     my $wd = HoleWebDriver.create;
     LEAVE $wd.delete-session;
     $wd.loadFizzBuzz;
-    $wd.setLang: 'Python';
+    $wd.setLang: 'python';
     $wd.clearCode;
     $wd.typeCode: $python210_88;
     $wd.isBytesAndChars: 210, 88, 'after typing the chars solution.';
@@ -738,7 +738,7 @@ subtest 'When not logged in, after a user submits different bytes and chars solu
     # Clear local storage just to prove that it's not required.
     $wd.clearLocalStorage;
     $wd.loadFizzBuzz;
-    $wd.setLang: 'Python';
+    $wd.setLang: 'python';
     $wd.isSolutionPickerState: 'bytes', 'after clearing localStorage and reloading the page.';
     $wd.isBytesAndChars: 121, 121, 'after clearing localStorage and reloading the page.';
     $wd.setSolution: 'chars';
@@ -751,7 +751,7 @@ subtest 'When not logged in, after a user submits different bytes and chars solu
     my $wd = HoleWebDriver.create;
     LEAVE $wd.delete-session;
     $wd.loadFizzBuzz;
-    $wd.setLang: 'Python';
+    $wd.setLang: 'python';
     $wd.clearCode;
     $wd.typeCode: $python121_121;
     $wd.isBytesAndChars: 121, 121, 'after typing the bytes solution.';
@@ -784,7 +784,7 @@ subtest 'When not logged in, after a user submits different bytes and chars solu
     my $wd = HoleWebDriver.create;
     LEAVE $wd.delete-session;
     $wd.loadFizzBuzz;
-    $wd.setLang: 'Python';
+    $wd.setLang: 'python';
     $wd.clearCode;
     $wd.typeCode: $python210_88;
     $wd.isBytesAndChars: 210, 88, 'after typing the chars solution.';
@@ -820,7 +820,7 @@ subtest 'If the user improves their solution on another browser, the restore sol
     my $session = new-golfer;
     $wd.setSessionCookie: $session;
     $wd.loadFizzBuzz;
-    $wd.setLang: 'Python';
+    $wd.setLang: 'python';
     $wd.clearCode;
     $wd.typeCode: $python121_121;
     $wd.isBytesAndChars: 121, 121, 'after typing code.';

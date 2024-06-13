@@ -56,12 +56,8 @@ class HoleWebDriver is WebDriver is export {
         $.find($text, :$using);
     }
 
-    method getLangOption(Str:D $lang) {
-        $.findAndWait: "//option[text()='$lang']", :using(XPath);
-    }
-
     method getLanguageActive(Str:D $lang) of Bool {
-        $.getLangOption($lang).selected;
+        ?($.url ~~ /\#$lang$/);
     }
 
     method getSolutionLink(Str:D $solution) {
@@ -156,7 +152,7 @@ class HoleWebDriver is WebDriver is export {
     }
 
     method setLang(Str:D $lang) {
-        $.getLangOption($lang).click;
+        $.js: "location.hash = '#$lang'";
     }
 
     method setScoring(Str:D $scoring) {
