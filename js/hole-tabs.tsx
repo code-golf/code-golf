@@ -8,11 +8,12 @@ import { EditorView }   from './_codemirror';
 import diffTable        from './_diff';
 import { $, $$, comma, debounce } from './_util';
 import {
-    init, langs, getLang, hole, getAutoSaveKey, setSolution, getSolution,
+    init, langs, hole, setSolution,
     setCode, refreshScores, getHideDeleteBtn, submit, ReadonlyPanelsData,
-    updateRestoreLinkVisibility, getSavedInDB, setCodeForLangAndSolution,
+    updateRestoreLinkVisibility, setCodeForLangAndSolution,
     populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyJSONBtn,
     getScorings, replaceUnprintablesInOutput, initOutputDiv,
+    updateLocalStorage,
 } from './_hole-common';
 import { highlightCodeBlocks } from './_wiki';
 
@@ -172,16 +173,7 @@ function makeEditor(parent: HTMLDivElement) {
                 ? `${formatScore(scorings.total)} (${formatScore(scorings.selection)} selected)`
                 : formatScore(scorings.total);
 
-            // Avoid future conflicts by only storing code locally that's
-            // different from the server's copy.
-            const serverCode = getCurrentSolutionCode();
-
-            const key = getAutoSaveKey(getLang(), getSolution());
-            if (code && (code !== serverCode || !getSavedInDB()) && code !== langs[getLang()].example)
-                localStorage.setItem(key, code);
-            else
-                localStorage.removeItem(key);
-
+            updateLocalStorage(code);
             updateRestoreLinkVisibility(editor);
 
             return result;
