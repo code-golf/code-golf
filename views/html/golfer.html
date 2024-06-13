@@ -58,6 +58,8 @@
         </div>
     </div>
 
+    {{ with .About }}<p id=about>{{ . }}{{ end }}
+
     <div id=badges>
     {{ if .Admin   }}<div><p>🔑<p class=orange>Admin  </div>{{ end }}
     {{ if .Sponsor }}<div><p>💰<p class=yellow>Sponsor</div>{{ end }}

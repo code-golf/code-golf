@@ -95,6 +95,11 @@ func golferSettingsPageResetPOST(w http.ResponseWriter, r *http.Request) {
 func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
+	if len(r.Form.Get("about")) > 255 {
+		http.Error(w, "Invalid about", http.StatusBadRequest)
+		return
+	}
+
 	if c := r.Form.Get("country"); c != "" && config.CountryByID[c] == nil {
 		http.Error(w, "Invalid country", http.StatusBadRequest)
 		return
@@ -128,14 +133,16 @@ func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 	userID := session.Golfer(r).ID
 	tx.MustExec(
 		`UPDATE users
-		    SET country = $1,
-		         keymap = $2,
-		       pronouns = $3,
-		    referrer_id = (SELECT id FROM users WHERE login = $4 AND id != $8),
-		   show_country = $5,
-		          theme = $6,
-		      time_zone = $7
-		  WHERE id = $8`,
+		    SET about = $1,
+		      country = $2,
+		       keymap = $3,
+		     pronouns = $4,
+		  referrer_id = (SELECT id FROM users WHERE login = $5 AND id != $9),
+		 show_country = $6,
+		        theme = $7,
+		    time_zone = $8
+		  WHERE id = $9`,
+		r.Form.Get("about"),
 		r.Form.Get("country"),
 		r.Form.Get("keymap"),
 		null.NullIfZero(r.Form.Get("pronouns")),

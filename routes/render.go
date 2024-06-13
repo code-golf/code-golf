@@ -92,6 +92,10 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		Title:       "Code Golf",
 	}
 
+	if g := args.GolferInfo; g != nil && g.About != "" {
+		args.Description = g.About
+	}
+
 	if len(data) > 1 {
 		args.Title = data[1]
 	}

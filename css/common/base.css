@@ -250,9 +250,9 @@ menu {
     padding: 0;
 }
 
-input:not([type]), input[type=number] { background: var(--background) }
+input:not([type]), input[type=number], textarea { background: var(--background) }
 
-input:not([type]), input[type=number], select {
+input:not([type]), input[type=number], select, textarea {
     border-radius: .25rem;
     border: 1px solid var(--grey);
     color: var(--color);

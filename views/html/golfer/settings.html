@@ -11,6 +11,12 @@
 
 <main>
     <form method=post>
+        <h2>About</h2>
+
+        Write a little about yourself.
+
+        <textarea maxlength=255 name=about rows=4>{{ .Golfer.About }}</textarea>
+
         <h2>Connections</h2>
 
         Will eventually allow for logging in with any supported OAuth

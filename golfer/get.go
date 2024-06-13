@@ -25,7 +25,8 @@ func Get(db *sqlx.DB, sessionID uuid.UUID) *Golfer {
 		     WHERE failing
 		  GROUP BY hole, lang
 		  ORDER BY hole, lang
-		)  SELECT u.admin                                   admin,
+		)  SELECT u.about                                   about,
+		          u.admin                                   admin,
 		          COALESCE(bytes.points, 0)                 bytes_points,
 		          COALESCE(chars.points, 0)                 chars_points,
 		          u.country                                 country,
@@ -99,7 +100,8 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		          COUNT(*) FILTER (WHERE medal = 'bronze' ) bronze
 		     FROM medals
 		 GROUP BY user_id
-		)  SELECT admin,
+		)  SELECT about,
+		          admin,
 		          COALESCE(bronze, 0)                   bronze,
 		          ARRAY(
 		            SELECT trophy
