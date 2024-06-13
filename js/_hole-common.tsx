@@ -150,14 +150,14 @@ function getScoring(str: string, index: 0 | 1) {
     return scorings[index] == 'Bytes' ? byteLen(str) : charLen(str);
 }
 
-function getSolutionCode(lang: string, solution: 0 | 1) {
+function getSolutionCode(lang: string, solution: 0 | 1): string {
     return lang in solutions[solution] ? solutions[solution][lang] : '';
 }
 
 /**
  * Get the code corresponding to the current lang and solution (bytes/chars)
  */
-export function getCurrentSolutionCode() {
+export function getCurrentSolutionCode(): string {
     return getSolutionCode(lang, solution);
 }
 
@@ -224,7 +224,8 @@ function updateLangPicker() {
 
             tab.append(' ', <sup>{text}</sup>);
         }
-        else {
+        else if (!localStorage.getItem(getAutoSaveKey(l.id, 0)) &&
+                 !localStorage.getItem(getAutoSaveKey(l.id, 1))) {
             return null;
         }
 
@@ -643,6 +644,25 @@ export async function submit(
         </div>));
 
     refreshScores(editor);
+}
+
+export function updateLocalStorage(code: string) {
+    // Avoid future conflicts by only storing code locally that's
+    // different from the server's copy.
+    const serverCode = getCurrentSolutionCode();
+    const key = getAutoSaveKey(getLang(), getSolution());
+    const hadLocalStorage = localStorage.getItem(key) !== null;
+    const wantLocalStorage = code && (code !== serverCode || !getSavedInDB()) && code !== langs[getLang()].example;
+
+    if (wantLocalStorage)
+        localStorage.setItem(key, code);
+    else
+        localStorage.removeItem(key);
+
+    if (wantLocalStorage !== hadLocalStorage && serverCode === '') {
+        // We may be adding or removing a language slot.
+        updateLangPicker();
+    }
 }
 
 export function updateRestoreLinkVisibility(editor: any) {
