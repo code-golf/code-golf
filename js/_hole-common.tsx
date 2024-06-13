@@ -54,6 +54,11 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
             updateReadonlyPanels({langWiki: await getLangWikiContent(lang)});
     })();
 
+    $('#langSelect').addEventListener('change', (e: Event) => {
+        const target = e.target as HTMLSelectElement;
+        location.hash = '#' + target.value;
+    });
+
     $('dialog [name=text]').addEventListener('input', (e: Event) => {
         const target = e.target as HTMLInputElement;
         target.form!.confirm.toggleAttribute('disabled',
@@ -198,14 +203,16 @@ export function setCode(code: string, editor: EditorView | null) {
 
 function updateLangPicker() {
     const langSelect = $('#langSelect') as HTMLSelectElement;
-    if (langSelect.childElementCount === 0) {
-        for (const l of sortedLangs as any[]) {
-            const suffix = l.experiment ? ' (experimental)' : '';
+    langSelect.innerHTML = '';
+    for (const l of sortedLangs as any[]) {
+        if (!getSolutionCode(l.id, 0) &&
+            !localStorage.getItem(getAutoSaveKey(l.id, 0)) &&
+            !localStorage.getItem(getAutoSaveKey(l.id, 1))) {
+            const suffix = l.experiment ? ' (exp.)' : '';
             langSelect.appendChild(<option value={l.id}>{l.name}{suffix}</option>);
         }
-
-        langSelect.addEventListener('change', () => location.hash = '#' + langSelect.value);
     }
+
     langSelect.value = lang;
 
     // Hybrid language selector: make it easy to see your existing solutions and their lengths.
