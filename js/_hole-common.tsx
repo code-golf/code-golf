@@ -347,7 +347,6 @@ export interface ReadonlyPanelsData {
 }
 
 export interface SubmitResponse {
-    Pass: boolean,
     Cheevos: {
         emoji: string,
         name: string
@@ -537,7 +536,8 @@ export async function submit(
     if (submissionID != latestSubmissionID)
         return;
 
-    if (data.Pass) {
+    const pass = data.runs.every(r => r.pass);
+    if (pass) {
         for (const i of [0, 1] as const) {
             const solutionCode = getSolutionCode(codeLang, i);
             if (!solutionCode || getScoring(code, i) <= getScoring(solutionCode, i)) {
@@ -578,7 +578,7 @@ export async function submit(
     // Automatically switch to the solution whose code matches the current
     // code after a new solution is submitted. Don't change scoring,
     // refreshScores will update the solution picker.
-    if (data.Pass && getSolutionCode(codeLang, solution) != code &&
+    if (pass && getSolutionCode(codeLang, solution) != code &&
         getSolutionCode(codeLang, getOtherScoring(solution)) == code)
         setSolution(getOtherScoring(solution));
 
@@ -646,7 +646,7 @@ export async function submit(
 
     btns[defaultRunIndex].click();
 
-    $('#status').className = data.Pass ? 'green' : 'red';
+    $('#status').className = pass ? 'green' : 'red';
 
     // Show cheevos.
     $('#popups').replaceChildren(...scorePopups(data.RankUpdates),
