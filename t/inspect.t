@@ -1,6 +1,6 @@
 use t;
 
-sub run($code) { post-solution(:$code)<Out> }
+sub run($code) { post-solution(:$code)<runs>[0]<stdout> }
 
 is run('say %*ENV'), '{}', 'Environment';
 

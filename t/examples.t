@@ -11,14 +11,15 @@ for 'config/langs.toml'.IO.&from-toml.map({
         ( 'quine' if $lang eq 'powershell' ),
     ) -> $hole {
         subtest "$lang ($hole)" => {
-            my $got = post-solution :$code :$hole :$lang;
-            my $exp = join "\n", 'Hello, World!', |^10, |$got<Argv>;
+            my $got = post-solution( :$code :$hole :$lang )<runs>[0];
+            my $exp = join "\n", 'Hello, World!', |^10, |$got<args>;
 
             $exp ~= "\n" if $hole eq 'quine';
 
             # Factor, Pascal & TeX prints lots of info to STDERR.
-            is $got<Out>, $exp, 'Out';
-            is $got<Err>,   '', 'Err' if $lang ne 'factor' | 'pascal' | 'tex';
+            is $got<stdout>, $exp, 'Stdout';
+            is $got<stderr>,   '', 'Stderr'
+                if $lang ne 'factor' | 'pascal' | 'tex';
         }
     }
 }

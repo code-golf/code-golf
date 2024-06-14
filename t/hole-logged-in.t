@@ -828,7 +828,9 @@ subtest 'If the user improves their solution on another browser, the restore sol
     $wd.isPassing: 'after running code.';
     $wd.isSolutionPickerState: '', 'after running code.';
     # Improve the solution outside of this browser session.
-    ok post-solution(:code($python62_62), :hole<fizz-buzz>, :lang<python>, :$session)<Pass>, 'Passes';
+    ok post-solution(
+        :code($python62_62), :hole<fizz-buzz>, :lang<python>, :$session,
+    )<runs>[0]<pass>, 'Passes';
     $wd.loadFizzBuzz;
     $wd.isRestoreSolutionLinkVisible: False, 'after improving the solution outside of the browser session and reloading.';
     $wd.isBytesAndChars: 62, 62, 'The byte count should be lower, after reloading the page.';
