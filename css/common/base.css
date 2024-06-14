@@ -265,7 +265,7 @@ input:not([type]), input[type=number], select, textarea {
 select {
     -webkit-appearance: none;
     appearance: none;
-    padding-right: .75rem;
+    padding-right: 1.5rem;
 }
 
 main {
