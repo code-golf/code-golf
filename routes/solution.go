@@ -3,6 +3,7 @@ package routes
 import (
 	"encoding/json"
 	"net/http"
+	"slices"
 	"time"
 
 	"github.com/buildkite/terminal-to-html/v3"
@@ -64,12 +65,6 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// FIXME This should really be based on any of the runs but until we
-	//       display all runs it's best to use only the one we display.
-	if displayedRun.Timeout && golfer != nil {
-		golfer.Earn(db, "slowcoach")
-	}
-
 	out := struct {
 		// Legacy TitleCase attributes.
 		Argv           []string
@@ -97,6 +92,14 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			{Scoring: "chars"},
 		},
 		Took: displayedRun.Time,
+	}
+
+	if golfer != nil && slices.ContainsFunc(
+		out.Runs, func(r hole.Run) bool { return r.Timeout },
+	) {
+		if c := golfer.Earn(db, "slowcoach"); c != nil {
+			out.Cheevos = append(out.Cheevos, *c)
+		}
 	}
 
 	if out.Pass && golfer != nil && experimental {
