@@ -68,7 +68,7 @@ langToggle.addEventListener('toggle', () => {
 });
 function setLangPickerOpen(open: boolean) {
     langToggle.open = open;
-    $('#pickerDiv').classList.toggle('hide', !open);
+    $('#picker').classList.toggle('hide', !open);
     saveLayout();
 }
 
