@@ -343,12 +343,18 @@ h2 {
 }
 
 #picker {
-    margin-top: .5rem;
+    gap: .25rem;
+
+    > a:not([href]) { border-color: var(--color) }
 
     > a {
         align-items: center;
+        border: 1px solid var(--grey);
+        border-radius: .25rem;
         display: flex;
         gap: .25rem;
+        line-height: 1.5;
+        padding: .375rem .5rem;
 
         svg {
             height: 1rem;
@@ -356,8 +362,6 @@ h2 {
         }
     }
 }
-
-#picker:empty { margin: 0 }
 
 #runtime {
     font-size: 80%;
