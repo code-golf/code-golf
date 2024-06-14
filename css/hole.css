@@ -361,6 +361,8 @@ h2 {
             width: 1rem;
         }
     }
+
+    > select { background-color: transparent }
 }
 
 #runtime {
