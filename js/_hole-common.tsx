@@ -198,8 +198,7 @@ export function setCode(code: string, editor: EditorView | null) {
 
 function updateLangPicker() {
     const selectNodes: Node[] = [];
-    const langSelect = createElement('select', {}) as HTMLSelectElement;
-    langSelect.appendChild(<option value="">Other</option>);
+    const langSelect = <select><option value="">Other</option></select>;
     let currentLangUnused = false;
 
     for (const l of sortedLangs as any[]) {
