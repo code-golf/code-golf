@@ -342,7 +342,7 @@ h2 {
     gap: 0.2rem;
 }
 
-#picker {
+#picker, #solutionPicker {
     gap: .25rem;
 
     > a:not([href]) { border-color: var(--color) }
