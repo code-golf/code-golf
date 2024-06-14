@@ -211,7 +211,7 @@ function updateLangPicker() {
         }
     }
 
-    if (langSelect.childElementCount) {
+    if (langSelect.childElementCount > 1) {
         langSelect.addEventListener('change', (e: Event) => {
             const target = e.target as HTMLSelectElement;
             location.hash = '#' + target.value;
