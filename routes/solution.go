@@ -73,7 +73,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 	out := struct {
 		// Legacy TitleCase attributes.
 		Argv           []string
-		Cheevos        []*config.Cheevo
+		Cheevos        []config.Cheevo
 		Err, Exp, Out  string
 		ExitCode       int
 		Pass, LoggedIn bool
@@ -84,7 +84,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		Runs []hole.Run `json:"runs"`
 	}{
 		Argv:     displayedRun.Args,
-		Cheevos:  []*config.Cheevo{},
+		Cheevos:  []config.Cheevo{},
 		Err:      displayedRun.Stderr,
 		ExitCode: displayedRun.ExitCode,
 		Exp:      displayedRun.Answer,
@@ -101,10 +101,9 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 
 	if out.Pass && golfer != nil && experimental {
 		if c := golfer.Earn(db, "black-box-testing"); c != nil {
-			out.Cheevos = append(out.Cheevos, c)
+			out.Cheevos = append(out.Cheevos, *c)
 		}
 	} else if out.Pass && golfer != nil && !experimental {
-		var cheevos []string
 		if err := db.QueryRowContext(
 			r.Context(),
 			`SELECT earned,
@@ -140,7 +139,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			        )`,
 			in.Code, in.Hole, in.Lang, golfer.ID, displayedRun.ASMBytes,
 		).Scan(
-			pq.Array(&cheevos),
+			pq.Array(&out.Cheevos),
 			&out.RankUpdates[0].FailingStrokes,
 			&out.RankUpdates[0].From.Joint,
 			&out.RankUpdates[0].From.Rank,
@@ -167,10 +166,6 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			&out.RankUpdates[1].OldBestSubmitted,
 		); err != nil {
 			panic(err)
-		}
-
-		for _, cheevo := range cheevos {
-			out.Cheevos = append(out.Cheevos, config.CheevoByID[cheevo])
 		}
 
 		recordUpdates := make([]Golfer.RankUpdate, 0, 2)
@@ -207,7 +202,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 
 		if month == time.October && day == 2 {
 			if c := golfer.Earn(db, "happy-birthday-code-golf"); c != nil {
-				out.Cheevos = append(out.Cheevos, c)
+				out.Cheevos = append(out.Cheevos, *c)
 			}
 		}
 
@@ -216,38 +211,38 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			if (month == time.December && day >= 25) ||
 				(month == time.January && day <= 5) {
 				if c := golfer.Earn(db, "twelvetide"); c != nil {
-					out.Cheevos = append(out.Cheevos, c)
+					out.Cheevos = append(out.Cheevos, *c)
 				}
 			}
 		case "star-wars-opening-crawl":
 			if month == time.May && day == 4 {
 				if c := golfer.Earn(db, "may-the-4ᵗʰ-be-with-you"); c != nil {
-					out.Cheevos = append(out.Cheevos, c)
+					out.Cheevos = append(out.Cheevos, *c)
 				}
 			}
 		case "united-states":
 			if month == time.July && day == 4 {
 				if c := golfer.Earn(db, "independence-day"); c != nil {
-					out.Cheevos = append(out.Cheevos, c)
+					out.Cheevos = append(out.Cheevos, *c)
 				}
 			}
 		case "vampire-numbers":
 			if month == time.October && day == 31 {
 				if c := golfer.Earn(db, "vampire-byte"); c != nil {
-					out.Cheevos = append(out.Cheevos, c)
+					out.Cheevos = append(out.Cheevos, *c)
 				}
 			}
 		case "π":
 			if month == time.March && day == 14 {
 				if c := golfer.Earn(db, "pi-day"); c != nil {
-					out.Cheevos = append(out.Cheevos, c)
+					out.Cheevos = append(out.Cheevos, *c)
 				}
 			}
 		}
 
 		if golfer.Keymap == "vim" && in.Lang == "viml" {
 			if c := golfer.Earn(db, "real-programmers"); c != nil {
-				out.Cheevos = append(out.Cheevos, c)
+				out.Cheevos = append(out.Cheevos, *c)
 			}
 		}
 	}
