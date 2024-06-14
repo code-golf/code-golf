@@ -57,41 +57,22 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// The legacy single run we display, first failing or last overall.
-	var displayedRun hole.Run
-	for _, displayedRun = range runs {
-		if !displayedRun.Pass {
-			break
-		}
-	}
-
 	out := struct {
 		// Legacy TitleCase attributes.
-		Argv           []string
-		Cheevos        []config.Cheevo
-		Err, Exp, Out  string
-		ExitCode       int
-		Pass, LoggedIn bool
-		RankUpdates    []Golfer.RankUpdate
-		Took           time.Duration
+		Cheevos     []config.Cheevo
+		LoggedIn    bool
+		RankUpdates []Golfer.RankUpdate
 
 		// Modern lowercase attributes.
 		Runs []hole.Run `json:"runs"`
 	}{
-		Argv:     displayedRun.Args,
 		Cheevos:  []config.Cheevo{},
-		Err:      displayedRun.Stderr,
-		ExitCode: displayedRun.ExitCode,
-		Exp:      displayedRun.Answer,
 		LoggedIn: golfer != nil,
-		Out:      displayedRun.Stdout,
-		Pass:     displayedRun.Pass,
 		Runs:     runs,
 		RankUpdates: []Golfer.RankUpdate{
 			{Scoring: "bytes"},
 			{Scoring: "chars"},
 		},
-		Took: displayedRun.Time,
 	}
 
 	if golfer != nil && slices.ContainsFunc(
@@ -102,11 +83,14 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if out.Pass && golfer != nil && experimental {
+	// Pass if no runs contain a fail.
+	pass := !slices.ContainsFunc(runs, func(r hole.Run) bool { return !r.Pass })
+
+	if pass && golfer != nil && experimental {
 		if c := golfer.Earn(db, "black-box-testing"); c != nil {
 			out.Cheevos = append(out.Cheevos, *c)
 		}
-	} else if out.Pass && golfer != nil && !experimental {
+	} else if pass && golfer != nil && !experimental {
 		if err := db.QueryRowContext(
 			r.Context(),
 			`SELECT earned,
@@ -140,7 +124,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			            lang    := $3,
 			            user_id := $4
 			        )`,
-			in.Code, in.Hole, in.Lang, golfer.ID, displayedRun.ASMBytes,
+			in.Code, in.Hole, in.Lang, golfer.ID, out.Runs[0].ASMBytes,
 		).Scan(
 			pq.Array(&out.Cheevos),
 			&out.RankUpdates[0].FailingStrokes,
