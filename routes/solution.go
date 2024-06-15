@@ -58,13 +58,10 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 	}
 
 	out := struct {
-		// Legacy TitleCase attributes.
-		Cheevos     []config.Cheevo
-		LoggedIn    bool
-		RankUpdates []Golfer.RankUpdate
-
-		// Modern lowercase attributes.
-		Runs []hole.Run `json:"runs"`
+		Cheevos     []config.Cheevo     `json:"cheevos"`
+		LoggedIn    bool                `json:"logged_in"`
+		RankUpdates []Golfer.RankUpdate `json:"rank_updates"`
+		Runs        []hole.Run          `json:"runs"`
 	}{
 		Cheevos:  []config.Cheevo{},
 		LoggedIn: golfer != nil,

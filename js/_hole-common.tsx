@@ -347,13 +347,10 @@ export interface ReadonlyPanelsData {
 }
 
 export interface SubmitResponse {
-    Cheevos: {
-        emoji: string,
-        name: string
-    }[],
-    LoggedIn: boolean,
-    RankUpdates: RankUpdate[],
-    runs: Run[]
+    cheevos:      { emoji: string, name: string }[],
+    logged_in:    boolean,
+    rank_updates: RankUpdate[],
+    runs:         Run[]
 }
 
 const makeSingular = (strokes: number, units: string) =>
@@ -531,7 +528,7 @@ export async function submit(
     }
 
     const data = await res.json() as SubmitResponse;
-    savedInDB = data.LoggedIn && !experimental;
+    savedInDB = data.logged_in && !experimental;
 
     if (submissionID != latestSubmissionID)
         return;
@@ -648,10 +645,11 @@ export async function submit(
 
     $('#status').className = pass ? 'green' : 'red';
 
-    // Show cheevos.
-    $('#popups').replaceChildren(...scorePopups(data.RankUpdates),
-        ...diamondPopups(data.RankUpdates),
-        ...data.Cheevos.map(c => <div>
+    // Show popups.
+    $('#popups').replaceChildren(
+        ...scorePopups(data.rank_updates),
+        ...diamondPopups(data.rank_updates),
+        ...data.cheevos.map(c => <div>
             <h3>Achievement Earned!</h3>
             { c.emoji }<p>{ c.name }</p>
         </div>));
