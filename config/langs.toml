@@ -621,7 +621,7 @@ echo each 2}.ARGV
 
 [Janet]
 size    = '869 KiB'
-version = '1.35.0'
+version = '1.35.2'
 website = 'https://janet-lang.org'
 example = '''
 # Printing
