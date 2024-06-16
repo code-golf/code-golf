@@ -159,10 +159,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 
 		// If any of the updates are record breakers, announce them on Discord
 		if len(recordUpdates) > 0 {
-			go discord.LogNewRecord(
-				golfer, config.HoleByID[in.Hole], config.LangByID[in.Lang],
-				recordUpdates, db,
-			)
+			go discord.LogNewRecord(golfer, holeObj, langObj, recordUpdates, db)
 		}
 
 		// TODO Use the golfer's timezone from /settings.
