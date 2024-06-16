@@ -6,7 +6,6 @@ import (
 	"slices"
 	"time"
 
-	"github.com/buildkite/terminal-to-html/v3"
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/discord"
 	Golfer "github.com/code-golf/code-golf/golfer"
@@ -46,16 +45,6 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 	}
 
 	runs := hole.Play(r.Context(), holeObj, langObj, in.Code)
-
-	// TODO Should this be pushed lower?
-	for i, run := range runs {
-		runs[i].Stderr = terminal.Render([]byte(run.Stderr))
-
-		// Bodge, surpress solitary "&nbsp;" that can be emitted.
-		if runs[i].Stderr == "&nbsp;" {
-			runs[i].Stderr = ""
-		}
-	}
 
 	out := struct {
 		Cheevos     []config.Cheevo     `json:"cheevos"`

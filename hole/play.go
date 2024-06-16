@@ -17,6 +17,7 @@ import (
 	"unicode"
 
 	"github.com/agnivade/levenshtein"
+	"github.com/buildkite/terminal-to-html/v3"
 	"github.com/code-golf/code-golf/config"
 	hungarianAlgorithm "github.com/oddg/hungarian-algorithm"
 )
@@ -495,22 +496,30 @@ func play(
 	const maxLength = 128 * 1024 // 128 KiB
 
 	// Trim trailing whitespace.
-	run.Stderr = string(bytes.TrimRightFunc(stderr.Next(maxLength), unicode.IsSpace))
+	stderrBytes := bytes.TrimRightFunc(stderr.Next(maxLength), unicode.IsSpace)
 
-	stdoutContents := stdout.Next(maxLength)
+	// Convert ANSI escapes into HTML, for coloured error messages.
+	run.Stderr = terminal.Render(stderrBytes)
+
+	// Bodge, surpress solitary "&nbsp;" that can be emitted.
+	if run.Stderr == "&nbsp;" {
+		run.Stderr = ""
+	}
+
+	stdoutBytes := stdout.Next(maxLength)
 
 	// Postprocess sed output to turn null bytes into newlines.
 	if lang.ID == "sed" {
-		stdoutContents = bytes.ReplaceAll(stdoutContents, []byte("\x00"), []byte("\n"))
+		stdoutBytes = bytes.ReplaceAll(stdoutBytes, []byte("\x00"), []byte("\n"))
 	}
 
 	// Trim trailing whitespace on each line, and then trailing empty lines.
 	// Quine solutions are obviously left untouched.
 	if hole.ID == "quine" {
-		run.Stdout = string(stdoutContents)
+		run.Stdout = string(stdoutBytes)
 	} else {
 		run.Stdout = string(bytes.TrimRight(stdoutTrimmer.ReplaceAll(
-			stdoutContents, []byte{'\n'}), "\n"))
+			stdoutBytes, []byte{'\n'}), "\n"))
 	}
 
 	// Timeouts and whitespace only output never pass.
