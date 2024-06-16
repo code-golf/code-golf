@@ -17,7 +17,7 @@ like post-solution(:lang<j> :code('echo JVERSION'))<runs>[0]<stdout>,
 
 # Trivial Tex Quine.
 my $code = "Trivial\n";
-my $err  = 'Quine in TeX must have at least one &#39;\&#39; character.';
+my $err  = ｢Quine in TeX must have at least one '\' character.｣;
 my %res  = post-solution :hole<quine> :lang<tex> :$code;
 
 is-deeply %res<runs>[0]<answer pass stderr>:p,
