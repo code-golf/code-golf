@@ -1754,6 +1754,24 @@ preamble = '''
 </div>
 '''
 
+[MNIST]
+category = 'Computing'
+experiment = 1187
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/MNIST_database' },
+]
+synopsis = 'Recognize digits in the MNIST dataset.'
+preamble = '''
+<p>
+    The MNIST dataset is a large database of handwritten digits that is
+    commonly used for training various image processing systems. You will be
+    provided images from the MNIST dataset. Each image is a 28x28 pixel image
+    of a handwritten digit from 0 to 9.
+<p>
+    Your task is to recognize the digit in each provided image.
+<p>
+'''
+
 ['Musical Chords']
 category = 'Transform'
 links = [
