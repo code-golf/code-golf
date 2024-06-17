@@ -345,7 +345,7 @@ h2 {
 #picker, #solutionPicker {
     gap: .25rem;
 
-    > a:not([href]) { border-color: var(--color) }
+    > a:not([href]), select.selectActive { border-color: var(--color) }
 
     > a {
         align-items: center;
