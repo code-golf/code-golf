@@ -515,11 +515,7 @@ export async function submit(
 
     const res  = await fetch('/solution', {
         method: 'POST',
-        body: JSON.stringify({
-            Code: code,
-            Hole: hole,
-            Lang: lang,
-        }),
+        body: JSON.stringify({ code, hole, lang }),
     });
 
     if (res.status != 200) {
