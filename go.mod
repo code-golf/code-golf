@@ -8,11 +8,11 @@ require (
 	github.com/agnivade/levenshtein v1.1.1
 	github.com/buildkite/terminal-to-html/v3 v3.12.1
 	github.com/bwmarrin/discordgo v0.28.1
-	github.com/go-chi/chi/v5 v5.0.12
+	github.com/go-chi/chi/v5 v5.0.13
 	github.com/go-git/go-billy/v5 v5.5.0
 	github.com/go-git/go-git/v5 v5.12.0
 	github.com/gofrs/uuid/v5 v5.2.0
-	github.com/gorilla/feeds v1.1.2
+	github.com/gorilla/feeds v1.2.0
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/lib/pq v1.10.9
 	github.com/oddg/hungarian-algorithm v0.0.0-20170809162819-9567cbc363de
