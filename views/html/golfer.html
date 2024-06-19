@@ -40,10 +40,12 @@
             </div>
         </div>
         <div>
-            <div title="{{ comma .Diamond }} diamond medals (uncontested gold medals)">
-                <span>💎</span>{{ comma .Diamond }}
+        {{ with .Diamond }}
+            <div title="{{ comma . }} diamonds (uncontested gold medals)">
+                <span>💎</span>{{ comma . }}
             </div>
             •
+        {{ end }}
             <div title="{{ comma .Gold }} gold medals">
                 <span>🥇</span>{{ comma .Gold }}
             </div>
