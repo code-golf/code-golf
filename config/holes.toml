@@ -3541,7 +3541,7 @@ preamble = '''
     Print the Zeckendorf representation for each input argument. Terms should
     be listed in decreasing order separated by ' + '.
     For example, input <b>10</b> should produce <b>8 + 2</b>.
-    Inputs are in the range 1 (inclusive) to 2<sup>63</sup> (exclusive).
+    Inputs are in the range 1 (inclusive) to 2<sup>31</sup> (exclusive).
 '''
 
 ['Zodiac Signs']
