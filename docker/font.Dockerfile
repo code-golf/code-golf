@@ -23,6 +23,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f356.svg       `# Meat on Bone`                 \
     svg/1f35e.svg       `# Bread`                        \
     svg/1f36f.svg       `# Honey Pot`                    \
+    svg/1f371.svg       `# Bento Box`                    \
     svg/1f377.svg       `# Wine Glass`                   \
     svg/1f37a.svg       `# Beer Mug`                     \
     svg/1f382.svg       `# Birthday Cake`                \

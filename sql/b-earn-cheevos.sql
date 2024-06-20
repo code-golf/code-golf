@@ -174,6 +174,10 @@ BEGIN
     IF array_length(langs_for_hole, 1) >= 36 THEN
         earned := earn(earned, 'omniglot', user_id); END IF;
 
+    -- 🍱 Omniglutton
+    IF array_length(langs_for_hole, 1) >= 48 THEN
+        earned := earn(earned, 'omniglutton', user_id); END IF;
+
     -----------------
     -- Progression --
     -----------------
