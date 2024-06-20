@@ -38,7 +38,7 @@ func zeckendorfRepresentation() []Run {
 
 	tests := make([]test, 40)
 
-	for i := uint64(0); i < 20; i++ {
+	for i := range 20 {
 		n := int64(0)
 		for n == 0 {
 			n = rand.Int64()
@@ -49,7 +49,7 @@ func zeckendorfRepresentation() []Run {
 		}
 	}
 
-	for i := uint64(20); i < 40; i++ {
+	for i := 20; i < 40; i++ {
 		n := int64(0)
 		for n == 0 {
 			n = int64(rand.Uint32())
