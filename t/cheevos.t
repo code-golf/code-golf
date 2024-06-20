@@ -24,6 +24,7 @@ constant %langs = <
     12 {polyglot}
     24 {polyglutton}
     36 {omniglot}
+    48 {omniglutton}
 >;
 
 my $dbh     = dbh;

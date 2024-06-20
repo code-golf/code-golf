@@ -226,6 +226,12 @@ description = 'Solve any hole in three dozen different languages.'
 target      = 36
 
 [[Miscellaneous]]
+name        = 'Omniglutton'
+emoji       = '🍱'
+description = 'Solve any hole in four dozen different languages.'
+target      = 48
+
+[[Miscellaneous]]
 name        = 'Real Programmers'
 emoji       = '🦋'
 description = '<a href=//xkcd.com/378/>Real programmers</a> solve any hole in VimL while using the Vim keymap.'

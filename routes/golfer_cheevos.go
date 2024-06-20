@@ -163,7 +163,7 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 		     WHERE NOT failing AND user_id = $1
 		  GROUP BY hole
 		) SELECT COALESCE(MAX(count), 0) FROM langs`,
-		[]string{"polyglot", "polyglutton", "omniglot"},
+		[]string{"polyglot", "polyglutton", "omniglot", "omniglutton"},
 	)
 
 	cheevoProgress(
