@@ -218,6 +218,9 @@ function updateLangPicker() {
         });
 
         langSelect.value = currentLangUnused ? lang : '';
+        if (currentLangUnused) {
+            langSelect.classList.add('selectActive');
+        }
         selectNodes.push(langSelect);
     }
 
