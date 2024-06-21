@@ -3,7 +3,7 @@ FROM alpine:3.20 AS builder
 RUN apk add -X http://dl-cdn.alpinelinux.org/alpine/edge/testing --no-cache \
     curl gcc musl-dev pcre tcc tcc-libs-static
 
-RUN curl https://nim-lang.org/download/nim-2.0.4.tar.xz | tar xJ
+RUN curl https://nim-lang.org/download/nim-2.0.6.tar.xz | tar xJ
 
 RUN cd nim-*                \
  && ./build.sh              \

@@ -748,7 +748,7 @@ end
 
 [Nim]
 size    = '15.0 MiB'
-version = '2.0.4'
+version = '2.0.6'
 website = 'https://nim-lang.org'
 example = '''
 import os
@@ -842,7 +842,7 @@ for ($i = 1; $i < $argc; $i++)
 
 [PowerShell]
 size    = '178 MiB'
-version = 'PowerShell 7.4.2 on .NET 8.0.3'
+version = 'PowerShell 7.4.3 on .NET 8.0.6'
 website = 'https://docs.microsoft.com/powershell/scripting/overview'
 example = '''
 # Printing
