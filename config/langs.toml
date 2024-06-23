@@ -222,8 +222,8 @@ int main(int argc, char* argv[]) {
 '''
 
 ['C#']
-size    = '150 MiB'
-version = 'C# 12.0 on .NET 8.0.3'
+size    = '151 MiB'
+version = 'C# 12.0 on .NET 8.0.6'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -415,8 +415,8 @@ for arg <- System.argv, do: IO.puts arg
 '''
 
 ['F#']
-size    = '146 MiB'
-version = 'F# 8.0 on .NET 8.0.3'
+size    = '148 MiB'
+version = 'F# 8.0 on .NET 8.0.6'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -579,7 +579,7 @@ main = do
 '''
 
 [Hexagony]
-size    = '8.82 MiB'
+size    = '8.81 MiB'
 version = '770406a'
 website = 'https://github.com/SirBogman/Hexagony'
 example = '''
