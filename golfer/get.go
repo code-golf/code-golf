@@ -94,6 +94,7 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		&info,
 		`WITH medals AS (
 		   SELECT user_id,
+		          COUNT(*) FILTER (WHERE medal = 'unicorn') unicorn,
 		          COUNT(*) FILTER (WHERE medal = 'diamond') diamond,
 		          COUNT(*) FILTER (WHERE medal = 'gold'   ) gold,
 		          COUNT(*) FILTER (WHERE medal = 'silver' ) silver,
@@ -131,7 +132,8 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		          )                                     referrals,
 		          COALESCE(silver, 0)                   silver,
 		          sponsor,
-		          started
+		          started,
+		          COALESCE(unicorn, 0)                  unicorn
 		     FROM users
 		LEFT JOIN medals       ON id = medals.user_id
 		LEFT JOIN points bytes ON id = bytes.user_id AND bytes.scoring = 'bytes'

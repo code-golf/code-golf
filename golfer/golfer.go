@@ -38,7 +38,7 @@ type GolferInfo struct {
 	Golfer
 
 	// Count of medals
-	Diamond, Gold, Silver, Bronze int
+	Unicorn, Diamond, Gold, Silver, Bronze int
 
 	// Count of cheevos/holes/langs done
 	Holes, Langs int

@@ -40,6 +40,12 @@
             </div>
         </div>
         <div>
+        {{ with .Unicorn }}
+            <div title="{{ comma . }} unicorns (uncontested solves)">
+                <span>🦄</span>{{ comma . }}
+            </div>
+            •
+        {{ end }}
         {{ with .Diamond }}
             <div title="{{ comma . }} diamonds (uncontested gold medals)">
                 <span>💎</span>{{ comma . }}

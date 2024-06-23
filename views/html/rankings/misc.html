@@ -1,11 +1,11 @@
 {{ template "header"   . }}
 {{ template "rankings" . }}
 
-{{ $diamondDeltas  := eq .Path "/rankings/misc/diamond-deltas" }}
-{{ $oldestDiamonds := eq .Path "/rankings/misc/oldest-diamonds" }}
-{{ $solutions      := eq .Path "/rankings/misc/solutions" }}
+{{ $diamondDeltas := eq .Path "/rankings/misc/diamond-deltas" }}
+{{ $oldestMedal   := hasPrefix .Path "/rankings/misc/oldest-" }}
+{{ $solutions     := eq .Path "/rankings/misc/solutions" }}
 
-{{ $hasHole := or $diamondDeltas $oldestDiamonds }}
+{{ $hasHole := or $diamondDeltas $oldestMedal }}
 
 <main id=two-pane>
     {{ template "nav" . }}
@@ -18,7 +18,7 @@
             {{ if $hasHole }}
                 <th>Hole
             {{ end }}
-            {{ if $oldestDiamonds }}
+            {{ if $oldestMedal }}
                 <th class=right>Submitted
             {{ else }}
                 <th class=right>Total
@@ -43,7 +43,7 @@
                         <span>{{ (index $.Holes .Hole).Name }}</span>
                     </a>
             {{ end }}
-            {{ if $oldestDiamonds }}
+            {{ if $oldestMedal }}
                 <td class=right>{{ time .Submitted }}
             {{ else }}
                 <td class=right>{{ comma .Count }}

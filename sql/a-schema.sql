@@ -69,7 +69,7 @@ CREATE TYPE lang AS ENUM (
     'swift', 'tcl', 'tex', 'v', 'viml', 'wren', 'zig'
 );
 
-CREATE TYPE medal AS ENUM ('diamond', 'gold', 'silver', 'bronze');
+CREATE TYPE medal AS ENUM ('unicorn', 'diamond', 'gold', 'silver', 'bronze');
 
 CREATE TYPE pronouns AS ENUM ('he/him', 'she/her', 'they/them');
 
@@ -206,7 +206,8 @@ CREATE TABLE trophies (
 );
 
 CREATE MATERIALIZED VIEW medals AS WITH ranks AS (
-    SELECT user_id, hole, lang, scoring,
+    SELECT user_id, hole, lang, scoring, submitted,
+           COUNT(*) OVER (PARTITION BY hole, lang, scoring),
            RANK() OVER (
                PARTITION BY hole, lang, scoring
                    ORDER BY CASE WHEN scoring = 'bytes'
@@ -214,16 +215,20 @@ CREATE MATERIALIZED VIEW medals AS WITH ranks AS (
            )
       FROM solutions
      WHERE NOT failing
-) SELECT user_id, hole, lang, scoring,
-         (enum_range(NULL::medal))[rank + 1] medal
+) SELECT user_id, hole, lang, scoring, submitted,
+         (enum_range(NULL::medal))[rank + 2] medal
     FROM ranks
    WHERE rank < 4
    UNION ALL
-  SELECT MIN(user_id) user_id, hole, lang, scoring, 'diamond'::medal
+  SELECT MIN(user_id) user_id, hole, lang, scoring, MIN(submitted), 'diamond'::medal
     FROM ranks
    WHERE rank = 1
 GROUP BY hole, lang, scoring
-  HAVING COUNT(*) = 1;
+  HAVING COUNT(*) = 1
+   UNION ALL
+  SELECT user_id, hole, lang, scoring, submitted, 'unicorn'::medal
+    FROM ranks
+   WHERE count = 1;
 
 CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
     select hole, lang, scoring, user_id, submitted,
