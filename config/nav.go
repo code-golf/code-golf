@@ -68,7 +68,7 @@ func init() {
 			Groups: []*LinkGroup{
 				group("", "type", "💎 Diamond Deltas", "Followers",
 					"Holes Authored", "Oldest 💎 Diamonds",
-				        "Oldest 🦄 Unicorns", "Referrals", "Solutions"),
+					"Oldest 🦄 Unicorns", "Referrals", "Solutions"),
 			},
 		},
 
