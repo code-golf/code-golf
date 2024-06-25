@@ -42,7 +42,7 @@
         {{ if eq (index $.Golfer.Settings "home" "navigate-to") "rankings" }}
             href="rankings/holes/{{ .Hole.ID }}/{{ $lang }}/{{ $scoring }}"
         {{ else }}
-            href="{{ .Hole.ID }}#{{ $lang }}"
+            href='{{ .Hole.ID }}{{ if ne $lang "all" }}#{{ $lang }}{{ end }}'
         {{ end }}
     {{ else }}
         href="{{ .Hole.ID }}"
