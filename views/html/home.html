@@ -36,10 +36,14 @@
 {{ end }}
 {{ range .Data.Cards }}
     <a class="card {{ .Hole.CategoryColor }}"
-    {{ if and $.Golfer (eq (index $.Golfer.Settings "home" "navigate-to") "rankings") }}
+    {{ if $.Golfer }}
         {{ $lang    := index $.Golfer.Settings "home" "points-for" }}
         {{ $scoring := index $.Golfer.Settings "home" "scoring"    }}
-        href="rankings/holes/{{ .Hole.ID }}/{{ $lang }}/{{ $scoring }}"
+        {{ if eq (index $.Golfer.Settings "home" "navigate-to") "rankings" }}
+            href="rankings/holes/{{ .Hole.ID }}/{{ $lang }}/{{ $scoring }}"
+        {{ else }}
+            href="{{ .Hole.ID }}#{{ $lang }}"
+        {{ end }}
     {{ else }}
         href="{{ .Hole.ID }}"
     {{ end }}
