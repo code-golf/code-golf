@@ -385,6 +385,10 @@ preamble = '''
 <p>The nth Catalan number can be expressed as C(n) = binomial(2n,n)/(n+1).
 
 <p>
+    They are unrelated to <a href=catalans-constant>Catalan's constant</a> except
+    by name.
+
+<p>
     Print the first <b>100</b> Catalan numbers, from <b>C(0)</b> to <b>C(99)</b> inclusive, each on
     their own line.
 
