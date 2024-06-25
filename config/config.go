@@ -13,7 +13,7 @@ var tomls embed.FS
 var id = strings.NewReplacer(
 	// Emoji
 	"🦄 ", "", "💎 ", "",
-	
+
 	// Remove.
 	"!", "", "(", "", ")", "", ",", "", "’", "",
 
