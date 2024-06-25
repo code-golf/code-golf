@@ -3533,6 +3533,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Zeckendorf_number_representation' },
     { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Zeckendorf's_theorem" },
 ]
+released = 2024-07-01
 synopsis = 'Calculate the Zeckendorf representation of numbers.'
 preamble = '''
 <p>

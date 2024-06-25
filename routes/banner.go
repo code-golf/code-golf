@@ -10,7 +10,7 @@ import (
 	"github.com/code-golf/code-golf/pretty"
 )
 
-const nextHole = "reversi"
+var nextHole = config.ExpHoleByID["zeckendorf-representation"]
 
 type banner struct {
 	Body template.HTML
@@ -19,7 +19,7 @@ type banner struct {
 
 // TODO Allow a golfer to hide individual banners #709.
 func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
-	if hole, ok := config.ExpHoleByID[nextHole]; ok {
+	if hole := nextHole; hole != nil {
 		in := "in " + pretty.Time(hole.Released.AsTime(time.UTC))
 		if strings.Contains(string(in), "ago") {
 			in = "momentarily"
