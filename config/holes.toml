@@ -385,12 +385,12 @@ preamble = '''
 <p>The nth Catalan number can be expressed as C(n) = binomial(2n,n)/(n+1).
 
 <p>
-    They are unrelated to <a href=catalans-constant>Catalan's constant</a> except
-    by name.
+    They are unrelated to <a href=catalans-constant>Catalan’s Constant</a>
+    except by name.
 
 <p>
-    Print the first <b>100</b> Catalan numbers, from <b>C(0)</b> to <b>C(99)</b> inclusive, each on
-    their own line.
+    Print the first <b>100</b> Catalan numbers, from <b>C(0)</b> to
+    <b>C(99)</b> inclusive, each on their own line.
 
 <p>Note: C(99) is 57 digits long, and is greater than 2<sup>187</sup>.
 '''
@@ -409,7 +409,7 @@ preamble = '''
     <b>1/1 − 1/3² + 1/5² − 1/7² + 1/9² − …</b>
 
 <p>
-    It is unrelated to the <a href=catalan-numbers>Catalan numbers</a> except
+    It is unrelated to the <a href=catalan-numbers>Catalan Numbers</a> except
     by name.
 
 <p>Print the first <b>1,000</b> decimal digits of Catalan’s constant.
