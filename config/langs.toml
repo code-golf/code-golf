@@ -452,8 +452,8 @@ command-line get-global [ print ] each
 
 [Fennel]
 experiment = 1144
-size       = '620 KiB'
-version    = '1.4.2'
+size       = '648 KiB'
+version    = '1.5.0'
 website    = 'https://fennel-lang.org'
 example    = '''
 ;; Printing
