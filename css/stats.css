@@ -26,6 +26,21 @@ table { width: 100% }
     }
 }
 
+#unsolved {
+    display: grid;
+    gap: .5rem;
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+
+    h2 { grid-column: 1 / -1 }
+
+    a + h2 { margin-top: .5rem }
+
+    a:hover {
+        background: var(--color);
+        color: var(--background);
+    }
+}
+
 @media (max-width: 34rem) {
     td:nth-child(4) { border-right: 1px solid var(--color) }
 }

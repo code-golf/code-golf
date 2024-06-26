@@ -395,6 +395,11 @@ thead th {
     padding: .5rem;
     user-select: none;
     white-space: nowrap;
+
+    > svg {
+        height: 1rem;
+        width: 1rem;
+    }
 }
 
 .btn[disabled] { opacity: .5 }
@@ -405,8 +410,6 @@ thead th {
     cursor: pointer;
     text-decoration: none;
 }
-
-.btn svg { height: 1rem }
 
 .card {
     align-items: end;

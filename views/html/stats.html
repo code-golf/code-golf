@@ -68,6 +68,22 @@
             {{ end }}
         </table>
     </div>
+{{ else if eq .Title "Statistics: Unsolved Holes" }}
+    <div id=unsolved>
+    {{ $hole := "" }}
+    {{ range .Data }}
+        {{ if .Hole.Experiment }}{{ continue }}{{ end }}
+
+        {{ if ne $hole .Hole.Name }}
+            <h2>{{ .Hole.Name }}</h2>
+            {{ $hole = .Hole.Name }}
+        {{ end }}
+
+        <a class=btn href="/{{ .Hole.ID }}#{{ .Lang.ID }}">
+            {{ svg .Lang.ID }} {{ .Lang.Name }}
+        </a>
+    {{ end }}
+    </div>
 {{ else }}
     <table class="nowrap-second sticky">
         <thead>

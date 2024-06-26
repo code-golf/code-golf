@@ -38,7 +38,7 @@ func (c *Cheevo) Scan(id any) error {
 }
 
 func (h *Hole) Scan(id any) error {
-	*h = *HoleByID[asString(id)]
+	*h = *AllHoleByID[asString(id)]
 	return nil
 }
 

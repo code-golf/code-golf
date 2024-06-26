@@ -101,6 +101,7 @@ func init() {
 						{Name: "Golfers", Slug: "golfers"},
 						{Name: "Holes", Slug: "holes"},
 						{Name: "Languages", Slug: "langs"},
+						{Name: "Unsolved Holes", Slug: "unsolved-holes"},
 					},
 				},
 			},

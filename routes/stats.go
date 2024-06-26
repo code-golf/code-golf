@@ -4,6 +4,7 @@ import (
 	"cmp"
 	"net/http"
 	"slices"
+	"strings"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
@@ -146,4 +147,38 @@ func statsTableGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	render(w, r, "stats", data, "Statistics: "+data.Fact+"s")
+}
+
+// GET /stats/{page:unsolved-holes}
+func statsUnsolvedHolesGET(w http.ResponseWriter, r *http.Request) {
+	type holeLang struct {
+		Hole *config.Hole
+		Lang *config.Lang
+	}
+
+	var data []holeLang
+	if err := session.Database(r).Select(
+		&data,
+		`WITH solves AS (
+		    SELECT DISTINCT hole, lang FROM solutions WHERE NOT failing
+		),
+		holes AS (SELECT unnest(enum_range(null::hole)) hole),
+		langs AS (SELECT unnest(enum_range(null::lang)) lang),
+		combo AS (SELECT hole, lang FROM holes CROSS JOIN langs)
+		   SELECT hole, lang
+		     FROM combo
+		LEFT JOIN solves USING (hole, lang)
+		    WHERE solves.hole IS NULL`,
+	); err != nil {
+		panic(err)
+	}
+
+	slices.SortFunc(data, func(a, b holeLang) int {
+		return cmp.Or(
+			cmp.Compare(strings.ToLower(a.Hole.Name), strings.ToLower(b.Hole.Name)),
+			cmp.Compare(strings.ToLower(a.Lang.Name), strings.ToLower(b.Lang.Name)),
+		)
+	})
+
+	render(w, r, "stats", data, "Statistics: Unsolved Holes")
 }
