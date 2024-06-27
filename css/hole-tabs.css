@@ -190,19 +190,6 @@ main {
 
 #pool span { background: var(--background) }
 
-.alert {
-    position: relative;
-}
-
-.main_close {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-}
-
 #alert-pool {
     align-items: center;
     display: flex;

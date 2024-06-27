@@ -46,20 +46,6 @@ let editor: EditorView | null = null;
 
 init(true, setSolution, setCodeForLangAndSolution, updateReadonlyPanels, () => editor);
 
-// Handle showing/hiding alerts
-for (const alertCloseBtn of $$('.main_close')) {
-    const alert = alertCloseBtn.parentNode as HTMLDivElement;
-    alertCloseBtn.addEventListener('click', () => {
-        const child = (alert.querySelector('svg') as any).cloneNode(true);
-        $('#alert-pool').appendChild(child);
-        alert.classList.add('hide');
-        child.addEventListener('click', () => {
-            child.parentNode.removeChild(child);
-            alert.classList.remove('hide');
-        });
-    });
-}
-
 // Handle showing/hiding lang picker
 // can't be done in CSS because the picker is one parent up
 const langToggle = $<HTMLDetailsElement>('#hole-lang details');
