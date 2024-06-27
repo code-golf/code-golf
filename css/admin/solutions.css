@@ -2,14 +2,14 @@
 
 code { white-space: normal }
 
-form {
+main > form {
     align-items: center;
     display: grid;
     grid-template-columns: min-content 1fr;
     margin: auto;
 }
 
-form > div {
+main > form > div {
     align-items: center;
     display: flex;
     grid-column: span 2;

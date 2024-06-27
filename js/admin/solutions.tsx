@@ -1,6 +1,6 @@
 import { $, comma } from '../_util';
 
-const form   = document.forms[0];
+const form   = $('main > form') as HTMLFormElement;
 const run    = $('#run');
 const status = $('#status');
 const stop   = $('#stop');
