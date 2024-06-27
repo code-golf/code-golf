@@ -366,6 +366,34 @@ thead th {
     padding: 1rem 1rem 1rem 3rem;
     position: relative;
 
+    /* Hide banner form */
+    > form {
+        position: absolute;
+        right: .5rem;
+        top: .5rem;
+
+        > button {
+            align-items: center;
+            background: none;
+            border: 0;
+            display: flex;
+            padding: .125rem;
+
+            &:hover {
+                background: var(--color);
+                color: var(--background);
+            }
+
+            > svg {
+                height: 1rem;
+                width: 1rem;
+            }
+        }
+    }
+
+    /* Avoid the text and close button overlapping */
+    &:has(> form) { padding-right: 2rem }
+
     > svg {
         fill: var(--color);
         left: .75rem;

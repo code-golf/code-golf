@@ -111,6 +111,10 @@
 </header>
 
 {{ range .Banners }}
+    {{ if and $.Golfer (index $.Golfer.Settings "hide-banner" .HideKey) }}
+        {{ continue }}
+    {{ end }}
+
     <div class="{{ .Type }}">
     {{ if eq .Type "alert" }}
         {{ svg "exclamation-circle" }}
@@ -118,5 +122,13 @@
         {{ svg "info-circle" }}
     {{ end }}
         <p>{{ .Body }}
+
+    {{ if and $.Golfer .HideKey }}
+        <form action=/golfer/hide-banner method=post>
+            <input name=banner type=hidden value="{{ .HideKey }}">
+            <input name=path type=hidden value="{{ $.Path }}">
+            <button title="Hide banner">{{ svg "x" }}</button>
+        </form>
+    {{ end }}
     </div>
 {{ end }}
