@@ -4,11 +4,17 @@
     {{ .Data.Title }}
 
 {{ with .Data.Name }}
+    {{ $slug := urlquery . }}
+    {{ if eq . "><>" }}
+        {{ $slug = "Fish" }}
+    {{ else if eq . "C++" }}
+        {{ $slug = "Cpp" }}
+    {{ end }}
     <div>
         GitHub:
-        <a href="//github.com/code-golf/code-golf/wiki/{{ urlquery . }}/_edit">edit</a>
+        <a href="//github.com/code-golf/code-golf/wiki/{{ $slug }}/_edit">edit</a>
         |
-        <a href="//github.com/code-golf/code-golf/wiki/{{ urlquery . }}">view</a>
+        <a href="//github.com/code-golf/code-golf/wiki/{{ $slug }}">view</a>
     </div>
 {{ end }}
 </h1>

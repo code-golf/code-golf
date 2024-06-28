@@ -2,9 +2,9 @@ FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache build-base curl
 
-RUN curl https://www.lua.org/ftp/lua-5.4.6.tar.gz | tar xz
+RUN curl https://www.lua.org/ftp/lua-5.4.7.tar.gz | tar xz
 
-RUN cd lua-5.4.6      \
+RUN cd lua-*          \
  && make generic      \
     AR='gcc-ar rcu'   \
     MYCFLAGS=-flto    \
@@ -14,7 +14,7 @@ RUN cd lua-5.4.6      \
 
 FROM codegolf/lang-base-no-proc
 
-COPY --from=0 /lua-5.4.6/src/lua /usr/bin/
+COPY --from=0 /lua-*/src/lua /usr/bin/
 
 ENTRYPOINT ["lua"]
 
