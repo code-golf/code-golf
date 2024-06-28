@@ -6,9 +6,15 @@
 {{ with .Data.Name }}
     <div>
         GitHub:
-        <a href="//github.com/code-golf/code-golf/wiki/{{ urlquery . }}/_edit">edit</a>
+        {{ $lang := urlquery . }}
+        {{ if eq . "><>" }}
+        {{ $lang = "Fish" }}
+        {{ else if eq . "C++" }}
+        {{ $lang = "Cpp" }}
+        {{ end }}
+        <a href="//github.com/code-golf/code-golf/wiki/{{ $lang }}/_edit">edit</a>
         |
-        <a href="//github.com/code-golf/code-golf/wiki/{{ urlquery . }}">view</a>
+        <a href="//github.com/code-golf/code-golf/wiki/{{ $lang }}">view</a>
     </div>
 {{ end }}
 </h1>
