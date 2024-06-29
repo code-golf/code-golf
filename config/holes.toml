@@ -1335,7 +1335,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Kaprekar_numbers' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Kaprekar_number' },
 ]
-synopsis = 'Print all the Kaprekar numbers from 1 to 100,000,000.'
+synopsis = 'Print all the Kaprekar numbers from 1 to 25,000,000.'
 preamble = '''
 <p>
     Any positive integer is a Kaprekar number on the following conditions:
@@ -1348,7 +1348,7 @@ preamble = '''
     operands must retain their digit order but may differ in length.
 
 <p>
-    Print all the Kaprekar numbers from <b>1</b> to <b>100,000,000</b>
+    Print all the Kaprekar numbers from <b>1</b> to <b>25,000,000</b>
     inclusive, each on their own line.
 '''
 
