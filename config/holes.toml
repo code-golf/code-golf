@@ -1327,6 +1327,31 @@ preamble = '''
     as it requires factorisation of <b>n</b>.
 '''
 
+['Kaprekar Numbers']
+experiment = 574
+category   = 'Sequence'
+links = [
+    { name = 'OEIS A006886', url = '//oeis.org/A006886' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Kaprekar_numbers' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Kaprekar_number' },
+]
+synopsis = 'Print all the Kaprekar numbers from 1 to 100,000,000.'
+preamble = '''
+<p>
+    Any positive integer is a Kaprekar number on the following conditions:
+    the integer is <b>1</b> or when splitting the integer's square in two
+    makes their sum equal the original integer.
+
+<p>
+    For example, the square of 55 equals <b>3,025</b>. Splitting the
+    square in <b>30</b> and <b>25</b> makes their sum equal 55. Both
+    operands must retain their digit order but may differ in length.
+
+<p>
+    Print all the Kaprekar numbers from <b>1</b> to <b>100,000,000</b>
+    inclusive, each on their own line.
+'''
+
 [Kolakoski]
 categories = ['Mathematics', 'Sequence']
 released = 2021-01-16
