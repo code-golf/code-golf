@@ -103,7 +103,7 @@ $ brew install vagrant virtualbox
 
 2. Create the virtual machine:
 ```
-$ vagrant up
+$ git config core.autocrlf false && git checkout utils/vagrant-bootstrap && vagrant up
 ```
 
 3. Install certificates. Ideally, you should run the following command outside of the virtual machine, the same as in the quickstart, because it will install the certificate in your browser. Alternatively, you can run the command in a virtual machine shell and then install the certificates manually.
