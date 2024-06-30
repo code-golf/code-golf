@@ -2518,7 +2518,7 @@ preamble = '''
     the end.)
 '''
 
-[Recamán]
+['Recamán']
 category = 'Sequence'
 links = [
     { name = 'Numberphile',  url = '//www.numberphile.com/videos/slightly-spooky-recaman-sequence' },
