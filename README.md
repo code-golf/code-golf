@@ -115,7 +115,7 @@ or
 $ vagrant ssh --command 'cd /vagrant/ && make cert'
 ```
 
-5. Bring up the website:
+4. Bring up the website:
 ```
 $ vagrant ssh --command 'cd /vagrant/ && make dev'
 ```
