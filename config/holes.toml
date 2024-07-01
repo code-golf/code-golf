@@ -787,25 +787,17 @@ preamble = '''
     inclusive, on their own line, with each divisor separated by a space.
 '''
 
-['N Queens']
-category = 'Gaming'
+['Ellipse Perimeters']
+category = 'Mathematics'
 links = [
-    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/N-queens_problem' },
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Eight_queens_puzzle' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Ellipse' },
 ]
-item-delimiter = "\n"
-released = 2024-05-01
-synopsis = 'Print all solutions to the N queens problem.'
+experiment = 811
+synopsis = 'Compute the perimeter of an ellipse.'
 preamble = '''
 <p>
-    In chess, pieces move on a board of 8 ranks and 8 files. A chess queen can attack along a file a rank or a diagonal.
-    It is possible to place 8 queens on the board, such that no queen is under attack by another one.
-    When we list the rank on which the queen is for each file, one solution looks like this
-
-<p>
-    <pre>63571428</pre>
-<p>
-    Print all solutions to the N queens problem, one per a line, for boards of sizes 4-8.
+    Given the two radii of an ellipse, compute its perimeter and print
+    its integer part.
 '''
 
 ['Emirp Numbers']
@@ -831,19 +823,6 @@ preamble = '''
     Print all the emirp numbers from <b>1</b> to
     <b>{{ if eq . "Emirp Numbers" }}1,000{{ else }}10,000{{ end }}</b>
     inclusive, each on their own line.
-'''
-
-['Ellipse Perimeters']
-category = 'Mathematics'
-links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Ellipse' },
-]
-experiment = 811
-synopsis = 'Compute the perimeter of an ellipse.'
-preamble = '''
-<p>
-    Given the two radii of an ellipse, compute its perimeter and print
-    its integer part.
 '''
 
 [Emojify]
@@ -1669,7 +1648,6 @@ preamble = '''
     Output the arguments that represent complete mahjong hands, in the same order as they appear in the argument list.
 '''
 
-
 [Maze]
 category = 'Gaming'
 links = [
@@ -1705,6 +1683,24 @@ preamble = '''
 
 <p>
     Given a list of space-separated solution scores in ascending order, print the corresponding diamonds and medals.
+'''
+
+[MNIST]
+category = 'Computing'
+experiment = 1187
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/MNIST_database' },
+]
+synopsis = 'Recognize digits in the MNIST dataset.'
+preamble = '''
+<p>
+    The MNIST dataset is a large database of handwritten digits that is
+    commonly used for training various image processing systems. You will be
+    provided images from the MNIST dataset. Each image is a 28x28 pixel image
+    of a handwritten digit from 0 to 9.
+<p>
+    Your task is to recognize the digit in each provided image.
+<p>
 '''
 
 [Morse]
@@ -1823,22 +1819,13 @@ preamble = '''
 </div>
 '''
 
-[MNIST]
-category = 'Computing'
-experiment = 1187
-links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/MNIST_database' },
-]
-synopsis = 'Recognize digits in the MNIST dataset.'
+['Multiset Judge Demo']
+category = 'Mathematics'
+experiment = -1
+synopsis = 'Order agnostic judge demo.'
+item-delimiter = "\n"
 preamble = '''
-<p>
-    The MNIST dataset is a large database of handwritten digits that is
-    commonly used for training various image processing systems. You will be
-    provided images from the MNIST dataset. Each image is a 28x28 pixel image
-    of a handwritten digit from 0 to 9.
-<p>
-    Your task is to recognize the digit in each provided image.
-<p>
+<p>Output each number 0..9 exactly twice and 10..29 exactly once.
 '''
 
 ['Musical Chords']
@@ -1989,6 +1976,27 @@ preamble = '''
     note distances. The root is the note whose letter comes 2 and 4 letters
     before the other two letters in the chord. The expected outputs are
     <b>C+</b> and <b>E+</b> respectively.
+'''
+
+['N Queens']
+category = 'Gaming'
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/N-queens_problem' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Eight_queens_puzzle' },
+]
+item-delimiter = "\n"
+released = 2024-05-01
+synopsis = 'Print all solutions to the N queens problem.'
+preamble = '''
+<p>
+    In chess, pieces move on a board of 8 ranks and 8 files. A chess queen can attack along a file a rank or a diagonal.
+    It is possible to place 8 queens on the board, such that no queen is under attack by another one.
+    When we list the rank on which the queen is for each file, one solution looks like this
+
+<p>
+    <pre>63571428</pre>
+<p>
+    Print all solutions to the N queens problem, one per a line, for boards of sizes 4-8.
 '''
 
 ['NFA Simulator']
@@ -2584,60 +2592,6 @@ preamble = '''
     repeating part in parenthesis.
 '''
 
-[Rock-paper-scissors-Spock-lizard]
-category = 'Gaming'
-links = [
-    { name = 'Rules',     url = 'http://www.samkass.com/theories/RPSSL.html' },
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Rock_paper_scissors#Additional_weapons' },
-]
-released = 2019-06-17
-synopsis = 'Print the outcome of games of Rock-paper-scissors-Spock-lizard.'
-preamble = '''
-<p>Judge games of "rock-paper-scissors" with additional weapons:
-
-<p>
-    ✂ cuts 📄 covers 💎 crushes 🦎 poisons 🖖 smashes ✂ decapitates 🦎 eats 📄
-    disproves 🖖 vaporizes 💎 crushes ✂.
-
-<p>
-    Each argument is a string of two emoji encoded in UTF-8. For each argument,
-    print a line like <code>🦎 poisons 🖖</code> describing the game outcome,
-    or <code>Tie</code> if they are equal.
-
-<p>The weapons are represented and encoded as follows:
-
-<div>
-    <table>
-        <thead>
-            <tr><th>Weapon
-                <th>Emoji
-                <th>Codepoint
-                <th>UTF-8 Sequence
-        <tbody>
-            <tr><th>Rock
-                <td>💎
-                <td><a href=//emojipedia.org/gem-stone/>U+1F48E</a>
-                <td><pre>f0 9f 92 8e</pre>
-            <tr><th>Paper
-                <td>📄
-                <td><a href=//emojipedia.org/page-facing-up/>U+1F4C4</a>
-                <td><pre>f0 9f 93 84</pre>
-            <tr><th>Scissors
-                <td>✂
-                <td><a href=//emojipedia.org/black-scissors/>U+2702</a>
-                <td><pre>e2 9c 82</pre>
-            <tr><th>Spock
-                <td>🖖
-                <td><a href=//emojipedia.org/raised-hand-with-part-between-middle-and-ring-fingers/>U+1F596</a>
-                <td><pre>f0 9f 96 96</pre>
-            <tr><th>Lizard
-                <td>🦎
-                <td><a href=//emojipedia.org/lizard/>U+1F98E</a>
-                <td><pre>f0 9f a6 8e</pre>
-    </table>
-</div>
-'''
-
 ['Reverse Polish Notation']
 category = 'Computing'
 links = [
@@ -2749,6 +2703,60 @@ e1 f8 98 11 69 d9 8e 94 9b 1e 87 e9 ce 55 28 df
 </pre>
 '''
 
+[Rock-paper-scissors-Spock-lizard]
+category = 'Gaming'
+links = [
+    { name = 'Rules',     url = 'http://www.samkass.com/theories/RPSSL.html' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Rock_paper_scissors#Additional_weapons' },
+]
+released = 2019-06-17
+synopsis = 'Print the outcome of games of Rock-paper-scissors-Spock-lizard.'
+preamble = '''
+<p>Judge games of "rock-paper-scissors" with additional weapons:
+
+<p>
+    ✂ cuts 📄 covers 💎 crushes 🦎 poisons 🖖 smashes ✂ decapitates 🦎 eats 📄
+    disproves 🖖 vaporizes 💎 crushes ✂.
+
+<p>
+    Each argument is a string of two emoji encoded in UTF-8. For each argument,
+    print a line like <code>🦎 poisons 🖖</code> describing the game outcome,
+    or <code>Tie</code> if they are equal.
+
+<p>The weapons are represented and encoded as follows:
+
+<div>
+    <table>
+        <thead>
+            <tr><th>Weapon
+                <th>Emoji
+                <th>Codepoint
+                <th>UTF-8 Sequence
+        <tbody>
+            <tr><th>Rock
+                <td>💎
+                <td><a href=//emojipedia.org/gem-stone/>U+1F48E</a>
+                <td><pre>f0 9f 92 8e</pre>
+            <tr><th>Paper
+                <td>📄
+                <td><a href=//emojipedia.org/page-facing-up/>U+1F4C4</a>
+                <td><pre>f0 9f 93 84</pre>
+            <tr><th>Scissors
+                <td>✂
+                <td><a href=//emojipedia.org/black-scissors/>U+2702</a>
+                <td><pre>e2 9c 82</pre>
+            <tr><th>Spock
+                <td>🖖
+                <td><a href=//emojipedia.org/raised-hand-with-part-between-middle-and-ring-fingers/>U+1F596</a>
+                <td><pre>f0 9f 96 96</pre>
+            <tr><th>Lizard
+                <td>🦎
+                <td><a href=//emojipedia.org/lizard/>U+1F98E</a>
+                <td><pre>f0 9f a6 8e</pre>
+    </table>
+</div>
+'''
+
 ['Rule 110']
 category = 'Computing'
 links = [
@@ -2808,13 +2816,18 @@ preamble = '''
 </pre>
 '''
 
-['Multiset Judge Demo']
-category = 'Mathematics'
-experiment = -1
-synopsis = 'Order agnostic judge demo.'
-item-delimiter = "\n"
+['Semiprime Numbers']
+experiment = 1154
+category = 'Sequence'
+links = [
+    { name = 'OEIS A001358', url = '//oeis.org/A001358' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Semiprime' },
+]
+synopsis = 'Print all the semiprime numbers from 1 to 10,000.'
 preamble = '''
-<p>Output each number 0..9 exactly twice and 10..29 exactly once.
+<p>A <b>semiprime number</b> is a number that is the product of two prime numbers. Note that the prime factors do not necessarily have to be distinct.
+
+<p>Print all the semiprime numbers from <b>1</b> to <b>10,000</b> inclusive, each on their own line.
 '''
 
 ['Seven Segment']
@@ -3121,6 +3134,20 @@ preamble = '''
     <b>1,000</b> (<code>one thousand</code>) inclusive.
 '''
 
+['Sphenic Numbers']
+experiment = 1154
+category = 'Sequence'
+links = [
+    { name = 'OEIS A007304', url = '//oeis.org/A007304' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Sphenic_number' },
+]
+synopsis = 'Print all the sphenic numbers from 1 to 10,000.'
+preamble = '''
+<p>A <b>sphenic number</b> is a number that is the product of three <b>distinct</b> prime numbers.
+
+<p>Print all the sphenic numbers from <b>1</b> to <b>10,000</b> inclusive, each on their own line.
+'''
+
 ['Star Wars Opening Crawl']
 category = 'Transform'
 links = [
@@ -3410,34 +3437,6 @@ The shells she sells are seashells, I'm sure.
 So if she sells seashells on the seashore,
 Then I'm sure she sells seashore shells.
 </blockquote>
-'''
-
-['Semiprime Numbers']
-experiment = 1154
-category = 'Sequence'
-links = [
-    { name = 'OEIS A001358', url = '//oeis.org/A001358' },
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Semiprime' },
-]
-synopsis = 'Print all the semiprime numbers from 1 to 10,000.'
-preamble = '''
-<p>A <b>semiprime number</b> is a number that is the product of two prime numbers. Note that the prime factors do not necessarily have to be distinct.
-
-<p>Print all the semiprime numbers from <b>1</b> to <b>10,000</b> inclusive, each on their own line.
-'''
-
-['Sphenic Numbers']
-experiment = 1154
-category = 'Sequence'
-links = [
-    { name = 'OEIS A007304', url = '//oeis.org/A007304' },
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Sphenic_number' },
-]
-synopsis = 'Print all the sphenic numbers from 1 to 10,000.'
-preamble = '''
-<p>A <b>sphenic number</b> is a number that is the product of three <b>distinct</b> prime numbers.
-
-<p>Print all the sphenic numbers from <b>1</b> to <b>10,000</b> inclusive, each on their own line.
 '''
 
 ['Trinomial Triangle']
