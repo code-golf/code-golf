@@ -3611,7 +3611,6 @@ preamble = '''
 
 ['Zeckendorf Representation']
 category = 'Mathematics'
-experiment = 667
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Zeckendorf_number_representation' },
     { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Zeckendorf's_theorem" },
@@ -3626,8 +3625,8 @@ preamble = '''
     This sum is called the Zeckendorf representation.
 
 <p>
-    Print the Zeckendorf representation for each input argument. Terms should
-    be listed in decreasing order separated by ' + '.
+    Print the Zeckendorf representation for each input argument.
+    Terms should be listed in decreasing order separated by ' + '.
     For example, input <b>10</b> should produce <b>8 + 2</b>.
     Inputs are in the range 1 (inclusive) to 2<sup>31</sup> (exclusive).
 '''
