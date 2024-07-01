@@ -1698,9 +1698,8 @@ preamble = '''
     commonly used for training various image processing systems. You will be
     provided images from the MNIST dataset. Each image is a 28x28 pixel image
     of a handwritten digit from 0 to 9.
-<p>
-    Your task is to recognize the digit in each provided image.
-<p>
+
+<p>Your task is to recognize the digit in each provided image.
 '''
 
 [Morse]
