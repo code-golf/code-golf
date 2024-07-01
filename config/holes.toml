@@ -977,6 +977,46 @@ preamble = '''
     for example <b>15</b> should print <b>FizzBuzz</b>.
 '''
 
+['Floyd-Steinberg Dithering']
+category = 'Art'
+experiment = 1138
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Floyd–Steinberg_dithering' },
+]
+synopsis = 'Apply the Floyd-Steinberg algorithm to a 64x64 grayscale image.'
+preamble = '''
+<p>
+    Given a 64x64 grayscale image in plain PGM format, convert it to a palette
+    of black (0) and white (255) using the Floyd-Steinberg algorithm. Print
+    the result, using "#" for black and spaces for white.
+<p>
+    The input is 3 lines of header information, followed by 4096 pixel values, each on their own line.
+<pre>
+    P2          # magic number
+    64 64       # image dimensions
+    255         # maximum pixel value
+    19          # (0,0) value
+    18          # (1,0) value
+    ...
+</pre>
+Pixels are processed one at a time, left-to-right then top-to-bottom. For each pixel:
+<ul>
+    <li>Let <code>a</code> be the pixel value.</li>
+    <li>Let <code>b</code> be the nearest palette value to <code>a</code> (either 0 or 255).</li>
+    <li>Set the current pixel to <code>b</code>. Now a "debt" of <code>a-b</code> needs to be spread to 4 of the neighboring pixels. For each of these 4 neighbors and its corresponding fraction <code>f</code> (as seen below), add <code>floor((a-b)*f)</code> to its value.</li>
+</ul>
+<pre>
+     --   --   --
+     --   []  7/16
+    3/16 5/16 1/16
+</pre>
+Notes:
+<ul>
+    <li>Some pixel values may temporarily become less than 0 or greater than 255.</li>
+    <li>When processing pixels on the edge, any adjustments made to pixels outside of the image should be ignored.</li>
+</ul>
+'''
+
 ['Forsyth–Edwards Notation']
 category = 'Gaming'
 links = [
@@ -3570,7 +3610,6 @@ preamble = '''
 
 ['Zeckendorf Representation']
 category = 'Mathematics'
-experiment = 667
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Zeckendorf_number_representation' },
     { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Zeckendorf's_theorem" },
@@ -3585,8 +3624,8 @@ preamble = '''
     This sum is called the Zeckendorf representation.
 
 <p>
-    Print the Zeckendorf representation for each input argument. Terms should
-    be listed in decreasing order separated by ' + '.
+    Print the Zeckendorf representation for each input argument.
+    Terms should be listed in decreasing order separated by ' + '.
     For example, input <b>10</b> should produce <b>8 + 2</b>.
     Inputs are in the range 1 (inclusive) to 2<sup>31</sup> (exclusive).
 '''

@@ -271,7 +271,7 @@ func Play(
 	case "emojify", "mnist", "rock-paper-scissors-spock-lizard",
 		"united-states":
 		runs = outputMultirunTests(fixedTests(hole.ID))
-	case "hexdump", "proximity-grid", "star-wars-opening-crawl":
+	case "floyd-steinberg-dithering", "hexdump", "proximity-grid", "star-wars-opening-crawl":
 		runs = outputTestsWithSep("\n\n", shuffle(fixedTests(hole.ID)))
 
 	// Holes with no arguments and a static answer.
