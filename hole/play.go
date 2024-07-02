@@ -202,7 +202,7 @@ func Play(
 		runs = fractions()
 	case "game-of-life":
 		runs = gameOfLife()
-	case "gray-code-encoder", "gray-code-decoder":
+	case "gray-code-decoder", "gray-code-encoder":
 		runs = grayCode(hole.ID == "gray-code-decoder")
 	case "isbn":
 		runs = isbn()
@@ -260,10 +260,10 @@ func Play(
 		runs = timeDistance()
 	case "turtle":
 		runs = turtle()
-	case "zodiac-signs":
-		runs = zodiacSigns()
 	case "zeckendorf-representation":
 		runs = zeckendorfRepresentation()
+	case "zodiac-signs":
+		runs = zodiacSigns()
 
 	// Holes with fixed test cases.
 	case "css-colors":
@@ -382,13 +382,13 @@ func play(
 		cmd.Args = []string{"/usr/bin/j", "/tmp/code.ijs"}
 	case "janet":
 		cmd.Args = []string{"/usr/bin/janet", "/proc/self/fd/0"}
-	case "k":
-		cmd.Args = []string{"/usr/bin/kwrapper", "/tmp/code.k"}
 	case "javascript":
 		cmd.Args = []string{"/usr/bin/d8", "-e", code, "--"}
 	case "julia":
 		cmd.Args = []string{"/usr/bin/julia", "--color=yes", "/proc/self/fd/0"}
 		cmd.Env = []string{"HOME=/"}
+	case "k":
+		cmd.Args = []string{"/usr/bin/kwrapper", "/tmp/code.k"}
 	case "nim":
 		cmd.Args = []string{"/usr/bin/nim", "--colors:on", "-o:/tmp/code", "-r", "c", "-"}
 	case "ocaml":
