@@ -1179,9 +1179,7 @@ preamble = '''
 ['Grid Packing']
 category = 'Art'
 experiment = 1214
-synopsis = '''
-Greedily fill a grid with rectangles while maintaining lexicographical order
-'''
+synopsis = 'Greedily fill a grid with rectangles while maintaining lexicographical order.'
 preamble = '''
 <p>
     Place each rectangle in the grid in the first position that fits. The first number given
