@@ -100,10 +100,10 @@ func solveGrid(question GridTestCase) GridSolution {
 
 	for _, box := range question.boxes {
 		for x+box.width > question.width || !All(heights[x:x+box.width], (func(k int) bool { return k <= y })) {
-			x += 1
+			x++
 			if x+box.width > question.width {
 				x = 0
-				y += 1
+				y++
 			}
 		}
 
