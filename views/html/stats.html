@@ -7,9 +7,10 @@
 
 {{ if eq .Title "Statistics" }}
     <div id=overview>
+        <div><h2>Countries</h2>{{ 0 }}</div>
+        <div><h2>Golfers</h2>{{ comma .Data.Golfers }}</div>
         <div><h2>Holes</h2>{{ len .Holes }}</div>
         <div><h2>Languages</h2>{{ len .Langs }}</div>
-        <div><h2>Golfers</h2>{{ comma .Data.Golfers }}</div>
 
         <div>
             <h2>Solutions</h2>
