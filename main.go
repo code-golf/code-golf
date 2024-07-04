@@ -14,6 +14,9 @@ import (
 )
 
 func main() {
+	// Occasionally in a dev context, the current directory is "/", which causes errors.
+	// Sometimes this issue is eventually resolved without manual intervention, but it doesn't hurt.
+	os.Chdir("/go")
 	log.SetFlags(log.Ltime)
 
 	db := db.Open()
