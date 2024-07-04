@@ -62,9 +62,11 @@ CREATE TYPE save_solution_ret AS (
     new_bytes                      int,
     new_bytes_joint                bool,
     new_bytes_rank                 int,
+    new_bytes_solution_count       int,
     new_chars                      int,
     new_chars_joint                bool,
     new_chars_rank                 int,
+    new_chars_solution_count       int,
     old_bytes                      int,
     old_bytes_joint                bool,
     old_bytes_rank                 int,
@@ -230,11 +232,27 @@ BEGIN
     ret.new_bytes_joint := rank.joint;
     ret.new_bytes_rank  := rank.rank;
 
+    SELECT COUNT(*)
+      INTO ret.new_bytes_solution_count
+      FROM solutions
+     WHERE solutions.failing = false
+       AND solutions.hole    = hole
+       AND solutions.lang    = lang
+       AND solutions.scoring = 'bytes';
+
     IF chars IS NOT NULL THEN
         rank                := hole_rank(hole, lang, 'chars', user_id);
         ret.new_chars       := rank.strokes;
         ret.new_chars_joint := rank.joint;
         ret.new_chars_rank  := rank.rank;
+
+        SELECT COUNT(*)
+          INTO ret.new_chars_solution_count
+          FROM solutions
+         WHERE solutions.failing = false
+           AND solutions.hole    = hole
+           AND solutions.lang    = lang
+           AND solutions.scoring = 'chars';
     END IF;
 
     ret.earned := earn_cheevos(hole, lang, user_id);

@@ -72,6 +72,7 @@ type RankUpdate struct {
 	OldBestFirstGolferID      null.Int         `json:"oldBestFirstGolferID"`      // ID of the first golfer that obtained the previous diamond (including current golfer).
 	OldBestStrokes            null.Int         `json:"oldBestStrokes"`            // Number of strokes for previous gold medal (including current golfer).
 	OldBestSubmitted          null.Time        `json:"oldBestSubmitted"`          // Timestamp for previous diamond (including current golfer).
+	NewSolutionCount          int              `json:"newSolutionCount"`          // Number of golfers with solutions for this hole/lang/scoring (including current golfer).
 }
 
 // Settings is page → setting → value.

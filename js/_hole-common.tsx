@@ -328,6 +328,7 @@ export interface RankUpdate {
     oldBestFirstGolferID: number | null,
     oldBestStrokes: number | null,
     oldBestSubmitted: string | null,
+    newSolutionCount: number,
 }
 
 export interface Run {
