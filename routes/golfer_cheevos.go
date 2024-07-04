@@ -171,5 +171,23 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 		cheevoIDs(config.CheevoTree["Total Points"]),
 	)
 
+	var holes []config.Hole
+	if err := db.Select(
+		&holes,
+		"SELECT DISTINCT hole FROM solutions WHERE NOT failing AND user_id = $1",
+		golfer.ID,
+	); err != nil {
+		panic(err)
+	}
+
+	categories := map[string]bool{}
+	for _, hole := range holes {
+		categories[hole.Category] = true
+	}
+
+	progress := data["smörgåsbord"]
+	progress.Progress = len(categories)
+	data["smörgåsbord"] = progress
+
 	render(w, r, "golfer/cheevos", data, golfer.Name)
 }
