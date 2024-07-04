@@ -79,6 +79,7 @@ func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.Messa
 	golferURL := "https://code.golf/golfers/" + golfer.Name
 
 	titlePrefix := "New Tied 🥇"
+	isUnicorn := false
 
 	// Creating the basic embed
 	embed := &discordgo.MessageEmbed{
@@ -91,11 +92,14 @@ func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.Messa
 	fieldValues := make(map[string]string)
 	for _, pair := range announce.Updates {
 		for _, update := range pair {
-			if !update.To.Joint.V {
+			if !update.To.Joint.V && !isUnicorn {
 				titlePrefix = "New 💎"
 			}
 
-			if update.OldBestStrokes.Valid && fieldValues[update.Scoring] == "" {
+			if !update.OldBestStrokes.Valid {
+				titlePrefix = "New 🦄 💎"
+				isUnicorn = true
+			} else if fieldValues[update.Scoring] == "" {
 				fieldValues[update.Scoring] = pretty.Comma(update.OldBestStrokes.V)
 
 				dateString := ""
