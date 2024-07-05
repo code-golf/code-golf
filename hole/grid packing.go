@@ -52,8 +52,8 @@ func parseGridQuestion(data string) GridTestCase {
 	parts := strings.Split(data, " ")
 
 	boxes := make([]GridBox, 0)
-	for i := range (len(parts) - 1) {
-		coords = strings.Split(pargs[i+1], ",")
+	for i := range len(parts) - 1 {
+		coords = strings.Split(parts[i+1], ",")
 		boxes = append(boxes, GridBox{
 			width:  parseInt(coords[0]),
 			height: parseInt(coords[1]),
