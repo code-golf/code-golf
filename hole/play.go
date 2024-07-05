@@ -204,8 +204,8 @@ func Play(
 		runs = gameOfLife()
 	case "gray-code-decoder", "gray-code-encoder":
 		runs = grayCode(hole.ID == "gray-code-decoder")
-	case "grid-packing":
-		runs = gridPacking()
+	case "css-grid":
+		runs = cssGrid()
 	case "isbn":
 		runs = isbn()
 	case "intersection":
