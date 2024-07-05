@@ -29,7 +29,7 @@ func formatGridSolution(solution GridSolution) string {
 
 	for i, box := range solution {
 		sb.WriteString(strconv.Itoa(box.x))
-		sb.WriteRune(' ')
+		sb.WriteRune(',')
 		sb.WriteString(strconv.Itoa(box.y))
 
 		if i < len(solution)-1 {
@@ -73,7 +73,7 @@ func formatGridQuestion(board GridTestCase) string {
 
 	for i, box := range board.boxes {
 		sb.WriteString(strconv.Itoa(box.width))
-		sb.WriteRune(' ')
+		sb.WriteRune(',')
 		sb.WriteString(strconv.Itoa(box.height))
 		if i < len(board.boxes)-1 {
 			sb.WriteRune(' ')
