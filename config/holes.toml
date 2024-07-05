@@ -1183,21 +1183,23 @@ synopsis = 'Greedily fill a grid with rectangles while maintaining lexicographic
 preamble = '''
 <p>
     Place each rectangle in the grid in the first position that fits. The first number given
-will be the width of the grid, then each pair of numbers represents the width and height of the boxes.
+will be the width of the grid, then each pair of comma-seperated numbers represents the width
+and height of the boxes.
 
 <p>
     Output the X and Y coordinates of the top-left corner of each box, starting from 0 0, all on one line.
+    Each pair of numbers is seperated by a comma.
 
 <p>
     The grid has infinite height. 
 
 
-<h2>Example</h2>
+<h3>Example</h3>
 
 <p>
     Given this input
 
-<pre>4 2 1 3 1 1 2 4 1</pre>
+<pre>4 2,1 3,1 1,2 4,1</pre>
 
 <p>
     We know the width is 4, and the boxes are <code>[2,1], [3,1], [1,2], [4,1]</code>
@@ -1206,18 +1208,18 @@ will be the width of the grid, then each pair of numbers represents the width an
     Greedily aranging the boxes gives us this:
 
 <pre>
-+----+      
-|    |      
-+----+      
-+-------++-+
-|       || |
-+-------+| |
-         | |
-         | |
-         +-+
-+----------+
-|          |
-+----------+
+┏━━━━┓      
+┃  ┆ ┃      
+┗━━━━┛      
+┏━━━━━━━┓┏━┓
+┃  ┆  ┆ ┃┃ ┃
+┗━━━━━━━┛┃┄┃
+         ┃ ┃
+         ┃ ┃
+         ┗━┛
+┏━━━━━━━━━━┓
+┃  ┆  ┆  ┆ ┃
+┗━━━━━━━━━━┛
 </pre>
 
 <p>
@@ -1227,7 +1229,7 @@ will be the width of the grid, then each pair of numbers represents the width an
     So we output the coordinates of the top left corners:
 
 <pre>
-0 0 0 1 3 1 0 3
+0,0 0,1 3,1 0,3
 </pre>
 '''
 
