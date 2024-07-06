@@ -92,7 +92,7 @@ func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.Messa
 	fieldValues := make(map[string]string)
 	for _, pair := range announce.Updates {
 		for _, update := range pair {
-			if update.NewSolutionCount == 1 {
+			if update.NewSolutionCount.Valid && update.NewSolutionCount.V == 1 {
 				// Once we detect a unicorn, we continue to show it when we edit messages.
 				titlePrefix = "New 🦄"
 				isUnicorn = true
