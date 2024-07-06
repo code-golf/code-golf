@@ -1176,18 +1176,24 @@ preamble = '''
 <p>The numbers range from 0 to 4095 inclusive.
 '''
 
-['Grid Packing']
+['CSS Grid']
 category = 'Art'
 experiment = 1214
-synopsis = 'Greedily fill a grid with rectangles while maintaining lexicographical order.'
+links = [
+    { name = "MDN", url = "//developer.mozilla.org/en-US/docs/Web/CSS/grid-auto-flow"}
+]
+synopsis = 'Place divs in a rectagular grid like CSS would.'
 preamble = '''
 <p>
-    Place each rectangle in the grid in the first position that fits. The first number given
-will be the width of the grid, then each pair of comma-seperated numbers represents the width
-and height of the boxes.
+    When using the grid layout in CSS, divs are placed in a particular way. Each div can span a number of rows and columns.
+    With the default settings, div must come after the previous one in flow order, so when placing a div the browser will look for the first 
+    spot that would fit and comes after the previous div.
+<p>
+    You will be given the number of columns, a space, then a series of <code>w,h</code> pairs representing the row and
+    column span of each div.
 
 <p>
-    Output the X and Y coordinates of the top-left corner of each box, starting from 0 0, all on one line.
+    Output the column and row coordinates of the top-left corner of each box, starting from 0 0, all on one line.
     Each pair of numbers is seperated by a comma.
 
 <p>
@@ -1208,18 +1214,15 @@ and height of the boxes.
     Greedily aranging the boxes gives us this:
 
 <pre>
-┏━━━━┓      
-┃  ┆ ┃      
-┗━━━━┛      
-┏━━━━━━━┓┏━┓
-┃  ┆  ┆ ┃┃ ┃
-┗━━━━━━━┛┃┄┃
-         ┃ ┃
-         ┃ ┃
-         ┗━┛
-┏━━━━━━━━━━┓
-┃  ┆  ┆  ┆ ┃
-┗━━━━━━━━━━┛
+┏━━━┓    
+┃ ┆ ┃    
+┣━━━┻━┳━┓
+┃ ┆ ┆ ┃ ┃
+┗━━━━━┫┄┃
+      ┃ ┃
+┏━━━━━┻━┫
+┃ ┆ ┆ ┆ ┃
+┗━━━━━━━┛
 </pre>
 
 <p>
