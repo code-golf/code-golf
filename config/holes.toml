@@ -1275,12 +1275,15 @@ preamble = '''
 '''
 
 ['Hexagonal Spiral']
-category = 'Art'
 experiment = 1223
-synopsis = 'Draw a cool hexagonal spiral. TODO: Better hole description.'
+category = 'Art'
+synopsis = 'Draw a cool hexagonal spiral.'
 preamble = '''
 <p>
-    Draw this:
+    The "hexagonal spiral" ASCII art represents a series of connected hexagons
+    that form a spiral-like pattern. This pattern creates an optical illusion
+    of a continuous, expanding, and interlocking hexagonal grid. Draw such a 
+    pattern.
 
 <pre>
                   _
