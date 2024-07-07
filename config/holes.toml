@@ -590,6 +590,67 @@ preamble = '''
 </div>
 '''
 
+['CSS Grid']
+category = 'Art'
+experiment = 1214
+links = [
+    { name = 'MDN', url = '//developer.mozilla.org/en-US/docs/Web/CSS/grid-auto-flow' }
+]
+synopsis = 'Place divs in a rectagular grid like CSS would.'
+preamble = '''
+<p>
+    When using the grid layout in CSS, divs are placed in a particular way.
+    Each div can span a number of rows and columns. With the default settings,
+    div must come after the previous one in flow order, so when placing a div
+    the browser will look for the first spot that would fit and comes after
+    the previous div.
+
+<p>
+    You will be given the number of columns, a space, then a series of
+    <code>w,h</code> pairs representing the row and column span of each div.
+
+<p>
+    Output the column and row coordinates of the top-left corner of each box,
+    starting from 0 0, all on one line. Each pair of numbers is seperated by a
+    comma.
+
+<p>The grid has infinite height.
+
+<h3>Example</h3>
+
+<p>Given this input:
+
+<pre>4 2,1 3,1 1,2 4,1</pre>
+
+<p>
+    We know the width is 4, and the boxes are
+    <code>[2,1], [3,1], [1,2], [4,1]</code>
+
+<p>Greedily aranging the boxes gives us this:
+
+<pre>
+┏━━━┓
+┃ ┆ ┃
+┣━━━┻━┳━┓
+┃ ┆ ┆ ┃ ┃
+┗━━━━━┫┄┃
+      ┃ ┃
+┏━━━━━┻━┫
+┃ ┆ ┆ ┆ ┃
+┗━━━━━━━┛
+</pre>
+
+<p>
+    Note that the third long box could fix on the third row, however, that
+    would not preserve ordering so we must place it on the second row.
+
+<p>So we output the coordinates of the top left corners:
+
+<pre>
+0,0 0,1 3,1 0,3
+</pre>
+'''
+
 [Cubes]
 category = 'Art'
 released = 2019-01-13
@@ -1176,66 +1237,6 @@ preamble = '''
 <p>The numbers range from 0 to 4095 inclusive.
 '''
 
-['CSS Grid']
-category = 'Art'
-experiment = 1214
-links = [
-    { name = "MDN", url = "//developer.mozilla.org/en-US/docs/Web/CSS/grid-auto-flow"}
-]
-synopsis = 'Place divs in a rectagular grid like CSS would.'
-preamble = '''
-<p>
-    When using the grid layout in CSS, divs are placed in a particular way. Each div can span a number of rows and columns.
-    With the default settings, div must come after the previous one in flow order, so when placing a div the browser will look for the first 
-    spot that would fit and comes after the previous div.
-<p>
-    You will be given the number of columns, a space, then a series of <code>w,h</code> pairs representing the row and
-    column span of each div.
-
-<p>
-    Output the column and row coordinates of the top-left corner of each box, starting from 0 0, all on one line.
-    Each pair of numbers is seperated by a comma.
-
-<p>
-    The grid has infinite height. 
-
-
-<h3>Example</h3>
-
-<p>
-    Given this input
-
-<pre>4 2,1 3,1 1,2 4,1</pre>
-
-<p>
-    We know the width is 4, and the boxes are <code>[2,1], [3,1], [1,2], [4,1]</code>
-
-<p>
-    Greedily aranging the boxes gives us this:
-
-<pre>
-┏━━━┓    
-┃ ┆ ┃    
-┣━━━┻━┳━┓
-┃ ┆ ┆ ┃ ┃
-┗━━━━━┫┄┃
-      ┃ ┃
-┏━━━━━┻━┫
-┃ ┆ ┆ ┆ ┃
-┗━━━━━━━┛
-</pre>
-
-<p>
-    Note that the third long box could fix on the third row, however, that would not preserve ordering so we must place it on the second row.
-
-<p>
-    So we output the coordinates of the top left corners:
-
-<pre>
-0,0 0,1 3,1 0,3
-</pre>
-'''
-
 ['Happy Numbers']
 category = 'Sequence'
 releases = [2017-10-31, 2021-09-19]
@@ -1691,24 +1692,6 @@ preamble = '''
     tickets for the numbering system on a separate line.
 '''
 
-[Mandelbrot]
-category = 'Art'
-experiment = 813
-links = [
-    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Mandelbrot_set' },
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Mandelbrot_set' },
-]
-synopsis = 'Draw the Mandelbrot set.'
-preamble = '''
-<p>
-    The Mandelbrot set is the set of complex numbers <b>c</b> for which the sequence <b>a(1) = 0, a(n+1) = a(n)² + c</b> does not diverge to infinity.
-
-<p>
-    Consider the section of the complex plane where <b>-2 ≤ Re c ≤ 0.5, -1 ≤ Im c ≤ 1</b> divided into a 41×81 lattice.
-    Draw the Mandelbrot set using this grid. That is, for each such lattice point, print █ (U+2588) if it belongs to the set and ▒ (U+2592) if it doesn't.
-    Note that for each of the lattice points, 1063 iterations are enough to determine whether the sequence corresponding to the point is unbounded or not.
-'''
-
 [Mahjong]
 category = 'Gaming'
 links = [
@@ -1753,6 +1736,24 @@ preamble = '''
 <p>
     The input consists of a sequence of arguments, each containing a string of 14 Unicode characters which represent the tiles in the hand.
     Output the arguments that represent complete mahjong hands, in the same order as they appear in the argument list.
+'''
+
+[Mandelbrot]
+category = 'Art'
+experiment = 813
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Mandelbrot_set' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Mandelbrot_set' },
+]
+synopsis = 'Draw the Mandelbrot set.'
+preamble = '''
+<p>
+    The Mandelbrot set is the set of complex numbers <b>c</b> for which the sequence <b>a(1) = 0, a(n+1) = a(n)² + c</b> does not diverge to infinity.
+
+<p>
+    Consider the section of the complex plane where <b>-2 ≤ Re c ≤ 0.5, -1 ≤ Im c ≤ 1</b> divided into a 41×81 lattice.
+    Draw the Mandelbrot set using this grid. That is, for each such lattice point, print █ (U+2588) if it belongs to the set and ▒ (U+2592) if it doesn't.
+    Note that for each of the lattice points, 1063 iterations are enough to determine whether the sequence corresponding to the point is unbounded or not.
 '''
 
 [Maze]
