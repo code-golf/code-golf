@@ -1275,6 +1275,7 @@ preamble = '''
 
 ['Hexagonal Spiral']
 category = 'Art'
+experiment = 1223
 synopsis = 'Draw a cool hexagonal spiral. TODO: Better hole description.'
 preamble = '''
 <p>
