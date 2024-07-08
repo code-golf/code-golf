@@ -92,13 +92,19 @@ func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.Messa
 	fieldValues := make(map[string]string)
 	for _, pair := range announce.Updates {
 		for _, update := range pair {
-			if update.NewSolutionCount.Valid && update.NewSolutionCount.V == 1 {
-				// Once we detect a unicorn, we continue to show it when we edit messages.
-				// The unicorn looks better with an extra space on the right.
-				titlePrefix = "New 🦄 "
-				isUnicorn = true
-			} else if !update.To.Joint.V && !isUnicorn {
-				titlePrefix = "New 💎"
+			if !isUnicorn {
+				if update.NewSolutionCount.Valid && update.NewSolutionCount.V == 1 {
+					// Once we detect a unicorn, we continue to show it when we edit messages.
+					// The unicorn looks better with an extra space on the right.
+					if !update.OldBestStrokes.Valid {
+						titlePrefix = "New 🦄 "
+					} else {
+						titlePrefix = "Improved 🦄 "
+					}
+					isUnicorn = true
+				} else if !update.To.Joint.V {
+					titlePrefix = "New 💎"
+				}
 			}
 
 			if update.OldBestStrokes.Valid && fieldValues[update.Scoring] == "" {
