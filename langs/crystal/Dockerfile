@@ -1,10 +1,10 @@
-FROM crystallang/crystal:1.12.2-alpine AS builder
+FROM crystallang/crystal:1.13.0-alpine AS builder
+
+RUN apk del --no-cache libxml2-static python3
 
 RUN strip /usr/bin/crystal
 
 FROM codegolf/lang-base
-
-ENV CRYSTAL_CACHE_DIR=/tmp PATH=/usr/bin:/bin
 
 COPY --from=0 /bin/sh                              /bin/
 COPY --from=0 /lib/ld-musl-x86_64.so.1             \

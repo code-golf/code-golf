@@ -337,8 +337,8 @@ for arg in sys.argv[1:]:
 '''
 
 [Crystal]
-size    = '252 MiB'
-version = '1.12.2'
+size    = '270 MiB'
+version = '1.13.0'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -676,7 +676,7 @@ for (let arg of arguments)
 
 [Julia]
 size    = '310 MiB'
-version = '1.10.3'
+version = '1.10.4'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -748,7 +748,7 @@ end
 
 [Nim]
 size    = '15.0 MiB'
-version = '2.0.6'
+version = '2.0.8'
 website = 'https://nim-lang.org'
 example = '''
 import os
@@ -825,7 +825,7 @@ say for @ARGV;
 
 [PHP]
 size    = '8.40 MiB'
-version = '8.3.8'
+version = '8.3.9'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -949,8 +949,8 @@ Shout arg
 '''
 
 [Ruby]
-size    = '27.9 MiB'
-version = '3.3.3'
+size    = '28.6 MiB'
+version = '3.3.4'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing
