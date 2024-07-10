@@ -2443,6 +2443,24 @@ preamble = '''
 </div>
 '''
 
+['Polyominoes']
+category = 'Computing'
+experiment = 1232
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Polyomino' },
+]
+item-delimiter = "\n\n"
+synopsis = 'Print all polyominoes of sizes 1 to 6.'
+preamble = '''
+<p>
+    A polyomino is a shape formed by joining a certain amount of squares together, where each square must be linked together.
+    Output each possible polyomino (including every rotation), up to a size of 6, in any order. Seperate each polyomino by an empty line.
+</p>
+<p>
+    There should be a total of 1 monomino, 2 dominoes, 6 trominoes, 19 tetrominoes, 63 pentominoes and 216 hexominoes.
+</p>
+'''
+
 ['Prime Numbers']
 category = 'Sequence'
 releases = [2017-10-04, 2021-12-05]
