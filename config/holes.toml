@@ -2454,7 +2454,7 @@ synopsis = 'Print all polyominoes of sizes 1 to 6.'
 preamble = '''
 <p>
     A polyomino is a shape formed by joining a certain amount of squares together, where each square must be linked together.
-    Output each possible polyomino (including every rotation), up to a size of 6, in any order. Seperate each polyomino by an empty line.
+    Output each possible polyomino (including every rotation), up to a size of 6, in any order. Separate each polyomino by an empty line.
 </p>
 <p>
     There should be a total of 1 monomino, 2 dominoes, 6 trominoes, 19 tetrominoes, 63 pentominoes and 216 hexominoes.
