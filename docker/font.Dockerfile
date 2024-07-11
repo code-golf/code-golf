@@ -121,6 +121,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1faa6.svg       `# Headstone`                    \
     svg/23f1.svg        `# Stopwatch`                    \
     svg/2615.svg        `# Hot Beverage`                 \
+    svg/2623.svg        `# Biohazard`                    \
     svg/2639.svg        `# Frowning Face`                \
     svg/26f3.svg        `# Flag in Hole`                 \
     svg/2702.svg        `# Scissors`                     \

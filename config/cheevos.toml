@@ -198,6 +198,11 @@ description = 'Leave a passing solution alone for one year.'
 target      = 365
 
 [[Miscellaneous]]
+name        = 'Biohazard'
+emoji       = '☣️'
+description = '<a href=/golfer/settings>Add a bio</a> to your profile.'
+
+[[Miscellaneous]]
 name        = 'Black-box Testing'
 emoji       = '🧪'
 description = 'Solve an <a href=/ideas>experimental hole</a> or language.'

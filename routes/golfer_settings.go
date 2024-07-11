@@ -130,7 +130,7 @@ func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 	tx := session.Database(r).MustBeginTx(r.Context(), nil)
 	defer tx.Rollback()
 
-	userID := session.Golfer(r).ID
+	golfer := session.Golfer(r)
 	tx.MustExec(
 		`UPDATE users
 		    SET about = $1,
@@ -150,11 +150,11 @@ func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 		r.Form.Get("show_country") == "on",
 		r.Form.Get("theme"),
 		r.Form.Get("time_zone"),
-		userID,
+		golfer.ID,
 	)
 
 	// Update connections' publicness if they differ from DB.
-	for _, c := range oauth.GetConnections(tx, userID, false) {
+	for _, c := range oauth.GetConnections(tx, golfer.ID, false) {
 		if show := r.Form.Get("show_"+c.Connection) == "on"; show != c.Public {
 			tx.MustExec(
 				`UPDATE connections
@@ -162,9 +162,14 @@ func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 				  WHERE connection = $2 AND user_id = $3`,
 				show,
 				c.Connection,
-				userID,
+				golfer.ID,
 			)
 		}
+	}
+
+	// TODO Add "flash" messages so we can show the cheevo after the redirect.
+	if r.Form.Get("about") != "" {
+		golfer.Earn(tx, "biohazard")
 	}
 
 	if err := tx.Commit(); err != nil {
