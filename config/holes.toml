@@ -1475,7 +1475,8 @@ preamble = '''
 <p>
     For example, the square of 55 equals <b>3,025</b>. Splitting the
     square in <b>30</b> and <b>25</b> makes their sum equal 55. Both
-    operands must retain their digit order but may differ in length.
+    operands must not equal zero, and must retain their digit order,
+    but they may differ in length.
 
 <p>
     Print all the Kaprekar numbers from <b>1</b> to <b>25,000,000</b>
