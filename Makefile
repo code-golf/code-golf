@@ -50,7 +50,7 @@ dev:
 e2e-iterate: export COMPOSE_FILE=docker/core.yml:docker/e2e.yml
 e2e-iterate: export COMPOSE_PROJECT_NAME=code-golf-e2e
 e2e-iterate:
-	@docker compose run e2e
+	@docker compose run --rm e2e
 
 e2e: export COMPOSE_FILE=docker/core.yml:docker/e2e.yml
 e2e: export COMPOSE_PROJECT_NAME=code-golf-e2e
@@ -60,7 +60,7 @@ e2e:
 	@touch docker/.env
 	@docker compose rm -fsv &>/dev/null
 	@docker compose build --pull -q
-	@docker compose run e2e || (docker compose logs; false)
+	@docker compose run --rm e2e || (docker compose logs; false)
 	@docker compose rm -fsv &>/dev/null
 
 fmt:
