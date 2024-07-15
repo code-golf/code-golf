@@ -1,5 +1,0 @@
-{
-    "eslint.validate": ["typescript","typescriptreact"],
-    "eslint.format.enable": true,
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-}
