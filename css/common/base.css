@@ -430,6 +430,13 @@ thead th {
     }
 }
 
+/* Buttons in table cells are smaller */
+td .btn {
+    font-size: .75rem;
+    line-height: .75rem;
+    padding: .25rem;
+}
+
 .btn[disabled] { opacity: .5 }
 
 .btn:not([disabled]):hover {
