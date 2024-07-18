@@ -89,9 +89,6 @@
             {{ svg "journals" }}
         </a>
         <div></div>
-    {{ if eq $.Name "hole-tabs" }}
-        <div id=alert-pool></div>
-    {{ end }}
     {{ with .Golfer }}
         {{ $slug := (print "/golfers/" .Name) }}
 
