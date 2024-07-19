@@ -243,7 +243,7 @@ foreach (String arg in args)
 
 ['C++']
 size    = '142 MiB'
-version = '18.1.6'
+version = '18.1.8'
 website = 'https://clang.llvm.org'
 example = '''
 #include <iostream>
@@ -268,8 +268,8 @@ int main(int argc, char* argv[]) {
 '''
 
 [Clojure]
-size    = '65.7 MiB'
-version = 'Babashka 1.3.190'
+size    = '65.8 MiB'
+version = 'Babashka 1.3.191'
 website = 'https://babashka.org'
 example = '''
 ; Printing
@@ -658,8 +658,8 @@ class Main {
 '''
 
 [JavaScript]
-size    = '39.6 MiB'
-version = 'V8 12.1.285.27'
+size    = '41.1 MiB'
+version = 'V8 12.6.228.28'
 website = 'https://v8.dev'
 example = '''
 // Printing
