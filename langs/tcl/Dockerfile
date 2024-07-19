@@ -4,7 +4,7 @@ RUN apk add --no-cache build-base curl
 
 RUN curl -L https://github.com/tcltk/tcl/archive/refs/tags/core-8-6-14.tar.gz | tar xz
 
-ENV LDFLAGS -static
+ENV LDFLAGS=-static
 
 RUN mv /tcl-* /tcl   \
  && cd tcl/unix      \

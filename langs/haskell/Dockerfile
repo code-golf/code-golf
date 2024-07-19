@@ -1,6 +1,6 @@
 FROM alpine:3.20 AS builder
 
-ENV VER 9.8.2
+ENV VER=9.8.2
 
 RUN apk add --no-cache build-base ghc=$VER-r1
 
