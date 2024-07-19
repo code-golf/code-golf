@@ -93,7 +93,7 @@ syscall
 [AWK]
 size    = '1.77 MiB'
 version = '5.3.0'
-website = 'https://www.gnu.org/software/gawk/'
+website = 'https://www.gnu.org/software/gawk'
 example = '''
 BEGIN {
     # Printing
@@ -118,7 +118,7 @@ BEGIN {
 [Bash]
 size    = '1.20 MiB'
 version = '5.2.26'
-website = 'https://www.gnu.org/software/bash/'
+website = 'https://www.gnu.org/software/bash'
 example = '''
 # Printing
 echo Hello, World!
@@ -201,7 +201,7 @@ with 65536 cells; and cells are 8 bit with wrapping;
 [C]
 size    = '1.70 MiB'
 version = 'Tiny C Compiler 0.9.27'
-website = 'https://bellard.org/tcc/'
+website = 'https://bellard.org/tcc'
 example = '''
 #include <stdio.h>
 
@@ -224,7 +224,7 @@ int main(int argc, char* argv[]) {
 ['C#']
 size    = '151 MiB'
 version = 'C# 12.0 on .NET 8.0.6'
-website = 'https://docs.microsoft.com/dotnet/csharp/'
+website = 'https://docs.microsoft.com/dotnet/csharp'
 example = '''
 // Printing
 Console.WriteLine("Hello, World!");
@@ -472,7 +472,7 @@ example    = '''
 [Forth]
 size    = '2.85 MiB'
 version = 'GNU Forth 0.7.3'
-website = 'https://www.gnu.org/software/gforth/'
+website = 'https://www.gnu.org/software/gforth'
 example = '''
 \ Printing
 .( Hello, World!) CR
@@ -493,7 +493,7 @@ bye
 [Fortran]
 size    = '94.1 MiB'
 version = 'GNU Fortran 14.1.0'
-website = 'https://gcc.gnu.org/fortran/'
+website = 'https://gcc.gnu.org/fortran'
 example = '''
 character(len=32) :: s
 integer :: i
@@ -547,7 +547,7 @@ func main() {
 [GolfScript]
 size    = '28.6 MiB'
 version = '6155e9f'
-website = 'http://www.golfscript.com/golfscript/'
+website = 'http://golfscript.com/golfscript'
 example = '''
 # Printing
 "Hello, World!"puts
@@ -562,7 +562,7 @@ n*
 [Haskell]
 size    = '388 MiB'
 version = 'Glasgow Haskell Compiler 9.8.2'
-website = 'https://www.haskell.org/ghc/'
+website = 'https://www.haskell.org/ghc'
 example = '''
 import System.Environment
 
@@ -843,7 +843,7 @@ for ($i = 1; $i < $argc; $i++)
 [PowerShell]
 size    = '178 MiB'
 version = 'PowerShell 7.4.3 on .NET 8.0.6'
-website = 'https://docs.microsoft.com/powershell/scripting/overview'
+website = 'https://docs.microsoft.com/powershell/scripting'
 example = '''
 # Printing
 Write-Host 'Hello, World!'
@@ -991,7 +991,7 @@ fn main() {
 [sed]
 size    = '236 KiB'
 version = '4.9'
-website = 'https://www.gnu.org/software/sed/'
+website = 'https://www.gnu.org/software/sed'
 example = '''
 # Printing
 1i Hello, World!
