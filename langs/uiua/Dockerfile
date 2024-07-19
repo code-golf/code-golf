@@ -1,4 +1,4 @@
-FROM rust:1.78-bookworm as builder
+FROM rust:1.78-bookworm AS builder
 
 RUN cargo install uiua --version 0.11.1
 

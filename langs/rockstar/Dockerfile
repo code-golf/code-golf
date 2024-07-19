@@ -1,4 +1,4 @@
-FROM eclipse-temurin:22.0.1_8-jre-alpine as builder
+FROM eclipse-temurin:22.0.1_8-jre-alpine AS builder
 
 RUN apk add --no-cache build-base wget
 
