@@ -470,7 +470,7 @@ example    = '''
 '''
 
 [Forth]
-size    = '2.85 MiB'
+size    = '2.86 MiB'
 version = 'GNU Forth 0.7.3'
 website = 'https://www.gnu.org/software/gforth/'
 example = '''
@@ -579,7 +579,7 @@ main = do
 '''
 
 [Hexagony]
-size    = '8.80 MiB'
+size    = '8.81 MiB'
 version = '770406a'
 website = 'https://github.com/SirBogman/Hexagony'
 example = '''
@@ -824,7 +824,7 @@ say for @ARGV;
 '''
 
 [PHP]
-size    = '8.39 MiB'
+size    = '8.40 MiB'
 version = '8.3.9'
 website = 'https://www.php.net'
 example = '''
@@ -1060,7 +1060,7 @@ for arg in CommandLine.arguments[1...] {
 '''
 
 [Tcl]
-size    = '5.24 MiB'
+size    = '5.25 MiB'
 version = '8.6.14'
 website = 'https://www.tcl-lang.org'
 example = '''
