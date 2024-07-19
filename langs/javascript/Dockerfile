@@ -3,7 +3,7 @@ FROM debian:bullseye-slim AS builder
 RUN apt-get update \
  && apt-get install -y curl g++ git pkg-config procps python python3
 
-ENV PATH "/depot_tools:$PATH"
+ENV PATH="/depot_tools:$PATH"
 
 RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git \
  && fetch v8

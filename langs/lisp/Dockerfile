@@ -1,6 +1,6 @@
 FROM alpine:3.20 AS builder
 
-ENV FORCE_UNSAFE_CONFIGURE 1
+ENV FORCE_UNSAFE_CONFIGURE=1
 
 RUN apk add --no-cache build-base curl
 
