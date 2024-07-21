@@ -24,7 +24,7 @@ x is a no-op.
 [Arturo]
 experiment = 915
 size       = '7.61 MiB'
-version    = '0.9.83'
+version    = '0.9.84'
 website    = 'https://arturo-lang.io'
 example    = '''
 ; Printing
@@ -34,9 +34,10 @@ print "Hello, World!"
 loop 0..9 'i ->
     print i
 
-; Accessing arguments (UNFINISHED)
-loop args 'arg ->
-    print arg
+; Accessing arguments
+loop arg [a] [
+    print a
+]
 '''
 
 [Assembly]
