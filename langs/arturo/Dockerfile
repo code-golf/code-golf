@@ -14,11 +14,11 @@ RUN ./build.nims -i -l -m mini --release
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6           \
-              /lib/x86_64-linux-gnu/libm.so.6           \
-              /lib/x86_64-linux-gnu/libpcre.so.3        /lib/x86_64-linux-gnu/
-COPY --from=0 /lib64/ld-linux-x86-64.so.2               /lib64/
-COPY --from=0 /arturo/bin/arturo                        /usr/bin/
+COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
+              /lib/x86_64-linux-gnu/libm.so.6       \
+              /lib/x86_64-linux-gnu/libpcre.so.3    /lib/x86_64-linux-gnu/
+COPY --from=0 /lib64/ld-linux-x86-64.so.2           /lib64/
+COPY --from=0 /arturo/bin/arturo                    /usr/bin/
 
 ENTRYPOINT ["arturo"]
 
