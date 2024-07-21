@@ -3570,8 +3570,25 @@ Then I'm sure she sells seashore shells.
 
 ['Transpose Sentence']
 category = 'Transform'
-synopsis = 'TBD'
-preamble = 'TBD'
+synopsis = 'Print the transposed representation of input sentence'
+preamble = '''<p>Consider the sentence <b>all work and no play makes jack a dull boy.</b>'
+To transpose it, first write each word on a separate line:
+<blockquote>
+all
+work
+and
+no
+play
+makes
+jack
+a
+dull
+boy
+</blockquote>
+Then read the block of text top to bottom, left to right, putting space after the last letter of each column:
+<b>awanpmjadb lonolaauo lrdakcly kyekl s</b>
+
+'''
 
 ['Trinomial Triangle']
 experiment = 1117
