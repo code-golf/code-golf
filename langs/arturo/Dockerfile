@@ -1,6 +1,6 @@
 FROM debian:bookworm-slim AS builder
 
-ENV PATH="/root/.nimble/bin:$PATH"
+ENV PATH="/root/.nimble/bin:$PATH" TERM=xterm
 
 RUN apt-get update && apt-get install -y curl gcc git libpcre3-dev xz-utils
 
@@ -12,7 +12,7 @@ WORKDIR /arturo
 
 RUN ./build.nims -i --log --mode mini
 
-FROM codegolf/lang-base-no-proc
+FROM codegolf/lang-base
 
 COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6           \
               /lib/x86_64-linux-gnu/libdl.so.2          \
