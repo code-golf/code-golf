@@ -3568,6 +3568,11 @@ Then I'm sure she sells seashore shells.
 </blockquote>
 '''
 
+['Transpose Sentence']
+category = 'Transform'
+synopsis = 'TBD'
+preamble = 'TBD'
+
 ['Trinomial Triangle']
 experiment = 1117
 category = 'Sequence'

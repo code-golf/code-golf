@@ -260,6 +260,8 @@ func Play(
 		runs = tenPinBowling()
 	case "time-distance":
 		runs = timeDistance()
+	case "transpose-sentence":
+		runs = transposeSentence()
 	case "turtle":
 		runs = turtle()
 	case "zeckendorf-representation":
