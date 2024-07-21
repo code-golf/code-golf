@@ -5,6 +5,7 @@ use JSON::Fast;
 use TOML::Thumb;
 
 constant %paths = (
+    'Arturo'     => 'github.com/arturo-lang/arturo/releases/latest',
     'BASIC'      => 'en.wikipedia.org/wiki/FreeBASIC',
     'Berry'      => 'github.com/berry-lang/berry/releases/latest',
     'C'          => 'en.wikipedia.org/wiki/Tiny_C_Compiler',
