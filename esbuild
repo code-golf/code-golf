@@ -1,6 +1,6 @@
 #!/bin/sh -e
 
-rm -rf dist esbuild.json
+rm -rf dist config/data/assets.json
 
 npm install
 
