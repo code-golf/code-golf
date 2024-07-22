@@ -1,6 +1,6 @@
 use t;
 
-for 'config/langs.toml'.IO.&from-toml.map({
+for 'config/data/langs.toml'.IO.&from-toml.map({
     .key.lc.subst(' ', '-').trans( qw[# + ><>] => qw[-sharp p fish] ) => .value<example>;
 }).sort -> (:key($lang), :value($code)) {
     for (
