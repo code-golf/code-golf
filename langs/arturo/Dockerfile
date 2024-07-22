@@ -1,24 +1,18 @@
-FROM debian:bookworm-slim AS builder
+FROM alpine:3.20 AS builder
 
-ENV PATH="/root/.nimble/bin:$PATH"
-
-RUN apt-get update && apt-get install -y curl gcc git libpcre3-dev xz-utils
-
-RUN curl https://nim-lang.org/choosenim/init.sh -sSf | sh -s -- -y && choosenim stable
+RUN apk add --no-cache build-base git nim pcre
 
 RUN git clone https://github.com/arturo-lang/arturo.git
 
 WORKDIR /arturo
 
-RUN ./build.nims -m mini -i
+RUN ./build.nims -m mini -i -l
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
-              /lib/x86_64-linux-gnu/libm.so.6       \
-              /lib/x86_64-linux-gnu/libpcre.so.3    /lib/x86_64-linux-gnu/
-COPY --from=0 /lib64/ld-linux-x86-64.so.2           /lib64/
-COPY --from=0 /arturo/bin/arturo                    /usr/bin/
+COPY --from=0 /lib/ld-musl-x86_64.so.1  /lib/
+COPY --from=0 /arturo/bin/arturo        /usr/bin/
+COPY --from=0 /usr/lib/libpcre.so.1     /usr/lib/
 
 ENTRYPOINT ["arturo"]
 
