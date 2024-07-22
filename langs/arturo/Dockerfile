@@ -1,6 +1,6 @@
 FROM debian:bookworm-slim AS builder
 
-ENV PATH="/root/.nimble/bin:$PATH" TERM=xterm
+ENV PATH="/root/.nimble/bin:$PATH"
 
 RUN apt-get update && apt-get install -y curl gcc git libpcre3-dev xz-utils
 
@@ -10,7 +10,7 @@ RUN git clone https://github.com/arturo-lang/arturo.git
 
 WORKDIR /arturo
 
-RUN ./build.nims -i -l -m mini --release
+RUN ./build.nims -m mini -i
 
 FROM codegolf/lang-base
 
