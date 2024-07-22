@@ -3570,6 +3570,7 @@ Then I'm sure she sells seashore shells.
 
 ['Transpose Sentence']
 category = 'Transform'
+experiment = 1245
 synopsis = 'Print the transposed representation of input sentence'
 preamble = '''<p>Given a list of sentences, print the transposed representation of each input.
 
