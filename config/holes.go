@@ -60,7 +60,7 @@ func init() {
 		Hole
 		Variants []string
 	}
-	unmarshal("holes.toml", &holes)
+	unmarshal("data/holes.toml", &holes)
 
 	funcs := template.FuncMap{
 		"hasPrefix": strings.HasPrefix,

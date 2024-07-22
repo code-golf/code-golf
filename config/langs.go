@@ -32,7 +32,7 @@ type Lang struct {
 
 func init() {
 	var langs map[string]*Lang
-	unmarshal("langs.toml", &langs)
+	unmarshal("data/langs.toml", &langs)
 
 	for name, lang := range langs {
 		lang.Example = strings.TrimSuffix(lang.Example, "\n")
