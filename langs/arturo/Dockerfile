@@ -1,10 +1,18 @@
 FROM alpine:3.20 AS builder
 
-RUN apk add --no-cache build-base git nim pcre
+RUN apk add --no-cache build-base curl git nim pcre
 
 RUN git clone https://github.com/arturo-lang/arturo.git
 
+COPY build.nims /arturo/
+
 WORKDIR /arturo
+
+RUN echo 0 > version/build
+
+RUN echo 0.9.83 > version/version
+
+RUN chmod +x build.nims
 
 RUN ./build.nims -m mini -i -l
 
