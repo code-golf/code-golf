@@ -52,7 +52,7 @@ constant %paths = (
     'Zig'        => 'en.wikipedia.org/wiki/Zig_(programming_language)',
 );
 
-my %langs = from-toml 'config/langs.toml'.IO;
+my %langs = from-toml 'config/data/langs.toml'.IO;
 
 for %langs.sort: *.key.fc -> (:key($name), :value(%lang)) {
     my $old = %lang<version> ~~ / <[\d.]>+ \d+ /;

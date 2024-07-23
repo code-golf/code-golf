@@ -77,8 +77,7 @@ COPY --from=codegolf/lang-lua        ["/", "/langs/lua/rootfs/"       ] #  354 K
 COPY --from=codegolf/lang-sed        ["/", "/langs/sed/rootfs/"       ] #  236 KiB
 COPY --from=codegolf/lang-brainfuck  ["/", "/langs/brainfuck/rootfs/" ] # 51.1 KiB
 
-COPY --from=0 /go/code-golf /go/esbuild.json     /
-COPY          /css                               /css/
+COPY --from=0 /go/code-golf                      /
 COPY --from=0 /go/dist                           /dist/
 COPY --from=0 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY          /public                            /public/

@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"encoding/json"
 	"net/http"
 	"net/url"
 	"os"
@@ -15,36 +14,10 @@ import (
 	"github.com/code-golf/code-golf/views"
 )
 
-var assets = map[string]string{}
-
 var dev bool
 
 func init() {
 	_, dev = os.LookupEnv("DEV")
-
-	// HACK Tests are run from the package directory, walk a dir up.
-	if _, err := os.Stat("esbuild.json"); os.IsNotExist(err) {
-		os.Chdir("..")
-	}
-
-	// Assets.
-	if file, err := os.Open("esbuild.json"); err == nil {
-		defer file.Close()
-
-		var esbuild struct {
-			Outputs map[string]struct{ EntryPoint string }
-		}
-
-		if err := json.NewDecoder(file).Decode(&esbuild); err != nil {
-			panic(err)
-		}
-
-		for dist, src := range esbuild.Outputs {
-			if src.EntryPoint != "" {
-				assets[src.EntryPoint] = "/" + dist
-			}
-		}
-	}
 }
 
 func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
@@ -75,13 +48,13 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	}{
 		Banners:     banners(theGolfer, time.Now().UTC()),
 		Cheevos:     config.CheevoTree,
-		CSS:         []cssLink{{assets["css/common/base.css"], ""}},
+		CSS:         []cssLink{{config.Assets["css/common/base.css"], ""}},
 		Data:        data[0],
 		Description: "Code Golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.",
 		Golfer:      theGolfer,
 		GolferInfo:  session.GolferInfo(r),
 		Holes:       config.HoleByID,
-		JS:          []string{assets["js/base.tsx"]},
+		JS:          []string{config.Assets["js/base.tsx"]},
 		Langs:       config.LangByID,
 		Name:        name,
 		Nonce:       nonce(),
@@ -120,12 +93,12 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 			args.Nav = nav
 		}
 
-		if url, ok := assets["css/"+subName+".css"]; ok {
+		if url, ok := config.Assets["css/"+subName+".css"]; ok {
 			args.CSS = append(args.CSS, cssLink{Path: url})
 		}
 
 		for _, ext := range []string{"ts", "tsx"} {
-			if url, ok := assets["js/"+subName+"."+ext]; ok {
+			if url, ok := config.Assets["js/"+subName+"."+ext]; ok {
 				args.JS = append(args.JS, url)
 			}
 		}
@@ -137,11 +110,11 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	if theme == "auto" {
 		args.CSS = append(
 			args.CSS,
-			cssLink{assets["css/common/light.css"], ""},
-			cssLink{assets["css/common/dark.css"], "(prefers-color-scheme:dark)"},
+			cssLink{config.Assets["css/common/light.css"], ""},
+			cssLink{config.Assets["css/common/dark.css"], "(prefers-color-scheme:dark)"},
 		)
 	} else {
-		args.CSS = append(args.CSS, cssLink{assets["css/common/"+theme+".css"], ""})
+		args.CSS = append(args.CSS, cssLink{config.Assets["css/common/"+theme+".css"], ""})
 	}
 
 	header := w.Header()

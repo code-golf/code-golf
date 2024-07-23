@@ -1,7 +1,7 @@
 /.vagrant/
+/config/data/assets.json
 /dist/
 /docker/.env
-/esbuild.json
 /localhost-key.pem
 /localhost.pem
 /node_modules/

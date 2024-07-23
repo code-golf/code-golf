@@ -6,7 +6,7 @@ unit sub MAIN(Bool :$no-push, *@langs);
 
 chdir $*PROGRAM.dirname;
 
-my %langs = from-toml 'config/langs.toml'.IO;
+my %langs = from-toml 'config/data/langs.toml'.IO;
 
 if my $unknown = @langs ∖ %langs {
     note "Unknown langs: $unknown";
@@ -92,7 +92,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
     run «docker push $img» unless $no-push;
 }
 
-spurt 'config/langs.toml', to-toml %langs;
+spurt 'config/data/langs.toml', to-toml %langs;
 
 # Reorder Dockerfiles: largest first to speed-up partial deploys.
 my $layers;

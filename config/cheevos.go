@@ -27,7 +27,7 @@ type Cheevo struct {
 }
 
 func init() {
-	unmarshal("cheevos.toml", &CheevoTree)
+	unmarshal("data/cheevos.toml", &CheevoTree)
 
 	for _, categories := range CheevoTree {
 		for _, cheevo := range categories {
