@@ -1,41 +1,34 @@
 package hole
 
-import (
-	"math/rand"
-	"strings"
-)
-
-const minWordCount = 4
-const wordCountVariance = 4
-const minCharCount = 4
-const charCountVariance = 4
-const chars = "abcdefghijklmnopqrstuvwxyz"
+import "strings"
 
 func randString(n int) string {
+	const chars = "abcdefghijklmnopqrstuvwxyz"
+
 	b := make([]byte, n)
 	for i := range b {
-		b[i] = chars[rand.Intn(len(chars))]
+		b[i] = randChoice([]byte(chars))
 	}
 	return string(b)
 }
 
 func transposeSentence() []Run {
-	count := 100 + rand.Intn(30)
+	tests := make([]test, randInt(100, 130))
 
-	tests := make([]test, count)
+	for i := range tests {
+		var sbr strings.Builder
 
-	for i := 0; i < count; i++ {
-		sbr := strings.Builder{}
-		nWord := minWordCount - 1 + rand.Intn(wordCountVariance)
+		// Four to seven random words.
+		for j := range randInt(4, 7) {
+			if j != 0 {
+				sbr.WriteByte(' ')
+			}
 
-		for j := 0; j < nWord; j++ {
-			sbr.WriteString(randString(minCharCount + rand.Intn(charCountVariance)))
-			sbr.WriteString(" ")
+			// Four to seven random chars long.
+			sbr.WriteString(randString(randInt(4, 7)))
 		}
-		sbr.WriteString(randString(minCharCount + rand.Intn(charCountVariance)))
 
 		sentence := sbr.String()
-
 		tests[i] = test{sentence, transpose(sentence)}
 	}
 
@@ -47,9 +40,7 @@ func transpose(s string) string {
 	maxLen := 0
 
 	for _, w := range srcWords {
-		if l := len(w); l > maxLen {
-			maxLen = l
-		}
+		maxLen = max(maxLen, len(w))
 	}
 
 	i, l, c := 0, len(srcWords), true
@@ -66,11 +57,11 @@ func transpose(s string) string {
 		i++
 	}
 
-	transposed := strings.Builder{}
+	var transposed strings.Builder
 
 	for _, sbr := range sbrs {
 		transposed.WriteString(sbr.String())
-		transposed.WriteString(" ")
+		transposed.WriteByte(' ')
 	}
 
 	return strings.TrimSpace(transposed.String())
