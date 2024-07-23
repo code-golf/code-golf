@@ -8,9 +8,8 @@ COPY build.nims /arturo/
 
 WORKDIR /arturo
 
-RUN echo 0 > version/build
-
-RUN echo 0.9.83 > version/version
+RUN echo 0      > version/build \
+ && echo 0.9.83 > version/version
 
 RUN chmod +x build.nims
 
