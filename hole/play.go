@@ -506,7 +506,7 @@ func play(
 	// Convert ANSI escapes into HTML, for coloured error messages.
 	run.Stderr = terminal.Render(stderrBytes)
 
-	// Bodge, surpress solitary "&nbsp;" that can be emitted.
+	// Bodge, suppress solitary "&nbsp;" that can be emitted.
 	if run.Stderr == "&nbsp;" {
 		run.Stderr = ""
 	}
