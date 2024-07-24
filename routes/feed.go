@@ -25,6 +25,7 @@ func init() {
 		sha, created, id string
 		hole             bool
 	}{
+		{"9802b2d", "2024-07-24 23:22:54", "transpose-sentence", true},
 		{"5df895f", "2024-07-01 00:00:02", "zeckendorf-representation", true},
 		{"0ff0d0e", "2024-06-01 00:08:19", "reversi", true},
 		{"8d348ce", "2024-05-01 17:56:27", "n-queens", true},
