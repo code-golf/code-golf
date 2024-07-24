@@ -3568,7 +3568,7 @@ Then I'm sure she sells seashore shells.
 </blockquote>
 '''
 
-['Transpose Sentence']
+['Sentence Transpose']
 category = 'Transform'
 experiment = 1245
 synopsis = 'Print the transposed representation of input sentence.'
