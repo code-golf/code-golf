@@ -21,7 +21,11 @@ func transposeSentence() []Run {
 		tests[i] = test{sentence, transpose(sentence)}
 	}
 
-	return outputTests(tests)
+	// Ensure a delta of at least 10.
+	sentence := "concentration is essential for success"
+	tests = append(tests, test{sentence, transpose(sentence)})
+
+	return outputTests(shuffle(tests))
 }
 
 func transpose(s string) string {
