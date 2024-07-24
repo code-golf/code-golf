@@ -14,11 +14,11 @@ RUN ./build.nims install mini log
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1  /lib/
+COPY --from=0 /lib/ld-musl-x86_64.so.1  \
+              /lib/libcrypto.so.3       \
+              /lib/libssl.so.3          /lib/
 COPY --from=0 /root/.arturo/bin/arturo  /usr/bin/
-COPY --from=0 /usr/lib/libcrypto.so.3   \
-              /usr/lib/libpcre.so.1     \
-              /usr/lib/libssl.so*       /usr/lib/
+COPY --from=0 /usr/lib/libpcre.so.1     /usr/lib/
 
 ENTRYPOINT ["arturo"]
 
