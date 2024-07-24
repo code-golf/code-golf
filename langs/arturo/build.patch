@@ -1,0 +1,30 @@
+--- /src/library/Numbers.nim
++++ /src/library/Numbers.nim
+@@ -949,7 +949,7 @@
+             elif x.kind==Floating:
+                 push(newLogical(x.f < 0.0))
+             elif x.kind==Rational:
+-                push(newLogical(x.rat.num < 0)):
++                push(newLogical(x.rat.num < 0))
+             elif x.kind==Complex:
+                 push(newLogical(x.z.re < 0.0 or (x.z.re == 0.0 and x.z.im < 0.0)))
+
+@@ -1033,7 +1033,7 @@
+             elif x.kind==Floating:
+                 push(newLogical(x.f > 0.0))
+             elif x.kind==Rational:
+-                push(newLogical(x.rat.num > 0)):
++                push(newLogical(x.rat.num > 0))
+             elif x.kind==Complex:
+                 push(newLogical(x.z.re > 0.0 or (x.z.re == 0.0 and x.z.im > 0.0)))
+
+--- /src/vm/vm.nim
++++ /src/vm/vm.nim
+@@ -92,7 +92,6 @@
+ importLib "Io"
+ importLib "Iterators"
+ importLib "Logic"
+-importLib "Net"
+ importLib "Numbers"
+ importLib "Paths"
+ importLib "Reflection"

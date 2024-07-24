@@ -1,25 +1,24 @@
-FROM alpine:3.20 AS builder
+FROM nimlang/nim:2.0.8-alpine-slim AS builder
 
-RUN apk add --no-cache build-base curl git nim pcre
+RUN apk add --no-cache build-base pcre
 
-RUN git clone https://github.com/arturo-lang/arturo.git
+RUN curl -L https://github.com/arturo-lang/arturo/archive/refs/tags/v0.9.83.tar.gz | tar xz
 
-COPY build.nims /arturo/
+COPY build.patch /arturo-0.9.83/
 
-WORKDIR /arturo
+WORKDIR /arturo-0.9.83
 
-RUN echo 0      > version/build \
- && echo 0.9.83 > version/version
+RUN patch -p 1 < build.patch
 
-RUN chmod +x build.nims
-
-RUN ./build.nims -m mini -i -l
+RUN ./build.nims install mini log
 
 FROM codegolf/lang-base
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1  /lib/
-COPY --from=0 /arturo/bin/arturo        /usr/bin/
-COPY --from=0 /usr/lib/libpcre.so.1     /usr/lib/
+COPY --from=0 /root/.arturo/bin/arturo  /usr/bin/
+COPY --from=0 /usr/lib/libcrypto.so.3   \
+              /usr/lib/libpcre.so.1     \
+              /usr/lib/libssl.so*       /usr/lib/
 
 ENTRYPOINT ["arturo"]
 
