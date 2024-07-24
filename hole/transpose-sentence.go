@@ -2,16 +2,6 @@ package hole
 
 import "strings"
 
-func randString(n int) string {
-	const chars = "abcdefghijklmnopqrstuvwxyz"
-
-	b := make([]byte, n)
-	for i := range b {
-		b[i] = randChoice([]byte(chars))
-	}
-	return string(b)
-}
-
 func transposeSentence() []Run {
 	tests := make([]test, randInt(100, 130))
 
@@ -24,8 +14,7 @@ func transposeSentence() []Run {
 				sbr.WriteByte(' ')
 			}
 
-			// Four to seven random chars long.
-			sbr.WriteString(randString(randInt(4, 7)))
+			sbr.WriteString(randWord())
 		}
 
 		sentence := sbr.String()

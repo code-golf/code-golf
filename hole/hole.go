@@ -17,6 +17,10 @@ var fixedTestsMap = map[string][]test{}
 //go:embed fixed-tests
 var fixedTestsFS embed.FS
 
+//go:embed words.txt
+var wordsTxt string
+var words = strings.Fields(wordsTxt)
+
 func init() {
 	if err := fs.WalkDir(fixedTestsFS, ".", func(path string, d fs.DirEntry, err error) error {
 		if d.IsDir() || err != nil {
@@ -102,6 +106,9 @@ func randChoice[E any](x []E) E { return x[rand.IntN(len(x))] }
 
 // Return a random integer between min and max inclusive.
 func randInt(min, max int) int { return min + rand.IntN(max-min+1) }
+
+// Return a random word from words.txt.
+func randWord() string { return randChoice(words) }
 
 // Returning the slice is a convenience, the shuffle is still in-place.
 func shuffle[E any](x []E) []E {
