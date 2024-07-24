@@ -3570,30 +3570,34 @@ Then I'm sure she sells seashore shells.
 
 ['Transpose Sentence']
 category = 'Transform'
-experiment = 1245
-synopsis = 'Print the transposed representation of input sentence.'
-preamble = '''<p>Given a list of sentences, print the transposed representation of each input.
+released = 2024-07-25
+synopsis = 'Print the transposed representation of a sentence.'
+preamble = '''
+<p>
+    Given a list of sentences, print the transposed representation of each
+    input.
 
-<p>Consider the sentence: <b>all work and no play makes jack a dull boy.</b>'
+<p>Consider the sentence: <b>all work and no play makes jack a dull boy.</b>
 
 <p>To transpose it, first write each word on a separate line:
 
-<pre>
-    ₁₂₃₄₅
-    ↓↓↓↓↓
-    all
-    work
-    and
-    no
-    play
-    makes
-    jack
-    a
-    dull
-    boy
+<pre>₁₂₃₄₅
+↓↓↓↓↓
+all
+work
+and
+no
+play
+makes
+jack
+a
+dull
+boy
 </pre>
 
-<p>Then read the block of text top to bottom, left to right, inserting a space after the last letter of each column, which yields:
+<p>
+    Then read the block of text top to bottom, left to right, inserting a
+    space after the last letter of each column, which yields:
 
 <p><b>awanpmjadb lonolaauo lrdakcly kyekl s</b>.
 '''

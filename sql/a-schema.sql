@@ -50,9 +50,10 @@ CREATE TYPE hole AS ENUM (
     'rock-paper-scissors-spock-lizard', 'roman-to-arabic', 'rule-110',
     'seven-segment', 'si-units', 'sierpiński-triangle', 'smith-numbers',
     'spelling-numbers', 'star-wars-opening-crawl', 'sudoku', 'sudoku-v2',
-    'ten-pin-bowling', 'time-distance', 'tongue-twisters', 'united-states',
-    'vampire-numbers', 'van-eck-sequence', 'zeckendorf-representation',
-    'zodiac-signs', 'γ', 'λ', 'π', 'τ', 'φ', '√2', '𝑒'
+    'ten-pin-bowling', 'time-distance', 'tongue-twisters',
+    'transpose-sentence', 'united-states', 'vampire-numbers',
+    'van-eck-sequence', 'zeckendorf-representation', 'zodiac-signs', 'γ', 'λ',
+    'π', 'τ', 'φ', '√2', '𝑒'
 );
 
 CREATE TYPE idea_category AS ENUM ('cheevo', 'hole', 'lang', 'other');
