@@ -44,6 +44,8 @@ type GolferInfo struct {
 	// Count of cheevos/holes/langs done
 	Holes, Langs int
 
+	HolesAuthored pq.StringArray
+
 	// Count of cheevos/holes/langs available
 	CheevosTotal, HolesTotal, LangsTotal int
 

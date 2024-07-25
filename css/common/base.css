@@ -187,6 +187,11 @@ dialog a {
     align-items: center;
     display: flex;
     gap: .5rem;
+
+    svg {
+        height: 1rem;
+        width: 1rem;
+    }
 }
 
 dialog img {

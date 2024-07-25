@@ -72,6 +72,13 @@
     {{ if .Admin   }}<div><p>🔑<p class=orange>Admin  </div>{{ end }}
     {{ if .Sponsor }}<div><p>💰<p class=yellow>Sponsor</div>{{ end }}
 
+    {{ with len .HolesAuthored }}
+        <button data-dialog=holes-authored-dialog>
+            <p>📚
+            <p class=purple>{{ . }} Hole{{ if gt . 1 }}s{{ end }} Authored
+        </button>
+    {{ end }}
+
     {{ with len .Referrals }}
         <button data-dialog=referrals-dialog>
             <p>📣
@@ -117,6 +124,23 @@
         </a>
     {{ end }}
     </nav>
+
+    {{ with .HolesAuthored }}
+        <dialog id=holes-authored-dialog>
+            <div>
+                <h1>Holes Authored</h1>
+                <ul>
+                {{ range . }}{{ with index $.Holes . }}
+                    <li>
+                        <a href="/{{ .ID }}">
+                            {{ svg .CategoryIcon }}
+                            {{ .Name }}
+                        </a>
+                {{ end }}{{ end }}
+                </ul>
+            </div>
+        </dialog>
+    {{ end }}
 
     {{ with .Referrals }}
         <dialog id=referrals-dialog>

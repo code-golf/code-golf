@@ -116,6 +116,12 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		          (SELECT COUNT(DISTINCT hole)
 		             FROM solutions
 		            WHERE user_id = id AND NOT FAILING) holes,
+		          ARRAY(
+		            SELECT hole
+		              FROM authors
+		             WHERE user_id = users.id
+		          ORDER BY hole
+		          )                                     holes_authored,
 		          id,
 		          (SELECT COUNT(DISTINCT lang)
 		             FROM solutions
