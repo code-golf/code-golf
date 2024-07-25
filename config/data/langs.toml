@@ -23,7 +23,7 @@ x is a no-op.
 
 [Arturo]
 experiment = 915
-size       = '10.3 MiB'
+size       = '6.20 MiB'
 version    = '0.9.83'
 website    = 'https://arturo-lang.io'
 example    = '''
