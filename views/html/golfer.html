@@ -1,10 +1,5 @@
 {{ with .GolferInfo }}
-    {{ $me := false }}
-    {{ if $.Golfer }}
-        {{ if eq $.Golfer.ID .ID }}
-            {{ $me = true }}
-        {{ end }}
-    {{ end }}
+    {{ $me := and $.Golfer (eq $.Golfer.ID .ID) }}
 
     <div class=grid id=profile>
         <img src="/golfers/{{ .Name }}/avatar/176">
