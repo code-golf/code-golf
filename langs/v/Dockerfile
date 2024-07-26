@@ -3,7 +3,7 @@ FROM debian:bullseye-slim AS builder
 RUN apt-get update && apt-get install -y gcc git make
 
 RUN git clone https://github.com/vlang/v /opt/v \
- && cd /opt/v && git reset --hard 0.4.6 && make && strip v
+ && cd /opt/v && git reset --hard 0.4.7 && make && strip v
 
 FROM debian:bullseye-slim
 

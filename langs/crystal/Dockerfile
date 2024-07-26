@@ -1,4 +1,4 @@
-FROM crystallang/crystal:1.13.0-alpine AS builder
+FROM crystallang/crystal:1.13.1-alpine AS builder
 
 RUN apk del --no-cache libxml2-static python3
 

@@ -357,7 +357,7 @@ for arg in sys.argv[1:]:
 
 [Crystal]
 size    = '270 MiB'
-version = '1.13.0'
+version = '1.13.1'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -987,8 +987,8 @@ end
 '''
 
 [Rust]
-size    = '329 MiB'
-version = '1.79.0'
+size    = '331 MiB'
+version = '1.80.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -1137,8 +1137,8 @@ example    = '''
 '''
 
 [V]
-size    = '60.2 MiB'
-version = '0.4.6'
+size    = '60.8 MiB'
+version = '0.4.7'
 website = 'https://vlang.io'
 example = '''
 import os
