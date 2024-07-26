@@ -21,6 +21,25 @@ each argument is NULL terminated.
 x is a no-op.
 '''
 
+[Arturo]
+experiment = 915
+size       = '6.20 MiB'
+version    = '0.9.83'
+website    = 'https://arturo-lang.io'
+example    = '''
+; Printing
+print "Hello, World!"
+
+; Looping
+loop 0..9 'i ->
+    print i
+
+; Accessing arguments
+loop arg [a] [
+    print a
+]
+'''
+
 [Assembly]
 size    = '104 MiB'
 version = 'DefAssembler 2.4.2'

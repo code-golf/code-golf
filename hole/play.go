@@ -335,6 +335,9 @@ func play(
 
 	// Interpreter
 	switch lang.ID {
+	case "arturo":
+		cmd.Args = []string{"/usr/bin/arturo", "-e", code}
+		cmd.Env = []string{"HOME=/tmp"}
 	case "assembly":
 		var err error
 		if asmBytesRead, asmBytesWrite, err = os.Pipe(); err != nil {
@@ -461,8 +464,8 @@ func play(
 
 	// Code
 	switch lang.ID {
-	case "awk", "brainfuck", "elixir", "fish", "golfscript", "javascript",
-		"perl", "sed", "tex", "uiua":
+	case "arturo", "awk", "brainfuck", "elixir", "fish", "golfscript",
+		"javascript", "perl", "sed", "tex", "uiua":
 		// For these langs, code is passed as an argument above.
 	case "k":
 		cmd.Stdin = strings.NewReader(preprocessKCode(hole.ID, code))
