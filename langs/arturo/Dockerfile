@@ -2,7 +2,7 @@ FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache curl g++ nim pcre
 
-RUN curl -L https://github.com/arturo-lang/arturo/archive/d142954.tar.gz \
+RUN curl -L https://github.com/arturo-lang/arturo/archive/0756a55.tar.gz \
   | tar xz
 
 RUN cd a* && \
