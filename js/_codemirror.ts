@@ -119,6 +119,7 @@ export const extensions : { [key: string]: any } = {
     'brainfuck':     brainfuck(),
     'c':             StreamLanguage.define(c),
     'c-sharp':       StreamLanguage.define(csharp),
+    // TODO civet
     'clojure':       StreamLanguage.define(clojure),
     'cobol':         StreamLanguage.define(cobol),
     'coconut':       python,
