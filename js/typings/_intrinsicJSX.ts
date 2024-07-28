@@ -40,6 +40,7 @@ declare global {
       td:      any;
       th:      any;
       thead:   any;
+      time:    any;
       tr:      any;
       use:     any;
     }
