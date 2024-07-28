@@ -1137,7 +1137,7 @@ example    = '''
 '''
 
 [V]
-size    = '60.8 MiB'
+size    = '60.9 MiB'
 version = '0.4.7'
 website = 'https://vlang.io'
 example = '''
