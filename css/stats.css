@@ -23,6 +23,12 @@ table { width: 100% }
         display: grid;
         gap: .5rem;
         padding: 1rem;
+
+        > h2 {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
     }
 }
 
