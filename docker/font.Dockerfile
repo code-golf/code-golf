@@ -112,11 +112,13 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f98b.svg       `# Butterfly`                    \
     svg/1f98e.svg       `# Lizard`                       \
     svg/1f9a5.svg       `# Sloth`                        \
+    svg/1f9ab.svg       `# Beaver`                       \
     svg/1f9d9.svg       `# Mage`                         \
     svg/1f9db.svg       `# Vampire`                      \
     svg/1f9e0.svg       `# Brain`                        \
     svg/1f9ea.svg       `# Test Tube`                    \
     svg/1f9f6.svg       `# Yarn`                         \
+    svg/1fa84.svg       `# Magic Wand`                   \
     svg/1fa9b.svg       `# Screwdriver`                  \
     svg/1fa9e.svg       `# Mirror`                       \
     svg/1faa6.svg       `# Headstone`                    \

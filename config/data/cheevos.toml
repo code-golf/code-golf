@@ -375,6 +375,18 @@ emoji       = '💯'
 description = 'Solve your hundredth hole.'
 target      = 100
 
+[['Total Holes']]
+name        = 'Busy Beaver'
+emoji       = '🦫'
+description = 'Solve your <a href=//oeis.org/A060843>one hundred and seventh</a> hole.'
+target      = 107
+
+[['Total Holes']]
+name        = 'Disappearing Act'
+emoji       = '🪄'
+description = 'Solve your <a href=//tolkiengateway.net/wiki/Bilbo%27s_Farewell_Party>eleventy-first</a> hole.'
+target      = 111
+
 # TODO
 # [['Total Holes']]
 # name        = 'That’s Gross!'
