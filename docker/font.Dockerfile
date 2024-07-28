@@ -69,6 +69,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f51e.svg       `# No One Under Eighteen`        \
     svg/1f520.svg       `# Input Latin Uppercase`        \
     svg/1f523.svg       `# Input Symbols`                \
+    svg/1f526.svg       `# Flashlight`                   \
     svg/1f549.svg       `# Om`                           \
     svg/1f596.svg       `# Vulcan Salute`                \
     svg/1f5a5.svg       `# Desktop Computer`             \
