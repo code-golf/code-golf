@@ -1,0 +1,12 @@
+#!/bin/sh -e
+
+[ "$1" = "--version" ] && exec /usr/src/app/dist/civet --version  # path'll change
+
+cd /tmp    #aybemaybenot
+
+cat - > code.civet   #PDOFODSFdsl;
+/usr/src/app/dist/civet code.civet      # path'll change, todo: test options (--comptime --no-config lalalal)
+rm code.civet     # subject to change
+
+shift
+exec ./code "$@"  # subject to change
