@@ -157,7 +157,5 @@ func quadraticFormula() []Run {
 		tests[i] = test{fmt.Sprint(a, b, c), solve(a, b, c).String()}
 	}
 
-	rand.Shuffle(len(tests), func(i, j int) { tests[i], tests[j] = tests[j], tests[i] })
-
-	return outputTests(tests)
+	return outputTests(shuffle(tests))
 }
