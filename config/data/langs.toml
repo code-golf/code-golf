@@ -296,14 +296,12 @@ example    = '''
 console.log 'Hello, World!'
 
 // Looping
-for i of [0..9] {
+for i of [0..9]
     console.log i
-}
 
 // Accessing arguments
-for arg of process.argv[2..] {
+for arg of process.argv[2..]
     console.log arg
-}
 '''
 
 [Clojure]
