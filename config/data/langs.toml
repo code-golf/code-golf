@@ -293,7 +293,7 @@ version    = '0.7.19'
 website    = 'https://civet.dev'
 example    = '''
 // Printing
-console.log "Hello, World!"
+console.log 'Hello, World!'
 
 // Looping
 for i of [0..9] {
