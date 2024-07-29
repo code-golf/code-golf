@@ -149,6 +149,7 @@ present
 problem
 program
 public
+quiz
 real
 right
 run
@@ -166,6 +167,7 @@ since
 small
 so
 some
+square
 stand
 state
 still
@@ -220,3 +222,4 @@ write
 xylophone
 year
 you
+zero

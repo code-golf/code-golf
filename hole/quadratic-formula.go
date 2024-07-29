@@ -120,12 +120,42 @@ func quadraticFormula() []Run {
 	tests := make([]test, 200)
 
 	for i := range tests {
-		a := rand.IntN(20) - 10
-		b := rand.IntN(20) - 10
-		c := rand.IntN(50) - 25
+		var a, b, c int
+
+		if i == 0 {
+			a = 0
+			b = 0
+			c = 0
+		} else if i == 1 {
+			a = 0
+			b = 0
+			c = rand.IntN(49) - 25
+			if c >= 0 {
+				c++
+			}
+		} else if i == 2 {
+			a = 0
+			b = rand.IntN(19) - 10
+			if b >= 0 {
+				b++
+			}
+			c = rand.IntN(50) - 25
+		} else if i == 3 {
+			k := rand.IntN(19) - 10
+			if k >= 0 {
+				k++
+			}
+			a = k
+			b = 2 * k
+			c = k
+		} else {
+			a = rand.IntN(20) - 10
+			b = rand.IntN(20) - 10
+			c = rand.IntN(50) - 25
+		}
 
 		tests[i] = test{fmt.Sprint(a, b, c), solve(a, b, c).String()}
 	}
 
-	return outputTests(tests)
+	return outputTests(shuffle(tests))
 }

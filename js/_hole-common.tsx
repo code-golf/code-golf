@@ -227,10 +227,10 @@ function updateLangPicker() {
 
     // Hybrid language selector: make it easy to see your existing solutions and their lengths.
     $('#picker').replaceChildren(...sortedLangs.map((l: any) => {
-        const tab = <a href={l.id == lang ? null : '#'+l.id}>{l.name}</a>;
-
-        if (l.experiment)
-            tab.prepend(<svg><use href="#flask"/></svg>);
+        const tab = <a href={l.id == lang ? null : '#'+l.id}>
+            <svg><use href={'#'+l.id}/></svg>
+            {l.name}
+        </a>;
 
         if (getSolutionCode(l.id, 0)) {
             const bytes = byteLen(getSolutionCode(l.id, 0));
@@ -239,12 +239,15 @@ function updateLangPicker() {
             let text = comma(bytes);
             if (chars && bytes != chars) text += '/' + comma(chars);
 
-            tab.append(' ', <sup>{text}</sup>);
+            tab.append(<sup>{text}</sup>);
         }
         else if (!localStorage.getItem(getAutoSaveKey(l.id, 0)) &&
                  !localStorage.getItem(getAutoSaveKey(l.id, 1))) {
             return null;
         }
+
+        if (l.experiment)
+            tab.append(<svg><use href="#flask"/></svg>);
 
         return tab;
     }).filter((x: Node | null) => x), ...selectNodes);
