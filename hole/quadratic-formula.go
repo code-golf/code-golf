@@ -131,19 +131,19 @@ func quadraticFormula() []Run {
 			b = 0
 			c = rand.IntN(49) - 25
 			if c >= 0 {
-				c += 1
+				c++
 			}
 		} else if i == 2 {
 			a = 0
 			b = rand.IntN(19) - 10
 			if b >= 0 {
-				b += 1
+				b++
 			}
 			c = rand.IntN(50) - 25
 		} else if i == 3 {
 			k := rand.IntN(19) - 10
 			if k >= 0 {
-				k += 1
+				k++
 			}
 			a = k
 			b = 2 * k
