@@ -288,7 +288,7 @@ int main(int argc, char* argv[]) {
 
 [Civet]
 experiment = 1087
-size       = '0 KiB'
+size       = '999 TiB'
 version    = '0.7.19'
 website    = 'https://civet.dev'
 example    = '''
@@ -301,7 +301,7 @@ for i of [0..9] {
 }
 
 // Accessing arguments
-for arg of process.argv[1..] {
+for arg of process.argv[2..] {
     console.log arg
 }
 '''
