@@ -13,13 +13,21 @@ import (
 
 // GET /stats
 func statsGET(w http.ResponseWriter, r *http.Request) {
-	var data struct{ Bytes, Golfers, Solutions int }
+	data := struct {
+		Bytes, Cheevos, CheevosEarned, Countries, Golfers, Solutions int
+	}{Cheevos: len(config.CheevoList)}
 
 	db := session.Database(r)
 
 	if err := db.QueryRow(
-		"SELECT COUNT(DISTINCT user_id) FROM trophies",
-	).Scan(&data.Golfers); err != nil {
+		"SELECT COUNT(*), COUNT(DISTINCT user_id) FROM trophies",
+	).Scan(&data.CheevosEarned, &data.Golfers); err != nil {
+		panic(err)
+	}
+
+	if err := db.QueryRow(
+		"SELECT COUNT(DISTINCT country) FROM users WHERE LENGTH(country) > 0",
+	).Scan(&data.Countries); err != nil {
 		panic(err)
 	}
 

@@ -199,6 +199,8 @@ BEGIN
     IF holes >=  90 THEN earned := earn(earned, 'right-on',                   user_id); END IF;
     IF holes >=  99 THEN earned := earn(earned, 'neunundneunzig-luftballons', user_id); END IF;
     IF holes >= 100 THEN earned := earn(earned, 'centenarian',                user_id); END IF;
+    IF holes >= 107 THEN earned := earn(earned, 'busy-beaver',                user_id); END IF;
+    IF holes >= 111 THEN earned := earn(earned, 'disappearing-act',           user_id); END IF;
 
     RETURN earned;
 END;

@@ -18,6 +18,8 @@ constant %holes = <
      90 {right-on}
      99 {neunundneunzig-luftballons}
     100 {centenarian}
+    107 {busy-beaver}
+    111 {disappearing-act}
 >;
 
 constant %langs = <

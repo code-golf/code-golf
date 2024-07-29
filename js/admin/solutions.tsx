@@ -50,6 +50,11 @@ form.onsubmit = async e => {
         stderr.innerHTML = line.stderr;
 
         tbody.append(<tr>
+            <td>
+                <time datetime={line.tested}>
+                    {new Date(line.tested).toLocaleString()}
+                </time>
+            </td>
             <td>{holes[line.hole]}</td>
             <td>{langs[line.lang]}</td>
             <td>{`${line.golfer} (${line.golfer_id})`}</td>

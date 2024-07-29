@@ -29,7 +29,9 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
-	experimental := holeObj.Experiment != 0 || langObj.Experiment != 0
+	experimentalHole := holeObj.Experiment != 0
+	experimentalLang := langObj.Experiment != 0
+	experimental := experimentalHole || experimentalLang
 
 	db := session.Database(r)
 	golfer := session.Golfer(r)
@@ -75,6 +77,12 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 	if pass && golfer != nil && experimental {
 		if c := golfer.Earn(db, "black-box-testing"); c != nil {
 			out.Cheevos = append(out.Cheevos, *c)
+		}
+
+		if experimentalHole && experimentalLang {
+			if c := golfer.Earn(db, "double-slit-experiment"); c != nil {
+				out.Cheevos = append(out.Cheevos, *c)
+			}
 		}
 	} else if pass && golfer != nil && !experimental {
 		if err := db.QueryRowContext(
