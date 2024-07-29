@@ -55,7 +55,12 @@
 
         <dt>What languages are supported?
         <dd id=langs>
+        {{ $seenExp := false }}
         {{ range .Data.Langs }}
+            {{ if and .Experiment (not $seenExp) }}
+                {{ $seenExp = true }}
+                <p>Experimental languages:
+            {{ end }}
             <section>
                 <header>
                     {{ svg .ID }}
