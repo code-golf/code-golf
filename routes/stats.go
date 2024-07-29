@@ -14,7 +14,7 @@ import (
 // GET /stats
 func statsGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		Bytes, Cheevos, CheevosEarned, Golfers, Solutions int
+		Bytes, Cheevos, CheevosEarned, Countries, Golfers, Solutions int
 	}{Cheevos: len(config.CheevoList)}
 
 	db := session.Database(r)
@@ -22,6 +22,12 @@ func statsGET(w http.ResponseWriter, r *http.Request) {
 	if err := db.QueryRow(
 		"SELECT COUNT(*), COUNT(DISTINCT user_id) FROM trophies",
 	).Scan(&data.CheevosEarned, &data.Golfers); err != nil {
+		panic(err)
+	}
+
+	if err := db.QueryRow(
+		"SELECT COUNT(DISTINCT country) FROM users WHERE LENGTH(country) > 0",
+	).Scan(&data.Countries); err != nil {
 		panic(err)
 	}
 
