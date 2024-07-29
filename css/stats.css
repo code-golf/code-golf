@@ -18,8 +18,15 @@ table { width: 100% }
     gap: 1rem;
     grid-template-columns: repeat(2, 1fr);
 
-    > div {
+    > a:hover {
+        background: var(--color);
+        color: var(--background);
+        text-decoration: none;
+    }
+
+    > * {
         border: 2px solid var(--color);
+        color: var(--color);
         display: grid;
         gap: .5rem;
         padding: 1rem;
