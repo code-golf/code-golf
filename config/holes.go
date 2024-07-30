@@ -3,6 +3,7 @@ package config
 import (
 	"bytes"
 	"cmp"
+	"database/sql"
 	"encoding/json"
 	"html/template"
 	"slices"
@@ -10,6 +11,7 @@ import (
 	templateTxt "text/template"
 
 	"github.com/code-golf/code-golf/ordered"
+	"github.com/lib/pq/hstore"
 	"github.com/pelletier/go-toml/v2"
 )
 
@@ -28,6 +30,9 @@ var (
 
 	// Ten most recent holes, used for /rankings/recent-holes.
 	RecentHoles []*Hole
+
+	// A map of hole ID to category for passing to SQL queries.
+	HoleCategoryHstore = hstore.Hstore{Map: map[string]sql.NullString{}}
 )
 
 type Link struct {
@@ -191,6 +196,8 @@ func init() {
 		if hole.Experiment == 0 {
 			HoleByID[hole.ID] = &hole.Hole
 			HoleList = append(HoleList, &hole.Hole)
+
+			HoleCategoryHstore.Map[hole.ID] = sql.NullString{hole.Category, true}
 		} else {
 			ExpHoleByID[hole.ID] = &hole.Hole
 			ExpHoleList = append(ExpHoleList, &hole.Hole)

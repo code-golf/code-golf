@@ -1,4 +1,5 @@
 CREATE EXTENSION citext;
+CREATE EXTENSION hstore;
 
 CREATE TYPE cheevo AS ENUM (
     '0xdead', 'aged-like-fine-wine', 'alchemist', 'archivist',

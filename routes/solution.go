@@ -229,21 +229,27 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if !golfer.Earned("smörgåsbord") {
-			var holes []config.Hole
-			if err := db.Select(
-				&holes,
-				"SELECT DISTINCT hole FROM solutions WHERE NOT failing AND user_id = $1",
+			var earn bool
+			if err := db.Get(
+				&earn,
+				`WITH distinct_holes AS (
+				    SELECT DISTINCT hole
+				      FROM solutions
+				     WHERE NOT failing AND user_id = $1
+				) SELECT (
+				    SELECT COUNT(DISTINCT $2::hstore->hole::text)
+				      FROM distinct_holes
+				) = (
+				    SELECT COUNT(DISTINCT cat)
+				      FROM unnest(avals($2)) cat
+				)`,
 				golfer.ID,
+				config.HoleCategoryHstore,
 			); err != nil {
 				panic(err)
 			}
 
-			categories := map[string]bool{}
-			for _, hole := range holes {
-				categories[hole.Category] = true
-			}
-
-			if len(categories) == 6 {
+			if earn {
 				if c := golfer.Earn(db, "smörgåsbord"); c != nil {
 					out.Cheevos = append(out.Cheevos, *c)
 				}
