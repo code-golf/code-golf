@@ -228,23 +228,25 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		var holes []config.Hole
-		if err := db.Select(
-			&holes,
-			"SELECT DISTINCT hole FROM solutions WHERE NOT failing AND user_id = $1",
-			golfer.ID,
-		); err != nil {
-			panic(err)
-		}
+		if !golfer.Earned("smörgåsbord") {
+			var holes []config.Hole
+			if err := db.Select(
+				&holes,
+				"SELECT DISTINCT hole FROM solutions WHERE NOT failing AND user_id = $1",
+				golfer.ID,
+			); err != nil {
+				panic(err)
+			}
 
-		categories := map[string]bool{}
-		for _, hole := range holes {
-			categories[hole.Category] = true
-		}
+			categories := map[string]bool{}
+			for _, hole := range holes {
+				categories[hole.Category] = true
+			}
 
-		if len(categories) == 6 {
-			if c := golfer.Earn(db, "smörgåsbord"); c != nil {
-				out.Cheevos = append(out.Cheevos, *c)
+			if len(categories) == 6 {
+				if c := golfer.Earn(db, "smörgåsbord"); c != nil {
+					out.Cheevos = append(out.Cheevos, *c)
+				}
 			}
 		}
 	}
