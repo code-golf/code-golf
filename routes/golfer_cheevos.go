@@ -150,13 +150,6 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 	)
 
 	cheevoProgress(
-		`SELECT COUNT(DISTINCT hole)
-		   FROM solutions
-		  WHERE NOT failing AND user_id = $1`,
-		cheevoIDs(config.CheevoTree["Total Holes"]),
-	)
-
-	cheevoProgress(
 		`WITH langs AS (
 		    SELECT COUNT(DISTINCT lang)
 		      FROM solutions
@@ -164,6 +157,13 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 		  GROUP BY hole
 		) SELECT COALESCE(MAX(count), 0) FROM langs`,
 		[]string{"polyglot", "polyglutton", "omniglot", "omniglutton"},
+	)
+
+	cheevoProgress(
+		`SELECT COUNT(DISTINCT hole)
+		   FROM solutions
+		  WHERE NOT failing AND user_id = $1`,
+		cheevoIDs(config.CheevoTree["Total Holes"]),
 	)
 
 	cheevoProgress(
