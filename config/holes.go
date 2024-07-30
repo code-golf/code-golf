@@ -197,7 +197,8 @@ func init() {
 			HoleByID[hole.ID] = &hole.Hole
 			HoleList = append(HoleList, &hole.Hole)
 
-			HoleCategoryHstore.Map[hole.ID] = sql.NullString{hole.Category, true}
+			HoleCategoryHstore.Map[hole.ID] =
+				sql.NullString{String: hole.Category, Valid: true}
 		} else {
 			ExpHoleByID[hole.ID] = &hole.Hole
 			ExpHoleList = append(ExpHoleList, &hole.Hole)
