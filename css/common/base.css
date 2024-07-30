@@ -635,7 +635,7 @@ body > .tabs a {
     gap: 1rem 2rem;
     grid-template: min-content 1fr / min-content 1fr;
 
-    & > form { display: none }
+    & > #form-nav { display: none }
 
     & > nav {
         align-content: flex-start;
@@ -694,7 +694,7 @@ body > .tabs a {
     #two-pane {
         grid-template: min-content min-content 1fr / 1fr;
 
-        & > form {
+        & > #form-nav {
             display: flex;
             gap: .5rem;
         }

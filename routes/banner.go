@@ -48,7 +48,7 @@ func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 				"Your account will be permanently deleted on the " +
 					delete.V.Format("2 Jan 2006") + "." +
 					"<p>If you wish to stop this, visit " +
-					"<a href=/golfer/settings>settings</a> " +
+					"<a href=/golfer/settings/delete-account>settings</a> " +
 					"and cancel the deletion."),
 		})
 	}

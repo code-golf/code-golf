@@ -9,7 +9,10 @@
 
 {{ template "golfer" . }}
 
-<main>
+<main id=two-pane>
+    {{ template "nav" . }}
+
+{{ if eq .Title "Settings: General" }}
     <form method=post>
         <h2>About</h2>
 
@@ -159,13 +162,11 @@
 
         <p><button class="btn green">Save Changes</button>
     </form>
+{{ else if eq .Title "Settings: Export Data" }}
+    <h2>Export Data</h2>
 
-    <form>
-        <h2>Export Data</h2>
-
-        <p>You can export your data <a href=export>here</a>.
-    </form>
-
+    <p>You can export your data <a href=/golfer/export>here</a>.
+{{ else if eq .Title "Settings: Delete Account" }}
 {{ if .Golfer.Delete.Valid }}
     <form action=/golfer/cancel-delete method=post>
         <h2>Cancel Deletion</h2>
@@ -184,6 +185,7 @@
 
         <p><button class="btn red">Delete Account</button>
     </form>
+{{ end }}
 {{ end }}
 </main>
 
