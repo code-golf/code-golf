@@ -10,7 +10,7 @@ import (
 	"github.com/code-golf/code-golf/pretty"
 )
 
-var nextHole = config.ExpHoleByID["zeckendorf-representation"]
+var nextHole = config.ExpHoleByID["polyominoes"]
 
 type banner struct {
 	Body          template.HTML
