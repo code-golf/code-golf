@@ -64,6 +64,7 @@ for %langs.sort: *.key.fc -> (:key($name), :value(%lang)) {
 
         when / 'endoflife' / { $res.&from-json[0]<latest> }
         when / 'github'    / { $res ~~ / [ $name || 'Release' ] ' ' v? <(\d+ <[\d.]>+)> / }
+        when / 'npmjs'     / { $res ~~ / <(\d+ \. \d+ \. \d+)> / }
         when / 'wikipedia' / {
             $res ~~ /
                 < Stable Preview > ' release' .+? '>' ( '#' \d+ ' "' )?
