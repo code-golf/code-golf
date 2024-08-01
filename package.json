@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "dependencies": {
     "@codemirror/lang-cpp": "",
     "@codemirror/lang-go": "",
@@ -37,7 +38,6 @@
     "@types/diff": "",
     "@typescript-eslint/eslint-plugin": "",
     "@typescript-eslint/parser": "",
-    "eslint": "",
-    "typescript": ""
+    "eslint": ""
   }
 }
