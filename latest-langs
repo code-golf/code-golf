@@ -42,6 +42,7 @@ constant %paths = (
     'Raku'       => 'en.wikipedia.org/wiki/Rakudo',
     'Ruby'       => 'endoflife.date/api/ruby.json',
     'Rust'       => 'en.wikipedia.org/wiki/Rust_(programming_language)',
+    'Scala'      => 'github.com/scala/scala3/releases/latest',
     'SQL'        => 'en.wikipedia.org/wiki/SQLite',
     'Swift'      => 'en.wikipedia.org/wiki/Swift_(programming_language)',
     'Tcl'        => 'en.wikipedia.org/wiki/Tcl',
