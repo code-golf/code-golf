@@ -2446,7 +2446,6 @@ preamble = '''
 
 [Polyominoes]
 category       = 'Computing'
-experiment     = 1232
 item-delimiter = "\n\n"
 released       = 2024-08-01
 synopsis       = 'Print all polyominoes of sizes 1 to 6.'
