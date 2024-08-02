@@ -25,7 +25,6 @@
     "codemirror-lang-k": "",
     "codemirror-lang-prolog": "",
     "codemirror-lang-zig": "",
-    "dialog-polyfill": "",
     "diff": "",
     "esbuild": "",
     "golden-layout": "^2.6.0",
