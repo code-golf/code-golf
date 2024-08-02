@@ -14,6 +14,7 @@ constant %paths = (
     'COBOL'      => 'en.wikipedia.org/wiki/GnuCOBOL',
     'Coconut'    => 'github.com/evhub/coconut/releases/latest',
     'Clojure'    => 'github.com/babashka/babashka/releases/latest',
+    'Civet'      => 'registry.npmjs.org/@danielx/civet/latest',
     'Crystal'    => 'github.com/crystal-lang/crystal/releases/latest',
     'D'          => 'en.wikipedia.org/wiki/D_(programming_language)',
     'Dart'       => 'en.wikipedia.org/wiki/Dart_(programming_language)',
@@ -63,6 +64,7 @@ for %langs.sort: *.key.fc -> (:key($name), :value(%lang)) {
 
         when / 'endoflife' / { $res.&from-json[0]<latest> }
         when / 'github'    / { $res ~~ / [ $name || 'Release' ] ' ' v? <(\d+ <[\d.]>+)> / }
+        when / 'npmjs'     / { $res.&from-json[0]<version> }
         when / 'wikipedia' / {
             $res ~~ /
                 < Stable Preview > ' release' .+? '>' ( '#' \d+ ' "' )?
