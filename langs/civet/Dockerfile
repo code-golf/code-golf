@@ -1,6 +1,6 @@
 FROM alpine:3.20 AS builder
 
-RUN apk add --no-cache bash curl icu-data-full npm
+RUN apk add --no-cache bash curl icu-data npm
 
 WORKDIR /usr/src
 
