@@ -63,12 +63,12 @@ CREATE TYPE keymap AS ENUM ('default', 'vim');
 
 CREATE TYPE lang AS ENUM (
     'assembly', 'awk', 'bash', 'basic', 'berry', 'brainfuck', 'c', 'c-sharp',
-    'clojure',  'cpp', 'cobol', 'coconut', 'crystal', 'd', 'dart', 'elixir',
-    'f-sharp', 'factor', 'fish', 'forth', 'fortran', 'go', 'golfscript',
-    'haskell', 'hexagony', 'j', 'janet', 'java', 'javascript', 'julia', 'k',
-    'lisp', 'lua', 'nim', 'ocaml', 'pascal', 'perl', 'php', 'powershell',
-    'prolog', 'python', 'r', 'raku', 'rockstar', 'ruby', 'rust', 'sed', 'sql',
-    'swift', 'tcl', 'tex', 'v', 'viml', 'wren', 'zig'
+    'civet', 'clojure',  'cpp', 'cobol', 'coconut', 'crystal', 'd', 'dart',
+    'elixir', 'f-sharp', 'factor', 'fish', 'forth', 'fortran', 'go',
+    'golfscript', 'haskell', 'hexagony', 'j', 'janet', 'java', 'javascript',
+    'julia', 'k', 'lisp', 'lua', 'nim', 'ocaml', 'pascal', 'perl', 'php',
+    'powershell', 'prolog', 'python', 'r', 'raku', 'rockstar', 'ruby', 'rust',
+    'sed', 'sql', 'swift', 'tcl', 'tex', 'v', 'viml', 'wren', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('unicorn', 'diamond', 'gold', 'silver', 'bronze');

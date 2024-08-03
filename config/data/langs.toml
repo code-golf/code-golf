@@ -287,11 +287,10 @@ int main(int argc, char* argv[]) {
 '''
 
 [Civet]
-experiment = 1087
-size       = '65.8 MiB'
-version    = '0.7.19'
-website    = 'https://civet.dev'
-example    = '''
+size    = '65.8 MiB'
+version = '0.7.19'
+website = 'https://civet.dev'
+example = '''
 // Printing
 console.log 'Hello, World!'
 

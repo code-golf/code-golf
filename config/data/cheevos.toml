@@ -87,7 +87,7 @@ target      = 3
 [['Hole/Lang Specific']]
 name        = 'Caffeinated'
 emoji       = '☕'
-description = 'Solve any hole in both Java and JavaScript.'
+description = 'Solve any hole in any two of Civet, Java, or JavaScript.'
 
 [['Hole/Lang Specific']]
 name        = 'COBOWL'

@@ -67,7 +67,9 @@ BEGIN
         earned := earn(earned, 'bird-is-the-word', user_id); END IF;
 
     -- ☕ Caffeinated
-    IF langs_for_hole @> '{java,javascript}' THEN
+    SELECT COUNT(*) >= 2 INTO found FROM UNNEST(langs_for_hole)
+     WHERE unnest IN ('civet', 'java', 'javascript');
+    IF found THEN
         earned := earn(earned, 'caffeinated', user_id); END IF;
 
     -- 🎳 COBOWL
