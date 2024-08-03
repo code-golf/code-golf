@@ -48,6 +48,6 @@ COPY --from=0 /usr/src/node_modules/webpack-virtual-modules/lib/index.js        
               /usr/src/node_modules/webpack-virtual-modules/lib/virtual-stats.js /usr/local/node_modules/webpack-virtual-modules/lib/
 COPY --from=0 /usr/share/icu/74.2/icudt74l.dat                                   /usr/share/icu/
 
-ENTRYPOINT ["/usr/src/dist/civet"]
+ENTRYPOINT ["/usr/local/dist/civet"]
 
 CMD ["--version"]
