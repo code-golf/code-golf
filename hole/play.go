@@ -373,6 +373,9 @@ func play(
 	case "elixir":
 		cmd.Args = []string{"/usr/local/bin/elixir", "-e", code, "--"}
 		cmd.Env = []string{"LANG=C.UTF-8", "PATH=/usr/local/bin:/usr/bin:/bin"}
+	case "erlang":
+		cmd.Args = []string{"/usr/bin/erl", "-noshell", "-eval", code}
+		//cmd.Env = []string{"HOME=/tmp"}
 	case "factor":
 		cmd.Args = []string{"/factor/factor", "/proc/self/fd/0"}
 		cmd.Env = []string{"XDG_CACHE_HOME=/tmp"}
@@ -467,8 +470,8 @@ func play(
 
 	// Code
 	switch lang.ID {
-	case "arturo", "awk", "brainfuck", "elixir", "fish", "golfscript",
-		"javascript", "perl", "sed", "tex", "uiua":
+	case "arturo", "awk", "brainfuck", "elixir", "erlang", "fish",
+		"golfscript", "javascript", "perl", "sed", "tex", "uiua":
 		// For these langs, code is passed as an argument above.
 	case "k":
 		cmd.Stdin = strings.NewReader(preprocessKCode(hole.ID, code))

@@ -450,6 +450,23 @@ for i <- 0..9, do: IO.puts i
 for arg <- System.argv, do: IO.puts arg
 '''
 
+[Erlang]
+experiment = 181
+size       = '156 MiB'
+version    = 'OTP 27.0.1'
+website    = 'https://www.erlang.org'
+example    = '''
+main(Args) ->
+    %% Printing
+    io:format("Hello, World!~n"),
+
+    %% Looping
+    lists:foreach(fun(N) -> io:format("~p~n", [N]) end, lists:seq(0, 9)),
+
+    %% Accessing arguments
+    lists:foreach(fun(Arg) -> io:format("~s~n", [Arg]) end, Args).
+'''
+
 ['F#']
 size    = '148 MiB'
 version = 'F# 8.0 on .NET 8.0.7'
