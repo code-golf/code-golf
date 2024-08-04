@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/exec"
 	"regexp"
+	"slices"
 	"strings"
 	"sync"
 	"syscall"
@@ -316,15 +317,33 @@ func Play(
 func play(
 	ctx context.Context, hole *config.Hole, lang *config.Lang, code string, run *Run,
 ) error {
+	// Require a backslash for TeX Quine to prevent trivial solutions.
+	// Don't even run the code; just mark error and return.
+	if hole.ID == "quine" && lang.ID == "tex" && !strings.Contains(code, `\`) {
+		run.Stderr = `Quine in TeX must have at least one '\' character.`
+		return nil
+	}
+
+	// Preprocess code.
+	switch lang.ID {
+	case "clojure":
+		// Appending (print) prevents implicit output of the last form, if it
+		// is not nil. This seems to be a quirk of the Babashka interpreter
+		// that only occurs when providing code via a command line argument.
+		code += "(print)"
+	case "k":
+		code = preprocessKCode(hole.ID, code)
+	case "php":
+		code = "<?php " + code + " ;"
+	}
+
 	var stderr, stdout bytes.Buffer
-	var asmBytesRead, asmBytesWrite *os.File
 
 	ctx, cancel := context.WithTimeout(ctx, timeout)
 	defer cancel()
 
 	cmd := exec.CommandContext(ctx, "/usr/bin/run-lang")
 	cmd.Dir = "/langs/" + lang.ID
-	cmd.Env = []string{}
 	cmd.Stderr = &stderr
 	cmd.Stdout = &stdout
 	cmd.WaitDelay = time.Second
@@ -333,122 +352,34 @@ func play(
 			syscall.CLONE_NEWNS | syscall.CLONE_NEWPID | syscall.CLONE_NEWUTS,
 	}
 
-	// Interpreter
-	switch lang.ID {
-	case "arturo":
-		cmd.Args = []string{"/usr/bin/arturo", "-e", code}
-		cmd.Env = []string{"HOME=/tmp"}
-	case "assembly":
+	// Ensure at least a non-nil empty environment. Append lang specific env.
+	cmd.Env = append([]string{}, lang.Env...)
+
+	// Assembly bytes pipe.
+	var asmBytesRead, asmBytesWrite *os.File
+	if lang.ID == "assembly" {
 		var err error
 		if asmBytesRead, asmBytesWrite, err = os.Pipe(); err != nil {
 			return err
 		}
 
-		cmd.Args = []string{"/usr/bin/defasm", "--size-out=3", "-w", "-r"}
 		cmd.ExtraFiles = []*os.File{asmBytesWrite}
-	case "awk":
-		cmd.Args = []string{"/usr/bin/gawk", "-v", "RS=\\0", code}
-	case "bash":
-		cmd.Args = []string{"/usr/bin/bash", "-s", "-"}
-	case "brainfuck":
-		cmd.Args = []string{"/usr/bin/brainfuck", "-xc", code}
-	case "c":
-		cmd.Args = []string{"/usr/bin/tcc", "-run", "-"}
-	case "civet":
-		cmd.Args = []string{"/usr/local/dist/civet", "--comptime", "--no-config", "-"}
-		cmd.Env = []string{"NODE_ICU_DATA=/usr/share/icu"}
-	case "clojure":
-		// Appending (print) prevents implicit output of the last form, if it is not nil.
-		// This seems to be a quirk of the Babashka interpreter that only occurs when
-		// providing code via a command line argument.
-		cmd.Args = []string{"/usr/bin/clojure", "-e", code + "(print)"}
-	case "coconut":
-		cmd.Args = []string{"/usr/bin/coconut", "--quiet", "--target", "sys", "--keep-lines", "--argv"}
-	case "crystal":
-		cmd.Args = []string{"/usr/bin/crystal", "run", "--stdin-filename", "code.cr", "--"}
-		cmd.Env = []string{"CRYSTAL_CACHE_DIR=/tmp", "PATH=/usr/bin:/bin"}
-	case "d":
-		cmd.Args = []string{"/usr/bin/ldc2", "--enable-color=true", "--run", "-"}
-		cmd.Env = []string{"PATH=/usr/bin"}
-	case "elixir":
-		cmd.Args = []string{"/usr/local/bin/elixir", "-e", code, "--"}
-		cmd.Env = []string{"LANG=C.UTF-8", "PATH=/usr/local/bin:/usr/bin:/bin"}
-	case "factor":
-		cmd.Args = []string{"/factor/factor", "/proc/self/fd/0"}
-		cmd.Env = []string{"XDG_CACHE_HOME=/tmp"}
-	case "fish":
-		cmd.Args = []string{"/usr/bin/fish", "--no-prng", "-c", code, "-u"}
-	case "forth":
-		cmd.Args = []string{"/usr/bin/forth", "/proc/self/fd/0"}
-	case "golfscript":
-		cmd.Args = []string{"/usr/bin/golfscript", "-n", "-e", code}
-		if hole.ID == "quine" {
-			cmd.Args = append(cmd.Args, "-q")
-		}
-		cmd.Args = append(cmd.Args, "--")
-	case "hexagony":
-		cmd.Args = []string{"/usr/bin/hexagony", "-d", "-"}
-	case "j":
-		cmd.Args = []string{"/usr/bin/j", "/tmp/code.ijs"}
-	case "janet":
-		cmd.Args = []string{"/usr/bin/janet", "/proc/self/fd/0"}
-	case "javascript":
-		cmd.Args = []string{"/usr/bin/d8", "-e", code, "--"}
-	case "julia":
-		cmd.Args = []string{"/usr/bin/julia", "--color=yes", "/proc/self/fd/0"}
-		cmd.Env = []string{"HOME=/"}
-	case "k":
-		cmd.Args = []string{"/usr/bin/kwrapper", "/tmp/code.k"}
-	case "nim":
-		cmd.Args = []string{"/usr/bin/nim", "--colors:on", "-o:/tmp/code", "-r", "c", "-"}
-	case "ocaml":
-		cmd.Args = []string{"/usr/bin/ocaml", "/proc/self/fd/0"}
-	case "perl":
-		cmd.Args = []string{"/usr/bin/perl", "-E", code, "--"}
-	case "php":
-		cmd.Args = []string{"/usr/bin/php", "--"}
-	case "powershell":
-		cmd.Args = []string{"/usr/bin/powershell"}
-
-		// Require explicit output for Quine to prevent trivial solutions.
-		if hole.ID == "quine" {
-			cmd.Args = append(cmd.Args, "--explicit")
-		}
-	case "prolog":
-		cmd.Args = []string{"/usr/bin/prolog", "-g", "halt", "/tmp/code.pl"}
-	case "python":
-		// Force the stdout and stderr streams to be unbuffered.
-		cmd.Args = []string{"/usr/bin/python", "-u", "-"}
-	case "r":
-		cmd.Args = []string{"/usr/bin/Rscript", "-"}
-
-		// Disable implicit output for Quine to prevent trivial solutions.
-		if hole.ID == "quine" {
-			cmd.Args = []string{"/usr/bin/Rscript", "-e", "source('stdin')"}
-		}
-	case "sed":
-		cmd.Args = []string{"/usr/bin/sed", "-E", "-z", "--sandbox", "-u", "--", code}
-	case "swift":
-		cmd.Args = []string{"/usr/bin/swift", "-module-cache-path", "/tmp", "-"}
-		cmd.Env = []string{"HOME=/"}
-	case "tcl":
-		cmd.Args = []string{"/usr/bin/tcl", "/proc/self/fd/0"}
-	case "tex":
-		cmd.Args = []string{"/usr/bin/tex", code}
-
-		// Require a backslash for Quine to prevent trivial solutions.
-		// Don't even run the code; just mark error and return.
-		if hole.ID == "quine" && !strings.Contains(code, `\`) {
-			run.Stderr = `Quine in TeX must have at least one '\' character.`
-			return nil
-		}
-	case "uiua":
-		cmd.Args = []string{"/usr/bin/uiua", "eval", "--", code}
-	default:
-		cmd.Args = []string{"/usr/bin/" + lang.ID, "-"}
 	}
 
-	// Args
+	// Language arguments. Clone because we intend to mutate.
+	cmd.Args = slices.Clone(lang.Args)
+	if hole.ID == "quine" && lang.ArgsQuine != nil {
+		cmd.Args = slices.Clone(lang.ArgsQuine)
+	}
+
+	// Pass code via args or stdin.
+	if i := slices.Index(cmd.Args, "$code"); i != -1 {
+		cmd.Args[i] = code
+	} else {
+		cmd.Stdin = strings.NewReader(code)
+	}
+
+	// Run arguments.
 	switch lang.ID {
 	case "awk", "brainfuck", "fish":
 		// Hole args passed through stdin for these langs separated by a null byte
@@ -463,19 +394,6 @@ func play(
 		cmd.Stdin = strings.NewReader(args)
 	default:
 		cmd.Args = append(cmd.Args, run.Args...)
-	}
-
-	// Code
-	switch lang.ID {
-	case "arturo", "awk", "brainfuck", "elixir", "fish", "golfscript",
-		"javascript", "perl", "sed", "tex", "uiua":
-		// For these langs, code is passed as an argument above.
-	case "k":
-		cmd.Stdin = strings.NewReader(preprocessKCode(hole.ID, code))
-	case "php":
-		cmd.Stdin = strings.NewReader("<?php " + code + " ;")
-	default:
-		cmd.Stdin = strings.NewReader(code)
 	}
 
 	err := cmd.Run()
