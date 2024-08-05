@@ -6,7 +6,35 @@ interface DiffPos {
     isLastDiff: boolean;
 }
 
-export default (hole: string, exp: string, out: string, argv: string[], ignoreCase: boolean) => {
+export default (hole: string, exp: string, out: string, argv: string[], ignoreCase: boolean, multisetDelimiter: string, itemDelimiter: string) => {
+    const provideItemwiseDiff = !multisetDelimiter && itemDelimiter;
+    return provideItemwiseDiff ?
+        <div>
+            <div id='diffKindSettings'>
+                <label><input type="radio" name="diff_kind" value="items" checked></input> Items</label>
+                <label><input type="radio" name="diff_kind" value="lines"></input> Lines</label>
+            </div>
+            {diffTable(hole, exp, out, argv, ignoreCase)}
+            {multisetDiff(exp, out, itemDelimiter)}
+        </div>
+        : diffTable(hole, exp, out, argv, ignoreCase)
+}
+
+function multisetDiff(exp: string, out: string, itemDelimiter: string){
+    const diff = new Map<string, number>();
+    for (const x of exp.split(itemDelimiter)){
+        diff.set(x, (diff.get(x) ?? 0) - 1);
+    }
+    for (const x of out.split(itemDelimiter)){
+        diff.set(x, (diff.get(x) ?? 0) + 1);
+    }
+    return <div id="itemsDiff">
+        {[...diff.entries()].filter(([_, count]) => count !== 0)
+        .map(([x, count]) => <span title={Math.abs(count) === 1 ? '' : `${Math.abs(count)}×`} class={count > 0 ? 'pos' : 'neg'}>{x}</span>)}
+    </div>
+}
+
+function diffTable(hole: string, exp: string, out: string, argv: string[], ignoreCase: boolean) {
     if (stringsEqual(exp, out, ignoreCase)) return '';
 
     // Show args? Exclude holes with one big argument like QR Decoder.
@@ -14,7 +42,7 @@ export default (hole: string, exp: string, out: string, argv: string[], ignoreCa
 
     const {rows, maxLineNum} = diffHTMLRows(hole, exp, out, argv, ignoreCase, isArgDiff);
 
-    return <table>
+    return <table id="linesDiff">
         {makeCols(isArgDiff, maxLineNum, argv)}
         <thead>
             {isArgDiff ? <th class="right">Args</th> : <th/>}
