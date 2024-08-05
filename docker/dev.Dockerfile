@@ -36,6 +36,7 @@ COPY --from=codegolf/lang-v          ["/", "/langs/v/rootfs/"         ] # 60.9 M
 COPY --from=codegolf/lang-java       ["/", "/langs/java/rootfs/"      ] # 58.1 MiB
 COPY --from=codegolf/lang-prolog     ["/", "/langs/prolog/rootfs/"    ] # 49.2 MiB
 COPY --from=codegolf/lang-javascript ["/", "/langs/javascript/rootfs/"] # 41.1 MiB
+COPY --from=codegolf/lang-erlang     ["/", "/langs/erlang/rootfs/"    ] # 40.7 MiB
 COPY --from=codegolf/lang-lisp       ["/", "/langs/lisp/rootfs/"      ] # 31.1 MiB
 COPY --from=codegolf/lang-pascal     ["/", "/langs/pascal/rootfs/"    ] # 31.1 MiB
 COPY --from=codegolf/lang-uiua       ["/", "/langs/uiua/rootfs/"      ] # 30.8 MiB
@@ -65,7 +66,6 @@ COPY --from=codegolf/lang-wren       ["/", "/langs/wren/rootfs/"      ] #  496 K
 COPY --from=codegolf/lang-lua        ["/", "/langs/lua/rootfs/"       ] #  354 KiB
 COPY --from=codegolf/lang-sed        ["/", "/langs/sed/rootfs/"       ] #  236 KiB
 COPY --from=codegolf/lang-brainfuck  ["/", "/langs/brainfuck/rootfs/" ] # 51.1 KiB
-COPY --from=codegolf/lang-erlang     ["/", "/langs/erlang/rootfs/"    ] # 39.0 MiB
 
 COPY run-lang.c ./
 

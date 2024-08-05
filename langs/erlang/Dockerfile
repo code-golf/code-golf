@@ -15,10 +15,11 @@ RUN ./configure --disable-jit --prefix=/usr \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/sh                                         /bin/
+COPY --from=0 /bin/cat /bin/chmod /bin/sh                     /bin/
 COPY --from=0 /lib/ld-musl-x86_64.so.1                        /lib/
+COPY          /erlang                                         /usr/bin/
 COPY --from=0 /usr/bin/basename /usr/bin/dirname /usr/bin/erl /usr/bin/
-COPY --from=0 /usr/lib/libncursesw.so.6                       /usr/lib/		
+COPY --from=0 /usr/lib/libncursesw.so.6                       /usr/lib/
 COPY --from=0 /usr/lib/erlang/bin/start.boot                  /usr/lib/erlang/bin/
 COPY --from=0 /usr/lib/erlang/erts-15.0.1/bin/beam.smp        \
               /usr/lib/erlang/erts-15.0.1/bin/erl_child_setup \
@@ -27,4 +28,8 @@ COPY --from=0 /usr/lib/erlang/erts-15.0.1/bin/beam.smp        \
 COPY --from=0 /usr/lib/erlang/lib/kernel-10.0.1/ebin          /usr/lib/erlang/lib/kernel-10.0.1/ebin
 COPY --from=0 /usr/lib/erlang/lib/stdlib-6.0.1/ebin           /usr/lib/erlang/lib/stdlib-6.0.1/ebin
 
-ENTRYPOINT ["erl"]
+RUN chmod +x /usr/bin/erlang
+
+ENTRYPOINT ["erlang"]
+
+CMD ["version"]

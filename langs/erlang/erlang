@@ -1,0 +1,9 @@
+#!/bin/sh -e
+
+[ "$1" = "version" ] && exec /usr/bin/erl version -s init stop
+
+cat - > /tmp/code.erl
+
+# test `-eval` use later, see where drop `-noshell` and what my options are with `erlexec`, no `make dev` atm meh docker mofos
+shift
+exec /usr/bin/erl -noshell -eval /tmp/code.erl "$@" -s init stop
