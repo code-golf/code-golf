@@ -54,28 +54,6 @@ type Run struct {
 	ASMBytes int `json:"-"`
 }
 
-func preprocessKCode(holeID, code string) string {
-	if holeID == "quine" {
-		length := len(code)
-		var newCode []byte
-
-		// Disable implicit output by inserting a ';' before all newlines,
-		// except when the next line begins with a space (for a continuation).
-		for i := range length {
-			x := code[i]
-			if x != '\n' || i+1 < length && code[i+1] == ' ' {
-				newCode = append(newCode, x)
-			} else {
-				newCode = append(newCode, ';', '\n')
-			}
-		}
-
-		return string(newCode)
-	} else {
-		return code + "\n"
-	}
-}
-
 func getClosestAnswer(anyAnswer, stdout, itemDelimiter, multisetDelimiter string) string {
 	answerMultisets := []string{anyAnswer}
 	stdoutMultisets := []string{stdout}
@@ -332,7 +310,25 @@ func play(
 		// that only occurs when providing code via a command line argument.
 		code += "(print)"
 	case "k":
-		code = preprocessKCode(hole.ID, code)
+		if hole.ID == "quine" {
+			length := len(code)
+			var newCode []byte
+
+			// Disable implicit output by inserting a ';' before all newlines,
+			// except when the next line begins with a space (for a continuation).
+			for i := range length {
+				x := code[i]
+				if x != '\n' || i+1 < length && code[i+1] == ' ' {
+					newCode = append(newCode, x)
+				} else {
+					newCode = append(newCode, ';', '\n')
+				}
+			}
+
+			code = string(newCode)
+		} else {
+			code += "\n"
+		}
 	case "php":
 		code = "<?php " + code + " ;"
 	}
