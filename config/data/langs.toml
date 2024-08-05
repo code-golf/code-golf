@@ -483,13 +483,13 @@ version    = 'OTP 27.0.1'
 website    = 'https://www.erlang.org'
 example    = '''
 main(Args) ->
-    %% Printing
+    % Printing
     io:format("Hello, World!~n"),
 
-    %% Looping
+    % Looping
     lists:foreach(fun(N) -> io:format("~p~n", [N]) end, lists:seq(0, 9)),
 
-    %% Accessing arguments
+    % Accessing arguments
     lists:foreach(fun(Arg) -> io:format("~s~n", [Arg]) end, Args).
 '''
 
