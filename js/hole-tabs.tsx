@@ -5,7 +5,7 @@ import {
     RootItemConfig,
 } from 'golden-layout';
 import { EditorView }   from './_codemirror';
-import diffTable        from './_diff';
+import diffView         from './_diff';
 import { $, $$, comma, debounce } from './_util';
 import {
     init, langs, hole, setSolution,
@@ -91,7 +91,7 @@ function updateReadonlyPanel(name: string) {
         break;
     case 'diff':
         const ignoreCase = JSON.parse($('#case-fold').innerText);
-        const diff = diffTable(hole, subRes.Exp, subRes.Out, subRes.Argv, ignoreCase);
+        const diff = diffView(hole, subRes.Exp, subRes.Out, subRes.Argv, ignoreCase, subRes.MultisetDelimiter, subRes.ItemDelimiter);
         output.replaceChildren(diff);
     }
 }

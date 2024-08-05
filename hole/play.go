@@ -40,14 +40,16 @@ var stdoutTrimmer = regexp.MustCompile(`[\t\x0B\f\r ]+(?:\n|$)`)
 
 // Run holds the results of running a given solution once.
 type Run struct {
-	Answer   string        `json:"answer"`
-	Args     []string      `json:"args"`
-	ExitCode int           `json:"exit_code"`
-	Pass     bool          `json:"pass"`
-	Stderr   string        `json:"stderr"`
-	Stdout   string        `json:"stdout"`
-	Time     time.Duration `json:"time_ns"`
-	Timeout  bool          `json:"timeout"`
+	Answer            string        `json:"answer"`
+	ItemDelimiter     string        `json:"item_delimiter"`
+	MultisetDelimiter string        `json:"multiset_delimiter"`
+	Args              []string      `json:"args"`
+	ExitCode          int           `json:"exit_code"`
+	Pass              bool          `json:"pass"`
+	Stderr            string        `json:"stderr"`
+	Stdout            string        `json:"stdout"`
+	Time              time.Duration `json:"time_ns"`
+	Timeout           bool          `json:"timeout"`
 
 	// This is a bit hacky, the only way to discover how long an assembly
 	// solution is is to compile it so we store it here but don't JSON it.
@@ -457,6 +459,9 @@ func play(
 			run.Pass = run.Answer == run.Stdout
 		}
 	}
+
+	run.MultisetDelimiter = hole.MultisetDelimiter
+	run.ItemDelimiter = hole.ItemDelimiter
 
 	return nil
 }
