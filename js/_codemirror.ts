@@ -18,6 +18,7 @@ import { oneDarkTheme, oneDarkHighlightStyle }   from '@codemirror/theme-one-dar
 import { vim }                                   from '@replit/codemirror-vim';
 
 // Languages.
+import { apl }                from '@codemirror/legacy-modes/mode/apl';
 import { assembly }           from '@defasm/codemirror';
 import { brainfuck }          from 'codemirror-lang-brainfuck';
 import { c, csharp, dart }    from './vendor/codemirror-clike';
@@ -111,6 +112,7 @@ export const extensions : { [key: string]: any } = {
     'vim': vim({ status: true }),
 
     // Languages.
+    'apl':           StreamLanguage.define(apl),
     // TODO arturo
     'assembly':      assembly(),
     'assembly-wiki': assembly({ byteDumps: false }),
