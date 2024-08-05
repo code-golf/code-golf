@@ -226,11 +226,14 @@ function updateLangPicker() {
     }
 
     // Hybrid language selector: make it easy to see your existing solutions and their lengths.
-    $('#picker').replaceChildren(...sortedLangs.map((l: any) => {
-        const tab = <a href={l.id == lang ? null : '#'+l.id}>
-            <svg><use href={'#'+l.id}/></svg>
-            {l.name}
-        </a>;
+    const picker = $('#picker');
+    const icon   = picker.dataset.style?.includes('icon')  ?? true;
+    const label  = picker.dataset.style?.includes('label') ?? true;
+    picker.replaceChildren(...sortedLangs.map((l: any) => {
+        const tab = <a href={l.id == lang ? null : '#'+l.id} title={l.name}></a>;
+
+        if (icon)  tab.append(<svg><use href={'#'+l.id}/></svg>)
+        if (label) tab.append(l.name);
 
         if (getSolutionCode(l.id, 0)) {
             const bytes = byteLen(getSolutionCode(l.id, 0));
@@ -246,8 +249,7 @@ function updateLangPicker() {
             return null;
         }
 
-        if (l.experiment)
-            tab.append(<svg><use href="#flask"/></svg>);
+        if (l.experiment) tab.append(<svg><use href="#flask"/></svg>);
 
         return tab;
     }).filter((x: Node | null) => x), ...selectNodes);

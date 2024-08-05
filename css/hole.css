@@ -353,7 +353,7 @@ h2 {
         border-radius: .25rem;
         display: flex;
         gap: .5rem;
-        line-height: 1.5;
+        height: 2.375rem;
         padding: .375rem .5rem;
 
         svg {
