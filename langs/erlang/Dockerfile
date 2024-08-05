@@ -10,18 +10,15 @@ ENV ERL_TOP=/otp-$OTP_VERSION
 
 WORKDIR $ERL_TOP
 
-RUN ./configure --prefix=/usr \
- && make --jobs=`nproc`       \
- && make --jobs=`nproc` install
+RUN ./configure --disable-jit --prefix=/usr \
+ && make --jobs=`nproc` && make --jobs=`nproc` install
 
 FROM codegolf/lang-base
 
 COPY --from=0 /bin/sh                                         /bin/
 COPY --from=0 /lib/ld-musl-x86_64.so.1                        /lib/
 COPY --from=0 /usr/bin/basename /usr/bin/dirname /usr/bin/erl /usr/bin/
-COPY --from=0 /usr/lib/libgcc_s.so.1                          \
-              /usr/lib/libncursesw.so.6                       \
-              /usr/lib/libstdc++.so.6                         /usr/lib/		
+COPY --from=0 /usr/lib/libncursesw.so.6                       /usr/lib/		
 COPY --from=0 /usr/lib/erlang/bin/start.boot                  /usr/lib/erlang/bin/
 COPY --from=0 /usr/lib/erlang/erts-15.0.1/bin/beam.smp        \
               /usr/lib/erlang/erts-15.0.1/bin/erl_child_setup \
