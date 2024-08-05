@@ -19,7 +19,7 @@ constant %paths = (
     'D'          => 'en.wikipedia.org/wiki/D_(programming_language)',
     'Dart'       => 'en.wikipedia.org/wiki/Dart_(programming_language)',
     'Elixir'     => 'en.wikipedia.org/wiki/Elixir_(programming_language)',
-    'Erlang'     => 'github.com/erlang/otp/releases/latest',
+    'Erlang'     => 'en.wikipedia.org/wiki/Erlang_(programming_language)',
     'F#'         => 'en.wikipedia.org/wiki/F_Sharp_(programming_language)',
     'Factor'     => 'github.com/factor/factor/releases/latest',
     'Forth'      => 'en.wikipedia.org/wiki/Gforth',
@@ -64,7 +64,7 @@ for %langs.sort: *.key.fc -> (:key($name), :value(%lang)) {
         my    $res = $ua.get("https://$_")<content>.decode;
 
         when / 'endoflife' / { $res.&from-json[0]<latest> }
-        when / 'github'    / { $res ~~ / [ $name || 'Release' ] ' ' .+? <(\d+ <[\d.]>+)> / }
+        when / 'github'    / { $res ~~ / [ $name || 'Release' ] ' ' v? <(\d+ <[\d.]>+)> / }
         when / 'npmjs'     / { $res.&from-json[0]<version> }
         when / 'wikipedia' / {
             $res ~~ /
