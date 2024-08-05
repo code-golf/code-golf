@@ -4,9 +4,9 @@ for (
 
     # System.
     # Use Raku because our Perl lacks the "Sys::Hostname" package.
-    cwd      => '/',         raku => 'say ~$*CWD',
-    env      => '{}',        raku => 'say %*ENV',
-    hostname => 'code-golf', raku => 'say $*KERNEL.hostname',
+    cwd      => '/',              raku => 'say ~$*CWD',
+    env      => '{HOME => /tmp}', raku => 'say %*ENV',
+    hostname => 'code-golf',      raku => 'say $*KERNEL.hostname',
 
     # User & Group.
     # Use Perl because our Raku lacks the "id" binary.

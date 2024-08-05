@@ -24,7 +24,6 @@ x is a no-op.
 
 [Arturo]
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
-env        = [ 'HOME=/tmp' ]
 experiment = 915
 size       = '6.21 MiB'
 version    = '0.9.84'
@@ -498,7 +497,6 @@ let main args =
 
 [Factor]
 args    = [ '/factor/factor', '/proc/self/fd/0' ]
-env     = [ 'XDG_CACHE_HOME=/tmp' ]
 size    = '172 MiB'
 version = '0.99'
 website = 'https://factorcode.org'
@@ -751,7 +749,6 @@ for (let arg of arguments)
 
 [Julia]
 args    = [ '/usr/bin/julia', '--color=yes', '/proc/self/fd/0' ]
-env     = [ 'HOME=/' ]
 size    = '310 MiB'
 version = '1.10.4'
 website = 'https://julialang.org'
@@ -1139,7 +1136,6 @@ SELECT arg FROM argv;
 
 [Swift]
 args    = [ '/usr/bin/swift', '-module-cache-path', '/tmp', '-' ]
-env     = [ 'HOME=/' ]
 size    = '462 MiB'
 version = '5.10.1'
 website = 'https://swift.org'

@@ -340,6 +340,7 @@ func play(
 
 	cmd := exec.CommandContext(ctx, "/usr/bin/run-lang")
 	cmd.Dir = "/langs/" + lang.ID
+	cmd.Env = append([]string{"HOME=/tmp"}, lang.Env...)
 	cmd.Stderr = &stderr
 	cmd.Stdout = &stdout
 	cmd.WaitDelay = time.Second
@@ -347,9 +348,6 @@ func play(
 		Cloneflags: syscall.CLONE_NEWIPC | syscall.CLONE_NEWNET |
 			syscall.CLONE_NEWNS | syscall.CLONE_NEWPID | syscall.CLONE_NEWUTS,
 	}
-
-	// Ensure at least a non-nil empty environment. Append lang specific env.
-	cmd.Env = append([]string{}, lang.Env...)
 
 	// Assembly bytes pipe.
 	var asmBytesRead, asmBytesWrite *os.File

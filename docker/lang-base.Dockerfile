@@ -3,8 +3,8 @@ FROM alpine:3.20
 WORKDIR /scratch
 
 RUN mkdir dev etc tmp \
- && echo nobody:x:65534:          > etc/group \
- && echo nobody:x:65534:65534::/: > etc/passwd
+ && echo nobody:x:65534:             > etc/group \
+ && echo nobody:x:65534:65534::/tmp: > etc/passwd
 
 FROM scratch AS lang-base-no-proc
 
