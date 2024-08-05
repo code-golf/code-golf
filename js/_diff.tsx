@@ -1,4 +1,5 @@
 import * as Diff from 'diff';
+import { $ } from './_util';
 
 interface DiffPos {
     left: number;
@@ -8,11 +9,12 @@ interface DiffPos {
 
 export default (hole: string, exp: string, out: string, argv: string[], ignoreCase: boolean, multisetDelimiter: string, itemDelimiter: string) => {
     const provideItemwiseDiff = !multisetDelimiter && itemDelimiter;
+    const isLinesDiffChecked = Boolean($('#diffKindSettings input[value="lines"]:checked'));
     return provideItemwiseDiff ?
         <div>
             <div id='diffKindSettings'>
-                <label><input type="radio" name="diff_kind" value="items" checked></input> Items</label>
-                <label><input type="radio" name="diff_kind" value="lines"></input> Lines</label>
+                <label><input type="radio" name="diff_kind" value="items" checked={!isLinesDiffChecked ? true : undefined}></input> Items</label>
+                <label><input type="radio" name="diff_kind" value="lines" checked={isLinesDiffChecked ? true : undefined}></input> Lines</label>
             </div>
             {linesDiff(hole, exp, out, argv, ignoreCase)}
             {itemsDiff(exp, out, itemDelimiter)}
