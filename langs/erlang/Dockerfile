@@ -16,16 +16,18 @@ RUN ./configure --prefix=/usr \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/sh                         /bin/
-COPY --from=0 /lib/ld-musl-x86_64.so.1        /lib/
-COPY --from=0 /usr/bin/basename               \
-              /usr/bin/dirname                \
-              /usr/bin/erl                    /usr/bin/
-COPY --from=0 /usr/lib/libgcc_s.so.1          \
-              /usr/lib/libncursesw.so.6       \
-              /usr/lib/libstdc++.so.6         /usr/lib/
-COPY --from=0 /usr/lib/erlang/bin/start.boot  /usr/lib/erlang/bin/
-COPY --from=0 /usr/lib/erlang/erts-15.0.1/bin /usr/lib/erlang/erts-15.0.1/bin
-COPY --from=0 /usr/lib/erlang/lib             /usr/lib/erlang/lib
+COPY --from=0 /bin/sh                                         /bin/
+COPY --from=0 /lib/ld-musl-x86_64.so.1                        /lib/
+COPY --from=0 /usr/bin/basename /usr/bin/dirname /usr/bin/erl /usr/bin/
+COPY --from=0 /usr/lib/libgcc_s.so.1                          \
+              /usr/lib/libncursesw.so.6                       \
+              /usr/lib/libstdc++.so.6                         /usr/lib/		
+COPY --from=0 /usr/lib/erlang/bin/start.boot                  /usr/lib/erlang/bin/
+COPY --from=0 /usr/lib/erlang/erts-15.0.1/bin/beam.smp        \
+              /usr/lib/erlang/erts-15.0.1/bin/erl_child_setup \
+              /usr/lib/erlang/erts-15.0.1/bin/erlexec         \
+              /usr/lib/erlang/erts-15.0.1/bin/inet_gethost    /usr/lib/erlang/erts-15.0.1/bin/
+COPY --from=0 /usr/lib/erlang/lib/kernel-10.0.1/ebin          /usr/lib/erlang/lib/kernel-10.0.1/ebin
+COPY --from=0 /usr/lib/erlang/lib/stdlib-6.0.1/ebin           /usr/lib/erlang/lib/stdlib-6.0.1/ebin
 
 ENTRYPOINT ["erl"]
