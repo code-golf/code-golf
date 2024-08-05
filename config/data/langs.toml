@@ -475,6 +475,8 @@ for arg <- System.argv, do: IO.puts arg
 '''
 
 [Erlang]
+args       = [ '/usr/bin/erl', '-noshell', '-eval', '$code' ]
+env        = [ 'HOME=/tmp' ]
 experiment = 181
 size       = '156 MiB'
 version    = 'OTP 27.0.1'
