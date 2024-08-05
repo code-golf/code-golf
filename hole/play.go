@@ -392,19 +392,6 @@ func play(
 		cmd.Args = append(cmd.Args, run.Args...)
 	}
 
-	// Code
-	switch lang.ID {
-	case "arturo", "awk", "brainfuck", "elixir", "erlang", "fish",
-		"golfscript", "javascript", "perl", "sed", "tex", "uiua":
-		// For these langs, code is passed as an argument above.
-	case "k":
-		cmd.Stdin = strings.NewReader(preprocessKCode(hole.ID, code))
-	case "php":
-		cmd.Stdin = strings.NewReader("<?php " + code + " ;")
-	default:
-		cmd.Stdin = strings.NewReader(code)
-	}
-
 	err := cmd.Run()
 
 	deadline, _ := ctx.Deadline()
