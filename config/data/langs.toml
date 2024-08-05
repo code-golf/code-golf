@@ -23,7 +23,7 @@ x is a no-op.
 '''
 
 [APL]
-args       = [ '/usr/bin/dyalog', '-b' ]
+args       = [ '/usr/bin/dyalog' ]
 experiment = 135
 size       = '13.1 MiB'
 version    = 'Dyalog APL 18.2.45405'
@@ -33,10 +33,11 @@ example    = '''
 'Hello, World!'
 
 ⍝ Looping
-⎕IO ← 0
-⎕ ← ¨ ⍳ 10
+⎕IO←0
+⎕←¨⍳10
 
 ⍝ Accessing arguments
+⎕←¨1↓2⎕NQ#'GetCommandLineArgs'
 
 '''
 
