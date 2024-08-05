@@ -47,10 +47,12 @@ func ideasGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, i := range ideas {
+		var isHole = false
 		for j, hole := range data.Holes {
 			if hole.ID == i.ID {
 				data.Holes[j].ThumbsDown = i.ThumbsDown
 				data.Holes[j].ThumbsUp = i.ThumbsUp
+				isHole = true
 			}
 		}
 
@@ -59,7 +61,9 @@ func ideasGET(w http.ResponseWriter, r *http.Request) {
 		}
 
 		i.CategoryColor = ideaColor(i.Category)
-		data.Ideas = append(data.Ideas, i)
+		if !isHole {
+			data.Ideas = append(data.Ideas, i)
+		}
 	}
 
 	slices.SortStableFunc(data.Holes, func(a, b idea) int {
