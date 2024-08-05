@@ -40,7 +40,7 @@ var stdoutTrimmer = regexp.MustCompile(`[\t\x0B\f\r ]+(?:\n|$)`)
 
 // Run holds the results of running a given solution once.
 type Run struct {
-	Answer   	      string        `json:"answer"`
+	Answer            string        `json:"answer"`
 	ItemDelimiter     string        `json:"item_delimiter"`
 	MultisetDelimiter string        `json:"multiset_delimiter"`
 	Args              []string      `json:"args"`
