@@ -24,7 +24,6 @@ x is a no-op.
 
 [Arturo]
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
-env        = [ 'HOME=/tmp' ]
 experiment = 915
 size       = '6.21 MiB'
 version    = '0.9.84'
@@ -142,7 +141,7 @@ BEGIN {
 [Bash]
 args    = [ '/usr/bin/bash', '-s', '-' ]
 size    = '1.20 MiB'
-version = '5.2.26'
+version = '5.2.32'
 website = 'https://www.gnu.org/software/bash/'
 example = '''
 # Printing
@@ -201,7 +200,7 @@ end
 
 [brainfuck]
 args    = [ '/usr/bin/brainfuck', '-xc', '$code' ]
-size    = '51.1 KiB'
+size    = '51.2 KiB'
 version = '077cc7f'
 website = 'https://github.com/primo-ppcg/bfci'
 example = '''
@@ -516,7 +515,6 @@ let main args =
 
 [Factor]
 args    = [ '/factor/factor', '/proc/self/fd/0' ]
-env     = [ 'XDG_CACHE_HOME=/tmp' ]
 size    = '172 MiB'
 version = '0.99'
 website = 'https://factorcode.org'
@@ -769,7 +767,6 @@ for (let arg of arguments)
 
 [Julia]
 args    = [ '/usr/bin/julia', '--color=yes', '/proc/self/fd/0' ]
-env     = [ 'HOME=/' ]
 size    = '310 MiB'
 version = '1.10.4'
 website = 'https://julialang.org'
@@ -1157,7 +1154,6 @@ SELECT arg FROM argv;
 
 [Swift]
 args    = [ '/usr/bin/swift', '-module-cache-path', '/tmp', '-' ]
-env     = [ 'HOME=/' ]
 size    = '462 MiB'
 version = '5.10.1'
 website = 'https://swift.org'

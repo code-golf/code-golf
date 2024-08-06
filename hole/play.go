@@ -40,14 +40,16 @@ var stdoutTrimmer = regexp.MustCompile(`[\t\x0B\f\r ]+(?:\n|$)`)
 
 // Run holds the results of running a given solution once.
 type Run struct {
-	Answer   string        `json:"answer"`
-	Args     []string      `json:"args"`
-	ExitCode int           `json:"exit_code"`
-	Pass     bool          `json:"pass"`
-	Stderr   string        `json:"stderr"`
-	Stdout   string        `json:"stdout"`
-	Time     time.Duration `json:"time_ns"`
-	Timeout  bool          `json:"timeout"`
+	Answer            string        `json:"answer"`
+	ItemDelimiter     string        `json:"item_delimiter"`
+	MultisetDelimiter string        `json:"multiset_delimiter"`
+	Args              []string      `json:"args"`
+	ExitCode          int           `json:"exit_code"`
+	Pass              bool          `json:"pass"`
+	Stderr            string        `json:"stderr"`
+	Stdout            string        `json:"stdout"`
+	Time              time.Duration `json:"time_ns"`
+	Timeout           bool          `json:"timeout"`
 
 	// This is a bit hacky, the only way to discover how long an assembly
 	// solution is is to compile it so we store it here but don't JSON it.
@@ -169,6 +171,8 @@ func Play(
 		runs = arrows()
 	case "brainfuck":
 		runs = brainfuck()
+	case "card-number-validation":
+		runs = cardNumberValidation()
 	case "day-of-week":
 		runs = dayOfWeek()
 	case "dfa-simulator":
@@ -340,6 +344,7 @@ func play(
 
 	cmd := exec.CommandContext(ctx, "/usr/bin/run-lang")
 	cmd.Dir = "/langs/" + lang.ID
+	cmd.Env = append([]string{"HOME=/tmp"}, lang.Env...)
 	cmd.Stderr = &stderr
 	cmd.Stdout = &stdout
 	cmd.WaitDelay = time.Second
@@ -347,9 +352,6 @@ func play(
 		Cloneflags: syscall.CLONE_NEWIPC | syscall.CLONE_NEWNET |
 			syscall.CLONE_NEWNS | syscall.CLONE_NEWPID | syscall.CLONE_NEWUTS,
 	}
-
-	// Ensure at least a non-nil empty environment. Append lang specific env.
-	cmd.Env = append([]string{}, lang.Env...)
 
 	// Assembly bytes pipe.
 	var asmBytesRead, asmBytesWrite *os.File
@@ -459,6 +461,9 @@ func play(
 			run.Pass = run.Answer == run.Stdout
 		}
 	}
+
+	run.MultisetDelimiter = hole.MultisetDelimiter
+	run.ItemDelimiter = hole.ItemDelimiter
 
 	return nil
 }

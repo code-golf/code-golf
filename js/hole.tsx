@@ -1,5 +1,5 @@
 import { EditorView }   from './_codemirror';
-import diffTable        from './_diff';
+import diffView         from './_diff';
 import { $, $$, comma } from './_util';
 import {
     init, langs, hole, setSolution,
@@ -83,7 +83,7 @@ function updateReadonlyPanels(data: ReadonlyPanelsData) {
     $('#out div').innerHTML = replaceUnprintablesInOutput($('#out div').innerHTML);
 
     const ignoreCase = JSON.parse($('#case-fold').innerText);
-    const diff = diffTable(hole, data.Exp, data.Out, data.Argv, ignoreCase);
+    const diff = diffView(hole, data.Exp, data.Out, data.Argv, ignoreCase, data.MultisetDelimiter, data.ItemDelimiter);
     $('#diff-content').replaceChildren(diff);
     $('#diff').classList.toggle('hide', !diff);
 }

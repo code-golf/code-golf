@@ -1,4 +1,13 @@
 [[hole]]
+id   = 'lang-picker-style'
+name = 'Language Picker Style'
+options = [
+    { id = 'icon-label', name = 'Icon & Label' },
+    { id = 'icon',       name = 'Icon Only' },
+    { id = 'label',      name = 'Label Only' },
+]
+
+[[hole]]
 id   = 'multi-window-layout'
 name = 'Multi-Window Layout (WIP)'
 

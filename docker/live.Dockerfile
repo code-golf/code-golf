@@ -78,7 +78,7 @@ COPY --from=codegolf/lang-k          ["/", "/langs/k/rootfs/"         ] #  621 K
 COPY --from=codegolf/lang-wren       ["/", "/langs/wren/rootfs/"      ] #  496 KiB
 COPY --from=codegolf/lang-lua        ["/", "/langs/lua/rootfs/"       ] #  354 KiB
 COPY --from=codegolf/lang-sed        ["/", "/langs/sed/rootfs/"       ] #  236 KiB
-COPY --from=codegolf/lang-brainfuck  ["/", "/langs/brainfuck/rootfs/" ] # 51.1 KiB
+COPY --from=codegolf/lang-brainfuck  ["/", "/langs/brainfuck/rootfs/" ] # 51.2 KiB
 
 COPY --from=0 /go/code-golf                      /
 COPY --from=0 /go/dist                           /dist/
