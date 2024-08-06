@@ -11,10 +11,14 @@ func cardNumberValidation() []Run {
 		valid bool
 	}
 
+	digitSum := func(n int) int {
+		return n - n/10*9
+	}
+
 	getCheckDigit := func(digits []int) int {
 		s := 0
 		for i, x := range digits {
-			s += x + (len(digits)-i)%2*x
+			s += digitSum(x + (len(digits)-i)%2*x)
 		}
 		return 9 - (s+9)%10
 	}
@@ -44,11 +48,12 @@ func cardNumberValidation() []Run {
 		for j := range digits {
 			digits[j] = randInt(0, 9)
 		}
+		checkDigit := getCheckDigit(digits)
+		lastDigit := checkDigit
 		if i < 50 {
-			cases = append(cases, Case{formatDigits(append(digits, getCheckDigit(digits))), true})
-		} else {
-			cases = append(cases, Case{formatDigits(append(digits, randInt(0, 9))), false})
+			lastDigit = randInt(0, 9)
 		}
+		cases = append(cases, Case{formatDigits(append(digits, lastDigit)), lastDigit == checkDigit})
 	}
 
 	shuffle(cases)
