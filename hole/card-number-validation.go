@@ -44,11 +44,12 @@ func cardNumberValidation() []Run {
 		for j := range digits {
 			digits[j] = randInt(0, 9)
 		}
+		checkDigit := getCheckDigit(digits)
+		lastDigit := checkDigit
 		if i < 50 {
-			cases = append(cases, Case{formatDigits(append(digits, getCheckDigit(digits))), true})
-		} else {
-			cases = append(cases, Case{formatDigits(append(digits, randInt(0, 9))), false})
+			lastDigit = randInt(0, 9)
 		}
+		cases = append(cases, Case{formatDigits(append(digits, lastDigit)), lastDigit == checkDigit})
 	}
 
 	shuffle(cases)
