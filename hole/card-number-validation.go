@@ -11,10 +11,14 @@ func cardNumberValidation() []Run {
 		valid bool
 	}
 
+	digitSum := func(n int) int {
+		return n - n/10*9
+	}
+
 	getCheckDigit := func(digits []int) int {
 		s := 0
 		for i, x := range digits {
-			s += x + (len(digits)-i)%2*x
+			s += digitSum(x + (len(digits)-i)%2*x)
 		}
 		return 9 - (s+9)%10
 	}
