@@ -171,6 +171,8 @@ func Play(
 		runs = arrows()
 	case "brainfuck":
 		runs = brainfuck()
+	case "card-number-validation":
+		runs = cardNumberValidation()
 	case "day-of-week":
 		runs = dayOfWeek()
 	case "dfa-simulator":
