@@ -30,10 +30,25 @@ function itemsDiff(exp: string, out: string, itemDelimiter: string) {
     for (const x of out.split(itemDelimiter)){
         diff.set(x, (diff.get(x) ?? 0) + 1);
     }
-    return <div id="itemsDiff">
-        {[...diff.entries()].filter(x => x[1] !== 0)
-            .map(([x, count]) => <span title={Math.abs(count) === 1 ? '' : `${Math.abs(count)}×`} class={count > 0 ? 'pos' : 'neg'}>{x}</span>)}
-    </div>;
+    const diffItems = [...diff.entries()].map(([x, count]) => ({x, count, absCount: Math.abs(count)}));
+    return <table id="itemsDiff">
+        <thead>
+            <th>Output</th>
+            <th>Expected</th>
+        </thead>
+        <tr>
+            <td>
+                <div>
+                    {diffItems.filter(x => x.count > 0).map(x => <span title={x.absCount === 1 ? '' : `${x.absCount}×`} class="pos">{x.x}</span>)}
+                </div>
+            </td>
+            <td>
+                <div>
+                    {diffItems.filter(x => x.count < 0).map(x => <span title={x.absCount === 1 ? '' : `${x.absCount}×`} class="neg">{x.x}</span>)}
+                </div>
+            </td>
+        </tr>
+    </table>;
 }
 
 function linesDiff(hole: string, exp: string, out: string, argv: string[], ignoreCase: boolean) {
