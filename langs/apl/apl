@@ -1,0 +1,9 @@
+#!/bin/sh -e
+
+export DYALOG=/opt/mdyalog/18.2/64/unicode
+export PATH=$DYALOG/scriptbin:$PATH
+
+cat - > /tmp/code.dyalog
+
+shift
+exec dyalogscript /tmp/code.dyalog "$@"

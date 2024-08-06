@@ -23,22 +23,21 @@ x is a no-op.
 '''
 
 [APL]
-args       = [ '/usr/bin/dyalog', '-b' ]
+args       = [ '/usr/bin/apl', '-' ]
 experiment = 135
-size       = '13.1 MiB'
+size       = '14.8 MiB'
 version    = 'Dyalog APL 18.2.45405'
 website    = 'https://www.dyalog.com'
 example    = '''
 ⍝ Printing
-'Hello, World!'
+⎕←'Hello, World!'
 
 ⍝ Looping
 ⎕IO←0
 ⎕←¨⍳10
 
 ⍝ Accessing arguments
-⎕←¨2↓2⎕NQ#'GetCommandLineArgs'
-
+⎕←¨1↓2⎕NQ#'GetCommandLineArgs'
 '''
 
 [Arturo]
