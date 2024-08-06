@@ -25,7 +25,7 @@ x is a no-op.
 [APL]
 args       = [ '/usr/bin/apl', '-' ]
 experiment = 135
-size       = '14.8 MiB'
+size       = '14.6 MiB'
 version    = 'Dyalog APL 18.2.45405'
 website    = 'https://www.dyalog.com'
 example    = '''
