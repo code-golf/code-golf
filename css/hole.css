@@ -381,12 +381,13 @@ h2 {
     margin: 0.5rem;
 }
 
-#itemsDiff {
+#itemsDiff td div {
     align-content: flex-start;
     align-items: flex-start;
     display: flex;
     flex-wrap: wrap;
     gap: .375rem;
+    margin-top: 0.25rem;
 }
 
 #itemsDiff span {
