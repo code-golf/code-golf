@@ -376,7 +376,7 @@ preamble = '''
 category = 'Computing'
 experiment = 1011
 links = [
-    { name  = 'Wikipedia', url = '//https://en.wikipedia.org/wiki/Luhn_algorithm' }
+    { name  = 'Wikipedia', url = '//en.wikipedia.org/wiki/Luhn_algorithm' }
 ]
 synopsis = 'Validate card numbers.'
 preamble = '''
