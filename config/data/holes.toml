@@ -372,6 +372,21 @@ preamble = '''
     and execute each program in turn.
 '''
 
+['Card Number Validation']
+category = 'Computing'
+experiment = 1011
+links = [
+    { name  = 'Wikipedia', url = '//https://en.wikipedia.org/wiki/Luhn_algorithm' }
+]
+synopsis = 'Validate card numbers.'
+preamble = '''
+<p>
+    The Luhn algorithm is a simple check digit formula used to validate a variety of identification numbers.
+
+<p>
+    Given a list of 16-digit payment card numbers (like <code>3566 0020 2036 0505</code>), output the ones that are valid according to the Luhn algorithm.
+'''
+
 ['Catalan Numbers']
 category = 'Sequence'
 links = [
