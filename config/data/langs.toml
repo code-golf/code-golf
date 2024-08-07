@@ -583,7 +583,7 @@ end
 [Go]
 args    = [ '/usr/bin/go', '-' ]
 size    = '353 MiB'
-version = '1.22.5'
+version = '1.22.6'
 website = 'https://go.dev'
 example = '''
 package main
