@@ -24,6 +24,7 @@ type solution struct {
 	LangID   string        `json:"lang"`
 	Pass     bool          `json:"pass"`
 	Stderr   string        `json:"stderr"`
+	Tested   time.Time     `json:"tested"`
 	Took     time.Duration `json:"took"`
 	Total    int           `json:"total"`
 }
@@ -48,6 +49,7 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/x-ndjson")
 
+	noNewFailures := r.FormValue("no-new-failures") == "on"
 	workers, _ := strconv.Atoi(r.FormValue("workers"))
 	for range workers {
 		wg.Add(1)
@@ -80,19 +82,23 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 					}
 				}
 
-				db.MustExec(
-					`UPDATE solutions
-					    SET failing = $1, tested = DEFAULT
-					  WHERE code    = $2
-					    AND hole    = $3
-					    AND lang    = $4
-					    AND user_id = $5`,
-					!s.Pass,
-					s.Code,
-					s.HoleID,
-					s.LangID,
-					s.GolferID,
-				)
+				// If we passed, or we're okay saving failures, or we used to
+				// fail then save to at least update the tested time.
+				if s.Pass || !noNewFailures || s.Failing {
+					db.MustExec(
+						`UPDATE solutions
+						    SET failing = $1, tested = DEFAULT
+						  WHERE code    = $2
+						    AND hole    = $3
+						    AND lang    = $4
+						    AND user_id = $5`,
+						!s.Pass,
+						s.Code,
+						s.HoleID,
+						s.LangID,
+						s.GolferID,
+					)
+				}
 
 				b, err := json.Marshal(s)
 				if err != nil {
@@ -122,14 +128,14 @@ func getSolutions(r *http.Request) chan solution {
 			r.Context(),
 			`WITH distinct_solutions AS (
 			  SELECT DISTINCT code, failing, login golfer, user_id golfer_id,
-			                  hole hole_id, lang lang_id
+			                  hole hole_id, lang lang_id, tested
 			    FROM solutions
 			    JOIN users   ON id = user_id
 			   WHERE failing IN (true, $1)
 			     AND (login = $2 OR $2 = '')
 			     AND (hole  = $3 OR $3 IS NULL)
 			     AND (lang  = $4 OR $4 IS NULL)
-			ORDER BY hole, lang, login
+			ORDER BY tested
 			) SELECT *, COUNT(*) OVER () total FROM distinct_solutions`,
 			r.FormValue("failing") == "on",
 			r.FormValue("golfer"),

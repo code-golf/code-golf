@@ -2,17 +2,6 @@
 
 h2 { font-size: 1.25rem }
 
-main > form {
-    display: grid;
-    gap: 1rem;
-    max-width: 30rem;
-}
-
-main > form + form {
-    border-top: 1px solid var(--grey);
-    padding-top: 1rem;
-}
-
 #connections {
     display: grid;
     gap: 1rem;

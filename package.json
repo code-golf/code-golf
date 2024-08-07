@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "dependencies": {
     "@codemirror/lang-cpp": "",
     "@codemirror/lang-go": "",
@@ -24,7 +25,6 @@
     "codemirror-lang-k": "",
     "codemirror-lang-prolog": "",
     "codemirror-lang-zig": "",
-    "dialog-polyfill": "",
     "diff": "",
     "esbuild": "",
     "golden-layout": "^2.6.0",
@@ -37,7 +37,6 @@
     "@types/diff": "",
     "@typescript-eslint/eslint-plugin": "",
     "@typescript-eslint/parser": "",
-    "eslint": "",
-    "typescript": ""
+    "eslint": ""
   }
 }

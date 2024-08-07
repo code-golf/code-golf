@@ -372,6 +372,21 @@ preamble = '''
     and execute each program in turn.
 '''
 
+['Card Number Validation']
+category = 'Computing'
+experiment = 1011
+links = [
+    { name  = 'Wikipedia', url = '//en.wikipedia.org/wiki/Luhn_algorithm' }
+]
+synopsis = 'Validate card numbers.'
+preamble = '''
+<p>
+    The Luhn algorithm is a simple check digit formula used to validate a variety of identification numbers.
+
+<p>
+    Given a list of 16-digit payment card numbers (like <code>3566 0020 2036 0505</code>), output the ones that are valid according to the Luhn algorithm.
+'''
+
 ['Catalan Numbers']
 category = 'Sequence'
 links = [
@@ -1930,15 +1945,6 @@ preamble = '''
 </div>
 '''
 
-['Multiset Judge Demo']
-category = 'Mathematics'
-experiment = -1
-synopsis = 'Order agnostic judge demo.'
-item-delimiter = "\n"
-preamble = '''
-<p>Output each number 0..9 exactly twice and 10..29 exactly once.
-'''
-
 ['Musical Chords']
 category = 'Transform'
 links = [
@@ -2444,22 +2450,24 @@ preamble = '''
 </div>
 '''
 
-['Polyominoes']
-category = 'Computing'
-experiment = 1232
+[Polyominoes]
+category       = 'Computing'
+item-delimiter = "\n\n"
+released       = 2024-08-01
+synopsis       = 'Print all polyominoes of sizes 1 to 6.'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Polyomino' },
 ]
-item-delimiter = "\n\n"
-synopsis = 'Print all polyominoes of sizes 1 to 6.'
 preamble = '''
 <p>
-    A polyomino is a shape formed by joining a certain amount of squares together, where each square must be linked together.
-    Output each possible polyomino (including every rotation), up to a size of 6, in any order. Separate each polyomino by an empty line.
-</p>
+    A polyomino is a shape formed by joining a certain amount of squares
+    together, where each square must be linked together. Output each possible
+    polyomino (including every rotation), up to a size of 6, in any order.
+    Separate each polyomino by an empty line.
+
 <p>
-    There should be a total of 1 monomino, 2 dominoes, 6 trominoes, 19 tetrominoes, 63 pentominoes and 216 hexominoes.
-</p>
+    There should be a total of 1 monomino, 2 dominoes, 6 trominoes,
+    19 tetrominoes, 63 pentominoes, and 216 hexominoes.
 '''
 
 ['Prime Numbers']

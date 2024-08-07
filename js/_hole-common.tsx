@@ -226,11 +226,14 @@ function updateLangPicker() {
     }
 
     // Hybrid language selector: make it easy to see your existing solutions and their lengths.
-    $('#picker').replaceChildren(...sortedLangs.map((l: any) => {
-        const tab = <a href={l.id == lang ? null : '#'+l.id}>{l.name}</a>;
+    const picker = $('#picker');
+    const icon   = picker.dataset.style?.includes('icon')  ?? true;
+    const label  = picker.dataset.style?.includes('label') ?? true;
+    picker.replaceChildren(...sortedLangs.map((l: any) => {
+        const tab = <a href={l.id == lang ? null : '#'+l.id} title={l.name}></a>;
 
-        if (l.experiment)
-            tab.prepend(<svg><use href="#flask"/></svg>);
+        if (icon)  tab.append(<svg><use href={'#'+l.id}/></svg>);
+        if (label) tab.append(l.name);
 
         if (getSolutionCode(l.id, 0)) {
             const bytes = byteLen(getSolutionCode(l.id, 0));
@@ -239,12 +242,14 @@ function updateLangPicker() {
             let text = comma(bytes);
             if (chars && bytes != chars) text += '/' + comma(chars);
 
-            tab.append(' ', <sup>{text}</sup>);
+            tab.append(<sup>{text}</sup>);
         }
         else if (!localStorage.getItem(getAutoSaveKey(l.id, 0)) &&
                  !localStorage.getItem(getAutoSaveKey(l.id, 1))) {
             return null;
         }
+
+        if (l.experiment) tab.append(<svg><use href="#flask"/></svg>);
 
         return tab;
     }).filter((x: Node | null) => x), ...selectNodes);
@@ -334,13 +339,15 @@ export interface RankUpdate {
 
 export interface Run {
     answer: string,
+    multiset_delimiter: string,
+    item_delimiter: string,
     args: string[],
     exit_code: number,
     pass: boolean,
     stderr: string,
     stdout: string,
     time_ns: number,
-    timeout: boolean
+    timeout: boolean,
 }
 
 export interface ReadonlyPanelsData {
@@ -349,6 +356,8 @@ export interface ReadonlyPanelsData {
     Exp: string,
     Err: string,
     Argv: string[],
+    MultisetDelimiter: string,
+    ItemDelimiter: string
 }
 
 export interface SubmitResponse {
@@ -591,6 +600,8 @@ export async function submit(
             Exp: run.answer,
             Err: run.stderr,
             Out: run.stdout,
+            MultisetDelimiter: run.multiset_delimiter,
+            ItemDelimiter: run.item_delimiter,
         });
 
         const ms = Math.round(run.time_ns / 10**6);

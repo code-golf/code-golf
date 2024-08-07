@@ -1,17 +1,18 @@
 CREATE EXTENSION citext;
+CREATE EXTENSION hstore;
 
 CREATE TYPE cheevo AS ENUM (
     '0xdead', 'aged-like-fine-wine', 'alchemist', 'archivist',
     'assembly-required', 'bakers-dozen', 'big-brother', 'biohazard',
     'bird-is-the-word', 'black-box-testing', 'blackjack', 'bullseye',
-    'caffeinated', 'centenarian', 'cobowl', 'cunning-linguist',
-    'dammit-janet', 'different-strokes', 'dont-panic',
-    'elephpant-in-the-room', 'emergency-room', 'fish-n-chips', 'fore',
-    'forty-winks', 'go-forth', 'gone-in-60-holes', 'happy-birthday-code-golf',
-    'happy-go-lucky', 'hello-world', 'hextreme-agony', 'inception',
-    'independence-day', 'interview-ready', 'its-over-9000', 'jeweler',
-    'just-kidding', 'like-comment-subscribe', 'marathon-runner',
-    'mary-had-a-little-lambda', 'may-the-4ᵗʰ-be-with-you',
+    'busy-beaver', 'caffeinated', 'centenarian', 'cobowl', 'cunning-linguist',
+    'dammit-janet', 'different-strokes', 'disappearing-act', 'dont-panic',
+    'double-slit-experiment', 'elephpant-in-the-room', 'emergency-room',
+    'fish-n-chips', 'fore', 'forty-winks', 'go-forth', 'gone-in-60-holes',
+    'happy-birthday-code-golf', 'happy-go-lucky', 'hello-world',
+    'hextreme-agony', 'inception', 'independence-day', 'interview-ready',
+    'its-over-9000', 'jeweler', 'just-kidding', 'like-comment-subscribe',
+    'marathon-runner', 'mary-had-a-little-lambda', 'may-the-4ᵗʰ-be-with-you',
     'my-god-its-full-of-stars', 'neunundneunzig-luftballons', 'off-the-grid',
     'omniglot', 'omniglutton', 'ouroboros', 'pangramglot', 'patches-welcome',
     'phileas-fogg', 'pi-day', 'polyglot', 'polyglutton', 'real-programmers',
@@ -44,8 +45,8 @@ CREATE TYPE hole AS ENUM (
     'niven-numbers', 'niven-numbers-long', 'number-spiral', 'odious-numbers',
     'odious-numbers-long', 'ordinal-numbers', 'pangram-grep',
     'pascals-triangle', 'pernicious-numbers', 'pernicious-numbers-long',
-    'poker', 'prime-numbers', 'prime-numbers-long', 'proximity-grid',
-    'qr-decoder', 'quine', 'recamán', 'repeating-decimals',
+    'poker', 'polyominoes', 'prime-numbers', 'prime-numbers-long',
+    'proximity-grid', 'qr-decoder', 'quine', 'recamán', 'repeating-decimals',
     'reverse-polish-notation', 'reversi', 'rijndael-s-box',
     'rock-paper-scissors-spock-lizard', 'roman-to-arabic', 'rule-110',
     'seven-segment', 'si-units', 'sierpiński-triangle', 'smith-numbers',
@@ -62,12 +63,12 @@ CREATE TYPE keymap AS ENUM ('default', 'vim');
 
 CREATE TYPE lang AS ENUM (
     'assembly', 'awk', 'bash', 'basic', 'berry', 'brainfuck', 'c', 'c-sharp',
-    'clojure',  'cpp', 'cobol', 'coconut', 'crystal', 'd', 'dart', 'elixir',
-    'f-sharp', 'factor', 'fish', 'forth', 'fortran', 'go', 'golfscript',
-    'haskell', 'hexagony', 'j', 'janet', 'java', 'javascript', 'julia', 'k',
-    'lisp', 'lua', 'nim', 'ocaml', 'pascal', 'perl', 'php', 'powershell',
-    'prolog', 'python', 'r', 'raku', 'rockstar', 'ruby', 'rust', 'sed', 'sql',
-    'swift', 'tcl', 'tex', 'v', 'viml', 'wren', 'zig'
+    'civet', 'clojure',  'cpp', 'cobol', 'coconut', 'crystal', 'd', 'dart',
+    'elixir', 'f-sharp', 'factor', 'fish', 'forth', 'fortran', 'go',
+    'golfscript', 'haskell', 'hexagony', 'j', 'janet', 'java', 'javascript',
+    'julia', 'k', 'lisp', 'lua', 'nim', 'ocaml', 'pascal', 'perl', 'php',
+    'powershell', 'prolog', 'python', 'r', 'raku', 'rockstar', 'ruby', 'rust',
+    'sed', 'sql', 'swift', 'tcl', 'tex', 'v', 'viml', 'wren', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('unicorn', 'diamond', 'gold', 'silver', 'bronze');

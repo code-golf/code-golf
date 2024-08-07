@@ -150,13 +150,6 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 	)
 
 	cheevoProgress(
-		`SELECT COUNT(DISTINCT hole)
-		   FROM solutions
-		  WHERE NOT failing AND user_id = $1`,
-		cheevoIDs(config.CheevoTree["Total Holes"]),
-	)
-
-	cheevoProgress(
 		`WITH langs AS (
 		    SELECT COUNT(DISTINCT lang)
 		      FROM solutions
@@ -167,27 +160,26 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 	)
 
 	cheevoProgress(
+		`WITH distinct_holes AS (
+		    SELECT DISTINCT hole
+		      FROM solutions
+		     WHERE NOT failing AND user_id = $2
+		) SELECT COUNT(DISTINCT $1::hstore->hole::text) FROM distinct_holes`,
+		[]string{"smörgåsbord"},
+		config.HoleCategoryHstore,
+	)
+
+	cheevoProgress(
+		`SELECT COUNT(DISTINCT hole)
+		   FROM solutions
+		  WHERE NOT failing AND user_id = $1`,
+		cheevoIDs(config.CheevoTree["Total Holes"]),
+	)
+
+	cheevoProgress(
 		"SELECT COALESCE(MAX(points), 0) FROM points WHERE user_id = $1",
 		cheevoIDs(config.CheevoTree["Total Points"]),
 	)
-
-	var holes []config.Hole
-	if err := db.Select(
-		&holes,
-		"SELECT DISTINCT hole FROM solutions WHERE NOT failing AND user_id = $1",
-		golfer.ID,
-	); err != nil {
-		panic(err)
-	}
-
-	categories := map[string]bool{}
-	for _, hole := range holes {
-		categories[hole.Category] = true
-	}
-
-	progress := data["smörgåsbord"]
-	progress.Progress = len(categories)
-	data["smörgåsbord"] = progress
 
 	render(w, r, "golfer/cheevos", data, golfer.Name)
 }

@@ -75,6 +75,11 @@
         </section>
     {{ end }}
 
+    <section id=category-overview>
+        <h2>Category Overview</h2>
+        <canvas></canvas>
+    </section>
+
     {{ with len .Data.Trophies }}
         <section class=icons>
             <h2>{{ . }} / {{ len $.Data.Langs }} Languages</h2>
@@ -154,5 +159,9 @@
     {{ end }}
     </aside>
 </main>
+
+<script id=category-overview-data type=application/json>
+    {{ .Data.CategoryOverview }}
+</script>
 
 {{ template "footer" }}

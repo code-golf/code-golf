@@ -29,7 +29,9 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
-	experimental := holeObj.Experiment != 0 || langObj.Experiment != 0
+	experimentalHole := holeObj.Experiment != 0
+	experimentalLang := langObj.Experiment != 0
+	experimental := experimentalHole || experimentalLang
 
 	db := session.Database(r)
 	golfer := session.Golfer(r)
@@ -75,6 +77,12 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 	if pass && golfer != nil && experimental {
 		if c := golfer.Earn(db, "black-box-testing"); c != nil {
 			out.Cheevos = append(out.Cheevos, *c)
+		}
+
+		if experimentalHole && experimentalLang {
+			if c := golfer.Earn(db, "double-slit-experiment"); c != nil {
+				out.Cheevos = append(out.Cheevos, *c)
+			}
 		}
 	} else if pass && golfer != nil && !experimental {
 		if err := db.QueryRowContext(
@@ -220,23 +228,31 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		var holes []config.Hole
-		if err := db.Select(
-			&holes,
-			"SELECT DISTINCT hole FROM solutions WHERE NOT failing AND user_id = $1",
-			golfer.ID,
-		); err != nil {
-			panic(err)
-		}
+		if !golfer.Earned("smörgåsbord") {
+			var earn bool
+			if err := db.Get(
+				&earn,
+				`WITH distinct_holes AS (
+				    SELECT DISTINCT hole
+				      FROM solutions
+				     WHERE NOT failing AND user_id = $1
+				) SELECT (
+				    SELECT COUNT(DISTINCT $2::hstore->hole::text)
+				      FROM distinct_holes
+				) = (
+				    SELECT COUNT(DISTINCT cat)
+				      FROM unnest(avals($2)) cat
+				)`,
+				golfer.ID,
+				config.HoleCategoryHstore,
+			); err != nil {
+				panic(err)
+			}
 
-		categories := map[string]bool{}
-		for _, hole := range holes {
-			categories[hole.Category] = true
-		}
-
-		if len(categories) == 6 {
-			if c := golfer.Earn(db, "smörgåsbord"); c != nil {
-				out.Cheevos = append(out.Cheevos, *c)
+			if earn {
+				if c := golfer.Earn(db, "smörgåsbord"); c != nil {
+					out.Cheevos = append(out.Cheevos, *c)
+				}
 			}
 		}
 	}

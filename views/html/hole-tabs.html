@@ -3,6 +3,8 @@
 <!-- For experimental lang picker -->
 <svg>{{ svg "flask-light" }}</svg>
 
+{{ range .Data.Langs }}<svg>{{ svg .ID }}</svg>{{ end }}
+
 {{ with .Data.Hole.Experiment }}
     <div class=alert>
         {{ svg "flask-light" }}
@@ -100,7 +102,9 @@
         </nav>
     </header>
 {{ end }}
-    <nav class=tabs id=picker></nav>
+    <nav class=tabs id=picker {{ with .Golfer -}}
+        data-style='{{ index .Settings "hole" "lang-picker-style" }}'
+    {{- end }}></nav>
     {{ template "hole-info" . }}
     <div id="picker-status-row">
         <nav class="tabs hide" id=solutionPicker></nav>

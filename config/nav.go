@@ -27,6 +27,21 @@ var Nav map[string]*Navigaton
 // maybe something like unified/single namespace.
 func init() {
 	Nav = map[string]*Navigaton{
+		"golfer/settings": {
+			OnePerRow: true,
+			Path:      "/golfer/settings/{page}",
+			Groups: []*LinkGroup{
+				{
+					Slug: "page",
+					Links: []*NavLink{
+						{Name: "General", Path: "/golfer/settings"},
+						{Name: "Export Data", Slug: "export-data"},
+						{Name: "Delete Account", Slug: "delete-account"},
+					},
+				},
+			},
+		},
+
 		"rankings/cheevos": {
 			OnePerRow: true,
 			Path:      "/rankings/cheevos/{cheevo}",
@@ -67,8 +82,9 @@ func init() {
 			Path:      "/rankings/misc/{type}",
 			Groups: []*LinkGroup{
 				group("", "type", "💎 Diamond Deltas", "Followers",
-					"Holes Authored", "Oldest 💎 Diamonds",
-					"Oldest 🦄 Unicorns", "Referrals", "Solutions"),
+					"Holes Authored", "Most Tied 🥇 Golds",
+					"Oldest 💎 Diamonds", "Oldest 🦄 Unicorns", "Referrals",
+					"Solutions"),
 			},
 		},
 

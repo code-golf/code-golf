@@ -17,7 +17,7 @@ func golferCancelDeletePOST(w http.ResponseWriter, r *http.Request) {
 		session.Golfer(r).ID,
 	)
 
-	http.Redirect(w, r, "/golfer/settings", http.StatusSeeOther)
+	http.Redirect(w, r, "/golfer/settings/delete-account", http.StatusSeeOther)
 }
 
 // POST /golfer/delete
@@ -27,7 +27,7 @@ func golferDeletePOST(w http.ResponseWriter, r *http.Request) {
 		session.Golfer(r).ID,
 	)
 
-	http.Redirect(w, r, "/golfer/settings", http.StatusSeeOther)
+	http.Redirect(w, r, "/golfer/settings/delete-account", http.StatusSeeOther)
 }
 
 // GET /golfer/settings
@@ -61,7 +61,17 @@ func golferSettingsGET(w http.ResponseWriter, r *http.Request) {
 		Value:    data.OAuthState,
 	})
 
-	render(w, r, "golfer/settings", data, "Settings")
+	render(w, r, "golfer/settings", data, "Settings: General")
+}
+
+// GET /golfer/settings/export-data
+func golferSettingsExportDataGET(w http.ResponseWriter, r *http.Request) {
+	render(w, r, "golfer/settings", nil, "Settings: Export Data")
+}
+
+// GET /golfer/settings/export-data
+func golferSettingsDeleteAccountGET(w http.ResponseWriter, r *http.Request) {
+	render(w, r, "golfer/settings", nil, "Settings: Delete Account")
 }
 
 // POST /golfer/settings/{page}

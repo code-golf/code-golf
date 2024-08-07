@@ -327,8 +327,8 @@ func mahjong() []Run {
 		"🀀🀀🀇🀈🀈🀈🀉🀊🀊🀌🀌🀐🀐🀐", // Integer wrapping exploit (1, 3, 1, 2, 0, 2)
 	}
 
-	tests := append(append([]string{}, completeHands...), incompleteHands...)
-	testValidity := make([]bool, len(completeHands)+len(incompleteHands))
+	tests := append(completeHands, incompleteHands...)
+	testValidity := make([]bool, len(tests))
 
 	for i := range completeHands {
 		testValidity[i] = true

@@ -28,6 +28,8 @@ declare global {
       h6:      any;
       header:  any;
       img:     any;
+      input:   any;
+      label:   any;
       option:  any;
       p:       any;
       section: any;
@@ -40,6 +42,7 @@ declare global {
       td:      any;
       th:      any;
       thead:   any;
+      time:    any;
       tr:      any;
       use:     any;
     }

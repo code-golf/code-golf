@@ -36,6 +36,10 @@
         <input {{ if eq "on" (.Request.FormValue "failing") }}checked{{ end }}
             id=failing name=failing type=checkbox>
 
+        <label for=failing>No New Failures</label>
+        <input {{ if eq "on" (.Request.FormValue "no-new-failures") }}checked{{ end }}
+            id=no-new-failures name=no-new-failures type=checkbox>
+
         <div>
             <div id=status></div>
             <button class="btn blue" id=run>Run</button>
@@ -45,6 +49,7 @@
     <table>
         <thead>
             <tr>
+                <th>Last Tested
                 <th>Hole
                 <th>Lang
                 <th>Golfer

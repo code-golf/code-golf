@@ -87,7 +87,7 @@ target      = 3
 [['Hole/Lang Specific']]
 name        = 'Caffeinated'
 emoji       = '☕'
-description = 'Solve any hole in both Java and JavaScript.'
+description = 'Solve any hole in any two of Civet, Java, or JavaScript.'
 
 [['Hole/Lang Specific']]
 name        = 'COBOWL'
@@ -205,12 +205,17 @@ description = '<a href=/golfer/settings>Add a bio</a> to your profile.'
 [[Miscellaneous]]
 name        = 'Black-box Testing'
 emoji       = '🧪'
-description = 'Solve an <a href=/ideas>experimental hole</a> or language.'
+description = 'Solve an <a href=/ideas>experimental hole</a>. Or solve any hole in an experimental language.'
 
 [[Miscellaneous]]
 name        = 'Different Strokes'
 emoji       = '🌈'
 description = 'Solve any hole using different bytes and chars solutions.'
+
+[[Miscellaneous]]
+name        = 'Double-slit Experiment'
+emoji       = '🔦'
+description = 'Solve an <a href=/ideas>experimental hole</a> in an experimental language.'
 
 [[Miscellaneous]]
 name        = 'Polyglot'
@@ -369,6 +374,18 @@ name        = 'Centenarian'
 emoji       = '💯'
 description = 'Solve your hundredth hole.'
 target      = 100
+
+[['Total Holes']]
+name        = 'Busy Beaver'
+emoji       = '🦫'
+description = 'Solve your <a href=//oeis.org/A060843>one hundred and seventh</a> hole.'
+target      = 107
+
+[['Total Holes']]
+name        = 'Disappearing Act'
+emoji       = '🪄'
+description = 'Solve your <a href=//tolkiengateway.net/wiki/Bilbo%27s_Farewell_Party>eleventy-first</a> hole.'
+target      = 111
 
 # TODO
 # [['Total Holes']]
