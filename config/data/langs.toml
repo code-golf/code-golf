@@ -293,7 +293,7 @@ int main(int argc, char* argv[]) {
     return 0;
 }
 
-// Code is compiled with clang with -std=c++2b
+// Code is compiled with clang with -std=c++23
 // See: https://clang.llvm.org/cxx_status.html
 '''
 
