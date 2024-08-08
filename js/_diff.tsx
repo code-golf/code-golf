@@ -31,16 +31,16 @@ function itemsDiff(exp: string, out: string, itemDelimiter: string) {
         diff.set(x, (diff.get(x) ?? 0) + 1);
     }
     const diffItems = [...diff.entries()].map(([x, count]) => ({x, count, absCount: Math.abs(count)}));
-    const neg = diffItems.filter(x => x.count < 0).map(x => <span title={x.absCount === 1 ? '' : `${x.absCount}×`} class="neg">{x.x}</span>);
-    const pos = diffItems.filter(x => x.count > 0).map(x => <span title={x.absCount === 1 ? '' : `${x.absCount}×`} class="pos">{x.x}</span>);
+    const neg = diffItems.filter(x => x.count < 0).map(x => <span title={x.absCount === 1 ? '' : `${x.absCount}×`}>{x.x}</span>);
+    const pos = diffItems.filter(x => x.count > 0).map(x => <span title={x.absCount === 1 ? '' : `${x.absCount}×`}>{x.x}</span>);
     return neg.length > 0 || pos.length > 0 ? <table id="itemsDiff">
         <thead>
             <th>Expected</th>
             <th>Output</th>
         </thead>
         <tr>
-            <td><div>{neg}</div></td>
-            <td><div>{pos}</div></td>
+            <td><div class="neg">{neg}</div></td>
+            <td><div class="pos">{pos}</div></td>
         </tr>
     </table> : '';
 }

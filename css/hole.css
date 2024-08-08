@@ -397,10 +397,10 @@ h2 {
     white-space: pre;
 }
 
-#itemsDiff span.neg{
+#itemsDiff .neg span{
     background: var(--red);
 }
-#itemsDiff span.pos{
+#itemsDiff .pos span{
     background: var(--green);
 }
 
