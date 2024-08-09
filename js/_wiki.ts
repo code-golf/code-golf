@@ -20,7 +20,7 @@ export function highlightCodeBlocks(selector: string){
         new EditorView({
             parent: pre,
             state:  EditorState.create({
-                doc: code.innerText.trim(),
+                doc: code.innerText.trimEnd(),
                 extensions: [
                     baseExtensions,
                     extensions[`${lang}-wiki`] ?? extensions[lang] ?? [],

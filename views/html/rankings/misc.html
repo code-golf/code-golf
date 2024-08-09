@@ -2,10 +2,12 @@
 {{ template "rankings" . }}
 
 {{ $diamondDeltas := eq .Path "/rankings/misc/diamond-deltas" }}
+{{ $mostTiedGolds := eq .Path "/rankings/misc/most-tied-golds" }}
 {{ $oldestMedal   := hasPrefix .Path "/rankings/misc/oldest-" }}
 {{ $solutions     := eq .Path "/rankings/misc/solutions" }}
 
-{{ $hasHole := or $diamondDeltas $oldestMedal }}
+{{ $hasGolfer := not $mostTiedGolds }}
+{{ $hasHole   := or $diamondDeltas $mostTiedGolds $oldestMedal }}
 
 <main id=two-pane>
     {{ template "nav" . }}
@@ -14,7 +16,9 @@
         <thead>
             <tr>
                 <th>#
+            {{ if $hasGolfer }}
                 <th>Golfer
+            {{ end }}
             {{ if $hasHole }}
                 <th>Hole
             {{ end }}
@@ -32,9 +36,11 @@
         {{ with .Golfer }}{{ $name = .Name }}{{ end }}
 
         {{ range .Data.Rows }}
-            <tr {{ if eq $name .Name }} class=me {{ end }}>
+            <tr {{ if and $hasGolfer (eq $name .Name) }} class=me {{ end }}>
                 <td>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup>
+            {{ if $hasGolfer }}
                 <td>{{ template "golfer-link" . }}
+            {{ end }}
             {{ if $hasHole }}
                 <td>
                     <a href="/rankings/holes/{{ .Hole }}/{{ .Lang }}/{{ .Scoring }}">

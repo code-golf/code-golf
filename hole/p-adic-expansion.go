@@ -39,16 +39,6 @@ var pAdicTests = [...]struct{ p, n, d int }{
 }
 var pAdicPrimes = []int{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61}
 
-func gcd(a, b int) int {
-	for b != 0 {
-		a, b = b, a%b
-	}
-	if a < 0 {
-		a = -a
-	}
-	return a
-}
-
 func pAdicExpansion() []Run {
 	tests := make([]test, len(pAdicTests), 100)
 

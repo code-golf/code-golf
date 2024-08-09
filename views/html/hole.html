@@ -99,7 +99,9 @@
         <summary>Details</summary>
         {{ template "hole-details" . }}
     </details>
-    <nav class=tabs id=picker></nav>
+    <nav class=tabs id=picker {{ with .Golfer -}}
+        data-style='{{ index .Settings "hole" "lang-picker-style" }}'
+    {{- end }}></nav>
     <nav class=tabs id=solutionPicker></nav>
     <section>
         <header>

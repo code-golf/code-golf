@@ -12,7 +12,7 @@ var config embed.FS
 
 var id = strings.NewReplacer(
 	// Emoji
-	"🦄 ", "", "💎 ", "",
+	"🦄 ", "", "💎 ", "", "🥇 ", "",
 
 	// Remove.
 	"!", "", "(", "", ")", "", ",", "", "’", "",

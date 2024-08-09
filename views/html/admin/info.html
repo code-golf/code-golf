@@ -27,6 +27,17 @@
                 <td>{{ bytes .Size }}
         {{ end }}
     </table>
+    <table class="nowrap-first sticky">
+        <thead>
+            <th>Last Tested
+            <th>Solutions
+        <tbody>
+        {{ range .Data.LastTested }}
+            <tr>
+                <td>{{ .TestedDay.Format "2006-01-02" }}
+                <td>{{ comma .Solutions }}
+        {{ end }}
+    </table>
 </main>
 
 {{ template "footer" }}

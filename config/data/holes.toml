@@ -319,6 +319,24 @@ F: / ? O _ o DEL
 </pre>
 '''
 
+['Billiard']
+category = 'Art'
+experiment = 456
+synopsis = 'Draw a path of a billiard ball.'
+preamble = '''
+<p>Given the size of a billiard table, draw the path of a ball shot from the top left corner of the table at 45 degree angles to the sides.
+
+<p>For example, given <code>4 14</code>, output
+<pre>
+\  /\  /\  /\
+ \/  \/  \/  \
+ /\  /\  /\  /
+/  \/  \/  \/
+</pre>
+
+<p>Separate each size with empty lines
+'''
+
 [brainfuck]
 category = 'Computing'
 links = [
@@ -370,6 +388,29 @@ preamble = '''
 <p>
     Write a program that will receive various brainfuck programs as arguments
     and execute each program in turn.
+'''
+
+['Card Number Validation']
+category = 'Computing'
+experiment = 1011
+links = [
+    { name  = 'Wikipedia', url = '//en.wikipedia.org/wiki/Luhn_algorithm' }
+]
+synopsis = 'Validate card numbers.'
+preamble = '''
+<p>
+    The Luhn algorithm is a simple check digit formula used to validate a variety of
+    identification numbers.
+
+<p>
+    Given a list of 16-digit payment card numbers (like <code>3566 0020 2036 0505</code>),
+    output the ones that are valid according to the Luhn algorithm. The digits of each input
+    are separated into groups of four by spaces.
+
+<p>
+    To verify a 16-digit card number like <code>XyXy XyXy XyXy XyXy</code>, add up all the "y"
+    digits and the <strong>digit sums</strong> of the <strong>doubles</strong> of the "X" digits.
+    The card number is valid if this sum is divisible by 10.
 '''
 
 ['Catalan Numbers']
@@ -1928,15 +1969,6 @@ preamble = '''
             <tr><td>9<td>▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄ ▄
     </table>
 </div>
-'''
-
-['Multiset Judge Demo']
-category = 'Mathematics'
-experiment = -1
-synopsis = 'Order agnostic judge demo.'
-item-delimiter = "\n"
-preamble = '''
-<p>Output each number 0..9 exactly twice and 10..29 exactly once.
 '''
 
 ['Musical Chords']

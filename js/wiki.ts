@@ -1,3 +1,3 @@
-import { highlightCodeBlocks }                                  from './_wiki';
+import { highlightCodeBlocks } from './_wiki';
 
 highlightCodeBlocks('pre > code');

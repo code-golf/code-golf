@@ -66,6 +66,16 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 			    JOIN users ON id = user_id
 			ORDER BY rank, login
 			   LIMIT $1 OFFSET $2`
+	case "most-tied-golds":
+		desc = "Most tied gold medals"
+		sql = `SELECT hole, lang, scoring, COUNT(*),
+			          RANK() OVER(ORDER BY COUNT(*) DESC),
+			          COUNT(*) OVER () total
+			     FROM medals
+			    WHERE medal = 'gold'
+			 GROUP BY hole, lang, scoring
+			 ORDER BY rank, hole, lang, scoring
+			    LIMIT $1 OFFSET $2`
 	case "oldest-diamonds", "oldest-unicorns":
 		if t == "oldest-diamonds" {
 			args = append(args, "diamond")

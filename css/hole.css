@@ -353,7 +353,7 @@ h2 {
         border-radius: .25rem;
         display: flex;
         gap: .5rem;
-        line-height: 1.5;
+        height: 2.375rem;
         padding: .375rem .5rem;
 
         svg {
@@ -381,12 +381,13 @@ h2 {
     margin: 0.5rem;
 }
 
-#itemsDiff {
+#itemsDiff td div {
     align-content: flex-start;
     align-items: flex-start;
     display: flex;
     flex-wrap: wrap;
     gap: .375rem;
+    margin-top: 0.25rem;
 }
 
 #itemsDiff span {

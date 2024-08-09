@@ -11,7 +11,11 @@ import (
 
 // GET /admin
 func adminGET(w http.ResponseWriter, r *http.Request) {
-	data := struct {
+	var data struct {
+		LastTested []struct {
+			Solutions int
+			TestedDay time.Time
+		}
 		Sessions []struct {
 			Country  config.NullCountry
 			LastUsed time.Time
@@ -21,9 +25,21 @@ func adminGET(w http.ResponseWriter, r *http.Request) {
 			Name       null.String
 			Rows, Size int
 		}
-	}{}
+	}
 
 	db := session.Database(r)
+	golfer := session.Golfer(r)
+
+	if err := db.Select(
+		&data.LastTested,
+		` SELECT COUNT(*) solutions, TIMEZONE($1, DATE(tested)) tested_day
+		    FROM solutions
+		GROUP BY tested_day
+		ORDER BY tested_day DESC`,
+		golfer.TimeZone,
+	); err != nil {
+		panic(err)
+	}
 
 	if err := db.Select(
 		&data.Sessions,
@@ -37,7 +53,7 @@ func adminGET(w http.ResponseWriter, r *http.Request) {
 		    FROM grouped_sessions
 		    JOIN users ON id = user_id
 		ORDER BY last_used DESC`,
-		session.Golfer(r).ID,
+		golfer.ID,
 	); err != nil {
 		panic(err)
 	}
