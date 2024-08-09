@@ -1081,19 +1081,22 @@ fn main() {
 '''
 
 [Scala]
+args       = [ '/usr/bin/scalarunner', '-' ]
 experiment = 235
 version    = '3.4.2'
 website    = 'https://www.scala-lang.org'
 example    = '''
-// Printing
-println("Hello, World!")
+def main(args: Array[String]) = {
+    // Printing
+    println("Hello, World!")
 
-// Looping
-for i <- 0 to 9
-    do println(i)
+    // Looping
+    for (i <- 0 to 9)
+        println(i)
 
-// Accessing arguments
-args.foreach(println)
+    // Accessing arguments
+    args.foreach(println)
+}
 '''
 
 [sed]
