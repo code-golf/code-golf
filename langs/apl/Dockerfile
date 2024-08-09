@@ -1,7 +1,7 @@
 FROM debian:bookworm-slim AS builder
 
-ARG RELEASE=18.2 \
-    BUILD=45405 \
+ARG RELEASE=19.0 \
+    BUILD=48958 \
     DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
@@ -15,9 +15,9 @@ RUN chmod +x apl
 
 FROM codegolf/lang-base
 
-ARG DIR=18.2
+ARG DIR=19.0
 
-COPY --from=0 /bin/bash /bin/cat                             /bin/
+COPY --from=0 /bin/bash /bin/cat /bin/sh                     /bin/
 COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6                \
               /lib/x86_64-linux-gnu/libdl.so.2               \
               /lib/x86_64-linux-gnu/libm.so.6                \
@@ -28,10 +28,10 @@ COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6                \
 COPY --from=0 /lib64/ld-linux-x86-64.so.2                    /lib64/
 COPY --from=0 /opt/mdyalog/$DIR/64/unicode/dyalog            /opt/mdyalog/$DIR/64/unicode/
 COPY --from=0 /opt/mdyalog/$DIR/64/unicode/aplkeys/default   \
-              /opt/mdyalog/$DIR/64/unicode/aplkeys/file      \
+              /opt/mdyalog/$DIR/64/unicode/aplkeys/utf8      \
               /opt/mdyalog/$DIR/64/unicode/aplkeys/utf8codes /opt/mdyalog/$DIR/64/unicode/aplkeys/
 COPY --from=0 /opt/mdyalog/$DIR/64/unicode/apltrans/default  \
-              /opt/mdyalog/$DIR/64/unicode/apltrans/file     /opt/mdyalog/$DIR/64/unicode/apltrans/
+              /opt/mdyalog/$DIR/64/unicode/apltrans/utf8     /opt/mdyalog/$DIR/64/unicode/apltrans/
 COPY --from=0 /opt/mdyalog/$DIR/64/unicode/scriptbin         /opt/mdyalog/$DIR/64/unicode/scriptbin
 COPY --from=0 /apl                                           /usr/bin/
 
