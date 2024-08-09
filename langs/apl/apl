@@ -1,6 +1,6 @@
-#!/bin/bash -e
+#!/bin/sh -e
 
-export DYALOG=/opt/mdyalog/18.2/64/unicode
+export DYALOG=/opt/mdyalog/19.0/64/unicode
 export PATH=$DYALOG/scriptbin:$PATH
 
 cat - > /tmp/code.dyalog
