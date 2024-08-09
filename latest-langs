@@ -5,6 +5,7 @@ use JSON::Fast;
 use TOML::Thumb;
 
 constant %paths = (
+    'APL'        => 'aplwiki.com/wiki/Dyalog_APL',
     'Arturo'     => 'github.com/arturo-lang/arturo/releases/latest',
     'BASIC'      => 'en.wikipedia.org/wiki/FreeBASIC',
     'Berry'      => 'github.com/berry-lang/berry/releases/latest',
@@ -62,6 +63,7 @@ for %langs.sort: *.key.fc -> (:key($name), :value(%lang)) {
         state $ua  = HTTP::Tiny.new :throw-exceptions;
         my    $res = $ua.get("https://$_")<content>.decode;
 
+        when / 'aplwiki'   / { $res ~~ / ' release' .+? <(\d+ <[\d.]>+)> / }
         when / 'endoflife' / { $res.&from-json[0]<latest> }
         when / 'github'    / { $res ~~ / [ $name || 'Release' ] ' ' v? <(\d+ <[\d.]>+)> / }
         when / 'npmjs'     / { $res.&from-json[0]<version> }

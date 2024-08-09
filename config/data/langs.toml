@@ -22,6 +22,24 @@ each argument is NULL terminated.
 x is a no-op.
 '''
 
+[APL]
+args       = [ '/usr/bin/apl', '-' ]
+experiment = 135
+size       = '14.5 MiB'
+version    = 'Dyalog APL 19.0.48958'
+website    = 'https://www.dyalog.com'
+example    = '''
+⍝ Printing
+⎕←'Hello, World!'
+
+⍝ Looping
+⎕IO←0
+⎕←¨⍳10
+
+⍝ Accessing arguments
+⎕←¨1↓2⎕NQ#'GetCommandLineArgs'
+'''
+
 [Arturo]
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
