@@ -1,0 +1,10 @@
+#!/bin/sh -e
+
+[ "$1" = "-version" ] && exec erl -version
+
+echo "#!/usr/bin/escript" > /tmp/code.erl
+
+cat - >> /tmp/code.erl
+
+shift
+exec escript /tmp/code.erl "$@"

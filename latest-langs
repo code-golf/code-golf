@@ -19,6 +19,7 @@ constant %paths = (
     'D'          => 'en.wikipedia.org/wiki/D_(programming_language)',
     'Dart'       => 'en.wikipedia.org/wiki/Dart_(programming_language)',
     'Elixir'     => 'en.wikipedia.org/wiki/Elixir_(programming_language)',
+    'Erlang'     => 'en.wikipedia.org/wiki/Erlang_(programming_language)',
     'F#'         => 'en.wikipedia.org/wiki/F_Sharp_(programming_language)',
     'Factor'     => 'github.com/factor/factor/releases/latest',
     'Forth'      => 'en.wikipedia.org/wiki/Gforth',
