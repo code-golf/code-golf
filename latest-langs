@@ -28,6 +28,7 @@ constant %paths = (
     'Janet'      => 'github.com/janet-lang/janet/releases/latest',
     'Java'       => 'endoflife.date/api/java.json',
     'JavaScript' => 'en.wikipedia.org/wiki/V8_(JavaScript_engine)',
+    'jq'         => 'github.com/jqlang/jq/releases/latest',
     'Julia'      => 'en.wikipedia.org/wiki/Julia_(programming_language)',
     'Lisp'       => 'en.wikipedia.org/wiki/CLISP',
     'Lua'        => 'en.wikipedia.org/wiki/Lua_(programming_language)',
