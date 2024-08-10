@@ -3,9 +3,7 @@ package routes
 import (
 	"encoding/json"
 	"net/http"
-	"time"
 
-	"github.com/buildkite/terminal-to-html/v3"
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/hole"
 )
@@ -57,32 +55,10 @@ func sandboxPOST(w http.ResponseWriter, r *http.Request) {
 
 	run := hole.PlaySandbox(r.Context(), langObj, in.Code, in.Args)
 
-	// TODO Should this be pushed lower?
-	run.Stderr = terminal.Render([]byte(run.Stderr))
-
-	// The legacy single run we display, first failing or last overall.
 	out := struct {
-		// Legacy TitleCase attributes.
-		Argv           []string
-		Cheevos        []*config.Cheevo
-		Err, Exp, Out  string
-		ExitCode       int
-		Pass, LoggedIn bool
-		Took           time.Duration
-
-		// Modern lowercase attributes.
 		Runs []hole.Run `json:"runs"`
 	}{
-		Argv:     run.Args,
-		Cheevos:  []*config.Cheevo{},
-		Err:      run.Stderr,
-		ExitCode: run.ExitCode,
-		Exp:      run.Answer,
-		LoggedIn: false,
-		Out:      run.Stdout,
-		Pass:     run.Pass,
-		Runs:     []hole.Run{*run},
-		Took:     run.Time,
+		Runs: []hole.Run{*run},
 	}
 
 	w.Header().Set("Content-Type", "application/json")
