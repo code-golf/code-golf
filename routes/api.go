@@ -249,8 +249,8 @@ func apiNotesGET(w http.ResponseWriter, r *http.Request) {
 
 // DELETE /api/notes/{hole}/{lang}
 func apiNoteDELETE(w http.ResponseWriter, r *http.Request) {
-	hole := config.HoleByID[param(r,"hole")]
-	lang := config.LangByID[param(r,"lang")]
+	hole := config.HoleByID[param(r, "hole")]
+	lang := config.LangByID[param(r, "lang")]
 	if hole == nil || lang == nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -269,8 +269,8 @@ func apiNoteDELETE(w http.ResponseWriter, r *http.Request) {
 
 // GET /api/notes/{hole}/{lang}
 func apiNoteGET(w http.ResponseWriter, r *http.Request) {
-	hole := config.HoleByID[param(r,"hole")]
-	lang := config.LangByID[param(r,"lang")]
+	hole := config.HoleByID[param(r, "hole")]
+	lang := config.LangByID[param(r, "lang")]
 	if hole == nil || lang == nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -299,8 +299,8 @@ func apiNoteGET(w http.ResponseWriter, r *http.Request) {
 
 // PUT /api/notes/{hole}/{lang}
 func apiNotePUT(w http.ResponseWriter, r *http.Request) {
-	hole := config.HoleByID[param(r,"hole")]
-	lang := config.LangByID[param(r,"lang")]
+	hole := config.HoleByID[param(r, "hole")]
+	lang := config.LangByID[param(r, "lang")]
 	note, _ := io.ReadAll(r.Body)
 
 	if hole == nil || lang == nil || len(note) == 0 || len(note) >= 128*1024 {

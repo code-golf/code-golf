@@ -17,8 +17,8 @@ func holeGET(w http.ResponseWriter, r *http.Request) {
 		Langs                    map[string]*config.Lang
 		RankingsView             string
 		Solutions                []map[string]string
-		IsSponsor				 bool
-		HasNotes				 bool
+		IsSponsor                bool
+		HasNotes                 bool
 	}{
 		Langs:        config.AllLangByID,
 		RankingsView: "me",
