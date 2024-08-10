@@ -301,7 +301,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '68.6 MiB'
-version = '0.7.21'
+version = '0.7.22'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -456,7 +456,7 @@ void main(string[] argv) {
 [Dart]
 args    = [ '/usr/bin/dart', '-' ]
 size    = '235 MiB'
-version = '3.4.4'
+version = '3.5.0'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -729,7 +729,7 @@ example = '''
 [Java]
 args    = [ '/usr/bin/java', '-' ]
 size    = '58.1 MiB'
-version = '22.0.1'
+version = '22.0.2'
 website = 'https://openjdk.java.net'
 example = '''
 class Main {
@@ -926,7 +926,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '8.40 MiB'
-version = '8.3.9'
+version = '8.3.10'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -982,8 +982,8 @@ example = '''
 
 [Python]
 args    = [ '/usr/bin/python', '-u', '-' ]
-size    = '71.1 MiB'
-version = '3.12.4'
+size    = '70.8 MiB'
+version = '3.12.5'
 website = 'https://www.python.org'
 example = '''
 import sys
@@ -1080,7 +1080,7 @@ end
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
 size    = '331 MiB'
-version = '1.80.0'
+version = '1.80.1'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
