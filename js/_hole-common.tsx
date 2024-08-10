@@ -28,7 +28,7 @@ const renamedHoles: Record<string, string> = {
     'eight-queens': 'n-queens',
     'factorial-factorisation-ascii': 'factorial-factorisation',
     'grid-packing': 'css-grid',
-    'billiard': 'billiards'
+    'billiard': 'billiards',
 };
 
 export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSolution: any, updateReadonlyPanels: any, getEditor: () => any) {
