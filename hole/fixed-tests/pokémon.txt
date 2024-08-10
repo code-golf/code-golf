@@ -1,0 +1,452 @@
+< Bulbasaur
+> Bug Fire Flying Ice Psychic
+
+< Ivysaur
+> Bug Fire Flying Ice Psychic
+
+< Venusaur
+> Bug Fire Flying Ice Psychic
+
+< Charmander
+> Ground Rock Water
+
+< Charmeleon
+> Ground Rock Water
+
+< Charizard
+> Electric Ice Rock Water
+
+< Squirtle
+> Electric Grass
+
+< Wartortle
+> Electric Grass
+
+< Blastoise
+> Electric Grass
+
+< Caterpie
+> Fire Flying Poison Rock
+
+< Metapod
+> Fire Flying Poison Rock
+
+< Butterfree
+> Electric Fire Flying Ice Poison Rock
+
+< Weedle
+> Bug Fire Flying Psychic Rock
+
+< Kakuna
+> Bug Fire Flying Psychic Rock
+
+< Beedrill
+> Bug Fire Flying Psychic Rock
+
+< Pidgey
+> Electric Ice Rock
+
+< Pidgeotto
+> Electric Ice Rock
+
+< Pidgeot
+> Electric Ice Rock
+
+< Rattata
+> Fighting
+
+< Raticate
+> Fighting
+
+< Spearow
+> Electric Ice Rock
+
+< Fearow
+> Electric Ice Rock
+
+< Ekans
+> Bug Ground Psychic
+
+< Arbok
+> Bug Ground Psychic
+
+< Pikachu
+> Ground
+
+< Raichu
+> Ground
+
+< Sandshrew
+> Grass Ice Water
+
+< Sandslash
+> Grass Ice Water
+
+< Nidoran♀
+> Bug Ground Psychic
+
+< Nidorina
+> Bug Ground Psychic
+
+< Nidoqueen
+> Bug Ground Ice Psychic Water
+
+< Nidoran♂
+> Bug Ground Psychic
+
+< Nidorino
+> Bug Ground Psychic
+
+< Nidoking
+> Bug Ground Ice Psychic Water
+
+< Clefairy
+> Fighting
+
+< Clefable
+> Fighting
+
+< Vulpix
+> Ground Rock Water
+
+< Ninetales
+> Ground Rock Water
+
+< Jigglypuff
+> Fighting
+
+< Wigglytuff
+> Fighting
+
+< Zubat
+> Electric Ice Psychic Rock
+
+< Golbat
+> Electric Ice Psychic Rock
+
+< Oddish
+> Bug Fire Flying Ice Psychic
+
+< Gloom
+> Bug Fire Flying Ice Psychic
+
+< Vileplume
+> Bug Fire Flying Ice Psychic
+
+< Paras
+> Bug Fire Flying Ice Poison Rock
+
+< Parasect
+> Bug Fire Flying Ice Poison Rock
+
+< Venonat
+> Bug Fire Flying Psychic Rock
+
+< Venomoth
+> Bug Fire Flying Psychic Rock
+
+< Diglett
+> Grass Ice Water
+
+< Dugtrio
+> Grass Ice Water
+
+< Meowth
+> Fighting
+
+< Persian
+> Fighting
+
+< Psyduck
+> Electric Grass
+
+< Golduck
+> Electric Grass
+
+< Mankey
+> Flying Psychic
+
+< Primeape
+> Flying Psychic
+
+< Growlithe
+> Ground Rock Water
+
+< Arcanine
+> Ground Rock Water
+
+< Poliwag
+> Electric Grass
+
+< Poliwhirl
+> Electric Grass
+
+< Poliwrath
+> Electric Flying Grass Psychic
+
+< Abra
+> Bug
+
+< Kadabra
+> Bug
+
+< Alakazam
+> Bug
+
+< Machop
+> Flying Psychic
+
+< Machoke
+> Flying Psychic
+
+< Machamp
+> Flying Psychic
+
+< Bellsprout
+> Bug Fire Flying Ice Psychic
+
+< Weepinbell
+> Bug Fire Flying Ice Psychic
+
+< Victreebel
+> Bug Fire Flying Ice Psychic
+
+< Tentacool
+> Bug Electric Ground Psychic
+
+< Tentacruel
+> Bug Electric Ground Psychic
+
+< Geodude
+> Fighting Grass Ground Ice Water
+
+< Graveler
+> Fighting Grass Ground Ice Water
+
+< Golem
+> Fighting Grass Ground Ice Water
+
+< Ponyta
+> Ground Rock Water
+
+< Rapidash
+> Ground Rock Water
+
+< Slowpoke
+> Bug Electric Grass
+
+< Slowbro
+> Bug Electric Grass
+
+< Magnemite
+> Ground
+
+< Magneton
+> Ground
+
+< Farfetch'd
+> Electric Ice Rock
+
+< Doduo
+> Electric Ice Rock
+
+< Dodrio
+> Electric Ice Rock
+
+< Seel
+> Electric Grass
+
+< Dewgong
+> Electric Fighting Grass Rock
+
+< Grimer
+> Bug Ground Psychic
+
+< Muk
+> Bug Ground Psychic
+
+< Shellder
+> Electric Grass
+
+< Cloyster
+> Electric Fighting Grass Rock
+
+< Gastly
+> Ghost Ground Psychic
+
+< Haunter
+> Ghost Ground Psychic
+
+< Gengar
+> Ghost Ground Psychic
+
+< Onix
+> Fighting Grass Ground Ice Water
+
+< Drowzee
+> Bug
+
+< Hypno
+> Bug
+
+< Krabby
+> Electric Grass
+
+< Kingler
+> Electric Grass
+
+< Voltorb
+> Ground
+
+< Electrode
+> Ground
+
+< Exeggcute
+> Bug Fire Flying Ice Poison
+
+< Exeggutor
+> Bug Fire Flying Ice Poison
+
+< Cubone
+> Grass Ice Water
+
+< Marowak
+> Grass Ice Water
+
+< Hitmonlee
+> Flying Psychic
+
+< Hitmonchan
+> Flying Psychic
+
+< Lickitung
+> Fighting
+
+< Koffing
+> Bug Ground Psychic
+
+< Weezing
+> Bug Ground Psychic
+
+< Rhyhorn
+> Fighting Grass Ground Ice Water
+
+< Rhydon
+> Fighting Grass Ground Ice Water
+
+< Chansey
+> Fighting
+
+< Tangela
+> Bug Fire Flying Ice Poison
+
+< Kangaskhan
+> Fighting
+
+< Horsea
+> Electric Grass
+
+< Seadra
+> Electric Grass
+
+< Goldeen
+> Electric Grass
+
+< Seaking
+> Electric Grass
+
+< Staryu
+> Electric Grass
+
+< Starmie
+> Bug Electric Grass
+
+< Mr. Mime
+> Bug
+
+< Scyther
+> Electric Fire Flying Ice Poison Rock
+
+< Jynx
+> Bug Fire Rock
+
+< Electabuzz
+> Ground
+
+< Magmar
+> Ground Rock Water
+
+< Pinsir
+> Fire Flying Poison Rock
+
+< Tauros
+> Fighting
+
+< Magikarp
+> Electric Grass
+
+< Gyarados
+> Electric Rock
+
+< Lapras
+> Electric Fighting Grass Rock
+
+< Ditto
+> Fighting
+
+< Eevee
+> Fighting
+
+< Vaporeon
+> Electric Grass
+
+< Jolteon
+> Ground
+
+< Flareon
+> Ground Rock Water
+
+< Porygon
+> Fighting
+
+< Omanyte
+> Electric Fighting Grass Ground
+
+< Omastar
+> Electric Fighting Grass Ground
+
+< Kabuto
+> Electric Fighting Grass Ground
+
+< Kabutops
+> Electric Fighting Grass Ground
+
+< Aerodactyl
+> Electric Ice Rock Water
+
+< Snorlax
+> Fighting
+
+< Articuno
+> Electric Fire Rock
+
+< Zapdos
+> Ice Rock
+
+< Moltres
+> Electric Ice Rock Water
+
+< Dratini
+> Dragon Ice
+
+< Dragonair
+> Dragon Ice
+
+< Dragonite
+> Dragon Ice Rock
+
+< Mewtwo
+> Bug
+
+< Mew
+> Bug
