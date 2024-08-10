@@ -74,10 +74,9 @@ for %langs.sort: *.key.fc -> (:key($name), :value(%lang)) {
         }
     } // '?';
 
-    printf "%11s \e[%dm%11s → %s\e[0m\n",
-        $name,
-           $new eq '?'                               ?? 33
-        !! $old eq $new || $old.starts-with("$new.") ?? 32
-        !!                                              31,
-        $old, $new;
+    my $code =  $new eq '?'                                              ?? 33
+        !! $old eq $new || $old.starts-with("$new.") || "$old.0" eq $new ?? 32
+        !!                                                                  31;
+
+    printf "%11s \e[%dm%11s → %s\e[0m\n", $name, $code, $old, $new;
 }
