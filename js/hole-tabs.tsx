@@ -48,6 +48,8 @@ const readonlyOutputs: {[key: string]: HTMLElement | undefined} = {};
 let editor: EditorView | null = null;
 let holeLangNotesEditor: EditorView | null = null;
 
+let substitutions: {pattern: RegExp, replacement: string}[] = []
+
 init(true, setSolution, setCodeForLangAndSolution, updateReadonlyPanels, () => editor);
 
 // Handle showing/hiding lang picker
@@ -108,6 +110,7 @@ function updateWikiContent() {
 }
 
 function updateHoleLangNotesContent() {
+    $<HTMLInputElement>("#notes-substitutions").value = localStorage.getItem(`${getLang()}-substitutions`) ?? "";
     if (holeLangNotesEditor) setState(holeLangNotesContent, holeLangNotesEditor);
 }
 
@@ -244,9 +247,31 @@ async function upsertNotes() {
         `/api/notes/${hole}/${getLang()}`,
         content ? { method: 'PUT', body: content} : { method: 'DELETE' }
     );
-    if (resp.status !== 200) $<HTMLButtonElement>("#upsert-notes-btn").disabled = false;
+    if (resp.status !== 204) $<HTMLButtonElement>("#upsert-notes-btn").disabled = false;
     else holeLangNotesContent = content;
 };
+
+function parseSubstitutions() {
+    const value = $<HTMLInputElement>("#notes-substitutions").value;
+    localStorage.setItem(`${getLang()}-substitutions`, value);
+    const pattern = /s\/((?:[^\/]|\\\/)*)\/((?:[^\/]|\\\/)*)\/([dgimsuvy]*)/g
+    substitutions = [...value.matchAll(pattern)]
+        .map(match => (
+            {pattern: new RegExp(match[1], [...new Set(match[3])].join("")), replacement: JSON.parse(`"${match[2]}"`)}
+        ));
+    $<HTMLButtonElement>("#convert-notes-btn").disabled = substitutions.length < 1;
+}
+
+function convertNotesAndRun(){
+    if(editor && holeLangNotesEditor){
+        let notes = holeLangNotesEditor.state.doc.toString();
+        for(const {pattern, replacement} of substitutions){
+            notes = notes[pattern.global ? 'replaceAll' : 'replace'](pattern, replacement);
+        }
+        setState(notes, editor);
+        submit(editor, updateReadonlyPanels);
+    }
+}
 
 layout.registerComponentFactoryFunction('holeLangNotes', async container => {
     container.setTitle(getTitle('holeLangNotes'));
@@ -254,8 +279,8 @@ layout.registerComponentFactoryFunction('holeLangNotes', async container => {
 
     const header = (<header>
         <div>
-            <input placeholder="Regex replace expression"></input>
-            <button class="btn blue" id="convert-notes-btn">Convert & Run</button>
+            <input id="notes-substitutions" placeholder="Perl-like s/// expressions" size="50"></input>
+            <button class="btn blue" id="convert-notes-btn" disabled>Convert & Run</button>
         </div>
         <button class="btn blue" id="upsert-notes-btn" disabled>Save</button>
     </header>) as HTMLElement;
@@ -268,8 +293,11 @@ layout.registerComponentFactoryFunction('holeLangNotes', async container => {
     makeHoleLangNotesEditor(editorDiv);
 
     $("#upsert-notes-btn").onclick = upsertNotes;
+    $("#convert-notes-btn").onclick = convertNotesAndRun;
+    $("#notes-substitutions").oninput = parseSubstitutions;
     
     updateHoleLangNotesContent();
+    parseSubstitutions();
 });
 
 async function afterDOM() {}
