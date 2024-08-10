@@ -2476,9 +2476,9 @@ preamble = '''
 </div>
 '''
 
-[Pokémon]
+['Pokémon']
 category           = 'Gaming'
-item-delimiter     = "  "
+item-delimiter     = " "
 multiset-delimiter = "\n"
 experiment         = 810
 synopsis           = "Given a Pokémon, print all the types it is weak to."
