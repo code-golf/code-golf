@@ -48,7 +48,7 @@ const readonlyOutputs: {[key: string]: HTMLElement | undefined} = {};
 let editor: EditorView | null = null;
 let holeLangNotesEditor: EditorView | null = null;
 
-let substitutions: {pattern: RegExp, replacement: string}[] = []
+let substitutions: {pattern: RegExp, replacement: string}[] = [];
 
 init(true, setSolution, setCodeForLangAndSolution, updateReadonlyPanels, () => editor);
 
@@ -110,7 +110,7 @@ function updateWikiContent() {
 }
 
 function updateHoleLangNotesContent() {
-    $<HTMLInputElement>("#notes-substitutions").value = localStorage.getItem(`${getLang()}-substitutions`) ?? "";
+    $<HTMLInputElement>('#notes-substitutions').value = localStorage.getItem(`${getLang()}-substitutions`) ?? '';
     if (holeLangNotesEditor) setState(holeLangNotesContent, holeLangNotesEditor);
 }
 
@@ -118,7 +118,8 @@ function updateReadonlyPanels(data: ReadonlyPanelsData | {langWiki: string}| {ho
     if ('langWiki' in data) {
         langWikiContent = data.langWiki;
         updateWikiContent();
-    } else if ('holeLangNotes' in data) {
+    }
+    else if ('holeLangNotes' in data) {
         holeLangNotesContent = data.holeLangNotes;
         updateHoleLangNotesContent();
     }
@@ -190,7 +191,7 @@ function makeHoleLangNotesEditor(parent: HTMLDivElement) {
             if (!holeLangNotesEditor) return;
             const result = holeLangNotesEditor.update([tr]) as unknown;
             const content = tr.state.doc.toString();
-            $<HTMLButtonElement>("#upsert-notes-btn").disabled = content === holeLangNotesContent || (!!content && !isSponsor());
+            $<HTMLButtonElement>('#upsert-notes-btn').disabled = content === holeLangNotesContent || (!!content && !isSponsor());
             return result;
         },
         parent,
@@ -241,31 +242,31 @@ layout.registerComponentFactoryFunction('code', async container => {
 });
 
 async function upsertNotes() {
-    $<HTMLButtonElement>("#upsert-notes-btn").disabled = true;
+    $<HTMLButtonElement>('#upsert-notes-btn').disabled = true;
     const content = holeLangNotesEditor!.state.doc.toString();
-    var resp = await fetch(
+    const resp = await fetch(
         `/api/notes/${hole}/${getLang()}`,
-        content ? { method: 'PUT', body: content} : { method: 'DELETE' }
+        content ? { method: 'PUT', body: content} : { method: 'DELETE' },
     );
-    if (resp.status !== 204) $<HTMLButtonElement>("#upsert-notes-btn").disabled = false;
+    if (resp.status !== 204) $<HTMLButtonElement>('#upsert-notes-btn').disabled = false;
     else holeLangNotesContent = content;
 };
 
 function parseSubstitutions() {
-    const value = $<HTMLInputElement>("#notes-substitutions").value;
+    const value = $<HTMLInputElement>('#notes-substitutions').value;
     localStorage.setItem(`${getLang()}-substitutions`, value);
-    const pattern = /s\/((?:[^\/]|\\\/)*)\/((?:[^\/]|\\\/)*)\/([dgimsuvy]*)/g
+    const pattern = /s\/((?:[^\/]|\\\/)*)\/((?:[^\/]|\\\/)*)\/([dgimsuvy]*)/g;
     substitutions = [...value.matchAll(pattern)]
         .map(match => (
-            {pattern: new RegExp(match[1], [...new Set(match[3])].join("")), replacement: JSON.parse(`"${match[2]}"`)}
+            {pattern: new RegExp(match[1], [...new Set(match[3])].join('')), replacement: JSON.parse(`"${match[2]}"`)}
         ));
-    $<HTMLButtonElement>("#convert-notes-btn").disabled = substitutions.length < 1;
+    $<HTMLButtonElement>('#convert-notes-btn').disabled = substitutions.length < 1;
 }
 
 function convertNotesAndRun(){
-    if(editor && holeLangNotesEditor){
+    if (editor && holeLangNotesEditor) {
         let notes = holeLangNotesEditor.state.doc.toString();
-        for(const {pattern, replacement} of substitutions){
+        for (const {pattern, replacement} of substitutions) {
             notes = notes[pattern.global ? 'replaceAll' : 'replace'](pattern, replacement);
         }
         setState(notes, editor);
@@ -292,10 +293,10 @@ layout.registerComponentFactoryFunction('holeLangNotes', async container => {
     await afterDOM();
     makeHoleLangNotesEditor(editorDiv);
 
-    $("#upsert-notes-btn").onclick = upsertNotes;
-    $("#convert-notes-btn").onclick = convertNotesAndRun;
-    $("#notes-substitutions").oninput = parseSubstitutions;
-    
+    $('#upsert-notes-btn').onclick = upsertNotes;
+    $('#convert-notes-btn').onclick = convertNotesAndRun;
+    $('#notes-substitutions').oninput = parseSubstitutions;
+
     updateHoleLangNotesContent();
     parseSubstitutions();
 });
