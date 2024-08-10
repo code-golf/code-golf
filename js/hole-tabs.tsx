@@ -15,6 +15,8 @@ import {
     getScorings, replaceUnprintablesInOutput, initOutputDiv, getArgs, serializeArgs,
     deserializeArgs,
     updateLocalStorage,
+    getLang,
+    setState,
 } from './_hole-common';
 import { highlightCodeBlocks } from './_wiki';
 
@@ -42,9 +44,13 @@ const isSandbox = $('#hole-sandbox') != null;
 
 let subRes: ReadonlyPanelsData | null = null;
 let langWikiContent = '';
+let holeLangNotesContent = '';
 const readonlyOutputs: {[key: string]: HTMLElement | undefined} = {};
 
 let editor: EditorView | null = null;
+let holeLangNotesEditor: EditorView | null = null;
+
+let substitutions: {pattern: RegExp, replacement: string}[] = [];
 
 init(true, setSolution, setCodeForLangAndSolution, updateReadonlyPanels, () => editor, getArgs);
 
@@ -105,10 +111,19 @@ function updateWikiContent() {
     }
 }
 
-function updateReadonlyPanels(data: ReadonlyPanelsData | {langWiki: string}) {
+function updateHoleLangNotesContent() {
+    $<HTMLInputElement>('#notes-substitutions').value = localStorage.getItem(`${getLang()}-substitutions`) ?? '';
+    if (holeLangNotesEditor) setState(holeLangNotesContent, holeLangNotesEditor);
+}
+
+function updateReadonlyPanels(data: ReadonlyPanelsData | {langWiki: string}| {holeLangNotes: string}) {
     if ('langWiki' in data) {
         langWikiContent = data.langWiki;
         updateWikiContent();
+    }
+    else if ('holeLangNotes' in data) {
+        holeLangNotesContent = data.holeLangNotes;
+        updateHoleLangNotesContent();
     }
     else {
         subRes = data;
@@ -220,6 +235,21 @@ function makeEditor(parent: HTMLDivElement) {
     editor.contentDOM.setAttribute('data-gramm', 'false');  // Disable Grammarly.
 }
 
+function makeHoleLangNotesEditor(parent: HTMLDivElement) {
+    holeLangNotesEditor = new EditorView({
+        dispatch: tr => {
+            if (!holeLangNotesEditor) return;
+            const result = holeLangNotesEditor.update([tr]) as unknown;
+            const content = tr.state.doc.toString();
+            $<HTMLButtonElement>('#upsert-notes-btn').disabled = content === holeLangNotesContent || (!!content && !isSponsor());
+            return result;
+        },
+        parent,
+    });
+
+    holeLangNotesEditor.contentDOM.setAttribute('data-gramm', 'false');  // Disable Grammarly.
+}
+
 function autoFocus(container: ComponentContainer) {
     container.element.addEventListener('focusin', () => container.focus());
     container.element.addEventListener('click', () => container.focus());
@@ -261,6 +291,66 @@ layout.registerComponentFactoryFunction('code', async container => {
     }
 
     setCodeForLangAndSolution(editor);
+});
+
+async function upsertNotes() {
+    $<HTMLButtonElement>('#upsert-notes-btn').disabled = true;
+    const content = holeLangNotesEditor!.state.doc.toString();
+    const resp = await fetch(
+        `/api/notes/${hole}/${getLang()}`,
+        content ? { method: 'PUT', body: content} : { method: 'DELETE' },
+    );
+    if (resp.status !== 204) $<HTMLButtonElement>('#upsert-notes-btn').disabled = false;
+    else holeLangNotesContent = content;
+};
+
+function parseSubstitutions() {
+    const { value } = $<HTMLInputElement>('#notes-substitutions');
+    localStorage.setItem(`${getLang()}-substitutions`, value);
+    const pattern = /s\/((?:[^\/]|\\\/)*)\/((?:[^\/]|\\\/)*)\/([dgimsuvy]*)/g;
+    substitutions = [...value.matchAll(pattern)]
+        .map(match => (
+            {pattern: new RegExp(match[1], [...new Set(match[3])].join('')), replacement: JSON.parse(`"${match[2]}"`)}
+        ));
+    $<HTMLButtonElement>('#convert-notes-btn').disabled = substitutions.length < 1;
+}
+
+function convertNotesAndRun(){
+    if (editor && holeLangNotesEditor) {
+        let notes = holeLangNotesEditor.state.doc.toString();
+        for (const {pattern, replacement} of substitutions) {
+            notes = notes[pattern.global ? 'replaceAll' : 'replace'](pattern, replacement);
+        }
+        setState(notes, editor);
+        submit(editor, updateReadonlyPanels);
+    }
+}
+
+layout.registerComponentFactoryFunction('holeLangNotes', async container => {
+    container.setTitle(getTitle('holeLangNotes'));
+    autoFocus(container);
+
+    const header = (<header>
+        <div>
+            <input id="notes-substitutions" placeholder="Perl-like s/// expressions" size="50"></input>
+            <button class="btn blue" id="convert-notes-btn" disabled>Convert & Run</button>
+        </div>
+        <button class="btn blue" id="upsert-notes-btn" disabled>Save</button>
+    </header>) as HTMLElement;
+    const editorDiv = <div id="holeLangNotesEditor"></div> as HTMLDivElement;
+
+    container.element.id = 'holeLangNotesEditor-section';
+    container.element.append(editorDiv, header);
+
+    await afterDOM();
+    makeHoleLangNotesEditor(editorDiv);
+
+    $('#upsert-notes-btn').onclick = upsertNotes;
+    $('#convert-notes-btn').onclick = convertNotesAndRun;
+    $('#notes-substitutions').oninput = parseSubstitutions;
+
+    updateHoleLangNotesContent();
+    parseSubstitutions();
 });
 
 async function afterDOM() {}
@@ -312,6 +402,7 @@ const titles: Record<string, string | undefined> = {
     diff: 'Diff',
     code: 'Code',
     langWiki: 'Language Wiki',
+    holeLangNotes: 'Notes',
 };
 
 function getTitle(name: string) {
@@ -376,8 +467,16 @@ const defaultLayout: LayoutConfig = {
     },
 };
 
+function isSponsor() {
+    return $('golferInfo')?.dataset.isSponsor;
+}
+function hasNotes() {
+    return $('golferInfo')?.dataset.hasNotes;
+}
+
 function getPoolFromLayoutConfig(config: LayoutConfig) {
     const allComponents = ['code', 'scoreboard', 'arg', 'exp', 'out', 'err', 'diff', 'langWiki', ...(isSandbox ? [] : ['details'])];
+    if (isSponsor() || hasNotes()) allComponents.push('holeLangNotes');
     const activeComponents = getComponentNamesRecursive(config.root!);
     return allComponents.filter(x => !activeComponents.includes(x));
 }

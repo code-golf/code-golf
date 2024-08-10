@@ -1,5 +1,7 @@
 {{ template "header" . }}
 
+<div id=golferInfo data-is-sponsor="{{ .Data.IsSponsor }}" data-has-notes="{{ .Data.HasNotes }}"></div>
+
 <!-- For experimental lang picker -->
 <svg>{{ svg "flask-light" }}</svg>
 

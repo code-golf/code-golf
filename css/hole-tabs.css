@@ -31,8 +31,8 @@ section header {
     padding: 0 .5rem;
 }
 
-#editor-section header {
-    margin-top: 1px;
+#editor-section header, #holeLangNotesEditor-section header {
+    margin-top: 2px;
     margin-bottom: 2px;
 }
 
@@ -51,7 +51,7 @@ section header {
     min-width: 2rem;
 }
 
-#editor-section {
+#editor-section, #holeLangNotesEditor-section {
     height: 100%;
     overflow: hidden;
 }
@@ -63,10 +63,10 @@ section header {
     font-size: 1rem;
 }
 
-#editor {
+#editor, #holeLangNotesEditor {
     border: none;
     /* Button = 1rem (contents) + 2*0.5 rem (padding) + 2px (border) + 4px (margin) */
-    height: calc(100% - (2rem + 6px));
+    height: calc(100% - (2rem + 7px));
 }
 
 main > header nav { max-width: 100% }
@@ -230,4 +230,9 @@ main {
 
 article>*:not(:first-child), article details>* {
     margin-top: 1rem;
+}
+
+#convert-notes-btn {
+    display: inline-block;
+    margin-left: .5rem;
 }

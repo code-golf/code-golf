@@ -6,13 +6,22 @@ import LZString                                from 'lz-string';
 
 let tabLayout: boolean = false;
 
-const langWikiCache: Record<string, string> = {};
+const langWikiCache: Record<string, string | null> = {};
 async function getLangWikiContent(lang: string): Promise<string> {
-    if (!(lang in langWikiCache)){
+    if (!(lang in langWikiCache)) {
         const resp  = await fetch(`/api/wiki/langs/${lang}`, { method: 'GET' });
         langWikiCache[lang] = resp.status === 200 ? (await resp.json()).content : null;
     }
     return langWikiCache[lang] ?? 'No data for current lang.';
+}
+
+const holeLangNotesCache: Record<string, string | null> = {};
+async function getHoleLangNotesContent(lang: string): Promise<string> {
+    if (!(lang in holeLangNotesCache)) {
+        const resp  = await fetch(`/api/notes/${hole}/${lang}`, { method: 'GET' });
+        holeLangNotesCache[lang] = resp.status === 200 ? (await resp.text()) : null;
+    }
+    return holeLangNotesCache[lang] ?? '';
 }
 
 const renamedHoles: Record<string, string> = {
@@ -51,8 +60,10 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
         }
         setCodeForLangAndSolution(editor);
 
-        if (tabLayout)
+        if (tabLayout) {
             updateReadonlyPanels({langWiki: await getLangWikiContent(lang)});
+            updateReadonlyPanels({holeLangNotes: await getHoleLangNotesContent(lang)});
+        }
     })();
 
     $('dialog [name=text]')?.addEventListener('input', (e: Event) => {
