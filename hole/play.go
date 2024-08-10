@@ -467,8 +467,10 @@ func playRun(
 		}
 	}
 
-	run.MultisetDelimiter = hole.MultisetDelimiter
-	run.ItemDelimiter = hole.ItemDelimiter
+	if hole != nil {
+		run.MultisetDelimiter = hole.MultisetDelimiter
+		run.ItemDelimiter = hole.ItemDelimiter
+	}
 
 	return nil
 }
