@@ -14,6 +14,8 @@ import {
     populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyJSONBtn,
     getScorings, replaceUnprintablesInOutput, initOutputDiv,
     updateLocalStorage,
+    getLang,
+    setState,
 } from './_hole-common';
 import { highlightCodeBlocks } from './_wiki';
 
@@ -40,9 +42,11 @@ let applyingDefault = false;
 
 let subRes: ReadonlyPanelsData | null = null;
 let langWikiContent = '';
+let holeLangNotesContent = '';
 const readonlyOutputs: {[key: string]: HTMLElement | undefined} = {};
 
 let editor: EditorView | null = null;
+let holeLangNotesEditor: EditorView | null = null;
 
 init(true, setSolution, setCodeForLangAndSolution, updateReadonlyPanels, () => editor);
 
@@ -103,10 +107,17 @@ function updateWikiContent() {
     }
 }
 
-function updateReadonlyPanels(data: ReadonlyPanelsData | {langWiki: string}) {
+function updateHoleLangNotesContent() {
+    if (holeLangNotesEditor) setState(holeLangNotesContent, holeLangNotesEditor);
+}
+
+function updateReadonlyPanels(data: ReadonlyPanelsData | {langWiki: string}| {holeLangNotes: string}) {
     if ('langWiki' in data) {
         langWikiContent = data.langWiki;
         updateWikiContent();
+    } else if ('holeLangNotes' in data) {
+        holeLangNotesContent = data.holeLangNotes;
+        updateHoleLangNotesContent();
     }
     else {
         subRes = data;
@@ -170,6 +181,19 @@ function makeEditor(parent: HTMLDivElement) {
     editor.contentDOM.setAttribute('data-gramm', 'false');  // Disable Grammarly.
 }
 
+function makeHoleLangNotesEditor(parent: HTMLDivElement) {
+    holeLangNotesEditor = new EditorView({
+        dispatch: tr => {
+            if (!holeLangNotesEditor) return;
+            const result = holeLangNotesEditor.update([tr]) as unknown;
+            return result;
+        },
+        parent,
+    });
+
+    holeLangNotesEditor.contentDOM.setAttribute('data-gramm', 'false');  // Disable Grammarly.
+}
+
 function autoFocus(container: ComponentContainer) {
     container.element.addEventListener('focusin', () => container.focus());
     container.element.addEventListener('click', () => container.focus());
@@ -209,6 +233,24 @@ layout.registerComponentFactoryFunction('code', async container => {
     }
 
     setCodeForLangAndSolution(editor);
+});
+
+layout.registerComponentFactoryFunction('holeLangNotes', async container => {
+    container.setTitle(getTitle('holeLangNotes'));
+    autoFocus(container);
+
+    const header = (<div>Upsert btn
+    </div>) as HTMLElement;
+    const editorDiv = <div id="holeLangNotesEditor"></div> as HTMLDivElement;
+
+    makeHoleLangNotesEditor(editorDiv);
+
+    container.element.id = 'holeLangNotesEditor-section';
+    container.element.append(editorDiv, header);
+
+    await afterDOM();
+    
+    updateHoleLangNotesContent();
 });
 
 async function afterDOM() {}
@@ -258,6 +300,7 @@ const titles: Record<string, string | undefined> = {
     diff: 'Diff',
     code: 'Code',
     langWiki: 'Language Wiki',
+    holeLangNotes: 'Notes',
 };
 
 function getTitle(name: string) {
@@ -317,8 +360,16 @@ const defaultLayout: LayoutConfig = {
     },
 };
 
+function isSponsor(){
+    return $('golferInfo')?.dataset.isSponsor;
+}
+function hasNotes(){
+    return $('golferInfo')?.dataset.hasNotes;
+}
+
 function getPoolFromLayoutConfig(config: LayoutConfig) {
     const allComponents = ['code', 'scoreboard', 'arg', 'exp', 'out', 'err', 'diff', 'details', 'langWiki'];
+    if (isSponsor() || hasNotes()) allComponents.push('holeLangNotes');
     const activeComponents = getComponentNamesRecursive(config.root!);
     return allComponents.filter(x => !activeComponents.includes(x));
 }
