@@ -755,7 +755,7 @@ version    = '1.7.1'
 website    = 'https://jqlang.github.io/jq/'
 example    = '''
 # Printing
-"Hello, World",
+"Hello, World!",
 
 # Looping
 range(10),
