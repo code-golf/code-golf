@@ -319,9 +319,7 @@ func play(
 	case "jq":
 		if hole.ID == "quine" {
 			// Disable implicit output by rejecting input that can be parsed as JSON.
-			var js json.RawMessage
-			if err := json.Unmarshal([]byte(code), &js); err == nil {
-				run.Stderr = "The attempt was worthy."
+			if json.Valid([]byte(code)) {
 				return nil
 			}
 		}
