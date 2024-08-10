@@ -319,7 +319,7 @@ F: / ? O _ o DEL
 </pre>
 '''
 
-['Billiard']
+[Billiards]
 category = 'Art'
 experiment = 456
 synopsis = 'Draw a path of a billiard ball.'

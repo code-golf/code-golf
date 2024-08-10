@@ -26,9 +26,9 @@ async function getHoleLangNotesContent(lang: string): Promise<string> {
 
 const renamedHoles: Record<string, string> = {
     'eight-queens': 'n-queens',
-    'eight-queens-formatted': 'n-queens-formatted',
     'factorial-factorisation-ascii': 'factorial-factorisation',
     'grid-packing': 'css-grid',
+    'billiard': 'billiards',
 };
 
 export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSolution: any, updateReadonlyPanels: any, getEditor: () => any) {
