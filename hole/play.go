@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"embed"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -315,6 +316,15 @@ func play(
 		// is not nil. This seems to be a quirk of the Babashka interpreter
 		// that only occurs when providing code via a command line argument.
 		code += "(print)"
+	case "jq":
+		if hole.ID == "quine" {
+			// Disable implicit output by rejecting input that can be parsed as JSON.
+			var js json.RawMessage
+			if err := json.Unmarshal([]byte(code), &js); err == nil {
+				run.Stderr = "The attempt was worthy."
+				return nil
+			}
+		}
 	case "k":
 		if hole.ID == "quine" {
 			length := len(code)
