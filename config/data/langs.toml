@@ -437,7 +437,7 @@ void main(string[] argv) {
 [Dart]
 args    = [ '/usr/bin/dart', '-' ]
 size    = '235 MiB'
-version = '3.4.4'
+version = '3.5.0'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
