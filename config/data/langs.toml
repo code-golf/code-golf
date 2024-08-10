@@ -963,8 +963,8 @@ example = '''
 
 [Python]
 args    = [ '/usr/bin/python', '-u', '-' ]
-size    = '71.1 MiB'
-version = '3.12.4'
+size    = '70.8 MiB'
+version = '3.12.5'
 website = 'https://www.python.org'
 example = '''
 import sys
