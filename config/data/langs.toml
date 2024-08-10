@@ -476,7 +476,7 @@ for arg <- System.argv, do: IO.puts arg
 ['F#']
 args    = [ '/usr/bin/f-sharp', '-' ]
 size    = '148 MiB'
-version = 'F# 8.0 on .NET 8.0.7'
+version = 'F# 8.0.0 on .NET 8.0.7'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -1240,7 +1240,7 @@ for arg in os.args[1..] {
 [VimL]
 args    = [ '/usr/bin/viml', '-' ]
 size    = '24.3 MiB'
-version = '9.1'
+version = '9.1.0'
 website = 'https://www.vim.org'
 example = '''
 " Printing
