@@ -409,10 +409,10 @@ const defaultLayout: LayoutConfig = {
 };
 
 function isSponsor() {
-    return $('golferInfo')?.dataset.isSponsor;
+    return $('#golferInfo')?.dataset.isSponsor === 'true';
 }
 function hasNotes() {
-    return $('golferInfo')?.dataset.hasNotes;
+    return $('#golferInfo')?.dataset.hasNotes  === 'true';
 }
 
 function getPoolFromLayoutConfig(config: LayoutConfig) {
