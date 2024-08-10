@@ -110,7 +110,8 @@ function updateWikiContent() {
 }
 
 function updateHoleLangNotesContent() {
-    $<HTMLInputElement>('#notes-substitutions').value = localStorage.getItem(`${getLang()}-substitutions`) ?? '';
+    const input = $<HTMLInputElement>('#notes-substitutions');
+    if (input) input.value = localStorage.getItem(`${getLang()}-substitutions`) ?? '';
     if (holeLangNotesEditor) setState(holeLangNotesContent, holeLangNotesEditor);
 }
 
