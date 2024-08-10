@@ -243,7 +243,7 @@ function makeHoleLangNotesEditor(parent: HTMLDivElement) {
             if (!holeLangNotesEditor) return;
             const result = holeLangNotesEditor.update([tr]) as unknown;
             const content = tr.state.doc.toString();
-            $<HTMLButtonElement>('#upsert-notes-btn').disabled = content === holeLangNotesContent || (!!content && !isSponsor());
+            $<HTMLButtonElement>('#upsert-notes-btn').disabled = content === holeLangNotesContent || (!!content && !isSponsor()) || isSandbox;
             return result;
         },
         parent,
