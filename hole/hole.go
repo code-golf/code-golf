@@ -115,3 +115,13 @@ func shuffle[E any](x []E) []E {
 	rand.Shuffle(len(x), func(i, j int) { x[i], x[j] = x[j], x[i] })
 	return x
 }
+
+func gcd(a, b int) int {
+	for b != 0 {
+		a, b = b, a%b
+	}
+	if a < 0 {
+		a = -a
+	}
+	return a
+}
