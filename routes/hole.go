@@ -59,7 +59,7 @@ func holeGET(w http.ResponseWriter, r *http.Request) {
 	golfer := session.Golfer(r)
 
 	if golfer != nil {
-		data.IsSponsor = golfer.Sponsor
+		data.IsSponsor = golfer.Admin || golfer.Sponsor
 		if !data.IsSponsor {
 			var notesCount int
 			if err := session.Database(r).QueryRow(

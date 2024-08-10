@@ -310,7 +310,7 @@ func apiNotePUT(w http.ResponseWriter, r *http.Request) {
 
 	// Only sponsors can create or update notes, the can still read & delete.
 	golfer := session.Golfer(r)
-	if !golfer.Sponsor {
+	if !(golfer.Admin || golfer.Sponsor) {
 		w.WriteHeader(http.StatusPaymentRequired)
 		return
 	}
