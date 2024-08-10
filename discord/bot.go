@@ -26,7 +26,8 @@ var (
 
 	// All the config keys!
 	botToken      = os.Getenv("DISCORD_BOT_TOKEN")       // Caddie
-	channelID     = os.Getenv("DISCORD_CHANNEL_ID")      // 🍇・sour-grapes
+	chanFreshID   = "1271911838153576572"                // 🍇・fresh-grapes
+	chanSourID    = os.Getenv("DISCORD_CHANNEL_ID")      // 🍇・sour-grapes
 	guildID       = os.Getenv("DISCORD_GUILD_ID")        // Code Golf
 	roleContribID = os.Getenv("DISCORD_ROLE_CONTRIB_ID") // Contributor
 	roleSponsorID = os.Getenv("DISCORD_ROLE_SPONSOR_ID") // Sponsor
@@ -46,7 +47,7 @@ type RecAnnouncement struct {
 func init() {
 	// Ensure we have all our config.
 	switch "" {
-	case botToken, channelID, guildID, roleContribID, roleSponsorID:
+	case botToken, chanFreshID, chanSourID, guildID, roleContribID, roleSponsorID:
 		return
 	}
 
@@ -60,6 +61,13 @@ func init() {
 			bot = nil
 		}
 	}()
+}
+
+func channel(hole *config.Hole, lang *config.Lang) string {
+	if hole.ID == "polyominoes" || lang.ID == "civet" {
+		return chanFreshID
+	}
+	return chanSourID
 }
 
 func getUsername(id int, db *sqlx.DB) (name string) {
@@ -278,7 +286,7 @@ func LogFailedRejudge(golfer *Golfer.Golfer, hole *config.Hole, lang *config.Lan
 	imageURL := "https://code.golf/golfers/" + golfer.Name + "/avatar"
 	golferURL := "https://code.golf/golfers/" + golfer.Name
 
-	if _, err := bot.ChannelMessageSendEmbed(channelID, &discordgo.MessageEmbed{
+	if _, err := bot.ChannelMessageSendEmbed(channel(hole, lang), &discordgo.MessageEmbed{
 		Title:  fmt.Sprintf("%s in %s failed rejudge!", hole.Name, lang.Name),
 		URL:    "https://code.golf/rankings/holes/" + hole.ID + "/" + lang.ID + "/" + scoring,
 		Author: &discordgo.MessageEmbedAuthor{Name: golfer.Name, IconURL: imageURL, URL: golferURL},
@@ -316,7 +324,7 @@ func logNewRecord(
 	}
 
 	if lastAnnouncement != nil {
-		if channel, err := bot.Channel(channelID); err == nil {
+		if channel, err := bot.Channel(channel(hole, lang)); err == nil {
 			if channel.LastMessageID != lastAnnouncement.MessageID {
 				// Discard the last announcement if another message was sent after it
 				lastAnnouncement = nil
@@ -350,15 +358,15 @@ func logNewRecord(
 		"SELECT message FROM discord_records WHERE hole = $1 AND lang = $2",
 		hole.ID, lang.ID,
 	).Scan(&prevMessage); err == nil {
-		newMessage, sendErr = bot.ChannelMessageSendComplex(channelID, &discordgo.MessageSend{
+		newMessage, sendErr = bot.ChannelMessageSendComplex(channel(hole, lang), &discordgo.MessageSend{
 			Embed: recAnnounceToEmbed(announcement, db),
 			Reference: &discordgo.MessageReference{
 				MessageID: prevMessage,
-				ChannelID: channelID,
+				ChannelID: channel(hole, lang),
 			},
 		})
 	} else if errors.Is(err, sql.ErrNoRows) {
-		newMessage, sendErr = bot.ChannelMessageSendEmbed(channelID, recAnnounceToEmbed(announcement, db))
+		newMessage, sendErr = bot.ChannelMessageSendEmbed(channel(hole, lang), recAnnounceToEmbed(announcement, db))
 	} else {
 		log.Println(err)
 	}
