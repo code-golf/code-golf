@@ -58,7 +58,7 @@ func sandboxPOST(w http.ResponseWriter, r *http.Request) {
 	run := hole.PlaySandbox(r.Context(), langObj, in.Code, in.Args)
 
 	// TODO Should this be pushed lower?
-	run.Stderr = string(terminal.Render([]byte(run.Stderr)))
+	run.Stderr = terminal.Render([]byte(run.Stderr))
 
 	// The legacy single run we display, first failing or last overall.
 	out := struct {
