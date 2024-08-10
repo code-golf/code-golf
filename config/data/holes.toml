@@ -2476,6 +2476,658 @@ preamble = '''
 </div>
 '''
 
+[Pokémon]
+category           = 'Gaming'
+item-delimiter     = "  "
+multiset-delimiter = "\n"
+experiment         = 810
+synopsis           = "Given a Pokémon, print all the types it is weak to."
+links = [
+    { name = 'Pokémon Database', url = '//pokemondb.net/type' },
+]
+data = '''{
+  "pokemon": {
+    "Bulbasaur": "Grass/Poison",
+    "Ivysaur": "Grass/Poison",
+    "Venusaur": "Grass/Poison",
+    "Charmander": "Fire",
+    "Charmeleon": "Fire",
+    "Charizard": "Fire/Flying",
+    "Squirtle": "Water",
+    "Wartortle": "Water",
+    "Blastoise": "Water",
+    "Caterpie": "Bug",
+    "Metapod": "Bug",
+    "Butterfree": "Bug/Flying",
+    "Weedle": "Bug/Poison",
+    "Kakuna": "Bug/Poison",
+    "Beedrill": "Bug/Poison",
+    "Pidgey": "Normal/Flying",
+    "Pidgeotto": "Normal/Flying",
+    "Pidgeot": "Normal/Flying",
+    "Rattata": "Normal",
+    "Raticate": "Normal",
+    "Spearow": "Normal/Flying",
+    "Fearow": "Normal/Flying",
+    "Ekans": "Poison",
+    "Arbok": "Poison",
+    "Pikachu": "Electric",
+    "Raichu": "Electric",
+    "Sandshrew": "Ground",
+    "Sandslash": "Ground",
+    "Nidoran\u2640": "Poison",
+    "Nidorina": "Poison",
+    "Nidoqueen": "Poison/Ground",
+    "Nidoran\u2642": "Poison",
+    "Nidorino": "Poison",
+    "Nidoking": "Poison/Ground",
+    "Clefairy": "Normal",
+    "Clefable": "Normal",
+    "Vulpix": "Fire",
+    "Ninetales": "Fire",
+    "Jigglypuff": "Normal",
+    "Wigglytuff": "Normal",
+    "Zubat": "Poison/Flying",
+    "Golbat": "Poison/Flying",
+    "Oddish": "Grass/Poison",
+    "Gloom": "Grass/Poison",
+    "Vileplume": "Grass/Poison",
+    "Paras": "Bug/Grass",
+    "Parasect": "Bug/Grass",
+    "Venonat": "Bug/Poison",
+    "Venomoth": "Bug/Poison",
+    "Diglett": "Ground",
+    "Dugtrio": "Ground",
+    "Meowth": "Normal",
+    "Persian": "Normal",
+    "Psyduck": "Water",
+    "Golduck": "Water",
+    "Mankey": "Fighting",
+    "Primeape": "Fighting",
+    "Growlithe": "Fire",
+    "Arcanine": "Fire",
+    "Poliwag": "Water",
+    "Poliwhirl": "Water",
+    "Poliwrath": "Water/Fighting",
+    "Abra": "Psychic",
+    "Kadabra": "Psychic",
+    "Alakazam": "Psychic",
+    "Machop": "Fighting",
+    "Machoke": "Fighting",
+    "Machamp": "Fighting",
+    "Bellsprout": "Grass/Poison",
+    "Weepinbell": "Grass/Poison",
+    "Victreebel": "Grass/Poison",
+    "Tentacool": "Water/Poison",
+    "Tentacruel": "Water/Poison",
+    "Geodude": "Rock/Ground",
+    "Graveler": "Rock/Ground",
+    "Golem": "Rock/Ground",
+    "Ponyta": "Fire",
+    "Rapidash": "Fire",
+    "Slowpoke": "Water/Psychic",
+    "Slowbro": "Water/Psychic",
+    "Magnemite": "Electric",
+    "Magneton": "Electric",
+    "Farfetch'd": "Normal/Flying",
+    "Doduo": "Normal/Flying",
+    "Dodrio": "Normal/Flying",
+    "Seel": "Water",
+    "Dewgong": "Water/Ice",
+    "Grimer": "Poison",
+    "Muk": "Poison",
+    "Shellder": "Water",
+    "Cloyster": "Water/Ice",
+    "Gastly": "Ghost/Poison",
+    "Haunter": "Ghost/Poison",
+    "Gengar": "Ghost/Poison",
+    "Onix": "Rock/Ground",
+    "Drowzee": "Psychic",
+    "Hypno": "Psychic",
+    "Krabby": "Water",
+    "Kingler": "Water",
+    "Voltorb": "Electric",
+    "Electrode": "Electric",
+    "Exeggcute": "Grass/Psychic",
+    "Exeggutor": "Grass/Psychic",
+    "Cubone": "Ground",
+    "Marowak": "Ground",
+    "Hitmonlee": "Fighting",
+    "Hitmonchan": "Fighting",
+    "Lickitung": "Normal",
+    "Koffing": "Poison",
+    "Weezing": "Poison",
+    "Rhyhorn": "Ground/Rock",
+    "Rhydon": "Ground/Rock",
+    "Chansey": "Normal",
+    "Tangela": "Grass",
+    "Kangaskhan": "Normal",
+    "Horsea": "Water",
+    "Seadra": "Water",
+    "Goldeen": "Water",
+    "Seaking": "Water",
+    "Staryu": "Water",
+    "Starmie": "Water/Psychic",
+    "Mr. Mime": "Psychic",
+    "Scyther": "Bug/Flying",
+    "Jynx": "Ice/Psychic",
+    "Electabuzz": "Electric",
+    "Magmar": "Fire",
+    "Pinsir": "Bug",
+    "Tauros": "Normal",
+    "Magikarp": "Water",
+    "Gyarados": "Water/Flying",
+    "Lapras": "Water/Ice",
+    "Ditto": "Normal",
+    "Eevee": "Normal",
+    "Vaporeon": "Water",
+    "Jolteon": "Electric",
+    "Flareon": "Fire",
+    "Porygon": "Normal",
+    "Omanyte": "Rock/Water",
+    "Omastar": "Rock/Water",
+    "Kabuto": "Rock/Water",
+    "Kabutops": "Rock/Water",
+    "Aerodactyl": "Rock/Flying",
+    "Snorlax": "Normal",
+    "Articuno": "Ice/Flying",
+    "Zapdos": "Electric/Flying",
+    "Moltres": "Fire/Flying",
+    "Dratini": "Dragon",
+    "Dragonair": "Dragon",
+    "Dragonite": "Dragon/Flying",
+    "Mewtwo": "Psychic",
+    "Mew": "Psychic"
+  },
+  "damage": {
+    "Normal": {
+      "Normal": 1.0,
+      "Fighting": 1.0,
+      "Flying": 1.0,
+      "Poison": 1.0,
+      "Ground": 1.0,
+      "Rock": 0.5,
+      "Bug": 1.0,
+      "Ghost": 0.0,
+      "Fire": 1.0,
+      "Water": 1.0,
+      "Grass": 1.0,
+      "Electric": 1.0,
+      "Psychic": 1.0,
+      "Ice": 1.0,
+      "Dragon": 1.0
+    },
+    "Fighting": {
+      "Normal": 2.0,
+      "Fighting": 1.0,
+      "Flying": 0.5,
+      "Poison": 0.5,
+      "Ground": 1.0,
+      "Rock": 2.0,
+      "Bug": 0.5,
+      "Ghost": 0.0,
+      "Fire": 1.0,
+      "Water": 1.0,
+      "Grass": 1.0,
+      "Electric": 1.0,
+      "Psychic": 0.5,
+      "Ice": 2.0,
+      "Dragon": 1.0
+    },
+    "Flying": {
+      "Normal": 1.0,
+      "Fighting": 2.0,
+      "Flying": 1.0,
+      "Poison": 1.0,
+      "Ground": 1.0,
+      "Rock": 0.5,
+      "Bug": 2.0,
+      "Ghost": 1.0,
+      "Fire": 1.0,
+      "Water": 1.0,
+      "Grass": 2.0,
+      "Electric": 0.5,
+      "Psychic": 1.0,
+      "Ice": 1.0,
+      "Dragon": 1.0
+    },
+    "Poison": {
+      "Normal": 1.0,
+      "Fighting": 1.0,
+      "Flying": 1.0,
+      "Poison": 0.5,
+      "Ground": 0.5,
+      "Rock": 0.5,
+      "Bug": 2.0,
+      "Ghost": 0.5,
+      "Fire": 1.0,
+      "Water": 1.0,
+      "Grass": 2.0,
+      "Electric": 1.0,
+      "Psychic": 1.0,
+      "Ice": 1.0,
+      "Dragon": 1.0
+    },
+    "Ground": {
+      "Normal": 1.0,
+      "Fighting": 1.0,
+      "Flying": 0.0,
+      "Poison": 2.0,
+      "Ground": 1.0,
+      "Rock": 2.0,
+      "Bug": 0.5,
+      "Ghost": 1.0,
+      "Fire": 2.0,
+      "Water": 1.0,
+      "Grass": 0.5,
+      "Electric": 2.0,
+      "Psychic": 1.0,
+      "Ice": 1.0,
+      "Dragon": 1.0
+    },
+    "Rock": {
+      "Normal": 1.0,
+      "Fighting": 0.5,
+      "Flying": 2.0,
+      "Poison": 1.0,
+      "Ground": 0.5,
+      "Rock": 1.0,
+      "Bug": 2.0,
+      "Ghost": 1.0,
+      "Fire": 2.0,
+      "Water": 1.0,
+      "Grass": 1.0,
+      "Electric": 1.0,
+      "Psychic": 1.0,
+      "Ice": 2.0,
+      "Dragon": 1.0
+    },
+    "Bug": {
+      "Normal": 1.0,
+      "Fighting": 0.5,
+      "Flying": 0.5,
+      "Poison": 2.0,
+      "Ground": 1.0,
+      "Rock": 1.0,
+      "Bug": 1.0,
+      "Ghost": 0.5,
+      "Fire": 0.5,
+      "Water": 1.0,
+      "Grass": 2.0,
+      "Electric": 1.0,
+      "Psychic": 2.0,
+      "Ice": 1.0,
+      "Dragon": 1.0
+    },
+    "Ghost": {
+      "Normal": 0.0,
+      "Fighting": 1.0,
+      "Flying": 1.0,
+      "Poison": 1.0,
+      "Ground": 1.0,
+      "Rock": 1.0,
+      "Bug": 1.0,
+      "Ghost": 2.0,
+      "Fire": 1.0,
+      "Water": 1.0,
+      "Grass": 1.0,
+      "Electric": 1.0,
+      "Psychic": 0.0,
+      "Ice": 1.0,
+      "Dragon": 1.0
+    },
+    "Fire": {
+      "Normal": 1.0,
+      "Fighting": 1.0,
+      "Flying": 1.0,
+      "Poison": 1.0,
+      "Ground": 1.0,
+      "Rock": 0.5,
+      "Bug": 2.0,
+      "Ghost": 1.0,
+      "Fire": 0.5,
+      "Water": 0.5,
+      "Grass": 2.0,
+      "Electric": 1.0,
+      "Psychic": 1.0,
+      "Ice": 2.0,
+      "Dragon": 0.5
+    },
+    "Water": {
+      "Normal": 1.0,
+      "Fighting": 1.0,
+      "Flying": 1.0,
+      "Poison": 1.0,
+      "Ground": 2.0,
+      "Rock": 2.0,
+      "Bug": 1.0,
+      "Ghost": 1.0,
+      "Fire": 2.0,
+      "Water": 0.5,
+      "Grass": 0.5,
+      "Electric": 1.0,
+      "Psychic": 1.0,
+      "Ice": 1.0,
+      "Dragon": 0.5
+    },
+    "Grass": {
+      "Normal": 1.0,
+      "Fighting": 1.0,
+      "Flying": 0.5,
+      "Poison": 0.5,
+      "Ground": 2.0,
+      "Rock": 2.0,
+      "Bug": 0.5,
+      "Ghost": 1.0,
+      "Fire": 0.5,
+      "Water": 2.0,
+      "Grass": 0.5,
+      "Electric": 1.0,
+      "Psychic": 1.0,
+      "Ice": 1.0,
+      "Dragon": 0.5
+    },
+    "Electric": {
+      "Normal": 1.0,
+      "Fighting": 1.0,
+      "Flying": 2.0,
+      "Poison": 1.0,
+      "Ground": 0.0,
+      "Rock": 1.0,
+      "Bug": 1.0,
+      "Ghost": 1.0,
+      "Fire": 1.0,
+      "Water": 2.0,
+      "Grass": 0.5,
+      "Electric": 0.5,
+      "Psychic": 1.0,
+      "Ice": 1.0,
+      "Dragon": 0.5
+    },
+    "Psychic": {
+      "Normal": 1.0,
+      "Fighting": 2.0,
+      "Flying": 1.0,
+      "Poison": 2.0,
+      "Ground": 1.0,
+      "Rock": 1.0,
+      "Bug": 1.0,
+      "Ghost": 1.0,
+      "Fire": 1.0,
+      "Water": 1.0,
+      "Grass": 1.0,
+      "Electric": 1.0,
+      "Psychic": 0.5,
+      "Ice": 1.0,
+      "Dragon": 1.0
+    },
+    "Ice": {
+      "Normal": 1.0,
+      "Fighting": 1.0,
+      "Flying": 2.0,
+      "Poison": 1.0,
+      "Ground": 2.0,
+      "Rock": 1.0,
+      "Bug": 1.0,
+      "Ghost": 1.0,
+      "Fire": 1.0,
+      "Water": 0.5,
+      "Grass": 2.0,
+      "Electric": 1.0,
+      "Psychic": 1.0,
+      "Ice": 0.5,
+      "Dragon": 2.0
+    },
+    "Dragon": {
+      "Normal": 1.0,
+      "Fighting": 1.0,
+      "Flying": 1.0,
+      "Poison": 1.0,
+      "Ground": 1.0,
+      "Rock": 1.0,
+      "Bug": 1.0,
+      "Ghost": 1.0,
+      "Fire": 1.0,
+      "Water": 1.0,
+      "Grass": 1.0,
+      "Electric": 1.0,
+      "Psychic": 1.0,
+      "Ice": 1.0,
+      "Dragon": 2.0
+    }
+  }
+}'''
+preamble = '''
+<p>
+    For each Pokémon, print the move types that it is weak to, separated by spaces.
+<p>
+    Each Pokémon has 1 or 2 types. Each combination of attacking vs. defending type has a
+    damage multiplier, which can be 2, 1, ½, or 0. If the defending Pokémon has 2 types,
+    the damage multipliers are multiplied together. The Pokémon is weak to the type if the
+    damage multiplier is <b>greater than 1.</b>
+<p>
+    Pokémon types:
+<div class=tables-4col>
+    <table>
+        <thead>
+            <tr>
+                <th>Pokémon
+                <th>Type
+        <tbody>
+            <tr><td>Bulbasaur       <td>Grass/Poison
+            <tr><td>Ivysaur         <td>Grass/Poison
+            <tr><td>Venusaur        <td>Grass/Poison
+            <tr><td>Charmander      <td>Fire
+            <tr><td>Charmeleon      <td>Fire
+            <tr><td>Charizard       <td>Fire/Flying
+            <tr><td>Squirtle        <td>Water
+            <tr><td>Wartortle       <td>Water
+            <tr><td>Blastoise       <td>Water
+            <tr><td>Caterpie        <td>Bug
+            <tr><td>Metapod         <td>Bug
+            <tr><td>Butterfree      <td>Bug/Flying
+            <tr><td>Weedle          <td>Bug/Poison
+            <tr><td>Kakuna          <td>Bug/Poison
+            <tr><td>Beedrill        <td>Bug/Poison
+            <tr><td>Pidgey          <td>Normal/Flying
+            <tr><td>Pidgeotto       <td>Normal/Flying
+            <tr><td>Pidgeot         <td>Normal/Flying
+            <tr><td>Rattata         <td>Normal
+            <tr><td>Raticate        <td>Normal
+            <tr><td>Spearow         <td>Normal/Flying
+            <tr><td>Fearow          <td>Normal/Flying
+            <tr><td>Ekans           <td>Poison
+            <tr><td>Arbok           <td>Poison
+            <tr><td>Pikachu         <td>Electric
+            <tr><td>Raichu          <td>Electric
+            <tr><td>Sandshrew       <td>Ground
+            <tr><td>Sandslash       <td>Ground
+            <tr><td>Nidoran♀        <td>Poison
+            <tr><td>Nidorina        <td>Poison
+            <tr><td>Nidoqueen       <td>Poison/Ground
+            <tr><td>Nidoran♂        <td>Poison
+            <tr><td>Nidorino        <td>Poison
+            <tr><td>Nidoking        <td>Poison/Ground
+            <tr><td>Clefairy        <td>Normal
+            <tr><td>Clefable        <td>Normal
+            <tr><td>Vulpix          <td>Fire
+            <tr><td>Ninetales       <td>Fire
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Pokémon
+                <th>Type
+        <tbody>
+            <tr><td>Jigglypuff      <td>Normal
+            <tr><td>Wigglytuff      <td>Normal
+            <tr><td>Zubat           <td>Poison/Flying
+            <tr><td>Golbat          <td>Poison/Flying
+            <tr><td>Oddish          <td>Grass/Poison
+            <tr><td>Gloom           <td>Grass/Poison
+            <tr><td>Vileplume       <td>Grass/Poison
+            <tr><td>Paras           <td>Bug/Grass
+            <tr><td>Parasect        <td>Bug/Grass
+            <tr><td>Venonat         <td>Bug/Poison
+            <tr><td>Venomoth        <td>Bug/Poison
+            <tr><td>Diglett         <td>Ground
+            <tr><td>Dugtrio         <td>Ground
+            <tr><td>Meowth          <td>Normal
+            <tr><td>Persian         <td>Normal
+            <tr><td>Psyduck         <td>Water
+            <tr><td>Golduck         <td>Water
+            <tr><td>Mankey          <td>Fighting
+            <tr><td>Primeape        <td>Fighting
+            <tr><td>Growlithe       <td>Fire
+            <tr><td>Arcanine        <td>Fire
+            <tr><td>Poliwag         <td>Water
+            <tr><td>Poliwhirl       <td>Water
+            <tr><td>Poliwrath       <td>Water/Fighting
+            <tr><td>Abra            <td>Psychic
+            <tr><td>Kadabra         <td>Psychic
+            <tr><td>Alakazam        <td>Psychic
+            <tr><td>Machop          <td>Fighting
+            <tr><td>Machoke         <td>Fighting
+            <tr><td>Machamp         <td>Fighting
+            <tr><td>Bellsprout      <td>Grass/Poison
+            <tr><td>Weepinbell      <td>Grass/Poison
+            <tr><td>Victreebel      <td>Grass/Poison
+            <tr><td>Tentacool       <td>Water/Poison
+            <tr><td>Tentacruel      <td>Water/Poison
+            <tr><td>Geodude         <td>Rock/Ground
+            <tr><td>Graveler        <td>Rock/Ground
+            <tr><td>Golem           <td>Rock/Ground
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Pokémon
+                <th>Type
+        <tbody>
+            <tr><td>Ponyta          <td>Fire
+            <tr><td>Rapidash        <td>Fire
+            <tr><td>Slowpoke        <td>Water/Psychic
+            <tr><td>Slowbro         <td>Water/Psychic
+            <tr><td>Magnemite       <td>Electric
+            <tr><td>Magneton        <td>Electric
+            <tr><td>Farfetch'd      <td>Normal/Flying
+            <tr><td>Doduo           <td>Normal/Flying
+            <tr><td>Dodrio          <td>Normal/Flying
+            <tr><td>Seel            <td>Water
+            <tr><td>Dewgong         <td>Water/Ice
+            <tr><td>Grimer          <td>Poison
+            <tr><td>Muk             <td>Poison
+            <tr><td>Shellder        <td>Water
+            <tr><td>Cloyster        <td>Water/Ice
+            <tr><td>Gastly          <td>Ghost/Poison
+            <tr><td>Haunter         <td>Ghost/Poison
+            <tr><td>Gengar          <td>Ghost/Poison
+            <tr><td>Onix            <td>Rock/Ground
+            <tr><td>Drowzee         <td>Psychic
+            <tr><td>Hypno           <td>Psychic
+            <tr><td>Krabby          <td>Water
+            <tr><td>Kingler         <td>Water
+            <tr><td>Voltorb         <td>Electric
+            <tr><td>Electrode       <td>Electric
+            <tr><td>Exeggcute       <td>Grass/Psychic
+            <tr><td>Exeggutor       <td>Grass/Psychic
+            <tr><td>Cubone          <td>Ground
+            <tr><td>Marowak         <td>Ground
+            <tr><td>Hitmonlee       <td>Fighting
+            <tr><td>Hitmonchan      <td>Fighting
+            <tr><td>Lickitung       <td>Normal
+            <tr><td>Koffing         <td>Poison
+            <tr><td>Weezing         <td>Poison
+            <tr><td>Rhyhorn         <td>Ground/Rock
+            <tr><td>Rhydon          <td>Ground/Rock
+            <tr><td>Chansey         <td>Normal
+            <tr><td>Tangela         <td>Grass
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Pokémon
+                <th>Type
+        <tbody>
+            <tr><td>Kangaskhan      <td>Normal
+            <tr><td>Horsea          <td>Water
+            <tr><td>Seadra          <td>Water
+            <tr><td>Goldeen         <td>Water
+            <tr><td>Seaking         <td>Water
+            <tr><td>Staryu          <td>Water
+            <tr><td>Starmie         <td>Water/Psychic
+            <tr><td>Mr. Mime        <td>Psychic
+            <tr><td>Scyther         <td>Bug/Flying
+            <tr><td>Jynx            <td>Ice/Psychic
+            <tr><td>Electabuzz      <td>Electric
+            <tr><td>Magmar          <td>Fire
+            <tr><td>Pinsir          <td>Bug
+            <tr><td>Tauros          <td>Normal
+            <tr><td>Magikarp        <td>Water
+            <tr><td>Gyarados        <td>Water/Flying
+            <tr><td>Lapras          <td>Water/Ice
+            <tr><td>Ditto           <td>Normal
+            <tr><td>Eevee           <td>Normal
+            <tr><td>Vaporeon        <td>Water
+            <tr><td>Jolteon         <td>Electric
+            <tr><td>Flareon         <td>Fire
+            <tr><td>Porygon         <td>Normal
+            <tr><td>Omanyte         <td>Rock/Water
+            <tr><td>Omastar         <td>Rock/Water
+            <tr><td>Kabuto          <td>Rock/Water
+            <tr><td>Kabutops        <td>Rock/Water
+            <tr><td>Aerodactyl      <td>Rock/Flying
+            <tr><td>Snorlax         <td>Normal
+            <tr><td>Articuno        <td>Ice/Flying
+            <tr><td>Zapdos          <td>Electric/Flying
+            <tr><td>Moltres         <td>Fire/Flying
+            <tr><td>Dratini         <td>Dragon
+            <tr><td>Dragonair       <td>Dragon
+            <tr><td>Dragonite       <td>Dragon/Flying
+            <tr><td>Mewtwo          <td>Psychic
+            <tr><td>Mew             <td>Psychic
+    </table>
+</div>
+<p>
+    Damage multipliers: (Row is attacker, column is defender)
+<div>
+    <table>
+        <tr>
+            <th>-
+            <th>Normal
+            <th>Fight.
+            <th>Flying
+            <th>Poison
+            <th>Ground
+            <th>Rock
+            <th>Bug
+            <th>Ghost
+            <th>Fire
+            <th>Water
+            <th>Grass
+            <th>Elect.
+            <th>Psychic
+            <th>Ice
+            <th>Dragon
+            <tr><th>Normal  <td>1 <td>1 <td>1 <td>1 <td>1 <td>½ <td>1 <td>0 <td>1 <td>1 <td>1 <td>1 <td>1 <td>1 <td>1 
+            <tr><th>Fighting<td>2 <td>1 <td>½ <td>½ <td>1 <td>2 <td>½ <td>0 <td>1 <td>1 <td>1 <td>1 <td>½ <td>2 <td>1 
+            <tr><th>Flying  <td>1 <td>2 <td>1 <td>1 <td>1 <td>½ <td>2 <td>1 <td>1 <td>1 <td>2 <td>½ <td>1 <td>1 <td>1 
+            <tr><th>Poison  <td>1 <td>1 <td>1 <td>½ <td>½ <td>½ <td>2 <td>½ <td>1 <td>1 <td>2 <td>1 <td>1 <td>1 <td>1 
+            <tr><th>Ground  <td>1 <td>1 <td>0 <td>2 <td>1 <td>2 <td>½ <td>1 <td>2 <td>1 <td>½ <td>2 <td>1 <td>1 <td>1 
+            <tr><th>Rock    <td>1 <td>½ <td>2 <td>1 <td>½ <td>1 <td>2 <td>1 <td>2 <td>1 <td>1 <td>1 <td>1 <td>2 <td>1 
+            <tr><th>Bug     <td>1 <td>½ <td>½ <td>2 <td>1 <td>1 <td>1 <td>½ <td>½ <td>1 <td>2 <td>1 <td>2 <td>1 <td>1 
+            <tr><th>Ghost   <td>0 <td>1 <td>1 <td>1 <td>1 <td>1 <td>1 <td>2 <td>1 <td>1 <td>1 <td>1 <td>0 <td>1 <td>1 
+            <tr><th>Fire    <td>1 <td>1 <td>1 <td>1 <td>1 <td>½ <td>2 <td>1 <td>½ <td>½ <td>2 <td>1 <td>1 <td>2 <td>½ 
+            <tr><th>Water   <td>1 <td>1 <td>1 <td>1 <td>2 <td>2 <td>1 <td>1 <td>2 <td>½ <td>½ <td>1 <td>1 <td>1 <td>½ 
+            <tr><th>Grass   <td>1 <td>1 <td>½ <td>½ <td>2 <td>2 <td>½ <td>1 <td>½ <td>2 <td>½ <td>1 <td>1 <td>1 <td>½ 
+            <tr><th>Electric<td>1 <td>1 <td>2 <td>1 <td>0 <td>1 <td>1 <td>1 <td>1 <td>2 <td>½ <td>½ <td>1 <td>1 <td>½ 
+            <tr><th>Psychic <td>1 <td>2 <td>1 <td>2 <td>1 <td>1 <td>1 <td>1 <td>1 <td>1 <td>1 <td>1 <td>½ <td>1 <td>1 
+            <tr><th>Ice     <td>1 <td>1 <td>2 <td>1 <td>2 <td>1 <td>1 <td>1 <td>1 <td>½ <td>2 <td>1 <td>1 <td>½ <td>2 
+            <tr><th>Dragon  <td>1 <td>1 <td>1 <td>1 <td>1 <td>1 <td>1 <td>1 <td>1 <td>1 <td>1 <td>1 <td>1 <td>1 <td>2 
+    </table>
+</div>
+'''
+
 [Polyominoes]
 category       = 'Computing'
 item-delimiter = "\n\n"
