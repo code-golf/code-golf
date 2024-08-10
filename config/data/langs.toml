@@ -985,7 +985,7 @@ for arg in sys.argv[1:]:
 args       = [ '/usr/bin/Rscript', '-' ]
 args-quine = [ '/usr/bin/Rscript', '-e', "source('stdin')" ]
 size       = '81.9 MiB'
-version    = '4.4.0'
+version    = '4.4.1'
 website    = 'https://www.r-project.org'
 example    = '''
 # Printing
@@ -1061,7 +1061,7 @@ end
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
 size    = '331 MiB'
-version = '1.80.0'
+version = '1.80.1'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
