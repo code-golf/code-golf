@@ -1,6 +1,6 @@
 FROM debian:bookworm-slim AS builder
 
-ARG RELEASE=19.0 \
+ENV RELEASE=19.0 \
     BUILD=48958 \
     DEBIAN_FRONTEND=noninteractive
 
@@ -15,7 +15,7 @@ RUN chmod +x apl
 
 FROM codegolf/lang-base
 
-ARG DIR=19.0
+ENV DIR=19.0
 
 COPY --from=0 /bin/bash /bin/cat /bin/sh                     /bin/
 COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6                \
