@@ -30,6 +30,7 @@ constant %paths = (
     'Janet'        => 'github.com/janet-lang/janet/releases/latest',
     'Java'         => 'endoflife.date/api/java.json',
     'JavaScript'   => 'en.wikipedia.org/wiki/V8_(JavaScript_engine)',
+    'jq'         => 'github.com/jqlang/jq/releases/latest',
     'Julia'        => 'en.wikipedia.org/wiki/Julia_(programming_language)',
     'Lisp'         => 'en.wikipedia.org/wiki/CLISP',
     'Lua'          => 'en.wikipedia.org/wiki/Lua_(programming_language)',
@@ -75,10 +76,9 @@ for %langs.sort: *.key.fc -> (:key($name), :value(%lang)) {
         }
     } // '?';
 
-    printf "%11s \e[%dm%11s → %s\e[0m\n",
-        $name,
-           $new eq '?'                               ?? 33
-        !! $old eq $new || $old.starts-with("$new.") ?? 32
-        !!                                              31,
-        $old, $new;
+    my $code =  $new eq '?'                                              ?? 33
+        !! $old eq $new || $old.starts-with("$new.") || "$old.0" eq $new ?? 32
+        !!                                                                  31;
+
+    printf "%11s \e[%dm%11s → %s\e[0m\n", $name, $code, $old, $new;
 }
