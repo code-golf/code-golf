@@ -402,7 +402,7 @@ console.log 'Hello, World!'
 for i in [0..9]
     console.log i
 
-#Accessing arguments
+# Accessing arguments
 for arg in process.argv[4..]
     console.log arg
 '''
