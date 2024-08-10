@@ -317,11 +317,9 @@ func play(
 		// that only occurs when providing code via a command line argument.
 		code += "(print)"
 	case "jq":
-		if hole.ID == "quine" {
-			// Disable implicit output by rejecting input that can be parsed as JSON.
-			if json.Valid([]byte(code)) {
-				return nil
-			}
+		// Disable implicit output by rejecting input that can be parsed as JSON.
+		if hole.ID == "quine" && json.Valid([]byte(code)) {
+			return nil
 		}
 	case "k":
 		if hole.ID == "quine" {
