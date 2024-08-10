@@ -1061,7 +1061,7 @@ end
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
 size    = '331 MiB'
-version = '1.80.0'
+version = '1.80.1'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
