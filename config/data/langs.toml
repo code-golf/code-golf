@@ -388,6 +388,26 @@ for arg in sys.argv[1:]:
     arg |> print
 '''
 
+[CoffeeScript]
+args       = [ '/usr/bin/coffeescript', '-' ]
+env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
+experiment = 450
+size       = '70.7 MiB'
+version    = '2.7.0'
+website    = 'https://coffeescript.org'
+example    = '''
+# Printing
+console.log 'Hello, World!'
+
+# Looping
+for i in [0..9]
+    console.log i
+
+# Accessing arguments
+for arg in process.argv[2..]
+    console.log arg
+'''
+
 [Crystal]
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
