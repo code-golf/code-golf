@@ -907,7 +907,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '8.40 MiB'
-version = '8.3.9'
+version = '8.3.10'
 website = 'https://www.php.net'
 example = '''
 # Printing
