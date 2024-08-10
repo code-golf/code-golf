@@ -985,7 +985,7 @@ for arg in sys.argv[1:]:
 args       = [ '/usr/bin/Rscript', '-' ]
 args-quine = [ '/usr/bin/Rscript', '-e', "source('stdin')" ]
 size       = '81.9 MiB'
-version    = '4.4.1'
+version    = '4.4.0'
 website    = 'https://www.r-project.org'
 example    = '''
 # Printing
