@@ -389,7 +389,7 @@ for arg in sys.argv[1:]:
 '''
 
 [CoffeeScript]
-args       =  [ '/usr/bin/coffee', '-e', '$code' ]
+args       =  [ '/usr/bin/coffee', '-s' ]
 experiment = 450
 size       = '65.5 MiB'
 version    = '2.7.0'
@@ -403,7 +403,7 @@ for i in [0..9]
     console.log i
 
 # Accessing arguments
-for arg in process.argv[4..]
+for arg in process.argv[3..]
     console.log arg
 '''
 
