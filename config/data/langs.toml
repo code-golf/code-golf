@@ -747,6 +747,23 @@ for (let arg of arguments)
     print(arg);
 '''
 
+[jq]
+args       = [ '/usr/bin/jq', '-nr', '$code', '--args' ]
+experiment = 240
+size       = '3.41 MiB'
+version    = '1.7.1'
+website    = 'https://jqlang.github.io/jq/'
+example    = '''
+# Printing
+"Hello, World!",
+
+# Looping
+range(10),
+
+# Accessing arguments
+$ARGS.positional[]
+'''
+
 [Julia]
 args    = [ '/usr/bin/julia', '--color=yes', '/proc/self/fd/0' ]
 size    = '310 MiB'
