@@ -69,7 +69,7 @@ func adminGET(w http.ResponseWriter, r *http.Request) {
 		     AND nspname = 'public'
 		   WHERE reltuples != 0
 		   UNION
-		  SELECT NULL, 0, PG_DATABASE_SIZE('code-golf')
+		  SELECT NULL, 0, PG_DATABASE_SIZE(CURRENT_DATABASE())
 		ORDER BY name`,
 	); err != nil {
 		panic(err)
