@@ -32,7 +32,7 @@ import { factor }             from '@codemirror/legacy-modes/mode/factor';
 import { forth }              from '@codemirror/legacy-modes/mode/forth';
 import { fortran }            from '@codemirror/legacy-modes/mode/fortran';
 import { fSharp, oCaml }      from '@codemirror/legacy-modes/mode/mllike';
-import { go }                 from '@codemirror/legacy-modes/mode/go';
+import { goLanguage }         from '@codemirror/lang-go';
 import { golfScript }         from 'codemirror-lang-golfscript';
 import { haskell }            from '@codemirror/legacy-modes/mode/haskell';
 import { j }                  from 'codemirror-lang-j';
@@ -63,6 +63,7 @@ import { zig }                from 'codemirror-lang-zig';
 
 // Bypass default constructors so we only get highlighters and not extensions.
 const elixir     = new LanguageSupport(elixirLanguage);
+const go         = new LanguageSupport(goLanguage);
 const javascript = new LanguageSupport(javascriptLanguage);
 const php        = new LanguageSupport(phpLanguage.configure({ top: 'Program' }));
 const python     = new LanguageSupport(pythonLanguage);
@@ -78,7 +79,7 @@ const asmErrorTooltip = {
 
 const fontFamily = "'Source Code Pro', monospace";
 
-export const extensions = {
+export const extensions : { [key: string]: any } = {
     // Extensions.
     'base': [
         carriageReturn, showUnprintables,
@@ -110,58 +111,63 @@ export const extensions = {
     'vim': vim({ status: true }),
 
     // Languages.
-    'assembly':   assembly(),
-    'bash':       StreamLanguage.define(shell),
+    // TODO arturo
+    'assembly':      assembly(),
+    'assembly-wiki': assembly({ byteDumps: false }),
+    'bash':          StreamLanguage.define(shell),
     // TODO basic
-    'brainfuck':  brainfuck(),
-    'c':          StreamLanguage.define(c),
-    'c-sharp':    StreamLanguage.define(csharp),
-    'clojure':    StreamLanguage.define(clojure),
-    'cobol':      StreamLanguage.define(cobol),
-    'coconut':    python,
-    'cpp':        cpp(),
-    'crystal':    StreamLanguage.define(crystal),
-    'd':          StreamLanguage.define(d),
-    'dart':       StreamLanguage.define(dart),
-    'elixir':     elixir,
-    'f-sharp':    StreamLanguage.define(fSharp),
-    'factor':     StreamLanguage.define(factor),
+    'brainfuck':     brainfuck(),
+    'c':             StreamLanguage.define(c),
+    'c-sharp':       StreamLanguage.define(csharp),
+    'civet':         javascript,
+    'clojure':       StreamLanguage.define(clojure),
+    'cobol':         StreamLanguage.define(cobol),
+    'coconut':       python,
+    'cpp':           cpp(),
+    'crystal':       StreamLanguage.define(crystal),
+    'd':             StreamLanguage.define(d),
+    'dart':          StreamLanguage.define(dart),
+    'elixir':        elixir,
+    'f-sharp':       StreamLanguage.define(fSharp),
+    'factor':        StreamLanguage.define(factor),
     // TODO fish
-    'forth':      StreamLanguage.define({ ...forth, languageData: { commentTokens: { line: '\\' } } }),
-    'fortran':    StreamLanguage.define({ ...fortran, languageData: { commentTokens: { line: '!' } } }),
-    'go':         StreamLanguage.define(go),
-    'golfscript': golfScript(),
-    'haskell':    StreamLanguage.define(haskell),
+    'forth':         StreamLanguage.define({ ...forth, languageData: { commentTokens: { line: '\\' } } }),
+    'fortran':       StreamLanguage.define({ ...fortran, languageData: { commentTokens: { line: '!' } } }),
+    'go':            go,
+    'golfscript':    golfScript(),
+    'haskell':       StreamLanguage.define(haskell),
     // TODO hexagony
-    'j':          j(),
-    'janet':      janet(),
-    'java':       java(),
-    'javascript': javascript,
-    'julia':      StreamLanguage.define(julia),
-    'k':          k(),
-    'lisp':       StreamLanguage.define(commonLisp),
-    'lua':        StreamLanguage.define(lua),
-    'nim':        StreamLanguage.define({ ...nim( {}, {} ), languageData: { commentTokens: { line: '#' } } }),
-    'ocaml':      StreamLanguage.define(oCaml),
-    'pascal':     StreamLanguage.define(pascal),
-    'perl':       StreamLanguage.define(perl),
-    'php':        php,
-    'powershell': StreamLanguage.define(powerShell),
-    'prolog':     prolog(),
-    'python':     python,
-    'r':          StreamLanguage.define(r),
-    'raku':       StreamLanguage.define(raku),
-    'ruby':       StreamLanguage.define(ruby),
-    'rust':       rust(),
+    'j':             j(),
+    'janet':         janet(),
+    'java':          java(),
+    'javascript':    javascript,
+    'julia':         StreamLanguage.define(julia),
+    'k':             k(),
+    'lisp':          StreamLanguage.define(commonLisp),
+    'lua':           StreamLanguage.define(lua),
+    'nim':           StreamLanguage.define({ ...nim( {}, {} ), languageData: { commentTokens: { line: '#' } } }),
+    'ocaml':         StreamLanguage.define(oCaml),
+    'pascal':        StreamLanguage.define(pascal),
+    'perl':          StreamLanguage.define(perl),
+    'php':           php,
+    'powershell':    StreamLanguage.define(powerShell),
+    'prolog':        prolog(),
+    'python':        python,
+    'r':             StreamLanguage.define(r),
+    'raku':          StreamLanguage.define(raku),
+    // TODO rockstar
+    'ruby':          StreamLanguage.define(ruby),
+    'rust':          rust(),
     // TODO sed
-    'sql':        sql,
-    'swift':      StreamLanguage.define(swift),
-    'tcl':        StreamLanguage.define(tcl),
-    'tex':        StreamLanguage.define(stex),
+    'sql':           sql,
+    'swift':         StreamLanguage.define(swift),
+    'tcl':           StreamLanguage.define(tcl),
+    'tex':           StreamLanguage.define(stex),
+    // TODO uiua
     // TODO v
     // TODO viml
-    'wren':       wren,
-    'zig':        zig(),
+    'wren':          wren,
+    'zig':           zig(),
 };
 
 // Order matters, unshift the dark stuff onto the front.

@@ -1,0 +1,156 @@
+{{ with .GolferInfo }}
+    {{ $me := and $.Golfer (eq $.Golfer.ID .ID) }}
+
+    <div class=grid id=profile>
+        <img src="/golfers/{{ .Name }}/avatar/176">
+        <h1 title="{{ .Name }}{{ with .Pronouns.V }} ({{ . }}){{ end }}">
+            {{ .Name }}
+            {{ with .Pronouns.V }}<span id=pronouns>({{ . }})</span>{{ end }}
+        {{ with .Country.Country }}
+            <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
+        {{ end }}
+        </h1>
+    {{ if not $.Golfer }}
+        <form></form>
+    {{ else if $me }}
+        <form action=/log-out method=post>
+            <button class="btn red">{{ svg "sign-out-alt-light" }} Log Out</button>
+        </form>
+    {{ else if $.Golfer.IsFollowing .ID }}
+        <form action="/golfers/{{ .Name }}/unfollow" method=post>
+            <button class="btn red">{{ svg "person-dash" }} Unfollow Golfer</button>
+        </form>
+    {{ else }}
+        <form action="/golfers/{{ .Name }}/follow" method=post>
+            <button class="btn blue">{{ svg "person-plus" }} Follow Golfer</button>
+        </form>
+    {{ end }}
+        <div>
+            <div title="{{ comma .BytesPoints }} points in bytes">
+                {{ svg "bytes" }}{{ comma .BytesPoints }}
+            </div>
+            •
+            <div title="{{ comma .CharsPoints }} points in chars">
+                {{ svg "chars" }}{{ comma .CharsPoints }}
+            </div>
+        </div>
+        <div>
+        {{ with .Unicorn }}
+            <div title="{{ comma . }} unicorns (uncontested solves)">
+                <span>🦄</span>{{ comma . }}
+            </div>
+            •
+        {{ end }}
+        {{ with .Diamond }}
+            <div title="{{ comma . }} diamonds (uncontested gold medals)">
+                <span>💎</span>{{ comma . }}
+            </div>
+            •
+        {{ end }}
+            <div title="{{ comma .Gold }} gold medals">
+                <span>🥇</span>{{ comma .Gold }}
+            </div>
+            •
+            <div title="{{ comma .Silver }} silver medals">
+                <span>🥈</span>{{ comma .Silver  }}
+            </div>
+            •
+            <div title="{{ comma .Bronze }} bronze medals">
+                <span>🥉</span>{{ comma .Bronze  }}
+            </div>
+        </div>
+    </div>
+
+    {{ with .About }}<p id=about>{{ . }}{{ end }}
+
+    <div id=badges>
+    {{ if .Admin   }}<div><p>🔑<p class=orange>Admin  </div>{{ end }}
+    {{ if .Sponsor }}<div><p>💰<p class=yellow>Sponsor</div>{{ end }}
+
+    {{ with len .HolesAuthored }}
+        <button data-dialog=holes-authored-dialog>
+            <p>📚
+            <p class=purple>{{ . }} Hole{{ if gt . 1 }}s{{ end }} Authored
+        </button>
+    {{ end }}
+
+    {{ with len .Referrals }}
+        <button data-dialog=referrals-dialog>
+            <p>📣
+            <p class=purple>{{ . }} Referral{{ if gt . 1 }}s{{ end }}
+        </button>
+    {{ end }}
+
+        <div>
+            <p>⛳
+            <p class=red>{{ .Holes }} / {{ .HolesTotal }} Holes
+        </div>
+        <div>
+            <p>🔣
+            <p class=green>{{ .Langs }} / {{ .LangsTotal }} Langs
+        </div>
+        <div>
+            <p>🏆
+            <p class=blue>{{ len .Cheevos }} / {{ .CheevosTotal }} Cheevos
+        </div>
+        <div>
+            <p>📅
+            <p class=yellow>{{ time (.Started.In $.Location) }}
+        </div>
+    </div>
+
+    <nav class=tabs>
+        {{ $slug := print "/golfers/" .Name }}
+        <a {{ if ne $.Path $slug }} href="{{ $slug }}" {{ end }}>Profile</a>
+
+        {{ $slug = print "/golfers/" .Name "/cheevos" }}
+        <a {{ if ne $.Path $slug }} href="{{ $slug }}" {{ end }}>Achievements</a>
+
+        {{ $slug = print "/golfers/" .Name "/holes" }}
+        <a {{ if not (hasPrefix $.Path $slug) }}
+            href="{{ $slug }}/rankings/lang/bytes"
+        {{ end }}>
+            Holes
+        </a>
+
+    {{ if $me }}
+        <a {{ if not (hasPrefix $.Path "/golfer/settings") }} href=/golfer/settings {{ end }}>
+            Settings
+        </a>
+    {{ end }}
+    </nav>
+
+    {{ with .HolesAuthored }}
+        <dialog id=holes-authored-dialog>
+            <div>
+                <h1>Holes Authored</h1>
+                <ul>
+                {{ range . }}{{ with index $.Holes . }}
+                    <li>
+                        <a href="/{{ .ID }}">
+                            {{ svg .CategoryIcon }}
+                            {{ .Name }}
+                        </a>
+                {{ end }}{{ end }}
+                </ul>
+            </div>
+        </dialog>
+    {{ end }}
+
+    {{ with .Referrals }}
+        <dialog id=referrals-dialog>
+            <div>
+                <h1>Referrals</h1>
+                <ul>
+                {{ range . }}
+                    <li>
+                        <a href="/golfers/{{ . }}">
+                            <img loading=lazy src="/golfers/{{ . }}/avatar/48">
+                            {{ . }}
+                        </a>
+                {{ end }}
+                </ul>
+            </div>
+        </dialog>
+    {{ end }}
+{{ end }}

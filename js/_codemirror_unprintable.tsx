@@ -50,7 +50,7 @@ export const insertChar = EditorView.domEventHandlers({
                         String.fromCodePoint(codepoint),
                     ));
             }
-            catch (e) {}
+            catch {}
             inputSequence = '';
         }
     },

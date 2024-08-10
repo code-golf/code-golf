@@ -25,19 +25,18 @@ func Get(db *sqlx.DB, sessionID uuid.UUID) *Golfer {
 		     WHERE failing
 		  GROUP BY hole, lang
 		  ORDER BY hole, lang
-		)  SELECT u.admin                                   admin,
+		)  SELECT u.about                                   about,
+		          u.admin                                   admin,
 		          COALESCE(bytes.points, 0)                 bytes_points,
 		          COALESCE(chars.points, 0)                 chars_points,
 		          u.country                                 country,
 		          u.delete                                  delete,
-		          (SELECT COALESCE(json_agg(failing), '[]')
-		             FROM failing)                          failing_solutions,
 		          u.id                                      id,
-		          u.layout                                  layout,
 		          u.keymap                                  keymap,
 		          u.login                                   name,
 		          u.pronouns                                pronouns,
 		          COALESCE(r.login, '')                     referrer,
+		          u.settings                                settings,
 		          u.show_country                            show_country,
 		          u.sponsor                                 sponsor,
 		          u.theme                                   theme,
@@ -46,6 +45,8 @@ func Get(db *sqlx.DB, sessionID uuid.UUID) *Golfer {
 		                  FROM trophies
 		                 WHERE user_id = u.id
 		              ORDER BY trophy)                      cheevos,
+		          (SELECT COALESCE(json_agg(failing), '[]')
+		             FROM failing)                          failing_solutions,
 		          ARRAY(SELECT followee_id
 		                  FROM follows
 		                 WHERE follower_id = u.id
@@ -66,6 +67,19 @@ func Get(db *sqlx.DB, sessionID uuid.UUID) *Golfer {
 		panic(err)
 	}
 
+	// Populate missing settings with default values.
+	for page, settings := range config.Settings {
+		if _, ok := golfer.Settings[page]; !ok {
+			golfer.Settings[page] = map[string]any{}
+		}
+
+		for _, setting := range settings {
+			if _, ok := golfer.Settings[page][setting.ID]; !ok {
+				golfer.Settings[page][setting.ID] = setting.Default
+			}
+		}
+	}
+
 	return &golfer
 }
 
@@ -80,13 +94,15 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		&info,
 		`WITH medals AS (
 		   SELECT user_id,
+		          COUNT(*) FILTER (WHERE medal = 'unicorn') unicorn,
 		          COUNT(*) FILTER (WHERE medal = 'diamond') diamond,
 		          COUNT(*) FILTER (WHERE medal = 'gold'   ) gold,
 		          COUNT(*) FILTER (WHERE medal = 'silver' ) silver,
 		          COUNT(*) FILTER (WHERE medal = 'bronze' ) bronze
 		     FROM medals
 		 GROUP BY user_id
-		)  SELECT admin,
+		)  SELECT about,
+		          admin,
 		          COALESCE(bronze, 0)                   bronze,
 		          ARRAY(
 		            SELECT trophy
@@ -100,6 +116,12 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		          (SELECT COUNT(DISTINCT hole)
 		             FROM solutions
 		            WHERE user_id = id AND NOT FAILING) holes,
+		          ARRAY(
+		            SELECT hole
+		              FROM authors
+		             WHERE user_id = users.id
+		          ORDER BY hole
+		          )                                     holes_authored,
 		          id,
 		          (SELECT COUNT(DISTINCT lang)
 		             FROM solutions
@@ -116,7 +138,8 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		          )                                     referrals,
 		          COALESCE(silver, 0)                   silver,
 		          sponsor,
-		          started
+		          started,
+		          COALESCE(unicorn, 0)                  unicorn
 		     FROM users
 		LEFT JOIN medals       ON id = medals.user_id
 		LEFT JOIN points bytes ON id = bytes.user_id AND bytes.scoring = 'bytes'

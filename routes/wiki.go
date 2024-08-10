@@ -13,21 +13,23 @@ import (
 // GET /wiki/*
 func wikiGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		HTML  template.HTML
-		Nav   *config.Navigaton
-		Title string
+		HTML        template.HTML
+		Name, Title string
+		Nav         *config.Navigaton
 	}{Title: "Wiki"}
 
 	// Page (if we have a slug).
 	if slug := param(r, "*"); slug != "" {
-		if err := session.Database(r).QueryRow(
-			"SELECT html, 'Wiki: ' || name FROM wiki WHERE slug = $1", slug,
-		).Scan(&data.HTML, &data.Title); errors.Is(err, sql.ErrNoRows) {
+		if err := session.Database(r).Get(
+			&data, "SELECT html, name FROM wiki WHERE slug = $1", slug,
+		); errors.Is(err, sql.ErrNoRows) {
 			w.WriteHeader(http.StatusNotFound)
 			return
 		} else if err != nil {
 			panic(err)
 		}
+
+		data.Title += ": " + data.Name
 	}
 
 	// Navigation.

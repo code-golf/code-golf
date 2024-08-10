@@ -2,12 +2,9 @@ package routes
 
 import (
 	"net/http"
-	"os"
-	"time"
 
 	"github.com/code-golf/code-golf/middleware"
 	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/httprate"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -21,7 +18,6 @@ func Router(db *sqlx.DB) http.Handler {
 		middleware.Recoverer,
 		middleware.Static,
 		middleware.RedirectSlashes,
-		middleware.Compress(5),
 		// middleware.Downtime,
 		middleware.Database(db),
 	)
@@ -45,12 +41,14 @@ func Router(db *sqlx.DB) http.Handler {
 	r.Group(func(r chi.Router) {
 		r.Use(middleware.Golfer)
 
-		r.Get("/", indexGET)
+		r.Get("/", homeGET)
 		r.Get("/{hole}", holeGET)
 		r.Get("/sandbox", sandboxGET)
 		r.Get("/about", aboutGET)
 		r.With(middleware.AdminArea).Route("/admin", func(r chi.Router) {
 			r.Get("/", adminGET)
+			r.Get("/banners", adminBannersGET)
+			r.Post("/banners/{banner}", adminBannerPOST)
 			r.Get("/solutions", adminSolutionsGET)
 			r.Get("/solutions/run", adminSolutionsRunGET)
 		})
@@ -91,8 +89,13 @@ func Router(db *sqlx.DB) http.Handler {
 			r.Post("/delete-solution", golferDeleteSolutionPOST)
 			r.Get("/disconnect/{connection}", golferDisconnectGET)
 			r.Get("/export", golferExportGET)
+			r.Post("/hide-banner", golferHideBannerPOST)
 			r.Get("/settings", golferSettingsGET)
 			r.Post("/settings", golferSettingsPOST)
+			r.Get("/settings/{page:delete-account}", golferSettingsDeleteAccountGET)
+			r.Get("/settings/{page:export-data}", golferSettingsExportDataGET)
+			r.Post("/settings/{page}", golferSettingsPagePOST)
+			r.Post("/settings/{page}/reset", golferSettingsPageResetPOST)
 		})
 		r.With(middleware.GolferInfo).Route("/golfers/{name}", func(r chi.Router) {
 			r.Get("/", golferGET)
@@ -131,24 +134,19 @@ func Router(db *sqlx.DB) http.Handler {
 			r.Get("/golfers", recentGolfersGET)
 			r.Get("/solutions/{hole}/{lang}/{scoring}", recentSolutionsGET)
 		})
+		r.Post("/sandbox", sandboxPOST)
 		r.Get("/scores/{hole}/{lang}", scoresGET)
 		r.Get("/scores/{hole}/{lang}/all", scoresAllGET)
 		r.Get("/scores/{hole}/{lang}/{scoring}", scoresGET)
 		r.Get("/scores/{hole}/{lang}/{scoring}/{page}", scoresGET)
+		r.Post("/solution", solutionPOST)
 		r.Get("/stats", statsGET)
 		r.Get("/stats/{page:countries}", statsCountriesGET)
+		r.Get("/stats/{page:golfers}", statsGolfersGET)
 		r.Get("/stats/{page:holes|langs}", statsTableGET)
+		r.Get("/stats/{page:unsolved-holes}", statsUnsolvedHolesGET)
 		r.Get("/wiki", wikiGET)
 		r.Get("/wiki/*", wikiGET)
-
-		// Rate-limit solutions to avoid running out of FDs. Disable under e2e.
-		if _, e2e := os.LookupEnv("E2E"); e2e {
-			r.Post("/solution", solutionPOST)
-			r.Post("/sandbox", sandboxPOST)
-		} else {
-			r.With(httprate.LimitByRealIP(60, time.Minute)).Post("/solution", solutionPOST)
-			r.With(httprate.LimitByRealIP(60, time.Minute)).Post("/sandbox", sandboxPOST)
-		}
 	})
 
 	return r

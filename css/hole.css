@@ -342,14 +342,24 @@ h2 {
     gap: 0.2rem;
 }
 
-#picker a {
-    align-items: center;
-    display: flex;
+#picker, #solutionPicker {
     gap: .25rem;
 
-    svg {
-        height: 1rem;
-        width: 1rem;
+    > a:not([href]), select.selectActive { border-color: var(--color) }
+
+    > a {
+        align-items: center;
+        border: 1px solid var(--grey);
+        border-radius: .25rem;
+        display: flex;
+        gap: .5rem;
+        height: 2.375rem;
+        padding: .375rem .5rem;
+
+        svg {
+            height: 1rem;
+            width: 1rem;
+        }
     }
 }
 
@@ -360,16 +370,44 @@ h2 {
     padding-bottom: 0.1rem;
 }
 
-#showWhitespaceCheckbox {
-    margin-left: .5rem;
-    margin-right: .5rem;
+.cm-highlightSpace, .cm-highlightTab { opacity: 0 }
+
+.show-whitespace :is(.cm-highlightSpace, .cm-highlightTab) { opacity: .5 }
+
+#diffKindSettings {
+    margin: 0.5rem;
+}
+#diffKindSettings label {
+    margin: 0.5rem;
 }
 
-.cm-highlightSpace, .cm-highlightTab {
-    opacity: 0;
+#itemsDiff td div {
+    align-content: flex-start;
+    align-items: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .375rem;
+    margin-top: 0.25rem;
 }
 
-:has(#showWhitespaceCheckbox:checked) .cm-highlightSpace,
-:has(#showWhitespaceCheckbox:checked) .cm-highlightTab {
-    opacity: .5;
+#itemsDiff span {
+    border-radius: .5rem;
+    font-family: emoji, mahjong, 'Source Code Pro', monospace;
+    padding: .25rem .375rem;
+    white-space: pre;
+}
+
+#itemsDiff span.pos{
+    background: var(--red);
+}
+#itemsDiff span.neg{
+    background: var(--green);
+}
+
+:has(#diffKindSettings input[value="items"]:checked) #linesDiff {
+    display: none;
+}
+
+:has(#diffKindSettings input[value="items"]:not(:checked)) #itemsDiff {
+    display: none;
 }

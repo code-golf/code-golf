@@ -71,7 +71,7 @@ func zodiacSigns() []Run {
 
 	tests := make([]test, randomCases, totalCases)
 
-	for i := 0; i < randomCases; i++ {
+	for i := range randomCases {
 		tests[i] = randChoice(sunSigns[:]).randomDate(rand.IntN(hours))
 	}
 

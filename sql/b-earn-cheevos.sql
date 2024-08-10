@@ -67,7 +67,9 @@ BEGIN
         earned := earn(earned, 'bird-is-the-word', user_id); END IF;
 
     -- ☕ Caffeinated
-    IF langs_for_hole @> '{java,javascript}' THEN
+    SELECT COUNT(*) >= 2 INTO found FROM UNNEST(langs_for_hole)
+     WHERE unnest IN ('civet', 'java', 'javascript');
+    IF found THEN
         earned := earn(earned, 'caffeinated', user_id); END IF;
 
     -- 🎳 COBOWL
@@ -174,6 +176,10 @@ BEGIN
     IF array_length(langs_for_hole, 1) >= 36 THEN
         earned := earn(earned, 'omniglot', user_id); END IF;
 
+    -- 🍱 Omniglutton
+    IF array_length(langs_for_hole, 1) >= 48 THEN
+        earned := earn(earned, 'omniglutton', user_id); END IF;
+
     -----------------
     -- Progression --
     -----------------
@@ -195,6 +201,8 @@ BEGIN
     IF holes >=  90 THEN earned := earn(earned, 'right-on',                   user_id); END IF;
     IF holes >=  99 THEN earned := earn(earned, 'neunundneunzig-luftballons', user_id); END IF;
     IF holes >= 100 THEN earned := earn(earned, 'centenarian',                user_id); END IF;
+    IF holes >= 107 THEN earned := earn(earned, 'busy-beaver',                user_id); END IF;
+    IF holes >= 111 THEN earned := earn(earned, 'disappearing-act',           user_id); END IF;
 
     RETURN earned;
 END;

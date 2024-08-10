@@ -1,6 +1,6 @@
 use t;
 
-for 'config/langs.toml'.IO.&from-toml.sort {
+for 'config/data/langs.toml'.IO.&from-toml.sort {
     next if .value<experiment>;
 
     my $id = .key.lc.subst(' ', '-').trans: qw[# + ><>] => qw[-sharp p fish];

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math"
 	"math/rand/v2"
-	"strings"
 )
 
 type quadraticSolution struct {
@@ -118,15 +117,45 @@ func (s quadraticSolution) String() string {
 }
 
 func quadraticFormula() []Run {
-	const numTests = 200
-	args := make([]string, numTests)
-	solstrings := make([]string, numTests)
-	for i := 0; i < numTests; i++ {
-		a := rand.IntN(20) - 10
-		b := rand.IntN(20) - 10
-		c := rand.IntN(50) - 25
-		args[i] = fmt.Sprint(a, b, c)
-		solstrings[i] = solve(a, b, c).String()
+	tests := make([]test, 200)
+
+	for i := range tests {
+		var a, b, c int
+
+		if i == 0 {
+			a = 0
+			b = 0
+			c = 0
+		} else if i == 1 {
+			a = 0
+			b = 0
+			c = rand.IntN(49) - 25
+			if c >= 0 {
+				c++
+			}
+		} else if i == 2 {
+			a = 0
+			b = rand.IntN(19) - 10
+			if b >= 0 {
+				b++
+			}
+			c = rand.IntN(50) - 25
+		} else if i == 3 {
+			k := rand.IntN(19) - 10
+			if k >= 0 {
+				k++
+			}
+			a = k
+			b = 2 * k
+			c = k
+		} else {
+			a = rand.IntN(20) - 10
+			b = rand.IntN(20) - 10
+			c = rand.IntN(50) - 25
+		}
+
+		tests[i] = test{fmt.Sprint(a, b, c), solve(a, b, c).String()}
 	}
-	return []Run{{Args: args, Answer: strings.Join(solstrings, "\n")}}
+
+	return outputTests(shuffle(tests))
 }

@@ -3,14 +3,14 @@ FROM debian:bullseye-slim AS builder
 RUN apt-get update \
  && apt-get install -y curl g++ git pkg-config procps python python3
 
-ENV PATH "/depot_tools:$PATH"
+ENV PATH="/depot_tools:$PATH"
 
 RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git \
  && fetch v8
 
 WORKDIR /v8
 
-RUN git checkout 12.1.285.27 && gclient sync -D
+RUN git checkout 12.6.228.28 && gclient sync -D
 
 RUN gn gen out --args="                 \
     is_debug=false                      \

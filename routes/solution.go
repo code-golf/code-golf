@@ -3,9 +3,9 @@ package routes
 import (
 	"encoding/json"
 	"net/http"
+	"slices"
 	"time"
 
-	"github.com/buildkite/terminal-to-html/v3"
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/discord"
 	Golfer "github.com/code-golf/code-golf/golfer"
@@ -29,7 +29,9 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
-	experimental := holeObj.Experiment != 0 || langObj.Experiment != 0
+	experimentalHole := holeObj.Experiment != 0
+	experimentalLang := langObj.Experiment != 0
+	experimental := experimentalHole || experimentalLang
 
 	db := session.Database(r)
 	golfer := session.Golfer(r)
@@ -46,71 +48,60 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 
 	runs := hole.Play(r.Context(), holeObj, langObj, in.Code)
 
-	// TODO Should this be pushed lower?
-	for i, run := range runs {
-		runs[i].Stderr = string(terminal.Render([]byte(run.Stderr)))
-	}
-
-	// The legacy single run we display, first failing or last overall.
-	var displayedRun hole.Run
-	for _, displayedRun = range runs {
-		if !displayedRun.Pass {
-			break
-		}
-	}
-
-	// FIXME This should really be based on any of the runs but until we
-	//       display all runs it's best to use only the one we display.
-	if displayedRun.Timeout && golfer != nil {
-		golfer.Earn(db, "slowcoach")
-	}
-
 	out := struct {
-		// Legacy TitleCase attributes.
-		Argv           []string
-		Cheevos        []*config.Cheevo
-		Err, Exp, Out  string
-		ExitCode       int
-		Pass, LoggedIn bool
-		RankUpdates    []Golfer.RankUpdate
-		Took           time.Duration
-
-		// Modern lowercase attributes.
-		Runs []hole.Run `json:"runs"`
+		Cheevos     []config.Cheevo     `json:"cheevos"`
+		LoggedIn    bool                `json:"logged_in"`
+		RankUpdates []Golfer.RankUpdate `json:"rank_updates"`
+		Runs        []hole.Run          `json:"runs"`
 	}{
-		Argv:     displayedRun.Args,
-		Cheevos:  []*config.Cheevo{},
-		Err:      displayedRun.Stderr,
-		ExitCode: displayedRun.ExitCode,
-		Exp:      displayedRun.Answer,
+		Cheevos:  []config.Cheevo{},
 		LoggedIn: golfer != nil,
-		Out:      displayedRun.Stdout,
-		Pass:     displayedRun.Pass,
 		Runs:     runs,
 		RankUpdates: []Golfer.RankUpdate{
 			{Scoring: "bytes"},
 			{Scoring: "chars"},
 		},
-		Took: displayedRun.Time,
 	}
 
-	if out.Pass && golfer != nil && experimental {
-		if c := golfer.Earn(db, "black-box-testing"); c != nil {
-			out.Cheevos = append(out.Cheevos, c)
+	if golfer != nil && slices.ContainsFunc(
+		out.Runs, func(r hole.Run) bool { return r.Timeout },
+	) {
+		if c := golfer.Earn(db, "slowcoach"); c != nil {
+			out.Cheevos = append(out.Cheevos, *c)
 		}
-	} else if out.Pass && golfer != nil && !experimental {
-		var cheevos []string
+	}
+
+	// Pass if no runs contain a fail.
+	pass := !slices.ContainsFunc(runs, func(r hole.Run) bool { return !r.Pass })
+
+	if pass && golfer != nil && experimental {
+		if c := golfer.Earn(db, "black-box-testing"); c != nil {
+			out.Cheevos = append(out.Cheevos, *c)
+		}
+
+		if experimentalHole && experimentalLang {
+			if c := golfer.Earn(db, "double-slit-experiment"); c != nil {
+				out.Cheevos = append(out.Cheevos, *c)
+			}
+		}
+	} else if pass && golfer != nil && !experimental {
 		if err := db.QueryRowContext(
 			r.Context(),
 			`SELECT earned,
+			        failing_bytes,
 			        old_bytes_joint, old_bytes_rank, old_bytes,
 			        new_bytes_joint, new_bytes_rank, new_bytes,
+			        new_bytes_solution_count,
+			        old_best_bytes_first_golfer_id,
 			        old_best_bytes_golfer_count,
 			        old_best_bytes_golfer_id,
 			        old_best_bytes,
 			        old_best_bytes_submitted,
+			        failing_chars,
 			        old_chars_joint, old_chars_rank, old_chars,
 			        new_chars_joint, new_chars_rank, new_chars,
+			        new_chars_solution_count,
+			        old_best_chars_first_golfer_id,
 			        old_best_chars_golfer_count,
 			        old_best_chars_golfer_id,
 			        old_best_chars,
@@ -129,48 +120,50 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			            lang    := $3,
 			            user_id := $4
 			        )`,
-			in.Code, in.Hole, in.Lang, golfer.ID, displayedRun.ASMBytes,
+			in.Code, in.Hole, in.Lang, golfer.ID, out.Runs[0].ASMBytes,
 		).Scan(
-			pq.Array(&cheevos),
+			pq.Array(&out.Cheevos),
+			&out.RankUpdates[0].FailingStrokes,
 			&out.RankUpdates[0].From.Joint,
 			&out.RankUpdates[0].From.Rank,
 			&out.RankUpdates[0].From.Strokes,
 			&out.RankUpdates[0].To.Joint,
 			&out.RankUpdates[0].To.Rank,
 			&out.RankUpdates[0].To.Strokes,
-			&out.RankUpdates[0].OldBestGolferCount,
-			&out.RankUpdates[0].OldBestGolferID,
+			&out.RankUpdates[0].NewSolutionCount,
+			&out.RankUpdates[0].OldBestFirstGolferID,
+			&out.RankUpdates[0].OldBestCurrentGolferCount,
+			&out.RankUpdates[0].OldBestCurrentGolferID,
 			&out.RankUpdates[0].OldBestStrokes,
 			&out.RankUpdates[0].OldBestSubmitted,
+			&out.RankUpdates[1].FailingStrokes,
 			&out.RankUpdates[1].From.Joint,
 			&out.RankUpdates[1].From.Rank,
 			&out.RankUpdates[1].From.Strokes,
 			&out.RankUpdates[1].To.Joint,
 			&out.RankUpdates[1].To.Rank,
 			&out.RankUpdates[1].To.Strokes,
-			&out.RankUpdates[1].OldBestGolferCount,
-			&out.RankUpdates[1].OldBestGolferID,
+			&out.RankUpdates[1].NewSolutionCount,
+			&out.RankUpdates[1].OldBestFirstGolferID,
+			&out.RankUpdates[1].OldBestCurrentGolferCount,
+			&out.RankUpdates[1].OldBestCurrentGolferID,
 			&out.RankUpdates[1].OldBestStrokes,
 			&out.RankUpdates[1].OldBestSubmitted,
 		); err != nil {
 			panic(err)
 		}
 
-		for _, cheevo := range cheevos {
-			out.Cheevos = append(out.Cheevos, config.CheevoByID[cheevo])
-		}
-
 		recordUpdates := make([]Golfer.RankUpdate, 0, 2)
 
 		for _, rank := range out.RankUpdates {
-			if rank.From.Strokes.Int64 == rank.To.Strokes.Int64 {
+			if rank.From.Strokes.V == rank.To.Strokes.V {
 				continue
 			}
 
 			// This keeps track of which updates (if any) represent new records or diamond matches.
-			if rank.To.Rank.Int64 == 1 {
-				if !rank.To.Joint.Bool ||
-					rank.OldBestGolferCount.Valid && rank.OldBestGolferCount.Int64 == 1 {
+			if rank.To.Rank.V == 1 {
+				if !rank.To.Joint.V ||
+					rank.OldBestCurrentGolferCount.Valid && rank.OldBestCurrentGolferCount.V == 1 {
 					recordUpdates = append(recordUpdates, rank)
 				}
 			}
@@ -178,10 +171,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 
 		// If any of the updates are record breakers, announce them on Discord
 		if len(recordUpdates) > 0 {
-			go discord.LogNewRecord(
-				golfer, config.HoleByID[in.Hole], config.LangByID[in.Lang],
-				recordUpdates, db,
-			)
+			go discord.LogNewRecord(golfer, holeObj, langObj, recordUpdates, db)
 		}
 
 		// TODO Use the golfer's timezone from /settings.
@@ -194,7 +184,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 
 		if month == time.October && day == 2 {
 			if c := golfer.Earn(db, "happy-birthday-code-golf"); c != nil {
-				out.Cheevos = append(out.Cheevos, c)
+				out.Cheevos = append(out.Cheevos, *c)
 			}
 		}
 
@@ -203,38 +193,66 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			if (month == time.December && day >= 25) ||
 				(month == time.January && day <= 5) {
 				if c := golfer.Earn(db, "twelvetide"); c != nil {
-					out.Cheevos = append(out.Cheevos, c)
+					out.Cheevos = append(out.Cheevos, *c)
 				}
 			}
 		case "star-wars-opening-crawl":
 			if month == time.May && day == 4 {
 				if c := golfer.Earn(db, "may-the-4ᵗʰ-be-with-you"); c != nil {
-					out.Cheevos = append(out.Cheevos, c)
+					out.Cheevos = append(out.Cheevos, *c)
 				}
 			}
 		case "united-states":
 			if month == time.July && day == 4 {
 				if c := golfer.Earn(db, "independence-day"); c != nil {
-					out.Cheevos = append(out.Cheevos, c)
+					out.Cheevos = append(out.Cheevos, *c)
 				}
 			}
 		case "vampire-numbers":
 			if month == time.October && day == 31 {
 				if c := golfer.Earn(db, "vampire-byte"); c != nil {
-					out.Cheevos = append(out.Cheevos, c)
+					out.Cheevos = append(out.Cheevos, *c)
 				}
 			}
 		case "π":
 			if month == time.March && day == 14 {
 				if c := golfer.Earn(db, "pi-day"); c != nil {
-					out.Cheevos = append(out.Cheevos, c)
+					out.Cheevos = append(out.Cheevos, *c)
 				}
 			}
 		}
 
 		if golfer.Keymap == "vim" && in.Lang == "viml" {
 			if c := golfer.Earn(db, "real-programmers"); c != nil {
-				out.Cheevos = append(out.Cheevos, c)
+				out.Cheevos = append(out.Cheevos, *c)
+			}
+		}
+
+		if !golfer.Earned("smörgåsbord") {
+			var earn bool
+			if err := db.Get(
+				&earn,
+				`WITH distinct_holes AS (
+				    SELECT DISTINCT hole
+				      FROM solutions
+				     WHERE NOT failing AND user_id = $1
+				) SELECT (
+				    SELECT COUNT(DISTINCT $2::hstore->hole::text)
+				      FROM distinct_holes
+				) = (
+				    SELECT COUNT(DISTINCT cat)
+				      FROM unnest(avals($2)) cat
+				)`,
+				golfer.ID,
+				config.HoleCategoryHstore,
+			); err != nil {
+				panic(err)
+			}
+
+			if earn {
+				if c := golfer.Earn(db, "smörgåsbord"); c != nil {
+					out.Cheevos = append(out.Cheevos, *c)
+				}
 			}
 		}
 	}

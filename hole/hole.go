@@ -1,9 +1,12 @@
 package hole
 
 import (
+	"bufio"
+	"bytes"
 	"embed"
+	"io/fs"
 	"math/rand/v2"
-	"path"
+	"path/filepath"
 	"strings"
 )
 
@@ -14,40 +17,63 @@ var fixedTestsMap = map[string][]test{}
 //go:embed fixed-tests
 var fixedTestsFS embed.FS
 
+//go:embed words.txt
+var wordsTxt string
+var words = strings.Fields(wordsTxt)
+
 func init() {
-	const dir = "fixed-tests"
+	if err := fs.WalkDir(fixedTestsFS, ".", func(path string, d fs.DirEntry, err error) error {
+		if d.IsDir() || err != nil {
+			return err
+		}
 
-	files, err := fixedTestsFS.ReadDir(dir)
-	if err != nil {
-		panic(err)
-	}
-
-	for _, file := range files {
-		name := file.Name()
-
-		txt, err := fixedTestsFS.ReadFile(path.Join(dir, name))
+		txt, err := fixedTestsFS.Open(path)
 		if err != nil {
-			panic(err)
+			return err
+		}
+		scanner := bufio.NewScanner(txt)
+
+		var tests []test
+		var in, out strings.Builder
+		for scanner.Scan() {
+			line := scanner.Bytes()
+
+			if b, ok := bytes.CutPrefix(line, []byte{'<'}); ok {
+				if in.Len() > 0 {
+					in.WriteByte('\n')
+				}
+				in.Write(bytes.TrimPrefix(b, []byte{' '}))
+			} else if b, ok := bytes.CutPrefix(line, []byte{'>'}); ok {
+				if out.Len() > 0 {
+					out.WriteByte('\n')
+				}
+				out.Write(bytes.TrimPrefix(b, []byte{' '}))
+			} else {
+				tests = append(tests, test{in.String(), out.String()})
+				in.Reset()
+				out.Reset()
+			}
 		}
 
-		tokens := strings.Split(strings.Trim(string(txt), "\n"), "\n\n")
-		tests := make([]test, 0, len(tokens)/2)
+		tests = append(tests, test{in.String(), out.String()})
 
-		for i := 0; i < len(tokens); i += 2 {
-			tests = append(tests, test{tokens[i], tokens[i+1]})
-		}
+		name := strings.TrimSuffix(filepath.Base(path), filepath.Ext(path))
+		fixedTestsMap[name] = tests
 
-		fixedTestsMap[strings.TrimSuffix(name, path.Ext(name))] = tests
+		return scanner.Err()
+	}); err != nil {
+		panic(err)
 	}
 }
 
 // Return a copy so holes are free to append, shuffle, etc.
 func fixedTests(holeID string) []test {
-	// return fixedTestsMap[holeID]
 	return append([]test(nil), fixedTestsMap[holeID]...)
 }
 
-func outputTests(testRuns ...[]test) []Run {
+func outputTests(tests ...[]test) []Run { return outputTestsWithSep("\n", tests...) }
+
+func outputTestsWithSep(sep string, testRuns ...[]test) []Run {
 	runs := make([]Run, len(testRuns))
 
 	for i, tests := range testRuns {
@@ -58,7 +84,7 @@ func outputTests(testRuns ...[]test) []Run {
 			args[i] = t.in
 
 			if i > 0 {
-				answer.WriteByte('\n')
+				answer.WriteString(sep)
 			}
 			answer.WriteString(t.out)
 		}
@@ -80,6 +106,9 @@ func randChoice[E any](x []E) E { return x[rand.IntN(len(x))] }
 
 // Return a random integer between min and max inclusive.
 func randInt(min, max int) int { return min + rand.IntN(max-min+1) }
+
+// Return a random word from words.txt.
+func randWord() string { return randChoice(words) }
 
 // Returning the slice is a convenience, the shuffle is still in-place.
 func shuffle[E any](x []E) []E {

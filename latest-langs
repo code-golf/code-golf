@@ -5,6 +5,7 @@ use JSON::Fast;
 use TOML::Thumb;
 
 constant %paths = (
+    'Arturo'     => 'github.com/arturo-lang/arturo/releases/latest',
     'BASIC'      => 'en.wikipedia.org/wiki/FreeBASIC',
     'Berry'      => 'github.com/berry-lang/berry/releases/latest',
     'C'          => 'en.wikipedia.org/wiki/Tiny_C_Compiler',
@@ -13,6 +14,7 @@ constant %paths = (
     'COBOL'      => 'en.wikipedia.org/wiki/GnuCOBOL',
     'Coconut'    => 'github.com/evhub/coconut/releases/latest',
     'Clojure'    => 'github.com/babashka/babashka/releases/latest',
+    'Civet'      => 'registry.npmjs.org/@danielx/civet/latest',
     'Crystal'    => 'github.com/crystal-lang/crystal/releases/latest',
     'D'          => 'en.wikipedia.org/wiki/D_(programming_language)',
     'Dart'       => 'en.wikipedia.org/wiki/Dart_(programming_language)',
@@ -45,13 +47,14 @@ constant %paths = (
     'Swift'      => 'en.wikipedia.org/wiki/Swift_(programming_language)',
     'Tcl'        => 'en.wikipedia.org/wiki/Tcl',
     'TeX'        => 'en.wikipedia.org/wiki/TeX',
+    'Uiua'       => 'github.com/uiua-lang/uiua/releases/latest',
     'V'          => 'github.com/vlang/v/releases/latest',
     'VimL'       => 'en.wikipedia.org/wiki/Vim_(text_editor)',
     'Wren'       => 'github.com/wren-lang/wren/releases/latest',
     'Zig'        => 'en.wikipedia.org/wiki/Zig_(programming_language)',
 );
 
-my %langs = from-toml 'config/langs.toml'.IO;
+my %langs = from-toml 'config/data/langs.toml'.IO;
 
 for %langs.sort: *.key.fc -> (:key($name), :value(%lang)) {
     my $old = %lang<version> ~~ / <[\d.]>+ \d+ /;
@@ -61,6 +64,7 @@ for %langs.sort: *.key.fc -> (:key($name), :value(%lang)) {
 
         when / 'endoflife' / { $res.&from-json[0]<latest> }
         when / 'github'    / { $res ~~ / [ $name || 'Release' ] ' ' v? <(\d+ <[\d.]>+)> / }
+        when / 'npmjs'     / { $res.&from-json[0]<version> }
         when / 'wikipedia' / {
             $res ~~ /
                 < Stable Preview > ' release' .+? '>' ( '#' \d+ ' "' )?

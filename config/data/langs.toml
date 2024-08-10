@@ -1,0 +1,1305 @@
+['><>']
+args    = [ '/usr/bin/fish', '--no-prng', '-c', '$code', '-u' ]
+size    = '4.66 MiB'
+version = '96b1cfc'
+website = 'https://github.com/primo-ppcg/fish-jit'
+example = '''
+\ printing
+> "!dlroW ,olleH" ooooooooooooo ao 03.
+  looping
+> 0 v
+    >:nao 1+ :9)?v
+v               ~<
+  accessing arguments
+> i : ?!v : 0) ?v ~;
+        a
+        o       o
+        ~
+^       <       <
+
+Arguments are available via STDIN,
+each argument is NULL terminated.
+x is a no-op.
+'''
+
+[Arturo]
+args       = [ '/usr/bin/arturo', '-e', '$code' ]
+experiment = 915
+size       = '6.21 MiB'
+version    = '0.9.84'
+website    = 'https://arturo-lang.io'
+example    = '''
+; Printing
+print "Hello, World!"
+
+; Looping
+loop 0..9 'i ->
+    print i
+
+; Accessing arguments
+loop arg [a] [
+    print a
+]
+'''
+
+[Assembly]
+args    = [ '/usr/bin/defasm', '--size-out=3', '-w', '-r' ]
+size    = '104 MiB'
+version = 'DefAssembler 2.4.2'
+website = 'https://www.npmjs.com/package/@defasm/core'
+example = '''
+SYS_WRITE = 1
+SYS_EXIT = 60
+STDOUT_FILENO = 1
+
+# Printing
+.data
+buffer: .string "Hello, World!\n"
+bufferLen = . - buffer
+
+.text
+mov $SYS_WRITE, %eax
+mov $STDOUT_FILENO, %edi
+mov $buffer, %esi
+mov $bufferLen, %edx
+syscall
+
+# Looping
+.data
+digit: .byte   '0', '\n'
+
+.text
+mov $10, %bl
+numberLoop:
+    mov $SYS_WRITE, %eax
+    mov $STDOUT_FILENO, %edi
+    mov $digit, %esi
+    mov $2, %edx
+    syscall
+
+    incb (%rsi)
+    dec %bl
+    jnz numberLoop
+
+# Accessing arguments
+pop %rbx
+pop %rax
+
+argLoop:
+    dec %rbx
+    jz endArgLoop
+
+    pop %rsi
+    mov %rsi, %rdi
+
+    mov $-1, %ecx
+    xor %al, %al
+    repnz scasb
+
+    not %ecx
+    movb $'\n', -1(%rsi, %rcx)
+
+    mov %ecx, %edx
+    mov $SYS_WRITE, %eax
+    mov $STDOUT_FILENO, %edi
+    syscall
+
+    jmp argLoop
+endArgLoop:
+
+mov $SYS_EXIT, %eax
+mov $0, %edi
+syscall
+'''
+
+[AWK]
+args    = [ '/usr/bin/gawk', '-v', 'RS=\0', '$code' ]
+size    = '1.77 MiB'
+version = '5.3.0'
+website = 'https://www.gnu.org/software/gawk/'
+example = '''
+BEGIN {
+    # Printing
+    print("Hello, World!")
+
+    # Looping
+    for (i = 0; i < 10; i++) {
+        print(i)
+    }
+}
+
+# Arguments are available via STDIN in the form of records
+# Each record is NULL terminated
+# By default, AWK automatically performs actions on each record
+{
+    # $0 is the full record while $1-$NF accesses individual fields in the record,
+    # where NF is the number of fields in the current record
+    print($0)
+}
+'''
+
+[Bash]
+args    = [ '/usr/bin/bash', '-s', '-' ]
+size    = '1.20 MiB'
+version = '5.2.32'
+website = 'https://www.gnu.org/software/bash/'
+example = '''
+# Printing
+echo Hello, World!
+
+# Looping
+for i in {0..9}; do
+    echo $i;
+done
+
+# Accessing arguments
+for arg; do
+    echo $arg;
+done
+'''
+
+[BASIC]
+args    = [ '/usr/bin/basic', '-' ]
+size    = '205 MiB'
+version = 'FreeBASIC 1.10.1'
+website = 'https://freebasic.net'
+example = '''
+' Printing
+Print "Hello, World!"
+
+' Looping
+For i As UInteger = 0 To 9
+    Print i
+Next
+
+' Accessing arguments
+For i As Integer = 1 To __FB_ARGC__ - 1
+    Print Command(i)
+Next
+'''
+
+[Berry]
+args    = [ '/usr/bin/berry', '-' ]
+size    = '973 KiB'
+version = '1.1.0'
+website = 'https://berry-lang.github.io'
+example = '''
+# Printing
+print('Hello, World!')
+
+# Looping
+for i : 0 .. 9
+    print(i)
+end
+
+# Accessing arguments
+for a : _argv[1..]
+    print(a)
+end
+'''
+
+[brainfuck]
+args    = [ '/usr/bin/brainfuck', '-xc', '$code' ]
+size    = '51.2 KiB'
+version = '077cc7f'
+website = 'https://github.com/primo-ppcg/bfci'
+example = '''
+>>Printing
++[-->-[>>+>-----<<]<--<---]>-.>>>+.>>..+++[.>]<<<<.+++.------.<<-.>>>>+.[<->-]<-.>
+
+>>Looping
+++++++++[>++++++<-]
+++++++++++[>.+>++++++++++.[-]<<-]
+
+>>Accessing arguments
+,[
+    [
+        .[-],
+    ]
+    ++++++++++.
+    [-],
+]
+
+Arguments are available via STDIN; each argument is NULL terminated;
+Taking input after EOF leaves the cell unchanged; the tape is circular
+with 65536 cells; and cells are 8 bit with wrapping;
+'''
+
+[C]
+args    = [ '/usr/bin/tcc', '-run', '-' ]
+size    = '1.70 MiB'
+version = 'Tiny C Compiler 0.9.27'
+website = 'https://bellard.org/tcc/'
+example = '''
+#include <stdio.h>
+
+int main(int argc, char* argv[]) {
+    // Printing
+    puts("Hello, World!");
+
+    // Looping
+    for (int i = 0; i < 10; i++)
+        printf("%d\n", i);
+
+    // Accessing arguments
+    for (int i = 1; i < argc; i++)
+        puts(argv[i]);
+
+    return 0;
+}
+'''
+
+['C#']
+args    = [ '/usr/bin/c-sharp', '-' ]
+size    = '151 MiB'
+version = 'C# 12.0 on .NET 8.0.7'
+website = 'https://docs.microsoft.com/dotnet/csharp/'
+example = '''
+// Printing
+Console.WriteLine("Hello, World!");
+
+// Looping
+for (int i = 0; i < 10; i++)
+    Console.WriteLine(i);
+
+// Accessing arguments
+foreach (String arg in args)
+    Console.WriteLine(arg);
+
+// Implicit using directives for console applications are enabled.
+// See: https://docs.microsoft.com/en-us/dotnet/core/tutorials/top-level-templates#implicit-using-directives
+'''
+
+['C++']
+args    = [ '/usr/bin/cpp', '-' ]
+size    = '142 MiB'
+version = '18.1.8'
+website = 'https://clang.llvm.org'
+example = '''
+#include <iostream>
+
+int main(int argc, char* argv[]) {
+    // Printing
+    std::cout<<"Hello, World!"<<std::endl;
+
+    // Looping
+    for (int i = 0; i < 10; i++)
+        std::cout<<i<<std::endl;
+
+    // Accessing arguments
+    for (int i = 1; i < argc; i++)
+        std::cout<<argv[i]<<std::endl;
+
+    return 0;
+}
+
+// Code is compiled with clang with -std=c++2b
+// See: https://clang.llvm.org/cxx_status.html
+'''
+
+[Civet]
+args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
+env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
+size    = '68.6 MiB'
+version = '0.7.20'
+website = 'https://civet.dev'
+example = '''
+// Printing
+console.log 'Hello, World!'
+
+// Looping
+for i of [0..9]
+    console.log i
+
+// Accessing arguments
+for arg of process.argv[2..]
+    console.log arg
+'''
+
+[Clojure]
+args    = [ '/usr/bin/clojure', '-e', '$code' ]
+size    = '65.8 MiB'
+version = 'Babashka 1.3.191'
+website = 'https://babashka.org'
+example = '''
+; Printing
+(println "Hello, World!")
+
+; Looping
+(dotimes [i 10]
+  (println i))
+
+; Accessing arguments
+(doseq [arg *command-line-args*]
+  (println arg))
+'''
+
+[COBOL]
+args    = [ '/usr/bin/cobol', '-' ]
+size    = '4.56 MiB'
+version = 'GnuCOBOL 3.2.0'
+website = 'https://gnucobol.sourceforge.io'
+example = '''
+program-id.example.
+
+data division.
+local-storage section.
+1 n pic 99 value 0.
+1 i pic 9999.
+1 a pic X(99).
+procedure division.
+
+*> Printing
+display "Hello, World!"
+
+*> Looping
+perform 10 times
+display n(2- function log10(n):)
+add 1 to n
+end-perform.
+
+*> Accessing arguments
+accept i from argument-number
+perform i times
+accept a from argument-value
+display a
+end-perform.
+end-program.
+
+'''
+
+[Coconut]
+args    = [ '/usr/bin/coconut', '--quiet', '--target', 'sys', '--keep-lines', '--argv' ]
+size    = '127 MiB'
+version = '3.1.1'
+website = 'https://coconut-lang.org'
+example = '''
+import sys
+
+# Printing
+'Hello, World!' |> print
+
+# Looping
+for i in range(10):
+    i |> print
+
+# Accessing arguments
+for arg in sys.argv[1:]:
+    arg |> print
+'''
+
+[Crystal]
+args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
+env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
+size    = '270 MiB'
+version = '1.13.1'
+website = 'https://crystal-lang.org'
+example = '''
+# Printing
+puts "Hello, World!"
+
+# Looping
+(0..9).each do |i|
+    puts i
+end
+
+# Accessing arguments
+ARGV.each do |arg|
+    puts arg
+end
+'''
+
+[D]
+args    = [ '/usr/bin/ldc2', '--enable-color=true', '--run', '-' ]
+env     = [ 'PATH=/usr/bin' ]
+size    = '309 MiB'
+version = 'D 2.103.1 on LDC 1.33.0'
+website = 'https://dlang.org'
+example = '''
+import std.stdio;
+
+void main(string[] argv) {
+    // Printing
+    writeln("Hello, World!");
+
+    // Looping
+    foreach (i; 0 .. 10) {
+        writeln(i);
+    }
+
+    // Accessing arguments
+    foreach (arg; argv[1 .. $]) {
+        writeln(arg);
+    }
+}
+'''
+
+[Dart]
+args    = [ '/usr/bin/dart', '-' ]
+size    = '235 MiB'
+version = '3.4.4'
+website = 'https://dart.dev'
+example = '''
+void main(List<String> argv) {
+  // Printing
+  print("Hello, World!");
+
+  // Looping
+  for (var i = 0; i < 10; i++) {
+    print(i);
+  }
+
+  // Accessing arguments
+  for (final arg in argv) {
+    print(arg);
+  }
+}
+'''
+
+[Elixir]
+args    = [ '/usr/local/bin/elixir', '-e', '$code', '--' ]
+env     = [ 'LANG=C.UTF-8', 'PATH=/usr/local/bin:/usr/bin:/bin' ]
+size    = '158 MiB'
+version = '1.16.3'
+website = 'https://elixir-lang.org'
+example = '''
+# Printing
+IO.puts "Hello, World!"
+
+# Looping
+for i <- 0..9, do: IO.puts i
+
+# Accessing arguments
+for arg <- System.argv, do: IO.puts arg
+'''
+
+['F#']
+args    = [ '/usr/bin/f-sharp', '-' ]
+size    = '148 MiB'
+version = 'F# 8.0 on .NET 8.0.7'
+website = 'https://fsharp.org'
+example = '''
+[<EntryPoint>]
+let main args =
+    // Printing
+    printfn "Hello, World!"
+
+    // Looping
+    for i in 0..9 do
+        printfn "%d" i
+
+    // Accessing arguments
+    for arg in args do
+        printfn "%s" arg
+
+    0
+'''
+
+[Factor]
+args    = [ '/factor/factor', '/proc/self/fd/0' ]
+size    = '172 MiB'
+version = '0.99'
+website = 'https://factorcode.org'
+example = '''
+! Printing
+"Hello, World!" print
+
+! Looping
+10 [0..b) [ . ] each
+
+! Accessing arguments
+command-line get-global [ print ] each
+'''
+
+[Fennel]
+args       = [ '/usr/bin/fennel', '-' ]
+experiment = 1144
+size       = '636 KiB'
+version    = '1.5.0'
+website    = 'https://fennel-lang.org'
+example    = '''
+;; Printing
+(print "Hello, World!")
+
+;; Looping
+(for [i 0 9]
+  (print i))
+
+;; Accessing arguments
+(each [i a (ipairs arg)]
+  (if (> i 1)
+    (print a)))
+'''
+
+[Forth]
+args    = [ '/usr/bin/forth', '/proc/self/fd/0' ]
+size    = '2.86 MiB'
+version = 'GNU Forth 0.7.3'
+website = 'https://www.gnu.org/software/gforth/'
+example = '''
+\ Printing
+.( Hello, World!) CR
+
+\ Looping
+: looping
+    10 0 do i 0 .r cr loop ;
+looping
+
+\ Accessing arguments
+: accessing-arguments
+    begin next-arg 2dup d0<> while type CR repeat 2drop ;
+accessing-arguments
+
+bye
+'''
+
+[Fortran]
+args    = [ '/usr/bin/fortran', '-' ]
+size    = '94.1 MiB'
+version = 'GNU Fortran 14.1.0'
+website = 'https://gcc.gnu.org/fortran/'
+example = '''
+character(len=32) :: s
+integer :: i
+
+! Printing
+print "(a)", "Hello, World!"
+
+! Looping
+do i = 0, 9
+    print "(i0)", i
+end do
+
+! Accessing arguments
+! (NOTE: getarg() and iargc() are GNU Fortran extensions)
+do i = 1, iargc()
+    call getarg(i,s)
+    print "(a)", s
+end do
+
+end
+'''
+
+[Go]
+args    = [ '/usr/bin/go', '-' ]
+size    = '353 MiB'
+version = '1.22.6'
+website = 'https://go.dev'
+example = '''
+package main
+
+import (
+    "fmt"
+    "os"
+)
+
+func main() {
+    // Printing
+    fmt.Println("Hello, World!")
+
+    // Looping
+    for i := range 10 {
+        fmt.Println(i)
+    }
+
+    // Accessing arguments
+    for _, arg := range os.Args[1:] {
+        fmt.Println(arg)
+    }
+}
+'''
+
+[GolfScript]
+args       = [ '/usr/bin/golfscript', '-n', '-e', '$code', '--' ]
+args-quine = [ '/usr/bin/golfscript', '-n', '-e', '$code', '-q', '--' ]
+size       = '28.6 MiB'
+version    = '6155e9f'
+website    = 'http://www.golfscript.com/golfscript/'
+example    = '''
+# Printing
+"Hello, World!"puts
+
+# Looping
+10,{p}/
+
+# The stack is initialized with one element, an array of arguments:
+n*
+'''
+
+[Haskell]
+args    = [ '/usr/bin/haskell', '-' ]
+size    = '388 MiB'
+version = 'Glasgow Haskell Compiler 9.8.2'
+website = 'https://www.haskell.org/ghc/'
+example = '''
+import System.Environment
+
+main = do
+  -- Printing
+  putStrLn "Hello, World!"
+
+  -- Looping
+  mapM print [0..9]
+
+  -- Accessing arguments
+  args <- drop 1 <$> getArgs
+  mapM putStrLn args
+'''
+
+[Hexagony]
+args    = [ '/usr/bin/hexagony', '-d', '-' ]
+size    = '8.81 MiB'
+version = '770406a'
+website = 'https://github.com/SirBogman/Hexagony'
+example = '''
+          \ P r i n t i n g .
+         \ H ; e ; l ; ; o ; \
+        / o ; W ; 0 P ; 2 Q < .
+       . > ; r ; l ; d ; P 1 ; \
+      > * . . . . . . . . . . < .
+     . . . . . . . . . . . . . . .
+    . . L o o p i n g . . . . . . .
+   \ 1 0 ; " $ / } ! ) " ; \ . . . .
+  . . . . . . . > . - " = < . . . . .
+ . / . . . . . < . . . . . . . . . . .
+  . . . . . . . . . . . . . . . . . .
+   . . . A c c e s s i n g . . . . .
+    . . . A r g u m e n t s . . . .
+     . . . . . . > \ . @ . . . . .
+      . > $ > , < \ ) < . . . . .
+       . . \ . ; / $ 0 / . . . .
+        . A r g u m e n t s . .
+         . a r e . N U L L . .
+          t e r m i n a t e d
+'''
+
+[J]
+args    = [ '/usr/bin/j', '/tmp/code.ijs' ]
+size    = '11.2 MiB'
+version = '9.5.5'
+website = 'https://www.jsoftware.com'
+example = '''
+NB.Printing
+echo'Hello, World!'
+
+NB.Looping
+echo i.10 1
+
+NB.Accessing arguments
+echo each 2}.ARGV
+'''
+
+[Janet]
+args    = [ '/usr/bin/janet', '/proc/self/fd/0' ]
+size    = '869 KiB'
+version = '1.35.2'
+website = 'https://janet-lang.org'
+example = '''
+# Printing
+(print "Hello, World!")
+
+# Looping
+(for i 0 10
+  (print i))
+
+# Accessing arguments
+(each arg (tuple/slice (dyn :args) 1)
+  (print arg))
+'''
+
+[Java]
+args    = [ '/usr/bin/java', '-' ]
+size    = '58.1 MiB'
+version = '22.0.1'
+website = 'https://openjdk.java.net'
+example = '''
+class Main {
+    public static void main(String[] args) {
+        // Printing
+        System.out.println("Hello, World!");
+
+        // Looping
+        for (int i = 0; i < 10; i++)
+            System.out.println(i);
+
+        // Accessing arguments
+        for (String arg : args)
+            System.out.println(arg);
+    }
+}
+'''
+
+[JavaScript]
+args    = [ '/usr/bin/d8', '-e', '$code', '--' ]
+size    = '41.1 MiB'
+version = 'V8 12.6.228.28'
+website = 'https://v8.dev'
+example = '''
+// Printing
+print("Hello, World!");
+
+// Looping
+for (let i = 0; i < 10; i++)
+    print(i);
+
+// Accessing arguments
+for (let arg of arguments)
+    print(arg);
+'''
+
+[Julia]
+args    = [ '/usr/bin/julia', '--color=yes', '/proc/self/fd/0' ]
+size    = '310 MiB'
+version = '1.10.4'
+website = 'https://julialang.org'
+example = '''
+# Printing
+println("Hello, World!")
+
+# Looping
+for i=0:9
+    println(i)
+end
+
+# Accessing arguments
+for arg in ARGS
+    println(arg)
+end
+'''
+
+[K]
+args    = [ '/usr/bin/kwrapper', '/tmp/code.k' ]
+size    = '621 KiB'
+version = 'a1dac79409'
+website = 'https://codeberg.org/ngn/k'
+example = '''
+/Printing
+`0:"Hello, World!"
+
+/Looping
+`0:$!10
+
+/Accessing arguments
+`0:x
+'''
+
+[Lisp]
+args    = [ '/usr/bin/lisp', '-' ]
+size    = '31.1 MiB'
+version = 'GNU CLISP 2.49.92'
+website = 'https://clisp.sourceforge.io'
+example = '''
+; Printing
+(write-line "Hello, World!")
+
+; Looping
+(loop for i from 0 to 9
+    do (format t "~d~%" i)
+)
+
+; Accessing Arguments
+(loop for arg in *args*
+    do (write-line arg)
+)
+'''
+
+[Lua]
+args    = [ '/usr/bin/lua', '-' ]
+size    = '354 KiB'
+version = '5.4.7'
+website = 'https://www.lua.org'
+example = '''
+-- Printing
+print("Hello, World!")
+
+-- Looping
+for i = 0, 9 do
+    print(i)
+end
+
+-- Accessing arguments
+for i = 1, #arg do
+    print(arg[i])
+end
+'''
+
+[Nim]
+args    = [ '/usr/bin/nim', '--colors:on', '-o:/tmp/code', '-r', 'c', '-' ]
+size    = '15.0 MiB'
+version = '2.0.8'
+website = 'https://nim-lang.org'
+example = '''
+import os
+
+# Printing
+echo "Hello, World!"
+
+# Looping
+for i in 0 .. 9:
+    echo i
+
+# Accessing arguments
+for arg in commandLineParams():
+    echo arg
+'''
+
+[OCaml]
+args    = [ '/usr/bin/ocaml', '/proc/self/fd/0' ]
+size    = '91.4 MiB'
+version = '5.2.0'
+website = 'https://ocaml.org'
+example = '''
+(* Printing *)
+print_endline "Hello, World!";
+
+(* Looping *)
+for i = 0 to 9 do
+  Printf.printf "%d\n" i
+done;
+
+(* Accessing arguments *)
+Sys.argv
+  |> Array.to_list
+  |> List.tl
+  |> List.iter print_endline;
+'''
+
+[Pascal]
+args    = [ '/usr/bin/pascal', '-' ]
+size    = '31.1 MiB'
+version = '3.2.2'
+website = 'https://freepascal.org'
+example = '''
+var
+    i: integer;
+begin
+    { Printing }
+    writeLn('Hello, World!');
+
+    { Looping }
+    for i := 0 to 9 do
+        writeLn(i);
+
+    { Accessing arguments }
+    for i := 1 to argc - 1 do
+        writeLn(argv[i]);
+end.
+'''
+
+[Perl]
+args    = [ '/usr/bin/perl', '-E', '$code', '--' ]
+size    = '5.51 MiB'
+version = '5.40.0'
+website = 'https://www.perl.org'
+example = '''
+# Printing
+say 'Hello, World!';
+
+# Looping
+say for 0..9;
+
+# Accessing arguments
+say for @ARGV;
+
+# Code is run under -E, all current features are enabled.
+'''
+
+[PHP]
+args    = [ '/usr/bin/php', '--' ]
+size    = '8.40 MiB'
+version = '8.3.9'
+website = 'https://www.php.net'
+example = '''
+# Printing
+echo "Hello, World!\n";
+
+# Looping
+for ($i = 0; $i < 10; $i++)
+    echo "$i\n";
+
+# Accessing arguments
+for ($i = 1; $i < $argc; $i++)
+    echo "$argv[$i]\n";
+'''
+
+[PowerShell]
+args       = [ '/usr/bin/powershell' ]
+args-quine = [ '/usr/bin/powershell', '--explicit' ]
+size       = '178 MiB'
+version    = 'PowerShell 7.4.4 on .NET 8.0.7'
+website    = 'https://docs.microsoft.com/powershell/scripting/overview'
+example    = '''
+# Printing
+Write-Host 'Hello, World!'
+
+# Looping
+ForEach ($i in 0..9) {
+    Write-Host $i
+}
+
+# Accessing arguments
+ForEach ($arg in $args) {
+    Write-Host $arg
+}
+'''
+
+[Prolog]
+args    = [ '/usr/bin/prolog', '-g', 'halt', '/tmp/code.pl' ]
+size    = '49.2 MiB'
+version = 'SWI-Prolog 9.2.2'
+website = 'https://www.swi-prolog.org'
+example = '''
+% Printing
+:- writeln("Hello, World!").
+
+% Looping
+:- numlist(0, 9, List),
+   maplist(writeln, List).
+
+% Accessing arguments
+:- prolog_flag(argv, Args),
+   maplist(writeln, Args).
+'''
+
+[Python]
+args    = [ '/usr/bin/python', '-u', '-' ]
+size    = '71.1 MiB'
+version = '3.12.4'
+website = 'https://www.python.org'
+example = '''
+import sys
+
+# Printing
+print('Hello, World!')
+
+# Looping
+for i in range(10):
+    print(i)
+
+# Accessing arguments
+for arg in sys.argv[1:]:
+    print(arg)
+'''
+
+[R]
+args       = [ '/usr/bin/Rscript', '-' ]
+args-quine = [ '/usr/bin/Rscript', '-e', "source('stdin')" ]
+size       = '81.9 MiB'
+version    = '4.4.0'
+website    = 'https://www.r-project.org'
+example    = '''
+# Printing
+write("Hello, World!", 1)
+
+# Looping
+for (i in 0:9) {
+    write(i, 1)
+}
+
+# Accessing arguments
+for (arg in commandArgs(TRUE)) {
+    write(arg, 1)
+}
+'''
+
+[Raku]
+args    = [ '/usr/bin/raku', '-' ]
+size    = '73.6 MiB'
+version = 'Raku 6.d on Rakudo 2024.05'
+website = 'https://raku.org'
+example = '''
+# Printing
+say 'Hello, World!';
+
+# Looping
+.say for ^10;
+
+# Accessing arguments
+.say for @*ARGS;
+'''
+
+[Rockstar]
+args    = [ '/usr/bin/rockstar', '-' ]
+size    = '162 MiB'
+version = '2.1.2'
+website = 'https://github.com/gaborsch/rocky'
+example = '''
+(Printing)
+Shout "Hello, World!"
+
+(Looping)
+Let i be 0
+While i is less than 10
+Shout i
+Build i up
+
+(Accessing arguments)
+While args alike arg
+Shout arg
+'''
+
+[Ruby]
+args    = [ '/usr/bin/ruby', '-' ]
+size    = '28.6 MiB'
+version = '3.3.4'
+website = 'https://www.ruby-lang.org'
+example = '''
+# Printing
+puts 'Hello, World!'
+
+# Looping
+(0..9).each do |i|
+    puts i
+end
+
+# Accessing arguments
+ARGV.each do |arg|
+    puts arg
+end
+'''
+
+[Rust]
+args    = [ '/usr/bin/rust', '-' ]
+size    = '331 MiB'
+version = '1.80.0'
+website = 'https://www.rust-lang.org'
+example = '''
+fn main() {
+    // Printing
+    println!("Hello, World!");
+
+    // Looping
+    for i in 0..10 {
+        println!("{i}");
+    }
+
+    // Accessing arguments
+    for arg in std::env::args().skip(1) {
+        println!("{arg}");
+    }
+}
+'''
+
+[sed]
+args    = [ '/usr/bin/sed', '-E', '-z', '--sandbox', '-u', '--', '$code' ]
+size    = '236 KiB'
+version = '4.9'
+website = 'https://www.gnu.org/software/sed/'
+example = '''
+# Printing
+1i Hello, World!
+
+# Looping
+2,$ b
+
+h
+s/.*/0/
+:loop
+p
+y/012345678/123456789/
+/9/ !b loop
+G
+
+# Accessing arguments
+# (... automatic, one per line ...)
+
+# Arguments are available via STDIN,
+# each argument is separated with a null byte.
+# The code is run with -E and -z options.
+# Output replaces null bytes with newlines.
+'''
+
+[SQL]
+args    = [ '/usr/bin/sql', '-' ]
+size    = '1.20 MiB'
+version = '3.46.0'
+website = 'https://sqlite.org'
+example = '''
+-- Printing
+SELECT 'Hello, World!';
+
+-- Looping
+WITH loop(i) AS (
+    SELECT 0
+    UNION ALL
+    SELECT i + 1 FROM loop
+    WHERE i < 9
+)
+SELECT i FROM loop;
+
+-- Accessing arguments
+SELECT arg FROM argv;
+
+-- Only the first column of the first result set will be printed,
+-- NULL values will be skipped, and the dialect is SQLite.
+'''
+
+[Swift]
+args    = [ '/usr/bin/swift', '-module-cache-path', '/tmp', '-' ]
+size    = '462 MiB'
+version = '5.10.1'
+website = 'https://swift.org'
+example = '''
+// Printing
+print("Hello, World!")
+
+// Looping
+for i in 0...9 {
+    print(i)
+}
+
+// Accessing arguments
+for arg in CommandLine.arguments[1...] {
+    print(arg)
+}
+'''
+
+[Tcl]
+args    = [ '/usr/bin/tcl', '/proc/self/fd/0' ]
+size    = '5.25 MiB'
+version = '8.6.14'
+website = 'https://www.tcl-lang.org'
+example = '''
+# Printing
+puts "Hello, World!"
+
+# Looping
+for {set x 0} {$x < 10} {incr x} {
+    puts $x
+}
+
+# Accessing arguments
+foreach arg $argv {
+    puts $arg
+}
+'''
+
+[TeX]
+args    = [ '/usr/bin/tex', '$code' ]
+size    = '9.67 MiB'
+version = '3.141592653'
+website = 'https://tug.org'
+example = '''
+% Printing
+Hello, World!
+
+% Looping
+\newcount\i
+\loop\ifnum\i<10
+    \the\i\endgraf
+    \advance\i by1
+\repeat
+
+% Accessing arguments
+\newcount\j
+\loop\ifnum\j<\argc\relax
+    \argv\j\endgraf
+    \advance\j by1
+\repeat
+'''
+
+[Uiua]
+args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
+experiment = 1115
+size       = '30.8 MiB'
+version    = '0.11.1'
+website    = 'https://www.uiua.org'
+example    = '''
+# Printing
+&p"Hello, World!"
+
+# Looping
+∵&p⇡10
+
+# Accessing arguments
+∵&p↘1&args
+'''
+
+[V]
+args    = [ '/usr/bin/v', '-' ]
+size    = '60.9 MiB'
+version = '0.4.7'
+website = 'https://vlang.io'
+example = '''
+import os
+
+// Printing
+println('Hello, World!')
+
+// Looping
+for i in 0..10 {
+    println(i)
+}
+
+// Accessing arguments
+for arg in os.args[1..] {
+    println(arg)
+}
+'''
+
+[VimL]
+args    = [ '/usr/bin/viml', '-' ]
+size    = '24.3 MiB'
+version = '9.1'
+website = 'https://www.vim.org'
+example = '''
+" Printing
+i
+Hello, World!
+.
+
+" Looping
+for i in range(10)
+    pu=i
+endfo
+
+" Accessing arguments
+for a in args
+    pu=a
+endfo
+
+" Make sure to save the file when you're done!
+w
+'''
+
+[Wren]
+args    = [ '/usr/bin/wren', '-' ]
+size    = '496 KiB'
+version = '0.4.0'
+website = 'https://wren.io'
+example = '''
+import "os" for Process
+
+// Printing
+System.print("Hello, World!")
+
+// Looping
+for (i in 0..9) System.print(i)
+
+// Accessing arguments
+for (a in Process.arguments) System.print(a)
+'''
+
+[Zig]
+args    = [ '/usr/bin/zig', '-' ]
+size    = '300 MiB'
+version = '0.13.0'
+website = 'https://ziglang.org'
+example = '''
+const std = @import("std");
+
+pub fn main() !void {
+    const stdout = std.io.getStdOut().writer();
+
+    // Printing
+    try stdout.print("Hello, World!\n", .{});
+
+    // Looping
+    for (0..10) |i|
+        try stdout.print("{}\n", .{i});
+
+    // Accessing arguments
+    for (std.os.argv[1..]) |arg|
+        try stdout.print("{s}\n", .{arg});
+}
+'''

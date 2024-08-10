@@ -128,8 +128,7 @@
     color: var(--color);
 }
 
-.lm_controls > *,
-.main_close {
+.lm_controls > * {
     position: relative;
     background-position: center center;
     background-repeat: no-repeat;
@@ -137,8 +136,7 @@
     transition: opacity 300ms ease;
 }
 
-.lm_controls > *:hover,
-.main_close:hover {
+.lm_controls > *:hover {
     opacity: 1;
 }
 
@@ -149,8 +147,7 @@
 }
 
 .lm_controls .lm_close,
-.lm_header .lm_tab .lm_close_tab,
-.main_close {
+.lm_header .lm_tab .lm_close_tab {
     background: var(--color);
     -webkit-mask: url(_close.svg) center / 12px 12px no-repeat;
     mask: url(_close.svg) center / 12px 12px no-repeat;

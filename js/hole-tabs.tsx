@@ -5,15 +5,16 @@ import {
     RootItemConfig,
 } from 'golden-layout';
 import { EditorView }   from './_codemirror';
-import diffTable        from './_diff';
+import diffView         from './_diff';
 import { $, $$, comma, debounce } from './_util';
 import {
-    init, langs, getLang, hole, getAutoSaveKey, setSolution, getSolution,
+    init, langs, hole, setSolution,
     setCode, refreshScores, getHideDeleteBtn, submit, ReadonlyPanelsData,
-    updateRestoreLinkVisibility, getSavedInDB, setCodeForLangAndSolution,
+    updateRestoreLinkVisibility, setCodeForLangAndSolution,
     populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyJSONBtn,
     getScorings, replaceUnprintablesInOutput, initOutputDiv, getArgs, serializeArgs,
     deserializeArgs,
+    updateLocalStorage,
 } from './_hole-common';
 import { highlightCodeBlocks } from './_wiki';
 
@@ -46,20 +47,6 @@ const readonlyOutputs: {[key: string]: HTMLElement | undefined} = {};
 let editor: EditorView | null = null;
 
 init(true, setSolution, setCodeForLangAndSolution, updateReadonlyPanels, () => editor, getArgs);
-
-// Handle showing/hiding alerts
-for (const alertCloseBtn of $$('.main_close')) {
-    const alert = alertCloseBtn.parentNode as HTMLDivElement;
-    alertCloseBtn.addEventListener('click', () => {
-        const child = (alert.querySelector('svg') as any).cloneNode(true);
-        $('#alert-pool').appendChild(child);
-        alert.classList.add('hide');
-        child.addEventListener('click', () => {
-            child.parentNode.removeChild(child);
-            alert.classList.remove('hide');
-        });
-    });
-}
 
 // Handle showing/hiding lang picker
 // can't be done in CSS because the picker is one parent up
@@ -106,7 +93,7 @@ function updateReadonlyPanel(name: string) {
         break;
     case 'diff':
         const ignoreCase = JSON.parse($('#case-fold').innerText);
-        const diff = diffTable(hole, subRes.Exp, subRes.Out, subRes.Argv, ignoreCase);
+        const diff = diffView(hole, subRes.Exp, subRes.Out, subRes.Argv, ignoreCase, subRes.MultisetDelimiter, subRes.ItemDelimiter);
         output.replaceChildren(diff);
     }
 }
@@ -222,16 +209,7 @@ function makeEditor(parent: HTMLDivElement) {
                 ? `${formatScore(scorings.total)} (${formatScore(scorings.selection)} selected)`
                 : formatScore(scorings.total);
 
-            // Avoid future conflicts by only storing code locally that's
-            // different from the server's copy.
-            const serverCode = getCurrentSolutionCode();
-
-            const key = getAutoSaveKey(getLang(), getSolution());
-            if (code && (code !== serverCode || !getSavedInDB()) && code !== langs[getLang()].example)
-                localStorage.setItem(key, code);
-            else
-                localStorage.removeItem(key);
-
+            updateLocalStorage(code);
             updateRestoreLinkVisibility(editor);
 
             return result;
@@ -252,10 +230,7 @@ layout.registerComponentFactoryFunction('code', async container => {
     autoFocus(container);
 
     const header = (<header>
-        <div>
-            <span id="strokes">0 bytes, 0 chars</span>
-            <input type="checkbox" id="showWhitespaceCheckbox" checked/><label for="showWhitespaceCheckbox">Show whitespace</label>
-        </div>
+        <div id="strokes">0 bytes, 0 chars</div>
         <a class="hide" href="" id="restoreLink">Restore solution</a>
     </header>) as HTMLElement;
     const editorDiv = <div id="editor"></div> as HTMLDivElement;

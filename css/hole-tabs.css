@@ -194,33 +194,6 @@ main {
 
 #pool span { background: var(--background) }
 
-.alert {
-    position: relative;
-}
-
-.main_close {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-}
-
-#alert-pool {
-    align-items: center;
-    display: flex;
-    flex-direction: row-reverse;
-    gap: 0.4rem;
-}
-
-#alert-pool:not(:empty) { padding-right: 0.5em }
-
-#alert-pool svg {
-    fill: var(--background);
-    cursor: pointer;
-}
-
 .mobile #golden-container { height: 150vh }
 
 .mobile.has_lm_maximised #golden-container {

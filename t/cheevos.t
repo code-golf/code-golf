@@ -18,12 +18,15 @@ constant %holes = <
      90 {right-on}
      99 {neunundneunzig-luftballons}
     100 {centenarian}
+    107 {busy-beaver}
+    111 {disappearing-act}
 >;
 
 constant %langs = <
     12 {polyglot}
     24 {polyglutton}
     36 {omniglot}
+    48 {omniglutton}
 >;
 
 my $dbh     = dbh;
@@ -84,9 +87,9 @@ is $dbh.execute(
 for $dbh.execute('SELECT unnest(enum_range(null::lang))').allrows.flat {
     my $earns = %langs{ my $i = ++$ } // '{}';
 
-    # Add hole-specific cheevos on the end.
+    # Add hole-specific cheevos on the front.
     $earns.=subst: '{', '{sounds-quite-nice,' if $_ eq 'd';
-    $earns.=subst: '{', '{caffeinated,'       if $_ eq 'javascript';
+    $earns.=subst: '{', '{caffeinated,'       if $_ eq 'java';
     $earns.=subst: '{', '{go-forth,'          if $_ eq 'go';
     $earns.=subst: '{', '{just-kidding,'      if $_ eq 'k';
     $earns.=subst: '{', '{tim-toady,'         if $_ eq 'raku';

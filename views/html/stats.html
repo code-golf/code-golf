@@ -1,0 +1,118 @@
+{{ template "header" . }}
+
+<h1>{{ .Title }}</h1>
+
+<main id=two-pane>
+    {{ template "nav" . }}
+
+{{ if eq .Title "Statistics" }}
+    <div id=overview>
+        <div><h2>Cheevos</h2>{{ .Data.Cheevos }}</div>
+        <div><h2>Earned Cheevos</h2>{{ comma .Data.CheevosEarned }}</div>
+        <a href=stats/countries><h2>Countries</h2>{{ .Data.Countries }}</a>
+        <a href=stats/golfers><h2>Golfers</h2>{{ comma .Data.Golfers }}</a>
+        <a href=stats/holes><h2>Holes</h2>{{ len .Holes }}</a>
+        <a href=stats/langs><h2>Languages</h2>{{ len .Langs }}</a>
+
+        <div>
+            <h2>Solutions</h2>
+            <span>
+                {{ comma .Data.Solutions }}
+                <small>({{ bytes .Data.Bytes }})</small>
+            </span>
+        </div>
+    </div>
+{{ else if eq .Title "Statistics: Countries" }}
+    <table class="nowrap-second sticky">
+        <thead>
+            <tr>
+                <th>#
+                <th>Country
+                <th class=right>Golfers
+                <th class=right>Percent
+        <tbody>
+        {{ range .Data }}
+            <tr>
+                <td>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
+                <td>
+                    {{ with .Country.Country }}
+                        <span class=flag title="{{ .ID }}">{{ .Flag }}</span>
+                        {{- .Name }}
+                    {{ else }}
+                        Rather not say
+                    {{ end }}
+                <td class=right>{{ comma .Golfers }}
+                <td class=right>{{ .Percent }}%
+        {{ end }}
+    </table>
+{{ else if eq .Title "Statistics: Golfers" }}
+    <script id=chart-data type="application/json">[
+        {{- range $i, $d := .Data -}}
+            {{- if ne $i 0 }},{{ end -}}
+            { "x": {{ .Date.UnixMilli }}, "y": {{ .Sum }} }
+        {{- end -}}
+    ]</script>
+
+    <div id=chart-container><canvas></canvas></div>
+
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Year
+                    <th class=right>Golfers
+                    <th class=right>∑
+            <tbody>
+            {{ range slice .Data 1 }}
+                <tr>
+                    <td>{{ .Date.Year }}
+                    <td class=right>{{ comma .Count }}
+                    <td class=right>{{ comma .Sum }}
+            {{ end }}
+        </table>
+    </div>
+{{ else if eq .Title "Statistics: Unsolved Holes" }}
+    <div id=unsolved>
+    {{ $hole := "" }}
+    {{ range .Data }}
+        {{ if .Hole.Experiment }}{{ continue }}{{ end }}
+
+        {{ if ne $hole .Hole.Name }}
+            <h2>{{ .Hole.Name }}</h2>
+            {{ $hole = .Hole.Name }}
+        {{ end }}
+
+        <a class=btn href="/{{ .Hole.ID }}#{{ .Lang.ID }}">
+            {{ svg .Lang.ID }} {{ .Lang.Name }}
+        </a>
+    {{ end }}
+    </div>
+{{ else }}
+    <table class="nowrap-second sticky">
+        <thead>
+            <tr>
+                <th>#
+                <th>{{ .Data.Fact }}
+                <th class=right>Solutions
+                <th class=right>Golfers
+                <th class="right wide">Per Golfer
+        <tbody>
+        {{ range .Data.Rows }}
+            <tr>
+                <td>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
+                <td>
+                {{ with .Hole }}
+                    <a href="/{{ .ID }}"><span>{{ .Name }}</span></a>
+                {{ end }}
+                {{ with .Lang }}
+                    <a href="/recent/{{ .ID }}"><span>{{ .Name }}</span></a>
+                {{ end }}
+                <td class=right>{{ comma .Count }}
+                <td class=right>{{ comma .Golfers }}
+                <td class="right wide">{{ .PerGolfer }}
+        {{ end }}
+    </table>
+{{ end }}
+</main>
+
+{{ template "footer" }}

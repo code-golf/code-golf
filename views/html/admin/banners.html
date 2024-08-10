@@ -1,0 +1,28 @@
+{{ template "header" . }}
+{{ template "admin"  . }}
+
+<main>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Banner
+                    <th class=right>Golfers
+                    <th>Delete
+            <tbody>
+            {{ range .Data.Banners }}
+                <tr>
+                    <td>{{ .Banner }}
+                    <td class=right>{{ comma .Count }}
+                    <td>
+                    {{ if not (index $.Data.LiveBanners .Banner) }}
+                        <form action="banners/{{ .Banner }}" method=post>
+                            <div><button class="btn red">Delete</button></div>
+                        </form>
+                    {{ end }}
+            {{ end }}
+        </table>
+    </div>
+</main>
+
+{{ template "footer" }}

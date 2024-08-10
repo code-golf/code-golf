@@ -1,12 +1,12 @@
 package routes
 
 import (
-	"database/sql"
 	"encoding/json"
 	"net/http"
 	"os"
 	"time"
 
+	"github.com/code-golf/code-golf/null"
 	"github.com/code-golf/code-golf/session"
 	"github.com/code-golf/code-golf/zone"
 	"golang.org/x/oauth2"
@@ -39,15 +39,12 @@ func callbackGET(w http.ResponseWriter, r *http.Request) {
 		Secure:   true,
 	}
 
-	var country, timeZone sql.NullString
+	var country, timeZone null.String
 
 	if tz, _ := time.LoadLocation(r.FormValue("time_zone")); tz != nil {
-		country.String, country.Valid = zone.Country[tz.String()]
+		country.V, country.Valid = zone.Country[tz.String()]
 
-		timeZone = sql.NullString{
-			String: tz.String(),
-			Valid:  tz != time.Local && tz != time.UTC,
-		}
+		timeZone = null.New(tz.String(), tz != time.Local && tz != time.UTC)
 	}
 
 	// In dev mode, the username is selected by the "username" parameter

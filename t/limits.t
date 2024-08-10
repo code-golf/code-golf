@@ -15,7 +15,7 @@ JS
 # -1 for the null termination.
 $code ~= ' ' x 128 * 1024 - $code.chars - 1;
 
-ok post-solution(:$code, :lang<javascript>)<Pass>, '128 KiB passes';
+ok post-solution(:$code, :lang<javascript>)<runs>[0]<pass>, '128 KiB passes';
 
 $code ~= ' ';
 

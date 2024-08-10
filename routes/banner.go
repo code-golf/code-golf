@@ -10,23 +10,25 @@ import (
 	"github.com/code-golf/code-golf/pretty"
 )
 
-const nextHole = "ascending-primes"
+var nextHole = config.ExpHoleByID["polyominoes"]
 
 type banner struct {
-	Body template.HTML
-	Type string
+	Body          template.HTML
+	HideKey, Type string
 }
 
 // TODO Allow a golfer to hide individual banners #709.
 func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
-	if hole, ok := config.ExpHoleByID[nextHole]; ok {
+	// Upcoming hole.
+	if hole := nextHole; hole != nil {
 		in := "in " + pretty.Time(hole.Released.AsTime(time.UTC))
 		if strings.Contains(string(in), "ago") {
 			in = "momentarily"
 		}
 
 		banners = append(banners, banner{
-			Type: "info",
+			HideKey: "upcoming-hole-" + hole.ID,
+			Type:    "info",
 			Body: "The <a href=/" + template.HTML(hole.ID) + ">" +
 				template.HTML(hole.Name) + "</a> hole will go live " + in +
 				". Why not try and solve it ahead of time?",
@@ -44,9 +46,9 @@ func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 			Type: "alert",
 			Body: template.HTML(
 				"Your account will be permanently deleted on the " +
-					delete.Time.Format("2 Jan 2006") + "." +
+					delete.V.Format("2 Jan 2006") + "." +
 					"<p>If you wish to stop this, visit " +
-					"<a href=/golfer/settings>settings</a> " +
+					"<a href=/golfer/settings/delete-account>settings</a> " +
 					"and cancel the deletion."),
 		})
 	}
@@ -108,7 +110,7 @@ Cheevo:
 				body = template.HTML("The "+cheevo.Emoji+" <b>"+
 					cheevo.Name+"</b> achievement will ") + body
 
-				banners = append(banners, banner{body, "info"})
+				banners = append(banners, banner{Body: body, Type: "info"})
 
 				break Cheevo
 			}
@@ -118,7 +120,8 @@ Cheevo:
 	// Latest hole (if unsolved).
 	if hole := config.RecentHoles[0]; !golfer.Solved(hole.ID) {
 		banners = append(banners, banner{
-			Type: "info",
+			HideKey: "latest-hole-" + hole.ID,
+			Type:    "info",
 			Body: template.HTML(`The <a href="/` + hole.ID + `">` +
 				hole.Name + "</a> hole is now live! Why not try and solve it?"),
 		})

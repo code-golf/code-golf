@@ -56,27 +56,33 @@ CREATE FUNCTION pangramglot(langs lang[]) RETURNS int IMMUTABLE RETURN (
 );
 
 CREATE TYPE save_solution_ret AS (
-    earned                      cheevo[],
-    new_bytes                   int,
-    new_bytes_joint             bool,
-    new_bytes_rank              int,
-    new_chars                   int,
-    new_chars_joint             bool,
-    new_chars_rank              int,
-    old_bytes                   int,
-    old_bytes_joint             bool,
-    old_bytes_rank              int,
-    old_chars                   int,
-    old_chars_joint             bool,
-    old_chars_rank              int,
-    old_best_bytes              int,
-    old_best_bytes_submitted    timestamp,
-    old_best_bytes_golfer_count int,
-    old_best_bytes_golfer_id    int,
-    old_best_chars              int,
-    old_best_chars_submitted    timestamp,
-    old_best_chars_golfer_count int,
-    old_best_chars_golfer_id    int
+    earned                         cheevo[],
+    failing_bytes                  int,
+    failing_chars                  int,
+    new_bytes                      int,
+    new_bytes_joint                bool,
+    new_bytes_rank                 int,
+    new_bytes_solution_count       int,
+    new_chars                      int,
+    new_chars_joint                bool,
+    new_chars_rank                 int,
+    new_chars_solution_count       int,
+    old_bytes                      int,
+    old_bytes_joint                bool,
+    old_bytes_rank                 int,
+    old_chars                      int,
+    old_chars_joint                bool,
+    old_chars_rank                 int,
+    old_best_bytes                 int,
+    old_best_bytes_submitted       timestamp,
+    old_best_bytes_first_golfer_id int,
+    old_best_bytes_golfer_count    int,
+    old_best_bytes_golfer_id       int,
+    old_best_chars                 int,
+    old_best_chars_submitted       timestamp,
+    old_best_chars_first_golfer_id int,
+    old_best_chars_golfer_count    int,
+    old_best_chars_golfer_id       int
 );
 
 CREATE FUNCTION save_solution(
@@ -101,14 +107,25 @@ BEGIN
     ret.old_bytes_joint := rank.joint;
     ret.old_bytes_rank  := rank.rank;
 
-    SELECT solutions.bytes, solutions.submitted
-      INTO ret.old_best_bytes, ret.old_best_bytes_submitted
+    SELECT solutions.bytes, solutions.submitted, solutions.user_id
+      INTO ret.old_best_bytes, ret.old_best_bytes_submitted, ret.old_best_bytes_first_golfer_id
       FROM solutions
      WHERE solutions.failing = false
        AND solutions.hole    = hole
        AND solutions.lang    = lang
+       AND solutions.scoring = 'bytes'
   ORDER BY solutions.bytes, solutions.submitted
      LIMIT 1;
+
+    -- If the user previously had a failing solution, get the number of strokes.
+    SELECT solutions.bytes
+      INTO ret.failing_bytes
+      FROM solutions
+     WHERE solutions.failing = true
+       AND solutions.hole    = hole
+       AND solutions.lang    = lang
+       AND solutions.scoring = 'bytes'
+       AND solutions.user_id = user_id;
 
     IF bytes <= ret.old_best_bytes THEN
         old_best := hole_best_except_user(hole, lang, 'bytes', user_id);
@@ -126,14 +143,24 @@ BEGIN
         ret.old_chars_joint := rank.joint;
         ret.old_chars_rank  := rank.rank;
 
-        SELECT solutions.chars, solutions.submitted
-          INTO ret.old_best_chars, ret.old_best_chars_submitted
+        SELECT solutions.chars, solutions.submitted, solutions.user_id
+          INTO ret.old_best_chars, ret.old_best_chars_submitted, ret.old_best_chars_first_golfer_id
           FROM solutions
          WHERE solutions.failing = false
            AND solutions.hole    = hole
            AND solutions.lang    = lang
+           AND solutions.scoring = 'chars'
       ORDER BY solutions.chars, solutions.submitted
          LIMIT 1;
+
+        SELECT solutions.chars
+          INTO ret.failing_chars
+          FROM solutions
+         WHERE solutions.failing = true
+           AND solutions.hole    = hole
+           AND solutions.lang    = lang
+           AND solutions.scoring = 'chars'
+           AND solutions.user_id = user_id;
 
         IF chars <= ret.old_best_chars THEN
             old_best := hole_best_except_user(hole, lang, 'chars', user_id);
@@ -177,7 +204,8 @@ BEGIN
                             chars     = excluded.chars,
                             code      = excluded.code,
                             failing   = false,
-                            submitted = excluded.submitted;
+                            submitted = excluded.submitted,
+                            tested    = excluded.tested;
 
             INSERT INTO solutions_log (bytes, chars, hole, lang, scoring, user_id)
                  VALUES               (bytes, chars, hole, lang, scoring, user_id);
@@ -188,7 +216,8 @@ BEGIN
             UPDATE solutions
                SET bytes   = bytes,
                    chars   = chars,
-                   code    = code
+                   code    = code,
+                   tested  = DEFAULT
              WHERE solutions.hole    = hole
                AND solutions.lang    = lang
                AND solutions.scoring = scoring
@@ -203,11 +232,27 @@ BEGIN
     ret.new_bytes_joint := rank.joint;
     ret.new_bytes_rank  := rank.rank;
 
+    SELECT COUNT(*)
+      INTO ret.new_bytes_solution_count
+      FROM solutions
+     WHERE solutions.failing = false
+       AND solutions.hole    = hole
+       AND solutions.lang    = lang
+       AND solutions.scoring = 'bytes';
+
     IF chars IS NOT NULL THEN
         rank                := hole_rank(hole, lang, 'chars', user_id);
         ret.new_chars       := rank.strokes;
         ret.new_chars_joint := rank.joint;
         ret.new_chars_rank  := rank.rank;
+
+        SELECT COUNT(*)
+          INTO ret.new_chars_solution_count
+          FROM solutions
+         WHERE solutions.failing = false
+           AND solutions.hole    = hole
+           AND solutions.lang    = lang
+           AND solutions.scoring = 'chars';
     END IF;
 
     ret.earned := earn_cheevos(hole, lang, user_id);

@@ -3,18 +3,9 @@ package hole
 import (
 	_ "embed"
 	"strconv"
-	"strings"
 
 	"github.com/agnivade/levenshtein"
 )
-
-var (
-	//go:embed words.txt
-	wordsTxt string
-	words    = strings.Fields(wordsTxt)
-)
-
-func randWord() string { return randChoice(words) }
 
 func levenshteinTest(a, b string) test {
 	return test{a + " " + b, strconv.Itoa(levenshtein.ComputeDistance(a, b))}

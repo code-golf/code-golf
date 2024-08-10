@@ -30,7 +30,6 @@ func randomPrime(max int) int {
 }
 
 func jacobiSymbol() []Run {
-	const mult = 9
 	tests := []test{{"0 1", "1"}, {"4622568476421908 4170463869060991", "1"}}
 	addTest := func(a, n int) {
 		tests = append(tests, test{
@@ -41,7 +40,7 @@ func jacobiSymbol() []Run {
 
 	var a, n int
 
-	for i := 0; i < mult; i++ {
+	for i := range 9 {
 		// Random numbers, varying size, a<n
 		n = randomOdd(1 << (53 - 2*i))
 		a = randomNatural(n)
@@ -77,8 +76,8 @@ func jacobiSymbol() []Run {
 		// n is small
 		a = randomNatural(1 << 53)
 		addTest(a, 2*i+1)
-
 	}
+
 	// Different residue classes
 	for i := 0; i < 4; i++ {
 		for j := 1; j < 8; j += 2 {

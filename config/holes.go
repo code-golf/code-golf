@@ -3,6 +3,7 @@ package config
 import (
 	"bytes"
 	"cmp"
+	"database/sql"
 	"encoding/json"
 	"html/template"
 	"slices"
@@ -10,8 +11,8 @@ import (
 	templateTxt "text/template"
 
 	"github.com/code-golf/code-golf/ordered"
+	"github.com/lib/pq/hstore"
 	"github.com/pelletier/go-toml/v2"
-	"github.com/tdewolff/minify/v2/minify"
 )
 
 var (
@@ -29,6 +30,9 @@ var (
 
 	// Ten most recent holes, used for /rankings/recent-holes.
 	RecentHoles []*Hole
+
+	// A map of hole ID to category for passing to SQL queries.
+	HoleCategoryHstore = hstore.Hstore{Map: map[string]sql.NullString{}}
 )
 
 type Link struct {
@@ -50,7 +54,6 @@ type Hole struct {
 	Links                       []Link           `json:"links"`
 	Name                        string           `json:"name"`
 	Preamble                    template.HTML    `json:"preamble"`
-	Prev, Next                  *Hole            `json:"-"`
 	Released                    toml.LocalDate   `json:"released"`
 	Releases                    []toml.LocalDate `json:"-"`
 	Synopsis                    string           `json:"synopsis"`
@@ -62,7 +65,7 @@ func init() {
 		Hole
 		Variants []string
 	}
-	unmarshal("holes.toml", &holes)
+	unmarshal("data/holes.toml", &holes)
 
 	funcs := template.FuncMap{
 		"hasPrefix": strings.HasPrefix,
@@ -131,6 +134,11 @@ func init() {
 		hole.ID = ID(name)
 		hole.Name = name
 
+		// FIXME Variants can't yet have different experiment IDs.
+		if hole.ID == "gray-code-encoder" {
+			hole.Experiment = 1157
+		}
+
 		// Process the templated preamble with the data.
 		if hole.Data != "" {
 			t, err := template.New("").Parse(string(hole.Preamble))
@@ -148,13 +156,6 @@ func init() {
 				panic(err)
 			}
 			hole.Preamble = template.HTML(b.String())
-		}
-
-		// Minify preamble.
-		if html, err := minify.HTML(string(hole.Preamble)); err != nil {
-			panic(err)
-		} else {
-			hole.Preamble = template.HTML(html)
 		}
 
 		// Filter out links that don't match this variant.
@@ -195,6 +196,9 @@ func init() {
 		if hole.Experiment == 0 {
 			HoleByID[hole.ID] = &hole.Hole
 			HoleList = append(HoleList, &hole.Hole)
+
+			HoleCategoryHstore.Map[hole.ID] =
+				sql.NullString{String: hole.Category, Valid: true}
 		} else {
 			ExpHoleByID[hole.ID] = &hole.Hole
 			ExpHoleList = append(ExpHoleList, &hole.Hole)
@@ -212,27 +216,10 @@ func init() {
 	})
 	RecentHoles = RecentHoles[:10]
 
-	for i, holes := range [][]*Hole{HoleList, ExpHoleList, AllHoleList} {
+	for _, holes := range [][]*Hole{HoleList, ExpHoleList, AllHoleList} {
 		// Case-insensitive sort.
 		slices.SortFunc(holes, func(a, b *Hole) int {
 			return cmp.Compare(strings.ToLower(a.Name), strings.ToLower(b.Name))
 		})
-
-		// Set Prev, Next. Not for "AllHoleList" as it would overwrite.
-		if i < 2 {
-			for j, hole := range holes {
-				if j == 0 {
-					hole.Prev = holes[len(holes)-1]
-				} else {
-					hole.Prev = holes[j-1]
-				}
-
-				if j == len(holes)-1 {
-					hole.Next = holes[0]
-				} else {
-					hole.Next = holes[j+1]
-				}
-			}
-		}
 	}
 }

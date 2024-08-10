@@ -1,7 +1,11 @@
 # FIXME Using alpine causes a 5s timeout with no net, musl DNS???
 # <1s docker run --rm --net none elixir:slim
 # >5s docker run --rm --net none elixir:alpine
-FROM elixir:1.16.1-slim AS builder
+
+# 1.17 doubles our image size from 158 MiB → 322 MiB, seems to be because of
+# https://github.com/erlang/otp/issues/8574
+
+FROM elixir:1.16.3-slim AS builder
 
 FROM codegolf/lang-base
 

@@ -1,3 +1,5 @@
+#about { padding: .75rem .75rem 0 }
+
 #badges {
     display: flex;
     flex-wrap: wrap;
@@ -42,6 +44,7 @@
 
 #profile form {
     align-self: start;
+    display: block;
     grid-row: span 3;
 }
 

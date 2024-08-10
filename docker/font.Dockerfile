@@ -1,4 +1,4 @@
-FROM node:21.4.0-bookworm-slim
+FROM node:22-bookworm-slim
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
     ca-certificates fontforge fonttools git make python3-fontforge unzip woff2 zip
@@ -23,6 +23,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f356.svg       `# Meat on Bone`                 \
     svg/1f35e.svg       `# Bread`                        \
     svg/1f36f.svg       `# Honey Pot`                    \
+    svg/1f371.svg       `# Bento Box`                    \
     svg/1f377.svg       `# Wine Glass`                   \
     svg/1f37a.svg       `# Beer Mug`                     \
     svg/1f382.svg       `# Birthday Cake`                \
@@ -68,6 +69,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f51e.svg       `# No One Under Eighteen`        \
     svg/1f520.svg       `# Input Latin Uppercase`        \
     svg/1f523.svg       `# Input Symbols`                \
+    svg/1f526.svg       `# Flashlight`                   \
     svg/1f549.svg       `# Om`                           \
     svg/1f596.svg       `# Vulcan Salute`                \
     svg/1f5a5.svg       `# Desktop Computer`             \
@@ -105,19 +107,24 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f949.svg       `# 3rd Place Medal`              \
     svg/1f961.svg       `# Takeout Box`                  \
     svg/1f967.svg       `# Pie`                          \
+    svg/1f96a.svg       `# Sandwich`                     \
+    svg/1f984.svg       `# Unicorn`                      \
     svg/1f98b.svg       `# Butterfly`                    \
     svg/1f98e.svg       `# Lizard`                       \
     svg/1f9a5.svg       `# Sloth`                        \
+    svg/1f9ab.svg       `# Beaver`                       \
     svg/1f9d9.svg       `# Mage`                         \
     svg/1f9db.svg       `# Vampire`                      \
     svg/1f9e0.svg       `# Brain`                        \
     svg/1f9ea.svg       `# Test Tube`                    \
     svg/1f9f6.svg       `# Yarn`                         \
+    svg/1fa84.svg       `# Magic Wand`                   \
     svg/1fa9b.svg       `# Screwdriver`                  \
     svg/1fa9e.svg       `# Mirror`                       \
     svg/1faa6.svg       `# Headstone`                    \
     svg/23f1.svg        `# Stopwatch`                    \
     svg/2615.svg        `# Hot Beverage`                 \
+    svg/2623.svg        `# Biohazard`                    \
     svg/2639.svg        `# Frowning Face`                \
     svg/26f3.svg        `# Flag in Hole`                 \
     svg/2702.svg        `# Scissors`                     \

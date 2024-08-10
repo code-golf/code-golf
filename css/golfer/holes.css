@@ -4,7 +4,7 @@ main nav { gap: 1rem 1.5rem }
 
 #holes {
     display: grid;
-    grid-template-columns: auto repeat(var(--langs), 1fr);
+    grid-template-columns: auto repeat(var(--langs), minmax(3rem, 1fr));
     max-height: calc(100vh - 10rem);
     overflow: auto;
 }
@@ -19,6 +19,8 @@ main nav { gap: 1rem 1.5rem }
 #holes a:hover { background: var(--background) }
 
 #holes a.grey:not(:hover) { color: var(--play-color) }
+
+#holes a.dark-grey:not(:hover) { color: var(--background) }
 
 #holes a, #holes .lang {
     align-items: center;
@@ -53,7 +55,6 @@ main nav { gap: 1rem 1.5rem }
 
 #holes .lang {
     border-bottom: 1px solid var(--color);
-    min-width: 2rem;
     top: 0;
 }
 

@@ -1,4 +1,5 @@
 module.exports = {
+    js2svg: { finalNewline: true  },
     plugins: [
         {
             name: 'preset-default',

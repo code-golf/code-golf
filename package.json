@@ -1,6 +1,8 @@
 {
+  "type": "module",
   "dependencies": {
     "@codemirror/lang-cpp": "",
+    "@codemirror/lang-go": "",
     "@codemirror/lang-java": "",
     "@codemirror/lang-javascript": "",
     "@codemirror/lang-php": "",
@@ -10,8 +12,10 @@
     "@codemirror/legacy-modes": "",
     "@codemirror/theme-one-dark": "",
     "@defasm/codemirror": "",
-    "@exercism/codemirror-lang-wren": "github:exercism/codemirror-lang-wren#wip",
+    "@exercism/codemirror-lang-wren": "github:exercism/codemirror-lang-wren#3bde996",
     "@replit/codemirror-vim": "",
+    "chart.js": "",
+    "chartjs-adapter-luxon": "",
     "codemirror": "^6",
     "codemirror-lang-brainfuck": "",
     "codemirror-lang-elixir": "",
@@ -21,21 +25,18 @@
     "codemirror-lang-k": "",
     "codemirror-lang-prolog": "",
     "codemirror-lang-zig": "",
-    "dialog-polyfill": "",
     "diff": "",
     "esbuild": "",
     "golden-layout": "^2.6.0",
+    "luxon": "",
     "lz-string": "",
+    "mathjax": "",
     "nim-codemirror-mode": ""
   },
   "devDependencies": {
     "@types/diff": "",
     "@typescript-eslint/eslint-plugin": "",
     "@typescript-eslint/parser": "",
-    "eslint": "",
-    "typescript": ""
-  },
-  "overrides": {
-    "codemirror": "^6"
+    "eslint": ""
   }
 }

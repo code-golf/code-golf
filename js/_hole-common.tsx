@@ -19,6 +19,7 @@ const renamedHoles: Record<string, string> = {
     'eight-queens': 'n-queens',
     'eight-queens-formatted': 'n-queens-formatted',
     'factorial-factorisation-ascii': 'factorial-factorisation',
+    'grid-packing': 'css-grid',
 };
 
 export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSolution: any, updateReadonlyPanels: any, getEditor: () => any, getArgs?: any) {
@@ -150,14 +151,14 @@ function getScoring(str: string, index: 0 | 1) {
     return scorings[index] == 'Bytes' ? byteLen(str) : charLen(str);
 }
 
-function getSolutionCode(lang: string, solution: 0 | 1) {
+function getSolutionCode(lang: string, solution: 0 | 1): string {
     return solutions && lang in solutions[solution] ? solutions[solution][lang] : '';
 }
 
 /**
  * Get the code corresponding to the current lang and solution (bytes/chars)
  */
-export function getCurrentSolutionCode() {
+export function getCurrentSolutionCode(): string {
     return getSolutionCode(lang, solution);
 }
 
@@ -197,12 +198,42 @@ export function setCode(code: string, editor: EditorView | null) {
 }
 
 function updateLangPicker() {
-    // Populate the language picker with accurate stroke counts.
-    $('#picker').replaceChildren(...sortedLangs.map((l: any) => {
-        const tab = <a href={l.id == lang ? null : '#' + l.id}>{l.name}</a>;
+    const selectNodes: Node[] = [];
+    const langSelect = <select><option value="">Other</option></select>;
+    let currentLangUnused = false;
 
-        if (l.experiment)
-            tab.prepend(<svg><use href="#flask"/></svg>);
+    for (const l of sortedLangs as any[]) {
+        if (!getSolutionCode(l.id, 0) &&
+            !localStorage.getItem(getAutoSaveKey(l.id, 0)) &&
+            !localStorage.getItem(getAutoSaveKey(l.id, 1))) {
+            const suffix = l.experiment ? ' (exp.)' : '';
+            langSelect.appendChild(<option value={l.id}>{l.name}{suffix}</option>);
+            currentLangUnused ||= lang == l.id;
+        }
+    }
+
+    if (langSelect.childElementCount > 1) {
+        langSelect.addEventListener('change', (e: Event) => {
+            const target = e.target as HTMLSelectElement;
+            location.hash = '#' + target.value;
+        });
+
+        langSelect.value = currentLangUnused ? lang : '';
+        if (currentLangUnused) {
+            langSelect.classList.add('selectActive');
+        }
+        selectNodes.push(langSelect);
+    }
+
+    // Hybrid language selector: make it easy to see your existing solutions and their lengths.
+    const picker = $('#picker');
+    const icon   = picker.dataset.style?.includes('icon')  ?? true;
+    const label  = picker.dataset.style?.includes('label') ?? true;
+    picker.replaceChildren(...sortedLangs.map((l: any) => {
+        const tab = <a href={l.id == lang ? null : '#' + l.id} title={l.name}></a>;
+
+        if (icon)  tab.append(<svg><use href={'#'+l.id}/></svg>);
+        if (label) tab.append(l.name);
 
         if (getSolutionCode(l.id, 0)) {
             const bytes = byteLen(getSolutionCode(l.id, 0));
@@ -211,11 +242,17 @@ function updateLangPicker() {
             let text = comma(bytes);
             if (chars && bytes != chars) text += '/' + comma(chars);
 
-            tab.append(' ', <sup>{text}</sup>);
+            tab.append(<sup>{text}</sup>);
+        }
+        else if (!localStorage.getItem(getAutoSaveKey(l.id, 0)) &&
+                 !localStorage.getItem(getAutoSaveKey(l.id, 1))) {
+            return null;
         }
 
+        if (l.experiment) tab.append(<svg><use href="#flask"/></svg>);
+
         return tab;
-    }));
+    }).filter((x: Node | null) => x), ...selectNodes);
 }
 
 export async function refreshScores(editor: any) {
@@ -289,22 +326,28 @@ export interface RankFromTo {
 
 export interface RankUpdate {
     scoring: string,
+    failingStrokes: number | null,
     from: RankFromTo,
     to: RankFromTo,
-    oldBestGolferId: number | null,
-    oldBestGolferCount: number | null,
+    oldBestCurrentGolferCount: number | null,
+    oldBestCurrentGolferId: number | null,
+    oldBestFirstGolferID: number | null,
     oldBestStrokes: number | null,
+    oldBestSubmitted: string | null,
+    newSolutionCount: number | null,
 }
 
 export interface Run {
     answer: string,
+    multiset_delimiter: string,
+    item_delimiter: string,
     args: string[],
     exit_code: number,
     pass: boolean,
     stderr: string,
     stdout: string,
     time_ns: number,
-    timeout: boolean
+    timeout: boolean,
 }
 
 export interface ReadonlyPanelsData {
@@ -313,17 +356,15 @@ export interface ReadonlyPanelsData {
     Exp: string,
     Err: string,
     Argv: string[],
+    MultisetDelimiter: string,
+    ItemDelimiter: string
 }
 
 export interface SubmitResponse {
-    Pass: boolean,
-    Cheevos: {
-        emoji: string,
-        name: string
-    }[],
-    LoggedIn: boolean,
-    RankUpdates: RankUpdate[],
-    runs: Run[]
+    cheevos:      { emoji: string, name: string }[],
+    logged_in:    boolean,
+    rank_updates: RankUpdate[],
+    runs:         Run[]
 }
 
 const makeSingular = (strokes: number, units: string) =>
@@ -449,7 +490,7 @@ const diamondPopups = (updates: RankUpdate[]) => {
             if (!update.to.joint) {
                 newDiamonds.push(update.scoring);
             }
-            else if (update.oldBestGolferCount === 1) {
+            else if (update.oldBestCurrentGolferCount === 1) {
                 matchedDiamonds.push(update.scoring);
             }
         }
@@ -491,11 +532,7 @@ export async function submit(
     const codeLang = lang;
     const submissionID = ++latestSubmissionID;
 
-    const request: any = {
-        Code: code,
-        Hole: hole,
-        Lang: lang,
-    };
+    const request: any = { code, hole, lang };
 
     if (hole === 'sandbox' && getArgs) {
         request.Args = getArgs();
@@ -512,12 +549,13 @@ export async function submit(
     }
 
     const data = await res.json() as SubmitResponse;
-    savedInDB = data.LoggedIn && !experimental;
+    savedInDB = data.logged_in && !experimental;
 
     if (submissionID != latestSubmissionID)
         return;
 
-    if (data.Pass && hole !== 'sandbox') {
+    const pass = data.runs.every(r => r.pass);
+    if (pass && hole !== 'sandbox') {
         for (const i of [0, 1] as const) {
             const solutionCode = getSolutionCode(codeLang, i);
             if (!solutionCode || getScoring(code, i) <= getScoring(solutionCode, i)) {
@@ -558,7 +596,7 @@ export async function submit(
     // Automatically switch to the solution whose code matches the current
     // code after a new solution is submitted. Don't change scoring,
     // refreshScores will update the solution picker.
-    if (data.Pass && getSolutionCode(codeLang, solution) != code &&
+    if (pass && getSolutionCode(codeLang, solution) != code &&
         getSolutionCode(codeLang, getOtherScoring(solution)) == code)
         setSolution(getOtherScoring(solution));
 
@@ -573,6 +611,8 @@ export async function submit(
             Exp: run.answer,
             Err: run.stderr,
             Out: run.stdout,
+            MultisetDelimiter: run.multiset_delimiter,
+            ItemDelimiter: run.item_delimiter,
         });
 
         const ms = Math.round(run.time_ns / 10**6);
@@ -626,12 +666,13 @@ export async function submit(
 
     btns[defaultRunIndex].click();
 
-    $('#status').className = data.Pass ? 'green' : 'red';
+    $('#status').className = pass ? 'green' : 'red';
 
-    // Show cheevos.
-    $('#popups').replaceChildren(...scorePopups(data.RankUpdates),
-        ...diamondPopups(data.RankUpdates),
-        ...data.Cheevos.map(c => <div>
+    // Show popups.
+    $('#popups').replaceChildren(
+        ...scorePopups(data.rank_updates),
+        ...diamondPopups(data.rank_updates),
+        ...data.cheevos.map(c => <div>
             <h3>Achievement Earned!</h3>
             { c.emoji }<p>{ c.name }</p>
         </div>));
@@ -639,10 +680,36 @@ export async function submit(
     refreshScores(editor);
 }
 
+export function updateLocalStorage(code: string) {
+    // Avoid future conflicts by only storing code locally that's
+    // different from the server's copy.
+    const serverCode = getCurrentSolutionCode();
+    const key = getAutoSaveKey(getLang(), getSolution());
+    const hadLocalStorage = localStorage.getItem(key) !== null;
+    const wantLocalStorage = code && (code !== serverCode || !getSavedInDB()) && code !== langs[getLang()].example;
+
+    if (wantLocalStorage)
+        localStorage.setItem(key, code);
+    else
+        localStorage.removeItem(key);
+
+    if (wantLocalStorage !== hadLocalStorage && serverCode === '') {
+        // We may be adding or removing a language slot.
+        updateLangPicker();
+    }
+}
+
 export function updateRestoreLinkVisibility(editor: any) {
-    const serverCode = getSolutionCode(lang, solution);
-    $('#restoreLink')?.classList.toggle('hide',
-        !serverCode || editor?.state.doc.toString() == serverCode);
+    const restoreLink = $('#restoreLink');
+    if (restoreLink instanceof HTMLAnchorElement) {
+        const serverCode = getSolutionCode(lang, solution);
+        const sampleCode = langs[lang].example;
+        const currentCode = editor?.state.doc.toString();
+        restoreLink.classList.toggle('hide',
+            (!serverCode && currentCode !== sampleCode) || currentCode === serverCode);
+        restoreLink.textContent =
+            currentCode === sampleCode ? 'Clear sample code' : 'Restore solution';
+    }
 }
 
 export function setCodeForLangAndSolution(editor: any) {
@@ -675,6 +742,7 @@ export async function populateScores(editor: any) {
     const view      = $('#rankingsView a:not([href])').innerText.trim().toLowerCase();
     const res       = await fetch(`/api/mini-rankings${path}/${view}` + (tabLayout ? '?long=1' : ''));
     const rows      = res.ok ? await res.json() : [];
+    const colspan   = lang == 'assembly' ? 3 : 4;
 
     $<HTMLAnchorElement>('#allLink').href = '/rankings/holes' + path;
 
@@ -688,13 +756,23 @@ export async function populateScores(editor: any) {
                     <span>{r.golfer.name}</span>
                 </a>
             </td>
-            <td data-tooltip={tooltip(r, 'Bytes')}>{comma(r.bytes)}</td>
-            <td data-tooltip={tooltip(r, 'Chars')}>{comma(r.chars)}</td>
-        </tr>) : <tr><td colspan="4">(Empty)</td></tr>
+            <td data-tooltip={tooltip(r, 'Bytes')}>
+                {scoringID != 'bytes' ? comma(r.bytes) :
+                    <a href={`/golfers/${r.golfer.name}/${hole}/${lang}/bytes`}>
+                        <span>{comma(r.bytes)}</span>
+                    </a>}
+            </td>
+            {lang == 'assembly' ? '' : <td data-tooltip={tooltip(r, 'Chars')}>
+                {scoringID != 'chars' ? comma(r.chars) :
+                    <a href={`/golfers/${r.golfer.name}/${hole}/${lang}/chars`}>
+                        <span>{comma(r.chars)}</span>
+                    </a>}
+            </td>}
+        </tr>) : <tr><td colspan={colspan}>(Empty)</td></tr>
     }{
         // Padding.
         tabLayout ? [] : [...Array(7 - rows.length).keys()].map(() =>
-            <tr><td colspan="4">&nbsp;</td></tr>)
+            <tr><td colspan={colspan}>&nbsp;</td></tr>)
     }</tbody>);
 
     if (tabLayout) {

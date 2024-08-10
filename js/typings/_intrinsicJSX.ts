@@ -14,35 +14,37 @@ declare global {
 
   namespace JSX {
     interface IntrinsicElements {
-      div: any;
-      span: any;
-      img: any;
-      a: any;
-      button: any;
-      h1: any;
-      h2: any;
-      h3: any;
-      h4: any;
-      h5: any;
-      h6: any;
-      p: any;
-      option: any;
-      sup: any;
-      table: any;
-      tbody: any;
-      thead: any;
-      tr: any;
-      th: any;
-      td: any;
-      col: any;
-      aside: any;
+      a:       any;
+      aside:   any;
+      button:  any;
+      code:    any;
+      col:     any;
+      div:     any;
+      h1:      any;
+      h2:      any;
+      h3:      any;
+      h4:      any;
+      h5:      any;
+      h6:      any;
+      header:  any;
+      img:     any;
+      input:   any;
+      label:   any;
+      option:  any;
+      p:       any;
       section: any;
-      header: any;
-      code: any;
-      input: any;
-      label: any;
-      svg: any;
-      use: any;
+      select:  any;
+      span:    any;
+      sup:     any;
+      svg:     any;
+      table:   any;
+      tbody:   any;
+      td:      any;
+      th:      any;
+      thead:   any;
+      time:    any;
+      tr:      any;
+      use:     any;
     }
   }
 }

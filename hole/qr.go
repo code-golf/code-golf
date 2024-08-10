@@ -113,11 +113,11 @@ func qr(decoder bool) []Run {
 	qrString := qr.toString(!decoder)
 
 	if decoder {
-		return []Run{{Args: []string{qrString}, Answer: content}}
+		return outputTests([]test{{qrString, content}})
 	}
 
-	return []Run{{
-		Args:   []string{content + " " + hex.EncodeToString(qr.getErrorCorrectionBlocks())},
-		Answer: qrString,
-	}}
+	return outputTests([]test{{
+		in:  content + " " + hex.EncodeToString(qr.getErrorCorrectionBlocks()),
+		out: qrString,
+	}})
 }

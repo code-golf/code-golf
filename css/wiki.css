@@ -5,6 +5,21 @@ article {
 }
 
 body > h1 {
+    align-items: center;
     border-bottom: 2px solid var(--color);
+    display: flex;
+    flex-wrap: wrap;
+    gap: .375rem;
+    justify-content: space-between;
     padding: 1rem;
+
+    > div {
+        display: flex;
+        font-size: 1rem;
+        gap: .375rem;
+
+        > a { font-weight: normal }
+    }
 }
+
+table { margin: 1rem 0 }

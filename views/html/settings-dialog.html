@@ -1,0 +1,23 @@
+{{ $name := .Name }}
+{{ if eq $name "hole-tabs" }}{{ $name = "hole" }}{{ end }}
+
+{{ if .Golfer }}
+<dialog id=settings-dialog>
+    <form action="/golfer/settings/{{ $name }}" method=post>
+        <h2>Settings</h2>
+
+        <input name=path type=hidden value="{{ .Path }}">
+
+        {{ template "settings" . }}
+
+        <menu>
+            <!-- Enter submits the first button, we flip the order in CSS -->
+            <button class="btn green">Save</button>
+            <button class="btn" formaction="/golfer/settings/{{ $name }}/reset">
+                Restore Defaults
+            </button>
+            <button class="btn red" formmethod=dialog>Cancel</button>
+        </menu>
+    </form>
+</dialog>
+{{ end }}

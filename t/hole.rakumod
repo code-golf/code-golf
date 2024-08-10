@@ -56,12 +56,8 @@ class HoleWebDriver is WebDriver is export {
         $.find($text, :$using);
     }
 
-    method getLangLink(Str:D $lang) {
-        $.findAndWait: $lang, :using(PartialLinkText);
-    }
-
-    method getLanguageActive(Str:D $lang) {
-        $.getLangLink($lang).prop('href') eq '';
+    method getLanguageActive(Str:D $lang) of Bool {
+        ?($.url ~~ /\#$lang$/);
     }
 
     method getSolutionLink(Str:D $solution) {
@@ -153,6 +149,10 @@ class HoleWebDriver is WebDriver is export {
 
     method run {
         $.find("#runBtn").click;
+    }
+
+    method setLang(Str:D $lang) {
+        $.js: "location.hash = '#$lang'";
     }
 
     method setScoring(Str:D $scoring) {

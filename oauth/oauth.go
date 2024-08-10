@@ -1,13 +1,13 @@
 package oauth
 
 import (
-	"database/sql"
 	"net/url"
 	"os"
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/code-golf/code-golf/db"
+	"github.com/code-golf/code-golf/null"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/github"
 	"golang.org/x/oauth2/gitlab"
@@ -21,7 +21,7 @@ type Config struct {
 
 type Connection struct {
 	Connection, Username string
-	Discriminator        sql.NullInt16
+	Discriminator        null.Int
 	ID                   int
 	Public               bool
 }

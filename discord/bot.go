@@ -2,6 +2,7 @@ package discord
 
 import (
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -33,11 +34,13 @@ var (
 
 // Represents a new record announcement message
 type RecAnnouncement struct {
-	Message *discordgo.Message
-	Updates [][]Golfer.RankUpdate
-	Golfer  *Golfer.Golfer
-	Hole    *config.Hole
-	Lang    *config.Lang
+	MessageChannelID string                `json:"messageChannelID"`
+	MessageID        string                `json:"messageID"`
+	Updates          [][]Golfer.RankUpdate `json:"updates"`
+	Golfer           *Golfer.Golfer        `json:"-"`
+	GolferID         int                   `json:"golfer"`
+	Hole             *config.Hole          `json:"hole"`
+	Lang             *config.Lang          `json:"lang"`
 }
 
 func init() {
@@ -55,17 +58,14 @@ func init() {
 		} else if err = bot.Open(); err != nil {
 			log.Println(err)
 			bot = nil
-		} else {
-			bot.AddHandler(handleMessage)
 		}
 	}()
 }
 
-func getUsername(id int64, db *sqlx.DB) (name string) {
-	if err := db.QueryRow(
-		"SELECT login FROM users WHERE id = $1",
-		id,
-	).Scan(&name); err != nil {
+func getUsername(id int, db *sqlx.DB) (name string) {
+	err := db.Get(&name, "SELECT login FROM users WHERE id = $1", id)
+	if err != nil {
+		name = "unknown golfer"
 		log.Println(err)
 	}
 
@@ -79,6 +79,7 @@ func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.Messa
 	golferURL := "https://code.golf/golfers/" + golfer.Name
 
 	titlePrefix := "New Tied 🥇"
+	isUnicorn := false
 
 	// Creating the basic embed
 	embed := &discordgo.MessageEmbed{
@@ -91,36 +92,69 @@ func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.Messa
 	fieldValues := make(map[string]string)
 	for _, pair := range announce.Updates {
 		for _, update := range pair {
-			if !update.To.Joint.Bool {
-				titlePrefix = "New 💎"
+			if !isUnicorn {
+				if update.NewSolutionCount.Valid && update.NewSolutionCount.V == 1 {
+					// Once we detect a unicorn, we continue to show it when we edit messages.
+					// The unicorn looks better with an extra space on the right.
+					if !update.OldBestStrokes.Valid {
+						titlePrefix = "New 🦄 "
+					} else {
+						titlePrefix = "Improved 🦄 "
+					}
+					isUnicorn = true
+				} else if !update.To.Joint.V {
+					titlePrefix = "New 💎"
+				}
 			}
 
 			if update.OldBestStrokes.Valid && fieldValues[update.Scoring] == "" {
-				fieldValues[update.Scoring] = pretty.Comma(int(update.OldBestStrokes.Int64))
+				fieldValues[update.Scoring] = pretty.Comma(update.OldBestStrokes.V)
 
-				timestamp := update.OldBestSubmitted.Time
+				dateString := ""
+				timestamp := update.OldBestSubmitted.V
 				if time.Since(timestamp) > minElapsedTimeToShowDate {
 					// Show the data using a locale-specific short date format.
-					fieldValues[update.Scoring] += fmt.Sprintf(" (<t:%d:d>)", timestamp.Unix())
+					dateString = fmt.Sprintf("<t:%d:R>", timestamp.Unix())
 				}
 
-				if update.OldBestGolferCount.Valid && update.OldBestGolferCount.Int64 > 1 {
+				// Determine the name or number of other golfers associated with the old record.
+				othersString := ""
+				if update.OldBestCurrentGolferCount.Valid && update.OldBestCurrentGolferCount.V > 1 {
 					// Display the number of golfers, excluding the current golfer, that previously held this record.
-					fieldValues[update.Scoring] += fmt.Sprintf(" (%d golfers)", update.OldBestGolferCount.Int64)
-				} else if update.OldBestGolferID.Valid && update.OldBestGolferID.Int64 != int64(announce.Golfer.ID) {
-					name := getUsername(update.OldBestGolferID.Int64, db)
-					if name != "" {
-						// Display the user name of the single golfer, excluding the current golfer, that previously held this record.
-						fieldValues[update.Scoring] += fmt.Sprintf(" (%s)", name)
-					}
+					othersString = fmt.Sprintf("%d golfers", update.OldBestCurrentGolferCount.V)
+				} else if update.OldBestCurrentGolferID.Valid && update.OldBestCurrentGolferID.V != golfer.ID {
+					// Display the user name of the single golfer, excluding the current golfer, that previously held this record.
+					othersString = getUsername(update.OldBestCurrentGolferID.V, db)
+				}
+
+				if othersString != "" && update.OldBestFirstGolferID.Valid && update.OldBestFirstGolferID.V == golfer.ID {
+					// Report that the current golfer was the first to obtain the old record.
+					othersString = fmt.Sprintf("%s, tied by %s", golfer.Name, othersString)
+				}
+
+				parenthetical := ""
+				if othersString == "" {
+					parenthetical = dateString
+				} else if dateString == "" {
+					parenthetical = othersString
+				} else {
+					parenthetical = fmt.Sprintf("%s by %s", dateString, othersString)
+				}
+
+				if parenthetical != "" {
+					fieldValues[update.Scoring] += fmt.Sprintf(" (%s)", parenthetical)
 				}
 			}
 
-			if !update.OldBestStrokes.Valid || update.To.Strokes.Int64 < update.OldBestStrokes.Int64 {
+			if !update.OldBestStrokes.Valid || update.To.Strokes.V < update.OldBestStrokes.V {
 				if fieldValues[update.Scoring] != "" {
 					fieldValues[update.Scoring] += "  →  "
 				}
-				fieldValues[update.Scoring] += pretty.Comma(int(update.To.Strokes.Int64))
+				fieldValues[update.Scoring] += pretty.Comma(update.To.Strokes.V)
+			}
+
+			if update.FailingStrokes.Valid && update.FailingStrokes.V <= update.To.Strokes.V {
+				fieldValues[update.Scoring] += fmt.Sprintf(" (replaced failing %d)", update.FailingStrokes.V)
 			}
 		}
 	}
@@ -134,7 +168,8 @@ func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.Messa
 	// Find the dominant scoring (only "chars" if there were no improvements on bytes)
 	if fieldValues["bytes"] == "" && fieldValues["bytes/chars"] == "" {
 		embed.URL += "chars"
-		fieldValues["bytes"] = "​" // Display the bytes column in any case, to avoid confusion
+		// Zero-width space to always show bytes column, to avoid confusion.
+		fieldValues["bytes"] = "\u200b"
 	} else {
 		embed.URL += "bytes"
 	}
@@ -269,22 +304,40 @@ func logNewRecord(
 	}
 
 	announcement := &RecAnnouncement{
-		Hole:    hole,
-		Lang:    lang,
-		Golfer:  golfer,
-		Updates: [][]Golfer.RankUpdate{updates},
+		Hole:     hole,
+		Lang:     lang,
+		Golfer:   golfer,
+		GolferID: golfer.ID,
+		Updates:  [][]Golfer.RankUpdate{updates},
+	}
+
+	if lastAnnouncement == nil {
+		loadLastAnnouncement(db)
+	}
+
+	if lastAnnouncement != nil {
+		if channel, err := bot.Channel(channelID); err == nil {
+			if channel.LastMessageID != lastAnnouncement.MessageID {
+				// Discard the last announcement if another message was sent after it
+				lastAnnouncement = nil
+			}
+		} else {
+			log.Println(err)
+		}
 	}
 
 	if lastAnnouncement != nil &&
 		announcement.Lang.ID == lastAnnouncement.Lang.ID &&
 		announcement.Hole.ID == lastAnnouncement.Hole.ID &&
-		announcement.Golfer.ID == lastAnnouncement.Golfer.ID {
+		announcement.GolferID == lastAnnouncement.GolferID {
+		lastAnnouncement.Golfer = golfer
 		lastAnnouncement.Updates = append(lastAnnouncement.Updates, updates)
 		if _, err := bot.ChannelMessageEditEmbed(
-			lastAnnouncement.Message.ChannelID,
-			lastAnnouncement.Message.ID,
+			lastAnnouncement.MessageChannelID,
+			lastAnnouncement.MessageID,
 			recAnnounceToEmbed(lastAnnouncement, db),
 		); err == nil { // Note that we only return if the embed was edited successfully;
+			saveLastAnnouncement(lastAnnouncement, db)
 			return // otherwise, we'll continue forward and send it as a new message
 		}
 	}
@@ -294,7 +347,7 @@ func logNewRecord(
 	var sendErr error
 
 	if err := db.QueryRow(
-		`SELECT message FROM discord_records WHERE hole = $1 AND lang = $2`,
+		"SELECT message FROM discord_records WHERE hole = $1 AND lang = $2",
 		hole.ID, lang.ID,
 	).Scan(&prevMessage); err == nil {
 		newMessage, sendErr = bot.ChannelMessageSendComplex(channelID, &discordgo.MessageSend{
@@ -324,18 +377,44 @@ func logNewRecord(
 		log.Println(sendErr)
 	} else {
 		lastAnnouncement = announcement
-		lastAnnouncement.Message = newMessage
+		lastAnnouncement.MessageChannelID = newMessage.ChannelID
+		lastAnnouncement.MessageID = newMessage.ID
+		saveLastAnnouncement(lastAnnouncement, db)
 	}
 }
 
-// handleMessage handles a message received by the bot
-func handleMessage(session *discordgo.Session, event *discordgo.MessageCreate) {
-	if event.Author.Bot {
+func loadLastAnnouncement(db *sqlx.DB) {
+	var bytes []byte
+
+	if err := db.QueryRow(
+		"SELECT value FROM discord_state WHERE key = 'lastAnnouncement'",
+	).Scan(&bytes); err != nil {
+		log.Println(err)
 		return
 	}
 
-	// Discard the last announcement if another message was sent after it
-	if event.ChannelID == channelID {
-		lastAnnouncement = nil
+	var announcement RecAnnouncement
+	if err := json.Unmarshal(bytes, &announcement); err != nil {
+		log.Println(err)
+	} else {
+		lastAnnouncement = &announcement
+	}
+}
+
+func saveLastAnnouncement(announce *RecAnnouncement, db *sqlx.DB) {
+	bytes, err := json.Marshal(announce)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	if _, err := db.Exec(
+		`INSERT INTO discord_state (key, value) VALUES
+			('lastAnnouncement', $1)
+			ON CONFLICT ON CONSTRAINT discord_state_pkey
+			DO UPDATE SET value = $1`,
+		bytes,
+	); err != nil {
+		log.Println(err)
 	}
 }

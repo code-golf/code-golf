@@ -1,0 +1,5 @@
+<nav class=tabs>
+    <a {{ if ne .Path "/admin"           }} href=/admin           {{ end }}>Info</a>
+    <a {{ if ne .Path "/admin/banners"   }} href=/admin/banners   {{ end }}>Banners</a>
+    <a {{ if ne .Path "/admin/solutions" }} href=/admin/solutions {{ end }}>Solutions</a>
+</nav>

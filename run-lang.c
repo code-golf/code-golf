@@ -8,6 +8,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/mount.h>
 #include <sys/prctl.h>
 #include <sys/stat.h>
@@ -16,11 +17,23 @@
 #include <unistd.h>
 
 // Not defined in alpine yet :-(
-#define __NR_epoll_wait2  441
-#define __NR_memfd_secret 447
-#define __NR_futex_waitv  449
-#define __NR_cachestat    451
-#define __NR_fchmodat2    452
+#define __NR_epoll_wait2             441
+#define __NR_quotactl_fd             443
+#define __NR_memfd_secret            447
+#define __NR_process_mrelease        448
+#define __NR_futex_waitv             449
+#define __NR_set_mempolicy_home_node 450
+#define __NR_cachestat               451
+#define __NR_fchmodat2               452
+#define __NR_map_shadow_stack        453
+#define __NR_futex_wake              454
+#define __NR_futex_wait              455
+#define __NR_futex_requeue           456
+#define __NR_statmount               457
+#define __NR_listmount               458
+#define __NR_lsm_get_self_attr       459
+#define __NR_lsm_set_self_attr       460
+#define __NR_lsm_list_modules        461
 
 #define NOBODY 65534
 
@@ -50,10 +63,6 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
     if (mount("tmpfs", "/dev", "tmpfs", MS_NOSUID, NULL) < 0)
         ERR_AND_EXIT("mount /dev");
 
-    // Elixir walks /dev/fd on exit closing each handle.
-    if (symlink("/proc/self/fd", "/dev/fd") < 0)
-        ERR_AND_EXIT("symlink /dev/fd");
-
     if (mknod("/dev/null", S_IFCHR|0666, makedev(1, 3)) < 0)
         ERR_AND_EXIT("mknod /dev/null");
 
@@ -71,13 +80,21 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
     // Not every lang has /proc.
     if (mount("proc", "/proc", "proc", MS_NODEV|MS_NOEXEC|MS_NOSUID, NULL) == 0) {
         // Clobber /proc/meminfo. It can be used to inject state.
-        // FIXME This escapes the container and affects ALL /proc mounts inc host.
-        if (chmod("/proc/meminfo", 0) < 0)
-            ERR_AND_EXIT("chmod /proc/meminfo");
+        if (mount("/dev/null", "/proc/meminfo", NULL, MS_BIND, NULL) < 0)
+            ERR_AND_EXIT("mount /proc/meminfo");
+
+        // Clobber /proc/stat. It can be used to inject state. V panics :-(
+        if (strcmp(argv[0], "/usr/bin/v") != 0)
+            if (mount("/dev/null", "/proc/stat", NULL, MS_BIND, NULL) < 0)
+                ERR_AND_EXIT("mount /proc/stat");
 
         // Clobber /proc/sys. It can be used to inject state.
         if (mount("tmpfs", "/proc/sys", "tmpfs", MS_NODEV|MS_NOEXEC|MS_NOSUID|MS_RDONLY, NULL) < 0)
             ERR_AND_EXIT("mount /proc/sys");
+
+        // Elixir walks /dev/fd on exit closing each handle.
+        if (symlink("/proc/self/fd", "/dev/fd") < 0)
+            ERR_AND_EXIT("symlink /dev/fd");
 
         // Allow /proc/self/fd/0 to be read by the lang after we change user.
         if (chown("/proc/self/fd/0", NOBODY, NOBODY) < 0)
@@ -98,6 +115,8 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
     if (setuid(NOBODY) < 0)
         ERR_AND_EXIT("setuid");
 
+// Syscalls are architecture-specific and we only deploy on x86-64.
+#if defined(__x86_64__)
     // sudo journalctl -f _AUDIT_TYPE_NAME=SECCOMP
     // ... SECCOMP ... syscall=xxx ...
     struct sock_filter filter[] = {
@@ -443,9 +462,13 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         // ALLOW(landlock_add_rule),       // 445
         // ALLOW(landlock_create_ruleset), // 444
         // ALLOW(landlock_restrict_self),  // 446
+        // ALLOW(lsm_get_self_attr),       // 459
+        // ALLOW(lsm_list_modules),        // 461
+        // ALLOW(lsm_set_self_attr),       // 460
+        // ALLOW(map_shadow_stack),        // 453
         ALLOW(prctl),                      // 157
-        // ALLOW(process_madvise)          // 440
-        // ALLOW(process_mrelease)         // 448
+        // ALLOW(process_madvise),         // 440
+        // ALLOW(process_mrelease),        // 448
         // ALLOW(process_vm_readv),        // 310
         // ALLOW(process_vm_writev),       // 311
         ALLOW(ptrace),                     // 101 (Used by DefAssembler)
@@ -508,10 +531,13 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         // ALLOW(semtimedop), // 220
 
         // Futexes
-        ALLOW(futex),           // 202
-        ALLOW(futex_waitv),     // 449
-        ALLOW(get_robust_list), // 274
-        ALLOW(set_robust_list), // 273
+        ALLOW(futex),            // 202
+        // ALLOW(futex_requeue), // 456
+        // ALLOW(futex_wait),    // 455
+        // ALLOW(futex_waitv),   // 449
+        // ALLOW(futex_wake),    // 454
+        ALLOW(get_robust_list),  // 274
+        ALLOW(set_robust_list),  // 273
 
         // System V Message Queue
         // ALLOW(msgctl), // 71
@@ -583,10 +609,12 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         // ALLOW(umount2),       // 166
 
         // Filesystem (unprivileged)
-        ALLOW(fstatfs), // 138
-        ALLOW(statfs),  // 137
-        ALLOW(sysfs),   // 139
-        ALLOW(ustat),   // 136
+        ALLOW(fstatfs),      // 138
+        // ALLOW(listmount), // 458
+        ALLOW(statfs),       // 137
+        // ALLOW(statmount), // 457
+        ALLOW(sysfs),        // 139
+        ALLOW(ustat),        // 136
 
         // Miscellaneous (privileged)
         ALLOW(ioperm),             // 173 (Used by FreeBASIC)
@@ -641,6 +669,9 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
 
     if (prctl(PR_SET_SECCOMP, SECCOMP_MODE_FILTER, &fprog) < 0)
         ERR_AND_EXIT("prctl(SECCOMP)");
+#else
+    fputs("seccomp is disabled!\n", stderr);
+#endif
 
     execvp(argv[0], argv);
     ERR_AND_EXIT("execvp");

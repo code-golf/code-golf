@@ -1,11 +1,11 @@
 package routes
 
 import (
-	"database/sql"
 	"net/http"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/null"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
 )
@@ -22,10 +22,11 @@ func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := struct {
-		HoleID, LangID, Scoring string
-		LangsShown              map[string]bool
-		Pager                   *pager.Pager
-		Rows                    []row
+		Hole, PrevHole, NextHole *config.Hole
+		HoleID, LangID, Scoring  string
+		LangsShown               map[string]bool
+		Pager                    *pager.Pager
+		Rows                     []row
 	}{
 		HoleID:     param(r, "hole"),
 		LangID:     param(r, "lang"),
@@ -42,6 +43,10 @@ func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if data.Hole = config.HoleByID[data.HoleID]; data.Hole != nil {
+		data.PrevHole, data.NextHole = getPrevNextHole(r, data.Hole)
+	}
+
 	if err := session.Database(r).Select(
 		&data.Rows,
 		` SELECT hole, lang, login name, strokes, rank, submitted, tie_count
@@ -51,8 +56,8 @@ func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 		     AND (lang = $2 OR $2 IS NULL)
 		     AND scoring = $3
 		ORDER BY submitted DESC LIMIT $4`,
-		sql.NullString{String: data.HoleID, Valid: data.HoleID != "all"},
-		sql.NullString{String: data.LangID, Valid: data.LangID != "all"},
+		null.New(data.HoleID, data.HoleID != "all"),
+		null.New(data.LangID, data.LangID != "all"),
 		data.Scoring,
 		pager.PerPage,
 	); err != nil {

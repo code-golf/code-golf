@@ -1,6 +1,6 @@
 use t;
 
-is post-solution(|.value)<Err>, '', .key for
+is post-solution(|.value)<runs>[0]<stderr>, '', .key for
     awk-ordchr  => \(:lang<awk>        :code('@load "ordchr"')),
     js-icu      => \(:lang<javascript> :code('/\p{Emoji}/u')),
     nim-re      => \(:lang<nim>        :code('import re;echo "a".match(re"a")')),
@@ -12,15 +12,15 @@ is post-solution(|.value)<Err>, '', .key for
     tcl-min     => \(:lang<tcl>        :code('puts [expr min(5,6)]'));
 
 # AVX 512 wouldn't work on live, yet.
-like post-solution(:lang<j> :code('echo JVERSION'))<Out>, / '/j64/linux' /,
-    'J engine is baseline AMD 64 (no AVX 512)';
+like post-solution(:lang<j> :code('echo JVERSION'))<runs>[0]<stdout>,
+    / '/j64/linux' /, 'J engine is baseline AMD 64 (no AVX 512)';
 
 # Trivial Tex Quine.
 my $code = "Trivial\n";
-my $err  = 'Quine in TeX must have at least one &#39;\&#39; character.';
+my $err  = ｢Quine in TeX must have at least one '\' character.｣;
 my %res  = post-solution :hole<quine> :lang<tex> :$code;
 
-is-deeply %res<Err Exp Pass>:p, ( :Err($err) :Exp($code) :!Pass ),
-    'Trivial Tex Quine is blocked';
+is-deeply %res<runs>[0]<answer pass stderr>:p,
+    ( :answer($code) :!pass :stderr($err) ), 'Trivial Tex Quine is blocked';
 
 done-testing;

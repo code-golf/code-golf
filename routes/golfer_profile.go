@@ -30,9 +30,10 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := struct {
-		Connections []oauth.Connection
-		Followers   []string
-		Following   []struct {
+		CategoryOverview map[string]map[string]int
+		Connections      []oauth.Connection
+		Followers        []string
+		Following        []struct {
 			Bytes, Chars, Rank int
 			Country            config.NullCountry
 			Name               string
@@ -42,11 +43,12 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		Trophies       map[string]map[string]int
 		Wall           []row
 	}{
-		Connections:    oauth.GetConnections(db, golfer.ID, true),
-		Langs:          config.LangList,
-		OAuthProviders: oauth.Providers,
-		Trophies:       map[string]map[string]int{},
-		Wall:           make([]row, 0, limit),
+		CategoryOverview: map[string]map[string]int{"bytes": {}, "chars": {}},
+		Connections:      oauth.GetConnections(db, golfer.ID, true),
+		Langs:            config.LangList,
+		OAuthProviders:   oauth.Providers,
+		Trophies:         map[string]map[string]int{},
+		Wall:             make([]row, 0, limit),
 	}
 
 	rows, err := db.Query(
@@ -119,6 +121,37 @@ rows:
 
 	if err := rows.Err(); err != nil {
 		panic(err)
+	}
+
+	var categories []struct {
+		Category, Scoring string
+		Points            int
+	}
+	if err := db.Select(
+		&categories,
+		`WITH max_points_per_hole AS (
+		    SELECT DISTINCT ON (hole, scoring) hole, scoring, points
+		      FROM rankings
+		     WHERE user_id = $1
+		  ORDER BY hole, scoring, points DESC
+		) SELECT $2::hstore->hole::text category,
+		         ROUND(AVG((points)))   points,
+		         scoring                scoring
+		    FROM max_points_per_hole
+		GROUP BY scoring, category`,
+		golfer.ID,
+		config.HoleCategoryHstore,
+	); err != nil {
+		panic(err)
+	}
+
+	// Ensure we have no missing categories.
+	for _, hole := range config.HoleList {
+		data.CategoryOverview["bytes"][hole.Category] = 0
+		data.CategoryOverview["chars"][hole.Category] = 0
+	}
+	for _, cat := range categories {
+		data.CategoryOverview[cat.Scoring][cat.Category] = cat.Points
 	}
 
 	rows, err = db.Query(

@@ -55,9 +55,9 @@ func morse(reverse bool) []Run {
 		string(shuffle([]byte("ABCDEFGHIJKLMNOPQRSTUVWXYZ"))),
 	}), " ")
 
-	runs := make([]Run, 2)
+	tests := make([][]test, 2)
 
-	for i := range runs {
+	for i := range tests {
 		out := ""
 		arg := strings.TrimSpace(text[:36])
 
@@ -71,10 +71,10 @@ func morse(reverse bool) []Run {
 		if reverse {
 			arg, out = out, arg
 		}
-		runs[i] = Run{Args: []string{arg}, Answer: out}
+		tests[i] = []test{{arg, out}}
 
 		text = text[36:]
 	}
 
-	return runs
+	return outputTests(tests...)
 }

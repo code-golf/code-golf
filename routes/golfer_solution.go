@@ -14,15 +14,17 @@ import (
 // GET /golfers/{golfer}/{hole}/{lang}/{scoring}
 func golferSolutionGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		Hole *config.Hole
-		Lang *config.Lang
-		Log  []struct {
+		Failing bool
+		Hole    *config.Hole
+		Lang    *config.Lang
+		Log     []struct {
 			Bytes     int
 			Chars     *int
 			Submitted time.Time
 		}
-		Rank, RankOverall, Row, RowOverall int
+		Rank, RankOverall, Row, RowOverall *int
 		Scoring                            string
+		Tested                             time.Time
 	}{
 		Hole:    config.HoleByID[param(r, "hole")],
 		Lang:    config.LangByID[param(r, "lang")],
@@ -38,9 +40,10 @@ func golferSolutionGET(w http.ResponseWriter, r *http.Request) {
 	golfer := session.GolferInfo(r).Golfer
 	if err := session.Database(r).Get(
 		&data,
-		`SELECT rank, rank_overall, row, row_overall
-		   FROM rankings
-		  WHERE hole = $1 AND lang = $2 AND scoring = $3 AND user_id = $4`,
+		`  SELECT failing, rank, rank_overall, row, row_overall, tested
+		     FROM solutions
+		LEFT JOIN rankings USING (hole, lang, scoring, user_id)
+		    WHERE hole = $1 AND lang = $2 AND scoring = $3 AND user_id = $4`,
 		data.Hole.ID,
 		data.Lang.ID,
 		data.Scoring,
