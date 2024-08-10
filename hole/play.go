@@ -258,7 +258,7 @@ func Play(
 	// Holes with fixed test cases.
 	case "css-colors":
 		runs = outputTests(shuffle(fixedTests(hole.ID)))
-	case "emojify", "mnist", "rock-paper-scissors-spock-lizard",
+	case "emojify", "mnist", "pokémon", "rock-paper-scissors-spock-lizard",
 		"united-states":
 		runs = outputMultirunTests(fixedTests(hole.ID))
 	case "floyd-steinberg-dithering", "hexdump", "proximity-grid", "star-wars-opening-crawl":
