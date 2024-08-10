@@ -167,7 +167,9 @@ layout.registerComponentFactoryFunction('arg', async container => {
 
     await afterDOM();
     if (isSandbox) {
-        $('#addArgBtn').onclick = () => { items.append(<span contenteditable></span>) };
+        $('#addArgBtn').onclick = () => {
+            items.append(<span contenteditable></span>);
+        };
         $('#removeArgBtn').onclick = () => {
             if (items.lastElementChild) items.removeChild(items.lastElementChild);
         };
