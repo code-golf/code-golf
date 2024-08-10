@@ -253,7 +253,7 @@ async function upsertNotes() {
 };
 
 function parseSubstitutions() {
-    const value = $<HTMLInputElement>('#notes-substitutions').value;
+    const { value } = $<HTMLInputElement>('#notes-substitutions');
     localStorage.setItem(`${getLang()}-substitutions`, value);
     const pattern = /s\/((?:[^\/]|\\\/)*)\/((?:[^\/]|\\\/)*)\/([dgimsuvy]*)/g;
     substitutions = [...value.matchAll(pattern)]
