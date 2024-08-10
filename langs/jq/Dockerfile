@@ -1,15 +1,15 @@
 FROM alpine:3.20 AS builder
 
-ARG RELEASE=1.7.1
+ENV VER=1.7.1
 
 RUN apk add --no-cache build-base curl
 
-RUN curl -L https://github.com/jqlang/jq/releases/download/jq-$RELEASE/jq-$RELEASE.tar.gz | tar xz
+RUN curl -L https://github.com/jqlang/jq/releases/download/jq-$VER/jq-$VER.tar.gz | tar xz
 
-WORKDIR /jq-$RELEASE
+WORKDIR /jq-$VER
 
 RUN ./configure --with-oniguruma=builtin \
- && make -j8 && make check && make install
+ && make -j`nproc` && make check && make install
 
 FROM codegolf/lang-base
 
