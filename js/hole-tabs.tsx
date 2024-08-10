@@ -186,6 +186,8 @@ function makeHoleLangNotesEditor(parent: HTMLDivElement) {
         dispatch: tr => {
             if (!holeLangNotesEditor) return;
             const result = holeLangNotesEditor.update([tr]) as unknown;
+            const content = tr.state.doc.toString();
+            $<HTMLButtonElement>("#upsert-notes-btn").disabled = content === holeLangNotesContent;
             return result;
         },
         parent,
@@ -235,20 +237,37 @@ layout.registerComponentFactoryFunction('code', async container => {
     setCodeForLangAndSolution(editor);
 });
 
+async function upsertNotes() {
+    $<HTMLButtonElement>("#upsert-notes-btn").disabled = true;
+    const content = holeLangNotesEditor!.state.doc.toString();
+    var resp = await fetch(
+        `/api/notes/${hole}/${getLang()}`,
+        content ? { method: 'PUT', body: content} : { method: 'DELETE' }
+    );
+    if (resp.status !== 200) $<HTMLButtonElement>("#upsert-notes-btn").disabled = false;
+    else holeLangNotesContent = content;
+};
+
 layout.registerComponentFactoryFunction('holeLangNotes', async container => {
     container.setTitle(getTitle('holeLangNotes'));
     autoFocus(container);
 
-    const header = (<div>Upsert btn
-    </div>) as HTMLElement;
+    const header = (<header>
+        <div>
+            <input placeholder="Regex replace expression"></input>
+            <button class="btn blue" id="convert-notes-btn">Convert & Run</button>
+        </div>
+        <button class="btn blue" id="upsert-notes-btn" disabled>Save</button>
+    </header>) as HTMLElement;
     const editorDiv = <div id="holeLangNotesEditor"></div> as HTMLDivElement;
-
-    makeHoleLangNotesEditor(editorDiv);
 
     container.element.id = 'holeLangNotesEditor-section';
     container.element.append(editorDiv, header);
 
     await afterDOM();
+    makeHoleLangNotesEditor(editorDiv);
+
+    $("#upsert-notes-btn").onclick = upsertNotes;
     
     updateHoleLangNotesContent();
 });
@@ -361,7 +380,7 @@ const defaultLayout: LayoutConfig = {
 };
 
 function isSponsor(){
-    return $('golferInfo')?.dataset.isSponsor;
+    return true || $('golferInfo')?.dataset.isSponsor;
 }
 function hasNotes(){
     return $('golferInfo')?.dataset.hasNotes;
