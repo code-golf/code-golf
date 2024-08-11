@@ -646,6 +646,25 @@ example    = '''
 n*
 '''
 
+[Groovy]
+args       = [ '/usr/bin/groovywrapper', '-' ]
+experiment = 1145
+size       = '0 MiB'
+version    = '4.0.22'
+website    = 'https://groovy-lang.org'
+example    = '''
+// Printing
+println "Hello, World!"
+
+// Looping
+for (i in 0..9)
+    println i
+
+// Accessing arguments
+for (arg in args)
+    println arg
+'''
+
 [Haskell]
 args    = [ '/usr/bin/haskell', '-' ]
 size    = '388 MiB'
