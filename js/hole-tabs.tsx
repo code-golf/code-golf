@@ -241,7 +241,7 @@ layout.registerComponentFactoryFunction('code', async container => {
 async function upsertNotes() {
     $<HTMLButtonElement>('#upsert-notes-btn').disabled = true;
     const content = holeLangNotesEditor!.state.doc.toString();
-    if (content || isSponsor()) {
+    if (!content || isSponsor()) {
         const resp = await fetch(
             `/api/notes/${hole}/${getLang()}`,
             content ? { method: 'PUT', body: content} : { method: 'DELETE' },
