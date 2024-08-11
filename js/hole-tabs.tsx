@@ -537,9 +537,15 @@ function setWide(b: boolean) {
     document.documentElement.classList.toggle('full-width', b);
 }
 
-$('#make-wide').addEventListener('click', () => setWide(true));
+function toggleTall() {
+    document.documentElement.classList.toggle('full-height');
+}
 
+$('#make-wide').addEventListener('click', () => setWide(true));
 $('#make-narrow').addEventListener('click', () => setWide(false));
+
+$('#make-tall').addEventListener('click', () => toggleTall());
+$('#make-short').addEventListener('click', () => toggleTall());
 
 function addPoolItem(componentType: string) {
     poolElements[componentType]?.remove();
