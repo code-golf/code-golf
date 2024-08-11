@@ -40,6 +40,7 @@ import { j }                  from 'codemirror-lang-j';
 import { janet }              from 'codemirror-lang-janet';
 import { java }               from '@codemirror/lang-java';
 import { javascriptLanguage } from '@codemirror/lang-javascript';
+import { jq }                 from 'codemirror-lang-jq';
 import { julia }              from '@codemirror/legacy-modes/mode/julia';
 import { k }                  from 'codemirror-lang-k';
 import { lua }                from '@codemirror/legacy-modes/mode/lua';
@@ -143,7 +144,7 @@ export const extensions : { [key: string]: any } = {
     'janet':         janet(),
     'java':          java(),
     'javascript':    javascript,
-    // TODO jq
+    'jq':            jq(),
     'julia':         StreamLanguage.define(julia),
     'k':             k(),
     'lisp':          StreamLanguage.define(commonLisp),
