@@ -48,21 +48,16 @@
 {{ $showWhitespace := and .Golfer (index .Golfer.Settings "hole" "show-whitespace") }}
 <main id="hole-{{ .Data.Hole.ID }}" {{ if $showWhitespace }} class=show-whitespace {{ end }}>
     <header>
-        <div>
-            <div id="hole-lang">
-                <h1>
-                {{ with .Data.Authors }}
-                    <button data-dialog=authors-dialog id=authors-btn>
-                    {{ range . }}
-                        <img src="/golfers/{{ . }}/avatar/72">
-                    {{ end }}
-                    </button>
-                {{ end }}
-                    {{ .Data.Hole.Name }}
-                </h1>
-                <details open><summary> Language </summary></details>
-            </div>
-        </div>
+        <h1>
+        {{ with .Data.Authors }}
+            <button data-dialog=authors-dialog id=authors-btn>
+            {{ range . }}
+                <img src="/golfers/{{ . }}/avatar/72">
+            {{ end }}
+            </button>
+        {{ end }}
+            {{ .Data.Hole.Name }}
+        </h1>
         <nav>
         {{ if .Golfer }}
             <button class="btn blue" data-dialog=settings-dialog title=Settings>

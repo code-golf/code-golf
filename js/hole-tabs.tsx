@@ -52,18 +52,6 @@ let substitutions: {pattern: RegExp, replacement: string}[] = [];
 
 init(true, setSolution, setCodeForLangAndSolution, updateReadonlyPanels, () => editor);
 
-// Handle showing/hiding lang picker
-// can't be done in CSS because the picker is one parent up
-const langToggle = $<HTMLDetailsElement>('#hole-lang details');
-langToggle.addEventListener('toggle', () => {
-    setLangPickerOpen(langToggle.open);
-});
-function setLangPickerOpen(open: boolean) {
-    langToggle.open = open;
-    $('#picker').classList.toggle('hide', !open);
-    saveLayout();
-}
-
 const goldenContainer = $('#golden-container');
 
 /**
@@ -434,14 +422,12 @@ const defaultViewState: ViewState = {
     version: 1,
     config: defaultLayout,
     isWide: false,
-    langPickerOpen: true,
 };
 
 interface ViewState {
     version: 1;
     config: ResolvedLayoutConfig | LayoutConfig;
     isWide: boolean;
-    langPickerOpen: boolean;
 }
 
 function getViewState(): ViewState {
@@ -449,7 +435,6 @@ function getViewState(): ViewState {
         version: 1,
         config: layout.saveLayout(),
         isWide,
-        langPickerOpen: langToggle.open,
     };
 }
 
@@ -473,7 +458,6 @@ async function applyViewState(viewState: ViewState) {
     toggleMobile(false);
     Object.keys(poolElements).map(removePoolItem);
     setWide(viewState.isWide);
-    setLangPickerOpen(viewState.langPickerOpen);
     let { config } = viewState;
     if (LayoutConfig.isResolved(config))
         config = LayoutConfig.fromResolved(config);
