@@ -1,0 +1,17 @@
+#!/bin/sh -e
+
+export ODIN_ROOT=/usr/local/dist
+export PATH=$ODIN_ROOT:$PATH
+
+[ "$1" = "version" ] && exec /usr/local/dist/odin version
+
+cd /tmp
+
+# Compile
+cat - > code.odin
+/usr/local/dist/odin build code.odin -file -build-mode:exe -o:none -out:code.exe
+rm code.odin
+
+# Execute
+shift
+exec ./code.exe "$@"
