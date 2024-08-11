@@ -312,7 +312,7 @@ func play(
 	case "jq":
 		// Prevent trivial quines. Error out and return early.
 		if hole.ID == "quine" && json.Valid([]byte(code)) {
-			run.Stderr = "Quine in jq musn't be valid JSON."
+			run.Stderr = "Quine in jq must not be valid JSON."
 			return nil
 		}
 	case "k":
