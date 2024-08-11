@@ -7,6 +7,7 @@ import {
     ReadonlyPanelsData, setCodeForLangAndSolution, getCurrentSolutionCode,
     initDeleteBtn, initCopyJSONBtn, initOutputDiv, getScorings, replaceUnprintablesInOutput,
     updateLocalStorage,
+    ctrlEnter,
 } from './_hole-common';
 
 const editor = new EditorView({
@@ -51,7 +52,9 @@ $('#restoreLink').onclick = e => {
 };
 
 // Wire submit to clicking a button and a keyboard shortcut.
-$('#runBtn').onclick = () => submit(editor, updateReadonlyPanels);
+const closuredSubmit = () => submit(editor, updateReadonlyPanels);
+$('#runBtn').onclick = closuredSubmit;
+window.onkeydown = ctrlEnter(closuredSubmit);
 
 initCopyJSONBtn($('#copy'));
 initDeleteBtn($('#deleteBtn'), langs);
