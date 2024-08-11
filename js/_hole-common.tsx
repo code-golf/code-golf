@@ -861,10 +861,10 @@ function replacePlaceholdersInRange(selection: Selection, range: Range) {
     return text;
 }
 
-export function ctrlEnter(func: Function){
-    return function(e: KeyboardEvent){
+export function ctrlEnter(func: Function) {
+    return function (e: KeyboardEvent) {
         if ((e.ctrlKey || e.metaKey) && e.key == 'Enter') {
             return func();
-         }
-    }
+        }
+    };
 }

@@ -223,10 +223,9 @@ layout.registerComponentFactoryFunction('code', async container => {
     const closuredSubmit = () => submit(editor, updateReadonlyPanels);
     $('#runBtn').onclick = closuredSubmit;
     $('#editor').onkeydown = ctrlEnter(closuredSubmit);
-    $('#holeLangNotesEditor-section').onkeydown = ctrlEnter(async () =>
-    {
+    $('#holeLangNotesEditor-section').onkeydown = ctrlEnter(async () => {
         if (await convertNotesAndRun()) {
-            await upsertNotes()
+            await upsertNotes();
         }
     });
 
@@ -300,7 +299,7 @@ layout.registerComponentFactoryFunction('holeLangNotes', async container => {
     $('#upsert-notes-btn').onclick = upsertNotes;
     $('#convert-notes-btn').onclick = convertNotesAndRun;
     $('#notes-substitutions').oninput = parseSubstitutions;
-    
+
     await afterDOM();
     updateHoleLangNotesContent();
     parseSubstitutions();
