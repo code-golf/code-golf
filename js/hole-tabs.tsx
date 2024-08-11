@@ -336,7 +336,7 @@ const titles: Record<string, string | undefined> = {
     arg: 'Arguments',
     diff: 'Diff',
     code: 'Code',
-    langWiki: 'Language Wiki',
+    langWiki: 'Wiki',
     holeLangNotes: 'Notes',
 };
 
