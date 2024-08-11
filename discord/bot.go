@@ -319,14 +319,19 @@ func logNewRecord(
 		Updates:  [][]Golfer.RankUpdate{updates},
 	}
 
+	channelID := channel(hole, lang)
+
 	if lastAnnouncement == nil {
 		loadLastAnnouncement(db)
 	}
 
 	if lastAnnouncement != nil {
-		if channel, err := bot.Channel(channel(hole, lang)); err == nil {
+		if lastAnnouncement.MessageChannelID != channelID {
+			// The last message went to a different channel. We can't edit it.
+			lastAnnouncement = nil
+		} else if channel, err := bot.Channel(channelID); err == nil {
 			if channel.LastMessageID != lastAnnouncement.MessageID {
-				// Discard the last announcement if another message was sent after it
+				// Another message was sent after the last announcement. Don't edit it.
 				lastAnnouncement = nil
 			}
 		} else {
@@ -351,39 +356,48 @@ func logNewRecord(
 	}
 
 	var prevMessage string
+	var prevChannelID string
 	var newMessage *discordgo.Message
 	var sendErr error
 
 	if err := db.QueryRow(
-		"SELECT message FROM discord_records WHERE hole = $1 AND lang = $2",
+		"SELECT message, channel FROM discord_records WHERE hole = $1 AND lang = $2",
 		hole.ID, lang.ID,
-	).Scan(&prevMessage); err == nil {
-		newMessage, sendErr = bot.ChannelMessageSendComplex(channel(hole, lang), &discordgo.MessageSend{
-			Embed: recAnnounceToEmbed(announcement, db),
-			Reference: &discordgo.MessageReference{
-				MessageID: prevMessage,
-				ChannelID: channel(hole, lang),
-			},
-		})
+	).Scan(&prevMessage, &prevChannelID); err == nil {
+		if channelID == prevChannelID {
+			newMessage, sendErr = bot.ChannelMessageSendComplex(channelID, &discordgo.MessageSend{
+				Embed: recAnnounceToEmbed(announcement, db),
+				Reference: &discordgo.MessageReference{
+					MessageID: prevMessage,
+					ChannelID: channelID,
+				},
+			})
+		} else {
+			// We can't reply to a message in a different channel. Just link to it.
+			newMessage, sendErr = bot.ChannelMessageSendComplex(channelID, &discordgo.MessageSend{
+				Content: fmt.Sprintf("Previous: https://discord.com/channels/%s/%s/%s", guildID, prevChannelID, prevMessage),
+				Embed:   recAnnounceToEmbed(announcement, db),
+			})
+		}
 	} else if errors.Is(err, sql.ErrNoRows) {
-		newMessage, sendErr = bot.ChannelMessageSendEmbed(channel(hole, lang), recAnnounceToEmbed(announcement, db))
+		newMessage, sendErr = bot.ChannelMessageSendEmbed(channelID, recAnnounceToEmbed(announcement, db))
 	} else {
-		log.Println(err)
-	}
-
-	if _, err := db.Exec(
-		`INSERT INTO discord_records (hole, lang, message) VALUES
-			($1, $2, $3)
-			ON CONFLICT ON CONSTRAINT discord_records_pkey
-			DO UPDATE SET message = $3`,
-		hole.ID, lang.ID, newMessage.ID,
-	); err != nil {
 		log.Println(err)
 	}
 
 	if sendErr != nil {
 		log.Println(sendErr)
 	} else {
+		if _, err := db.Exec(
+			`INSERT INTO discord_records (hole, lang, message, channel) VALUES
+				($1, $2, $3, $4)
+				ON CONFLICT ON CONSTRAINT discord_records_pkey
+				DO UPDATE SET message = $3, channel = $4`,
+			hole.ID, lang.ID, newMessage.ID, newMessage.ChannelID,
+		); err != nil {
+			log.Println(err)
+		}
+
 		lastAnnouncement = announcement
 		lastAnnouncement.MessageChannelID = newMessage.ChannelID
 		lastAnnouncement.MessageID = newMessage.ID
