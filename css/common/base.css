@@ -92,6 +92,7 @@ h2 { font-size: 1.50rem }
 h3 { font-size: 1.25rem }
 
 #page-header {
+    align-items: center;
     border-bottom: 2px solid var(--color);
     display: flex;
     flex-wrap: wrap;
