@@ -26,58 +26,10 @@
     </div>
 {{ end }}{{ end }}
 
-{{ with .Data.Authors }}
-    <dialog id=authors-dialog>
-        <div>
-            <h1>{{ $.Data.Hole.Name }} Authors</h1>
-            <ul>
-            {{ range . }}
-                <li>
-                    <a href="/golfers/{{ . }}">
-                        <img src="/golfers/{{ . }}/avatar/48">
-                        {{ . }}
-                    </a>
-            {{ end }}
-            </ul>
-        </div>
-    </dialog>
-{{ end }}
+{{ template "hole-header" . }}
 
 {{ $showWhitespace := and .Golfer (index .Golfer.Settings "hole" "show-whitespace") }}
 <main id="hole-{{ .Data.Hole.ID }}" {{ if $showWhitespace }} class=show-whitespace {{ end }}>
-    <header>
-        <h1>
-        {{ with .Data.Authors }}
-            <button data-dialog=authors-dialog id=authors-btn>
-            {{ range . }}
-                <img src="/golfers/{{ . }}/avatar/72">
-            {{ end }}
-            </button>
-        {{ end }}
-            {{ .Data.Hole.Name }}
-        </h1>
-        <nav>
-        {{ if .Golfer }}
-            <button class="btn blue" data-dialog=settings-dialog title=Settings>
-                {{ svg "gear-fill" }}
-                Settings
-            </button>
-        {{ end }}
-        {{ with .Data.PrevHole }}
-            <a class="btn orange" href="{{ .ID }}" title="{{ .Name }}">
-                {{ svg "chevron-double-left-light" }} Prev
-            </a>
-        {{ end }}
-            <a class="btn purple" href=random>
-                {{ svg "dice-light" }} Random
-            </a>
-        {{ with .Data.NextHole }}
-            <a class="btn orange" href="{{ .ID }}" title="{{ .Name }}">
-                {{ svg "chevron-double-right-light" }} Next
-            </a>
-        {{ end }}
-        </nav>
-    </header>
     <details id=details {{ if not .Data.HideDetails }}open{{ end }}>
         <summary>Details</summary>
         {{ template "hole-details" . }}
