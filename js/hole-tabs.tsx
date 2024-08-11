@@ -242,12 +242,14 @@ layout.registerComponentFactoryFunction('code', async container => {
 async function upsertNotes() {
     $<HTMLButtonElement>('#upsert-notes-btn').disabled = true;
     const content = holeLangNotesEditor!.state.doc.toString();
-    const resp = await fetch(
-        `/api/notes/${hole}/${getLang()}`,
-        content ? { method: 'PUT', body: content} : { method: 'DELETE' },
-    );
-    if (resp.status !== 204) $<HTMLButtonElement>('#upsert-notes-btn').disabled = false;
-    else holeLangNotesContent = content;
+    if (content || isSponsor()) {
+        const resp = await fetch(
+            `/api/notes/${hole}/${getLang()}`,
+            content ? { method: 'PUT', body: content} : { method: 'DELETE' },
+        );
+        if (resp.status !== 204) $<HTMLButtonElement>('#upsert-notes-btn').disabled = false;
+        else holeLangNotesContent = content;
+    }
 };
 
 function parseSubstitutions() {
