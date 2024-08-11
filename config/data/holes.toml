@@ -31,12 +31,13 @@ synopsis = 'Print the lyrics to the song “The 12 Days of Christmas”.'
 preamble = '''
 <p>Print the lyrics to the song <b>The 12 Days of Christmas</b>:</p>
 
-<blockquote>On the First day of Christmas
+<pre>
+On the First day of Christmas
 My true love sent to me
 A Partridge in a Pear Tree.
-<br><br>
+
 …
-<br><br>
+
 On the Twelfth day of Christmas
 My true love sent to me
 Twelve Drummers Drumming,
@@ -51,7 +52,7 @@ Four Calling Birds,
 Three French Hens,
 Two Turtle Doves, and
 A Partridge in a Pear Tree.
-</blockquote>
+</pre>
 '''
 
 ['24 Game']
@@ -90,20 +91,21 @@ synopsis = 'Print the lyrics to the song “99 Bottles of Beer”.'
 preamble = '''
 <p>Print the lyrics to the song <b>99 Bottles of Beer</b>:</p>
 
-<blockquote>99 bottles of beer on the wall, 99 bottles of beer.
+<pre>
+99 bottles of beer on the wall, 99 bottles of beer.
 Take one down and pass it around, 98 bottles of beer on the wall.
-<br><br>
+
 98 bottles of beer on the wall, 98 bottles of beer.
 Take one down and pass it around, 97 bottles of beer on the wall.
-<br><br>
+
 …
-<br><br>
+
 1 bottle of beer on the wall, 1 bottle of beer.
 Take one down and pass it around, no more bottles of beer on the wall.
-<br><br>
+
 No more bottles of beer on the wall, no more bottles of beer.
 Go to the store and buy some more, 99 bottles of beer on the wall.
-</blockquote>
+</pre>
 '''
 
 ['Abundant Numbers']
@@ -319,7 +321,7 @@ F: / ? O _ o DEL
 </pre>
 '''
 
-['Billiard']
+[Billiards]
 category = 'Art'
 experiment = 456
 synopsis = 'Draw a path of a billiard ball.'
@@ -3518,7 +3520,8 @@ synopsis = 'Print the lyrics to the song “The Name Game”.'
 preamble = '''
 <p>Print the lyrics to the song <b>The Name Game</b>:
 
-<blockquote>The name game!
+<pre>
+The name game!
 
 Shirley!
 Shirley, Shirley, bo Birley
@@ -3538,7 +3541,7 @@ Bonana fanna fo Fick
 Fee fy mo Mick, Nick!
 
 The name game!
-</blockquote>
+</pre>
 '''
 
 ['Time Distance']
@@ -3584,22 +3587,22 @@ synopsis = 'Print a few tongue twisters.'
 preamble = '''
 <p>Print the following tongue twisters with a blank line between each one:
 
-<blockquote>
+<pre>
 How much wood would a woodchuck chuck,
 If a woodchuck could chuck wood?
 A woodchuck would chuck all the wood he could chuck
 If a woodchuck would chuck wood.
-<br><br>
+
 Peter Piper picked a peck of pickled peppers.
 A peck of pickled peppers Peter Piper picked.
 If Peter Piper picked a peck of pickled peppers,
 Where's the peck of pickled peppers Peter Piper picked?
-<br><br>
+
 She sells seashells by the seashore,
 The shells she sells are seashells, I'm sure.
 So if she sells seashells on the seashore,
 Then I'm sure she sells seashore shells.
-</blockquote>
+</pre>
 '''
 
 ['Transpose Sentence']

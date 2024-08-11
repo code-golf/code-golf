@@ -1,11 +1,6 @@
 /* TODO Stop having "thin" pages, make everything consistent. */
 body { max-width: 60rem }
 
-body > h1 {
-    border-bottom: 2px solid var(--color);
-    padding: 1rem;
-}
-
 table { width: 100% }
 
 .flag { margin-right: .5rem }
