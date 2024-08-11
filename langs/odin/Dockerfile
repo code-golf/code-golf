@@ -4,16 +4,16 @@ RUN apk add --no-cache clang curl llvm-dev make
 
 RUN curl -L https://github.com/odin-lang/Odin/archive/refs/tags/dev-2024-08.tar.gz | tar xz
 
-RUN mv Odin-* /usr/local/dist
+RUN mv Odin-* /usr/local/tmp
 
-WORKDIR /usr/local/dist
+RUN ln -s /usr/local/tmp/base /usr/local/bin/base \
+ && ln -s /usr/local/tmp/core /usr/local/bin/core
 
-RUN make -j`nproc` release
+RUN mkdir /usr/local/bin/vendor
 
-# The final image gets close to exceeding 400 MiB prior to this hacky approach.
-# It'll trick the compiler into thinking the `enormous` libraries are present.
-# As a matter of fact, they would never be used for the purposes on code.golf.
-RUN rm -rf vendor && mkdir vendor
+WORKDIR /usr/local/tmp
+
+RUN ODIN_ROOT=/usr/local/bin make -j`nproc` release
 
 FROM codegolf/lang-base
 
@@ -43,10 +43,10 @@ COPY --from=0 /usr/lib/crt1.o                                         \
 COPY --from=0 /usr/lib/gcc/x86_64-alpine-linux-musl/13.2.1/crtbegin.o \
               /usr/lib/gcc/x86_64-alpine-linux-musl/13.2.1/crtend.o   \
               /usr/lib/gcc/x86_64-alpine-linux-musl/13.2.1/libgcc.a   /usr/lib/gcc/x86_64-alpine-linux-musl/13.2.1/
-COPY --from=0 /usr/local/dist/odin                                    /usr/local/dist/
-COPY --from=0 /usr/local/dist/base                                    /usr/local/dist/base
-COPY --from=0 /usr/local/dist/core                                    /usr/local/dist/core
-COPY --from=0 /usr/local/dist/vendor                                  /usr/local/dist/vendor
+COPY --from=0 /usr/local/tmp/odin                                     /usr/local/bin/
+COPY --from=0 /usr/local/bin/base                                     /usr/local/bin/base
+COPY --from=0 /usr/local/bin/core                                     /usr/local/bin/core
+COPY --from=0 /usr/local/bin/vendor                                   /usr/local/bin/vendor
 
 RUN chmod +x /usr/bin/odinwrapper
 
