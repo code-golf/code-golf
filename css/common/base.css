@@ -63,12 +63,17 @@ body {
     overflow-x: hidden;
 }
 
+#all-but-footer {
+    display: flex;
+    flex-direction: column;
+}
+
 body, footer nav, #site-header nav, #popups {
     margin: auto;
     max-width: 1280px;
 }
 
-body > svg, .hide { display: none }
+body > svg, #all-but-footer > svg, .hide { display: none }
 
 details .grid { padding-top: 1rem }
 
