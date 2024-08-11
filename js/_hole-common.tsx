@@ -54,10 +54,7 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
         history.replaceState(null, '', '#' + lang);
 
         const editor = getEditor();
-        if (tabLayout) {
-            $('#hole-lang summary').innerText = langs[lang].name;
-            refreshScores(editor);
-        }
+        if (tabLayout) refreshScores(editor);
         setCodeForLangAndSolution(editor);
 
         if (tabLayout) {

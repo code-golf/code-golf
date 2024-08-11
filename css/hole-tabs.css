@@ -65,23 +65,6 @@ section header {
     height: calc(100% - (2rem + 7px));
 }
 
-main > header nav { max-width: 100% }
-
-main > header:nth-child(2) { margin-top: 0.5rem }
-
-#hole-lang {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-}
-
-#hole-lang details {
-    cursor: pointer;
-    user-select: none;
-}
-
-#hole-lang summary { line-height: 1.7rem }
-
 #rankingsView { border: none }
 
 #scoreboard-section {
