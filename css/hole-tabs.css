@@ -188,6 +188,7 @@ main {
     justify-self: center;
     display: flex;
     flex-wrap: wrap;
+    justify-content: flex-end;
     gap: 0.375rem;
 }
 
