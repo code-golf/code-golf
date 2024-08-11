@@ -170,8 +170,8 @@ func Play(
 		runs = arabicToRoman(hole.ID == "roman-to-arabic")
 	case "arrows":
 		runs = arrows()
-	case "billiard":
-		runs = billiard()
+	case "billiards":
+		runs = billiards()
 	case "brainfuck":
 		runs = brainfuck()
 	case "card-number-validation":
