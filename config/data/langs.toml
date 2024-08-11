@@ -44,7 +44,7 @@ loop arg [a] [
 
 [Assembly]
 args    = [ '/usr/bin/defasm', '--size-out=3', '-w', '-r' ]
-size    = '104 MiB'
+size    = '109 MiB'
 version = 'DefAssembler 2.4.2'
 website = 'https://www.npmjs.com/package/@defasm/core'
 example = '''
@@ -293,7 +293,7 @@ int main(int argc, char* argv[]) {
     return 0;
 }
 
-// Code is compiled with clang with -std=c++2b
+// Code is compiled with clang with -std=c++23
 // See: https://clang.llvm.org/cxx_status.html
 '''
 
@@ -301,7 +301,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '68.6 MiB'
-version = '0.7.20'
+version = '0.7.22'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -388,6 +388,26 @@ for arg in sys.argv[1:]:
     arg |> print
 '''
 
+[CoffeeScript]
+args       = [ '/usr/bin/coffeescript', '-' ]
+env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
+experiment = 450
+size       = '70.7 MiB'
+version    = '2.7.0'
+website    = 'https://coffeescript.org'
+example    = '''
+# Printing
+console.log 'Hello, World!'
+
+# Looping
+for i in [0..9]
+    console.log i
+
+# Accessing arguments
+for arg in process.argv[2..]
+    console.log arg
+'''
+
 [Crystal]
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
@@ -437,7 +457,7 @@ void main(string[] argv) {
 [Dart]
 args    = [ '/usr/bin/dart', '-' ]
 size    = '235 MiB'
-version = '3.4.4'
+version = '3.5.0'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -601,7 +621,7 @@ end
 [Go]
 args    = [ '/usr/bin/go', '-' ]
 size    = '353 MiB'
-version = '1.22.5'
+version = '1.22.6'
 website = 'https://go.dev'
 example = '''
 package main
@@ -728,7 +748,7 @@ example = '''
 [Java]
 args    = [ '/usr/bin/java', '-' ]
 size    = '58.1 MiB'
-version = '22.0.1'
+version = '22.0.2'
 website = 'https://openjdk.java.net'
 example = '''
 class Main {
@@ -763,6 +783,23 @@ for (let i = 0; i < 10; i++)
 // Accessing arguments
 for (let arg of arguments)
     print(arg);
+'''
+
+[jq]
+args       = [ '/usr/bin/jq', '-nr', '$code', '--args' ]
+experiment = 240
+size       = '3.41 MiB'
+version    = '1.7.1'
+website    = 'https://jqlang.github.io/jq/'
+example    = '''
+# Printing
+"Hello, World!",
+
+# Looping
+range(10),
+
+# Accessing arguments
+$ARGS.positional[]
 '''
 
 [Julia]
@@ -925,7 +962,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '8.40 MiB'
-version = '8.3.9'
+version = '8.3.10'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -981,8 +1018,8 @@ example = '''
 
 [Python]
 args    = [ '/usr/bin/python', '-u', '-' ]
-size    = '71.1 MiB'
-version = '3.12.4'
+size    = '70.8 MiB'
+version = '3.12.5'
 website = 'https://www.python.org'
 example = '''
 import sys
@@ -1079,7 +1116,7 @@ end
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
 size    = '331 MiB'
-version = '1.80.0'
+version = '1.80.1'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {

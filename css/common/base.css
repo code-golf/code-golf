@@ -63,7 +63,7 @@ body {
     overflow-x: hidden;
 }
 
-body, footer nav, body > header nav, #popups {
+body, footer nav, #site-header nav, #popups {
     margin: auto;
     max-width: 1280px;
 }
@@ -91,7 +91,28 @@ h1 { font-size: 1.75rem }
 h2 { font-size: 1.50rem }
 h3 { font-size: 1.25rem }
 
-body > header {
+#page-header {
+    align-items: center;
+    border-bottom: 2px solid var(--color);
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    overflow: hidden;
+    padding: 1rem;
+
+    h1 {
+        flex: 1;
+        white-space: nowrap;
+    }
+
+    nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem;
+    }
+}
+
+#site-header {
     background: var(--color);
     margin: 0 calc(50% - 50vw);
     overflow: auto;
@@ -100,7 +121,7 @@ body > header {
     z-index: 7; /* Codemirror uses up to 6 */
 }
 
-body > header a {
+#site-header a {
     align-items: center;
     display: flex;
     fill: var(--background);
@@ -109,13 +130,13 @@ body > header a {
     min-width: 2.75rem;
 }
 
-body > header a:is(.on, :hover) {
+#site-header a:is(.on, :hover) {
     background: var(--background);
     color: var(--color);
     fill: var(--color);
 }
 
-body > header [title=Profile] {
+#site-header [title=Profile] {
     color: var(--background);
     display: grid;
     font-size: .75rem;
@@ -141,9 +162,9 @@ body > header [title=Profile] {
     }
 }
 
-body > header nav { display: flex }
+#site-header nav { display: flex }
 
-body > header svg {
+#site-header svg {
     height: 1.5rem;
     width: 1.5rem;
 }

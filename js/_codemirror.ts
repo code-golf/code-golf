@@ -23,6 +23,7 @@ import { brainfuck }          from 'codemirror-lang-brainfuck';
 import { c, csharp, dart }    from './vendor/codemirror-clike';
 import { clojure }            from '@codemirror/legacy-modes/mode/clojure';
 import { cobol }              from './vendor/codemirror-cobol';
+import { coffeeScript }       from '@codemirror/legacy-modes/mode/coffeescript';
 import { commonLisp }         from '@codemirror/legacy-modes/mode/commonlisp';
 import { cpp }                from '@codemirror/lang-cpp';
 import { crystal }            from '@codemirror/legacy-modes/mode/crystal';
@@ -124,6 +125,7 @@ export const extensions : { [key: string]: any } = {
     'clojure':       StreamLanguage.define(clojure),
     'cobol':         StreamLanguage.define(cobol),
     'coconut':       python,
+    'coffeescript':  StreamLanguage.define(coffeeScript),
     'cpp':           cpp(),
     'crystal':       StreamLanguage.define(crystal),
     'd':             StreamLanguage.define(d),
@@ -143,6 +145,7 @@ export const extensions : { [key: string]: any } = {
     'janet':         janet(),
     'java':          java(),
     'javascript':    javascript,
+    // TODO jq
     'julia':         StreamLanguage.define(julia),
     'k':             k(),
     'lisp':          StreamLanguage.define(commonLisp),

@@ -45,7 +45,7 @@
     --play-color: #444;
 }
 
-body > header {
+#site-header {
     --background: #ddd;
     --color:      #343a40;
 }
