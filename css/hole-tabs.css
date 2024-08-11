@@ -202,6 +202,9 @@ main {
 @media only screen and (max-width: 1280px) {
     #make-narrow, #make-wide, #make-tall, #make-short { display: none }
 }
+@media only screen and (min-width: 768px) {
+    #add-row { display: none }
+}
 
 #make-narrow { display: none; }
 .full-width #make-narrow { display: flex; }
