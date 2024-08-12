@@ -20,9 +20,9 @@ import (
 const minElapsedTimeToShowDate = 30 * 24 * time.Hour
 
 var (
-	bot              *discordgo.Session
-	lastAnnouncement *RecAnnouncement
-	mux              sync.Mutex
+	bot                 *discordgo.Session
+	lastAnnouncementMap = make(map[string]*RecAnnouncement)
+	mux                 sync.Mutex
 
 	// All the config keys!
 	botToken      = os.Getenv("DISCORD_BOT_TOKEN")       // Caddie
@@ -321,8 +321,11 @@ func logNewRecord(
 
 	channelID := channel(hole, lang)
 
+	lastAnnouncement := lastAnnouncementMap[channelID]
+
 	if lastAnnouncement == nil {
-		loadLastAnnouncement(db)
+		lastAnnouncement = loadLastAnnouncement(db, channelID)
+		lastAnnouncementMap[channelID] = lastAnnouncement
 	}
 
 	if lastAnnouncement != nil {
@@ -401,15 +404,17 @@ func logNewRecord(
 		lastAnnouncement = announcement
 		lastAnnouncement.MessageChannelID = newMessage.ChannelID
 		lastAnnouncement.MessageID = newMessage.ID
+		lastAnnouncementMap[channelID] = announcement
 		saveLastAnnouncement(lastAnnouncement, db)
 	}
 }
 
-func loadLastAnnouncement(db *sqlx.DB) {
+func loadLastAnnouncement(db *sqlx.DB, channelID string) (result *RecAnnouncement) {
 	var bytes []byte
 
 	if err := db.QueryRow(
-		"SELECT value FROM discord_state WHERE key = 'lastAnnouncement'",
+		"SELECT value FROM discord_state WHERE key = $1",
+		channelID,
 	).Scan(&bytes); err != nil {
 		log.Println(err)
 		return
@@ -419,8 +424,10 @@ func loadLastAnnouncement(db *sqlx.DB) {
 	if err := json.Unmarshal(bytes, &announcement); err != nil {
 		log.Println(err)
 	} else {
-		lastAnnouncement = &announcement
+		result = &announcement
 	}
+
+	return
 }
 
 func saveLastAnnouncement(announce *RecAnnouncement, db *sqlx.DB) {
@@ -432,10 +439,10 @@ func saveLastAnnouncement(announce *RecAnnouncement, db *sqlx.DB) {
 
 	if _, err := db.Exec(
 		`INSERT INTO discord_state (key, value) VALUES
-			('lastAnnouncement', $1)
+			($1, $2)
 			ON CONFLICT ON CONSTRAINT discord_state_pkey
-			DO UPDATE SET value = $1`,
-		bytes,
+			DO UPDATE SET value = $2`,
+		announce.MessageChannelID, bytes,
 	); err != nil {
 		log.Println(err)
 	}
