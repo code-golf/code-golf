@@ -647,7 +647,8 @@ n*
 '''
 
 [Groovy]
-args       = [ '/usr/bin/groovywrapper', '-' ]
+args       = [ '/usr/local/bin/groovy', '-e', '$code' ]
+env        = [ 'JAVA_HOME=/opt/java/openjdk' ]
 experiment = 1145
 size       = '0 MiB'
 version    = '4.0.22'
