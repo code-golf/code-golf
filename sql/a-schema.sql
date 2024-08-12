@@ -83,6 +83,7 @@ CREATE TABLE discord_records (
     hole    hole NOT NULL,
     lang    lang NOT NULL,
     message text NOT NULL,
+    channel text NOT NULL,
     PRIMARY KEY (hole, lang)
 );
 
