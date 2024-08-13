@@ -140,6 +140,7 @@ export const extensions : { [key: string]: any } = {
     'golfscript':    golfScript(),
     'haskell':       StreamLanguage.define(haskell),
     // TODO hexagony
+    // TODO hush
     'j':             j(),
     'janet':         janet(),
     'java':          java(),

@@ -693,6 +693,27 @@ example = '''
           t e r m i n a t e d
 '''
 
+[Hush]
+args       = [ '/usr/bin/hush', '-' ]
+experiment = 656
+size       = '3.26 MiB'
+version    = '0.1.4'
+website    = 'https://hush-shell.github.io'
+example    = '''
+# Printing
+std.print("Hello, World!")
+
+# Looping
+for i in std.range(0, 10, 1) do
+    std.print(i)
+end
+
+# Accessing arguments
+for i in std.range(0, std.len(std.args()), 1) do
+    std.print(std.args()[i])
+end
+'''
+
 [J]
 args    = [ '/usr/bin/j', '/tmp/code.ijs' ]
 size    = '11.2 MiB'
