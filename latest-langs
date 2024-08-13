@@ -54,6 +54,7 @@ constant %paths = (
     'V'            => 'github.com/vlang/v/releases/latest',
     'VimL'         => 'en.wikipedia.org/wiki/Vim_(text_editor)',
     'Wren'         => 'github.com/wren-lang/wren/releases/latest',
+    'Yuescript'    => 'github.com/pigpigyyy/Yuescript/releases/latest',
     'Zig'          => 'en.wikipedia.org/wiki/Zig_(programming_language)',
 );
 
