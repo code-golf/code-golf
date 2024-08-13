@@ -35,6 +35,7 @@ import { fortran }            from '@codemirror/legacy-modes/mode/fortran';
 import { fSharp, oCaml }      from '@codemirror/legacy-modes/mode/mllike';
 import { goLanguage }         from '@codemirror/lang-go';
 import { golfScript }         from 'codemirror-lang-golfscript';
+import { groovy }             from '@codemirror/legacy-modes/mode/groovy';
 import { haskell }            from '@codemirror/legacy-modes/mode/haskell';
 import { j }                  from 'codemirror-lang-j';
 import { janet }              from 'codemirror-lang-janet';
@@ -138,6 +139,7 @@ export const extensions : { [key: string]: any } = {
     'fortran':       StreamLanguage.define({ ...fortran, languageData: { commentTokens: { line: '!' } } }),
     'go':            go,
     'golfscript':    golfScript(),
+    'groovy':        StreamLanguage.define(groovy),
     'haskell':       StreamLanguage.define(haskell),
     // TODO hexagony
     'j':             j(),
