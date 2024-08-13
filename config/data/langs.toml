@@ -1054,6 +1054,27 @@ say 'Hello, World!';
 .say for @*ARGS;
 '''
 
+[Rebol]
+args       = [ '/usr/bin/rebol', '-qw', '--do', '$code', '--', '--script', '' ]
+experiment = 189
+size       = '1.22 MiB'
+version    = 'REBOL/Core 2.7.8.4.10'
+website    = 'https://www.rebol.com'
+example    = '''
+; Printing
+print "Hello, World!"
+
+; Looping
+for i 0 9 1 [
+    print i
+]
+
+; Accessing arguments
+foreach arg system/options/args [
+    print arg
+]
+'''
+
 [Rockstar]
 args    = [ '/usr/bin/rockstar', '-' ]
 size    = '162 MiB'
