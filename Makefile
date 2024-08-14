@@ -10,7 +10,7 @@ bench:
 
 bump:
 	@go get -u
-	@go mod tidy -compat=1.22
+	@go mod tidy -compat=1.23
 	@npm upgrade
 
 cert:
