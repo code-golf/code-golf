@@ -1316,6 +1316,25 @@ for (i in 0..9) System.print(i)
 for (a in Process.arguments) System.print(a)
 '''
 
+[Yuescript]
+args       = [ '/usr/bin/yue', '-e', '$code' ]
+experiment = 807
+size       = '8.78 MiB'
+version    = '0.24.1'
+website    = 'https://yuescript.org'
+example    = '''
+-- Printing
+print "Hello, World!"
+
+-- Looping
+for i = 0, 9
+    print i
+
+-- Accessing arguments
+for i = 1, #arg
+    print arg[i]
+'''
+
 [Zig]
 args    = [ '/usr/bin/zig', '-' ]
 size    = '300 MiB'
