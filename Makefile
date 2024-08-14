@@ -109,7 +109,7 @@ logs:
 	@ssh root@code.golf docker logs --tail 5 -f code-golf
 
 svgo:
-	@svgo -f views/svg
+	@node_modules/.bin/svgo -f views/svg
 
 test:
 	@go test ./...
