@@ -1079,7 +1079,7 @@ say 'Hello, World!';
 args       = [ '/usr/bin/rebol', '-qw', '--do', '$code', '--', '--script', '' ]
 experiment = 189
 size       = '1.22 MiB'
-version    = 'REBOL/Core 2.7.8.4.10'
+version    = '2.7.8.4.10'
 website    = 'https://www.rebol.com'
 example    = '''
 ; Printing
