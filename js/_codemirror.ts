@@ -160,6 +160,7 @@ export const extensions : { [key: string]: any } = {
     'python':        python,
     'r':             StreamLanguage.define(r),
     'raku':          StreamLanguage.define(raku),
+    // TODO rebol
     // TODO rexx
     // TODO rockstar
     'ruby':          StreamLanguage.define(ruby),
