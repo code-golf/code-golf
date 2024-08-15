@@ -12,13 +12,12 @@ RUN ./configure \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/cat /bin/chmod /bin/sh /bin/
-COPY --from=0 /lib/ld-musl-x86_64.so.1    /lib/
-COPY --from=0 /usr/local/bin/regina       /usr/bin/
-COPY          /rexx                       /usr/bin/
-COPY --from=0 /libregina.so.3             /usr/lib/
+COPY --from=0 /bin/cat /bin/sh         /bin/
+COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
+COPY --from=0 /usr/local/bin/regina    /usr/bin/
+COPY --from=0 /libregina.so.3          /usr/lib/
 
-RUN chmod +x /usr/bin/rexx
+COPY /rexx /usr/bin/
 
 ENTRYPOINT ["rexx"]
 

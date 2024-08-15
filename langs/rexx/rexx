@@ -1,11 +1,11 @@
 #!/bin/sh -e
 
-[ "$1" = "--version" ] && exec /usr/bin/regina --version
+[ "$1" = "--version" ] && exec regina --version
 
 cd /tmp
 
 cat - > code.rexx
-/usr/bin/regina --compile code code.rexx
+regina --compile code code.rexx
 
 shift
-/usr/bin/regina --execute --args code "$@"
+regina --execute --args code "$@"
