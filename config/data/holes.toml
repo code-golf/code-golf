@@ -2350,6 +2350,18 @@ preamble = '''
 <pre>61 -85/24 → X2'Wy</pre>
 '''
 
+[PalindromemordnilaP]
+category = 'Transform'
+links = []
+experiment = 935
+synopsis = 'Append minimum number of characters to make the input a palindrome.'
+preamble = '''
+<p>Given an alphanumeric string, append minimum number of characters to get a palindrome and output the result.
+
+<p>
+    For example, on input <code>Palindromemord</code>, output <code>PalindromemordnilaP</code>.
+'''
+
 ['Pangram Grep']
 category = 'Transform'
 links = [

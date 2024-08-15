@@ -1,4 +1,4 @@
-FROM golang:1.22.6-alpine3.20
+FROM golang:1.23.0-alpine3.20
 
 ENV CGO_ENABLED=0 GOPATH= TZ=Europe/London
 
@@ -8,7 +8,7 @@ RUN apk add --no-cache build-base curl git linux-headers tzdata \
 
 COPY --from=codegolf/lang-swift        ["/", "/langs/swift/rootfs/"       ] #  462 MiB
 COPY --from=codegolf/lang-haskell      ["/", "/langs/haskell/rootfs/"     ] #  388 MiB
-COPY --from=codegolf/lang-go           ["/", "/langs/go/rootfs/"          ] #  353 MiB
+COPY --from=codegolf/lang-go           ["/", "/langs/go/rootfs/"          ] #  382 MiB
 COPY --from=codegolf/lang-rust         ["/", "/langs/rust/rootfs/"        ] #  331 MiB
 COPY --from=codegolf/lang-julia        ["/", "/langs/julia/rootfs/"       ] #  310 MiB
 COPY --from=codegolf/lang-d            ["/", "/langs/d/rootfs/"           ] #  309 MiB
@@ -52,8 +52,10 @@ COPY --from=codegolf/lang-arturo       ["/", "/langs/arturo/rootfs/"      ] # 6.
 COPY --from=codegolf/lang-perl         ["/", "/langs/perl/rootfs/"        ] # 5.51 MiB
 COPY --from=codegolf/lang-tcl          ["/", "/langs/tcl/rootfs/"         ] # 5.25 MiB
 COPY --from=codegolf/lang-fish         ["/", "/langs/fish/rootfs/"        ] # 4.66 MiB
+COPY --from=codegolf/lang-rexx         ["/", "/langs/rexx/rootfs/"        ] # 4.63 MiB
 COPY --from=codegolf/lang-cobol        ["/", "/langs/cobol/rootfs/"       ] # 4.56 MiB
 COPY --from=codegolf/lang-jq           ["/", "/langs/jq/rootfs/"          ] # 3.41 MiB
+COPY --from=codegolf/lang-hush         ["/", "/langs/hush/rootfs/"        ] # 3.27 MiB
 COPY --from=codegolf/lang-forth        ["/", "/langs/forth/rootfs/"       ] # 2.86 MiB
 COPY --from=codegolf/lang-awk          ["/", "/langs/awk/rootfs/"         ] # 1.77 MiB
 COPY --from=codegolf/lang-c            ["/", "/langs/c/rootfs/"           ] # 1.70 MiB

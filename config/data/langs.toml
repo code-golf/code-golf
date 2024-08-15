@@ -602,8 +602,8 @@ end
 
 [Go]
 args    = [ '/usr/bin/go', '-' ]
-size    = '353 MiB'
-version = '1.22.6'
+size    = '382 MiB'
+version = '1.23.0'
 website = 'https://go.dev'
 example = '''
 package main
@@ -691,6 +691,27 @@ example = '''
         . A r g u m e n t s . .
          . a r e . N U L L . .
           t e r m i n a t e d
+'''
+
+[Hush]
+args       = [ '/usr/bin/hush', '-' ]
+experiment = 656
+size       = '3.27 MiB'
+version    = '0.1.4'
+website    = 'https://hush-shell.github.io'
+example    = '''
+# Printing
+std.print("Hello, World!")
+
+# Looping
+for i in std.range(0, 10, 1) do
+    std.print(i)
+end
+
+# Accessing arguments
+for arg in std.iter(std.args()) do
+    std.print(arg)
+end
 '''
 
 [J]
@@ -1075,6 +1096,27 @@ foreach arg system/options/args [
 ]
 '''
 
+[Rexx]
+args       = [ '/usr/bin/rexx', '-' ]
+experiment = 873
+size       = '4.63 MiB'
+version    = '3.9.6'
+website    = 'https://regina-rexx.sourceforge.io'
+example    = '''
+-- Printing
+say "Hello, World!"
+
+-- Looping
+do i = 0 to 9
+    say i
+end
+
+-- Accessing arguments
+do i = 1 to arg()
+    say arg(i)
+end
+'''
+
 [Rockstar]
 args    = [ '/usr/bin/rockstar', '-' ]
 size    = '162 MiB'
@@ -1169,7 +1211,7 @@ G
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
 size    = '1.20 MiB'
-version = '3.46.0'
+version = '3.46.1'
 website = 'https://sqlite.org'
 example = '''
 -- Printing

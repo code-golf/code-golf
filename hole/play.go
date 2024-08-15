@@ -218,6 +218,8 @@ func Play(
 		runs = ordinalNumbers()
 	case "p-adic-expansion":
 		runs = pAdicExpansion()
+	case "palindromemordnilap":
+		runs = palindromemordnilap()
 	case "pangram-grep":
 		runs = pangramGrep()
 	case "poker":
