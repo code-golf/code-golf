@@ -1054,6 +1054,27 @@ say 'Hello, World!';
 .say for @*ARGS;
 '''
 
+[Rexx]
+args       = [ '/usr/bin/rexx', '-' ]
+experiment = 873
+size       = '5.44 MiB'
+version    = 'Regina 3.9.6'
+website    = 'https://regina-rexx.sourceforge.io'
+example    = '''
+-- Printing
+say "Hello, World!"
+
+-- Looping
+do i = 0 to 9
+    say i
+end
+
+-- Accessing arguments
+do i = 1 to arg()
+    say arg(i)
+end
+'''
+
 [Rockstar]
 args    = [ '/usr/bin/rockstar', '-' ]
 size    = '162 MiB'
