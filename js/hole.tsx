@@ -19,7 +19,7 @@ const editor = new EditorView({
         const scorings: {total: {byte?: number, char?: number}, selection?: {byte?: number, char?: number}} = getScorings(tr, editor);
         const scoringKeys = ['byte', 'char'] as const;
 
-        $('main')?.classList.toggle('lastSubmittedCode', code == getLastSubmittedCode());
+        $('main')?.classList.toggle('lastSubmittedCode', code === getLastSubmittedCode());
 
         function formatScore(scoring: any) {
             return scoringKeys
