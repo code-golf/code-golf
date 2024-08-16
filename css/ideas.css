@@ -1,3 +1,31 @@
+details {
+    > div {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    }
+
+    /* TODO de-dupe this CSS with golfer/cheevos */
+    > summary {
+        background: var(--background);
+        border: 0;
+        color: var(--color);
+        font-size: 1.5rem;
+        font-weight: bold;
+        padding: 1rem 0;
+        position: sticky;
+        top: 2.75rem;
+        z-index: 1;
+
+        &:hover { background: var(--background) !important }
+    }
+}
+
+main {
+    gap: 0;
+    padding-top: 0;
+}
+
 .card {
     align-items: center;
     gap: .5rem .25rem;
