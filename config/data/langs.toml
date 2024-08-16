@@ -900,6 +900,27 @@ for arg in commandLineParams():
     echo arg
 '''
 
+[Noulith]
+args       = [ '/usr/bin/noulith', '-e', '$code' ]
+experiment = 1045
+size       = '0 MiB'
+version    = '0.1.0'
+website    = 'https://github.com/betaveros/noulith'
+example    = '''
+# Printing
+print("Hello, World!");
+
+# Looping
+for (i <- 0 to 9) (
+    print(i)
+);
+
+# Accessing arguments
+for (arg <- argv) (
+    print(arg)
+)
+'''
+
 [OCaml]
 args    = [ '/usr/bin/ocaml', '/proc/self/fd/0' ]
 size    = '91.4 MiB'
