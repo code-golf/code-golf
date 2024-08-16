@@ -35,15 +35,18 @@
 {{ end }}{{ end }}
 
 <main id=ideas>
-    <h1 class=span>Experimental Holes</h1>
-    {{ template "ideaGrid" .Data.Holes }}
-
-    <h1 class=span>Experimental Languages</h1>
-    {{ template "ideaGrid" .Data.Langs }}
-
-    <h1 class=span>Other Ideas</h1>
-    {{ template "ideaGrid" .Data.Ideas }}
-
+{{ with .Data.Holes }}
+    <h1 class=span>Experimental Holes ({{ len . }})</h1>
+    {{ template "ideaGrid" . }}
+{{ end }}
+{{ with .Data.Langs }}
+    <h1 class=span>Experimental Languages ({{ len . }})</h1>
+    {{ template "ideaGrid" . }}
+{{ end }}
+{{ with .Data.Ideas }}
+    <h1 class=span>Other Ideas ({{ len . }})</h1>
+    {{ template "ideaGrid" . }}
+{{ end }}
     <p class="right span">
         <a href="//github.com/code-golf/code-golf/issues/new/choose">
             Add an Idea
