@@ -301,7 +301,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '68.6 MiB'
-version = '0.7.22'
+version = '0.7.23'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -620,8 +620,8 @@ end
 
 [Go]
 args    = [ '/usr/bin/go', '-' ]
-size    = '353 MiB'
-version = '1.22.6'
+size    = '382 MiB'
+version = '1.23.0'
 website = 'https://go.dev'
 example = '''
 package main
@@ -711,6 +711,27 @@ example = '''
           t e r m i n a t e d
 '''
 
+[Hush]
+args       = [ '/usr/bin/hush', '-' ]
+experiment = 656
+size       = '3.27 MiB'
+version    = '0.1.4'
+website    = 'https://hush-shell.github.io'
+example    = '''
+# Printing
+std.print("Hello, World!")
+
+# Looping
+for i in std.range(0, 10, 1) do
+    std.print(i)
+end
+
+# Accessing arguments
+for arg in std.iter(std.args()) do
+    std.print(arg)
+end
+'''
+
 [J]
 args    = [ '/usr/bin/j', '/tmp/code.ijs' ]
 size    = '11.2 MiB'
@@ -786,12 +807,11 @@ for (let arg of arguments)
 '''
 
 [jq]
-args       = [ '/usr/bin/jq', '-nr', '$code', '--args' ]
-experiment = 240
-size       = '3.41 MiB'
-version    = '1.7.1'
-website    = 'https://jqlang.github.io/jq/'
-example    = '''
+args    = [ '/usr/bin/jq', '-nr', '$code', '--args', '--' ]
+size    = '3.41 MiB'
+version = '1.7.1'
+website = 'https://jqlang.github.io/jq/'
+example = '''
 # Printing
 "Hello, World!",
 
@@ -1073,6 +1093,48 @@ say 'Hello, World!';
 .say for @*ARGS;
 '''
 
+[Rebol]
+args       = [ '/usr/bin/rebol', '-qw', '--do', '$code', '--', '--script', '' ]
+experiment = 189
+size       = '1.22 MiB'
+version    = '2.7.8.4.10'
+website    = 'https://www.rebol.com'
+example    = '''
+; Printing
+print "Hello, World!"
+
+; Looping
+for i 0 9 1 [
+    print i
+]
+
+; Accessing arguments
+foreach arg system/options/args [
+    print arg
+]
+'''
+
+[Rexx]
+args       = [ '/usr/bin/rexx', '-' ]
+experiment = 873
+size       = '4.63 MiB'
+version    = '3.9.6'
+website    = 'https://regina-rexx.sourceforge.io'
+example    = '''
+-- Printing
+say "Hello, World!"
+
+-- Looping
+do i = 0 to 9
+    say i
+end
+
+-- Accessing arguments
+do i = 1 to arg()
+    say arg(i)
+end
+'''
+
 [Rockstar]
 args    = [ '/usr/bin/rockstar', '-' ]
 size    = '162 MiB'
@@ -1167,7 +1229,7 @@ G
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
 size    = '1.20 MiB'
-version = '3.46.0'
+version = '3.46.1'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
@@ -1256,8 +1318,8 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '30.8 MiB'
-version    = '0.11.1'
+size       = '31.5 MiB'
+version    = '0.12.0'
 website    = 'https://www.uiua.org'
 example    = '''
 # Printing

@@ -37,14 +37,16 @@ constant %paths = (
     'Lua'          => 'en.wikipedia.org/wiki/Lua_(programming_language)',
     'Nim'          => 'en.wikipedia.org/wiki/Nim_(programming_language)',
     'OCaml'        => 'en.wikipedia.org/wiki/OCaml',
-    'PHP'          => 'endoflife.date/api/php.json',
     'Pascal'       => 'en.wikipedia.org/wiki/Free_Pascal',
     'Perl'         => 'endoflife.date/api/perl.json',
+    'PHP'          => 'endoflife.date/api/php.json',
     'PowerShell'   => 'endoflife.date/api/powershell.json',
     'Prolog'       => 'en.wikipedia.org/wiki/SWI-Prolog',
     'Python'       => 'endoflife.date/api/python.json',
     'R'            => 'en.wikipedia.org/wiki/R_(programming_language)',
     'Raku'         => 'en.wikipedia.org/wiki/Rakudo',
+    'Rebol'        => 'en.wikipedia.org/wiki/Rebol',
+    'Rexx'         => 'en.wikipedia.org/wiki/Rexx',
     'Ruby'         => 'endoflife.date/api/ruby.json',
     'Rust'         => 'en.wikipedia.org/wiki/Rust_(programming_language)',
     'SQL'          => 'en.wikipedia.org/wiki/SQLite',
@@ -81,5 +83,5 @@ for %langs.sort: *.key.fc -> (:key($name), :value(%lang)) {
         !! $old eq $new || $old.starts-with("$new.") || "$old.0" eq $new ?? 32
         !!                                                                  31;
 
-    printf "%11s \e[%dm%11s → %s\e[0m\n", $name, $code, $old, $new;
+    printf "%12s \e[%dm%11s → %s\e[0m\n", $name, $code, $old, $new;
 }

@@ -16,10 +16,10 @@ CREATE TYPE cheevo AS ENUM (
     'my-god-its-full-of-stars', 'neunundneunzig-luftballons', 'off-the-grid',
     'omniglot', 'omniglutton', 'ouroboros', 'pangramglot', 'patches-welcome',
     'phileas-fogg', 'pi-day', 'polyglot', 'polyglutton', 'real-programmers',
-    'right-on', 'rtfm', 'rule-34', 'slowcoach', 'smörgåsbord', 'solve-quine',
-    'sounds-quite-nice', 'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr',
-    'twelvetide', 'twenty-kiloleagues', 'under-pressure', 'up-to-eleven',
-    'vampire-byte', 'x86'
+    'right-on', 'rm-rf', 'rtfm', 'rule-34', 'slowcoach', 'smörgåsbord',
+    'solve-quine', 'sounds-quite-nice', 'takeout', 'the-watering-hole',
+    'tim-toady', 'tl-dr', 'twelvetide', 'twenty-kiloleagues',
+    'under-pressure', 'up-to-eleven', 'vampire-byte', 'x86'
 );
 
 CREATE TYPE connection AS ENUM (
@@ -66,9 +66,9 @@ CREATE TYPE lang AS ENUM (
     'civet', 'clojure',  'cpp', 'cobol', 'coconut', 'crystal', 'd', 'dart',
     'elixir', 'f-sharp', 'factor', 'fish', 'forth', 'fortran', 'go',
     'golfscript', 'haskell', 'hexagony', 'j', 'janet', 'java', 'javascript',
-    'julia', 'k', 'lisp', 'lua', 'nim', 'ocaml', 'pascal', 'perl', 'php',
-    'powershell', 'prolog', 'python', 'r', 'raku', 'rockstar', 'ruby', 'rust',
-    'sed', 'sql', 'swift', 'tcl', 'tex', 'v', 'viml', 'wren', 'zig'
+    'jq', 'julia', 'k', 'lisp', 'lua', 'nim', 'ocaml', 'pascal', 'perl',
+    'php', 'powershell', 'prolog', 'python', 'r', 'raku', 'rockstar', 'ruby',
+    'rust', 'sed', 'sql', 'swift', 'tcl', 'tex', 'v', 'viml', 'wren', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('unicorn', 'diamond', 'gold', 'silver', 'bronze');
@@ -83,6 +83,7 @@ CREATE TABLE discord_records (
     hole    hole NOT NULL,
     lang    lang NOT NULL,
     message text NOT NULL,
+    channel text NOT NULL,
     PRIMARY KEY (hole, lang)
 );
 
