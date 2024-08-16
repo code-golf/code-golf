@@ -7,12 +7,36 @@
 
 {{ if eq .Title "Statistics" }}
     <div id=overview>
-        <div><h2>Cheevos</h2>{{ .Data.Cheevos }}</div>
-        <div><h2>Earned Cheevos</h2>{{ comma .Data.CheevosEarned }}</div>
+        <div>
+            <h2>Cheevos</h2>
+            <span>
+                {{ .Data.Cheevos }}
+                <small>({{ comma .Data.CheevosEarned }} earned)</small>
+            </span>
+        </div>
+
         <a href=stats/countries><h2>Countries</h2>{{ .Data.Countries }}</a>
         <a href=stats/golfers><h2>Golfers</h2>{{ comma .Data.Golfers }}</a>
-        <a href=stats/holes><h2>Holes</h2>{{ len .Holes }}</a>
-        <a href=stats/langs><h2>Languages</h2>{{ len .Langs }}</a>
+
+        <a href=stats/holes>
+            <h2>Holes</h2>
+            <span>
+                {{ .Data.Holes }}
+                {{ with .Data.HolesExp }}
+                    <small>({{ . }} experimental)</small>
+                {{ end }}
+            </span>
+        </a>
+
+        <a href=stats/langs>
+            <h2>Languages</h2>
+            <span>
+                {{ .Data.Langs }}
+                {{ with .Data.LangsExp }}
+                    <small>({{ . }} experimental)</small>
+                {{ end }}
+            </span>
+        </a>
 
         <div>
             <h2>Solutions</h2>
