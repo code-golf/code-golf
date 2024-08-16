@@ -2,20 +2,27 @@
     align-items: center;
     gap: .5rem .25rem;
     grid-template: min-content / min-content min-content 1fr min-content min-content;
-}
 
-.card h2 {
-    font-size: 1.25rem;
-    line-height: 1.25;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
+    > h2 {
+        align-items: center;
+        display: flex;
+        font-size: 1.25rem;
+        gap: .5rem;
+        line-height: 1.25;
 
-.card svg {
-    fill: var(--color);
-    height: 1rem;
-    width: 1rem;
-}
+        > span {
+            display: inline;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            min-width: 0;
+        }
+    }
 
-.card :not(h2) { justify-self: center }
+    svg {
+        fill: var(--color);
+        height: 1rem;
+        justify-self: center;
+        width: 1rem;
+    }
+}
