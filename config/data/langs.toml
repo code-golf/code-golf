@@ -301,7 +301,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '68.6 MiB'
-version = '0.7.22'
+version = '0.7.23'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -1300,8 +1300,8 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '30.8 MiB'
-version    = '0.11.1'
+size       = '31.5 MiB'
+version    = '0.12.0'
 website    = 'https://www.uiua.org'
 example    = '''
 # Printing
