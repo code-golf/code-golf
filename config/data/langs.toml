@@ -1319,7 +1319,7 @@ for (a in Process.arguments) System.print(a)
 [Yuescript]
 args       = [ '/usr/bin/yue', '-e', '$code' ]
 experiment = 807
-size       = '8.78 MiB'
+size       = '5.59 MiB'
 version    = '0.24.1'
 website    = 'https://yuescript.org'
 example    = '''
