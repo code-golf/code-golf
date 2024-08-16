@@ -218,6 +218,8 @@ func Play(
 		runs = ordinalNumbers()
 	case "p-adic-expansion":
 		runs = pAdicExpansion()
+	case "palindromemordnilap":
+		runs = palindromemordnilap()
 	case "pangram-grep":
 		runs = pangramGrep()
 	case "poker":
@@ -258,8 +260,7 @@ func Play(
 	// Holes with fixed test cases.
 	case "css-colors":
 		runs = outputTests(shuffle(fixedTests(hole.ID)))
-	case "emojify", "mnist", "rock-paper-scissors-spock-lizard",
-		"united-states":
+	case "emojify", "rock-paper-scissors-spock-lizard", "united-states":
 		runs = outputMultirunTests(fixedTests(hole.ID))
 	case "floyd-steinberg-dithering", "hexdump", "proximity-grid", "star-wars-opening-crawl":
 		runs = outputTestsWithSep("\n\n", shuffle(fixedTests(hole.ID)))

@@ -9,9 +9,21 @@
 {{ with .Hole }}
     <a class="card {{ .CategoryColor }}" href="/{{ .ID }}" title="{{ .Name }} ({{ .Category }})">
 {{ else }}
-    <a class="card {{ .CategoryColor }}" href="//github.com/code-golf/code-golf/issues/{{ .ID }}" title="{{ .Title }}">
+    {{ $class := "red" }}
+    {{ if eq .Category "cheeevo" }}
+        {{ $class = "green" }}
+    {{ else if eq .Category "hole" }}
+        {{ $class = "purple" }}
+    {{ else if eq .Category "lang" }}
+        {{ $class = "yellow" }}
+    {{ end }}
+
+    <a class="card {{ $class }}" href="//github.com/code-golf/code-golf/issues/{{ .ID }}" title="{{ .Title }}">
 {{ end }}
-        <h2 class=span>{{ .Title }}</h2>
+        <h2 class=span>
+            {{ with .Lang }}{{ svg .ID }}{{ end }}
+            <span>{{ .Title }}</span>
+        </h2>
         <svg><use href="#thumbs-up"/></svg>
         {{ .ThumbsUp }}
 
@@ -22,17 +34,34 @@
     </a>
 {{ end }}{{ end }}
 
-<main id=ideas>
-    <h1 class=span>Experimental Holes</h1>
-    {{ template "ideaGrid" .Data.Holes }}
-
-    <h1 class=span>Ideas</h1>
-    {{ template "ideaGrid" .Data.Ideas }}
-
-    <p class="right span">
+<header id=page-header>
+    <h1>Ideas</h1>
+    <nav>
         <a href="//github.com/code-golf/code-golf/issues/new/choose">
             Add an Idea
         </a>
+    </nav>
+</header>
+
+<main>
+{{ with .Data.Holes }}
+    <details open>
+        <summary>Experimental Holes ({{ len . }})</summary>
+        <div>{{ template "ideaGrid" . }}</div>
+    </details>
+{{ end }}
+{{ with .Data.Langs }}
+    <details open>
+        <summary>Experimental Languages ({{ len . }})</summary>
+        <div>{{ template "ideaGrid" . }}</div>
+    </details>
+{{ end }}
+{{ with .Data.Ideas }}
+    <details open>
+        <summary>Other Ideas ({{ len . }})</summary>
+        <div>{{ template "ideaGrid" . }}</div>
+    </details>
+{{ end }}
 </main>
 
 {{ template "footer" }}

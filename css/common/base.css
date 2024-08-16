@@ -609,7 +609,7 @@ body > .tabs a {
 
 #error h1 { text-align: center }
 
-#home, #ideas { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
+#home { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
 
 #home > .tabs { justify-content: flex-end }
 
