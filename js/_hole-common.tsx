@@ -555,6 +555,8 @@ export async function submit(
         return false;
 
     const pass = data.runs.every(r => r.pass);
+    $('main')?.classList.remove('pass');
+    $('main')?.classList.remove('fail');
     $('main')?.classList.add(pass ? 'pass' : 'fail');
     $('main')?.classList.add('lastSubmittedCode');
     if (pass) {
