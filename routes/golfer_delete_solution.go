@@ -16,10 +16,22 @@ func golferDeleteSolutionPOST(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 	}
 
-	session.Database(r).MustExec(
+	golfer := session.Golfer(r)
+
+	tx := session.Database(r).MustBeginTx(r.Context(), nil)
+	defer tx.Rollback()
+
+	tx.MustExec(
 		"DELETE FROM solutions WHERE hole = $1 AND lang = $2 AND user_id = $3",
-		hole, lang, session.Golfer(r).ID,
+		hole, lang, golfer.ID,
 	)
+
+	// TODO Add "flash" messages so we can show the cheevo after the redirect.
+	golfer.Earn(tx, "rm-rf")
+
+	if err := tx.Commit(); err != nil {
+		panic(err)
+	}
 
 	http.Redirect(w, r, "/"+hole+"#"+lang, http.StatusSeeOther)
 }
