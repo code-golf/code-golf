@@ -518,6 +518,11 @@ const diamondPopups = (updates: RankUpdate[]) => {
     return popups;
 };
 
+let lastSubmittedCode = "";
+export function getLastSubmittedCode(){
+    return lastSubmittedCode;
+}
+
 export async function submit(
     editor: any,
     // eslint-disable-next-line no-unused-vars
@@ -529,6 +534,7 @@ export async function submit(
     $$('canvas').forEach(e => e.remove());
 
     const code = editor.state.doc.toString();
+    lastSubmittedCode = code;
     const codeLang = lang;
     const submissionID = ++latestSubmissionID;
 
@@ -549,6 +555,8 @@ export async function submit(
         return false;
 
     const pass = data.runs.every(r => r.pass);
+    $("main")?.classList.add(pass ? "pass" : "fail");
+    $("main")?.classList.add("lastSubmittedCode");
     if (pass) {
         for (const i of [0, 1] as const) {
             const solutionCode = getSolutionCode(codeLang, i);

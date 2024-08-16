@@ -8,6 +8,7 @@ import {
     initDeleteBtn, initCopyJSONBtn, initOutputDiv, getScorings, replaceUnprintablesInOutput,
     updateLocalStorage,
     ctrlEnter,
+    getLastSubmittedCode,
 } from './_hole-common';
 
 const editor = new EditorView({
@@ -17,6 +18,8 @@ const editor = new EditorView({
         const code = tr.state.doc.toString();
         const scorings: {total: {byte?: number, char?: number}, selection?: {byte?: number, char?: number}} = getScorings(tr, editor);
         const scoringKeys = ['byte', 'char'] as const;
+
+        $("main")?.classList.toggle("lastSubmittedCode", code == getLastSubmittedCode());
 
         function formatScore(scoring: any) {
             return scoringKeys
