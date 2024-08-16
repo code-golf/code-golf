@@ -153,8 +153,8 @@ function makeEditor(parent: HTMLDivElement) {
             const code = tr.state.doc.toString();
             const scorings: {total: {byte?: number, char?: number}, selection?: {byte?: number, char?: number}} = getScorings(tr, editor);
             const scoringKeys = ['byte', 'char'] as const;
-            
-            $("main")?.classList.toggle("lastSubmittedCode", code == getLastSubmittedCode());
+
+            $('main')?.classList.toggle('lastSubmittedCode', code == getLastSubmittedCode());
 
             function formatScore(scoring: any) {
                 return scoringKeys

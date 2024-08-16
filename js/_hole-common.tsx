@@ -518,7 +518,7 @@ const diamondPopups = (updates: RankUpdate[]) => {
     return popups;
 };
 
-let lastSubmittedCode = "";
+let lastSubmittedCode = '';
 export function getLastSubmittedCode(){
     return lastSubmittedCode;
 }
@@ -555,8 +555,8 @@ export async function submit(
         return false;
 
     const pass = data.runs.every(r => r.pass);
-    $("main")?.classList.add(pass ? "pass" : "fail");
-    $("main")?.classList.add("lastSubmittedCode");
+    $('main')?.classList.add(pass ? 'pass' : 'fail');
+    $('main')?.classList.add('lastSubmittedCode');
     if (pass) {
         for (const i of [0, 1] as const) {
             const solutionCode = getSolutionCode(codeLang, i);
