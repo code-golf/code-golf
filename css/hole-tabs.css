@@ -233,10 +233,6 @@ article>*:not(:first-child), article details>* {
     margin-left: .5rem;
 }
 
-#all-but-footer {
-    min-height: 100vh;
-}
-
 .pass.lastSubmittedCode .lm_content:has(#editor) {
     border-color: var(--green);
 }
