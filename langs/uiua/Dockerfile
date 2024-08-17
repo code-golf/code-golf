@@ -1,14 +1,13 @@
-FROM rust:1.78-bookworm AS builder
+FROM rust:1.80.1-alpine3.20 AS builder
 
-RUN cargo install uiua --version 0.12.0
+RUN apk add --no-cache build-base linux-headers
+
+RUN cargo install uiua --version 0.12.2
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6     \
-              /lib/x86_64-linux-gnu/libgcc_s.so.1 \
-              /lib/x86_64-linux-gnu/libm.so.6     /lib/x86_64-linux-gnu/
-COPY --from=0 /lib64/ld-linux-x86-64.so.2         /lib64/
-COPY --from=0 /usr/local/cargo/bin/uiua           /usr/bin/
+COPY --from=0 /lib/ld-musl-x86_64.so.1  /lib/
+COPY --from=0 /usr/local/cargo/bin/uiua /usr/bin/
 
 ENTRYPOINT ["uiua"]
 

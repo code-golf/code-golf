@@ -696,7 +696,7 @@ example = '''
 [Hush]
 args       = [ '/usr/bin/hush', '-' ]
 experiment = 656
-size       = '3.27 MiB'
+size       = '3.19 MiB'
 version    = '0.1.4'
 website    = 'https://hush-shell.github.io'
 example    = '''
@@ -1300,8 +1300,8 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '31.5 MiB'
-version    = '0.12.0'
+size       = '28.4 MiB'
+version    = '0.12.2'
 website    = 'https://www.uiua.org'
 example    = '''
 # Printing

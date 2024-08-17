@@ -27,6 +27,7 @@ constant %paths = (
     'Fortran'      => 'en.wikipedia.org/wiki/GNU_Fortran',
     'Go'           => 'endoflife.date/api/go.json',
     'Haskell'      => 'en.wikipedia.org/wiki/Glasgow_Haskell_Compiler',
+    'Hush'         => 'crates.io/api/v1/crates/hush',
     'Janet'        => 'github.com/janet-lang/janet/releases/latest',
     'Java'         => 'endoflife.date/api/java.json',
     'JavaScript'   => 'en.wikipedia.org/wiki/V8_(JavaScript_engine)',
@@ -52,7 +53,7 @@ constant %paths = (
     'Swift'        => 'en.wikipedia.org/wiki/Swift_(programming_language)',
     'Tcl'          => 'en.wikipedia.org/wiki/Tcl',
     'TeX'          => 'en.wikipedia.org/wiki/TeX',
-    'Uiua'         => 'github.com/uiua-lang/uiua/releases/latest',
+    'Uiua'         => 'crates.io/api/v1/crates/uiua',
     'V'            => 'github.com/vlang/v/releases/latest',
     'VimL'         => 'en.wikipedia.org/wiki/Vim_(text_editor)',
     'Wren'         => 'github.com/wren-lang/wren/releases/latest',
@@ -67,6 +68,7 @@ for %langs.sort: *.key.fc -> (:key($name), :value(%lang)) {
         state $ua  = HTTP::Tiny.new :throw-exceptions;
         my    $res = $ua.get("https://$_")<content>.decode;
 
+        when / 'crates.io' / { $res.&from-json<crate><max_stable_version> }
         when / 'endoflife' / { $res.&from-json[0]<latest> }
         when / 'github'    / { $res ~~ / [ $name || 'Release' ] ' ' v? <(\d+ <[\d.]>+)> / }
         when / 'npmjs'     / { $res.&from-json[0]<version> }
