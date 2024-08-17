@@ -1,3 +1,4 @@
+# Also bump Hush, Uiua.
 ARG VER=1.80.1
 
 FROM rust:$VER-alpine3.20 AS builder

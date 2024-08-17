@@ -609,7 +609,7 @@ body > .tabs a {
 
 #error h1 { text-align: center }
 
-#home, #ideas { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
+#home { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
 
 #home > .tabs { justify-content: flex-end }
 
@@ -624,7 +624,9 @@ body > .tabs a {
 }
 
 #popups {
-    display: grid;
+    align-items: flex-end;
+    display: flex;
+    flex-direction: column;
     gap: .5rem;
     grid-template-columns: 1fr auto;
     padding: .5rem;
@@ -641,11 +643,11 @@ body > .tabs a {
     color: var(--background);
     display: default;
     gap: .25rem .5rem;
-    grid-column: 2;
     grid-template-columns: auto 1fr;
-    opacity: 0;
+    max-width: 15rem;
     pointer-events: initial;
     padding: .5rem;
+    visibility: collapse;
     white-space: nowrap;
 }
 
@@ -703,9 +705,13 @@ body > .tabs a {
     }
 }
 
+.rotate-icon svg {
+    transform: rotate(90deg);
+}
+
 @keyframes fade {
-    0%   { opacity: 0; margin-top: -4rem }
-    100% { opacity: 1; margin-top: 0 }
+    0%   { margin-top: -4rem; opacity: 0; visibility: collapse }
+    100% { margin-top:  0;    opacity: 1; visibility: visible  }
 }
 
 @media     (max-width: 34rem) { .wide { display: none !important } }

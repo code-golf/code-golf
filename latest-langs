@@ -27,6 +27,7 @@ constant %paths = (
     'Fortran'      => 'en.wikipedia.org/wiki/GNU_Fortran',
     'Go'           => 'endoflife.date/api/go.json',
     'Haskell'      => 'en.wikipedia.org/wiki/Glasgow_Haskell_Compiler',
+    'Hush'         => 'crates.io/api/v1/crates/hush',
     'Janet'        => 'github.com/janet-lang/janet/releases/latest',
     'Java'         => 'endoflife.date/api/java.json',
     'JavaScript'   => 'en.wikipedia.org/wiki/V8_(JavaScript_engine)',
@@ -37,21 +38,23 @@ constant %paths = (
     'Nim'          => 'en.wikipedia.org/wiki/Nim_(programming_language)',
     'OCaml'        => 'en.wikipedia.org/wiki/OCaml',
     'Odin'         => 'github.com/odin-lang/Odin/releases/latest',
-    'PHP'          => 'endoflife.date/api/php.json',
     'Pascal'       => 'en.wikipedia.org/wiki/Free_Pascal',
     'Perl'         => 'endoflife.date/api/perl.json',
+    'PHP'          => 'endoflife.date/api/php.json',
     'PowerShell'   => 'endoflife.date/api/powershell.json',
     'Prolog'       => 'en.wikipedia.org/wiki/SWI-Prolog',
     'Python'       => 'endoflife.date/api/python.json',
     'R'            => 'en.wikipedia.org/wiki/R_(programming_language)',
     'Raku'         => 'en.wikipedia.org/wiki/Rakudo',
+    'Rebol'        => 'en.wikipedia.org/wiki/Rebol',
+    'Rexx'         => 'en.wikipedia.org/wiki/Rexx',
     'Ruby'         => 'endoflife.date/api/ruby.json',
     'Rust'         => 'en.wikipedia.org/wiki/Rust_(programming_language)',
     'SQL'          => 'en.wikipedia.org/wiki/SQLite',
     'Swift'        => 'en.wikipedia.org/wiki/Swift_(programming_language)',
     'Tcl'          => 'en.wikipedia.org/wiki/Tcl',
     'TeX'          => 'en.wikipedia.org/wiki/TeX',
-    'Uiua'         => 'github.com/uiua-lang/uiua/releases/latest',
+    'Uiua'         => 'crates.io/api/v1/crates/uiua',
     'V'            => 'github.com/vlang/v/releases/latest',
     'VimL'         => 'en.wikipedia.org/wiki/Vim_(text_editor)',
     'Wren'         => 'github.com/wren-lang/wren/releases/latest',
@@ -66,6 +69,7 @@ for %langs.sort: *.key.fc -> (:key($name), :value(%lang)) {
         state $ua  = HTTP::Tiny.new :throw-exceptions;
         my    $res = $ua.get("https://$_")<content>.decode;
 
+        when / 'crates.io' / { $res.&from-json<crate><max_stable_version> }
         when / 'endoflife' / { $res.&from-json[0]<latest> }
         when / 'github'    / { $res ~~ / [ $name || 'Release' ] ' ' v? <(\d+ <[\d.]>+)> / }
         when / 'npmjs'     / { $res.&from-json[0]<version> }
@@ -81,5 +85,5 @@ for %langs.sort: *.key.fc -> (:key($name), :value(%lang)) {
         !! $old eq $new || $old.starts-with("$new.") || "$old.0" eq $new ?? 32
         !!                                                                  31;
 
-    printf "%11s \e[%dm%11s → %s\e[0m\n", $name, $code, $old, $new;
+    printf "%12s \e[%dm%11s → %s\e[0m\n", $name, $code, $old, $new;
 }

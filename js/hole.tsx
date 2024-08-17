@@ -7,6 +7,8 @@ import {
     ReadonlyPanelsData, setCodeForLangAndSolution, getCurrentSolutionCode,
     initDeleteBtn, initCopyJSONBtn, initOutputDiv, getScorings, replaceUnprintablesInOutput,
     updateLocalStorage,
+    ctrlEnter,
+    getLastSubmittedCode,
 } from './_hole-common';
 
 const editor = new EditorView({
@@ -16,6 +18,8 @@ const editor = new EditorView({
         const code = tr.state.doc.toString();
         const scorings: {total: {byte?: number, char?: number}, selection?: {byte?: number, char?: number}} = getScorings(tr, editor);
         const scoringKeys = ['byte', 'char'] as const;
+
+        $('main')?.classList.toggle('lastSubmittedCode', code === getLastSubmittedCode());
 
         function formatScore(scoring: any) {
             return scoringKeys
@@ -51,7 +55,9 @@ $('#restoreLink').onclick = e => {
 };
 
 // Wire submit to clicking a button and a keyboard shortcut.
-$('#runBtn').onclick = () => submit(editor, updateReadonlyPanels);
+const closuredSubmit = () => submit(editor, updateReadonlyPanels);
+$('#runBtn').onclick = closuredSubmit;
+window.onkeydown = ctrlEnter(closuredSubmit);
 
 initCopyJSONBtn($('#copy'));
 initDeleteBtn($('#deleteBtn'), langs);
