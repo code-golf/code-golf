@@ -13,13 +13,12 @@ RUN mkdir /usr/local/bin/vendor
 
 WORKDIR /usr/local/tmp
 
-RUN ODIN_ROOT=/usr/local/bin make -j`nproc` release
+RUN ODIN_ROOT=/usr/local/bin make release -j `nproc`
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/cat /bin/chmod /bin/rm /bin/sh                     /bin/
+COPY --from=0 /bin/cat /bin/rm /bin/sh                                /bin/
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/libz.so.1                 /lib/
-COPY           odinwrapper                                            /usr/bin/
 COPY --from=0 /usr/bin/clang /usr/bin/ld                              /usr/bin/
 COPY --from=0 /usr/lib/crt1.o                                         \
               /usr/lib/crti.o                                         \
@@ -48,7 +47,7 @@ COPY --from=0 /usr/local/bin/base                                     /usr/local
 COPY --from=0 /usr/local/bin/core                                     /usr/local/bin/core
 COPY --from=0 /usr/local/bin/vendor                                   /usr/local/bin/vendor
 
-RUN chmod +x /usr/bin/odinwrapper
+COPY /odinwrapper /usr/bin/
 
 ENTRYPOINT ["odinwrapper"]
 
