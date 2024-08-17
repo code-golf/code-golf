@@ -35,7 +35,6 @@ constant %paths = (
     'Lisp'         => 'en.wikipedia.org/wiki/CLISP',
     'Lua'          => 'en.wikipedia.org/wiki/Lua_(programming_language)',
     'Nim'          => 'en.wikipedia.org/wiki/Nim_(programming_language)',
-    
     'OCaml'        => 'en.wikipedia.org/wiki/OCaml',
     'Pascal'       => 'en.wikipedia.org/wiki/Free_Pascal',
     'Perl'         => 'endoflife.date/api/perl.json',
