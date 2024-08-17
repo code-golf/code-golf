@@ -729,7 +729,7 @@ example    = '''
     (print i))
 
 ; Accessing arguments
-(for [arg sys.argv]
+(for [arg (get sys.argv (slice 1 None))]
     (print arg))
 '''
 
