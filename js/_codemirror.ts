@@ -141,6 +141,7 @@ export const extensions : { [key: string]: any } = {
     'haskell':       StreamLanguage.define(haskell),
     // TODO hexagony
     // TODO hush
+    // TODO hy
     'j':             j(),
     'janet':         janet(),
     'java':          java(),
