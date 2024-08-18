@@ -49,6 +49,7 @@ constant %paths = (
     'Rexx'         => 'en.wikipedia.org/wiki/Rexx',
     'Ruby'         => 'endoflife.date/api/ruby.json',
     'Rust'         => 'en.wikipedia.org/wiki/Rust_(programming_language)',
+    'Scheme'       => 'en.wikipedia.org/wiki/Chez_Scheme',
     'SQL'          => 'en.wikipedia.org/wiki/SQLite',
     'Swift'        => 'en.wikipedia.org/wiki/Swift_(programming_language)',
     'Tcl'          => 'en.wikipedia.org/wiki/Tcl',

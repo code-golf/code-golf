@@ -1179,6 +1179,23 @@ fn main() {
 }
 '''
 
+[Scheme]
+args       = [ '/usr/bin/schemewrapper', '-' ]
+experiment = 167
+size       = '17.9 MiB'
+version    = 'Chez Scheme 10.0.0'
+website    = 'https://cisco.github.io/ChezScheme/'
+example    = '''
+; Printing
+(printf "~a~n" "Hello, World!")
+
+; Looping
+(for-each (lambda (i) (display i) (newline)) (iota 10))
+
+; Accessing arguments
+(for-each (lambda (arg) (display arg) (newline)) (command-line-arguments))
+'''
+
 [sed]
 args    = [ '/usr/bin/sed', '-E', '-z', '--sandbox', '-u', '--', '$code' ]
 size    = '236 KiB'
