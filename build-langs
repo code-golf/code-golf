@@ -83,7 +83,8 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
                 $ver ~~ m:g/ v (\S+) '.' /;
                 $ver = "Raku $1[0] on Rakudo $0[0]";
             }
-            default { $ver = $digits }
+            when 'Rexx'       { $ver = "Regina $digits" }
+            default           { $ver = $digits }
         }
 
         %lang<version> = $ver;
