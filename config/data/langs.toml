@@ -25,7 +25,7 @@ x is a no-op.
 [Arturo]
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
-size       = '6.21 MiB'
+size       = '5.29 MiB'
 version    = '0.9.84'
 website    = 'https://arturo-lang.io'
 example    = '''
@@ -115,7 +115,7 @@ syscall
 [AWK]
 args    = [ '/usr/bin/gawk', '-v', 'RS=\0', '$code' ]
 size    = '1.77 MiB'
-version = '5.3.0'
+version = 'GNU AWK 5.3.0'
 website = 'https://www.gnu.org/software/gawk/'
 example = '''
 BEGIN {
@@ -273,7 +273,7 @@ foreach (String arg in args)
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
 size    = '142 MiB'
-version = '18.1.8'
+version = 'Clang 18.1.8'
 website = 'https://clang.llvm.org'
 example = '''
 #include <iostream>
@@ -751,7 +751,7 @@ example = '''
 [Java]
 args    = [ '/usr/bin/java', '-' ]
 size    = '58.1 MiB'
-version = '22.0.2'
+version = 'OpenJDK 22.0.2'
 website = 'https://openjdk.java.net'
 example = '''
 class Main {
@@ -789,7 +789,7 @@ for (let arg of arguments)
 '''
 
 [jq]
-args    = [ '/usr/bin/jq', '-nr', '$code', '--args', '--' ]
+args    = [ '/usr/bin/jq', '--args', '--null-input', '--raw-output', '--', '$code' ]
 size    = '3.41 MiB'
 version = '1.7.1'
 website = 'https://jqlang.github.io/jq/'
@@ -924,7 +924,7 @@ Sys.argv
 [Pascal]
 args    = [ '/usr/bin/pascal', '-' ]
 size    = '31.1 MiB'
-version = '3.2.2'
+version = 'Free Pascal 3.2.2'
 website = 'https://freepascal.org'
 example = '''
 var
@@ -1117,7 +1117,7 @@ foreach arg system/options/args [
 args       = [ '/usr/bin/rexx', '-' ]
 experiment = 873
 size       = '4.63 MiB'
-version    = '3.9.6'
+version    = 'Regina 3.9.6'
 website    = 'https://regina-rexx.sourceforge.io'
 example    = '''
 -- Printing
@@ -1137,7 +1137,7 @@ end
 [Rockstar]
 args    = [ '/usr/bin/rockstar', '-' ]
 size    = '162 MiB'
-version = '2.1.2'
+version = 'Rocky 2.1.2'
 website = 'https://github.com/gaborsch/rocky'
 example = '''
 (Printing)
@@ -1196,10 +1196,27 @@ fn main() {
 }
 '''
 
+[Scheme]
+args       = [ '/usr/bin/schemewrapper', '-' ]
+experiment = 167
+size       = '17.9 MiB'
+version    = 'Chez Scheme 10.0.0'
+website    = 'https://cisco.github.io/ChezScheme/'
+example    = '''
+; Printing
+(printf "~a~n" "Hello, World!")
+
+; Looping
+(for-each (lambda (i) (display i) (newline)) (iota 10))
+
+; Accessing arguments
+(for-each (lambda (arg) (display arg) (newline)) (command-line-arguments))
+'''
+
 [sed]
 args    = [ '/usr/bin/sed', '-E', '-z', '--sandbox', '-u', '--', '$code' ]
 size    = '236 KiB'
-version = '4.9'
+version = 'GNU sed 4.9'
 website = 'https://www.gnu.org/software/sed/'
 example = '''
 # Printing
@@ -1228,7 +1245,7 @@ G
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
 size    = '1.20 MiB'
-version = '3.46.1'
+version = 'SQLite 3.46.1'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
@@ -1317,8 +1334,8 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '28.4 MiB'
-version    = '0.12.2'
+size       = '28.5 MiB'
+version    = '0.12.3'
 website    = 'https://www.uiua.org'
 example    = '''
 # Printing

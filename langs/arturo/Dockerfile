@@ -5,8 +5,7 @@ RUN apk add --no-cache curl g++ nim pcre
 RUN curl -L https://github.com/arturo-lang/arturo/archive/0756a55.tar.gz \
   | tar xz
 
-RUN cd a* && \
-    ./build.nims -m mini -i -l
+RUN cd arturo-* && ./build.nims --install --mode mini --release
 
 FROM codegolf/lang-base
 
