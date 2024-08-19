@@ -115,7 +115,7 @@ syscall
 [AWK]
 args    = [ '/usr/bin/gawk', '-v', 'RS=\0', '$code' ]
 size    = '1.77 MiB'
-version = '5.3.0'
+version = 'GNU AWK 5.3.0'
 website = 'https://www.gnu.org/software/gawk/'
 example = '''
 BEGIN {
@@ -273,7 +273,7 @@ foreach (String arg in args)
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
 size    = '142 MiB'
-version = '18.1.8'
+version = 'Clang 18.1.8'
 website = 'https://clang.llvm.org'
 example = '''
 #include <iostream>
@@ -751,7 +751,7 @@ example = '''
 [Java]
 args    = [ '/usr/bin/java', '-' ]
 size    = '58.1 MiB'
-version = '22.0.2'
+version = 'OpenJDK 22.0.2'
 website = 'https://openjdk.java.net'
 example = '''
 class Main {
@@ -924,7 +924,7 @@ Sys.argv
 [Pascal]
 args    = [ '/usr/bin/pascal', '-' ]
 size    = '31.1 MiB'
-version = '3.2.2'
+version = 'Free Pascal 3.2.2'
 website = 'https://freepascal.org'
 example = '''
 var
@@ -1120,7 +1120,7 @@ end
 [Rockstar]
 args    = [ '/usr/bin/rockstar', '-' ]
 size    = '162 MiB'
-version = '2.1.2'
+version = 'Rocky 2.1.2'
 website = 'https://github.com/gaborsch/rocky'
 example = '''
 (Printing)
@@ -1182,7 +1182,7 @@ fn main() {
 [sed]
 args    = [ '/usr/bin/sed', '-E', '-z', '--sandbox', '-u', '--', '$code' ]
 size    = '236 KiB'
-version = '4.9'
+version = 'GNU sed 4.9'
 website = 'https://www.gnu.org/software/sed/'
 example = '''
 # Printing
@@ -1211,7 +1211,7 @@ G
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
 size    = '1.20 MiB'
-version = '3.46.1'
+version = 'SQLite 3.46.1'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
