@@ -961,6 +961,23 @@ say for @ARGV;
 # Code is run under -E, all current features are enabled.
 '''
 
+[Pip]
+args       = [ '/usr/bin/pip.py', '-e', '$code' ]
+experiment = 919
+size       = '0 MiB'
+version    = '1.2.0'
+website    = 'https://github.com/dloscutoff/pip'
+example    = '''
+; Printing
+"Hello, World!"
+
+; Looping
+
+
+; Accessing arguments
+
+'''
+
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '8.40 MiB'

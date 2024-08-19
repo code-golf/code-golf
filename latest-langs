@@ -40,6 +40,7 @@ constant %paths = (
     'Pascal'       => 'en.wikipedia.org/wiki/Free_Pascal',
     'Perl'         => 'endoflife.date/api/perl.json',
     'PHP'          => 'endoflife.date/api/php.json',
+    'Pip'          => 'github.com/dloscutoff/pip/releases/latest',
     'PowerShell'   => 'endoflife.date/api/powershell.json',
     'Prolog'       => 'en.wikipedia.org/wiki/SWI-Prolog',
     'Python'       => 'endoflife.date/api/python.json',
