@@ -25,7 +25,7 @@ x is a no-op.
 [Arturo]
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
-size       = '6.21 MiB'
+size       = '5.29 MiB'
 version    = '0.9.84'
 website    = 'https://arturo-lang.io'
 example    = '''
