@@ -1,0 +1,14 @@
+#!/bin/sh -e
+
+[ "$1" = "--version" ] && exec /usr/local/pony/bin/ponyc --version
+
+cd /tmp
+
+# Compile
+cat - > code.pony
+/usr/local/pony/bin/ponyc --verbose 0
+rm code.pony
+
+# Execute
+shift
+exec ./tmp "$@"

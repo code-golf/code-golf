@@ -979,6 +979,31 @@ for ($i = 1; $i < $argc; $i++)
     echo "$argv[$i]\n";
 '''
 
+[Pony]
+args       = [ '/usr/bin/pony', '-' ]
+experiment = 90
+size       = '0 MiB'
+version    = '0.58.5'
+website    = 'https://www.ponylang.io'
+example    = '''
+actor Main
+  new create(env: Env) =>
+    // Printing
+    env.out.print("Hello, World!")
+
+    // Looping
+    var i: U8 = 0
+    while i < 10 do
+        env.out.print(i.string())
+        i = i + 1
+    end
+
+    // Accessing arguments
+    for arg in env.args.values() do
+        env.out.print(arg)
+    end
+'''
+
 [PowerShell]
 args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
