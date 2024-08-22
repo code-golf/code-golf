@@ -6,18 +6,17 @@ import (
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/oauth"
+	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
 	"github.com/lib/pq"
 )
 
 // GET /golfers/{golfer}
 func golferGET(w http.ResponseWriter, r *http.Request) {
-	const limit = 100
-
 	type row struct {
 		Cheevos      []*config.Cheevo
 		Date, Golfer string
-		Hole         *config.Hole
+		Holes        []*config.Hole
 		Lang         *config.Lang
 	}
 
@@ -51,7 +50,7 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		Langs:            config.LangList,
 		OAuthProviders:   oauth.Providers,
 		Trophies:         map[string]map[string]int{},
-		Wall:             make([]row, 0, limit),
+		Wall:             make([]row, 0, pager.PerPage),
 	}
 
 	// Note we hide followers as well as following if the bool is false.
@@ -91,11 +90,10 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		  GROUP BY user_id, hole, lang
 		) SELECT cheevo, date, login, hole, lang
 		    FROM data JOIN users ON id = user_id
-		ORDER BY date DESC, login LIMIT $4`,
+		ORDER BY date DESC, login`,
 		followedGolfersInFeed,
 		golfer.ID,
 		golfer.FollowLimit(),
-		limit,
 	)
 	if err != nil {
 		panic(err)
@@ -105,10 +103,11 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 rows:
 	for rows.Next() {
 		var cheevo *config.Cheevo
+		var hole *config.Hole
 		var time time.Time
 
 		var r row
-		if err := rows.Scan(&cheevo, &time, &r.Golfer, &r.Hole, &r.Lang); err != nil {
+		if err := rows.Scan(&cheevo, &time, &r.Golfer, &hole, &r.Lang); err != nil {
 			panic(err)
 		}
 
@@ -126,7 +125,25 @@ rows:
 			r.Cheevos = append(r.Cheevos, cheevo)
 		}
 
+		if hole != nil {
+			// Try and find a place in the current day to append the hole.
+			for i := len(data.Wall) - 1; i >= 0 && data.Wall[i].Date == r.Date; i-- {
+				if data.Wall[i].Holes != nil &&
+					data.Wall[i].Golfer == r.Golfer &&
+					data.Wall[i].Lang.ID == r.Lang.ID {
+					data.Wall[i].Holes = append(data.Wall[i].Holes, hole)
+					continue rows
+				}
+			}
+
+			r.Holes = append(r.Holes, hole)
+		}
+
 		data.Wall = append(data.Wall, r)
+
+		if len(data.Wall) == pager.PerPage {
+			break
+		}
 	}
 
 	if err := rows.Err(); err != nil {
