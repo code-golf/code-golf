@@ -65,7 +65,7 @@ func init() {
 
 // TODO Make this dynamic based on hole/lang age.
 func channel(_ *config.Hole, lang *config.Lang) string {
-	if lang.ID == "jq" {
+	if lang.ID == "scheme" {
 		return chanFreshID
 	}
 	return chanSourID

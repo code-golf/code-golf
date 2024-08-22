@@ -1180,12 +1180,11 @@ fn main() {
 '''
 
 [Scheme]
-args       = [ '/usr/bin/schemewrapper', '-' ]
-experiment = 167
-size       = '17.9 MiB'
-version    = 'Chez Scheme 10.0.0'
-website    = 'https://cisco.github.io/ChezScheme/'
-example    = '''
+args    = [ '/usr/bin/schemewrapper', '-' ]
+size    = '17.9 MiB'
+version = 'Chez Scheme 10.0.0'
+website = 'https://cisco.github.io/ChezScheme/'
+example = '''
 ; Printing
 (printf "~a~n" "Hello, World!")
 
