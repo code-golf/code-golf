@@ -301,7 +301,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '68.6 MiB'
-version = '0.7.23'
+version = '0.7.24'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -412,7 +412,7 @@ for arg in process.argv[2..]
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
 size    = '270 MiB'
-version = '1.13.1'
+version = '1.13.2'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
