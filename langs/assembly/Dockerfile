@@ -1,10 +1,10 @@
 FROM node:22-alpine3.20 AS builder
 
-ENV VERSION=2.4.2
+ENV VERSION=2.4.3
 
 RUN apk add --no-cache binutils
 
-RUN npm install -g @defasm/cli@1.2.3 @defasm/core@$VERSION
+RUN npm install -g @defasm/cli@1.3.0 @defasm/core@$VERSION
 
 # Strip node.
 RUN strip /usr/local/bin/node
