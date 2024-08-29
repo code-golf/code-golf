@@ -1,6 +1,6 @@
 module github.com/code-golf/code-golf
 
-go 1.22.0
+go 1.23.0
 
 require (
 	github.com/DATA-DOG/go-sqlmock v1.5.2
@@ -11,7 +11,7 @@ require (
 	github.com/go-chi/chi/v5 v5.1.0
 	github.com/go-git/go-billy/v5 v5.5.0
 	github.com/go-git/go-git/v5 v5.12.0
-	github.com/gofrs/uuid/v5 v5.2.0
+	github.com/gofrs/uuid/v5 v5.3.0
 	github.com/gorilla/feeds v1.2.0
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/lib/pq v1.10.9
@@ -24,10 +24,10 @@ require (
 )
 
 require (
-	dario.cat/mergo v1.0.0 // indirect
+	dario.cat/mergo v1.0.1 // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
 	github.com/ProtonMail/go-crypto v1.0.0 // indirect
-	github.com/cloudflare/circl v1.3.9 // indirect
+	github.com/cloudflare/circl v1.4.0 // indirect
 	github.com/cyphar/filepath-securejoin v0.3.1 // indirect
 	github.com/dgryski/trifles v0.0.0-20210119233746-37d926d5de6c // indirect
 	github.com/emirpasic/gods v1.18.1 // indirect

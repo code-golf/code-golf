@@ -34,9 +34,6 @@ const renamedHoles: Record<string, string> = {
 export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSolution: any, updateReadonlyPanels: any, getEditor: () => any) {
     tabLayout = _tabLayout;
     const closuredSubmit = () => submit(getEditor(), updateReadonlyPanels);
-    window.onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter'
-        ? closuredSubmit()
-        : undefined;
     if (vimMode) Vim.defineEx('write', 'w', closuredSubmit);
 
     (onhashchange = async () => {
@@ -521,17 +518,23 @@ const diamondPopups = (updates: RankUpdate[]) => {
     return popups;
 };
 
+let lastSubmittedCode = '';
+export function getLastSubmittedCode(){
+    return lastSubmittedCode;
+}
+
 export async function submit(
     editor: any,
     // eslint-disable-next-line no-unused-vars
     updateReadonlyPanels: (d: ReadonlyPanelsData) => void,
-) {
-    if (!editor) return;
+): Promise<boolean> {
+    if (!editor) return false;
     $('h2').innerText = '…';
     $('#status').className = 'grey';
     $$('canvas').forEach(e => e.remove());
 
     const code = editor.state.doc.toString();
+    lastSubmittedCode = code;
     const codeLang = lang;
     const submissionID = ++latestSubmissionID;
 
@@ -542,16 +545,20 @@ export async function submit(
 
     if (res.status != 200) {
         alert('Error ' + res.status);
-        return;
+        return false;
     }
 
     const data = await res.json() as SubmitResponse;
     savedInDB = data.logged_in && !experimental;
 
     if (submissionID != latestSubmissionID)
-        return;
+        return false;
 
     const pass = data.runs.every(r => r.pass);
+    $('main')?.classList.remove('pass');
+    $('main')?.classList.remove('fail');
+    $('main')?.classList.add(pass ? 'pass' : 'fail');
+    $('main')?.classList.add('lastSubmittedCode');
     if (pass) {
         for (const i of [0, 1] as const) {
             const solutionCode = getSolutionCode(codeLang, i);
@@ -675,6 +682,8 @@ export async function submit(
         </div>));
 
     refreshScores(editor);
+
+    return pass;
 }
 
 export function updateLocalStorage(code: string) {
@@ -860,4 +869,12 @@ function replacePlaceholdersInRange(selection: Selection, range: Range) {
     }
 
     return text;
+}
+
+export function ctrlEnter(func: Function) {
+    return function (e: KeyboardEvent) {
+        if ((e.ctrlKey || e.metaKey) && e.key == 'Enter') {
+            return func();
+        }
+    };
 }

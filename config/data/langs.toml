@@ -43,7 +43,7 @@ example    = '''
 [Arturo]
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
-size       = '6.21 MiB'
+size       = '5.29 MiB'
 version    = '0.9.84'
 website    = 'https://arturo-lang.io'
 example    = '''
@@ -133,7 +133,7 @@ syscall
 [AWK]
 args    = [ '/usr/bin/gawk', '-v', 'RS=\0', '$code' ]
 size    = '1.77 MiB'
-version = '5.3.0'
+version = 'GNU AWK 5.3.0'
 website = 'https://www.gnu.org/software/gawk/'
 example = '''
 BEGIN {
@@ -291,7 +291,7 @@ foreach (String arg in args)
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
 size    = '142 MiB'
-version = '18.1.8'
+version = 'Clang 18.1.8'
 website = 'https://clang.llvm.org'
 example = '''
 #include <iostream>
@@ -319,7 +319,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '68.6 MiB'
-version = '0.7.22'
+version = '0.7.24'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -430,7 +430,7 @@ for arg in process.argv[2..]
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
 size    = '270 MiB'
-version = '1.13.1'
+version = '1.13.2'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -620,8 +620,8 @@ end
 
 [Go]
 args    = [ '/usr/bin/go', '-' ]
-size    = '353 MiB'
-version = '1.22.6'
+size    = '382 MiB'
+version = '1.23.0'
 website = 'https://go.dev'
 example = '''
 package main
@@ -711,6 +711,27 @@ example = '''
           t e r m i n a t e d
 '''
 
+[Hush]
+args       = [ '/usr/bin/hush', '-' ]
+experiment = 656
+size       = '3.19 MiB'
+version    = '0.1.4'
+website    = 'https://hush-shell.github.io'
+example    = '''
+# Printing
+std.print("Hello, World!")
+
+# Looping
+for i in std.range(0, 10, 1) do
+    std.print(i)
+end
+
+# Accessing arguments
+for arg in std.iter(std.args()) do
+    std.print(arg)
+end
+'''
+
 [J]
 args    = [ '/usr/bin/j', '/tmp/code.ijs' ]
 size    = '11.2 MiB'
@@ -748,7 +769,7 @@ example = '''
 [Java]
 args    = [ '/usr/bin/java', '-' ]
 size    = '58.1 MiB'
-version = '22.0.2'
+version = 'OpenJDK 22.0.2'
 website = 'https://openjdk.java.net'
 example = '''
 class Main {
@@ -786,12 +807,11 @@ for (let arg of arguments)
 '''
 
 [jq]
-args       = [ '/usr/bin/jq', '-nr', '$code', '--args' ]
-experiment = 240
-size       = '3.41 MiB'
-version    = '1.7.1'
-website    = 'https://jqlang.github.io/jq/'
-example    = '''
+args    = [ '/usr/bin/jq', '--args', '--null-input', '--raw-output', '--', '$code' ]
+size    = '3.41 MiB'
+version = '1.7.1'
+website = 'https://jqlang.github.io/jq/'
+example = '''
 # Printing
 "Hello, World!",
 
@@ -922,7 +942,7 @@ Sys.argv
 [Pascal]
 args    = [ '/usr/bin/pascal', '-' ]
 size    = '31.1 MiB'
-version = '3.2.2'
+version = 'Free Pascal 3.2.2'
 website = 'https://freepascal.org'
 example = '''
 var
@@ -1073,10 +1093,52 @@ say 'Hello, World!';
 .say for @*ARGS;
 '''
 
+[Rebol]
+args       = [ '/usr/bin/rebol', '-qw', '--do', '$code', '--', '--script', '' ]
+experiment = 189
+size       = '1.22 MiB'
+version    = '2.7.8.4.10'
+website    = 'https://www.rebol.com'
+example    = '''
+; Printing
+print "Hello, World!"
+
+; Looping
+for i 0 9 1 [
+    print i
+]
+
+; Accessing arguments
+foreach arg system/options/args [
+    print arg
+]
+'''
+
+[Rexx]
+args       = [ '/usr/bin/rexx', '-' ]
+experiment = 873
+size       = '4.63 MiB'
+version    = 'Regina 3.9.6'
+website    = 'https://regina-rexx.sourceforge.io'
+example    = '''
+-- Printing
+say "Hello, World!"
+
+-- Looping
+do i = 0 to 9
+    say i
+end
+
+-- Accessing arguments
+do i = 1 to arg()
+    say arg(i)
+end
+'''
+
 [Rockstar]
 args    = [ '/usr/bin/rockstar', '-' ]
 size    = '162 MiB'
-version = '2.1.2'
+version = 'Rocky 2.1.2'
 website = 'https://github.com/gaborsch/rocky'
 example = '''
 (Printing)
@@ -1135,10 +1197,26 @@ fn main() {
 }
 '''
 
+[Scheme]
+args    = [ '/usr/bin/schemewrapper', '-' ]
+size    = '17.9 MiB'
+version = 'Chez Scheme 10.0.0'
+website = 'https://cisco.github.io/ChezScheme/'
+example = '''
+; Printing
+(printf "~a~n" "Hello, World!")
+
+; Looping
+(for-each (lambda (i) (display i) (newline)) (iota 10))
+
+; Accessing arguments
+(for-each (lambda (arg) (display arg) (newline)) (command-line-arguments))
+'''
+
 [sed]
 args    = [ '/usr/bin/sed', '-E', '-z', '--sandbox', '-u', '--', '$code' ]
 size    = '236 KiB'
-version = '4.9'
+version = 'GNU sed 4.9'
 website = 'https://www.gnu.org/software/sed/'
 example = '''
 # Printing
@@ -1167,7 +1245,7 @@ G
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
 size    = '1.20 MiB'
-version = '3.46.0'
+version = 'SQLite 3.46.1'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
@@ -1256,8 +1334,8 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '30.8 MiB'
-version    = '0.11.1'
+size       = '28.5 MiB'
+version    = '0.12.3'
 website    = 'https://www.uiua.org'
 example    = '''
 # Printing

@@ -38,19 +38,23 @@
     {{ template "hole-info" . }}
     <div id="picker-status-row">
         <nav class="tabs hide" id=solutionPicker></nav>
-        <div id=pool></div>
-        <div class=hide id=status>
-            <h2></h2>
-            <nav id=thirdParty></nav>
+        <div id=panel-btns>
+            <div id=pool></div>
+            <div class=hide id=status>
+                <h2></h2>
+                <nav id=thirdParty></nav>
+            </div>
+            <div id=layout-btns>
+                <span id=revert-layout class=btn> {{ svg "default-layout" }} Default Layout</span>
+                <span id=make-wide class=btn> {{ svg "arrow-with-stroke-left-right" }} Wide</span>
+                <span id=make-narrow class=btn> {{ svg "arrow-with-stroke-right-left" }} Narrow</span>
+                <span id=make-tall class="btn rotate-icon"> {{ svg "arrow-with-stroke-left-right" }} Tall</span>
+                <span id=make-short class="btn rotate-icon"> {{ svg "arrow-with-stroke-right-left" }} Short</span>
+                <span id=add-row class=btn> {{ svg "downwards-arrow-to-bar" }} Add row</span>
+            </div>
         </div>
     </div>
     <div id=golden-container></div>
-    <div id=layout-btns>
-        <div id=revert-layout class=btn> {{ svg "default-layout" }} Default Layout</div>
-        <div id=make-wide class=btn> {{ svg "arrow-with-stroke-left-right" }} Wide</div>
-        <div id=make-narrow class=btn> {{ svg "arrow-with-stroke-right-left" }} Narrow</div>
-        <div id=add-row class=btn> {{ svg "downwards-arrow-to-bar" }} Add row</div>
-    </div>
 </main>
 
 <template id=template-details>{{ template "hole-details" . }}</template>

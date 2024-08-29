@@ -52,6 +52,10 @@
                         <th>Follow Limit
                         <td>{{ .Data.FollowLimit }}
                         <td>{{ .Data.FollowLimitSponsor }}
+                    <tr>
+                        <th>Solution Notes
+                        <td>No
+                        <td>Yes
             </table>
 
         <dt>What languages are supported?
@@ -60,19 +64,13 @@
         {{ range .Data.Langs }}
             {{ if and .Experiment (not $seenExp) }}
                 {{ $seenExp = true }}
-                <p>Experimental languages:
+                <p>Experimental languages:</p>
             {{ end }}
-            <section>
-                <header>
+                <a href="{{ .Website }}" title="{{ .Name }} - {{ .Version }}">
                     {{ svg .ID }}
                     <h2>{{ .Name }}</h2>
-                    {{ .Size }}
-                </header>
-                <div>{{ .Version }}</div>
-                <a href="{{ .Website }}">
-                    {{ trimPrefix (trimPrefix .Website "https://") "www." }}
+                    <span>{{ .Version }}</span>
                 </a>
-            </section>
         {{ end }}
             <p>
                 If you'd like to see another language added then raise an
