@@ -251,8 +251,8 @@ int main(int argc, char* argv[]) {
 
 ['C#']
 args    = [ '/usr/bin/c-sharp', '-' ]
-size    = '151 MiB'
-version = 'C# 12.0 on .NET 8.0.7'
+size    = '152 MiB'
+version = 'C# 12.0 on .NET 8.0.8'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -983,7 +983,7 @@ for ($i = 1; $i < $argc; $i++)
 args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 size       = '178 MiB'
-version    = 'PowerShell 7.4.5 on .NET 8.0.7'
+version    = 'PowerShell 7.4.5 on .NET 8.0.8'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
