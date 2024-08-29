@@ -2,7 +2,7 @@ FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache autoconf build-base cmake curl gfortran linux-headers python3
 
-ENV CXXFLAGS=-flto LDFLAGS=-flto VER=1.10.4
+ENV CXXFLAGS=-flto LDFLAGS=-flto VER=1.10.5
 
 RUN curl -L https://github.com/JuliaLang/julia/releases/download/v$VER/julia-$VER.tar.gz \
   | tar xz
