@@ -1,38 +1,32 @@
 FROM debian:bookworm-slim AS builder
 
-ENV RELEASE=19.0 \
-    BUILD=48958 \
-    DEBIAN_FRONTEND=noninteractive
-
 RUN apt-get update \
- && apt-get install -y curl dpkg libtinfo5
+ && DEBIAN_FRONTEND=noninteractive apt-get install -y curl dpkg libtinfo5
 
-RUN curl -o dyalog.deb https://www.dyalog.com/uploads/php/download.dyalog.com/download.php?file=$RELEASE/linux_64_$RELEASE.${BUILD}_unicode.x86_64.deb \
+RUN curl -o dyalog.deb https://www.dyalog.com/uploads/php/download.dyalog.com/download.php?file=19.0/linux_64_19.0.49960_unicode.x86_64.deb \
  && dpkg -i dyalog.deb
-
-COPY apl /
-RUN chmod +x apl
 
 FROM codegolf/lang-base
 
-ENV DIR=19.0
+ENV DYALOG=/opt/mdyalog/19.0/64/unicode
 
-COPY --from=0 /bin/bash /bin/cat /bin/sh                     /bin/
-COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6                \
-              /lib/x86_64-linux-gnu/libdl.so.2               \
-              /lib/x86_64-linux-gnu/libm.so.6                \
-              /lib/x86_64-linux-gnu/libpthread.so.0          \
-              /lib/x86_64-linux-gnu/librt.so.1               \
-              /lib/x86_64-linux-gnu/libtinfo.so.5            \
-              /lib/x86_64-linux-gnu/libtinfo.so.6            /lib/x86_64-linux-gnu/
-COPY --from=0 /lib64/ld-linux-x86-64.so.2                    /lib64/
-COPY --from=0 /opt/mdyalog/$DIR/64/unicode/dyalog            /opt/mdyalog/$DIR/64/unicode/
-COPY --from=0 /opt/mdyalog/$DIR/64/unicode/aplkeys/default   \
-              /opt/mdyalog/$DIR/64/unicode/aplkeys/utf8      \
-              /opt/mdyalog/$DIR/64/unicode/aplkeys/utf8codes /opt/mdyalog/$DIR/64/unicode/aplkeys/
-COPY --from=0 /opt/mdyalog/$DIR/64/unicode/apltrans/default  \
-              /opt/mdyalog/$DIR/64/unicode/apltrans/utf8     /opt/mdyalog/$DIR/64/unicode/apltrans/
-COPY --from=0 /opt/mdyalog/$DIR/64/unicode/scriptbin         /opt/mdyalog/$DIR/64/unicode/scriptbin
-COPY --from=0 /apl                                           /usr/bin/
+COPY --from=0 /bin/bash /bin/cat /bin/sh            /bin/
+COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
+              /lib/x86_64-linux-gnu/libdl.so.2      \
+              /lib/x86_64-linux-gnu/libm.so.6       \
+              /lib/x86_64-linux-gnu/libpthread.so.0 \
+              /lib/x86_64-linux-gnu/librt.so.1      \
+              /lib/x86_64-linux-gnu/libtinfo.so.5   \
+              /lib/x86_64-linux-gnu/libtinfo.so.6   /lib/x86_64-linux-gnu/
+COPY --from=0 /lib64/ld-linux-x86-64.so.2           /lib64/
+COPY --from=0 $DYALOG/dyalog                        $DYALOG/
+COPY --from=0 $DYALOG/aplkeys/default               \
+              $DYALOG/aplkeys/utf8                  \
+              $DYALOG/aplkeys/utf8codes             $DYALOG/aplkeys/
+COPY --from=0 $DYALOG/apltrans/default              \
+              $DYALOG/apltrans/utf8                 $DYALOG/apltrans/
+COPY --from=0 $DYALOG/scriptbin                     $DYALOG/scriptbin
+
+COPY /apl /usr/bin/
 
 ENTRYPOINT ["apl"]
