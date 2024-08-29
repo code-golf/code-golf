@@ -4,6 +4,9 @@ use HTTP::Tiny;
 use JSON::Fast;
 use TOML::Thumb;
 
+# Pass "--all" to see all languages regardless of version status.
+unit sub MAIN(Bool :$all);
+
 constant %paths = (
     'Arturo'       => 'github.com/arturo-lang/arturo/releases/latest',
     'Assembly'     => 'registry.npmjs.org/@defasm/core/latest',
@@ -23,8 +26,9 @@ constant %paths = (
     'Elixir'       => 'en.wikipedia.org/wiki/Elixir_(programming_language)',
     'F#'           => 'en.wikipedia.org/wiki/F_Sharp_(programming_language)',
     'Factor'       => 'github.com/factor/factor/releases/latest',
+    'Fennel'       => 'fennel-lang.org/setup',
     'Forth'        => 'en.wikipedia.org/wiki/Gforth',
-    'Fortran'      => 'en.wikipedia.org/wiki/GNU_Fortran',
+    'Fortran'      => 'en.wikipedia.org/wiki/GNU_Compiler_Collection',
     'Go'           => 'endoflife.date/api/go.json',
     'Haskell'      => 'en.wikipedia.org/wiki/Glasgow_Haskell_Compiler',
     'Hush'         => 'crates.io/api/v1/crates/hush',
@@ -46,6 +50,7 @@ constant %paths = (
     'R'            => 'en.wikipedia.org/wiki/R_(programming_language)',
     'Raku'         => 'en.wikipedia.org/wiki/Rakudo',
     'Rebol'        => 'en.wikipedia.org/wiki/Rebol',
+    'Rexx'         => 'regina-rexx.sourceforge.io',
     'Ruby'         => 'endoflife.date/api/ruby.json',
     'Rust'         => 'en.wikipedia.org/wiki/Rust_(programming_language)',
     'Scheme'       => 'en.wikipedia.org/wiki/Chez_Scheme',
@@ -62,27 +67,31 @@ constant %paths = (
 
 my %langs = from-toml 'config/data/langs.toml'.IO;
 
+my regex ver { \d+ <[\d.]>+ }
+
 for %langs.sort: *.key.fc -> (:key($name), :value(%lang)) {
-    my $old = %lang<version> ~~ / <[\d.]>+ \d+ /;
+    my $old = %lang<version> ~~ / <ver> /;
     my $new = do with %paths{$name} {
         state $ua  = HTTP::Tiny.new :throw-exceptions;
         my    $res = $ua.get("https://$_")<content>.decode;
 
-        when / 'crates.io' / { $res.&from-json<crate><max_stable_version> }
-        when / 'endoflife' / { $res.&from-json[0]<latest> }
-        when / 'github'    / { $res ~~ / [ $name || 'Release' ] ' ' v? <(\d+ <[\d.]>+)> / }
-        when / 'npmjs'     / { $res.&from-json[0]<version> }
-        when / 'wikipedia' / {
+        when / 'crates.io'   / { $res.&from-json<crate><max_stable_version> }
+        when / 'endoflife'   / { $res.&from-json[0]<latest> }
+        when / 'fennel-lang' / { $res ~~ / 'downloads/fennel-' <(<ver>)> / }
+        when / 'github.com'  / { $res ~~ / [ $name || 'Release' ] ' ' v? <(<ver>)> / }
+        when / 'npmjs.org'   / { $res.&from-json[0]<version> }
+        when / 'regina-rexx' / { $res ~~ / '<b>Current</b> ' <(<ver>)> / }
+        when / 'wikipedia'   / {
             $res ~~ /
                 < Stable Preview > ' release' .+? '>' ( '#' \d+ ' "' )?
-                <(\d+ <[\d.]>+)>
+                <(<ver>)>
             /;
         }
     } // '?';
 
-    my $code =  $new eq '?'                                              ?? 33
-        !! $old eq $new || $old.starts-with("$new.") || "$old.0" eq $new ?? 32
-        !!                                                                  31;
+    my $match = $old eq $new || $old.starts-with("$new.") || "$old.0" eq $new;
+    my $code  = $new eq '?' ?? 33 !! $match ?? 32 !! 31;
 
-    printf "%12s \e[%dm%11s → %s\e[0m\n", $name, $code, $old, $new;
+    printf "%12s \e[%dm%11s → %s\e[0m\n", $name, $code, $old, $new
+        if $all || !$match;
 }
