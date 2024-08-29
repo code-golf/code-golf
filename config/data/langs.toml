@@ -301,7 +301,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '68.6 MiB'
-version = '0.7.24'
+version = '0.7.26'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -806,8 +806,8 @@ $ARGS.positional[]
 
 [Julia]
 args    = [ '/usr/bin/julia', '--color=yes', '/proc/self/fd/0' ]
-size    = '310 MiB'
-version = '1.10.4'
+size    = '311 MiB'
+version = '1.10.5'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -983,7 +983,7 @@ for ($i = 1; $i < $argc; $i++)
 args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 size       = '178 MiB'
-version    = 'PowerShell 7.4.4 on .NET 8.0.7'
+version    = 'PowerShell 7.4.5 on .NET 8.0.7'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
