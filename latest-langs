@@ -26,7 +26,6 @@ constant %paths = (
     'Forth'        => 'en.wikipedia.org/wiki/Gforth',
     'Fortran'      => 'en.wikipedia.org/wiki/GNU_Fortran',
     'Go'           => 'endoflife.date/api/go.json',
-    #'Hare'         => '',
     'Haskell'      => 'en.wikipedia.org/wiki/Glasgow_Haskell_Compiler',
     'Hush'         => 'crates.io/api/v1/crates/hush',
     'Janet'        => 'github.com/janet-lang/janet/releases/latest',
