@@ -2,9 +2,15 @@
 
 export PATH=/usr/local/bin:$PATH
 
-[ "$1" = "-v" ] && exec harec -v
+[ "$1" = "version" ] && exec hare version
 
-cat - > /tmp/code.ha
+cd /tmp
 
+# Compile
+cat - > code.ha
+hare build -j `nproc` -qR -t bin code.ha
+rm code.ha
+
+# Execute
 shift
-exec hare run -R -j `nproc` /tmp/code.ha "$@"
+exec ./code "$@"
