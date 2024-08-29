@@ -646,6 +646,30 @@ example    = '''
 n*
 '''
 
+[Hare]
+args       = [ '/usr/bin/harewrapper', '-' ]
+experiment = 1323
+size       = '7,489,321,897 MiB'
+version    = '0.24.2'
+website    = 'https://harelang.org'
+example    = '''
+use fmt;
+use os;
+
+export fn main() void = {
+    // Printing
+    fmt::println("Hello, World!")!;
+
+    // Looping
+    for (let i = 0; i < 10; i += 1)
+        fmt::println(i)!;
+
+    // Accessing arguments
+    for (let arg .. os::args[1..])
+        fmt::println(arg)!;
+};
+'''
+
 [Haskell]
 args    = [ '/usr/bin/haskell', '-' ]
 size    = '388 MiB'

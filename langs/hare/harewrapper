@@ -1,0 +1,10 @@
+#!/bin/sh -e
+
+export PATH=/usr/local/bin:$PATH
+
+[ "$1" = "-v" ] && exec harec -v
+
+cat - > /tmp/code.ha
+
+shift
+exec hare run -R -j `nproc` /tmp/code.ha "$@"
