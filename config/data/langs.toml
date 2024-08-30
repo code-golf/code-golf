@@ -301,7 +301,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '68.6 MiB'
-version = '0.7.26'
+version = '0.7.27'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -827,7 +827,7 @@ end
 [K]
 args    = [ '/usr/bin/kwrapper', '/tmp/code.k' ]
 size    = '621 KiB'
-version = 'a1dac79409'
+version = '67da192f47'
 website = 'https://codeberg.org/ngn/k'
 example = '''
 /Printing
@@ -1061,8 +1061,8 @@ for (arg in commandArgs(TRUE)) {
 
 [Raku]
 args    = [ '/usr/bin/raku', '-' ]
-size    = '73.6 MiB'
-version = 'Raku 6.d on Rakudo 2024.05'
+size    = '75.5 MiB'
+version = 'Raku 6.d on Rakudo 2024.08'
 website = 'https://raku.org'
 example = '''
 # Printing
