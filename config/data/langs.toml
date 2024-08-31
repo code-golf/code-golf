@@ -961,23 +961,6 @@ say for @ARGV;
 # Code is run under -E, all current features are enabled.
 '''
 
-[Pip]
-args       = [ '/usr/bin/pip.py', '-e', '$code' ]
-experiment = 919
-size       = '0 MiB'
-version    = '1.2.0'
-website    = 'https://github.com/dloscutoff/pip'
-example    = '''
-; Printing
-"Hello, World!"
-
-; Looping
-
-
-; Accessing arguments
-
-'''
-
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '8.40 MiB'
@@ -994,6 +977,23 @@ for ($i = 0; $i < 10; $i++)
 # Accessing arguments
 for ($i = 1; $i < $argc; $i++)
     echo "$argv[$i]\n";
+'''
+
+[Pip]
+args       = [ '/usr/bin/pip.py', '-e', '$code' ]
+experiment = 919
+size       = '0 MiB'
+version    = '1.2.0'
+website    = 'https://github.com/dloscutoff/pip'
+example    = '''
+; Printing
+"Hello, World!"
+
+; Looping
+
+
+; Accessing arguments
+
 '''
 
 [PowerShell]
