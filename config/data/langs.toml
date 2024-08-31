@@ -1141,7 +1141,7 @@ Shout arg
 args       = [ '/usr/bin/rockstarwrapper', '-' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 experiment = 1336
-size       = '7.08 MiB'
+size       = '6.91 MiB'
 version    = '0.9.1'
 website    = 'https://beta.codewithrockstar.com'
 example    = '''

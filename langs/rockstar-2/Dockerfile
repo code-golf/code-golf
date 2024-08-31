@@ -1,12 +1,10 @@
 #FROM mcr.microsoft.com/dotnet/sdk:8.0.401-alpine3.20 AS builder
 FROM alpine:3.20 AS builder
 
-ENV VER=0.9.1
-
 RUN apk add --no-cache build-base curl libc6-compat
 
-RUN curl -L https://github.com/RockstarLang/rockstar2/releases/download/v$VER/rockstar-v$VER-linux-x64.tar.gz \
-  | tar xz --strip-components 1
+#RUN curl https://github.com/RockstarLang/rockstar2/archive/refs/tags/v0.9.1.tar.gz | tar xz
+RUN curl -L https://github.com/RockstarLang/rockstar2/releases/download/v0.9.1/rockstar-v0.9.1-linux-x64.tar.gz | tar xz --strip-components 1
 
 FROM codegolf/lang-base
 
