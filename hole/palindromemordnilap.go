@@ -1,9 +1,7 @@
 package hole
 
 func palindromemordnilap() []Run {
-	var tests []test
-
-	alphabet := "qwertzuiopasdfghjklyxcvbnmQWERTZUIOPASDFGHJKLYXCVBNM0123456789"
+	const alphabet = "qwertzuiopasdfghjklyxcvbnmQWERTZUIOPASDFGHJKLYXCVBNM0123456789"
 
 	correctLength := func(input string) int {
 		for length := len(input); length > 1; length-- {
@@ -26,10 +24,24 @@ func palindromemordnilap() []Run {
 		return input
 	}
 
-	fixedInputs := []string{"a", "aa", "ab", "aba", "abb", "abc", "aaaaaaa", "abaaaba", "Palindrome", "aA", "abcdcc", "abcdc", "123456", "better", "mississippi", "ababcdcdefefg", "ghghijijklklm", "mnmnopopqrqrs", "ststuvuvwxwxy", "yzyz010123234", "ABABCDCDEFEFG", "GHGHIJIJKLKLM", "MNMNOPOPQRQRS", "STSTUVUVWXWXY", "YZYZ454567678", "8989a"}
+	fixedInputs := []string{
+		"123456", "8989a",
 
-	for _, input := range fixedInputs {
-		tests = append(tests, test{input, solve(input)})
+		"a", "aA", "aa", "aaaaaaa", "ab", "aba", "abaaaba", "abb", "abc",
+		"abcdc", "abcdcc",
+
+		"better", "mississippi", "Palindrome",
+
+		"ababcdcdefefg", "ABABCDCDEFEFG",
+		"ghghijijklklm", "GHGHIJIJKLKLM",
+		"mnmnopopqrqrs", "MNMNOPOPQRQRS",
+		"ststuvuvwxwxy", "STSTUVUVWXWXY",
+		"yzyz010123234", "YZYZ454567678",
+	}
+
+	tests := make([]test, len(fixedInputs))
+	for i, input := range fixedInputs {
+		tests[i] = test{input, solve(input)}
 	}
 
 	for baseLength := 1; baseLength <= 8; baseLength++ {
