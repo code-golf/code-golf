@@ -1,6 +1,6 @@
 FROM node:22-alpine3.20 AS builder
 
-ENV VERSION=2.4.2
+ENV VERSION=2.4.3
 
 RUN apk add --no-cache binutils
 

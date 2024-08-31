@@ -2335,14 +2335,17 @@ preamble = '''
 
 [PalindromemordnilaP]
 category = 'Transform'
-links = []
 experiment = 935
+released = 2024-09-01
 synopsis = 'Append minimum number of characters to make the input a palindrome.'
 preamble = '''
-<p>Given an alphanumeric string, append minimum number of characters to get a palindrome and output the result.
+<p>
+    Given an alphanumeric string, append minimum number of characters to get a
+    palindrome and output the result.
 
 <p>
-    For example, on input <code>Palindromemord</code>, output <code>PalindromemordnilaP</code>.
+    For example, on input <code>Palindromemord</code>, output
+    <code>PalindromemordnilaP</code>.
 '''
 
 ['Pangram Grep']
