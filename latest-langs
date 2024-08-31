@@ -56,6 +56,7 @@ constant %paths = (
     'Raku'         => 'github.com/rakudo/rakudo/releases/latest',
     'Rebol'        => 'en.wikipedia.org/wiki/Rebol',
     'Rexx'         => 'regina-rexx.sourceforge.io',
+    'Rockstar 2'   => 'github.com/RockstarLang/rockstar2/releases/latest',
     'Ruby'         => 'endoflife.date/api/ruby.json',
     'Rust'         => 'en.wikipedia.org/wiki/Rust_(programming_language)',
     'Scheme'       => 'en.wikipedia.org/wiki/Chez_Scheme',
