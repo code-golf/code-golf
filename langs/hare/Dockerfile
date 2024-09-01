@@ -9,8 +9,7 @@ RUN curl https://git.sr.ht/~sircmpwn/harec/archive/$VER.tar.gz | tar xz
 RUN cd harec-$VER                 \
  && cp configs/linux.mk config.mk \
  && make -j `nproc`               \
- && make install                  \
- && cd ..
+ && make install
 
 RUN curl https://git.sr.ht/~sircmpwn/hare/archive/$VER.tar.gz | tar xz
 
