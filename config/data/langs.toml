@@ -371,7 +371,7 @@ end-program.
 [Coconut]
 args    = [ '/usr/bin/coconut', '--quiet', '--target', 'sys', '--keep-lines', '--argv' ]
 size    = '120 MiB'
-version = '3.1.1'
+version = '3.1.2'
 website = 'https://coconut-lang.org'
 example = '''
 import sys

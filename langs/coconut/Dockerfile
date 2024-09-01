@@ -2,7 +2,7 @@ FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache build-base curl libffi-dev openssl-dev zlib-dev
 
-ENV PYVER=3.12.5 VER=3.1.1
+ENV PYVER=3.12.5 VER=3.1.2
 
 RUN curl https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz | tar xJ
 
