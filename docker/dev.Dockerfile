@@ -35,6 +35,7 @@ COPY --from=codegolf/lang-civet        ["/", "/langs/civet/rootfs/"       ] # 68
 COPY --from=codegolf/lang-clojure      ["/", "/langs/clojure/rootfs/"     ] # 65.8 MiB
 COPY --from=codegolf/lang-v            ["/", "/langs/v/rootfs/"           ] # 60.9 MiB
 COPY --from=codegolf/lang-java         ["/", "/langs/java/rootfs/"        ] # 58.1 MiB
+COPY --from=codegolf/lang-hy           ["/", "/langs/hy/rootfs/"          ] # 57.8 MiB
 COPY --from=codegolf/lang-prolog       ["/", "/langs/prolog/rootfs/"      ] # 49.2 MiB
 COPY --from=codegolf/lang-javascript   ["/", "/langs/javascript/rootfs/"  ] # 41.1 MiB
 COPY --from=codegolf/lang-lisp         ["/", "/langs/lisp/rootfs/"        ] # 31.1 MiB
