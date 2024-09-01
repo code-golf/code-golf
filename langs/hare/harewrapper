@@ -1,0 +1,16 @@
+#!/bin/sh -e
+
+export PATH=/usr/local/bin:$PATH
+
+[ "$1" = "version" ] && exec hare version
+
+cd /tmp
+
+# Compile
+cat - > code.ha
+hare build -j `nproc` -qR -t bin code.ha
+rm code.ha
+
+# Execute
+shift
+exec ./code "$@"

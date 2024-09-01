@@ -139,6 +139,7 @@ export const extensions : { [key: string]: any } = {
     'fortran':       StreamLanguage.define({ ...fortran, languageData: { commentTokens: { line: '!' } } }),
     'go':            go,
     'golfscript':    golfScript(),
+    // TODO hare
     'haskell':       StreamLanguage.define(haskell),
     // TODO hexagony
     // TODO hush
