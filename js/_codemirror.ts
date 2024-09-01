@@ -55,6 +55,7 @@ import { r }                  from '@codemirror/legacy-modes/mode/r';
 import { raku }               from './vendor/codemirror-raku';
 import { ruby }               from '@codemirror/legacy-modes/mode/ruby';
 import { rust }               from '@codemirror/lang-rust';
+import { scheme }             from '@codemirror/legacy-modes/mode/scheme';
 import { shell }              from '@codemirror/legacy-modes/mode/shell';
 import { SQLite }             from '@codemirror/lang-sql';
 import { swift }              from '@codemirror/legacy-modes/mode/swift';
@@ -138,9 +139,11 @@ export const extensions : { [key: string]: any } = {
     'fortran':       StreamLanguage.define({ ...fortran, languageData: { commentTokens: { line: '!' } } }),
     'go':            go,
     'golfscript':    golfScript(),
+    // TODO hare
     'haskell':       StreamLanguage.define(haskell),
     // TODO hexagony
     // TODO hush
+    // TODO hy
     'j':             j(),
     'janet':         janet(),
     'java':          java(),
@@ -166,6 +169,7 @@ export const extensions : { [key: string]: any } = {
     // TODO rockstar
     'ruby':          StreamLanguage.define(ruby),
     'rust':          rust(),
+    'scheme':        StreamLanguage.define(scheme),
     // TODO sed
     'sql':           sql,
     'swift':         StreamLanguage.define(swift),

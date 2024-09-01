@@ -25,7 +25,7 @@ x is a no-op.
 [Arturo]
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
-size       = '6.21 MiB'
+size       = '5.29 MiB'
 version    = '0.9.84'
 website    = 'https://arturo-lang.io'
 example    = '''
@@ -44,8 +44,8 @@ loop arg [a] [
 
 [Assembly]
 args    = [ '/usr/bin/defasm', '--size-out=3', '-w', '-r' ]
-size    = '109 MiB'
-version = 'DefAssembler 2.4.2'
+size    = '106 MiB'
+version = 'DefAssembler 2.4.3'
 website = 'https://www.npmjs.com/package/@defasm/core'
 example = '''
 SYS_WRITE = 1
@@ -115,7 +115,7 @@ syscall
 [AWK]
 args    = [ '/usr/bin/gawk', '-v', 'RS=\0', '$code' ]
 size    = '1.77 MiB'
-version = '5.3.0'
+version = 'GNU AWK 5.3.0'
 website = 'https://www.gnu.org/software/gawk/'
 example = '''
 BEGIN {
@@ -251,8 +251,8 @@ int main(int argc, char* argv[]) {
 
 ['C#']
 args    = [ '/usr/bin/c-sharp', '-' ]
-size    = '151 MiB'
-version = 'C# 12.0 on .NET 8.0.7'
+size    = '152 MiB'
+version = 'C# 12.0 on .NET 8.0.8'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -273,7 +273,7 @@ foreach (String arg in args)
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
 size    = '142 MiB'
-version = '18.1.8'
+version = 'Clang 18.1.8'
 website = 'https://clang.llvm.org'
 example = '''
 #include <iostream>
@@ -301,7 +301,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '68.6 MiB'
-version = '0.7.23'
+version = '0.7.28'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -412,7 +412,7 @@ for arg in process.argv[2..]
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
 size    = '270 MiB'
-version = '1.13.1'
+version = '1.13.2'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -457,7 +457,7 @@ void main(string[] argv) {
 [Dart]
 args    = [ '/usr/bin/dart', '-' ]
 size    = '235 MiB'
-version = '3.5.0'
+version = '3.5.2'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -534,8 +534,8 @@ command-line get-global [ print ] each
 [Fennel]
 args       = [ '/usr/bin/fennel', '-' ]
 experiment = 1144
-size       = '636 KiB'
-version    = '1.5.0'
+size       = '639 KiB'
+version    = '1.5.1'
 website    = 'https://fennel-lang.org'
 example    = '''
 ;; Printing
@@ -575,8 +575,8 @@ bye
 
 [Fortran]
 args    = [ '/usr/bin/fortran', '-' ]
-size    = '94.1 MiB'
-version = 'GNU Fortran 14.1.0'
+size    = '94.3 MiB'
+version = 'GNU Fortran 14.2.0'
 website = 'https://gcc.gnu.org/fortran/'
 example = '''
 character(len=32) :: s
@@ -644,6 +644,30 @@ example    = '''
 
 # The stack is initialized with one element, an array of arguments:
 n*
+'''
+
+[Hare]
+args       = [ '/usr/bin/harewrapper', '-' ]
+experiment = 1323
+size       = '13.5 MiB'
+version    = '0.24.2'
+website    = 'https://harelang.org'
+example    = '''
+use fmt;
+use os;
+
+export fn main() void = {
+    // Printing
+    fmt::println("Hello, World!")!;
+
+    // Looping
+    for (let i = 0; i < 10; i += 1)
+        fmt::println(i)!;
+
+    // Accessing arguments
+    for (let arg .. os::args[1..])
+        fmt::println(arg)!;
+};
 '''
 
 [Haskell]
@@ -714,10 +738,29 @@ for arg in std.iter(std.args()) do
 end
 '''
 
+[Hy]
+args       = [ '/usr/bin/hy', '-' ]
+experiment = 586
+size       = '57.8 MiB'
+version    = '0.29.0'
+website    = 'https://hylang.org'
+example    = '''
+; Printing
+(print "Hello, World!")
+
+; Looping
+(for [i (range 10)]
+    (print i))
+
+; Accessing arguments
+(for [arg (get sys.argv (slice 1 None))]
+    (print arg))
+'''
+
 [J]
 args    = [ '/usr/bin/j', '/tmp/code.ijs' ]
 size    = '11.2 MiB'
-version = '9.5.5'
+version = '9.5.6'
 website = 'https://www.jsoftware.com'
 example = '''
 NB.Printing
@@ -751,7 +794,7 @@ example = '''
 [Java]
 args    = [ '/usr/bin/java', '-' ]
 size    = '58.1 MiB'
-version = '22.0.2'
+version = 'OpenJDK 22.0.2'
 website = 'https://openjdk.java.net'
 example = '''
 class Main {
@@ -789,7 +832,7 @@ for (let arg of arguments)
 '''
 
 [jq]
-args    = [ '/usr/bin/jq', '-nr', '$code', '--args', '--' ]
+args    = [ '/usr/bin/jq', '--args', '--null-input', '--raw-output', '--', '$code' ]
 size    = '3.41 MiB'
 version = '1.7.1'
 website = 'https://jqlang.github.io/jq/'
@@ -806,8 +849,8 @@ $ARGS.positional[]
 
 [Julia]
 args    = [ '/usr/bin/julia', '--color=yes', '/proc/self/fd/0' ]
-size    = '310 MiB'
-version = '1.10.4'
+size    = '311 MiB'
+version = '1.10.5'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -827,7 +870,7 @@ end
 [K]
 args    = [ '/usr/bin/kwrapper', '/tmp/code.k' ]
 size    = '621 KiB'
-version = 'a1dac79409'
+version = '67da192f47'
 website = 'https://codeberg.org/ngn/k'
 example = '''
 /Printing
@@ -952,7 +995,7 @@ main :: proc() {
 [Pascal]
 args    = [ '/usr/bin/pascal', '-' ]
 size    = '31.1 MiB'
-version = '3.2.2'
+version = 'Free Pascal 3.2.2'
 website = 'https://freepascal.org'
 example = '''
 var
@@ -992,7 +1035,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '8.40 MiB'
-version = '8.3.10'
+version = '8.3.11'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -1011,7 +1054,7 @@ for ($i = 1; $i < $argc; $i++)
 args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 size       = '178 MiB'
-version    = 'PowerShell 7.4.4 on .NET 8.0.7'
+version    = 'PowerShell 7.4.5 on .NET 8.0.8'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
@@ -1089,8 +1132,8 @@ for (arg in commandArgs(TRUE)) {
 
 [Raku]
 args    = [ '/usr/bin/raku', '-' ]
-size    = '73.6 MiB'
-version = 'Raku 6.d on Rakudo 2024.05'
+size    = '75.5 MiB'
+version = 'Raku 6.d on Rakudo 2024.08'
 website = 'https://raku.org'
 example = '''
 # Printing
@@ -1128,7 +1171,7 @@ foreach arg system/options/args [
 args       = [ '/usr/bin/rexx', '-' ]
 experiment = 873
 size       = '4.63 MiB'
-version    = '3.9.6'
+version    = 'Regina 3.9.6'
 website    = 'https://regina-rexx.sourceforge.io'
 example    = '''
 -- Printing
@@ -1148,7 +1191,7 @@ end
 [Rockstar]
 args    = [ '/usr/bin/rockstar', '-' ]
 size    = '162 MiB'
-version = '2.1.2'
+version = 'Rocky 2.1.2'
 website = 'https://github.com/gaborsch/rocky'
 example = '''
 (Printing)
@@ -1207,10 +1250,26 @@ fn main() {
 }
 '''
 
+[Scheme]
+args    = [ '/usr/bin/schemewrapper', '-' ]
+size    = '17.9 MiB'
+version = 'Chez Scheme 10.0.0'
+website = 'https://cisco.github.io/ChezScheme/'
+example = '''
+; Printing
+(printf "~a~n" "Hello, World!")
+
+; Looping
+(for-each (lambda (i) (display i) (newline)) (iota 10))
+
+; Accessing arguments
+(for-each (lambda (arg) (display arg) (newline)) (command-line-arguments))
+'''
+
 [sed]
 args    = [ '/usr/bin/sed', '-E', '-z', '--sandbox', '-u', '--', '$code' ]
 size    = '236 KiB'
-version = '4.9'
+version = 'GNU sed 4.9'
 website = 'https://www.gnu.org/software/sed/'
 example = '''
 # Printing
@@ -1239,7 +1298,7 @@ G
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
 size    = '1.20 MiB'
-version = '3.46.1'
+version = 'SQLite 3.46.1'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
@@ -1328,8 +1387,8 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '28.4 MiB'
-version    = '0.12.2'
+size       = '28.5 MiB'
+version    = '0.12.3'
 website    = 'https://www.uiua.org'
 example    = '''
 # Printing
