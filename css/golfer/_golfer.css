@@ -42,9 +42,10 @@
 
 #profile div div { gap: .25rem }
 
-#profile form {
+#profile > nav {
     align-self: start;
-    display: block;
+    display: flex;
+    gap: .5rem;
     grid-row: span 3;
 }
 
@@ -77,7 +78,7 @@
 @media (max-width: 34rem) {
     #profile { grid-template-columns: min-content 1fr }
 
-    #profile form {
+    #profile > nav {
         padding-top: 1rem;
         grid-column: span 2;
         grid-row: 4;

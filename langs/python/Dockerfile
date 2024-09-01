@@ -2,7 +2,8 @@ FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache build-base curl libffi-dev zlib-dev
 
-ENV VER=3.12.4
+# Also bump Coconut, Hy.
+ENV VER=3.12.5
 
 RUN curl https://www.python.org/ftp/python/$VER/Python-$VER.tar.xz | tar xJ
 
@@ -16,6 +17,10 @@ RUN cd Python-$VER             \
  && make -j`nproc` install     \
  && strip /usr/bin/python3.12
 
+# Remove some unneeded libraries.
+RUN cd /usr/lib/python3.12 \
+ && rm -r idlelib tkinter
+
 FROM codegolf/lang-base-no-proc
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
@@ -24,4 +29,4 @@ COPY --from=0 /usr/lib/python3.12      /usr/lib/python3.12
 
 ENTRYPOINT ["python"]
 
-CMD ["-c", "import platform;print(platform.python_version())"]
+CMD ["--version"]

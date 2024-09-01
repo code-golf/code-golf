@@ -74,10 +74,10 @@ func golferSettingsDeleteAccountGET(w http.ResponseWriter, r *http.Request) {
 	render(w, r, "golfer/settings", nil, "Settings: Delete Account")
 }
 
-// POST /golfer/settings/{page}
-func golferSettingsPagePOST(w http.ResponseWriter, r *http.Request) {
+// POST /golfer/settings/save
+func golferSettingsSavePOST(w http.ResponseWriter, r *http.Request) {
 	golfer := session.Golfer(r)
-	page := param(r, "page")
+	page := r.FormValue("page")
 
 	// If the posted value is valid, update the golfer's settings map.
 	for _, setting := range config.Settings[page] {
@@ -90,11 +90,11 @@ func golferSettingsPagePOST(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, r.FormValue("path"), http.StatusFound)
 }
 
-// POST /golfer/settings/{page}/reset
-func golferSettingsPageResetPOST(w http.ResponseWriter, r *http.Request) {
+// POST /golfer/settings/reset
+func golferSettingsResetPOST(w http.ResponseWriter, r *http.Request) {
 	golfer := session.Golfer(r)
 
-	delete(golfer.Settings, param(r, "page"))
+	delete(golfer.Settings, r.FormValue("page"))
 
 	golfer.SaveSettings(session.Database(r))
 

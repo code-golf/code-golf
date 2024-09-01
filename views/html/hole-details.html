@@ -1,5 +1,24 @@
 <div class=grid>
     {{ .Data.Hole.Preamble }}
+{{ with .Data.Hole.Variants }}
+    <p>
+        <b>Variants:</b>
+        {{ $continuation := false }}
+        {{ range . }}
+            {{- if eq . $.Data.Hole }}{{ continue }}{{ end -}}
+            {{- if $continuation }},{{ end }}
+            <a href="{{ .ID }}">{{ .Name }}</a>
+            {{- $continuation = true -}}
+        {{ end }}
+{{ end }}
+{{ with .Data.Hole.Links }}
+    <p>
+        <b>External links:</b>
+        {{ range $i, $l := . -}}
+            {{ if ne $i 0 }},{{ end }}
+            <a href="{{ .URL }}">{{ .Name }}</a>
+        {{- end }}
+{{ end }}
 {{ if .Data.Hole.CaseFold }}
     <div class=info>The output will be checked case-insensitively.</div>
 {{ end }}

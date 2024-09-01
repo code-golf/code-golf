@@ -22,6 +22,7 @@
     "codemirror-lang-golfscript": "",
     "codemirror-lang-j": "",
     "codemirror-lang-janet": "",
+    "codemirror-lang-jq": "",
     "codemirror-lang-k": "",
     "codemirror-lang-prolog": "",
     "codemirror-lang-zig": "",
@@ -37,6 +38,7 @@
     "@types/diff": "",
     "@typescript-eslint/eslint-plugin": "",
     "@typescript-eslint/parser": "",
-    "eslint": ""
+    "eslint": "",
+    "svgo": ""
   }
 }

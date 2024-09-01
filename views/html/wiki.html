@@ -1,7 +1,7 @@
 {{ template "header" . }}
 
-<h1>
-    {{ .Data.Title }}
+<header id=page-header>
+    <h1>{{ .Data.Title }}</h1>
 
 {{ with .Data.Name }}
     {{ $slug := urlquery . }}
@@ -10,14 +10,14 @@
     {{ else if eq . "C++" }}
         {{ $slug = "Cpp" }}
     {{ end }}
-    <div>
+    <nav>
         GitHub:
         <a href="//github.com/code-golf/code-golf/wiki/{{ $slug }}/_edit">edit</a>
         |
         <a href="//github.com/code-golf/code-golf/wiki/{{ $slug }}">view</a>
-    </div>
+    </nav>
 {{ end }}
-</h1>
+</header>
 
 <main id=two-pane>
     {{ template "nav" . }}

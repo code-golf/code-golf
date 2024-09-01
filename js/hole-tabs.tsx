@@ -14,6 +14,10 @@ import {
     populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyJSONBtn,
     getScorings, replaceUnprintablesInOutput, initOutputDiv,
     updateLocalStorage,
+    getLang,
+    setState,
+    ctrlEnter,
+    getLastSubmittedCode,
 } from './_hole-common';
 import { highlightCodeBlocks } from './_wiki';
 
@@ -40,23 +44,15 @@ let applyingDefault = false;
 
 let subRes: ReadonlyPanelsData | null = null;
 let langWikiContent = '';
+let holeLangNotesContent = '';
 const readonlyOutputs: {[key: string]: HTMLElement | undefined} = {};
 
 let editor: EditorView | null = null;
+let holeLangNotesEditor: EditorView | null = null;
+
+let substitutions: {pattern: RegExp, replacement: string}[] = [];
 
 init(true, setSolution, setCodeForLangAndSolution, updateReadonlyPanels, () => editor);
-
-// Handle showing/hiding lang picker
-// can't be done in CSS because the picker is one parent up
-const langToggle = $<HTMLDetailsElement>('#hole-lang details');
-langToggle.addEventListener('toggle', () => {
-    setLangPickerOpen(langToggle.open);
-});
-function setLangPickerOpen(open: boolean) {
-    langToggle.open = open;
-    $('#picker').classList.toggle('hide', !open);
-    saveLayout();
-}
 
 const goldenContainer = $('#golden-container');
 
@@ -103,10 +99,20 @@ function updateWikiContent() {
     }
 }
 
-function updateReadonlyPanels(data: ReadonlyPanelsData | {langWiki: string}) {
+function updateHoleLangNotesContent() {
+    const input = $<HTMLInputElement>('#notes-substitutions');
+    if (input) input.value = localStorage.getItem(`${getLang()}-substitutions`) ?? '';
+    if (holeLangNotesEditor) setState(holeLangNotesContent, holeLangNotesEditor);
+}
+
+function updateReadonlyPanels(data: ReadonlyPanelsData | {langWiki: string}| {holeLangNotes: string}) {
     if ('langWiki' in data) {
         langWikiContent = data.langWiki;
         updateWikiContent();
+    }
+    else if ('holeLangNotes' in data) {
+        holeLangNotesContent = data.holeLangNotes;
+        updateHoleLangNotesContent();
     }
     else {
         subRes = data;
@@ -148,6 +154,8 @@ function makeEditor(parent: HTMLDivElement) {
             const scorings: {total: {byte?: number, char?: number}, selection?: {byte?: number, char?: number}} = getScorings(tr, editor);
             const scoringKeys = ['byte', 'char'] as const;
 
+            $('main')?.classList.toggle('lastSubmittedCode', code === getLastSubmittedCode());
+
             function formatScore(scoring: any) {
                 return scoringKeys
                     .filter(s => s in scoring)
@@ -168,6 +176,21 @@ function makeEditor(parent: HTMLDivElement) {
     });
 
     editor.contentDOM.setAttribute('data-gramm', 'false');  // Disable Grammarly.
+}
+
+function makeHoleLangNotesEditor(parent: HTMLDivElement) {
+    holeLangNotesEditor = new EditorView({
+        dispatch: tr => {
+            if (!holeLangNotesEditor) return;
+            const result = holeLangNotesEditor.update([tr]) as unknown;
+            const content = tr.state.doc.toString();
+            $<HTMLButtonElement>('#upsert-notes-btn').disabled = content === holeLangNotesContent || (!!content && !isSponsor());
+            return result;
+        },
+        parent,
+    });
+
+    holeLangNotesEditor.contentDOM.setAttribute('data-gramm', 'false');  // Disable Grammarly.
 }
 
 function autoFocus(container: ComponentContainer) {
@@ -200,7 +223,9 @@ layout.registerComponentFactoryFunction('code', async container => {
     };
 
     // Wire submit to clicking a button and a keyboard shortcut.
-    $('#runBtn').onclick = () => submit(editor, updateReadonlyPanels);
+    const closuredSubmit = () => submit(editor, updateReadonlyPanels);
+    $('#runBtn').onclick = closuredSubmit;
+    $('#editor').onkeydown = ctrlEnter(closuredSubmit);
 
     const deleteBtn = $('#deleteBtn');
     if (deleteBtn) {
@@ -209,6 +234,78 @@ layout.registerComponentFactoryFunction('code', async container => {
     }
 
     setCodeForLangAndSolution(editor);
+});
+
+async function upsertNotes() {
+    $<HTMLButtonElement>('#upsert-notes-btn').disabled = true;
+    const content = holeLangNotesEditor!.state.doc.toString();
+    if (!content || isSponsor()) {
+        const resp = await fetch(
+            `/api/notes/${hole}/${getLang()}`,
+            content ? { method: 'PUT', body: content} : { method: 'DELETE' },
+        );
+        if (resp.status !== 204) $<HTMLButtonElement>('#upsert-notes-btn').disabled = false;
+        else holeLangNotesContent = content;
+    }
+};
+
+function parseSubstitutions() {
+    const { value } = $<HTMLInputElement>('#notes-substitutions');
+    localStorage.setItem(`${getLang()}-substitutions`, value);
+    const pattern = /s\/((?:[^\/]|\\\/)*)\/((?:[^\/]|\\\/)*)\/([dgimsuvy]*)/g;
+    substitutions = [...value.matchAll(pattern)]
+        .map(match => (
+            {pattern: new RegExp(match[1], [...new Set(match[3])].join('')), replacement: JSON.parse(`"${match[2]}"`)}
+        ));
+    $<HTMLButtonElement>('#convert-notes-btn').disabled = substitutions.length < 1;
+}
+
+async function convertNotesAndRun(): Promise<boolean> {
+    if (editor && holeLangNotesEditor) {
+        let newCode = holeLangNotesEditor.state.doc.toString();
+        for (const {pattern, replacement} of substitutions) {
+            newCode = newCode.replace(pattern, replacement);
+        }
+        const code = editor.state.doc.toString();
+        if (code !== newCode) {
+            setState(newCode, editor);
+            return await submit(editor, updateReadonlyPanels);
+        }
+    }
+    return false;
+}
+
+layout.registerComponentFactoryFunction('holeLangNotes', async container => {
+    container.setTitle(getTitle('holeLangNotes'));
+    autoFocus(container);
+
+    const header = (<header>
+        <div>
+            <input id="notes-substitutions" placeholder="Perl-like s/// expressions" size="50"></input>
+            <button class="btn blue" id="convert-notes-btn" disabled>Convert & Run</button>
+        </div>
+        <button class="btn blue" id="upsert-notes-btn" disabled>Save</button>
+    </header>) as HTMLElement;
+    const editorDiv = <div id="holeLangNotesEditor"></div> as HTMLDivElement;
+
+    container.element.id = 'holeLangNotesEditor-section';
+    container.element.append(editorDiv, header);
+
+    await afterDOM();
+    makeHoleLangNotesEditor(editorDiv);
+
+    $('#upsert-notes-btn').onclick = upsertNotes;
+    $('#convert-notes-btn').onclick = convertNotesAndRun;
+    $('#notes-substitutions').oninput = parseSubstitutions;
+    $('#holeLangNotesEditor-section').onkeydown = ctrlEnter(async () => {
+        if (await convertNotesAndRun()) {
+            await upsertNotes();
+        }
+    });
+
+    await afterDOM();
+    updateHoleLangNotesContent();
+    parseSubstitutions();
 });
 
 async function afterDOM() {}
@@ -257,7 +354,8 @@ const titles: Record<string, string | undefined> = {
     arg: 'Arguments',
     diff: 'Diff',
     code: 'Code',
-    langWiki: 'Language Wiki',
+    langWiki: 'Wiki',
+    holeLangNotes: 'Notes',
 };
 
 function getTitle(name: string) {
@@ -317,8 +415,16 @@ const defaultLayout: LayoutConfig = {
     },
 };
 
+function isSponsor() {
+    return $('#golferInfo')?.dataset.isSponsor === 'true';
+}
+function hasNotes() {
+    return $('#golferInfo')?.dataset.hasNotes === 'true';
+}
+
 function getPoolFromLayoutConfig(config: LayoutConfig) {
     const allComponents = ['code', 'scoreboard', 'arg', 'exp', 'out', 'err', 'diff', 'details', 'langWiki'];
+    if (isSponsor() || hasNotes()) allComponents.push('holeLangNotes');
     const activeComponents = getComponentNamesRecursive(config.root!);
     return allComponents.filter(x => !activeComponents.includes(x));
 }
@@ -334,14 +440,12 @@ const defaultViewState: ViewState = {
     version: 1,
     config: defaultLayout,
     isWide: false,
-    langPickerOpen: true,
 };
 
 interface ViewState {
     version: 1;
     config: ResolvedLayoutConfig | LayoutConfig;
     isWide: boolean;
-    langPickerOpen: boolean;
 }
 
 function getViewState(): ViewState {
@@ -349,7 +453,6 @@ function getViewState(): ViewState {
         version: 1,
         config: layout.saveLayout(),
         isWide,
-        langPickerOpen: langToggle.open,
     };
 }
 
@@ -373,7 +476,6 @@ async function applyViewState(viewState: ViewState) {
     toggleMobile(false);
     Object.keys(poolElements).map(removePoolItem);
     setWide(viewState.isWide);
-    setLangPickerOpen(viewState.langPickerOpen);
     let { config } = viewState;
     if (LayoutConfig.isResolved(config))
         config = LayoutConfig.fromResolved(config);
@@ -438,9 +540,15 @@ function setWide(b: boolean) {
     document.documentElement.classList.toggle('full-width', b);
 }
 
-$('#make-wide').addEventListener('click', () => setWide(true));
+function toggleTall() {
+    document.documentElement.classList.toggle('full-height');
+}
 
+$('#make-wide').addEventListener('click', () => setWide(true));
 $('#make-narrow').addEventListener('click', () => setWide(false));
+
+$('#make-tall').addEventListener('click', () => toggleTall());
+$('#make-short').addEventListener('click', () => toggleTall());
 
 function addPoolItem(componentType: string) {
     poolElements[componentType]?.remove();

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"embed"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -169,6 +170,8 @@ func Play(
 		runs = arabicToRoman(hole.ID == "roman-to-arabic")
 	case "arrows":
 		runs = arrows()
+	case "billiards":
+		runs = billiards()
 	case "brainfuck":
 		runs = brainfuck()
 	case "card-number-validation":
@@ -215,6 +218,8 @@ func Play(
 		runs = ordinalNumbers()
 	case "p-adic-expansion":
 		runs = pAdicExpansion()
+	case "palindromemordnilap":
+		runs = palindromemordnilap()
 	case "pangram-grep":
 		runs = pangramGrep()
 	case "poker":
@@ -255,8 +260,7 @@ func Play(
 	// Holes with fixed test cases.
 	case "css-colors":
 		runs = outputTests(shuffle(fixedTests(hole.ID)))
-	case "emojify", "mnist", "rock-paper-scissors-spock-lizard",
-		"united-states":
+	case "emojify", "rock-paper-scissors-spock-lizard", "united-states":
 		runs = outputMultirunTests(fixedTests(hole.ID))
 	case "floyd-steinberg-dithering", "hexdump", "proximity-grid", "star-wars-opening-crawl":
 		runs = outputTestsWithSep("\n\n", shuffle(fixedTests(hole.ID)))
@@ -299,13 +303,6 @@ func Play(
 func play(
 	ctx context.Context, hole *config.Hole, lang *config.Lang, code string, run *Run,
 ) error {
-	// Require a backslash for TeX Quine to prevent trivial solutions.
-	// Don't even run the code; just mark error and return.
-	if hole.ID == "quine" && lang.ID == "tex" && !strings.Contains(code, `\`) {
-		run.Stderr = `Quine in TeX must have at least one '\' character.`
-		return nil
-	}
-
 	// Preprocess code.
 	switch lang.ID {
 	case "clojure":
@@ -313,6 +310,12 @@ func play(
 		// is not nil. This seems to be a quirk of the Babashka interpreter
 		// that only occurs when providing code via a command line argument.
 		code += "(print)"
+	case "jq":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && json.Valid([]byte(code)) {
+			run.Stderr = "Quine in jq must not be valid JSON."
+			return nil
+		}
 	case "k":
 		if hole.ID == "quine" {
 			length := len(code)
@@ -335,6 +338,12 @@ func play(
 		}
 	case "php":
 		code = "<?php " + code + " ;"
+	case "tex":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && !strings.Contains(code, `\`) {
+			run.Stderr = `Quine in TeX must have at least one '\' character.`
+			return nil
+		}
 	}
 
 	var stderr, stdout bytes.Buffer
