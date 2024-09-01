@@ -18,7 +18,7 @@ constant %paths = (
     'C#'           => 'en.wikipedia.org/wiki/C_Sharp_(programming_language)',
     'C++'          => 'en.wikipedia.org/wiki/Clang',
     'COBOL'        => 'en.wikipedia.org/wiki/GnuCOBOL',
-    'Coconut'      => 'github.com/evhub/coconut/releases/latest',
+    'Coconut'      => 'pypi.org/pypi/coconut/json',
     'CoffeeScript' => 'registry.npmjs.org/coffeescript/latest',
     'Clojure'      => 'github.com/babashka/babashka/releases/latest',
     'Civet'        => 'registry.npmjs.org/@danielx/civet/latest',
@@ -36,6 +36,7 @@ constant %paths = (
     'Haskell'      => 'en.wikipedia.org/wiki/Glasgow_Haskell_Compiler',
     'Hexagony'     => 'github.com/SirBogman/Hexagony',
     'Hush'         => 'crates.io/api/v1/crates/hush',
+    'Hy'           => 'pypi.org/pypi/hy/json',
     'Janet'        => 'github.com/janet-lang/janet/releases/latest',
     'Java'         => 'endoflife.date/api/java.json',
     'JavaScript'   => 'en.wikipedia.org/wiki/V8_(JavaScript_engine)',
@@ -87,6 +88,7 @@ for %langs.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'endoflife'   / { $res.&from-json[0]<latest> }
         when / 'fennel-lang' / { $res ~~ / 'downloads/fennel-' <(<ver>)> / }
         when / 'npmjs.org'   / { $res.&from-json[0]<version> }
+        when / 'pypi.org'    / { $res.&from-json<info><version> }
         when / 'regina-rexx' / { $res ~~ / '<b>Current</b> ' <(<ver>)> / }
         when / 'github.com'  / {
             .ends-with('/releases/latest')

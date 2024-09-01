@@ -1,9 +1,7 @@
 package hole
 
 func palindromemordnilap() []Run {
-	tests := fixedTests("palindromemordnilap")
-
-	alphabet := "qwertzuiopasdfghjklyxcvbnmQWERTZUIOPASDFGHJKLYXCVBNM0123456789"
+	const alphabet = "qwertzuiopasdfghjklyxcvbnmQWERTZUIOPASDFGHJKLYXCVBNM0123456789"
 
 	correctLength := func(input string) int {
 		for length := len(input); length > 1; length-- {
@@ -24,6 +22,26 @@ func palindromemordnilap() []Run {
 			input += input[i : i+1]
 		}
 		return input
+	}
+
+	fixedInputs := []string{
+		"123456", "8989a",
+
+		"a", "aA", "aa", "aaaaaaa", "ab", "aba", "abaaaba", "abb", "abc",
+		"abcdc", "abcdcc",
+
+		"better", "mississippi", "Palindrome",
+
+		"ababcdcdefefg", "ABABCDCDEFEFG",
+		"ghghijijklklm", "GHGHIJIJKLKLM",
+		"mnmnopopqrqrs", "MNMNOPOPQRQRS",
+		"ststuvuvwxwxy", "STSTUVUVWXWXY",
+		"yzyz010123234", "YZYZ454567678",
+	}
+
+	tests := make([]test, len(fixedInputs))
+	for i, input := range fixedInputs {
+		tests[i] = test{input, solve(input)}
 	}
 
 	for baseLength := 1; baseLength <= 8; baseLength++ {
