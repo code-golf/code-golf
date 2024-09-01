@@ -6,7 +6,7 @@ cd /tmp
 
 # Compile
 cat - > code.ha
-hare build -j `nproc` -qR -t bin code.ha
+hare build -qR -t bin code.ha
 rm code.ha
 
 # Execute

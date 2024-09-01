@@ -25,7 +25,6 @@ COPY --from=0 /lib/ld-musl-x86_64.so.1   \
               /lib/libz.so.1             /lib/
 COPY --from=0 /usr/bin/as                \
               /usr/bin/ld                \
-              /usr/bin/nproc             \
               /usr/bin/qbe               /usr/bin/
 COPY --from=0 /usr/lib/libbfd-2.42.so    \
               /usr/lib/libctf.so.0       \

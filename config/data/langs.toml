@@ -649,7 +649,7 @@ n*
 [Hare]
 args       = [ '/usr/bin/harewrapper', '-' ]
 experiment = 1323
-size       = '14.3 MiB'
+size       = '13.5 MiB'
 version    = '0.24.2'
 website    = 'https://harelang.org'
 example    = '''
