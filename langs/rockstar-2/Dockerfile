@@ -1,20 +1,19 @@
-#FROM mcr.microsoft.com/dotnet/sdk:8.0.401-alpine3.20 AS builder
-FROM alpine:3.20 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:8.0.401-alpine3.20 AS builder
 
-RUN apk add --no-cache build-base curl libc6-compat
+RUN apk add --no-cache build-base zlib-dev
 
-#RUN curl https://github.com/RockstarLang/rockstar2/archive/refs/tags/v0.9.1.tar.gz | tar xz
-RUN curl -L https://github.com/RockstarLang/rockstar2/releases/download/v0.9.1/rockstar-v0.9.1-linux-x64.tar.gz | tar xz --strip-components 1
+WORKDIR /work
+
+COPY /Rockstar        /Rockstar
+COPY /Rockstar.Engine /Rockstar.Engine
+
+RUN dotnet publish /Rockstar -c Release -o /out
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/cat /bin/chmod /bin/sh /bin/
-COPY --from=0 /lib/ld-musl-x86_64.so.1    \
-              /lib/libgcompat.so.0        \
-              /lib/libucontext.so.1       /lib/
-COPY --from=0 /lib64/ld-linux-x86-64.so.2 /lib64/
-COPY --from=0 /rockstar                   /usr/bin/
-COPY --from=0 /usr/lib/libobstack.so.1    /usr/lib/
+COPY --from=0 / /
+
+COPY --from=0 /out /usr/bin
 
 COPY /rockstarwrapper /usr/bin/
 RUN chmod +x /usr/bin/rockstarwrapper
