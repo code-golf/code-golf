@@ -28,8 +28,7 @@ RUN rm -r /usr/lib/python3.12/__pycache__/doctest.* \
           /usr/lib/python3.12/pydoc_data            \
           /usr/lib/python3.12/tkinter               \
           /usr/lib/python3.12/turtle.py             \
-          /usr/lib/python3.12/turtledemo            \
-          /usr/lib/python3.12/unittest
+          /usr/lib/python3.12/turtledemo
 
 FROM codegolf/lang-base-no-proc
 
