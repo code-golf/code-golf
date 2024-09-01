@@ -1,50 +1,31 @@
 FROM alpine:3.20 AS builder
 
-RUN apk add --no-cache bash curl git openjdk21-jre-headless
+RUN apk add --no-cache bash curl git openjdk21
 
-RUN curl -L https://github.com/sbt/sbt/releases/download/v1.10.1/sbt-1.10.1.tgz | tar xz \
- && mv sbt /usr/local/sbt
+RUN wget https://github.com/lampepfl/dotty/releases/download/3.5.0/scala3-3.5.0.zip && \
+    unzip scala3-3.5.0.zip -d /usr/local/scala && \
+    rm scala3-3.5.0.zip
 
-ENV PATH=/usr/local/sbt/bin:$PATH
+RUN curl -L https://github.com/VirtusLab/scala-cli/archive/refs/tags/v1.5.0.tar.gz | tar xz
 
-RUN git clone https://github.com/scala/scala3.git -b 3.4.2 \
- && mv scala3 /usr/local/scala
+RUN mkdir -p /root/.cache/coursier/v1/https/github.com/coursier/coursier/releases/download/v2.1.10
 
-WORKDIR /usr/local/scala
-RUN sbt dist/packArchive
+RUN cd /root/.cache/coursier/v1/https/github.com/coursier/coursier/releases/download/v2.1.10 \
+ && wget https://github.com/coursier/coursier/releases/download/v2.1.10/cs-x86_64-pc-linux.gz \
+ && mkdir -p cs-x86_64-pc-linux.gz \
+ && gunzip -c cs-x86_64-pc-linux.gz > cs-x86_64-pc-linux.gz/cs-x86_64-pc-linux \
+ && chmod +x cs-x86_64-pc-linux.gz/cs-x86_64-pc-linux
+
+ENV SCALA_HOME=/usr/local/scala
+ENV PATH=/usr/local/scala/bin:/usr/local/bin:$PATH
+
+RUN cd scala-cli-1.5.0 \
+ && ./mill 'cli[]'.nativeImage
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/bash /bin/busybox /bin/cat /bin/chmod /bin/sh /bin/uname        /bin/
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/libz.so.1                              /lib/
-COPY          /scalarunner                                                         /usr/bin/
-COPY --from=0 /usr/bin/dirname /usr/bin/env                                        /usr/bin/
-COPY --from=0 /usr/lib/jvm/java-21-openjdk/jre/bin/java                            /usr/lib/jre/bin/
-COPY --from=0 /usr/lib/jvm/java-21-openjdk/jre/conf/security/java.security         /usr/lib/jre/conf/security/
-COPY --from=0 /usr/lib/jvm/java-21-openjdk/jre/lib/jvm.cfg                         \
-              /usr/lib/jvm/java-21-openjdk/jre/lib/libjava.so                      \
-              /usr/lib/jvm/java-21-openjdk/jre/lib/libjimage.so                    \
-              /usr/lib/jvm/java-21-openjdk/jre/lib/libjli.so                       \
-              /usr/lib/jvm/java-21-openjdk/jre/lib/libnet.so                       \
-              /usr/lib/jvm/java-21-openjdk/jre/lib/libnio.so                       \
-              /usr/lib/jvm/java-21-openjdk/jre/lib/libzip.so                       \
-              /usr/lib/jvm/java-21-openjdk/jre/lib/modules                         /usr/lib/jre/lib/
-COPY --from=0 /usr/lib/jvm/java-21-openjdk/jre/lib/server/libjvm.so                /usr/lib/jre/lib/server/
-COPY --from=0 /usr/lib/libncursesw.so.6 /usr/lib/libreadline.so.8                  /usr/lib/
-COPY --from=0 /usr/local/scala/dist/target/pack/bin/common                         \
-              /usr/local/scala/dist/target/pack/bin/scala                          \
-              /usr/local/scala/dist/target/pack/bin/scalac                         /usr/local/bin/
-COPY --from=0 /usr/local/scala/dist/target/pack/lib/compiler-interface-1.9.6.jar   \
-              /usr/local/scala/dist/target/pack/lib/scala-asm-9.6.0-scala-1.jar    \
-              /usr/local/scala/dist/target/pack/lib/scala-library-2.13.12.jar      \
-              /usr/local/scala/dist/target/pack/lib/scala3-compiler_3-*.jar        \
-              /usr/local/scala/dist/target/pack/lib/scala3-interfaces-*.jar        \
-              /usr/local/scala/dist/target/pack/lib/scala3-library_3-*.jar         \
-              /usr/local/scala/dist/target/pack/lib/scala3-tasty-inspector_3-*.jar \
-              /usr/local/scala/dist/target/pack/lib/tasty-core_3-*.jar             /usr/local/lib/
+COPY --from=0 / /
 
-RUN chmod +x /usr/bin/scalarunner
-
-ENTRYPOINT ["scalarunner"]
+ENTRYPOINT ["scala"]
 
 CMD ["-version"]
