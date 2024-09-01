@@ -1081,9 +1081,9 @@ fn main() {
 '''
 
 [Scala]
-args       = [ '/usr/bin/scalarunner', '-' ]
+args       = [ '/usr/local/scala/bin/scala', '-' ]
 experiment = 235
-version    = '3.4.2'
+version    = '3.5.0'
 website    = 'https://www.scala-lang.org'
 example    = '''
 def main(args: Array[String]) = {
