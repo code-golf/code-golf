@@ -15,11 +15,21 @@ RUN cd Python-$VER             \
     --without-ensurepip        \
     --without-static-libpython \
  && make -j`nproc` install     \
- && strip /usr/bin/python3.12
+ && strip /usr/bin/python3.12  \
+          /usr/lib/python3.12/lib-dynload/*.so
 
 # Remove some unneeded libraries.
-RUN cd /usr/lib/python3.12 \
- && rm -r idlelib tkinter
+RUN rm -r /usr/lib/python3.12/__pycache__/doctest.* \
+          /usr/lib/python3.12/__pycache__/pydoc.*   \
+          /usr/lib/python3.12/__pycache__/turtle.*  \
+          /usr/lib/python3.12/ensurepip             \
+          /usr/lib/python3.12/idlelib               \
+          /usr/lib/python3.12/lib2to3               \
+          /usr/lib/python3.12/pydoc_data            \
+          /usr/lib/python3.12/tkinter               \
+          /usr/lib/python3.12/turtle.py             \
+          /usr/lib/python3.12/turtledemo            \
+          /usr/lib/python3.12/unittest
 
 FROM codegolf/lang-base-no-proc
 

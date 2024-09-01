@@ -370,7 +370,7 @@ end-program.
 
 [Coconut]
 args    = [ '/usr/bin/coconut', '--quiet', '--target', 'sys', '--keep-lines', '--argv' ]
-size    = '120 MiB'
+size    = '104 MiB'
 version = '3.1.2'
 website = 'https://coconut-lang.org'
 example = '''
@@ -741,7 +741,7 @@ end
 [Hy]
 args       = [ '/usr/bin/hy', '-' ]
 experiment = 586
-size       = '75.7 MiB'
+size       = '59.4 MiB'
 version    = '0.29.0'
 website    = 'https://hylang.org'
 example    = '''
@@ -1063,7 +1063,7 @@ example = '''
 
 [Python]
 args    = [ '/usr/bin/python', '-u', '-' ]
-size    = '65.0 MiB'
+size    = '47.3 MiB'
 version = '3.12.5'
 website = 'https://www.python.org'
 example = '''
