@@ -1,19 +1,19 @@
 FROM alpine:3.20 AS builder
 
-ENV VER=0.24.2
+ENV VERSION=0.24.2
 
 RUN apk add --no-cache build-base curl qbe scdoc
 
-RUN curl https://git.sr.ht/~sircmpwn/harec/archive/$VER.tar.gz | tar xz
+RUN curl https://git.sr.ht/~sircmpwn/harec/archive/$VERSION.tar.gz | tar xz
 
-RUN cd harec-$VER                 \
+RUN cd harec-$VERSION             \
  && cp configs/linux.mk config.mk \
  && make -j `nproc`               \
  && make install
 
-RUN curl https://git.sr.ht/~sircmpwn/hare/archive/$VER.tar.gz | tar xz
+RUN curl https://git.sr.ht/~sircmpwn/hare/archive/$VERSION.tar.gz | tar xz
 
-RUN cd hare-$VER                  \
+RUN cd hare-$VERSION              \
  && cp configs/linux.mk config.mk \
  && make -j `nproc`               \
  && make install
@@ -39,5 +39,3 @@ COPY --from=0 /usr/local/src/hare/stdlib /usr/local/src/hare/stdlib
 COPY /harewrapper /usr/bin/
 
 ENTRYPOINT ["harewrapper"]
-
-CMD ["version"]

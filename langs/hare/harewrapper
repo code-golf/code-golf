@@ -2,8 +2,6 @@
 
 export PATH=/usr/local/bin:$PATH
 
-[ "$1" = "version" ] && exec hare version
-
 cd /tmp
 
 # Compile
