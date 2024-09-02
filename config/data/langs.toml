@@ -1183,7 +1183,7 @@ Shout arg
 ['Rockstar 2']
 args       = [ '/usr/bin/rockstarwrapper', '-' ]
 experiment = 1336
-size       = '6.91 MiB'
+size       = '6.11 MiB'
 version    = '0.9.1'
 website    = 'https://beta.codewithrockstar.com'
 example    = '''
@@ -1197,7 +1197,8 @@ print x
 x = x + 1
 
 (Accessing arguments)
-
+while args alike arg
+print arg
 '''
 
 [Ruby]
