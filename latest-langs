@@ -74,8 +74,8 @@ constant %paths = (
 
 my %langs = from-toml 'config/data/langs.toml'.IO;
 
-# Dotted decimal or Git SHA.
-my regex ver { \d+ ( '.' \d+ )+ | <xdigit> ** 7..* }
+# Dotted decimal, hyphenated date, or Git SHA.
+my regex ver { \d+ ( <[.-]> \d+ )+ | <xdigit> ** 7..* }
 
 for %langs.sort: *.key.fc -> (:key($name), :value(%lang)) {
     my $old = %lang<version> ~~ / <ver> /;
@@ -92,7 +92,7 @@ for %langs.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'regina-rexx' / { $res ~~ / '<b>Current</b> ' <(<ver>)> / }
         when / 'github.com'  / {
             .ends-with('/releases/latest')
-                ?? $res ~~ / [ $name || 'Release' ] ' ' v? <(<ver>)> /
+                ?? $res ~~ / [ $name || 'dev' || 'Release' ] <[\ -]> v? <(<ver>)> /
                 !! $res ~~ / '"currentOid":"' <( <xdigit> ** 7 )> /;
         }
         when / 'wikipedia'   / {

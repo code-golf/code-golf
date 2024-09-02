@@ -60,7 +60,8 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         my $ver = $proc.out.slurp(:close).chomp.trans: "\n" => ' ';
 
         given $name {
-            my $digits = $ver ~~ / <[\d.]>+ \d+ /;
+            # Dotted decimal or hyphenated date.
+            my $digits = $ver ~~ / \d+ ( <[.-]> \d+ )+ /;
 
             when 'AWK'
                | 'Forth'
