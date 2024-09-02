@@ -1,31 +1,38 @@
-FROM alpine:3.20 AS builder
+FROM ghcr.io/graalvm/graalvm-ce:22.3.1 AS builder
+#FROM eclipse-temurin:22.0.2_9-jdk-alpine AS builder
 
-RUN apk add --no-cache bash curl git openjdk21
+#ENV VERSION=3.4.3
 
-RUN wget https://github.com/lampepfl/dotty/releases/download/3.5.0/scala3-3.5.0.zip && \
-    unzip scala3-3.5.0.zip -d /usr/local/scala && \
-    rm scala3-3.5.0.zip
+RUN microdnf install -y unzip
+#RUN apk add --no-cache curl unzip
 
-RUN curl -L https://github.com/VirtusLab/scala-cli/archive/refs/tags/v1.5.0.tar.gz | tar xz
+#RUN curl -Lo scala.zip https://github.com/scala/scala3/releases/download/$VERSION/scala3-$VERSION.zip
 
-RUN mkdir -p /root/.cache/coursier/v1/https/github.com/coursier/coursier/releases/download/v2.1.10
+#RUN git clone https://github.com/Yewzir/code-golf-argv > argv
 
-RUN cd /root/.cache/coursier/v1/https/github.com/coursier/coursier/releases/download/v2.1.10 \
- && wget https://github.com/coursier/coursier/releases/download/v2.1.10/cs-x86_64-pc-linux.gz \
- && mkdir -p cs-x86_64-pc-linux.gz \
- && gunzip -c cs-x86_64-pc-linux.gz > cs-x86_64-pc-linux.gz/cs-x86_64-pc-linux \
- && chmod +x cs-x86_64-pc-linux.gz/cs-x86_64-pc-linux
+#RUN unzip scala.zip \
+# && mv scala3-$VERSION /usr/local/scala
 
-ENV SCALA_HOME=/usr/local/scala
-ENV PATH=/usr/local/scala/bin:/usr/local/bin:$PATH
+RUN curl -Lo scala.zip https://github.com/VirtusLab/scala-cli/releases/download/v1.5.0/scala-cli-x86_64-pc-linux-static-sdk.zip
 
-RUN cd scala-cli-1.5.0 \
- && ./mill 'cli[]'.nativeImage
+RUN unzip scala.zip \
+ && mv scala-* /usr/local/scala
 
 FROM codegolf/lang-base
 
-COPY --from=0 / /
+ENV JAVA_HOME=/opt/jvm
 
-ENTRYPOINT ["scala"]
+COPY --from=0 /bin             /bin
+COPY --from=0 /lib             /lib
+COPY --from=0 /lib64           /lib64
+COPY --from=0 /opt/graalvm-*   /opt/jvm
+COPY --from=0 /usr/bin         /usr/bin
+COPY --from=0 /usr/lib         /usr/lib
+COPY --from=0 /usr/local/scala /usr/local
+
+COPY /scalawrapper /usr/bin/
+RUN chmod +x /usr/bin/scalawrapper
+
+ENTRYPOINT ["scalawrapper"]
 
 CMD ["-version"]

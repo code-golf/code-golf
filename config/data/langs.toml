@@ -1223,18 +1223,19 @@ fn main() {
 '''
 
 [Scala]
-args       = [ '/usr/local/scala/bin/scala', '-' ]
+args       = [ '/usr/bin/scalawrapper', '-' ]
+env        = [ 'JAVA_HOME=/opt/jvm' ]
 experiment = 235
 version    = '3.5.0'
 website    = 'https://www.scala-lang.org'
 example    = '''
-def main(args: Array[String]) = {
+def main(args: Array[String]): Unit = {
     // Printing
     println("Hello, World!")
 
     // Looping
-    for (i <- 0 to 9)
-        println(i)
+    for i <- 0 to 9
+        do println(i)
 
     // Accessing arguments
     args.foreach(println)

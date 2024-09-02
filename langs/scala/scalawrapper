@@ -1,0 +1,12 @@
+#!/bin/sh -e
+
+[ "$1" = "-version" ] && exec /usr/local/bin/scala-cli -version
+
+cd /tmp
+
+cat - > code.scala
+/usr/local/bin/scala-cli compile code.scala
+rm code.scala
+
+shift
+exec /usr/local/bin/scala-cli --power run -classpath /usr/local/lib/scala-library-2.13.12.jar:/usr/local/lib/scala3-library_3-3.4.3.jar:/usr/local/lib/scala-asm-9.6.0-scala-1.jar:/usr/local/lib/compiler-interface-1.9.6.jar:/usr/local/lib/scala3-interfaces-3.4.3.jar:/usr/local/lib/scala3-compiler_3-3.4.3.jar:/usr/local/lib/tasty-core_3-3.4.3.jar:/usr/local/lib/scala3-staging_3-3.4.3.jar:/usr/local/lib/scala3-tasty-inspector_3-3.4.3.jar:/usr/local/lib/jline-reader-3.25.1.jar:/usr/local/lib/jline-terminal-3.25.1.jar:/usr/local/lib/jline-terminal-jna-3.25.1.jar:/usr/local/lib/jna-5.14.0.jar
