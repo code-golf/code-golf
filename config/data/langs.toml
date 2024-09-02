@@ -967,8 +967,8 @@ Sys.argv
 [Odin]
 args       = [ '/usr/bin/odinwrapper', '-' ]
 experiment = 766
-size       = '258 MiB'
-version    = 'dev-2024-08'
+size       = '257 MiB'
+version    = '2024'
 website    = 'https://odin-lang.org'
 example    = '''
 package main
