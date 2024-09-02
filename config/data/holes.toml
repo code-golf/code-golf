@@ -2364,6 +2364,30 @@ preamble = '''
     case insensitive.
 '''
 
+['Partition Numbers']
+experiment = 998
+category = 'Sequence'
+links = [
+    { name = 'OEIS A000041', url = '//oeis.org/A000041' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Integer_partition' },
+]
+synopsis = 'Print the first 100 partition numbers.'
+preamble = '''
+<p>
+    The <b>n</b>th partition number is the number of ways that <b>n</b> can be
+    expressed as the sum of positive integers, where ordering does not matter.
+
+<p>
+    For example, <b>4</b> can be partitioned in five distinct ways:
+<pre><code>4
+3 + 1
+2 + 2
+1 + 2 + 1
+1 + 1 + 1 + 1</code></pre>
+<p>
+    Print the first <b>100</b> partition numbers, each on a separate line.
+'''
+
 ['Pascal’s Triangle']
 category = 'Sequence'
 links = [

@@ -52,7 +52,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
     else {
         # Forth outputs it's version number over stderr.
         my $proc = run «docker run -i --rm --tmpfs '/tmp:exec' $img»,
-            :in, :out, :merge($id eq 'forth' | 'scheme');
+            :in, :out, :merge(so $id eq 'forth' | 'scheme');
 
         $proc.in.say: 'puts [info patchlevel]' if $id eq 'tcl';
         $proc.in.close;
@@ -60,7 +60,8 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         my $ver = $proc.out.slurp(:close).chomp.trans: "\n" => ' ';
 
         given $name {
-            my $digits = $ver ~~ / <[\d.]>+ \d+ /;
+            # Dotted decimal or hyphenated date.
+            my $digits = $ver ~~ / \d+ ( <[.-]> \d+ )+ /;
 
             when 'AWK'
                | 'Forth'
