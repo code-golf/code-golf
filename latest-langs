@@ -47,6 +47,7 @@ constant %paths = (
     'Lua'          => 'en.wikipedia.org/wiki/Lua_(programming_language)',
     'Nim'          => 'en.wikipedia.org/wiki/Nim_(programming_language)',
     'OCaml'        => 'en.wikipedia.org/wiki/OCaml',
+    'Odin'         => 'github.com/odin-lang/Odin/releases/latest',
     'Pascal'       => 'en.wikipedia.org/wiki/Free_Pascal',
     'Perl'         => 'endoflife.date/api/perl.json',
     'PHP'          => 'endoflife.date/api/php.json',

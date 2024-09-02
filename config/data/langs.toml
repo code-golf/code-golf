@@ -964,6 +964,34 @@ Sys.argv
   |> List.iter print_endline;
 '''
 
+[Odin]
+args       = [ '/usr/bin/odinwrapper', '-' ]
+experiment = 766
+size       = '258 MiB'
+version    = 'dev-2024-08'
+website    = 'https://odin-lang.org'
+example    = '''
+package main
+
+import "core:fmt"
+import "core:os"
+
+main :: proc() {
+    // Printing
+    fmt.println("Hello, World!")
+
+    // Looping
+    for i in 0..<10 {
+        fmt.println(i)
+    }
+
+    // Accessing arguments
+    for arg in os.args[1:] {
+        fmt.println(arg)
+    }
+}
+'''
+
 [Pascal]
 args    = [ '/usr/bin/pascal', '-' ]
 size    = '31.1 MiB'
