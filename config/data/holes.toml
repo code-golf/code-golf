@@ -2378,10 +2378,12 @@ preamble = '''
     expressed as the sum of positive integers, where ordering does not matter.
 
 <p>
-    For example, <b>3</b> can be partitioned in three distinct ways:
-<pre><code>3
-2 + 1
-1 + 1 + 1</code></pre>
+    For example, <b>4</b> can be partitioned in five distinct ways:
+<pre><code>4
+3 + 1
+2 + 2
+1 + 2 + 1
+1 + 1 + 1 + 1</code></pre>
 <p>
     Print the first <b>100</b> partition numbers, each on a separate line.
 '''
