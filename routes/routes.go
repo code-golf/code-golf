@@ -38,9 +38,7 @@ func Router(db *sqlx.DB) http.Handler {
 	r.Get("/users/{name}", userGET)
 
 	// HTML routes that need middleware.Golfer.
-	r.Group(func(r chi.Router) {
-		r.Use(middleware.Golfer)
-
+	r.With(middleware.Golfer).Group(func(r chi.Router) {
 		r.Get("/", homeGET)
 		r.Get("/{hole}", holeGET)
 		r.Get("/about", aboutGET)
@@ -70,9 +68,7 @@ func Router(db *sqlx.DB) http.Handler {
 			r.Get("/wiki/*", apiWikiPageGET)
 
 			// API routes that require a logged-in golfer.
-			r.Group(func(r chi.Router) {
-				r.With(middleware.GolferArea)
-
+			r.With(middleware.GolferArea).Group(func(r chi.Router) {
 				r.Get("/notes", apiNotesGET)
 				r.Delete("/notes/{hole}/{lang}", apiNoteDELETE)
 				r.Get("/notes/{hole}/{lang}", apiNoteGET)
