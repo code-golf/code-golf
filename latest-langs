@@ -31,6 +31,7 @@ constant %paths = (
     'Fennel'       => 'fennel-lang.org/setup',
     'Forth'        => 'en.wikipedia.org/wiki/Gforth',
     'Fortran'      => 'en.wikipedia.org/wiki/GNU_Compiler_Collection',
+    'Gleam'        => 'github.com/gleam-lang/gleam/releases/latest',
     'Go'           => 'endoflife.date/api/go.json',
     'GolfScript'   => 'github.com/lynn/golfscript/tree/code-golf',
     'Haskell'      => 'en.wikipedia.org/wiki/Glasgow_Haskell_Compiler',

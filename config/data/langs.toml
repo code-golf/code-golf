@@ -600,6 +600,33 @@ end do
 end
 '''
 
+[Gleam]
+args       = [ '/usr/bin/gleamwrapper', '-', '--' ]
+env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
+experiment = 1129
+size       = '87.7 MiB'
+version    = '1.4.1'
+website    = 'https://gleam.run'
+example    = '''
+import argv
+import gleam/int
+import gleam/io
+import gleam/list
+
+pub fn main() {
+    // Printing
+    io.println("Hello, World!")
+    
+    // Looping
+    list.range(0, 9)
+    |> list.each(fn(i) { io.println(int.to_string(i)) })
+    
+    // Accessing arguments
+    argv.load().arguments
+    |> list.each(fn(arg) { io.println(arg) })
+}
+'''
+
 [Go]
 args    = [ '/usr/bin/go', '-' ]
 size    = '382 MiB'
