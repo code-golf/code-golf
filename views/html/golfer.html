@@ -10,21 +10,29 @@
             <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
         {{ end }}
         </h1>
-    {{ if not $.Golfer }}
-        <form></form>
-    {{ else if $me }}
-        <form action=/log-out method=post>
-            <button class="btn red">{{ svg "sign-out-alt-light" }} Log Out</button>
-        </form>
-    {{ else if $.Golfer.IsFollowing .ID }}
-        <form action="/golfers/{{ .Name }}/unfollow" method=post>
-            <button class="btn red">{{ svg "person-dash" }} Unfollow Golfer</button>
-        </form>
-    {{ else }}
-        <form action="/golfers/{{ .Name }}/follow" method=post>
-            <button class="btn blue">{{ svg "person-plus" }} Follow Golfer</button>
-        </form>
+        <nav>
+    {{ if $.Golfer }}
+        {{ if $me }}
+            <form action=/log-out method=post>
+                <button class="btn red">{{ svg "sign-out-alt-light" }} Log Out</button>
+            </form>
+        {{ else if $.Golfer.IsFollowing .ID }}
+            <form action="/golfers/{{ .Name }}/unfollow" method=post>
+                <button class="btn red">{{ svg "person-dash" }} Unfollow Golfer</button>
+            </form>
+        {{ else }}
+            <form action="/golfers/{{ .Name }}/follow" method=post>
+                <button class="btn blue">{{ svg "person-plus" }} Follow Golfer</button>
+            </form>
+        {{ end }}
+        {{ if $.Settings }}
+            <button class="btn blue" data-dialog=settings-dialog title=Settings>
+                {{ svg "gear-fill" }}
+                Page Settings
+            </button>
+        {{ end }}
     {{ end }}
+        </nav>
         <div>
             <div title="{{ comma .BytesPoints }} points in bytes">
                 {{ svg "bytes" }}{{ comma .BytesPoints }}
@@ -115,7 +123,7 @@
 
     {{ if $me }}
         <a {{ if not (hasPrefix $.Path "/golfer/settings") }} href=/golfer/settings {{ end }}>
-            Settings
+            Site Settings
         </a>
     {{ end }}
     </nav>

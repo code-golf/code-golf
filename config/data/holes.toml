@@ -1840,23 +1840,6 @@ preamble = '''
     Given a list of space-separated solution scores in ascending order, print the corresponding diamonds and medals.
 '''
 
-[MNIST]
-category = 'Computing'
-experiment = 1187
-links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/MNIST_database' },
-]
-synopsis = 'Recognize digits in the MNIST dataset.'
-preamble = '''
-<p>
-    The MNIST dataset is a large database of handwritten digits that is
-    commonly used for training various image processing systems. You will be
-    provided images from the MNIST dataset. Each image is a 28x28 pixel image
-    of a handwritten digit from 0 to 9.
-
-<p>Your task is to recognize the digit in each provided image.
-'''
-
 [Morse]
 category = 'Transform'
 released = 2018-02-18
@@ -2350,6 +2333,20 @@ preamble = '''
 <pre>61 -85/24 → X2'Wy</pre>
 '''
 
+[PalindromemordnilaP]
+category = 'Transform'
+released = 2024-09-01
+synopsis = 'Append minimum number of characters to make the input a palindrome.'
+preamble = '''
+<p>
+    Given an alphanumeric string, append minimum number of characters to get a
+    palindrome and output the result.
+
+<p>
+    For example, on input <code>Palindromemord</code>, output
+    <code>PalindromemordnilaP</code>.
+'''
+
 ['Pangram Grep']
 category = 'Transform'
 links = [
@@ -2365,6 +2362,30 @@ preamble = '''
     Write a program that will receive various sentences as arguments and print
     those that are valid pangrams, meaning they use all letters from A to Z,
     case insensitive.
+'''
+
+['Partition Numbers']
+experiment = 998
+category = 'Sequence'
+links = [
+    { name = 'OEIS A000041', url = '//oeis.org/A000041' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Integer_partition' },
+]
+synopsis = 'Print the first 100 partition numbers.'
+preamble = '''
+<p>
+    The <b>n</b>th partition number is the number of ways that <b>n</b> can be
+    expressed as the sum of positive integers, where ordering does not matter.
+
+<p>
+    For example, <b>4</b> can be partitioned in five distinct ways:
+<pre><code>4
+3 + 1
+2 + 2
+1 + 2 + 1
+1 + 1 + 1 + 1</code></pre>
+<p>
+    Print the first <b>100</b> partition numbers, each on a separate line.
 '''
 
 ['Pascal’s Triangle']
@@ -3508,40 +3529,6 @@ preamble = '''
 <p>
     Output the total score for each game on a separate line. The total score
     is the total number of pins knocked down plus strike and spare bonuses.
-'''
-
-['The Name Game']
-category = 'Art'
-experiment = 753
-links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/The_Name_Game#Rules' },
-]
-synopsis = 'Print the lyrics to the song “The Name Game”.'
-preamble = '''
-<p>Print the lyrics to the song <b>The Name Game</b>:
-
-<pre>
-The name game!
-
-Shirley!
-Shirley, Shirley, bo Birley
-Bonana fanna fo Firley
-Fee fy mo Mirley, Shirley!
-
-Lincoln!
-Lincoln, Lincoln, bo Bincoln
-Bonana fanna fo Fincoln
-Fee fy mo Mincoln, Lincoln!
-
-…
-
-A little trick with Nick!
-Nick, Nick, bo Bick
-Bonana fanna fo Fick
-Fee fy mo Mick, Nick!
-
-The name game!
-</pre>
 '''
 
 ['Time Distance']

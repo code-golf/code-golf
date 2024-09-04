@@ -17,6 +17,7 @@ import {
     getLang,
     setState,
     ctrlEnter,
+    getLastSubmittedCode,
 } from './_hole-common';
 import { highlightCodeBlocks } from './_wiki';
 
@@ -153,6 +154,8 @@ function makeEditor(parent: HTMLDivElement) {
             const scorings: {total: {byte?: number, char?: number}, selection?: {byte?: number, char?: number}} = getScorings(tr, editor);
             const scoringKeys = ['byte', 'char'] as const;
 
+            $('main')?.classList.toggle('lastSubmittedCode', code === getLastSubmittedCode());
+
             function formatScore(scoring: any) {
                 return scoringKeys
                     .filter(s => s in scoring)
@@ -261,7 +264,7 @@ async function convertNotesAndRun(): Promise<boolean> {
     if (editor && holeLangNotesEditor) {
         let newCode = holeLangNotesEditor.state.doc.toString();
         for (const {pattern, replacement} of substitutions) {
-            newCode = newCode[pattern.global ? 'replaceAll' : 'replace'](pattern, replacement);
+            newCode = newCode.replace(pattern, replacement);
         }
         const code = editor.state.doc.toString();
         if (code !== newCode) {

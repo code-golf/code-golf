@@ -9,7 +9,7 @@ let tabLayout: boolean = false;
 const langWikiCache: Record<string, string | null> = {};
 async function getLangWikiContent(lang: string): Promise<string> {
     if (!(lang in langWikiCache)) {
-        const resp  = await fetch(`/api/wiki/langs/${lang}`, { method: 'GET' });
+        const resp  = await fetch(`/api/wiki/langs/${lang}`);
         langWikiCache[lang] = resp.status === 200 ? (await resp.json()).content : null;
     }
     return langWikiCache[lang] ?? 'No data for current lang.';
@@ -18,7 +18,7 @@ async function getLangWikiContent(lang: string): Promise<string> {
 const holeLangNotesCache: Record<string, string | null> = {};
 async function getHoleLangNotesContent(lang: string): Promise<string> {
     if (!(lang in holeLangNotesCache)) {
-        const resp  = await fetch(`/api/notes/${hole}/${lang}`, { method: 'GET' });
+        const resp  = await fetch(`/api/notes/${hole}/${lang}`);
         holeLangNotesCache[lang] = resp.status === 200 ? (await resp.text()) : null;
     }
     return holeLangNotesCache[lang] ?? '';
@@ -518,6 +518,11 @@ const diamondPopups = (updates: RankUpdate[]) => {
     return popups;
 };
 
+let lastSubmittedCode = '';
+export function getLastSubmittedCode(){
+    return lastSubmittedCode;
+}
+
 export async function submit(
     editor: any,
     // eslint-disable-next-line no-unused-vars
@@ -529,6 +534,7 @@ export async function submit(
     $$('canvas').forEach(e => e.remove());
 
     const code = editor.state.doc.toString();
+    lastSubmittedCode = code;
     const codeLang = lang;
     const submissionID = ++latestSubmissionID;
 
@@ -549,6 +555,10 @@ export async function submit(
         return false;
 
     const pass = data.runs.every(r => r.pass);
+    $('main')?.classList.remove('pass');
+    $('main')?.classList.remove('fail');
+    $('main')?.classList.add(pass ? 'pass' : 'fail');
+    $('main')?.classList.add('lastSubmittedCode');
     if (pass) {
         for (const i of [0, 1] as const) {
             const solutionCode = getSolutionCode(codeLang, i);

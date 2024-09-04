@@ -38,6 +38,7 @@
     "@types/diff": "",
     "@typescript-eslint/eslint-plugin": "",
     "@typescript-eslint/parser": "",
-    "eslint": ""
+    "eslint": "",
+    "svgo": ""
   }
 }
