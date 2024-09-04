@@ -79,14 +79,7 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 			    LIMIT $1 OFFSET $2`
 		if golfer != nil {
 			sql = `SELECT hole, lang, scoring, count, rank, total, golfer_rank
-				FROM (SELECT hole, lang, scoring, COUNT(*),
-							RANK() OVER(ORDER BY COUNT(*) DESC),
-							COUNT(*) OVER () total
-					FROM medals
-					WHERE medal = 'gold'
-					GROUP BY hole, lang, scoring
-					ORDER BY rank, hole, lang, scoring
-					LIMIT $1 OFFSET $2)
+				FROM (` + sql + `)
 				LEFT JOIN (SELECT hole, lang, scoring, COALESCE(rank, -1) golfer_rank
 					FROM rankings
 					WHERE user_id = $3)
