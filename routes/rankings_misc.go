@@ -13,14 +13,15 @@ import (
 func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 	var desc, sql string
 
+	golfer := session.Golfer(r)
 	data := struct {
 		Pager *pager.Pager
 		Rows  []struct {
-			Bytes, Chars, Count, Rank, Total int
-			Country                          config.NullCountry `db:"country_flag"`
-			Hole, Lang, Scoring              string
-			Name                             string `db:"login"`
-			Submitted                        time.Time
+			Bytes, Chars, Count, Rank, Total, GolferRank int
+			Country                                      config.NullCountry `db:"country_flag"`
+			Hole, Lang, Scoring                          string
+			Name                                         string `db:"login"`
+			Submitted                                    time.Time
 		}
 	}{Pager: pager.New(r)}
 
@@ -76,6 +77,24 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 			 GROUP BY hole, lang, scoring
 			 ORDER BY rank, hole, lang, scoring
 			    LIMIT $1 OFFSET $2`
+		if golfer != nil {
+			sql = `SELECT hole, lang, scoring, count, rank, total, golfer_rank
+				FROM (SELECT hole, lang, scoring, COUNT(*),
+							RANK() OVER(ORDER BY COUNT(*) DESC),
+							COUNT(*) OVER () total
+					FROM medals
+					WHERE medal = 'gold'
+					GROUP BY hole, lang, scoring
+					ORDER BY rank, hole, lang, scoring
+					LIMIT $1 OFFSET $2)
+				LEFT JOIN (SELECT hole, lang, scoring, COALESCE(rank, -1) golfer_rank
+					FROM rankings
+					WHERE user_id = $3)
+				USING (hole, lang, scoring)
+				ORDER BY rank, hole, lang, scoring`
+			args = append(args, golfer.ID)
+		}
+
 	case "oldest-diamonds", "oldest-unicorns":
 		if t == "oldest-diamonds" {
 			args = append(args, "diamond")

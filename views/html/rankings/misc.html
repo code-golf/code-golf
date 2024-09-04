@@ -7,6 +7,7 @@
 {{ $solutions     := eq .Path "/rankings/misc/solutions" }}
 
 {{ $hasGolfer := not $mostTiedGolds }}
+{{ $hasMedal := and $mostTiedGolds .Golfer }}
 {{ $hasHole   := or $diamondDeltas $mostTiedGolds $oldestMedal }}
 
 <main id=two-pane>
@@ -30,6 +31,9 @@
             {{ if $solutions }}
                 <th class=right>Bytes
                 <th class=right>Chars
+            {{ end }}
+            {{ if $hasMedal }}
+                <th class>
             {{ end }}
         <tbody>
         {{ $name := "" }}
@@ -57,6 +61,9 @@
             {{ if $solutions }}
                 <td class=right>{{ comma .Bytes }}
                 <td class=right>{{ comma .Chars }}
+            {{ end }}
+            {{ if $hasMedal }}
+                <td>{{ if eq .GolferRank 1 }}🥇{{ end }}
             {{ end }}
         {{ end }}
     </table>
