@@ -1,0 +1,14 @@
+#!/bin/sh -e
+
+[ "$1" = "--version" ] && exec /usr/local/bin/koka --version
+
+cd /tmp
+
+# Compile
+cat - > code.kk
+/usr/local/bin/koka -c -o code -v0 code.kk
+rm code.kk
+
+# Execute
+shift
+exec ./code "$@"

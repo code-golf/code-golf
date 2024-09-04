@@ -883,6 +883,16 @@ example = '''
 `0:x
 '''
 
+[Koka]
+args       = [ '/usr/bin/kokawrapper', '-' ]
+experiment = -1
+size       = '89.7 MiB'
+version    = '3.1.2'
+website    = 'https://koka-lang.github.io'
+example    = '''
+println("Hello, World!")
+'''
+
 [Lisp]
 args    = [ '/usr/bin/lisp', '-' ]
 size    = '31.1 MiB'
