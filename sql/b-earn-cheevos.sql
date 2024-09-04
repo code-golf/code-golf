@@ -88,6 +88,10 @@ BEGIN
     IF hole = '𝑒' AND lang = 'r' THEN
         earned := earn(earned, 'emergency-room', user_id); END IF;
 
+    -- 😈 Evil Scheme
+    IF hole IN ('evil-numbers', 'evil-numbers-long') AND lang = 'scheme' THEN
+        earned = earn(earned, 'evil-scheme', user_id); END IF;
+
     -- 🐟 Fish ’n’ Chips
     IF hole = 'poker' AND lang = 'fish' THEN
         earned := earn(earned, 'fish-n-chips', user_id); END IF;
