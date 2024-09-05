@@ -10,9 +10,12 @@ RUN make lilt \
 
 FROM codegolf/lang-base
 
+COPY --from=0 /bin/cat /bin/sh         /bin/
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
 COPY --from=0 /c/build/lilt            /usr/bin/
 
-ENTRYPOINT ["lilt"]
+COPY /lilwrapper /usr/bin/
 
-CMD ["-e", "print[sys.version]"]
+ENTRYPOINT ["lilwrapper"]
+
+CMD ["--version"]
