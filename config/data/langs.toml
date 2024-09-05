@@ -899,10 +899,8 @@ each i in range 10
 end
 
 # Accessing arguments
-each i in range count args
-  if i > 2
-    print[args[i]]
-  end
+each arg in 3 drop args
+    print[arg]
 end
 '''
 
