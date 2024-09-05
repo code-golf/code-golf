@@ -884,9 +884,9 @@ example = '''
 '''
 
 [Lil]
-args       = [ '/usr/bin/lilt', '-e', '$code' ]
+args       = [ '/usr/bin/lilwrapper', '-' ]
 experiment = 1174
-size       = '1.67 MiB'
+size       = '3.29 MiB'
 version    = 'Lilt 1.48'
 website    = 'https://beyondloom.com/decker/lilt.html'
 example    = '''
@@ -899,7 +899,7 @@ each i in range 10
 end
 
 # Accessing arguments
-each arg in 3 drop args
+each arg in 2 drop args
     print[arg]
 end
 '''
