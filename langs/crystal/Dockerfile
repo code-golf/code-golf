@@ -1,22 +1,15 @@
 FROM crystallang/crystal:1.13.2-alpine AS builder
 
-RUN apk del --no-cache libxml2-static python3
+RUN apk add --no-cache curl libstdc++-dev llvm18-dev
 
-RUN strip /usr/bin/crystal
+RUN curl -L https://github.com/crystal-lang/crystal/archive/refs/tags/1.13.2.tar.gz \
+  | tar xz --strip-components 1
+
+RUN make crystal -j`nproc` release=1 interpreter=1 static=1
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/sh                              /bin/
-COPY --from=0 /lib/ld-musl-x86_64.so.1             \
-              /lib/libz.so.1                       /lib/
-COPY --from=0 /usr/bin/cc                          \
-              /usr/bin/crystal                     \
-              /usr/bin/pkg-config                  /usr/bin/
-COPY --from=0 /usr/include                         /usr/include
-COPY --from=0 /usr/lib                             /usr/lib
-COPY --from=0 /usr/libexec/gcc                     /usr/libexec/gcc
-COPY --from=0 /usr/share/crystal                   /usr/share/crystal
-COPY --from=0 /usr/x86_64-alpine-linux-musl/bin/ld /usr/x86_64-alpine-linux-musl/bin/
+COPY --from=0 /usr/bin/crystal /usr/bin/
 
 ENTRYPOINT ["crystal"]
 
