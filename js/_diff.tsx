@@ -7,8 +7,8 @@ interface DiffPos {
     isLastDiff: boolean;
 }
 
-export default (hole: string, exp: string, out: string, argv: string[], ignoreCase: boolean, multisetDelimiter: string, itemDelimiter: string) => {
-    const provideItemwiseDiff = !multisetDelimiter && itemDelimiter;
+export default (hole: string, exp: string, out: string, argv: string[], ignoreCase: boolean, outputDelimiter: string, itemDelimiter: string) => {
+    const provideItemwiseDiff = !outputDelimiter && itemDelimiter;
     const isLinesDiffChecked = Boolean($('#diffKindSettings input[value="lines"]:checked'));
     return provideItemwiseDiff ?
         <div>

@@ -89,7 +89,7 @@ function updateReadonlyPanels(data: ReadonlyPanelsData) {
     $('#out div').innerHTML = replaceUnprintablesInOutput($('#out div').innerHTML);
 
     const ignoreCase = JSON.parse($('#case-fold').innerText);
-    const diff = diffView(hole, data.Exp, data.Out, data.Argv, ignoreCase, data.MultisetDelimiter, data.ItemDelimiter);
+    const diff = diffView(hole, data.Exp, data.Out, data.Argv, ignoreCase, data.OutputDelimiter, data.ItemDelimiter);
     $('#diff-content').replaceChildren(diff);
     $('#diff').classList.toggle('hide', !diff);
 }

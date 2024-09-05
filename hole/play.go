@@ -43,7 +43,7 @@ var stdoutTrimmer = regexp.MustCompile(`[\t\x0B\f\r ]+(?:\n|$)`)
 type Run struct {
 	Answer            string        `json:"answer"`
 	ItemDelimiter     string        `json:"item_delimiter"`
-	MultisetDelimiter string        `json:"multiset_delimiter"`
+	OutputDelimiter   string        `json:"output_delimiter"`
 	Args              []string      `json:"args"`
 	ExitCode          int           `json:"exit_code"`
 	Pass              bool          `json:"pass"`
@@ -57,114 +57,11 @@ type Run struct {
 	ASMBytes int `json:"-"`
 }
 
-func getClosestAnswer(anyAnswer, stdout, itemDelimiter, multisetDelimiter string) string {
-	answerMultisets := []string{anyAnswer}
-	stdoutMultisets := []string{stdout}
-	if multisetDelimiter != "" {
-		answerMultisets = strings.Split(anyAnswer, multisetDelimiter)
-		stdoutMultisets = strings.Split(stdout, multisetDelimiter)
-	}
-	closestMultisets := make([]string, len(answerMultisets))
-
-	for i, answerMultiset := range answerMultisets {
-		stdoutMultiset := ""
-		if i < len(stdoutMultisets) {
-			stdoutMultiset = stdoutMultisets[i]
-		}
-		closestMultisets[i] = getClosestMultiset(answerMultiset, stdoutMultiset, itemDelimiter)
-	}
-	return strings.Join(closestMultisets, multisetDelimiter)
-}
-
-func getClosestMultiset(anyAnswer, stdout, itemDelimiter string) string {
-	expectedItems := strings.Split(anyAnswer, itemDelimiter)
-	expectedItemsReordered := make([]string, len(expectedItems))
-	userItems := strings.Split(stdout, itemDelimiter)
-
-	expectedItemsMap := make(map[string]int)
-	for _, expected := range expectedItems {
-		expectedItemsMap[expected]++
-	}
-
-	// Match items that are correct
-	matches := 0
-	for i, user := range userItems {
-		if i < len(expectedItems) && expectedItemsMap[user] > 0 {
-			expectedItemsReordered[i] = user
-			expectedItemsMap[user]--
-			userItems[i] = ""
-			matches++
-		}
-	}
-
-	// Process mismatched items
-	if matches < len(expectedItems) {
-
-		// Calculate indices of expected & user items that couldn't be matched be equality
-		unmatchedExpectedIndices := []int{}
-		unmatchedUserIndices := []int{}
-
-		for i, expected := range expectedItems {
-			if expectedItemsMap[expected] > 0 {
-				unmatchedExpectedIndices = append(unmatchedExpectedIndices, i)
-				expectedItemsMap[expected]--
-			}
-		}
-
-		for i, user := range userItems {
-			if user != "" {
-				unmatchedUserIndices = append(unmatchedUserIndices, i)
-			}
-		}
-
-		n := max(len(unmatchedExpectedIndices), len(unmatchedUserIndices))
-
-		permutation := make([]int, n)
-		for i := range permutation {
-			permutation[i] = i
-		}
-
-		// If there are not many wrong items, try to match them
-		// otherwise, use the above identity permutation
-		if n <= 32 {
-			dist := make([][]int, n)
-			for i := range dist {
-				dist[i] = make([]int, n)
-				for j := range dist {
-					if j >= len(unmatchedExpectedIndices) {
-						dist[i][j] = len(userItems[unmatchedUserIndices[i]])
-					} else if i >= len(unmatchedUserIndices) {
-						dist[i][j] = len(expectedItems[unmatchedExpectedIndices[j]])
-					} else {
-						dist[i][j] = levenshtein.ComputeDistance(expectedItems[unmatchedExpectedIndices[j]], userItems[unmatchedUserIndices[i]])
-					}
-				}
-			}
-
-			permutation, _ = hungarianAlgorithm.Solve(dist)
-		}
-
-		k := 0
-		for _, i := range permutation {
-			if k >= len(expectedItemsReordered) {
-				break
-			}
-			if i < len(unmatchedExpectedIndices) {
-				for expectedItemsReordered[k] != "" {
-					k++
-				}
-				expectedItemsReordered[k] = expectedItems[unmatchedExpectedIndices[i]]
-			}
-		}
-	}
-
-	return strings.Join(expectedItemsReordered, itemDelimiter)
-}
-
 // Play a given hole, in a given lang, with given code and return the runs.
 func Play(
 	ctx context.Context, hole *config.Hole, lang *config.Lang, code string,
 ) (runs []Run) {
+	var judge Judge
 	switch hole.ID {
 	case "arabic-to-roman", "roman-to-arabic":
 		runs = arabicToRoman(hole.ID == "roman-to-arabic")
@@ -264,6 +161,21 @@ func Play(
 		runs = outputMultirunTests(fixedTests(hole.ID))
 	case "floyd-steinberg-dithering", "hexdump", "proximity-grid", "star-wars-opening-crawl":
 		runs = outputTestsWithSep("\n\n", shuffle(fixedTests(hole.ID)))
+	
+	
+	// Use multiset judge for holes that have configured `ItemDelimiter`
+	if judge == nil && hole.ItemDelimiter != "" {
+		if hole.OutputDelimiter != "" {
+			judge = perOutputJudge(func(input, userOutput, rawExpectedOutput string) string {
+				return getClosestMultiset(rawExpectedOutput, userOutput, hole.ItemDelimiter)
+			})
+		} else {
+			judge = func(run Run) {
+				return getClosestMultiset(run.Answer, run.Stdout, hole.ItemDelimiter)
+			}
+		}
+	}
+	
 
 	// Holes with no arguments and a static answer.
 	default:
@@ -287,7 +199,7 @@ func Play(
 
 	for i := range runs {
 		go func(run *Run) {
-			if err := play(ctx, hole, lang, code, run); err != nil {
+			if err := play(ctx, hole, lang, code, run, judge); err != nil {
 				log.Println(err)
 			}
 
@@ -301,8 +213,11 @@ func Play(
 }
 
 func play(
-	ctx context.Context, hole *config.Hole, lang *config.Lang, code string, run *Run,
+	ctx context.Context, hole *config.Hole, lang *config.Lang, code string, run *Run, judge Judge
 ) error {
+	run.MultisetDelimiter = hole.MultisetDelimiter
+	run.ItemDelimiter = hole.ItemDelimiter
+
 	// Preprocess code.
 	switch lang.ID {
 	case "clojure":
@@ -460,8 +375,8 @@ func play(
 
 	// Timeouts and whitespace only output never pass.
 	if !run.Timeout && len(strings.TrimSpace(run.Stdout)) != 0 {
-		if hole.ItemDelimiter != "" {
-			run.Answer = getClosestAnswer(run.Answer, run.Stdout, hole.ItemDelimiter, hole.MultisetDelimiter)
+		if judge != nil {
+			run.Answer = judge(run)
 		}
 
 		if hole.CaseFold {
@@ -470,9 +385,6 @@ func play(
 			run.Pass = run.Answer == run.Stdout
 		}
 	}
-
-	run.MultisetDelimiter = hole.MultisetDelimiter
-	run.ItemDelimiter = hole.ItemDelimiter
 
 	return nil
 }

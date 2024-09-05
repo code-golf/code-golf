@@ -353,7 +353,7 @@ export interface RankUpdate {
 
 export interface Run {
     answer: string,
-    multiset_delimiter: string,
+    output_delimiter: string,
     item_delimiter: string,
     args: string[],
     exit_code: number,
@@ -370,7 +370,7 @@ export interface ReadonlyPanelsData {
     Exp: string,
     Err: string,
     Argv: string[],
-    MultisetDelimiter: string,
+    OutputDelimiter: string,
     ItemDelimiter: string
 }
 
@@ -624,7 +624,7 @@ export async function submit(
             Exp: run.answer,
             Err: run.stderr,
             Out: run.stdout,
-            MultisetDelimiter: run.multiset_delimiter,
+            OutputDelimiter: run.output_delimiter,
             ItemDelimiter: run.item_delimiter,
         });
 
