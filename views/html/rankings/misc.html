@@ -7,7 +7,6 @@
 {{ $solutions     := eq .Path "/rankings/misc/solutions" }}
 
 {{ $hasGolfer := not $mostTiedGolds }}
-{{ $hasMedal := and $mostTiedGolds .Golfer }}
 {{ $hasHole   := or $diamondDeltas $mostTiedGolds $oldestMedal }}
 
 <main id=two-pane>
@@ -32,15 +31,12 @@
                 <th class=right>Bytes
                 <th class=right>Chars
             {{ end }}
-            {{ if $hasMedal }}
-                <th class>
-            {{ end }}
         <tbody>
         {{ $name := "" }}
         {{ with .Golfer }}{{ $name = .Name }}{{ end }}
 
         {{ range .Data.Rows }}
-            <tr {{ if and $hasGolfer (eq $name .Name) }} class=me {{ end }}>
+            <tr {{ if or (and $hasGolfer (eq $name .Name)) (and $mostTiedGolds (eq .GolferRank 1)) }} class=me {{ end }}>
                 <td>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup>
             {{ if $hasGolfer }}
                 <td>{{ template "golfer-link" . }}
@@ -61,9 +57,6 @@
             {{ if $solutions }}
                 <td class=right>{{ comma .Bytes }}
                 <td class=right>{{ comma .Chars }}
-            {{ end }}
-            {{ if $hasMedal }}
-                <td>{{ if eq .GolferRank 1 }}🥇{{ end }}
             {{ end }}
         {{ end }}
     </table>
