@@ -840,6 +840,29 @@ example = '''
 `0:x
 '''
 
+[Lil]
+args       = [ '/usr/bin/lilt', '-e', '$code' ]
+experiment = 1174
+size       = '1.67 MiB'
+version    = 'Lilt 1.48'
+website    = 'https://beyondloom.com/decker/lilt.html'
+example    = '''
+# Printing
+print["Hello, World!"]
+
+# Looping
+each i in range 10
+    print[i]
+end
+
+# Accessing arguments
+each i in range count args
+  if i > 2
+    print[args[i]]
+  end
+end
+'''
+
 [Lisp]
 args    = [ '/usr/bin/lisp', '-' ]
 size    = '31.1 MiB'
