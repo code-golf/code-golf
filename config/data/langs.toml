@@ -961,7 +961,7 @@ for (i <- 0 to 9) (
 # Accessing arguments
 for (arg <- argv) (
     print(arg)
-)
+);
 '''
 
 [OCaml]
