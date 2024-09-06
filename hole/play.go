@@ -39,16 +39,16 @@ var stdoutTrimmer = regexp.MustCompile(`[\t\x0B\f\r ]+(?:\n|$)`)
 
 // Run holds the results of running a given solution once.
 type Run struct {
-	Answer          string        `json:"answer"`
-	ItemDelimiter   string        `json:"item_delimiter"`
-	OutputDelimiter string        `json:"output_delimiter"`
-	Args            []string      `json:"args"`
-	ExitCode        int           `json:"exit_code"`
-	Pass            bool          `json:"pass"`
-	Stderr          string        `json:"stderr"`
-	Stdout          string        `json:"stdout"`
-	Time            time.Duration `json:"time_ns"`
-	Timeout         bool          `json:"timeout"`
+	Answer                string        `json:"answer"`
+	MultisetItemDelimiter string        `json:"multiset_item_delimiter"`
+	OutputDelimiter       string        `json:"output_delimiter"`
+	Args                  []string      `json:"args"`
+	ExitCode              int           `json:"exit_code"`
+	Pass                  bool          `json:"pass"`
+	Stderr                string        `json:"stderr"`
+	Stdout                string        `json:"stdout"`
+	Time                  time.Duration `json:"time_ns"`
+	Timeout               bool          `json:"timeout"`
 
 	// This is a bit hacky, the only way to discover how long an assembly
 	// solution is is to compile it so we store it here but don't JSON it.
@@ -178,8 +178,8 @@ func Play(
 		}
 	}
 
-	// Use multiset judge for holes that have configured `ItemDelimiter`
-	if judge == nil && hole.ItemDelimiter != "" {
+	// Use multiset judge for holes that have configured `MultisetItemDelimiter`
+	if judge == nil && hole.MultisetItemDelimiter != "" {
 		judge = multisetJudge(hole.CaseFold)
 	}
 
@@ -206,7 +206,7 @@ func play(
 	ctx context.Context, hole *config.Hole, lang *config.Lang, code string, run *Run, judge Judge,
 ) error {
 	run.OutputDelimiter = hole.OutputDelimiter
-	run.ItemDelimiter = hole.ItemDelimiter
+	run.MultisetItemDelimiter = hole.MultisetItemDelimiter
 
 	// Preprocess code.
 	switch lang.ID {

@@ -49,7 +49,7 @@ type Hole struct {
 	Data                        template.JS      `json:"-"`
 	Experiment                  int              `json:"-"`
 	ID                          string           `json:"id"`
-	ItemDelimiter               string           `json:"-" toml:"item-delimiter"`
+	MultisetItemDelimiter       string           `json:"-" toml:"multiset-item-delimiter"`
 	OutputDelimiter             string           `json:"-" toml:"output-delimiter"`
 	Links                       []Link           `json:"links"`
 	Name                        string           `json:"name"`

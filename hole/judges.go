@@ -79,11 +79,11 @@ func oneOfPerOutputJudge(getAllSolutions func(arg string) []string, caseFold boo
 	})
 }
 
-func getClosestMultiset(anyAnswer, stdout, itemDelimiter string) string {
+func getClosestMultiset(anyAnswer, stdout, multisetItemDelimiter string) string {
 	// TODO implement case folding version
-	expectedItems := strings.Split(anyAnswer, itemDelimiter)
+	expectedItems := strings.Split(anyAnswer, multisetItemDelimiter)
 	expectedItemsReordered := make([]string, len(expectedItems))
-	userItems := strings.Split(stdout, itemDelimiter)
+	userItems := strings.Split(stdout, multisetItemDelimiter)
 
 	expectedItemsMap := make(map[string]int)
 	for _, expected := range expectedItems {
@@ -162,17 +162,17 @@ func getClosestMultiset(anyAnswer, stdout, itemDelimiter string) string {
 		}
 	}
 
-	return strings.Join(expectedItemsReordered, itemDelimiter)
+	return strings.Join(expectedItemsReordered, multisetItemDelimiter)
 }
 
 func multisetJudge(caseFold bool) Judge {
 	return func(run Run) string {
 		if run.OutputDelimiter != "" {
 			return perOutputJudge(func(input, userOutput, rawExpectedOutput string) string {
-				return getClosestMultiset(rawExpectedOutput, userOutput, run.ItemDelimiter)
+				return getClosestMultiset(rawExpectedOutput, userOutput, run.MultisetItemDelimiter)
 			})(run)
 		} else {
-			return getClosestMultiset(run.Answer, run.Stdout, run.ItemDelimiter)
+			return getClosestMultiset(run.Answer, run.Stdout, run.MultisetItemDelimiter)
 		}
 	}
 }

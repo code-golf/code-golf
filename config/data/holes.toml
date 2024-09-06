@@ -2224,7 +2224,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/N-queens_problem' },
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Eight_queens_puzzle' },
 ]
-item-delimiter = "\n"
+multiset-item-delimiter = "\n"
 released = 2024-05-01
 synopsis = 'Print all solutions to the N queens problem.'
 preamble = '''
@@ -2613,7 +2613,7 @@ preamble = '''
 
 [Polyominoes]
 category       = 'Computing'
-item-delimiter = "\n\n"
+multiset-item-delimiter = "\n\n"
 released       = 2024-08-01
 synopsis       = 'Print all polyominoes of sizes 1 to 6.'
 links = [
