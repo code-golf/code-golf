@@ -162,19 +162,6 @@ func Play(
 	case "floyd-steinberg-dithering", "hexdump", "proximity-grid", "star-wars-opening-crawl":
 		runs = outputTestsWithSep("\n\n", shuffle(fixedTests(hole.ID)))
 
-		// Use multiset judge for holes that have configured `ItemDelimiter`
-		if judge == nil && hole.ItemDelimiter != "" {
-			if hole.OutputDelimiter != "" {
-				judge = perOutputJudge(func(input, userOutput, rawExpectedOutput string) string {
-					return getClosestMultiset(rawExpectedOutput, userOutput, hole.ItemDelimiter)
-				})
-			} else {
-				judge = func(run Run) string {
-					return getClosestMultiset(run.Answer, run.Stdout, hole.ItemDelimiter)
-				}
-			}
-		}
-
 	// Holes with no arguments and a static answer.
 	default:
 		// ¯\_(ツ)_/¯ cannot embed file answers/√2.txt: invalid name √2.txt
@@ -189,6 +176,11 @@ func Play(
 			answer := string(bytes.TrimSuffix(b, []byte{'\n'}))
 			runs = []Run{{Args: []string{}, Answer: answer}}
 		}
+	}
+
+	// Use multiset judge for holes that have configured `ItemDelimiter`
+	if judge == nil && hole.ItemDelimiter != "" {
+		judge = multisetJudge(hole.CaseFold)
 	}
 
 	// Run all the runs in parallel to reduce the wall clock time.

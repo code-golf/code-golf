@@ -80,6 +80,7 @@ func oneOfPerOutputJudge(getAllSolutions func(arg string) []string, caseFold boo
 }
 
 func getClosestMultiset(anyAnswer, stdout, itemDelimiter string) string {
+	// TODO implement case folding version
 	expectedItems := strings.Split(anyAnswer, itemDelimiter)
 	expectedItemsReordered := make([]string, len(expectedItems))
 	userItems := strings.Split(stdout, itemDelimiter)
@@ -162,4 +163,16 @@ func getClosestMultiset(anyAnswer, stdout, itemDelimiter string) string {
 	}
 
 	return strings.Join(expectedItemsReordered, itemDelimiter)
+}
+
+func multisetJudge(caseFold bool) Judge {
+	return func(run Run) string {
+		if run.OutputDelimiter != "" {
+			return perOutputJudge(func(input, userOutput, rawExpectedOutput string) string {
+				return getClosestMultiset(rawExpectedOutput, userOutput, run.ItemDelimiter)
+			})(run)
+		} else {
+			return getClosestMultiset(run.Answer, run.Stdout, run.ItemDelimiter)
+		}
+	}
 }
