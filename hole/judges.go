@@ -1,27 +1,36 @@
+package hole
+
+import (
+	"strings"
+
+	"github.com/agnivade/levenshtein"
+	hungarianAlgorithm "github.com/oddg/hungarian-algorithm"
+)
+
 // An ultimate task of a Judge is to tell whether a run is passing or not.
 // However, it does more. When the output is not recognised as correct,
 // it returns a similar output that is.
 type Judge func(run Run) string
 
 // A judge for a single output (corresponding to either a single input or a single preset output item)
-type SingleOutputJudge func(input, userOutput, rawExpectedOutput string) string
+type SingleOutputJudge func(arg, userOutput, rawExpectedOutput string) string
 
 // Creates a judge by treating an output as a sequence of
 // delimited outputs, each corresponding to a respective input.
 // The final expected output length's is the bigger of input length & the rawExpectedOutput length.
 // This allows two different ways of building the expected output:
-//  1. purely from the inputs
+//  1. purely from the args
 //  2. by transforming the preset raw expected output (from the runs generator)
 func perOutputJudge(singleOutputJudge SingleOutputJudge) Judge {
-	return func(run Run) {
-		inputs := run.Inputs
+	return func(run Run) string {
+		args := run.Args
 		userOutputs := strings.Split(run.Stdout, run.OutputDelimiter)
 		rawExpectedOutputs := strings.Split(run.Answer, run.OutputDelimiter)
 		var expectedOutputs []string
-		for i := range max(len(inputs), len(rawExpectedOutputs)) {
-			input := ""
-			if i < len(input) {
-				input = inputs[i]
+		for i := range max(len(args), len(rawExpectedOutputs)) {
+			arg := ""
+			if i < len(arg) {
+				arg = args[i]
 			}
 			userOutput := ""
 			if i < len(userOutputs) {
@@ -31,9 +40,9 @@ func perOutputJudge(singleOutputJudge SingleOutputJudge) Judge {
 			if i < len(rawExpectedOutputs) {
 				rawExpectedOutput = rawExpectedOutputs[i]
 			}
-			expectedOutput := singleOutputJudge(input, userOutput, rawExpectedOutput)
-			if expectedOutput := "" {
-				expectedOutputs := append(expectedOutputs, expectedOutput)
+			expectedOutput := singleOutputJudge(arg, userOutput, rawExpectedOutput)
+			if expectedOutput != "" {
+				expectedOutputs = append(expectedOutputs, expectedOutput)
 			}
 		}
 		return strings.Join(expectedOutputs, run.OutputDelimiter)
@@ -41,10 +50,10 @@ func perOutputJudge(singleOutputJudge SingleOutputJudge) Judge {
 }
 
 // Creates a judge which checks whether each user output
-// corresponds to one of preset outputs corresponding to the respective input.
-func oneOfPerOutputJudge(getAllSolutions func(input string) []string) Judge {
-	return perOutputJudge(func(input, userOutput, rawExpectedOutput string) string {
-		solutions := getAllSolutions(input)
+// corresponds to one of preset outputs corresponding to the respective arg.
+func oneOfPerOutputJudge(getAllSolutions func(arg string) []string) Judge {
+	return perOutputJudge(func(arg, userOutput, rawExpectedOutput string) string {
+		solutions := getAllSolutions(arg)
 		closestSolution := ""
 		minDistance := 1 << 24
 		for _, solution := range solutions {
@@ -53,8 +62,11 @@ func oneOfPerOutputJudge(getAllSolutions func(input string) []string) Judge {
 				minDistance = distance
 				closestSolution = solution
 			}
+			if distance == 0 {
+				break
+			}
 		}
-		return solution
+		return closestSolution
 	})
 }
 

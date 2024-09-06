@@ -18,10 +18,8 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/agnivade/levenshtein"
 	"github.com/buildkite/terminal-to-html/v3"
 	"github.com/code-golf/code-golf/config"
-	hungarianAlgorithm "github.com/oddg/hungarian-algorithm"
 )
 
 var timeout = 5 * time.Second
@@ -41,16 +39,16 @@ var stdoutTrimmer = regexp.MustCompile(`[\t\x0B\f\r ]+(?:\n|$)`)
 
 // Run holds the results of running a given solution once.
 type Run struct {
-	Answer            string        `json:"answer"`
-	ItemDelimiter     string        `json:"item_delimiter"`
-	OutputDelimiter   string        `json:"output_delimiter"`
-	Args              []string      `json:"args"`
-	ExitCode          int           `json:"exit_code"`
-	Pass              bool          `json:"pass"`
-	Stderr            string        `json:"stderr"`
-	Stdout            string        `json:"stdout"`
-	Time              time.Duration `json:"time_ns"`
-	Timeout           bool          `json:"timeout"`
+	Answer          string        `json:"answer"`
+	ItemDelimiter   string        `json:"item_delimiter"`
+	OutputDelimiter string        `json:"output_delimiter"`
+	Args            []string      `json:"args"`
+	ExitCode        int           `json:"exit_code"`
+	Pass            bool          `json:"pass"`
+	Stderr          string        `json:"stderr"`
+	Stdout          string        `json:"stdout"`
+	Time            time.Duration `json:"time_ns"`
+	Timeout         bool          `json:"timeout"`
 
 	// This is a bit hacky, the only way to discover how long an assembly
 	// solution is is to compile it so we store it here but don't JSON it.
@@ -161,21 +159,19 @@ func Play(
 		runs = outputMultirunTests(fixedTests(hole.ID))
 	case "floyd-steinberg-dithering", "hexdump", "proximity-grid", "star-wars-opening-crawl":
 		runs = outputTestsWithSep("\n\n", shuffle(fixedTests(hole.ID)))
-	
-	
-	// Use multiset judge for holes that have configured `ItemDelimiter`
-	if judge == nil && hole.ItemDelimiter != "" {
-		if hole.OutputDelimiter != "" {
-			judge = perOutputJudge(func(input, userOutput, rawExpectedOutput string) string {
-				return getClosestMultiset(rawExpectedOutput, userOutput, hole.ItemDelimiter)
-			})
-		} else {
-			judge = func(run Run) {
-				return getClosestMultiset(run.Answer, run.Stdout, hole.ItemDelimiter)
+
+		// Use multiset judge for holes that have configured `ItemDelimiter`
+		if judge == nil && hole.ItemDelimiter != "" {
+			if hole.OutputDelimiter != "" {
+				judge = perOutputJudge(func(input, userOutput, rawExpectedOutput string) string {
+					return getClosestMultiset(rawExpectedOutput, userOutput, hole.ItemDelimiter)
+				})
+			} else {
+				judge = func(run Run) string {
+					return getClosestMultiset(run.Answer, run.Stdout, hole.ItemDelimiter)
+				}
 			}
 		}
-	}
-	
 
 	// Holes with no arguments and a static answer.
 	default:
@@ -213,9 +209,9 @@ func Play(
 }
 
 func play(
-	ctx context.Context, hole *config.Hole, lang *config.Lang, code string, run *Run, judge Judge
+	ctx context.Context, hole *config.Hole, lang *config.Lang, code string, run *Run, judge Judge,
 ) error {
-	run.MultisetDelimiter = hole.MultisetDelimiter
+	run.OutputDelimiter = hole.OutputDelimiter
 	run.ItemDelimiter = hole.ItemDelimiter
 
 	// Preprocess code.
@@ -376,7 +372,7 @@ func play(
 	// Timeouts and whitespace only output never pass.
 	if !run.Timeout && len(strings.TrimSpace(run.Stdout)) != 0 {
 		if judge != nil {
-			run.Answer = judge(run)
+			run.Answer = judge(*run)
 		}
 
 		if hole.CaseFold {
