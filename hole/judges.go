@@ -29,7 +29,7 @@ func perOutputJudge(singleOutputJudge SingleOutputJudge) Judge {
 		var expectedOutputs []string
 		for i := range max(len(args), len(rawExpectedOutputs)) {
 			arg := ""
-			if i < len(arg) {
+			if i < len(args) {
 				arg = args[i]
 			}
 			userOutput := ""
@@ -51,19 +51,28 @@ func perOutputJudge(singleOutputJudge SingleOutputJudge) Judge {
 
 // Creates a judge which checks whether each user output
 // corresponds to one of preset outputs corresponding to the respective arg.
-func oneOfPerOutputJudge(getAllSolutions func(arg string) []string) Judge {
+func oneOfPerOutputJudge(getAllSolutions func(arg string) []string, caseFold bool) Judge {
 	return perOutputJudge(func(arg, userOutput, rawExpectedOutput string) string {
 		solutions := getAllSolutions(arg)
+		for _, solution := range solutions {
+			if caseFold && strings.EqualFold(solution, userOutput) || !caseFold && solution == userOutput {
+				return userOutput
+			}
+		}
+
 		closestSolution := ""
 		minDistance := 1 << 24
-		for _, solution := range solutions {
+		if caseFold {
+			userOutput = strings.ToLower(userOutput)
+		}
+		for i, solution := range solutions {
+			if caseFold {
+				solution = strings.ToLower(solution)
+			}
 			distance := levenshtein.ComputeDistance(solution, userOutput)
 			if distance < minDistance {
 				minDistance = distance
-				closestSolution = solution
-			}
-			if distance == 0 {
-				break
+				closestSolution = solutions[i]
 			}
 		}
 		return closestSolution

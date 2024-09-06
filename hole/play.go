@@ -71,6 +71,8 @@ func Play(
 		runs = brainfuck()
 	case "card-number-validation":
 		runs = cardNumberValidation()
+	case "css-colors-inverse":
+		runs, judge = cssColorsInverse()
 	case "day-of-week":
 		runs = dayOfWeek()
 	case "dfa-simulator":
