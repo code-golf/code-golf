@@ -64,8 +64,8 @@ func init() {
 }
 
 // TODO Make this dynamic based on hole/lang age.
-func channel(_ *config.Hole, lang *config.Lang) string {
-	if lang.ID == "scheme" {
+func channel(hole *config.Hole, _ *config.Lang) string {
+	if hole.ID == "palindromemordnilap" {
 		return chanFreshID
 	}
 	return chanSourID

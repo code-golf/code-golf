@@ -54,6 +54,7 @@ for $dbh.execute('SELECT unnest(enum_range(null::hole))').allrows.flat {
 for <
     brainfuck                        brainfuck {inception}
     divisors                         php       {elephpant-in-the-room}
+    evil-numbers                     scheme    {evil-scheme}
     game-of-life                     elixir    {alchemist}
     hexdump                          hexagony  {hextreme-agony}
     pascals-triangle                 pascal    {under-pressure}

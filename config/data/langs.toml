@@ -62,8 +62,8 @@ loop arg [a] [
 
 [Assembly]
 args    = [ '/usr/bin/defasm', '--size-out=3', '-w', '-r' ]
-size    = '109 MiB'
-version = 'DefAssembler 2.4.2'
+size    = '106 MiB'
+version = 'DefAssembler 2.4.3'
 website = 'https://www.npmjs.com/package/@defasm/core'
 example = '''
 SYS_WRITE = 1
@@ -269,8 +269,8 @@ int main(int argc, char* argv[]) {
 
 ['C#']
 args    = [ '/usr/bin/c-sharp', '-' ]
-size    = '151 MiB'
-version = 'C# 12.0 on .NET 8.0.7'
+size    = '152 MiB'
+version = 'C# 12.0 on .NET 8.0.8'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -318,8 +318,8 @@ int main(int argc, char* argv[]) {
 [Civet]
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
-size    = '68.6 MiB'
-version = '0.7.24'
+size    = '68.7 MiB'
+version = '0.7.29'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -388,8 +388,8 @@ end-program.
 
 [Coconut]
 args    = [ '/usr/bin/coconut', '--quiet', '--target', 'sys', '--keep-lines', '--argv' ]
-size    = '127 MiB'
-version = '3.1.1'
+size    = '105 MiB'
+version = '3.1.2'
 website = 'https://coconut-lang.org'
 example = '''
 import sys
@@ -475,7 +475,7 @@ void main(string[] argv) {
 [Dart]
 args    = [ '/usr/bin/dart', '-' ]
 size    = '235 MiB'
-version = '3.5.0'
+version = '3.5.2'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -497,8 +497,8 @@ void main(List<String> argv) {
 [Elixir]
 args    = [ '/usr/local/bin/elixir', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8', 'PATH=/usr/local/bin:/usr/bin:/bin' ]
-size    = '158 MiB'
-version = '1.16.3'
+size    = '178 MiB'
+version = '1.17.2'
 website = 'https://elixir-lang.org'
 example = '''
 # Printing
@@ -552,8 +552,8 @@ command-line get-global [ print ] each
 [Fennel]
 args       = [ '/usr/bin/fennel', '-' ]
 experiment = 1144
-size       = '636 KiB'
-version    = '1.5.0'
+size       = '639 KiB'
+version    = '1.5.1'
 website    = 'https://fennel-lang.org'
 example    = '''
 ;; Printing
@@ -593,8 +593,8 @@ bye
 
 [Fortran]
 args    = [ '/usr/bin/fortran', '-' ]
-size    = '94.1 MiB'
-version = 'GNU Fortran 14.1.0'
+size    = '94.3 MiB'
+version = 'GNU Fortran 14.2.0'
 website = 'https://gcc.gnu.org/fortran/'
 example = '''
 character(len=32) :: s
@@ -662,6 +662,30 @@ example    = '''
 
 # The stack is initialized with one element, an array of arguments:
 n*
+'''
+
+[Hare]
+args       = [ '/usr/bin/harewrapper', '-' ]
+experiment = 1323
+size       = '13.5 MiB'
+version    = '0.24.2'
+website    = 'https://harelang.org'
+example    = '''
+use fmt;
+use os;
+
+export fn main() void = {
+    // Printing
+    fmt::println("Hello, World!")!;
+
+    // Looping
+    for (let i = 0; i < 10; i += 1)
+        fmt::println(i)!;
+
+    // Accessing arguments
+    for (let arg .. os::args[1..])
+        fmt::println(arg)!;
+};
 '''
 
 [Haskell]
@@ -732,10 +756,29 @@ for arg in std.iter(std.args()) do
 end
 '''
 
+[Hy]
+args       = [ '/usr/bin/hy', '-' ]
+experiment = 586
+size       = '60.5 MiB'
+version    = '0.29.0'
+website    = 'https://hylang.org'
+example    = '''
+; Printing
+(print "Hello, World!")
+
+; Looping
+(for [i (range 10)]
+    (print i))
+
+; Accessing arguments
+(for [arg (get sys.argv (slice 1 None))]
+    (print arg))
+'''
+
 [J]
 args    = [ '/usr/bin/j', '/tmp/code.ijs' ]
 size    = '11.2 MiB'
-version = '9.5.5'
+version = '9.5.6'
 website = 'https://www.jsoftware.com'
 example = '''
 NB.Printing
@@ -824,8 +867,8 @@ $ARGS.positional[]
 
 [Julia]
 args    = [ '/usr/bin/julia', '--color=yes', '/proc/self/fd/0' ]
-size    = '310 MiB'
-version = '1.10.4'
+size    = '311 MiB'
+version = '1.10.5'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -845,7 +888,7 @@ end
 [K]
 args    = [ '/usr/bin/kwrapper', '/tmp/code.k' ]
 size    = '621 KiB'
-version = 'a1dac79409'
+version = '67da192f47'
 website = 'https://codeberg.org/ngn/k'
 example = '''
 /Printing
@@ -939,6 +982,34 @@ Sys.argv
   |> List.iter print_endline;
 '''
 
+[Odin]
+args       = [ '/usr/bin/odinwrapper', '-' ]
+experiment = 766
+size       = '257 MiB'
+version    = '2024-09'
+website    = 'https://odin-lang.org'
+example    = '''
+package main
+
+import "core:fmt"
+import "core:os"
+
+main :: proc() {
+    // Printing
+    fmt.println("Hello, World!")
+
+    // Looping
+    for i in 0..<10 {
+        fmt.println(i)
+    }
+
+    // Accessing arguments
+    for arg in os.args[1:] {
+        fmt.println(arg)
+    }
+}
+'''
+
 [Pascal]
 args    = [ '/usr/bin/pascal', '-' ]
 size    = '31.1 MiB'
@@ -982,7 +1053,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '8.40 MiB'
-version = '8.3.10'
+version = '8.3.11'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -1001,7 +1072,7 @@ for ($i = 1; $i < $argc; $i++)
 args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 size       = '178 MiB'
-version    = 'PowerShell 7.4.4 on .NET 8.0.7'
+version    = 'PowerShell 7.4.5 on .NET 8.0.8'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
@@ -1038,7 +1109,7 @@ example = '''
 
 [Python]
 args    = [ '/usr/bin/python', '-u', '-' ]
-size    = '70.8 MiB'
+size    = '48.4 MiB'
 version = '3.12.5'
 website = 'https://www.python.org'
 example = '''
@@ -1079,8 +1150,8 @@ for (arg in commandArgs(TRUE)) {
 
 [Raku]
 args    = [ '/usr/bin/raku', '-' ]
-size    = '73.6 MiB'
-version = 'Raku 6.d on Rakudo 2024.05'
+size    = '75.5 MiB'
+version = 'Raku 6.d on Rakudo 2024.08'
 website = 'https://raku.org'
 example = '''
 # Printing
@@ -1158,7 +1229,7 @@ Shout arg
 [Ruby]
 args    = [ '/usr/bin/ruby', '-' ]
 size    = '28.6 MiB'
-version = '3.3.4'
+version = '3.3.5'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing

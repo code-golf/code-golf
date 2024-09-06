@@ -1,10 +1,14 @@
+ARG VER=14.2.0
+
 FROM alpine:3.20 AS builder
+
+ARG VER
 
 RUN apk add --no-cache curl g++ linux-headers m4 make patch tar xz
 
 WORKDIR /src
 
-RUN curl ftp://ftp.gnu.org/gnu/gcc/gcc-14.1.0/gcc-14.1.0.tar.xz      | tar xJ \
+RUN curl ftp://ftp.gnu.org/gnu/gcc/gcc-$VER/gcc-$VER.tar.xz          | tar xJ \
  && curl ftp://gcc.gnu.org/pub/gcc/infrastructure/gmp-6.2.1.tar.bz2  | tar xj \
  && curl ftp://gcc.gnu.org/pub/gcc/infrastructure/mpfr-4.1.0.tar.bz2 | tar xj \
  && curl ftp://gcc.gnu.org/pub/gcc/infrastructure/mpc-1.2.1.tar.gz   | tar xz
@@ -27,7 +31,7 @@ RUN gcc -o fortran fortran.c
 
 WORKDIR /scratch
 
-RUN /src/gcc-14.1.0/configure     \
+RUN /src/gcc-$VER/configure       \
     --disable-bootstrap           \
     --disable-gcov                \
     --disable-libgomp             \
@@ -45,9 +49,11 @@ RUN /src/gcc-14.1.0/configure     \
  && make -j`nproc`                \
  && make install                  \
  && strip /usr/local/bin/gfortran \
-    /usr/local/libexec/gcc/x86_64-pc-linux-musl/14.1.0/f951
+    /usr/local/libexec/gcc/x86_64-pc-linux-musl/$VER/f951
 
 FROM codegolf/lang-base
+
+ARG VER
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1             \
               /lib/libz.so.1                       /lib/
@@ -66,8 +72,8 @@ COPY --from=0 /usr/lib/crt1.o                      \
 COPY --from=0 /usr/local/bin/gfortran              /usr/local/bin/
 COPY --from=0 /usr/local/lib                       /usr/local/lib
 COPY --from=0 /usr/local/lib64                     /usr/local/lib64
-COPY --from=0 /usr/local/libexec/gcc/x86_64-pc-linux-musl/14.1.0/f951 \
-              /usr/local/libexec/gcc/x86_64-pc-linux-musl/14.1.0/
+COPY --from=0 /usr/local/libexec/gcc/x86_64-pc-linux-musl/$VER/f951 \
+              /usr/local/libexec/gcc/x86_64-pc-linux-musl/$VER/
 
 ENTRYPOINT ["fortran"]
 
