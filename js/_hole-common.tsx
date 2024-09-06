@@ -9,7 +9,7 @@ let tabLayout: boolean = false;
 const langWikiCache: Record<string, string | null> = {};
 async function getLangWikiContent(lang: string): Promise<string> {
     if (!(lang in langWikiCache)) {
-        const resp  = await fetch(`/api/wiki/langs/${lang}`, { method: 'GET' });
+        const resp  = await fetch(`/api/wiki/langs/${lang}`);
         langWikiCache[lang] = resp.status === 200 ? (await resp.json()).content : null;
     }
     return langWikiCache[lang] ?? 'No data for current lang.';
@@ -18,17 +18,21 @@ async function getLangWikiContent(lang: string): Promise<string> {
 const holeLangNotesCache: Record<string, string | null> = {};
 async function getHoleLangNotesContent(lang: string): Promise<string> {
     if (!(lang in holeLangNotesCache)) {
-        const resp  = await fetch(`/api/notes/${hole}/${lang}`, { method: 'GET' });
+        const resp  = await fetch(`/api/notes/${hole}/${lang}`);
         holeLangNotesCache[lang] = resp.status === 200 ? (await resp.text()) : null;
     }
     return holeLangNotesCache[lang] ?? '';
 }
 
 const renamedHoles: Record<string, string> = {
-    'eight-queens': 'n-queens',
+    'billiard':                      'billiards',
+    'eight-queens':                  'n-queens',
     'factorial-factorisation-ascii': 'factorial-factorisation',
-    'grid-packing': 'css-grid',
-    'billiard': 'billiards',
+    'grid-packing':                  'css-grid',
+};
+
+const renamedLangs: Record<string, string> = {
+    perl6: 'raku',
 };
 
 export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSolution: any, updateReadonlyPanels: any, getEditor: () => any) {
@@ -68,9 +72,14 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
 
     for (const [key, value] of Object.entries(localStorage)) {
         if (key.startsWith('code_')) {
-            const hole = key.split('_')[1];
-            if (hole in renamedHoles) {
-                localStorage.setItem(key.replace(hole, renamedHoles[hole]), value);
+            const [prefix, hole, lang, scoring] = key.split('_');
+
+            const newHole = renamedHoles[hole] ?? hole;
+            const newLang = renamedLangs[lang] ?? lang;
+
+            const newKey = [prefix, newHole, newLang, scoring].join('_');
+            if (key !== newKey) {
+                localStorage.setItem(newKey, value);
                 localStorage.removeItem(key);
             }
         }
@@ -518,6 +527,11 @@ const diamondPopups = (updates: RankUpdate[]) => {
     return popups;
 };
 
+let lastSubmittedCode = '';
+export function getLastSubmittedCode(){
+    return lastSubmittedCode;
+}
+
 export async function submit(
     editor: any,
     // eslint-disable-next-line no-unused-vars
@@ -529,6 +543,7 @@ export async function submit(
     $$('canvas').forEach(e => e.remove());
 
     const code = editor.state.doc.toString();
+    lastSubmittedCode = code;
     const codeLang = lang;
     const submissionID = ++latestSubmissionID;
 
@@ -549,6 +564,10 @@ export async function submit(
         return false;
 
     const pass = data.runs.every(r => r.pass);
+    $('main')?.classList.remove('pass');
+    $('main')?.classList.remove('fail');
+    $('main')?.classList.add(pass ? 'pass' : 'fail');
+    $('main')?.classList.add('lastSubmittedCode');
     if (pass) {
         for (const i of [0, 1] as const) {
             const solutionCode = getSolutionCode(codeLang, i);

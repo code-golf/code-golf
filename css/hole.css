@@ -386,3 +386,10 @@ h2 {
 :has(#diffKindSettings input[value="items"]:not(:checked)) #itemsDiff {
     display: none;
 }
+
+.pass.lastSubmittedCode #editor {
+    border-color: var(--green);
+}
+.fail.lastSubmittedCode #editor {
+    border-color: var(--red);
+}

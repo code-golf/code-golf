@@ -72,6 +72,7 @@
     color: var(--grey);
     margin-right: 2px;
     border: 1px solid var(--gl-border);
+    border-bottom: none;
 }
 
 .lm_header .lm_tab .lm_title {
@@ -122,6 +123,9 @@
 .lm_tab.lm_active {
     background: var(--background);
     color: var(--grey);
+}
+.lm_tab:not(.lm_active) {
+    height: 13px;
 }
 
 .lm_header .lm_controls .lm_tabdropdown:before {
