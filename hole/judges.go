@@ -62,25 +62,27 @@ func oneOfPerOutputJudge(getAllSolutions func(arg string) []string, caseFold boo
 
 		closestSolution := ""
 		minDistance := 1 << 24
-		if caseFold {
-			userOutput = strings.ToLower(userOutput)
-		}
-		for i, solution := range solutions {
-			if caseFold {
-				solution = strings.ToLower(solution)
-			}
-			distance := levenshtein.ComputeDistance(solution, userOutput)
+		userOutput = toLowerConditionally(userOutput, caseFold)
+		for _, solution := range solutions {
+			distance := levenshtein.ComputeDistance(toLowerConditionally(solution, caseFold), userOutput)
 			if distance < minDistance {
 				minDistance = distance
-				closestSolution = solutions[i]
+				closestSolution = solution
 			}
 		}
 		return closestSolution
 	})
 }
 
-func getClosestMultiset(anyAnswer, stdout, multisetItemDelimiter string) string {
-	expectedItems := strings.Split(anyAnswer, multisetItemDelimiter)
+func toLowerConditionally(text string, caseFold bool) string {
+	if caseFold {
+		return strings.ToLower(text)
+	}
+	return text
+}
+
+func getClosestMultiset(anyAnswer, stdout, multisetItemDelimiter string, caseFold bool) string {
+	expectedItems := strings.Split(toLowerConditionally(anyAnswer, caseFold), multisetItemDelimiter)
 	expectedItemsReordered := make([]string, len(expectedItems))
 	userItems := strings.Split(stdout, multisetItemDelimiter)
 
@@ -92,7 +94,7 @@ func getClosestMultiset(anyAnswer, stdout, multisetItemDelimiter string) string 
 	// Match items that are correct
 	matches := 0
 	for i, user := range userItems {
-		if i < len(expectedItems) && expectedItemsMap[user] > 0 {
+		if i < len(expectedItems) && expectedItemsMap[toLowerConditionally(user, caseFold)] > 0 {
 			expectedItemsReordered[i] = user
 			expectedItemsMap[user]--
 			userItems[i] = ""
@@ -139,7 +141,7 @@ func getClosestMultiset(anyAnswer, stdout, multisetItemDelimiter string) string 
 					} else if i >= len(unmatchedUserIndices) {
 						dist[i][j] = len(expectedItems[unmatchedExpectedIndices[j]])
 					} else {
-						dist[i][j] = levenshtein.ComputeDistance(expectedItems[unmatchedExpectedIndices[j]], userItems[unmatchedUserIndices[i]])
+						dist[i][j] = levenshtein.ComputeDistance(expectedItems[unmatchedExpectedIndices[j]], toLowerConditionally(userItems[unmatchedUserIndices[i]], caseFold))
 					}
 				}
 			}
@@ -168,16 +170,10 @@ func multisetJudge(caseFold bool) Judge {
 	return func(run Run) string {
 		if run.OutputDelimiter != "" {
 			return perOutputJudge(func(input, userOutput, rawExpectedOutput string) string {
-				if !caseFold {
-					return getClosestMultiset(rawExpectedOutput, userOutput, run.MultisetItemDelimiter)
-				}
-				return getClosestMultiset(strings.ToLower(rawExpectedOutput), strings.ToLower(userOutput), run.MultisetItemDelimiter)
+				return getClosestMultiset(rawExpectedOutput, userOutput, run.MultisetItemDelimiter, caseFold)
 			})(run)
 		} else {
-			if !caseFold {
-				return getClosestMultiset(run.Answer, run.Stdout, run.MultisetItemDelimiter)
-			}
-			return getClosestMultiset(strings.ToLower(run.Answer), strings.ToLower(run.Stdout), run.MultisetItemDelimiter)
+			return getClosestMultiset(run.Answer, run.Stdout, run.MultisetItemDelimiter, caseFold)
 		}
 	}
 }
