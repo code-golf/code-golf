@@ -67,7 +67,7 @@ func adminGET(w http.ResponseWriter, r *http.Request) {
 		    JOIN pg_namespace n
 		      ON n.oid = relnamespace
 		     AND nspname = 'public'
-		   WHERE reltuples != 0
+		   WHERE reltuples > 0
 		   UNION
 		  SELECT NULL, 0, PG_DATABASE_SIZE(CURRENT_DATABASE())
 		ORDER BY name`,
