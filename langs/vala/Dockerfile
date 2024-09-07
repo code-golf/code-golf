@@ -13,7 +13,7 @@ RUN ./configure       \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/cat /bin/chmod /bin/rm /bin/sh        /bin/
+COPY --from=0 /bin/cat /bin/rm /bin/sh                   /bin/
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/libz.so.1    /lib/
 COPY --from=0 /usr/bin/as                                \
               /usr/bin/cc                                \
@@ -67,9 +67,6 @@ COPY --from=0 /usr/share/vala-0.56/vapi/glib-2.0.vapi    \
               /usr/share/vala-0.56/vapi/gobject-2.0.vapi /usr/share/vala-0.56/vapi/
 
 COPY /valawrapper /usr/bin/
-
-# Remove with final delivery
-RUN chmod +x /usr/bin/valawrapper
 
 ENTRYPOINT ["valawrapper"]
 
