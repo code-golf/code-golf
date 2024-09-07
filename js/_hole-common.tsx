@@ -575,7 +575,7 @@ export async function submit(
         return false;
 
     const pass = data.runs.every(r => r.pass);
-    if(hole !== 'sandbox'){
+    if (hole !== 'sandbox') {
         $('main')?.classList.remove('pass');
         $('main')?.classList.remove('fail');
         $('main')?.classList.add(pass ? 'pass' : 'fail');
