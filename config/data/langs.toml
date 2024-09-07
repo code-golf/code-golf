@@ -1423,6 +1423,29 @@ for arg in os.args[1..] {
 }
 '''
 
+[Vala]
+args       = [ '/usr/bin/valawrapper', '-' ]
+experiment = 1354
+size       = '194 MiB'
+version    = '0.56.17'
+website    = 'https://vala.dev'
+example    = '''
+int main(string[] args) {
+    // Printing
+    print("Hello, World!\n");
+    
+    // Looping
+    for (int i = 0; i < 10; i++)
+        print("%d\n", i);
+    
+    // Accessing arguments
+    foreach (string arg in args[1:])
+        print("%s\n", arg);
+    
+    return 0;
+}
+'''
+
 [VimL]
 args    = [ '/usr/bin/viml', '-' ]
 size    = '24.3 MiB'

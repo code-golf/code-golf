@@ -67,6 +67,7 @@ constant %paths = (
     'TeX'          => 'en.wikipedia.org/wiki/TeX',
     'Uiua'         => 'crates.io/api/v1/crates/uiua',
     'V'            => 'github.com/vlang/v/releases/latest',
+    'Vala'         => 'en.wikipedia.org/wiki/Vala_(programming_language)',
     'VimL'         => 'en.wikipedia.org/wiki/Vim_(text_editor)',
     'Wren'         => 'github.com/wren-lang/wren/releases/latest',
     'Zig'          => 'en.wikipedia.org/wiki/Zig_(programming_language)',

@@ -177,6 +177,7 @@ export const extensions : { [key: string]: any } = {
     'tex':           StreamLanguage.define(stex),
     // TODO uiua
     // TODO v
+    // TODO vala
     // TODO viml
     'wren':          wren,
     'zig':           zig(),
