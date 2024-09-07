@@ -22,6 +22,29 @@ each argument is NULL terminated.
 x is a no-op.
 '''
 
+[Amber]
+args       = [ '/usr/bin/amber', '-e', '$code' ]
+experiment = 1356
+size       = '7.94 MiB'
+version    = '0.3.5'
+website    = 'https://amber-lang.com'
+example    = '''
+main(args) {
+    // Printing
+    echo "Hello, World!"
+
+    // Looping
+    loop i in 0..10 {
+        echo i
+    }
+
+    // Accessing arguments
+    loop arg in args {
+        echo arg
+    }
+}
+'''
+
 [Arturo]
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915

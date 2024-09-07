@@ -9,6 +9,7 @@ unit sub MAIN(Bool :$all, *@langs);
 
 constant %paths = (
     '><>'          => 'github.com/primo-ppcg/fish-jit',
+    'Amber'        => 'github.com/amber-lang/amber/releases/latest',
     'Arturo'       => 'github.com/arturo-lang/arturo/releases/latest',
     'Assembly'     => 'registry.npmjs.org/@defasm/core/latest',
     'Bash'         => 'en.wikipedia.org/wiki/Bash_(Unix_shell)',

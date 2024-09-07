@@ -117,6 +117,7 @@ export const extensions : { [key: string]: any } = {
     'vim': vim({ status: true }),
 
     // Languages.
+    // TODO amber
     // TODO arturo
     'assembly':      assembly(),
     'assembly-wiki': assembly({ byteDumps: false }),
