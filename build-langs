@@ -82,6 +82,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
             when 'Haskell'    { $ver = "Glasgow Haskell Compiler $digits" }
             when 'Java'       { $ver = "OpenJDK $digits" }
             when 'JavaScript' { $ver = "V8 $digits" }
+            when 'Lil'        { $ver = "Lilt $digits" }
             when 'Lisp'       { $ver = "GNU CLISP $digits" }
             when 'Pascal'     { $ver = "Free Pascal $digits" }
             when 'Prolog'     { $ver = "SWI-Prolog $digits" }
