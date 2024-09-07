@@ -22,7 +22,6 @@ COPY --from=0 /usr/bin/as                                \
               /usr/bin/pkg-config                        \
               /usr/bin/vala                              \
               /usr/bin/valac                             /usr/bin/
-              # Needs additional filtering
 COPY --from=0 /usr/include                               /usr/include
 COPY --from=0 /usr/lib/Scrt1.o                           \
               /usr/lib/crti.o                            \
