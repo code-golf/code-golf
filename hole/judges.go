@@ -54,12 +54,20 @@ func perOutputJudge(singleOutputJudge SingleOutputJudge) Judge {
 func oneOfPerOutputJudge(getAllSolutions func(arg string) []string, caseFold bool) Judge {
 	return perOutputJudge(func(arg, userOutput, rawExpectedOutput string) string {
 		solutions := getAllSolutions(arg)
+
+		// Output is correct - output the match.
 		for _, solution := range solutions {
 			if caseFold && strings.EqualFold(solution, userOutput) || !caseFold && solution == userOutput {
 				return userOutput
 			}
 		}
 
+		// There's a single solution - output it.
+		if len(solutions) == 1 {
+			return solutions[0]
+		}
+
+		// There are multiple solutions - output the closest to the user output.
 		closestSolution := ""
 		minDistance := 1 << 24
 		userOutput = toLowerConditionally(userOutput, caseFold)
