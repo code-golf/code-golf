@@ -1,7 +1,5 @@
 #!/bin/sh -e
 
-export PATH=/usr/libexec/gcc/x86_64-alpine-linux-musl/13.2.1:$PATH
-
 [ "$1" = "--version" ] && exec vala --version
 
 cd /tmp
