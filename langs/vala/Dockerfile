@@ -59,11 +59,10 @@ COPY --from=0 /usr/lib/pkgconfig/glib-2.0.pc                   \
               /usr/lib/pkgconfig/gobject-2.0.pc                \
               /usr/lib/pkgconfig/libffi.pc                     \
               /usr/lib/pkgconfig/libpcre2-8.pc                 /usr/lib/pkgconfig/
-              # Needs additional filtering
 COPY --from=0 /usr/lib/glib-2.0/include                        /usr/lib/glib-2.0/include
 COPY --from=0 /usr/lib/vala-0.56/libvalaccodegen.so            /usr/lib/vala-0.56/
               # Tis one messed up directory tree: symlink & change wrapper shell export
-COPY --from=0 /usr/libexec/gcc/x86_64-alpine-linux-musl/13.2.1 /usr/libexec/gcc/x86_64-alpine-linux-musl/13.2.1
+COPY --from=0 /usr/libexec/gcc/x86_64-alpine-linux-musl/13.2.1 /usr/lib/gcc/x86_64-alpine-linux-musl/13.2.1
 COPY --from=0 /usr/share/gir-1.0/GLib-2.0.gir                  \
               /usr/share/gir-1.0/GObject-2.0.gir               /usr/share/gir-1.0/
 COPY --from=0 /usr/share/vala-0.56/vapi/glib-2.0.vapi          \
