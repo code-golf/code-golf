@@ -2,7 +2,6 @@ FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache bison build-base curl flex glib-dev gobject-introspection-dev graphviz-dev musl-dev pkgconf
 
-# Check again for what's actually latest, but think this is the one
 RUN curl -L https://download.gnome.org/sources/vala/0.56/vala-0.56.17.tar.xz \
   | tar xJ --strip-components 1
 
