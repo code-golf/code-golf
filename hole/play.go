@@ -170,8 +170,8 @@ func Play(
 		runs = arabicToRoman(hole.ID == "roman-to-arabic")
 	case "arrows":
 		runs = arrows()
-	case "billiard":
-		runs = billiard()
+	case "billiards":
+		runs = billiards()
 	case "brainfuck":
 		runs = brainfuck()
 	case "card-number-validation":
@@ -218,6 +218,8 @@ func Play(
 		runs = ordinalNumbers()
 	case "p-adic-expansion":
 		runs = pAdicExpansion()
+	case "palindromemordnilap":
+		runs = palindromemordnilap()
 	case "pangram-grep":
 		runs = pangramGrep()
 	case "poker":
@@ -258,8 +260,7 @@ func Play(
 	// Holes with fixed test cases.
 	case "css-colors":
 		runs = outputTests(shuffle(fixedTests(hole.ID)))
-	case "emojify", "mnist", "rock-paper-scissors-spock-lizard",
-		"united-states":
+	case "emojify", "rock-paper-scissors-spock-lizard", "united-states":
 		runs = outputMultirunTests(fixedTests(hole.ID))
 	case "floyd-steinberg-dithering", "hexdump", "proximity-grid", "star-wars-opening-crawl":
 		runs = outputTestsWithSep("\n\n", shuffle(fixedTests(hole.ID)))
@@ -317,7 +318,7 @@ func playRun(
 	case "jq":
 		// Prevent trivial quines. Error out and return early.
 		if hole.ID == "quine" && json.Valid([]byte(code)) {
-			run.Stderr = "Quine in jq musn't be valid JSON."
+			run.Stderr = "Quine in jq must not be valid JSON."
 			return nil
 		}
 	case "k":

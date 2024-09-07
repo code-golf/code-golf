@@ -40,6 +40,7 @@ import { j }                  from 'codemirror-lang-j';
 import { janet }              from 'codemirror-lang-janet';
 import { java }               from '@codemirror/lang-java';
 import { javascriptLanguage } from '@codemirror/lang-javascript';
+import { jq }                 from 'codemirror-lang-jq';
 import { julia }              from '@codemirror/legacy-modes/mode/julia';
 import { k }                  from 'codemirror-lang-k';
 import { lua }                from '@codemirror/legacy-modes/mode/lua';
@@ -54,6 +55,7 @@ import { r }                  from '@codemirror/legacy-modes/mode/r';
 import { raku }               from './vendor/codemirror-raku';
 import { ruby }               from '@codemirror/legacy-modes/mode/ruby';
 import { rust }               from '@codemirror/lang-rust';
+import { scheme }             from '@codemirror/legacy-modes/mode/scheme';
 import { shell }              from '@codemirror/legacy-modes/mode/shell';
 import { SQLite }             from '@codemirror/lang-sql';
 import { swift }              from '@codemirror/legacy-modes/mode/swift';
@@ -137,19 +139,24 @@ export const extensions : { [key: string]: any } = {
     'fortran':       StreamLanguage.define({ ...fortran, languageData: { commentTokens: { line: '!' } } }),
     'go':            go,
     'golfscript':    golfScript(),
+    // TODO hare
     'haskell':       StreamLanguage.define(haskell),
     // TODO hexagony
+    // TODO hush
+    // TODO hy
     'j':             j(),
     'janet':         janet(),
     'java':          java(),
     'javascript':    javascript,
-    // TODO jq
+    'jq':            jq(),
     'julia':         StreamLanguage.define(julia),
     'k':             k(),
+    // TODO lil
     'lisp':          StreamLanguage.define(commonLisp),
     'lua':           StreamLanguage.define(lua),
     'nim':           StreamLanguage.define({ ...nim( {}, {} ), languageData: { commentTokens: { line: '#' } } }),
     'ocaml':         StreamLanguage.define(oCaml),
+    // TODO odin
     'pascal':        StreamLanguage.define(pascal),
     'perl':          StreamLanguage.define(perl),
     'php':           php,
@@ -158,9 +165,12 @@ export const extensions : { [key: string]: any } = {
     'python':        python,
     'r':             StreamLanguage.define(r),
     'raku':          StreamLanguage.define(raku),
+    // TODO rebol
+    // TODO rexx
     // TODO rockstar
     'ruby':          StreamLanguage.define(ruby),
     'rust':          rust(),
+    'scheme':        StreamLanguage.define(scheme),
     // TODO sed
     'sql':           sql,
     'swift':         StreamLanguage.define(swift),

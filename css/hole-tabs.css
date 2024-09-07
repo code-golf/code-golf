@@ -69,23 +69,6 @@ section header {
     height: calc(100% - (2rem + 7px));
 }
 
-main > header nav { max-width: 100% }
-
-main > header:nth-child(2) { margin-top: 0.5rem }
-
-#hole-lang {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-}
-
-#hole-lang details {
-    cursor: pointer;
-    user-select: none;
-}
-
-#hole-lang summary { line-height: 1.7rem }
-
 #rankingsView { border: none }
 
 #scoreboard-section {
@@ -132,7 +115,9 @@ main > header:nth-child(2) { margin-top: 0.5rem }
 }
 
 #status {
-    padding: 0.5rem;
+    padding: 0;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
     grid-column: 3;
 }
 
@@ -155,7 +140,6 @@ main {
     gap: 0;
 }
 
-#picker,
 #info-container .info,
 #picker-status-row > *:not(:empty),
 #golden-container {
@@ -192,7 +176,7 @@ main {
 
 #pool span::before { content: "+" }
 
-#pool span { background: var(--background) }
+#layout-btns span { background: var(--background) }
 
 .mobile #golden-container { height: 150vh }
 
@@ -206,20 +190,39 @@ main {
 #layout-btns {
     grid-row: 6;
     justify-self: center;
-    margin-top: 5px;
-    margin-bottom: calc(5px - 1rem);
     display: flex;
-    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.375rem;
+}
+
+#panel-btns {
+    display: flex;
+    gap: 0.375rem;
+    justify-content: space-between;
+    width: 100%;
 }
 
 @media only screen and (max-width: 1280px) {
-    #make-narrow, #make-wide { display: none }
+    #make-narrow, #make-wide, #make-tall, #make-short { display: none }
+}
+@media only screen and (min-width: 768px) {
+    #add-row { display: none }
 }
 
 #make-narrow { display: none; }
 .full-width #make-narrow { display: flex; }
 .full-width #make-wide { display: none; }
 .full-width body { max-width: unset; }
+
+.full-height #page-header,
+.full-height footer,
+.full-height #picker,
+.full-height #make-tall,
+#make-short {
+    display: none;
+}
+.full-height #make-short { display: flex }
 
 :has(#arg) button {
     margin: 3px;
@@ -235,4 +238,17 @@ article>*:not(:first-child), article details>* {
 #convert-notes-btn {
     display: inline-block;
     margin-left: .5rem;
+}
+
+.pass.lastSubmittedCode .lm_content:has(#editor) {
+    border-color: var(--green);
+}
+.fail.lastSubmittedCode .lm_content:has(#editor) {
+    border-color: var(--red);
+}
+.pass.lastSubmittedCode .lm_header .lm_tab[title='Code'] {
+    border-color: var(--green);
+}
+.fail.lastSubmittedCode .lm_header .lm_tab[title='Code'] {
+    border-color: var(--red);
 }

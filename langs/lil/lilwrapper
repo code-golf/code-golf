@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+[ "$1" = "--version" ] && exec lilt -e "print[sys.version]"
+
+cat - > /tmp/code.lil
+
+shift
+exec lilt /tmp/code.lil "$@"

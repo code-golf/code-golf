@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func billiard() []Run {
+func billiards() []Run {
 	tests := []test{}
 	addTest := func(height, width int) {
 		common := gcd(height, width)

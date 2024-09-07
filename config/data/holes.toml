@@ -31,12 +31,13 @@ synopsis = 'Print the lyrics to the song “The 12 Days of Christmas”.'
 preamble = '''
 <p>Print the lyrics to the song <b>The 12 Days of Christmas</b>:</p>
 
-<blockquote>On the First day of Christmas
+<pre>
+On the First day of Christmas
 My true love sent to me
 A Partridge in a Pear Tree.
-<br><br>
+
 …
-<br><br>
+
 On the Twelfth day of Christmas
 My true love sent to me
 Twelve Drummers Drumming,
@@ -51,7 +52,7 @@ Four Calling Birds,
 Three French Hens,
 Two Turtle Doves, and
 A Partridge in a Pear Tree.
-</blockquote>
+</pre>
 '''
 
 ['24 Game']
@@ -90,20 +91,21 @@ synopsis = 'Print the lyrics to the song “99 Bottles of Beer”.'
 preamble = '''
 <p>Print the lyrics to the song <b>99 Bottles of Beer</b>:</p>
 
-<blockquote>99 bottles of beer on the wall, 99 bottles of beer.
+<pre>
+99 bottles of beer on the wall, 99 bottles of beer.
 Take one down and pass it around, 98 bottles of beer on the wall.
-<br><br>
+
 98 bottles of beer on the wall, 98 bottles of beer.
 Take one down and pass it around, 97 bottles of beer on the wall.
-<br><br>
+
 …
-<br><br>
+
 1 bottle of beer on the wall, 1 bottle of beer.
 Take one down and pass it around, no more bottles of beer on the wall.
-<br><br>
+
 No more bottles of beer on the wall, no more bottles of beer.
 Go to the store and buy some more, 99 bottles of beer on the wall.
-</blockquote>
+</pre>
 '''
 
 ['Abundant Numbers']
@@ -319,7 +321,7 @@ F: / ? O _ o DEL
 </pre>
 '''
 
-['Billiard']
+[Billiards]
 category = 'Art'
 experiment = 456
 synopsis = 'Draw a path of a billiard ball.'
@@ -388,6 +390,10 @@ preamble = '''
 <p>
     Write a program that will receive various brainfuck programs as arguments
     and execute each program in turn.
+
+<p>
+    Arguments will not contain any character not
+    listed in the table above. In particular, the input command "<b>,</b>" is not tested.
 '''
 
 ['Card Number Validation']
@@ -1838,23 +1844,6 @@ preamble = '''
     Given a list of space-separated solution scores in ascending order, print the corresponding diamonds and medals.
 '''
 
-[MNIST]
-category = 'Computing'
-experiment = 1187
-links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/MNIST_database' },
-]
-synopsis = 'Recognize digits in the MNIST dataset.'
-preamble = '''
-<p>
-    The MNIST dataset is a large database of handwritten digits that is
-    commonly used for training various image processing systems. You will be
-    provided images from the MNIST dataset. Each image is a 28x28 pixel image
-    of a handwritten digit from 0 to 9.
-
-<p>Your task is to recognize the digit in each provided image.
-'''
-
 [Morse]
 category = 'Transform'
 released = 2018-02-18
@@ -2348,6 +2337,20 @@ preamble = '''
 <pre>61 -85/24 → X2'Wy</pre>
 '''
 
+[PalindromemordnilaP]
+category = 'Transform'
+released = 2024-09-01
+synopsis = 'Append minimum number of characters to make the input a palindrome.'
+preamble = '''
+<p>
+    Given an alphanumeric string, append minimum number of characters to get a
+    palindrome and output the result.
+
+<p>
+    For example, on input <code>Palindromemord</code>, output
+    <code>PalindromemordnilaP</code>.
+'''
+
 ['Pangram Grep']
 category = 'Transform'
 links = [
@@ -2363,6 +2366,30 @@ preamble = '''
     Write a program that will receive various sentences as arguments and print
     those that are valid pangrams, meaning they use all letters from A to Z,
     case insensitive.
+'''
+
+['Partition Numbers']
+experiment = 998
+category = 'Sequence'
+links = [
+    { name = 'OEIS A000041', url = '//oeis.org/A000041' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Integer_partition' },
+]
+synopsis = 'Print the first 100 partition numbers.'
+preamble = '''
+<p>
+    The <b>n</b>th partition number is the number of ways that <b>n</b> can be
+    expressed as the sum of positive integers, where ordering does not matter.
+
+<p>
+    For example, <b>4</b> can be partitioned in five distinct ways:
+<pre><code>4
+3 + 1
+2 + 2
+1 + 2 + 1
+1 + 1 + 1 + 1</code></pre>
+<p>
+    Print the first <b>100</b> partition numbers, each on a separate line.
 '''
 
 ['Pascal’s Triangle']
@@ -3508,39 +3535,6 @@ preamble = '''
     is the total number of pins knocked down plus strike and spare bonuses.
 '''
 
-['The Name Game']
-category = 'Art'
-experiment = 753
-links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/The_Name_Game#Rules' },
-]
-synopsis = 'Print the lyrics to the song “The Name Game”.'
-preamble = '''
-<p>Print the lyrics to the song <b>The Name Game</b>:
-
-<blockquote>The name game!
-
-Shirley!
-Shirley, Shirley, bo Birley
-Bonana fanna fo Firley
-Fee fy mo Mirley, Shirley!
-
-Lincoln!
-Lincoln, Lincoln, bo Bincoln
-Bonana fanna fo Fincoln
-Fee fy mo Mincoln, Lincoln!
-
-…
-
-A little trick with Nick!
-Nick, Nick, bo Bick
-Bonana fanna fo Fick
-Fee fy mo Mick, Nick!
-
-The name game!
-</blockquote>
-'''
-
 ['Time Distance']
 category = 'Transform'
 released = 2022-04-10
@@ -3584,22 +3578,22 @@ synopsis = 'Print a few tongue twisters.'
 preamble = '''
 <p>Print the following tongue twisters with a blank line between each one:
 
-<blockquote>
+<pre>
 How much wood would a woodchuck chuck,
 If a woodchuck could chuck wood?
 A woodchuck would chuck all the wood he could chuck
 If a woodchuck would chuck wood.
-<br><br>
+
 Peter Piper picked a peck of pickled peppers.
 A peck of pickled peppers Peter Piper picked.
 If Peter Piper picked a peck of pickled peppers,
 Where's the peck of pickled peppers Peter Piper picked?
-<br><br>
+
 She sells seashells by the seashore,
 The shells she sells are seashells, I'm sure.
 So if she sells seashells on the seashore,
 Then I'm sure she sells seashore shells.
-</blockquote>
+</pre>
 '''
 
 ['Transpose Sentence']

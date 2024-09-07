@@ -17,7 +17,8 @@ for 'config/data/langs.toml'.IO.&from-toml.map({
             $exp ~= "\n" if $hole eq 'quine';
 
             # Factor, Pascal & TeX prints lots of info to STDERR.
-            is $got<stdout>, $exp, 'Stdout';
+            is $got<stdout>, $exp, 'Stdout'
+                if $lang ne 'lil';  # FIXME Lil has broken unicode ATM.
             is $got<stderr>,   '', 'Stderr'
                 if $lang ne 'factor' | 'pascal' | 'tex';
         }

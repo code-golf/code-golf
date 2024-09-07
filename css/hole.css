@@ -199,31 +199,6 @@ section header {
     padding: .25rem .4rem;
 }
 
-main > header {
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: space-between;
-}
-
-main > header:nth-child(2) { justify-content: end }
-
-main > header a { white-space: nowrap }
-
-main > header h1 {
-    display: flex;
-    gap: .5rem;
-    overflow-x: auto;
-    white-space: nowrap;
-}
-
-main > header nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: .5rem;
-}
-
 #rankingsView {
     background: var(--color);
     border: 1px solid var(--color);
@@ -410,4 +385,15 @@ h2 {
 
 :has(#diffKindSettings input[value="items"]:not(:checked)) #itemsDiff {
     display: none;
+}
+
+.pass.lastSubmittedCode #editor {
+    border-color: var(--green);
+}
+.fail.lastSubmittedCode #editor {
+    border-color: var(--red);
+}
+
+#hole-sandbox #status {
+    visibility: hidden;
 }

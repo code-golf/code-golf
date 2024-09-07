@@ -9,7 +9,7 @@ let tabLayout: boolean = false;
 const langWikiCache: Record<string, string | null> = {};
 async function getLangWikiContent(lang: string): Promise<string> {
     if (!(lang in langWikiCache)) {
-        const resp  = await fetch(`/api/wiki/langs/${lang}`, { method: 'GET' });
+        const resp  = await fetch(`/api/wiki/langs/${lang}`);
         langWikiCache[lang] = resp.status === 200 ? (await resp.json()).content : null;
     }
     return langWikiCache[lang] ?? 'No data for current lang.';
@@ -18,25 +18,26 @@ async function getLangWikiContent(lang: string): Promise<string> {
 const holeLangNotesCache: Record<string, string | null> = {};
 async function getHoleLangNotesContent(lang: string): Promise<string> {
     if (!(lang in holeLangNotesCache)) {
-        const resp  = await fetch(`/api/notes/${hole}/${lang}`, { method: 'GET' });
+        const resp  = await fetch(`/api/notes/${hole}/${lang}`);
         holeLangNotesCache[lang] = resp.status === 200 ? (await resp.text()) : null;
     }
     return holeLangNotesCache[lang] ?? '';
 }
 
 const renamedHoles: Record<string, string> = {
-    'eight-queens': 'n-queens',
-    'eight-queens-formatted': 'n-queens-formatted',
+    'billiard':                      'billiards',
+    'eight-queens':                  'n-queens',
     'factorial-factorisation-ascii': 'factorial-factorisation',
-    'grid-packing': 'css-grid',
+    'grid-packing':                  'css-grid',
+};
+
+const renamedLangs: Record<string, string> = {
+    perl6: 'raku',
 };
 
 export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSolution: any, updateReadonlyPanels: any, getEditor: () => any, getArgs?: any) {
     tabLayout = _tabLayout;
     const closuredSubmit = () => submit(getEditor(), updateReadonlyPanels, getArgs);
-    window.onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter'
-        ? closuredSubmit()
-        : undefined;
     if (vimMode) Vim.defineEx('write', 'w', closuredSubmit);
 
     (onhashchange = async () => {
@@ -54,10 +55,7 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
         history.replaceState(null, '', '#' + lang);
 
         const editor = getEditor();
-        if (tabLayout) {
-            $('#hole-lang summary').innerText = langs[lang].name;
-            refreshScores(editor);
-        }
+        if (tabLayout) refreshScores(editor);
         setCodeForLangAndSolution(editor);
 
         if (tabLayout) {
@@ -74,9 +72,14 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
 
     for (const [key, value] of Object.entries(localStorage)) {
         if (key.startsWith('code_')) {
-            const hole = key.split('_')[1];
-            if (hole in renamedHoles) {
-                localStorage.setItem(key.replace(hole, renamedHoles[hole]), value);
+            const [prefix, hole, lang, scoring] = key.split('_');
+
+            const newHole = renamedHoles[hole] ?? hole;
+            const newLang = renamedLangs[lang] ?? lang;
+
+            const newKey = [prefix, newHole, newLang, scoring].join('_');
+            if (key !== newKey) {
+                localStorage.setItem(newKey, value);
                 localStorage.removeItem(key);
             }
         }
@@ -528,18 +531,24 @@ const diamondPopups = (updates: RankUpdate[]) => {
     return popups;
 };
 
+let lastSubmittedCode = '';
+export function getLastSubmittedCode(){
+    return lastSubmittedCode;
+}
+
 export async function submit(
     editor: any,
     // eslint-disable-next-line no-unused-vars
     updateReadonlyPanels: (d: ReadonlyPanelsData) => void,
     getArgs?: () => string[],
-) {
-    if (!editor) return;
+): Promise<boolean> {
+    if (!editor) return false;
     $('h2').innerText = '…';
     if ($('#status')) $('#status').className = 'grey';
     $$('canvas').forEach(e => e.remove());
 
     const code = editor.state.doc.toString();
+    lastSubmittedCode = code;
     const codeLang = lang;
     const submissionID = ++latestSubmissionID;
 
@@ -556,27 +565,33 @@ export async function submit(
 
     if (res.status != 200) {
         alert('Error ' + res.status);
-        return;
+        return false;
     }
 
     const data = await res.json() as SubmitResponse;
     savedInDB = data.logged_in && !experimental;
 
     if (submissionID != latestSubmissionID)
-        return;
+        return false;
 
     const pass = data.runs.every(r => r.pass);
-    if (pass && hole !== 'sandbox') {
-        for (const i of [0, 1] as const) {
-            const solutionCode = getSolutionCode(codeLang, i);
-            if (!solutionCode || getScoring(code, i) <= getScoring(solutionCode, i)) {
-                solutions[i][codeLang] = code;
+    if(hole !== 'sandbox'){
+        $('main')?.classList.remove('pass');
+        $('main')?.classList.remove('fail');
+        $('main')?.classList.add(pass ? 'pass' : 'fail');
+        $('main')?.classList.add('lastSubmittedCode');
+        if (pass) {
+            for (const i of [0, 1] as const) {
+                const solutionCode = getSolutionCode(codeLang, i);
+                if (!solutionCode || getScoring(code, i) <= getScoring(solutionCode, i)) {
+                    solutions[i][codeLang] = code;
 
-                // Don't need to keep solution in local storage because it's
-                // stored on the site. This prevents conflicts when the
-                // solution is improved on another browser.
-                if (savedInDB && localStorage.getItem(getAutoSaveKey(codeLang, i)) == code)
-                    localStorage.removeItem(getAutoSaveKey(codeLang, i));
+                    // Don't need to keep solution in local storage because it's
+                    // stored on the site. This prevents conflicts when the
+                    // solution is improved on another browser.
+                    if (savedInDB && localStorage.getItem(getAutoSaveKey(codeLang, i)) == code)
+                        localStorage.removeItem(getAutoSaveKey(codeLang, i));
+                }
             }
         }
     }
@@ -689,6 +704,8 @@ export async function submit(
         </div>));
 
     refreshScores(editor);
+
+    return pass;
 }
 
 export function updateLocalStorage(code: string) {
@@ -898,4 +915,12 @@ function replacePlaceholdersInRange(selection: Selection, range: Range) {
     }
 
     return text;
+}
+
+export function ctrlEnter(func: Function) {
+    return function (e: KeyboardEvent) {
+        if ((e.ctrlKey || e.metaKey) && e.key == 'Enter') {
+            return func();
+        }
+    };
 }
