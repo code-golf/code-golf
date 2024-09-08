@@ -11,4 +11,4 @@ cat - > src/code.gleam
 
 # Execute
 shift
-exec gleam run -t javascript "$@"
+exec gleam run --no-print-progress --target javascript "$@"

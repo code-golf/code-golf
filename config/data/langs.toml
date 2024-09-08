@@ -604,7 +604,7 @@ end
 args       = [ '/usr/bin/gleamwrapper', '-', '--' ]
 env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 1129
-size       = '87.7 MiB'
+size       = '87.8 MiB'
 version    = '1.4.1'
 website    = 'https://gleam.run'
 example    = '''

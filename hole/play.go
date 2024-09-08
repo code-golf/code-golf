@@ -444,11 +444,6 @@ func play(
 
 	stdoutBytes := stdout.Next(maxLength)
 
-	// Postprocess gleam output to suppress redundant compilation verbosity.
-	if lang.ID == "gleam" {
-		stdoutBytes, _ = bytes.CutPrefix(stdoutBytes, stdoutBytes[0:102])
-	}
-
 	// Postprocess sed output to turn null bytes into newlines.
 	if lang.ID == "sed" {
 		stdoutBytes = bytes.ReplaceAll(stdoutBytes, []byte("\x00"), []byte("\n"))
