@@ -1130,6 +1130,24 @@ for (arg in commandArgs(TRUE)) {
 }
 '''
 
+[Racket]
+args       = [ '/usr/local/bin/racket', '-e', '$code', '--' ]
+experiment = 1358
+size       = '78.7 MiB'
+version    = '8.14'
+website    = 'https://racket-lang.org'
+example    = '''
+; Printing
+(displayln "Hello, World!")
+
+; Looping
+(for-each println (range 10))
+
+; Accessing arguments
+(for ([arg (current-command-line-arguments)])
+  (displayln arg))
+'''
+
 [Raku]
 args    = [ '/usr/bin/raku', '-' ]
 size    = '75.5 MiB'

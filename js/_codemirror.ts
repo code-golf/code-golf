@@ -163,6 +163,7 @@ export const extensions : { [key: string]: any } = {
     'prolog':        prolog(),
     'python':        python,
     'r':             StreamLanguage.define(r),
+    'racket':        StreamLanguage.define(scheme),
     'raku':          StreamLanguage.define(raku),
     // TODO rebol
     // TODO rexx
