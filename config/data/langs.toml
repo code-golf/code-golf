@@ -883,27 +883,6 @@ example = '''
 `0:x
 '''
 
-[Lil]
-args       = [ '/usr/bin/lilwrapper', '-' ]
-experiment = 1174
-size       = '3.29 MiB'
-version    = 'Lilt 1.48'
-website    = 'https://beyondloom.com/decker/lilt.html'
-example    = '''
-# Printing
-print["Hello, World!"]
-
-# Looping
-each i in range 10
-    print[i]
-end
-
-# Accessing arguments
-each arg in 2 drop args
-    print[arg]
-end
-'''
-
 [Lisp]
 args    = [ '/usr/bin/lisp', '-' ]
 size    = '31.1 MiB'
