@@ -614,16 +614,16 @@ import gleam/io
 import gleam/list
 
 pub fn main() {
-    // Printing
-    io.println("Hello, World!")
-    
-    // Looping
-    list.range(0, 9)
-    |> list.each(fn(i) { io.println(int.to_string(i)) })
-    
-    // Accessing arguments
-    argv.load().arguments
-    |> list.each(fn(arg) { io.println(arg) })
+  // Printing
+  io.println("Hello, World!")
+
+  // Looping
+  list.range(0, 9)
+  |> list.each(fn(i) { io.println(int.to_string(i)) })
+
+  // Accessing arguments
+  argv.load().arguments
+  |> list.each(fn(arg) { io.println(arg) })
 }
 '''
 
