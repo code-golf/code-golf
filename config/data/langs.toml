@@ -775,8 +775,8 @@ echo each 2}.ARGV
 
 [Janet]
 args    = [ '/usr/bin/janet', '/proc/self/fd/0' ]
-size    = '869 KiB'
-version = '1.35.2'
+size    = '886 KiB'
+version = '1.36.0'
 website = 'https://janet-lang.org'
 example = '''
 # Printing
@@ -1113,7 +1113,7 @@ example = '''
 [Python]
 args    = [ '/usr/bin/python', '-u', '-' ]
 size    = '48.4 MiB'
-version = '3.12.5'
+version = '3.12.6'
 website = 'https://www.python.org'
 example = '''
 import sys
