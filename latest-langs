@@ -5,7 +5,7 @@ use JSON::Fast;
 use TOML::Thumb;
 
 # Pass "--all" to see all languages regardless of version status.
-unit sub MAIN(Bool :$all);
+unit sub MAIN(Bool :$all, *@langs);
 
 constant %paths = (
     '><>'          => 'github.com/primo-ppcg/fish-jit',
@@ -78,7 +78,7 @@ my %langs = from-toml 'config/data/langs.toml'.IO;
 # Dotted decimal, hyphenated date, or Git SHA.
 my regex ver { \d+ ( <[.-]> \d+ )+ | <xdigit> ** 7..* }
 
-for %langs.sort: *.key.fc -> (:key($name), :value(%lang)) {
+for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
     my $old = %lang<version> ~~ / <ver> /;
     my $new = do with %paths{$name} {
         state $ua  = HTTP::Tiny.new :throw-exceptions;
@@ -108,5 +108,5 @@ for %langs.sort: *.key.fc -> (:key($name), :value(%lang)) {
     my $code  = $new eq '?' ?? 33 !! $match ?? 32 !! 31;
 
     printf "%12s \e[%dm%11s → %s\e[0m\n", $name, $code, $old, $new
-        if $all || !$match;
+        if $all || @langs.elems || !$match;
 }
