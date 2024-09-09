@@ -155,6 +155,7 @@ export const extensions : { [key: string]: any } = {
     'lisp':          StreamLanguage.define(commonLisp),
     'lua':           StreamLanguage.define(lua),
     'nim':           StreamLanguage.define({ ...nim( {}, {} ), languageData: { commentTokens: { line: '#' } } }),
+    // TODO nit
     'ocaml':         StreamLanguage.define(oCaml),
     // TODO odin
     'pascal':        StreamLanguage.define(pascal),
