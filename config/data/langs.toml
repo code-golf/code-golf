@@ -532,9 +532,9 @@ command-line get-global [ print ] each
 '''
 
 [Fennel]
-args       = [ '/usr/bin/fennel', '-' ]
+args       = [ '/usr/bin/fennelwrapper', '/tmp/code.fnl' ]
 experiment = 1144
-size       = '639 KiB'
+size       = '665 KiB'
 version    = '1.5.1'
 website    = 'https://fennel-lang.org'
 example    = '''
@@ -547,8 +547,7 @@ example    = '''
 
 ;; Accessing arguments
 (each [i a (ipairs arg)]
-  (if (> i 1)
-    (print a)))
+  (print a))
 '''
 
 [Forth]
