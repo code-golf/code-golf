@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+cd /tmp
+
+cat - > code.crap
+
+shift
+exec crap code.crap | tcc -run - "$@";
