@@ -864,6 +864,23 @@ Sys.argv
   |> List.iter print_endline;
 '''
 
+[PARI-GP]
+args       = [ '/usr/bin/gp2c-run', '-' ]
+experiment = 219
+size       = '0 MiB'
+version    = '2.15.5'
+website    = 'https://pari.math.u-bordeaux.fr'
+example    = '''
+\\ Printing
+
+
+\\ Looping
+
+
+\\ Accessing arguments
+
+'''
+
 [Pascal]
 args    = [ '/usr/bin/pascal', '-' ]
 size    = '31.1 MiB'
