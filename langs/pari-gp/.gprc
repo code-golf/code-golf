@@ -1,0 +1,6 @@
+histfile = "~/.gp_history"
+colors = "darkbg"
+lines = 40
+parisizemax = 4G
+threadsizemax = 1G
+read "~/.gprc.gp"
