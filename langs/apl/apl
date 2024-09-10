@@ -1,9 +1,14 @@
 #!/bin/sh -e
 
-export DYALOG=/opt/mdyalog/19.0/64/unicode
-export PATH=$DYALOG/scriptbin:$PATH
+cd /tmp
 
-cat - > /tmp/code.dyalog
+if [ "$1" = "" ]; then
+  # Write version to .dyalog file
+  echo "⎕←2⊃⎕WG'APLVersion'" > code.dyalog
+else
+  cat - > code.dyalog
+  shift
+fi
 
-shift
-exec dyalogscript /tmp/code.dyalog "$@"
+# Execute
+exec dyalogscript code.dyalog "$@"

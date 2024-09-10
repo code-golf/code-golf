@@ -25,7 +25,7 @@ COPY --from=0 $DYALOG/aplkeys/default               \
               $DYALOG/aplkeys/utf8codes             $DYALOG/aplkeys/
 COPY --from=0 $DYALOG/apltrans/default              \
               $DYALOG/apltrans/utf8                 $DYALOG/apltrans/
-COPY --from=0 $DYALOG/scriptbin                     $DYALOG/scriptbin
+COPY --from=0 $DYALOG/scriptbin/dyalogscript        /usr/bin/
 
 COPY /apl /usr/bin/
 
