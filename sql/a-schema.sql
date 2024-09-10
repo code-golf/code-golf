@@ -8,18 +8,19 @@ CREATE TYPE cheevo AS ENUM (
     'busy-beaver', 'caffeinated', 'centenarian', 'cobowl', 'cunning-linguist',
     'dammit-janet', 'different-strokes', 'disappearing-act', 'dont-panic',
     'double-slit-experiment', 'elephpant-in-the-room', 'emergency-room',
-    'fish-n-chips', 'fore', 'forty-winks', 'go-forth', 'gone-in-60-holes',
-    'happy-birthday-code-golf', 'happy-go-lucky', 'hello-world',
-    'hextreme-agony', 'inception', 'independence-day', 'interview-ready',
-    'its-over-9000', 'jeweler', 'just-kidding', 'like-comment-subscribe',
-    'marathon-runner', 'mary-had-a-little-lambda', 'may-the-4ᵗʰ-be-with-you',
-    'my-god-its-full-of-stars', 'neunundneunzig-luftballons', 'off-the-grid',
-    'omniglot', 'omniglutton', 'ouroboros', 'pangramglot', 'patches-welcome',
-    'phileas-fogg', 'pi-day', 'polyglot', 'polyglutton', 'real-programmers',
-    'right-on', 'rm-rf', 'rtfm', 'rule-34', 'slowcoach', 'smörgåsbord',
-    'solve-quine', 'sounds-quite-nice', 'takeout', 'the-watering-hole',
-    'tim-toady', 'tl-dr', 'twelvetide', 'twenty-kiloleagues',
-    'under-pressure', 'up-to-eleven', 'vampire-byte', 'x86'
+    'evil-scheme', 'fish-n-chips', 'fore', 'forty-winks', 'go-forth',
+    'gone-in-60-holes', 'happy-birthday-code-golf', 'happy-go-lucky',
+    'hello-world', 'hextreme-agony', 'inception', 'independence-day',
+    'interview-ready', 'its-over-9000', 'jeweler', 'just-kidding',
+    'like-comment-subscribe', 'marathon-runner', 'mary-had-a-little-lambda',
+    'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars',
+    'neunundneunzig-luftballons', 'off-the-grid', 'omniglot', 'omniglutton',
+    'ouroboros', 'pangramglot', 'patches-welcome', 'phileas-fogg', 'pi-day',
+    'polyglot', 'polyglutton', 'real-programmers', 'right-on', 'rm-rf',
+    'rtfm', 'rule-34', 'slowcoach', 'smörgåsbord', 'solve-quine',
+    'sounds-quite-nice', 'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr',
+    'twelvetide', 'twenty-kiloleagues', 'under-pressure', 'up-to-eleven',
+    'vampire-byte', 'x86'
 );
 
 CREATE TYPE connection AS ENUM (
