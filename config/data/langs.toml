@@ -35,7 +35,7 @@ example    = '''
 
 ⍝ Looping
 ⎕IO←0
-⎕←¨⍳10
+{⎕←⍵}¨⍳10
 
 ⍝ Accessing arguments
 ⎕←¨1↓2⎕NQ#'GetCommandLineArgs'
