@@ -63,6 +63,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
             # Dotted decimal or hyphenated date.
             my $digits = $ver ~~ / \d+ ( <[.-]> \d+ )+ /;
 
+            when 'APL'        { $ver = "Dyalog $name $digits" }
             when 'AWK'
                | 'Forth'
                | 'Fortran'
