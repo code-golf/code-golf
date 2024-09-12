@@ -193,6 +193,7 @@ export const extensions : { [key: string]: any } = {
     'swift':         StreamLanguage.define(swift),
     'tcl':           StreamLanguage.define(tcl),
     'tex':           StreamLanguage.define(stex),
+    'typescript':    javascript,
     // TODO uiua
     // TODO v
     // TODO viml
