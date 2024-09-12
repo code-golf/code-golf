@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+[ "$1" = "--version" ] && exec gp --version-short
+
+cat - > /tmp/code.gp
+
+shift
+exec gp --quiet /tmp/code.gp "$@"
