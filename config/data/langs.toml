@@ -525,7 +525,7 @@ example = '''
 "Hello, World!" print
 
 ! Looping
-10 [0..b) [ . ] each
+0 ..= 9 [ . ] each
 
 ! Accessing arguments
 command-line get-global [ print ] each
