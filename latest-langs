@@ -66,6 +66,7 @@ constant %paths = (
     'Swift'        => 'en.wikipedia.org/wiki/Swift_(programming_language)',
     'Tcl'          => 'en.wikipedia.org/wiki/Tcl',
     'TeX'          => 'en.wikipedia.org/wiki/TeX',
+    'TypeScript'   => 'github.com/microsoft/TypeScript/releases/latest',
     'Uiua'         => 'crates.io/api/v1/crates/uiua',
     'V'            => 'github.com/vlang/v/releases/latest',
     'VimL'         => 'en.wikipedia.org/wiki/Vim_(text_editor)',
