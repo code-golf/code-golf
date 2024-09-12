@@ -1705,7 +1705,7 @@ Hello, World!
 
 [TypeScript]
 args       = [ '/node_modules/.bin/ts-node', '--swc', '-e', '$code', '--' ]
-experiment = -1
+experiment = 1364
 size       = '314 MiB'
 version    = '5.6.2'
 website    = 'https://www.typescriptlang.org'
