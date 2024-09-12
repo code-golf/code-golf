@@ -63,7 +63,7 @@ body {
     overflow-x: hidden;
 }
 
-body, footer nav, body > header nav, #popups {
+body, footer nav, #site-header nav, #popups {
     margin: auto;
     max-width: 1280px;
 }
@@ -91,7 +91,28 @@ h1 { font-size: 1.75rem }
 h2 { font-size: 1.50rem }
 h3 { font-size: 1.25rem }
 
-body > header {
+#page-header {
+    align-items: center;
+    border-bottom: 2px solid var(--color);
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    overflow: hidden;
+    padding: 1rem;
+
+    h1 {
+        flex: 1;
+        white-space: nowrap;
+    }
+
+    nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem;
+    }
+}
+
+#site-header {
     background: var(--color);
     margin: 0 calc(50% - 50vw);
     overflow: auto;
@@ -100,7 +121,7 @@ body > header {
     z-index: 7; /* Codemirror uses up to 6 */
 }
 
-body > header a {
+#site-header a {
     align-items: center;
     display: flex;
     fill: var(--background);
@@ -109,13 +130,13 @@ body > header a {
     min-width: 2.75rem;
 }
 
-body > header a:is(.on, :hover) {
+#site-header a:is(.on, :hover) {
     background: var(--background);
     color: var(--color);
     fill: var(--color);
 }
 
-body > header [title=Profile] {
+#site-header [title=Profile] {
     color: var(--background);
     display: grid;
     font-size: .75rem;
@@ -141,9 +162,9 @@ body > header [title=Profile] {
     }
 }
 
-body > header nav { display: flex }
+#site-header nav { display: flex }
 
-body > header svg {
+#site-header svg {
     height: 1.5rem;
     width: 1.5rem;
 }
@@ -588,7 +609,7 @@ body > .tabs a {
 
 #error h1 { text-align: center }
 
-#home, #ideas { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
+#home { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
 
 #home > .tabs { justify-content: flex-end }
 
@@ -603,7 +624,9 @@ body > .tabs a {
 }
 
 #popups {
-    display: grid;
+    align-items: flex-end;
+    display: flex;
+    flex-direction: column;
     gap: .5rem;
     grid-template-columns: 1fr auto;
     padding: .5rem;
@@ -620,11 +643,11 @@ body > .tabs a {
     color: var(--background);
     display: default;
     gap: .25rem .5rem;
-    grid-column: 2;
     grid-template-columns: auto 1fr;
-    opacity: 0;
+    max-width: 15rem;
     pointer-events: initial;
     padding: .5rem;
+    visibility: collapse;
     white-space: nowrap;
 }
 
@@ -682,9 +705,13 @@ body > .tabs a {
     }
 }
 
+.rotate-icon svg {
+    transform: rotate(90deg);
+}
+
 @keyframes fade {
-    0%   { opacity: 0; margin-top: -4rem }
-    100% { opacity: 1; margin-top: 0 }
+    0%   { margin-top: -4rem; opacity: 0; visibility: collapse }
+    100% { margin-top:  0;    opacity: 1; visibility: visible  }
 }
 
 @media     (max-width: 34rem) { .wide { display: none !important } }

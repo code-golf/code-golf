@@ -1,8 +1,8 @@
-FROM eclipse-temurin:22.0.1_8-jre-alpine AS builder
+FROM eclipse-temurin:22.0.2_9-jre-alpine AS builder
 
 RUN apk add --no-cache build-base wget
 
-RUN wget https://github.com/gaborsch/rocky/raw/bd2c1db/rocky.jar
+RUN wget https://github.com/gaborsch/rocky/raw/9af6921/rocky.jar
 
 COPY rockstar.c .
 

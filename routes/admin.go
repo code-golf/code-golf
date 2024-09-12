@@ -47,7 +47,7 @@ func adminGET(w http.ResponseWriter, r *http.Request) {
 		    SELECT user_id, MAX(last_used) last_used
 		      FROM sessions
 		     WHERE user_id != $1
-		       AND last_used > TIMEZONE('UTC', NOW()) - INTERVAL '1 day'
+		       AND last_used > TIMEZONE('UTC', NOW()) - INTERVAL '1 hour'
 		  GROUP BY user_id
 		) SELECT country_flag country, last_used, login name
 		    FROM grouped_sessions
@@ -67,9 +67,9 @@ func adminGET(w http.ResponseWriter, r *http.Request) {
 		    JOIN pg_namespace n
 		      ON n.oid = relnamespace
 		     AND nspname = 'public'
-		   WHERE reltuples != 0
+		   WHERE reltuples > 0
 		   UNION
-		  SELECT NULL, 0, PG_DATABASE_SIZE('code-golf')
+		  SELECT NULL, 0, PG_DATABASE_SIZE(CURRENT_DATABASE())
 		ORDER BY name`,
 	); err != nil {
 		panic(err)

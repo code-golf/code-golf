@@ -14,8 +14,15 @@ import (
 // GET /stats
 func statsGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		Bytes, Cheevos, CheevosEarned, Countries, Golfers, Solutions int
-	}{Cheevos: len(config.CheevoList)}
+		Bytes, Cheevos, CheevosEarned, Countries, Golfers,
+		Holes, HolesExp, Langs, LangsExp, Solutions int
+	}{
+		Cheevos:  len(config.CheevoList),
+		Holes:    len(config.AllHoleList),
+		HolesExp: len(config.ExpHoleList),
+		Langs:    len(config.AllLangList),
+		LangsExp: len(config.ExpLangList),
+	}
 
 	db := session.Database(r)
 

@@ -2,7 +2,6 @@
 /.github/
 /.vagrant/
 /Makefile
-/code-golf
 /dist/
 /docker/
 /langs/

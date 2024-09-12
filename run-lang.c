@@ -11,7 +11,6 @@
 #include <string.h>
 #include <sys/mount.h>
 #include <sys/prctl.h>
-#include <sys/stat.h>
 #include <sys/syscall.h>
 #include <sys/sysmacros.h>
 #include <unistd.h>
@@ -60,23 +59,6 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
     if (umount2("/", MNT_DETACH) < 0)
         ERR_AND_EXIT("umount2");
 
-    if (mount("tmpfs", "/dev", "tmpfs", MS_NOSUID, NULL) < 0)
-        ERR_AND_EXIT("mount /dev");
-
-    if (mknod("/dev/null", S_IFCHR|0666, makedev(1, 3)) < 0)
-        ERR_AND_EXIT("mknod /dev/null");
-
-    // FIXME This shouldn't be needed, 0666 should suffice, but without it Zig
-    //       fails with permission denied when opening /dev/null as O_RDWR.
-    if (chown("/dev/null", NOBODY, NOBODY) < 0)
-        ERR_AND_EXIT("chown /dev/null");
-
-    if (mknod("/dev/random", S_IFCHR|0444, makedev(1, 8)) < 0)
-        ERR_AND_EXIT("mknod /dev/random");
-
-    if (mknod("/dev/urandom", S_IFCHR|0444, makedev(1, 9)) < 0)
-        ERR_AND_EXIT("mknod /dev/urandom");
-
     // Not every lang has /proc.
     if (mount("proc", "/proc", "proc", MS_NODEV|MS_NOEXEC|MS_NOSUID, NULL) == 0) {
         // Clobber /proc/meminfo. It can be used to inject state.
@@ -91,10 +73,6 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         // Clobber /proc/sys. It can be used to inject state.
         if (mount("tmpfs", "/proc/sys", "tmpfs", MS_NODEV|MS_NOEXEC|MS_NOSUID|MS_RDONLY, NULL) < 0)
             ERR_AND_EXIT("mount /proc/sys");
-
-        // Elixir walks /dev/fd on exit closing each handle.
-        if (symlink("/proc/self/fd", "/dev/fd") < 0)
-            ERR_AND_EXIT("symlink /dev/fd");
 
         // Allow /proc/self/fd/0 to be read by the lang after we change user.
         if (chown("/proc/self/fd/0", NOBODY, NOBODY) < 0)

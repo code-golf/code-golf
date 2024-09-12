@@ -74,6 +74,7 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 						}
 					}
 
+					s.Stderr = run.Stderr
 					s.Took = run.Time
 
 					if run.Pass {
