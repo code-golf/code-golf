@@ -47,7 +47,6 @@ COPY --from=0 /usr/lib/Scrt1.o                           \
               /usr/lib/libpcre2-8.so.0                   \
               /usr/lib/libpkgconf.so.5                   \
               /usr/lib/libsframe.so.1                    \
-              /usr/lib/libsframe.so.1                    \
               /usr/lib/libssp_nonshared.a                \
               /usr/lib/libvala-0.56.so.0                 \
               /usr/lib/libzstd.so.1                      \
