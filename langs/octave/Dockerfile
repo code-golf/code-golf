@@ -33,8 +33,6 @@ COPY --from=0 /usr/share/octave                        /usr/share/octave
 
 COPY /octavewrapper /usr/bin/
 
-RUN chmod +x /usr/bin/octavewrapper
-
 ENTRYPOINT ["octavewrapper"]
 
 CMD ["--version"]
