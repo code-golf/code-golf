@@ -968,7 +968,7 @@ for arg in commandLineParams():
 args       = [ '/usr/bin/nitwrapper', '-' ]
 env        = [ 'NIT_DIR=/usr/local', 'PATH=/usr/local/bin:/usr/bin:/bin:$PATH' ]
 experiment = -1
-size       = '0 MiB'
+size       = '527 MiB'
 version    = '0.8'
 website    = 'https://nitlanguage.org'
 example    = '''

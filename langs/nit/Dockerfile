@@ -24,7 +24,6 @@ COPY --from=0 /usr/libexec/gcc /usr/lib/gcc
 
 COPY /nitwrapper /usr/bin/
 
-# Remove
 RUN chmod +x /usr/bin/nitwrapper
 
 ENTRYPOINT ["nitwrapper"]
