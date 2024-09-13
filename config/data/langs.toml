@@ -982,25 +982,25 @@ for ($i = 1; $i < $argc; $i++)
 [Pony]
 args       = [ '/usr/bin/pony', '-' ]
 experiment = 90
-size       = '0 MiB'
+size       = '539 MiB'
 version    = '0.58.5'
 website    = 'https://www.ponylang.io'
 example    = '''
+use "collections"
+
 actor Main
   new create(env: Env) =>
     // Printing
     env.out.print("Hello, World!")
 
     // Looping
-    var i: U8 = 0
-    while i < 10 do
+    for i in Range(0, 10) do
         env.out.print(i.string())
-        i = i + 1
     end
 
     // Accessing arguments
-    for arg in env.args.values() do
-        env.out.print(arg)
+    for i in Range(1, env.args.size()) do
+        env.out.print((try env.args(i)? end).string())
     end
 '''
 

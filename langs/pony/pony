@@ -1,6 +1,6 @@
 #!/bin/sh -e
 
-export PATH=/usr/local/pony/bin:$PATH
+export PATH="/usr/local/pony/bin:$PATH"
 
 [ "$1" = "--version" ] && exec ponyc --version
 
