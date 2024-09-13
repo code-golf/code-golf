@@ -4,39 +4,51 @@ use HTTP::Tiny;
 use JSON::Fast;
 use TOML::Thumb;
 
+# Pass "--all" to see all languages regardless of version status.
+unit sub MAIN(Bool :$all, *@langs);
+
 constant %paths = (
+    '><>'          => 'github.com/primo-ppcg/fish-jit',
     'Arturo'       => 'github.com/arturo-lang/arturo/releases/latest',
     'Assembly'     => 'registry.npmjs.org/@defasm/core/latest',
     'BASIC'        => 'en.wikipedia.org/wiki/FreeBASIC',
     'Berry'        => 'github.com/berry-lang/berry/releases/latest',
+    'brainfuck'    => 'github.com/primo-ppcg/bfci',
     'C'            => 'en.wikipedia.org/wiki/Tiny_C_Compiler',
     'C#'           => 'en.wikipedia.org/wiki/C_Sharp_(programming_language)',
     'C++'          => 'en.wikipedia.org/wiki/Clang',
-    'COBOL'        => 'en.wikipedia.org/wiki/GnuCOBOL',
-    'Coconut'      => 'github.com/evhub/coconut/releases/latest',
-    'CoffeeScript' => 'registry.npmjs.org/coffeescript/latest',
-    'Clojure'      => 'github.com/babashka/babashka/releases/latest',
     'Civet'        => 'registry.npmjs.org/@danielx/civet/latest',
+    'Clojure'      => 'github.com/babashka/babashka/releases/latest',
+    'COBOL'        => 'en.wikipedia.org/wiki/GnuCOBOL',
+    'Coconut'      => 'pypi.org/pypi/coconut/json',
+    'CoffeeScript' => 'registry.npmjs.org/coffeescript/latest',
     'Crystal'      => 'github.com/crystal-lang/crystal/releases/latest',
     'D'            => 'en.wikipedia.org/wiki/D_(programming_language)',
     'Dart'         => 'en.wikipedia.org/wiki/Dart_(programming_language)',
     'Elixir'       => 'en.wikipedia.org/wiki/Elixir_(programming_language)',
     'F#'           => 'en.wikipedia.org/wiki/F_Sharp_(programming_language)',
     'Factor'       => 'github.com/factor/factor/releases/latest',
+    'Fennel'       => 'fennel-lang.org/setup',
     'Forth'        => 'en.wikipedia.org/wiki/Gforth',
-    'Fortran'      => 'en.wikipedia.org/wiki/GNU_Fortran',
+    'Fortran'      => 'en.wikipedia.org/wiki/GNU_Compiler_Collection',
+    'Gleam'        => 'github.com/gleam-lang/gleam/releases/latest',
     'Go'           => 'endoflife.date/api/go.json',
+    'GolfScript'   => 'github.com/lynn/golfscript/tree/code-golf',
     'Haskell'      => 'en.wikipedia.org/wiki/Glasgow_Haskell_Compiler',
+    'Hexagony'     => 'github.com/SirBogman/Hexagony',
     'Hush'         => 'crates.io/api/v1/crates/hush',
+    'Hy'           => 'pypi.org/pypi/hy/json',
     'Janet'        => 'github.com/janet-lang/janet/releases/latest',
     'Java'         => 'endoflife.date/api/java.json',
     'JavaScript'   => 'en.wikipedia.org/wiki/V8_(JavaScript_engine)',
     'jq'           => 'github.com/jqlang/jq/releases/latest',
     'Julia'        => 'en.wikipedia.org/wiki/Julia_(programming_language)',
+    'K'            => 'codeberg.org/ngn/k',
     'Lisp'         => 'en.wikipedia.org/wiki/CLISP',
     'Lua'          => 'en.wikipedia.org/wiki/Lua_(programming_language)',
     'Nim'          => 'en.wikipedia.org/wiki/Nim_(programming_language)',
     'OCaml'        => 'en.wikipedia.org/wiki/OCaml',
+    'Odin'         => 'github.com/odin-lang/Odin/releases/latest',
     'Pascal'       => 'en.wikipedia.org/wiki/Free_Pascal',
     'Perl'         => 'endoflife.date/api/perl.json',
     'PHP'          => 'endoflife.date/api/php.json',
@@ -45,8 +57,9 @@ constant %paths = (
     'Prolog'       => 'en.wikipedia.org/wiki/SWI-Prolog',
     'Python'       => 'endoflife.date/api/python.json',
     'R'            => 'en.wikipedia.org/wiki/R_(programming_language)',
-    'Raku'         => 'en.wikipedia.org/wiki/Rakudo',
+    'Raku'         => 'github.com/rakudo/rakudo/releases/latest',
     'Rebol'        => 'en.wikipedia.org/wiki/Rebol',
+    'Rexx'         => 'regina-rexx.sourceforge.io',
     'Ruby'         => 'endoflife.date/api/ruby.json',
     'Rust'         => 'en.wikipedia.org/wiki/Rust_(programming_language)',
     'Scheme'       => 'en.wikipedia.org/wiki/Chez_Scheme',
@@ -63,27 +76,38 @@ constant %paths = (
 
 my %langs = from-toml 'config/data/langs.toml'.IO;
 
-for %langs.sort: *.key.fc -> (:key($name), :value(%lang)) {
-    my $old = %lang<version> ~~ / <[\d.]>+ \d+ /;
+# Dotted decimal, hyphenated date, or Git SHA.
+my regex ver { \d+ ( <[.-]> \d+ )+ | <xdigit> ** 7..* }
+
+for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
+    my $old = %lang<version> ~~ / <ver> /;
     my $new = do with %paths{$name} {
         state $ua  = HTTP::Tiny.new :throw-exceptions;
         my    $res = $ua.get("https://$_")<content>.decode;
 
-        when / 'crates.io' / { $res.&from-json<crate><max_stable_version> }
-        when / 'endoflife' / { $res.&from-json[0]<latest> }
-        when / 'github'    / { $res ~~ / [ $name || 'Release' ] ' ' v? <(\d+ <[\d.]>+)> / }
-        when / 'npmjs'     / { $res.&from-json[0]<version> }
-        when / 'wikipedia' / {
+        when / 'codeberg'    / { $res ~~ / '"shortsha">' <(<ver>)> / }
+        when / 'crates.io'   / { $res.&from-json<crate><max_stable_version> }
+        when / 'endoflife'   / { $res.&from-json[0]<latest> }
+        when / 'fennel-lang' / { $res ~~ / 'downloads/fennel-' <(<ver>)> / }
+        when / 'npmjs.org'   / { $res.&from-json[0]<version> }
+        when / 'pypi.org'    / { $res.&from-json<info><version> }
+        when / 'regina-rexx' / { $res ~~ / '<b>Current</b> ' <(<ver>)> / }
+        when / 'github.com'  / {
+            .ends-with('/releases/latest')
+                ?? $res ~~ / [ $name || 'dev' || 'Release' ] <[\ -]> v? <(<ver>)> /
+                !! $res ~~ / '"currentOid":"' <( <xdigit> ** 7 )> /;
+        }
+        when / 'wikipedia'   / {
             $res ~~ /
                 < Stable Preview > ' release' .+? '>' ( '#' \d+ ' "' )?
-                <(\d+ <[\d.]>+)>
+                <(<ver>)>
             /;
         }
     } // '?';
 
-    my $code =  $new eq '?'                                              ?? 33
-        !! $old eq $new || $old.starts-with("$new.") || "$old.0" eq $new ?? 32
-        !!                                                                  31;
+    my $match = $old eq $new || $old.starts-with("$new.") || "$old.0" eq $new;
+    my $code  = $new eq '?' ?? 33 !! $match ?? 32 !! 31;
 
-    printf "%12s \e[%dm%11s → %s\e[0m\n", $name, $code, $old, $new;
+    printf "%12s \e[%dm%11s → %s\e[0m\n", $name, $code, $old, $new
+        if $all || @langs.elems || !$match;
 }
