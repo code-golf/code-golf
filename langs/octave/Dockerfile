@@ -14,22 +14,22 @@ RUN ./configure        \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/cat /bin/chmod /bin/sh              /bin/
-COPY --from=0 /lib/ld-musl-x86_64.so.1                 \
-              /lib/libz.so.1                           /lib/
-COPY --from=0 /usr/bin/octave                          \
-              /usr/bin/octave-cli-9.2.0                /usr/bin/
-COPY --from=0 /usr/lib/libblas.so.3                    \
-              /usr/lib/libgcc_s.so.1                   \
-              /usr/lib/libgfortran.so.5                \
-              /usr/lib/libgomp.so.1                    \
-              /usr/lib/liblapack.so.3                  \
-              /usr/lib/libpcre2-8.so.0                 \
-              /usr/lib/libquadmath.so.0                \
-              /usr/lib/libstdc++.so.6                  /usr/lib/
-COPY --from=0 /usr/lib/octave/9.2.0/liboctave.so.11    \
-              /usr/lib/octave/9.2.0/liboctinterp.so.12 /usr/lib/octave/9.2.0/
-COPY --from=0 /usr/share/octave                        /usr/share/octave
+COPY --from=0 /bin/cat /bin/sh                     /bin/
+COPY --from=0 /lib/ld-musl-x86_64.so.1             \
+              /lib/libz.so.1                       /lib/
+COPY --from=0 /usr/bin/octave                      \
+              /usr/bin/octave-cli-*                /usr/bin/
+COPY --from=0 /usr/lib/libblas.so.3                \
+              /usr/lib/libgcc_s.so.1               \
+              /usr/lib/libgfortran.so.5            \
+              /usr/lib/libgomp.so.1                \
+              /usr/lib/liblapack.so.3              \
+              /usr/lib/libpcre2-8.so.0             \
+              /usr/lib/libquadmath.so.0            \
+              /usr/lib/libstdc++.so.6              /usr/lib/
+COPY --from=0 /usr/lib/octave/*/liboctave.so.11    \
+              /usr/lib/octave/*/liboctinterp.so.12 /usr/lib/octave/9.2.0/
+COPY --from=0 /usr/share/octave                    /usr/share/octave
 
 COPY /octavewrapper /usr/bin/
 
