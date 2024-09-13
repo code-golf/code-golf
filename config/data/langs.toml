@@ -990,6 +990,27 @@ Sys.argv
   |> List.iter print_endline;
 '''
 
+[Octave]
+args       = [ '/usr/bin/octavewrapper', '-' ]
+experiment = 1369
+size       = '678 MiB'
+version    = 'GNU Octave 9.2.0'
+website    = 'https://octave.org'
+example    = '''
+# Printing
+disp("Hello, World!");
+
+# Looping
+for i = 0:9
+    disp(i);
+end
+
+# Accessing arguments
+for i = 1:length(argv())
+    disp(argv{i});
+end
+'''
+
 [Odin]
 args       = [ '/usr/bin/odinwrapper', '-' ]
 experiment = 766

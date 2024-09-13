@@ -19,6 +19,7 @@ RUN go build -ldflags -s -trimpath \
 
 FROM scratch
 
+COPY --from=codegolf/lang-octave       ["/", "/langs/octave/rootfs/"      ] #  678 MiB
 COPY --from=codegolf/lang-swift        ["/", "/langs/swift/rootfs/"       ] #  462 MiB
 COPY --from=codegolf/lang-haskell      ["/", "/langs/haskell/rootfs/"     ] #  388 MiB
 COPY --from=codegolf/lang-go           ["/", "/langs/go/rootfs/"          ] #  383 MiB
