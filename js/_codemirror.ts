@@ -54,6 +54,7 @@ import { prolog }             from 'codemirror-lang-prolog';
 import { pythonLanguage }     from '@codemirror/lang-python';
 import { r }                  from '@codemirror/legacy-modes/mode/r';
 import { raku }               from './vendor/codemirror-raku';
+import { rockstar }           from 'codemirror-lang-rockstar';
 import { ruby }               from '@codemirror/legacy-modes/mode/ruby';
 import { rust }               from '@codemirror/lang-rust';
 import { scheme }             from '@codemirror/legacy-modes/mode/scheme';
@@ -169,7 +170,7 @@ export const extensions : { [key: string]: any } = {
     'raku':          StreamLanguage.define(raku),
     // TODO rebol
     // TODO rexx
-    // TODO rockstar
+    'rockstar-2':    rockstar(),
     'ruby':          StreamLanguage.define(ruby),
     'rust':          rust(),
     'scheme':        StreamLanguage.define(scheme),
