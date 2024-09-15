@@ -198,6 +198,8 @@ func Play(
 		runs = intersection()
 	case "jacobi-symbol":
 		runs = jacobiSymbol()
+	case "keep-the-change":
+		runs = keepTheChange()
 	case "levenshtein-distance":
 		runs = levenshteinDistance()
 	case "lucky-tickets":

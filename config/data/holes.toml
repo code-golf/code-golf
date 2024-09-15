@@ -1526,6 +1526,20 @@ preamble = '''
     inclusive, each on their own line.
 '''
 
+['Keep the Change']
+experiment = 1375
+category   = 'Transform'
+links      = []
+synopsis   = 'Output return change in minimum amount of coins and/or banknotes.'
+preamble   = '''
+<p>
+    Given a list of net amounts to pay, with customers'
+    payable amounts in parentheses, output the exact
+    amounts of return change in the minimum amount of
+    coins and/or banknotes to do so in the United States
+    Dollar System.
+'''
+
 [Kolakoski]
 categories = ['Mathematics', 'Sequence']
 released = 2021-01-16
