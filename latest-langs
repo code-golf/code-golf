@@ -39,6 +39,7 @@ constant %paths = (
     'Hexagony'     => 'github.com/SirBogman/Hexagony',
     'Hush'         => 'crates.io/api/v1/crates/hush',
     'Hy'           => 'pypi.org/pypi/hy/json',
+    'J'            => 'en.wikipedia.org/wiki/J_(programming_language)',
     'Janet'        => 'github.com/janet-lang/janet/releases/latest',
     'Java'         => 'endoflife.date/api/java.json',
     'JavaScript'   => 'en.wikipedia.org/wiki/V8_(JavaScript_engine)',
