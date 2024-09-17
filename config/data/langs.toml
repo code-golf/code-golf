@@ -841,8 +841,8 @@ class Main {
 
 [JavaScript]
 args    = [ '/usr/bin/d8', '-e', '$code', '--' ]
-size    = '41.1 MiB'
-version = 'V8 12.6.228.28'
+size    = '43.2 MiB'
+version = 'V8 13.1.11'
 website = 'https://v8.dev'
 example = '''
 // Printing
