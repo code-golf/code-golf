@@ -1079,7 +1079,7 @@ for ($i = 1; $i < $argc; $i++)
 [Pony]
 args       = [ '/usr/bin/pony', '-' ]
 experiment = 90
-size       = '539 MiB'
+size       = '332 MiB'
 version    = '0.58.5'
 website    = 'https://www.ponylang.io'
 example    = '''
