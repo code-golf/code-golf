@@ -11,6 +11,7 @@ constant %paths = (
     '><>'          => 'github.com/primo-ppcg/fish-jit',
     'Arturo'       => 'github.com/arturo-lang/arturo/releases/latest',
     'Assembly'     => 'registry.npmjs.org/@defasm/core/latest',
+    'Bash'         => 'en.wikipedia.org/wiki/Bash_(Unix_shell)',
     'BASIC'        => 'en.wikipedia.org/wiki/FreeBASIC',
     'Berry'        => 'github.com/berry-lang/berry/releases/latest',
     'brainfuck'    => 'github.com/primo-ppcg/bfci',
