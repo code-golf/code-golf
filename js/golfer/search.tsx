@@ -19,7 +19,10 @@ const langs: Record<string,string> = JSON.parse($('#langs').innerText);
 const holes: Record<string,string> = JSON.parse($('#holes').innerText);
 
 $('#searchInput').onkeyup = onSearch;
-$('#isRegex').onchange = onSearch;
+$('#isRegexInput').onchange = onSearch;
+$('#languageInput').onchange = onSearch;
+
+$('#languageInput').replaceChildren(<option value=''>All languages</option>, ...Object.entries(langs).map(([id,name]) => <option value={id}>{name}</option>));
 
 function onSearch() {
     let search = $<HTMLInputElement>('#searchInput').value;
@@ -29,8 +32,9 @@ function onSearch() {
         $('#results').replaceChildren();
         return;
     }
-    const isRegex = $<HTMLInputElement>('#isRegex').checked;
-    search = isRegex ? search : search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const isRegexInput = $<HTMLInputElement>('#isRegexInput').checked;
+    search = isRegexInput ? search : search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const language = $<HTMLSelectElement>('#languageInput').value;
 
     // If there is 0 case sensitive matches, we match case-insensitively
     for (const caseInsensitive of [false, true]) {
@@ -46,23 +50,25 @@ function onSearch() {
             $<HTMLInputElement>('#searchInput').setCustomValidity('');
             const amount = (n: number, singular: string, plural?: string) => `${n} ${n === 1 ? singular : plural ?? singular + 's'}`;
 
-            const results = solutions.map(x => {
-                const matches = [...x.Code.matchAll(pattern)];
-                const matchesCount = matches.length;
-                let firstMatch = {before: '', match: '', after: ''};
-                if (matchesCount > 0) {
-                    const m = matches[0];
-                    const b = m.index;
-                    let a = b;
-                    while (a-1 > 0 && a > b - 10 && !/\n|\r/.test(x.Code[a-1])) a--;
-                    let c = b;
-                    while (c+1 <= b + m[0].length && !/\n|\r/.test(x.Code[c])) c++;
-                    let d = c;
-                    while (d+1 <= x.Code.length && d < c + 10 && !/\n|\r/.test(x.Code[d])) d++;
-                    firstMatch = {before: x.Code.slice(a,b), match: x.Code.slice(b,c), after: x.Code.slice(c,d)};
-                }
-                return {...x, matchesCount, firstMatch};
-            }).filter(x => x.matchesCount > 0);
+            const results = solutions
+                .filter(x => !language || x.Lang == language)
+                .map(x => {
+                    const matches = [...x.Code.matchAll(pattern)];
+                    const matchesCount = matches.length;
+                    let firstMatch = {before: '', match: '', after: ''};
+                    if (matchesCount > 0) {
+                        const m = matches[0];
+                        const b = m.index;
+                        let a = b;
+                        while (a-1 > 0 && a > b - 10 && !/\n|\r/.test(x.Code[a-1])) a--;
+                        let c = b;
+                        while (c+1 <= b + m[0].length && !/\n|\r/.test(x.Code[c])) c++;
+                        let d = c;
+                        while (d+1 <= x.Code.length && d < c + 10 && !/\n|\r/.test(x.Code[d])) d++;
+                        firstMatch = {before: x.Code.slice(a,b), match: x.Code.slice(b,c), after: x.Code.slice(c,d)};
+                    }
+                    return {...x, matchesCount, firstMatch};
+                }).filter(x => x.matchesCount > 0);
             results.sort((a,b)=> a.matchesCount - b.matchesCount);
             const totalCount = results.map(x => x.matchesCount).reduce((a,b)=>a+b, 0);
             const ci = caseInsensitive ? 'case insensitive ' : '';
