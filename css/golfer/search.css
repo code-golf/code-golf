@@ -13,6 +13,10 @@
 }
 
 #results {
+    h2 {
+        margin-bottom: .5rem;
+    }
+
     a {
         margin-top: .5rem;
         border: 2px solid var(--color);
@@ -21,9 +25,23 @@
         display: block;
     }
 
+    code {
+        white-space: pre;
+        background-color: var(--light-grey);
+        border-radius: .25rem;
+        padding: .25rem;
+        .match {
+            background-color: var(--yellow);
+        }
+    }
+
     a:hover {
         background: var(--color);
         color: var(--background);
         text-decoration: none;
+
+        code {
+            background-color: var(--grey);
+        }
     }
 }
