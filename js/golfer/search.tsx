@@ -4,7 +4,6 @@ interface Solution {
     Code: string, Hole: string, Lang: string, Scoring: string | null
 }
 let solutions: Solution[] = JSON.parse($('#solutions').innerText);
-solutions = [{"Code":"Solution 1","Hole":"12-days-of-christmas","Lang":"nim","Scoring":"chars"}, {"Code":"Solution 1","Hole":"12-days-of-christmas","Lang":"nim","Scoring":"bytes"},{"Code":"Solution 2","Hole":"12-days-of-christmas","Lang":"python","Scoring":"chars"}, {"Code":"Solution 3 Solution","Hole":"12-days-of-christmas","Lang":"python","Scoring":"bytes"}]
 const uniqueSolutions: Record<string, Solution> = {}
 for (const solution of solutions) {
     const key = solution.Hole + solution.Lang + solution.Code;
@@ -36,7 +35,7 @@ function onSearch() {
         pattern = new RegExp(isRegex ? search : search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), "g");
     }
     catch {
-        $<HTMLInputElement>('#searchInput').setCustomValidity('Invalid RegExp');
+        $<HTMLInputElement>('#searchInput').setCustomValidity('Invalid Regex');
         $<HTMLInputElement>('#searchInput').reportValidity();
     }
     if (pattern) {
@@ -50,7 +49,7 @@ function onSearch() {
         $('#resultsOverview').innerText = results.length === 0
             ? '0 matches'
             : `${amount(totalCount, 'match', 'matches')} across ${amount(results.length, 'solution')}`;
-        const resultNodes = results.map(r => (<a href='christmas-trees#python'>
+        const resultNodes = results.map(r => (<a href={r.Hole + '#' + r.Lang}>
             <h2>{holes[r.Hole]} in {langs[r.Lang]}{r.Scoring ? ` (${r.Scoring})` : ''}</h2>
             <span>{amount(r.matches.length, 'match', 'matches')}</span>
         </a>));
