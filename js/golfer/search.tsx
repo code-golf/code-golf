@@ -4,7 +4,7 @@ interface Solution {
     Code: string, Hole: string, Lang: string, Scoring: string | null
 }
 let solutions: Solution[] = JSON.parse($('#solutions').innerText);
-const uniqueSolutions: Record<string, Solution> = {}
+const uniqueSolutions: Record<string, Solution> = {};
 for (const solution of solutions) {
     const key = solution.Hole + solution.Lang + solution.Code;
     if (key in uniqueSolutions) {
@@ -32,7 +32,7 @@ function onSearch() {
     const isRegex = $<HTMLInputElement>('#isRegex').checked;
     let pattern: RegExp | undefined = undefined;
     try {
-        pattern = new RegExp(isRegex ? search : search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), "g");
+        pattern = new RegExp(isRegex ? search : search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
     }
     catch {
         $<HTMLInputElement>('#searchInput').setCustomValidity('Invalid Regex');
@@ -40,10 +40,10 @@ function onSearch() {
     }
     if (pattern) {
         $<HTMLInputElement>('#searchInput').setCustomValidity('');
-        const amount = (n: number, singular: string, plural?: string) => `${n} ${n === 1 ? singular : plural ?? singular + "s"}`;
+        const amount = (n: number, singular: string, plural?: string) => `${n} ${n === 1 ? singular : plural ?? singular + 's'}`;
         const results = solutions.map(x => ({
             ...x,
-            matches: [...x.Code.matchAll(pattern)]
+            matches: [...x.Code.matchAll(pattern)],
         })).filter(x => x.matches.length > 0);
         const totalCount = results.map(x => x.matches.length).reduce((a,b)=>a+b);
         $('#resultsOverview').innerText = results.length === 0
