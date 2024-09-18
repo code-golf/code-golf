@@ -30,8 +30,8 @@ function onSearch() {
         return;
     }
     const isRegex = $<HTMLInputElement>('#isRegex').checked;
-    search = isRegex ? search : search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-    
+    search = isRegex ? search : search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
     // If there is 0 case sensitive matches, we match case-insensitively
     for (const caseInsensitive of [false, true]) {
         let pattern: RegExp | undefined = undefined;
@@ -43,13 +43,13 @@ function onSearch() {
             $<HTMLInputElement>('#searchInput').reportValidity();
         }
         if (pattern) {
-        $<HTMLInputElement>('#searchInput').setCustomValidity('');
-        const amount = (n: number, singular: string, plural?: string) => `${n} ${n === 1 ? singular : plural ?? singular + 's'}`;
+            $<HTMLInputElement>('#searchInput').setCustomValidity('');
+            const amount = (n: number, singular: string, plural?: string) => `${n} ${n === 1 ? singular : plural ?? singular + 's'}`;
 
             const results = solutions.map(x => {
-                const matches = [...x.Code.matchAll(pattern)]
-                const matchesCount = matches.length
-                let firstMatch = {before: "", match: "", after: ""}
+                const matches = [...x.Code.matchAll(pattern)];
+                const matchesCount = matches.length;
+                let firstMatch = {before: '', match: '', after: ''};
                 if (matchesCount > 0) {
                     const m = matches[0];
                     const b = m.index;
@@ -64,7 +64,6 @@ function onSearch() {
                 return {...x, matchesCount, firstMatch};
             }).filter(x => x.matchesCount > 0);
             results.sort((a,b)=> a.matchesCount - b.matchesCount);
-            console.log({results})
             const totalCount = results.map(x => x.matchesCount).reduce((a,b)=>a+b, 0);
             const ci = caseInsensitive ? 'case insensitive ' : '';
             $('#resultsOverview').innerText = results.length === 0
