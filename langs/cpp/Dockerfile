@@ -33,6 +33,8 @@ RUN cmake                            \
     .. \
     && make -j`nproc` install
 
+RUN strip /llvm/bin/clang /llvm/lib/libLLVM-19.so
+
 WORKDIR /runner
 
 COPY cpp.c /runner/
@@ -46,7 +48,8 @@ COPY --from=0 /llvm/bin/clang          \
 COPY --from=0 /lib/ld-musl-x86_64.so.1 \
               /lib/libz.so.1           /lib/
 COPY --from=0 /usr/include/            /usr/include/
-COPY --from=0 /usr/lib/crt1.o          \
+COPY --from=0 /llvm/lib/libLLVM-19.so  \
+              /usr/lib/crt1.o          \
               /usr/lib/crti.o          \
               /usr/lib/crtn.o          \
               /usr/lib/libatomic.so    \
