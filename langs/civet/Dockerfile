@@ -4,7 +4,7 @@ RUN apk add --no-cache bash curl icu-data npm
 
 WORKDIR /usr/src
 
-RUN curl -L https://github.com/DanielXMoore/Civet/archive/refs/tags/v0.7.29.tar.gz \
+RUN curl -L https://github.com/DanielXMoore/Civet/archive/refs/tags/v0.7.30.tar.gz \
   | tar xz --strip-components 1
 
 RUN npm install && npm run build
