@@ -1,0 +1,17 @@
+{{ template "header" . }}
+
+<script id=langs        type=application/json>{{ .Data.Langs                }}</script>
+<script id=holes        type=application/json>{{ .Data.Holes                }}</script>
+<script id=solutions    type=application/json>{{ .Data.Solutions            }}</script>
+
+<main>
+    <h1>Solution search</h1>
+    <div id=search>
+        <input id=searchInput autofocus/>
+        <span><input id=isRegex type=checkbox checked/><label for="isRegex">Regex</label></span>
+    </div>
+    <div id="resultsOverview"></div>
+    <div id=results></div>
+</main>
+
+{{ template "footer" }}
