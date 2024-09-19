@@ -5,20 +5,17 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-int main(int argc, char* argv[]) {
-    if (argc > 1 && strcmp(argv[1], "-h") == 0) {
-        execl("/opt/java/openjdk/bin/java", "java", "-jar", "/rocky.jar", "-h", NULL);
+int main (int argc, char *argv[]) {
+    if (argc > 1 && strcmp(argv[1], "-v") == 0) {
+        execv("/usr/bin/fennel", argv);
         ERR_AND_EXIT("execl");
     }
 
-    if(chdir("/tmp"))
-        ERR_AND_EXIT("chdir");
-
-    FILE* fp = fopen("code.rock", "w");
+    FILE* fp = fopen("/tmp/code.fnl", "w");
     if (!fp)
         ERR_AND_EXIT("fopen");
 
-    // Copy STDIN into code.rock
+    // Copy STDIN into code.fnl
     char buffer[4096];
     ssize_t nbytes;
     while ((nbytes = read(STDIN_FILENO, buffer, sizeof(buffer))) > 0)
@@ -28,7 +25,6 @@ int main(int argc, char* argv[]) {
     if (fclose(fp) < 0)
         ERR_AND_EXIT("fclose");
 
-    execl("/opt/java/openjdk/bin/java", "java", "-jar", "/rocky.jar",
-        "run", "--infinite-loops", "--rocky", "code.rock", NULL);
+    execv("/usr/bin/fennel", argv);
     ERR_AND_EXIT("execl");
 }
