@@ -272,8 +272,8 @@ foreach (String arg in args)
 
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
-size    = '142 MiB'
-version = 'Clang 18.1.8'
+size    = '147 MiB'
+version = 'Clang 19.1.0'
 website = 'https://clang.llvm.org'
 example = '''
 #include <iostream>
@@ -301,7 +301,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '68.7 MiB'
-version = '0.7.29'
+version = '0.7.31'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -412,7 +412,7 @@ for arg in process.argv[2..]
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
 size    = '270 MiB'
-version = '1.13.2'
+version = '1.13.3'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -1390,8 +1390,8 @@ for arg in CommandLine.arguments[1...] {
 
 [Tcl]
 args    = [ '/usr/bin/tcl', '/proc/self/fd/0' ]
-size    = '5.25 MiB'
-version = '8.6.14'
+size    = '5.19 MiB'
+version = '8.6.15'
 website = 'https://www.tcl-lang.org'
 example = '''
 # Printing
