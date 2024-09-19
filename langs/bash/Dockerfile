@@ -2,6 +2,8 @@ FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache build-base curl
 
+WORKDIR /app
+
 RUN curl https://ftp.gnu.org/gnu/bash/bash-5.2.tar.gz \
   | tar xz --strip-components 1
 
@@ -25,7 +27,7 @@ RUN ./configure                \
 
 FROM codegolf/lang-base-no-proc
 
-COPY --from=0 /bash /usr/bin/
+COPY --from=0 /app/bash /usr/bin/
 
 ENTRYPOINT ["bash"]
 
