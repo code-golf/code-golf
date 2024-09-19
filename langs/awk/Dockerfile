@@ -8,7 +8,6 @@ RUN curl https://ftp.gnu.org/gnu/gawk/gawk-5.3.0.tar.xz \
 RUN ./configure    \
     --disable-docs \
     --disable-lint \
- && make -j`nproc` \
  && make install   \
  && strip /usr/local/bin/gawk
 
