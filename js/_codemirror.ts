@@ -169,7 +169,7 @@ export const extensions : { [key: string]: any } = {
     'raku':          StreamLanguage.define(raku),
     // TODO rebol
     // TODO rexx
-    // TODO rockstar-2
+    // TODO rockstar
     'ruby':          StreamLanguage.define(ruby),
     'rust':          rust(),
     'scheme':        StreamLanguage.define(scheme),
