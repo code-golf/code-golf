@@ -8,7 +8,7 @@ RUN curl -o dyalog.deb https://www.dyalog.com/uploads/php/download.dyalog.com/do
 
 FROM codegolf/lang-base
 
-ENV DYALOG=/opt/mdyalog/19.0/64/unicode
+ENV DYALOG="/opt/mdyalog/19.0/64/unicode"
 
 COPY --from=0 /bin/bash /bin/cat /bin/sh            /bin/
 COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
@@ -30,3 +30,5 @@ COPY --from=0 $DYALOG/scriptbin/dyalogscript        /usr/bin/
 COPY /apl /usr/bin/
 
 ENTRYPOINT ["apl"]
+
+CMD ["--version"]

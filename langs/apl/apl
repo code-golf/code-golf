@@ -2,7 +2,7 @@
 
 cd /tmp
 
-if [ "$1" = "" ]; then
+if [ "$1" = "--version" ]; then
   # Write version to .dyalog file
   echo "⎕←2⊃⎕WG'APLVersion'" > code.dyalog
 else
