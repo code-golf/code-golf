@@ -40,5 +40,5 @@ func golferSearchGET(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	render(w, r, "golfer/search", data, "Solution search")
+	render(w, r, "golfer/code-search", data, "Solution search")
 }
