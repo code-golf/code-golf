@@ -1,22 +1,22 @@
 import { $ } from '../_util';
 
 interface Solution {
-    Code: string, Hole: string, Lang: string, Scoring: string | null
+    code: string, hole: string, lang: string, scoring: string | null
 }
 let solutions: Solution[] = JSON.parse($('#solutions').innerText);
 const uniqueSolutions: Record<string, Solution> = {};
 for (const solution of solutions) {
-    const key = solution.Hole + solution.Lang + solution.Code;
+    const key = solution.hole + solution.lang + solution.code;
     if (key in uniqueSolutions) {
-        uniqueSolutions[key].Scoring = null;
+        uniqueSolutions[key].scoring = null;
     }
     else {
         uniqueSolutions[key] = solution;
     }
 }
 solutions = Object.values(uniqueSolutions);
-const langs: Record<string,string> = JSON.parse($('#langs').innerText);
-const holes: Record<string,string> = JSON.parse($('#holes').innerText);
+const langs: Record<string, string> = JSON.parse($('#langs').innerText);
+const holes: Record<string, string> = JSON.parse($('#holes').innerText);
 
 $('#searchInput').onkeyup = onSearch;
 $('#isRegexInput').onchange = onSearch;
@@ -51,21 +51,21 @@ function onSearch() {
             const amount = (n: number, singular: string, plural?: string) => `${n} ${n === 1 ? singular : plural ?? singular + 's'}`;
 
             const results = solutions
-                .filter(x => !language || x.Lang == language)
+                .filter(x => !language || x.lang == language)
                 .map(x => {
-                    const matches = [...x.Code.matchAll(pattern)];
+                    const matches = [...x.code.matchAll(pattern)];
                     const matchesCount = matches.length;
                     let firstMatch = {before: '', match: '', after: ''};
                     if (matchesCount > 0) {
                         const m = matches[0];
                         const b = m.index;
                         let a = b;
-                        while (a-1 > 0 && a > b - 10 && !/\n|\r/.test(x.Code[a-1])) a--;
+                        while (a-1 > 0 && a > b - 10 && !/\n|\r/.test(x.code[a-1])) a--;
                         let c = b;
-                        while (c+1 <= b + m[0].length && !/\n|\r/.test(x.Code[c])) c++;
+                        while (c+1 <= b + m[0].length && !/\n|\r/.test(x.code[c])) c++;
                         let d = c;
-                        while (d+1 <= x.Code.length && d < c + 10 && !/\n|\r/.test(x.Code[d])) d++;
-                        firstMatch = {before: x.Code.slice(a,b), match: x.Code.slice(b,c), after: x.Code.slice(c,d)};
+                        while (d+1 <= x.code.length && d < c + 10 && !/\n|\r/.test(x.code[d])) d++;
+                        firstMatch = {before: x.code.slice(a,b), match: x.code.slice(b,c), after: x.code.slice(c,d)};
                     }
                     return {...x, matchesCount, firstMatch};
                 }).filter(x => x.matchesCount > 0);
@@ -75,8 +75,8 @@ function onSearch() {
             $('#resultsOverview').innerText = results.length === 0
                 ? '0 matches'
                 : `${amount(totalCount, ci + 'match', ci + 'matches')} across ${amount(results.length, 'solution')}`;
-            const resultNodes = results.map(r => (<a href={r.Hole + '#' + r.Lang}>
-                <h2>{holes[r.Hole]} in {langs[r.Lang]}{r.Scoring ? ` (${r.Scoring})` : ''}</h2>
+            const resultNodes = results.map(r => (<a href={r.hole + '#' + r.lang}>
+                <h2>{holes[r.hole]} in {langs[r.lang]}{r.scoring ? ` (${r.scoring})` : ''}</h2>
                 <span>
                     <code>{r.firstMatch.before}<span class='match'>{r.firstMatch.match}</span>{r.firstMatch.after}</code>
                     {r.matchesCount > 1 ? ' and ' + amount(r.matchesCount-1, 'more match', 'more matches') : ''}
