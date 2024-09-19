@@ -1,4 +1,4 @@
-FROM crystallang/crystal:1.13.2-alpine AS builder
+FROM crystallang/crystal:1.13.3-alpine AS builder
 
 RUN apk add --no-cache build-base    \
                        curl          \
