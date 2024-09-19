@@ -409,9 +409,9 @@ for arg in process.argv[2..]
 '''
 
 [Crystal]
-args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
-env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
-size    = '132 MiB'
+args    = [ '/usr/bin/crystalwrapper', '-' ]
+env     = [ 'PATH=/usr/bin:/bin:$PATH' ]
+size    = '135 MiB'
 version = '1.13.3'
 website = 'https://crystal-lang.org'
 example = '''
