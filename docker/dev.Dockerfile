@@ -19,11 +19,11 @@ RUN apk add --no-cache build-base curl git linux-headers tzdata \
 #COPY --from=codegolf/lang-basic        ["/", "/langs/basic/rootfs/"       ] #  205 MiB
 #COPY --from=codegolf/lang-elixir       ["/", "/langs/elixir/rootfs/"      ] #  178 MiB
 #COPY --from=codegolf/lang-powershell   ["/", "/langs/powershell/rootfs/"  ] #  178 MiB
-#COPY --from=codegolf/lang-factor       ["/", "/langs/factor/rootfs/"      ] #  172 MiB
+#COPY --from=codegolf/lang-factor       ["/", "/langs/factor/rootfs/"      ] #  173 MiB
 #COPY --from=codegolf/lang-rockstar     ["/", "/langs/rockstar/rootfs/"    ] #  162 MiB
 #COPY --from=codegolf/lang-c-sharp      ["/", "/langs/c-sharp/rootfs/"     ] #  152 MiB
 #COPY --from=codegolf/lang-f-sharp      ["/", "/langs/f-sharp/rootfs/"     ] #  148 MiB
-#COPY --from=codegolf/lang-cpp          ["/", "/langs/cpp/rootfs/"         ] #  142 MiB
+#COPY --from=codegolf/lang-cpp          ["/", "/langs/cpp/rootfs/"         ] #  147 MiB
 #COPY --from=codegolf/lang-assembly     ["/", "/langs/assembly/rootfs/"    ] #  106 MiB
 #COPY --from=codegolf/lang-coconut      ["/", "/langs/coconut/rootfs/"     ] #  105 MiB
 #COPY --from=codegolf/lang-fortran      ["/", "/langs/fortran/rootfs/"     ] # 94.3 MiB
@@ -33,7 +33,7 @@ RUN apk add --no-cache build-base curl git linux-headers tzdata \
 #COPY --from=codegolf/lang-raku         ["/", "/langs/raku/rootfs/"        ] # 75.5 MiB
 #COPY --from=codegolf/lang-coffeescript ["/", "/langs/coffeescript/rootfs/"] # 70.7 MiB
 #COPY --from=codegolf/lang-civet        ["/", "/langs/civet/rootfs/"       ] # 68.7 MiB
-#COPY --from=codegolf/lang-clojure      ["/", "/langs/clojure/rootfs/"     ] # 65.8 MiB
+#COPY --from=codegolf/lang-clojure      ["/", "/langs/clojure/rootfs/"     ] # 66.3 MiB
 #COPY --from=codegolf/lang-v            ["/", "/langs/v/rootfs/"           ] # 60.9 MiB
 #COPY --from=codegolf/lang-hy           ["/", "/langs/hy/rootfs/"          ] # 60.5 MiB
 #COPY --from=codegolf/lang-java         ["/", "/langs/java/rootfs/"        ] # 58.1 MiB
@@ -55,7 +55,7 @@ RUN apk add --no-cache build-base curl git linux-headers tzdata \
 #COPY --from=codegolf/lang-php          ["/", "/langs/php/rootfs/"         ] # 8.40 MiB
 #COPY --from=codegolf/lang-perl         ["/", "/langs/perl/rootfs/"        ] # 5.51 MiB
 #COPY --from=codegolf/lang-arturo       ["/", "/langs/arturo/rootfs/"      ] # 5.29 MiB
-#COPY --from=codegolf/lang-tcl          ["/", "/langs/tcl/rootfs/"         ] # 5.25 MiB
+#COPY --from=codegolf/lang-tcl          ["/", "/langs/tcl/rootfs/"         ] # 5.19 MiB
 #COPY --from=codegolf/lang-fish         ["/", "/langs/fish/rootfs/"        ] # 4.66 MiB
 #COPY --from=codegolf/lang-rexx         ["/", "/langs/rexx/rootfs/"        ] # 4.63 MiB
 #COPY --from=codegolf/lang-cobol        ["/", "/langs/cobol/rootfs/"       ] # 4.56 MiB
