@@ -5,7 +5,7 @@ RUN curl -Lo scala-cli.gz https://github.com/VirtusLab/scala-cli/releases/downlo
 RUN gunzip scala-cli.gz    \
  && chmod +x scala-cli     \
  && mv scala-cli /usr/bin/ \
- && TERM=dumb scala-cli    \
+ && TERM="dumb" scala-cli  \
  && scala-cli --power bloop
 
 FROM codegolf/lang-base
@@ -17,6 +17,11 @@ COPY --from=0 /opt/graalvm-* /opt/jvm
 COPY --from=0 /usr           /usr
 
 COPY /scalawrapper /usr/bin/
+
+# I know exactly what to do here but several attempts have failed so far.
+# Well, "exactly" is too much, but I presume it'll work.
+
+# Remove
 RUN chmod +x /usr/bin/scalawrapper
 
 ENTRYPOINT ["scala-cli"]
