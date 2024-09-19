@@ -8,15 +8,14 @@ RUN curl https://ftp.gnu.org/gnu/gawk/gawk-5.3.0.tar.xz \
 RUN ./configure    \
     --disable-docs \
     --disable-lint \
-    --prefix=/usr  \
  && make -j`nproc` \
  && make install   \
- && strip /usr/bin/gawk
+ && strip /usr/local/bin/gawk
 
 FROM codegolf/lang-base-no-proc
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /usr/bin/gawk            /usr/bin/
+COPY --from=0 /usr/local/bin/gawk      /usr/bin/
 
 ENTRYPOINT ["gawk"]
 
