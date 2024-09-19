@@ -1,7 +1,7 @@
 FROM debian:bookworm-slim AS builder
 
 RUN apt-get update \
- && DEBIAN_FRONTEND=noninteractive apt-get install -y curl dpkg libtinfo5
+ && DEBIAN_FRONTEND="noninteractive" apt-get install -y curl dpkg libtinfo5
 
 RUN curl -o dyalog.deb https://www.dyalog.com/uploads/php/download.dyalog.com/download.php?file=19.0/linux_64_19.0.50027_unicode.x86_64.deb \
  && dpkg -i dyalog.deb
@@ -17,7 +17,7 @@ COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
               /lib/x86_64-linux-gnu/libpthread.so.0 \
               /lib/x86_64-linux-gnu/librt.so.1      \
               /lib/x86_64-linux-gnu/libtinfo.so.5   \
-              /lib/x86_64-linux-gnu/libtinfo.so.6   /lib/x86_64-linux-gnu/
+              /lib/x86_64-linux-gnu/libtinfo.so.6   /lib/
 COPY --from=0 /lib64/ld-linux-x86-64.so.2           /lib64/
 COPY --from=0 $DYALOG/dyalog                        $DYALOG/
 COPY --from=0 $DYALOG/aplkeys/default               \
