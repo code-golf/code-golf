@@ -392,7 +392,7 @@ for arg in sys.argv[1:]:
 args       = [ '/usr/bin/coffeescript', '-' ]
 env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 450
-size       = '70.7 MiB'
+size       = '69.9 MiB'
 version    = '2.7.0'
 website    = 'https://coffeescript.org'
 example    = '''
