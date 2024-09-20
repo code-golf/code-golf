@@ -25,7 +25,7 @@ RUN chmod +x /usr/bin/scalawrapper
 
 RUN chmod 777 /tmp
 USER nobody
-COPY --chown=nobody /.cache /.cache
+COPY --chown=nobody --from=0 /.cache /.cache
 
 ENTRYPOINT ["scalawrapper"]
 
