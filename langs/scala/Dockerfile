@@ -10,17 +10,15 @@ RUN gunzip scala-cli.gz    \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/cat /bin/sh   /bin/
-COPY --from=0 /lib               /lib
-COPY --from=0 /lib64             /lib64
-COPY --from=0 /opt/graalvm-*     /opt/graalvm
-COPY --from=0 /usr/bin/coreutils \
-              /usr/bin/scala-cli /usr/bin/
+COPY --from=0 /bin/cat /bin/chmod /bin/cp /bin/sh   /bin/
+COPY --from=0 /lib                                  /lib
+COPY --from=0 /lib64                                /lib64
+COPY --from=0 /opt/graalvm-*                        /opt/graalvm
+COPY --from=0 /usr/bin/coreutils /usr/bin/scala-cli /usr/bin/
 
 COPY /scalawrapper /usr/bin/
 
-# Remove 23-24
-COPY --from=0 /bin/chmod /bin/
+# Remove
 RUN chmod +x /usr/bin/scalawrapper
 
 RUN chmod 777 /tmp
