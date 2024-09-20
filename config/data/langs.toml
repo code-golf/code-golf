@@ -1238,8 +1238,8 @@ Shout arg
 args       = [ '/usr/bin/rockstarwrapper', '-' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 experiment = 1336
-size       = '6.82 MiB'
-version    = '0.11.0'
+size       = '6.01 MiB'
+version    = '0.11.2'
 website    = 'https://beta.codewithrockstar.com'
 example    = '''
 (Printing)
