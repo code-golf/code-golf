@@ -23,10 +23,10 @@ func golferSearchGET(w http.ResponseWriter, r *http.Request) {
 		Holes: make(map[string]string),
 	}
 
-	for k, v := range config.AllLangByID {
+	for k, v := range config.LangByID {
 		data.Langs[k] = v.Name
 	}
-	for k, v := range config.AllHoleByID {
+	for k, v := range config.HoleByID {
 		data.Holes[k] = v.Name
 	}
 
