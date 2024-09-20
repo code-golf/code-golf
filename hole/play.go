@@ -217,8 +217,6 @@ func Play(
 		runs = morse(hole.ID == "morse-decoder")
 	case "musical-chords":
 		runs = musicalChords()
-	case "nfa-simulator":
-		runs = nfaSimulator()
 	case "ordinal-numbers":
 		runs = ordinalNumbers()
 	case "p-adic-expansion":
