@@ -10,20 +10,21 @@ RUN gunzip scala-cli.gz    \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin           /bin
-COPY --from=0 /lib           /lib
-COPY --from=0 /lib64         /lib64
-COPY --from=0 /opt/graalvm-* /opt/graalvm
-COPY --from=0 /usr           /usr
+COPY --from=0 /bin/cat /bin/sh   /bin/
+COPY --from=0 /lib               /lib
+COPY --from=0 /lib64             /lib64
+COPY --from=0 /opt/graalvm-*     /opt/graalvm
+COPY --from=0 /usr/bin/coreutils \
+              /usr/bin/scala-cli /usr/bin/
+
+COPY --from=0 /.cache            /.cache
 
 COPY /scalawrapper /usr/bin/
 
-# I know exactly what to do here but several attempts have failed so far.
-# Well, "exactly" is too much, but I presume it'll work.
-
 # Remove
+COPY --from=0 /bin/chmod /bin/
 RUN chmod +x /usr/bin/scalawrapper
 
-ENTRYPOINT ["scala-cli"]
+ENTRYPOINT ["scalawrapper"]
 
 CMD ["--version"]
