@@ -45,14 +45,9 @@ func scoresGET(w http.ResponseWriter, r *http.Request) {
 	if holeID == "all-holes" {
 		holeID = "all"
 	}
-
-	switch langID {
-	case "all-langs":
+	if langID == "all-holes" {
 		langID = "all"
-	case "perl6":
-		langID = "raku"
 	}
-
 	if scoring == "" {
 		scoring = "bytes"
 	}

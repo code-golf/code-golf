@@ -2,7 +2,7 @@ FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache build-base curl libffi-dev openssl-dev zlib-dev
 
-ENV PYVER=3.12.5 VER=3.1.1
+ENV PYVER=3.12.6 VER=3.1.2
 
 RUN curl https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz | tar xJ
 
@@ -13,13 +13,22 @@ RUN cd Python-$PYVER           \
     --with-lto                 \
     --without-static-libpython \
  && make -j`nproc` install     \
- && strip /usr/bin/python3.12
+ && strip /usr/bin/python3.12  \
+          /usr/lib/python3.12/lib-dynload/*.so
 
 RUN pip3 install coconut==$VER
 
 # Remove some unneeded libraries.
-RUN cd /usr/lib/python3.12 \
- && rm -r ensurepip idlelib tkinter
+RUN rm -r /usr/lib/python3.12/__pycache__/doctest.* \
+          /usr/lib/python3.12/__pycache__/pydoc.*   \
+          /usr/lib/python3.12/__pycache__/turtle.*  \
+          /usr/lib/python3.12/ensurepip             \
+          /usr/lib/python3.12/idlelib               \
+          /usr/lib/python3.12/lib2to3               \
+          /usr/lib/python3.12/pydoc_data            \
+          /usr/lib/python3.12/tkinter               \
+          /usr/lib/python3.12/turtle.py             \
+          /usr/lib/python3.12/turtledemo
 
 FROM codegolf/lang-base
 
