@@ -178,6 +178,15 @@ For i As Integer = 1 To __FB_ARGC__ - 1
 Next
 '''
 
+[Befunge]
+args       = [ '/usr/bin/befunge', '-' ]
+experiment = 428
+size       = '0 MiB'
+version    = '1.0.5'
+website    = 'https://esolangs.org/wiki/Befunge'
+example    = '''
+'''
+
 [Berry]
 args    = [ '/usr/bin/berry', '-' ]
 size    = '973 KiB'
