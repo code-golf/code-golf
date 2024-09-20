@@ -5,4 +5,4 @@
 cat - > /tmp/code.scala
 
 shift
-exec scala-cli /tmp/code.scala "$@"
+exec scala-cli --server=false /tmp/code.scala "$@"

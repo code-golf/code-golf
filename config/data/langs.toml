@@ -1277,7 +1277,7 @@ fn main() {
 '''
 
 [Scala]
-args       = [ '/usr/bin/scala-cli', '--server=false', '-e', '$code' ]
+args       = [ '/usr/bin/scalawrapper', '-' ]
 env        = [ 'JAVA_HOME=/opt/graalvm' ]
 experiment = 235
 version    = '3.5.0'
