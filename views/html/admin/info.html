@@ -34,7 +34,7 @@
         <tbody>
         {{ range .Data.LastTested }}
             <tr>
-                <td>{{ .TestedDay.Format "2006-01-02" }}
+                <td>{{ .Day.Format "2006-01-02" }}
                 <td>{{ comma .Solutions }}
         {{ end }}
     </table>
