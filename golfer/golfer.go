@@ -155,6 +155,13 @@ func (g *Golfer) Solved(holeID string) bool {
 	return ok
 }
 
+func (g *Golfer) Value() (driver.Value, error) {
+	if g == nil {
+		return nil, nil
+	}
+	return int64(g.ID), nil
+}
+
 func (s *Settings) Scan(v any) error { return json.Unmarshal(v.([]byte), &s) }
 
 func (s Settings) Value() (driver.Value, error) { return json.Marshal(s) }

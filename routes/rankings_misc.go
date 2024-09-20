@@ -19,6 +19,7 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 			Bytes, Chars, Count, Rank, Total int
 			Country                          config.NullCountry `db:"country_flag"`
 			Hole, Lang, Scoring              string
+			Me                               bool
 			Name                             string `db:"login"`
 			Submitted                        time.Time
 		}
@@ -67,9 +68,11 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 			ORDER BY rank, login
 			   LIMIT $1 OFFSET $2`
 	case "most-tied-golds":
+		args = append(args, session.Golfer(r))
 		desc = "Most tied gold medals"
 		sql = `SELECT hole, lang, scoring, COUNT(*),
 			          RANK() OVER(ORDER BY COUNT(*) DESC),
+			          COUNT(*) FILTER (WHERE user_id = $3) > 0 me,
 			          COUNT(*) OVER () total
 			     FROM medals
 			    WHERE medal = 'gold'
