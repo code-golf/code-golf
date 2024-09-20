@@ -2,7 +2,7 @@
 
 [ "$1" = "--version" ] && exec scala-cli --version
 
-cat - > /tmp/code.scala
+cat - > /tmp/code.sc
 
 shift
-exec scala-cli --server=false /tmp/code.scala "$@"
+exec scala-cli --server=false /tmp/code.sc "$@"
