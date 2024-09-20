@@ -13,7 +13,7 @@ FROM codegolf/lang-base
 COPY --from=0 /bin           /bin
 COPY --from=0 /lib           /lib
 COPY --from=0 /lib64         /lib64
-COPY --from=0 /opt/graalvm-* /opt/jvm
+COPY --from=0 /opt/graalvm-* /opt/graalvm
 COPY --from=0 /usr           /usr
 
 COPY /scalawrapper /usr/bin/
