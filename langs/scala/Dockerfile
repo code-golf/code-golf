@@ -1,4 +1,4 @@
-FROM ghcr.io/graalvm/graalvm-ce:22.3.1 AS builder
+FROM ghcr.io/graalvm/graalvm-ce:22.3.1 AS erlang-miserable-piece-of-shit-vm
 
 RUN curl -Lo scala-cli.gz https://github.com/VirtusLab/scala-cli/releases/download/v1.5.0/scala-cli-x86_64-pc-linux-static.gz
 
