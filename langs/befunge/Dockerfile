@@ -13,7 +13,7 @@ FROM codegolf/lang-base
 
 COPY --from=0 /bin/cat /bin/sh         /bin/
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /bef/bin/bef             /usr/bin/
+COPY --from=0 /bef/bin/bef2c           /usr/bin/
 
 COPY /befunge /usr/bin/
 

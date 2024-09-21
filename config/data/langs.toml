@@ -185,10 +185,18 @@ size       = '0 MiB'
 version    = '2.25'
 website    = 'https://esolangs.org/wiki/Befunge'
 example    = '''
-> printing      v
-v"Hello, World!"<
->:v
-^,_@
+v printing
+> "!dlroW ,olleH" ,,,,,,,,,,,,, v
+v                           ,+19<
+v looping
+> 0 v              <
+    >:.91+, 1+ :9`!|
+v                 $<
+v accessing arguments
+> ~~$$ v
+       > ~ : 0`!#v_ ,
+                 !
+^            ,+19_@
 '''
 
 [Berry]

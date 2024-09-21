@@ -1,6 +1,12 @@
 #!/bin/sh -e
 
-cat - > /tmp/code.bf
+cd /tmp
+
+cat - > code.bf
+
+for arg in "$@"; do
+    echo "$arg" >> args.bf;
+done
 
 shift
-exec bef -q -i "$@" /tmp/code.bf
+exec bef2c -q -r args.bf code.bf
