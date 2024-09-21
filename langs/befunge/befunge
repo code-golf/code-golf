@@ -3,4 +3,4 @@
 cat - > /tmp/code.bf
 
 shift
-exec bef -i "$@" -q /tmp/code.bf
+exec bef -q -i "$@" /tmp/code.bf

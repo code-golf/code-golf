@@ -182,7 +182,7 @@ Next
 args       = [ '/usr/bin/befunge', '-' ]
 experiment = 428
 size       = '0 MiB'
-version    = '1.0.5'
+version    = '2.25'
 website    = 'https://esolangs.org/wiki/Befunge'
 example    = '''
 > printing      v
