@@ -24,6 +24,7 @@ import { highlightCodeBlocks } from './_wiki';
 const poolDragSources: {[key: string]: DragSource} = {};
 const poolElements: {[key: string]: HTMLElement} = {};
 let isWide = false;
+let isTall = false;
 
 /**
  * Is mobile mode activated? Start at false as default since Golden Layout
@@ -440,12 +441,14 @@ const defaultViewState: ViewState = {
     version: 1,
     config: defaultLayout,
     isWide: false,
+    isTall: false,
 };
 
 interface ViewState {
     version: 1;
     config: ResolvedLayoutConfig | LayoutConfig;
     isWide: boolean;
+    isTall: boolean;
 }
 
 function getViewState(): ViewState {
@@ -453,6 +456,7 @@ function getViewState(): ViewState {
         version: 1,
         config: layout.saveLayout(),
         isWide,
+        isTall,
     };
 }
 
@@ -476,6 +480,7 @@ async function applyViewState(viewState: ViewState) {
     toggleMobile(false);
     Object.keys(poolElements).map(removePoolItem);
     setWide(viewState.isWide);
+    setTall(viewState.isTall);
     let { config } = viewState;
     if (LayoutConfig.isResolved(config))
         config = LayoutConfig.fromResolved(config);
@@ -540,15 +545,16 @@ function setWide(b: boolean) {
     document.documentElement.classList.toggle('full-width', b);
 }
 
-function toggleTall() {
-    document.documentElement.classList.toggle('full-height');
+function setTall(b: boolean) {
+    isTall = b;
+    document.documentElement.classList.toggle('full-height', b);
 }
 
 $('#make-wide').addEventListener('click', () => setWide(true));
 $('#make-narrow').addEventListener('click', () => setWide(false));
 
-$('#make-tall').addEventListener('click', () => toggleTall());
-$('#make-short').addEventListener('click', () => toggleTall());
+$('#make-tall').addEventListener('click', () => setTall(true));
+$('#make-short').addEventListener('click', () => setTall(false));
 
 function addPoolItem(componentType: string) {
     poolElements[componentType]?.remove();
