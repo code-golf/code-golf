@@ -185,6 +185,10 @@ size       = '0 MiB'
 version    = '1.0.5'
 website    = 'https://esolangs.org/wiki/Befunge'
 example    = '''
+> printing      v
+v"Hello, World!"<
+>:v
+^,_@
 '''
 
 [Berry]

@@ -1,0 +1,6 @@
+#!/bin/sh -e
+
+cat - > /tmp/code.bf
+
+shift
+exec bef -i "$@" -q /tmp/code.bf
