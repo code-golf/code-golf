@@ -2,6 +2,7 @@ package hole
 
 import (
 	"math/rand/v2"
+	"slices"
 	"strings"
 )
 
@@ -43,8 +44,7 @@ func pangramGrepTests(l, r int) Run {
 	})
 
 	for i, pangram := range pangrams {
-		clone := make([]byte, len(pangram))
-		copy(clone, pangram)
+		clone := slices.Clone(pangram)
 
 		// Replace letter `i` with a different random letter.
 		old := 'a' + byte(i)
