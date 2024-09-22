@@ -68,7 +68,6 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
                | 'Fortran'
                | 'sed'        { $ver = "GNU $name $digits" }
             when 'BASIC'      { $ver = "FreeBASIC $digits" }
-            when 'Befunge'    { $ver = "$name-93 $digits" }
             when 'C'          { $ver = "Tiny C Compiler $digits" }
             when 'C#'
                | 'F#'

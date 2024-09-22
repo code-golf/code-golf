@@ -4,12 +4,13 @@
 
 cd /tmp
 
-cat > code
+cat - > code
 
+shift
 for arg in "$@"; do
-    # Write argument to file
-    echo "$arg" >> argv
+    # Write NULL terminated argument to .txt file
+    echo -ne "$arg\0" >> argv.txt
 done
 
-# Pass arguments as file
-exec cfunge code < argv
+# Read arguments from .txt file
+exec cfunge -bEW code < argv.txt

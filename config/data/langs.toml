@@ -182,21 +182,19 @@ Next
 args       = [ '/usr/bin/befunge', '-' ]
 experiment = 428
 size       = '2.81 MiB'
-version    = 'Befunge-98 1,001'
+version    = 'b7bf640'
 website    = 'https://github.com/VorpalBlade/cfunge'
 example    = '''
 v printing
 > "!dlroW ,olleH" ,,,,,,,,,,,,, v
-v                           ,+19<
+v                             ,a<
 v looping
-> 0 v              <
-    >:.91+, 1+ :9`!|
-v                 $<
+> 0 v            <
+    >:.a, 1+ :9`!|
+v               $<
 v accessing arguments
-> ~~   v
->      > ~ : 0`!#v_ ,
-                 !
-^            ,*89_@
+> #@~ :0`!#v_ ,
+^        ,a<
 '''
 
 [Berry]
