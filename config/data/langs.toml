@@ -183,7 +183,7 @@ args       = [ '/usr/bin/befunge', '-' ]
 experiment = 428
 size       = '2.29 MiB'
 version    = 'Befunge-93 2.25'
-website    = 'https://catseye.tc/article/Languages.md#befunge-93'
+website    = 'https://codeberg.org/catseye/Befunge-93'
 example    = '''
 v printing
 > "!dlroW ,olleH" ,,,,,,,,,,,,, v
