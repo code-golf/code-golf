@@ -7,13 +7,13 @@ import (
 )
 
 func pangramGrep() []Run {
-	return []Run{
+	return outputTests(
 		pangramGrepTests(2, 5),
 		pangramGrepTests(0, 0),
-	}
+	)
 }
 
-func pangramGrepTests(l, r int) Run {
+func pangramGrepTests(l, r int) []test {
 	// They all start lowercase and valid.
 	pangrams := shuffle([][]byte{
 		[]byte("6>_4\"gv9lb?2!ic7}=-m'fd30ph].o%@w+[8unk&t1es<az(x;${^y#)q,rj\\5/*:"),
@@ -102,13 +102,12 @@ func pangramGrepTests(l, r int) Run {
 		}
 	}
 
-	var args []string
-	var out string
+	tests := make([]test, len(pangrams))
 
 outer:
-	for _, pangram := range shuffle(pangrams) {
+	for i, pangram := range shuffle(pangrams) {
 		str := string(pangram)
-		args = append(args, str)
+		tests[i].in = str
 
 		for c := 'a'; c <= 'z'; c++ {
 			if !strings.ContainsRune(str, c) && !strings.ContainsRune(str, c-32) {
@@ -116,11 +115,8 @@ outer:
 			}
 		}
 
-		out += str + "\n"
+		tests[i].out = str
 	}
 
-	// Drop the trailing newline.
-	out = out[:len(out)-1]
-
-	return Run{Args: args, Answer: out}
+	return tests
 }

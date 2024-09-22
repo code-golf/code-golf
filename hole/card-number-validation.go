@@ -1,16 +1,8 @@
 package hole
 
-import (
-	"strconv"
-	"strings"
-)
+import "strconv"
 
 func cardNumberValidation() []Run {
-	type Case struct {
-		arg   string
-		valid bool
-	}
-
 	digitSum := func(n int) int {
 		return n - n/10*9
 	}
@@ -34,13 +26,13 @@ func cardNumberValidation() []Run {
 		return result
 	}
 
-	cases := []Case{
-		{"4242 4242 4242 4242", true},
-		{"4242 4244 4242 4242", false},
-		{"5555 5555 5555 4444", true},
-		{"5555 5555 5555 5444", false},
-		{"3566 0020 2036 0505", true},
-		{"3656 0020 2036 0505", false},
+	tests := []test{
+		{"4242 4242 4242 4242", "4242 4242 4242 4242"},
+		{"4242 4244 4242 4242", ""},
+		{"5555 5555 5555 4444", "5555 5555 5555 4444"},
+		{"5555 5555 5555 5444", ""},
+		{"3566 0020 2036 0505", "3566 0020 2036 0505"},
+		{"3656 0020 2036 0505", ""},
 	}
 
 	for i := range 100 {
@@ -53,23 +45,15 @@ func cardNumberValidation() []Run {
 		if i < 50 {
 			lastDigit = randInt(0, 9)
 		}
-		cases = append(cases, Case{formatDigits(append(digits, lastDigit)), lastDigit == checkDigit})
-	}
 
-	shuffle(cases)
-	args := make([]string, len(cases))
-	var answer strings.Builder
-
-	for i, c := range cases {
-		args[i] = c.arg
-
-		if c.valid {
-			if answer.Len() > 0 {
-				answer.WriteByte('\n')
-			}
-			answer.WriteString(c.arg)
+		cardNumber := formatDigits(append(digits, lastDigit))
+		t := test{in: cardNumber}
+		if lastDigit == checkDigit {
+			t.out = cardNumber
 		}
+
+		tests = append(tests, t)
 	}
 
-	return []Run{{Args: args, Answer: answer.String()}}
+	return outputTests(shuffle(tests))
 }
