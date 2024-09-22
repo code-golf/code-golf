@@ -33,6 +33,7 @@ import { factor }             from '@codemirror/legacy-modes/mode/factor';
 import { forth }              from '@codemirror/legacy-modes/mode/forth';
 import { fortran }            from '@codemirror/legacy-modes/mode/fortran';
 import { fSharp, oCaml }      from '@codemirror/legacy-modes/mode/mllike';
+import { gleamLanguage }      from '@exercism/codemirror-lang-gleam';
 import { goLanguage }         from '@codemirror/lang-go';
 import { golfScript }         from 'codemirror-lang-golfscript';
 import { haskell }            from '@codemirror/legacy-modes/mode/haskell';
@@ -55,6 +56,7 @@ import { r }                  from '@codemirror/legacy-modes/mode/r';
 import { raku }               from './vendor/codemirror-raku';
 import { ruby }               from '@codemirror/legacy-modes/mode/ruby';
 import { rust }               from '@codemirror/lang-rust';
+import { scheme }             from '@codemirror/legacy-modes/mode/scheme';
 import { shell }              from '@codemirror/legacy-modes/mode/shell';
 import { SQLite }             from '@codemirror/lang-sql';
 import { swift }              from '@codemirror/legacy-modes/mode/swift';
@@ -65,6 +67,7 @@ import { zig }                from 'codemirror-lang-zig';
 
 // Bypass default constructors so we only get highlighters and not extensions.
 const elixir     = new LanguageSupport(elixirLanguage);
+const gleam      = new LanguageSupport(gleamLanguage);
 const go         = new LanguageSupport(goLanguage);
 const javascript = new LanguageSupport(javascriptLanguage);
 const php        = new LanguageSupport(phpLanguage.configure({ top: 'Program' }));
@@ -136,8 +139,10 @@ export const extensions : { [key: string]: any } = {
     // TODO fish
     'forth':         StreamLanguage.define({ ...forth, languageData: { commentTokens: { line: '\\' } } }),
     'fortran':       StreamLanguage.define({ ...fortran, languageData: { commentTokens: { line: '!' } } }),
+    'gleam':         gleam,
     'go':            go,
     'golfscript':    golfScript(),
+    // TODO hare
     'haskell':       StreamLanguage.define(haskell),
     // TODO hexagony
     // TODO hush
@@ -153,6 +158,7 @@ export const extensions : { [key: string]: any } = {
     'lua':           StreamLanguage.define(lua),
     'nim':           StreamLanguage.define({ ...nim( {}, {} ), languageData: { commentTokens: { line: '#' } } }),
     'ocaml':         StreamLanguage.define(oCaml),
+    // TODO odin
     'pascal':        StreamLanguage.define(pascal),
     'perl':          StreamLanguage.define(perl),
     'php':           php,
@@ -166,6 +172,7 @@ export const extensions : { [key: string]: any } = {
     // TODO rockstar
     'ruby':          StreamLanguage.define(ruby),
     'rust':          rust(),
+    'scheme':        StreamLanguage.define(scheme),
     // TODO sed
     'sql':           sql,
     'swift':         StreamLanguage.define(swift),

@@ -36,10 +36,11 @@ else
   #   byte 4 = space
   #   byte 5 = escape (previously \)
   #   byte 6 = parameter (previously #)
+  #   byte 7 = comment (previously %)
   # The end of the group resets all the catcodes for future tokenizing, but it
   # does not change the catcodes of the tokens already created
   init+='
-{\catcode1=1\catcode2=2\catcode5=0\catcode6=6\catcode4=10
+{\catcode1=1\catcode2=2\catcode5=0\catcode6=6\catcode4=10\catcode7=14
 \catcode`$=12\catcode`&=12\catcode`^=12\catcode`_=12\catcode37=12
 \catcode`~=12\catcode`#=12\catcode`{=12\catcode`}=12\catcode9=12
 \catcode32=12\catcode10=12\catcode12=12\catcode13=13\catcode92=12
@@ -64,12 +65,18 @@ else
   #
   # Note: If you ever come back to this, make sure it works for
   # argv{\the\i}, argv\i, and argv{\count0}, and hole args starting with digits
-  init+='globaldefargv1ifnum1=0'"$arg0"'elseifcase1or'"$args"'fifi'
+  body='globaldefargv1ifnum1=0'"$arg0"'elseifcase1or'"$args"'fifi'
+  # Replace each newline '\n' with '\x07\n\n'. The comment character deletes
+  # the first newline, so it's equivalent in most cases. The difference is when
+  # the preceding line ends with one or spaces. This construction prevents
+  # clobbering the trailing spaces.
+  body="${body//$'\n'/$'\x07\n\n'}"
+  init+="$body"
 fi
 
 # \octet enables the octet font
 # \footline={} disables page numbers
-# \parindex=0pt prevents per-paragraph indentation
+# \parindent=0pt prevents per-paragraph indentation
 # \hsize and \vsize set the page dimensions. I set them a bit less than the
 #   maximum legal dimension which is less than 16384pt.
 # \bye closes the document (TeX doesn't handle EOF how you might expect)
