@@ -1,16 +1,15 @@
 #!/bin/sh -e
 
-# Dummy input file shows version
-[ "$1" = "" ] && exec bef foo.bf
+[ "$1" = "-V" ] && exec cfunge -V
 
 cd /tmp
 
-cat > code.bf
+cat > code
 
 for arg in "$@"; do
-    # Write argument to .txt file
-    echo "$arg" >> argv.txt
+    # Write argument to file
+    echo "$arg" >> argv
 done
 
-# Pass arguments as .txt file
-exec bef -q -r argv.txt code.bf
+# Pass arguments as file
+exec cfunge code < argv
