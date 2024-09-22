@@ -37,7 +37,12 @@ func init() {
 var answers embed.FS
 
 // All ASCII whitespace except newline, up to a newline or the end.
-var stdoutTrimmer = regexp.MustCompile(`[\t\x0B\f\r ]+(?:\n|$)`)
+var perLineTrimmer = regexp.MustCompile(`[\t\x0B\f\r ]+(?:\n|$)`)
+
+func trimPerLine(bytesSlice []byte) string {
+	return string(bytes.TrimRight(perLineTrimmer.ReplaceAll(
+		bytesSlice, []byte{'\n'}), "\n"))
+}
 
 // Run holds the results of running a given solution once.
 type Run struct {
@@ -400,6 +405,26 @@ func playRun(
 			args += arg + "\x00"
 		}
 		cmd.Stdin = strings.NewReader(args)
+	case "rockstar":
+		// Embed args into the code.
+		var argCode strings.Builder
+		argCode.WriteString("rock args\n")
+		for _, arg := range run.Args {
+			argCode.WriteString(`rock "`)
+			for _, r := range arg {
+				switch r {
+				case '\\', '"':
+					argCode.WriteByte('\\')
+					argCode.WriteRune(r)
+				case '\n':
+					argCode.WriteString(`\n`)
+				default:
+					argCode.WriteRune(r)
+				}
+			}
+			argCode.WriteString("\" into args\n")
+		}
+		cmd.Stdin = strings.NewReader(argCode.String() + code)
 	case "sed":
 		// For sed we always need to append a null byte, even if no args exist
 		args := strings.Join(run.Args, "\x00") + "\x00"
@@ -459,12 +484,14 @@ func playRun(
 	if holeID == "quine" {
 		run.Stdout = string(stdoutBytes)
 	} else {
-		run.Stdout = string(bytes.TrimRight(stdoutTrimmer.ReplaceAll(
-			stdoutBytes, []byte{'\n'}), "\n"))
+		run.Stdout = trimPerLine(stdoutBytes)
 	}
 
 	// Timeouts and whitespace only output never pass.
 	if hole != nil && !run.Timeout && len(strings.TrimSpace(run.Stdout)) != 0 {
+		if hole.ID != "quine" {
+			run.Answer = trimPerLine([]byte(run.Answer))
+		}
 		if hole.ItemDelimiter != "" {
 			run.Answer = getClosestAnswer(run.Answer, run.Stdout, hole.ItemDelimiter, hole.MultisetDelimiter)
 		}

@@ -1,4 +1,4 @@
-FROM eclipse-temurin:22.0.2_9-jdk-alpine AS builder
+FROM eclipse-temurin:23_37-jdk-alpine AS builder
 
 RUN apk add --no-cache build-base gmp-dev
 

@@ -16,6 +16,12 @@ main > form > div {
     justify-content: flex-end;
 }
 
+main > form > span {
+    align-items: center;
+    display: flex;
+    gap: .25rem;
+}
+
 table {
     display: none;
     margin: auto;
