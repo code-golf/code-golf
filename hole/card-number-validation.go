@@ -65,7 +65,7 @@ func cardNumberValidation() []Run {
 
 		if c.valid {
 			if answer.Len() > 0 {
-				answer.WriteString("\n")
+				answer.WriteByte('\n')
 			}
 			answer.WriteString(c.arg)
 		}
