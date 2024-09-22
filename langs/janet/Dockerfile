@@ -10,7 +10,7 @@ RUN mv janet-* janet                          \
 
 FROM codegolf/lang-base
 
-COPY --from=builder /janet/build/janet /usr/bin/
+COPY --from=0 /janet/build/janet /usr/bin/
 
 ENTRYPOINT ["janet"]
 
