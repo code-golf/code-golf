@@ -390,6 +390,10 @@ preamble = '''
 <p>
     Write a program that will receive various brainfuck programs as arguments
     and execute each program in turn.
+
+<p>
+    Arguments will not contain any character not
+    listed in the table above. In particular, the input command "<b>,</b>" is not tested.
 '''
 
 ['Card Number Validation']
