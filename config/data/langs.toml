@@ -767,7 +767,7 @@ end
 [Hy]
 args       = [ '/usr/bin/hy', '-' ]
 experiment = 586
-size       = '57.6 MiB'
+size       = '60.5 MiB'
 version    = '1.0.0'
 website    = 'https://hylang.org'
 example    = '''
