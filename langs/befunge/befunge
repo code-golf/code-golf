@@ -12,5 +12,5 @@ for arg in "$@"; do
     echo -ne "$arg\0" >> argv.txt
 done
 
-# Read arguments from .txt file
+# Execute and read arguments from .txt file
 exec cfunge -bEW code < argv.txt
