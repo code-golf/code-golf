@@ -1,12 +1,16 @@
 #!/bin/sh -e
 
+# Dummy input file shows version
+[ "$1" = "" ] && exec bef foo.bf
+
 cd /tmp
 
-cat - > code.bf
+cat > code.bf
 
 for arg in "$@"; do
-    echo "$arg" >> args.bf;
+    # Write argument to .txt file
+    echo "$arg" >> argv.txt
 done
 
-shift
-exec bef2c -q -r args.bf code.bf
+# Pass arguments as .txt file
+exec bef -q -r argv.txt code.bf

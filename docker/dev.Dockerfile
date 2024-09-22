@@ -62,6 +62,7 @@ RUN apk add --no-cache build-base curl git linux-headers tzdata \
 #COPY --from=codegolf/lang-jq           ["/", "/langs/jq/rootfs/"          ] # 3.41 MiB
 #COPY --from=codegolf/lang-hush         ["/", "/langs/hush/rootfs/"        ] # 3.26 MiB
 #COPY --from=codegolf/lang-forth        ["/", "/langs/forth/rootfs/"       ] # 2.86 MiB
+COPY --from=codegolf/lang-befunge      ["/", "/langs/befunge/rootfs/"     ] # 2.29 MiB
 #COPY --from=codegolf/lang-awk          ["/", "/langs/awk/rootfs/"         ] # 1.77 MiB
 #COPY --from=codegolf/lang-c            ["/", "/langs/c/rootfs/"           ] # 1.70 MiB
 #COPY --from=codegolf/lang-rebol        ["/", "/langs/rebol/rootfs/"       ] # 1.22 MiB
@@ -75,7 +76,6 @@ RUN apk add --no-cache build-base curl git linux-headers tzdata \
 #COPY --from=codegolf/lang-lua          ["/", "/langs/lua/rootfs/"         ] #  354 KiB
 #COPY --from=codegolf/lang-sed          ["/", "/langs/sed/rootfs/"         ] #  236 KiB
 #COPY --from=codegolf/lang-brainfuck    ["/", "/langs/brainfuck/rootfs/"   ] # 51.2 KiB
-COPY --from=codegolf/lang-befunge      ["/", "/langs/befunge/rootfs/"     ] #    0 MiB
 
 COPY run-lang.c ./
 
