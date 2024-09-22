@@ -2,7 +2,7 @@ FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache curl py-pip
 
-RUN curl -L https://github.com/hylang/hy/archive/refs/tags/0.29.0.tar.gz | tar xz --strip-components 1
+RUN curl -L https://github.com/hylang/hy/archive/refs/tags/1.0.0.tar.gz | tar xz --strip-components 1
 
 RUN pip install hy --break-system-packages
 
