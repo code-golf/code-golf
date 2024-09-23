@@ -201,8 +201,8 @@ func Play(
 		runs = isbn()
 	case "intersection":
 		runs = intersection()
-    case "hello-world":
-        runs = helloWorld()
+	case "hello-world":
+		runs = helloWorld()
 	case "jacobi-symbol":
 		runs = jacobiSymbol()
 	case "levenshtein-distance":
