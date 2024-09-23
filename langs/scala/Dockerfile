@@ -16,14 +16,11 @@ COPY --from=0 /lib64                                /lib64
 COPY --from=0 /opt/graalvm-*                        /opt/graalvm
 COPY --from=0 /usr/bin/coreutils /usr/bin/scala-cli /usr/bin/
 
-COPY /scalawrapper /usr/bin/
-
-# Remove
-RUN chmod +x /usr/bin/scalawrapper
-
 RUN chmod 777 /tmp
 USER nobody
 COPY --chown=nobody --from=0 /root/.cache /.cache
+
+COPY /scalawrapper /usr/bin/
 
 ENTRYPOINT ["scalawrapper"]
 
