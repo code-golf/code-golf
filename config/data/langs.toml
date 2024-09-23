@@ -392,7 +392,7 @@ for arg in sys.argv[1:]:
 args       = [ '/usr/bin/coffeescript', '-' ]
 env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 450
-size       = '70.7 MiB'
+size       = '69.9 MiB'
 version    = '2.7.0'
 website    = 'https://coffeescript.org'
 example    = '''
@@ -603,8 +603,8 @@ end
 args       = [ '/usr/bin/gleamwrapper', '-', '--' ]
 env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 1129
-size       = '87.8 MiB'
-version    = '1.4.1'
+size       = '88.0 MiB'
+version    = '1.5.0'
 website    = 'https://gleam.run'
 example    = '''
 import argv
@@ -746,7 +746,7 @@ example = '''
 [Hush]
 args       = [ '/usr/bin/hush', '-' ]
 experiment = 656
-size       = '3.26 MiB'
+size       = '3.27 MiB'
 version    = '0.1.4'
 website    = 'https://hush-shell.github.io'
 example    = '''
@@ -1232,6 +1232,28 @@ Build i up
 (Accessing arguments)
 While args alike arg
 Shout arg
+'''
+
+['Rockstar 2']
+args       = [ '/usr/bin/rockstarwrapper', '-' ]
+env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
+experiment = 1336
+size       = '6.01 MiB'
+version    = '0.11.3'
+website    = 'https://beta.codewithrockstar.com'
+example    = '''
+(Printing)
+print "Hello, World!"
+
+(Looping)
+x = 0
+until x > 9
+print x
+x = x + 1
+
+(Accessing arguments)
+for arg in arguments
+print arg
 '''
 
 [Ruby]
