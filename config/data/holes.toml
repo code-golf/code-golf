@@ -1321,15 +1321,6 @@ preamble = '''
     inclusive, each on their own line.
 '''
 
-['Hello World!']
-experiment = 1404
-category = 'Art'
-synopsis = 'Golf the code.golf placeholder.'
-preamble = '''
-<p>
-    Golf the code.golf placeholder.
-'''
-
 ['Hexagonal Spiral']
 experiment = 1223
 category = 'Art'
@@ -2443,6 +2434,15 @@ preamble = '''
     Print all the pernicious numbers from <b>0</b> to
     <b>{{ if hasSuffix . "(Long)" }}10,000{{ else }}50{{ end }}</b>
     inclusive, each on their own line.
+'''
+
+['Placeholder']
+experiment = 1404
+category = 'Art'
+synopsis = 'Golf the code.golf placeholder.'
+preamble = '''
+<p>
+    Golf the code.golf placeholder.
 '''
 
 [Poker]

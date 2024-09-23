@@ -2,7 +2,7 @@ package hole
 
 import "strconv"
 
-func helloWorld() []Run {
+func placeholder() []Run {
 	var tests []test
 
 	for i := 0; i < 100; i++ {

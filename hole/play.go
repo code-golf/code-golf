@@ -201,8 +201,6 @@ func Play(
 		runs = isbn()
 	case "intersection":
 		runs = intersection()
-	case "hello-world":
-		runs = helloWorld()
 	case "jacobi-symbol":
 		runs = jacobiSymbol()
 	case "levenshtein-distance":
@@ -229,6 +227,8 @@ func Play(
 		runs = palindromemordnilap()
 	case "pangram-grep":
 		runs = pangramGrep()
+	case "placeholder":
+		runs = placeholder()
 	case "poker":
 		runs = poker()
 	case "qr-decoder", "qr-encoder":
