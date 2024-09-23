@@ -186,8 +186,8 @@ version    = 'b7bf640'
 website    = 'https://github.com/VorpalBlade/cfunge'
 example    = '''
 v printing
-> "!dlroW ,olleH" ,,,,,,,,,,,,, v
-v                             ,a<
+> "!dlroW ,olleH" ck, v
+v                   ,a<
 v looping
 > 0 v            <
     >:.a, 1+ :9`!|
