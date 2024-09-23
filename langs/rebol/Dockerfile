@@ -2,7 +2,8 @@ FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache curl libc6-compat
 
-RUN curl https://www.rebol.com/downloads/v278/rebol-core-278-4-10.tar.gz | tar xz --strip-components=1
+RUN curl https://www.rebol.com/downloads/v278/rebol-core-278-4-10.tar.gz \
+  | tar xz --strip-components 1
 
 FROM codegolf/lang-base
 

@@ -2,7 +2,7 @@ FROM rust:1.80.1-alpine3.20 AS builder
 
 RUN apk add --no-cache build-base curl icu-data npm
 
-RUN curl -L https://github.com/gleam-lang/gleam/archive/38dbf33.tar.gz \
+RUN curl -L https://github.com/gleam-lang/gleam/archive/refs/tags/v1.5.0.tar.gz \
   | tar xz --strip-components 1
 
 RUN make -j`nproc` \
