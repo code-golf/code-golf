@@ -1321,6 +1321,15 @@ preamble = '''
     inclusive, each on their own line.
 '''
 
+['Hello World!']
+experiment = 1404
+category = 'Art'
+synopsis = 'Golf the code.golf placeholder.'
+preamble = '''
+<p>
+    Golf the code.golf placeholder.
+'''
+
 ['Hexagonal Spiral']
 experiment = 1223
 category = 'Art'
