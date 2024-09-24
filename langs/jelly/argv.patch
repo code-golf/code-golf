@@ -1,3 +1,4 @@
+# Add the ʂ nilad which gets all command line arguments as an array.
 # Thanks to: https://github.com/DennisMitchell/jellylanguage/pull/87
 
 --- /jelly/__init__.py
