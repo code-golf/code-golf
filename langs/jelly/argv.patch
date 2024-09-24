@@ -1,3 +1,5 @@
+# Thanks to: https://github.com/DennisMitchell/jellylanguage/pull/87
+
 --- /jelly/__init__.py
 +++ /jelly/__init__.py
 @@ -6,6 +6,8 @@
@@ -9,18 +11,19 @@
  	try:
  		output(jelly_eval(code, args[:2]), end)
  	except KeyboardInterrupt:
+
 --- /jelly/interpreter.py
 +++ /jelly/interpreter.py
 @@ -7,7 +7,7 @@
  code_page  = '''¡¢£¤¥¦©¬®µ½¿€ÆÇÐÑ×ØŒÞßæçðıȷñ÷øœþ !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~¶'''
- code_page += '''°¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾ƁƇƊƑƓƘⱮƝƤƬƲȤɓƈɗƒɠɦƙɱɲƥʠɼʂƭʋȥẠḄḌẸḤỊḲḶṂṆỌṚṢṬỤṾẈỴẒȦḂĊḊĖḞĠḢİĿṀṄȮṖṘṠṪẆẊẎŻạḅḍẹḥịḳḷṃṇọṛṣṭụṿẉỵẓȧḃċḋėḟġḣŀṁṅȯṗṙṡṫẇẋẏż«»‘’“”'''
+ code_page += '''°¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾ƁƇƊƑƓƘⱮƝƤƬƲȤɓƈɗƒɠɦƙɱɲƥʠɼʂƭʋȥẠḄḌẸḤỊḲḶṂṆỌṚṢṬỤṾẈỴẒȦḂĊḊĖḞĠḢİĿṀṄȮṖṘṠṪẆẊẎŻạḅḍẹḥịḳḷṃṇọṛṣṭ§Äẉỵẓȧḃċḋėḟġḣŀṁṅȯṗṙṡṫẇẋẏż«»‘’“”'''
  
--# Unused symbols for single-byte atoms/quicks: ()kquƁƇƘⱮƬȤƒɦɱɲƥʠɼʂȥẈẒŻḥḳṇụṿẉỵẓḋėġṅẏ
-+# Unused symbols for single-byte atoms/quicks: ()kquƁƇƘⱮƬȤƒɦɱɲƥʠɼȥẈẒŻḥḳṇụṿẉỵẓḋėġṅẏ
+-# Unused symbols for single-byte atoms/quicks: (quƁƘȤɦɱɲƥʠʂȥḥḳṇẉỵẓėġṅẏ
++# Unused symbols for single-byte atoms/quicks: (quƁƘȤɦɱɲƥʠȥḥḳṇẉỵẓėġṅẏ
  
  str_digit = '0123456789'
  str_lower = 'abcdefghijklmnopqrstuvwxyz'
-@@ -1636,6 +1636,10 @@
+@@ -1754,6 +1754,10 @@
  		arity = 2,
  		call = lambda x, y: jellify(split_at(iterable(x, make_digits = True), y))
  	),

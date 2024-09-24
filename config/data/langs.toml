@@ -859,13 +859,13 @@ for (let arg of arguments)
 
 [Jelly]
 args       = [ '/usr/bin/jelly', 'eun', '$code' ]
-env        = [ 'LANG=en_US.UTF8' ]
+env        = [ 'LANG=en_US.UTF-8' ]
 experiment = 109
-size       = '0 MiB'
+size       = '138 MiB'
 version    = '70c9fd9'
 website    = 'https://github.com/DennisMitchell/jellylanguage'
 example    = '''
-ʂ
+“3ḅaė;œ»”¶10Ḷ;ʂY
 '''
 
 [jq]
