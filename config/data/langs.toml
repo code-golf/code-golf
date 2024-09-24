@@ -709,8 +709,8 @@ example = '''
 
 [Java]
 args    = [ '/usr/bin/java', '-' ]
-size    = '58.1 MiB'
-version = '22.0.1'
+size    = '58.4 MiB'
+version = '23.0.0'
 website = 'https://openjdk.java.net'
 example = '''
 class Main {
