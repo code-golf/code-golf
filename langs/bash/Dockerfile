@@ -3,7 +3,7 @@ FROM alpine:3.20 AS builder
 RUN apk add --no-cache build-base curl patch
 
 RUN curl https://ftp.gnu.org/gnu/bash/bash-5.2.tar.gz | tar xz && cd bash-5.2 \
- && curl https://ftp.gnu.org/gnu/bash/bash-5.2-patches/bash52-0[01-32] | patch -p0
+ && curl https://ftp.gnu.org/gnu/bash/bash-5.2-patches/bash52-0[01-37] | patch -p0
 
 RUN cd bash-*                  \
  && ./configure                \
