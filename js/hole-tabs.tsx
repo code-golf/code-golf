@@ -24,7 +24,6 @@ import { highlightCodeBlocks } from './_wiki';
 const poolDragSources: {[key: string]: DragSource} = {};
 const poolElements: {[key: string]: HTMLElement} = {};
 let isWide = false;
-let isTall = false;
 
 /**
  * Is mobile mode activated? Start at false as default since Golden Layout
@@ -441,14 +440,12 @@ const defaultViewState: ViewState = {
     version: 1,
     config: defaultLayout,
     isWide: false,
-    isTall: false,
 };
 
 interface ViewState {
     version: 1;
     config: ResolvedLayoutConfig | LayoutConfig;
     isWide: boolean;
-    isTall: boolean;
 }
 
 function getViewState(): ViewState {
@@ -456,7 +453,6 @@ function getViewState(): ViewState {
         version: 1,
         config: layout.saveLayout(),
         isWide,
-        isTall,
     };
 }
 
@@ -480,7 +476,7 @@ async function applyViewState(viewState: ViewState) {
     toggleMobile(false);
     Object.keys(poolElements).map(removePoolItem);
     setWide(viewState.isWide);
-    setTall(viewState.isTall);
+    setTall(false);
     let { config } = viewState;
     if (LayoutConfig.isResolved(config))
         config = LayoutConfig.fromResolved(config);
@@ -546,7 +542,6 @@ function setWide(b: boolean) {
 }
 
 function setTall(b: boolean) {
-    isTall = b;
     document.documentElement.classList.toggle('full-height', b);
 }
 
