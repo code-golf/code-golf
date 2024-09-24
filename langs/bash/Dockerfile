@@ -7,7 +7,7 @@ WORKDIR /lang
 RUN curl https://ftp.gnu.org/gnu/bash/bash-5.2.tar.gz \
   | tar xz --strip-components 1
 
-RUN curl https://ftp.gnu.org/gnu/bash/bash-5.2-patches/bash52-0[01-32] \
+RUN curl https://ftp.gnu.org/gnu/bash/bash-5.2-patches/bash52-0[01-37] \
   | patch -p0
 
 RUN ./configure                \
