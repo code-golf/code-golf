@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     js2svg: { finalNewline: true  },
     plugins: [
         {

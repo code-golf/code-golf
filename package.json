@@ -12,6 +12,7 @@
     "@codemirror/legacy-modes": "",
     "@codemirror/theme-one-dark": "",
     "@defasm/codemirror": "",
+    "@exercism/codemirror-lang-gleam": "",
     "@exercism/codemirror-lang-wren": "github:exercism/codemirror-lang-wren#3bde996",
     "@replit/codemirror-vim": "",
     "chart.js": "",
@@ -22,6 +23,7 @@
     "codemirror-lang-golfscript": "",
     "codemirror-lang-j": "",
     "codemirror-lang-janet": "",
+    "codemirror-lang-jq": "",
     "codemirror-lang-k": "",
     "codemirror-lang-prolog": "",
     "codemirror-lang-zig": "",
@@ -37,6 +39,7 @@
     "@types/diff": "",
     "@typescript-eslint/eslint-plugin": "",
     "@typescript-eslint/parser": "",
-    "eslint": ""
+    "eslint": "",
+    "svgo": ""
   }
 }

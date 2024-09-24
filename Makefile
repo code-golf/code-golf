@@ -10,7 +10,7 @@ bench:
 
 bump:
 	@go get -u
-	@go mod tidy -compat=1.22
+	@go mod tidy -compat=1.23
 	@npm upgrade
 
 cert:
@@ -50,7 +50,7 @@ dev:
 e2e-iterate: export COMPOSE_FILE=docker/core.yml:docker/e2e.yml
 e2e-iterate: export COMPOSE_PROJECT_NAME=code-golf-e2e
 e2e-iterate:
-	@docker compose run e2e
+	@docker compose run --rm e2e
 
 e2e: export COMPOSE_FILE=docker/core.yml:docker/e2e.yml
 e2e: export COMPOSE_PROJECT_NAME=code-golf-e2e
@@ -60,7 +60,7 @@ e2e:
 	@touch docker/.env
 	@docker compose rm -fsv &>/dev/null
 	@docker compose build --pull -q
-	@docker compose run e2e || (docker compose logs; false)
+	@docker compose run --rm e2e || (docker compose logs; false)
 	@docker compose rm -fsv &>/dev/null
 
 fmt:
@@ -79,7 +79,7 @@ mathjax-fonts:
 
 lint:
 	@docker run --rm -v $(CURDIR):/app -w /app \
-	    golangci/golangci-lint:v1.59.1 golangci-lint run
+	    golangci/golangci-lint:v1.61.0 golangci-lint run
 
 	@node_modules/.bin/eslint js
 
@@ -109,7 +109,7 @@ logs:
 	@ssh root@code.golf docker logs --tail 5 -f code-golf
 
 svgo:
-	@svgo -f views/svg
+	@node_modules/.bin/svgo -f views/svg
 
 test:
 	@go test ./...

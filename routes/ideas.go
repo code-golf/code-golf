@@ -10,32 +10,26 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-func ideaColor(kind string) string {
-	switch kind {
-	case "hole":
-		return "purple"
-	case "lang":
-		return "yellow"
-	case "cheevo":
-		return "green"
-	}
-	return "red"
-}
-
 // GET /ideas
 func ideasGET(w http.ResponseWriter, r *http.Request) {
 	type idea struct {
-		Category, CategoryColor, Title string
-		Hole                           *config.Hole
-		ID, ThumbsDown, ThumbsUp       int
+		Category, Title          string
+		Hole                     *config.Hole
+		ID, ThumbsDown, ThumbsUp int
+		Lang                     *config.Lang
 	}
 
-	data := struct {
-		Holes, Ideas []idea
-	}{Holes: make([]idea, len(config.ExpHoleList))}
+	var data struct{ Holes, Ideas, Langs []idea }
 
-	for i, hole := range config.ExpHoleList {
-		data.Holes[i] = idea{Hole: hole, ID: hole.Experiment, Title: hole.Name}
+	// FIXME This is only a slice because of semiprime/sphenic.
+	holes := map[int][]*config.Hole{}
+	for _, hole := range config.ExpHoleList {
+		holes[hole.Experiment] = append(holes[hole.Experiment], hole)
+	}
+
+	langs := map[int]*config.Lang{}
+	for _, lang := range config.ExpLangList {
+		langs[lang.Experiment] = lang
 	}
 
 	var ideas []idea
@@ -47,28 +41,30 @@ func ideasGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, i := range ideas {
-		var isHole = false
-		for j, hole := range data.Holes {
-			if hole.ID == i.ID {
-				data.Holes[j].ThumbsDown = i.ThumbsDown
-				data.Holes[j].ThumbsUp = i.ThumbsUp
-				isHole = true
+		if holes, ok := holes[i.ID]; ok {
+			for _, hole := range holes {
+				i.Hole = hole
+				i.Title = hole.Name
+				data.Holes = append(data.Holes, i)
 			}
-		}
-
-		if strings.HasPrefix(i.Title, "Add ") && strings.HasSuffix(i.Title, " Lang") {
-			i.Title = i.Title[len("Add ") : len(i.Title)-len(" Lang")]
-		}
-
-		i.CategoryColor = ideaColor(i.Category)
-		if !isHole {
+		} else if lang, ok := langs[i.ID]; ok {
+			i.Lang = lang
+			i.Title = lang.Name
+			data.Langs = append(data.Langs, i)
+		} else {
 			data.Ideas = append(data.Ideas, i)
 		}
 	}
 
-	slices.SortStableFunc(data.Holes, func(a, b idea) int {
-		return cmp.Compare(b.ThumbsUp-b.ThumbsDown, a.ThumbsUp-a.ThumbsDown)
-	})
+	// Sort by vote difference, then case-insensitive title.
+	for _, ideas := range [][]idea{data.Holes, data.Langs} {
+		slices.SortFunc(ideas, func(a, b idea) int {
+			return cmp.Or(
+				cmp.Compare(b.ThumbsUp-b.ThumbsDown, a.ThumbsUp-a.ThumbsDown),
+				cmp.Compare(strings.ToLower(a.Title), strings.ToLower(b.Title)),
+			)
+		})
+	}
 
 	render(w, r, "ideas", data, "Ideas")
 }

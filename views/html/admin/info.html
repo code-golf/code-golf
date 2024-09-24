@@ -20,9 +20,9 @@
             <th>Size
         <tbody>
         {{ range .Data.Tables }}
-            {{ if not .Name.Value }}<tfoot>{{ end }}
+            {{ if not .Name.Valid }}<tfoot>{{ end }}
             <tr>
-                <td>{{ .Name.Value }}
+                <td>{{ .Name.V }}
                 <td>{{ with .Rows }}{{ comma . }}{{ end }}
                 <td>{{ bytes .Size }}
         {{ end }}
@@ -34,7 +34,7 @@
         <tbody>
         {{ range .Data.LastTested }}
             <tr>
-                <td>{{ .TestedDay.Format "2006-01-02" }}
+                <td>{{ .Day.Format "2006-01-02" }}
                 <td>{{ comma .Solutions }}
         {{ end }}
     </table>

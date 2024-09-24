@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"embed"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -36,7 +37,12 @@ func init() {
 var answers embed.FS
 
 // All ASCII whitespace except newline, up to a newline or the end.
-var stdoutTrimmer = regexp.MustCompile(`[\t\x0B\f\r ]+(?:\n|$)`)
+var perLineTrimmer = regexp.MustCompile(`[\t\x0B\f\r ]+(?:\n|$)`)
+
+func trimPerLine(bytesSlice []byte) string {
+	return string(bytes.TrimRight(perLineTrimmer.ReplaceAll(
+		bytesSlice, []byte{'\n'}), "\n"))
+}
 
 // Run holds the results of running a given solution once.
 type Run struct {
@@ -169,8 +175,8 @@ func Play(
 		runs = arabicToRoman(hole.ID == "roman-to-arabic")
 	case "arrows":
 		runs = arrows()
-	case "billiard":
-		runs = billiard()
+	case "billiards":
+		runs = billiards()
 	case "brainfuck":
 		runs = brainfuck()
 	case "card-number-validation":
@@ -217,6 +223,8 @@ func Play(
 		runs = ordinalNumbers()
 	case "p-adic-expansion":
 		runs = pAdicExpansion()
+	case "palindromemordnilap":
+		runs = palindromemordnilap()
 	case "pangram-grep":
 		runs = pangramGrep()
 	case "poker":
@@ -257,8 +265,7 @@ func Play(
 	// Holes with fixed test cases.
 	case "css-colors":
 		runs = outputTests(shuffle(fixedTests(hole.ID)))
-	case "emojify", "mnist", "rock-paper-scissors-spock-lizard",
-		"united-states":
+	case "emojify", "rock-paper-scissors-spock-lizard", "united-states":
 		runs = outputMultirunTests(fixedTests(hole.ID))
 	case "floyd-steinberg-dithering", "hexdump", "proximity-grid", "star-wars-opening-crawl":
 		runs = outputTestsWithSep("\n\n", shuffle(fixedTests(hole.ID)))
@@ -301,13 +308,6 @@ func Play(
 func play(
 	ctx context.Context, hole *config.Hole, lang *config.Lang, code string, run *Run,
 ) error {
-	// Require a backslash for TeX Quine to prevent trivial solutions.
-	// Don't even run the code; just mark error and return.
-	if hole.ID == "quine" && lang.ID == "tex" && !strings.Contains(code, `\`) {
-		run.Stderr = `Quine in TeX must have at least one '\' character.`
-		return nil
-	}
-
 	// Preprocess code.
 	switch lang.ID {
 	case "clojure":
@@ -315,6 +315,12 @@ func play(
 		// is not nil. This seems to be a quirk of the Babashka interpreter
 		// that only occurs when providing code via a command line argument.
 		code += "(print)"
+	case "jq":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && json.Valid([]byte(code)) {
+			run.Stderr = "Quine in jq must not be valid JSON."
+			return nil
+		}
 	case "k":
 		if hole.ID == "quine" {
 			length := len(code)
@@ -337,6 +343,12 @@ func play(
 		}
 	case "php":
 		code = "<?php " + code + " ;"
+	case "tex":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && !strings.Contains(code, `\`) {
+			run.Stderr = `Quine in TeX must have at least one '\' character.`
+			return nil
+		}
 	}
 
 	var stderr, stdout bytes.Buffer
@@ -388,6 +400,26 @@ func play(
 			args += arg + "\x00"
 		}
 		cmd.Stdin = strings.NewReader(args)
+	case "rockstar":
+		// Embed args into the code.
+		var argCode strings.Builder
+		argCode.WriteString("rock args\n")
+		for _, arg := range run.Args {
+			argCode.WriteString(`rock "`)
+			for _, r := range arg {
+				switch r {
+				case '\\', '"':
+					argCode.WriteByte('\\')
+					argCode.WriteRune(r)
+				case '\n':
+					argCode.WriteString(`\n`)
+				default:
+					argCode.WriteRune(r)
+				}
+			}
+			argCode.WriteString("\" into args\n")
+		}
+		cmd.Stdin = strings.NewReader(argCode.String() + code)
 	case "sed":
 		// For sed we always need to append a null byte, even if no args exist
 		args := strings.Join(run.Args, "\x00") + "\x00"
@@ -447,12 +479,14 @@ func play(
 	if hole.ID == "quine" {
 		run.Stdout = string(stdoutBytes)
 	} else {
-		run.Stdout = string(bytes.TrimRight(stdoutTrimmer.ReplaceAll(
-			stdoutBytes, []byte{'\n'}), "\n"))
+		run.Stdout = trimPerLine(stdoutBytes)
 	}
 
 	// Timeouts and whitespace only output never pass.
 	if !run.Timeout && len(strings.TrimSpace(run.Stdout)) != 0 {
+		if hole.ID != "quine" {
+			run.Answer = trimPerLine([]byte(run.Answer))
+		}
 		if hole.ItemDelimiter != "" {
 			run.Answer = getClosestAnswer(run.Answer, run.Stdout, hole.ItemDelimiter, hole.MultisetDelimiter)
 		}
