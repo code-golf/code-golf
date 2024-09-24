@@ -14,6 +14,7 @@ constant %paths = (
     'Bash'         => 'en.wikipedia.org/wiki/Bash_(Unix_shell)',
     'BASIC'        => 'en.wikipedia.org/wiki/FreeBASIC',
     'Berry'        => 'github.com/berry-lang/berry/releases/latest',
+    'BQN'          => 'aplwiki.com/wiki/BQN',
     'brainfuck'    => 'github.com/primo-ppcg/bfci',
     'C'            => 'en.wikipedia.org/wiki/Tiny_C_Compiler',
     'C#'           => 'en.wikipedia.org/wiki/C_Sharp_(programming_language)',
@@ -87,6 +88,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         state $ua  = HTTP::Tiny.new :throw-exceptions;
         my    $res = $ua.get("https://$_")<content>.decode;
 
+        when / 'aplwiki'     / { $res ~~ / ' release' .+? <(<ver>)> / }
         when / 'codeberg'    / { $res ~~ / '"shortsha">' <(<ver>)> / }
         when / 'crates.io'   / { $res.&from-json<crate><max_stable_version> }
         when / 'endoflife'   / { $res.&from-json[0]<latest> }
