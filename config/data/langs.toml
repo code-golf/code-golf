@@ -865,7 +865,8 @@ size       = '138 MiB'
 version    = '70c9fd9'
 website    = 'https://github.com/DennisMitchell/jellylanguage'
 example    = '''
-“3ḅaė;œ»”¶10Ḷ;ʂY
+Printing 	Looping	  Accessing arguments
+“3ḅaė;œ»”¶ 	10Ḷ;	  ʂY
 '''
 
 [jq]
