@@ -343,6 +343,12 @@ func play(
 			run.Stderr = "Quine in " + lang.Name + " must not consist solely of numeric characters."
 			return nil
 		}
+	case "jelly":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && len(code) > 0 && !strings.Contains(code, `“`) {
+			run.Stderr = "Quine in Jelly must have at least one '“' character."
+			return nil
+		}
 	case "jq":
 		// Prevent trivial quines. Error out and return early.
 		if hole.ID == "quine" && json.Valid([]byte(code)) {

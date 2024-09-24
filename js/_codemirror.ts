@@ -174,6 +174,7 @@ export const extensions : { [key: string]: any } = {
     'janet':         janet(),
     'java':          java(),
     'javascript':    javascript,
+    // TODO jelly
     'jq':            jq(),
     'julia':         StreamLanguage.define(julia),
     'k':             k(),
