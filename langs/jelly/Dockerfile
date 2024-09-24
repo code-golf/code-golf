@@ -22,7 +22,7 @@ COPY /argv.patch /jellylanguage/
           
 RUN cd jellylanguage       \
  && patch -p1 < argv.patch \
- && pip3 install --break-system-packages --upgrade .
+ && pip3 install --upgrade .
 
 # Remove some unneeded libraries.
 RUN rm -r /usr/lib/python3.12/__pycache__/doctest.* \
