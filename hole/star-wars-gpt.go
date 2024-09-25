@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func solve(corpusSanitized string, promptWords map[string]bool) map[string]string {
+func solveSWGPT(corpusSanitized string, promptWords map[string]bool) map[string]string {
 	markovFirst := map[string][]string{}
 	markovCount := map[string]map[string]int{}
 
@@ -70,20 +70,20 @@ func starWarsGpt() []Run {
 			}
 		}
 
-		var input strings.Builder
-		var output strings.Builder
+		var inputSWGPT strings.Builder
+		var outputSWGPT strings.Builder
 
-		input.WriteString(corpusSanitized)
-		input.WriteByte('\n')
+		inputSWGPT.WriteString(corpusSanitized)
+		inputSWGPT.WriteByte('\n')
 
-		for solveInputWord, solveOutputWord := range solve(corpusSanitized, chosenWords) {
-			input.WriteString(solveInputWord)
-			input.WriteByte('\n')
-			output.WriteString(solveOutputWord)
-			output.WriteByte('\n')
+		for solveInputWord, solveOutputWord := range solveSWGPT(corpusSanitized, chosenWords) {
+			inputSWGPT.WriteString(solveInputWord)
+			inputSWGPT.WriteByte('\n')
+			outputSWGPT.WriteString(solveOutputWord)
+			outputSWGPT.WriteByte('\n')
 		}
 
-		runs[i/2] = Run{Args: input, Answer: output}
+		runs[i/2] = Run{Args: inputSWGPT, Answer: outputSWGPT}
 	}
 
   return outputTests(runs...)
