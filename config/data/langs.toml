@@ -716,6 +716,30 @@ main = do
   mapM putStrLn args
 '''
 
+[Haxe]
+args       = [ '/usr/bin/haxewrapper', '-' ]
+env        = [ 'HAXE_STD_PATH=/usr/lib/std' ]
+experiment = 1366
+size       = '40.0 MiB'
+version    = '4.3.6'
+website    = 'https://haxe.org'
+example    = '''
+class Main {
+    static public function main() {
+        // Printing
+        Sys.println("Hello, World!");
+
+        // Looping
+        for (i in 0...10)
+            Sys.println(i);
+
+        // Accessing arguments
+        for (arg in Sys.args())
+            Sys.println(arg);
+    }
+}
+'''
+
 [Hexagony]
 args    = [ '/usr/bin/hexagony', '-d', '-' ]
 size    = '8.81 MiB'
