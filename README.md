@@ -84,6 +84,9 @@ $ make test
 ```
 
 2. Run the e2e tests:
+
+> *NOTE*: Any changes made to content in the `langs` directory causes the command to fail halfway through the tests.
+
 ```
 $ make e2e
 ```
