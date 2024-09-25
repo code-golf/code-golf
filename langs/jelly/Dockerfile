@@ -1,8 +1,10 @@
 FROM alpine:3.20 AS builder
 
+ENV PYVER=3.12.6
+
 RUN apk add --no-cache build-base curl git libffi-dev openssl-dev zlib-dev
 
-ENV PYVER=3.12.6
+RUN git clone https://github.com/DennisMitchell/jellylanguage.git
 
 RUN curl https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz | tar xJ
 
@@ -16,25 +18,20 @@ RUN cd Python-$PYVER           \
  && strip /usr/bin/python3.12  \
           /usr/lib/python3.12/lib-dynload/*.so
 
-RUN git clone https://github.com/DennisMitchell/jellylanguage.git
-
-COPY /argv.patch /jellylanguage/
-          
-RUN cd jellylanguage       \
- && patch -p1 < argv.patch \
- && pip3 install --upgrade .
+RUN pip3 install --upgrade /jellylanguage/
 
 # Remove some unneeded libraries.
-RUN rm -r /usr/lib/python3.12/__pycache__/doctest.* \
-          /usr/lib/python3.12/__pycache__/pydoc.*   \
-          /usr/lib/python3.12/__pycache__/turtle.*  \
-          /usr/lib/python3.12/ensurepip             \
-          /usr/lib/python3.12/idlelib               \
-          /usr/lib/python3.12/lib2to3               \
-          /usr/lib/python3.12/pydoc_data            \
-          /usr/lib/python3.12/tkinter               \
-          /usr/lib/python3.12/turtle.py             \
-          /usr/lib/python3.12/turtledemo
+RUN cd /usr/lib/python3.12      \
+ && rm -r __pycache__/doctest.* \
+          __pycache__/pydoc.*   \
+          __pycache__/turtle.*  \
+          ensurepip             \
+          idlelib               \
+          lib2to3               \
+          pydoc_data            \
+          tkinter               \
+          turtle.py             \
+          turtledemo
 
 FROM codegolf/lang-base
 
