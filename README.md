@@ -85,7 +85,7 @@ $ make test
 
 2. Run the e2e tests:
 
-> *NOTE*: Any changes made to content in the `langs` directory causes the command to fail halfway through the tests.
+> *NOTE*: Any changes to the languages need to be re-built with `build-langs` before e2e will pick up the changes.
 
 ```
 $ make e2e
