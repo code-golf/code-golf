@@ -858,10 +858,11 @@ for (let arg of arguments)
 '''
 
 [Jelly]
-args       = [ '/usr/bin/jelly', 'eun', '$code' ]
-env        = [ 'LANG=en_US.UTF-8' ]
+args       = [ '/usr/bin/jellywrapper', '-' ]
+args-quine = [ '/usr/bin/jelly', 'en', '$code', '-' ]
+env        = [ 'LANG=en_US' ]
 experiment = 109
-size       = '139 MiB'
+size       = '140 MiB'
 version    = '70c9fd9'
 website    = 'https://github.com/DennisMitchell/jellylanguage'
 example    = '''
