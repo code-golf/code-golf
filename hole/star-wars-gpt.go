@@ -17,7 +17,7 @@ func solveSWGPT(corpusSanitized string, promptWords map[string]bool) map[string]
 			markovCount[words[i]] = make(map[string]int)
 		}
 		markovFirst[words[i]] = append(markovFirst[words[i]], words[i+1])
-		markovCount[words[i]][words[i+1]] += 1
+		markovCount[words[i]][words[i+1]]++
 	}
 
 	answer := make(map[string]string)
