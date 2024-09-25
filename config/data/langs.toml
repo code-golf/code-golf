@@ -820,7 +820,7 @@ example = '''
 [Java]
 args    = [ '/usr/bin/java', '-' ]
 size    = '58.4 MiB'
-version = '23.0.0'
+version = 'OpenJDK 23.0.0'
 website = 'https://openjdk.java.net'
 example = '''
 class Main {
