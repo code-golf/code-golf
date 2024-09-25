@@ -50,7 +50,7 @@ func starWarsGpt() []Run {
 		`The dead speak! The galaxy has heard a mysterious broadcast, a threat of REVENGE in the sinister voice of the late EMPEROR PALPATINE. GENERAL LEIA ORGANA dispatches secret agents to gather intelligence, while REY, the last hope of the Jedi, trains for battle against the diabolical FIRST ORDER. Meanwhile, Supreme Leader KYLO REN rages in search of the phantom Emperor, determined to destroy any threat to his power....`,
 	})
 
-  runs := make([][]test, 5)
+	runs := make([]Run, 5)
 
 	for i := 0; i < 10; i += 2 {
 		corpus := corpi[i] + " " + corpi[(i+1)%9]
@@ -83,8 +83,9 @@ func starWarsGpt() []Run {
 			outputSWGPT.WriteByte('\n')
 		}
 
-		runs[i/2] = Run{Args: inputSWGPT, Answer: outputSWGPT}
+		args := []string{inputSWGPT}
+		runs[i/2] = Run{Args: args, Answer: outputSWGPT}
 	}
 
-  return outputTests(runs...)
+	return outputTests(runs...)
 }
