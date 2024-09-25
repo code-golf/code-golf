@@ -35,10 +35,13 @@ RUN cd /usr/lib/python3.12      \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 \
-              /lib/libz.so.1           /lib/
-COPY --from=0 /usr/bin/jelly           \
-              /usr/bin/python3.12      /usr/bin/
-COPY --from=0 /usr/lib/python3.12      /usr/lib/python3.12
+COPY --from=0 /bin/cat /bin/sed /bin/sh /bin/
+COPY --from=0 /lib/ld-musl-x86_64.so.1  \
+              /lib/libz.so.1            /lib/
+COPY --from=0 /usr/bin/jelly            \
+              /usr/bin/python3.12       /usr/bin/
+COPY --from=0 /usr/lib/python3.12       /usr/lib/python3.12
 
-ENTRYPOINT ["jelly"]
+COPY /jellywrapper /usr/bin/
+
+ENTRYPOINT ["jellywrapper"]
