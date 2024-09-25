@@ -83,9 +83,9 @@ func starWarsGpt() []Run {
 			outputSWGPT.WriteByte('\n')
 		}
 
-		args := []string{inputSWGPT}
-		runs[i/2] = Run{Args: args, Answer: outputSWGPT}
+		args := []string{inputSWGPT.String()}
+		runs[i/2] = Run{Args: args, Answer: outputSWGPT.String()}
 	}
 
-	return outputTests(runs...)
+	return runs
 }
