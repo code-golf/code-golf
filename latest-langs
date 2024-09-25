@@ -59,6 +59,7 @@ constant %paths = (
     'Prolog'       => 'en.wikipedia.org/wiki/SWI-Prolog',
     'Python'       => 'endoflife.date/api/python.json',
     'R'            => 'en.wikipedia.org/wiki/R_(programming_language)',
+    'Racket'       => 'github.com/racket/racket/releases/latest',
     'Raku'         => 'github.com/rakudo/rakudo/releases/latest',
     'Rebol'        => 'en.wikipedia.org/wiki/Rebol',
     'Rexx'         => 'regina-rexx.sourceforge.io',
