@@ -861,12 +861,12 @@ for (let arg of arguments)
 args       = [ '/usr/bin/jelly', 'eun', '$code' ]
 env        = [ 'LANG=en_US.UTF-8' ]
 experiment = 109
-size       = '138 MiB'
+size       = '139 MiB'
 version    = '70c9fd9'
 website    = 'https://github.com/DennisMitchell/jellylanguage'
 example    = '''
-Printing 	Looping	  Accessing arguments
-“3ḅaė;œ»”¶ 	10Ḷ;	  ʂY
+Printing         Looping  Accessing arguments
+“Hello, World!¶” ⁵Ḷ;      ³Y
 '''
 
 [jq]
