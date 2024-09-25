@@ -8,7 +8,8 @@ func placeholder() []Run {
 	for r := range runs {
 		var tests []test
 
-		for i := 0; i < randInt(1, 100); i++ {
+        numArgs := randInt(1, 100)
+		for i := 0; i < numArgs; i++ {
 			word := randWord()
 			tests = append(tests, test{word, word})
 		}
