@@ -1045,7 +1045,7 @@ main :: proc() {
 [PARI-GP]
 args       = [ '/usr/bin/pari-gp', '-' ]
 experiment = 219
-size       = '0 MiB'
+size       = '16.3 MiB'
 version    = '2.15.5'
 website    = 'https://pari.math.u-bordeaux.fr'
 example    = '''
@@ -1056,7 +1056,7 @@ print("Hello, World!")
 for (i = 0, 9, print(i))
 
 \\ Accessing arguments
-
+for (i = 1, #(args=readstr("input.txt")), print(args[i]))
 '''
 
 [Pascal]

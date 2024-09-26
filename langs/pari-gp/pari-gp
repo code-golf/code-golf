@@ -2,7 +2,16 @@
 
 [ "$1" = "--version" ] && exec gp --version-short
 
-cat - > /tmp/code.gp
+cd /tmp
+
+cat - > code.gp
+touch input.txt
 
 shift
-exec gp --quiet /tmp/code.gp "$@"
+for arg in "$@"; do
+    # Write argument to .txt file
+    echo "$arg" >> input.txt
+done
+
+# Execute
+exec gp --fast --quiet code.gp
