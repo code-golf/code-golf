@@ -141,7 +141,7 @@ BEGIN {
 [Bash]
 args    = [ '/usr/bin/bash', '-s', '-' ]
 size    = '1.20 MiB'
-version = '5.2.32'
+version = '5.2.37'
 website = 'https://www.gnu.org/software/bash/'
 example = '''
 # Printing
@@ -716,6 +716,30 @@ main = do
   mapM putStrLn args
 '''
 
+[Haxe]
+args       = [ '/usr/bin/haxewrapper', '-' ]
+env        = [ 'HAXE_STD_PATH=/usr/lib/std' ]
+experiment = 1366
+size       = '40.0 MiB'
+version    = '4.3.6'
+website    = 'https://haxe.org'
+example    = '''
+class Main {
+    static public function main() {
+        // Printing
+        Sys.println("Hello, World!");
+
+        // Looping
+        for (i in 0...10)
+            Sys.println(i);
+
+        // Accessing arguments
+        for (arg in Sys.args())
+            Sys.println(arg);
+    }
+}
+'''
+
 [Hexagony]
 args    = [ '/usr/bin/hexagony', '-d', '-' ]
 size    = '8.81 MiB'
@@ -768,7 +792,7 @@ end
 args       = [ '/usr/bin/hy', '-' ]
 experiment = 586
 size       = '60.5 MiB'
-version    = '0.29.0'
+version    = '1.0.0'
 website    = 'https://hylang.org'
 example    = '''
 ; Printing
@@ -819,8 +843,8 @@ example = '''
 
 [Java]
 args    = [ '/usr/bin/java', '-' ]
-size    = '58.1 MiB'
-version = 'OpenJDK 22.0.2'
+size    = '58.4 MiB'
+version = 'OpenJDK 23.0'
 website = 'https://openjdk.java.net'
 example = '''
 class Main {
@@ -1154,6 +1178,24 @@ for (i in 0:9) {
 for (arg in commandArgs(TRUE)) {
     write(arg, 1)
 }
+'''
+
+[Racket]
+args       = [ '/usr/local/bin/racket', '-e', '$code', '--' ]
+experiment = 1358
+size       = '28.9 MiB'
+version    = '8.14'
+website    = 'https://racket-lang.org'
+example    = '''
+; Printing
+(displayln "Hello, World!")
+
+; Looping
+(for-each println (range 10))
+
+; Accessing arguments
+(for ([arg (current-command-line-arguments)])
+  (displayln arg))
 '''
 
 [Raku]
