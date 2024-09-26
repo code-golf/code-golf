@@ -1056,7 +1056,7 @@ print("Hello, World!");
 for (i=0, 9, print(i));
 
 \\ Accessing arguments
-[print(arg)|arg<-readstr("ARGV")];
+[print(arg)|arg<-read(ARGV)];
 '''
 
 [Pascal]

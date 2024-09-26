@@ -4,14 +4,27 @@
 
 cd /tmp
 
-touch ARGV
 cat - > code.gp
 
+# Construct string representation of args list
 shift
+args="["
 for arg in "$@"; do
-    # Write argument to `ARGV`
-    echo "$arg" >> ARGV
+
+  # Escape backslash, double quotes, and newlines
+  escaped="$(\
+    printf '%s' "$arg" \
+      | sed -e 's/\\/\\\\/g' \
+      | sed -e 's/"/\\"/g' \
+      | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/\\n/g' \
+  )"
+
+  # Append escaped arg and trailing comma
+  args="$args\"$escaped\", "
+
 done
+# Discard trailing comma, close contained list, and write `args` to input file
+echo args="${args%, }]" > ARGV
 
 # Execute
 exec gp --fast --quiet code.gp
