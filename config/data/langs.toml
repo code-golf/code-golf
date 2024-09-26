@@ -1050,13 +1050,13 @@ version    = '2.15.5'
 website    = 'https://pari.math.u-bordeaux.fr'
 example    = '''
 \\ Printing
-print("Hello, World!")
+print("Hello, World!");
 
 \\ Looping
-for (i = 0, 9, print(i))
+for (i=0, 9, print(i));
 
 \\ Accessing arguments
-for (i = 1, #(args=readstr("input.txt")), print(args[i]))
+[print(arg)|arg<-readstr("ARGV")];
 '''
 
 [Pascal]

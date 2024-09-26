@@ -4,13 +4,13 @@
 
 cd /tmp
 
+touch ARGV
 cat - > code.gp
-touch input.txt
 
 shift
 for arg in "$@"; do
-    # Write argument to .txt file
-    echo "$arg" >> input.txt
+    # Write argument to `ARGV`
+    echo "$arg" >> ARGV
 done
 
 # Execute
