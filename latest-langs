@@ -66,6 +66,7 @@ constant %paths = (
     'Rockstar 2'   => 'github.com/RockstarLang/rockstar2/releases/latest',
     'Ruby'         => 'endoflife.date/api/ruby.json',
     'Rust'         => 'en.wikipedia.org/wiki/Rust_(programming_language)',
+    'Scala'        => 'github.com/scala/scala3/releases/latest',
     'Scheme'       => 'en.wikipedia.org/wiki/Chez_Scheme',
     'SQL'          => 'en.wikipedia.org/wiki/SQLite',
     'Swift'        => 'github.com/swiftlang/swift/releases/latest',
