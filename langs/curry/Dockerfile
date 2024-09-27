@@ -11,7 +11,7 @@ RUN mv pakcs* edu \
  && cd edu        \
  && make -j`nproc`
 
-FROM codegolf/lang
+FROM codegolf/lang-base
 
 COPY --from=0 /bin/dirname /bin/readlink /bin/rm /bin/sh    /bin/
 COPY --from=0 /edu                                          /edu
