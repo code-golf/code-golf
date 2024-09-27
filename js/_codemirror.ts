@@ -132,6 +132,7 @@ export const extensions : { [key: string]: any } = {
     'coffeescript':  StreamLanguage.define(coffeeScript),
     'cpp':           cpp(),
     'crystal':       StreamLanguage.define(crystal),
+    // TODO curry
     'd':             StreamLanguage.define(d),
     'dart':          StreamLanguage.define(dart),
     'elixir':        elixir,

@@ -429,6 +429,23 @@ ARGV.each do |arg|
 end
 '''
 
+[Curry]
+args       = [ '/usr/bin/curry', '-' ]
+experiment = 1418
+size       = '42.7 MiB'
+version    = 'PAKCS 3.6.0'
+website    = 'https://mirrors.cat.pdx.edu/pakcs/'
+example    = '''
+-- Printing
+
+
+-- Looping
+
+
+-- Accessing arguments
+
+'''
+
 [D]
 args    = [ '/usr/bin/ldc2', '--enable-color=true', '--run', '-' ]
 env     = [ 'PATH=/usr/bin' ]
