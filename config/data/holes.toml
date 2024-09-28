@@ -400,23 +400,26 @@ preamble = '''
 category = 'Computing'
 experiment = 1011
 links = [
-    { name  = 'Wikipedia', url = '//en.wikipedia.org/wiki/Luhn_algorithm' }
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Luhn_algorithm' }
 ]
+released = 2024-10-01
 synopsis = 'Validate card numbers.'
 preamble = '''
 <p>
-    The Luhn algorithm is a simple check digit formula used to validate a variety of
-    identification numbers.
+    The Luhn algorithm is a simple check digit formula used to validate a
+    variety of identification numbers.
 
 <p>
-    Given a list of 16-digit payment card numbers (like <code>3566 0020 2036 0505</code>),
-    output the ones that are valid according to the Luhn algorithm. The digits of each input
-    are separated into groups of four by spaces.
+    Given a list of 16-digit payment card numbers
+    (like <code>3566 0020 2036 0505</code>), output the ones that are valid
+    according to the Luhn algorithm. The digits of each input are separated
+    into groups of four by spaces.
 
 <p>
-    To verify a 16-digit card number like <code>XyXy XyXy XyXy XyXy</code>, add up all the "y"
-    digits and the <strong>digit sums</strong> of the <strong>doubles</strong> of the "X" digits.
-    The card number is valid if this sum is divisible by 10.
+    To verify a 16-digit card number like <code>XyXy XyXy XyXy XyXy</code>,
+    add up all the "y" digits and the <strong>digit sums</strong> of the
+    <strong>doubles</strong> of the "X" digits. The card number is valid if
+    this sum is divisible by 10.
 '''
 
 ['Catalan Numbers']
