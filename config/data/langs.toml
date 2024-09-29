@@ -430,20 +430,25 @@ end
 '''
 
 [Curry]
-args       = [ '/usr/bin/curry', '-' ]
+args       = [ '/usr/bin/currywrapper', '-' ]
+env        = [ 'PATH=/edu/bin:/bin:$PATH' ]
 experiment = 1418
 size       = '42.7 MiB'
 version    = 'PAKCS 3.6.0'
 website    = 'https://mirrors.cat.pdx.edu/pakcs/'
 example    = '''
--- Printing
+import System.Environment(getArgs)
 
+main :: Prelude.IO()
+main = do
+  -- Printing
+  putStrLn "Hello, World!"
 
--- Looping
+  -- Looping
+  mapM print [0..9]
 
-
--- Accessing arguments
-
+  -- Accessing arguments
+  getArgs >>= putStr . unlines
 '''
 
 [D]

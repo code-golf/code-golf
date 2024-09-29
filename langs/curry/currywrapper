@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+[ "$1" = "--version" ] && exec curry --numeric-version
+
+cat - > /tmp/code.curry
+
+shift
+exec curry --quiet :set args "$@" :add System.Environment :load /tmp/code.curry :eval main :quit

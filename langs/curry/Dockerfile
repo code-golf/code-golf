@@ -20,8 +20,8 @@ COPY --from=0 /lib64/ld-linux-x86-64.so.2                   /lib64/
 COPY --from=0 /usr/lib/swipl/bin/x86_64-linux/swipl         /usr/lib/swipl/bin/x86_64-linux/
 COPY --from=0 /usr/lib/swipl/lib/x86_64-linux/libswipl.so.9 /usr/lib/swipl/lib/x86_64-linux/
 
-ENV PATH="/edu/bin:$PATH"
+COPY /currywrapper /usr/bin/
 
-ENTRYPOINT ["pakcs"]
+ENTRYPOINT ["currywrapper"]
 
 CMD ["--version"]
