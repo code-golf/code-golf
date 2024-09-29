@@ -38,7 +38,7 @@ func solveSWGPT(corpusSanitized string, promptWords map[string]bool) map[string]
 }
 
 func starWarsGpt() []Run {
-	corpi := shuffle([]string{
+	corpora := shuffle([]string{
 		`Turmoil has engulfed the Galactic Republic. The taxation of trade routes to outlying star systems is in dispute. Hoping to resolve the matter with a blockade of deadly battleships, the greedy Trade Federation has stopped all shipping to the small planet of Naboo. While the Congress of the Republic endlessly debates this alarming chain of events, the Supreme Chancellor has secretly dispatched two Jedi Knights, the guardians of peace and justice in the galaxy, to settle the conflict....`,
 		`War! The Republic is crumbling under attacks by the ruthless Sith Lord, Count Dooku. There are heroes on both sides. Evil is everywhere. In a stunning move, the fiendish droid leader, General Grievous, has swept into the Republic capital and kidnapped Chancellor Palpatine, leader of the Galactic Senate. As the Separatist Droid Army attempts to flee the besieged capital with their valuable hostage, two Jedi Knights lead a desperate mission to rescue the captive Chancellor....`,
 		`There is unrest in the Galactic Senate. Several thousand solar systems have declared their intentions to leave the Republic. This separatist movement, under the leadership of the mysterious Count Dooku, has made it difficult for the limited number of Jedi Knights to maintain peace and order in the galaxy. Senator Amidala, the former Queen of Naboo, is returning to the Galactic Senate to vote on the critical issue of creating an ARMY OF THE REPUBLIC to assist the overwhelmed Jedi....`,
@@ -53,7 +53,7 @@ func starWarsGpt() []Run {
 	runs := make([]Run, 5)
 
 	for i := 0; i < 10; i += 2 {
-		corpus := corpi[i] + " " + corpi[(i+1)%9]
+		corpus := corpora[i] + " " + corpora[(i+1)%9]
 		corpusSanitized := corpus
 		for _, c := range ".,;!?" {
 			corpusSanitized = strings.Replace(corpusSanitized, string(c), "", -1)
