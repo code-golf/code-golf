@@ -130,6 +130,7 @@ export const extensions : { [key: string]: any } = {
     'cobol':         StreamLanguage.define(cobol),
     'coconut':       python,
     'coffeescript':  StreamLanguage.define(coffeeScript),
+    // TODO coq
     'cpp':           cpp(),
     'crystal':       StreamLanguage.define(crystal),
     'd':             StreamLanguage.define(d),
