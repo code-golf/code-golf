@@ -408,6 +408,23 @@ for arg in process.argv[2..]
     console.log arg
 '''
 
+[Coq]
+args       = [ '/usr/bin/coqwrapper', '-' ]
+experiment = 1425
+size       = '712 MiB'
+version    = '8.20.0'
+website    = 'https://coq.inria.fr'
+example    = '''
+(* Printing *)
+
+
+(* Looping *)
+
+
+(* Accessing arguments *)
+
+'''
+
 [Crystal]
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
