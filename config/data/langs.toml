@@ -698,7 +698,7 @@ export fn main() void = {
 
 [Haskell]
 args    = [ '/usr/bin/haskell', '-' ]
-size    = '388 MiB'
+size    = '390 MiB'
 version = 'Glasgow Haskell Compiler 9.8.2'
 website = 'https://www.haskell.org/ghc/'
 example = '''
