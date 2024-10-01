@@ -2,7 +2,11 @@ FROM alpine:3.20 AS builder
 
 ENV VER=9.8.2
 
-RUN apk add --no-cache gcc ghc=$VER-r1
+RUN apk add --no-cache build-base ghc=$VER-r1
+
+COPY haskell.c .
+
+RUN gcc -Wall -Werror -Wextra -o haskell -s haskell.c
 
 RUN find /usr/lib -name '*.a' -delete
 
@@ -22,14 +26,13 @@ RUN rm -r /usr/lib/ghc-$VER/lib/bin    \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/cat /bin/sh         /bin/
+COPY --from=0 /bin/sh                  /bin/
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /usr/bin/gcc             \
+COPY --from=0 /haskell                 \
+              /usr/bin/gcc             \
               /usr/bin/ghc             \
               /usr/bin/runghc          /usr/bin/
 COPY --from=0 /usr/lib                 /usr/lib
-
-COPY /haskell /usr/bin/
 
 ENTRYPOINT ["haskell"]
 
