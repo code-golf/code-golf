@@ -398,7 +398,6 @@ preamble = '''
 
 ['Card Number Validation']
 category = 'Computing'
-experiment = 1011
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Luhn_algorithm' }
 ]
