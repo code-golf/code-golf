@@ -399,7 +399,8 @@ preamble = '''
 ['Card Number Validation']
 category = 'Computing'
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Luhn_algorithm' }
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Luhn_test_of_credit_card_numbers' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Luhn_algorithm' }
 ]
 released = 2024-10-01
 synopsis = 'Validate card numbers.'
