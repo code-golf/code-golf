@@ -50,6 +50,7 @@ COPY --from=codegolf/lang-clojure      ["/", "/langs/clojure/rootfs/"     ] # 66
 COPY --from=codegolf/lang-hy           ["/", "/langs/hy/rootfs/"          ] # 60.5 MiB
 COPY --from=codegolf/lang-v            ["/", "/langs/v/rootfs/"           ] # 59.7 MiB
 COPY --from=codegolf/lang-java         ["/", "/langs/java/rootfs/"        ] # 58.4 MiB
+COPY --from=codegolf/lang-egel         ["/", "/langs/egel/rootfs/"        ] # 49.8 MiB
 COPY --from=codegolf/lang-prolog       ["/", "/langs/prolog/rootfs/"      ] # 49.3 MiB
 COPY --from=codegolf/lang-python       ["/", "/langs/python/rootfs/"      ] # 48.4 MiB
 COPY --from=codegolf/lang-javascript   ["/", "/langs/javascript/rootfs/"  ] # 41.1 MiB
@@ -91,7 +92,6 @@ COPY --from=codegolf/lang-wren         ["/", "/langs/wren/rootfs/"        ] #  4
 COPY --from=codegolf/lang-lua          ["/", "/langs/lua/rootfs/"         ] #  354 KiB
 COPY --from=codegolf/lang-sed          ["/", "/langs/sed/rootfs/"         ] #  236 KiB
 COPY --from=codegolf/lang-brainfuck    ["/", "/langs/brainfuck/rootfs/"   ] # 51.2 KiB
-COPY --from=codegolf/lang-egel         ["/", "/langs/egel/rootfs/"        ] #    0 MiB
 
 COPY --from=0 /go/code-golf                      /
 COPY --from=0 /go/dist                           /dist/

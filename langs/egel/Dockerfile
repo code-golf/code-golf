@@ -4,29 +4,53 @@ ENV VER=0.1.14
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND="noninteractive" \
-    apt-get install --yes clang cmake curl libfmt-dev make pkg-config
+    apt-get install --yes binutils-dev clang cmake curl libffi-dev libfmt-dev libiberty-dev libicu-dev pkg-config zlib1g-dev
+   
+WORKDIR /lightning
 
-RUN curl https://ftp.gnu.org/gnu/lightning/lightning-2.2.3.tar.gz | tar xz
+RUN curl https://ftp.gnu.org/gnu/lightning/lightning-2.2.3.tar.gz \
+  | tar xz --strip-components 1
 
-RUN cd lightning-2.2.3 \
- && ./configure        \
-    --prefix="/usr"    \
- && make               \
+RUN ./configure \
+ && make        \
  && make install
 
-RUN curl -L https://github.com/egel-lang/egel/archive/refs/tags/v$VER.tar.gz | tar xz
+WORKDIR /egel
 
-RUN cd egel-$VER \
- && mkdir build  \
- && cd build     \
- && cmake ..     \
- && make         \
+RUN curl -L https://github.com/egel-lang/egel/archive/refs/tags/v$VER.tar.gz \
+  | tar xz --strip-components 1
+
+RUN mkdir build    \
+ && cd build       \
+ && cmake ..       \
+ && make -j`nproc` \
  && make install
 
 FROM codegolf/lang-base
 
-COPY --from=0 / /
+COPY --from=0 /bin/cat /bin/sh                           /bin/
+COPY --from=0 /lib/x86_64-linux-gnu/libbfd-2.40-*.so     \
+              /lib/x86_64-linux-gnu/libc.so.6            \
+              /lib/x86_64-linux-gnu/libffi.so.8          \
+              /lib/x86_64-linux-gnu/libfmt.so.9          \
+              /lib/x86_64-linux-gnu/libgcc_s.so.1        \
+              /lib/x86_64-linux-gnu/libicudata.so.72     \
+              /lib/x86_64-linux-gnu/libicui18n.so.72     \
+              /lib/x86_64-linux-gnu/libicuio.so.72       \
+              /lib/x86_64-linux-gnu/libicuuc.so.72       \
+              /lib/x86_64-linux-gnu/libm.so.6            \
+              /lib/x86_64-linux-gnu/libopcodes-2.40-*.so \
+              /lib/x86_64-linux-gnu/libsframe.so.0       \
+              /lib/x86_64-linux-gnu/libstdc++.so.6       \
+              /lib/x86_64-linux-gnu/libz.so.1            \
+              /lib/x86_64-linux-gnu/libzstd.so.1         /lib/
+COPY --from=0 /lib64/ld-linux-x86-64.so.2                /lib64/
+COPY --from=0 /usr/local/bin/egel                        /usr/bin/
+COPY --from=0 /usr/local/lib/liblightning.so.2           /usr/lib/
+COPY --from=0 /usr/local/lib/egel                        /usr/lib/egel
 
-ENTRYPOINT ["egel"]
+COPY /egelwrapper /usr/bin/
+
+ENTRYPOINT ["egelwrapper"]
 
 CMD ["--version"]

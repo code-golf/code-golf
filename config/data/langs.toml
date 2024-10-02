@@ -477,20 +477,31 @@ void main(List<String> argv) {
 '''
 
 [Egel]
-args       = [ '/usr/local/bin/egel', '-e', '$code' ]
+args       = [ '/usr/bin/egelwrapper', '-' ]
 experiment = 1434
-size       = '0 MiB'
+size       = '49.8 MiB'
 version    = '0.1.14'
 website    = 'https://github.com/egel-lang/egel'
 example    = '''
+import "prelude.eg"
+
+using System
+using List
+
 # Printing
-"Hello, World!"
+def printing =
+    print "Hello, World!\n"
 
 # Looping
-
+def looping =
+    [ 10 -> nil | N -> print N "\n"; looping (N+1) ]
 
 # Accessing arguments
+def arguments =
+    drop 2 args MOTHERFUUUUUUUUUUUUUUUUUUCKERS FUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUCK
 
+def main =
+    (printing; looping 0; arguments)
 '''
 
 [Elixir]

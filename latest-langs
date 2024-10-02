@@ -99,7 +99,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'regina-rexx' / { $res ~~ / '<b>Current</b> ' <(<ver>)> / }
         when / 'github.com'  / {
             .ends-with('/releases/latest')
-                ?? $res ~~ / [ $name || 'dev' || 'Release' ] <[\ -]> v? <(<ver>)> /
+                ?? $res ~~ / [ $name || 'dev' || 'elease' ] <[\ -]> v? <(<ver>)> /
                 !! $res ~~ / '"currentOid":"' <( <xdigit> ** 7 )> /;
         }
         when / 'wikipedia'   / {
