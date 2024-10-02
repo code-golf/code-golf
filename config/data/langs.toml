@@ -674,7 +674,7 @@ n*
 
 [Hare]
 args       = [ '/usr/bin/harewrapper', '-' ]
-env        = [ 'PATH=/usr/local/bin:/usr/bin:/bin:$PATH' ]
+env        = [ 'PATH=/usr/local/bin:/usr/bin:/bin' ]
 experiment = 1323
 size       = '13.5 MiB'
 version    = '0.24.2'
