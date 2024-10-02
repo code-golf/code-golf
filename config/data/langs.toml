@@ -1016,6 +1016,7 @@ Sys.argv
 
 [Odin]
 args       = [ '/usr/bin/odinwrapper', '-' ]
+env        = [ 'PATH=/usr/local/bin:/usr/bin:/bin' ]
 experiment = 766
 size       = '258 MiB'
 version    = '2024-10'
