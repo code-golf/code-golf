@@ -3,7 +3,7 @@
 export ODIN_ROOT=/usr/local/bin
 export PATH=$ODIN_ROOT:$PATH
 
-[ "$1" = "version" ] && exec odin version
+[ "$1" = "--version" ] && exec odin version
 
 cd /tmp
 
