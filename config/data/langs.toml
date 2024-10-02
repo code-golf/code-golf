@@ -476,6 +476,23 @@ void main(List<String> argv) {
 }
 '''
 
+[Egel]
+args       = [ '/usr/local/bin/egel', '-e', '$code' ]
+experiment = 1434
+size       = '0 MiB'
+version    = '0.1.14'
+website    = 'https://github.com/egel-lang/egel'
+example    = '''
+# Printing
+"Hello, World!"
+
+# Looping
+
+
+# Accessing arguments
+
+'''
+
 [Elixir]
 args    = [ '/usr/local/bin/elixir', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8', 'PATH=/usr/local/bin:/usr/bin:/bin' ]

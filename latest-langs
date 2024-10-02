@@ -26,6 +26,7 @@ constant %paths = (
     'Crystal'      => 'github.com/crystal-lang/crystal/releases/latest',
     'D'            => 'en.wikipedia.org/wiki/D_(programming_language)',
     'Dart'         => 'en.wikipedia.org/wiki/Dart_(programming_language)',
+    'Egel'         => 'github.com/egel-lang/egel/releases/latest',
     'Elixir'       => 'en.wikipedia.org/wiki/Elixir_(programming_language)',
     'F#'           => 'en.wikipedia.org/wiki/F_Sharp_(programming_language)',
     'Factor'       => 'github.com/factor/factor/releases/latest',
