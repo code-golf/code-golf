@@ -51,4 +51,4 @@ COPY /odinwrapper /usr/bin/
 
 ENTRYPOINT ["odinwrapper"]
 
-CMD ["version"]
+CMD ["--version"]
