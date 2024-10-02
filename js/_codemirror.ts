@@ -33,9 +33,11 @@ import { factor }             from '@codemirror/legacy-modes/mode/factor';
 import { forth }              from '@codemirror/legacy-modes/mode/forth';
 import { fortran }            from '@codemirror/legacy-modes/mode/fortran';
 import { fSharp, oCaml }      from '@codemirror/legacy-modes/mode/mllike';
+import { gleamLanguage }      from '@exercism/codemirror-lang-gleam';
 import { goLanguage }         from '@codemirror/lang-go';
 import { golfScript }         from 'codemirror-lang-golfscript';
 import { haskell }            from '@codemirror/legacy-modes/mode/haskell';
+import { haxe }               from '@codemirror/legacy-modes/mode/haxe';
 import { j }                  from 'codemirror-lang-j';
 import { janet }              from 'codemirror-lang-janet';
 import { java }               from '@codemirror/lang-java';
@@ -66,6 +68,7 @@ import { zig }                from 'codemirror-lang-zig';
 
 // Bypass default constructors so we only get highlighters and not extensions.
 const elixir     = new LanguageSupport(elixirLanguage);
+const gleam      = new LanguageSupport(gleamLanguage);
 const go         = new LanguageSupport(goLanguage);
 const javascript = new LanguageSupport(javascriptLanguage);
 const php        = new LanguageSupport(phpLanguage.configure({ top: 'Program' }));
@@ -137,11 +140,15 @@ export const extensions : { [key: string]: any } = {
     // TODO fish
     'forth':         StreamLanguage.define({ ...forth, languageData: { commentTokens: { line: '\\' } } }),
     'fortran':       StreamLanguage.define({ ...fortran, languageData: { commentTokens: { line: '!' } } }),
+    'gleam':         gleam,
     'go':            go,
     'golfscript':    golfScript(),
+    // TODO hare
     'haskell':       StreamLanguage.define(haskell),
+    'haxe':          StreamLanguage.define(haxe),
     // TODO hexagony
     // TODO hush
+    // TODO hy
     'j':             j(),
     'janet':         janet(),
     'java':          java(),
@@ -153,6 +160,7 @@ export const extensions : { [key: string]: any } = {
     'lua':           StreamLanguage.define(lua),
     'nim':           StreamLanguage.define({ ...nim( {}, {} ), languageData: { commentTokens: { line: '#' } } }),
     'ocaml':         StreamLanguage.define(oCaml),
+    // TODO odin
     'pascal':        StreamLanguage.define(pascal),
     'perl':          StreamLanguage.define(perl),
     'php':           php,
@@ -160,6 +168,7 @@ export const extensions : { [key: string]: any } = {
     'prolog':        prolog(),
     'python':        python,
     'r':             StreamLanguage.define(r),
+    'racket':        StreamLanguage.define(scheme),
     'raku':          StreamLanguage.define(raku),
     // TODO rebol
     // TODO rexx

@@ -45,14 +45,14 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
     }
 
     # Version.
-    if $id ~~ any <assembly brainfuck fish golfscript hexagony k> {
+    if $id ~~ any <assembly brainfuck fish golfscript hare hexagony k> {
         "langs/$id/Dockerfile".IO.slurp ~~ / ' VERSION=' (\S+) /;
         %lang<version> = $id eq 'assembly' ?? "DefAssembler $0" !! $0;
     }
     else {
         # Forth outputs it's version number over stderr.
         my $proc = run «docker run -i --rm --tmpfs '/tmp:exec' $img»,
-            :in, :out, :merge($id eq 'forth' | 'scheme');
+            :in, :out, :merge(so $id eq 'forth' | 'scheme');
 
         $proc.in.say: 'puts [info patchlevel]' if $id eq 'tcl';
         $proc.in.close;
@@ -60,7 +60,8 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         my $ver = $proc.out.slurp(:close).chomp.trans: "\n" => ' ';
 
         given $name {
-            my $digits = $ver ~~ / <[\d.]>+ \d+ /;
+            # Dotted decimal or hyphenated date.
+            my $digits = $ver ~~ / \d+ ( <[.-]> \d+ )+ /;
 
             when 'AWK'
                | 'Forth'
@@ -79,7 +80,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
                 $ver = "D $0 on LDC $digits";
             }
             when 'Haskell'    { $ver = "Glasgow Haskell Compiler $digits" }
-            when 'Java'       { $ver = "OpenJDK $digits" }
+            when 'Java'       { $ver = "OpenJDK 23.0" } # FIXME no decimal place.
             when 'JavaScript' { $ver = "V8 $digits" }
             when 'Lisp'       { $ver = "GNU CLISP $digits" }
             when 'Pascal'     { $ver = "Free Pascal $digits" }

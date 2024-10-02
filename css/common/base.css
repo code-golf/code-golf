@@ -244,7 +244,7 @@ form {
         &:has([type=checkbox]) { flex-direction: column }
     }
 
-    input:not([type]), input[type=number], select { width: 100% }
+    input:not([type]), input[type=date], input[type=number], select { width: 100% }
 
     label {
         display: flex;
@@ -276,9 +276,9 @@ menu {
     padding: 0;
 }
 
-input:not([type]), input[type=number], textarea { background: var(--background) }
+input:not([type]), input[type=date], input[type=number], textarea { background: var(--background) }
 
-input:not([type]), input[type=number], select, textarea {
+input:not([type]), input[type=date], input[type=number], select, textarea {
     border-radius: .25rem;
     border: 1px solid var(--grey);
     color: var(--color);

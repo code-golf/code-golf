@@ -390,29 +390,36 @@ preamble = '''
 <p>
     Write a program that will receive various brainfuck programs as arguments
     and execute each program in turn.
+
+<p>
+    Arguments will not contain any character not
+    listed in the table above. In particular, the input command "<b>,</b>" is not tested.
 '''
 
 ['Card Number Validation']
 category = 'Computing'
-experiment = 1011
 links = [
-    { name  = 'Wikipedia', url = '//en.wikipedia.org/wiki/Luhn_algorithm' }
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Luhn_test_of_credit_card_numbers' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Luhn_algorithm' }
 ]
+released = 2024-10-01
 synopsis = 'Validate card numbers.'
 preamble = '''
 <p>
-    The Luhn algorithm is a simple check digit formula used to validate a variety of
-    identification numbers.
+    The Luhn algorithm is a simple check digit formula used to validate a
+    variety of identification numbers.
 
 <p>
-    Given a list of 16-digit payment card numbers (like <code>3566 0020 2036 0505</code>),
-    output the ones that are valid according to the Luhn algorithm. The digits of each input
-    are separated into groups of four by spaces.
+    Given a list of 16-digit payment card numbers
+    (like <code>3566 0020 2036 0505</code>), output the ones that are valid
+    according to the Luhn algorithm. The digits of each input are separated
+    into groups of four by spaces.
 
 <p>
-    To verify a 16-digit card number like <code>XyXy XyXy XyXy XyXy</code>, add up all the "y"
-    digits and the <strong>digit sums</strong> of the <strong>doubles</strong> of the "X" digits.
-    The card number is valid if this sum is divisible by 10.
+    To verify a 16-digit card number like <code>XyXy XyXy XyXy XyXy</code>,
+    add up all the "y" digits and the <strong>digit sums</strong> of the
+    <strong>doubles</strong> of the "X" digits. The card number is valid if
+    this sum is divisible by 10.
 '''
 
 ['Catalan Numbers']
@@ -2335,14 +2342,16 @@ preamble = '''
 
 [PalindromemordnilaP]
 category = 'Transform'
-links = []
-experiment = 935
+released = 2024-09-01
 synopsis = 'Append minimum number of characters to make the input a palindrome.'
 preamble = '''
-<p>Given an alphanumeric string, append minimum number of characters to get a palindrome and output the result.
+<p>
+    Given an alphanumeric string, append minimum number of characters to get a
+    palindrome and output the result.
 
 <p>
-    For example, on input <code>Palindromemord</code>, output <code>PalindromemordnilaP</code>.
+    For example, on input <code>Palindromemord</code>, output
+    <code>PalindromemordnilaP</code>.
 '''
 
 ['Pangram Grep']
@@ -2360,6 +2369,30 @@ preamble = '''
     Write a program that will receive various sentences as arguments and print
     those that are valid pangrams, meaning they use all letters from A to Z,
     case insensitive.
+'''
+
+['Partition Numbers']
+experiment = 998
+category = 'Sequence'
+links = [
+    { name = 'OEIS A000041', url = '//oeis.org/A000041' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Integer_partition' },
+]
+synopsis = 'Print the first 100 partition numbers.'
+preamble = '''
+<p>
+    The <b>n</b>th partition number is the number of ways that <b>n</b> can be
+    expressed as the sum of positive integers, where ordering does not matter.
+
+<p>
+    For example, <b>4</b> can be partitioned in five distinct ways:
+<pre><code>4
+3 + 1
+2 + 2
+1 + 2 + 1
+1 + 1 + 1 + 1</code></pre>
+<p>
+    Print the first <b>100</b> partition numbers, each on a separate line.
 '''
 
 ['Pascal’s Triangle']
