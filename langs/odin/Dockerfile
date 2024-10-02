@@ -2,7 +2,7 @@ FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache clang curl llvm-dev make
 
-RUN curl -L https://github.com/odin-lang/Odin/archive/refs/tags/dev-2024-08.tar.gz | tar xz
+RUN curl -L https://github.com/odin-lang/Odin/archive/refs/tags/dev-2024-10.tar.gz | tar xz
 
 RUN mv Odin-* /usr/local/tmp
 
