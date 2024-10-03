@@ -160,7 +160,7 @@ BEGIN {
 [Bash]
 args    = [ '/usr/bin/bash', '-s', '-' ]
 size    = '1.20 MiB'
-version = '5.2.32'
+version = '5.2.37'
 website = 'https://www.gnu.org/software/bash/'
 example = '''
 # Printing
@@ -411,7 +411,7 @@ for arg in sys.argv[1:]:
 args       = [ '/usr/bin/coffeescript', '-' ]
 env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 450
-size       = '70.7 MiB'
+size       = '69.9 MiB'
 version    = '2.7.0'
 website    = 'https://coffeescript.org'
 example    = '''
@@ -622,8 +622,8 @@ end
 args       = [ '/usr/bin/gleamwrapper', '-', '--' ]
 env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 1129
-size       = '87.8 MiB'
-version    = '1.4.1'
+size       = '88.4 MiB'
+version    = '1.5.1'
 website    = 'https://gleam.run'
 example    = '''
 import argv
@@ -648,7 +648,7 @@ pub fn main() {
 [Go]
 args    = [ '/usr/bin/go', '-' ]
 size    = '383 MiB'
-version = '1.23.1'
+version = '1.23.2'
 website = 'https://go.dev'
 example = '''
 package main
@@ -693,6 +693,7 @@ n*
 
 [Hare]
 args       = [ '/usr/bin/harewrapper', '-' ]
+env        = [ 'PATH=/usr/local/bin:/usr/bin:/bin' ]
 experiment = 1323
 size       = '13.5 MiB'
 version    = '0.24.2'
@@ -735,6 +736,30 @@ main = do
   mapM putStrLn args
 '''
 
+[Haxe]
+args       = [ '/usr/bin/haxewrapper', '-' ]
+env        = [ 'HAXE_STD_PATH=/usr/lib/std' ]
+experiment = 1366
+size       = '40.0 MiB'
+version    = '4.3.6'
+website    = 'https://haxe.org'
+example    = '''
+class Main {
+    static public function main() {
+        // Printing
+        Sys.println("Hello, World!");
+
+        // Looping
+        for (i in 0...10)
+            Sys.println(i);
+
+        // Accessing arguments
+        for (arg in Sys.args())
+            Sys.println(arg);
+    }
+}
+'''
+
 [Hexagony]
 args    = [ '/usr/bin/hexagony', '-d', '-' ]
 size    = '8.81 MiB'
@@ -765,7 +790,7 @@ example = '''
 [Hush]
 args       = [ '/usr/bin/hush', '-' ]
 experiment = 656
-size       = '3.26 MiB'
+size       = '3.27 MiB'
 version    = '0.1.4'
 website    = 'https://hush-shell.github.io'
 example    = '''
@@ -787,7 +812,7 @@ end
 args       = [ '/usr/bin/hy', '-' ]
 experiment = 586
 size       = '60.5 MiB'
-version    = '0.29.0'
+version    = '1.0.0'
 website    = 'https://hylang.org'
 example    = '''
 ; Printing
@@ -838,8 +863,8 @@ example = '''
 
 [Java]
 args    = [ '/usr/bin/java', '-' ]
-size    = '58.1 MiB'
-version = 'OpenJDK 22.0.2'
+size    = '58.4 MiB'
+version = 'OpenJDK 23.0'
 website = 'https://openjdk.java.net'
 example = '''
 class Main {
@@ -970,8 +995,8 @@ end
 
 [Nim]
 args    = [ '/usr/bin/nim', '--colors:on', '-o:/tmp/code', '-r', 'c', '-' ]
-size    = '15.0 MiB'
-version = '2.0.8'
+size    = '15.5 MiB'
+version = '2.2.0'
 website = 'https://nim-lang.org'
 example = '''
 import os
@@ -1011,9 +1036,10 @@ Sys.argv
 
 [Odin]
 args       = [ '/usr/bin/odinwrapper', '-' ]
+env        = [ 'PATH=/usr/local/bin:/usr/bin:/bin' ]
 experiment = 766
-size       = '257 MiB'
-version    = '2024-09'
+size       = '258 MiB'
+version    = '2024-10'
 website    = 'https://odin-lang.org'
 example    = '''
 package main
@@ -1080,7 +1106,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '8.40 MiB'
-version = '8.3.11'
+version = '8.3.12'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -1118,8 +1144,8 @@ ForEach ($arg in $args) {
 
 [Prolog]
 args    = [ '/usr/bin/prolog', '-g', 'halt', '/tmp/code.pl' ]
-size    = '49.2 MiB'
-version = 'SWI-Prolog 9.2.2'
+size    = '49.3 MiB'
+version = 'SWI-Prolog 9.2.7'
 website = 'https://www.swi-prolog.org'
 example = '''
 % Printing
@@ -1137,7 +1163,7 @@ example = '''
 [Python]
 args    = [ '/usr/bin/python', '-u', '-' ]
 size    = '48.4 MiB'
-version = '3.12.6'
+version = '3.12.7'
 website = 'https://www.python.org'
 example = '''
 import sys
@@ -1175,10 +1201,28 @@ for (arg in commandArgs(TRUE)) {
 }
 '''
 
+[Racket]
+args       = [ '/usr/local/bin/racket', '-e', '$code', '--' ]
+experiment = 1358
+size       = '28.9 MiB'
+version    = '8.14'
+website    = 'https://racket-lang.org'
+example    = '''
+; Printing
+(displayln "Hello, World!")
+
+; Looping
+(for-each println (range 10))
+
+; Accessing arguments
+(for ([arg (current-command-line-arguments)])
+  (displayln arg))
+'''
+
 [Raku]
 args    = [ '/usr/bin/raku', '-' ]
-size    = '75.5 MiB'
-version = 'Raku 6.d on Rakudo 2024.08'
+size    = '75.7 MiB'
+version = 'Raku 6.d on Rakudo 2024.09'
 website = 'https://raku.org'
 example = '''
 # Printing
@@ -1251,6 +1295,28 @@ Build i up
 (Accessing arguments)
 While args alike arg
 Shout arg
+'''
+
+['Rockstar 2']
+args       = [ '/usr/bin/rockstarwrapper', '-' ]
+env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
+experiment = 1336
+size       = '6.01 MiB'
+version    = '0.11.3'
+website    = 'https://beta.codewithrockstar.com'
+example    = '''
+(Printing)
+print "Hello, World!"
+
+(Looping)
+x = 0
+until x > 9
+print x
+x = x + 1
+
+(Accessing arguments)
+for arg in arguments
+print arg
 '''
 
 [Ruby]
@@ -1387,8 +1453,8 @@ for arg in CommandLine.arguments[1...] {
 
 [Tcl]
 args    = [ '/usr/bin/tcl', '/proc/self/fd/0' ]
-size    = '5.19 MiB'
-version = '8.6.15'
+size    = '5.62 MiB'
+version = '9.0.0'
 website = 'https://www.tcl-lang.org'
 example = '''
 # Printing
@@ -1448,8 +1514,8 @@ example    = '''
 
 [V]
 args    = [ '/usr/bin/v', '-' ]
-size    = '60.9 MiB'
-version = '0.4.7'
+size    = '59.7 MiB'
+version = '0.4.8'
 website = 'https://vlang.io'
 example = '''
 import os
