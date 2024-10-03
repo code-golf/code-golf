@@ -628,7 +628,7 @@ pub fn main() {
 
 [Go]
 args    = [ '/usr/bin/gowrapper', '-' ]
-env     = [ 'GOCACHE=/tmp/.cache', 'GOPATH=/tmp', 'PATH=/usr/local/bin:/usr/bin:/bin' ]
+env     = [ 'GOCACHE=/tmp/.cache', 'PATH=/usr/local/bin:/bin' ]
 size    = '383 MiB'
 version = '1.23.1'
 website = 'https://go.dev'
