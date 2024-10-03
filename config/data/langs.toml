@@ -603,8 +603,8 @@ end
 args       = [ '/usr/bin/gleamwrapper', '-', '--' ]
 env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 1129
-size       = '88.0 MiB'
-version    = '1.5.0'
+size       = '88.4 MiB'
+version    = '1.5.1'
 website    = 'https://gleam.run'
 example    = '''
 import argv
@@ -629,7 +629,7 @@ pub fn main() {
 [Go]
 args    = [ '/usr/bin/go', '-' ]
 size    = '383 MiB'
-version = '1.23.1'
+version = '1.23.2'
 website = 'https://go.dev'
 example = '''
 package main
@@ -674,6 +674,7 @@ n*
 
 [Hare]
 args       = [ '/usr/bin/harewrapper', '-' ]
+env        = [ 'PATH=/usr/local/bin:/usr/bin:/bin' ]
 experiment = 1323
 size       = '13.5 MiB'
 version    = '0.24.2'
@@ -975,8 +976,8 @@ end
 
 [Nim]
 args    = [ '/usr/bin/nim', '--colors:on', '-o:/tmp/code', '-r', 'c', '-' ]
-size    = '15.0 MiB'
-version = '2.0.8'
+size    = '15.5 MiB'
+version = '2.2.0'
 website = 'https://nim-lang.org'
 example = '''
 import os
@@ -1016,9 +1017,10 @@ Sys.argv
 
 [Odin]
 args       = [ '/usr/bin/odinwrapper', '-' ]
+env        = [ 'PATH=/usr/local/bin:/usr/bin:/bin' ]
 experiment = 766
-size       = '257 MiB'
-version    = '2024-09'
+size       = '258 MiB'
+version    = '2024-10'
 website    = 'https://odin-lang.org'
 example    = '''
 package main
@@ -1102,7 +1104,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '8.40 MiB'
-version = '8.3.11'
+version = '8.3.12'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -1140,8 +1142,8 @@ ForEach ($arg in $args) {
 
 [Prolog]
 args    = [ '/usr/bin/prolog', '-g', 'halt', '/tmp/code.pl' ]
-size    = '49.2 MiB'
-version = 'SWI-Prolog 9.2.2'
+size    = '49.3 MiB'
+version = 'SWI-Prolog 9.2.7'
 website = 'https://www.swi-prolog.org'
 example = '''
 % Printing
@@ -1159,7 +1161,7 @@ example = '''
 [Python]
 args    = [ '/usr/bin/python', '-u', '-' ]
 size    = '48.4 MiB'
-version = '3.12.6'
+version = '3.12.7'
 website = 'https://www.python.org'
 example = '''
 import sys
@@ -1217,8 +1219,8 @@ example    = '''
 
 [Raku]
 args    = [ '/usr/bin/raku', '-' ]
-size    = '75.5 MiB'
-version = 'Raku 6.d on Rakudo 2024.08'
+size    = '75.7 MiB'
+version = 'Raku 6.d on Rakudo 2024.09'
 website = 'https://raku.org'
 example = '''
 # Printing
@@ -1449,8 +1451,8 @@ for arg in CommandLine.arguments[1...] {
 
 [Tcl]
 args    = [ '/usr/bin/tcl', '/proc/self/fd/0' ]
-size    = '5.19 MiB'
-version = '8.6.15'
+size    = '5.62 MiB'
+version = '9.0.0'
 website = 'https://www.tcl-lang.org'
 example = '''
 # Printing
@@ -1510,8 +1512,8 @@ example    = '''
 
 [V]
 args    = [ '/usr/bin/v', '-' ]
-size    = '60.9 MiB'
-version = '0.4.7'
+size    = '59.7 MiB'
+version = '0.4.8'
 website = 'https://vlang.io'
 example = '''
 import os

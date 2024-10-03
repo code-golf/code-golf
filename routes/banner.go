@@ -10,7 +10,7 @@ import (
 	"github.com/code-golf/code-golf/pretty"
 )
 
-var nextHole = config.ExpHoleByID["palindromemordnilap"]
+var nextHole = config.ExpHoleByID["card-number-validation"]
 
 type banner struct {
 	Body          template.HTML
