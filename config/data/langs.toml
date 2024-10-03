@@ -481,27 +481,26 @@ args       = [ '/usr/bin/egelwrapper', '-' ]
 experiment = 1434
 size       = '49.8 MiB'
 version    = '0.1.14'
-website    = 'https://github.com/egel-lang/egel'
+website    = 'https://egel-lang.github.io'
 example    = '''
 import "prelude.eg"
 
-using System
-using List
+using System, List
 
-# Printing
-def printing =
-    print "Hello, World!\n"
-
-# Looping
-def looping =
-    [ 10 -> nil | N -> print N "\n"; looping (N+1) ]
-
-# Accessing arguments
-def arguments =
-    drop 2 args MOTHERFUUUUUUUUUUUUUUUUUUCKERS FUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUCK
+def loop =
+    [ 10 -> print | I -> print I "\n"; loop (I + 1) ]
 
 def main =
-    (printing; looping 0; arguments)
+    # Printing
+    print "Hello, World!\n";
+
+    # Looping
+    loop 0;
+
+    # Accessing arguments
+    map [ ARG -> print ARG "\n" ] (drop 2 args);
+
+    print
 '''
 
 [Elixir]
