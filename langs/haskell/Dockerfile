@@ -4,6 +4,8 @@ ENV VER=9.8.2
 
 RUN apk add --no-cache build-base ghc=$VER-r1
 
+RUN echo "#define VERSION \"$VER\"" > haskell.h
+
 COPY haskell.c .
 
 RUN gcc -Wall -Werror -Wextra -o haskell -s haskell.c

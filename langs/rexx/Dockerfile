@@ -4,7 +4,8 @@ ENV VER=3.9.6
 
 RUN apk add --no-cache build-base curl
 
-RUN curl -L https://sourceforge.net/projects/regina-rexx/files/regina-rexx/$VER/regina-rexx-$VER.tar.gz | tar xz --strip-components=1
+RUN curl -L https://sourceforge.net/projects/regina-rexx/files/regina-rexx/$VER/regina-rexx-$VER.tar.gz \
+  | tar xz --strip-components 1
 
 RUN ./configure \
  && make        \

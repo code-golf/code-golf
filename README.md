@@ -84,6 +84,9 @@ $ make test
 ```
 
 2. Run the e2e tests:
+
+> *NOTE*: Any changes to the languages need to be re-built with `build-langs` before e2e will pick up the changes.
+
 ```
 $ make e2e
 ```

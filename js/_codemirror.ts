@@ -37,6 +37,7 @@ import { gleamLanguage }      from '@exercism/codemirror-lang-gleam';
 import { goLanguage }         from '@codemirror/lang-go';
 import { golfScript }         from 'codemirror-lang-golfscript';
 import { haskell }            from '@codemirror/legacy-modes/mode/haskell';
+import { haxe }               from '@codemirror/legacy-modes/mode/haxe';
 import { j }                  from 'codemirror-lang-j';
 import { janet }              from 'codemirror-lang-janet';
 import { java }               from '@codemirror/lang-java';
@@ -145,6 +146,7 @@ export const extensions : { [key: string]: any } = {
     'golfscript':    golfScript(),
     // TODO hare
     'haskell':       StreamLanguage.define(haskell),
+    'haxe':          StreamLanguage.define(haxe),
     // TODO hexagony
     // TODO hush
     // TODO hy
@@ -167,6 +169,7 @@ export const extensions : { [key: string]: any } = {
     'prolog':        prolog(),
     'python':        python,
     'r':             StreamLanguage.define(r),
+    'racket':        StreamLanguage.define(scheme),
     'raku':          StreamLanguage.define(raku),
     // TODO rebol
     // TODO rexx

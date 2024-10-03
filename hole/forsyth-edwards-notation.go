@@ -16,11 +16,11 @@ func forsythEdwardsNotation() []Run {
 		strings.Join(shuffle([]string{"2k1N3", "7r", "8", "2B5", "3rb3", "4n3", "1R6", "4K3"}), "/") + " w - - 0 50",
 	})
 
-	var buf strings.Builder
+	tests := make([]test, len(args))
+
 	for i, arg := range args {
-		if i > 0 {
-			buf.WriteString("\n\n")
-		}
+		var buf strings.Builder
+
 		for i, c := range arg {
 			if c == ' ' {
 				break
@@ -36,7 +36,9 @@ func forsythEdwardsNotation() []Run {
 				buf.WriteRune(pieceMap[c])
 			}
 		}
+
+		tests[i] = test{in: arg, out: buf.String()}
 	}
 
-	return []Run{{Args: args, Answer: strings.TrimRight(buf.String(), "\n")}}
+	return outputTestsWithSep("\n\n", tests)
 }
