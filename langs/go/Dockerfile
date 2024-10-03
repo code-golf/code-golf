@@ -14,4 +14,4 @@ COPY go /usr/bin/
 
 ENTRYPOINT ["go"]
 
-CMD ["version"]
+CMD ["--version"]
