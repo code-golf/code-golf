@@ -4,7 +4,7 @@ ENV VER=0.1.14
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND="noninteractive" \
-    apt-get install --yes binutils-dev clang cmake curl libffi-dev libfmt-dev libiberty-dev libicu-dev pkg-config zlib1g-dev
+    apt-get install --yes binutils-dev clang cmake curl libffi-dev libfmt-dev libiberty-dev libicu-dev ninja-build pkg-config zlib1g-dev
    
 WORKDIR /lightning
 
@@ -20,11 +20,10 @@ WORKDIR /egel
 RUN curl -L https://github.com/egel-lang/egel/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1
 
-RUN mkdir build    \
- && cd build       \
- && cmake ..       \
- && make -j`nproc` \
- && make install
+RUN mkdir build       \
+ && cd build          \
+ && cmake -G Ninja .. \
+ && ninja install
 
 FROM codegolf/lang-base
 
