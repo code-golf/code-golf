@@ -487,15 +487,12 @@ import "prelude.eg"
 
 using System, List
 
-def loop =
-    [ 10 -> print | I -> print I "\n"; loop (I + 1) ]
-
 def main =
     # Printing
     print "Hello, World!\n";
 
     # Looping
-    loop 0;
+    map [ I -> print I "\n" ] (from_to 0 9);
 
     # Accessing arguments
     map [ ARG -> print ARG "\n" ] (drop 2 args);
