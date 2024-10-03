@@ -23,6 +23,7 @@ constant %paths = (
     'COBOL'        => 'en.wikipedia.org/wiki/GnuCOBOL',
     'Coconut'      => 'pypi.org/pypi/coconut/json',
     'CoffeeScript' => 'registry.npmjs.org/coffeescript/latest',
+    'Coq'          => 'github.com/coq/coq/releases/latest',
     'Crystal'      => 'github.com/crystal-lang/crystal/releases/latest',
     'D'            => 'en.wikipedia.org/wiki/D_(programming_language)',
     'Dart'         => 'en.wikipedia.org/wiki/Dart_(programming_language)',
