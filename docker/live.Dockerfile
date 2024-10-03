@@ -1,4 +1,4 @@
-FROM golang:1.23.1-alpine3.20
+FROM golang:1.23.2-alpine3.20
 
 ENV CGO_ENABLED=0 GOAMD64=v4 GOPATH=
 
@@ -62,7 +62,7 @@ COPY --from=codegolf/lang-ruby         ["/", "/langs/ruby/rootfs/"        ] # 28
 COPY --from=codegolf/lang-uiua         ["/", "/langs/uiua/rootfs/"        ] # 28.6 MiB
 COPY --from=codegolf/lang-viml         ["/", "/langs/viml/rootfs/"        ] # 24.3 MiB
 COPY --from=codegolf/lang-scheme       ["/", "/langs/scheme/rootfs/"      ] # 17.9 MiB
-COPY --from=codegolf/lang-nim          ["/", "/langs/nim/rootfs/"         ] # 15.0 MiB
+COPY --from=codegolf/lang-nim          ["/", "/langs/nim/rootfs/"         ] # 15.5 MiB
 COPY --from=codegolf/lang-hare         ["/", "/langs/hare/rootfs/"        ] # 13.5 MiB
 COPY --from=codegolf/lang-j            ["/", "/langs/j/rootfs/"           ] # 11.2 MiB
 COPY --from=codegolf/lang-tex          ["/", "/langs/tex/rootfs/"         ] # 9.67 MiB

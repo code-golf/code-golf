@@ -630,7 +630,7 @@ pub fn main() {
 args    = [ '/usr/bin/gowrapper', '-' ]
 env     = [ 'GOCACHE=/tmp/.cache', 'PATH=/usr/local/bin:/bin' ]
 size    = '383 MiB'
-version = '1.23.1'
+version = '1.23.2'
 website = 'https://go.dev'
 example = '''
 package main
@@ -977,8 +977,8 @@ end
 
 [Nim]
 args    = [ '/usr/bin/nim', '--colors:on', '-o:/tmp/code', '-r', 'c', '-' ]
-size    = '15.0 MiB'
-version = '2.0.8'
+size    = '15.5 MiB'
+version = '2.2.0'
 website = 'https://nim-lang.org'
 example = '''
 import os

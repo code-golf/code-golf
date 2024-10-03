@@ -1,4 +1,4 @@
-FROM golang:1.23.1-alpine3.20 AS builder
+FROM golang:1.23.2-alpine3.20 AS builder
 
 # Precompile the standard library.
 RUN GOCACHE=/cache go install std
@@ -14,4 +14,4 @@ COPY /gowrapper /usr/bin/
 
 ENTRYPOINT ["gowrapper"]
 
-CMD ["version"]
+CMD ["--version"]
