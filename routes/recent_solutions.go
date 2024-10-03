@@ -13,12 +13,12 @@ import (
 // GET /recent/solutions/{hole}/{lang}/{scoring}
 func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 	type row struct {
-		Country                 config.NullCountry
-		Name                    string
-		Hole                    *config.Hole
-		Lang                    *config.Lang
-		Rank, Strokes, TieCount int
-		Submitted               time.Time
+		Country                          config.NullCountry
+		Name                             string
+		Hole                             *config.Hole
+		Lang                             *config.Lang
+		Golfers, Rank, Strokes, TieCount int
+		Submitted                        time.Time
 	}
 
 	data := struct {
@@ -49,7 +49,7 @@ func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 
 	if err := session.Database(r).Select(
 		&data.Rows,
-		` SELECT hole, lang, login name, strokes, rank, submitted, tie_count
+		` SELECT golfers, hole, lang, login name, strokes, rank, submitted, tie_count
 		    FROM rankings
 		    JOIN users ON user_id = id
 		   WHERE (hole = $1 OR $1 IS NULL)
