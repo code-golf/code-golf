@@ -1,6 +1,6 @@
 #!/bin/sh -e
 
-[ "$1" = "version" ] && exec go version
+[ "$1" = "--version" ] && exec go version
 
 cd /tmp
 
