@@ -629,7 +629,7 @@ pub fn main() {
 [Go]
 args    = [ '/usr/bin/go', '-' ]
 size    = '383 MiB'
-version = '1.23.1'
+version = '1.23.2'
 website = 'https://go.dev'
 example = '''
 package main
