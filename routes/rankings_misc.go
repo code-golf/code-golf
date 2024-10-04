@@ -68,11 +68,7 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 			ORDER BY rank, login
 			   LIMIT $1 OFFSET $2`
 	case "most-tied-golds":
-		if golfer := session.Golfer(r); golfer != nil {
-			args = append(args, golfer.ID)
-		} else {
-			args = append(args, nil)
-		}
+		args = append(args, session.Golfer(r))
 		desc = "Most tied gold medals"
 		sql = `SELECT hole, lang, scoring, COUNT(*),
 			          RANK() OVER(ORDER BY COUNT(*) DESC),

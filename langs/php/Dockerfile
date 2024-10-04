@@ -2,7 +2,7 @@ FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache build-base curl
 
-RUN curl -L https://php.net/distributions/php-8.3.11.tar.xz | tar xJ
+RUN curl -L https://php.net/distributions/php-8.3.12.tar.xz | tar xJ
 
 ENV CFLAGS='-O2 -flto' LDFLAGS='-O2 -flto -all-static'
 
