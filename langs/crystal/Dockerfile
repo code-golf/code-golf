@@ -11,12 +11,8 @@ RUN shards install
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/cat /bin/sh         /bin/
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /.build/crystal          /usr/bin/
+COPY --from=0 /.build/crystal /usr/bin/
 
-COPY /crystalwrapper /usr/bin/
-
-ENTRYPOINT ["crystalwrapper"]
+ENTRYPOINT ["crystal"]
 
 CMD ["--version"]

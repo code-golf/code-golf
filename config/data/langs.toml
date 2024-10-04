@@ -409,8 +409,8 @@ for arg in process.argv[2..]
 '''
 
 [Crystal]
-args    = [ '/usr/bin/crystalwrapper', '-' ]
-env     = [ 'PATH=/usr/bin:/bin:$PATH' ]
+args    = [ '/usr/bin/crystal', 'i', 'code.cr', '--' ]
+env     = [ 'PATH=/usr/bin:/bin' ]
 size    = '135 MiB'
 version = '1.13.3'
 website = 'https://crystal-lang.org'
