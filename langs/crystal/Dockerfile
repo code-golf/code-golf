@@ -17,10 +17,6 @@ COPY --from=0 /.build/crystal          /usr/bin/
 
 COPY /crystalwrapper /usr/bin/
 
-# Remove
-COPY --from=0 /bin/chmod /bin/
-RUN chmod +x /usr/bin/crystalwrapper
-
 ENTRYPOINT ["crystalwrapper"]
 
 CMD ["--version"]
