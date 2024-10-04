@@ -7,7 +7,8 @@ RUN curl -L https://github.com/crystal-lang/crystal/archive/refs/tags/1.13.3.tar
 
 RUN make -j`nproc` crystal interpreter=1 release=1 static=1
 
-RUN shards install
+RUN strip /.build/crystal \
+ && shards install
 
 FROM codegolf/lang-base
 
