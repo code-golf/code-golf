@@ -480,7 +480,7 @@ void main(List<String> argv) {
 args    = [ '/usr/local/bin/elixir', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8', 'PATH=/usr/local/bin:/usr/bin:/bin' ]
 size    = '178 MiB'
-version = '1.17.2'
+version = '1.17.3'
 website = 'https://elixir-lang.org'
 example = '''
 # Printing
