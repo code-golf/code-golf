@@ -2,7 +2,7 @@
 
 [ "$1" = "--version" ] && exec piet
 
-cat - > /tmp/code.foo
+cat - > /tmp/code.ppm
 
 shift
-exec piet /tmp/code.foo "$@"
+exec piet /tmp/code.ppm "$@"

@@ -15,7 +15,7 @@ FROM codegolf/lang-base
 COPY --from=0 /bin/cat /bin/sh              /bin/
 COPY --from=0 /lib/ld-musl-x86_64.so.1      \
               /lib/libz.so.1                /lib/
-COPY --from=0 /usr/bin/npiet-foogol         /usr/bin/piet
+COPY --from=0 /usr/bin/npiet                /usr/bin/piet
 COPY --from=0 /usr/lib/libaom.so.3          \
               /usr/lib/libavif.so.16        \
               /usr/lib/libbrotlidec.so.1    \
