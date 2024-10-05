@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+[ "$1" = "--version" ] && exec piet
+
+cat - > /tmp/code.foo
+
+shift
+exec piet /tmp/code.foo "$@"
