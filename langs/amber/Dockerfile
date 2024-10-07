@@ -1,17 +1,18 @@
-FROM rust:1.80.1-alpine3.20 AS builder
+FROM rust:1.81.0-alpine3.20 AS builder
+
+ENV VER=0.3.5-alpha
 
 RUN apk add --no-cache bash build-base curl
 
-RUN curl -L https://github.com/amber-lang/amber/archive/refs/tags/0.3.5-alpha.tar.gz \
-  | tar xz --strip-components 1
+RUN curl -L https://github.com/amber-lang/amber/archive/refs/tags/$VER.tar.gz \
+  | tar xz
 
-RUN cargo install --path .
+RUN cd amber-$VER \
+ && cargo install --path .
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/bash                  \
-              /bin/busybox               \
-              /bin/sed                   /bin/
+COPY --from=0 /bin/bash /bin/sed         /bin/
 COPY --from=0 /lib/ld-musl-x86_64.so.1   /lib/
 COPY --from=0 /usr/bin/bc                \
               /usr/bin/env               \
