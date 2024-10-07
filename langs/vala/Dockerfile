@@ -7,7 +7,7 @@ RUN curl -L https://download.gnome.org/sources/vala/0.56/vala-0.56.17.tar.xz \
 
 RUN ./configure       \
     --disable-valadoc \
-    --prefix=/usr     \
+    --prefix="/usr"   \
  && make -j`nproc`    \
  && make install
 
