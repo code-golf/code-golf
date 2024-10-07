@@ -92,7 +92,6 @@ section header {
 
 #arrows code { font-size: 1.5rem }
 #arrows td   { font-family: emoji, mahjong, 'Source Code Pro', monospace }
-#arrows td:first-child { white-space: pre }
 #arrows td:last-child  { width: 100% }
 
 #authors-btn {

@@ -83,10 +83,10 @@ func outputTestsWithSep(sep string, testRuns ...[]test) []Run {
 		for i, t := range tests {
 			args[i] = t.in
 
-			if i > 0 {
+			if t.out != "" {
+				answer.WriteString(t.out)
 				answer.WriteString(sep)
 			}
-			answer.WriteString(t.out)
 		}
 
 		runs[i] = Run{Args: args, Answer: answer.String()}

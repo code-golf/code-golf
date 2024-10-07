@@ -476,6 +476,7 @@ async function applyViewState(viewState: ViewState) {
     toggleMobile(false);
     Object.keys(poolElements).map(removePoolItem);
     setWide(viewState.isWide);
+    setTall(false);
     let { config } = viewState;
     if (LayoutConfig.isResolved(config))
         config = LayoutConfig.fromResolved(config);
@@ -540,15 +541,15 @@ function setWide(b: boolean) {
     document.documentElement.classList.toggle('full-width', b);
 }
 
-function toggleTall() {
-    document.documentElement.classList.toggle('full-height');
+function setTall(b: boolean) {
+    document.documentElement.classList.toggle('full-height', b);
 }
 
 $('#make-wide').addEventListener('click', () => setWide(true));
 $('#make-narrow').addEventListener('click', () => setWide(false));
 
-$('#make-tall').addEventListener('click', () => toggleTall());
-$('#make-short').addEventListener('click', () => toggleTall());
+$('#make-tall').addEventListener('click', () => setTall(true));
+$('#make-short').addEventListener('click', () => setTall(false));
 
 function addPoolItem(componentType: string) {
     poolElements[componentType]?.remove();

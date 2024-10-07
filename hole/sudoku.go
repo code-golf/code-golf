@@ -26,9 +26,9 @@ func printSudoku(board [boardSize][boardSize]int) string {
 
 		for j, number := range row {
 			if j%blockSize == 0 {
-				b.WriteString("┃")
+				b.WriteRune('┃')
 			} else {
-				b.WriteString("│")
+				b.WriteRune('│')
 			}
 
 			b.WriteByte(' ')
