@@ -292,7 +292,7 @@ func Play(
 
 	for i := range runs {
 		go func(run *Run) {
-			if err := play(ctx, hole, lang, code, run); err != nil {
+			if err := playRun(ctx, hole, lang, code, run); err != nil {
 				log.Println(err)
 			}
 
@@ -305,9 +305,14 @@ func Play(
 	return
 }
 
-func play(
+func playRun(
 	ctx context.Context, hole *config.Hole, lang *config.Lang, code string, run *Run,
 ) error {
+	holeID := "sandbox"
+	if hole != nil {
+		holeID = hole.ID
+	}
+
 	// Preprocess code.
 	switch lang.ID {
 	case "clojure":
@@ -322,7 +327,7 @@ func play(
 			return nil
 		}
 	case "k":
-		if hole.ID == "quine" {
+		if holeID == "quine" {
 			length := len(code)
 			var newCode []byte
 
@@ -380,7 +385,7 @@ func play(
 
 	// Language arguments. Clone because we intend to mutate.
 	cmd.Args = slices.Clone(lang.Args)
-	if hole.ID == "quine" && lang.ArgsQuine != nil {
+	if holeID == "quine" && lang.ArgsQuine != nil {
 		cmd.Args = slices.Clone(lang.ArgsQuine)
 	}
 
@@ -476,14 +481,14 @@ func play(
 
 	// Trim trailing whitespace on each line, and then trailing empty lines.
 	// Quine solutions are obviously left untouched.
-	if hole.ID == "quine" {
+	if holeID == "quine" {
 		run.Stdout = string(stdoutBytes)
 	} else {
 		run.Stdout = trimPerLine(stdoutBytes)
 	}
 
 	// Timeouts and whitespace only output never pass.
-	if !run.Timeout && len(strings.TrimSpace(run.Stdout)) != 0 {
+	if hole != nil && !run.Timeout && len(strings.TrimSpace(run.Stdout)) != 0 {
 		if hole.ID != "quine" {
 			run.Answer = trimPerLine([]byte(run.Answer))
 		}
@@ -498,8 +503,21 @@ func play(
 		}
 	}
 
-	run.MultisetDelimiter = hole.MultisetDelimiter
-	run.ItemDelimiter = hole.ItemDelimiter
+	if hole != nil {
+		run.MultisetDelimiter = hole.MultisetDelimiter
+		run.ItemDelimiter = hole.ItemDelimiter
+	}
 
 	return nil
+}
+
+func PlaySandbox(ctx context.Context, lang *config.Lang, code string, args []string) *Run {
+	run := Run{Args: args, Answer: ""}
+
+	if err := playRun(ctx, nil, lang, code, &run); err != nil {
+		log.Println(err)
+	}
+
+	run.Pass = !run.Timeout
+	return &run
 }
