@@ -2,7 +2,7 @@ FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache build-base cmake curl linux-headers python3
 
-ENV VER=19.1.0
+ENV VER=19.1.1
 
 RUN curl -L https://github.com/llvm/llvm-project/releases/download/llvmorg-$VER/llvm-project-$VER.src.tar.xz | tar xJ
 
@@ -20,7 +20,8 @@ RUN cmake                            \
     -DLLVM_ENABLE_BINDINGS="NO"      \
     -DLLVM_ENABLE_UNWIND_TABLES="NO" \
     .. \
-    && make -j`nproc` install
+ && make -j`nproc` install \
+ && make clean
 
 WORKDIR /llvm-project-$VER.src/clang/build
 
@@ -31,7 +32,8 @@ RUN cmake                            \
     -DLLVM_INCLUDE_TESTS="NO"        \
     -DLLVM_ENABLE_UNWIND_TABLES="NO" \
     .. \
-    && make -j`nproc` install
+ && make -j`nproc` install \
+ && make clean
 
 RUN strip /llvm/bin/clang /llvm/lib/libLLVM-19.so
 
