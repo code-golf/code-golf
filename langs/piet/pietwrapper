@@ -1,8 +1,0 @@
-#!/bin/sh -e
-
-[ "$1" = "--version" ] && exec piet
-
-cat - > /tmp/code.ppm
-
-shift
-exec piet /tmp/code.ppm "$@"
