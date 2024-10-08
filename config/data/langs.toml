@@ -198,6 +198,23 @@ for a : _argv[1..]
 end
 '''
 
+[BQN]
+args       = [ '/usr/bin/bqn', '-' ]
+experiment = 474
+size       = '1.27 MiB'
+version    = 'CBQN 0.7.0'
+website    = 'https://github.com/dzaima/CBQN'
+example    = '''
+# Printing
+•Out "Hello, World!"
+
+# Looping
+•Show ¨↕10
+
+# Accessing arguments
+•Out ¨•args
+'''
+
 [brainfuck]
 args    = [ '/usr/bin/brainfuck', '-xc', '$code' ]
 size    = '51.2 KiB'
