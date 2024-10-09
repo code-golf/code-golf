@@ -7,7 +7,7 @@ RUN curl -L https://download.savannah.nongnu.org/releases/tinycc/tcc-0.9.27.tar.
 
 RUN ./configure      \
     --config-musl    \
-    --prefix=/usr    \
+    --prefix="/usr"  \
     --strip-binaries \
  && make             \
  && make install
@@ -65,6 +65,6 @@ COPY --from=0 /usr/lib/tcc/libtcc1.a     /usr/lib/tcc/
 
 COPY /crapwrapper /usr/bin/
 
-ENTRYPOINT ["/bin/sh"]
+ENTRYPOINT ["crapwrapper"]
 
-CMD ["-c", "cat version"]
+CMD ["--version"]
