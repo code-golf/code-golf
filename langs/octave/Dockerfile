@@ -8,9 +8,8 @@ RUN curl -L https://ftp.nluug.nl/pub/gnu/octave/octave-9.2.0.tar.xz \
 RUN ./configure        \
     --disable-docs     \
     --disable-readline \
-    --prefix=/usr      \
- && make -j`nproc`     \
- && make install
+    --prefix="/usr"    \
+ && make -j `nproc` install
 
 FROM codegolf/lang-base
 
