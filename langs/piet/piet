@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+cd /tmp
+
+cat - > code.txt
+
+shift
+exec python /usr/bin/ascii2piet.py code.txt code.png

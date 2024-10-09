@@ -1103,6 +1103,15 @@ for ($i = 1; $i < $argc; $i++)
     echo "$argv[$i]\n";
 '''
 
+[Piet]
+args       = [ '/usr/bin/piet', '-' ]
+experiment = 648
+size       = '60.2 MiB'
+version    = '2ba1c90'
+website    = 'https://github.com/dloscutoff/ascii-piet'
+example    = '''
+'''
+
 [PowerShell]
 args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
