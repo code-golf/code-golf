@@ -1,4 +1,5 @@
 /.vagrant/
+/.vscode/
 /config/data/assets.json
 /dist/
 /docker/.env
