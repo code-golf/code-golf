@@ -45,6 +45,7 @@ constant %paths = (
     'Java'         => 'endoflife.date/api/java.json',
     'JavaScript'   => 'en.wikipedia.org/wiki/V8_(JavaScript_engine)',
     'jq'           => 'github.com/jqlang/jq/releases/latest',
+    'JSFuck'       => 'registry.npmjs.org/jsfuck/latest',
     'Julia'        => 'en.wikipedia.org/wiki/Julia_(programming_language)',
     'K'            => 'codeberg.org/ngn/k',
     'Lisp'         => 'en.wikipedia.org/wiki/CLISP',

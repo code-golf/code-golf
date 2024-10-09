@@ -154,6 +154,7 @@ export const extensions : { [key: string]: any } = {
     'java':          java(),
     'javascript':    javascript,
     'jq':            jq(),
+    // TODO jsfuck
     'julia':         StreamLanguage.define(julia),
     'k':             k(),
     'lisp':          StreamLanguage.define(commonLisp),
