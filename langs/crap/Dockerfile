@@ -59,7 +59,7 @@ COPY --from=0 /usr/include/alloca.h      \
               /usr/local/include/print.h \
               /usr/local/include/reg.h   \
               /usr/local/include/sjoin.h /usr/include/
-COPY --from=0 /usr/include/bits          /usr/include/bits/
+COPY --from=0 /usr/include/bits          /usr/include/bits
 COPY --from=0 /usr/lib/libc.so           /usr/lib/
 COPY --from=0 /usr/lib/tcc/libtcc1.a     /usr/lib/tcc/
 
