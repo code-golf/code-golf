@@ -63,6 +63,7 @@ COPY --from=codegolf/lang-fish         ["/", "/langs/fish/rootfs/"        ] # 4.
 COPY --from=codegolf/lang-rexx         ["/", "/langs/rexx/rootfs/"        ] # 4.63 MiB
 COPY --from=codegolf/lang-cobol        ["/", "/langs/cobol/rootfs/"       ] # 4.56 MiB
 COPY --from=codegolf/lang-jq           ["/", "/langs/jq/rootfs/"          ] # 3.41 MiB
+COPY --from=codegolf/lang-crap         ["/", "/langs/crap/rootfs/"        ] # 3.37 MiB
 COPY --from=codegolf/lang-hush         ["/", "/langs/hush/rootfs/"        ] # 3.27 MiB
 COPY --from=codegolf/lang-forth        ["/", "/langs/forth/rootfs/"       ] # 2.86 MiB
 COPY --from=codegolf/lang-awk          ["/", "/langs/awk/rootfs/"         ] # 1.77 MiB

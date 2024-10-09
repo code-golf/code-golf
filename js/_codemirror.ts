@@ -131,6 +131,7 @@ export const extensions : { [key: string]: any } = {
     'coconut':       python,
     'coffeescript':  StreamLanguage.define(coffeeScript),
     'cpp':           cpp(),
+    'crap':          StreamLanguage.define(c),
     'crystal':       StreamLanguage.define(crystal),
     'd':             StreamLanguage.define(d),
     'dart':          StreamLanguage.define(dart),
