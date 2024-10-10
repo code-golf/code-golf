@@ -1559,6 +1559,27 @@ for (i in 0..9) System.print(i)
 for (a in Process.arguments) System.print(a)
 '''
 
+[Zeek]
+args       = [ '/usr/bin/zeek', '-e', '$code' ]
+experiment = 1457
+size       = '192 MiB'
+version    = '7.0.3'
+website    = 'https://zeek.org'
+example    = '''
+# Printing
+print "Hello, World!";
+
+# Looping
+local i = 0;
+while (i < 10) {
+    print i;
+    ++i;
+}
+
+# Accessing arguments
+
+'''
+
 [Zig]
 args    = [ '/usr/bin/zig', '-' ]
 size    = '300 MiB'
