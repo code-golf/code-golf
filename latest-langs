@@ -75,6 +75,7 @@ constant %paths = (
     'V'            => 'en.wikipedia.org/wiki/V_(programming_language)',
     'VimL'         => 'en.wikipedia.org/wiki/Vim_(text_editor)',
     'Wren'         => 'github.com/wren-lang/wren/releases/latest',
+    'Zeek'         => 'github.com/zeek/zeek/releases/latest',
     'Zig'          => 'github.com/ziglang/zig/releases/latest',
 );
 
