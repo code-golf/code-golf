@@ -318,8 +318,8 @@ for arg of process.argv[2..]
 
 [Clojure]
 args    = [ '/usr/bin/clojure', '-e', '$code' ]
-size    = '66.3 MiB'
-version = 'Babashka 1.4.192'
+size    = '66.4 MiB'
+version = 'Babashka 1.12.193'
 website = 'https://babashka.org'
 example = '''
 ; Printing
