@@ -2,9 +2,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0.401-alpine3.20 AS builder
 
 RUN apk add --no-cache build-base zlib-dev
 
-ENV VER=2.0.0
-
-RUN curl -L https://github.com/RockstarLang/rockstar/archive/refs/tags/v2.0.0-beta.$VER.tar.gz \
+RUN curl -L https://github.com/RockstarLang/rockstar/archive/refs/tags/v2.0.0-beta.2.0.0.tar.gz \
   | tar xz --strip-components 1
 
 RUN dotnet publish Starship/Rockstar -c Release -o rockstar
