@@ -1,7 +1,5 @@
 #!/bin/sh -e
 
-export PATH=/usr/local/bin:$PATH
-
 cd /tmp
 
 # Compile

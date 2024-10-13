@@ -80,7 +80,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
                 $ver = "D $0 on LDC $digits";
             }
             when 'Haskell'    { $ver = "Glasgow Haskell Compiler $digits" }
-            when 'Java'       { $ver = "OpenJDK $digits" }
+            when 'Java'       { $ver = "OpenJDK 23.0" } # FIXME no decimal place.
             when 'JavaScript' { $ver = "V8 $digits" }
             when 'Lisp'       { $ver = "GNU CLISP $digits" }
             when 'Pascal'     { $ver = "Free Pascal $digits" }
