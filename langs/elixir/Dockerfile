@@ -2,10 +2,7 @@
 # <1s docker run --rm --net none elixir:slim
 # >5s docker run --rm --net none elixir:alpine
 
-# 1.17 doubles our image size from 158 MiB → 322 MiB, seems to be because of
-# https://github.com/erlang/otp/issues/8574
-
-FROM elixir:1.16.3-slim AS builder
+FROM elixir:1.17.3-slim AS builder
 
 FROM codegolf/lang-base
 

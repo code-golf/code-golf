@@ -94,7 +94,7 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 		{
 			cheevo: "archivist",
 			holes:  []any{"isbn"},
-			langs:  []any{"basic", "cobol", "fortran", "lisp"},
+			langs:  []any{"basic", "cobol", "forth", "fortran", "lisp"},
 		},
 		{
 			cheevo: "bird-is-the-word",

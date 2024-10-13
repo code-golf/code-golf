@@ -1,0 +1,10 @@
+#!/bin/sh -e
+
+[ "$1" = "--version" ] && exec haxe --version
+
+cd /tmp
+
+cat - > Main.hx
+
+shift
+exec haxe --run Main "$@"

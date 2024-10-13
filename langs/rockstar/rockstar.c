@@ -18,30 +18,6 @@ int main(int argc, char* argv[]) {
     if (!fp)
         ERR_AND_EXIT("fopen");
 
-    // Set up "args", escaping each arg into a double quoted string.
-    // Skip over "rockstar" and "-".
-    fputs("rock args\n", fp);
-    for(int i = 2; i < argc; i++) {
-        fputs("rock \"", fp);
-
-        for (char* c = argv[i]; *c; c++)
-            switch (*c) {
-                case '\n':
-                    fputs("\\n", fp);
-                    break;
-                case '"':
-                    fputs("\\\"", fp);
-                    break;
-                case '\\':
-                    fputs("\\\\", fp);
-                    break;
-                default:
-                    putc(*c, fp);
-            }
-
-        fputs("\" into args\n", fp);
-    }
-
     // Copy STDIN into code.rock
     char buffer[4096];
     ssize_t nbytes;
