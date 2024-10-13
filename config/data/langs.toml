@@ -178,6 +178,25 @@ For i As Integer = 1 To __FB_ARGC__ - 1
 Next
 '''
 
+[Befunge]
+args       = [ '/usr/bin/befunge', '-' ]
+experiment = 428
+size       = '2.81 MiB'
+version    = 'b7bf640'
+website    = 'https://github.com/VorpalBlade/cfunge'
+example    = '''
+v printing
+> "!dlroW ,olleH" ck, v
+v                   ,a<
+v looping
+> 0 v            <
+    >:.a, 1+ :9`!|
+v               $<
+v accessing arguments
+> #@~ :0`!#v_ ,
+^        ,a<
+'''
+
 [Berry]
 args    = [ '/usr/bin/berry', '-' ]
 size    = '973 KiB'
