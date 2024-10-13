@@ -7,7 +7,14 @@
 
 {{ define "ideaGrid" }}{{ range . }}
 {{ with .Hole }}
-    <a class="card {{ .CategoryColor }}" href="/{{ .ID }}" title="{{ .Name }} ({{ .Category }})">
+    <a class="card {{ .CategoryColor }}"
+    {{ if $.Golfer }}
+        {{ $lang := index $.Golfer.Settings "home" "points-for" }}
+        href='/{{ .ID }}{{ if ne $lang "all" }}#{{ $lang }}{{ end }}'
+    {{ else }}
+        href="/{{ .ID }}"
+    {{ end }}
+        title="{{ .Name }} ({{ .Category }})">
 {{ else }}
     {{ $class := "red" }}
     {{ if eq .Category "cheeevo" }}
