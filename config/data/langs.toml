@@ -185,14 +185,16 @@ size       = '3.62 MiB'
 version    = 'b7bf640'
 website    = 'https://github.com/VorpalBlade/cfunge'
 example    = '''
-v printing
+v Printing
 > "!dlroW ,olleH" ck, v
 v                   ,a<
-v looping
+
+v Looping
 > 0 v            <
     >:.a, 1+ :9`!|
 v               $<
-v accessing arguments
+
+v Accessing arguments
 > #@~ :0`!#v_ ,
 ^        ,a<
 '''
