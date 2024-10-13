@@ -9,10 +9,10 @@ RUN curl -L https://github.com/VorpalBlade/cfunge/tarball/$VERSION | tar xz \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/cat /bin/sh          /bin/
-COPY --from=0 /lib/ld-musl-x86_64.so.1  /lib/
-COPY --from=0 /*-cfunge-*/bin/cfunge    /usr/bin/
-COPY --from=0 /usr/lib/libncursesw.so.6 /usr/lib/
+COPY --from=0 /bin/cat /bin/sh /bin/touch /bin/
+COPY --from=0 /lib/ld-musl-x86_64.so.1    /lib/
+COPY --from=0 /*-cfunge-*/bin/cfunge      /usr/bin/
+COPY --from=0 /usr/lib/libncursesw.so.6   /usr/lib/
 
 COPY /befunge /usr/bin/
 
