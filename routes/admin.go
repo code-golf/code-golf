@@ -13,8 +13,8 @@ import (
 func adminGET(w http.ResponseWriter, r *http.Request) {
 	var data struct {
 		LastTested []struct {
+			Day       time.Time
 			Solutions int
-			TestedDay time.Time
 		}
 		Sessions []struct {
 			Country  config.NullCountry
@@ -32,10 +32,11 @@ func adminGET(w http.ResponseWriter, r *http.Request) {
 
 	if err := db.Select(
 		&data.LastTested,
-		` SELECT COUNT(*) solutions, TIMEZONE($1, DATE(tested)) tested_day
+		` SELECT COUNT(*)                                    solutions,
+		         DATE(TIMEZONE($1, TIMEZONE('UTC', tested))) "day"
 		    FROM solutions
-		GROUP BY tested_day
-		ORDER BY tested_day DESC`,
+		GROUP BY day
+		ORDER BY day DESC`,
 		golfer.TimeZone,
 	); err != nil {
 		panic(err)
