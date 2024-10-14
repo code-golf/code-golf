@@ -1,7 +1,8 @@
 FROM ocaml/opam:alpine-3.20-ocaml-5.2 AS builder
 
-RUN sudo apk add gmp-dev linux-headers \
- && opam install -j`nproc` coq-stdlib="8.20.0"
+RUN sudo apk add gmp-dev linux-headers         \
+ && opam install -j`nproc` coq-stdlib="8.20.0" \
+ && strip /home/opam/.opam/5.2/bin/coqc
 
 FROM codegolf/lang-base
 

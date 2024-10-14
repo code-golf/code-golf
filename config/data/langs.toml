@@ -412,7 +412,7 @@ for arg in process.argv[2..]
 args       = [ '/usr/bin/coqwrapper', '-' ]
 env        = [ 'OPAM_HOME=/home/opam/.opam/5.2' ]
 experiment = 1425
-size       = '225 MiB'
+size       = '217 MiB'
 version    = '8.20.0'
 website    = 'https://coq.inria.fr'
 example    = '''
