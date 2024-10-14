@@ -6,7 +6,7 @@ cd /tmp
 
 # Compile
 cat - > code.vala
-valac -q code.vala
+valac --color=always --quiet code.vala
 rm code.vala
 
 # Execute
