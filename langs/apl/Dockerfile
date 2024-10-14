@@ -1,7 +1,8 @@
 FROM debian:bookworm-slim AS builder
 
-RUN apt-get update \
- && DEBIAN_FRONTEND="noninteractive" apt-get install -y curl dpkg libtinfo5
+RUN apt-get update                   \
+ && DEBIAN_FRONTEND="noninteractive" \
+    apt-get install -y curl dpkg libtinfo5
 
 RUN curl -o dyalog.deb https://www.dyalog.com/uploads/php/download.dyalog.com/download.php?file=19.0/linux_64_19.0.50027_unicode.x86_64.deb \
  && dpkg -i dyalog.deb
