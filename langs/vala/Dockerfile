@@ -2,14 +2,15 @@ FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache bison build-base curl flex glib-dev gobject-introspection-dev graphviz-dev musl-dev pkgconf
 
-RUN curl -L https://download.gnome.org/sources/vala/0.56/vala-0.56.17.tar.xz \
-  | tar xJ --strip-components 1
+ENV VER=0.56.17
 
-RUN ./configure       \
+RUN curl -L https://download.gnome.org/sources/vala/0.56/vala-$VER.tar.xz | tar xJ
+
+RUN cd vala-$VER      \
+ && ./configure       \
     --disable-valadoc \
     --prefix="/usr"   \
- && make -j`nproc`    \
- && make install
+ && make -j`nproc` install
 
 FROM codegolf/lang-base
 
