@@ -1,13 +1,12 @@
 FROM rust:1.81.0-alpine3.20 AS builder
 
-ENV VER=0.3.5-alpha
-
 RUN apk add --no-cache bash build-base curl
 
-RUN curl -L https://github.com/amber-lang/amber/archive/refs/tags/$VER.tar.gz \
-  | tar xz
+ENV VER=0.3.5
 
-RUN cd amber-$VER \
+RUN curl -L https://github.com/amber-lang/amber/archive/refs/tags/$VER-alpha.tar.gz | tar xz
+
+RUN cd amber-$VER-alpha \
  && cargo install --path .
 
 FROM codegolf/lang-base

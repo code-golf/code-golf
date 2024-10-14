@@ -26,7 +26,7 @@ x is a no-op.
 args       = [ '/usr/bin/amber', '-e', '$code', '--' ]
 experiment = 1356
 size       = '7.14 MiB'
-version    = '0.3.5-alpha'
+version    = '0.3.5'
 website    = 'https://amber-lang.com'
 example    = '''
 main(args) {
