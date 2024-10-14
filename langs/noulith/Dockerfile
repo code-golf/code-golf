@@ -2,7 +2,7 @@ FROM rust:1.81.0-alpine3.20 AS builder
 
 RUN apk add --no-cache build-base curl
 
-RUN curl -L https://github.com/betaveros/noulith/archive/828de52.tar.gz \
+RUN curl -L https://github.com/betaveros/noulith/archive/57580ee.tar.gz \
   | tar xz --strip-components 1
 
 RUN cargo build    \

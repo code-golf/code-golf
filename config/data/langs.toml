@@ -999,7 +999,7 @@ for arg in commandLineParams():
 args       = [ '/usr/bin/noulith', '-e', '$code' ]
 experiment = 1045
 size       = '28.8 MiB'
-version    = '828de52'
+version    = '57580ee'
 website    = 'https://github.com/betaveros/noulith'
 example    = '''
 # Printing
