@@ -1,7 +1,7 @@
 {{ template "header" . }}
 {{ template "recent" . }}
 
-<svg>{{ range .Langs }}{{ svg .ID }}{{ end }}</svg>
+{{ template "lang-svgs" .Data.Golfers }}
 
 <main>
     <table class="nowrap-first-second sticky">
