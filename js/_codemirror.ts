@@ -123,6 +123,7 @@ export const extensions : { [key: string]: any } = {
     'bash':          StreamLanguage.define(shell),
     // TODO basic
     // TODO befunge
+    // TODO bqn
     'brainfuck':     brainfuck(),
     'c':             StreamLanguage.define(c),
     'c-sharp':       StreamLanguage.define(csharp),
