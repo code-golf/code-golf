@@ -185,7 +185,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         // ALLOW(fsetxattr),    // 190
         // ALLOW(getxattr),     // 191
         // ALLOW(lgetxattr),    // 192
-        // ALLOW(listxattr),    // 194
+        ALLOW(listxattr),       // 194
         // ALLOW(llistxattr),   // 195
         // ALLOW(lremovexattr), // 198
         // ALLOW(lsetxattr),    // 189

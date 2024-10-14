@@ -227,6 +227,8 @@ func Play(
 		runs = palindromemordnilap()
 	case "pangram-grep":
 		runs = pangramGrep()
+	case "placeholder":
+		runs = placeholder()
 	case "poker":
 		runs = poker()
 	case "qr-decoder", "qr-encoder":
@@ -247,6 +249,8 @@ func Play(
 		runs = siUnits()
 	case "spelling-numbers":
 		runs = spellingNumbers()
+	case "star-wars-gpt":
+		runs = starWarsGpt()
 	case "sudoku", "sudoku-v2":
 		runs = sudoku(hole.ID == "sudoku-v2")
 	case "ten-pin-bowling":
