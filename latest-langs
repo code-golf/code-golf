@@ -50,6 +50,7 @@ constant %paths = (
     'Lisp'         => 'en.wikipedia.org/wiki/CLISP',
     'Lua'          => 'en.wikipedia.org/wiki/Lua_(programming_language)',
     'Nim'          => 'en.wikipedia.org/wiki/Nim_(programming_language)',
+    'Noulith'      => 'github.com/betaveros/noulith',
     'OCaml'        => 'en.wikipedia.org/wiki/OCaml',
     'Odin'         => 'github.com/odin-lang/Odin/releases/latest',
     'Pascal'       => 'en.wikipedia.org/wiki/Free_Pascal',
