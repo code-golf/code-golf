@@ -1,0 +1,17 @@
+#!/bin/sh -e
+
+[ "$1" = "-V" ] && exec cfunge -V
+
+cd /tmp
+
+cat - > code
+
+shift
+touch argv.txt
+for arg in "$@"; do
+    # Write NULL terminated argument to .txt file
+    echo -ne "$arg\0" >> argv.txt
+done
+
+# Execute and read arguments from .txt file
+exec cfunge -bEW code < argv.txt
