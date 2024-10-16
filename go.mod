@@ -19,7 +19,7 @@ require (
 	github.com/pelletier/go-toml/v2 v2.2.3
 	github.com/shurcooL/graphql v0.0.0-20230722043721-ed46e5a46466
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
-	github.com/yuin/goldmark v1.7.7
+	github.com/yuin/goldmark v1.7.8
 	golang.org/x/oauth2 v0.23.0
 )
 
