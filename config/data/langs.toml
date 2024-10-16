@@ -114,8 +114,8 @@ syscall
 
 [AWK]
 args    = [ '/usr/bin/gawk', '-v', 'RS=\0', '$code' ]
-size    = '1.77 MiB'
-version = 'GNU AWK 5.3.0'
+size    = '1.78 MiB'
+version = 'GNU AWK 5.3.1'
 website = 'https://www.gnu.org/software/gawk/'
 example = '''
 BEGIN {
