@@ -8,9 +8,11 @@ cd /tmp
 # running Go without the stdlib cached.
 cp -r /cache .cache
 
+# Compile
 cat - > code.go
 go build code.go
 rm code.go
 
+# Execute
 shift
 exec ./code "$@"
