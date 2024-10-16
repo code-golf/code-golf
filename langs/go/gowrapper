@@ -9,6 +9,8 @@ cd /tmp
 cp -r /cache .cache
 
 cat - > code.go
+go build code.go
+rm code.go
 
 shift
-exec go run code.go "$@"
+exec ./code "$@"
