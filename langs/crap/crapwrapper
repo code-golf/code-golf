@@ -1,0 +1,10 @@
+#!/bin/sh -e
+
+[ "$1" = "--version" ] && exec cat version
+
+cd /tmp
+
+cat - > code.crap
+
+shift
+exec crap code.crap | tcc -run - "$@";
