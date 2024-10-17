@@ -1,14 +1,15 @@
-#include "berry.h"
-#include "be_vm.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "be_vm.h"
+#include "berry.h"
 
 static int handle_result(bvm *vm, int res) {
     switch (res) {
     case BE_OK: /* everything is OK */
         return 0;
-    case BE_EXCEPTION: /* uncatched exception */
+    case BE_EXCEPTION: /* uncaught exception */
         be_dumpexcept(vm);
         return 1;
     case BE_EXIT: /* return exit code */
@@ -21,7 +22,7 @@ static int handle_result(bvm *vm, int res) {
     case BE_MALLOC_FAIL:
         be_writestring("error: memory allocation failed.\n");
         return -1;
-    default: /* unkonw result */
+    default: /* unknown result */
         return 2;
     }
 }
