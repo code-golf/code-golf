@@ -811,7 +811,7 @@ example = '''
 [Hush]
 args       = [ '/usr/bin/hush', '-' ]
 experiment = 656
-size       = '3.27 MiB'
+size       = '3.26 MiB'
 version    = '0.1.4'
 website    = 'https://hush-shell.github.io'
 example    = '''
