@@ -2,7 +2,7 @@ FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache build-base curl
 
-RUN curl https://pari.math.u-bordeaux.fr/pub/pari/unix/pari-2.15.5.tar.gz \
+RUN curl https://pari.math.u-bordeaux.fr/pub/pari/unix/pari-2.17.0.tar.gz \
   | tar xz --strip-components 1
 
 RUN ./Configure        \
