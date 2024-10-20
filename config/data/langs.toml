@@ -1034,6 +1034,28 @@ for arg in commandLineParams():
     echo arg
 '''
 
+[Nit]
+args       = [ '/usr/bin/nitwrapper', '-' ]
+env        = [ 'NIT_DIR=/usr/local', 'PATH=/usr/local/bin:/usr/bin:/bin:$PATH' ]
+experiment = 1371
+size       = '422 MiB'
+version    = '0.8'
+website    = 'https://nitlanguage.org'
+example    = '''
+# Printing
+print "Hello, World!"
+
+# Looping
+for i in [0..9] do
+    print i
+end
+
+# Accessing arguments
+for arg in args do
+    print arg
+end
+'''
+
 [OCaml]
 args    = [ '/usr/bin/ocaml', '/proc/self/fd/0' ]
 size    = '91.4 MiB'
