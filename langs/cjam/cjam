@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+[ "$1" = "--version" ] && exec cat /usr/bin/version
+
+cat - > /tmp/code.cjam
+
+shift
+exec /opt/jdk/bin/java -jar /usr/bin/cjam.jar /tmp/code.cjam "$@"
