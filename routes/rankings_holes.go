@@ -13,8 +13,8 @@ import (
 	"github.com/lib/pq"
 )
 
-// GET        /rankings/holes/{hole}/{lang}/{scoring}
-// GET /rankings/recent-holes/{hole}/{lang}/{scoring}
+// GET /rankings/holes/{hole}/{lang}/{scoring}
+// GET /rankings/recent-holes/{lang}/{scoring}
 func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 	type row struct {
 		Country                      config.NullCountry
