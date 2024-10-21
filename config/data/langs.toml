@@ -700,7 +700,7 @@ args       = [ '/usr/bin/golfscript', '-n', '-e', '$code', '--' ]
 args-quine = [ '/usr/bin/golfscript', '-n', '-e', '$code', '-q', '--' ]
 size       = '28.6 MiB'
 version    = '6155e9f'
-website    = 'http://www.golfscript.com/golfscript/'
+website    = 'https://golfscript.com/golfscript/'
 example    = '''
 # Printing
 "Hello, World!"puts
