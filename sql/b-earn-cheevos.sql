@@ -138,6 +138,10 @@ BEGIN
     IF hole = 'pangram-grep' AND pangramglot(langs_for_hole) = 26 THEN
         earned := earn(earned, 'pangramglot', user_id); END IF;
 
+    -- 🎮 S-box 360
+    IF hole = 'rijndael-s-box' AND lang IN ('c-sharp', 'f-sharp', 'powershell') THEN
+        earned := earn(earned, 's-box-360', user_id); END IF;
+
     -- 🪞 Solve Quine
     IF hole = 'quine' THEN
         earned := earn(earned, 'solve-quine', user_id); END IF;

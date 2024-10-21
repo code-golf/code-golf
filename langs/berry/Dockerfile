@@ -16,4 +16,4 @@ COPY --from=0 /berry/berry             /usr/bin/
 
 ENTRYPOINT ["berry"]
 
-CMD ["-v"]
+CMD ["--version"]

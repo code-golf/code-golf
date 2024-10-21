@@ -172,7 +172,7 @@ Wren
 
 For other languages, you will need to build them locally. For example:
 ```
-$ ./build-langs --no-push C
+$ ./build-langs --no-push C Go JavaScript
 ```
 
 Otherwise, you may see the following error:

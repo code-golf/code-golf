@@ -17,7 +17,7 @@ CREATE TYPE cheevo AS ENUM (
     'neunundneunzig-luftballons', 'off-the-grid', 'omniglot', 'omniglutton',
     'ouroboros', 'pangramglot', 'patches-welcome', 'phileas-fogg', 'pi-day',
     'polyglot', 'polyglutton', 'real-programmers', 'right-on', 'rm-rf',
-    'rtfm', 'rule-34', 'slowcoach', 'smörgåsbord', 'solve-quine',
+    'rtfm', 'rule-34', 's-box-360', 'slowcoach', 'smörgåsbord', 'solve-quine',
     'sounds-quite-nice', 'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr',
     'twelvetide', 'twenty-kiloleagues', 'under-pressure', 'up-to-eleven',
     'vampire-byte', 'x86'

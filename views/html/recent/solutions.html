@@ -1,11 +1,7 @@
 {{ template "header" . }}
 {{ template "recent" . }}
 
-<svg>
-{{ range $lang, $true := .Data.LangsShown }}
-    {{ svg $lang }}
-{{ end }}
-</svg>
+{{ template "lang-svgs" .Data.Rows }}
 
 <main id=two-pane>
     {{ template "nav" . }}

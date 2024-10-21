@@ -2439,6 +2439,15 @@ preamble = '''
     inclusive, each on their own line.
 '''
 
+['Placeholder']
+experiment = 1404
+category = 'Art'
+synopsis = 'Golf the code.golf placeholder.'
+preamble = '''
+<p>
+    Golf the code.golf placeholder.
+'''
+
 [Poker]
 category = 'Gaming'
 links = [
@@ -3339,6 +3348,20 @@ preamble = '''
 <p>A <b>sphenic number</b> is a number that is the product of three <b>distinct</b> prime numbers.
 
 <p>Print all the sphenic numbers from <b>1</b> to <b>10,000</b> inclusive, each on their own line.
+'''
+
+['Star Wars GPT']
+experiment = 1463
+category = 'Transform'
+links = [
+    { name = 'Wookieepedia', url = '//starwars.fandom.com/wiki/Opening_crawl' },
+]
+synopsis = 'Output the most likely next word to occur given word frequency in the Star Wars opening crawl.'
+preamble = '''
+Given input of a text *corpus* and two or more *prompts*.
+For each prompt, output the prompt followed by the most likely next word in the corpus by frequency (aka *mode*).
+If there is more than one mode, output the first encountered in the corpus.
+In this problem, the corpus is fixed to be the Star Wars opening crawl texts.
 '''
 
 ['Star Wars Opening Crawl']

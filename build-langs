@@ -45,7 +45,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
     }
 
     # Version.
-    if $id ~~ any <assembly brainfuck fish golfscript hare hexagony k> {
+    if $id ~~ any <assembly befunge brainfuck fish golfscript hare hexagony k> {
         "langs/$id/Dockerfile".IO.slurp ~~ / ' VERSION=' (\S+) /;
         %lang<version> = $id eq 'assembly' ?? "DefAssembler $0" !! $0;
     }
@@ -68,6 +68,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
                | 'Fortran'
                | 'sed'        { $ver = "GNU $name $digits" }
             when 'BASIC'      { $ver = "FreeBASIC $digits" }
+            when 'BQN'        { $ver = "C$name $digits" }
             when 'C'          { $ver = "Tiny C Compiler $digits" }
             when 'C#'
                | 'F#'
