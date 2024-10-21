@@ -2,7 +2,7 @@
 # <1s docker run --rm --net none elixir:slim
 # >5s docker run --rm --net none elixir:alpine
 
-FROM elixir:1.17.2-slim AS builder
+FROM elixir:1.17.3-slim AS builder
 
 FROM codegolf/lang-base
 

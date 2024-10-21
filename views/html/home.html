@@ -22,8 +22,9 @@
     {{ svg "joystick" }}
     {{ svg "shuffle" }}
     {{ svg "sort-numeric-down" }}
-    {{ range $k, $v := .Data.LangsUsed }}{{ svg $k }}{{ end }}
 </svg>
+
+{{ template "lang-svgs" .Data }}
 
 <main id=home>
 {{ if .Golfer }}
@@ -34,7 +35,7 @@
         </button>
     </nav>
 {{ end }}
-{{ range .Data.Cards }}
+{{ range .Data }}
     <a class="card {{ .Hole.CategoryColor }}"
     {{ if $.Golfer }}
         {{ $lang    := index $.Golfer.Settings "home" "points-for" }}

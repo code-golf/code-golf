@@ -13,7 +13,9 @@ constant %paths = (
     'Assembly'     => 'registry.npmjs.org/@defasm/core/latest',
     'Bash'         => 'en.wikipedia.org/wiki/Bash_(Unix_shell)',
     'BASIC'        => 'en.wikipedia.org/wiki/FreeBASIC',
+    'Befunge'      => 'github.com/VorpalBlade/cfunge',
     'Berry'        => 'github.com/berry-lang/berry/releases/latest',
+    'BQN'          => 'aplwiki.com/wiki/BQN',
     'brainfuck'    => 'github.com/primo-ppcg/bfci',
     'C'            => 'en.wikipedia.org/wiki/Tiny_C_Compiler',
     'C#'           => 'en.wikipedia.org/wiki/C_Sharp_(programming_language)',
@@ -46,7 +48,7 @@ constant %paths = (
     'Java'         => 'endoflife.date/api/java.json',
     'JavaScript'   => 'en.wikipedia.org/wiki/V8_(JavaScript_engine)',
     'jq'           => 'github.com/jqlang/jq/releases/latest',
-    'Julia'        => 'en.wikipedia.org/wiki/Julia_(programming_language)',
+    'Julia'        => 'github.com/JuliaLang/julia/releases/latest',
     'K'            => 'codeberg.org/ngn/k',
     'Lisp'         => 'en.wikipedia.org/wiki/CLISP',
     'Lua'          => 'en.wikipedia.org/wiki/Lua_(programming_language)',
@@ -64,7 +66,7 @@ constant %paths = (
     'Raku'         => 'github.com/rakudo/rakudo/releases/latest',
     'Rebol'        => 'en.wikipedia.org/wiki/Rebol',
     'Rexx'         => 'regina-rexx.sourceforge.io',
-    'Rockstar 2'   => 'github.com/RockstarLang/rockstar2/releases/latest',
+    'Rockstar 2'   => 'github.com/RockstarLang/rockstar/releases/latest',
     'Ruby'         => 'endoflife.date/api/ruby.json',
     'Rust'         => 'en.wikipedia.org/wiki/Rust_(programming_language)',
     'Scheme'       => 'en.wikipedia.org/wiki/Chez_Scheme',
@@ -90,6 +92,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         state $ua  = HTTP::Tiny.new :throw-exceptions;
         my    $res = $ua.get("https://$_")<content>.decode;
 
+        when / 'aplwiki'     / { $res ~~ / ' release' .+? <(<ver>)> / }
         when / 'codeberg'    / { $res ~~ / '"shortsha">' <(<ver>)> / }
         when / 'crates.io'   / { $res.&from-json<crate><max_stable_version> }
         when / 'endoflife'   / { $res.&from-json[0]<latest> }
@@ -99,7 +102,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'regina-rexx' / { $res ~~ / '<b>Current</b> ' <(<ver>)> / }
         when / 'github.com'  / {
             .ends-with('/releases/latest')
-                ?? $res ~~ / [ $name || 'dev' || 'elease' ] <[\ -]> v? <(<ver>)> /
+                ?? $res ~~ / [ $name || 'dev' || 'elease' || 'Version' ] <[\ -]> v? <(<ver>)> /
                 !! $res ~~ / '"currentOid":"' <( <xdigit> ** 7 )> /;
         }
         when / 'wikipedia'   / {
