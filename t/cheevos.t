@@ -60,6 +60,7 @@ for <
     pascals-triangle                 pascal    {under-pressure}
     poker                            fish      {fish-n-chips}
     quine                            python    {ouroboros}
+    rijndael-s-box                   c-sharp   {s-box-360}
     rock-paper-scissors-spock-lizard janet     {dammit-janet}
     seven-segment                    assembly  {assembly-required}
     sudoku                           hexagony  {off-the-grid}

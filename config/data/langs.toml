@@ -114,8 +114,8 @@ syscall
 
 [AWK]
 args    = [ '/usr/bin/gawk', '-v', 'RS=\0', '$code' ]
-size    = '1.77 MiB'
-version = 'GNU AWK 5.3.0'
+size    = '1.78 MiB'
+version = 'GNU AWK 5.3.1'
 website = 'https://www.gnu.org/software/gawk/'
 example = '''
 BEGIN {
@@ -311,7 +311,7 @@ foreach (String arg in args)
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
 size    = '147 MiB'
-version = 'Clang 19.1.1'
+version = 'Clang 19.1.2'
 website = 'https://clang.llvm.org'
 example = '''
 #include <iostream>
@@ -338,8 +338,8 @@ int main(int argc, char* argv[]) {
 [Civet]
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
-size    = '68.7 MiB'
-version = '0.8.1'
+size    = '67.9 MiB'
+version = '0.8.5'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -431,7 +431,7 @@ for arg in sys.argv[1:]:
 args       = [ '/usr/bin/coffeescript', '-' ]
 env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 450
-size       = '69.9 MiB'
+size       = '69.1 MiB'
 version    = '2.7.0'
 website    = 'https://coffeescript.org'
 example    = '''
@@ -642,7 +642,7 @@ end
 args       = [ '/usr/bin/gleamwrapper', '-', '--' ]
 env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 1129
-size       = '88.4 MiB'
+size       = '88.1 MiB'
 version    = '1.5.1'
 website    = 'https://gleam.run'
 example    = '''
@@ -700,7 +700,7 @@ args       = [ '/usr/bin/golfscript', '-n', '-e', '$code', '--' ]
 args-quine = [ '/usr/bin/golfscript', '-n', '-e', '$code', '-q', '--' ]
 size       = '28.6 MiB'
 version    = '6155e9f'
-website    = 'http://www.golfscript.com/golfscript/'
+website    = 'https://golfscript.com/golfscript/'
 example    = '''
 # Printing
 "Hello, World!"puts
@@ -941,7 +941,7 @@ $ARGS.positional[]
 [Julia]
 args    = [ '/usr/bin/julia', '--color=yes', '--eval', '$code', '--' ]
 size    = '297 MiB'
-version = '1.11.0'
+version = '1.11.1'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -1322,7 +1322,7 @@ end
 
 [Rockstar]
 args    = [ '/usr/bin/rockstar', '-' ]
-size    = '162 MiB'
+size    = '164 MiB'
 version = 'Rocky 2.1.2'
 website = 'https://github.com/gaborsch/rocky'
 example = '''
@@ -1384,8 +1384,8 @@ end
 
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
-size    = '338 MiB'
-version = '1.81.0'
+size    = '358 MiB'
+version = '1.82.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -1542,7 +1542,7 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '28.6 MiB'
+size       = '28.8 MiB'
 version    = '0.12.3'
 website    = 'https://www.uiua.org'
 example    = '''
