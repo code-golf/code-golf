@@ -339,7 +339,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '67.9 MiB'
-version = '0.8.3'
+version = '0.8.5'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -717,7 +717,7 @@ args       = [ '/usr/bin/golfscript', '-n', '-e', '$code', '--' ]
 args-quine = [ '/usr/bin/golfscript', '-n', '-e', '$code', '-q', '--' ]
 size       = '28.6 MiB'
 version    = '6155e9f'
-website    = 'http://www.golfscript.com/golfscript/'
+website    = 'https://golfscript.com/golfscript/'
 example    = '''
 # Printing
 "Hello, World!"puts
@@ -1318,7 +1318,7 @@ end
 
 [Rockstar]
 args    = [ '/usr/bin/rockstar', '-' ]
-size    = '162 MiB'
+size    = '164 MiB'
 version = 'Rocky 2.1.2'
 website = 'https://github.com/gaborsch/rocky'
 example = '''
