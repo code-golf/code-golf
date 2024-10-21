@@ -1,3 +1,4 @@
+# Also bump Rockstar.
 FROM eclipse-temurin:23_37-jdk-alpine AS builder
 
 RUN apk add --no-cache build-base gmp-dev
