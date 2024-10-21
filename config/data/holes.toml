@@ -3441,7 +3441,7 @@ consequat.</pre>
 [Sudoku]
 category = 'Gaming'
 releases = [2018-11-15, 2021-04-25]
-variants = ['Sudoku', 'Sudoku v2']
+variants = ['Sudoku', 'Sudoku (Fill-in)']
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Sudoku' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Sudoku' },

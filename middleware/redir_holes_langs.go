@@ -23,6 +23,8 @@ func RedirHolesLangs(next http.Handler) http.Handler {
 				"/factorial-factorisation", 1)
 		case "grid-packing":
 			newPath = strings.Replace(newPath, "/grid-packing", "/css-grid", 1)
+		case "sudoku-v2":
+			newPath = strings.Replace(newPath, "/sudoku-v2", "/sudoku-fill-in", 1)
 		}
 
 		if r.PathValue("lang") == "perl6" {
