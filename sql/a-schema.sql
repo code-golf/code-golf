@@ -52,7 +52,7 @@ CREATE TYPE hole AS ENUM (
     'reversi', 'rijndael-s-box', 'rock-paper-scissors-spock-lizard',
     'roman-to-arabic', 'rule-110', 'seven-segment', 'si-units',
     'sierpiński-triangle', 'smith-numbers', 'spelling-numbers',
-    'star-wars-opening-crawl', 'sudoku', 'sudoku-v2', 'ten-pin-bowling',
+    'star-wars-opening-crawl', 'sudoku', 'sudoku-fill-in', 'ten-pin-bowling',
     'time-distance', 'tongue-twisters', 'transpose-sentence', 'united-states',
     'vampire-numbers', 'van-eck-sequence', 'zeckendorf-representation',
     'zodiac-signs', 'γ', 'λ', 'π', 'τ', 'φ', '√2', '𝑒'
