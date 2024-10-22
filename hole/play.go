@@ -251,8 +251,8 @@ func Play(
 		runs = spellingNumbers()
 	case "star-wars-gpt":
 		runs = starWarsGpt()
-	case "sudoku", "sudoku-v2":
-		runs = sudoku(hole.ID == "sudoku-v2")
+	case "sudoku", "sudoku-fill-in":
+		runs = sudoku(hole.ID == "sudoku-fill-in")
 	case "ten-pin-bowling":
 		runs = tenPinBowling()
 	case "time-distance":

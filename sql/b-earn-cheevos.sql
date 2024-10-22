@@ -127,7 +127,7 @@ BEGIN
         earned := earn(earned, 'mary-had-a-little-lambda', user_id); END IF;
 
     -- 📴 Off-the-grid
-    IF hole IN ('sudoku', 'sudoku-v2') AND lang = 'hexagony' THEN
+    IF hole IN ('sudoku', 'sudoku-fill-in') AND lang = 'hexagony' THEN
         earned = earn(earned, 'off-the-grid', user_id); END IF;
 
     -- 🐍 Ouroboros

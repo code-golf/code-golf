@@ -29,6 +29,7 @@ const renamedHoles: Record<string, string> = {
     'eight-queens':                  'n-queens',
     'factorial-factorisation-ascii': 'factorial-factorisation',
     'grid-packing':                  'css-grid',
+    'sudoku-v2':                     'sudoku-fill-in',
 };
 
 const renamedLangs: Record<string, string> = {
