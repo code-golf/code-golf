@@ -1,8 +1,6 @@
 #!/bin/sh -e
 
-export PATH=/usr/bin:/bin
-
-[ "$1" = "--version" ] && exec /usr/bin/vim --version
+[ "$1" = "--version" ] && exec vim --version
 
 cd /tmp
 
