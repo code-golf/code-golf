@@ -440,8 +440,14 @@ func play(
 
 	err := cmd.Run()
 
+	timeout2 := timeout
+	if lang.ID == "kotlin" {
+		// Add some extra time
+		timeout2 += 5 * time.Second
+	}
+
 	deadline, _ := ctx.Deadline()
-	run.Time = timeout - time.Until(deadline)
+	run.Time = timeout2 - time.Until(deadline)
 
 	if err != nil {
 		if err, ok := err.(*exec.ExitError); ok {
@@ -450,7 +456,7 @@ func play(
 
 		if errors.Is(ctx.Err(), context.DeadlineExceeded) {
 			run.Timeout = true
-			fmt.Fprint(&stderr, "Killed for exceeding the ", timeout, " timeout.")
+			fmt.Fprint(&stderr, "Killed for exceeding the ", timeout2, " timeout.")
 		} else {
 			stderr.WriteString(err.Error())
 		}
