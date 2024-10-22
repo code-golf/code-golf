@@ -39,7 +39,7 @@ err="$(/usr/bin/vim --clean --not-a-term --noplugin -eZ -V1 +0 -S code.vim outpu
 status=$?
 set -e
 
-if [[ $status -eq 0 ]];then
+if [[ $status -eq 0 ]]; then
   cat output
 else
   echo "$err" >&2
