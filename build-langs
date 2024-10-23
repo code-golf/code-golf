@@ -97,6 +97,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
             default           { $ver = $digits }
         }
 
+        die "Couldn't get version string for $id." unless $ver;
         %lang<version> = $ver;
     }
 

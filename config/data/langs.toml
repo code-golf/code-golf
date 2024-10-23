@@ -974,6 +974,27 @@ example = '''
 `0:x
 '''
 
+[Kotlin]
+args       = [ '/usr/bin/kotlin', '-' ]
+experiment = 151
+size       = '661 MiB'
+version    = '2.0.21'
+website    = 'https://kotlinlang.org/'
+example    = '''
+fun main(args: Array<String>) {
+    // Printing
+    println("Hello, World!")
+
+    // Looping
+    for (i in 0..10)
+        println("$i")
+
+    // Accessing arguments
+    for (arg in args)
+        println(arg)
+}
+'''
+
 [Lisp]
 args    = [ '/usr/bin/lisp', '-' ]
 size    = '31.1 MiB'
