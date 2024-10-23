@@ -1402,6 +1402,19 @@ preamble = '''
 </ul>
 '''
 
+['Hilbert Curve']
+experiment = 1448
+category   = 'Art'
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Hilbert_curve' },
+]
+synopsis = 'Print five iterations of the Hilbert curve.'
+preamble = '''
+<p>The Hilbert curve is a continuous fractal space-filling curve, constructed as a limit of piecewise linear curves.
+
+<p>Print five iterations of the Hilbert curve.
+'''
+
 [Intersection]
 category = 'Mathematics'
 links = [
