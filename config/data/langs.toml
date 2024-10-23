@@ -986,7 +986,7 @@ println("Hello, World!")
 
 // Looping
 for (i in 0..9)
-    println("$i")
+    println(i)
 
 // Accessing arguments
 for (arg in args)
