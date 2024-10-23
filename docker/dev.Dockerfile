@@ -6,8 +6,8 @@ ENV CGO_ENABLED=0 GOPATH= TZ=Europe/London
 RUN apk add --no-cache build-base curl git linux-headers tzdata \
  && GOBIN=/bin go install github.com/cespare/reflex@latest
 
-COPY --from=codegolf/lang-kotlin       ["/", "/langs/kotlin/rootfs/"      ] #  661 MiB
 COPY --from=codegolf/lang-swift        ["/", "/langs/swift/rootfs/"       ] #  555 MiB
+COPY --from=codegolf/lang-kotlin       ["/", "/langs/kotlin/rootfs/"      ] #  452 MiB
 COPY --from=codegolf/lang-haskell      ["/", "/langs/haskell/rootfs/"     ] #  388 MiB
 COPY --from=codegolf/lang-go           ["/", "/langs/go/rootfs/"          ] #  383 MiB
 COPY --from=codegolf/lang-rust         ["/", "/langs/rust/rootfs/"        ] #  358 MiB

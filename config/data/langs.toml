@@ -975,24 +975,23 @@ example = '''
 '''
 
 [Kotlin]
-args       = [ '/usr/bin/kotlin', '-' ]
+args       = [ '/kotlinc/bin/kotlin', '-e', '$code' ]
+env        = [ 'LC_ALL=C.UTF-8', 'PATH=/usr/bin:/bin:/opt/jdk/openjdk/bin' ]
 experiment = 151
-size       = '661 MiB'
+size       = '452 MiB'
 version    = '2.0.21'
 website    = 'https://kotlinlang.org'
 example    = '''
-fun main(args: Array<String>) {
-    // Printing
-    println("Hello, World!")
+// Printing
+println("Hello, World!")
 
-    // Looping
-    for (i in 0..9)
-        println("$i")
+// Looping
+for (i in 0..9)
+    println("$i")
 
-    // Accessing arguments
-    for (arg in args)
-        println(arg)
-}
+// Accessing arguments
+for (arg in args)
+    println(arg)
 '''
 
 [Lisp]
