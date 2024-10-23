@@ -977,7 +977,7 @@ example = '''
 [Kotlin]
 args       = [ '/usr/bin/kotlin', '-' ]
 experiment = 151
-size       = '561 MiB'
+size       = '661 MiB'
 version    = '2.0.21'
 website    = 'https://kotlinlang.org/'
 example    = '''

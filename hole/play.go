@@ -363,7 +363,13 @@ func play(
 
 	var stderr, stdout bytes.Buffer
 
-	ctx, cancel := context.WithTimeout(ctx, timeout)
+	timeout2 := timeout
+	if lang.ID == "kotlin" {
+		// Add some extra time
+		timeout2 += 5 * time.Second
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, timeout2)
 	defer cancel()
 
 	cmd := exec.CommandContext(ctx, "/usr/bin/run-lang")
@@ -439,12 +445,6 @@ func play(
 	}
 
 	err := cmd.Run()
-
-	timeout2 := timeout
-	if lang.ID == "kotlin" {
-		// Add some extra time
-		timeout2 += 5 * time.Second
-	}
 
 	deadline, _ := ctx.Deadline()
 	run.Time = timeout2 - time.Until(deadline)
