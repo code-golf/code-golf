@@ -290,7 +290,7 @@ int main(int argc, char* argv[]) {
 ['C#']
 args    = [ '/usr/bin/c-sharp', '-' ]
 size    = '152 MiB'
-version = 'C# 12.0 on .NET 8.0.8'
+version = 'C# 12.0 on .NET 8.0.10'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
