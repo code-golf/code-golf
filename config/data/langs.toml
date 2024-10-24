@@ -975,9 +975,9 @@ example = '''
 '''
 
 [Kotlin]
-args    = [ '/kotlinc/bin/kotlin', '-e', '$code' ]
-env     = [ 'LC_ALL=C.UTF-8', 'PATH=/usr/bin:/bin:/opt/jdk/openjdk/bin' ]
-size    = '464 MiB'
+args    = [ '/usr/bin/kotlin', '-e', '$code' ]
+env     = [ 'LC_ALL=C.UTF-8', 'PATH=/usr/bin:/bin:/opt/java/openjdk/bin' ]
+size    = '263 MiB'
 version = '2.0.21'
 website = 'https://kotlinlang.org'
 example = '''
