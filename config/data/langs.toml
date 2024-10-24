@@ -1262,8 +1262,8 @@ example    = '''
 
 [Raku]
 args    = [ '/usr/bin/raku', '-' ]
-size    = '75.7 MiB'
-version = 'Raku 6.d on Rakudo 2024.09'
+size    = '75.8 MiB'
+version = 'Raku 6.d on Rakudo 2024.10'
 website = 'https://raku.org'
 example = '''
 # Printing
