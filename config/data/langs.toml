@@ -535,7 +535,7 @@ for arg <- System.argv, do: IO.puts arg
 ['F#']
 args    = [ '/usr/bin/f-sharp', '-' ]
 size    = '148 MiB'
-version = 'F# 8.0 on .NET 8.0.7'
+version = 'F# 8.0 on .NET 8.0.10'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
