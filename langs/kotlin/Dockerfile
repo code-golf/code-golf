@@ -2,7 +2,9 @@ FROM eclipse-temurin:23.0.1_11-jre-alpine AS builder
 
 RUN apk add --no-cache bash curl unzip
 
-RUN curl -L https://github.com/JetBrains/kotlin/releases/download/v2.0.21/kotlin-compiler-2.0.21.zip > kotlin.zip
+ENV VER=2.0.21
+
+RUN curl -L https://github.com/JetBrains/kotlin/releases/download/v$VER/kotlin-compiler-$VER.zip > kotlin.zip
 
 RUN unzip kotlin.zip && cp -r /kotlinc/* /usr/
 
