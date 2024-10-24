@@ -1165,7 +1165,7 @@ for ($i = 1; $i < $argc; $i++)
 args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 size       = '178 MiB'
-version    = 'PowerShell 7.4.5 on .NET 8.0.8'
+version    = 'PowerShell 7.4.5 on .NET 8.0.10'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
