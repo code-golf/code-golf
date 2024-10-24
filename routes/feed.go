@@ -25,6 +25,7 @@ func init() {
 		sha, created, id string
 		hole             bool
 	}{
+		{"e2f6993", "2024-10-23 19:43:52", "kotlin", false},
 		{"1fd2acf", "2024-10-01 00:00:02", "card-number-validation", true},
 		{"db53e05", "2024-09-01 00:00:19", "palindromemordnilap", true},
 		{"a3cd66a", "2024-08-22 01:53:21", "scheme", false},

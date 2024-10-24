@@ -1402,6 +1402,19 @@ preamble = '''
 </ul>
 '''
 
+['Hilbert Curve']
+experiment = 1448
+category   = 'Art'
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Hilbert_curve' },
+]
+synopsis = 'Print five iterations of the Hilbert curve.'
+preamble = '''
+<p>The Hilbert curve is a continuous fractal space-filling curve, constructed as a limit of piecewise linear curves.
+
+<p>Print five iterations of the Hilbert curve.
+'''
+
 [Intersection]
 category = 'Mathematics'
 links = [
@@ -3358,8 +3371,8 @@ links = [
 ]
 synopsis = 'Output the most likely next word to occur given word frequency in the Star Wars opening crawl.'
 preamble = '''
-Given input of a text *corpus* and two or more *prompts*.
-For each prompt, output the prompt followed by the most likely next word in the corpus by frequency (aka *mode*).
+You are given input of a text *corpus* and several *prompts* on subsequent lines.
+For each prompt, output the most likely next word in the corpus by frequency (aka *mode*).
 If there is more than one mode, output the first encountered in the corpus.
 In this problem, the corpus is fixed to be the Star Wars opening crawl texts.
 '''

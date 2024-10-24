@@ -339,7 +339,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '67.9 MiB'
-version = '0.8.5'
+version = '0.8.7'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -991,6 +991,25 @@ example = '''
 `0:x
 '''
 
+[Kotlin]
+args    = [ '/kotlinc/bin/kotlin', '-e', '$code' ]
+env     = [ 'LC_ALL=C.UTF-8', 'PATH=/usr/bin:/bin:/opt/jdk/openjdk/bin' ]
+size    = '452 MiB'
+version = '2.0.21'
+website = 'https://kotlinlang.org'
+example = '''
+// Printing
+println("Hello, World!")
+
+// Looping
+for (i in 0..9)
+    println(i)
+
+// Accessing arguments
+for (arg in args)
+    println(arg)
+'''
+
 [Lisp]
 args    = [ '/usr/bin/lisp', '-' ]
 size    = '31.1 MiB'
@@ -1447,8 +1466,8 @@ G
 
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
-size    = '1.20 MiB'
-version = 'SQLite 3.46.1'
+size    = '1.21 MiB'
+version = 'SQLite 3.47.0'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
@@ -1538,8 +1557,8 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '28.8 MiB'
-version    = '0.12.3'
+size       = '33.7 MiB'
+version    = '0.13.0'
 website    = 'https://www.uiua.org'
 example    = '''
 # Printing

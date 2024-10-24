@@ -20,6 +20,7 @@ RUN go build -ldflags -s -trimpath \
 FROM scratch
 
 COPY --from=codegolf/lang-swift        ["/", "/langs/swift/rootfs/"       ] #  555 MiB
+COPY --from=codegolf/lang-kotlin       ["/", "/langs/kotlin/rootfs/"      ] #  452 MiB
 COPY --from=codegolf/lang-haskell      ["/", "/langs/haskell/rootfs/"     ] #  388 MiB
 COPY --from=codegolf/lang-go           ["/", "/langs/go/rootfs/"          ] #  383 MiB
 COPY --from=codegolf/lang-rust         ["/", "/langs/rust/rootfs/"        ] #  358 MiB
@@ -55,10 +56,10 @@ COPY --from=codegolf/lang-prolog       ["/", "/langs/prolog/rootfs/"      ] # 49
 COPY --from=codegolf/lang-python       ["/", "/langs/python/rootfs/"      ] # 47.7 MiB
 COPY --from=codegolf/lang-javascript   ["/", "/langs/javascript/rootfs/"  ] # 41.1 MiB
 COPY --from=codegolf/lang-haxe         ["/", "/langs/haxe/rootfs/"        ] # 40.0 MiB
+COPY --from=codegolf/lang-uiua         ["/", "/langs/uiua/rootfs/"        ] # 33.7 MiB
 COPY --from=codegolf/lang-lisp         ["/", "/langs/lisp/rootfs/"        ] # 31.1 MiB
 COPY --from=codegolf/lang-pascal       ["/", "/langs/pascal/rootfs/"      ] # 31.1 MiB
 COPY --from=codegolf/lang-racket       ["/", "/langs/racket/rootfs/"      ] # 28.9 MiB
-COPY --from=codegolf/lang-uiua         ["/", "/langs/uiua/rootfs/"        ] # 28.8 MiB
 COPY --from=codegolf/lang-golfscript   ["/", "/langs/golfscript/rootfs/"  ] # 28.6 MiB
 COPY --from=codegolf/lang-ruby         ["/", "/langs/ruby/rootfs/"        ] # 28.6 MiB
 COPY --from=codegolf/lang-viml         ["/", "/langs/viml/rootfs/"        ] # 24.3 MiB
@@ -84,8 +85,8 @@ COPY --from=codegolf/lang-awk          ["/", "/langs/awk/rootfs/"         ] # 1.
 COPY --from=codegolf/lang-c            ["/", "/langs/c/rootfs/"           ] # 1.70 MiB
 COPY --from=codegolf/lang-bqn          ["/", "/langs/bqn/rootfs/"         ] # 1.27 MiB
 COPY --from=codegolf/lang-rebol        ["/", "/langs/rebol/rootfs/"       ] # 1.22 MiB
+COPY --from=codegolf/lang-sql          ["/", "/langs/sql/rootfs/"         ] # 1.21 MiB
 COPY --from=codegolf/lang-bash         ["/", "/langs/bash/rootfs/"        ] # 1.20 MiB
-COPY --from=codegolf/lang-sql          ["/", "/langs/sql/rootfs/"         ] # 1.20 MiB
 COPY --from=codegolf/lang-berry        ["/", "/langs/berry/rootfs/"       ] #  973 KiB
 COPY --from=codegolf/lang-janet        ["/", "/langs/janet/rootfs/"       ] #  886 KiB
 COPY --from=codegolf/lang-fennel       ["/", "/langs/fennel/rootfs/"      ] #  665 KiB
