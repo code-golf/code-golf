@@ -37,7 +37,12 @@ func init() {
 var answers embed.FS
 
 // All ASCII whitespace except newline, up to a newline or the end.
-var stdoutTrimmer = regexp.MustCompile(`[\t\x0B\f\r ]+(?:\n|$)`)
+var perLineTrimmer = regexp.MustCompile(`[\t\x0B\f\r ]+(?:\n|$)`)
+
+func trimPerLine(bytesSlice []byte) string {
+	return string(bytes.TrimRight(perLineTrimmer.ReplaceAll(
+		bytesSlice, []byte{'\n'}), "\n"))
+}
 
 // Run holds the results of running a given solution once.
 type Run struct {
@@ -222,6 +227,8 @@ func Play(
 		runs = palindromemordnilap()
 	case "pangram-grep":
 		runs = pangramGrep()
+	case "placeholder":
+		runs = placeholder()
 	case "poker":
 		runs = poker()
 	case "qr-decoder", "qr-encoder":
@@ -242,8 +249,10 @@ func Play(
 		runs = siUnits()
 	case "spelling-numbers":
 		runs = spellingNumbers()
-	case "sudoku", "sudoku-v2":
-		runs = sudoku(hole.ID == "sudoku-v2")
+	case "star-wars-gpt":
+		runs = starWarsGpt()
+	case "sudoku", "sudoku-fill-in":
+		runs = sudoku(hole.ID == "sudoku-fill-in")
 	case "ten-pin-bowling":
 		runs = tenPinBowling()
 	case "time-distance":
@@ -310,6 +319,12 @@ func play(
 		// is not nil. This seems to be a quirk of the Babashka interpreter
 		// that only occurs when providing code via a command line argument.
 		code += "(print)"
+	case "go":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && strings.Contains(code, "//go:embed") {
+			run.Stderr = `Quine in Go must not use "embed".`
+			return nil
+		}
 	case "jq":
 		// Prevent trivial quines. Error out and return early.
 		if hole.ID == "quine" && json.Valid([]byte(code)) {
@@ -395,6 +410,26 @@ func play(
 			args += arg + "\x00"
 		}
 		cmd.Stdin = strings.NewReader(args)
+	case "rockstar":
+		// Embed args into the code.
+		var argCode strings.Builder
+		argCode.WriteString("rock args\n")
+		for _, arg := range run.Args {
+			argCode.WriteString(`rock "`)
+			for _, r := range arg {
+				switch r {
+				case '\\', '"':
+					argCode.WriteByte('\\')
+					argCode.WriteRune(r)
+				case '\n':
+					argCode.WriteString(`\n`)
+				default:
+					argCode.WriteRune(r)
+				}
+			}
+			argCode.WriteString("\" into args\n")
+		}
+		cmd.Stdin = strings.NewReader(argCode.String() + code)
 	case "sed":
 		// For sed we always need to append a null byte, even if no args exist
 		args := strings.Join(run.Args, "\x00") + "\x00"
@@ -454,12 +489,14 @@ func play(
 	if hole.ID == "quine" {
 		run.Stdout = string(stdoutBytes)
 	} else {
-		run.Stdout = string(bytes.TrimRight(stdoutTrimmer.ReplaceAll(
-			stdoutBytes, []byte{'\n'}), "\n"))
+		run.Stdout = trimPerLine(stdoutBytes)
 	}
 
 	// Timeouts and whitespace only output never pass.
 	if !run.Timeout && len(strings.TrimSpace(run.Stdout)) != 0 {
+		if hole.ID != "quine" {
+			run.Answer = trimPerLine([]byte(run.Answer))
+		}
 		if hole.ItemDelimiter != "" {
 			run.Answer = getClosestAnswer(run.Answer, run.Stdout, hole.ItemDelimiter, hole.MultisetDelimiter)
 		}
