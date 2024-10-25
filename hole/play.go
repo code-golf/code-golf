@@ -251,8 +251,8 @@ func Play(
 		runs = spellingNumbers()
 	case "star-wars-gpt":
 		runs = starWarsGpt()
-	case "sudoku", "sudoku-v2":
-		runs = sudoku(hole.ID == "sudoku-v2")
+	case "sudoku", "sudoku-fill-in":
+		runs = sudoku(hole.ID == "sudoku-fill-in")
 	case "ten-pin-bowling":
 		runs = tenPinBowling()
 	case "time-distance":
@@ -319,6 +319,12 @@ func play(
 		// is not nil. This seems to be a quirk of the Babashka interpreter
 		// that only occurs when providing code via a command line argument.
 		code += "(print)"
+	case "go":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && strings.Contains(code, "//go:embed") {
+			run.Stderr = `Quine in Go must not use "embed".`
+			return nil
+		}
 	case "jq":
 		// Prevent trivial quines. Error out and return early.
 		if hole.ID == "quine" && json.Valid([]byte(code)) {

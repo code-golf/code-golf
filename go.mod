@@ -6,10 +6,10 @@ require (
 	github.com/DATA-DOG/go-sqlmock v1.5.2
 	github.com/SeerUK/assert v1.0.0
 	github.com/agnivade/levenshtein v1.2.0
-	github.com/buildkite/terminal-to-html/v3 v3.16.2
+	github.com/buildkite/terminal-to-html/v3 v3.16.3
 	github.com/bwmarrin/discordgo v0.28.1
 	github.com/go-chi/chi/v5 v5.1.0
-	github.com/go-git/go-billy/v5 v5.5.0
+	github.com/go-git/go-billy/v5 v5.6.0
 	github.com/go-git/go-git/v5 v5.12.0
 	github.com/gofrs/uuid/v5 v5.3.0
 	github.com/gorilla/feeds v1.2.0
@@ -19,7 +19,7 @@ require (
 	github.com/pelletier/go-toml/v2 v2.2.3
 	github.com/shurcooL/graphql v0.0.0-20230722043721-ed46e5a46466
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
-	github.com/yuin/goldmark v1.7.6
+	github.com/yuin/goldmark v1.7.8
 	golang.org/x/oauth2 v0.23.0
 )
 

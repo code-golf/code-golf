@@ -18,4 +18,4 @@ COPY /befunge /usr/bin/
 
 ENTRYPOINT ["befunge"]
 
-CMD ["-V"]
+CMD ["--version"]
