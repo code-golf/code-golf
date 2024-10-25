@@ -2,7 +2,7 @@ FROM rust:1.82.0-alpine3.20 AS builder
 
 RUN apk add --no-cache build-base linux-headers
 
-RUN cargo install uiua --version 0.12.3
+RUN cargo install uiua --version 0.13.0
 
 FROM codegolf/lang-base
 

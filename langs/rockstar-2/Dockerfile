@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0.401-alpine3.20 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:8.0.403-alpine3.20 AS builder
 
 RUN apk add --no-cache build-base zlib-dev
 
