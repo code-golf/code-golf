@@ -25,10 +25,15 @@ async function getHoleLangNotesContent(lang: string): Promise<string> {
 }
 
 const renamedHoles: Record<string, string> = {
-    'eight-queens': 'n-queens',
+    'billiard':                      'billiards',
+    'eight-queens':                  'n-queens',
     'factorial-factorisation-ascii': 'factorial-factorisation',
-    'grid-packing': 'css-grid',
-    'billiard': 'billiards',
+    'grid-packing':                  'css-grid',
+    'sudoku-v2':                     'sudoku-fill-in',
+};
+
+const renamedLangs: Record<string, string> = {
+    perl6: 'raku',
 };
 
 export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSolution: any, updateReadonlyPanels: any, getEditor: () => any) {
@@ -68,9 +73,14 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
 
     for (const [key, value] of Object.entries(localStorage)) {
         if (key.startsWith('code_')) {
-            const hole = key.split('_')[1];
-            if (hole in renamedHoles) {
-                localStorage.setItem(key.replace(hole, renamedHoles[hole]), value);
+            const [prefix, hole, lang, scoring] = key.split('_');
+
+            const newHole = renamedHoles[hole] ?? hole;
+            const newLang = renamedLangs[lang] ?? lang;
+
+            const newKey = [prefix, newHole, newLang, scoring].join('_');
+            if (key !== newKey) {
+                localStorage.setItem(newKey, value);
                 localStorage.removeItem(key);
             }
         }

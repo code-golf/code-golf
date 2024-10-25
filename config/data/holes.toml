@@ -390,29 +390,36 @@ preamble = '''
 <p>
     Write a program that will receive various brainfuck programs as arguments
     and execute each program in turn.
+
+<p>
+    Arguments will not contain any character not
+    listed in the table above. In particular, the input command "<b>,</b>" is not tested.
 '''
 
 ['Card Number Validation']
 category = 'Computing'
-experiment = 1011
 links = [
-    { name  = 'Wikipedia', url = '//en.wikipedia.org/wiki/Luhn_algorithm' }
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Luhn_test_of_credit_card_numbers' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Luhn_algorithm' }
 ]
+released = 2024-10-01
 synopsis = 'Validate card numbers.'
 preamble = '''
 <p>
-    The Luhn algorithm is a simple check digit formula used to validate a variety of
-    identification numbers.
+    The Luhn algorithm is a simple check digit formula used to validate a
+    variety of identification numbers.
 
 <p>
-    Given a list of 16-digit payment card numbers (like <code>3566 0020 2036 0505</code>),
-    output the ones that are valid according to the Luhn algorithm. The digits of each input
-    are separated into groups of four by spaces.
+    Given a list of 16-digit payment card numbers
+    (like <code>3566 0020 2036 0505</code>), output the ones that are valid
+    according to the Luhn algorithm. The digits of each input are separated
+    into groups of four by spaces.
 
 <p>
-    To verify a 16-digit card number like <code>XyXy XyXy XyXy XyXy</code>, add up all the "y"
-    digits and the <strong>digit sums</strong> of the <strong>doubles</strong> of the "X" digits.
-    The card number is valid if this sum is divisible by 10.
+    To verify a 16-digit card number like <code>XyXy XyXy XyXy XyXy</code>,
+    add up all the "y" digits and the <strong>digit sums</strong> of the
+    <strong>doubles</strong> of the "X" digits. The card number is valid if
+    this sum is divisible by 10.
 '''
 
 ['Catalan Numbers']
@@ -1393,6 +1400,19 @@ preamble = '''
         The original 16 bytes, except with newline replaced with full stop
         (<code>.</code>)
 </ul>
+'''
+
+['Hilbert Curve']
+experiment = 1448
+category   = 'Art'
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Hilbert_curve' },
+]
+synopsis = 'Print five iterations of the Hilbert curve.'
+preamble = '''
+<p>The Hilbert curve is a continuous fractal space-filling curve, constructed as a limit of piecewise linear curves.
+
+<p>Print five iterations of the Hilbert curve.
 '''
 
 [Intersection]
@@ -2432,6 +2452,15 @@ preamble = '''
     inclusive, each on their own line.
 '''
 
+['Placeholder']
+experiment = 1404
+category = 'Art'
+synopsis = 'Golf the code.golf placeholder.'
+preamble = '''
+<p>
+    Golf the code.golf placeholder.
+'''
+
 [Poker]
 category = 'Gaming'
 links = [
@@ -3334,6 +3363,20 @@ preamble = '''
 <p>Print all the sphenic numbers from <b>1</b> to <b>10,000</b> inclusive, each on their own line.
 '''
 
+['Star Wars GPT']
+experiment = 1463
+category = 'Transform'
+links = [
+    { name = 'Wookieepedia', url = '//starwars.fandom.com/wiki/Opening_crawl' },
+]
+synopsis = 'Output the most likely next word to occur given word frequency in the Star Wars opening crawl.'
+preamble = '''
+You are given input of a text *corpus* and several *prompts* on subsequent lines.
+For each prompt, output the most likely next word in the corpus by frequency (aka *mode*).
+If there is more than one mode, output the first encountered in the corpus.
+In this problem, the corpus is fixed to be the Star Wars opening crawl texts.
+'''
+
 ['Star Wars Opening Crawl']
 category = 'Transform'
 links = [
@@ -3411,7 +3454,7 @@ consequat.</pre>
 [Sudoku]
 category = 'Gaming'
 releases = [2018-11-15, 2021-04-25]
-variants = ['Sudoku', 'Sudoku v2']
+variants = ['Sudoku', 'Sudoku (Fill-in)']
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Sudoku' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Sudoku' },
