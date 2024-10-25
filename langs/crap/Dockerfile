@@ -7,7 +7,7 @@ RUN curl -L https://download.savannah.nongnu.org/releases/tinycc/tcc-0.9.27.tar.
 
 RUN ./configure      \
     --config-musl    \
-    --prefix="/usr"  \
+    --prefix=/usr    \
     --strip-binaries \
  && make             \
  && make install
