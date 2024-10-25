@@ -17,7 +17,7 @@ CREATE TYPE cheevo AS ENUM (
     'neunundneunzig-luftballons', 'off-the-grid', 'omniglot', 'omniglutton',
     'ouroboros', 'pangramglot', 'patches-welcome', 'phileas-fogg', 'pi-day',
     'polyglot', 'polyglutton', 'real-programmers', 'right-on', 'rm-rf',
-    'rtfm', 'rule-34', 'slowcoach', 'smörgåsbord', 'solve-quine',
+    'rtfm', 'rule-34', 's-box-360', 'slowcoach', 'smörgåsbord', 'solve-quine',
     'sounds-quite-nice', 'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr',
     'twelvetide', 'twenty-kiloleagues', 'under-pressure', 'up-to-eleven',
     'vampire-byte', 'x86'
@@ -52,7 +52,7 @@ CREATE TYPE hole AS ENUM (
     'reversi', 'rijndael-s-box', 'rock-paper-scissors-spock-lizard',
     'roman-to-arabic', 'rule-110', 'seven-segment', 'si-units',
     'sierpiński-triangle', 'smith-numbers', 'spelling-numbers',
-    'star-wars-opening-crawl', 'sudoku', 'sudoku-v2', 'ten-pin-bowling',
+    'star-wars-opening-crawl', 'sudoku', 'sudoku-fill-in', 'ten-pin-bowling',
     'time-distance', 'tongue-twisters', 'transpose-sentence', 'united-states',
     'vampire-numbers', 'van-eck-sequence', 'zeckendorf-representation',
     'zodiac-signs', 'γ', 'λ', 'π', 'τ', 'φ', '√2', '𝑒'
@@ -67,10 +67,10 @@ CREATE TYPE lang AS ENUM (
     'civet', 'clojure',  'cpp', 'cobol', 'coconut', 'crystal', 'd', 'dart',
     'elixir', 'f-sharp', 'factor', 'fish', 'forth', 'fortran', 'go',
     'golfscript', 'haskell', 'hexagony', 'j', 'janet', 'java', 'javascript',
-    'jq', 'julia', 'k', 'lisp', 'lua', 'nim', 'ocaml', 'pascal', 'perl',
-    'php', 'powershell', 'prolog', 'python', 'r', 'raku', 'rockstar', 'ruby',
-    'rust', 'scheme', 'sed', 'sql', 'swift', 'tcl', 'tex', 'v', 'viml',
-    'wren', 'zig'
+    'jq', 'julia', 'k', 'kotlin', 'lisp', 'lua', 'nim', 'ocaml', 'pascal',
+    'perl', 'php', 'powershell', 'prolog', 'python', 'r', 'raku', 'rockstar',
+    'ruby', 'rust', 'scheme', 'sed', 'sql', 'swift', 'tcl', 'tex', 'v',
+    'viml', 'wren', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('unicorn', 'diamond', 'gold', 'silver', 'bronze');

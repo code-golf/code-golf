@@ -2,7 +2,7 @@ FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache build-base cmake curl linux-headers python3
 
-ENV VER=19.1.1
+ENV VER=19.1.2
 
 RUN curl -L https://github.com/llvm/llvm-project/releases/download/llvmorg-$VER/llvm-project-$VER.src.tar.xz | tar xJ
 
