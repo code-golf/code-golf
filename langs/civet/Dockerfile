@@ -2,7 +2,7 @@ FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache bash curl icu-data npm
 
-RUN curl -L https://github.com/DanielXMoore/Civet/archive/refs/tags/v0.8.3.tar.gz \
+RUN curl -L https://github.com/DanielXMoore/Civet/archive/refs/tags/v0.8.8.tar.gz \
   | tar xz --strip-components 1
 
 RUN npm install \
@@ -10,7 +10,6 @@ RUN npm install \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/busybox                                               /bin/
 COPY --from=0 /lib/ld-musl-x86_64.so.1                                   \
               /lib/libcrypto.so.3                                        \
               /lib/libssl.so.3                                           \
