@@ -26,9 +26,9 @@ func printSudoku(board [boardSize][boardSize]int) string {
 
 		for j, number := range row {
 			if j%blockSize == 0 {
-				b.WriteString("┃")
+				b.WriteRune('┃')
 			} else {
-				b.WriteString("│")
+				b.WriteRune('│')
 			}
 
 			b.WriteByte(' ')
@@ -115,7 +115,7 @@ Numbers:
 	return false
 }
 
-func sudokuBoard(v2 bool) Run {
+func sudokuBoard(fillIn bool) Run {
 	var board [boardSize][boardSize]int
 
 	var generate func(int) bool
@@ -194,7 +194,7 @@ func sudokuBoard(v2 bool) Run {
 		}
 	}
 
-	if v2 {
+	if fillIn {
 		args = []string{printSudoku(board)}
 	} else {
 		args = make([]string, boardSize)
@@ -217,10 +217,10 @@ func sudokuBoard(v2 bool) Run {
 	return Run{Args: args, Answer: out}
 }
 
-func sudoku(v2 bool) []Run {
+func sudoku(fillIn bool) []Run {
 	runs := make([]Run, 3)
 	for i := range runs {
-		runs[i] = sudokuBoard(v2)
+		runs[i] = sudokuBoard(fillIn)
 	}
 	return runs
 }
