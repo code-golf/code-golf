@@ -38,7 +38,7 @@ COPY --from=0 /usr/bin/awk                                  \
               /usr/bin/groovy                               \
               /usr/bin/startGroovy                          /usr/bin/
 COPY --from=0 /usr/conf/groovy-starter.conf                 /usr/conf/
-COPY --from=0 /usr/lib                                      /usr/lib
+COPY --from=0 /usr/lib/*.jar                                /usr/lib/
 
 ENV JAVA_HOME=/opt/java
 
