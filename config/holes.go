@@ -58,6 +58,8 @@ type Hole struct {
 	Releases                    []toml.LocalDate `json:"-"`
 	Synopsis                    string           `json:"synopsis"`
 	Variants                    []*Hole          `json:"-"`
+	Redirects                   []string         `json:"-"`
+	Aliases                     []string         `json:"-"`
 }
 
 func init() {
@@ -134,9 +136,12 @@ func init() {
 		hole.ID = ID(name)
 		hole.Name = name
 
-		// FIXME Variants can't yet have different experiment IDs.
+		// FIXME Variants can't yet have different redirects nor experiment IDs.
 		if hole.ID == "gray-code-encoder" {
 			hole.Experiment = 1157
+		}
+		if hole.ID == "sudoku-fill-in" {
+			hole.Redirects = []string{"sudoku-v2"}
 		}
 
 		// Process the templated preamble with the data.
