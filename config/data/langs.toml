@@ -1320,7 +1320,7 @@ end
 
 [Rockstar]
 args    = [ '/usr/bin/rockstar', '-' ]
-size    = '164 MiB'
+size    = '127 MiB'
 version = 'Rocky 2.1.2'
 website = 'https://github.com/gaborsch/rocky'
 example = '''
