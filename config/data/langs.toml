@@ -290,7 +290,7 @@ int main(int argc, char* argv[]) {
 ['C#']
 args    = [ '/usr/bin/c-sharp', '-' ]
 size    = '152 MiB'
-version = 'C# 12.0 on .NET 8.0.8'
+version = 'C# 12.0 on .NET 8.0.10'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -339,7 +339,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '67.9 MiB'
-version = '0.8.5'
+version = '0.8.8'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -535,7 +535,7 @@ for arg <- System.argv, do: IO.puts arg
 ['F#']
 args    = [ '/usr/bin/f-sharp', '-' ]
 size    = '148 MiB'
-version = 'F# 8.0 on .NET 8.0.7'
+version = 'F# 8.0 on .NET 8.0.10'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -885,7 +885,7 @@ example = '''
 [Java]
 args    = [ '/usr/bin/java', '-' ]
 size    = '58.4 MiB'
-version = 'OpenJDK 23.0'
+version = 'OpenJDK 23.0.1'
 website = 'https://openjdk.java.net'
 example = '''
 class Main {
@@ -972,6 +972,25 @@ example = '''
 
 /Accessing arguments
 `0:x
+'''
+
+[Kotlin]
+args    = [ '/usr/bin/kotlin', '-e', '$code' ]
+env     = [ 'JAVA_HOME=/opt/java' ]
+size    = '226 MiB'
+version = '2.0.21'
+website = 'https://kotlinlang.org'
+example = '''
+// Printing
+println("Hello, World!")
+
+// Looping
+for (i in 0..9)
+    println(i)
+
+// Accessing arguments
+for (arg in args)
+    println(arg)
 '''
 
 [Lisp]
@@ -1166,8 +1185,8 @@ for ($i = 1; $i < $argc; $i++)
 [PowerShell]
 args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
-size       = '178 MiB'
-version    = 'PowerShell 7.4.5 on .NET 8.0.8'
+size       = '180 MiB'
+version    = 'PowerShell 7.4.6 on .NET 8.0.10'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
@@ -1264,8 +1283,8 @@ example    = '''
 
 [Raku]
 args    = [ '/usr/bin/raku', '-' ]
-size    = '75.7 MiB'
-version = 'Raku 6.d on Rakudo 2024.09'
+size    = '75.8 MiB'
+version = 'Raku 6.d on Rakudo 2024.10'
 website = 'https://raku.org'
 example = '''
 # Printing
@@ -1451,8 +1470,8 @@ G
 
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
-size    = '1.20 MiB'
-version = 'SQLite 3.46.1'
+size    = '1.21 MiB'
+version = 'SQLite 3.47.0'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
@@ -1542,8 +1561,8 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '28.8 MiB'
-version    = '0.12.3'
+size       = '33.7 MiB'
+version    = '0.13.0'
 website    = 'https://www.uiua.org'
 example    = '''
 # Printing
