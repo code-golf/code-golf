@@ -1,0 +1,28 @@
+#!/bin/sh -e
+
+[ "$1" = "--version" ] && exec cat /usr/bin/version
+
+cat - > /tmp/code.jelly
+
+# Construct string representation of args list
+shift
+argv="["
+for arg in "$@"; do
+
+  # Escape backslash, double quotes, and newlines
+  escaped="$(\
+    printf '%s' "$arg" \
+      | sed -e 's/\\/\\\\/g' \
+      | sed -e 's/"/\\"/g' \
+      | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/\\n/g' \
+  )"
+  
+  # Append escaped arg and trailing comma
+  argv="$argv\"$escaped\", "
+
+done
+# Discard trailing comma and close contained list
+argv="${argv%, }]"
+
+# Execute
+exec jelly fun /tmp/code.jelly "$argv"
