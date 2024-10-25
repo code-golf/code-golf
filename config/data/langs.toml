@@ -290,7 +290,7 @@ int main(int argc, char* argv[]) {
 ['C#']
 args    = [ '/usr/bin/c-sharp', '-' ]
 size    = '152 MiB'
-version = 'C# 12.0 on .NET 8.0.8'
+version = 'C# 12.0 on .NET 8.0.10'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -338,8 +338,8 @@ int main(int argc, char* argv[]) {
 [Civet]
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
-size    = '68.7 MiB'
-version = '0.8.3'
+size    = '67.9 MiB'
+version = '0.8.8'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -431,7 +431,7 @@ for arg in sys.argv[1:]:
 args       = [ '/usr/bin/coffeescript', '-' ]
 env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 450
-size       = '69.9 MiB'
+size       = '69.1 MiB'
 version    = '2.7.0'
 website    = 'https://coffeescript.org'
 example    = '''
@@ -535,7 +535,7 @@ for arg <- System.argv, do: IO.puts arg
 ['F#']
 args    = [ '/usr/bin/f-sharp', '-' ]
 size    = '148 MiB'
-version = 'F# 8.0 on .NET 8.0.7'
+version = 'F# 8.0 on .NET 8.0.10'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -642,7 +642,7 @@ end
 args       = [ '/usr/bin/gleamwrapper', '-', '--' ]
 env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 1129
-size       = '88.4 MiB'
+size       = '88.1 MiB'
 version    = '1.5.1'
 website    = 'https://gleam.run'
 example    = '''
@@ -700,7 +700,7 @@ args       = [ '/usr/bin/golfscript', '-n', '-e', '$code', '--' ]
 args-quine = [ '/usr/bin/golfscript', '-n', '-e', '$code', '-q', '--' ]
 size       = '28.6 MiB'
 version    = '6155e9f'
-website    = 'http://www.golfscript.com/golfscript/'
+website    = 'https://golfscript.com/golfscript/'
 example    = '''
 # Printing
 "Hello, World!"puts
@@ -885,7 +885,7 @@ example = '''
 [Java]
 args    = [ '/usr/bin/java', '-' ]
 size    = '58.4 MiB'
-version = 'OpenJDK 23.0'
+version = 'OpenJDK 23.0.1'
 website = 'https://openjdk.java.net'
 example = '''
 class Main {
@@ -972,6 +972,25 @@ example = '''
 
 /Accessing arguments
 `0:x
+'''
+
+[Kotlin]
+args    = [ '/usr/bin/kotlin', '-e', '$code' ]
+env     = [ 'JAVA_HOME=/opt/java' ]
+size    = '226 MiB'
+version = '2.0.21'
+website = 'https://kotlinlang.org'
+example = '''
+// Printing
+println("Hello, World!")
+
+// Looping
+for (i in 0..9)
+    println(i)
+
+// Accessing arguments
+for (arg in args)
+    println(arg)
 '''
 
 [Lisp]
@@ -1167,8 +1186,8 @@ for ($i = 1; $i < $argc; $i++)
 [PowerShell]
 args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
-size       = '178 MiB'
-version    = 'PowerShell 7.4.5 on .NET 8.0.8'
+size       = '180 MiB'
+version    = 'PowerShell 7.4.6 on .NET 8.0.10'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
@@ -1265,8 +1284,8 @@ example    = '''
 
 [Raku]
 args    = [ '/usr/bin/raku', '-' ]
-size    = '75.7 MiB'
-version = 'Raku 6.d on Rakudo 2024.09'
+size    = '75.8 MiB'
+version = 'Raku 6.d on Rakudo 2024.10'
 website = 'https://raku.org'
 example = '''
 # Printing
@@ -1323,7 +1342,7 @@ end
 
 [Rockstar]
 args    = [ '/usr/bin/rockstar', '-' ]
-size    = '162 MiB'
+size    = '164 MiB'
 version = 'Rocky 2.1.2'
 website = 'https://github.com/gaborsch/rocky'
 example = '''
@@ -1385,8 +1404,8 @@ end
 
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
-size    = '338 MiB'
-version = '1.81.0'
+size    = '358 MiB'
+version = '1.82.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -1452,8 +1471,8 @@ G
 
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
-size    = '1.20 MiB'
-version = 'SQLite 3.46.1'
+size    = '1.21 MiB'
+version = 'SQLite 3.47.0'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
@@ -1543,8 +1562,8 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '28.6 MiB'
-version    = '0.12.3'
+size       = '33.7 MiB'
+version    = '0.13.0'
 website    = 'https://www.uiua.org'
 example    = '''
 # Printing
