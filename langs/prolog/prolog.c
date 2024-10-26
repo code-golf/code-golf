@@ -16,8 +16,6 @@ int main (int argc, char *argv[]) {
 
     fclose(fp);
 
-    putenv("LC_ALL=C.UTF-8");
-
     execv("/usr/bin/swipl", argv);
     perror("execv");
 }
