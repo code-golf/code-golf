@@ -8,6 +8,11 @@ RUN curl -L https://github.com/JetBrains/kotlin/releases/download/v$VER/kotlin-c
 
 RUN unzip kotlin.zip && cp -r /kotlinc/* /usr/
 
+# Remove some unneeded libraries.
+RUN rm -f /usr/lib/android*.jar \
+          /usr/lib/*sources.jar \
+          /usr/lib/*test*.jar
+
 FROM codegolf/lang-base
 
 COPY --from=0 /bin/bash /bin/uname                          /bin/

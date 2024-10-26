@@ -7,7 +7,7 @@
 
 int main(int argc, char* argv[]) {
     if (argc > 1 && strcmp(argv[1], "-h") == 0) {
-        execl("/opt/java/openjdk/bin/java", "java", "-jar", "/rocky.jar", "-h", NULL);
+        execl("/opt/java/bin/java", "java", "-jar", "/rocky.jar", "-h", NULL);
         ERR_AND_EXIT("execl");
     }
 
@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
     if (fclose(fp) < 0)
         ERR_AND_EXIT("fclose");
 
-    execl("/opt/java/openjdk/bin/java", "java", "-jar", "/rocky.jar",
+    execl("/opt/java/bin/java", "java", "-jar", "/rocky.jar",
         "run", "--infinite-loops", "--rocky", "code.rock", NULL);
     ERR_AND_EXIT("execl");
 }
