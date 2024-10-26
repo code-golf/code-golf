@@ -24,16 +24,14 @@ func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Hole, PrevHole, NextHole *config.Hole
 		HoleID, LangID, Scoring  string
-		LangsShown               map[string]bool
 		Pager                    *pager.Pager
 		Rows                     []row
 	}{
-		HoleID:     param(r, "hole"),
-		LangID:     param(r, "lang"),
-		LangsShown: map[string]bool{},
-		Pager:      pager.New(r),
-		Rows:       make([]row, 0, pager.PerPage),
-		Scoring:    param(r, "scoring"),
+		HoleID:  param(r, "hole"),
+		LangID:  param(r, "lang"),
+		Pager:   pager.New(r),
+		Rows:    make([]row, 0, pager.PerPage),
+		Scoring: param(r, "scoring"),
 	}
 
 	if data.HoleID != "all" && config.HoleByID[data.HoleID] == nil ||
@@ -62,10 +60,6 @@ func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 		pager.PerPage,
 	); err != nil {
 		panic(err)
-	}
-
-	for _, row := range data.Rows {
-		data.LangsShown[row.Lang.ID] = true
 	}
 
 	render(w, r, "recent/solutions", data, "Recent Solutions")

@@ -1,7 +1,7 @@
 {{ template "header" . }}
 {{ template "recent" . }}
 
-<svg>{{ range .Langs }}{{ svg .ID }}{{ end }}</svg>
+{{ template "lang-svgs" .Data.Golfers }}
 
 <main>
     <table class="nowrap-first-second sticky">
@@ -21,12 +21,10 @@
                 <td>
                     <div>
                     {{ range .Langs }}
-                        {{ with index $.Langs . }}
-                            <svg>
-                                <title>{{ .Name }}</title>
-                                <use href="#{{ .ID }}"/>
-                            </svg>
-                        {{ end }}
+                        <svg>
+                            <title>{{ .Name }}</title>
+                            <use href="#{{ .ID }}"/>
+                        </svg>
                     {{ end }}
                     </div>
                 <td class="right wide">{{ .Cheevos }} / {{ $.Data.Cheevos }}
