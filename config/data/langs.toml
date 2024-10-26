@@ -975,7 +975,7 @@ example = '''
 '''
 
 [Kotlin]
-args    = [ '/usr/bin/kotlin', '-e', '$code' ]
+args    = [ '/usr/bin/kotlin', '-Xuse-fast-jar-file-system', '-e', '$code' ]
 env     = [ 'JAVA_HOME=/opt/java' ]
 size    = '223 MiB'
 version = '2.0.21'
