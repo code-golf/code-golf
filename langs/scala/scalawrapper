@@ -1,8 +1,0 @@
-#!/bin/sh -e
-
-[ "$1" = "--version" ] && exec scala-cli --version
-
-cat - > /tmp/code.sc
-
-shift
-exec scala-cli --server=false /tmp/code.sc "$@"

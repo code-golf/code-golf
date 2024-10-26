@@ -1403,10 +1403,11 @@ fn main() {
 '''
 
 [Scala]
-args       = [ '/usr/bin/scalawrapper', '-' ]
-env        = [ 'JAVA_HOME=/opt/graalvm' ]
+args       = [ '/usr/bin/scala-cli', '-e', '$code' ]
+env        = [ 'JAVA_HOME=/opt/java' ]
 experiment = 235
-version    = '3.5.0'
+size       = '342 MiB'
+version    = '1.5.1'
 website    = 'https://www.scala-lang.org'
 example    = '''
 // Printing
