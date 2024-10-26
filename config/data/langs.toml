@@ -1185,7 +1185,7 @@ ForEach ($arg in $args) {
 [Prolog]
 args    = [ '/usr/bin/prolog', '-g', 'halt', '/tmp/code.pl' ]
 size    = '49.3 MiB'
-version = 'SWI-Prolog 9.2.7'
+version = 'SWI-Prolog 9.2.8'
 website = 'https://www.swi-prolog.org'
 example = '''
 % Printing
