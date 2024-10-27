@@ -62,19 +62,34 @@ func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 				"please update them to pass:<ul>",
 		}
 
-		prevHoleID := ""
-		for _, solution := range failing {
-			hole := config.HoleByID[solution.Hole]
-			lang := config.LangByID[solution.Lang]
+		type GroupItem struct {
+			HoleId, LangId, KeyName, OtherName string
+		}
 
-			if prevHoleID == hole.ID {
-				banner.Body += template.HTML(`, <a href="/` + hole.ID + "#" +
-					lang.ID + `">` + lang.Name + "</a>")
-			} else {
-				banner.Body += template.HTML("<li>" + hole.Name + `: <a href="/` + hole.ID + "#" +
-					lang.ID + `">` + lang.Name + "</a>")
+		byLang := make(map[string][]GroupItem)
+		byHole := make(map[string][]GroupItem)
+
+		for _, solution := range failing {
+			langName := config.LangByID[solution.Lang].Name
+			holeName := config.HoleByID[solution.Hole].Name
+			byLang[solution.Lang] = append(byLang[solution.Lang], GroupItem{solution.Hole, solution.Lang, langName, holeName})
+			byHole[solution.Hole] = append(byHole[solution.Hole], GroupItem{solution.Hole, solution.Lang, holeName, langName})
+		}
+
+		groups := byHole
+		if len(byLang) < len(byHole) {
+			groups = byLang
+		}
+
+		for _, solutionGroup := range groups {
+			for index, solution := range solutionGroup {
+				if index > 0 {
+					banner.Body += template.HTML(", ")
+				} else {
+					banner.Body += template.HTML("<li>" + solution.KeyName + ": ")
+				}
+				banner.Body += template.HTML(`<a href="/` + solution.HoleId + "#" + solution.LangId + `">` + solution.OtherName + "</a>")
 			}
-			prevHoleID = hole.ID
 		}
 
 		banner.Body += "</ul>"
