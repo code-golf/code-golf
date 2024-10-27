@@ -37,6 +37,7 @@ constant %paths = (
     'Gleam'        => 'github.com/gleam-lang/gleam/releases/latest',
     'Go'           => 'endoflife.date/api/go.json',
     'GolfScript'   => 'github.com/lynn/golfscript/tree/code-golf',
+    'Hare'         => 'git.sr.ht/~sircmpwn/hare/refs',
     'Haskell'      => 'en.wikipedia.org/wiki/Glasgow_Haskell_Compiler',
     'Haxe'         => 'github.com/HaxeFoundation/haxe/releases/latest',
     'Hexagony'     => 'github.com/SirBogman/Hexagony',
@@ -97,6 +98,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'crates.io'   / { $res.&from-json<crate><max_stable_version> }
         when / 'endoflife'   / { $res.&from-json[0]<latest> }
         when / 'fennel-lang' / { $res ~~ / 'downloads/fennel-' <(<ver>)> / }
+        when / 'git.sr.ht'   / { $res ~~ / 'stable release' .+? <(<ver>)> / }
         when / 'npmjs.org'   / { $res.&from-json[0]<version> }
         when / 'pypi.org'    / { $res.&from-json<info><version> }
         when / 'regina-rexx' / { $res ~~ / '<b>Current</b> ' <(<ver>)> / }
