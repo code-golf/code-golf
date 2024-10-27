@@ -63,7 +63,7 @@ func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 		}
 
 		type GroupItem struct {
-			HoleId, LangId, KeyName, OtherName string
+			HoleID, LangID, KeyName, OtherName string
 		}
 
 		byLang := make(map[string][]GroupItem)
@@ -88,7 +88,7 @@ func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 				} else {
 					banner.Body += template.HTML("<li>" + solution.KeyName + ": ")
 				}
-				banner.Body += template.HTML(`<a href="/` + solution.HoleId + "#" + solution.LangId + `">` + solution.OtherName + "</a>")
+				banner.Body += template.HTML(`<a href="/` + solution.HoleID + "#" + solution.LangID + `">` + solution.OtherName + "</a>")
 			}
 		}
 
