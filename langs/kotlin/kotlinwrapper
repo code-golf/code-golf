@@ -6,7 +6,7 @@ cd /tmp
 
 # Compile
 cat - > code.kt
-kotlinc code.kt -d code.jar
+kotlinc -Xuse-fast-jar-file-system code.kt -d code.jar
 rm code.kt
 
 # Execute
