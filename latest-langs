@@ -70,6 +70,7 @@ constant %paths = (
     'Ruby'         => 'endoflife.date/api/ruby.json',
     'Rust'         => 'en.wikipedia.org/wiki/Rust_(programming_language)',
     'Scheme'       => 'en.wikipedia.org/wiki/Chez_Scheme',
+    'sed'          => 'git.savannah.gnu.org/cgit/sed.git/refs',
     'SQL'          => 'en.wikipedia.org/wiki/SQLite',
     'Swift'        => 'github.com/swiftlang/swift/releases/latest',
     'Tcl'          => 'en.wikipedia.org/wiki/Tcl',
@@ -100,6 +101,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'npmjs.org'   / { $res.&from-json[0]<version> }
         when / 'pypi.org'    / { $res.&from-json<info><version> }
         when / 'regina-rexx' / { $res ~~ / '<b>Current</b> ' <(<ver>)> / }
+        when / 'savannah'    / { $res ~~ / 'snapshot/sed-' <(<ver>)> / }
         when / 'github.com'  / {
             .ends-with('/releases/latest')
                 ?? $res ~~ / [ $name || 'dev' || 'Release' || 'Version' ] <[\ -]> v? <(<ver>)> /
