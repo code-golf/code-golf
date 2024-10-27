@@ -37,6 +37,7 @@ constant %paths = (
     'Gleam'        => 'github.com/gleam-lang/gleam/releases/latest',
     'Go'           => 'endoflife.date/api/go.json',
     'GolfScript'   => 'github.com/lynn/golfscript/tree/code-golf',
+    'Groovy'       => 'en.wikipedia.org/wiki/Apache_Groovy',
     'Haskell'      => 'en.wikipedia.org/wiki/Glasgow_Haskell_Compiler',
     'Haxe'         => 'github.com/HaxeFoundation/haxe/releases/latest',
     'Hexagony'     => 'github.com/SirBogman/Hexagony',

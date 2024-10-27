@@ -712,6 +712,26 @@ example    = '''
 n*
 '''
 
+[Groovy]
+args       = [ '/usr/bin/groovy', '-e', '$code' ]
+env        = [ 'JAVA_HOME=/opt/java' ]
+experiment = 1145
+size       = '146 MiB'
+version    = '4.0.23'
+website    = 'https://groovy-lang.org'
+example    = '''
+// Printing
+println "Hello, World!"
+
+// Looping
+for (i in 0..9)
+    println i
+
+// Accessing arguments
+for (arg in args)
+    println arg
+'''
+
 [Hare]
 args       = [ '/usr/bin/harewrapper', '-' ]
 env        = [ 'PATH=/usr/local/bin:/usr/bin:/bin' ]
