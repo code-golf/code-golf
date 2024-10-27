@@ -16,4 +16,4 @@ COPY --from=0 /sql /usr/bin/
 
 ENTRYPOINT ["sql"]
 
-CMD ["-v"]
+CMD ["--version"]
