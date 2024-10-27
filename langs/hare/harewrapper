@@ -1,5 +1,7 @@
 #!/bin/sh -e
 
+[ "$1" = "--version" ] && exec cat /usr/bin/version
+
 cd /tmp
 
 # Compile
