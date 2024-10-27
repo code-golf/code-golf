@@ -1,0 +1,14 @@
+#!/bin/sh -e
+
+[ "$1" = "--version" ] && exec kotlin -version
+
+cd /tmp
+
+# Compile
+cat - > code.kt
+kotlinc code.kt -d code.jar
+rm code.kt
+
+# Execute
+shift
+exec $JAVA_HOME/bin/java -jar code.jar

@@ -975,12 +975,13 @@ example = '''
 '''
 
 [Kotlin]
-args    = [ '/usr/bin/kotlin', '-e', '$code' ]
-env     = [ 'JAVA_HOME=/opt/java' ]
-size    = '223 MiB'
-version = '2.0.21'
-website = 'https://kotlinlang.org'
-example = '''
+args       = [ '/usr/bin/kotlin', '-e', '$code' ]
+args-quine = [ '/usr/bin/kotlinwrapper', '-' ]
+env        = [ 'JAVA_HOME=/opt/java' ]
+size       = '226 MiB'
+version    = '2.0.21'
+website    = 'https://kotlinlang.org'
+example    = '''
 // Printing
 println("Hello, World!")
 

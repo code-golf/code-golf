@@ -15,7 +15,7 @@ RUN rm -f /usr/lib/android*.jar \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/bash /bin/uname                          /bin/
+COPY --from=0 /bin/bash /bin/cat /bin/rm /bin/uname /bin/sh /bin/
 COPY --from=0 /lib/ld-musl-x86_64.so.1                      \
               /lib/libacl.so.1                              \
               /lib/libattr.so.1                             \
@@ -34,7 +34,8 @@ COPY --from=0 /opt/java/openjdk/lib/jrt-fs.jar              \
               /opt/java/openjdk/lib/libnio.so               \
               /opt/java/openjdk/lib/libverify.so            \
               /opt/java/openjdk/lib/libzip.so               \
-              /opt/java/openjdk/lib/modules                 /opt/java/lib/
+              /opt/java/openjdk/lib/modules                 \
+              /opt/java/openjdk/lib/tzdb.dat                /opt/java/lib/
 COPY --from=0 /opt/java/openjdk/lib/server/libjvm.so        /opt/java/lib/server/
 COPY --from=0 /usr/build.txt                                /usr/
 COPY --from=0 /usr/bin/dirname                              \
@@ -45,8 +46,10 @@ COPY --from=0 /usr/lib/*.jar                                \
               /usr/lib/libncursesw.so.6                     \
               /usr/lib/libreadline.so.8                     /usr/lib/
 
+COPY /kotlinwrapper /usr/bin/
+
 ENV JAVA_HOME=/opt/java
 
-ENTRYPOINT ["kotlin"]
+ENTRYPOINT ["kotlinwrapper"]
 
-CMD ["-version"]
+CMD ["--version"]
