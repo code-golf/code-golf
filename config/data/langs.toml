@@ -712,6 +712,26 @@ example    = '''
 n*
 '''
 
+[Groovy]
+args       = [ '/usr/bin/groovy', '-e', '$code' ]
+env        = [ 'JAVA_HOME=/opt/java' ]
+experiment = 1145
+size       = '146 MiB'
+version    = '4.0.23'
+website    = 'https://groovy-lang.org'
+example    = '''
+// Printing
+println "Hello, World!"
+
+// Looping
+for (i in 0..9)
+    println i
+
+// Accessing arguments
+for (arg in args)
+    println arg
+'''
+
 [Hare]
 args       = [ '/usr/bin/harewrapper', '-' ]
 env        = [ 'PATH=/usr/local/bin:/usr/bin:/bin' ]
@@ -975,7 +995,7 @@ example = '''
 '''
 
 [Kotlin]
-args    = [ '/usr/bin/kotlin', '-e', '$code' ]
+args    = [ '/usr/bin/kotlin', '-Xuse-fast-jar-file-system', '-e', '$code' ]
 env     = [ 'JAVA_HOME=/opt/java' ]
 size    = '223 MiB'
 version = '2.0.21'
@@ -1184,6 +1204,7 @@ ForEach ($arg in $args) {
 
 [Prolog]
 args    = [ '/usr/bin/prolog', '-g', 'halt', '/tmp/code.pl' ]
+env     = [ 'LC_ALL=C.UTF-8' ]
 size    = '49.3 MiB'
 version = 'SWI-Prolog 9.2.8'
 website = 'https://www.swi-prolog.org'
