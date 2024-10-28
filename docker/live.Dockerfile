@@ -37,6 +37,7 @@ COPY --from=codegolf/lang-factor       ["/", "/langs/factor/rootfs/"      ] #  1
 COPY --from=codegolf/lang-c-sharp      ["/", "/langs/c-sharp/rootfs/"     ] #  152 MiB
 COPY --from=codegolf/lang-f-sharp      ["/", "/langs/f-sharp/rootfs/"     ] #  148 MiB
 COPY --from=codegolf/lang-cpp          ["/", "/langs/cpp/rootfs/"         ] #  147 MiB
+COPY --from=codegolf/lang-groovy       ["/", "/langs/groovy/rootfs/"      ] #  146 MiB
 COPY --from=codegolf/lang-rockstar     ["/", "/langs/rockstar/rootfs/"    ] #  127 MiB
 COPY --from=codegolf/lang-assembly     ["/", "/langs/assembly/rootfs/"    ] #  106 MiB
 COPY --from=codegolf/lang-coconut      ["/", "/langs/coconut/rootfs/"     ] #  104 MiB
