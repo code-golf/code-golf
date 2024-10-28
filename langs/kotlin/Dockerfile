@@ -34,8 +34,7 @@ COPY --from=0 /opt/java/openjdk/lib/jrt-fs.jar              \
               /opt/java/openjdk/lib/libnio.so               \
               /opt/java/openjdk/lib/libverify.so            \
               /opt/java/openjdk/lib/libzip.so               \
-              /opt/java/openjdk/lib/modules                 \
-              /opt/java/openjdk/lib/tzdb.dat                /opt/java/lib/
+              /opt/java/openjdk/lib/modules                 /opt/java/lib/
 COPY --from=0 /opt/java/openjdk/lib/server/libjvm.so        /opt/java/lib/server/
 COPY --from=0 /usr/build.txt                                /usr/
 COPY --from=0 /usr/bin/dirname                              \
