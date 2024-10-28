@@ -351,6 +351,10 @@ func play(
 		} else {
 			code += "\n"
 		}
+	case "kotlin":
+		// Appending `Unit` on a newline suppresses implicit output of expressions
+		// in Kotlin. The '\n' guarantees we're not appending a ';' to another ';'.
+		code += "\nUnit"
 	case "php":
 		code = "<?php " + code + " ;"
 	case "tex":
