@@ -2,6 +2,8 @@ package routes
 
 import (
 	"html/template"
+	"maps"
+	"slices"
 	"strings"
 	"time"
 
@@ -80,8 +82,11 @@ func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 		if len(byLang) < len(byHole) {
 			groups = byLang
 		}
+		keys := slices.Collect(maps.Keys(groups))
+		slices.Sort(keys)
 
-		for _, solutionGroup := range groups {
+		for _, key := range keys {
+			solutionGroup := groups[key]
 			for index, solution := range solutionGroup {
 				if index > 0 {
 					banner.Body += template.HTML(", ")
