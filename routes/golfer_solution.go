@@ -2,12 +2,13 @@ package routes
 
 import (
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"net/http"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
-	"github.com/code-golf/code-golf/discord"
+	h "github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/session"
 )
 
@@ -73,7 +74,6 @@ func golferSolutionGET(w http.ResponseWriter, r *http.Request) {
 }
 
 // POST /golfers/{golfer}/{hole}/{lang}/{scoring}
-// nolint deadcode
 func golferSolutionPOST(w http.ResponseWriter, r *http.Request) {
 	hole := config.HoleByID[param(r, "hole")]
 	lang := config.LangByID[param(r, "lang")]
@@ -109,30 +109,21 @@ func golferSolutionPOST(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	// Best of three runs. Given they're fickle, timeouts count as passes.
-	var passes, fails int
-	/* FIXME for i := 0; passes < 2 && fails < 2; i++ {
-		score := h.Play(ctx, hole.ID, lang.ID, code)
-		if score.Pass || score.Timeout || score.ExitCode != 0 {
-			passes++
-		} else {
-			fails++
-		}
-	} */
-
-	if fails > passes {
-		res := db.MustExec(
-			`UPDATE solutions
-			    SET failing = true
-			  WHERE NOT failing AND code = $1 AND hole = $2 AND lang = $3`,
-			code, hole.ID, lang.ID,
-		)
-
-		// FIXME Technically we can end up failing multiple golfers.
-		if rows, _ := res.RowsAffected(); rows > 0 {
-			go discord.LogFailedRejudge(&golfer, hole, lang, scoring)
-		}
+	// Subset runs so we don't leak too much info.
+	type SubsetRun struct {
+		Pass    bool          `json:"pass"`
+		Time    time.Duration `json:"time"`
+		Timeout bool          `json:"timeout"`
 	}
 
-	http.Redirect(w, r, param(r, "scoring"), http.StatusSeeOther)
+	runs := h.Play(ctx, hole, lang, code)
+	subsetRuns := make([]SubsetRun, len(runs))
+
+	for i, run := range runs {
+		subsetRuns[i] = SubsetRun{run.Pass, run.Time, run.Timeout}
+	}
+
+	if err := json.NewEncoder(w).Encode(subsetRuns); err != nil {
+		panic(err)
+	}
 }
