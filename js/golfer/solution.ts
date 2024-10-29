@@ -12,8 +12,8 @@ $('#test-solution').onclick = async () => {
     for (const run of await res.json()) {
         msg += `Run ${++i}: ${run.pass ? 'PASS' : 'FAIL'}`;
         msg += ` (${Math.round(run.time / 10**6)}ms`;
-        if (run.timeout) msg += '; Timeout'
-        msg += ")\n";
+        if (run.timeout) msg += '; Timeout';
+        msg += ')\n';
     }
     alert(msg);
 };
