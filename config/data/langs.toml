@@ -1497,7 +1497,7 @@ SELECT arg FROM argv;
 args    = [ '/usr/bin/swift', '-module-cache-path', '/tmp', '-' ]
 env     = [ 'PATH=/usr/bin:/bin' ]
 size    = '555 MiB'
-version = '6.0.1'
+version = '6.0.2'
 website = 'https://swift.org'
 example = '''
 // Printing
