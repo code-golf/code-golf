@@ -85,16 +85,16 @@ func golferSolutionPOST(w http.ResponseWriter, r *http.Request) {
 	}
 
 	code := ""
+	previouslyFailing := false
 	ctx := r.Context()
 	db := session.Database(r)
 	golfer := session.GolferInfo(r).Golfer
 
 	if err := db.QueryRowContext(
 		ctx,
-		`SELECT code
+		`SELECT code, failing
 		   FROM solutions
-		  WHERE NOT failing
-		    AND hole    = $1
+		  WHERE hole    = $1
 		    AND lang    = $2
 		    AND scoring = $3
 		    AND user_id = $4`,
@@ -102,7 +102,7 @@ func golferSolutionPOST(w http.ResponseWriter, r *http.Request) {
 		lang.ID,
 		scoring,
 		golfer.ID,
-	).Scan(&code); errors.Is(err, sql.ErrNoRows) {
+	).Scan(&code, &previouslyFailing); errors.Is(err, sql.ErrNoRows) {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	} else if err != nil {
@@ -119,8 +119,31 @@ func golferSolutionPOST(w http.ResponseWriter, r *http.Request) {
 	runs := h.Play(ctx, hole, lang, code)
 	subsetRuns := make([]SubsetRun, len(runs))
 
+	overallPass := true
 	for i, run := range runs {
 		subsetRuns[i] = SubsetRun{run.Pass, run.Time, run.Timeout}
+
+		if !run.Pass {
+			overallPass = false
+		}
+	}
+
+	// Update the last tested value if we can.
+	if overallPass || previouslyFailing {
+		if _, err := db.ExecContext(
+			ctx,
+			`UPDATE solutions
+			    SET tested = DEFAULT
+			  WHERE code    = $1
+			    AND failing = $2
+			    AND hole    = $3
+			    AND lang    = $4
+			    AND scoring = $5
+			    AND user_id = $6`,
+			code, previouslyFailing, hole.ID, lang.ID, scoring, golfer.ID,
+		); err != nil {
+			panic(err)
+		}
 	}
 
 	if err := json.NewEncoder(w).Encode(subsetRuns); err != nil {
