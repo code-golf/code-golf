@@ -90,7 +90,7 @@ BEGIN
 
     -- 😈 Evil Scheme
     IF hole IN ('evil-numbers', 'evil-numbers-long') AND lang = 'scheme' THEN
-        earned = earn(earned, 'evil-scheme', user_id); END IF;
+        earned := earn(earned, 'evil-scheme', user_id); END IF;
 
     -- 🐟 Fish ’n’ Chips
     IF hole = 'poker' AND lang = 'fish' THEN
@@ -127,8 +127,8 @@ BEGIN
         earned := earn(earned, 'mary-had-a-little-lambda', user_id); END IF;
 
     -- 📴 Off-the-grid
-    IF hole IN ('sudoku', 'sudoku-v2') AND lang = 'hexagony' THEN
-        earned = earn(earned, 'off-the-grid', user_id); END IF;
+    IF hole IN ('sudoku', 'sudoku-fill-in') AND lang = 'hexagony' THEN
+        earned := earn(earned, 'off-the-grid', user_id); END IF;
 
     -- 🐍 Ouroboros
     IF hole = 'quine' AND lang = 'python' THEN
@@ -137,6 +137,10 @@ BEGIN
     -- 🔠 Pangramglot
     IF hole = 'pangram-grep' AND pangramglot(langs_for_hole) = 26 THEN
         earned := earn(earned, 'pangramglot', user_id); END IF;
+
+    -- 🎮 S-box 360
+    IF hole = 'rijndael-s-box' AND lang IN ('c-sharp', 'f-sharp', 'powershell') THEN
+        earned := earn(earned, 's-box-360', user_id); END IF;
 
     -- 🪞 Solve Quine
     IF hole = 'quine' THEN

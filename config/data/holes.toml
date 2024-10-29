@@ -135,6 +135,18 @@ preamble = '''
     inclusive, each on their own line.
 '''
 
+['Apéry’s Constant']
+experiment = 1525
+category   = 'Mathematics'
+links = [
+    { name = 'OEIS A002117', url = '//oeis.org/A002117' },
+    { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Apéry's_constant" },
+]
+synopsis = 'Print the first 1,000 digits of ζ(3).'
+preamble = '''
+<p>Print the first <b>1,000</b> decimal digits of ζ(3).
+'''
+
 ['Arabic to Roman']
 category = 'Transform'
 releases = [2017-07-22, 2017-11-10]
@@ -1402,6 +1414,19 @@ preamble = '''
 </ul>
 '''
 
+['Hilbert Curve']
+experiment = 1448
+category   = 'Art'
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Hilbert_curve' },
+]
+synopsis = 'Print five iterations of the Hilbert curve.'
+preamble = '''
+<p>The Hilbert curve is a continuous fractal space-filling curve, constructed as a limit of piecewise linear curves.
+
+<p>Print five iterations of the Hilbert curve.
+'''
+
 [Intersection]
 category = 'Mathematics'
 links = [
@@ -2439,6 +2464,15 @@ preamble = '''
     inclusive, each on their own line.
 '''
 
+['Placeholder']
+experiment = 1404
+category = 'Art'
+synopsis = 'Golf the code.golf placeholder.'
+preamble = '''
+<p>
+    Golf the code.golf placeholder.
+'''
+
 [Poker]
 category = 'Gaming'
 links = [
@@ -3341,6 +3375,20 @@ preamble = '''
 <p>Print all the sphenic numbers from <b>1</b> to <b>10,000</b> inclusive, each on their own line.
 '''
 
+['Star Wars GPT']
+experiment = 1463
+category = 'Transform'
+links = [
+    { name = 'Wookieepedia', url = '//starwars.fandom.com/wiki/Opening_crawl' },
+]
+synopsis = 'Output the most likely next word to occur given word frequency in the Star Wars opening crawl.'
+preamble = '''
+You are given input of a text *corpus* and several *prompts* on subsequent lines.
+For each prompt, output the most likely next word in the corpus by frequency (aka *mode*).
+If there is more than one mode, output the first encountered in the corpus.
+In this problem, the corpus is fixed to be the Star Wars opening crawl texts.
+'''
+
 ['Star Wars Opening Crawl']
 category = 'Transform'
 links = [
@@ -3418,7 +3466,7 @@ consequat.</pre>
 [Sudoku]
 category = 'Gaming'
 releases = [2018-11-15, 2021-04-25]
-variants = ['Sudoku', 'Sudoku v2']
+variants = ['Sudoku', 'Sudoku (Fill-in)']
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Sudoku' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Sudoku' },
