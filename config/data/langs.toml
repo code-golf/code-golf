@@ -22,6 +22,27 @@ each argument is NULL terminated.
 x is a no-op.
 '''
 
+['ALGOL 68']
+args       = [ '/usr/bin/a68g', '--exec', '$code', '--' ]
+experiment = 856
+size       = '4.66 MiB'
+version    = '3.5.9'
+website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
+example    = '''
+# Printing #
+printf($"Hello, World!"l$);
+
+# Looping #
+FOR i FROM 0 TO 9 DO
+    printf(($g(0)l$, i))
+OD;
+
+# Accessing arguments #
+FOR i FROM 2 TO a68g argc DO
+    printf(($gl$, a68g argv(i)))
+OD
+'''
+
 [Arturo]
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
