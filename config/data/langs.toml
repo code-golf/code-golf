@@ -515,6 +515,30 @@ void main(List<String> argv) {
 }
 '''
 
+[Egel]
+args       = [ '/usr/bin/egelwrapper', '-' ]
+experiment = 1434
+size       = '49.8 MiB'
+version    = '0.1.14'
+website    = 'https://egel-lang.github.io'
+example    = '''
+import "prelude.eg"
+
+using System, List
+
+def main =
+    # Printing
+    print "Hello, World!\n";
+
+    # Looping
+    map [ I -> print I "\n" ] (from_to 0 9);
+
+    # Accessing arguments
+    map [ ARG -> print ARG "\n" ] (drop 2 args);
+
+    print
+'''
+
 [Elixir]
 args    = [ '/usr/local/bin/elixir', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8', 'PATH=/usr/local/bin:/usr/bin:/bin' ]

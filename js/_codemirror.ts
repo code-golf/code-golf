@@ -137,6 +137,7 @@ export const extensions : { [key: string]: any } = {
     'crystal':       StreamLanguage.define(crystal),
     'd':             StreamLanguage.define(d),
     'dart':          StreamLanguage.define(dart),
+    // TODO egel
     'elixir':        elixir,
     'f-sharp':       StreamLanguage.define(fSharp),
     'factor':        StreamLanguage.define(factor),
