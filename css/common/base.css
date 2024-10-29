@@ -65,7 +65,7 @@ body {
 
 body, footer nav, #site-header nav, #popups {
     margin: auto;
-    max-width: 1280px;
+    max-width: 80rem;
 }
 
 body > svg, .hide { display: none }
@@ -669,7 +669,7 @@ body > .tabs a {
         grid-row: span 2;
         justify-content: flex-end;
         padding: .5rem 2rem .5rem 0;
-        width: 18rem;
+        width: 20rem;
 
         & > * {
             align-items: center;
@@ -717,7 +717,7 @@ body > .tabs a {
 @media     (max-width: 34rem) { .wide { display: none !important } }
 @media not (max-width: 34rem) { .thin { display: none !important } }
 
-@media (max-width: 46rem) {
+@media (max-width: 50rem) {
     #two-pane {
         grid-template: min-content min-content 1fr / 1fr;
 
