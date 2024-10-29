@@ -9,11 +9,11 @@ RUN curl https://www.python.org/ftp/python/$VER/Python-$VER.tar.xz | tar xJ
 RUN cd Python-$VER             \
  && ./configure                \
     --disable-test-modules     \
-    --prefix="/usr"            \
+    --prefix /usr              \
     --with-lto                 \
     --without-ensurepip        \
     --without-static-libpython \
- && make -j `nproc` install    \
+ && make -j`nproc` install     \
  && strip /usr/bin/python3.12  \
           /usr/lib/python3.12/lib-dynload/*.so
 
@@ -39,7 +39,9 @@ COPY --from=0 /lib/ld-musl-x86_64.so.1        \
               /lib/libz.so.1                  /lib/
 COPY --from=0 /ascii-piet/ascii2piet.py       /usr/bin/
 COPY --from=0 /usr/bin/python3.12             /usr/bin/python
-COPY --from=0 /usr/lib/libbsd.so.0            \
+COPY --from=0 /usr/lib/libXau.so.6            \
+              /usr/lib/libXdmcp.so.6          \
+              /usr/lib/libbsd.so.0            \
               /usr/lib/libgcc_s.so.1          \
               /usr/lib/libimagequant.so.0.0.4 \
               /usr/lib/libjpeg.so.8           \
@@ -48,9 +50,7 @@ COPY --from=0 /usr/lib/libbsd.so.0            \
               /usr/lib/libsharpyuv.so.0       \
               /usr/lib/libtiff.so.6           \
               /usr/lib/libwebp.so.7           \
-              /usr/lib/libXau.so.6            \
               /usr/lib/libxcb.so.1            \
-              /usr/lib/libXdmcp.so.6          \
               /usr/lib/libzstd.so.1           /usr/lib/
 COPY --from=0 /usr/lib/python3.12             /usr/lib/python3.12
 
