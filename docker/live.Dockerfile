@@ -19,7 +19,6 @@ RUN go build -ldflags -s -trimpath \
 
 FROM scratch
 
-COPY --from=codegolf/lang-octave       ["/", "/langs/octave/rootfs/"      ] #  678 MiB
 COPY --from=codegolf/lang-swift        ["/", "/langs/swift/rootfs/"       ] #  555 MiB
 COPY --from=codegolf/lang-haskell      ["/", "/langs/haskell/rootfs/"     ] #  388 MiB
 COPY --from=codegolf/lang-go           ["/", "/langs/go/rootfs/"          ] #  383 MiB
@@ -45,6 +44,7 @@ COPY --from=codegolf/lang-fortran      ["/", "/langs/fortran/rootfs/"     ] # 94
 COPY --from=codegolf/lang-ocaml        ["/", "/langs/ocaml/rootfs/"       ] # 91.4 MiB
 COPY --from=codegolf/lang-gleam        ["/", "/langs/gleam/rootfs/"       ] # 88.1 MiB
 COPY --from=codegolf/lang-r            ["/", "/langs/r/rootfs/"           ] # 81.9 MiB
+COPY --from=codegolf/lang-octave       ["/", "/langs/octave/rootfs/"      ] # 76.5 MiB
 COPY --from=codegolf/lang-raku         ["/", "/langs/raku/rootfs/"        ] # 75.8 MiB
 COPY --from=codegolf/lang-coffeescript ["/", "/langs/coffeescript/rootfs/"] # 69.1 MiB
 COPY --from=codegolf/lang-civet        ["/", "/langs/civet/rootfs/"       ] # 67.9 MiB

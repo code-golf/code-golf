@@ -11,6 +11,9 @@ RUN ./configure        \
     --prefix /usr      \
  && make -j`nproc` install
 
+RUN strip /usr/lib/octave/*/liboctave.so.11 \
+          /usr/lib/octave/*/liboctinterp.so.12
+
 FROM codegolf/lang-base
 
 COPY --from=0 /bin/cat /bin/sh                     /bin/
