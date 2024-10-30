@@ -339,7 +339,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '67.9 MiB'
-version = '0.8.8'
+version = '0.8.10'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -513,7 +513,7 @@ void main(string[] argv) {
 [Dart]
 args    = [ '/usr/bin/dart', '-' ]
 size    = '235 MiB'
-version = '3.5.2'
+version = '3.5.4'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -530,6 +530,30 @@ void main(List<String> argv) {
     print(arg);
   }
 }
+'''
+
+[Egel]
+args       = [ '/usr/bin/egelwrapper', '-' ]
+experiment = 1434
+size       = '49.8 MiB'
+version    = '0.1.14'
+website    = 'https://egel-lang.github.io'
+example    = '''
+import "prelude.eg"
+
+using System, List
+
+def main =
+    # Printing
+    print "Hello, World!\n";
+
+    # Looping
+    map [ I -> print I "\n" ] (from_to 0 9);
+
+    # Accessing arguments
+    map [ ARG -> print ARG "\n" ] (drop 2 args);
+
+    print
 '''
 
 [Elixir]
@@ -727,6 +751,26 @@ example    = '''
 
 # The stack is initialized with one element, an array of arguments:
 n*
+'''
+
+[Groovy]
+args       = [ '/usr/bin/groovy', '-e', '$code' ]
+env        = [ 'JAVA_HOME=/opt/java' ]
+experiment = 1145
+size       = '146 MiB'
+version    = '4.0.23'
+website    = 'https://groovy-lang.org'
+example    = '''
+// Printing
+println "Hello, World!"
+
+// Looping
+for (i in 0..9)
+    println i
+
+// Accessing arguments
+for (arg in args)
+    println arg
 '''
 
 [Hare]
@@ -992,7 +1036,7 @@ example = '''
 '''
 
 [Kotlin]
-args    = [ '/usr/bin/kotlin', '-e', '$code' ]
+args    = [ '/usr/bin/kotlin', '-Xuse-fast-jar-file-system', '-e', '$code' ]
 env     = [ 'JAVA_HOME=/opt/java' ]
 size    = '223 MiB'
 version = '2.0.21'
@@ -1201,8 +1245,9 @@ ForEach ($arg in $args) {
 
 [Prolog]
 args    = [ '/usr/bin/prolog', '-g', 'halt', '/tmp/code.pl' ]
+env     = [ 'LC_ALL=C.UTF-8' ]
 size    = '49.3 MiB'
-version = 'SWI-Prolog 9.2.7'
+version = 'SWI-Prolog 9.2.8'
 website = 'https://www.swi-prolog.org'
 example = '''
 % Printing
@@ -1493,7 +1538,7 @@ SELECT arg FROM argv;
 args    = [ '/usr/bin/swift', '-module-cache-path', '/tmp', '-' ]
 env     = [ 'PATH=/usr/bin:/bin' ]
 size    = '555 MiB'
-version = '6.0.1'
+version = '6.0.2'
 website = 'https://swift.org'
 example = '''
 // Printing
