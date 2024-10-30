@@ -1,10 +1,8 @@
 FROM eclipse-temurin:23.0.1_11-jre-alpine AS builder
 
-ENV VER=0.6.5
+ENV VERSION=0.6.5
 
-RUN wget -O cjam.jar https://sourceforge.net/projects/cjam/files/cjam-$VER/cjam-$VER.jar/download
-
-RUN echo $VER > version
+RUN wget -O cjam.jar https://sourceforge.net/projects/cjam/files/cjam-$VERSION/cjam-$VERSION.jar/download
 
 FROM codegolf/lang-base
 
@@ -25,10 +23,8 @@ COPY --from=0 /opt/java/openjdk/lib/jvm.cfg          \
               /opt/java/openjdk/lib/libzip.so        \
               /opt/java/openjdk/lib/modules          /opt/jdk/lib/
 COPY --from=0 /opt/java/openjdk/lib/server/libjvm.so /opt/jdk/lib/server/
-COPY --from=0 /cjam.jar /version                     /usr/bin/
+COPY --from=0 /cjam.jar                              /usr/bin/
 
 COPY /cjam /usr/bin/
 
 ENTRYPOINT ["cjam"]
-
-CMD ["--version"]

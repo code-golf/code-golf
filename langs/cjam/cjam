@@ -1,7 +1,5 @@
 #!/bin/sh -e
 
-[ "$1" = "--version" ] && exec cat /usr/bin/version
-
 cat - > /tmp/code.cjam
 
 shift
