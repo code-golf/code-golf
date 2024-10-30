@@ -1056,7 +1056,7 @@ for arg in commandLineParams():
 [Noulith]
 args       = [ '/usr/bin/noulith', '-e', '$code' ]
 experiment = 1045
-size       = '28.8 MiB'
+size       = '5.37 MiB'
 version    = '57580ee'
 website    = 'https://github.com/betaveros/noulith'
 example    = '''
