@@ -1,8 +1,12 @@
+ARG VER=9.2.0
+
 FROM alpine:3.20 AS builder
+
+ARG VER
 
 RUN apk add --no-cache autoconf automake blas-dev build-base curl gawk gfortran gperf lapack-dev less libtool ncurses pcre2 pcre2-dev
 
-RUN curl -L https://ftp.nluug.nl/pub/gnu/octave/octave-9.2.0.tar.xz \
+RUN curl -L https://ftp.nluug.nl/pub/gnu/octave/octave-$VER.tar.xz \
   | tar xJ --strip-components 1
 
 RUN ./configure        \
@@ -15,6 +19,8 @@ RUN strip /usr/lib/octave/*/liboctave.so.11 \
           /usr/lib/octave/*/liboctinterp.so.12
 
 FROM codegolf/lang-base
+
+ARG VER
 
 COPY --from=0 /bin/cat /bin/sh                     /bin/
 COPY --from=0 /lib/ld-musl-x86_64.so.1             \
@@ -29,7 +35,7 @@ COPY --from=0 /usr/lib/libblas.so.3                \
               /usr/lib/libquadmath.so.0            \
               /usr/lib/libstdc++.so.6              /usr/lib/
 COPY --from=0 /usr/lib/octave/*/liboctave.so.11    \
-              /usr/lib/octave/*/liboctinterp.so.12 /usr/lib/octave/9.2.0/
+              /usr/lib/octave/*/liboctinterp.so.12 /usr/lib/octave/$VER/
 COPY --from=0 /usr/share/octave                    /usr/share/octave
 
 COPY /octavewrapper /usr/bin/
