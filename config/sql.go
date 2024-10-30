@@ -1,6 +1,12 @@
 package config
 
-import "database/sql/driver"
+import (
+	"database/sql/driver"
+	"strings"
+)
+
+type Cheevos []*Cheevo
+type Langs []*Lang
 
 type NullCountry struct {
 	Country *Country
@@ -46,6 +52,24 @@ func (h *Hole) Value() (driver.Value, error) { return h.ID, nil }
 
 func (l *Lang) Scan(id any) error {
 	*l = *LangByID[asString(id)]
+	return nil
+}
+
+func (c *Cheevos) Scan(src any) error {
+	if ids := asString(src); len(ids) > 2 {
+		for _, id := range strings.Split(ids[1:len(ids)-1], ",") {
+			*c = append(*c, CheevoByID[id])
+		}
+	}
+	return nil
+}
+
+func (l *Langs) Scan(src any) error {
+	if ids := asString(src); len(ids) > 2 {
+		for _, id := range strings.Split(ids[1:len(ids)-1], ",") {
+			*l = append(*l, LangByID[id])
+		}
+	}
 	return nil
 }
 
