@@ -36,6 +36,7 @@ import { fSharp, oCaml }           from '@codemirror/legacy-modes/mode/mllike';
 import { gleamLanguage }           from '@exercism/codemirror-lang-gleam';
 import { goLanguage }              from '@codemirror/lang-go';
 import { golfScript }              from 'codemirror-lang-golfscript';
+import { groovy }                  from '@codemirror/legacy-modes/mode/groovy';
 import { haskell }                 from '@codemirror/legacy-modes/mode/haskell';
 import { haxe }                    from '@codemirror/legacy-modes/mode/haxe';
 import { j }                       from 'codemirror-lang-j';
@@ -137,6 +138,7 @@ export const extensions : { [key: string]: any } = {
     'crystal':       StreamLanguage.define(crystal),
     'd':             StreamLanguage.define(d),
     'dart':          StreamLanguage.define(dart),
+    // TODO egel
     'elixir':        elixir,
     'f-sharp':       StreamLanguage.define(fSharp),
     'factor':        StreamLanguage.define(factor),
@@ -146,6 +148,7 @@ export const extensions : { [key: string]: any } = {
     'gleam':         gleam,
     'go':            go,
     'golfscript':    golfScript(),
+    'groovy':        StreamLanguage.define(groovy),
     // TODO hare
     'haskell':       StreamLanguage.define(haskell),
     'haxe':          StreamLanguage.define(haxe),

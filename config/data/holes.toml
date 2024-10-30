@@ -135,6 +135,18 @@ preamble = '''
     inclusive, each on their own line.
 '''
 
+['Apéry’s Constant']
+experiment = 1525
+category   = 'Mathematics'
+links = [
+    { name = 'OEIS A002117', url = '//oeis.org/A002117' },
+    { name = 'Wikipedia',    url = "//en.wikipedia.org/wiki/Apéry's_constant" },
+]
+synopsis = 'Print the first 1,000 digits of ζ(3).'
+preamble = '''
+<p>Print the first <b>1,000</b> decimal digits of ζ(3).
+'''
+
 ['Arabic to Roman']
 category = 'Transform'
 releases = [2017-07-22, 2017-11-10]
@@ -1528,6 +1540,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Kaprekar_numbers' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Kaprekar_number' },
 ]
+released = 2024-11-01
 synopsis = 'Print all the Kaprekar numbers from 1 to 25,000,000.'
 preamble = '''
 <p>
