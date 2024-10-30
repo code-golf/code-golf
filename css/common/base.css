@@ -559,6 +559,15 @@ td .btn {
     width: 50%;
 }
 
+.nowrap-first-second-third td:nth-child(1),
+.nowrap-first-second-third td:nth-child(2),
+.nowrap-first-second-third td:nth-child(3) {
+    max-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 33%;
+}
+
 .right { text-align: right }
 
 .span { grid-column: 1 / -1 }
