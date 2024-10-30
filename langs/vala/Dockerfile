@@ -1,16 +1,19 @@
 FROM alpine:3.20 AS builder
 
-RUN apk add --no-cache bison build-base curl flex glib-dev gobject-introspection-dev graphviz-dev musl-dev pkgconf
+RUN apk add --no-cache bison curl flex g++ gobject-introspection-dev make
 
 ENV VER=0.56.17
 
-RUN curl -L https://download.gnome.org/sources/vala/0.56/vala-$VER.tar.xz | tar xJ
+RUN curl -L https://download.gnome.org/sources/vala/0.56/vala-$VER.tar.xz \
+  | tar xJ --strip-components 1
 
-RUN cd vala-$VER      \
- && ./configure       \
+RUN ./configure       \
     --disable-valadoc \
-    --prefix="/usr"   \
+    --prefix /usr     \
  && make -j`nproc` install
+
+RUN strip /usr/lib/libvala-0.56.so.0 \
+          /usr/lib/vala-0.56/libvalaccodegen.so
 
 FROM codegolf/lang-base
 
@@ -54,13 +57,13 @@ COPY --from=0 /usr/lib/Scrt1.o                           \
               /usr/lib/gcc/*/*/crtbeginS.o               \
               /usr/lib/gcc/*/*/crtendS.o                 \
               /usr/lib/gcc/*/*/libgcc.a                  /usr/lib/
-COPY --from=0 /usr/libexec/gcc                           /usr/lib/gcc
+COPY --from=0 /usr/lib/glib-2.0/include                  /usr/lib/glib-2.0/include
 COPY --from=0 /usr/lib/pkgconfig/glib-2.0.pc             \
               /usr/lib/pkgconfig/gobject-2.0.pc          \
               /usr/lib/pkgconfig/libffi.pc               \
               /usr/lib/pkgconfig/libpcre2-8.pc           /usr/lib/pkgconfig/
-COPY --from=0 /usr/lib/glib-2.0/include                  /usr/lib/glib-2.0/include
 COPY --from=0 /usr/lib/vala-0.56/libvalaccodegen.so      /usr/lib/vala-0.56/
+COPY --from=0 /usr/libexec/gcc                           /usr/libexec/gcc
 COPY --from=0 /usr/share/gir-1.0/GLib-2.0.gir            \
               /usr/share/gir-1.0/GObject-2.0.gir         /usr/share/gir-1.0/
 COPY --from=0 /usr/share/vala-0.56/vapi/glib-2.0.vapi    \

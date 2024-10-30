@@ -1518,25 +1518,23 @@ for arg in os.args[1..] {
 
 [Vala]
 args       = [ '/usr/bin/valawrapper', '-' ]
-env        = [ 'PATH=/usr/lib/gcc:/usr/bin:/bin' ]
+env        = [ 'PATH=/usr/libexec/gcc:/usr/bin:/bin' ]
 experiment = 1354
-size       = '193 MiB'
+size       = '167 MiB'
 version    = '0.56.17'
 website    = 'https://vala.dev'
 example    = '''
-int main(string[] args) {
+void main (string[] args) {
     // Printing
-    print("Hello, World!\n");
+    print ("Hello, World!\n");
     
     // Looping
-    for (int i = 0; i < 10; i++)
-        print("%d\n", i);
+    for (var i = 0; i < 10; i++)
+        print ("%d\n", i);
     
     // Accessing arguments
     foreach (string arg in args[1:])
-        print("%s\n", arg);
-    
-    return 0;
+        stdout.printf ("%s\n", arg);
 }
 '''
 
