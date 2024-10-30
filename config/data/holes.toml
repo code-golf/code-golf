@@ -1540,6 +1540,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Kaprekar_numbers' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Kaprekar_number' },
 ]
+released = 2024-11-01
 synopsis = 'Print all the Kaprekar numbers from 1 to 25,000,000.'
 preamble = '''
 <p>

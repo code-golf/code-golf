@@ -1,10 +1,11 @@
-#include "sqlite3.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include "sqlite3.h"
+
 int main(int argc, char *argv[]) {
-    if (argc > 1 && strcmp(argv[1], "-v") == 0) {
+    if (argc > 1 && strcmp(argv[1], "--version") == 0) {
         puts(sqlite3_libversion());
         return 0;
     }

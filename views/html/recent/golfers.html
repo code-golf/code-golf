@@ -1,21 +1,21 @@
 {{ template "header" . }}
 {{ template "recent" . }}
 
-{{ template "lang-svgs" .Data.Golfers }}
+{{ template "lang-svgs" .Data }}
 
 <main>
-    <table class="nowrap-first-second sticky">
+    <table class="nowrap-first-second-third sticky">
         <thead>
             <tr>
                 <th>Golfer
                 <th>Languages
-                <th class="right wide">Cheevos
+                <th class=wide>Cheevos
                 <th class=right>Date
         <tbody>
         {{ $name := "" }}
         {{ with .Golfer }}{{ $name = .Name }}{{ end }}
 
-        {{ range .Data.Golfers }}
+        {{ range .Data }}
             <tr {{ if eq $name .Name }} class=me {{ end }}>
                 <td>{{ template "golfer-link" . }}
                 <td>
@@ -27,7 +27,14 @@
                         </svg>
                     {{ end }}
                     </div>
-                <td class="right wide">{{ .Cheevos }} / {{ $.Data.Cheevos }}
+                <td class=wide>
+                    <div>
+                    {{ range .Cheevos }}
+                        <span title="{{ .Name }} - {{ .Description }}">
+                            {{ .Emoji }}
+                        </span>
+                    {{ end }}
+                    </div>
                 <td class=right>{{ time .Date }}
         {{ end }}
     </table>
