@@ -75,6 +75,7 @@ COPY --from=codegolf/lang-rockstar-2   ["/", "/langs/rockstar-2/rootfs/"  ] # 6.
 COPY --from=codegolf/lang-tcl          ["/", "/langs/tcl/rootfs/"         ] # 5.62 MiB
 COPY --from=codegolf/lang-perl         ["/", "/langs/perl/rootfs/"        ] # 5.51 MiB
 COPY --from=codegolf/lang-arturo       ["/", "/langs/arturo/rootfs/"      ] # 5.29 MiB
+COPY --from=codegolf/lang-algol-68     ["/", "/langs/algol-68/rootfs/"    ] # 4.66 MiB
 COPY --from=codegolf/lang-fish         ["/", "/langs/fish/rootfs/"        ] # 4.66 MiB
 COPY --from=codegolf/lang-rexx         ["/", "/langs/rexx/rootfs/"        ] # 4.63 MiB
 COPY --from=codegolf/lang-cobol        ["/", "/langs/cobol/rootfs/"       ] # 4.56 MiB
