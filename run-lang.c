@@ -61,12 +61,13 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
 
     // Not every lang has /proc.
     if (mount("proc", "/proc", "proc", MS_NODEV|MS_NOEXEC|MS_NOSUID, NULL) == 0) {
-        // Clobber /proc/meminfo. It can be used to inject state.
-        if (mount("/dev/null", "/proc/meminfo", NULL, MS_BIND, NULL) < 0)
-            ERR_AND_EXIT("mount /proc/meminfo");
+        // Clobber /proc/meminfo. It can be used to inject state. Kotlin doesn't like this.
+        if (strcmp(argv[0], "/usr/bin/kotlin") != 0)
+            if (mount("/dev/null", "/proc/meminfo", NULL, MS_BIND, NULL) < 0)
+                ERR_AND_EXIT("mount /proc/meminfo");
 
-        // Clobber /proc/stat. It can be used to inject state. V panics :-(
-        if (strcmp(argv[0], "/usr/bin/v") != 0)
+        // Clobber /proc/stat. It can be used to inject state. Kotlin and V panic :-(
+        if (strcmp(argv[0], "/usr/bin/v") != 0 && strcmp(argv[0], "/usr/bin/kotlin") != 0)
             if (mount("/dev/null", "/proc/stat", NULL, MS_BIND, NULL) < 0)
                 ERR_AND_EXIT("mount /proc/stat");
 
@@ -185,7 +186,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         // ALLOW(fsetxattr),    // 190
         // ALLOW(getxattr),     // 191
         // ALLOW(lgetxattr),    // 192
-        // ALLOW(listxattr),    // 194
+        ALLOW(listxattr),       // 194
         // ALLOW(llistxattr),   // 195
         // ALLOW(lremovexattr), // 198
         // ALLOW(lsetxattr),    // 189
