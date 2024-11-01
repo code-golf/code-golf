@@ -211,6 +211,8 @@ main {
 .full-width #make-wide { display: none; }
 .full-width body { max-width: unset; }
 
+.full-height .alert,
+.full-height .info,
 .full-height #page-header,
 .full-height footer,
 .full-height #picker,

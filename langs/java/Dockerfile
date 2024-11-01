@@ -1,4 +1,4 @@
-# Also bump Kotlin, Rockstar.
+# Also bump Groovy, Kotlin, Rockstar.
 FROM eclipse-temurin:23.0.1_11-jdk-alpine AS builder
 
 RUN apk add --no-cache build-base gmp-dev
