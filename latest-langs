@@ -9,7 +9,7 @@ unit sub MAIN(Bool :$all, *@langs);
 
 constant %paths = (
     '><>'          => 'github.com/primo-ppcg/fish-jit',
-    'ALGOL 68'     => 'en.wikipedia.org/wiki/ALGOL_68',
+    'ALGOL 68'     => 'jmvdveer.home.xs4all.nl/en.download.algol-68-genie-current.html',
     'Arturo'       => 'github.com/arturo-lang/arturo/releases/latest',
     'Assembly'     => 'registry.npmjs.org/@defasm/core/latest',
     'Bash'         => 'en.wikipedia.org/wiki/Bash_(Unix_shell)',
@@ -103,6 +103,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'endoflife'   / { $res.&from-json[0]<latest> }
         when / 'fennel-lang' / { $res ~~ / 'downloads/fennel-' <(<ver>)> / }
         when / 'git.sr.ht'   / { $res ~~ / 'stable release' .+? <(<ver>)> / }
+        when / 'jmvdveer'    / { $res ~~ / 'algol68g-' <(<ver>)> / }
         when / 'npmjs.org'   / { $res.&from-json[0]<version> }
         when / 'pypi.org'    / { $res.&from-json<info><version> }
         when / 'regina-rexx' / { $res ~~ / '<b>Current</b> ' <(<ver>)> / }
