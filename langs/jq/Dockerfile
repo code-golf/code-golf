@@ -9,7 +9,8 @@ RUN curl -L https://github.com/jqlang/jq/releases/download/jq-$VER/jq-$VER.tar.g
 
 RUN ./configure              \
     --with-oniguruma=builtin \
- && make LDFLAGS="-all-static" -j`nproc`
+ && make LDFLAGS=-all-static \
+ && strip jq
 
 FROM codegolf/lang-base-no-proc
 
