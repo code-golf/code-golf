@@ -63,7 +63,7 @@ constant %paths = (
     'Perl'         => 'endoflife.date/api/perl.json',
     'PHP'          => 'endoflife.date/api/php.json',
     'PowerShell'   => 'endoflife.date/api/powershell.json',
-    'Prolog'       => 'en.wikipedia.org/wiki/SWI-Prolog',
+    'Prolog'       => 'swi-prolog.discourse.group/c/releases',
     'Python'       => 'endoflife.date/api/python.json',
     'R'            => 'en.wikipedia.org/wiki/R_(programming_language)',
     'Racket'       => 'github.com/racket/racket/releases/latest',
@@ -107,6 +107,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'pypi.org'    / { $res.&from-json<info><version> }
         when / 'regina-rexx' / { $res ~~ / '<b>Current</b> ' <(<ver>)> / }
         when / 'savannah'    / { $res ~~ / 'snapshot/sed-' <(<ver>)> / }
+        when / 'swi-prolog'  / { $res ~~ / 'stable' .+? <(<ver>)> / }
         when / 'github.com'  / {
             .ends-with('/releases/latest')
                 ?? $res ~~ / [ $name || 'dev' || 'elease' || 'Version' ] <[\ -]> v? <(<ver>)> /
