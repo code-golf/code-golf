@@ -17,22 +17,17 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
-    if (setenv("LC_ALL", "C.UTF-8", 1)) {
-        perror("Error setting environment variable");
-        return 1;
-    }
-
     FILE* fp = fopen(code, "w");
 
     if (!fp)
-        return 2;
+        return 1;
 
     char buffer[4096];
     ssize_t nbytes;
 
     while ((nbytes = read(STDIN_FILENO, buffer, sizeof(buffer))) > 0)
         if (fwrite(buffer, sizeof(char), nbytes, fp) != nbytes)
-            return 3;
+            return 2;
 
     fclose(fp);
 
@@ -40,28 +35,28 @@ int main(int argc, char* argv[]) {
     if (!pid) {
         execl(javac, javac, code, NULL);
         perror("execl");
-        return 4;
+        return 3;
     }
 
     int status;
     waitpid(pid, &status, 0);
 
     if (!WIFEXITED(status))
-        return 5;
+        return 4;
 
     if (WEXITSTATUS(status))
         return WEXITSTATUS(status);
 
     if(remove(code)) {
         perror("Error deleting file");
-        return 6;
+        return 5;
     }
 
     // Find the class name.
     DIR* dir = opendir("/tmp/");
 
     if (!dir)
-        return 7;
+        return 6;
 
     char class[256];
     memset(class, 0, sizeof(class));
@@ -79,14 +74,14 @@ int main(int argc, char* argv[]) {
     }
 
     if (errno)
-        return 8;
+        return 7;
 
     if (closedir(dir))
-        return 9;
+        return 8;
 
     if(chdir("/tmp")) {
         perror("Error changing directory");
-        return 10;
+        return 9;
     }
 
     int jargc = argc + 1;
@@ -98,5 +93,5 @@ int main(int argc, char* argv[]) {
 
     execv(java, jargv);
     perror("execv");
-    return 11;
+    return 10;
 }
