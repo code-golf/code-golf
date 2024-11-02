@@ -178,7 +178,7 @@ export const extensions : { [key: string]: any } = {
     // TODO rockstar
     'ruby':          StreamLanguage.define(ruby),
     'rust':          rust(),
-    // TODO scala
+    'scala':         java(),
     'scheme':        StreamLanguage.define(scheme),
     // TODO sed
     'sql':           sql,
