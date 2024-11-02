@@ -1533,8 +1533,7 @@ preamble = '''
 '''
 
 ['Kaprekar Numbers']
-experiment = 574
-category   = 'Sequence'
+category = 'Sequence'
 links = [
     { name = 'OEIS A006886', url = '//oeis.org/A006886' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Kaprekar_numbers' },
