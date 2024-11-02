@@ -3,7 +3,7 @@ FROM debian:bullseye-slim AS builder
 RUN apt-get update && apt-get install -y \
     binutils curl libatomic1 libc6-dev libedit2 libncurses6 libsqlite3-0 libz3-4
 
-ENV VER=6.0.1
+ENV VER=6.0.2
 
 RUN curl https://download.swift.org/swift-$VER-release/ubuntu2004/swift-$VER-RELEASE/swift-$VER-RELEASE-ubuntu20.04.tar.gz \
   | tar xz --directory / --strip-components 1

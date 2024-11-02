@@ -11,34 +11,29 @@ import (
 
 // GET /recent/golfers
 func recentGolfersGET(w http.ResponseWriter, r *http.Request) {
-	type golfer struct {
-		Cheevos int
+	var data []struct {
+		Cheevos config.Cheevos
 		Country config.NullCountry
 		Date    time.Time
 		Langs   config.Langs
 		Name    string
 	}
 
-	data := struct {
-		Cheevos int
-		Golfers []golfer
-	}{len(config.CheevoList), make([]golfer, 0, pager.PerPage)}
-
 	if err := session.Database(r).Select(
-		&data.Golfers,
+		&data,
 		`WITH langs AS (
 		    SELECT user_id, array_agg(DISTINCT lang) langs
 		      FROM solutions
 		     WHERE NOT failing
 		  GROUP BY user_id
-		), recent AS (
-		    SELECT user_id, COUNT(*) cheevos, MIN(earned) date
+		), cheevos AS (
+		    SELECT user_id, array_agg(trophy ORDER BY trophy) cheevos, MIN(earned) date
 		      FROM trophies
 		  GROUP BY user_id
 		  ORDER BY date DESC
 		     LIMIT $1
 		)  SELECT country_flag country, cheevos, date, login name, langs
-		     FROM recent
+		     FROM cheevos
 		     JOIN users ON id = user_id
 		LEFT JOIN langs USING (user_id)
 		 ORDER BY date DESC`,
