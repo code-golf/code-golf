@@ -160,6 +160,10 @@ BEGIN
     IF hole = 'pascals-triangle' AND lang = 'pascal' THEN
         earned := earn(earned, 'under-pressure', user_id); END IF;
 
+    -- ❌ X-Factor
+    IF hole = 'factorial-factorisation' AND lang = 'factor' THEN
+        earned := earn(earned, 'x-factor', user_id); END IF;
+
     -------------------
     -- Miscellaneous --
     -------------------
