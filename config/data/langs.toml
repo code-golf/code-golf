@@ -22,6 +22,27 @@ each argument is NULL terminated.
 x is a no-op.
 '''
 
+['ALGOL 68']
+args       = [ '/usr/bin/a68g', '--exec', '$code', '--' ]
+experiment = 856
+size       = '4.66 MiB'
+version    = '3.5.9'
+website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
+example    = '''
+# Printing #
+printf($"Hello, World!"l$);
+
+# Looping #
+FOR i FROM 0 TO 9 DO
+    printf(($g(0)l$, i))
+OD;
+
+# Accessing arguments #
+FOR i FROM 2 TO a68g argc DO
+    printf(($gl$, a68g argv(i)))
+OD
+'''
+
 [Arturo]
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
@@ -311,7 +332,7 @@ foreach (String arg in args)
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
 size    = '147 MiB'
-version = 'Clang 19.1.2'
+version = 'Clang 19.1.3'
 website = 'https://clang.llvm.org'
 example = '''
 #include <iostream>
@@ -339,7 +360,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '67.9 MiB'
-version = '0.8.9'
+version = '0.8.11'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -496,7 +517,7 @@ void main(string[] argv) {
 [Dart]
 args    = [ '/usr/bin/dart', '-' ]
 size    = '235 MiB'
-version = '3.5.2'
+version = '3.5.4'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -513,6 +534,30 @@ void main(List<String> argv) {
     print(arg);
   }
 }
+'''
+
+[Egel]
+args       = [ '/usr/bin/egelwrapper', '-' ]
+experiment = 1434
+size       = '49.8 MiB'
+version    = '0.1.14'
+website    = 'https://egel-lang.github.io'
+example    = '''
+import "prelude.eg"
+
+using System, List
+
+def main =
+    # Printing
+    print "Hello, World!\n";
+
+    # Looping
+    map [ I -> print I "\n" ] (from_to 0 9);
+
+    # Accessing arguments
+    map [ ARG -> print ARG "\n" ] (drop 2 args);
+
+    print
 '''
 
 [Elixir]
@@ -759,7 +804,7 @@ export fn main() void = {
 
 [Haskell]
 args    = [ '/usr/bin/haskell', '-' ]
-size    = '388 MiB'
+size    = '339 MiB'
 version = 'GHC 9.8.2'
 website = 'https://www.haskell.org/ghc/'
 example = '''
@@ -944,7 +989,7 @@ for (let arg of arguments)
 
 [jq]
 args    = [ '/usr/bin/jq', '--args', '--null-input', '--raw-output', '--', '$code' ]
-size    = '3.41 MiB'
+size    = '964 KiB'
 version = '1.7.1'
 website = 'https://jqlang.github.io/jq/'
 example = '''
@@ -1432,6 +1477,25 @@ fn main() {
 }
 '''
 
+[Scala]
+args       = [ '/usr/local/bin/scala', '-opt:none', '-Xsource:3-cross', '-e', '$code', '--' ]
+env        = [ 'JAVA_HOME=/opt/java' ]
+experiment = 235
+size       = '203 MiB'
+version    = '2.13.15'
+website    = 'https://www.scala-lang.org'
+example    = '''
+// Printing
+println("Hello, World!")
+
+// Looping
+for (i <- 0 to 9)
+    println(i)
+
+// Accessing arguments
+args.foreach(println)
+'''
+
 [Scheme]
 args    = [ '/usr/bin/schemewrapper', '-' ]
 size    = '17.9 MiB'
@@ -1506,7 +1570,7 @@ SELECT arg FROM argv;
 args    = [ '/usr/bin/swift', '-module-cache-path', '/tmp', '-' ]
 env     = [ 'PATH=/usr/bin:/bin' ]
 size    = '555 MiB'
-version = '6.0.1'
+version = '6.0.2'
 website = 'https://swift.org'
 example = '''
 // Printing
