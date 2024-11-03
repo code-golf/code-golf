@@ -1,7 +1,6 @@
 package routes
 
 import (
-	_ "embed"
 	"encoding/json"
 	"fmt"
 	"net/http"
