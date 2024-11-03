@@ -2,11 +2,11 @@ FROM eclipse-temurin:23.0.1_11-jdk-alpine AS builder
 
 RUN apk add --no-cache bash curl git
 
-ENV SBTVER=1.10.4 VER=2.13.15
+ENV SBTVER=1.10.4 VERSION=2.13.15
 
 RUN curl -L https://github.com/sbt/sbt/releases/download/v$SBTVER/sbt-$SBTVER.tgz | tar xz
 
-RUN git clone https://github.com/scala/scala.git --branch v$VER
+RUN git clone https://github.com/scala/scala.git --branch v$VERSION
 
 WORKDIR /scala
 
@@ -44,5 +44,3 @@ COPY --from=0 /scala/build/pack/lib/scala-compiler.jar      \
 ENV JAVA_HOME=/opt/java
 
 ENTRYPOINT ["scala"]
-
-CMD ["-version"]
