@@ -17,10 +17,10 @@ CREATE TYPE cheevo AS ENUM (
     'neunundneunzig-luftballons', 'off-the-grid', 'omniglot', 'omniglutton',
     'ouroboros', 'pangramglot', 'patches-welcome', 'phileas-fogg', 'pi-day',
     'polyglot', 'polyglutton', 'real-programmers', 'right-on', 'rm-rf',
-    'rtfm', 'rule-34', 'slowcoach', 'smörgåsbord', 'solve-quine',
+    'rtfm', 'rule-34', 's-box-360', 'slowcoach', 'smörgåsbord', 'solve-quine',
     'sounds-quite-nice', 'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr',
     'twelvetide', 'twenty-kiloleagues', 'under-pressure', 'up-to-eleven',
-    'vampire-byte', 'x86'
+    'vampire-byte', 'x-factor', 'x86'
 );
 
 CREATE TYPE connection AS ENUM (
@@ -39,23 +39,24 @@ CREATE TYPE hole AS ENUM (
     'foo-fizz-buzz-bar', 'forsyth-edwards-notation', 'fractions',
     'game-of-life', 'gijswijts-sequence', 'happy-numbers',
     'happy-numbers-long', 'hexdump', 'intersection', 'inventory-sequence',
-    'isbn', 'jacobi-symbol', 'kolakoski-constant', 'kolakoski-sequence',
-    'leap-years', 'levenshtein-distance', 'leyland-numbers', 'ln-2',
-    'look-and-say', 'lucky-numbers', 'lucky-tickets', 'mahjong', 'maze',
-    'medal-tally', 'morse-decoder', 'morse-encoder', 'musical-chords',
-    'n-queens', 'niven-numbers', 'niven-numbers-long', 'number-spiral',
-    'odious-numbers', 'odious-numbers-long', 'ordinal-numbers',
-    'palindromemordnilap', 'pangram-grep', 'pascals-triangle',
-    'pernicious-numbers', 'pernicious-numbers-long', 'poker', 'polyominoes',
-    'prime-numbers', 'prime-numbers-long', 'proximity-grid', 'qr-decoder',
-    'quine', 'recamán', 'repeating-decimals', 'reverse-polish-notation',
-    'reversi', 'rijndael-s-box', 'rock-paper-scissors-spock-lizard',
-    'roman-to-arabic', 'rule-110', 'seven-segment', 'si-units',
-    'sierpiński-triangle', 'smith-numbers', 'spelling-numbers',
-    'star-wars-opening-crawl', 'sudoku', 'sudoku-v2', 'ten-pin-bowling',
-    'time-distance', 'tongue-twisters', 'transpose-sentence', 'united-states',
-    'vampire-numbers', 'van-eck-sequence', 'zeckendorf-representation',
-    'zodiac-signs', 'γ', 'λ', 'π', 'τ', 'φ', '√2', '𝑒'
+    'isbn', 'jacobi-symbol', 'kaprekar-numbers', 'kolakoski-constant',
+    'kolakoski-sequence', 'leap-years', 'levenshtein-distance',
+    'leyland-numbers', 'ln-2', 'look-and-say', 'lucky-numbers',
+    'lucky-tickets', 'mahjong', 'maze', 'medal-tally', 'morse-decoder',
+    'morse-encoder', 'musical-chords', 'n-queens', 'niven-numbers',
+    'niven-numbers-long', 'number-spiral', 'odious-numbers',
+    'odious-numbers-long', 'ordinal-numbers', 'palindromemordnilap',
+    'pangram-grep', 'pascals-triangle', 'pernicious-numbers',
+    'pernicious-numbers-long', 'poker', 'polyominoes', 'prime-numbers',
+    'prime-numbers-long', 'proximity-grid', 'qr-decoder', 'quine', 'recamán',
+    'repeating-decimals', 'reverse-polish-notation', 'reversi',
+    'rijndael-s-box', 'rock-paper-scissors-spock-lizard', 'roman-to-arabic',
+    'rule-110', 'seven-segment', 'si-units', 'sierpiński-triangle',
+    'smith-numbers', 'spelling-numbers', 'star-wars-opening-crawl', 'sudoku',
+    'sudoku-fill-in', 'ten-pin-bowling', 'time-distance', 'tongue-twisters',
+    'transpose-sentence', 'united-states', 'vampire-numbers',
+    'van-eck-sequence', 'zeckendorf-representation', 'zodiac-signs', 'γ', 'λ',
+    'π', 'τ', 'φ', '√2', '𝑒'
 );
 
 CREATE TYPE idea_category AS ENUM ('cheevo', 'hole', 'lang', 'other');
@@ -67,10 +68,10 @@ CREATE TYPE lang AS ENUM (
     'civet', 'clojure',  'cpp', 'cobol', 'coconut', 'crystal', 'd', 'dart',
     'elixir', 'f-sharp', 'factor', 'fish', 'forth', 'fortran', 'go',
     'golfscript', 'haskell', 'hexagony', 'j', 'janet', 'java', 'javascript',
-    'jq', 'julia', 'k', 'lisp', 'lua', 'nim', 'ocaml', 'pascal', 'perl',
-    'php', 'powershell', 'prolog', 'python', 'r', 'raku', 'rockstar', 'ruby',
-    'rust', 'scheme', 'sed', 'sql', 'swift', 'tcl', 'tex', 'v', 'viml',
-    'wren', 'zig'
+    'jq', 'julia', 'k', 'kotlin', 'lisp', 'lua', 'nim', 'ocaml', 'pascal',
+    'perl', 'php', 'powershell', 'prolog', 'python', 'r', 'raku', 'rockstar',
+    'ruby', 'rust', 'scheme', 'sed', 'sql', 'swift', 'tcl', 'tex', 'v',
+    'viml', 'wren', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('unicorn', 'diamond', 'gold', 'silver', 'bronze');

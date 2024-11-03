@@ -45,7 +45,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
     }
 
     # Version.
-    if $id ~~ any <assembly brainfuck fish golfscript hare hexagony k> {
+    if $id ~~ any <assembly befunge brainfuck fish golfscript hare hexagony k scala> {
         "langs/$id/Dockerfile".IO.slurp ~~ / ' VERSION=' (\S+) /;
         %lang<version> = $id eq 'assembly' ?? "DefAssembler $0" !! $0;
     }
@@ -68,6 +68,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
                | 'Fortran'
                | 'sed'        { $ver = "GNU $name $digits" }
             when 'BASIC'      { $ver = "FreeBASIC $digits" }
+            when 'BQN'        { $ver = "C$name $digits" }
             when 'C'          { $ver = "Tiny C Compiler $digits" }
             when 'C#'
                | 'F#'
@@ -79,8 +80,8 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
                 $ver ~~ m/ v (\S+) /;
                 $ver = "D $0 on LDC $digits";
             }
-            when 'Haskell'    { $ver = "Glasgow Haskell Compiler $digits" }
-            when 'Java'       { $ver = "OpenJDK 23.0" } # FIXME no decimal place.
+            when 'Haskell'    { $ver = "GHC $digits" }
+            when 'Java'       { $ver = "OpenJDK $digits" }
             when 'JavaScript' { $ver = "V8 $digits" }
             when 'Lisp'       { $ver = "GNU CLISP $digits" }
             when 'Pascal'     { $ver = "Free Pascal $digits" }
@@ -96,6 +97,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
             default           { $ver = $digits }
         }
 
+        die "Couldn't get version string for $id." unless $ver;
         %lang<version> = $ver;
     }
 
