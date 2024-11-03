@@ -198,7 +198,7 @@ func isHandValid(tileCounts map[rune]int) bool {
 }
 
 func mahjong() []Run {
-	runs := make([]Run, 2)
+	runs := make([]Run, 3)
 
 	args := make([]string, 100)
 	var answer strings.Builder
@@ -329,9 +329,6 @@ func mahjong() []Run {
 		"🀃🀀🀁🀂🀃🀄🀅🀇🀏🀐🀘🀙🀡🀔",
 		"🀙🀀🀁🀂🀃🀄🀅🀆🀇🀏🀘🀙🀡🀛",
 		"🀅🀀🀁🀂🀃🀄🀅🀆🀇🀏🀐🀙🀡🀐",
-		"🀆🀄🀀🀂🀃🀏🀁🀡🀡🀡🀐🀙🀘🀄",
-		"🀆🀘🀆🀄🀁🀙🀏🀇🀆🀐🀏🀃🀡🀂",
-		"🀘🀅🀐🀂🀆🀃🀃🀀🀂🀙🀄🀂🀇🀏",
 		"🀀🀀🀇🀈🀈🀈🀉🀊🀊🀌🀌🀐🀐🀐", // Integer wrapping exploit (1, 3, 1, 2, 0, 2)
 	}
 
@@ -373,6 +370,46 @@ func mahjong() []Run {
 	}
 
 	runs[1] = Run{Args: args2, Answer: answer2.String()}
+
+	additionalIncompleteHands := []string{
+		"🀆🀄🀀🀂🀃🀏🀁🀡🀡🀡🀐🀙🀘🀄",
+		"🀆🀘🀆🀄🀁🀙🀏🀇🀆🀐🀏🀃🀡🀂",
+		"🀘🀅🀐🀂🀆🀃🀃🀀🀂🀙🀄🀂🀇🀏",
+	}
+
+	// Additional test run with more static hands
+	args3 := make([]string, 100)
+	var answer3 strings.Builder
+
+	for i := range args3 {
+		var hand string
+		if i < len(args3) {
+			hand = additionalIncompleteHands[i]
+		} else {
+			hand = genValidHand()
+			mutCount := rand.IntN(4)
+			if mutCount > 0 {
+				hand = genInvalidHand(mutCount)
+			}
+		}
+
+		// Shuffle tiles within each hand
+		runes := []rune(hand)
+		rand.Shuffle(len(runes), func(i, j int) {
+			runes[i], runes[j] = runes[j], runes[i]
+		})
+		args3[i] = string(runes)
+
+		// Add hand to answer, if complete
+		if isHandValid(countHandTiles(hand)) {
+			if answer3.Len() > 0 {
+				answer3.WriteByte('\n')
+			}
+			answer3.WriteString(string(runes))
+		}
+	}
+
+	runs[2] = Run{Args: args3, Answer: answer3.String()}
 
 	return runs
 }
