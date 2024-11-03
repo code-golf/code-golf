@@ -1234,6 +1234,32 @@ size       = '93.2 MiB'
 version    = '2ba1c90'
 website    = 'https://github.com/dloscutoff/ascii-piet'
 example    = '''
+t  printing
+t
+tliumldamedtqeusaqumkqimeciaeusaqumkqimeciaeusaqumkqimeciaeusaqumkqimq
+ l lllmmmddeeeaaauuqqqmmiiieeaaauuqqqmmiiieeaaauuqqqmmiiiee uuuuqqq  c
+   lmmmddddeeaauuuqqqqmmiieeeaauuqqqmmmiieeeaaauuqqqmmiiiee uuuqqqq  j
+    mdddeeeeaauuuuqqqqmmiieee         iieeeeaaauuqmmmmieeee          v
+                  qqmmmiii                  a uuu    m e             d
+   looping                                                           m
+                                                                     q
+jueeeiljjrrrrrrrrrr????????????????????????????????????????????cqmdvjc
+?
+?ejrrr????lfnnnnnnnnnnltfc
+t?                       l
+tt                       t
+l                        t
+cfffvvnecccskffffvnebbbrctdl
+                           ?
+   accessing arguments     ?
+                           ?
+ejrrr???????????????????????
+?
+?ejrrr????rk?qaaaaaaaaaaq
+t?         t            f    ???
+tt         d            n    ?
+l          d            n    ?
+cbdtqmjjjbkdaqeusinssskqnvvvna
 '''
 
 [PowerShell]
