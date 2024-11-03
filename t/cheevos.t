@@ -55,6 +55,7 @@ for <
     brainfuck                        brainfuck {inception}
     divisors                         php       {elephpant-in-the-room}
     evil-numbers                     scheme    {evil-scheme}
+    factorial-factorisation          factor    {x-factor}
     game-of-life                     elixir    {alchemist}
     hexdump                          hexagony  {hextreme-agony}
     pascals-triangle                 pascal    {under-pressure}
