@@ -6,14 +6,13 @@ export function highlightCodeBlocks(selector: string){
     const baseExtensions = [...extensions.base, EditorState.readOnly.of(true)];
 
     for (const code of $$(selector)) {
-        let lang = code.className.slice('language-'.length).toLowerCase();
-
-        // FIXME Is there a better way to do this mapping?
-        if (lang == 'asm') lang = 'assembly';
-        if (lang == 'c++') lang = 'cpp';
-        if (lang == 'cs' ) lang = 'c-sharp';
-        if (lang == 'fs' ) lang = 'f-sharp';
-        if (lang == 'ijs') lang = 'j';
+        const lang = {
+            'asm' : 'assembly',
+            'c++' : 'cpp',
+            'cs'  : 'c-sharp',
+            'fs'  : 'f-sharp',
+            'ijs' : 'j',
+        }[code.className.slice('language-'.length).toLowerCase()] || '';
 
         // Clear the existing code and replace with a read-only editor.
         const pre = code.parentElement!;
