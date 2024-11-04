@@ -490,16 +490,13 @@ end
 '''
 
 [Curry]
-args       = [ '/usr/bin/currywrapper', '-' ]
-env        = [ 'PATH=/usr/bin:/bin' ]
+args       = [ '/usr/bin/curry', '/tmp/code.curry' ]
 experiment = 1418
-size       = '42.7 MiB'
+size       = '174 MiB'
 version    = 'PAKCS 3.6.0'
 website    = 'https://mirrors.cat.pdx.edu/pakcs/'
 example    = '''
-import System.Environment(getArgs)
-
-main :: Prelude.IO()
+import System.Environment
 
 main = do
   -- Printing
