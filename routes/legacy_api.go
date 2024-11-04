@@ -377,7 +377,9 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 
 	// We don't use the rankings view as we want instant updates upon solution
 	// submit, therefore we skip scoring to keep it fast.
-	rows, err := session.Database(r).Query(
+	entries := make([]entry, 0, limit)
+	if err := session.Database(r).Select(
+		&entries,
 		`WITH ranks AS (
 		    SELECT ROW_NUMBER() OVER (ORDER BY `+scoring+`, submitted) row,
 		           RANK()       OVER (ORDER BY `+scoring+`),
@@ -399,7 +401,8 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 		       AND lang = $3
 		       AND scoring = $5
 		       AND NOT failing
-		)   SELECT bytes, bytes_chars, chars, chars_bytes, id, login, me, rank
+		)   SELECT bytes, bytes_chars, chars, chars_bytes, me, rank,
+		           id "golfer.id", login "golfer.name"
 		      FROM ranks
 		      JOIN users ON id = user_id
 		 LEFT JOIN other_scoring USING(user_id)
@@ -412,33 +415,7 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 		scoring,
 		otherScoring,
 		limit,
-	)
-	if err != nil {
-		panic(err)
-	}
-	defer rows.Close()
-
-	entries := make([]entry, 0, limit)
-	for rows.Next() {
-		var e entry
-
-		if err := rows.Scan(
-			&e.Bytes,
-			&e.BytesChars,
-			&e.Chars,
-			&e.CharsBytes,
-			&e.Golfer.ID,
-			&e.Golfer.Name,
-			&e.Me,
-			&e.Rank,
-		); err != nil {
-			panic(err)
-		}
-
-		entries = append(entries, e)
-	}
-
-	if err := rows.Err(); err != nil {
+	); err != nil {
 		panic(err)
 	}
 
