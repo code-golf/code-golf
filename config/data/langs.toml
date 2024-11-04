@@ -1072,7 +1072,7 @@ example = '''
     do (format t "~d~%" i)
 )
 
-; Accessing Arguments
+; Accessing arguments
 (loop for arg in *args*
     do (write-line arg)
 )
