@@ -1,8 +1,8 @@
 import { $ } from './_util';
 
 import { Chart, BarController,
-    LinearScale, PointElement, Tooltip, CategoryScale, 
-    BarElement} from 'chart.js';
+    LinearScale, PointElement, Tooltip, CategoryScale,
+    BarElement } from 'chart.js';
 
 const dataElement = $('#chart-data');
 if (dataElement) {
@@ -13,14 +13,14 @@ if (dataElement) {
         const frequencies = golfers.map(({frequency}) => frequency);
         let total = 0;
         const cumsum = [0];
-        for(let i = golfers.length - 1; i >= 0; i--) {
+        for (let i = golfers.length - 1; i >= 0; i--) {
             cumsum.push(total += golfers[i].frequency);
         }
         cumsum.reverse();
 
         const orderedFrequencies = [...frequencies];
         orderedFrequencies.sort((a, b) => b - a);
-        
+
         const golferBar = new Array(golfers.length);
         if (golfer) {
             golferBar[strokes.findIndex(x => x == golfer)] = 1 << 24;
@@ -64,31 +64,31 @@ if (dataElement) {
                                 if (total < 2) return '';
                                 const betterThan = cumsum[1 + item.dataIndex];
                                 const betterThanRatio = betterThan / (total - 1);
-                                return `Better than ${(betterThanRatio * 100).toFixed(2)}% golfers`
+                                return `Better than ${(betterThanRatio * 100).toFixed(2)}% golfers`;
                             },
                             title(items) {
-                                return `${items[0].label} ${scoring}: ${items[0].raw} golfer${Number(items[0].raw) > 1 ? 's' : ''}`
-                            }
+                                return `${items[0].label} ${scoring}: ${items[0].raw} golfer${Number(items[0].raw) > 1 ? 's' : ''}`;
+                            },
                         },
                         filter(item) {
                             return item.datasetIndex < 1;
                         },
                         displayColors: false,
                         intersect: false,
-                        mode: 'index'
+                        mode: 'index',
                     },
                 },
                 scales: {
                     x: {
                         type: 'category',
                         display: false,
-                        stacked: true
+                        stacked: true,
                     },
                     y: {
                         type: 'linear',
                         max: yMax,
                         display: false,
-                        beginAtZero: true
+                        beginAtZero: true,
                     },
                 },
             },
