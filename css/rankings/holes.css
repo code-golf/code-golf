@@ -5,3 +5,11 @@
 
     tr > :nth-child(n+5) { display: none }
 }
+
+th:has(#chart-container) {
+    padding: 0;
+}
+
+#chart-container {
+    position: relative;
+}
