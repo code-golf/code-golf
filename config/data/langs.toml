@@ -1429,7 +1429,7 @@ print arg
 [Ruby]
 args    = [ '/usr/bin/ruby', '-' ]
 size    = '28.6 MiB'
-version = '3.3.5'
+version = '3.3.6'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing
