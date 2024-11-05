@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 
 RUN git clone -b v0.7.0 https://github.com/mozilla/twemoji-colr.git
 
-WORKDIR twemoji-colr
+WORKDIR /twemoji-colr
 
 # https://github.com/mozilla/twemoji-colr/pull/72
 COPY font.patch /tmp/
