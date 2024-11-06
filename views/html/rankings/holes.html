@@ -45,10 +45,10 @@
             {{ else }}
                 <a href="/golfers/{{ .Name }}/{{ $.Data.HoleID }}/{{ .Lang.ID }}/{{ $.Data.Scoring }}"
                 {{ if .OtherStrokes }}
-                data-tooltip="{{ .Lang.Name }} {{ $.Data.Scoring }} solution is {{ comma .Strokes }} {{ $.Data.Scoring }}, {{ comma .OtherStrokes }} {{ $.Data.OtherScoring }}."
+                    data-tooltip="{{ .Lang.Name }} {{ $.Data.Scoring }} solution is {{ comma .Strokes }} {{ $.Data.Scoring }}, {{ comma .OtherStrokes }} {{ $.Data.OtherScoring }}."
                 {{ end }}>
-                <span>{{ comma .Strokes }}</span>
-                <svg><use href="#{{ .Lang.ID }}"/></svg>
+                    <span>{{ comma .Strokes }}</span>
+                    <svg><use href="#{{ .Lang.ID }}"/></svg>
                 </a>
             {{ end }}
             <td class=right>{{ time (.Submitted.In $.Location) }}
