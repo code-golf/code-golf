@@ -42,24 +42,22 @@ type Link struct {
 }
 
 type Hole struct {
-	CaseFold                    bool             `json:"-" toml:"case-fold"`
-	Categories                  []string         `json:"-"`
-	Category                    string           `json:"category"`
-	CategoryColor, CategoryIcon string           `json:"-"`
-	Data                        template.JS      `json:"-"`
-	Experiment                  int              `json:"-"`
-	ID                          string           `json:"id"`
-	ItemDelimiter               string           `json:"-" toml:"item-delimiter"`
-	MultisetDelimiter           string           `json:"-" toml:"multiset-delimiter"`
-	Links                       []Link           `json:"links"`
-	Name                        string           `json:"name"`
-	Preamble                    template.HTML    `json:"preamble"`
-	Released                    toml.LocalDate   `json:"released"`
-	Releases                    []toml.LocalDate `json:"-"`
-	Synopsis                    string           `json:"synopsis"`
-	Variants                    []*Hole          `json:"-"`
-	Redirects                   []string         `json:"-"`
-	Aliases                     []string         `json:"-"`
+	Aliases, Categories, Redirects []string         `json:"-"`
+	CaseFold                       bool             `json:"-" toml:"case-fold"`
+	Category                       string           `json:"category"`
+	CategoryColor, CategoryIcon    string           `json:"-"`
+	Data                           template.JS      `json:"-"`
+	Experiment                     int              `json:"-"`
+	ID                             string           `json:"id"`
+	ItemDelimiter                  string           `json:"-" toml:"item-delimiter"`
+	MultisetDelimiter              string           `json:"-" toml:"multiset-delimiter"`
+	Links                          []Link           `json:"links"`
+	Name                           string           `json:"name"`
+	Preamble                       template.HTML    `json:"preamble"`
+	Released                       toml.LocalDate   `json:"released"`
+	Releases                       []toml.LocalDate `json:"-"`
+	Synopsis                       string           `json:"synopsis"`
+	Variants                       []*Hole          `json:"-"`
 }
 
 func init() {
