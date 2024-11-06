@@ -67,7 +67,10 @@ if (dataElement) {
                                 return `Better than ${(betterThanRatio * 100).toFixed(2)}% golfers`;
                             },
                             title(items) {
-                                return `${items[0].label} ${scoring}: ${items[0].raw} golfer${Number(items[0].raw) > 1 ? 's' : ''}`;
+                                const strokes = Number(items[0].label)
+                                let otherGolfers = Number(items[0].raw);
+                                if (golfer == strokes) otherGolfers--;
+                                return `${strokes} ${scoring}: ${golfer == strokes ? 'you and ' : ''}${otherGolfers} golfer${otherGolfers > 1 ? 's' : ''}`;
                             },
                         },
                         filter(item) {
