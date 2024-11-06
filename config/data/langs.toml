@@ -469,10 +469,10 @@ for arg in process.argv[2..]
 '''
 
 [Coq]
-args       = [ '/usr/bin/coqwrapper', '-' ]
+args       = [ '/usr/bin/coq', '/tmp/code.v' ]
 env        = [ 'OPAM_HOME=/home/opam/.opam/5.2' ]
 experiment = 1425
-size       = '217 MiB'
+size       = '215 MiB'
 version    = '8.20.0'
 website    = 'https://coq.inria.fr'
 example    = '''
