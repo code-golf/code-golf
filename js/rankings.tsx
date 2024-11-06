@@ -67,7 +67,7 @@ if (dataElement) {
                                 return `Better than ${(betterThanRatio * 100).toFixed(2)}% golfers`;
                             },
                             title(items) {
-                                const strokes = Number(items[0].label)
+                                const strokes = Number(items[0].label);
                                 let otherGolfers = Number(items[0].raw);
                                 if (golfer == strokes) otherGolfers--;
                                 return `${strokes} ${scoring}: ${golfer == strokes ? 'you and ' : ''}${otherGolfers} golfer${otherGolfers > 1 ? 's' : ''}`;
