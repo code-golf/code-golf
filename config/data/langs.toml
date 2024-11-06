@@ -1311,8 +1311,8 @@ for (arg in commandArgs(TRUE)) {
 [Racket]
 args       = [ '/usr/local/bin/racket', '-e', '$code', '--' ]
 experiment = 1358
-size       = '28.9 MiB'
-version    = '8.14'
+size       = '29.0 MiB'
+version    = '8.15'
 website    = 'https://racket-lang.org'
 example    = '''
 ; Printing
