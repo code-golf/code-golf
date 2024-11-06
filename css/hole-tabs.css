@@ -136,7 +136,7 @@ main {
     gap: 0;
 }
 
-#info-container .info,
+#info-container,
 #picker-status-row > *:not(:empty),
 #golden-container {
     margin-top: 0.5rem;
@@ -156,12 +156,6 @@ main {
 #status {
     flex-grow: 1;
     flex-basis: 20rem;
-}
-
-#info-container {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
 }
 
 #pool {

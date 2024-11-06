@@ -160,7 +160,7 @@ target      = 3
 [['Hole/Lang Specific']]
 name        = 'Off-the-grid'
 emoji       = '📴'
-description = 'Solve <a href=/sudoku#hexagony>Sudoku</a> or <a href=/sudoku-fill-in#hexagony>Sudoku (Fill-In)</a> in Hexagony.'
+description = 'Solve <a href=/sudoku#hexagony>Sudoku</a> or <a href=/sudoku-fill-in#hexagony>Sudoku (Fill-in)</a> in Hexagony.'
 
 [['Hole/Lang Specific']]
 name        = 'Ouroboros'
@@ -198,6 +198,11 @@ description = 'Solve any hole in both Perl and Raku.'
 name        = 'Under Pressure'
 emoji       = '🗜'
 description = 'Solve <a href=/pascals-triangle#pascal>Pascal’s Triangle in Pascal</a>.'
+
+[['Hole/Lang Specific']]
+name        = 'X-Factor'
+emoji       = '❌'
+description = 'Solve <a href=/factorial-factorisation#factor>Factorial Factorisation in Factor</a>.'
 
 # Miscellaneous
 

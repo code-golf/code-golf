@@ -10,3 +10,11 @@
 <script id=experimental type=application/json>{{ ne .Data.Hole.Experiment 0 }}</script>
 <script id=langs        type=application/json>{{ .Data.Langs                }}</script>
 <script id=solutions    type=application/json>{{ .Data.Solutions            }}</script>
+
+<script id=has-notes type=application/json>
+    {{ with .Golfer }}{{ .HasNotes }}{{ else }}false{{ end }}
+</script>
+
+<script id=sponsor type=application/json>
+    {{ with .Golfer }}{{ .SponsorOrAdmin }}{{ else }}false{{ end }}
+</script>

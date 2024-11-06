@@ -5,6 +5,8 @@ details > div {
     grid-template-columns: repeat(auto-fill, minmax(21rem, 1fr));
 }
 
+details:not(:has(.cheevo)) { display: none }
+
 main {
     gap: 0;
     padding: 0;
