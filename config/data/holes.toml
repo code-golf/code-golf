@@ -350,6 +350,7 @@ preamble = '''
 
 <p>Separate each size with empty lines
 '''
+redirects = ["billiard"]
 
 [brainfuck]
 category = 'Computing'
@@ -712,6 +713,7 @@ preamble = '''
 0,0 0,1 3,1 0,3
 </pre>
 '''
+redirects = ["grid-packing"]
 
 [Cubes]
 category = 'Art'
@@ -1029,6 +1031,7 @@ preamble = '''
         2^994*3^498*5^249*7^164*11^98*13^81*17^61*19^54*23^44*...*983*991*997
     </code>.
 '''
+redirects = ["factorial-factorisation-ascii"]
 
 ['Farey Sequence']
 category = 'Sequence'
@@ -2158,6 +2161,7 @@ preamble = '''
 <p>
     Print all solutions to the N queens problem, one per a line, for boards of sizes 4-8.
 '''
+redirects = ["eight-queens"]
 
 ['NFA Simulator']
 category = 'Computing'
@@ -3955,6 +3959,7 @@ preamble = '''
 <p>
     Print the first <b>1,000</b> decimal digits of the Euler–Mascheroni constant γ (gamma).
 '''
+aliases = ['gamma']
 
 ['λ']
 category = 'Mathematics'
@@ -3975,6 +3980,7 @@ preamble = '''
 
 <p>Print the first <b>1,000</b> decimal digits of λ.
 '''
+aliases = ['lambda']
 
 ['π']
 category = 'Mathematics'
@@ -3994,6 +4000,7 @@ preamble = '''
 <p>Print the first <b>1,000</b> decimal digits of 2π=τ (tau).
 {{- end -}}
 '''
+aliases = ['pi']
 
 ['φ']
 category = 'Mathematics'
@@ -4006,6 +4013,7 @@ synopsis = 'Print the first 1,000 digits of φ.'
 preamble = '''
 <p>Print the first <b>1,000</b> decimal digits of the Golden ratio φ (phi).
 '''
+aliases = ['phi']
 
 ['√2']
 category = 'Mathematics'
@@ -4018,6 +4026,7 @@ synopsis = 'Print the first 1,000 digits of √2.'
 preamble = '''
 <p>Print the first <b>1,000</b> decimal digits of √2 (Pythagoras’ constant).
 '''
+aliases = ['sqrt-2']
 
 ['𝑒']
 category = 'Mathematics'
@@ -4030,3 +4039,4 @@ synopsis = 'Print the first 1,000 digits of 𝑒.'
 preamble = '''
 <p>Print the first <b>1,000</b> decimal digits of 𝑒 (Euler’s number).
 '''
+aliases = ['e']
