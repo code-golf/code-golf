@@ -42,22 +42,22 @@ type Link struct {
 }
 
 type Hole struct {
-	CaseFold                    bool             `json:"-" toml:"case-fold"`
-	Categories                  []string         `json:"-"`
-	Category                    string           `json:"category"`
-	CategoryColor, CategoryIcon string           `json:"-"`
-	Data                        template.JS      `json:"-"`
-	Experiment                  int              `json:"-"`
-	ID                          string           `json:"id"`
-	ItemDelimiter               string           `json:"-" toml:"item-delimiter"`
-	MultisetDelimiter           string           `json:"-" toml:"multiset-delimiter"`
-	Links                       []Link           `json:"links"`
-	Name                        string           `json:"name"`
-	Preamble                    template.HTML    `json:"preamble"`
-	Released                    toml.LocalDate   `json:"released"`
-	Releases                    []toml.LocalDate `json:"-"`
-	Synopsis                    string           `json:"synopsis"`
-	Variants                    []*Hole          `json:"-"`
+	Aliases, Categories, Redirects []string         `json:"-"`
+	CaseFold                       bool             `json:"-" toml:"case-fold"`
+	Category                       string           `json:"category"`
+	CategoryColor, CategoryIcon    string           `json:"-"`
+	Data                           template.JS      `json:"-"`
+	Experiment                     int              `json:"-"`
+	ID                             string           `json:"id"`
+	ItemDelimiter                  string           `json:"-" toml:"item-delimiter"`
+	MultisetDelimiter              string           `json:"-" toml:"multiset-delimiter"`
+	Links                          []Link           `json:"links"`
+	Name                           string           `json:"name"`
+	Preamble                       template.HTML    `json:"preamble"`
+	Released                       toml.LocalDate   `json:"released"`
+	Releases                       []toml.LocalDate `json:"-"`
+	Synopsis                       string           `json:"synopsis"`
+	Variants                       []*Hole          `json:"-"`
 }
 
 func init() {
@@ -134,9 +134,14 @@ func init() {
 		hole.ID = ID(name)
 		hole.Name = name
 
-		// FIXME Variants can't yet have different experiment IDs.
-		if hole.ID == "gray-code-encoder" {
+		// FIXME Variant support needs a overhaul for holes that differ a bit.
+		switch hole.ID {
+		case "gray-code-encoder":
 			hole.Experiment = 1157
+		case "sudoku-fill-in":
+			hole.Redirects = []string{"sudoku-v2"}
+		case "τ":
+			hole.Aliases = []string{"tau"}
 		}
 
 		// Process the templated preamble with the data.
