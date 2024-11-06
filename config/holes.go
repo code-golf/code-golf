@@ -136,12 +136,14 @@ func init() {
 		hole.ID = ID(name)
 		hole.Name = name
 
-		// FIXME Variants can't yet have different redirects nor experiment IDs.
-		if hole.ID == "gray-code-encoder" {
+		// FIXME Variant support needs a overhaul for holes that differ a bit.
+		switch hole.ID {
+		case "gray-code-encoder":
 			hole.Experiment = 1157
-		}
-		if hole.ID == "sudoku-fill-in" {
+		case "sudoku-fill-in":
 			hole.Redirects = []string{"sudoku-v2"}
+		case "τ":
+			hole.Aliases = []string{"tau"}
 		}
 
 		// Process the templated preamble with the data.
