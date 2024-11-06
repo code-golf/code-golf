@@ -11,7 +11,7 @@ RUN npm install --global coffeescript
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/busybox /bin/cat /bin/sh         /bin/
+COPY --from=0 /bin/cat /bin/sh                      /bin/
 COPY --from=0 /lib/ld-musl-x86_64.so.1              \
               /lib/libcrypto.so.3                   \
               /lib/libssl.so.3                      \

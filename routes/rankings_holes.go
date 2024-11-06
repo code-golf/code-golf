@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"database/sql"
 	"html/template"
 	"net/http"
 	"strings"
@@ -13,18 +12,9 @@ import (
 	"github.com/lib/pq"
 )
 
-// GET        /rankings/holes/{hole}/{lang}/{scoring}
-// GET /rankings/recent-holes/{hole}/{lang}/{scoring}
+// GET /rankings/holes/{hole}/{lang}/{scoring}
+// GET /rankings/recent-holes/{lang}/{scoring}
 func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
-	type row struct {
-		Country                      config.NullCountry
-		Holes, Rank, Points, Strokes int
-		Lang                         *config.Lang
-		Name                         string
-		OtherStrokes                 *int
-		Submitted                    time.Time
-	}
-
 	data := struct {
 		Hole, PrevHole, NextHole              *config.Hole
 		HoleID, LangID, OtherScoring, Scoring string
@@ -32,7 +22,14 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		Langs                                 []*config.Lang
 		Pager                                 *pager.Pager
 		Recent                                bool
-		Rows                                  []row
+		Rows                                  []struct {
+			Country                             config.NullCountry
+			Holes, Rank, Points, Strokes, Total int
+			Lang                                *config.Lang
+			Name                                string
+			OtherStrokes                        *int
+			Submitted                           time.Time
+		}
 	}{
 		HoleID:  param(r, "hole"),
 		Holes:   config.HoleList,
@@ -40,7 +37,6 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		Langs:   config.LangList,
 		Pager:   pager.New(r),
 		Recent:  strings.HasPrefix(r.URL.Path, "/rankings/recent-holes"),
-		Rows:    make([]row, 0, pager.PerPage),
 		Scoring: param(r, "scoring"),
 	}
 
@@ -67,13 +63,12 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		data.OtherScoring = "bytes"
 	}
 
-	var rows *sql.Rows
-	var err error
+	var sql string
+	var bind []any
 
 	// TODO Try and merge these SQL queries?
 	if data.HoleID == "all" && data.LangID == "all" {
-		rows, err = session.Database(r).Query(
-			`WITH foo AS (
+		sql = `WITH foo AS (
 			    SELECT user_id, hole, lang, points, strokes, submitted,
 			           ROW_NUMBER() OVER (
 			               PARTITION BY user_id, hole ORDER BY points DESC, strokes
@@ -89,28 +84,22 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			      FROM foo
 			     WHERE row_number = 1
 			  GROUP BY user_id
-			) SELECT country_flag,
-			         holes,
-			         NULL,
-			         login,
-			         points,
-			         RANK() OVER (ORDER BY points DESC, strokes),
-			         strokes,
-			         NULL other_strokes,
-			         submitted,
-			         COUNT(*) OVER()
+			) SELECT country_flag                                 country,
+			         holes                                        holes,
+			         login                                        name,
+			         points                                       points,
+			         RANK() OVER (ORDER BY points DESC, strokes)  rank,
+			         strokes                                      strokes,
+			         submitted                                    submitted,
+			         COUNT(*) OVER()                              total
 			    FROM summed
 			    JOIN users ON user_id = id
 			ORDER BY rank, submitted
-			   LIMIT $2 OFFSET $3`,
-			data.Scoring,
-			pager.PerPage,
-			data.Pager.Offset,
-			holeWhere,
-		)
+			   LIMIT $2 OFFSET $3`
+
+		bind = []any{data.Scoring, pager.PerPage, data.Pager.Offset, holeWhere}
 	} else if data.HoleID == "all" {
-		rows, err = session.Database(r).Query(
-			`WITH summed AS (
+		sql = `WITH summed AS (
 			    SELECT user_id,
 			           COUNT(*)             holes,
 			           SUM(points_for_lang) points,
@@ -121,102 +110,62 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			       AND lang    = $1
 			       AND scoring = $2
 			  GROUP BY user_id
-			) SELECT country_flag,
-			         holes,
-			         $1,
-			         login,
-			         points,
-			         RANK() OVER (ORDER BY points DESC, strokes),
-			         strokes,
-			         NULL other_strokes,
-			         submitted,
-			         COUNT(*) OVER()
+			) SELECT country_flag                                 country,
+			         holes                                        holes,
+			         login                                        name,
+			         points                                       points,
+			         RANK() OVER (ORDER BY points DESC, strokes)  rank,
+			         strokes                                      strokes,
+			         submitted                                    submitted,
+			         COUNT(*) OVER()                              total
 			    FROM summed
 			    JOIN users ON user_id = id
 			ORDER BY rank, submitted
-			   LIMIT $3 OFFSET $4`,
-			data.LangID,
-			data.Scoring,
-			pager.PerPage,
-			data.Pager.Offset,
-			holeWhere,
-		)
+			   LIMIT $3 OFFSET $4`
+
+		bind = []any{data.LangID, data.Scoring, pager.PerPage, data.Pager.Offset, holeWhere}
 	} else if data.LangID == "all" {
-		rows, err = session.Database(r).Query(
-			` SELECT country_flag,
-			         1,
-			         lang,
-			         login,
-			         points,
-			         rank_overall,
-			         strokes,
-			         other_strokes,
-			         submitted,
-			         COUNT(*) OVER()
-			    FROM rankings
-			    JOIN users ON user_id = id
-			   WHERE hole = $1 AND scoring = $2
-			ORDER BY rank_overall, submitted
-			   LIMIT $3 OFFSET $4`,
-			data.HoleID,
-			data.Scoring,
-			pager.PerPage,
-			data.Pager.Offset,
-		)
+		sql = `SELECT country_flag     country,
+			          lang             lang,
+			          login            name,
+			          other_strokes    other_strokes,
+			          points           points,
+			          rank_overall     rank,
+			          strokes          strokes,
+			          submitted        submitted,
+			          COUNT(*) OVER()  total
+			     FROM rankings
+			     JOIN users ON user_id = id
+			    WHERE hole = $1 AND scoring = $2
+			 ORDER BY rank_overall, submitted
+			    LIMIT $3 OFFSET $4`
+
+		bind = []any{data.HoleID, data.Scoring, pager.PerPage, data.Pager.Offset}
 	} else {
-		rows, err = session.Database(r).Query(
-			` SELECT country_flag,
-			         1,
-			         lang,
-			         login,
-			         points_for_lang,
-			         rank,
-			         strokes,
-			         other_strokes,
-			         submitted,
-			         COUNT(*) OVER()
-			    FROM rankings
-			    JOIN users ON user_id = id
-			   WHERE hole = $1 AND lang = $2 AND scoring = $3
-			ORDER BY rank, submitted
-			   LIMIT $4 OFFSET $5`,
-			data.HoleID,
-			data.LangID,
-			data.Scoring,
-			pager.PerPage,
-			data.Pager.Offset,
-		)
+		sql = `SELECT country_flag     country,
+			          lang             lang,
+			          login            name,
+			          other_strokes    other_strokes,
+			          points_for_lang  points,
+			          rank             rank,
+			          strokes          strokes,
+			          submitted        submitted,
+			          COUNT(*) OVER()  total
+			     FROM rankings
+			     JOIN users ON user_id = id
+			    WHERE hole = $1 AND lang = $2 AND scoring = $3
+			 ORDER BY rank, submitted
+			    LIMIT $4 OFFSET $5`
+
+		bind = []any{data.HoleID, data.LangID, data.Scoring, pager.PerPage, data.Pager.Offset}
 	}
-	if err != nil {
+
+	if err := session.Database(r).Select(&data.Rows, sql, bind...); err != nil {
 		panic(err)
 	}
-	defer rows.Close()
 
-	for rows.Next() {
-		var r row
-		var lang config.NullLang
-
-		if err := rows.Scan(
-			&r.Country,
-			&r.Holes,
-			&lang,
-			&r.Name,
-			&r.Points,
-			&r.Rank,
-			&r.Strokes,
-			&r.OtherStrokes,
-			&r.Submitted,
-			&data.Pager.Total,
-		); err != nil {
-			panic(err)
-		}
-
-		r.Lang = lang.Lang
-		data.Rows = append(data.Rows, r)
-	}
-
-	if err := rows.Err(); err != nil {
-		panic(err)
+	if len(data.Rows) > 0 {
+		data.Pager.Total = data.Rows[0].Total
 	}
 
 	if data.Pager.Calculate() {
