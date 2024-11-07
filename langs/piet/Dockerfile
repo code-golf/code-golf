@@ -30,7 +30,7 @@ RUN cd /usr/lib/python3.13      \
           turtle.py             \
           turtledemo
 
-RUN pip3 install Pillow
+RUN pip3 install pillow
 
 WORKDIR /npiet
 
