@@ -1,22 +1,20 @@
 FROM alpine:3.20 AS builder
 
-ENV VERSION=0.24.2
-
 RUN apk add --no-cache build-base curl qbe scdoc
+
+ENV VERSION=0.24.2
 
 RUN curl https://git.sr.ht/~sircmpwn/harec/archive/$VERSION.tar.gz | tar xz
 
 RUN cd harec-$VERSION             \
- && cp configs/linux.mk config.mk \
- && make -j `nproc`               \
+ && mv configs/linux.mk config.mk \
  && make install
 
 RUN curl https://git.sr.ht/~sircmpwn/hare/archive/$VERSION.tar.gz | tar xz
 
 RUN cd hare-$VERSION              \
- && cp configs/linux.mk config.mk \
- && make -j `nproc`               \
- && make install
+ && mv configs/linux.mk config.mk \
+ && make && make install
 
 FROM codegolf/lang-base
 

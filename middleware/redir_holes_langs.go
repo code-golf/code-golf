@@ -3,40 +3,46 @@ package middleware
 import (
 	"net/http"
 	"strings"
+
+	"github.com/code-golf/code-golf/config"
 )
 
 // RedirHolesLangs redirects old values for {hole} and {lang}.
 func RedirHolesLangs(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		newPath := r.URL.Path
+		holeID := r.PathValue("hole")
+		langID := r.PathValue("lang")
 
-		// FIXME Consider using chi.RouteContext(r.Context()).RoutePattern()
-		//       and filling in hole/lang, more robust than strings.Replace().
-
-		switch r.PathValue("hole") {
-		case "billiard":
-			newPath = strings.Replace(newPath, "/billiard", "/billiards", 1)
-		case "eight-queens":
-			newPath = strings.Replace(newPath, "/eight-queens", "/n-queens", 1)
-		case "factorial-factorisation-ascii":
-			newPath = strings.Replace(newPath, "/factorial-factorisation-ascii",
-				"/factorial-factorisation", 1)
-		case "grid-packing":
-			newPath = strings.Replace(newPath, "/grid-packing", "/css-grid", 1)
+		// Permanent redirects
+		if redirect, ok := config.HoleRedirects[holeID]; ok {
+			redir(w, r, holeID, redirect, http.StatusPermanentRedirect)
+			return
 		}
 
-		if r.PathValue("lang") == "perl6" {
-			newPath = strings.Replace(newPath, "/perl6", "/raku", 1)
+		if redirect, ok := config.LangRedirects[langID]; ok {
+			redir(w, r, langID, redirect, http.StatusPermanentRedirect)
+			return
 		}
 
-		if newPath == r.URL.Path {
-			next.ServeHTTP(w, r)
-		} else {
-			if r.URL.RawQuery != "" {
-				newPath += "?" + r.URL.RawQuery
-			}
-
-			http.Redirect(w, r, newPath, http.StatusPermanentRedirect)
+		// Aliases
+		if alias, ok := config.HoleAliases[holeID]; ok {
+			redir(w, r, holeID, alias, http.StatusTemporaryRedirect)
+			return
 		}
+
+		// No redirect
+		next.ServeHTTP(w, r)
 	})
+}
+
+func redir(w http.ResponseWriter, r *http.Request, old, new string, code int) {
+	// FIXME Consider using chi.RouteContext(r.Context()).RoutePattern()
+	//       and filling in hole/lang, more robust than strings.Replace().
+	path := strings.Replace(r.URL.Path, "/"+old, "/"+new, 1)
+
+	if r.URL.RawQuery != "" {
+		path += "?" + r.URL.RawQuery
+	}
+
+	http.Redirect(w, r, path, code)
 }
