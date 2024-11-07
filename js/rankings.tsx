@@ -38,17 +38,19 @@ if (dataElement) {
         Chart.defaults.borderColor     = style.getPropertyValue('--light-grey');
         Chart.defaults.color           = style.getPropertyValue('--color');
 
+        const barColors = strokes.map((x) => style.getPropertyValue(x === golfer ? '--light-green' : '--blue'));
+
         const chart = new Chart($<HTMLCanvasElement>('#chart-container canvas'), {
             type: 'bar',
             data: {
                 labels: strokes,
                 datasets: [{
-                    backgroundColor: style.getPropertyValue('--blue'),
+                    backgroundColor: barColors,
                     barPercentage: 1,
                     categoryPercentage: 1,
                     data: frequencies,
                 }, {
-                    backgroundColor: style.getPropertyValue('--light-green'),
+                    backgroundColor: style.getPropertyValue('--light-grey'),
                     barPercentage: 1,
                     categoryPercentage: 1,
                     data: golferBar,
