@@ -1,15 +1,13 @@
 FROM alpine:3.20 AS builder
 
-RUN apk add --no-cache build-base curl gd-dev giflib-dev groff libffi-dev openssl-dev zlib-dev
+RUN apk add --no-cache build-base curl gd-dev giflib-dev git groff libffi-dev openssl-dev zlib-dev
 
-ENV PYVER=3.13.0 VERSION=2ba1c90
+ENV PYVER=3.13.0 VERSION=1.3f
 
-WORKDIR /python
+RUN curl https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz | tar xJ
 
-RUN curl https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz \
-  | tar xJ --strip-components 1
-
-RUN ./configure                \
+RUN cd Python-$PYVER           \
+ && ./configure                \
     --disable-test-modules     \
     --prefix=/usr              \
     --with-lto                 \
@@ -32,32 +30,23 @@ RUN cd /usr/lib/python3.13      \
 
 RUN pip3 install pillow
 
-WORKDIR /npiet
-
-RUN curl https://www.bertnase.de/npiet/npiet-1.3f.tar.gz \
+RUN curl https://www.bertnase.de/npiet/npiet-$VERSION.tar.gz \
   | tar xz --strip-components 1
 
-RUN ./configure   \
-    --prefix=/usr \
- && make          \
- && make install
+RUN ./configure && make && make install
 
-WORKDIR /ascii-piet
+RUN git clone https://github.com/dloscutoff/ascii-piet.git
 
-RUN curl -L https://github.com/dloscutoff/ascii-piet/tarball/$VERSION \
-  | tar xz --strip-components 1
-
-COPY /piet.c /
-
-RUN gcc -Wall -Werror -Wextra -s -o /piet /piet.c
+RUN chmod +x /ascii-piet/ascii2piet.py
 
 FROM codegolf/lang-base
 
-COPY --from=0 /ascii-piet/ascii2piet.py     /
+COPY --from=0 /bin/cat /bin/sh /bin/touch   /bin/
 COPY --from=0 /lib/ld-musl-x86_64.so.1      \
               /lib/libz.so.1                /lib/
-COPY --from=0 /piet /usr/bin/npiet          /usr/bin/
-COPY --from=0 /usr/bin/python3.13           /usr/bin/python
+COPY --from=0 /usr/local/bin/npiet          /usr/bin/
+COPY --from=0 /ascii-piet/ascii2piet.py     /usr/bin/piet.py
+COPY --from=0 /usr/bin/python3.13           /usr/bin/python3
 COPY --from=0 /usr/lib/libX11.so.6          \
               /usr/lib/libXau.so.6          \
               /usr/lib/libXdmcp.so.6        \
@@ -83,5 +72,7 @@ COPY --from=0 /usr/lib/libX11.so.6          \
               /usr/lib/libxcb.so.1          \
               /usr/lib/libzstd.so.1         /usr/lib/
 COPY --from=0 /usr/lib/python3.13           /usr/lib/python3.13
+
+COPY /piet /usr/bin/
 
 ENTRYPOINT ["piet"]
