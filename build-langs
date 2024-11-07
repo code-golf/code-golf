@@ -48,6 +48,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
     if $id ~~ any <assembly befunge brainfuck fish golfscript hare hexagony k piet scala> {
         "langs/$id/Dockerfile".IO.slurp ~~ / ' VERSION=' (\S+) /;
         %lang<version> = $id eq 'assembly' ?? "DefAssembler $0" !! $0;
+        %lang<version> = $id eq 'piet' ?? "npiet $0" !! $0;
     }
     else {
         # Forth outputs it's version number over stderr.
