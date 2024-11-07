@@ -1,10 +1,5 @@
 @import "./_rankings.css";
 
-main nav {
-    flex-direction: column;
-    justify-content: flex-start;
-}
-
 @media (max-width: 34rem) {
     td:nth-child(3) { border-right: 1px solid var(--color) }
 

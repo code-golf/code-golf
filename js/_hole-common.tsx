@@ -2,20 +2,46 @@ import { ASMStateField }                       from '@defasm/codemirror';
 import { $, $$, byteLen, charLen, comma, ord } from './_util';
 import { Vim }                                 from '@replit/codemirror-vim';
 import { EditorState, EditorView, extensions } from './_codemirror';
-import pbm                                     from './_pbm';
 import LZString                                from 'lz-string';
 
 let tabLayout: boolean = false;
 
+const langWikiCache: Record<string, string | null> = {};
+async function getLangWikiContent(lang: string): Promise<string> {
+    if (!(lang in langWikiCache)) {
+        const resp  = await fetch(`/api/wiki/langs/${lang}`);
+        langWikiCache[lang] = resp.status === 200 ? (await resp.json()).content : null;
+    }
+    return langWikiCache[lang] ?? 'No data for current lang.';
+}
+
+const holeLangNotesCache: Record<string, string | null> = {};
+async function getHoleLangNotesContent(lang: string): Promise<string> {
+    if (!(lang in holeLangNotesCache)) {
+        const resp  = await fetch(`/api/notes/${hole}/${lang}`);
+        holeLangNotesCache[lang] = resp.status === 200 ? (await resp.text()) : null;
+    }
+    return holeLangNotesCache[lang] ?? '';
+}
+
+const renamedHoles: Record<string, string> = {
+    'billiard':                      'billiards',
+    'eight-queens':                  'n-queens',
+    'factorial-factorisation-ascii': 'factorial-factorisation',
+    'grid-packing':                  'css-grid',
+    'sudoku-v2':                     'sudoku-fill-in',
+};
+
+const renamedLangs: Record<string, string> = {
+    perl6: 'raku',
+};
+
 export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSolution: any, updateReadonlyPanels: any, getEditor: () => any) {
     tabLayout = _tabLayout;
     const closuredSubmit = () => submit(getEditor(), updateReadonlyPanels);
-    window.onkeydown = e => (e.ctrlKey || e.metaKey) && e.key == 'Enter'
-        ? closuredSubmit()
-        : undefined;
     if (vimMode) Vim.defineEx('write', 'w', closuredSubmit);
 
-    (onhashchange = () => {
+    (onhashchange = async () => {
         const hashLang = location.hash.slice(1) || localStorage.getItem('lang');
 
         // Kick 'em to Python if we don't know the chosen language, or if there is no given language.
@@ -30,11 +56,13 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
         history.replaceState(null, '', '#' + lang);
 
         const editor = getEditor();
-        if (tabLayout) {
-            $('#hole-lang summary').innerText = langs[lang].name;
-            refreshScores(editor);
-        }
+        if (tabLayout) refreshScores(editor);
         setCodeForLangAndSolution(editor);
+
+        if (tabLayout) {
+            updateReadonlyPanels({langWiki: await getLangWikiContent(lang)});
+            updateReadonlyPanels({holeLangNotes: await getHoleLangNotesContent(lang)});
+        }
     })();
 
     $('dialog [name=text]').addEventListener('input', (e: Event) => {
@@ -42,6 +70,21 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
         target.form!.confirm.toggleAttribute('disabled',
             target.value !== target.placeholder);
     });
+
+    for (const [key, value] of Object.entries(localStorage)) {
+        if (key.startsWith('code_')) {
+            const [prefix, hole, lang, scoring] = key.split('_');
+
+            const newHole = renamedHoles[hole] ?? hole;
+            const newLang = renamedLangs[lang] ?? lang;
+
+            const newKey = [prefix, newHole, newLang, scoring].join('_');
+            if (key !== newKey) {
+                localStorage.setItem(newKey, value);
+                localStorage.removeItem(key);
+            }
+        }
+    }
 }
 
 export function initDeleteBtn(deleteBtn: HTMLElement | undefined, langs: any) {
@@ -50,6 +93,20 @@ export function initDeleteBtn(deleteBtn: HTMLElement | undefined, langs: any) {
         $<HTMLInputElement>('#delete-dialog [name=lang]').value = lang;
         $<HTMLInputElement>('#delete-dialog [name=text]').value = '';
         $<HTMLDialogElement>('#delete-dialog').showModal();
+    });
+}
+
+export function initOutputDiv(outputDiv: HTMLElement | undefined) {
+    outputDiv?.addEventListener('copy', event => {
+        const selection = document.getSelection();
+        if (selection?.rangeCount !== undefined && selection.rangeCount > 0) {
+            let text = '';
+            for (let index = 0; index < selection.rangeCount; index++) {
+                text += replacePlaceholdersInRange(selection, selection.getRangeAt(index));
+            }
+            event.clipboardData?.setData('text/plain', text);
+            event.preventDefault();
+        }
     });
 }
 
@@ -75,11 +132,7 @@ const solutions    = JSON.parse($('#solutions').innerText);
 const vimMode = JSON.parse($('#keymap').innerText) === 'vim';
 const vimModeExtensions = vimMode ? [extensions.vim] : [];
 
-const darkMode =
-    matchMedia(JSON.parse($('#darkModeMediaQuery').innerText)).matches;
-const darkModeExtensions = darkMode ? [...extensions.dark] : [];
-
-const baseExtensions = [...vimModeExtensions, ...darkModeExtensions, ...extensions.base];
+const baseExtensions = [...vimModeExtensions, ...extensions.base, ...extensions.editor];
 
 let latestSubmissionID = 0;
 let solution = scorings.indexOf(localStorage.getItem('solution') ?? 'Bytes') as 0 | 1;
@@ -113,14 +166,14 @@ function getScoring(str: string, index: 0 | 1) {
     return scorings[index] == 'Bytes' ? byteLen(str) : charLen(str);
 }
 
-function getSolutionCode(lang: string, solution: 0 | 1) {
+function getSolutionCode(lang: string, solution: 0 | 1): string {
     return lang in solutions[solution] ? solutions[solution][lang] : '';
 }
 
 /**
  * Get the code corresponding to the current lang and solution (bytes/chars)
  */
-export function getCurrentSolutionCode() {
+export function getCurrentSolutionCode(): string {
     return getSolutionCode(lang, solution);
 }
 
@@ -140,7 +193,7 @@ export function setState(code: string, editor: EditorView) {
             doc: code,
             extensions: [
                 ...baseExtensions,
-                extensions[lang as keyof typeof extensions] || [],
+                extensions[lang as keyof typeof extensions] ?? [],
                 // These languages shouldn't match brackets.
                 ['fish', 'hexagony'].includes(lang)
                     ? [] : extensions.bracketMatching,
@@ -160,9 +213,42 @@ export function setCode(code: string, editor: EditorView | null) {
 }
 
 function updateLangPicker() {
-    // Populate the language picker with accurate stroke counts.
-    $('#picker').replaceChildren(...sortedLangs.map((l: any) => {
-        const tab = <a href={l.id == lang ? null : '#'+l.id}>{l.name}</a>;
+    const selectNodes: Node[] = [];
+    const langSelect = <select><option value="">Other</option></select>;
+    let currentLangUnused = false;
+
+    for (const l of sortedLangs as any[]) {
+        if (!getSolutionCode(l.id, 0) &&
+            !localStorage.getItem(getAutoSaveKey(l.id, 0)) &&
+            !localStorage.getItem(getAutoSaveKey(l.id, 1))) {
+            const suffix = l.experiment ? ' (exp.)' : '';
+            langSelect.appendChild(<option value={l.id}>{l.name}{suffix}</option>);
+            currentLangUnused ||= lang == l.id;
+        }
+    }
+
+    if (langSelect.childElementCount > 1) {
+        langSelect.addEventListener('change', (e: Event) => {
+            const target = e.target as HTMLSelectElement;
+            location.hash = '#' + target.value;
+        });
+
+        langSelect.value = currentLangUnused ? lang : '';
+        if (currentLangUnused) {
+            langSelect.classList.add('selectActive');
+        }
+        selectNodes.push(langSelect);
+    }
+
+    // Hybrid language selector: make it easy to see your existing solutions and their lengths.
+    const picker = $('#picker');
+    const icon   = picker.dataset.style?.includes('icon')  ?? true;
+    const label  = picker.dataset.style?.includes('label') ?? true;
+    picker.replaceChildren(...sortedLangs.map((l: any) => {
+        const tab = <a href={l.id == lang ? null : '#'+l.id} title={l.name}></a>;
+
+        if (icon)  tab.append(<svg><use href={'#'+l.id}/></svg>);
+        if (label) tab.append(l.name);
 
         if (getSolutionCode(l.id, 0)) {
             const bytes = byteLen(getSolutionCode(l.id, 0));
@@ -171,11 +257,17 @@ function updateLangPicker() {
             let text = comma(bytes);
             if (chars && bytes != chars) text += '/' + comma(chars);
 
-            tab.append(' ', <sup>{text}</sup>);
+            tab.append(<sup>{text}</sup>);
+        }
+        else if (!localStorage.getItem(getAutoSaveKey(l.id, 0)) &&
+                 !localStorage.getItem(getAutoSaveKey(l.id, 1))) {
+            return null;
         }
 
+        if (l.experiment) tab.append(<svg><use href="#flask"/></svg>);
+
         return tab;
-    }));
+    }).filter((x: Node | null) => x), ...selectNodes);
 }
 
 export async function refreshScores(editor: any) {
@@ -249,51 +341,101 @@ export interface RankFromTo {
 
 export interface RankUpdate {
     scoring: string,
+    failingStrokes: number | null,
     from: RankFromTo,
     to: RankFromTo,
-    beat: number | null,
-    oldBestJoint: boolean | null,
+    oldBestCurrentGolferCount: number | null,
+    oldBestCurrentGolferId: number | null,
+    oldBestFirstGolferID: number | null,
     oldBestStrokes: number | null,
+    oldBestSubmitted: string | null,
+    newSolutionCount: number | null,
 }
 
-export interface SubmitResponse {
+export interface Run {
+    answer: string,
+    multiset_delimiter: string,
+    item_delimiter: string,
+    args: string[],
+    exit_code: number,
+    pass: boolean,
+    stderr: string,
+    stdout: string,
+    time_ns: number,
+    timeout: boolean,
+}
+
+export interface ReadonlyPanelsData {
     Pass: boolean,
     Out: string,
     Exp: string,
     Err: string,
     Argv: string[],
-    Cheevos: {
-        emoji: string,
-        name: string
-    }[],
-    LoggedIn: boolean,
-    RankUpdates: RankUpdate[],
+    MultisetDelimiter: string,
+    ItemDelimiter: string
+}
+
+export interface SubmitResponse {
+    cheevos:      { emoji: string, name: string }[],
+    logged_in:    boolean,
+    rank_updates: RankUpdate[],
+    runs:         Run[]
 }
 
 const makeSingular = (strokes: number, units: string) =>
     strokes == 1 ? units.substring(0, units.length - 1) : units;
 
-const scorePopups = (updates: RankUpdate[]) => {
-    const popups: Node[] = [];
+const getDisplayRank = (rank: number) => rank < 4 ? ['🥇','🥈','🥉'][rank - 1] : `${rank}${ord(rank)} place`;
 
-    const strokes = [0, 0];
+// Don't show the delta, if it's the first time playing this hole.
+const getDisplayRankChange = (rank: number, delta: number) =>
+    getDisplayRank(rank) + (delta > 0 ? ` (was ${getDisplayRank(rank + delta)})` : '');
+
+const getDisplayPointsChange = (points: number, delta: number) =>
+    `${points} points` + (delta > 0 && delta < points ? ` (+${delta})` : '');
+
+const scorePopups = (updates: RankUpdate[]) => {
+    const strokesDelta = [0, 0];
+    const pointsDelta = [0, 0];
     const points = [0, 0];
+    const rankDelta = [0, 0];
+    const rank = [0, 0];
+    let newSolution = false;
 
     for (const i of [0, 1] as const) {
         const update = updates[i];
-        if (update.from.strokes && update.to.strokes) {
-            strokes[i] = update.from.strokes - update.to.strokes;
-            if (update.oldBestStrokes) {
-                const newBest = Math.min(update.oldBestStrokes, update.to.strokes);
-                points[i] = Math.round(newBest / update.to.strokes * 1000) - Math.round(update.oldBestStrokes / update.from.strokes * 1000);
+        if (update.to.strokes) {
+            const newBest = update.oldBestStrokes != null ?
+                Math.min(update.oldBestStrokes, update.to.strokes) :
+                update.to.strokes;
+            points[i] = Math.round(newBest / update.to.strokes * 1000);
+
+            if (update.from.strokes) {
+                strokesDelta[i] = update.from.strokes - update.to.strokes;
+                if (update.oldBestStrokes) {
+                    pointsDelta[i] = points[i] - Math.round(update.oldBestStrokes / update.from.strokes * 1000);
+                }
             }
+            else {
+                newSolution = true;
+                pointsDelta[i] = points[i];
+            }
+        }
+
+        if (update.to.rank) {
+            rank[i] = update.to.rank;
+            rankDelta[i] = (update.from.rank || 0) - update.to.rank;
         }
     }
 
-    if (strokes[0] > 0 || strokes[1] > 0) {
+    const nodes: Node[] = [];
+
+    if (strokesDelta[0] > 0 || strokesDelta[1] > 0) {
         let amount = '';
-        if (strokes[0] > 0 && strokes[0] == strokes[1]) {
-            const delta = strokes[0];
+
+        // Show the decrease in strokes.
+        if (strokesDelta[0] > 0 && strokesDelta[0] == strokesDelta[1]) {
+            const delta = strokesDelta[0];
             let units = '';
             for (const i of [0, 1] as const) {
                 units += (i == 1 ? '/' : '') + makeSingular(delta, updates[i].scoring);
@@ -303,32 +445,44 @@ const scorePopups = (updates: RankUpdate[]) => {
         }
         else {
             for (const i of [0, 1] as const) {
-                if (strokes[i] > 0) {
-                    amount += (i == 1 && strokes[0] > 0 ? '/' : '') + `${strokes[i]} ${makeSingular(strokes[i], updates[i].scoring)}`;
+                if (strokesDelta[i] > 0) {
+                    amount += (i == 1 && strokesDelta[0] > 0 ? '/' : '') + `${strokesDelta[i]} ${makeSingular(strokesDelta[i], updates[i].scoring)}`;
                 }
             }
         }
 
-        const pointsNodes: Node[] = [];
-        if (points[0] > 0 && points[1] == points[0]) {
-            pointsNodes.push(<p>Earned {points[0]} {makeSingular(points[0], 'points')} for {updates[0].scoring}/{updates[1].scoring}</p>);
-        }
-        else {
-            for (const i of [0, 1] as const) {
-                if (points[i] > 0) {
-                    pointsNodes.push(<p>Earned {points[i]} {makeSingular(points[i], 'points')} for {updates[i].scoring}</p>);
-                }
-            }
-        }
-
-        popups.push(<div>
-            <h3>Score Improved</h3>
-            <p>Saved {amount}</p>
-            {pointsNodes}
-        </div>);
+        nodes.push(<h3>Score Improved</h3>);
+        nodes.push(<p>Saved {amount}</p>);
+    }
+    else if (newSolution) {
+        nodes.push(<h3>New Solution</h3>);
     }
 
-    return popups;
+    // Show points updates, including the current number of points, because this is not show on the mini-scoreboard.
+    if (pointsDelta[0] != 0 && pointsDelta[0] == pointsDelta[1] && points[0] == points[1]) {
+        nodes.push(<p>{getDisplayPointsChange(points[0], pointsDelta[0])} for {updates[0].scoring}/{updates[1].scoring}</p>);
+    }
+    else {
+        for (const i of [0, 1] as const) {
+            if (pointsDelta[i] != 0) {
+                nodes.push(<p>{getDisplayPointsChange(points[i], pointsDelta[i])} for {updates[i].scoring}</p>);
+            }
+        }
+    }
+
+    // Show rank update.
+    if (rankDelta[0] != 0 && rankDelta[0] == rankDelta[1] && rank[0] == rank[1]) {
+        nodes.push(<p>{getDisplayRankChange(rank[0], rankDelta[0])} for {updates[0].scoring}/{updates[1].scoring}</p>);
+    }
+    else {
+        for (const i of [0, 1] as const) {
+            if (rankDelta[i] != 0) {
+                nodes.push(<p>{getDisplayRankChange(rank[i], rankDelta[i])} for {updates[i].scoring}</p>);
+            }
+        }
+    }
+
+    return nodes.length > 1 ? [<div>{nodes}</div>] : [];
 };
 
 const diamondPopups = (updates: RankUpdate[]) => {
@@ -339,13 +493,21 @@ const diamondPopups = (updates: RankUpdate[]) => {
 
     for (const i of [0, 1] as const) {
         const update = updates[i];
-        if (update.from.rank != 1 && update.to.rank == 1) {
+        if (update.to.rank !== 1) {
+            continue;
+        }
+
+        if (update.from.rank !== 1) {
             if (!update.to.joint) {
                 newDiamonds.push(update.scoring);
             }
-            else if (!update.oldBestJoint) {
+            else if (update.oldBestCurrentGolferCount === 1) {
                 matchedDiamonds.push(update.scoring);
             }
+        }
+        else if (update.from.joint && !update.to.joint) {
+            // Transition from golf to a new diamond.
+            newDiamonds.push(update.scoring);
         }
     }
 
@@ -366,37 +528,48 @@ const diamondPopups = (updates: RankUpdate[]) => {
     return popups;
 };
 
-export async function submit(editor: any, updateReadonlyPanels: any) {
-    if (!editor) return;
+let lastSubmittedCode = '';
+export function getLastSubmittedCode(){
+    return lastSubmittedCode;
+}
+
+export async function submit(
+    editor: any,
+    // eslint-disable-next-line no-unused-vars
+    updateReadonlyPanels: (d: ReadonlyPanelsData) => void,
+): Promise<boolean> {
+    if (!editor) return false;
     $('h2').innerText = '…';
     $('#status').className = 'grey';
     $$('canvas').forEach(e => e.remove());
 
     const code = editor.state.doc.toString();
+    lastSubmittedCode = code;
     const codeLang = lang;
     const submissionID = ++latestSubmissionID;
 
     const res  = await fetch('/solution', {
         method: 'POST',
-        body: JSON.stringify({
-            Code: code,
-            Hole: hole,
-            Lang: lang,
-        }),
+        body: JSON.stringify({ code, hole, lang }),
     });
 
     if (res.status != 200) {
         alert('Error ' + res.status);
-        return;
+        return false;
     }
 
     const data = await res.json() as SubmitResponse;
-    savedInDB = data.LoggedIn && !experimental;
+    savedInDB = data.logged_in && !experimental;
 
     if (submissionID != latestSubmissionID)
-        return;
+        return false;
 
-    if (data.Pass) {
+    const pass = data.runs.every(r => r.pass);
+    $('main')?.classList.remove('pass');
+    $('main')?.classList.remove('fail');
+    $('main')?.classList.add(pass ? 'pass' : 'fail');
+    $('main')?.classList.add('lastSubmittedCode');
+    if (pass) {
         for (const i of [0, 1] as const) {
             const solutionCode = getSolutionCode(codeLang, i);
             if (!solutionCode || getScoring(code, i) <= getScoring(solutionCode, i)) {
@@ -437,7 +610,7 @@ export async function submit(editor: any, updateReadonlyPanels: any) {
     // Automatically switch to the solution whose code matches the current
     // code after a new solution is submitted. Don't change scoring,
     // refreshScores will update the solution picker.
-    if (data.Pass && getSolutionCode(codeLang, solution) != code &&
+    if (pass && getSolutionCode(codeLang, solution) != code &&
         getSolutionCode(codeLang, getOtherScoring(solution)) == code)
         setSolution(getOtherScoring(solution));
 
@@ -445,42 +618,114 @@ export async function submit(editor: any, updateReadonlyPanels: any) {
     // solution.
     updateRestoreLinkVisibility(editor);
 
-    $('h2').innerText = data.Pass ? 'Pass 😀' : 'Fail ☹️';
+    function showRun(run: Run) {
+        updateReadonlyPanels({
+            Pass: run.pass,
+            Argv: run.args,
+            Exp: run.answer,
+            Err: run.stderr,
+            Out: run.stdout,
+            MultisetDelimiter: run.multiset_delimiter,
+            ItemDelimiter: run.item_delimiter,
+        });
 
-    updateReadonlyPanels(data);
+        const ms = Math.round(run.time_ns / 10**6);
+        // Only show runtime if it's more than 1000ms, for a bit less clutter in general.
+        $('#runtime').innerText = ms > 1000 ? `(${ms}ms)` : '';
 
-    $('#status').className = data.Pass ? 'green' : 'red';
+        // 3rd party integrations.
+        let thirdParty = '';
+        if (lang == 'hexagony') {
+            const payload = LZString.compressToBase64(JSON.stringify({
+                code, input: run.args.join('\0') + '\0', inputMode: 'raw' }));
 
-    // 3rd party integrations.
-    let thirdParty = '';
-    if (lang == 'hexagony') {
-        const payload = LZString.compressToBase64(JSON.stringify({
-            code, input: data.Argv.join('\0') + '\0', inputMode: 'raw' }));
-
-        thirdParty = <a href={'//hexagony.net#lz' + payload}>
-            Run on Hexagony.net
-        </a>;
+            thirdParty = <a href={'//hexagony.net#lz' + payload}>
+                Run on Hexagony.net
+            </a>;
+        }
+        $('#thirdParty').replaceChildren(thirdParty);
     }
-    $('#thirdParty').replaceChildren(thirdParty);
 
-    if (hole == 'julia-set')
-        $('main').append(pbm(data.Exp) as Node, pbm(data.Out) ?? [] as any);
+    // Default run: first failing non-timeout, else first timeout, else last overall.
+    let defaultRunIndex = data.runs.findIndex(run => !run.pass && !run.timeout);
+    if (defaultRunIndex === -1)
+        defaultRunIndex = data.runs.findIndex(run => !run.pass);
+    if (defaultRunIndex === -1)
+        defaultRunIndex = data.runs.length - 1;
 
-    // Show cheevos.
-    $('#popups').replaceChildren(...scorePopups(data.RankUpdates),
-        ...diamondPopups(data.RankUpdates),
-        ...data.Cheevos.map(c => <div>
+    const btns = data.runs.map((run, i) => {
+        const [emoji, label] = run.pass ? ['😀', 'Pass']
+            : run.timeout ? ['⏱️', 'Timeout']
+                : ['☹️', 'Fail'];
+        const btn = (
+            <button class="run-result-btn" aria-label={`Run ${i + 1}: ${label}`}>
+                {emoji}
+            </button>
+        );
+        function onPickRun() {
+            showRun(run);
+            $$<HTMLButtonElement>('.run-result-btn').forEach(b => b.disabled = false);
+            $('#pass-fail-msg').innerText = label;
+            btn.disabled = true;
+        };
+        btn.addEventListener('click', onPickRun);
+        return btn;
+    });
+
+    $('h2').replaceChildren(
+        <span id="run-result-btns">{btns}</span>,
+        <span id="pass-fail-msg"></span>,
+        <span id="runtime"></span>,
+    );
+
+    btns[defaultRunIndex].click();
+
+    $('#status').className = pass ? 'green' : 'red';
+
+    // Show popups.
+    $('#popups').replaceChildren(
+        ...scorePopups(data.rank_updates),
+        ...diamondPopups(data.rank_updates),
+        ...data.cheevos.map(c => <div>
             <h3>Achievement Earned!</h3>
             { c.emoji }<p>{ c.name }</p>
         </div>));
 
     refreshScores(editor);
+
+    return pass;
+}
+
+export function updateLocalStorage(code: string) {
+    // Avoid future conflicts by only storing code locally that's
+    // different from the server's copy.
+    const serverCode = getCurrentSolutionCode();
+    const key = getAutoSaveKey(getLang(), getSolution());
+    const hadLocalStorage = localStorage.getItem(key) !== null;
+    const wantLocalStorage = code && (code !== serverCode || !getSavedInDB()) && code !== langs[getLang()].example;
+
+    if (wantLocalStorage)
+        localStorage.setItem(key, code);
+    else
+        localStorage.removeItem(key);
+
+    if (wantLocalStorage !== hadLocalStorage && serverCode === '') {
+        // We may be adding or removing a language slot.
+        updateLangPicker();
+    }
 }
 
 export function updateRestoreLinkVisibility(editor: any) {
-    const serverCode = getSolutionCode(lang, solution);
-    $('#restoreLink')?.classList.toggle('hide',
-        !serverCode || editor?.state.doc.toString() == serverCode);
+    const restoreLink = $('#restoreLink');
+    if (restoreLink instanceof HTMLAnchorElement) {
+        const serverCode = getSolutionCode(lang, solution);
+        const sampleCode = langs[lang].example;
+        const currentCode = editor?.state.doc.toString();
+        restoreLink.classList.toggle('hide',
+            (!serverCode && currentCode !== sampleCode) || currentCode === serverCode);
+        restoreLink.textContent =
+            currentCode === sampleCode ? 'Clear sample code' : 'Restore solution';
+    }
 }
 
 export function setCodeForLangAndSolution(editor: any) {
@@ -501,7 +746,7 @@ export function setCodeForLangAndSolution(editor: any) {
 
     refreshScores(editor);
 
-    $$('main .info').forEach(
+    $$('#info-container .info').forEach(
         i => i.classList.toggle('hide', !i.classList.contains(lang)));
 }
 
@@ -513,6 +758,7 @@ export async function populateScores(editor: any) {
     const view      = $('#rankingsView a:not([href])').innerText.trim().toLowerCase();
     const res       = await fetch(`/api/mini-rankings${path}/${view}` + (tabLayout ? '?long=1' : ''));
     const rows      = res.ok ? await res.json() : [];
+    const colspan   = lang == 'assembly' ? 3 : 4;
 
     $<HTMLAnchorElement>('#allLink').href = '/rankings/holes' + path;
 
@@ -522,17 +768,27 @@ export async function populateScores(editor: any) {
             <td>{r.rank}<sup>{ord(r.rank)}</sup></td>
             <td>
                 <a href={`/golfers/${r.golfer.name}`}>
-                    <img src={`//avatars.githubusercontent.com/${r.golfer.name}?s=24`}/>
+                    <img src={`/golfers/${r.golfer.name}/avatar/48`}/>
                     <span>{r.golfer.name}</span>
                 </a>
             </td>
-            <td data-tooltip={tooltip(r, 'Bytes')}>{comma(r.bytes)}</td>
-            <td data-tooltip={tooltip(r, 'Chars')}>{comma(r.chars)}</td>
-        </tr>): <tr><td colspan="4">(Empty)</td></tr>
+            <td data-tooltip={tooltip(r, 'Bytes')}>
+                {scoringID != 'bytes' ? comma(r.bytes) :
+                    <a href={`/golfers/${r.golfer.name}/${hole}/${lang}/bytes`}>
+                        <span>{comma(r.bytes)}</span>
+                    </a>}
+            </td>
+            {lang == 'assembly' ? '' : <td data-tooltip={tooltip(r, 'Chars')}>
+                {scoringID != 'chars' ? comma(r.chars) :
+                    <a href={`/golfers/${r.golfer.name}/${hole}/${lang}/chars`}>
+                        <span>{comma(r.chars)}</span>
+                    </a>}
+            </td>}
+        </tr>): <tr><td colspan={colspan}>(Empty)</td></tr>
     }{
         // Padding.
         tabLayout ? [] : [...Array(7 - rows.length).keys()].map(() =>
-            <tr><td colspan="4">&nbsp;</td></tr>)
+            <tr><td colspan={colspan}>&nbsp;</td></tr>)
     }</tbody>);
 
     if (tabLayout) {
@@ -583,4 +839,52 @@ export function getScorings(tr: any, editor: any) {
     }
 
     return (selection.byte || selection.char) ? {total, selection} : {total};
+}
+
+export function replaceUnprintablesInOutput(output: string) {
+    return output.replace(/[\x00-\x08\x0B-\x1F\x7F]/g,
+        x => `<span title=${'\\u' + x.charCodeAt(0).toString(16)}>•</span>`);
+}
+
+// Extracts the text, replacing any unprintable placeholders with the actual text.
+function replacePlaceholdersInRange(selection: Selection, range: Range) {
+    let containers = [];
+    if (range.startContainer === range.endContainer) {
+        if (range.startContainer.parentElement instanceof HTMLSpanElement) {
+            containers.push(range.startContainer.parentElement);
+        }
+        else {
+            containers.push(range.startContainer);
+        }
+    }
+    else {
+        containers = Array.from(range.commonAncestorContainer.childNodes).filter(node => selection.containsNode(node, true));
+    }
+
+    let text = '';
+    for (const container of containers) {
+        if (container instanceof HTMLSpanElement) {
+            // Decode placeholder character.
+            text += String.fromCharCode(parseInt(container.title.substring(2), 16));
+        }
+        else if (container instanceof HTMLBRElement) {
+            text += '\n';
+        }
+        else {
+            const childText = container.textContent || '';
+            const start = container === containers[0] ? range.startOffset : 0;
+            const end = container === containers[containers.length - 1] ? range.endOffset : childText.length;
+            text += childText.substring(start, end);
+        }
+    }
+
+    return text;
+}
+
+export function ctrlEnter(func: Function) {
+    return function (e: KeyboardEvent) {
+        if ((e.ctrlKey || e.metaKey) && e.key == 'Enter') {
+            return func();
+        }
+    };
 }

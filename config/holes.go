@@ -2,14 +2,17 @@ package config
 
 import (
 	"bytes"
+	"cmp"
+	"database/sql"
 	"encoding/json"
 	"html/template"
+	"slices"
 	"strings"
 	templateTxt "text/template"
 
 	"github.com/code-golf/code-golf/ordered"
-	"github.com/tdewolff/minify/v2/minify"
-	"golang.org/x/exp/slices"
+	"github.com/lib/pq/hstore"
+	"github.com/pelletier/go-toml/v2"
 )
 
 var (
@@ -24,34 +27,45 @@ var (
 	// All holes.
 	AllHoleByID = map[string]*Hole{}
 	AllHoleList []*Hole
+
+	// Ten most recent holes, used for /rankings/recent-holes.
+	RecentHoles []*Hole
+
+	// A map of hole ID to category for passing to SQL queries.
+	HoleCategoryHstore = hstore.Hstore{Map: map[string]sql.NullString{}}
 )
 
-type (
-	Link struct {
-		Name string `json:"name"`
-		URL  string `json:"url"`
-		V    []int  `json:"-"`
-	}
-	Hole struct {
-		Category                                string        `json:"category"`
-		CategoryColor, CategoryIcon, Prev, Next string        `json:"-"`
-		Data                                    template.JS   `json:"-"`
-		Experiment                              int           `json:"-"`
-		ID                                      string        `json:"id"`
-		Name                                    string        `json:"name"`
-		Preamble                                template.HTML `json:"preamble"`
-		Synopsis                                string        `json:"synopsis"`
-		Links                                   []Link        `json:"links"`
-		Variants                                []*Hole       `json:"-"`
-	}
-)
+type Link struct {
+	Name string `json:"name"`
+	URL  string `json:"url"`
+	V    []int  `json:"-"`
+}
+
+type Hole struct {
+	Aliases, Categories, Redirects []string         `json:"-"`
+	CaseFold                       bool             `json:"-" toml:"case-fold"`
+	Category                       string           `json:"category"`
+	CategoryColor, CategoryIcon    string           `json:"-"`
+	Data                           template.JS      `json:"-"`
+	Experiment                     int              `json:"-"`
+	ID                             string           `json:"id"`
+	ItemDelimiter                  string           `json:"-" toml:"item-delimiter"`
+	MultisetDelimiter              string           `json:"-" toml:"multiset-delimiter"`
+	Links                          []Link           `json:"links"`
+	Name                           string           `json:"name"`
+	Preamble                       template.HTML    `json:"preamble"`
+	Released                       toml.LocalDate   `json:"released"`
+	Releases                       []toml.LocalDate `json:"-"`
+	Synopsis                       string           `json:"synopsis"`
+	Variants                       []*Hole          `json:"-"`
+}
 
 func init() {
 	var holes map[string]*struct {
 		Hole
 		Variants []string
 	}
-	unmarshal("holes.toml", &holes)
+	unmarshal("data/holes.toml", &holes)
 
 	funcs := template.FuncMap{
 		"hasPrefix": strings.HasPrefix,
@@ -81,7 +95,7 @@ func init() {
 		}
 
 		var variants []*Hole
-		for _, variant := range hole.Variants {
+		for i, variant := range hole.Variants {
 			hole := *hole
 
 			// Process the templated preamble with the current variant.
@@ -100,6 +114,14 @@ func init() {
 
 			holes[variant] = &hole
 			variants = append(variants, &hole.Hole)
+
+			if len(hole.Categories) > 0 {
+				hole.Category = hole.Categories[i]
+			}
+
+			if len(hole.Releases) > 0 {
+				hole.Released = hole.Releases[i]
+			}
 		}
 
 		// Reference the variants from each variant.
@@ -111,6 +133,16 @@ func init() {
 	for name, hole := range holes {
 		hole.ID = ID(name)
 		hole.Name = name
+
+		// FIXME Variant support needs a overhaul for holes that differ a bit.
+		switch hole.ID {
+		case "gray-code-encoder":
+			hole.Experiment = 1157
+		case "sudoku-fill-in":
+			hole.Redirects = []string{"sudoku-v2"}
+		case "τ":
+			hole.Aliases = []string{"tau"}
+		}
 
 		// Process the templated preamble with the data.
 		if hole.Data != "" {
@@ -129,13 +161,6 @@ func init() {
 				panic(err)
 			}
 			hole.Preamble = template.HTML(b.String())
-		}
-
-		// Minify preamble.
-		if html, err := minify.HTML(string(hole.Preamble)); err != nil {
-			panic(err)
-		} else {
-			hole.Preamble = template.HTML(html)
 		}
 
 		// Filter out links that don't match this variant.
@@ -176,33 +201,30 @@ func init() {
 		if hole.Experiment == 0 {
 			HoleByID[hole.ID] = &hole.Hole
 			HoleList = append(HoleList, &hole.Hole)
+
+			HoleCategoryHstore.Map[hole.ID] =
+				sql.NullString{String: hole.Category, Valid: true}
 		} else {
 			ExpHoleByID[hole.ID] = &hole.Hole
 			ExpHoleList = append(ExpHoleList, &hole.Hole)
 		}
 	}
 
-	for i, holes := range [][]*Hole{HoleList, ExpHoleList, AllHoleList} {
-		// Case-insensitive sort.
-		slices.SortFunc(holes, func(a, b *Hole) bool {
-			return strings.ToLower(a.Name) < strings.ToLower(b.Name)
-		})
-
-		// Set Prev, Next. Not for "AllHoleList" as it would overwrite.
-		if i < 2 {
-			for j, hole := range holes {
-				if j == 0 {
-					hole.Prev = holes[len(holes)-1].ID
-				} else {
-					hole.Prev = holes[j-1].ID
-				}
-
-				if j == len(holes)-1 {
-					hole.Next = holes[0].ID
-				} else {
-					hole.Next = holes[j+1].ID
-				}
-			}
+	// Ten most recent holes.
+	RecentHoles = make([]*Hole, len(HoleList))
+	copy(RecentHoles, HoleList)
+	slices.SortFunc(RecentHoles, func(a, b *Hole) int {
+		if c := cmp.Compare(b.Released.String(), a.Released.String()); c != 0 {
+			return c
 		}
+		return cmp.Compare(strings.ToLower(a.Name), strings.ToLower(b.Name))
+	})
+	RecentHoles = RecentHoles[:10]
+
+	for _, holes := range [][]*Hole{HoleList, ExpHoleList, AllHoleList} {
+		// Case-insensitive sort.
+		slices.SortFunc(holes, func(a, b *Hole) int {
+			return cmp.Compare(strings.ToLower(a.Name), strings.ToLower(b.Name))
+		})
 	}
 }

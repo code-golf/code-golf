@@ -2,10 +2,13 @@ package discord
 
 import (
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
 	"os"
+	"sync"
+	"time"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/code-golf/code-golf/config"
@@ -14,12 +17,17 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+const minElapsedTimeToShowDate = 30 * 24 * time.Hour
+
 var (
-	bot *discordgo.Session
+	bot                 *discordgo.Session
+	lastAnnouncementMap = make(map[string]*RecAnnouncement)
+	mux                 sync.Mutex
 
 	// All the config keys!
 	botToken      = os.Getenv("DISCORD_BOT_TOKEN")       // Caddie
-	channelID     = os.Getenv("DISCORD_CHANNEL_ID")      // 🍇・sour-grapes
+	chanFreshID   = os.Getenv("DISCORD_CHAN_FRESH_ID")   // 🍇・fresh-grapes
+	chanSourID    = os.Getenv("DISCORD_CHAN_SOUR_ID")    // 🍇・sour-grapes
 	guildID       = os.Getenv("DISCORD_GUILD_ID")        // Code Golf
 	roleContribID = os.Getenv("DISCORD_ROLE_CONTRIB_ID") // Contributor
 	roleSponsorID = os.Getenv("DISCORD_ROLE_SPONSOR_ID") // Sponsor
@@ -27,19 +35,19 @@ var (
 
 // Represents a new record announcement message
 type RecAnnouncement struct {
-	Message *discordgo.Message
-	Updates [][]Golfer.RankUpdate
-	Golfer  *Golfer.Golfer
-	Hole    *config.Hole
-	Lang    *config.Lang
+	MessageChannelID string                `json:"messageChannelID"`
+	MessageID        string                `json:"messageID"`
+	Updates          [][]Golfer.RankUpdate `json:"updates"`
+	Golfer           *Golfer.Golfer        `json:"-"`
+	GolferID         int                   `json:"golfer"`
+	Hole             *config.Hole          `json:"hole"`
+	Lang             *config.Lang          `json:"lang"`
 }
-
-var lastAnnouncement *RecAnnouncement
 
 func init() {
 	// Ensure we have all our config.
 	switch "" {
-	case botToken, channelID, guildID, roleContribID, roleSponsorID:
+	case botToken, chanFreshID, chanSourID, guildID, roleContribID, roleSponsorID:
 		return
 	}
 
@@ -51,21 +59,39 @@ func init() {
 		} else if err = bot.Open(); err != nil {
 			log.Println(err)
 			bot = nil
-		} else {
-			bot.AddHandler(handleMessage)
 		}
 	}()
 }
 
+// TODO Make this dynamic based on hole/lang age.
+func channel(hole *config.Hole, lang *config.Lang) string {
+	if hole.ID == "kaprekar-numbers" || lang.ID == "kotlin" {
+		return chanFreshID
+	}
+	return chanSourID
+}
+
+func getUsername(id int, db *sqlx.DB) (name string) {
+	err := db.Get(&name, "SELECT login FROM users WHERE id = $1", id)
+	if err != nil {
+		name = "unknown golfer"
+		log.Println(err)
+	}
+
+	return
+}
+
 // recAnnounceToEmbed parses a recAnnouncement object and turns it into a Discord embed
-func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
+func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.MessageEmbed {
 	hole, lang, golfer := announce.Hole, announce.Lang, announce.Golfer
-	imageURL := "https://avatars.githubusercontent.com/" + golfer.Name
+	imageURL := "https://code.golf/golfers/" + golfer.Name + "/avatar"
 	golferURL := "https://code.golf/golfers/" + golfer.Name
+
+	titlePrefix := "New Tied 🥇"
+	isUnicorn := false
 
 	// Creating the basic embed
 	embed := &discordgo.MessageEmbed{
-		Title:  fmt.Sprintf("New 🥇 on %s in %s!", hole.Name, lang.Name),
 		URL:    "https://code.golf/rankings/holes/" + hole.ID + "/" + lang.ID + "/",
 		Fields: make([]*discordgo.MessageEmbedField, 0, 2),
 		Author: &discordgo.MessageEmbedAuthor{Name: golfer.Name, IconURL: imageURL, URL: golferURL},
@@ -75,15 +101,74 @@ func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
 	fieldValues := make(map[string]string)
 	for _, pair := range announce.Updates {
 		for _, update := range pair {
-			if update.Beat.Valid && fieldValues[update.Scoring] == "" {
-				fieldValues[update.Scoring] = pretty.Comma(int(update.Beat.Int64))
+			if !isUnicorn {
+				if update.NewSolutionCount.Valid && update.NewSolutionCount.V == 1 {
+					// Once we detect a unicorn, we continue to show it when we edit messages.
+					// The unicorn looks better with an extra space on the right.
+					if !update.OldBestStrokes.Valid {
+						titlePrefix = "New 🦄 "
+					} else {
+						titlePrefix = "Improved 🦄 "
+					}
+					isUnicorn = true
+				} else if !update.To.Joint.V {
+					titlePrefix = "New 💎"
+				}
 			}
-			if fieldValues[update.Scoring] != "" {
-				fieldValues[update.Scoring] += "  →  "
+
+			if update.OldBestStrokes.Valid && fieldValues[update.Scoring] == "" {
+				fieldValues[update.Scoring] = pretty.Comma(update.OldBestStrokes.V)
+
+				dateString := ""
+				timestamp := update.OldBestSubmitted.V
+				if time.Since(timestamp) > minElapsedTimeToShowDate {
+					// Show the data using a locale-specific short date format.
+					dateString = fmt.Sprintf("<t:%d:R>", timestamp.Unix())
+				}
+
+				// Determine the name or number of other golfers associated with the old record.
+				othersString := ""
+				if update.OldBestCurrentGolferCount.Valid && update.OldBestCurrentGolferCount.V > 1 {
+					// Display the number of golfers, excluding the current golfer, that previously held this record.
+					othersString = fmt.Sprintf("%d golfers", update.OldBestCurrentGolferCount.V)
+				} else if update.OldBestCurrentGolferID.Valid && update.OldBestCurrentGolferID.V != golfer.ID {
+					// Display the user name of the single golfer, excluding the current golfer, that previously held this record.
+					othersString = getUsername(update.OldBestCurrentGolferID.V, db)
+				}
+
+				if othersString != "" && update.OldBestFirstGolferID.Valid && update.OldBestFirstGolferID.V == golfer.ID {
+					// Report that the current golfer was the first to obtain the old record.
+					othersString = fmt.Sprintf("%s, tied by %s", golfer.Name, othersString)
+				}
+
+				parenthetical := ""
+				if othersString == "" {
+					parenthetical = dateString
+				} else if dateString == "" {
+					parenthetical = othersString
+				} else {
+					parenthetical = fmt.Sprintf("%s by %s", dateString, othersString)
+				}
+
+				if parenthetical != "" {
+					fieldValues[update.Scoring] += fmt.Sprintf(" (%s)", parenthetical)
+				}
 			}
-			fieldValues[update.Scoring] += pretty.Comma(int(update.To.Strokes.Int64))
+
+			if !update.OldBestStrokes.Valid || update.To.Strokes.V < update.OldBestStrokes.V {
+				if fieldValues[update.Scoring] != "" {
+					fieldValues[update.Scoring] += "  →  "
+				}
+				fieldValues[update.Scoring] += pretty.Comma(update.To.Strokes.V)
+			}
+
+			if update.FailingStrokes.Valid && update.FailingStrokes.V <= update.To.Strokes.V {
+				fieldValues[update.Scoring] += fmt.Sprintf(" (replaced failing %d)", update.FailingStrokes.V)
+			}
 		}
 	}
+
+	embed.Title = fmt.Sprintf("%s on %s in %s!", titlePrefix, hole.Name, lang.Name)
 
 	if fieldValues["bytes"] == fieldValues["chars"] {
 		fieldValues = map[string]string{"bytes/chars": fieldValues["bytes"]}
@@ -92,7 +177,8 @@ func recAnnounceToEmbed(announce *RecAnnouncement) *discordgo.MessageEmbed {
 	// Find the dominant scoring (only "chars" if there were no improvements on bytes)
 	if fieldValues["bytes"] == "" && fieldValues["bytes/chars"] == "" {
 		embed.URL += "chars"
-		fieldValues["bytes"] = "​" // Display the bytes column in any case, to avoid confusion
+		// Zero-width space to always show bytes column, to avoid confusion.
+		fieldValues["bytes"] = "\u200b"
 	} else {
 		embed.URL += "bytes"
 	}
@@ -198,10 +284,10 @@ func LogFailedRejudge(golfer *Golfer.Golfer, hole *config.Hole, lang *config.Lan
 		return
 	}
 
-	imageURL := "https://avatars.githubusercontent.com/" + golfer.Name
+	imageURL := "https://code.golf/golfers/" + golfer.Name + "/avatar"
 	golferURL := "https://code.golf/golfers/" + golfer.Name
 
-	if _, err := bot.ChannelMessageSendEmbed(channelID, &discordgo.MessageEmbed{
+	if _, err := bot.ChannelMessageSendEmbed(channel(hole, lang), &discordgo.MessageEmbed{
 		Title:  fmt.Sprintf("%s in %s failed rejudge!", hole.Name, lang.Name),
 		URL:    "https://code.golf/rankings/holes/" + hole.ID + "/" + lang.ID + "/" + scoring,
 		Author: &discordgo.MessageEmbedAuthor{Name: golfer.Name, IconURL: imageURL, URL: golferURL},
@@ -214,78 +300,151 @@ func LogFailedRejudge(golfer *Golfer.Golfer, hole *config.Hole, lang *config.Lan
 func LogNewRecord(
 	golfer *Golfer.Golfer, hole *config.Hole, lang *config.Lang, updates []Golfer.RankUpdate, db *sqlx.DB,
 ) {
+	mux.Lock()
+	logNewRecord(golfer, hole, lang, updates, db)
+	mux.Unlock()
+}
+
+func logNewRecord(
+	golfer *Golfer.Golfer, hole *config.Hole, lang *config.Lang, updates []Golfer.RankUpdate, db *sqlx.DB,
+) {
 	if bot == nil {
 		return
 	}
 
 	announcement := &RecAnnouncement{
-		Hole:    hole,
-		Lang:    lang,
-		Golfer:  golfer,
-		Updates: [][]Golfer.RankUpdate{updates},
+		Hole:     hole,
+		Lang:     lang,
+		Golfer:   golfer,
+		GolferID: golfer.ID,
+		Updates:  [][]Golfer.RankUpdate{updates},
+	}
+
+	channelID := channel(hole, lang)
+
+	lastAnnouncement := lastAnnouncementMap[channelID]
+
+	if lastAnnouncement == nil {
+		lastAnnouncement = loadLastAnnouncement(db, channelID)
+		lastAnnouncementMap[channelID] = lastAnnouncement
+	}
+
+	if lastAnnouncement != nil {
+		if lastAnnouncement.MessageChannelID != channelID {
+			// The last message went to a different channel. We can't edit it.
+			lastAnnouncement = nil
+		} else if channel, err := bot.Channel(channelID); err == nil {
+			if channel.LastMessageID != lastAnnouncement.MessageID {
+				// Another message was sent after the last announcement. Don't edit it.
+				lastAnnouncement = nil
+			}
+		} else {
+			log.Println(err)
+		}
 	}
 
 	if lastAnnouncement != nil &&
 		announcement.Lang.ID == lastAnnouncement.Lang.ID &&
 		announcement.Hole.ID == lastAnnouncement.Hole.ID &&
-		announcement.Golfer.ID == lastAnnouncement.Golfer.ID {
+		announcement.GolferID == lastAnnouncement.GolferID {
+		lastAnnouncement.Golfer = golfer
 		lastAnnouncement.Updates = append(lastAnnouncement.Updates, updates)
 		if _, err := bot.ChannelMessageEditEmbed(
-			lastAnnouncement.Message.ChannelID,
-			lastAnnouncement.Message.ID,
-			recAnnounceToEmbed(lastAnnouncement),
+			lastAnnouncement.MessageChannelID,
+			lastAnnouncement.MessageID,
+			recAnnounceToEmbed(lastAnnouncement, db),
 		); err == nil { // Note that we only return if the embed was edited successfully;
+			saveLastAnnouncement(lastAnnouncement, db)
 			return // otherwise, we'll continue forward and send it as a new message
 		}
 	}
 
 	var prevMessage string
+	var prevChannelID string
 	var newMessage *discordgo.Message
 	var sendErr error
 
 	if err := db.QueryRow(
-		`SELECT message FROM discord_records WHERE hole = $1 AND lang = $2`,
+		"SELECT message, channel FROM discord_records WHERE hole = $1 AND lang = $2",
 		hole.ID, lang.ID,
-	).Scan(&prevMessage); err == nil {
-		newMessage, sendErr = bot.ChannelMessageSendComplex(channelID, &discordgo.MessageSend{
-			Embed: recAnnounceToEmbed(announcement),
-			Reference: &discordgo.MessageReference{
-				MessageID: prevMessage,
-				ChannelID: channelID,
-			},
-		})
+	).Scan(&prevMessage, &prevChannelID); err == nil {
+		if channelID == prevChannelID {
+			newMessage, sendErr = bot.ChannelMessageSendComplex(channelID, &discordgo.MessageSend{
+				Embed: recAnnounceToEmbed(announcement, db),
+				Reference: &discordgo.MessageReference{
+					MessageID: prevMessage,
+					ChannelID: channelID,
+				},
+			})
+		} else {
+			// We can't reply to a message in a different channel. Just link to it.
+			newMessage, sendErr = bot.ChannelMessageSendComplex(channelID, &discordgo.MessageSend{
+				Content: fmt.Sprintf("Previous: https://discord.com/channels/%s/%s/%s", guildID, prevChannelID, prevMessage),
+				Embed:   recAnnounceToEmbed(announcement, db),
+			})
+		}
 	} else if errors.Is(err, sql.ErrNoRows) {
-		newMessage, sendErr = bot.ChannelMessageSendEmbed(channelID, recAnnounceToEmbed(announcement))
+		newMessage, sendErr = bot.ChannelMessageSendEmbed(channelID, recAnnounceToEmbed(announcement, db))
 	} else {
-		log.Println(err)
-	}
-
-	if _, err := db.Exec(
-		`INSERT INTO discord_records (hole, lang, message) VALUES
-			($1, $2, $3)
-			ON CONFLICT ON CONSTRAINT discord_records_pkey
-			DO UPDATE SET message = $3`,
-		hole.ID, lang.ID, newMessage.ID,
-	); err != nil {
 		log.Println(err)
 	}
 
 	if sendErr != nil {
 		log.Println(sendErr)
 	} else {
+		if _, err := db.Exec(
+			`INSERT INTO discord_records (hole, lang, message, channel) VALUES
+				($1, $2, $3, $4)
+				ON CONFLICT ON CONSTRAINT discord_records_pkey
+				DO UPDATE SET message = $3, channel = $4`,
+			hole.ID, lang.ID, newMessage.ID, newMessage.ChannelID,
+		); err != nil {
+			log.Println(err)
+		}
+
 		lastAnnouncement = announcement
-		lastAnnouncement.Message = newMessage
+		lastAnnouncement.MessageChannelID = newMessage.ChannelID
+		lastAnnouncement.MessageID = newMessage.ID
+		lastAnnouncementMap[channelID] = announcement
+		saveLastAnnouncement(lastAnnouncement, db)
 	}
 }
 
-// handleMessage handles a message received by the bot
-func handleMessage(session *discordgo.Session, event *discordgo.MessageCreate) {
-	if event.Author.Bot {
+func loadLastAnnouncement(db *sqlx.DB, channelID string) (result *RecAnnouncement) {
+	var bytes []byte
+
+	if err := db.QueryRow(
+		"SELECT value FROM discord_state WHERE key = $1",
+		channelID,
+	).Scan(&bytes); err != nil {
+		log.Println(err)
 		return
 	}
 
-	// Discard the last announcement if another message was sent after it
-	if event.ChannelID == channelID {
-		lastAnnouncement = nil
+	var announcement RecAnnouncement
+	if err := json.Unmarshal(bytes, &announcement); err != nil {
+		log.Println(err)
+	} else {
+		result = &announcement
+	}
+
+	return
+}
+
+func saveLastAnnouncement(announce *RecAnnouncement, db *sqlx.DB) {
+	bytes, err := json.Marshal(announce)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	if _, err := db.Exec(
+		`INSERT INTO discord_state (key, value) VALUES
+			($1, $2)
+			ON CONFLICT ON CONSTRAINT discord_state_pkey
+			DO UPDATE SET value = $2`,
+		announce.MessageChannelID, bytes,
+	); err != nil {
+		log.Println(err)
 	}
 }

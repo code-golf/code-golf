@@ -1,66 +1,54 @@
-main {
+/* TODO Stop having "thin" pages, make everything consistent. */
+body { max-width: 64rem }
+
+table { width: 100% }
+
+.flag { margin-right: .5rem }
+
+#chart-container { min-width: 0 }
+
+#overview {
     align-items: start;
-    grid-template-columns: repeat(4, 1fr);
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+
+    > a:hover {
+        background: var(--color);
+        color: var(--background);
+        text-decoration: none;
+    }
+
+    > :is(a, div) {
+        border: 2px solid var(--color);
+        color: var(--color);
+        display: grid;
+        gap: .5rem;
+        padding: 1rem;
+
+        > :is(h2, span) {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
 }
 
-main div {
-    border: 2px solid var(--color);
+#unsolved {
     display: grid;
     gap: .5rem;
-    padding: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+
+    h2 { grid-column: 1 / -1 }
+
+    a + h2 { margin-top: .5rem }
+
+    a:hover {
+        background: var(--color);
+        color: var(--background);
+    }
 }
 
-table {
-    grid-column: span 2;
-    width: 100%;
+@media (max-width: 34rem) {
+    td:nth-child(4) { border-right: 1px solid var(--color) }
 }
-
-td:nth-child(2) {
-    max-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
-}
-
-.pie {
-    gap: 1rem !important;
-    grid-column: span 2;
-    grid-template-columns: 2fr 1fr;
-}
-
-.pie h2 { text-align: center }
-
-.pie li {
-    align-items: center;
-    display: grid;
-    font-weight: bold;
-    padding: .5rem;
-    white-space: nowrap;
-}
-
-.pie path:nth-child(1) { fill: var(--red)    }
-.pie path:nth-child(2) { fill: var(--orange) }
-.pie path:nth-child(3) { fill: var(--yellow) }
-.pie path:nth-child(4) { fill: var(--green)  }
-.pie path:nth-child(5) { fill: var(--blue)   }
-.pie path:nth-child(6) { fill: var(--purple) }
-
-.pie span {
-    display: block;
-    font-size: .75rem;
-    font-weight: normal;
-}
-
-.pie svg {
-    align-self: center;
-    max-width: 100%;
-    transform: rotate(-90deg);
-}
-
-.pie ul {
-    display: grid;
-    list-style: none;
-    padding: 0;
-}
-
-@media (max-width: 34rem) { main { grid-template-columns: 1fr 1fr } }

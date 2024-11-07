@@ -1,7 +1,6 @@
 import { $, $$ } from './_util';
-import dialogPolyfill from 'dialog-polyfill';
 
-const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+const { timeZone } = Intl.DateTimeFormat().resolvedOptions();
 
 // Add current time zone to the redirect URI of any log in links.
 for (const a of $$<HTMLAnchorElement>('.log-in')) {
@@ -39,12 +38,10 @@ for (const input of $$<any>('[list]')) {
     };
 }
 
-// Polyfill dialog support, mainly for iOS.
-for (const dialog of $$<HTMLDialogElement>('dialog')) {
-    dialogPolyfill.registerDialog(dialog);
-
-    dialog.onclick = e => e.target == dialog ? dialog.close() : null;
-}
+// Close dialogs when clicking outside of them.
+// onmousedown not onclick, see https://stackoverflow.com/questions/25864259
+for (const dialog of $$<HTMLDialogElement>('dialog'))
+    dialog.onmousedown = e => e.target == dialog ? dialog.close() : null;
 
 // Wire up any dialog buttons.
 for (const btn of $$<HTMLElement>('[data-dialog]'))

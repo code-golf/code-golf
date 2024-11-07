@@ -1,4 +1,5 @@
 import * as Diff from 'diff';
+import { $ } from './_util';
 
 interface DiffPos {
     left: number;
@@ -6,21 +7,59 @@ interface DiffPos {
     isLastDiff: boolean;
 }
 
-export default (hole: string, exp: string, out: string, argv: string[]) => {
-    if (stringsEqual(exp, out, shouldIgnoreCase(hole))) return '';
+export default (hole: string, exp: string, out: string, argv: string[], ignoreCase: boolean, multisetDelimiter: string, itemDelimiter: string) => {
+    const provideItemwiseDiff = !multisetDelimiter && itemDelimiter;
+    const isLinesDiffChecked = Boolean($('#diffKindSettings input[value="lines"]:checked'));
+    return provideItemwiseDiff ?
+        <div>
+            <div id='diffKindSettings'>
+                <label><input type="radio" name="diff_kind" value="items" checked={!isLinesDiffChecked ? true : undefined}></input> Items</label>
+                <label><input type="radio" name="diff_kind" value="lines" checked={isLinesDiffChecked ? true : undefined}></input> Lines</label>
+            </div>
+            {linesDiff(hole, exp, out, argv, ignoreCase)}
+            {itemsDiff(exp, out, itemDelimiter)}
+        </div>
+        : linesDiff(hole, exp, out, argv, ignoreCase);
+};
+
+function itemsDiff(exp: string, out: string, itemDelimiter: string) {
+    const diff = new Map<string, number>();
+    for (const x of exp.split(itemDelimiter)){
+        diff.set(x, (diff.get(x) ?? 0) - 1);
+    }
+    for (const x of out.split(itemDelimiter)){
+        diff.set(x, (diff.get(x) ?? 0) + 1);
+    }
+    const diffItems = [...diff.entries()].map(([x, count]) => ({x, count, absCount: Math.abs(count)}));
+    const neg = diffItems.filter(x => x.count < 0).map(x => <span title={x.absCount === 1 ? '' : `${x.absCount}×`}>{x.x}</span>);
+    const pos = diffItems.filter(x => x.count > 0).map(x => <span title={x.absCount === 1 ? '' : `${x.absCount}×`}>{x.x}</span>);
+    return neg.length > 0 || pos.length > 0 ? <table id="itemsDiff">
+        <thead>
+            <th>Expected</th>
+            <th>Output</th>
+        </thead>
+        <tr>
+            <td><div class="neg">{neg}</div></td>
+            <td><div class="pos">{pos}</div></td>
+        </tr>
+    </table> : '';
+}
+
+function linesDiff(hole: string, exp: string, out: string, argv: string[], ignoreCase: boolean) {
+    if (stringsEqual(exp, out, ignoreCase)) return '';
 
     // Show args? Exclude holes with one big argument like QR Decoder.
     const isArgDiff = argv.length > 1 && argv.length == lines(exp).length;
 
-    const {rows, maxLineNum} = diffHTMLRows(hole, exp, out, argv, isArgDiff);
+    const {rows, maxLineNum} = diffHTMLRows(hole, exp, out, argv, ignoreCase, isArgDiff);
 
-    return <table>
+    return <table id="linesDiff">
         {makeCols(isArgDiff, maxLineNum, argv)}
         <thead>
             {isArgDiff ? <th class="right">Args</th> : <th/>}
-            <th>Output</th>
-            {isArgDiff ? null : <th/>}
             <th>Expected</th>
+            {isArgDiff ? null : <th/>}
+            <th>Output</th>
         </thead>
         {rows}
     </table>;
@@ -154,14 +193,14 @@ function makeCols(isArgDiff: boolean, maxLineNum: number, argv: string[]) {
     return cols;
 }
 
-function diffHTMLRows(hole: string, exp: string, out: string, argv: string[], isArgDiff: boolean) {
+function diffHTMLRows(hole: string, exp: string, out: string, argv: string[], ignoreCase: boolean, isArgDiff: boolean) {
     const rows = [];
     const pos = {
         left: 1,
         right: 1,
         isLastDiff: false,
     };
-    const changes = getLineChanges(hole, out, exp, isArgDiff);
+    const changes = getLineChanges(exp, out, ignoreCase, isArgDiff);
     let pendingChange = null;
     for (let i = 0; i < changes.length; i++) {
         const change = changes[i];
@@ -171,20 +210,20 @@ function diffHTMLRows(hole: string, exp: string, out: string, argv: string[], is
                 pendingChange = change;
             }
             else {
-                rows.push(...getDiffRow(hole, pendingChange, change, pos, argv, isArgDiff));
+                rows.push(...getDiffRow(hole, pendingChange, change, pos, argv, ignoreCase, isArgDiff));
                 pendingChange = null;
             }
         }
         else {
             if (pendingChange) {
-                rows.push(...getDiffRow(hole, pendingChange, {value: ''}, pos, argv, isArgDiff));
+                rows.push(...getDiffRow(hole, pendingChange, {value: ''}, pos, argv, ignoreCase, isArgDiff));
                 pendingChange = null;
             }
-            rows.push(...getDiffLines(hole, change, change, pos, argv, isArgDiff));
+            rows.push(...getDiffLines(hole, change, change, pos, argv, ignoreCase, isArgDiff));
         }
     }
     if (pendingChange) {
-        rows.push(...getDiffRow(hole, pendingChange, {value: ''}, pos, argv, isArgDiff));
+        rows.push(...getDiffRow(hole, pendingChange, {value: ''}, pos, argv, ignoreCase, isArgDiff));
     }
     return {
         rows,
@@ -193,30 +232,25 @@ function diffHTMLRows(hole: string, exp: string, out: string, argv: string[], is
 }
 
 function stringsEqual(a: string, b: string, ignoreCase: boolean) {
-    // https://stackoverflow.com/a/2140723/7481517
+    // Note: localeCompare ignores non-printable characters.
+    if (!ignoreCase) {
+        return a === b;
+    }
     return (
         a !== undefined &&
         a !== null &&
-        0 ===
-        a.localeCompare(
-            b,
-            undefined,
-            ignoreCase
-                ? {
-                    sensitivity: 'accent',
-                }
-                : undefined,
-        )
+        b !== undefined &&
+        b !== null &&
+        a.toLowerCase() === b.toLowerCase()
     );
 }
 
-function getLineChanges(hole: string, before: string, after: string, isArgDiff: boolean) {
+function getLineChanges(before: string, after: string, ignoreCase: boolean, isArgDiff: boolean) {
     if (isArgDiff) {
         const out = [];
         const splitBefore = lines(before);
         const splitAfter = lines(after);
         let currentUnchanged = [];
-        const ignoreCase = shouldIgnoreCase(hole);
         for (let i=0; i<Math.max(splitBefore.length, splitAfter.length); i++) {
             const a = splitBefore[i] ?? '';
             const b = splitAfter[i] ?? '';
@@ -256,21 +290,19 @@ function getLineChanges(hole: string, before: string, after: string, isArgDiff: 
         return out;
     }
     else {
-        return diffWrapper('\n', lines(before), lines(after), {
-            ignoreCase: shouldIgnoreCase(hole),
-        });
+        return diffWrapper('\n', lines(before), lines(after), { ignoreCase });
     }
 }
 
-function getDiffRow(hole: string, change1: Diff.Change, change2: Diff.Change, pos: DiffPos, argv: string[], isArgDiff: boolean) {
+function getDiffRow(hole: string, change1: Diff.Change, change2: Diff.Change, pos: DiffPos, argv: string[], ignoreCase: boolean, isArgDiff: boolean) {
     change2.value ??= '';
     change2.count ??= 0;
     const left = change1.removed ? change1 : change2;
     const right = change1.added ? change1 : change2;
-    return getDiffLines(hole, left, right, pos, argv, isArgDiff);
+    return getDiffLines(hole, left, right, pos, argv, ignoreCase, isArgDiff);
 }
 
-function getDiffLines(hole: string, left: Diff.Change, right: Diff.Change, pos: DiffPos, argv: string[], isArgDiff: boolean) {
+function getDiffLines(hole: string, left: Diff.Change, right: Diff.Change, pos: DiffPos, argv: string[], ignoreCase: boolean, isArgDiff: boolean) {
     const leftSplit = lines(left.value);
     const rightSplit = lines(right.value);
     if (!(pos.isLastDiff && hole === 'quine')) {
@@ -278,9 +310,7 @@ function getDiffLines(hole: string, left: Diff.Change, right: Diff.Change, pos: 
         if (leftSplit[leftSplit.length - 1] === '') leftSplit.pop();
         if (rightSplit[rightSplit.length - 1] === '') rightSplit.pop();
     }
-    const diffOpts = {
-        ignoreCase: shouldIgnoreCase(hole),
-    };
+    const diffOpts = { ignoreCase };
     const rows = [];
     const numLines = Math.max(leftSplit.length, rightSplit.length);
     const isUnchanged = !left.removed && !right.added;
@@ -365,10 +395,6 @@ function renderCharDiff(className: string, charDiff: Diff.Change[], isRight: boo
             td.append(change.value);
 
     return td;
-}
-
-function shouldIgnoreCase(hole: string) {
-    return hole === 'css-colors';
 }
 
 function lines(s: string) {

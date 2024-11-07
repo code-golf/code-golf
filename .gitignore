@@ -1,9 +1,16 @@
 /.vagrant/
+/.vscode/
+/config/data/assets.json
 /dist/
 /docker/.env
-/esbuild.json
-/localhost-key.pem
 /localhost.pem
+/localhost-key.pem
 /node_modules/
 /sql/
 /t/.precomp/
+.DS_Store
+
+# .NET temporary folders for IDEs
+/langs/c-sharp/obj
+/langs/f-sharp/obj
+/langs/powershell/obj

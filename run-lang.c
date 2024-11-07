@@ -1,18 +1,38 @@
 //go:build none
 
 #define _GNU_SOURCE
+#include <errno.h>
 #include <linux/filter.h>
 #include <linux/seccomp.h>
 #include <sched.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/mount.h>
 #include <sys/prctl.h>
-#include <sys/stat.h>
 #include <sys/syscall.h>
 #include <sys/sysmacros.h>
 #include <unistd.h>
+
+// Not defined in alpine yet :-(
+#define __NR_epoll_wait2             441
+#define __NR_quotactl_fd             443
+#define __NR_memfd_secret            447
+#define __NR_process_mrelease        448
+#define __NR_futex_waitv             449
+#define __NR_set_mempolicy_home_node 450
+#define __NR_cachestat               451
+#define __NR_fchmodat2               452
+#define __NR_map_shadow_stack        453
+#define __NR_futex_wake              454
+#define __NR_futex_wait              455
+#define __NR_futex_requeue           456
+#define __NR_statmount               457
+#define __NR_listmount               458
+#define __NR_lsm_get_self_attr       459
+#define __NR_lsm_set_self_attr       460
+#define __NR_lsm_list_modules        461
 
 #define NOBODY 65534
 
@@ -39,30 +59,28 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
     if (umount2("/", MNT_DETACH) < 0)
         ERR_AND_EXIT("umount2");
 
-    if (mount("tmpfs", "/dev", "tmpfs", MS_NOSUID, NULL) < 0)
-        ERR_AND_EXIT("mount /dev");
+    // Not every lang has /proc.
+    if (mount("proc", "/proc", "proc", MS_NODEV|MS_NOEXEC|MS_NOSUID, NULL) == 0) {
+        // Clobber /proc/meminfo. It can be used to inject state. Kotlin doesn't like this.
+        if (strcmp(argv[0], "/usr/bin/kotlin") != 0)
+            if (mount("/dev/null", "/proc/meminfo", NULL, MS_BIND, NULL) < 0)
+                ERR_AND_EXIT("mount /proc/meminfo");
 
-    // Elixir walks /dev/fd on exit closing each handle.
-    if (symlink("/proc/self/fd", "/dev/fd") < 0)
-        ERR_AND_EXIT("symlink /dev/fd");
+        // Clobber /proc/stat. It can be used to inject state. Kotlin and V panic :-(
+        if (strcmp(argv[0], "/usr/bin/v") != 0 && strcmp(argv[0], "/usr/bin/kotlin") != 0)
+            if (mount("/dev/null", "/proc/stat", NULL, MS_BIND, NULL) < 0)
+                ERR_AND_EXIT("mount /proc/stat");
 
-    if (mknod("/dev/null", S_IFCHR|0666, makedev(1, 3)) < 0)
-        ERR_AND_EXIT("mknod");
+        // Clobber /proc/sys. It can be used to inject state.
+        if (mount("tmpfs", "/proc/sys", "tmpfs", MS_NODEV|MS_NOEXEC|MS_NOSUID|MS_RDONLY, NULL) < 0)
+            ERR_AND_EXIT("mount /proc/sys");
 
-    // FIXME This shouldn't be needed, 0666 should suffice, but without it Zig
-    //       fails with permission denied when opening /dev/null as O_RDWR.
-    if (chown("/dev/null", NOBODY, NOBODY) < 0)
-        ERR_AND_EXIT("chown /dev/null");
-
-    if (mknod("/dev/urandom", S_IFCHR|0444, makedev(1, 9)) < 0)
-        ERR_AND_EXIT("mknod");
-
-    if (mount("proc", "/proc", "proc", MS_NODEV|MS_NOEXEC|MS_NOSUID|MS_RDONLY, NULL) < 0)
+        // Allow /proc/self/fd/0 to be read by the lang after we change user.
+        if (chown("/proc/self/fd/0", NOBODY, NOBODY) < 0)
+            ERR_AND_EXIT("chown /proc/self/fd/0");
+    }
+    else if (errno != ENOENT)
         ERR_AND_EXIT("mount proc");
-
-    // Clobber /proc/sys. It can be used to inject state.
-    if (mount("tmpfs", "/proc/sys", "tmpfs", MS_NODEV|MS_NOEXEC|MS_NOSUID|MS_RDONLY, NULL) < 0)
-        ERR_AND_EXIT("mount /proc/sys");
 
     if (mount("tmpfs", "/tmp", "tmpfs", MS_NODEV|MS_NOSUID, NULL) < 0)
         ERR_AND_EXIT("mount tmp");
@@ -70,16 +88,14 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
     if (sethostname(STR_WITH_LEN("code-golf")) < 0)
         ERR_AND_EXIT("sethostname");
 
-    // Allow /proc/self/fd/0 to be read by the lang after we change user.
-    if (chown("/proc/self/fd/0", NOBODY, NOBODY) < 0)
-        ERR_AND_EXIT("chown /proc/self/fd/0");
-
     if (setgid(NOBODY) < 0)
         ERR_AND_EXIT("setgid");
 
     if (setuid(NOBODY) < 0)
         ERR_AND_EXIT("setuid");
 
+// Syscalls are architecture-specific and we only deploy on x86-64.
+#if defined(__x86_64__)
     // sudo journalctl -f _AUDIT_TYPE_NAME=SECCOMP
     // ... SECCOMP ... syscall=xxx ...
     struct sock_filter filter[] = {
@@ -89,6 +105,9 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         // SECCOMP auid=x uid=65534 gid=65534 ses=x pid=x comm="julia" exe="/usr/bin/julia" sig=31 arch=c000003e syscall=1008 compat=0 ip=x code=0x0
         #define __NR_julia 1008
         ALLOW(julia),
+
+        // Syscall 424 or higher can be found here:
+        // https://github.com/torvalds/linux/blob/master/include/uapi/asm-generic/unistd.h
 
         /*************\
         | File System |
@@ -101,6 +120,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(fallocate),         // 285
         ALLOW(ftruncate),         // 77
         ALLOW(memfd_create),      // 319
+        ALLOW(memfd_secret),      // 447
         ALLOW(mknod),             // 133
         ALLOW(mknodat),           // 259
         ALLOW(name_to_handle_at), // 303
@@ -144,6 +164,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(faccessat2), // 439
         ALLOW(fchmod),     // 91
         ALLOW(fchmodat),   // 268
+        ALLOW(fchmodat2),  // 452
         ALLOW(fchown),     // 93
         ALLOW(fchownat),   // 260
         ALLOW(fstat),      // 5
@@ -165,7 +186,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         // ALLOW(fsetxattr),    // 190
         // ALLOW(getxattr),     // 191
         // ALLOW(lgetxattr),    // 192
-        // ALLOW(listxattr),    // 194
+        ALLOW(listxattr),       // 194
         // ALLOW(llistxattr),   // 195
         // ALLOW(lremovexattr), // 198
         // ALLOW(lsetxattr),    // 189
@@ -204,15 +225,15 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(syncfs),          // 306
 
         // Asynchronous I/O
-        ALLOW(io_pgetevents),        // 333
-        ALLOW(io_cancel),            // 210
-        ALLOW(io_destroy),           // 207
-        ALLOW(io_getevents),         // 208
-        ALLOW(io_setup),             // 206
-        ALLOW(io_submit),            // 209
-        // ALLOW(io_uring_enter),    // 426
-        // ALLOW(io_uring_register), // 427
-        // ALLOW(io_uring_setup),    // 425
+        ALLOW(io_pgetevents),     // 333
+        ALLOW(io_cancel),         // 210
+        ALLOW(io_destroy),        // 207
+        ALLOW(io_getevents),      // 208
+        ALLOW(io_setup),          // 206
+        ALLOW(io_submit),         // 209
+        ALLOW(io_uring_enter),    // 426
+        ALLOW(io_uring_register), // 427
+        ALLOW(io_uring_setup),    // 425
 
         // Multiplexed I/O
         ALLOW(epoll_create),  // 213
@@ -220,18 +241,19 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(epoll_ctl),     // 233
         ALLOW(epoll_pwait),   // 281
         ALLOW(epoll_wait),    // 232
+        ALLOW(epoll_wait2),   // 441
         ALLOW(poll),          // 7
         ALLOW(ppoll),         // 271
         ALLOW(pselect6),      // 270
         ALLOW(select),        // 23
 
         // Monitoring File Events
-        // ALLOW(fanotify_init),     // 300
-        // ALLOW(fanotify_mark),     // 301
-        // ALLOW(inotify_add_watch), // 254
-        // ALLOW(inotify_init1),     // 294
-        // ALLOW(inotify_init),      // 253
-        // ALLOW(inotify_rm_watch),  // 255
+        // ALLOW(fanotify_init),  // 300
+        // ALLOW(fanotify_mark),  // 301
+        ALLOW(inotify_add_watch), // 254 (Used by Factor)
+        ALLOW(inotify_init1),     // 294 (Used by Factor)
+        ALLOW(inotify_init),      // 253 (Used by Factor)
+        ALLOW(inotify_rm_watch),  // 255 (Used by Factor)
 
         // Miscellaneous
         ALLOW(fadvise64),    // 221
@@ -388,6 +410,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
 
         // Virtual Memory
         ALLOW(brk),           // 12
+        ALLOW(cachestat),     // 451
         ALLOW(madvise),       // 28
         ALLOW(membarrier),    // 324
         ALLOW(mincore),       // 27
@@ -414,14 +437,23 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(set_tid_address), // 218
 
         // Miscellaneous
-        // ALLOW(kcmp),              // 312
-        ALLOW(prctl),                // 157
-        // ALLOW(process_vm_readv),  // 310
-        // ALLOW(process_vm_writev), // 311
-        ALLOW(ptrace),               // 101 (Used by DefAssembler)
-        // ALLOW(seccomp),           // 317
-        // ALLOW(unshare),           // 272
-        // ALLOW(uselib),            // 134
+        // ALLOW(kcmp),                    // 312
+        // ALLOW(landlock_add_rule),       // 445
+        // ALLOW(landlock_create_ruleset), // 444
+        // ALLOW(landlock_restrict_self),  // 446
+        // ALLOW(lsm_get_self_attr),       // 459
+        // ALLOW(lsm_list_modules),        // 461
+        // ALLOW(lsm_set_self_attr),       // 460
+        // ALLOW(map_shadow_stack),        // 453
+        ALLOW(prctl),                      // 157
+        // ALLOW(process_madvise),         // 440
+        // ALLOW(process_mrelease),        // 448
+        // ALLOW(process_vm_readv),        // 310
+        // ALLOW(process_vm_writev),       // 311
+        ALLOW(ptrace),                     // 101 (Used by DefAssembler)
+        // ALLOW(seccomp),                 // 317
+        // ALLOW(unshare),                 // 272
+        // ALLOW(uselib),                  // 134
 
         /*********\
         | Signals |
@@ -478,9 +510,13 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         // ALLOW(semtimedop), // 220
 
         // Futexes
-        ALLOW(futex),           // 202
-        ALLOW(get_robust_list), // 274
-        ALLOW(set_robust_list), // 273
+        ALLOW(futex),            // 202
+        // ALLOW(futex_requeue), // 456
+        // ALLOW(futex_wait),    // 455
+        // ALLOW(futex_waitv),   // 449
+        // ALLOW(futex_wake),    // 454
+        ALLOW(get_robust_list),  // 274
+        ALLOW(set_robust_list),  // 273
 
         // System V Message Queue
         // ALLOW(msgctl), // 71
@@ -504,11 +540,12 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         // ALLOW(getcpu), // 309
 
         // Memory Node
-        ALLOW(get_mempolicy),    // 239
-        ALLOW(mbind),            // 237
-        // ALLOW(migrate_pages), // 256
-        // ALLOW(move_pages),    // 279
-        ALLOW(set_mempolicy),    // 238
+        ALLOW(get_mempolicy),              // 239
+        ALLOW(mbind),                      // 237
+        // ALLOW(migrate_pages),           // 256
+        // ALLOW(move_pages),              // 279
+        ALLOW(set_mempolicy),              // 238
+        // ALLOW(set_mempolicy_home_node), // 450
 
         /****************\
         | Key Management |
@@ -531,28 +568,32 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         // ALLOW(query_module),    // 178
 
         // Accounting and Quota
-        // ALLOW(acct),     // 163
-        // ALLOW(quotactl), // 179
+        // ALLOW(acct),        // 163
+        // ALLOW(quotactl),    // 179
+        // ALLOW(quotactl_fd), // 443
 
         // Filesystem (privileged)
-        // ALLOW(fsconfig),   // 431
-        // ALLOW(fsmount),    // 432
-        // ALLOW(fsopen),     // 430
-        // ALLOW(fspick),     // 433
-        // ALLOW(mount),      // 165
-        // ALLOW(move_mount), // 429
-        // ALLOW(nfsservctl), // 180
-        // ALLOW(open_tree),  // 428
-        // ALLOW(pivot_root), // 155
-        // ALLOW(swapoff),    // 168
-        // ALLOW(swapon),     // 167
-        // ALLOW(umount2),    // 166
+        // ALLOW(fsconfig),      // 431
+        // ALLOW(fsmount),       // 432
+        // ALLOW(fsopen),        // 430
+        // ALLOW(fspick),        // 433
+        // ALLOW(mount),         // 165
+        // ALLOW(mount_setattr), // 442
+        // ALLOW(move_mount),    // 429
+        // ALLOW(nfsservctl),    // 180
+        // ALLOW(open_tree),     // 428
+        // ALLOW(pivot_root),    // 155
+        // ALLOW(swapoff),       // 168
+        // ALLOW(swapon),        // 167
+        // ALLOW(umount2),       // 166
 
         // Filesystem (unprivileged)
-        ALLOW(fstatfs), // 138
-        ALLOW(statfs),  // 137
-        ALLOW(sysfs),   // 139
-        ALLOW(ustat),   // 136
+        ALLOW(fstatfs),      // 138
+        // ALLOW(listmount), // 458
+        ALLOW(statfs),       // 137
+        // ALLOW(statmount), // 457
+        ALLOW(sysfs),        // 139
+        ALLOW(ustat),        // 136
 
         // Miscellaneous (privileged)
         ALLOW(ioperm),             // 173 (Used by FreeBASIC)
@@ -607,6 +648,9 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
 
     if (prctl(PR_SET_SECCOMP, SECCOMP_MODE_FILTER, &fprog) < 0)
         ERR_AND_EXIT("prctl(SECCOMP)");
+#else
+    fputs("seccomp is disabled!\n", stderr);
+#endif
 
     execvp(argv[0], argv);
     ERR_AND_EXIT("execvp");

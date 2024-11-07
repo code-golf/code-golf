@@ -4,7 +4,9 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
+	"github.com/lib/pq"
 )
 
 // GET /golfers/{golfer}/cheevos
@@ -55,91 +57,96 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 
 	// Caclulate progress
 	// TODO Bake it into the cheevos table rather than calculating on the fly.
-	cheevoProgress := func(sql string, cheevoIDs ...string) {
-		var count int
-		if err := db.QueryRow(sql, golfer.ID).Scan(&count); err != nil {
-			panic(err)
-		}
+	cheevoProgress := func(sql string, cheevoIDs []string, args ...any) {
+		count := -1
 
 		for _, cheevoID := range cheevoIDs {
 			progress := data[cheevoID]
+
+			// No need to calculate progress if they've already earnt it.
+			if progress.Earned != nil {
+				continue
+			}
+
+			if count == -1 {
+				if err := db.Get(&count, sql, append(args, golfer.ID)...); err != nil {
+					panic(err)
+				}
+			}
+
 			progress.Progress = count
 			data[cheevoID] = progress
 		}
+	}
+
+	cheevoIDs := func(cheevos []*config.Cheevo) []string {
+		ids := make([]string, len(cheevos))
+		for i, cheevo := range cheevos {
+			ids[i] = cheevo.ID
+		}
+		return ids
+	}
+
+	for _, cheevo := range []struct {
+		cheevo       string
+		holes, langs []any
+	}{
+		{
+			cheevo: "archivist",
+			holes:  []any{"isbn"},
+			langs:  []any{"basic", "cobol", "forth", "fortran", "lisp"},
+		},
+		{
+			cheevo: "bird-is-the-word",
+			holes:  []any{"levenshtein-distance"},
+			langs:  []any{"awk", "prolog", "sql", "swift", "tcl", "wren"},
+		},
+		{
+			cheevo: "happy-go-lucky",
+			holes:  []any{"happy-numbers", "lucky-numbers"},
+			langs:  []any{"go"},
+		},
+		{
+			cheevo: "jeweler",
+			holes:  []any{"diamonds"},
+			langs:  []any{"crystal", "ruby"},
+		},
+		{
+			cheevo: "mary-had-a-little-lambda",
+			holes:  []any{"λ"},
+			langs:  []any{"clojure", "coconut", "haskell", "lisp", "scheme"},
+		},
+		{
+			cheevo: "sounds-quite-nice",
+			holes:  []any{"musical-chords"},
+			langs:  []any{"c", "c-sharp", "d", "f-sharp"},
+		},
+	} {
+		cheevoProgress(
+			`SELECT COUNT(DISTINCT(hole, lang))
+			   FROM solutions
+			  WHERE NOT failing
+			    AND hole    = ANY($1)
+			    AND lang    = ANY($2)
+			    AND user_id = $3`,
+			[]string{cheevo.cheevo},
+			pq.Array(cheevo.holes),
+			pq.Array(cheevo.langs),
+		)
 	}
 
 	cheevoProgress(
 		`SELECT pangramglot(array_agg(DISTINCT lang))
 		   FROM solutions
 		  WHERE NOT failing AND hole = 'pangram-grep' AND user_id = $1`,
-		"pangramglot",
-	)
-
-	cheevoProgress(
-		`SELECT COUNT(DISTINCT lang)
-		   FROM solutions
-		  WHERE NOT failing
-		    AND hole = 'isbn'
-		    AND lang IN ('basic', 'cobol', 'fortran', 'lisp')
-		    AND user_id = $1`,
-		"archivist",
-	)
-
-	cheevoProgress(
-		`SELECT COUNT(DISTINCT lang)
-		   FROM solutions
-		  WHERE NOT failing
-		    AND hole = 'levenshtein-distance'
-		    AND lang IN ('awk', 'prolog', 'sql', 'swift', 'tcl', 'wren')
-		    AND user_id = $1`,
-		"bird-is-the-word",
-	)
-
-	cheevoProgress(
-		`SELECT COUNT(DISTINCT lang)
-		   FROM solutions
-		  WHERE NOT failing
-		    AND hole = 'diamonds'
-		    AND lang IN ('crystal', 'ruby')
-		    AND user_id = $1`,
-		"jeweler",
-	)
-
-	cheevoProgress(
-		`SELECT COUNT(DISTINCT lang)
-		   FROM solutions
-		  WHERE NOT failing
-		    AND hole = 'musical-chords'
-		    AND lang IN ('c', 'c-sharp', 'd', 'f-sharp')
-		    AND user_id = $1`,
-		"sounds-quite-nice",
+		[]string{"pangramglot"},
 	)
 
 	cheevoProgress(
 		`SELECT COALESCE(EXTRACT(days FROM TIMEZONE('UTC', NOW()) - MIN(submitted)), 0)
 		   FROM solutions
 		  WHERE NOT FAILING AND user_id = $1`,
-		"aged-like-fine-wine",
-	)
-
-	cheevoProgress(
-		`SELECT COUNT(DISTINCT hole)
-		   FROM solutions
-		  WHERE NOT failing AND user_id = $1`,
-		"fore", "up-to-eleven", "bakers-dozen", "the-watering-hole",
-		"blackjack", "rule-34", "forty-winks", "dont-panic", "bullseye",
-		"gone-in-60-holes", "cunning-linguist", "phileas-fogg", "x86",
-		"right-on",
-	)
-
-	cheevoProgress(
-		`SELECT COUNT(DISTINCT hole)
-		   FROM solutions
-		  WHERE NOT failing
-		    AND hole IN ('happy-numbers', 'lucky-numbers')
-		    AND lang = 'go'
-		    AND user_id = $1`,
-		"happy-go-lucky",
+		[]string{"aged-like-fine-wine"},
 	)
 
 	cheevoProgress(
@@ -149,13 +156,29 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 		     WHERE NOT failing AND user_id = $1
 		  GROUP BY hole
 		) SELECT COALESCE(MAX(count), 0) FROM langs`,
-		"polyglot", "polyglutton", "omniglot",
+		[]string{"polyglot", "polyglutton", "omniglot", "omniglutton"},
+	)
+
+	cheevoProgress(
+		`WITH distinct_holes AS (
+		    SELECT DISTINCT hole
+		      FROM solutions
+		     WHERE NOT failing AND user_id = $2
+		) SELECT COUNT(DISTINCT $1::hstore->hole::text) FROM distinct_holes`,
+		[]string{"smörgåsbord"},
+		config.HoleCategoryHstore,
+	)
+
+	cheevoProgress(
+		`SELECT COUNT(DISTINCT hole)
+		   FROM solutions
+		  WHERE NOT failing AND user_id = $1`,
+		cheevoIDs(config.CheevoTree["Total Holes"]),
 	)
 
 	cheevoProgress(
 		"SELECT COALESCE(MAX(points), 0) FROM points WHERE user_id = $1",
-		"big-brother", "its-over-9000", "twenty-kiloleagues",
-		"marathon-runner", "0xdead",
+		cheevoIDs(config.CheevoTree["Total Points"]),
 	)
 
 	render(w, r, "golfer/cheevos", data, golfer.Name)

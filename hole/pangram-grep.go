@@ -1,11 +1,19 @@
 package hole
 
 import (
-	"math/rand"
+	"math/rand/v2"
+	"slices"
 	"strings"
 )
 
-func pangramGrep() []Scorecard {
+func pangramGrep() []Run {
+	return outputTests(
+		pangramGrepTests(2, 5),
+		pangramGrepTests(0, 0),
+	)
+}
+
+func pangramGrepTests(l, r int) []test {
 	// They all start lowercase and valid.
 	pangrams := shuffle([][]byte{
 		[]byte("6>_4\"gv9lb?2!ic7}=-m'fd30ph].o%@w+[8unk&t1es<az(x;${^y#)q,rj\\5/*:"),
@@ -36,12 +44,11 @@ func pangramGrep() []Scorecard {
 	})
 
 	for i, pangram := range pangrams {
-		clone := make([]byte, len(pangram))
-		copy(clone, pangram)
+		clone := slices.Clone(pangram)
 
 		// Replace letter `i` with a different random letter.
 		old := 'a' + byte(i)
-		new := 'a' + byte((i+rand.Intn(25)+1)%26)
+		new := 'a' + byte((i+rand.IntN(25)+1)%26)
 		for j, letter := range clone {
 			if letter == old {
 				clone[j] = new
@@ -49,9 +56,9 @@ func pangramGrep() []Scorecard {
 		}
 
 		// Replace 0-4 other letters with random letters.
-		for times := rand.Intn(5); times > 0; times-- {
-			old := 'a' + byte(rand.Intn(26))
-			new := 'a' + byte(rand.Intn(26))
+		for times := rand.IntN(5); times > 0; times-- {
+			old := 'a' + byte(rand.IntN(26))
+			new := 'a' + byte(rand.IntN(26))
 			for j, letter := range clone {
 				if letter == old {
 					clone[j] = new
@@ -76,17 +83,17 @@ func pangramGrep() []Scorecard {
 	// Uppercase random letters.
 	for _, pangram := range pangrams {
 		for j, letter := range pangram {
-			if 'a' <= letter && letter <= 'z' && rand.Intn(2) == 0 {
+			if 'a' <= letter && letter <= 'z' && rand.IntN(2) == 0 {
 				pangram[j] -= 32
 			}
 		}
 	}
 
-	// Insert 2-5 random post-'z' characters
+	// Insert l-r random post-'z' characters
 	for i, pangram := range pangrams {
-		for times := rand.Intn(4) + 2; times > 0; times-- {
-			c := '{' + byte(rand.Intn(4))
-			pos := rand.Intn(len(pangram))
+		for times := rand.IntN(r-l+1) + l; times > 0; times-- {
+			c := '{' + byte(rand.IntN(4))
+			pos := rand.IntN(len(pangram))
 
 			pangram = append(pangram, 0)
 			copy(pangram[pos+1:], pangram[pos:])
@@ -95,13 +102,12 @@ func pangramGrep() []Scorecard {
 		}
 	}
 
-	var args []string
-	var out string
+	tests := make([]test, len(pangrams))
 
 outer:
-	for _, pangram := range shuffle(pangrams) {
+	for i, pangram := range shuffle(pangrams) {
 		str := string(pangram)
-		args = append(args, str)
+		tests[i].in = str
 
 		for c := 'a'; c <= 'z'; c++ {
 			if !strings.ContainsRune(str, c) && !strings.ContainsRune(str, c-32) {
@@ -109,11 +115,8 @@ outer:
 			}
 		}
 
-		out += str + "\n"
+		tests[i].out = str
 	}
 
-	// Drop the trailing newline.
-	out = out[:len(out)-1]
-
-	return []Scorecard{{Args: args, Answer: out}}
+	return tests
 }

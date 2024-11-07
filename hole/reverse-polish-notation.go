@@ -2,7 +2,7 @@ package hole
 
 import (
 	"math"
-	"math/rand"
+	"math/rand/v2"
 	"strconv"
 	"strings"
 )
@@ -19,7 +19,7 @@ func expand(node *Node) {
 	val := node.value
 	var left, right int
 
-	switch node.op = "+-*/"[rand.Intn(4)]; node.op {
+	switch node.op = randChoice([]byte("+-*/")); node.op {
 	case '+':
 		left = randInt(0, val)
 		right = val - left
@@ -40,7 +40,7 @@ func expand(node *Node) {
 			left = randChoice(factors)
 			right = val / left
 		}
-		if rand.Intn(2) == 1 {
+		if rand.IntN(2) == 1 {
 			left, right = right, left
 		}
 	case '/':
@@ -74,7 +74,7 @@ func expandRight(init *Node, count int) {
 func expandRand(init *Node, count int) {
 	valueNodes := []*Node{init}
 	for nodesCount := 1; nodesCount <= count; nodesCount++ {
-		nodeIdx := rand.Intn(nodesCount)
+		nodeIdx := rand.IntN(nodesCount)
 		node := valueNodes[nodeIdx]
 		expand(node)
 		valueNodes[nodeIdx] = node.left
@@ -102,32 +102,27 @@ func genExpr(init int, expander func(*Node, int), expandCount int) *Node {
 	return node
 }
 
-func reversePolishNotation() []Scorecard {
-	const tests = 20
+func reversePolishNotation() []Run {
+	const count = 20
 
-	exprs := [tests]*Node{
+	exprs := [count]*Node{
 		genExpr(randInt(1, math.MaxInt16), expandLeft, randInt(16, 31)),
 		genExpr(randInt(1, math.MaxInt16), expandRight, randInt(16, 31)),
 		genExpr(randInt(1, math.MaxInt16), expandRight, 0),
 		genExpr(0, expandRand, randInt(16, 31)),
 	}
 
-	for i := 4; i < tests; i++ {
+	for i := 4; i < count; i++ {
 		exprs[i] = genExpr(randInt(1, math.MaxInt16), expandRand, randInt(1, 31))
 	}
 
-	args := make([]string, tests)
-	var answer strings.Builder
+	tests := make([]test, count)
 
-	for i, expr := range shuffle(exprs[:]) {
+	for i, expr := range exprs {
 		var arg strings.Builder
 		writeNode(&arg, expr)
-		args[i] = arg.String()
-		if i > 0 {
-			answer.WriteByte('\n')
-		}
-		answer.WriteString(strconv.Itoa(expr.value))
+		tests[i] = test{arg.String(), strconv.Itoa(expr.value)}
 	}
 
-	return []Scorecard{{Args: args, Answer: answer.String()}}
+	return outputTests(shuffle(tests))
 }

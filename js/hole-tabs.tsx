@@ -1,21 +1,32 @@
 import {
     ComponentItem, ComponentItemConfig, ContentItem, GoldenLayout,
     RowOrColumn, LayoutConfig, ResolvedRootItemConfig,
-    ResolvedLayoutConfig, DragSource, LayoutManager, ComponentContainer,
+    DragSource, LayoutManager, ComponentContainer, ResolvedLayoutConfig,
+    RootItemConfig,
 } from 'golden-layout';
 import { EditorView }   from './_codemirror';
-import diffTable        from './_diff';
-import { $, $$, comma } from './_util';
+import diffView         from './_diff';
+import { $, $$, comma, debounce } from './_util';
 import {
-    init, langs, getLang, hole, getAutoSaveKey, setSolution, getSolution,
-    setCode, refreshScores, getHideDeleteBtn, submit, SubmitResponse,
-    updateRestoreLinkVisibility, getSavedInDB, setCodeForLangAndSolution,
+    init, langs, hole, setSolution,
+    setCode, refreshScores, getHideDeleteBtn, submit, ReadonlyPanelsData,
+    updateRestoreLinkVisibility, setCodeForLangAndSolution,
     populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyJSONBtn,
-    getScorings,
+    getScorings, replaceUnprintablesInOutput, initOutputDiv,
+    updateLocalStorage,
+    getLang,
+    setState,
+    ctrlEnter,
+    getLastSubmittedCode,
 } from './_hole-common';
+import { highlightCodeBlocks } from './_wiki';
 
 const poolDragSources: {[key: string]: DragSource} = {};
 const poolElements: {[key: string]: HTMLElement} = {};
+let isWide = false;
+
+const isSponsor = JSON.parse($('#sponsor').innerText);
+const hasNotes  = JSON.parse($('#has-notes').innerText);
 
 /**
  * Is mobile mode activated? Start at false as default since Golden Layout
@@ -34,33 +45,17 @@ const poolElements: {[key: string]: HTMLElement} = {};
 let isMobile = false;
 let applyingDefault = false;
 
-let subRes: SubmitResponse | null = null;
+let subRes: ReadonlyPanelsData | null = null;
+let langWikiContent = '';
+let holeLangNotesContent = '';
 const readonlyOutputs: {[key: string]: HTMLElement | undefined} = {};
 
 let editor: EditorView | null = null;
+let holeLangNotesEditor: EditorView | null = null;
+
+let substitutions: {pattern: RegExp, replacement: string}[] = [];
 
 init(true, setSolution, setCodeForLangAndSolution, updateReadonlyPanels, () => editor);
-
-// Handle showing/hiding alerts
-for (const alertCloseBtn of $$('.main_close')) {
-    const alert = alertCloseBtn.parentNode as HTMLDivElement;
-    alertCloseBtn.addEventListener('click', () => {
-        const child = (alert.querySelector('svg') as any).cloneNode(true);
-        $('#alert-pool').appendChild(child);
-        alert.classList.add('hide');
-        child.addEventListener('click', () => {
-            child.parentNode.removeChild(child);
-            alert.classList.remove('hide');
-        });
-    });
-}
-
-// Handle showing/hiding lang picker
-// can't be done in CSS because the picker is one parent up
-const langToggle = $<HTMLDetailsElement>('#hole-lang details');
-langToggle.addEventListener('toggle', () => {
-    $('#picker').classList.toggle('hide', !langToggle.open);
-});
 
 const goldenContainer = $('#golden-container');
 
@@ -82,6 +77,7 @@ function updateReadonlyPanel(name: string) {
         break;
     case 'out':
         output.innerText = subRes.Out;
+        output.innerHTML = replaceUnprintablesInOutput(output.innerHTML);
         break;
     case 'exp':
         output.innerText = subRes.Exp;
@@ -93,30 +89,63 @@ function updateReadonlyPanel(name: string) {
         );
         break;
     case 'diff':
-        const diff = diffTable(hole, subRes.Exp, subRes.Out, subRes.Argv);
+        const ignoreCase = JSON.parse($('#case-fold').innerText);
+        const diff = diffView(hole, subRes.Exp, subRes.Out, subRes.Argv, ignoreCase, subRes.MultisetDelimiter, subRes.ItemDelimiter);
         output.replaceChildren(diff);
     }
 }
 
-function updateReadonlyPanels(data: SubmitResponse) {
-    subRes = data;
-    for (const name in readonlyOutputs) {
-        updateReadonlyPanel(name);
+function updateWikiContent() {
+    if ($('#langWiki')) {
+        $('#langWiki').innerHTML = `<article>${langWikiContent}</article>`;
+        highlightCodeBlocks('#langWiki pre > code');
     }
 }
 
-for (const i of [0,1,2,3,4]) {
-    const name = ['exp', 'out', 'err', 'arg', 'diff'][i];
-    const title = ['Expected', 'Output', 'Errors', 'Arguments', 'Diff'][i];
+function updateHoleLangNotesContent() {
+    const input = $<HTMLInputElement>('#notes-substitutions');
+    if (input) input.value = localStorage.getItem(`${getLang()}-substitutions`) ?? '';
+    if (holeLangNotesEditor) setState(holeLangNotesContent, holeLangNotesEditor);
+}
+
+function updateReadonlyPanels(data: ReadonlyPanelsData | {langWiki: string}| {holeLangNotes: string}) {
+    if ('langWiki' in data) {
+        langWikiContent = data.langWiki;
+        updateWikiContent();
+    }
+    else if ('holeLangNotes' in data) {
+        holeLangNotesContent = data.holeLangNotes;
+        updateHoleLangNotesContent();
+    }
+    else {
+        subRes = data;
+        for (const name in readonlyOutputs) {
+            updateReadonlyPanel(name);
+        }
+    }
+}
+
+for (const name of ['exp', 'out', 'err', 'arg', 'diff']) {
     layout.registerComponentFactoryFunction(name, container => {
-        container.setTitle(title);
+        container.setTitle(getTitle(name));
         autoFocus(container);
         container.element.id = name;
         container.element.classList.add('readonly-output');
+        if (name === 'out') {
+            initOutputDiv(container.element);
+        }
         readonlyOutputs[name] = container.element;
         updateReadonlyPanel(name);
     });
 }
+
+layout.registerComponentFactoryFunction('langWiki', async container => {
+    container.setTitle(getTitle('langWiki'));
+    autoFocus(container);
+    container.element.id = 'langWiki';
+    await afterDOM();
+    updateWikiContent();
+});
 
 function makeEditor(parent: HTMLDivElement) {
     editor = new EditorView({
@@ -127,6 +156,8 @@ function makeEditor(parent: HTMLDivElement) {
             const code = tr.state.doc.toString();
             const scorings: {total: {byte?: number, char?: number}, selection?: {byte?: number, char?: number}} = getScorings(tr, editor);
             const scoringKeys = ['byte', 'char'] as const;
+
+            $('main')?.classList.toggle('lastSubmittedCode', code === getLastSubmittedCode());
 
             function formatScore(scoring: any) {
                 return scoringKeys
@@ -139,24 +170,30 @@ function makeEditor(parent: HTMLDivElement) {
                 ? `${formatScore(scorings.total)} (${formatScore(scorings.selection)} selected)`
                 : formatScore(scorings.total);
 
-            // Avoid future conflicts by only storing code locally that's
-            // different from the server's copy.
-            const serverCode = getCurrentSolutionCode();
-
-            const key = getAutoSaveKey(getLang(), getSolution());
-            if (code && (code !== serverCode || !getSavedInDB()) && code !== langs[getLang()].example)
-                localStorage.setItem(key, code);
-            else
-                localStorage.removeItem(key);
-
+            updateLocalStorage(code);
             updateRestoreLinkVisibility(editor);
 
             return result;
         },
-        parent: parent,
+        parent,
     });
 
     editor.contentDOM.setAttribute('data-gramm', 'false');  // Disable Grammarly.
+}
+
+function makeHoleLangNotesEditor(parent: HTMLDivElement) {
+    holeLangNotesEditor = new EditorView({
+        dispatch: tr => {
+            if (!holeLangNotesEditor) return;
+            const result = holeLangNotesEditor.update([tr]) as unknown;
+            const content = tr.state.doc.toString();
+            $<HTMLButtonElement>('#upsert-notes-btn').disabled = content === holeLangNotesContent || (!!content && !isSponsor);
+            return result;
+        },
+        parent,
+    });
+
+    holeLangNotesEditor.contentDOM.setAttribute('data-gramm', 'false');  // Disable Grammarly.
 }
 
 function autoFocus(container: ComponentContainer) {
@@ -165,7 +202,7 @@ function autoFocus(container: ComponentContainer) {
 }
 
 layout.registerComponentFactoryFunction('code', async container => {
-    container.setTitle('Code');
+    container.setTitle(getTitle('code'));
     autoFocus(container);
 
     const header = (<header>
@@ -189,7 +226,9 @@ layout.registerComponentFactoryFunction('code', async container => {
     };
 
     // Wire submit to clicking a button and a keyboard shortcut.
-    $('#runBtn').onclick = () => submit(editor, updateReadonlyPanels);
+    const closuredSubmit = () => submit(editor, updateReadonlyPanels);
+    $('#runBtn').onclick = closuredSubmit;
+    $('#editor').onkeydown = ctrlEnter(closuredSubmit);
 
     const deleteBtn = $('#deleteBtn');
     if (deleteBtn) {
@@ -198,6 +237,78 @@ layout.registerComponentFactoryFunction('code', async container => {
     }
 
     setCodeForLangAndSolution(editor);
+});
+
+async function upsertNotes() {
+    $<HTMLButtonElement>('#upsert-notes-btn').disabled = true;
+    const content = holeLangNotesEditor!.state.doc.toString();
+    if (!content || isSponsor) {
+        const resp = await fetch(
+            `/api/notes/${hole}/${getLang()}`,
+            content ? { method: 'PUT', body: content} : { method: 'DELETE' },
+        );
+        if (resp.status !== 204) $<HTMLButtonElement>('#upsert-notes-btn').disabled = false;
+        else holeLangNotesContent = content;
+    }
+};
+
+function parseSubstitutions() {
+    const { value } = $<HTMLInputElement>('#notes-substitutions');
+    localStorage.setItem(`${getLang()}-substitutions`, value);
+    const pattern = /s\/((?:[^\/]|\\\/)*)\/((?:[^\/]|\\\/)*)\/([dgimsuvy]*)/g;
+    substitutions = [...value.matchAll(pattern)]
+        .map(match => (
+            {pattern: new RegExp(match[1], [...new Set(match[3])].join('')), replacement: JSON.parse(`"${match[2]}"`)}
+        ));
+    $<HTMLButtonElement>('#convert-notes-btn').disabled = substitutions.length < 1;
+}
+
+async function convertNotesAndRun(): Promise<boolean> {
+    if (editor && holeLangNotesEditor) {
+        let newCode = holeLangNotesEditor.state.doc.toString();
+        for (const {pattern, replacement} of substitutions) {
+            newCode = newCode.replace(pattern, replacement);
+        }
+        const code = editor.state.doc.toString();
+        if (code !== newCode) {
+            setState(newCode, editor);
+            return await submit(editor, updateReadonlyPanels);
+        }
+    }
+    return false;
+}
+
+layout.registerComponentFactoryFunction('holeLangNotes', async container => {
+    container.setTitle(getTitle('holeLangNotes'));
+    autoFocus(container);
+
+    const header = (<header>
+        <div>
+            <input id="notes-substitutions" placeholder="Perl-like s/// expressions" size="50"></input>
+            <button class="btn blue" id="convert-notes-btn" disabled>Convert & Run</button>
+        </div>
+        <button class="btn blue" id="upsert-notes-btn" disabled>Save</button>
+    </header>) as HTMLElement;
+    const editorDiv = <div id="holeLangNotesEditor"></div> as HTMLDivElement;
+
+    container.element.id = 'holeLangNotesEditor-section';
+    container.element.append(editorDiv, header);
+
+    await afterDOM();
+    makeHoleLangNotesEditor(editorDiv);
+
+    $('#upsert-notes-btn').onclick = upsertNotes;
+    $('#convert-notes-btn').onclick = convertNotesAndRun;
+    $('#notes-substitutions').oninput = parseSubstitutions;
+    $('#holeLangNotesEditor-section').onkeydown = ctrlEnter(async () => {
+        if (await convertNotesAndRun()) {
+            await upsertNotes();
+        }
+    });
+
+    await afterDOM();
+    updateHoleLangNotesContent();
+    parseSubstitutions();
 });
 
 async function afterDOM() {}
@@ -217,7 +328,7 @@ function delinkRankingsView() {
 }
 
 layout.registerComponentFactoryFunction('scoreboard', async container => {
-    container.setTitle('Scoreboard');
+    container.setTitle(getTitle('scoreboard'));
     autoFocus(container);
     container.element.append(
         $<HTMLTemplateElement>('#template-scoreboard').content.cloneNode(true),
@@ -229,7 +340,7 @@ layout.registerComponentFactoryFunction('scoreboard', async container => {
 });
 
 layout.registerComponentFactoryFunction('details', container => {
-    container.setTitle('Details');
+    container.setTitle(getTitle('details'));
     autoFocus(container);
     const details = $<HTMLTemplateElement>('#template-details').content.cloneNode(true) as HTMLDetailsElement;
     container.element.append(details);
@@ -237,10 +348,27 @@ layout.registerComponentFactoryFunction('details', container => {
     initCopyJSONBtn(container.element.querySelector('#copy') as HTMLElement);
 });
 
+const titles: Record<string, string | undefined> = {
+    details: 'Details',
+    scoreboard: 'Scoreboard',
+    exp: 'Expected',
+    out: 'Output',
+    err: 'Errors',
+    arg: 'Arguments',
+    diff: 'Diff',
+    code: 'Code',
+    langWiki: 'Wiki',
+    holeLangNotes: 'Notes',
+};
+
+function getTitle(name: string) {
+    return titles[name] ?? name;
+}
+
 function plainComponent(componentType: string): ComponentItemConfig {
     return {
         type: 'component',
-        componentType: componentType,
+        componentType,
         reorderEnabled: !isMobile,
     };
 }
@@ -290,24 +418,77 @@ const defaultLayout: LayoutConfig = {
     },
 };
 
-async function applyDefaultLayout() {
+function getPoolFromLayoutConfig(config: LayoutConfig) {
+    const allComponents = ['code', 'scoreboard', 'arg', 'exp', 'out', 'err', 'diff', 'details', 'langWiki'];
+    if (isSponsor || hasNotes) allComponents.push('holeLangNotes');
+    const activeComponents = getComponentNamesRecursive(config.root!);
+    return allComponents.filter(x => !activeComponents.includes(x));
+}
+
+function getComponentNamesRecursive(config: RootItemConfig): string[] {
+    if (config.type === 'component'){
+        return [config.componentType as string];
+    }
+    return config.content.flatMap(getComponentNamesRecursive);
+}
+
+const defaultViewState: ViewState = {
+    version: 1,
+    config: defaultLayout,
+    isWide: false,
+};
+
+interface ViewState {
+    version: 1;
+    config: ResolvedLayoutConfig | LayoutConfig;
+    isWide: boolean;
+}
+
+function getViewState(): ViewState {
+    return {
+        version: 1,
+        config: layout.saveLayout(),
+        isWide,
+    };
+}
+
+const saveLayout = debounce(() => {
+    const state = getViewState();
+    if (!state.config.root) return;
+    localStorage.setItem('lastViewState', JSON.stringify(state));
+}, 2000);
+
+
+async function applyInitialLayout() {
+    const saved = localStorage.getItem('lastViewState');
+    const viewState = saved
+        ? JSON.parse(saved) as ViewState
+        : defaultViewState;
+    await applyViewState(viewState);
+}
+
+async function applyViewState(viewState: ViewState) {
     applyingDefault = true;
     toggleMobile(false);
     Object.keys(poolElements).map(removePoolItem);
-    addPoolItem('details', 'Details');
-    layout.loadLayout(defaultLayout);
+    setWide(viewState.isWide);
+    setTall(false);
+    let { config } = viewState;
+    if (LayoutConfig.isResolved(config))
+        config = LayoutConfig.fromResolved(config);
+    layout.loadLayout(config);
+    getPoolFromLayoutConfig(config).forEach(addPoolItem);
     await afterDOM();
     checkMobile();
     applyingDefault = false;
 }
 
-applyDefaultLayout();
+applyInitialLayout();
 
 /**
  * Try to add after selected item, with sensible defaults
  */
 function addItemFromPool(componentName: string) {
-    (window as any).layout = layout;
     layout.addItemAtLocation(
         plainComponent(componentName),
         LayoutManager.afterFocusedItemIfPossibleLocationSelectors,
@@ -349,19 +530,26 @@ function addRow() {
 
 $('#add-row').addEventListener('click', addRow);
 
-$('#revert-layout').addEventListener('click', applyDefaultLayout);
+$('#revert-layout').addEventListener('click', () => applyViewState(defaultViewState));
 
-$('#make-wide').addEventListener('click',
-    () => document.documentElement.classList.toggle('full-width', true),
-);
+function setWide(b: boolean) {
+    isWide = b;
+    document.documentElement.classList.toggle('full-width', b);
+}
 
-$('#make-narrow').addEventListener('click',
-    () => document.documentElement.classList.toggle('full-width', false),
-);
+function setTall(b: boolean) {
+    document.documentElement.classList.toggle('full-height', b);
+}
 
-function addPoolItem(componentType: string, title: string) {
+$('#make-wide').addEventListener('click', () => setWide(true));
+$('#make-narrow').addEventListener('click', () => setWide(false));
+
+$('#make-tall').addEventListener('click', () => setTall(true));
+$('#make-short').addEventListener('click', () => setTall(false));
+
+function addPoolItem(componentType: string) {
     poolElements[componentType]?.remove();
-    const el = (<span class="btn">{title}</span>);
+    const el = (<span class="btn">{getTitle(componentType)}</span>);
     $('#pool').appendChild(el);
     poolDragSources[componentType] = layout.newDragSource(el, componentType);
     poolElements[componentType] = el;
@@ -375,7 +563,7 @@ layout.addEventListener('itemDestroyed', e => {
     const _target = e.target as ContentItem;
     if (_target.isComponent) {
         const target = _target as ComponentItem;
-        addPoolItem(target.componentType as string, target.title);
+        addPoolItem(target.componentType as string);
     }
     checkShowAddRow();
 });
@@ -412,7 +600,6 @@ layout.addEventListener('itemCreated', e => {
     }
 });
 
-
 /**
  * There's a bug with the dragging from layout.newDragSource where dragging up
  * from the tab pool causes a .lm_dragProxy to appear, but it doesn't get
@@ -425,6 +612,7 @@ layout.addEventListener('itemCreated', e => {
 layout.addEventListener('stateChanged', () => {
     document.addEventListener('mouseup', removeDragProxies);
     document.addEventListener('touchend', removeDragProxies);
+    saveLayout();
     document.documentElement.classList.toggle('has_lm_maximised', !!$('.lm_maximised'));
 });
 
@@ -452,7 +640,7 @@ type DeepMutable<T> = { -readonly [key in keyof T]: DeepMutable<T[key]> };
  */
 function mutateDeep(item: DeepMutable<ResolvedRootItemConfig>, isMobile: boolean) {
     if (isMobile && item.type === 'row') {
-        (item as any).type = 'column';
+        item.type = 'column';
     }
     (item as any).reorderEnabled = !isMobile;
     if (item.content.length > 0) {
@@ -465,10 +653,10 @@ function toggleMobile(_isMobile: boolean) {
     // This could be a CSS media query, but I'm keeping generality in case of
     // other config options ("request desktop site", button config, etc.)
     document.documentElement.classList.toggle('mobile', isMobile);
-    const currLayout = layout.saveLayout() as DeepMutable<ResolvedLayoutConfig>;
+    const currLayout = layout.saveLayout();
     if (currLayout.root) {
-        mutateDeep(currLayout.root, isMobile);
-        layout.loadLayout(currLayout as any as LayoutConfig);
+        mutateDeep(currLayout.root as DeepMutable<ResolvedRootItemConfig>, isMobile);
+        layout.loadLayout(LayoutConfig.fromResolved(currLayout));
     }
     if (isMobile) {
         for (const componentType in poolDragSources)

@@ -15,67 +15,84 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 	const limit = 100
 
 	type row struct {
-		Cheevo *config.Cheevo
-		Date   time.Time
-		Golfer string
-		Hole   *config.Hole
-		Lang   *config.Lang
+		Cheevos      []*config.Cheevo
+		Date, Golfer string
+		Hole         *config.Hole
+		Lang         *config.Lang
 	}
 
 	db := session.Database(r)
 	golfer := session.GolferInfo(r)
 
+	location := time.UTC
+	followedGolfersInFeed := true
+	if golfer := session.Golfer(r); golfer != nil {
+		location = golfer.Location()
+		followedGolfersInFeed =
+			golfer.Settings["golfer/profile"]["followed-golfers-in-feed"].(bool)
+	}
+
 	data := struct {
-		Connections []oauth.Connection
-		Followers   []string
-		Following   []struct {
+		CategoryOverview map[string]map[string]int
+		Connections      []oauth.Connection
+		Followers        []string
+		Following        []struct {
 			Bytes, Chars, Rank int
-			CountryFlag, Login string
+			Country            config.NullCountry
+			Name               string
 		}
 		Langs          []*config.Lang
 		OAuthProviders map[string]*oauth.Config
 		Trophies       map[string]map[string]int
 		Wall           []row
 	}{
-		Connections:    oauth.GetConnections(db, golfer.ID, true),
-		Langs:          config.LangList,
-		OAuthProviders: oauth.Providers,
-		Trophies:       map[string]map[string]int{},
-		Wall:           make([]row, 0, limit),
+		CategoryOverview: map[string]map[string]int{"bytes": {}, "chars": {}},
+		Connections:      oauth.GetConnections(db, golfer.ID, true),
+		Langs:            config.LangList,
+		OAuthProviders:   oauth.Providers,
+		Trophies:         map[string]map[string]int{},
+		Wall:             make([]row, 0, limit),
 	}
 
+	// Note we hide followers as well as following if the bool is false.
+	// Maybe this means the setting is badly named?
 	rows, err := db.Query(
 		`WITH data AS (
 		 -- Cheevos
-		    SELECT earned       date,
-		           trophy::text cheevo,
-		           ''           hole,
-		           ''           lang,
+		    SELECT earned     date,
+		           trophy     cheevo,
+		           NULL::hole hole,
+		           NULL::lang lang,
 		           user_id
 		      FROM trophies
-		     WHERE user_id = ANY(following($1, $2))
+		     WHERE CASE WHEN $1 THEN user_id = ANY(following($2, $3))
+		                        ELSE user_id = $2
+		           END
 		 UNION ALL
 		 -- Follows
-		    SELECT followed    date,
-		           ''          cheevo,
-		           ''          hole,
-		           ''          lang,
-		           follower_id user_id
+		    SELECT followed     date,
+		           NULL::cheevo cheevo,
+		           NULL::hole   hole,
+		           NULL::lang   lang,
+		           follower_id  user_id
 		      FROM follows
-		     WHERE followee_id = $1
+		     WHERE followee_id = $2 AND $1
 		 UNION ALL
 		 -- Holes
 		    SELECT MAX(submitted) date,
-		           ''             cheevo,
-		           hole::text     hole,
-		           lang::text     lang,
+		           NULL::cheevo   cheevo,
+		           hole           hole,
+		           lang           lang,
 		           user_id
 		      FROM solutions
-		     WHERE user_id = ANY(following($1, $2))
+		     WHERE CASE WHEN $1 THEN user_id = ANY(following($2, $3))
+		                        ELSE user_id = $2
+		           END
 		  GROUP BY user_id, hole, lang
 		) SELECT cheevo, date, login, hole, lang
 		    FROM data JOIN users ON id = user_id
-		ORDER BY date DESC, login LIMIT $3`,
+		ORDER BY date DESC, login LIMIT $4`,
+		followedGolfersInFeed,
 		golfer.ID,
 		golfer.FollowLimit(),
 		limit,
@@ -85,25 +102,66 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 	}
 	defer rows.Close()
 
+rows:
 	for rows.Next() {
-		var cheevo, golfer, hole, lang string
-		var date time.Time
+		var cheevo *config.Cheevo
+		var time time.Time
 
-		if err := rows.Scan(&cheevo, &date, &golfer, &hole, &lang); err != nil {
+		var r row
+		if err := rows.Scan(&cheevo, &time, &r.Golfer, &r.Hole, &r.Lang); err != nil {
 			panic(err)
 		}
 
-		data.Wall = append(data.Wall, row{
-			Cheevo: config.CheevoByID[cheevo],
-			Date:   date,
-			Golfer: golfer,
-			Hole:   config.HoleByID[hole],
-			Lang:   config.LangByID[lang],
-		})
+		r.Date = time.In(location).Format("Mon 2 Jan 2006")
+
+		if cheevo != nil {
+			// Try and find a place in the current day to append the cheevo.
+			for i := len(data.Wall) - 1; i >= 0 && data.Wall[i].Date == r.Date; i-- {
+				if data.Wall[i].Cheevos != nil && data.Wall[i].Golfer == r.Golfer {
+					data.Wall[i].Cheevos = append(data.Wall[i].Cheevos, cheevo)
+					continue rows
+				}
+			}
+
+			r.Cheevos = append(r.Cheevos, cheevo)
+		}
+
+		data.Wall = append(data.Wall, r)
 	}
 
 	if err := rows.Err(); err != nil {
 		panic(err)
+	}
+
+	var categories []struct {
+		Category, Scoring string
+		Points            int
+	}
+	if err := db.Select(
+		&categories,
+		`WITH max_points_per_hole AS (
+		    SELECT DISTINCT ON (hole, scoring) hole, scoring, points
+		      FROM rankings
+		     WHERE user_id = $1
+		  ORDER BY hole, scoring, points DESC
+		) SELECT $2::hstore->hole::text category,
+		         ROUND(AVG((points)))   points,
+		         scoring                scoring
+		    FROM max_points_per_hole
+		GROUP BY scoring, category`,
+		golfer.ID,
+		config.HoleCategoryHstore,
+	); err != nil {
+		panic(err)
+	}
+
+	// Ensure we have no missing categories.
+	for _, hole := range config.HoleList {
+		data.CategoryOverview["bytes"][hole.Category] = 0
+		data.CategoryOverview["chars"][hole.Category] = 0
+	}
+	for _, cat := range categories {
+		data.CategoryOverview[cat.Scoring][cat.Category] = cat.Points
 	}
 
 	rows, err = db.Query(
@@ -143,7 +201,7 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 	if err := db.Select(
 		&data.Following,
 		`WITH follows AS (
-		    SELECT country_flag, login,
+		    SELECT country_flag country, login name,
 		           COALESCE((SELECT points FROM points
 		              WHERE scoring = 'bytes' AND user_id = id), 0) bytes,
 		           COALESCE((SELECT points FROM points
@@ -152,7 +210,7 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		     WHERE id = ANY(following($1, $2))
 		) SELECT *, RANK() OVER (ORDER BY bytes DESC, chars DESC)
 		    FROM follows
-		ORDER BY rank, login`,
+		ORDER BY rank, name`,
 		golfer.ID,
 		golfer.FollowLimit(),
 	); err != nil {

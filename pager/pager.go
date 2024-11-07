@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-const PerPage = 50
+const PerPage = 75
 
 type Pager struct {
 	lastPage, First, Last, Offset, Page, Total int
@@ -16,9 +16,7 @@ type Pager struct {
 
 func New(r *http.Request) *Pager {
 	page, _ := strconv.Atoi(r.FormValue("page"))
-	if page < 1 {
-		page = 1
-	}
+	page = max(page, 1)
 
 	return &Pager{base: r.URL, Offset: (page - 1) * PerPage, Page: page}
 }

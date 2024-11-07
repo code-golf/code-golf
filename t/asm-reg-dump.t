@@ -1,6 +1,6 @@
 use t;
 
-like post-solution(:code<nop> :lang<assembly>)<Err>, rx[^
+like post-solution(:code<nop> :lang<assembly>)<runs>[0]<stderr>, rx[^
     'Signal: segmentation fault after line 1 (%rip was ' <xdigit> ** 16 ')'
  \n 'Registers:'
  \n '    %rax = ' <xdigit> ** 16 '        %r8  = ' <xdigit> ** 16

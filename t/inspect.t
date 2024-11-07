@@ -1,49 +1,26 @@
 use t;
 
-sub run($code) { post-solution(:$code)<Out> }
+for (
 
-is run('say %*ENV'), '{}', 'Environment';
+    # System.
+    # Use Raku because our Perl lacks the "Sys::Hostname" package.
+    cwd      => '/',              raku => 'say ~$*CWD',
+    env      => '{HOME => /tmp}', raku => 'say %*ENV',
+    hostname => 'code-golf',      raku => 'say $*KERNEL.hostname',
 
-is run('say $*KERNEL.hostname'), 'code-golf', 'Hostname';
+    # User & Group.
+    # Use Perl because our Raku lacks the "id" binary.
+    group    => 'nobody', perl => 'say +( getgrgid $( )[0]',
+    user     => 'nobody', perl => 'say +( getpwuid $< )[0]',
+    group-id => '65534',  perl => 'say 0 + $(',
+    user-id  => '65534',  perl => 'say 0 + $<',
 
-my $mounts = run('say slurp "/proc/mounts"');
+) -> ( :key($name), :value($exp) ), ( :key($lang), :value($code) ) {
+    my $got = post-solution( :$code :$lang )<runs>[0];
 
-$mounts ~~ s:g/ ',inode64'       //;  # Older kernels wont have this flag.
-$mounts ~~ s:g/ ',lowerdir=' \S+ //;  # Strip the Docker specific crap.
+    is $got<stdout>, $exp, $name;
 
-# Note on live root is read-only but doing that on dev breaks go build.
-is $mounts, Q:to/MOUNTS/.chomp, '/proc/mounts';
-    overlay / overlay rw,relatime 0 0
-    tmpfs /dev tmpfs rw,nosuid,relatime 0 0
-    proc /proc proc ro,nosuid,nodev,noexec,relatime 0 0
-    tmpfs /proc/sys tmpfs ro,nosuid,nodev,noexec,relatime 0 0
-    tmpfs /tmp tmpfs rw,nosuid,nodev,relatime 0 0
-    MOUNTS
-
-my %status   = run('say slurp "/proc/self/status"').split: / ':' \s+ | \n /;
-my %expected = (
-    # TODO No capabilities
-    # CapAmb => '0000000000000000',
-    # CapBnd => '0000000000000000',
-    # CapEff => '0000000000000000',
-    # CapInh => '0000000000000000',
-    # CapPrm => '0000000000000000',
-
-    # User/Group nobody
-    Gid => "65534\t65534\t65534\t65534",
-    Uid => "65534\t65534\t65534\t65534",
-
-    Name => 'raku',
-
-    NoNewPrivs => '1',
-
-    Pid  => '1',
-    PPid => '0',
-
-    # Seccomp filter mode
-    Seccomp => '2',
-);
-
-is-deeply %status{ %expected.keys }:kv.Hash, %expected, '/proc/self/status';
+    diag $got<stderr> if $got<stderr>;
+}
 
 done-testing;

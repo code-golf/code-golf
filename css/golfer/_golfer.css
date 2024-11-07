@@ -1,3 +1,5 @@
+#about { padding: .75rem .75rem 0 }
+
 #badges {
     display: flex;
     flex-wrap: wrap;
@@ -40,14 +42,17 @@
 
 #profile div div { gap: .25rem }
 
-#profile form {
+#profile > nav {
     align-self: start;
+    display: flex;
+    gap: .5rem;
     grid-row: span 3;
 }
 
 #profile > h1 {
     align-items: center;
     display: flex;
+    gap: .75rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -65,10 +70,15 @@
     width: 1.25rem;
 }
 
+#pronouns {
+    color: var(--grey);
+    font-size: 1.25rem;
+}
+
 @media (max-width: 34rem) {
     #profile { grid-template-columns: min-content 1fr }
 
-    #profile form {
+    #profile > nav {
         padding-top: 1rem;
         grid-column: span 2;
         grid-row: 4;

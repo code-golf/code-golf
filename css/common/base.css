@@ -58,14 +58,14 @@ body {
     color: var(--color);
     display: flex;
     flex-direction: column;
-    font: 16px emoji, system-ui, -apple-system, sans-serif;
+    font: 16px emoji, mahjong, system-ui, -apple-system, sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
 }
 
-body, footer nav, body > header nav, #popups {
+body, footer nav, #site-header nav, #popups {
     margin: auto;
-    max-width: 1280px;
+    max-width: 80rem;
 }
 
 body > svg, .hide { display: none }
@@ -91,7 +91,28 @@ h1 { font-size: 1.75rem }
 h2 { font-size: 1.50rem }
 h3 { font-size: 1.25rem }
 
-body > header {
+#page-header {
+    align-items: center;
+    border-bottom: 2px solid var(--color);
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    overflow: hidden;
+    padding: 1rem;
+
+    h1 {
+        flex: 1;
+        white-space: nowrap;
+    }
+
+    nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem;
+    }
+}
+
+#site-header {
     background: var(--color);
     margin: 0 calc(50% - 50vw);
     overflow: auto;
@@ -100,7 +121,7 @@ body > header {
     z-index: 7; /* Codemirror uses up to 6 */
 }
 
-body > header a {
+#site-header a {
     align-items: center;
     display: flex;
     fill: var(--background);
@@ -109,13 +130,13 @@ body > header a {
     min-width: 2.75rem;
 }
 
-body > header a:is(.on, :hover) {
+#site-header a:is(.on, :hover) {
     background: var(--background);
     color: var(--color);
     fill: var(--color);
 }
 
-body > header [title=Profile] {
+#site-header [title=Profile] {
     color: var(--background);
     display: grid;
     font-size: .75rem;
@@ -141,18 +162,19 @@ body > header [title=Profile] {
     }
 }
 
-body > header nav { display: flex }
+#site-header nav { display: flex }
 
-body > header svg {
+#site-header svg {
     height: 1.5rem;
     width: 1.5rem;
 }
 
 button {
     color: var(--color);
-    cursor: pointer;
     font: inherit;
 }
+
+button:not(:disabled) { cursor: pointer }
 
 dialog {
     background: var(--background);
@@ -186,6 +208,11 @@ dialog a {
     align-items: center;
     display: flex;
     gap: .5rem;
+
+    svg {
+        height: 1rem;
+        width: 1rem;
+    }
 }
 
 dialog img {
@@ -202,7 +229,46 @@ dialog ul {
     padding: 0;
 }
 
-form menu {
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    fieldset {
+        border: 0;
+        display: flex;
+        gap: .5rem .75rem;
+        padding: 0;
+
+        /* fieldsets with checkboxes go vertical */
+        &:has([type=checkbox]) { flex-direction: column }
+    }
+
+    input:not([type]), input[type=date], input[type=number], select { width: 100% }
+
+    label {
+        display: flex;
+        flex-direction: column;
+        font-weight: bold;
+        gap: .375rem;
+
+        > * { font-weight: normal }
+
+        /* labels with checkboxes/radios directly inside them go horizontal */
+        &:has(> :is([type=checkbox], [type=radio])) {
+            align-items: center;
+            flex-direction: row;
+            font-weight: normal;
+        }
+
+        &:has(> [type=checkbox]) {
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+        }
+    }
+}
+
+menu {
     display: flex;
     flex-direction: row-reverse;
     gap: 1rem;
@@ -210,16 +276,22 @@ form menu {
     padding: 0;
 }
 
-input:not([type]) { background: var(--background) }
+input:not([type]), input[type=date], input[type=number], textarea { background: var(--background) }
 
-input:not([type]), select {
+input:not([type]), input[type=date], input[type=number], select, textarea {
     border-radius: .25rem;
     border: 1px solid var(--grey);
     color: var(--color);
-    font: inherit;
+    font-family: inherit;
+    font-size: 1rem;
     line-height: 1.5;
     padding: .375rem .5rem;
-    width: 100%;
+}
+
+select {
+    -webkit-appearance: none;
+    appearance: none;
+    padding-right: 1.5rem;
 }
 
 main {
@@ -232,12 +304,6 @@ main {
 }
 
 nav > :empty { flex: 1 }
-
-select {
-    -webkit-appearance: none;
-    appearance: none;
-    padding-right: .75rem;
-}
 
 summary {
     background: var(--summary-background);
@@ -284,25 +350,32 @@ td.right > a { justify-content: right }
 td > a {
     align-items: center;
     display: flex;
+    gap: .5rem;
     text-decoration: none;
 
     > img {
         border-radius: 50%;
         flex-shrink: 0;
         height: 1.5rem;
-        margin-right: .5rem;
         width: 1.5rem;
     }
 
-    > span {
+    /* :first-of-type because of <span class=flag> */
+    > span:first-of-type {
+        flex: 1;
         overflow: hidden;
         text-overflow: ellipsis;
     }
 
-    > span:nth-of-type(1) { flex: 1 }
+    > svg { color: var(--color) }
 }
 
 td > a:hover > span:first-of-type { text-decoration: underline }
+
+td svg {
+    height: 1rem;
+    width: 1rem;
+}
 
 tfoot td { border: 0 }
 
@@ -318,6 +391,34 @@ thead th {
     margin: 1rem 1rem 0;
     padding: 1rem 1rem 1rem 3rem;
     position: relative;
+
+    /* Hide banner form */
+    > form {
+        position: absolute;
+        right: .5rem;
+        top: .5rem;
+
+        > button {
+            align-items: center;
+            background: none;
+            border: 0;
+            display: flex;
+            padding: .125rem;
+
+            &:hover {
+                background: var(--color);
+                color: var(--background);
+            }
+
+            > svg {
+                height: 1rem;
+                width: 1rem;
+            }
+        }
+    }
+
+    /* Avoid the text and close button overlapping */
+    &:has(> form) { padding-right: 2rem }
 
     > svg {
         fill: var(--color);
@@ -348,6 +449,18 @@ thead th {
     padding: .5rem;
     user-select: none;
     white-space: nowrap;
+
+    > svg {
+        height: 1rem;
+        width: 1rem;
+    }
+}
+
+/* Buttons in table cells are smaller */
+td .btn {
+    font-size: .75rem;
+    line-height: .75rem;
+    padding: .25rem;
 }
 
 .btn[disabled] { opacity: .5 }
@@ -358,8 +471,6 @@ thead th {
     cursor: pointer;
     text-decoration: none;
 }
-
-.btn svg { height: 1rem }
 
 .card {
     align-items: end;
@@ -409,12 +520,12 @@ thead th {
 .color:nth-of-type(6n+6), .purple { background: var(--purple) }
 
 .flag {
-    margin-left: .5rem;
     overflow: visible;
     text-shadow: var(--color) 1px 1px 2px;
 }
 
 .grey { background: var(--light-grey) }
+.dark-grey { background: var(--grey) }
 
 .grid {
     align-items: center;
@@ -433,6 +544,8 @@ thead th {
 .nowrap-first  td:nth-child(1),
 .nowrap-second td:nth-child(2) {
     max-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
     width: 100%;
 }
 
@@ -441,7 +554,18 @@ thead th {
 .nowrap-second-third td:nth-child(2),
 .nowrap-second-third td:nth-child(3) {
     max-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
     width: 50%;
+}
+
+.nowrap-first-second-third td:nth-child(1),
+.nowrap-first-second-third td:nth-child(2),
+.nowrap-first-second-third td:nth-child(3) {
+    max-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 33%;
 }
 
 .right { text-align: right }
@@ -492,15 +616,13 @@ body > .tabs a {
 
 .text-red { color: var(--red-text) }
 
-/* Hacky, remove once we no longer use links inside <details>. */
-details.tabs   { display: initial }
-details.tabs a { display: inline-block }
-
 #error h1 { text-align: center }
 
-#ideas, #index { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
+#home { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
 
-#index > .grid {
+#home > .tabs { justify-content: flex-end }
+
+#home > .grid {
     border: 2px solid var(--color);
     padding: 1rem;
 }
@@ -511,7 +633,9 @@ details.tabs a { display: inline-block }
 }
 
 #popups {
-    display: grid;
+    align-items: flex-end;
+    display: flex;
+    flex-direction: column;
     gap: .5rem;
     grid-template-columns: 1fr auto;
     padding: .5rem;
@@ -528,19 +652,90 @@ details.tabs a { display: inline-block }
     color: var(--background);
     display: default;
     gap: .25rem .5rem;
-    grid-column: 2;
     grid-template-columns: auto 1fr;
-    opacity: 0;
+    max-width: 15rem;
     pointer-events: initial;
     padding: .5rem;
+    visibility: collapse;
     white-space: nowrap;
 }
 
 #popups h3 { grid-column: span 2 }
 
-@keyframes fade {
-    0%   { opacity: 0; margin-top: -4rem }
-    100% { opacity: 1; margin-top: 0 }
+#two-pane {
+    display: grid;
+    gap: 1rem 2rem;
+    grid-template: min-content 1fr / min-content 1fr;
+
+    & > #form-nav { display: none }
+
+    & > nav {
+        align-content: flex-start;
+        border-right: 2px solid var(--color);
+        display: flex;
+        flex-wrap: wrap;
+        gap: .25rem .75rem;
+        grid-row: span 2;
+        justify-content: flex-end;
+        padding: .5rem 2rem .5rem 0;
+        width: 20rem;
+
+        & > * {
+            align-items: center;
+            display: flex;
+            gap: .5rem;
+            justify-content: flex-end;
+            white-space: nowrap;
+        }
+
+        & > a:hover { text-decoration: none }
+
+        & > a[href]:hover span:first-child { text-decoration: underline }
+
+        & > a:not([href]) {
+            color: var(--color);
+            font-weight: bold;
+        }
+
+        & > h2 {
+            font-size: 1rem;
+            text-decoration: underline;
+            width: 100%;
+
+            &:not(:first-child) { margin-top: 1rem }
+        }
+    }
+
+    & > nav#one-per-row {
+        flex-direction: column;
+        justify-content: flex-start;
+
+        & > a { width: 100% }
+    }
 }
 
-@media (max-width: 34rem) { .wide { display: none !important } }
+.rotate-icon svg {
+    transform: rotate(90deg);
+}
+
+@keyframes fade {
+    0%   { margin-top: -4rem; opacity: 0; visibility: collapse }
+    100% { margin-top:  0;    opacity: 1; visibility: visible  }
+}
+
+@media     (max-width: 34rem) { .wide { display: none !important } }
+@media not (max-width: 34rem) { .thin { display: none !important } }
+
+@media (max-width: 50rem) {
+    #two-pane {
+        display: flex;
+        flex-direction: column;
+
+        & > #form-nav {
+            display: flex;
+            gap: .5rem;
+        }
+
+        & > nav { display: none }
+    }
+}

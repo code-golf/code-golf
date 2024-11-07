@@ -1,9 +1,9 @@
 package config
 
 import (
+	"cmp"
+	"slices"
 	"strings"
-
-	"golang.org/x/exp/slices"
 )
 
 var (
@@ -21,18 +21,21 @@ var (
 )
 
 type Lang struct {
-	Example    string `json:"example"`
-	Experiment int    `json:"-"`
-	ID         string `json:"id"`
-	Name       string `json:"name"`
-	Size       string `json:"size"`
-	Version    string `json:"version"`
-	Website    string `json:"website"`
+	Args       []string `json:"-"`
+	ArgsQuine  []string `json:"-" toml:"args-quine"`
+	Env        []string `json:"-"`
+	Example    string   `json:"example"`
+	Experiment int      `json:"experiment,omitempty"`
+	ID         string   `json:"id"`
+	Name       string   `json:"name"`
+	Size       string   `json:"size"`
+	Version    string   `json:"version"`
+	Website    string   `json:"website"`
 }
 
 func init() {
 	var langs map[string]*Lang
-	unmarshal("langs.toml", &langs)
+	unmarshal("data/langs.toml", &langs)
 
 	for name, lang := range langs {
 		lang.Example = strings.TrimSuffix(lang.Example, "\n")
@@ -53,8 +56,8 @@ func init() {
 
 	// Case-insensitive sort.
 	for _, langs := range [][]*Lang{LangList, ExpLangList, AllLangList} {
-		slices.SortFunc(langs, func(a, b *Lang) bool {
-			return strings.ToLower(a.Name) < strings.ToLower(b.Name)
+		slices.SortFunc(langs, func(a, b *Lang) int {
+			return cmp.Compare(strings.ToLower(a.Name), strings.ToLower(b.Name))
 		})
 	}
 }

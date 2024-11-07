@@ -1,19 +1,20 @@
-FROM alpine:3.17 as builder
+FROM alpine:3.20 AS builder
 
-RUN apk add --no-cache build-base curl patch
+RUN apk add --no-cache build-base curl
 
-RUN curl https://ftp.gnu.org/gnu/bash/bash-5.2.tar.gz | tar xz && cd bash-5.2 \
- && curl https://ftp.gnu.org/gnu/bash/bash-5.2-patches/bash52-0[01-15] | patch -p0
+WORKDIR /lang
 
-COPY strtoimax.patch /
+RUN curl https://ftp.gnu.org/gnu/bash/bash-5.2.tar.gz \
+  | tar xz --strip-components 1
 
-RUN mv bash-* bash             \
- && patch -p0 <strtoimax.patch \
- && cd bash                    \
- && ./configure                \
+RUN curl https://ftp.gnu.org/gnu/bash/bash-5.2-patches/bash52-0[01-37] \
+  | patch -p0
+
+RUN ./configure                \
     --disable-command-timing   \
     --disable-debugger         \
     --disable-directory-stack  \
+    --disable-docs             \
     --disable-help-builtin     \
     --disable-job-control      \
     --disable-net-redirections \
@@ -24,9 +25,9 @@ RUN mv bash-* bash             \
  && make                       \
  && strip bash
 
-FROM codegolf/lang-base
+FROM codegolf/lang-base-no-proc
 
-COPY --from=0 /bash/bash /usr/bin/
+COPY --from=0 /lang/bash /usr/bin/
 
 ENTRYPOINT ["bash"]
 

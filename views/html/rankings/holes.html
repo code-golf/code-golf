@@ -1,0 +1,47 @@
+{{ template "header"   . }}
+{{ template "rankings" . }}
+
+{{ template "lang-svgs" .Data.Rows }}
+
+<main id=two-pane>
+    {{ template "nav" . }}
+
+    <table class="nowrap-second sticky">
+        <thead>
+            <tr>
+                <th>#
+                <th>Golfer
+                {{ if eq .Data.HoleID "all" }}<th class=right>Holes{{ end }}
+                <th class=right>Points
+                <th class=right>{{ title .Data.Scoring }}
+                <th class=right>Time
+        <tbody>
+    {{ $name := "" }}
+    {{ with .Golfer }}{{ $name = .Name }}{{ end }}
+
+    {{ range .Data.Rows }}
+        <tr {{ if eq $name .Name }} class=me {{ end }}>
+            <td>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup>
+            <td>{{ template "golfer-link" . }}
+            {{ if eq $.Data.HoleID "all" }}<td class=right>{{ .Holes }}{{ end }}
+            <td class=right>{{ comma .Points }}
+            <td class=right>
+            {{ if eq $.Data.HoleID "all" }}
+                {{ comma .Strokes }}
+            {{ else }}
+                <a href="/golfers/{{ .Name }}/{{ $.Data.HoleID }}/{{ .Lang.ID }}/{{ $.Data.Scoring }}"
+                {{ if .OtherStrokes }}
+                   data-tooltip="{{ .Lang.Name }} {{ $.Data.Scoring }} solution is {{ comma .Strokes }} {{ $.Data.Scoring }}, {{ comma .OtherStrokes }} {{ $.Data.OtherScoring }}."
+                {{ end }}>
+                   <span>{{ comma .Strokes }}</span>
+                   <svg><use href="#{{ .Lang.ID }}"/></svg>
+                </a>
+            {{ end }}
+            <td class=right>{{ time (.Submitted.In $.Location) }}
+    {{ end }}
+    </table>
+
+    {{ template "pagination" .Data.Pager }}
+</main>
+
+{{ template "footer" }}

@@ -8,25 +8,33 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-type key string
+type key struct{}
 
-func Set(r *http.Request, k string, v any) *http.Request {
-	return r.WithContext(context.WithValue(r.Context(), key(k), v))
+type Session struct {
+	Database   *sqlx.DB
+	Golfer     *golfer.Golfer
+	GolferInfo *golfer.GolferInfo
+}
+
+func Create(r *http.Request) *http.Request {
+	return r.WithContext(context.WithValue(r.Context(), key{}, &Session{}))
+}
+
+func Get(r *http.Request) *Session {
+	return r.Context().Value(key{}).(*Session)
 }
 
 // Database gets the database handle from the request context.
 func Database(r *http.Request) *sqlx.DB {
-	return r.Context().Value(key("database")).(*sqlx.DB)
+	return Get(r).Database
 }
 
 // Golfer gets the golfer from the request context.
 func Golfer(r *http.Request) *golfer.Golfer {
-	golfer, _ := r.Context().Value(key("golfer")).(*golfer.Golfer)
-	return golfer
+	return Get(r).Golfer
 }
 
 // GolferInfo gets the GolferInfo object from the request context.
 func GolferInfo(r *http.Request) *golfer.GolferInfo {
-	info, _ := r.Context().Value(key("golfer-info")).(*golfer.GolferInfo)
-	return info
+	return Get(r).GolferInfo
 }

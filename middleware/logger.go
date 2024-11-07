@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"os"
 	"time"
+
+	"github.com/code-golf/code-golf/session"
 )
 
 const (
@@ -39,13 +41,19 @@ func Logger(next http.Handler) http.Handler {
 		ww := NewWrapResponseWriter(w, r.ProtoMajor)
 
 		defer func() {
+			golfer := "-"
+			if g := session.Golfer(r); g != nil {
+				golfer = g.Name
+			}
+
 			log.Printf(
-				"%s%d "+magenta+"%4s"+reset+" %s "+magenta+"%v"+white+" %s"+reset,
+				"%s%d "+magenta+"%4s"+reset+" %s "+magenta+"%v"+white+" %s %s"+reset,
 				statusColours[ww.Status()/100],
 				ww.Status(),
 				r.Method,
 				r.URL.Path,
 				time.Since(start).Round(time.Millisecond),
+				golfer,
 				r.UserAgent(),
 			)
 		}()

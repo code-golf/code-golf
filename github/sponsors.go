@@ -26,24 +26,16 @@ func sponsors(db *sqlx.DB) (limits []rateLimit) {
 
 	limits = append(limits, query.RateLimit)
 
-	tx, err := db.Begin()
-	if err != nil {
-		panic(err)
-	}
-
+	tx := db.MustBegin()
 	defer tx.Rollback()
 
-	if _, err := tx.Exec("UPDATE users SET sponsor = false"); err != nil {
-		panic(err)
-	}
+	tx.MustExec("UPDATE users SET sponsor = false")
 
 	for _, node := range query.Viewer.SponsorshipsAsMaintainer.Nodes {
-		if _, err := tx.Exec(
+		tx.MustExec(
 			"UPDATE users SET sponsor = true WHERE id = $1",
 			node.SponsorEntity.User.DatabaseID,
-		); err != nil {
-			panic(err)
-		}
+		)
 	}
 
 	if err := tx.Commit(); err != nil {

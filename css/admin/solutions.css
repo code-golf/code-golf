@@ -1,21 +1,26 @@
+@import "../_terminal.css";
+
 code { white-space: normal }
 
-form {
+main > form {
     align-items: center;
     display: grid;
-    gap: 1rem;
     grid-template-columns: min-content 1fr;
     margin: auto;
 }
 
-form > div {
+main > form > div {
     align-items: center;
     display: flex;
     grid-column: span 2;
     justify-content: flex-end;
 }
 
-label { font-weight: bold }
+main > form > span {
+    align-items: center;
+    display: flex;
+    gap: .25rem;
+}
 
 table {
     display: none;
@@ -27,7 +32,7 @@ td {
     white-space: nowrap;
 }
 
-td span {
+td > span {
     border: 1px solid var(--color);
     font-family: monospace;
     font-size: .75rem;

@@ -66,15 +66,11 @@ func wordify(i int) string {
 	return out.String()
 }
 
-func spellingNumbers() []Scorecard {
-	const count = 1001
-	tests := make([]test, count)
+func spellingNumbers() []Run {
+	tests := make([]test, 1001)
 
-	for i := 0; i < count; i++ {
-		tests[i] = test{
-			strconv.Itoa(i),
-			wordify(i),
-		}
+	for i := range tests {
+		tests[i] = test{strconv.Itoa(i), wordify(i)}
 	}
 
 	return outputTests(shuffle(tests))

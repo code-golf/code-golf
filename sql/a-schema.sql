@@ -1,22 +1,26 @@
 CREATE EXTENSION citext;
+CREATE EXTENSION hstore;
 
 CREATE TYPE cheevo AS ENUM (
     '0xdead', 'aged-like-fine-wine', 'alchemist', 'archivist',
-    'assembly-required', 'bakers-dozen', 'big-brother', 'bird-is-the-word',
-    'black-box-testing', 'blackjack', 'bullseye', 'caffeinated', 'cobowl',
-    'cunning-linguist', 'dammit-janet', 'different-strokes', 'dont-panic',
-    'elephpant-in-the-room', 'emergency-room', 'fish-n-chips', 'fore',
-    'forty-winks', 'gone-in-60-holes', 'happy-birthday-code-golf',
-    'happy-go-lucky', 'hello-world', 'hextreme-agony', 'inception',
-    'independence-day', 'interview-ready', 'its-over-9000', 'jeweler',
-    'just-kidding', 'like-comment-subscribe', 'marathon-runner',
+    'assembly-required', 'bakers-dozen', 'big-brother', 'biohazard',
+    'bird-is-the-word', 'black-box-testing', 'blackjack', 'bullseye',
+    'busy-beaver', 'caffeinated', 'centenarian', 'cobowl', 'cunning-linguist',
+    'dammit-janet', 'different-strokes', 'disappearing-act', 'dont-panic',
+    'double-slit-experiment', 'elephpant-in-the-room', 'emergency-room',
+    'evil-scheme', 'fish-n-chips', 'fore', 'forty-winks', 'go-forth',
+    'gone-in-60-holes', 'happy-birthday-code-golf', 'happy-go-lucky',
+    'hello-world', 'hextreme-agony', 'inception', 'independence-day',
+    'interview-ready', 'its-over-9000', 'jeweler', 'just-kidding',
+    'like-comment-subscribe', 'marathon-runner', 'mary-had-a-little-lambda',
     'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars',
-    'off-the-grid', 'omniglot', 'ouroboros', 'pangramglot', 'patches-welcome',
-    'phileas-fogg', 'pi-day', 'polyglot', 'polyglutton', 'real-programmers',
-    'right-on', 'rtfm', 'rule-34', 'slowcoach', 'solve-quine',
+    'neunundneunzig-luftballons', 'off-the-grid', 'omniglot', 'omniglutton',
+    'ouroboros', 'pangramglot', 'patches-welcome', 'phileas-fogg', 'pi-day',
+    'polyglot', 'polyglutton', 'real-programmers', 'right-on', 'rm-rf',
+    'rtfm', 'rule-34', 's-box-360', 'slowcoach', 'smörgåsbord', 'solve-quine',
     'sounds-quite-nice', 'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr',
     'twelvetide', 'twenty-kiloleagues', 'under-pressure', 'up-to-eleven',
-    'vampire-byte', 'x86'
+    'vampire-byte', 'x-factor', 'x86'
 );
 
 CREATE TYPE connection AS ENUM (
@@ -24,45 +28,55 @@ CREATE TYPE connection AS ENUM (
 );
 
 CREATE TYPE hole AS ENUM (
-    '12-days-of-christmas', '99-bottles-of-beer', 'abundant-numbers',
-    'abundant-numbers-long', 'arabic-to-roman', 'arrows', 'ascii-table',
-    'brainfuck', 'catalan-numbers', 'catalans-constant', 'christmas-trees',
-    'collatz', 'css-colors', 'cubes', 'day-of-week', 'diamonds', 'divisors',
-    'emirp-numbers', 'emirp-numbers-long', 'emojify', 'evil-numbers',
-    'evil-numbers-long', 'fibonacci', 'fizz-buzz', 'foo-fizz-buzz-bar',
-    'fractions', 'game-of-life', 'happy-numbers', 'happy-numbers-long',
-    'hexdump', 'intersection', 'inventory-sequence', 'isbn', 'jacobi-symbol',
-    'kolakoski-constant', 'kolakoski-sequence', 'leap-years',
-    'levenshtein-distance', 'leyland-numbers', 'look-and-say',
-    'lucky-numbers', 'lucky-tickets', 'maze', 'morse-decoder',
-    'morse-encoder', 'musical-chords', 'niven-numbers', 'niven-numbers-long',
-    'number-spiral', 'odious-numbers', 'odious-numbers-long',
-    'ordinal-numbers', 'pangram-grep', 'pascals-triangle',
-    'pernicious-numbers', 'pernicious-numbers-long', 'poker', 'prime-numbers',
+    '12-days-of-christmas', '24-game', '99-bottles-of-beer',
+    'abundant-numbers', 'abundant-numbers-long', 'arabic-to-roman',
+    'arithmetic-numbers', 'arrows', 'ascending-primes', 'ascii-table',
+    'brainfuck', 'card-number-validation', 'catalan-numbers',
+    'catalans-constant', 'christmas-trees', 'collatz', 'css-colors', 'cubes',
+    'day-of-week', 'dfa-simulator', 'diamonds', 'divisors', 'emirp-numbers',
+    'emirp-numbers-long', 'emojify', 'evil-numbers', 'evil-numbers-long',
+    'factorial-factorisation', 'farey-sequence', 'fibonacci', 'fizz-buzz',
+    'foo-fizz-buzz-bar', 'forsyth-edwards-notation', 'fractions',
+    'game-of-life', 'gijswijts-sequence', 'happy-numbers',
+    'happy-numbers-long', 'hexdump', 'intersection', 'inventory-sequence',
+    'isbn', 'jacobi-symbol', 'kaprekar-numbers', 'kolakoski-constant',
+    'kolakoski-sequence', 'leap-years', 'levenshtein-distance',
+    'leyland-numbers', 'ln-2', 'look-and-say', 'lucky-numbers',
+    'lucky-tickets', 'mahjong', 'maze', 'medal-tally', 'morse-decoder',
+    'morse-encoder', 'musical-chords', 'n-queens', 'niven-numbers',
+    'niven-numbers-long', 'number-spiral', 'odious-numbers',
+    'odious-numbers-long', 'ordinal-numbers', 'palindromemordnilap',
+    'pangram-grep', 'pascals-triangle', 'pernicious-numbers',
+    'pernicious-numbers-long', 'poker', 'polyominoes', 'prime-numbers',
     'prime-numbers-long', 'proximity-grid', 'qr-decoder', 'quine', 'recamán',
-    'repeating-decimals', 'reverse-polish-notation',
-    'rock-paper-scissors-spock-lizard', 'roman-to-arabic', 'rule-110',
-    'seven-segment', 'si-units', 'sierpiński-triangle', 'smith-numbers',
-    'spelling-numbers', 'star-wars-opening-crawl', 'sudoku', 'sudoku-v2',
-    'ten-pin-bowling', 'time-distance', 'tongue-twisters', 'united-states',
-    'vampire-numbers', 'van-eck-sequence', 'zodiac-signs', 'γ', 'λ', 'π', 'τ',
-    'φ', '√2', '𝑒'
+    'repeating-decimals', 'reverse-polish-notation', 'reversi',
+    'rijndael-s-box', 'rock-paper-scissors-spock-lizard', 'roman-to-arabic',
+    'rule-110', 'seven-segment', 'si-units', 'sierpiński-triangle',
+    'smith-numbers', 'spelling-numbers', 'star-wars-opening-crawl', 'sudoku',
+    'sudoku-fill-in', 'ten-pin-bowling', 'time-distance', 'tongue-twisters',
+    'transpose-sentence', 'united-states', 'vampire-numbers',
+    'van-eck-sequence', 'zeckendorf-representation', 'zodiac-signs', 'γ', 'λ',
+    'π', 'τ', 'φ', '√2', '𝑒'
 );
 
-CREATE TYPE layout AS ENUM ('default', 'tabs');
+CREATE TYPE idea_category AS ENUM ('cheevo', 'hole', 'lang', 'other');
 
 CREATE TYPE keymap AS ENUM ('default', 'vim');
 
 CREATE TYPE lang AS ENUM (
-    'assembly', 'awk', 'bash', 'basic', 'brainfuck', 'c', 'c-sharp', 'cpp',
-    'cobol', 'crystal', 'd', 'dart', 'elixir', 'f-sharp', 'fish', 'fortran',
-    'go', 'golfscript', 'haskell', 'hexagony', 'j', 'janet', 'java',
-    'javascript', 'julia', 'k', 'lisp', 'lua', 'nim', 'ocaml', 'pascal',
-    'perl', 'php', 'powershell', 'prolog', 'python', 'r', 'raku', 'ruby',
-    'rust', 'sed', 'sql', 'swift', 'tcl', 'tex', 'v', 'viml', 'wren', 'zig'
+    'assembly', 'awk', 'bash', 'basic', 'berry', 'brainfuck', 'c', 'c-sharp',
+    'civet', 'clojure',  'cpp', 'cobol', 'coconut', 'crystal', 'd', 'dart',
+    'elixir', 'f-sharp', 'factor', 'fish', 'forth', 'fortran', 'go',
+    'golfscript', 'haskell', 'hexagony', 'j', 'janet', 'java', 'javascript',
+    'jq', 'julia', 'k', 'kotlin', 'lisp', 'lua', 'nim', 'ocaml', 'pascal',
+    'perl', 'php', 'powershell', 'prolog', 'python', 'r', 'raku', 'rockstar',
+    'ruby', 'rust', 'scheme', 'sed', 'sql', 'swift', 'tcl', 'tex', 'v',
+    'viml', 'wren', 'zig'
 );
 
-CREATE TYPE medal AS ENUM ('diamond', 'gold', 'silver', 'bronze');
+CREATE TYPE medal AS ENUM ('unicorn', 'diamond', 'gold', 'silver', 'bronze');
+
+CREATE TYPE pronouns AS ENUM ('he/him', 'she/her', 'they/them');
 
 CREATE TYPE scoring AS ENUM ('bytes', 'chars');
 
@@ -72,14 +86,21 @@ CREATE TABLE discord_records (
     hole    hole NOT NULL,
     lang    lang NOT NULL,
     message text NOT NULL,
+    channel text NOT NULL,
     PRIMARY KEY (hole, lang)
 );
 
+CREATE TABLE discord_state (
+    key   text NOT NULL PRIMARY KEY,
+    value text NOT NULL
+);
+
 CREATE UNLOGGED TABLE ideas (
-    id          int  NOT NULL PRIMARY KEY,
-    thumbs_down int  NOT NULL,
-    thumbs_up   int  NOT NULL,
-    title       text NOT NULL UNIQUE
+    id          int           NOT NULL PRIMARY KEY,
+    thumbs_down int           NOT NULL,
+    thumbs_up   int           NOT NULL,
+    title       text          NOT NULL UNIQUE,
+    category    idea_category NOT NULL DEFAULT 'other'
 );
 
 CREATE TABLE users (
@@ -98,9 +119,12 @@ CREATE TABLE users (
     country_flag char(2)   NOT NULL GENERATED ALWAYS AS
         (COALESCE(CASE WHEN show_country THEN country END, '')) STORED,
     keymap       keymap    NOT NULL DEFAULT 'default',
-    layout       layout    NOT NULL DEFAULT 'default',
+    pronouns     pronouns,
+    settings     jsonb     NOT NULL DEFAULT '{}'::jsonb,
+    about        text      NOT NULL DEFAULT '',
     CHECK (country IS NULL OR country = UPPER(country)),
-    CHECK (id != referrer_id)   -- Can't refer yourself
+    CHECK (id != referrer_id),              -- Can't refer yourself!
+    CHECK (login ~ '^[A-Za-z0-9_-]{1,42}$') -- 1 - 42 ASCII word/hyphen chars.
 );
 
 CREATE TABLE authors (
@@ -128,6 +152,15 @@ CREATE TABLE connections (
     UNIQUE (connection, user_id)
 );
 
+CREATE TABLE notes (
+    user_id int  NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    hole    hole NOT NULL,
+    lang    lang NOT NULL,
+    note    text NOT NULL,
+    CHECK (octet_length(note) <= 128 * 1024),
+    PRIMARY KEY (user_id, hole, lang)
+);
+
 CREATE TABLE sessions (
     id        uuid      NOT NULL DEFAULT GEN_RANDOM_UUID() PRIMARY KEY,
     last_used timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
@@ -144,6 +177,7 @@ CREATE TABLE solutions (
     scoring   scoring   NOT NULL,
     failing   bool      NOT NULL DEFAULT false,
     code      text      NOT NULL,
+    tested    timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
     -- Assembly can only be scored on bytes, and they are compiled bytes.
     CHECK ((lang  = 'assembly' AND chars IS NULL AND scoring = 'bytes')
         OR (lang != 'assembly' AND bytes = octet_length(code)
@@ -178,7 +212,8 @@ CREATE TABLE trophies (
 );
 
 CREATE MATERIALIZED VIEW medals AS WITH ranks AS (
-    SELECT user_id, hole, lang, scoring,
+    SELECT user_id, hole, lang, scoring, submitted,
+           COUNT(*) OVER (PARTITION BY hole, lang, scoring),
            RANK() OVER (
                PARTITION BY hole, lang, scoring
                    ORDER BY CASE WHEN scoring = 'bytes'
@@ -186,16 +221,20 @@ CREATE MATERIALIZED VIEW medals AS WITH ranks AS (
            )
       FROM solutions
      WHERE NOT failing
-) SELECT user_id, hole, lang, scoring,
-         (enum_range(NULL::medal))[rank + 1] medal
+) SELECT user_id, hole, lang, scoring, submitted,
+         (enum_range(NULL::medal))[rank + 2] medal
     FROM ranks
    WHERE rank < 4
    UNION ALL
-  SELECT MIN(user_id) user_id, hole, lang, scoring, 'diamond'::medal
+  SELECT MIN(user_id) user_id, hole, lang, scoring, MIN(submitted), 'diamond'::medal
     FROM ranks
    WHERE rank = 1
 GROUP BY hole, lang, scoring
-  HAVING COUNT(*) = 1;
+  HAVING COUNT(*) = 1
+   UNION ALL
+  SELECT user_id, hole, lang, scoring, submitted, 'unicorn'::medal
+    FROM ranks
+   WHERE count = 1;
 
 CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
     select hole, lang, scoring, user_id, submitted,
@@ -224,12 +263,16 @@ CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
       join bayesian_estimators using(hole, lang, scoring)
 ), ranks as (
     select *,
-           count(*) over (partition by hole, lang, scoring) golfers,
-           rank()   over (partition by hole, lang, scoring
-                              order by points_for_lang desc, strokes),
-           count(*) over (partition by hole, scoring) golfers_overall,
-           rank()   over (partition by hole, scoring
-                              order by points desc, strokes) rank_overall
+           count(*)     over (partition by hole, lang, scoring) golfers,
+           rank()       over (partition by hole, lang, scoring
+                                  order by points_for_lang desc, strokes),
+           row_number() over (partition by hole, lang, scoring
+                                  order by points_for_lang desc, strokes, submitted) row,
+           count(*)     over (partition by hole, scoring) golfers_overall,
+           rank()       over (partition by hole, scoring
+                                  order by points desc, strokes) rank_overall,
+           row_number() over (partition by hole, scoring
+                                  order by points desc, strokes, submitted) row_overall
       from points
 ), tie_count as (
     select hole, lang, scoring, strokes, count(*) tie_count
@@ -264,8 +307,10 @@ ALTER MATERIALIZED VIEW rankings OWNER TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE authors         TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE connections     TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE discord_records TO "code-golf";
+GRANT SELECT, INSERT, UPDATE         ON TABLE discord_state   TO "code-golf";
 GRANT SELECT, INSERT,         DELETE ON TABLE follows         TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE ideas           TO "code-golf";
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE notes           TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE sessions        TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE solutions       TO "code-golf";
 GRANT SELECT, INSERT                 ON TABLE solutions_log   TO "code-golf";

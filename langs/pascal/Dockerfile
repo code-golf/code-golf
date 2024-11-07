@@ -1,10 +1,10 @@
-FROM alpine:3.17 as builder
+FROM alpine:3.20 AS builder
 
-RUN apk add --no-cache binutils curl
+RUN apk add --no-cache build-base curl
 
 ENV ARCH=x86_64-linux VERSION=3.2.2
 
-RUN curl -L https://downloads.sourceforge.net/project/freepascal/Linux/$VERSION/fpc-$VERSION.$ARCH.tar | tar x
+RUN curl https://downloads.freepascal.org/fpc/dist/$VERSION/$ARCH/fpc-$VERSION.$ARCH.tar | tar x
 
 # Workaround musl vs glibc entrypoint for fpcmkcfg.
 RUN mkdir /lib64 \
@@ -21,20 +21,25 @@ RUN find /usr/lib/fpc/$VERSION/units/$ARCH \
     -not -name rtl-objpas                  \
     -exec rm -r {} +
 
+COPY pascal.c .
+
+RUN gcc -Wall -Werror -Wextra -o pascal -s pascal.c
+
 FROM codegolf/lang-base
 
-COPY --from=0 /bin                      /bin
-COPY --from=0 /lib/ld-musl-x86_64.so.1  \
-              /lib/libz.so.1            /lib/
-COPY --from=0 /etc/fpc.cfg              /etc/
-COPY --from=0 /usr/bin/fpc              \
-              /usr/bin/ld               /usr/bin/
-COPY --from=0 /usr/lib/libbfd-2.39.so   \
-              /usr/lib/libctf.so.0      /usr/lib/
-COPY --from=0 /usr/lib/fpc              /usr/lib/fpc
-
-COPY pascal /usr/bin/
+COPY --from=0 /lib/ld-musl-x86_64.so.1 \
+              /lib/libz.so.1           /lib/
+COPY --from=0 /etc/fpc.cfg             /etc/
+COPY --from=0 /pascal                  \
+              /usr/bin/fpc             \
+              /usr/bin/ld              /usr/bin/
+COPY --from=0 /usr/lib/libbfd-2.42.so  \
+              /usr/lib/libctf.so.0     \
+              /usr/lib/libjansson.so.4 \
+              /usr/lib/libsframe.so.1  \
+              /usr/lib/libzstd.so.1    /usr/lib/
+COPY --from=0 /usr/lib/fpc             /usr/lib/fpc
 
 ENTRYPOINT ["pascal"]
 
-CMD ["version"]
+CMD ["--version"]

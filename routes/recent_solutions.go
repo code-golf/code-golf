@@ -1,11 +1,11 @@
 package routes
 
 import (
-	"database/sql"
 	"net/http"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/null"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
 )
@@ -13,29 +13,25 @@ import (
 // GET /recent/solutions/{hole}/{lang}/{scoring}
 func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 	type row struct {
-		Hole                    *config.Hole
-		Lang                    *config.Lang
-		Login                   string
-		Rank, Strokes, TieCount int
-		Submitted               time.Time
+		Country                          config.NullCountry
+		Name                             string
+		Hole                             *config.Hole
+		Lang                             *config.Lang
+		Golfers, Rank, Strokes, TieCount int
+		Submitted                        time.Time
 	}
 
 	data := struct {
-		HoleID, LangID, Scoring string
-		Holes                   []*config.Hole
-		Langs                   []*config.Lang
-		LangsShown              map[string]bool
-		Pager                   *pager.Pager
-		Rows                    []row
+		Hole, PrevHole, NextHole *config.Hole
+		HoleID, LangID, Scoring  string
+		Pager                    *pager.Pager
+		Rows                     []row
 	}{
-		HoleID:     param(r, "hole"),
-		Holes:      config.HoleList,
-		LangID:     param(r, "lang"),
-		Langs:      config.LangList,
-		LangsShown: map[string]bool{},
-		Pager:      pager.New(r),
-		Rows:       make([]row, 0, pager.PerPage),
-		Scoring:    param(r, "scoring"),
+		HoleID:  param(r, "hole"),
+		LangID:  param(r, "lang"),
+		Pager:   pager.New(r),
+		Rows:    make([]row, 0, pager.PerPage),
+		Scoring: param(r, "scoring"),
 	}
 
 	if data.HoleID != "all" && config.HoleByID[data.HoleID] == nil ||
@@ -45,48 +41,24 @@ func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	rows, err := session.Database(r).Query(
-		` SELECT hole, lang, login, strokes, rank, submitted, tie_count
+	if data.Hole = config.HoleByID[data.HoleID]; data.Hole != nil {
+		data.PrevHole, data.NextHole = getPrevNextHole(r, data.Hole)
+	}
+
+	if err := session.Database(r).Select(
+		&data.Rows,
+		` SELECT golfers, hole, lang, login name, strokes, rank, submitted, tie_count
 		    FROM rankings
 		    JOIN users ON user_id = id
 		   WHERE (hole = $1 OR $1 IS NULL)
 		     AND (lang = $2 OR $2 IS NULL)
 		     AND scoring = $3
 		ORDER BY submitted DESC LIMIT $4`,
-		sql.NullString{String: data.HoleID, Valid: data.HoleID != "all"},
-		sql.NullString{String: data.LangID, Valid: data.LangID != "all"},
+		null.New(data.HoleID, data.HoleID != "all"),
+		null.New(data.LangID, data.LangID != "all"),
 		data.Scoring,
 		pager.PerPage,
-	)
-	if err != nil {
-		panic(err)
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var holeID, langID string
-		var r row
-
-		if err := rows.Scan(
-			&holeID,
-			&langID,
-			&r.Login,
-			&r.Strokes,
-			&r.Rank,
-			&r.Submitted,
-			&r.TieCount,
-		); err != nil {
-			panic(err)
-		}
-
-		r.Hole = config.HoleByID[holeID]
-		r.Lang = config.LangByID[langID]
-
-		data.LangsShown[langID] = true
-		data.Rows = append(data.Rows, r)
-	}
-
-	if err := rows.Err(); err != nil {
+	); err != nil {
 		panic(err)
 	}
 

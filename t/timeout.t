@@ -3,25 +3,25 @@ use t;
 # Note timeout is 5s in live, 10s under e2e. See hole/play.go for details.
 
 subtest 'Timeout' => {
-    my $res = post-solution :code('sleep 11');
+    my $res = post-solution( :code('sleep 11') )<runs>[0];
 
-    is $res<Err>, 'Killed for exceeding the 10s timeout.', 'Correct error';
+    is $res<stderr>, 'Killed for exceeding the 10s timeout.', 'Correct error';
 
-    is floor( $res<Took> / 1e9 ), 10, 'Correct took';
+    is floor( $res<time_ns> / 1e9 ), 10, 'Correct time';
 };
 
 subtest 'Timeout with correct output' => {
-    my $res = post-solution :code(q:to/CODE/);
+    my $res = post-solution( :code(q:to/CODE/) )<runs>[0];
         say "Fizz" x $_ %% 3 ~ "Buzz" x $_ %% 5 || $_ for 1 .. 100;
         $*OUT.flush;
         sleep 11;
     CODE
 
-    is $res<Err>, 'Killed for exceeding the 10s timeout.', 'Correct error';
+    is $res<stderr>, 'Killed for exceeding the 10s timeout.', 'Correct error';
 
-    is $res<Out>, slurp('hole/answers/fizz-buzz.txt').trim, 'Correct output';
+    is $res<stdout>, slurp('hole/answers/fizz-buzz.txt').trim, 'Correct output';
 
-    nok $res<Pass>, 'Solution fails';
+    nok $res<pass>, 'Solution fails';
 };
 
 done-testing;

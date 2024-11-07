@@ -1,13 +1,14 @@
-import { EditorState }                     from '@codemirror/state';
-import { EditorView, keymap, lineNumbers,
-    drawSelection }                        from '@codemirror/view';
+import { EditorState }                                    from '@codemirror/state';
+import { EditorView, keymap, lineNumbers, drawSelection,
+    highlightWhitespace } from '@codemirror/view';
+import { $ }                                              from './_util';
 
 export { EditorState, EditorView };
 
 // Extensions.
 import { carriageReturn, insertChar,
     showUnprintables }                           from './_codemirror_unprintable';
-import { history, historyKeymap, insertNewline,
+import { history, historyKeymap, indentLess, insertNewline,
     insertTab, standardKeymap, toggleComment }   from '@codemirror/commands';
 import { tags }                                  from '@lezer/highlight';
 import { bracketMatching, defaultHighlightStyle,
@@ -17,45 +18,64 @@ import { oneDarkTheme, oneDarkHighlightStyle }   from '@codemirror/theme-one-dar
 import { vim }                                   from '@replit/codemirror-vim';
 
 // Languages.
-import { assembly }           from '@defasm/codemirror';
-import { brainfuck }          from 'codemirror-lang-brainfuck';
-import { c, csharp, dart }    from './vendor/codemirror-clike';
-import { cobol }              from './vendor/codemirror-cobol';
-import { commonLisp }         from '@codemirror/legacy-modes/mode/commonlisp';
-import { cpp }                from '@codemirror/lang-cpp';
-import { crystal }            from '@codemirror/legacy-modes/mode/crystal';
-import { d }                  from '@codemirror/legacy-modes/mode/d';
-import { elixir }             from 'codemirror-lang-elixir';
-import { fortran }            from '@codemirror/legacy-modes/mode/fortran';
-import { fSharp }             from '@codemirror/legacy-modes/mode/mllike';
-import { go }                 from '@codemirror/legacy-modes/mode/go';
-import { golfScript }         from 'codemirror-lang-golfscript';
-import { haskell }            from '@codemirror/legacy-modes/mode/haskell';
-import { j }                  from 'codemirror-lang-j';
-import { janet }              from 'codemirror-lang-janet';
-import { java }               from '@codemirror/lang-java';
-import { javascriptLanguage } from '@codemirror/lang-javascript';
-import { julia }              from '@codemirror/legacy-modes/mode/julia';
-import { k }                  from 'codemirror-lang-k';
-import { lua }                from '@codemirror/legacy-modes/mode/lua';
-import { nim }                from 'nim-codemirror-mode';
-import { oCaml }              from '@codemirror/legacy-modes/mode/mllike';
-import { pascal }             from '@codemirror/legacy-modes/mode/pascal';
-import { perl }               from '@codemirror/legacy-modes/mode/perl';
-import { phpLanguage }        from '@codemirror/lang-php';
-import { powerShell }         from '@codemirror/legacy-modes/mode/powershell';
-import { prolog }             from 'codemirror-lang-prolog';
-import { pythonLanguage }     from '@codemirror/lang-python';
-import { r }                  from '@codemirror/legacy-modes/mode/r';
-import { raku }               from './vendor/codemirror-raku';
-import { ruby }               from '@codemirror/legacy-modes/mode/ruby';
-import { rust }               from '@codemirror/lang-rust';
-import { shell }              from '@codemirror/legacy-modes/mode/shell';
-import { sql, SQLite }        from '@codemirror/lang-sql';
-import { swift }              from '@codemirror/legacy-modes/mode/swift';
-import { tcl }                from '@codemirror/legacy-modes/mode/tcl';
-import { stex }               from '@codemirror/legacy-modes/mode/stex';
-import { wren }               from '@exercism/codemirror-lang-wren';
+import { assembly }                       from '@defasm/codemirror';
+import { brainfuck }                      from 'codemirror-lang-brainfuck';
+import { c, csharp, dart, kotlin, scala } from './vendor/codemirror-clike';
+import { clojure }                        from '@codemirror/legacy-modes/mode/clojure';
+import { cobol }                          from './vendor/codemirror-cobol';
+import { coffeeScript }                   from '@codemirror/legacy-modes/mode/coffeescript';
+import { commonLisp }                     from '@codemirror/legacy-modes/mode/commonlisp';
+import { cpp }                            from '@codemirror/lang-cpp';
+import { crystal }                        from '@codemirror/legacy-modes/mode/crystal';
+import { d }                              from '@codemirror/legacy-modes/mode/d';
+import { elixirLanguage }                 from 'codemirror-lang-elixir';
+import { factor }                         from '@codemirror/legacy-modes/mode/factor';
+import { forth }                          from '@codemirror/legacy-modes/mode/forth';
+import { fortran }                        from '@codemirror/legacy-modes/mode/fortran';
+import { fSharp, oCaml }                  from '@codemirror/legacy-modes/mode/mllike';
+import { gleamLanguage }                  from '@exercism/codemirror-lang-gleam';
+import { goLanguage }                     from '@codemirror/lang-go';
+import { golfScript }                     from 'codemirror-lang-golfscript';
+import { groovy }                         from '@codemirror/legacy-modes/mode/groovy';
+import { haskell }                        from '@codemirror/legacy-modes/mode/haskell';
+import { haxe }                           from '@codemirror/legacy-modes/mode/haxe';
+import { j }                              from 'codemirror-lang-j';
+import { janet }                          from 'codemirror-lang-janet';
+import { java }                           from '@codemirror/lang-java';
+import { javascriptLanguage }             from '@codemirror/lang-javascript';
+import { jq }                             from 'codemirror-lang-jq';
+import { julia }                          from '@codemirror/legacy-modes/mode/julia';
+import { k }                              from 'codemirror-lang-k';
+import { lua }                            from '@codemirror/legacy-modes/mode/lua';
+import { nim }                            from 'nim-codemirror-mode';
+import { pascal }                         from '@codemirror/legacy-modes/mode/pascal';
+import { perl }                           from '@codemirror/legacy-modes/mode/perl';
+import { phpLanguage }                    from '@codemirror/lang-php';
+import { powerShell }                     from '@codemirror/legacy-modes/mode/powershell';
+import { prolog }                         from 'codemirror-lang-prolog';
+import { pythonLanguage }                 from '@codemirror/lang-python';
+import { r }                              from '@codemirror/legacy-modes/mode/r';
+import { raku }                           from './vendor/codemirror-raku';
+import { ruby }                           from '@codemirror/legacy-modes/mode/ruby';
+import { rust }                           from '@codemirror/lang-rust';
+import { scheme }                         from '@codemirror/legacy-modes/mode/scheme';
+import { shell }                          from '@codemirror/legacy-modes/mode/shell';
+import { SQLite }                         from '@codemirror/lang-sql';
+import { swift }                          from '@codemirror/legacy-modes/mode/swift';
+import { tcl }                            from '@codemirror/legacy-modes/mode/tcl';
+import { stex }                           from '@codemirror/legacy-modes/mode/stex';
+import { wrenLanguage }                   from '@exercism/codemirror-lang-wren';
+import { zig }                            from 'codemirror-lang-zig';
+
+// Bypass default constructors so we only get highlighters and not extensions.
+const elixir     = new LanguageSupport(elixirLanguage);
+const gleam      = new LanguageSupport(gleamLanguage);
+const go         = new LanguageSupport(goLanguage);
+const javascript = new LanguageSupport(javascriptLanguage);
+const php        = new LanguageSupport(phpLanguage.configure({ top: 'Program' }));
+const python     = new LanguageSupport(pythonLanguage);
+const sql        = new LanguageSupport(SQLite.language);
+const wren       = new LanguageSupport(wrenLanguage);
 
 // For some reason, this doesn't fully work unless added to both themes.
 const asmErrorTooltip = {
@@ -66,17 +86,10 @@ const asmErrorTooltip = {
 
 const fontFamily = "'Source Code Pro', monospace";
 
-export const extensions = {
+export const extensions : { [key: string]: any } = {
     // Extensions.
     'base': [
-        carriageReturn, history(), insertChar, lineNumbers(), showUnprintables,
-        keymap.of([
-            // Replace "enter" with a non auto indenting action.
-            ...historyKeymap, ...standardKeymap.filter(k => k.key != 'Enter'),
-            { key: 'Enter', run: insertNewline },
-            { key: 'Tab',   run: insertTab },
-            { key: 'Mod-/', run: toggleComment },
-        ]),
+        carriageReturn, showUnprintables,
         drawSelection(),
         syntaxHighlighting(defaultHighlightStyle),
         EditorView.theme({
@@ -88,8 +101,104 @@ export const extensions = {
             '.cm-tooltip-autocomplete': { fontFamily },
         }, { dark: false }),
     ],
+    'editor': [
+        history(),
+        insertChar,
+        keymap.of([
+            // Replace "enter" with a non auto indenting action.
+            ...historyKeymap, ...standardKeymap.filter(k => k.key != 'Enter'),
+            { key: 'Enter', run: insertNewline },
+            { key: 'Tab',   run: insertTab, shift: indentLess },
+            { key: 'Mod-/', run: toggleComment },
+        ]),
+        highlightWhitespace(),
+        lineNumbers(),
+    ],
     'bracketMatching': bracketMatching(),
-    'dark': [
+    'vim': vim({ status: true }),
+
+    // Languages.
+    // TODO algol-68
+    // TODO arturo
+    'assembly':      assembly(),
+    'assembly-wiki': assembly({ byteDumps: false }),
+    'bash':          StreamLanguage.define(shell),
+    // TODO basic
+    // TODO befunge
+    // TODO bqn
+    'brainfuck':     brainfuck(),
+    'c':             StreamLanguage.define(c),
+    'c-sharp':       StreamLanguage.define(csharp),
+    'civet':         javascript,
+    'clojure':       StreamLanguage.define(clojure),
+    'cobol':         StreamLanguage.define(cobol),
+    'coconut':       python,
+    'coffeescript':  StreamLanguage.define(coffeeScript),
+    'cpp':           cpp(),
+    'crystal':       StreamLanguage.define(crystal),
+    'd':             StreamLanguage.define(d),
+    'dart':          StreamLanguage.define(dart),
+    // TODO egel
+    'elixir':        elixir,
+    'f-sharp':       StreamLanguage.define(fSharp),
+    'factor':        StreamLanguage.define(factor),
+    // TODO fish
+    'forth':         StreamLanguage.define({ ...forth, languageData: { commentTokens: { line: '\\' } } }),
+    'fortran':       StreamLanguage.define({ ...fortran, languageData: { commentTokens: { line: '!' } } }),
+    'gleam':         gleam,
+    'go':            go,
+    'golfscript':    golfScript(),
+    'groovy':        StreamLanguage.define(groovy),
+    // TODO hare
+    'haskell':       StreamLanguage.define(haskell),
+    'haxe':          StreamLanguage.define(haxe),
+    // TODO hexagony
+    // TODO hush
+    // TODO hy
+    'j':             j(),
+    'janet':         janet(),
+    'java':          java(),
+    'javascript':    javascript,
+    'jq':            jq(),
+    'julia':         StreamLanguage.define(julia),
+    'k':             k(),
+    'kotlin':        StreamLanguage.define(kotlin),
+    'lisp':          StreamLanguage.define(commonLisp),
+    'lua':           StreamLanguage.define(lua),
+    'nim':           StreamLanguage.define({ ...nim( {}, {} ), languageData: { commentTokens: { line: '#' } } }),
+    'ocaml':         StreamLanguage.define(oCaml),
+    // TODO odin
+    'pascal':        StreamLanguage.define(pascal),
+    'perl':          StreamLanguage.define(perl),
+    'php':           php,
+    'powershell':    StreamLanguage.define(powerShell),
+    'prolog':        prolog(),
+    'python':        python,
+    'r':             StreamLanguage.define(r),
+    'racket':        StreamLanguage.define(scheme),
+    'raku':          StreamLanguage.define(raku),
+    // TODO rebol
+    // TODO rexx
+    // TODO rockstar
+    'ruby':          StreamLanguage.define(ruby),
+    'rust':          rust(),
+    'scala':         StreamLanguage.define(scala),
+    'scheme':        StreamLanguage.define(scheme),
+    // TODO sed
+    'sql':           sql,
+    'swift':         StreamLanguage.define(swift),
+    'tcl':           StreamLanguage.define(tcl),
+    'tex':           StreamLanguage.define(stex),
+    // TODO uiua
+    // TODO v
+    // TODO viml
+    'wren':          wren,
+    'zig':           zig(),
+};
+
+// Order matters, unshift the dark stuff onto the front.
+if (matchMedia(JSON.parse($('#dark-mode-media-query').innerText)).matches)
+    extensions.base.unshift(
         EditorView.theme({
             '&': { background: 'var(--background)', color: 'var(--color)' },
             '.cm-asm-dump':               { color: 'var(--asm-dump)' },
@@ -104,58 +213,4 @@ export const extensions = {
         ])),
         oneDarkTheme,
         syntaxHighlighting(oneDarkHighlightStyle),
-    ],
-    'vim': vim({ status: true }),
-
-    // Languages.
-    'assembly':   assembly(),
-    'bash':       StreamLanguage.define(shell),
-    'brainfuck':  brainfuck(),
-    'c':          StreamLanguage.define(c),
-    'c-sharp':    StreamLanguage.define(csharp),
-    'cobol':      StreamLanguage.define(cobol),
-    'cpp':        cpp(),
-    'crystal':    StreamLanguage.define(crystal),
-    'd':          StreamLanguage.define(d),
-    'dart':       StreamLanguage.define(dart),
-    'elixir':     StreamLanguage.define(elixir),
-    'f-sharp':    StreamLanguage.define(fSharp),
-    // TODO fish
-    'fortran':    StreamLanguage.define({ ...fortran, languageData: { commentTokens: { line: '!' } } }),
-    'go':         StreamLanguage.define(go),
-    'golfscript': golfScript(),
-    'haskell':    StreamLanguage.define(haskell),
-    // TODO hexagony
-    'j':          j(),
-    'janet':      janet(),
-    'java':       java(),
-    // Bypass javascript() so that autocomplete imports are tree-shaken out.
-    'javascript': new LanguageSupport(javascriptLanguage),
-    'julia':      StreamLanguage.define(julia),
-    'k':          k(),
-    'lisp':       StreamLanguage.define(commonLisp),
-    'lua':        StreamLanguage.define(lua),
-    'nim':        StreamLanguage.define({ ...nim( {}, {} ), languageData: { commentTokens: { line: '#' } } }),
-    'ocaml':      StreamLanguage.define(oCaml),
-    'pascal':     StreamLanguage.define(pascal),
-    'perl':       StreamLanguage.define(perl),
-    // Bypass php() so that lang-html & lang-css imports are tree-shaken out.
-    'php':        new LanguageSupport(phpLanguage.configure({ top: 'Program' })),
-    'powershell': StreamLanguage.define(powerShell),
-    'prolog':     prolog(),
-    // Bypass python() so that autocomplete imports are tree-shaken out.
-    'python':     new LanguageSupport(pythonLanguage),
-    'r':          StreamLanguage.define(r),
-    'raku':       StreamLanguage.define(raku),
-    'ruby':       StreamLanguage.define(ruby),
-    'rust':       rust(),
-    // TODO sed
-    'sql':        sql({ dialect: SQLite }),
-    'swift':      StreamLanguage.define(swift),
-    'tcl':        StreamLanguage.define(tcl),
-    'tex':        StreamLanguage.define(stex),
-    // TODO v
-    // TODO viml
-    'wren':       wren(),
-    // TODO zig
-};
+    );

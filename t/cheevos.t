@@ -1,32 +1,36 @@
 use t;
 
 constant %holes = <
-    1  {hello-world}
-    4  {fore}
-    11 {up-to-eleven}
-    13 {bakers-dozen}
-    19 {the-watering-hole}
-    21 {blackjack}
-    34 {rule-34}
-    40 {forty-winks}
-    42 {dont-panic}
-    50 {bullseye}
-    60 {gone-in-60-holes}
-    69 {cunning-linguist}
-    80 {phileas-fogg}
-    86 {x86}
-    90 {right-on}
+      1 {hello-world}
+      4 {fore}
+     11 {up-to-eleven}
+     13 {bakers-dozen}
+     19 {the-watering-hole}
+     21 {blackjack}
+     34 {rule-34}
+     40 {forty-winks}
+     42 {dont-panic}
+     50 {bullseye}
+     60 {gone-in-60-holes}
+     69 {cunning-linguist}
+     80 {phileas-fogg}
+     86 {x86}
+     90 {right-on}
+     99 {neunundneunzig-luftballons}
+    100 {centenarian}
+    107 {busy-beaver}
+    111 {disappearing-act}
 >;
 
 constant %langs = <
     12 {polyglot}
     24 {polyglutton}
     36 {omniglot}
+    48 {omniglutton}
 >;
 
-my $dbh = dbh;
-createUser($dbh, 1);
-my $session = createSession($dbh, 1);
+my $dbh     = dbh;
+my $session = new-golfer :$dbh;
 
 $client.get: 'https://app/about',
     headers => { cookie => "__Host-session=$session" };
@@ -50,11 +54,14 @@ for $dbh.execute('SELECT unnest(enum_range(null::hole))').allrows.flat {
 for <
     brainfuck                        brainfuck {inception}
     divisors                         php       {elephpant-in-the-room}
+    evil-numbers                     scheme    {evil-scheme}
+    factorial-factorisation          factor    {x-factor}
     game-of-life                     elixir    {alchemist}
     hexdump                          hexagony  {hextreme-agony}
     pascals-triangle                 pascal    {under-pressure}
     poker                            fish      {fish-n-chips}
     quine                            python    {ouroboros}
+    rijndael-s-box                   c-sharp   {s-box-360}
     rock-paper-scissors-spock-lizard janet     {dammit-janet}
     seven-segment                    assembly  {assembly-required}
     sudoku                           hexagony  {off-the-grid}
@@ -83,9 +90,10 @@ is $dbh.execute(
 for $dbh.execute('SELECT unnest(enum_range(null::lang))').allrows.flat {
     my $earns = %langs{ my $i = ++$ } // '{}';
 
-    # Add hole-specific cheevos on the end.
+    # Add hole-specific cheevos on the front.
     $earns.=subst: '{', '{sounds-quite-nice,' if $_ eq 'd';
-    $earns.=subst: '{', '{caffeinated,'       if $_ eq 'javascript';
+    $earns.=subst: '{', '{caffeinated,'       if $_ eq 'java';
+    $earns.=subst: '{', '{go-forth,'          if $_ eq 'go';
     $earns.=subst: '{', '{just-kidding,'      if $_ eq 'k';
     $earns.=subst: '{', '{tim-toady,'         if $_ eq 'raku';
     $earns.=subst: ',}', '}';

@@ -1,33 +1,43 @@
-FROM rust:1.68.2-alpine3.17 as builder
+# Also bump Gleam, Hush, Uiua.
+ARG VER=1.82.0
 
-WORKDIR /usr/local/rustup/toolchains/1.68.2-x86_64-unknown-linux-musl
+FROM rust:$VER-alpine3.20 AS builder
+
+ARG VER
+
+WORKDIR /usr/local/rustup/toolchains/$VER-x86_64-unknown-linux-musl
 
 # Delete unused binaries.
 RUN find /usr/local/cargo/bin bin -not -name rustc -delete \
  && rm lib/rustlib/x86_64-unknown-linux-musl/bin/rust-lld
 
-# Delete unused libs.
-RUN rm lib/libtest-*.so
+# Delete unused sanitizers.
+RUN find . -name '*.?san.a' -delete
 
 # Strip the giant rust libs.
 RUN strip lib/*.so
 
 FROM codegolf/lang-base
 
+ARG VER
+
 COPY --from=0 /bin/sh                         /bin/
 COPY --from=0 /lib/ld-musl-x86_64.so.1        \
               /lib/libz.so.1                  /lib/
 COPY --from=0 /usr/bin/ld                     /usr/bin/
-COPY --from=0 /usr/lib/libbfd-2.39.so         \
+COPY --from=0 /usr/lib/libbfd-2.42.so         \
               /usr/lib/libctf.so.0            \
-              /usr/lib/libgcc_s.so.1          /usr/lib/
+              /usr/lib/libgcc_s.so.1          \
+              /usr/lib/libjansson.so.4        \
+              /usr/lib/libsframe.so.1         \
+              /usr/lib/libzstd.so.1           /usr/lib/
 COPY --from=0 /usr/local/cargo                /usr/local/cargo
 COPY --from=0 /usr/local/rustup/settings.toml /usr/local/rustup/
 
-COPY --from=0 /usr/local/rustup/toolchains/1.68.2-x86_64-unknown-linux-musl/bin \
-              /usr/local/rustup/toolchains/1.68.2-x86_64-unknown-linux-musl/bin
-COPY --from=0 /usr/local/rustup/toolchains/1.68.2-x86_64-unknown-linux-musl/lib \
-              /usr/local/rustup/toolchains/1.68.2-x86_64-unknown-linux-musl/lib
+COPY --from=0 /usr/local/rustup/toolchains/$VER-x86_64-unknown-linux-musl/bin \
+              /usr/local/rustup/toolchains/$VER-x86_64-unknown-linux-musl/bin
+COPY --from=0 /usr/local/rustup/toolchains/$VER-x86_64-unknown-linux-musl/lib \
+              /usr/local/rustup/toolchains/$VER-x86_64-unknown-linux-musl/lib
 
 COPY rust /usr/bin/
 

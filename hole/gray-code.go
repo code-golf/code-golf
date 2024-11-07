@@ -2,7 +2,7 @@ package hole
 
 import "strconv"
 
-func grayCode(reverse bool) []Scorecard {
+func grayCode(reverse bool) []Run {
 	const count = 2000
 
 	// Start with the 3 edge cases.

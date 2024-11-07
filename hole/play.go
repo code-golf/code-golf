@@ -4,16 +4,24 @@ import (
 	"bytes"
 	"context"
 	"embed"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
 	"os"
 	"os/exec"
 	"regexp"
+	"slices"
 	"strings"
+	"sync"
 	"syscall"
 	"time"
 	"unicode"
+
+	"github.com/agnivade/levenshtein"
+	"github.com/buildkite/terminal-to-html/v3"
+	"github.com/code-golf/code-golf/config"
+	hungarianAlgorithm "github.com/oddg/hungarian-algorithm"
 )
 
 var timeout = 5 * time.Second
@@ -28,195 +36,345 @@ func init() {
 //go:embed answers
 var answers embed.FS
 
-// All whitespace except newline, up to a newline or the end.
-var stdoutTrimmer = regexp.MustCompile(`[^\S\n]+(?:\n|$)`)
+// All ASCII whitespace except newline, up to a newline or the end.
+var perLineTrimmer = regexp.MustCompile(`[\t\x0B\f\r ]+(?:\n|$)`)
 
-var romanToASCII = strings.NewReplacer(
-	"Ⅰ", "I", "Ⅱ", "II", "Ⅲ", "III", "Ⅳ", "IV", "Ⅴ", "V",
-	"Ⅵ", "VI", "Ⅶ", "VII", "Ⅷ", "VIII", "Ⅸ", "IX", "Ⅹ", "X",
-	"Ⅺ", "XI", "Ⅻ", "XII", "Ⅼ", "L", "Ⅽ", "C", "Ⅾ", "D", "Ⅿ", "M",
-)
-
-type Scorecard struct {
-	ASMBytes, ExitCode int
-	Answer             string
-	Args               []string
-	Pass, Timeout      bool
-	Stderr, Stdout     []byte
-	Took               time.Duration
+func trimPerLine(bytesSlice []byte) string {
+	return string(bytes.TrimRight(perLineTrimmer.ReplaceAll(
+		bytesSlice, []byte{'\n'}), "\n"))
 }
 
-func preprocessKCode(holeID, code string) string {
-	if holeID == "quine" {
-		length := len(code)
-		var newCode []byte
+// Run holds the results of running a given solution once.
+type Run struct {
+	Answer            string        `json:"answer"`
+	ItemDelimiter     string        `json:"item_delimiter"`
+	MultisetDelimiter string        `json:"multiset_delimiter"`
+	Args              []string      `json:"args"`
+	ExitCode          int           `json:"exit_code"`
+	Pass              bool          `json:"pass"`
+	Stderr            string        `json:"stderr"`
+	Stdout            string        `json:"stdout"`
+	Time              time.Duration `json:"time_ns"`
+	Timeout           bool          `json:"timeout"`
 
-		// Disable implicit output by inserting a ';' before all newlines,
-		// except when the next line begins with a space (for a continuation).
-		for i := 0; i < length; i++ {
-			x := code[i]
-			if x != '\n' || i+1 < length && code[i+1] == ' ' {
-				newCode = append(newCode, x)
-			} else {
-				newCode = append(newCode, ';', '\n')
+	// This is a bit hacky, the only way to discover how long an assembly
+	// solution is is to compile it so we store it here but don't JSON it.
+	ASMBytes int `json:"-"`
+}
+
+func getClosestAnswer(anyAnswer, stdout, itemDelimiter, multisetDelimiter string) string {
+	answerMultisets := []string{anyAnswer}
+	stdoutMultisets := []string{stdout}
+	if multisetDelimiter != "" {
+		answerMultisets = strings.Split(anyAnswer, multisetDelimiter)
+		stdoutMultisets = strings.Split(stdout, multisetDelimiter)
+	}
+	closestMultisets := make([]string, len(answerMultisets))
+
+	for i, answerMultiset := range answerMultisets {
+		stdoutMultiset := ""
+		if i < len(stdoutMultisets) {
+			stdoutMultiset = stdoutMultisets[i]
+		}
+		closestMultisets[i] = getClosestMultiset(answerMultiset, stdoutMultiset, itemDelimiter)
+	}
+	return strings.Join(closestMultisets, multisetDelimiter)
+}
+
+func getClosestMultiset(anyAnswer, stdout, itemDelimiter string) string {
+	expectedItems := strings.Split(anyAnswer, itemDelimiter)
+	expectedItemsReordered := make([]string, len(expectedItems))
+	userItems := strings.Split(stdout, itemDelimiter)
+
+	expectedItemsMap := make(map[string]int)
+	for _, expected := range expectedItems {
+		expectedItemsMap[expected]++
+	}
+
+	// Match items that are correct
+	matches := 0
+	for i, user := range userItems {
+		if i < len(expectedItems) && expectedItemsMap[user] > 0 {
+			expectedItemsReordered[i] = user
+			expectedItemsMap[user]--
+			userItems[i] = ""
+			matches++
+		}
+	}
+
+	// Process mismatched items
+	if matches < len(expectedItems) {
+
+		// Calculate indices of expected & user items that couldn't be matched be equality
+		unmatchedExpectedIndices := []int{}
+		unmatchedUserIndices := []int{}
+
+		for i, expected := range expectedItems {
+			if expectedItemsMap[expected] > 0 {
+				unmatchedExpectedIndices = append(unmatchedExpectedIndices, i)
+				expectedItemsMap[expected]--
 			}
 		}
 
-		return string(newCode)
-	} else {
-		return code + "\n"
-	}
-}
-
-// Play a given hole, in a given lang, with given code and return a Scorecard.
-func Play(ctx context.Context, holeID, langID, code string) (score Scorecard) {
-	var scores []Scorecard
-
-	switch holeID {
-	case "arabic-to-roman", "roman-to-arabic":
-		scores = arabicToRoman(holeID == "roman-to-arabic")
-	case "arrows":
-		scores = arrows()
-	case "brainfuck":
-		scores = brainfuck()
-	case "css-colors":
-		scores = cssColors()
-	case "day-of-week":
-		scores = dayOfWeek()
-	case "ellipse-perimeters":
-		scores = ellipsePerimeters()
-	case "emojify":
-		scores = emojify()
-	case "forsyth-edwards-notation":
-		scores = forsythEdwardsNotation()
-	case "fractions":
-		scores = fractions()
-	case "game-of-life":
-		scores = gameOfLife()
-	case "gray-code-encoder", "gray-code-decoder":
-		scores = grayCode(holeID == "gray-code-decoder")
-	case "hexdump":
-		scores = hexdump()
-	case "isbn":
-		scores = isbn()
-	case "intersection":
-		scores = intersection()
-	case "jacobi-symbol":
-		scores = jacobiSymbol()
-	case "levenshtein-distance":
-		scores = levenshteinDistance()
-	case "lucky-tickets":
-		scores = luckyTickets()
-	case "mahjong":
-		scores = mahjong()
-	case "maze":
-		scores = maze()
-	case "morse-decoder", "morse-encoder":
-		scores = morse(holeID == "morse-decoder")
-	case "musical-chords":
-		scores = musicalChords()
-	case "ordinal-numbers":
-		scores = ordinalNumbers()
-	case "p-adic-expansion":
-		scores = pAdicExpansion()
-	case "pangram-grep":
-		scores = pangramGrep()
-	case "poker":
-		scores = poker()
-	case "proximity-grid":
-		scores = proximityGrid()
-	case "qr-decoder", "qr-encoder":
-		scores = qr(holeID == "qr-decoder")
-	case "quadratic-formula":
-		scores = quadraticFormula()
-	case "quine":
-		scores = []Scorecard{{Args: []string{}, Answer: code}}
-	case "repeating-decimals":
-		scores = repeatingDecimals()
-	case "reverse-polish-notation":
-		scores = reversePolishNotation()
-	case "rock-paper-scissors-spock-lizard":
-		scores = rockPaperScissorsSpockLizard()
-	case "seven-segment":
-		scores = sevenSegment()
-	case "si-units":
-		scores = siUnits()
-	case "spelling-numbers":
-		scores = spellingNumbers()
-	case "star-wars-opening-crawl":
-		scores = starWarsOpeningCrawl()
-	case "sudoku", "sudoku-v2":
-		scores = sudoku(holeID == "sudoku-v2")
-	case "ten-pin-bowling":
-		scores = tenPinBowling()
-	case "time-distance":
-		scores = timeDistance()
-	case "united-states":
-		scores = unitedStates()
-	case "turtle":
-		scores = turtle()
-	case "zodiac-signs":
-		scores = zodiacSigns()
-	case "zeckendorf-representation":
-		scores = zeckendorfRepresentation()
-	default:
-		// ¯\_(ツ)_/¯ cannot embed file answers/√2.txt: invalid name √2.txt
-		if holeID == "√2" {
-			holeID = "root-2"
+		for i, user := range userItems {
+			if user != "" {
+				unmatchedUserIndices = append(unmatchedUserIndices, i)
+			}
 		}
 
-		if b, err := answers.ReadFile("answers/" + holeID + ".txt"); err != nil {
+		n := max(len(unmatchedExpectedIndices), len(unmatchedUserIndices))
+
+		permutation := make([]int, n)
+		for i := range permutation {
+			permutation[i] = i
+		}
+
+		// If there are not many wrong items, try to match them
+		// otherwise, use the above identity permutation
+		if n <= 32 {
+			dist := make([][]int, n)
+			for i := range dist {
+				dist[i] = make([]int, n)
+				for j := range dist {
+					if j >= len(unmatchedExpectedIndices) {
+						dist[i][j] = len(userItems[unmatchedUserIndices[i]])
+					} else if i >= len(unmatchedUserIndices) {
+						dist[i][j] = len(expectedItems[unmatchedExpectedIndices[j]])
+					} else {
+						dist[i][j] = levenshtein.ComputeDistance(expectedItems[unmatchedExpectedIndices[j]], userItems[unmatchedUserIndices[i]])
+					}
+				}
+			}
+
+			permutation, _ = hungarianAlgorithm.Solve(dist)
+		}
+
+		k := 0
+		for _, i := range permutation {
+			if k >= len(expectedItemsReordered) {
+				break
+			}
+			if i < len(unmatchedExpectedIndices) {
+				for expectedItemsReordered[k] != "" {
+					k++
+				}
+				expectedItemsReordered[k] = expectedItems[unmatchedExpectedIndices[i]]
+			}
+		}
+	}
+
+	return strings.Join(expectedItemsReordered, itemDelimiter)
+}
+
+// Play a given hole, in a given lang, with given code and return the runs.
+func Play(
+	ctx context.Context, hole *config.Hole, lang *config.Lang, code string,
+) (runs []Run) {
+	switch hole.ID {
+	case "arabic-to-roman", "roman-to-arabic":
+		runs = arabicToRoman(hole.ID == "roman-to-arabic")
+	case "arrows":
+		runs = arrows()
+	case "billiards":
+		runs = billiards()
+	case "brainfuck":
+		runs = brainfuck()
+	case "card-number-validation":
+		runs = cardNumberValidation()
+	case "day-of-week":
+		runs = dayOfWeek()
+	case "dfa-simulator":
+		runs = dfaSimulator()
+	case "ellipse-perimeters":
+		runs = ellipsePerimeters()
+	case "forsyth-edwards-notation":
+		runs = forsythEdwardsNotation()
+	case "fractions":
+		runs = fractions()
+	case "game-of-life":
+		runs = gameOfLife()
+	case "gray-code-decoder", "gray-code-encoder":
+		runs = grayCode(hole.ID == "gray-code-decoder")
+	case "css-grid":
+		runs = cssGrid()
+	case "isbn":
+		runs = isbn()
+	case "intersection":
+		runs = intersection()
+	case "jacobi-symbol":
+		runs = jacobiSymbol()
+	case "levenshtein-distance":
+		runs = levenshteinDistance()
+	case "lucky-tickets":
+		runs = luckyTickets()
+	case "mahjong":
+		runs = mahjong()
+	case "maze":
+		runs = maze()
+	case "medal-tally":
+		runs = medalTally()
+	case "morse-decoder", "morse-encoder":
+		runs = morse(hole.ID == "morse-decoder")
+	case "musical-chords":
+		runs = musicalChords()
+	case "nfa-simulator":
+		runs = nfaSimulator()
+	case "ordinal-numbers":
+		runs = ordinalNumbers()
+	case "p-adic-expansion":
+		runs = pAdicExpansion()
+	case "palindromemordnilap":
+		runs = palindromemordnilap()
+	case "pangram-grep":
+		runs = pangramGrep()
+	case "placeholder":
+		runs = placeholder()
+	case "poker":
+		runs = poker()
+	case "qr-decoder", "qr-encoder":
+		runs = qr(hole.ID == "qr-decoder")
+	case "quadratic-formula":
+		runs = quadraticFormula()
+	case "quine":
+		runs = []Run{{Args: []string{}, Answer: code}}
+	case "repeating-decimals":
+		runs = repeatingDecimals()
+	case "reverse-polish-notation":
+		runs = reversePolishNotation()
+	case "reversi":
+		runs = reversi()
+	case "seven-segment":
+		runs = sevenSegment()
+	case "si-units":
+		runs = siUnits()
+	case "spelling-numbers":
+		runs = spellingNumbers()
+	case "star-wars-gpt":
+		runs = starWarsGpt()
+	case "sudoku", "sudoku-fill-in":
+		runs = sudoku(hole.ID == "sudoku-fill-in")
+	case "ten-pin-bowling":
+		runs = tenPinBowling()
+	case "time-distance":
+		runs = timeDistance()
+	case "transpose-sentence":
+		runs = transposeSentence()
+	case "turtle":
+		runs = turtle()
+	case "zeckendorf-representation":
+		runs = zeckendorfRepresentation()
+	case "zodiac-signs":
+		runs = zodiacSigns()
+
+	// Holes with fixed test cases.
+	case "css-colors":
+		runs = outputTests(shuffle(fixedTests(hole.ID)))
+	case "emojify", "rock-paper-scissors-spock-lizard", "united-states":
+		runs = outputMultirunTests(fixedTests(hole.ID))
+	case "floyd-steinberg-dithering", "hexdump", "proximity-grid", "star-wars-opening-crawl":
+		runs = outputTestsWithSep("\n\n", shuffle(fixedTests(hole.ID)))
+
+	// Holes with no arguments and a static answer.
+	default:
+		// ¯\_(ツ)_/¯ cannot embed file answers/√2.txt: invalid name √2.txt
+		id := hole.ID
+		if id == "√2" {
+			id = "root-2"
+		}
+
+		if b, err := answers.ReadFile("answers/" + id + ".txt"); err != nil {
 			panic(err)
 		} else {
 			answer := string(bytes.TrimSuffix(b, []byte{'\n'}))
-			scores = []Scorecard{{Args: []string{}, Answer: answer}}
+			runs = []Run{{Args: []string{}, Answer: answer}}
 		}
 	}
 
-	// Fast path, only one scorecard? No need for goroutines and channels.
-	if len(scores) == 1 {
-		play(ctx, holeID, langID, code, &scores[0])
-		return scores[0]
+	// Run all the runs in parallel to reduce the wall clock time.
+	var wg sync.WaitGroup
+	wg.Add(len(runs))
+
+	for i := range runs {
+		go func(run *Run) {
+			if err := play(ctx, hole, lang, code, run); err != nil {
+				log.Println(err)
+			}
+
+			wg.Done()
+		}(&runs[i])
 	}
 
-	done := make(chan Scorecard)
+	wg.Wait()
 
-	for _, score := range scores {
-		go func(score Scorecard) {
-			defer func() {
-				if r := recover(); r != nil {
-					log.Println(r)
-				}
-			}()
-
-			play(ctx, holeID, langID, code, &score)
-			done <- score
-		}(score)
-	}
-
-	// TODO Maybe return all runs (rather than last or failing) to the UI.
-	for range scores {
-		score = <-done
-
-		// We failed! Return that run.
-		if !score.Pass {
-			break
-		}
-	}
-
-	return // Return the last run.
+	return
 }
 
-func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
+func play(
+	ctx context.Context, hole *config.Hole, lang *config.Lang, code string, run *Run,
+) error {
+	// Preprocess code.
+	switch lang.ID {
+	case "clojure":
+		// Appending (print) prevents implicit output of the last form, if it
+		// is not nil. This seems to be a quirk of the Babashka interpreter
+		// that only occurs when providing code via a command line argument.
+		code += "(print)"
+	case "go":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && strings.Contains(code, "//go:embed") {
+			run.Stderr = `Quine in Go must not use "embed".`
+			return nil
+		}
+	case "jq":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && json.Valid([]byte(code)) {
+			run.Stderr = "Quine in jq must not be valid JSON."
+			return nil
+		}
+	case "k":
+		if hole.ID == "quine" {
+			length := len(code)
+			var newCode []byte
+
+			// Disable implicit output by inserting a ';' before all newlines,
+			// except when the next line begins with a space (for a continuation).
+			for i := range length {
+				x := code[i]
+				if x != '\n' || i+1 < length && code[i+1] == ' ' {
+					newCode = append(newCode, x)
+				} else {
+					newCode = append(newCode, ';', '\n')
+				}
+			}
+
+			code = string(newCode)
+		} else {
+			code += "\n"
+		}
+	case "kotlin":
+		if hole.ID == "quine" {
+			// Appending `Unit` on a newline suppresses implicit output of expressions
+			// in Kotlin. The '\n' guarantees we're not appending a ';' to another ';'.
+			code += "\nUnit"
+		}
+	case "php":
+		code = "<?php " + code + " ;"
+	case "tex":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && !strings.Contains(code, `\`) {
+			run.Stderr = `Quine in TeX must have at least one '\' character.`
+			return nil
+		}
+	}
+
 	var stderr, stdout bytes.Buffer
-	var asmBytesRead, asmBytesWrite *os.File
 
 	ctx, cancel := context.WithTimeout(ctx, timeout)
 	defer cancel()
 
 	cmd := exec.CommandContext(ctx, "/usr/bin/run-lang")
-	cmd.Dir = "/langs/" + langID
-	cmd.Env = []string{}
+	cmd.Dir = "/langs/" + lang.ID
+	cmd.Env = append([]string{"HOME=/tmp"}, lang.Env...)
 	cmd.Stderr = &stderr
 	cmd.Stdout = &stdout
 	cmd.WaitDelay = time.Second
@@ -225,142 +383,79 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 			syscall.CLONE_NEWNS | syscall.CLONE_NEWPID | syscall.CLONE_NEWUTS,
 	}
 
-	// Interpreter
-	switch langID {
-	case "assembly":
+	// Assembly bytes pipe.
+	var asmBytesRead, asmBytesWrite *os.File
+	if lang.ID == "assembly" {
 		var err error
 		if asmBytesRead, asmBytesWrite, err = os.Pipe(); err != nil {
-			panic(err)
+			return err
 		}
 
-		cmd.Args = []string{"/usr/bin/defasm", "--size-out=3", "-w", "-r"}
 		cmd.ExtraFiles = []*os.File{asmBytesWrite}
-	case "awk":
-		cmd.Args = []string{"/usr/bin/gawk", "-v", "RS=\\0", code}
-	case "bash":
-		cmd.Args = []string{"/usr/bin/bash", "-s", "-"}
-	case "brainfuck":
-		cmd.Args = []string{"/usr/bin/brainfuck", "-c", code}
-	case "c":
-		cmd.Args = []string{"/usr/bin/tcc", "-run", "-"}
-	case "crystal":
-		cmd.Args = []string{"/usr/bin/crystal", "run", "--stdin-filename", "code.cr", "--"}
-		cmd.Env = []string{"CRYSTAL_CACHE_DIR=/tmp", "PATH=/usr/bin:/bin"}
-	case "d":
-		cmd.Args = []string{"/usr/bin/ldc2", "--enable-color=true", "--run", "-"}
-		cmd.Env = []string{"PATH=/usr/bin"}
-	case "elixir":
-		cmd.Args = []string{"/usr/local/bin/elixir", "-e", code, "--"}
-		cmd.Env = []string{"LANG=C.UTF-8", "PATH=/usr/local/bin:/usr/bin:/bin"}
-	case "fish":
-		cmd.Args = []string{"/usr/bin/fish", "--no-prng", "-c", code, "-u"}
-	case "golfscript":
-		cmd.Args = []string{"/usr/bin/golfscript", "-n", "-e", code}
-		if holeID == "quine" {
-			cmd.Args = append(cmd.Args, "-q")
-		}
-		cmd.Args = append(cmd.Args, "--")
-	case "haskell", "php":
-		cmd.Args = []string{"/usr/bin/" + langID, "--"}
-	case "hexagony":
-		cmd.Args = []string{"/usr/bin/hexagony", "-d", "-"}
-	case "j":
-		cmd.Args = []string{"/usr/bin/j", "/tmp/code.ijs"}
-	case "janet":
-		cmd.Args = []string{"/usr/bin/janet", "/proc/self/fd/0"}
-	case "k":
-		cmd.Args = []string{"/usr/bin/kwrapper", "/tmp/code.k"}
-	case "javascript":
-		cmd.Args = []string{"/usr/bin/d8", "-e", code, "--"}
-	case "julia":
-		cmd.Args = []string{"/usr/bin/julia", "--color=yes", "/proc/self/fd/0"}
-		cmd.Env = []string{"HOME=/"}
-	case "nim":
-		cmd.Args = []string{"/usr/bin/nim", "--colors:on", "-o:/tmp/code", "-r", "c", "-"}
-	case "ocaml":
-		cmd.Args = []string{"/usr/bin/ocaml", "/proc/self/fd/0"}
-	case "perl":
-		cmd.Args = []string{"/usr/bin/perl", "-E", code, "--"}
-	case "powershell":
-		cmd.Args = []string{"/usr/bin/powershell"}
-
-		// Require explicit output for Quine to prevent trivial solutions.
-		if holeID == "quine" {
-			cmd.Args = append(cmd.Args, "--explicit")
-		}
-	case "prolog":
-		cmd.Args = []string{"/usr/bin/prolog", "-g", "halt", "/tmp/code.pl"}
-	case "python":
-		// Force the stdout and stderr streams to be unbuffered.
-		cmd.Args = []string{"/usr/bin/python", "-u", "-"}
-	case "r":
-		cmd.Args = []string{"/usr/bin/Rscript", "-"}
-
-		// Disable implicit output for Quine to prevent trivial solutions.
-		if holeID == "quine" {
-			cmd.Args = []string{"/usr/bin/Rscript", "-e", "source('stdin')"}
-		}
-	case "sed":
-		cmd.Args = []string{"/usr/bin/sed", "-E", "-z", "--sandbox", "-u", "--", code}
-	case "swift":
-		cmd.Args = []string{"/usr/bin/swift", "-module-cache-path", "/tmp", "-"}
-	case "tcl":
-		cmd.Args = []string{"/usr/bin/tcl", "/proc/self/fd/0"}
-	case "tex":
-		cmd.Args = []string{"/usr/bin/tex", code}
-
-		// Require a backslash for Quine to prevent trivial solutions.
-		// Don't even run the code; just mark error and return.
-		if holeID == "quine" && !strings.Contains(code, `\`) {
-			score.Stderr = []byte(`Quine in TeX must have at least one '\' character.`)
-			return
-		}
-	default:
-		cmd.Args = []string{"/usr/bin/" + langID, "-"}
 	}
 
-	// Args
-	switch langID {
+	// Language arguments. Clone because we intend to mutate.
+	cmd.Args = slices.Clone(lang.Args)
+	if hole.ID == "quine" && lang.ArgsQuine != nil {
+		cmd.Args = slices.Clone(lang.ArgsQuine)
+	}
+
+	// Pass code via args or stdin.
+	if i := slices.Index(cmd.Args, "$code"); i != -1 {
+		cmd.Args[i] = code
+	} else {
+		cmd.Stdin = strings.NewReader(code)
+	}
+
+	// Run arguments.
+	switch lang.ID {
 	case "awk", "brainfuck", "fish":
 		// Hole args passed through stdin for these langs separated by a null byte
 		args := ""
-		for _, arg := range score.Args {
+		for _, arg := range run.Args {
 			args += arg + "\x00"
 		}
 		cmd.Stdin = strings.NewReader(args)
+	case "rockstar":
+		// Embed args into the code.
+		var argCode strings.Builder
+		argCode.WriteString("rock args\n")
+		for _, arg := range run.Args {
+			argCode.WriteString(`rock "`)
+			for _, r := range arg {
+				switch r {
+				case '\\', '"':
+					argCode.WriteByte('\\')
+					argCode.WriteRune(r)
+				case '\n':
+					argCode.WriteString(`\n`)
+				default:
+					argCode.WriteRune(r)
+				}
+			}
+			argCode.WriteString("\" into args\n")
+		}
+		cmd.Stdin = strings.NewReader(argCode.String() + code)
 	case "sed":
 		// For sed we always need to append a null byte, even if no args exist
-		args := strings.Join(score.Args, "\x00") + "\x00"
+		args := strings.Join(run.Args, "\x00") + "\x00"
 		cmd.Stdin = strings.NewReader(args)
 	default:
-		cmd.Args = append(cmd.Args, score.Args...)
-	}
-
-	// Code
-	switch langID {
-	case "awk", "brainfuck", "elixir", "fish", "golfscript", "javascript",
-		"perl", "sed", "tex":
-		// For these langs, code is passed as an argument above.
-	case "k":
-		cmd.Stdin = strings.NewReader(preprocessKCode(holeID, code))
-	case "php":
-		cmd.Stdin = strings.NewReader("<?php " + code + " ;")
-	default:
-		cmd.Stdin = strings.NewReader(code)
+		cmd.Args = append(cmd.Args, run.Args...)
 	}
 
 	err := cmd.Run()
 
 	deadline, _ := ctx.Deadline()
-	score.Took = timeout - time.Until(deadline)
+	run.Time = timeout - time.Until(deadline)
 
 	if err != nil {
 		if err, ok := err.(*exec.ExitError); ok {
-			score.ExitCode = err.ExitCode()
+			run.ExitCode = err.ExitCode()
 		}
 
 		if errors.Is(ctx.Err(), context.DeadlineExceeded) {
-			score.Timeout = true
+			run.Timeout = true
 			fmt.Fprint(&stderr, "Killed for exceeding the ", timeout, " timeout.")
 		} else {
 			stderr.WriteString(err.Error())
@@ -368,9 +463,9 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 	}
 
 	// Actual byte count is printed by the assembler.
-	if langID == "assembly" {
-		if _, err := fmt.Fscanf(asmBytesRead, "%d", &score.ASMBytes); err != nil {
-			panic(err)
+	if lang.ID == "assembly" {
+		if _, err := fmt.Fscanf(asmBytesRead, "%d", &run.ASMBytes); err != nil {
+			return err
 		}
 		asmBytesRead.Close()
 	}
@@ -378,36 +473,49 @@ func play(ctx context.Context, holeID, langID, code string, score *Scorecard) {
 	const maxLength = 128 * 1024 // 128 KiB
 
 	// Trim trailing whitespace.
-	score.Stderr = bytes.TrimRightFunc(stderr.Next(maxLength), unicode.IsSpace)
+	stderrBytes := bytes.TrimRightFunc(stderr.Next(maxLength), unicode.IsSpace)
 
-	stdoutContents := stdout.Next(maxLength)
+	// Convert ANSI escapes into HTML, for coloured error messages.
+	run.Stderr = terminal.Render(stderrBytes)
+
+	// Bodge, suppress solitary "&nbsp;" that can be emitted.
+	if run.Stderr == "&nbsp;" {
+		run.Stderr = ""
+	}
+
+	stdoutBytes := stdout.Next(maxLength)
 
 	// Postprocess sed output to turn null bytes into newlines.
-	if langID == "sed" {
-		stdoutContents = bytes.ReplaceAll(stdoutContents, []byte("\x00"), []byte("\n"))
+	if lang.ID == "sed" {
+		stdoutBytes = bytes.ReplaceAll(stdoutBytes, []byte("\x00"), []byte("\n"))
 	}
 
 	// Trim trailing whitespace on each line, and then trailing empty lines.
 	// Quine solutions are obviously left untouched.
-	if holeID == "quine" {
-		score.Stdout = stdoutContents
+	if hole.ID == "quine" {
+		run.Stdout = string(stdoutBytes)
 	} else {
-		score.Stdout = bytes.TrimRight(stdoutTrimmer.ReplaceAll(
-			stdoutContents, []byte{'\n'}), "\n")
-	}
-
-	// ASCII-ify roman numerals
-	if holeID == "arabic-to-roman" {
-		score.Stdout = []byte(romanToASCII.Replace(string(score.Stdout)))
+		run.Stdout = trimPerLine(stdoutBytes)
 	}
 
 	// Timeouts and whitespace only output never pass.
-	if !score.Timeout && len(bytes.TrimSpace(score.Stdout)) != 0 {
-		if holeID == "css-colors" {
-			// TODO Generalise case insensitivity, should it apply to others?
-			score.Pass = strings.EqualFold(score.Answer, string(score.Stdout))
+	if !run.Timeout && len(strings.TrimSpace(run.Stdout)) != 0 {
+		if hole.ID != "quine" {
+			run.Answer = trimPerLine([]byte(run.Answer))
+		}
+		if hole.ItemDelimiter != "" {
+			run.Answer = getClosestAnswer(run.Answer, run.Stdout, hole.ItemDelimiter, hole.MultisetDelimiter)
+		}
+
+		if hole.CaseFold {
+			run.Pass = strings.EqualFold(run.Answer, run.Stdout)
 		} else {
-			score.Pass = score.Answer == string(score.Stdout)
+			run.Pass = run.Answer == run.Stdout
 		}
 	}
+
+	run.MultisetDelimiter = hole.MultisetDelimiter
+	run.ItemDelimiter = hole.ItemDelimiter
+
+	return nil
 }

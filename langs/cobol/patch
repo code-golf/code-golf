@@ -1,11 +1,11 @@
---- libcob/coblocal.h
-+++ libcob/coblocal.h
-@@ -173,7 +173,7 @@
- #endif
- 
- /* Convert between a digit and an integer (e.g., '0' <-> 0) */
--#define COB_D2I(x)		((x) - '0')
-+#define COB_D2I(x)		((x) & 0x0F)
- #define COB_I2D(x)		(char) ((x) + '0')
- 
- #define	COB_MODULE_PTR		cobglobptr->cob_current_module
+--- cobc/codegen.c
++++ cobc/codegen.c
+@@ -2107,7 +2107,7 @@
+ 			   which makes the whole purpose of the fence useless */
+ 		}
+ 		if (fld->index_type == CB_INT_INDEX) {
+-			output_local ("int		%s%d;",
++			output_local ("static int	%s%d;",
+ 				      CB_PREFIX_BASE, fld->id);
+ 		} else if (fld->index_type == CB_STATIC_INT_INDEX) {
+ 			output_local ("static int	%s%d;",

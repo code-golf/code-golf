@@ -1,4 +1,4 @@
-FROM golang:1.20.3-alpine3.17
+FROM golang:1.23.2-alpine3.20
 
 ENV CGO_ENABLED=0 GOAMD64=v4 GOPATH=
 
@@ -10,73 +10,100 @@ RUN go mod download
 
 COPY . ./
 
-RUN go build -ldflags -s -trimpath \
- && gcc -Wall -Werror -Wextra -o /usr/bin/run-lang -s -static run-lang.c
-
 RUN ./esbuild \
  && find dist \( -name '*.css' -or  -name '*.js' -or -name '*.map' \) \
   | xargs -i -n1 -P`nproc` sh -c 'brotli {} && zopfli {}'
 
+RUN go build -ldflags -s -trimpath \
+ && gcc -Wall -Werror -Wextra -o /usr/bin/run-lang -s -static run-lang.c
+
 FROM scratch
 
-COPY --from=codegolf/lang-swift      ["/", "/langs/swift/rootfs/"     ] #  484 MiB
-COPY --from=codegolf/lang-rust       ["/", "/langs/rust/rootfs/"      ] #  434 MiB
-COPY --from=codegolf/lang-haskell    ["/", "/langs/haskell/rootfs/"   ] #  310 MiB
-COPY --from=codegolf/lang-d          ["/", "/langs/d/rootfs/"         ] #  293 MiB
-COPY --from=codegolf/lang-julia      ["/", "/langs/julia/rootfs/"     ] #  286 MiB
-COPY --from=codegolf/lang-zig        ["/", "/langs/zig/rootfs/"       ] #  262 MiB
-COPY --from=codegolf/lang-dart       ["/", "/langs/dart/rootfs/"      ] #  240 MiB
-COPY --from=codegolf/lang-basic      ["/", "/langs/basic/rootfs/"     ] #  221 MiB
-COPY --from=codegolf/lang-crystal    ["/", "/langs/crystal/rootfs/"   ] #  201 MiB
-COPY --from=codegolf/lang-powershell ["/", "/langs/powershell/rootfs/"] #  176 MiB
-COPY --from=codegolf/lang-elixir     ["/", "/langs/elixir/rootfs/"    ] #  168 MiB
-COPY --from=codegolf/lang-f-sharp    ["/", "/langs/f-sharp/rootfs/"   ] #  150 MiB
-COPY --from=codegolf/lang-go         ["/", "/langs/go/rootfs/"        ] #  150 MiB
-COPY --from=codegolf/lang-c-sharp    ["/", "/langs/c-sharp/rootfs/"   ] #  149 MiB
-COPY --from=codegolf/lang-cpp        ["/", "/langs/cpp/rootfs/"       ] #  118 MiB
-COPY --from=codegolf/lang-ocaml      ["/", "/langs/ocaml/rootfs/"     ] # 99.1 MiB
-COPY --from=codegolf/lang-assembly   ["/", "/langs/assembly/rootfs/"  ] # 87.6 MiB
-COPY --from=codegolf/lang-fortran    ["/", "/langs/fortran/rootfs/"   ] # 85.6 MiB
-COPY --from=codegolf/lang-r          ["/", "/langs/r/rootfs/"         ] # 76.4 MiB
-COPY --from=codegolf/lang-python     ["/", "/langs/python/rootfs/"    ] #   74 MiB
-COPY --from=codegolf/lang-raku       ["/", "/langs/raku/rootfs/"      ] # 67.4 MiB
-COPY --from=codegolf/lang-java       ["/", "/langs/java/rootfs/"      ] # 51.1 MiB
-COPY --from=codegolf/lang-prolog     ["/", "/langs/prolog/rootfs/"    ] # 50.8 MiB
-COPY --from=codegolf/lang-v          ["/", "/langs/v/rootfs/"         ] # 46.1 MiB
-COPY --from=codegolf/lang-lisp       ["/", "/langs/lisp/rootfs/"      ] # 30.9 MiB
-COPY --from=codegolf/lang-pascal     ["/", "/langs/pascal/rootfs/"    ] # 30.9 MiB
-COPY --from=codegolf/lang-golfscript ["/", "/langs/golfscript/rootfs/"] # 24.2 MiB
-COPY --from=codegolf/lang-ruby       ["/", "/langs/ruby/rootfs/"      ] # 24.1 MiB
-COPY --from=codegolf/lang-javascript ["/", "/langs/javascript/rootfs/"] # 23.8 MiB
-COPY --from=codegolf/lang-viml       ["/", "/langs/viml/rootfs/"      ] # 23.1 MiB
-COPY --from=codegolf/lang-nim        ["/", "/langs/nim/rootfs/"       ] # 13.6 MiB
-COPY --from=codegolf/lang-j          ["/", "/langs/j/rootfs/"         ] #   11 MiB
-COPY --from=codegolf/lang-php        ["/", "/langs/php/rootfs/"       ] # 10.5 MiB
-COPY --from=codegolf/lang-tex        ["/", "/langs/tex/rootfs/"       ] # 9.58 MiB
-COPY --from=codegolf/lang-hexagony   ["/", "/langs/hexagony/rootfs/"  ] #  8.5 MiB
-COPY --from=codegolf/lang-perl       ["/", "/langs/perl/rootfs/"      ] # 5.34 MiB
-COPY --from=codegolf/lang-tcl        ["/", "/langs/tcl/rootfs/"       ] # 5.23 MiB
-COPY --from=codegolf/lang-fish       ["/", "/langs/fish/rootfs/"      ] # 4.99 MiB
-COPY --from=codegolf/lang-brainfuck  ["/", "/langs/brainfuck/rootfs/" ] # 4.57 MiB
-COPY --from=codegolf/lang-cobol      ["/", "/langs/cobol/rootfs/"     ] # 4.12 MiB
-COPY --from=codegolf/lang-awk        ["/", "/langs/awk/rootfs/"       ] # 1.72 MiB
-COPY --from=codegolf/lang-c          ["/", "/langs/c/rootfs/"         ] # 1.63 MiB
-COPY --from=codegolf/lang-janet      ["/", "/langs/janet/rootfs/"     ] # 1.35 MiB
-COPY --from=codegolf/lang-bash       ["/", "/langs/bash/rootfs/"      ] # 1.19 MiB
-COPY --from=codegolf/lang-sql        ["/", "/langs/sql/rootfs/"       ] # 1.13 MiB
-COPY --from=codegolf/lang-k          ["/", "/langs/k/rootfs/"         ] #  530 KiB
-COPY --from=codegolf/lang-wren       ["/", "/langs/wren/rootfs/"      ] #  484 KiB
-COPY --from=codegolf/lang-lua        ["/", "/langs/lua/rootfs/"       ] #  342 KiB
-COPY --from=codegolf/lang-sed        ["/", "/langs/sed/rootfs/"       ] #  232 KiB
+COPY --from=codegolf/lang-swift        ["/", "/langs/swift/rootfs/"       ] #  555 MiB
+COPY --from=codegolf/lang-go           ["/", "/langs/go/rootfs/"          ] #  383 MiB
+COPY --from=codegolf/lang-rust         ["/", "/langs/rust/rootfs/"        ] #  358 MiB
+COPY --from=codegolf/lang-haskell      ["/", "/langs/haskell/rootfs/"     ] #  339 MiB
+COPY --from=codegolf/lang-d            ["/", "/langs/d/rootfs/"           ] #  309 MiB
+COPY --from=codegolf/lang-zig          ["/", "/langs/zig/rootfs/"         ] #  300 MiB
+COPY --from=codegolf/lang-julia        ["/", "/langs/julia/rootfs/"       ] #  297 MiB
+COPY --from=codegolf/lang-crystal      ["/", "/langs/crystal/rootfs/"     ] #  270 MiB
+COPY --from=codegolf/lang-odin         ["/", "/langs/odin/rootfs/"        ] #  258 MiB
+COPY --from=codegolf/lang-dart         ["/", "/langs/dart/rootfs/"        ] #  235 MiB
+COPY --from=codegolf/lang-kotlin       ["/", "/langs/kotlin/rootfs/"      ] #  223 MiB
+COPY --from=codegolf/lang-basic        ["/", "/langs/basic/rootfs/"       ] #  205 MiB
+COPY --from=codegolf/lang-scala        ["/", "/langs/scala/rootfs/"       ] #  203 MiB
+COPY --from=codegolf/lang-powershell   ["/", "/langs/powershell/rootfs/"  ] #  180 MiB
+COPY --from=codegolf/lang-elixir       ["/", "/langs/elixir/rootfs/"      ] #  178 MiB
+COPY --from=codegolf/lang-factor       ["/", "/langs/factor/rootfs/"      ] #  173 MiB
+COPY --from=codegolf/lang-c-sharp      ["/", "/langs/c-sharp/rootfs/"     ] #  152 MiB
+COPY --from=codegolf/lang-f-sharp      ["/", "/langs/f-sharp/rootfs/"     ] #  148 MiB
+COPY --from=codegolf/lang-cpp          ["/", "/langs/cpp/rootfs/"         ] #  147 MiB
+COPY --from=codegolf/lang-groovy       ["/", "/langs/groovy/rootfs/"      ] #  146 MiB
+COPY --from=codegolf/lang-rockstar     ["/", "/langs/rockstar/rootfs/"    ] #  127 MiB
+COPY --from=codegolf/lang-assembly     ["/", "/langs/assembly/rootfs/"    ] #  106 MiB
+COPY --from=codegolf/lang-coconut      ["/", "/langs/coconut/rootfs/"     ] #  104 MiB
+COPY --from=codegolf/lang-fortran      ["/", "/langs/fortran/rootfs/"     ] # 94.3 MiB
+COPY --from=codegolf/lang-ocaml        ["/", "/langs/ocaml/rootfs/"       ] # 91.4 MiB
+COPY --from=codegolf/lang-gleam        ["/", "/langs/gleam/rootfs/"       ] # 88.1 MiB
+COPY --from=codegolf/lang-r            ["/", "/langs/r/rootfs/"           ] # 81.9 MiB
+COPY --from=codegolf/lang-raku         ["/", "/langs/raku/rootfs/"        ] # 75.8 MiB
+COPY --from=codegolf/lang-coffeescript ["/", "/langs/coffeescript/rootfs/"] # 69.1 MiB
+COPY --from=codegolf/lang-civet        ["/", "/langs/civet/rootfs/"       ] # 67.9 MiB
+COPY --from=codegolf/lang-clojure      ["/", "/langs/clojure/rootfs/"     ] # 64.6 MiB
+COPY --from=codegolf/lang-hy           ["/", "/langs/hy/rootfs/"          ] # 59.8 MiB
+COPY --from=codegolf/lang-v            ["/", "/langs/v/rootfs/"           ] # 59.7 MiB
+COPY --from=codegolf/lang-java         ["/", "/langs/java/rootfs/"        ] # 58.4 MiB
+COPY --from=codegolf/lang-egel         ["/", "/langs/egel/rootfs/"        ] # 49.8 MiB
+COPY --from=codegolf/lang-prolog       ["/", "/langs/prolog/rootfs/"      ] # 49.3 MiB
+COPY --from=codegolf/lang-python       ["/", "/langs/python/rootfs/"      ] # 47.7 MiB
+COPY --from=codegolf/lang-javascript   ["/", "/langs/javascript/rootfs/"  ] # 41.1 MiB
+COPY --from=codegolf/lang-haxe         ["/", "/langs/haxe/rootfs/"        ] # 40.0 MiB
+COPY --from=codegolf/lang-uiua         ["/", "/langs/uiua/rootfs/"        ] # 33.7 MiB
+COPY --from=codegolf/lang-lisp         ["/", "/langs/lisp/rootfs/"        ] # 31.1 MiB
+COPY --from=codegolf/lang-pascal       ["/", "/langs/pascal/rootfs/"      ] # 31.1 MiB
+COPY --from=codegolf/lang-racket       ["/", "/langs/racket/rootfs/"      ] # 29.0 MiB
+COPY --from=codegolf/lang-golfscript   ["/", "/langs/golfscript/rootfs/"  ] # 28.6 MiB
+COPY --from=codegolf/lang-ruby         ["/", "/langs/ruby/rootfs/"        ] # 28.6 MiB
+COPY --from=codegolf/lang-viml         ["/", "/langs/viml/rootfs/"        ] # 24.3 MiB
+COPY --from=codegolf/lang-scheme       ["/", "/langs/scheme/rootfs/"      ] # 17.9 MiB
+COPY --from=codegolf/lang-nim          ["/", "/langs/nim/rootfs/"         ] # 15.5 MiB
+COPY --from=codegolf/lang-hare         ["/", "/langs/hare/rootfs/"        ] # 13.5 MiB
+COPY --from=codegolf/lang-j            ["/", "/langs/j/rootfs/"           ] # 11.2 MiB
+COPY --from=codegolf/lang-tex          ["/", "/langs/tex/rootfs/"         ] # 9.67 MiB
+COPY --from=codegolf/lang-hexagony     ["/", "/langs/hexagony/rootfs/"    ] # 8.81 MiB
+COPY --from=codegolf/lang-php          ["/", "/langs/php/rootfs/"         ] # 8.40 MiB
+COPY --from=codegolf/lang-rockstar-2   ["/", "/langs/rockstar-2/rootfs/"  ] # 6.01 MiB
+COPY --from=codegolf/lang-tcl          ["/", "/langs/tcl/rootfs/"         ] # 5.62 MiB
+COPY --from=codegolf/lang-perl         ["/", "/langs/perl/rootfs/"        ] # 5.51 MiB
+COPY --from=codegolf/lang-arturo       ["/", "/langs/arturo/rootfs/"      ] # 5.29 MiB
+COPY --from=codegolf/lang-algol-68     ["/", "/langs/algol-68/rootfs/"    ] # 4.66 MiB
+COPY --from=codegolf/lang-fish         ["/", "/langs/fish/rootfs/"        ] # 4.66 MiB
+COPY --from=codegolf/lang-rexx         ["/", "/langs/rexx/rootfs/"        ] # 4.63 MiB
+COPY --from=codegolf/lang-cobol        ["/", "/langs/cobol/rootfs/"       ] # 4.56 MiB
+COPY --from=codegolf/lang-befunge      ["/", "/langs/befunge/rootfs/"     ] # 3.62 MiB
+COPY --from=codegolf/lang-hush         ["/", "/langs/hush/rootfs/"        ] # 3.27 MiB
+COPY --from=codegolf/lang-forth        ["/", "/langs/forth/rootfs/"       ] # 2.86 MiB
+COPY --from=codegolf/lang-awk          ["/", "/langs/awk/rootfs/"         ] # 1.78 MiB
+COPY --from=codegolf/lang-c            ["/", "/langs/c/rootfs/"           ] # 1.70 MiB
+COPY --from=codegolf/lang-bqn          ["/", "/langs/bqn/rootfs/"         ] # 1.27 MiB
+COPY --from=codegolf/lang-rebol        ["/", "/langs/rebol/rootfs/"       ] # 1.22 MiB
+COPY --from=codegolf/lang-sql          ["/", "/langs/sql/rootfs/"         ] # 1.21 MiB
+COPY --from=codegolf/lang-bash         ["/", "/langs/bash/rootfs/"        ] # 1.20 MiB
+COPY --from=codegolf/lang-berry        ["/", "/langs/berry/rootfs/"       ] #  973 KiB
+COPY --from=codegolf/lang-jq           ["/", "/langs/jq/rootfs/"          ] #  964 KiB
+COPY --from=codegolf/lang-janet        ["/", "/langs/janet/rootfs/"       ] #  886 KiB
+COPY --from=codegolf/lang-fennel       ["/", "/langs/fennel/rootfs/"      ] #  665 KiB
+COPY --from=codegolf/lang-k            ["/", "/langs/k/rootfs/"           ] #  621 KiB
+COPY --from=codegolf/lang-wren         ["/", "/langs/wren/rootfs/"        ] #  496 KiB
+COPY --from=codegolf/lang-lua          ["/", "/langs/lua/rootfs/"         ] #  354 KiB
+COPY --from=codegolf/lang-sed          ["/", "/langs/sed/rootfs/"         ] #  236 KiB
+COPY --from=codegolf/lang-brainfuck    ["/", "/langs/brainfuck/rootfs/"   ] # 51.2 KiB
 
-COPY --from=0 /go/code-golf /go/esbuild.json     /
-COPY          /css                               /css/
+COPY --from=0 /go/code-golf                      /
 COPY --from=0 /go/dist                           /dist/
 COPY --from=0 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY          /public                            /public/
-COPY          /svg                               /svg/
 COPY --from=0 /usr/bin/run-lang                  /usr/bin/
 COPY --from=0 /usr/share/zoneinfo                /usr/share/zoneinfo/
-COPY          /views                             /views/
 
 CMD ["/code-golf"]

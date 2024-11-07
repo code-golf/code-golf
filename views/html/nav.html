@@ -1,0 +1,62 @@
+<!-- Some pages have dynamic navigation from the controller -->
+{{ $nav := .Nav }}
+{{ if eq .Name "wiki" }}{{ $nav = .Data.Nav }}{{ end }}
+
+<form id=form-nav>
+    <input name=base type=hidden value="/{{ .Name }}">
+
+{{ if $nav.OnePerRow }}
+    <select name=nav>
+    {{ $val := param .Request (index $nav.Groups 0).Slug }}
+    {{ range $nav.Groups }}
+        {{ with .Name }}<optgroup label="{{ . }}">{{ end }}
+        {{ range .Links }}
+            <option value="{{ .Slug }}" {{ if eq $val .Slug }} selected {{ end }}>
+                {{ with .Emoji }}{{ . }}&ensp;{{ end }}{{ .Name }}
+        {{ end }}
+    {{ end }}
+    </select>
+{{ else }}
+    {{ range $i, $group := $nav.ReverseGroups }}
+        {{ $val := param $.Request $group.Slug }}
+        {{ if gt (len $group.Links) 3 }}
+            <select name="{{ $group.Slug }}">
+            {{ range $group.Links }}
+                <option value="{{ .Slug }}" {{ if eq $val .Slug }} selected {{ end }}>
+                    {{ .Name }}
+                    <!-- Clarify the type of "All" for dropdowns -->
+                    {{ if eq .Name "All" }}{{ $group.Name }}s{{ end }}
+            {{ end }}
+            </select>
+        {{ else }}
+            <fieldset>
+            {{ range $group.Links }}
+                <label>
+                    <input name="todo-group-slug" type=radio value="{{ .Slug }}"
+                        {{ if eq $val .Slug }} checked {{ end }}>
+                    {{ .Name }}
+                </label>
+            {{ end }}
+            </fieldset>
+        {{ end }}
+    {{ end }}
+{{ end }}
+</form>
+
+<!-- HACK wiki wants wide top links and not wide bottom links -->
+{{ $wiki := eq .Name "wiki" }}
+
+<nav {{ if and $nav.OnePerRow (not $wiki) }} id=one-per-row {{ end }}>
+{{ range $nav.Groups }}
+    {{ with .Name }}<h2>{{ . }}</h2>{{ end }}
+
+    {{ $hack := and $wiki (eq .Name "") }}
+    {{ range .Links }}
+        <a {{ with .PopulatePath $.Request }} href="{{ . }}" {{ end }}
+            {{ if $hack }} style="width:100%" {{ end }}>
+            <span>{{ .Name }}</span>
+            {{ with .Emoji }}<span>{{ . }}</span>{{ end }}
+        </a>
+    {{ end }}
+{{ end }}
+</nav>

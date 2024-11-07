@@ -1,10 +1,13 @@
-FROM alpine:3.17 as builder
+FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache build-base curl libffi-dev zlib-dev
 
-RUN curl https://www.python.org/ftp/python/3.11.3/Python-3.11.3.tar.xz | tar xJ
+# Also bump Coconut, Hy.
+ENV VER=3.13.0
 
-RUN cd Python-3.11.3           \
+RUN curl https://www.python.org/ftp/python/$VER/Python-$VER.tar.xz | tar xJ
+
+RUN cd Python-$VER             \
  && ./configure                \
     --disable-test-modules     \
     --prefix=/usr              \
@@ -12,14 +15,26 @@ RUN cd Python-3.11.3           \
     --without-ensurepip        \
     --without-static-libpython \
  && make -j`nproc` install     \
- && strip /usr/bin/python3.11
+ && strip /usr/bin/python3.13  \
+          /usr/lib/python3.13/lib-dynload/*.so
 
-FROM codegolf/lang-base
+# Remove some unneeded libraries.
+RUN rm -r /usr/lib/python3.13/__pycache__/doctest.* \
+          /usr/lib/python3.13/__pycache__/pydoc.*   \
+          /usr/lib/python3.13/__pycache__/turtle.*  \
+          /usr/lib/python3.13/ensurepip             \
+          /usr/lib/python3.13/idlelib               \
+          /usr/lib/python3.13/pydoc_data            \
+          /usr/lib/python3.13/tkinter               \
+          /usr/lib/python3.13/turtle.py             \
+          /usr/lib/python3.13/turtledemo
+
+FROM codegolf/lang-base-no-proc
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /usr/bin/python3.11      /usr/bin/python
-COPY --from=0 /usr/lib/python3.11      /usr/lib/python3.11
+COPY --from=0 /usr/bin/python3.13      /usr/bin/python
+COPY --from=0 /usr/lib/python3.13      /usr/lib/python3.13
 
 ENTRYPOINT ["python"]
 
-CMD ["-c", "import platform;print(platform.python_version())"]
+CMD ["--version"]

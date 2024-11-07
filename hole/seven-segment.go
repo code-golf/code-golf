@@ -8,20 +8,20 @@ var segments = [][]string{
 	{"|_|", "  |", "|_ ", " _|", "  |", " _|", "|_|", "  |", "|_|", " _|"},
 }
 
-func sevenSegment() []Scorecard {
+func sevenSegment() []Run {
 	digits := shuffle([]byte("00112233445566778899"))
-	score := Scorecard{Args: []string{string(digits)}}
+	t := test{in: string(digits)}
 
-	for row := 0; row < 3; row++ {
+	for row, segment := range segments {
 		for _, digit := range digits {
-			score.Answer += segments[row][digit-'0']
+			t.out += segment[digit-'0']
 		}
 
-		score.Answer = strings.TrimRight(score.Answer, " ")
+		t.out = strings.TrimRight(t.out, " ")
 		if row < 2 {
-			score.Answer += "\n"
+			t.out += "\n"
 		}
 	}
 
-	return []Scorecard{score}
+	return outputTests([]test{t})
 }

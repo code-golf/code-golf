@@ -1,9 +1,6 @@
 package hole
 
-import (
-	"math/rand"
-	"strings"
-)
+import "strings"
 
 const lifeSize = 32
 
@@ -47,11 +44,11 @@ type grid []string
 func randGrid() grid {
 	grid := make(grid, lifeSize)
 	var array [lifeSize]byte
-	for i := 0; i < lifeSize; i++ {
-		for j := 0; j < lifeSize; j++ {
+	for i := range lifeSize {
+		for j := range lifeSize {
 			c := lifeTemplate[i][j]
 			if c == '?' {
-				c = ".#"[rand.Int31()&1]
+				c = randChoice([]byte(".#"))
 			}
 			array[j] = c
 		}
@@ -70,8 +67,8 @@ func (grid grid) get(i, j int) int {
 func (g grid) step() grid {
 	next := make(grid, lifeSize)
 	var array [lifeSize]byte
-	for i := 0; i < lifeSize; i++ {
-		for j := 0; j < lifeSize; j++ {
+	for i := range lifeSize {
+		for j := range lifeSize {
 			neighbours := g.get(i+1, j+1) + g.get(i+1, j) + g.get(i+1, j-1) +
 				g.get(i, j+1) + g.get(i, j-1) +
 				g.get(i-1, j+1) + g.get(i-1, j) + g.get(i-1, j-1)
@@ -90,10 +87,8 @@ func (grid grid) toString() string {
 	return strings.Join(grid, "\n")
 }
 
-func gameOfLife() []Scorecard {
+func gameOfLife() []Run {
 	grid := randGrid()
-	return []Scorecard{{
-		Args:   []string{grid.toString()},
-		Answer: grid.step().toString(),
-	}}
+
+	return outputTests([]test{{grid.toString(), grid.step().toString()}})
 }

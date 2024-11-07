@@ -7,15 +7,18 @@ import (
 	"github.com/pelletier/go-toml/v2"
 )
 
-//go:embed *.toml
-var tomls embed.FS
+//go:embed data/*
+var config embed.FS
 
 var id = strings.NewReplacer(
+	// Emoji
+	"🦄 ", "", "💎 ", "", "🥇 ", "",
+
 	// Remove.
 	"!", "", "(", "", ")", "", ",", "", "’", "",
 
 	// Hyphenate.
-	" ", "-", ";", "-", "–", "-",
+	" -", "-", " ", "-", ";", "-", "–", "-",
 
 	// Special.
 	"#", "-sharp",
@@ -28,7 +31,7 @@ var id = strings.NewReplacer(
 func ID(name string) string { return strings.ToLower(id.Replace(name)) }
 
 func unmarshal(file string, value any) {
-	if data, err := tomls.ReadFile(file); err != nil {
+	if data, err := config.ReadFile(file); err != nil {
 		panic(err)
 	} else if err := toml.Unmarshal(data, value); err != nil {
 		panic(err)

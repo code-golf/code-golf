@@ -1,28 +1,35 @@
 package routes
 
 import (
+	"cmp"
 	"net/http"
+	"slices"
 	"strings"
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
-	"golang.org/x/exp/slices"
 )
 
 // GET /ideas
 func ideasGET(w http.ResponseWriter, r *http.Request) {
 	type idea struct {
+		Category, Title          string
 		Hole                     *config.Hole
 		ID, ThumbsDown, ThumbsUp int
-		Title                    string
+		Lang                     *config.Lang
 	}
 
-	data := struct {
-		Holes, Ideas, Langs []idea
-	}{Holes: make([]idea, len(config.ExpHoleList))}
+	var data struct{ Holes, Ideas, Langs []idea }
 
-	for i, hole := range config.ExpHoleList {
-		data.Holes[i] = idea{Hole: hole, ID: hole.Experiment, Title: hole.Name}
+	// FIXME This is only a slice because of semiprime/sphenic.
+	holes := map[int][]*config.Hole{}
+	for _, hole := range config.ExpHoleList {
+		holes[hole.Experiment] = append(holes[hole.Experiment], hole)
+	}
+
+	langs := map[int]*config.Lang{}
+	for _, lang := range config.ExpLangList {
+		langs[lang.Experiment] = lang
 	}
 
 	var ideas []idea
@@ -33,28 +40,31 @@ func ideasGET(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-rows:
 	for _, i := range ideas {
-		for j, hole := range data.Holes {
-			if hole.ID == i.ID {
-				data.Holes[j].ThumbsDown = i.ThumbsDown
-				data.Holes[j].ThumbsUp = i.ThumbsUp
-				continue rows
+		if holes, ok := holes[i.ID]; ok {
+			for _, hole := range holes {
+				i.Hole = hole
+				i.Title = hole.Name
+				data.Holes = append(data.Holes, i)
 			}
-		}
-
-		if strings.HasPrefix(i.Title, "Add ") && strings.HasSuffix(i.Title, " Lang") {
-			i.Title = i.Title[len("Add ") : len(i.Title)-len(" Lang")]
-
+		} else if lang, ok := langs[i.ID]; ok {
+			i.Lang = lang
+			i.Title = lang.Name
 			data.Langs = append(data.Langs, i)
 		} else {
 			data.Ideas = append(data.Ideas, i)
 		}
 	}
 
-	slices.SortStableFunc(data.Holes, func(a, b idea) bool {
-		return a.ThumbsUp-a.ThumbsDown > b.ThumbsUp-b.ThumbsDown
-	})
+	// Sort by vote difference, then case-insensitive title.
+	for _, ideas := range [][]idea{data.Holes, data.Langs} {
+		slices.SortFunc(ideas, func(a, b idea) int {
+			return cmp.Or(
+				cmp.Compare(b.ThumbsUp-b.ThumbsDown, a.ThumbsUp-a.ThumbsDown),
+				cmp.Compare(strings.ToLower(a.Title), strings.ToLower(b.Title)),
+			)
+		})
+	}
 
 	render(w, r, "ideas", data, "Ideas")
 }

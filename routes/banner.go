@@ -2,6 +2,9 @@ package routes
 
 import (
 	"html/template"
+	"maps"
+	"slices"
+	"strings"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
@@ -9,23 +12,30 @@ import (
 	"github.com/code-golf/code-golf/pretty"
 )
 
+var nextHole = config.ExpHoleByID["kaprekar-numbers"]
+
 type banner struct {
-	Body template.HTML
-	Type string
+	Body          template.HTML
+	HideKey, Type string
 }
 
 // TODO Allow a golfer to hide individual banners #709.
 func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
-	/* in := "in " + pretty.Time(time.Date(2023, time.April, 1, 0, 0, 0, 0, time.UTC))
-	if strings.Contains(string(in), "ago") {
-		in = "momentarily"
-	}
+	// Upcoming hole.
+	if hole := nextHole; hole != nil {
+		in := "in " + pretty.Time(hole.Released.AsTime(time.UTC))
+		if strings.Contains(string(in), "ago") {
+			in = "momentarily"
+		}
 
-	banners = append(banners, banner{
-		Type: "info",
-		Body: "The <a href=/si-units>SI Units</a> hole will go live " + in +
-			". Why not try and solve it ahead of time?",
-	}) */
+		banners = append(banners, banner{
+			HideKey: "upcoming-hole-" + hole.ID,
+			Type:    "info",
+			Body: "The <a href=/" + template.HTML(hole.ID) + ">" +
+				template.HTML(hole.Name) + "</a> hole will go live " + in +
+				". Why not try and solve it ahead of time?",
+		})
+	}
 
 	// Currently all the global banners require a golfer.
 	if golfer == nil {
@@ -38,9 +48,9 @@ func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 			Type: "alert",
 			Body: template.HTML(
 				"Your account will be permanently deleted on the " +
-					delete.Time.Format("2 Jan 2006") + "." +
+					delete.V.Format("2 Jan 2006") + "." +
 					"<p>If you wish to stop this, visit " +
-					"<a href=/golfer/settings>settings</a> " +
+					"<a href=/golfer/settings/delete-account>settings</a> " +
 					"and cancel the deletion."),
 		})
 	}
@@ -54,19 +64,37 @@ func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 				"please update them to pass:<ul>",
 		}
 
-		prevHoleID := ""
-		for _, solution := range failing {
-			hole := config.HoleByID[solution.Hole]
-			lang := config.LangByID[solution.Lang]
+		type GroupItem struct {
+			HoleID, LangID, KeyName, OtherName string
+		}
 
-			if prevHoleID == hole.ID {
-				banner.Body += template.HTML(`, <a href="/` + hole.ID + "#" +
-					lang.ID + `">` + lang.Name + "</a>")
-			} else {
-				banner.Body += template.HTML("<li>" + hole.Name + `: <a href="/` + hole.ID + "#" +
-					lang.ID + `">` + lang.Name + "</a>")
+		byLang := make(map[string][]GroupItem)
+		byHole := make(map[string][]GroupItem)
+
+		for _, solution := range failing {
+			langName := config.LangByID[solution.Lang].Name
+			holeName := config.HoleByID[solution.Hole].Name
+			byLang[solution.Lang] = append(byLang[solution.Lang], GroupItem{solution.Hole, solution.Lang, langName, holeName})
+			byHole[solution.Hole] = append(byHole[solution.Hole], GroupItem{solution.Hole, solution.Lang, holeName, langName})
+		}
+
+		groups := byHole
+		if len(byLang) < len(byHole) {
+			groups = byLang
+		}
+		keys := slices.Collect(maps.Keys(groups))
+		slices.Sort(keys)
+
+		for _, key := range keys {
+			solutionGroup := groups[key]
+			for index, solution := range solutionGroup {
+				if index > 0 {
+					banner.Body += template.HTML(", ")
+				} else {
+					banner.Body += template.HTML("<li>" + solution.KeyName + ": ")
+				}
+				banner.Body += template.HTML(`<a href="/` + solution.HoleID + "#" + solution.LangID + `">` + solution.OtherName + "</a>")
 			}
-			prevHoleID = hole.ID
 		}
 
 		banner.Body += "</ul>"
@@ -77,10 +105,7 @@ func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 	// Our date-specific cheevos are set around the year 2000.
 	delta := now.Year() - 2000
 
-	location := golfer.TimeZone
-	if location == nil {
-		location = time.UTC
-	}
+	location := golfer.Location()
 
 Cheevo:
 	for _, cheevo := range config.CheevoList {
@@ -105,7 +130,7 @@ Cheevo:
 				body = template.HTML("The "+cheevo.Emoji+" <b>"+
 					cheevo.Name+"</b> achievement will ") + body
 
-				banners = append(banners, banner{body, "info"})
+				banners = append(banners, banner{Body: body, Type: "info"})
 
 				break Cheevo
 			}
@@ -113,9 +138,10 @@ Cheevo:
 	}
 
 	// Latest hole (if unsolved).
-	if hole := recentHoles[0]; !golfer.Solved(hole.ID) {
+	if hole := config.RecentHoles[0]; !golfer.Solved(hole.ID) {
 		banners = append(banners, banner{
-			Type: "info",
+			HideKey: "latest-hole-" + hole.ID,
+			Type:    "info",
 			Body: template.HTML(`The <a href="/` + hole.ID + `">` +
 				hole.Name + "</a> hole is now live! Why not try and solve it?"),
 		})

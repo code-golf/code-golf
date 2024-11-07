@@ -30,6 +30,7 @@ let compile(checker: FSharpChecker) (codeFile: string) (assemblyPath: string) =
             "fsi.exe";
             "-o"; assemblyPath;
             codeFile;
+            "--strict-indentation-";
             "--targetprofile:netcore";
             "--target:exe";
             "--optimize";

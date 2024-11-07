@@ -1,18 +1,16 @@
-FROM alpine:3.17 AS builder
+FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache build-base curl
 
-RUN curl -L https://github.com/janet-lang/janet/archive/refs/tags/v1.27.0.tar.gz | tar xz
+RUN curl -L https://github.com/janet-lang/janet/archive/refs/tags/v1.36.0.tar.gz | tar xz
 
-RUN mv janet-* janet \
- && cd janet         \
- && make             \
- && strip build/janet
+RUN mv janet-* janet                          \
+ && make -C janet build/janet LDFLAGS=-static \
+ && strip janet/build/janet
 
 FROM codegolf/lang-base
 
-COPY --from=builder /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=builder /janet/build/janet       /usr/bin/
+COPY --from=0 /janet/build/janet /usr/bin/
 
 ENTRYPOINT ["janet"]
 

@@ -2,7 +2,7 @@ package hole
 
 import (
 	"encoding/hex"
-	"math/rand"
+	"math/rand/v2"
 	"strings"
 
 	"github.com/skip2/go-qrcode"
@@ -11,7 +11,7 @@ import (
 func randStr(len int) string {
 	buf := make([]byte, len)
 	for i := range buf {
-		buf[i] = byte(33 + rand.Intn(94)) // randPrintableAscii: [33; 126]
+		buf[i] = byte(33 + rand.IntN(94)) // randPrintableAscii: [33; 126]
 	}
 	return string(buf)
 }
@@ -108,16 +108,16 @@ func (qr matrix) toString(trimRight bool) string {
 	return buf.String()
 }
 
-func qr(decoder bool) []Scorecard {
+func qr(decoder bool) []Run {
 	content, qr := getStandardQr()
 	qrString := qr.toString(!decoder)
 
 	if decoder {
-		return []Scorecard{{Args: []string{qrString}, Answer: content}}
+		return outputTests([]test{{qrString, content}})
 	}
 
-	return []Scorecard{{
-		Args:   []string{content + " " + hex.EncodeToString(qr.getErrorCorrectionBlocks())},
-		Answer: qrString,
-	}}
+	return outputTests([]test{{
+		in:  content + " " + hex.EncodeToString(qr.getErrorCorrectionBlocks()),
+		out: qrString,
+	}})
 }

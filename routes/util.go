@@ -6,8 +6,6 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-
-	"github.com/go-chi/chi/v5"
 )
 
 func cookie(r *http.Request, name string) (value string) {
@@ -22,6 +20,9 @@ func cookie(r *http.Request, name string) (value string) {
 // The generated value SHOULD be at least 128 bits long (before encoding), and
 // SHOULD be generated via a cryptographically secure random number generator.
 // https://w3c.github.io/webappsec-csp/#security-nonces
+//
+// TODO Replace call sites with crypto/rand.Text() once it ships (prob 1.24).
+// https://github.com/golang/go/issues/67057
 func nonce() string {
 	nonce := make([]byte, 16)
 	if _, err := rand.Read(nonce); err != nil {
@@ -32,7 +33,7 @@ func nonce() string {
 }
 
 func param(r *http.Request, key string) string {
-	value, _ := url.QueryUnescape(chi.URLParam(r, key))
+	value, _ := url.QueryUnescape(r.PathValue(key))
 	return value
 }
 

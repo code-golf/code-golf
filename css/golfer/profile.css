@@ -43,9 +43,10 @@ section > a, section > div {
 .icons a:hover {
     background: var(--color);
     color: var(--background);
+    text-decoration: none;
 }
 
-.icons div:not(.earned) {
+#cheevos a:not(.earned) {
     background: var(--light-grey);
     color: transparent;
     text-shadow: 0 0 var(--cheevo-not-earned);
@@ -105,22 +106,31 @@ section > a, section > div {
 }
 
 #wall {
-    display: flex;
-    flex-direction: column;
+    display: grid;
     gap: .5rem;
-}
+    grid-template-columns: auto 1fr;
+    height: fit-content;
 
-#wall a, #wall div {
-    align-items: center;
-    display: flex;
-    gap: .375rem;
-}
+    div { line-height: 1.5rem }
 
-#wall img {
-    border-radius: 50%;
-    display: block;
-    height: 1.5rem;
-    width: 1.5rem;
+    details > div { margin-top: .5rem }
+
+    summary {
+        background: none;
+        border: 0;
+        color: inherit;
+        line-height: 1.5rem;
+        padding: 0;
+    }
+
+    > img {
+        border-radius: 50%;
+        display: block;
+        height: 1.5rem;
+        width: 1.5rem;
+    }
+
+    > time { grid-column: span 2 }
 }
 
 @media (max-width: 46rem) {

@@ -6,7 +6,7 @@ for sort dir 'hole/answers' {
 
     $hole = '√2' if $hole eq 'root-2';
 
-    ok post-solution( :$code :$hole )<Pass>, $hole;
+    ok post-solution( :$code :$hole )<runs>[0]<pass>, $hole;
 }
 
 done-testing;

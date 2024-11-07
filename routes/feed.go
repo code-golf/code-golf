@@ -12,8 +12,6 @@ import (
 var (
 	atomFeed, jsonFeed, rssFeed []byte
 	feed                        feeds.Feed
-	recentHoles                 []*config.Hole
-	recentHoleIDs               []string
 )
 
 // TZ=UTC git log --date='format-local:%Y-%m-%d %X' --format='%h %cd %s'
@@ -27,6 +25,36 @@ func init() {
 		sha, created, id string
 		hole             bool
 	}{
+		{"05d85ed", "2024-11-01 00:01:17", "kaprekar-numbers", true},
+		{"e2f6993", "2024-10-23 19:43:52", "kotlin", false},
+		{"1fd2acf", "2024-10-01 00:00:02", "card-number-validation", true},
+		{"db53e05", "2024-09-01 00:00:19", "palindromemordnilap", true},
+		{"a3cd66a", "2024-08-22 01:53:21", "scheme", false},
+		{"7bca306", "2024-08-11 22:01:06", "jq", false},
+		{"ab98914", "2024-08-03 01:33:16", "civet", false},
+		{"9c742ac", "2024-08-01 00:00:13", "polyominoes", true},
+		{"9802b2d", "2024-07-24 23:22:54", "transpose-sentence", true},
+		{"5df895f", "2024-07-01 00:00:02", "zeckendorf-representation", true},
+		{"0ff0d0e", "2024-06-01 00:08:19", "reversi", true},
+		{"8d348ce", "2024-05-01 17:56:27", "n-queens", true},
+		{"03472e3", "2024-04-13 00:00:00", "factorial-factorisation", true},
+		{"3e6f170", "2024-03-12 18:20:34", "rockstar", false},
+		{"74e8b74", "2024-02-29 21:34:53", "24-game", true},
+		{"b66e4a0", "2024-01-15 17:41:18", "coconut", false},
+		{"f5599de", "2024-01-01 00:18:14", "ascending-primes", true},
+		{"79dcb1e", "2023-12-10 13:40:21", "clojure", false},
+		{"6bd24c1", "2023-12-01 00:00:07", "farey-sequence", true},
+		{"6bd24c1", "2023-12-01 00:00:07", "mahjong", true},
+		{"befe8fa", "2023-11-01 00:00:13", "dfa-simulator", true},
+		{"b5fc39d", "2023-10-08 21:31:55", "berry", false},
+		{"94068d3", "2023-10-01 00:00:04", "arithmetic-numbers", true},
+		{"9a98efe", "2023-09-12 23:41:38", "factor", false},
+		{"8854248", "2023-09-01 00:01:30", "rijndael-s-box", true},
+		{"c8fe7ef", "2023-08-01 00:00:19", "ln-2", true},
+		{"00db130", "2023-07-13 12:40:02", "forth", false},
+		{"13d2a54", "2023-06-30 23:46:54", "gijswijts-sequence", true},
+		{"6e66587", "2023-06-01 00:03:57", "medal-tally", true},
+		{"9701f03", "2023-05-01 00:00:48", "forsyth-edwards-notation", true},
 		{"c29127d", "2023-04-16 17:39:39", "janet", false},
 		{"bb9a7b4", "2023-04-16 11:27:28", "day-of-week", true},
 		{"7f7664a", "2023-04-01 00:01:10", "si-units", true},
@@ -82,7 +110,7 @@ func init() {
 		{"babc6cb", "2021-05-29 23:09:41", "assembly", false},
 		{"e3ade9f", "2021-05-03 20:17:00", "star-wars-opening-crawl", true},
 		{"7b70234", "2021-05-01 04:08:12", "van-eck-sequence", true},
-		{"db4bfba", "2021-04-25 22:39:11", "sudoku-v2", true},
+		{"db4bfba", "2021-04-25 22:39:11", "sudoku-fill-in", true},
 		{"a3cbf07", "2021-03-23 02:10:24", "crystal", false},
 		{"78f7023", "2021-01-24 20:44:04", "hexagony", false},
 		{"1d9ce0d", "2021-01-16 22:57:45", "kolakoski-constant", true},
@@ -170,11 +198,6 @@ func init() {
 			hole := config.HoleByID[i.id]
 			name = hole.Name
 			link = "https://code.golf/" + i.id
-
-			if len(recentHoles) < 10 {
-				recentHoles = append(recentHoles, hole)
-				recentHoleIDs = append(recentHoleIDs, hole.ID)
-			}
 		} else {
 			name = config.LangByID[i.id].Name
 			link = "https://code.golf/rankings/holes/all/" + i.id + "/bytes"

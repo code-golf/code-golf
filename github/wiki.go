@@ -66,6 +66,8 @@ func Wiki(db *sqlx.DB) error {
 			name = "Hole Specific Tips"
 		} else if slug == "other-sites" {
 			name = "Other Sites"
+		} else if slug == "spigot-algorithms" {
+			name = "Spigot Algorithms"
 		} else {
 			continue
 		}

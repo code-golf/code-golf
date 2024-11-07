@@ -10,24 +10,24 @@ import (
 
 // GET /rankings/medals/{hole}/{lang}
 func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
-	type row struct {
-		Country, Login                      string
-		Rank, Diamond, Gold, Silver, Bronze int
-	}
-
 	data := struct {
-		HoleID, LangID, Scoring string
-		Holes                   []*config.Hole
-		Langs                   []*config.Lang
-		Pager                   *pager.Pager
-		Rows                    []row
+		Hole, PrevHole, NextHole *config.Hole
+		HoleID, LangID, Scoring  string
+		Holes                    []*config.Hole
+		Langs                    []*config.Lang
+		Pager                    *pager.Pager
+		Rows                     []struct {
+			Country                       config.NullCountry
+			Diamond, Gold, Silver, Bronze int
+			Name                          string
+			Rank, Total                   int
+		}
 	}{
 		HoleID:  param(r, "hole"),
 		Holes:   config.HoleList,
 		LangID:  param(r, "lang"),
 		Langs:   config.LangList,
 		Pager:   pager.New(r),
-		Rows:    make([]row, 0, pager.PerPage),
 		Scoring: param(r, "scoring"),
 	}
 
@@ -38,7 +38,12 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	rows, err := session.Database(r).Query(
+	if data.Hole = config.HoleByID[data.HoleID]; data.Hole != nil {
+		data.PrevHole, data.NextHole = getPrevNextHole(r, data.Hole)
+	}
+
+	if err := session.Database(r).Select(
+		&data.Rows,
 		`WITH counts AS (
 		    SELECT user_id,
 		           COUNT(*) FILTER (WHERE medal = 'diamond') diamond,
@@ -53,13 +58,8 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 		) SELECT RANK() OVER(
 		             ORDER BY gold DESC, diamond DESC, silver DESC, bronze DESC
 		         ),
-		         country_flag,
-		         login,
-		         diamond,
-		         gold,
-		         silver,
-		         bronze,
-		         COUNT(*) OVER()
+		         diamond, gold, silver, bronze,
+		         country_flag country, login name, COUNT(*) OVER() total
 		    FROM counts
 		    JOIN users ON id = user_id
 		ORDER BY rank, login
@@ -69,33 +69,12 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 		data.Scoring,
 		pager.PerPage,
 		data.Pager.Offset,
-	)
-	if err != nil {
+	); err != nil {
 		panic(err)
 	}
-	defer rows.Close()
 
-	for rows.Next() {
-		var r row
-
-		if err := rows.Scan(
-			&r.Rank,
-			&r.Country,
-			&r.Login,
-			&r.Diamond,
-			&r.Gold,
-			&r.Silver,
-			&r.Bronze,
-			&data.Pager.Total,
-		); err != nil {
-			panic(err)
-		}
-
-		data.Rows = append(data.Rows, r)
-	}
-
-	if err := rows.Err(); err != nil {
-		panic(err)
+	if len(data.Rows) > 0 {
+		data.Pager.Total = data.Rows[0].Total
 	}
 
 	if data.Pager.Calculate() {

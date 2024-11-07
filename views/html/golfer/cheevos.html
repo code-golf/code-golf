@@ -1,0 +1,55 @@
+{{ template "header" . }}
+{{ template "golfer" . }}
+
+{{ $show := and .Golfer (index .Golfer.Settings "golfer/cheevos" "show-cheevos") }}
+
+<main>
+{{ range $category, $cheevos := .Cheevos }}
+    <details open>
+        <div>
+        {{ $i := 0 }}
+        {{ range $cheevos }}
+            {{ $progress := index $.Data .ID }}
+
+            {{ if or (and      $progress.Earned  (eq $show "unearned"))
+                     (and (not $progress.Earned) (eq $show "earned")) }}
+                {{ continue }}
+            {{ end }}
+
+            <div class="cheevo {{ if $progress.Earned }} earned {{ end }}">
+                <div>{{ .Emoji }}</div>
+                <h3>{{ .Name }}</h3>
+                <p>{{ .Description }}
+                <p>
+                {{ if and (not $progress.Earned) .Target }}
+                    <progress max="{{ .Target }}"
+                            value="{{ $progress.Progress }}"></progress>
+                {{ end }}
+                    <span>
+                    {{ if $progress.Earned }}
+                        {{ $i = inc $i }}
+                        Earned {{ time $progress.Earned }}
+                    {{ else if .Target }}
+                        {{ comma $progress.Progress }} / {{ comma .Target }}
+                    {{ else }}
+                        Not yet earned
+                    {{ end }}
+                    </span>
+                    <a href="/rankings/cheevos/{{ .ID }}">
+                        {{ comma $progress.Count }}
+                        golfer{{ if ne $progress.Count 1 }}s{{ end }}
+                        ({{ $progress.Percent }}%)
+                    </a>
+            </div>
+        {{ end }}
+        </div>
+        <summary>
+            {{ if eq $show "all" }}[ {{ $i }} / {{ len $cheevos }} ]{{ end }}
+            {{ $category }}
+        </summary>
+    </details>
+{{ end }}
+</main>
+
+{{ template "settings-dialog" . }}
+{{ template "footer" }}

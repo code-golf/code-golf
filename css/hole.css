@@ -7,14 +7,14 @@ aside {
 }
 
 pre {
-    font-family: emoji, 'Source Code Pro', monospace;
+    font-family: emoji, mahjong, 'Source Code Pro', monospace;
     line-height: 1.2;
     overflow: auto hidden;
 }
 
 .qr-span span {
     color: var(--grey);
-    font-family: emoji, 'Source Code Pro', monospace;
+    font-family: emoji, mahjong, 'Source Code Pro', monospace;
 }
 
 aside > div {
@@ -22,17 +22,12 @@ aside > div {
     border: 1px solid var(--color);
     border-left: 0;
     flex: 1;
-    font-family: emoji, 'Source Code Pro', monospace;
+    font-family: emoji, mahjong, 'Source Code Pro', monospace;
     font-variant-ligatures: none;
     height: 8.75rem;
     line-height: 1;
     overflow: auto;
     padding: .375rem;
-}
-
-/* Ensure FEN has consistent aligned display. See #645 for details */
-#hole-forsyth-edwards-notation {
-    & aside > div, & pre { font-family: chess, monospace }
 }
 
 aside > h3 {
@@ -90,14 +85,13 @@ section header {
 #arg span {
     background: var(--arg-background);
     border-radius: .5rem;
-    font-family: emoji, 'Source Code Pro', monospace;
+    font-family: emoji, mahjong, 'Source Code Pro', monospace;
     padding: .25rem .375rem;
     white-space: pre;
 }
 
 #arrows code { font-size: 1.5rem }
-#arrows td   { font-family: emoji, 'Source Code Pro', monospace }
-#arrows td:first-child { white-space: pre }
+#arrows td   { font-family: emoji, mahjong, 'Source Code Pro', monospace }
 #arrows td:last-child  { width: 100% }
 
 #authors-btn {
@@ -119,12 +113,6 @@ section header {
 #authors-btn img:not(:first-child) {
     border: .25rem solid var(--background);
     margin-left: -.75rem;
-}
-
-#chars {
-    border-bottom: 1px solid var(--color);
-    font-weight: bold;
-    line-height: 2rem;
 }
 
 #copy + span {
@@ -210,27 +198,13 @@ section header {
     padding: .25rem .4rem;
 }
 
-main > header {
-    align-items: center;
+#info-container {
     display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: space-between;
-}
+    flex-direction: column;
+    gap: 0.5rem;
 
-main > header a { white-space: nowrap }
-
-main > header h1 {
-    display: flex;
-    gap: .5rem;
-    overflow-x: auto;
-    white-space: nowrap;
-}
-
-main > header nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: .5rem;
+    /* Hide container when it doesn't have a direct child that isn't hidden */
+    &:not(:has(> :not(.hide))) { display: none }
 }
 
 #rankingsView {
@@ -328,4 +302,102 @@ thead { user-select: none }
     #editor { border-width: 1px }
 
     #thirdParty:empty { display: none }
+}
+
+.run-result-btn {
+    border: none;
+    background: none;
+    padding: 0;
+    margin-inline: 2px;
+}
+
+.run-result-btn:is(
+    :is(:hover, :active, :focus):not([disabled]),
+    [disabled]:not(:only-child)
+) {
+    border-bottom: 2px solid var(--color);
+    margin-bottom: -2px;
+}
+
+h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+#picker, #solutionPicker {
+    gap: .25rem;
+
+    > a:not([href]), select.selectActive { border-color: var(--color) }
+
+    > a {
+        align-items: center;
+        border: 1px solid var(--grey);
+        border-radius: .25rem;
+        display: flex;
+        gap: .5rem;
+        height: 2.375rem;
+        padding: .375rem .5rem;
+
+        svg {
+            height: 1rem;
+            width: 1rem;
+        }
+    }
+}
+
+#runtime {
+    font-size: 80%;
+    text-align: center;
+    font-weight: normal;
+    padding-bottom: 0.1rem;
+}
+
+.cm-highlightSpace, .cm-highlightTab { opacity: 0 }
+
+.show-whitespace :is(.cm-highlightSpace, .cm-highlightTab) { opacity: .5 }
+
+#diffKindSettings {
+    margin: 0.5rem;
+}
+#diffKindSettings label {
+    margin: 0.5rem;
+}
+
+#itemsDiff td div {
+    align-content: flex-start;
+    align-items: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .375rem;
+    margin-top: 0.25rem;
+}
+
+#itemsDiff span {
+    border-radius: .5rem;
+    font-family: emoji, mahjong, 'Source Code Pro', monospace;
+    padding: .25rem .375rem;
+    white-space: pre;
+}
+
+#itemsDiff .neg span{
+    background: var(--red);
+}
+#itemsDiff .pos span{
+    background: var(--green);
+}
+
+:has(#diffKindSettings input[value="items"]:checked) #linesDiff {
+    display: none;
+}
+
+:has(#diffKindSettings input[value="items"]:not(:checked)) #itemsDiff {
+    display: none;
+}
+
+.pass.lastSubmittedCode #editor {
+    border-color: var(--green);
+}
+.fail.lastSubmittedCode #editor {
+    border-color: var(--red);
 }

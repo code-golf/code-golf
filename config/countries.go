@@ -8,7 +8,7 @@ var (
 type Country struct{ ID, Flag, Name string }
 
 func init() {
-	unmarshal("countries.toml", &CountryTree)
+	unmarshal("data/countries.toml", &CountryTree)
 
 	for _, countries := range CountryTree {
 		for _, country := range countries {

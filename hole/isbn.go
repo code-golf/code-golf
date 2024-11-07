@@ -1,7 +1,7 @@
 package hole
 
 import (
-	"math/rand"
+	"math/rand/v2"
 	"strings"
 )
 
@@ -16,15 +16,14 @@ func checkDigit(digits [9]int) int {
 	return (11 - (sum % 11)) % 11
 }
 
-func isbn() []Scorecard {
-	args := make([]string, 100)
-	outs := make([]string, 100)
+func isbn() []Run {
+	tests := make([]test, 100)
 
 	for i, perm := range rand.Perm(100) {
 		var digits [9]int
 
 		for j := range digits {
-			digits[j] = rand.Intn(10)
+			digits[j] = rand.IntN(10)
 		}
 
 		// Guarantee at least 5 arguments end with 'X'
@@ -46,7 +45,7 @@ func isbn() []Scorecard {
 
 		// This here logic is for varying the second two parts of the ISBN.
 		// Sure, it's cosmetic, but it might mess some people up.
-		difference := 7 - rand.Intn(5)
+		difference := 7 - rand.IntN(5)
 		for j, digit := range digits {
 			id.WriteByte(byte('0' + digit))
 
@@ -57,7 +56,7 @@ func isbn() []Scorecard {
 
 		id.WriteByte('-')
 
-		args[i] = id.String()
+		tests[i].in = id.String()
 
 		if digit := checkDigit(digits); digit == 10 {
 			id.WriteByte('X')
@@ -65,8 +64,8 @@ func isbn() []Scorecard {
 			id.WriteByte(byte('0' + digit))
 		}
 
-		outs[i] = id.String()
+		tests[i].out = id.String()
 	}
 
-	return []Scorecard{{Args: args, Answer: strings.Join(outs, "\n")}}
+	return outputTests(tests)
 }

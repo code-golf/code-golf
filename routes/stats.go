@@ -1,41 +1,40 @@
 package routes
 
 import (
-	"fmt"
+	"cmp"
 	"net/http"
+	"slices"
+	"strings"
+	"time"
 
 	"github.com/code-golf/code-golf/config"
-	"github.com/code-golf/code-golf/pie"
 	"github.com/code-golf/code-golf/session"
 )
 
 // GET /stats
 func statsGET(w http.ResponseWriter, r *http.Request) {
-	type row struct {
-		Count, Golfers, Rank   int
-		Fact, PerGolfer, Route string
-	}
-
-	type table struct {
-		Fact string
-		Rows []row
-	}
-
 	data := struct {
-		Bytes, Golfers, Holes, Langs, Solutions int
-		SolutionsByHole, SolutionsByLang        pie.Pie
-		Tables                                  []table
+		Bytes, Cheevos, CheevosEarned, Countries, Golfers,
+		Holes, HolesExp, Langs, LangsExp, Solutions int
 	}{
-		Holes:  len(config.HoleList),
-		Langs:  len(config.LangList),
-		Tables: []table{{Fact: "Hole"}, {Fact: "Language"}},
+		Cheevos:  len(config.CheevoList),
+		Holes:    len(config.AllHoleList),
+		HolesExp: len(config.ExpHoleList),
+		Langs:    len(config.AllLangList),
+		LangsExp: len(config.ExpLangList),
 	}
 
 	db := session.Database(r)
 
 	if err := db.QueryRow(
-		"SELECT COUNT(DISTINCT user_id) FROM trophies",
-	).Scan(&data.Golfers); err != nil {
+		"SELECT COUNT(*), COUNT(DISTINCT user_id) FROM trophies",
+	).Scan(&data.CheevosEarned, &data.Golfers); err != nil {
+		panic(err)
+	}
+
+	if err := db.QueryRow(
+		"SELECT COUNT(DISTINCT country) FROM users WHERE LENGTH(country) > 0",
+	).Scan(&data.Countries); err != nil {
 		panic(err)
 	}
 
@@ -47,68 +46,154 @@ func statsGET(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	for i, fact := range [...]string{"hole", "lang"} {
-		rows, err := db.Query(
-			`SELECT RANK() OVER (ORDER BY COUNT(*) DESC, ` + fact + `),
-			         ` + fact + `,
-			         COUNT(*),
-			         COUNT(DISTINCT user_id)
-			    FROM solutions
-			   WHERE NOT failing
-			GROUP BY ` + fact,
-		)
-		if err != nil {
-			panic(err)
-		}
-		defer rows.Close()
+	render(w, r, "stats", data, "Statistics")
+}
 
-		var slices []pie.Slice
+// GET /stats/{page:countries}
+func statsCountriesGET(w http.ResponseWriter, r *http.Request) {
+	type row struct {
+		Country       config.NullCountry
+		Golfers, Rank int
+		Percent       string
+	}
 
-		for rows.Next() {
-			var row row
+	var data []row
+	if err := session.Database(r).Select(
+		&data,
+		` SELECT RANK() OVER (ORDER BY COUNT(*) DESC)             rank,
+		         COALESCE(country, '')                            country,
+		         COUNT(*)                                         golfers,
+		         ROUND(COUNT(*) / SUM(COUNT(*)) OVER () * 100, 2) percent
+		    FROM users
+		GROUP BY COALESCE(country, '')`,
+	); err != nil {
+		panic(err)
+	}
 
-			if err := rows.Scan(
-				&row.Rank,
-				&row.Fact,
-				&row.Count,
-				&row.Golfers,
-			); err != nil {
-				panic(err)
-			}
-
-			if fact == "hole" {
-				row.Route = "/" + row.Fact
-				row.Fact = config.HoleByID[row.Fact].Name
-			} else {
-				row.Route = "/recent/" + row.Fact
-				row.Fact = config.LangByID[row.Fact].Name
-			}
-
-			row.PerGolfer = fmt.Sprintf("%.2f", float64(row.Count)/float64(row.Golfers))
-
-			data.Tables[i].Rows = append(data.Tables[i].Rows, row)
-
-			// Pie chart
-			switch len(slices) {
-			case 6:
-				slices[5].Quantity += row.Count
-			case 5:
-				slices = append(slices, pie.Slice{Label: "Other", Quantity: row.Count})
-			default:
-				slices = append(slices, pie.Slice{Label: row.Fact, Quantity: row.Count})
-			}
+	// Sort in Go because SQL doesn't have access to country name, just ID.
+	slices.SortFunc(data, func(a, b row) int {
+		if c := cmp.Compare(a.Rank, b.Rank); c != 0 {
+			return c
 		}
 
-		if err := rows.Err(); err != nil {
-			panic(err)
+		var aName, bName string
+		if a.Country.Valid {
+			aName = a.Country.Country.Name
 		}
+		if b.Country.Valid {
+			bName = b.Country.Country.Name
+		}
+		return cmp.Compare(aName, bName)
+	})
 
-		if fact == "hole" {
-			data.SolutionsByHole = pie.New(slices)
-		} else {
-			data.SolutionsByLang = pie.New(slices)
+	render(w, r, "stats", data, "Statistics: Countries")
+}
+
+// GET /stats/{page:golfers}
+func statsGolfersGET(w http.ResponseWriter, r *http.Request) {
+	var data []struct {
+		Count, Sum int
+		Date       time.Time
+	}
+
+	if err := session.Database(r).Select(
+		&data,
+		`-- Only consider golfers that have a cheevo (i.e here to stay).
+		WITH earnt_golfers AS (
+		    SELECT DISTINCT id, started FROM users JOIN trophies ON id = user_id
+		), first_golfer AS (
+		    SELECT started date, 1 count, 1 sum
+		      FROM earnt_golfers
+		  ORDER BY started
+		     LIMIT 1
+		), counts AS (
+		    SELECT LEAST(
+		               DATE_TRUNC('year', started)
+		                   + INTERVAL '1 year' - INTERVAL '1 microsecond',
+		               TIMEZONE('UTC', NOW())
+		           ) date,
+		           COUNT(*)
+		      FROM earnt_golfers
+		  GROUP BY date
+		) SELECT * FROM first_golfer
+		   UNION ALL
+		  SELECT *, SUM(count) OVER (ORDER BY date) FROM counts`,
+	); err != nil {
+		panic(err)
+	}
+
+	render(w, r, "stats", data, "Statistics: Golfers")
+}
+
+// GET /stats/{page:holes|langs}
+func statsTableGET(w http.ResponseWriter, r *http.Request) {
+	var data struct {
+		Fact string
+		Rows []struct {
+			Count, Golfers, Rank int
+			PerGolfer            string
+			Hole                 *config.Hole
+			Lang                 *config.Lang
 		}
 	}
 
-	render(w, r, "stats", data, "Stats")
+	column := ""
+	switch param(r, "page") {
+	case "holes":
+		column = "hole"
+		data.Fact = "Hole"
+	case "langs":
+		column = "lang"
+		data.Fact = "Language"
+	}
+
+	if err := session.Database(r).Select(
+		&data.Rows,
+		` SELECT RANK() OVER (ORDER BY COUNT(*) DESC, `+column+`),
+		         `+column+`,
+		         COUNT(*),
+		         COUNT(DISTINCT user_id) golfers,
+		         ROUND(COUNT(*)::decimal / COUNT(DISTINCT user_id), 2) per_golfer
+		    FROM solutions
+		   WHERE NOT failing
+		GROUP BY `+column,
+	); err != nil {
+		panic(err)
+	}
+
+	render(w, r, "stats", data, "Statistics: "+data.Fact+"s")
+}
+
+// GET /stats/{page:unsolved-holes}
+func statsUnsolvedHolesGET(w http.ResponseWriter, r *http.Request) {
+	type holeLang struct {
+		Hole *config.Hole
+		Lang *config.Lang
+	}
+
+	var data []holeLang
+	if err := session.Database(r).Select(
+		&data,
+		`WITH solves AS (
+		    SELECT DISTINCT hole, lang FROM solutions WHERE NOT failing
+		),
+		holes AS (SELECT unnest(enum_range(null::hole)) hole),
+		langs AS (SELECT unnest(enum_range(null::lang)) lang),
+		combo AS (SELECT hole, lang FROM holes CROSS JOIN langs)
+		   SELECT hole, lang
+		     FROM combo
+		LEFT JOIN solves USING (hole, lang)
+		    WHERE solves.hole IS NULL`,
+	); err != nil {
+		panic(err)
+	}
+
+	slices.SortFunc(data, func(a, b holeLang) int {
+		return cmp.Or(
+			cmp.Compare(strings.ToLower(a.Hole.Name), strings.ToLower(b.Hole.Name)),
+			cmp.Compare(strings.ToLower(a.Lang.Name), strings.ToLower(b.Lang.Name)),
+		)
+	})
+
+	render(w, r, "stats", data, "Statistics: Unsolved Holes")
 }

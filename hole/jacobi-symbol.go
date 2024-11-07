@@ -3,14 +3,14 @@ package hole
 import (
 	"fmt"
 	"math/big"
-	"math/rand"
+	"math/rand/v2"
 )
 
 func randomNatural(max int) int {
 	if max <= 0 {
 		return 0
 	}
-	return rand.Intn(max)
+	return rand.IntN(max)
 }
 
 func randomInClass(max, mod, class int) int {
@@ -29,8 +29,7 @@ func randomPrime(max int) int {
 	return k
 }
 
-func jacobiSymbol() []Scorecard {
-	const mult = 9
+func jacobiSymbol() []Run {
 	tests := []test{{"0 1", "1"}, {"4622568476421908 4170463869060991", "1"}}
 	addTest := func(a, n int) {
 		tests = append(tests, test{
@@ -41,7 +40,7 @@ func jacobiSymbol() []Scorecard {
 
 	var a, n int
 
-	for i := 0; i < mult; i++ {
+	for i := range 9 {
 		// Random numbers, varying size, a<n
 		n = randomOdd(1 << (53 - 2*i))
 		a = randomNatural(n)
@@ -77,8 +76,8 @@ func jacobiSymbol() []Scorecard {
 		// n is small
 		a = randomNatural(1 << 53)
 		addTest(a, 2*i+1)
-
 	}
+
 	// Different residue classes
 	for i := 0; i < 4; i++ {
 		for j := 1; j < 8; j += 2 {

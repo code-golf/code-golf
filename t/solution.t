@@ -5,32 +5,27 @@ constant $code-long        = 'say "Fizz" x $_ %% 3 ~ "Buzz" x $_ %% 5 || $_ for 
 constant $code-short       = 'say "Fizz"x$_%%3~"Buzz"x$_%%5||$_ for 1..100';
 constant $code-short-chars = 'say "Fizz"x$_%%3~"Buzz"x$_%%5||$_ for 1…100';
 
-is-deeply post-solution(:code($code-long))<
-    Argv Cheevos Err ExitCode Exp Pass
+is-deeply post-solution(:code($code-long))<runs>[0]<
+    answer args exit_code pass stderr
 >:kv.Hash, {
-    Argv     => [],
-    Cheevos  => [],
-    Err      => '',
-    ExitCode => 0,
-    Exp      => $answer,
-    Pass     => True,
+    answer    => $answer,
+    args      => [],
+    exit_code => 0,
+    pass      => True,
+    stderr    => '',
 };
 
-my $dbh = dbh;
-
-$dbh.execute: "INSERT INTO users (id, login) VALUES (123, 'test')";
-
-my $session = $dbh.execute(
-    'INSERT INTO sessions (user_id) VALUES (123) RETURNING id').row.head;
+my $dbh     = dbh;
+my $session = new-golfer :$dbh;
 
 subtest 'Failing solution' => {
-    nok post-solution( :$session :code('say 1') )<Pass>, 'Solution fails';
+    nok post-solution( :$session :code('say 1') )<runs>[0]<pass>, 'Solution fails';
 
     is $dbh.execute('SELECT COUNT(*) FROM solutions').row.head, 0, 'DB is empty';
 }
 
 subtest 'Initial solution' => {
-    ok post-solution( :$session :code($code-long) )<Pass>, 'Passes';
+    ok post-solution( :$session :code($code-long) )<runs>[0]<pass>, 'Passes';
 
     is-deeply db, (
         { :code($code-long), :lang<raku>, :scoring<bytes> },
@@ -39,7 +34,7 @@ subtest 'Initial solution' => {
 };
 
 subtest 'Same solution' => {
-    ok post-solution( :$session :code($code-long) )<Pass>, 'Passes';
+    ok post-solution( :$session :code($code-long) )<runs>[0]<pass>, 'Passes';
 
     is-deeply db, (
         { :code($code-long), :lang<raku>, :scoring<bytes> },
@@ -48,7 +43,7 @@ subtest 'Same solution' => {
 };
 
 subtest 'Shorter solution' => {
-    ok post-solution( :$session :code($code-short) )<Pass>, 'Passes';
+    ok post-solution( :$session :code($code-short) )<runs>[0]<pass>, 'Passes';
 
     is-deeply db, (
         { :code($code-short), :lang<raku>, :scoring<bytes> },
@@ -57,7 +52,7 @@ subtest 'Shorter solution' => {
 };
 
 subtest 'Shorter chars solution' => {
-    ok post-solution( :$session :code($code-short-chars) )<Pass>, 'Passes';
+    ok post-solution( :$session :code($code-short-chars) )<runs>[0]<pass>, 'Passes';
 
     is-deeply db, (
         { :code($code-short),       :lang<raku>, :scoring<bytes> },
@@ -76,7 +71,7 @@ constant $code = Q:c:to/ASM/;
     text: .string "{ $answer.lines.join: ｢\n｣ }"; textEnd:
     ASM
 
-    ok post-solution( :$session :$code :lang<assembly> )<Pass>, 'Passes';
+    ok post-solution( :$session :$code :lang<assembly> )<runs>[0]<pass>, 'Passes';
 
     is-deeply db, (
         { :code($code-short),       :lang<raku>,     :scoring<bytes> },

@@ -1,11 +1,15 @@
-FROM node:10.24.1-buster-slim
+FROM node:22-bookworm-slim
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
-    ca-certificates fontforge fonttools git make python-fontforge unzip woff2 zip
+    ca-certificates fontforge fonttools git make python3-fontforge unzip woff2 zip
 
-RUN git clone -b v0.6.0 https://github.com/mozilla/twemoji-colr.git
+RUN git clone -b v0.7.0 https://github.com/mozilla/twemoji-colr.git
 
-WORKDIR twemoji-colr
+WORKDIR /twemoji-colr
+
+# https://github.com/mozilla/twemoji-colr/pull/72
+COPY font.patch /tmp/
+RUN git apply /tmp/font.patch
 
 RUN npm install
 
@@ -19,10 +23,13 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f356.svg       `# Meat on Bone`                 \
     svg/1f35e.svg       `# Bread`                        \
     svg/1f36f.svg       `# Honey Pot`                    \
+    svg/1f371.svg       `# Bento Box`                    \
     svg/1f377.svg       `# Wine Glass`                   \
     svg/1f37a.svg       `# Beer Mug`                     \
     svg/1f382.svg       `# Birthday Cake`                \
     svg/1f385.svg       `# Santa Claus`                  \
+    svg/1f388.svg       `# Balloon`                      \
+    svg/1f3ae.svg       `# Video Game Controller`        \
     svg/1f3af.svg       `# Direct Hit`                   \
     svg/1f3b3.svg       `# Bowling`                      \
     svg/1f3b8.svg       `# Guitar`                       \
@@ -30,10 +37,12 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f3c3.svg       `# Person Running`               \
     svg/1f3c6.svg       `# Trophy`                       \
     svg/1f3cc.svg       `# Person Golfing`               \
+    svg/1f3de.svg       `# National Park`                \
     svg/1f3e5.svg       `# Hospital`                     \
     svg/1f409.svg       `# Dragon`                       \
     svg/1f40b.svg       `# Whale`                        \
     svg/1f40d.svg       `# Sanke`                        \
+    svg/1f411.svg       `# Sheep`                        \
     svg/1f418.svg       `# Elephant`                     \
     svg/1f41f.svg       `# Fish`                         \
     svg/1f426.svg       `# Bird`                         \
@@ -46,6 +55,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f47f.svg       `# Angry Face with Horns`        \
     svg/1f48d.svg       `# Ring`                         \
     svg/1f48e.svg       `# Gem Stone`                    \
+    svg/1f4af.svg       `# Hundred Points`               \
     svg/1f4b0.svg       `# Money Bag`                    \
     svg/1f4bc.svg       `# Briefcase`                    \
     svg/1f4be.svg       `# Floppy Disk`                  \
@@ -60,9 +70,11 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f51e.svg       `# No One Under Eighteen`        \
     svg/1f520.svg       `# Input Latin Uppercase`        \
     svg/1f523.svg       `# Input Symbols`                \
+    svg/1f526.svg       `# Flashlight`                   \
     svg/1f549.svg       `# Om`                           \
     svg/1f596.svg       `# Vulcan Salute`                \
     svg/1f5a5.svg       `# Desktop Computer`             \
+    svg/1f5d1.svg       `# Wastebasket`                  \
     svg/1f5dc.svg       `# Compression`                  \
     svg/1f5f3.svg       `# Ballot Box with Ballot`       \
     svg/1f600.svg       `# Grinning Face`                \
@@ -97,21 +109,28 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f949.svg       `# 3rd Place Medal`              \
     svg/1f961.svg       `# Takeout Box`                  \
     svg/1f967.svg       `# Pie`                          \
+    svg/1f96a.svg       `# Sandwich`                     \
+    svg/1f984.svg       `# Unicorn`                      \
     svg/1f98b.svg       `# Butterfly`                    \
     svg/1f98e.svg       `# Lizard`                       \
     svg/1f9a5.svg       `# Sloth`                        \
+    svg/1f9ab.svg       `# Beaver`                       \
     svg/1f9d9.svg       `# Mage`                         \
     svg/1f9db.svg       `# Vampire`                      \
     svg/1f9e0.svg       `# Brain`                        \
     svg/1f9ea.svg       `# Test Tube`                    \
     svg/1f9f6.svg       `# Yarn`                         \
+    svg/1fa84.svg       `# Magic Wand`                   \
     svg/1fa9b.svg       `# Screwdriver`                  \
     svg/1fa9e.svg       `# Mirror`                       \
     svg/1faa6.svg       `# Headstone`                    \
+    svg/23f1.svg        `# Stopwatch`                    \
     svg/2615.svg        `# Hot Beverage`                 \
+    svg/2623.svg        `# Biohazard`                    \
     svg/2639.svg        `# Frowning Face`                \
     svg/26f3.svg        `# Flag in Hole`                 \
     svg/2702.svg        `# Scissors`                     \
+    svg/274c.svg        `# Ballot X`                     \
     svg/2b50.svg        `# Star`                         \
  && rm twe-svg.zip                                       \
     svg/1f1ea-1f1fa.svg `# Flag: European Union`         \

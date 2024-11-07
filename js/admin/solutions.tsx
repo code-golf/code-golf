@@ -1,6 +1,6 @@
 import { $, comma } from '../_util';
 
-const form   = document.forms[0];
+const form   = $('main > form') as HTMLFormElement;
 const run    = $('#run');
 const status = $('#status');
 const stop   = $('#stop');
@@ -43,10 +43,18 @@ form.onsubmit = async e => {
         if (!line.pass) failing++;
 
         status.innerText = comma(++solutions) + '/' + comma(line.total) +
-            ` solutions (${failing} failing) in ` +
+            ` solutions (${comma(failing)} failing) in ` +
             new Date(Date.now() - start).toISOString().substr(14, 8).replace(/^00:/, '');
 
+        const stderr = <code></code>;
+        stderr.innerHTML = line.stderr;
+
         tbody.append(<tr>
+            <td>
+                <time datetime={line.tested}>
+                    {new Date(line.tested).toLocaleString()}
+                </time>
+            </td>
             <td>{holes[line.hole]}</td>
             <td>{langs[line.lang]}</td>
             <td>{`${line.golfer} (${line.golfer_id})`}</td>
@@ -54,7 +62,7 @@ form.onsubmit = async e => {
             <td><span class={line.pass ? 'green' : 'red'}>
                 {line.pass ? 'PASS' : 'FAIL'}
             </span></td>
-            <td><code>{line.stderr}</code></td>
+            <td>{stderr}</td>
         </tr>);
     };
 

@@ -1,11 +1,14 @@
 import { EditorView }   from './_codemirror';
-import diffTable        from './_diff';
+import diffView         from './_diff';
 import { $, $$, comma } from './_util';
 import {
-    init, langs, getLang, hole, getAutoSaveKey, setSolution, getSolution,
-    setCode, refreshScores, submit, getSavedInDB, updateRestoreLinkVisibility,
-    SubmitResponse, setCodeForLangAndSolution, getCurrentSolutionCode,
-    initDeleteBtn, initCopyJSONBtn, getScorings,
+    init, langs, hole, setSolution,
+    setCode, refreshScores, submit, updateRestoreLinkVisibility,
+    ReadonlyPanelsData, setCodeForLangAndSolution, getCurrentSolutionCode,
+    initDeleteBtn, initCopyJSONBtn, initOutputDiv, getScorings, replaceUnprintablesInOutput,
+    updateLocalStorage,
+    ctrlEnter,
+    getLastSubmittedCode,
 } from './_hole-common';
 
 const editor = new EditorView({
@@ -15,6 +18,8 @@ const editor = new EditorView({
         const code = tr.state.doc.toString();
         const scorings: {total: {byte?: number, char?: number}, selection?: {byte?: number, char?: number}} = getScorings(tr, editor);
         const scoringKeys = ['byte', 'char'] as const;
+
+        $('main')?.classList.toggle('lastSubmittedCode', code === getLastSubmittedCode());
 
         function formatScore(scoring: any) {
             return scoringKeys
@@ -27,16 +32,7 @@ const editor = new EditorView({
             ? `${formatScore(scorings.total)} (${formatScore(scorings.selection)} selected)`
             : formatScore(scorings.total);
 
-        // Avoid future conflicts by only storing code locally that's
-        // different from the server's copy.
-        const serverCode = getCurrentSolutionCode();
-
-        const key = getAutoSaveKey(getLang(), getSolution());
-        if (code && (code !== serverCode || !getSavedInDB()) && code !== langs[getLang()].example)
-            localStorage.setItem(key, code);
-        else
-            localStorage.removeItem(key);
-
+        updateLocalStorage(code);
         updateRestoreLinkVisibility(editor);
 
         return result;
@@ -47,6 +43,7 @@ const editor = new EditorView({
 editor.contentDOM.setAttribute('data-gramm', 'false');  // Disable Grammarly.
 
 init(false, setSolution, setCodeForLangAndSolution, updateReadonlyPanels, () => editor);
+initOutputDiv($('#out div'));
 
 // Set/clear the hide-details cookie on details toggling.
 $('#details').ontoggle = (e: Event) => document.cookie =
@@ -58,7 +55,9 @@ $('#restoreLink').onclick = e => {
 };
 
 // Wire submit to clicking a button and a keyboard shortcut.
-$('#runBtn').onclick = () => submit(editor, updateReadonlyPanels);
+const closuredSubmit = () => submit(editor, updateReadonlyPanels);
+$('#runBtn').onclick = closuredSubmit;
+window.onkeydown = ctrlEnter(closuredSubmit);
 
 initCopyJSONBtn($('#copy'));
 initDeleteBtn($('#deleteBtn'), langs);
@@ -75,7 +74,7 @@ $$('#rankingsView a').forEach(a => a.onclick = e => {
     refreshScores(editor);
 });
 
-function updateReadonlyPanels(data: SubmitResponse) {
+function updateReadonlyPanels(data: ReadonlyPanelsData) {
     // Hide arguments unless we have some.
     $('#arg div').replaceChildren(...data.Argv.map(a => <span>{a}</span>));
     $('#arg').classList.toggle('hide', !data.Argv.length);
@@ -87,8 +86,10 @@ function updateReadonlyPanels(data: SubmitResponse) {
     // Always show exp & out.
     $('#exp div').innerText = data.Exp;
     $('#out div').innerText = data.Out;
+    $('#out div').innerHTML = replaceUnprintablesInOutput($('#out div').innerHTML);
 
-    const diff = diffTable(hole, data.Exp, data.Out, data.Argv);
+    const ignoreCase = JSON.parse($('#case-fold').innerText);
+    const diff = diffView(hole, data.Exp, data.Out, data.Argv, ignoreCase, data.MultisetDelimiter, data.ItemDelimiter);
     $('#diff-content').replaceChildren(diff);
     $('#diff').classList.toggle('hide', !diff);
 }

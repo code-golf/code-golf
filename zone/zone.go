@@ -1,13 +1,13 @@
 package zone
 
 import (
+	"cmp"
 	"encoding/csv"
 	"fmt"
 	"io"
 	"os"
+	"slices"
 	"time"
-
-	"golang.org/x/exp/slices"
 )
 
 type Zone struct {
@@ -21,6 +21,14 @@ var locations []*time.Location
 var ByID = map[string]bool{}
 
 var Country = map[string]string{}
+
+// Zones that exist in zone.tab but not zone1970.tab.
+var Obsolete = map[string]struct{ Country, Zone string }{
+	"Asia/Muscat":       {"OM", "Asia/Dubai"},
+	"Europe/Copenhagen": {"DK", "Europe/Berlin"},
+	"Europe/Ljubljana":  {"SI", "Europe/Belgrade"},
+	"Europe/Zagreb":     {"HR", "Europe/Belgrade"},
+}
 
 func init() {
 	file, err := os.Open("/usr/share/zoneinfo/zone1970.tab")
@@ -79,11 +87,11 @@ func List() []Zone {
 		zones[i] = Zone{location.String(), offset}
 	}
 
-	slices.SortFunc(zones, func(a, b Zone) bool {
-		if a.Offset != b.Offset {
-			return a.Offset < b.Offset
+	slices.SortFunc(zones, func(a, b Zone) int {
+		if c := cmp.Compare(a.Offset, b.Offset); c != 0 {
+			return c
 		}
-		return a.Name < b.Name
+		return cmp.Compare(a.Name, b.Name)
 	})
 
 	return zones

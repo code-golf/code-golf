@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0.100-preview.2-alpine3.17 as builder
+FROM mcr.microsoft.com/dotnet/sdk:8.0.403-alpine3.20 AS builder
 
 RUN apk add --no-cache build-base zlib-dev
 
@@ -11,7 +11,7 @@ RUN curl -L https://github.com/SirBogman/Hexagony/tarball/$VERSION | tar xz \
     -p:InvariantGlobalization=true -p:PublishAot=true -p:PublishDir=/       \
     -p:StripSymbols=true
 
-FROM codegolf/lang-base
+FROM codegolf/lang-base-no-proc
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
 COPY --from=0 /usr/lib/libgcc_s.so.1   \

@@ -1,11 +1,12 @@
 package golfer
 
 import (
-	"reflect"
+	"slices"
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/jmoiron/sqlx"
+	"github.com/lib/pq"
 )
 
 func TestEarn(t *testing.T) {
@@ -13,7 +14,7 @@ func TestEarn(t *testing.T) {
 	db := sqlx.NewDb(mockDB, "sqlmock")
 
 	golfer := Golfer{ID: 123}
-	cheevos := []string{"foo", "bar", "bar", "baz"}
+	cheevos := pq.StringArray{"foo", "bar", "bar", "baz"}
 
 	for _, cheevo := range cheevos {
 		mock.ExpectExec("INSERT INTO trophies").
@@ -25,8 +26,8 @@ func TestEarn(t *testing.T) {
 		golfer.Earn(db, cheevo)
 	}
 
-	want := []string{"bar", "baz", "foo"}
-	if !reflect.DeepEqual(golfer.Cheevos, want) {
+	want := pq.StringArray{"bar", "baz", "foo"}
+	if !slices.Equal(golfer.Cheevos, want) {
 		t.Errorf("golfer.Cheevos = %v; want %v", golfer.Cheevos, want)
 	}
 }

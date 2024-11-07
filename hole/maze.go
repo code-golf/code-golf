@@ -1,7 +1,7 @@
 package hole
 
 import (
-	"math/rand"
+	"math/rand/v2"
 	"strings"
 )
 
@@ -40,8 +40,8 @@ func dig(i, j int, grid, dist [height][width]int) ([height][width]int, [height][
 
 func findExit(dist [height][width]int) (ei, ej int) {
 	maxd := -1
-	for i := 0; i < height; i++ {
-		for j := 0; j < width; j++ {
+	for i := range height {
+		for j := range width {
 			if dist[i][j] > maxd {
 				maxd = dist[i][j]
 				ei, ej = i, j
@@ -76,7 +76,7 @@ func tracePath(dist [height][width]int, ei, ej int) (path [height][width]int) {
 	return
 }
 
-func draw(grid [height][width]int, si, sj, ei, ej int, path [height][width]int, drawpath bool) (mazestr string) {
+func draw(grid [height][width]int, si, sj, ei, ej int, path [height][width]int, drawpath bool) string {
 	const wall = "#"
 
 	var track, top, bottom, cell, eastboundary, southboundary string
@@ -87,11 +87,12 @@ func draw(grid [height][width]int, si, sj, ei, ej int, path [height][width]int, 
 		track = " "
 	}
 
-	mazestr = wall + strings.Repeat(strings.Repeat(wall, 2), width) + "\n"
-	for i := 0; i < height; i++ {
+	mazestr := strings.Repeat(wall, 2*width+1) + "\n"
+
+	for i := range height {
 		top = wall
 		bottom = wall
-		for j := 0; j < width; j++ {
+		for j := range width {
 			if i == si && j == sj {
 				cell = "S"
 			} else if i == ei && j == ej {
@@ -126,31 +127,29 @@ func draw(grid [height][width]int, si, sj, ei, ej int, path [height][width]int, 
 		}
 		mazestr += top + "\n" + bottom + "\n"
 	}
-	return
+
+	// Trim trailing newline.
+	return mazestr[:len(mazestr)-1]
 }
 
-func maze() []Scorecard {
-	const count = 5
-	runs := make([]Scorecard, count)
+func maze() []Run {
+	runs := make([][]test, 5)
 
-	for i := 0; i < count; i++ {
-		var grid [height][width]int
-		var dist [height][width]int
+	for i := range runs {
+		var grid, dist [height][width]int
 
-		sj := rand.Intn(width)
-		si := rand.Intn(height)
+		sj := rand.IntN(width)
+		si := rand.IntN(height)
 
 		grid, dist = dig(si, sj, grid, dist)
 		ei, ej := findExit(dist)
 		path := tracePath(dist, ei, ej)
-		mazeinput := draw(grid, si, sj, ei, ej, path, false)
-		mazesolved := draw(grid, si, sj, ei, ej, path, true)
 
-		runs[i] = Scorecard{
-			Args:   []string{mazeinput[:len(mazeinput)-1]},
-			Answer: mazesolved[:len(mazesolved)-1],
-		}
+		runs[i] = []test{{
+			in:  draw(grid, si, sj, ei, ej, path, false),
+			out: draw(grid, si, sj, ei, ej, path, true),
+		}}
 	}
 
-	return runs
+	return outputTests(runs...)
 }

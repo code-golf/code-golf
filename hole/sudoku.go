@@ -1,7 +1,7 @@
 package hole
 
 import (
-	"math/rand"
+	"math/rand/v2"
 	"strings"
 )
 
@@ -26,9 +26,9 @@ func printSudoku(board [boardSize][boardSize]int) string {
 
 		for j, number := range row {
 			if j%blockSize == 0 {
-				b.WriteString("┃")
+				b.WriteRune('┃')
 			} else {
-				b.WriteString("│")
+				b.WriteRune('│')
 			}
 
 			b.WriteByte(' ')
@@ -115,7 +115,7 @@ Numbers:
 	return false
 }
 
-func sudokuBoard(v2 bool) Scorecard {
+func sudokuBoard(fillIn bool) Run {
 	var board [boardSize][boardSize]int
 
 	var generate func(int) bool
@@ -194,7 +194,7 @@ func sudokuBoard(v2 bool) Scorecard {
 		}
 	}
 
-	if v2 {
+	if fillIn {
 		args = []string{printSudoku(board)}
 	} else {
 		args = make([]string, boardSize)
@@ -214,13 +214,13 @@ func sudokuBoard(v2 bool) Scorecard {
 		}
 	}
 
-	return Scorecard{Args: args, Answer: out}
+	return Run{Args: args, Answer: out}
 }
 
-func sudoku(v2 bool) []Scorecard {
-	cards := make([]Scorecard, 3)
-	for i := 0; i < len(cards); i++ {
-		cards[i] = sudokuBoard(v2)
+func sudoku(fillIn bool) []Run {
+	runs := make([]Run, 3)
+	for i := range runs {
+		runs[i] = sudokuBoard(fillIn)
 	}
-	return cards
+	return runs
 }

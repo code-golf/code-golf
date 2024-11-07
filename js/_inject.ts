@@ -6,7 +6,9 @@ export function createElement(
     attrs: {[key: string]: string},
     ...children: (Node | string)[]
 ) {
-    const element = document.createElement(tag);
+    const element = tag === 'svg' || tag === 'use'
+        ? document.createElementNS('http://www.w3.org/2000/svg', tag)
+        : document.createElement(tag);
 
     // Set all defined/non-null attributes.
     Object.entries(attrs ?? {})

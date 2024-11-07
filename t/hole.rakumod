@@ -2,9 +2,10 @@ use Test;
 use WebDriver;
 
 # https://www.w3.org/TR/webdriver/#keyboard-actions
-constant BACKSPACE = "\xe003";
-constant CONTROL   = "\xe009";
-constant DELETE    = "\xe017";
+constant WD-BACKSPACE = "\xe003";
+constant WD-CONTROL   = "\xe009";
+constant WD-END       = "\xe010";
+constant WD-DELETE    = "\xe017";
 
 our $raku57_55 is export = 'say "Fizz" x $_ %% 3 ~ "Buzz" x $_ %% 5 || $_ for 1…100';
 
@@ -55,12 +56,8 @@ class HoleWebDriver is WebDriver is export {
         $.find($text, :$using);
     }
 
-    method getLangLink(Str:D $lang) {
-        $.findAndWait: $lang, :using(PartialLinkText);
-    }
-
-    method getLanguageActive(Str:D $lang) {
-        $.getLangLink($lang).prop('href') eq '';
+    method getLanguageActive(Str:D $lang) of Bool {
+        ?($.url ~~ /\#$lang$/);
     }
 
     method getSolutionLink(Str:D $solution) {
@@ -96,12 +93,12 @@ class HoleWebDriver is WebDriver is export {
 
     # Methods whose names begin with "is" do exactly one assertion.
     method isFailing(Str:D $context) {
-        $.isResult: 'Fail ☹️', $context;
+        $.isResult: "☹️\nFail", $context;
     }
 
     # Methods whose names begin with "is" do exactly one assertion.
     method isPassing(Str:D $context) {
-        $.isResult: 'Pass 😀', $context;
+        $.isResult: "😀\nPass", $context;
     }
 
     # Methods whose names begin with "is" do exactly one assertion.
@@ -154,6 +151,10 @@ class HoleWebDriver is WebDriver is export {
         $.find("#runBtn").click;
     }
 
+    method setLang(Str:D $lang) {
+        $.js: "location.hash = '#$lang'";
+    }
+
     method setScoring(Str:D $scoring) {
         $.getScoringLink($scoring).click;
     }
@@ -167,10 +168,10 @@ class HoleWebDriver is WebDriver is export {
     }
 
     method clearCode {
-        $.find('.cm-content').send-keys: CONTROL ~ 'a' ~ DELETE;
+        $.find('.cm-content').click.send-keys: WD-CONTROL ~ 'a' ~ WD-DELETE;
     }
 
     method typeCode(Str:D $code) {
-        $.find('.cm-content').send-keys: $code;
+        $.find('.cm-content').click.send-keys(WD-CONTROL ~ WD-END).send-keys($code);
     }
 }

@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
 )
@@ -12,7 +13,38 @@ import (
 func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 	var desc, sql string
 
-	switch param(r, "type") {
+	data := struct {
+		Pager *pager.Pager
+		Rows  []struct {
+			Bytes, Chars, Count, Rank, Total int
+			Country                          config.NullCountry `db:"country_flag"`
+			Hole, Lang, Scoring              string
+			Me                               bool
+			Name                             string `db:"login"`
+			Submitted                        time.Time
+		}
+	}{Pager: pager.New(r)}
+
+	args := []any{pager.PerPage, data.Pager.Offset}
+
+	switch t := param(r, "type"); t {
+	case "diamond-deltas":
+		desc = "Deltas between diamonds and silvers."
+		sql = `WITH diamonds AS (
+			    SELECT * FROM rankings WHERE rank = 1 AND tie_count = 1
+			), silvers AS (
+			    SELECT DISTINCT hole, lang, scoring, strokes
+			      FROM rankings
+			     WHERE rank = 2
+			) SELECT country_flag, hole, lang, login, scoring,
+			         silvers.strokes - diamonds.strokes count,
+			         RANK() OVER(ORDER BY silvers.strokes - diamonds.strokes DESC),
+			         COUNT(*) OVER () total
+			    FROM diamonds
+			    JOIN silvers USING (hole, lang, scoring)
+			    JOIN users ON id = user_id
+			ORDER BY rank, scoring
+			   LIMIT $1 OFFSET $2`
 	case "followers":
 		desc = "Total followers."
 		sql = `WITH followers AS (
@@ -35,17 +67,33 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 			    JOIN users ON id = user_id
 			ORDER BY rank, login
 			   LIMIT $1 OFFSET $2`
-	case "oldest-diamonds":
-		desc = "Oldest diamond medals."
-		sql = `WITH diamonds AS (
-			    SELECT hole, lang, scoring, submitted, user_id
-			      FROM rankings
-			     WHERE rank = 1 AND tie_count = 1
-			) SELECT country_flag, hole, lang, login, scoring, submitted,
+	case "most-tied-golds":
+		args = append(args, session.Golfer(r))
+		desc = "Most tied gold medals"
+		sql = `SELECT hole, lang, scoring, COUNT(*),
+			          RANK() OVER(ORDER BY COUNT(*) DESC),
+			          COUNT(*) FILTER (WHERE user_id = $3) > 0 me,
+			          COUNT(*) OVER () total
+			     FROM medals
+			    WHERE medal = 'gold'
+			 GROUP BY hole, lang, scoring
+			 ORDER BY rank, hole, lang, scoring
+			    LIMIT $1 OFFSET $2`
+	case "oldest-diamonds", "oldest-unicorns":
+		if t == "oldest-diamonds" {
+			args = append(args, "diamond")
+			desc = "💎 Oldest diamonds (uncontested gold medals)."
+		} else {
+			args = append(args, "unicorn")
+			desc = "🦄 Oldest unicorns (uncontested solves)."
+		}
+
+		sql = `SELECT country_flag, hole, lang, login, scoring, submitted,
 			         RANK() OVER(ORDER BY submitted),
 			         COUNT(*) OVER () total
-			    FROM diamonds
+			    FROM medals
 			    JOIN users ON id = user_id
+			   WHERE medal = $3
 			ORDER BY rank, hole, lang, scoring, login
 			   LIMIT $1 OFFSET $2`
 	case "referrals":
@@ -81,18 +129,7 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := struct {
-		Pager *pager.Pager
-		Rows  []struct {
-			Bytes, Chars, Count, Rank, Total        int
-			CountryFlag, Hole, Lang, Login, Scoring string
-			Submitted                               time.Time
-		}
-	}{Pager: pager.New(r)}
-
-	if err := session.Database(r).Select(
-		&data.Rows, sql, pager.PerPage, data.Pager.Offset,
-	); err != nil {
+	if err := session.Database(r).Select(&data.Rows, sql, args...); err != nil {
 		panic(err)
 	}
 
