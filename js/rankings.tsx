@@ -70,7 +70,8 @@ if (dataElement) {
                                 const strokes = Number(items[0].label);
                                 let otherGolfers = Number(items[0].raw);
                                 if (golfer == strokes) otherGolfers--;
-                                return `${strokes} ${scoring}: ${golfer == strokes ? 'you and ' : ''}${otherGolfers} golfer${otherGolfers > 1 ? 's' : ''}`;
+                                return otherGolfers === 0 ? `${strokes} ${scoring}: just you` :
+                                    `${strokes} ${scoring}: ${golfer == strokes ? 'you and ' : ''}${otherGolfers} golfer${otherGolfers > 1 ? 's' : ''}`;
                             },
                         },
                         filter(item) {
