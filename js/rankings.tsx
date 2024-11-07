@@ -26,7 +26,8 @@ if (dataElement) {
             golferBar[strokes.findIndex(x => x == golfer)] = 1 << 24;
         }
 
-        const yMax = orderedFrequencies.length > 1 ? Math.min(orderedFrequencies[0], orderedFrequencies[1] * 1.5) : orderedFrequencies[0];
+        let yMax = orderedFrequencies[0];
+        if (yMax > 50 && orderedFrequencies.length > 1) yMax = Math.min(yMax, orderedFrequencies[1] * 1.5);
 
         Chart.register(BarController, BarElement,
             LinearScale, PointElement, Tooltip, CategoryScale);
