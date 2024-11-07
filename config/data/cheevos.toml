@@ -199,6 +199,11 @@ name        = 'Under Pressure'
 emoji       = '🗜'
 description = 'Solve <a href=/pascals-triangle#pascal>Pascal’s Triangle in Pascal</a>.'
 
+[['Hole/Lang Specific']]
+name        = 'X-Factor'
+emoji       = '❌'
+description = 'Solve <a href=/factorial-factorisation#factor>Factorial Factorisation in Factor</a>.'
+
 # Miscellaneous
 
 [[Miscellaneous]]

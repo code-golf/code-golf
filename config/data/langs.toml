@@ -360,7 +360,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '67.9 MiB'
-version = '0.8.11'
+version = '0.8.13'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -1072,7 +1072,7 @@ example = '''
     do (format t "~d~%" i)
 )
 
-; Accessing Arguments
+; Accessing arguments
 (loop for arg in *args*
     do (write-line arg)
 )
@@ -1144,7 +1144,7 @@ args       = [ '/usr/bin/odinwrapper', '-' ]
 env        = [ 'PATH=/usr/local/bin:/usr/bin:/bin' ]
 experiment = 766
 size       = '258 MiB'
-version    = '2024-10'
+version    = '2024-11'
 website    = 'https://odin-lang.org'
 example    = '''
 package main
@@ -1347,8 +1347,8 @@ for (arg in commandArgs(TRUE)) {
 [Racket]
 args       = [ '/usr/local/bin/racket', '-e', '$code', '--' ]
 experiment = 1358
-size       = '28.9 MiB'
-version    = '8.14'
+size       = '29.0 MiB'
+version    = '8.15'
 website    = 'https://racket-lang.org'
 example    = '''
 ; Printing
@@ -1363,11 +1363,12 @@ example    = '''
 '''
 
 [Raku]
-args    = [ '/usr/bin/raku', '-' ]
-size    = '75.8 MiB'
-version = 'Raku 6.d on Rakudo 2024.10'
-website = 'https://raku.org'
-example = '''
+args      = [ '/usr/bin/raku', '-' ]
+redirects = [ 'perl6' ]
+size      = '75.8 MiB'
+version   = 'Raku 6.d on Rakudo 2024.10'
+website   = 'https://raku.org'
+example   = '''
 # Printing
 say 'Hello, World!';
 
@@ -1465,7 +1466,7 @@ print arg
 [Ruby]
 args    = [ '/usr/bin/ruby', '-' ]
 size    = '28.6 MiB'
-version = '3.3.5'
+version = '3.3.6'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing
