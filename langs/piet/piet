@@ -1,0 +1,12 @@
+#!/bin/sh -e
+
+cd /tmp
+
+# Convert ASCII to PNG
+cat - > code.txt
+ascii-piet.py code.txt code.png
+rm code.txt
+
+# Decode & Execute
+shift
+exec npiet code.png
