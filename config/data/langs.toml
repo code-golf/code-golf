@@ -1230,7 +1230,7 @@ for ($i = 1; $i < $argc; $i++)
 args       = [ '/usr/bin/piet', '-' ]
 env        = [ 'PYTHON_COLORS=1' ]
 experiment = 648
-size       = '99.1 MiB'
+size       = '87.7 MiB'
 version    = '2ba1c90'
 website    = 'https://github.com/dloscutoff/ascii-piet'
 example    = '''
