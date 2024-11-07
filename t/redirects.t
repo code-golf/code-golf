@@ -6,16 +6,16 @@ my constant $query = '?foo=bar';
 
 # Redirects.
 for <
-    GET    /api/holes/billiard                    /api/holes/billiards
-    GET    /api/langs/perl6                       /api/langs/raku
-    DELETE /api/notes/billiard/perl6              /api/notes/billiards/raku
-    GET    /api/notes/billiard/perl6              /api/notes/billiards/raku
-    PUT    /api/notes/billiard/perl6              /api/notes/billiards/raku
-    GET    /billiard                              /billiards
-    GET    /rankings/recent-holes/perl6/bytes     /rankings/recent-holes/raku/bytes
-    GET    /recent/perl6                          /recent/raku
-    GET    /recent/solutions/billiard/perl6/bytes /recent/solutions/billiards/raku/bytes
-    GET    /scores/billiard/perl6                 /scores/billiards/raku
+    GET    /api/holes/billiard                   /api/holes/billiards
+    GET    /api/langs/perl6                      /api/langs/raku
+    DELETE /api/notes/billiard/perl              /api/notes/billiards/perl
+    GET    /api/notes/billiards/perl6            /api/notes/billiards/raku
+    PUT    /api/notes/billiard/go                /api/notes/billiards/go
+    GET    /billiard                             /billiards
+    GET    /rankings/recent-holes/perl6/bytes    /rankings/recent-holes/raku/bytes
+    GET    /recent/perl6                         /recent/raku
+    GET    /recent/solutions/billiard/perl/bytes /recent/solutions/billiards/perl/bytes
+    GET    /scores/billiard/perl                 /scores/billiards/perl
 > -> $method, $start, $end {
     my $res = $ua.request: $method, "https://app:443$start$query";
 

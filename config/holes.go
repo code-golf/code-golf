@@ -33,6 +33,10 @@ var (
 
 	// A map of hole ID to category for passing to SQL queries.
 	HoleCategoryHstore = hstore.Hstore{Map: map[string]sql.NullString{}}
+
+	// Aliases & Redirects
+	HoleAliases   = map[string]string{}
+	HoleRedirects = map[string]string{}
 )
 
 type Link struct {
@@ -142,6 +146,16 @@ func init() {
 			hole.Redirects = []string{"sudoku-v2"}
 		case "τ":
 			hole.Aliases = []string{"tau"}
+		}
+
+		// Aliases.
+		for _, alias := range hole.Aliases {
+			HoleAliases[alias] = hole.ID
+		}
+
+		// Redirects.
+		for _, redirect := range hole.Redirects {
+			HoleRedirects[redirect] = hole.ID
 		}
 
 		// Process the templated preamble with the data.
