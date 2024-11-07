@@ -8,6 +8,7 @@
 
 th:has(#chart-container) {
     padding: 0;
+    position: initial;
 }
 
 #chart-container {
