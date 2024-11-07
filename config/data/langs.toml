@@ -1562,7 +1562,7 @@ for (a in Process.arguments) System.print(a)
 [Zeek]
 args       = [ '/usr/bin/zeek', '-e', '$code' ]
 experiment = 1457
-size       = '192 MiB'
+size       = '191 MiB'
 version    = '7.0.3'
 website    = 'https://zeek.org'
 example    = '''
