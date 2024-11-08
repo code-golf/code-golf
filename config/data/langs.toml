@@ -1707,8 +1707,8 @@ Hello, World!
 args       = [ '/node_modules/.bin/ts-node', '--swc', '-e', '$code', '--' ]
 env        = [ 'FORCE_COLOR=true', 'NODE_OPTIONS=--disallow-code-generation-from-strings' ]
 experiment = 1364
-size       = '144 MiB'
-version    = '5.6.2'
+size       = '142 MiB'
+version    = '5.6.3'
 website    = 'https://www.typescriptlang.org'
 example    = '''
 // Printing
