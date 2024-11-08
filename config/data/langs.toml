@@ -685,7 +685,7 @@ end
 
 [Gleam]
 args       = [ '/usr/bin/gleamwrapper', '-', '--' ]
-env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
+env        = [ 'FORCE_COLOR=true', 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 1129
 size       = '88.1 MiB'
 version    = '1.5.1'
