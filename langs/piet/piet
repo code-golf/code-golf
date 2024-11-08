@@ -2,11 +2,17 @@
 
 cd /tmp
 
-# Convert ASCII to PNG
 cat - > code.txt
-ascii-piet.py code.txt code.png
-rm code.txt
 
-# Decode & Execute
 shift
-exec npiet code.png
+touch argv.txt
+for arg in "$@"; do
+    # Write NULL terminated argument to .txt file
+    echo -ne "$arg\0" >> argv.txt
+done
+
+# Convert ASCII-encoding to Portable Pixmap image
+piet.py code.txt > code.ppm
+
+# Execute decoded image and read arguments from .txt file
+exec npiet code.ppm < argv.txt
