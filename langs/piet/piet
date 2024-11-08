@@ -15,4 +15,4 @@ done
 piet.py code.txt > code.ppm
 
 # Execute decoded image and read arguments from .txt file
-exec npiet code.ppm < argv.txt
+exec npiet -v11 code.ppm < argv.txt
