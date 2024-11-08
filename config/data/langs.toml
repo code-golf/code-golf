@@ -450,7 +450,7 @@ for arg in sys.argv[1:]:
 
 [CoffeeScript]
 args       = [ '/usr/bin/coffeescript', '-' ]
-env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
+env        = [ 'FORCE_COLOR=true', 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 450
 size       = '69.1 MiB'
 version    = '2.7.0'
