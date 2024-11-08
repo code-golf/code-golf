@@ -728,7 +728,8 @@ body > .tabs a {
 
 @media (max-width: 50rem) {
     #two-pane {
-        grid-template: min-content min-content 1fr / 1fr;
+        display: flex;
+        flex-direction: column;
 
         & > #form-nav {
             display: flex;

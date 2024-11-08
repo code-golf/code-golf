@@ -20,7 +20,7 @@ CREATE TYPE cheevo AS ENUM (
     'rtfm', 'rule-34', 's-box-360', 'slowcoach', 'smörgåsbord', 'solve-quine',
     'sounds-quite-nice', 'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr',
     'twelvetide', 'twenty-kiloleagues', 'under-pressure', 'up-to-eleven',
-    'vampire-byte', 'x86'
+    'vampire-byte', 'x-factor', 'x86'
 );
 
 CREATE TYPE connection AS ENUM (
