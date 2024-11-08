@@ -2,7 +2,7 @@ FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache curl npm
 
-RUN curl -L https://github.com/microsoft/TypeScript/archive/refs/tags/v5.6.2.tar.gz \
+RUN curl -L https://github.com/microsoft/TypeScript/archive/refs/tags/v5.6.3.tar.gz \
   | tar xz --strip-components 1
 
 RUN npm install @swc/core ts-node \
