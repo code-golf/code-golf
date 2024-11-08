@@ -358,7 +358,7 @@ int main(int argc, char* argv[]) {
 
 [Civet]
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
-env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
+env     = [ 'FORCE_COLOR=true', 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '67.9 MiB'
 version = '0.8.14'
 website = 'https://civet.dev'
@@ -368,7 +368,7 @@ console.log 'Hello, World!'
 
 // Looping
 for i of [0..9]
-    console.log i
+    console.log `${i}`
 
 // Accessing arguments
 for arg of process.argv[2..]
