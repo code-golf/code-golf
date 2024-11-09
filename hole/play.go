@@ -485,6 +485,13 @@ func play(
 
 	stdoutBytes := stdout.Next(maxLength)
 
+	// Postprocess Piet output to turn spaces preceded by question marks into nil.
+	// This is odd behavior from `npiet` that reproduces on its online interpreter.
+	// Reference: https://www.bertnase.de/npiet/npiet-execute.php?target=code.ppm&input=abcdef&go=1&internal=0
+	if lang.ID == "piet" {
+		stdoutBytes = bytes.ReplaceAll(stdoutBytes, []byte("? "), nil)
+	}
+
 	// Postprocess sed output to turn null bytes into newlines.
 	if lang.ID == "sed" {
 		stdoutBytes = bytes.ReplaceAll(stdoutBytes, []byte("\x00"), []byte("\n"))

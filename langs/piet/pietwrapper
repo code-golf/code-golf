@@ -7,12 +7,12 @@ cat - > code.txt
 shift
 touch argv.txt
 for arg in "$@"; do
-    # Write NULL terminated argument to .txt file
-    echo -ne "$arg\0" >> argv.txt
+    # Write argument to .txt file
+    echo "$arg" >> argv.txt
 done
 
-# Encode ASCII to PNG
-piet code.txt > code.png
+# Encode ASCII to Portable Pixmap
+piet code.txt > code.ppm
 
-# Decode PNG and read arguments from .txt file
-exec npiet -v11 code.png < argv.txt
+# Decode PPM and read arguments from .txt file
+exec npiet -v11 code.ppm < argv.txt
