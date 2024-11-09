@@ -15,4 +15,4 @@ done
 piet code.txt > code.ppm
 
 # Decode PPM and read arguments from .txt file
-exec npiet -v11 code.ppm < argv.txt
+exec npiet -q -v11 code.ppm < argv.txt
