@@ -110,17 +110,13 @@ Go to the store and buy some more, 99 bottles of beer on the wall.
 
 ['Abundant Numbers']
 category = 'Sequence'
-releases = [2019-11-17, 2022-11-19]
-variants = ['Abundant Numbers', 'Abundant Numbers (Long)']
+released = 2019-11-17
 links = [
     { name = 'OEIS A005101', url = '//oeis.org/A005101' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Abundant,_deficient_and_perfect_number_classifications' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Abundant_number' },
 ]
-synopsis = '''
-Print all the abundant numbers from 1 to
-{{- if eq . "Abundant Numbers" }} 200.{{ else }} 1,000.{{ end -}}
-'''
+synopsis = 'Print all the abundant numbers from 1 to 200.'
 preamble = '''
 <p>
     An abundant number is a number for which the sum of its proper divisors
@@ -131,9 +127,14 @@ preamble = '''
 
 <p>
     Print all the abundant numbers from <b>1</b> to
-    <b>{{ if eq . "Abundant Numbers" }}200{{ else }}1,000{{ end }}</b>
+    <b>{{ if eq .Name "Abundant Numbers" }}200{{ else }}1,000{{ end }}</b>
     inclusive, each on their own line.
 '''
+
+[['Abundant Numbers'.variants]]
+name     = 'Abundant Numbers (Long)'
+released = 2022-11-19
+synopsis = 'Print all the abundant numbers from 1 to 1,000.'
 
 ['Apéry’s Constant']
 experiment = 1525
@@ -149,22 +150,14 @@ preamble = '''
 
 ['Arabic to Roman']
 category = 'Transform'
-releases = [2017-07-22, 2017-11-10]
-variants = ['Arabic to Roman', 'Roman to Arabic']
+released = 2017-07-22
 links = [
-    { v = [0], name = 'Rosetta Code', url = '//rosettacode.org/wiki/Roman_numerals/Encode' },
-    { v = [1], name = 'Rosetta Code', url = '//rosettacode.org/wiki/Roman_numerals/Decode' },
-    {          name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Roman_numerals' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Roman_numerals/Encode' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Roman_numerals' },
 ]
-synopsis = '''
-{{ if eq . "Arabic to Roman" -}}
-    Convert Arabic numerals to Roman numerals.
-{{- else -}}
-    Convert Roman numerals to Arabic numerals.
-{{- end -}}
-'''
+synopsis = 'Convert Arabic numerals to Roman numerals.'
 preamble = '''
-{{ if eq . "Arabic to Roman" }}
+{{ if eq .Name "Arabic to Roman" }}
 <p>
     For each numeric argument in Arabic numerals, print the same number in
     Roman numerals.
@@ -199,6 +192,15 @@ preamble = '''
     </table>
 </div>
 '''
+
+[['Arabic to Roman'.variants]]
+name     = 'Roman to Arabic'
+released = 2017-11-10
+synopsis = 'Convert Roman numerals to Arabic numerals.'
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Roman_numerals/Decode' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Roman_numerals' },
+]
 
 ['Arithmetic Numbers']
 category = 'Sequence'
@@ -636,7 +638,7 @@ preamble = '''
     corresponding order. The full mapping is as follows:
 
 <div id=colors class="tables-4col">
-{{ range . }}
+{{ range .DataMap }}
     {{ if or (eq .Key "IndianRed") (eq .Key "Magenta")
              (eq .Key "Cyan"     ) (eq .Key "Sienna" ) }}
         <table><thead><tr><th>Keyword<th>Hex<tbody>
@@ -927,17 +929,13 @@ preamble = '''
 
 ['Emirp Numbers']
 category = 'Sequence'
-releases = [2017-10-08, 2022-10-29]
-variants = ['Emirp Numbers', 'Emirp Numbers (Long)']
+released = 2017-10-08
 links = [
     { name = 'OEIS A006567', url = '//oeis.org/A006567' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Emirp_primes' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Emirp' },
 ]
-synopsis = '''
-Print all the emirp numbers from 1 to
-{{- if eq . "Emirp Numbers" }} 1,000.{{ else }} 10,000.{{ end -}}
-'''
+synopsis = 'Print all the emirp numbers from 1 to 1,000.'
 preamble = '''
 <p>
     An emirp (prime spelled backwards) is a prime number that results in a
@@ -946,9 +944,14 @@ preamble = '''
 
 <p>
     Print all the emirp numbers from <b>1</b> to
-    <b>{{ if eq . "Emirp Numbers" }}1,000{{ else }}10,000{{ end }}</b>
+    <b>{{ if eq .Name "Emirp Numbers" }}1,000{{ else }}10,000{{ end }}</b>
     inclusive, each on their own line.
 '''
+
+[['Emirp Numbers'.variants]]
+name     = 'Emirp Numbers (Long)'
+released = 2022-10-29
+synopsis = 'Print all the emirp numbers from 1 to 10,000.'
 
 [Emojify]
 category = 'Transform'
@@ -971,7 +974,7 @@ preamble = '''
     Unicode emoji.
 
 <div id=emojify>
-{{ range . }}
+{{ range .DataMap }}
     <div><pre>{{ .Key }}</pre>{{ .Value }}</div>
 {{ end }}
 </div>
@@ -979,30 +982,27 @@ preamble = '''
 
 ['Evil Numbers']
 category = 'Sequence'
-releases = [2017-10-18, 2022-09-06, 2017-10-18, 2022-09-06]
-variants = ['Evil Numbers', 'Evil Numbers (Long)', 'Odious Numbers', 'Odious Numbers (Long)']
+released = 2017-10-18
 links = [
-    { v = [0, 1], name = 'OEIS A001969', url = '//oeis.org/A001969' },
-    { v = [2, 3], name = 'OEIS A000069', url = '//oeis.org/A000069' },
-    {             name = 'Rosetta Code', url = '//rosettacode.org/wiki/Population_count' },
-    { v = [0, 1], name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Evil_number' },
-    { v = [2, 3], name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Odious_number' },
+    { name = 'OEIS A001969', url = '//oeis.org/A001969' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Population_count' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Evil_number' },
 ]
 synopsis = '''
 Print all the
-{{- if hasPrefix . "Evil" }} evil {{ else }} odious {{ end -}}
+{{- if hasPrefix .Name "Evil" }} evil {{ else }} odious {{ end -}}
 numbers from 0 to
-{{- if hasSuffix . "(Long)" }} 1,000.{{ else }} 50.{{ end -}}
+{{- if hasSuffix .Name "(Long)" }} 1,000.{{ else }} 50.{{ end -}}
 '''
 preamble = '''
-{{ if or (eq . "Evil Numbers") (eq . "Evil Numbers (Long)") }}
+{{ if or (eq .Name "Evil Numbers") (eq .Name "Evil Numbers (Long)") }}
 <p>
     An evil number is a non-negative number that has an even number of 1s in
     its binary expansion.
 
 <p>
     Print all the evil numbers from <b>0</b> to
-    <b>{{ if eq . "Evil Numbers" }}50{{ else }}1,000{{ end }}</b>
+    <b>{{ if eq .Name "Evil Numbers" }}50{{ else }}1,000{{ end }}</b>
     inclusive, each on their own line.
 {{ else }}
 <p>
@@ -1011,10 +1011,32 @@ preamble = '''
 
 <p>
     Print all the odious numbers from <b>0</b> to
-    <b>{{ if eq . "Odious Numbers" }}50{{ else }}1,000{{ end }}</b>
+    <b>{{ if eq .Name "Odious Numbers" }}50{{ else }}1,000{{ end }}</b>
     inclusive, each on their own line.
 {{ end }}
 '''
+
+[['Evil Numbers'.variants]]
+name     = 'Evil Numbers (Long)'
+released = 2022-09-06
+
+[['Evil Numbers'.variants]]
+name     = 'Odious Numbers'
+released = 2017-10-18
+links    = [
+    { name = 'OEIS A000069', url = '//oeis.org/A000069' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Population_count' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Odious_number' },
+]
+
+[['Evil Numbers'.variants]]
+name     = 'Odious Numbers (Long)'
+released = 2022-09-06
+links    = [
+    { name = 'OEIS A000069', url = '//oeis.org/A000069' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Population_count' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Odious_number' },
+]
 
 ['Factorial Factorisation']
 category = 'Mathematics'
@@ -1072,21 +1094,20 @@ preamble = '''
 
 ['Fizz Buzz']
 category = 'Sequence'
-releases = [2017-05-22, 2021-11-21]
-variants = ['Fizz Buzz', 'Foo Fizz Buzz Bar']
+released = 2017-05-22
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/FizzBuzz' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Fizz_buzz' },
 ]
-synopsis = 'Print {{ . }}.'
+synopsis = 'Print {{ .Name }}.'
 preamble = '''
 <p>
     Print the numbers from <b>1</b> to
-    <b>{{ if eq . "Fizz Buzz" }}100{{ else }}1,000{{ end }}</b>
+    <b>{{ if eq .Name "Fizz Buzz" }}100{{ else }}1,000{{ end }}</b>
     inclusive, each on their own line.
 
 <p>
-{{ if eq . "Fizz Buzz" }}
+{{ if eq .Name "Fizz Buzz" }}
     If, however, the number is a multiple of <b>three</b> then print
     <b>Fizz</b> instead, and if the number is a multiple of <b>five</b> then
     print <b>Buzz</b>.
@@ -1102,6 +1123,10 @@ preamble = '''
     If multiple conditions hold true then all replacements should be printed,
     for example <b>15</b> should print <b>FizzBuzz</b>.
 '''
+
+[['Fizz Buzz'.variants]]
+name     = 'Foo Fizz Buzz Bar'
+released = 2021-11-21
 
 ['Floyd-Steinberg Dithering']
 category = 'Art'
@@ -1262,21 +1287,14 @@ preamble = '''
     Gijswijt’s sequence, each on a separate line.
 '''
 
-['Gray Code']
+['Gray Code Decoder']
 category = 'Transform'
-variants = ['Gray Code Decoder', 'Gray Code Encoder']
 experiment = 779
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Gray_code' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Gray_code' },
 ]
-synopsis = '''
-{{- if eq . "Gray Code Decoder" -}}
-    Decode Gray code into denary numbers.
-{{- else -}}
-    Encode denary numbers into Gray code.
-{{- end -}}
-'''
+synopsis = 'Decode Gray code into denary numbers.'
 preamble = '''
 <p>
     The reflected binary code (RBC), also known as Gray code, is an ordering
@@ -1291,7 +1309,7 @@ preamble = '''
     change, instead of two.
 
 <p>
-{{ if eq . "Gray Code Decoder" }}
+{{ if eq .Name "Gray Code Decoder" }}
     For each argument in reflected binary (Gray code) form, print the same
     number in decimal form.
 {{ else }}
@@ -1302,19 +1320,20 @@ preamble = '''
 <p>The numbers range from 0 to 4095 inclusive.
 '''
 
+[['Gray Code Decoder'.variants]]
+name       = 'Gray Code Encoder'
+experiment = 1157
+synopsis = 'Encode denary numbers into Gray code.'
+
 ['Happy Numbers']
 category = 'Sequence'
-releases = [2017-10-31, 2021-09-19]
-variants = ['Happy Numbers', 'Happy Numbers (Long)']
+released = 2017-10-31
 links = [
     { name = 'OEIS A007770', url = '//oeis.org/A007770' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Happy_numbers' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Happy_number' },
 ]
-synopsis = '''
-Print all the happy numbers from 1 to
-{{- if hasSuffix . "(Long)" }} 1,000.{{ else }} 200.{{ end -}}
-'''
+synopsis = 'Print all the happy numbers from 1 to 200.'
 preamble = '''
 <p>
     A happy number is defined by the following Sequence: Starting with any
@@ -1335,9 +1354,14 @@ preamble = '''
 
 <p>
     Print all the happy numbers from <b>1</b> to
-    <b>{{ if eq . "Happy Numbers" }}200{{ else }}1,000{{ end }}</b>
+    <b>{{ if eq .Name "Happy Numbers" }}200{{ else }}1,000{{ end }}</b>
     inclusive, each on their own line.
 '''
+
+[['Happy Numbers'.variants]]
+name     = 'Happy Numbers (Long)'
+released = 2021-09-19
+synopsis = 'Print all the happy numbers from 1 to 1,000.'
 
 ['Hexagonal Spiral']
 experiment = 1223
@@ -1561,26 +1585,16 @@ preamble = '''
     inclusive, each on their own line.
 '''
 
-[Kolakoski]
-categories = ['Mathematics', 'Sequence']
+['Kolakoski Constant']
+category = 'Mathematics'
 released = 2021-01-16
-variants = ['Kolakoski Constant', 'Kolakoski Sequence']
 links = [
-    { v = [0], name = 'OEIS A118270', url = '//oeis.org/A118270' },
-    { v = [0], name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Kolakoski_sequence#Kolakoski_Constant' },
-    { v = [1], name = 'OEIS A000002', url = '//oeis.org/A000002' },
-    { v = [1], name = 'Rosetta Code', url = '//rosettacode.org/wiki/Kolakoski_sequence' },
-    { v = [1], name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Kolakoski_sequence' },
+    { name = 'OEIS A118270', url = '//oeis.org/A118270' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Kolakoski_sequence#Kolakoski_Constant' },
 ]
-synopsis = '''
-{{- if eq . "Kolakoski Constant" -}}
-    Print the first 1,000 digits of the Kolakoski constant.
-{{- else -}}
-    Print the first 1,000 elements in the Kolakoski sequence.
-{{- end -}}
-'''
+synopsis = 'Print the first 1,000 digits of the Kolakoski constant.'
 preamble = '''
-{{- if eq . "Kolakoski Constant" -}}
+{{- if eq .Name "Kolakoski Constant" -}}
 <p>
     The Kolakoski constant is created by taking the
     <a href=kolakoski-sequence>Kolakoski sequence</a>, subtracting one from
@@ -1611,6 +1625,16 @@ preamble = '''
     sequence, separated by spaces.
 {{- end -}}
 '''
+
+[['Kolakoski Constant'.variants]]
+name     = 'Kolakoski Sequence'
+category = 'Sequence'
+synopsis = 'Print the first 1,000 elements in the Kolakoski sequence.'
+links = [
+    { name = 'OEIS A000002', url = '//oeis.org/A000002' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Kolakoski_sequence' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Kolakoski_sequence' },
+]
 
 ['Leap Years']
 category = 'Sequence'
@@ -1875,10 +1899,9 @@ preamble = '''
     Given a list of space-separated solution scores in ascending order, print the corresponding diamonds and medals.
 '''
 
-[Morse]
+['Morse Decoder']
 category = 'Transform'
 released = 2018-02-18
-variants = ['Morse Decoder', 'Morse Encoder']
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Morse_code' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Morse_code' },
@@ -1899,17 +1922,11 @@ data = '''
     "8": "▄▄▄ ▄▄▄ ▄▄▄ ▄ ▄", "9": "▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄ ▄", "0": "▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄ ▄▄▄",
     " ": "    "
 }'''
-synopsis = '''
-{{- if eq . "Morse Decoder" -}}
-    Decode alphanumeric strings into International Morse Code.
-{{- else -}}
-    Encode alphanumeric strings into International Morse Code.
-{{- end -}}
-'''
+synopsis = 'Decode alphanumeric strings into International Morse Code.'
 preamble = '''
 <p>
     Using ▄ (U+2584 Lower Half Block) to represent a dot,
-{{ if eq . "Morse Decoder" }}
+{{ if eq .Name "Morse Decoder" }}
     decode the argument from International Morse Code to alphanumeric.
 {{ else }}
     encode the argument from alphanumeric into International Morse Code.
@@ -1990,6 +2007,10 @@ preamble = '''
     </table>
 </div>
 '''
+
+[['Morse Decoder'.variants]]
+name     = 'Morse Encoder'
+synopsis = 'Encode alphanumeric strings into International Morse Code.'
 
 ['Musical Chords']
 category = 'Transform'
@@ -2234,17 +2255,13 @@ acbcab</code></pre>
 
 ['Niven Numbers']
 category = 'Sequence'
-releases = [2018-05-03, 2022-08-08]
-variants = ['Niven Numbers', 'Niven Numbers (Long)']
+released = 2018-05-03
 links = [
     { name = 'OEIS A005349', url = '//oeis.org/A005349' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Harshad_or_Niven_series' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Niven_number' },
 ]
-synopsis = '''
-Print all the Niven numbers from 1 to
-{{- if hasSuffix . "(Long)" }} 10,000.{{ else }} 100.{{ end -}}
-'''
+synopsis = 'Print all the Niven numbers from 1 to 100.'
 preamble = '''
 <p>
     A Niven number is a positive integer that is divisible by the sum of
@@ -2252,9 +2269,14 @@ preamble = '''
 
 <p>
     Print all the Niven numbers from <b>1</b> to
-    <b>{{ if eq . "Niven Numbers" }}100{{ else }}10,000{{ end }}</b>
+    <b>{{ if eq .Name "Niven Numbers" }}100{{ else }}10,000{{ end }}</b>
     inclusive, each on their own line.
 '''
+
+[['Niven Numbers'.variants]]
+name     = 'Niven Numbers (Long)'
+released = 2022-08-08
+synopsis = 'Print all the Niven numbers from 1 to 10,000.'
 
 ['Number Spiral']
 category = 'Art'
@@ -2442,17 +2464,13 @@ preamble = '''
 
 ['Pernicious Numbers']
 category = 'Sequence'
-releases = [2017-10-18, 2022-11-19]
-variants = ['Pernicious Numbers', 'Pernicious Numbers (Long)']
+released = 2017-10-18
 links = [
     { name = 'OEIS A052294', url = '//oeis.org/A052294' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Pernicious_numbers' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Pernicious_number' },
 ]
-synopsis = '''
-Print all the Pernicious numbers from 0 to
-{{- if hasSuffix . "(Long)" }} 10,000.{{ else }} 50.{{ end -}}
-'''
+synopsis = 'Print all the Pernicious numbers from 0 to 50.'
 preamble = '''
 <p>
     A pernicious number is a positive number where the sum of its binary
@@ -2464,9 +2482,14 @@ preamble = '''
 
 <p>
     Print all the pernicious numbers from <b>0</b> to
-    <b>{{ if hasSuffix . "(Long)" }}10,000{{ else }}50{{ end }}</b>
+    <b>{{ if hasSuffix .Name "(Long)" }}10,000{{ else }}50{{ end }}</b>
     inclusive, each on their own line.
 '''
+
+[['Pernicious Numbers'.variants]]
+name     = 'Pernicious Numbers (Long)'
+released = 2022-11-19
+synopsis = 'Print all the Pernicious numbers from 0 to 10,000.'
 
 ['Placeholder']
 experiment = 1404
@@ -2566,22 +2589,23 @@ preamble = '''
 
 ['Prime Numbers']
 category = 'Sequence'
-releases = [2017-10-04, 2021-12-05]
-variants = ['Prime Numbers', 'Prime Numbers (Long)']
+released = 2017-10-04
 links = [
     { name = 'OEIS A000040', url = '//oeis.org/A000040' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Prime_number' },
 ]
-synopsis = '''
-Print all the prime numbers from 1 to
-{{- if hasSuffix . "(Long)" }} 10,000.{{ else }} 100.{{ end -}}
-'''
+synopsis = 'Print all the prime numbers from 1 to 100.'
 preamble = '''
 <p>
     Print all the prime numbers from <b>1</b> to
-    <b>{{ if hasSuffix . "(Long)" }}10,000{{ else }}100{{ end }}</b>
+    <b>{{ if hasSuffix .Name "(Long)" }}10,000{{ else }}100{{ end }}</b>
     inclusive, each on their own line.
 '''
+
+[['Prime Numbers'.variants]]
+name     = 'Prime Numbers (Long)'
+released = 2021-12-05
+synopsis = 'Print all the prime numbers from 1 to 10,000.'
 
 ['Proximity Grid']
 category = 'Computing'
@@ -3469,8 +3493,7 @@ consequat.</pre>
 
 [Sudoku]
 category = 'Gaming'
-releases = [2018-11-15, 2021-04-25]
-variants = ['Sudoku', 'Sudoku (Fill-in)']
+released = 2018-11-15
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Sudoku' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Sudoku' },
@@ -3483,7 +3506,7 @@ preamble = '''
     digits.
 
 <p>
-{{ if eq . "Sudoku" }}
+{{ if eq .Name "Sudoku" }}
     Write a program that given an incomplete Sudoku board as 9 arguments of 9
     digits, with blanks represented by an underscore, prints a solved Sudoku
     grid using Unicode box-drawing characters like so:
@@ -3514,6 +3537,11 @@ preamble = '''
 ┗━━━┷━━━┷━━━┻━━━┷━━━┷━━━┻━━━┷━━━┷━━━┛
 </pre>
 '''
+
+[[Sudoku.variants]]
+name      = 'Sudoku (Fill-in)'
+redirects = [ 'sudoku-v2' ]
+released  = 2021-04-25
 
 ['Ten-pin Bowling']
 category = 'Gaming'
@@ -3776,7 +3804,7 @@ preamble = '''
 <p>The full mapping is as follows:
 
 <div id=states class="tables-4col">
-{{ range . }}
+{{ range .DataMap }}
     {{ if or (eq .Value "AL") (eq .Value "IL")
              (eq .Value "MT") (eq .Value "RI") }}
         <table><thead><tr><th>State<th>Abbr.<tbody>
@@ -3984,23 +4012,24 @@ aliases = ['lambda']
 
 ['π']
 category = 'Mathematics'
-releases = [2017-07-02, 2017-11-28]
-variants = ['π', 'τ']
+released = 2017-07-02
 links = [
-    { v = [0], name = 'OEIS A000796', url = '//oeis.org/A000796' },
-    { v = [0], name = 'Rosetta Code', url = '//rosettacode.org/wiki/Pi' },
-    { v = [0], name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Pi' },
-    { v = [1], name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Tau_(mathematical_constant)' },
+    { name = 'OEIS A000796', url = '//oeis.org/A000796' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Pi' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Pi' },
 ]
-synopsis = 'Print the first 1,000 digits of {{ . }}.'
-preamble = '''
-{{- if eq . "π" -}}
-<p>Print the first <b>1,000</b> decimal digits of π (pi).
-{{- else -}}
-<p>Print the first <b>1,000</b> decimal digits of 2π=τ (tau).
-{{- end -}}
-'''
+synopsis = 'Print the first 1,000 digits of {{ .Name }}.'
+preamble = '<p>Print the first <b>1,000</b> decimal digits of π (pi).'
 aliases = ['pi']
+
+[['π'.variants]]
+name     = 'τ'
+aliases  = ['tau']
+released = 2017-11-28
+preamble = '<p>Print the first <b>1,000</b> decimal digits of 2π=τ (tau).'
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Tau_(mathematical_constant)' },
+]
 
 ['φ']
 category = 'Mathematics'
