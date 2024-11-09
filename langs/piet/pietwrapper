@@ -11,8 +11,8 @@ for arg in "$@"; do
     echo -ne "$arg\0" >> argv.txt
 done
 
-# Convert ASCII-encoding to Portable Pixmap image
-piet.py code.txt > code.ppm
+# Encode ASCII to PNG
+piet code.txt > code.png
 
-# Execute decoded image and read arguments from .txt file
-exec npiet -v11 code.ppm < argv.txt
+# Decode PNG and read arguments from .txt file
+exec npiet -v11 code.png < argv.txt
