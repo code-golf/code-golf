@@ -1,6 +1,6 @@
 ['><>']
 args    = [ '/usr/bin/fish', '--no-prng', '-c', '$code', '-u' ]
-size    = '4.66 MiB'
+size    = '4.80 MiB'
 version = '96b1cfc'
 website = 'https://github.com/primo-ppcg/fish-jit'
 example = '''
