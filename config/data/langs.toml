@@ -506,6 +506,27 @@ ARGV.each do |arg|
 end
 '''
 
+[Curry]
+args       = [ '/usr/bin/currywrapper', '-' ]
+env        = [ 'PATH=/pakcs/pakcs/bin:/bin' ]
+experiment = 1418
+size       = '167 MiB'
+version    = 'PAKCS 3.6.0'
+website    = 'https://www.informatik.uni-kiel.de/~pakcs/'
+example    = '''
+import System.Environment
+
+main = do
+  -- Printing
+  putStrLn "Hello, World!"
+
+  -- Looping
+  mapM print [0..9]
+
+  -- Accessing arguments
+  getArgs >>= putStrLn . unlines
+'''
+
 [D]
 args    = [ '/usr/bin/ldc2', '--enable-color=true', '--run', '-' ]
 env     = [ 'PATH=/usr/bin' ]
