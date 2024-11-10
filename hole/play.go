@@ -314,6 +314,12 @@ func play(
 ) error {
 	// Preprocess code.
 	switch lang.ID {
+	case "cjam":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && !strings.Contains(code, "`") {
+			run.Stderr = "Quine in CJam must have at least one '`' character."
+			return nil
+		}
 	case "clojure":
 		// Appending (print) prevents implicit output of the last form, if it
 		// is not nil. This seems to be a quirk of the Babashka interpreter

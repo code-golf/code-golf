@@ -11,7 +11,7 @@ RUN ./configure    \
  && make install   \
  && strip /usr/bin/gawk
 
-FROM codegolf/lang-base-no-proc
+FROM codegolf/lang-base
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
 COPY --from=0 /usr/bin/gawk            /usr/bin/
