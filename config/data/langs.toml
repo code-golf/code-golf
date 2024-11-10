@@ -490,11 +490,12 @@ end
 '''
 
 [Curry]
-args       = [ '/usr/bin/curry', '/tmp/code.curry' ]
+args       = [ '/usr/bin/currywrapper', '-' ]
+env        = [ 'PATH=/pakcs/pakcs/bin:/bin' ]
 experiment = 1418
-size       = '174 MiB'
+size       = '167 MiB'
 version    = 'PAKCS 3.6.0'
-website    = 'https://mirrors.cat.pdx.edu/pakcs/'
+website    = 'https://www.informatik.uni-kiel.de/~pakcs/'
 example    = '''
 import System.Environment
 
@@ -506,7 +507,7 @@ main = do
   mapM print [0..9]
 
   -- Accessing arguments
-  getArgs >>= putStr . unlines
+  getArgs >>= putStrLn . unlines
 '''
 
 [D]
