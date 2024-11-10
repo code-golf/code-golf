@@ -18,7 +18,7 @@ RUN cd php-*                   \
 
 RUN echo display_errors=stderr > /usr/lib/php.ini
 
-FROM codegolf/lang-base-no-proc
+FROM codegolf/lang-base
 
 COPY --from=0 /usr/bin/php     /usr/bin/
 COPY --from=0 /usr/lib/php.ini /usr/lib/

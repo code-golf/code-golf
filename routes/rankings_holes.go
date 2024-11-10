@@ -1,6 +1,8 @@
 package routes
 
 import (
+	"database/sql"
+	"errors"
 	"html/template"
 	"net/http"
 	"strings"
@@ -16,6 +18,11 @@ import (
 // GET /rankings/recent-holes/{lang}/{scoring}
 func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
+		Distribution []struct {
+			Strokes   int
+			Frequency int
+		}
+		Strokes                               int
 		Hole, PrevHole, NextHole              *config.Hole
 		HoleID, LangID, OtherScoring, Scoring string
 		Holes                                 []*config.Hole
@@ -63,12 +70,12 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		data.OtherScoring = "bytes"
 	}
 
-	var sql string
+	var query string
 	var bind []any
 
 	// TODO Try and merge these SQL queries?
 	if data.HoleID == "all" && data.LangID == "all" {
-		sql = `WITH foo AS (
+		query = `WITH foo AS (
 			    SELECT user_id, hole, lang, points, strokes, submitted,
 			           ROW_NUMBER() OVER (
 			               PARTITION BY user_id, hole ORDER BY points DESC, strokes
@@ -99,7 +106,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 
 		bind = []any{data.Scoring, pager.PerPage, data.Pager.Offset, holeWhere}
 	} else if data.HoleID == "all" {
-		sql = `WITH summed AS (
+		query = `WITH summed AS (
 			    SELECT user_id,
 			           COUNT(*)             holes,
 			           SUM(points_for_lang) points,
@@ -125,7 +132,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 
 		bind = []any{data.LangID, data.Scoring, pager.PerPage, data.Pager.Offset, holeWhere}
 	} else if data.LangID == "all" {
-		sql = `SELECT country_flag     country,
+		query = `SELECT country_flag     country,
 			          lang             lang,
 			          login            name,
 			          other_strokes    other_strokes,
@@ -142,7 +149,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 
 		bind = []any{data.HoleID, data.Scoring, pager.PerPage, data.Pager.Offset}
 	} else {
-		sql = `SELECT country_flag     country,
+		query = `SELECT country_flag     country,
 			          lang             lang,
 			          login            name,
 			          other_strokes    other_strokes,
@@ -152,6 +159,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			          submitted        submitted,
 			          COUNT(*) OVER()  total
 			     FROM rankings
+
 			     JOIN users ON user_id = id
 			    WHERE hole = $1 AND lang = $2 AND scoring = $3
 			 ORDER BY rank, submitted
@@ -160,12 +168,39 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		bind = []any{data.HoleID, data.LangID, data.Scoring, pager.PerPage, data.Pager.Offset}
 	}
 
-	if err := session.Database(r).Select(&data.Rows, sql, bind...); err != nil {
+	if err := session.Database(r).Select(&data.Rows, query, bind...); err != nil {
 		panic(err)
 	}
 
 	if len(data.Rows) > 0 {
 		data.Pager.Total = data.Rows[0].Total
+	}
+
+	if data.LangID != "all" && data.HoleID != "all" {
+		query = `SELECT strokes  strokes,
+					  COUNT(*) frequency
+				 FROM rankings
+				WHERE hole = $1 AND lang = $2 AND scoring = $3
+			 GROUP BY strokes
+			 ORDER BY strokes`
+		if err := session.Database(r).Select(&data.Distribution, query, data.HoleID, data.LangID, data.Scoring); err != nil {
+			panic(err)
+		}
+		golfer := session.Golfer(r)
+		if golfer != nil {
+			if err := session.Database(r).Get(
+				&data,
+				`SELECT strokes  strokes
+				FROM rankings
+				WHERE hole = $1 AND lang = $2 AND scoring = $3 AND user_id = $4`,
+				data.HoleID,
+				data.LangID,
+				data.Scoring,
+				golfer.ID,
+			); err != nil && !errors.Is(err, sql.ErrNoRows) {
+				panic(err)
+			}
+		}
 	}
 
 	if data.Pager.Calculate() {

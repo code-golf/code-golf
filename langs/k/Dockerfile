@@ -12,7 +12,7 @@ COPY kwrapper.c /
 
 RUN gcc -static -s -o kwrapper kwrapper.c
 
-FROM codegolf/lang-base-no-proc
+FROM codegolf/lang-base
 
 COPY --from=0 /k/k /kwrapper /usr/bin/
 

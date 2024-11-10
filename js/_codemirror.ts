@@ -130,6 +130,7 @@ export const extensions : { [key: string]: any } = {
     'c':             StreamLanguage.define(c),
     'c-sharp':       StreamLanguage.define(csharp),
     'civet':         javascript,
+    // TODO cjam
     'clojure':       StreamLanguage.define(clojure),
     'cobol':         StreamLanguage.define(cobol),
     'coconut':       python,
