@@ -2,9 +2,9 @@ FROM node:23.1.0-alpine3.20 AS builder
 
 RUN apk add --no-cache build-base
 
-ENV VERSION=0.4.0
+ENV VER=0.4.0
 
-RUN npm install --prefix=/usr jsfuck@$VERSION
+RUN npm install --prefix=/usr jsfuck@$VER
 
 COPY jsfuck.c /
 

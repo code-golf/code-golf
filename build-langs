@@ -46,7 +46,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
 
     # Version.
     if $id ~~ any <assembly befunge brainfuck fish golfscript hare hexagony jsfuck k scala> {
-        "langs/$id/Dockerfile".IO.slurp ~~ / ' VERSION=' (\S+) /;
+        "langs/$id/Dockerfile".IO.slurp ~~ / ' VER=' (\S+) | ' VERSION=' (\S+) /;
         %lang<version> = $id eq 'assembly' ?? "DefAssembler $0" !! $0;
     }
     else {
