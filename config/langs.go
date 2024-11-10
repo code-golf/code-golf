@@ -18,19 +18,21 @@ var (
 	// All languages.
 	AllLangByID = map[string]*Lang{}
 	AllLangList []*Lang
+
+	// Redirects.
+	LangRedirects = map[string]string{}
 )
 
 type Lang struct {
-	Args       []string `json:"-"`
-	ArgsQuine  []string `json:"-" toml:"args-quine"`
-	Env        []string `json:"-"`
-	Example    string   `json:"example"`
-	Experiment int      `json:"experiment,omitempty"`
-	ID         string   `json:"id"`
-	Name       string   `json:"name"`
-	Size       string   `json:"size"`
-	Version    string   `json:"version"`
-	Website    string   `json:"website"`
+	Args, Redirects, Env []string `json:"-"`
+	ArgsQuine            []string `json:"-" toml:"args-quine"`
+	Example              string   `json:"example"`
+	Experiment           int      `json:"experiment,omitempty"`
+	ID                   string   `json:"id"`
+	Name                 string   `json:"name"`
+	Size                 string   `json:"size"`
+	Version              string   `json:"version"`
+	Website              string   `json:"website"`
 }
 
 func init() {
@@ -41,6 +43,11 @@ func init() {
 		lang.Example = strings.TrimSuffix(lang.Example, "\n")
 		lang.ID = ID(name)
 		lang.Name = name
+
+		// Redirects.
+		for _, redirect := range lang.Redirects {
+			LangRedirects[redirect] = lang.ID
+		}
 
 		AllLangByID[lang.ID] = lang
 		AllLangList = append(AllLangList, lang)

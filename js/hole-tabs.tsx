@@ -25,6 +25,9 @@ const poolDragSources: {[key: string]: DragSource} = {};
 const poolElements: {[key: string]: HTMLElement} = {};
 let isWide = false;
 
+const isSponsor = JSON.parse($('#sponsor').innerText);
+const hasNotes  = JSON.parse($('#has-notes').innerText);
+
 /**
  * Is mobile mode activated? Start at false as default since Golden Layout
  * uses desktop as default. Change to true and apply changes if width is less
@@ -184,7 +187,7 @@ function makeHoleLangNotesEditor(parent: HTMLDivElement) {
             if (!holeLangNotesEditor) return;
             const result = holeLangNotesEditor.update([tr]) as unknown;
             const content = tr.state.doc.toString();
-            $<HTMLButtonElement>('#upsert-notes-btn').disabled = content === holeLangNotesContent || (!!content && !isSponsor());
+            $<HTMLButtonElement>('#upsert-notes-btn').disabled = content === holeLangNotesContent || (!!content && !isSponsor);
             return result;
         },
         parent,
@@ -239,7 +242,7 @@ layout.registerComponentFactoryFunction('code', async container => {
 async function upsertNotes() {
     $<HTMLButtonElement>('#upsert-notes-btn').disabled = true;
     const content = holeLangNotesEditor!.state.doc.toString();
-    if (!content || isSponsor()) {
+    if (!content || isSponsor) {
         const resp = await fetch(
             `/api/notes/${hole}/${getLang()}`,
             content ? { method: 'PUT', body: content} : { method: 'DELETE' },
@@ -415,16 +418,9 @@ const defaultLayout: LayoutConfig = {
     },
 };
 
-function isSponsor() {
-    return $('#golferInfo')?.dataset.isSponsor === 'true';
-}
-function hasNotes() {
-    return $('#golferInfo')?.dataset.hasNotes === 'true';
-}
-
 function getPoolFromLayoutConfig(config: LayoutConfig) {
     const allComponents = ['code', 'scoreboard', 'arg', 'exp', 'out', 'err', 'diff', 'details', 'langWiki'];
-    if (isSponsor() || hasNotes()) allComponents.push('holeLangNotes');
+    if (isSponsor || hasNotes) allComponents.push('holeLangNotes');
     const activeComponents = getComponentNamesRecursive(config.root!);
     return allComponents.filter(x => !activeComponents.includes(x));
 }
