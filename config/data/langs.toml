@@ -375,6 +375,23 @@ for arg of process.argv[2..]
     console.log arg
 '''
 
+[CJam]
+args       = [ '/usr/bin/cjam', '-' ]
+experiment = 1493
+size       = '133 MiB'
+version    = '0.6.5'
+website    = 'https://sourceforge.net/projects/cjam/'
+example    = '''
+e# Printing
+"Hello, World!"
+
+e# Looping
+T{1_$+}9*]N*N
+
+e# Accessing arguments
+eaN*
+'''
+
 [Clojure]
 args    = [ '/usr/bin/clojure', '-e', '$code' ]
 size    = '64.6 MiB'
