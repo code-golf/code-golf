@@ -40,7 +40,7 @@ WORKDIR /npiet-$VERSION
 
 RUN ./configure && make && make install
 
-FROM codegolf/lang-base-no-proc
+FROM codegolf/lang-base
 
 COPY --from=0 /bin/cat /bin/sh /bin/touch   /bin/
 COPY --from=0 /lib/ld-musl-x86_64.so.1      \
