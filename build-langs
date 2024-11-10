@@ -14,15 +14,12 @@ if my $unknown = @langs ∖ %langs {
 }
 
 # Build (and maybe push) lang-base.
-for 'lang-base', 'lang-base-no-proc' {
-    run <docker buildx build>,
-        '--file',   'docker/lang-base.Dockerfile',
-        '--pull',
-      ( '--push' unless $no-push ),
-        '--tag',    "codegolf/$_",
-        '--target', $_,
-        '.';
-}
+run <docker buildx build>,
+    '--file',   'docker/lang-base.Dockerfile',
+    '--pull',
+    ( '--push' unless $no-push ),
+    '--tag',    'codegolf/lang-base',
+    '.';
 
 for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
     my $id  = id($name);

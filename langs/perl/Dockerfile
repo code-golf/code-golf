@@ -25,7 +25,7 @@ RUN cd perl                           \
  && make -j`nproc`                    \
  && strip -s perl
 
-FROM codegolf/lang-base-no-proc
+FROM codegolf/lang-base
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1         /lib/
 COPY --from=0 /perl/perl                       /usr/bin/
