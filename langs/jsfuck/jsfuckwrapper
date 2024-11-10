@@ -1,6 +1,0 @@
-#!/bin/sh -e
-
-cat - > /tmp/code.js
-
-shift
-exec /usr/local/bin/jsfuck /tmp/code.js
