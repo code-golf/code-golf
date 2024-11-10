@@ -11,7 +11,7 @@ RUN mv wren-* wren         \
  && patch -p0 <stdin.patch \
  && LDFLAGS=-static make -C /wren/projects/make
 
-FROM codegolf/lang-base-no-proc
+FROM codegolf/lang-base
 
 COPY --from=0 /wren/bin/wren_cli /usr/bin/wren
 

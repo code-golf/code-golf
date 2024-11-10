@@ -1,6 +1,6 @@
 FROM alpine:3.20 AS builder
 
-ENV PY_VERSION=3.10-v7.3.16 VERSION=96b1cfc
+ENV PY_VERSION=3.10-v7.3.17 VERSION=96b1cfc
 
 RUN echo @edge https://dl-cdn.alpinelinux.org/alpine/edge/testing \
  >> /etc/apk/repositories                                         \

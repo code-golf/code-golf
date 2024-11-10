@@ -1,6 +1,6 @@
 ['><>']
 args    = [ '/usr/bin/fish', '--no-prng', '-c', '$code', '-u' ]
-size    = '4.66 MiB'
+size    = '4.80 MiB'
 version = '96b1cfc'
 website = 'https://github.com/primo-ppcg/fish-jit'
 example = '''
@@ -375,6 +375,23 @@ for arg of process.argv[2..]
     console.log arg
 '''
 
+[CJam]
+args       = [ '/usr/bin/cjam', '-' ]
+experiment = 1493
+size       = '133 MiB'
+version    = '0.6.5'
+website    = 'https://sourceforge.net/projects/cjam/'
+example    = '''
+e# Printing
+"Hello, World!"
+
+e# Looping
+T{1_$+}9*]N*N
+
+e# Accessing arguments
+eaN*
+'''
+
 [Clojure]
 args    = [ '/usr/bin/clojure', '-e', '$code' ]
 size    = '64.6 MiB'
@@ -685,7 +702,7 @@ end
 
 [Gleam]
 args       = [ '/usr/bin/gleamwrapper', '-', '--' ]
-env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
+env        = [ 'FORCE_COLOR=1', 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 1129
 size       = '88.1 MiB'
 version    = '1.5.1'
