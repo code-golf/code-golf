@@ -1,6 +1,6 @@
 ['><>']
 args    = [ '/usr/bin/fish', '--no-prng', '-c', '$code', '-u' ]
-size    = '4.66 MiB'
+size    = '4.80 MiB'
 version = '96b1cfc'
 website = 'https://github.com/primo-ppcg/fish-jit'
 example = '''
@@ -360,7 +360,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '67.9 MiB'
-version = '0.8.13'
+version = '0.8.14'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -373,6 +373,23 @@ for i of [0..9]
 // Accessing arguments
 for arg of process.argv[2..]
     console.log arg
+'''
+
+[CJam]
+args       = [ '/usr/bin/cjam', '-' ]
+experiment = 1493
+size       = '133 MiB'
+version    = '0.6.5'
+website    = 'https://sourceforge.net/projects/cjam/'
+example    = '''
+e# Printing
+"Hello, World!"
+
+e# Looping
+T{1_$+}9*]N*N
+
+e# Accessing arguments
+eaN*
 '''
 
 [Clojure]
@@ -685,7 +702,7 @@ end
 
 [Gleam]
 args       = [ '/usr/bin/gleamwrapper', '-', '--' ]
-env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
+env        = [ 'FORCE_COLOR=1', 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 1129
 size       = '88.1 MiB'
 version    = '1.5.1'
@@ -714,7 +731,7 @@ pub fn main() {
 args    = [ '/usr/bin/gowrapper', '-' ]
 env     = [ 'GOCACHE=/tmp/.cache', 'PATH=/usr/local/bin:/bin' ]
 size    = '383 MiB'
-version = '1.23.2'
+version = '1.23.3'
 website = 'https://go.dev'
 example = '''
 package main
@@ -1327,11 +1344,12 @@ example    = '''
 '''
 
 [Raku]
-args    = [ '/usr/bin/raku', '-' ]
-size    = '75.8 MiB'
-version = 'Raku 6.d on Rakudo 2024.10'
-website = 'https://raku.org'
-example = '''
+args      = [ '/usr/bin/raku', '-' ]
+redirects = [ 'perl6' ]
+size      = '75.8 MiB'
+version   = 'Raku 6.d on Rakudo 2024.10'
+website   = 'https://raku.org'
+example   = '''
 # Printing
 say 'Hello, World!';
 
