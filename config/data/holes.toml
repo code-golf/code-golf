@@ -1128,7 +1128,7 @@ preamble = '''
 name     = 'Foo Fizz Buzz Bar'
 released = 2021-11-21
 
-['Flags']
+[Flags]
 category = 'Transform'
 experiment = 1580
 links = [
@@ -1136,414 +1136,174 @@ links = [
 ]
 synopsis = 'Convert region names to their flags.'
 data = '''{
-    "Afghanistan":                      ["AF", "🇦🇫"], "Åland Islands":                    ["AX", "🇦🇽"],
-    "Albania":                          ["AL", "🇦🇱"], "Algeria":                          ["DZ", "🇩🇿"],
-    "American Samoa":                   ["AS", "🇦🇸"], "Andorra":                          ["AD", "🇦🇩"],
-    "Angola":                           ["AO", "🇦🇴"], "Anguilla":                         ["AI", "🇦🇮"],
-    "Antarctica":                       ["AQ", "🇦🇶"], "Antigua and Barbuda":              ["AG", "🇦🇬"],
-    "Argentina":                        ["AR", "🇦🇷"], "Armenia":                          ["AM", "🇦🇲"],
-    "Aruba":                            ["AW", "🇦🇼"], "Ascension Island":                 ["AC", "🇦🇨"],
-    "Australia":                        ["AU", "🇦🇺"], "Austria":                          ["AT", "🇦🇹"],
-    "Azerbaijan":                       ["AZ", "🇦🇿"], "Bahamas":                          ["BS", "🇧🇸"],
-    "Bahrain":                          ["BH", "🇧🇭"], "Bangladesh":                       ["BD", "🇧🇩"],
-    "Barbados":                         ["BB", "🇧🇧"], "Belarus":                          ["BY", "🇧🇾"],
-    "Belgium":                          ["BE", "🇧🇪"], "Belize":                           ["BZ", "🇧🇿"],
-    "Benin":                            ["BJ", "🇧🇯"], "Bermuda":                          ["BM", "🇧🇲"],
-    "Bhutan":                           ["BT", "🇧🇹"], "Bolivia":                          ["BO", "🇧🇴"],
-    "Bosnia and Herzegovina":           ["BA", "🇧🇦"], "Botswana":                         ["BW", "🇧🇼"],
-    "Brazil":                           ["BR", "🇧🇷"], "British Indian Ocean Territory":   ["IO", "🇮🇴"],
-    "British Virgin Islands":           ["VG", "🇻🇬"], "Brunei":                           ["BN", "🇧🇳"],
-    "Bulgaria":                         ["BG", "🇧🇬"], "Burkina Faso":                     ["BF", "🇧🇫"],
-    "Burundi":                          ["BI", "🇧🇮"], "Cambodia":                         ["KH", "🇰🇭"],
-    "Cameroon":                         ["CM", "🇨🇲"], "Canada":                           ["CA", "🇨🇦"],
-    "Canary Islands":                   ["IC", "🇮🇨"], "Cape Verde":                       ["CV", "🇨🇻"],
-    "Caribbean Netherlands":            ["BQ", "🇧🇶"], "Cayman Islands":                   ["KY", "🇰🇾"],
-    "Central African Republic":         ["CF", "🇨🇫"], "Chad":                             ["TD", "🇹🇩"],
-    "Chile":                            ["CL", "🇨🇱"], "China":                            ["CN", "🇨🇳"],
-    "Christmas Island":                 ["CX", "🇨🇽"], "Cocos (Keeling) Islands":          ["CC", "🇨🇨"],
-    "Colombia":                         ["CO", "🇨🇴"], "Comoros":                          ["KM", "🇰🇲"],
-    "Congo - Brazzaville":              ["CG", "🇨🇬"], "Congo - Kinshasa":                 ["CD", "🇨🇩"],
-    "Cook Islands":                     ["CK", "🇨🇰"], "Costa Rica":                       ["CR", "🇨🇷"],
-    "Côte d'Ivoire":                    ["CI", "🇨🇮"], "Croatia":                          ["HR", "🇭🇷"],
-    "Cuba":                             ["CU", "🇨🇺"], "Curaçao":                          ["CW", "🇨🇼"],
-    "Cyprus":                           ["CY", "🇨🇾"], "Czechia":                          ["CZ", "🇨🇿"],
-    "Denmark":                          ["DK", "🇩🇰"], "Djibouti":                         ["DJ", "🇩🇯"],
-    "Dominica":                         ["DM", "🇩🇲"], "Dominican Republic":               ["DO", "🇩🇴"],
-    "Ecuador":                          ["EC", "🇪🇨"], "Egypt":                            ["EG", "🇪🇬"],
-    "El Salvador":                      ["SV", "🇸🇻"], "Equatorial Guinea":                ["GQ", "🇬🇶"],
-    "Eritrea":                          ["ER", "🇪🇷"], "Estonia":                          ["EE", "🇪🇪"],
-    "Eswatini":                         ["SZ", "🇸🇿"], "Ethiopia":                         ["ET", "🇪🇹"],
-    "European Union":                   ["EU", "🇪🇺"], "Falkland Islands":                 ["FK", "🇫🇰"],
-    "Faroe Islands":                    ["FO", "🇫🇴"], "Fiji":                             ["FJ", "🇫🇯"],
-    "Finland":                          ["FI", "🇫🇮"], "France":                           ["FR", "🇫🇷"],
-    "French Guiana":                    ["GF", "🇬🇫"], "French Polynesia":                 ["PF", "🇵🇫"],
-    "French Southern Territories":      ["TF", "🇹🇫"], "Gabon":                            ["GA", "🇬🇦"],
-    "The Gambia":                       ["GM", "🇬🇲"], "Georgia":                          ["GE", "🇬🇪"],
-    "Germany":                          ["DE", "🇩🇪"], "Ghana":                            ["GH", "🇬🇭"],
-    "Gibraltar":                        ["GI", "🇬🇮"], "Greece":                           ["GR", "🇬🇷"],
-    "Greenland":                        ["GL", "🇬🇱"], "Grenada":                          ["GD", "🇬🇩"],
-    "Guadeloupe":                       ["GP", "🇬🇵"], "Guam":                             ["GU", "🇬🇺"],
-    "Guatemala":                        ["GT", "🇬🇹"], "Guernsey":                         ["GG", "🇬🇬"],
-    "Guinea":                           ["GN", "🇬🇳"], "Guinea-Bissau":                    ["GW", "🇬🇼"],
-    "Guyana":                           ["GY", "🇬🇾"], "Haiti":                            ["HT", "🇭🇹"],
-    "Honduras":                         ["HN", "🇭🇳"], "Hong Kong":                        ["HK", "🇭🇰"],
-    "Hungary":                          ["HU", "🇭🇺"], "Iceland":                          ["IS", "🇮🇸"],
-    "India":                            ["IN", "🇮🇳"], "Indonesia":                        ["ID", "🇮🇩"],
-    "Iran":                             ["IR", "🇮🇷"], "Iraq":                             ["IQ", "🇮🇶"],
-    "Ireland":                          ["IE", "🇮🇪"], "Isle of Man":                      ["IM", "🇮🇲"],
-    "Israel":                           ["IL", "🇮🇱"], "Italy":                            ["IT", "🇮🇹"],
-    "Jamaica":                          ["JM", "🇯🇲"], "Japan":                            ["JP", "🇯🇵"],
-    "Jersey":                           ["JE", "🇯🇪"], "Jordan":                           ["JO", "🇯🇴"],
-    "Kazakhstan":                       ["KZ", "🇰🇿"], "Kenya":                            ["KE", "🇰🇪"],
-    "Kiribati":                         ["KI", "🇰🇮"], "Kosovo":                           ["XK", "🇽🇰"],
-    "Kuwait":                           ["KW", "🇰🇼"], "Kyrgyzstan":                       ["KG", "🇰🇬"],
-    "Laos":                             ["LA", "🇱🇦"], "Latvia":                           ["LV", "🇱🇻"],
-    "Lebanon":                          ["LB", "🇱🇧"], "Lesotho":                          ["LS", "🇱🇸"],
-    "Liberia":                          ["LR", "🇱🇷"], "Libya":                            ["LY", "🇱🇾"],
-    "Liechtenstein":                    ["LI", "🇱🇮"], "Lithuania":                        ["LT", "🇱🇹"],
-    "Luxembourg":                       ["LU", "🇱🇺"], "Macau":                            ["MO", "🇲🇴"],
-    "Madagascar":                       ["MG", "🇲🇬"], "Malawi":                           ["MW", "🇲🇼"],
-    "Malaysia":                         ["MY", "🇲🇾"], "Maldives":                         ["MV", "🇲🇻"],
-    "Mali":                             ["ML", "🇲🇱"], "Malta":                            ["MT", "🇲🇹"],
-    "Marshall Islands":                 ["MH", "🇲🇭"], "Mauritania":                       ["MR", "🇲🇷"],
-    "Mauritius":                        ["MU", "🇲🇺"], "Mayotte":                          ["YT", "🇾🇹"],
-    "Mexico":                           ["MX", "🇲🇽"], "Micronesia":                       ["FM", "🇫🇲"],
-    "Moldova":                          ["MD", "🇲🇩"], "Monaco":                           ["MC", "🇲🇨"],
-    "Mongolia":                         ["MN", "🇲🇳"], "Montenegro":                       ["ME", "🇲🇪"],
-    "Montserrat":                       ["MS", "🇲🇸"], "Morocco":                          ["MA", "🇲🇦"],
-    "Mozambique":                       ["MZ", "🇲🇿"], "Myanmar":                          ["MM", "🇲🇲"],
-    "Namibia":                          ["NA", "🇳🇦"], "Nauru":                            ["NR", "🇳🇷"],
-    "Nepal":                            ["NP", "🇳🇵"], "Netherlands":                      ["NL", "🇳🇱"],
-    "New Caledonia":                    ["NC", "🇳🇨"], "New Zealand":                      ["NZ", "🇳🇿"],
-    "Nicaragua":                        ["NI", "🇳🇮"], "Niger":                            ["NE", "🇳🇪"],
-    "Nigeria":                          ["NG", "🇳🇬"], "Niue":                             ["NU", "🇳🇺"],
-    "Norfolk Island":                   ["NF", "🇳🇫"], "North Korea":                      ["KP", "🇰🇵"],
-    "North Macedonia":                  ["MK", "🇲🇰"], "Northern Mariana Islands":         ["MP", "🇲🇵"],
-    "Norway":                           ["NO", "🇳🇴"], "Oman":                             ["OM", "🇴🇲"],
-    "Pakistan":                         ["PK", "🇵🇰"], "Palau":                            ["PW", "🇵🇼"],
-    "Palestine":                        ["PS", "🇵🇸"], "Panama":                           ["PA", "🇵🇦"],
-    "Papua New Guinea":                 ["PG", "🇵🇬"], "Paraguay":                         ["PY", "🇵🇾"],
-    "Peru":                             ["PE", "🇵🇪"], "Philippines":                      ["PH", "🇵🇭"],
-    "Pitcairn Islands":                 ["PN", "🇵🇳"], "Poland":                           ["PL", "🇵🇱"],
-    "Portugal":                         ["PT", "🇵🇹"], "Puerto Rico":                      ["PR", "🇵🇷"],
-    "Qatar":                            ["QA", "🇶🇦"], "Réunion":                          ["RE", "🇷🇪"],
-    "Romania":                          ["RO", "🇷🇴"], "Russia":                           ["RU", "🇷🇺"],
-    "Rwanda":                           ["RW", "🇷🇼"], "Saint Barthélemy":                 ["BL", "🇧🇱"],
-    "Saint Helena":                     ["SH", "🇸🇭"], "Saint Kitts and Nevis":            ["KN", "🇰🇳"],
-    "Saint Lucia":                      ["LC", "🇱🇨"], "Saint Pierre and Miquelon":        ["PM", "🇵🇲"],
-    "Saint Vincent and the Grenadines": ["VC", "🇻🇨"], "Samoa":                            ["WS", "🇼🇸"],
-    "San Marino":                       ["SM", "🇸🇲"], "São Tomé and Príncipe":            ["ST", "🇸🇹"],
-    "Saudi Arabia":                     ["SA", "🇸🇦"], "Senegal":                          ["SN", "🇸🇳"],
-    "Serbia":                           ["RS", "🇷🇸"], "Seychelles":                       ["SC", "🇸🇨"],
-    "Sierra Leone":                     ["SL", "🇸🇱"], "Singapore":                        ["SG", "🇸🇬"],
-    "Sint Maarten":                     ["SX", "🇸🇽"], "Slovakia":                         ["SK", "🇸🇰"],
-    "Slovenia":                         ["SI", "🇸🇮"], "Solomon Islands":                  ["SB", "🇸🇧"],
-    "Somalia":                          ["SO", "🇸🇴"], "South Africa":                     ["ZA", "🇿🇦"],
-    "South Georgia and the South Sandwich Islands":                                       ["GS", "🇬🇸"],
-    "South Korea":                      ["KR", "🇰🇷"], "South Sudan":                      ["SS", "🇸🇸"],
-    "Spain":                            ["ES", "🇪🇸"], "Sri Lanka":                        ["LK", "🇱🇰"],
-    "Sudan":                            ["SD", "🇸🇩"], "Suriname":                         ["SR", "🇸🇷"],
-    "Sweden":                           ["SE", "🇸🇪"], "Switzerland":                      ["CH", "🇨🇭"],
-    "Syria":                            ["SY", "🇸🇾"], "Taiwan":                           ["TW", "🇹🇼"],
-    "Tajikistan":                       ["TJ", "🇹🇯"], "Tanzania":                         ["TZ", "🇹🇿"],
-    "Thailand":                         ["TH", "🇹🇭"], "Timor-Leste":                      ["TL", "🇹🇱"],
-    "Togo":                             ["TG", "🇹🇬"], "Tokelau":                          ["TK", "🇹🇰"],
-    "Tonga":                            ["TO", "🇹🇴"], "Trinidad and Tobago":              ["TT", "🇹🇹"],
-    "Tristan da Cunha":                 ["TA", "🇹🇦"], "Tunisia":                          ["TN", "🇹🇳"],
-    "Türkiye":                          ["TR", "🇹🇷"], "Turkmenistan":                     ["TM", "🇹🇲"],
-    "Turks and Caicos Islands":         ["TC", "🇹🇨"], "Tuvalu":                           ["TV", "🇹🇻"],
-    "Uganda":                           ["UG", "🇺🇬"], "Ukraine":                          ["UA", "🇺🇦"],
-    "United Arab Emirates":             ["AE", "🇦🇪"], "United Kingdom":                   ["GB", "🇬🇧"],
-    "United Nations":                   ["UN", "🇺🇳"], "United States":                    ["US", "🇺🇸"],
-    "United States Virgin Islands":     ["VI", "🇻🇮"], "Uruguay":                          ["UY", "🇺🇾"],
-    "Uzbekistan":                       ["UZ", "🇺🇿"], "Vanuatu":                          ["VU", "🇻🇺"],
-    "Vatican City":                     ["VA", "🇻🇦"], "Venezuela":                        ["VE", "🇻🇪"],
-    "Vietnam":                          ["VN", "🇻🇳"], "Wallis and Futuna":                ["WF", "🇼🇫"],
-    "Western Sahara":                   ["EH", "🇪🇭"], "Yemen":                            ["YE", "🇾🇪"],
-    "Zambia":                           ["ZM", "🇿🇲"], "Zimbabwe":                         ["ZW", "🇿🇼"]
+    "Afghanistan":          ["AF", "🇦🇫"], "Åland Islands":        ["AX", "🇦🇽"],
+    "Albania":              ["AL", "🇦🇱"], "Algeria":              ["DZ", "🇩🇿"],
+    "American Samoa":       ["AS", "🇦🇸"], "Andorra":              ["AD", "🇦🇩"],
+    "Angola":               ["AO", "🇦🇴"], "Anguilla":             ["AI", "🇦🇮"],
+    "Antarctica":           ["AQ", "🇦🇶"], "Antigua and Barbuda":  ["AG", "🇦🇬"],
+    "Argentina":            ["AR", "🇦🇷"], "Armenia":              ["AM", "🇦🇲"],
+    "Aruba":                ["AW", "🇦🇼"], "Ascension Island":     ["AC", "🇦🇨"],
+    "Australia":            ["AU", "🇦🇺"], "Austria":              ["AT", "🇦🇹"],
+    "Azerbaijan":           ["AZ", "🇦🇿"], "Bahamas":              ["BS", "🇧🇸"],
+    "Bahrain":              ["BH", "🇧🇭"], "Bangladesh":           ["BD", "🇧🇩"],
+    "Barbados":             ["BB", "🇧🇧"], "Belarus":              ["BY", "🇧🇾"],
+    "Belgium":              ["BE", "🇧🇪"], "Belize":               ["BZ", "🇧🇿"],
+    "Benin":                ["BJ", "🇧🇯"], "Bermuda":              ["BM", "🇧🇲"],
+    "Bhutan":               ["BT", "🇧🇹"], "Bolivia":              ["BO", "🇧🇴"],
+    "Bosnia and Herzegovina":                                     ["BA", "🇧🇦"],
+    "Botswana":             ["BW", "🇧🇼"], "Brazil":               ["BR", "🇧🇷"],
+    "British Indian Ocean Territory":                             ["IO", "🇮🇴"],
+    "British Virgin Islands":                                     ["VG", "🇻🇬"],
+    "Brunei":               ["BN", "🇧🇳"], "Bulgaria":             ["BG", "🇧🇬"],
+    "Burkina Faso":         ["BF", "🇧🇫"], "Burundi":              ["BI", "🇧🇮"],
+    "Cambodia":             ["KH", "🇰🇭"], "Cameroon":             ["CM", "🇨🇲"],
+    "Canada":               ["CA", "🇨🇦"], "Canary Islands":       ["IC", "🇮🇨"],
+    "Cape Verde":           ["CV", "🇨🇻"], "Caribbean Netherlands":["BQ", "🇧🇶"],
+    "Cayman Islands":       ["KY", "🇰🇾"],
+    "Central African Republic":                                   ["CF", "🇨🇫"],
+    "Chad":                 ["TD", "🇹🇩"], "Chile":                ["CL", "🇨🇱"],
+    "China":                ["CN", "🇨🇳"], "Christmas Island":     ["CX", "🇨🇽"],
+    "Cocos (Keeling) Islands":                                    ["CC", "🇨🇨"],
+    "Colombia":             ["CO", "🇨🇴"], "Comoros":              ["KM", "🇰🇲"],
+    "Congo - Brazzaville":  ["CG", "🇨🇬"], "Congo - Kinshasa":     ["CD", "🇨🇩"],
+    "Cook Islands":         ["CK", "🇨🇰"], "Costa Rica":           ["CR", "🇨🇷"],
+    "Côte d'Ivoire":        ["CI", "🇨🇮"], "Croatia":              ["HR", "🇭🇷"],
+    "Cuba":                 ["CU", "🇨🇺"], "Curaçao":              ["CW", "🇨🇼"],
+    "Cyprus":               ["CY", "🇨🇾"], "Czechia":              ["CZ", "🇨🇿"],
+    "Denmark":              ["DK", "🇩🇰"], "Djibouti":             ["DJ", "🇩🇯"],
+    "Dominica":             ["DM", "🇩🇲"], "Dominican Republic":   ["DO", "🇩🇴"],
+    "Ecuador":              ["EC", "🇪🇨"], "Egypt":                ["EG", "🇪🇬"],
+    "El Salvador":          ["SV", "🇸🇻"], "Equatorial Guinea":    ["GQ", "🇬🇶"],
+    "Eritrea":              ["ER", "🇪🇷"], "Estonia":              ["EE", "🇪🇪"],
+    "Eswatini":             ["SZ", "🇸🇿"], "Ethiopia":             ["ET", "🇪🇹"],
+    "European Union":       ["EU", "🇪🇺"], "Falkland Islands":     ["FK", "🇫🇰"],
+    "Faroe Islands":        ["FO", "🇫🇴"], "Fiji":                 ["FJ", "🇫🇯"],
+    "Finland":              ["FI", "🇫🇮"], "France":               ["FR", "🇫🇷"],
+    "French Guiana":        ["GF", "🇬🇫"], "French Polynesia":     ["PF", "🇵🇫"],
+    "French Southern Territories":                                ["TF", "🇹🇫"],
+    "Gabon":                ["GA", "🇬🇦"], "The Gambia":           ["GM", "🇬🇲"],
+    "Georgia":              ["GE", "🇬🇪"], "Germany":              ["DE", "🇩🇪"],
+    "Ghana":                ["GH", "🇬🇭"], "Gibraltar":            ["GI", "🇬🇮"],
+    "Greece":               ["GR", "🇬🇷"], "Greenland":            ["GL", "🇬🇱"],
+    "Grenada":              ["GD", "🇬🇩"], "Guadeloupe":           ["GP", "🇬🇵"],
+    "Guam":                 ["GU", "🇬🇺"], "Guatemala":            ["GT", "🇬🇹"],
+    "Guernsey":             ["GG", "🇬🇬"], "Guinea":               ["GN", "🇬🇳"],
+    "Guinea-Bissau":        ["GW", "🇬🇼"], "Guyana":               ["GY", "🇬🇾"],
+    "Haiti":                ["HT", "🇭🇹"], "Honduras":             ["HN", "🇭🇳"],
+    "Hong Kong":            ["HK", "🇭🇰"], "Hungary":              ["HU", "🇭🇺"],
+    "Iceland":              ["IS", "🇮🇸"], "India":                ["IN", "🇮🇳"],
+    "Indonesia":            ["ID", "🇮🇩"], "Iran":                 ["IR", "🇮🇷"],
+    "Iraq":                 ["IQ", "🇮🇶"], "Ireland":              ["IE", "🇮🇪"],
+    "Isle of Man":          ["IM", "🇮🇲"], "Israel":               ["IL", "🇮🇱"],
+    "Italy":                ["IT", "🇮🇹"], "Jamaica":              ["JM", "🇯🇲"],
+    "Japan":                ["JP", "🇯🇵"], "Jersey":               ["JE", "🇯🇪"],
+    "Jordan":               ["JO", "🇯🇴"], "Kazakhstan":           ["KZ", "🇰🇿"],
+    "Kenya":                ["KE", "🇰🇪"], "Kiribati":             ["KI", "🇰🇮"],
+    "Kosovo":               ["XK", "🇽🇰"], "Kuwait":               ["KW", "🇰🇼"],
+    "Kyrgyzstan":           ["KG", "🇰🇬"], "Laos":                 ["LA", "🇱🇦"],
+    "Latvia":               ["LV", "🇱🇻"], "Lebanon":              ["LB", "🇱🇧"],
+    "Lesotho":              ["LS", "🇱🇸"], "Liberia":              ["LR", "🇱🇷"],
+    "Libya":                ["LY", "🇱🇾"], "Liechtenstein":        ["LI", "🇱🇮"],
+    "Lithuania":            ["LT", "🇱🇹"], "Luxembourg":           ["LU", "🇱🇺"],
+    "Macau":                ["MO", "🇲🇴"], "Madagascar":           ["MG", "🇲🇬"],
+    "Malawi":               ["MW", "🇲🇼"], "Malaysia":             ["MY", "🇲🇾"],
+    "Maldives":             ["MV", "🇲🇻"], "Mali":                 ["ML", "🇲🇱"],
+    "Malta":                ["MT", "🇲🇹"], "Marshall Islands":     ["MH", "🇲🇭"],
+    "Mauritania":           ["MR", "🇲🇷"], "Mauritius":            ["MU", "🇲🇺"],
+    "Mayotte":              ["YT", "🇾🇹"], "Mexico":               ["MX", "🇲🇽"],
+    "Micronesia":           ["FM", "🇫🇲"], "Moldova":              ["MD", "🇲🇩"],
+    "Monaco":               ["MC", "🇲🇨"], "Mongolia":             ["MN", "🇲🇳"],
+    "Montenegro":           ["ME", "🇲🇪"], "Montserrat":           ["MS", "🇲🇸"],
+    "Morocco":              ["MA", "🇲🇦"], "Mozambique":           ["MZ", "🇲🇿"],
+    "Myanmar":              ["MM", "🇲🇲"], "Namibia":              ["NA", "🇳🇦"],
+    "Nauru":                ["NR", "🇳🇷"], "Nepal":                ["NP", "🇳🇵"],
+    "Netherlands":          ["NL", "🇳🇱"], "New Caledonia":        ["NC", "🇳🇨"],
+    "New Zealand":          ["NZ", "🇳🇿"], "Nicaragua":            ["NI", "🇳🇮"],
+    "Niger":                ["NE", "🇳🇪"], "Nigeria":              ["NG", "🇳🇬"],
+    "Niue":                 ["NU", "🇳🇺"], "Norfolk Island":       ["NF", "🇳🇫"],
+    "North Korea":          ["KP", "🇰🇵"], "North Macedonia":      ["MK", "🇲🇰"],
+    "Northern Mariana Islands":                                   ["MP", "🇲🇵"],
+    "Norway":               ["NO", "🇳🇴"], "Oman":                 ["OM", "🇴🇲"],
+    "Pakistan":             ["PK", "🇵🇰"], "Palau":                ["PW", "🇵🇼"],
+    "Palestine":            ["PS", "🇵🇸"], "Panama":               ["PA", "🇵🇦"],
+    "Papua New Guinea":     ["PG", "🇵🇬"], "Paraguay":             ["PY", "🇵🇾"],
+    "Peru":                 ["PE", "🇵🇪"], "Philippines":          ["PH", "🇵🇭"],
+    "Pitcairn Islands":     ["PN", "🇵🇳"], "Poland":               ["PL", "🇵🇱"],
+    "Portugal":             ["PT", "🇵🇹"], "Puerto Rico":          ["PR", "🇵🇷"],
+    "Qatar":                ["QA", "🇶🇦"], "Réunion":              ["RE", "🇷🇪"],
+    "Romania":              ["RO", "🇷🇴"], "Russia":               ["RU", "🇷🇺"],
+    "Rwanda":               ["RW", "🇷🇼"], "Saint Barthélemy":     ["BL", "🇧🇱"],
+    "Saint Helena":         ["SH", "🇸🇭"], "Saint Kitts and Nevis":["KN", "🇰🇳"],
+    "Saint Lucia":          ["LC", "🇱🇨"],
+    "Saint Pierre and Miquelon":                                  ["PM", "🇵🇲"],
+    "Saint Vincent and the Grenadines":                           ["VC", "🇻🇨"],
+    "Samoa":                ["WS", "🇼🇸"], "San Marino":           ["SM", "🇸🇲"],
+    "São Tomé and Príncipe":["ST", "🇸🇹"], "Saudi Arabia":         ["SA", "🇸🇦"],
+    "Senegal":              ["SN", "🇸🇳"], "Serbia":               ["RS", "🇷🇸"],
+    "Seychelles":           ["SC", "🇸🇨"], "Sierra Leone":         ["SL", "🇸🇱"],
+    "Singapore":            ["SG", "🇸🇬"], "Sint Maarten":         ["SX", "🇸🇽"],
+    "Slovakia":             ["SK", "🇸🇰"], "Slovenia":             ["SI", "🇸🇮"],
+    "Solomon Islands":      ["SB", "🇸🇧"], "Somalia":              ["SO", "🇸🇴"],
+    "South Africa":         ["ZA", "🇿🇦"],
+    "South Georgia and the South Sandwich Islands":               ["GS", "🇬🇸"],
+    "South Korea":          ["KR", "🇰🇷"], "South Sudan":          ["SS", "🇸🇸"],
+    "Spain":                ["ES", "🇪🇸"], "Sri Lanka":            ["LK", "🇱🇰"],
+    "Sudan":                ["SD", "🇸🇩"], "Suriname":             ["SR", "🇸🇷"],
+    "Sweden":               ["SE", "🇸🇪"], "Switzerland":          ["CH", "🇨🇭"],
+    "Syria":                ["SY", "🇸🇾"], "Taiwan":               ["TW", "🇹🇼"],
+    "Tajikistan":           ["TJ", "🇹🇯"], "Tanzania":             ["TZ", "🇹🇿"],
+    "Thailand":             ["TH", "🇹🇭"], "Timor-Leste":          ["TL", "🇹🇱"],
+    "Togo":                 ["TG", "🇹🇬"], "Tokelau":              ["TK", "🇹🇰"],
+    "Tonga":                ["TO", "🇹🇴"], "Trinidad and Tobago":  ["TT", "🇹🇹"],
+    "Tristan da Cunha":     ["TA", "🇹🇦"], "Tunisia":              ["TN", "🇹🇳"],
+    "Türkiye":              ["TR", "🇹🇷"], "Turkmenistan":         ["TM", "🇹🇲"],
+    "Turks and Caicos Islands":                                   ["TC", "🇹🇨"],
+    "Tuvalu":               ["TV", "🇹🇻"], "Uganda":               ["UG", "🇺🇬"],
+    "Ukraine":              ["UA", "🇺🇦"], "United Arab Emirates": ["AE", "🇦🇪"],
+    "United Kingdom":       ["GB", "🇬🇧"], "United Nations":       ["UN", "🇺🇳"],
+    "United States":        ["US", "🇺🇸"],
+    "United States Virgin Islands":                               ["VI", "🇻🇮"],
+    "Uruguay":              ["UY", "🇺🇾"], "Uzbekistan":           ["UZ", "🇺🇿"],
+    "Vanuatu":              ["VU", "🇻🇺"], "Vatican City":         ["VA", "🇻🇦"],
+    "Venezuela":            ["VE", "🇻🇪"], "Vietnam":              ["VN", "🇻🇳"],
+    "Wallis and Futuna":    ["WF", "🇼🇫"], "Western Sahara":       ["EH", "🇪🇭"],
+    "Yemen":                ["YE", "🇾🇪"], "Zambia":               ["ZM", "🇿🇲"],
+    "Zimbabwe":             ["ZW", "🇿🇼"]
 }'''
-preamble = '''<div id="flags" class=tables-4col>
-    <table>
+preamble = '''
+<p>
+    Given each region (and an organization) print the corresponding unicode flag.
+<p>
+    Unicode encodes standard flags using 26
+    <a href="https://en.wikipedia.org/wiki/Regional_indicator_symbol"><b>
+    regional indicator symbols</b></a> from <code>U+1F1E6</code> 🇦 to <code>U+1F1FF</code> 🇿,
+    one for each letter in the latin alphabet.
+<p>
+    A flag is composed of two sequential regional indicator symbols which spell a given region's two-letter
+    <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2"><b>ISO 3166-1 alpha-2 code</b></a>.
+<p>
+    For example, Vietnam's two-letter ISO code is VN, so 🇻+🇳 = 🇻🇳.
+
+<p>The full mapping is as follows:<div id=colors class="tables-4col">
+{{ range .DataMap }}
+    {{ if or (eq .Key "Afghanistan" ) (eq .Key "Djibouti"                  )
+             (eq .Key "Liberia"     ) (eq .Key "Saint Pierre and Miquelon" ) }}
+        <table>
         <thead>
             <tr>
                 <th>Name
                 <th>ISO
                 <th>Flag
             <tbody>
-            <tr><td>Afghanistan<td>AF<td>🇦🇫
-            <tr><td>Åland Islands<td>AX<td>🇦🇽
-            <tr><td>Albania<td>AL<td>🇦🇱
-            <tr><td>Algeria<td>DZ<td>🇩🇿
-            <tr><td>American Samoa<td>AS<td>🇦🇸
-            <tr><td>Andorra<td>AD<td>🇦🇩
-            <tr><td>Angola<td>AO<td>🇦🇴
-            <tr><td>Anguilla<td>AI<td>🇦🇮
-            <tr><td>Antarctica<td>AQ<td>🇦🇶
-            <tr><td>Antigua and Barbuda<td>AG<td>🇦🇬
-            <tr><td>Argentina<td>AR<td>🇦🇷
-            <tr><td>Armenia<td>AM<td>🇦🇲
-            <tr><td>Aruba<td>AW<td>🇦🇼
-            <tr><td>Ascension Island<td>AC<td>🇦🇨
-            <tr><td>Australia<td>AU<td>🇦🇺
-            <tr><td>Austria<td>AT<td>🇦🇹
-            <tr><td>Azerbaijan<td>AZ<td>🇦🇿
-            <tr><td>Bahamas<td>BS<td>🇧🇸
-            <tr><td>Bahrain<td>BH<td>🇧🇭
-            <tr><td>Bangladesh<td>BD<td>🇧🇩
-            <tr><td>Barbados<td>BB<td>🇧🇧
-            <tr><td>Belarus<td>BY<td>🇧🇾
-            <tr><td>Belgium<td>BE<td>🇧🇪
-            <tr><td>Belize<td>BZ<td>🇧🇿
-            <tr><td>Benin<td>BJ<td>🇧🇯
-            <tr><td>Bermuda<td>BM<td>🇧🇲
-            <tr><td>Bhutan<td>BT<td>🇧🇹
-            <tr><td>Bolivia<td>BO<td>🇧🇴
-            <tr><td>Bosnia and Herzegovina<td>BA<td>🇧🇦
-            <tr><td>Botswana<td>BW<td>🇧🇼
-            <tr><td>Brazil<td>BR<td>🇧🇷
-            <tr><td>British Indian Ocean Territory<td>IO<td>🇮🇴
-            <tr><td>British Virgin Islands<td>VG<td>🇻🇬
-            <tr><td>Brunei<td>BN<td>🇧🇳
-            <tr><td>Bulgaria<td>BG<td>🇧🇬
-            <tr><td>Burkina Faso<td>BF<td>🇧🇫
-            <tr><td>Burundi<td>BI<td>🇧🇮
-            <tr><td>Cambodia<td>KH<td>🇰🇭
-            <tr><td>Cameroon<td>CM<td>🇨🇲
-            <tr><td>Canada<td>CA<td>🇨🇦
-            <tr><td>Canary Islands<td>IC<td>🇮🇨
-            <tr><td>Cape Verde<td>CV<td>🇨🇻
-            <tr><td>Caribbean Netherlands<td>BQ<td>🇧🇶
-            <tr><td>Cayman Islands<td>KY<td>🇰🇾
-            <tr><td>Central African Republic<td>CF<td>🇨🇫
-            <tr><td>Chad<td>TD<td>🇹🇩
-            <tr><td>Chile<td>CL<td>🇨🇱
-            <tr><td>China<td>CN<td>🇨🇳
-            <tr><td>Christmas Island<td>CX<td>🇨🇽
-            <tr><td>Cocos (Keeling) Islands<td>CC<td>🇨🇨
-            <tr><td>Colombia<td>CO<td>🇨🇴
-            <tr><td>Comoros<td>KM<td>🇰🇲
-            <tr><td>Congo - Brazzaville<td>CG<td>🇨🇬
-            <tr><td>Congo - Kinshasa<td>CD<td>🇨🇩
-            <tr><td>Cook Islands<td>CK<td>🇨🇰
-            <tr><td>Costa Rica<td>CR<td>🇨🇷
-            <tr><td>Côte d'Ivoire<td>CI<td>🇨🇮
-            <tr><td>Croatia<td>HR<td>🇭🇷
-            <tr><td>Cuba<td>CU<td>🇨🇺
-            <tr><td>Curaçao<td>CW<td>🇨🇼
-            <tr><td>Cyprus<td>CY<td>🇨🇾
-            <tr><td>Czechia<td>CZ<td>🇨🇿
-            <tr><td>Denmark<td>DK<td>🇩🇰
-   </table>
-    <table>
-        <thead>
-            <tr>
-                <th>Name
-                <th>ISO
-                <th>Flag
-            <tbody>
-            <tr><td>Djibouti<td>DJ<td>🇩🇯
-            <tr><td>Dominica<td>DM<td>🇩🇲
-            <tr><td>Dominican Republic<td>DO<td>🇩🇴
-            <tr><td>Ecuador<td>EC<td>🇪🇨
-            <tr><td>Egypt<td>EG<td>🇪🇬
-            <tr><td>El Salvador<td>SV<td>🇸🇻
-            <tr><td>Equatorial Guinea<td>GQ<td>🇬🇶
-            <tr><td>Eritrea<td>ER<td>🇪🇷
-            <tr><td>Estonia<td>EE<td>🇪🇪
-            <tr><td>Eswatini<td>SZ<td>🇸🇿
-            <tr><td>Ethiopia<td>ET<td>🇪🇹
-            <tr><td>European Union<td>EU<td>🇪🇺
-            <tr><td>Falkland Islands<td>FK<td>🇫🇰
-            <tr><td>Faroe Islands<td>FO<td>🇫🇴
-            <tr><td>Fiji<td>FJ<td>🇫🇯
-            <tr><td>Finland<td>FI<td>🇫🇮
-            <tr><td>France<td>FR<td>🇫🇷
-            <tr><td>French Guiana<td>GF<td>🇬🇫
-            <tr><td>French Polynesia<td>PF<td>🇵🇫
-            <tr><td>French Southern Territories<td>TF<td>🇹🇫
-            <tr><td>Gabon<td>GA<td>🇬🇦
-            <tr><td>The Gambia<td>GM<td>🇬🇲
-            <tr><td>Georgia<td>GE<td>🇬🇪
-            <tr><td>Germany<td>DE<td>🇩🇪
-            <tr><td>Ghana<td>GH<td>🇬🇭
-            <tr><td>Gibraltar<td>GI<td>🇬🇮
-            <tr><td>Greece<td>GR<td>🇬🇷
-            <tr><td>Greenland<td>GL<td>🇬🇱
-            <tr><td>Grenada<td>GD<td>🇬🇩
-            <tr><td>Guadeloupe<td>GP<td>🇬🇵
-            <tr><td>Guam<td>GU<td>🇬🇺
-            <tr><td>Guatemala<td>GT<td>🇬🇹
-            <tr><td>Guernsey<td>GG<td>🇬🇬
-            <tr><td>Guinea<td>GN<td>🇬🇳
-            <tr><td>Guinea-Bissau<td>GW<td>🇬🇼
-            <tr><td>Guyana<td>GY<td>🇬🇾
-            <tr><td>Haiti<td>HT<td>🇭🇹
-            <tr><td>Honduras<td>HN<td>🇭🇳
-            <tr><td>Hong Kong<td>HK<td>🇭🇰
-            <tr><td>Hungary<td>HU<td>🇭🇺
-            <tr><td>Iceland<td>IS<td>🇮🇸
-            <tr><td>India<td>IN<td>🇮🇳
-            <tr><td>Indonesia<td>ID<td>🇮🇩
-            <tr><td>Iran<td>IR<td>🇮🇷
-            <tr><td>Iraq<td>IQ<td>🇮🇶
-            <tr><td>Ireland<td>IE<td>🇮🇪
-            <tr><td>Isle of Man<td>IM<td>🇮🇲
-            <tr><td>Israel<td>IL<td>🇮🇱
-            <tr><td>Italy<td>IT<td>🇮🇹
-            <tr><td>Jamaica<td>JM<td>🇯🇲
-            <tr><td>Japan<td>JP<td>🇯🇵
-            <tr><td>Jersey<td>JE<td>🇯🇪
-            <tr><td>Jordan<td>JO<td>🇯🇴
-            <tr><td>Kazakhstan<td>KZ<td>🇰🇿
-            <tr><td>Kenya<td>KE<td>🇰🇪
-            <tr><td>Kiribati<td>KI<td>🇰🇮
-            <tr><td>Kosovo<td>XK<td>🇽🇰
-            <tr><td>Kuwait<td>KW<td>🇰🇼
-            <tr><td>Kyrgyzstan<td>KG<td>🇰🇬
-            <tr><td>Laos<td>LA<td>🇱🇦
-            <tr><td>Latvia<td>LV<td>🇱🇻
-            <tr><td>Lebanon<td>LB<td>🇱🇧
-            <tr><td>Lesotho<td>LS<td>🇱🇸
-   </table>
-    <table>
-        <thead>
-            <tr>
-                <th>Name
-                <th>ISO
-                <th>Flag
-            <tbody>
-            <tr><td>Liberia<td>LR<td>🇱🇷
-            <tr><td>Libya<td>LY<td>🇱🇾
-            <tr><td>Liechtenstein<td>LI<td>🇱🇮
-            <tr><td>Lithuania<td>LT<td>🇱🇹
-            <tr><td>Luxembourg<td>LU<td>🇱🇺
-            <tr><td>Macau<td>MO<td>🇲🇴
-            <tr><td>Madagascar<td>MG<td>🇲🇬
-            <tr><td>Malawi<td>MW<td>🇲🇼
-            <tr><td>Malaysia<td>MY<td>🇲🇾
-            <tr><td>Maldives<td>MV<td>🇲🇻
-            <tr><td>Mali<td>ML<td>🇲🇱
-            <tr><td>Malta<td>MT<td>🇲🇹
-            <tr><td>Marshall Islands<td>MH<td>🇲🇭
-            <tr><td>Mauritania<td>MR<td>🇲🇷
-            <tr><td>Mauritius<td>MU<td>🇲🇺
-            <tr><td>Mayotte<td>YT<td>🇾🇹
-            <tr><td>Mexico<td>MX<td>🇲🇽
-            <tr><td>Micronesia<td>FM<td>🇫🇲
-            <tr><td>Moldova<td>MD<td>🇲🇩
-            <tr><td>Monaco<td>MC<td>🇲🇨
-            <tr><td>Mongolia<td>MN<td>🇲🇳
-            <tr><td>Montenegro<td>ME<td>🇲🇪
-            <tr><td>Montserrat<td>MS<td>🇲🇸
-            <tr><td>Morocco<td>MA<td>🇲🇦
-            <tr><td>Mozambique<td>MZ<td>🇲🇿
-            <tr><td>Myanmar<td>MM<td>🇲🇲
-            <tr><td>Namibia<td>NA<td>🇳🇦
-            <tr><td>Nauru<td>NR<td>🇳🇷
-            <tr><td>Nepal<td>NP<td>🇳🇵
-            <tr><td>Netherlands<td>NL<td>🇳🇱
-            <tr><td>New Caledonia<td>NC<td>🇳🇨
-            <tr><td>New Zealand<td>NZ<td>🇳🇿
-            <tr><td>Nicaragua<td>NI<td>🇳🇮
-            <tr><td>Niger<td>NE<td>🇳🇪
-            <tr><td>Nigeria<td>NG<td>🇳🇬
-            <tr><td>Niue<td>NU<td>🇳🇺
-            <tr><td>Norfolk Island<td>NF<td>🇳🇫
-            <tr><td>North Korea<td>KP<td>🇰🇵
-            <tr><td>North Macedonia<td>MK<td>🇲🇰
-            <tr><td>Northern Mariana Islands<td>MP<td>🇲🇵
-            <tr><td>Norway<td>NO<td>🇳🇴
-            <tr><td>Oman<td>OM<td>🇴🇲
-            <tr><td>Pakistan<td>PK<td>🇵🇰
-            <tr><td>Palau<td>PW<td>🇵🇼
-            <tr><td>Palestine<td>PS<td>🇵🇸
-            <tr><td>Panama<td>PA<td>🇵🇦
-            <tr><td>Papua New Guinea<td>PG<td>🇵🇬
-            <tr><td>Paraguay<td>PY<td>🇵🇾
-            <tr><td>Peru<td>PE<td>🇵🇪
-            <tr><td>Philippines<td>PH<td>🇵🇭
-            <tr><td>Pitcairn Islands<td>PN<td>🇵🇳
-            <tr><td>Poland<td>PL<td>🇵🇱
-            <tr><td>Portugal<td>PT<td>🇵🇹
-            <tr><td>Puerto Rico<td>PR<td>🇵🇷
-            <tr><td>Qatar<td>QA<td>🇶🇦
-            <tr><td>Réunion<td>RE<td>🇷🇪
-            <tr><td>Romania<td>RO<td>🇷🇴
-            <tr><td>Russia<td>RU<td>🇷🇺
-            <tr><td>Rwanda<td>RW<td>🇷🇼
-            <tr><td>Saint Barthélemy<td>BL<td>🇧🇱
-            <tr><td>Saint Helena<td>SH<td>🇸🇭
-            <tr><td>Saint Kitts and Nevis<td>KN<td>🇰🇳
-            <tr><td>Saint Lucia<td>LC<td>🇱🇨
-   </table>
-    <table>
-        <thead>
-            <tr>
-                <th>Name
-                <th>ISO
-                <th>Flag
-            <tbody>
-            <tr><td>Saint Pierre and Miquelon<td>PM<td>🇵🇲
-            <tr><td>Saint Vincent and the Grenadines<td>VC<td>🇻🇨
-            <tr><td>Samoa<td>WS<td>🇼🇸
-            <tr><td>San Marino<td>SM<td>🇸🇲
-            <tr><td>São Tomé and Príncipe<td>ST<td>🇸🇹
-            <tr><td>Saudi Arabia<td>SA<td>🇸🇦
-            <tr><td>Senegal<td>SN<td>🇸🇳
-            <tr><td>Serbia<td>RS<td>🇷🇸
-            <tr><td>Seychelles<td>SC<td>🇸🇨
-            <tr><td>Sierra Leone<td>SL<td>🇸🇱
-            <tr><td>Singapore<td>SG<td>🇸🇬
-            <tr><td>Sint Maarten<td>SX<td>🇸🇽
-            <tr><td>Slovakia<td>SK<td>🇸🇰
-            <tr><td>Slovenia<td>SI<td>🇸🇮
-            <tr><td>Solomon Islands<td>SB<td>🇸🇧
-            <tr><td>Somalia<td>SO<td>🇸🇴
-            <tr><td>South Africa<td>ZA<td>🇿🇦
-            <tr><td>South Georgia and the South Sandwich Islands<td>GS<td>🇬🇸
-            <tr><td>South Korea<td>KR<td>🇰🇷
-            <tr><td>South Sudan<td>SS<td>🇸🇸
-            <tr><td>Spain<td>ES<td>🇪🇸
-            <tr><td>Sri Lanka<td>LK<td>🇱🇰
-            <tr><td>Sudan<td>SD<td>🇸🇩
-            <tr><td>Suriname<td>SR<td>🇸🇷
-            <tr><td>Sweden<td>SE<td>🇸🇪
-            <tr><td>Switzerland<td>CH<td>🇨🇭
-            <tr><td>Syria<td>SY<td>🇸🇾
-            <tr><td>Taiwan<td>TW<td>🇹🇼
-            <tr><td>Tajikistan<td>TJ<td>🇹🇯
-            <tr><td>Tanzania<td>TZ<td>🇹🇿
-            <tr><td>Thailand<td>TH<td>🇹🇭
-            <tr><td>Timor-Leste<td>TL<td>🇹🇱
-            <tr><td>Togo<td>TG<td>🇹🇬
-            <tr><td>Tokelau<td>TK<td>🇹🇰
-            <tr><td>Tonga<td>TO<td>🇹🇴
-            <tr><td>Trinidad and Tobago<td>TT<td>🇹🇹
-            <tr><td>Tristan da Cunha<td>TA<td>🇹🇦
-            <tr><td>Tunisia<td>TN<td>🇹🇳
-            <tr><td>Türkiye<td>TR<td>🇹🇷
-            <tr><td>Turkmenistan<td>TM<td>🇹🇲
-            <tr><td>Turks and Caicos Islands<td>TC<td>🇹🇨
-            <tr><td>Tuvalu<td>TV<td>🇹🇻
-            <tr><td>Uganda<td>UG<td>🇺🇬
-            <tr><td>Ukraine<td>UA<td>🇺🇦
-            <tr><td>United Arab Emirates<td>AE<td>🇦🇪
-            <tr><td>United Kingdom<td>GB<td>🇬🇧
-            <tr><td>United Nations<td>UN<td>🇺🇳
-            <tr><td>United States<td>US<td>🇺🇸
-            <tr><td>United States Virgin Islands<td>VI<td>🇻🇮
-            <tr><td>Uruguay<td>UY<td>🇺🇾
-            <tr><td>Uzbekistan<td>UZ<td>🇺🇿
-            <tr><td>Vanuatu<td>VU<td>🇻🇺
-            <tr><td>Vatican City<td>VA<td>🇻🇦
-            <tr><td>Venezuela<td>VE<td>🇻🇪
-            <tr><td>Vietnam<td>VN<td>🇻🇳
-            <tr><td>Wallis and Futuna<td>WF<td>🇼🇫
-            <tr><td>Western Sahara<td>EH<td>🇪🇭
-            <tr><td>Yemen<td>YE<td>🇾🇪
-            <tr><td>Zambia<td>ZM<td>🇿🇲
-            <tr><td>Zimbabwe<td>ZW<td>🇿🇼
-   </table>
+    {{ end }}
+
+    <tr><td>{{ .Key }}<td>{{ index .Value 0 }}<td>{{ index .Value 1 }}
+
+    {{ if or (eq .Key "Denmark"     ) (eq .Key "Lesotho"  )
+             (eq .Key "Saint Lucia" ) (eq .Key "Zimbabwe" ) }}
+        </table>
+    {{ end }}
+{{ end }}
 </div>
 '''
 
