@@ -496,12 +496,6 @@ func play(
 		stdoutBytes = bytes.ReplaceAll(stdoutBytes, []byte("\x00"), []byte("\n"))
 	}
 
-	// INTHEFIX Why on earth does Vyxal print `False` on every run?????????????
-	// Being delayed by something so stupid makes me so unbelievably nervous...
-	if lang.ID == "vyxal" {
-		stdoutBytes, _ = bytes.CutPrefix(stdoutBytes, stdoutBytes[0:6])
-	}
-
 	// Trim trailing whitespace on each line, and then trailing empty lines.
 	// Quine solutions are obviously left untouched.
 	if hole.ID == "quine" {

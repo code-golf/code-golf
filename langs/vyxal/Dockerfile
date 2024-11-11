@@ -3,7 +3,7 @@ FROM alpine:3.20 AS builder
 RUN apk add --no-cache build-base curl libffi-dev openssl-dev zlib-dev
 
 # Python meta: https://pypi.org/project/vyxal/
-ENV PYVER=3.10.15 VER=2.22.0
+ENV PYVER=3.10.15 VER=2.22.1
 
 RUN curl https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz | tar xJ
 
