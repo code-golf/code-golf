@@ -209,17 +209,13 @@ func mahjong() []Run {
 		if mutCount > 0 {
 			hand = genInvalidHand(mutCount)
 		}
-		runes := []rune(hand)
-		rand.Shuffle(len(runes), func(i, j int) {
-			runes[i], runes[j] = runes[j], runes[i]
-		})
-		args[i] = string(runes)
+		args[i] = string(shuffle([]rune(hand)))
 
 		if mutCount == 0 {
 			if answer.Len() > 0 {
 				answer.WriteByte('\n')
 			}
-			answer.WriteString(string(runes))
+			answer.WriteString(args[i])
 		}
 	}
 
@@ -352,20 +348,16 @@ func mahjong() []Run {
 	args2 := make([]string, len(tests))
 	var answer2 strings.Builder
 
-	for i, t := range tests {
+	for i, hand := range tests {
 		// Shuffle tiles within each hand
-		runes := []rune(t)
-		rand.Shuffle(len(runes), func(i, j int) {
-			runes[i], runes[j] = runes[j], runes[i]
-		})
-		args2[i] = string(runes)
+		args2[i] = string(shuffle([]rune(hand)))
 
 		// Add hand to answer, if complete
 		if testValidity[i] {
 			if answer2.Len() > 0 {
 				answer2.WriteByte('\n')
 			}
-			answer2.WriteString(string(runes))
+			answer2.WriteString(args2[i])
 		}
 	}
 
