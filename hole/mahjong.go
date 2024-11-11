@@ -198,22 +198,6 @@ func isHandValid(tileCounts map[rune]int) bool {
 }
 
 func mahjong() []Run {
-	runOne := make([]test, 100)
-
-	for i := range runOne {
-		hand := genValidHand()
-		mutCount := rand.IntN(4)
-		if mutCount > 0 {
-			hand = genInvalidHand(mutCount)
-		}
-		runOne[i].in = string(shuffle([]rune(hand)))
-
-		if mutCount == 0 {
-			runOne[i].out = runOne[i].in
-		}
-	}
-
-	// For the last run, use a set of static test cases
 	completeHands := []string{
 		"🀀🀁🀂🀃🀄🀅🀆🀆🀇🀏🀐🀘🀙🀡",
 		"🀀🀀🀁🀂🀃🀄🀅🀆🀇🀏🀐🀘🀙🀡",
@@ -320,17 +304,38 @@ func mahjong() []Run {
 		"🀀🀀🀇🀈🀈🀈🀉🀊🀊🀌🀌🀐🀐🀐", // Integer wrapping exploit (1, 3, 1, 2, 0, 2)
 	}
 
-	var runTwo []test
+	const argc = 100 // Preserve original argc
 
+	var tests []test
+
+	// Start with some hardcoded complete hands.
 	for _, hand := range completeHands {
 		hand = string(shuffle([]rune(hand)))
-		runTwo = append(runTwo, test{in: hand, out: hand})
+		tests = append(tests, test{in: hand, out: hand})
 	}
 
+	// Append some hardcoded incomplete hands.
 	for _, hand := range incompleteHands {
 		hand = string(shuffle([]rune(hand)))
-		runTwo = append(runTwo, test{in: hand})
+		tests = append(tests, test{in: hand})
 	}
 
-	return outputTests(runOne, shuffle(runTwo))
+	// Fill-in the remaining with random hands.
+	for range 2*argc - len(tests) {
+		hand := genValidHand()
+		mutCount := rand.IntN(4)
+		if mutCount > 0 {
+			hand = genInvalidHand(mutCount)
+		}
+
+		test := test{in: string(shuffle([]rune(hand)))}
+		if mutCount == 0 {
+			test.out = test.in
+		}
+
+		tests = append(tests, test)
+	}
+
+	shuffle(tests)
+	return outputTests(tests[:argc], tests[argc:])
 }
