@@ -320,34 +320,17 @@ func mahjong() []Run {
 		"🀀🀀🀇🀈🀈🀈🀉🀊🀊🀌🀌🀐🀐🀐", // Integer wrapping exploit (1, 3, 1, 2, 0, 2)
 	}
 
-	tests := append(completeHands, incompleteHands...)
-	testValidity := make([]bool, len(tests))
+	var runTwo []test
 
-	for i := range completeHands {
-		testValidity[i] = true
+	for _, hand := range completeHands {
+		hand = string(shuffle([]rune(hand)))
+		runTwo = append(runTwo, test{in: hand, out: hand})
 	}
 
-	for i := len(completeHands); i < len(testValidity); i++ {
-		testValidity[i] = false
+	for _, hand := range incompleteHands {
+		hand = string(shuffle([]rune(hand)))
+		runTwo = append(runTwo, test{in: hand})
 	}
 
-	// Shuffle complete and incomplete hands
-	rand.Shuffle(len(tests), func(i, j int) {
-		tests[i], tests[j] = tests[j], tests[i]
-		testValidity[i], testValidity[j] = testValidity[j], testValidity[i]
-	})
-
-	runTwo := make([]test, len(tests))
-
-	for i, hand := range tests {
-		// Shuffle tiles within each hand
-		runTwo[i].in = string(shuffle([]rune(hand)))
-
-		// Add hand to answer, if complete
-		if testValidity[i] {
-			runTwo[i].out = runTwo[i].in
-		}
-	}
-
-	return outputTests(runOne, runTwo)
+	return outputTests(runOne, shuffle(runTwo))
 }
