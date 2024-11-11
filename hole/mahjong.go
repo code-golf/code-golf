@@ -198,28 +198,20 @@ func isHandValid(tileCounts map[rune]int) bool {
 }
 
 func mahjong() []Run {
-	runs := make([]Run, 2)
+	runOne := make([]test, 100)
 
-	args := make([]string, 100)
-	var answer strings.Builder
-
-	for i := range args {
+	for i := range runOne {
 		hand := genValidHand()
 		mutCount := rand.IntN(4)
 		if mutCount > 0 {
 			hand = genInvalidHand(mutCount)
 		}
-		args[i] = string(shuffle([]rune(hand)))
+		runOne[i].in = string(shuffle([]rune(hand)))
 
 		if mutCount == 0 {
-			if answer.Len() > 0 {
-				answer.WriteByte('\n')
-			}
-			answer.WriteString(args[i])
+			runOne[i].out = runOne[i].in
 		}
 	}
-
-	runs[0] = Run{Args: args, Answer: answer.String()}
 
 	// For the last run, use a set of static test cases
 	completeHands := []string{
@@ -345,23 +337,17 @@ func mahjong() []Run {
 		testValidity[i], testValidity[j] = testValidity[j], testValidity[i]
 	})
 
-	args2 := make([]string, len(tests))
-	var answer2 strings.Builder
+	runTwo := make([]test, len(tests))
 
 	for i, hand := range tests {
 		// Shuffle tiles within each hand
-		args2[i] = string(shuffle([]rune(hand)))
+		runTwo[i].in = string(shuffle([]rune(hand)))
 
 		// Add hand to answer, if complete
 		if testValidity[i] {
-			if answer2.Len() > 0 {
-				answer2.WriteByte('\n')
-			}
-			answer2.WriteString(args2[i])
+			runTwo[i].out = runTwo[i].in
 		}
 	}
 
-	runs[1] = Run{Args: args2, Answer: answer2.String()}
-
-	return runs
+	return outputTests(runOne, runTwo)
 }
