@@ -1704,6 +1704,23 @@ endfo
 w
 '''
 
+[Vyxal]
+args       = [ '/usr/bin/vyxalwrapper', '-' ]
+experiment = 404
+size       = '194 MiB'
+version    = '2.22.0'
+website    = 'https://github.com/Vyxal/Vyxal/tree/version-2'
+example    = '''
+# Printing
+`ƈṡ, ƛ€!`,
+
+# Looping
+9 (n,)
+
+# Accessing arguments
+(a|←a,)
+'''
+
 [Wren]
 args    = [ '/usr/bin/wren', '-' ]
 size    = '496 KiB'

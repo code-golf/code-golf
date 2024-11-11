@@ -193,6 +193,7 @@ export const extensions : { [key: string]: any } = {
     // TODO uiua
     // TODO v
     // TODO viml
+    // TODO vyxal
     'wren':          wren,
     'zig':           zig(),
 };

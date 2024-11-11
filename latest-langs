@@ -84,6 +84,7 @@ constant %paths = (
     'Uiua'         => 'crates.io/api/v1/crates/uiua',
     'V'            => 'en.wikipedia.org/wiki/V_(programming_language)',
     'VimL'         => 'en.wikipedia.org/wiki/Vim_(text_editor)',
+    'Vyxal'        => 'pypi.org/pypi/vyxal/json',
     'Wren'         => 'github.com/wren-lang/wren/releases/latest',
     'Zig'          => 'github.com/ziglang/zig/releases/latest',
 );
