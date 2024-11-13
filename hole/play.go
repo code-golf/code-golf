@@ -314,6 +314,12 @@ func play(
 ) error {
 	// Preprocess code.
 	switch lang.ID {
+	case "05ab1e":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && !strings.Contains(code, `"`) {
+			run.Stderr = "Quine in 05AB1E must have at least one '\"' character."
+			return nil
+		}
 	case "cjam":
 		// Prevent trivial quines. Error out and return early.
 		if hole.ID == "quine" && !strings.Contains(code, "`") {
