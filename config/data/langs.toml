@@ -6,10 +6,13 @@ size       = '50.6 MiB'
 version    = 'fb4a2ce'
 website    = 'https://github.com/Adriandmen/05AB1E'
 example    = '''
+"Printing"
 "Hello, World!",
 
+"Looping"
 10FN,}
 
+"Accessing arguments"
 |vy,
 '''
 
