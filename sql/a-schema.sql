@@ -133,14 +133,6 @@ CREATE TABLE authors (
     PRIMARY KEY (hole, user_id)
 );
 
-CREATE TABLE follows (
-    follower_id int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    followee_id int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    followed    timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
-    PRIMARY KEY (follower_id, followee_id),
-    CHECK (follower_id != followee_id)  -- Can't follow yourself!
-);
-
 CREATE TABLE connections (
     id            bigint     NOT NULL,
     connection    connection NOT NULL,
@@ -150,6 +142,14 @@ CREATE TABLE connections (
     username      text       NOT NULL,
     PRIMARY KEY (connection, id),
     UNIQUE (connection, user_id)
+);
+
+CREATE TABLE follows (
+    follower_id int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    followee_id int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    followed    timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
+    PRIMARY KEY (follower_id, followee_id),
+    CHECK (follower_id != followee_id)  -- Can't follow yourself!
 );
 
 CREATE TABLE notes (
