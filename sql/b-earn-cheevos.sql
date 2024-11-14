@@ -24,18 +24,17 @@ BEGIN
     -----------
 
     SELECT COUNT(DISTINCT solutions.hole) INTO holes
-      FROM solutions WHERE NOT failing AND solutions.user_id = user_id;
+      FROM stable_passing_solutions
+     WHERE solutions.user_id = user_id;
 
     SELECT array_agg(DISTINCT solutions.hole) INTO holes_for_lang
-      FROM solutions
-     WHERE NOT failing
-       AND solutions.lang    = lang
+      FROM stable_passing_solutions
+     WHERE solutions.lang    = lang
        AND solutions.user_id = user_id;
 
     SELECT array_agg(DISTINCT solutions.lang) INTO langs_for_hole
-      FROM solutions
-     WHERE NOT failing
-       AND solutions.hole    = hole
+      FROM stable_passing_solutions
+     WHERE solutions.hole    = hole
        AND solutions.user_id = user_id;
 
     ------------------------

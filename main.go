@@ -6,10 +6,12 @@ import (
 	"os"
 	"time"
 
+	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/db"
 	"github.com/code-golf/code-golf/discord"
 	"github.com/code-golf/code-golf/github"
 	"github.com/code-golf/code-golf/routes"
+	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 )
 
@@ -17,6 +19,24 @@ func main() {
 	log.SetFlags(log.Ltime)
 
 	db := db.Open()
+
+	// Attempt to populate the holes table every second until we succeed.
+	// This handles the site starting before the DB.
+	go func() {
+		if err := populateHolesTable(db); err != nil {
+			log.Println(err)
+		} else {
+			return
+		}
+
+		for range time.Tick(time.Second) {
+			if err := populateHolesTable(db); err != nil {
+				log.Println(err)
+			} else {
+				break
+			}
+		}
+	}()
 
 	// Every 10 seconds.
 	go func() {
@@ -145,4 +165,34 @@ func main() {
 
 	// Live only listens on HTTP, TLS is handled by Caddy.
 	panic(http.ListenAndServe(":80", routes.Router(db)))
+}
+
+func populateHolesTable(db *sqlx.DB) error {
+	tx, err := db.Begin()
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	insertHole, err := tx.Prepare("INSERT INTO holes (id, experiment) VALUES ($1, $2)")
+	if err != nil {
+		return err
+	}
+
+	if _, err := tx.Exec("TRUNCATE holes"); err != nil {
+		return err
+	}
+
+	for _, hole := range config.AllHoleList {
+		if _, err := insertHole.Exec(hole.ID, hole.Experiment); err != nil {
+			return err
+		}
+	}
+
+	if err := tx.Commit(); err != nil {
+		return err
+	}
+
+	log.Println("Populated holes table.")
+	return nil
 }

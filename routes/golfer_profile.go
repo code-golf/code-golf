@@ -85,7 +85,9 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		           lang           lang,
 		           user_id
 		      FROM solutions
-		     WHERE CASE WHEN $1 THEN user_id = ANY(following($2, $3))
+		      JOIN holes ON id = hole
+		     WHERE experiment = 0 -- TODO This is probably temporary
+		       AND CASE WHEN $1 THEN user_id = ANY(following($2, $3))
 		                        ELSE user_id = $2
 		           END
 		  GROUP BY user_id, hole, lang
