@@ -865,7 +865,7 @@ class Main {
 
 [Hexagony]
 args    = [ '/usr/bin/hexagony', '-d', '-' ]
-size    = '8.81 MiB'
+size    = '8.78 MiB'
 version = '770406a'
 website = 'https://github.com/SirBogman/Hexagony'
 example = '''
