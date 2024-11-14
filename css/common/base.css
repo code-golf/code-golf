@@ -65,7 +65,7 @@ body {
 
 body, footer nav, #site-header nav, #popups {
     margin: auto;
-    max-width: 1280px;
+    max-width: 80rem;
 }
 
 body > svg, .hide { display: none }
@@ -244,7 +244,7 @@ form {
         &:has([type=checkbox]) { flex-direction: column }
     }
 
-    input:not([type]), input[type=number], select { width: 100% }
+    input:not([type]), input[type=date], input[type=number], select { width: 100% }
 
     label {
         display: flex;
@@ -276,9 +276,9 @@ menu {
     padding: 0;
 }
 
-input:not([type]), input[type=number], textarea { background: var(--background) }
+input:not([type]), input[type=date], input[type=number], textarea { background: var(--background) }
 
-input:not([type]), input[type=number], select, textarea {
+input:not([type]), input[type=date], input[type=number], select, textarea {
     border-radius: .25rem;
     border: 1px solid var(--grey);
     color: var(--color);
@@ -559,6 +559,15 @@ td .btn {
     width: 50%;
 }
 
+.nowrap-first-second-third td:nth-child(1),
+.nowrap-first-second-third td:nth-child(2),
+.nowrap-first-second-third td:nth-child(3) {
+    max-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 33%;
+}
+
 .right { text-align: right }
 
 .span { grid-column: 1 / -1 }
@@ -669,7 +678,7 @@ body > .tabs a {
         grid-row: span 2;
         justify-content: flex-end;
         padding: .5rem 2rem .5rem 0;
-        width: 18rem;
+        width: 20rem;
 
         & > * {
             align-items: center;
@@ -717,9 +726,10 @@ body > .tabs a {
 @media     (max-width: 34rem) { .wide { display: none !important } }
 @media not (max-width: 34rem) { .thin { display: none !important } }
 
-@media (max-width: 46rem) {
+@media (max-width: 50rem) {
     #two-pane {
-        grid-template: min-content min-content 1fr / 1fr;
+        display: flex;
+        flex-direction: column;
 
         & > #form-nav {
             display: flex;

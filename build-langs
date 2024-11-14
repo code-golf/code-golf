@@ -14,15 +14,12 @@ if my $unknown = @langs ∖ %langs {
 }
 
 # Build (and maybe push) lang-base.
-for 'lang-base', 'lang-base-no-proc' {
-    run <docker buildx build>,
-        '--file',   'docker/lang-base.Dockerfile',
-        '--pull',
-      ( '--push' unless $no-push ),
-        '--tag',    "codegolf/$_",
-        '--target', $_,
-        '.';
-}
+run <docker buildx build>,
+    '--file',   'docker/lang-base.Dockerfile',
+    '--pull',
+    ( '--push' unless $no-push ),
+    '--tag',    'codegolf/lang-base',
+    '.';
 
 for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
     my $id  = id($name);
@@ -45,14 +42,14 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
     }
 
     # Version.
-    if $id ~~ any <assembly brainfuck fish golfscript hexagony k> {
+    if $id ~~ any <assembly befunge brainfuck cjam fish golfscript hare hexagony k scala> {
         "langs/$id/Dockerfile".IO.slurp ~~ / ' VERSION=' (\S+) /;
         %lang<version> = $id eq 'assembly' ?? "DefAssembler $0" !! $0;
     }
     else {
         # Forth outputs it's version number over stderr.
         my $proc = run «docker run -i --rm --tmpfs '/tmp:exec' $img»,
-            :in, :out, :merge($id eq 'forth' | 'scheme');
+            :in, :out, :merge(so $id eq 'forth' | 'scheme');
 
         $proc.in.say: 'puts [info patchlevel]' if $id eq 'tcl';
         $proc.in.close;
@@ -60,13 +57,15 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         my $ver = $proc.out.slurp(:close).chomp.trans: "\n" => ' ';
 
         given $name {
-            my $digits = $ver ~~ / <[\d.]>+ \d+ /;
+            # Dotted decimal or hyphenated date.
+            my $digits = $ver ~~ / \d+ ( <[.-]> \d+ )+ /;
 
             when 'AWK'
                | 'Forth'
                | 'Fortran'
                | 'sed'        { $ver = "GNU $name $digits" }
             when 'BASIC'      { $ver = "FreeBASIC $digits" }
+            when 'BQN'        { $ver = "C$name $digits" }
             when 'C'          { $ver = "Tiny C Compiler $digits" }
             when 'C#'
                | 'F#'
@@ -78,7 +77,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
                 $ver ~~ m/ v (\S+) /;
                 $ver = "D $0 on LDC $digits";
             }
-            when 'Haskell'    { $ver = "Glasgow Haskell Compiler $digits" }
+            when 'Haskell'    { $ver = "GHC $digits" }
             when 'Java'       { $ver = "OpenJDK $digits" }
             when 'JavaScript' { $ver = "V8 $digits" }
             when 'Lisp'       { $ver = "GNU CLISP $digits" }
@@ -95,6 +94,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
             default           { $ver = $digits }
         }
 
+        die "Couldn't get version string for $id." unless $ver;
         %lang<version> = $ver;
     }
 

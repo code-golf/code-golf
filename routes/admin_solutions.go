@@ -32,9 +32,20 @@ type solution struct {
 // GET /admin/solutions
 func adminSolutionsGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		Holes []*config.Hole
-		Langs []*config.Lang
-	}{config.HoleList, config.LangList}
+		Holes                []*config.Hole
+		Langs                []*config.Lang
+		TestedFrom, TestedTo time.Time
+	}{Holes: config.HoleList, Langs: config.LangList}
+
+	if err := session.Database(r).Get(
+		&data,
+		`SELECT MIN(TIMEZONE($1, TIMEZONE('UTC', tested))) tested_from,
+		        MAX(TIMEZONE($1, TIMEZONE('UTC', tested))) tested_to
+		   FROM solutions`,
+		session.Golfer(r).TimeZone,
+	); err != nil {
+		panic(err)
+	}
 
 	render(w, r, "admin/solutions", data, "Admin Solutions")
 }
@@ -74,6 +85,7 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 						}
 					}
 
+					s.Stderr = run.Stderr
 					s.Took = run.Time
 
 					if run.Pass {
@@ -135,12 +147,16 @@ func getSolutions(r *http.Request) chan solution {
 			     AND (login = $2 OR $2 = '')
 			     AND (hole  = $3 OR $3 IS NULL)
 			     AND (lang  = $4 OR $4 IS NULL)
+			     AND DATE(TIMEZONE($5, TIMEZONE('UTC', tested))) BETWEEN $6 AND $7
 			ORDER BY tested
 			) SELECT *, COUNT(*) OVER () total FROM distinct_solutions`,
 			r.FormValue("failing") == "on",
 			r.FormValue("golfer"),
 			null.NullIfZero(r.FormValue("hole")),
 			null.NullIfZero(r.FormValue("lang")),
+			session.Golfer(r).TimeZone,
+			r.FormValue("tested-from"),
+			r.FormValue("tested-to"),
 		)
 		if err != nil {
 			panic(err)

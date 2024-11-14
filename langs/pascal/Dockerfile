@@ -4,7 +4,7 @@ RUN apk add --no-cache build-base curl
 
 ENV ARCH=x86_64-linux VERSION=3.2.2
 
-RUN curl -L https://downloads.sourceforge.net/project/freepascal/Linux/$VERSION/fpc-$VERSION.$ARCH.tar | tar x
+RUN curl https://downloads.freepascal.org/fpc/dist/$VERSION/$ARCH/fpc-$VERSION.$ARCH.tar | tar x
 
 # Workaround musl vs glibc entrypoint for fpcmkcfg.
 RUN mkdir /lib64 \

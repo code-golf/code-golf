@@ -54,11 +54,14 @@ for $dbh.execute('SELECT unnest(enum_range(null::hole))').allrows.flat {
 for <
     brainfuck                        brainfuck {inception}
     divisors                         php       {elephpant-in-the-room}
+    evil-numbers                     scheme    {evil-scheme}
+    factorial-factorisation          factor    {x-factor}
     game-of-life                     elixir    {alchemist}
     hexdump                          hexagony  {hextreme-agony}
     pascals-triangle                 pascal    {under-pressure}
     poker                            fish      {fish-n-chips}
     quine                            python    {ouroboros}
+    rijndael-s-box                   c-sharp   {s-box-360}
     rock-paper-scissors-spock-lizard janet     {dammit-janet}
     seven-segment                    assembly  {assembly-required}
     sudoku                           hexagony  {off-the-grid}
