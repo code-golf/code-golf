@@ -209,8 +209,8 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var desc strings.Builder
-	if hole, ok := config.HoleByID[data.HoleID]; ok {
-		desc.WriteString(hole.Name)
+	if data.Hole != nil {
+		desc.WriteString(data.Hole.Name)
 		desc.WriteString(" in ")
 	} else if data.Recent {
 		desc.WriteString("Ten most recent holes in ")
