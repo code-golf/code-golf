@@ -1,0 +1,11 @@
+--- /usr/local/bin/nibbles.hs
++++ /usr/local/bin/nibbles.hs
+@@ -49,7 +49,7 @@
+ 
+ -- Set this as a constant rather than read it to create a stand-alone binary.
+ headerRaw :: String
+-headerRaw = [litFile|Header.hs|]
++headerRaw = [litFile|/usr/local/bin/Header.hs|]
+ 
+ main=do
+    setLocaleEncoding latin1 -- use raw bytes for .nbl, .nbb, and .hs files
