@@ -1,0 +1,16 @@
+#!/bin/sh -e
+
+[ "$1" = "--version" ] && exec nibbles -v
+
+cd /tmp
+
+cp -r /usr/local/bin/* .
+
+# Compile
+cat - > code.nbl
+nibbles -hs code.nbl "$@"
+rm code.nbl
+
+# Evaluate
+shift
+exec runghc out.hs -- "$@"
