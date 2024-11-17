@@ -19,6 +19,7 @@ RUN go build -ldflags -s -trimpath \
 
 FROM scratch
 
+COPY --from=codegolf/lang-nibbles      ["/", "/langs/nibbles/rootfs/"     ] # 1.90 GiB
 COPY --from=codegolf/lang-swift        ["/", "/langs/swift/rootfs/"       ] #  555 MiB
 COPY --from=codegolf/lang-go           ["/", "/langs/go/rootfs/"          ] #  383 MiB
 COPY --from=codegolf/lang-rust         ["/", "/langs/rust/rootfs/"        ] #  358 MiB
@@ -67,7 +68,6 @@ COPY --from=codegolf/lang-golfscript   ["/", "/langs/golfscript/rootfs/"  ] # 28
 COPY --from=codegolf/lang-ruby         ["/", "/langs/ruby/rootfs/"        ] # 28.6 MiB
 COPY --from=codegolf/lang-viml         ["/", "/langs/viml/rootfs/"        ] # 24.3 MiB
 COPY --from=codegolf/lang-scheme       ["/", "/langs/scheme/rootfs/"      ] # 17.9 MiB
-COPY --from=codegolf/lang-nibbles      ["/", "/langs/nibbles/rootfs/"     ] # 17.5 MiB
 COPY --from=codegolf/lang-nim          ["/", "/langs/nim/rootfs/"         ] # 15.5 MiB
 COPY --from=codegolf/lang-hare         ["/", "/langs/hare/rootfs/"        ] # 13.5 MiB
 COPY --from=codegolf/lang-j            ["/", "/langs/j/rootfs/"           ] # 11.2 MiB

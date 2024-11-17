@@ -4,13 +4,18 @@
 
 cd /tmp
 
-cp -r /usr/local/bin/* .
+cp -R /usr/local/bin/* .
 
-# Compile
 cat - > code.nbl
-nibbles -hs code.nbl "$@"
-rm code.nbl
 
-# Evaluate
 shift
-exec runghc out.hs -- "$@"
+touch argv.txt
+for arg in "$@"; do
+    # Write argument to .txt file
+    echo "$arg" >> argv.txt
+done
+
+# Execute and read arguments from .txt file
+exec nibbles code.nbl < argv.txt
+
+# IN PROGRESS: Discarding default size message on stderr.
