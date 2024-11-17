@@ -16,4 +16,4 @@ for arg in "$@"; do
 done
 
 # Execute and read arguments from .txt file
-exec nibbles code.nbl < argv.txt 2>&1 | grep -v " nibbles "
+exec nibbles code.nbl < argv.txt
