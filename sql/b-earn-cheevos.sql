@@ -90,7 +90,7 @@ BEGIN
 
     -- 😈 Evil Scheme
     IF hole IN ('evil-numbers', 'evil-numbers-long') AND lang = 'scheme' THEN
-        earned = earn(earned, 'evil-scheme', user_id); END IF;
+        earned := earn(earned, 'evil-scheme', user_id); END IF;
 
     -- 🐟 Fish ’n’ Chips
     IF hole = 'poker' AND lang = 'fish' THEN
@@ -128,7 +128,7 @@ BEGIN
 
     -- 📴 Off-the-grid
     IF hole IN ('sudoku', 'sudoku-fill-in') AND lang = 'hexagony' THEN
-        earned = earn(earned, 'off-the-grid', user_id); END IF;
+        earned := earn(earned, 'off-the-grid', user_id); END IF;
 
     -- 🐍 Ouroboros
     IF hole = 'quine' AND lang = 'python' THEN
@@ -159,6 +159,10 @@ BEGIN
     -- 🗜 Under Pressure
     IF hole = 'pascals-triangle' AND lang = 'pascal' THEN
         earned := earn(earned, 'under-pressure', user_id); END IF;
+
+    -- ❌ X-Factor
+    IF hole = 'factorial-factorisation' AND lang = 'factor' THEN
+        earned := earn(earned, 'x-factor', user_id); END IF;
 
     -------------------
     -- Miscellaneous --
