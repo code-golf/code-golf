@@ -18,7 +18,8 @@ WORKDIR /usr/local/bin
 
 RUN ghc -O -package ghc *.hs
 
-# IN PROGRESS: Strip whatever there's to strip here.
+RUN strip /usr/lib/ghc-8.10.7/*/*.a \
+          /usr/lib/ghc-8.10.7/*/*.so
 
 FROM codegolf/lang-base
 
@@ -53,7 +54,6 @@ COPY --from=0 /usr/lib/gcc/x86_64-alpine-linux-musl/13.2.1/crtbegin.o           
               /usr/lib/gcc/x86_64-alpine-linux-musl/13.2.1/crtendS.o                          \
               /usr/lib/gcc/x86_64-alpine-linux-musl/13.2.1/libgcc.a                           /usr/lib/gcc/x86_64-alpine-linux-musl/13.2.1/
 COPY --from=0 /usr/lib/ghc-8.10.7/platformConstants /usr/lib/ghc-8.10.7/settings              /usr/lib/ghc-8.10.7/
-# IN PROGRESS: Filter these directories.
 COPY --from=0 /usr/lib/ghc-8.10.7/array-0.5.4.0                                               /usr/lib/ghc-8.10.7/array-0.5.4.0
 COPY --from=0 /usr/lib/ghc-8.10.7/base-4.14.3.0                                               /usr/lib/ghc-8.10.7/base-4.14.3.0
 COPY --from=0 /usr/lib/ghc-8.10.7/bytestring-0.10.12.0                                        /usr/lib/ghc-8.10.7/bytestring-0.10.12.0
@@ -67,7 +67,6 @@ COPY --from=0 /usr/lib/ghc-8.10.7/package.conf.d                                
 COPY --from=0 /usr/lib/ghc-8.10.7/pretty-1.1.3.6                                              /usr/lib/ghc-8.10.7/pretty-1.1.3.6
 COPY --from=0 /usr/lib/ghc-8.10.7/rts                                                         /usr/lib/ghc-8.10.7/rts
 COPY --from=0 /usr/lib/ghc-8.10.7/template-haskell-2.16.0.0                                   /usr/lib/ghc-8.10.7/template-haskell-2.16.0.0
-# ^
 COPY --from=0 /usr/lib/ghc-8.10.7/bin/ghc                                                     /usr/lib/ghc-8.10.7/bin/
 COPY --from=0 /usr/lib/ghc-8.10.7/binary-0.8.8.0/libHSbinary-0.8.8.0-ghc8.10.7.so             /usr/lib/ghc-8.10.7/binary-0.8.8.0/
 COPY --from=0 /usr/lib/ghc-8.10.7/directory-1.3.6.0/libHSdirectory-1.3.6.0-ghc8.10.7.so       /usr/lib/ghc-8.10.7/directory-1.3.6.0/

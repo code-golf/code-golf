@@ -17,5 +17,3 @@ done
 
 # Execute and read arguments from .txt file
 exec nibbles code.nbl < argv.txt 2>&1 | grep -v " nibbles "
-
-# IN PROGRESS: This eliminates that default message but displays just everything on stdout :pleading_face:
