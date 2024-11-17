@@ -7,13 +7,13 @@ version    = 'fe1ab18'
 website    = 'https://github.com/Adriandmen/05AB1E'
 example    = '''
 "Printing"
-"Hello, World!",
+”Ÿ™,‚ï!”,
 
 "Looping"
-10FN,}
+9ƒN,}
 
 "Accessing arguments"
-|vy,}
+|»,}
 '''
 
 ['><>']

@@ -32,7 +32,7 @@ RUN cd /usr/lib/python3.13      \
 
 WORKDIR /osabie
 
-RUN curl -L https://github.com/Adriandmen/05AB1E/tarball/$VER \
+RUN curl -#L https://github.com/Adriandmen/05AB1E/tarball/$VER \
   | tar xz --strip-components 1
         
 COPY escape.patch /osabie/
