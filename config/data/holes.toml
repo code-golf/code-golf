@@ -1132,7 +1132,7 @@ released = 2021-11-21
 category = 'Transform'
 experiment = 1580
 links = [
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Regional_indicator_symbol' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Regional_indicator_symbol' },
 ]
 synopsis = 'Convert region names to their flags.'
 data = '''{
