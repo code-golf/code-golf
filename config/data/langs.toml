@@ -328,8 +328,8 @@ int main(int argc, char* argv[]) {
 
 ['C#']
 args    = [ '/usr/bin/c-sharp', '-' ]
-size    = '152 MiB'
-version = 'C# 12.0 on .NET 8.0.10'
+size    = '157 MiB'
+version = 'C# 12.0 on .NET 9.0.0'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -614,8 +614,8 @@ for arg <- System.argv, do: IO.puts arg
 
 ['F#']
 args    = [ '/usr/bin/f-sharp', '-' ]
-size    = '148 MiB'
-version = 'F# 8.0 on .NET 8.0.10'
+size    = '152 MiB'
+version = 'F# 9.0 on .NET 9.0.0'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -883,7 +883,7 @@ class Main {
 
 [Hexagony]
 args    = [ '/usr/bin/hexagony', '-d', '-' ]
-size    = '8.81 MiB'
+size    = '8.78 MiB'
 version = '770406a'
 website = 'https://github.com/SirBogman/Hexagony'
 example = '''
@@ -1264,8 +1264,8 @@ for ($i = 1; $i < $argc; $i++)
 [PowerShell]
 args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
-size       = '180 MiB'
-version    = 'PowerShell 7.4.6 on .NET 8.0.10'
+size       = '185 MiB'
+version    = 'PowerShell 7.4.6 on .NET 9.0.0'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing

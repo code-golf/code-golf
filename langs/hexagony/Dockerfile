@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0.403-alpine3.20 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:9.0.100-alpine3.20 AS builder
 
 RUN apk add --no-cache build-base zlib-dev
 
@@ -6,7 +6,7 @@ ENV DOTNET_CLI_TELEMETRY_OPTOUT=1 VERSION=770406a
 
 RUN curl -L https://github.com/SirBogman/Hexagony/tarball/$VERSION | tar xz \
  && cd /SirBogman-Hexagony-$VERSION                                         \
- && sed -i s/net7/net8/ Hexagony.csproj                                     \
+ && sed -i s/net7/net9/ Hexagony.csproj                                     \
  && VERSION= dotnet publish -c Release -r linux-musl-x64                    \
     -p:InvariantGlobalization=true -p:PublishAot=true -p:PublishDir=/       \
     -p:StripSymbols=true
