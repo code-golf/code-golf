@@ -16,6 +16,6 @@ for arg in "$@"; do
 done
 
 # Execute and read arguments from .txt file
-exec nibbles code.nbl < argv.txt
+exec nibbles code.nbl < argv.txt 2>&1 | grep -v " nibbles "
 
-# IN PROGRESS: Discarding default size message on stderr.
+# IN PROGRESS: This eliminates that default message but displays just everything on stdout :pleading_face:
