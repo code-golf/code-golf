@@ -52,9 +52,7 @@ COPY --from=0 /usr/lib/gcc/x86_64-alpine-linux-musl/13.2.1/crtbegin.o           
               /usr/lib/gcc/x86_64-alpine-linux-musl/13.2.1/crtend.o                           \
               /usr/lib/gcc/x86_64-alpine-linux-musl/13.2.1/crtendS.o                          \
               /usr/lib/gcc/x86_64-alpine-linux-musl/13.2.1/libgcc.a                           /usr/lib/gcc/x86_64-alpine-linux-musl/13.2.1/
-COPY --from=0 /usr/lib/ghc-8.10.7/platformConstants                                           \
-              /usr/lib/ghc-8.10.7/settings                                                    /usr/lib/ghc-8.10.7/
-
+COPY --from=0 /usr/lib/ghc-8.10.7/platformConstants /usr/lib/ghc-8.10.7/settings              /usr/lib/ghc-8.10.7/
 # IN PROGRESS: Filter these directories.
 COPY --from=0 /usr/lib/ghc-8.10.7/array-0.5.4.0                                               /usr/lib/ghc-8.10.7/array-0.5.4.0
 COPY --from=0 /usr/lib/ghc-8.10.7/base-4.14.3.0                                               /usr/lib/ghc-8.10.7/base-4.14.3.0
@@ -69,7 +67,7 @@ COPY --from=0 /usr/lib/ghc-8.10.7/package.conf.d                                
 COPY --from=0 /usr/lib/ghc-8.10.7/pretty-1.1.3.6                                              /usr/lib/ghc-8.10.7/pretty-1.1.3.6
 COPY --from=0 /usr/lib/ghc-8.10.7/rts                                                         /usr/lib/ghc-8.10.7/rts
 COPY --from=0 /usr/lib/ghc-8.10.7/template-haskell-2.16.0.0                                   /usr/lib/ghc-8.10.7/template-haskell-2.16.0.0
-
+# ^
 COPY --from=0 /usr/lib/ghc-8.10.7/bin/ghc                                                     /usr/lib/ghc-8.10.7/bin/
 COPY --from=0 /usr/lib/ghc-8.10.7/binary-0.8.8.0/libHSbinary-0.8.8.0-ghc8.10.7.so             /usr/lib/ghc-8.10.7/binary-0.8.8.0/
 COPY --from=0 /usr/lib/ghc-8.10.7/directory-1.3.6.0/libHSdirectory-1.3.6.0-ghc8.10.7.so       /usr/lib/ghc-8.10.7/directory-1.3.6.0/
@@ -90,9 +88,27 @@ COPY --from=0 /usr/lib/ghc-8.10.7/transformers-0.5.6.2/libHStransformers-0.5.6.2
 COPY --from=0 /usr/lib/ghc-8.10.7/unix-2.7.2.2/libHSunix-2.7.2.2-ghc8.10.7.so                 /usr/lib/ghc-8.10.7/unix-2.7.2.2/
 COPY --from=0 /usr/libexec/gcc/x86_64-alpine-linux-musl/13.2.1/cc1                            \
               /usr/libexec/gcc/x86_64-alpine-linux-musl/13.2.1/liblto_plugin.so               /usr/libexec/gcc/x86_64-alpine-linux-musl/13.2.1/
-
-# IN PROGRESS: Filter this directory.
-COPY --from=0 /usr/local/bin                                                                  /usr/local/bin
+COPY --from=0 /usr/local/bin/nibbles                                                          /usr/local/bin/
+COPY --from=0 /usr/local/bin/Data/Digest/Murmur64.hi                                          \
+              /usr/local/bin/Data/Digest/Murmur64.hs                                          \
+              /usr/local/bin/Data/Digest/Murmur64.o                                           /usr/local/bin/Data/Digest/
+COPY --from=0 /usr/local/bin/Data/Function/Memoize.hi                                         \
+              /usr/local/bin/Data/Function/Memoize.hs                                         \
+              /usr/local/bin/Data/Function/Memoize.o                                          /usr/local/bin/Data/Function/
+COPY --from=0 /usr/local/bin/Data/Function/Memoize/Class.dyn_o                                \
+              /usr/local/bin/Data/Function/Memoize/Class.hi                                   \
+              /usr/local/bin/Data/Function/Memoize/Class.hs                                   \
+              /usr/local/bin/Data/Function/Memoize/Class.o                                    \
+              /usr/local/bin/Data/Function/Memoize/TH.dyn_o                                   \
+              /usr/local/bin/Data/Function/Memoize/TH.hi                                      \
+              /usr/local/bin/Data/Function/Memoize/TH.hs                                      \
+              /usr/local/bin/Data/Function/Memoize/TH.o                                       /usr/local/bin/Data/Function/Memoize/
+COPY --from=0 /usr/local/bin/Data/List/Split.hi                                               \
+              /usr/local/bin/Data/List/Split.hs                                               \
+              /usr/local/bin/Data/List/Split.o                                                /usr/local/bin/Data/List/
+COPY --from=0 /usr/local/bin/Data/List/Split/Internals.hi                                     \
+              /usr/local/bin/Data/List/Split/Internals.hs                                     \
+              /usr/local/bin/Data/List/Split/Internals.o                                      /usr/local/bin/Data/List/Split/
 
 COPY nibbleswrapper /usr/bin/
 
