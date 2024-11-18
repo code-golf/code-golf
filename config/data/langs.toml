@@ -1575,6 +1575,25 @@ SELECT arg FROM argv;
 -- NULL values will be skipped, and the dialect is SQLite.
 '''
 
+[Squirrel]
+args       = [ '/usr/bin/squirrel', '-' ]
+experiment = 1598
+size       = '3.96 MiB'
+version    = '3.2'
+website    = 'http://squirrel-lang.org'
+example    = '''
+// Printing
+print("Hello, World!\n");
+
+// Looping
+for (local i = 0; i < 10; i++)
+    printf("%d\n", i);
+
+// Accessing arguments
+foreach (arg in vargv)
+    print(arg + "\n");
+'''
+
 [Swift]
 args    = [ '/usr/bin/swift', '-module-cache-path', '/tmp', '-' ]
 env     = [ 'PATH=/usr/bin:/bin' ]
