@@ -1,13 +1,16 @@
 FROM alpine:3.20 AS builder
 
-RUN apk add --no-cache build-base cmake curl
+RUN apk add --no-cache clang cmake curl make patch
 
 ENV VER=3.2
 
 RUN curl -#L https://github.com/albertodemichelis/squirrel/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1
 
-COPY squirrel.c /
+COPY argv.patch \
+     squirrel.c /
+
+RUN patch -p 0 < argv.patch
 
 RUN gcc -Wall -Werror -Wextra -o /usr/bin/squirrel -s -static squirrel.c
 
