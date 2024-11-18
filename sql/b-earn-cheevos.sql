@@ -88,6 +88,10 @@ BEGIN
     IF hole = '𝑒' AND lang = 'r' THEN
         earned := earn(earned, 'emergency-room', user_id); END IF;
 
+    -- 😈 Evil Scheme
+    IF hole IN ('evil-numbers', 'evil-numbers-long') AND lang = 'scheme' THEN
+        earned := earn(earned, 'evil-scheme', user_id); END IF;
+
     -- 🐟 Fish ’n’ Chips
     IF hole = 'poker' AND lang = 'fish' THEN
         earned := earn(earned, 'fish-n-chips', user_id); END IF;
@@ -118,13 +122,13 @@ BEGIN
 
     -- 🐑 Mary Had a Little Lambda
     SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs_for_hole)
-     WHERE unnest IN ('clojure', 'coconut', 'haskell', 'lisp');
+     WHERE unnest IN ('clojure', 'coconut', 'haskell', 'lisp', 'scheme');
     IF hole = 'λ' AND found THEN
         earned := earn(earned, 'mary-had-a-little-lambda', user_id); END IF;
 
     -- 📴 Off-the-grid
-    IF hole IN ('sudoku', 'sudoku-v2') AND lang = 'hexagony' THEN
-        earned = earn(earned, 'off-the-grid', user_id); END IF;
+    IF hole IN ('sudoku', 'sudoku-fill-in') AND lang = 'hexagony' THEN
+        earned := earn(earned, 'off-the-grid', user_id); END IF;
 
     -- 🐍 Ouroboros
     IF hole = 'quine' AND lang = 'python' THEN
@@ -133,6 +137,10 @@ BEGIN
     -- 🔠 Pangramglot
     IF hole = 'pangram-grep' AND pangramglot(langs_for_hole) = 26 THEN
         earned := earn(earned, 'pangramglot', user_id); END IF;
+
+    -- 🎮 S-box 360
+    IF hole = 'rijndael-s-box' AND lang IN ('c-sharp', 'f-sharp', 'powershell') THEN
+        earned := earn(earned, 's-box-360', user_id); END IF;
 
     -- 🪞 Solve Quine
     IF hole = 'quine' THEN
@@ -151,6 +159,10 @@ BEGIN
     -- 🗜 Under Pressure
     IF hole = 'pascals-triangle' AND lang = 'pascal' THEN
         earned := earn(earned, 'under-pressure', user_id); END IF;
+
+    -- ❌ X-Factor
+    IF hole = 'factorial-factorisation' AND lang = 'factor' THEN
+        earned := earn(earned, 'x-factor', user_id); END IF;
 
     -------------------
     -- Miscellaneous --

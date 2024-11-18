@@ -1,3 +1,17 @@
+[['golfer/cheevos']]
+id      = 'show-cheevos'
+name    = 'Show Achievements'
+options = [
+    { id = 'all',      name = 'All' },
+    { id = 'earned',   name = 'Earned' },
+    { id = 'unearned', name = 'Unearned' },
+]
+
+[['golfer/profile']]
+id      = 'followed-golfers-in-feed'
+name    = 'Show Followed Golfers in Feed'
+default = true
+
 [[hole]]
 id   = 'lang-picker-style'
 name = 'Language Picker Style'
@@ -13,7 +27,7 @@ name = 'Multi-Window Layout (WIP)'
 
 [[hole]]
 id      = 'show-whitespace'
-name    = 'Show Whitespace'
+name    = 'Show Whitespace in Editor'
 default = true
 
 [[home]]

@@ -7,7 +7,7 @@
             Code Golf is a game designed to let you show off your code-fu by
             solving problems in the least number of characters.
         <p>
-            Since this is your first time here, I suggest starting with
+            Since this is your first time here, we suggest starting with
             something simple like <a href=fizz-buzz>Fizz Buzz</a>.
         <p>
             Also visit <a href=//discord.gg/eVCTkYQ>our Discord server</a>
@@ -22,19 +22,20 @@
     {{ svg "joystick" }}
     {{ svg "shuffle" }}
     {{ svg "sort-numeric-down" }}
-    {{ range $k, $v := .Data.LangsUsed }}{{ svg $k }}{{ end }}
 </svg>
+
+{{ template "lang-svgs" .Data }}
 
 <main id=home>
 {{ if .Golfer }}
     <nav class="span tabs">
         <button class="btn blue" data-dialog=settings-dialog title=Settings>
             {{ svg "gear-fill" }}
-            Settings
+            Page Settings
         </button>
     </nav>
 {{ end }}
-{{ range .Data.Cards }}
+{{ range .Data }}
     <a class="card {{ .Hole.CategoryColor }}"
     {{ if $.Golfer }}
         {{ $lang    := index $.Golfer.Settings "home" "points-for" }}

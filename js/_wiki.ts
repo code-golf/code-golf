@@ -11,6 +11,7 @@ export function highlightCodeBlocks(selector: string){
         // FIXME Is there a better way to do this mapping?
         if (lang == 'asm') lang = 'assembly';
         if (lang == 'c++') lang = 'cpp';
+        if (lang == 'cs' ) lang = 'c-sharp';
         if (lang == 'fs' ) lang = 'f-sharp';
         if (lang == 'ijs') lang = 'j';
 

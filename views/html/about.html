@@ -64,23 +64,17 @@
         {{ range .Data.Langs }}
             {{ if and .Experiment (not $seenExp) }}
                 {{ $seenExp = true }}
-                <p>Experimental languages:
+                <p>Experimental languages:</p>
             {{ end }}
-            <section>
-                <header>
+                <a href="{{ .Website }}" title="{{ .Name }} - {{ .Version }}">
                     {{ svg .ID }}
                     <h2>{{ .Name }}</h2>
-                    {{ .Size }}
-                </header>
-                <div>{{ .Version }}</div>
-                <a href="{{ .Website }}">
-                    {{ trimPrefix (trimPrefix .Website "https://") "www." }}
+                    <span>{{ .Version }}</span>
                 </a>
-            </section>
         {{ end }}
             <p>
                 If you'd like to see another language added then raise an
-                <a href=//github.com/code-golf/code-golf/issues/new>issue</a>.
+                <a href=//github.com/code-golf/code-golf/issues/new/choose>issue</a>.
         <dt>Are warnings ignored?
         <dd>
             Yes. Only STDOUT is checked against the solution, STDERR is

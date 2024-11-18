@@ -17,8 +17,6 @@ func holeGET(w http.ResponseWriter, r *http.Request) {
 		Langs                    map[string]*config.Lang
 		RankingsView             string
 		Solutions                []map[string]string
-		IsSponsor                bool
-		HasNotes                 bool
 	}{
 		Langs:        config.AllLangByID,
 		RankingsView: "me",
@@ -57,20 +55,6 @@ func holeGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	golfer := session.Golfer(r)
-
-	if golfer != nil {
-		data.IsSponsor = golfer.Admin || golfer.Sponsor
-		if !data.IsSponsor {
-			var notesCount int
-			if err := session.Database(r).QueryRow(
-				`SELECT COUNT(*) FROM notes WHERE user_id = $1`,
-				session.Golfer(r).ID,
-			).Scan(&notesCount); err != nil {
-				panic(err)
-			}
-			data.HasNotes = notesCount > 0
-		}
-	}
 
 	if golfer != nil && data.Hole.Experiment == 0 {
 		// Fetch all the code per lang.

@@ -1,16 +1,31 @@
 {{ template "header"   . }}
 {{ template "rankings" . }}
 
+{{ template "lang-svgs" .Data.Rows }}
+
 <main id=two-pane>
     {{ template "nav" . }}
 
-    <table class="nowrap-second sticky {{ if eq .Data.HoleID "all" }}all-holes{{ else }}one-hole{{ end }}">
+    <table class="nowrap-second sticky">
         <thead>
+            {{ with .Data }}
+                {{ if .Distribution }}
+                <script id=chart-data type="application/json">{
+                    "golfer": {{ .Strokes }},
+                    "golfers": [
+                    {{- range $i, $d := .Distribution -}}
+                        {{- if ne $i 0 }},{{ end -}}
+                        { "strokes": {{ .Strokes }}, "frequency": {{ .Frequency }} }
+                    {{- end -}}
+                ]}</script>
+                <tr>
+                    <th colspan="5"><div id=chart-container><canvas></canvas></div>
+                {{ end }}
+            {{ end }}
             <tr>
                 <th>#
                 <th>Golfer
-                <th class=right>
-                    {{ if eq .Data.HoleID "all" }}Holes{{ else }}Lang{{ end }}
+                {{ if eq .Data.HoleID "all" }}<th class=right>Holes{{ end }}
                 <th class=right>Points
                 <th class=right>{{ title .Data.Scoring }}
                 <th class=right>Time
@@ -22,12 +37,7 @@
         <tr {{ if eq $name .Name }} class=me {{ end }}>
             <td>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup>
             <td>{{ template "golfer-link" . }}
-            <td class=right>
-            {{ if eq $.Data.HoleID "all" }}
-                {{ .Holes }}
-            {{ else }}
-                {{ .Lang.Name }}
-            {{ end }}
+            {{ if eq $.Data.HoleID "all" }}<td class=right>{{ .Holes }}{{ end }}
             <td class=right>{{ comma .Points }}
             <td class=right>
             {{ if eq $.Data.HoleID "all" }}
@@ -35,9 +45,10 @@
             {{ else }}
                 <a href="/golfers/{{ .Name }}/{{ $.Data.HoleID }}/{{ .Lang.ID }}/{{ $.Data.Scoring }}"
                 {{ if .OtherStrokes }}
-                   data-tooltip="{{ title $.Data.Scoring }} solution is {{ comma .Strokes }} {{ $.Data.Scoring }}, {{ comma .OtherStrokes }} {{ $.Data.OtherScoring }}."
+                    data-tooltip="{{ .Lang.Name }} {{ $.Data.Scoring }} solution is {{ comma .Strokes }} {{ $.Data.Scoring }}, {{ comma .OtherStrokes }} {{ $.Data.OtherScoring }}."
                 {{ end }}>
-                   {{ comma .Strokes }}
+                    <span>{{ comma .Strokes }}</span>
+                    <svg><use href="#{{ .Lang.ID }}"/></svg>
                 </a>
             {{ end }}
             <td class=right>{{ time (.Submitted.In $.Location) }}

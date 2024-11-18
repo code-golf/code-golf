@@ -51,6 +51,8 @@ func Get(db *sqlx.DB, sessionID uuid.UUID) *Golfer {
 		                  FROM follows
 		                 WHERE follower_id = u.id
 		              ORDER BY followee_id)                 following,
+		          (SELECT COUNT(*)
+		             FROM notes WHERE user_id = u.id) > 0   has_notes,
 		          ARRAY(SELECT DISTINCT hole
 		                  FROM solutions
 		                 WHERE user_id = u.id
