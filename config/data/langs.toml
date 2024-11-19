@@ -704,8 +704,8 @@ end
 args       = [ '/usr/bin/gleamwrapper', '-', '--' ]
 env        = [ 'FORCE_COLOR=1', 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 1129
-size       = '88.1 MiB'
-version    = '1.5.1'
+size       = '88.8 MiB'
+version    = '1.6.0'
 website    = 'https://gleam.run'
 example    = '''
 import argv
@@ -988,8 +988,8 @@ class Main {
 
 [JavaScript]
 args    = [ '/usr/bin/d8', '-e', '$code', '--' ]
-size    = '41.1 MiB'
-version = 'V8 12.6.228.28'
+size    = '41.8 MiB'
+version = 'V8 13.1.201.9'
 website = 'https://v8.dev'
 example = '''
 // Printing
