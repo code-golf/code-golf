@@ -1,36 +1,16 @@
 FROM alpine:3.20 AS builder
 
-RUN apk add --no-cache build-base curl libffi-dev zlib-dev
+RUN apk add --no-cache curl
 
-ENV PYVER=3.12.5 VER=1.2.0
+RUN curl -L https://github.com/dloscutoff/pip/archive/refs/tags/v1.2.0.tar.gz \
+  | tar -xz --strip-components 1
 
-RUN curl https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz | tar xJ
+FROM codegolf/lang-python
 
-RUN cd Python-$PYVER           \
- && ./configure                \
-    --disable-test-modules     \
-    --prefix=/usr              \
-    --with-lto                 \
-    --without-ensurepip        \
-    --without-static-libpython \
- && make -j`nproc` install     \
- && strip /usr/bin/python3.12
-
-WORKDIR /tmp/dir
-
-RUN curl -L https://github.com/dloscutoff/pip/archive/refs/tags/v$VER.tar.gz \
-  | tar xz --strip-components 1
+COPY --from=0 *.py /
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/chmod /bin/sh       /bin/
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /tmp/dir                 /usr/bin
-COPY --from=0 /usr/bin/python3.12      /usr/bin/python
-COPY --from=0 /usr/lib/python3.12      /usr/lib/python3.12
+COPY --from=1 . /
 
-RUN chmod +x /usr/bin/pip.py
-
-ENTRYPOINT ["pip.py"]
-
-CMD ["--version"]
+CMD ["python", "pip.py", "--version"]
