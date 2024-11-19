@@ -1128,6 +1128,185 @@ preamble = '''
 name     = 'Foo Fizz Buzz Bar'
 released = 2021-11-21
 
+[Flags]
+category = 'Transform'
+experiment = 1580
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Regional_indicator_symbol' },
+]
+synopsis = 'Convert region names to their flags.'
+data = '''{
+    "Afghanistan":          ["AF", "🇦🇫"], "Åland Islands":        ["AX", "🇦🇽"],
+    "Albania":              ["AL", "🇦🇱"], "Algeria":              ["DZ", "🇩🇿"],
+    "American Samoa":       ["AS", "🇦🇸"], "Andorra":              ["AD", "🇦🇩"],
+    "Angola":               ["AO", "🇦🇴"], "Anguilla":             ["AI", "🇦🇮"],
+    "Antarctica":           ["AQ", "🇦🇶"], "Antigua and Barbuda":  ["AG", "🇦🇬"],
+    "Argentina":            ["AR", "🇦🇷"], "Armenia":              ["AM", "🇦🇲"],
+    "Aruba":                ["AW", "🇦🇼"], "Ascension Island":     ["AC", "🇦🇨"],
+    "Australia":            ["AU", "🇦🇺"], "Austria":              ["AT", "🇦🇹"],
+    "Azerbaijan":           ["AZ", "🇦🇿"], "Bahamas":              ["BS", "🇧🇸"],
+    "Bahrain":              ["BH", "🇧🇭"], "Bangladesh":           ["BD", "🇧🇩"],
+    "Barbados":             ["BB", "🇧🇧"], "Belarus":              ["BY", "🇧🇾"],
+    "Belgium":              ["BE", "🇧🇪"], "Belize":               ["BZ", "🇧🇿"],
+    "Benin":                ["BJ", "🇧🇯"], "Bermuda":              ["BM", "🇧🇲"],
+    "Bhutan":               ["BT", "🇧🇹"], "Bolivia":              ["BO", "🇧🇴"],
+    "Bosnia and Herzegovina":                                     ["BA", "🇧🇦"],
+    "Botswana":             ["BW", "🇧🇼"], "Brazil":               ["BR", "🇧🇷"],
+    "British Indian Ocean Territory":                             ["IO", "🇮🇴"],
+    "British Virgin Islands":                                     ["VG", "🇻🇬"],
+    "Brunei":               ["BN", "🇧🇳"], "Bulgaria":             ["BG", "🇧🇬"],
+    "Burkina Faso":         ["BF", "🇧🇫"], "Burundi":              ["BI", "🇧🇮"],
+    "Cambodia":             ["KH", "🇰🇭"], "Cameroon":             ["CM", "🇨🇲"],
+    "Canada":               ["CA", "🇨🇦"], "Canary Islands":       ["IC", "🇮🇨"],
+    "Cape Verde":           ["CV", "🇨🇻"], "Caribbean Netherlands":["BQ", "🇧🇶"],
+    "Cayman Islands":       ["KY", "🇰🇾"],
+    "Central African Republic":                                   ["CF", "🇨🇫"],
+    "Chad":                 ["TD", "🇹🇩"], "Chile":                ["CL", "🇨🇱"],
+    "China":                ["CN", "🇨🇳"], "Christmas Island":     ["CX", "🇨🇽"],
+    "Cocos (Keeling) Islands":                                    ["CC", "🇨🇨"],
+    "Colombia":             ["CO", "🇨🇴"], "Comoros":              ["KM", "🇰🇲"],
+    "Congo - Brazzaville":  ["CG", "🇨🇬"], "Congo - Kinshasa":     ["CD", "🇨🇩"],
+    "Cook Islands":         ["CK", "🇨🇰"], "Costa Rica":           ["CR", "🇨🇷"],
+    "Côte d'Ivoire":        ["CI", "🇨🇮"], "Croatia":              ["HR", "🇭🇷"],
+    "Cuba":                 ["CU", "🇨🇺"], "Curaçao":              ["CW", "🇨🇼"],
+    "Cyprus":               ["CY", "🇨🇾"], "Czechia":              ["CZ", "🇨🇿"],
+    "Denmark":              ["DK", "🇩🇰"], "Djibouti":             ["DJ", "🇩🇯"],
+    "Dominica":             ["DM", "🇩🇲"], "Dominican Republic":   ["DO", "🇩🇴"],
+    "Ecuador":              ["EC", "🇪🇨"], "Egypt":                ["EG", "🇪🇬"],
+    "El Salvador":          ["SV", "🇸🇻"], "Equatorial Guinea":    ["GQ", "🇬🇶"],
+    "Eritrea":              ["ER", "🇪🇷"], "Estonia":              ["EE", "🇪🇪"],
+    "Eswatini":             ["SZ", "🇸🇿"], "Ethiopia":             ["ET", "🇪🇹"],
+    "European Union":       ["EU", "🇪🇺"], "Falkland Islands":     ["FK", "🇫🇰"],
+    "Faroe Islands":        ["FO", "🇫🇴"], "Fiji":                 ["FJ", "🇫🇯"],
+    "Finland":              ["FI", "🇫🇮"], "France":               ["FR", "🇫🇷"],
+    "French Guiana":        ["GF", "🇬🇫"], "French Polynesia":     ["PF", "🇵🇫"],
+    "French Southern Territories":                                ["TF", "🇹🇫"],
+    "Gabon":                ["GA", "🇬🇦"], "The Gambia":           ["GM", "🇬🇲"],
+    "Georgia":              ["GE", "🇬🇪"], "Germany":              ["DE", "🇩🇪"],
+    "Ghana":                ["GH", "🇬🇭"], "Gibraltar":            ["GI", "🇬🇮"],
+    "Greece":               ["GR", "🇬🇷"], "Greenland":            ["GL", "🇬🇱"],
+    "Grenada":              ["GD", "🇬🇩"], "Guadeloupe":           ["GP", "🇬🇵"],
+    "Guam":                 ["GU", "🇬🇺"], "Guatemala":            ["GT", "🇬🇹"],
+    "Guernsey":             ["GG", "🇬🇬"], "Guinea":               ["GN", "🇬🇳"],
+    "Guinea-Bissau":        ["GW", "🇬🇼"], "Guyana":               ["GY", "🇬🇾"],
+    "Haiti":                ["HT", "🇭🇹"], "Honduras":             ["HN", "🇭🇳"],
+    "Hong Kong":            ["HK", "🇭🇰"], "Hungary":              ["HU", "🇭🇺"],
+    "Iceland":              ["IS", "🇮🇸"], "India":                ["IN", "🇮🇳"],
+    "Indonesia":            ["ID", "🇮🇩"], "Iran":                 ["IR", "🇮🇷"],
+    "Iraq":                 ["IQ", "🇮🇶"], "Ireland":              ["IE", "🇮🇪"],
+    "Isle of Man":          ["IM", "🇮🇲"], "Israel":               ["IL", "🇮🇱"],
+    "Italy":                ["IT", "🇮🇹"], "Jamaica":              ["JM", "🇯🇲"],
+    "Japan":                ["JP", "🇯🇵"], "Jersey":               ["JE", "🇯🇪"],
+    "Jordan":               ["JO", "🇯🇴"], "Kazakhstan":           ["KZ", "🇰🇿"],
+    "Kenya":                ["KE", "🇰🇪"], "Kiribati":             ["KI", "🇰🇮"],
+    "Kosovo":               ["XK", "🇽🇰"], "Kuwait":               ["KW", "🇰🇼"],
+    "Kyrgyzstan":           ["KG", "🇰🇬"], "Laos":                 ["LA", "🇱🇦"],
+    "Latvia":               ["LV", "🇱🇻"], "Lebanon":              ["LB", "🇱🇧"],
+    "Lesotho":              ["LS", "🇱🇸"], "Liberia":              ["LR", "🇱🇷"],
+    "Libya":                ["LY", "🇱🇾"], "Liechtenstein":        ["LI", "🇱🇮"],
+    "Lithuania":            ["LT", "🇱🇹"], "Luxembourg":           ["LU", "🇱🇺"],
+    "Macau":                ["MO", "🇲🇴"], "Madagascar":           ["MG", "🇲🇬"],
+    "Malawi":               ["MW", "🇲🇼"], "Malaysia":             ["MY", "🇲🇾"],
+    "Maldives":             ["MV", "🇲🇻"], "Mali":                 ["ML", "🇲🇱"],
+    "Malta":                ["MT", "🇲🇹"], "Marshall Islands":     ["MH", "🇲🇭"],
+    "Mauritania":           ["MR", "🇲🇷"], "Mauritius":            ["MU", "🇲🇺"],
+    "Mayotte":              ["YT", "🇾🇹"], "Mexico":               ["MX", "🇲🇽"],
+    "Micronesia":           ["FM", "🇫🇲"], "Moldova":              ["MD", "🇲🇩"],
+    "Monaco":               ["MC", "🇲🇨"], "Mongolia":             ["MN", "🇲🇳"],
+    "Montenegro":           ["ME", "🇲🇪"], "Montserrat":           ["MS", "🇲🇸"],
+    "Morocco":              ["MA", "🇲🇦"], "Mozambique":           ["MZ", "🇲🇿"],
+    "Myanmar":              ["MM", "🇲🇲"], "Namibia":              ["NA", "🇳🇦"],
+    "Nauru":                ["NR", "🇳🇷"], "Nepal":                ["NP", "🇳🇵"],
+    "Netherlands":          ["NL", "🇳🇱"], "New Caledonia":        ["NC", "🇳🇨"],
+    "New Zealand":          ["NZ", "🇳🇿"], "Nicaragua":            ["NI", "🇳🇮"],
+    "Niger":                ["NE", "🇳🇪"], "Nigeria":              ["NG", "🇳🇬"],
+    "Niue":                 ["NU", "🇳🇺"], "Norfolk Island":       ["NF", "🇳🇫"],
+    "North Korea":          ["KP", "🇰🇵"], "North Macedonia":      ["MK", "🇲🇰"],
+    "Northern Mariana Islands":                                   ["MP", "🇲🇵"],
+    "Norway":               ["NO", "🇳🇴"], "Oman":                 ["OM", "🇴🇲"],
+    "Pakistan":             ["PK", "🇵🇰"], "Palau":                ["PW", "🇵🇼"],
+    "Palestine":            ["PS", "🇵🇸"], "Panama":               ["PA", "🇵🇦"],
+    "Papua New Guinea":     ["PG", "🇵🇬"], "Paraguay":             ["PY", "🇵🇾"],
+    "Peru":                 ["PE", "🇵🇪"], "Philippines":          ["PH", "🇵🇭"],
+    "Pitcairn Islands":     ["PN", "🇵🇳"], "Poland":               ["PL", "🇵🇱"],
+    "Portugal":             ["PT", "🇵🇹"], "Puerto Rico":          ["PR", "🇵🇷"],
+    "Qatar":                ["QA", "🇶🇦"], "Réunion":              ["RE", "🇷🇪"],
+    "Romania":              ["RO", "🇷🇴"], "Russia":               ["RU", "🇷🇺"],
+    "Rwanda":               ["RW", "🇷🇼"], "Saint Barthélemy":     ["BL", "🇧🇱"],
+    "Saint Helena":         ["SH", "🇸🇭"], "Saint Kitts and Nevis":["KN", "🇰🇳"],
+    "Saint Lucia":          ["LC", "🇱🇨"],
+    "Saint Pierre and Miquelon":                                  ["PM", "🇵🇲"],
+    "Saint Vincent and the Grenadines":                           ["VC", "🇻🇨"],
+    "Samoa":                ["WS", "🇼🇸"], "San Marino":           ["SM", "🇸🇲"],
+    "São Tomé and Príncipe":["ST", "🇸🇹"], "Saudi Arabia":         ["SA", "🇸🇦"],
+    "Senegal":              ["SN", "🇸🇳"], "Serbia":               ["RS", "🇷🇸"],
+    "Seychelles":           ["SC", "🇸🇨"], "Sierra Leone":         ["SL", "🇸🇱"],
+    "Singapore":            ["SG", "🇸🇬"], "Sint Maarten":         ["SX", "🇸🇽"],
+    "Slovakia":             ["SK", "🇸🇰"], "Slovenia":             ["SI", "🇸🇮"],
+    "Solomon Islands":      ["SB", "🇸🇧"], "Somalia":              ["SO", "🇸🇴"],
+    "South Africa":         ["ZA", "🇿🇦"],
+    "South Georgia and the South Sandwich Islands":               ["GS", "🇬🇸"],
+    "South Korea":          ["KR", "🇰🇷"], "South Sudan":          ["SS", "🇸🇸"],
+    "Spain":                ["ES", "🇪🇸"], "Sri Lanka":            ["LK", "🇱🇰"],
+    "Sudan":                ["SD", "🇸🇩"], "Suriname":             ["SR", "🇸🇷"],
+    "Sweden":               ["SE", "🇸🇪"], "Switzerland":          ["CH", "🇨🇭"],
+    "Syria":                ["SY", "🇸🇾"], "Taiwan":               ["TW", "🇹🇼"],
+    "Tajikistan":           ["TJ", "🇹🇯"], "Tanzania":             ["TZ", "🇹🇿"],
+    "Thailand":             ["TH", "🇹🇭"], "Timor-Leste":          ["TL", "🇹🇱"],
+    "Togo":                 ["TG", "🇹🇬"], "Tokelau":              ["TK", "🇹🇰"],
+    "Tonga":                ["TO", "🇹🇴"], "Trinidad and Tobago":  ["TT", "🇹🇹"],
+    "Tristan da Cunha":     ["TA", "🇹🇦"], "Tunisia":              ["TN", "🇹🇳"],
+    "Türkiye":              ["TR", "🇹🇷"], "Turkmenistan":         ["TM", "🇹🇲"],
+    "Turks and Caicos Islands":                                   ["TC", "🇹🇨"],
+    "Tuvalu":               ["TV", "🇹🇻"], "Uganda":               ["UG", "🇺🇬"],
+    "Ukraine":              ["UA", "🇺🇦"], "United Arab Emirates": ["AE", "🇦🇪"],
+    "United Kingdom":       ["GB", "🇬🇧"], "United Nations":       ["UN", "🇺🇳"],
+    "United States":        ["US", "🇺🇸"],
+    "United States Virgin Islands":                               ["VI", "🇻🇮"],
+    "Uruguay":              ["UY", "🇺🇾"], "Uzbekistan":           ["UZ", "🇺🇿"],
+    "Vanuatu":              ["VU", "🇻🇺"], "Vatican City":         ["VA", "🇻🇦"],
+    "Venezuela":            ["VE", "🇻🇪"], "Vietnam":              ["VN", "🇻🇳"],
+    "Wallis and Futuna":    ["WF", "🇼🇫"], "Western Sahara":       ["EH", "🇪🇭"],
+    "Yemen":                ["YE", "🇾🇪"], "Zambia":               ["ZM", "🇿🇲"],
+    "Zimbabwe":             ["ZW", "🇿🇼"]
+}'''
+preamble = '''
+<p>
+    Given each region (and an organization) print the corresponding unicode flag.
+<p>
+    Unicode encodes standard flags using 26
+    <a href="https://en.wikipedia.org/wiki/Regional_indicator_symbol"><b>
+    regional indicator symbols</b></a> from <code>U+1F1E6</code> 🇦 to <code>U+1F1FF</code> 🇿,
+    one for each letter in the latin alphabet.
+<p>
+    A flag is composed of two sequential regional indicator symbols which spell a given region's two-letter
+    <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2"><b>ISO 3166-1 alpha-2 code</b></a>.
+<p>
+    For example, Vietnam's two-letter ISO code is VN, so 🇻+🇳 = 🇻🇳.
+
+<p>The full mapping is as follows:<div id=colors class="tables-4col">
+{{ range .DataMap }}
+    {{ if or (eq .Key "Afghanistan" ) (eq .Key "Djibouti"                  )
+             (eq .Key "Liberia"     ) (eq .Key "Saint Pierre and Miquelon" ) }}
+        <table>
+        <thead>
+            <tr>
+                <th>Name
+                <th>ISO
+                <th>Flag
+            <tbody>
+    {{ end }}
+
+    <tr><td>{{ .Key }}<td>{{ index .Value 0 }}<td>{{ index .Value 1 }}
+
+    {{ if or (eq .Key "Denmark"     ) (eq .Key "Lesotho"  )
+             (eq .Key "Saint Lucia" ) (eq .Key "Zimbabwe" ) }}
+        </table>
+    {{ end }}
+{{ end }}
+</div>
+'''
+
 ['Floyd-Steinberg Dithering']
 category = 'Art'
 experiment = 1138
