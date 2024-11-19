@@ -1723,10 +1723,10 @@ for (a in Process.arguments) System.print(a)
 '''
 
 [Yuescript]
-args       = [ '/usr/bin/yue', '-e', '$code' ]
+args       = [ '/usr/bin/yuescript', '-' ]
 experiment = 807
-size       = '5.58 MiB'
-version    = '0.25.5'
+size       = '8.78 MiB'
+version    = '0.26.0'
 website    = 'https://yuescript.org'
 example    = '''
 -- Printing

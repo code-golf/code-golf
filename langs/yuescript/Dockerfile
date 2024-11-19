@@ -1,19 +1,38 @@
 FROM debian:bookworm-slim AS builder
 
-ENV DEBIAN_FRONTEND=noninteractive LDFLAGS=-static
+RUN apt-get update                 \
+ && DEBIAN_FRONTEND=noninteractive \
+    apt-get install --yes curl g++ make
 
-RUN apt-get update \
- && apt-get install -y build-essential curl
+ENV VER=0.26.0
 
-RUN curl -L https://github.com/pigpigyyy/Yuescript/archive/refs/tags/v0.25.5.tar.gz \
+RUN curl -#L https://github.com/pigpigyyy/Yuescript/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1
 
-RUN make -j`nproc` install
+RUN make install \
+    NO_LUA=true  \
+    NO_MACRO=true
+  
+RUN strip /usr/local/bin/yue
+
+COPY yuescript.c /
+
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/yuescript -s -static yuescript.c
+
+FROM codegolf/lang-lua
+
+COPY --from=0 /usr/bin/yuescript \
+              /usr/local/bin/yue /usr/bin/
 
 FROM codegolf/lang-base
 
-COPY --from=0 /yue /usr/bin/
+COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6      \
+              /lib/x86_64-linux-gnu/libgcc_s.so.1  \
+              /lib/x86_64-linux-gnu/libm.so.6      \
+              /lib/x86_64-linux-gnu/libstdc++.so.6 /lib/
+COPY --from=0 /lib64/ld-linux-x86-64.so.2          /lib64/
+COPY --from=1 /usr/bin                             /usr/bin
 
-ENTRYPOINT ["yue"]
+ENTRYPOINT ["yuescript"]
 
-CMD ["-v"]
+CMD ["--version"]
