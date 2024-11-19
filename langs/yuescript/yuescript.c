@@ -36,6 +36,7 @@ int main(int argc, char* argv[]) {
         if (!dup2(STDERR_FILENO, STDOUT_FILENO))
             ERR_AND_EXIT("dup2");
         
+        // Compile to Lua.
         execl("/usr/bin/yue", "yue", "code.yue", NULL);
         ERR_AND_EXIT("execl");
     }
