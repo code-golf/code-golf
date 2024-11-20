@@ -2,7 +2,7 @@ FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache build-base curl libffi-dev zlib-dev
 
-# Also bump Coconut, Hy, Piet.
+# Also bump 05AB1E, Coconut, Hy, Piet.
 ENV VER=3.13.0
 
 RUN curl https://www.python.org/ftp/python/$VER/Python-$VER.tar.xz | tar xJ
