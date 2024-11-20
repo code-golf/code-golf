@@ -1,3 +1,21 @@
+[05AB1E]
+args       = [ '/usr/bin/05ab1e', '-' ]
+env        = [ 'PYTHON_COLORS=1' ]
+experiment = 233
+size       = '50.6 MiB'
+version    = 'fe1ab18'
+website    = 'https://github.com/Adriandmen/05AB1E'
+example    = '''
+"Printing"
+”Ÿ™,‚ï!”,
+
+"Looping"
+9ƒN,}
+
+"Accessing arguments"
+|»,}
+'''
+
 ['><>']
 args    = [ '/usr/bin/fish', '--no-prng', '-c', '$code', '-u' ]
 size    = '4.80 MiB'
