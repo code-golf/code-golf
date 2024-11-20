@@ -2,12 +2,15 @@ FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache build-base curl
 
-RUN curl -L https://github.com/cisco/ChezScheme/releases/download/v10.0.0/csv10.0.0.tar.gz | tar xz --strip-components 1
+ENV VER=10.0.0
 
-RUN ./configure     \
-  --disable-curses  \
-  --disable-x11     \
- && make -j `nproc` \
+RUN curl -L https://github.com/cisco/ChezScheme/releases/download/v$VER/csv$VER.tar.gz \
+  | tar xz --strip-components 1
+
+RUN ./configure      \
+    --disable-curses \
+    --disable-x11    \
+ && make -j`nproc`   \
  && make install
 
 FROM codegolf/lang-base

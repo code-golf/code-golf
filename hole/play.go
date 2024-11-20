@@ -269,7 +269,7 @@ func Play(
 	// Holes with fixed test cases.
 	case "css-colors":
 		runs = outputTests(shuffle(fixedTests(hole.ID)))
-	case "emojify", "rock-paper-scissors-spock-lizard", "united-states":
+	case "emojify", "flags", "rock-paper-scissors-spock-lizard", "united-states":
 		runs = outputMultirunTests(fixedTests(hole.ID))
 	case "floyd-steinberg-dithering", "hexdump", "proximity-grid", "star-wars-opening-crawl":
 		runs = outputTestsWithSep("\n\n", shuffle(fixedTests(hole.ID)))
@@ -314,6 +314,12 @@ func play(
 ) error {
 	// Preprocess code.
 	switch lang.ID {
+	case "05ab1e":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && !strings.Contains(code, `"`) && !strings.Contains(code, "”") {
+			run.Stderr = "Quine in 05AB1E must have at least one '\"' or '”' character."
+			return nil
+		}
 	case "cjam":
 		// Prevent trivial quines. Error out and return early.
 		if hole.ID == "quine" && !strings.Contains(code, "`") {
