@@ -225,6 +225,13 @@ CREATE TABLE trophies (
     PRIMARY KEY (user_id, trophy)
 );
 
+-- Hole isn't experimental and solution isn't failing.
+CREATE VIEW stable_passing_solutions AS
+     SELECT solutions.*
+       FROM solutions
+       JOIN holes ON id = hole
+      WHERE experiment = 0 AND NOT failing;
+
 CREATE MATERIALIZED VIEW medals AS WITH ranks AS (
     SELECT user_id, hole, lang, scoring, submitted,
            COUNT(*) OVER (PARTITION BY hole, lang, scoring),
@@ -233,8 +240,7 @@ CREATE MATERIALIZED VIEW medals AS WITH ranks AS (
                    ORDER BY CASE WHEN scoring = 'bytes'
                                  THEN bytes ELSE chars END
            )
-      FROM solutions
-     WHERE NOT failing
+      FROM stable_passing_solutions
 ) SELECT user_id, hole, lang, scoring, submitted,
          (enum_range(NULL::medal))[rank + 2] medal
     FROM ranks
@@ -254,8 +260,7 @@ CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
     select hole, lang, scoring, user_id, submitted,
            case when scoring = 'bytes' then bytes else chars end strokes,
            case when scoring = 'bytes' then chars else bytes end other_strokes
-      from solutions
-     where not failing
+      from stable_passing_solutions
 ), min as (
     select hole, scoring, min(strokes)::numeric Sa
       from strokes
@@ -313,11 +318,15 @@ CREATE INDEX solutions_lang_key ON solutions(lang, user_id) WHERE NOT failing;
 
 CREATE ROLE "code-golf" WITH LOGIN;
 
--- Only owners can refresh.
+-- Materialized views. Only owners can refresh.
 ALTER MATERIALIZED VIEW medals   OWNER TO "code-golf";
 ALTER MATERIALIZED VIEW points   OWNER TO "code-golf";
 ALTER MATERIALIZED VIEW rankings OWNER TO "code-golf";
 
+-- Views.
+GRANT SELECT ON stable_passing_solutions TO "code-golf";
+
+-- Tables.
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE authors         TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE connections     TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE discord_records TO "code-golf";
