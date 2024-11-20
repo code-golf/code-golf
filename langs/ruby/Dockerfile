@@ -59,4 +59,4 @@ COPY --from=0 /usr/lib/ruby            /usr/lib/ruby
 
 ENTRYPOINT ["ruby"]
 
-CMD ["-e", "puts RUBY_VERSION"]
+CMD ["--version"]
