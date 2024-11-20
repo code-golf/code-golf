@@ -25,7 +25,7 @@ RUN ./configure                \
  && make                       \
  && strip bash
 
-FROM codegolf/lang-base-no-proc
+FROM codegolf/lang-base
 
 COPY --from=0 /lang/bash /usr/bin/
 

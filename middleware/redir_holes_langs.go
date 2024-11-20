@@ -10,57 +10,39 @@ import (
 // RedirHolesLangs redirects old values for {hole} and {lang}.
 func RedirHolesLangs(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		newPath := r.URL.Path
-
-		// FIXME Consider using chi.RouteContext(r.Context()).RoutePattern()
-		//       and filling in hole/lang, more robust than strings.Replace().
+		holeID := r.PathValue("hole")
+		langID := r.PathValue("lang")
 
 		// Permanent redirects
-		for _, hole := range config.AllHoleList {
-			if newPath != r.URL.Path {
-				break
-			}
-			for _, redirect := range hole.Redirects {
-				if r.PathValue("hole") == redirect {
-					newPath = strings.Replace(newPath, "/"+redirect, "/"+hole.ID, 1)
-				}
-			}
+		if redirect, ok := config.HoleRedirects[holeID]; ok {
+			redir(w, r, holeID, redirect, http.StatusPermanentRedirect)
+			return
 		}
 
-		if r.PathValue("lang") == "perl6" {
-			newPath = strings.Replace(newPath, "/perl6", "/raku", 1)
-		}
-
-		if newPath != r.URL.Path {
-			if r.URL.RawQuery != "" {
-				newPath += "?" + r.URL.RawQuery
-			}
-
-			http.Redirect(w, r, newPath, http.StatusPermanentRedirect)
+		if redirect, ok := config.LangRedirects[langID]; ok {
+			redir(w, r, langID, redirect, http.StatusPermanentRedirect)
 			return
 		}
 
 		// Aliases
-		for _, hole := range config.AllHoleList {
-			if newPath != r.URL.Path {
-				break
-			}
-			for _, alias := range hole.Aliases {
-				if r.PathValue("hole") == alias {
-					newPath = strings.Replace(newPath, "/"+alias, "/"+hole.ID, 1)
-				}
-			}
-		}
-		if newPath != r.URL.Path {
-			if r.URL.RawQuery != "" {
-				newPath += "?" + r.URL.RawQuery
-			}
-
-			http.Redirect(w, r, newPath, http.StatusTemporaryRedirect)
+		if alias, ok := config.HoleAliases[holeID]; ok {
+			redir(w, r, holeID, alias, http.StatusTemporaryRedirect)
 			return
 		}
 
 		// No redirect
 		next.ServeHTTP(w, r)
 	})
+}
+
+func redir(w http.ResponseWriter, r *http.Request, old, new string, code int) {
+	// FIXME Consider using chi.RouteContext(r.Context()).RoutePattern()
+	//       and filling in hole/lang, more robust than strings.Replace().
+	path := strings.Replace(r.URL.Path, "/"+old, "/"+new, 1)
+
+	if r.URL.RawQuery != "" {
+		path += "?" + r.URL.RawQuery
+	}
+
+	http.Redirect(w, r, path, code)
 }
