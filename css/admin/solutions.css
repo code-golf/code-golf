@@ -30,14 +30,20 @@ table {
 td {
     vertical-align: top;
     white-space: nowrap;
-}
 
-td > span {
-    border: 1px solid var(--color);
-    font-family: monospace;
-    font-size: .75rem;
-    font-weight: bold;
-    padding: .2rem .35rem;
+    > code {
+        display: block;
+        max-height: 10rem;
+        overflow: scroll;
+    }
+
+    > span {
+        border: 1px solid var(--color);
+        font-family: monospace;
+        font-size: .75rem;
+        font-weight: bold;
+        padding: .2rem .35rem;
+    }
 }
 
 tr > :nth-child(4) { text-align: right }

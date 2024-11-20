@@ -51,7 +51,7 @@ RUN cd /usr/lib/ruby/3.3.0 && rm -rf \
                       ripper.rb      \
     x86_64-linux-musl/ripper.so
 
-FROM codegolf/lang-base-no-proc
+FROM codegolf/lang-base
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
 COPY --from=0 /usr/bin/ruby            /usr/bin/
@@ -59,4 +59,4 @@ COPY --from=0 /usr/lib/ruby            /usr/lib/ruby
 
 ENTRYPOINT ["ruby"]
 
-CMD ["-e", "puts RUBY_VERSION"]
+CMD ["--version"]
