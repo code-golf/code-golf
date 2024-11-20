@@ -18,16 +18,21 @@ RUN cd Python-$PYVER           \
 
 RUN pip3 install coconut==$VER
 
+WORKDIR /usr/lib/python3.13
+
 # Remove some unneeded libraries.
-RUN rm -r /usr/lib/python3.13/__pycache__/doctest.* \
-          /usr/lib/python3.13/__pycache__/pydoc.*   \
-          /usr/lib/python3.13/__pycache__/turtle.*  \
-          /usr/lib/python3.13/ensurepip             \
-          /usr/lib/python3.13/idlelib               \
-          /usr/lib/python3.13/pydoc_data            \
-          /usr/lib/python3.13/tkinter               \
-          /usr/lib/python3.13/turtle.py             \
-          /usr/lib/python3.13/turtledemo
+RUN find . -name '*.opt-[12].pyc' -delete \
+ && rm -r __pycache__/doctest.*           \
+          __pycache__/pydoc.*             \
+          __pycache__/turtle.*            \
+          _pyrepl                         \
+          ensurepip                       \
+          idlelib                         \
+          pydoc_data                      \
+          tkinter                         \
+          turtle.py                       \
+          turtledemo                      \
+          unittest
 
 FROM codegolf/lang-base
 
