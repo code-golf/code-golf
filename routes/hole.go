@@ -56,7 +56,7 @@ func holeGET(w http.ResponseWriter, r *http.Request) {
 
 	golfer := session.Golfer(r)
 
-	if golfer != nil && data.Hole.Experiment == 0 {
+	if golfer != nil {
 		// Fetch all the code per lang.
 		rows, err := session.Database(r).Query(
 			`SELECT code, lang, scoring
