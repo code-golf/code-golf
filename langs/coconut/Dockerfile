@@ -31,8 +31,7 @@ RUN find . -name '*.opt-[12].pyc' -delete \
           pydoc_data                      \
           tkinter                         \
           turtle.py                       \
-          turtledemo                      \
-          unittest
+          turtledemo
 
 FROM codegolf/lang-base
 
