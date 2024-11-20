@@ -158,6 +158,14 @@ CREATE TABLE follows (
     CHECK (follower_id != followee_id)  -- Can't follow yourself!
 );
 
+-- config/data/holes.toml is the canonical source of truth for hole data.
+-- This table is a shadow copy, updated on startup, used in DB queries.
+-- TODO Move category here, remove config.HoleCategoryHstore.
+CREATE UNLOGGED TABLE holes (
+    id         hole NOT NULL PRIMARY KEY,
+    experiment int  NOT NULL
+);
+
 CREATE TABLE notes (
     user_id int  NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     hole    hole NOT NULL,
@@ -315,6 +323,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE connections     TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE discord_records TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE discord_state   TO "code-golf";
 GRANT SELECT, INSERT,         DELETE ON TABLE follows         TO "code-golf";
+GRANT SELECT, INSERT, TRUNCATE       ON TABLE holes           TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE ideas           TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE notes           TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE sessions        TO "code-golf";
