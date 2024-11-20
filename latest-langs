@@ -78,6 +78,7 @@ constant %paths = (
     'Scheme'       => 'en.wikipedia.org/wiki/Chez_Scheme',
     'sed'          => 'git.savannah.gnu.org/cgit/sed.git/refs',
     'SQL'          => 'en.wikipedia.org/wiki/SQLite',
+    'Squirrel'     => 'github.com/albertodemichelis/squirrel/releases/latest',
     'Swift'        => 'github.com/swiftlang/swift/releases/latest',
     'Tcl'          => 'en.wikipedia.org/wiki/Tcl',
     'TeX'          => 'en.wikipedia.org/wiki/TeX',

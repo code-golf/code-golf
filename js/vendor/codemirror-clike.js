@@ -642,3 +642,15 @@ export const scala = clike({
     },
     modeProps: {closeBrackets: {pairs: '()[]{}""', triples: '"'}},
 });
+
+export const squirrel = clike({
+    keywords: words('base break clone continue const default delete enum extends function in class' +
+                    ' foreach local resume return this throw typeof yield constructor instanceof static'),
+    types: cTypes,
+    blockKeywords: words('case catch class else for foreach if switch try while'),
+    defKeywords: words('function local class'),
+    typeFirstDefinitions: true,
+    atoms: words('true false null'),
+    hooks: {'#': cppHook},
+    modeProps: {fold: ['brace', 'include']}
+});
