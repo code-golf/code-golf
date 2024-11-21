@@ -1,3 +1,29 @@
+<!-- For experimental lang picker -->
+<svg>{{ svg "flask-light" }}</svg>
+
+{{ range .Data.Langs }}<svg>{{ svg .ID }}</svg>{{ end }}
+
+{{ with .Data.Hole.Experiment }}
+    <div class=alert>
+        {{ svg "flask-light" }}
+        <p>
+            This hole is experimental, no solutions will be saved.
+        {{ if ne . -1 }}
+            Please leave feedback on the
+            <a href="//github.com/code-golf/code-golf/issues/{{ . }}">
+                GitHub issue</a>.
+        {{ end }}
+    </div>
+{{ else }}{{ if not .Golfer }}
+    <div class=alert>
+        {{ svg "exclamation-circle" }}
+        <p>
+            Please
+            <a class=log-in href="{{ .LogInURL }}">log in with GitHub</a>
+            in order to save solutions and appear on the leaderboards.
+    </div>
+{{ end }}{{ end }}
+
 <header id=page-header>
 {{ with .Data.Authors }}
     <dialog id=authors-dialog>
