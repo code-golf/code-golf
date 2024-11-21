@@ -42,16 +42,14 @@ func holeGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Lookup the hole's author(s).
-	if data.Hole.Experiment == 0 {
-		if err := session.Database(r).QueryRow(
-			`SELECT array_agg(login ORDER BY login)
-			   FROM authors
-			   JOIN users ON id = user_id
-			  WHERE hole = $1`,
-			data.Hole.ID,
-		).Scan(pq.Array(&data.Authors)); err != nil {
-			panic(err)
-		}
+	if err := session.Database(r).QueryRow(
+		`SELECT array_agg(login ORDER BY login)
+		   FROM authors
+		   JOIN users ON id = user_id
+		  WHERE hole = $1`,
+		data.Hole.ID,
+	).Scan(pq.Array(&data.Authors)); err != nil {
+		panic(err)
 	}
 
 	golfer := session.Golfer(r)
