@@ -43,6 +43,7 @@ COPY --from=codegolf/lang-cjam         ["/", "/langs/cjam/rootfs/"        ] #  1
 COPY --from=codegolf/lang-rockstar     ["/", "/langs/rockstar/rootfs/"    ] #  127 MiB
 COPY --from=codegolf/lang-assembly     ["/", "/langs/assembly/rootfs/"    ] #  106 MiB
 COPY --from=codegolf/lang-fortran      ["/", "/langs/fortran/rootfs/"     ] # 94.3 MiB
+COPY --from=codegolf/lang-crystal      ["/", "/langs/crystal/rootfs/"     ] # 94.1 MiB
 COPY --from=codegolf/lang-ocaml        ["/", "/langs/ocaml/rootfs/"       ] # 91.4 MiB
 COPY --from=codegolf/lang-gleam        ["/", "/langs/gleam/rootfs/"       ] # 88.8 MiB
 COPY --from=codegolf/lang-coconut      ["/", "/langs/coconut/rootfs/"     ] # 85.7 MiB

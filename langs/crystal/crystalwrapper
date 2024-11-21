@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+[ "$1" = "--version" ] && exec crystal --version
+
+cat - > /tmp/code.cr
+
+shift
+exec crystal i /tmp/code.cr "$@"
