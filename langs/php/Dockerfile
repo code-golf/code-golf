@@ -25,4 +25,4 @@ COPY --from=0 /usr/lib/php.ini /usr/lib/
 
 ENTRYPOINT ["php"]
 
-CMD ["-r", "echo phpversion();"]
+CMD ["--version"]
