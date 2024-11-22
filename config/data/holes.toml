@@ -338,6 +338,7 @@ F: / ? O _ o DEL
 [Billiards]
 category = 'Art'
 experiment = 456
+released = 2024-12-01
 synopsis = 'Draw a path of a billiard ball.'
 preamble = '''
 <p>Given the size of a billiard table, draw the path of a ball shot from the top left corner of the table at 45 degree angles to the sides.
