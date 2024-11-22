@@ -124,7 +124,6 @@ export function getLang() {
     return lang;
 }
 
-const experimental = JSON.parse($('#experimental').innerText);
 export const hole         = decodeURI(location.pathname.slice(1));
 const scorings     = ['Bytes', 'Chars'];
 const solutions    = JSON.parse($('#solutions').innerText);
@@ -143,12 +142,12 @@ let hideDeleteBtn: boolean = false;
 // The savedInDB state is used to avoid saving solutions in localStorage when
 // those solutions match the solutions in the database. It's used to avoid
 // restoring a solution from localStorage when the user has improved that
-// solution on a different browser. Assume the user is logged-in by default
-// for non-experimental holes. At this point, it doesn't matter whether the
+// solution on a different browser. Assume the user is logged-in by default.
+// At this point, it doesn't matter whether the
 // user is actually logged-in, because solutions dictionaries will be empty
 // for users who aren't logged-in, so the savedInDB state won't be used.
 // By the time they are non-empty, the savedInDB state will have been updated.
-let savedInDB = !experimental;
+let savedInDB = true;
 
 export function getSavedInDB() {
     return savedInDB;
@@ -559,7 +558,7 @@ export async function submit(
     }
 
     const data = await res.json() as SubmitResponse;
-    savedInDB = data.logged_in && !experimental;
+    savedInDB = data.logged_in;
 
     if (submissionID != latestSubmissionID)
         return false;
