@@ -448,6 +448,17 @@ func play(
 			argCode.WriteString("\" into args\n")
 		}
 		cmd.Stdin = strings.NewReader(argCode.String() + code)
+	case "scala":
+		if hole.ID == "emojify" || hole.ID == "hexdump" ||
+			hole.ID == "pangram-grep" || hole.ID == "star-wars-opening-crawl" {
+				args := []string{}
+				for _, arg := range run.Args {
+					args = append(args, strings.ReplaceAll(arg, "'", "'\\''"))
+				}
+			cmd.Args = append(cmd.Args, args...)
+		} else {
+			cmd.Args = append(cmd.Args, run.Args...)
+		}
 	case "sed":
 		// For sed we always need to append a null byte, even if no args exist
 		args := strings.Join(run.Args, "\x00") + "\x00"
