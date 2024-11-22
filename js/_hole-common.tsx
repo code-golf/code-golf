@@ -312,8 +312,8 @@ export async function refreshScores(editor: any) {
     else
         $('#solutionPicker').classList.add('hide');
 
-    // Hide the delete button for exp holes or if we have no solutions.
-    hideDeleteBtn = experimental || (!dbBytes && !dbChars);
+    // Hide the delete button if we have no solutions.
+    hideDeleteBtn = !dbBytes && !dbChars;
     $('#deleteBtn')?.classList.toggle('hide', hideDeleteBtn);
 
     await populateScores(editor);
