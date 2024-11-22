@@ -1,7 +1,7 @@
 {{ template "header" . }}
 {{ template "golfer" . }}
 
-{{ $show := and .Golfer (index .Golfer.Settings "golfer/cheevos" "show-cheevos") }}
+{{ $show := setting .Golfer "golfer/cheevos" "show-cheevos" }}
 
 <main>
 {{ range $category, $cheevos := .Cheevos }}

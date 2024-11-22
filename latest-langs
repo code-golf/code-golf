@@ -8,6 +8,7 @@ use TOML::Thumb;
 unit sub MAIN(Bool :$all, *@langs);
 
 constant %paths = (
+    '05AB1E'       => 'github.com/Adriandmen/05AB1E',
     '><>'          => 'github.com/primo-ppcg/fish-jit',
     'ALGOL 68'     => 'jmvdveer.home.xs4all.nl/en.download.algol-68-genie-current.html',
     'Arturo'       => 'github.com/arturo-lang/arturo/releases/latest',
@@ -78,6 +79,7 @@ constant %paths = (
     'Scheme'       => 'en.wikipedia.org/wiki/Chez_Scheme',
     'sed'          => 'git.savannah.gnu.org/cgit/sed.git/refs',
     'SQL'          => 'en.wikipedia.org/wiki/SQLite',
+    'Squirrel'     => 'github.com/albertodemichelis/squirrel/releases/latest',
     'Swift'        => 'github.com/swiftlang/swift/releases/latest',
     'Tcl'          => 'en.wikipedia.org/wiki/Tcl',
     'TeX'          => 'en.wikipedia.org/wiki/TeX',
