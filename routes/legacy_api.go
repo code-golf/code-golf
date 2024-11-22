@@ -134,6 +134,24 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 				out.Cheevos = append(out.Cheevos, *c)
 			}
 		}
+
+		// TODO Eventually save exp langs too.
+		if experimentalHole && !experimentalLang {
+			if _, err := db.ExecContext(
+				r.Context(),
+				`SELECT save_solution(
+				            bytes   := octet_length($1),
+				            chars   := char_length($1),
+				            code    := $1,
+				            hole    := $2,
+				            lang    := $3,
+				            user_id := $4
+				        )`,
+				in.Code, in.Hole, in.Lang, golfer.ID,
+			); err != nil {
+				panic(err)
+			}
+		}
 	} else if pass && golfer != nil && !experimental {
 		if err := db.QueryRowContext(
 			r.Context(),
