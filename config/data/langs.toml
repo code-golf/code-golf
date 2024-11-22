@@ -1744,8 +1744,8 @@ w
 [Vyxal]
 args       = [ '/usr/bin/vyxalwrapper', '-' ]
 experiment = 404
-size       = '194 MiB'
-version    = '2.22.1'
+size       = '193 MiB'
+version    = '2.22.3'
 website    = 'https://github.com/Vyxal/Vyxal/tree/version-2'
 example    = '''
 # Printing

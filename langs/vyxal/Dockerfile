@@ -3,7 +3,7 @@ FROM alpine:3.20 AS builder
 RUN apk add --no-cache build-base curl libffi-dev openssl-dev zlib-dev
 
 # Python meta: https://pypi.org/project/vyxal/
-ENV PYVER=3.10.15 VER=2.22.1
+ENV PYVER=3.10.15 VER=2.22.3
 
 RUN curl https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz | tar xJ
 
@@ -22,9 +22,10 @@ RUN ./configure                \
 
 RUN pip3 install vyxal==$VER
 
+WORKDIR /usr/lib/python3.10
+
 # Remove some unneeded libraries.
-RUN cd /usr/lib/python3.10      \
- && rm -r __pycache__/doctest.* \
+RUN rm -r __pycache__/doctest.* \
           __pycache__/pydoc.*   \
           __pycache__/turtle.*  \
           ensurepip             \
@@ -33,7 +34,8 @@ RUN cd /usr/lib/python3.10      \
           pydoc_data            \
           tkinter               \
           turtle.py             \
-          turtledemo
+          turtledemo            \
+          unittest
 
 RUN gcc -Wall -Werror -Wextra -o /usr/bin/vyxalwrapper -s -static /vyxalwrapper.c
 
