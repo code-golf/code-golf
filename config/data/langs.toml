@@ -813,10 +813,10 @@ for (arg in args)
 '''
 
 [Harbour]
-args       = [ '/usr/bin/harbour', '-' ]
+args       = [ '/usr/bin/harbourwrapper', '-' ]
 experiment = 1614
 size       = '13.0 MiB'
-version    = '3.2.0'
+version    = '4ae5151'
 website    = 'https://harbour.github.io'
 example    = '''
 LOCAL i
