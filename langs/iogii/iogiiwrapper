@@ -1,0 +1,17 @@
+#!/bin/sh -e
+
+[ "$1" = "--version" ] && exec iogii --version
+
+cd /tmp
+
+cat - > code.iog
+
+shift
+touch argv.txt
+for arg in "$@"; do
+    # Write argument to .txt file
+    echo "$arg" >> argv.txt
+done
+
+# Execute and read arguments from .txt file
+exec iogii code.iog < argv.txt
