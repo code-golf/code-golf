@@ -39,7 +39,8 @@ COPY --from=0 /busybox/_install/bin        /bin
 COPY --from=0 /lib/ld-musl-x86_64.so.1     \
               /lib/libz.so.1               /lib/
 COPY --from=0 /busybox/_install/usr/bin    /usr/bin
-COPY --from=0 /usr/bin/R /usr/bin/printf   /usr/bin/
+COPY --from=0 /usr/bin/Rscript             \
+              /usr/bin/printf              /usr/bin/
 COPY --from=0 /usr/lib/libbz2.so.1         \
               /usr/lib/libgcc_s.so.1       \
               /usr/lib/libgfortran.so.5    \
@@ -48,6 +49,8 @@ COPY --from=0 /usr/lib/libbz2.so.1         \
               /usr/lib/liblzma.so.5        \
               /usr/lib/libpcre2-8.so.0     \
               /usr/lib/libquadmath.so.0    /usr/lib/
+COPY --from=0 /usr/lib/R/bin/R             \
+              /usr/lib/R/bin/Rscript       /usr/lib/R/bin/
 COPY --from=0 /usr/lib/R/bin/exec/R        /usr/lib/R/bin/exec/
 COPY --from=0 /usr/lib/R/etc/Renviron      \
               /usr/lib/R/etc/ldpaths       \
@@ -64,6 +67,6 @@ COPY --from=0 /usr/lib/R/library/methods   /usr/lib/R/library/methods
 COPY --from=0 /usr/lib/R/library/stats     /usr/lib/R/library/stats
 COPY --from=0 /usr/lib/R/library/utils     /usr/lib/R/library/utils
 
-ENTRYPOINT ["R"]
+ENTRYPOINT ["Rscript"]
 
 CMD ["--version"]
