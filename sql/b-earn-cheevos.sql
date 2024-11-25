@@ -23,20 +23,19 @@ BEGIN
     -- Setup --
     -----------
 
-    SELECT COUNT(DISTINCT solutions.hole) INTO holes
-      FROM solutions WHERE NOT failing AND solutions.user_id = user_id;
+    SELECT COUNT(DISTINCT stable_passing_solutions.hole) INTO holes
+      FROM stable_passing_solutions
+     WHERE stable_passing_solutions.user_id = user_id;
 
-    SELECT array_agg(DISTINCT solutions.hole) INTO holes_for_lang
-      FROM solutions
-     WHERE NOT failing
-       AND solutions.lang    = lang
-       AND solutions.user_id = user_id;
+    SELECT array_agg(DISTINCT stable_passing_solutions.hole) INTO holes_for_lang
+      FROM stable_passing_solutions
+     WHERE stable_passing_solutions.lang    = lang
+       AND stable_passing_solutions.user_id = user_id;
 
-    SELECT array_agg(DISTINCT solutions.lang) INTO langs_for_hole
-      FROM solutions
-     WHERE NOT failing
-       AND solutions.hole    = hole
-       AND solutions.user_id = user_id;
+    SELECT array_agg(DISTINCT stable_passing_solutions.lang) INTO langs_for_hole
+      FROM stable_passing_solutions
+     WHERE stable_passing_solutions.hole    = hole
+       AND stable_passing_solutions.user_id = user_id;
 
     ------------------------
     -- Hole/Lang Specific --
@@ -90,7 +89,7 @@ BEGIN
 
     -- 😈 Evil Scheme
     IF hole IN ('evil-numbers', 'evil-numbers-long') AND lang = 'scheme' THEN
-        earned = earn(earned, 'evil-scheme', user_id); END IF;
+        earned := earn(earned, 'evil-scheme', user_id); END IF;
 
     -- 🐟 Fish ’n’ Chips
     IF hole = 'poker' AND lang = 'fish' THEN
@@ -128,7 +127,7 @@ BEGIN
 
     -- 📴 Off-the-grid
     IF hole IN ('sudoku', 'sudoku-fill-in') AND lang = 'hexagony' THEN
-        earned = earn(earned, 'off-the-grid', user_id); END IF;
+        earned := earn(earned, 'off-the-grid', user_id); END IF;
 
     -- 🐍 Ouroboros
     IF hole = 'quine' AND lang = 'python' THEN
@@ -159,6 +158,10 @@ BEGIN
     -- 🗜 Under Pressure
     IF hole = 'pascals-triangle' AND lang = 'pascal' THEN
         earned := earn(earned, 'under-pressure', user_id); END IF;
+
+    -- ❌ X-Factor
+    IF hole = 'factorial-factorisation' AND lang = 'factor' THEN
+        earned := earn(earned, 'x-factor', user_id); END IF;
 
     -------------------
     -- Miscellaneous --
