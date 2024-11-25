@@ -12,6 +12,7 @@ RUN ./configure                      \
     --disable-byte-compiled-packages \
     --disable-java                   \
     --enable-R-shlib                 \
+    --enable-fast-install            \
     --enable-lto                     \
     --prefix=/usr                    \
     --without-readline               \
@@ -19,8 +20,9 @@ RUN ./configure                      \
     --without-x                      \
  && make -j`nproc` && make install
 
-RUN strip /usr/lib/R/lib/libR.so \
-          /usr/lib/R/lib/libRblas.so
+RUN strip /usr/lib/R/lib/libR.so     \
+          /usr/lib/R/lib/libRblas.so \
+          /usr/lib/R/lib/libRlapack.so
 
 WORKDIR /busybox
 
@@ -39,16 +41,20 @@ COPY --from=0 /lib/ld-musl-x86_64.so.1     \
 COPY --from=0 /busybox/_install/usr/bin    /usr/bin
 COPY --from=0 /usr/bin/R /usr/bin/printf   /usr/bin/
 COPY --from=0 /usr/lib/libbz2.so.1         \
+              /usr/lib/libgcc_s.so.1       \
+              /usr/lib/libgfortran.so.5    \
               /usr/lib/libgomp.so.1        \
               /usr/lib/libintl.so.8        \
               /usr/lib/liblzma.so.5        \
-              /usr/lib/libpcre2-8.so.0     /usr/lib/
+              /usr/lib/libpcre2-8.so.0     \
+              /usr/lib/libquadmath.so.0    /usr/lib/
 COPY --from=0 /usr/lib/R/bin/exec/R        /usr/lib/R/bin/exec/
 COPY --from=0 /usr/lib/R/etc/Renviron      \
               /usr/lib/R/etc/ldpaths       \
               /usr/lib/R/etc/repositories  /usr/lib/R/etc/
 COPY --from=0 /usr/lib/R/lib/libR.so       \
-              /usr/lib/R/lib/libRblas.so   /usr/lib/R/lib/
+              /usr/lib/R/lib/libRblas.so   \
+              /usr/lib/R/lib/libRlapack.so /usr/lib/R/lib/
 COPY --from=0 /usr/lib/R/library/base      /usr/lib/R/library/base
 COPY --from=0 /usr/lib/R/library/compiler  /usr/lib/R/library/compiler
 COPY --from=0 /usr/lib/R/library/datasets  /usr/lib/R/library/datasets
@@ -57,20 +63,6 @@ COPY --from=0 /usr/lib/R/library/graphics  /usr/lib/R/library/graphics
 COPY --from=0 /usr/lib/R/library/methods   /usr/lib/R/library/methods
 COPY --from=0 /usr/lib/R/library/stats     /usr/lib/R/library/stats
 COPY --from=0 /usr/lib/R/library/utils     /usr/lib/R/library/utils
-
-# Super weird thing happening here. There's just one recurring warning
-# claiming the `stats` package cannot be found. Yet, it is able to find
-# all others. When I uncomment line 73, the warning disappears, so then
-# I must be missing a few assets from that particular directory tree.
-# I've copied the entire tree, file per file, to lang-base, and it STILL
-# returns the warning! I did check if some contents were hidden, but un-
-# fortunately. Simply uncommenting that line isn't really the path I want
-# to take in order to keep the container to a minsize. Also, it's odd
-# that the versioning of the busybox configuration file and installation
-# files are mismatched. Earlier, I was hoping it was related to busybox,
-# but nah. So yeah, there's something in `/usr/lib` that finishes this.
-
-#COPY --from=0 /usr/lib /usr/lib
 
 ENTRYPOINT ["R"]
 
