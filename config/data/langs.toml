@@ -1323,10 +1323,10 @@ for arg in sys.argv[1:]:
 '''
 
 [R]
-args       = [ '/usr/bin/Rscript', '-' ]
-args-quine = [ '/usr/bin/Rscript', '-e', "source('stdin')" ]
-size       = '81.9 MiB'
-version    = '4.4.0'
+args       = [ '/usr/bin/R', '-s', '-e', '$code', '--args' ]
+args-quine = [ '/usr/bin/R', '-s', '-e', 'source("stdin")' ]
+size       = '23.8 MiB'
+version    = '4.4.2'
 website    = 'https://www.r-project.org'
 example    = '''
 # Printing
