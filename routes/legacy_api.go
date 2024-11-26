@@ -355,7 +355,7 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 	if hole == nil || lang == nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
-	} else if hole.Experiment != 0 || lang.Experiment != 0 {
+	} else if lang.Experiment != 0 {
 		w.Write([]byte("[]"))
 		return
 	}
