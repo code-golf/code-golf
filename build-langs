@@ -73,10 +73,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
             when 'C++'        { $ver = "Clang $digits" }
             when 'Clojure'    { $ver = "Babashka $digits" }
             when 'COBOL'      { $ver = "GnuCOBOL $digits" }
-            when 'D'          {
-                $ver ~~ m/ v (\S+) /;
-                $ver = "D $0 on LDC $digits";
-            }
+            when 'D'          { $ver = "DMD $digits" }
             when 'Haskell'    { $ver = "GHC $digits" }
             when 'Java'       { $ver = "OpenJDK $digits" }
             when 'JavaScript' { $ver = "V8 $digits" }
