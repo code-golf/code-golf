@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
     int dargc = argc + 3;
     char** dargv = malloc(dargc * sizeof(char*));
     dargv[0] = (char*) dmd;
-    dargv[1] = "-color";
+    dargv[1] = "-color=on";
     dargv[2] = "-run";
     dargv[3] = "code.d";
     memcpy(&dargv[4], &argv[2], (argc - 2) * sizeof(char*));
