@@ -1077,8 +1077,8 @@ example = '''
 [Kotlin]
 args    = [ '/usr/bin/kotlin', '-Xuse-fast-jar-file-system', '-e', '$code' ]
 env     = [ 'JAVA_HOME=/opt/java' ]
-size    = '223 MiB'
-version = '2.0.21'
+size    = '224 MiB'
+version = '2.1.0'
 website = 'https://kotlinlang.org'
 example = '''
 // Printing
