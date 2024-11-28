@@ -8,8 +8,9 @@ use TOML::Thumb;
 unit sub MAIN(Bool :$all, *@langs);
 
 constant %paths = (
+    '05AB1E'       => 'github.com/Adriandmen/05AB1E',
     '><>'          => 'github.com/primo-ppcg/fish-jit',
-    'ALGOL 68'     => 'en.wikipedia.org/wiki/ALGOL_68',
+    'ALGOL 68'     => 'jmvdveer.home.xs4all.nl/en.download.algol-68-genie-current.html',
     'Arturo'       => 'github.com/arturo-lang/arturo/releases/latest',
     'Assembly'     => 'registry.npmjs.org/@defasm/core/latest',
     'Bash'         => 'en.wikipedia.org/wiki/Bash_(Unix_shell)',
@@ -22,6 +23,7 @@ constant %paths = (
     'C#'           => 'en.wikipedia.org/wiki/C_Sharp_(programming_language)',
     'C++'          => 'en.wikipedia.org/wiki/Clang',
     'Civet'        => 'registry.npmjs.org/@danielx/civet/latest',
+    'CJam'         => 'sourceforge.net/projects/cjam/files',
     'Clojure'      => 'github.com/babashka/babashka/releases/latest',
     'COBOL'        => 'en.wikipedia.org/wiki/GnuCOBOL',
     'Coconut'      => 'pypi.org/pypi/coconut/json',
@@ -41,7 +43,7 @@ constant %paths = (
     'GolfScript'   => 'github.com/lynn/golfscript/tree/code-golf',
     'Groovy'       => 'en.wikipedia.org/wiki/Apache_Groovy',
     'Hare'         => 'git.sr.ht/~sircmpwn/hare/refs',
-    'Haskell'      => 'en.wikipedia.org/wiki/Glasgow_Haskell_Compiler',
+    'Haskell'      => 'pkgs.alpinelinux.org/package/edge/community/x86_64/ghc',
     'Haxe'         => 'github.com/HaxeFoundation/haxe/releases/latest',
     'Hexagony'     => 'github.com/SirBogman/Hexagony',
     'Hush'         => 'crates.io/api/v1/crates/hush',
@@ -64,7 +66,7 @@ constant %paths = (
     'PHP'          => 'endoflife.date/api/php.json',
     'Pony'         => 'github.com/ponylang/ponyc/releases/latest',
     'PowerShell'   => 'endoflife.date/api/powershell.json',
-    'Prolog'       => 'en.wikipedia.org/wiki/SWI-Prolog',
+    'Prolog'       => 'swi-prolog.discourse.group/c/releases',
     'Python'       => 'endoflife.date/api/python.json',
     'R'            => 'en.wikipedia.org/wiki/R_(programming_language)',
     'Racket'       => 'github.com/racket/racket/releases/latest',
@@ -74,9 +76,11 @@ constant %paths = (
     'Rockstar 2'   => 'github.com/RockstarLang/rockstar/releases/latest',
     'Ruby'         => 'endoflife.date/api/ruby.json',
     'Rust'         => 'en.wikipedia.org/wiki/Rust_(programming_language)',
+    'Scala'        => 'github.com/scala/scala/releases/latest',
     'Scheme'       => 'en.wikipedia.org/wiki/Chez_Scheme',
     'sed'          => 'git.savannah.gnu.org/cgit/sed.git/refs',
     'SQL'          => 'en.wikipedia.org/wiki/SQLite',
+    'Squirrel'     => 'github.com/albertodemichelis/squirrel/releases/latest',
     'Swift'        => 'github.com/swiftlang/swift/releases/latest',
     'Tcl'          => 'en.wikipedia.org/wiki/Tcl',
     'TeX'          => 'en.wikipedia.org/wiki/TeX',
@@ -98,16 +102,20 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         state $ua  = HTTP::Tiny.new :throw-exceptions;
         my    $res = $ua.get("https://$_")<content>.decode;
 
+        when / 'alpinelinux' / { $res ~~ / 'release' .+? <(<ver>)> / }
         when / 'aplwiki'     / { $res ~~ / ' release' .+? <(<ver>)> / }
         when / 'codeberg'    / { $res ~~ / '"shortsha">' <(<ver>)> / }
         when / 'crates.io'   / { $res.&from-json<crate><max_stable_version> }
         when / 'endoflife'   / { $res.&from-json[0]<latest> }
         when / 'fennel-lang' / { $res ~~ / 'downloads/fennel-' <(<ver>)> / }
         when / 'git.sr.ht'   / { $res ~~ / 'stable release' .+? <(<ver>)> / }
+        when / 'jmvdveer'    / { $res ~~ / 'algol68g-' <(<ver>)> / }
         when / 'npmjs.org'   / { $res.&from-json[0]<version> }
         when / 'pypi.org'    / { $res.&from-json<info><version> }
         when / 'regina-rexx' / { $res ~~ / '<b>Current</b> ' <(<ver>)> / }
         when / 'savannah'    / { $res ~~ / 'snapshot/sed-' <(<ver>)> / }
+        when / 'sourceforge' / { $res ~~ / 'Latest' .+? <(<ver>)> / }
+        when / 'swi-prolog'  / { $res ~~ / 'stable' .+? <(<ver>)> / }
         when / 'github.com'  / {
             .ends-with('/releases/latest')
                 ?? $res ~~ / [ $name || 'dev' || 'elease' || 'Version' ] <[\ -]> v? <(<ver>)> /

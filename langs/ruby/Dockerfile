@@ -3,7 +3,7 @@ FROM alpine:3.20 AS builder
 RUN apk add --no-cache build-base clang curl openssl-dev yaml-dev
 
 # Also rebuild GolfScript.
-RUN curl https://cache.ruby-lang.org/pub/ruby/3.3/ruby-3.3.5.tar.xz | tar xJ
+RUN curl https://cache.ruby-lang.org/pub/ruby/3.3/ruby-3.3.6.tar.xz | tar xJ
 
 # Clang produces the same size binary as using LTO with GCC, but GCC+LTO leads
 # to an issue where the stack size available for recursion is significantly
@@ -51,7 +51,7 @@ RUN cd /usr/lib/ruby/3.3.0 && rm -rf \
                       ripper.rb      \
     x86_64-linux-musl/ripper.so
 
-FROM codegolf/lang-base-no-proc
+FROM codegolf/lang-base
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
 COPY --from=0 /usr/bin/ruby            /usr/bin/
@@ -59,4 +59,4 @@ COPY --from=0 /usr/lib/ruby            /usr/lib/ruby
 
 ENTRYPOINT ["ruby"]
 
-CMD ["-e", "puts RUBY_VERSION"]
+CMD ["--version"]

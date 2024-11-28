@@ -79,10 +79,11 @@ mathjax-fonts:
 
 lint:
 	@docker run --rm -v $(CURDIR):/app -w /app \
-	    golangci/golangci-lint:v1.61.0 golangci-lint run
+	    golangci/golangci-lint:v1.62.2 golangci-lint run
 
 	@node_modules/.bin/eslint js
 
+# Calls "make logs" at the end to make sure we didn't break the site.
 live:
 	@docker buildx build --pull --push \
 	    --file docker/live.Dockerfile --tag codegolf/code-golf .
@@ -104,6 +105,8 @@ live:
 	        --volume     /var/run/postgresql:/var/run/postgresql \
 	    codegolf/code-golf &&                                    \
 	    docker system prune -f"
+
+	@make logs
 
 logs:
 	@ssh root@code.golf docker logs --tail 5 -f code-golf

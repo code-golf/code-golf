@@ -1,6 +1,8 @@
 {{ template "header" . }}
 {{ template "golfer" . }}
 
+{{ $show := setting .Golfer "golfer/cheevos" "show-cheevos" }}
+
 <main>
 {{ range $category, $cheevos := .Cheevos }}
     <details open>
@@ -8,6 +10,11 @@
         {{ $i := 0 }}
         {{ range $cheevos }}
             {{ $progress := index $.Data .ID }}
+
+            {{ if or (and      $progress.Earned  (eq $show "unearned"))
+                     (and (not $progress.Earned) (eq $show "earned")) }}
+                {{ continue }}
+            {{ end }}
 
             <div class="cheevo {{ if $progress.Earned }} earned {{ end }}">
                 <div>{{ .Emoji }}</div>
@@ -36,9 +43,13 @@
             </div>
         {{ end }}
         </div>
-        <summary>[ {{ $i }} / {{ len $cheevos }} ] {{ $category }}</summary>
+        <summary>
+            {{ if eq $show "all" }}[ {{ $i }} / {{ len $cheevos }} ]{{ end }}
+            {{ $category }}
+        </summary>
     </details>
 {{ end }}
 </main>
 
+{{ template "settings-dialog" . }}
 {{ template "footer" }}

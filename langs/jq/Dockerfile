@@ -12,7 +12,7 @@ RUN ./configure              \
  && make LDFLAGS=-all-static \
  && strip jq
 
-FROM codegolf/lang-base-no-proc
+FROM codegolf/lang-base
 
 COPY --from=0 ./jq /usr/bin/
 

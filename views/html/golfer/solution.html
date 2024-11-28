@@ -12,7 +12,7 @@
 
 {{ if .Data.Failing }}
     <p>Currently failing.
-{{ else }}
+{{ else if not .Data.Hole.Experiment }}
     <p>
         <a href="/rankings/holes/{{ .Data.Hole.ID }}/{{ .Data.Lang.ID }}/{{ .Data.Scoring -}}
             ?page={{ page .Data.Row }}">

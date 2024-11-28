@@ -2,7 +2,7 @@ FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache bash curl icu-data npm
 
-RUN curl -L https://github.com/DanielXMoore/Civet/archive/refs/tags/v0.8.11.tar.gz \
+RUN curl -L https://github.com/DanielXMoore/Civet/archive/refs/tags/v0.8.16.tar.gz \
   | tar xz --strip-components 1
 
 RUN npm install \
