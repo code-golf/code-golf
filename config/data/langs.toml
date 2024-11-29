@@ -615,7 +615,8 @@ for arg <- System.argv, do: IO.puts arg
 
 ['F#']
 args    = [ '/usr/bin/f-sharp', '-' ]
-size    = '152 MiB'
+env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
+size    = '108 MiB'
 version = 'F# 9.0 on .NET 9.0.0'
 website = 'https://fsharp.org'
 example = '''
