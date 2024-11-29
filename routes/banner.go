@@ -28,7 +28,7 @@ func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 			t = t.In(golfer.Location())
 		}
 
-		in := "in " + pretty.Time(t)
+		in := "in approximately " + pretty.Time(t)
 		if strings.Contains(string(in), "ago") {
 			in = "momentarily"
 		}
