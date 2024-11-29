@@ -60,11 +60,11 @@ func Ordinal(i int) string {
 //	  2 mins ago
 //	         ...
 //	 59 mins ago
-//	 an hour ago
+//	119 mins ago
 //	 2 hours ago
 //	         ...
 //	23 hours ago
-//	   a day ago
+//	47 hours ago
 //	  2 days ago
 //	         ...
 //	 28 days ago
@@ -91,14 +91,10 @@ func Time(t time.Time) template.HTML {
 		switch {
 		case diff < 2*time.Minute:
 			sb.WriteString("a min")
-		case diff < time.Hour:
-			fmt.Fprintf(&sb, "%d mins", diff/time.Minute)
 		case diff < 2*time.Hour:
-			sb.WriteString("an hour")
-		case diff < day:
-			fmt.Fprintf(&sb, "%d hours", diff/time.Hour)
+			fmt.Fprintf(&sb, "%d mins", diff/time.Minute)
 		case diff < 2*day:
-			sb.WriteString("a day")
+			fmt.Fprintf(&sb, "%d hours", diff/time.Hour)
 		default:
 			fmt.Fprintf(&sb, "%d days", diff/day)
 		}
