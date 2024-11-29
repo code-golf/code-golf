@@ -23,7 +23,12 @@ type banner struct {
 func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 	// Upcoming hole.
 	if hole := nextHole; hole != nil {
-		in := "in " + pretty.Time(hole.Released.AsTime(time.UTC))
+		t := hole.Released.AsTime(time.UTC)
+		if golfer != nil {
+			t = t.In(golfer.Location())
+		}
+
+		in := "in " + pretty.Time(t)
 		if strings.Contains(string(in), "ago") {
 			in = "momentarily"
 		}
