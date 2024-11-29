@@ -19,7 +19,6 @@ type banner struct {
 	HideKey, Type string
 }
 
-// TODO Allow a golfer to hide individual banners #709.
 func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 	// Upcoming hole.
 	if hole := nextHole; hole != nil {
