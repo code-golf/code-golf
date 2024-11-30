@@ -60,6 +60,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
             # Dotted decimal or hyphenated date.
             my $digits = $ver ~~ / \d+ ( <[.-]> \d+ )+ /;
 
+            when 'ALGOL 68'   { $ver = "Algol 68 Genie $digits" }
             when 'AWK'
                | 'Forth'
                | 'Fortran'
