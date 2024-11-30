@@ -1,7 +1,7 @@
 FROM debian:bookworm-slim AS builder
 
 RUN apt-get update                   \
- && DEBIAN_FRONTEND="noninteractive" \
+ && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl gcc make
 
 ENV VER=3.5.10
