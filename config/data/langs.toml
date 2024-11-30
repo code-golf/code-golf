@@ -814,9 +814,9 @@ for (arg in args)
 
 [Hare]
 args       = [ '/usr/bin/harewrapper', '-' ]
-env        = [ 'PATH=/usr/local/bin:/usr/bin:/bin' ]
+env        = [ 'PATH=/usr/local/bin:/usr/bin' ]
 experiment = 1323
-size       = '13.5 MiB'
+size       = '11.1 MiB'
 version    = '0.24.2'
 website    = 'https://harelang.org'
 example    = '''
