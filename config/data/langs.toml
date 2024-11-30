@@ -41,7 +41,7 @@ x is a no-op.
 '''
 
 ['ALGOL 68']
-args       = [ '/usr/bin/a68g', '--exec', '$code', '--' ]
+args       = [ '/usr/bin/algol-68', '--exec', '$code', '--' ]
 experiment = 856
 size       = '4.66 MiB'
 version    = '3.5.10'

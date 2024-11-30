@@ -20,8 +20,8 @@ COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6        \
               /lib/x86_64-linux-gnu/libm.so.6        \
               /lib/x86_64-linux-gnu/libquadmath.so.0 /lib/
 COPY --from=0 /lib64/ld-linux-x86-64.so.2            /lib64/
-COPY --from=0 /usr/bin/a68g                          /usr/bin/
+COPY --from=0 /usr/bin/a68g                          /usr/bin/algol-68
 
-ENTRYPOINT ["a68g"]
+ENTRYPOINT ["algol-68"]
 
 CMD ["--version"]
