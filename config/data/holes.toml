@@ -337,7 +337,6 @@ F: / ? O _ o DEL
 
 [Billiards]
 category = 'Art'
-experiment = 456
 released = 2024-12-01
 synopsis = 'Draw a path of a billiard ball.'
 preamble = '''
