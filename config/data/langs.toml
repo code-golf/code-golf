@@ -1200,11 +1200,10 @@ Sys.argv
 '''
 
 [Odin]
-args       = [ '/usr/bin/odinwrapper', '-' ]
-env        = [ 'PATH=/usr/local/bin:/usr/bin:/bin' ]
+args       = [ '/usr/bin/odinwrapper', '-', '--' ]
 experiment = 766
-size       = '258 MiB'
-version    = '2024-11'
+size       = '257 MiB'
+version    = '2024-12'
 website    = 'https://odin-lang.org'
 example    = '''
 package main
