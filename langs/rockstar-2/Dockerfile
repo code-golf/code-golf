@@ -6,7 +6,8 @@ RUN curl -L https://github.com/RockstarLang/rockstar/archive/refs/tags/v2.0.0.ta
   | tar xz --strip-components 1
 
 RUN find Starship -name '*.csproj' -exec sed -Ei 's/\bnet\d+\b/net9/' {} + \
- && dotnet publish Starship/Rockstar -c Release -o rockstar
+ && dotnet publish Starship/Rockstar -c Release -o rockstar \
+    -p:InvariantGlobalization=true
 
 FROM codegolf/lang-base
 
