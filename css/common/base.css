@@ -184,7 +184,7 @@ dialog {
     max-width: calc(100vw - 2rem);
     padding: 0;
     position: fixed;
-    transform: translate(-50%, -50%);
+    translate: -50% -50%;
     width: 30rem;
 }
 
