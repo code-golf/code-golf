@@ -5,7 +5,8 @@ RUN apk add --no-cache build-base zlib-dev
 RUN curl -L https://github.com/RockstarLang/rockstar/archive/refs/tags/v2.0.0.tar.gz \
   | tar xz --strip-components 1
 
-RUN dotnet publish Starship/Rockstar -c Release -o rockstar
+RUN find Starship -name '*.csproj' -exec sed -Ei 's/\bnet\d+\b/net9/' {} + \
+ && dotnet publish Starship/Rockstar -c Release -o rockstar
 
 FROM codegolf/lang-base
 
