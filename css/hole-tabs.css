@@ -20,6 +20,8 @@ body {
     content: "(Empty)";
 }
 
+.rotate-icon svg { transform: rotate(90deg) }
+
 section {
     /* undo display: grid */
     display: block;

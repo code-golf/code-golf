@@ -714,10 +714,6 @@ body > .tabs a {
     }
 }
 
-.rotate-icon svg {
-    transform: rotate(90deg);
-}
-
 @keyframes fade {
     0%   { margin-top: -4rem; opacity: 0; visibility: collapse }
     100% { margin-top:  0;    opacity: 1; visibility: visible  }
