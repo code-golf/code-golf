@@ -41,10 +41,10 @@ x is a no-op.
 '''
 
 ['ALGOL 68']
-args       = [ '/usr/bin/a68g', '--exec', '$code', '--' ]
+args       = [ '/usr/bin/algol-68', '--exec', '$code', '--' ]
 experiment = 856
 size       = '4.66 MiB'
-version    = '3.5.9'
+version    = 'Algol 68 Genie 3.5.10'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -328,7 +328,8 @@ int main(int argc, char* argv[]) {
 
 ['C#']
 args    = [ '/usr/bin/c-sharp', '-' ]
-size    = '157 MiB'
+env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
+size    = '107 MiB'
 version = 'C# 12.0 on .NET 9.0.0'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
@@ -614,7 +615,8 @@ for arg <- System.argv, do: IO.puts arg
 
 ['F#']
 args    = [ '/usr/bin/f-sharp', '-' ]
-size    = '152 MiB'
+env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
+size    = '108 MiB'
 version = 'F# 9.0 on .NET 9.0.0'
 website = 'https://fsharp.org'
 example = '''
@@ -810,6 +812,29 @@ for (i in 0..9)
 // Accessing arguments
 for (arg in args)
     println arg
+'''
+
+[Harbour]
+args       = [ '/usr/bin/harbourwrapper', '-' ]
+experiment = 1614
+size       = '13.0 MiB'
+version    = '4ae5151'
+website    = 'https://harbour.github.io'
+example    = '''
+LOCAL i
+
+// Printing
+?? "Hello, World!"
+
+// Looping
+FOR i := 0 TO 9
+    ? hb_ntos( i )
+NEXT
+
+// Accessing arguments
+FOR i := 1 TO PCount()
+    ? hb_PValue( i )
+NEXT
 '''
 
 [Hare]
@@ -1264,7 +1289,8 @@ for ($i = 1; $i < $argc; $i++)
 [PowerShell]
 args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
-size       = '185 MiB'
+env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
+size       = '135 MiB'
 version    = 'PowerShell 7.4.6 on .NET 9.0.0'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
@@ -1442,9 +1468,8 @@ Shout arg
 
 ['Rockstar 2']
 args       = [ '/usr/bin/rockstarwrapper', '-' ]
-env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 experiment = 1336
-size       = '6.01 MiB'
+size       = '5.79 MiB'
 version    = '2.0.0'
 website    = 'https://codewithrockstar.com'
 example    = '''
