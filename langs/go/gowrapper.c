@@ -85,7 +85,7 @@ void copy_folder(const char* src_dir, const char* dst_dir) {
     struct stat st;
 
     if (stat(dst_dir, &st))
-        if (mkdir(dst_dir, 755)) {
+        if (mkdir(dst_dir, 0755)) {
             if (closedir(dp))
                 ERR_AND_EXIT("closedir");
 
