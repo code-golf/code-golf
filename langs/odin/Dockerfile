@@ -1,6 +1,6 @@
 FROM alpine:3.20 AS builder
 
-RUN apk add --no-cache clang curl llvm-dev make
+RUN apk add --no-cache clang curl dash llvm-dev make
 
 ENV VER=2024-11
 
@@ -24,7 +24,7 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/odinwrapper -s -static /odinwrapper.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/sh                     /bin/
+COPY --from=0 /usr/bin/dash               /bin/sh
 COPY --from=0 /lib/ld-musl-x86_64.so.1    \
               /lib/libz.so.1              /lib/
 COPY --from=0 /usr/bin/clang              \

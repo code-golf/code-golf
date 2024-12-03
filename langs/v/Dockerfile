@@ -1,6 +1,6 @@
 FROM alpine:3.20 AS builder
 
-RUN apk add --no-cache build-base gc-dev git
+RUN apk add --no-cache build-base dash gc-dev git
 
 ENV VER=0.4.8
 
@@ -18,7 +18,7 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/V -s -static /v.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/sh                   /bin/
+COPY --from=0 /usr/bin/dash             /bin/sh
 COPY --from=0 /lib/ld-musl-x86_64.so.1  /lib/
 COPY --from=0 /usr/bin/V                /usr/bin/
 COPY --from=0 /usr/include              /usr/include

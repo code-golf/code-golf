@@ -1,6 +1,6 @@
 FROM alpine:3.20 AS builder
 
-RUN apk add --no-cache build-base git ncurses-dev
+RUN apk add --no-cache build-base dash git ncurses-dev
 
 RUN git clone --branch v9.1.0447 --depth 1 https://github.com/vim/vim.git
 
@@ -25,7 +25,7 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/viml -s -static /viml.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/sh                   /bin/
+COPY --from=0 /usr/bin/dash             /bin/sh
 COPY --from=0 /lib/ld-musl-x86_64.so.1  /lib/
 COPY --from=0 /usr/bin/vim              \
               /usr/bin/viml             /usr/bin/
