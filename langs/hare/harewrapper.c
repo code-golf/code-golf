@@ -9,7 +9,7 @@ const char* hare = "/usr/local/bin/hare", *code = "code.ha";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version"))
-        return 0;
+        exit(EXIT_SUCCESS);
 
     if (chdir("/tmp"))
         ERR_AND_EXIT("chdir");
