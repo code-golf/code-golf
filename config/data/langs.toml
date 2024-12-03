@@ -507,7 +507,7 @@ for arg in process.argv[2..]
 [Crystal]
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
-size    = '270 MiB'
+size    = '269 MiB'
 version = '1.14.0'
 website = 'https://crystal-lang.org'
 example = '''
