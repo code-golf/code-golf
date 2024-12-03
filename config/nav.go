@@ -8,7 +8,10 @@ import (
 	"strings"
 )
 
-type NavLink struct{ Emoji, Name, Slug, Path string }
+type NavLink struct {
+	Emoji, Name, Slug, Path string
+	Heading                 bool
+}
 
 type LinkGroup struct {
 	Links      []*NavLink
@@ -56,7 +59,7 @@ func init() {
 			Groups: []*LinkGroup{
 				group("Scoring", "scoring", "Bytes", "Chars"),
 				groupLangs(),
-				groupHoles(),
+				groupHoles(true),
 			},
 		},
 
@@ -73,7 +76,7 @@ func init() {
 			Groups: []*LinkGroup{
 				group("Scoring", "scoring", "All", "Bytes", "Chars"),
 				groupLangs(),
-				groupHoles(),
+				groupHoles(false),
 			},
 		},
 
@@ -101,7 +104,7 @@ func init() {
 			Groups: []*LinkGroup{
 				group("Scoring", "scoring", "Bytes", "Chars"),
 				groupLangs(),
-				groupHoles(),
+				groupHoles(false),
 			},
 		},
 
@@ -200,7 +203,7 @@ func groupsCheevos() (groups []*LinkGroup) {
 	return
 }
 
-func groupHoles() *LinkGroup {
+func groupHoles(includeExperimental bool) *LinkGroup {
 	group := group("Hole", "hole", "All")
 
 	for _, hole := range HoleList {
@@ -208,6 +211,20 @@ func groupHoles() *LinkGroup {
 			Name: hole.Name,
 			Slug: hole.ID,
 		})
+	}
+
+	if includeExperimental {
+		group.Links = append(group.Links, &NavLink{
+			Heading: true,
+			Name:    "Experimental Hole",
+		})
+
+		for _, hole := range ExpHoleList {
+			group.Links = append(group.Links, &NavLink{
+				Name: hole.Name,
+				Slug: hole.ID,
+			})
+		}
 	}
 
 	return group
