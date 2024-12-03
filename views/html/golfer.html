@@ -133,13 +133,13 @@
             <div>
                 <h1>Holes Authored</h1>
                 <ul>
-                {{ range . }}{{ with index $.Holes . }}
+                {{ range . }}
                     <li>
                         <a href="/{{ .ID }}">
                             {{ svg .CategoryIcon }}
                             {{ .Name }}
                         </a>
-                {{ end }}{{ end }}
+                {{ end }}
                 </ul>
             </div>
         </dialog>
