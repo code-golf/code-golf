@@ -152,6 +152,7 @@ export const extensions : { [key: string]: any } = {
     'go':            go,
     'golfscript':    golfScript(),
     'groovy':        StreamLanguage.define(groovy),
+    // TODO harbour
     // TODO hare
     'haskell':       StreamLanguage.define(haskell),
     'haxe':          StreamLanguage.define(haxe),
