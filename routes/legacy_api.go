@@ -140,14 +140,20 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			if _, err := db.ExecContext(
 				r.Context(),
 				`SELECT save_solution(
-				            bytes   := octet_length($1),
-				            chars   := char_length($1),
+				            bytes   := CASE WHEN $3 = 'assembly'::lang
+				                            THEN $5
+				                            ELSE octet_length($1)
+				                            END,
+				            chars   := CASE WHEN $3 = 'assembly'::lang
+				                            THEN NULL
+				                            ELSE char_length($1)
+				                            END,
 				            code    := $1,
 				            hole    := $2,
 				            lang    := $3,
 				            user_id := $4
 				        )`,
-				in.Code, in.Hole, in.Lang, golfer.ID,
+				in.Code, in.Hole, in.Lang, golfer.ID, out.Runs[0].ASMBytes,
 			); err != nil {
 				panic(err)
 			}
@@ -355,7 +361,7 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 	if hole == nil || lang == nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
-	} else if hole.Experiment != 0 || lang.Experiment != 0 {
+	} else if lang.Experiment != 0 {
 		w.Write([]byte("[]"))
 		return
 	}

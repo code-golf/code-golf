@@ -1,15 +1,11 @@
-ARG VER=4.0.23
+ARG VER=4.0.24
 
 FROM eclipse-temurin:23.0.1_11-jre-alpine AS builder
 
 ARG VER
 
-RUN apk add --no-cache curl
-
-RUN curl -Lo groovy.zip https://groovy.jfrog.io/artifactory/dist-release-local/groovy-zips/apache-groovy-binary-$VER.zip
-
-RUN unzip groovy.zip \
- && cp -r /groovy*/* /usr/
+RUN wget -cO groovy.zip https://groovy.jfrog.io/artifactory/dist-release-local/groovy-zips/apache-groovy-binary-$VER.zip \
+ && unzip -j groovy.zip
 
 FROM codegolf/lang-base
 
@@ -35,16 +31,16 @@ COPY --from=0 /opt/java/openjdk/lib/jvm.cfg                 \
               /opt/java/openjdk/lib/modules                 \
               /opt/java/openjdk/lib/tzdb.dat                /opt/java/lib/
 COPY --from=0 /opt/java/openjdk/lib/server/libjvm.so        /opt/java/lib/server/
-COPY --from=0 /usr/bin/awk                                  \
+COPY --from=0 /groovy                                       \
+              /startGroovy                                  \
+              /usr/bin/awk                                  \
               /usr/bin/basename                             \
               /usr/bin/cut                                  \
               /usr/bin/dirname                              \
               /usr/bin/env                                  \
-              /usr/bin/expr                                 \
-              /usr/bin/groovy                               \
-              /usr/bin/startGroovy                          /usr/bin/
-COPY --from=0 /usr/conf/groovy-starter.conf                 /usr/conf/
-COPY --from=0 /usr/lib/groovy-$VER.jar                      /usr/lib/
+              /usr/bin/expr                                 /usr/bin/
+COPY --from=0 /groovy-starter.conf                          /usr/conf/
+COPY --from=0 /groovy-$VER.jar                              /usr/lib/
 
 ENV JAVA_HOME=/opt/java
 

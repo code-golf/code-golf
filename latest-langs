@@ -42,8 +42,9 @@ constant %paths = (
     'Go'           => 'endoflife.date/api/go.json',
     'GolfScript'   => 'github.com/lynn/golfscript/tree/code-golf',
     'Groovy'       => 'en.wikipedia.org/wiki/Apache_Groovy',
+    'Harbour'      => 'github.com/harbour/core',
     'Hare'         => 'git.sr.ht/~sircmpwn/hare/refs',
-    'Haskell'      => 'en.wikipedia.org/wiki/Glasgow_Haskell_Compiler',
+    'Haskell'      => 'pkgs.alpinelinux.org/package/edge/community/x86_64/ghc',
     'Haxe'         => 'github.com/HaxeFoundation/haxe/releases/latest',
     'Hexagony'     => 'github.com/SirBogman/Hexagony',
     'Hush'         => 'crates.io/api/v1/crates/hush',
@@ -101,6 +102,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         state $ua  = HTTP::Tiny.new :throw-exceptions;
         my    $res = $ua.get("https://$_")<content>.decode;
 
+        when / 'alpinelinux' / { $res ~~ / 'Version' .+? <(<ver>)> / }
         when / 'aplwiki'     / { $res ~~ / ' release' .+? <(<ver>)> / }
         when / 'codeberg'    / { $res ~~ / '"shortsha">' <(<ver>)> / }
         when / 'crates.io'   / { $res.&from-json<crate><max_stable_version> }

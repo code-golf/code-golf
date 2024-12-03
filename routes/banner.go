@@ -19,11 +19,15 @@ type banner struct {
 	HideKey, Type string
 }
 
-// TODO Allow a golfer to hide individual banners #709.
 func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 	// Upcoming hole.
 	if hole := nextHole; hole != nil {
-		in := "in " + pretty.Time(hole.Released.AsTime(time.UTC))
+		t := hole.Released.AsTime(time.UTC)
+		if golfer != nil {
+			t = t.In(golfer.Location())
+		}
+
+		in := "in approximately " + pretty.Time(t)
 		if strings.Contains(string(in), "ago") {
 			in = "momentarily"
 		}
