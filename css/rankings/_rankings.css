@@ -19,8 +19,6 @@ h1 nav {
 
 h1 span { flex: 1 }
 
-table { flex: 1 }
-
 #pagination { display: flex }
 
 #pagination > :first-child { text-align: right }
