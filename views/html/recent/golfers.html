@@ -35,7 +35,7 @@
                         </span>
                     {{ end }}
                     </div>
-                <td class=right>{{ time .Date }}
+                <td class=right>{{ time (.Date.In $.Location) }}
         {{ end }}
     </table>
 </main>
