@@ -51,7 +51,7 @@ COPY --from=0 /osabie/osabie.py        /osabie/
 COPY --from=0 /osabie/behaviour        /osabie/behaviour
 COPY --from=0 /osabie/lib              /osabie/lib
 COPY --from=0 /usr/bin/05ab1e          /usr/bin/
-COPY --from=0 /usr/bin/python3.13      /usr/bin/osabie
+COPY --from=0 /usr/bin/python3.13      /usr/bin/python
 COPY --from=0 /usr/lib/python3.13      /usr/lib/python3.13
 
 ENTRYPOINT ["05ab1e"]

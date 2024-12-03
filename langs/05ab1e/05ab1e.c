@@ -7,7 +7,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* osabie = "/usr/bin/osabie", *code = "code.abe", *input = "argv.txt";
+const char* osabie = "/usr/bin/python", *code = "code.abe", *input = "argv.txt";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version"))

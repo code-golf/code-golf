@@ -5,7 +5,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* java = "/opt/java/bin/java", *code = "code.cjam";
+const char* cjam = "/opt/java/bin/java", *code = "code.cjam";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version"))
@@ -31,13 +31,13 @@ int main(int argc, char* argv[]) {
 
     int cargc = argc + 3;
     char** cargv = malloc(cargc * sizeof(char*));
-    cargv[0] = (char*) java;
+    cargv[0] = (char*) cjam;
     cargv[1] = "-jar";
     cargv[2] = "/cjam.jar";
     cargv[3] = (char*) code;
     memcpy(&cargv[4], &argv[2], (argc - 2) * sizeof(char*));
     cargv[cargc - 1] = NULL;
 
-    execv(java, cargv);
+    execv(cjam, cargv);
     ERR_AND_EXIT("execv");
 }
