@@ -1744,7 +1744,7 @@ for arg in os.args[1..] {
 
 [VimL]
 args    = [ '/usr/bin/viml', '-' ]
-size    = '24.3 MiB'
+size    = '24.7 MiB'
 version = '9.1'
 website = 'https://www.vim.org'
 example = '''
