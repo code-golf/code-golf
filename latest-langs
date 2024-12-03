@@ -8,6 +8,7 @@ use TOML::Thumb;
 unit sub MAIN(Bool :$all, *@langs);
 
 constant %paths = (
+    '05AB1E'       => 'github.com/Adriandmen/05AB1E',
     '><>'          => 'github.com/primo-ppcg/fish-jit',
     'ALGOL 68'     => 'jmvdveer.home.xs4all.nl/en.download.algol-68-genie-current.html',
     'Arturo'       => 'github.com/arturo-lang/arturo/releases/latest',
@@ -41,8 +42,9 @@ constant %paths = (
     'Go'           => 'endoflife.date/api/go.json',
     'GolfScript'   => 'github.com/lynn/golfscript/tree/code-golf',
     'Groovy'       => 'en.wikipedia.org/wiki/Apache_Groovy',
+    'Harbour'      => 'github.com/harbour/core',
     'Hare'         => 'git.sr.ht/~sircmpwn/hare/refs',
-    'Haskell'      => 'en.wikipedia.org/wiki/Glasgow_Haskell_Compiler',
+    'Haskell'      => 'pkgs.alpinelinux.org/package/edge/community/x86_64/ghc',
     'Haxe'         => 'github.com/HaxeFoundation/haxe/releases/latest',
     'Hexagony'     => 'github.com/SirBogman/Hexagony',
     'Hush'         => 'crates.io/api/v1/crates/hush',
@@ -78,6 +80,7 @@ constant %paths = (
     'Scheme'       => 'en.wikipedia.org/wiki/Chez_Scheme',
     'sed'          => 'git.savannah.gnu.org/cgit/sed.git/refs',
     'SQL'          => 'en.wikipedia.org/wiki/SQLite',
+    'Squirrel'     => 'github.com/albertodemichelis/squirrel/releases/latest',
     'Swift'        => 'github.com/swiftlang/swift/releases/latest',
     'Tcl'          => 'en.wikipedia.org/wiki/Tcl',
     'TeX'          => 'en.wikipedia.org/wiki/TeX',
@@ -100,6 +103,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         state $ua  = HTTP::Tiny.new :throw-exceptions;
         my    $res = $ua.get("https://$_")<content>.decode;
 
+        when / 'alpinelinux' / { $res ~~ / 'Version' .+? <(<ver>)> / }
         when / 'aplwiki'     / { $res ~~ / ' release' .+? <(<ver>)> / }
         when / 'codeberg'    / { $res ~~ / '"shortsha">' <(<ver>)> / }
         when / 'crates.io'   / { $res.&from-json<crate><max_stable_version> }

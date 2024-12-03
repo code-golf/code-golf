@@ -9,6 +9,8 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/pretty"
 )
@@ -44,6 +46,20 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 	"param": func(r *http.Request, key string) string {
 		value, _ := url.QueryUnescape(r.PathValue(key))
 		return value
+	},
+
+	"setting": func(golfer *golfer.Golfer, page, id string) any {
+		if golfer != nil {
+			return golfer.Settings[page][id]
+		}
+
+		for _, setting := range config.Settings[page] {
+			if setting.ID == id {
+				return setting.Default
+			}
+		}
+
+		return nil
 	},
 
 	"svg": func(name string) template.HTML {
