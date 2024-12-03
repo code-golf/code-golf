@@ -53,14 +53,14 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		holeWhere = pq.Array(config.RecentHoles)
 	}
 
-	if data.HoleID != "all" && config.HoleByID[data.HoleID] == nil ||
+	if data.HoleID != "all" && config.AllHoleByID[data.HoleID] == nil ||
 		data.LangID != "all" && config.LangByID[data.LangID] == nil ||
 		data.Scoring != "chars" && data.Scoring != "bytes" {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
-	if data.Hole = config.HoleByID[data.HoleID]; data.Hole != nil {
+	if data.Hole = config.AllHoleByID[data.HoleID]; data.Hole != nil {
 		data.PrevHole, data.NextHole = getPrevNextHole(r, data.Hole)
 	}
 
@@ -131,6 +131,30 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			   LIMIT $3 OFFSET $4`
 
 		bind = []any{data.LangID, data.Scoring, pager.PerPage, data.Pager.Offset, holeWhere}
+	} else if data.Hole.Experiment != 0 {
+		// TODO Fold strokes/other_strokes into a view? Rankings uses them too.
+		// FIXME $2 IN (lang::text, 'all') isn't very efficient due to the cast.
+		query = `WITH strokes_other_strokes AS (
+			    SELECT *,
+			           case when scoring = 'bytes'
+			                then bytes else chars end strokes,
+			           case when scoring = 'bytes'
+			                then chars else bytes end other_strokes
+			      FROM solutions
+			) SELECT country_flag                    country,
+			         lang                            lang,
+			         login                           name,
+			         other_strokes                   other_strokes,
+			         RANK()   OVER(ORDER BY strokes) rank,
+			         strokes                         strokes,
+			         submitted                       submitted,
+			         COUNT(*) OVER()                 total
+			    FROM strokes_other_strokes
+			    JOIN users ON user_id = id
+			   WHERE NOT failing AND hole = $1 AND $2 IN (lang::text, 'all') AND scoring = $3
+			   LIMIT $4 OFFSET $5`
+
+		bind = []any{data.HoleID, data.LangID, data.Scoring, pager.PerPage, data.Pager.Offset}
 	} else if data.LangID == "all" {
 		query = `SELECT country_flag     country,
 			          lang             lang,
@@ -159,7 +183,6 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			          submitted        submitted,
 			          COUNT(*) OVER()  total
 			     FROM rankings
-
 			     JOIN users ON user_id = id
 			    WHERE hole = $1 AND lang = $2 AND scoring = $3
 			 ORDER BY rank, submitted

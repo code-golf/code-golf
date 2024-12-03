@@ -3,8 +3,8 @@
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0"/>
     </ItemGroup>
     <PropertyGroup>
+        <ImplicitUsings>true</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
         <OutputType>Exe</OutputType>
         <PublishReadyToRun>true</PublishReadyToRun>
         <SelfContained>true</SelfContained>

@@ -79,8 +79,10 @@
     #profile { grid-template-columns: min-content 1fr }
 
     #profile > nav {
-        padding-top: 1rem;
         grid-column: span 2;
         grid-row: 4;
+
+        /* Only add padding if it has the form, bit hacky */
+        &:has(form) { padding-top: 1rem }
     }
 }

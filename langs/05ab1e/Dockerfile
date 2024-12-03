@@ -18,17 +18,21 @@ RUN ./configure                \
  && strip /usr/bin/python3.13  \
           /usr/lib/python3.13/lib-dynload/*.so
 
+WORKDIR /usr/lib/python3.13
+
 # Remove some unneeded libraries.
-RUN cd /usr/lib/python3.13      \
- && rm -r __pycache__/doctest.* \
-          __pycache__/pydoc.*   \
-          __pycache__/turtle.*  \
-          ensurepip             \
-          idlelib               \
-          pydoc_data            \
-          tkinter               \
-          turtle.py             \
-          turtledemo
+RUN find . -name '*.opt-[12].pyc' -delete \
+ && rm -r __pycache__/doctest.*           \
+          __pycache__/pydoc.*             \
+          __pycache__/turtle.*            \
+          _pyrepl                         \
+          ensurepip                       \
+          idlelib                         \
+          pydoc_data                      \
+          tkinter                         \
+          turtle.py                       \
+          turtledemo                      \
+          unittest
 
 WORKDIR /osabie
 
