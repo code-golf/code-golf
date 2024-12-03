@@ -2,7 +2,7 @@
 args       = [ '/usr/bin/05ab1e', '-' ]
 env        = [ 'PYTHON_COLORS=1' ]
 experiment = 233
-size       = '50.6 MiB'
+size       = '31.9 MiB'
 version    = 'fe1ab18'
 website    = 'https://github.com/Adriandmen/05AB1E'
 example    = '''
@@ -41,10 +41,10 @@ x is a no-op.
 '''
 
 ['ALGOL 68']
-args       = [ '/usr/bin/a68g', '--exec', '$code', '--' ]
+args       = [ '/usr/bin/algol-68', '--exec', '$code', '--' ]
 experiment = 856
 size       = '4.66 MiB'
-version    = '3.5.9'
+version    = 'Algol 68 Genie 3.5.10'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -328,7 +328,8 @@ int main(int argc, char* argv[]) {
 
 ['C#']
 args    = [ '/usr/bin/c-sharp', '-' ]
-size    = '157 MiB'
+env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
+size    = '107 MiB'
 version = 'C# 12.0 on .NET 9.0.0'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
@@ -378,7 +379,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '67.9 MiB'
-version = '0.8.15'
+version = '0.8.16'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -465,7 +466,7 @@ end-program.
 [Coconut]
 args    = [ '/usr/bin/coconut', '--quiet', '--target', 'sys', '--keep-lines', '--argv' ]
 env     = [ 'PYTHON_COLORS=1' ]
-size    = '104 MiB'
+size    = '85.7 MiB'
 version = '3.1.2'
 website = 'https://coconut-lang.org'
 example = '''
@@ -525,10 +526,10 @@ end
 '''
 
 [D]
-args    = [ '/usr/bin/ldc2', '--enable-color=true', '--run', '-' ]
+args    = [ '/usr/bin/D', '-' ]
 env     = [ 'PATH=/usr/bin' ]
-size    = '309 MiB'
-version = 'D 2.103.1 on LDC 1.33.0'
+size    = '93.3 MiB'
+version = 'DMD 2.109.1'
 website = 'https://dlang.org'
 example = '''
 import std.stdio;
@@ -614,7 +615,8 @@ for arg <- System.argv, do: IO.puts arg
 
 ['F#']
 args    = [ '/usr/bin/f-sharp', '-' ]
-size    = '152 MiB'
+env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
+size    = '108 MiB'
 version = 'F# 9.0 on .NET 9.0.0'
 website = 'https://fsharp.org'
 example = '''
@@ -723,7 +725,7 @@ args       = [ '/usr/bin/gleamwrapper', '-', '--' ]
 env        = [ 'FORCE_COLOR=1', 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 1129
 size       = '88.8 MiB'
-version    = '1.6.1'
+version    = '1.6.2'
 website    = 'https://gleam.run'
 example    = '''
 import argv
@@ -797,7 +799,7 @@ args       = [ '/usr/bin/groovy', '-e', '$code' ]
 env        = [ 'JAVA_HOME=/opt/java' ]
 experiment = 1145
 size       = '146 MiB'
-version    = '4.0.23'
+version    = '4.0.24'
 website    = 'https://groovy-lang.org'
 example    = '''
 // Printing
@@ -810,6 +812,29 @@ for (i in 0..9)
 // Accessing arguments
 for (arg in args)
     println arg
+'''
+
+[Harbour]
+args       = [ '/usr/bin/harbourwrapper', '-' ]
+experiment = 1614
+size       = '13.0 MiB'
+version    = '4ae5151'
+website    = 'https://harbour.github.io'
+example    = '''
+LOCAL i
+
+// Printing
+?? "Hello, World!"
+
+// Looping
+FOR i := 0 TO 9
+    ? hb_ntos( i )
+NEXT
+
+// Accessing arguments
+FOR i := 1 TO PCount()
+    ? hb_PValue( i )
+NEXT
 '''
 
 [Hare]
@@ -932,7 +957,7 @@ end
 [Hy]
 args       = [ '/usr/bin/hy', '-' ]
 experiment = 586
-size       = '59.8 MiB'
+size       = '41.5 MiB'
 version    = '1.0.0'
 website    = 'https://hylang.org'
 example    = '''
@@ -1077,8 +1102,8 @@ example = '''
 [Kotlin]
 args    = [ '/usr/bin/kotlin', '-Xuse-fast-jar-file-system', '-e', '$code' ]
 env     = [ 'JAVA_HOME=/opt/java' ]
-size    = '223 MiB'
-version = '2.0.21'
+size    = '224 MiB'
+version = '2.1.0'
 website = 'https://kotlinlang.org'
 example = '''
 // Printing
@@ -1267,7 +1292,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '8.40 MiB'
-version = '8.4.0'
+version = '8.4.1'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -1285,7 +1310,8 @@ for ($i = 1; $i < $argc; $i++)
 [PowerShell]
 args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
-size       = '185 MiB'
+env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
+size       = '135 MiB'
 version    = 'PowerShell 7.4.6 on .NET 9.0.0'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
@@ -1325,7 +1351,7 @@ example = '''
 [Python]
 args    = [ '/usr/bin/python', '-u', '-' ]
 env     = [ 'PYTHON_COLORS=1' ]
-size    = '47.7 MiB'
+size    = '29.0 MiB'
 version = '3.13.0'
 website = 'https://www.python.org'
 example = '''
@@ -1346,8 +1372,8 @@ for arg in sys.argv[1:]:
 [R]
 args       = [ '/usr/bin/Rscript', '-' ]
 args-quine = [ '/usr/bin/Rscript', '-e', "source('stdin')" ]
-size       = '81.9 MiB'
-version    = '4.4.0'
+size       = '29.7 MiB'
+version    = '4.4.2'
 website    = 'https://www.r-project.org'
 example    = '''
 # Printing
@@ -1463,9 +1489,8 @@ Shout arg
 
 ['Rockstar 2']
 args       = [ '/usr/bin/rockstarwrapper', '-' ]
-env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 experiment = 1336
-size       = '6.01 MiB'
+size       = '5.79 MiB'
 version    = '2.0.0'
 website    = 'https://codewithrockstar.com'
 example    = '''
@@ -1546,8 +1571,8 @@ args.foreach(println)
 
 [Scheme]
 args    = [ '/usr/bin/schemewrapper', '-' ]
-size    = '17.9 MiB'
-version = 'Chez Scheme 10.0.0'
+size    = '8.96 MiB'
+version = 'Chez Scheme 10.1.0'
 website = 'https://cisco.github.io/ChezScheme/'
 example = '''
 ; Printing
@@ -1592,7 +1617,7 @@ G
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
 size    = '1.21 MiB'
-version = 'SQLite 3.47.0'
+version = 'SQLite 3.47.1'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
@@ -1701,7 +1726,7 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '33.7 MiB'
+size       = '28.5 MiB'
 version    = '0.13.0'
 website    = 'https://www.uiua.org'
 example    = '''
