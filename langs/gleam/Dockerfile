@@ -2,20 +2,35 @@ FROM rust:1.82.0-alpine3.20 AS builder
 
 RUN apk add --no-cache build-base curl icu-data npm
 
-RUN curl -L https://github.com/gleam-lang/gleam/archive/refs/tags/v1.6.2.tar.gz \
+ENV VER=1.6.2
+
+RUN curl -#L https://github.com/gleam-lang/gleam/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1
 
 RUN make -j`nproc` install
 
+WORKDIR /gleam
+
+COPY gleam.toml .
+
+RUN mkdir src \
+ && gleam deps download
+
+RUN chmod -R 777 .
+
+COPY gleamwrapper.c /
+
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/gleamwrapper -s -static /gleamwrapper.c
+
 FROM codegolf/lang-base
 
-COPY --from=0 /bin                             /bin
+COPY --from=0 /gleam                           /gleam
 COPY --from=0 /lib/ld-musl-x86_64.so.1         \
               /lib/libcrypto.so.3              \
               /lib/libssl.so.3                 \
               /lib/libz.so.1                   /lib/
-COPY --from=0 /usr/bin/node                    \
-              /usr/local/cargo/bin/gleam       /usr/bin/
+COPY --from=0 /usr/bin/gleamwrapper            \
+              /usr/bin/node                    /usr/bin/
 COPY --from=0 /usr/lib/libada.so.2             \
               /usr/lib/libbrotlicommon.so.1    \
               /usr/lib/libbrotlidec.so.1       \
@@ -28,16 +43,8 @@ COPY --from=0 /usr/lib/libada.so.2             \
               /usr/lib/libnghttp2.so.14        \
               /usr/lib/libstdc++.so.6          \
               /usr/lib/libuv.so.1              /usr/lib/
+COPY --from=0 /usr/local/cargo/bin/gleam       /usr/local/bin/
 COPY --from=0 /usr/share/icu/74.2/icudt74l.dat /usr/share/icu/
-
-RUN chmod 777 /tmp
-USER nobody
-COPY --chown=nobody /gleam.toml /gleam/
-
-RUN cd gleam \
- && gleam deps download
-
-COPY /gleamwrapper /usr/bin/
 
 ENTRYPOINT ["gleamwrapper"]
 
