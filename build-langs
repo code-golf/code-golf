@@ -42,7 +42,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
     }
 
     # Version.
-    if $id ~~ any <05ab1e assembly befunge brainfuck cjam fish golfscript hare hexagony k nibbles scala> {
+    if $id ~~ any <05ab1e assembly befunge brainfuck cjam fish golfscript harbour hare hexagony k nibbles scala> {
         "langs/$id/Dockerfile".IO.slurp ~~ / ' VER=' (\S+) | ' VER=' (\S+) | ' VERSION=' (\S+) /;
         %lang<version> = $id eq 'assembly' ?? "DefAssembler $0" !! $0;
     }
@@ -60,6 +60,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
             # Dotted decimal or hyphenated date.
             my $digits = $ver ~~ / \d+ ( <[.-]> \d+ )+ /;
 
+            when 'ALGOL 68'   { $ver = "Algol 68 Genie $digits" }
             when 'AWK'
                | 'Forth'
                | 'Fortran'

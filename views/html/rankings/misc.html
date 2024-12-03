@@ -50,7 +50,7 @@
                     </a>
             {{ end }}
             {{ if $oldestMedal }}
-                <td class=right>{{ time .Submitted }}
+                <td class=right>{{ time (.Submitted.In $.Location) }}
             {{ else }}
                 <td class=right>{{ comma .Count }}
             {{ end }}
