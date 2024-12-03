@@ -379,7 +379,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '67.9 MiB'
-version = '0.8.16'
+version = '0.8.17'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -507,7 +507,7 @@ for arg in process.argv[2..]
 [Crystal]
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
-size    = '270 MiB'
+size    = '269 MiB'
 version = '1.14.0'
 website = 'https://crystal-lang.org'
 example = '''
@@ -818,7 +818,7 @@ for (arg in args)
 args       = [ '/usr/bin/harbourwrapper', '-' ]
 experiment = 1614
 size       = '13.0 MiB'
-version    = '4ae5151'
+version    = '93d6749'
 website    = 'https://harbour.github.io'
 example    = '''
 LOCAL i
@@ -936,7 +936,7 @@ example = '''
 [Hush]
 args       = [ '/usr/bin/hush', '-' ]
 experiment = 656
-size       = '3.27 MiB'
+size       = '3.26 MiB'
 version    = '0.1.4'
 website    = 'https://hush-shell.github.io'
 example    = '''
@@ -1509,8 +1509,8 @@ end
 
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
-size    = '358 MiB'
-version = '1.82.0'
+size    = '351 MiB'
+version = '1.83.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -1705,7 +1705,7 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '28.5 MiB'
+size       = '28.6 MiB'
 version    = '0.13.0'
 website    = 'https://www.uiua.org'
 example    = '''
