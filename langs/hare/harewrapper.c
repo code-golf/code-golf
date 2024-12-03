@@ -5,7 +5,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* hare = "/usr/local/bin/hare";
+const char* hare = "/usr/local/bin/hare", *code = "code.ha";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version"))
@@ -16,7 +16,7 @@ int main(int argc, char* argv[]) {
 
     FILE* fp;
 
-    if (!(fp = fopen("code.ha", "w")))
+    if (!(fp = fopen(code, "w")))
         ERR_AND_EXIT("fopen");
 
     char buffer[4096];
@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
     char** hargv = malloc(hargc * sizeof(char*));
     hargv[0] = (char*) hare;
     hargv[1] = "run";
-    hargv[2] = "code.ha";
+    hargv[2] = (char*) code;
     memcpy(&hargv[3], &argv[2], (argc - 2) * sizeof(char*));
     hargv[hargc - 1] = NULL;
 

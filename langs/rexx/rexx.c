@@ -6,7 +6,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* rexx = "/usr/bin/regina";
+const char* rexx = "/usr/bin/regina", *code = "code.rexx";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
 
     FILE* fp;
 
-    if (!(fp = fopen("code.rexx", "w")))
+    if (!(fp = fopen(code, "w")))
         ERR_AND_EXIT("fopen");
 
     char buffer[4096];
@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
     pid_t pid;
 
     if (!(pid = fork())) {
-        execl(rexx, rexx, "--compile", "code", "code.rexx", NULL);
+        execl(rexx, rexx, "--compile", "code", code, NULL);
         ERR_AND_EXIT("execl");
     }
 

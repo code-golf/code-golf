@@ -5,7 +5,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* java = "/opt/java/bin/java";
+const char* java = "/opt/java/bin/java", *code = "code.cjam";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version"))
@@ -16,7 +16,7 @@ int main(int argc, char* argv[]) {
 
     FILE* fp;
 
-    if (!(fp = fopen("code.cjam", "w")))
+    if (!(fp = fopen(code, "w")))
         ERR_AND_EXIT("fopen");
 
     char buffer[4096];
@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
     cargv[0] = (char*) java;
     cargv[1] = "-jar";
     cargv[2] = "/cjam.jar";
-    cargv[3] = "code.cjam";
+    cargv[3] = (char*) code;
     memcpy(&cargv[4], &argv[2], (argc - 2) * sizeof(char*));
     cargv[cargc - 1] = NULL;
 

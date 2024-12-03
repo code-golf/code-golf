@@ -5,7 +5,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* scheme = "/usr/bin/scheme";
+const char* scheme = "/usr/bin/scheme", *code = "code.ss";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
 
     FILE* fp;
 
-    if (!(fp = fopen("code.ss", "w")))
+    if (!(fp = fopen(code, "w")))
         ERR_AND_EXIT("fopen");
 
     char buffer[4096];
@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
     char** sargv = malloc(sargc * sizeof(char*));
     sargv[0] = (char*) scheme;
     sargv[1] = "--script";
-    sargv[2] = "code.ss";
+    sargv[2] = (char*) code;
     memcpy(&sargv[3], &argv[2], (argc - 2) * sizeof(char*));
     sargv[sargc - 1] = NULL;
 

@@ -10,7 +10,7 @@
 void copy_file(const char* src_file, const char* dst_file);
 void copy_folder(const char* src_dir, const char* dst_dir);
 
-const char* go = "/usr/local/bin/go";
+const char* go = "/usr/local/bin/go", *code = "code.go";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
 
     FILE* fp;
 
-    if (!(fp = fopen("code.go", "w")))
+    if (!(fp = fopen(code, "w")))
         ERR_AND_EXIT("fopen");
 
     char buffer[4096];
@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
     char** gargv = malloc(gargc * sizeof(char*));
     gargv[0] = (char*) go;
     gargv[1] = "run";
-    gargv[2] = "code.go";
+    gargv[2] = (char*) code;
     memcpy(&gargv[3], &argv[2], (argc - 2) * sizeof(char*));
     gargv[gargc - 1] = NULL;
 

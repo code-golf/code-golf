@@ -5,7 +5,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* V = "/usr/local/v";
+const char* V = "/usr/local/v", *code = "code.v";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
 
     FILE* fp;
 
-    if (!(fp = fopen("code.v", "w")))
+    if (!(fp = fopen(code, "w")))
         ERR_AND_EXIT("fopen");
 
     char buffer[4096];
@@ -36,7 +36,7 @@ int main(int argc, char* argv[]) {
     vargv[0] = (char*) V;
     vargv[1] = "-color";
     vargv[2] = "run";
-    vargv[3] = "code.v";
+    vargv[3] = (char*) code;
     memcpy(&vargv[4], &argv[2], (argc - 2) * sizeof(char*));
     vargv[vargc - 1] = NULL;
 

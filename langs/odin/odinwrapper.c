@@ -5,7 +5,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* odin = "/usr/local/bin/odin";
+const char* odin = "/usr/local/bin/odin", *code = "code.odin";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
 
     FILE* fp;
 
-    if (!(fp = fopen("code.odin", "w")))
+    if (!(fp = fopen(code, "w")))
         ERR_AND_EXIT("fopen");
 
     char buffer[4096];
@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
     char** oargv = malloc(oargc * sizeof(char*));
     oargv[0] = (char*) odin;
     oargv[1] = "run";
-    oargv[2] = "code.odin";
+    oargv[2] = (char*) code;
     oargv[3] = "-file";
     oargv[4] = "-o:none";
     memcpy(&oargv[5], &argv[2], (argc - 2) * sizeof(char*));
