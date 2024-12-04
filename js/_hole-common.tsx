@@ -227,7 +227,7 @@ function updateLangPicker() {
             currentLangUnused ||= lang == l.id;
         }
     }
-    
+
     langSelect.appendChild(experimentalLangGroup);
 
     if (langSelect.childElementCount > 1) {
