@@ -65,6 +65,7 @@ constant %paths = (
     'Pascal'       => 'en.wikipedia.org/wiki/Free_Pascal',
     'Perl'         => 'endoflife.date/api/perl.json',
     'PHP'          => 'endoflife.date/api/php.json',
+    'Piet'         => 'bertnase.de/npiet/ChangeLog',
     'PowerShell'   => 'endoflife.date/api/powershell.json',
     'Prolog'       => 'swi-prolog.discourse.group/c/releases',
     'Python'       => 'endoflife.date/api/python.json',
@@ -104,6 +105,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
 
         when / 'alpinelinux' / { $res ~~ / 'Version' .+? <(<ver>)> / }
         when / 'aplwiki'     / { $res ~~ / ' release' .+? <(<ver>)> / }
+        when / 'bertnase'    / { $res ~~ / 'version' .+? <(<ver>)> / }
         when / 'codeberg'    / { $res ~~ / '"shortsha">' <(<ver>)> / }
         when / 'crates.io'   / { $res.&from-json<crate><max_stable_version> }
         when / 'endoflife'   / { $res.&from-json[0]<latest> }
