@@ -221,9 +221,8 @@ function updateLangPicker() {
         if (!getSolutionCode(l.id, 0) &&
             !localStorage.getItem(getAutoSaveKey(l.id, 0)) &&
             !localStorage.getItem(getAutoSaveKey(l.id, 1))) {
-            const suffix = l.experiment ? ' (exp.)' : '';
             const parent = l.experiment ? experimentalLangGroup : langSelect;
-            parent.appendChild(<option value={l.id}>{l.name}{suffix}</option>);
+            parent.appendChild(<option value={l.id}>{l.name}</option>);
             currentLangUnused ||= lang == l.id;
         }
     }
