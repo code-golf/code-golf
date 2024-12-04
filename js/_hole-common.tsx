@@ -33,6 +33,7 @@ const renamedHoles: Record<string, string> = {
 };
 
 const renamedLangs: Record<string, string> = {
+    lisp:  'common-lisp',
     perl6: 'raku',
 };
 

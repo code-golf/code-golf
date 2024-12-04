@@ -504,6 +504,27 @@ for arg in process.argv[2..]
     console.log arg
 '''
 
+['Common Lisp']
+args      = [ '/usr/bin/lisp', '-' ]
+redirects = [ 'lisp' ]
+size      = '31.1 MiB'
+version   = 'GNU CLISP 2.49.92'
+website   = 'https://clisp.sourceforge.io'
+example   = '''
+; Printing
+(write-line "Hello, World!")
+
+; Looping
+(loop for i from 0 to 9
+    do (format t "~d~%" i)
+)
+
+; Accessing arguments
+(loop for arg in *args*
+    do (write-line arg)
+)
+'''
+
 [Crystal]
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
@@ -1116,26 +1137,6 @@ for (i in 0..9)
 // Accessing arguments
 for (arg in args)
     println(arg)
-'''
-
-[Lisp]
-args    = [ '/usr/bin/lisp', '-' ]
-size    = '31.1 MiB'
-version = 'GNU CLISP 2.49.92'
-website = 'https://clisp.sourceforge.io'
-example = '''
-; Printing
-(write-line "Hello, World!")
-
-; Looping
-(loop for i from 0 to 9
-    do (format t "~d~%" i)
-)
-
-; Accessing arguments
-(loop for arg in *args*
-    do (write-line arg)
-)
 '''
 
 [Lua]
