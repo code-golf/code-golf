@@ -725,7 +725,7 @@ args       = [ '/usr/bin/gleamwrapper', '-', '--' ]
 env        = [ 'FORCE_COLOR=1', 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 1129
 size       = '88.8 MiB'
-version    = '1.6.2'
+version    = '1.6.3'
 website    = 'https://gleam.run'
 example    = '''
 import argv
