@@ -227,7 +227,8 @@ function updateLangPicker() {
         }
     }
 
-    langSelect.appendChild(experimentalLangGroup);
+    if (experimentalLangGroup.childElementCount > 0)
+        langSelect.appendChild(experimentalLangGroup);
 
     if (langSelect.childElementCount > 1) {
         langSelect.addEventListener('change', (e: Event) => {
