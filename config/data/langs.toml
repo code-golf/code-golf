@@ -772,7 +772,7 @@ pub fn main() {
 args    = [ '/usr/bin/gowrapper', '-' ]
 env     = [ 'GOCACHE=/tmp/.cache', 'PATH=/usr/local/bin:/bin' ]
 size    = '383 MiB'
-version = '1.23.3'
+version = '1.23.4'
 website = 'https://go.dev'
 example = '''
 package main
