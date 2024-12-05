@@ -8,8 +8,10 @@
 const char* hare = "/usr/local/bin/hare", *code = "code.ha";
 
 int main(int argc, char* argv[]) {
-    if (!strcmp(argv[1], "--version"))
-        exit(EXIT_SUCCESS);
+    if (!strcmp(argv[1], "--version")) {
+        execl(hare, hare, "version", NULL);
+        ERR_AND_EXIT("execl");
+    }
 
     if (chdir("/tmp"))
         ERR_AND_EXIT("chdir");
