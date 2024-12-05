@@ -7,7 +7,7 @@ ENV VER=3.13.1
 
 RUN curl https://www.python.org/ftp/python/$VER/Python-$VER.tar.xz | tar xJ
 
-WORKDIR /Python-$PYVER
+WORKDIR /Python-$VER
 
 RUN ./configure                \
     --disable-test-modules     \
