@@ -4,10 +4,12 @@ RUN apk add --no-cache gcc musl-dev zlib-dev
 
 ENV VER=2.0.0
 
-RUN curl -#L https://github.com/RockstarLang/rockstar/archive/refs/tags/v$VER-beta.10.tar.gz \
+RUN curl -#L https://github.com/RockstarLang/rockstar/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1
 
-RUN dotnet publish Starship/Rockstar -c Release -o /usr/bin
+RUN find Starship -name '*.csproj' -exec sed -Ei 's/\bnet\d+\b/net9/' {} + \
+ && dotnet publish Starship/Rockstar -c Release -o /usr/bin \
+    -p:InvariantGlobalization=true
 
 COPY rockstarwrapper.c /
 

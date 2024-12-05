@@ -1,7 +1,7 @@
 FROM debian:bookworm-slim AS builder
 
 RUN apt-get update                   \
- && DEBIAN_FRONTEND="noninteractive" \
+ && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes binutils-dev clang cmake curl libffi-dev libfmt-dev libiberty-dev libicu-dev ninja-build pkg-config zlib1g-dev
 
 ENV VER=0.1.14
