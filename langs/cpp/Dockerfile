@@ -37,6 +37,7 @@ COPY --from=0 /usr/bin/clang /usr/bin/cpp /usr/bin/ld /usr/bin/
 COPY --from=0 /usr/include/*.h                        /usr/include/
 COPY --from=0 /usr/include/bits/*.h                   /usr/include/bits/
 COPY --from=0 /usr/include/c++/13.2.1                 /usr/include/c++/13.2.1
+COPY --from=0 /usr/include/sys/*.h                    /usr/include/sys/
 COPY --from=0 /usr/lib/Scrt1.o                        \
               /usr/lib/crti.o                         \
               /usr/lib/crtn.o                         \
