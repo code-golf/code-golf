@@ -5,45 +5,59 @@ use JSON::Fast;
 use TOML::Thumb;
 
 # Pass "--all" to see all languages regardless of version status.
-unit sub MAIN(Bool :$all);
+unit sub MAIN(Bool :$all, *@langs);
 
 constant %paths = (
+    '05AB1E'       => 'github.com/Adriandmen/05AB1E',
     '><>'          => 'github.com/primo-ppcg/fish-jit',
+    'ALGOL 68'     => 'jmvdveer.home.xs4all.nl/en.download.algol-68-genie-current.html',
     'Arturo'       => 'github.com/arturo-lang/arturo/releases/latest',
     'Assembly'     => 'registry.npmjs.org/@defasm/core/latest',
+    'Bash'         => 'en.wikipedia.org/wiki/Bash_(Unix_shell)',
     'BASIC'        => 'en.wikipedia.org/wiki/FreeBASIC',
+    'Befunge'      => 'github.com/VorpalBlade/cfunge',
     'Berry'        => 'github.com/berry-lang/berry/releases/latest',
+    'BQN'          => 'aplwiki.com/wiki/BQN',
     'brainfuck'    => 'github.com/primo-ppcg/bfci',
     'C'            => 'en.wikipedia.org/wiki/Tiny_C_Compiler',
     'C#'           => 'en.wikipedia.org/wiki/C_Sharp_(programming_language)',
     'C++'          => 'en.wikipedia.org/wiki/Clang',
+    'Civet'        => 'registry.npmjs.org/@danielx/civet/latest',
+    'CJam'         => 'sourceforge.net/projects/cjam/files',
+    'Clojure'      => 'github.com/babashka/babashka/releases/latest',
     'COBOL'        => 'en.wikipedia.org/wiki/GnuCOBOL',
     'Coconut'      => 'pypi.org/pypi/coconut/json',
     'CoffeeScript' => 'registry.npmjs.org/coffeescript/latest',
-    'Clojure'      => 'github.com/babashka/babashka/releases/latest',
-    'Civet'        => 'registry.npmjs.org/@danielx/civet/latest',
     'Crystal'      => 'github.com/crystal-lang/crystal/releases/latest',
     'D'            => 'en.wikipedia.org/wiki/D_(programming_language)',
     'Dart'         => 'en.wikipedia.org/wiki/Dart_(programming_language)',
+    'Egel'         => 'github.com/egel-lang/egel/releases/latest',
     'Elixir'       => 'en.wikipedia.org/wiki/Elixir_(programming_language)',
     'F#'           => 'en.wikipedia.org/wiki/F_Sharp_(programming_language)',
     'Factor'       => 'github.com/factor/factor/releases/latest',
     'Fennel'       => 'fennel-lang.org/setup',
     'Forth'        => 'en.wikipedia.org/wiki/Gforth',
     'Fortran'      => 'en.wikipedia.org/wiki/GNU_Compiler_Collection',
+    'Gleam'        => 'github.com/gleam-lang/gleam/releases/latest',
     'Go'           => 'endoflife.date/api/go.json',
     'GolfScript'   => 'github.com/lynn/golfscript/tree/code-golf',
-    'Haskell'      => 'en.wikipedia.org/wiki/Glasgow_Haskell_Compiler',
+    'Groovy'       => 'en.wikipedia.org/wiki/Apache_Groovy',
+    'Harbour'      => 'github.com/harbour/core',
+    'Hare'         => 'git.sr.ht/~sircmpwn/hare/refs',
+    'Haskell'      => 'pkgs.alpinelinux.org/package/edge/community/x86_64/ghc',
+    'Haxe'         => 'github.com/HaxeFoundation/haxe/releases/latest',
     'Hexagony'     => 'github.com/SirBogman/Hexagony',
     'Hush'         => 'crates.io/api/v1/crates/hush',
     'Hy'           => 'pypi.org/pypi/hy/json',
+    'J'            => 'en.wikipedia.org/wiki/J_(programming_language)',
     'Janet'        => 'github.com/janet-lang/janet/releases/latest',
     'Java'         => 'endoflife.date/api/java.json',
     'JavaScript'   => 'en.wikipedia.org/wiki/V8_(JavaScript_engine)',
     'jq'           => 'github.com/jqlang/jq/releases/latest',
-    'Julia'        => 'en.wikipedia.org/wiki/Julia_(programming_language)',
+    'Julia'        => 'github.com/JuliaLang/julia/releases/latest',
     'K'            => 'codeberg.org/ngn/k',
     'Koka'         => 'github.com/koka-lang/koka/releases/latest',
+    'Kotlin'       => 'github.com/JetBrains/kotlin/releases/latest',
     'Lisp'         => 'en.wikipedia.org/wiki/CLISP',
     'Lua'          => 'en.wikipedia.org/wiki/Lua_(programming_language)',
     'Nim'          => 'en.wikipedia.org/wiki/Nim_(programming_language)',
@@ -53,24 +67,29 @@ constant %paths = (
     'Perl'         => 'endoflife.date/api/perl.json',
     'PHP'          => 'endoflife.date/api/php.json',
     'PowerShell'   => 'endoflife.date/api/powershell.json',
-    'Prolog'       => 'en.wikipedia.org/wiki/SWI-Prolog',
+    'Prolog'       => 'swi-prolog.discourse.group/c/releases',
     'Python'       => 'endoflife.date/api/python.json',
     'R'            => 'en.wikipedia.org/wiki/R_(programming_language)',
+    'Racket'       => 'github.com/racket/racket/releases/latest',
     'Raku'         => 'github.com/rakudo/rakudo/releases/latest',
     'Rebol'        => 'en.wikipedia.org/wiki/Rebol',
     'Rexx'         => 'regina-rexx.sourceforge.io',
+    'Rockstar 2'   => 'github.com/RockstarLang/rockstar/releases/latest',
     'Ruby'         => 'endoflife.date/api/ruby.json',
     'Rust'         => 'en.wikipedia.org/wiki/Rust_(programming_language)',
+    'Scala'        => 'github.com/scala/scala/releases/latest',
     'Scheme'       => 'en.wikipedia.org/wiki/Chez_Scheme',
+    'sed'          => 'git.savannah.gnu.org/cgit/sed.git/refs',
     'SQL'          => 'en.wikipedia.org/wiki/SQLite',
-    'Swift'        => 'en.wikipedia.org/wiki/Swift_(programming_language)',
+    'Squirrel'     => 'github.com/albertodemichelis/squirrel/releases/latest',
+    'Swift'        => 'github.com/swiftlang/swift/releases/latest',
     'Tcl'          => 'en.wikipedia.org/wiki/Tcl',
     'TeX'          => 'en.wikipedia.org/wiki/TeX',
     'Uiua'         => 'crates.io/api/v1/crates/uiua',
-    'V'            => 'github.com/vlang/v/releases/latest',
+    'V'            => 'en.wikipedia.org/wiki/V_(programming_language)',
     'VimL'         => 'en.wikipedia.org/wiki/Vim_(text_editor)',
     'Wren'         => 'github.com/wren-lang/wren/releases/latest',
-    'Zig'          => 'en.wikipedia.org/wiki/Zig_(programming_language)',
+    'Zig'          => 'github.com/ziglang/zig/releases/latest',
 );
 
 my %langs = from-toml 'config/data/langs.toml'.IO;
@@ -78,22 +97,29 @@ my %langs = from-toml 'config/data/langs.toml'.IO;
 # Dotted decimal, hyphenated date, or Git SHA.
 my regex ver { \d+ ( <[.-]> \d+ )+ | <xdigit> ** 7..* }
 
-for %langs.sort: *.key.fc -> (:key($name), :value(%lang)) {
+for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
     my $old = %lang<version> ~~ / <ver> /;
     my $new = do with %paths{$name} {
         state $ua  = HTTP::Tiny.new :throw-exceptions;
         my    $res = $ua.get("https://$_")<content>.decode;
 
+        when / 'alpinelinux' / { $res ~~ / 'Version' .+? <(<ver>)> / }
+        when / 'aplwiki'     / { $res ~~ / ' release' .+? <(<ver>)> / }
         when / 'codeberg'    / { $res ~~ / '"shortsha">' <(<ver>)> / }
         when / 'crates.io'   / { $res.&from-json<crate><max_stable_version> }
         when / 'endoflife'   / { $res.&from-json[0]<latest> }
         when / 'fennel-lang' / { $res ~~ / 'downloads/fennel-' <(<ver>)> / }
+        when / 'git.sr.ht'   / { $res ~~ / 'stable release' .+? <(<ver>)> / }
+        when / 'jmvdveer'    / { $res ~~ / 'algol68g-' <(<ver>)> / }
         when / 'npmjs.org'   / { $res.&from-json[0]<version> }
         when / 'pypi.org'    / { $res.&from-json<info><version> }
         when / 'regina-rexx' / { $res ~~ / '<b>Current</b> ' <(<ver>)> / }
+        when / 'savannah'    / { $res ~~ / 'snapshot/sed-' <(<ver>)> / }
+        when / 'sourceforge' / { $res ~~ / 'Latest' .+? <(<ver>)> / }
+        when / 'swi-prolog'  / { $res ~~ / 'stable' .+? <(<ver>)> / }
         when / 'github.com'  / {
             .ends-with('/releases/latest')
-                ?? $res ~~ / [ $name || 'dev' || 'Release' ] <[\ -]> v? <(<ver>)> /
+                ?? $res ~~ / [ $name || 'dev' || 'elease' || 'Version' ] <[\ -]> v? <(<ver>)> /
                 !! $res ~~ / '"currentOid":"' <( <xdigit> ** 7 )> /;
         }
         when / 'wikipedia'   / {
@@ -108,5 +134,5 @@ for %langs.sort: *.key.fc -> (:key($name), :value(%lang)) {
     my $code  = $new eq '?' ?? 33 !! $match ?? 32 !! 31;
 
     printf "%12s \e[%dm%11s → %s\e[0m\n", $name, $code, $old, $new
-        if $all || !$match;
+        if $all || @langs.elems || !$match;
 }

@@ -7,7 +7,7 @@
 
 int main(int argc, char* argv[]) {
     if (argc > 1 && strcmp(argv[1], "-h") == 0) {
-        execl("/opt/java/openjdk/bin/java", "java", "-jar", "/rocky.jar", "-h", NULL);
+        execl("/opt/java/bin/java", "java", "-jar", "/rocky.jar", "-h", NULL);
         ERR_AND_EXIT("execl");
     }
 
@@ -17,30 +17,6 @@ int main(int argc, char* argv[]) {
     FILE* fp = fopen("code.rock", "w");
     if (!fp)
         ERR_AND_EXIT("fopen");
-
-    // Set up "args", escaping each arg into a double quoted string.
-    // Skip over "rockstar" and "-".
-    fputs("rock args\n", fp);
-    for(int i = 2; i < argc; i++) {
-        fputs("rock \"", fp);
-
-        for (char* c = argv[i]; *c; c++)
-            switch (*c) {
-                case '\n':
-                    fputs("\\n", fp);
-                    break;
-                case '"':
-                    fputs("\\\"", fp);
-                    break;
-                case '\\':
-                    fputs("\\\\", fp);
-                    break;
-                default:
-                    putc(*c, fp);
-            }
-
-        fputs("\" into args\n", fp);
-    }
 
     // Copy STDIN into code.rock
     char buffer[4096];
@@ -52,7 +28,7 @@ int main(int argc, char* argv[]) {
     if (fclose(fp) < 0)
         ERR_AND_EXIT("fclose");
 
-    execl("/opt/java/openjdk/bin/java", "java", "-jar", "/rocky.jar",
+    execl("/opt/java/bin/java", "java", "-jar", "/rocky.jar",
         "run", "--infinite-loops", "--rocky", "code.rock", NULL);
     ERR_AND_EXIT("execl");
 }

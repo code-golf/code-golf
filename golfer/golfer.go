@@ -22,16 +22,16 @@ const (
 // TODO Some of this stuff isn't needed on every request but is needed to
 // populate golfer settings, that should be fixed.
 type Golfer struct {
-	About, Keymap, Name, Referrer, Theme string
-	Admin, ShowCountry, Sponsor          bool
-	BytesPoints, CharsPoints, ID         int
-	Cheevos, Holes                       pq.StringArray
-	Country                              config.NullCountry
-	Delete                               null.Time
-	FailingSolutions                     FailingSolutions
-	Following                            pq.Int64Array
-	Pronouns, TimeZone                   null.String
-	Settings                             Settings
+	About, Keymap, Name, Referrer, Theme  string
+	Admin, HasNotes, ShowCountry, Sponsor bool
+	BytesPoints, CharsPoints, ID          int
+	Cheevos, Holes                        pq.StringArray
+	Country                               config.NullCountry
+	Delete                                null.Time
+	FailingSolutions                      FailingSolutions
+	Following                             pq.Int64Array
+	Pronouns, TimeZone                    null.String
+	Settings                              Settings
 }
 
 // GolferInfo is populated when looking at a /golfers/xxx route.
@@ -44,7 +44,7 @@ type GolferInfo struct {
 	// Count of cheevos/holes/langs done
 	Holes, Langs int
 
-	HolesAuthored pq.StringArray
+	HolesAuthored config.Holes
 
 	// Count of cheevos/holes/langs available
 	CheevosTotal, HolesTotal, LangsTotal int
@@ -153,6 +153,15 @@ func (g *Golfer) SaveSettings(db *sqlx.DB) {
 func (g *Golfer) Solved(holeID string) bool {
 	_, ok := slices.BinarySearch(g.Holes, holeID)
 	return ok
+}
+
+func (g Golfer) SponsorOrAdmin() bool { return g.Sponsor || g.Admin }
+
+func (g *Golfer) Value() (driver.Value, error) {
+	if g == nil {
+		return nil, nil
+	}
+	return int64(g.ID), nil
 }
 
 func (s *Settings) Scan(v any) error { return json.Unmarshal(v.([]byte), &s) }

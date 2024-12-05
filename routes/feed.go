@@ -25,6 +25,10 @@ func init() {
 		sha, created, id string
 		hole             bool
 	}{
+		{"9a1fcec", "2024-12-01 00:00:06", "billiards", true},
+		{"05d85ed", "2024-11-01 00:01:17", "kaprekar-numbers", true},
+		{"e2f6993", "2024-10-23 19:43:52", "kotlin", false},
+		{"1fd2acf", "2024-10-01 00:00:02", "card-number-validation", true},
 		{"db53e05", "2024-09-01 00:00:19", "palindromemordnilap", true},
 		{"a3cd66a", "2024-08-22 01:53:21", "scheme", false},
 		{"7bca306", "2024-08-11 22:01:06", "jq", false},
@@ -107,7 +111,7 @@ func init() {
 		{"babc6cb", "2021-05-29 23:09:41", "assembly", false},
 		{"e3ade9f", "2021-05-03 20:17:00", "star-wars-opening-crawl", true},
 		{"7b70234", "2021-05-01 04:08:12", "van-eck-sequence", true},
-		{"db4bfba", "2021-04-25 22:39:11", "sudoku-v2", true},
+		{"db4bfba", "2021-04-25 22:39:11", "sudoku-fill-in", true},
 		{"a3cbf07", "2021-03-23 02:10:24", "crystal", false},
 		{"78f7023", "2021-01-24 20:44:04", "hexagony", false},
 		{"1d9ce0d", "2021-01-16 22:57:45", "kolakoski-constant", true},
@@ -155,7 +159,7 @@ func init() {
 		{"834750b", "2018-06-06 20:54:22", "diamonds", true},
 		{"bd8e789", "2018-05-20 18:09:59", "haskell", false},
 		{"7b72ebc", "2018-05-03 17:30:42", "niven-numbers", true},
-		{"827599e", "2018-03-22 16:56:44", "lisp", false},
+		{"827599e", "2018-03-22 16:56:44", "common-lisp", false},
 		{"5790715", "2018-02-18 21:01:24", "morse-decoder", true},
 		{"5790715", "2018-02-18 21:01:24", "morse-encoder", true},
 		{"05e21ff", "2018-01-27 23:39:06", "brainfuck", true},

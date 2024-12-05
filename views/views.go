@@ -6,8 +6,11 @@ import (
 	"io/fs"
 	"net/http"
 	"net/url"
+	"reflect"
 	"strings"
 
+	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/pretty"
 )
@@ -23,14 +26,40 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 	"hasSuffix": strings.HasSuffix,
 	"html":      func(html string) template.HTML { return template.HTML(html) },
 	"inc":       func(i int) int { return i + 1 },
+	"map":       func() map[string]bool { return map[string]bool{} },
 	"ord":       pretty.Ordinal,
 	"page":      func(i int) int { return i/pager.PerPage + 1 },
 	"title":     pretty.Title,
 	"time":      pretty.Time,
 
+	"getSet": func(m map[string]bool, k string) bool {
+		old := m[k]
+		m[k] = true
+		return old
+	},
+
+	"hasField": func(v any, name string) bool {
+		s := reflect.ValueOf(v)
+		return s.Kind() == reflect.Struct && s.FieldByName(name).IsValid()
+	},
+
 	"param": func(r *http.Request, key string) string {
 		value, _ := url.QueryUnescape(r.PathValue(key))
 		return value
+	},
+
+	"setting": func(golfer *golfer.Golfer, page, id string) any {
+		if golfer != nil {
+			return golfer.Settings[page][id]
+		}
+
+		for _, setting := range config.Settings[page] {
+			if setting.ID == id {
+				return setting.Default
+			}
+		}
+
+		return nil
 	},
 
 	"svg": func(name string) template.HTML {

@@ -81,7 +81,7 @@ description = 'Solve <a href=/seven-segment#assembly>Seven Segment in Assembly</
 [['Hole/Lang Specific']]
 name        = 'Bird Is the Word'
 emoji       = '🐦'
-description = 'Solve <a href=/levenshtein-distance>Levenshtein Distance</a> in any three of <a href=/levenshtein-distance#awk>AWK</a>, <a href=/levenshtein-distance#prolog>Prolog</a>, <a href=/levenshtein-distance#sql>SQL</a>, <a href=/levenshtein-distance#swift>Swift</a>, <a href=/levenshtein-distance#tcl>Tcl</a>, or <a href=/levenshtein-distance#wren>Wren</a>'
+description = 'Solve <a href=/levenshtein-distance>Levenshtein Distance</a> in any three of <a href=/levenshtein-distance#awk>AWK</a>, <a href=/levenshtein-distance#prolog>Prolog</a>, <a href=/levenshtein-distance#sql>SQL</a>, <a href=/levenshtein-distance#swift>Swift</a>, <a href=/levenshtein-distance#tcl>Tcl</a>, or <a href=/levenshtein-distance#wren>Wren</a>.'
 target      = 3
 
 [['Hole/Lang Specific']]
@@ -154,13 +154,13 @@ description = 'Solve any hole in both J and K.'
 [['Hole/Lang Specific']]
 name        = 'Mary Had a Little Lambda'
 emoji       = '🐑'
-description = 'Solve <a href=/λ>λ</a> in any three of <a href=/λ#clojure>Clojure</a>, <a href=/λ#coconut>Coconut</a>, <a href=/λ#haskell>Haskell</a>, <a href=/λ#lisp>Lisp</a>, or <a href=/λ#scheme>Scheme</a>'
+description = 'Solve <a href=/λ>λ</a> in any three of <a href=/λ#clojure>Clojure</a>, <a href=/λ#coconut>Coconut</a>, <a href=/λ#common-lisp>Common Lisp</a>, <a href=/λ#haskell>Haskell</a>, or <a href=/λ#scheme>Scheme</a>.'
 target      = 3
 
 [['Hole/Lang Specific']]
 name        = 'Off-the-grid'
 emoji       = '📴'
-description = 'Solve <a href=/sudoku#hexagony>Sudoku</a> or <a href=/sudoku-v2#hexagony>Sudoku v2</a> in Hexagony.'
+description = 'Solve <a href=/sudoku#hexagony>Sudoku</a> or <a href=/sudoku-fill-in#hexagony>Sudoku (Fill-in)</a> in Hexagony.'
 
 [['Hole/Lang Specific']]
 name        = 'Ouroboros'
@@ -172,6 +172,11 @@ name        = 'Pangramglot'
 emoji       = '🔠'
 description = 'Solve <a href=/pangram-grep>Pangram Grep</a> in languages whose combined names form a pangram.'
 target      = 26
+
+[['Hole/Lang Specific']]
+name        = 'S-box 360'
+emoji       = '🎮'
+description = 'Solve <a href=/rijndael-s-box>Rijndael S-box</a> in any Microsoft language.'
 
 [['Hole/Lang Specific']]
 name        = 'Solve Quine'
@@ -193,6 +198,11 @@ description = 'Solve any hole in both Perl and Raku.'
 name        = 'Under Pressure'
 emoji       = '🗜'
 description = 'Solve <a href=/pascals-triangle#pascal>Pascal’s Triangle in Pascal</a>.'
+
+[['Hole/Lang Specific']]
+name        = 'X-Factor'
+emoji       = '❌'
+description = 'Solve <a href=/factorial-factorisation#factor>Factorial Factorisation in Factor</a>.'
 
 # Miscellaneous
 

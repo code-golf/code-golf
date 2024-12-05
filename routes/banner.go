@@ -2,6 +2,8 @@ package routes
 
 import (
 	"html/template"
+	"maps"
+	"slices"
 	"strings"
 	"time"
 
@@ -10,18 +12,22 @@ import (
 	"github.com/code-golf/code-golf/pretty"
 )
 
-var nextHole = config.ExpHoleByID["palindromemordnilap"]
+var nextHole = config.ExpHoleByID["billiards"]
 
 type banner struct {
 	Body          template.HTML
 	HideKey, Type string
 }
 
-// TODO Allow a golfer to hide individual banners #709.
 func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 	// Upcoming hole.
 	if hole := nextHole; hole != nil {
-		in := "in " + pretty.Time(hole.Released.AsTime(time.UTC))
+		t := hole.Released.AsTime(time.UTC)
+		if golfer != nil {
+			t = t.In(golfer.Location())
+		}
+
+		in := "in approximately " + pretty.Time(t)
 		if strings.Contains(string(in), "ago") {
 			in = "momentarily"
 		}
@@ -62,19 +68,37 @@ func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 				"please update them to pass:<ul>",
 		}
 
-		prevHoleID := ""
-		for _, solution := range failing {
-			hole := config.HoleByID[solution.Hole]
-			lang := config.LangByID[solution.Lang]
+		type GroupItem struct {
+			HoleID, LangID, KeyName, OtherName string
+		}
 
-			if prevHoleID == hole.ID {
-				banner.Body += template.HTML(`, <a href="/` + hole.ID + "#" +
-					lang.ID + `">` + lang.Name + "</a>")
-			} else {
-				banner.Body += template.HTML("<li>" + hole.Name + `: <a href="/` + hole.ID + "#" +
-					lang.ID + `">` + lang.Name + "</a>")
+		byLang := make(map[string][]GroupItem)
+		byHole := make(map[string][]GroupItem)
+
+		for _, solution := range failing {
+			langName := config.LangByID[solution.Lang].Name
+			holeName := config.HoleByID[solution.Hole].Name
+			byLang[solution.Lang] = append(byLang[solution.Lang], GroupItem{solution.Hole, solution.Lang, langName, holeName})
+			byHole[solution.Hole] = append(byHole[solution.Hole], GroupItem{solution.Hole, solution.Lang, holeName, langName})
+		}
+
+		groups := byHole
+		if len(byLang) < len(byHole) {
+			groups = byLang
+		}
+		keys := slices.Collect(maps.Keys(groups))
+		slices.Sort(keys)
+
+		for _, key := range keys {
+			solutionGroup := groups[key]
+			for index, solution := range solutionGroup {
+				if index > 0 {
+					banner.Body += template.HTML(", ")
+				} else {
+					banner.Body += template.HTML("<li>" + solution.KeyName + ": ")
+				}
+				banner.Body += template.HTML(`<a href="/` + solution.HoleID + "#" + solution.LangID + `">` + solution.OtherName + "</a>")
 			}
-			prevHoleID = hole.ID
 		}
 
 		banner.Body += "</ul>"
