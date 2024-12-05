@@ -39,20 +39,21 @@ WORKDIR /osabie
 RUN curl -#L https://github.com/Adriandmen/05AB1E/tarball/$VER \
   | tar xz --strip-components 1
         
-COPY escape.patch /osabie/
+COPY 05ab1e.c escape.patch /
         
-RUN patch -p 1 < escape.patch
+RUN patch -p 1 < /escape.patch \
+ && gcc -Wall -Werror -Wextra -o /usr/bin/05ab1e -s -static /05ab1e.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/cat /bin/sh /bin/touch /bin/
-COPY --from=0 /lib/ld-musl-x86_64.so.1    /lib/
-COPY --from=0 /osabie/osabie.py           /osabie/
-COPY --from=0 /osabie/behaviour           /osabie/behaviour
-COPY --from=0 /osabie/lib                 /osabie/lib
-COPY --from=0 /usr/bin/python3.13         /usr/bin/python
-COPY --from=0 /usr/lib/python3.13         /usr/lib/python3.13
-
-COPY 05ab1e /usr/bin/
+COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
+COPY --from=0 /osabie/osabie.py        /osabie/
+COPY --from=0 /osabie/behaviour        /osabie/behaviour
+COPY --from=0 /osabie/lib              /osabie/lib
+COPY --from=0 /usr/bin/05ab1e          /usr/bin/
+COPY --from=0 /usr/bin/python3.13      /usr/bin/python
+COPY --from=0 /usr/lib/python3.13      /usr/lib/python3.13
 
 ENTRYPOINT ["05ab1e"]
+
+CMD ["--version"]

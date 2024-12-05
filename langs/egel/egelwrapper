@@ -1,8 +1,0 @@
-#!/bin/sh -e
-
-[ "$1" = "--version" ] && exec egel --version
-
-cat - > /tmp/code.eg
-
-shift
-exec egel /tmp/code.eg "$@"
