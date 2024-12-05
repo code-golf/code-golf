@@ -1162,7 +1162,7 @@ end
 args       = [ '/usr/bin/nibbleswrapper', '-' ]
 env        = [ 'PATH=/usr/local/bin:/usr/bin:/bin' ]
 experiment = 1062
-size       = '331 MiB'
+size       = '328 MiB'
 version    = '998ea44'
 website    = 'https://golfscript.com/nibbles/'
 example    = '''

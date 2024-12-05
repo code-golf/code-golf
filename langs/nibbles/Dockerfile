@@ -1,6 +1,6 @@
 FROM alpine:3.20 AS builder
 
-RUN apk add --no-cache build-base curl ncurses-dev
+RUN apk add --no-cache build-base curl dash ncurses-dev
 
 ENV VER=998ea44
 
@@ -13,30 +13,29 @@ RUN ./configure  \
 
 WORKDIR /usr/local/bin
 
-RUN curl -#L https://github.com/darrenks/nibbles/tarball/$VER \
-  | tar xz --strip-components 1
-
-RUN curl -#L https://hackage.haskell.org/package/dlist-1.0/dlist-1.0.tar.gz \
-  | tar xz --strip-components 1
-
-RUN curl -#L https://hackage.haskell.org/package/memoize-1.1.2/memoize-1.1.2.tar.gz \
+RUN curl -#L https://github.com/darrenks/nibbles/tarball/$VER                                     \
+  | tar xz --strip-components 1                                                                   \
+ && curl -#L https://hackage.haskell.org/package/dlist-1.0/dlist-1.0.tar.gz                       \
+  | tar xz --strip-components 1                                                                   \
+ && curl -#L https://hackage.haskell.org/package/memoize-1.1.2/memoize-1.1.2.tar.gz               \
+  | tar xz --strip-components 2                                                                   \
+ && curl -#L https://hackage.haskell.org/package/murmur-hash-0.1.0.11/murmur-hash-0.1.0.11.tar.gz \
+  | tar xz --strip-components 1                                                                   \
+ && curl -#L https://hackage.haskell.org/package/split-0.2.5/split-0.2.5.tar.gz                   \
   | tar xz --strip-components 2
 
-RUN curl -#L https://hackage.haskell.org/package/murmur-hash-0.1.0.11/murmur-hash-0.1.0.11.tar.gz \
-  | tar xz --strip-components 1
+RUN ghc -O -package ghc nibbles.hs \
+ && strip /lib/x86_64-linux-ghc-8.10.7/*.so*
 
-RUN curl -#L https://hackage.haskell.org/package/split-0.2.5/split-0.2.5.tar.gz \
-  | tar xz --strip-components 2
+COPY nibbleswrapper.c /
 
-RUN ghc -O -package ghc nibbles.hs
-
-RUN strip /lib/x86_64-linux-ghc-8.10.7/*.so*
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/nibbleswrapper -s -static /nibbleswrapper.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/cat /bin/cp /bin/touch /bin/sh                                      /bin/
+COPY --from=0 /usr/bin/dash                                                            /bin/sh
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/libz.so.1                                  /lib/
-COPY --from=0 /usr/bin/as /usr/bin/cc /usr/bin/ghc /usr/bin/ld                         /usr/bin/
+COPY --from=0 /usr/bin/as /usr/bin/cc /usr/bin/ghc /usr/bin/ld /usr/bin/nibbleswrapper /usr/bin/
 COPY --from=0 /usr/include                                                             /usr/include
 COPY --from=0 /usr/lib/crt1.o                                                          \
               /usr/lib/crti.o                                                          \
@@ -131,8 +130,6 @@ COPY --from=0 /usr/local/bin/Data/List/Split.hi                                 
 COPY --from=0 /usr/local/bin/Data/List/Split/Internals.hi                              \
               /usr/local/bin/Data/List/Split/Internals.hs                              \
               /usr/local/bin/Data/List/Split/Internals.o                               /usr/local/bin/Data/List/Split/
-
-COPY nibbleswrapper /usr/bin/
 
 ENTRYPOINT ["nibbleswrapper"]
 
