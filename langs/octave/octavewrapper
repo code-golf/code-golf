@@ -1,8 +1,0 @@
-#!/bin/sh -e
-
-[ "$1" = "--version" ] && exec octave --version
-
-cat - > /tmp/code.m
-
-shift
-exec octave --quiet /tmp/code.m "$@"
