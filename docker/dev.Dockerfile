@@ -34,6 +34,7 @@ COPY --from=codegolf/lang-ocaml        ["/", "/langs/ocaml/rootfs/"       ] # 91
 COPY --from=codegolf/lang-gleam        ["/", "/langs/gleam/rootfs/"       ] # 88.8 MiB
 COPY --from=codegolf/lang-coconut      ["/", "/langs/coconut/rootfs/"     ] # 85.8 MiB
 COPY --from=codegolf/lang-raku         ["/", "/langs/raku/rootfs/"        ] # 75.8 MiB
+COPY --from=codegolf/lang-octave       ["/", "/langs/octave/rootfs/"      ] # 74.7 MiB
 COPY --from=codegolf/lang-coffeescript ["/", "/langs/coffeescript/rootfs/"] # 69.1 MiB
 COPY --from=codegolf/lang-civet        ["/", "/langs/civet/rootfs/"       ] # 67.9 MiB
 COPY --from=codegolf/lang-clojure      ["/", "/langs/clojure/rootfs/"     ] # 66.3 MiB
