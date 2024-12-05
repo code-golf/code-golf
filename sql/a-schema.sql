@@ -71,13 +71,13 @@ CREATE TYPE keymap AS ENUM ('default', 'vim');
 
 CREATE TYPE lang AS ENUM (
     'assembly', 'awk', 'bash', 'basic', 'berry', 'brainfuck', 'c', 'c-sharp',
-    'civet', 'clojure',  'cpp', 'cobol', 'coconut', 'crystal', 'd', 'dart',
-    'elixir', 'f-sharp', 'factor', 'fish', 'forth', 'fortran', 'go',
-    'golfscript', 'haskell', 'hexagony', 'j', 'janet', 'java', 'javascript',
-    'jq', 'julia', 'k', 'kotlin', 'lisp', 'lua', 'nim', 'ocaml', 'pascal',
-    'perl', 'php', 'powershell', 'prolog', 'python', 'r', 'raku', 'rockstar',
-    'ruby', 'rust', 'scheme', 'sed', 'sql', 'swift', 'tcl', 'tex', 'v',
-    'viml', 'wren', 'zig'
+    'civet', 'clojure',  'cpp', 'cobol', 'coconut', 'common-lisp', 'crystal',
+    'd', 'dart', 'elixir', 'f-sharp', 'factor', 'fish', 'forth', 'fortran',
+    'go', 'golfscript', 'haskell', 'hexagony', 'j', 'janet', 'java',
+    'javascript', 'jq', 'julia', 'k', 'kotlin', 'lua', 'nim', 'ocaml',
+    'pascal', 'perl', 'php', 'powershell', 'prolog', 'python', 'r', 'raku',
+    'rockstar', 'ruby', 'rust', 'scheme', 'sed', 'sql', 'swift', 'tcl', 'tex',
+    'v', 'viml', 'wren', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('unicorn', 'diamond', 'gold', 'silver', 'bronze');
