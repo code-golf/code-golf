@@ -261,7 +261,7 @@ end
 [BQN]
 args       = [ '/usr/bin/bqn', '-' ]
 experiment = 474
-size       = '1.27 MiB'
+size       = '1.26 MiB'
 version    = 'CBQN 0.7.0'
 website    = 'https://github.com/dzaima/CBQN'
 example    = '''
