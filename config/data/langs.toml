@@ -1012,8 +1012,8 @@ echo each 2}.ARGV
 
 [Janet]
 args    = [ '/usr/bin/janet', '/proc/self/fd/0' ]
-size    = '886 KiB'
-version = '1.36.0'
+size    = '902 KiB'
+version = '1.37.1'
 website = 'https://janet-lang.org'
 example = '''
 # Printing
