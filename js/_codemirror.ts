@@ -18,7 +18,7 @@ import { oneDarkTheme, oneDarkHighlightStyle }   from '@codemirror/theme-one-dar
 import { vim }                                   from '@replit/codemirror-vim';
 
 // Languages.
-import { apl }                            from '@codemirror/legacy-modes/mode/apl';
+import { apl }                                      from '@codemirror/legacy-modes/mode/apl';
 import { assembly }                                 from '@defasm/codemirror';
 import { brainfuck }                                from 'codemirror-lang-brainfuck';
 import { c, csharp, dart, kotlin, scala, squirrel } from './vendor/codemirror-clike';
