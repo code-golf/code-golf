@@ -51,7 +51,7 @@ BEGIN
 
     -- 📚 Archivist
     SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs_for_hole)
-     WHERE unnest IN ('basic', 'cobol', 'forth', 'fortran', 'lisp');
+     WHERE unnest IN ('basic', 'cobol', 'common-lisp', 'forth', 'fortran');
     IF hole = 'isbn' AND found THEN
         earned := earn(earned, 'archivist', user_id); END IF;
 
@@ -121,7 +121,7 @@ BEGIN
 
     -- 🐑 Mary Had a Little Lambda
     SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs_for_hole)
-     WHERE unnest IN ('clojure', 'coconut', 'haskell', 'lisp', 'scheme');
+     WHERE unnest IN ('clojure', 'coconut', 'common-lisp', 'haskell', 'scheme');
     IF hole = 'λ' AND found THEN
         earned := earn(earned, 'mary-had-a-little-lambda', user_id); END IF;
 
