@@ -304,7 +304,7 @@ with 65536 cells; and cells are 8 bit with wrapping;
 
 [C]
 args    = [ '/usr/bin/tcc', '-run', '-' ]
-size    = '1.70 MiB'
+size    = '1.73 MiB'
 version = 'Tiny C Compiler 0.9.27'
 website = 'https://bellard.org/tcc/'
 example = '''
