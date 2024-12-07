@@ -1661,7 +1661,7 @@ for arg in CommandLine.arguments[1...] {
 
 [Tcl]
 args    = [ '/usr/bin/tcl', '/proc/self/fd/0' ]
-size    = '5.62 MiB'
+size    = '5.64 MiB'
 version = '9.0.0'
 website = 'https://www.tcl-lang.org'
 example = '''
