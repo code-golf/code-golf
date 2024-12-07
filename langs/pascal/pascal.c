@@ -7,9 +7,6 @@
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
 int main(int argc, char* argv[]) {
-    if (setenv("PATH", "/usr/lib/fpc/3.2.2:/usr/bin", 1))
-        ERR_AND_EXIT("setenv");
-
     if (argc > 1 && strcmp(argv[1], "--version") == 0) {
         execl("/usr/bin/fpc", "fpc", "-iV", NULL);
         ERR_AND_EXIT("execl");

@@ -40,6 +40,8 @@ COPY --from=0 /usr/lib/libbfd-2.42.so  \
               /usr/lib/libzstd.so.1    /usr/lib/
 COPY --from=0 /usr/lib/fpc             /usr/lib/fpc
 
+ENV PATH=/usr/lib/fpc/3.2.2:$PATH
+
 ENTRYPOINT ["pascal"]
 
 CMD ["--version"]
