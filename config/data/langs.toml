@@ -1769,7 +1769,7 @@ w
 
 [Wren]
 args    = [ '/usr/bin/wren', '-' ]
-size    = '496 KiB'
+size    = '505 KiB'
 version = '0.4.0'
 website = 'https://wren.io'
 example = '''
