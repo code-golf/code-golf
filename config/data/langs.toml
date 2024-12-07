@@ -676,7 +676,7 @@ command-line get-global [ print ] each
 [Fennel]
 args       = [ '/usr/bin/fennelwrapper', '/tmp/code.fnl' ]
 experiment = 1144
-size       = '665 KiB'
+size       = '673 KiB'
 version    = '1.5.1'
 website    = 'https://fennel-lang.org'
 example    = '''
