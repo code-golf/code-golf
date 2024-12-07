@@ -1159,6 +1159,24 @@ for i = 1, #arg do
 end
 '''
 
+[Nibbles]
+args       = [ '/usr/bin/nibbleswrapper', '-' ]
+env        = [ 'PATH=/usr/local/bin:/usr/bin:/bin' ]
+experiment = 1062
+size       = '328 MiB'
+version    = '998ea44'
+website    = 'https://golfscript.com/nibbles/'
+example    = '''
+# Printing
+"Hello, World!\n"
+
+# Looping
+`,10
+
+# Accessing arguments
+;@
+'''
+
 [Nim]
 args    = [ '/usr/bin/nim', '--colors:on', '-o:/tmp/code', '-r', 'c', '-' ]
 size    = '15.5 MiB'
