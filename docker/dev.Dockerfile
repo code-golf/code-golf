@@ -89,6 +89,7 @@ COPY --from=codegolf/lang-wren         ["/", "/langs/wren/rootfs/"        ] #  4
 COPY --from=codegolf/lang-lua          ["/", "/langs/lua/rootfs/"         ] #  354 KiB
 COPY --from=codegolf/lang-sed          ["/", "/langs/sed/rootfs/"         ] #  236 KiB
 COPY --from=codegolf/lang-brainfuck    ["/", "/langs/brainfuck/rootfs/"   ] # 51.2 KiB
+COPY --from=codegolf/lang-stax         ["/", "/langs/stax/rootfs/"        ] #    0 MiB
 
 COPY run-lang.c ./
 
