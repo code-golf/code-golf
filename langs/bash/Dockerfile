@@ -14,7 +14,6 @@ RUN ./configure                \
     --disable-command-timing   \
     --disable-debugger         \
     --disable-directory-stack  \
-    --disable-docs             \
     --disable-help-builtin     \
     --disable-job-control      \
     --disable-net-redirections \
