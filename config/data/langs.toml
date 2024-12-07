@@ -1510,7 +1510,7 @@ end
 
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
-size    = '351 MiB'
+size    = '352 MiB'
 version = '1.83.0'
 website = 'https://www.rust-lang.org'
 example = '''
