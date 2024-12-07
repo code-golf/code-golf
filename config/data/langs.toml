@@ -1408,7 +1408,7 @@ say 'Hello, World!';
 [Rebol]
 args       = [ '/usr/bin/rebol', '-qw', '--do', '$code', '--', '--script', '' ]
 experiment = 189
-size       = '1.22 MiB'
+size       = '1.23 MiB'
 version    = '2.7.8.4.10'
 website    = 'https://www.rebol.com'
 example    = '''
