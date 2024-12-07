@@ -189,6 +189,7 @@ export const extensions : { [key: string]: any } = {
     // TODO sed
     'sql':           sql,
     'squirrel':      StreamLanguage.define(squirrel),
+    // TODO stax
     'swift':         StreamLanguage.define(swift),
     'tcl':           StreamLanguage.define(tcl),
     'tex':           StreamLanguage.define(stex),
