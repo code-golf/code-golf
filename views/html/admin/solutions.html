@@ -15,6 +15,7 @@
             <option value={{ .ID }}
                 {{ if eq .ID ($.Request.FormValue "hole") }}selected{{ end }}>
                 {{ .Name }}
+                {{ if .Experiment }}(exp.){{ end }}
         {{ end }}
         </select>
 

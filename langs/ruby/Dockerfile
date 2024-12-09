@@ -1,4 +1,4 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache build-base clang curl openssl-dev yaml-dev
 
@@ -59,4 +59,4 @@ COPY --from=0 /usr/lib/ruby            /usr/lib/ruby
 
 ENTRYPOINT ["ruby"]
 
-CMD ["-e", "puts RUBY_VERSION"]
+CMD ["--version"]
