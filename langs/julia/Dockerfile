@@ -1,8 +1,8 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache autoconf build-base cmake curl gfortran linux-headers python3
 
-ENV CXXFLAGS=-flto LDFLAGS=-flto VER=1.11.1
+ENV CXXFLAGS=-flto LDFLAGS=-flto VER=1.11.2
 
 RUN curl -L https://github.com/JuliaLang/julia/releases/download/v$VER/julia-$VER.tar.gz \
   | tar xz
@@ -18,7 +18,6 @@ FROM codegolf/lang-base
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1      /lib/
 COPY --from=0 /usr/bin/julia                /usr/bin/
-COPY --from=0 /usr/lib/julia                /usr/lib/julia
 COPY --from=0 /usr/lib/libbrotlicommon.so.1 \
               /usr/lib/libbrotlidec.so.1    \
               /usr/lib/libcares.so.2        \
@@ -34,6 +33,7 @@ COPY --from=0 /usr/lib/libbrotlicommon.so.1 \
               /usr/lib/libstdc++.so.6       \
               /usr/lib/libunistring.so.5    \
               /usr/lib/libzstd.so.1         /usr/lib/
+COPY --from=0 /usr/lib/julia                /usr/lib/julia
 
 ENTRYPOINT ["julia"]
 
