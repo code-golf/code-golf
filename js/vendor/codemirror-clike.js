@@ -555,4 +555,102 @@ function tokenKotlinString(tripleString){
       closeBrackets: {brackets: ["(", "[", "{", "'", '"', '"""']}
     }
   });
-  
+
+function tokenTripleString(stream, state) {
+    var escaped = false;
+    while (!stream.eol()) {
+        if (!escaped && stream.match('"""')) {
+            state.tokenize = null;
+            break;
+        }
+        escaped = stream.next() == '\\' && !escaped;
+    }
+    return 'string';
+}
+
+function tokenNestedComment(depth) {
+    return function (stream, state) {
+        var ch;
+        while (ch = stream.next()) {
+            if (ch == '*' && stream.eat('/')) {
+                if (depth == 1) {
+                    state.tokenize = null;
+                    break;
+                } else {
+                    state.tokenize = tokenNestedComment(depth - 1);
+                    return state.tokenize(stream, state);
+                }
+            } else if (ch == '/' && stream.eat('*')) {
+                state.tokenize = tokenNestedComment(depth + 1);
+                return state.tokenize(stream, state);
+            }
+        }
+        return 'comment';
+    }
+}
+
+export const scala = clike({
+    keywords: words('abstract case catch class def do else extends final finally for forSome if' +
+                  ' implicit import lazy match new null object override package private protected return' +
+                  ' sealed super this throw trait try type val var while with yield _' +
+                  ' assert assume require print println printf readLine readBoolean readByte readShort' +
+                  ' readChar readInt readLong readFloat readDouble'),
+    types: words('AnyVal App Application Array BufferedIterator BigDecimal BigInt Char Console Either' +
+                ' Enumeration Equiv Error Exception Fractional Function IndexedSeq Int Integral Iterable' +
+                ' Iterator List Map Numeric Nil NotNull Option Ordered Ordering PartialFunction PartialOrdering' +
+                ' Product Proxy Range Responder Seq Serializable Set Specializable Stream StringBuilder' +
+                ' StringContext Symbol Throwable Traversable TraversableOnce Tuple Unit Vector' +
+                ' Boolean Byte Character CharSequence Class ClassLoader Cloneable Comparable' +
+                ' Compiler Double Exception Float Integer Long Math Number Object Package Pair Process' +
+                ' Runtime Runnable SecurityManager Short StackTraceElement StrictMath String' +
+                ' StringBuffer System Thread ThreadGroup ThreadLocal Throwable Triple Void'),
+    multiLineStrings: true,
+    blockKeywords: words('catch class enum do else finally for forSome if match switch try while'),
+    defKeywords: words('class enum def object package trait type val var'),
+    atoms: words('true false null'),
+    indentStatements: false,
+    indentSwitch: false,
+    isOperatorChar: /[+\-*&%=<>!?|\/#:@]/,
+    hooks: {
+        '@': function(stream) {
+            stream.eatWhile(/[\w\$_]/);
+            return 'meta';
+        },
+        '"': function(stream, state) {
+            if (!stream.match('""')) return false;
+            state.tokenize = tokenTripleString;
+            return state.tokenize(stream, state);
+        },
+        "'": function(stream) {
+            if (stream.match(/^(\\[^'\s]+|[^\\'])'/)) return 'string-2';
+            stream.eatWhile(/[\w\$_\xa1-\uffff]/);
+            return 'atom';
+        },
+        '=': function(stream, state) {
+            var cx = state.context;
+            if (cx.type == '}' && cx.align && stream.eat('>')) {
+                state.context = new Context(cx.indented, cx.column, cx.type, cx.info, null, cx.prev);
+                return 'operator';
+            }
+            return false;
+        },
+        '/': function(stream, state) {
+            if (!stream.eat('*')) return false;
+            state.tokenize = tokenNestedComment(1);
+            return state.tokenize(stream, state);
+        },
+    },
+    modeProps: {closeBrackets: {pairs: '()[]{}""', triples: '"'}},
+});
+
+export const squirrel = clike({
+    keywords: words('base break clone continue const default delete enum extends function in class' +
+                    ' foreach local resume return this throw typeof yield constructor instanceof static'),
+    types: cTypes,
+    blockKeywords: words('case catch class else for foreach if switch try while'),
+    defKeywords: words('function local class'),
+    typeFirstDefinitions: true,
+    atoms: words('true false null'),
+    hooks: {'#': cppHook},
+    modeProps: {fold: ['brace', 'include']}
+});

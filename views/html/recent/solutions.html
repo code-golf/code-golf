@@ -38,7 +38,7 @@
                         <span class=right>{{ comma .Strokes }}</span>
                         <svg><use href="#{{ .Lang.ID }}"/></svg>
                     </a>
-                <td class=right>{{ time .Submitted }}
+                <td class=right>{{ time (.Submitted.In $.Location) }}
         {{ end }}
     </table>
 </main>

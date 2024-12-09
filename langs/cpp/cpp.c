@@ -24,7 +24,7 @@ int main(int argc, char* argv[]) {
     ssize_t nbytes;
 
     while ((nbytes = fread(buffer, sizeof(char), sizeof(buffer), stdin)) > 0)
-        if (fwrite(buffer, sizeof(char), nbytes, fp) != nbytes)
+        if (fwrite(buffer, sizeof(char), nbytes, fp) != (size_t) nbytes)
             return 2;
 
     fclose(fp);
@@ -57,7 +57,7 @@ int main(int argc, char* argv[]) {
 
     int cargc = argc;
     char** cargv = malloc(cargc * sizeof(char*));
-    cargv[0] = (char*)bin;
+    cargv[0] = (char*) bin;
     memcpy(&cargv[1], &argv[2], (argc - 2) * sizeof(char*));
     cargv[cargc - 1] = NULL;
 

@@ -184,7 +184,7 @@ dialog {
     max-width: calc(100vw - 2rem);
     padding: 0;
     position: fixed;
-    transform: translate(-50%, -50%);
+    translate: -50% -50%;
     width: 30rem;
 }
 
@@ -714,10 +714,6 @@ body > .tabs a {
     }
 }
 
-.rotate-icon svg {
-    transform: rotate(90deg);
-}
-
 @keyframes fade {
     0%   { margin-top: -4rem; opacity: 0; visibility: collapse }
     100% { margin-top:  0;    opacity: 1; visibility: visible  }
@@ -728,7 +724,8 @@ body > .tabs a {
 
 @media (max-width: 50rem) {
     #two-pane {
-        grid-template: min-content min-content 1fr / 1fr;
+        display: flex;
+        flex-direction: column;
 
         & > #form-nav {
             display: flex;

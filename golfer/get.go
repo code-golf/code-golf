@@ -51,6 +51,8 @@ func Get(db *sqlx.DB, sessionID uuid.UUID) *Golfer {
 		                  FROM follows
 		                 WHERE follower_id = u.id
 		              ORDER BY followee_id)                 following,
+		          (SELECT COUNT(*)
+		             FROM notes WHERE user_id = u.id) > 0   has_notes,
 		          ARRAY(SELECT DISTINCT hole
 		                  FROM solutions
 		                 WHERE user_id = u.id
@@ -114,8 +116,8 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		          COALESCE(diamond, 0)                  diamond,
 		          COALESCE(gold, 0)                     gold,
 		          (SELECT COUNT(DISTINCT hole)
-		             FROM solutions
-		            WHERE user_id = id AND NOT FAILING) holes,
+		             FROM stable_passing_solutions
+		            WHERE user_id = id)                 holes,
 		          ARRAY(
 		            SELECT hole
 		              FROM authors
@@ -124,8 +126,8 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		          )                                     holes_authored,
 		          id,
 		          (SELECT COUNT(DISTINCT lang)
-		             FROM solutions
-		            WHERE user_id = id AND NOT FAILING) langs,
+		             FROM stable_passing_solutions
+		            WHERE user_id = id)                 langs,
 		          login                                 name,
 		          COALESCE(bytes.points, 0)             bytes_points,
 		          COALESCE(chars.points, 0)             chars_points,

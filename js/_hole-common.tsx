@@ -33,6 +33,7 @@ const renamedHoles: Record<string, string> = {
 };
 
 const renamedLangs: Record<string, string> = {
+    lisp:  'common-lisp',
     perl6: 'raku',
 };
 
@@ -124,7 +125,6 @@ export function getLang() {
     return lang;
 }
 
-const experimental = JSON.parse($('#experimental').innerText);
 export const hole         = decodeURI(location.pathname.slice(1));
 const scorings     = ['Bytes', 'Chars'];
 const solutions    = JSON.parse($('#solutions').innerText);
@@ -143,12 +143,12 @@ let hideDeleteBtn: boolean = false;
 // The savedInDB state is used to avoid saving solutions in localStorage when
 // those solutions match the solutions in the database. It's used to avoid
 // restoring a solution from localStorage when the user has improved that
-// solution on a different browser. Assume the user is logged-in by default
-// for non-experimental holes. At this point, it doesn't matter whether the
+// solution on a different browser. Assume the user is logged-in by default.
+// At this point, it doesn't matter whether the
 // user is actually logged-in, because solutions dictionaries will be empty
 // for users who aren't logged-in, so the savedInDB state won't be used.
 // By the time they are non-empty, the savedInDB state will have been updated.
-let savedInDB = !experimental;
+let savedInDB = true;
 
 export function getSavedInDB() {
     return savedInDB;
@@ -215,17 +215,21 @@ export function setCode(code: string, editor: EditorView | null) {
 function updateLangPicker() {
     const selectNodes: Node[] = [];
     const langSelect = <select><option value="">Other</option></select>;
+    const experimentalLangGroup = <optgroup label="Experimental"></optgroup>;
     let currentLangUnused = false;
 
     for (const l of sortedLangs as any[]) {
         if (!getSolutionCode(l.id, 0) &&
             !localStorage.getItem(getAutoSaveKey(l.id, 0)) &&
             !localStorage.getItem(getAutoSaveKey(l.id, 1))) {
-            const suffix = l.experiment ? ' (exp.)' : '';
-            langSelect.appendChild(<option value={l.id}>{l.name}{suffix}</option>);
+            const parent = l.experiment ? experimentalLangGroup : langSelect;
+            parent.appendChild(<option value={l.id}>{l.name}</option>);
             currentLangUnused ||= lang == l.id;
         }
     }
+
+    if (experimentalLangGroup.childElementCount > 0)
+        langSelect.appendChild(experimentalLangGroup);
 
     if (langSelect.childElementCount > 1) {
         langSelect.addEventListener('change', (e: Event) => {
@@ -312,8 +316,8 @@ export async function refreshScores(editor: any) {
     else
         $('#solutionPicker').classList.add('hide');
 
-    // Hide the delete button for exp holes or if we have no solutions.
-    hideDeleteBtn = experimental || (!dbBytes && !dbChars);
+    // Hide the delete button if we have no solutions.
+    hideDeleteBtn = !dbBytes && !dbChars;
     $('#deleteBtn')?.classList.toggle('hide', hideDeleteBtn);
 
     await populateScores(editor);
@@ -559,7 +563,7 @@ export async function submit(
     }
 
     const data = await res.json() as SubmitResponse;
-    savedInDB = data.logged_in && !experimental;
+    savedInDB = data.logged_in;
 
     if (submissionID != latestSubmissionID)
         return false;
