@@ -136,6 +136,7 @@ export const extensions : { [key: string]: any } = {
     'cobol':         StreamLanguage.define(cobol),
     'coconut':       python,
     'coffeescript':  StreamLanguage.define(coffeeScript),
+    'common-lisp':   StreamLanguage.define(commonLisp),
     'cpp':           cpp(),
     'crystal':       StreamLanguage.define(crystal),
     'd':             StreamLanguage.define(d),
@@ -166,7 +167,6 @@ export const extensions : { [key: string]: any } = {
     'julia':         StreamLanguage.define(julia),
     'k':             k(),
     'kotlin':        StreamLanguage.define(kotlin),
-    'lisp':          StreamLanguage.define(commonLisp),
     'lua':           StreamLanguage.define(lua),
     'nim':           StreamLanguage.define({ ...nim( {}, {} ), languageData: { commentTokens: { line: '#' } } }),
     // TODO noulith
