@@ -44,11 +44,16 @@ WORKDIR /npiet-$VER
 
 RUN ./configure && make && make install
 
+COPY pietwrapper.c /
+
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/pietwrapper -s -static /pietwrapper.c
+
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/cat /bin/sh /bin/touch   /bin/
 COPY --from=0 /lib/ld-musl-x86_64.so.1      /lib/
-COPY --from=0 /piet /usr/local/bin/npiet    /usr/bin/
+COPY --from=0 /piet                         \
+              /usr/bin/pietwrapper          \
+              /usr/local/bin/npiet          /usr/bin/
 COPY --from=0 /usr/bin/python3.13           /usr/bin/python3
 COPY --from=0 /usr/lib/libX11.so.6          \
               /usr/lib/libXau.so.6          \
@@ -77,6 +82,6 @@ COPY --from=0 /usr/lib/libX11.so.6          \
               /usr/lib/libzstd.so.1         /usr/lib/
 COPY --from=0 /usr/lib/python3.13           /usr/lib/python3.13
 
-COPY /pietwrapper /usr/bin/
-
 ENTRYPOINT ["pietwrapper"]
+
+CMD ["--version"]
