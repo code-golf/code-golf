@@ -1,4 +1,4 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache build-base curl libffi-dev openssl-dev zlib-dev
 
@@ -25,28 +25,28 @@ RUN pip3 install vyxal==$VER
 WORKDIR /usr/lib/python3.10
 
 # Remove some unneeded libraries.
-RUN rm -r __pycache__/doctest.* \
-          __pycache__/pydoc.*   \
-          __pycache__/turtle.*  \
-          ensurepip             \
-          idlelib               \
-          lib2to3               \
-          pydoc_data            \
-          tkinter               \
-          turtle.py             \
-          turtledemo            \
+RUN find . -name '*.opt-[12].pyc' -delete \
+ && rm -r __pycache__/doctest.*           \
+          __pycache__/pydoc.*             \
+          __pycache__/turtle.*            \
+          ensurepip                       \
+          idlelib                         \
+          pydoc_data                      \
+          tkinter                         \
+          turtle.py                       \
+          turtledemo                      \
           unittest
 
 RUN gcc -Wall -Werror -Wextra -o /usr/bin/vyxalwrapper -s -static /vyxalwrapper.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 \
-              /lib/libz.so.1           /lib/
+COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
 COPY --from=0 /usr/bin/python3.10      \
               /usr/bin/vyxal           \
               /usr/bin/vyxalwrapper    /usr/bin/
-COPY --from=0 /usr/lib/libffi.so.8     /usr/lib/
+COPY --from=0 /usr/lib/libffi.so.8     \
+              /usr/lib/libz.so.1       /usr/lib/
 COPY --from=0 /usr/lib/python3.10      /usr/lib/python3.10
 
 ENTRYPOINT ["vyxalwrapper"]
