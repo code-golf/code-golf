@@ -242,10 +242,10 @@ func nfaSimulator() []Run {
 		results = append(results, solveNFA(dfa))
 	}
 
-	rand.Shuffle(len(args), func(i, j int) {
-		args[i], args[j] = args[j], args[i]
-		results[i], results[j] = results[j], results[i]
-	})
+	tests := make([]test, len(args))
+	for i := range tests {
+		tests[i] = test{args[i], results[i]}
+	}
 
-	return []Run{{Args: args, Answer: strings.Join(results, "\n\n")}}
+	return outputTestsWithSep("\n\n", shuffle(tests))
 }

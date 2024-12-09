@@ -12,7 +12,7 @@
 
 {{ if .Data.Failing }}
     <p>Currently failing.
-{{ else }}
+{{ else if not .Data.Hole.Experiment }}
     <p>
         <a href="/rankings/holes/{{ .Data.Hole.ID }}/{{ .Data.Lang.ID }}/{{ .Data.Scoring -}}
             ?page={{ page .Data.Row }}">
@@ -23,7 +23,7 @@
             {{ comma .Data.RankOverall }}<sup>{{ ord .Data.RankOverall }}</sup> overall</a>.
 {{ end }}
 
-    <p>Last tested {{ time .Data.Tested }}.
+    <p>Last tested {{ time (.Data.Tested.In $.Location) }}.
 
     <div><button class=btn id=test-solution>Test Solution</button></div>
 
@@ -39,7 +39,7 @@
                 <tr>
                     <td class=right>{{ comma .Bytes }}
                     <td class=right>{{ with .Chars }}{{ comma . }}{{ end }}
-                    <td class=right>{{ time .Submitted }}
+                    <td class=right>{{ time (.Submitted.In $.Location) }}
             {{ end }}
         </table>
     </div>

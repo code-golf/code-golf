@@ -18,54 +18,54 @@ import { oneDarkTheme, oneDarkHighlightStyle }   from '@codemirror/theme-one-dar
 import { vim }                                   from '@replit/codemirror-vim';
 
 // Languages.
-import { assembly }                from '@defasm/codemirror';
-import { brainfuck }               from 'codemirror-lang-brainfuck';
-import { c, csharp, dart, kotlin } from './vendor/codemirror-clike';
-import { clojure }                 from '@codemirror/legacy-modes/mode/clojure';
-import { cobol }                   from './vendor/codemirror-cobol';
-import { coffeeScript }            from '@codemirror/legacy-modes/mode/coffeescript';
-import { commonLisp }              from '@codemirror/legacy-modes/mode/commonlisp';
-import { cpp }                     from '@codemirror/lang-cpp';
-import { crystal }                 from '@codemirror/legacy-modes/mode/crystal';
-import { d }                       from '@codemirror/legacy-modes/mode/d';
-import { elixirLanguage }          from 'codemirror-lang-elixir';
-import { factor }                  from '@codemirror/legacy-modes/mode/factor';
-import { forth }                   from '@codemirror/legacy-modes/mode/forth';
-import { fortran }                 from '@codemirror/legacy-modes/mode/fortran';
-import { fSharp, oCaml }           from '@codemirror/legacy-modes/mode/mllike';
-import { gleamLanguage }           from '@exercism/codemirror-lang-gleam';
-import { goLanguage }              from '@codemirror/lang-go';
-import { golfScript }              from 'codemirror-lang-golfscript';
-import { groovy }                  from '@codemirror/legacy-modes/mode/groovy';
-import { haskell }                 from '@codemirror/legacy-modes/mode/haskell';
-import { haxe }                    from '@codemirror/legacy-modes/mode/haxe';
-import { j }                       from 'codemirror-lang-j';
-import { janet }                   from 'codemirror-lang-janet';
-import { java }                    from '@codemirror/lang-java';
-import { javascriptLanguage }      from '@codemirror/lang-javascript';
-import { jq }                      from 'codemirror-lang-jq';
-import { julia }                   from '@codemirror/legacy-modes/mode/julia';
-import { k }                       from 'codemirror-lang-k';
-import { lua }                     from '@codemirror/legacy-modes/mode/lua';
-import { nim }                     from 'nim-codemirror-mode';
-import { pascal }                  from '@codemirror/legacy-modes/mode/pascal';
-import { perl }                    from '@codemirror/legacy-modes/mode/perl';
-import { phpLanguage }             from '@codemirror/lang-php';
-import { powerShell }              from '@codemirror/legacy-modes/mode/powershell';
-import { prolog }                  from 'codemirror-lang-prolog';
-import { pythonLanguage }          from '@codemirror/lang-python';
-import { r }                       from '@codemirror/legacy-modes/mode/r';
-import { raku }                    from './vendor/codemirror-raku';
-import { ruby }                    from '@codemirror/legacy-modes/mode/ruby';
-import { rust }                    from '@codemirror/lang-rust';
-import { scheme }                  from '@codemirror/legacy-modes/mode/scheme';
-import { shell }                   from '@codemirror/legacy-modes/mode/shell';
-import { SQLite }                  from '@codemirror/lang-sql';
-import { swift }                   from '@codemirror/legacy-modes/mode/swift';
-import { tcl }                     from '@codemirror/legacy-modes/mode/tcl';
-import { stex }                    from '@codemirror/legacy-modes/mode/stex';
-import { wrenLanguage }            from '@exercism/codemirror-lang-wren';
-import { zig }                     from 'codemirror-lang-zig';
+import { assembly }                                 from '@defasm/codemirror';
+import { brainfuck }                                from 'codemirror-lang-brainfuck';
+import { c, csharp, dart, kotlin, scala, squirrel } from './vendor/codemirror-clike';
+import { clojure }                                  from '@codemirror/legacy-modes/mode/clojure';
+import { cobol }                                    from './vendor/codemirror-cobol';
+import { coffeeScript }                             from '@codemirror/legacy-modes/mode/coffeescript';
+import { commonLisp }                               from '@codemirror/legacy-modes/mode/commonlisp';
+import { cpp }                                      from '@codemirror/lang-cpp';
+import { crystal }                                  from '@codemirror/legacy-modes/mode/crystal';
+import { d }                                        from '@codemirror/legacy-modes/mode/d';
+import { elixirLanguage }                           from 'codemirror-lang-elixir';
+import { factor }                                   from '@codemirror/legacy-modes/mode/factor';
+import { forth }                                    from '@codemirror/legacy-modes/mode/forth';
+import { fortran }                                  from '@codemirror/legacy-modes/mode/fortran';
+import { fSharp, oCaml }                            from '@codemirror/legacy-modes/mode/mllike';
+import { gleamLanguage }                            from '@exercism/codemirror-lang-gleam';
+import { goLanguage }                               from '@codemirror/lang-go';
+import { golfScript }                               from 'codemirror-lang-golfscript';
+import { groovy }                                   from '@codemirror/legacy-modes/mode/groovy';
+import { haskell }                                  from '@codemirror/legacy-modes/mode/haskell';
+import { haxe }                                     from '@codemirror/legacy-modes/mode/haxe';
+import { j }                                        from 'codemirror-lang-j';
+import { janet }                                    from 'codemirror-lang-janet';
+import { java }                                     from '@codemirror/lang-java';
+import { javascriptLanguage }                       from '@codemirror/lang-javascript';
+import { jq }                                       from 'codemirror-lang-jq';
+import { julia }                                    from '@codemirror/legacy-modes/mode/julia';
+import { k }                                        from 'codemirror-lang-k';
+import { lua }                                      from '@codemirror/legacy-modes/mode/lua';
+import { nim }                                      from 'nim-codemirror-mode';
+import { pascal }                                   from '@codemirror/legacy-modes/mode/pascal';
+import { perl }                                     from '@codemirror/legacy-modes/mode/perl';
+import { phpLanguage }                              from '@codemirror/lang-php';
+import { powerShell }                               from '@codemirror/legacy-modes/mode/powershell';
+import { prolog }                                   from 'codemirror-lang-prolog';
+import { pythonLanguage }                           from '@codemirror/lang-python';
+import { r }                                        from '@codemirror/legacy-modes/mode/r';
+import { raku }                                     from './vendor/codemirror-raku';
+import { ruby }                                     from '@codemirror/legacy-modes/mode/ruby';
+import { rust }                                     from '@codemirror/lang-rust';
+import { scheme }                                   from '@codemirror/legacy-modes/mode/scheme';
+import { shell }                                    from '@codemirror/legacy-modes/mode/shell';
+import { SQLite }                                   from '@codemirror/lang-sql';
+import { swift }                                    from '@codemirror/legacy-modes/mode/swift';
+import { tcl }                                      from '@codemirror/legacy-modes/mode/tcl';
+import { stex }                                     from '@codemirror/legacy-modes/mode/stex';
+import { wrenLanguage }                             from '@exercism/codemirror-lang-wren';
+import { zig }                                      from 'codemirror-lang-zig';
 
 // Bypass default constructors so we only get highlighters and not extensions.
 const elixir     = new LanguageSupport(elixirLanguage);
@@ -118,6 +118,7 @@ export const extensions : { [key: string]: any } = {
     'vim': vim({ status: true }),
 
     // Languages.
+    // TODO 05ab1e
     // TODO algol-68
     // TODO arturo
     'assembly':      assembly(),
@@ -130,10 +131,12 @@ export const extensions : { [key: string]: any } = {
     'c':             StreamLanguage.define(c),
     'c-sharp':       StreamLanguage.define(csharp),
     'civet':         javascript,
+    // TODO cjam
     'clojure':       StreamLanguage.define(clojure),
     'cobol':         StreamLanguage.define(cobol),
     'coconut':       python,
     'coffeescript':  StreamLanguage.define(coffeeScript),
+    'common-lisp':   StreamLanguage.define(commonLisp),
     'cpp':           cpp(),
     'crystal':       StreamLanguage.define(crystal),
     'd':             StreamLanguage.define(d),
@@ -149,6 +152,7 @@ export const extensions : { [key: string]: any } = {
     'go':            go,
     'golfscript':    golfScript(),
     'groovy':        StreamLanguage.define(groovy),
+    // TODO harbour
     // TODO hare
     'haskell':       StreamLanguage.define(haskell),
     'haxe':          StreamLanguage.define(haxe),
@@ -163,7 +167,6 @@ export const extensions : { [key: string]: any } = {
     'julia':         StreamLanguage.define(julia),
     'k':             k(),
     'kotlin':        StreamLanguage.define(kotlin),
-    'lisp':          StreamLanguage.define(commonLisp),
     'lua':           StreamLanguage.define(lua),
     'nim':           StreamLanguage.define({ ...nim( {}, {} ), languageData: { commentTokens: { line: '#' } } }),
     // TODO nit
@@ -183,9 +186,11 @@ export const extensions : { [key: string]: any } = {
     // TODO rockstar
     'ruby':          StreamLanguage.define(ruby),
     'rust':          rust(),
+    'scala':         StreamLanguage.define(scala),
     'scheme':        StreamLanguage.define(scheme),
     // TODO sed
     'sql':           sql,
+    'squirrel':      StreamLanguage.define(squirrel),
     'swift':         StreamLanguage.define(swift),
     'tcl':           StreamLanguage.define(tcl),
     'tex':           StreamLanguage.define(stex),

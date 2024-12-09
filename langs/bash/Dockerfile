@@ -14,7 +14,6 @@ RUN ./configure                \
     --disable-command-timing   \
     --disable-debugger         \
     --disable-directory-stack  \
-    --disable-docs             \
     --disable-help-builtin     \
     --disable-job-control      \
     --disable-net-redirections \
@@ -25,10 +24,10 @@ RUN ./configure                \
  && make                       \
  && strip bash
 
-FROM codegolf/lang-base-no-proc
+FROM codegolf/lang-base
 
 COPY --from=0 /lang/bash /usr/bin/
 
 ENTRYPOINT ["bash"]
 
-CMD ["-c", "echo ${BASH_VERSION%\\([0-9]\\)-release}"]
+CMD ["--version"]
