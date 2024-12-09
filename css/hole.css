@@ -35,7 +35,7 @@ aside > h3 {
     background: var(--color);
     line-height: 2rem;
     padding: .5rem 0;
-    transform: rotate(.5turn);
+    rotate: 180deg;
     writing-mode: vertical-rl;
 }
 

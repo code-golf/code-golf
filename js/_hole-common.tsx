@@ -33,6 +33,7 @@ const renamedHoles: Record<string, string> = {
 };
 
 const renamedLangs: Record<string, string> = {
+    lisp:  'common-lisp',
     perl6: 'raku',
 };
 
@@ -214,17 +215,21 @@ export function setCode(code: string, editor: EditorView | null) {
 function updateLangPicker() {
     const selectNodes: Node[] = [];
     const langSelect = <select><option value="">Other</option></select>;
+    const experimentalLangGroup = <optgroup label="Experimental"></optgroup>;
     let currentLangUnused = false;
 
     for (const l of sortedLangs as any[]) {
         if (!getSolutionCode(l.id, 0) &&
             !localStorage.getItem(getAutoSaveKey(l.id, 0)) &&
             !localStorage.getItem(getAutoSaveKey(l.id, 1))) {
-            const suffix = l.experiment ? ' (exp.)' : '';
-            langSelect.appendChild(<option value={l.id}>{l.name}{suffix}</option>);
+            const parent = l.experiment ? experimentalLangGroup : langSelect;
+            parent.appendChild(<option value={l.id}>{l.name}</option>);
             currentLangUnused ||= lang == l.id;
         }
     }
+
+    if (experimentalLangGroup.childElementCount > 0)
+        langSelect.appendChild(experimentalLangGroup);
 
     if (langSelect.childElementCount > 1) {
         langSelect.addEventListener('change', (e: Event) => {
