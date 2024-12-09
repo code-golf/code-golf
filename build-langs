@@ -61,36 +61,36 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
             # Dotted decimal or hyphenated date.
             my $digits = $ver ~~ / \d+ ( <[.-]> \d+ )+ /;
 
-            when 'ALGOL 68'   { $ver = "Algol 68 Genie $digits" }
+            when 'ALGOL 68'    { $ver = "Algol 68 Genie $digits" }
             when 'AWK'
                | 'Forth'
                | 'Fortran'
-               | 'sed'        { $ver = "GNU $name $digits" }
-            when 'BASIC'      { $ver = "FreeBASIC $digits" }
-            when 'BQN'        { $ver = "C$name $digits" }
-            when 'C'          { $ver = "Tiny C Compiler $digits" }
+               | 'sed'         { $ver = "GNU $name $digits" }
+            when 'BASIC'       { $ver = "FreeBASIC $digits" }
+            when 'BQN'         { $ver = "C$name $digits" }
+            when 'C'           { $ver = "Tiny C Compiler $digits" }
             when 'C#'
                | 'F#'
-               | 'PowerShell' { }
-            when 'C++'        { $ver = "Clang $digits" }
-            when 'Clojure'    { $ver = "Babashka $digits" }
-            when 'COBOL'      { $ver = "GnuCOBOL $digits" }
-            when 'D'          { $ver = "DMD $digits" }
-            when 'Haskell'    { $ver = "GHC $digits" }
-            when 'Java'       { $ver = "OpenJDK $digits" }
-            when 'JavaScript' { $ver = "V8 $digits" }
-            when 'Lisp'       { $ver = "GNU CLISP $digits" }
-            when 'Pascal'     { $ver = "Free Pascal $digits" }
-            when 'Prolog'     { $ver = "SWI-Prolog $digits" }
-            when 'Raku'       {
+               | 'PowerShell'  { }
+            when 'C++'         { $ver = "Clang $digits" }
+            when 'Clojure'     { $ver = "Babashka $digits" }
+            when 'COBOL'       { $ver = "GnuCOBOL $digits" }
+            when 'Common Lisp' { $ver = "GNU CLISP $digits" }
+            when 'D'           { $ver = "DMD $digits" }
+            when 'Haskell'     { $ver = "GHC $digits" }
+            when 'Java'        { $ver = "OpenJDK $digits" }
+            when 'JavaScript'  { $ver = "V8 $digits" }
+            when 'Pascal'      { $ver = "Free Pascal $digits" }
+            when 'Prolog'      { $ver = "SWI-Prolog $digits" }
+            when 'Raku'        {
                 $ver ~~ m:g/ v (\S+) '.' /;
                 $ver = "Raku $1[0] on Rakudo $0[0]";
             }
-            when 'Rexx'       { $ver = "Regina $digits" }
-            when 'Rockstar'   { $ver = "Rocky $digits" }
-            when 'Scheme'     { $ver = "Chez Scheme $digits" }
-            when 'SQL'        { $ver = "SQLite $digits" }
-            default           { $ver = $digits }
+            when 'Rexx'        { $ver = "Regina $digits" }
+            when 'Rockstar'    { $ver = "Rocky $digits" }
+            when 'Scheme'      { $ver = "Chez Scheme $digits" }
+            when 'SQL'         { $ver = "SQLite $digits" }
+            default            { $ver = $digits }
         }
 
         die "Couldn't get version string for $id." unless $ver;

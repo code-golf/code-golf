@@ -1,4 +1,4 @@
-FROM rust:1.82.0-alpine3.20 AS builder
+FROM rust:1.83.0-alpine3.21 AS builder
 
 RUN apk add --no-cache build-base linux-headers
 
