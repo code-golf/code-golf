@@ -2,11 +2,16 @@ FROM eclipse-temurin:23.0.1_11-jre-alpine AS builder
 
 RUN apk add --no-cache bash curl
 
-ENV VER=2.0.21
+ENV VER=2.1.0
 
-RUN curl -L https://github.com/JetBrains/kotlin/releases/download/v$VER/kotlin-compiler-$VER.zip > kotlin.zip
+RUN curl -#L https://github.com/JetBrains/kotlin/releases/download/v$VER/kotlin-compiler-$VER.zip > kotlin.zip
 
 RUN unzip kotlin.zip && cp -r /kotlinc/* /usr/
+
+# Remove some unneeded libraries.
+RUN rm -f /usr/lib/android*.jar \
+          /usr/lib/*sources.jar \
+          /usr/lib/*test*.jar
 
 FROM codegolf/lang-base
 
