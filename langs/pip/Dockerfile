@@ -1,9 +1,9 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.21 AS builder
 
-RUN apk add --no-cache curl
+ENV VER=1.2.0
 
-RUN curl -L https://github.com/dloscutoff/pip/archive/refs/tags/v1.2.0.tar.gz \
-  | tar -xz --strip-components 1
+RUN wget -O- https://github.com/dloscutoff/pip/archive/refs/tags/v$VER.tar.gz \
+  | tar xz --strip-components 1
 
 FROM codegolf/lang-python
 

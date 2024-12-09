@@ -1290,7 +1290,7 @@ for ($i = 1; $i < $argc; $i++)
 [Pip]
 args       = [ '/usr/bin/python', 'pip.py', '-e', '$code', '--' ]
 experiment = 919
-size       = '48.0 MiB'
+size       = '29.5 MiB'
 version    = '1.2.0'
 website    = 'https://github.com/dloscutoff/pip'
 example    = '''
