@@ -277,7 +277,7 @@ example    = '''
 
 [brainfuck]
 args    = [ '/usr/bin/brainfuck', '-xc', '$code' ]
-size    = '51.2 KiB'
+size    = '51.1 KiB'
 version = '077cc7f'
 website = 'https://github.com/primo-ppcg/bfci'
 example = '''
