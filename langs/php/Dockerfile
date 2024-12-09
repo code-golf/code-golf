@@ -1,8 +1,8 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache build-base curl
 
-RUN curl -L https://php.net/distributions/php-8.4.0.tar.xz | tar xJ
+RUN curl -L https://php.net/distributions/php-8.4.1.tar.xz | tar xJ
 
 ENV CFLAGS='-O2 -flto' LDFLAGS='-O2 -flto -all-static'
 
@@ -25,4 +25,4 @@ COPY --from=0 /usr/lib/php.ini /usr/lib/
 
 ENTRYPOINT ["php"]
 
-CMD ["-r", "echo phpversion();"]
+CMD ["--version"]
