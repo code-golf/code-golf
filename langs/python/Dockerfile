@@ -1,14 +1,15 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache build-base curl libffi-dev zlib-dev
 
 # Also bump 05AB1E, Coconut, Hy.
-ENV VER=3.13.0
+ENV VER=3.13.1
 
 RUN curl https://www.python.org/ftp/python/$VER/Python-$VER.tar.xz | tar xJ
 
-RUN cd Python-$VER             \
- && ./configure                \
+WORKDIR /Python-$VER
+
+RUN ./configure                \
     --disable-test-modules     \
     --prefix=/usr              \
     --with-lto                 \
