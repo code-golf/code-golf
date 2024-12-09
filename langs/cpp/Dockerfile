@@ -1,4 +1,4 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache build-base cmake curl linux-headers ninja python3
 
@@ -22,7 +22,7 @@ RUN cmake -G Ninja                    \
     -DLLVM_INCLUDE_TESTS='OFF'        \
     -DLLVM_TARGETS_TO_BUILD='Native' ..
 
-RUN ninja install        \
+RUN ninja install \
  && strip /usr/bin/clang \
           /usr/lib/libLLVM-19.so
 
@@ -32,17 +32,17 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/cpp -s -static /cpp.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/libz.so.1 /lib/
+COPY --from=0 /lib/ld-musl-x86_64.so.1                /lib/
 COPY --from=0 /usr/bin/clang /usr/bin/cpp /usr/bin/ld /usr/bin/
 COPY --from=0 /usr/include/*.h                        /usr/include/
 COPY --from=0 /usr/include/bits/*.h                   /usr/include/bits/
-COPY --from=0 /usr/include/c++/13.2.1                 /usr/include/c++/13.2.1
+COPY --from=0 /usr/include/c++/14.2.0                 /usr/include/c++/14.2.0
 COPY --from=0 /usr/include/sys/*.h                    /usr/include/sys/
 COPY --from=0 /usr/lib/Scrt1.o                        \
               /usr/lib/crti.o                         \
               /usr/lib/crtn.o                         \
               /usr/lib/libLLVM-19.so                  \
-              /usr/lib/libbfd-2.42.so                 \
+              /usr/lib/libbfd-2.43.1.so               \
               /usr/lib/libc.so                        \
               /usr/lib/libctf.so.0                    \
               /usr/lib/libgcc_s.so                    \
@@ -51,11 +51,12 @@ COPY --from=0 /usr/lib/Scrt1.o                        \
               /usr/lib/libsframe.so.1                 \
               /usr/lib/libstdc++.so                   \
               /usr/lib/libstdc++.so.6                 \
+              /usr/lib/libz.so.1                      \
               /usr/lib/libzstd.so.1                   /usr/lib/
-COPY --from=0 /usr/lib/gcc/x86_64*/13.2.1/crtbegin.o  \
-              /usr/lib/gcc/x86_64*/13.2.1/crtbeginS.o \
-              /usr/lib/gcc/x86_64*/13.2.1/crtendS.o   \
-              /usr/lib/gcc/x86_64*/13.2.1/libgcc.a    /usr/lib/gcc/x86_64-alpine-linux-musl/13.2.1/
+COPY --from=0 /usr/lib/gcc/x86_64*/14.2.0/crtbegin.o  \
+              /usr/lib/gcc/x86_64*/14.2.0/crtbeginS.o \
+              /usr/lib/gcc/x86_64*/14.2.0/crtendS.o   \
+              /usr/lib/gcc/x86_64*/14.2.0/libgcc.a    /usr/lib/gcc/x86_64-alpine-linux-musl/14.2.0/
 
 COPY unbuffered.cpp /
 
