@@ -94,7 +94,7 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 		{
 			cheevo: "archivist",
 			holes:  []any{"isbn"},
-			langs:  []any{"basic", "cobol", "forth", "fortran", "lisp"},
+			langs:  []any{"basic", "cobol", "common-lisp", "forth", "fortran"},
 		},
 		{
 			cheevo: "bird-is-the-word",
@@ -114,7 +114,7 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 		{
 			cheevo: "mary-had-a-little-lambda",
 			holes:  []any{"λ"},
-			langs:  []any{"clojure", "coconut", "haskell", "lisp", "scheme"},
+			langs:  []any{"clojure", "coconut", "common-lisp", "haskell", "scheme"},
 		},
 		{
 			cheevo: "sounds-quite-nice",
@@ -124,9 +124,8 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 	} {
 		cheevoProgress(
 			`SELECT COUNT(DISTINCT(hole, lang))
-			   FROM solutions
-			  WHERE NOT failing
-			    AND hole    = ANY($1)
+			   FROM stable_passing_solutions
+			  WHERE hole    = ANY($1)
 			    AND lang    = ANY($2)
 			    AND user_id = $3`,
 			[]string{cheevo.cheevo},
@@ -137,23 +136,23 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 
 	cheevoProgress(
 		`SELECT pangramglot(array_agg(DISTINCT lang))
-		   FROM solutions
-		  WHERE NOT failing AND hole = 'pangram-grep' AND user_id = $1`,
+		   FROM stable_passing_solutions
+		  WHERE hole = 'pangram-grep' AND user_id = $1`,
 		[]string{"pangramglot"},
 	)
 
 	cheevoProgress(
 		`SELECT COALESCE(EXTRACT(days FROM TIMEZONE('UTC', NOW()) - MIN(submitted)), 0)
-		   FROM solutions
-		  WHERE NOT FAILING AND user_id = $1`,
+		   FROM stable_passing_solutions
+		  WHERE user_id = $1`,
 		[]string{"aged-like-fine-wine"},
 	)
 
 	cheevoProgress(
 		`WITH langs AS (
 		    SELECT COUNT(DISTINCT lang)
-		      FROM solutions
-		     WHERE NOT failing AND user_id = $1
+		      FROM stable_passing_solutions
+		     WHERE user_id = $1
 		  GROUP BY hole
 		) SELECT COALESCE(MAX(count), 0) FROM langs`,
 		[]string{"polyglot", "polyglutton", "omniglot", "omniglutton"},
@@ -162,8 +161,8 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 	cheevoProgress(
 		`WITH distinct_holes AS (
 		    SELECT DISTINCT hole
-		      FROM solutions
-		     WHERE NOT failing AND user_id = $2
+		      FROM stable_passing_solutions
+		     WHERE user_id = $2
 		) SELECT COUNT(DISTINCT $1::hstore->hole::text) FROM distinct_holes`,
 		[]string{"smörgåsbord"},
 		config.HoleCategoryHstore,
@@ -171,8 +170,8 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 
 	cheevoProgress(
 		`SELECT COUNT(DISTINCT hole)
-		   FROM solutions
-		  WHERE NOT failing AND user_id = $1`,
+		   FROM stable_passing_solutions
+		  WHERE user_id = $1`,
 		cheevoIDs(config.CheevoTree["Total Holes"]),
 	)
 

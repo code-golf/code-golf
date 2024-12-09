@@ -1,4 +1,4 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.21 AS builder
 
 ENV VERSION=67da192f47
 
@@ -12,7 +12,7 @@ COPY kwrapper.c /
 
 RUN gcc -static -s -o kwrapper kwrapper.c
 
-FROM codegolf/lang-base-no-proc
+FROM codegolf/lang-base
 
 COPY --from=0 /k/k /kwrapper /usr/bin/
 

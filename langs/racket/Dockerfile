@@ -1,8 +1,8 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache build-base curl
 
-RUN curl -L https://github.com/racket/racket/archive/refs/tags/v8.14.tar.gz \
+RUN curl -L https://github.com/racket/racket/archive/refs/tags/v8.15.tar.gz \
   | tar xz --strip-components 1
 
 RUN make bc -j`nproc` PKGS="" RACKETBC_SUFFIX=""

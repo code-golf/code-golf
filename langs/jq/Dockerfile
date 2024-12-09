@@ -1,4 +1,4 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.21 AS builder
 
 ENV VER=1.7.1
 
@@ -12,7 +12,7 @@ RUN ./configure              \
  && make LDFLAGS=-all-static \
  && strip jq
 
-FROM codegolf/lang-base-no-proc
+FROM codegolf/lang-base
 
 COPY --from=0 ./jq /usr/bin/
 

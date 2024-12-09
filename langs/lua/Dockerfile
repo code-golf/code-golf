@@ -1,4 +1,4 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache build-base curl
 
@@ -13,7 +13,7 @@ RUN cd lua-*          \
     RANLIB=gcc-ranlib \
  && strip src/lua
 
-FROM codegolf/lang-base-no-proc
+FROM codegolf/lang-base
 
 COPY --from=0 /lua-*/src/lua /usr/bin/
 

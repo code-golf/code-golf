@@ -20,7 +20,7 @@ CREATE TYPE cheevo AS ENUM (
     'rtfm', 'rule-34', 's-box-360', 'slowcoach', 'smörgåsbord', 'solve-quine',
     'sounds-quite-nice', 'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr',
     'twelvetide', 'twenty-kiloleagues', 'under-pressure', 'up-to-eleven',
-    'vampire-byte', 'x86'
+    'vampire-byte', 'x-factor', 'x86'
 );
 
 CREATE TYPE connection AS ENUM (
@@ -29,34 +29,40 @@ CREATE TYPE connection AS ENUM (
 
 CREATE TYPE hole AS ENUM (
     '12-days-of-christmas', '24-game', '99-bottles-of-beer',
-    'abundant-numbers', 'abundant-numbers-long', 'arabic-to-roman',
-    'arithmetic-numbers', 'arrows', 'ascending-primes', 'ascii-table',
-    'brainfuck', 'card-number-validation', 'catalan-numbers',
-    'catalans-constant', 'christmas-trees', 'collatz', 'css-colors', 'cubes',
-    'day-of-week', 'dfa-simulator', 'diamonds', 'divisors', 'emirp-numbers',
+    'abundant-numbers', 'abundant-numbers-long', 'apérys-constant',
+    'arabic-to-roman', 'arithmetic-numbers', 'arrows', 'ascending-primes',
+    'ascii-table', 'billiards', 'brainfuck', 'card-number-validation',
+    'catalan-numbers', 'catalans-constant', 'christmas-trees', 'collatz',
+    'css-colors', 'css-grid', 'cubes', 'day-of-week', 'dfa-simulator',
+    'diamonds', 'divisors', 'ellipse-perimeters', 'emirp-numbers',
     'emirp-numbers-long', 'emojify', 'evil-numbers', 'evil-numbers-long',
     'factorial-factorisation', 'farey-sequence', 'fibonacci', 'fizz-buzz',
-    'foo-fizz-buzz-bar', 'forsyth-edwards-notation', 'fractions',
-    'game-of-life', 'gijswijts-sequence', 'happy-numbers',
-    'happy-numbers-long', 'hexdump', 'intersection', 'inventory-sequence',
-    'isbn', 'jacobi-symbol', 'kaprekar-numbers', 'kolakoski-constant',
+    'flags', 'floyd-steinberg-dithering', 'foo-fizz-buzz-bar',
+    'forsyth-edwards-notation', 'fractions', 'game-of-life',
+    'gijswijts-sequence', 'gray-code-decoder', 'gray-code-encoder',
+    'happy-numbers', 'happy-numbers-long', 'hexagonal-spiral', 'hexdump',
+    'hilbert-curve', 'intersection', 'inventory-sequence', 'isbn',
+    'jacobi-symbol', 'kaprekar-numbers', 'kolakoski-constant',
     'kolakoski-sequence', 'leap-years', 'levenshtein-distance',
     'leyland-numbers', 'ln-2', 'look-and-say', 'lucky-numbers',
-    'lucky-tickets', 'mahjong', 'maze', 'medal-tally', 'morse-decoder',
-    'morse-encoder', 'musical-chords', 'n-queens', 'niven-numbers',
-    'niven-numbers-long', 'number-spiral', 'odious-numbers',
-    'odious-numbers-long', 'ordinal-numbers', 'palindromemordnilap',
-    'pangram-grep', 'pascals-triangle', 'pernicious-numbers',
-    'pernicious-numbers-long', 'poker', 'polyominoes', 'prime-numbers',
-    'prime-numbers-long', 'proximity-grid', 'qr-decoder', 'quine', 'recamán',
+    'lucky-tickets', 'mahjong', 'mandelbrot', 'maze', 'medal-tally',
+    'morse-decoder', 'morse-encoder', 'musical-chords', 'n-queens',
+    'nfa-simulator', 'niven-numbers', 'niven-numbers-long', 'number-spiral',
+    'odd-polyomino-tiling', 'odious-numbers', 'odious-numbers-long',
+    'ordinal-numbers', 'p-adic-expansion', 'palindromemordnilap',
+    'pangram-grep', 'partition-numbers', 'pascals-triangle',
+    'pernicious-numbers', 'pernicious-numbers-long', 'placeholder', 'poker',
+    'polyominoes', 'prime-numbers', 'prime-numbers-long', 'proximity-grid',
+    'qr-decoder', 'qr-encoder', 'quadratic-formula', 'quine', 'recamán',
     'repeating-decimals', 'reverse-polish-notation', 'reversi',
     'rijndael-s-box', 'rock-paper-scissors-spock-lizard', 'roman-to-arabic',
-    'rule-110', 'seven-segment', 'si-units', 'sierpiński-triangle',
-    'smith-numbers', 'spelling-numbers', 'star-wars-opening-crawl', 'sudoku',
+    'rule-110', 'semiprime-numbers', 'seven-segment', 'si-units',
+    'sierpiński-triangle', 'smith-numbers', 'spelling-numbers',
+    'sphenic-numbers', 'star-wars-gpt', 'star-wars-opening-crawl', 'sudoku',
     'sudoku-fill-in', 'ten-pin-bowling', 'time-distance', 'tongue-twisters',
-    'transpose-sentence', 'united-states', 'vampire-numbers',
-    'van-eck-sequence', 'zeckendorf-representation', 'zodiac-signs', 'γ', 'λ',
-    'π', 'τ', 'φ', '√2', '𝑒'
+    'transpose-sentence', 'trinomial-triangle', 'turtle', 'united-states',
+    'vampire-numbers', 'van-eck-sequence', 'zeckendorf-representation',
+    'zodiac-signs', 'γ', 'λ', 'π', 'τ', 'φ', '√2', '𝑒'
 );
 
 CREATE TYPE idea_category AS ENUM ('cheevo', 'hole', 'lang', 'other');
@@ -65,13 +71,13 @@ CREATE TYPE keymap AS ENUM ('default', 'vim');
 
 CREATE TYPE lang AS ENUM (
     'assembly', 'awk', 'bash', 'basic', 'berry', 'brainfuck', 'c', 'c-sharp',
-    'civet', 'clojure',  'cpp', 'cobol', 'coconut', 'crystal', 'd', 'dart',
-    'elixir', 'f-sharp', 'factor', 'fish', 'forth', 'fortran', 'go',
-    'golfscript', 'haskell', 'hexagony', 'j', 'janet', 'java', 'javascript',
-    'jq', 'julia', 'k', 'kotlin', 'lisp', 'lua', 'nim', 'ocaml', 'pascal',
-    'perl', 'php', 'powershell', 'prolog', 'python', 'r', 'raku', 'rockstar',
-    'ruby', 'rust', 'scheme', 'sed', 'sql', 'swift', 'tcl', 'tex', 'v',
-    'viml', 'wren', 'zig'
+    'civet', 'clojure',  'cpp', 'cobol', 'coconut', 'common-lisp', 'crystal',
+    'd', 'dart', 'elixir', 'f-sharp', 'factor', 'fish', 'forth', 'fortran',
+    'go', 'golfscript', 'haskell', 'hexagony', 'j', 'janet', 'java',
+    'javascript', 'jq', 'julia', 'k', 'kotlin', 'lua', 'nim', 'ocaml',
+    'pascal', 'perl', 'php', 'powershell', 'prolog', 'python', 'r', 'raku',
+    'rockstar', 'ruby', 'rust', 'scheme', 'sed', 'sql', 'swift', 'tcl', 'tex',
+    'v', 'viml', 'wren', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('unicorn', 'diamond', 'gold', 'silver', 'bronze');
@@ -133,14 +139,6 @@ CREATE TABLE authors (
     PRIMARY KEY (hole, user_id)
 );
 
-CREATE TABLE follows (
-    follower_id int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    followee_id int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    followed    timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
-    PRIMARY KEY (follower_id, followee_id),
-    CHECK (follower_id != followee_id)  -- Can't follow yourself!
-);
-
 CREATE TABLE connections (
     id            bigint     NOT NULL,
     connection    connection NOT NULL,
@@ -150,6 +148,22 @@ CREATE TABLE connections (
     username      text       NOT NULL,
     PRIMARY KEY (connection, id),
     UNIQUE (connection, user_id)
+);
+
+CREATE TABLE follows (
+    follower_id int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    followee_id int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    followed    timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
+    PRIMARY KEY (follower_id, followee_id),
+    CHECK (follower_id != followee_id)  -- Can't follow yourself!
+);
+
+-- config/data/holes.toml is the canonical source of truth for hole data.
+-- This table is a shadow copy, updated on startup, used in DB queries.
+-- TODO Move category here, remove config.HoleCategoryHstore.
+CREATE UNLOGGED TABLE holes (
+    id         hole NOT NULL PRIMARY KEY,
+    experiment int  NOT NULL
 );
 
 CREATE TABLE notes (
@@ -211,6 +225,13 @@ CREATE TABLE trophies (
     PRIMARY KEY (user_id, trophy)
 );
 
+-- Hole isn't experimental and solution isn't failing.
+CREATE VIEW stable_passing_solutions AS
+     SELECT solutions.*
+       FROM solutions
+       JOIN holes ON id = hole
+      WHERE experiment = 0 AND NOT failing;
+
 CREATE MATERIALIZED VIEW medals AS WITH ranks AS (
     SELECT user_id, hole, lang, scoring, submitted,
            COUNT(*) OVER (PARTITION BY hole, lang, scoring),
@@ -219,8 +240,7 @@ CREATE MATERIALIZED VIEW medals AS WITH ranks AS (
                    ORDER BY CASE WHEN scoring = 'bytes'
                                  THEN bytes ELSE chars END
            )
-      FROM solutions
-     WHERE NOT failing
+      FROM stable_passing_solutions
 ) SELECT user_id, hole, lang, scoring, submitted,
          (enum_range(NULL::medal))[rank + 2] medal
     FROM ranks
@@ -240,8 +260,7 @@ CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
     select hole, lang, scoring, user_id, submitted,
            case when scoring = 'bytes' then bytes else chars end strokes,
            case when scoring = 'bytes' then chars else bytes end other_strokes
-      from solutions
-     where not failing
+      from stable_passing_solutions
 ), min as (
     select hole, scoring, min(strokes)::numeric Sa
       from strokes
@@ -299,16 +318,21 @@ CREATE INDEX solutions_lang_key ON solutions(lang, user_id) WHERE NOT failing;
 
 CREATE ROLE "code-golf" WITH LOGIN;
 
--- Only owners can refresh.
+-- Materialized views. Only owners can refresh.
 ALTER MATERIALIZED VIEW medals   OWNER TO "code-golf";
 ALTER MATERIALIZED VIEW points   OWNER TO "code-golf";
 ALTER MATERIALIZED VIEW rankings OWNER TO "code-golf";
 
+-- Views.
+GRANT SELECT ON stable_passing_solutions TO "code-golf";
+
+-- Tables.
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE authors         TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE connections     TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE discord_records TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE discord_state   TO "code-golf";
 GRANT SELECT, INSERT,         DELETE ON TABLE follows         TO "code-golf";
+GRANT SELECT, INSERT, TRUNCATE       ON TABLE holes           TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE ideas           TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE notes           TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE sessions        TO "code-golf";

@@ -38,7 +38,7 @@ $client.get: 'https://app/about',
 is $dbh.execute('SELECT ARRAY(SELECT trophy FROM trophies)').row, '{rtfm}',
     'GET /about earns {rtfm}';
 
-for $dbh.execute('SELECT unnest(enum_range(null::hole))').allrows.flat {
+for $dbh.execute('SELECT id FROM holes WHERE experiment = 0').allrows.flat {
     my $cheevos = %holes{ my $i = ++$ } // '{}';
 
     # Add hole-specific cheevos to the start.
@@ -55,6 +55,7 @@ for <
     brainfuck                        brainfuck {inception}
     divisors                         php       {elephpant-in-the-room}
     evil-numbers                     scheme    {evil-scheme}
+    factorial-factorisation          factor    {x-factor}
     game-of-life                     elixir    {alchemist}
     hexdump                          hexagony  {hextreme-agony}
     pascals-triangle                 pascal    {under-pressure}
