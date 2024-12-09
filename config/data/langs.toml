@@ -378,8 +378,8 @@ int main(int argc, char* argv[]) {
 [Civet]
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
-size    = '67.9 MiB'
-version = '0.8.17'
+size    = '71.7 MiB'
+version = '0.9.0'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -1012,8 +1012,8 @@ echo each 2}.ARGV
 
 [Janet]
 args    = [ '/usr/bin/janet', '/proc/self/fd/0' ]
-size    = '886 KiB'
-version = '1.36.0'
+size    = '902 KiB'
+version = '1.37.1'
 website = 'https://janet-lang.org'
 example = '''
 # Printing
@@ -1222,8 +1222,8 @@ Sys.argv
 args       = [ '/usr/bin/odinwrapper', '-' ]
 env        = [ 'PATH=/usr/local/bin:/usr/bin:/bin' ]
 experiment = 766
-size       = '258 MiB'
-version    = '2024-11'
+size       = '283 MiB'
+version    = '2024-12'
 website    = 'https://odin-lang.org'
 example    = '''
 package main
