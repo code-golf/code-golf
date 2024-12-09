@@ -50,7 +50,7 @@ func starWarsGpt() []Run {
 		`The dead speak! The galaxy has heard a mysterious broadcast, a threat of REVENGE in the sinister voice of the late EMPEROR PALPATINE. GENERAL LEIA ORGANA dispatches secret agents to gather intelligence, while REY, the last hope of the Jedi, trains for battle against the diabolical FIRST ORDER. Meanwhile, Supreme Leader KYLO REN rages in search of the phantom Emperor, determined to destroy any threat to his power....`,
 	})
 
-	runs := make([]Run, 5)
+	runs := make([]Run, 7)
 
 	for i := 0; i < 10; i += 2 {
 		corpus := corpora[i] + " " + corpora[(i+1)%9]
@@ -86,6 +86,12 @@ func starWarsGpt() []Run {
 		args := []string{inputSWGPT.String()}
 		runs[i/2] = Run{Args: args, Answer: outputSWGPT.String()}
 	}
+	staticTest1 := "the first order reigns having decimated the peaceful republic supreme leader snoke now deploys his merciless legions to seize military control of the galaxy only general leia organa's band of resistance fighters stand against the rising tyranny certain that jedi master luke skywalker will return and restore a spark of hope to the fight but the resistance has been exposed as the first order speeds toward the rebel base the brave heroes mount a desperate escape turmoil has engulfed the galactic republic the taxation of trade routes to outlying star systems is in dispute hoping to resolve the matter with a blockade of deadly battleships the greedy trade federation has stopped all shipping to the small planet of naboo while the congress of the republic endlessly debates this alarming chain of events the supreme chancellor has secretly dispatched two jedi knights the guardians of peace and justice in the galaxy to settle the conflict\nof\nto\nthe\ndispatched\nfirst\nmilitary\nengulfed\ngalaxy\nspark\ncertain\nevents\nseize"
+	staticResult1 := "the\nthe\nfirst\ntwo\norder\ncontrol\nthe\nonly\nof\nthat\nthe\nmilitary"
+	staticTest2 := "it is a period of civil war rebel spaceships striking from a hidden base have won their first victory against the evil galactic empire during the battle rebel spies managed to steal secret plans to the empire's ultimate weapon the death star an armored space station with enough power to destroy an entire planet pursued by the empire's sinister agents princess leia races home aboard her starship custodian of the stolen plans that can save her people and restore freedom to the galaxy luke skywalker has vanished in his absence the sinister first order has risen from the ashes of the empire and will not rest until skywalker the last jedi has been destroyed with the support of the republic general leia organa leads a brave resistance she is desperate to find her brother luke and gain his help in restoring peace and justice to the galaxy leia has sent her most daring pilot on a secret mission to jakku where an old ally has discovered a clue to luke's whereabouts\nenough\nin\nempire\nthe\nsave\nto\ndestroy\nand\nsinister\na\nis\nultimate"
+	staticResult2 := "power\nhis\nduring\nempire's\nher\nthe\nan\nrestore\nagents\nperiod\na\nweapon"
+	runs[5] = Run{Args: []string{staticTest1}, Answer: staticResult1}
+	runs[6] = Run{Args: []string{staticTest2}, Answer: staticResult2}
 
 	return runs
 }
