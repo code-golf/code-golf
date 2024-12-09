@@ -1,23 +1,45 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
-int main (int argc, char *argv[]) {
-    if (argc > 1 && strcmp(argv[1], "--version") != 0) {
-        char buffer[4096];
-        ssize_t nbytes;
-        FILE *fp = fopen("/tmp/code.pl", "w");
+#define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-        if (fp == 0)
-            return 1;
+const char* prolog = "/usr/bin/swipl", *code = "code.pl";
 
-        while ((nbytes = fread(buffer, sizeof(char), sizeof(buffer), stdin)) > 0)
-            if (fwrite(buffer, sizeof(char), nbytes, fp) != nbytes)
-                return 2;
-
-        fclose(fp);
+int main(int argc, char* argv[]) {
+    if (!strcmp(argv[1], "--version")) {
+        execv(prolog, argv);
+        ERR_AND_EXIT("execv");
     }
 
-    execv("/usr/bin/swipl", argv);
-    perror("execv");
+    if (chdir("/tmp"))
+        ERR_AND_EXIT("chdir");
+
+    FILE* fp;
+
+    if (!(fp = fopen(code, "w")))
+        ERR_AND_EXIT("fopen");
+
+    char buffer[4096];
+    ssize_t nbytes;
+
+    while ((nbytes = read(STDIN_FILENO, buffer, sizeof(buffer))))
+        if (fwrite(buffer, sizeof(char), nbytes, fp) != (size_t) nbytes)
+            ERR_AND_EXIT("fwrite");
+
+    if (fclose(fp))
+        ERR_AND_EXIT("fclose");
+
+    int pargc = argc + 3;
+    char** pargv = malloc(pargc * sizeof(char*));
+    pargv[0] = (char*) prolog;
+    pargv[1] = "-g";
+    pargv[2] = "halt";
+    pargv[3] = (char*) code;
+    memcpy(&pargv[4], &argv[2], (argc - 2) * sizeof(char*));
+    pargv[pargc - 1] = NULL;
+
+    execv(prolog, pargv);
+    ERR_AND_EXIT("execv");
 }
