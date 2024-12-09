@@ -1291,7 +1291,7 @@ for ($i = 1; $i < $argc; $i++)
 args       = [ '/usr/bin/pietwrapper', '-' ]
 env        = [ 'PATH=/usr/bin:/bin', 'PYTHON_COLORS=1' ]
 experiment = 648
-size       = '90.1 MiB'
+size       = '71.9 MiB'
 version    = 'npiet 1.3f'
 website    = 'https://www.bertnase.de/npiet/'
 example    = '''
