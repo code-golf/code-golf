@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+[ "$1" = "--version" ] && exec dart --version
+
+cat - > /tmp/code.dart
+
+shift
+exec dart /tmp/code.dart "$@"
