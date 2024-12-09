@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <sys/wait.h>
 #include <unistd.h>
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
@@ -12,7 +11,7 @@
 void copy_file(const char* src_file, const char* dst_file);
 void copy_folder(const char* src_dir, const char* dst_dir);
 
-const char* nibbles = "/usr/local/bin/nibbles", *code = "code.nbl", *input = "argv.txt";
+const char* nibbles = "/usr/local/bin/nibbles", *code = "code.nbl";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
@@ -40,41 +39,15 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int fd;
+    int nargc = argc + 1;
+    char** nargv = malloc(nargc * sizeof(char*));
+    nargv[0] = (char*) nibbles;
+    nargv[1] = (char*) code;
+    memcpy(&nargv[2], &argv[2], (argc - 2) * sizeof(char*));
+    nargv[nargc - 1] = NULL;
 
-    if (!(fd = open(input, O_CREAT | O_TRUNC | O_WRONLY, 0644)))
-        ERR_AND_EXIT("open");
-
-    for (int i = 2; i < argc; i++)
-        if (write(fd, argv[i], strlen(argv[i])) < 0 || write(fd, "\n", sizeof(char)) < 0) {
-            if (close(fd))
-                ERR_AND_EXIT("close");
-
-            ERR_AND_EXIT("write");
-        }
-
-    if (close(fd))
-        ERR_AND_EXIT("close");
-
-    pid_t pid;
-
-    if (!(pid = fork())) {
-        if (dup2(open(input, O_RDONLY), STDIN_FILENO))
-            ERR_AND_EXIT("dup2");
-
-        execl(nibbles, nibbles, code, NULL);
-        ERR_AND_EXIT("execl");
-    }
-
-    int status;
-
-    waitpid(pid, &status, 0);
-
-    if (!WIFEXITED(status))
-        return 1;
-
-    if (WEXITSTATUS(status))
-        return WEXITSTATUS(status);
+    execv(nibbles, nargv);
+    ERR_AND_EXIT("execv");
 }
 
 void copy_file(const char* src_file, const char* dst_file) {

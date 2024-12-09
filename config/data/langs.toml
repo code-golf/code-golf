@@ -1160,11 +1160,11 @@ end
 '''
 
 [Nibbles]
-args       = [ '/usr/bin/nibbleswrapper', '-' ]
+args       = [ '/usr/bin/nibbleswrapper', '-', '--' ]
 env        = [ 'PATH=/usr/local/bin:/usr/bin:/bin' ]
 experiment = 1062
 size       = '328 MiB'
-version    = '998ea44'
+version    = 'f0f01c8'
 website    = 'https://golfscript.com/nibbles/'
 example    = '''
 # Printing
