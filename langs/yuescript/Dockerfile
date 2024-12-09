@@ -1,7 +1,7 @@
 FROM debian:bookworm-slim AS builder
 
-RUN apt-get update                 \
- && DEBIAN_FRONTEND=noninteractive \
+RUN apt-get update                   \
+ && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl g++ make
 
 ENV VER=0.26.0
@@ -9,11 +9,10 @@ ENV VER=0.26.0
 RUN curl -#L https://github.com/pigpigyyy/Yuescript/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1
 
-RUN make install \
-    NO_LUA=true  \
-    NO_MACRO=true
-  
-RUN strip /usr/local/bin/yue
+RUN make install  \
+    NO_LUA=true   \
+    NO_MACRO=true \
+ && strip /usr/local/bin/yue
 
 COPY yuescript.c /
 
