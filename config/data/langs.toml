@@ -2,7 +2,7 @@
 args       = [ '/usr/bin/05ab1e', '-' ]
 env        = [ 'PYTHON_COLORS=1' ]
 experiment = 233
-size       = '31.9 MiB'
+size       = '32.1 MiB'
 version    = 'fe1ab18'
 website    = 'https://github.com/Adriandmen/05AB1E'
 example    = '''
@@ -1106,7 +1106,7 @@ end
 
 [K]
 args    = [ '/usr/bin/kwrapper', '/tmp/code.k' ]
-size    = '621 KiB'
+size    = '631 KiB'
 version = '67da192f47'
 website = 'https://codeberg.org/ngn/k'
 example = '''
@@ -1204,8 +1204,8 @@ Sys.argv
 args       = [ '/usr/bin/odinwrapper', '-' ]
 env        = [ 'PATH=/usr/local/bin:/usr/bin:/bin' ]
 experiment = 766
-size       = '258 MiB'
-version    = '2024-11'
+size       = '283 MiB'
+version    = '2024-12'
 website    = 'https://odin-lang.org'
 example    = '''
 package main
@@ -1331,7 +1331,7 @@ example = '''
 [Python]
 args    = [ '/usr/bin/python', '-u', '-' ]
 env     = [ 'PYTHON_COLORS=1' ]
-size    = '29.1 MiB'
+size    = '29.2 MiB'
 version = '3.13.1'
 website = 'https://www.python.org'
 example = '''
@@ -1391,7 +1391,7 @@ example    = '''
 [Raku]
 args      = [ '/usr/bin/raku', '-' ]
 redirects = [ 'perl6' ]
-size      = '75.8 MiB'
+size      = '75.9 MiB'
 version   = 'Raku 6.d on Rakudo 2024.10'
 website   = 'https://raku.org'
 example   = '''
@@ -1567,7 +1567,7 @@ example = '''
 
 [sed]
 args    = [ '/usr/bin/sed', '-E', '-z', '--sandbox', '-u', '--', '$code' ]
-size    = '236 KiB'
+size    = '244 KiB'
 version = 'GNU sed 4.9'
 website = 'https://www.gnu.org/software/sed/'
 example = '''
@@ -1597,7 +1597,7 @@ G
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
 size    = '1.21 MiB'
-version = 'SQLite 3.47.1'
+version = 'SQLite 3.47.2'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
@@ -1622,7 +1622,7 @@ SELECT arg FROM argv;
 [Squirrel]
 args       = [ '/usr/bin/squirrel', '-' ]
 experiment = 1598
-size       = '3.96 MiB'
+size       = '4.08 MiB'
 version    = '3.2'
 website    = 'http://squirrel-lang.org'
 example    = '''
