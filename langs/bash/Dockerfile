@@ -31,4 +31,4 @@ COPY --from=0 /lang/bash /usr/bin/
 
 ENTRYPOINT ["bash"]
 
-CMD ["-c", "echo ${BASH_VERSION%\\([0-9]\\)-release}"]
+CMD ["--version"]
