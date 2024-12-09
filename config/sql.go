@@ -5,8 +5,11 @@ import (
 	"strings"
 )
 
-type Cheevos []*Cheevo
-type Langs []*Lang
+type (
+	Cheevos []*Cheevo
+	Holes   []*Hole
+	Langs   []*Lang
+)
 
 type NullCountry struct {
 	Country *Country
@@ -59,6 +62,15 @@ func (c *Cheevos) Scan(src any) error {
 	if ids := asString(src); len(ids) > 2 {
 		for _, id := range strings.Split(ids[1:len(ids)-1], ",") {
 			*c = append(*c, CheevoByID[id])
+		}
+	}
+	return nil
+}
+
+func (h *Holes) Scan(src any) error {
+	if ids := asString(src); len(ids) > 2 {
+		for _, id := range strings.Split(ids[1:len(ids)-1], ",") {
+			*h = append(*h, AllHoleByID[id])
 		}
 	}
 	return nil

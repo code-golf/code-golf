@@ -1,4 +1,4 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache build-base bzip2-dev curl-dev gettext-dev gfortran pcre2-dev perl tzdata xz-dev zlib-dev
 
@@ -36,8 +36,7 @@ RUN make install
 FROM codegolf/lang-base
 
 COPY --from=0 /busybox/_install/bin        /bin
-COPY --from=0 /lib/ld-musl-x86_64.so.1     \
-              /lib/libz.so.1               /lib/
+COPY --from=0 /lib/ld-musl-x86_64.so.1     /lib/
 COPY --from=0 /busybox/_install/usr/bin    /usr/bin
 COPY --from=0 /usr/bin/Rscript             \
               /usr/bin/printf              /usr/bin/
@@ -48,7 +47,8 @@ COPY --from=0 /usr/lib/libbz2.so.1         \
               /usr/lib/libintl.so.8        \
               /usr/lib/liblzma.so.5        \
               /usr/lib/libpcre2-8.so.0     \
-              /usr/lib/libquadmath.so.0    /usr/lib/
+              /usr/lib/libquadmath.so.0    \
+              /usr/lib/libz.so.1           /usr/lib/
 COPY --from=0 /usr/lib/R/bin/R             \
               /usr/lib/R/bin/Rscript       /usr/lib/R/bin/
 COPY --from=0 /usr/lib/R/bin/exec/R        /usr/lib/R/bin/exec/
