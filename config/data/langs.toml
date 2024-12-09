@@ -199,7 +199,7 @@ done
 
 [BASIC]
 args    = [ '/usr/bin/basic', '-' ]
-size    = '205 MiB'
+size    = '84.5 MiB'
 version = 'FreeBASIC 1.10.1'
 website = 'https://freebasic.net'
 example = '''
