@@ -1,4 +1,4 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache build-base curl dash ncurses-dev
 
@@ -34,13 +34,13 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/nibbleswrapper -s -static /nibbleswrap
 FROM codegolf/lang-base
 
 COPY --from=0 /usr/bin/dash                                                            /bin/sh
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/libz.so.1                                  /lib/
+COPY --from=0 /lib/ld-musl-x86_64.so.1                                                 /lib/
 COPY --from=0 /usr/bin/as /usr/bin/cc /usr/bin/ghc /usr/bin/ld /usr/bin/nibbleswrapper /usr/bin/
 COPY --from=0 /usr/include                                                             /usr/include
 COPY --from=0 /usr/lib/crt1.o                                                          \
               /usr/lib/crti.o                                                          \
               /usr/lib/crtn.o                                                          \
-              /usr/lib/libbfd-2.42.so                                                  \
+              /usr/lib/libbfd-2.43.1.so                                                \
               /usr/lib/libc.so                                                         \
               /usr/lib/libctf.so.0                                                     \
               /usr/lib/libdl.a                                                         \
@@ -56,12 +56,13 @@ COPY --from=0 /usr/lib/crt1.o                                                   
               /usr/lib/librt.a                                                         \
               /usr/lib/libsframe.so.1                                                  \
               /usr/lib/libssp_nonshared.a                                              \
+              /usr/lib/libz.so.1                                                       \
               /usr/lib/libzstd.so.1                                                    /usr/lib/
-COPY --from=0 /usr/lib/gcc/x86_64-alpine-linux-musl/13.2.1/crtbegin.o                  \
-              /usr/lib/gcc/x86_64-alpine-linux-musl/13.2.1/crtbeginS.o                 \
-              /usr/lib/gcc/x86_64-alpine-linux-musl/13.2.1/crtend.o                    \
-              /usr/lib/gcc/x86_64-alpine-linux-musl/13.2.1/crtendS.o                   \
-              /usr/lib/gcc/x86_64-alpine-linux-musl/13.2.1/libgcc.a                    /usr/lib/gcc/x86_64-alpine-linux-musl/13.2.1/
+COPY --from=0 /usr/lib/gcc/x86_64-alpine-linux-musl/14.2.0/crtbegin.o                  \
+              /usr/lib/gcc/x86_64-alpine-linux-musl/14.2.0/crtbeginS.o                 \
+              /usr/lib/gcc/x86_64-alpine-linux-musl/14.2.0/crtend.o                    \
+              /usr/lib/gcc/x86_64-alpine-linux-musl/14.2.0/crtendS.o                   \
+              /usr/lib/gcc/x86_64-alpine-linux-musl/14.2.0/libgcc.a                    /usr/lib/gcc/x86_64-alpine-linux-musl/14.2.0/
 COPY --from=0 /usr/lib/ghc-8.10.7/bin/ghc                                              /usr/lib/ghc-8.10.7/bin/
 COPY --from=0 /usr/lib/ghc-8.10.7/lib/platformConstants                                \
               /usr/lib/ghc-8.10.7/lib/settings                                         /usr/lib/ghc-8.10.7/lib/
@@ -107,8 +108,8 @@ COPY --from=0 /lib/x86_64-linux-ghc-8.10.7/integer-simple-0.1.2.0               
 COPY --from=0 /lib/x86_64-linux-ghc-8.10.7/pretty-1.1.3.6                              /usr/lib/ghc-8.10.7/lib/x86_64-linux-ghc-8.10.7/pretty-1.1.3.6
 COPY --from=0 /lib/x86_64-linux-ghc-8.10.7/rts-1.0.1                                   /usr/lib/ghc-8.10.7/lib/x86_64-linux-ghc-8.10.7/rts-1.0.1
 COPY --from=0 /lib/x86_64-linux-ghc-8.10.7/template-haskell-2.16.0.0                   /usr/lib/ghc-8.10.7/lib/x86_64-linux-ghc-8.10.7/template-haskell-2.16.0.0
-COPY --from=0 /usr/libexec/gcc/x86_64-alpine-linux-musl/13.2.1/cc1                     \
-              /usr/libexec/gcc/x86_64-alpine-linux-musl/13.2.1/liblto_plugin.so        /usr/libexec/gcc/x86_64-alpine-linux-musl/13.2.1/
+COPY --from=0 /usr/libexec/gcc/x86_64-alpine-linux-musl/14.2.0/cc1                     \
+              /usr/libexec/gcc/x86_64-alpine-linux-musl/14.2.0/liblto_plugin.so        /usr/libexec/gcc/x86_64-alpine-linux-musl/14.2.0/
 COPY --from=0 /usr/local/bin/nibbles                                                   /usr/local/bin/
 COPY --from=0 /usr/local/bin/Data/Digest/Murmur64.hi                                   \
               /usr/local/bin/Data/Digest/Murmur64.hs                                   \
