@@ -9,17 +9,15 @@ import (
 
 // GET /rankings/langs/{scoring}
 func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
-	type row struct {
-		Hole                    *config.Hole
-		Lang                    *config.Lang
-		Golds, Silvers, Bronzes int
-		Points, Rank, Strokes   int
-	}
-
 	data := struct {
 		LangID, Scoring string
 		Langs           []*config.Lang
-		Rows            []row
+		Rows            []struct {
+			Hole                    *config.Hole
+			Lang                    *config.Lang
+			Golds, Silvers, Bronzes int
+			Points, Rank, Strokes   int
+		}
 	}{
 		LangID:  param(r, "lang"),
 		Langs:   config.LangList,

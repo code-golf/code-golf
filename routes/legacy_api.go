@@ -134,6 +134,30 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 				out.Cheevos = append(out.Cheevos, *c)
 			}
 		}
+
+		// TODO Eventually save exp langs too.
+		if experimentalHole && !experimentalLang {
+			if _, err := db.ExecContext(
+				r.Context(),
+				`SELECT save_solution(
+				            bytes   := CASE WHEN $3 = 'assembly'::lang
+				                            THEN $5
+				                            ELSE octet_length($1)
+				                            END,
+				            chars   := CASE WHEN $3 = 'assembly'::lang
+				                            THEN NULL
+				                            ELSE char_length($1)
+				                            END,
+				            code    := $1,
+				            hole    := $2,
+				            lang    := $3,
+				            user_id := $4
+				        )`,
+				in.Code, in.Hole, in.Lang, golfer.ID, out.Runs[0].ASMBytes,
+			); err != nil {
+				panic(err)
+			}
+		}
 	} else if pass && golfer != nil && !experimental {
 		if err := db.QueryRowContext(
 			r.Context(),
@@ -337,7 +361,7 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 	if hole == nil || lang == nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
-	} else if hole.Experiment != 0 || lang.Experiment != 0 {
+	} else if lang.Experiment != 0 {
 		w.Write([]byte("[]"))
 		return
 	}
@@ -377,7 +401,9 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 
 	// We don't use the rankings view as we want instant updates upon solution
 	// submit, therefore we skip scoring to keep it fast.
-	rows, err := session.Database(r).Query(
+	entries := make([]entry, 0, limit)
+	if err := session.Database(r).Select(
+		&entries,
 		`WITH ranks AS (
 		    SELECT ROW_NUMBER() OVER (ORDER BY `+scoring+`, submitted) row,
 		           RANK()       OVER (ORDER BY `+scoring+`),
@@ -399,7 +425,8 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 		       AND lang = $3
 		       AND scoring = $5
 		       AND NOT failing
-		)   SELECT bytes, bytes_chars, chars, chars_bytes, id, login, me, rank
+		)   SELECT bytes, bytes_chars, chars, chars_bytes, me, rank,
+		           id "golfer.id", login "golfer.name"
 		      FROM ranks
 		      JOIN users ON id = user_id
 		 LEFT JOIN other_scoring USING(user_id)
@@ -412,33 +439,7 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 		scoring,
 		otherScoring,
 		limit,
-	)
-	if err != nil {
-		panic(err)
-	}
-	defer rows.Close()
-
-	entries := make([]entry, 0, limit)
-	for rows.Next() {
-		var e entry
-
-		if err := rows.Scan(
-			&e.Bytes,
-			&e.BytesChars,
-			&e.Chars,
-			&e.CharsBytes,
-			&e.Golfer.ID,
-			&e.Golfer.Name,
-			&e.Me,
-			&e.Rank,
-		); err != nil {
-			panic(err)
-		}
-
-		entries = append(entries, e)
-	}
-
-	if err := rows.Err(); err != nil {
+	); err != nil {
 		panic(err)
 	}
 
