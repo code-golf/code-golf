@@ -1,6 +1,6 @@
 ARG VER=14.2.0
 
-FROM alpine:3.20 AS builder
+FROM alpine:3.21 AS builder
 
 ARG VER
 
@@ -55,19 +55,19 @@ FROM codegolf/lang-base
 
 ARG VER
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1             \
-              /lib/libz.so.1                       /lib/
+COPY --from=0 /lib/ld-musl-x86_64.so.1             /lib/
 COPY --from=0 /src/fortran /usr/bin/as /usr/bin/ld /usr/bin/
 COPY --from=0 /usr/lib/crt1.o                      \
               /usr/lib/crti.o                      \
               /usr/lib/crtn.o                      \
-              /usr/lib/libbfd-2.42.so              \
+              /usr/lib/libbfd-2.43.1.so            \
               /usr/lib/libc.so                     \
               /usr/lib/libctf.so.0                 \
               /usr/lib/libjansson.so.4             \
               /usr/lib/libm.a                      \
-              /usr/lib/libopcodes-2.42.so          \
+              /usr/lib/libopcodes-2.43.1.so        \
               /usr/lib/libsframe.so.1              \
+              /usr/lib/libz.so.1                   \
               /usr/lib/libzstd.so.1                /usr/lib/
 COPY --from=0 /usr/local/bin/gfortran              /usr/local/bin/
 COPY --from=0 /usr/local/lib                       /usr/local/lib
