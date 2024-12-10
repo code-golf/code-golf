@@ -1161,7 +1161,7 @@ end
 
 [Nibbles]
 args       = [ '/usr/bin/nibbleswrapper', '-', '--' ]
-env        = [ 'PATH=/usr/local/bin:/usr/bin:/bin' ]
+env        = [ 'PATH=/usr/bin' ]
 experiment = 1062
 size       = '334 MiB'
 version    = 'f0f01c8'

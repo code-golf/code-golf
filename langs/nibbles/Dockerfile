@@ -7,8 +7,8 @@ ENV VER=f0f01c8
 RUN curl -#L https://downloads.haskell.org/~ghc/8.10.7/ghc-8.10.7-x86_64-alpine3.10-linux-integer-simple.tar.xz \
   | tar xJ --strip-components 1
 
-RUN ./configure  \
-   --prefix=/usr \
+RUN ./configure   \
+    --prefix=/usr \
  && make install
 
 WORKDIR /usr/local/bin
