@@ -152,6 +152,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			    FROM strokes_other_strokes
 			    JOIN users ON user_id = id
 			   WHERE NOT failing AND hole = $1 AND $2 IN (lang::text, 'all') AND scoring = $3
+			ORDER BY rank, submitted
 			   LIMIT $4 OFFSET $5`
 
 		bind = []any{data.HoleID, data.LangID, data.Scoring, pager.PerPage, data.Pager.Offset}

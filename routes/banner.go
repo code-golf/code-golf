@@ -77,7 +77,7 @@ func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 
 		for _, solution := range failing {
 			langName := config.LangByID[solution.Lang].Name
-			holeName := config.HoleByID[solution.Hole].Name
+			holeName := config.AllHoleByID[solution.Hole].Name
 			byLang[solution.Lang] = append(byLang[solution.Lang], GroupItem{solution.Hole, solution.Lang, langName, holeName})
 			byHole[solution.Hole] = append(byHole[solution.Hole], GroupItem{solution.Hole, solution.Lang, holeName, langName})
 		}
