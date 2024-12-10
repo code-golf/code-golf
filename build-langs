@@ -14,15 +14,12 @@ if my $unknown = @langs ∖ %langs {
 }
 
 # Build (and maybe push) lang-base.
-for 'lang-base', 'lang-base-no-proc' {
-    run <docker buildx build>,
-        '--file',   'docker/lang-base.Dockerfile',
-        '--pull',
-      ( '--push' unless $no-push ),
-        '--tag',    "codegolf/$_",
-        '--target', $_,
-        '.';
-}
+run <docker buildx build>,
+    '--file',   'docker/lang-base.Dockerfile',
+    '--pull',
+    ( '--push' unless $no-push ),
+    '--tag',    'codegolf/lang-base',
+    '.';
 
 for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
     my $id  = id($name);
@@ -45,8 +42,8 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
     }
 
     # Version.
-    if $id ~~ any <assembly befunge brainfuck fish golfscript hare hexagony k scala> {
-        "langs/$id/Dockerfile".IO.slurp ~~ / ' VERSION=' (\S+) /;
+    if $id ~~ any <05ab1e assembly befunge brainfuck cjam fish golfscript harbour hare hexagony k scala> {
+        "langs/$id/Dockerfile".IO.slurp ~~ / ' VER=' (\S+) | ' VERSION=' (\S+) /;
         %lang<version> = $id eq 'assembly' ?? "DefAssembler $0" !! $0;
     }
     else {
@@ -63,38 +60,36 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
             # Dotted decimal or hyphenated date.
             my $digits = $ver ~~ / \d+ ( <[.-]> \d+ )+ /;
 
+            when 'ALGOL 68'    { $ver = "Algol 68 Genie $digits" }
             when 'AWK'
                | 'Forth'
                | 'Fortran'
-               | 'sed'        { $ver = "GNU $name $digits" }
-            when 'BASIC'      { $ver = "FreeBASIC $digits" }
-            when 'BQN'        { $ver = "C$name $digits" }
-            when 'C'          { $ver = "Tiny C Compiler $digits" }
+               | 'sed'         { $ver = "GNU $name $digits" }
+            when 'BASIC'       { $ver = "FreeBASIC $digits" }
+            when 'BQN'         { $ver = "C$name $digits" }
+            when 'C'           { $ver = "Tiny C Compiler $digits" }
             when 'C#'
                | 'F#'
-               | 'PowerShell' { }
-            when 'C++'        { $ver = "Clang $digits" }
-            when 'Clojure'    { $ver = "Babashka $digits" }
-            when 'COBOL'      { $ver = "GnuCOBOL $digits" }
-            when 'D'          {
-                $ver ~~ m/ v (\S+) /;
-                $ver = "D $0 on LDC $digits";
-            }
-            when 'Haskell'    { $ver = "GHC $digits" }
-            when 'Java'       { $ver = "OpenJDK $digits" }
-            when 'JavaScript' { $ver = "V8 $digits" }
-            when 'Lisp'       { $ver = "GNU CLISP $digits" }
-            when 'Pascal'     { $ver = "Free Pascal $digits" }
-            when 'Prolog'     { $ver = "SWI-Prolog $digits" }
-            when 'Raku'       {
+               | 'PowerShell'  { }
+            when 'C++'         { $ver = "Clang $digits" }
+            when 'Clojure'     { $ver = "Babashka $digits" }
+            when 'COBOL'       { $ver = "GnuCOBOL $digits" }
+            when 'Common Lisp' { $ver = "GNU CLISP $digits" }
+            when 'D'           { $ver = "DMD $digits" }
+            when 'Haskell'     { $ver = "GHC $digits" }
+            when 'Java'        { $ver = "OpenJDK $digits" }
+            when 'JavaScript'  { $ver = "V8 $digits" }
+            when 'Pascal'      { $ver = "Free Pascal $digits" }
+            when 'Prolog'      { $ver = "SWI-Prolog $digits" }
+            when 'Raku'        {
                 $ver ~~ m:g/ v (\S+) '.' /;
                 $ver = "Raku $1[0] on Rakudo $0[0]";
             }
-            when 'Rexx'       { $ver = "Regina $digits" }
-            when 'Rockstar'   { $ver = "Rocky $digits" }
-            when 'Scheme'     { $ver = "Chez Scheme $digits" }
-            when 'SQL'        { $ver = "SQLite $digits" }
-            default           { $ver = $digits }
+            when 'Rexx'        { $ver = "Regina $digits" }
+            when 'Rockstar'    { $ver = "Rocky $digits" }
+            when 'Scheme'      { $ver = "Chez Scheme $digits" }
+            when 'SQL'         { $ver = "SQLite $digits" }
+            default            { $ver = $digits }
         }
 
         die "Couldn't get version string for $id." unless $ver;

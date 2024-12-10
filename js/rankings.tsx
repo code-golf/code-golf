@@ -26,7 +26,8 @@ if (dataElement) {
             golferBar[strokes.findIndex(x => x == golfer)] = 1 << 24;
         }
 
-        const yMax = orderedFrequencies.length > 1 ? Math.min(orderedFrequencies[0], orderedFrequencies[1] * 1.5) : orderedFrequencies[0];
+        let yMax = orderedFrequencies[0];
+        if (yMax > 50 && orderedFrequencies.length > 1) yMax = Math.min(yMax, orderedFrequencies[1] * 1.5);
 
         Chart.register(BarController, BarElement,
             LinearScale, PointElement, Tooltip, CategoryScale);
@@ -37,17 +38,19 @@ if (dataElement) {
         Chart.defaults.borderColor     = style.getPropertyValue('--light-grey');
         Chart.defaults.color           = style.getPropertyValue('--color');
 
+        const barColors = strokes.map(x => style.getPropertyValue(x === golfer ? '--light-green' : '--blue'));
+
         const chart = new Chart($<HTMLCanvasElement>('#chart-container canvas'), {
             type: 'bar',
             data: {
                 labels: strokes,
                 datasets: [{
-                    backgroundColor: style.getPropertyValue('--blue'),
+                    backgroundColor: barColors,
                     barPercentage: 1,
                     categoryPercentage: 1,
                     data: frequencies,
                 }, {
-                    backgroundColor: style.getPropertyValue('--light-green'),
+                    backgroundColor: style.getPropertyValue('--light-grey'),
                     barPercentage: 1,
                     categoryPercentage: 1,
                     data: golferBar,
@@ -70,7 +73,8 @@ if (dataElement) {
                                 const strokes = Number(items[0].label);
                                 let otherGolfers = Number(items[0].raw);
                                 if (golfer == strokes) otherGolfers--;
-                                return `${strokes} ${scoring}: ${golfer == strokes ? 'you and ' : ''}${otherGolfers} golfer${otherGolfers > 1 ? 's' : ''}`;
+                                return otherGolfers === 0 ? `${strokes} ${scoring}: just you` :
+                                    `${strokes} ${scoring}: ${golfer == strokes ? 'you and ' : ''}${otherGolfers} golfer${otherGolfers > 1 ? 's' : ''}`;
                             },
                         },
                         filter(item) {
