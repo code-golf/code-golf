@@ -1746,7 +1746,7 @@ for arg in os.args[1..] {
 args       = [ '/usr/bin/valawrapper', '-' ]
 env        = [ 'PATH=/usr/libexec/gcc:/usr/bin:/bin' ]
 experiment = 1354
-size       = '167 MiB'
+size       = '98.9 MiB'
 version    = '0.56.17'
 website    = 'https://vala.dev'
 example    = '''
