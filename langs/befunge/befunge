@@ -1,0 +1,18 @@
+#!/bin/sh -e
+
+[ "$1" = "--version" ] && exec cfunge -V
+
+cd /tmp
+
+cat - > code
+
+shift
+touch argv.txt
+for arg in "$@"; do
+    # Write argument to .txt file
+    echo "$arg" >> argv.txt
+done
+
+# Execute and read arguments from .txt file
+exec cfunge -bEW code < argv.txt
+
