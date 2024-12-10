@@ -1744,7 +1744,7 @@ for arg in os.args[1..] {
 
 [Vala]
 args       = [ '/usr/bin/valawrapper', '-' ]
-env        = [ 'PATH=/usr/libexec/gcc:/usr/bin:/bin' ]
+env        = [ 'PATH=/usr/bin' ]
 experiment = 1354
 size       = '98.9 MiB'
 version    = '0.56.17'
