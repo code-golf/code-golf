@@ -6,11 +6,11 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* c3c = "/usr/local/bin/c3c";
+const char* c3 = "/usr/local/bin/c3c", *code = "code.c3";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
-        execv(c3c, argv);
+        execv(c3, argv);
         ERR_AND_EXIT("execv");
     }
 
@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
 
     FILE* fp;
 
-    if (!(fp = fopen("code.c3", "w")))
+    if (!(fp = fopen(code, "w")))
         ERR_AND_EXIT("fopen");
 
     char buffer[4096];
@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
         if (!dup2(STDERR_FILENO, STDOUT_FILENO))
             ERR_AND_EXIT("dup2");
 
-        execl(c3c, c3c, "compile", "code.c3", NULL);
+        execl(c3, c3, "compile", code, NULL);
         ERR_AND_EXIT("execl");
     }
 

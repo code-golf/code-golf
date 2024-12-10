@@ -2,7 +2,7 @@ FROM debian:bookworm-slim AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
-    apt-get install --yes curl gcc libxml2-dev
+    apt-get install --yes curl dash gcc libxml2-dev
 
 ENV VER=0.6.4
 
@@ -15,7 +15,7 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/c3 -s -static c3.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/sh                                           /bin/
+COPY --from=0 /usr/bin/dash                                     /bin/sh
 COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6                   \
               /lib/x86_64-linux-gnu/libicudata.so.72            \
               /lib/x86_64-linux-gnu/libicuuc.so.72              \
