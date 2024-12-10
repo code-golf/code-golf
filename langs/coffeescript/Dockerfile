@@ -1,20 +1,26 @@
 FROM alpine:3.21 AS builder
 
-RUN apk add --no-cache curl icu-data npm
+RUN apk add --no-cache curl gcc icu-data musl-dev npm
+
+ENV VER=2.7.0
 
 WORKDIR /usr
 
-RUN curl -L https://github.com/jashkenas/coffeescript/tarball/2.7.0 \
+RUN curl -#L https://github.com/jashkenas/coffeescript/tarball/$VER \
   | tar xz --strip-components 1
 
 RUN npm install --global coffeescript
 
+COPY coffeescript.c /
+
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/coffeescript -s -static /coffeescript.c
+
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/cat /bin/sh                      /bin/
 COPY --from=0 /lib/ld-musl-x86_64.so.1              /lib/
 COPY --from=0 /usr/package.json                     /usr/
 COPY --from=0 /usr/bin/coffee                       \
+              /usr/bin/coffeescript                 \
               /usr/bin/env                          \
               /usr/bin/node                         /usr/bin/
 COPY --from=0 /usr/lib/libada.so.2                  \
@@ -47,8 +53,6 @@ COPY --from=0 /usr/lib/coffeescript/coffeescript.js \
               /usr/lib/coffeescript/scope.js        \
               /usr/lib/coffeescript/sourcemap.js    /usr/lib/coffeescript/
 COPY --from=0 /usr/share/icu/74.2/icudt74l.dat      /usr/share/icu/
-
-COPY /coffeescript /usr/bin/
 
 ENTRYPOINT ["coffeescript"]
 
