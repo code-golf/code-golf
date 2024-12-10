@@ -12,18 +12,22 @@ import (
 	"github.com/code-golf/code-golf/pretty"
 )
 
-var nextHole = config.ExpHoleByID["kaprekar-numbers"]
+var nextHole = config.ExpHoleByID["billiards"]
 
 type banner struct {
 	Body          template.HTML
 	HideKey, Type string
 }
 
-// TODO Allow a golfer to hide individual banners #709.
 func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 	// Upcoming hole.
 	if hole := nextHole; hole != nil {
-		in := "in " + pretty.Time(hole.Released.AsTime(time.UTC))
+		t := hole.Released.AsTime(time.UTC)
+		if golfer != nil {
+			t = t.In(golfer.Location())
+		}
+
+		in := "in approximately " + pretty.Time(t)
 		if strings.Contains(string(in), "ago") {
 			in = "momentarily"
 		}
@@ -73,7 +77,7 @@ func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 
 		for _, solution := range failing {
 			langName := config.LangByID[solution.Lang].Name
-			holeName := config.HoleByID[solution.Hole].Name
+			holeName := config.AllHoleByID[solution.Hole].Name
 			byLang[solution.Lang] = append(byLang[solution.Lang], GroupItem{solution.Hole, solution.Lang, langName, holeName})
 			byHole[solution.Hole] = append(byHole[solution.Hole], GroupItem{solution.Hole, solution.Lang, holeName, langName})
 		}

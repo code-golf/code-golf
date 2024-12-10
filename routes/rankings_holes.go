@@ -1,6 +1,8 @@
 package routes
 
 import (
+	"database/sql"
+	"errors"
 	"html/template"
 	"net/http"
 	"strings"
@@ -16,6 +18,11 @@ import (
 // GET /rankings/recent-holes/{lang}/{scoring}
 func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
+		Distribution []struct {
+			Strokes   int
+			Frequency int
+		}
+		Strokes                               int
 		Hole, PrevHole, NextHole              *config.Hole
 		HoleID, LangID, OtherScoring, Scoring string
 		Holes                                 []*config.Hole
@@ -46,14 +53,14 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		holeWhere = pq.Array(config.RecentHoles)
 	}
 
-	if data.HoleID != "all" && config.HoleByID[data.HoleID] == nil ||
+	if data.HoleID != "all" && config.AllHoleByID[data.HoleID] == nil ||
 		data.LangID != "all" && config.LangByID[data.LangID] == nil ||
 		data.Scoring != "chars" && data.Scoring != "bytes" {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
-	if data.Hole = config.HoleByID[data.HoleID]; data.Hole != nil {
+	if data.Hole = config.AllHoleByID[data.HoleID]; data.Hole != nil {
 		data.PrevHole, data.NextHole = getPrevNextHole(r, data.Hole)
 	}
 
@@ -63,12 +70,12 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		data.OtherScoring = "bytes"
 	}
 
-	var sql string
+	var query string
 	var bind []any
 
 	// TODO Try and merge these SQL queries?
 	if data.HoleID == "all" && data.LangID == "all" {
-		sql = `WITH foo AS (
+		query = `WITH foo AS (
 			    SELECT user_id, hole, lang, points, strokes, submitted,
 			           ROW_NUMBER() OVER (
 			               PARTITION BY user_id, hole ORDER BY points DESC, strokes
@@ -99,7 +106,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 
 		bind = []any{data.Scoring, pager.PerPage, data.Pager.Offset, holeWhere}
 	} else if data.HoleID == "all" {
-		sql = `WITH summed AS (
+		query = `WITH summed AS (
 			    SELECT user_id,
 			           COUNT(*)             holes,
 			           SUM(points_for_lang) points,
@@ -124,8 +131,33 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			   LIMIT $3 OFFSET $4`
 
 		bind = []any{data.LangID, data.Scoring, pager.PerPage, data.Pager.Offset, holeWhere}
+	} else if data.Hole.Experiment != 0 {
+		// TODO Fold strokes/other_strokes into a view? Rankings uses them too.
+		// FIXME $2 IN (lang::text, 'all') isn't very efficient due to the cast.
+		query = `WITH strokes_other_strokes AS (
+			    SELECT *,
+			           case when scoring = 'bytes'
+			                then bytes else chars end strokes,
+			           case when scoring = 'bytes'
+			                then chars else bytes end other_strokes
+			      FROM solutions
+			) SELECT country_flag                    country,
+			         lang                            lang,
+			         login                           name,
+			         other_strokes                   other_strokes,
+			         RANK()   OVER(ORDER BY strokes) rank,
+			         strokes                         strokes,
+			         submitted                       submitted,
+			         COUNT(*) OVER()                 total
+			    FROM strokes_other_strokes
+			    JOIN users ON user_id = id
+			   WHERE NOT failing AND hole = $1 AND $2 IN (lang::text, 'all') AND scoring = $3
+			ORDER BY rank, submitted
+			   LIMIT $4 OFFSET $5`
+
+		bind = []any{data.HoleID, data.LangID, data.Scoring, pager.PerPage, data.Pager.Offset}
 	} else if data.LangID == "all" {
-		sql = `SELECT country_flag     country,
+		query = `SELECT country_flag     country,
 			          lang             lang,
 			          login            name,
 			          other_strokes    other_strokes,
@@ -142,7 +174,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 
 		bind = []any{data.HoleID, data.Scoring, pager.PerPage, data.Pager.Offset}
 	} else {
-		sql = `SELECT country_flag     country,
+		query = `SELECT country_flag     country,
 			          lang             lang,
 			          login            name,
 			          other_strokes    other_strokes,
@@ -160,12 +192,39 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		bind = []any{data.HoleID, data.LangID, data.Scoring, pager.PerPage, data.Pager.Offset}
 	}
 
-	if err := session.Database(r).Select(&data.Rows, sql, bind...); err != nil {
+	if err := session.Database(r).Select(&data.Rows, query, bind...); err != nil {
 		panic(err)
 	}
 
 	if len(data.Rows) > 0 {
 		data.Pager.Total = data.Rows[0].Total
+	}
+
+	if data.LangID != "all" && data.HoleID != "all" {
+		query = `SELECT strokes  strokes,
+					  COUNT(*) frequency
+				 FROM rankings
+				WHERE hole = $1 AND lang = $2 AND scoring = $3
+			 GROUP BY strokes
+			 ORDER BY strokes`
+		if err := session.Database(r).Select(&data.Distribution, query, data.HoleID, data.LangID, data.Scoring); err != nil {
+			panic(err)
+		}
+		golfer := session.Golfer(r)
+		if golfer != nil {
+			if err := session.Database(r).Get(
+				&data,
+				`SELECT strokes  strokes
+				FROM rankings
+				WHERE hole = $1 AND lang = $2 AND scoring = $3 AND user_id = $4`,
+				data.HoleID,
+				data.LangID,
+				data.Scoring,
+				golfer.ID,
+			); err != nil && !errors.Is(err, sql.ErrNoRows) {
+				panic(err)
+			}
+		}
 	}
 
 	if data.Pager.Calculate() {
@@ -174,8 +233,8 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var desc strings.Builder
-	if hole, ok := config.HoleByID[data.HoleID]; ok {
-		desc.WriteString(hole.Name)
+	if data.Hole != nil {
+		desc.WriteString(data.Hole.Name)
 		desc.WriteString(" in ")
 	} else if data.Recent {
 		desc.WriteString("Ten most recent holes in ")
