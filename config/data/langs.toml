@@ -1,6 +1,24 @@
+[05AB1E]
+args       = [ '/usr/bin/05ab1e', '-' ]
+env        = [ 'PYTHON_COLORS=1' ]
+experiment = 233
+size       = '32.1 MiB'
+version    = 'fe1ab18'
+website    = 'https://github.com/Adriandmen/05AB1E'
+example    = '''
+"Printing"
+”Ÿ™,‚ï!”,
+
+"Looping"
+9ƒN,}
+
+"Accessing arguments"
+|»,}
+'''
+
 ['><>']
 args    = [ '/usr/bin/fish', '--no-prng', '-c', '$code', '-u' ]
-size    = '4.66 MiB'
+size    = '4.85 MiB'
 version = '96b1cfc'
 website = 'https://github.com/primo-ppcg/fish-jit'
 example = '''
@@ -23,10 +41,10 @@ x is a no-op.
 '''
 
 ['ALGOL 68']
-args       = [ '/usr/bin/a68g', '--exec', '$code', '--' ]
+args       = [ '/usr/bin/algol-68', '--exec', '$code', '--' ]
 experiment = 856
 size       = '4.66 MiB'
-version    = '3.5.9'
+version    = 'Algol 68 Genie 3.5.10'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -135,7 +153,7 @@ syscall
 
 [AWK]
 args    = [ '/usr/bin/gawk', '-v', 'RS=\0', '$code' ]
-size    = '1.78 MiB'
+size    = '1.80 MiB'
 version = 'GNU AWK 5.3.1'
 website = 'https://www.gnu.org/software/gawk/'
 example = '''
@@ -202,7 +220,7 @@ Next
 [Befunge]
 args       = [ '/usr/bin/befunge', '-' ]
 experiment = 428
-size       = '3.62 MiB'
+size       = '4.21 MiB'
 version    = 'b7bf640'
 website    = 'https://github.com/VorpalBlade/cfunge'
 example    = '''
@@ -222,7 +240,7 @@ v Accessing arguments
 
 [Berry]
 args    = [ '/usr/bin/berry', '-' ]
-size    = '973 KiB'
+size    = '986 KiB'
 version = '1.1.0'
 website = 'https://berry-lang.github.io'
 example = '''
@@ -243,7 +261,7 @@ end
 [BQN]
 args       = [ '/usr/bin/bqn', '-' ]
 experiment = 474
-size       = '1.27 MiB'
+size       = '1.26 MiB'
 version    = 'CBQN 0.7.0'
 website    = 'https://github.com/dzaima/CBQN'
 example    = '''
@@ -259,7 +277,7 @@ example    = '''
 
 [brainfuck]
 args    = [ '/usr/bin/brainfuck', '-xc', '$code' ]
-size    = '51.2 KiB'
+size    = '51.1 KiB'
 version = '077cc7f'
 website = 'https://github.com/primo-ppcg/bfci'
 example = '''
@@ -286,7 +304,7 @@ with 65536 cells; and cells are 8 bit with wrapping;
 
 [C]
 args    = [ '/usr/bin/tcc', '-run', '-' ]
-size    = '1.70 MiB'
+size    = '1.73 MiB'
 version = 'Tiny C Compiler 0.9.27'
 website = 'https://bellard.org/tcc/'
 example = '''
@@ -310,8 +328,9 @@ int main(int argc, char* argv[]) {
 
 ['C#']
 args    = [ '/usr/bin/c-sharp', '-' ]
-size    = '152 MiB'
-version = 'C# 12.0 on .NET 8.0.10'
+env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
+size    = '107 MiB'
+version = 'C# 13.0 on .NET 9.0.0'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -331,8 +350,8 @@ foreach (String arg in args)
 
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
-size    = '147 MiB'
-version = 'Clang 19.1.3'
+size    = '142 MiB'
+version = 'Clang 19.1.5'
 website = 'https://clang.llvm.org'
 example = '''
 #include <iostream>
@@ -359,8 +378,8 @@ int main(int argc, char* argv[]) {
 [Civet]
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
-size    = '67.9 MiB'
-version = '0.8.12'
+size    = '71.7 MiB'
+version = '0.9.0'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -375,10 +394,27 @@ for arg of process.argv[2..]
     console.log arg
 '''
 
+[CJam]
+args       = [ '/usr/bin/cjam', '-' ]
+experiment = 1493
+size       = '133 MiB'
+version    = '0.6.5'
+website    = 'https://sourceforge.net/projects/cjam/'
+example    = '''
+e# Printing
+"Hello, World!"
+
+e# Looping
+T{1_$+}9*]N*N
+
+e# Accessing arguments
+eaN*
+'''
+
 [Clojure]
 args    = [ '/usr/bin/clojure', '-e', '$code' ]
-size    = '64.6 MiB'
-version = 'Babashka 1.12.194'
+size    = '66.3 MiB'
+version = 'Babashka 1.12.195'
 website = 'https://babashka.org'
 example = '''
 ; Printing
@@ -395,7 +431,7 @@ example = '''
 
 [COBOL]
 args    = [ '/usr/bin/cobol', '-' ]
-size    = '4.56 MiB'
+size    = '4.61 MiB'
 version = 'GnuCOBOL 3.2.0'
 website = 'https://gnucobol.sourceforge.io'
 example = '''
@@ -430,7 +466,7 @@ end-program.
 [Coconut]
 args    = [ '/usr/bin/coconut', '--quiet', '--target', 'sys', '--keep-lines', '--argv' ]
 env     = [ 'PYTHON_COLORS=1' ]
-size    = '104 MiB'
+size    = '87.3 MiB'
 version = '3.1.2'
 website = 'https://coconut-lang.org'
 example = '''
@@ -452,7 +488,7 @@ for arg in sys.argv[1:]:
 args       = [ '/usr/bin/coffeescript', '-' ]
 env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 450
-size       = '69.1 MiB'
+size       = '72.9 MiB'
 version    = '2.7.0'
 website    = 'https://coffeescript.org'
 example    = '''
@@ -468,10 +504,31 @@ for arg in process.argv[2..]
     console.log arg
 '''
 
+['Common Lisp']
+args      = [ '/usr/bin/lisp', '-' ]
+redirects = [ 'lisp' ]
+size      = '31.1 MiB'
+version   = 'GNU CLISP 2.49.92'
+website   = 'https://clisp.sourceforge.io'
+example   = '''
+; Printing
+(write-line "Hello, World!")
+
+; Looping
+(loop for i from 0 to 9
+    do (format t "~d~%" i)
+)
+
+; Accessing arguments
+(loop for arg in *args*
+    do (write-line arg)
+)
+'''
+
 [Crystal]
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
-size    = '270 MiB'
+size    = '269 MiB'
 version = '1.14.0'
 website = 'https://crystal-lang.org'
 example = '''
@@ -511,10 +568,10 @@ main = do
 '''
 
 [D]
-args    = [ '/usr/bin/ldc2', '--enable-color=true', '--run', '-' ]
+args    = [ '/usr/bin/D', '-' ]
 env     = [ 'PATH=/usr/bin' ]
-size    = '309 MiB'
-version = 'D 2.103.1 on LDC 1.33.0'
+size    = '93.3 MiB'
+version = 'DMD 2.109.1'
 website = 'https://dlang.org'
 example = '''
 import std.stdio;
@@ -600,8 +657,9 @@ for arg <- System.argv, do: IO.puts arg
 
 ['F#']
 args    = [ '/usr/bin/f-sharp', '-' ]
-size    = '148 MiB'
-version = 'F# 8.0 on .NET 8.0.10'
+env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
+size    = '108 MiB'
+version = 'F# 9.0 on .NET 9.0.0'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -639,7 +697,7 @@ command-line get-global [ print ] each
 [Fennel]
 args       = [ '/usr/bin/fennelwrapper', '/tmp/code.fnl' ]
 experiment = 1144
-size       = '665 KiB'
+size       = '673 KiB'
 version    = '1.5.1'
 website    = 'https://fennel-lang.org'
 example    = '''
@@ -679,7 +737,7 @@ bye
 
 [Fortran]
 args    = [ '/usr/bin/fortran', '-' ]
-size    = '94.3 MiB'
+size    = '95.1 MiB'
 version = 'GNU Fortran 14.2.0'
 website = 'https://gcc.gnu.org/fortran/'
 example = '''
@@ -706,10 +764,10 @@ end
 
 [Gleam]
 args       = [ '/usr/bin/gleamwrapper', '-', '--' ]
-env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
+env        = [ 'FORCE_COLOR=1', 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 1129
-size       = '88.1 MiB'
-version    = '1.5.1'
+size       = '92.6 MiB'
+version    = '1.6.3'
 website    = 'https://gleam.run'
 example    = '''
 import argv
@@ -735,7 +793,7 @@ pub fn main() {
 args    = [ '/usr/bin/gowrapper', '-' ]
 env     = [ 'GOCACHE=/tmp/.cache', 'PATH=/usr/local/bin:/bin' ]
 size    = '383 MiB'
-version = '1.23.2'
+version = '1.23.4'
 website = 'https://go.dev'
 example = '''
 package main
@@ -783,7 +841,7 @@ args       = [ '/usr/bin/groovy', '-e', '$code' ]
 env        = [ 'JAVA_HOME=/opt/java' ]
 experiment = 1145
 size       = '146 MiB'
-version    = '4.0.23'
+version    = '4.0.24'
 website    = 'https://groovy-lang.org'
 example    = '''
 // Printing
@@ -798,11 +856,34 @@ for (arg in args)
     println arg
 '''
 
+[Harbour]
+args       = [ '/usr/bin/harbourwrapper', '-' ]
+experiment = 1614
+size       = '13.0 MiB'
+version    = 'b547517'
+website    = 'https://harbour.github.io'
+example    = '''
+LOCAL i
+
+// Printing
+?? "Hello, World!"
+
+// Looping
+FOR i := 0 TO 9
+    ? hb_ntos( i )
+NEXT
+
+// Accessing arguments
+FOR i := 1 TO PCount()
+    ? hb_PValue( i )
+NEXT
+'''
+
 [Hare]
 args       = [ '/usr/bin/harewrapper', '-' ]
 env        = [ 'PATH=/usr/local/bin:/usr/bin:/bin' ]
 experiment = 1323
-size       = '13.5 MiB'
+size       = '13.8 MiB'
 version    = '0.24.2'
 website    = 'https://harelang.org'
 example    = '''
@@ -869,7 +950,7 @@ class Main {
 
 [Hexagony]
 args    = [ '/usr/bin/hexagony', '-d', '-' ]
-size    = '8.81 MiB'
+size    = '8.78 MiB'
 version = '770406a'
 website = 'https://github.com/SirBogman/Hexagony'
 example = '''
@@ -897,7 +978,7 @@ example = '''
 [Hush]
 args       = [ '/usr/bin/hush', '-' ]
 experiment = 656
-size       = '3.27 MiB'
+size       = '3.26 MiB'
 version    = '0.1.4'
 website    = 'https://hush-shell.github.io'
 example    = '''
@@ -918,7 +999,7 @@ end
 [Hy]
 args       = [ '/usr/bin/hy', '-' ]
 experiment = 586
-size       = '59.8 MiB'
+size       = '41.8 MiB'
 version    = '1.0.0'
 website    = 'https://hylang.org'
 example    = '''
@@ -952,8 +1033,8 @@ echo each 2}.ARGV
 
 [Janet]
 args    = [ '/usr/bin/janet', '/proc/self/fd/0' ]
-size    = '886 KiB'
-version = '1.36.0'
+size    = '902 KiB'
+version = '1.37.1'
 website = 'https://janet-lang.org'
 example = '''
 # Printing
@@ -992,8 +1073,8 @@ class Main {
 
 [JavaScript]
 args    = [ '/usr/bin/d8', '-e', '$code', '--' ]
-size    = '41.1 MiB'
-version = 'V8 12.6.228.28'
+size    = '41.8 MiB'
+version = 'V8 13.1.201.9'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1010,7 +1091,7 @@ for (let arg of arguments)
 
 [jq]
 args    = [ '/usr/bin/jq', '--args', '--null-input', '--raw-output', '--', '$code' ]
-size    = '964 KiB'
+size    = '973 KiB'
 version = '1.7.1'
 website = 'https://jqlang.github.io/jq/'
 example = '''
@@ -1026,8 +1107,8 @@ $ARGS.positional[]
 
 [Julia]
 args    = [ '/usr/bin/julia', '--color=yes', '--eval', '$code', '--' ]
-size    = '297 MiB'
-version = '1.11.1'
+size    = '300 MiB'
+version = '1.11.2'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -1046,7 +1127,7 @@ end
 
 [K]
 args    = [ '/usr/bin/kwrapper', '/tmp/code.k' ]
-size    = '621 KiB'
+size    = '631 KiB'
 version = '67da192f47'
 website = 'https://codeberg.org/ngn/k'
 example = '''
@@ -1063,8 +1144,8 @@ example = '''
 [Kotlin]
 args    = [ '/usr/bin/kotlin', '-Xuse-fast-jar-file-system', '-e', '$code' ]
 env     = [ 'JAVA_HOME=/opt/java' ]
-size    = '223 MiB'
-version = '2.0.21'
+size    = '224 MiB'
+version = '2.1.0'
 website = 'https://kotlinlang.org'
 example = '''
 // Printing
@@ -1079,29 +1160,9 @@ for (arg in args)
     println(arg)
 '''
 
-[Lisp]
-args    = [ '/usr/bin/lisp', '-' ]
-size    = '31.1 MiB'
-version = 'GNU CLISP 2.49.92'
-website = 'https://clisp.sourceforge.io'
-example = '''
-; Printing
-(write-line "Hello, World!")
-
-; Looping
-(loop for i from 0 to 9
-    do (format t "~d~%" i)
-)
-
-; Accessing arguments
-(loop for arg in *args*
-    do (write-line arg)
-)
-'''
-
 [Lua]
 args    = [ '/usr/bin/lua', '-' ]
-size    = '354 KiB'
+size    = '362 KiB'
 version = '5.4.7'
 website = 'https://www.lua.org'
 example = '''
@@ -1121,7 +1182,7 @@ end
 
 [Nim]
 args    = [ '/usr/bin/nim', '--colors:on', '-o:/tmp/code', '-r', 'c', '-' ]
-size    = '15.5 MiB'
+size    = '15.6 MiB'
 version = '2.2.0'
 website = 'https://nim-lang.org'
 example = '''
@@ -1164,8 +1225,8 @@ Sys.argv
 args       = [ '/usr/bin/odinwrapper', '-' ]
 env        = [ 'PATH=/usr/local/bin:/usr/bin:/bin' ]
 experiment = 766
-size       = '258 MiB'
-version    = '2024-10'
+size       = '283 MiB'
+version    = '2024-12'
 website    = 'https://odin-lang.org'
 example    = '''
 package main
@@ -1191,7 +1252,7 @@ main :: proc() {
 
 [Pascal]
 args    = [ '/usr/bin/pascal', '-' ]
-size    = '31.1 MiB'
+size    = '31.4 MiB'
 version = 'Free Pascal 3.2.2'
 website = 'https://freepascal.org'
 example = '''
@@ -1213,7 +1274,7 @@ end.
 
 [Perl]
 args    = [ '/usr/bin/perl', '-E', '$code', '--' ]
-size    = '5.51 MiB'
+size    = '5.57 MiB'
 version = '5.40.0'
 website = 'https://www.perl.org'
 example = '''
@@ -1232,7 +1293,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '8.40 MiB'
-version = '8.3.13'
+version = '8.4.1'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -1250,8 +1311,9 @@ for ($i = 1; $i < $argc; $i++)
 [PowerShell]
 args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
-size       = '180 MiB'
-version    = 'PowerShell 7.4.6 on .NET 8.0.10'
+env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
+size       = '135 MiB'
+version    = 'PowerShell 7.4.6 on .NET 9.0.0'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
@@ -1290,8 +1352,8 @@ example = '''
 [Python]
 args    = [ '/usr/bin/python', '-u', '-' ]
 env     = [ 'PYTHON_COLORS=1' ]
-size    = '47.7 MiB'
-version = '3.13.0'
+size    = '29.2 MiB'
+version = '3.13.1'
 website = 'https://www.python.org'
 example = '''
 import sys
@@ -1311,8 +1373,8 @@ for arg in sys.argv[1:]:
 [R]
 args       = [ '/usr/bin/Rscript', '-' ]
 args-quine = [ '/usr/bin/Rscript', '-e', "source('stdin')" ]
-size       = '81.9 MiB'
-version    = '4.4.0'
+size       = '30.1 MiB'
+version    = '4.4.2'
 website    = 'https://www.r-project.org'
 example    = '''
 # Printing
@@ -1332,8 +1394,8 @@ for (arg in commandArgs(TRUE)) {
 [Racket]
 args       = [ '/usr/local/bin/racket', '-e', '$code', '--' ]
 experiment = 1358
-size       = '28.9 MiB'
-version    = '8.14'
+size       = '29.0 MiB'
+version    = '8.15'
 website    = 'https://racket-lang.org'
 example    = '''
 ; Printing
@@ -1348,11 +1410,12 @@ example    = '''
 '''
 
 [Raku]
-args    = [ '/usr/bin/raku', '-' ]
-size    = '75.8 MiB'
-version = 'Raku 6.d on Rakudo 2024.10'
-website = 'https://raku.org'
-example = '''
+args      = [ '/usr/bin/raku', '-' ]
+redirects = [ 'perl6' ]
+size      = '75.9 MiB'
+version   = 'Raku 6.d on Rakudo 2024.10'
+website   = 'https://raku.org'
+example   = '''
 # Printing
 say 'Hello, World!';
 
@@ -1366,7 +1429,7 @@ say 'Hello, World!';
 [Rebol]
 args       = [ '/usr/bin/rebol', '-qw', '--do', '$code', '--', '--script', '' ]
 experiment = 189
-size       = '1.22 MiB'
+size       = '1.23 MiB'
 version    = '2.7.8.4.10'
 website    = 'https://www.rebol.com'
 example    = '''
@@ -1387,7 +1450,7 @@ foreach arg system/options/args [
 [Rexx]
 args       = [ '/usr/bin/rexx', '-' ]
 experiment = 873
-size       = '4.63 MiB'
+size       = '4.64 MiB'
 version    = 'Regina 3.9.6'
 website    = 'https://regina-rexx.sourceforge.io'
 example    = '''
@@ -1427,9 +1490,8 @@ Shout arg
 
 ['Rockstar 2']
 args       = [ '/usr/bin/rockstarwrapper', '-' ]
-env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 experiment = 1336
-size       = '6.01 MiB'
+size       = '5.79 MiB'
 version    = '2.0.0'
 website    = 'https://codewithrockstar.com'
 example    = '''
@@ -1450,7 +1512,7 @@ print arg
 [Ruby]
 args    = [ '/usr/bin/ruby', '-' ]
 size    = '28.6 MiB'
-version = '3.3.5'
+version = '3.3.6'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing
@@ -1469,8 +1531,8 @@ end
 
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
-size    = '358 MiB'
-version = '1.82.0'
+size    = '352 MiB'
+version = '1.83.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -1510,8 +1572,8 @@ args.foreach(println)
 
 [Scheme]
 args    = [ '/usr/bin/schemewrapper', '-' ]
-size    = '17.9 MiB'
-version = 'Chez Scheme 10.0.0'
+size    = '8.98 MiB'
+version = 'Chez Scheme 10.1.0'
 website = 'https://cisco.github.io/ChezScheme/'
 example = '''
 ; Printing
@@ -1526,7 +1588,7 @@ example = '''
 
 [sed]
 args    = [ '/usr/bin/sed', '-E', '-z', '--sandbox', '-u', '--', '$code' ]
-size    = '236 KiB'
+size    = '244 KiB'
 version = 'GNU sed 4.9'
 website = 'https://www.gnu.org/software/sed/'
 example = '''
@@ -1556,7 +1618,7 @@ G
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
 size    = '1.21 MiB'
-version = 'SQLite 3.47.0'
+version = 'SQLite 3.47.2'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
@@ -1576,6 +1638,25 @@ SELECT arg FROM argv;
 
 -- Only the first column of the first result set will be printed,
 -- NULL values will be skipped, and the dialect is SQLite.
+'''
+
+[Squirrel]
+args       = [ '/usr/bin/squirrel', '-' ]
+experiment = 1598
+size       = '4.08 MiB'
+version    = '3.2'
+website    = 'http://squirrel-lang.org'
+example    = '''
+// Printing
+print("Hello, World!\n");
+
+// Looping
+for (local i = 0; i < 10; i++)
+    printf("%d\n", i);
+
+// Accessing arguments
+foreach (arg in vargv)
+    print(arg + "\n");
 '''
 
 [Swift]
@@ -1601,7 +1682,7 @@ for arg in CommandLine.arguments[1...] {
 
 [Tcl]
 args    = [ '/usr/bin/tcl', '/proc/self/fd/0' ]
-size    = '5.62 MiB'
+size    = '5.64 MiB'
 version = '9.0.0'
 website = 'https://www.tcl-lang.org'
 example = '''
@@ -1646,7 +1727,7 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '33.7 MiB'
+size       = '28.6 MiB'
 version    = '0.13.0'
 website    = 'https://www.uiua.org'
 example    = '''
@@ -1684,7 +1765,7 @@ for arg in os.args[1..] {
 
 [VimL]
 args    = [ '/usr/bin/viml', '-' ]
-size    = '24.3 MiB'
+size    = '24.8 MiB'
 version = '9.1'
 website = 'https://www.vim.org'
 example = '''
@@ -1709,7 +1790,7 @@ w
 
 [Wren]
 args    = [ '/usr/bin/wren', '-' ]
-size    = '496 KiB'
+size    = '505 KiB'
 version = '0.4.0'
 website = 'https://wren.io'
 example = '''
