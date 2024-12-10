@@ -220,7 +220,7 @@ Next
 [Befunge]
 args       = [ '/usr/bin/befunge', '-' ]
 experiment = 428
-size       = '3.62 MiB'
+size       = '4.21 MiB'
 version    = 'b7bf640'
 website    = 'https://github.com/VorpalBlade/cfunge'
 example    = '''
@@ -957,7 +957,7 @@ example = '''
 [Hush]
 args       = [ '/usr/bin/hush', '-' ]
 experiment = 656
-size       = '3.27 MiB'
+size       = '3.26 MiB'
 version    = '0.1.4'
 website    = 'https://hush-shell.github.io'
 example    = '''
