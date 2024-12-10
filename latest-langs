@@ -28,6 +28,7 @@ constant %paths = (
     'COBOL'        => 'en.wikipedia.org/wiki/GnuCOBOL',
     'Coconut'      => 'pypi.org/pypi/coconut/json',
     'CoffeeScript' => 'registry.npmjs.org/coffeescript/latest',
+    'Common Lisp'  => 'en.wikipedia.org/wiki/CLISP',
     'Crystal'      => 'github.com/crystal-lang/crystal/releases/latest',
     'D'            => 'en.wikipedia.org/wiki/D_(programming_language)',
     'Dart'         => 'en.wikipedia.org/wiki/Dart_(programming_language)',
@@ -42,6 +43,7 @@ constant %paths = (
     'Go'           => 'endoflife.date/api/go.json',
     'GolfScript'   => 'github.com/lynn/golfscript/tree/code-golf',
     'Groovy'       => 'en.wikipedia.org/wiki/Apache_Groovy',
+    'Harbour'      => 'github.com/harbour/core',
     'Hare'         => 'git.sr.ht/~sircmpwn/hare/refs',
     'Haskell'      => 'pkgs.alpinelinux.org/package/edge/community/x86_64/ghc',
     'Haxe'         => 'github.com/HaxeFoundation/haxe/releases/latest',
@@ -56,7 +58,6 @@ constant %paths = (
     'Julia'        => 'github.com/JuliaLang/julia/releases/latest',
     'K'            => 'codeberg.org/ngn/k',
     'Kotlin'       => 'github.com/JetBrains/kotlin/releases/latest',
-    'Lisp'         => 'en.wikipedia.org/wiki/CLISP',
     'Lua'          => 'en.wikipedia.org/wiki/Lua_(programming_language)',
     'Nim'          => 'en.wikipedia.org/wiki/Nim_(programming_language)',
     'OCaml'        => 'en.wikipedia.org/wiki/OCaml',
@@ -102,7 +103,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         state $ua  = HTTP::Tiny.new :throw-exceptions;
         my    $res = $ua.get("https://$_")<content>.decode;
 
-        when / 'alpinelinux' / { $res ~~ / 'release' .+? <(<ver>)> / }
+        when / 'alpinelinux' / { $res ~~ / 'Version' .+? <(<ver>)> / }
         when / 'aplwiki'     / { $res ~~ / ' release' .+? <(<ver>)> / }
         when / 'codeberg'    / { $res ~~ / '"shortsha">' <(<ver>)> / }
         when / 'crates.io'   / { $res.&from-json<crate><max_stable_version> }
