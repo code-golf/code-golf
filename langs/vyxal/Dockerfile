@@ -3,11 +3,9 @@ FROM alpine:3.21 AS builder
 RUN apk add --no-cache build-base curl libffi-dev openssl-dev zlib-dev
 
 # Python meta: https://pypi.org/project/vyxal/
-ENV PYVER=3.10.15 VER=2.22.3
+ENV PYVER=3.10.15 VER=2.22.4.3
 
 RUN curl https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz | tar xJ
-
-COPY vyxalwrapper.c /
 
 WORKDIR /Python-$PYVER
 
@@ -36,6 +34,8 @@ RUN find . -name '*.opt-[12].pyc' -delete \
           turtle.py                       \
           turtledemo                      \
           unittest
+
+COPY vyxalwrapper.c /
 
 RUN gcc -Wall -Werror -Wextra -o /usr/bin/vyxalwrapper -s -static /vyxalwrapper.c
 

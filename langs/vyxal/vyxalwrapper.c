@@ -8,7 +8,7 @@
 const char* vyxal = "/usr/bin/vyxal", *code = "code.vy";
 
 int main(int argc, char* argv[]) {
-    if (argc && !strcmp(argv[1], "--version")) {
+    if (!strcmp(argv[1], "--version")) {
         execl(vyxal, vyxal, "-", "⋎", NULL);
         ERR_AND_EXIT("execl");
     }
