@@ -4,7 +4,7 @@ RUN apk add --no-cache build-base curl
 
 ENV VER=10.1.0
 
-RUN curl -L https://github.com/cisco/ChezScheme/releases/download/v$VER/csv$VER.tar.gz \
+RUN curl -#L https://github.com/cisco/ChezScheme/releases/download/v$VER/csv$VER.tar.gz \
   | tar xz --strip-components 1
 
 RUN ./configure      \

@@ -38,14 +38,12 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int gargc = argc + 4;
+    int gargc = argc + 2;
     char** gargv = malloc(gargc * sizeof(char*));
     gargv[0] = (char*) gleam;
     gargv[1] = "run";
     gargv[2] = "--no-print-progress";
-    gargv[3] = "--target";
-    gargv[4] = "javascript";
-    memcpy(&gargv[5], &argv[2], (argc - 2) * sizeof(char*));
+    memcpy(&gargv[3], &argv[2], (argc - 2) * sizeof(char*));
     gargv[gargc - 1] = NULL;
 
     execv(gleam, gargv);

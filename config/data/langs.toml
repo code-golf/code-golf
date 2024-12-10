@@ -2,7 +2,7 @@
 args       = [ '/usr/bin/05ab1e', '-' ]
 env        = [ 'PYTHON_COLORS=1' ]
 experiment = 233
-size       = '29.5 MiB'
+size       = '29.7 MiB'
 version    = 'fe1ab18'
 website    = 'https://github.com/Adriandmen/05AB1E'
 example    = '''
@@ -220,7 +220,7 @@ Next
 [Befunge]
 args       = [ '/usr/bin/befunge', '-' ]
 experiment = 428
-size       = '1.18 MiB'
+size       = '4.68 MiB'
 version    = 'b7bf640'
 website    = 'https://github.com/VorpalBlade/cfunge'
 example    = '''
@@ -488,7 +488,7 @@ for arg in sys.argv[1:]:
 args       = [ '/usr/bin/coffeescript', '-' ]
 env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 450
-size       = '67.5 MiB'
+size       = '71.3 MiB'
 version    = '2.7.0'
 website    = 'https://coffeescript.org'
 example    = '''
@@ -745,7 +745,7 @@ end
 args       = [ '/usr/bin/gleamwrapper', '-', '--' ]
 env        = [ 'FORCE_COLOR=1', 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 1129
-size       = '87.9 MiB'
+size       = '91.7 MiB'
 version    = '1.6.3'
 website    = 'https://gleam.run'
 example    = '''
@@ -862,7 +862,7 @@ NEXT
 args       = [ '/usr/bin/harewrapper', '-' ]
 env        = [ 'PATH=/usr/local/bin:/usr/bin' ]
 experiment = 1323
-size       = '11.1 MiB'
+size       = '11.4 MiB'
 version    = '0.24.2'
 website    = 'https://harelang.org'
 example    = '''
@@ -1203,7 +1203,7 @@ Sys.argv
 [Odin]
 args       = [ '/usr/bin/odinwrapper', '-', '--' ]
 experiment = 766
-size       = '256 MiB'
+size       = '280 MiB'
 version    = '2024-12'
 website    = 'https://odin-lang.org'
 example    = '''
@@ -1428,7 +1428,7 @@ foreach arg system/options/args [
 [Rexx]
 args       = [ '/usr/bin/rexx', '-' ]
 experiment = 873
-size       = '3.04 MiB'
+size       = '3.06 MiB'
 version    = 'Regina 3.9.6'
 website    = 'https://regina-rexx.sourceforge.io'
 example    = '''
@@ -1509,7 +1509,7 @@ end
 
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
-size    = '333 MiB'
+size    = '334 MiB'
 version = '1.83.0'
 website = 'https://www.rust-lang.org'
 example = '''
@@ -1550,7 +1550,7 @@ args.foreach(println)
 
 [Scheme]
 args    = [ '/usr/bin/schemewrapper', '-' ]
-size    = '7.36 MiB'
+size    = '7.39 MiB'
 version = 'Chez Scheme 10.1.0'
 website = 'https://cisco.github.io/ChezScheme/'
 example = '''
@@ -1743,7 +1743,7 @@ for arg in os.args[1..] {
 
 [VimL]
 args    = [ '/usr/bin/viml', '-' ]
-size    = '24.0 MiB'
+size    = '24.1 MiB'
 version = '9.1'
 website = 'https://www.vim.org'
 example = '''

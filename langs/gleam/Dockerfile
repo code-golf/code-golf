@@ -11,10 +11,10 @@ RUN make -j`nproc` install
 
 WORKDIR /gleam
 
-COPY gleam.toml .
+RUN gleam new --name code --skip-git --template javascript .
 
-RUN mkdir src \
- && gleam deps download
+RUN gleam add argv \
+ && gleam remove gleeunit
 
 RUN chmod -R 777 .
 
@@ -24,7 +24,10 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/gleamwrapper -s -static /gleamwrapper.
 
 FROM codegolf/lang-base
 
-COPY --from=0 /gleam                           /gleam
+COPY --from=0 /gleam/gleam.toml                \
+              /gleam/manifest.toml             /gleam/
+COPY --from=0 /gleam/build/packages            /gleam/build/packages
+COPY --from=0 /gleam/src                       /gleam/src
 COPY --from=0 /lib/ld-musl-x86_64.so.1         /lib/
 COPY --from=0 /usr/bin/gleamwrapper            \
               /usr/bin/node                    /usr/bin/

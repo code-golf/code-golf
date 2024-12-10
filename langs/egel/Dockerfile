@@ -8,8 +8,8 @@ ENV VER=0.1.14
    
 WORKDIR /lightning
 
-RUN curl https://ftp.gnu.org/gnu/lightning/lightning-2.2.3.tar.gz \
-  | tar -xz --strip-components 1
+RUN curl -#L https://ftp.gnu.org/gnu/lightning/lightning-2.2.3.tar.gz \
+  | tar xz --strip-components 1
 
 RUN ./configure && make install
 
