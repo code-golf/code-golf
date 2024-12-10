@@ -1,7 +1,7 @@
 # Also bump Gleam, Hush, Uiua.
-ARG VER=1.82.0
+ARG VER=1.83.0
 
-FROM rust:$VER-alpine3.20 AS builder
+FROM rust:$VER-alpine3.21 AS builder
 
 ARG VER
 
@@ -22,14 +22,14 @@ FROM codegolf/lang-base
 ARG VER
 
 COPY --from=0 /bin/sh                         /bin/
-COPY --from=0 /lib/ld-musl-x86_64.so.1        \
-              /lib/libz.so.1                  /lib/
+COPY --from=0 /lib/ld-musl-x86_64.so.1        /lib/
 COPY --from=0 /usr/bin/ld                     /usr/bin/
-COPY --from=0 /usr/lib/libbfd-2.42.so         \
+COPY --from=0 /usr/lib/libbfd-2.43.1.so       \
               /usr/lib/libctf.so.0            \
               /usr/lib/libgcc_s.so.1          \
               /usr/lib/libjansson.so.4        \
               /usr/lib/libsframe.so.1         \
+              /usr/lib/libz.so.1              \
               /usr/lib/libzstd.so.1           /usr/lib/
 COPY --from=0 /usr/local/cargo                /usr/local/cargo
 COPY --from=0 /usr/local/rustup/settings.toml /usr/local/rustup/
