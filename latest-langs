@@ -118,7 +118,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'swi-prolog'  / { $res ~~ / 'stable' .+? <(<ver>)> / }
         when / 'github.com'  / {
             .ends-with('/releases/latest')
-                ?? $res ~~ / [ $name || 'dev' || 'elease' || 'Version' ] <[\ -]> v? <(<ver>)> /
+                ?? $res ~~ m:i/ [ $name || < dev release version > ] <[\ -]> v? <(<ver>)> /
                 !! $res ~~ / '"currentOid":"' <( <xdigit> ** 7 )> /;
         }
         when / 'wikipedia'   / {
