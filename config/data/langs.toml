@@ -1707,7 +1707,7 @@ args       = [ '/node_modules/.bin/ts-node', '--swc', '-e', '$code', '--' ]
 env        = [ 'NODE_OPTIONS=--disallow-code-generation-from-strings' ]
 experiment = 1364
 size       = '146 MiB'
-version    = '5.6.3'
+version    = '5.7.2'
 website    = 'https://www.typescriptlang.org'
 example    = '''
 // Printing

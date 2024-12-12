@@ -2,7 +2,7 @@ FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache curl npm
 
-ENV VER=5.6.3
+ENV VER=5.7.2
 
 RUN curl -#L https://github.com/microsoft/TypeScript/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1
@@ -13,7 +13,7 @@ RUN npm install @swc/core ts-node \
 FROM codegolf/lang-base
 
 COPY --from=0 /bin/busybox /bin/tsc                                                 /bin/
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/tsc.js                                  /lib/
+COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/_tsc.js /lib/tsc.js                     /lib/
 COPY --from=0 /node_modules/.bin                                                    /node_modules/.bin
 COPY --from=0 /node_modules/@cspotcode/source-map-support/package.json              \
               /node_modules/@cspotcode/source-map-support/source-map-support.js     /node_modules/@cspotcode/source-map-support/
