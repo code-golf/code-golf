@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"cmp"
 	"database/sql"
+	"embed"
 	"encoding/json"
 	"html/template"
 	"reflect"
@@ -15,6 +16,9 @@ import (
 	"github.com/lib/pq/hstore"
 	"github.com/pelletier/go-toml/v2"
 )
+
+//go:embed hole-answers
+var answers embed.FS
 
 var (
 	// Standard holes.
@@ -47,6 +51,7 @@ type Link struct {
 
 type Hole struct {
 	Aliases, Redirects          []string       `json:"-"`
+	Answer                      string         `json:"-"`
 	CaseFold                    bool           `json:"-" toml:"case-fold"`
 	Category                    string         `json:"category"`
 	CategoryColor, CategoryIcon string         `json:"-"`
@@ -121,6 +126,14 @@ func init() {
 		// Redirects.
 		for _, redirect := range hole.Redirects {
 			HoleRedirects[redirect] = hole.ID
+		}
+
+		// Answers.
+		// ¯\_(ツ)_/¯ cannot embed file hole-answers/√2.txt: invalid name √2.txt
+		if b, err := answers.ReadFile(
+			"hole-answers/" + strings.Replace(hole.ID, "√2", "root-2", 1) + ".txt",
+		); err == nil {
+			hole.Answer = string(bytes.TrimSuffix(b, []byte{'\n'}))
 		}
 
 		// Unmarshall any data into an ordered map.
