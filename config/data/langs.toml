@@ -1640,8 +1640,8 @@ foreach (arg in vargv)
 [Swift]
 args    = [ '/usr/bin/swift', '-module-cache-path', '/tmp', '-' ]
 env     = [ 'PATH=/usr/bin:/bin' ]
-size    = '555 MiB'
-version = '6.0.2'
+size    = '516 MiB'
+version = '6.0.3'
 website = 'https://swift.org'
 example = '''
 // Printing
