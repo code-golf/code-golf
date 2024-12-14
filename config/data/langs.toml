@@ -239,7 +239,7 @@ Next
 [Befunge]
 args       = [ '/usr/bin/befunge', '-' ]
 experiment = 428
-size       = '3.62 MiB'
+size       = '4.21 MiB'
 version    = 'b7bf640'
 website    = 'https://github.com/VorpalBlade/cfunge'
 example    = '''
@@ -976,7 +976,7 @@ example = '''
 [Hush]
 args       = [ '/usr/bin/hush', '-' ]
 experiment = 656
-size       = '3.27 MiB'
+size       = '3.26 MiB'
 version    = '0.1.4'
 website    = 'https://hush-shell.github.io'
 example    = '''
@@ -1487,12 +1487,11 @@ Shout arg
 '''
 
 ['Rockstar 2']
-args       = [ '/usr/bin/rockstarwrapper', '-' ]
-experiment = 1336
-size       = '5.79 MiB'
-version    = '2.0.0'
-website    = 'https://codewithrockstar.com'
-example    = '''
+args    = [ '/usr/bin/rockstarwrapper', '-' ]
+size    = '5.82 MiB'
+version = '2.0.16'
+website = 'https://codewithrockstar.com'
+example = '''
 (Printing)
 print "Hello, World!"
 
@@ -1660,8 +1659,8 @@ foreach (arg in vargv)
 [Swift]
 args    = [ '/usr/bin/swift', '-module-cache-path', '/tmp', '-' ]
 env     = [ 'PATH=/usr/bin:/bin' ]
-size    = '555 MiB'
-version = '6.0.2'
+size    = '516 MiB'
+version = '6.0.3'
 website = 'https://swift.org'
 example = '''
 // Printing
