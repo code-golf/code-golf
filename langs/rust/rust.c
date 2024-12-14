@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
     waitpid(pid, &status, 0);
 
     if (!WIFEXITED(status))
-        return 1;
+        exit(EXIT_FAILURE);
 
     if (WEXITSTATUS(status))
         return WEXITSTATUS(status);
