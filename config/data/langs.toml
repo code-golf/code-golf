@@ -1468,7 +1468,7 @@ Shout arg
 
 ['Rockstar 2']
 args    = [ '/usr/bin/rockstarwrapper', '-' ]
-size    = '5.82 MiB'
+size    = '4.23 MiB'
 version = '2.0.16'
 website = 'https://codewithrockstar.com'
 example = '''
@@ -1720,7 +1720,7 @@ example    = '''
 
 [V]
 args    = [ '/usr/bin/V', '-' ]
-size    = '49.9 MiB'
+size    = '50.1 MiB'
 version = '0.4.8'
 website = 'https://vlang.io'
 example = '''
