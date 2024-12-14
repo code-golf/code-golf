@@ -313,26 +313,7 @@ synopsis = 'Print the hex ASCII table from “man 7 ascii”.'
 preamble = '''
 <p>Print the following hex ASCII table, taken from <code>man 7 ascii</code>.
 
-<pre>
-   2 3 4 5 6 7
- -------------
-0:   0 @ P ` p
-1: ! 1 A Q a q
-2: " 2 B R b r
-3: # 3 C S c s
-4: $ 4 D T d t
-5: % 5 E U e u
-6: & 6 F V f v
-7: ' 7 G W g w
-8: ( 8 H X h x
-9: ) 9 I Y i y
-A: * : J Z j z
-B: + ; K [ k {
-C: , < L \ l |
-D: - = M ] m }
-E: . > N ^ n ~
-F: / ? O _ o DEL
-</pre>
+<pre>{{ .Answer }}</pre>
 '''
 
 [Billiards]
@@ -1555,43 +1536,7 @@ preamble = '''
     of a continuous, expanding, and interlocking hexagonal grid. Draw such a 
     pattern.
 
-<pre>
-                  _
-                _/ \
-              _/ \_/  _
-            _/ \_/  _/ \_
-          _/ \_/  _/ \_/ \_
-        _/ \_/  _/ \_/ \_/ \_
-      _/ \_/  _/ \_/  _  \_/ \_
-     / \_/  _/ \_/  _/ \_  \_/ \_
-  _  \_/  _/ \_/  _/ \_/ \_  \_/ \_
- / \ / \ / \_/  _/ \_/ \_/ \_  \_/ \
- \_/ \_/ \_/  _/ \_/  _  \_/ \_  \_/
- / \ / \ / \ / \_/  _/ \_  \_/ \_
- \_/ \_/ \_/ \_/  _/ \_/ \_  \_/ \_
- / \ / \ / \ / \ / \_/ \_/ \_  \_/ \
- \_/ \_/ \_/ \_/ \_/  _  \_/ \_  \_/
- / \ / \ / \ / \_/ \_/ \_  \_/ \ / \
- \_/ \_/ \_/ \_/ \_/ \_/ \_  \_/ \_/
- / \ / \ / \_  \_/ \_/ \_/ \ / \ / \
- \_/ \_/ \_/ \_/ \_/ \_  \_/ \_/ \_/
- / \ / \_  \_/ \_/ \_/ \ / \ / \ / \
- \_/ \_/ \_  \_/ \_/ \_/ \_/ \_/ \_/
- / \_  \_/ \_   _/ \ / \ / \ / \ / \
- \_/ \_  \_/ \_/ \_/ \_/ \_/ \_/ \_/
-   \_/ \_  \_/ \_/  _/ \ / \ / \ / \
-  _  \_/ \_  \_/  _/ \_/ \_/ \_/ \_/
- / \_  \_/ \_   _/ \_/  _/ \ / \ / \
- \_/ \_  \_/ \_/ \_/  _/ \_/ \_/ \_/
-   \_/ \_  \_/ \_/  _/ \_/  _/ \
-     \_/ \_  \_/  _/ \_/  _/ \_/
-       \_/ \_   _/ \_/  _/ \_/
-         \_/ \_/ \_/  _/ \_/
-           \_/ \_/  _/ \_/
-             \_/  _/ \_/
-                 / \_/
-                 \_/
-</pre>
+<pre>{{ .Answer }}</pre>
 '''
 
 [Hexdump]
@@ -2474,16 +2419,7 @@ preamble = '''
 
 <p>The full grid should look like this:
 
-<pre> 0  1  2  3  4  5  6  7  8  9
-35 36 37 38 39 40 41 42 43 10
-34 63 64 65 66 67 68 69 44 11
-33 62 83 84 85 86 87 70 45 12
-32 61 82 95 96 97 88 71 46 13
-31 60 81 94 99 98 89 72 47 14
-30 59 80 93 92 91 90 73 48 15
-29 58 79 78 77 76 75 74 49 16
-28 57 56 55 54 53 52 51 50 17
-27 26 25 24 23 22 21 20 19 18</pre>
+<pre>{{ .Answer }}</pre>
 '''
 
 ['Odd Polyomino Tiling']
@@ -3119,24 +3055,7 @@ synopsis = 'Print Rijndael S-box as a series of hex bytes.'
 preamble = '''
 <p>Print the <b>Rijndael S-box</b> as a series of hex bytes:
 
-<pre>
-63 7c 77 7b f2 6b 6f c5 30 01 67 2b fe d7 ab 76
-ca 82 c9 7d fa 59 47 f0 ad d4 a2 af 9c a4 72 c0
-b7 fd 93 26 36 3f f7 cc 34 a5 e5 f1 71 d8 31 15
-04 c7 23 c3 18 96 05 9a 07 12 80 e2 eb 27 b2 75
-09 83 2c 1a 1b 6e 5a a0 52 3b d6 b3 29 e3 2f 84
-53 d1 00 ed 20 fc b1 5b 6a cb be 39 4a 4c 58 cf
-d0 ef aa fb 43 4d 33 85 45 f9 02 7f 50 3c 9f a8
-51 a3 40 8f 92 9d 38 f5 bc b6 da 21 10 ff f3 d2
-cd 0c 13 ec 5f 97 44 17 c4 a7 7e 3d 64 5d 19 73
-60 81 4f dc 22 2a 90 88 46 ee b8 14 de 5e 0b db
-e0 32 3a 0a 49 06 24 5c c2 d3 ac 62 91 95 e4 79
-e7 c8 37 6d 8d d5 4e a9 6c 56 f4 ea 65 7a ae 08
-ba 78 25 2e 1c a6 b4 c6 e8 dd 74 1f 4b bd 8b 8a
-70 3e b5 66 48 03 f6 0e 61 35 57 b9 86 c1 1d 9e
-e1 f8 98 11 69 d9 8e 94 9b 1e 87 e9 ce 55 28 df
-8c a1 89 0d bf e6 42 68 41 99 2d 0f b0 54 bb 16
-</pre>
+<pre>{{ .Answer }}</pre>
 '''
 
 [Rock-paper-scissors-Spock-lizard]
@@ -3513,23 +3432,7 @@ preamble = '''
     A Sierpiński triangle of order 4 should look like this, print such an
     output:
 
-<pre>               ▲
-              ▲ ▲
-             ▲   ▲
-            ▲ ▲ ▲ ▲
-           ▲       ▲
-          ▲ ▲     ▲ ▲
-         ▲   ▲   ▲   ▲
-        ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲
-       ▲               ▲
-      ▲ ▲             ▲ ▲
-     ▲   ▲           ▲   ▲
-    ▲ ▲ ▲ ▲         ▲ ▲ ▲ ▲
-   ▲       ▲       ▲       ▲
-  ▲ ▲     ▲ ▲     ▲ ▲     ▲ ▲
- ▲   ▲   ▲   ▲   ▲   ▲   ▲   ▲
-▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲
-</pre>
+<pre>{{ .Answer }}</pre>
 '''
 
 ['Smith Numbers']
@@ -3842,22 +3745,7 @@ synopsis = 'Print a few tongue twisters.'
 preamble = '''
 <p>Print the following tongue twisters with a blank line between each one:
 
-<pre>
-How much wood would a woodchuck chuck,
-If a woodchuck could chuck wood?
-A woodchuck would chuck all the wood he could chuck
-If a woodchuck would chuck wood.
-
-Peter Piper picked a peck of pickled peppers.
-A peck of pickled peppers Peter Piper picked.
-If Peter Piper picked a peck of pickled peppers,
-Where's the peck of pickled peppers Peter Piper picked?
-
-She sells seashells by the seashore,
-The shells she sells are seashells, I'm sure.
-So if she sells seashells on the seashore,
-Then I'm sure she sells seashore shells.
-</pre>
+<pre>{{ .Answer }}</pre>
 '''
 
 ['Transpose Sentence']

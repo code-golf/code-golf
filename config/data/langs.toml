@@ -1467,12 +1467,11 @@ Shout arg
 '''
 
 ['Rockstar 2']
-args       = [ '/usr/bin/rockstarwrapper', '-' ]
-experiment = 1336
-size       = '4.20 MiB'
-version    = '2.0.0'
-website    = 'https://codewithrockstar.com'
-example    = '''
+args    = [ '/usr/bin/rockstarwrapper', '-' ]
+size    = '5.82 MiB'
+version = '2.0.16'
+website = 'https://codewithrockstar.com'
+example = '''
 (Printing)
 print "Hello, World!"
 
@@ -1640,8 +1639,8 @@ foreach (arg in vargv)
 [Swift]
 args    = [ '/usr/bin/swift', '-module-cache-path', '/tmp', '-' ]
 env     = [ 'PATH=/usr/bin:/bin' ]
-size    = '555 MiB'
-version = '6.0.2'
+size    = '516 MiB'
+version = '6.0.3'
 website = 'https://swift.org'
 example = '''
 // Printing
