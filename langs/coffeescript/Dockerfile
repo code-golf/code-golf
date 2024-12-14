@@ -33,11 +33,11 @@ COPY --from=0 /usr/lib/libada.so.2                  \
               /usr/lib/libicudata.so.74             \
               /usr/lib/libicui18n.so.74             \
               /usr/lib/libicuuc.so.74               \
+              /usr/lib/libnghttp2.so.14             \
               /usr/lib/libsimdjson.so.23            \
               /usr/lib/libsimdutf.so.11             \
               /usr/lib/libsqlite3.so.0              \
               /usr/lib/libssl.so.3                  \
-              /usr/lib/libnghttp2.so.14             \
               /usr/lib/libstdc++.so.6               \
               /usr/lib/libz.so.1                    /usr/lib/
 COPY --from=0 /usr/lib/coffeescript/coffeescript.js \
