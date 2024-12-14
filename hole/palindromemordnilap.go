@@ -28,7 +28,7 @@ func palindromemordnilap() []Run {
 		"123456", "8989a",
 
 		"a", "aA", "aa", "aaaaaaa", "ab", "aba", "abaaaba", "abb", "abc",
-		"abcdc", "abcdcc",
+		"abca", "abcdc", "abcdcc",
 
 		"better", "mississippi", "Palindrome",
 
