@@ -60,5 +60,7 @@ func palindromemordnilap() []Run {
 		}
 	}
 
+	tests = tests[:106] // Preserve original argc
+
 	return outputTests(shuffle(tests))
 }
