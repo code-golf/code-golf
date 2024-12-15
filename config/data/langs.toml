@@ -1392,7 +1392,7 @@ example    = '''
 args      = [ '/usr/bin/raku', '-' ]
 redirects = [ 'perl6' ]
 size      = '75.9 MiB'
-version   = 'Raku 6.d on Rakudo 2024.10'
+version   = 'Raku 6.d on Rakudo 2024.12'
 website   = 'https://raku.org'
 example   = '''
 # Printing
