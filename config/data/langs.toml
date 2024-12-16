@@ -378,8 +378,8 @@ int main(int argc, char* argv[]) {
 [Civet]
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
-size    = '71.7 MiB'
-version = '0.9.0'
+size    = '71.8 MiB'
+version = '0.9.1'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -573,8 +573,8 @@ void main(string[] argv) {
 
 [Dart]
 args    = [ '/usr/bin/dartwrapper', '-' ]
-size    = '236 MiB'
-version = '3.5.4'
+size    = '240 MiB'
+version = '3.6.0'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -1391,7 +1391,7 @@ example    = '''
 args      = [ '/usr/bin/raku', '-' ]
 redirects = [ 'perl6' ]
 size      = '75.9 MiB'
-version   = 'Raku 6.d on Rakudo 2024.10'
+version   = 'Raku 6.d on Rakudo 2024.12'
 website   = 'https://raku.org'
 example   = '''
 # Printing
@@ -1468,8 +1468,8 @@ Shout arg
 
 ['Rockstar 2']
 args    = [ '/usr/bin/rockstarwrapper', '-' ]
-size    = '4.23 MiB'
-version = '2.0.16'
+size    = '4.24 MiB'
+version = '2.0.23'
 website = 'https://codewithrockstar.com'
 example = '''
 (Printing)

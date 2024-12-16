@@ -1,4 +1,4 @@
-FROM dart:3.5.4-sdk AS builder
+FROM dart:3.6.0-sdk AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
