@@ -87,6 +87,10 @@ const asmErrorTooltip = {
 
 const fontFamily = "'Source Code Pro', monospace";
 
+// Enable character-wise wrapping whenever possible.
+// This was disabled in the upstream due to the old Safari issue (codemirror/dev#524).
+const lineWrapping: any = CSS.supports('overflow-wrap', 'anywhere') ? { wordBreak: 'break-all' } : {};
+
 export const extensions : { [key: string]: any } = {
     // Extensions.
     'base': [
@@ -98,6 +102,7 @@ export const extensions : { [key: string]: any } = {
             '.cm-asm-error-tooltip':    asmErrorTooltip,
             '.cm-content':              { fontFamily },
             '.cm-gutters':              { fontFamily },
+            '.cm-lineWrapping':         lineWrapping,
             '.cm-tooltip':              { fontFamily },
             '.cm-tooltip-autocomplete': { fontFamily },
         }, { dark: false }),
