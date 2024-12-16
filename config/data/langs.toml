@@ -1120,6 +1120,23 @@ example = '''
 `0:x
 '''
 
+[KamilaLisp]
+args       = [ '/usr/bin/kamilalisp', '-' ]
+experiment = 1738
+size       = '148 MiB'
+version    = '0.3.0.1'
+website    = 'https://github.com/kspalaiologos/kamilalisp'
+example    = '''
+; Printing
+(io:writeln "Hello, World!")
+
+; Looping
+(:io:writeln \⍳ 10)
+
+; Accessing arguments
+(:io:writeln args)
+'''
+
 [Kotlin]
 args    = [ '/usr/bin/kotlin', '-Xuse-fast-jar-file-system', '-e', '$code' ]
 env     = [ 'JAVA_HOME=/opt/java' ]
