@@ -86,6 +86,18 @@ export default class UnprintableElement extends HTMLElement {
         this.#span.textContent = ignoreTextContent ? '' : c;
         this.#span.title = t;
     }
+
+    static PATTERN = /([\x00-\x08\x0B-\x1F\x7F-\xA0])/g;
+
+    static escape(text: string): DocumentFragment {
+        const frag = document.createDocumentFragment();
+        const parts = text.split(UnprintableElement.PATTERN);
+        for (let i = 0; i < parts.length - 1; i += 2) {
+            frag.append(parts[i], new UnprintableElement(parts[i + 1]));
+        }
+        frag.append(parts[parts.length - 1]);
+        return frag;
+    }
 }
 
 customElements.define('u-p', UnprintableElement);
