@@ -378,8 +378,8 @@ int main(int argc, char* argv[]) {
 [Civet]
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
-size    = '71.7 MiB'
-version = '0.9.0'
+size    = '71.8 MiB'
+version = '0.9.1'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -573,8 +573,8 @@ void main(string[] argv) {
 
 [Dart]
 args    = [ '/usr/bin/dart', '-' ]
-size    = '235 MiB'
-version = '3.5.4'
+size    = '239 MiB'
+version = '3.6.0'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -1392,7 +1392,7 @@ example    = '''
 args      = [ '/usr/bin/raku', '-' ]
 redirects = [ 'perl6' ]
 size      = '75.9 MiB'
-version   = 'Raku 6.d on Rakudo 2024.10'
+version   = 'Raku 6.d on Rakudo 2024.12'
 website   = 'https://raku.org'
 example   = '''
 # Printing
@@ -1468,12 +1468,11 @@ Shout arg
 '''
 
 ['Rockstar 2']
-args       = [ '/usr/bin/rockstarwrapper', '-' ]
-experiment = 1336
-size       = '5.79 MiB'
-version    = '2.0.0'
-website    = 'https://codewithrockstar.com'
-example    = '''
+args    = [ '/usr/bin/rockstarwrapper', '-' ]
+size    = '5.83 MiB'
+version = '2.0.25'
+website = 'https://codewithrockstar.com'
+example = '''
 (Printing)
 print "Hello, World!"
 
@@ -1641,8 +1640,8 @@ foreach (arg in vargv)
 [Swift]
 args    = [ '/usr/bin/swift', '-module-cache-path', '/tmp', '-' ]
 env     = [ 'PATH=/usr/bin:/bin' ]
-size    = '555 MiB'
-version = '6.0.2'
+size    = '516 MiB'
+version = '6.0.3'
 website = 'https://swift.org'
 example = '''
 // Printing
