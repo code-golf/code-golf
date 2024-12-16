@@ -1159,6 +1159,16 @@ for i = 1, #arg do
 end
 '''
 
+[Malbolge]
+args       = [ '/usr/bin/malbolgewrapper', '-' ]
+experiment = 1724
+size       = '52.7 KiB'
+version    = '03eb1ca'
+website    = 'https://'
+example    = '''
+('&%:9]!~}|z2Vxwv-,POqponl$Hjihf|B@@>,=<M:9&7Y#VV2TSn.Oe*c;(I&%$#"mCBA?zxxv*Pb8`qo42mZF.{Iy*@dD'<;_?!\}}|z2VxSSQ
+'''
+
 [Nim]
 args    = [ '/usr/bin/nim', '--colors:on', '-o:/tmp/code', '-r', 'c', '-' ]
 size    = '15.6 MiB'
