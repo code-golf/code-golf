@@ -6,7 +6,7 @@ import { $ }                                              from './_util';
 export { EditorState, EditorView };
 
 // Extensions.
-import { carriageReturn, insertChar,
+import { carriageReturn, insertChar, insertCharState,
     showUnprintables }                           from './_codemirror_unprintable';
 import { history, historyKeymap, indentLess, insertNewline,
     insertTab, standardKeymap, toggleComment }   from '@codemirror/commands';
@@ -110,6 +110,7 @@ export const extensions : { [key: string]: any } = {
     'editor': [
         history(),
         insertChar,
+        insertCharState,
         keymap.of([
             // Replace "enter" with a non auto indenting action.
             ...historyKeymap, ...standardKeymap.filter(k => k.key != 'Enter'),
