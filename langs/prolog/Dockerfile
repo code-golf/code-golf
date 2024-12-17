@@ -1,3 +1,4 @@
+# Also bump Curry.
 FROM swipl:9.2.8 AS builder
 
 RUN apt-get update && apt-get install -y gcc
