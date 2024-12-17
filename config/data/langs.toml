@@ -1287,6 +1287,23 @@ for ($i = 1; $i < $argc; $i++)
     echo "$argv[$i]\n";
 '''
 
+[Pip]
+args       = [ '/usr/bin/python', 'pip.py', '-e', '$code', '--' ]
+experiment = 919
+size       = '29.5 MiB'
+version    = '1.2.0'
+website    = 'https://github.com/dloscutoff/pip'
+example    = '''
+; Printing
+P"Hello, World!"
+
+; Looping
+Fi,tPi
+
+; Accessing arguments
+FagPa
+'''
+
 [PowerShell]
 args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
