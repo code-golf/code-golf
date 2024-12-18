@@ -9,9 +9,7 @@ ENV VER=0.26.0
 RUN curl -#L https://github.com/pigpigyyy/Yuescript/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1
 
-RUN make install  \
-    NO_LUA=true   \
-    NO_MACRO=true \
+RUN make install \
  && strip /usr/local/bin/yue
 
 COPY yuescript.c /
