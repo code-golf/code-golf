@@ -61,6 +61,25 @@ FOR i FROM 2 TO a68g argc DO
 OD
 '''
 
+[APL]
+args       = [ '/usr/bin/apl', '-' ]
+env        = [ 'DYALOG=/opt/mdyalog/19.0/64/unicode' ]
+experiment = 135
+size       = '15.0 MiB'
+version    = 'Dyalog APL 19.0.50027'
+website    = 'https://www.dyalog.com'
+example    = '''
+⍝ Printing
+⎕←'Hello, World!'
+
+⍝ Looping
+⎕IO←0
+{⎕←⍵}¨⍳10
+
+⍝ Accessing arguments
+⎕←¨1↓2⎕NQ#'GetCommandLineArgs'
+'''
+
 [Arturo]
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
@@ -220,7 +239,7 @@ Next
 [Befunge]
 args       = [ '/usr/bin/befunge', '-' ]
 experiment = 428
-size       = '3.62 MiB'
+size       = '4.21 MiB'
 version    = 'b7bf640'
 website    = 'https://github.com/VorpalBlade/cfunge'
 example    = '''
@@ -378,8 +397,8 @@ int main(int argc, char* argv[]) {
 [Civet]
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
-size    = '71.7 MiB'
-version = '0.9.0'
+size    = '71.8 MiB'
+version = '0.9.1'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -573,8 +592,8 @@ void main(string[] argv) {
 
 [Dart]
 args    = [ '/usr/bin/dart', '-' ]
-size    = '235 MiB'
-version = '3.5.4'
+size    = '239 MiB'
+version = '3.6.0'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -839,7 +858,7 @@ for (arg in args)
 args       = [ '/usr/bin/harbourwrapper', '-' ]
 experiment = 1614
 size       = '13.0 MiB'
-version    = 'b547517'
+version    = '79c4f25'
 website    = 'https://harbour.github.io'
 example    = '''
 LOCAL i
@@ -957,7 +976,7 @@ example = '''
 [Hush]
 args       = [ '/usr/bin/hush', '-' ]
 experiment = 656
-size       = '3.27 MiB'
+size       = '3.26 MiB'
 version    = '0.1.4'
 website    = 'https://hush-shell.github.io'
 example    = '''
@@ -1392,7 +1411,7 @@ example    = '''
 args      = [ '/usr/bin/raku', '-' ]
 redirects = [ 'perl6' ]
 size      = '75.9 MiB'
-version   = 'Raku 6.d on Rakudo 2024.10'
+version   = 'Raku 6.d on Rakudo 2024.12'
 website   = 'https://raku.org'
 example   = '''
 # Printing
@@ -1468,12 +1487,11 @@ Shout arg
 '''
 
 ['Rockstar 2']
-args       = [ '/usr/bin/rockstarwrapper', '-' ]
-experiment = 1336
-size       = '5.79 MiB'
-version    = '2.0.0'
-website    = 'https://codewithrockstar.com'
-example    = '''
+args    = [ '/usr/bin/rockstarwrapper', '-' ]
+size    = '5.83 MiB'
+version = '2.0.25'
+website = 'https://codewithrockstar.com'
+example = '''
 (Printing)
 print "Hello, World!"
 
@@ -1641,8 +1659,8 @@ foreach (arg in vargv)
 [Swift]
 args    = [ '/usr/bin/swift', '-module-cache-path', '/tmp', '-' ]
 env     = [ 'PATH=/usr/bin:/bin' ]
-size    = '555 MiB'
-version = '6.0.2'
+size    = '516 MiB'
+version = '6.0.3'
 website = 'https://swift.org'
 example = '''
 // Printing
