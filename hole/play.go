@@ -482,9 +482,16 @@ func play(
 
 	stdoutBytes := stdout.Next(maxLength)
 
-	// Postprocess sed output to turn null bytes into newlines.
-	if lang.ID == "sed" {
-		stdoutBytes = bytes.ReplaceAll(stdoutBytes, []byte("\x00"), []byte("\n"))
+	// Postprocess output in apl or sed.
+	// Convert apl's carriage returns or sed's null bytes to newlines.
+	if lang.ID == "apl" || lang.ID == "sed" {
+		stdoutByte := "\r"
+
+		if lang.ID == "sed" {
+			stdoutByte = "\x00"
+		}
+
+		stdoutBytes = bytes.ReplaceAll(stdoutBytes, []byte(stdoutByte), []byte("\n"))
 	}
 
 	// Trim trailing whitespace on each line, and then trailing empty lines.
