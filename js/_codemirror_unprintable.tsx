@@ -1,6 +1,7 @@
 // CodeMirror unprintable character extensions
 import { Decoration, EditorView, keymap, MatchDecorator, ViewPlugin, WidgetType } from '@codemirror/view';
 import { EditorState }                                                            from '@codemirror/state';
+import UnprintableElement                                                         from './_unprintable';
 
 export const carriageReturn = [
     EditorState.lineSeparator.of('\n'), // Prevent CM from treating carriage return as newline
@@ -64,12 +65,12 @@ class UnprintableWidget extends WidgetType {
         this.value = value;
     }
     toDOM() {
-        return <span title={'\\u' + this.value.toString(16)}>•</span>;
+        return <u-p c={String.fromCharCode(this.value)} />;
     }
 }
 
 const unprintableDecorator = new MatchDecorator({
-    regexp: /[\x01-\x08\x0B-\x1F\x7F]/g,
+    regexp: UnprintableElement.PATTERN,
     decoration: match => Decoration.replace({
         widget: new UnprintableWidget(match[0].charCodeAt(0)),
     }),
