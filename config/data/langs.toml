@@ -1200,8 +1200,8 @@ for arg in commandLineParams():
 
 [OCaml]
 args    = [ '/usr/bin/ocaml', '/proc/self/fd/0' ]
-size    = '91.4 MiB'
-version = '5.2.0'
+size    = '91.5 MiB'
+version = '5.2.1'
 website = 'https://ocaml.org'
 example = '''
 (* Printing *)
