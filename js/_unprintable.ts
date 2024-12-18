@@ -1,42 +1,44 @@
-import { StyleModule } from "style-mod"; // Already used by CodeMirror
+import { StyleModule } from 'style-mod'; // Already used by CodeMirror
+
+/* eslint no-unused-vars: ["off"] */
 
 const shadowStyle = new StyleModule({
-    ":host": {
-        display: "inline-block",
-        position: "relative",
-        verticalAlign: "middle",
-        width: "1ch",
-        height: "1em",
+    ':host': {
+        display: 'inline-block',
+        position: 'relative',
+        verticalAlign: 'middle',
+        width: '1ch',
+        height: '1em',
         // Omit emoji because Apple Color Emoji has a full-width glyph for non-emoji '0'. (???)
         fontFamily: "'Source Code Pro', monospace",
         lineHeight: 0.8,
-        cursor: "text",
+        cursor: 'text',
     },
-    ":host > span": {
-        WebkitTextFillColor: "transparent",
-        "&:before, &:after": {
-            WebkitTextFillColor: "currentcolor",
-            fontSize: "70%",
-            position: "absolute",
-            pointerEvents: "none",
+    ':host > span': {
+        'WebkitTextFillColor': 'transparent',
+        '&:before, &:after': {
+            WebkitTextFillColor: 'currentcolor',
+            fontSize: '70%',
+            position: 'absolute',
+            pointerEvents: 'none',
         },
-        "&:before": {
-            content: "attr(data-h)",
+        '&:before': {
+            content: 'attr(data-h)',
             left: 0,
             top: 0,
         },
-        "&:after": {
-            content: "attr(data-l)",
+        '&:after': {
+            content: 'attr(data-l)',
             right: 0,
             bottom: 0,
         },
     },
 
-    ":host([c])": {
-        pointerEvents: "none",
+    ':host([c])': {
+        pointerEvents: 'none',
     },
-    ":host([c]) > span": {
-        pointerEvents: "auto",
+    ':host([c]) > span': {
+        pointerEvents: 'auto',
     },
 });
 
@@ -70,12 +72,14 @@ export default class UnprintableElement extends HTMLElement {
             h = '⌜';
             l = '⌟';
             t = '(empty)';
-        } else if (c.length == 1) {
+        }
+        else if (c.length == 1) {
             const code = c.charCodeAt(0);
             h = '0123456789ABCDEF'[code / 16 | 0];
             l = '0123456789ABCDEF'[code % 16];
             t = '\\u' + code.toString(16);
-        } else {
+        }
+        else {
             h = '+';
             l = '+';
             c = '';
