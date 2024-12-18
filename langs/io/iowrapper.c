@@ -5,7 +5,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* io = "/usr/bin/io";
+const char* io = "/usr/bin/io", *code = "code.io";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
 
     FILE* fp;
 
-    if (!(fp = fopen("code.io", "w")))
+    if (!(fp = fopen(code, "w")))
         ERR_AND_EXIT("fopen");
 
     char buffer[4096];
@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
     int iargc = argc + 1;
     char** iargv = malloc(iargc * sizeof(char*));
     iargv[0] = (char*) io;
-    iargv[1] = "code.io";
+    iargv[1] = (char*) code;
     memcpy(&iargv[2], &argv[2], (argc - 2) * sizeof(char*));
     iargv[iargc - 1] = NULL;
 
