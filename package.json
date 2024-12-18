@@ -33,7 +33,8 @@
     "luxon": "",
     "lz-string": "",
     "mathjax": "",
-    "nim-codemirror-mode": ""
+    "nim-codemirror-mode": "",
+    "style-mod": ""
   },
   "devDependencies": {
     "@types/diff": "",
