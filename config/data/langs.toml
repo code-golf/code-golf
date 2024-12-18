@@ -61,6 +61,25 @@ FOR i FROM 2 TO a68g argc DO
 OD
 '''
 
+[APL]
+args       = [ '/usr/bin/apl', '-' ]
+env        = [ 'DYALOG=/opt/mdyalog/19.0/64/unicode' ]
+experiment = 135
+size       = '15.0 MiB'
+version    = 'Dyalog APL 19.0.50027'
+website    = 'https://www.dyalog.com'
+example    = '''
+⍝ Printing
+⎕←'Hello, World!'
+
+⍝ Looping
+⎕IO←0
+{⎕←⍵}¨⍳10
+
+⍝ Accessing arguments
+⎕←¨1↓2⎕NQ#'GetCommandLineArgs'
+'''
+
 [Arturo]
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
@@ -351,7 +370,7 @@ foreach (String arg in args)
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
 size    = '142 MiB'
-version = 'Clang 19.1.5'
+version = 'Clang 19.1.6'
 website = 'https://clang.llvm.org'
 example = '''
 #include <iostream>
@@ -839,7 +858,7 @@ for (arg in args)
 args       = [ '/usr/bin/harbourwrapper', '-' ]
 experiment = 1614
 size       = '13.0 MiB'
-version    = 'b547517'
+version    = '79c4f25'
 website    = 'https://harbour.github.io'
 example    = '''
 LOCAL i
@@ -1198,8 +1217,8 @@ for arg in commandLineParams():
 
 [OCaml]
 args    = [ '/usr/bin/ocaml', '/proc/self/fd/0' ]
-size    = '91.4 MiB'
-version = '5.2.0'
+size    = '91.5 MiB'
+version = '5.2.1'
 website = 'https://ocaml.org'
 example = '''
 (* Printing *)
