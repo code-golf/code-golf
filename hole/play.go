@@ -371,7 +371,7 @@ func play(
 		}
 	case "octave":
 		// Prevent trivial quines. Error out and return early.
-		if hole.ID == "quine" && strings.Contains(code, "ans") {
+		if hole.ID == "quine" && len(code) > 0 && strings.Contains(code, "ans") {
 			run.Stderr = `Quine in Octave must not use "ans".`
 			return nil
 		}
