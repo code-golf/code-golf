@@ -49,6 +49,7 @@ import { julia }                                    from '@codemirror/legacy-mod
 import { k }                                        from 'codemirror-lang-k';
 import { lua }                                      from '@codemirror/legacy-modes/mode/lua';
 import { nim }                                      from 'nim-codemirror-mode';
+import { octave }                                   from '@codemirror/legacy-modes/mode/octave';
 import { pascal }                                   from '@codemirror/legacy-modes/mode/pascal';
 import { perl }                                     from '@codemirror/legacy-modes/mode/perl';
 import { phpLanguage }                              from '@codemirror/lang-php';
@@ -178,6 +179,7 @@ export const extensions : { [key: string]: any } = {
     'lua':           StreamLanguage.define(lua),
     'nim':           StreamLanguage.define({ ...nim( {}, {} ), languageData: { commentTokens: { line: '#' } } }),
     'ocaml':         StreamLanguage.define(oCaml),
+    'octave':        StreamLanguage.define(octave),
     // TODO odin
     'pascal':        StreamLanguage.define(pascal),
     'perl':          StreamLanguage.define(perl),
