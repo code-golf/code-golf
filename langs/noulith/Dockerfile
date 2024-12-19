@@ -1,6 +1,6 @@
 FROM rust:1.83.0-alpine3.21 AS builder
 
-RUN apk add --no-cache build-base
+RUN apk add --no-cache musl-dev
 
 ENV VER=57580ee
 
