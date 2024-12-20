@@ -1091,7 +1091,7 @@ for (let arg of arguments)
 args       = [ '/usr/bin/jellywrapper', '-' ]
 env        = [ 'LANG=en_US.UTF-8' ]
 experiment = 109
-size       = '120 MiB'
+size       = '118 MiB'
 version    = '70c9fd9'
 website    = 'https://github.com/DennisMitchell/jellylanguage'
 example    = '''

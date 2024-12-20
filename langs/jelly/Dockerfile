@@ -37,16 +37,18 @@ RUN find . -name '*.opt-[12].pyc' -delete \
           turtledemo                      \
           unittest
 
+COPY jellywrapper.c /
+
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/jellywrapper -s -static /jellywrapper.c
+
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/cat /bin/sed /bin/sh /bin/
-COPY --from=0 /lib/ld-musl-x86_64.so.1  /lib/
-COPY --from=0 /usr/bin/jelly            \
-              /usr/bin/python3.13       /usr/bin/
-COPY --from=0 /usr/lib/libz.so.1        /usr/lib/
-COPY --from=0 /usr/lib/python3.13       /usr/lib/python3.13
-
-COPY jellywrapper /usr/bin/
+COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
+COPY --from=0 /usr/bin/jelly           \
+              /usr/bin/jellywrapper    \
+              /usr/bin/python3.13      /usr/bin/
+COPY --from=0 /usr/lib/libz.so.1       /usr/lib/
+COPY --from=0 /usr/lib/python3.13      /usr/lib/python3.13
 
 ENTRYPOINT ["jellywrapper"]
 
