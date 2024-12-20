@@ -324,7 +324,7 @@ func play(
 		}
 	case "jelly":
 		// Prevent trivial quines. Error out and return early.
-		if hole.ID == "quine" && !strings.Contains(code, `“`) {
+		if hole.ID == "quine" && len(code) > 0 && !strings.Contains(code, `“`) {
 			run.Stderr = "Quine in Jelly must have at least one '“' character."
 			return nil
 		}
