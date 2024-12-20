@@ -328,6 +328,12 @@ func play(
 			run.Stderr = "Quine in jq must not be valid JSON."
 			return nil
 		}
+	case "jsfuck":
+		// Disallow characters other than '!', '(', ')', '+', '[', and ']'.
+		if !regexp.MustCompile(`^[!()+[\]]*$`).MatchString(code) {
+			run.Stderr = "Code in JSFuck must not contain characters other than '!', '(', ')', '+', '[', and ']'."
+			return nil
+		}
 	case "k":
 		if hole.ID == "quine" {
 			length := len(code)
