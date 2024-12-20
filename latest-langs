@@ -11,6 +11,7 @@ constant %paths = (
     '05AB1E'       => 'github.com/Adriandmen/05AB1E',
     '><>'          => 'github.com/primo-ppcg/fish-jit',
     'ALGOL 68'     => 'jmvdveer.home.xs4all.nl/en.download.algol-68-genie-current.html',
+    'APL'          => 'aplwiki.com/wiki/Dyalog_APL',
     'Arturo'       => 'github.com/arturo-lang/arturo/releases/latest',
     'Assembly'     => 'registry.npmjs.org/@defasm/core/latest',
     'Bash'         => 'en.wikipedia.org/wiki/Bash_(Unix_shell)',
@@ -118,7 +119,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'swi-prolog'  / { $res ~~ / 'stable' .+? <(<ver>)> / }
         when / 'github.com'  / {
             .ends-with('/releases/latest')
-                ?? $res ~~ / [ $name || 'dev' || 'elease' || 'Version' ] <[\ -]> v? <(<ver>)> /
+                ?? $res ~~ m:i/ [ $name || < dev release version > ] <[\ -]> v? <(<ver>)> /
                 !! $res ~~ / '"currentOid":"' <( <xdigit> ** 7 )> /;
         }
         when / 'wikipedia'   / {

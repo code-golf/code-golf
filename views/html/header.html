@@ -40,6 +40,10 @@
             chtml:   { fontURL:    '/mathjax-fonts' },
             startup: { elements:   ['article'] },
             tex:     { inlineMath: [['$', '$']] },
+            options: {
+                processHtmlClass: 'language-math',
+                skipHtmlTags: {'[-]': ['pre']},
+            },
         };
     </script>
 {{ end }}
