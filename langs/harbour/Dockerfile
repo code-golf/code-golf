@@ -4,7 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl gcc libpcre3-dev make zlib1g-dev
 
-ENV VER=b547517
+ENV VER=79c4f25
 
 RUN curl -#L https://github.com/harbour/core/tarball/$VER \
   | tar xz --strip-components 1

@@ -5,11 +5,12 @@ import {
     init, langs, hole, setSolution,
     setCode, refreshScores, submit, updateRestoreLinkVisibility,
     ReadonlyPanelsData, setCodeForLangAndSolution, getCurrentSolutionCode,
-    initDeleteBtn, initCopyJSONBtn, initOutputDiv, getScorings, replaceUnprintablesInOutput,
+    initDeleteBtn, initCopyJSONBtn, getScorings,
     updateLocalStorage,
     ctrlEnter,
     getLastSubmittedCode,
 } from './_hole-common';
+import UnprintableElement from './_unprintable';
 
 const editor = new EditorView({
     dispatch: tr => {
@@ -43,7 +44,6 @@ const editor = new EditorView({
 editor.contentDOM.setAttribute('data-gramm', 'false');  // Disable Grammarly.
 
 init(false, setSolution, setCodeForLangAndSolution, updateReadonlyPanels, () => editor);
-initOutputDiv($('#out div'));
 
 // Set/clear the hide-details cookie on details toggling.
 $('#details').ontoggle = (e: Event) => document.cookie =
@@ -85,8 +85,7 @@ function updateReadonlyPanels(data: ReadonlyPanelsData) {
 
     // Always show exp & out.
     $('#exp div').innerText = data.Exp;
-    $('#out div').innerText = data.Out;
-    $('#out div').innerHTML = replaceUnprintablesInOutput($('#out div').innerHTML);
+    $('#out div').replaceChildren(UnprintableElement.escape(data.Out));
 
     const ignoreCase = JSON.parse($('#case-fold').innerText);
     const diff = diffView(hole, data.Exp, data.Out, data.Argv, ignoreCase, data.MultisetDelimiter, data.ItemDelimiter);

@@ -14,6 +14,7 @@
     left: 50%;
     position: absolute;
     transform: translate(-50%, -.25rem);
+    pointer-events: none;
 }
 
 /* Tooltip Arrow */

@@ -19,7 +19,7 @@ subtest 'Timeout with correct output' => {
 
     is $res<stderr>, 'Killed for exceeding the 10s timeout.', 'Correct error';
 
-    is $res<stdout>, slurp('hole/answers/fizz-buzz.txt').trim, 'Correct output';
+    is $res<stdout>, slurp('config/hole-answers/fizz-buzz.txt').trim, 'Correct output';
 
     nok $res<pass>, 'Solution fails';
 };

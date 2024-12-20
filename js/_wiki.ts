@@ -8,6 +8,9 @@ export function highlightCodeBlocks(selector: string){
     for (const code of $$(selector)) {
         let lang = code.className.slice('language-'.length).toLowerCase();
 
+        // Should be handled instead by MathJax.
+        if (lang == 'math') continue;
+
         // FIXME Is there a better way to do this mapping?
         if (lang == 'asm') lang = 'assembly';
         if (lang == 'c++') lang = 'cpp';
