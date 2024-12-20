@@ -1496,14 +1496,14 @@ example = '''
 print "Hello, World!"
 
 (Looping)
-x = 0
-until x > 9
-print x
-x = x + 1
+for x in 10
+  print x
+end
 
 (Accessing arguments)
 for arg in arguments
-print arg
+  print arg
+end
 '''
 
 [Ruby]
