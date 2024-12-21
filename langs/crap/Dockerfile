@@ -2,28 +2,31 @@ FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache build-base curl git
 
-RUN curl -L https://download.savannah.nongnu.org/releases/tinycc/tcc-0.9.27.tar.bz2 \
+RUN curl -#L https://download.savannah.nongnu.org/releases/tinycc/tcc-0.9.27.tar.bz2 \
   | tar xj --strip-components 1
 
 RUN ./configure      \
     --config-musl    \
     --prefix=/usr    \
     --strip-binaries \
- && make             \
- && make install
+ && make && make install
 
 RUN git clone https://github.com/themanyone/crap.git
 
-RUN cd crap \
- && make    \
- && make install
+WORKDIR /crap
+
+RUN make && make install
+
+COPY crapwrapper.c /
+
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/crapwrapper -s -static /crapwrapper.c
 
 FROM codegolf/lang-base
 
 COPY --from=0 /crap/VERSION              /version
-COPY --from=0 /bin/cat /bin/sh           /bin/
 COPY --from=0 /lib/ld-musl-x86_64.so.1   /lib/
-COPY --from=0 /usr/bin/tcc               \
+COPY --from=0 /usr/bin/crapwrapper       \
+              /usr/bin/tcc               \
               /usr/local/bin/crap        /usr/bin/
 COPY --from=0 /usr/include/alloca.h      \
               /usr/include/assert.h      \
@@ -62,8 +65,6 @@ COPY --from=0 /usr/include/alloca.h      \
 COPY --from=0 /usr/include/bits          /usr/include/bits
 COPY --from=0 /usr/lib/libc.so           /usr/lib/
 COPY --from=0 /usr/lib/tcc/libtcc1.a     /usr/lib/tcc/
-
-COPY /crapwrapper /usr/bin/
 
 ENTRYPOINT ["crapwrapper"]
 
