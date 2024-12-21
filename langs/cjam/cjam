@@ -1,6 +1,0 @@
-#!/bin/sh -e
-
-cat - > /tmp/code.cjam
-
-shift
-exec /opt/jdk/bin/java -jar /usr/bin/cjam.jar /tmp/code.cjam "$@"

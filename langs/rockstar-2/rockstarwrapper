@@ -1,8 +1,0 @@
-#!/bin/sh -e
-
-[ "$1" = "--version" ] && exec rockstar --version
-
-cat - > /tmp/code.rock
-
-shift
-exec rockstar /tmp/code.rock "$@"

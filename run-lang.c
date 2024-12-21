@@ -71,7 +71,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
     // Clobber /proc/stat. It can be used to inject state. Kotlin, Raku, & V don't like this.
     if (strcmp(argv[0], "/usr/bin/kotlin") != 0
      && strcmp(argv[0], "/usr/bin/raku")   != 0
-     && strcmp(argv[0], "/usr/bin/v")      != 0)
+     && strcmp(argv[0], "/usr/bin/V")      != 0)
         if (mount("/dev/null", "/proc/stat", NULL, MS_BIND, NULL) < 0)
             ERR_AND_EXIT("mount /proc/stat");
 
@@ -213,7 +213,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(pwritev),         // 296
         ALLOW(read),            // 0
         ALLOW(readv),           // 19
-        ALLOW(sendfile),        // 40 (Used by cat in wrappers, TODO remove)
+        // ALLOW(sendfile),     // 40
         ALLOW(write),           // 1
         ALLOW(writev),          // 20
 
