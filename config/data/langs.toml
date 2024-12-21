@@ -398,7 +398,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '71.8 MiB'
-version = '0.9.1'
+version = '0.9.2'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -858,7 +858,7 @@ for (arg in args)
 args       = [ '/usr/bin/harbourwrapper', '-' ]
 experiment = 1614
 size       = '13.0 MiB'
-version    = '79c4f25'
+version    = 'ce1bc20'
 website    = 'https://harbour.github.io'
 example    = '''
 LOCAL i
@@ -1290,7 +1290,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '8.40 MiB'
-version = '8.4.1'
+version = '8.4.2'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -1495,14 +1495,14 @@ example = '''
 print "Hello, World!"
 
 (Looping)
-x = 0
-until x > 9
-print x
-x = x + 1
+for x in 10
+  print x
+end
 
 (Accessing arguments)
 for arg in arguments
-print arg
+  print arg
+end
 '''
 
 [Ruby]
