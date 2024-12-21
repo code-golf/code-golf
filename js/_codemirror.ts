@@ -146,6 +146,7 @@ export const extensions : { [key: string]: any } = {
     'coffeescript':  StreamLanguage.define(coffeeScript),
     'common-lisp':   StreamLanguage.define(commonLisp),
     'cpp':           cpp(),
+    'crap':          StreamLanguage.define(c),
     'crystal':       StreamLanguage.define(crystal),
     'd':             StreamLanguage.define(d),
     'dart':          StreamLanguage.define(dart),
