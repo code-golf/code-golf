@@ -176,6 +176,7 @@ export const extensions : { [key: string]: any } = {
     'k':             k(),
     'kotlin':        StreamLanguage.define(kotlin),
     'lua':           StreamLanguage.define(lua),
+    // TODO nibbles
     'nim':           StreamLanguage.define({ ...nim( {}, {} ), languageData: { commentTokens: { line: '#' } } }),
     'ocaml':         StreamLanguage.define(oCaml),
     // TODO odin
