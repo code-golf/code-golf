@@ -1740,8 +1740,8 @@ example    = '''
 
 [V]
 args    = [ '/usr/bin/v', '-' ]
-size    = '59.7 MiB'
-version = '0.4.8'
+size    = '59.9 MiB'
+version = '0.4.9'
 website = 'https://vlang.io'
 example = '''
 import os
