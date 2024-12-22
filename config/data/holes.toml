@@ -66,18 +66,18 @@ released = 2024-02-29
 synopsis = 'Print all solvable quadruples in the 24 game.'
 preamble = '''
 <p>
-    The 24 game is an arithmetical puzzle in which the objective is to find a way to combine
-    four integers using only basic arithmetic operations (+, -, ×, ÷) to get a result of 24.
-    Each integer must be used exactly once.
+    The 24 game is an arithmetical puzzle in which the objective is to find a
+    way to combine four integers using only basic arithmetic operations
+    (+, -, ×, ÷) to get a result of 24. Each integer must be used exactly once.
 
 <p>
-    The variation we use is played with a standard 52-card deck, with integers ranging from 1
-    to 13. Print all solvable quadruples of integers. The integers of each quadruple should
-    be printed in non-decreasing order.
+    The variation we use is played with a standard 52-card deck, with integers
+    ranging from 1 to 13. Print all solvable quadruples of integers. The
+    integers of each quadruple should be printed in non-decreasing order.
 
 <p>
-    Keep in mind that some solutions involve fractions. For example, the only solution to
-    <code>1 3 4 6</code> is <code>6/(1-3/4)</code>.
+    Keep in mind that some solutions involve fractions. For example, the only
+    solution to <code>1 3 4 6</code> is <code>6/(1-3/4)</code>.
 '''
 
 ['99 Bottles of Beer']
@@ -299,8 +299,9 @@ links = [
 released = 2024-01-01
 synopsis = 'Print all primes with distinct digits in ascending order.'
 preamble = '''
-<p>Print all primes whose decimal digits are distinct and appear in ascending
-order. There are <b>100</b> such primes, the largest being <b>23456789</b>.
+<p>
+    Print all primes whose decimal digits are distinct and appear in ascending
+    order. There are <b>100</b> such primes, the largest being <b>23456789</b>.
 '''
 
 ['ASCII Table']
@@ -390,8 +391,8 @@ preamble = '''
     and execute each program in turn.
 
 <p>
-    Arguments will not contain any character not
-    listed in the table above. In particular, the input command "<b>,</b>" is not tested.
+    Arguments will not contain any character not listed in the table above.
+    In particular, the input command "<b>,</b>" is not tested.
 '''
 
 ['Card Number Validation']
@@ -476,7 +477,8 @@ preamble = '''
     A size <b>3</b> tree should look like this, with a single centered
     asterisk for the trunk:
 
-<pre>   *
+<pre>
+   *
   ***
  *****
    *
@@ -484,7 +486,8 @@ preamble = '''
 
 <p>With the largest size <b>9</b> tree looking like this:
 
-<pre>         *
+<pre>
+         *
         ***
        *****
       *******
@@ -712,7 +715,8 @@ preamble = '''
     range from size <b>1</b> to size <b>7</b> with a blank line between each
     cube. A size <b>1</b> cube should look like:
 
-<pre>  █────█
+<pre>
+  █────█
  ╱    ╱│
 █────█ │
 │    │ █
@@ -722,7 +726,8 @@ preamble = '''
 
 <p>And a size <b>7</b> cube should look like:
 
-<pre>        █────────────────────────────█
+<pre>
+        █────────────────────────────█
        ╱                            ╱│
       ╱                            ╱ │
      ╱                            ╱  │
@@ -777,65 +782,81 @@ preamble = '''
     Each input consists of a table describing the DFA, and a quoted input
     string, like so:
 
-<pre><code>    a b c d e f
-&gt; 0 0 0 0 1 0 0
+<pre>
+    a b c d e f
+> 0 0 0 0 1 0 0
   1 0 0 0 1 0 2
   2 3 0 0 1 0 0
  F3 3 3 3 3 3 3
-&quot;adbacadafad&quot;</code></pre>
+"adbacadafad"
+</pre>
 
-<p>
-    In this table, we can find the following information:
+<p>In this table, we can find the following information:
 
 <ul>
-<li>
-    There are four states, called <code>0</code>, <code>1</code>,
-    <code>2</code>, and <code>3</code>.
-    <ul>
-    <li>States are always digits <code>0-9</code>. There may be up to 10
-    states.</li>
-    </ul></li>
-<li>
-    There are six characters in the input alphabet: <code>a</code>,
-    <code>b</code>, <code>c</code>, <code>d</code>, <code>e</code>, and
-    <code>f</code>.
-    <ul>
-    <li>Input characters may be lowercase letters <code>a-z</code> or digits
-    <code>0-9</code>.</li>
-    </ul></li>
-<li>
-    The table entries describe the new state for each (current state,
-    character) pair.
-    <ul>
-    <li>For example, if the current state is <code>0</code>, and a
-    <code>d</code> is read, the next state is <code>1</code>.</li>
-    </ul></li>
-<li>
-    The row describing state <code>0</code> is marked with
-    <code>&gt;</code> so it is the <strong>initial state</strong>. There is
-    exactly one initial state.</li>
-<li>
-    The row describing state <code>3</code> is marked with
-    <code>F</code> so it is an <strong>accept state</strong>. There may be
-    multiple accept states, or none at all.</li>
+    <li>
+        There are four states, called <code>0</code>, <code>1</code>,
+        <code>2</code>, and <code>3</code>.
+
+        <ul>
+            <li>
+                States are always digits <code>0-9</code>.
+                There may be up to 10 states.
+        </ul>
+
+    <li>
+        There are six characters in the input alphabet: <code>a</code>,
+        <code>b</code>, <code>c</code>, <code>d</code>, <code>e</code>, and
+        <code>f</code>.
+
+        <ul>
+            <li>
+                Input characters may be lowercase letters <code>a-z</code> or
+                digits <code>0-9</code>.
+        </ul>
+
+    <li>
+        The table entries describe the new state for each (current state,
+        character) pair.
+
+        <ul>
+            <li>
+                For example, if the current state is <code>0</code>, and a
+                <code>d</code> is read, the next state is <code>1</code>.
+        </ul>
+
+    <li>
+        The row describing state <code>0</code> is marked with
+        <code>&gt;</code> so it is the <strong>initial state</strong>.
+        There is exactly one initial state.
+
+    <li>
+        The row describing state <code>3</code> is marked with
+        <code>F</code> so it is an <strong>accept state</strong>.
+        There may be multiple accept states, or none at all.
 </ul>
 
 <p>
     Use the table to move the DFA between its states by feeding it
     characters from the input string.
-<p>
-    In our example:
+
+<p>In our example:
+
 <ul>
-    <li>The initial state is <code>0</code>. The first character is
-    <code>a</code>. Looking at the table, we see the new state is
-    <code>0</code>.</li>
-    <li>The current state is <code>0</code>. The next character is
-    <code>d</code>. Looking at the table, we see the new state is
-    <code>1</code>.</li>
-    <li>The current state is <code>1</code>. The next character is
-    <code>b</code>. Looking at the table, we see the new state is
-    <code>0</code>.</li>
-    <li>…</li>
+    <li>
+        The initial state is <code>0</code>. The first character is
+        <code>a</code>. Looking at the table, we see the new state is
+        <code>0</code>.
+    <li>
+        The current state is <code>0</code>. The next character is
+        <code>d</code>. Looking at the table, we see the new state is
+        <code>1</code>.
+    <li>
+        The current state is <code>1</code>. The next character is
+        <code>b</code>. Looking at the table, we see the new state is
+        <code>0</code>.
+    <li>
+        …
 </ul>
 
 <p>
@@ -856,11 +877,14 @@ preamble = '''
     separated by a blank line.<p>A size <b>1</b> diamond should look like
     this, a single centered <b>1</b>:
 
-<pre>         1</pre>
+<pre>
+         1
+</pre>
 
 <p>With the largest size <b>9</b> diamond looking like this:
 
-<pre>         1
+<pre>
+         1
         121
        12321
       1234321
@@ -906,8 +930,8 @@ experiment = 811
 synopsis = 'Compute the perimeter of an ellipse.'
 preamble = '''
 <p>
-    Given the two radii of an ellipse, compute its perimeter and print
-    its integer part.
+    Given the two radii of an ellipse, compute its perimeter and print its
+    integer part.
 '''
 
 ['Emirp Numbers']
@@ -922,8 +946,8 @@ synopsis = 'Print all the emirp numbers from 1 to 1,000.'
 preamble = '''
 <p>
     An emirp (prime spelled backwards) is a prime number that results in a
-    <b>different</b> prime when its decimal digits are reversed. For example both
-    <b>13</b> and <b>31</b> are emirps, but <b>131</b> is not.
+    <b>different</b> prime when its decimal digits are reversed. For example
+    both <b>13</b> and <b>31</b> are emirps, but <b>131</b> is not.
 
 <p>
     Print all the emirp numbers from <b>1</b> to
@@ -1070,6 +1094,7 @@ preamble = '''
 <p>
     The Fibonacci numbers are a numerical sequence in which each number is the
     sum of the two preceding numbers: <b>0, 1, 1, 2, 3, 5, 8, 13…</b>
+
 <p>
     Print the first <b>31</b> Fibonacci numbers from <b>F<sub>0</sub> = 0</b>
     to <b>F<sub>30</sub> = 832040</b> (inclusive), each on a separate line.
@@ -1256,18 +1281,24 @@ data = '''{
 preamble = '''
 <p>
     Given each region (and an organization) print the corresponding unicode flag.
+
 <p>
     Unicode encodes standard flags using 26
-    <a href="https://en.wikipedia.org/wiki/Regional_indicator_symbol"><b>
-    regional indicator symbols</b></a> from <code>U+1F1E6</code> 🇦 to <code>U+1F1FF</code> 🇿,
+    <a href="//en.wikipedia.org/wiki/Regional_indicator_symbol">
+        regional indicator symbols</a>
+    from <code>U+1F1E6</code> 🇦 to <code>U+1F1FF</code> 🇿,
     one for each letter in the latin alphabet.
-<p>
-    A flag is composed of two sequential regional indicator symbols which spell a given region's two-letter
-    <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2"><b>ISO 3166-1 alpha-2 code</b></a>.
-<p>
-    For example, Vietnam's two-letter ISO code is VN, so 🇻+🇳 = 🇻🇳.
 
-<p>The full mapping is as follows:<div id=colors class="tables-4col">
+<p>
+    A flag is composed of two sequential regional indicator symbols which
+    spell a given region's two-letter
+    <a href="//en.wikipedia.org/wiki/ISO_3166-1_alpha-2">ISO 3166-1 alpha-2 code</a>.
+
+<p>For example, Vietnam's two-letter ISO code is VN, so 🇻+🇳 = 🇻🇳.
+
+<p>The full mapping is as follows:
+
+<div id=colors class="tables-4col">
 {{ range .DataMap }}
     {{ if or (eq .Key "Afghanistan" ) (eq .Key "Djibouti"                  )
              (eq .Key "Liberia"     ) (eq .Key "Saint Pierre and Miquelon" ) }}
@@ -1302,8 +1333,11 @@ preamble = '''
     Given a 64x64 grayscale image in plain PGM format, convert it to a palette
     of black (0) and white (255) using the Floyd-Steinberg algorithm. Print
     the result, using "#" for black and spaces for white.
+
 <p>
-    The input is 3 lines of header information, followed by 4096 pixel values, each on their own line.
+    The input is 3 lines of header information, followed by 4096 pixel values,
+    each on their own line.
+
 <pre>
     P2          # magic number
     64 64       # image dimensions
@@ -1312,21 +1346,38 @@ preamble = '''
     18          # (1,0) value
     ...
 </pre>
-Pixels are processed one at a time, left-to-right then top-to-bottom. For each pixel:
+
+<p>
+    Pixels are processed one at a time, left-to-right then top-to-bottom.
+    For each pixel:
+
 <ul>
-    <li>Let <code>a</code> be the pixel value.</li>
-    <li>Let <code>b</code> be the nearest palette value to <code>a</code> (either 0 or 255).</li>
-    <li>Set the current pixel to <code>b</code>. Now a "debt" of <code>a-b</code> needs to be spread to 4 of the neighboring pixels. For each of these 4 neighbors and its corresponding fraction <code>f</code> (as seen below), add <code>floor((a-b)*f)</code> to its value.</li>
+    <li>
+        Let <code>a</code> be the pixel value.
+    <li>
+        Let <code>b</code> be the nearest palette value to <code>a</code>
+        (either 0 or 255).
+    <li>
+        Set the current pixel to <code>b</code>. Now a "debt" of <code>a-b</code>
+        needs to be spread to 4 of the neighboring pixels. For each of these 4
+        neighbors and its corresponding fraction <code>f</code> (as seen below),
+        add <code>floor((a-b)*f)</code> to its value.
 </ul>
+
 <pre>
      --   --   --
      --   []  7/16
     3/16 5/16 1/16
 </pre>
-Notes:
+
+<p>Notes:
+
 <ul>
-    <li>Some pixel values may temporarily become less than 0 or greater than 255.</li>
-    <li>When processing pixels on the edge, any adjustments made to pixels outside of the image should be ignored.</li>
+    <li>
+        Some pixel values may temporarily become less than 0 or greater than 255.
+    <li>
+        When processing pixels on the edge, any adjustments made to pixels
+        outside of the image should be ignored.
 </ul>
 '''
 
@@ -1364,14 +1415,16 @@ preamble = '''
     space for empty squares. The output corresponding to the FEN of the
     starting position given above should be
 
-<pre>♜♞♝♛♚♝♞♜
+<pre>
+♜♞♝♛♚♝♞♜
 ♟♟♟♟♟♟♟♟
 
 
 
 
 ♙♙♙♙♙♙♙♙
-♖♘♗♕♔♗♘♖</pre>
+♖♘♗♕♔♗♘♖
+</pre>
 '''
 
 [Fractions]
@@ -1556,11 +1609,13 @@ preamble = '''
     <li>
         The (hexadecimal, lowercase) index of the starting octet, padded with
         zeros to eight hexadecimal digits
-    <li>A single colon (<code>:</code>), followed by a single space.
+    <li>
+        A single colon (<code>:</code>), followed by a single space.
     <li>
         8 space-separated pairs of octets, with each pair printed as 4
         hexadecimal digits
-    <li>Spaces to pad to 51 bytes
+    <li>
+        Spaces to pad to 51 bytes
     <li>
         The original 16 bytes, except with newline replaced with full stop
         (<code>.</code>)
@@ -1575,9 +1630,12 @@ links = [
 ]
 synopsis = 'Print five iterations of the Hilbert curve.'
 preamble = '''
-<p>The Hilbert curve is a continuous fractal space-filling curve, constructed as a limit of piecewise linear curves.
+<p>
+    The Hilbert curve is a continuous fractal space-filling curve, constructed
+    as a limit of piecewise linear curves.
 
-<p>Print five iterations of the Hilbert curve.
+<p>
+    Print five iterations of the Hilbert curve.
 '''
 
 [Intersection]
@@ -1637,7 +1695,9 @@ preamble = '''
 4 4 4 1 4 0
 </pre>
 
-<p>Print the first <b>1,000</b> terms of the inventory sequence, each on their own line.
+<p>
+    Print the first <b>1,000</b> terms of the inventory sequence,
+    each on their own line.
 '''
 
 [ISBN]
@@ -1676,10 +1736,12 @@ preamble = '''
     <br>
     <b>J(a, 1)</b> is defined as <b>1</b>.
     <br>
-    If <b>n</b> is prime, then <b>J(a, n)</b> is defined as <b>0</b> if <b>a=0 (mod n)</b>, as <b>1</b> if <b>a</b> is a square
-    modulo <b>n</b>, and <b>−1</b> otherwise.
+    If <b>n</b> is prime, then <b>J(a, n)</b> is defined as <b>0</b> if
+    <b>a=0 (mod n)</b>, as <b>1</b> if <b>a</b> is a square modulo <b>n</b>,
+    and <b>−1</b> otherwise.
     <br>
-    If <b>n = x*y, x,y>1</b>, then <b>J(a, n)</b> is defined as <b>J(a, x)*J(a, y)</b>.
+    If <b>n = x*y, x,y>1</b>, then <b>J(a, n)</b> is defined as
+    <b>J(a, x)*J(a, y)</b>.
     <br>
     Note that calculating the symbol from the definition is not very efficient
     as it requires factorisation of <b>n</b>.
@@ -1747,8 +1809,8 @@ preamble = '''
 </pre>
 
 <p>
-    Beginning with (1, 2) print the first <b>1,000</b> elements in the Kolakoski
-    sequence, separated by spaces.
+    Beginning with (1, 2) print the first <b>1,000</b> elements in the
+    Kolakoski sequence, separated by spaces.
 {{- end -}}
 '''
 
@@ -1857,10 +1919,10 @@ released = 2020-12-01
 synopsis = 'Print the first 20 terms of the Look and Say sequence.'
 preamble = '''
 <p>
-    The Look and Say sequence starts with 1 and is continued by looking
-    at each of the runs of the same number in the previous term and combining
-    the length with the original number. For example the next term after
-    111221 would be 312211 (three ones, two twos and one one).
+    The Look and Say sequence starts with 1 and is continued by looking at
+    each of the runs of the same number in the previous term and combining the
+    length with the original number. For example the next term after 111221
+    would be 312211 (three ones, two twos and one one).
 
 <p>Print the first <b>20</b> terms of the Look and Say sequence.
 '''
@@ -1933,41 +1995,54 @@ released = 2023-12-01
 synopsis = 'Print the completed mahjong hands.'
 preamble = '''
 <p>
-    Given a list of mahjong hands, print out all of the hands which are complete under the rules of Riichi Mahjong.
+    Given a list of mahjong hands, print out all of the hands which are
+    complete under the rules of Riichi Mahjong.
 
 <p>
-    Mahjong tiles are divided into three suits of <b>number tiles</b> from 1 to 9, and seven <b>honor tiles</b>, which are not numbered.
-    These are the Unicode characters representing the tiles in each suit, from 1 to 9:
-    <ul>
-        <li> Characters 🀇🀈🀉🀊🀋🀌🀍🀎🀏
-        <li> Bamboo 🀐🀑🀒🀓🀔🀕🀖🀗🀘
-        <li> Circles 🀙🀚🀛🀜🀝🀞🀟🀠🀡
-    </ul>
+    Mahjong tiles are divided into three suits of <b>number tiles</b>
+    from 1 to 9, and seven <b>honor tiles</b>, which are not numbered.
+    These are the Unicode characters representing the tiles in each suit,
+    from 1 to 9:
 
-<p>
-    These are the Unicode characters representing honor tiles: 🀀🀁🀂🀃🀄🀅🀆
+<ul>
+    <li>Characters 🀇🀈🀉🀊🀋🀌🀍🀎🀏
+    <li>Bamboo 🀐🀑🀒🀓🀔🀕🀖🀗🀘
+    <li>Circles 🀙🀚🀛🀜🀝🀞🀟🀠🀡
+</ul>
+
+<p>These are the Unicode characters representing honor tiles: 🀀🀁🀂🀃🀄🀅🀆
 
 <p>
     A <b>triplet</b> is a group of three identical tiles, e.g. 🀓🀓🀓 or 🀅🀅🀅.
-    A <b>sequence</b> is a group of three number tiles of the same suit and with consecutive numbers, e.g. 🀇🀈🀉 or 🀜🀝🀞.
+    A <b>sequence</b> is a group of three number tiles of the same suit and
+    with consecutive numbers, e.g. 🀇🀈🀉 or 🀜🀝🀞.
     A <b>meld</b> is either a triplet or a sequence.
     A <b>pair</b> is a group of two identical tiles.
 
 <p>
     A mahjong hand is <b>complete</b> if it consists of one of the following:
-    <ul>
-        <li> Four melds and a pair.
-        <li> Seven distinct pairs. Four of the same tile do not count as two pairs.
-        <li> All seven honor tiles and the 1 and 9 of each suit, plus one duplicate tile that forms a pair.
-    </ul>
+
+<ul>
+    <li>Four melds and a pair.
+
+    <li>Seven distinct pairs. Four of the same tile do not count as two pairs.
+
+    <li>
+        All seven honor tiles and the 1 and 9 of each suit,
+        plus one duplicate tile that forms a pair.
+</ul>
 
 <p>
-    The tiles in a mahjong hand are not ordered. For example, the hand 🀇🀈🀈🀈🀉🀓🀔🀕🀚🀛🀜🀀🀀🀀 is complete, as it can be split into the groups 🀇🀈🀉 🀓🀔🀕 🀚🀛🀜 🀀🀀🀀 🀈🀈.
+    The tiles in a mahjong hand are not ordered. For example,
+    the hand 🀇🀈🀈🀈🀉🀓🀔🀕🀚🀛🀜🀀🀀🀀 is complete,
+    as it can be split into the groups 🀇🀈🀉 🀓🀔🀕 🀚🀛🀜 🀀🀀🀀 🀈🀈.
     You may assume that no hand contains more than 4 of a single tile.
 
 <p>
-    The input consists of a sequence of arguments, each containing a string of 14 Unicode characters which represent the tiles in the hand.
-    Output the arguments that represent complete mahjong hands, in the same order as they appear in the argument list.
+    The input consists of a sequence of arguments, each containing a string of
+    14 Unicode characters which represent the tiles in the hand. Output the
+    arguments that represent complete mahjong hands, in the same order as they
+    appear in the argument list.
 '''
 
 [Mandelbrot]
@@ -1980,12 +2055,17 @@ links = [
 synopsis = 'Draw the Mandelbrot set.'
 preamble = '''
 <p>
-    The Mandelbrot set is the set of complex numbers <b>c</b> for which the sequence <b>a(1) = 0, a(n+1) = a(n)² + c</b> does not diverge to infinity.
+    The Mandelbrot set is the set of complex numbers <b>c</b> for which the
+    sequence <b>a(1) = 0, a(n+1) = a(n)² + c</b> does not diverge to infinity.
 
 <p>
-    Consider the section of the complex plane where <b>-2 ≤ Re c ≤ 0.5, -1 ≤ Im c ≤ 1</b> divided into a 41×81 lattice.
-    Draw the Mandelbrot set using this grid. That is, for each such lattice point, print █ (U+2588) if it belongs to the set and ▒ (U+2592) if it doesn't.
-    Note that for each of the lattice points, 1063 iterations are enough to determine whether the sequence corresponding to the point is unbounded or not.
+    Consider the section of the complex plane where
+    <b>-2 ≤ Re c ≤ 0.5, -1 ≤ Im c ≤ 1</b> divided into a 41×81 lattice.
+    Draw the Mandelbrot set using this grid. That is, for each such lattice
+    point, print █ (U+2588) if it belongs to the set and ▒ (U+2592) if it
+    doesn't. Note that for each of the lattice points, 1063 iterations are
+    enough to determine whether the sequence corresponding to the point is
+    unbounded or not.
 '''
 
 [Maze]
@@ -2018,11 +2098,14 @@ released = 2023-06-01
 synopsis = 'Tally code golf medals.'
 preamble = '''
 <p>
-    Solutions on code.golf can be awarded one of three medals: bronze (🥉) for 3rd place, silver (🥈) for 2nd place, or gold (🥇) for 1st place.
-    In addition, an uncontested 1st place solution is awarded a diamond (💎). Tied solutions are all awarded the same medal.
+    Solutions on code.golf can be awarded one of three medals: bronze (🥉) for
+    3rd place, silver (🥈) for 2nd place, or gold (🥇) for 1st place. In
+    addition, an uncontested 1st place solution is awarded a diamond (💎).
+    Tied solutions are all awarded the same medal.
 
 <p>
-    Given a list of space-separated solution scores in ascending order, print the corresponding diamonds and medals.
+    Given a list of space-separated solution scores in ascending order,
+    print the corresponding diamonds and medals.
 '''
 
 ['Morse Decoder']
@@ -2299,14 +2382,17 @@ released = 2024-05-01
 synopsis = 'Print all solutions to the N queens problem.'
 preamble = '''
 <p>
-    In chess, pieces move on a board of 8 ranks and 8 files. A chess queen can attack along a file a rank or a diagonal.
-    It is possible to place 8 queens on the board, such that no queen is under attack by another one.
-    When we list the rank on which the queen is for each file, one solution looks like this
+    In chess, pieces move on a board of 8 ranks and 8 files. A chess queen can
+    attack along a file a rank or a diagonal. It is possible to place 8 queens
+    on the board, such that no queen is under attack by another one. When we
+    list the rank on which the queen is for each file, one solution looks like
+    this:
+
+<pre>63571428</pre>
 
 <p>
-    <pre>63571428</pre>
-<p>
-    Print all solutions to the N queens problem, one per a line, for boards of sizes 4-8.
+    Print all solutions to the N queens problem, one per a line, for boards of
+    sizes 4-8.
 '''
 redirects = ["eight-queens"]
 
@@ -2322,61 +2408,108 @@ preamble = '''
     A <strong>nondeterministic finite automaton</strong> or NFA is a
     finite-state machine that may nondeterministically move to any
     of a set of states as it reads characters from a string.
+
 <p>
     Each input consists of a table describing the NFA, and a quoted input
     string, like so:
-<pre><code>    | a | b | c |
+
+<pre>
+    | a | b | c |
 → 0 |{0}|{0}|{0,1}|
-  1 |{2}| ∅ |  ∅ |
-  2 | ∅ |{3}|  ∅ |
+  1 |{2}| ∅ | ∅ |
+  2 | ∅ |{3}| ∅ |
  F3 | ∅ | ∅ | ∅ |
-acbcab</code></pre>
-<p>
-    In this table, we can find the following information:
+acbcab
+</pre>
+
+<p>In this table, we can find the following information:
+
 <ul>
-<li>
-    There are four states, called <code>0</code>, <code>1</code>,
-    <code>2</code>, and <code>3</code>.
-    <ul>
-    <li>States are always digits <code>0-9</code>. There may be up to 10
-    states.</li>
-    </ul></li>
-<li>
-    There are three characters in the input alphabet: <code>a</code>,
-    <code>b</code>, and <code>c</code>.
-    <ul>
-    <li>Input characters may be lowercase letters <code>a-z</code> or digits
-    <code>0-9</code>.</li>
-    </ul></li>
-<li>
-    The table entries describe the set of states the NFA may transition to for each (current state, character) pair.
-    <ul>
-    <li>For example, if the current state is <code>0</code>, and a c is read, the set of possible next states is {0,1}.</li>
-    </ul></li>
-<li>
-    The row describing state <code>0</code> is marked with
-    <code>→</code> so it is the <strong>initial state</strong>. There is
-    exactly one initial state.</li>
-<li>
-    The row describing state <code>3</code> is marked with
-    <code>F</code> so it is an <strong>accept state</strong>. There may be
-    multiple accept states, or none at all.</li>
+    <li>
+        There are four states, called <code>0</code>, <code>1</code>,
+        <code>2</code>, and <code>3</code>.
+
+        <ul>
+            <li>
+                States are always digits <code>0-9</code>.
+                There may be up to 10 states.
+        </ul>
+
+    <li>
+        There are three characters in the input alphabet: <code>a</code>,
+        <code>b</code>, and <code>c</code>.
+
+        <ul>
+            <li>
+                Input characters may be lowercase letters <code>a-z</code> or
+                digits <code>0-9</code>.
+        </ul>
+
+    <li>
+        The table entries describe the set of states the NFA may transition to
+        for each (current state, character) pair.
+
+        <ul>
+            <li>
+                For example, if the current state is <code>0</code>,
+                and a c is read, the set of possible next states is {0,1}.
+        </ul>
+
+    <li>
+        The row describing state <code>0</code> is marked with
+        <code>→</code> so it is the <strong>initial state</strong>.
+        There is exactly one initial state.
+
+    <li>
+        The row describing state <code>3</code> is marked with
+        <code>F</code> so it is an <strong>accept state</strong>.
+        There may be multiple accept states, or none at all.
 </ul>
+
 <p>
-    Use the table to move the NFA between sets of valid states by
-    feeding it characters from the input string.  Once the set of
-    possible states is the empty set, it remains so.
-<p>
-    In our example:
+    Use the table to move the NFA between sets of valid states by feeding it
+    characters from the input string. Once the set of possible states is the
+    empty set, it remains so.
+
+<p>In our example:
+
 <ul>
-    <li>The initial state is <code>0</code>. The first character is <code>a</code>. Looking at the table, we see the new set of possible states is <code>{0}</code>, so the NFA must be in state <code>0</code>.</li>
-    <li>The current state is <code>0</code>. The next character is <code>c</code>. Looking at the table, we see that the set of possible next states is <code>{0,1}</code>.  Thus, the NFA may nondeterministically move to either <code>0</code> or <code>1</code>. or, alternatively, its set of possible locations is <code>{0,1}</code>.</li>
-    <li>The current state is either <code>0</code> or <code>1</code>. The next character is <code>b</code>. Looking at the table, we see that if the state had been <code>0</code>, it can be <code>0</code> next, while if it had been <code>1</code>, it has no next state -- and that computation path dies.  Thus, the set of reachable states after seeing substring <code>acb</code> is <code>{0,1}</code>.</li>
+    <li>
+        The initial state is <code>0</code>. The first character is
+        <code>a</code>. Looking at the table, we see the new set of possible
+        states is <code>{0}</code>, so the NFA must be in state <code>0</code>.
+
+    <li>
+        The current state is <code>0</code>. The next character is
+        <code>c</code>. Looking at the table, we see that the set of possible
+        next states is <code>{0,1}</code>. Thus, the NFA may
+        nondeterministically move to either <code>0</code> or <code>1</code>.
+        Or, alternatively, its set of possible locations is <code>{0,1}</code>.
+
+    <li>
+        The current state is either <code>0</code> or <code>1</code>. The next
+        character is <code>b</code>. Looking at the table, we see that if the
+        state had been <code>0</code>, it can be <code>0</code> next, while if
+        it had been <code>1</code>, it has no next state -- and that
+        computation path dies. Thus, the set of reachable states after seeing
+        substring <code>acb</code> is <code>{0,1}</code>.
 </ul>
+
 <p>
-    Finally, print on <b>separate lines</b> the set of reachable states after processing the entirety of <b>each</b> input string, followed by a space, followed by either <code>Accept</code> (if the NFA can reach any accept state by processing the string, or, in other words, if the final set of valid states contains an accept state) or <code>Accept</code> (otherwise). In this case, we may end at either <code>0</code> or <code>3</code> and one of them is an accept state (<code>3</code>), so we print <code>{0,3} Accept</code>.
+    Finally, print on <b>separate lines</b> the set of reachable states after
+    processing the entirety of <b>each</b> input string, followed by a space,
+    followed by either <code>Accept</code> (if the NFA can reach any accept
+    state by processing the string, or, in other words, if the final set of
+    valid states contains an accept state) or <code>Accept</code> (otherwise).
+    In this case, we may end at either <code>0</code> or <code>3</code> and
+    one of them is an accept state (<code>3</code>), so we print
+    <code>{0,3} Accept</code>.
+
 <p>
-    There may be multiple input strings presented on separate lines; print their respective outputs on separate lines. When printing a set, sort its elements numerically and use <code>∅</code> to denote the empty set. The empty string in the input is denoted by <code>ε</code>.
+    There may be multiple input strings presented on separate lines; print
+    their respective outputs on separate lines. When printing a set, sort its
+    elements numerically and use <code>∅</code> to denote the empty set. The
+    empty string in the input is denoted by <code>ε</code>.
 '''
 
 ['Niven Numbers']
@@ -2481,7 +2614,8 @@ preamble = '''
         Find the only integer <b>a<sub>i</sub></b> between <b>0</b> and
         <b>p − 1</b> such that the numerator of <b>r − a<sub>i</sub></b> is
         divisible by <b>p</b>.
-    <li>Replace <b>r</b> with <b>(r − a<sub>i</sub>)/p</b>.
+    <li>
+        Replace <b>r</b> with <b>(r − a<sub>i</sub>)/p</b>.
 </ol>
 
 <p>
@@ -2552,15 +2686,17 @@ preamble = '''
     The <b>n</b>th partition number is the number of ways that <b>n</b> can be
     expressed as the sum of positive integers, where ordering does not matter.
 
-<p>
-    For example, <b>4</b> can be partitioned in five distinct ways:
-<pre><code>4
+<p>For example, <b>4</b> can be partitioned in five distinct ways:
+
+<pre>
+4
 3 + 1
 2 + 2
 1 + 2 + 1
-1 + 1 + 1 + 1</code></pre>
-<p>
-    Print the first <b>100</b> partition numbers, each on a separate line.
+1 + 1 + 1 + 1
+</pre>
+
+<p>Print the first <b>100</b> partition numbers, each on a separate line.
 '''
 
 ['Pascal’s Triangle']
@@ -2613,8 +2749,7 @@ experiment = 1404
 category = 'Art'
 synopsis = 'Golf the code.golf placeholder.'
 preamble = '''
-<p>
-    Golf the code.golf placeholder.
+<p>Golf the code.golf placeholder.
 '''
 
 [Poker]
@@ -2942,9 +3077,10 @@ released = 2020-12-26
 synopsis = 'Print the first 250 terms of the Recamán sequence.'
 preamble = '''
 <p>
-    Starting from <b>a(0) = 0</b>, each term of the sequence is <b>a(n) = a(n-1) − n</b>
-    but only if <b>a(n) > 0</b> and it has not previously generated. In case
-    the condition doesn't hold, <b>a(n) = a(n-1) + n</b>.
+    Starting from <b>a(0) = 0</b>, each term of the sequence is
+    <b>a(n) = a(n-1) − n</b> but only if <b>a(n) > 0</b> and it has not
+    previously generated. In case the condition doesn't hold,
+    <b>a(n) = a(n-1) + n</b>.
 
 <p>Print the first <b>250</b> terms of the sequence one per line.
 '''
@@ -2974,9 +3110,9 @@ released = 2022-02-12
 synopsis = 'Calculate the result of Reverse Polish notation expressions.'
 preamble = '''
 <p>
-    RPN (<b>R</b>everse <b>P</b>olish <b>N</b>otation) is a way of writing expressions such that
-    operators are written after their operands: <code>3 2 +</code> rather than
-    <code>(3+2)</code>.
+    RPN (<b>R</b>everse <b>P</b>olish <b>N</b>otation) is a way of writing
+    expressions such that operators are written after their operands:
+    <code>3 2 +</code> rather than <code>(3+2)</code>.
 
 <p>
     Each argument is an RPN expression, given as a space-separated list of
@@ -3002,13 +3138,13 @@ preamble = '''
 <p>Output the possible moves for <code>O</code> on a Reversi board.
 
 <p>
-    In Reversi, <code>X</code> and <code>O</code> take turns placing tiles
-    on empty squares on the board. To determine if a move is legal, draw
-    a straight line in any direction (horizontal, vertical, or diagonal)
+    In Reversi, <code>X</code> and <code>O</code> take turns placing tiles on
+    empty squares on the board. To determine if a move is legal, draw a
+    straight line in any direction (horizontal, vertical, or diagonal)
     starting from the square. If the line intersects another friendly tile,
     separated from the square by only opponent tiles, that square is a legal move.
-<p>
-    For example, given:
+
+<p>For example, given:
 
 <pre>
 ......
@@ -3017,8 +3153,7 @@ preamble = '''
 ...!..
 </pre>
 
-<p>
-    <code>O</code> can only place on squares marked with <code>!</code>.
+<p><code>O</code> can only place on squares marked with <code>!</code>.
 
 <p>
     Assume a board size of 8x8 and a position reachable on <code>O</code>'s turn,
@@ -3158,7 +3293,8 @@ preamble = '''
 
 <p>The first 10 rows are shown here:
 
-<pre>         █
+<pre>
+         █
         ██
        ███
       ██ █
@@ -3180,9 +3316,13 @@ links = [
 ]
 synopsis = 'Print all the semiprime numbers from 1 to 10,000.'
 preamble = '''
-<p>A <b>semiprime number</b> is a number that is the product of two prime numbers. Note that the prime factors do not necessarily have to be distinct.
+<p>
+    A <b>semiprime number</b> is a number that is the product of two prime
+    numbers. Note that the prime factors do not necessarily have to be distinct.
 
-<p>Print all the semiprime numbers from <b>1</b> to <b>10,000</b> inclusive, each on their own line.
+<p>
+    Print all the semiprime numbers from <b>1</b> to <b>10,000</b> inclusive,
+    each on their own line.
 '''
 
 ['Seven Segment']
@@ -3199,7 +3339,8 @@ preamble = '''
 
 <p>For example the number <b>0123456789</b> should be displayed as:
 
-<pre> _     _  _     _  _  _  _  _
+<pre>
+ _     _  _     _  _  _  _  _
 | |  | _| _||_||_ |_   ||_||_|
 |_|  ||_  _|  | _||_|  ||_| _|
 </pre>
@@ -3482,9 +3623,13 @@ links = [
 ]
 synopsis = 'Print all the sphenic numbers from 1 to 10,000.'
 preamble = '''
-<p>A <b>sphenic number</b> is a number that is the product of three <b>distinct</b> prime numbers.
+<p>
+    A <b>sphenic number</b> is a number that is the product of three
+    <b>distinct</b> prime numbers.
 
-<p>Print all the sphenic numbers from <b>1</b> to <b>10,000</b> inclusive, each on their own line.
+<p>
+    Print all the sphenic numbers from <b>1</b> to <b>10,000</b> inclusive,
+    each on their own line.
 '''
 
 ['Star Wars GPT']
@@ -3495,10 +3640,12 @@ links = [
 ]
 synopsis = 'Output the most likely next word to occur given word frequency in the Star Wars opening crawl.'
 preamble = '''
-You are given input of a text *corpus* and several *prompts* on subsequent lines.
-For each prompt, output the most likely next word in the corpus by frequency (aka *mode*).
-If there is more than one mode, output the first encountered in the corpus.
-In this problem, the corpus is fixed to be the Star Wars opening crawl texts.
+<p>
+    You are given input of a text *corpus* and several *prompts* on subsequent
+    lines. For each prompt, output the most likely next word in the corpus by
+    frequency (aka *mode*). If there is more than one mode, output the first
+    encountered in the corpus. In this problem, the corpus is fixed to be the
+    Star Wars opening crawl texts.
 '''
 
 ['Star Wars Opening Crawl']
@@ -3513,14 +3660,16 @@ preamble = '''
     Format a piece of text in the style of Star Wars opening crawl. Here is an
     example. Input:
 
-<pre>5 21
+<pre>
+5 21
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</pre>
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+</pre>
 
-<p>
-    Corresponding output:
+<p>Corresponding output:
 
-<pre>     Lorem ipsum dolor sit
+<pre>
+     Lorem ipsum dolor sit
      amet,     consectetur
     adipiscing elit, sed do
     eiusmod          tempor
@@ -3531,18 +3680,20 @@ Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliqu
  quis   nostrud   exercitation
  ullamco   laboris   nisi   ut
 aliquip     ex    ea    commodo
-consequat.</pre>
+consequat.
+</pre>
 
-<p>
-    Here is how this works. Each test case consists of the following:
+<p>Here is how this works. Each test case consists of the following:
 
-    <ul>
-        <li> A line containing the initial indentation <b>I</b> and the initial line width <b>W</b>, separated by a space.
-        <li> Several lines of text, each representing a paragraph of the output.
-    </ul>
+<ul>
+    <li>
+        A line containing the initial indentation <b>I</b> and the initial
+        line width <b>W</b>, separated by a space.
+    <li>
+        Several lines of text, each representing a paragraph of the output.
+</ul>
 
-<p>
-    Split the text into centred lines that get progressively longer as follows:
+<p>Split the text into centred lines that get progressively longer as follows:
 
 <p>
     The first line starts with <b>I</b> spaces and should contain as many words
@@ -3600,7 +3751,8 @@ preamble = '''
     box-drawing characters like so:
 {{ end }}
 
-<pre>┏━━━┯━━━┯━━━┳━━━┯━━━┯━━━┳━━━┯━━━┯━━━┓
+<pre>
+┏━━━┯━━━┯━━━┳━━━┯━━━┯━━━┳━━━┯━━━┯━━━┓
 ┃ 2 │ 5 │ 8 ┃ 4 │ 1 │ 7 ┃ 6 │ 9 │ 3 ┃
 ┠───┼───┼───╂───┼───┼───╂───┼───┼───┨
 ┃ 6 │ 1 │ 7 ┃ 9 │ 2 │ 3 ┃ 8 │ 5 │ 4 ┃
@@ -3761,7 +3913,8 @@ preamble = '''
 
 <p>To transpose it, first write each word on a separate line:
 
-<pre>₁₂₃₄₅
+<pre>
+₁₂₃₄₅
 ↓↓↓↓↓
 all
 work
@@ -3790,11 +3943,17 @@ links = [
 ]
 synopsis = 'Print the first 20 rows of the trinomial triangle.'
 preamble = '''
-<p>The trinomial triangle is a triangular array of numbers similar to Pascal's triangle.
-The top row consists of a single 1, and each subsequent row contains 2 more numbers than the last.
-Each number is the sum of the 3 numbers above it, i.e.
-<pre>1 2 3
-  6</pre>
+<p>
+    The trinomial triangle is a triangular array of numbers similar to
+    Pascal's triangle. The top row consists of a single 1, and each subsequent
+    row contains 2 more numbers than the last. Each number is the sum of the 3
+    numbers above it, i.e.
+
+<pre>
+1 2 3
+  6
+</pre>
+
 <p>Print the first <b>20</b> rows of the trinomial triangle.
 '''
 
