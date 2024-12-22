@@ -1,5 +1,6 @@
 import * as Diff from 'diff';
 import { $ } from './_util';
+import UnprintableElement from './_unprintable';
 
 interface DiffPos {
     left: number;
@@ -388,11 +389,11 @@ function renderCharDiff(className: string, charDiff: Diff.Change[], isRight: boo
 
     for (const change of charDiff)
         if (change.added && isRight)
-            td.append(<span class="diff-char-addition">{change.value}</span>);
+            td.append(<span class="diff-char-addition">{UnprintableElement.escape(change.value)}</span>);
         else if (change.removed && !isRight)
-            td.append(<span class="diff-char-removal">{change.value}</span>);
+            td.append(<span class="diff-char-removal">{UnprintableElement.escape(change.value)}</span>);
         else if (!change.added && !change.removed)
-            td.append(change.value);
+            td.append(UnprintableElement.escape(change.value));
 
     return td;
 }
