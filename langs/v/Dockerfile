@@ -2,11 +2,11 @@ FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache build-base dash gc-dev git
 
-ENV VER=2024.50
+ENV VER=0.4.9
 
 WORKDIR /usr/local
 
-RUN wget -O- https://github.com/vlang/v/archive/refs/tags/weekly.$VER.tar.gz \
+RUN wget -O- https://github.com/vlang/v/archive/refs/tags/$VER.tar.gz \
   | tar xz --strip-components 1
 
 RUN make \

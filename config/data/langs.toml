@@ -1331,7 +1331,7 @@ ForEach ($arg in $args) {
 args    = [ '/usr/bin/prolog', '-g', 'halt', '/tmp/code.pl' ]
 env     = [ 'LC_ALL=C.UTF-8' ]
 size    = '49.3 MiB'
-version = 'SWI-Prolog 9.2.8'
+version = 'SWI-Prolog 9.2.9'
 website = 'https://www.swi-prolog.org'
 example = '''
 % Printing
@@ -1739,8 +1739,8 @@ example    = '''
 
 [V]
 args    = [ '/usr/bin/V', '-' ]
-size    = '50.1 MiB'
-version = '0.4.8'
+size    = '50.2 MiB'
+version = '0.4.9'
 website = 'https://vlang.io'
 example = '''
 import os
