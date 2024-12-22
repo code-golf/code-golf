@@ -2,7 +2,7 @@ FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache bsd-compat-headers build-base curl zlib-dev
 
-RUN curl -L https://github.com/tcltk/tcl/archive/refs/tags/core-9-0-0.tar.gz | tar xz
+RUN curl -L https://github.com/tcltk/tcl/archive/refs/tags/core-9-0-1.tar.gz | tar xz
 
 ENV LDFLAGS=-static
 
