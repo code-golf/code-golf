@@ -398,7 +398,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '71.8 MiB'
-version = '0.9.2'
+version = '0.9.3'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -1678,8 +1678,8 @@ for arg in CommandLine.arguments[1...] {
 
 [Tcl]
 args    = [ '/usr/bin/tcl', '/proc/self/fd/0' ]
-size    = '5.64 MiB'
-version = '9.0.0'
+size    = '5.68 MiB'
+version = '9.0.1'
 website = 'https://www.tcl-lang.org'
 example = '''
 # Printing
