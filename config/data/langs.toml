@@ -370,7 +370,7 @@ foreach (String arg in args)
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
 size    = '142 MiB'
-version = 'Clang 19.1.5'
+version = 'Clang 19.1.6'
 website = 'https://clang.llvm.org'
 example = '''
 #include <iostream>
@@ -398,7 +398,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '71.8 MiB'
-version = '0.9.1'
+version = '0.9.2'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -858,7 +858,7 @@ for (arg in args)
 args       = [ '/usr/bin/harbourwrapper', '-' ]
 experiment = 1614
 size       = '13.0 MiB'
-version    = '79c4f25'
+version    = 'ce1bc20'
 website    = 'https://harbour.github.io'
 example    = '''
 LOCAL i
@@ -1200,8 +1200,8 @@ for arg in commandLineParams():
 
 [OCaml]
 args    = [ '/usr/bin/ocaml', '/proc/self/fd/0' ]
-size    = '91.4 MiB'
-version = '5.2.0'
+size    = '91.5 MiB'
+version = '5.2.1'
 website = 'https://ocaml.org'
 example = '''
 (* Printing *)
@@ -1291,7 +1291,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '8.40 MiB'
-version = '8.4.1'
+version = '8.4.2'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -1357,7 +1357,7 @@ ForEach ($arg in $args) {
 args    = [ '/usr/bin/prolog', '-g', 'halt', '/tmp/code.pl' ]
 env     = [ 'LC_ALL=C.UTF-8' ]
 size    = '49.3 MiB'
-version = 'SWI-Prolog 9.2.8'
+version = 'SWI-Prolog 9.2.9'
 website = 'https://www.swi-prolog.org'
 example = '''
 % Printing
@@ -1521,14 +1521,14 @@ example = '''
 print "Hello, World!"
 
 (Looping)
-x = 0
-until x > 9
-print x
-x = x + 1
+for x in 10
+  print x
+end
 
 (Accessing arguments)
 for arg in arguments
-print arg
+  print arg
+end
 '''
 
 [Ruby]
@@ -1749,8 +1749,8 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '28.6 MiB'
-version    = '0.13.0'
+size       = '29.9 MiB'
+version    = '0.14.0'
 website    = 'https://www.uiua.org'
 example    = '''
 # Printing
@@ -1765,8 +1765,8 @@ example    = '''
 
 [V]
 args    = [ '/usr/bin/v', '-' ]
-size    = '59.7 MiB'
-version = '0.4.8'
+size    = '59.9 MiB'
+version = '0.4.9'
 website = 'https://vlang.io'
 example = '''
 import os
