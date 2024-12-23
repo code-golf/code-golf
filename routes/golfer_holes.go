@@ -64,7 +64,7 @@ func golferHolesGET(w http.ResponseWriter, r *http.Request) {
 		); err != nil {
 			panic(err)
 		}
-		r.IsUnicorn = data.Scope == "lang" && r.Golfers == 1;
+		r.IsUnicorn = data.Scope == "lang" && r.Golfers == 1
 
 		data.LangsUsed[lang] = true
 
