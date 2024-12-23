@@ -1310,7 +1310,7 @@ for ($i = 1; $i < $argc; $i++)
 args       = [ '/usr/bin/pony', '-' ]
 experiment = 90
 size       = '354 MiB'
-version    = '0.58.5'
+version    = '0.58.7'
 website    = 'https://www.ponylang.io'
 example    = '''
 use "collections"

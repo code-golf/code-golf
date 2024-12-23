@@ -2,7 +2,7 @@ FROM alpine:3.21 AS builder
 
 ENV VER=0.58.7
 
-RUN apk add --no-cache binutils-gold build-base clang curl
+RUN apk add --no-cache binutils-gold build-base clang curl dash
 
 RUN curl -#L https://github.com/ponylang/ponyup/archive/refs/tags/0.8.4.tar.gz \
   | tar xz --strip-components 1
@@ -18,6 +18,7 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/pony -s -static pony.c
 
 FROM codegolf/lang-base
 
+COPY --from=0 /usr/bin/dash                              /bin/sh
 COPY --from=0 /lib/ld-musl-x86_64.so.1                   /lib/
 COPY --from=0 /usr/bin/clang                             \
               /usr/bin/ld.gold                           \
@@ -42,10 +43,10 @@ COPY --from=0 /usr/lib/Scrt1.o                           \
               /usr/lib/libstdc++.so.6                    \
               /usr/lib/libxml2.so.2                      \
               /usr/lib/libz.so.1                         \
-              /usr/lib/libzstd.so.1                      /usr/lib/
-COPY --from=0 /usr/lib/gcc/x86_64*/14.2.0/crtbeginS.o    \
+              /usr/lib/libzstd.so.1                      \
+              /usr/lib/gcc/x86_64*/14.2.0/crtbeginS.o    \
               /usr/lib/gcc/x86_64*/14.2.0/crtendS.o      \
-              /usr/lib/gcc/x86_64*/14.2.0/libgcc.a       /usr/lib/gcc/x86_64-alpine-linux-musl/14.2.0/
+              /usr/lib/gcc/x86_64*/14.2.0/libgcc.a       /usr/lib/
 COPY --from=0 /usr/local/pony/bin/ponyc                  /usr/local/pony/bin/
 COPY --from=0 /usr/local/pony/lib/x86-64/libponyrt-pic.a /usr/local/pony/lib/x86-64/
 COPY --from=0 /usr/local/pony/packages                   /usr/local/pony/packages
