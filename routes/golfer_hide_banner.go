@@ -20,6 +20,10 @@ func golferHideBannerPOST(w http.ResponseWriter, r *http.Request) {
 		_, valid = config.HoleByID[holeID]
 	} else if holeID, ok := strings.CutPrefix(banner, "upcoming-hole-"); ok {
 		_, valid = config.ExpHoleByID[holeID]
+	} else if cheevoID, ok := strings.CutPrefix(banner, "cheevo-before-"); ok {
+		_, valid = config.CheevoByID[cheevoID]
+	} else if cheevoID, ok := strings.CutPrefix(banner, "cheevo-during-"); ok {
+		_, valid = config.CheevoByID[cheevoID]
 	}
 
 	if valid {
