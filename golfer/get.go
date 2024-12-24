@@ -41,6 +41,9 @@ func Get(db *sqlx.DB, sessionID uuid.UUID) *Golfer {
 		          u.sponsor                                 sponsor,
 		          u.theme                                   theme,
 		          u.time_zone                               time_zone,
+				  ARRAY(SELECT hide_key
+						  FROM hidden_banners
+						  WHERE user_id = u.id)             hidden_banners,
 		          ARRAY(SELECT trophy
 		                  FROM trophies
 		                 WHERE user_id = u.id

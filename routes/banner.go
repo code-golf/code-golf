@@ -19,6 +19,28 @@ type banner struct {
 	HideKey, Type string
 }
 
+func unHiddenBanners(golfer *golfer.Golfer, now time.Time) (ret []banner) {
+	// Currently all the global banners require a golfer.
+	if golfer == nil {
+		return
+	}
+
+	allBanners := banners(golfer, now)
+	if len(golfer.HiddenBanners) == 0 {
+		return allBanners
+	}
+	hiddenMap := map[string]bool{}
+	for _, hideKey := range golfer.HiddenBanners {
+		hiddenMap[hideKey] = true
+	}
+	for _, banner := range allBanners {
+		if !hiddenMap[banner.HideKey] {
+			ret = append(ret, banner)
+		}
+	}
+	return
+}
+
 func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 	// Upcoming hole.
 	if hole := nextHole; hole != nil {

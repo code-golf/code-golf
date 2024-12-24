@@ -113,10 +113,6 @@
 </header>
 
 {{ range .Banners }}
-    {{ if and $.Golfer (index $.Golfer.Settings "hide-banner" .HideKey) }}
-        {{ continue }}
-    {{ end }}
-
     <div class="{{ .Type }}">
     {{ if eq .Type "alert" }}
         {{ svg "exclamation-circle" }}

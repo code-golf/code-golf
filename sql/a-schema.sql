@@ -133,6 +133,14 @@ CREATE TABLE users (
     CHECK (login ~ '^[A-Za-z0-9_-]{1,42}$') -- 1 - 42 ASCII word/hyphen chars.
 );
 
+-- A row ("latest-hole-24-game", 12345) says user 12345 already dismissed the
+-- banner saying that 24-game is the latest hole.
+CREATE TABLE hidden_banners (
+    hide_key text NOT NULL,
+    user_id int REFERENCES users(id) ON DELETE CASCADE,
+    PRIMARY KEY (hide_key, user_id)
+);
+
 CREATE TABLE authors (
     hole    hole NOT NULL,
     user_id int  REFERENCES users(id) ON DELETE CASCADE,
@@ -328,6 +336,7 @@ GRANT SELECT ON stable_passing_solutions TO "code-golf";
 
 -- Tables.
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE authors         TO "code-golf";
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE hidden_banners  TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE connections     TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE discord_records TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE discord_state   TO "code-golf";

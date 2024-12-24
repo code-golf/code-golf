@@ -25,7 +25,7 @@ type Golfer struct {
 	About, Keymap, Name, Referrer, Theme  string
 	Admin, HasNotes, ShowCountry, Sponsor bool
 	BytesPoints, CharsPoints, ID          int
-	Cheevos, Holes                        pq.StringArray
+	Cheevos, Holes, HiddenBanners         pq.StringArray
 	Country                               config.NullCountry
 	Delete                                null.Time
 	FailingSolutions                      FailingSolutions

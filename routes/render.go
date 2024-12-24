@@ -46,7 +46,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		Request                            *http.Request
 		Settings                           []*config.Setting
 	}{
-		Banners:     banners(theGolfer, time.Now().UTC()),
+		Banners:     unHiddenBanners(theGolfer, time.Now().UTC()),
 		Cheevos:     config.CheevoTree,
 		CSS:         []cssLink{{config.Assets["css/common/base.css"], ""}},
 		Data:        data[0],
