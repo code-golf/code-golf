@@ -123,6 +123,11 @@ func main() {
 					"users scheduled for deletion",
 					"DELETE FROM users WHERE delete < TIMEZONE('UTC', NOW())",
 				},
+				{
+					"expired hidden banners",
+					`DELETE FROM hidden_banners
+					  WHERE delete < TIMEZONE('UTC', NOW())`,
+				},
 			} {
 				if res, err := db.Exec(job.sql); err != nil {
 					log.Println(err)

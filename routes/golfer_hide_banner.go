@@ -26,8 +26,12 @@ func golferHideBannerPOST(w http.ResponseWriter, r *http.Request) {
 		golfer := session.Golfer(r)
 
 		if _, err := session.Database(r).Exec(
-			`INSERT INTO hidden_banners (hide_key, user_id)
-			      VALUES                ($1,       $2)
+			// 60 days is picked to be longer than any new hole window
+			// and any date-based cheevo window, but shorter than a year
+			// (so the date-based cheevo will show again next year).
+			`INSERT INTO hidden_banners
+				    (hide_key, user_id, delete)
+			 VALUES ($1,       $2,      TIMEZONE('UTC', NOW()) + INTERVAL '60 days')
 			 ON CONFLICT DO NOTHING`,
 			banner,
 			golfer.ID,

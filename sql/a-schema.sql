@@ -133,11 +133,13 @@ CREATE TABLE users (
     CHECK (login ~ '^[A-Za-z0-9_-]{1,42}$') -- 1 - 42 ASCII word/hyphen chars.
 );
 
--- A row ("latest-hole-24-game", 12345) says user 12345 already dismissed the
--- banner saying that 24-game is the latest hole.
+-- A row ("latest-hole-24-game", 12345, delete) says user 12345 already dismissed
+-- the banner saying that 24-game is the latest hole, but this dismissal should
+-- disappear at the time given by the `delete` timestamp.
 CREATE TABLE hidden_banners (
     hide_key text NOT NULL,
     user_id int REFERENCES users(id) ON DELETE CASCADE,
+    delete timestamp,
     PRIMARY KEY (hide_key, user_id)
 );
 
