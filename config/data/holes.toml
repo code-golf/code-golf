@@ -1629,17 +1629,19 @@ links = [
     { name = 'OEIS A002182', url = '//oeis.org/A002182' },
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Highly_composite_number' },
 ]
-synopsis = 'Print all the highly composite numbers from 1 to 2,500,000,000,000.'
+synopsis = 'Print all the highly composite numbers from 1 to 250,000,000.'
 preamble = '''
 <p>
-    A highly composite number is a positive integer that has more divisors than all
-    smaller positive integers. For example, number <b>12</b> is highly composite
-    because its divisors count (<b>1</b>, <b>2</b>, <b>3</b>, <b>4</b>, <b>6</b>,
-    and <b>12</b>) equals <b>6</b> which is greater than the respective counts of
-    all numbers smaller than 12.
+    A highly composite number is a positive integer that has more divisors than
+    all smaller positive integers.
 
 <p>
-    Print all the highly composite numbers from <b>1</b> to <b>2,500,000,000,000</b>
+    For example, number <b>12</b> is highly composite because it has six divisors
+    (<b>1</b>, <b>2</b>, <b>3</b>, <b>4</b>, <b>6</b>, and <b>12</b>) which is
+    more than the respective divisor counts of all numbers that are less than 12.
+
+<p>
+    Print all the highly composite numbers from <b>1</b> to <b>250,000,000</b>
     inclusive, each on their own line.
 '''
 
