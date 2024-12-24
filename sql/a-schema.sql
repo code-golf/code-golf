@@ -167,6 +167,12 @@ CREATE UNLOGGED TABLE holes (
     experiment int  NOT NULL
 );
 
+-- Ditto for config/data/langs.toml.
+CREATE UNLOGGED TABLE langs (
+    id         lang NOT NULL PRIMARY KEY,
+    experiment int  NOT NULL
+);
+
 CREATE TABLE notes (
     user_id int  NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     hole    hole NOT NULL,
@@ -335,6 +341,7 @@ GRANT SELECT, INSERT, UPDATE         ON TABLE discord_state   TO "code-golf";
 GRANT SELECT, INSERT,         DELETE ON TABLE follows         TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE holes           TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE ideas           TO "code-golf";
+GRANT SELECT, INSERT, TRUNCATE       ON TABLE langs           TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE notes           TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE sessions        TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE solutions       TO "code-golf";
