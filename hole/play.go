@@ -315,7 +315,10 @@ func play(
 		// Appending (print) prevents implicit output of the last form, if it
 		// is not nil. This seems to be a quirk of the Babashka interpreter
 		// that only occurs when providing code via a command line argument.
-		code += "(print)"
+		//
+		// Add a newline in to avoid commenting it out via ;, and
+		// do it twice to avoid commenting it out via #_.
+		code += "\n(print)(print)"
 	case "go":
 		// Prevent trivial quines. Error out and return early.
 		if hole.ID == "quine" && strings.Contains(code, "//go:embed") {
