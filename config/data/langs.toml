@@ -1508,8 +1508,8 @@ end
 
 [Ruby]
 args    = [ '/usr/bin/ruby', '-' ]
-size    = '28.6 MiB'
-version = '3.3.6'
+size    = '33.2 MiB'
+version = '3.4.1'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing
