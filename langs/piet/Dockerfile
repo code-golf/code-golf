@@ -8,8 +8,8 @@ RUN curl https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz | tar xJ
 
 RUN curl https://www.bertnase.de/npiet/npiet-$VER.tar.gz | tar xz
 
-RUN curl -#o piet https://raw.githubusercontent.com/dloscutoff/ascii-piet/refs/heads/master/ascii2piet.py \
- && chmod +x piet
+RUN curl -#o /usr/bin/piet https://raw.githubusercontent.com/dloscutoff/ascii-piet/refs/heads/master/ascii2piet.py \
+ && chmod +x /usr/bin/piet
 
 WORKDIR /Python-$PYVER
 
@@ -51,7 +51,7 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/pietwrapper -s -static /pietwrapper.c
 FROM codegolf/lang-base
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1      /lib/
-COPY --from=0 /piet                         \
+COPY --from=0 /usr/bin/piet                 \
               /usr/bin/pietwrapper          \
               /usr/local/bin/npiet          /usr/bin/
 COPY --from=0 /usr/bin/python3.13           /usr/bin/python3
@@ -61,8 +61,8 @@ COPY --from=0 /usr/lib/libX11.so.6          \
               /usr/lib/libXpm.so.4          \
               /usr/lib/libaom.so.3          \
               /usr/lib/libavif.so.16        \
-              /usr/lib/libbrotlidec.so.1    \
               /usr/lib/libbrotlicommon.so.1 \
+              /usr/lib/libbrotlidec.so.1    \
               /usr/lib/libbsd.so.0          \
               /usr/lib/libbz2.so.1          \
               /usr/lib/libdav1d.so.7        \
