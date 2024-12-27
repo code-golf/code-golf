@@ -69,8 +69,6 @@ CREATE TYPE hole AS ENUM (
 
 CREATE TYPE idea_category AS ENUM ('cheevo', 'hole', 'lang', 'other');
 
-CREATE TYPE keymap AS ENUM ('default', 'vim');
-
 CREATE TYPE lang AS ENUM (
     'assembly', 'awk', 'bash', 'basic', 'berry', 'brainfuck', 'c', 'c-sharp',
     'civet', 'clojure',  'cpp', 'cobol', 'coconut', 'common-lisp', 'crystal',
@@ -126,7 +124,6 @@ CREATE TABLE users (
     -- TODO Make country_flag VIRTUAL not STORED when PostgreSQL supports it.
     country_flag char(2)   NOT NULL GENERATED ALWAYS AS
         (COALESCE(CASE WHEN show_country THEN country END, '')) STORED,
-    keymap       keymap    NOT NULL DEFAULT 'default',
     pronouns     pronouns,
     settings     jsonb     NOT NULL DEFAULT '{}'::jsonb,
     about        text      NOT NULL DEFAULT '',
