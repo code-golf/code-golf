@@ -6,7 +6,7 @@ import { $ }                                              from './_util';
 export { EditorState, EditorView };
 
 // Extensions.
-import { carriageReturn, insertChar,
+import { carriageReturn, insertChar, insertCharState,
     showUnprintables }                           from './_codemirror_unprintable';
 import { history, historyKeymap, indentLess, insertNewline,
     insertTab, standardKeymap, toggleComment }   from '@codemirror/commands';
@@ -18,6 +18,7 @@ import { oneDarkTheme, oneDarkHighlightStyle }   from '@codemirror/theme-one-dar
 import { vim }                                   from '@replit/codemirror-vim';
 
 // Languages.
+import { apl }                                      from '@codemirror/legacy-modes/mode/apl';
 import { assembly }                                 from '@defasm/codemirror';
 import { brainfuck }                                from 'codemirror-lang-brainfuck';
 import { c, csharp, dart, kotlin, scala, squirrel } from './vendor/codemirror-clike';
@@ -86,6 +87,10 @@ const asmErrorTooltip = {
 
 const fontFamily = "'Source Code Pro', monospace";
 
+// Enable character-wise wrapping whenever possible.
+// This was disabled in the upstream due to the old Safari issue (codemirror/dev#524).
+const lineWrapping: any = CSS.supports('overflow-wrap', 'anywhere') ? { wordBreak: 'break-all' } : {};
+
 export const extensions : { [key: string]: any } = {
     // Extensions.
     'base': [
@@ -97,6 +102,7 @@ export const extensions : { [key: string]: any } = {
             '.cm-asm-error-tooltip':    asmErrorTooltip,
             '.cm-content':              { fontFamily },
             '.cm-gutters':              { fontFamily },
+            '.cm-lineWrapping':         lineWrapping,
             '.cm-tooltip':              { fontFamily },
             '.cm-tooltip-autocomplete': { fontFamily },
         }, { dark: false }),
@@ -104,6 +110,7 @@ export const extensions : { [key: string]: any } = {
     'editor': [
         history(),
         insertChar,
+        insertCharState,
         keymap.of([
             // Replace "enter" with a non auto indenting action.
             ...historyKeymap, ...standardKeymap.filter(k => k.key != 'Enter'),
@@ -120,6 +127,7 @@ export const extensions : { [key: string]: any } = {
     // Languages.
     // TODO 05ab1e
     // TODO algol-68
+    'apl':           StreamLanguage.define(apl),
     // TODO arturo
     'assembly':      assembly(),
     'assembly-wiki': assembly({ byteDumps: false }),
@@ -136,6 +144,7 @@ export const extensions : { [key: string]: any } = {
     'cobol':         StreamLanguage.define(cobol),
     'coconut':       python,
     'coffeescript':  StreamLanguage.define(coffeeScript),
+    'common-lisp':   StreamLanguage.define(commonLisp),
     'cpp':           cpp(),
     'crystal':       StreamLanguage.define(crystal),
     'd':             StreamLanguage.define(d),
@@ -151,6 +160,7 @@ export const extensions : { [key: string]: any } = {
     'go':            go,
     'golfscript':    golfScript(),
     'groovy':        StreamLanguage.define(groovy),
+    // TODO harbour
     // TODO hare
     'haskell':       StreamLanguage.define(haskell),
     'haxe':          StreamLanguage.define(haxe),
@@ -166,7 +176,6 @@ export const extensions : { [key: string]: any } = {
     'julia':         StreamLanguage.define(julia),
     'k':             k(),
     'kotlin':        StreamLanguage.define(kotlin),
-    'lisp':          StreamLanguage.define(commonLisp),
     'lua':           StreamLanguage.define(lua),
     'nim':           StreamLanguage.define({ ...nim( {}, {} ), languageData: { commentTokens: { line: '#' } } }),
     'ocaml':         StreamLanguage.define(oCaml),

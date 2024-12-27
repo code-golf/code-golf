@@ -11,6 +11,7 @@ constant %paths = (
     '05AB1E'       => 'github.com/Adriandmen/05AB1E',
     '><>'          => 'github.com/primo-ppcg/fish-jit',
     'ALGOL 68'     => 'jmvdveer.home.xs4all.nl/en.download.algol-68-genie-current.html',
+    'APL'          => 'aplwiki.com/wiki/Dyalog_APL',
     'Arturo'       => 'github.com/arturo-lang/arturo/releases/latest',
     'Assembly'     => 'registry.npmjs.org/@defasm/core/latest',
     'Bash'         => 'en.wikipedia.org/wiki/Bash_(Unix_shell)',
@@ -28,6 +29,7 @@ constant %paths = (
     'COBOL'        => 'en.wikipedia.org/wiki/GnuCOBOL',
     'Coconut'      => 'pypi.org/pypi/coconut/json',
     'CoffeeScript' => 'registry.npmjs.org/coffeescript/latest',
+    'Common Lisp'  => 'en.wikipedia.org/wiki/CLISP',
     'Crystal'      => 'github.com/crystal-lang/crystal/releases/latest',
     'D'            => 'en.wikipedia.org/wiki/D_(programming_language)',
     'Dart'         => 'en.wikipedia.org/wiki/Dart_(programming_language)',
@@ -42,8 +44,9 @@ constant %paths = (
     'Go'           => 'endoflife.date/api/go.json',
     'GolfScript'   => 'github.com/lynn/golfscript/tree/code-golf',
     'Groovy'       => 'en.wikipedia.org/wiki/Apache_Groovy',
+    'Harbour'      => 'github.com/harbour/core',
     'Hare'         => 'git.sr.ht/~sircmpwn/hare/refs',
-    'Haskell'      => 'en.wikipedia.org/wiki/Glasgow_Haskell_Compiler',
+    'Haskell'      => 'pkgs.alpinelinux.org/package/edge/community/x86_64/ghc',
     'Haxe'         => 'github.com/HaxeFoundation/haxe/releases/latest',
     'Hexagony'     => 'github.com/SirBogman/Hexagony',
     'Hush'         => 'crates.io/api/v1/crates/hush',
@@ -57,7 +60,6 @@ constant %paths = (
     'Julia'        => 'github.com/JuliaLang/julia/releases/latest',
     'K'            => 'codeberg.org/ngn/k',
     'Kotlin'       => 'github.com/JetBrains/kotlin/releases/latest',
-    'Lisp'         => 'en.wikipedia.org/wiki/CLISP',
     'Lua'          => 'en.wikipedia.org/wiki/Lua_(programming_language)',
     'Nim'          => 'en.wikipedia.org/wiki/Nim_(programming_language)',
     'OCaml'        => 'en.wikipedia.org/wiki/OCaml',
@@ -102,6 +104,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         state $ua  = HTTP::Tiny.new :throw-exceptions;
         my    $res = $ua.get("https://$_")<content>.decode;
 
+        when / 'alpinelinux' / { $res ~~ / 'Version' .+? <(<ver>)> / }
         when / 'aplwiki'     / { $res ~~ / ' release' .+? <(<ver>)> / }
         when / 'codeberg'    / { $res ~~ / '"shortsha">' <(<ver>)> / }
         when / 'crates.io'   / { $res.&from-json<crate><max_stable_version> }
@@ -118,7 +121,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'swi-prolog'  / { $res ~~ / 'stable' .+? <(<ver>)> / }
         when / 'github.com'  / {
             .ends-with('/releases/latest')
-                ?? $res ~~ / [ $name || 'dev' || 'elease' || 'Version' ] <[\ -]> v? <(<ver>)> /
+                ?? $res ~~ m:i/ [ $name || < dev release version > ] <[\ -]> v? <(<ver>)> /
                 !! $res ~~ / '"currentOid":"' <( <xdigit> ** 7 )> /;
         }
         when / 'wikipedia'   / {

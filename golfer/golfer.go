@@ -22,7 +22,7 @@ const (
 // TODO Some of this stuff isn't needed on every request but is needed to
 // populate golfer settings, that should be fixed.
 type Golfer struct {
-	About, Keymap, Name, Referrer, Theme  string
+	About, Name, Referrer, Theme          string
 	Admin, HasNotes, ShowCountry, Sponsor bool
 	BytesPoints, CharsPoints, ID          int
 	Cheevos, Holes                        pq.StringArray
@@ -44,7 +44,7 @@ type GolferInfo struct {
 	// Count of cheevos/holes/langs done
 	Holes, Langs int
 
-	HolesAuthored pq.StringArray
+	HolesAuthored config.Holes
 
 	// Count of cheevos/holes/langs available
 	CheevosTotal, HolesTotal, LangsTotal int

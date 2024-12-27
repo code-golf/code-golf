@@ -3,7 +3,6 @@ package hole
 import (
 	"bytes"
 	"context"
-	"embed"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -32,9 +31,6 @@ func init() {
 		timeout = 10 * time.Second
 	}
 }
-
-//go:embed answers
-var answers embed.FS
 
 // All ASCII whitespace except newline, up to a newline or the end.
 var perLineTrimmer = regexp.MustCompile(`[\t\x0B\f\r ]+(?:\n|$)`)
@@ -179,6 +175,8 @@ func Play(
 		runs = billiards()
 	case "brainfuck":
 		runs = brainfuck()
+	case "calendar":
+		runs = calendar()
 	case "card-number-validation":
 		runs = cardNumberValidation()
 	case "day-of-week":
@@ -243,6 +241,8 @@ func Play(
 		runs = reversePolishNotation()
 	case "reversi":
 		runs = reversi()
+	case "scrambled-alphabetization":
+		runs = scrambledAlphabetization()
 	case "seven-segment":
 		runs = sevenSegment()
 	case "si-units":
@@ -276,18 +276,7 @@ func Play(
 
 	// Holes with no arguments and a static answer.
 	default:
-		// ¯\_(ツ)_/¯ cannot embed file answers/√2.txt: invalid name √2.txt
-		id := hole.ID
-		if id == "√2" {
-			id = "root-2"
-		}
-
-		if b, err := answers.ReadFile("answers/" + id + ".txt"); err != nil {
-			panic(err)
-		} else {
-			answer := string(bytes.TrimSuffix(b, []byte{'\n'}))
-			runs = []Run{{Args: []string{}, Answer: answer}}
-		}
+		runs = []Run{{Args: []string{}, Answer: hole.Answer}}
 	}
 
 	// Run all the runs in parallel to reduce the wall clock time.
@@ -330,7 +319,10 @@ func play(
 		// Appending (print) prevents implicit output of the last form, if it
 		// is not nil. This seems to be a quirk of the Babashka interpreter
 		// that only occurs when providing code via a command line argument.
-		code += "(print)"
+		//
+		// Add a newline in to avoid commenting it out via ;, and
+		// do it twice to avoid commenting it out via #_.
+		code += "\n(print)(print)"
 	case "go":
 		// Prevent trivial quines. Error out and return early.
 		if hole.ID == "quine" && strings.Contains(code, "//go:embed") {
@@ -503,9 +495,16 @@ func play(
 
 	stdoutBytes := stdout.Next(maxLength)
 
-	// Postprocess sed output to turn null bytes into newlines.
-	if lang.ID == "sed" {
-		stdoutBytes = bytes.ReplaceAll(stdoutBytes, []byte("\x00"), []byte("\n"))
+	// Postprocess output in apl or sed.
+	// Convert apl's carriage returns or sed's null bytes to newlines.
+	if lang.ID == "apl" || lang.ID == "sed" {
+		stdoutByte := "\r"
+
+		if lang.ID == "sed" {
+			stdoutByte = "\x00"
+		}
+
+		stdoutBytes = bytes.ReplaceAll(stdoutBytes, []byte(stdoutByte), []byte("\n"))
 	}
 
 	// Trim trailing whitespace on each line, and then trailing empty lines.
