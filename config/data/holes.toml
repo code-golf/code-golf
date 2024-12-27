@@ -3330,6 +3330,17 @@ preamble = '''
 </pre>
 '''
 
+['Scrambled Alphabetization']
+experiment = 1324
+category = 'Transform'
+synopsis = 'Alphabetize words according to scrambled alphabets.'
+preamble = '''
+<p>
+    Given a scrambled alphabet and a set of words, print the words in
+    alphabetical order according to the given alphabet. Separate the
+    words by spaces for each argument.
+'''
+
 ['Semiprime Numbers']
 experiment = 1154
 category = 'Sequence'
