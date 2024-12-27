@@ -1,18 +1,25 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.21 AS builder
 
-RUN wget -cO /usr/bin/iogii https://golfscript.com/iogii/iogii-0.1-alpha \
+RUN apk add --no-cache gcc musl-dev
+
+ENV VER=0.2
+
+RUN wget -cO /usr/bin/iogii https://golfscript.com/iogii/iogii-$VER-alpha \
  && chmod +x /usr/bin/iogii
 
-FROM codegolf/lang-ruby AS interpreter
+COPY iogiiwrapper.c /
 
-COPY --from=0 /bin/cat /bin/sh /bin/touch /bin/
-COPY --from=0 /usr/bin/env /usr/bin/iogii /usr/bin/
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/iogiiwrapper -s -static iogiiwrapper.c
+
+FROM codegolf/lang-ruby
+
+COPY --from=0 /usr/bin/env          \
+              /usr/bin/iogii        \
+              /usr/bin/iogiiwrapper /usr/bin/
 
 FROM codegolf/lang-base
 
 COPY --from=1 . /
-
-COPY iogiiwrapper /usr/bin/
 
 ENTRYPOINT ["iogiiwrapper"]
 
