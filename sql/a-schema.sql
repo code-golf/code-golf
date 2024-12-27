@@ -31,13 +31,14 @@ CREATE TYPE hole AS ENUM (
     '12-days-of-christmas', '24-game', '99-bottles-of-beer',
     'abundant-numbers', 'abundant-numbers-long', 'apérys-constant',
     'arabic-to-roman', 'arithmetic-numbers', 'arrows', 'ascending-primes',
-    'ascii-table', 'billiards', 'brainfuck', 'card-number-validation',
-    'catalan-numbers', 'catalans-constant', 'christmas-trees', 'collatz',
-    'css-colors', 'css-grid', 'cubes', 'day-of-week', 'dfa-simulator',
-    'diamonds', 'divisors', 'ellipse-perimeters', 'emirp-numbers',
-    'emirp-numbers-long', 'emojify', 'evil-numbers', 'evil-numbers-long',
-    'factorial-factorisation', 'farey-sequence', 'fibonacci', 'fizz-buzz',
-    'flags', 'floyd-steinberg-dithering', 'foo-fizz-buzz-bar',
+    'ascii-table', 'billiards', 'brainfuck', 'calendar',
+    'card-number-validation', 'catalan-numbers', 'catalans-constant',
+    'christmas-trees', 'collatz', 'css-colors', 'css-grid', 'cubes',
+    'day-of-week', 'dfa-simulator', 'diamonds', 'divisors',
+    'ellipse-perimeters', 'emirp-numbers', 'emirp-numbers-long', 'emojify',
+    'evil-numbers', 'evil-numbers-long', 'factorial-factorisation',
+    'farey-sequence', 'fibonacci', 'fizz-buzz', 'flags',
+    'floyd-steinberg-dithering', 'foo-fizz-buzz-bar',
     'forsyth-edwards-notation', 'fractions', 'game-of-life',
     'gijswijts-sequence', 'gray-code-decoder', 'gray-code-encoder',
     'happy-numbers', 'happy-numbers-long', 'hexagonal-spiral', 'hexdump',
@@ -62,8 +63,8 @@ CREATE TYPE hole AS ENUM (
     'star-wars-opening-crawl', 'sudoku', 'sudoku-fill-in', 'ten-pin-bowling',
     'time-distance', 'tongue-twisters', 'transpose-sentence',
     'trinomial-triangle', 'turtle', 'united-states', 'vampire-numbers',
-    'van-eck-sequence', 'zeckendorf-representation', 'zodiac-signs',
-    'γ', 'λ', 'π', 'τ', 'φ', '√2', '𝑒'
+    'van-eck-sequence', 'zeckendorf-representation', 'zodiac-signs', 'γ', 'λ',
+    'π', 'τ', 'φ', '√2', '𝑒'
 );
 
 CREATE TYPE idea_category AS ENUM ('cheevo', 'hole', 'lang', 'other');
