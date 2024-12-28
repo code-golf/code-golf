@@ -175,6 +175,8 @@ func Play(
 		runs = billiards()
 	case "brainfuck":
 		runs = brainfuck()
+	case "calendar":
+		runs = calendar()
 	case "card-number-validation":
 		runs = cardNumberValidation()
 	case "day-of-week":
@@ -239,6 +241,8 @@ func Play(
 		runs = reversePolishNotation()
 	case "reversi":
 		runs = reversi()
+	case "scrambled-alphabetization":
+		runs = scrambledAlphabetization()
 	case "seven-segment":
 		runs = sevenSegment()
 	case "si-units":
