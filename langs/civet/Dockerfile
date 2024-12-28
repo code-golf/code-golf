@@ -2,7 +2,7 @@ FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache bash curl icu-data npm
 
-ENV VER=0.9.1
+ENV VER=0.9.3
 
 RUN curl -#L https://github.com/DanielXMoore/Civet/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1
@@ -50,8 +50,6 @@ COPY --from=0 /node_modules/unplugin/dist/context-BMwTIisg.cjs           \
               /node_modules/unplugin/dist/index.cjs                      \
               /node_modules/unplugin/dist/utils-CTvyqQEm.cjs             \
               /node_modules/unplugin/dist/webpack-like-CcGmGwl8.cjs      /usr/local/node_modules/unplugin/dist/
-COPY --from=0 /node_modules/webpack-sources/package.json                 /usr/local/node_modules/webpack-sources/
-COPY --from=0 /node_modules/webpack-sources/lib/index.js                 /usr/local/node_modules/webpack-sources/lib/
 COPY --from=0 /node_modules/webpack-virtual-modules/package.json         /usr/local/node_modules/webpack-virtual-modules/
 COPY --from=0 /node_modules/webpack-virtual-modules/lib/index.js         \
               /node_modules/webpack-virtual-modules/lib/virtual-stats.js /usr/local/node_modules/webpack-virtual-modules/lib/
