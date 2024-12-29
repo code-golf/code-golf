@@ -6,94 +6,85 @@ import (
 	"strings"
 )
 
-var lines = [][]int{
-	// horizontal
-	{0, 1, 2}, {3, 4, 5}, {6, 7, 8},
-	// vertical
-	{0, 3, 6}, {1, 4, 7}, {2, 5, 8},
-	// diagonal
-	{0, 4, 8}, {2, 4, 6},
-}
-
 func ticTacToe() []Run {
-	tests := make([]test, 0, 100)
+	tests := make([]test, 0, 500)
 
-	for range 100 {
+	for range 500 {
 		var argument strings.Builder
 
 		board := generateBoard()
 
-		for i := range 3 {
-			argument.WriteString(fmt.Sprintln(string(board[i*3 : i*3+3])))
+		for i := 0; i < 9; i += 3 {
+			argument.WriteString(fmt.Sprintln(string(board[i:i+3])))
 		}
 
 		tests = append(tests, test{
-			argument.String()[:10],
-			determineWinner(board),
+			argument.String(),
+			announceWinner(board),
 		})
 	}
 
 	return outputTests(shuffle(tests))
 }
 
-func determineWinner(board []rune) string {
-	if isWonBy(board, 'X') {
-		return "X"
-	} else if isWonBy(board, 'O') {
-		return "O"
-	}
-
-	return "-"
-}
-
 func generateBoard() []rune {
-	board, players, X, O := []rune("         "), []rune{'X', 'O'}, 0, 0
+	board, characters, X, O := []rune("........."), []rune{'X', 'O'}, 0, 0
 
-	rand.Shuffle(len(players), func(i, j int) {
-		players[i], players[j] = players[j], players[i]
+	rand.Shuffle(len(characters), func(i, j int) {
+		characters[i], characters[j] = characters[j], characters[i]
 	})
 
 	for i := range 9 {
-		if isWonBy(board, players[0]) || isWonBy(board, players[1]) {
+		if isGameOver(board, characters[0]) || isGameOver(board, characters[1]) {
 			break
 		}
 
-		squares := []int{}
+		dots := []int{}
 
-		for j, sq := range board {
-			if sq == ' ' {
-				squares = append(squares, j)
+		for j, ch := range board {
+			if ch == '.' {
+				dots = append(dots, j)
 			}
 		}
 
-		if len(squares) == 0 {
+		if len(dots) == 0 {
 			break
 		}
 
-		square := squares[rand.IntN(len(squares))]
+		index := dots[rand.IntN(len(dots))]
 
 		if i%2 == 0 {
-			board[square] = 'X'
+			board[index] = 'X'
 			X++
 		} else {
-			board[square] = 'O'
+			board[index] = 'O'
 			O++
 		}
-	}
-
-	if O > X {
-		return generateBoard()
 	}
 
 	return board
 }
 
-func isWonBy(board []rune, ch rune) bool {
-	for _, line := range lines {
-		if ch == board[line[0]] && ch == board[line[1]] && ch == board[line[2]] {
+func isGameOver(board []rune, ch rune) bool {
+	for _, pattern := range [][]int{
+		{0, 1, 2}, {3, 4, 5}, {6, 7, 8},
+		{0, 3, 6}, {1, 4, 7}, {2, 5, 8},
+		{0, 4, 8}, {2, 4, 6},
+	} {
+		if ch == board[pattern[0]] && ch == board[pattern[1]] && ch == board[pattern[2]] {
 			return true
 		}
 	}
 
 	return false
+}
+
+func announceWinner(board []rune) string {
+	if isGameOver(board, 'X') {
+		return "X"
+	} else if isGameOver(board, 'O') {
+		return "O"
+	}
+
+	return "-"
 }
