@@ -338,6 +338,63 @@ preamble = '''
 '''
 redirects = ["billiard"]
 
+[Boggle]
+experiment = 1306
+category = 'Gaming'
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Boggle' },
+]
+synopsis = 'Print valid words in the word game Boggle.'
+preamble = '''
+<p>
+    Boggle is a word game in which players try to find as many words in a
+    four-by-four grid consisting of random letters in the English alphabet.
+
+<p>
+    Each word, in order to be valid, must adhere to specific criteria defined
+    as follows:
+
+<ul>
+    <li>Any given word must count at least three letters.
+    <li>Each letter after the first must be a direct neighbor of the preceding
+        letter, either horizontal, vertical, or diagonal.
+    <li>Individual letters from the grid may be used once in any given word.
+</ul>
+
+<p>
+    For example, consider the following argument.
+
+<pre>
+CODE GOLF IS AWESOME
+
+A C F J
+E O L B
+P D G M
+U X C I
+</pre>
+
+<p>
+    Searching the word <code>CODE</code> is demonstrated by replacing each of
+    its letters with digits 1, 2, 3, and 4, respectively.
+
+<pre>
+A <b>1</b> F J
+<b>4</b> <b>2</b> L B
+P <b>3</b> G M
+U X C I
+</pre>
+
+<p>
+    Starting at 1, going in order, each digit after the first is a direct
+    neighbor of the one that precedes it in any of the aforementioned
+    directions. Therefore, and because it equally meets both length and used
+    letter frequency criteria, the word <code>CODE</code> is valid.
+
+<p>
+    Print the valid words in each given grid per argument on the same line,
+    separated by spaces.
+'''
+
 [brainfuck]
 category = 'Computing'
 links = [
