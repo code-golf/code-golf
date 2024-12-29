@@ -1015,7 +1015,7 @@ example    = '''
 
 [iogii]
 args       = [ '/usr/bin/iogiiwrapper', '-' ]
-experiment = -1
+experiment = 1770
 size       = '34.1 MiB'
 version    = '0.2'
 website    = 'https://golfscript.com/iogii/'
