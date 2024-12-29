@@ -255,6 +255,8 @@ func Play(
 		runs = sudoku(hole.ID == "sudoku-fill-in")
 	case "ten-pin-bowling":
 		runs = tenPinBowling()
+	case "tic-tac-toe":
+		runs = ticTacToe()
 	case "time-distance":
 		runs = timeDistance()
 	case "transpose-sentence":
