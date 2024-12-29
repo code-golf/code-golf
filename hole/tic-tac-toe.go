@@ -7,16 +7,23 @@ import (
 )
 
 func ticTacToe() []Run {
-	tests := make([]test, 0, 500)
+	boards, tests := make(map[string]struct{}), make([]test, 0, 500)
 
-	for range 500 {
+	for i := 0; i < 500; {
 		var argument strings.Builder
 
 		board := generateBoard()
 
-		for i := 0; i < 9; i += 3 {
-			argument.WriteString(fmt.Sprintln(string(board[i:i+3])))
+		for j := 0; j < 9; j += 3 {
+			argument.WriteString(fmt.Sprintln(string(board[j : j+3])))
 		}
+
+		if _, dupe := boards[argument.String()]; dupe {
+			continue
+		}
+
+		boards[argument.String()] = struct{}{}
+		i++
 
 		tests = append(tests, test{
 			argument.String(),
