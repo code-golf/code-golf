@@ -3382,6 +3382,41 @@ preamble = '''
     each on their own line.
 '''
 
+['Set']
+experiment = 1058
+category = 'Gaming'
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Set,_the_card_game' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Set_(card_game)' },
+]
+synopsis = 'Identify sets in the card game Set.'
+preamble = '''
+<p>
+    Set is a card game played with a deck of 81 unique cards that vary in four
+    features, each of which take on three values:
+
+<ul>
+    <li>Number: each card contains either <b>1</b>, <b>2</b>, or <b>3</b>
+        shapes.
+    <li>Color: the shapes on each card are either <b>R</b>ed, <b>G</b>reen, or
+        <b>P</b>urple.
+    <li>Shading: each shape is either <b>S</b>olid, <b>H</b>alf-shaded, or
+        <b>E</b>mpty.
+    <li>Shape: the shapes on each card are either <b>O</b>vals, <b>D</b>iamonds,
+        or <b>W</b>aves.
+</ul>
+
+<p>
+    The goal of the game is to find a <i>set</i> of three cards, such that for
+    each of the four features, either all three cards have different values or
+    all three cards have the same value.
+
+<p>
+    Each card is represented by the values of its features, with each value
+    encoded by the first character. For example, <code>2RSW</code> means
+    <b>2</b> <b>R</b>ed <b>S</b>olid <b>W</b>aves.
+'''
+
 ['Seven Segment']
 category = 'Transform'
 links = [
