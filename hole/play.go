@@ -243,6 +243,8 @@ func Play(
 		runs = reversi()
 	case "scrambled-alphabetization":
 		runs = scrambledAlphabetization()
+	case "set":
+		runs = set()
 	case "seven-segment":
 		runs = sevenSegment()
 	case "si-units":
