@@ -245,6 +245,8 @@ func Play(
 		runs = rot13()
 	case "scrambled-alphabetization":
 		runs = scrambledAlphabetization()
+	case "set":
+		runs = set()
 	case "seven-segment":
 		runs = sevenSegment()
 	case "si-units":
