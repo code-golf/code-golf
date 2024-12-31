@@ -3946,6 +3946,24 @@ preamble = '''
     is the total number of pins knocked down plus strike and spare bonuses.
 '''
 
+[Tic-tac-toe]
+experiment = 1031
+category = 'Gaming'
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Tic-tac-toe' },
+]
+synopsis = 'Determine eventual winners in finished tic-tac-toe games.'
+preamble = '''
+<p>
+    Given a finished grid state in tic-tac-toe, determine which character wins
+    the game.
+
+<p>
+    Print <b>X</b> or <b>O</b> when three consecutive characters complete a
+    horizontal, vertical, or diagonal line; or <b>-</b> when no such line is
+    completed.
+'''
+
 ['Time Distance']
 category = 'Transform'
 released = 2022-04-10
