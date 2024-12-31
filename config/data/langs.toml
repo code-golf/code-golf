@@ -858,7 +858,7 @@ for (arg in args)
 args       = [ '/usr/bin/harbourwrapper', '-' ]
 experiment = 1614
 size       = '13.0 MiB'
-version    = 'ce1bc20'
+version    = 'a23ea49'
 website    = 'https://harbour.github.io'
 example    = '''
 LOCAL i
@@ -1126,7 +1126,7 @@ end
 [K]
 args    = [ '/usr/bin/kwrapper', '/tmp/code.k' ]
 size    = '631 KiB'
-version = '67da192f47'
+version = 'b8b678f365'
 website = 'https://codeberg.org/ngn/k'
 example = '''
 /Printing
