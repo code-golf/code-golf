@@ -1013,6 +1013,24 @@ example    = '''
     (print arg))
 '''
 
+[iogii]
+args       = [ '/usr/bin/iogiiwrapper', '-' ]
+experiment = 1770
+size       = '34.1 MiB'
+version    = '0.2'
+website    = 'https://golfscript.com/iogii/'
+example    = '''
+# Printing
+"Hello, World!
+"
+
+# Looping
+10T
+
+# Accessing arguments
+$
+'''
+
 [J]
 args    = [ '/usr/bin/j', '/tmp/code.ijs' ]
 size    = '11.2 MiB'
