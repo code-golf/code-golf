@@ -3396,8 +3396,8 @@ preamble = '''
     features, each of which take on three values:
 
 <ul>
-    <li>Number: each card contains either <b>1</b>, <b>2</b>, or <b>3</b>
-        shapes.
+    <li>Number of shapes: each card contains either <b>1</b>, <b>2</b>, or
+        <b>3</b> shapes.
     <li>Color: the shapes on each card are either <b>R</b>ed, <b>G</b>reen, or
         <b>P</b>urple.
     <li>Shading: each shape is either <b>S</b>olid, <b>H</b>alf-shaded, or
@@ -3415,6 +3415,16 @@ preamble = '''
     Each card is represented by the values of its features, with each value
     encoded by the first character. For example, <code>2RSW</code> means
     <b>2</b> <b>R</b>ed <b>S</b>olid <b>W</b>aves.
+
+<p>
+    Each argument represents the twelve cards that are laid out according to the
+    rules of the game.
+
+<p>
+    Print each set of three cards that can be made on the same line, separated
+    by spaces and in order of appearance from left to right. Join individual
+    cards in the set by hyphens, or print a dash when there are no sets to be
+    made.
 '''
 
 ['Seven Segment']
