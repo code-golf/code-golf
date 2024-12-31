@@ -3417,14 +3417,9 @@ preamble = '''
     <b>2</b> <b>R</b>ed <b>S</b>olid <b>W</b>aves.
 
 <p>
-    Each argument represents the twelve cards that are laid out according to the
-    rules of the game.
-
-<p>
-    Print each set of three cards that can be made on the same line, separated
-    by spaces and in order of appearance from left to right. Join individual
-    cards in the set by hyphens, or print a dash when there are no sets to be
-    made.
+    Each argument represents twelve cards that are laid out. In order of
+    appearance, print the three cards that make up each set per argument
+    on the same line, separated by spaces.
 '''
 
 ['Seven Segment']

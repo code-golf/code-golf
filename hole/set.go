@@ -49,6 +49,7 @@ func shuffleUpAndDeal() string {
 		hand.WriteString(fmt.Sprintf("%s ", card))
 
 		cards[card] = struct{}{}
+
 		i++
 	}
 
@@ -58,24 +59,28 @@ func shuffleUpAndDeal() string {
 func set() []Run {
 	tests := make([]test, 0, 100)
 
-	for range 100 {
+	for i := 0; i < 100; {
 		var expected strings.Builder
 
-		cards := strings.Fields(shuffleUpAndDeal())
+		cards, count := strings.Fields(shuffleUpAndDeal()), 0
 
-		for i := range len(cards) {
-			for j := i + 1; j < len(cards); j++ {
-				for k := j + 1; k < len(cards); k++ {
-					if isSet(cards[i], cards[j], cards[k]) {
-						expected.WriteString(fmt.Sprintf("%s-%s-%s ", cards[i], cards[j], cards[k]))
+		for j := range len(cards) {
+			for k := j + 1; k < len(cards); k++ {
+				for l := k + 1; l < len(cards); l++ {
+					if isSet(cards[j], cards[k], cards[l]) {
+						expected.WriteString(fmt.Sprintf("%s %s %s", cards[j], cards[k], cards[l]))
+
+						count++
 					}
 				}
 			}
 		}
 
-		if len(expected.String()) == 0 {
-			expected.WriteRune('-')
+		if count != 1  {
+			continue
 		}
+
+		i++
 
 		tests = append(tests, test{
 			strings.Join(cards, " "),
