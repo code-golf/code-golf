@@ -3293,6 +3293,41 @@ preamble = '''
 </div>
 '''
 
+[ROT13]
+experiment = 921
+category = 'Transform'
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/ROT13' },
+]
+synopsis = 'Encode or decode ROT13 sequences.'
+preamble = '''
+<p>
+    ROT13, short for <i>rotate by 13 places</i>, is a simple substitution cipher
+    derived from the Caesar cipher. It works by replacing each letter in the
+    English alphabet with the letter 13 positions after it, wrapping around to
+    the beginning of the alphabet if necessary.
+
+<ul>
+    <li>For <b>uppercase</b> letters: <b>A</b> becomes <b>N</b>, <b>B</b> becomes
+        <b>O</b>, ..., <b>Z</b> becomes <b>M</b>.
+    <li>For <b>lowercase</b> letters: <b>a</b> becomes <b>n</b>, <b>b</b> becomes
+        <b>o</b>, ..., <b>z</b> becomes <b>m</b>.
+    <li>Non-alphabetic characters (digits, punctuation, spaces) remain unchanged.
+</ul>
+
+<p>
+    Here's a simple table that illustrates each letter substitution with ROT13:
+
+<pre>
+ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
+NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm
+</pre>
+
+<p>
+    Print the encoded or decoded ROT13 sequence for each argument, each on their
+    own line.
+'''
+
 ['Rule 110']
 category = 'Computing'
 links = [

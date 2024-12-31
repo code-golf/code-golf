@@ -57,15 +57,15 @@ CREATE TYPE hole AS ENUM (
     'prime-numbers-long', 'proximity-grid', 'qr-decoder', 'qr-encoder',
     'quadratic-formula', 'quine', 'recamán', 'repeating-decimals',
     'reverse-polish-notation', 'reversi', 'rijndael-s-box',
-    'rock-paper-scissors-spock-lizard', 'roman-to-arabic', 'rule-110',
-    'scrambled-alphabetization', 'semiprime-numbers', 'seven-segment',
-    'si-units', 'sierpiński-triangle', 'smith-numbers', 'spelling-numbers',
-    'sphenic-numbers', 'star-wars-gpt', 'star-wars-opening-crawl',
-    'sudoku', 'sudoku-fill-in', 'ten-pin-bowling', 'tic-tac-toe',
-    'time-distance', 'tongue-twisters', 'transpose-sentence',
-    'trinomial-triangle', 'turtle', 'united-states', 'vampire-numbers',
-    'van-eck-sequence', 'zeckendorf-representation', 'zodiac-signs', 'γ',
-    'λ', 'π', 'τ', 'φ', '√2', '𝑒'
+    'rock-paper-scissors-spock-lizard', 'roman-to-arabic', 'rot13',
+    'rule-110', 'scrambled-alphabetization', 'semiprime-numbers',
+    'seven-segment', 'si-units', 'sierpiński-triangle', 'smith-numbers',
+    'spelling-numbers', 'sphenic-numbers', 'star-wars-gpt',
+    'star-wars-opening-crawl', 'sudoku', 'sudoku-fill-in',
+    'ten-pin-bowling', 'tic-tac-toe', 'time-distance', 'tongue-twisters',
+    'transpose-sentence', 'trinomial-triangle', 'turtle', 'united-states',
+    'vampire-numbers', 'van-eck-sequence', 'zeckendorf-representation',
+    'zodiac-signs', 'γ', 'λ', 'π', 'τ', 'φ', '√2', '𝑒'
 );
 
 CREATE TYPE idea_category AS ENUM ('cheevo', 'hole', 'lang', 'other');

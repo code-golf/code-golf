@@ -241,6 +241,8 @@ func Play(
 		runs = reversePolishNotation()
 	case "reversi":
 		runs = reversi()
+	case "rot13":
+		runs = rot13()
 	case "scrambled-alphabetization":
 		runs = scrambledAlphabetization()
 	case "seven-segment":
