@@ -76,7 +76,7 @@ func set() []Run {
 			}
 		}
 
-		if count != 1  {
+		if count != 1 {
 			continue
 		}
 
