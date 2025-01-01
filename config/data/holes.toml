@@ -2821,6 +2821,16 @@ preamble = '''
 <p>Golf the code.golf placeholder.
 '''
 
+['Placeholder Text']
+experiment = 1409
+category = 'Art'
+synopsis = 'Print programming languages’ code samples.'
+preamble = '''
+<p>
+    Print the sample code of the given programming language for each argument,
+    separated by newlines.
+'''
+
 [Poker]
 category = 'Gaming'
 links = [
