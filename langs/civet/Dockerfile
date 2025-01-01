@@ -2,7 +2,7 @@ FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache bash curl icu-data npm
 
-ENV VER=0.9.3
+ENV VER=0.9.4
 
 RUN curl -#L https://github.com/DanielXMoore/Civet/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1

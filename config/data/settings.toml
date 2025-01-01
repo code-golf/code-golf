@@ -13,6 +13,14 @@ name    = 'Show Followed Golfers in Feed'
 default = true
 
 [[hole]]
+id      = 'editor-keymap'
+name    = 'Editor Keymap'
+options = [
+    { id = 'default', name = 'Default' },
+    { id = 'vim',     name = 'Vim' },
+]
+
+[[hole]]
 id   = 'lang-picker-style'
 name = 'Language Picker Style'
 options = [

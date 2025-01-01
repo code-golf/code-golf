@@ -2,8 +2,8 @@ FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache build-base clang curl openssl-dev yaml-dev
 
-# Also rebuild GolfScript.
-RUN curl https://cache.ruby-lang.org/pub/ruby/3.3/ruby-3.3.6.tar.xz | tar xJ
+# Also rebuild GolfScript, iogii.
+RUN curl https://cache.ruby-lang.org/pub/ruby/3.4/ruby-3.4.1.tar.xz | tar xJ
 
 # Clang produces the same size binary as using LTO with GCC, but GCC+LTO leads
 # to an issue where the stack size available for recursion is significantly
@@ -18,7 +18,7 @@ RUN cd ruby-*              \
  && strip -s /usr/bin/ruby
 
 # Remove some default gems we don't need.
-RUN cd /usr/lib/ruby/3.3.0 && rm -rf \
+RUN cd /usr/lib/ruby/3.4.0 && rm -rf \
                       English.rb     \
                       benchmark      \
                       benchmark.rb   \
