@@ -260,6 +260,9 @@ func apiWikiPageGET(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
+	// Cache the wiki for 5 minutes, since it is fetched on every page navigation.
+	w.Header().Set("Cache-Control", "max-age=300, public")
+
 	encodeJSON(w, page)
 }
 
