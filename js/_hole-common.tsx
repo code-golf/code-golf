@@ -9,10 +9,24 @@ let tabLayout: boolean = false;
 const langWikiCache: Record<string, string | null> = {};
 async function getLangWikiContent(lang: string): Promise<string> {
     if (!(lang in langWikiCache)) {
-        const resp  = await fetch(`/api/wiki/langs/${lang}`);
-        langWikiCache[lang] = resp.status === 200 ? (await resp.json()).content : null;
+        langWikiCache[lang] = await _getLangWikiContent(lang);
     }
     return langWikiCache[lang] ?? 'No data for current lang.';
+}
+async function _getLangWikiContent(lang: string): Promise<string | null> {
+    const resp  = await fetch(`/api/wiki/langs/${lang}`);
+    const {content, title} = await resp.json() as {content: string, title: string};
+    if (resp.status !== 200) {
+        return null;
+    }
+    const header = (<p id={`lang-wiki-${lang}`}>
+        Wiki: {title}{' '}
+        <a href={`/wiki/langs/${lang}`} target="_blank">
+            (open in new tab)
+        </a>
+        .
+    </p>).outerHTML;
+    return header + content;
 }
 
 const holeLangNotesCache: Record<string, string | null> = {};

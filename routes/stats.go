@@ -175,10 +175,10 @@ func statsUnsolvedHolesGET(w http.ResponseWriter, r *http.Request) {
 	if err := session.Database(r).Select(
 		&data,
 		`WITH solves AS (
-		    SELECT DISTINCT hole, lang FROM solutions WHERE NOT failing
+		    SELECT DISTINCT hole, lang FROM stable_passing_solutions
 		),
-		holes AS (SELECT unnest(enum_range(null::hole)) hole),
-		langs AS (SELECT unnest(enum_range(null::lang)) lang),
+		holes AS (SELECT id hole FROM holes WHERE experiment = 0),
+		langs AS (SELECT id lang FROM langs WHERE experiment = 0),
 		combo AS (SELECT hole, lang FROM holes CROSS JOIN langs)
 		   SELECT hole, lang
 		     FROM combo

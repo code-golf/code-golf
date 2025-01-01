@@ -168,6 +168,7 @@ export const extensions : { [key: string]: any } = {
     // TODO hush
     // TODO hy
     // TODO io
+    // TODO iogii
     'j':             j(),
     'janet':         janet(),
     'java':          java(),

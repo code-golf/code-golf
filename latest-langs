@@ -52,6 +52,7 @@ constant %paths = (
     'Hush'         => 'crates.io/api/v1/crates/hush',
     'Hy'           => 'pypi.org/pypi/hy/json',
     'Io'           => 'github.com/IoLanguage/io',
+    'iogii'        => 'golfscript.com/iogii/source.html',
     'J'            => 'en.wikipedia.org/wiki/J_(programming_language)',
     'Janet'        => 'github.com/janet-lang/janet/releases/latest',
     'Java'         => 'endoflife.date/api/java.json',
@@ -110,6 +111,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'crates.io'   / { $res.&from-json<crate><max_stable_version> }
         when / 'endoflife'   / { $res.&from-json[0]<latest> }
         when / 'fennel-lang' / { $res ~~ / 'downloads/fennel-' <(<ver>)> / }
+        when / 'golfscript'  / { $res ~~ / '(Alpha)' .+? <(<ver>)> / }
         when / 'git.sr.ht'   / { $res ~~ / 'stable release' .+? <(<ver>)> / }
         when / 'jmvdveer'    / { $res ~~ / 'algol68g-' <(<ver>)> / }
         when / 'npmjs.org'   / { $res.&from-json[0]<version> }
