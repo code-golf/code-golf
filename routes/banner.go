@@ -122,19 +122,26 @@ Cheevo:
 			end := cheevo.Times[i+1].AddDate(delta, 0, 0)
 
 			var body template.HTML
+			var hideKey string
 			if start.AddDate(0, 0, -7).Before(now) && now.Before(start) {
 				body = "be available in " +
 					pretty.Time(start.In(location)) + "."
+				hideKey = "cheevo-before-" + start.Format(time.DateOnly) + "-" + cheevo.ID
 			} else if start.Before(now) && now.Before(end) {
 				body = "stop being available in " +
 					pretty.Time(end.In(location)) + "."
+				hideKey = "cheevo-until-" + end.Format(time.DateOnly) + "-" + cheevo.ID
 			}
 
 			if body != "" {
 				body = template.HTML("The "+cheevo.Emoji+" <b>"+
 					cheevo.Name+"</b> achievement will ") + body
 
-				banners = append(banners, banner{Body: body, Type: "info"})
+				banners = append(banners, banner{
+					Body:    body,
+					HideKey: hideKey,
+					Type:    "info",
+				})
 
 				break Cheevo
 			}
