@@ -104,22 +104,22 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         state $ua  = HTTP::Tiny.new :throw-exceptions;
         my    $res = $ua.get("https://$_")<content>.decode;
 
-        when / 'alpinelinux' / { $res ~~ / 'Version' .+? <(<ver>)> / }
-        when / 'aplwiki'     / { $res ~~ / ' release' .+? <(<ver>)> / }
-        when / 'codeberg'    / { $res ~~ / '"shortsha">' <(<ver>)> / }
-        when / 'crates.io'   / { $res.&from-json<crate><max_stable_version> }
-        when / 'endoflife'   / { $res.&from-json[0]<latest> }
-        when / 'fennel-lang' / { $res ~~ / 'downloads/fennel-' <(<ver>)> / }
-        when / 'golfscript'  / { $res ~~ / '(Alpha)' .+? <(<ver>)> / }
-        when / 'git.sr.ht'   / { $res ~~ / 'stable release' .+? <(<ver>)> / }
-        when / 'jmvdveer'    / { $res ~~ / 'algol68g-' <(<ver>)> / }
-        when / 'npmjs.org'   / { $res.&from-json[0]<version> }
-        when / 'pypi.org'    / { $res.&from-json<info><version> }
-        when / 'regina-rexx' / { $res ~~ / '<b>Current</b> ' <(<ver>)> / }
-        when / 'savannah'    / { $res ~~ / 'snapshot/sed-' <(<ver>)> / }
-        when / 'sourceforge' / { $res ~~ / 'Latest' .+? <(<ver>)> / }
-        when / 'swi-prolog'  / { $res ~~ / 'stable' .+? <(<ver>)> / }
-        when / 'github.com'  / {
+        when / 'alpinelinux'    / { $res ~~ / 'Version' .+? <(<ver>)> / }
+        when / 'aplwiki'        / { $res ~~ / ' release' .+? <(<ver>)> / }
+        when / 'codeberg'       / { $res ~~ / '"shortsha">' <(<ver>)> / }
+        when / 'crates.io'      / { $res.&from-json<crate><max_stable_version> }
+        when / 'endoflife'      / { $res.&from-json[0]<latest> }
+        when / 'fennel-lang'    / { $res ~~ / 'downloads/fennel-' <(<ver>)> / }
+        when / 'golfscript.com' / { $res ~~ / '(Alpha)' .+? <(<ver>)> / }
+        when / 'git.sr.ht'      / { $res ~~ / 'stable release' .+? <(<ver>)> / }
+        when / 'jmvdveer'       / { $res ~~ / 'algol68g-' <(<ver>)> / }
+        when / 'npmjs.org'      / { $res.&from-json[0]<version> }
+        when / 'pypi.org'       / { $res.&from-json<info><version> }
+        when / 'regina-rexx'    / { $res ~~ / '<b>Current</b> ' <(<ver>)> / }
+        when / 'savannah'       / { $res ~~ / 'snapshot/sed-' <(<ver>)> / }
+        when / 'sourceforge'    / { $res ~~ / 'Latest' .+? <(<ver>)> / }
+        when / 'swi-prolog'     / { $res ~~ / 'stable' .+? <(<ver>)> / }
+        when / 'github.com'     / {
             .ends-with('/releases/latest')
                 ?? $res ~~ m:i/ [ $name || < dev release version > ] <[\ -]> v? <(<ver>)> /
                 !! $res ~~ / '"currentOid":"' <( <xdigit> ** 7 )> /;
