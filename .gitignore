@@ -6,7 +6,7 @@
 /localhost.pem
 /localhost-key.pem
 /node_modules/
-/sql/
+/sql/*.gz
 /t/.precomp/
 .DS_Store
 
