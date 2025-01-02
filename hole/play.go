@@ -381,8 +381,8 @@ func play(
 		}
 	case "uiua":
 		// Prevent trivial quines. Error out and return early.
-		if hole.ID == "quine" && len(code) > 0 && !strings.Contains(code, "&p") {
-			run.Stderr = `Quine in Uiua must use "&p".`
+		if hole.ID == "quine" && len(code) > 0 && !strings.Contains(code, "&p") || strings.Contains(code, `"&p"`) {
+			run.Stderr = "Quine in Uiua must use `&p` (without backticks) and cannot be enclosed in double quotes."
 			return nil
 		}
 	}
