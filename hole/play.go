@@ -379,6 +379,12 @@ func play(
 			run.Stderr = `Quine in TeX must have at least one '\' character.`
 			return nil
 		}
+	case "uiua":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && len(code) > 0 && !strings.Contains(code, "&p") {
+			run.Stderr = `Quine in Uiua must use "&p".`
+			return nil
+		}
 	}
 
 	var stderr, stdout bytes.Buffer
