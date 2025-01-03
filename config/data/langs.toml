@@ -858,7 +858,7 @@ for (arg in args)
 args       = [ '/usr/bin/harbourwrapper', '-' ]
 experiment = 1614
 size       = '13.0 MiB'
-version    = 'a23ea49'
+version    = '21ea321'
 website    = 'https://harbour.github.io'
 example    = '''
 LOCAL i
