@@ -401,9 +401,8 @@ category = 'Transform'
 synopsis = 'Print calendars for given months in given years.'
 preamble = '''
 <p>
-    Given a <b>month</b> and a <b>year</b>, print that month's calendar for
-    each argument <code><b>MM YYYY</b></code>. Monday marks the first day of
-    the week.
+    Given a month and a year, print that month's calendar for each argument
+    <code><b>MM YYYY</b></code>. Monday marks the first day of the week.
 
 <p>
     For example, <code>03 2023</code> refers to the month of March in 2023.
@@ -2154,6 +2153,29 @@ preamble = '''
     print the corresponding diamonds and medals.
 '''
 
+[Minesweeper]
+experiment = 1025
+category = 'Gaming'
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Minesweeper_(video_game)' },
+]
+synopsis = 'Print solved boards in Minesweeper games.'
+preamble = '''
+<p>
+    Minesweeper is a video game in which the player must clear a board without
+    detonating any of the hidden mines scattered throughout the grid of
+    clickable tiles.
+
+<p>
+    Each argument represents a ten-by-ten board with thirteen mine tiles,
+    denoted by <code><b>M</b></code>. Replace the safe tiles, denoted by
+    <code><b>X</b></code>, with the number of adjacent mines.
+
+<p>
+    Print a solved Minesweeper board for each argument, separated by newlines,
+    and replace each mine with <code><b>X</b></code> as if it weren't detonated.
+'''
+
 ['Morse Decoder']
 category = 'Transform'
 released = 2018-02-18
@@ -3299,6 +3321,7 @@ category = 'Transform'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/ROT13' },
 ]
+released = 2025-01-05
 synopsis = 'Encode or decode ROT13 sequences.'
 preamble = '''
 <p>

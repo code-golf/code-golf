@@ -44,7 +44,7 @@ x is a no-op.
 args       = [ '/usr/bin/algol-68', '--exec', '$code', '--' ]
 experiment = 856
 size       = '4.66 MiB'
-version    = 'Algol 68 Genie 3.5.10'
+version    = 'Algol 68 Genie 3.5.11'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -1017,7 +1017,7 @@ example    = '''
 args       = [ '/usr/bin/iogiiwrapper', '-' ]
 experiment = 1770
 size       = '34.1 MiB'
-version    = '0.1'
+version    = '0.2'
 website    = 'https://golfscript.com/iogii/'
 example    = '''
 # Printing
@@ -1506,7 +1506,7 @@ Shout arg
 ['Rockstar 2']
 args    = [ '/usr/bin/rockstarwrapper', '-' ]
 size    = '4.24 MiB'
-version = '2.0.25'
+version = '2.0.26'
 website = 'https://codewithrockstar.com'
 example = '''
 (Printing)

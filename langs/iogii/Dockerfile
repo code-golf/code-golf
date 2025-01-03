@@ -2,7 +2,7 @@ FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache gcc musl-dev
 
-ENV VER=0.1
+ENV VER=0.2
 
 RUN wget -cO /usr/bin/iogii https://golfscript.com/iogii/iogii-$VER-alpha \
  && chmod +x /usr/bin/iogii
