@@ -1,0 +1,950 @@
+< ><>
+> \ printing
+> > "!dlroW ,olleH" ooooooooooooo ao 03.
+>   looping
+> > 0 v
+>     >:nao 1+ :9)?v
+> v               ~<
+>   accessing arguments
+> > i : ?!v : 0) ?v ~;
+>         a
+>         o       o
+>         ~
+> ^       <       <
+> 
+> Arguments are available via STDIN,
+> each argument is NULL terminated.
+> x is a no-op.
+
+< Assembly
+> SYS_WRITE = 1
+> SYS_EXIT = 60
+> STDOUT_FILENO = 1
+> 
+> # Printing
+> .data
+> buffer: .string "Hello, World!\n"
+> bufferLen = . - buffer
+> 
+> .text
+> mov $SYS_WRITE, %eax
+> mov $STDOUT_FILENO, %edi
+> mov $buffer, %esi
+> mov $bufferLen, %edx
+> syscall
+> 
+> # Looping
+> .data
+> digit: .byte   '0', '\n'
+> 
+> .text
+> mov $10, %bl
+> numberLoop:
+>     mov $SYS_WRITE, %eax
+>     mov $STDOUT_FILENO, %edi
+>     mov $digit, %esi
+>     mov $2, %edx
+>     syscall
+> 
+>     incb (%rsi)
+>     dec %bl
+>     jnz numberLoop
+> 
+> # Accessing arguments
+> pop %rbx
+> pop %rax
+> 
+> argLoop:
+>     dec %rbx
+>     jz endArgLoop
+> 
+>     pop %rsi
+>     mov %rsi, %rdi
+> 
+>     mov $-1, %ecx
+>     xor %al, %al
+>     repnz scasb
+> 
+>     not %ecx
+>     movb $'\n', -1(%rsi, %rcx)
+> 
+>     mov %ecx, %edx
+>     mov $SYS_WRITE, %eax
+>     mov $STDOUT_FILENO, %edi
+>     syscall
+> 
+>     jmp argLoop
+> endArgLoop:
+> 
+> mov $SYS_EXIT, %eax
+> mov $0, %edi
+> syscall
+
+< AWK
+> BEGIN {
+>     # Printing
+>     print("Hello, World!")
+> 
+>     # Looping
+>     for (i = 0; i < 10; i++) {
+>         print(i)
+>     }
+> }
+> 
+> # Arguments are available via STDIN in the form of records
+> # Each record is NULL terminated
+> # By default, AWK automatically performs actions on each record
+> {
+>     # $0 is the full record while $1-$NF accesses individual fields in the record,
+>     # where NF is the number of fields in the current record
+>     print($0)
+> }
+
+< Bash
+> # Printing
+> echo Hello, World!
+> 
+> # Looping
+> for i in {0..9}; do
+>     echo $i;
+> done
+> 
+> # Accessing arguments
+> for arg; do
+>     echo $arg;
+> done
+
+< BASIC
+> ' Printing
+> Print "Hello, World!"
+> 
+> ' Looping
+> For i As UInteger = 0 To 9
+>     Print i
+> Next
+> 
+> ' Accessing arguments
+> For i As Integer = 1 To __FB_ARGC__ - 1
+>     Print Command(i)
+> Next
+
+< Berry
+> # Printing
+> print('Hello, World!')
+> 
+> # Looping
+> for i : 0 .. 9
+>     print(i)
+> end
+> 
+> # Accessing arguments
+> for a : _argv[1..]
+>     print(a)
+> end
+
+< brainfuck
+> >>Printing
+> +[-->-[>>+>-----<<]<--<---]>-.>>>+.>>..+++[.>]<<<<.+++.------.<<-.>>>>+.[<->-]<-.>
+> 
+> >>Looping
+> ++++++++[>++++++<-]
+> ++++++++++[>.+>++++++++++.[-]<<-]
+> 
+> >>Accessing arguments
+> ,[
+>     [
+>         .[-],
+>     ]
+>     ++++++++++.
+>     [-],
+> ]
+> 
+> Arguments are available via STDIN; each argument is NULL terminated;
+> Taking input after EOF leaves the cell unchanged; the tape is circular
+> with 65536 cells; and cells are 8 bit with wrapping;
+
+< C
+> #include <stdio.h>
+> 
+> int main(int argc, char* argv[]) {
+>     // Printing
+>     puts("Hello, World!");
+> 
+>     // Looping
+>     for (int i = 0; i < 10; i++)
+>         printf("%d\n", i);
+> 
+>     // Accessing arguments
+>     for (int i = 1; i < argc; i++)
+>         puts(argv[i]);
+> 
+>     return 0;
+> }
+
+< C#
+> // Printing
+> Console.WriteLine("Hello, World!");
+> 
+> // Looping
+> for (int i = 0; i < 10; i++)
+>     Console.WriteLine(i);
+> 
+> // Accessing arguments
+> foreach (String arg in args)
+>     Console.WriteLine(arg);
+> 
+> // Implicit using directives for console applications are enabled.
+> // See: https://docs.microsoft.com/en-us/dotnet/core/tutorials/top-level-templates#implicit-using-directives
+
+< C++
+> #include <iostream>
+> 
+> int main(int argc, char* argv[]) {
+>     // Printing
+>     std::cout<<"Hello, World!"<<std::endl;
+> 
+>     // Looping
+>     for (int i = 0; i < 10; i++)
+>         std::cout<<i<<std::endl;
+> 
+>     // Accessing arguments
+>     for (int i = 1; i < argc; i++)
+>         std::cout<<argv[i]<<std::endl;
+> 
+>     return 0;
+> }
+> 
+> // Code is compiled with clang with -std=c++23
+> // See: https://clang.llvm.org/cxx_status.html
+
+< Civet
+> // Printing
+> console.log 'Hello, World!'
+> 
+> // Looping
+> for i of [0..9]
+>     console.log i
+> 
+> // Accessing arguments
+> for arg of process.argv[2..]
+>     console.log arg
+
+< Clojure
+> ; Printing
+> (println "Hello, World!")
+> 
+> ; Looping
+> (dotimes [i 10]
+>   (println i))
+> 
+> ; Accessing arguments
+> (doseq [arg *command-line-args*]
+>   (println arg))
+
+< COBOL
+> program-id.example.
+> 
+> data division.
+> local-storage section.
+> 1 n pic 99 value 0.
+> 1 i pic 9999.
+> 1 a pic X(99).
+> procedure division.
+> 
+> *> Printing
+> display "Hello, World!"
+> 
+> *> Looping
+> perform 10 times
+> display n(2- function log10(n):)
+> add 1 to n
+> end-perform.
+> 
+> *> Accessing arguments
+> accept i from argument-number
+> perform i times
+> accept a from argument-value
+> display a
+> end-perform.
+> end-program.
+
+< Coconut
+> import sys
+> 
+> # Printing
+> 'Hello, World!' |> print
+> 
+> # Looping
+> for i in range(10):
+>     i |> print
+> 
+> # Accessing arguments
+> for arg in sys.argv[1:]:
+>     arg |> print
+
+< Common Lisp
+> ; Printing
+> (write-line "Hello, World!")
+> 
+> ; Looping
+> (loop for i from 0 to 9
+>     do (format t "~d~%" i)
+> )
+> 
+> ; Accessing arguments
+> (loop for arg in *args*
+>     do (write-line arg)
+> )
+
+< Crystal
+> # Printing
+> puts "Hello, World!"
+> 
+> # Looping
+> (0..9).each do |i|
+>     puts i
+> end
+> 
+> # Accessing arguments
+> ARGV.each do |arg|
+>     puts arg
+> end
+
+< D
+> import std.stdio;
+> 
+> void main(string[] argv) {
+>     // Printing
+>     writeln("Hello, World!");
+> 
+>     // Looping
+>     foreach (i; 0 .. 10) {
+>         writeln(i);
+>     }
+> 
+>     // Accessing arguments
+>     foreach (arg; argv[1 .. $]) {
+>         writeln(arg);
+>     }
+> }
+
+< Dart
+> void main(List<String> argv) {
+>   // Printing
+>   print("Hello, World!");
+> 
+>   // Looping
+>   for (var i = 0; i < 10; i++) {
+>     print(i);
+>   }
+> 
+>   // Accessing arguments
+>   for (final arg in argv) {
+>     print(arg);
+>   }
+> }
+
+< Elixir
+> # Printing
+> IO.puts "Hello, World!"
+> 
+> # Looping
+> for i <- 0..9, do: IO.puts i
+> 
+> # Accessing arguments
+> for arg <- System.argv, do: IO.puts arg
+
+< F#
+> [<EntryPoint>]
+> let main args =
+>     // Printing
+>     printfn "Hello, World!"
+> 
+>     // Looping
+>     for i in 0..9 do
+>         printfn "%d" i
+> 
+>     // Accessing arguments
+>     for arg in args do
+>         printfn "%s" arg
+> 
+>     0
+
+< Factor
+> ! Printing
+> "Hello, World!" print
+> 
+> ! Looping
+> 0 ..= 9 [ . ] each
+> 
+> ! Accessing arguments
+> command-line get-global [ print ] each
+
+< Forth
+> \ Printing
+> .( Hello, World!) CR
+> 
+> \ Looping
+> : looping
+>     10 0 do i 0 .r cr loop ;
+> looping
+> 
+> \ Accessing arguments
+> : accessing-arguments
+>     begin next-arg 2dup d0<> while type CR repeat 2drop ;
+> accessing-arguments
+> 
+> bye
+
+< Fortran
+> character(len=32) :: s
+> integer :: i
+> 
+> ! Printing
+> print "(a)", "Hello, World!"
+> 
+> ! Looping
+> do i = 0, 9
+>     print "(i0)", i
+> end do
+> 
+> ! Accessing arguments
+> ! (NOTE: getarg() and iargc() are GNU Fortran extensions)
+> do i = 1, iargc()
+>     call getarg(i,s)
+>     print "(a)", s
+> end do
+> 
+> end
+
+< Go
+> package main
+> 
+> import (
+>     "fmt"
+>     "os"
+> )
+> 
+> func main() {
+>     // Printing
+>     fmt.Println("Hello, World!")
+> 
+>     // Looping
+>     for i := range 10 {
+>         fmt.Println(i)
+>     }
+> 
+>     // Accessing arguments
+>     for _, arg := range os.Args[1:] {
+>         fmt.Println(arg)
+>     }
+> }
+
+< GolfScript
+> # Printing
+> "Hello, World!"puts
+> 
+> # Looping
+> 10,{p}/
+> 
+> # The stack is initialized with one element, an array of arguments:
+> n*
+
+< Haskell
+> import System.Environment
+> 
+> main = do
+>   -- Printing
+>   putStrLn "Hello, World!"
+> 
+>   -- Looping
+>   mapM print [0..9]
+> 
+>   -- Accessing arguments
+>   args <- drop 1 <$> getArgs
+>   mapM putStrLn args
+
+< Hexagony
+>          \ P r i n t i n g .
+>         \ H ; e ; l ; ; o ; \
+>        / o ; W ; 0 P ; 2 Q < .
+>       . > ; r ; l ; d ; P 1 ; \
+>      > * . . . . . . . . . . < .
+>     . . . . . . . . . . . . . . .
+>    . . L o o p i n g . . . . . . .
+>   \ 1 0 ; " $ / } ! ) " ; \ . . . .
+>  . . . . . . . > . - " = < . . . . .
+> . / . . . . . < . . . . . . . . . . .
+>  . . . . . . . . . . . . . . . . . .
+>   . . . A c c e s s i n g . . . . .
+>    . . . A r g u m e n t s . . . .
+>     . . . . . . > \ . @ . . . . .
+>      . > $ > , < \ ) < . . . . .
+>       . . \ . ; / $ 0 / . . . .
+>        . A r g u m e n t s . .
+>         . a r e . N U L L . .
+>          t e r m i n a t e d
+
+< J
+> NB.Printing
+> echo'Hello, World!'
+> 
+> NB.Looping
+> echo i.10 1
+> 
+> NB.Accessing arguments
+> echo each 2}.ARGV
+
+< Janet
+> # Printing
+> (print "Hello, World!")
+> 
+> # Looping
+> (for i 0 10
+>   (print i))
+> 
+> # Accessing arguments
+> (each arg (tuple/slice (dyn :args) 1)
+>   (print arg))
+
+< Java
+> class Main {
+>     public static void main(String[] args) {
+>         // Printing
+>         System.out.println("Hello, World!");
+> 
+>         // Looping
+>         for (int i = 0; i < 10; i++)
+>             System.out.println(i);
+> 
+>         // Accessing arguments
+>         for (String arg : args)
+>             System.out.println(arg);
+>     }
+> }
+
+< JavaScript
+> // Printing
+> print("Hello, World!");
+> 
+> // Looping
+> for (let i = 0; i < 10; i++)
+>     print(i);
+> 
+> // Accessing arguments
+> for (let arg of arguments)
+>     print(arg);
+
+< jq
+> # Printing
+> "Hello, World!",
+> 
+> # Looping
+> range(10),
+> 
+> # Accessing arguments
+> $ARGS.positional[]
+
+< Julia
+> # Printing
+> println("Hello, World!")
+> 
+> # Looping
+> for i=0:9
+>     println(i)
+> end
+> 
+> # Accessing arguments
+> for arg in ARGS
+>     println(arg)
+> end
+
+< K
+> /Printing
+> `0:"Hello, World!"
+> 
+> /Looping
+> `0:$!10
+> 
+> /Accessing arguments
+> `0:x
+
+< Kotlin
+> // Printing
+> println("Hello, World!")
+> 
+> // Looping
+> for (i in 0..9)
+>     println(i)
+> 
+> // Accessing arguments
+> for (arg in args)
+>     println(arg)
+
+< Lua
+> -- Printing
+> print("Hello, World!")
+> 
+> -- Looping
+> for i = 0, 9 do
+>     print(i)
+> end
+> 
+> -- Accessing arguments
+> for i = 1, #arg do
+>     print(arg[i])
+> end
+
+< Nim
+> import os
+> 
+> # Printing
+> echo "Hello, World!"
+> 
+> # Looping
+> for i in 0 .. 9:
+>     echo i
+> 
+> # Accessing arguments
+> for arg in commandLineParams():
+>     echo arg
+
+< OCaml
+> (* Printing *)
+> print_endline "Hello, World!";
+> 
+> (* Looping *)
+> for i = 0 to 9 do
+>   Printf.printf "%d\n" i
+> done;
+> 
+> (* Accessing arguments *)
+> Sys.argv
+>   |> Array.to_list
+>   |> List.tl
+>   |> List.iter print_endline;
+
+< Pascal
+> var
+>     i: integer;
+> begin
+>     { Printing }
+>     writeLn('Hello, World!');
+> 
+>     { Looping }
+>     for i := 0 to 9 do
+>         writeLn(i);
+> 
+>     { Accessing arguments }
+>     for i := 1 to argc - 1 do
+>         writeLn(argv[i]);
+> end.
+
+< Perl
+> # Printing
+> say 'Hello, World!';
+> 
+> # Looping
+> say for 0..9;
+> 
+> # Accessing arguments
+> say for @ARGV;
+> 
+> # Code is run under -E, all current features are enabled.
+
+< PHP
+> # Printing
+> echo "Hello, World!\n";
+> 
+> # Looping
+> for ($i = 0; $i < 10; $i++)
+>     echo "$i\n";
+> 
+> # Accessing arguments
+> for ($i = 1; $i < $argc; $i++)
+>     echo "$argv[$i]\n";
+
+< PowerShell
+> # Printing
+> Write-Host 'Hello, World!'
+> 
+> # Looping
+> ForEach ($i in 0..9) {
+>     Write-Host $i
+> }
+> 
+> # Accessing arguments
+> ForEach ($arg in $args) {
+>     Write-Host $arg
+> }
+
+< Prolog
+> % Printing
+> :- writeln("Hello, World!").
+> 
+> % Looping
+> :- numlist(0, 9, List),
+>    maplist(writeln, List).
+> 
+> % Accessing arguments
+> :- prolog_flag(argv, Args),
+>    maplist(writeln, Args).
+
+< Python
+> import sys
+> 
+> # Printing
+> print('Hello, World!')
+> 
+> # Looping
+> for i in range(10):
+>     print(i)
+> 
+> # Accessing arguments
+> for arg in sys.argv[1:]:
+>     print(arg)
+
+< R
+> # Printing
+> write("Hello, World!", 1)
+> 
+> # Looping
+> for (i in 0:9) {
+>     write(i, 1)
+> }
+> 
+> # Accessing arguments
+> for (arg in commandArgs(TRUE)) {
+>     write(arg, 1)
+> }
+
+< Raku
+> # Printing
+> say 'Hello, World!';
+> 
+> # Looping
+> .say for ^10;
+> 
+> # Accessing arguments
+> .say for @*ARGS;
+
+< Rockstar
+> (Printing)
+> Shout "Hello, World!"
+> 
+> (Looping)
+> Let i be 0
+> While i is less than 10
+> Shout i
+> Build i up
+> 
+> (Accessing arguments)
+> While args alike arg
+> Shout arg
+
+< Rockstar 2
+> (Printing)
+> print "Hello, World!"
+> 
+> (Looping)
+> for x in 10
+>   print x
+> end
+> 
+> (Accessing arguments)
+> for arg in arguments
+>   print arg
+> end
+
+< Ruby
+> # Printing
+> puts 'Hello, World!'
+> 
+> # Looping
+> (0..9).each do |i|
+>     puts i
+> end
+> 
+> # Accessing arguments
+> ARGV.each do |arg|
+>     puts arg
+> end
+
+< Rust
+> fn main() {
+>     // Printing
+>     println!("Hello, World!");
+> 
+>     // Looping
+>     for i in 0..10 {
+>         println!("{i}");
+>     }
+> 
+>     // Accessing arguments
+>     for arg in std::env::args().skip(1) {
+>         println!("{arg}");
+>     }
+> }
+
+< Scheme
+> ; Printing
+> (printf "~a~n" "Hello, World!")
+> 
+> ; Looping
+> (for-each (lambda (i) (display i) (newline)) (iota 10))
+> 
+> ; Accessing arguments
+> (for-each (lambda (arg) (display arg) (newline)) (command-line-arguments))
+
+< sed
+> # Printing
+> 1i Hello, World!
+> 
+> # Looping
+> 2,$ b
+> 
+> h
+> s/.*/0/
+> :loop
+> p
+> y/012345678/123456789/
+> /9/ !b loop
+> G
+> 
+> # Accessing arguments
+> # (... automatic, one per line ...)
+> 
+> # Arguments are available via STDIN,
+> # each argument is separated with a null byte.
+> # The code is run with -E and -z options.
+> # Output replaces null bytes with newlines.
+
+< SQL
+> -- Printing
+> SELECT 'Hello, World!';
+> 
+> -- Looping
+> WITH loop(i) AS (
+>     SELECT 0
+>     UNION ALL
+>     SELECT i + 1 FROM loop
+>     WHERE i < 9
+> )
+> SELECT i FROM loop;
+> 
+> -- Accessing arguments
+> SELECT arg FROM argv;
+> 
+> -- Only the first column of the first result set will be printed,
+> -- NULL values will be skipped, and the dialect is SQLite.
+
+< Swift
+> // Printing
+> print("Hello, World!")
+> 
+> // Looping
+> for i in 0...9 {
+>     print(i)
+> }
+> 
+> // Accessing arguments
+> for arg in CommandLine.arguments[1...] {
+>     print(arg)
+> }
+
+< Tcl
+> # Printing
+> puts "Hello, World!"
+> 
+> # Looping
+> for {set x 0} {$x < 10} {incr x} {
+>     puts $x
+> }
+> 
+> # Accessing arguments
+> foreach arg $argv {
+>     puts $arg
+> }
+
+< TeX
+> % Printing
+> Hello, World!
+> 
+> % Looping
+> \newcount\i
+> \loop\ifnum\i<10
+>     \the\i\endgraf
+>     \advance\i by1
+> \repeat
+> 
+> % Accessing arguments
+> \newcount\j
+> \loop\ifnum\j<\argc\relax
+>     \argv\j\endgraf
+>     \advance\j by1
+> \repeat
+
+< V
+> import os
+> 
+> // Printing
+> println('Hello, World!')
+> 
+> // Looping
+> for i in 0..10 {
+>     println(i)
+> }
+> 
+> // Accessing arguments
+> for arg in os.args[1..] {
+>     println(arg)
+> }
+
+< VimL
+> " Printing
+> i
+> Hello, World!
+> .
+> 
+> " Looping
+> for i in range(10)
+>     pu=i
+> endfo
+> 
+> " Accessing arguments
+> for a in args
+>     pu=a
+> endfo
+> 
+> " Make sure to save the file when you're done!
+> w
+
+< Wren
+> import "os" for Process
+> 
+> // Printing
+> System.print("Hello, World!")
+> 
+> // Looping
+> for (i in 0..9) System.print(i)
+> 
+> // Accessing arguments
+> for (a in Process.arguments) System.print(a)
+
+< Zig
+> const std = @import("std");
+> 
+> pub fn main() !void {
+>     const stdout = std.io.getStdOut().writer();
+> 
+>     // Printing
+>     try stdout.print("Hello, World!\n", .{});
+> 
+>     // Looping
+>     for (0..10) |i|
+>         try stdout.print("{}\n", .{i});
+> 
+>     // Accessing arguments
+>     for (std.os.argv[1..]) |arg|
+>         try stdout.print("{s}\n", .{arg});
+> }
