@@ -37,7 +37,7 @@ constant %paths = (
     'Elixir'       => 'en.wikipedia.org/wiki/Elixir_(programming_language)',
     'F#'           => 'en.wikipedia.org/wiki/F_Sharp_(programming_language)',
     'Factor'       => 'github.com/factor/factor/releases/latest',
-    'Fennel'       => 'fennel-lang.org/setup',
+    'Fennel'       => 'fennel-lang.org/downloads/?C=M;O=D',
     'Forth'        => 'en.wikipedia.org/wiki/Gforth',
     'Fortran'      => 'en.wikipedia.org/wiki/GNU_Compiler_Collection',
     'Gleam'        => 'github.com/gleam-lang/gleam/releases/latest',
@@ -110,7 +110,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'crates.io'      / { $res.&from-json<crate><max_stable_version> }
         when / 'dyalog.com'     / { $res ~~ / <(<ver>)> ' for Linux (DEB)' / }
         when / 'endoflife'      / { $res.&from-json[0]<latest> }
-        when / 'fennel-lang'    / { $res ~~ / 'downloads/fennel-' <(<ver>)> / }
+        when / 'fennel-lang'    / { $res ~~ / 'fennel-' <(<ver>)> / }
         when / 'golfscript.com' / { $res ~~ / '(Alpha)' .+? <(<ver>)> / }
         when / 'jmvdveer'       / { $res ~~ / 'algol68g-' <(<ver>)> / }
         when / 'lists.sr.ht'    / { $res ~~ / 'Hare ' <(<ver>)> ' release' / }
