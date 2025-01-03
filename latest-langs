@@ -117,6 +117,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'npmjs.org'      / { $res.&from-json[0]<version> }
         when / 'pypi.org'       / { $res.&from-json<info><version> }
         when / 'regina-rexx'    / { $res ~~ / '<b>Current</b> ' <(<ver>)> / }
+        when / 'rockstar'       / { $res ~~ / 'rockstar-v' <(<ver>)> / }
         when / 'savannah'       / { $res ~~ / 'snapshot/sed-' <(<ver>)> / }
         when / 'sourceforge'    / { $res ~~ / 'Latest' .+? <(<ver>)> / }
         when / 'swi-prolog'     / { $res ~~ / 'stable' .+? <(<ver>)> / }
