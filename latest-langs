@@ -11,7 +11,7 @@ constant %paths = (
     '05AB1E'       => 'github.com/Adriandmen/05AB1E',
     '><>'          => 'github.com/primo-ppcg/fish-jit',
     'ALGOL 68'     => 'jmvdveer.home.xs4all.nl/en.download.algol-68-genie-current.html',
-    'APL'          => 'aplwiki.com/wiki/Dyalog_APL',
+    'APL'          => 'dyalog.com/download-zone.htm?p=download',
     'Arturo'       => 'github.com/arturo-lang/arturo/releases/latest',
     'Assembly'     => 'registry.npmjs.org/@defasm/core/latest',
     'Bash'         => 'en.wikipedia.org/wiki/Bash_(Unix_shell)',
@@ -108,6 +108,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'aplwiki'        / { $res ~~ / ' release' .+? <(<ver>)> / }
         when / 'codeberg'       / { $res ~~ / '"shortsha">' <(<ver>)> / }
         when / 'crates.io'      / { $res.&from-json<crate><max_stable_version> }
+        when / 'dyalog.com'     / { $res ~~ / <(<ver>)> ' for Linux (DEB)' / }
         when / 'endoflife'      / { $res.&from-json[0]<latest> }
         when / 'fennel-lang'    / { $res ~~ / 'downloads/fennel-' <(<ver>)> / }
         when / 'golfscript.com' / { $res ~~ / '(Alpha)' .+? <(<ver>)> / }
