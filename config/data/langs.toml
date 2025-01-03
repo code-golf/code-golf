@@ -1157,6 +1157,29 @@ example = '''
 `0:x
 '''
 
+[Koka]
+args       = [ '/usr/bin/kokawrapper', '-', '--' ]
+env        = [ 'PATH=/usr/local/bin:/usr/bin' ]
+experiment = 1792
+size       = '301 MiB'
+version    = '3.1.2'
+website    = 'https://koka-lang.github.io/koka/doc/index.html'
+example    = '''
+import std/os/env
+
+fun main()
+  // Printing
+  println("Hello, World!")
+
+  // Looping
+  for(0,9) fn(i)
+    println(i)
+
+  // Accessing arguments
+  get-args().foreach fn(arg)
+    arg.println
+'''
+
 [Kotlin]
 args    = [ '/usr/bin/kotlin', '-Xuse-fast-jar-file-system', '-e', '$code' ]
 env     = [ 'JAVA_HOME=/opt/java' ]
