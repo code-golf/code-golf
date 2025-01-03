@@ -45,7 +45,7 @@ constant %paths = (
     'GolfScript'   => 'github.com/lynn/golfscript/tree/code-golf',
     'Groovy'       => 'en.wikipedia.org/wiki/Apache_Groovy',
     'Harbour'      => 'github.com/harbour/core',
-    'Hare'         => 'git.sr.ht/~sircmpwn/hare/refs',
+    'Hare'         => 'lists.sr.ht/~sircmpwn/hare-announce?search=release',
     'Haskell'      => 'pkgs.alpinelinux.org/package/edge/community/x86_64/ghc',
     'Haxe'         => 'github.com/HaxeFoundation/haxe/releases/latest',
     'Hexagony'     => 'github.com/SirBogman/Hexagony',
@@ -111,8 +111,8 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'endoflife'      / { $res.&from-json[0]<latest> }
         when / 'fennel-lang'    / { $res ~~ / 'downloads/fennel-' <(<ver>)> / }
         when / 'golfscript.com' / { $res ~~ / '(Alpha)' .+? <(<ver>)> / }
-        when / 'git.sr.ht'      / { $res ~~ / 'stable release' .+? <(<ver>)> / }
         when / 'jmvdveer'       / { $res ~~ / 'algol68g-' <(<ver>)> / }
+        when / 'lists.sr.ht'    / { $res ~~ / 'Hare ' <(<ver>)> ' release' / }
         when / 'npmjs.org'      / { $res.&from-json[0]<version> }
         when / 'pypi.org'       / { $res.&from-json<info><version> }
         when / 'regina-rexx'    / { $res ~~ / '<b>Current</b> ' <(<ver>)> / }
