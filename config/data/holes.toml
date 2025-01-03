@@ -3322,6 +3322,7 @@ category = 'Transform'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/ROT13' },
 ]
+released = 2025-01-05
 synopsis = 'Encode or decode ROT13 sequences.'
 preamble = '''
 <p>
