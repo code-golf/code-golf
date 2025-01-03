@@ -44,7 +44,7 @@ x is a no-op.
 args       = [ '/usr/bin/algol-68', '--exec', '$code', '--' ]
 experiment = 856
 size       = '4.66 MiB'
-version    = 'Algol 68 Genie 3.5.10'
+version    = 'Algol 68 Genie 3.5.11'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -398,7 +398,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '71.8 MiB'
-version = '0.9.3'
+version = '0.9.4'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -639,8 +639,8 @@ def main =
 [Elixir]
 args    = [ '/usr/local/bin/elixir', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8', 'PATH=/usr/local/bin:/usr/bin:/bin' ]
-size    = '178 MiB'
-version = '1.17.3'
+size    = '179 MiB'
+version = '1.18.0'
 website = 'https://elixir-lang.org'
 example = '''
 # Printing
@@ -858,7 +858,7 @@ for (arg in args)
 args       = [ '/usr/bin/harbourwrapper', '-' ]
 experiment = 1614
 size       = '13.0 MiB'
-version    = 'ce1bc20'
+version    = 'a23ea49'
 website    = 'https://harbour.github.io'
 example    = '''
 LOCAL i
@@ -1013,6 +1013,24 @@ example    = '''
     (print arg))
 '''
 
+[iogii]
+args       = [ '/usr/bin/iogiiwrapper', '-' ]
+experiment = 1770
+size       = '34.1 MiB'
+version    = '0.2'
+website    = 'https://golfscript.com/iogii/'
+example    = '''
+# Printing
+"Hello, World!
+"
+
+# Looping
+10T
+
+# Accessing arguments
+$
+'''
+
 [J]
 args    = [ '/usr/bin/j', '/tmp/code.ijs' ]
 size    = '11.2 MiB'
@@ -1126,7 +1144,7 @@ end
 [K]
 args    = [ '/usr/bin/kwrapper', '/tmp/code.k' ]
 size    = '631 KiB'
-version = '67da192f47'
+version = 'b8b678f365'
 website = 'https://codeberg.org/ngn/k'
 example = '''
 /Printing
@@ -1525,7 +1543,7 @@ Shout arg
 ['Rockstar 2']
 args    = [ '/usr/bin/rockstarwrapper', '-' ]
 size    = '5.83 MiB'
-version = '2.0.25'
+version = '2.0.26'
 website = 'https://codewithrockstar.com'
 example = '''
 (Printing)

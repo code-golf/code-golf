@@ -11,7 +11,7 @@ constant %paths = (
     '05AB1E'       => 'github.com/Adriandmen/05AB1E',
     '><>'          => 'github.com/primo-ppcg/fish-jit',
     'ALGOL 68'     => 'jmvdveer.home.xs4all.nl/en.download.algol-68-genie-current.html',
-    'APL'          => 'aplwiki.com/wiki/Dyalog_APL',
+    'APL'          => 'dyalog.com/download-zone.htm?p=download',
     'Arturo'       => 'github.com/arturo-lang/arturo/releases/latest',
     'Assembly'     => 'registry.npmjs.org/@defasm/core/latest',
     'Bash'         => 'en.wikipedia.org/wiki/Bash_(Unix_shell)',
@@ -45,12 +45,13 @@ constant %paths = (
     'GolfScript'   => 'github.com/lynn/golfscript/tree/code-golf',
     'Groovy'       => 'en.wikipedia.org/wiki/Apache_Groovy',
     'Harbour'      => 'github.com/harbour/core',
-    'Hare'         => 'git.sr.ht/~sircmpwn/hare/refs',
+    'Hare'         => 'lists.sr.ht/~sircmpwn/hare-announce?search=release',
     'Haskell'      => 'pkgs.alpinelinux.org/package/edge/community/x86_64/ghc',
     'Haxe'         => 'github.com/HaxeFoundation/haxe/releases/latest',
     'Hexagony'     => 'github.com/SirBogman/Hexagony',
     'Hush'         => 'crates.io/api/v1/crates/hush',
     'Hy'           => 'pypi.org/pypi/hy/json',
+    'iogii'        => 'golfscript.com/iogii/source.html',
     'J'            => 'en.wikipedia.org/wiki/J_(programming_language)',
     'Janet'        => 'github.com/janet-lang/janet/releases/latest',
     'Java'         => 'endoflife.date/api/java.json',
@@ -104,22 +105,24 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         state $ua  = HTTP::Tiny.new :throw-exceptions;
         my    $res = $ua.get("https://$_")<content>.decode;
 
-        when / 'alpinelinux' / { $res ~~ / 'Version' .+? <(<ver>)> / }
-        when / 'aplwiki'     / { $res ~~ / ' release' .+? <(<ver>)> / }
-        when / 'bertnase'    / { $res ~~ / 'version' .+? <(<ver>)> / }
-        when / 'codeberg'    / { $res ~~ / '"shortsha">' <(<ver>)> / }
-        when / 'crates.io'   / { $res.&from-json<crate><max_stable_version> }
-        when / 'endoflife'   / { $res.&from-json[0]<latest> }
-        when / 'fennel-lang' / { $res ~~ / 'downloads/fennel-' <(<ver>)> / }
-        when / 'git.sr.ht'   / { $res ~~ / 'stable release' .+? <(<ver>)> / }
-        when / 'jmvdveer'    / { $res ~~ / 'algol68g-' <(<ver>)> / }
-        when / 'npmjs.org'   / { $res.&from-json[0]<version> }
-        when / 'pypi.org'    / { $res.&from-json<info><version> }
-        when / 'regina-rexx' / { $res ~~ / '<b>Current</b> ' <(<ver>)> / }
-        when / 'savannah'    / { $res ~~ / 'snapshot/sed-' <(<ver>)> / }
-        when / 'sourceforge' / { $res ~~ / 'Latest' .+? <(<ver>)> / }
-        when / 'swi-prolog'  / { $res ~~ / 'stable' .+? <(<ver>)> / }
-        when / 'github.com'  / {
+        when / 'alpinelinux'    / { $res ~~ / 'Version' .+? <(<ver>)> / }
+        when / 'aplwiki'        / { $res ~~ / ' release' .+? <(<ver>)> / }
+        when / 'bertnase'       / { $res ~~ / 'version' .+? <(<ver>)> / }
+        when / 'codeberg'       / { $res ~~ / '"shortsha">' <(<ver>)> / }
+        when / 'crates.io'      / { $res.&from-json<crate><max_stable_version> }
+        when / 'dyalog.com'     / { $res ~~ / <(<ver>)> ' for Linux (DEB)' / }
+        when / 'endoflife'      / { $res.&from-json[0]<latest> }
+        when / 'fennel-lang'    / { $res ~~ / 'downloads/fennel-' <(<ver>)> / }
+        when / 'golfscript.com' / { $res ~~ / '(Alpha)' .+? <(<ver>)> / }
+        when / 'jmvdveer'       / { $res ~~ / 'algol68g-' <(<ver>)> / }
+        when / 'lists.sr.ht'    / { $res ~~ / 'Hare ' <(<ver>)> ' release' / }
+        when / 'npmjs.org'      / { $res.&from-json[0]<version> }
+        when / 'pypi.org'       / { $res.&from-json<info><version> }
+        when / 'regina-rexx'    / { $res ~~ / '<b>Current</b> ' <(<ver>)> / }
+        when / 'savannah'       / { $res ~~ / 'snapshot/sed-' <(<ver>)> / }
+        when / 'sourceforge'    / { $res ~~ / 'Latest' .+? <(<ver>)> / }
+        when / 'swi-prolog'     / { $res ~~ / 'stable' .+? <(<ver>)> / }
+        when / 'github.com'     / {
             .ends-with('/releases/latest')
                 ?? $res ~~ m:i/ [ $name || < dev release version > ] <[\ -]> v? <(<ver>)> /
                 !! $res ~~ / '"currentOid":"' <( <xdigit> ** 7 )> /;

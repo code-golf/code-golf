@@ -4,15 +4,25 @@ ENV CGO_ENABLED=0 GOAMD64=v4 GOPATH=
 
 RUN apk add --no-cache brotli build-base linux-headers npm tzdata zopfli
 
+# Fetch modules.
 COPY go.mod go.sum ./
 
 RUN go mod download
 
-COPY . ./
+# Build assets.
+COPY node_modules ./node_modules
+COPY fonts        ./fonts
+COPY css          ./css
+COPY js           ./js
+
+COPY esbuild package-lock.json package.json ./
 
 RUN ./esbuild \
  && find dist \( -name '*.css' -or  -name '*.js' -or -name '*.map' \) \
   | xargs -i -n1 -P`nproc` sh -c 'brotli {} && zopfli {}'
+
+# Build website.
+COPY . ./
 
 RUN go build -ldflags -s -trimpath \
  && gcc -Wall -Werror -Wextra -o /usr/bin/run-lang -s -static run-lang.c
@@ -31,7 +41,7 @@ COPY --from=codegolf/lang-dart         ["/", "/langs/dart/rootfs/"        ] #  2
 COPY --from=codegolf/lang-kotlin       ["/", "/langs/kotlin/rootfs/"      ] #  224 MiB
 COPY --from=codegolf/lang-basic        ["/", "/langs/basic/rootfs/"       ] #  205 MiB
 COPY --from=codegolf/lang-scala        ["/", "/langs/scala/rootfs/"       ] #  203 MiB
-COPY --from=codegolf/lang-elixir       ["/", "/langs/elixir/rootfs/"      ] #  178 MiB
+COPY --from=codegolf/lang-elixir       ["/", "/langs/elixir/rootfs/"      ] #  179 MiB
 COPY --from=codegolf/lang-factor       ["/", "/langs/factor/rootfs/"      ] #  173 MiB
 COPY --from=codegolf/lang-groovy       ["/", "/langs/groovy/rootfs/"      ] #  146 MiB
 COPY --from=codegolf/lang-cpp          ["/", "/langs/cpp/rootfs/"         ] #  142 MiB
@@ -58,6 +68,7 @@ COPY --from=codegolf/lang-prolog       ["/", "/langs/prolog/rootfs/"      ] # 49
 COPY --from=codegolf/lang-hy           ["/", "/langs/hy/rootfs/"          ] # 41.8 MiB
 COPY --from=codegolf/lang-javascript   ["/", "/langs/javascript/rootfs/"  ] # 41.8 MiB
 COPY --from=codegolf/lang-haxe         ["/", "/langs/haxe/rootfs/"        ] # 40.0 MiB
+COPY --from=codegolf/lang-iogii        ["/", "/langs/iogii/rootfs/"       ] # 34.1 MiB
 COPY --from=codegolf/lang-ruby         ["/", "/langs/ruby/rootfs/"        ] # 33.2 MiB
 COPY --from=codegolf/lang-05ab1e       ["/", "/langs/05ab1e/rootfs/"      ] # 32.1 MiB
 COPY --from=codegolf/lang-pascal       ["/", "/langs/pascal/rootfs/"      ] # 31.4 MiB
