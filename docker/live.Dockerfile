@@ -4,15 +4,25 @@ ENV CGO_ENABLED=0 GOAMD64=v4 GOPATH=
 
 RUN apk add --no-cache brotli build-base linux-headers npm tzdata zopfli
 
+# Fetch modules.
 COPY go.mod go.sum ./
 
 RUN go mod download
 
-COPY . ./
+# Build assets.
+COPY node_modules ./node_modules
+COPY fonts        ./fonts
+COPY css          ./css
+COPY js           ./js
+
+COPY esbuild package-lock.json package.json ./
 
 RUN ./esbuild \
  && find dist \( -name '*.css' -or  -name '*.js' -or -name '*.map' \) \
   | xargs -i -n1 -P`nproc` sh -c 'brotli {} && zopfli {}'
+
+# Build website.
+COPY . ./
 
 RUN go build -ldflags -s -trimpath \
  && gcc -Wall -Werror -Wextra -o /usr/bin/run-lang -s -static run-lang.c
