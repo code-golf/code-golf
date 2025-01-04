@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0.101-alpine3.20 AS builder
 
 RUN apk add --no-cache gcc musl-dev zlib-dev
 
-ENV VER=2.0.26
+ENV VER=2.0.29
 
 RUN curl -#L https://github.com/RockstarLang/rockstar/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1
