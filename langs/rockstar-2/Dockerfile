@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0.101-alpine3.20 AS builder
 
 RUN apk add --no-cache build-base zlib-dev
 
-RUN curl -L https://github.com/RockstarLang/rockstar/archive/refs/tags/v2.0.26.tar.gz \
+RUN curl -L https://github.com/RockstarLang/rockstar/archive/refs/tags/v2.0.29.tar.gz \
   | tar xz --strip-components 1
 
 RUN find Starship -name '*.csproj' -exec sed -Ei 's/\bnet\d+\b/net9/' {} + \

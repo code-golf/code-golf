@@ -14,6 +14,7 @@ constant %paths = (
     'APL'          => 'dyalog.com/download-zone.htm?p=download',
     'Arturo'       => 'github.com/arturo-lang/arturo/releases/latest',
     'Assembly'     => 'registry.npmjs.org/@defasm/core/latest',
+    'AWK'          => 'ftp.gnu.org/gnu/gawk/?C=M;O=D',
     'Bash'         => 'en.wikipedia.org/wiki/Bash_(Unix_shell)',
     'BASIC'        => 'en.wikipedia.org/wiki/FreeBASIC',
     'Befunge'      => 'github.com/VorpalBlade/cfunge',
@@ -104,13 +105,14 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         state $ua  = HTTP::Tiny.new :throw-exceptions;
         my    $res = $ua.get("https://$_")<content>.decode;
 
-        when / 'alpinelinux'    / { $res ~~ / 'Version' .+? <(<ver>)> / }
+        when / 'alpinelinux'    / { $res ~~ / 'Version' .+? <(<ver>)> '-r' \d+ / }
         when / 'aplwiki' | 'J_' / { $res ~~ / 'release' .+? <(<ver>)> / }
         when / 'codeberg'       / { $res ~~ / '"shortsha">' <(<ver>)> / }
         when / 'crates.io'      / { $res.&from-json<crate><max_stable_version> }
         when / 'dyalog.com'     / { $res ~~ / <(<ver>)> ' for Linux (DEB)' / }
         when / 'endoflife'      / { $res.&from-json[0]<latest> }
         when / 'fennel-lang'    / { $res ~~ / 'downloads/fennel-' <(<ver>)> / }
+        when / 'ftp.gnu.org'    / { $res ~~ / 'gawk-' <(<ver>)> '.tar.xz' / }
         when / 'golfscript.com' / { $res ~~ / '(Alpha)' .+? <(<ver>)> / }
         when / 'jmvdveer'       / { $res ~~ / 'algol68g-' <(<ver>)> / }
         when / 'lists.sr.ht'    / { $res ~~ / 'Hare ' <(<ver>)> ' release' / }
