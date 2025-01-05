@@ -3754,6 +3754,52 @@ preamble = '''
     each on their own line.
 '''
 
+[Snake]
+experiment = 1039
+category = 'Gaming'
+synopsis = 'Print Snake trails.'
+preamble = '''
+<p>
+    Snake is a video game in which the player controls a rapidly enlarging
+    snake, growing the size of one cell per captured object. The session ends
+    when the snake collides with itself or any of the terrain boundaries.
+<p>
+    Each argument is a sequence of the snake's moves which are either forward,
+    left, or right, respectively denoted by <b>F</b>, <b>L</b>, and <b>R</b>.
+    The snake's initial move, facing east, starts in the top left corner.
+    Additionally, it never intersects itself nor leaves terrain along the north
+    and west sides.
+
+<p>
+    For example, <code>FFFRFFLFFFFLFLFF</code> means the snake's moves are in
+    full:
+
+<ul>
+    <li>Move three cells forward
+    <li>Turn right, facing south
+    <li>Move two cells forward
+    <li>Turn left, facing east
+    <li>Move four cells forward
+    <li>Turn left, facing north
+    <li>Move one cell forward
+    <li>Turn left, facing west
+    <li>Move two cells forward
+</ul>
+
+<p>
+    Using hashes, the aforementioned trail looks as follows:
+
+<pre>
+####
+   # ###
+   #####
+</pre>
+
+<p>
+    Print the snake's trail for each argument, separated by newlines, with an
+    additional hash marking the end of the trail.
+'''
+
 ['Spelling Numbers']
 category = 'Transform'
 released = 2017-09-29
