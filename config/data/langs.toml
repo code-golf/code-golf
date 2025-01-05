@@ -102,7 +102,7 @@ loop arg [a] [
 
 [Assembly]
 args    = [ '/usr/bin/defasm', '--size-out=3', '-w', '-r' ]
-size    = '106 MiB'
+size    = '114 MiB'
 version = 'DefAssembler 2.4.3'
 website = 'https://www.npmjs.com/package/@defasm/core'
 example = '''
@@ -1144,7 +1144,7 @@ end
 [K]
 args    = [ '/usr/bin/kwrapper', '/tmp/code.k' ]
 size    = '631 KiB'
-version = 'b8b678f365'
+version = 'feb51a6144'
 website = 'https://codeberg.org/ngn/k'
 example = '''
 /Printing

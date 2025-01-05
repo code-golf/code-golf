@@ -5,8 +5,15 @@ import "strings"
 func rot13() []Run {
 	tests := make([]test, 0, 100)
 
-	for range 100 {
+	for i := 0; i < 100; {
 		argument := generateSequence()
+
+		// Prevent arguments from starting with '@' because some languages cannot handle them correctly.
+		if argument[0] == '@' {
+			continue
+		}
+
+		i++
 
 		tests = append(tests, test{
 			argument,
