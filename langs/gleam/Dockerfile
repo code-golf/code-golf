@@ -2,7 +2,7 @@ FROM rust:1.83.0-alpine3.21 AS builder
 
 RUN apk add --no-cache build-base curl icu-data npm
 
-ENV VER=1.6.3
+ENV VER=1.7.0
 
 RUN curl -#L https://github.com/gleam-lang/gleam/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1
