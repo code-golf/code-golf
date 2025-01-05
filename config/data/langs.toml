@@ -102,7 +102,7 @@ loop arg [a] [
 
 [Assembly]
 args    = [ '/usr/bin/defasm', '--size-out=3', '-w', '-r' ]
-size    = '106 MiB'
+size    = '114 MiB'
 version = 'DefAssembler 2.4.3'
 website = 'https://www.npmjs.com/package/@defasm/core'
 example = '''
@@ -398,7 +398,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '71.8 MiB'
-version = '0.9.4'
+version = '0.9.5'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -764,8 +764,8 @@ end
 args       = [ '/usr/bin/gleamwrapper', '-', '--' ]
 env        = [ 'FORCE_COLOR=1', 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 1129
-size       = '91.7 MiB'
-version    = '1.6.3'
+size       = '92.5 MiB'
+version    = '1.7.0'
 website    = 'https://gleam.run'
 example    = '''
 import argv
@@ -1144,7 +1144,7 @@ end
 [K]
 args    = [ '/usr/bin/kwrapper', '/tmp/code.k' ]
 size    = '631 KiB'
-version = 'b8b678f365'
+version = 'feb51a6144'
 website = 'https://codeberg.org/ngn/k'
 example = '''
 /Printing
