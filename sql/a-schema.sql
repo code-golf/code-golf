@@ -60,7 +60,7 @@ CREATE TYPE hole AS ENUM (
     'rijndael-s-box', 'rock-paper-scissors-spock-lizard',
     'roman-to-arabic', 'rot13', 'rule-110', 'scrambled-alphabetization',
     'semiprime-numbers', 'set', 'seven-segment', 'si-units',
-    'sierpiński-triangle', 'smith-numbers', 'spelling-numbers',
+    'sierpiński-triangle', 'smith-numbers', 'snake', 'spelling-numbers',
     'sphenic-numbers', 'star-wars-gpt', 'star-wars-opening-crawl',
     'sudoku', 'sudoku-fill-in', 'ten-pin-bowling', 'tic-tac-toe',
     'time-distance', 'tongue-twisters', 'transpose-sentence',
