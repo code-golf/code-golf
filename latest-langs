@@ -105,7 +105,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         state $ua  = HTTP::Tiny.new :throw-exceptions;
         my    $res = $ua.get("https://$_")<content>.decode;
 
-        when / 'alpinelinux'    / { $res ~~ / 'Version' .+? <(<ver>)> / }
+        when / 'alpinelinux'    / { $res ~~ / 'Version' .+? <(<ver>)> '-r' \d+ / }
         when / 'aplwiki'        / { $res ~~ / ' release' .+? <(<ver>)> / }
         when / 'codeberg'       / { $res ~~ / '"shortsha">' <(<ver>)> / }
         when / 'crates.io'      / { $res.&from-json<crate><max_stable_version> }
