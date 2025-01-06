@@ -1,4 +1,4 @@
-FROM node:22-alpine3.20 AS builder
+FROM node:23.5.0-alpine3.21 AS builder
 
 ENV VERSION=2.4.3
 
@@ -18,12 +18,12 @@ RUN mkdir /symlink \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1            \
-              /lib/libz.so.1                      /lib/
+COPY --from=0 /lib/ld-musl-x86_64.so.1            /lib/
 COPY --from=0 /symlink                            /usr/bin
 COPY --from=0 /usr/local/bin/node                 /usr/bin/
 COPY --from=0 /usr/lib/libgcc_s.so.1              \
-              /usr/lib/libstdc++.so.6             /usr/lib/
+              /usr/lib/libstdc++.so.6             \
+              /usr/lib/libz.so.1                  /usr/lib/
 COPY --from=0 /usr/local/lib/node_modules/@defasm /usr/lib/node_modules/@defasm
 
 ENTRYPOINT ["defasm"]
