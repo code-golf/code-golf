@@ -3318,7 +3318,8 @@ preamble = '''
 [ROT13]
 category = 'Transform'
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/ROT13' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Rot-13' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/ROT13' },
 ]
 released = 2025-01-05
 synopsis = 'Encode or decode ROT13 sequences.'
@@ -3444,7 +3445,7 @@ experiment = 1058
 category = 'Gaming'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Set,_the_card_game' },
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Set_(card_game)' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Set_(card_game)' },
 ]
 synopsis = 'Identify sets in the card game Set.'
 preamble = '''
