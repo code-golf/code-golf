@@ -1242,7 +1242,7 @@ args       = [ '/usr/bin/odinwrapper', '-' ]
 env        = [ 'PATH=/usr/local/bin:/usr/bin:/bin' ]
 experiment = 766
 size       = '283 MiB'
-version    = '2024-12'
+version    = '2025-01'
 website    = 'https://odin-lang.org'
 example    = '''
 package main
