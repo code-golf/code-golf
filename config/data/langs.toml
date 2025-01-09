@@ -615,7 +615,7 @@ void main(List<String> argv) {
 [Egel]
 args       = [ '/usr/bin/egelwrapper', '-' ]
 experiment = 1434
-size       = '50.3 MiB'
+size       = '49.7 MiB'
 version    = '0.1.14'
 website    = 'https://egel-lang.github.io'
 example    = '''

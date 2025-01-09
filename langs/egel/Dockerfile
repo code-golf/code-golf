@@ -24,7 +24,7 @@ RUN cmake -G Ninja .. && ninja install
 
 COPY egelwrapper.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/egelwrapper -s -static /egelwrapper.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/egelwrapper -s /egelwrapper.c
 
 FROM codegolf/lang-base
 
