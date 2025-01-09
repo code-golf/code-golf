@@ -16,7 +16,7 @@ RUN cmake .. && make install \
 
 COPY befunge.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/befunge -s -static /befunge.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/befunge -s /befunge.c
 
 FROM codegolf/lang-base
 
