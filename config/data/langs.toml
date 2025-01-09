@@ -1742,18 +1742,18 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '30.0 MiB'
+size       = '52.7 MiB'
 version    = '0.14.1'
 website    = 'https://www.uiua.org'
 example    = '''
 # Printing
-&p"Hello, World!"
+&p "Hello, World!"
 
 # Looping
-∵&p⇡10
+∵&p⇡ 10
 
 # Accessing arguments
-∵&p↘1&args
+∵&p↘ 1 &args
 '''
 
 [V]
