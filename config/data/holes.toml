@@ -421,7 +421,7 @@ Mo Tu We Th Fr Sa Su
 category = 'Computing'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Luhn_test_of_credit_card_numbers' },
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Luhn_algorithm' }
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Luhn_algorithm' },
 ]
 released = 2024-10-01
 synopsis = 'Validate card numbers.'
@@ -527,7 +527,7 @@ category = 'Sequence'
 links = [
     { name = 'OEIS A006577', url = '//oeis.org/A006577' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Hailstone_sequence' },
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Collatz_conjecture' }
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Collatz_conjecture' },
 ]
 released = 2022-05-04
 synopsis = 'Print the Collatz stopping times of all the numbers from 1 to 1,000.'
@@ -667,7 +667,7 @@ preamble = '''
 category = 'Art'
 experiment = 1214
 links = [
-    { name = 'MDN', url = '//developer.mozilla.org/en-US/docs/Web/CSS/grid-auto-flow' }
+    { name = 'MDN', url = '//developer.mozilla.org/en-US/docs/Web/CSS/grid-auto-flow' },
 ]
 synopsis = 'Place divs in a rectagular grid like CSS would.'
 preamble = '''
@@ -1748,7 +1748,7 @@ preamble = '''
 [ISBN]
 category = 'Transform'
 links = [
-    { name  = 'Wikipedia', url = '//en.wikipedia.org/wiki/International_Standard_Book_Number#ISBN-10_check_digit_calculation' }
+    { name  = 'Wikipedia', url = '//en.wikipedia.org/wiki/International_Standard_Book_Number#ISBN-10_check_digit_calculation' },
 ]
 released = 2022-01-10
 synopsis = 'Calculate the check digit for these incomplete ISBNs.'
@@ -1977,7 +1977,7 @@ category = 'Sequence'
 links = [
     { name = 'OEIS A000959', url = '//oeis.org/A000959' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Lucky_and_even_lucky_numbers' },
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Lucky_number'}
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Lucky_number'},
 ]
 released = 2022-02-28
 synopsis = 'Print the first 1,000 Lucky numbers.'
