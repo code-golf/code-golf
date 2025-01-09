@@ -398,6 +398,10 @@ preamble = '''
 [Calendar]
 experiment = 908
 category = 'Transform'
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Calendar' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Gregorian_calendar' },
+]
 synopsis = 'Print calendars for given months in given years.'
 preamble = '''
 <p>
