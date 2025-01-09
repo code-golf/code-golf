@@ -1757,8 +1757,8 @@ example    = '''
 '''
 
 [V]
-args    = [ '/usr/bin/v', '-' ]
-size    = '59.9 MiB'
+args    = [ '/usr/bin/V', '-' ]
+size    = '50.2 MiB'
 version = '0.4.9'
 website = 'https://vlang.io'
 example = '''
