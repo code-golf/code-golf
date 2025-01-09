@@ -2,7 +2,7 @@
 args       = [ '/usr/bin/05ab1e', '-' ]
 env        = [ 'PYTHON_COLORS=1' ]
 experiment = 233
-size       = '32.1 MiB'
+size       = '29.7 MiB'
 version    = 'fe1ab18'
 website    = 'https://github.com/Adriandmen/05AB1E'
 example    = '''
@@ -239,7 +239,7 @@ Next
 [Befunge]
 args       = [ '/usr/bin/befunge', '-' ]
 experiment = 428
-size       = '4.21 MiB'
+size       = '4.68 MiB'
 version    = 'b7bf640'
 website    = 'https://github.com/VorpalBlade/cfunge'
 example    = '''
@@ -416,7 +416,7 @@ for arg of process.argv[2..]
 [CJam]
 args       = [ '/usr/bin/cjam', '-' ]
 experiment = 1493
-size       = '133 MiB'
+size       = '132 MiB'
 version    = '0.6.5'
 website    = 'https://sourceforge.net/projects/cjam/'
 example    = '''
@@ -507,7 +507,7 @@ for arg in sys.argv[1:]:
 args       = [ '/usr/bin/coffeescript', '-' ]
 env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 450
-size       = '72.9 MiB'
+size       = '71.3 MiB'
 version    = '2.7.0'
 website    = 'https://coffeescript.org'
 example    = '''
@@ -548,7 +548,7 @@ example   = '''
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
 size    = '269 MiB'
-version = '1.14.0'
+version = '1.14.1'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -858,7 +858,7 @@ for (arg in args)
 args       = [ '/usr/bin/harbourwrapper', '-' ]
 experiment = 1614
 size       = '13.0 MiB'
-version    = '21ea321'
+version    = '56bd635'
 website    = 'https://harbour.github.io'
 example    = '''
 LOCAL i
@@ -1465,7 +1465,7 @@ foreach arg system/options/args [
 [Rexx]
 args       = [ '/usr/bin/rexx', '-' ]
 experiment = 873
-size       = '4.64 MiB'
+size       = '3.06 MiB'
 version    = 'Regina 3.9.6'
 website    = 'https://regina-rexx.sourceforge.io'
 example    = '''
@@ -1505,7 +1505,7 @@ Shout arg
 
 ['Rockstar 2']
 args    = [ '/usr/bin/rockstarwrapper', '-' ]
-size    = '5.83 MiB'
+size    = '4.24 MiB'
 version = '2.0.29'
 website = 'https://codewithrockstar.com'
 example = '''
@@ -1545,7 +1545,7 @@ end
 
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
-size    = '352 MiB'
+size    = '334 MiB'
 version = '1.83.0'
 website = 'https://www.rust-lang.org'
 example = '''
@@ -1756,8 +1756,8 @@ example    = '''
 '''
 
 [V]
-args    = [ '/usr/bin/v', '-' ]
-size    = '59.9 MiB'
+args    = [ '/usr/bin/V', '-' ]
+size    = '50.2 MiB'
 version = '0.4.9'
 website = 'https://vlang.io'
 example = '''
@@ -1821,8 +1821,8 @@ for (a in Process.arguments) System.print(a)
 '''
 
 [Zig]
-args    = [ '/usr/bin/zig', '-' ]
-size    = '300 MiB'
+args    = [ '/usr/bin/zigwrapper', '-' ]
+size    = '298 MiB'
 version = '0.13.0'
 website = 'https://ziglang.org'
 example = '''

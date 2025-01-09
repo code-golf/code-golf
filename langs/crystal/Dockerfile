@@ -1,7 +1,7 @@
-FROM crystallang/crystal:1.14.0-alpine AS builder
+FROM crystallang/crystal:1.14.1-alpine AS builder
 
-RUN apk del --no-cache libxml2-static python3
 RUN apk add --no-cache dash
+RUN apk del --no-cache libxml2-static python3
 
 RUN strip /usr/bin/crystal
 
@@ -21,4 +21,4 @@ COPY --from=0 /usr/x86_64-alpine-linux-musl/bin/ld /usr/x86_64-alpine-linux-musl
 
 ENTRYPOINT ["crystal"]
 
-CMD ["-v"]
+CMD ["--version"]
