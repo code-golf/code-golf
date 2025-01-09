@@ -416,7 +416,7 @@ for arg of process.argv[2..]
 [CJam]
 args       = [ '/usr/bin/cjam', '-' ]
 experiment = 1493
-size       = '133 MiB'
+size       = '132 MiB'
 version    = '0.6.5'
 website    = 'https://sourceforge.net/projects/cjam/'
 example    = '''
