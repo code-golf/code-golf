@@ -1506,7 +1506,7 @@ Shout arg
 
 ['Rockstar 2']
 args    = [ '/usr/bin/rockstarwrapper', '-' ]
-size    = '5.83 MiB'
+size    = '4.24 MiB'
 version = '2.0.29'
 website = 'https://codewithrockstar.com'
 example = '''
