@@ -3347,8 +3347,13 @@ NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm
 </pre>
 
 <p>
-    Print the encoded or decoded ROT13 sequence for each argument, each on their
-    own line.
+    Each argument consists of a sequence of random printable characters from the
+    ASCII character set.
+
+<p>
+    For each argument, print the sequence with all its substitutions after
+    applying the appropriate rotations, effectively encoding or decoding the
+    sequence, each on their own line.
 '''
 
 ['Rule 110']
