@@ -4013,7 +4013,8 @@ preamble = '''
 experiment = 1031
 category = 'Gaming'
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Tic-tac-toe' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Tic-tac-toe' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Tic-tac-toe' },
 ]
 synopsis = 'Determine eventual winners in finished tic-tac-toe games.'
 preamble = '''
