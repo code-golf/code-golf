@@ -13,7 +13,7 @@ RUN curl -#L https://github.com/HaxeFoundation/haxe/releases/download/$VER/haxe-
 
 COPY haxewrapper.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/haxewrapper -s -static /haxewrapper.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/haxewrapper -s /haxewrapper.c
 
 FROM codegolf/lang-base
 
