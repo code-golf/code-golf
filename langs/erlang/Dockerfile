@@ -1,46 +1,38 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.21 AS builder
 
-ARG OTP_VERSION=27.0.1
+RUN apk add --no-cache build-base curl dash ncurses-dev perl
 
-RUN apk add --no-cache build-base curl ncurses-dev openjdk21=21.0.4_p7-r0 openssl openssl-dev perl=5.38.2-r0
+ENV VER=27.2
 
-RUN curl -L https://github.com/erlang/otp/releases/download/OTP-$OTP_VERSION/otp_src_$OTP_VERSION.tar.gz | tar xz
+RUN curl -#L https://github.com/erlang/otp/releases/download/OTP-$VER/otp_src_$VER.tar.gz | tar xz
 
-RUN mv otp_src_* otp           \
- && cd otp                     \
- && export ERL_TOP=`pwd`       \
- && ./configure                \
-    --disable-silent-rules     \
-    --prefix=/usr              \
- && export MAKEFLAGS=-j`nproc` \
- && make                       \
- && make install
+WORKDIR /otp_src_$VER
 
-COPY erlang /usr/bin/
-RUN chmod +x /usr/bin/erlang
+RUN ./configure && make -j`nproc` install
+
+COPY erlang.c /
+
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/erlang -s -static /erlang.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/cat /bin/sh                                /bin/
-COPY --from=0 /lib/ld-musl-x86_64.so.1                        /lib/
-COPY --from=0 /usr/bin/basename                               \
-              /usr/bin/dirname                                \
-              /usr/bin/erl                                    \
-              /usr/bin/erlang                                 \
-              /usr/bin/escript                                /usr/bin/
-COPY --from=0 /usr/lib/libgcc_s.so.1                          \
-              /usr/lib/libncursesw.so.6                       \
-              /usr/lib/libstdc++.so.6                         /usr/lib/
-COPY --from=0 /usr/lib/erlang/bin/no_dot_erlang.boot          \
-              /usr/lib/erlang/bin/start.boot                  /usr/lib/erlang/bin/
-COPY --from=0 /usr/lib/erlang/erts-15.0.1/bin/beam.smp        \
-              /usr/lib/erlang/erts-15.0.1/bin/erl_child_setup \
-              /usr/lib/erlang/erts-15.0.1/bin/erlexec         \
-              /usr/lib/erlang/erts-15.0.1/bin/inet_gethost    /usr/lib/erlang/erts-15.0.1/bin/
-COPY --from=0 /usr/lib/erlang/lib/compiler-8.5.1/ebin         /usr/lib/erlang/lib/compiler-8.5.1/ebin
-COPY --from=0 /usr/lib/erlang/lib/kernel-10.0.1/ebin          /usr/lib/erlang/lib/kernel-10.0.1/ebin
-COPY --from=0 /usr/lib/erlang/lib/stdlib-6.0.1/ebin           /usr/lib/erlang/lib/stdlib-6.0.1/ebin
+COPY --from=0 /usr/bin/dash                                       /bin/sh
+COPY --from=0 /lib/ld-musl-x86_64.so.1                            /lib/
+COPY --from=0 /usr/bin/basename /usr/bin/dirname /usr/bin/erlang  /usr/bin/
+COPY --from=0 /usr/lib/libgcc_s.so.1                              \
+              /usr/lib/libncursesw.so.6                           \
+              /usr/lib/libstdc++.so.6                             /usr/lib/
+COPY --from=0 /usr/local/bin/erl /usr/local/bin/escript           /usr/local/bin/
+COPY --from=0 /usr/local/lib/erlang/bin/no_dot_erlang.boot        \
+              /usr/local/lib/erlang/bin/start.boot                /usr/local/lib/erlang/bin/
+COPY --from=0 /usr/local/lib/erlang/erts-15.2/bin/beam.smp        \
+              /usr/local/lib/erlang/erts-15.2/bin/erl_child_setup \
+              /usr/local/lib/erlang/erts-15.2/bin/erlexec         \
+              /usr/local/lib/erlang/erts-15.2/bin/inet_gethost    /usr/local/lib/erlang/erts-15.2/bin/
+COPY --from=0 /usr/local/lib/erlang/lib/compiler-8.5.4/ebin       /usr/local/lib/erlang/lib/compiler-8.5.4/ebin
+COPY --from=0 /usr/local/lib/erlang/lib/kernel-10.2/ebin          /usr/local/lib/erlang/lib/kernel-10.2/ebin
+COPY --from=0 /usr/local/lib/erlang/lib/stdlib-6.2/ebin           /usr/local/lib/erlang/lib/stdlib-6.2/ebin
 
 ENTRYPOINT ["erlang"]
 
-CMD ["-version"]
+CMD ["--version"]

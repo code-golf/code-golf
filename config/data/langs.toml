@@ -597,19 +597,19 @@ for arg <- System.argv, do: IO.puts arg
 [Erlang]
 args       = [ '/usr/bin/erlang', '-' ]
 experiment = 181
-size       = '69.3 MiB'
-version    = 'OTP 27.0.1'
+size       = '68.9 MiB'
+version    = '27.2'
 website    = 'https://www.erlang.org'
 example    = '''
 main(Args) ->
-    % Printing
-    io:format("Hello, World!~n"),
+  % Printing
+  io:format("Hello, World!~n"),
 
-    % Looping
-    lists:foreach(fun(N) -> io:format("~p~n", [N]) end, lists:seq(0, 9)),
+  % Looping
+  lists:foreach(fun(N) -> io:format("~p~n", [N]) end, lists:seq(0, 9)),
 
-    % Accessing arguments
-    lists:foreach(fun(Arg) -> io:format("~s~n", [Arg]) end, Args).
+  % Accessing arguments
+  lists:foreach(fun(Arg) -> io:format("~ts~n", [Arg]) end, Args).
 '''
 
 ['F#']
