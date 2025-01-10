@@ -6,7 +6,7 @@ RUN apt-get update                   \
 
 COPY dartwrapper.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/dartwrapper -s -static /dartwrapper.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/dartwrapper -s /dartwrapper.c
 
 FROM codegolf/lang-base
 
