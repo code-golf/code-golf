@@ -17,7 +17,7 @@ RUN strip /usr/bin/scheme
 
 COPY schemewrapper.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/schemewrapper -s -static schemewrapper.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/schemewrapper -s schemewrapper.c
 
 FROM codegolf/lang-base
 
