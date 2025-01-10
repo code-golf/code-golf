@@ -2,7 +2,7 @@
 args       = [ '/usr/bin/05ab1e', '-' ]
 env        = [ 'PYTHON_COLORS=1' ]
 experiment = 233
-size       = '32.1 MiB'
+size       = '29.7 MiB'
 version    = 'fe1ab18'
 website    = 'https://github.com/Adriandmen/05AB1E'
 example    = '''
@@ -239,7 +239,7 @@ Next
 [Befunge]
 args       = [ '/usr/bin/befunge', '-' ]
 experiment = 428
-size       = '4.21 MiB'
+size       = '3.95 MiB'
 version    = 'b7bf640'
 website    = 'https://github.com/VorpalBlade/cfunge'
 example    = '''
@@ -416,7 +416,7 @@ for arg of process.argv[2..]
 [CJam]
 args       = [ '/usr/bin/cjam', '-' ]
 experiment = 1493
-size       = '133 MiB'
+size       = '132 MiB'
 version    = '0.6.5'
 website    = 'https://sourceforge.net/projects/cjam/'
 example    = '''
@@ -507,7 +507,7 @@ for arg in sys.argv[1:]:
 args       = [ '/usr/bin/coffeescript', '-' ]
 env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 450
-size       = '72.9 MiB'
+size       = '71.3 MiB'
 version    = '2.7.0'
 website    = 'https://coffeescript.org'
 example    = '''
@@ -547,8 +547,8 @@ example   = '''
 [Crystal]
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
-size    = '269 MiB'
-version = '1.14.0'
+size    = '270 MiB'
+version = '1.15.0'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -591,7 +591,7 @@ void main(string[] argv) {
 '''
 
 [Dart]
-args    = [ '/usr/bin/dart', '-' ]
+args    = [ '/usr/bin/dartwrapper', '-' ]
 size    = '239 MiB'
 version = '3.6.0'
 website = 'https://dart.dev'
@@ -615,7 +615,7 @@ void main(List<String> argv) {
 [Egel]
 args       = [ '/usr/bin/egelwrapper', '-' ]
 experiment = 1434
-size       = '49.8 MiB'
+size       = '49.7 MiB'
 version    = '0.1.14'
 website    = 'https://egel-lang.github.io'
 example    = '''
@@ -764,7 +764,7 @@ end
 args       = [ '/usr/bin/gleamwrapper', '-', '--' ]
 env        = [ 'FORCE_COLOR=1', 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 1129
-size       = '93.4 MiB'
+size       = '93.8 MiB'
 version    = '1.7.0'
 website    = 'https://gleam.run'
 example    = '''
@@ -858,7 +858,7 @@ for (arg in args)
 args       = [ '/usr/bin/harbourwrapper', '-' ]
 experiment = 1614
 size       = '13.0 MiB'
-version    = '21ea321'
+version    = 'bdc240e'
 website    = 'https://harbour.github.io'
 example    = '''
 LOCAL i
@@ -879,9 +879,9 @@ NEXT
 
 [Hare]
 args       = [ '/usr/bin/harewrapper', '-' ]
-env        = [ 'PATH=/usr/local/bin:/usr/bin:/bin' ]
+env        = [ 'PATH=/usr/local/bin:/usr/bin' ]
 experiment = 1323
-size       = '13.8 MiB'
+size       = '11.4 MiB'
 version    = '0.24.2'
 website    = 'https://harelang.org'
 example    = '''
@@ -926,7 +926,7 @@ main = do
 args       = [ '/usr/bin/haxewrapper', '-' ]
 env        = [ 'HAXE_STD_PATH=/usr/lib/std' ]
 experiment = 1366
-size       = '40.0 MiB'
+size       = '39.8 MiB'
 version    = '4.3.6'
 website    = 'https://haxe.org'
 example    = '''
@@ -976,7 +976,7 @@ example = '''
 [Hush]
 args       = [ '/usr/bin/hush', '-' ]
 experiment = 656
-size       = '3.26 MiB'
+size       = '3.32 MiB'
 version    = '0.1.4'
 website    = 'https://hush-shell.github.io'
 example    = '''
@@ -1218,8 +1218,8 @@ for arg in commandLineParams():
 
 [OCaml]
 args    = [ '/usr/bin/ocaml', '/proc/self/fd/0' ]
-size    = '91.5 MiB'
-version = '5.2.1'
+size    = '84.5 MiB'
+version = '5.3.0'
 website = 'https://ocaml.org'
 example = '''
 (* Printing *)
@@ -1238,11 +1238,10 @@ Sys.argv
 '''
 
 [Odin]
-args       = [ '/usr/bin/odinwrapper', '-' ]
-env        = [ 'PATH=/usr/local/bin:/usr/bin:/bin' ]
+args       = [ '/usr/bin/odinwrapper', '-', '--' ]
 experiment = 766
-size       = '283 MiB'
-version    = '2024-12'
+size       = '280 MiB'
+version    = '2025-01'
 website    = 'https://odin-lang.org'
 example    = '''
 package main
@@ -1466,7 +1465,7 @@ foreach arg system/options/args [
 [Rexx]
 args       = [ '/usr/bin/rexx', '-' ]
 experiment = 873
-size       = '4.64 MiB'
+size       = '3.06 MiB'
 version    = 'Regina 3.9.6'
 website    = 'https://regina-rexx.sourceforge.io'
 example    = '''
@@ -1506,7 +1505,7 @@ Shout arg
 
 ['Rockstar 2']
 args    = [ '/usr/bin/rockstarwrapper', '-' ]
-size    = '5.83 MiB'
+size    = '4.24 MiB'
 version = '2.0.29'
 website = 'https://codewithrockstar.com'
 example = '''
@@ -1546,8 +1545,8 @@ end
 
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
-size    = '352 MiB'
-version = '1.83.0'
+size    = '356 MiB'
+version = '1.84.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -1587,7 +1586,7 @@ args.foreach(println)
 
 [Scheme]
 args    = [ '/usr/bin/schemewrapper', '-' ]
-size    = '8.98 MiB'
+size    = '7.38 MiB'
 version = 'Chez Scheme 10.1.0'
 website = 'https://cisco.github.io/ChezScheme/'
 example = '''
@@ -1757,8 +1756,8 @@ example    = '''
 '''
 
 [V]
-args    = [ '/usr/bin/v', '-' ]
-size    = '59.9 MiB'
+args    = [ '/usr/bin/V', '-' ]
+size    = '50.2 MiB'
 version = '0.4.9'
 website = 'https://vlang.io'
 example = '''
@@ -1780,7 +1779,7 @@ for arg in os.args[1..] {
 
 [VimL]
 args    = [ '/usr/bin/viml', '-' ]
-size    = '24.8 MiB'
+size    = '24.1 MiB'
 version = '9.1'
 website = 'https://www.vim.org'
 example = '''
@@ -1822,8 +1821,8 @@ for (a in Process.arguments) System.print(a)
 '''
 
 [Zig]
-args    = [ '/usr/bin/zig', '-' ]
-size    = '300 MiB'
+args    = [ '/usr/bin/zigwrapper', '-' ]
+size    = '298 MiB'
 version = '0.13.0'
 website = 'https://ziglang.org'
 example = '''
