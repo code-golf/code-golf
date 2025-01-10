@@ -5,16 +5,13 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* dart = "/usr/bin/dart", *code = "code.dart";
+const char* dart = "/usr/bin/dart", *code = "/tmp/code.dart";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
         execv(dart, argv);
         ERR_AND_EXIT("execv");
     }
-
-    if (chdir("/tmp"))
-        ERR_AND_EXIT("chdir");
 
     FILE* fp;
 
