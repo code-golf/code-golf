@@ -239,7 +239,7 @@ Next
 [Befunge]
 args       = [ '/usr/bin/befunge', '-' ]
 experiment = 428
-size       = '4.21 MiB'
+size       = '3.95 MiB'
 version    = 'b7bf640'
 website    = 'https://github.com/VorpalBlade/cfunge'
 example    = '''
@@ -591,7 +591,7 @@ void main(string[] argv) {
 '''
 
 [Dart]
-args    = [ '/usr/bin/dart', '-' ]
+args    = [ '/usr/bin/dartwrapper', '-' ]
 size    = '239 MiB'
 version = '3.6.0'
 website = 'https://dart.dev'
@@ -615,7 +615,7 @@ void main(List<String> argv) {
 [Egel]
 args       = [ '/usr/bin/egelwrapper', '-' ]
 experiment = 1434
-size       = '49.8 MiB'
+size       = '49.7 MiB'
 version    = '0.1.14'
 website    = 'https://egel-lang.github.io'
 example    = '''
@@ -879,9 +879,9 @@ NEXT
 
 [Hare]
 args       = [ '/usr/bin/harewrapper', '-' ]
-env        = [ 'PATH=/usr/local/bin:/usr/bin:/bin' ]
+env        = [ 'PATH=/usr/local/bin:/usr/bin' ]
 experiment = 1323
-size       = '13.8 MiB'
+size       = '11.4 MiB'
 version    = '0.24.2'
 website    = 'https://harelang.org'
 example    = '''
@@ -926,7 +926,7 @@ main = do
 args       = [ '/usr/bin/haxewrapper', '-' ]
 env        = [ 'HAXE_STD_PATH=/usr/lib/std' ]
 experiment = 1366
-size       = '40.0 MiB'
+size       = '39.8 MiB'
 version    = '4.3.6'
 website    = 'https://haxe.org'
 example    = '''
@@ -1238,10 +1238,9 @@ Sys.argv
 '''
 
 [Odin]
-args       = [ '/usr/bin/odinwrapper', '-' ]
-env        = [ 'PATH=/usr/local/bin:/usr/bin:/bin' ]
+args       = [ '/usr/bin/odinwrapper', '-', '--' ]
 experiment = 766
-size       = '283 MiB'
+size       = '280 MiB'
 version    = '2025-01'
 website    = 'https://odin-lang.org'
 example    = '''
@@ -1587,7 +1586,7 @@ args.foreach(println)
 
 [Scheme]
 args    = [ '/usr/bin/schemewrapper', '-' ]
-size    = '8.98 MiB'
+size    = '7.38 MiB'
 version = 'Chez Scheme 10.1.0'
 website = 'https://cisco.github.io/ChezScheme/'
 example = '''
@@ -1757,8 +1756,8 @@ example    = '''
 '''
 
 [V]
-args    = [ '/usr/bin/v', '-' ]
-size    = '59.9 MiB'
+args    = [ '/usr/bin/V', '-' ]
+size    = '50.2 MiB'
 version = '0.4.9'
 website = 'https://vlang.io'
 example = '''
@@ -1780,7 +1779,7 @@ for arg in os.args[1..] {
 
 [VimL]
 args    = [ '/usr/bin/viml', '-' ]
-size    = '24.8 MiB'
+size    = '24.1 MiB'
 version = '9.1'
 website = 'https://www.vim.org'
 example = '''
