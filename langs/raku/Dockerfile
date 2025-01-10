@@ -1,8 +1,8 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache build-base git perl
 
-RUN git clone -b 2024.10 https://github.com/rakudo/rakudo.git \
+RUN git clone -b 2024.12 https://github.com/rakudo/rakudo.git \
  && cd rakudo                                                 \
  && CFLAGS=-flto ./Configure.pl                               \
     --gen-moar                                                \
@@ -26,4 +26,4 @@ COPY --from=0 /usr/share/perl6         /usr/share/perl6
 
 ENTRYPOINT ["raku"]
 
-CMD ["-v"]
+CMD ["--version"]

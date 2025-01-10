@@ -1,8 +1,10 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache bash curl icu-data npm
 
-RUN curl -L https://github.com/DanielXMoore/Civet/archive/refs/tags/v0.8.15.tar.gz \
+ENV VER=0.9.6
+
+RUN curl -#L https://github.com/DanielXMoore/Civet/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1
 
 RUN npm install \
@@ -10,23 +12,25 @@ RUN npm install \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1                                   \
-              /lib/libcrypto.so.3                                        \
-              /lib/libssl.so.3                                           \
-              /lib/libz.so.1                                             /lib/
+COPY --from=0 /lib/ld-musl-x86_64.so.1                                   /lib/
 COPY --from=0 /usr/bin/env /usr/bin/node                                 /usr/bin/
 COPY --from=0 /usr/lib/libada.so.2                                       \
               /usr/lib/libbrotlicommon.so.1                              \
               /usr/lib/libbrotlidec.so.1                                 \
               /usr/lib/libbrotlienc.so.1                                 \
               /usr/lib/libcares.so.2                                     \
+              /usr/lib/libcrypto.so.3                                    \
               /usr/lib/libgcc_s.so.1                                     \
               /usr/lib/libicudata.so.74                                  \
               /usr/lib/libicui18n.so.74                                  \
               /usr/lib/libicuuc.so.74                                    \
               /usr/lib/libnghttp2.so.14                                  \
+              /usr/lib/libsimdjson.so.23                                 \
+              /usr/lib/libsimdutf.so.11                                  \
+              /usr/lib/libsqlite3.so.0                                   \
+              /usr/lib/libssl.so.3                                       \
               /usr/lib/libstdc++.so.6                                    \
-              /usr/lib/libuv.so.1                                        /usr/lib/
+              /usr/lib/libz.so.1                                         /usr/lib/
 COPY --from=0 /package.json /register.js                                 /usr/local/
 COPY --from=0 /dist/civet                                                \
               /dist/config.js                                            \
@@ -39,9 +43,13 @@ COPY --from=0 /node_modules/@typescript/vfs/dist/index.js                \
 COPY --from=0 /node_modules/acorn/package.json                           /usr/local/node_modules/acorn/
 COPY --from=0 /node_modules/acorn/dist/acorn.js                          /usr/local/node_modules/acorn/dist/
 COPY --from=0 /node_modules/unplugin/package.json                        /usr/local/node_modules/unplugin/
-COPY --from=0 /node_modules/unplugin/dist/index.js                       /usr/local/node_modules/unplugin/dist/
-COPY --from=0 /node_modules/webpack-sources/package.json                 /usr/local/node_modules/webpack-sources/
-COPY --from=0 /node_modules/webpack-sources/lib/index.js                 /usr/local/node_modules/webpack-sources/lib/
+COPY --from=0 /node_modules/unplugin/dist/context-BMwTIisg.cjs           \
+              /node_modules/unplugin/dist/context-DpcDg_HU.cjs           \
+              /node_modules/unplugin/dist/context-wnIdYOoj.cjs           \
+              /node_modules/unplugin/dist/index.js                       \
+              /node_modules/unplugin/dist/index.cjs                      \
+              /node_modules/unplugin/dist/utils-CTvyqQEm.cjs             \
+              /node_modules/unplugin/dist/webpack-like-CcGmGwl8.cjs      /usr/local/node_modules/unplugin/dist/
 COPY --from=0 /node_modules/webpack-virtual-modules/package.json         /usr/local/node_modules/webpack-virtual-modules/
 COPY --from=0 /node_modules/webpack-virtual-modules/lib/index.js         \
               /node_modules/webpack-virtual-modules/lib/virtual-stats.js /usr/local/node_modules/webpack-virtual-modules/lib/

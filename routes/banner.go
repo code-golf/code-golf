@@ -12,18 +12,22 @@ import (
 	"github.com/code-golf/code-golf/pretty"
 )
 
-var nextHole = config.ExpHoleByID["kaprekar-numbers"]
+var nextHole = config.ExpHoleByID["rot13"]
 
 type banner struct {
 	Body          template.HTML
 	HideKey, Type string
 }
 
-// TODO Allow a golfer to hide individual banners #709.
 func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 	// Upcoming hole.
 	if hole := nextHole; hole != nil {
-		in := "in " + pretty.Time(hole.Released.AsTime(time.UTC))
+		t := hole.Released.AsTime(time.UTC)
+		if golfer != nil {
+			t = t.In(golfer.Location())
+		}
+
+		in := "in approximately " + pretty.Time(t)
 		if strings.Contains(string(in), "ago") {
 			in = "momentarily"
 		}
@@ -73,7 +77,7 @@ func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 
 		for _, solution := range failing {
 			langName := config.LangByID[solution.Lang].Name
-			holeName := config.HoleByID[solution.Hole].Name
+			holeName := config.AllHoleByID[solution.Hole].Name
 			byLang[solution.Lang] = append(byLang[solution.Lang], GroupItem{solution.Hole, solution.Lang, langName, holeName})
 			byHole[solution.Hole] = append(byHole[solution.Hole], GroupItem{solution.Hole, solution.Lang, holeName, langName})
 		}
@@ -118,19 +122,26 @@ Cheevo:
 			end := cheevo.Times[i+1].AddDate(delta, 0, 0)
 
 			var body template.HTML
+			var hideKey string
 			if start.AddDate(0, 0, -7).Before(now) && now.Before(start) {
 				body = "be available in " +
 					pretty.Time(start.In(location)) + "."
+				hideKey = "cheevo-before-" + start.Format(time.DateOnly) + "-" + cheevo.ID
 			} else if start.Before(now) && now.Before(end) {
 				body = "stop being available in " +
 					pretty.Time(end.In(location)) + "."
+				hideKey = "cheevo-until-" + end.Format(time.DateOnly) + "-" + cheevo.ID
 			}
 
 			if body != "" {
 				body = template.HTML("The "+cheevo.Emoji+" <b>"+
 					cheevo.Name+"</b> achievement will ") + body
 
-				banners = append(banners, banner{Body: body, Type: "info"})
+				banners = append(banners, banner{
+					Body:    body,
+					HideKey: hideKey,
+					Type:    "info",
+				})
 
 				break Cheevo
 			}

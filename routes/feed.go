@@ -25,6 +25,8 @@ func init() {
 		sha, created, id string
 		hole             bool
 	}{
+		{"326b5cd", "2025-01-05 00:00:06", "rot13", true},
+		{"9a1fcec", "2024-12-01 00:00:06", "billiards", true},
 		{"05d85ed", "2024-11-01 00:01:17", "kaprekar-numbers", true},
 		{"e2f6993", "2024-10-23 19:43:52", "kotlin", false},
 		{"1fd2acf", "2024-10-01 00:00:02", "card-number-validation", true},
@@ -158,7 +160,7 @@ func init() {
 		{"834750b", "2018-06-06 20:54:22", "diamonds", true},
 		{"bd8e789", "2018-05-20 18:09:59", "haskell", false},
 		{"7b72ebc", "2018-05-03 17:30:42", "niven-numbers", true},
-		{"827599e", "2018-03-22 16:56:44", "lisp", false},
+		{"827599e", "2018-03-22 16:56:44", "common-lisp", false},
 		{"5790715", "2018-02-18 21:01:24", "morse-decoder", true},
 		{"5790715", "2018-02-18 21:01:24", "morse-encoder", true},
 		{"05e21ff", "2018-01-27 23:39:06", "brainfuck", true},

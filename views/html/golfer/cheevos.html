@@ -1,7 +1,7 @@
 {{ template "header" . }}
 {{ template "golfer" . }}
 
-{{ $show := and .Golfer (index .Golfer.Settings "golfer/cheevos" "show-cheevos") }}
+{{ $show := setting .Golfer "golfer/cheevos" "show-cheevos" }}
 
 <main>
 {{ range $category, $cheevos := .Cheevos }}
@@ -28,7 +28,7 @@
                     <span>
                     {{ if $progress.Earned }}
                         {{ $i = inc $i }}
-                        Earned {{ time $progress.Earned }}
+                        Earned {{ time ($progress.Earned.In $.Location) }}
                     {{ else if .Target }}
                         {{ comma $progress.Progress }} / {{ comma .Target }}
                     {{ else }}

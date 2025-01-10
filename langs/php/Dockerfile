@@ -1,13 +1,16 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache build-base curl
 
-RUN curl -L https://php.net/distributions/php-8.3.13.tar.xz | tar xJ
+ENV VER=8.4.2
+
+RUN curl -#L https://php.net/distributions/php-$VER.tar.xz | tar xJ
+
+WORKDIR /php-$VER
 
 ENV CFLAGS='-O2 -flto' LDFLAGS='-O2 -flto -all-static'
 
-RUN cd php-*                   \
- && LDFLAGS= ./configure       \
+RUN LDFLAGS= ./configure       \
     --disable-all              \
     --disable-gcc-global-regs  \
     --disable-ipv6             \
@@ -25,4 +28,4 @@ COPY --from=0 /usr/lib/php.ini /usr/lib/
 
 ENTRYPOINT ["php"]
 
-CMD ["-r", "echo phpversion();"]
+CMD ["--version"]
