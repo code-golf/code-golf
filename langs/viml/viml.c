@@ -55,7 +55,7 @@ int main(int argc, char* argv[]) {
             ERR_AND_EXIT("fputc");
     }
 
-    if (fputs("]", fp))
+    if (fputs("]\n", fp))
         ERR_AND_EXIT("fputs");
 
     char stderr_buf[4096], stdout_buf[4096];
