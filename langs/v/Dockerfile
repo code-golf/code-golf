@@ -28,6 +28,7 @@ COPY --from=0 /usr/lib/crt1.o           \
               /usr/lib/libatomic.so.1   \
               /usr/lib/libc.so          \
               /usr/lib/libdl.a          \
+              /usr/lib/libm.a           \
               /usr/lib/libpthread.a     /usr/lib/
 COPY --from=0 /usr/local/v              /usr/local/
 COPY --from=0 /usr/local/thirdparty/tcc /usr/local/thirdparty/tcc
