@@ -31,7 +31,7 @@ RUN bash -c "rm -r ../texmf-var/web2c/{lua*,pdftex,metafont}                    
 
 COPY tex.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/tex -s -static /tex.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/tex -s /tex.c
 
 FROM codegolf/lang-base
 
