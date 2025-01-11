@@ -84,7 +84,7 @@ CREATE TYPE lang AS ENUM (
 
 CREATE TYPE medal AS ENUM ('unicorn', 'diamond', 'gold', 'silver', 'bronze');
 
-CREATE TYPE pronouns AS ENUM ('he/him', 'she/her', 'they/them');
+CREATE TYPE pronouns AS ENUM ('he/him', 'she/her', 'they/them', 'he/they', 'she/they');
 
 CREATE TYPE scoring AS ENUM ('bytes', 'chars');
 
