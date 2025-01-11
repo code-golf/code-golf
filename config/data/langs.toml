@@ -547,8 +547,8 @@ example   = '''
 [Crystal]
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
-size    = '269 MiB'
-version = '1.14.1'
+size    = '270 MiB'
+version = '1.15.0'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -782,7 +782,7 @@ end
 args       = [ '/usr/bin/gleamwrapper', '-', '--' ]
 env        = [ 'FORCE_COLOR=1', 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 1129
-size       = '93.4 MiB'
+size       = '93.8 MiB'
 version    = '1.7.0'
 website    = 'https://gleam.run'
 example    = '''
@@ -876,7 +876,7 @@ for (arg in args)
 args       = [ '/usr/bin/harbourwrapper', '-' ]
 experiment = 1614
 size       = '13.0 MiB'
-version    = '56bd635'
+version    = 'bdc240e'
 website    = 'https://harbour.github.io'
 example    = '''
 LOCAL i
@@ -994,7 +994,7 @@ example = '''
 [Hush]
 args       = [ '/usr/bin/hush', '-' ]
 experiment = 656
-size       = '3.26 MiB'
+size       = '3.32 MiB'
 version    = '0.1.4'
 website    = 'https://hush-shell.github.io'
 example    = '''
@@ -1563,8 +1563,8 @@ end
 
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
-size    = '334 MiB'
-version = '1.83.0'
+size    = '356 MiB'
+version = '1.84.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
