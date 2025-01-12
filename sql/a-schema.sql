@@ -75,7 +75,7 @@ CREATE TYPE lang AS ENUM (
     'assembly', 'awk', 'bash', 'basic', 'berry', 'brainfuck', 'c', 'c-sharp',
     'civet', 'clojure',  'cpp', 'cobol', 'coconut', 'common-lisp', 'crystal',
     'd', 'dart', 'elixir', 'f-sharp', 'factor', 'fish', 'forth', 'fortran',
-    'go', 'golfscript', 'haskell', 'hexagony', 'j', 'janet', 'java',
+    'gleam', 'go', 'golfscript', 'haskell', 'hexagony', 'j', 'janet', 'java',
     'javascript', 'jq', 'julia', 'k', 'kotlin', 'lua', 'nim', 'ocaml',
     'pascal', 'perl', 'php', 'powershell', 'prolog', 'python', 'r', 'raku',
     'rockstar', 'rockstar-2', 'ruby', 'rust', 'scheme', 'sed', 'sql', 'swift',
