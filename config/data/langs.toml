@@ -1820,6 +1820,23 @@ endfo
 w
 '''
 
+[Vyxal]
+args       = [ '/opt/java/bin/java', '-jar', 'vyxal.jar', '-MO', '--code', '$code', '--' ]
+experiment = 1846
+size       = '152 MiB'
+version    = '3.5.0'
+website    = 'https://vyxal.github.io'
+example    = '''
+## Printing
+"Hello, World!",
+
+## Looping
+9 (n,}
+
+## Accessing arguments
+#? (,}
+'''
+
 [Wren]
 args    = [ '/usr/bin/wren', '-' ]
 size    = '505 KiB'
