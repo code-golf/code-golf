@@ -114,7 +114,7 @@ func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 	}
 
 	switch r.Form.Get("pronouns") {
-    case "", "he/him", "he/they", "she/her", "she/they", "they/them":
+	case "", "he/him", "he/they", "she/her", "she/they", "they/them":
 	default:
 		http.Error(w, "Invalid pronouns", http.StatusBadRequest)
 		return
