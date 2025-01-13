@@ -89,7 +89,7 @@ constant %paths = (
     'TeX'          => 'en.wikipedia.org/wiki/TeX',
     'Uiua'         => 'crates.io/api/v1/crates/uiua',
     'V'            => 'en.wikipedia.org/wiki/V_(programming_language)',
-    'Vala'         => 'en.wikipedia.org/wiki/Vala_(programming_language)',
+    'Vala'         => 'gitlab.gnome.org/GNOME/vala/-/tags',
     'VimL'         => 'en.wikipedia.org/wiki/Vim_(text_editor)',
     'Wren'         => 'github.com/wren-lang/wren/releases/latest',
     'Zig'          => 'github.com/ziglang/zig/releases/latest',
@@ -114,6 +114,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'endoflife'      / { $res.&from-json[0]<latest> }
         when / 'fennel-lang'    / { $res ~~ / 'downloads/fennel-' <(<ver>)> / }
         when / 'ftp.gnu.org'    / { $res ~~ / 'gawk-' <(<ver>)> '.tar.xz' / }
+        when / 'gnome.org'      / { $res ~~ / 'Release ' <(<ver>)> / }
         when / 'golfscript.com' / { $res ~~ / '(Alpha)' .+? <(<ver>)> / }
         when / 'jmvdveer'       / { $res ~~ / 'algol68g-' <(<ver>)> / }
         when / 'lists.sr.ht'    / { $res ~~ / 'Hare ' <(<ver>)> ' release' / }

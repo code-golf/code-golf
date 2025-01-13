@@ -6,7 +6,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* vala = "/usr/bin/vala", *valac = "/usr/bin/valac", *code = "code.vala";
+const char* vala = "/usr/bin/valac", *code = "code.vala";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
     pid_t pid;
 
     if (!(pid = fork())) {
-        execl(valac, valac, "--color=always", "--quiet", code, NULL);
+        execl(vala, vala, "--color=always", "--quiet", code, NULL);
         ERR_AND_EXIT("execl");
     }
 
