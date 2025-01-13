@@ -2,7 +2,7 @@ FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache curl gcc musl-dev
 
-ENV VER=03eb1ca
+ENV VER=07dce2d
 
 RUN curl -#L https://github.com/graue/esofiles/tarball/$VER \
   | tar xz --strip-components 3
