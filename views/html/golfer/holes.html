@@ -76,6 +76,8 @@
            data-wide-tooltip>
                     {{- if eq $.Data.Display "points" -}}
                         {{- comma .Points -}}
+                    {{- else if .IsUnicorn -}}
+                        🦄
                     {{- else if and (eq .Rank 1) (eq .TieCount 1) -}}
                         💎
                     {{- else -}}
