@@ -22,6 +22,6 @@ COPY --from=0 /usr/lib/dart/bin/snapshots/dartdev.dart.snapshot        \
 COPY --from=0 /usr/lib/dart/include                                    /usr/include
 COPY --from=0 /usr/lib/dart/lib                                        /usr/lib
 
-ENTRYPOINT ["dart"]
+ENTRYPOINT ["dartwrapper"]
 
 CMD ["--version"]

@@ -36,6 +36,7 @@ constant %paths = (
     'Dart'         => 'en.wikipedia.org/wiki/Dart_(programming_language)',
     'Egel'         => 'github.com/egel-lang/egel/releases/latest',
     'Elixir'       => 'en.wikipedia.org/wiki/Elixir_(programming_language)',
+    'Erlang'       => 'github.com/erlang/otp/releases/latest',
     'F#'           => 'en.wikipedia.org/wiki/F_Sharp_(programming_language)',
     'Factor'       => 'github.com/factor/factor/releases/latest',
     'Fennel'       => 'fennel-lang.org/downloads/?C=M;O=D',
@@ -90,6 +91,7 @@ constant %paths = (
     'Uiua'         => 'crates.io/api/v1/crates/uiua',
     'V'            => 'en.wikipedia.org/wiki/V_(programming_language)',
     'VimL'         => 'en.wikipedia.org/wiki/Vim_(text_editor)',
+    'Vyxal'        => 'github.com/Vyxal/Vyxal/releases/latest',
     'Wren'         => 'github.com/wren-lang/wren/releases/latest',
     'Zig'          => 'github.com/ziglang/zig/releases/latest',
 );
