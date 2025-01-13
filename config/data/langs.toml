@@ -1257,8 +1257,8 @@ Sys.argv
 [Octave]
 args       = [ '/usr/bin/octavewrapper', '-' ]
 experiment = 1369
-size       = '76.7 MiB'
-version    = 'GNU Octave 9.2.0'
+size       = '76.8 MiB'
+version    = 'GNU Octave 9.3.0'
 website    = 'https://octave.org'
 example    = '''
 # Printing
