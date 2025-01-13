@@ -398,12 +398,15 @@ preamble = '''
 [Calendar]
 experiment = 908
 category = 'Transform'
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Calendar' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Gregorian_calendar' },
+]
 synopsis = 'Print calendars for given months in given years.'
 preamble = '''
 <p>
-    Given a <b>month</b> and a <b>year</b>, print that month's calendar for
-    each argument <code><b>MM YYYY</b></code>. Monday marks the first day of
-    the week.
+    Given a month and a year, print that month's calendar for each argument
+    <code><b>MM YYYY</b></code>. Monday marks the first day of the week.
 
 <p>
     For example, <code>03 2023</code> refers to the month of March in 2023.
@@ -422,7 +425,7 @@ Mo Tu We Th Fr Sa Su
 category = 'Computing'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Luhn_test_of_credit_card_numbers' },
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Luhn_algorithm' }
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Luhn_algorithm' },
 ]
 released = 2024-10-01
 synopsis = 'Validate card numbers.'
@@ -528,7 +531,7 @@ category = 'Sequence'
 links = [
     { name = 'OEIS A006577', url = '//oeis.org/A006577' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Hailstone_sequence' },
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Collatz_conjecture' }
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Collatz_conjecture' },
 ]
 released = 2022-05-04
 synopsis = 'Print the Collatz stopping times of all the numbers from 1 to 1,000.'
@@ -668,7 +671,7 @@ preamble = '''
 category = 'Art'
 experiment = 1214
 links = [
-    { name = 'MDN', url = '//developer.mozilla.org/en-US/docs/Web/CSS/grid-auto-flow' }
+    { name = 'MDN', url = '//developer.mozilla.org/en-US/docs/Web/CSS/grid-auto-flow' },
 ]
 synopsis = 'Place divs in a rectagular grid like CSS would.'
 preamble = '''
@@ -1749,7 +1752,7 @@ preamble = '''
 [ISBN]
 category = 'Transform'
 links = [
-    { name  = 'Wikipedia', url = '//en.wikipedia.org/wiki/International_Standard_Book_Number#ISBN-10_check_digit_calculation' }
+    { name  = 'Wikipedia', url = '//en.wikipedia.org/wiki/International_Standard_Book_Number#ISBN-10_check_digit_calculation' },
 ]
 released = 2022-01-10
 synopsis = 'Calculate the check digit for these incomplete ISBNs.'
@@ -1978,7 +1981,7 @@ category = 'Sequence'
 links = [
     { name = 'OEIS A000959', url = '//oeis.org/A000959' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Lucky_and_even_lucky_numbers' },
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Lucky_number'}
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Lucky_number'},
 ]
 released = 2022-02-28
 synopsis = 'Print the first 1,000 Lucky numbers.'
@@ -2152,6 +2155,29 @@ preamble = '''
 <p>
     Given a list of space-separated solution scores in ascending order,
     print the corresponding diamonds and medals.
+'''
+
+[Minesweeper]
+experiment = 1025
+category = 'Gaming'
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Minesweeper_(video_game)' },
+]
+synopsis = 'Print solved boards in Minesweeper games.'
+preamble = '''
+<p>
+    Minesweeper is a video game in which the player must clear a board without
+    detonating any of the hidden mines scattered throughout the grid of
+    clickable tiles.
+
+<p>
+    Each argument represents a ten-by-ten board with thirteen mine tiles,
+    denoted by <code><b>M</b></code>. Replace the safe tiles, denoted by
+    <code><b>X</b></code>, with the number of adjacent mines.
+
+<p>
+    Print a solved Minesweeper board for each argument, separated by newlines,
+    and replace each mine with <code><b>X</b></code> as if it weren't detonated.
 '''
 
 ['Morse Decoder']
@@ -3294,11 +3320,12 @@ preamble = '''
 '''
 
 [ROT13]
-experiment = 921
 category = 'Transform'
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/ROT13' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Rot-13' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/ROT13' },
 ]
+released = 2025-01-05
 synopsis = 'Encode or decode ROT13 sequences.'
 preamble = '''
 <p>
@@ -3324,8 +3351,13 @@ NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm
 </pre>
 
 <p>
-    Print the encoded or decoded ROT13 sequence for each argument, each on their
-    own line.
+    Each argument consists of a sequence of random printable characters from the
+    ASCII character set.
+
+<p>
+    For each argument, print the sequence with all its substitutions after
+    applying the appropriate rotations, effectively encoding or decoding the
+    sequence, each on their own line.
 '''
 
 ['Rule 110']
@@ -3422,7 +3454,7 @@ experiment = 1058
 category = 'Gaming'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Set,_the_card_game' },
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Set_(card_game)' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Set_(card_game)' },
 ]
 synopsis = 'Identify sets in the card game Set.'
 preamble = '''
@@ -3990,7 +4022,8 @@ preamble = '''
 experiment = 1031
 category = 'Gaming'
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Tic-tac-toe' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Tic-tac-toe' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Tic-tac-toe' },
 ]
 synopsis = 'Determine eventual winners in finished tic-tac-toe games.'
 preamble = '''

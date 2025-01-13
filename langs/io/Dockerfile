@@ -9,7 +9,7 @@ ENV VER=7113659
 RUN curl -#L https://github.com/IoLanguage/io/tarball/$VER \
   | tar xz --strip-components 1
 
-RUN curl -#L https://github.com/kgabis/parson/tarball/4f3eaa6 \
+RUN curl -#L https://github.com/kgabis/parson/tarball/ba29f4e \
   | tar xz --directory /deps/parson --strip-components 1
 
 WORKDIR /build
@@ -24,7 +24,7 @@ RUN strip /usr/lib/libbasekit.so \
 
 COPY iowrapper.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/iowrapper -s -static /iowrapper.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/iowrapper -s /iowrapper.c
 
 FROM codegolf/lang-base
 
