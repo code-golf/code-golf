@@ -5,7 +5,7 @@ import {
     init, langs, hole, setSolution,
     setCode, refreshScores, submit, updateRestoreLinkVisibility,
     ReadonlyPanelsData, setCodeForLangAndSolution, getCurrentSolutionCode,
-    initDeleteBtn, initCopyJSONBtn, getScorings,
+    initDeleteBtn, initCopyButtons, getScorings,
     updateLocalStorage,
     ctrlEnter,
     getLastSubmittedCode,
@@ -59,7 +59,7 @@ const closuredSubmit = () => submit(editor, updateReadonlyPanels);
 $('#runBtn').onclick = closuredSubmit;
 window.onkeydown = ctrlEnter(closuredSubmit);
 
-initCopyJSONBtn($('#copy'));
+initCopyButtons($$('[data-copy]'));
 initDeleteBtn($('#deleteBtn'), langs);
 
 $$('#rankingsView a').forEach(a => a.onclick = e => {

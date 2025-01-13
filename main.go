@@ -20,17 +20,17 @@ func main() {
 
 	db := db.Open()
 
-	// Attempt to populate the holes table every second until we succeed.
+	// Attempt to populate the holes/langs tables every sec until we succeed.
 	// This handles the site starting before the DB.
 	go func() {
-		if err := populateHolesTable(db); err != nil {
+		if err := populateHolesLangsTables(db); err != nil {
 			log.Println(err)
 		} else {
 			return
 		}
 
 		for range time.Tick(time.Second) {
-			if err := populateHolesTable(db); err != nil {
+			if err := populateHolesLangsTables(db); err != nil {
 				log.Println(err)
 			} else {
 				break
@@ -167,7 +167,7 @@ func main() {
 	panic(http.ListenAndServe(":80", routes.Router(db)))
 }
 
-func populateHolesTable(db *sqlx.DB) error {
+func populateHolesLangsTables(db *sqlx.DB) error {
 	tx, err := db.Beginx()
 	if err != nil {
 		return err
@@ -192,10 +192,28 @@ func populateHolesTable(db *sqlx.DB) error {
 		}
 	}
 
+	insertLang, err := tx.PrepareNamed(
+		`INSERT INTO langs ( id,  experiment)
+		      VALUES       (:id, :experiment)`,
+	)
+	if err != nil {
+		return err
+	}
+
+	if _, err := tx.Exec("TRUNCATE langs"); err != nil {
+		return err
+	}
+
+	// TODO Expand enum and add experimental langs.
+	for _, lang := range config.LangList {
+		if _, err := insertLang.Exec(lang); err != nil {
+			return err
+		}
+	}
 	if err := tx.Commit(); err != nil {
 		return err
 	}
 
-	log.Println("Populated holes table.")
+	log.Println("Populated holes & langs tables.")
 	return nil
 }

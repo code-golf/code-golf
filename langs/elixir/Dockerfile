@@ -2,17 +2,13 @@
 # <1s docker run --rm --net none elixir:slim
 # >5s docker run --rm --net none elixir:alpine
 
-FROM elixir:1.17.3-slim AS builder
+FROM elixir:1.18.0-slim AS builder
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/readlink                             \
-              /bin/sed                                  \
-              /bin/sh                                   /bin/
+COPY --from=0 /bin/readlink /bin/sed /bin/sh            /bin/
 COPY --from=0 /lib64/ld-linux-x86-64.so.2               /lib64/
-COPY --from=0 /usr/bin/basename                         \
-              /usr/bin/dirname                          /usr/bin/
-COPY --from=0 /usr/lib/locale                           /usr/lib/locale
+COPY --from=0 /usr/bin/basename /usr/bin/dirname        /usr/bin/
 COPY --from=0 /usr/lib/x86_64-linux-gnu/libacl.so.1     \
               /usr/lib/x86_64-linux-gnu/libc.so.6       \
               /usr/lib/x86_64-linux-gnu/libdl.so.2      \
@@ -23,7 +19,8 @@ COPY --from=0 /usr/lib/x86_64-linux-gnu/libacl.so.1     \
               /usr/lib/x86_64-linux-gnu/librt.so.1      \
               /usr/lib/x86_64-linux-gnu/libselinux.so.1 \
               /usr/lib/x86_64-linux-gnu/libstdc++.so.6  \
-              /usr/lib/x86_64-linux-gnu/libtinfo.so.6   /usr/lib/x86_64-linux-gnu/
+              /usr/lib/x86_64-linux-gnu/libtinfo.so.6   /usr/lib/
+COPY --from=0 /usr/lib/locale                           /usr/lib/locale
 COPY --from=0 /usr/local/bin                            /usr/local/bin
 COPY --from=0 /usr/local/lib                            /usr/local/lib
 
