@@ -19,7 +19,9 @@ RUN ./configure                \
  && strip /usr/bin/python3.13  \
           /usr/lib/python3.13/lib-dynload/*.so
 
-RUN pip3 install --upgrade /DennisMitchell-jellylanguage-$VER/
+WORKDIR /DennisMitchell-jellylanguage-$VER
+
+RUN pip3 install --upgrade .
 
 WORKDIR /usr/lib/python3.13
 
