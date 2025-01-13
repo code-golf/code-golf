@@ -327,6 +327,12 @@ func play(
 		// Add a newline in to avoid commenting it out via ;, and
 		// do it twice to avoid commenting it out via #_.
 		code += "\n(print)(print)"
+	case "gleam":
+		// Enforce writing Gleam code instead of JavaScript code.
+		if strings.Contains(code, "external") && strings.Contains(code, "javascript") {
+			run.Stderr = "Gleam's external functions/types have been disabled."
+			return nil
+		}
 	case "go":
 		// Prevent trivial quines. Error out and return early.
 		if hole.ID == "quine" && strings.Contains(code, "//go:embed") {
