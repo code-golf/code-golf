@@ -24,7 +24,6 @@ COPY --from=0 /opt/java/openjdk/lib/jvm.cfg                 \
               /opt/java/openjdk/lib/libmanagement_ext.so    \
               /opt/java/openjdk/lib/libnet.so               \
               /opt/java/openjdk/lib/libnio.so               \
-              /opt/java/openjdk/lib/libverify.so            \
               /opt/java/openjdk/lib/libzip.so               \
               /opt/java/openjdk/lib/modules                 /opt/java/lib/
 COPY --from=0 /opt/java/openjdk/lib/server/libjvm.so        /opt/java/lib/server/
