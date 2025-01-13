@@ -111,9 +111,10 @@ export function initDeleteBtn(deleteBtn: HTMLElement | undefined, langs: any) {
     });
 }
 
-export function initCopyJSONBtn(copyBtn: HTMLElement | undefined) {
-    copyBtn?.addEventListener('click', () =>
-        navigator.clipboard.writeText($('#data').innerText));
+export function initCopyButtons(buttons: NodeListOf<HTMLElement>) {
+    for (const btn of buttons)
+        btn.onclick = () =>
+            navigator.clipboard.writeText(btn.dataset.copy!);
 }
 
 export const langs = JSON.parse($('#langs').innerText);
