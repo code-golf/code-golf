@@ -1,5 +1,6 @@
 import * as Diff from 'diff';
 import { $ } from './_util';
+import UnprintableElement from './_unprintable';
 
 interface DiffPos {
     left: number;
@@ -173,11 +174,12 @@ function makeCols(isArgDiff: boolean, maxLineNum: number, argv: string[]) {
     const col       = (width: number) => <col style={`width:${width}px`}/>;
     const cols      = [];
     const numLength = String(maxLineNum).length + 1;
-    const charWidth = 11;
+    const charWidth = 12;
 
     if (isArgDiff) {
         const longestArgLength = Math.max(6, ...argv.map(arg => arg.length));
-        cols.push(col(Math.min(longestArgLength * charWidth + 1, 350)));
+        const estimatedWidth = longestArgLength * charWidth + 2 * 8; // Width of characters + padding
+        cols.push(col(Math.min(estimatedWidth, 350)));
     }
     else {
         cols.push(col(numLength * charWidth));
@@ -388,11 +390,11 @@ function renderCharDiff(className: string, charDiff: Diff.Change[], isRight: boo
 
     for (const change of charDiff)
         if (change.added && isRight)
-            td.append(<span class="diff-char-addition">{change.value}</span>);
+            td.append(<span class="diff-char-addition">{UnprintableElement.escape(change.value)}</span>);
         else if (change.removed && !isRight)
-            td.append(<span class="diff-char-removal">{change.value}</span>);
+            td.append(<span class="diff-char-removal">{UnprintableElement.escape(change.value)}</span>);
         else if (!change.added && !change.removed)
-            td.append(change.value);
+            td.append(UnprintableElement.escape(change.value));
 
     return td;
 }

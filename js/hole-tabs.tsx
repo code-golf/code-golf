@@ -11,8 +11,8 @@ import {
     init, langs, hole, setSolution,
     setCode, refreshScores, getHideDeleteBtn, submit, ReadonlyPanelsData,
     updateRestoreLinkVisibility, setCodeForLangAndSolution,
-    populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyJSONBtn,
-    getScorings, replaceUnprintablesInOutput, initOutputDiv,
+    populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyButtons,
+    getScorings,
     updateLocalStorage,
     getLang,
     setState,
@@ -20,6 +20,7 @@ import {
     getLastSubmittedCode,
 } from './_hole-common';
 import { highlightCodeBlocks } from './_wiki';
+import UnprintableElement from './_unprintable';
 
 const poolDragSources: {[key: string]: DragSource} = {};
 const poolElements: {[key: string]: HTMLElement} = {};
@@ -76,8 +77,7 @@ function updateReadonlyPanel(name: string) {
         output.innerHTML = subRes.Err.replace(/\n/g,'<br>');
         break;
     case 'out':
-        output.innerText = subRes.Out;
-        output.innerHTML = replaceUnprintablesInOutput(output.innerHTML);
+        output.replaceChildren(UnprintableElement.escape(subRes.Out));
         break;
     case 'exp':
         output.innerText = subRes.Exp;
@@ -131,9 +131,6 @@ for (const name of ['exp', 'out', 'err', 'arg', 'diff']) {
         autoFocus(container);
         container.element.id = name;
         container.element.classList.add('readonly-output');
-        if (name === 'out') {
-            initOutputDiv(container.element);
-        }
         readonlyOutputs[name] = container.element;
         updateReadonlyPanel(name);
     });
@@ -345,7 +342,7 @@ layout.registerComponentFactoryFunction('details', container => {
     const details = $<HTMLTemplateElement>('#template-details').content.cloneNode(true) as HTMLDetailsElement;
     container.element.append(details);
     container.element.id = 'details-content';
-    initCopyJSONBtn(container.element.querySelector('#copy') as HTMLElement);
+    initCopyButtons(container.element.querySelectorAll('[data-copy]'));
 });
 
 const titles: Record<string, string | undefined> = {

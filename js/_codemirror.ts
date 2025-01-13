@@ -6,7 +6,7 @@ import { $ }                                              from './_util';
 export { EditorState, EditorView };
 
 // Extensions.
-import { carriageReturn, insertChar,
+import { carriageReturn, insertChar, insertCharState,
     showUnprintables }                           from './_codemirror_unprintable';
 import { history, historyKeymap, indentLess, insertNewline,
     insertTab, standardKeymap, toggleComment }   from '@codemirror/commands';
@@ -18,6 +18,7 @@ import { oneDarkTheme, oneDarkHighlightStyle }   from '@codemirror/theme-one-dar
 import { vim }                                   from '@replit/codemirror-vim';
 
 // Languages.
+import { apl }                                      from '@codemirror/legacy-modes/mode/apl';
 import { assembly }                                 from '@defasm/codemirror';
 import { brainfuck }                                from 'codemirror-lang-brainfuck';
 import { c, csharp, dart, kotlin, scala, squirrel } from './vendor/codemirror-clike';
@@ -29,6 +30,7 @@ import { cpp }                                      from '@codemirror/lang-cpp';
 import { crystal }                                  from '@codemirror/legacy-modes/mode/crystal';
 import { d }                                        from '@codemirror/legacy-modes/mode/d';
 import { elixirLanguage }                           from 'codemirror-lang-elixir';
+import { erlang }                                   from '@codemirror/legacy-modes/mode/erlang';
 import { factor }                                   from '@codemirror/legacy-modes/mode/factor';
 import { forth }                                    from '@codemirror/legacy-modes/mode/forth';
 import { fortran }                                  from '@codemirror/legacy-modes/mode/fortran';
@@ -86,6 +88,10 @@ const asmErrorTooltip = {
 
 const fontFamily = "'Source Code Pro', monospace";
 
+// Enable character-wise wrapping whenever possible.
+// This was disabled in the upstream due to the old Safari issue (codemirror/dev#524).
+const lineWrapping: any = CSS.supports('overflow-wrap', 'anywhere') ? { wordBreak: 'break-all' } : {};
+
 export const extensions : { [key: string]: any } = {
     // Extensions.
     'base': [
@@ -97,6 +103,7 @@ export const extensions : { [key: string]: any } = {
             '.cm-asm-error-tooltip':    asmErrorTooltip,
             '.cm-content':              { fontFamily },
             '.cm-gutters':              { fontFamily },
+            '.cm-lineWrapping':         lineWrapping,
             '.cm-tooltip':              { fontFamily },
             '.cm-tooltip-autocomplete': { fontFamily },
         }, { dark: false }),
@@ -104,6 +111,7 @@ export const extensions : { [key: string]: any } = {
     'editor': [
         history(),
         insertChar,
+        insertCharState,
         keymap.of([
             // Replace "enter" with a non auto indenting action.
             ...historyKeymap, ...standardKeymap.filter(k => k.key != 'Enter'),
@@ -120,6 +128,7 @@ export const extensions : { [key: string]: any } = {
     // Languages.
     // TODO 05ab1e
     // TODO algol-68
+    'apl':           StreamLanguage.define(apl),
     // TODO arturo
     'assembly':      assembly(),
     'assembly-wiki': assembly({ byteDumps: false }),
@@ -143,6 +152,7 @@ export const extensions : { [key: string]: any } = {
     'dart':          StreamLanguage.define(dart),
     // TODO egel
     'elixir':        elixir,
+    'erlang':        StreamLanguage.define(erlang),
     'f-sharp':       StreamLanguage.define(fSharp),
     'factor':        StreamLanguage.define(factor),
     // TODO fish
@@ -159,6 +169,7 @@ export const extensions : { [key: string]: any } = {
     // TODO hexagony
     // TODO hush
     // TODO hy
+    // TODO iogii
     'j':             j(),
     'janet':         janet(),
     'java':          java(),
@@ -197,6 +208,7 @@ export const extensions : { [key: string]: any } = {
     // TODO uiua
     // TODO v
     // TODO viml
+    // TODO vyxal
     'wren':          wren,
     'zig':           zig(),
 };
