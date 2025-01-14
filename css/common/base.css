@@ -62,6 +62,8 @@ body {
     font: 16px emoji, mahjong, system-ui, -apple-system, sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
+
+    &:has(dialog[open]) { overflow: hidden }
 }
 
 body, footer nav, #site-header nav, #popups {
