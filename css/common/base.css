@@ -191,7 +191,7 @@ dialog {
 
 dialog:not([open]) { display: none }
 
-dialog::backdrop, dialog + .backdrop {
+dialog::backdrop {
     backdrop-filter: blur(.25rem);
     background: rgba(0, 0, 0, .1);
     inset: 0;
