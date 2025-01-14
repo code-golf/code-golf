@@ -637,9 +637,9 @@ def main =
 
 [Elixir]
 args    = [ '/usr/local/bin/elixir', '-e', '$code', '--' ]
-env     = [ 'LANG=C.UTF-8', 'PATH=/usr/local/bin:/usr/bin:/bin' ]
-size    = '179 MiB'
-version = '1.18.0'
+env     = [ 'LANG=C.UTF-8' ]
+size    = '74.2 MiB'
+version = '1.18.1'
 website = 'https://elixir-lang.org'
 example = '''
 # Printing
@@ -1648,7 +1648,7 @@ G
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
 size    = '1.21 MiB'
-version = 'SQLite 3.47.2'
+version = 'SQLite 3.48.0'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
@@ -1822,7 +1822,7 @@ w
 args       = [ '/opt/java/bin/java', '-jar', 'vyxal.jar', '-MO', '--code', '$code', '--' ]
 experiment = 1846
 size       = '152 MiB'
-version    = '3.5.0'
+version    = '3.5.1'
 website    = 'https://vyxal.github.io'
 example    = '''
 ## Printing
