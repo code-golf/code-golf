@@ -1,58 +1,60 @@
-FROM alpine:3.21 AS builder
+FROM debian:trixie-slim AS builder
 
-RUN apk add --no-cache build-base curl libffi-dev zlib-dev
+RUN apt-get update                   \
+ && DEBIAN_FRONTEND='noninteractive' \
+    apt-get install --yes curl elixir erlang gcc patch
 
-ENV PYVER=3.13.1 VER=fe1ab18
+WORKDIR /05ab1e
 
-RUN curl https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz | tar xJ
-
-WORKDIR /Python-$PYVER
-
-RUN ./configure                \
-    --disable-test-modules     \
-    --prefix=/usr              \
-    --with-lto                 \
-    --without-ensurepip        \
-    --without-static-libpython \
- && make -j`nproc` install     \
- && strip /usr/bin/python3.13  \
-          /usr/lib/python3.13/lib-dynload/*.so
-
-WORKDIR /usr/lib/python3.13
-
-# Remove some unneeded libraries.
-RUN find . -name '*.opt-[12].pyc' -delete \
- && rm -r __pycache__/doctest.*           \
-          __pycache__/pydoc.*             \
-          __pycache__/turtle.*            \
-          _pyrepl                         \
-          ensurepip                       \
-          idlelib                         \
-          pydoc_data                      \
-          tkinter                         \
-          turtle.py                       \
-          turtledemo                      \
-          unittest
-
-WORKDIR /osabie
+ENV MIX_ENV=prod VER=c31668b
 
 RUN curl -#L https://github.com/Adriandmen/05AB1E/tarball/$VER \
   | tar xz --strip-components 1
-        
-COPY 05ab1e.c escape.patch /
-        
-RUN patch -p 1 < /escape.patch \
- && gcc -Wall -Werror -Wextra -o /usr/bin/05ab1e -s -static /05ab1e.c
+
+COPY interp.patch /
+
+RUN patch -p1 < /interp.patch
+
+RUN mix local.hex --force \
+ && mix local.rebar       \
+ && mix deps.get          \
+ && mix deps.update --all \
+ && mix escript.build
+
+COPY 05ab1e.c /
+
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/05ab1e -s /05ab1e.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /osabie/osabie.py        /osabie/
-COPY --from=0 /osabie/behaviour        /osabie/behaviour
-COPY --from=0 /osabie/lib              /osabie/lib
-COPY --from=0 /usr/bin/05ab1e          /usr/bin/
-COPY --from=0 /usr/bin/python3.13      /usr/bin/python
-COPY --from=0 /usr/lib/python3.13      /usr/lib/python3.13
+COPY --from=0 /05ab1e/osabie                                    /
+COPY --from=0 /usr/bin/dash                                     /bin/sh
+COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6                   \
+              /lib/x86_64-linux-gnu/libgcc_s.so.1               \
+              /lib/x86_64-linux-gnu/libm.so.6                   \
+              /lib/x86_64-linux-gnu/libstdc++.so.6              \
+              /lib/x86_64-linux-gnu/libtinfo.so.6               \
+              /lib/x86_64-linux-gnu/libz.so.1                   /lib/
+COPY --from=0 /lib64/ld-linux-x86-64.so.2                       /lib64/
+COPY --from=0 /usr/bin/05ab1e                                   \
+              /usr/bin/basename                                 \
+              /usr/bin/dirname                                  \
+              /usr/bin/erl                                      \
+              /usr/bin/escript                                  /usr/bin/
+COPY --from=0 /usr/lib/erlang/bin/no_dot_erlang.boot            /usr/lib/erlang/bin/
+COPY --from=0 /usr/lib/erlang/erts-13.2.2.9/bin/beam.smp        \
+              /usr/lib/erlang/erts-13.2.2.9/bin/erl_child_setup \
+              /usr/lib/erlang/erts-13.2.2.9/bin/erlexec         \
+              /usr/lib/erlang/erts-13.2.2.9/bin/inet_gethost    /usr/lib/erlang/erts-13.2.2.9/bin/
+COPY --from=0 /usr/lib/erlang/lib/asn1-5.0.21.1/ebin            /usr/lib/erlang/lib/asn1-5.0.21.1/ebin
+COPY --from=0 /usr/lib/erlang/lib/compiler-8.2.6.4/ebin         /usr/lib/erlang/lib/compiler-8.2.6.4/ebin
+COPY --from=0 /usr/lib/erlang/lib/crypto-5.1.4.3/ebin           /usr/lib/erlang/lib/crypto-5.1.4.3/ebin
+COPY --from=0 /usr/lib/erlang/lib/kernel-8.5.4.3/ebin           /usr/lib/erlang/lib/kernel-8.5.4.3/ebin
+COPY --from=0 /usr/lib/erlang/lib/public_key-1.13.3.2/ebin      /usr/lib/erlang/lib/public_key-1.13.3.2/ebin
+COPY --from=0 /usr/lib/erlang/lib/ssl-10.9.1.4/ebin             /usr/lib/erlang/lib/ssl-10.9.1.4/ebin
+COPY --from=0 /usr/lib/erlang/lib/stdlib-4.3.1.4/ebin           /usr/lib/erlang/lib/stdlib-4.3.1.4/ebin
+COPY --from=0 /usr/lib/erlang/lib/syntax_tools-3.0.1/ebin       /usr/lib/erlang/lib/syntax_tools-3.0.1/ebin
+COPY --from=0 /usr/lib/erlang/lib/tools-3.5.3/ebin              /usr/lib/erlang/lib/tools-3.5.3/ebin
 
 ENTRYPOINT ["05ab1e"]
 
