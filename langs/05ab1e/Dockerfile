@@ -4,31 +4,29 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl elixir erlang gcc patch
 
-WORKDIR /05ab1e
+ENV VER=c31668b
 
-ENV MIX_ENV=prod VER=c31668b
+WORKDIR /05ab1e
 
 RUN curl -#L https://github.com/Adriandmen/05AB1E/tarball/$VER \
   | tar xz --strip-components 1
 
-COPY interp.patch /
+COPY 05ab1e.c interp.patch /
 
 RUN patch -p1 < /interp.patch
 
-RUN mix local.hex --force \
- && mix local.rebar       \
- && mix deps.get          \
- && mix deps.update --all \
- && mix escript.build
-
-COPY 05ab1e.c /
+RUN mix local.hex --force          \
+ && mix local.rebar                \
+ && mix deps.get                   \
+ && mix deps.update ssl_verify_fun \
+ && MIX_ENV='prod' mix escript.build
 
 RUN gcc -Wall -Werror -Wextra -o /usr/bin/05ab1e -s /05ab1e.c
 
 FROM codegolf/lang-base
 
 COPY --from=0 /05ab1e/osabie                                    /
-COPY --from=0 /usr/bin/dash                                     /bin/sh
+COPY --from=0 /bin/dash                                         /bin/sh
 COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6                   \
               /lib/x86_64-linux-gnu/libgcc_s.so.1               \
               /lib/x86_64-linux-gnu/libm.so.6                   \
