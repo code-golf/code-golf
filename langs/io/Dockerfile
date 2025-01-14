@@ -2,15 +2,16 @@ FROM debian:bookworm-slim AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
-    apt-get install --yes cmake curl
+    apt-get install --yes cmake curl git
 
 ENV VER=7113659
 
 RUN curl -#L https://github.com/IoLanguage/io/tarball/$VER \
   | tar xz --strip-components 1
 
-RUN curl -#L https://github.com/kgabis/parson/tarball/ba29f4e \
-  | tar xz --directory /deps/parson --strip-components 1
+WORKDIR /deps
+
+RUN git clone https://github.com/kgabis/parson.git
 
 WORKDIR /build
 
