@@ -1823,7 +1823,7 @@ w
 args       = [ '/opt/java/bin/java', '-jar', 'vyxal.jar', '-MO', '--code', '$code', '--' ]
 experiment = 1846
 size       = '152 MiB'
-version    = '3.5.0'
+version    = '3.5.1'
 website    = 'https://vyxal.github.io'
 example    = '''
 ## Printing
