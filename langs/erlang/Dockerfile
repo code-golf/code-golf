@@ -4,6 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes build-essential curl ncurses-dev
 
+# Also bump Elixir.
 ENV VER=27.2
 
 RUN curl -#L https://github.com/erlang/otp/releases/download/OTP-$VER/otp_src_$VER.tar.gz | tar xz
@@ -21,7 +22,7 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/erlang -s /erlang.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /usr/bin/dash                                 /bin/sh
+COPY --from=0 /bin/dash                                     /bin/sh
 COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6               \
               /lib/x86_64-linux-gnu/libgcc_s.so.1           \
               /lib/x86_64-linux-gnu/libm.so.6               \
