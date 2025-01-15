@@ -251,6 +251,8 @@ func Play(
 		runs = sevenSegment()
 	case "si-units":
 		runs = siUnits()
+	case "snake":
+		runs = snake()
 	case "spelling-numbers":
 		runs = spellingNumbers()
 	case "star-wars-gpt":
