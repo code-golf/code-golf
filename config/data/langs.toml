@@ -1,9 +1,8 @@
 [05AB1E]
 args       = [ '/usr/bin/05ab1e', '-' ]
-env        = [ 'PYTHON_COLORS=1' ]
 experiment = 233
-size       = '29.7 MiB'
-version    = 'fe1ab18'
+size       = '28.2 MiB'
+version    = 'c31668b'
 website    = 'https://github.com/Adriandmen/05AB1E'
 example    = '''
 "Printing"
