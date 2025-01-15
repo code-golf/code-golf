@@ -1,4 +1,4 @@
-FROM ubuntu:25.04 AS builder
+FROM debian:trixie-slim AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
