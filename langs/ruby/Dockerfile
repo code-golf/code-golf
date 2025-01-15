@@ -2,7 +2,7 @@ FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache build-base clang curl openssl-dev yaml-dev
 
-# Also rebuild GolfScript, iogii.
+# Also rebuild GolfScript, iogii, Labyrinth.
 RUN curl https://cache.ruby-lang.org/pub/ruby/3.4/ruby-3.4.1.tar.xz | tar xJ
 
 # Clang produces the same size binary as using LTO with GCC, but GCC+LTO leads
