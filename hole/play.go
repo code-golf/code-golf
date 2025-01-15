@@ -173,6 +173,8 @@ func Play(
 		runs = arrows()
 	case "billiards":
 		runs = billiards()
+	case "boggle":
+		runs = boggle()
 	case "brainfuck":
 		runs = brainfuck()
 	case "calendar":
