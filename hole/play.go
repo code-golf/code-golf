@@ -23,7 +23,7 @@ import (
 	hungarianAlgorithm "github.com/oddg/hungarian-algorithm"
 )
 
-var timeout = 5 * time.Second
+var timeout = 60 * time.Second
 
 // Increase the timeout under e2e as the hardware is less powerful than live.
 func init() {
