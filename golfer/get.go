@@ -32,7 +32,6 @@ func Get(db *sqlx.DB, sessionID uuid.UUID) *Golfer {
 		          u.country                                 country,
 		          u.delete                                  delete,
 		          u.id                                      id,
-		          u.keymap                                  keymap,
 		          u.login                                   name,
 		          u.pronouns                                pronouns,
 		          COALESCE(r.login, '')                     referrer,

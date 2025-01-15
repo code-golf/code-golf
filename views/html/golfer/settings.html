@@ -96,20 +96,6 @@
             <input name=show_country type=checkbox
                 {{ if .Golfer.ShowCountry }}checked{{ end }}>
         </label>
-        
-        <h2>Keymap</h2>
-
-        Preferred keyboard mapping for the solution editor.
-
-        <fieldset>
-        {{- range .Data.Keymaps -}}
-            <label>
-                <input name=keymap type=radio value="{{ . }}"
-                    {{- if eq . $.Golfer.Keymap }} checked{{ end }}>
-                    {{- title . -}}
-            </label>
-        {{- end -}}
-        </fieldset>
 
         <h2>Pronouns</h2>
 

@@ -35,7 +35,7 @@ func adminSolutionsGET(w http.ResponseWriter, r *http.Request) {
 		Holes                []*config.Hole
 		Langs                []*config.Lang
 		TestedFrom, TestedTo time.Time
-	}{Holes: config.HoleList, Langs: config.LangList}
+	}{Holes: config.AllHoleList, Langs: config.LangList}
 
 	if err := session.Database(r).Get(
 		&data,

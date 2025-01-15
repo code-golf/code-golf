@@ -3,6 +3,8 @@
 
 {{ template "lang-svgs" .Data.Rows }}
 
+{{ $hidePoints := and .Data.Hole .Data.Hole.Experiment }}
+
 <main id=two-pane>
     {{ template "nav" . }}
 
@@ -26,7 +28,7 @@
                 <th>#
                 <th>Golfer
                 {{ if eq .Data.HoleID "all" }}<th class=right>Holes{{ end }}
-                <th class=right>Points
+                <th class="right {{ if $hidePoints }}hide{{ end }}">Points
                 <th class=right>{{ title .Data.Scoring }}
                 <th class=right>Time
         <tbody>
@@ -38,7 +40,7 @@
             <td>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup>
             <td>{{ template "golfer-link" . }}
             {{ if eq $.Data.HoleID "all" }}<td class=right>{{ .Holes }}{{ end }}
-            <td class=right>{{ comma .Points }}
+            <td class="right {{ if $hidePoints }}hide{{ end }}">{{ comma .Points }}
             <td class=right>
             {{ if eq $.Data.HoleID "all" }}
                 {{ comma .Strokes }}
