@@ -11,11 +11,11 @@ RUN curl -#L https://github.com/c3lang/c3c/releases/download/v$VER/c3-linux.tar.
 
 COPY c3.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/c3 -s -static c3.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/c3 -s c3.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /usr/bin/dash                                     /bin/sh
+COPY --from=0 /bin/dash                                         /bin/sh
 COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6                   \
               /lib/x86_64-linux-gnu/libicudata.so.72            \
               /lib/x86_64-linux-gnu/libicuuc.so.72              \

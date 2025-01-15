@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
     if (WEXITSTATUS(status))
         return WEXITSTATUS(status);
 
-    if (remove("code.c3"))
+    if (remove(code))
         ERR_AND_EXIT("remove");
 
     int cargc = argc;

@@ -47,25 +47,26 @@ CREATE TYPE hole AS ENUM (
     'kolakoski-constant', 'kolakoski-sequence', 'leap-years',
     'levenshtein-distance', 'leyland-numbers', 'ln-2', 'look-and-say',
     'lucky-numbers', 'lucky-tickets', 'mahjong', 'mandelbrot', 'maze',
-    'medal-tally', 'morse-decoder', 'morse-encoder', 'musical-chords',
-    'n-queens', 'nfa-simulator', 'niven-numbers', 'niven-numbers-long',
-    'number-spiral', 'odd-polyomino-tiling', 'odious-numbers',
-    'odious-numbers-long', 'ordinal-numbers', 'p-adic-expansion',
-    'palindromemordnilap', 'pangram-grep', 'partition-numbers',
-    'pascals-triangle', 'pernicious-numbers', 'pernicious-numbers-long',
-    'placeholder', 'poker', 'polyominoes', 'prime-numbers',
-    'prime-numbers-long', 'proximity-grid', 'qr-decoder', 'qr-encoder',
-    'quadratic-formula', 'quine', 'recamán', 'repeating-decimals',
-    'reverse-polish-notation', 'reversi', 'rijndael-s-box',
-    'rock-paper-scissors-spock-lizard', 'roman-to-arabic', 'rule-110',
-    'scrambled-alphabetization', 'semiprime-numbers', 'seven-segment',
-    'si-units', 'sierpiński-triangle', 'smith-numbers', 'spelling-numbers',
+    'medal-tally', 'minesweeper', 'morse-decoder', 'morse-encoder',
+    'musical-chords', 'n-queens', 'nfa-simulator', 'niven-numbers',
+    'niven-numbers-long', 'number-spiral', 'odd-polyomino-tiling',
+    'odious-numbers', 'odious-numbers-long', 'ordinal-numbers',
+    'p-adic-expansion', 'palindromemordnilap', 'pangram-grep',
+    'partition-numbers', 'pascals-triangle', 'pernicious-numbers',
+    'pernicious-numbers-long', 'placeholder', 'poker', 'polyominoes',
+    'prime-numbers', 'prime-numbers-long', 'proximity-grid', 'qr-decoder',
+    'qr-encoder', 'quadratic-formula', 'quine', 'recamán',
+    'repeating-decimals', 'reverse-polish-notation', 'reversi',
+    'rijndael-s-box', 'rock-paper-scissors-spock-lizard',
+    'roman-to-arabic', 'rot13', 'rule-110', 'scrambled-alphabetization',
+    'semiprime-numbers', 'set', 'seven-segment', 'si-units',
+    'sierpiński-triangle', 'smith-numbers', 'spelling-numbers',
     'sphenic-numbers', 'star-wars-gpt', 'star-wars-opening-crawl',
-    'sudoku', 'sudoku-fill-in', 'ten-pin-bowling', 'time-distance',
-    'tongue-twisters', 'transpose-sentence', 'trinomial-triangle',
-    'turtle', 'united-states', 'vampire-numbers', 'van-eck-sequence',
-    'zeckendorf-representation', 'zodiac-signs', 'γ', 'λ', 'π', 'τ', 'φ',
-    '√2', '𝑒'
+    'sudoku', 'sudoku-fill-in', 'ten-pin-bowling', 'tic-tac-toe',
+    'time-distance', 'tongue-twisters', 'transpose-sentence',
+    'trinomial-triangle', 'turtle', 'united-states', 'vampire-numbers',
+    'van-eck-sequence', 'zeckendorf-representation', 'zodiac-signs', 'γ',
+    'λ', 'π', 'τ', 'φ', '√2', '𝑒'
 );
 
 CREATE TYPE idea_category AS ENUM ('cheevo', 'hole', 'lang', 'other');
@@ -74,7 +75,7 @@ CREATE TYPE lang AS ENUM (
     'assembly', 'awk', 'bash', 'basic', 'berry', 'brainfuck', 'c', 'c-sharp',
     'civet', 'clojure',  'cpp', 'cobol', 'coconut', 'common-lisp', 'crystal',
     'd', 'dart', 'elixir', 'f-sharp', 'factor', 'fish', 'forth', 'fortran',
-    'go', 'golfscript', 'haskell', 'hexagony', 'j', 'janet', 'java',
+    'gleam', 'go', 'golfscript', 'haskell', 'hexagony', 'j', 'janet', 'java',
     'javascript', 'jq', 'julia', 'k', 'kotlin', 'lua', 'nim', 'ocaml',
     'pascal', 'perl', 'php', 'powershell', 'prolog', 'python', 'r', 'raku',
     'rockstar', 'rockstar-2', 'ruby', 'rust', 'scheme', 'sed', 'sql', 'swift',
@@ -83,7 +84,7 @@ CREATE TYPE lang AS ENUM (
 
 CREATE TYPE medal AS ENUM ('unicorn', 'diamond', 'gold', 'silver', 'bronze');
 
-CREATE TYPE pronouns AS ENUM ('he/him', 'she/her', 'they/them');
+CREATE TYPE pronouns AS ENUM ('he/him', 'he/they', 'she/her', 'she/they', 'they/them');
 
 CREATE TYPE scoring AS ENUM ('bytes', 'chars');
 
