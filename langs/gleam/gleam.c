@@ -10,7 +10,7 @@
 void copy_file(const char* src_file, const char* dst_file);
 void copy_folder(const char* src_dir, const char* dst_dir);
 
-const char* gleam = "/usr/local/bin/gleam", *code = "src/code.gleam";
+const char* gleam = "/usr/local/bin/gleam", *code = "src/main.gleam";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
