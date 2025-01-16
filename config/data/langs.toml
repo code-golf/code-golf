@@ -348,7 +348,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/bin/c-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size    = '107 MiB'
-version = 'C# 13.0 on .NET 9.0.0'
+version = 'C# 13.0 on .NET 9.0.1'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -673,8 +673,8 @@ main(Args) ->
 ['F#']
 args    = [ '/usr/bin/f-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
-size    = '108 MiB'
-version = 'F# 9.0 on .NET 9.0.0'
+size    = '109 MiB'
+version = 'F# 9.0 on .NET 9.0.1'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
