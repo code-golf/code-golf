@@ -38,7 +38,8 @@ COPY --from=0 /opt/java/openjdk/lib/server/libjvm.so           /opt/java/lib/ser
 COPY --from=0 /usr/bin/dirname                                 \
               /usr/bin/env                                     \
               /usr/bin/scalawrapper                            /usr/bin/
-COPY --from=0 /usr/lib/libncursesw.so.6                        \
+COPY --from=0 /usr/lib/libgmp.so.10                         \
+              /usr/lib/libncursesw.so.6                        \
               /usr/lib/libreadline.so.8                        /usr/lib/
 COPY --from=0 /usr/local/bin/common /usr/local/bin/scala       /usr/local/bin/
 COPY --from=0 /usr/local/lib/compiler-interface-1.9.6.jar      \
