@@ -1324,7 +1324,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '8.40 MiB'
-version = '8.4.2'
+version = '8.4.3'
 website = 'https://www.php.net'
 example = '''
 # Printing
