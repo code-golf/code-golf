@@ -807,7 +807,7 @@ pub fn main() {
 args    = [ '/usr/bin/gowrapper', '-' ]
 env     = [ 'GOCACHE=/tmp/cache' ]
 size    = '383 MiB'
-version = '1.23.4'
+version = '1.23.5'
 website = 'https://go.dev'
 example = '''
 package main
@@ -874,7 +874,7 @@ for (arg in args)
 args       = [ '/usr/bin/harbourwrapper', '-' ]
 experiment = 1614
 size       = '13.0 MiB'
-version    = 'bdc240e'
+version    = 'b1ed850'
 website    = 'https://harbour.github.io'
 example    = '''
 LOCAL i
@@ -1324,7 +1324,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '8.40 MiB'
-version = '8.4.2'
+version = '8.4.3'
 website = 'https://www.php.net'
 example = '''
 # Printing
