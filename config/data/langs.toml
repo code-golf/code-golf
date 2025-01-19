@@ -1340,7 +1340,7 @@ for ($i = 1; $i < $argc; $i++)
 '''
 
 [Piet]
-args       = [ '/usr/bin/pietwrapper', '-' ]
+args       = [ '/usr/bin/piet', '-' ]
 env        = [ 'PYTHON_COLORS=1' ]
 experiment = 648
 size       = '69.5 MiB'

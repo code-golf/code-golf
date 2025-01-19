@@ -8,8 +8,8 @@ RUN curl https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz | tar xJ
 
 RUN curl https://www.bertnase.de/npiet/npiet-$VER.tar.gz | tar xz
 
-RUN curl -#o /usr/bin/piet https://raw.githubusercontent.com/dloscutoff/ascii-piet/refs/heads/master/ascii2piet.py \
- && chmod +x /usr/bin/piet
+RUN curl -#o /usr/bin/ascii-piet https://raw.githubusercontent.com/dloscutoff/ascii-piet/refs/heads/master/ascii2piet.py \
+ && chmod +x /usr/bin/ascii-piet
 
 WORKDIR /Python-$PYVER
 
@@ -22,7 +22,7 @@ RUN ./configure                \
  && strip /usr/bin/python3.13  \
           /usr/lib/python3.13/lib-dynload/*.so
 
-RUN pip3 install Pillow
+RUN pip3 install pillow
 
 WORKDIR /usr/lib/python3.13
 
@@ -44,16 +44,15 @@ WORKDIR /npiet-$VER
 
 RUN ./configure && make && make install
 
-COPY pietwrapper.c /
+COPY piet.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/pietwrapper -s -static /pietwrapper.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/piet -s -static /piet.c
 
 FROM codegolf/lang-base
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1      /lib/
-COPY --from=0 /usr/bin/piet                 \
-              /usr/bin/pietwrapper          \
-              /usr/local/bin/npiet          /usr/bin/
+COPY --from=0 /usr/bin/ascii-piet           \
+              /usr/bin/piet                 /usr/bin/
 COPY --from=0 /usr/bin/python3.13           /usr/bin/python3
 COPY --from=0 /usr/lib/libX11.so.6          \
               /usr/lib/libXau.so.6          \
@@ -81,7 +80,8 @@ COPY --from=0 /usr/lib/libX11.so.6          \
               /usr/lib/libz.so.1            \
               /usr/lib/libzstd.so.1         /usr/lib/
 COPY --from=0 /usr/lib/python3.13           /usr/lib/python3.13
+COPY --from=0 /usr/local/bin/npiet          /usr/local/bin/
 
-ENTRYPOINT ["pietwrapper"]
+ENTRYPOINT ["piet"]
 
 CMD ["--version"]
