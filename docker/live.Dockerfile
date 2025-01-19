@@ -14,11 +14,12 @@ COPY node_modules ./node_modules
 COPY fonts        ./fonts
 COPY css          ./css
 COPY js           ./js
+COPY svg          ./svg
 
 COPY esbuild package-lock.json package.json ./
 
 RUN ./esbuild \
- && find dist \( -name '*.css' -or  -name '*.js' -or -name '*.map' \) \
+ && find dist \( -name '*.css' -or  -name '*.js' -or -name '*.map' -or -name '*.svg' \) \
   | xargs -i -n1 -P`nproc` sh -c 'brotli {} && zopfli {}'
 
 # Build website.
