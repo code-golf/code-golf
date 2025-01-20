@@ -24,8 +24,6 @@
     {{ svg "sort-numeric-down" }}
 </svg>
 
-{{ template "lang-svgs" .Data }}
-
 <main id=home>
 {{ if .Golfer }}
     <nav class="span tabs">
@@ -54,7 +52,7 @@
     {{ if .Lang }}
         <span title="{{ comma .Points }} points in {{ .Lang.Name }}">
             {{ comma .Points }}
-            <svg><use href="#{{ .Lang.ID }}"/></svg>
+            {{ svg .Lang.ID }}
         </span>
     {{ end }}
     </a>

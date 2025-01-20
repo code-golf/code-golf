@@ -4,7 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl gcc make
 
-ENV VER=3.5.11
+ENV VER=3.5.12
 
 RUN curl https://jmvdveer.home.xs4all.nl/algol68g-$VER.tar.gz \
   | tar xz --strip-components 1
