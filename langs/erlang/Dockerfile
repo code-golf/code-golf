@@ -4,7 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes build-essential curl ncurses-dev
 
-# Also bump Elixir.
+# Also bump Elixir, Gleam.
 ENV VER=27.2
 
 RUN curl -#L https://github.com/erlang/otp/releases/download/OTP-$VER/otp_src_$VER.tar.gz | tar xz
@@ -33,6 +33,7 @@ COPY --from=0 /lib64/ld-linux-x86-64.so.2                   /lib64/
 COPY --from=0 /usr/bin/basename                             \
               /usr/bin/dirname                              \
               /usr/bin/erl                                  \
+              /usr/bin/erlc                                 \
               /usr/bin/erlang                               \
               /usr/bin/escript                              /usr/bin/
 COPY --from=0 /usr/lib/erlang/bin/no_dot_erlang.boot        \
