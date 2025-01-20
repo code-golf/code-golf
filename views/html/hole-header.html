@@ -1,8 +1,6 @@
 <!-- For experimental lang picker -->
 <svg>{{ svg "flask-light" }}</svg>
 
-{{ range .Data.Langs }}<svg>{{ svg .ID }}</svg>{{ end }}
-
 {{ with .Data.Hole.Experiment }}
     <div class=alert>
         {{ svg "flask-light" }}
