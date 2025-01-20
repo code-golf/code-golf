@@ -14,11 +14,12 @@ COPY node_modules ./node_modules
 COPY fonts        ./fonts
 COPY css          ./css
 COPY js           ./js
+COPY svg          ./svg
 
 COPY esbuild package-lock.json package.json ./
 
 RUN ./esbuild \
- && find dist \( -name '*.css' -or  -name '*.js' -or -name '*.map' \) \
+ && find dist \( -name '*.css' -or  -name '*.js' -or -name '*.map' -or -name '*.svg' \) \
   | xargs -i -n1 -P`nproc` sh -c 'brotli {} && zopfli {}'
 
 # Build website.
@@ -61,7 +62,7 @@ COPY --from=codegolf/lang-elixir       ["/", "/langs/elixir/rootfs/"      ] # 74
 COPY --from=codegolf/lang-civet        ["/", "/langs/civet/rootfs/"       ] # 71.8 MiB
 COPY --from=codegolf/lang-coffeescript ["/", "/langs/coffeescript/rootfs/"] # 71.3 MiB
 COPY --from=codegolf/lang-piet         ["/", "/langs/piet/rootfs/"        ] # 69.5 MiB
-COPY --from=codegolf/lang-erlang       ["/", "/langs/erlang/rootfs/"      ] # 68.0 MiB
+COPY --from=codegolf/lang-erlang       ["/", "/langs/erlang/rootfs/"      ] # 68.5 MiB
 COPY --from=codegolf/lang-clojure      ["/", "/langs/clojure/rootfs/"     ] # 66.4 MiB
 COPY --from=codegolf/lang-java         ["/", "/langs/java/rootfs/"        ] # 58.4 MiB
 COPY --from=codegolf/lang-v            ["/", "/langs/v/rootfs/"           ] # 50.2 MiB
