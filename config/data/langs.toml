@@ -655,7 +655,7 @@ for arg <- System.argv, do: IO.puts arg
 [Erlang]
 args       = [ '/usr/bin/erlang', '-' ]
 experiment = 181
-size       = '68.0 MiB'
+size       = '68.5 MiB'
 version    = 'OTP 27.2'
 website    = 'https://www.erlang.org'
 example    = '''
@@ -874,7 +874,7 @@ for (arg in args)
 args       = [ '/usr/bin/harbourwrapper', '-' ]
 experiment = 1614
 size       = '13.0 MiB'
-version    = 'b1ed850'
+version    = 'a40aa4b'
 website    = 'https://harbour.github.io'
 example    = '''
 LOCAL i
@@ -1305,8 +1305,8 @@ end.
 
 [Perl]
 args    = [ '/usr/bin/perl', '-E', '$code', '--' ]
-size    = '5.57 MiB'
-version = '5.40.0'
+size    = '5.54 MiB'
+version = '5.40.1'
 website = 'https://www.perl.org'
 example = '''
 # Printing

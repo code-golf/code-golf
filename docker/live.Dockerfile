@@ -14,11 +14,12 @@ COPY node_modules ./node_modules
 COPY fonts        ./fonts
 COPY css          ./css
 COPY js           ./js
+COPY svg          ./svg
 
 COPY esbuild package-lock.json package.json ./
 
 RUN ./esbuild \
- && find dist \( -name '*.css' -or  -name '*.js' -or -name '*.map' \) \
+ && find dist \( -name '*.css' -or  -name '*.js' -or -name '*.map' -or -name '*.svg' \) \
   | xargs -i -n1 -P`nproc` sh -c 'brotli {} && zopfli {}'
 
 # Build website.
@@ -60,7 +61,7 @@ COPY --from=codegolf/lang-raku         ["/", "/langs/raku/rootfs/"        ] # 75
 COPY --from=codegolf/lang-elixir       ["/", "/langs/elixir/rootfs/"      ] # 74.2 MiB
 COPY --from=codegolf/lang-civet        ["/", "/langs/civet/rootfs/"       ] # 71.8 MiB
 COPY --from=codegolf/lang-coffeescript ["/", "/langs/coffeescript/rootfs/"] # 71.3 MiB
-COPY --from=codegolf/lang-erlang       ["/", "/langs/erlang/rootfs/"      ] # 68.0 MiB
+COPY --from=codegolf/lang-erlang       ["/", "/langs/erlang/rootfs/"      ] # 68.5 MiB
 COPY --from=codegolf/lang-clojure      ["/", "/langs/clojure/rootfs/"     ] # 66.4 MiB
 COPY --from=codegolf/lang-java         ["/", "/langs/java/rootfs/"        ] # 58.4 MiB
 COPY --from=codegolf/lang-v            ["/", "/langs/v/rootfs/"           ] # 50.2 MiB
@@ -91,7 +92,7 @@ COPY --from=codegolf/lang-hexagony     ["/", "/langs/hexagony/rootfs/"    ] # 8.
 COPY --from=codegolf/lang-php          ["/", "/langs/php/rootfs/"         ] # 8.40 MiB
 COPY --from=codegolf/lang-scheme       ["/", "/langs/scheme/rootfs/"      ] # 7.38 MiB
 COPY --from=codegolf/lang-tcl          ["/", "/langs/tcl/rootfs/"         ] # 5.68 MiB
-COPY --from=codegolf/lang-perl         ["/", "/langs/perl/rootfs/"        ] # 5.57 MiB
+COPY --from=codegolf/lang-perl         ["/", "/langs/perl/rootfs/"        ] # 5.54 MiB
 COPY --from=codegolf/lang-arturo       ["/", "/langs/arturo/rootfs/"      ] # 5.29 MiB
 COPY --from=codegolf/lang-fish         ["/", "/langs/fish/rootfs/"        ] # 4.85 MiB
 COPY --from=codegolf/lang-algol-68     ["/", "/langs/algol-68/rootfs/"    ] # 4.66 MiB
