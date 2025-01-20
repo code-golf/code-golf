@@ -871,10 +871,10 @@ for (arg in args)
 '''
 
 [Harbour]
-args       = [ '/usr/bin/harbourwrapper', '-' ]
+args       = [ '/usr/bin/harbour', '-' ]
 experiment = 1614
-size       = '13.0 MiB'
-version    = 'a40aa4b'
+size       = '12.2 MiB'
+version    = '3.0.0'
 website    = 'https://harbour.github.io'
 example    = '''
 LOCAL i
