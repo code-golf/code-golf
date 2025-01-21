@@ -43,10 +43,10 @@
             {{ end }}
             {{ if $hasHole }}
                 <td>
-                    <a href="/rankings/holes/{{ .Hole }}/{{ .Lang }}/{{ .Scoring }}">
-                        {{ svg .Lang }}
+                    <a href="/rankings/holes/{{ .Hole.ID }}/{{ .Lang.ID }}/{{ .Scoring }}">
+                        {{ svg .Lang.ID }}
                         <svg><use href="#{{ .Scoring }}"/></svg>
-                        <span>{{ (index $.Holes .Hole).Name }}</span>
+                        <span>{{ .Hole.Name }}</span>
                     </a>
             {{ end }}
             {{ if $oldestMedal }}
