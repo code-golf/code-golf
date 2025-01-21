@@ -5,20 +5,17 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* hbmk = "/usr/bin/hbmk2";
+const char* dart = "/usr/bin/dart", *code = "/tmp/code.dart";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
-        execv(hbmk, argv);
+        execv(dart, argv);
         ERR_AND_EXIT("execv");
     }
 
-    if (chdir("/tmp"))
-        ERR_AND_EXIT("chdir");
-
     FILE* fp;
 
-    if (!(fp = fopen("code.hb", "w")))
+    if (!(fp = fopen(code, "w")))
         ERR_AND_EXIT("fopen");
 
     char buffer[4096];
@@ -31,13 +28,13 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int hargc = argc + 1;
-    char** hargv = malloc(hargc * sizeof(char*));
-    hargv[0] = (char*) hbmk;
-    hargv[1] = "code.hb";
-    memcpy(&hargv[2], &argv[2], (argc - 2) * sizeof(char*));
-    hargv[hargc - 1] = NULL;
+    int dargc = argc + 1;
+    char** dargv = malloc(dargc * sizeof(char*));
+    dargv[0] = (char*) dart;
+    dargv[1] = (char*) code;
+    memcpy(&dargv[2], &argv[2], (argc - 2) * sizeof(char*));
+    dargv[dargc - 1] = NULL;
 
-    execv(hbmk, hargv);
+    execv(dart, dargv);
     ERR_AND_EXIT("execv");
 }
