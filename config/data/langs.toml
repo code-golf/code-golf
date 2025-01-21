@@ -1121,6 +1121,26 @@ for (let arg of arguments)
     print(arg);
 '''
 
+[Joy]
+args       = [ '/usr/bin/joywrapper', '-' ]
+experiment = 1766
+size       = '1.03 MiB'
+version    = 'Joy1 d7130c7'
+website    = 'https://github.com/Wodan58/joy1'
+example    = '''
+(* Printing *)
+"Hello, World!
+" putchars
+
+(* Looping *)
+0 [9 <] [dup put '\n putch 1 +] while.
+
+(* Accessing arguments *)
+argv rest [putchars 10 putch] step.
+
+quit.
+'''
+
 [jq]
 args    = [ '/usr/bin/jq', '--args', '--null-input', '--raw-output', '--', '$code' ]
 size    = '973 KiB'
