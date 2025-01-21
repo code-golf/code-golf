@@ -45,7 +45,7 @@
                 <td>
                     <a href="/rankings/holes/{{ .Hole.ID }}/{{ .Lang.ID }}/{{ .Scoring }}">
                         {{ svg .Lang.ID }}
-                        <svg><use href="#{{ .Scoring }}"/></svg>
+                        {{ svg .Scoring }}
                         <span>{{ .Hole.Name }}</span>
                     </a>
             {{ end }}
@@ -63,10 +63,5 @@
 
     {{ template "pagination" .Data.Pager }}
 </main>
-
-<svg>
-    {{ svg "bytes" }}
-    {{ svg "chars" }}
-</svg>
 
 {{ template "footer" }}
