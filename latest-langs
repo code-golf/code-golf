@@ -64,6 +64,7 @@ constant %paths = (
     'Kotlin'       => 'github.com/JetBrains/kotlin/releases/latest',
     'Lua'          => 'en.wikipedia.org/wiki/Lua_(programming_language)',
     'Nim'          => 'en.wikipedia.org/wiki/Nim_(programming_language)',
+    'Nit'          => 'github.com/nitlang/nit',
     'OCaml'        => 'en.wikipedia.org/wiki/OCaml',
     'Odin'         => 'github.com/odin-lang/Odin/releases/latest',
     'Pascal'       => 'en.wikipedia.org/wiki/Free_Pascal',
