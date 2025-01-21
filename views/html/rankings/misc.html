@@ -44,7 +44,7 @@
             {{ if $hasHole }}
                 <td>
                     <a href="/rankings/holes/{{ .Hole }}/{{ .Lang }}/{{ .Scoring }}">
-                        <svg><use href="#{{ .Lang }}"/></svg>
+                        {{ svg .Lang }}
                         <svg><use href="#{{ .Scoring }}"/></svg>
                         <span>{{ (index $.Holes .Hole).Name }}</span>
                     </a>
@@ -67,9 +67,6 @@
 <svg>
     {{ svg "bytes" }}
     {{ svg "chars" }}
-{{ range .Langs }}
-    {{ svg .ID }}
-{{ end }}
 </svg>
 
 {{ template "footer" }}
