@@ -130,11 +130,13 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
                 ?? $res ~~ m:i/ [ $name || < dev release version > ] <[\ -]> v? <(<ver>)> /
                 !! $res ~~ / '"currentOid":"' <( <xdigit> ** 7 )> /;
         }
-        when / 'wikipedia'   / {
-            $res ~~ /
-                < Stable Preview > ' release' .+? '>' ( '#' \d+ ' "' )?
-                <(<ver>)>
-            /;
+        when / 'wikipedia'      / {
+            .contains(any < C_Sharp TeX >)
+                ?? $res ~~ / < current stable > ' version' .+? <(<ver>)> /
+                !! $res ~~ /
+                    < Stable Preview > ' release' .+? '>' ( '#' \d+ ' "' )?
+                    <(<ver>)>
+                /;
         }
     } // '?';
 
