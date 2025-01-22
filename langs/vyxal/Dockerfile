@@ -1,12 +1,21 @@
+ARG VER=3.6.0
+
 FROM eclipse-temurin:23.0.1_11-jre-alpine AS builder
 
-ENV VER=3.6.0
+ARG VER
 
-RUN wget -O vyxal.jar https://github.com/Vyxal/Vyxal/releases/download/v$VER/vyxal-$VER.jar
+RUN apk add --no-cache curl
+
+RUN wget -O- https://github.com/Vyxal/Vyxal/archive/refs/tags/v$VER.tar.gz \
+  | tar xz --strip-components 1
+
+RUN ./mill jvm.assembly
 
 FROM codegolf/lang-base
 
-COPY --from=0 /vyxal.jar                             /
+ARG VER
+
+COPY --from=0 /out/jvm/assembly.dest/vyxal-$VER.jar  /vyxal.jar
 COPY --from=0 /lib/ld-musl-x86_64.so.1               /lib/
 COPY --from=0 /opt/java/openjdk/bin/java             /opt/java/bin/
 COPY --from=0 /opt/java/openjdk/lib/jvm.cfg          \
