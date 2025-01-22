@@ -1140,7 +1140,7 @@ $ARGS.positional[]
 [Julia]
 args    = [ '/usr/bin/julia', '--color=yes', '--eval', '$code', '--' ]
 size    = '300 MiB'
-version = '1.11.2'
+version = '1.11.3'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -1853,7 +1853,7 @@ w
 args       = [ '/opt/java/bin/java', '-jar', 'vyxal.jar', '-O', '--code', '$code', '--' ]
 experiment = 1846
 size       = '152 MiB'
-version    = '3.6.0'
+version    = '3.6.1'
 website    = 'https://vyxal.github.io'
 example    = '''
 ## Printing

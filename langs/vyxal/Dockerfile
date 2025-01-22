@@ -1,4 +1,4 @@
-ARG VER=3.6.0
+ARG VER=3.6.1
 
 FROM eclipse-temurin:23.0.1_11-jre-alpine AS builder
 
