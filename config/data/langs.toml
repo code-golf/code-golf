@@ -1582,7 +1582,7 @@ fn main() {
 '''
 
 [Scala]
-args       = [ '/usr/bin/scalawrapper', '-' ]
+args       = [ '/usr/bin/scala', '-' ]
 env        = [ 'JAVA_HOME=/opt/java' ]
 experiment = 235
 size       = '164 MiB'

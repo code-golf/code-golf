@@ -9,9 +9,9 @@ ARG VER
 RUN curl -#L https://github.com/scala/scala3/releases/download/$VER/scala3-$VER.tar.gz \
   | tar xz --directory /usr/local --strip-components 1
 
-COPY scalawrapper.c /
+COPY scala.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/scalawrapper -s -static scalawrapper.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/scala -s -static scala.c
 
 FROM codegolf/lang-base
 
@@ -37,8 +37,8 @@ COPY --from=0 /opt/java/openjdk/lib/jvm.cfg                    \
 COPY --from=0 /opt/java/openjdk/lib/server/libjvm.so           /opt/java/lib/server/
 COPY --from=0 /usr/bin/dirname                                 \
               /usr/bin/env                                     \
-              /usr/bin/scalawrapper                            /usr/bin/
-COPY --from=0 /usr/lib/libgmp.so.10                         \
+              /usr/bin/scala                                   /usr/bin/
+COPY --from=0 /usr/lib/libgmp.so.10                            \
               /usr/lib/libncursesw.so.6                        \
               /usr/lib/libreadline.so.8                        /usr/lib/
 COPY --from=0 /usr/local/bin/common /usr/local/bin/scala       /usr/local/bin/
@@ -53,6 +53,6 @@ COPY --from=0 /usr/local/lib/compiler-interface-1.9.6.jar      \
 
 ENV JAVA_HOME=/opt/java
 
-ENTRYPOINT ["scalawrapper"]
+ENTRYPOINT ["scala"]
 
 CMD ["--version"]
