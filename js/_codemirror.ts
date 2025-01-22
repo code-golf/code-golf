@@ -30,6 +30,7 @@ import { cpp }                                      from '@codemirror/lang-cpp';
 import { crystal }                                  from '@codemirror/legacy-modes/mode/crystal';
 import { d }                                        from '@codemirror/legacy-modes/mode/d';
 import { elixirLanguage }                           from 'codemirror-lang-elixir';
+import { erlang }                                   from '@codemirror/legacy-modes/mode/erlang';
 import { factor }                                   from '@codemirror/legacy-modes/mode/factor';
 import { forth }                                    from '@codemirror/legacy-modes/mode/forth';
 import { fortran }                                  from '@codemirror/legacy-modes/mode/fortran';
@@ -151,6 +152,7 @@ export const extensions : { [key: string]: any } = {
     'dart':          StreamLanguage.define(dart),
     // TODO egel
     'elixir':        elixir,
+    'erlang':        StreamLanguage.define(erlang),
     'f-sharp':       StreamLanguage.define(fSharp),
     'factor':        StreamLanguage.define(factor),
     // TODO fish
@@ -183,6 +185,7 @@ export const extensions : { [key: string]: any } = {
     'pascal':        StreamLanguage.define(pascal),
     'perl':          StreamLanguage.define(perl),
     'php':           php,
+    // TODO picat
     'powershell':    StreamLanguage.define(powerShell),
     'prolog':        prolog(),
     'python':        python,
@@ -205,6 +208,7 @@ export const extensions : { [key: string]: any } = {
     // TODO uiua
     // TODO v
     // TODO viml
+    // TODO vyxal
     'wren':          wren,
     'zig':           zig(),
 };
