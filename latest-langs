@@ -51,6 +51,7 @@ constant %paths = (
     'Haskell'      => 'pkgs.alpinelinux.org/package/edge/community/x86_64/ghc',
     'Haxe'         => 'github.com/HaxeFoundation/haxe/releases/latest',
     'Hexagony'     => 'github.com/SirBogman/Hexagony',
+    'Hurl'         => 'git.sr.ht/~ntietz/hurl-lang/tree',
     'Hush'         => 'crates.io/api/v1/crates/hush',
     'Hy'           => 'pypi.org/pypi/hy/json',
     'iogii'        => 'golfscript.com/iogii/source.html',
@@ -116,6 +117,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'endoflife'      / { $res.&from-json[0]<latest> }
         when / 'fennel-lang'    / { $res ~~ / 'fennel-' <(<ver>)> / }
         when / 'ftp.gnu.org'    / { $res ~~ / '-' <(<ver>)> '.tar.gz' / }
+        when / 'git.sr.ht'      / { $res ~~ / 'Permalink' .+? <(<ver>)> / }
         when / 'golfscript.com' / { $res ~~ / '(Alpha)' .+? <(<ver>)> / }
         when / 'jmvdveer'       / { $res ~~ / 'algol68g-' <(<ver>)> / }
         when / 'lists.sr.ht'    / { $res ~~ / 'Hare ' <(<ver>)> ' release' / }
