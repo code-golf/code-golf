@@ -84,4 +84,6 @@ int main(int argc, char* argv[]) {
 
     execl(parigp, parigp, "--fast", "--quiet", code, NULL);
     ERR_AND_EXIT("execl");
+
+    free(args);
 }
