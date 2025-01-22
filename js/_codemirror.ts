@@ -185,6 +185,7 @@ export const extensions : { [key: string]: any } = {
     'pascal':        StreamLanguage.define(pascal),
     'perl':          StreamLanguage.define(perl),
     'php':           php,
+    // TODO picat
     // TODO piet
     'powershell':    StreamLanguage.define(powerShell),
     'prolog':        prolog(),
