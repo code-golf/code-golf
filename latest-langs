@@ -46,7 +46,7 @@ constant %paths = (
     'Go'           => 'endoflife.date/api/go.json',
     'GolfScript'   => 'github.com/lynn/golfscript/tree/code-golf',
     'Groovy'       => 'en.wikipedia.org/wiki/Apache_Groovy',
-    'Harbour'      => 'github.com/harbour/core',
+    'Harbour'      => 'sourceforge.net/projects/harbour-project/files',
     'Hare'         => 'lists.sr.ht/~sircmpwn/hare-announce?search=release',
     'Haskell'      => 'pkgs.alpinelinux.org/package/edge/community/x86_64/ghc',
     'Haxe'         => 'github.com/HaxeFoundation/haxe/releases/latest',
@@ -70,6 +70,7 @@ constant %paths = (
     'Pascal'       => 'en.wikipedia.org/wiki/Free_Pascal',
     'Perl'         => 'endoflife.date/api/perl.json',
     'PHP'          => 'endoflife.date/api/php.json',
+    'Picat'        => 'picat-lang.org/download.html',
     'PowerShell'   => 'endoflife.date/api/powershell.json',
     'Prolog'       => 'swi-prolog.discourse.group/c/releases',
     'Python'       => 'endoflife.date/api/python.json',
@@ -120,6 +121,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'jmvdveer'       / { $res ~~ / 'algol68g-' <(<ver>)> / }
         when / 'lists.sr.ht'    / { $res ~~ / 'Hare ' <(<ver>)> ' release' / }
         when / 'npmjs.org'      / { $res.&from-json[0]<version> }
+        when / 'picat-lang.org' / { $res ~~ / 'Version ' <(<ver>)> / }
         when / 'pypi.org'       / { $res.&from-json<info><version> }
         when / 'regina-rexx'    / { $res ~~ / '<b>Current</b> ' <(<ver>)> / }
         when / 'sourceforge'    / { $res ~~ / 'Latest' .+? <(<ver>)> / }
@@ -129,11 +131,13 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
                 ?? $res ~~ m:i/ [ $name || < dev release version > ] <[\ -]> v? <(<ver>)> /
                 !! $res ~~ / '"currentOid":"' <( <xdigit> ** 7 )> /;
         }
-        when / 'wikipedia'   / {
-            $res ~~ /
-                < Stable Preview > ' release' .+? '>' ( '#' \d+ ' "' )?
-                <(<ver>)>
-            /;
+        when / 'wikipedia'      / {
+            .contains(any < C_Sharp TeX >)
+                ?? $res ~~ / < current stable > ' version' .+? <(<ver>)> /
+                !! $res ~~ /
+                    < Stable Preview > ' release' .+? '>' ( '#' \d+ ' "' )?
+                    <(<ver>)>
+                /;
         }
     } // '?';
 

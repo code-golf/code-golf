@@ -4,19 +4,23 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl gcc libpcre3-dev make zlib1g-dev
 
-ENV VER=a40aa4b
+ENV HB_BUILD_CONTRIBS='no' HB_BUILD_STRIP='all' VER=3.0.0
 
-RUN curl -#L https://github.com/harbour/core/tarball/$VER \
+RUN curl -#L https://sourceforge.net/projects/harbour-project/files/source/$VER/harbour-$VER.tar.gz/download \
   | tar xz --strip-components 1
 
-RUN HB_BUILD_CONTRIBS='no'   \
-    HB_BUILD_STRIP='all'     \
-    HB_INSTALL_PREFIX='/usr' \
-    make -j`nproc` install
+RUN make -j`nproc` install
 
-COPY harbourwrapper.c /
+WORKDIR /harbour
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/harbourwrapper -s -static harbourwrapper.c
+RUN curl -#L https://github.com/harbour/core/archive/master.tar.gz \
+  | tar xz --strip-components 1
+
+RUN HB_INSTALL_PREFIX='/usr' make -j`nproc` install
+
+COPY harbour.c /
+
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/harbour -s /harbour.c
 
 FROM codegolf/lang-base
 
@@ -27,11 +31,11 @@ COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
               /lib/x86_64-linux-gnu/libpthread.so.0 \
               /lib/x86_64-linux-gnu/libz.so.1       /lib/
 COPY --from=0 /lib64/ld-linux-x86-64.so.2           /lib64/
-COPY --from=0 /usr/bin/harbour                      \
-              /usr/bin/harbourwrapper               \
-              /usr/bin/hbmk2                        /usr/bin/
-COPY --from=0 /usr/include/harbour                  /usr/include/harbour
+COPY --from=0 /usr/bin/harbour                      /usr/bin/
+COPY --from=0 /usr/bin/hbmk2                        \
+              /usr/local/bin/harbour                /usr/local/bin/
+COPY --from=0 /usr/local/include/harbour            /usr/local/include/harbour
 
-ENTRYPOINT ["harbourwrapper"]
+ENTRYPOINT ["harbour"]
 
 CMD ["--version"]
