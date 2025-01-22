@@ -136,6 +136,7 @@
                 {{ end }}
                 {{ with .Lang }}
                     <a href="/recent/{{ .ID }}">
+                        {{ svg .ID }}
                         <span>{{ .Name }}</span>
                         {{ if .Experiment }}<svg><use href="#flask"/></svg>{{ end }}
                     </a>

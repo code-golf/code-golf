@@ -1,8 +1,6 @@
 {{ template "header" . }}
 {{ template "recent" . }}
 
-{{ template "lang-svgs" .Data.Rows }}
-
 <main id=two-pane>
     {{ template "nav" . }}
 
@@ -21,7 +19,7 @@
             <tr {{ if eq $name .Name }} class=me {{ end }}>
                 <td>
                     <a href="/{{ .Hole.ID }}#{{ .Lang.ID }}">
-                        <svg class=thin><use href="#{{ .Lang.ID }}"/></svg>
+                        {{ svg .Lang.ID "class" "thin" }}
                         <span>{{ .Hole.Name }}</span>
                     </a>
                 <td>{{ template "golfer-link" . }}
@@ -36,7 +34,7 @@
                         {{ else if eq .Rank 3 }}🥉
                         {{ end }}
                         <span class=right>{{ comma .Strokes }}</span>
-                        <svg><use href="#{{ .Lang.ID }}"/></svg>
+                        {{ svg .Lang.ID }}
                     </a>
                 <td class=right>{{ time (.Submitted.In $.Location) }}
         {{ end }}

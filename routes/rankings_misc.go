@@ -18,9 +18,11 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 		Rows  []struct {
 			Bytes, Chars, Count, Rank, Total int
 			Country                          config.NullCountry `db:"country_flag"`
-			Hole, Lang, Scoring              string
+			Hole                             *config.Hole
+			Lang                             *config.Lang
 			Me                               bool
 			Name                             string `db:"login"`
+			Scoring                          string
 			Submitted                        time.Time
 		}
 	}{Pager: pager.New(r)}

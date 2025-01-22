@@ -296,7 +296,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		if golfer.Keymap == "vim" && in.Lang == "viml" {
+		if in.Lang == "viml" && golfer.Settings["hole"]["editor-keymap"] == "vim" {
 			if c := golfer.Earn(db, "real-programmers"); c != nil {
 				out.Cheevos = append(out.Cheevos, *c)
 			}
