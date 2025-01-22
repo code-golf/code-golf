@@ -895,10 +895,10 @@ for (arg in args)
 '''
 
 [Harbour]
-args       = [ '/usr/bin/harbourwrapper', '-' ]
+args       = [ '/usr/bin/harbour', '-' ]
 experiment = 1614
-size       = '13.0 MiB'
-version    = 'a40aa4b'
+size       = '12.2 MiB'
+version    = '3.0.0'
 website    = 'https://harbour.github.io'
 example    = '''
 LOCAL i
@@ -1361,6 +1361,37 @@ for ($i = 0; $i < 10; $i++)
 # Accessing arguments
 for ($i = 1; $i < $argc; $i++)
     echo "$argv[$i]\n";
+'''
+
+[Picat]
+args       = [ '/usr/bin/picat', '-' ]
+experiment = 1871
+size       = '11.1 MiB'
+version    = '3.7'
+website    = 'https://picat-lang.org'
+example    = '''
+main =>
+    % Printing
+    println("Hello, World!"),
+
+    % Looping
+    foreach (I in 0..9)
+        println(I)
+    end.
+
+main(Args) =>
+    % Printing
+    println("Hello, World!"),
+
+    % Looping
+    foreach (I in 0..9)
+        println(I)
+    end,
+
+    % Accessing arguments
+    foreach (Arg in Args)
+        println(Arg)
+    end.
 '''
 
 [PowerShell]
@@ -1843,17 +1874,17 @@ w
 '''
 
 [Vyxal]
-args       = [ '/opt/java/bin/java', '-jar', 'vyxal.jar', '-MO', '--code', '$code', '--' ]
+args       = [ '/opt/java/bin/java', '-jar', 'vyxal.jar', '-O', '--code', '$code', '--' ]
 experiment = 1846
 size       = '152 MiB'
-version    = '3.5.1'
+version    = '3.6.1'
 website    = 'https://vyxal.github.io'
 example    = '''
 ## Printing
 "Hello, World!",
 
 ## Looping
-9 (n,}
+0,9 (n,}
 
 ## Accessing arguments
 #? (,}
