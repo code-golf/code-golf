@@ -265,16 +265,24 @@ GROUP BY hole, lang, scoring
 
 CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
     select hole, lang, scoring, user_id, submitted,
+           holes.experiment != 0                          experimental_hole,
+           langs.experiment != 0                          experimental_lang,
+           holes.experiment != 0 OR langs.experiment != 0 experimental,
            case when scoring = 'bytes' then bytes else chars end strokes,
            case when scoring = 'bytes' then chars else bytes end other_strokes
-      from stable_passing_solutions
+      from solutions
+      join holes ON hole = holes.id
+      join langs ON lang = langs.id
+     where not failing
 ), min as (
     select hole, scoring, min(strokes)::numeric Sa
       from strokes
+     where not experimental
   group by hole, scoring
 ), min_per_lang as (
     select hole, lang, scoring, min(strokes)::numeric S, sqrt(count(*)) N
      from strokes
+     where not experimental
   group by hole, lang, scoring
 ), bayesian_estimators as (
     select hole, lang, scoring, S,
@@ -283,10 +291,11 @@ CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
       join min_per_lang using(hole, scoring)
 ), points as (
     select hole, lang, scoring, user_id, strokes, other_strokes, submitted,
-           round(Sb / strokes * 1000) points,
-           round(S  / strokes * 1000) points_for_lang
+           experimental_hole, experimental_lang, experimental,
+           coalesce(round(Sb / strokes * 1000), 0) points,
+           coalesce(round(S  / strokes * 1000), 0) points_for_lang
       from strokes
-      join bayesian_estimators using(hole, lang, scoring)
+ left join bayesian_estimators using(hole, lang, scoring)
 ), ranks as (
     select *,
            count(*)     over (partition by hole, lang, scoring) golfers,

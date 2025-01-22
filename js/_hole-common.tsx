@@ -252,7 +252,7 @@ function updateLangPicker() {
     picker.replaceChildren(...sortedLangs.map((l: any) => {
         const tab = <a href={l.id == lang ? null : '#'+l.id} title={l.name}></a>;
 
-        if (icon)  tab.append(<svg><use href={'#'+l.id}/></svg>);
+        if (icon)  tab.append(<svg><use href={l['logo-url']+'#'+l.id}/></svg>);
         if (label) tab.append(l.name);
 
         if (getSolutionCode(l.id, 0)) {

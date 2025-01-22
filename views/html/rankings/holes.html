@@ -1,8 +1,6 @@
 {{ template "header"   . }}
 {{ template "rankings" . }}
 
-{{ template "lang-svgs" .Data.Rows }}
-
 {{ $hidePoints := and .Data.Hole .Data.Hole.Experiment }}
 
 <main id=two-pane>
@@ -50,7 +48,7 @@
                     data-tooltip="{{ .Lang.Name }} {{ $.Data.Scoring }} solution is {{ comma .Strokes }} {{ $.Data.Scoring }}, {{ comma .OtherStrokes }} {{ $.Data.OtherScoring }}."
                 {{ end }}>
                     <span>{{ comma .Strokes }}</span>
-                    <svg><use href="#{{ .Lang.ID }}"/></svg>
+                    {{ svg .Lang.ID }}
                 </a>
             {{ end }}
             <td class=right>{{ time (.Submitted.In $.Location) }}

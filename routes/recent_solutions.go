@@ -14,6 +14,7 @@ import (
 func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 	type row struct {
 		Country                          config.NullCountry
+		Experimental                     bool
 		Name                             string
 		Hole                             *config.Hole
 		Lang                             *config.Lang
@@ -47,7 +48,7 @@ func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 
 	if err := session.Database(r).Select(
 		&data.Rows,
-		` SELECT golfers, hole, lang, login name, strokes, rank, submitted, tie_count
+		` SELECT experimental, golfers, hole, lang, login name, strokes, rank, submitted, tie_count
 		    FROM rankings
 		    JOIN users ON user_id = id
 		   WHERE (hole = $1 OR $1 IS NULL)

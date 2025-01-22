@@ -11,6 +11,6 @@ COPY --from=0 *.rb /
 
 FROM codegolf/lang-base
 
-COPY --from=1 / /
+COPY --from=1 . /
 
 CMD ["ruby", "labyrinth.rb"]
