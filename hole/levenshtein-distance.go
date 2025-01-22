@@ -16,15 +16,23 @@ func levenshteinDistance() []Run {
 	tests := []test{
 		levenshteinTest(word, word),
 		levenshteinTest("a", randWord()),
+		levenshteinTest(randWord(), "a"),
 		levenshteinTest("incomprehensible", randWord()),
 		levenshteinTest("open", "however"),
 		levenshteinTest("however", "open"),
 		levenshteinTest("large", "hypothetical"),
+		levenshteinTest("hypothetical", "set"),
+		levenshteinTest("very", "incomprehensible"),
+		levenshteinTest("apprentice", "point"),
+		levenshteinTest("school", "school"),
 	}
 
-	for i := len(tests); i < 20; i++ {
+	for i := len(tests); i < 40; i++ {
 		tests = append(tests, levenshteinTest(randWord(), randWord()))
 	}
 
-	return outputTests(shuffle(tests))
+	tests = shuffle(tests)
+
+	const argc = 20 // Preserve original argc
+	return outputTests(tests[:argc], tests[len(tests)-argc:])
 }
