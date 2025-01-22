@@ -119,13 +119,15 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 
 	header := w.Header()
 
+	// Workaround SVG blocking, set default-src to 'self' rather than 'none'.
+	// Until Firefox >= 132 is more widespread, see https://bugzil.la/1773976
 	header.Set("Content-Language", "en")
 	header.Set("Content-Type", "text/html; charset=utf-8")
 	header.Set("Referrer-Policy", "no-referrer")
 	header.Set("Content-Security-Policy",
 		"base-uri 'none';"+
 			"connect-src 'self';"+
-			"default-src 'none';"+
+			"default-src 'self';"+
 			"form-action 'self';"+
 			"font-src 'self';"+
 			"frame-ancestors 'none';"+
