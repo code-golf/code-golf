@@ -2,7 +2,7 @@ FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache build-base curl
 
-RUN curl https://cpan.metacpan.org/authors/id/H/HA/HAARG/perl-5.40.0.tar.gz \
+RUN curl https://cpan.metacpan.org/authors/id/S/SH/SHAY/perl-5.40.1.tar.gz \
   | tar xz && mv perl-* perl
 
 RUN cd perl                           \
@@ -60,4 +60,4 @@ COPY --from=0 /perl/lib/warnings/register.pm   /usr/lib/perl/warnings/
 
 ENTRYPOINT ["perl"]
 
-CMD ["-E", "say substr $^V, 1"]
+CMD ["--version"]
