@@ -35,11 +35,7 @@ int main(int argc, char* argv[]) {
     pid_t pid;
 
     if (!(pid = fork())) {
-        // FIXME Avoid compiler message redirects.
-        if (!dup2(STDERR_FILENO, STDOUT_FILENO))
-            ERR_AND_EXIT("dup2");
-
-        execl(c3, c3, "compile", code, NULL);
+        execl(c3, c3, "--quiet", "compile", code, NULL);
         ERR_AND_EXIT("execl");
     }
 
