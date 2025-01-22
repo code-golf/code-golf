@@ -1221,7 +1221,8 @@ version    = 'f0f01c8'
 website    = 'https://golfscript.com/nibbles/'
 example    = '''
 # Printing
-"Hello, World!\n"
+"Hello, World!
+"
 
 # Looping
 `,10
