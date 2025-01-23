@@ -94,7 +94,7 @@ func scramble() [4][4]rune {
 
 	for i := range 4 {
 		for j := range 4 {
-			board[i][j] = dice[j + i * 4][0] // Index 0 represents the side facing up after scrambling.
+			board[i][j] = dice[j+i*4][0] // Index 0 represents the side facing up after scrambling.
 		}
 	}
 
@@ -135,9 +135,9 @@ func dfs(board [4][4]rune, used [4][4]bool, word []rune, index, i, j int) bool {
 		{+0, -1}, {+0, +1},
 		{+1, -1}, {+1, +0}, {+1, +1},
 	} {
-		x, y := i + direction[0], j + direction[1]
+		x, y := i+direction[0], j+direction[1]
 
-		if dfs(board, used, word, index + 1, x, y) {
+		if dfs(board, used, word, index+1, x, y) {
 			return true
 		}
 	}

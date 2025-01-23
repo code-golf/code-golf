@@ -243,8 +243,12 @@ func Play(
 		runs = reversePolishNotation()
 	case "reversi":
 		runs = reversi()
+	case "rot13":
+		runs = rot13()
 	case "scrambled-alphabetization":
 		runs = scrambledAlphabetization()
+	case "set":
+		runs = set()
 	case "seven-segment":
 		runs = sevenSegment()
 	case "si-units":
@@ -271,9 +275,9 @@ func Play(
 	// Holes with fixed test cases.
 	case "css-colors":
 		runs = outputTests(shuffle(fixedTests(hole.ID)))
-	case "emojify", "flags", "rock-paper-scissors-spock-lizard", "united-states":
+	case "emojify", "flags", "rock-paper-scissors-spock-lizard", "tic-tac-toe", "united-states":
 		runs = outputMultirunTests(fixedTests(hole.ID))
-	case "floyd-steinberg-dithering", "hexdump", "proximity-grid", "star-wars-opening-crawl":
+	case "floyd-steinberg-dithering", "hexdump", "minesweeper", "proximity-grid", "star-wars-opening-crawl":
 		runs = outputTestsWithSep("\n\n", shuffle(fixedTests(hole.ID)))
 
 	// Holes with no arguments and a static answer.
@@ -307,8 +311,8 @@ func play(
 	switch lang.ID {
 	case "05ab1e":
 		// Prevent trivial quines. Error out and return early.
-		if hole.ID == "quine" && !strings.Contains(code, `"`) && !strings.Contains(code, "”") {
-			run.Stderr = "Quine in 05AB1E must have at least one '\"' or '”' character."
+		if hole.ID == "quine" && len(code) > 0 && !strings.Contains(code, `"`) && !strings.Contains(code, "”") {
+			run.Stderr = `Quine in 05AB1E must have at least one '"' or '”' character.`
 			return nil
 		}
 	case "cjam":
@@ -329,6 +333,12 @@ func play(
 		// Prevent trivial quines. Error out and return early.
 		if hole.ID == "quine" && strings.Contains(code, "//go:embed") {
 			run.Stderr = `Quine in Go must not use "embed".`
+			return nil
+		}
+	case "iogii":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && len(code) > 0 && regexp.MustCompile(`^\d+$`).MatchString(code) {
+			run.Stderr = "Quine in iogii must not consist solely of numeric characters."
 			return nil
 		}
 	case "jq":
@@ -369,6 +379,12 @@ func play(
 		// Prevent trivial quines. Error out and return early.
 		if hole.ID == "quine" && !strings.Contains(code, `\`) {
 			run.Stderr = `Quine in TeX must have at least one '\' character.`
+			return nil
+		}
+	case "uiua":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && len(code) > 0 && (!strings.Contains(code, "&p") || strings.Contains(code, `"`)) {
+			run.Stderr = "Quine in Uiua must use `&p` (without backticks) and cannot contain double quotes."
 			return nil
 		}
 	}
