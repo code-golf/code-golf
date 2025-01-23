@@ -5,11 +5,11 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* hbmk = "/usr/bin/hbmk2";
+const char* picat = "/usr/local/bin/picat", *code = "code.pi";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
-        execv(hbmk, argv);
+        execv(picat, argv);
         ERR_AND_EXIT("execv");
     }
 
@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
 
     FILE* fp;
 
-    if (!(fp = fopen("code.hb", "w")))
+    if (!(fp = fopen(code, "w")))
         ERR_AND_EXIT("fopen");
 
     char buffer[4096];
@@ -31,13 +31,13 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int hargc = argc + 1;
-    char** hargv = malloc(hargc * sizeof(char*));
-    hargv[0] = (char*) hbmk;
-    hargv[1] = "code.hb";
-    memcpy(&hargv[2], &argv[2], (argc - 2) * sizeof(char*));
-    hargv[hargc - 1] = NULL;
+    int pargc = argc + 1;
+    char** pargv = malloc(pargc * sizeof(char*));
+    pargv[0] = (char*) picat;
+    pargv[1] = (char*) code;
+    memcpy(&pargv[2], &argv[2], (argc - 2) * sizeof(char*));
+    pargv[pargc - 1] = NULL;
 
-    execv(hbmk, hargv);
+    execv(picat, pargv);
     ERR_AND_EXIT("execv");
 }

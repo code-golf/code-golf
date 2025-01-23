@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
@@ -10,7 +11,7 @@
 void copy_file(const char* src_file, const char* dst_file);
 void copy_folder(const char* src_dir, const char* dst_dir);
 
-const char* gleam = "/usr/local/bin/gleam", *code = "src/code.gleam";
+const char* gleam = "/usr/local/bin/gleam", *code = "src/main.gleam";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
@@ -37,6 +38,27 @@ int main(int argc, char* argv[]) {
 
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
+
+    pid_t pid;
+
+    if (!(pid = fork())) {
+        // Print errors and/or warnings on STDERR.
+        if (!dup2(STDERR_FILENO, STDOUT_FILENO))
+            ERR_AND_EXIT("dup2");
+
+        execl(gleam, gleam, "build", "--no-print-progress", NULL);
+        ERR_AND_EXIT("execl");
+    }
+
+    int status;
+
+    waitpid(pid, &status, 0);
+
+    if (!WIFEXITED(status))
+        exit(EXIT_FAILURE);
+
+    if (WEXITSTATUS(status))
+        return WEXITSTATUS(status);
 
     int gargc = argc + 2;
     char** gargv = malloc(gargc * sizeof(char*));
