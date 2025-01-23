@@ -347,52 +347,55 @@ links = [
 synopsis = 'Print valid words in the word game Boggle.'
 preamble = '''
 <p>
-    Boggle is a word game in which players try to find as many words in a
-    four-by-four grid consisting of random letters in the English alphabet.
+    Boggle is a word game in which players try to find as many words as they can
+    from a four-by-four grid of random letters in the English alphabet.
 
 <p>
     Each word, in order to be valid, must adhere to specific criteria defined
     as follows:
 
 <ul>
-    <li>Any given word must count at least three letters.
+    <li>Any given word must consist of at least three letters.
     <li>Each letter after the first must be a direct neighbor of the preceding
         letter, either horizontal, vertical, or diagonal.
+    <li>Wrapping around any of the edges is not allowed at all times.
     <li>Individual letters from the grid may be used once in any given word.
 </ul>
 
 <p>
-    For example, consider the following argument.
+    For example, consider the following argument:
 
 <pre>
-CODE GOLF IS AWESOME
+code golf is awesome
 
-A C F J
-E O L B
-P D G M
-U X C I
+D E C A
+B O L O
+E R T I
+T D N I
 </pre>
 
 <p>
-    Searching the word <code>CODE</code> is demonstrated by replacing each of
-    its letters with digits 1, 2, 3, and 4, respectively.
+    The first line has all the words you need to validate. Validating the word
+    <code><b>code</b></code> is demonstrated by replacing every matching letter
+    in the grid with digits 1, 2, 3, and 4, respectively.
 
 <pre>
-A <b>1</b> F J
-<b>4</b> <b>2</b> L B
-P <b>3</b> G M
-U X C I
+<b>3</b> <b>4</b> <b>1</b> A
+B <b>2</b> L O
+E R T I
+T D N I
 </pre>
 
 <p>
-    Starting at 1, going in order, each digit after the first is a direct
-    neighbor of the one that precedes it in any of the aforementioned
-    directions. Therefore, and because it equally meets both length and used
-    letter frequency criteria, the word <code>CODE</code> is valid.
+    In ascending order, each subsequent digit after the first is a direct
+    neighbor of the preceding digit in any of the aforementioned directions.
+    Therefore, and because it adheres to all remaining validation criteria
+    equally, the word <code><b>code</b></code> is valid.
 
 <p>
-    Print the valid words in each given grid per argument on the same line,
-    separated by spaces.
+    In order of appearance, print the valid words for each given grid per
+    argument on the same line, separated by spaces; or <b>-</b> when none
+    of the words are valid.
 '''
 
 [brainfuck]
