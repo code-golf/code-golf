@@ -15,15 +15,6 @@
     </div>
 {{ end }}
 
-<svg>
-    {{ svg "brush" }}
-    {{ svg "calculator" }}
-    {{ svg "cpu" }}
-    {{ svg "joystick" }}
-    {{ svg "shuffle" }}
-    {{ svg "sort-numeric-down" }}
-</svg>
-
 <main id=home>
 {{ if .Golfer }}
     <nav class="span tabs">
@@ -48,7 +39,7 @@
     {{ end }}
        title="{{ .Hole.Name }} ({{ .Hole.Category }})">
         <h2>{{ .Hole.Name }}</h2>
-        <svg><use href="#{{ .Hole.CategoryIcon }}"/></svg>
+        {{ svg .Hole.CategoryIcon }}
     {{ if .Lang }}
         <span title="{{ comma .Points }} points in {{ .Lang.Name }}">
             {{ comma .Points }}
