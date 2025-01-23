@@ -7,7 +7,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* osabie = "/usr/bin/python", *code = "code.abe", *input = "argv.txt";
+const char* osabie = "/usr/bin/escript", *code = "code.abe", *input = "argv.txt";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version"))
@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
         if (dup2(open(input, O_RDONLY), STDIN_FILENO))
             ERR_AND_EXIT("dup2");
 
-        execl(osabie, osabie, "/osabie/osabie.py", code, NULL);
+        execl(osabie, osabie, "/osabie", code, NULL);
         ERR_AND_EXIT("execl");
     }
 
