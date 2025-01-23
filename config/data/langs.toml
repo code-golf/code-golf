@@ -638,8 +638,8 @@ def main =
 [Elixir]
 args    = [ '/usr/local/bin/elixir', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '74.2 MiB'
-version = '1.18.1'
+size    = '74.3 MiB'
+version = '1.18.2'
 website = 'https://elixir-lang.org'
 example = '''
 # Printing
