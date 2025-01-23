@@ -996,6 +996,7 @@ size       = '2.10 MiB'
 version    = '0bcafce7'
 website    = 'https://hurl.wtf'
 example    = '''
+include "if.hurl";
 include "loop.hurl";
 
 # Printing
@@ -1006,14 +1007,25 @@ try {
     loop(func(i) {
         println(i.1);
         toss [i.1 + 1, i.2];
-        hurl ~(i.1 + 1 == i.2);
+        hurl (i.1 + 1) < i.2;
     }, [0, 10]);
-} catch as wtf {};
+} catch as x {
+};
 
 # Accessing arguments
-for_each(str_lines(read_file("args")), func(arg) {
-    println(arg);
-});
+let file = read_file("argv.txt");
+let list = str_lines(file);
+let argv = slice(list, 1, len(list) + 1);
+try {
+    if(func() {
+        hurl argv ~= [];
+    }, func() {
+        for_each(argv, func(arg) {
+            println(arg);
+        });
+    });
+} catch as x {
+};
 '''
 
 [Hush]
