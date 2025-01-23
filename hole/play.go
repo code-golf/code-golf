@@ -459,10 +459,10 @@ func play(
 	case "scala":
 		if hole.ID == "emojify" || hole.ID == "hexdump" || hole.ID == "pangram-grep" ||
 			hole.ID == "rot13" || hole.ID == "star-wars-opening-crawl" {
-				args := []string{}
-				for _, arg := range run.Args {
-					args = append(args, strings.ReplaceAll(arg, "'", "'\\''"))
-				}
+			args := []string{}
+			for _, arg := range run.Args {
+				args = append(args, strings.ReplaceAll(arg, "'", "'\\''"))
+			}
 			cmd.Args = append(cmd.Args, args...)
 		} else {
 			cmd.Args = append(cmd.Args, run.Args...)
