@@ -638,8 +638,8 @@ def main =
 [Elixir]
 args    = [ '/usr/local/bin/elixir', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '74.2 MiB'
-version = '1.18.1'
+size    = '74.3 MiB'
+version = '1.18.2'
 website = 'https://elixir-lang.org'
 example = '''
 # Printing
@@ -1160,7 +1160,7 @@ $ARGS.positional[]
 [Julia]
 args    = [ '/usr/bin/julia', '--color=yes', '--eval', '$code', '--' ]
 size    = '300 MiB'
-version = '1.11.2'
+version = '1.11.3'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -1870,17 +1870,17 @@ w
 '''
 
 [Vyxal]
-args       = [ '/opt/java/bin/java', '-jar', 'vyxal.jar', '-MO', '--code', '$code', '--' ]
+args       = [ '/opt/java/bin/java', '-jar', 'vyxal.jar', '-O', '--code', '$code', '--' ]
 experiment = 1846
 size       = '152 MiB'
-version    = '3.5.1'
+version    = '3.6.1'
 website    = 'https://vyxal.github.io'
 example    = '''
 ## Printing
 "Hello, World!",
 
 ## Looping
-9 (n,}
+0,9 (n,}
 
 ## Accessing arguments
 #? (,}
