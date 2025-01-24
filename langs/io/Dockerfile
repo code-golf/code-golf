@@ -15,29 +15,29 @@ RUN git clone https://github.com/kgabis/parson.git
 
 WORKDIR /build
 
-RUN cmake ..                      \
-    -DCMAKE_BUILD_TYPE='Release'  \
-    -DCMAKE_INSTALL_PREFIX='/usr' \
+RUN cmake ..                     \
+    -DCMAKE_BUILD_TYPE='Release' \
  && make -j`nproc` && make install
 
-RUN strip /usr/lib/libbasekit.so \
-          /usr/lib/libiovmall.so
+RUN strip /usr/local/lib/libbasekit.so \
+          /usr/local/lib/libiovmall.so
 
-COPY iowrapper.c /
+COPY io.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/iowrapper -s /iowrapper.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/io -s /io.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6 \
-              /lib/x86_64-linux-gnu/libm.so.6 /lib/
-COPY --from=0 /lib64/ld-linux-x86-64.so.2     /lib64/
-COPY --from=0 /usr/bin/io /usr/bin/iowrapper  /usr/bin/
-COPY --from=0 /usr/lib/libbasekit.so          \
-              /usr/lib/libcoroutine.so        \
-              /usr/lib/libgarbagecollector.so \
-              /usr/lib/libiovmall.so          /usr/lib/
+COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
+              /lib/x86_64-linux-gnu/libm.so.6       /lib/
+COPY --from=0 /lib64/ld-linux-x86-64.so.2           /lib64/
+COPY --from=0 /usr/bin/io                           /usr/bin/
+COPY --from=0 /usr/local/lib/libbasekit.so          \
+              /usr/local/lib/libcoroutine.so        \
+              /usr/local/lib/libgarbagecollector.so \
+              /usr/local/lib/libiovmall.so          /usr/lib/
+COPY --from=0 /usr/local/bin/io                     /usr/local/bin/
 
-ENTRYPOINT ["iowrapper"]
+ENTRYPOINT ["io"]
 
 CMD ["--version"]

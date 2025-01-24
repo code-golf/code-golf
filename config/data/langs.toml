@@ -1030,7 +1030,7 @@ example    = '''
 '''
 
 [Io]
-args       = [ '/usr/bin/iowrapper', '-' ]
+args       = [ '/usr/bin/io', '-' ]
 experiment = 182
 size       = '4.25 MiB'
 version    = '7113659'
@@ -1044,8 +1044,6 @@ for(i, 0, 9, i println)
 
 # Accessing arguments
 System args slice(1) foreach(println)
-
-0
 '''
 
 [iogii]
