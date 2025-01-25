@@ -1,8 +1,6 @@
 {{ template "header" . }}
 {{ template "recent" . }}
 
-{{ template "lang-svgs" .Data }}
-
 <main>
     <table class="nowrap-first-second-third sticky">
         <thead>
@@ -20,12 +18,7 @@
                 <td>{{ template "golfer-link" . }}
                 <td>
                     <div>
-                    {{ range .Langs }}
-                        <svg>
-                            <title>{{ .Name }}</title>
-                            <use href="#{{ .ID }}"/>
-                        </svg>
-                    {{ end }}
+                    {{ range .Langs }}{{ svg .ID "title" .Name }}{{ end }}
                     </div>
                 <td class=wide>
                     <div>

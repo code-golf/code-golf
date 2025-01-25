@@ -2,11 +2,11 @@ package views
 
 import (
 	"embed"
+	"encoding/xml"
 	"html/template"
 	"io/fs"
 	"net/http"
 	"net/url"
-	"reflect"
 	"strings"
 
 	"github.com/code-golf/code-golf/config"
@@ -26,22 +26,10 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 	"hasSuffix": strings.HasSuffix,
 	"html":      func(html string) template.HTML { return template.HTML(html) },
 	"inc":       func(i int) int { return i + 1 },
-	"map":       func() map[string]bool { return map[string]bool{} },
 	"ord":       pretty.Ordinal,
 	"page":      func(i int) int { return i/pager.PerPage + 1 },
 	"title":     pretty.Title,
 	"time":      pretty.Time,
-
-	"getSet": func(m map[string]bool, k string) bool {
-		old := m[k]
-		m[k] = true
-		return old
-	},
-
-	"hasField": func(v any, name string) bool {
-		s := reflect.ValueOf(v)
-		return s.Kind() == reflect.Struct && s.FieldByName(name).IsValid()
-	},
 
 	"param": func(r *http.Request, key string) string {
 		value, _ := url.QueryUnescape(r.PathValue(key))
@@ -62,9 +50,38 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 		return nil
 	},
 
-	"svg": func(name string) template.HTML {
+	"svg": func(name string, attrs ...string) (template.HTML, error) {
+		if path, ok := config.Assets["svg/"+name+".svg"]; ok {
+			type Use struct {
+				Href string `xml:"href,attr"`
+			}
+
+			type SVG struct {
+				XMLName xml.Name   `xml:"svg"`
+				Attrs   []xml.Attr `xml:",attr"`
+				Title   string     `xml:"title"`
+				Use     Use        `xml:"use"`
+			}
+
+			svg := SVG{Use: Use{Href: path + "#" + name}}
+
+			for i := 0; i < len(attrs); i += 2 {
+				if attrs[i] == "title" {
+					svg.Title = attrs[i+1]
+				} else {
+					svg.Attrs = append(svg.Attrs, xml.Attr{
+						Name:  xml.Name{Local: attrs[i]},
+						Value: attrs[i+1],
+					})
+				}
+			}
+
+			b, err := xml.Marshal(svg)
+			return template.HTML(b), err
+		}
+
 		data, _ := views.ReadFile("svg/" + name + ".svg")
-		return template.HTML(data)
+		return template.HTML(data), nil
 	},
 })
 
