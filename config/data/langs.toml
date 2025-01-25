@@ -1884,7 +1884,7 @@ for (i in 0..9) System.print(i)
 for (a in Process.arguments) System.print(a)
 '''
 
-[Yuescript]
+[YueScript]
 args       = [ '/usr/bin/yuescript', '-' ]
 experiment = 807
 size       = '9.29 MiB'
