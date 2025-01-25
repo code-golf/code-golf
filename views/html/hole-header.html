@@ -1,27 +1,36 @@
 {{ svg "flask" "id" "flask" }}<!-- For JS lang picker -->
 
-{{ with .Data.Hole.Experiment }}
+{{ if eq .Data.Hole.ID "tutorial" }}
+    <div class=info>
+        {{ svg "info-circle" }}
+        <p>
+            <b>Tutorial</b> is a rather unique hole. It's designed to be very
+            simple and a good introduction for new golfers. It won't
+            contribute to scoring.
+    </div>
+{{ else if .Data.Hole.Experiment }}
     <div class=alert>
         {{ svg "flask" }}
         <p>
             This hole is experimental, passing requirements may change.
             Solutions won't contribute to scoring until the hole goes live.
-        {{ if ne . -1 }}
+    {{ if ne .Data.Hole.Experiment -1 }}
         <p>
             Please leave feedback on the
-            <a href="//github.com/code-golf/code-golf/issues/{{ . }}">
+            <a href="//github.com/code-golf/code-golf/issues/{{ .Data.Hole.Experiment }}">
                 GitHub issue</a>.
-        {{ end }}
+    {{ end }}
     </div>
-{{ else }}{{ if not .Golfer }}
+{{ else if not .Golfer }}
     <div class=alert>
-        {{ svg "exclamation-circle" }}
+        {{ svg "exclamation" }}
         <p>
             Please
             <a class=log-in href="{{ .LogInURL }}">log in with GitHub</a>
             in order to save solutions and appear on the leaderboards.
+            New here? Check out the <a href=tutorial>Tutorial hole</a>.
     </div>
-{{ end }}{{ end }}
+{{ end }}
 
 <header id=page-header>
 {{ with .Data.Authors }}
