@@ -6,7 +6,7 @@ RUN apt-get update                   \
 
 ENV VER=0.26.0
 
-RUN curl -#L https://github.com/pigpigyyy/Yuescript/archive/refs/tags/v$VER.tar.gz \
+RUN curl -#L https://github.com/IppClub/YueScript/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1
 
 RUN make install \
