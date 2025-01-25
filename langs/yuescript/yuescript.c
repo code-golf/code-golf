@@ -32,16 +32,44 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
+    int fd[2];
+
+    if (pipe(fd))
+        ERR_AND_EXIT("pipe");
+
     pid_t pid;
 
     if (!(pid = fork())) {
-        if (!dup2(STDERR_FILENO, STDOUT_FILENO))
+        if (close(*fd))
+            ERR_AND_EXIT("close");
+
+        if (!dup2(fd[1], STDERR_FILENO) || !dup2(fd[1], STDOUT_FILENO))
             ERR_AND_EXIT("dup2");
 
-        // Compile to Lua.
+        if (close(fd[1]))
+            ERR_AND_EXIT("close");
+
+        // Compile to .lua file.
         execl(yuescript, yuescript, code, NULL);
         ERR_AND_EXIT("execl");
     }
+
+    if (close(fd[1]))
+        ERR_AND_EXIT("close");
+
+    if (!(fp = fdopen(*fd, "r")))
+        ERR_AND_EXIT("fdopen");
+
+    while (fgets(buffer, sizeof(buffer), fp)) {
+        if (strstr(buffer, code))
+            continue;
+
+        if (!fputs(buffer, stderr))
+            ERR_AND_EXIT("fputs");
+    }
+
+    if (fclose(fp))
+        ERR_AND_EXIT("fclose");
 
     int status;
 
