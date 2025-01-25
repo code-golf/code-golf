@@ -425,6 +425,7 @@ thead th {
 
     > svg {
         fill: var(--color);
+        height: 1.5rem;
         left: .75rem;
         position: absolute;
         top: calc(50% - .75rem);

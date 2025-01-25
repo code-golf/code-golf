@@ -638,8 +638,8 @@ def main =
 [Elixir]
 args    = [ '/usr/local/bin/elixir', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '74.2 MiB'
-version = '1.18.1'
+size    = '74.3 MiB'
+version = '1.18.2'
 website = 'https://elixir-lang.org'
 example = '''
 # Printing
@@ -655,7 +655,7 @@ for arg <- System.argv, do: IO.puts arg
 [Erlang]
 args       = [ '/usr/bin/erlang', '-' ]
 experiment = 181
-size       = '68.0 MiB'
+size       = '68.5 MiB'
 version    = 'OTP 27.2'
 website    = 'https://www.erlang.org'
 example    = '''
@@ -778,9 +778,9 @@ end
 '''
 
 [Gleam]
-args    = [ '/usr/bin/gleamwrapper', '-', '--' ]
-env     = [ 'FORCE_COLOR=1', 'NODE_ICU_DATA=/usr/share/icu' ]
-size    = '92.9 MiB'
+args    = [ '/usr/bin/gleam', '-', '--' ]
+env     = [ 'LANG=C.UTF-8' ]
+size    = '91.1 MiB'
 version = '1.7.0'
 website = 'https://gleam.run'
 example = '''
@@ -807,7 +807,7 @@ pub fn main() {
 args    = [ '/usr/bin/gowrapper', '-' ]
 env     = [ 'GOCACHE=/tmp/cache' ]
 size    = '383 MiB'
-version = '1.23.4'
+version = '1.23.5'
 website = 'https://go.dev'
 example = '''
 package main
@@ -871,10 +871,10 @@ for (arg in args)
 '''
 
 [Harbour]
-args       = [ '/usr/bin/harbourwrapper', '-' ]
+args       = [ '/usr/bin/harbour', '-' ]
 experiment = 1614
-size       = '13.0 MiB'
-version    = 'bdc240e'
+size       = '12.2 MiB'
+version    = '3.0.0'
 website    = 'https://harbour.github.io'
 example    = '''
 LOCAL i
@@ -1104,9 +1104,9 @@ class Main {
 '''
 
 [JavaScript]
-args    = [ '/usr/bin/d8', '-e', '$code', '--' ]
-size    = '41.8 MiB'
-version = 'V8 13.1.201.9'
+args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
+size    = '41.9 MiB'
+version = 'V8 13.2.152.32'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1140,7 +1140,7 @@ $ARGS.positional[]
 [Julia]
 args    = [ '/usr/bin/julia', '--color=yes', '--eval', '$code', '--' ]
 size    = '300 MiB'
-version = '1.11.2'
+version = '1.11.3'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -1326,8 +1326,8 @@ end.
 
 [Perl]
 args    = [ '/usr/bin/perl', '-E', '$code', '--' ]
-size    = '5.57 MiB'
-version = '5.40.0'
+size    = '5.54 MiB'
+version = '5.40.1'
 website = 'https://www.perl.org'
 example = '''
 # Printing
@@ -1345,7 +1345,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '8.40 MiB'
-version = '8.4.2'
+version = '8.4.3'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -1358,6 +1358,37 @@ for ($i = 0; $i < 10; $i++)
 # Accessing arguments
 for ($i = 1; $i < $argc; $i++)
     echo "$argv[$i]\n";
+'''
+
+[Picat]
+args       = [ '/usr/bin/picat', '-' ]
+experiment = 1871
+size       = '11.1 MiB'
+version    = '3.7'
+website    = 'https://picat-lang.org'
+example    = '''
+main =>
+    % Printing
+    println("Hello, World!"),
+
+    % Looping
+    foreach (I in 0..9)
+        println(I)
+    end.
+
+main(Args) =>
+    % Printing
+    println("Hello, World!"),
+
+    % Looping
+    foreach (I in 0..9)
+        println(I)
+    end,
+
+    % Accessing arguments
+    foreach (Arg in Args)
+        println(Arg)
+    end.
 '''
 
 [PowerShell]
@@ -1840,17 +1871,17 @@ w
 '''
 
 [Vyxal]
-args       = [ '/opt/java/bin/java', '-jar', 'vyxal.jar', '-MO', '--code', '$code', '--' ]
+args       = [ '/opt/java/bin/java', '-jar', 'vyxal.jar', '-O', '--code', '$code', '--' ]
 experiment = 1846
 size       = '152 MiB'
-version    = '3.5.1'
+version    = '3.6.1'
 website    = 'https://vyxal.github.io'
 example    = '''
 ## Printing
 "Hello, World!",
 
 ## Looping
-9 (n,}
+0,9 (n,}
 
 ## Accessing arguments
 #? (,}
