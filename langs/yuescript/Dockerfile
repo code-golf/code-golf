@@ -4,17 +4,17 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl g++ make
 
-ENV VER=0.26.0
+ENV VER=0.26.1
 
 RUN curl -#L https://github.com/IppClub/YueScript/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1
 
-RUN make install \
+RUN make -j`nproc` install \
  && strip /usr/local/bin/yue
 
 COPY yuescript.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/yuescript -s -static yuescript.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/yuescript -s yuescript.c
 
 FROM codegolf/lang-lua
 

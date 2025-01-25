@@ -1887,8 +1887,8 @@ for (a in Process.arguments) System.print(a)
 [YueScript]
 args       = [ '/usr/bin/yuescript', '-' ]
 experiment = 807
-size       = '9.29 MiB'
-version    = '0.26.0'
+size       = '8.62 MiB'
+version    = '0.26.1'
 website    = 'https://yuescript.org'
 example    = '''
 -- Printing
