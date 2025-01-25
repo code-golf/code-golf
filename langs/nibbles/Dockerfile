@@ -31,9 +31,9 @@ RUN curl -#L https://github.com/darrenks/nibbles/tarball/$VER                   
 RUN ghc -O -package ghc nibbles.hs \
  && strip /lib/x86_64-linux-ghc-$GHCVER/*.so*
 
-COPY nibbleswrapper.c /
+COPY nibbles.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/nibbleswrapper -s -static /nibbleswrapper.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/nibbles -s -static /nibbles.c
 
 FROM codegolf/lang-base
 
@@ -41,7 +41,7 @@ ARG GHCVER
 
 COPY --from=0 /usr/bin/dash                                                              /bin/sh
 COPY --from=0 /lib/ld-musl-x86_64.so.1                                                   /lib/
-COPY --from=0 /usr/bin/as /usr/bin/cc /usr/bin/ghc /usr/bin/ld /usr/bin/nibbleswrapper   /usr/bin/
+COPY --from=0 /usr/bin/as /usr/bin/cc /usr/bin/ghc /usr/bin/ld /usr/bin/nibbles          /usr/bin/
 COPY --from=0 /usr/include                                                               /usr/include
 COPY --from=0 /usr/lib/crt1.o                                                            \
               /usr/lib/crti.o                                                            \
@@ -138,6 +138,6 @@ COPY --from=0 /usr/local/bin/Data/List/Split/Internals.hi                       
               /usr/local/bin/Data/List/Split/Internals.hs                                \
               /usr/local/bin/Data/List/Split/Internals.o                                 /usr/local/bin/Data/List/Split/
 
-ENTRYPOINT ["nibbleswrapper"]
+ENTRYPOINT ["nibbles"]
 
 CMD ["--version"]

@@ -1213,7 +1213,7 @@ end
 '''
 
 [Nibbles]
-args       = [ '/usr/bin/nibbleswrapper', '-', '--' ]
+args       = [ '/usr/bin/nibbles', '-' ]
 env        = [ 'PATH=/usr/bin' ]
 experiment = 1062
 size       = '334 MiB'
