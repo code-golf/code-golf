@@ -4017,6 +4017,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Tic-tac-toe' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Tic-tac-toe' },
 ]
+released = 2025-01-31
 synopsis = 'Determine eventual winners in finished tic-tac-toe games.'
 preamble = '''
 <p>
