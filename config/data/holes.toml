@@ -2816,14 +2816,6 @@ name     = 'Pernicious Numbers (Long)'
 released = 2022-11-19
 synopsis = 'Print all the Pernicious numbers from 0 to 10,000.'
 
-['Placeholder']
-experiment = 1404
-category = 'Art'
-synopsis = 'Golf the code.golf placeholder.'
-preamble = '''
-<p>Golf the code.golf placeholder.
-'''
-
 [Poker]
 category = 'Gaming'
 links = [
@@ -4181,6 +4173,18 @@ preamble = '''
     units south, and 7 units east, intersecting the previous path. Keep in
     mind <b>if the turtle ends up at the beginning,  print the turtle but not
     the flag</b>.
+'''
+
+[Tutorial]
+experiment = 1404
+category  = 'Art'
+redirects = ["placeholder"]
+synopsis  = 'Golf the code.golf sample code.'
+preamble  = '''
+<p>
+    Output the same output as the sample code would produce.
+    The string <b>"Hello, World!"</b>, the integers <b>0</b> to <b>9</b>,
+    and any number of <b>arguments</b>. Everything on an individual line.
 '''
 
 ['United States']
