@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
         if (!dup2(STDERR_FILENO, STDOUT_FILENO))
             ERR_AND_EXIT("dup2");
 
-        execl(pascal, pascal, "-Sc", "-vw", code, NULL);
+        execl(pascal, pascal, "-Sc", "-Sg", "-vw", code, NULL);
         ERR_AND_EXIT("execl");
     }
 

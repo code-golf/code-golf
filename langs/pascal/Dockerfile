@@ -4,6 +4,10 @@ RUN apk add --no-cache build-base curl
 
 ENV ARCH=x86_64-linux VER=3.2.2
 
+# Workaround musl vs glibc entrypoint for fpcmkcfg.
+RUN mkdir /lib64 \
+ && ln -s /lib/ld-musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2
+
 RUN curl -# https://downloads.freepascal.org/fpc/dist/$VER/$ARCH/fpc-$VER.$ARCH.tar \
   | tar x --strip-components 1 && sh install.sh
 
@@ -22,6 +26,7 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/pascal -s pascal.c
 
 FROM codegolf/lang-base
 
+COPY --from=0 /etc/fpc.cfg              /etc/
 COPY --from=0 /lib/ld-musl-x86_64.so.1  /lib/
 COPY --from=0 /usr/bin/fpc              \
               /usr/bin/ld               \
