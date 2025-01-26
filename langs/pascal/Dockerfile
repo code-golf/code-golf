@@ -17,19 +17,21 @@ FROM codegolf/lang-base
 
 ARG VER
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1                        /lib/
-COPY --from=0 /usr/bin/fpc                                    \
-              /usr/bin/ld                                     \
-              /usr/bin/pascal                                 \
-              /usr/bin/ppcx64                                 /usr/bin/
-COPY --from=0 /usr/lib/libbfd-2.43.1.so                       \
-              /usr/lib/libctf.so.0                            \
-              /usr/lib/libjansson.so.4                        \
-              /usr/lib/libsframe.so.1                         \
-              /usr/lib/libz.so.1                              \
-              /usr/lib/libzstd.so.1                           /usr/lib/
-COPY --from=0 /usr/lib/fpc/$VER/units/x86_64-linux/rtl        \
-              /usr/lib/fpc/$VER/units/x86_64-linux/rtl-objpas /usr/lib/fpc/$VER/units/x86_64-linux/rtl/
+COPY --from=0 /lib/ld-musl-x86_64.so.1                         /lib/
+COPY --from=0 /usr/bin/fpc                                     \
+              /usr/bin/ld                                      \
+              /usr/bin/pascal                                  \
+              /usr/bin/ppcx64                                  /usr/bin/
+COPY --from=0 /usr/lib/libbfd-2.43.1.so                        \
+              /usr/lib/libctf.so.0                             \
+              /usr/lib/libjansson.so.4                         \
+              /usr/lib/libsframe.so.1                          \
+              /usr/lib/libz.so.1                               \
+              /usr/lib/libzstd.so.1                            /usr/lib/
+COPY --from=0 /usr/lib/fpc/$VER/units/x86_64-linux/fcl-base    /usr/lib/fpc/$VER/units/x86_64-linux/fcl-base
+COPY --from=0 /usr/lib/fpc/$VER/units/x86_64-linux/rtl         \
+              /usr/lib/fpc/$VER/units/x86_64-linux/rtl-objpas  /usr/lib/fpc/$VER/units/x86_64-linux/rtl/
+COPY --from=0 /usr/lib/fpc/$VER/units/x86_64-linux/rtl-console /usr/lib/fpc/$VER/units/x86_64-linux/rtl-console
 
 ENTRYPOINT ["pascal"]
 
