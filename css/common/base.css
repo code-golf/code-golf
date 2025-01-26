@@ -71,7 +71,7 @@ body, footer nav, #site-header nav, #popups {
     max-width: 80rem;
 }
 
-body > svg, .hide { display: none }
+.hide { display: none }
 
 details .grid { padding-top: 1rem }
 
