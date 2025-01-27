@@ -225,8 +225,6 @@ func Play(
 		runs = palindromemordnilap()
 	case "pangram-grep":
 		runs = pangramGrep()
-	case "placeholder":
-		runs = placeholder()
 	case "poker":
 		runs = poker()
 	case "qr-decoder", "qr-encoder":
@@ -265,6 +263,8 @@ func Play(
 		runs = transposeSentence()
 	case "turtle":
 		runs = turtle()
+	case "tutorial":
+		runs = tutorial()
 	case "zeckendorf-representation":
 		runs = zeckendorfRepresentation()
 	case "zodiac-signs":
