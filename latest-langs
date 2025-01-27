@@ -87,6 +87,7 @@ constant %paths = (
     'sed'          => 'ftp.gnu.org/gnu/sed/?C=M;O=D',
     'SQL'          => 'en.wikipedia.org/wiki/SQLite',
     'Squirrel'     => 'github.com/albertodemichelis/squirrel/releases/latest',
+    'Stax'         => 'github.com/tomtheisen/stax/releases/latest',
     'Swift'        => 'github.com/swiftlang/swift/releases/latest',
     'Tcl'          => 'en.wikipedia.org/wiki/Tcl',
     'TeX'          => 'en.wikipedia.org/wiki/TeX',
