@@ -11,7 +11,7 @@ import {
     init, langs, hole, setSolution,
     setCode, refreshScores, getHideDeleteBtn, submit, ReadonlyPanelsData,
     updateRestoreLinkVisibility, setCodeForLangAndSolution,
-    populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyJSONBtn,
+    populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyButtons,
     getScorings,
     updateLocalStorage,
     getLang,
@@ -342,7 +342,7 @@ layout.registerComponentFactoryFunction('details', container => {
     const details = $<HTMLTemplateElement>('#template-details').content.cloneNode(true) as HTMLDetailsElement;
     container.element.append(details);
     container.element.id = 'details-content';
-    initCopyJSONBtn(container.element.querySelector('#copy') as HTMLElement);
+    initCopyButtons(container.element.querySelectorAll('[data-copy]'));
 });
 
 const titles: Record<string, string | undefined> = {
