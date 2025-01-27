@@ -35,7 +35,7 @@ constant %paths = (
     'D'            => 'en.wikipedia.org/wiki/D_(programming_language)',
     'Dart'         => 'en.wikipedia.org/wiki/Dart_(programming_language)',
     'Egel'         => 'github.com/egel-lang/egel/releases/latest',
-    'Elixir'       => 'en.wikipedia.org/wiki/Elixir_(programming_language)',
+    'Elixir'       => 'github.com/elixir-lang/elixir/releases/latest',
     'Erlang'       => 'github.com/erlang/otp/releases/latest',
     'F#'           => 'en.wikipedia.org/wiki/F_Sharp_(programming_language)',
     'Factor'       => 'github.com/factor/factor/releases/latest',
@@ -45,8 +45,8 @@ constant %paths = (
     'Gleam'        => 'github.com/gleam-lang/gleam/releases/latest',
     'Go'           => 'endoflife.date/api/go.json',
     'GolfScript'   => 'github.com/lynn/golfscript/tree/code-golf',
-    'Groovy'       => 'en.wikipedia.org/wiki/Apache_Groovy',
-    'Harbour'      => 'github.com/harbour/core',
+    'Groovy'       => 'endoflife.date/api/apache-groovy.json',
+    'Harbour'      => 'sourceforge.net/projects/harbour-project/files',
     'Hare'         => 'lists.sr.ht/~sircmpwn/hare-announce?search=release',
     'Haskell'      => 'pkgs.alpinelinux.org/package/edge/community/x86_64/ghc',
     'Haxe'         => 'github.com/HaxeFoundation/haxe/releases/latest',
@@ -54,7 +54,7 @@ constant %paths = (
     'Hush'         => 'crates.io/api/v1/crates/hush',
     'Hy'           => 'pypi.org/pypi/hy/json',
     'iogii'        => 'golfscript.com/iogii/source.html',
-    'J'            => 'en.wikipedia.org/wiki/J_(programming_language)',
+    'J'            => 'aplwiki.com/wiki/J',
     'Janet'        => 'github.com/janet-lang/janet/releases/latest',
     'Java'         => 'endoflife.date/api/java.json',
     'JavaScript'   => 'en.wikipedia.org/wiki/V8_(JavaScript_engine)',
@@ -70,6 +70,7 @@ constant %paths = (
     'Pascal'       => 'en.wikipedia.org/wiki/Free_Pascal',
     'Perl'         => 'endoflife.date/api/perl.json',
     'PHP'          => 'endoflife.date/api/php.json',
+    'Picat'        => 'picat-lang.org/download.html',
     'PowerShell'   => 'endoflife.date/api/powershell.json',
     'Prolog'       => 'swi-prolog.discourse.group/c/releases',
     'Python'       => 'endoflife.date/api/python.json',
@@ -120,20 +121,25 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'jmvdveer'       / { $res ~~ / 'algol68g-' <(<ver>)> / }
         when / 'lists.sr.ht'    / { $res ~~ / 'Hare ' <(<ver>)> ' release' / }
         when / 'npmjs.org'      / { $res.&from-json[0]<version> }
+        when / 'picat-lang.org' / { $res ~~ / 'Version ' <(<ver>)> / }
         when / 'pypi.org'       / { $res.&from-json<info><version> }
         when / 'regina-rexx'    / { $res ~~ / '<b>Current</b> ' <(<ver>)> / }
         when / 'sourceforge'    / { $res ~~ / 'Latest' .+? <(<ver>)> / }
         when / 'swi-prolog'     / { $res ~~ / 'stable' .+? <(<ver>)> / }
         when / 'github.com'     / {
             .ends-with('/releases/latest')
-                ?? $res ~~ m:i/ [ $name || < dev release version > ] <[\ -]> v? <(<ver>)> /
+                ?? .contains(any <odin-lang>)
+                    ?? $res ~~ / < dev > .+? <(<ver>)> /
+                    !! $res ~~ / \d+ ( '.' \d+ )+ /
                 !! $res ~~ / '"currentOid":"' <( <xdigit> ** 7 )> /;
         }
-        when / 'wikipedia'   / {
-            $res ~~ /
-                < Stable Preview > ' release' .+? '>' ( '#' \d+ ' "' )?
-                <(<ver>)>
-            /;
+        when / 'wikipedia'      / {
+            .contains(any <C_Sharp TeX>)
+                ?? $res ~~ / < current stable > ' version' .+? <(<ver>)> /
+                !! $res ~~ /
+                    < Stable Preview > ' release' .+? '>' ( '#' \d+ ' "' )?
+                    <(<ver>)>
+                /;
         }
     } // '?';
 

@@ -225,8 +225,6 @@ func Play(
 		runs = palindromemordnilap()
 	case "pangram-grep":
 		runs = pangramGrep()
-	case "placeholder":
-		runs = placeholder()
 	case "poker":
 		runs = poker()
 	case "qr-decoder", "qr-encoder":
@@ -265,6 +263,8 @@ func Play(
 		runs = transposeSentence()
 	case "turtle":
 		runs = turtle()
+	case "tutorial":
+		runs = tutorial()
 	case "zeckendorf-representation":
 		runs = zeckendorfRepresentation()
 	case "zodiac-signs":
@@ -309,8 +309,8 @@ func play(
 	switch lang.ID {
 	case "05ab1e":
 		// Prevent trivial quines. Error out and return early.
-		if hole.ID == "quine" && !strings.Contains(code, `"`) && !strings.Contains(code, "”") {
-			run.Stderr = "Quine in 05AB1E must have at least one '\"' or '”' character."
+		if hole.ID == "quine" && len(code) > 0 && !strings.Contains(code, `"`) && !strings.Contains(code, "”") {
+			run.Stderr = `Quine in 05AB1E must have at least one '"' or '”' character.`
 			return nil
 		}
 	case "cjam":

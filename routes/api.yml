@@ -388,6 +388,9 @@ components:
           type: string
         id:
           type: string
+        logo-url:
+          type: string
+          format: uri
         name:
           type: string
         size:
