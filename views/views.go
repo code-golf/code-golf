@@ -59,7 +59,7 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 			type SVG struct {
 				XMLName xml.Name   `xml:"svg"`
 				Attrs   []xml.Attr `xml:",attr"`
-				Title   string     `xml:"title"`
+				Title   string     `xml:"title,omitempty"`
 				Use     Use        `xml:"use"`
 			}
 
