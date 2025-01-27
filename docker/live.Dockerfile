@@ -33,7 +33,6 @@ FROM scratch
 COPY --from=codegolf/lang-swift        ["/", "/langs/swift/rootfs/"       ] #  516 MiB
 COPY --from=codegolf/lang-go           ["/", "/langs/go/rootfs/"          ] #  383 MiB
 COPY --from=codegolf/lang-rust         ["/", "/langs/rust/rootfs/"        ] #  356 MiB
-COPY --from=codegolf/lang-nit          ["/", "/langs/nit/rootfs/"         ] #  355 MiB
 COPY --from=codegolf/lang-haskell      ["/", "/langs/haskell/rootfs/"     ] #  339 MiB
 COPY --from=codegolf/lang-julia        ["/", "/langs/julia/rootfs/"       ] #  300 MiB
 COPY --from=codegolf/lang-zig          ["/", "/langs/zig/rootfs/"         ] #  298 MiB
@@ -51,6 +50,7 @@ COPY --from=codegolf/lang-powershell   ["/", "/langs/powershell/rootfs/"  ] #  1
 COPY --from=codegolf/lang-cjam         ["/", "/langs/cjam/rootfs/"        ] #  132 MiB
 COPY --from=codegolf/lang-rockstar     ["/", "/langs/rockstar/rootfs/"    ] #  127 MiB
 COPY --from=codegolf/lang-assembly     ["/", "/langs/assembly/rootfs/"    ] #  114 MiB
+COPY --from=codegolf/lang-nit          ["/", "/langs/nit/rootfs/"         ] #  114 MiB
 COPY --from=codegolf/lang-f-sharp      ["/", "/langs/f-sharp/rootfs/"     ] #  109 MiB
 COPY --from=codegolf/lang-c-sharp      ["/", "/langs/c-sharp/rootfs/"     ] #  107 MiB
 COPY --from=codegolf/lang-fortran      ["/", "/langs/fortran/rootfs/"     ] # 95.1 MiB
