@@ -63,7 +63,7 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 				Use     Use        `xml:"use"`
 			}
 
-			svg := SVG{Use: Use{Href: path + "#" + name}}
+			svg := SVG{Use: Use{Href: path + "#a"}}
 
 			for i := 0; i < len(attrs); i += 2 {
 				if attrs[i] == "title" {
