@@ -45,7 +45,7 @@ constant %paths = (
     'Gleam'        => 'github.com/gleam-lang/gleam/releases/latest',
     'Go'           => 'endoflife.date/api/go.json',
     'GolfScript'   => 'github.com/lynn/golfscript/tree/code-golf',
-    'Groovy'       => 'en.wikipedia.org/wiki/Apache_Groovy',
+    'Groovy'       => 'endoflife.date/api/apache-groovy.json',
     'Harbour'      => 'sourceforge.net/projects/harbour-project/files',
     'Hare'         => 'lists.sr.ht/~sircmpwn/hare-announce?search=release',
     'Haskell'      => 'pkgs.alpinelinux.org/package/edge/community/x86_64/ghc',
@@ -128,11 +128,13 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'swi-prolog'     / { $res ~~ / 'stable' .+? <(<ver>)> / }
         when / 'github.com'     / {
             .ends-with('/releases/latest')
-                ?? $res ~~ m:i/ [ $name || < dev release version > ] <[\ -]> v? <(<ver>)> /
+                ?? .contains(any <odin-lang>)
+                    ?? $res ~~ / < dev > .+? <(<ver>)> /
+                    !! $res ~~ / \d+ ( '.' \d+ )+ /
                 !! $res ~~ / '"currentOid":"' <( <xdigit> ** 7 )> /;
         }
         when / 'wikipedia'      / {
-            .contains(any < C_Sharp TeX >)
+            .contains(any <C_Sharp TeX>)
                 ?? $res ~~ / < current stable > ' version' .+? <(<ver>)> /
                 !! $res ~~ /
                     < Stable Preview > ' release' .+? '>' ( '#' \d+ ' "' )?
