@@ -1740,6 +1740,24 @@ foreach (arg in vargv)
     print(arg + "\n");
 '''
 
+[Stax]
+args       = [ '/usr/bin/staxwrapper', '-' ]
+env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
+experiment = 439
+size       = '76.5 MiB'
+version    = '1.2.1'
+website    = 'https://github.com/tomtheisen/stax'
+example    = '''
+`Printing`d
+"Hello, World!"P
+
+`Looping`d
+0P9R{P}F
+
+`Accessing arguments`d
+Lm
+'''
+
 [Swift]
 args    = [ '/usr/bin/swift', '-module-cache-path', '/tmp', '-' ]
 env     = [ 'PATH=/usr/bin:/bin' ]
