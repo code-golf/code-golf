@@ -15,7 +15,7 @@ import (
 	"github.com/code-golf/code-golf/pretty"
 )
 
-//go:embed html/* svg/*
+//go:embed html/*
 var views embed.FS
 
 var tmpl = template.New("").Funcs(template.FuncMap{
@@ -51,37 +51,33 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 	},
 
 	"svg": func(name string, attrs ...string) (template.HTML, error) {
-		if path, ok := config.Assets["svg/"+name+".svg"]; ok {
-			type Use struct {
-				Href string `xml:"href,attr"`
-			}
-
-			type SVG struct {
-				XMLName xml.Name   `xml:"svg"`
-				Attrs   []xml.Attr `xml:",attr"`
-				Title   string     `xml:"title"`
-				Use     Use        `xml:"use"`
-			}
-
-			svg := SVG{Use: Use{Href: path + "#" + name}}
-
-			for i := 0; i < len(attrs); i += 2 {
-				if attrs[i] == "title" {
-					svg.Title = attrs[i+1]
-				} else {
-					svg.Attrs = append(svg.Attrs, xml.Attr{
-						Name:  xml.Name{Local: attrs[i]},
-						Value: attrs[i+1],
-					})
-				}
-			}
-
-			b, err := xml.Marshal(svg)
-			return template.HTML(b), err
+		type Use struct {
+			Href string `xml:"href,attr"`
 		}
 
-		data, _ := views.ReadFile("svg/" + name + ".svg")
-		return template.HTML(data), nil
+		type SVG struct {
+			XMLName xml.Name   `xml:"svg"`
+			Attrs   []xml.Attr `xml:",attr"`
+			Title   string     `xml:"title,omitempty"`
+			Use     Use        `xml:"use"`
+		}
+
+		path := config.Assets["svg/"+name+".svg"]
+		svg := SVG{Use: Use{Href: path + "#a"}}
+
+		for i := 0; i < len(attrs); i += 2 {
+			if attrs[i] == "title" {
+				svg.Title = attrs[i+1]
+			} else {
+				svg.Attrs = append(svg.Attrs, xml.Attr{
+					Name:  xml.Name{Local: attrs[i]},
+					Value: attrs[i+1],
+				})
+			}
+		}
+
+		b, err := xml.Marshal(svg)
+		return template.HTML(b), err
 	},
 })
 

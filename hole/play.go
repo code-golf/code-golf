@@ -333,10 +333,10 @@ func play(
 			run.Stderr = `Quine in Go must not use "embed".`
 			return nil
 		}
-	case "iogii":
+	case "iogii", "stax":
 		// Prevent trivial quines. Error out and return early.
-		if hole.ID == "quine" && len(code) > 0 && regexp.MustCompile(`^\d+$`).MatchString(code) {
-			run.Stderr = "Quine in iogii must not consist solely of numeric characters."
+		if hole.ID == "quine" && len(code) > 0 && regexp.MustCompile(`^\d+\n?$`).MatchString(code) {
+			run.Stderr = "Quine in " + lang.Name + " must not consist solely of numeric characters."
 			return nil
 		}
 	case "jq":
