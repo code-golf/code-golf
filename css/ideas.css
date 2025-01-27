@@ -48,7 +48,6 @@ main {
     }
 
     svg {
-        fill: var(--color);
         height: 1rem;
         justify-self: center;
         width: 1rem;
