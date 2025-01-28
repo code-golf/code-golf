@@ -10,7 +10,7 @@ import (
 // GET /golfers/{golfer}/holes/{display}/{scope}/{scoring}
 func golferHolesGET(w http.ResponseWriter, r *http.Request) {
 	type ranking struct {
-		Failing                         bool
+		Failing, IsUnicorn              bool
 		Golfers, Points, Rank, TieCount int
 	}
 
@@ -41,7 +41,7 @@ func golferHolesGET(w http.ResponseWriter, r *http.Request) {
 		        CASE WHEN $1 THEN points          ELSE points_for_lang END,
 		        CASE WHEN $1 THEN rank_overall    ELSE rank            END
 		   FROM rankings
-		  WHERE user_id = $2 AND scoring = $3
+		  WHERE user_id = $2 AND scoring = $3 AND NOT experimental
 		  UNION ALL
 		 SELECT hole, lang, true, 0, 0, 0, 0
 		   FROM solutions
@@ -64,6 +64,7 @@ func golferHolesGET(w http.ResponseWriter, r *http.Request) {
 		); err != nil {
 			panic(err)
 		}
+		r.IsUnicorn = data.Scope == "lang" && r.Golfers == 1
 
 		data.LangsUsed[lang] = true
 

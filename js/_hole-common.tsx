@@ -9,10 +9,24 @@ let tabLayout: boolean = false;
 const langWikiCache: Record<string, string | null> = {};
 async function getLangWikiContent(lang: string): Promise<string> {
     if (!(lang in langWikiCache)) {
-        const resp  = await fetch(`/api/wiki/langs/${lang}`);
-        langWikiCache[lang] = resp.status === 200 ? (await resp.json()).content : null;
+        langWikiCache[lang] = await _getLangWikiContent(lang);
     }
     return langWikiCache[lang] ?? 'No data for current lang.';
+}
+async function _getLangWikiContent(lang: string): Promise<string | null> {
+    const resp  = await fetch(`/api/wiki/langs/${lang}`);
+    const {content, title} = await resp.json() as {content: string, title: string};
+    if (resp.status !== 200) {
+        return null;
+    }
+    const header = (<p id={`lang-wiki-${lang}`}>
+        Wiki: {title}{' '}
+        <a href={`/wiki/langs/${lang}`} target="_blank">
+            (open in new tab)
+        </a>
+        .
+    </p>).outerHTML;
+    return header + content;
 }
 
 const holeLangNotesCache: Record<string, string | null> = {};
@@ -29,6 +43,7 @@ const renamedHoles: Record<string, string> = {
     'eight-queens':                  'n-queens',
     'factorial-factorisation-ascii': 'factorial-factorisation',
     'grid-packing':                  'css-grid',
+    'placeholder':                   'tutorial',
     'sudoku-v2':                     'sudoku-fill-in',
 };
 
@@ -97,9 +112,10 @@ export function initDeleteBtn(deleteBtn: HTMLElement | undefined, langs: any) {
     });
 }
 
-export function initCopyJSONBtn(copyBtn: HTMLElement | undefined) {
-    copyBtn?.addEventListener('click', () =>
-        navigator.clipboard.writeText($('#data').innerText));
+export function initCopyButtons(buttons: NodeListOf<HTMLElement>) {
+    for (const btn of buttons)
+        btn.onclick = () =>
+            navigator.clipboard.writeText(btn.dataset.copy!);
 }
 
 export const langs = JSON.parse($('#langs').innerText);
@@ -237,7 +253,7 @@ function updateLangPicker() {
     picker.replaceChildren(...sortedLangs.map((l: any) => {
         const tab = <a href={l.id == lang ? null : '#'+l.id} title={l.name}></a>;
 
-        if (icon)  tab.append(<svg><use href={'#'+l.id}/></svg>);
+        if (icon)  tab.append(<svg><use href={l['logo-url']+'#a'}/></svg>);
         if (label) tab.append(l.name);
 
         if (getSolutionCode(l.id, 0)) {
