@@ -84,6 +84,7 @@ COPY --from=codegolf/lang-pascal       ["/", "/langs/pascal/rootfs/"      ] # 26
 COPY --from=codegolf/lang-viml         ["/", "/langs/viml/rootfs/"        ] # 24.1 MiB
 COPY --from=codegolf/lang-nim          ["/", "/langs/nim/rootfs/"         ] # 15.6 MiB
 COPY --from=codegolf/lang-apl          ["/", "/langs/apl/rootfs/"         ] # 15.0 MiB
+COPY --from=codegolf/lang-pari-gp      ["/", "/langs/pari-gp/rootfs/"     ] # 14.2 MiB
 COPY --from=codegolf/lang-harbour      ["/", "/langs/harbour/rootfs/"     ] # 12.2 MiB
 COPY --from=codegolf/lang-hare         ["/", "/langs/hare/rootfs/"        ] # 11.4 MiB
 COPY --from=codegolf/lang-j            ["/", "/langs/j/rootfs/"           ] # 11.2 MiB
