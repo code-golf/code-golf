@@ -6,7 +6,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* pony = "/usr/local/pony/bin/ponyc", *code = "code.pony";
+const char* pony = "/usr/local/bin/ponyc", *code = "code.pony";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
@@ -54,7 +54,7 @@ int main(int argc, char* argv[]) {
 
     int pargc = argc;
     char** pargv = malloc(pargc * sizeof(char*));
-    pargv[0] = "code";
+    pargv[0] = "tmp";
     memcpy(&pargv[1], &argv[2], (argc - 2) * sizeof(char*));
     pargv[pargc - 1] = NULL;
 
