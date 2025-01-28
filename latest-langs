@@ -87,6 +87,7 @@ constant %paths = (
     'sed'          => 'ftp.gnu.org/gnu/sed/?C=M;O=D',
     'SQL'          => 'en.wikipedia.org/wiki/SQLite',
     'Squirrel'     => 'github.com/albertodemichelis/squirrel/releases/latest',
+    'Stax'         => 'github.com/tomtheisen/stax/releases/latest',
     'Swift'        => 'github.com/swiftlang/swift/releases/latest',
     'Tcl'          => 'en.wikipedia.org/wiki/Tcl',
     'TeX'          => 'en.wikipedia.org/wiki/TeX',
@@ -129,11 +130,13 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'swi-prolog'     / { $res ~~ / 'stable' .+? <(<ver>)> / }
         when / 'github.com'     / {
             .ends-with('/releases/latest')
-                ?? $res ~~ m:i/ [ $name || < dev release version > ] <[\ -]> v? <(<ver>)> /
+                ?? .contains(any <odin-lang>)
+                    ?? $res ~~ / < dev > .+? <(<ver>)> /
+                    !! $res ~~ / \d+ ( '.' \d+ )+ /
                 !! $res ~~ / '"currentOid":"' <( <xdigit> ** 7 )> /;
         }
         when / 'wikipedia'      / {
-            .contains(any < C_Sharp TeX >)
+            .contains(any <C_Sharp TeX>)
                 ?? $res ~~ / < current stable > ' version' .+? <(<ver>)> /
                 !! $res ~~ /
                     < Stable Preview > ' release' .+? '>' ( '#' \d+ ' "' )?
