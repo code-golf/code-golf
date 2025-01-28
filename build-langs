@@ -53,7 +53,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         }
     }
     else {
-        # Forth outputs it's version number over stderr.
+        # Forth outputs its version number over stderr.
         my $proc = run «docker run -i --rm --tmpfs '/tmp:exec' $img»,
             :in, :out, :merge(so $id eq 'forth' | 'scheme');
 
