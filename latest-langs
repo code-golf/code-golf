@@ -7,6 +7,11 @@ use TOML::Thumb;
 # Pass "--all" to see all languages regardless of version status.
 unit sub MAIN(Bool :$all, *@langs);
 
+sub get {
+    state $ua = HTTP::Tiny.new :throw-exceptions;
+    return $ua.get("https://$^url")<content>.decode;
+}
+
 constant %paths = (
     '05AB1E'       => 'github.com/Adriandmen/05AB1E',
     '><>'          => 'github.com/primo-ppcg/fish-jit',
@@ -57,7 +62,9 @@ constant %paths = (
     'J'            => 'aplwiki.com/wiki/J',
     'Janet'        => 'github.com/janet-lang/janet/releases/latest',
     'Java'         => 'endoflife.date/api/java.json',
-    'JavaScript'   => 'en.wikipedia.org/wiki/V8_(JavaScript_engine)',
+    'JavaScript'   => 'chromium.googlesource.com/v8/v8.git/+/' ~ get(
+        'chromiumdash.appspot.com/fetch_releases?platform=linux',
+    ).&from-json.first(*<channel> eq 'Stable')<hashes><v8>,
     'jq'           => 'github.com/jqlang/jq/releases/latest',
     'Julia'        => 'github.com/JuliaLang/julia/releases/latest',
     'K'            => 'codeberg.org/ngn/k',
@@ -111,6 +118,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
 
         when / 'alpinelinux'    / { $res ~~ / 'Version' .+? <(<ver>)> '-r' \d+ / }
         when / 'aplwiki'        / { $res ~~ / ' release' .+? <(<ver>)> / }
+        when / 'chromium'       / { $res ~~ / 'Version' .+? <(<ver>)> / }
         when / 'codeberg'       / { $res ~~ / '"shortsha">' <(<ver>)> / }
         when / 'crates.io'      / { $res.&from-json<crate><max_stable_version> }
         when / 'dyalog.com'     / { $res ~~ / <(<ver>)> ' for Linux (DEB)' / }
