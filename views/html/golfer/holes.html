@@ -1,8 +1,6 @@
 {{ template "header" . }}
 {{ template "golfer" . }}
 
-<svg>{{ svg "exclamation-circle" }}{{ svg "play-light" }}</svg>
-
 <main>
     <nav class=tabs>
         <div>
@@ -87,12 +85,12 @@
                 {{- end }}{{ else if $r -}}
                     <a class="{{ $lang.ID }} dark-grey"
                         href="../../../{{ $hole.ID }}/{{ $lang.ID }}/{{ $.Data.Scoring }}">
-                        <svg><use href="#exclamation"/></svg>
+                        {{ svg "exclamation" }}
                     </a>
                 {{- else -}}
                     <a class="{{ $lang.ID }} grey"
                         href="/{{ $hole.ID }}#{{ $lang.ID }}">
-                        <svg><use href="#play"/></svg>
+                        {{ svg "play" }}
                     </a>
                 {{- end -}}
             {{- end }}
