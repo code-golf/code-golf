@@ -77,7 +77,7 @@ constant %paths = (
     'Racket'       => 'github.com/racket/racket/releases/latest',
     'Raku'         => 'github.com/rakudo/rakudo/releases/latest',
     'Rebol'        => 'en.wikipedia.org/wiki/Rebol',
-    'Rexx'         => 'regina-rexx.sourceforge.io',
+    'Rexx'         => 'sourceforge.net/projects/regina-rexx/files',
     'Rockstar 2'   => 'github.com/RockstarLang/rockstar/releases/latest',
     'Ruby'         => 'endoflife.date/api/ruby.json',
     'Rust'         => 'en.wikipedia.org/wiki/Rust_(programming_language)',
@@ -86,6 +86,7 @@ constant %paths = (
     'sed'          => 'ftp.gnu.org/gnu/sed/?C=M;O=D',
     'SQL'          => 'en.wikipedia.org/wiki/SQLite',
     'Squirrel'     => 'github.com/albertodemichelis/squirrel/releases/latest',
+    'Stax'         => 'github.com/tomtheisen/stax/releases/latest',
     'Swift'        => 'github.com/swiftlang/swift/releases/latest',
     'Tcl'          => 'en.wikipedia.org/wiki/Tcl',
     'TeX'          => 'en.wikipedia.org/wiki/TeX',
@@ -122,7 +123,6 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'npmjs.org'      / { $res.&from-json[0]<version> }
         when / 'picat-lang.org' / { $res ~~ / 'Version ' <(<ver>)> / }
         when / 'pypi.org'       / { $res.&from-json<info><version> }
-        when / 'regina-rexx'    / { $res ~~ / '<b>Current</b> ' <(<ver>)> / }
         when / 'sourceforge'    / { $res ~~ / 'Latest' .+? <(<ver>)> / }
         when / 'swi-prolog'     / { $res ~~ / 'stable' .+? <(<ver>)> / }
         when / 'github.com'     / {
