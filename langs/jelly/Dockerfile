@@ -6,8 +6,6 @@ ENV PYVER=3.13.1 VER=70c9fd9
 
 RUN curl https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz | tar xJ
 
-RUN curl -#L https://github.com/DennisMitchell/jellylanguage/tarball/$VER | tar xz
-
 WORKDIR /Python-$PYVER
 
 RUN ./configure                \
@@ -19,7 +17,12 @@ RUN ./configure                \
  && strip /usr/bin/python3.13  \
           /usr/lib/python3.13/lib-dynload/*.so
 
-RUN pip3 install --upgrade /DennisMitchell-jellylanguage-$VER
+WORKDIR /jelly
+
+RUN curl -#L https://github.com/DennisMitchell/jellylanguage/tarball/$VER \
+  | tar xz --strip-components 1
+
+RUN pip3 install --upgrade .
 
 WORKDIR /usr/lib/python3.13
 
