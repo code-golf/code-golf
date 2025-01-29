@@ -8,7 +8,7 @@ use TOML::Thumb;
 unit sub MAIN(Bool :$all, *@langs);
 
 sub get {
-    state $ua = HTTP::Tiny.new :throw-exceptions;
+    my $ua = HTTP::Tiny.new :throw-exceptions;
     return $ua.get("https://$^url")<content>.decode;
 }
 
@@ -41,7 +41,7 @@ constant %paths = (
     'Dart'         => 'en.wikipedia.org/wiki/Dart_(programming_language)',
     'Egel'         => 'github.com/egel-lang/egel/releases/latest',
     'Elixir'       => 'github.com/elixir-lang/elixir/releases/latest',
-    'Erlang'       => 'github.com/erlang/otp/releases/latest',
+    'Erlang'       => 'api.github.com/repos/erlang/otp/releases',
     'F#'           => 'en.wikipedia.org/wiki/F_Sharp_(programming_language)',
     'Factor'       => 'github.com/factor/factor/releases/latest',
     'Fennel'       => 'fennel-lang.org/downloads/?C=M;O=D',
@@ -66,13 +66,13 @@ constant %paths = (
         'chromiumdash.appspot.com/fetch_releases?platform=linux',
     ).&from-json.first(*<channel> eq 'Stable')<hashes><v8>,
     'jq'           => 'github.com/jqlang/jq/releases/latest',
-    'Julia'        => 'github.com/JuliaLang/julia/releases/latest',
+    'Julia'        => 'api.github.com/repos/JuliaLang/julia/releases',
     'K'            => 'codeberg.org/ngn/k',
     'Kotlin'       => 'github.com/JetBrains/kotlin/releases/latest',
     'Lua'          => 'en.wikipedia.org/wiki/Lua_(programming_language)',
     'Nim'          => 'en.wikipedia.org/wiki/Nim_(programming_language)',
     'OCaml'        => 'en.wikipedia.org/wiki/OCaml',
-    'Odin'         => 'github.com/odin-lang/Odin/releases/latest',
+    'Odin'         => 'api.github.com/repos/odin-lang/Odin/releases',
     'Ox'           => 'doornik.com/download.html',
     'Pascal'       => 'en.wikipedia.org/wiki/Free_Pascal',
     'Perl'         => 'endoflife.date/api/perl.json',
@@ -114,8 +114,7 @@ my regex ver { \d+ ( <[.-]> \d+ )+ | <xdigit> ** 7..* }
 for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
     my $old = %lang<version> ~~ / <ver> /;
     my $new = do with %paths{$name} {
-        state $ua  = HTTP::Tiny.new :throw-exceptions;
-        my    $res = $ua.get("https://$_")<content>.decode;
+        my $res = get($_);
 
         when / 'alpinelinux'    / { $res ~~ / 'Version' .+? <(<ver>)> '-r' \d+ / }
         when / 'aplwiki'        / { $res ~~ / ' release' .+? <(<ver>)> / }
@@ -135,11 +134,13 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'pypi.org'       / { $res.&from-json<info><version> }
         when / 'sourceforge'    / { $res ~~ / 'Latest' .+? <(<ver>)> / }
         when / 'swi-prolog'     / { $res ~~ / 'stable' .+? <(<ver>)> / }
+        when / 'api.github.com' / {
+            $res.&from-json.grep(!*<prerelease>).map({ .<name> ~~ / <ver> / })
+                .sort({ Version.new: $_ }).tail;
+        }
         when / 'github.com'     / {
             .ends-with('/releases/latest')
-                ?? .contains(any <odin-lang>)
-                    ?? $res ~~ / < dev > .+? <(<ver>)> /
-                    !! $res ~~ / \d+ ( '.' \d+ )+ /
+                ?? $res ~~ / \d+ ( '.' \d+ )+ /
                 !! $res ~~ / '"currentOid":"' <( <xdigit> ** 7 )> /;
         }
         when / 'wikipedia'      / {
