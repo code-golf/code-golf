@@ -1301,8 +1301,8 @@ main() {
     // Accessing arguments
     decl args = arglist();
 
-    foreach (arg in args)
-        println(arg);
+    for (decl i = 1; i < sizeof(args); ++i)
+        println(args[i]);
 }
 '''
 
