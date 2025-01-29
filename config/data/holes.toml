@@ -639,12 +639,6 @@ data = '''
 released = 2020-06-21
 synopsis = 'Convert CSS color keywords to their hex values.'
 preamble = '''
-<svg class=hide>
-    <svg id="color" viewBox="0 0 1 1">
-        <rect width="1" height="1"/>
-    </svg>
-</svg>
-
 <p>
     Given a list of all the CSS color keywords print the hex values in the
     corresponding order. The full mapping is as follows:
@@ -656,8 +650,14 @@ preamble = '''
         <table><thead><tr><th>Keyword<th>Hex<tbody>
     {{ end }}
 
-    <tr><td><svg><use fill="{{ .Value }}" href="#color"/></svg>{{ .Key }}
-        <td>{{ .Value }}
+    <tr>
+        <td>
+            <svg viewBox="0 0 1 1">
+                <rect width="1" height="1" fill="{{ .Value }}"/>
+            </svg>
+            {{ .Key }}
+        <td>
+            {{ .Value }}
 
     {{ if or (eq .Key "Fuchsia"    ) (eq .Key "Aqua" )
              (eq .Key "SaddleBrown") (eq .Key "Black") }}
