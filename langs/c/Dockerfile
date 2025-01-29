@@ -2,8 +2,10 @@ FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache build-base curl
 
-# Also bump Crap.
-RUN curl -L https://download.savannah.nongnu.org/releases/tinycc/tcc-0.9.27.tar.bz2 \
+# Also rebuild Crap.
+ENV VER=0.9.27
+
+RUN curl -L https://download.savannah.nongnu.org/releases/tinycc/tcc-$VER.tar.bz2 \
   | tar xj
 
 COPY setvbuf.patch /

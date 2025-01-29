@@ -1,71 +1,28 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.21 AS builder
 
-RUN apk add --no-cache build-base curl git
+RUN apk add --no-cache build-base curl
 
-RUN curl -#L https://download.savannah.nongnu.org/releases/tinycc/tcc-0.9.27.tar.bz2 \
-  | tar xj --strip-components 1
+ENV VER=2828c5b
 
-RUN ./configure      \
-    --config-musl    \
-    --prefix=/usr    \
-    --strip-binaries \
- && make && make install
-
-RUN git clone https://github.com/themanyone/crap.git
-
-WORKDIR /crap
-
-RUN make && make install
+RUN curl -#L https://github.com/themanyone/crap/tarball/$VER \
+  | tar xz --strip-components 1 && make && make install
 
 COPY crapwrapper.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/crapwrapper -s -static /crapwrapper.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/crapwrapper -s crapwrapper.c
+
+FROM codegolf/lang-c
+
+COPY --from=0 /usr/bin/crapwrapper       /usr/bin/
+COPY --from=0 /usr/local/bin/crap        /usr/local/bin/
+COPY --from=0 /usr/local/include/print.h \
+              /usr/local/include/reg.h   \
+              /usr/local/include/sjoin.h /usr/local/include/
 
 FROM codegolf/lang-base
 
-COPY --from=0 /crap/VERSION              /version
-COPY --from=0 /lib/ld-musl-x86_64.so.1   /lib/
-COPY --from=0 /usr/bin/crapwrapper       \
-              /usr/bin/tcc               \
-              /usr/local/bin/crap        /usr/bin/
-COPY --from=0 /usr/include/alloca.h      \
-              /usr/include/assert.h      \
-              /usr/include/complex.h     \
-              /usr/include/ctype.h       \
-              /usr/include/errno.h       \
-              /usr/include/features.h    \
-              /usr/include/fenv.h        \
-              /usr/include/float.h       \
-              /usr/include/inttypes.h    \
-              /usr/include/iso646.h      \
-              /usr/include/limits.h      \
-              /usr/include/locale.h      \
-              /usr/include/math.h        \
-              /usr/include/setjmp.h      \
-              /usr/include/signal.h      \
-              /usr/include/stdalign.h    \
-              /usr/include/stdarg.h      \
-              /usr/include/stdbool.h     \
-              /usr/include/stddef.h      \
-              /usr/include/stdint.h      \
-              /usr/include/stdio.h       \
-              /usr/include/stdlib.h      \
-              /usr/include/stdnoreturn.h \
-              /usr/include/string.h      \
-              /usr/include/strings.h     \
-              /usr/include/tgmath.h      \
-              /usr/include/threads.h     \
-              /usr/include/time.h        \
-              /usr/include/uchar.h       \
-              /usr/include/wchar.h       \
-              /usr/include/wctype.h      \
-              /usr/local/include/print.h \
-              /usr/local/include/reg.h   \
-              /usr/local/include/sjoin.h /usr/include/
-COPY --from=0 /usr/include/bits          /usr/include/bits
-COPY --from=0 /usr/lib/libc.so           /usr/lib/
-COPY --from=0 /usr/lib/tcc/libtcc1.a     /usr/lib/tcc/
+COPY --from=1 . /
 
-ENTRYPOINT ["crapwrapper"]
+ENTRYPOINT ["crap"]
 
-CMD ["--version"]
+CMD ["--dry-run"]
