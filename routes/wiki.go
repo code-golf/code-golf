@@ -12,45 +12,52 @@ import (
 
 // GET /wiki/*
 func wikiGET(w http.ResponseWriter, r *http.Request) {
-	data := struct {
+	var data struct {
 		HTML        template.HTML
 		Name, Title string
 		Nav         *config.Navigaton
-	}{Title: "Wiki"}
+	}
 
-	// Page (if we have a slug).
-	if slug := param(r, "*"); slug != "" {
-		if err := session.Database(r).Get(
-			&data, "SELECT html, name FROM wiki WHERE slug = $1", slug,
-		); errors.Is(err, sql.ErrNoRows) {
-			w.WriteHeader(http.StatusNotFound)
-			return
-		} else if err != nil {
-			panic(err)
-		}
+	// Page.
+	if err := session.Database(r).Get(
+		&data, "SELECT html, name FROM wiki WHERE slug = $1", param(r, "*"),
+	); errors.Is(err, sql.ErrNoRows) {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	} else if err != nil {
+		panic(err)
+	}
 
-		data.Title += ": " + data.Name
+	// Title.
+	if data.Name == "Home" {
+		data.Title = "Wiki"
+	} else {
+		data.Title = "Wiki: " + data.Name
 	}
 
 	// Navigation.
 	var pages []struct{ Name, Section, Slug string }
 	if err := session.Database(r).Select(
-		&pages, "SELECT name, section, slug FROM wiki ORDER BY section, name",
+		&pages,
+		"SELECT name, section, slug FROM wiki ORDER BY name != 'Home', section, name",
 	); err != nil {
 		panic(err)
 	}
 
-	groups := []*config.LinkGroup{
-		{Links: []*config.NavLink{{Name: "Home", Path: "/wiki"}}, Slug: "*"},
-	}
+	groups := []*config.LinkGroup{{Slug: "*"}}
 	for _, page := range pages {
 		if groups[len(groups)-1].Name != page.Section {
 			groups = append(groups, &config.LinkGroup{Name: page.Section})
 		}
 
+		path := "/wiki"
+		if page.Slug != "" {
+			path += "/" + page.Slug
+		}
+
 		groups[len(groups)-1].Links = append(
 			groups[len(groups)-1].Links,
-			&config.NavLink{Name: page.Name, Path: "/wiki/" + page.Slug, Slug: page.Slug},
+			&config.NavLink{Name: page.Name, Path: path, Slug: page.Slug},
 		)
 	}
 	data.Nav = &config.Navigaton{Groups: groups, OnePerRow: true}
