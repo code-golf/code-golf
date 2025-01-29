@@ -1,4 +1,4 @@
-# Also bump Gleam, Hush, Uiua.
+# Also bump Gleam, Hurl, Hush, Uiua.
 ARG VER=1.84.0
 
 FROM rust:$VER-alpine3.21 AS builder
