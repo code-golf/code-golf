@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"cmp"
 	"html/template"
 	"maps"
 	"slices"
@@ -10,16 +11,17 @@ import (
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/pretty"
+	"github.com/jmoiron/sqlx"
 )
 
-var nextHole = config.ExpHoleByID["billiards"]
+var nextHole = config.ExpHoleByID["tic-tac-toe"]
 
 type banner struct {
 	Body          template.HTML
 	HideKey, Type string
 }
 
-func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
+func banners(db *sqlx.DB, golfer *golfer.Golfer, now time.Time) (banners []banner) {
 	// Upcoming hole.
 	if hole := nextHole; hole != nil {
 		t := hole.Released.AsTime(time.UTC)
@@ -57,6 +59,49 @@ func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 					"<a href=/golfer/settings/delete-account>settings</a> " +
 					"and cancel the deletion."),
 		})
+	}
+
+	// Nag people to port their Rockstar solutions to v2.
+	var rockstarHoles config.Holes
+	if db != nil {
+		if err := db.Get(
+			&rockstarHoles,
+			`WITH rockstar AS (
+			    SELECT DISTINCT hole, user_id
+			      FROM stable_passing_solutions
+			     WHERE lang = 'rockstar'
+			), rockstar_2 AS (
+			    SELECT DISTINCT hole, user_id
+			      FROM stable_passing_solutions
+			     WHERE lang = 'rockstar-2'
+			)  SELECT array_agg(hole)
+			     FROM rockstar
+			LEFT JOIN rockstar_2
+			    USING (hole, user_id)
+			    WHERE rockstar_2.hole IS NULL AND user_id = $1`,
+			golfer.ID,
+		); err != nil {
+			panic(err)
+		}
+	}
+	if len(rockstarHoles) > 0 {
+		slices.SortFunc(rockstarHoles, func(a, b *config.Hole) int {
+			return cmp.Compare(strings.ToLower(a.Name), strings.ToLower(b.Name))
+		})
+
+		banner := banner{
+			Type: "alert",
+			Body: "Rockstar 1 is going away soon, please port the " +
+				"following solutions to Rockstar 2 or delete them:<ul>",
+		}
+
+		for _, hole := range rockstarHoles {
+			banner.Body += template.HTML(`<li><a href="/` + hole.ID + `#rockstar">` + hole.Name + "</a>")
+		}
+
+		banner.Body += "</ul>"
+
+		banners = append(banners, banner)
 	}
 
 	// Failing solutions.
@@ -122,19 +167,26 @@ Cheevo:
 			end := cheevo.Times[i+1].AddDate(delta, 0, 0)
 
 			var body template.HTML
+			var hideKey string
 			if start.AddDate(0, 0, -7).Before(now) && now.Before(start) {
 				body = "be available in " +
 					pretty.Time(start.In(location)) + "."
+				hideKey = "cheevo-before-" + start.Format(time.DateOnly) + "-" + cheevo.ID
 			} else if start.Before(now) && now.Before(end) {
 				body = "stop being available in " +
 					pretty.Time(end.In(location)) + "."
+				hideKey = "cheevo-until-" + end.Format(time.DateOnly) + "-" + cheevo.ID
 			}
 
 			if body != "" {
 				body = template.HTML("The "+cheevo.Emoji+" <b>"+
 					cheevo.Name+"</b> achievement will ") + body
 
-				banners = append(banners, banner{Body: body, Type: "info"})
+				banners = append(banners, banner{
+					Body:    body,
+					HideKey: hideKey,
+					Type:    "info",
+				})
 
 				break Cheevo
 			}

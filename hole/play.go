@@ -3,7 +3,6 @@ package hole
 import (
 	"bytes"
 	"context"
-	"embed"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -32,9 +31,6 @@ func init() {
 		timeout = 10 * time.Second
 	}
 }
-
-//go:embed answers
-var answers embed.FS
 
 // All ASCII whitespace except newline, up to a newline or the end.
 var perLineTrimmer = regexp.MustCompile(`[\t\x0B\f\r ]+(?:\n|$)`)
@@ -179,6 +175,8 @@ func Play(
 		runs = billiards()
 	case "brainfuck":
 		runs = brainfuck()
+	case "calendar":
+		runs = calendar()
 	case "card-number-validation":
 		runs = cardNumberValidation()
 	case "day-of-week":
@@ -227,8 +225,6 @@ func Play(
 		runs = palindromemordnilap()
 	case "pangram-grep":
 		runs = pangramGrep()
-	case "placeholder":
-		runs = placeholder()
 	case "poker":
 		runs = poker()
 	case "qr-decoder", "qr-encoder":
@@ -243,6 +239,12 @@ func Play(
 		runs = reversePolishNotation()
 	case "reversi":
 		runs = reversi()
+	case "rot13":
+		runs = rot13()
+	case "scrambled-alphabetization":
+		runs = scrambledAlphabetization()
+	case "set":
+		runs = set()
 	case "seven-segment":
 		runs = sevenSegment()
 	case "si-units":
@@ -261,6 +263,8 @@ func Play(
 		runs = transposeSentence()
 	case "turtle":
 		runs = turtle()
+	case "tutorial":
+		runs = tutorial()
 	case "zeckendorf-representation":
 		runs = zeckendorfRepresentation()
 	case "zodiac-signs":
@@ -269,25 +273,14 @@ func Play(
 	// Holes with fixed test cases.
 	case "css-colors":
 		runs = outputTests(shuffle(fixedTests(hole.ID)))
-	case "emojify", "flags", "rock-paper-scissors-spock-lizard", "united-states":
+	case "emojify", "flags", "rock-paper-scissors-spock-lizard", "tic-tac-toe", "united-states":
 		runs = outputMultirunTests(fixedTests(hole.ID))
-	case "floyd-steinberg-dithering", "hexdump", "proximity-grid", "star-wars-opening-crawl":
+	case "floyd-steinberg-dithering", "hexdump", "minesweeper", "proximity-grid", "star-wars-opening-crawl":
 		runs = outputTestsWithSep("\n\n", shuffle(fixedTests(hole.ID)))
 
 	// Holes with no arguments and a static answer.
 	default:
-		// ¯\_(ツ)_/¯ cannot embed file answers/√2.txt: invalid name √2.txt
-		id := hole.ID
-		if id == "√2" {
-			id = "root-2"
-		}
-
-		if b, err := answers.ReadFile("answers/" + id + ".txt"); err != nil {
-			panic(err)
-		} else {
-			answer := string(bytes.TrimSuffix(b, []byte{'\n'}))
-			runs = []Run{{Args: []string{}, Answer: answer}}
-		}
+		runs = []Run{{Args: []string{}, Answer: hole.Answer}}
 	}
 
 	// Run all the runs in parallel to reduce the wall clock time.
@@ -316,8 +309,8 @@ func play(
 	switch lang.ID {
 	case "05ab1e":
 		// Prevent trivial quines. Error out and return early.
-		if hole.ID == "quine" && !strings.Contains(code, `"`) && !strings.Contains(code, "”") {
-			run.Stderr = "Quine in 05AB1E must have at least one '\"' or '”' character."
+		if hole.ID == "quine" && len(code) > 0 && !strings.Contains(code, `"`) && !strings.Contains(code, "”") {
+			run.Stderr = `Quine in 05AB1E must have at least one '"' or '”' character.`
 			return nil
 		}
 	case "cjam":
@@ -330,11 +323,20 @@ func play(
 		// Appending (print) prevents implicit output of the last form, if it
 		// is not nil. This seems to be a quirk of the Babashka interpreter
 		// that only occurs when providing code via a command line argument.
-		code += "(print)"
+		//
+		// Add a newline in to avoid commenting it out via ;, and
+		// do it twice to avoid commenting it out via #_.
+		code += "\n(print)(print)"
 	case "go":
 		// Prevent trivial quines. Error out and return early.
 		if hole.ID == "quine" && strings.Contains(code, "//go:embed") {
 			run.Stderr = `Quine in Go must not use "embed".`
+			return nil
+		}
+	case "iogii", "stax":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && len(code) > 0 && regexp.MustCompile(`^\d+\n?$`).MatchString(code) {
+			run.Stderr = "Quine in " + lang.Name + " must not consist solely of numeric characters."
 			return nil
 		}
 	case "jq":
@@ -375,6 +377,12 @@ func play(
 		// Prevent trivial quines. Error out and return early.
 		if hole.ID == "quine" && !strings.Contains(code, `\`) {
 			run.Stderr = `Quine in TeX must have at least one '\' character.`
+			return nil
+		}
+	case "uiua":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && len(code) > 0 && (!strings.Contains(code, "&p") || strings.Contains(code, `"`)) {
+			run.Stderr = "Quine in Uiua must use `&p` (without backticks) and cannot contain double quotes."
 			return nil
 		}
 	}
@@ -497,9 +505,16 @@ func play(
 
 	stdoutBytes := stdout.Next(maxLength)
 
-	// Postprocess sed output to turn null bytes into newlines.
-	if lang.ID == "sed" {
-		stdoutBytes = bytes.ReplaceAll(stdoutBytes, []byte("\x00"), []byte("\n"))
+	// Postprocess output in apl or sed.
+	// Convert apl's carriage returns or sed's null bytes to newlines.
+	if lang.ID == "apl" || lang.ID == "sed" {
+		stdoutByte := "\r"
+
+		if lang.ID == "sed" {
+			stdoutByte = "\x00"
+		}
+
+		stdoutBytes = bytes.ReplaceAll(stdoutBytes, []byte(stdoutByte), []byte("\n"))
 	}
 
 	// Trim trailing whitespace on each line, and then trailing empty lines.
