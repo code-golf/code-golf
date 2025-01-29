@@ -58,6 +58,7 @@ constant %paths = (
     'Hexagony'     => 'github.com/SirBogman/Hexagony',
     'Hush'         => 'crates.io/api/v1/crates/hush',
     'Hy'           => 'pypi.org/pypi/hy/json',
+    'INTERCAL'     => 'gitlab.com/esr/intercal/-/blob/master/NEWS?ref_type=heads',
     'iogii'        => 'golfscript.com/iogii/source.html',
     'J'            => 'aplwiki.com/wiki/J',
     'Janet'        => 'github.com/janet-lang/janet/releases/latest',
@@ -126,6 +127,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'fennel-lang'    / { $res ~~ / 'fennel-' <(<ver>)> / }
         when / 'ftp.gnu.org'    / { $res ~~ / '-' <(<ver>)> '.tar.gz' / }
         when / 'golfscript.com' / { $res ~~ / '(Alpha)' .+? <(<ver>)> / }
+        when / 'gitlab.com'     / { $res ~~ / 'Ready to ship ' <(<ver>)> / }
         when / 'jmvdveer'       / { $res ~~ / 'algol68g-' <(<ver>)> / }
         when / 'lists.sr.ht'    / { $res ~~ / 'Hare ' <(<ver>)> ' release' / }
         when / 'npmjs.org'      / { $res.&from-json[0]<version> }
