@@ -104,7 +104,7 @@ func init() {
 			Groups: []*LinkGroup{
 				group("Scoring", "scoring", "Bytes", "Chars"),
 				groupLangs(),
-				groupHoles(false),
+				groupHoles(true),
 			},
 		},
 

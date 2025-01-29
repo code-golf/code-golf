@@ -23,6 +23,8 @@ func levenshteinDistance() []Run {
 		levenshteinTest("large", "hypothetical"),
 		levenshteinTest("hypothetical", "set"),
 		levenshteinTest("very", "incomprehensible"),
+		levenshteinTest("apprentice", "point"),
+		levenshteinTest("school", "school"),
 	}
 
 	for i := len(tests); i < 40; i++ {

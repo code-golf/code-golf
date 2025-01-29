@@ -6,13 +6,13 @@
         {{ .Data.Hole.Name }} in {{ .Data.Lang.Name }} in {{ title .Data.Scoring }}
 
         <a class="btn purple" href="/{{ .Data.Hole.ID }}#{{ .Data.Lang.ID }}">
-            {{ svg "play-light" }} Play Hole
+            {{ svg "play" }} Play Hole
         </a>
     </h1>
 
-{{ if .Data.Failing }}
-    <p>Currently failing.
-{{ else if not .Data.Hole.Experiment }}
+{{ if .Data.Failing }}<p>Currently failing.{{ end }}
+
+{{ if .Data.Rank }}
     <p>
         <a href="/rankings/holes/{{ .Data.Hole.ID }}/{{ .Data.Lang.ID }}/{{ .Data.Scoring -}}
             ?page={{ page .Data.Row }}">
