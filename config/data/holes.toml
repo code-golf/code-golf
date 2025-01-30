@@ -1718,6 +1718,7 @@ preamble = '''
 category = 'Sequence'
 links = [
     { name = 'Numberphile',  url = '//www.numberphile.com/videos/the-inventory-sequence' },
+    { name = 'Rosetta Code',  url = '//rosettacode.org/wiki/Inventory_sequence' },
     { name = 'OEIS A342585', url = '//oeis.org/A342585' },
 ]
 released = 2022-11-19
