@@ -113,7 +113,6 @@ logs:
 
 svgo:
 	@node_modules/.bin/svgo -f svg
-	@node_modules/.bin/svgo -f views/svg
 
 test:
 	@go test ./...
