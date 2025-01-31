@@ -18,12 +18,7 @@
                 <td>{{ template "golfer-link" . }}
                 <td>
                     <div>
-                    {{ range .Langs }}
-                        <svg>
-                            <title>{{ .Name }}</title>
-                            {{ svg .ID }}
-                        </svg>
-                    {{ end }}
+                    {{ range .Langs }}{{ svg .ID "title" .Name }}{{ end }}
                     </div>
                 <td class=wide>
                     <div>
