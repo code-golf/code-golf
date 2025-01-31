@@ -1,6 +1,6 @@
 ARG VER=3.4.3
 
-FROM eclipse-temurin:23.0.1_11-jre-alpine AS builder
+FROM eclipse-temurin:23.0.2_7-jre-alpine-3.21 AS builder
 
 RUN apk add --no-cache bash curl gcc musl-dev
 
@@ -18,12 +18,7 @@ FROM codegolf/lang-base
 ARG VER
 
 COPY --from=0 /bin/bash /bin/uname                             /bin/
-COPY --from=0 /lib/ld-musl-x86_64.so.1                         \
-              /lib/libacl.so.1                                 \
-              /lib/libattr.so.1                                \
-              /lib/libcrypto.so.3                              \
-              /lib/libskarnet.so.2.14                          \
-              /lib/libutmps.so.0.1                             /lib/
+COPY --from=0 /lib/ld-musl-x86_64.so.1                         /lib/
 COPY --from=0 /opt/java/openjdk/bin/java                       /opt/java/bin/
 COPY --from=0 /opt/java/openjdk/conf/security/java.security    /opt/java/conf/security/
 COPY --from=0 /opt/java/openjdk/lib/jvm.cfg                    \
@@ -38,9 +33,14 @@ COPY --from=0 /opt/java/openjdk/lib/server/libjvm.so           /opt/java/lib/ser
 COPY --from=0 /usr/bin/dirname                                 \
               /usr/bin/env                                     \
               /usr/bin/scala                                   /usr/bin/
-COPY --from=0 /usr/lib/libgmp.so.10                            \
+COPY --from=0 /usr/lib/libacl.so.1                             \
+              /usr/lib/libattr.so.1                            \
+              /usr/lib/libcrypto.so.3                          \
+              /usr/lib/libgmp.so.10                            \
               /usr/lib/libncursesw.so.6                        \
-              /usr/lib/libreadline.so.8                        /usr/lib/
+              /usr/lib/libreadline.so.8                        \
+              /usr/lib/libskarnet.so.2.14                      \
+              /usr/lib/libutmps.so.0.1                         /usr/lib/
 COPY --from=0 /usr/local/bin/common /usr/local/bin/scala       /usr/local/bin/
 COPY --from=0 /usr/local/lib/compiler-interface-1.9.6.jar      \
               /usr/local/lib/scala-asm-9.6.0-scala-1.jar       \
