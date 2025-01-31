@@ -4012,7 +4012,6 @@ preamble = '''
 '''
 
 [Tic-tac-toe]
-experiment = 1031
 category = 'Gaming'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Tic-tac-toe' },
