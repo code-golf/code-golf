@@ -10,7 +10,7 @@
         </a>
         <a class="btn purple"
             href='/{{ .Data.Hole.ID }}{{ if ne .Data.LangID "all" }}#{{ .Data.LangID }}{{ end }}'>
-            {{ svg "play-light" }} Play Hole
+            {{ svg "play" }} Play Hole
         </a>
         <a class="btn orange"
             href="/{{ .Name }}/{{ .Data.NextHole.ID }}/{{ .Data.LangID }}/{{ .Data.Scoring }}"
