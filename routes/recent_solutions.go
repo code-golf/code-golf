@@ -35,14 +35,14 @@ func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 		Scoring: param(r, "scoring"),
 	}
 
-	if data.HoleID != "all" && config.HoleByID[data.HoleID] == nil ||
+	if data.HoleID != "all" && config.AllHoleByID[data.HoleID] == nil ||
 		data.LangID != "all" && config.LangByID[data.LangID] == nil ||
 		data.Scoring != "chars" && data.Scoring != "bytes" {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
-	if data.Hole = config.HoleByID[data.HoleID]; data.Hole != nil {
+	if data.Hole = config.AllHoleByID[data.HoleID]; data.Hole != nil {
 		data.PrevHole, data.NextHole = getPrevNextHole(r, data.Hole)
 	}
 
