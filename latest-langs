@@ -7,6 +7,11 @@ use TOML::Thumb;
 # Pass "--all" to see all languages regardless of version status.
 unit sub MAIN(Bool :$all, *@langs);
 
+sub get {
+    my $ua = HTTP::Tiny.new :throw-exceptions;
+    return $ua.get("https://$^url")<content>.decode;
+}
+
 constant %paths = (
     '05AB1E'       => 'github.com/Adriandmen/05AB1E',
     '><>'          => 'github.com/primo-ppcg/fish-jit',
@@ -36,7 +41,7 @@ constant %paths = (
     'Dart'         => 'en.wikipedia.org/wiki/Dart_(programming_language)',
     'Egel'         => 'github.com/egel-lang/egel/releases/latest',
     'Elixir'       => 'github.com/elixir-lang/elixir/releases/latest',
-    'Erlang'       => 'github.com/erlang/otp/releases/latest',
+    'Erlang'       => 'api.github.com/repos/erlang/otp/releases',
     'F#'           => 'en.wikipedia.org/wiki/F_Sharp_(programming_language)',
     'Factor'       => 'github.com/factor/factor/releases/latest',
     'Fennel'       => 'fennel-lang.org/downloads/?C=M;O=D',
@@ -57,15 +62,17 @@ constant %paths = (
     'J'            => 'aplwiki.com/wiki/J',
     'Janet'        => 'github.com/janet-lang/janet/releases/latest',
     'Java'         => 'endoflife.date/api/java.json',
-    'JavaScript'   => 'en.wikipedia.org/wiki/V8_(JavaScript_engine)',
+    'JavaScript'   => 'chromium.googlesource.com/v8/v8.git/+/' ~ get(
+        'chromiumdash.appspot.com/fetch_releases?platform=linux',
+    ).&from-json.first(*<channel> eq 'Stable')<hashes><v8>,
     'jq'           => 'github.com/jqlang/jq/releases/latest',
-    'Julia'        => 'github.com/JuliaLang/julia/releases/latest',
+    'Julia'        => 'api.github.com/repos/JuliaLang/julia/releases',
     'K'            => 'codeberg.org/ngn/k',
     'Kotlin'       => 'github.com/JetBrains/kotlin/releases/latest',
     'Lua'          => 'en.wikipedia.org/wiki/Lua_(programming_language)',
     'Nim'          => 'en.wikipedia.org/wiki/Nim_(programming_language)',
     'OCaml'        => 'en.wikipedia.org/wiki/OCaml',
-    'Odin'         => 'github.com/odin-lang/Odin/releases/latest',
+    'Odin'         => 'api.github.com/repos/odin-lang/Odin/releases',
     'Pascal'       => 'en.wikipedia.org/wiki/Free_Pascal',
     'Perl'         => 'endoflife.date/api/perl.json',
     'PHP'          => 'endoflife.date/api/php.json',
@@ -77,7 +84,7 @@ constant %paths = (
     'Racket'       => 'github.com/racket/racket/releases/latest',
     'Raku'         => 'github.com/rakudo/rakudo/releases/latest',
     'Rebol'        => 'en.wikipedia.org/wiki/Rebol',
-    'Rexx'         => 'regina-rexx.sourceforge.io',
+    'Rexx'         => 'sourceforge.net/projects/regina-rexx/files',
     'Rockstar 2'   => 'github.com/RockstarLang/rockstar/releases/latest',
     'Ruby'         => 'endoflife.date/api/ruby.json',
     'Rust'         => 'en.wikipedia.org/wiki/Rust_(programming_language)',
@@ -86,6 +93,7 @@ constant %paths = (
     'sed'          => 'ftp.gnu.org/gnu/sed/?C=M;O=D',
     'SQL'          => 'en.wikipedia.org/wiki/SQLite',
     'Squirrel'     => 'github.com/albertodemichelis/squirrel/releases/latest',
+    'Stax'         => 'github.com/tomtheisen/stax/releases/latest',
     'Swift'        => 'github.com/swiftlang/swift/releases/latest',
     'Tcl'          => 'en.wikipedia.org/wiki/Tcl',
     'TeX'          => 'en.wikipedia.org/wiki/TeX',
@@ -105,11 +113,11 @@ my regex ver { \d+ ( <[.-]> \d+ )+ | <xdigit> ** 7..* }
 for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
     my $old = %lang<version> ~~ / <ver> /;
     my $new = do with %paths{$name} {
-        state $ua  = HTTP::Tiny.new :throw-exceptions;
-        my    $res = $ua.get("https://$_")<content>.decode;
+        my $res = get($_);
 
         when / 'alpinelinux'    / { $res ~~ / 'Version' .+? <(<ver>)> '-r' \d+ / }
         when / 'aplwiki'        / { $res ~~ / ' release' .+? <(<ver>)> / }
+        when / 'chromium'       / { $res ~~ / 'Version' .+? <(<ver>)> / }
         when / 'codeberg'       / { $res ~~ / '"shortsha">' <(<ver>)> / }
         when / 'crates.io'      / { $res.&from-json<crate><max_stable_version> }
         when / 'dyalog.com'     / { $res ~~ / <(<ver>)> ' for Linux (DEB)' / }
@@ -122,16 +130,19 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'npmjs.org'      / { $res.&from-json[0]<version> }
         when / 'picat-lang.org' / { $res ~~ / 'Version ' <(<ver>)> / }
         when / 'pypi.org'       / { $res.&from-json<info><version> }
-        when / 'regina-rexx'    / { $res ~~ / '<b>Current</b> ' <(<ver>)> / }
         when / 'sourceforge'    / { $res ~~ / 'Latest' .+? <(<ver>)> / }
         when / 'swi-prolog'     / { $res ~~ / 'stable' .+? <(<ver>)> / }
+        when / 'api.github.com' / {
+            $res.&from-json.grep(!*<prerelease>).map({ .<name> ~~ / <ver> / })
+                .sort({ Version.new: $_ }).tail;
+        }
         when / 'github.com'     / {
             .ends-with('/releases/latest')
-                ?? $res ~~ m:i/ [ $name || < dev release version > ] <[\ -]> v? <(<ver>)> /
+                ?? $res ~~ / \d+ ( '.' \d+ )+ /
                 !! $res ~~ / '"currentOid":"' <( <xdigit> ** 7 )> /;
         }
         when / 'wikipedia'      / {
-            .contains(any < C_Sharp TeX >)
+            .contains(any <C_Sharp TeX>)
                 ?? $res ~~ / < current stable > ' version' .+? <(<ver>)> /
                 !! $res ~~ /
                     < Stable Preview > ' release' .+? '>' ( '#' \d+ ' "' )?
