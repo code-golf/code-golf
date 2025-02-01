@@ -49,7 +49,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
             when 'apl'      { "Dyalog $name $0" }
             when 'assembly' { "DefAssembler $0" }
             when 'erlang'   { "OTP $0" }
-            when 'joy'      { "$name" ~ "1 $0" }
+            when 'joy'      { "Moy $0" }
             default         { $0 }
         }
     }

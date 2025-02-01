@@ -1,16 +1,16 @@
 FROM alpine:3.21 AS builder
 
-RUN apk add --no-cache cmake g++ gc-dev make
+RUN apk add --no-cache bison cmake flex g++ gc-dev make
 
-ENV VER=d7130c7
+ENV VER=4faf069
 
-RUN wget -O- https://github.com/Wodan58/joy1/tarball/$VER \
+RUN wget -O- https://github.com/Wodan58/Moy/tarball/$VER \
   | tar xz --strip-components 1
 
 WORKDIR /build
 
-RUN cmake -G 'Unix Makefiles' .. \
- && cmake --build .              \
+RUN cmake ..        \
+ && cmake --build . \
  && strip joy
 
 COPY joywrapper.c /

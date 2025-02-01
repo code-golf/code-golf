@@ -1124,13 +1124,12 @@ for (let arg of arguments)
 [Joy]
 args       = [ '/usr/bin/joywrapper', '-' ]
 experiment = 1766
-size       = '1.03 MiB'
-version    = 'Joy1 d7130c7'
-website    = 'https://github.com/Wodan58/joy1'
+size       = '1.09 MiB'
+version    = 'Moy 4faf069'
+website    = 'https://github.com/Wodan58/Moy'
 example    = '''
 (* Printing *)
-"Hello, World!
-" putchars
+"Hello, World!\n" putchars
 
 (* Looping *)
 0 [9 <] [dup put '\n putch 1 +] while.
