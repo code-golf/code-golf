@@ -70,6 +70,7 @@ constant %paths = (
     'K'            => 'codeberg.org/ngn/k',
     'Kotlin'       => 'github.com/JetBrains/kotlin/releases/latest',
     'Lua'          => 'en.wikipedia.org/wiki/Lua_(programming_language)',
+    'Nial'         => 'github.com/niallang/Nial_Development',
     'Nim'          => 'en.wikipedia.org/wiki/Nim_(programming_language)',
     'OCaml'        => 'en.wikipedia.org/wiki/OCaml',
     'Odin'         => 'api.github.com/repos/odin-lang/Odin/releases',
