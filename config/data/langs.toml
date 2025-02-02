@@ -1490,7 +1490,7 @@ say 'Hello, World!';
 
 [Reason]
 args       = [ '/usr/bin/reason', '-', '--' ]
-env        = [ 'PATH=/usr/local/bin:/usr/bin' ]
+env        = [ 'CLICOLOR_FORCE=1', 'PATH=/usr/local/bin:/usr/bin' ]
 experiment = 1925
 size       = '373 MiB'
 version    = '3.14.0'
