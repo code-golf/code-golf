@@ -4,7 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl g++ make
 
-RUN curl -# https://picat-lang.org/download/picat37_src.tar.gz | tar xz
+RUN curl -# https://picat-lang.org/download/picat38_src.tar.gz | tar xz
 
 WORKDIR /Picat/emu
 
