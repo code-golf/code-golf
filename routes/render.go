@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"crypto/rand"
 	"net/http"
 	"net/url"
 	"os"
@@ -57,7 +58,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		JS:          []string{config.Assets["js/base.tsx"]},
 		Langs:       config.LangByID,
 		Name:        name,
-		Nonce:       nonce(),
+		Nonce:       rand.Text(),
 		Path:        r.URL.Path,
 		Request:     r,
 		Settings:    config.Settings[strings.TrimSuffix(name, "-tabs")],

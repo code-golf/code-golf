@@ -82,8 +82,8 @@ example    = '''
 [Arturo]
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
-size       = '5.29 MiB'
-version    = '0.9.84'
+size       = '5.33 MiB'
+version    = '1feabea'
 website    = 'https://arturo-lang.io'
 example    = '''
 ; Printing
@@ -592,7 +592,7 @@ void main(string[] argv) {
 [Dart]
 args    = [ '/usr/bin/dartwrapper', '-' ]
 size    = '239 MiB'
-version = '3.6.1'
+version = '3.6.2'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -1084,7 +1084,7 @@ example = '''
 [Java]
 args    = [ '/usr/bin/java', '-' ]
 size    = '58.4 MiB'
-version = 'OpenJDK 23.0.1'
+version = 'OpenJDK 23.0.2'
 website = 'https://openjdk.java.net'
 example = '''
 class Main {
@@ -1343,7 +1343,7 @@ for ($i = 1; $i < $argc; $i++)
 args       = [ '/usr/bin/picat', '-' ]
 experiment = 1871
 size       = '11.1 MiB'
-version    = '3.7'
+version    = '3.8'
 website    = 'https://picat-lang.org'
 example    = '''
 main =>
@@ -1375,7 +1375,7 @@ args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size       = '135 MiB'
-version    = 'PowerShell 7.4.6 on .NET 9.0.1'
+version    = 'PowerShell 7.5.0 on .NET 9.0.1'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
