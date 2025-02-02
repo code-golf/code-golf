@@ -1488,6 +1488,26 @@ say 'Hello, World!';
 .say for @*ARGS;
 '''
 
+[Reason]
+args       = [ '/usr/bin/reason', '-', '--' ]
+env        = [ 'PATH=/usr/local/bin:/usr/bin' ]
+experiment = 1925
+size       = '373 MiB'
+version    = '3.14.0'
+website    = 'https://reasonml.github.io'
+example    = '''
+// Printing
+print_endline("Hello, World!");
+
+// Looping
+for (i in 0 to 9) {
+    Printf.printf("%d\n", i);
+};
+
+// Accessing arguments
+List.map(arg => print_endline(arg), List.tl(Array.to_list(Sys.argv)));
+'''
+
 [Rebol]
 args       = [ '/usr/bin/rebol', '-qw', '--do', '$code', '--', '--script', '' ]
 experiment = 189

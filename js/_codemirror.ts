@@ -192,6 +192,7 @@ export const extensions : { [key: string]: any } = {
     'r':             StreamLanguage.define(r),
     'racket':        StreamLanguage.define(scheme),
     'raku':          StreamLanguage.define(raku),
+    // TODO reason
     // TODO rebol
     // TODO rexx
     // TODO rockstar
