@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"crypto/rand"
 	"net/http"
 
 	"github.com/code-golf/code-golf/config"
@@ -44,7 +45,7 @@ func golferSettingsGET(w http.ResponseWriter, r *http.Request) {
 		oauth.GetConnections(session.Database(r), session.Golfer(r).ID, false),
 		config.CountryTree,
 		oauth.Providers,
-		nonce(),
+		rand.Text(),
 		[]string{"he/him", "he/they", "she/her", "she/they", "they/them"},
 		[]string{"auto", "dark", "light"},
 		zone.List(),
