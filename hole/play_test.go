@@ -24,7 +24,7 @@ func BenchmarkSudokuV2(b *testing.B) {
 }
 
 func benchHole(b *testing.B, hole func() []Run) {
-	for range b.N {
+	for b.Loop() {
 		hole()
 	}
 }
