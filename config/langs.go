@@ -29,6 +29,7 @@ type Lang struct {
 	Example              string   `json:"example"`
 	Experiment           int      `json:"experiment,omitempty"`
 	ID                   string   `json:"id"`
+	LogoURL              string   `json:"logo-url"`
 	Name                 string   `json:"name"`
 	Size                 string   `json:"size"`
 	Version              string   `json:"version"`
@@ -42,6 +43,7 @@ func init() {
 	for name, lang := range langs {
 		lang.Example = strings.TrimSuffix(lang.Example, "\n")
 		lang.ID = ID(name)
+		lang.LogoURL = Assets["svg/"+lang.ID+".svg"]
 		lang.Name = name
 
 		// Redirects.

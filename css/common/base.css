@@ -62,6 +62,8 @@ body {
     font: 16px emoji, mahjong, system-ui, -apple-system, sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
+
+    &:has(dialog[open]) { overflow: hidden }
 }
 
 body, footer nav, #site-header nav, #popups {
@@ -69,7 +71,7 @@ body, footer nav, #site-header nav, #popups {
     max-width: 80rem;
 }
 
-body > svg, .hide { display: none }
+.hide { display: none }
 
 details .grid { padding-top: 1rem }
 
@@ -124,8 +126,8 @@ h3 { font-size: 1.25rem }
 
 #site-header a {
     align-items: center;
+    color: var(--background);
     display: flex;
-    fill: var(--background);
     height: 2.75rem;
     justify-content: center;
     min-width: 2.75rem;
@@ -134,11 +136,9 @@ h3 { font-size: 1.25rem }
 #site-header a:is(.on, :hover) {
     background: var(--background);
     color: var(--color);
-    fill: var(--color);
 }
 
 #site-header [title=Profile] {
-    color: var(--background);
     display: grid;
     font-size: .75rem;
     font-variant: tabular-nums;
@@ -191,7 +191,7 @@ dialog {
 
 dialog:not([open]) { display: none }
 
-dialog::backdrop, dialog + .backdrop {
+dialog::backdrop {
     backdrop-filter: blur(.25rem);
     background: rgba(0, 0, 0, .1);
     inset: 0;
@@ -327,6 +327,8 @@ sup {
     line-height: 0;
 }
 
+svg { fill: currentColor }
+
 table {
     border-spacing: 0;
     font-variant: tabular-nums;
@@ -422,7 +424,7 @@ thead th {
     &:has(> form) { padding-right: 2rem }
 
     > svg {
-        fill: var(--color);
+        height: 1.5rem;
         left: .75rem;
         position: absolute;
         top: calc(50% - .75rem);
@@ -508,7 +510,6 @@ td .btn {
 }
 
 .card svg {
-    fill: var(--color);
     height: 1rem;
     width: 1rem;
 }

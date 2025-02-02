@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"crypto/rand"
 	"net/http"
 	"net/url"
 	"os"
@@ -46,7 +47,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		Request                            *http.Request
 		Settings                           []*config.Setting
 	}{
-		Banners:     banners(theGolfer, time.Now().UTC()),
+		Banners:     banners(session.Database(r), theGolfer, time.Now().UTC()),
 		Cheevos:     config.CheevoTree,
 		CSS:         []cssLink{{config.Assets["css/common/base.css"], ""}},
 		Data:        data[0],
@@ -57,7 +58,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		JS:          []string{config.Assets["js/base.tsx"]},
 		Langs:       config.LangByID,
 		Name:        name,
-		Nonce:       nonce(),
+		Nonce:       rand.Text(),
 		Path:        r.URL.Path,
 		Request:     r,
 		Settings:    config.Settings[strings.TrimSuffix(name, "-tabs")],
@@ -119,13 +120,15 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 
 	header := w.Header()
 
+	// Workaround SVG blocking, set default-src to 'self' rather than 'none'.
+	// Until Firefox >= 132 is more widespread, see https://bugzil.la/1773976
 	header.Set("Content-Language", "en")
 	header.Set("Content-Type", "text/html; charset=utf-8")
 	header.Set("Referrer-Policy", "no-referrer")
 	header.Set("Content-Security-Policy",
 		"base-uri 'none';"+
 			"connect-src 'self';"+
-			"default-src 'none';"+
+			"default-src 'self';"+
 			"form-action 'self';"+
 			"font-src 'self';"+
 			"frame-ancestors 'none';"+

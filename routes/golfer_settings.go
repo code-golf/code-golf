@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"crypto/rand"
 	"net/http"
 
 	"github.com/code-golf/code-golf/config"
@@ -44,8 +45,8 @@ func golferSettingsGET(w http.ResponseWriter, r *http.Request) {
 		oauth.GetConnections(session.Database(r), session.Golfer(r).ID, false),
 		config.CountryTree,
 		oauth.Providers,
-		nonce(),
-		[]string{"he/him", "she/her", "they/them"},
+		rand.Text(),
+		[]string{"he/him", "he/they", "she/her", "she/they", "they/them"},
 		[]string{"auto", "dark", "light"},
 		zone.List(),
 	}
@@ -114,7 +115,7 @@ func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 	}
 
 	switch r.Form.Get("pronouns") {
-	case "", "he/him", "she/her", "they/them":
+	case "", "he/him", "he/they", "she/her", "she/they", "they/them":
 	default:
 		http.Error(w, "Invalid pronouns", http.StatusBadRequest)
 		return

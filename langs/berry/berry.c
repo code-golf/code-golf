@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "be_vm.h"
 #include "berry.h"
@@ -10,16 +11,19 @@ static int handle_result(bvm *vm, int res) {
     case BE_OK: /* everything is OK */
         return 0;
     case BE_EXCEPTION: /* uncaught exception */
+        dup2(2, 1);
         be_dumpexcept(vm);
         return 1;
     case BE_EXIT: /* return exit code */
         return be_toindex(vm, -1);
     case BE_IO_ERROR:
+        dup2(2, 1);
         be_writestring("error: "); 
         be_writestring(be_tostring(vm, -1));
         be_writenewline();
         return -2;
     case BE_MALLOC_FAIL:
+        dup2(2, 1);
         be_writestring("error: memory allocation failed.\n");
         return -1;
     default: /* unknown result */

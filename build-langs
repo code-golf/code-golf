@@ -42,12 +42,18 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
     }
 
     # Version.
-    if $id ~~ any <05ab1e apl assembly befunge brainfuck cjam fish golfscript harbour hare hexagony k scala> {
+    if $id ~~ any <05ab1e apl arturo assembly befunge brainfuck cjam erlang fish golfscript hare hexagony k scala stax vyxal> {
         "langs/$id/Dockerfile".IO.slurp ~~ / ' VER=' (\S+) | ' VERSION=' (\S+) /;
-        %lang<version> = $id eq 'apl' ?? "Dyalog $name $0" !! $id eq 'assembly' ?? "DefAssembler $0" !! $0;
+
+        %lang<version> = do given $id {
+            when 'apl'      { "Dyalog $name $0" }
+            when 'assembly' { "DefAssembler $0" }
+            when 'erlang'   { "OTP $0" }
+            default         { $0 }
+        }
     }
     else {
-        # Forth outputs it's version number over stderr.
+        # Forth outputs its version number over stderr.
         my $proc = run «docker run -i --rm --tmpfs '/tmp:exec' $img»,
             :in, :out, :merge(so $id eq 'forth' | 'scheme');
 
