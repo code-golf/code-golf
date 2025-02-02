@@ -1212,6 +1212,23 @@ for i = 1, #arg do
 end
 '''
 
+[Nial]
+args       = [ '/usr/bin/nial', '-', '--' ]
+experiment = 579
+size       = '1.23 MiB'
+version    = 'cdd6e81'
+website    = 'https://www.nial-array-language.org'
+example    = '''
+% Printing ;
+write 'Hello, World!';
+
+% Looping ;
+EACH write tell 10;
+
+% Accessing arguments ;
+EACH write drop 4 sys_argv;
+'''
+
 [Nim]
 args    = [ '/usr/bin/nim', '--colors:on', '-o:/tmp/code', '-r', 'c', '-' ]
 size    = '15.6 MiB'
