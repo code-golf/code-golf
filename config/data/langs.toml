@@ -1432,6 +1432,25 @@ for arg in sys.argv[1:]:
     print(arg)
 '''
 
+[Qore]
+args       = [ '/usr/bin/qore', '-' ]
+experiment = 1928
+size       = '18.0 MiB'
+version    = '1.19.2'
+website    = 'https://qore.org'
+example    = '''
+# Printing
+print("Hello, World!\n");
+
+# Looping
+foreach int i in (0..9)
+    printf("%d\n", i);
+
+# Accessing arguments
+foreach string arg in (ARGV)
+    printf("%s\n", arg);
+'''
+
 [R]
 args       = [ '/usr/bin/Rscript', '-' ]
 args-quine = [ '/usr/bin/Rscript', '-e', "source('stdin')" ]

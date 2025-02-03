@@ -80,6 +80,7 @@ constant %paths = (
     'PowerShell'   => 'endoflife.date/api/powershell.json',
     'Prolog'       => 'swi-prolog.discourse.group/c/releases',
     'Python'       => 'endoflife.date/api/python.json',
+    'Qore'         => 'github.com/qorelanguage/qore/releases/latest',
     'R'            => 'en.wikipedia.org/wiki/R_(programming_language)',
     'Racket'       => 'github.com/racket/racket/releases/latest',
     'Raku'         => 'github.com/rakudo/rakudo/releases/latest',
