@@ -58,14 +58,19 @@ func printTrail(s string) string {
 	xMin, xMax, yMin, yMax := 0, 0, 0, 0
 
 	for i := range visited {
-		switch true {
-		case i[0] < xMin:
+		if i[0] < xMin {
 			xMin = i[0]
-		case i[0] > xMax:
+		}
+
+		if i[0] > xMax {
 			xMax = i[0]
-		case i[1] < yMin:
+		}
+
+		if i[1] < yMin {
 			yMin = i[1]
-		case i[1] > yMax:
+		}
+
+		if i[1] > yMax {
 			yMax = i[1]
 		}
 	}
