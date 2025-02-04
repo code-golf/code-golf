@@ -72,14 +72,18 @@ CREATE TYPE hole AS ENUM (
 CREATE TYPE idea_category AS ENUM ('cheevo', 'hole', 'lang', 'other');
 
 CREATE TYPE lang AS ENUM (
-    'assembly', 'awk', 'bash', 'basic', 'berry', 'brainfuck', 'c', 'c-sharp',
-    'civet', 'clojure',  'cpp', 'cobol', 'coconut', 'common-lisp', 'crystal',
-    'd', 'dart', 'elixir', 'f-sharp', 'factor', 'fish', 'forth', 'fortran',
-    'gleam', 'go', 'golfscript', 'haskell', 'hexagony', 'j', 'janet', 'java',
-    'javascript', 'jq', 'julia', 'k', 'kotlin', 'lua', 'nim', 'ocaml',
-    'pascal', 'perl', 'php', 'powershell', 'prolog', 'python', 'r', 'raku',
-    'rockstar', 'rockstar-2', 'ruby', 'rust', 'scheme', 'sed', 'sql', 'swift',
-    'tcl', 'tex', 'v', 'viml', 'wren', 'zig'
+    '05ab1e', 'algol-68', 'apl', 'arturo', 'assembly', 'awk', 'bash', 'basic',
+    'befunge', 'berry', 'bqn', 'brainfuck', 'c', 'c-sharp', 'civet', 'cjam',
+    'clojure', 'cobol', 'coconut', 'coffeescript', 'common-lisp', 'cpp',
+    'crystal', 'd', 'dart', 'egel', 'elixir', 'erlang', 'f-sharp', 'factor',
+    'fennel', 'fish', 'forth', 'fortran', 'gleam', 'go', 'golfscript',
+    'groovy', 'harbour', 'hare', 'haskell', 'haxe', 'hexagony', 'hush', 'hy',
+    'iogii', 'j', 'janet', 'java', 'javascript', 'jq', 'julia', 'k', 'kotlin',
+    'lua', 'nim', 'ocaml', 'odin', 'pascal', 'perl', 'php', 'picat',
+    'powershell', 'prolog', 'python', 'r', 'racket', 'raku', 'rebol', 'rexx',
+    'rockstar', 'rockstar-2', 'ruby', 'rust', 'scala', 'scheme', 'sed', 'sql',
+    'squirrel', 'stax', 'swift', 'tcl', 'tex', 'uiua', 'v', 'viml', 'vyxal',
+    'wren', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('unicorn', 'diamond', 'gold', 'silver', 'bronze');
@@ -232,12 +236,13 @@ CREATE TABLE trophies (
     PRIMARY KEY (user_id, trophy)
 );
 
--- Hole isn't experimental and solution isn't failing.
+-- Hole/lang isn't experimental and solution isn't failing.
 CREATE VIEW stable_passing_solutions AS
      SELECT solutions.*
        FROM solutions
-       JOIN holes ON id = hole
-      WHERE experiment = 0 AND NOT failing;
+       JOIN holes ON hole = holes.id
+       JOIN langs ON lang = langs.id
+      WHERE holes.experiment = 0 AND langs.experiment = 0 AND NOT failing;
 
 CREATE MATERIALIZED VIEW medals AS WITH ranks AS (
     SELECT user_id, hole, lang, scoring, submitted,
