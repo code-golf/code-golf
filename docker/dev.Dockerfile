@@ -19,6 +19,7 @@ COPY --from=codegolf/lang-kotlin       ["/", "/langs/kotlin/rootfs/"      ] #  2
 COPY --from=codegolf/lang-basic        ["/", "/langs/basic/rootfs/"       ] #  205 MiB
 COPY --from=codegolf/lang-scala        ["/", "/langs/scala/rootfs/"       ] #  203 MiB
 COPY --from=codegolf/lang-factor       ["/", "/langs/factor/rootfs/"      ] #  173 MiB
+COPY --from=codegolf/lang-typescript   ["/", "/langs/typescript/rootfs/"  ] #  153 MiB
 COPY --from=codegolf/lang-vyxal        ["/", "/langs/vyxal/rootfs/"       ] #  152 MiB
 COPY --from=codegolf/lang-groovy       ["/", "/langs/groovy/rootfs/"      ] #  146 MiB
 COPY --from=codegolf/lang-cpp          ["/", "/langs/cpp/rootfs/"         ] #  142 MiB
