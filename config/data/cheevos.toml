@@ -9,6 +9,12 @@ dates       = [2000-10-02, 2000-10-03]
 description = 'Solve any hole on <a href=//github.com/code-golf/code-golf/commit/4b44>2 Oct</a>.'
 
 [['Date Specific']]
+name        = 'Hugs and Kisses'
+emoji       = '🥰'
+dates       = [2000-02-14, 2000-02-15]
+description = 'Solve <a href=/tic-tac-toe>Tic-tac-toe</a> on <a href=//www.wikipedia.org/wiki/Valentine%27s_Day>14 Feb</a>.'
+
+[['Date Specific']]
 name        = 'Independence Day'
 emoji       = '🇺🇸'
 dates       = [2000-07-04, 2000-07-05]

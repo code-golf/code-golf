@@ -273,6 +273,12 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 					out.Cheevos = append(out.Cheevos, *c)
 				}
 			}
+		case "tic-tac-toe":
+			if month == time.February && day == 14 {
+				if c := golfer.Earn(db, "hugs-and-kisses"); c != nil {
+					out.Cheevos = append(out.Cheevos, *c)
+				}
+			}
 		case "united-states":
 			if month == time.July && day == 4 {
 				if c := golfer.Earn(db, "independence-day"); c != nil {
