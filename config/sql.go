@@ -54,7 +54,7 @@ func (h *Hole) Scan(id any) error {
 func (h *Hole) Value() (driver.Value, error) { return h.ID, nil }
 
 func (l *Lang) Scan(id any) error {
-	*l = *LangByID[asString(id)]
+	*l = *AllLangByID[asString(id)]
 	return nil
 }
 

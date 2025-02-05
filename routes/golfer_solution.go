@@ -28,7 +28,7 @@ func golferSolutionGET(w http.ResponseWriter, r *http.Request) {
 		Tested                             time.Time
 	}{
 		Hole:    config.AllHoleByID[param(r, "hole")],
-		Lang:    config.LangByID[param(r, "lang")],
+		Lang:    config.AllLangByID[param(r, "lang")],
 		Scoring: param(r, "scoring"),
 	}
 
@@ -76,7 +76,7 @@ func golferSolutionGET(w http.ResponseWriter, r *http.Request) {
 // POST /golfers/{golfer}/{hole}/{lang}/{scoring}
 func golferSolutionPOST(w http.ResponseWriter, r *http.Request) {
 	hole := config.AllHoleByID[param(r, "hole")]
-	lang := config.LangByID[param(r, "lang")]
+	lang := config.AllLangByID[param(r, "lang")]
 	scoring := param(r, "scoring")
 
 	if hole == nil || lang == nil || (scoring != "bytes" && scoring != "chars") {
