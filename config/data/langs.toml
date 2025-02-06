@@ -1214,8 +1214,8 @@ end
 
 [Nim]
 args    = [ '/usr/bin/nim', '--colors:on', '-o:/tmp/code', '-r', 'c', '-' ]
-size    = '15.6 MiB'
-version = '2.2.0'
+size    = '15.0 MiB'
+version = '2.2.2'
 website = 'https://nim-lang.org'
 example = '''
 import os
