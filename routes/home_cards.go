@@ -66,7 +66,7 @@ func getHomeCards(r *http.Request) (cards []Card) {
 			     FROM rankings
 			    WHERE scoring = $1 AND user_id = $2
 			 ORDER BY hole, points DESC, lang
-			)  SELECT id hole, lang, COALESCE(points, 0)
+			)  SELECT id hole, lang, COALESCE(points, 0) points
 			     FROM holes
 			LEFT JOIN points ON id = hole WHERE experiment = 0`
 
@@ -76,36 +76,14 @@ func getHomeCards(r *http.Request) (cards []Card) {
 			   SELECT hole, lang, points_for_lang
 			     FROM rankings
 			    WHERE scoring = $1 AND user_id = $2 AND lang = $3
-			)  SELECT id hole, lang, COALESCE(points_for_lang, 0)
+			)  SELECT id hole, lang, COALESCE(points_for_lang, 0) points
 			     FROM holes
 			LEFT JOIN points ON id = hole WHERE experiment = 0`
 
 		bind = []any{golfer.Settings["home"]["scoring"], golfer.ID, lang}
 	}
 
-	rows, err := session.Database(r).Query(query, bind)
-	if err != nil {
-		panic(err)
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var card Card
-		var hole config.NullHole // NULL when DB updated before config.
-		var lang config.NullLang // NULL when not solved.
-
-		if err := rows.Scan(&hole, &lang, &card.Points); err != nil {
-			panic(err)
-		}
-
-		if hole.Valid {
-			card.Hole = hole.Hole
-			card.Lang = lang.Lang
-			cards = append(cards, card)
-		}
-	}
-
-	if err := rows.Err(); err != nil {
+	if err := session.Database(r).Select(&cards, query, bind...); err != nil {
 		panic(err)
 	}
 
