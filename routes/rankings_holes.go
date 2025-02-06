@@ -18,10 +18,7 @@ import (
 // GET /rankings/recent-holes/{lang}/{scoring}
 func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		Distribution []struct {
-			Strokes   int
-			Frequency int
-		}
+		Distribution                          []struct{ Frequency, Strokes int }
 		Strokes                               int
 		Hole, PrevHole, NextHole              *config.Hole
 		HoleID, LangID, OtherScoring, Scoring string
