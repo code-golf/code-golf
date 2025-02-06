@@ -66,9 +66,9 @@ func getHomeCards(r *http.Request) (cards []Card) {
 			     FROM rankings
 			    WHERE scoring = $1 AND user_id = $2
 			 ORDER BY hole, points DESC, lang
-			)  SELECT hole, lang, COALESCE(points, 0)
-			     FROM unnest(enum_range(NULL::hole)) hole
-			LEFT JOIN points USING(hole)`
+			)  SELECT id hole, lang, COALESCE(points, 0)
+			     FROM holes
+			LEFT JOIN points ON id = hole WHERE experiment = 0`
 
 		bind = []any{golfer.Settings["home"]["scoring"], golfer.ID}
 	} else {
@@ -76,9 +76,9 @@ func getHomeCards(r *http.Request) (cards []Card) {
 			   SELECT hole, lang, points_for_lang
 			     FROM rankings
 			    WHERE scoring = $1 AND user_id = $2 AND lang = $3
-			)  SELECT hole, lang, COALESCE(points_for_lang, 0)
-			     FROM unnest(enum_range(NULL::hole)) hole
-			LEFT JOIN points USING(hole)`
+			)  SELECT id hole, lang, COALESCE(points_for_lang, 0)
+			     FROM holes
+			LEFT JOIN points ON id = hole WHERE experiment = 0`
 
 		bind = []any{golfer.Settings["home"]["scoring"], golfer.ID, lang}
 	}
