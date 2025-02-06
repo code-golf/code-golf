@@ -22,8 +22,6 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		Strokes                               int
 		Hole, PrevHole, NextHole              *config.Hole
 		HoleID, LangID, OtherScoring, Scoring string
-		Holes                                 []*config.Hole
-		Langs                                 []*config.Lang
 		Pager                                 *pager.Pager
 		Recent                                bool
 		Rows                                  []struct {
@@ -36,9 +34,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		}
 	}{
 		HoleID:  param(r, "hole"),
-		Holes:   config.HoleList,
 		LangID:  param(r, "lang"),
-		Langs:   config.LangList,
 		Pager:   pager.New(r),
 		Recent:  strings.HasPrefix(r.URL.Path, "/rankings/recent-holes"),
 		Scoring: param(r, "scoring"),
