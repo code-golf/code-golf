@@ -2,7 +2,6 @@ package routes
 
 import (
 	"cmp"
-	"database/sql"
 	"net/http"
 	"slices"
 	"strings"
@@ -58,37 +57,33 @@ func getHomeCards(r *http.Request) (cards []Card) {
 		return cardList
 	}
 
-	var rows *sql.Rows
-	var err error
+	var query string
+	var bind []any
 
 	if lang := golfer.Settings["home"]["points-for"]; lang == "all" {
-		rows, err = session.Database(r).Query(
-			`WITH points AS (
-				SELECT DISTINCT ON (hole) hole, lang, points
-				  FROM rankings
-				 WHERE scoring = $1 AND user_id = $2
-			  ORDER BY hole, points DESC, lang
+		query = `WITH points AS (
+			   SELECT DISTINCT ON (hole) hole, lang, points
+			     FROM rankings
+			    WHERE scoring = $1 AND user_id = $2
+			 ORDER BY hole, points DESC, lang
 			)  SELECT hole, lang, COALESCE(points, 0)
-				 FROM unnest(enum_range(NULL::hole)) hole
-			LEFT JOIN points USING(hole)`,
-			golfer.Settings["home"]["scoring"],
-			golfer.ID,
-		)
+			     FROM unnest(enum_range(NULL::hole)) hole
+			LEFT JOIN points USING(hole)`
+
+		bind = []any{golfer.Settings["home"]["scoring"], golfer.ID}
 	} else {
-		rows, err = session.Database(r).Query(
-			`WITH points AS (
-				SELECT hole, lang, points_for_lang
-				  FROM rankings
-				 WHERE scoring = $1 AND user_id = $2 AND lang = $3
+		query = `WITH points AS (
+			   SELECT hole, lang, points_for_lang
+			     FROM rankings
+			    WHERE scoring = $1 AND user_id = $2 AND lang = $3
 			)  SELECT hole, lang, COALESCE(points_for_lang, 0)
-				 FROM unnest(enum_range(NULL::hole)) hole
-			LEFT JOIN points USING(hole)`,
-			golfer.Settings["home"]["scoring"],
-			golfer.ID,
-			lang,
-		)
+			     FROM unnest(enum_range(NULL::hole)) hole
+			LEFT JOIN points USING(hole)`
+
+		bind = []any{golfer.Settings["home"]["scoring"], golfer.ID, lang}
 	}
 
+	rows, err := session.Database(r).Query(query, bind)
 	if err != nil {
 		panic(err)
 	}
