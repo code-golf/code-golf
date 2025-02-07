@@ -121,7 +121,7 @@ func banners(db *sqlx.DB, golfer *golfer.Golfer, now time.Time) (banners []banne
 		byHole := make(map[string][]GroupItem)
 
 		for _, solution := range failing {
-			langName := config.LangByID[solution.Lang].Name
+			langName := config.AllLangByID[solution.Lang].Name
 			holeName := config.AllHoleByID[solution.Hole].Name
 			byLang[solution.Lang] = append(byLang[solution.Lang], GroupItem{solution.Hole, solution.Lang, langName, holeName})
 			byHole[solution.Hole] = append(byHole[solution.Hole], GroupItem{solution.Hole, solution.Lang, holeName, langName})
