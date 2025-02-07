@@ -18,15 +18,10 @@ import (
 // GET /rankings/recent-holes/{lang}/{scoring}
 func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		Distribution []struct {
-			Strokes   int
-			Frequency int
-		}
+		Distribution                          []struct{ Frequency, Strokes int }
 		Strokes                               int
 		Hole, PrevHole, NextHole              *config.Hole
 		HoleID, LangID, OtherScoring, Scoring string
-		Holes                                 []*config.Hole
-		Langs                                 []*config.Lang
 		Pager                                 *pager.Pager
 		Recent                                bool
 		Rows                                  []struct {
@@ -39,9 +34,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		}
 	}{
 		HoleID:  param(r, "hole"),
-		Holes:   config.HoleList,
 		LangID:  param(r, "lang"),
-		Langs:   config.LangList,
 		Pager:   pager.New(r),
 		Recent:  strings.HasPrefix(r.URL.Path, "/rankings/recent-holes"),
 		Scoring: param(r, "scoring"),
@@ -54,7 +47,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if data.HoleID != "all" && config.AllHoleByID[data.HoleID] == nil ||
-		data.LangID != "all" && config.LangByID[data.LangID] == nil ||
+		data.LangID != "all" && config.AllLangByID[data.LangID] == nil ||
 		data.Scoring != "chars" && data.Scoring != "bytes" {
 		w.WriteHeader(http.StatusNotFound)
 		return

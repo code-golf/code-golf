@@ -204,8 +204,7 @@ func populateHolesLangsTables(db *sqlx.DB) error {
 		return err
 	}
 
-	// TODO Expand enum and add experimental langs.
-	for _, lang := range config.LangList {
+	for _, lang := range config.AllLangList {
 		if _, err := insertLang.Exec(lang); err != nil {
 			return err
 		}

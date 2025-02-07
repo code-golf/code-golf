@@ -110,6 +110,7 @@ RUN echo [] > extras/ligatures.json                      \
     svg/1f961.svg       `# Takeout Box`                  \
     svg/1f967.svg       `# Pie`                          \
     svg/1f96a.svg       `# Sandwich`                     \
+    svg/1f970.svg       `# Smiling Face with Hearts`     \
     svg/1f984.svg       `# Unicorn`                      \
     svg/1f98b.svg       `# Butterfly`                    \
     svg/1f98e.svg       `# Lizard`                       \

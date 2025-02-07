@@ -58,43 +58,34 @@ func printTrail(s string) string {
 	xMin, xMax, yMin, yMax := 0, 0, 0, 0
 
 	for i := range visited {
-		switch true {
-		case i[0] < xMin:
-			xMin = i[0]
-		case i[0] > xMax:
-			xMax = i[0]
-		case i[1] < yMin:
-			yMin = i[1]
-		case i[1] > yMax:
-			yMax = i[1]
-		}
+		xMin = min(xMin, i[0])
+		xMax = max(xMax, i[0])
+		yMin = min(yMin, i[1])
+		yMax = max(yMax, i[1])
 	}
 
 	for i := xMin; i <= xMax; i++ {
 		for j := yMin; j <= yMax; j++ {
 			if visited[[2]int{i, j}] {
-				trail.WriteRune('#')
+				trail.WriteByte('#')
 			} else {
-				trail.WriteRune(' ')
+				trail.WriteByte(' ')
 			}
 		}
 
-		trail.WriteRune('\n')
+		trail.WriteByte('\n')
 	}
 
 	return trail.String()
 }
 
 func snake() []Run {
-	tests := make([]test, 0, 100)
+	tests := make([]test, 100)
 
-	for range 100 {
+	for i := range tests {
 		argument := randTrail(randInt(10, randInt(20, 100)))
 
-		tests = append(tests, test{
-			argument,
-			printTrail(argument),
-		})
+		tests[i] = test{argument, printTrail(argument)}
 	}
 
 	return outputTests(shuffle(tests))

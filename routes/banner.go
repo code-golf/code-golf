@@ -180,7 +180,8 @@ Cheevo:
 
 			if body != "" {
 				body = template.HTML("The "+cheevo.Emoji+" <b>"+
-					cheevo.Name+"</b> achievement will ") + body
+					cheevo.Name+"</b> achievement will ") + body +
+					"<p>" + cheevo.Description
 
 				banners = append(banners, banner{
 					Body:    body,

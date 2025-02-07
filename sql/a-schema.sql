@@ -10,17 +10,18 @@ CREATE TYPE cheevo AS ENUM (
     'double-slit-experiment', 'elephpant-in-the-room', 'emergency-room',
     'evil-scheme', 'fish-n-chips', 'fore', 'forty-winks', 'go-forth',
     'gone-in-60-holes', 'happy-birthday-code-golf', 'happy-go-lucky',
-    'hello-world', 'hextreme-agony', 'inception', 'independence-day',
-    'interview-ready', 'its-over-9000', 'jeweler', 'just-kidding',
-    'like-comment-subscribe', 'marathon-runner', 'mary-had-a-little-lambda',
-    'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars',
-    'neunundneunzig-luftballons', 'off-the-grid', 'omniglot', 'omniglutton',
-    'ouroboros', 'pangramglot', 'patches-welcome', 'phileas-fogg', 'pi-day',
-    'polyglot', 'polyglutton', 'real-programmers', 'right-on', 'rm-rf',
-    'rtfm', 'rule-34', 's-box-360', 'slowcoach', 'smörgåsbord', 'solve-quine',
-    'sounds-quite-nice', 'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr',
-    'twelvetide', 'twenty-kiloleagues', 'under-pressure', 'up-to-eleven',
-    'vampire-byte', 'x-factor', 'x86'
+    'hello-world', 'hextreme-agony', 'hugs-and-kisses', 'inception',
+    'independence-day', 'interview-ready', 'its-over-9000', 'jeweler',
+    'just-kidding', 'like-comment-subscribe', 'marathon-runner',
+    'mary-had-a-little-lambda', 'may-the-4ᵗʰ-be-with-you',
+    'my-god-its-full-of-stars', 'neunundneunzig-luftballons', 'off-the-grid',
+    'omniglot', 'omniglutton', 'ouroboros', 'pangramglot', 'patches-welcome',
+    'phileas-fogg', 'pi-day', 'polyglot', 'polyglutton', 'real-programmers',
+    'right-on', 'rm-rf', 'rtfm', 'rule-34', 's-box-360', 'slowcoach',
+    'smörgåsbord', 'solve-quine', 'sounds-quite-nice', 'takeout',
+    'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
+    'twenty-kiloleagues', 'under-pressure', 'up-to-eleven', 'vampire-byte',
+    'x-factor', 'x86'
 );
 
 CREATE TYPE connection AS ENUM (
@@ -72,14 +73,18 @@ CREATE TYPE hole AS ENUM (
 CREATE TYPE idea_category AS ENUM ('cheevo', 'hole', 'lang', 'other');
 
 CREATE TYPE lang AS ENUM (
-    'assembly', 'awk', 'bash', 'basic', 'berry', 'brainfuck', 'c', 'c-sharp',
-    'civet', 'clojure',  'cpp', 'cobol', 'coconut', 'common-lisp', 'crystal',
-    'd', 'dart', 'elixir', 'f-sharp', 'factor', 'fish', 'forth', 'fortran',
-    'gleam', 'go', 'golfscript', 'haskell', 'hexagony', 'j', 'janet', 'java',
-    'javascript', 'jq', 'julia', 'k', 'kotlin', 'lua', 'nim', 'ocaml',
-    'pascal', 'perl', 'php', 'powershell', 'prolog', 'python', 'r', 'raku',
-    'rockstar', 'rockstar-2', 'ruby', 'rust', 'scheme', 'sed', 'sql', 'swift',
-    'tcl', 'tex', 'v', 'viml', 'wren', 'zig'
+    '05ab1e', 'algol-68', 'apl', 'arturo', 'assembly', 'awk', 'bash', 'basic',
+    'befunge', 'berry', 'bqn', 'brainfuck', 'c', 'c-sharp', 'civet', 'cjam',
+    'clojure', 'cobol', 'coconut', 'coffeescript', 'common-lisp', 'cpp',
+    'crystal', 'd', 'dart', 'egel', 'elixir', 'erlang', 'f-sharp', 'factor',
+    'fennel', 'fish', 'forth', 'fortran', 'gleam', 'go', 'golfscript',
+    'groovy', 'harbour', 'hare', 'haskell', 'haxe', 'hexagony', 'hush', 'hy',
+    'iogii', 'j', 'janet', 'java', 'javascript', 'jq', 'julia', 'k', 'kotlin',
+    'lua', 'nim', 'ocaml', 'odin', 'pascal', 'perl', 'php', 'picat',
+    'powershell', 'prolog', 'python', 'r', 'racket', 'raku', 'rebol', 'rexx',
+    'rockstar', 'rockstar-2', 'ruby', 'rust', 'scala', 'scheme', 'sed', 'sql',
+    'squirrel', 'stax', 'swift', 'tcl', 'tex', 'uiua', 'v', 'viml', 'vyxal',
+    'wren', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('unicorn', 'diamond', 'gold', 'silver', 'bronze');
@@ -232,12 +237,13 @@ CREATE TABLE trophies (
     PRIMARY KEY (user_id, trophy)
 );
 
--- Hole isn't experimental and solution isn't failing.
+-- Hole/lang isn't experimental and solution isn't failing.
 CREATE VIEW stable_passing_solutions AS
      SELECT solutions.*
        FROM solutions
-       JOIN holes ON id = hole
-      WHERE experiment = 0 AND NOT failing;
+       JOIN holes ON hole = holes.id
+       JOIN langs ON lang = langs.id
+      WHERE holes.experiment = 0 AND langs.experiment = 0 AND NOT failing;
 
 CREATE MATERIALIZED VIEW medals AS WITH ranks AS (
     SELECT user_id, hole, lang, scoring, submitted,

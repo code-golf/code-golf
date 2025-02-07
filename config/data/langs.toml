@@ -83,7 +83,7 @@ example    = '''
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
 size       = '5.33 MiB'
-version    = '6f10987'
+version    = '1c12b00'
 website    = 'https://arturo-lang.io'
 example    = '''
 ; Printing
@@ -484,7 +484,7 @@ end-program.
 [Coconut]
 args    = [ '/usr/bin/coconut', '--quiet', '--target', 'sys', '--keep-lines', '--argv' ]
 env     = [ 'PYTHON_COLORS=1' ]
-size    = '87.3 MiB'
+size    = '87.6 MiB'
 version = '3.1.2'
 website = 'https://coconut-lang.org'
 example = '''
@@ -547,7 +547,7 @@ example   = '''
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
 size    = '270 MiB'
-version = '1.15.0'
+version = '1.15.1'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -656,7 +656,7 @@ for arg <- System.argv, do: IO.puts arg
 args       = [ '/usr/bin/erlang', '-' ]
 experiment = 181
 size       = '68.5 MiB'
-version    = 'OTP 27.2.1'
+version    = 'OTP 27.2.2'
 website    = 'https://www.erlang.org'
 example    = '''
 main(Args) ->
@@ -780,7 +780,7 @@ end
 [Gleam]
 args    = [ '/usr/bin/gleam', '-', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '91.3 MiB'
+size    = '91.2 MiB'
 version = '1.7.0'
 website = 'https://gleam.run'
 example = '''
@@ -807,7 +807,7 @@ pub fn main() {
 args    = [ '/usr/bin/gowrapper', '-' ]
 env     = [ 'GOCACHE=/tmp/cache' ]
 size    = '383 MiB'
-version = '1.23.5'
+version = '1.23.6'
 website = 'https://go.dev'
 example = '''
 package main
@@ -1214,8 +1214,8 @@ end
 
 [Nim]
 args    = [ '/usr/bin/nim', '--colors:on', '-o:/tmp/code', '-r', 'c', '-' ]
-size    = '15.6 MiB'
-version = '2.2.0'
+size    = '15.0 MiB'
+version = '2.2.2'
 website = 'https://nim-lang.org'
 example = '''
 import os
@@ -1415,7 +1415,7 @@ example = '''
 args    = [ '/usr/bin/python', '-u', '-' ]
 env     = [ 'PYTHON_COLORS=1' ]
 size    = '29.2 MiB'
-version = '3.13.1'
+version = '3.13.2'
 website = 'https://www.python.org'
 example = '''
 import sys
