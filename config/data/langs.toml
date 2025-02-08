@@ -1105,8 +1105,8 @@ class Main {
 
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
-size    = '41.9 MiB'
-version = 'V8 13.2.152.36'
+size    = '42.5 MiB'
+version = 'V8 13.3.415.19'
 website = 'https://v8.dev'
 example = '''
 // Printing
