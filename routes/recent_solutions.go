@@ -13,7 +13,7 @@ import (
 // GET /recent/solutions/{hole}/{lang}/{scoring}
 func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 	type row struct {
-		Country                          config.NullCountry
+		Country                          *config.Country
 		Experimental                     bool
 		Name                             string
 		Hole                             *config.Hole

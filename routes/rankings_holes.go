@@ -25,7 +25,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		Pager                                 *pager.Pager
 		Recent                                bool
 		Rows                                  []struct {
-			Country                             config.NullCountry
+			Country                             *config.Country
 			Holes, Rank, Points, Strokes, Total int
 			Lang                                *config.Lang
 			Name                                string

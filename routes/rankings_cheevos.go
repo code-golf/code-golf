@@ -18,7 +18,7 @@ func rankingsCheevosGET(w http.ResponseWriter, r *http.Request) {
 		Cheevo *config.Cheevo
 		Pager  *pager.Pager
 		Rows   []struct {
-			Country            config.NullCountry
+			Country            *config.Country
 			Earned             time.Time
 			Name               string
 			Count, Rank, Total int

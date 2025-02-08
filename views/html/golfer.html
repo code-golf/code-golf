@@ -6,7 +6,7 @@
         <h1 title="{{ .Name }}{{ with .Pronouns.V }} ({{ . }}){{ end }}">
             {{ .Name }}
             {{ with .Pronouns.V }}<span id=pronouns>({{ . }})</span>{{ end }}
-        {{ with .Country.Country }}
+        {{ with .Country }}
             <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
         {{ end }}
         </h1>

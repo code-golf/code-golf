@@ -17,7 +17,7 @@ func adminGET(w http.ResponseWriter, r *http.Request) {
 			Solutions int
 		}
 		Sessions []struct {
-			Country  config.NullCountry
+			Country  *config.Country
 			LastUsed time.Time
 			Name     string
 		}
