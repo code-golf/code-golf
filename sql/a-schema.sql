@@ -134,7 +134,7 @@ CREATE TABLE users (
     pronouns     pronouns,
     settings     jsonb     NOT NULL DEFAULT '{}'::jsonb,
     about        text      NOT NULL DEFAULT '',
-    CHECK (country IS NULL OR country = UPPER(country)),
+    CHECK (country IS NULL OR country ~ '^[A-Z]{2}$'),
     CHECK (id != referrer_id),              -- Can't refer yourself!
     CHECK (login ~ '^[A-Za-z0-9_-]{1,42}$') -- 1 - 42 ASCII word/hyphen chars.
 );
