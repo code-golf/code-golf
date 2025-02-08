@@ -36,7 +36,7 @@ func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if data.HoleID != "all" && config.AllHoleByID[data.HoleID] == nil ||
-		data.LangID != "all" && config.LangByID[data.LangID] == nil ||
+		data.LangID != "all" && config.AllLangByID[data.LangID] == nil ||
 		data.Scoring != "chars" && data.Scoring != "bytes" {
 		w.WriteHeader(http.StatusNotFound)
 		return

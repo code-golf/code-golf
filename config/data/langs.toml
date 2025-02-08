@@ -82,8 +82,8 @@ example    = '''
 [Arturo]
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
-size       = '5.29 MiB'
-version    = '0.9.84'
+size       = '5.33 MiB'
+version    = '1c12b00'
 website    = 'https://arturo-lang.io'
 example    = '''
 ; Printing
@@ -484,7 +484,7 @@ end-program.
 [Coconut]
 args    = [ '/usr/bin/coconut', '--quiet', '--target', 'sys', '--keep-lines', '--argv' ]
 env     = [ 'PYTHON_COLORS=1' ]
-size    = '87.3 MiB'
+size    = '87.6 MiB'
 version = '3.1.2'
 website = 'https://coconut-lang.org'
 example = '''
@@ -547,7 +547,7 @@ example   = '''
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
 size    = '270 MiB'
-version = '1.15.0'
+version = '1.15.1'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -592,7 +592,7 @@ void main(string[] argv) {
 [Dart]
 args    = [ '/usr/bin/dartwrapper', '-' ]
 size    = '239 MiB'
-version = '3.6.1'
+version = '3.6.2'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -656,7 +656,7 @@ for arg <- System.argv, do: IO.puts arg
 args       = [ '/usr/bin/erlang', '-' ]
 experiment = 181
 size       = '68.5 MiB'
-version    = 'OTP 27.2.1'
+version    = 'OTP 27.2.2'
 website    = 'https://www.erlang.org'
 example    = '''
 main(Args) ->
@@ -780,8 +780,8 @@ end
 [Gleam]
 args    = [ '/usr/bin/gleam', '-', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '91.2 MiB'
-version = '1.7.0'
+size    = '91.3 MiB'
+version = '1.8.0'
 website = 'https://gleam.run'
 example = '''
 import argv
@@ -807,7 +807,7 @@ pub fn main() {
 args    = [ '/usr/bin/gowrapper', '-' ]
 env     = [ 'GOCACHE=/tmp/cache' ]
 size    = '383 MiB'
-version = '1.23.5'
+version = '1.23.6'
 website = 'https://go.dev'
 example = '''
 package main
@@ -1084,7 +1084,7 @@ example = '''
 [Java]
 args    = [ '/usr/bin/java', '-' ]
 size    = '58.4 MiB'
-version = 'OpenJDK 23.0.1'
+version = 'OpenJDK 23.0.2'
 website = 'https://openjdk.java.net'
 example = '''
 class Main {
@@ -1106,7 +1106,7 @@ class Main {
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
 size    = '41.9 MiB'
-version = 'V8 13.2.152.32'
+version = 'V8 13.2.152.36'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1177,7 +1177,7 @@ example = '''
 args    = [ '/usr/bin/kotlin', '-Xuse-fast-jar-file-system', '-e', '$code' ]
 env     = [ 'JAVA_HOME=/opt/java' ]
 size    = '224 MiB'
-version = '2.1.0'
+version = '2.1.10'
 website = 'https://kotlinlang.org'
 example = '''
 // Printing
@@ -1233,8 +1233,8 @@ example    = '''
 
 [Nim]
 args    = [ '/usr/bin/nim', '--colors:on', '-o:/tmp/code', '-r', 'c', '-' ]
-size    = '15.6 MiB'
-version = '2.2.0'
+size    = '15.0 MiB'
+version = '2.2.2'
 website = 'https://nim-lang.org'
 example = '''
 import os
@@ -1302,7 +1302,7 @@ main :: proc() {
 
 [Pascal]
 args    = [ '/usr/bin/pascal', '-' ]
-size    = '35.5 MiB'
+size    = '26.6 MiB'
 version = 'Free Pascal 3.2.2'
 website = 'https://freepascal.org'
 example = '''
@@ -1362,7 +1362,7 @@ for ($i = 1; $i < $argc; $i++)
 args       = [ '/usr/bin/picat', '-' ]
 experiment = 1871
 size       = '11.1 MiB'
-version    = '3.7'
+version    = '3.8'
 website    = 'https://picat-lang.org'
 example    = '''
 main =>
@@ -1394,7 +1394,7 @@ args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size       = '135 MiB'
-version    = 'PowerShell 7.4.6 on .NET 9.0.1'
+version    = 'PowerShell 7.5.0 on .NET 9.0.1'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
@@ -1434,7 +1434,7 @@ example = '''
 args    = [ '/usr/bin/python', '-u', '-' ]
 env     = [ 'PYTHON_COLORS=1' ]
 size    = '29.2 MiB'
-version = '3.13.1'
+version = '3.13.2'
 website = 'https://www.python.org'
 example = '''
 import sys
@@ -1612,7 +1612,7 @@ end
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
 size    = '356 MiB'
-version = '1.84.0'
+version = '1.84.1'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -1825,7 +1825,7 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '30.0 MiB'
+size       = '30.3 MiB'
 version    = '0.14.1'
 website    = 'https://www.uiua.org'
 example    = '''

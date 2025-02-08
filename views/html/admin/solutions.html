@@ -26,6 +26,7 @@
             <option value={{ .ID }}
                 {{ if eq .ID ($.Request.FormValue "lang") }}selected{{ end }}>
                 {{ .Name }}
+                {{ if .Experiment }}(exp.){{ end }}
         {{ end }}
         </select>
 

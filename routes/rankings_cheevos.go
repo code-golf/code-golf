@@ -40,10 +40,10 @@ func rankingsCheevosGET(w http.ResponseWriter, r *http.Request) {
 		`WITH count AS (
 		    SELECT user_id, COUNT(*), MAX(earned) earned
 		      FROM trophies
-		     WHERE $1 IN ('all', trophy::text)
+		     WHERE trophy = $1 OR $1 IS NULL
 		  GROUP BY user_id
 		) SELECT count, country_flag country, earned, login name,
-		         CASE WHEN $1 = 'all'
+		         CASE WHEN $1 IS NULL
 		            THEN RANK() OVER(ORDER BY count DESC)
 		            ELSE RANK() OVER(ORDER BY earned)
 		         END,
@@ -51,7 +51,7 @@ func rankingsCheevosGET(w http.ResponseWriter, r *http.Request) {
 		    FROM count JOIN users ON id = user_id
 		ORDER BY rank, earned, login
 		   LIMIT $2 OFFSET $3`,
-		cheevoID,
+		data.Cheevo,
 		pager.PerPage,
 		data.Pager.Offset,
 	); err != nil {
