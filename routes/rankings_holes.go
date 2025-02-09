@@ -212,7 +212,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		desc.WriteString("All holes in ")
 	}
 
-	if lang, ok := config.LangByID[data.LangID]; ok {
+	if lang, ok := config.AllLangByID[data.LangID]; ok {
 		desc.WriteString(lang.Name)
 		desc.WriteString(" in ")
 	} else {
