@@ -83,7 +83,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	// Get route specific CSS, JS, and navigation by splitting the name.
 	// e.g. foo/bar/baz → foo, foo/bar, foo/bar/baz.
 	subName := ""
-	for _, part := range strings.Split(name, "/") {
+	for part := range strings.SplitSeq(name, "/") {
 		subName = path.Join(subName, part)
 
 		if nav, ok := config.Nav[subName]; ok {
