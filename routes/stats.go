@@ -33,7 +33,7 @@ func statsGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := db.QueryRow(
-		"SELECT COUNT(DISTINCT country) FROM users WHERE LENGTH(country) > 0",
+		"SELECT COUNT(DISTINCT country) FROM users WHERE country IS NOT NULL",
 	).Scan(&data.Countries); err != nil {
 		panic(err)
 	}
