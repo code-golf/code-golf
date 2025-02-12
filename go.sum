@@ -19,8 +19,8 @@ github.com/arbovm/levenshtein v0.0.0-20160628152529-48b4e1c0c4d0 h1:jfIu9sQUG6Ig
 github.com/arbovm/levenshtein v0.0.0-20160628152529-48b4e1c0c4d0/go.mod h1:t2tdKJDJF9BV14lnkjHmOQgcvEKgtqs5a1N3LNdJhGE=
 github.com/armon/go-socks5 v0.0.0-20160902184237-e75332964ef5 h1:0CwZNZbxp69SHPdPJAN/hZIm0C4OItdklCFmMRWYpio=
 github.com/armon/go-socks5 v0.0.0-20160902184237-e75332964ef5/go.mod h1:wHh0iHkYZB8zMSxRWpUBQtwG5a7fFgvEO+odwuTv2gs=
-github.com/buildkite/terminal-to-html/v3 v3.16.4 h1:QFYO8IGvRnp7tGgiQb8g9uFU8kY9wOzxsFFx17+yy6Q=
-github.com/buildkite/terminal-to-html/v3 v3.16.4/go.mod h1:r/J7cC9c3EzBzP3/wDz0RJLPwv5PUAMp+KF2w+ntMc0=
+github.com/buildkite/terminal-to-html/v3 v3.16.5 h1:s/8NElw/Yhm09jKdMq4nY31tjcFMgHukjLfPrqxApcQ=
+github.com/buildkite/terminal-to-html/v3 v3.16.5/go.mod h1:PgzeBymbRFC8I2m46Sci3S18AbwonEgpaz3TGhD7EPs=
 github.com/bwmarrin/discordgo v0.28.1 h1:gXsuo2GBO7NbR6uqmrrBDplPUx2T3nzu775q/Rd1aG4=
 github.com/bwmarrin/discordgo v0.28.1/go.mod h1:NJZpH+1AfhIcyQsPeuBKsUtYrRnjkyu0kIVMCHkZtRY=
 github.com/cloudflare/circl v1.6.0 h1:cr5JKic4HI+LkINy2lg3W2jF8sHCVTBncJr5gIIq7qk=
