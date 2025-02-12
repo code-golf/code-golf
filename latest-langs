@@ -83,6 +83,7 @@ constant %paths = (
     'R'            => 'en.wikipedia.org/wiki/R_(programming_language)',
     'Racket'       => 'github.com/racket/racket/releases/latest',
     'Raku'         => 'github.com/rakudo/rakudo/releases/latest',
+    'Reason'       => 'github.com/reasonml/reason/releases/latest',
     'Rebol'        => 'en.wikipedia.org/wiki/Rebol',
     'Rexx'         => 'sourceforge.net/projects/regina-rexx/files',
     'Rockstar 2'   => 'github.com/RockstarLang/rockstar/releases/latest',

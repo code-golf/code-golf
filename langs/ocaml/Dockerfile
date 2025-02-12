@@ -2,6 +2,7 @@ FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache build-base curl
 
+# Also bump Reason.
 ENV VER=5.3.0
 
 RUN curl -#L https://github.com/ocaml/ocaml/archive/refs/tags/$VER.tar.gz | tar xz
