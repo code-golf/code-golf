@@ -48,6 +48,7 @@ func Router(db *sqlx.DB) http.Handler {
 			r.Post("/banners/{banner}", adminBannerPOST)
 			r.Get("/solutions", adminSolutionsGET)
 			r.Get("/solutions/run", adminSolutionsRunGET)
+			r.Get("/solutions/{hole}/{lang}/{golferID}", adminSolutionGET)
 		})
 		r.With(middleware.API).Route("/api", func(r chi.Router) {
 			r.Get("/", apiGET)

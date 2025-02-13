@@ -1,0 +1,10 @@
+{{ template "header" . }}
+{{ template "admin"  . }}
+
+<main>
+{{ range .Data }}
+    <code>{{ . }}</code>
+{{ end }}
+</main>
+
+{{ template "footer" }}

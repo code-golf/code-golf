@@ -18,19 +18,14 @@ import (
 // GET /rankings/recent-holes/{lang}/{scoring}
 func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		Distribution []struct {
-			Strokes   int
-			Frequency int
-		}
+		Distribution                          []struct{ Frequency, Strokes int }
 		Strokes                               int
 		Hole, PrevHole, NextHole              *config.Hole
 		HoleID, LangID, OtherScoring, Scoring string
-		Holes                                 []*config.Hole
-		Langs                                 []*config.Lang
 		Pager                                 *pager.Pager
 		Recent                                bool
 		Rows                                  []struct {
-			Country                             config.NullCountry
+			Country                             *config.Country
 			Holes, Rank, Points, Strokes, Total int
 			Lang                                *config.Lang
 			Name                                string
@@ -39,9 +34,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		}
 	}{
 		HoleID:  param(r, "hole"),
-		Holes:   config.HoleList,
 		LangID:  param(r, "lang"),
-		Langs:   config.LangList,
 		Pager:   pager.New(r),
 		Recent:  strings.HasPrefix(r.URL.Path, "/rankings/recent-holes"),
 		Scoring: param(r, "scoring"),
@@ -219,7 +212,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		desc.WriteString("All holes in ")
 	}
 
-	if lang, ok := config.LangByID[data.LangID]; ok {
+	if lang, ok := config.AllLangByID[data.LangID]; ok {
 		desc.WriteString(lang.Name)
 		desc.WriteString(" in ")
 	} else {

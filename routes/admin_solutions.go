@@ -130,6 +130,23 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 	wg.Wait()
 }
 
+// GET /admin/solutions/{hole}/{lang}/{golferID}
+func adminSolutionGET(w http.ResponseWriter, r *http.Request) {
+	var data []string
+
+	if err := session.Database(r).Select(
+		&data,
+		"SELECT DISTINCT code FROM solutions WHERE hole = $1 AND lang = $2 AND user_id = $3",
+		param(r, "hole"),
+		param(r, "lang"),
+		param(r, "golferID"),
+	); err != nil {
+		panic(err)
+	}
+
+	render(w, r, "admin/solution", data, "Admin Solution")
+}
+
 func getSolutions(r *http.Request) chan solution {
 	solutions := make(chan solution)
 
