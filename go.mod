@@ -20,7 +20,7 @@ require (
 	github.com/shurcooL/graphql v0.0.0-20230722043721-ed46e5a46466
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 	github.com/yuin/goldmark v1.7.8
-	golang.org/x/oauth2 v0.26.0
+	golang.org/x/oauth2 v0.26.1-0.20250213155532-109dabf90171
 )
 
 require (
