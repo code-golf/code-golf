@@ -80,10 +80,10 @@ example    = '''
 '''
 
 [Arturo]
-args       = [ '/usr/bin/arturo', '-e', '$code' ]
+args       = [ '/usr/bin/arturo', '-' ]
 experiment = 915
-size       = '5.33 MiB'
-version    = '1c12b00'
+size       = '5.26 MiB'
+version    = 'e57e8df'
 website    = 'https://arturo-lang.io'
 example    = '''
 ; Printing

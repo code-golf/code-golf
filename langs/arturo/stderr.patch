@@ -1,0 +1,83 @@
+--- /src/vm/errors.nim
++++ /src/vm/errors.nim
+@@ -165,17 +165,17 @@
+ 
+     let middleStretch = getMaxWidth() - preHeader.realLen() - postHeader.realLen()
+ 
+-    echo ""
+-    echo preHeader & repeat(HorizLine, middleStretch) & postHeader
++    stderr.writeLine ""
++    stderr.writeLine preHeader & repeat(HorizLine, middleStretch) & postHeader
+ 
+ proc printErrorKindDescription(e: VError) =
+     if e.kind.description != "":
+-        echo ""
+-        echo indent(e.kind.description, 2) & resetColor
++        stderr.writeLine ""
++        stderr.writeLine indent(e.kind.description, 2) & resetColor
+ 
+ proc printErrorMessage(e: VError) =
+-    echo ""
+-    echo strip(indent(dedent(formatMessage(e.msg)), 2), chars={'\n'})
++    stderr.writeLine ""
++    stderr.writeLine strip(indent(dedent(formatMessage(e.msg)), 2), chars={'\n'})
+ 
+ proc printCodePreview(e: VError) =
+     when (not defined(NOERRORLINES)) and (not defined(BUNDLE)):
+@@ -187,15 +187,15 @@
+                 else:
+                     e.context.file = currentFrame().path
+                 
+-            echo ""
++            stderr.writeLine ""
+             let fileContent = readFile(e.context.file)
+             let codeLines = fileContent.splitLines()
+             const linesBeforeAfter = 2
+             let lineFrom = max(0, e.context.line - (linesBeforeAfter+1))
+             let lineTo = min(len(codeLines)-1, e.context.line + (linesBeforeAfter-1))
+-            echo "  " & fg(grayColor) & "{VertLine} ".fmt & bold(grayColor) & "File: " & fg(grayColor) & e.context.file
+-            echo "  " & fg(grayColor) & "{VertLine} ".fmt & bold(grayColor) & "Line: " & fg(grayColor) & $(e.context.line)
+-            echo "  " & fg(grayColor) & "{VertLine} ".fmt & resetColor
++            stderr.writeLine "  " & fg(grayColor) & "{VertLine} ".fmt & bold(grayColor) & "File: " & fg(grayColor) & e.context.file
++            stderr.writeLine "  " & fg(grayColor) & "{VertLine} ".fmt & bold(grayColor) & "Line: " & fg(grayColor) & $(e.context.line)
++            stderr.writeLine "  " & fg(grayColor) & "{VertLine} ".fmt & resetColor
+             for lineNo in lineFrom..lineTo:
+                 var line = codeLines[lineNo]
+                 var pointerArrow = "{VertLineD} ".fmt
+@@ -207,17 +207,17 @@
+                     line = bold(grayColor) & line & fg(grayColor)
+                     lineNumPre = bold(grayColor)
+                     lineNumPost = fg(grayColor)
+-                echo "  " & fg(grayColor) & "{VertLine} ".fmt & lineNumPre & align(lineNum,4) & lineNumPost & " {pointerArrow} ".fmt & line & resetColor
++                stderr.writeLine "  " & fg(grayColor) & "{VertLine} ".fmt & lineNumPre & align(lineNum,4) & lineNumPost & " {pointerArrow} ".fmt & line & resetColor
+ 
+ proc printHint(e: VError) =
+     if e.hint != "":
+         let wrappingWidth = min(100, int(0.8 * float(getMaxWidth() - 2 - 6)))
+         let hinter = "  " & underline() & "Hint" & resetColor() & ": "
+-        echo ""
++        stderr.writeLine ""
+         if e.hint.contains("\n"):
+-            echo (hinter & "$$") ~~ @[e.hint.processPseudomarkdown()]
++            stderr.writeLine (hinter & "$$") ~~ @[e.hint.processPseudomarkdown()]
+         else:
+-            echo hinter & wrapped(strip(dedent(e.hint)).splitLines().join(" "), wrappingWidth, delim="\n        ")
++            stderr.writeLine hinter & wrapped(strip(dedent(e.hint)).splitLines().join(" "), wrappingWidth, delim="\n        ")
+ 
+ #=======================================
+ # Methods
+@@ -232,7 +232,7 @@
+         printHint()
+     
+     if (not IsRepl) or e.hint=="":
+-        echo ""
++        stderr.writeLine ""
+ 
+ func panic(error: VError) =
+     raise error
+@@ -1045,4 +1045,4 @@
+ 
+ #     if errMsgParts.len > 1:
+ #         errMsg &= errMsgParts[1..^1].join(fmt("\n{indent}{bold(redColor)}{separator}{resetColor} "))
+-#     echo fmt("{bold(redColor)}{marker} {header} {separator}{resetColor} {errMsg}")
++#     stderr.writeLine fmt("{bold(redColor)}{marker} {header} {separator}{resetColor} {errMsg}")
