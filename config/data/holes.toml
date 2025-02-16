@@ -556,6 +556,18 @@ preamble = '''
     inclusive, each on their own line.
 '''
 
+['Connect Four']
+experiment = 1022
+category = 'Gaming'
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Connect_Four' },
+]
+synopsis = 'Determine eventual winners in Connect 4 games.'
+preamble = '''
+<p>
+    Connect Four is a solved game in which players play a game.
+'''
+
 ['CSS Colors']
 case-fold = true
 category = 'Transform'
