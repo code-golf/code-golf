@@ -36,7 +36,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
     $proc.sink;
 
     with %lang<size> = $proc.out.slurp(:close).chomp {
-        s/(.)B$/ {$0.uc}iB/;          # "XB" → "XiB"
+        s/(.)B$/ {$0.uc}iB/;          # "XB" → " XiB"
         s/^ ( \d  \d ) ' ' /{$0}.0 /; #   99 → 99.0
         s/^ ( \d\.\d ) ' ' /{$0}0 /;  #  9.9 → 9.90
         s/^ ( \d ) ' ' /{$0}.00 /;    #    9 → 9.00
