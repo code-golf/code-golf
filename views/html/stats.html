@@ -59,12 +59,12 @@
             <tr>
                 <td>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
                 <td>
-                    {{ with .Country.Country }}
-                        <span class=flag title="{{ .ID }}">{{ .Flag }}</span>
-                        {{- .Name }}
-                    {{ else }}
-                        Rather not say
-                    {{ end }}
+                {{ with .Country }}
+                    <span class=flag title="{{ .ID }}">{{ .Flag }}</span>
+                    {{- .Name }}
+                {{ else }}
+                    Rather not say
+                {{ end }}
                 <td class=right>{{ comma .Golfers }}
                 <td class=right>{{ .Percent }}%
         {{ end }}

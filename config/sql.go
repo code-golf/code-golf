@@ -11,39 +11,10 @@ type (
 	Langs   []*Lang
 )
 
-type NullCountry struct {
-	Country *Country
-	Valid   bool
-}
-
-type NullHole struct {
-	Hole  *Hole
-	Valid bool
-}
-
-type NullLang struct {
-	Lang  *Lang
-	Valid bool
-}
-
-func (n *NullCountry) Scan(id any) error {
-	n.Country, n.Valid = CountryByID[asString(id)]
-	return nil
-}
-
-func (n *NullHole) Scan(id any) error {
-	n.Hole, n.Valid = HoleByID[asString(id)]
-	return nil
-}
-
-func (n *NullLang) Scan(id any) error {
-	n.Lang, n.Valid = LangByID[asString(id)]
-	return nil
-}
-
-func (c *Cheevo) Scan(src any) error { return scanID(c, src, CheevoByID) }
-func (h *Hole) Scan(src any) error   { return scanID(h, src, AllHoleByID) }
-func (l *Lang) Scan(src any) error   { return scanID(l, src, AllLangByID) }
+func (c *Cheevo) Scan(src any) error  { return scanID(c, src, CheevoByID) }
+func (c *Country) Scan(src any) error { return scanID(c, src, CountryByID) }
+func (h *Hole) Scan(src any) error    { return scanID(h, src, AllHoleByID) }
+func (l *Lang) Scan(src any) error    { return scanID(l, src, AllLangByID) }
 
 func (c *Cheevos) Scan(src any) error { return scanIDs(c, src, CheevoByID) }
 func (h *Holes) Scan(src any) error   { return scanIDs(h, src, AllHoleByID) }

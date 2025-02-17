@@ -15,7 +15,7 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 		HoleID, LangID, Scoring  string
 		Pager                    *pager.Pager
 		Rows                     []struct {
-			Country                       config.NullCountry
+			Country                       *config.Country
 			Diamond, Gold, Silver, Bronze int
 			Name                          string
 			Rank, Total                   int

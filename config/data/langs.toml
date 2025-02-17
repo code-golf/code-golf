@@ -591,8 +591,8 @@ void main(string[] argv) {
 
 [Dart]
 args    = [ '/usr/bin/dartwrapper', '-' ]
-size    = '239 MiB'
-version = '3.6.2'
+size    = '246 MiB'
+version = '3.7.0'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -780,8 +780,8 @@ end
 [Gleam]
 args    = [ '/usr/bin/gleam', '-', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '91.3 MiB'
-version = '1.8.0'
+size    = '91.2 MiB'
+version = '1.8.1'
 website = 'https://gleam.run'
 example = '''
 import argv
@@ -806,8 +806,8 @@ pub fn main() {
 [Go]
 args    = [ '/usr/bin/gowrapper', '-' ]
 env     = [ 'GOCACHE=/tmp/cache' ]
-size    = '383 MiB'
-version = '1.23.6'
+size    = '417 MiB'
+version = '1.24.0'
 website = 'https://go.dev'
 example = '''
 package main
@@ -1105,8 +1105,8 @@ class Main {
 
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
-size    = '41.9 MiB'
-version = 'V8 13.2.152.36'
+size    = '42.5 MiB'
+version = 'V8 13.3.415.21'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1257,7 +1257,7 @@ Sys.argv
 args       = [ '/usr/bin/odinwrapper', '-', '--' ]
 experiment = 766
 size       = '280 MiB'
-version    = '2025-01'
+version    = '2025-02'
 website    = 'https://odin-lang.org'
 example    = '''
 package main
@@ -1324,7 +1324,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '8.40 MiB'
-version = '8.4.3'
+version = '8.4.4'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -1679,7 +1679,7 @@ G
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
 size    = '1.21 MiB'
-version = 'SQLite 3.48.0'
+version = 'SQLite 3.49.0'
 website = 'https://sqlite.org'
 example = '''
 -- Printing

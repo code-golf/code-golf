@@ -11,9 +11,7 @@ jobs:
 
       - uses: actions/setup-go@v5
         with:
-          go-version: 1.24.0-rc.2
-          # https://github.com/actions/setup-go/issues/525
-          # go-version-file: go.mod
+          go-version-file: go.mod
 
       - uses: actions/setup-node@v4
         with:
