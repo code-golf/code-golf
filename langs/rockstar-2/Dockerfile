@@ -1,8 +1,8 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0.102-alpine3.21 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:9.0.200-alpine3.21 AS builder
 
 RUN apk add --no-cache gcc musl-dev zlib-dev
 
-ENV VER=2.0.29
+ENV VER=2.0.30
 
 RUN curl -#L https://github.com/RockstarLang/rockstar/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1
