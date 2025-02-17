@@ -341,6 +341,12 @@ func play(
 			run.Stderr = "Quine in " + lang.Name + " must not consist solely of numeric characters."
 			return nil
 		}
+		// Inserting '>' before the code in the editor enables raw mode, and disables
+		// automatic parsing by treating every command-line argument as a string. See
+		// https://github.com/code-golf/code-golf/issues/1770#issuecomment-2641005487
+		if hole.ID == "card-number-validation" && lang.ID == "iogii" {
+			code = ">" + code
+		}
 	case "jq":
 		// Prevent trivial quines. Error out and return early.
 		if hole.ID == "quine" && json.Valid([]byte(code)) {

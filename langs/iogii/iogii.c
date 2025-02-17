@@ -21,11 +21,6 @@ int main(int argc, char* argv[]) {
     if (!(fp = fopen(code, "w")))
         ERR_AND_EXIT("fopen");
 
-    // Raw mode disables automatic parsing and forces arguments to be treated as strings.
-    // Source: https://github.com/code-golf/code-golf/issues/1770#issuecomment-2641005487
-    if (fputs(">", fp))
-        ERR_AND_EXIT("fputs");
-
     char buffer[4096];
     ssize_t nbytes;
 
