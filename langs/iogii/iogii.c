@@ -5,7 +5,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* iogii = "/usr/bin/iogii", *code = "code.iog";
+const char* iogii = "/usr/local/bin/iogii", *code = "code.iog";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
@@ -20,6 +20,11 @@ int main(int argc, char* argv[]) {
 
     if (!(fp = fopen(code, "w")))
         ERR_AND_EXIT("fopen");
+
+    // Raw mode disables automatic parsing and forces arguments to be treated as strings.
+    // Source: https://github.com/code-golf/code-golf/issues/1770#issuecomment-2641005487
+    if (fputs(">", fp))
+        ERR_AND_EXIT("fputs");
 
     char buffer[4096];
     ssize_t nbytes;
