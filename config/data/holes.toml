@@ -556,6 +556,35 @@ preamble = '''
     inclusive, each on their own line.
 '''
 
+['Connect Four']
+experiment = 1022
+category = 'Gaming'
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Connect_Four' },
+]
+synopsis = 'Determine eventual winners in Connect 4 games.'
+preamble = '''
+<p>
+    Connect Four is a solved strategy game in which two players take turns
+    dropping a red or yellow checker into a column with at least one unoccupied
+    space, traditionally played on a six-by-seven playing rack. The player who
+    drops the red checkers is always the first to take action, and in theory
+    they are always favored to win by endangering their opponent, as the red
+    checkers are dropped in strategic locations. The first player to complete a
+    horizontal, vertical, or diagonal line of four connected checkers wins the
+    game.
+
+<p>
+    Each argument is a space-separated series of digits of different lengths and
+    represents the columns into which players drop checkers, with 0 and 6 being
+    the leftmost and rightmost columns, respectively. Note that a sequence can
+    also represent a game in progress. For each argument, decide which color
+    wins and print <b><code>Red</code></b> or <b><code>Yellow</code></b>.
+    Additionally, print <b><code>Draw</code></b> if no row of four connected
+    checkers is complete when both players have used all their checkers; or
+    <b><code>-</code></b> when games are still in progress.
+'''
+
 ['CSS Colors']
 case-fold = true
 category = 'Transform'
