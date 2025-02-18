@@ -22,6 +22,11 @@ RUN ./esbuild \
  && find dist \( -name '*.css' -or  -name '*.js' -or -name '*.map' -or -name '*.svg' \) \
   | xargs -i -n1 -P`nproc` sh -c 'brotli {} && zopfli {}'
 
+# Build lang hasher.
+COPY cmd/hash-langs ./cmd/hash-langs
+
+RUN go build -ldflags -s -trimpath ./cmd/hash-langs
+
 # Build website.
 COPY . ./
 
@@ -119,6 +124,10 @@ COPY --from=codegolf/lang-wren         ["/", "/langs/wren/rootfs/"        ] #  5
 COPY --from=codegolf/lang-lua          ["/", "/langs/lua/rootfs/"         ] #  362 KiB
 COPY --from=codegolf/lang-sed          ["/", "/langs/sed/rootfs/"         ] #  244 KiB
 COPY --from=codegolf/lang-brainfuck    ["/", "/langs/brainfuck/rootfs/"   ] # 51.1 KiB
+
+COPY --from=0 /go/hash-langs /
+
+RUN ["/hash-langs"]
 
 COPY --from=0 /go/code-golf                      /
 COPY --from=0 /go/dist                           /dist/

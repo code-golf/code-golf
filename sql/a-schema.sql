@@ -173,8 +173,9 @@ CREATE UNLOGGED TABLE holes (
 
 -- Ditto for config/data/langs.toml.
 CREATE UNLOGGED TABLE langs (
-    id         lang NOT NULL PRIMARY KEY,
-    experiment int  NOT NULL
+    id           lang  NOT NULL PRIMARY KEY,
+    experiment   int   NOT NULL,
+    digest_trunc bytea NOT NULL
 );
 
 CREATE TABLE notes (

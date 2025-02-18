@@ -96,6 +96,10 @@ COPY --from=codegolf/lang-lua          ["/", "/langs/lua/rootfs/"         ] #  3
 COPY --from=codegolf/lang-sed          ["/", "/langs/sed/rootfs/"         ] #  244 KiB
 COPY --from=codegolf/lang-brainfuck    ["/", "/langs/brainfuck/rootfs/"   ] # 51.1 KiB
 
+COPY cmd/hash-langs ./cmd/hash-langs
+
+RUN go run ./cmd/hash-langs/main.go
+
 COPY run-lang.c ./
 
 RUN gcc -Wall -Werror -Wextra -o /usr/bin/run-lang -s -static run-lang.c

@@ -2,6 +2,9 @@ package config
 
 import (
 	"cmp"
+	"encoding/hex"
+	"encoding/json"
+	"os"
 	"slices"
 	"strings"
 )
@@ -26,6 +29,8 @@ var (
 type Lang struct {
 	Args, Redirects, Env []string `json:"-"`
 	ArgsQuine            []string `json:"-" toml:"args-quine"`
+	Digest               string   `json:"digest"`
+	DigestTrunc          []byte   `json:"-"`
 	Example              string   `json:"example"`
 	Experiment           int      `json:"experiment,omitempty"`
 	ID                   string   `json:"id"`
@@ -37,6 +42,18 @@ type Lang struct {
 }
 
 func init() {
+	// Digests.
+	digestFile, err := os.Open("/lang-digests.json")
+	if err != nil {
+		panic(err)
+	}
+	defer digestFile.Close()
+
+	var digests map[string]string
+	if err := json.NewDecoder(digestFile).Decode(&digests); err != nil {
+		panic(err)
+	}
+
 	var langs map[string]*Lang
 	unmarshal("data/langs.toml", &langs)
 
@@ -45,6 +62,14 @@ func init() {
 		lang.ID = ID(name)
 		lang.LogoURL = Assets["svg/"+lang.ID+".svg"]
 		lang.Name = name
+
+		// Digest & DigestTrunc (48-bit, 12 char trunc, like docker images).
+		lang.Digest = digests[lang.ID]
+		if lang.DigestTrunc, err = hex.DecodeString(
+			strings.TrimPrefix(lang.Digest, "sha256:")[:12],
+		); err != nil {
+			panic(err)
+		}
 
 		// Redirects.
 		for _, redirect := range lang.Redirects {
