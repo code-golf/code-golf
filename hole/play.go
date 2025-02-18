@@ -179,6 +179,8 @@ func Play(
 		runs = calendar()
 	case "card-number-validation":
 		runs = cardNumberValidation()
+	case "connect-four":
+		runs = connectFour()
 	case "day-of-week":
 		runs = dayOfWeek()
 	case "dfa-simulator":
