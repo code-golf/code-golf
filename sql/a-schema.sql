@@ -34,8 +34,8 @@ CREATE TYPE hole AS ENUM (
     'arabic-to-roman', 'arithmetic-numbers', 'arrows', 'ascending-primes',
     'ascii-table', 'billiards', 'brainfuck', 'calendar',
     'card-number-validation', 'catalan-numbers', 'catalans-constant',
-    'christmas-trees', 'collatz', 'css-colors', 'css-grid', 'cubes',
-    'day-of-week', 'dfa-simulator', 'diamonds', 'divisors',
+    'christmas-trees', 'collatz', 'connect-four', 'css-colors', 'css-grid',
+    'cubes', 'day-of-week', 'dfa-simulator', 'diamonds', 'divisors',
     'ellipse-perimeters', 'emirp-numbers', 'emirp-numbers-long', 'emojify',
     'evil-numbers', 'evil-numbers-long', 'factorial-factorisation',
     'farey-sequence', 'fibonacci', 'fizz-buzz', 'flags',
@@ -62,12 +62,11 @@ CREATE TYPE hole AS ENUM (
     'rule-110', 'scrambled-alphabetization', 'semiprime-numbers', 'set',
     'seven-segment', 'si-units', 'sierpiński-triangle', 'smith-numbers',
     'snake', 'spelling-numbers', 'sphenic-numbers', 'star-wars-gpt',
-    'star-wars-opening-crawl', 'sudoku', 'sudoku-fill-in',
-    'ten-pin-bowling', 'tic-tac-toe', 'time-distance', 'tongue-twisters',
-    'transpose-sentence', 'trinomial-triangle', 'turtle', 'tutorial',
-    'united-states', 'vampire-numbers', 'van-eck-sequence',
-    'zeckendorf-representation', 'zodiac-signs', 'γ', 'λ', 'π', 'τ', 'φ',
-    '√2', '𝑒'
+    'star-wars-opening-crawl', 'sudoku', 'sudoku-fill-in', 'ten-pin-bowling',
+    'tic-tac-toe', 'time-distance', 'tongue-twisters', 'transpose-sentence',
+    'trinomial-triangle', 'turtle', 'tutorial', 'united-states',
+    'vampire-numbers', 'van-eck-sequence', 'zeckendorf-representation',
+    'zodiac-signs', 'γ', 'λ', 'π', 'τ', 'φ', '√2', '𝑒'
 );
 
 CREATE TYPE idea_category AS ENUM ('cheevo', 'hole', 'lang', 'other');
