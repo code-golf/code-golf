@@ -7,6 +7,7 @@ import (
 	"os"
 	"slices"
 	"strings"
+	"testing"
 )
 
 var (
@@ -43,15 +44,17 @@ type Lang struct {
 
 func init() {
 	// Digests.
-	digestFile, err := os.Open("/lang-digests.json")
-	if err != nil {
-		panic(err)
-	}
-	defer digestFile.Close()
-
 	var digests map[string]string
-	if err := json.NewDecoder(digestFile).Decode(&digests); err != nil {
-		panic(err)
+	if !testing.Testing() {
+		digestFile, err := os.Open("/lang-digests.json")
+		if err != nil {
+			panic(err)
+		}
+		defer digestFile.Close()
+
+		if err := json.NewDecoder(digestFile).Decode(&digests); err != nil {
+			panic(err)
+		}
 	}
 
 	var langs map[string]*Lang
@@ -64,11 +67,13 @@ func init() {
 		lang.Name = name
 
 		// Digest & DigestTrunc (48-bit, 12 char trunc, like docker images).
-		lang.Digest = digests[lang.ID]
-		if lang.DigestTrunc, err = hex.DecodeString(
-			strings.TrimPrefix(lang.Digest, "sha256:")[:12],
-		); err != nil {
-			panic(err)
+		if lang.Digest = digests[lang.ID]; lang.Digest != "" {
+			var err error
+			if lang.DigestTrunc, err = hex.DecodeString(
+				strings.TrimPrefix(lang.Digest, "sha256:")[:12],
+			); err != nil {
+				panic(err)
+			}
 		}
 
 		// Redirects.
