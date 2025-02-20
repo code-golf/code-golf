@@ -13,7 +13,7 @@ const (
 	rows int = 6
 )
 
-func dropDisc(grid [][]int, col, player int) bool {
+func dropDisc(grid [rows][cols]int, col, player int) bool {
 	for i := rows - 1; i >= 0; i-- {
 		if grid[i][col] == 0 {
 			grid[i][col] = player
@@ -25,7 +25,7 @@ func dropDisc(grid [][]int, col, player int) bool {
 	return false
 }
 
-func checkDirection(grid [][]int, row, col, dr, dc, player int) bool {
+func checkDirection(grid [rows][cols]int, row, col, dr, dc, player int) bool {
 	count := 0
 
 	for i := range 4 {
@@ -39,7 +39,7 @@ func checkDirection(grid [][]int, row, col, dr, dc, player int) bool {
 	return count == 4
 }
 
-func checkWinner(grid [][]int, player int) int {
+func checkWinner(grid [rows][cols]int, player int) int {
 	for row := range rows {
 		for col := range cols {
 			if grid[row][col] == player {
@@ -58,13 +58,9 @@ func checkWinner(grid [][]int, player int) int {
 }
 
 func emulPlay() ([]int, string) {
-	grid, player := make([][]int, rows), 1
-
-	for i := range grid {
-		grid[i] = make([]int, cols)
-	}
-
+	var grid [rows][cols]int
 	var moves []int
+	var player int = 1
 
 	for {
 		if col := rand.IntN(cols); dropDisc(grid, col, player) {
@@ -75,7 +71,7 @@ func emulPlay() ([]int, string) {
 			}
 
 			// If there are no empty cells on the top row, return "Draw".
-			if !slices.Contains(grid[0], 0) {
+			if !slices.Contains(grid[0][:], 0) {
 				return moves, "Draw"
 			}
 
