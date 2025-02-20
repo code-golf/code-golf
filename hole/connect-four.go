@@ -3,6 +3,7 @@ package hole
 import (
 	"fmt"
 	"math/rand/v2"
+	"slices"
 	"strings"
 )
 
@@ -56,16 +57,6 @@ func checkWinner(grid [][]int, player int) int {
 	return 0
 }
 
-func isBoardFull(grid [][]int) bool {
-	for i := range cols {
-		if grid[0][i] == 0 {
-			return false
-		}
-	}
-
-	return true
-}
-
 func emulPlay() ([]int, string) {
 	grid, player := make([][]int, rows), 1
 
@@ -83,7 +74,8 @@ func emulPlay() ([]int, string) {
 				return moves, []string{"Red", "Yellow"}[player-1]
 			}
 
-			if isBoardFull(grid) {
+			// If there are no empty cells on the top row, return "Draw".
+			if !slices.Contains(grid[0], 0) {
 				return moves, "Draw"
 			}
 
