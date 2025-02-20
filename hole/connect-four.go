@@ -8,7 +8,6 @@ import (
 )
 
 const (
-	argc int = 1000 // Preserve original argc
 	cols int = 7
 	rows int = 6
 )
@@ -379,6 +378,8 @@ func connectFour() []Run {
 	for _, moves := range sweats {
 		tests = append(tests, test{moves, "Yellow"})
 	}
+
+	const argc = 1000 // Preserve original argc
 
 	for range argc*2 - len(tests) {
 		moves, expected := emulPlay()
