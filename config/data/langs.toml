@@ -1679,7 +1679,7 @@ G
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
 size    = '1.21 MiB'
-version = 'SQLite 3.49.0'
+version = 'SQLite 3.49.1'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
