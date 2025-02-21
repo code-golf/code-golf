@@ -194,16 +194,17 @@ CREATE TABLE sessions (
 );
 
 CREATE TABLE solutions (
-    submitted timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
-    bytes     int       NOT NULL,
-    chars     int,
-    user_id   int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    hole      hole      NOT NULL,
-    lang      lang      NOT NULL,
-    scoring   scoring   NOT NULL,
-    failing   bool      NOT NULL DEFAULT false,
-    code      text      NOT NULL,
-    tested    timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
+    submitted   timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
+    bytes       int       NOT NULL,
+    chars       int,
+    user_id     int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    hole        hole      NOT NULL,
+    lang        lang      NOT NULL,
+    scoring     scoring   NOT NULL,
+    failing     bool      NOT NULL DEFAULT false,
+    code        text      NOT NULL,
+    tested      timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
+    lang_digest bytea     NOT NULL,
     -- Assembly can only be scored on bytes, and they are compiled bytes.
     CHECK ((lang  = 'assembly' AND chars IS NULL AND scoring = 'bytes')
         OR (lang != 'assembly' AND bytes = octet_length(code)
