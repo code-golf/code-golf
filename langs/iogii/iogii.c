@@ -5,7 +5,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* iogii = "/usr/bin/iogii", *code = "code.iog";
+const char* iogii = "/usr/local/bin/iogii", *code = "code.iog";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
