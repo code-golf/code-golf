@@ -80,10 +80,10 @@ CREATE TYPE lang AS ENUM (
     'groovy', 'harbour', 'hare', 'haskell', 'haxe', 'hexagony', 'hush', 'hy',
     'iogii', 'j', 'janet', 'java', 'javascript', 'jq', 'julia', 'k', 'kotlin',
     'lua', 'nim', 'ocaml', 'odin', 'pascal', 'perl', 'php', 'picat',
-    'powershell', 'prolog', 'python', 'r', 'racket', 'raku', 'rebol', 'rexx',
-    'rockstar', 'rockstar-2', 'ruby', 'rust', 'scala', 'scheme', 'sed', 'sql',
-    'squirrel', 'stax', 'swift', 'tcl', 'tex', 'uiua', 'v', 'viml', 'vyxal',
-    'wren', 'zig'
+    'powershell', 'prolog', 'python', 'qore', 'r', 'racket', 'raku', 'rebol',
+    'rexx', 'rockstar', 'rockstar-2', 'ruby', 'rust', 'scala', 'scheme', 'sed',
+    'sql', 'squirrel', 'stax', 'swift', 'tcl', 'tex', 'uiua', 'v', 'viml',
+    'vyxal', 'wren', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('unicorn', 'diamond', 'gold', 'silver', 'bronze');
