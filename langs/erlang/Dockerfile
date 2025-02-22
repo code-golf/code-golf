@@ -5,7 +5,7 @@ RUN apt-get update                   \
     apt-get install --yes build-essential curl ncurses-dev
 
 # Also bump Elixir, Gleam.
-ENV VER=27.2.3
+ENV VER=27.2.4
 
 RUN curl -#L https://github.com/erlang/otp/releases/download/OTP-$VER/otp_src_$VER.tar.gz | tar xz
 
