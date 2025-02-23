@@ -189,6 +189,7 @@ export const extensions : { [key: string]: any } = {
     'powershell':    StreamLanguage.define(powerShell),
     'prolog':        prolog(),
     'python':        python,
+    // TODO qore
     'r':             StreamLanguage.define(r),
     'racket':        StreamLanguage.define(scheme),
     'raku':          StreamLanguage.define(raku),
