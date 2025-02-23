@@ -1036,7 +1036,9 @@ size       = '34.1 MiB'
 version    = '0.2'
 website    = 'https://golfscript.com/iogii/'
 example    = '''
+# Process input in raw mode
 >
+
 # Printing
 "Hello, World!
 "
