@@ -39,10 +39,11 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         s/(.)B$/ {$0.uc}iB/;          # "XB" → " XiB"
         s/^ ( \d  \d ) ' ' /{$0}.0 /; #   99 → 99.0
         s/^ ( \d\.\d ) ' ' /{$0}0 /;  #  9.9 → 9.90
+        s/^ ( \d ) ' ' /{$0}.00 /;    #    9 → 9.00
     }
 
     # Version.
-    if $id ~~ any <05ab1e apl arturo assembly befunge brainfuck cjam erlang fish golfscript hare hexagony k scala stax vyxal> {
+    if $id ~~ any <05ab1e apl assembly befunge brainfuck cjam erlang fish golfscript hare hexagony k scala stax vyxal> {
         "langs/$id/Dockerfile".IO.slurp ~~ / ' VER=' (\S+) | ' VERSION=' (\S+) /;
 
         %lang<version> = do given $id {
