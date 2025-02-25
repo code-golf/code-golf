@@ -21,7 +21,7 @@ func computeZeckendorf(n int32) string {
 		out = append(out, f)
 	}
 
-	return strings.Trim(strings.Replace(fmt.Sprint(out), " ", " + ", -1), "[]")
+	return strings.Trim(strings.ReplaceAll(fmt.Sprint(out), " ", " + "), "[]")
 }
 
 func zeckendorfRepresentation() []Run {

@@ -57,7 +57,7 @@ func starWarsGpt() []Run {
 		corpus := corpora[i] + " " + corpora[(i+1)%9]
 		corpusSanitized := corpus
 		for _, c := range ".,;!?" {
-			corpusSanitized = strings.Replace(corpusSanitized, string(c), "", -1)
+			corpusSanitized = strings.ReplaceAll(corpusSanitized, string(c), "")
 		}
 		corpusSanitized = strings.ToLower(corpusSanitized)
 

@@ -64,7 +64,7 @@ func set() []Run {
 
 		cards, count := strings.Fields(shuffleUpAndDeal()), 0
 
-		for j := range len(cards) {
+		for j := range cards {
 			for k := j + 1; k < len(cards); k++ {
 				for l := k + 1; l < len(cards); l++ {
 					if isSet(cards[j], cards[k], cards[l]) {
