@@ -10,7 +10,7 @@ require (
 	github.com/bwmarrin/discordgo v0.28.1
 	github.com/go-chi/chi/v5 v5.2.1
 	github.com/go-git/go-billy/v5 v5.6.2
-	github.com/go-git/go-git/v5 v5.13.2
+	github.com/go-git/go-git/v5 v5.14.0
 	github.com/gofrs/uuid/v5 v5.3.1
 	github.com/gorilla/feeds v1.2.0
 	github.com/jmoiron/sqlx v1.4.0
