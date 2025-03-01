@@ -1,8 +1,9 @@
 FROM alpine:3.21 AS builder
 
-RUN apk add --no-cache build-base bzip2-dev curl-dev gettext-dev gfortran pcre2-dev perl tzdata xz-dev zlib-dev
+RUN apk add --no-cache build-base bzip2-dev curl-dev gettext-dev gfortran \
+                       pcre2-dev perl tzdata xz-dev zlib-dev
 
-ENV VER=4.4.2
+ENV VER=4.4.3
 
 RUN wget -O- https://cran.r-project.org/src/base/R-4/R-$VER.tar.xz | tar xJ
 

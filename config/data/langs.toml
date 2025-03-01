@@ -432,7 +432,7 @@ eaN*
 [Clojure]
 args    = [ '/usr/bin/clojure', '-e', '$code' ]
 size    = '66.4 MiB'
-version = 'Babashka 1.12.196'
+version = 'Babashka 1.12.197'
 website = 'https://babashka.org'
 example = '''
 ; Printing
@@ -592,7 +592,7 @@ void main(string[] argv) {
 [Dart]
 args    = [ '/usr/bin/dartwrapper', '-' ]
 size    = '246 MiB'
-version = '3.7.0'
+version = '3.7.1'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -855,7 +855,7 @@ args       = [ '/usr/bin/groovy', '-e', '$code' ]
 env        = [ 'JAVA_HOME=/opt/java' ]
 experiment = 1145
 size       = '146 MiB'
-version    = '4.0.25'
+version    = '4.0.26'
 website    = 'https://groovy-lang.org'
 example    = '''
 // Printing
@@ -1458,7 +1458,7 @@ foreach string arg in (ARGV)
 args       = [ '/usr/bin/Rscript', '-' ]
 args-quine = [ '/usr/bin/Rscript', '-e', "source('stdin')" ]
 size       = '30.1 MiB'
-version    = '4.4.2'
+version    = '4.4.3'
 website    = 'https://www.r-project.org'
 example    = '''
 # Printing
