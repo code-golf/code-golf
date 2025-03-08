@@ -394,10 +394,10 @@ int main(int argc, char* argv[]) {
 '''
 
 [Civet]
-args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
+args    = [ '/usr/lib/node_modules/@danielx/civet/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
-size    = '71.8 MiB'
-version = '0.9.6'
+size    = '72.1 MiB'
+version = '0.9.7'
 website = 'https://civet.dev'
 example = '''
 // Printing
