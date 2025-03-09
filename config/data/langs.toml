@@ -1825,6 +1825,28 @@ Hello, World!
 \repeat
 '''
 
+[TypeScript]
+args       = [ '/usr/bin/typescript', '-' ]
+env        = [ 'NODE_OPTIONS=--disallow-code-generation-from-strings' ]
+experiment = 1364
+size       = '153 MiB'
+version    = '5.7.3'
+website    = 'https://www.typescriptlang.org'
+example    = '''
+// Printing
+console.log("Hello, World!");
+
+// Looping
+for (let i = 0; i < 10; i++) {
+    console.log(i);
+}
+
+// Accessing arguments
+for (let arg of process.argv.slice(1)) {
+    console.log(arg);
+}
+'''
+
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
