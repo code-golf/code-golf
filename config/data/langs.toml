@@ -781,7 +781,7 @@ end
 args    = [ '/usr/bin/gleam', '-', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
 size    = '91.6 MiB'
-version = '1.9.0'
+version = '1.9.1'
 website = 'https://gleam.run'
 example = '''
 import argv
