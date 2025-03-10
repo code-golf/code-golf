@@ -4,7 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes build-essential curl ncurses-dev
 
-ENV ERLVER=27.3 VER=1.9.0
+ENV ERLVER=27.3 VER=1.9.1
 
 RUN curl -#L https://github.com/erlang/otp/releases/download/OTP-$ERLVER/otp_src_$ERLVER.tar.gz | tar xz
 
