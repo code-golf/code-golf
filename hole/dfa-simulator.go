@@ -95,10 +95,10 @@ func generateDFA() string {
 			inputDFA.WriteString(states[rand.IntN(stateLength)])
 		}
 		inputDFA.WriteByte('\n')
-
 	}
+
 	inputDFA.WriteByte('"')
-	for i := 0; i < rand.IntN(2*alphabetLength); i++ {
+	for range rand.IntN(2 * alphabetLength) {
 		inputDFA.WriteString(alphabet[rand.IntN(alphabetLength)])
 	}
 	inputDFA.WriteByte('"')

@@ -61,7 +61,6 @@ func hasGroupCounts(tileCounts map[rune]int, pairCount int, meldCount int) bool 
 				tileCounts[tile+2]++
 			}
 		}
-
 	}
 	return false
 }

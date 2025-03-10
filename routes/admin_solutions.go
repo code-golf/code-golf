@@ -95,16 +95,17 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 				}
 
 				// If we passed, or we're okay saving failures, or we used to
-				// fail then save to at least update the tested time.
+				// fail then save to at least update lang_digest & tested.
 				if s.Pass || !noNewFailures || s.Failing {
 					db.MustExec(
 						`UPDATE solutions
-						    SET failing = $1, tested = DEFAULT
-						  WHERE code    = $2
-						    AND hole    = $3
-						    AND lang    = $4
-						    AND user_id = $5`,
+						    SET failing = $1, lang_digest = $2, tested = DEFAULT
+						  WHERE code    = $3
+						    AND hole    = $4
+						    AND lang    = $5
+						    AND user_id = $6`,
 						!s.Pass,
+						config.AllLangByID[s.LangID].DigestTrunc,
 						s.Code,
 						s.HoleID,
 						s.LangID,

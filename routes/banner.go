@@ -14,7 +14,7 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-var nextHole = config.ExpHoleByID["tic-tac-toe"]
+var nextHole = config.ExpHoleByID["partition-numbers"]
 
 type banner struct {
 	Body          template.HTML
