@@ -161,11 +161,13 @@ func getSolutions(r *http.Request) chan solution {
 			                  hole hole_id, lang lang_id, tested
 			    FROM solutions
 			    JOIN users   ON id = user_id
+			LEFT JOIN langs  ON lang_digest = digest_trunc
 			   WHERE failing IN (true, $1)
 			     AND (login = $2 OR $2 = '')
 			     AND (hole  = $3 OR $3 IS NULL)
 			     AND (lang  = $4 OR $4 IS NULL)
 			     AND DATE(TIMEZONE($5, TIMEZONE('UTC', tested))) BETWEEN $6 AND $7
+			     AND (NOT $8 OR digest_trunc IS NULL)
 			ORDER BY tested
 			) SELECT *, COUNT(*) OVER () total FROM distinct_solutions`,
 			r.FormValue("failing") == "on",
@@ -175,6 +177,7 @@ func getSolutions(r *http.Request) chan solution {
 			session.Golfer(r).TimeZone,
 			r.FormValue("tested-from"),
 			r.FormValue("tested-to"),
+			r.FormValue("old-lang-digests") == "on",
 		)
 		if err != nil {
 			panic(err)
