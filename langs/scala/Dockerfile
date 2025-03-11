@@ -51,7 +51,7 @@ COPY --from=0 /usr/local/lib/compiler-interface-1.9.6.jar      \
               /usr/local/lib/scala3-tasty-inspector_3-$VER.jar \
               /usr/local/lib/tasty-core_3-$VER.jar             /usr/local/lib/
 
-ENV JAVA_HOME=/opt/java
+ENV JAVA_HOME='/opt/java'
 
 ENTRYPOINT ["scala"]
 

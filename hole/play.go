@@ -179,6 +179,8 @@ func Play(
 		runs = calendar()
 	case "card-number-validation":
 		runs = cardNumberValidation()
+	case "connect-four":
+		runs = connectFour()
 	case "day-of-week":
 		runs = dayOfWeek()
 	case "dfa-simulator":
@@ -249,6 +251,8 @@ func Play(
 		runs = sevenSegment()
 	case "si-units":
 		runs = siUnits()
+	case "snake":
+		runs = snake()
 	case "spelling-numbers":
 		runs = spellingNumbers()
 	case "star-wars-gpt":
@@ -373,6 +377,12 @@ func play(
 		}
 	case "php":
 		code = "<?php " + code + " ;"
+	case "racket":
+		if hole.ID == "quine" {
+			// Inserting `(current-print (λ (x) (void)))` before the code in the editor
+			// suppresses the implicit output of expressions in Racket.
+			code = "(current-print (λ (x) (void)))" + code
+		}
 	case "tex":
 		// Prevent trivial quines. Error out and return early.
 		if hole.ID == "quine" && !strings.Contains(code, `\`) {

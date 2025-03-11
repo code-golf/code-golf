@@ -14,7 +14,7 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-var nextHole = config.ExpHoleByID["tic-tac-toe"]
+var nextHole = config.ExpHoleByID["partition-numbers"]
 
 type banner struct {
 	Body          template.HTML
@@ -121,7 +121,7 @@ func banners(db *sqlx.DB, golfer *golfer.Golfer, now time.Time) (banners []banne
 		byHole := make(map[string][]GroupItem)
 
 		for _, solution := range failing {
-			langName := config.LangByID[solution.Lang].Name
+			langName := config.AllLangByID[solution.Lang].Name
 			holeName := config.AllHoleByID[solution.Hole].Name
 			byLang[solution.Lang] = append(byLang[solution.Lang], GroupItem{solution.Hole, solution.Lang, langName, holeName})
 			byHole[solution.Hole] = append(byHole[solution.Hole], GroupItem{solution.Hole, solution.Lang, holeName, langName})
@@ -180,7 +180,8 @@ Cheevo:
 
 			if body != "" {
 				body = template.HTML("The "+cheevo.Emoji+" <b>"+
-					cheevo.Name+"</b> achievement will ") + body
+					cheevo.Name+"</b> achievement will ") + body +
+					"<p>" + cheevo.Description
 
 				banners = append(banners, banner{
 					Body:    body,

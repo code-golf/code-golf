@@ -99,7 +99,7 @@ func turtle() []Run {
 	}
 
 	return outputTests([]test{{
-		in:  strings.Join(argVec[:], "\n"),
-		out: strings.Join(outVec[:], "\n"),
+		in:  strings.Join(argVec, "\n"),
+		out: strings.Join(outVec, "\n"),
 	}})
 }

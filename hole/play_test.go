@@ -5,6 +5,7 @@ import "testing"
 func BenchmarkArrows(b *testing.B)          { benchHole(b, arrows) }
 func BenchmarkISBN(b *testing.B)            { benchHole(b, isbn) }
 func BenchmarkOrdinalNumbers(b *testing.B)  { benchHole(b, ordinalNumbers) }
+func BenchmarkSet(b *testing.B)             { benchHole(b, set) }
 func BenchmarkSpellingNumbers(b *testing.B) { benchHole(b, spellingNumbers) }
 
 func BenchmarkArabicToRoman(b *testing.B) {

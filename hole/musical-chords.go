@@ -94,7 +94,6 @@ func musicalChords() []Run {
 					}
 					combNum++
 				}
-
 			}
 		}
 	}

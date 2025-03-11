@@ -2,7 +2,7 @@ FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache clang curl dash llvm-dev make
 
-ENV VER=2025-01
+ENV VER=2025-03
 
 RUN curl -#L https://github.com/odin-lang/Odin/archive/refs/tags/dev-$VER.tar.gz \
   | tar xz --directory /usr/local/lib --strip-components 1

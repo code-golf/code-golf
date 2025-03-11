@@ -2,7 +2,7 @@ FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache curl g++ nim pcre
 
-ENV VER=1feabea
+ENV VER=d10ce54
 
 RUN curl -#L https://github.com/arturo-lang/arturo/tarball/$VER \
   | tar xz --strip-components 1

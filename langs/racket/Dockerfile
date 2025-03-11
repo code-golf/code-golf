@@ -1,11 +1,13 @@
 FROM alpine:3.21 AS builder
 
-RUN apk add --no-cache build-base curl
+RUN apk add --no-cache build-base curl linux-headers
 
-RUN curl -L https://github.com/racket/racket/archive/refs/tags/v8.15.tar.gz \
+ENV VER=8.16
+
+RUN curl -#L https://github.com/racket/racket/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1
 
-RUN make bc -j`nproc` PKGS="" RACKETBC_SUFFIX=""
+RUN make bc -j`nproc` PKGS='' RACKETBC_SUFFIX=''
 
 FROM codegolf/lang-base
 

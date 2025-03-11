@@ -4,7 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl dpkg gcc
 
-ENV VER=3.6.2
+ENV VER=3.7.1
 
 RUN curl -#o dart.deb https://storage.googleapis.com/dart-archive/channels/stable/release/latest/linux_packages/dart_$VER-1_amd64.deb \
  && dpkg -i dart.deb
