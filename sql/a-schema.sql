@@ -80,10 +80,10 @@ CREATE TYPE lang AS ENUM (
     'groovy', 'harbour', 'hare', 'haskell', 'haxe', 'hexagony', 'hush', 'hy',
     'iogii', 'j', 'janet', 'java', 'javascript', 'jq', 'julia', 'k', 'kotlin',
     'lua', 'nim', 'ocaml', 'odin', 'pascal', 'perl', 'php', 'picat',
-    'powershell', 'prolog', 'python', 'r', 'racket', 'raku', 'rebol', 'rexx',
-    'rockstar', 'rockstar-2', 'ruby', 'rust', 'scala', 'scheme', 'sed', 'sql',
-    'squirrel', 'stax', 'swift', 'tcl', 'tex', 'uiua', 'v', 'viml', 'vyxal',
-    'wren', 'zig'
+    'powershell', 'prolog', 'python', 'qore', 'r', 'racket', 'raku', 'rebol',
+    'rexx', 'rockstar', 'rockstar-2', 'ruby', 'rust', 'scala', 'scheme', 'sed',
+    'sql', 'squirrel', 'stax', 'swift', 'tcl', 'tex', 'uiua', 'v', 'viml',
+    'vyxal', 'wren', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('unicorn', 'diamond', 'gold', 'silver', 'bronze');
@@ -173,8 +173,9 @@ CREATE UNLOGGED TABLE holes (
 
 -- Ditto for config/data/langs.toml.
 CREATE UNLOGGED TABLE langs (
-    id         lang NOT NULL PRIMARY KEY,
-    experiment int  NOT NULL
+    id           lang  NOT NULL PRIMARY KEY,
+    experiment   int   NOT NULL,
+    digest_trunc bytea NOT NULL
 );
 
 CREATE TABLE notes (
@@ -193,16 +194,17 @@ CREATE TABLE sessions (
 );
 
 CREATE TABLE solutions (
-    submitted timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
-    bytes     int       NOT NULL,
-    chars     int,
-    user_id   int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    hole      hole      NOT NULL,
-    lang      lang      NOT NULL,
-    scoring   scoring   NOT NULL,
-    failing   bool      NOT NULL DEFAULT false,
-    code      text      NOT NULL,
-    tested    timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
+    submitted   timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
+    bytes       int       NOT NULL,
+    chars       int,
+    user_id     int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    hole        hole      NOT NULL,
+    lang        lang      NOT NULL,
+    scoring     scoring   NOT NULL,
+    failing     bool      NOT NULL DEFAULT false,
+    code        text      NOT NULL,
+    tested      timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
+    lang_digest bytea     NOT NULL,
     -- Assembly can only be scored on bytes, and they are compiled bytes.
     CHECK ((lang  = 'assembly' AND chars IS NULL AND scoring = 'bytes')
         OR (lang != 'assembly' AND bytes = octet_length(code)

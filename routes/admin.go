@@ -16,6 +16,10 @@ func adminGET(w http.ResponseWriter, r *http.Request) {
 			Day       time.Time
 			Solutions int
 		}
+		OldLangDigests []struct {
+			Lang      *config.Lang
+			Solutions int
+		}
 		Sessions []struct {
 			Country  *config.Country
 			LastUsed time.Time
@@ -38,6 +42,17 @@ func adminGET(w http.ResponseWriter, r *http.Request) {
 		GROUP BY day
 		ORDER BY day DESC`,
 		golfer.TimeZone,
+	); err != nil {
+		panic(err)
+	}
+
+	if err := db.Select(
+		&data.OldLangDigests,
+		`  SELECT lang, COUNT(*) solutions
+		     FROM solutions
+		LEFT JOIN langs ON lang_digest = digest_trunc
+		    WHERE digest_trunc IS NULL
+		 GROUP BY lang`,
 	); err != nil {
 		panic(err)
 	}

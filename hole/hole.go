@@ -7,6 +7,7 @@ import (
 	"io/fs"
 	"math/rand/v2"
 	"path/filepath"
+	"slices"
 	"strings"
 )
 
@@ -68,7 +69,7 @@ func init() {
 
 // Return a copy so holes are free to append, shuffle, etc.
 func fixedTests(holeID string) []test {
-	return append([]test(nil), fixedTestsMap[holeID]...)
+	return slices.Clone(fixedTestsMap[holeID])
 }
 
 func outputTests(tests ...[]test) []Run { return outputTestsWithSep("\n", tests...) }

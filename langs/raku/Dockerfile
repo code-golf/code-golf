@@ -2,7 +2,7 @@ FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache build-base git perl
 
-RUN git clone -b 2025.01 https://github.com/rakudo/rakudo.git
+RUN git clone -b 2025.02 https://github.com/rakudo/rakudo.git
 
 WORKDIR /rakudo
 
