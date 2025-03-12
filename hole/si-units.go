@@ -69,7 +69,7 @@ var siUnitsMap = [...]struct{ symbol, expansion string }{
 }
 
 var _ = answerFunc("si-units", func() []Answer {
-	tests := []test{}
+	tests := make([]test, 0, len(siPrefixes)*len(siUnitsMap))
 	for _, prefix := range siPrefixes {
 		for _, unit := range siUnitsMap {
 			exp := prefix.exponent
