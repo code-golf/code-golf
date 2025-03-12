@@ -68,7 +68,7 @@ var siUnitsMap = [...]struct{ symbol, expansion string }{
 	{"kat", "mol s^-1"},
 }
 
-func siUnits() []Run {
+var _ = answerFunc("si-units", func() []Answer {
 	tests := []test{}
 	for _, prefix := range siPrefixes {
 		for _, unit := range siUnitsMap {
@@ -82,4 +82,4 @@ func siUnits() []Run {
 		}
 	}
 	return outputMultirunTests(tests)
-}
+})

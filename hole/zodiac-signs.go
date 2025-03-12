@@ -62,7 +62,7 @@ func (s sunSign) test(day int, hour int) (t test) {
 	return
 }
 
-func zodiacSigns() []Run {
+var _ = answerFunc("zodiac-signs", func() []Answer {
 	const (
 		randomCases = 20
 		hours       = 24
@@ -83,4 +83,4 @@ func zodiacSigns() []Run {
 	}
 
 	return outputTests(shuffle(tests))
-}
+})

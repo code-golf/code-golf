@@ -52,7 +52,7 @@ func scrambleAlphabet() string {
 	return strings.Join(alphabet, "")
 }
 
-func scrambledAlphabetization() []Run {
+var _ = answerFunc("scrambled-alphabetization", func() []Answer {
 	tests := make([]test, 0, 100)
 
 	for range 100 {
@@ -65,4 +65,4 @@ func scrambledAlphabetization() []Run {
 	}
 
 	return outputTests(shuffle(tests))
-}
+})

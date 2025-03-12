@@ -64,7 +64,7 @@ func genNotes(rootIdx int, rootNote string, steps [2]int) []string {
 	return []string{rootNote, thirdNote, fifthNote}
 }
 
-func musicalChords() []Run {
+var _ = answerFunc("musical-chords", func() []Answer {
 	var tests []test
 
 	// Skip a random combination for anti-cheese
@@ -100,4 +100,4 @@ func musicalChords() []Run {
 
 	// Cut 3 tests.
 	return outputTests(shuffle(tests)[3:])
-}
+})
