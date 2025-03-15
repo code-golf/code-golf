@@ -3789,6 +3789,10 @@ preamble = '''
 [Snake]
 experiment = 1039
 category = 'Gaming'
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Snake' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Snake_(1998_video_game)' },
+]
 synopsis = 'Print Snake trails.'
 preamble = '''
 <p>
