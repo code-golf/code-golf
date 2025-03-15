@@ -13,9 +13,9 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/iogii -s -static iogii.c
 
 FROM codegolf/lang-ruby
 
-COPY --from=0 /usr/bin/env   \
-              /usr/bin/iogii /usr/bin/
-COPY --from=0 /usr/local/bin /usr/local/bin
+COPY --from=0 /usr/bin/env         \
+              /usr/bin/iogii       /usr/bin/
+COPY --from=0 /usr/local/bin/iogii /usr/local/bin/
 
 FROM codegolf/lang-base
 
