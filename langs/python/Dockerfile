@@ -39,6 +39,7 @@ FROM codegolf/lang-base
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
 COPY --from=0 /usr/bin/python3.13      /usr/bin/python
+COPY --from=0 /usr/lib/libz.so.1       /usr/lib/
 COPY --from=0 /usr/lib/python3.13      /usr/lib/python3.13
 
 ENTRYPOINT ["python"]
