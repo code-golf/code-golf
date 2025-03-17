@@ -11,7 +11,7 @@ func levenshteinTest(a, b string) test {
 	return test{a + " " + b, strconv.Itoa(levenshtein.ComputeDistance(a, b))}
 }
 
-func levenshteinDistance() []Run {
+var _ = answerFunc("levenshtein-distance", func() []Answer {
 	word := randWord()
 	tests := []test{
 		levenshteinTest(word, word),
@@ -35,4 +35,4 @@ func levenshteinDistance() []Run {
 
 	const argc = 20 // Preserve original argc
 	return outputTests(tests[:argc], tests[len(tests)-argc:])
-}
+})

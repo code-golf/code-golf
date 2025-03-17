@@ -2,7 +2,10 @@ package hole
 
 import "strconv"
 
-func grayCode(reverse bool) []Run {
+var _ = answerFunc("gray-code-decoder", func() []Answer { return grayCode(true) })
+var _ = answerFunc("gray-code-encoder", func() []Answer { return grayCode(false) })
+
+func grayCode(reverse bool) []Answer {
 	const count = 2000
 
 	// Start with the 3 edge cases.

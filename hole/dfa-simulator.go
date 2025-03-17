@@ -106,7 +106,7 @@ func generateDFA() string {
 	return inputDFA.String()
 }
 
-func dfaSimulator() []Run {
+var _ = answerFunc("dfa-simulator", func() []Answer {
 	tests := fixedTests("dfa-simulator")
 
 	for range 79 {
@@ -115,4 +115,4 @@ func dfaSimulator() []Run {
 	}
 
 	return outputTests(shuffle(tests))
-}
+})

@@ -196,7 +196,7 @@ func isHandValid(tileCounts map[rune]int) bool {
 	return hasPair
 }
 
-func mahjong() []Run {
+var _ = answerFunc("mahjong", func() []Answer {
 	completeHands := []string{
 		"🀀🀁🀂🀃🀄🀅🀆🀆🀇🀏🀐🀘🀙🀡",
 		"🀀🀀🀁🀂🀃🀄🀅🀆🀇🀏🀐🀘🀙🀡",
@@ -340,4 +340,4 @@ func mahjong() []Run {
 
 	shuffle(tests)
 	return outputTests(tests[:argc], tests[argc:])
-}
+})

@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func turtle() []Run {
+var _ = answerFunc("turtle", func() []Answer {
 	var argVec []string
 	for i := range 21 {
 		for _, dir := range []string{"N", "E", "S", "W"} {
@@ -102,4 +102,4 @@ func turtle() []Run {
 		in:  strings.Join(argVec, "\n"),
 		out: strings.Join(outVec, "\n"),
 	}})
-}
+})

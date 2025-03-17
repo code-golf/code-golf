@@ -30,7 +30,7 @@ func isSet(a, b, c string) bool {
 	return true
 }
 
-func set() []Run {
+var _ = answerFunc("set", func() []Answer {
 	tests := make([]test, 100)
 
 outer:
@@ -67,4 +67,4 @@ outer:
 	}
 
 	return outputTests(tests)
-}
+})

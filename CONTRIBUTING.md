@@ -49,21 +49,13 @@ If the hole has no inputs, the expected output needs to be placed in `/config/ho
 
 ### Holes with computed solutions
 
-For computed solutions, a case switch needs to be added to `/hole/play.go`. The value needs to match the URLized version of the hole name. When a case matches, a function defined in its own file in `/holes/` is called.
+For computed solutions, a function is defined in its own file in `/holes/`.
 This function must return data for at least one test run. Data for each run takes form of a list of inputs and a single string containing the expected output.
-
-`/hole/play.go`
-
-```go
-switch hole.ID {
-case "hole-name":
-    runs = holeName()
-```
 
 `/hole/hole-name.go`
 
 ```go
-func holeName() []Run {
+var _ = answerFunc("hole-id", func() []Answer {
     // Implement hole and create tests
 
     return outputTests(shuffle(tests))
