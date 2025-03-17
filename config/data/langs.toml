@@ -1859,8 +1859,10 @@ fn main() {
     }
 
     // Accessing arguments
-    for i := 1; i < len(rtlargv); i++ {
-        printf("%s\n", rtlargv[i])
+    for i, arg in rtlargv {
+        if i > 0 {
+            printf("%s\n", arg)
+        }
     }
 }
 '''
