@@ -1260,7 +1260,7 @@ Sys.argv
 args       = [ '/usr/bin/octave', '-' ]
 experiment = 1369
 size       = '76.8 MiB'
-version    = 'GNU Octave 9.3.0'
+version    = 'GNU Octave 9.4.0'
 website    = 'https://octave.org'
 example    = '''
 # Printing
