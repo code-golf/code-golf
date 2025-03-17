@@ -5,11 +5,11 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* octave = "/usr/bin/octave", *code = "code.m";
+const char* iogii = "/usr/local/bin/iogii", *code = "code.iog";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
-        execv(octave, argv);
+        execv(iogii, argv);
         ERR_AND_EXIT("execv");
     }
 
@@ -31,14 +31,14 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int oargc = argc + 2;
-    char** oargv = malloc(oargc * sizeof(char*));
-    oargv[0] = (char*) octave;
-    oargv[1] = "--quiet";
-    oargv[2] = (char*) code;
-    memcpy(&oargv[3], &argv[2], (argc - 2) * sizeof(char*));
-    oargv[oargc - 1] = NULL;
+    int iargc = argc + 2;
+    char** iargv = malloc(iargc * sizeof(char*));
+    iargv[0] = (char*) iogii;
+    iargv[1] = (char*) code;
+    iargv[2] = "--";
+    memcpy(&iargv[3], &argv[2], (argc - 2) * sizeof(char*));
+    iargv[iargc - 1] = NULL;
 
-    execv(octave, oargv);
+    execv(iogii, iargv);
     ERR_AND_EXIT("execv");
 }

@@ -2,11 +2,12 @@ FROM alpine:3.20 AS builder
 
 RUN apk add --no-cache curl g++ nim pcre
 
-RUN curl -L https://github.com/arturo-lang/arturo/archive/0756a55.tar.gz \
-  | tar xz
+ENV VER=d10ce54
 
-RUN cd arturo-*  \
- && ./build.nims \
+RUN curl -#L https://github.com/arturo-lang/arturo/tarball/$VER \
+  | tar xz --strip-components 1
+
+RUN ./build.nims \
     --install    \
     --mode mini  \
     --release

@@ -61,7 +61,7 @@ func randReplacements(gFrames []rune) []rune {
 	return frames
 }
 
-func tenPinBowling() []Run {
+var _ = answerFunc("ten-pin-bowling", func() []Answer {
 	extraCases := 22
 	tests := make([]test, len(games)+extraCases)
 
@@ -151,4 +151,4 @@ func tenPinBowling() []Run {
 	}
 
 	return outputTests(shuffle(tests))
-}
+})

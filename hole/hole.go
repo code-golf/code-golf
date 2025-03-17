@@ -7,8 +7,14 @@ import (
 	"io/fs"
 	"math/rand/v2"
 	"path/filepath"
+	"slices"
 	"strings"
+
+	"github.com/code-golf/code-golf/config"
 )
+
+// Alias HoleAnswer into this package to reduce boilerplate in every callsite.
+type Answer = config.HoleAnswer
 
 type test struct{ in, out string }
 
@@ -68,13 +74,19 @@ func init() {
 
 // Return a copy so holes are free to append, shuffle, etc.
 func fixedTests(holeID string) []test {
-	return append([]test(nil), fixedTestsMap[holeID]...)
+	return slices.Clone(fixedTestsMap[holeID])
 }
 
-func outputTests(tests ...[]test) []Run { return outputTestsWithSep("\n", tests...) }
+// Set the answer func on the Hole by ID, return any to allow top-level call.
+func answerFunc(holeID string, f config.HoleAnswerFunc) any {
+	config.AllHoleByID[holeID].AnswerFunc = f
+	return nil
+}
 
-func outputTestsWithSep(sep string, testRuns ...[]test) []Run {
-	runs := make([]Run, len(testRuns))
+func outputTests(tests ...[]test) []Answer { return outputTestsWithSep("\n", tests...) }
+
+func outputTestsWithSep(sep string, testRuns ...[]test) []Answer {
+	answers := make([]Answer, len(testRuns))
 
 	for i, tests := range testRuns {
 		args := make([]string, len(tests))
@@ -89,13 +101,13 @@ func outputTestsWithSep(sep string, testRuns ...[]test) []Run {
 			}
 		}
 
-		runs[i] = Run{Args: args, Answer: answer.String()}
+		answers[i] = Answer{Args: args, Answer: answer.String()}
 	}
 
-	return runs
+	return answers
 }
 
-func outputMultirunTests(tests []test) []Run {
+func outputMultirunTests(tests []test) []Answer {
 	shuffle(tests)
 	mid := len(tests) / 2
 	return outputTests(tests, tests[:mid], tests[mid:])

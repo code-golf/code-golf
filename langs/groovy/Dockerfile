@@ -1,6 +1,6 @@
-ARG VER=4.0.25
+ARG VER=4.0.26
 
-FROM eclipse-temurin:23.0.1_11-jre-alpine AS builder
+FROM eclipse-temurin:23.0.2_7-jre-alpine-3.21 AS builder
 
 ARG VER
 
