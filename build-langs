@@ -71,30 +71,30 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
                | 'Forth'
                | 'Fortran'
                | 'sed'         { $ver = "GNU $name $digits" }
-            when 'BASIC'       { $ver = "FreeBASIC $digits" }
+            when 'BASIC'       { $ver = "Free$name $digits" }
             when 'BQN'         { $ver = "C$name $digits" }
-            when 'C'           { $ver = "Tiny C Compiler $digits" }
+            when 'C'           { $ver = "TCC $digits" }
             when 'C#'
                | 'F#'
                | 'PowerShell'  { }
             when 'C++'         { $ver = "Clang $digits" }
             when 'Clojure'     { $ver = "Babashka $digits" }
-            when 'COBOL'       { $ver = "GnuCOBOL $digits" }
+            when 'COBOL'       { $ver = "Gnu$name $digits" }
             when 'Common Lisp' { $ver = "GNU CLISP $digits" }
             when 'D'           { $ver = "DMD $digits" }
             when 'Haskell'     { $ver = "GHC $digits" }
             when 'Java'        { $ver = "OpenJDK $digits" }
             when 'JavaScript'  { $ver = "V8 $digits" }
-            when 'Pascal'      { $ver = "Free Pascal $digits" }
-            when 'Prolog'      { $ver = "SWI-Prolog $digits" }
+            when 'Pascal'      { $ver = "FPC $digits" }
+            when 'Prolog'      { $ver = "SWI-$name $digits" }
             when 'Raku'        {
                 $ver ~~ m:g/ v (\S+) '.' /;
-                $ver = "Raku $1[0] on Rakudo $0[0]";
+                $ver = "$name $1[0] on $name" ~ "do $0[0]";
             }
             when 'Rexx'        { $ver = "Regina $digits" }
             when 'Rockstar'    { $ver = "Rocky $digits" }
-            when 'Scheme'      { $ver = "Chez Scheme $digits" }
-            when 'SQL'         { $ver = "SQLite $digits" }
+            when 'Scheme'      { $ver = "Chez $name $digits" }
+            when 'SQL'         { $ver = "$name" ~ "ite $digits" }
             default            { $ver = $digits }
         }
 
