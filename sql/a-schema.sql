@@ -79,7 +79,7 @@ CREATE TYPE lang AS ENUM (
     'fennel', 'fish', 'forth', 'fortran', 'gleam', 'go', 'golfscript',
     'groovy', 'harbour', 'hare', 'haskell', 'haxe', 'hexagony', 'hush', 'hy',
     'iogii', 'j', 'janet', 'java', 'javascript', 'jq', 'julia', 'k', 'kotlin',
-    'lua', 'nim', 'ocaml', 'odin', 'pascal', 'perl', 'php', 'picat',
+    'lua', 'mojo', 'nim', 'ocaml', 'odin', 'pascal', 'perl', 'php', 'picat',
     'powershell', 'prolog', 'python', 'qore', 'r', 'racket', 'raku', 'rebol',
     'rexx', 'rockstar', 'rockstar-2', 'ruby', 'rust', 'scala', 'scheme', 'sed',
     'sql', 'squirrel', 'stax', 'swift', 'tcl', 'tex', 'uiua', 'v', 'viml',
