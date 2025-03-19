@@ -1,12 +1,12 @@
-FROM eclipse-temurin:23.0.2_7-jre-alpine-3.21 AS builder
+FROM eclipse-temurin:24_36-jre-alpine-3.21 AS builder
 
-RUN apk add --no-cache build-base wget
+RUN apk add --no-cache gcc musl-dev
 
 RUN wget https://github.com/gaborsch/rocky/raw/9af6921/rocky.jar
 
-COPY rockstar.c .
+COPY rockstar.c /
 
-RUN gcc -Wall -Werror -Wextra -o rockstar -s rockstar.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/rockstar -s rockstar.c
 
 FROM codegolf/lang-base
 
@@ -24,8 +24,8 @@ COPY --from=0 /opt/java/openjdk/lib/jvm.cfg                 \
               /opt/java/openjdk/lib/libzip.so               \
               /opt/java/openjdk/lib/modules                 /opt/java/lib/
 COPY --from=0 /opt/java/openjdk/lib/server/libjvm.so        /opt/java/lib/server/
-COPY --from=0 /rockstar                                     /usr/bin/
+COPY --from=0 /usr/bin/rockstar                             /usr/bin/
 
 ENTRYPOINT ["rockstar"]
 
-CMD ["-h"]
+CMD ["--version"]
