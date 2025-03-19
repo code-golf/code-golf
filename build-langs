@@ -72,8 +72,8 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
                | 'Fortran'
                | 'sed'         { $ver = "GNU $name $digits" }
             when 'BASIC'       { $ver = "FreeBASIC $digits" }
-            when 'BQN'         { $ver = "C$name $digits" }
-            when 'C'           { $ver = "Tiny C Compiler $digits" }
+            when 'BQN'         { $ver = "CBQN $digits" }
+            when 'C'           { $ver = "TCC $digits" }
             when 'C#'
                | 'F#'
                | 'PowerShell'  { }
@@ -85,7 +85,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
             when 'Haskell'     { $ver = "GHC $digits" }
             when 'Java'        { $ver = "OpenJDK $digits" }
             when 'JavaScript'  { $ver = "V8 $digits" }
-            when 'Pascal'      { $ver = "Free Pascal $digits" }
+            when 'Pascal'      { $ver = "FPC $digits" }
             when 'Prolog'      { $ver = "SWI-Prolog $digits" }
             when 'Raku'        {
                 $ver ~~ m:g/ v (\S+) '.' /;
