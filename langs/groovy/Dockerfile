@@ -1,6 +1,6 @@
 ARG VER=4.0.26
 
-FROM eclipse-temurin:23.0.2_7-jre-alpine-3.21 AS builder
+FROM eclipse-temurin:24_36-jre-alpine-3.21 AS builder
 
 ARG VER
 
@@ -42,7 +42,7 @@ COPY --from=0 /groovy-$VER.jar                              \
               /usr/lib/libskarnet.so.2.14                   \
               /usr/lib/libutmps.so.0.1                      /usr/lib/
 
-ENV JAVA_HOME=/opt/java
+ENV JAVA_HOME='/opt/java'
 
 ENTRYPOINT ["groovy"]
 

@@ -1,4 +1,4 @@
-FROM eclipse-temurin:23.0.2_7-jre-alpine-3.21 AS builder
+FROM eclipse-temurin:24_36-jre-alpine-3.21 AS builder
 
 RUN apk add --no-cache bash curl
 
@@ -45,7 +45,7 @@ COPY --from=0 /usr/lib/*.jar                                \
               /usr/lib/libutmps.so.0.1                      \
               /usr/lib/libz.so.1                            /usr/lib/
 
-ENV JAVA_HOME=/opt/java
+ENV JAVA_HOME='/opt/java'
 
 ENTRYPOINT ["kotlin"]
 
