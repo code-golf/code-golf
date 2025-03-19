@@ -4,7 +4,7 @@ RUN apk add --no-cache gcc musl-dev
 
 ENV BIN='/usr/local/bin/iogii' VER=0.3
 
-RUN wget -cO $BIN https://golfscript.com/iogii/iogii-$VER-alpha \
+RUN wget -cO $BIN https://golfscript.com/iogii/iogii-$VER-beta \
  && chmod +x $BIN
 
 COPY iogii.c /

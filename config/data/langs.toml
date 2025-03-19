@@ -1035,11 +1035,11 @@ args       = [ '/usr/bin/iogii', '-' ]
 env        = [ 'RUBY_THREAD_VM_STACK_SIZE=500000000' ]
 experiment = 1770
 size       = '34.1 MiB'
-version    = '0.2'
+version    = '0.3'
 website    = 'https://golfscript.com/iogii/'
 example    = '''
 # Process input in raw mode
->
+,
 
 # Printing
 "Hello, World!
