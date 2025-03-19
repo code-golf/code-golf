@@ -568,7 +568,7 @@ end
 args    = [ '/usr/bin/D', '-' ]
 env     = [ 'PATH=/usr/bin' ]
 size    = '93.3 MiB'
-version = 'DMD 2.109.1'
+version = 'DMD 2.110.0'
 website = 'https://dlang.org'
 example = '''
 import std.stdio;
@@ -1068,8 +1068,8 @@ echo each 2}.ARGV
 
 [Janet]
 args    = [ '/usr/bin/janet', '/proc/self/fd/0' ]
-size    = '902 KiB'
-version = '1.37.1'
+size    = '906 KiB'
+version = '1.38.0'
 website = 'https://janet-lang.org'
 example = '''
 # Printing
