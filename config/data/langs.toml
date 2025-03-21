@@ -836,7 +836,6 @@ func main() {
 [GolfScript]
 args       = [ '/usr/bin/golfscript', '-n', '-e', '$code', '--' ]
 args-quine = [ '/usr/bin/golfscript', '-n', '-e', '$code', '-q', '--' ]
-env        = [ 'RUBY_THREAD_VM_STACK_SIZE=500000000' ]
 size       = '33.2 MiB'
 version    = '6155e9f'
 website    = 'https://golfscript.com/golfscript/'
@@ -1032,7 +1031,6 @@ example    = '''
 
 [iogii]
 args       = [ '/usr/bin/iogii', '-' ]
-env        = [ 'RUBY_THREAD_VM_STACK_SIZE=500000000' ]
 experiment = 1770
 size       = '34.1 MiB'
 version    = '0.3'
@@ -1596,7 +1594,6 @@ end
 
 [Ruby]
 args    = [ '/usr/bin/ruby', '-' ]
-env     = [ 'RUBY_THREAD_VM_STACK_SIZE=500000000' ]
 size    = '33.2 MiB'
 version = '3.4.2'
 website = 'https://www.ruby-lang.org'
