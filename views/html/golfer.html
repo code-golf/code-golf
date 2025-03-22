@@ -122,6 +122,10 @@
         </a>
 
     {{ if $me }}
+        <a {{ if ne $.Path "/golfer/code-search" }} href=/golfer/code-search {{ end }}>
+            Code Search
+        </a>
+        
         <a {{ if not (hasPrefix $.Path "/golfer/settings") }} href=/golfer/settings {{ end }}>
             Site Settings
         </a>
