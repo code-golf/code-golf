@@ -37,11 +37,13 @@
 {{ if or (eq .Name "hole-tabs") (eq .Name "wiki") }}
     <script nonce="{{ $.Nonce }}">
         MathJax = {
-            chtml: { fontURL: '/mathjax-fonts' },
-            tex: { inlineMath: [['$', '$']] },
-            startup: {
-                elements: ['article']
-            }
+            chtml:   { fontURL:    '/mathjax-fonts' },
+            startup: { elements:   ['article'] },
+            tex:     { inlineMath: [['$', '$']] },
+            options: {
+                processHtmlClass: 'language-math',
+                skipHtmlTags: {'[-]': ['pre']},
+            },
         };
     </script>
 {{ end }}
@@ -117,7 +119,7 @@
 
     <div class="{{ .Type }}">
     {{ if eq .Type "alert" }}
-        {{ svg "exclamation-circle" }}
+        {{ svg "exclamation" }}
     {{ else if eq .Type "info" }}
         {{ svg "info-circle" }}
     {{ end }}

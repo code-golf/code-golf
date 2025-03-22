@@ -9,10 +9,24 @@ let tabLayout: boolean = false;
 const langWikiCache: Record<string, string | null> = {};
 async function getLangWikiContent(lang: string): Promise<string> {
     if (!(lang in langWikiCache)) {
-        const resp  = await fetch(`/api/wiki/langs/${lang}`);
-        langWikiCache[lang] = resp.status === 200 ? (await resp.json()).content : null;
+        langWikiCache[lang] = await _getLangWikiContent(lang);
     }
     return langWikiCache[lang] ?? 'No data for current lang.';
+}
+async function _getLangWikiContent(lang: string): Promise<string | null> {
+    const resp  = await fetch(`/api/wiki/langs/${lang}`);
+    const {content, title} = await resp.json() as {content: string, title: string};
+    if (resp.status !== 200) {
+        return null;
+    }
+    const header = (<p id={`lang-wiki-${lang}`}>
+        Wiki: {title}{' '}
+        <a href={`/wiki/langs/${lang}`} target="_blank">
+            (open in new tab)
+        </a>
+        .
+    </p>).outerHTML;
+    return header + content;
 }
 
 const holeLangNotesCache: Record<string, string | null> = {};
@@ -29,9 +43,12 @@ const renamedHoles: Record<string, string> = {
     'eight-queens':                  'n-queens',
     'factorial-factorisation-ascii': 'factorial-factorisation',
     'grid-packing':                  'css-grid',
+    'placeholder':                   'tutorial',
+    'sudoku-v2':                     'sudoku-fill-in',
 };
 
 const renamedLangs: Record<string, string> = {
+    lisp:  'common-lisp',
     perl6: 'raku',
 };
 
@@ -95,23 +112,10 @@ export function initDeleteBtn(deleteBtn: HTMLElement | undefined, langs: any) {
     });
 }
 
-export function initOutputDiv(outputDiv: HTMLElement | undefined) {
-    outputDiv?.addEventListener('copy', event => {
-        const selection = document.getSelection();
-        if (selection?.rangeCount !== undefined && selection.rangeCount > 0) {
-            let text = '';
-            for (let index = 0; index < selection.rangeCount; index++) {
-                text += replacePlaceholdersInRange(selection, selection.getRangeAt(index));
-            }
-            event.clipboardData?.setData('text/plain', text);
-            event.preventDefault();
-        }
-    });
-}
-
-export function initCopyJSONBtn(copyBtn: HTMLElement | undefined) {
-    copyBtn?.addEventListener('click', () =>
-        navigator.clipboard.writeText($('#data').innerText));
+export function initCopyButtons(buttons: NodeListOf<HTMLElement>) {
+    for (const btn of buttons)
+        btn.onclick = () =>
+            navigator.clipboard.writeText(btn.dataset.copy!);
 }
 
 export const langs = JSON.parse($('#langs').innerText);
@@ -123,7 +127,6 @@ export function getLang() {
     return lang;
 }
 
-const experimental = JSON.parse($('#experimental').innerText);
 export const hole         = decodeURI(location.pathname.slice(1));
 const scorings     = ['Bytes', 'Chars'];
 const solutions    = JSON.parse($('#solutions').innerText);
@@ -142,12 +145,12 @@ let hideDeleteBtn: boolean = false;
 // The savedInDB state is used to avoid saving solutions in localStorage when
 // those solutions match the solutions in the database. It's used to avoid
 // restoring a solution from localStorage when the user has improved that
-// solution on a different browser. Assume the user is logged-in by default
-// for non-experimental holes. At this point, it doesn't matter whether the
+// solution on a different browser. Assume the user is logged-in by default.
+// At this point, it doesn't matter whether the
 // user is actually logged-in, because solutions dictionaries will be empty
 // for users who aren't logged-in, so the savedInDB state won't be used.
 // By the time they are non-empty, the savedInDB state will have been updated.
-let savedInDB = !experimental;
+let savedInDB = true;
 
 export function getSavedInDB() {
     return savedInDB;
@@ -214,17 +217,21 @@ export function setCode(code: string, editor: EditorView | null) {
 function updateLangPicker() {
     const selectNodes: Node[] = [];
     const langSelect = <select><option value="">Other</option></select>;
+    const experimentalLangGroup = <optgroup label="Experimental"></optgroup>;
     let currentLangUnused = false;
 
     for (const l of sortedLangs as any[]) {
         if (!getSolutionCode(l.id, 0) &&
             !localStorage.getItem(getAutoSaveKey(l.id, 0)) &&
             !localStorage.getItem(getAutoSaveKey(l.id, 1))) {
-            const suffix = l.experiment ? ' (exp.)' : '';
-            langSelect.appendChild(<option value={l.id}>{l.name}{suffix}</option>);
+            const parent = l.experiment ? experimentalLangGroup : langSelect;
+            parent.appendChild(<option value={l.id}>{l.name}</option>);
             currentLangUnused ||= lang == l.id;
         }
     }
+
+    if (experimentalLangGroup.childElementCount > 0)
+        langSelect.appendChild(experimentalLangGroup);
 
     if (langSelect.childElementCount > 1) {
         langSelect.addEventListener('change', (e: Event) => {
@@ -246,7 +253,7 @@ function updateLangPicker() {
     picker.replaceChildren(...sortedLangs.map((l: any) => {
         const tab = <a href={l.id == lang ? null : '#'+l.id} title={l.name}></a>;
 
-        if (icon)  tab.append(<svg><use href={'#'+l.id}/></svg>);
+        if (icon)  tab.append(<svg><use href={l['logo-url']+'#a'}/></svg>);
         if (label) tab.append(l.name);
 
         if (getSolutionCode(l.id, 0)) {
@@ -311,8 +318,8 @@ export async function refreshScores(editor: any) {
     else
         $('#solutionPicker').classList.add('hide');
 
-    // Hide the delete button for exp holes or if we have no solutions.
-    hideDeleteBtn = experimental || (!dbBytes && !dbChars);
+    // Hide the delete button if we have no solutions.
+    hideDeleteBtn = !dbBytes && !dbChars;
     $('#deleteBtn')?.classList.toggle('hide', hideDeleteBtn);
 
     await populateScores(editor);
@@ -558,7 +565,7 @@ export async function submit(
     }
 
     const data = await res.json() as SubmitResponse;
-    savedInDB = data.logged_in && !experimental;
+    savedInDB = data.logged_in;
 
     if (submissionID != latestSubmissionID)
         return false;
@@ -838,46 +845,6 @@ export function getScorings(tr: any, editor: any) {
     }
 
     return (selection.byte || selection.char) ? {total, selection} : {total};
-}
-
-export function replaceUnprintablesInOutput(output: string) {
-    return output.replace(/[\x00-\x08\x0B-\x1F\x7F]/g,
-        x => `<span title=${'\\u' + x.charCodeAt(0).toString(16)}>•</span>`);
-}
-
-// Extracts the text, replacing any unprintable placeholders with the actual text.
-function replacePlaceholdersInRange(selection: Selection, range: Range) {
-    let containers = [];
-    if (range.startContainer === range.endContainer) {
-        if (range.startContainer.parentElement instanceof HTMLSpanElement) {
-            containers.push(range.startContainer.parentElement);
-        }
-        else {
-            containers.push(range.startContainer);
-        }
-    }
-    else {
-        containers = Array.from(range.commonAncestorContainer.childNodes).filter(node => selection.containsNode(node, true));
-    }
-
-    let text = '';
-    for (const container of containers) {
-        if (container instanceof HTMLSpanElement) {
-            // Decode placeholder character.
-            text += String.fromCharCode(parseInt(container.title.substring(2), 16));
-        }
-        else if (container instanceof HTMLBRElement) {
-            text += '\n';
-        }
-        else {
-            const childText = container.textContent || '';
-            const start = container === containers[0] ? range.startOffset : 0;
-            const end = container === containers[containers.length - 1] ? range.endOffset : childText.length;
-            text += childText.substring(start, end);
-        }
-    }
-
-    return text;
 }
 
 export function ctrlEnter(func: Function) {

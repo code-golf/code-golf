@@ -10,7 +10,7 @@ bench:
 
 bump:
 	@go get -u
-	@go mod tidy -compat=1.23
+	@go mod tidy -compat=1.24
 	@npm upgrade
 
 cert:
@@ -78,11 +78,13 @@ mathjax-fonts:
 	@cp -r node_modules/mathjax/es5/output/chtml/fonts/woff-v2 public/mathjax-fonts
 
 lint:
-	@docker run --rm -v $(CURDIR):/app -w /app \
-	    golangci/golangci-lint:v1.61.0 golangci-lint run
+# Disabled until 1.24 support: https://github.com/golangci/golangci-lint/issues/5225
+#	@docker run --rm -v $(CURDIR):/app -w /app \
+#	    golangci/golangci-lint:v1.63.4 golangci-lint run
 
 	@node_modules/.bin/eslint js
 
+# Calls "make logs" at the end to make sure we didn't break the site.
 live:
 	@docker buildx build --pull --push \
 	    --file docker/live.Dockerfile --tag codegolf/code-golf .
@@ -105,11 +107,13 @@ live:
 	    codegolf/code-golf &&                                    \
 	    docker system prune -f"
 
+	@make logs
+
 logs:
 	@ssh root@code.golf docker logs --tail 5 -f code-golf
 
 svgo:
-	@node_modules/.bin/svgo -f views/svg
+	@node_modules/.bin/svgo -f svg
 
 test:
 	@go test ./...

@@ -38,7 +38,7 @@ $client.get: 'https://app/about',
 is $dbh.execute('SELECT ARRAY(SELECT trophy FROM trophies)').row, '{rtfm}',
     'GET /about earns {rtfm}';
 
-for $dbh.execute('SELECT unnest(enum_range(null::hole))').allrows.flat {
+for $dbh.execute('SELECT id FROM holes WHERE experiment = 0').allrows.flat {
     my $cheevos = %holes{ my $i = ++$ } // '{}';
 
     # Add hole-specific cheevos to the start.
@@ -55,11 +55,13 @@ for <
     brainfuck                        brainfuck {inception}
     divisors                         php       {elephpant-in-the-room}
     evil-numbers                     scheme    {evil-scheme}
+    factorial-factorisation          factor    {x-factor}
     game-of-life                     elixir    {alchemist}
     hexdump                          hexagony  {hextreme-agony}
     pascals-triangle                 pascal    {under-pressure}
     poker                            fish      {fish-n-chips}
     quine                            python    {ouroboros}
+    rijndael-s-box                   c-sharp   {s-box-360}
     rock-paper-scissors-spock-lizard janet     {dammit-janet}
     seven-segment                    assembly  {assembly-required}
     sudoku                           hexagony  {off-the-grid}
@@ -85,7 +87,7 @@ is $dbh.execute(
     "SELECT earned FROM save_solution(3, 1, '⛳', 'π', 'c', 1)",
 ).row, '{different-strokes}', 'Earns {different-strokes}';
 
-for $dbh.execute('SELECT unnest(enum_range(null::lang))').allrows.flat {
+for $dbh.execute('SELECT id FROM langs WHERE experiment = 0').allrows.flat {
     my $earns = %langs{ my $i = ++$ } // '{}';
 
     # Add hole-specific cheevos on the front.

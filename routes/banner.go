@@ -1,27 +1,35 @@
 package routes
 
 import (
+	"cmp"
 	"html/template"
+	"maps"
+	"slices"
 	"strings"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/pretty"
+	"github.com/jmoiron/sqlx"
 )
 
-var nextHole = config.ExpHoleByID["palindromemordnilap"]
+var nextHole = config.ExpHoleByID["partition-numbers"]
 
 type banner struct {
 	Body          template.HTML
 	HideKey, Type string
 }
 
-// TODO Allow a golfer to hide individual banners #709.
-func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
+func banners(db *sqlx.DB, golfer *golfer.Golfer, now time.Time) (banners []banner) {
 	// Upcoming hole.
 	if hole := nextHole; hole != nil {
-		in := "in " + pretty.Time(hole.Released.AsTime(time.UTC))
+		t := hole.Released.AsTime(time.UTC)
+		if golfer != nil {
+			t = t.In(golfer.Location())
+		}
+
+		in := "in approximately " + pretty.Time(t)
 		if strings.Contains(string(in), "ago") {
 			in = "momentarily"
 		}
@@ -53,6 +61,49 @@ func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 		})
 	}
 
+	// Nag people to port their Rockstar solutions to v2.
+	var rockstarHoles config.Holes
+	if db != nil {
+		if err := db.Get(
+			&rockstarHoles,
+			`WITH rockstar AS (
+			    SELECT DISTINCT hole, user_id
+			      FROM stable_passing_solutions
+			     WHERE lang = 'rockstar'
+			), rockstar_2 AS (
+			    SELECT DISTINCT hole, user_id
+			      FROM stable_passing_solutions
+			     WHERE lang = 'rockstar-2'
+			)  SELECT array_agg(hole)
+			     FROM rockstar
+			LEFT JOIN rockstar_2
+			    USING (hole, user_id)
+			    WHERE rockstar_2.hole IS NULL AND user_id = $1`,
+			golfer.ID,
+		); err != nil {
+			panic(err)
+		}
+	}
+	if len(rockstarHoles) > 0 {
+		slices.SortFunc(rockstarHoles, func(a, b *config.Hole) int {
+			return cmp.Compare(strings.ToLower(a.Name), strings.ToLower(b.Name))
+		})
+
+		banner := banner{
+			Type: "alert",
+			Body: "Rockstar 1 is going away soon, please port the " +
+				"following solutions to Rockstar 2 or delete them:<ul>",
+		}
+
+		for _, hole := range rockstarHoles {
+			banner.Body += template.HTML(`<li><a href="/` + hole.ID + `#rockstar">` + hole.Name + "</a>")
+		}
+
+		banner.Body += "</ul>"
+
+		banners = append(banners, banner)
+	}
+
 	// Failing solutions.
 	if failing := golfer.FailingSolutions; len(failing) > 0 {
 		banner := banner{
@@ -62,19 +113,37 @@ func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 				"please update them to pass:<ul>",
 		}
 
-		prevHoleID := ""
-		for _, solution := range failing {
-			hole := config.HoleByID[solution.Hole]
-			lang := config.LangByID[solution.Lang]
+		type GroupItem struct {
+			HoleID, LangID, KeyName, OtherName string
+		}
 
-			if prevHoleID == hole.ID {
-				banner.Body += template.HTML(`, <a href="/` + hole.ID + "#" +
-					lang.ID + `">` + lang.Name + "</a>")
-			} else {
-				banner.Body += template.HTML("<li>" + hole.Name + `: <a href="/` + hole.ID + "#" +
-					lang.ID + `">` + lang.Name + "</a>")
+		byLang := make(map[string][]GroupItem)
+		byHole := make(map[string][]GroupItem)
+
+		for _, solution := range failing {
+			langName := config.AllLangByID[solution.Lang].Name
+			holeName := config.AllHoleByID[solution.Hole].Name
+			byLang[solution.Lang] = append(byLang[solution.Lang], GroupItem{solution.Hole, solution.Lang, langName, holeName})
+			byHole[solution.Hole] = append(byHole[solution.Hole], GroupItem{solution.Hole, solution.Lang, holeName, langName})
+		}
+
+		groups := byHole
+		if len(byLang) < len(byHole) {
+			groups = byLang
+		}
+		keys := slices.Collect(maps.Keys(groups))
+		slices.Sort(keys)
+
+		for _, key := range keys {
+			solutionGroup := groups[key]
+			for index, solution := range solutionGroup {
+				if index > 0 {
+					banner.Body += template.HTML(", ")
+				} else {
+					banner.Body += template.HTML("<li>" + solution.KeyName + ": ")
+				}
+				banner.Body += template.HTML(`<a href="/` + solution.HoleID + "#" + solution.LangID + `">` + solution.OtherName + "</a>")
 			}
-			prevHoleID = hole.ID
 		}
 
 		banner.Body += "</ul>"
@@ -98,19 +167,27 @@ Cheevo:
 			end := cheevo.Times[i+1].AddDate(delta, 0, 0)
 
 			var body template.HTML
+			var hideKey string
 			if start.AddDate(0, 0, -7).Before(now) && now.Before(start) {
 				body = "be available in " +
 					pretty.Time(start.In(location)) + "."
+				hideKey = "cheevo-before-" + start.Format(time.DateOnly) + "-" + cheevo.ID
 			} else if start.Before(now) && now.Before(end) {
 				body = "stop being available in " +
 					pretty.Time(end.In(location)) + "."
+				hideKey = "cheevo-until-" + end.Format(time.DateOnly) + "-" + cheevo.ID
 			}
 
 			if body != "" {
 				body = template.HTML("The "+cheevo.Emoji+" <b>"+
-					cheevo.Name+"</b> achievement will ") + body
+					cheevo.Name+"</b> achievement will ") + body +
+					"<p>" + cheevo.Description
 
-				banners = append(banners, banner{Body: body, Type: "info"})
+				banners = append(banners, banner{
+					Body:    body,
+					HideKey: hideKey,
+					Type:    "info",
+				})
 
 				break Cheevo
 			}

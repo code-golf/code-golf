@@ -3,7 +3,6 @@ package hole
 import (
 	"bytes"
 	"context"
-	"embed"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -33,11 +32,13 @@ func init() {
 	}
 }
 
-//go:embed answers
-var answers embed.FS
-
 // All ASCII whitespace except newline, up to a newline or the end.
-var stdoutTrimmer = regexp.MustCompile(`[\t\x0B\f\r ]+(?:\n|$)`)
+var perLineTrimmer = regexp.MustCompile(`[\t\x0B\f\r ]+(?:\n|$)`)
+
+func trimPerLine(bytesSlice []byte) string {
+	return string(bytes.TrimRight(perLineTrimmer.ReplaceAll(
+		bytesSlice, []byte{'\n'}), "\n"))
+}
 
 // Run holds the results of running a given solution once.
 type Run struct {
@@ -164,128 +165,41 @@ func getClosestMultiset(anyAnswer, stdout, itemDelimiter string) string {
 // Play a given hole, in a given lang, with given code and return the runs.
 func Play(
 	ctx context.Context, hole *config.Hole, lang *config.Lang, code string,
-) (runs []Run) {
+) []Run {
+	var answers []Answer
+
 	switch hole.ID {
-	case "arabic-to-roman", "roman-to-arabic":
-		runs = arabicToRoman(hole.ID == "roman-to-arabic")
-	case "arrows":
-		runs = arrows()
-	case "billiards":
-		runs = billiards()
-	case "brainfuck":
-		runs = brainfuck()
-	case "card-number-validation":
-		runs = cardNumberValidation()
-	case "day-of-week":
-		runs = dayOfWeek()
-	case "dfa-simulator":
-		runs = dfaSimulator()
-	case "ellipse-perimeters":
-		runs = ellipsePerimeters()
-	case "forsyth-edwards-notation":
-		runs = forsythEdwardsNotation()
-	case "fractions":
-		runs = fractions()
-	case "game-of-life":
-		runs = gameOfLife()
-	case "gray-code-decoder", "gray-code-encoder":
-		runs = grayCode(hole.ID == "gray-code-decoder")
-	case "css-grid":
-		runs = cssGrid()
-	case "isbn":
-		runs = isbn()
-	case "intersection":
-		runs = intersection()
-	case "jacobi-symbol":
-		runs = jacobiSymbol()
-	case "levenshtein-distance":
-		runs = levenshteinDistance()
-	case "lucky-tickets":
-		runs = luckyTickets()
-	case "mahjong":
-		runs = mahjong()
-	case "maze":
-		runs = maze()
-	case "medal-tally":
-		runs = medalTally()
-	case "morse-decoder", "morse-encoder":
-		runs = morse(hole.ID == "morse-decoder")
-	case "musical-chords":
-		runs = musicalChords()
-	case "nfa-simulator":
-		runs = nfaSimulator()
-	case "ordinal-numbers":
-		runs = ordinalNumbers()
-	case "p-adic-expansion":
-		runs = pAdicExpansion()
-	case "palindromemordnilap":
-		runs = palindromemordnilap()
-	case "pangram-grep":
-		runs = pangramGrep()
-	case "poker":
-		runs = poker()
-	case "qr-decoder", "qr-encoder":
-		runs = qr(hole.ID == "qr-decoder")
-	case "quadratic-formula":
-		runs = quadraticFormula()
+
+	// Quine is special as the answer depends on the given code.
 	case "quine":
-		runs = []Run{{Args: []string{}, Answer: code}}
-	case "repeating-decimals":
-		runs = repeatingDecimals()
-	case "reverse-polish-notation":
-		runs = reversePolishNotation()
-	case "reversi":
-		runs = reversi()
-	case "seven-segment":
-		runs = sevenSegment()
-	case "si-units":
-		runs = siUnits()
-	case "spelling-numbers":
-		runs = spellingNumbers()
-	case "sudoku", "sudoku-v2":
-		runs = sudoku(hole.ID == "sudoku-v2")
-	case "ten-pin-bowling":
-		runs = tenPinBowling()
-	case "time-distance":
-		runs = timeDistance()
-	case "transpose-sentence":
-		runs = transposeSentence()
-	case "turtle":
-		runs = turtle()
-	case "zeckendorf-representation":
-		runs = zeckendorfRepresentation()
-	case "zodiac-signs":
-		runs = zodiacSigns()
+		answers = []Answer{{Args: []string{}, Answer: code}}
 
 	// Holes with fixed test cases.
 	case "css-colors":
-		runs = outputTests(shuffle(fixedTests(hole.ID)))
-	case "emojify", "rock-paper-scissors-spock-lizard", "united-states":
-		runs = outputMultirunTests(fixedTests(hole.ID))
-	case "floyd-steinberg-dithering", "hexdump", "proximity-grid", "star-wars-opening-crawl":
-		runs = outputTestsWithSep("\n\n", shuffle(fixedTests(hole.ID)))
+		answers = outputTests(shuffle(fixedTests(hole.ID)))
+	case "emojify", "flags", "rock-paper-scissors-spock-lizard", "tic-tac-toe", "united-states":
+		answers = outputMultirunTests(fixedTests(hole.ID))
+	case "floyd-steinberg-dithering", "hexdump", "minesweeper", "proximity-grid", "star-wars-opening-crawl":
+		answers = outputTestsWithSep("\n\n", shuffle(fixedTests(hole.ID)))
 
-	// Holes with no arguments and a static answer.
+	// Holes with a static answer or answer func.
 	default:
-		// ¯\_(ツ)_/¯ cannot embed file answers/√2.txt: invalid name √2.txt
-		id := hole.ID
-		if id == "√2" {
-			id = "root-2"
-		}
-
-		if b, err := answers.ReadFile("answers/" + id + ".txt"); err != nil {
-			panic(err)
+		if hole.AnswerFunc != nil {
+			answers = hole.AnswerFunc()
 		} else {
-			answer := string(bytes.TrimSuffix(b, []byte{'\n'}))
-			runs = []Run{{Args: []string{}, Answer: answer}}
+			answers = []Answer{{Args: []string{}, Answer: hole.Answer}}
 		}
 	}
 
+	runs := make([]Run, len(answers))
+
 	// Run all the runs in parallel to reduce the wall clock time.
 	var wg sync.WaitGroup
-	wg.Add(len(runs))
+	wg.Add(len(answers))
 
-	for i := range runs {
+	for i, answer := range answers {
+		runs[i] = Run{Args: answer.Args, Answer: answer.Answer}
+
 		go func(run *Run) {
 			if err := play(ctx, hole, lang, code, run); err != nil {
 				log.Println(err)
@@ -297,7 +211,7 @@ func Play(
 
 	wg.Wait()
 
-	return
+	return runs
 }
 
 func play(
@@ -305,11 +219,38 @@ func play(
 ) error {
 	// Preprocess code.
 	switch lang.ID {
+	case "05ab1e":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && len(code) > 0 && !strings.Contains(code, `"`) && !strings.Contains(code, "”") {
+			run.Stderr = `Quine in 05AB1E must have at least one '"' or '”' character.`
+			return nil
+		}
+	case "cjam":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && !strings.Contains(code, "`") {
+			run.Stderr = "Quine in CJam must have at least one '`' character."
+			return nil
+		}
 	case "clojure":
 		// Appending (print) prevents implicit output of the last form, if it
 		// is not nil. This seems to be a quirk of the Babashka interpreter
 		// that only occurs when providing code via a command line argument.
-		code += "(print)"
+		//
+		// Add a newline in to avoid commenting it out via ;, and
+		// do it twice to avoid commenting it out via #_.
+		code += "\n(print)(print)"
+	case "go":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && strings.Contains(code, "//go:embed") {
+			run.Stderr = `Quine in Go must not use "embed".`
+			return nil
+		}
+	case "iogii", "stax":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && len(code) > 0 && regexp.MustCompile(`^\d+\n?$`).MatchString(code) {
+			run.Stderr = "Quine in " + lang.Name + " must not consist solely of numeric characters."
+			return nil
+		}
 	case "jq":
 		// Prevent trivial quines. Error out and return early.
 		if hole.ID == "quine" && json.Valid([]byte(code)) {
@@ -336,12 +277,30 @@ func play(
 		} else {
 			code += "\n"
 		}
+	case "kotlin":
+		if hole.ID == "quine" {
+			// Appending `Unit` on a newline suppresses implicit output of expressions
+			// in Kotlin. The '\n' guarantees we're not appending a ';' to another ';'.
+			code += "\nUnit"
+		}
 	case "php":
 		code = "<?php " + code + " ;"
+	case "racket":
+		if hole.ID == "quine" {
+			// Inserting `(current-print (λ (x) (void)))` before the code in the editor
+			// suppresses the implicit output of expressions in Racket.
+			code = "(current-print (λ (x) (void)))" + code
+		}
 	case "tex":
 		// Prevent trivial quines. Error out and return early.
 		if hole.ID == "quine" && !strings.Contains(code, `\`) {
 			run.Stderr = `Quine in TeX must have at least one '\' character.`
+			return nil
+		}
+	case "uiua":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && len(code) > 0 && (!strings.Contains(code, "&p") || strings.Contains(code, `"`)) {
+			run.Stderr = "Quine in Uiua must use `&p` (without backticks) and cannot contain double quotes."
 			return nil
 		}
 	}
@@ -464,9 +423,16 @@ func play(
 
 	stdoutBytes := stdout.Next(maxLength)
 
-	// Postprocess sed output to turn null bytes into newlines.
-	if lang.ID == "sed" {
-		stdoutBytes = bytes.ReplaceAll(stdoutBytes, []byte("\x00"), []byte("\n"))
+	// Postprocess output in apl or sed.
+	// Convert apl's carriage returns or sed's null bytes to newlines.
+	if lang.ID == "apl" || lang.ID == "sed" {
+		stdoutByte := "\r"
+
+		if lang.ID == "sed" {
+			stdoutByte = "\x00"
+		}
+
+		stdoutBytes = bytes.ReplaceAll(stdoutBytes, []byte(stdoutByte), []byte("\n"))
 	}
 
 	// Trim trailing whitespace on each line, and then trailing empty lines.
@@ -474,12 +440,14 @@ func play(
 	if hole.ID == "quine" {
 		run.Stdout = string(stdoutBytes)
 	} else {
-		run.Stdout = string(bytes.TrimRight(stdoutTrimmer.ReplaceAll(
-			stdoutBytes, []byte{'\n'}), "\n"))
+		run.Stdout = trimPerLine(stdoutBytes)
 	}
 
 	// Timeouts and whitespace only output never pass.
 	if !run.Timeout && len(strings.TrimSpace(run.Stdout)) != 0 {
+		if hole.ID != "quine" {
+			run.Answer = trimPerLine([]byte(run.Answer))
+		}
 		if hole.ItemDelimiter != "" {
 			run.Answer = getClosestAnswer(run.Answer, run.Stdout, hole.ItemDelimiter, hole.MultisetDelimiter)
 		}

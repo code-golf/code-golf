@@ -16,6 +16,12 @@ main > form > div {
     justify-content: flex-end;
 }
 
+main > form > span {
+    align-items: center;
+    display: flex;
+    gap: .25rem;
+}
+
 table {
     display: none;
     margin: auto;
@@ -24,14 +30,20 @@ table {
 td {
     vertical-align: top;
     white-space: nowrap;
-}
 
-td > span {
-    border: 1px solid var(--color);
-    font-family: monospace;
-    font-size: .75rem;
-    font-weight: bold;
-    padding: .2rem .35rem;
+    > code {
+        display: block;
+        max-height: 10rem;
+        overflow: scroll;
+    }
+
+    > span {
+        border: 1px solid var(--color);
+        font-family: monospace;
+        font-size: .75rem;
+        font-weight: bold;
+        padding: .2rem .35rem;
+    }
 }
 
 tr > :nth-child(4) { text-align: right }

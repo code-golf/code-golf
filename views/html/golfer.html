@@ -6,7 +6,7 @@
         <h1 title="{{ .Name }}{{ with .Pronouns.V }} ({{ . }}){{ end }}">
             {{ .Name }}
             {{ with .Pronouns.V }}<span id=pronouns>({{ . }})</span>{{ end }}
-        {{ with .Country.Country }}
+        {{ with .Country }}
             <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
         {{ end }}
         </h1>
@@ -137,13 +137,13 @@
             <div>
                 <h1>Holes Authored</h1>
                 <ul>
-                {{ range . }}{{ with index $.Holes . }}
+                {{ range . }}
                     <li>
                         <a href="/{{ .ID }}">
                             {{ svg .CategoryIcon }}
                             {{ .Name }}
                         </a>
-                {{ end }}{{ end }}
+                {{ end }}
                 </ul>
             </div>
         </dialog>

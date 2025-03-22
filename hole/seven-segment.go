@@ -8,7 +8,7 @@ var segments = [][]string{
 	{"|_|", "  |", "|_ ", " _|", "  |", " _|", "|_|", "  |", "|_|", " _|"},
 }
 
-func sevenSegment() []Run {
+var _ = answerFunc("seven-segment", func() []Answer {
 	digits := shuffle([]byte("00112233445566778899"))
 	t := test{in: string(digits)}
 
@@ -24,4 +24,4 @@ func sevenSegment() []Run {
 	}
 
 	return outputTests([]test{t})
-}
+})

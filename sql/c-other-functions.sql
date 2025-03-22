@@ -90,6 +90,7 @@ CREATE FUNCTION save_solution(
 ) RETURNS save_solution_ret AS $$
 #variable_conflict use_variable
 DECLARE
+    lang_digest bytea;
     old_best    hole_best_except_user_ret;
     old_bytes   int;
     old_chars   int;
@@ -106,6 +107,8 @@ BEGIN
     ret.old_bytes       := rank.strokes;
     ret.old_bytes_joint := rank.joint;
     ret.old_bytes_rank  := rank.rank;
+
+    SELECT digest_trunc INTO lang_digest FROM langs WHERE id = lang;
 
     SELECT solutions.bytes, solutions.submitted, solutions.user_id
       INTO ret.old_best_bytes, ret.old_best_bytes_submitted, ret.old_best_bytes_first_golfer_id
@@ -197,15 +200,16 @@ BEGIN
         -- No existing solution, or it was failing, or the new one is shorter.
         -- Insert or update everything. Also add a history entry.
         IF NOT FOUND OR strokes < old_strokes THEN
-            INSERT INTO solutions (bytes, chars, code, hole, lang, scoring, user_id)
-                 VALUES           (bytes, chars, code, hole, lang, scoring, user_id)
+            INSERT INTO solutions (bytes, chars, code, hole, lang, lang_digest, scoring, user_id)
+                 VALUES           (bytes, chars, code, hole, lang, lang_digest, scoring, user_id)
             ON CONFLICT ON CONSTRAINT solutions_pkey
-              DO UPDATE SET bytes     = excluded.bytes,
-                            chars     = excluded.chars,
-                            code      = excluded.code,
-                            failing   = false,
-                            submitted = excluded.submitted,
-                            tested    = excluded.tested;
+              DO UPDATE SET bytes       = excluded.bytes,
+                            chars       = excluded.chars,
+                            code        = excluded.code,
+                            failing     = false,
+                            lang_digest = excluded.lang_digest,
+                            submitted   = excluded.submitted,
+                            tested      = excluded.tested;
 
             INSERT INTO solutions_log (bytes, chars, hole, lang, scoring, user_id)
                  VALUES               (bytes, chars, hole, lang, scoring, user_id);
@@ -214,10 +218,11 @@ BEGIN
         -- a user moving down the leaderboard by matching their personal best.
         ELSIF strokes = old_strokes THEN
             UPDATE solutions
-               SET bytes   = bytes,
-                   chars   = chars,
-                   code    = code,
-                   tested  = DEFAULT
+               SET bytes       = bytes,
+                   chars       = chars,
+                   code        = code,
+                   lang_digest = lang_digest,
+                   tested      = DEFAULT
              WHERE solutions.hole    = hole
                AND solutions.lang    = lang
                AND solutions.scoring = scoring
@@ -255,7 +260,11 @@ BEGIN
            AND solutions.scoring = 'chars';
     END IF;
 
-    ret.earned := earn_cheevos(hole, lang, user_id);
+    -- Only earn cheevos if the hole isn't experimental.
+    SELECT experiment = 0 INTO found FROM holes WHERE id = hole;
+    IF found THEN
+        ret.earned := earn_cheevos(hole, lang, user_id);
+    END IF;
 
     RETURN ret;
 END;

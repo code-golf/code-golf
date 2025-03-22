@@ -5,6 +5,8 @@ details > div {
     grid-template-columns: repeat(auto-fill, minmax(21rem, 1fr));
 }
 
+details:not(:has(.cheevo)) { display: none }
+
 main {
     gap: 0;
     padding: 0;
@@ -18,11 +20,12 @@ progress {
     grid-column: span 2;
     height: .5rem;
     width: 100%;
-}
 
-progress::-moz-progress-bar      { background: var(--link-color) }
-progress::-webkit-progress-bar   { background: none              }
-progress::-webkit-progress-value { background: var(--link-color) }
+    /* ::track/fill eventually https://drafts.csswg.org/css-forms-1/#slider-pseudos */
+    &::-moz-progress-bar,
+    &::-webkit-progress-value { background: var(--link-color) }
+    &::-webkit-progress-bar   { background: none }
+}
 
 summary {
     background: var(--background);

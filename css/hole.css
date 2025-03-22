@@ -35,7 +35,7 @@ aside > h3 {
     background: var(--color);
     line-height: 2rem;
     padding: .5rem 0;
-    transform: rotate(.5turn);
+    rotate: 180deg;
     writing-mode: vertical-rl;
 }
 
@@ -92,7 +92,6 @@ section header {
 
 #arrows code { font-size: 1.5rem }
 #arrows td   { font-family: emoji, mahjong, 'Source Code Pro', monospace }
-#arrows td:first-child { white-space: pre }
 #arrows td:last-child  { width: 100% }
 
 #authors-btn {
@@ -116,18 +115,20 @@ section header {
     margin-left: -.75rem;
 }
 
-#copy + span {
-    opacity: 0;
-    transition: all 2s;
-}
+[data-copy] {
+    display: inline;
 
-#copy:active + span {
-    opacity: 1;
-    padding-left: 1rem;
-    transition: all 0s;
-}
+    + span {
+        opacity: 0;
+        transition: all 2s;
+    }
 
-#copy { display: inline }
+    &:active + span {
+        opacity: 1;
+        padding-left: 1rem;
+        transition: all 0s;
+    }
+}
 
 #diff:not(:empty),
 #diff-content {
@@ -197,6 +198,15 @@ section header {
     display: flex;
     justify-content: space-between;
     padding: .25rem .4rem;
+}
+
+#info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    /* Hide container when it doesn't have a direct child that isn't hidden */
+    &:not(:has(> :not(.hide))) { display: none }
 }
 
 #rankingsView {

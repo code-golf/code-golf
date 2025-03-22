@@ -32,9 +32,20 @@ type solution struct {
 // GET /admin/solutions
 func adminSolutionsGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		Holes []*config.Hole
-		Langs []*config.Lang
-	}{config.HoleList, config.LangList}
+		Holes                []*config.Hole
+		Langs                []*config.Lang
+		TestedFrom, TestedTo time.Time
+	}{Holes: config.AllHoleList, Langs: config.AllLangList}
+
+	if err := session.Database(r).Get(
+		&data,
+		`SELECT MIN(TIMEZONE($1, TIMEZONE('UTC', tested))) tested_from,
+		        MAX(TIMEZONE($1, TIMEZONE('UTC', tested))) tested_to
+		   FROM solutions`,
+		session.Golfer(r).TimeZone,
+	); err != nil {
+		panic(err)
+	}
 
 	render(w, r, "admin/solutions", data, "Admin Solutions")
 }
@@ -84,16 +95,17 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 				}
 
 				// If we passed, or we're okay saving failures, or we used to
-				// fail then save to at least update the tested time.
+				// fail then save to at least update lang_digest & tested.
 				if s.Pass || !noNewFailures || s.Failing {
 					db.MustExec(
 						`UPDATE solutions
-						    SET failing = $1, tested = DEFAULT
-						  WHERE code    = $2
-						    AND hole    = $3
-						    AND lang    = $4
-						    AND user_id = $5`,
+						    SET failing = $1, lang_digest = $2, tested = DEFAULT
+						  WHERE code    = $3
+						    AND hole    = $4
+						    AND lang    = $5
+						    AND user_id = $6`,
 						!s.Pass,
+						config.AllLangByID[s.LangID].DigestTrunc,
 						s.Code,
 						s.HoleID,
 						s.LangID,
@@ -119,6 +131,23 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 	wg.Wait()
 }
 
+// GET /admin/solutions/{hole}/{lang}/{golferID}
+func adminSolutionGET(w http.ResponseWriter, r *http.Request) {
+	var data []string
+
+	if err := session.Database(r).Select(
+		&data,
+		"SELECT DISTINCT code FROM solutions WHERE hole = $1 AND lang = $2 AND user_id = $3",
+		param(r, "hole"),
+		param(r, "lang"),
+		param(r, "golferID"),
+	); err != nil {
+		panic(err)
+	}
+
+	render(w, r, "admin/solution", data, "Admin Solution")
+}
+
 func getSolutions(r *http.Request) chan solution {
 	solutions := make(chan solution)
 
@@ -132,16 +161,23 @@ func getSolutions(r *http.Request) chan solution {
 			                  hole hole_id, lang lang_id, tested
 			    FROM solutions
 			    JOIN users   ON id = user_id
+			LEFT JOIN langs  ON lang_digest = digest_trunc
 			   WHERE failing IN (true, $1)
 			     AND (login = $2 OR $2 = '')
 			     AND (hole  = $3 OR $3 IS NULL)
 			     AND (lang  = $4 OR $4 IS NULL)
+			     AND DATE(TIMEZONE($5, TIMEZONE('UTC', tested))) BETWEEN $6 AND $7
+			     AND (NOT $8 OR digest_trunc IS NULL)
 			ORDER BY tested
 			) SELECT *, COUNT(*) OVER () total FROM distinct_solutions`,
 			r.FormValue("failing") == "on",
 			r.FormValue("golfer"),
 			null.NullIfZero(r.FormValue("hole")),
 			null.NullIfZero(r.FormValue("lang")),
+			session.Golfer(r).TimeZone,
+			r.FormValue("tested-from"),
+			r.FormValue("tested-to"),
+			r.FormValue("old-lang-digests") == "on",
 		)
 		if err != nil {
 			panic(err)
