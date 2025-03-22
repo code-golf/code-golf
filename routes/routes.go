@@ -75,6 +75,7 @@ func Router(db *sqlx.DB) http.Handler {
 					r.Delete("/notes/{hole}/{lang}", apiNoteDELETE)
 					r.Get("/notes/{hole}/{lang}", apiNoteGET)
 					r.Put("/notes/{hole}/{lang}", apiNotePUT)
+					r.Get("/solutions-search", apiSolutionsSearchGET)
 				})
 			})
 		})

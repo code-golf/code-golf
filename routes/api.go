@@ -220,6 +220,86 @@ func apiSolutionsLogGET(w http.ResponseWriter, r *http.Request) {
 	encodeJSON(w, rows)
 }
 
+// GET /api/solutions-search
+func apiSolutionsSearchGET(w http.ResponseWriter, r *http.Request) {
+	lang := r.FormValue("lang")
+	hole := r.FormValue("hole")
+	pattern := r.FormValue("pattern")
+	if pattern == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	type Match struct {
+		Code    string `json:"-"`
+		Start   int    `json:"-"`
+		End     int    `json:"-"`
+		Before  string `json:"before"`
+		Match   string `json:"match"`
+		After   string `json:"after"`
+		Count   int    `json:"count"`
+		Hole    string `json:"hole"`
+		Lang    string `json:"lang"`
+		Scoring string `json:"scoring"`
+	}
+
+	matches := []Match{}
+
+	// Fetch data, if there is no case-sensitive match, match case-insensitively
+	for _, flags := range []string{"", "i"} {
+		query := `SELECT code, hole, lang, scoring,
+							regexp_count(code, $2, 1, '` + flags + `') AS count,
+							regexp_instr(code, $2, 1, 1, 0, '` + flags + `')-1 AS start,
+							regexp_instr(code, $2, 1, 1, 1, '` + flags + `')-1 AS end
+					   FROM solutions
+					  WHERE user_id = $1 AND regexp_like(code, $2, '` + flags + `')`
+		args := []interface{}{session.Golfer(r).ID, pattern}
+		if lang != "" {
+			query += " AND lang = $3"
+			args = append(args, lang)
+		}
+		if hole != "" {
+			query += " AND hole = $4"
+			args = append(args, hole)
+		}
+		query += " LIMIT 1000"
+
+		if err := session.Database(r).Select(
+			&matches,
+			query,
+			args...,
+		); err != nil {
+			panic(err)
+		}
+
+		if len(matches) > 0 {
+			break
+		}
+	}
+
+	// process the results - remove duplicate results for identical bytes/chars solutions, calculate the Before, Match & After parts
+	matchMap := make(map[string]Match)
+	for _, match := range matches {
+		key := match.Code + match.Hole + match.Lang
+		existing, exists := matchMap[key]
+		if exists {
+			existing.Scoring = ""
+			matchMap[key] = existing
+		} else {
+			match.Match = match.Code[match.Start:match.End]
+			match.Before = match.Code[max(0, match.Start-10):match.Start]
+			match.After = match.Code[match.End:min(len(match.Code), match.End+10)]
+			matchMap[key] = match
+		}
+	}
+
+	result := []Match{}
+	for _, match := range matchMap {
+		result = append(result, match)
+	}
+	encodeJSON(w, result)
+}
+
 // GET /api/suggestions/golfers
 func apiSuggestionsGolfersGET(w http.ResponseWriter, r *http.Request) {
 	var json []byte
