@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"context"
 	"database/sql"
 	_ "embed"
 	"encoding/json"
@@ -248,11 +249,11 @@ func apiSolutionsSearchGET(w http.ResponseWriter, r *http.Request) {
 	// Fetch data, if there is no case-sensitive match, match case-insensitively
 	for _, flags := range []string{"", "i"} {
 		query := `SELECT code, hole, lang, scoring,
-							regexp_count(code, $2, 1, '` + flags + `') AS count,
-							regexp_instr(code, $2, 1, 1, 0, '` + flags + `')-1 AS start,
-							regexp_instr(code, $2, 1, 1, 1, '` + flags + `')-1 AS end
-					   FROM solutions
-					  WHERE user_id = $1 AND regexp_like(code, $2, '` + flags + `')`
+						 regexp_count(code, $2, 1, '` + flags + `') AS count,
+						 regexp_instr(code, $2, 1, 1, 0, '` + flags + `')-1 AS start,
+						 regexp_instr(code, $2, 1, 1, 1, '` + flags + `')-1 AS end
+					FROM solutions
+				   WHERE user_id = $1 AND regexp_like(code, $2, '` + flags + `')`
 		args := []interface{}{session.Golfer(r).ID, pattern}
 		if lang != "" {
 			query += " AND lang = $3"
@@ -264,11 +265,19 @@ func apiSolutionsSearchGET(w http.ResponseWriter, r *http.Request) {
 		}
 		query += " LIMIT 1000"
 
-		if err := session.Database(r).Select(
+		ctx, cancel := context.WithTimeout(r.Context(), 100*time.Millisecond)
+		defer cancel()
+
+		if err := session.Database(r).SelectContext(
+			ctx,
 			&matches,
 			query,
 			args...,
 		); err != nil {
+			if ctx.Err() == context.DeadlineExceeded {
+				w.WriteHeader(http.StatusRequestTimeout)
+				return
+			}
 			panic(err)
 		}
 
