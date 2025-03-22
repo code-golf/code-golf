@@ -1,4 +1,4 @@
-FROM eclipse-temurin:23.0.2_7-jre-alpine-3.21 AS builder
+FROM eclipse-temurin:24_36-jre-alpine-3.21 AS builder
 
 RUN apk add --no-cache gcc musl-dev
 
