@@ -19,10 +19,10 @@ let searchParams = '';
 function debounce(func: () => void, timeout = 500) {
     let timer: number | undefined;
     return () => {
-      clearTimeout(timer);
-      timer = setTimeout(func, timeout);
+        clearTimeout(timer);
+        timer = setTimeout(func, timeout);
     };
-  }
+}
 
 async function onSearch() {
     let pattern = $<HTMLInputElement>('#searchInput').value;
