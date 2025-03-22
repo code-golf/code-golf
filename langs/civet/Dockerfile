@@ -2,7 +2,7 @@ FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache bash curl icu-data npm
 
-ENV VER=0.10.0
+ENV VER=0.10.1
 
 RUN curl -#L https://github.com/DanielXMoore/Civet/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1
@@ -43,13 +43,11 @@ COPY --from=0 /node_modules/@typescript/vfs/dist/index.js                \
 COPY --from=0 /node_modules/acorn/package.json                           /usr/local/node_modules/acorn/
 COPY --from=0 /node_modules/acorn/dist/acorn.js                          /usr/local/node_modules/acorn/dist/
 COPY --from=0 /node_modules/unplugin/package.json                        /usr/local/node_modules/unplugin/
-COPY --from=0 /node_modules/unplugin/dist/context-BMwTIisg.cjs           \
-              /node_modules/unplugin/dist/context-DpcDg_HU.cjs           \
-              /node_modules/unplugin/dist/context-wnIdYOoj.cjs           \
+COPY --from=0 /node_modules/unplugin/dist/context-*.cjs                  \
               /node_modules/unplugin/dist/index.js                       \
               /node_modules/unplugin/dist/index.cjs                      \
-              /node_modules/unplugin/dist/utils-CTvyqQEm.cjs             \
-              /node_modules/unplugin/dist/webpack-like-CcGmGwl8.cjs      /usr/local/node_modules/unplugin/dist/
+              /node_modules/unplugin/dist/utils-*.cjs                    \
+              /node_modules/unplugin/dist/webpack-like-*.cjs             /usr/local/node_modules/unplugin/dist/
 COPY --from=0 /node_modules/webpack-virtual-modules/package.json         /usr/local/node_modules/webpack-virtual-modules/
 COPY --from=0 /node_modules/webpack-virtual-modules/lib/index.js         \
               /node_modules/webpack-virtual-modules/lib/virtual-stats.js /usr/local/node_modules/webpack-virtual-modules/lib/
