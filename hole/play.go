@@ -354,6 +354,15 @@ func play(
 			args += arg + "\x00"
 		}
 		cmd.Stdin = strings.NewReader(args)
+	case "mojo":
+		args := run.Args
+		if hole.ID == "emojify" || hole.ID == "hexdump" || hole.ID == "pangram-grep" || hole.ID == "rot13" || hole.ID == "star-wars-opening-crawl" {
+			args = nil
+			for _, arg := range run.Args {
+				args = append(args, strings.ReplaceAll(arg, "'", "'\\'"))
+			}
+		}
+		cmd.Args = append(cmd.Args, args...)
 	case "rockstar":
 		// Embed args into the code.
 		var argCode strings.Builder

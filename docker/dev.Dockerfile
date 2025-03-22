@@ -96,6 +96,7 @@ COPY --from=codegolf/lang-wren         ["/", "/langs/wren/rootfs/"        ] #  5
 COPY --from=codegolf/lang-lua          ["/", "/langs/lua/rootfs/"         ] #  362 KiB
 COPY --from=codegolf/lang-sed          ["/", "/langs/sed/rootfs/"         ] #  244 KiB
 COPY --from=codegolf/lang-brainfuck    ["/", "/langs/brainfuck/rootfs/"   ] # 51.1 KiB
+COPY --from=codegolf/lang-mojo         ["/", "/langs/mojo/rootfs/"        ] #    0 KiB
 
 COPY cmd/hash-langs ./cmd/hash-langs
 
