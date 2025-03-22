@@ -83,7 +83,7 @@ example    = '''
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
 size       = '5.38 MiB'
-version    = '7158acf'
+version    = '71a4677'
 website    = 'https://arturo-lang.io'
 example    = '''
 ; Printing
