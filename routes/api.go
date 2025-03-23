@@ -1,14 +1,18 @@
 package routes
 
 import (
+	"cmp"
 	"context"
 	"database/sql"
 	_ "embed"
 	"encoding/json"
 	"errors"
 	"io"
+	"maps"
 	"net/http"
 	"reflect"
+	"slices"
+	"strings"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
@@ -302,11 +306,13 @@ func apiSolutionsSearchGET(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	result := []Match{}
-	for _, match := range matchMap {
-		result = append(result, match)
-	}
-	encodeJSON(w, result)
+	encodeJSON(w, slices.SortedFunc(maps.Values(matchMap), func(a, b Match) int {
+		return cmp.Or(
+			strings.Compare(a.Hole, b.Hole),
+			strings.Compare(a.Lang, b.Lang),
+			strings.Compare(a.Scoring, b.Scoring),
+		)
+	}))
 }
 
 // GET /api/suggestions/golfers
