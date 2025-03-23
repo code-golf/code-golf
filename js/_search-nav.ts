@@ -1,4 +1,4 @@
-import { $ } from "./_util";
+import { $ } from './_util';
 
 export interface SearchNavResult {
     path: string;
@@ -22,7 +22,7 @@ function defaultMatchPriority(haystack: string, needle: string) {
 }
 
 let lastSearch: string | undefined = undefined;
-export function requestResults(search: string, updateResults: (results: SearchNavResult[]) => void) {
+export function requestResults(search: string, updateResults: (_: SearchNavResult[]) => void) {
     if (!search || lastSearch === search) return;
     lastSearch = search;
 
@@ -32,7 +32,7 @@ export function requestResults(search: string, updateResults: (results: SearchNa
     }
 
     const [holeSearch, langSearch] = search.includes('#') ? search.split('#', 2) : [search, undefined];
-    let currentHole = location.pathname.slice(1) in holes ? location.pathname.slice(1) : undefined;
+    const currentHole = location.pathname.slice(1) in holes ? location.pathname.slice(1) : undefined;
 
     let matches: SearchNavResultInternal[] = [];
 
@@ -40,7 +40,7 @@ export function requestResults(search: string, updateResults: (results: SearchNa
         .map(([k,v]) => ({
             path: `/${k}`,
             description: v[0],
-            priority: Math.max(...v.map(name => defaultMatchPriority(name, holeSearch)))
+            priority: Math.max(...v.map(name => defaultMatchPriority(name, holeSearch))),
         })).filter(x => x.priority > 0);
 
     if (langSearch) {
@@ -48,7 +48,7 @@ export function requestResults(search: string, updateResults: (results: SearchNa
             .map(([k,v]) => ({
                 path: `#${k}`,
                 description: v[0],
-                priority: Math.max(...v.map(name => defaultMatchPriority(name, langSearch)))
+                priority: Math.max(...v.map(name => defaultMatchPriority(name, langSearch))),
             })).filter(x => x.priority > 0) : [];
 
         if (holeSearch) {
@@ -63,7 +63,7 @@ export function requestResults(search: string, updateResults: (results: SearchNa
                 {
                     path: '/' + currentHole + lang.path,
                     description: holes[currentHole][0] + ' in ' + lang.description,
-                    priority: lang.priority
+                    priority: lang.priority,
                 }
             )));
         }
@@ -81,7 +81,7 @@ function processResults(results: SearchNavResultInternal[]) {
     return results.slice(0, 10);
 }
 
-function requestAtResults(search: string, updateResults: (results: SearchNavResult[]) => void) {
+function requestAtResults(search: string, updateResults: (_: SearchNavResult[]) => void) {
     if (search === '@') {
         const currentGolferPath = $<HTMLAnchorElement>('#site-header [title=Profile]')?.href;
         updateResults(currentGolferPath ? processResults([{path: new URL(currentGolferPath).href, description: 'My Profile', priority: 0}]) : []);
@@ -92,13 +92,13 @@ function requestAtResults(search: string, updateResults: (results: SearchNavResu
 
 const requestGolferResults = debounce(fetchGolferResults);
 
-async function fetchGolferResults(search: string, updateResults: (results: SearchNavResult[]) => void) {
+async function fetchGolferResults(search: string, updateResults: (_: SearchNavResult[]) => void) {
     const resp  = await fetch(`/api/suggestions/golfers?${new URLSearchParams({q: search})}`);
     const golfers = await resp.json() as string[];
     updateResults(processResults(golfers.map(x => ({
         path: `golfers/${x}`,
         description: x,
-        priority: search === x ? Infinity : search.toLowerCase() === x.toLocaleLowerCase() ? 1 : 0
+        priority: defaultMatchPriority(x, search),
     }))));
 }
 

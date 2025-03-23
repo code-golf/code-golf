@@ -55,7 +55,7 @@ for (const btn of $$<HTMLElement>('[data-dialog]'))
     };
 
 // Search navigation dialog
-document.addEventListener('keydown', (e) => {
+document.addEventListener('keydown', e => {
     if (e.ctrlKey && e.key === 'p') {
         const dialog = $<HTMLDialogElement>('#search-nav-dialog');
         if (!dialog) return;
@@ -80,7 +80,7 @@ $('#search-nav-input').onkeyup = () => requestResults($<HTMLInputElement>('#sear
 $('#search-nav-form').onsubmit = e => {
     $<HTMLAnchorElement>('li.current-result a')?.click();
     e.preventDefault();
-}
+};
 
 let currentIndex = 0;
 let currentResults: SearchNavResult[] = [];
@@ -90,7 +90,8 @@ $<HTMLDialogElement>('#search-nav-dialog').onkeydown = (e: KeyboardEvent) => {
         currentIndex++;
         renderResults();
         e.preventDefault();
-    } else if (e.key === 'ArrowUp') {
+    }
+    else if (e.key === 'ArrowUp') {
         currentIndex--;
         renderResults();
         e.preventDefault();
