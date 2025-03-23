@@ -22,7 +22,8 @@ function defaultMatchPriority(haystack: string, needle: string) {
 }
 
 let lastSearch: string | undefined = undefined;
-export function requestResults(search: string, updateResults: (_: SearchNavResult[]) => void) {
+// eslint-disable-next-line no-unused-vars
+export function requestResults(search: string, updateResults: (results: SearchNavResult[]) => void) {
     if (!search || lastSearch === search) return;
     lastSearch = search;
 
@@ -81,7 +82,8 @@ function processResults(results: SearchNavResultInternal[]) {
     return results.slice(0, 10);
 }
 
-function requestAtResults(search: string, updateResults: (_: SearchNavResult[]) => void) {
+// eslint-disable-next-line no-unused-vars
+function requestAtResults(search: string, updateResults: (results: SearchNavResult[]) => void) {
     if (search === '@') {
         const currentGolferPath = $<HTMLAnchorElement>('#site-header [title=Profile]')?.href;
         updateResults(currentGolferPath ? processResults([{path: new URL(currentGolferPath).href, description: 'My Profile', priority: 0}]) : []);
@@ -92,7 +94,8 @@ function requestAtResults(search: string, updateResults: (_: SearchNavResult[]) 
 
 const requestGolferResults = debounce(fetchGolferResults);
 
-async function fetchGolferResults(search: string, updateResults: (_: SearchNavResult[]) => void) {
+// eslint-disable-next-line no-unused-vars
+async function fetchGolferResults(search: string, updateResults: (results: SearchNavResult[]) => void) {
     const resp  = await fetch(`/api/suggestions/golfers?${new URLSearchParams({q: search})}`);
     const golfers = await resp.json() as string[];
     updateResults(processResults(golfers.map(x => ({
