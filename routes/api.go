@@ -1,14 +1,18 @@
 package routes
 
 import (
+	"cmp"
 	"context"
 	"database/sql"
 	_ "embed"
 	"encoding/json"
 	"errors"
 	"io"
+	"maps"
 	"net/http"
 	"reflect"
+	"slices"
+	"strings"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
@@ -249,18 +253,18 @@ func apiSolutionsSearchGET(w http.ResponseWriter, r *http.Request) {
 	// Fetch data, if there is no case-sensitive match, match case-insensitively
 	for _, flags := range []string{"", "i"} {
 		query := `SELECT code, hole, lang, scoring,
-						 regexp_count(code, $2, 1, '` + flags + `') AS count,
-						 regexp_instr(code, $2, 1, 1, 0, '` + flags + `')-1 AS start,
-						 regexp_instr(code, $2, 1, 1, 1, '` + flags + `')-1 AS end
+						 regexp_count(code, $2, 1, $3) AS count,
+						 regexp_instr(code, $2, 1, 1, 0, $3)-1 AS start,
+						 regexp_instr(code, $2, 1, 1, 1, $3)-1 AS end
 					FROM solutions
-				   WHERE user_id = $1 AND regexp_like(code, $2, '` + flags + `')`
-		args := []interface{}{session.Golfer(r).ID, pattern}
+				   WHERE user_id = $1 AND regexp_like(code, $2, $3)`
+		args := []any{session.Golfer(r).ID, pattern, flags}
 		if lang != "" {
-			query += " AND lang = $3"
+			query += " AND lang = $4"
 			args = append(args, lang)
 		}
 		if hole != "" {
-			query += " AND hole = $4"
+			query += " AND hole = $5"
 			args = append(args, hole)
 		}
 		query += " LIMIT 1000"
@@ -302,11 +306,13 @@ func apiSolutionsSearchGET(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	result := []Match{}
-	for _, match := range matchMap {
-		result = append(result, match)
-	}
-	encodeJSON(w, result)
+	encodeJSON(w, slices.SortedFunc(maps.Values(matchMap), func(a, b Match) int {
+		return cmp.Or(
+			strings.Compare(a.Hole, b.Hole),
+			strings.Compare(a.Lang, b.Lang),
+			strings.Compare(a.Scoring, b.Scoring),
+		)
+	}))
 }
 
 // GET /api/suggestions/golfers
