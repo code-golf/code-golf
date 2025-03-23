@@ -1842,6 +1842,31 @@ example    = '''
 ∵&p↘1&args
 '''
 
+[Umka]
+args       = [ '/usr/bin/umka', '-' ]
+experiment = -1
+size       = '1.29 MiB'
+version    = '1.5.2'
+website    = 'https://github.com/vtereshkov/umka-lang'
+example    = '''
+fn main() {
+    // Printing
+    printf("Hello, World!\n")
+
+    // Looping
+    for i := 0; i < 10; i++ {
+        printf("%d\n", i)
+    }
+
+    // Accessing arguments
+    for i, arg in rtlargv {
+        if i > 0 {
+            printf("%s\n", arg)
+        }
+    }
+}
+'''
+
 [V]
 args    = [ '/usr/bin/V', '-' ]
 size    = '50.6 MiB'
