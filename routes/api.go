@@ -227,8 +227,8 @@ func apiSolutionsLogGET(w http.ResponseWriter, r *http.Request) {
 
 // GET /api/solutions-search
 func apiSolutionsSearchGET(w http.ResponseWriter, r *http.Request) {
-	lang := r.FormValue("lang")
-	hole := r.FormValue("hole")
+	hole := config.AllHoleByID[r.FormValue("hole")]
+	lang := config.AllLangByID[r.FormValue("lang")]
 	pattern := r.FormValue("pattern")
 	if pattern == "" {
 		w.WriteHeader(http.StatusBadRequest)
@@ -250,33 +250,28 @@ func apiSolutionsSearchGET(w http.ResponseWriter, r *http.Request) {
 
 	matches := []Match{}
 
+	db := session.Database(r)
+	golfer := session.Golfer(r)
+
 	// Fetch data, if there is no case-sensitive match, match case-insensitively
 	for _, flags := range []string{"", "i"} {
-		query := `SELECT code, hole, lang, scoring,
-						 regexp_count(code, $2, 1, $3) AS count,
-						 regexp_instr(code, $2, 1, 1, 0, $3)-1 AS start,
-						 regexp_instr(code, $2, 1, 1, 1, $3)-1 AS end
-					FROM solutions
-				   WHERE user_id = $1 AND regexp_like(code, $2, $3)`
-		args := []any{session.Golfer(r).ID, pattern, flags}
-		if lang != "" {
-			query += " AND lang = $4"
-			args = append(args, lang)
-		}
-		if hole != "" {
-			query += " AND hole = $5"
-			args = append(args, hole)
-		}
-		query += " LIMIT 1000"
-
 		ctx, cancel := context.WithTimeout(r.Context(), 100*time.Millisecond)
 		defer cancel()
 
-		if err := session.Database(r).SelectContext(
+		if err := db.SelectContext(
 			ctx,
 			&matches,
-			query,
-			args...,
+			`SELECT code, hole, lang, scoring,
+			        regexp_count(code, $2, 1, $3)           count,
+			        regexp_instr(code, $2, 1, 1, 0, $3) - 1 start,
+			        regexp_instr(code, $2, 1, 1, 1, $3) - 1 end
+			   FROM solutions
+			  WHERE user_id = $1
+			    AND regexp_like(code, $2, $3)
+			    AND (hole = $4 OR $4 IS NULL)
+			    AND (lang = $5 OR $5 IS NULL)
+			  LIMIT 1000`,
+			golfer.ID, pattern, flags, hole, lang,
 		); err != nil {
 			if ctx.Err() == context.DeadlineExceeded {
 				w.WriteHeader(http.StatusRequestTimeout)
