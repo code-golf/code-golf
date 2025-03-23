@@ -56,7 +56,7 @@ export function requestResults(search: string, updateResults: (results: SearchNa
             matches = holesMatches.flatMap(hole => langsMatches.map(lang => ({
                 path: hole.path + lang.path,
                 description: hole.description + ' in ' + lang.description,
-                priority: hole.priority * lang.priority
+                priority: hole.priority * lang.priority,
             })));
         }
         if (currentHole) {
