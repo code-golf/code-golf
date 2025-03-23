@@ -205,6 +205,16 @@ dialog > * {
     padding: 1rem;
 }
 
+dialog#search-nav-dialog {
+    translate: -50% 0;
+    top: 1rem;
+    width: 40rem;
+}
+
+dialog#search-nav-dialog .hint {
+    color: var(--grey);
+}
+
 dialog a {
     align-items: center;
     display: flex;

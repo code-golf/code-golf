@@ -52,3 +52,36 @@ for (const btn of $$<HTMLElement>('[data-dialog]'))
         dialog.querySelector('form')?.reset();
         dialog.showModal();
     };
+
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === 'p') {
+        const dialog = $<HTMLDialogElement>('#search-nav-dialog');
+        if (!dialog) return;
+
+        if (dialog.open) {
+            dialog.close();
+        }
+        else {
+            dialog.showModal();
+            e.preventDefault();
+        }
+    }
+});
+
+$('#search-nav-input').onkeyup = requestResults;
+
+interface SearchNavResult {
+    path: string;
+    description: string;
+}
+function updateResults(results: SearchNavResult[]) {
+    const resultNodes = results.map(r => (<li><a href={r.path}>{r.description}</a></li>));
+    $('#search-nav-results').replaceChildren(...resultNodes);
+}
+
+function requestResults() {
+    updateResults([
+        {path: "/day-of-week#nim", description: "Day of Week in Nim"},
+        {path: "/golfers/MichalMarsalek", description: "My profile"},
+    ])
+}
