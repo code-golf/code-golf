@@ -99,7 +99,7 @@ async function fetchGolferResults(search: string, updateResults: (results: Searc
     const resp  = await fetch(`/api/suggestions/golfers?${new URLSearchParams({q: search})}`);
     const golfers = await resp.json() as string[];
     updateResults(processResults(golfers.map(x => ({
-        path: `golfers/${x}`,
+        path: `/golfers/${x}`,
         description: x,
         priority: defaultMatchPriority(x, search),
     }))));
