@@ -67,11 +67,13 @@
 </script>
 
 <dialog id=search-nav-dialog>
-    <div>
-        <input placeholder="Search holes, #langs, @golfers..." id=search-nav-input />
-        <ul id=search-nav-results></ul>
-        <div class=hint>Ctrl+P again to print, arrows to navigate results, enter to confirm</div>
-    </div>
+    <form id=search-nav-form >
+        <div>
+            <input placeholder="Search holes, #langs, @golfers..." id=search-nav-input autocomplete=off />
+            <ul id=search-nav-results></ul>
+        </div>
+        <div class=hint>Ctrl+P again to print, arrows/tab to navigate results, enter to confirm</div>
+    </form>
 </dialog>
 
 <header id=site-header>

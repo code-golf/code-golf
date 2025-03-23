@@ -1,3 +1,4 @@
+import { requestResults, SearchNavResult } from './_search-nav';
 import { $, $$ } from './_util';
 
 const { timeZone } = Intl.DateTimeFormat().resolvedOptions();
@@ -53,6 +54,7 @@ for (const btn of $$<HTMLElement>('[data-dialog]'))
         dialog.showModal();
     };
 
+// Search navigation dialog
 document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.key === 'p') {
         const dialog = $<HTMLDialogElement>('#search-nav-dialog');
@@ -68,20 +70,42 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-$('#search-nav-input').onkeyup = requestResults;
+window.addEventListener('hashchange', () => {
+    const dialog = $<HTMLDialogElement>('#search-nav-dialog');
+    dialog?.close();
+});
 
-interface SearchNavResult {
-    path: string;
-    description: string;
+$('#search-nav-input').onkeyup = () => requestResults($<HTMLInputElement>('#search-nav-input').value, updateResults);
+
+$('#search-nav-form').onsubmit = e => {
+    $<HTMLAnchorElement>('li.current-result a')?.click();
+    e.preventDefault();
 }
+
+let currentIndex = 0;
+let currentResults: SearchNavResult[] = [];
+
+$<HTMLDialogElement>('#search-nav-dialog').onkeydown = (e: KeyboardEvent) => {
+    if (e.key === 'ArrowDown') {
+        currentIndex++;
+        renderResults();
+        e.preventDefault();
+    } else if (e.key === 'ArrowUp') {
+        currentIndex--;
+        renderResults();
+        e.preventDefault();
+    }
+};
+
 function updateResults(results: SearchNavResult[]) {
-    const resultNodes = results.map(r => (<li><a href={r.path}>{r.description}</a></li>));
-    $('#search-nav-results').replaceChildren(...resultNodes);
+    currentResults = results;
+    currentIndex = 0;
+    renderResults();
 }
 
-function requestResults() {
-    updateResults([
-        {path: "/day-of-week#nim", description: "Day of Week in Nim"},
-        {path: "/golfers/MichalMarsalek", description: "My profile"},
-    ])
+const mod = (x: number, modulus: number) => (x % modulus + modulus) % modulus;
+
+function renderResults() {
+    const resultNodes = currentResults.map((r,i) => (<li class={i === mod(currentIndex, currentResults.length) ? 'current-result' : ''}><a href={r.path}><span class='result-description'>{r.description}</span> <span class='result-path'>{r.path}</span></a></li>));
+    $('#search-nav-results').replaceChildren(...resultNodes);
 }
