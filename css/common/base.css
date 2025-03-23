@@ -238,7 +238,7 @@ dialog#search-nav-dialog {
         border-radius: 0.25rem;
     }
     ul:not(:has(li:hover)):not(:has(li:focus-within)) li.current-result, li:hover, li:focus-within {
-        background-color: var(--summary-background);
+        background-color: var(--light-grey);
     }
     li :focus {
         outline: none;
