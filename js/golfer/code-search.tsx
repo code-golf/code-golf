@@ -56,10 +56,20 @@ async function onSearch() {
 
 const fetchSolutionsDebounced = debounce(fetchSolutions, 500);
 
+async function fetchSupporting408InFirefox(path: string) {
+    try {
+        return await fetch(path);
+    }
+    catch (e) {
+        if (`${e}`.includes('NetworkError')) return {status: 408} as const;
+        throw e;
+    }
+}
+
 async function fetchSolutions() {
-    const resp  = await fetch(`/api/solutions-search?${searchParams}`);
+    const resp = await fetchSupporting408InFirefox(`/api/solutions-search?${searchParams}`);
     if (resp.status !== 200) {
-        $<HTMLInputElement>('#searchInput').setCustomValidity('Bad request');
+        $<HTMLInputElement>('#searchInput').setCustomValidity(resp.status === 408 ? 'Timeout. Try single language or raw text search.' : `Error ${resp.status}`);
         $<HTMLInputElement>('#searchInput').reportValidity();
         return;
     }
