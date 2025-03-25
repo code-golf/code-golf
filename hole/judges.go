@@ -12,6 +12,10 @@ import (
 // it returns a similar output that is.
 type Judge func(run Run) string
 
+func defaultJudge(run Run) string {
+	return trimPerLine([]byte(run.Answer))
+}
+
 // A judge for a single output (corresponding to either a single input or a single preset output item)
 type SingleOutputJudge func(arg, userOutput, rawExpectedOutput string) string
 
@@ -176,6 +180,7 @@ func getClosestMultiset(anyAnswer, stdout, multisetItemDelimiter string, caseFol
 
 func multisetJudge(caseFold bool) Judge {
 	return func(run Run) string {
+		run.Answer = defaultJudge(run)
 		if run.OutputDelimiter != "" {
 			return perOutputJudge(func(input, userOutput, rawExpectedOutput string) string {
 				return getClosestMultiset(rawExpectedOutput, userOutput, run.MultisetItemDelimiter, caseFold)

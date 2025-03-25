@@ -1,12 +1,13 @@
-FROM crystallang/crystal:1.13.3-alpine AS builder
+FROM crystallang/crystal:1.15.1-alpine AS builder
 
+RUN apk add --no-cache dash
 RUN apk del --no-cache libxml2-static python3
 
 RUN strip /usr/bin/crystal
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/sh                              /bin/
+COPY --from=0 /usr/bin/dash                        /bin/sh
 COPY --from=0 /lib/ld-musl-x86_64.so.1             \
               /lib/libz.so.1                       /lib/
 COPY --from=0 /usr/bin/cc                          \
@@ -20,4 +21,4 @@ COPY --from=0 /usr/x86_64-alpine-linux-musl/bin/ld /usr/x86_64-alpine-linux-musl
 
 ENTRYPOINT ["crystal"]
 
-CMD ["-v"]
+CMD ["--version"]

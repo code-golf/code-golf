@@ -1,4 +1,4 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache build-base curl
 
@@ -9,7 +9,7 @@ RUN cd sed-4.9                                 \
  && make                                       \
  && strip sed/sed
 
-FROM codegolf/lang-base-no-proc
+FROM codegolf/lang-base
 
 COPY --from=0 /sed-4.9/sed/sed /usr/bin/
 

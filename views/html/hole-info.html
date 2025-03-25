@@ -7,7 +7,7 @@
             syscalls</a> to write output.
     </div>
 {{ if eq .Data.Hole.ID "quine" }}
-    <div class="hide info golfscript r">
+    <div class="hide info golfscript kotlin r">
         Implicit output is disabled for this hole.
     </div>
     <div class="hide info k">
@@ -20,8 +20,8 @@
 {{ end }}
 {{ range .Data.Langs }}{{ if .Experiment }}
     <div class="hide info {{ .ID }}">
-        {{ .Name }} is an experimental language, no solutions will be saved.
-        Please leave feedback on the
+        {{ .Name }} is an experimental language, solutions won't contribute to
+        scoring until the language goes live. Please leave feedback on the
         <a href="//github.com/code-golf/code-golf/issues/{{ .Experiment }}">
             GitHub issue</a>.
     </div>

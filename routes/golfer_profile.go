@@ -38,7 +38,7 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		Followers        []string
 		Following        []struct {
 			Bytes, Chars, Rank int
-			Country            config.NullCountry
+			Country            *config.Country
 			Name               string
 		}
 		Langs          []*config.Lang
@@ -142,7 +142,7 @@ rows:
 		`WITH max_points_per_hole AS (
 		    SELECT DISTINCT ON (hole, scoring) hole, scoring, points
 		      FROM rankings
-		     WHERE user_id = $1
+		     WHERE user_id = $1 AND NOT experimental
 		  ORDER BY hole, scoring, points DESC
 		) SELECT $2::hstore->hole::text category,
 		         ROUND(AVG((points)))   points,
@@ -170,6 +170,7 @@ rows:
 		           RANK() OVER (PARTITION BY scoring, lang
 		                            ORDER BY SUM(points_for_lang) DESC)
 		      FROM rankings
+		     WHERE NOT experimental
 		  GROUP BY user_id, scoring, lang
 		) SELECT lang, scoring, rank FROM ranks WHERE user_id = $1`,
 		golfer.ID,

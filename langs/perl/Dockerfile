@@ -1,8 +1,8 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache build-base curl
 
-RUN curl https://cpan.metacpan.org/authors/id/H/HA/HAARG/perl-5.40.0.tar.gz \
+RUN curl https://cpan.metacpan.org/authors/id/S/SH/SHAY/perl-5.40.1.tar.gz \
   | tar xz && mv perl-* perl
 
 RUN cd perl                           \
@@ -25,7 +25,7 @@ RUN cd perl                           \
  && make -j`nproc`                    \
  && strip -s perl
 
-FROM codegolf/lang-base-no-proc
+FROM codegolf/lang-base
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1         /lib/
 COPY --from=0 /perl/perl                       /usr/bin/
@@ -60,4 +60,4 @@ COPY --from=0 /perl/lib/warnings/register.pm   /usr/lib/perl/warnings/
 
 ENTRYPOINT ["perl"]
 
-CMD ["-E", "say substr $^V, 1"]
+CMD ["--version"]

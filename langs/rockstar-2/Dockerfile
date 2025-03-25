@@ -1,19 +1,25 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0.401-alpine3.20 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:9.0.200-alpine3.21 AS builder
 
-RUN apk add --no-cache build-base zlib-dev
+RUN apk add --no-cache gcc musl-dev zlib-dev
 
-RUN curl -L https://github.com/RockstarLang/rockstar2/archive/refs/tags/v0.11.3.tar.gz \
+ENV VER=2.0.30
+
+RUN curl -#L https://github.com/RockstarLang/rockstar/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1
 
-RUN dotnet publish Starship/Rockstar -c Release -o rockstar
+RUN find Starship -name '*.csproj' -exec sed -Ei 's/\bnet\d+\b/net9/' {} + \
+ && dotnet publish Starship/Rockstar -c Release -o /usr/bin \
+    -p:InvariantGlobalization=true
+
+COPY rockstarwrapper.c /
+
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/rockstarwrapper -s -static rockstarwrapper.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/cat /bin/sh         /bin/
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /rockstar/rockstar       /usr/bin/
-
-COPY /rockstarwrapper /usr/bin/
+COPY --from=0 /usr/bin/rockstar        \
+              /usr/bin/rockstarwrapper /usr/bin/
 
 ENTRYPOINT ["rockstarwrapper"]
 

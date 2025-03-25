@@ -12,8 +12,9 @@ func golferDeleteSolutionPOST(w http.ResponseWriter, r *http.Request) {
 	hole := r.PostFormValue("hole")
 	lang := r.PostFormValue("lang")
 
-	if config.HoleByID[hole] == nil || config.LangByID[lang] == nil {
+	if config.AllHoleByID[hole] == nil || config.AllLangByID[lang] == nil {
 		w.WriteHeader(http.StatusBadRequest)
+		return
 	}
 
 	golfer := session.Golfer(r)

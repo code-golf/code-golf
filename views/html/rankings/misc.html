@@ -43,14 +43,14 @@
             {{ end }}
             {{ if $hasHole }}
                 <td>
-                    <a href="/rankings/holes/{{ .Hole }}/{{ .Lang }}/{{ .Scoring }}">
-                        <svg><use href="#{{ .Lang }}"/></svg>
-                        <svg><use href="#{{ .Scoring }}"/></svg>
-                        <span>{{ (index $.Holes .Hole).Name }}</span>
+                    <a href="/rankings/holes/{{ .Hole.ID }}/{{ .Lang.ID }}/{{ .Scoring }}">
+                        {{ svg .Lang.ID }}
+                        {{ svg .Scoring }}
+                        <span>{{ .Hole.Name }}</span>
                     </a>
             {{ end }}
             {{ if $oldestMedal }}
-                <td class=right>{{ time .Submitted }}
+                <td class=right>{{ time (.Submitted.In $.Location) }}
             {{ else }}
                 <td class=right>{{ comma .Count }}
             {{ end }}
@@ -63,13 +63,5 @@
 
     {{ template "pagination" .Data.Pager }}
 </main>
-
-<svg>
-    {{ svg "bytes" }}
-    {{ svg "chars" }}
-{{ range .Langs }}
-    {{ svg .ID }}
-{{ end }}
-</svg>
 
 {{ template "footer" }}
