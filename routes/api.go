@@ -358,7 +358,11 @@ func apiWikiPageGET(w http.ResponseWriter, r *http.Request) {
 
 func encodeJSON(w http.ResponseWriter, v any) {
 	if v == nil || reflect.ValueOf(v).IsNil() {
-		w.WriteHeader(http.StatusNotFound)
+		if t := reflect.TypeOf(v); t != nil && t.Kind() == reflect.Slice {
+			w.Write([]byte("[]"))
+		} else {
+			w.WriteHeader(http.StatusNotFound)
+		}
 	} else if err := json.NewEncoder(w).Encode(v); err != nil {
 		panic(err)
 	}
