@@ -57,7 +57,7 @@ async function onSearch() {
 const fetchSolutionsDebounced = debounce(fetchSolutions, 500);
 
 async function fetchSolutions() {
-    const resp  = await fetch(`/api/solutions-search?${searchParams}`);
+    const resp = await fetch(`/api/solutions-search?${searchParams}`);
     if (resp.status !== 200) {
         $<HTMLInputElement>('#searchInput').setCustomValidity('Bad request');
         $<HTMLInputElement>('#searchInput').reportValidity();
