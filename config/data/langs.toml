@@ -42,8 +42,8 @@ x is a no-op.
 ['ALGOL 68']
 args       = [ '/usr/bin/algol-68', '--exec', '$code', '--' ]
 experiment = 856
-size       = '4.66 MiB'
-version    = 'Algol 68 Genie 3.5.12'
+size       = '4.67 MiB'
+version    = 'Algol 68 Genie 3.5.14'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -82,8 +82,8 @@ example    = '''
 [Arturo]
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
-size       = '5.35 MiB'
-version    = 'd10ce54'
+size       = '5.38 MiB'
+version    = '71a4677'
 website    = 'https://arturo-lang.io'
 example    = '''
 ; Printing
@@ -369,7 +369,7 @@ foreach (String arg in args)
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
 size    = '152 MiB'
-version = 'Clang 20.1.0'
+version = 'Clang 20.1.1'
 website = 'https://clang.llvm.org'
 example = '''
 #include <iostream>
@@ -397,7 +397,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '72.1 MiB'
-version = '0.10.0'
+version = '0.10.1'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -1033,11 +1033,11 @@ example    = '''
 args       = [ '/usr/bin/iogii', '-' ]
 experiment = 1770
 size       = '34.1 MiB'
-version    = '0.2'
+version    = '0.3'
 website    = 'https://golfscript.com/iogii/'
 example    = '''
 # Process input in raw mode
->
+,
 
 # Printing
 "Hello, World!
@@ -1109,7 +1109,7 @@ class Main {
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
 size    = '43.2 MiB'
-version = 'V8 13.4.114.19'
+version = 'V8 13.4.114.21'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1179,8 +1179,8 @@ example = '''
 [Kotlin]
 args    = [ '/usr/bin/kotlin', '-Xuse-fast-jar-file-system', '-e', '$code' ]
 env     = [ 'JAVA_HOME=/opt/java' ]
-size    = '226 MiB'
-version = '2.1.10'
+size    = '227 MiB'
+version = '2.1.20'
 website = 'https://kotlinlang.org'
 example = '''
 // Printing
@@ -1496,8 +1496,8 @@ example    = '''
 [Raku]
 args      = [ '/usr/bin/raku', '-' ]
 redirects = [ 'perl6' ]
-size      = '76.6 MiB'
-version   = 'Raku 6.d on Rakudo 2025.02'
+size      = '77.9 MiB'
+version   = 'Raku 6.d on Rakudo 2025.03'
 website   = 'https://raku.org'
 example   = '''
 # Printing
@@ -1615,7 +1615,7 @@ end
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
 size    = '355 MiB'
-version = '1.85.0'
+version = '1.85.1'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -1828,7 +1828,7 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '30.3 MiB'
+size       = '30.4 MiB'
 version    = '0.14.1'
 website    = 'https://www.uiua.org'
 example    = '''
@@ -1844,8 +1844,8 @@ example    = '''
 
 [V]
 args    = [ '/usr/bin/V', '-' ]
-size    = '50.2 MiB'
-version = '0.4.9'
+size    = '50.6 MiB'
+version = '0.4.10'
 website = 'https://vlang.io'
 example = '''
 import os

@@ -2,7 +2,7 @@ FROM eclipse-temurin:24_36-jre-alpine-3.21 AS builder
 
 RUN apk add --no-cache bash curl
 
-ENV VER=2.1.10
+ENV VER=2.1.20
 
 RUN curl -#Lo kotlin.zip https://github.com/JetBrains/kotlin/releases/download/v$VER/kotlin-compiler-$VER.zip
 
