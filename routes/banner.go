@@ -10,7 +10,6 @@ import (
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/pretty"
-	"github.com/jmoiron/sqlx"
 )
 
 var nextHole = config.ExpHoleByID["partition-numbers"]
@@ -20,7 +19,7 @@ type banner struct {
 	HideKey, Type string
 }
 
-func banners(db *sqlx.DB, golfer *golfer.Golfer, now time.Time) (banners []banner) {
+func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 	// Upcoming hole.
 	if hole := nextHole; hole != nil {
 		t := hole.Released.AsTime(time.UTC)
