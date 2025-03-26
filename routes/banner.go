@@ -12,7 +12,7 @@ import (
 	"github.com/code-golf/code-golf/pretty"
 )
 
-var nextHole = config.ExpHoleByID["partition-numbers"]
+var nextHole = config.ExpHoleByID["set"]
 
 type banner struct {
 	Body          template.HTML

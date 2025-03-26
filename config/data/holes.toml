@@ -3471,13 +3471,14 @@ preamble = '''
     each on their own line.
 '''
 
-['Set']
+[Set]
 experiment = 1058
 category = 'Gaming'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Set,_the_card_game' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Set_(card_game)' },
 ]
+released = 2025-04-01
 synopsis = 'Identify sets in the card game Set.'
 preamble = '''
 <p>
