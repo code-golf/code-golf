@@ -167,7 +167,6 @@ function makeEditor(parent: HTMLDivElement) {
                 let innertext = scorings.selection
                     ? `${formatScore(scorings.total)} (${formatScore(scorings.selection)} selected)`
                     : formatScore(scorings.total);
-            
                 if (scorings.selection?.char === 1) {
                     const sel = tr.state.sliceDoc(tr.state.selection.main.from, tr.state.selection.main.to);
                     const code = sel.codePointAt(0);
