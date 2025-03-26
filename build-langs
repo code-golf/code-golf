@@ -92,7 +92,6 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
                 $ver = "Raku $1[0] on Rakudo $0[0]";
             }
             when 'Rexx'        { $ver = "Regina $digits" }
-            when 'Rockstar'    { $ver = "Rocky $digits" }
             when 'Scheme'      { $ver = "Chez Scheme $digits" }
             when 'SQL'         { $ver = "SQLite $digits" }
             default            { $ver = $digits }

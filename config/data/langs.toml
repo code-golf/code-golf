@@ -1553,31 +1553,12 @@ end
 '''
 
 [Rockstar]
-args    = [ '/usr/bin/rockstar', '-' ]
-size    = '129 MiB'
-version = 'Rocky 2.1.2'
-website = 'https://github.com/gaborsch/rocky'
-example = '''
-(Printing)
-Shout "Hello, World!"
-
-(Looping)
-Let i be 0
-While i is less than 10
-Shout i
-Build i up
-
-(Accessing arguments)
-While args alike arg
-Shout arg
-'''
-
-['Rockstar 2']
-args    = [ '/usr/bin/rockstarwrapper', '-' ]
-size    = '4.26 MiB'
-version = '2.0.30'
-website = 'https://codewithrockstar.com'
-example = '''
+args      = [ '/usr/bin/rockstarwrapper', '-' ]
+redirects = [ 'rockstar-2' ]
+size      = '4.26 MiB'
+version   = '2.0.30'
+website   = 'https://codewithrockstar.com'
+example   = '''
 (Printing)
 print "Hello, World!"
 

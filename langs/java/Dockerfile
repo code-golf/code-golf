@@ -1,4 +1,4 @@
-# Also bump CJam, Groovy, Kotlin, Rockstar, Scala, Vyxal.
+# Also bump CJam, Groovy, Kotlin, Scala, Vyxal.
 FROM eclipse-temurin:24_36-jdk-alpine-3.21 AS builder
 
 RUN apk add --no-cache build-base gmp-dev
