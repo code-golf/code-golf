@@ -34,7 +34,7 @@ CREATE TYPE hole AS ENUM (
     'arabic-to-roman', 'arithmetic-numbers', 'arrows', 'ascending-primes',
     'ascii-table', 'billiards', 'brainfuck', 'calendar',
     'card-number-validation', 'catalan-numbers', 'catalans-constant',
-    'christmas-trees', 'collatz', 'connect-four', 'css-colors', 'css-grid',
+    'christmas-trees', 'collatz', 'connect-four', 'css-colors', 'css-colors-inverse', 'css-grid',
     'cubes', 'day-of-week', 'dfa-simulator', 'diamonds', 'divisors',
     'ellipse-perimeters', 'emirp-numbers', 'emirp-numbers-long', 'emojify',
     'evil-numbers', 'evil-numbers-long', 'factorial-factorisation',
