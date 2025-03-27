@@ -2923,10 +2923,10 @@ links = [
 ]
 preamble = '''
 <p>
-    A polyomino is a shape formed by joining a certain amount of squares
-    together, where each square must be linked together. Output each possible
-    polyomino (including every rotation), up to a size of 6, in any order.
-    Separate each polyomino by an empty line.
+    A polyomino is a 2D shape formed by joining squares along common edges, such
+    that all squares are connected. Output each possible polyomino (including
+    every rotation), up to a size of 6, in any order. Separate each polyomino by
+    an empty line.
 
 <p>
     There should be a total of 1 monomino, 2 dominoes, 6 trominoes,
