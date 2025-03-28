@@ -655,8 +655,8 @@ for arg <- System.argv, do: IO.puts arg
 [Erlang]
 args       = [ '/usr/bin/erlang', '-' ]
 experiment = 181
-size       = '68.5 MiB'
-version    = 'OTP 27.3'
+size       = '68.6 MiB'
+version    = 'OTP 27.3.1'
 website    = 'https://www.erlang.org'
 example    = '''
 main(Args) ->
