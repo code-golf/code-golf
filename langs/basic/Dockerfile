@@ -20,6 +20,7 @@ FROM codegolf/lang-base
 COPY --from=0 /bin/dash                             /bin/sh
 COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
               /lib/x86_64-linux-gnu/libdl.so.2      \
+              /lib/x86_64-linux-gnu/libgcc_s.so.1   \
               /lib/x86_64-linux-gnu/libm.so.6       \
               /lib/x86_64-linux-gnu/libmvec.so.1    \
               /lib/x86_64-linux-gnu/libpthread.so.0 \
