@@ -42,8 +42,8 @@ x is a no-op.
 ['ALGOL 68']
 args       = [ '/usr/bin/algol-68', '--exec', '$code', '--' ]
 experiment = 856
-size       = '4.66 MiB'
-version    = 'Algol 68 Genie 3.5.12'
+size       = '4.67 MiB'
+version    = 'Algol 68 Genie 3.5.14'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -82,8 +82,8 @@ example    = '''
 [Arturo]
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
-size       = '5.35 MiB'
-version    = 'd10ce54'
+size       = '5.38 MiB'
+version    = '71a4677'
 website    = 'https://arturo-lang.io'
 example    = '''
 ; Printing
@@ -101,7 +101,7 @@ loop arg [a] [
 
 [Assembly]
 args    = [ '/usr/bin/defasm', '--size-out=3', '-w', '-r' ]
-size    = '116 MiB'
+size    = '115 MiB'
 version = 'DefAssembler 2.4.5'
 website = 'https://www.npmjs.com/package/@defasm/core'
 example = '''
@@ -323,7 +323,7 @@ with 65536 cells; and cells are 8 bit with wrapping;
 [C]
 args    = [ '/usr/bin/tcc', '-run', '-' ]
 size    = '1.73 MiB'
-version = 'Tiny C Compiler 0.9.27'
+version = 'TCC 0.9.27'
 website = 'https://bellard.org/tcc/'
 example = '''
 #include <stdio.h>
@@ -369,7 +369,7 @@ foreach (String arg in args)
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
 size    = '152 MiB'
-version = 'Clang 20.1.0'
+version = 'Clang 20.1.1'
 website = 'https://clang.llvm.org'
 example = '''
 #include <iostream>
@@ -396,8 +396,8 @@ int main(int argc, char* argv[]) {
 [Civet]
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
-size    = '71.8 MiB'
-version = '0.9.6'
+size    = '72.1 MiB'
+version = '0.10.1'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -415,7 +415,7 @@ for arg of process.argv[2..]
 [CJam]
 args       = [ '/usr/bin/cjam', '-' ]
 experiment = 1493
-size       = '132 MiB'
+size       = '134 MiB'
 version    = '0.6.5'
 website    = 'https://sourceforge.net/projects/cjam/'
 example    = '''
@@ -568,7 +568,7 @@ end
 args    = [ '/usr/bin/D', '-' ]
 env     = [ 'PATH=/usr/bin' ]
 size    = '93.3 MiB'
-version = 'DMD 2.109.1'
+version = 'DMD 2.110.0'
 website = 'https://dlang.org'
 example = '''
 import std.stdio;
@@ -592,7 +592,7 @@ void main(string[] argv) {
 [Dart]
 args    = [ '/usr/bin/dartwrapper', '-' ]
 size    = '246 MiB'
-version = '3.7.1'
+version = '3.7.2'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -655,8 +655,8 @@ for arg <- System.argv, do: IO.puts arg
 [Erlang]
 args       = [ '/usr/bin/erlang', '-' ]
 experiment = 181
-size       = '68.5 MiB'
-version    = 'OTP 27.3'
+size       = '68.6 MiB'
+version    = 'OTP 27.3.1'
 website    = 'https://www.erlang.org'
 example    = '''
 main(Args) ->
@@ -854,7 +854,7 @@ n*
 args       = [ '/usr/bin/groovy', '-e', '$code' ]
 env        = [ 'JAVA_HOME=/opt/java' ]
 experiment = 1145
-size       = '146 MiB'
+size       = '148 MiB'
 version    = '4.0.26'
 website    = 'https://groovy-lang.org'
 example    = '''
@@ -1033,11 +1033,11 @@ example    = '''
 args       = [ '/usr/bin/iogii', '-' ]
 experiment = 1770
 size       = '34.1 MiB'
-version    = '0.2'
+version    = '0.3'
 website    = 'https://golfscript.com/iogii/'
 example    = '''
 # Process input in raw mode
->
+,
 
 # Printing
 "Hello, World!
@@ -1068,8 +1068,8 @@ echo each 2}.ARGV
 
 [Janet]
 args    = [ '/usr/bin/janet', '/proc/self/fd/0' ]
-size    = '902 KiB'
-version = '1.37.1'
+size    = '906 KiB'
+version = '1.38.0'
 website = 'https://janet-lang.org'
 example = '''
 # Printing
@@ -1086,8 +1086,8 @@ example = '''
 
 [Java]
 args    = [ '/usr/bin/java', '-' ]
-size    = '58.4 MiB'
-version = 'OpenJDK 23.0.2'
+size    = '59.3 MiB'
+version = 'OpenJDK 24.0'
 website = 'https://openjdk.java.net'
 example = '''
 class Main {
@@ -1109,7 +1109,7 @@ class Main {
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
 size    = '43.2 MiB'
-version = 'V8 13.4.114.19'
+version = 'V8 13.4.114.21'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1179,8 +1179,8 @@ example = '''
 [Kotlin]
 args    = [ '/usr/bin/kotlin', '-Xuse-fast-jar-file-system', '-e', '$code' ]
 env     = [ 'JAVA_HOME=/opt/java' ]
-size    = '224 MiB'
-version = '2.1.10'
+size    = '227 MiB'
+version = '2.1.20'
 website = 'https://kotlinlang.org'
 example = '''
 // Printing
@@ -1287,7 +1287,7 @@ main :: proc() {
 [Pascal]
 args    = [ '/usr/bin/pascal', '-' ]
 size    = '26.6 MiB'
-version = 'Free Pascal 3.2.2'
+version = 'FPC 3.2.2'
 website = 'https://freepascal.org'
 example = '''
 var
@@ -1496,8 +1496,8 @@ example    = '''
 [Raku]
 args      = [ '/usr/bin/raku', '-' ]
 redirects = [ 'perl6' ]
-size      = '76.6 MiB'
-version   = 'Raku 6.d on Rakudo 2025.02'
+size      = '77.9 MiB'
+version   = 'Raku 6.d on Rakudo 2025.03'
 website   = 'https://raku.org'
 example   = '''
 # Printing
@@ -1553,31 +1553,12 @@ end
 '''
 
 [Rockstar]
-args    = [ '/usr/bin/rockstar', '-' ]
-size    = '127 MiB'
-version = 'Rocky 2.1.2'
-website = 'https://github.com/gaborsch/rocky'
-example = '''
-(Printing)
-Shout "Hello, World!"
-
-(Looping)
-Let i be 0
-While i is less than 10
-Shout i
-Build i up
-
-(Accessing arguments)
-While args alike arg
-Shout arg
-'''
-
-['Rockstar 2']
-args    = [ '/usr/bin/rockstarwrapper', '-' ]
-size    = '4.26 MiB'
-version = '2.0.30'
-website = 'https://codewithrockstar.com'
-example = '''
+args      = [ '/usr/bin/rockstarwrapper', '-' ]
+redirects = [ 'rockstar-2' ]
+size      = '4.26 MiB'
+version   = '2.0.30'
+website   = 'https://codewithrockstar.com'
+example   = '''
 (Printing)
 print "Hello, World!"
 
@@ -1615,7 +1596,7 @@ end
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
 size    = '355 MiB'
-version = '1.85.0'
+version = '1.85.1'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -1638,7 +1619,7 @@ fn main() {
 args       = [ '/usr/local/bin/scala', '-opt:none', '-Xsource:3-cross', '-e', '$code', '--' ]
 env        = [ 'JAVA_HOME=/opt/java' ]
 experiment = 235
-size       = '203 MiB'
+size       = '205 MiB'
 version    = '2.13.16'
 website    = 'https://www.scala-lang.org'
 example    = '''
@@ -1828,7 +1809,7 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '30.3 MiB'
+size       = '30.4 MiB'
 version    = '0.14.1'
 website    = 'https://www.uiua.org'
 example    = '''
@@ -1844,8 +1825,8 @@ example    = '''
 
 [V]
 args    = [ '/usr/bin/V', '-' ]
-size    = '50.2 MiB'
-version = '0.4.9'
+size    = '50.6 MiB'
+version = '0.4.10'
 website = 'https://vlang.io'
 example = '''
 import os
@@ -1892,7 +1873,7 @@ w
 [Vyxal]
 args       = [ '/opt/java/bin/java', '-jar', 'vyxal.jar', '-O', '--code', '$code', '--' ]
 experiment = 1846
-size       = '152 MiB'
+size       = '154 MiB'
 version    = '3.7.0'
 website    = 'https://vyxal.github.io'
 example    = '''

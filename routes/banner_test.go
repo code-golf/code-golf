@@ -17,7 +17,7 @@ func TestBanners(t *testing.T) {
 	} {
 		pass := false
 		time, _ := time.Parse(time.RFC3339, tt.time)
-		for _, b := range banners(nil, &golfer.Golfer{}, time) {
+		for _, b := range banners(&golfer.Golfer{}, time) {
 			if strings.Contains(string(b.Body), tt.cheevo) {
 				pass = true
 				continue
