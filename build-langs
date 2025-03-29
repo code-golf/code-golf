@@ -35,10 +35,12 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
 
     $proc.sink;
 
+    # Format the size consistently so everything lines up.
     with %lang<size> = $proc.out.slurp(:close).chomp {
-        s/(.)B$/ {$0.uc}iB/;          # "XB" → " XiB"
-        s/^ ( \d  \d ) ' ' /{$0}.0 /; #   99 → 99.0
-        s/^ ( \d\.\d ) ' ' /{$0}0 /;  #  9.9 → 9.90
+        s/(.)B$/ {$0.uc}iB/;           # "XB" → " XiB"
+        s/^ ( \d  \d ) ' ' /{$0}.0 /;  #   99 → 99.0
+        s/^ ( \d\.\d ) ' ' /{$0}0 /;   #  9.9 → 9.90
+        s/^ ( \d     ) ' ' /{$0}.00 /; #    9 → 9.00
     }
 
     # Version.
@@ -53,7 +55,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         }
     }
     else {
-        # Forth outputs its version number over stderr.
+        # Some langs output their version number over stderr so merge out/err.
         my $proc = run «docker run -i --rm --tmpfs '/tmp:exec' $img»,
             :in, :out, :merge(so $id eq 'forth' | 'scheme');
 
