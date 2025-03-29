@@ -135,28 +135,25 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		// TODO Eventually save exp langs too.
-		if experimentalHole && !experimentalLang {
-			if _, err := db.ExecContext(
-				r.Context(),
-				`SELECT save_solution(
-				            bytes   := CASE WHEN $3 = 'assembly'::lang
-				                            THEN $5
-				                            ELSE octet_length($1)
-				                            END,
-				            chars   := CASE WHEN $3 = 'assembly'::lang
-				                            THEN NULL
-				                            ELSE char_length($1)
-				                            END,
-				            code    := $1,
-				            hole    := $2,
-				            lang    := $3,
-				            user_id := $4
-				        )`,
-				in.Code, in.Hole, in.Lang, golfer.ID, out.Runs[0].ASMBytes,
-			); err != nil {
-				panic(err)
-			}
+		if _, err := db.ExecContext(
+			r.Context(),
+			`SELECT save_solution(
+			            bytes   := CASE WHEN $3 = 'assembly'::lang
+			                            THEN $5
+			                            ELSE octet_length($1)
+			                            END,
+			            chars   := CASE WHEN $3 = 'assembly'::lang
+			                            THEN NULL
+			                            ELSE char_length($1)
+			                            END,
+			            code    := $1,
+			            hole    := $2,
+			            lang    := $3,
+			            user_id := $4
+			        )`,
+			in.Code, in.Hole, in.Lang, golfer.ID, out.Runs[0].ASMBytes,
+		); err != nil {
+			panic(err)
 		}
 	} else if pass && golfer != nil && !experimental {
 		if err := db.QueryRowContext(
@@ -276,6 +273,12 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 					out.Cheevos = append(out.Cheevos, *c)
 				}
 			}
+		case "tic-tac-toe":
+			if month == time.February && day == 14 {
+				if c := golfer.Earn(db, "hugs-and-kisses"); c != nil {
+					out.Cheevos = append(out.Cheevos, *c)
+				}
+			}
 		case "united-states":
 			if month == time.July && day == 4 {
 				if c := golfer.Earn(db, "independence-day"); c != nil {
@@ -296,7 +299,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		if golfer.Keymap == "vim" && in.Lang == "viml" {
+		if in.Lang == "viml" && golfer.Settings["hole"]["editor-keymap"] == "vim" {
 			if c := golfer.Earn(db, "real-programmers"); c != nil {
 				out.Cheevos = append(out.Cheevos, *c)
 			}
@@ -360,9 +363,6 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 	lang := config.AllLangByID[langID]
 	if hole == nil || lang == nil {
 		w.WriteHeader(http.StatusNotFound)
-		return
-	} else if lang.Experiment != 0 {
-		w.Write([]byte("[]"))
 		return
 	}
 

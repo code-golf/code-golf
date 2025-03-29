@@ -52,7 +52,7 @@ func boxGen() bbox {
 	}
 }
 
-func intersection() []Run {
+var _ = answerFunc("intersection", func() []Answer {
 	var tests []test
 
 	//// default cases
@@ -160,4 +160,4 @@ func intersection() []Run {
 	}
 
 	return outputTests(shuffle(tests))
-}
+})

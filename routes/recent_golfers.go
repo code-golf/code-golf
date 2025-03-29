@@ -13,7 +13,7 @@ import (
 func recentGolfersGET(w http.ResponseWriter, r *http.Request) {
 	var data []struct {
 		Cheevos config.Cheevos
-		Country config.NullCountry
+		Country *config.Country
 		Date    time.Time
 		Langs   config.Langs
 		Name    string

@@ -1,54 +1,57 @@
 FROM alpine:3.21 AS builder
 
-RUN apk add --no-cache build-base clang curl openssl-dev yaml-dev
+RUN apk add --no-cache bison clang curl git gmp-dev make mpfr-dev texinfo
 
-# Also rebuild GolfScript.
-RUN curl https://cache.ruby-lang.org/pub/ruby/3.3/ruby-3.3.6.tar.xz | tar xJ
+# Also rebuild GolfScript, iogii.
+ENV VER=3.4.2
 
-# Clang produces the same size binary as using LTO with GCC, but GCC+LTO leads
-# to an issue where the stack size available for recursion is significantly
-# reduced. It may be worth trying to enable LTO for Clang. That appears to
-# require building the LLVMgold plugin.
-RUN cd ruby-*              \
- && CC=clang ./configure   \
+RUN git clone --depth 1 --progress git://sourceware.org/git/binutils-gdb.git binutils
+
+WORKDIR /gold
+
+RUN CC='clang' CXX='clang++' \
+    ../binutils/configure    \
+    --disable-werror         \
+    --enable-gold            \
+    --enable-plugins         \
+ && make -j`nproc` all-gold  \
+ && mv gold/ld-new /usr/bin/ld
+
+WORKDIR /ruby
+
+RUN curl -#L https://cache.ruby-lang.org/pub/ruby/3.4/ruby-$VER.tar.xz \
+  | tar xJ --strip-components 1
+
+RUN CC='clang' ./configure \
     --disable-install-doc  \
     --disable-jit-support  \
     --prefix=/usr          \
+    --without-gmp          \
  && make -j`nproc` install \
  && strip -s /usr/bin/ruby
 
 # Remove some default gems we don't need.
-RUN cd /usr/lib/ruby/3.3.0 && rm -rf \
+RUN cd /usr/lib/ruby/3.4.0 && rm -rf \
                       English.rb     \
-                      benchmark      \
-                      benchmark.rb   \
-                      bundler        \
-                      bundler.rb     \
+                      benchmark*     \
+                      bundler*       \
     x86_64-linux-musl/bundler.so     \
-                      coverage       \
-                      coverage.rb    \
+                      coverage*      \
     x86_64-linux-musl/coverage.so    \
-                      csv            \
-                      csv.rb         \
+                      csv*           \
                       debug.rb       \
-                      fiddle         \
-                      fiddle.rb      \
+                      fiddle*        \
     x86_64-linux-musl/fiddle.so      \
                       mkmf.rb        \
-                      objspace       \
-                      objspace.rb    \
+                      objspace*      \
     x86_64-linux-musl/objspace.so    \
-                      openssl        \
-                      openssl.rb     \
+                      openssl*       \
     x86_64-linux-musl/openssl.so     \
-                      psych          \
-                      psych.rb       \
+                      psych*         \
     x86_64-linux-musl/psych.so       \
-                      rdoc           \
-                      rdoc.rb        \
+                      rdoc*          \
     x86_64-linux-musl/rdoc.so        \
-                      ripper         \
-                      ripper.rb      \
+                      ripper*        \
     x86_64-linux-musl/ripper.so
 
 FROM codegolf/lang-base

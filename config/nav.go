@@ -58,7 +58,7 @@ func init() {
 			Path: "/rankings/holes/{hole}/{lang}/{scoring}",
 			Groups: []*LinkGroup{
 				group("Scoring", "scoring", "Bytes", "Chars"),
-				groupLangs(),
+				groupLangs(true),
 				groupHoles(true),
 			},
 		},
@@ -67,7 +67,7 @@ func init() {
 			Path: "/rankings/langs/{lang}/{scoring}",
 			Groups: []*LinkGroup{
 				group("Scoring", "scoring", "Bytes", "Chars"),
-				groupLangs(),
+				groupLangs(false),
 			},
 		},
 
@@ -75,7 +75,7 @@ func init() {
 			Path: "/rankings/medals/{hole}/{lang}/{scoring}",
 			Groups: []*LinkGroup{
 				group("Scoring", "scoring", "All", "Bytes", "Chars"),
-				groupLangs(),
+				groupLangs(false),
 				groupHoles(false),
 			},
 		},
@@ -95,7 +95,7 @@ func init() {
 			Path: "/rankings/recent-holes/{lang}/{scoring}",
 			Groups: []*LinkGroup{
 				group("Scoring", "scoring", "Bytes", "Chars"),
-				groupLangs(),
+				groupLangs(false),
 			},
 		},
 
@@ -103,8 +103,8 @@ func init() {
 			Path: "/recent/solutions/{hole}/{lang}/{scoring}",
 			Groups: []*LinkGroup{
 				group("Scoring", "scoring", "Bytes", "Chars"),
-				groupLangs(),
-				groupHoles(false),
+				groupLangs(true),
+				groupHoles(true),
 			},
 		},
 
@@ -230,7 +230,7 @@ func groupHoles(includeExperimental bool) *LinkGroup {
 	return group
 }
 
-func groupLangs() *LinkGroup {
+func groupLangs(includeExperimental bool) *LinkGroup {
 	group := group("Language", "lang", "All")
 
 	for _, lang := range LangList {
@@ -238,6 +238,20 @@ func groupLangs() *LinkGroup {
 			Name: lang.Name,
 			Slug: lang.ID,
 		})
+	}
+
+	if includeExperimental {
+		group.Links = append(group.Links, &NavLink{
+			Heading: true,
+			Name:    "Experimental Language",
+		})
+
+		for _, lang := range ExpLangList {
+			group.Links = append(group.Links, &NavLink{
+				Name: lang.Name,
+				Slug: lang.ID,
+			})
+		}
 	}
 
 	return group

@@ -1,15 +1,21 @@
-FROM alpine:3.20 AS builder
+FROM nimlang/nim:2.2.2-alpine AS builder
 
-RUN apk add --no-cache curl g++ nim pcre
+RUN apk add --no-cache pcre
 
-RUN curl -L https://github.com/arturo-lang/arturo/archive/0756a55.tar.gz \
-  | tar xz
+ENV VER=71a4677
 
-RUN cd arturo-*  \
- && ./build.nims \
-    --install    \
-    --mode mini  \
-    --release
+RUN curl -#L https://github.com/arturo-lang/arturo/tarball/$VER \
+  | tar xz --strip-components 1
+
+# Drop an "l" to make Nim int -> C long int. Both are 64 bit, not sure why
+# this is needed on some systems and not others, seems to affect alpine more.
+# See https://github.com/arturo-lang/arturo/issues/1896
+# And https://gcc.gnu.org/onlinedocs/gcc/Integer-Overflow-Builtins.html
+# $ echo 'echo sizeof(int)' | docker run --rm -i nimlang/nim:2.2.2-alpine nim c -r -
+# 8
+RUN sed -i -E 's/(__builtin_s)(add|sub|mul)l(l_overflow)/\1\2\3/g' \
+    src/helpers/intrinsics.nim                                     \
+ && ./build.nims --install --mode mini --release
 
 FROM codegolf/lang-base
 

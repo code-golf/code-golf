@@ -115,18 +115,20 @@ section header {
     margin-left: -.75rem;
 }
 
-#copy + span {
-    opacity: 0;
-    transition: all 2s;
-}
+[data-copy] {
+    display: inline;
 
-#copy:active + span {
-    opacity: 1;
-    padding-left: 1rem;
-    transition: all 0s;
-}
+    + span {
+        opacity: 0;
+        transition: all 2s;
+    }
 
-#copy { display: inline }
+    &:active + span {
+        opacity: 1;
+        padding-left: 1rem;
+        transition: all 0s;
+    }
+}
 
 #diff:not(:empty),
 #diff-content {

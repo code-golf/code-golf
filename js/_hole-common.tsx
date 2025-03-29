@@ -9,10 +9,24 @@ let tabLayout: boolean = false;
 const langWikiCache: Record<string, string | null> = {};
 async function getLangWikiContent(lang: string): Promise<string> {
     if (!(lang in langWikiCache)) {
-        const resp  = await fetch(`/api/wiki/langs/${lang}`);
-        langWikiCache[lang] = resp.status === 200 ? (await resp.json()).content : null;
+        langWikiCache[lang] = await _getLangWikiContent(lang);
     }
     return langWikiCache[lang] ?? 'No data for current lang.';
+}
+async function _getLangWikiContent(lang: string): Promise<string | null> {
+    const resp  = await fetch(`/api/wiki/langs/${lang}`);
+    const {content, title} = await resp.json() as {content: string, title: string};
+    if (resp.status !== 200) {
+        return null;
+    }
+    const header = (<p id={`lang-wiki-${lang}`}>
+        Wiki: {title}{' '}
+        <a href={`/wiki/langs/${lang}`} target="_blank">
+            (open in new tab)
+        </a>
+        .
+    </p>).outerHTML;
+    return header + content;
 }
 
 const holeLangNotesCache: Record<string, string | null> = {};
@@ -29,6 +43,7 @@ const renamedHoles: Record<string, string> = {
     'eight-queens':                  'n-queens',
     'factorial-factorisation-ascii': 'factorial-factorisation',
     'grid-packing':                  'css-grid',
+    'placeholder':                   'tutorial',
     'sudoku-v2':                     'sudoku-fill-in',
 };
 
@@ -97,23 +112,10 @@ export function initDeleteBtn(deleteBtn: HTMLElement | undefined, langs: any) {
     });
 }
 
-export function initOutputDiv(outputDiv: HTMLElement | undefined) {
-    outputDiv?.addEventListener('copy', event => {
-        const selection = document.getSelection();
-        if (selection?.rangeCount !== undefined && selection.rangeCount > 0) {
-            let text = '';
-            for (let index = 0; index < selection.rangeCount; index++) {
-                text += replacePlaceholdersInRange(selection, selection.getRangeAt(index));
-            }
-            event.clipboardData?.setData('text/plain', text);
-            event.preventDefault();
-        }
-    });
-}
-
-export function initCopyJSONBtn(copyBtn: HTMLElement | undefined) {
-    copyBtn?.addEventListener('click', () =>
-        navigator.clipboard.writeText($('#data').innerText));
+export function initCopyButtons(buttons: NodeListOf<HTMLElement>) {
+    for (const btn of buttons)
+        btn.onclick = () =>
+            navigator.clipboard.writeText(btn.dataset.copy!);
 }
 
 export const langs = JSON.parse($('#langs').innerText);
@@ -251,7 +253,7 @@ function updateLangPicker() {
     picker.replaceChildren(...sortedLangs.map((l: any) => {
         const tab = <a href={l.id == lang ? null : '#'+l.id} title={l.name}></a>;
 
-        if (icon)  tab.append(<svg><use href={'#'+l.id}/></svg>);
+        if (icon)  tab.append(<svg><use href={l['logo-url']+'#a'}/></svg>);
         if (label) tab.append(l.name);
 
         if (getSolutionCode(l.id, 0)) {
@@ -843,46 +845,6 @@ export function getScorings(tr: any, editor: any) {
     }
 
     return (selection.byte || selection.char) ? {total, selection} : {total};
-}
-
-export function replaceUnprintablesInOutput(output: string) {
-    return output.replace(/[\x00-\x08\x0B-\x1F\x7F]/g,
-        x => `<span title=${'\\u' + x.charCodeAt(0).toString(16)}>•</span>`);
-}
-
-// Extracts the text, replacing any unprintable placeholders with the actual text.
-function replacePlaceholdersInRange(selection: Selection, range: Range) {
-    let containers = [];
-    if (range.startContainer === range.endContainer) {
-        if (range.startContainer.parentElement instanceof HTMLSpanElement) {
-            containers.push(range.startContainer.parentElement);
-        }
-        else {
-            containers.push(range.startContainer);
-        }
-    }
-    else {
-        containers = Array.from(range.commonAncestorContainer.childNodes).filter(node => selection.containsNode(node, true));
-    }
-
-    let text = '';
-    for (const container of containers) {
-        if (container instanceof HTMLSpanElement) {
-            // Decode placeholder character.
-            text += String.fromCharCode(parseInt(container.title.substring(2), 16));
-        }
-        else if (container instanceof HTMLBRElement) {
-            text += '\n';
-        }
-        else {
-            const childText = container.textContent || '';
-            const start = container === containers[0] ? range.startOffset : 0;
-            const end = container === containers[containers.length - 1] ? range.endOffset : childText.length;
-            text += childText.substring(start, end);
-        }
-    }
-
-    return text;
 }
 
 export function ctrlEnter(func: Function) {

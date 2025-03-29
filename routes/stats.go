@@ -33,7 +33,7 @@ func statsGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := db.QueryRow(
-		"SELECT COUNT(DISTINCT country) FROM users WHERE LENGTH(country) > 0",
+		"SELECT COUNT(DISTINCT country) FROM users WHERE country IS NOT NULL",
 	).Scan(&data.Countries); err != nil {
 		panic(err)
 	}
@@ -52,7 +52,7 @@ func statsGET(w http.ResponseWriter, r *http.Request) {
 // GET /stats/{page:countries}
 func statsCountriesGET(w http.ResponseWriter, r *http.Request) {
 	type row struct {
-		Country       config.NullCountry
+		Country       *config.Country
 		Golfers, Rank int
 		Percent       string
 	}
@@ -61,11 +61,11 @@ func statsCountriesGET(w http.ResponseWriter, r *http.Request) {
 	if err := session.Database(r).Select(
 		&data,
 		` SELECT RANK() OVER (ORDER BY COUNT(*) DESC)             rank,
-		         COALESCE(country, '')                            country,
+		         country                                          country,
 		         COUNT(*)                                         golfers,
 		         ROUND(COUNT(*) / SUM(COUNT(*)) OVER () * 100, 2) percent
 		    FROM users
-		GROUP BY COALESCE(country, '')`,
+		GROUP BY country`,
 	); err != nil {
 		panic(err)
 	}
@@ -77,11 +77,11 @@ func statsCountriesGET(w http.ResponseWriter, r *http.Request) {
 		}
 
 		var aName, bName string
-		if a.Country.Valid {
-			aName = a.Country.Country.Name
+		if a.Country != nil {
+			aName = a.Country.Name
 		}
-		if b.Country.Valid {
-			bName = b.Country.Country.Name
+		if b.Country != nil {
+			bName = b.Country.Name
 		}
 		return cmp.Compare(aName, bName)
 	})
@@ -175,10 +175,10 @@ func statsUnsolvedHolesGET(w http.ResponseWriter, r *http.Request) {
 	if err := session.Database(r).Select(
 		&data,
 		`WITH solves AS (
-		    SELECT DISTINCT hole, lang FROM solutions WHERE NOT failing
+		    SELECT DISTINCT hole, lang FROM stable_passing_solutions
 		),
-		holes AS (SELECT unnest(enum_range(null::hole)) hole),
-		langs AS (SELECT unnest(enum_range(null::lang)) lang),
+		holes AS (SELECT id hole FROM holes WHERE experiment = 0),
+		langs AS (SELECT id lang FROM langs WHERE experiment = 0),
 		combo AS (SELECT hole, lang FROM holes CROSS JOIN langs)
 		   SELECT hole, lang
 		     FROM combo

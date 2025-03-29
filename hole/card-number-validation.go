@@ -2,7 +2,7 @@ package hole
 
 import "strconv"
 
-func cardNumberValidation() []Run {
+var _ = answerFunc("card-number-validation", func() []Answer {
 	digitSum := func(n int) int {
 		return n - n/10*9
 	}
@@ -56,4 +56,4 @@ func cardNumberValidation() []Run {
 	}
 
 	return outputTests(shuffle(tests))
-}
+})
