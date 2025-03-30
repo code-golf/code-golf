@@ -324,10 +324,13 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 	enc := json.NewEncoder(w)
 	enc.SetEscapeHTML(false)
 
-	// Avoid returning "null" cheevos array. Eventually fix with json/v2.
+	// Avoid returning "null" arrays. Eventually fix with json/v2.
 	// See https://github.com/golang/go/issues/37711#issuecomment-1750018405
 	if out.Cheevos == nil {
 		out.Cheevos = []config.Cheevo{}
+	}
+	if out.RankUpdates == nil {
+		out.RankUpdates = []Golfer.RankUpdate{}
 	}
 
 	if err := enc.Encode(&out); err != nil {
