@@ -60,8 +60,8 @@ type Hole struct {
 	DataMap                     ordered.Map    `json:"-"`
 	Experiment                  int            `json:"-"`
 	ID                          string         `json:"id"`
-	ItemDelimiter               string         `json:"-" toml:"item-delimiter"`
-	MultisetDelimiter           string         `json:"-" toml:"multiset-delimiter"`
+	MultisetItemDelimiter       string         `json:"-" toml:"multiset-item-delimiter"`
+	OutputDelimiter             string         `json:"-" toml:"output-delimiter"`
 	Links                       []Link         `json:"links"`
 	Name                        string         `json:"name"`
 	Preamble                    template.HTML  `json:"preamble"`

@@ -17,10 +17,8 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/agnivade/levenshtein"
 	"github.com/buildkite/terminal-to-html/v3"
 	"github.com/code-golf/code-golf/config"
-	hungarianAlgorithm "github.com/oddg/hungarian-algorithm"
 )
 
 var timeout = 5 * time.Second
@@ -42,124 +40,21 @@ func trimPerLine(bytesSlice []byte) string {
 
 // Run holds the results of running a given solution once.
 type Run struct {
-	Answer            string        `json:"answer"`
-	ItemDelimiter     string        `json:"item_delimiter"`
-	MultisetDelimiter string        `json:"multiset_delimiter"`
-	Args              []string      `json:"args"`
-	ExitCode          int           `json:"exit_code"`
-	Pass              bool          `json:"pass"`
-	Stderr            string        `json:"stderr"`
-	Stdout            string        `json:"stdout"`
-	Time              time.Duration `json:"time_ns"`
-	Timeout           bool          `json:"timeout"`
+	Answer                string        `json:"answer"`
+	Code                  string        `json:"-"`
+	MultisetItemDelimiter string        `json:"multiset_item_delimiter"`
+	OutputDelimiter       string        `json:"output_delimiter"`
+	Args                  []string      `json:"args"`
+	ExitCode              int           `json:"exit_code"`
+	Pass                  bool          `json:"pass"`
+	Stderr                string        `json:"stderr"`
+	Stdout                string        `json:"stdout"`
+	Time                  time.Duration `json:"time_ns"`
+	Timeout               bool          `json:"timeout"`
 
 	// This is a bit hacky, the only way to discover how long an assembly
 	// solution is is to compile it so we store it here but don't JSON it.
 	ASMBytes int `json:"-"`
-}
-
-func getClosestAnswer(anyAnswer, stdout, itemDelimiter, multisetDelimiter string) string {
-	answerMultisets := []string{anyAnswer}
-	stdoutMultisets := []string{stdout}
-	if multisetDelimiter != "" {
-		answerMultisets = strings.Split(anyAnswer, multisetDelimiter)
-		stdoutMultisets = strings.Split(stdout, multisetDelimiter)
-	}
-	closestMultisets := make([]string, len(answerMultisets))
-
-	for i, answerMultiset := range answerMultisets {
-		stdoutMultiset := ""
-		if i < len(stdoutMultisets) {
-			stdoutMultiset = stdoutMultisets[i]
-		}
-		closestMultisets[i] = getClosestMultiset(answerMultiset, stdoutMultiset, itemDelimiter)
-	}
-	return strings.Join(closestMultisets, multisetDelimiter)
-}
-
-func getClosestMultiset(anyAnswer, stdout, itemDelimiter string) string {
-	expectedItems := strings.Split(anyAnswer, itemDelimiter)
-	expectedItemsReordered := make([]string, len(expectedItems))
-	userItems := strings.Split(stdout, itemDelimiter)
-
-	expectedItemsMap := make(map[string]int)
-	for _, expected := range expectedItems {
-		expectedItemsMap[expected]++
-	}
-
-	// Match items that are correct
-	matches := 0
-	for i, user := range userItems {
-		if i < len(expectedItems) && expectedItemsMap[user] > 0 {
-			expectedItemsReordered[i] = user
-			expectedItemsMap[user]--
-			userItems[i] = ""
-			matches++
-		}
-	}
-
-	// Process mismatched items
-	if matches < len(expectedItems) {
-
-		// Calculate indices of expected & user items that couldn't be matched be equality
-		unmatchedExpectedIndices := []int{}
-		unmatchedUserIndices := []int{}
-
-		for i, expected := range expectedItems {
-			if expectedItemsMap[expected] > 0 {
-				unmatchedExpectedIndices = append(unmatchedExpectedIndices, i)
-				expectedItemsMap[expected]--
-			}
-		}
-
-		for i, user := range userItems {
-			if user != "" {
-				unmatchedUserIndices = append(unmatchedUserIndices, i)
-			}
-		}
-
-		n := max(len(unmatchedExpectedIndices), len(unmatchedUserIndices))
-
-		permutation := make([]int, n)
-		for i := range permutation {
-			permutation[i] = i
-		}
-
-		// If there are not many wrong items, try to match them
-		// otherwise, use the above identity permutation
-		if n <= 32 {
-			dist := make([][]int, n)
-			for i := range dist {
-				dist[i] = make([]int, n)
-				for j := range dist {
-					if j >= len(unmatchedExpectedIndices) {
-						dist[i][j] = len(userItems[unmatchedUserIndices[i]])
-					} else if i >= len(unmatchedUserIndices) {
-						dist[i][j] = len(expectedItems[unmatchedExpectedIndices[j]])
-					} else {
-						dist[i][j] = levenshtein.ComputeDistance(expectedItems[unmatchedExpectedIndices[j]], userItems[unmatchedUserIndices[i]])
-					}
-				}
-			}
-
-			permutation, _ = hungarianAlgorithm.Solve(dist)
-		}
-
-		k := 0
-		for _, i := range permutation {
-			if k >= len(expectedItemsReordered) {
-				break
-			}
-			if i < len(unmatchedExpectedIndices) {
-				for expectedItemsReordered[k] != "" {
-					k++
-				}
-				expectedItemsReordered[k] = expectedItems[unmatchedExpectedIndices[i]]
-			}
-		}
-	}
-
-	return strings.Join(expectedItemsReordered, itemDelimiter)
 }
 
 // Play a given hole, in a given lang, with given code and return the runs.
@@ -168,11 +63,17 @@ func Play(
 ) []Run {
 	var answers []Answer
 
-	switch hole.ID {
+	// Use multiset judge for holes that have configured `MultisetItemDelimiter`
+	if holeJudges[hole.ID] == nil && hole.MultisetItemDelimiter != "" {
+		holeJudges[hole.ID] = multisetJudge(hole.CaseFold)
+	}
 
-	// Quine is special as the answer depends on the given code.
-	case "quine":
-		answers = []Answer{{Args: []string{}, Answer: code}}
+	// All other holes use the default judge which compares by equality (trimming the line endings)
+	if holeJudges[hole.ID] == nil {
+		holeJudges[hole.ID] = defaultJudge
+	}
+
+	switch hole.ID {
 
 	// Holes with fixed test cases.
 	case "css-colors":
@@ -217,6 +118,10 @@ func Play(
 func play(
 	ctx context.Context, hole *config.Hole, lang *config.Lang, code string, run *Run,
 ) error {
+	run.Code = code
+	run.OutputDelimiter = hole.OutputDelimiter
+	run.MultisetItemDelimiter = hole.MultisetItemDelimiter
+
 	// Preprocess code.
 	switch lang.ID {
 	case "05ab1e":
@@ -425,12 +330,7 @@ func play(
 
 	// Timeouts and whitespace only output never pass.
 	if !run.Timeout && len(strings.TrimSpace(run.Stdout)) != 0 {
-		if hole.ID != "quine" {
-			run.Answer = trimPerLine([]byte(run.Answer))
-		}
-		if hole.ItemDelimiter != "" {
-			run.Answer = getClosestAnswer(run.Answer, run.Stdout, hole.ItemDelimiter, hole.MultisetDelimiter)
-		}
+		run.Answer = holeJudges[hole.ID](*run)
 
 		if hole.CaseFold {
 			run.Pass = strings.EqualFold(run.Answer, run.Stdout)
@@ -438,9 +338,6 @@ func play(
 			run.Pass = run.Answer == run.Stdout
 		}
 	}
-
-	run.MultisetDelimiter = hole.MultisetDelimiter
-	run.ItemDelimiter = hole.ItemDelimiter
 
 	return nil
 }

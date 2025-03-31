@@ -27,6 +27,8 @@ var fixedTestsFS embed.FS
 var wordsTxt string
 var words = strings.Fields(wordsTxt)
 
+var holeJudges = make(map[string]Judge)
+
 func init() {
 	if err := fs.WalkDir(fixedTestsFS, ".", func(path string, d fs.DirEntry, err error) error {
 		if d.IsDir() || err != nil {
@@ -80,6 +82,12 @@ func fixedTests(holeID string) []test {
 // Set the answer func on the Hole by ID, return any to allow top-level call.
 func answerFunc(holeID string, f config.HoleAnswerFunc) any {
 	config.AllHoleByID[holeID].AnswerFunc = f
+	return nil
+}
+
+// Set the judge on the Hole by ID, return any to allow top-level call.
+func judge(holeID string, judge Judge) any {
+	holeJudges[holeID] = judge
 	return nil
 }
 
