@@ -4,7 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes build-essential curl ncurses-dev
 
-ENV ERLVER=27.3 VER=1.9.1
+ENV ERLVER=27.3.1 VER=1.9.1
 
 RUN curl -#L https://github.com/erlang/otp/releases/download/OTP-$ERLVER/otp_src_$ERLVER.tar.gz | tar xz
 
@@ -52,13 +52,13 @@ COPY --from=0 /usr/bin/basename                               \
               /usr/bin/gleam                                  /usr/bin/
 COPY --from=0 /usr/lib/erlang/bin/no_dot_erlang.boot          \
               /usr/lib/erlang/bin/start.boot                  /usr/lib/erlang/bin/
-COPY --from=0 /usr/lib/erlang/erts-15.2.3/bin/beam.smp        \
-              /usr/lib/erlang/erts-15.2.3/bin/erl_child_setup \
-              /usr/lib/erlang/erts-15.2.3/bin/erlexec         \
-              /usr/lib/erlang/erts-15.2.3/bin/inet_gethost    /usr/lib/erlang/erts-15.2.3/bin/
+COPY --from=0 /usr/lib/erlang/erts-15.2.4/bin/beam.smp        \
+              /usr/lib/erlang/erts-15.2.4/bin/erl_child_setup \
+              /usr/lib/erlang/erts-15.2.4/bin/erlexec         \
+              /usr/lib/erlang/erts-15.2.4/bin/inet_gethost    /usr/lib/erlang/erts-15.2.4/bin/
 COPY --from=0 /usr/lib/erlang/lib/compiler-8.6/ebin           /usr/lib/erlang/lib/compiler-8.6/ebin
-COPY --from=0 /usr/lib/erlang/lib/kernel-10.2.3/ebin          /usr/lib/erlang/lib/kernel-10.2.3/ebin
-COPY --from=0 /usr/lib/erlang/lib/stdlib-6.2.1/ebin           /usr/lib/erlang/lib/stdlib-6.2.1/ebin
+COPY --from=0 /usr/lib/erlang/lib/kernel-10.2.4/ebin          /usr/lib/erlang/lib/kernel-10.2.4/ebin
+COPY --from=0 /usr/lib/erlang/lib/stdlib-6.2.2/ebin           /usr/lib/erlang/lib/stdlib-6.2.2/ebin
 COPY --from=0 /usr/lib/locale                                 /usr/lib/locale
 COPY --from=0 /usr/local/cargo/bin/gleam                      /usr/local/bin/
 

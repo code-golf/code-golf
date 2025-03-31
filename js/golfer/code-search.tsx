@@ -27,6 +27,7 @@ function debounce(func: () => void, timeout = 500) {
 async function onSearch() {
     let pattern = $<HTMLInputElement>('#searchInput').value;
     if (!pattern) {
+        searchParams = '';
         $('#resultsOverview').innerText = '';
         $<HTMLInputElement>('#searchInput').setCustomValidity('');
         $('#results').replaceChildren();
