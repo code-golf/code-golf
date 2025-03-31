@@ -58,9 +58,11 @@ async function fetchSolutions() {
     }
     const results = await resp.json() as Match[];
     const totalCount = results.map(x => x.count).reduce((a,b)=>a+b, 0);
+    const holesCount = [...new Set(results.map(x => x.hole))].length;
+    const resultsLangs = [...new Set(results.map(x => x.lang))].map(x => langs[x]);
     $('#resultsOverview').innerText = results.length === 0
         ? '0 matches'
-        : `${amount(totalCount, 'match', 'matches')} across ${amount(results.length, 'solution')}`;
+        : `${amount(totalCount, 'match', 'matches')} across ${amount(results.length, 'solution')} (${amount(holesCount, 'hole')} in ${resultsLangs.length > 5 ? `${resultsLangs.length} languages` : resultsLangs.join(', ')})`;
     const resultNodes = results.map(r => (<a href={'/' + r.hole + '#' + r.lang}>
         <h2>{holes[r.hole]} in {langs[r.lang]}{r.scoring ? ` (${r.scoring})` : ''}</h2>
         <span>
