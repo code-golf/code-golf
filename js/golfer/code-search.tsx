@@ -1,4 +1,4 @@
-import { $ } from '../_util';
+import { $, debounce } from '../_util';
 
 interface Match {
     before: string, match: string, after: string, count: number, hole: string, lang: string, scoring: string | null
@@ -15,14 +15,6 @@ $('#languageInput').replaceChildren(<option value=''>All languages</option>, ...
 const amount = (n: number, singular: string, plural?: string) => `${n} ${n === 1 ? singular : plural ?? singular + 's'}`;
 
 let searchParams = '';
-
-function debounce(func: () => void, timeout = 500) {
-    let timer: number | undefined;
-    return () => {
-        clearTimeout(timer);
-        timer = setTimeout(func, timeout);
-    };
-}
 
 async function onSearch() {
     let pattern = $<HTMLInputElement>('#searchInput').value;

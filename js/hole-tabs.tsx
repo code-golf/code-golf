@@ -6,7 +6,7 @@ import {
 } from 'golden-layout';
 import { EditorView }   from './_codemirror';
 import diffView         from './_diff';
-import { $, $$, comma, debounce } from './_util';
+import { $, $$, comma, throttle } from './_util';
 import {
     init, langs, hole, setSolution,
     setCode, refreshScores, getHideDeleteBtn, submit, ReadonlyPanelsData,
@@ -462,7 +462,7 @@ function getViewState(): ViewState {
     };
 }
 
-const saveLayout = debounce(() => {
+const saveLayout = throttle(() => {
     const state = getViewState();
     if (!state.config.root) return;
     localStorage.setItem('lastViewState', JSON.stringify(state));
