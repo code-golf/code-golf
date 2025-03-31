@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/SeerUK/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestHoleSynopses(t *testing.T) {
