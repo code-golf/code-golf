@@ -28,6 +28,11 @@
         padding: 1rem;
     }
 
+    span {
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+
     code {
         white-space: pre;
         background-color: var(--light-grey);
