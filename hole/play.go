@@ -354,26 +354,6 @@ func play(
 			args += arg + "\x00"
 		}
 		cmd.Stdin = strings.NewReader(args)
-	case "rockstar":
-		// Embed args into the code.
-		var argCode strings.Builder
-		argCode.WriteString("rock args\n")
-		for _, arg := range run.Args {
-			argCode.WriteString(`rock "`)
-			for _, r := range arg {
-				switch r {
-				case '\\', '"':
-					argCode.WriteByte('\\')
-					argCode.WriteRune(r)
-				case '\n':
-					argCode.WriteString(`\n`)
-				default:
-					argCode.WriteRune(r)
-				}
-			}
-			argCode.WriteString("\" into args\n")
-		}
-		cmd.Stdin = strings.NewReader(argCode.String() + code)
 	case "sed":
 		// For sed we always need to append a null byte, even if no args exist
 		args := strings.Join(run.Args, "\x00") + "\x00"

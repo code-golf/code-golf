@@ -104,13 +104,8 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		RankUpdates []Golfer.RankUpdate `json:"rank_updates"`
 		Runs        []hole.Run          `json:"runs"`
 	}{
-		Cheevos:  []config.Cheevo{},
 		LoggedIn: golfer != nil,
 		Runs:     runs,
-		RankUpdates: []Golfer.RankUpdate{
-			{Scoring: "bytes"},
-			{Scoring: "chars"},
-		},
 	}
 
 	if golfer != nil && slices.ContainsFunc(
@@ -124,38 +119,10 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 	// Pass if no runs contain a fail.
 	pass := !slices.ContainsFunc(runs, func(r hole.Run) bool { return !r.Pass })
 
-	if pass && golfer != nil && experimental {
-		if c := golfer.Earn(db, "black-box-testing"); c != nil {
-			out.Cheevos = append(out.Cheevos, *c)
-		}
+	if pass && golfer != nil {
+		out.RankUpdates =
+			[]Golfer.RankUpdate{{Scoring: "bytes"}, {Scoring: "chars"}}
 
-		if experimentalHole && experimentalLang {
-			if c := golfer.Earn(db, "double-slit-experiment"); c != nil {
-				out.Cheevos = append(out.Cheevos, *c)
-			}
-		}
-
-		if _, err := db.ExecContext(
-			r.Context(),
-			`SELECT save_solution(
-			            bytes   := CASE WHEN $3 = 'assembly'::lang
-			                            THEN $5
-			                            ELSE octet_length($1)
-			                            END,
-			            chars   := CASE WHEN $3 = 'assembly'::lang
-			                            THEN NULL
-			                            ELSE char_length($1)
-			                            END,
-			            code    := $1,
-			            hole    := $2,
-			            lang    := $3,
-			            user_id := $4
-			        )`,
-			in.Code, in.Hole, in.Lang, golfer.ID, out.Runs[0].ASMBytes,
-		); err != nil {
-			panic(err)
-		}
-	} else if pass && golfer != nil && !experimental {
 		if err := db.QueryRowContext(
 			r.Context(),
 			`SELECT earned,
@@ -224,6 +191,11 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
+		// For now don't show any popups for experimental solutions.
+		if experimental {
+			out.RankUpdates = []Golfer.RankUpdate{}
+		}
+
 		recordUpdates := make([]Golfer.RankUpdate, 0, 2)
 
 		for _, rank := range out.RankUpdates {
@@ -245,71 +217,83 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			go discord.LogNewRecord(golfer, holeObj, langObj, recordUpdates, db)
 		}
 
-		// TODO Use the golfer's timezone from /settings.
-		// TODO Move these to save_solution() in the DB.
-		var (
-			now   = time.Now().UTC()
-			month = now.Month()
-			day   = now.Day()
-		)
-
-		if month == time.October && day == 2 {
-			if c := golfer.Earn(db, "happy-birthday-code-golf"); c != nil {
+		// Cheevos.
+		if experimental {
+			if c := golfer.Earn(db, "black-box-testing"); c != nil {
 				out.Cheevos = append(out.Cheevos, *c)
 			}
-		}
 
-		switch in.Hole {
-		case "12-days-of-christmas":
-			if (month == time.December && day >= 25) ||
-				(month == time.January && day <= 5) {
-				if c := golfer.Earn(db, "twelvetide"); c != nil {
+			if experimentalHole && experimentalLang {
+				if c := golfer.Earn(db, "double-slit-experiment"); c != nil {
 					out.Cheevos = append(out.Cheevos, *c)
 				}
 			}
-		case "star-wars-opening-crawl":
-			if month == time.May && day == 4 {
-				if c := golfer.Earn(db, "may-the-4ᵗʰ-be-with-you"); c != nil {
-					out.Cheevos = append(out.Cheevos, *c)
-				}
-			}
-		case "tic-tac-toe":
-			if month == time.February && day == 14 {
-				if c := golfer.Earn(db, "hugs-and-kisses"); c != nil {
-					out.Cheevos = append(out.Cheevos, *c)
-				}
-			}
-		case "united-states":
-			if month == time.July && day == 4 {
-				if c := golfer.Earn(db, "independence-day"); c != nil {
-					out.Cheevos = append(out.Cheevos, *c)
-				}
-			}
-		case "vampire-numbers":
-			if month == time.October && day == 31 {
-				if c := golfer.Earn(db, "vampire-byte"); c != nil {
-					out.Cheevos = append(out.Cheevos, *c)
-				}
-			}
-		case "π":
-			if month == time.March && day == 14 {
-				if c := golfer.Earn(db, "pi-day"); c != nil {
-					out.Cheevos = append(out.Cheevos, *c)
-				}
-			}
-		}
+		} else {
+			// TODO Use the golfer's timezone from /settings.
+			// TODO Move these to save_solution() in the DB.
+			var (
+				now   = time.Now().UTC()
+				month = now.Month()
+				day   = now.Day()
+			)
 
-		if in.Lang == "viml" && golfer.Settings["hole"]["editor-keymap"] == "vim" {
-			if c := golfer.Earn(db, "real-programmers"); c != nil {
-				out.Cheevos = append(out.Cheevos, *c)
+			if month == time.October && day == 2 {
+				if c := golfer.Earn(db, "happy-birthday-code-golf"); c != nil {
+					out.Cheevos = append(out.Cheevos, *c)
+				}
 			}
-		}
 
-		if !golfer.Earned("smörgåsbord") {
-			var earn bool
-			if err := db.Get(
-				&earn,
-				`WITH distinct_holes AS (
+			switch in.Hole {
+			case "12-days-of-christmas":
+				if (month == time.December && day >= 25) ||
+					(month == time.January && day <= 5) {
+					if c := golfer.Earn(db, "twelvetide"); c != nil {
+						out.Cheevos = append(out.Cheevos, *c)
+					}
+				}
+			case "star-wars-opening-crawl":
+				if month == time.May && day == 4 {
+					if c := golfer.Earn(db, "may-the-4ᵗʰ-be-with-you"); c != nil {
+						out.Cheevos = append(out.Cheevos, *c)
+					}
+				}
+			case "tic-tac-toe":
+				if month == time.February && day == 14 {
+					if c := golfer.Earn(db, "hugs-and-kisses"); c != nil {
+						out.Cheevos = append(out.Cheevos, *c)
+					}
+				}
+			case "united-states":
+				if month == time.July && day == 4 {
+					if c := golfer.Earn(db, "independence-day"); c != nil {
+						out.Cheevos = append(out.Cheevos, *c)
+					}
+				}
+			case "vampire-numbers":
+				if month == time.October && day == 31 {
+					if c := golfer.Earn(db, "vampire-byte"); c != nil {
+						out.Cheevos = append(out.Cheevos, *c)
+					}
+				}
+			case "π":
+				if month == time.March && day == 14 {
+					if c := golfer.Earn(db, "pi-day"); c != nil {
+						out.Cheevos = append(out.Cheevos, *c)
+					}
+				}
+			}
+
+			if in.Lang == "viml" && golfer.Settings["hole"]["editor-keymap"] == "vim" {
+				if c := golfer.Earn(db, "real-programmers"); c != nil {
+					out.Cheevos = append(out.Cheevos, *c)
+				}
+			}
+
+			if !golfer.Earned("smörgåsbord") {
+				var earn bool
+				if err := db.Get(
+					&earn,
+					`WITH distinct_holes AS (
 				    SELECT DISTINCT hole
 				      FROM solutions
 				     WHERE NOT failing AND user_id = $1
@@ -320,15 +304,16 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 				    SELECT COUNT(DISTINCT cat)
 				      FROM unnest(avals($2)) cat
 				)`,
-				golfer.ID,
-				config.HoleCategoryHstore,
-			); err != nil {
-				panic(err)
-			}
+					golfer.ID,
+					config.HoleCategoryHstore,
+				); err != nil {
+					panic(err)
+				}
 
-			if earn {
-				if c := golfer.Earn(db, "smörgåsbord"); c != nil {
-					out.Cheevos = append(out.Cheevos, *c)
+				if earn {
+					if c := golfer.Earn(db, "smörgåsbord"); c != nil {
+						out.Cheevos = append(out.Cheevos, *c)
+					}
 				}
 			}
 		}
@@ -338,6 +323,15 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 
 	enc := json.NewEncoder(w)
 	enc.SetEscapeHTML(false)
+
+	// Avoid returning "null" arrays. Eventually fix with json/v2.
+	// See https://github.com/golang/go/issues/37711#issuecomment-1750018405
+	if out.Cheevos == nil {
+		out.Cheevos = []config.Cheevo{}
+	}
+	if out.RankUpdates == nil {
+		out.RankUpdates = []Golfer.RankUpdate{}
+	}
 
 	if err := enc.Encode(&out); err != nil {
 		panic(err)

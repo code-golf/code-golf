@@ -227,8 +227,8 @@ func apiSolutionsLogGET(w http.ResponseWriter, r *http.Request) {
 
 // GET /api/solutions-search
 func apiSolutionsSearchGET(w http.ResponseWriter, r *http.Request) {
-	lang := r.FormValue("lang")
-	hole := r.FormValue("hole")
+	hole := config.AllHoleByID[r.FormValue("hole")]
+	lang := config.AllLangByID[r.FormValue("lang")]
 	pattern := r.FormValue("pattern")
 	if pattern == "" {
 		w.WriteHeader(http.StatusBadRequest)
@@ -236,9 +236,6 @@ func apiSolutionsSearchGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	type Match struct {
-		Code    string `json:"-"`
-		Start   int    `json:"-"`
-		End     int    `json:"-"`
 		Before  string `json:"before"`
 		Match   string `json:"match"`
 		After   string `json:"after"`
@@ -250,33 +247,34 @@ func apiSolutionsSearchGET(w http.ResponseWriter, r *http.Request) {
 
 	matches := []Match{}
 
+	db := session.Database(r)
+	golfer := session.Golfer(r)
+
 	// Fetch data, if there is no case-sensitive match, match case-insensitively
 	for _, flags := range []string{"", "i"} {
-		query := `SELECT code, hole, lang, scoring,
-						 regexp_count(code, $2, 1, $3) AS count,
-						 regexp_instr(code, $2, 1, 1, 0, $3)-1 AS start,
-						 regexp_instr(code, $2, 1, 1, 1, $3)-1 AS end
-					FROM solutions
-				   WHERE user_id = $1 AND regexp_like(code, $2, $3)`
-		args := []any{session.Golfer(r).ID, pattern, flags}
-		if lang != "" {
-			query += " AND lang = $4"
-			args = append(args, lang)
-		}
-		if hole != "" {
-			query += " AND hole = $5"
-			args = append(args, hole)
-		}
-		query += " LIMIT 1000"
-
 		ctx, cancel := context.WithTimeout(r.Context(), 100*time.Millisecond)
 		defer cancel()
 
-		if err := session.Database(r).SelectContext(
+		if err := db.SelectContext(
 			ctx,
 			&matches,
-			query,
-			args...,
+			`SELECT			
+				hole, lang, scoring, count,
+				substr(code, GREATEST(start - 30, 1), LEAST(30, start - 1)) AS before,
+				substr(code, start, "end" - start) AS match,
+				substr(code, "end", 30) AS after
+			FROM
+				(SELECT code, hole, lang, scoring,
+						regexp_count(code, $2, 1, $3)       AS count,
+						regexp_instr(code, $2, 1, 1, 0, $3) AS start,
+						regexp_instr(code, $2, 1, 1, 1, $3) AS end
+				FROM solutions
+				WHERE user_id = $1
+					AND regexp_like(code, $2, $3)
+					AND (hole = $4 OR $4 IS NULL)
+					AND (lang = $5 OR $5 IS NULL)
+				LIMIT 1000)`,
+			golfer.ID, pattern, flags, hole, lang,
 		); err != nil {
 			if ctx.Err() == context.DeadlineExceeded {
 				w.WriteHeader(http.StatusRequestTimeout)
@@ -290,18 +288,15 @@ func apiSolutionsSearchGET(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// process the results - remove duplicate results for identical bytes/chars solutions, calculate the Before, Match & After parts
+	// process the results - remove duplicate results for identical bytes/chars solutions
 	matchMap := make(map[string]Match)
 	for _, match := range matches {
-		key := match.Code + match.Hole + match.Lang
+		key := match.Before + match.Match + match.After + match.Hole + match.Lang
 		existing, exists := matchMap[key]
 		if exists {
 			existing.Scoring = ""
 			matchMap[key] = existing
 		} else {
-			match.Match = match.Code[match.Start:match.End]
-			match.Before = match.Code[max(0, match.Start-10):match.Start]
-			match.After = match.Code[match.End:min(len(match.Code), match.End+10)]
 			matchMap[key] = match
 		}
 	}
@@ -363,7 +358,11 @@ func apiWikiPageGET(w http.ResponseWriter, r *http.Request) {
 
 func encodeJSON(w http.ResponseWriter, v any) {
 	if v == nil || reflect.ValueOf(v).IsNil() {
-		w.WriteHeader(http.StatusNotFound)
+		if t := reflect.TypeOf(v); t != nil && t.Kind() == reflect.Slice {
+			w.Write([]byte("[]"))
+		} else {
+			w.WriteHeader(http.StatusNotFound)
+		}
 	} else if err := json.NewEncoder(w).Encode(v); err != nil {
 		panic(err)
 	}

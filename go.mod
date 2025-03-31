@@ -6,12 +6,12 @@ require (
 	github.com/DATA-DOG/go-sqlmock v1.5.2
 	github.com/SeerUK/assert v1.0.0
 	github.com/agnivade/levenshtein v1.2.1
-	github.com/buildkite/terminal-to-html/v3 v3.16.7
+	github.com/buildkite/terminal-to-html/v3 v3.16.8
 	github.com/bwmarrin/discordgo v0.28.1
 	github.com/go-chi/chi/v5 v5.2.1
 	github.com/go-git/go-billy/v5 v5.6.2
 	github.com/go-git/go-git/v5 v5.14.0
-	github.com/gofrs/uuid/v5 v5.3.1
+	github.com/gofrs/uuid/v5 v5.3.2
 	github.com/gorilla/feeds v1.2.0
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/lib/pq v1.10.9
@@ -40,7 +40,7 @@ require (
 	github.com/skeema/knownhosts v1.3.1 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	golang.org/x/crypto v0.36.0 // indirect
-	golang.org/x/net v0.37.0 // indirect
+	golang.org/x/net v0.38.0 // indirect
 	golang.org/x/sys v0.31.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 )
