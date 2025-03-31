@@ -3472,7 +3472,6 @@ preamble = '''
 '''
 
 [Set]
-experiment = 1058
 category = 'Gaming'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Set,_the_card_game' },
