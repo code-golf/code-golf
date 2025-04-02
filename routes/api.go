@@ -258,22 +258,22 @@ func apiSolutionsSearchGET(w http.ResponseWriter, r *http.Request) {
 		if err := db.SelectContext(
 			ctx,
 			&matches,
-			`SELECT			
-				hole, lang, scoring, count,
-				substr(code, GREATEST(start - 30, 1), LEAST(30, start - 1)) AS before,
-				substr(code, start, "end" - start) AS match,
-				substr(code, "end", 30) AS after
-			FROM
-				(SELECT code, hole, lang, scoring,
-						regexp_count(code, $2, 1, $3)       AS count,
-						regexp_instr(code, $2, 1, 1, 0, $3) AS start,
-						regexp_instr(code, $2, 1, 1, 1, $3) AS end
-				FROM solutions
-				WHERE user_id = $1
-					AND regexp_like(code, $2, $3)
-					AND (hole = $4 OR $4 IS NULL)
-					AND (lang = $5 OR $5 IS NULL)
-				LIMIT 1000)`,
+			`WITH matches AS (
+			  SELECT code, hole, lang, scoring,
+			         regexp_count(code, $2, 1, $3)       count,
+			         regexp_instr(code, $2, 1, 1, 0, $3) start,
+			         regexp_instr(code, $2, 1, 1, 1, $3) end
+			    FROM solutions
+			   WHERE user_id = $1
+			     AND regexp_like(code, $2, $3)
+			     AND (hole = $4 OR $4 IS NULL)
+			     AND (lang = $5 OR $5 IS NULL)
+			   LIMIT 1000
+			) SELECT hole, lang, scoring, count,
+			         substr(code, GREATEST(start - 30, 1), LEAST(30, start - 1)) before,
+			         substr(code, start, "end" - start)                          match,
+			         substr(code, "end", 30)                                     after
+			    FROM matches`,
 			golfer.ID, pattern, flags, hole, lang,
 		); err != nil {
 			if ctx.Err() == context.DeadlineExceeded {
