@@ -1743,9 +1743,8 @@ Lm
 
 [Swift]
 args    = [ '/usr/bin/swift', '-module-cache-path', '/tmp', '-' ]
-env     = [ 'PATH=/usr/bin:/bin' ]
-size    = '516 MiB'
-version = '6.0.3'
+size    = '543 MiB'
+version = '6.1'
 website = 'https://swift.org'
 example = '''
 // Printing
