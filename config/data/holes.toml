@@ -356,9 +356,9 @@ preamble = '''
 
 <ul>
     <li>Any given word must consist of at least three letters.
-    <li>Each letter after the first must be a direct neighbor of the preceding
-        letter, either horizontal, vertical, or diagonal.
-    <li>Wrapping around any of the edges is not allowed at all times.
+    <li>Each letter after the first must be directly adjacent to the previous
+        letter, either horizontally, vertically, or diagonally.
+    <li>Wrapping around any of the edges is not allowed.
     <li>Individual letters from the grid may be used once in any given word.
 </ul>
 
@@ -367,7 +367,6 @@ preamble = '''
 
 <pre>
 code golf is awesome
-
 D E C A
 B O L O
 E R T I
@@ -387,10 +386,10 @@ T D N I
 </pre>
 
 <p>
-    In ascending order, each subsequent digit after the first is a direct
-    neighbor of the preceding digit in any of the aforementioned directions.
-    Therefore, and because it adheres to all remaining validation criteria
-    equally, the word <code><b>code</b></code> is valid.
+    In ascending order, each digit after the first digit is directly adjacent to
+    the previous digit in one of the directions mentioned above. Therefore, and
+    because it adheres to all remaining validation criteria equally, the word
+    <code><b>code</b></code> is valid.
 
 <p>
     In order of appearance, print the valid words for each given grid per
