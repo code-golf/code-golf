@@ -1,12 +1,17 @@
-FROM dart:3.6.0-sdk AS builder
+FROM debian:bookworm-slim AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
-    apt-get install --yes gcc
+    apt-get install --yes curl dpkg gcc
+
+ENV VER=3.7.2
+
+RUN curl -#o dart.deb https://storage.googleapis.com/dart-archive/channels/stable/release/latest/linux_packages/dart_$VER-1_amd64.deb \
+ && dpkg -i dart.deb
 
 COPY dartwrapper.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/dartwrapper -s /dartwrapper.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/dartwrapper -s dartwrapper.c
 
 FROM codegolf/lang-base
 

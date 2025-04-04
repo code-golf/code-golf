@@ -43,6 +43,7 @@ const renamedHoles: Record<string, string> = {
     'eight-queens':                  'n-queens',
     'factorial-factorisation-ascii': 'factorial-factorisation',
     'grid-packing':                  'css-grid',
+    'placeholder':                   'tutorial',
     'sudoku-v2':                     'sudoku-fill-in',
 };
 
@@ -252,7 +253,7 @@ function updateLangPicker() {
     picker.replaceChildren(...sortedLangs.map((l: any) => {
         const tab = <a href={l.id == lang ? null : '#'+l.id} title={l.name}></a>;
 
-        if (icon)  tab.append(<svg><use href={l['logo-url']+'#'+l.id}/></svg>);
+        if (icon)  tab.append(<svg><use href={l['logo-url']+'#a'}/></svg>);
         if (label) tab.append(l.name);
 
         if (getSolutionCode(l.id, 0)) {
@@ -407,8 +408,7 @@ const scorePopups = (updates: RankUpdate[]) => {
     const rank = [0, 0];
     let newSolution = false;
 
-    for (const i of [0, 1] as const) {
-        const update = updates[i];
+    for (const [i, update] of updates.entries()) {
         if (update.to.strokes) {
             const newBest = update.oldBestStrokes != null ?
                 Math.min(update.oldBestStrokes, update.to.strokes) :
@@ -496,8 +496,7 @@ const diamondPopups = (updates: RankUpdate[]) => {
     const newDiamonds: string[] = [];
     const matchedDiamonds: string[] = [];
 
-    for (const i of [0, 1] as const) {
-        const update = updates[i];
+    for (const update of updates) {
         if (update.to.rank !== 1) {
             continue;
         }

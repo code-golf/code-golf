@@ -165,131 +165,41 @@ func getClosestMultiset(anyAnswer, stdout, itemDelimiter string) string {
 // Play a given hole, in a given lang, with given code and return the runs.
 func Play(
 	ctx context.Context, hole *config.Hole, lang *config.Lang, code string,
-) (runs []Run) {
+) []Run {
+	var answers []Answer
+
 	switch hole.ID {
-	case "arabic-to-roman", "roman-to-arabic":
-		runs = arabicToRoman(hole.ID == "roman-to-arabic")
-	case "arrows":
-		runs = arrows()
-	case "billiards":
-		runs = billiards()
-	case "boggle":
-		runs = boggle()
-	case "brainfuck":
-		runs = brainfuck()
-	case "calendar":
-		runs = calendar()
-	case "card-number-validation":
-		runs = cardNumberValidation()
-	case "day-of-week":
-		runs = dayOfWeek()
-	case "dfa-simulator":
-		runs = dfaSimulator()
-	case "ellipse-perimeters":
-		runs = ellipsePerimeters()
-	case "forsyth-edwards-notation":
-		runs = forsythEdwardsNotation()
-	case "fractions":
-		runs = fractions()
-	case "game-of-life":
-		runs = gameOfLife()
-	case "gray-code-decoder", "gray-code-encoder":
-		runs = grayCode(hole.ID == "gray-code-decoder")
-	case "css-grid":
-		runs = cssGrid()
-	case "isbn":
-		runs = isbn()
-	case "intersection":
-		runs = intersection()
-	case "jacobi-symbol":
-		runs = jacobiSymbol()
-	case "levenshtein-distance":
-		runs = levenshteinDistance()
-	case "lucky-tickets":
-		runs = luckyTickets()
-	case "mahjong":
-		runs = mahjong()
-	case "maze":
-		runs = maze()
-	case "medal-tally":
-		runs = medalTally()
-	case "morse-decoder", "morse-encoder":
-		runs = morse(hole.ID == "morse-decoder")
-	case "musical-chords":
-		runs = musicalChords()
-	case "nfa-simulator":
-		runs = nfaSimulator()
-	case "ordinal-numbers":
-		runs = ordinalNumbers()
-	case "p-adic-expansion":
-		runs = pAdicExpansion()
-	case "palindromemordnilap":
-		runs = palindromemordnilap()
-	case "pangram-grep":
-		runs = pangramGrep()
-	case "placeholder":
-		runs = placeholder()
-	case "poker":
-		runs = poker()
-	case "qr-decoder", "qr-encoder":
-		runs = qr(hole.ID == "qr-decoder")
-	case "quadratic-formula":
-		runs = quadraticFormula()
+
+	// Quine is special as the answer depends on the given code.
 	case "quine":
-		runs = []Run{{Args: []string{}, Answer: code}}
-	case "repeating-decimals":
-		runs = repeatingDecimals()
-	case "reverse-polish-notation":
-		runs = reversePolishNotation()
-	case "reversi":
-		runs = reversi()
-	case "rot13":
-		runs = rot13()
-	case "scrambled-alphabetization":
-		runs = scrambledAlphabetization()
-	case "set":
-		runs = set()
-	case "seven-segment":
-		runs = sevenSegment()
-	case "si-units":
-		runs = siUnits()
-	case "spelling-numbers":
-		runs = spellingNumbers()
-	case "star-wars-gpt":
-		runs = starWarsGpt()
-	case "sudoku", "sudoku-fill-in":
-		runs = sudoku(hole.ID == "sudoku-fill-in")
-	case "ten-pin-bowling":
-		runs = tenPinBowling()
-	case "time-distance":
-		runs = timeDistance()
-	case "transpose-sentence":
-		runs = transposeSentence()
-	case "turtle":
-		runs = turtle()
-	case "zeckendorf-representation":
-		runs = zeckendorfRepresentation()
-	case "zodiac-signs":
-		runs = zodiacSigns()
+		answers = []Answer{{Args: []string{}, Answer: code}}
 
 	// Holes with fixed test cases.
 	case "css-colors":
-		runs = outputTests(shuffle(fixedTests(hole.ID)))
+		answers = outputTests(shuffle(fixedTests(hole.ID)))
 	case "emojify", "flags", "rock-paper-scissors-spock-lizard", "tic-tac-toe", "united-states":
-		runs = outputMultirunTests(fixedTests(hole.ID))
+		answers = outputMultirunTests(fixedTests(hole.ID))
 	case "floyd-steinberg-dithering", "hexdump", "minesweeper", "proximity-grid", "star-wars-opening-crawl":
-		runs = outputTestsWithSep("\n\n", shuffle(fixedTests(hole.ID)))
+		answers = outputTestsWithSep("\n\n", shuffle(fixedTests(hole.ID)))
 
-	// Holes with no arguments and a static answer.
+	// Holes with a static answer or answer func.
 	default:
-		runs = []Run{{Args: []string{}, Answer: hole.Answer}}
+		if hole.AnswerFunc != nil {
+			answers = hole.AnswerFunc()
+		} else {
+			answers = []Answer{{Args: []string{}, Answer: hole.Answer}}
+		}
 	}
+
+	runs := make([]Run, len(answers))
 
 	// Run all the runs in parallel to reduce the wall clock time.
 	var wg sync.WaitGroup
-	wg.Add(len(runs))
+	wg.Add(len(answers))
 
-	for i := range runs {
+	for i, answer := range answers {
+		runs[i] = Run{Args: answer.Args, Answer: answer.Answer}
+
 		go func(run *Run) {
 			if err := play(ctx, hole, lang, code, run); err != nil {
 				log.Println(err)
@@ -301,7 +211,7 @@ func Play(
 
 	wg.Wait()
 
-	return
+	return runs
 }
 
 func play(
@@ -335,10 +245,10 @@ func play(
 			run.Stderr = `Quine in Go must not use "embed".`
 			return nil
 		}
-	case "iogii":
+	case "iogii", "stax":
 		// Prevent trivial quines. Error out and return early.
-		if hole.ID == "quine" && len(code) > 0 && regexp.MustCompile(`^\d+$`).MatchString(code) {
-			run.Stderr = "Quine in iogii must not consist solely of numeric characters."
+		if hole.ID == "quine" && len(code) > 0 && regexp.MustCompile(`^\d+\n?$`).MatchString(code) {
+			run.Stderr = "Quine in " + lang.Name + " must not consist solely of numeric characters."
 			return nil
 		}
 	case "jq":
@@ -375,6 +285,12 @@ func play(
 		}
 	case "php":
 		code = "<?php " + code + " ;"
+	case "racket":
+		if hole.ID == "quine" {
+			// Inserting `(current-print (λ (x) (void)))` before the code in the editor
+			// suppresses the implicit output of expressions in Racket.
+			code = "(current-print (λ (x) (void)))" + code
+		}
 	case "tex":
 		// Prevent trivial quines. Error out and return early.
 		if hole.ID == "quine" && !strings.Contains(code, `\`) {
@@ -438,26 +354,6 @@ func play(
 			args += arg + "\x00"
 		}
 		cmd.Stdin = strings.NewReader(args)
-	case "rockstar":
-		// Embed args into the code.
-		var argCode strings.Builder
-		argCode.WriteString("rock args\n")
-		for _, arg := range run.Args {
-			argCode.WriteString(`rock "`)
-			for _, r := range arg {
-				switch r {
-				case '\\', '"':
-					argCode.WriteByte('\\')
-					argCode.WriteRune(r)
-				case '\n':
-					argCode.WriteString(`\n`)
-				default:
-					argCode.WriteRune(r)
-				}
-			}
-			argCode.WriteString("\" into args\n")
-		}
-		cmd.Stdin = strings.NewReader(argCode.String() + code)
 	case "sed":
 		// For sed we always need to append a null byte, even if no args exist
 		args := strings.Join(run.Args, "\x00") + "\x00"

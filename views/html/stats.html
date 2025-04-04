@@ -1,8 +1,5 @@
 {{ template "header" . }}
 
-<!-- For experimental holes/langs -->
-<svg>{{ svg "flask-light" }}</svg>
-
 <header id=page-header><h1>{{ .Title }}</h1></header>
 
 <main id=two-pane>
@@ -62,12 +59,12 @@
             <tr>
                 <td>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
                 <td>
-                    {{ with .Country.Country }}
-                        <span class=flag title="{{ .ID }}">{{ .Flag }}</span>
-                        {{- .Name }}
-                    {{ else }}
-                        Rather not say
-                    {{ end }}
+                {{ with .Country }}
+                    <span class=flag title="{{ .ID }}">{{ .Flag }}</span>
+                    {{- .Name }}
+                {{ else }}
+                    Rather not say
+                {{ end }}
                 <td class=right>{{ comma .Golfers }}
                 <td class=right>{{ .Percent }}%
         {{ end }}
@@ -131,14 +128,14 @@
                 {{ with .Hole }}
                     <a href="/{{ .ID }}">
                         <span>{{ .Name }}</span>
-                        {{ if .Experiment }}<svg><use href="#flask"/></svg>{{ end }}
+                        {{ if .Experiment }}{{ svg "flask" }}{{ end }}
                     </a>
                 {{ end }}
                 {{ with .Lang }}
                     <a href="/recent/{{ .ID }}">
                         {{ svg .ID }}
                         <span>{{ .Name }}</span>
-                        {{ if .Experiment }}<svg><use href="#flask"/></svg>{{ end }}
+                        {{ if .Experiment }}{{ svg "flask" }}{{ end }}
                     </a>
                 {{ end }}
                 <td class=right>{{ comma .Count }}
