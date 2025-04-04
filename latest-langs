@@ -88,7 +88,7 @@ constant %paths = (
     'Rexx'         => 'regina-rexx.sourceforge.io',
     'Rockstar'     => 'github.com/RockstarLang/rockstar/releases/latest',
     'Ruby'         => 'endoflife.date/api/ruby.json',
-    'Rust'         => 'en.wikipedia.org/wiki/Rust_(programming_language)',
+    'Rust'         => 'github.com/rust-lang/rust/releases/latest',
     'Scala'        => 'github.com/scala/scala/releases/latest',
     'Scheme'       => 'en.wikipedia.org/wiki/Chez_Scheme',
     'sed'          => 'ftp.gnu.org/gnu/sed/?C=M;O=D',
