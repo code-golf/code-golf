@@ -1,4 +1,4 @@
-FROM eclipse-temurin:23.0.2_7-jdk-alpine-3.21 AS builder
+FROM eclipse-temurin:24_36-jdk-alpine-3.21 AS builder
 
 RUN apk add --no-cache bash curl git
 
@@ -42,7 +42,7 @@ COPY --from=0 /scala/build/pack/lib/scala-compiler.jar      \
               /scala/build/pack/lib/scala-library.jar       \
               /scala/build/pack/lib/scala-reflect.jar       /usr/local/lib/
 
-ENV JAVA_HOME=/opt/java
+ENV JAVA_HOME='/opt/java'
 
 ENTRYPOINT ["scala"]
 
