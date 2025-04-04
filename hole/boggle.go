@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func boggle() []Run {
+var _ = answerFunc("boggle", func() []Answer {
 	const argc = 100 // Preserve original argc
 
 	tests := make([]test, 0, argc)
@@ -13,7 +13,7 @@ func boggle() []Run {
 	for range 2 * argc {
 		var argument, expected strings.Builder
 
-		board, count, words := scramble(), randInt(2 * argc, 4 * argc), make(map[string]struct{})
+		board, count, words := scramble(), randInt(2*argc, 4*argc), make(map[string]struct{})
 
 		for i := 0; i < count; {
 			word := randWord()
@@ -25,7 +25,7 @@ func boggle() []Run {
 			words[word] = struct{}{}
 			i++
 
-			argument.WriteString(strings.ToLower(word))
+			argument.WriteString(word)
 
 			if i < count {
 				argument.WriteRune(' ')
@@ -53,8 +53,8 @@ func boggle() []Run {
 
 	tests = shuffle(tests)
 
-	return outputTests(tests[:argc], tests[len(tests) - argc:])
-}
+	return outputTests(tests[:argc], tests[len(tests)-argc:])
+})
 
 func stringify(board [4][4]rune) string {
 	var grid strings.Builder
@@ -98,7 +98,7 @@ func scramble() [4][4]rune {
 
 	for i := range 4 {
 		for j := range 4 {
-			board[i][j] = dice[j+i*4][0] // Index 0 represents the side facing up after scrambling.
+			board[i][j] = dice[j+i*4][0] // Index 0 is the side facing up after scrambling.
 		}
 	}
 
@@ -133,7 +133,7 @@ func dfs(board [4][4]rune, used [4][4]bool, word []rune, index, i, j int) bool {
 	}
 
 	if letter := board[i][j]; letter == 'q' {
-		if index + 1 < len(word) && word[index] == 'q' && word[index + 1] == 'u' {
+		if index+1 < len(word) && word[index] == 'q' && word[index+1] == 'u' {
 			used[i][j] = true
 
 			for _, direction := range [][]int{
@@ -141,7 +141,7 @@ func dfs(board [4][4]rune, used [4][4]bool, word []rune, index, i, j int) bool {
 				{+0, -1}, {+0, +1},
 				{+1, -1}, {+1, +0}, {+1, +1},
 			} {
-				if dfs(board, used, word, index + 2, i + direction[0], j + direction[1]) {
+				if dfs(board, used, word, index+2, i+direction[0], j+direction[1]) {
 					return true
 				}
 			}
@@ -161,9 +161,7 @@ func dfs(board [4][4]rune, used [4][4]bool, word []rune, index, i, j int) bool {
 		{+0, -1}, {+0, +1},
 		{+1, -1}, {+1, +0}, {+1, +1},
 	} {
-		x, y := i+direction[0], j+direction[1]
-
-		if dfs(board, used, word, index+1, x, y) {
+		if dfs(board, used, word, index+1, i+direction[0], j+direction[1]) {
 			return true
 		}
 	}
