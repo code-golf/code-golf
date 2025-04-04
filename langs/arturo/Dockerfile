@@ -2,7 +2,7 @@ FROM nimlang/nim:2.2.2-alpine AS builder
 
 RUN apk add --no-cache pcre
 
-ENV VER=71a4677
+ENV VER=3454c16
 
 RUN curl -#L https://github.com/arturo-lang/arturo/tarball/$VER \
   | tar xz --strip-components 1
