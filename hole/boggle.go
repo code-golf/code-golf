@@ -6,12 +6,14 @@ import (
 )
 
 func boggle() []Run {
-	tests := make([]test, 0, 100)
+	const argc = 100 // Preserve original argc
 
-	for range 100 {
+	tests := make([]test, 0, argc)
+
+	for range 2 * argc {
 		var argument, expected strings.Builder
 
-		board, count, words := scramble(), randInt(100, 200), make(map[string]struct{})
+		board, count, words := scramble(), randInt(2 * argc, 4 * argc), make(map[string]struct{})
 
 		for i := 0; i < count; {
 			word := randWord()
@@ -41,7 +43,7 @@ func boggle() []Run {
 			expected.WriteRune('-')
 		}
 
-		argument.WriteString("\n\n" + stringify(board))
+		argument.WriteString("\n" + stringify(board))
 
 		tests = append(tests, test{
 			argument.String(),
@@ -49,7 +51,9 @@ func boggle() []Run {
 		})
 	}
 
-	return outputTests(shuffle(tests))
+	tests = shuffle(tests)
+
+	return outputTests(tests[:argc], tests[len(tests) - argc:])
 }
 
 func stringify(board [4][4]rune) string {
@@ -124,7 +128,29 @@ func dfs(board [4][4]rune, used [4][4]bool, word []rune, index, i, j int) bool {
 		return true
 	}
 
-	if i < 0 || i > 3 || j < 0 || j > 3 || used[i][j] || board[i][j] != word[index] {
+	if i < 0 || i > 3 || j < 0 || j > 3 || used[i][j] {
+		return false
+	}
+
+	if letter := board[i][j]; letter == 'q' {
+		if index + 1 < len(word) && word[index] == 'q' && word[index + 1] == 'u' {
+			used[i][j] = true
+
+			for _, direction := range [][]int{
+				{-1, -1}, {-1, +0}, {-1, +1},
+				{+0, -1}, {+0, +1},
+				{+1, -1}, {+1, +0}, {+1, +1},
+			} {
+				if dfs(board, used, word, index + 2, i + direction[0], j + direction[1]) {
+					return true
+				}
+			}
+
+			used[i][j] = false
+
+			return false
+		}
+	} else if letter != word[index] {
 		return false
 	}
 
@@ -141,6 +167,8 @@ func dfs(board [4][4]rune, used [4][4]bool, word []rune, index, i, j int) bool {
 			return true
 		}
 	}
+
+	used[i][j] = false
 
 	return false
 }
