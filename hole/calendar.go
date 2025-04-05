@@ -13,7 +13,7 @@ func generate(s string) string {
 	fields := strings.Fields(s)
 	month, year := parseInt(fields[0]), parseInt(fields[1])
 
-	calendar.WriteString("Mo Tu We Th Fr Sa Su\n")
+	calendar.WriteString(fmt.Sprintf("%9.3s %d\n%s\nMo Tu We Th Fr Sa Su\n", time.Month(month).String(), year, strings.Repeat("-", 20)))
 
 	first, total := int((time.Date(year, time.Month(month), 1, 0, 0, 0, 0, time.UTC).Weekday()-1+7)%7), time.Date(year, time.Month(month)+1, 0, 0, 0, 0, 0, time.UTC).Day()
 
