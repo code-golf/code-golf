@@ -32,7 +32,7 @@ CREATE TYPE hole AS ENUM (
     '12-days-of-christmas', '24-game', '99-bottles-of-beer',
     'abundant-numbers', 'abundant-numbers-long', 'apérys-constant',
     'arabic-to-roman', 'arithmetic-numbers', 'arrows', 'ascending-primes',
-    'ascii-table', 'billiards', 'brainfuck', 'calendar',
+    'ascii-table', 'billiards', 'boggle', 'brainfuck', 'calendar',
     'card-number-validation', 'catalan-numbers', 'catalans-constant',
     'christmas-trees', 'collatz', 'connect-four', 'css-colors', 'css-grid',
     'cubes', 'day-of-week', 'dfa-simulator', 'diamonds', 'divisors',
