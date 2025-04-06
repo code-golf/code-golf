@@ -83,7 +83,7 @@ example    = '''
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
 size       = '5.38 MiB'
-version    = '71a4677'
+version    = '3454c16'
 website    = 'https://arturo-lang.io'
 example    = '''
 ; Printing
@@ -656,7 +656,7 @@ for arg <- System.argv, do: IO.puts arg
 args       = [ '/usr/bin/erlang', '-' ]
 experiment = 181
 size       = '68.6 MiB'
-version    = 'OTP 27.3.1'
+version    = 'OTP 27.3.2'
 website    = 'https://www.erlang.org'
 example    = '''
 main(Args) ->
@@ -1808,8 +1808,8 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '29.9 MiB'
-version    = '0.16.0'
+size       = '19.8 MiB'
+version    = '0.15.0'
 website    = 'https://www.uiua.org'
 example    = '''
 # Printing
