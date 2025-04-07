@@ -2,7 +2,7 @@ FROM rust:1.86.0-alpine3.21 AS builder
 
 RUN apk add --no-cache build-base linux-headers
 
-ENV VER=0.15.0
+ENV VER=0.15.1
 
 RUN cargo install uiua    \
     --features binary     \
