@@ -1845,8 +1845,8 @@ example    = '''
 [Umka]
 args       = [ '/usr/bin/umka', '-' ]
 experiment = -1
-size       = '1.29 MiB'
-version    = '1.5.2'
+size       = '1.30 MiB'
+version    = '1.5.3'
 website    = 'https://github.com/vtereshkov/umka-lang'
 example    = '''
 fn main() {
