@@ -1161,8 +1161,8 @@ end
 '''
 
 [K]
-args    = [ '/usr/bin/kwrapper', '/tmp/code.k' ]
-size    = '631 KiB'
+args    = [ '/usr/bin/K', 'code.k' ]
+size    = '619 KiB'
 version = '544d014afd'
 website = 'https://codeberg.org/ngn/k'
 example = '''
