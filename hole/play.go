@@ -326,9 +326,10 @@ func play(
 	}
 
 	// Language arguments. Clone because we intend to mutate.
-	cmd.Args = slices.Clone(lang.Args)
 	if hole.ID == "quine" && lang.ArgsQuine != nil {
 		cmd.Args = slices.Clone(lang.ArgsQuine)
+	} else {
+		cmd.Args = slices.Clone(lang.Args)
 	}
 
 	// Pass code via args or stdin.
