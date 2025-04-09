@@ -348,7 +348,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/bin/c-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size    = '107 MiB'
-version = 'C# 13.0 on .NET 9.0.2'
+version = 'C# 13.0 on .NET 9.0.4'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -674,7 +674,7 @@ main(Args) ->
 args    = [ '/usr/bin/f-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size    = '109 MiB'
-version = 'F# 9.0 on .NET 9.0.2'
+version = 'F# 9.0 on .NET 9.0.4'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -1378,7 +1378,7 @@ args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size       = '135 MiB'
-version    = 'PowerShell 7.5.0 on .NET 9.0.2'
+version    = 'PowerShell 7.5.0 on .NET 9.0.4'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
