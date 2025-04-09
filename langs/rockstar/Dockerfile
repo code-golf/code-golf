@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0.200-alpine3.21 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:9.0.203-alpine3.21 AS builder
 
 RUN apk add --no-cache gcc musl-dev zlib-dev
 
@@ -11,9 +11,9 @@ RUN find Starship -name '*.csproj' -exec sed -Ei 's/\bnet\d+\b/net9/' {} + \
  && dotnet publish Starship/Rockstar -c Release -o /usr/bin \
     -p:InvariantGlobalization=true
 
-COPY rockstarwrapper.c /
+COPY rockstar.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/rockstarwrapper -s -static rockstarwrapper.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/rockstarwrapper -s -static rockstar.c
 
 FROM codegolf/lang-base
 
