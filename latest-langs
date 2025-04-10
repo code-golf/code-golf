@@ -21,7 +21,7 @@ constant %paths = (
     'Assembly'     => 'registry.npmjs.org/@defasm/core/latest',
     'AWK'          => 'ftp.gnu.org/gnu/gawk/?C=M;O=D',
     'Bash'         => 'en.wikipedia.org/wiki/Bash_(Unix_shell)',
-    'BASIC'        => 'en.wikipedia.org/wiki/FreeBASIC',
+    'BASIC'        => 'github.com/freebasic/fbc/releases/latest',
     'Befunge'      => 'github.com/VorpalBlade/cfunge',
     'Berry'        => 'github.com/berry-lang/berry/releases/latest',
     'BQN'          => 'aplwiki.com/wiki/BQN',
