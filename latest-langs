@@ -90,7 +90,7 @@ constant %paths = (
     'Ruby'         => 'endoflife.date/api/ruby.json',
     'Rust'         => 'github.com/rust-lang/rust/releases/latest',
     'Scala'        => 'github.com/scala/scala/releases/latest',
-    'Scheme'       => 'en.wikipedia.org/wiki/Chez_Scheme',
+    'Scheme'       => 'github.com/cisco/ChezScheme/releases/latest',
     'sed'          => 'ftp.gnu.org/gnu/sed/?C=M;O=D',
     'SQL'          => 'en.wikipedia.org/wiki/SQLite',
     'Squirrel'     => 'github.com/albertodemichelis/squirrel/releases/latest',
