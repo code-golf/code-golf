@@ -49,7 +49,8 @@ COPY --from=0 /usr/lib/libbz2.so.1         \
               /usr/lib/liblzma.so.5        \
               /usr/lib/libpcre2-8.so.0     \
               /usr/lib/libquadmath.so.0    \
-              /usr/lib/libz.so.1           /usr/lib/
+              /usr/lib/libz.so.1           \
+              /usr/lib/libzstd.so.1        /usr/lib/
 COPY --from=0 /usr/lib/R/bin/R             \
               /usr/lib/R/bin/Rscript       /usr/lib/R/bin/
 COPY --from=0 /usr/lib/R/bin/exec/R        /usr/lib/R/bin/exec/
