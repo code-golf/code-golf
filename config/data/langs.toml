@@ -1309,7 +1309,7 @@ end.
 [Perl]
 args    = [ '/usr/bin/perl', '-E', '$code', '--' ]
 size    = '5.54 MiB'
-version = '5.40.1'
+version = '5.40.2'
 website = 'https://www.perl.org'
 example = '''
 # Printing
