@@ -1051,9 +1051,9 @@ $
 '''
 
 [J]
-args    = [ '/usr/bin/j', '/tmp/code.ijs' ]
+args    = [ '/opt/j/bin/jconsole', '/proc/self/fd/0' ]
 size    = '11.3 MiB'
-version = '9.6.14'
+version = '9.6'
 website = 'https://www.jsoftware.com'
 example = '''
 NB.Printing
