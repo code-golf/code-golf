@@ -8,7 +8,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl
 
-RUN curl -# https://www.jsoftware.com/download/j$VER/install/j$VER.1_linux64.tar.gz \
+RUN curl -# https://www.jsoftware.com/download/j$VER/install/j$VER.3_linux64.tar.gz \
   | tar xz
 
 # FIXME Don't run updatejs.sh as it tries to update to AVX512 because my build
