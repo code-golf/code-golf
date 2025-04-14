@@ -413,7 +413,7 @@ for arg of process.argv[2..]
 '''
 
 [CJam]
-args       = [ '/usr/bin/cjam', '-' ]
+args       = [ '/opt/java/bin/java', '-jar', 'cjam.jar', '/proc/self/fd/0' ]
 experiment = 1493
 size       = '134 MiB'
 version    = '0.6.5'
