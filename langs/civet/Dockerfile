@@ -2,7 +2,7 @@ FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache bash curl icu-data npm
 
-ENV VER=0.10.1
+ENV VER=0.10.2
 
 RUN curl -#L https://github.com/DanielXMoore/Civet/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1
@@ -42,6 +42,12 @@ COPY --from=0 /node_modules/@typescript/vfs/dist/index.js                \
               /node_modules/@typescript/vfs/dist/vfs.cjs.development.js  /usr/local/node_modules/@typescript/vfs/dist/
 COPY --from=0 /node_modules/acorn/package.json                           /usr/local/node_modules/acorn/
 COPY --from=0 /node_modules/acorn/dist/acorn.js                          /usr/local/node_modules/acorn/dist/
+COPY --from=0 /node_modules/picomatch/index.js                           /usr/local/node_modules/picomatch/
+COPY --from=0 /node_modules/picomatch/lib/constants.js                   \
+              /node_modules/picomatch/lib/parse.js                       \
+              /node_modules/picomatch/lib/picomatch.js                   \
+              /node_modules/picomatch/lib/scan.js                        \
+              /node_modules/picomatch/lib/utils.js                       /usr/local/node_modules/picomatch/lib/
 COPY --from=0 /node_modules/unplugin/package.json                        /usr/local/node_modules/unplugin/
 COPY --from=0 /node_modules/unplugin/dist/context-*.cjs                  \
               /node_modules/unplugin/dist/index.js                       \
