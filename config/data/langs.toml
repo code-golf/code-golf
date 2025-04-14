@@ -1143,7 +1143,7 @@ $ARGS.positional[]
 [Julia]
 args    = [ '/usr/bin/julia', '--color=yes', '--eval', '$code', '--' ]
 size    = '300 MiB'
-version = '1.11.4'
+version = '1.11.5'
 website = 'https://julialang.org'
 example = '''
 # Printing
