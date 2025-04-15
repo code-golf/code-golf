@@ -6,7 +6,7 @@ Create an issue and describe the hole
 
 ## Add hole description to `holes.toml`
 
-Each hole needs to have its section in the `/config/holes.toml` file.
+Each hole needs to have its section in the `/config/data/holes.toml` file.
 Each section needs to define the following fields:
 
 - `category` - One of 'Art', 'Computing', 'Gaming', 'Mathematics', 'Sequence', 'Transform'.
@@ -30,9 +30,10 @@ Example:
 category = 'hole category'
 experiment = github-issue-number
 links = [
-    { name = 'Some useful link', url = '//someusefullink' },
-    { name = 'Another useful link',    url = '//www.anotherusefullink' },
+    { name = 'Some useful link',    url = '//someusefullink' },
+    { name = 'Another useful link', url = '//www.anotherusefullink' },
 ]
+synopsis = 'Short overview of the hole'
 preamble = '''
 <p>Hole description and instructions</p>
 '''
@@ -44,28 +45,20 @@ Depending on the new hole design, the answers could be hardcoded (99 bottles, 12
 
 ### Holes with hardcoded solutions
 
-If the hole has no inputs, the expected output needs to be placed in `/hole/answers/hole-name.txt`. The filename must be the [URLized](https://github.com/code-golf/code-golf/blob/master/config/config.go#L13) version of the hole name in the `holes.toml`.
+If the hole has no inputs, the expected output needs to be placed in `/config/hole-answers/hole-name.txt`. The filename must be the [URLized](https://github.com/code-golf/code-golf/blob/master/config/config.go#L13) version of the hole name in the `holes.toml`.
 
 ### Holes with computed solutions
 
-For computed solutions, a case switch needs to be added to `/hole/play.go`. The value needs to match the URLized version of the hole name. When a case matches, a function defined in its own file in `/holes/` is called.
+For computed solutions, a function is defined in its own file in `/holes/`.
 This function must return data for at least one test run. Data for each run takes form of a list of inputs and a single string containing the expected output.
-
-`/hole/play.go`
-
-```go
-	switch holeID {
-	case "hole-name":
-		scores = holeName()
-```
 
 `/hole/hole-name.go`
 
 ```go
-func holeName() []Run {
-	// Create Args and Answer
+var _ = answerFunc("hole-id", func() []Answer {
+    // Implement hole and create tests
 
-	return []Run{{Args: args, Answer: out}}
+    return outputTests(shuffle(tests))
 }
 ```
 

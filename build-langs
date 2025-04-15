@@ -35,25 +35,27 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
 
     $proc.sink;
 
+    # Format the size consistently so everything lines up.
     with %lang<size> = $proc.out.slurp(:close).chomp {
-        s/(.)B$/ {$0.uc}iB/;          # "XB" → " XiB"
-        s/^ ( \d  \d ) ' ' /{$0}.0 /; #   99 → 99.0
-        s/^ ( \d\.\d ) ' ' /{$0}0 /;  #  9.9 → 9.90
+        s/(.)B$/ {$0.uc}iB/;           # "XB" → " XiB"
+        s/^ ( \d  \d ) ' ' /{$0}.0 /;  #   99 → 99.0
+        s/^ ( \d\.\d ) ' ' /{$0}0 /;   #  9.9 → 9.90
+        s/^ ( \d     ) ' ' /{$0}.00 /; #    9 → 9.00
     }
 
     # Version.
-    if $id ~~ any <05ab1e apl assembly befunge brainfuck cjam erlang fish golfscript hare hexagony k scala stax vyxal> {
+    if $id ~~ any <05ab1e apl arturo assembly befunge brainfuck cjam erlang fish golfscript hare hexagony j k scala stax vyxal> {
         "langs/$id/Dockerfile".IO.slurp ~~ / ' VER=' (\S+) | ' VERSION=' (\S+) /;
 
         %lang<version> = do given $id {
-            when 'apl'      { "Dyalog $name $0" }
+            when 'apl'      { "Dyalog APL $0" }
             when 'assembly' { "DefAssembler $0" }
             when 'erlang'   { "OTP $0" }
             default         { $0 }
         }
     }
     else {
-        # Forth outputs it's version number over stderr.
+        # Some langs output their version number over stderr so merge out/err.
         my $proc = run «docker run -i --rm --tmpfs '/tmp:exec' $img»,
             :in, :out, :merge(so $id eq 'forth' | 'scheme');
 
@@ -72,8 +74,8 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
                | 'Fortran'
                | 'sed'         { $ver = "GNU $name $digits" }
             when 'BASIC'       { $ver = "FreeBASIC $digits" }
-            when 'BQN'         { $ver = "C$name $digits" }
-            when 'C'           { $ver = "Tiny C Compiler $digits" }
+            when 'BQN'         { $ver = "CBQN $digits" }
+            when 'C'           { $ver = "TCC $digits" }
             when 'C#'
                | 'F#'
                | 'PowerShell'  { }
@@ -83,16 +85,15 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
             when 'Common Lisp' { $ver = "GNU CLISP $digits" }
             when 'D'           { $ver = "DMD $digits" }
             when 'Haskell'     { $ver = "GHC $digits" }
-            when 'Java'        { $ver = "OpenJDK $digits" }
+            when 'Java'        { $ver = "OpenJDK 24.0" } # FIXME no decimal place.
             when 'JavaScript'  { $ver = "V8 $digits" }
-            when 'Pascal'      { $ver = "Free Pascal $digits" }
+            when 'Pascal'      { $ver = "FPC $digits" }
             when 'Prolog'      { $ver = "SWI-Prolog $digits" }
             when 'Raku'        {
                 $ver ~~ m:g/ v (\S+) '.' /;
                 $ver = "Raku $1[0] on Rakudo $0[0]";
             }
             when 'Rexx'        { $ver = "Regina $digits" }
-            when 'Rockstar'    { $ver = "Rocky $digits" }
             when 'Scheme'      { $ver = "Chez Scheme $digits" }
             when 'SQL'         { $ver = "SQLite $digits" }
             default            { $ver = $digits }

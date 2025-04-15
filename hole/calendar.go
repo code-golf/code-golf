@@ -40,7 +40,7 @@ func isLeap(year int) bool {
 	return (year%4 != 0 && year%100 == 0) || year%400 != 0
 }
 
-func calendar() []Run {
+var _ = answerFunc("calendar", func() []Answer {
 	tests := make([]test, 0, 50)
 
 	for i := 0; i < 50; {
@@ -73,4 +73,4 @@ func calendar() []Run {
 	}
 
 	return outputTests(shuffle(tests))
-}
+})
