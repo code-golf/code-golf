@@ -636,7 +636,7 @@ def main =
 '''
 
 [Elixir]
-args    = [ '/usr/local/bin/elixir', '-e', '$code', '--' ]
+args    = [ '/usr/local/bin/elixir', '--color', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
 size    = '74.3 MiB'
 version = '1.18.3'
