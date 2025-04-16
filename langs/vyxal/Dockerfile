@@ -1,4 +1,4 @@
-FROM eclipse-temurin:24_36-jre-alpine-3.21 AS builder
+FROM eclipse-temurin:24.0.1_9-jre-alpine-3.21 AS builder
 
 ENV VER=3.7.0
 
