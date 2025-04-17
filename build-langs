@@ -96,6 +96,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
             when 'Rexx'        { $ver = "Regina $digits" }
             when 'Scheme'      { $ver = "Chez Scheme $digits" }
             when 'SQL'         { $ver = "SQLite $digits" }
+            when 'WebAssembly' { $ver = "Wasmtime $digits" }
             default            { $ver = $digits }
         }
 
