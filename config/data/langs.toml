@@ -547,7 +547,7 @@ example   = '''
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
 size    = '270 MiB'
-version = '1.16.0'
+version = '1.16.1'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -636,7 +636,7 @@ def main =
 '''
 
 [Elixir]
-args    = [ '/usr/local/bin/elixir', '-e', '$code', '--' ]
+args    = [ '/usr/local/bin/elixir', '--color', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
 size    = '74.3 MiB'
 version = '1.18.3'
@@ -656,7 +656,7 @@ for arg <- System.argv, do: IO.puts arg
 args       = [ '/usr/bin/erlang', '-' ]
 experiment = 181
 size       = '68.6 MiB'
-version    = 'OTP 27.3.2'
+version    = 'OTP 27.3.3'
 website    = 'https://www.erlang.org'
 example    = '''
 main(Args) ->
@@ -1236,7 +1236,7 @@ for arg in commandLineParams():
 '''
 
 [OCaml]
-args    = [ '/usr/bin/ocaml', '/proc/self/fd/0' ]
+args    = [ '/usr/bin/ocaml', '-color=always', '/proc/self/fd/0' ]
 size    = '84.5 MiB'
 version = '5.3.0'
 website = 'https://ocaml.org'
@@ -1438,8 +1438,8 @@ for arg in sys.argv[1:]:
 [Qore]
 args       = [ '/usr/bin/qore', '--allow-bare-refs', '-K', '--mit', '-pno-external-access', '-e', '$code', '--' ]
 experiment = 1928
-size       = '18.0 MiB'
-version    = '1.19.2'
+size       = '16.8 MiB'
+version    = '2.0.0'
 website    = 'https://qore.org'
 example    = '''
 # Printing

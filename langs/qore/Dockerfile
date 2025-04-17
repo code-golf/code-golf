@@ -1,18 +1,18 @@
 FROM alpine:3.21 AS builder
 
-RUN apk add --no-cache bison bzip2-dev cmake curl flex g++ git gmp-dev linux-headers mpfr-dev ninja openssl-dev pcre-dev zlib-dev
+RUN apk add --no-cache bison build-base bzip2-dev curl flex gmp-dev linux-headers mpfr-dev openssl-dev pcre2-dev zlib-dev
 
-ENV VER=1.19.2
+ENV VER=2.0.0
 
-RUN curl -#L https://github.com/qorelanguage/qore/archive/refs/tags/release-$VER.tar.gz | tar xz
+RUN curl -#L https://github.com/qorelanguage/qore/releases/download/release-2.0/qore-$VER.tar.bz2 \
+  | tar xj --strip-components 1
 
-WORKDIR /qore-release-$VER/build
-
-RUN cmake .. -G Ninja             \
-    -DCMAKE_BUILD_TYPE='Release'  \
-    -DCMAKE_INSTALL_PREFIX='/usr' \
-    -DSINGLE_COMPILATION_UNIT='1' \
- && ninja install
+RUN ./configure            \
+    --disable-debug        \
+    --prefix=/usr          \
+ && make -j`nproc` install \
+ && strip /usr/bin/qore    \
+          /usr/lib/libqore.so.12
 
 FROM codegolf/lang-base
 
@@ -23,7 +23,7 @@ COPY --from=0 /usr/lib/libbz2.so.1     \
               /usr/lib/libgcc_s.so.1   \
               /usr/lib/libgmp.so.10    \
               /usr/lib/libmpfr.so.6    \
-              /usr/lib/libpcre.so.1    \
+              /usr/lib/libpcre2-8.so.0 \
               /usr/lib/libqore.so.12   \
               /usr/lib/libssl.so.3     \
               /usr/lib/libstdc++.so.6  \
