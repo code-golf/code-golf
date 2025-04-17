@@ -1742,7 +1742,7 @@ Lm
 '''
 
 [Swift]
-args    = [ '/usr/bin/swift', '-module-cache-path', '/tmp', '-' ]
+args    = [ '/usr/bin/swift', '-color-diagnostics', '-module-cache-path', '/tmp', '-' ]
 size    = '543 MiB'
 version = '6.1'
 website = 'https://swift.org'
