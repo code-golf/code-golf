@@ -431,8 +431,8 @@ eaN*
 
 [Clojure]
 args    = [ '/usr/bin/clojure', '-e', '$code' ]
-size    = '66.4 MiB'
-version = 'Babashka 1.12.197'
+size    = '66.0 MiB'
+version = 'Babashka 1.12.199'
 website = 'https://babashka.org'
 example = '''
 ; Printing
