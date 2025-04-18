@@ -752,12 +752,12 @@ bye
 
 [Fortran]
 args    = [ '/usr/bin/fortran', '-' ]
-size    = '95.1 MiB'
+size    = '95.3 MiB'
 version = 'GNU Fortran 14.2.0'
 website = 'https://gcc.gnu.org/fortran/'
 example = '''
-character(len=32) :: s
 integer :: i
+character(len=2048) :: arg
 
 ! Printing
 print "(a)", "Hello, World!"
@@ -770,8 +770,8 @@ end do
 ! Accessing arguments
 ! (NOTE: getarg() and iargc() are GNU Fortran extensions)
 do i = 1, iargc()
-    call getarg(i,s)
-    print "(a)", s
+    call getarg(i, arg)
+    print "(a)", arg
 end do
 
 end
