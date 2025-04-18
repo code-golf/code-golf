@@ -1033,15 +1033,11 @@ example    = '''
 args       = [ '/usr/bin/iogii', '-' ]
 experiment = 1770
 size       = '34.1 MiB'
-version    = '0.3'
+version    = '1.0'
 website    = 'https://golfscript.com/iogii/'
 example    = '''
-# Process input in raw mode
-,
-
 # Printing
-"Hello, World!
-"
+"Hello, World!\n"
 
 # Looping
 10T

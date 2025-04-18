@@ -2,9 +2,9 @@ FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache gcc musl-dev
 
-ENV BIN='/usr/local/bin/iogii' VER=0.3
+ENV BIN='/usr/local/bin/iogii' VER=1.0
 
-RUN wget -cO $BIN https://golfscript.com/iogii/iogii-$VER-beta \
+RUN wget -cO $BIN https://golfscript.com/iogii/iogii-$VER \
  && chmod +x $BIN
 
 COPY iogii.c /
