@@ -4,7 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes build-essential curl ncurses-dev
 
-# Also bump Elixir, Gleam.
+# Also bump 05AB1E, Elixir, Gleam.
 ENV VER=27.3.3
 
 RUN curl -#L https://github.com/erlang/otp/releases/download/OTP-$VER/otp_src_$VER.tar.gz | tar xz
