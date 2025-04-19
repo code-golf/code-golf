@@ -170,8 +170,8 @@ syscall
 '''
 
 [AWK]
-args    = [ '/usr/bin/awk', '-v', 'RS=\0', '$code' ]
-size    = '1.91 MiB'
+args    = [ '/usr/bin/awk', '-Mv', 'RS=\0', '$code' ]
+size    = '3.09 MiB'
 version = 'GNU AWK 5.3.2'
 website = 'https://www.gnu.org/software/gawk/'
 example = '''
