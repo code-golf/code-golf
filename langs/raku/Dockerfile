@@ -1,12 +1,14 @@
 FROM alpine:3.21 AS builder
 
-RUN apk add --no-cache build-base git perl
+RUN apk add --no-cache build-base git linux-headers perl
 
-ENV VER=2025.03
+ENV VER=2025.04
 
 RUN git clone --branch $VER https://github.com/rakudo/rakudo.git
 
 WORKDIR /rakudo
+
+RUN cp /usr/include/sys/prctl.h /usr/include/linux/
 
 RUN CFLAGS='-flto'            \
     ./Configure.pl            \
