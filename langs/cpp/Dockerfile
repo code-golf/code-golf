@@ -2,7 +2,7 @@ FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache build-base cmake curl linux-headers ninja python3
 
-ENV VER=20.1.2
+ENV VER=20.1.3
 
 RUN curl -#L https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-$VER.tar.gz \
   | tar xz --strip-components 1
