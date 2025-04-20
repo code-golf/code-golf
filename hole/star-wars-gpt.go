@@ -37,7 +37,7 @@ func solveSWGPT(corpusSanitized string, promptWords map[string]bool) map[string]
 	return answer
 }
 
-func starWarsGpt() []Run {
+var _ = answerFunc("star-wars-gpt", func() []Answer {
 	corpora := shuffle([]string{
 		`Turmoil has engulfed the Galactic Republic. The taxation of trade routes to outlying star systems is in dispute. Hoping to resolve the matter with a blockade of deadly battleships, the greedy Trade Federation has stopped all shipping to the small planet of Naboo. While the Congress of the Republic endlessly debates this alarming chain of events, the Supreme Chancellor has secretly dispatched two Jedi Knights, the guardians of peace and justice in the galaxy, to settle the conflict....`,
 		`War! The Republic is crumbling under attacks by the ruthless Sith Lord, Count Dooku. There are heroes on both sides. Evil is everywhere. In a stunning move, the fiendish droid leader, General Grievous, has swept into the Republic capital and kidnapped Chancellor Palpatine, leader of the Galactic Senate. As the Separatist Droid Army attempts to flee the besieged capital with their valuable hostage, two Jedi Knights lead a desperate mission to rescue the captive Chancellor....`,
@@ -50,14 +50,14 @@ func starWarsGpt() []Run {
 		`The dead speak! The galaxy has heard a mysterious broadcast, a threat of REVENGE in the sinister voice of the late EMPEROR PALPATINE. GENERAL LEIA ORGANA dispatches secret agents to gather intelligence, while REY, the last hope of the Jedi, trains for battle against the diabolical FIRST ORDER. Meanwhile, Supreme Leader KYLO REN rages in search of the phantom Emperor, determined to destroy any threat to his power....`,
 	})
 
-	runs := make([]Run, 9)
+	tests := make([]test, 10)
 	testWordCount := 12
 
 	for i := 0; i < 10; i += 2 {
 		corpus := corpora[i] + " " + corpora[(i+1)%9]
 		corpusSanitized := corpus
 		for _, c := range ".,;!?" {
-			corpusSanitized = strings.Replace(corpusSanitized, string(c), "", -1)
+			corpusSanitized = strings.ReplaceAll(corpusSanitized, string(c), "")
 		}
 		corpusSanitized = strings.ToLower(corpusSanitized)
 
@@ -90,8 +90,7 @@ func starWarsGpt() []Run {
 			counter++
 		}
 
-		args := []string{inputSWGPT.String()}
-		runs[i/2] = Run{Args: args, Answer: outputSWGPT.String()}
+		tests[i/2] = test{inputSWGPT.String(), outputSWGPT.String()}
 	}
 	staticTest1 := "the first order reigns having decimated the peaceful republic supreme leader snoke now deploys his merciless legions to seize military control of the galaxy only general leia organa's band of resistance fighters stand against the rising tyranny certain that jedi master luke skywalker will return and restore a spark of hope to the fight but the resistance has been exposed as the first order speeds toward the rebel base the brave heroes mount a desperate escape turmoil has engulfed the galactic republic the taxation of trade routes to outlying star systems is in dispute hoping to resolve the matter with a blockade of deadly battleships the greedy trade federation has stopped all shipping to the small planet of naboo while the congress of the republic endlessly debates this alarming chain of events the supreme chancellor has secretly dispatched two jedi knights the guardians of peace and justice in the galaxy to settle the conflict\nof\nto\nthe\ndispatched\nfirst\nmilitary\nengulfed\ngalaxy\nspark\ncertain\nevents\nseize"
 	staticResult1 := "the\nthe\nfirst\ntwo\norder\ncontrol\nthe\nonly\nof\nthat\nthe\nmilitary"
@@ -101,10 +100,13 @@ func starWarsGpt() []Run {
 	staticResult3 := "their\na\nof\nvaluable\nuntil\nthe\nheroes\nrepublic\nlead\nher\nunder\nare"
 	staticTest4 := "there is unrest in the galactic senate several thousand solar systems have declared their intentions to leave the republic this separatist movement under the leadership of the mysterious count dooku has made it difficult for the limited number of jedi knights to maintain peace and order in the galaxy senator amidala the former queen of naboo is returning to the galactic senate to vote on the critical issue of creating an army of the republic to assist the overwhelmed jedi war the republic is crumbling under attacks by the ruthless sith lord count dooku there are heroes on both sides evil is everywhere in a stunning move the fiendish droid leader general grievous has swept into the republic capital and kidnapped chancellor palpatine leader of the galactic senate as the separatist droid army attempts to flee the besieged capital with their valuable hostage two jedi knights lead a desperate mission to rescue the captive chancellor\nthousand\nto\ncaptive\nin\nthe\nsith\njedi\ntwo\nrepublic\ngalaxy\non\nof"
 	staticResult4 := "solar\nleave\nchancellor\nthe\nrepublic\nlord\nknights\njedi\nthis\nsenator\nthe\nthe"
-	runs[5] = Run{Args: []string{staticTest1}, Answer: staticResult1}
-	runs[6] = Run{Args: []string{staticTest2}, Answer: staticResult2}
-	runs[7] = Run{Args: []string{staticTest3}, Answer: staticResult3}
-	runs[8] = Run{Args: []string{staticTest4}, Answer: staticResult4}
+	staticTest5 := "there is unrest in the galactic senate several thousand solar systems have declared their intentions to leave the republic this separatist movement under the leadership of the mysterious count dooku has made it difficult for the limited number of jedi knights to maintain peace and order in the galaxy senator amidala the former queen of naboo is returning to the galactic senate to vote on the critical issue of creating an army of the republic to assist the overwhelmed jedi luke skywalker has vanished in his absence the sinister first order has risen from the ashes of the empire and will not rest until skywalker the last jedi has been destroyed with the support of the republic general leia organa leads a brave resistance she is desperate to find her brother luke and gain his help in restoring peace and justice to the galaxy leia has sent her most daring pilot on a secret mission to jakku where an old ally has discovered a clue to luke's whereabouts\nand\ngain\nsenate\nbrother\na\npeace\nassist\nqueen\nhis\njedi\npilot\ngalactic"
+	staticResult5 := "order\nhis\nseveral\nluke\nbrave\nand\nthe\nof\nabsence\nknights\non\nsenate"
+	tests[5] = test{staticTest1, staticResult1}
+	tests[6] = test{staticTest2, staticResult2}
+	tests[7] = test{staticTest3, staticResult3}
+	tests[8] = test{staticTest4, staticResult4}
+	tests[9] = test{staticTest5, staticResult5}
 
-	return runs
-}
+	return outputTests(shuffle(tests))
+})

@@ -116,7 +116,7 @@ Numbers:
 	return false
 }
 
-func sudokuBoard(fillIn bool) Run {
+func sudokuBoard(fillIn bool) Answer {
 	var board [boardSize][boardSize]int
 	var solutions int
 	solveSudoku(&board, 0, &solutions)
@@ -165,13 +165,16 @@ func sudokuBoard(fillIn bool) Run {
 		}
 	}
 
-	return Run{Args: args, Answer: out}
+	return Answer{Args: args, Answer: out}
 }
 
-func sudoku(fillIn bool) []Run {
-	runs := make([]Run, 3)
-	for i := range runs {
-		runs[i] = sudokuBoard(fillIn)
+var _ = answerFunc("sudoku", func() []Answer { return sudoku(false) })
+var _ = answerFunc("sudoku-fill-in", func() []Answer { return sudoku(true) })
+
+func sudoku(fillIn bool) []Answer {
+	answers := make([]Answer, 3)
+	for i := range answers {
+		answers[i] = sudokuBoard(fillIn)
 	}
-	return runs
+	return answers
 }
