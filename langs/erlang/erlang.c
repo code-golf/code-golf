@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
         ERR_AND_EXIT("fopen");
 
     if (!fputs("-module(main).\n-export([main/1]).\n", fp))
-        ERR_AND_EXIT("fprintf");
+        ERR_AND_EXIT("fputs");
 
     char buffer[4096];
     ssize_t nbytes;
@@ -36,7 +36,6 @@ int main(int argc, char* argv[]) {
     pid_t pid;
 
     if (!(pid = fork())) {
-        // Print errors and/or warnings on STDERR.
         if (!dup2(STDERR_FILENO, STDOUT_FILENO))
             ERR_AND_EXIT("dup2");
 

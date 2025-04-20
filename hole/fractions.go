@@ -55,7 +55,7 @@ func largeFracGen() fraction {
 	return f
 }
 
-func fractions() []Run {
+var _ = answerFunc("fractions", func() []Answer {
 	// Default cases.
 	ra1 := rand.IntN(249) + 2
 	ra2 := rand.IntN(249) + 2
@@ -124,4 +124,4 @@ func fractions() []Run {
 	}
 
 	return outputTests(tests)
-}
+})

@@ -87,7 +87,7 @@ is $dbh.execute(
     "SELECT earned FROM save_solution(3, 1, '⛳', 'π', 'c', 1)",
 ).row, '{different-strokes}', 'Earns {different-strokes}';
 
-for $dbh.execute('SELECT unnest(enum_range(null::lang))').allrows.flat {
+for $dbh.execute('SELECT id FROM langs WHERE experiment = 0').allrows.flat {
     my $earns = %langs{ my $i = ++$ } // '{}';
 
     # Add hole-specific cheevos on the front.

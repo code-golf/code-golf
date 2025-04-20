@@ -2,7 +2,7 @@ FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache binutils curl gcc musl-dev
 
-ENV VER=0.13.0
+ENV VER=0.14.0
 
 RUN curl -# https://ziglang.org/download/$VER/zig-linux-x86_64-$VER.tar.xz \
   | tar xJC tmp --strip-components 1

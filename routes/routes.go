@@ -48,6 +48,7 @@ func Router(db *sqlx.DB) http.Handler {
 			r.Post("/banners/{banner}", adminBannerPOST)
 			r.Get("/solutions", adminSolutionsGET)
 			r.Get("/solutions/run", adminSolutionsRunGET)
+			r.Get("/solutions/{hole}/{lang}/{golferID}", adminSolutionGET)
 		})
 		r.With(middleware.API).Route("/api", func(r chi.Router) {
 			r.Get("/", apiGET)
@@ -74,6 +75,7 @@ func Router(db *sqlx.DB) http.Handler {
 					r.Delete("/notes/{hole}/{lang}", apiNoteDELETE)
 					r.Get("/notes/{hole}/{lang}", apiNoteGET)
 					r.Put("/notes/{hole}/{lang}", apiNotePUT)
+					r.Get("/solutions-search", apiSolutionsSearchGET)
 				})
 			})
 		})
@@ -87,6 +89,7 @@ func Router(db *sqlx.DB) http.Handler {
 			r.Get("/disconnect/{connection}", golferDisconnectGET)
 			r.Get("/export", golferExportGET)
 			r.Post("/hide-banner", golferHideBannerPOST)
+			r.Get("/code-search", golferSearchGET)
 			r.Get("/settings", golferSettingsGET)
 			r.Post("/settings", golferSettingsPOST)
 			r.Get("/settings/{page:delete-account}", golferSettingsDeleteAccountGET)
