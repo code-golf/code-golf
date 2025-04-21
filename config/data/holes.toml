@@ -1704,6 +1704,7 @@ preamble = '''
 experiment = 1448
 category   = 'Art'
 links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Hilbert_curve' },
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Hilbert_curve' },
 ]
 synopsis = 'Print five iterations of the Hilbert curve.'
