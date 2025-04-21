@@ -1682,7 +1682,7 @@ experiment = 1449
 category   = 'Sequence'
 links = [
     { name = 'OEIS A002182', url = '//oeis.org/A002182' },
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Highly_composite_number' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Highly_composite_number' },
 ]
 synopsis = 'Print all the highly composite numbers from 1 to 250,000,000.'
 preamble = '''
@@ -2478,7 +2478,7 @@ preamble = '''
 category = 'Gaming'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/N-queens_problem' },
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Eight_queens_puzzle' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Eight_queens_puzzle' },
 ]
 item-delimiter = "\n"
 released = 2024-05-01
@@ -3459,7 +3459,7 @@ experiment = 1154
 category = 'Sequence'
 links = [
     { name = 'OEIS A001358', url = '//oeis.org/A001358' },
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Semiprime' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Semiprime' },
 ]
 synopsis = 'Print all the semiprime numbers from 1 to 10,000.'
 preamble = '''
@@ -3860,7 +3860,7 @@ experiment = 1154
 category = 'Sequence'
 links = [
     { name = 'OEIS A007304', url = '//oeis.org/A007304' },
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Sphenic_number' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Sphenic_number' },
 ]
 synopsis = 'Print all the sphenic numbers from 1 to 10,000.'
 preamble = '''
