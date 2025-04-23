@@ -2,11 +2,15 @@ FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache build-base git perl
 
-ENV VER=2025.03
+ENV VER=2025.04
 
 RUN git clone --branch $VER https://github.com/rakudo/rakudo.git
 
 WORKDIR /rakudo
+
+# HACK: See https://github.com/microsoft/mimalloc/issues/1065
+RUN mkdir /usr/include/linux \
+ && cp /usr/include/sys/prctl.h /usr/include/linux/
 
 RUN CFLAGS='-flto'            \
     ./Configure.pl            \
