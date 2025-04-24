@@ -1083,7 +1083,7 @@ example = '''
 [Java]
 args    = [ '/usr/bin/java', '-' ]
 size    = '59.3 MiB'
-version = 'OpenJDK 24.0'
+version = 'OpenJDK 24.0.1'
 website = 'https://openjdk.java.net'
 example = '''
 class Main {
