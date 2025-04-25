@@ -752,8 +752,8 @@ bye
 
 [Fortran]
 args    = [ '/usr/bin/fortran', '-' ]
-size    = '95.3 MiB'
-version = 'GNU Fortran 14.2.0'
+size    = '101 MiB'
+version = 'GNU Fortran 15.1.0'
 website = 'https://gcc.gnu.org/fortran/'
 example = '''
 integer :: i
