@@ -2,7 +2,7 @@ FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache build-base curl m4
 
-ENV VER=14.2.0
+ENV VER=15.1.0
 
 WORKDIR /gmp
 
