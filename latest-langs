@@ -112,6 +112,9 @@ my %langs = from-toml 'config/data/langs.toml'.IO;
 my regex ver { \d+ ( <[.-]> \d+ )+ | <xdigit> ** 7..* }
 
 for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
+    # Catch exceptions and carry on to the next lang.
+    CATCH { default { note "$name: $_" } }
+
     my $old = %lang<version> ~~ / <ver> /;
     my $new = do with %paths{$name} {
         my $res = get($_);
