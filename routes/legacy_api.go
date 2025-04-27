@@ -251,7 +251,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 						out.Cheevos = append(out.Cheevos, *c)
 					}
 				}
-			case "star-wars-opening-crawl":
+			case "star-wars-gpt", "star-wars-opening-crawl":
 				if month == time.May && day == 4 {
 					if c := golfer.Earn(db, "may-the-4ᵗʰ-be-with-you"); c != nil {
 						out.Cheevos = append(out.Cheevos, *c)
