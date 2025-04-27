@@ -3879,14 +3879,16 @@ category = 'Transform'
 links = [
     { name = 'Wookieepedia', url = '//starwars.fandom.com/wiki/Opening_crawl' },
 ]
-synopsis = 'Output the most likely next word to occur given word frequency in the Star Wars opening crawl.'
+released = 2025-05-01
+synopsis = 'Print the next most likely word in the Star Wars opening crawls.'
 preamble = '''
 <p>
-    You are given input of a text *corpus* and several *prompts* on subsequent
-    lines. For each prompt, output the most likely next word in the corpus by
-    frequency (aka *mode*). If there is more than one mode, output the first
-    encountered in the corpus. In this problem, the corpus is fixed to be the
-    Star Wars opening crawl texts.
+    You are given input of a text <b>corpus</b> and several <b>prompts</b> on
+    subsequent lines. For each prompt, output the most likely next word in the
+    corpus by frequency (aka <b>mode</b>). If there is more than one mode,
+    output the first encountered in the corpus. In this problem, the corpus is
+    fixed to be the
+    <a href=star-wars-opening-crawl>Star Wars Opening Crawl</a> texts.
 '''
 
 ['Star Wars Opening Crawl']

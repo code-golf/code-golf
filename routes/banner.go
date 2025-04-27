@@ -12,7 +12,7 @@ import (
 	"github.com/code-golf/code-golf/pretty"
 )
 
-var nextHole = config.ExpHoleByID["set"]
+var nextHole = config.ExpHoleByID["star-wars-gpt"]
 
 type banner struct {
 	Body          template.HTML
