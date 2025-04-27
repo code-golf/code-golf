@@ -27,9 +27,10 @@ import (
 
 // Create a string containing the given number of characters and UTF-8 encoded bytes.
 func makeCode(chars *int, bytes int) (result string) {
+	// Support assembly solutions without chars, just return empty string as
+	// the source byte length isn't the same as the DB byte length.
 	if chars == nil {
-		// Support assembly solutions without chars.
-		return strings.Repeat("a", bytes)
+		return ""
 	}
 
 	delta := bytes - *chars
