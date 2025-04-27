@@ -211,6 +211,11 @@ func play(
 	ctx context.Context, hole *config.Hole, lang *config.Lang, code string, run *Run,
 ) error {
 	// Preprocess code.
+	if strings.Contains(code, "\x00") {
+		run.Stderr = "Solutions must not contain a literal null byte."
+		return nil
+	}
+
 	switch lang.ID {
 	case "05ab1e":
 		// Prevent trivial quines. Error out and return early.
