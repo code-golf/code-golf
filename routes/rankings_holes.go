@@ -138,7 +138,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			          COUNT(*) OVER()  total
 			     FROM rankings
 			     JOIN users ON user_id = id
-			    WHERE hole = $1 AND scoring = $2 AND NOT experimental_lang
+			    WHERE hole = $1 AND scoring = $2
 			 ORDER BY rank_overall, submitted
 			    LIMIT $3 OFFSET $4`
 
