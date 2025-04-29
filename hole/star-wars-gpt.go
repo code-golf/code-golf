@@ -50,7 +50,7 @@ var _ = answerFunc("star-wars-gpt", func() []Answer {
 		`The dead speak! The galaxy has heard a mysterious broadcast, a threat of REVENGE in the sinister voice of the late EMPEROR PALPATINE. GENERAL LEIA ORGANA dispatches secret agents to gather intelligence, while REY, the last hope of the Jedi, trains for battle against the diabolical FIRST ORDER. Meanwhile, Supreme Leader KYLO REN rages in search of the phantom Emperor, determined to destroy any threat to his power....`,
 	})
 
-	tests := make([]test, 10)
+	tests := make([]test, 11)
 	testWordCount := 12
 
 	for i := 0; i < 10; i += 2 {
@@ -102,11 +102,14 @@ var _ = answerFunc("star-wars-gpt", func() []Answer {
 	staticResult4 := "solar\nleave\nchancellor\nthe\nrepublic\nlord\nknights\njedi\nthis\nsenator\nthe\nthe"
 	staticTest5 := "there is unrest in the galactic senate several thousand solar systems have declared their intentions to leave the republic this separatist movement under the leadership of the mysterious count dooku has made it difficult for the limited number of jedi knights to maintain peace and order in the galaxy senator amidala the former queen of naboo is returning to the galactic senate to vote on the critical issue of creating an army of the republic to assist the overwhelmed jedi luke skywalker has vanished in his absence the sinister first order has risen from the ashes of the empire and will not rest until skywalker the last jedi has been destroyed with the support of the republic general leia organa leads a brave resistance she is desperate to find her brother luke and gain his help in restoring peace and justice to the galaxy leia has sent her most daring pilot on a secret mission to jakku where an old ally has discovered a clue to luke's whereabouts\nand\ngain\nsenate\nbrother\na\npeace\nassist\nqueen\nhis\njedi\npilot\ngalactic"
 	staticResult5 := "order\nhis\nseveral\nluke\nbrave\nand\nthe\nof\nabsence\nknights\non\nsenate"
+	staticTest6 := "there is unrest in the galactic senate several thousand solar systems have declared their intentions to leave the republic this separatist movement under the leadership of the mysterious count dooku has made it difficult for the limited number of jedi knights to maintain peace and order in the galaxy senator amidala the former queen of naboo is returning to the galactic senate to vote on the critical issue of creating an army of the republic to assist the overwhelmed jedi war the republic is crumbling under attacks by the ruthless sith lord count dooku there are heroes on both sides evil is everywhere in a stunning move the fiendish droid leader general grievous has swept into the republic capital and kidnapped chancellor palpatine leader of the galactic senate as the separatist droid army attempts to flee the besieged capital with their valuable hostage two jedi knights lead a desperate mission to rescue the captive chancellor\nchancellor\ntheir\na\nreturning\nthe\nthousand\nassist\ngalactic\nin\nqueen\non\nsolar"
+	staticResult6 := "palpatine\nintentions\nstunning\nto\nrepublic\nsolar\nthe\nsenate\nthe\nof\nthe\nsystems"
 	tests[5] = test{staticTest1, staticResult1}
 	tests[6] = test{staticTest2, staticResult2}
 	tests[7] = test{staticTest3, staticResult3}
 	tests[8] = test{staticTest4, staticResult4}
 	tests[9] = test{staticTest5, staticResult5}
+	tests[10] = test{staticTest6, staticResult6}
 
 	return outputTests(shuffle(tests))
 })
