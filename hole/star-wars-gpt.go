@@ -54,6 +54,7 @@ var _ = answerFunc("star-wars-gpt", func() []Answer {
 	corpora := shuffle(slices.Clone(crawls))
 
 	tests := make([]test, 13)
+	testWordCount := 12
 
 	for i := 0; i < 10; i += 2 {
 		corpusSanitized := corpora[i] + " " + corpora[(i+1)%9]
@@ -61,7 +62,6 @@ var _ = answerFunc("star-wars-gpt", func() []Answer {
 		chosenWords := map[string]bool{}
 		splitWords := strings.Split(corpusSanitized, " ")
 		shuffledWords := shuffle(splitWords[:len(splitWords)-1]) // omit last word
-		testWordCount := randInt(5, 15)
 		for j := 0; len(chosenWords) < testWordCount; j++ {
 			if _, ok := chosenWords[shuffledWords[j]]; !ok {
 				chosenWords[shuffledWords[j]] = true
@@ -99,8 +99,8 @@ var _ = answerFunc("star-wars-gpt", func() []Answer {
 	staticResult4 := "solar\nleave\nchancellor\nthe\nrepublic\nlord\nknights\njedi\nthis\nsenator\nthe\nthe"
 	staticTest5 := crawls[1] + " " + crawls[6] + "\nand\ngain\nsenate\nbrother\na\npeace\nassist\nqueen\nhis\njedi\npilot\ngalactic"
 	staticResult5 := "order\nhis\nseveral\nluke\nbrave\nand\nthe\nof\nabsence\nknights\non\nsenate"
-	staticTest6 := crawls[1] + " " + crawls[2] + "\nchancellor\ntheir\na\nreturning\nthe\nthousand\ngalactic\nqueen\nsolar"
-	staticResult6 := "palpatine\nintentions\nstunning\nto\nrepublic\nsolar\nsenate\nof\nsystems"
+	staticTest6 := crawls[1] + " " + crawls[2] + "\nchancellor\ntheir\na\nreturning\nthe\nthousand\nassist\ngalactic\nin\nqueen\non\nsolar"
+	staticResult6 := "palpatine\nintentions\nstunning\nto\nrepublic\nsolar\nthe\nsenate\nthe\nof\nthe\nsystems"
 	staticTest7 := crawls[3] + " " + crawls[8] + "\nintelligence\nthe\nultimate\nevil\nfor\nthreat\njedi\nwon\nempire\npower\ndead\nrebel"
 	staticResult7 := "while\nempire's\nweapon\ngalactic\nbattle\nof\ntrains\ntheir\nduring\nto\nspeak\nspaceships"
 	staticTest8 := crawls[6] + " " + crawls[3] + "\nthe\nstolen\nspace\nbattle\nvictory\nweapon\njustice\nto\nresistance\nin\nof\njedi"
