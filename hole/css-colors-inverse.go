@@ -13,7 +13,7 @@ var _ = answerFunc("css-colors-inverse", func() []Answer {
 	return outputMultirunTests(tests)
 })
 
-func getCssColorsInverseJudge() Judge {
+func getCSSColorsInverseJudge() Judge {
 	nameInCodeOutTests := fixedTests("css-colors")
 	codeToNames := make(map[string][]string)
 	for _, nameInCodeOut := range nameInCodeOutTests {
@@ -24,4 +24,4 @@ func getCssColorsInverseJudge() Judge {
 	}, true)
 }
 
-var _ = judge("css-colors-inverse", getCssColorsInverseJudge())
+var _ = judge("css-colors-inverse", getCSSColorsInverseJudge())
