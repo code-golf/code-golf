@@ -295,7 +295,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SolutionsLog'
-  
+
   /solutions-search:
     get:
       operationId: solutionsSearch
@@ -319,7 +319,9 @@ paths:
           schema:
             type: string
       tags: [misc]
-      summary: Search solutions
+      security:
+        - cookieAuth: []
+      summary: Search all current golfer's solutions
       responses:
         '200':
           description: A JSON array of matches
@@ -329,6 +331,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SolutionsSearchMatch'
+        '403':
+          description: Solutions search access requires authentication
 
   /wiki/{slug}:
     get:

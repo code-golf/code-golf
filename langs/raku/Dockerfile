@@ -2,11 +2,17 @@ FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache build-base git perl
 
-RUN git clone -b 2025.02 https://github.com/rakudo/rakudo.git
+ENV VER=2025.04
+
+RUN git clone --branch $VER https://github.com/rakudo/rakudo.git
 
 WORKDIR /rakudo
 
-RUN CFLAGS=-flto              \
+# HACK: See https://github.com/microsoft/mimalloc/issues/1065
+RUN mkdir /usr/include/linux \
+ && cp /usr/include/sys/prctl.h /usr/include/linux/
+
+RUN CFLAGS='-flto'            \
     ./Configure.pl            \
     --gen-moar                \
     --moar-option=--ar=gcc-ar \

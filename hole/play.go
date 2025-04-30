@@ -6,19 +6,18 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 	"regexp"
 	"slices"
 	"strings"
-	"sync"
 	"syscall"
 	"time"
 	"unicode"
 
 	"github.com/buildkite/terminal-to-html/v3"
 	"github.com/code-golf/code-golf/config"
+	"golang.org/x/sync/errgroup"
 )
 
 var timeout = 5 * time.Second
@@ -95,22 +94,16 @@ func Play(
 	runs := make([]Run, len(answers))
 
 	// Run all the runs in parallel to reduce the wall clock time.
-	var wg sync.WaitGroup
-	wg.Add(len(answers))
-
+	var g errgroup.Group
 	for i, answer := range answers {
 		runs[i] = Run{Args: answer.Args, Answer: answer.Answer}
 
-		go func(run *Run) {
-			if err := play(ctx, hole, lang, code, run); err != nil {
-				log.Println(err)
-			}
-
-			wg.Done()
-		}(&runs[i])
+		g.Go(func() error { return play(ctx, hole, lang, code, &runs[i]) })
 	}
 
-	wg.Wait()
+	if err := g.Wait(); err != nil {
+		panic(err)
+	}
 
 	return runs
 }
@@ -238,9 +231,10 @@ func play(
 	}
 
 	// Language arguments. Clone because we intend to mutate.
-	cmd.Args = slices.Clone(lang.Args)
 	if hole.ID == "quine" && lang.ArgsQuine != nil {
 		cmd.Args = slices.Clone(lang.ArgsQuine)
+	} else {
+		cmd.Args = slices.Clone(lang.Args)
 	}
 
 	// Pass code via args or stdin.
@@ -259,26 +253,6 @@ func play(
 			args += arg + "\x00"
 		}
 		cmd.Stdin = strings.NewReader(args)
-	case "rockstar":
-		// Embed args into the code.
-		var argCode strings.Builder
-		argCode.WriteString("rock args\n")
-		for _, arg := range run.Args {
-			argCode.WriteString(`rock "`)
-			for _, r := range arg {
-				switch r {
-				case '\\', '"':
-					argCode.WriteByte('\\')
-					argCode.WriteRune(r)
-				case '\n':
-					argCode.WriteString(`\n`)
-				default:
-					argCode.WriteRune(r)
-				}
-			}
-			argCode.WriteString("\" into args\n")
-		}
-		cmd.Stdin = strings.NewReader(argCode.String() + code)
 	case "sed":
 		// For sed we always need to append a null byte, even if no args exist
 		args := strings.Join(run.Args, "\x00") + "\x00"

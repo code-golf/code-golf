@@ -6,7 +6,7 @@ import {
 } from 'golden-layout';
 import { EditorView }   from './_codemirror';
 import diffView         from './_diff';
-import { $, $$, comma, debounce } from './_util';
+import { $, $$, comma, throttle } from './_util';
 import {
     init, langs, hole, setSolution,
     setCode, refreshScores, getHideDeleteBtn, submit, ReadonlyPanelsData,
@@ -163,9 +163,22 @@ function makeEditor(parent: HTMLDivElement) {
                     .join(', ');
             }
 
-            $('#strokes').innerText = scorings.selection
-                ? `${formatScore(scorings.total)} (${formatScore(scorings.selection)} selected)`
-                : formatScore(scorings.total);
+            $('#strokes').innerText = (() => {
+                let innertext = scorings.selection
+                    ? `${formatScore(scorings.total)} (${formatScore(scorings.selection)} selected)`
+                    : formatScore(scorings.total);
+                if (scorings.selection?.char === 1) {
+                    const sel = tr.state.sliceDoc(tr.state.selection.main.from, tr.state.selection.main.to);
+                    const code = sel.codePointAt(0);
+                    if (code !== undefined) {
+                        const hex = code.toString(16).toUpperCase().padStart(4, '0');
+                        const bin = code.toString(2).padStart(8, '0');
+                        innertext += ` ${sel} - ${code} - 0x${hex} - ${bin}`;
+                    }
+                }
+                return innertext;
+            })();
+
 
             updateLocalStorage(code);
             updateRestoreLinkVisibility(editor);
@@ -449,7 +462,7 @@ function getViewState(): ViewState {
     };
 }
 
-const saveLayout = debounce(() => {
+const saveLayout = throttle(() => {
     const state = getViewState();
     if (!state.config.root) return;
     localStorage.setItem('lastViewState', JSON.stringify(state));

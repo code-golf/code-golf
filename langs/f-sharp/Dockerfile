@@ -1,6 +1,6 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0.200-alpine3.21 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:9.0.203-alpine3.21 AS builder
 
-WORKDIR /work
+WORKDIR /f-sharp
 
 COPY f-sharp.fs f-sharp.fsproj ./
 
@@ -9,7 +9,7 @@ RUN dotnet publish -c Release -o /out
 # Trim additional things to improve F# compiler startup performance.
 WORKDIR /trimmer
 
-COPY Trimmer.csproj Trimmer.cs ExtraTrimmingList.txt ./
+COPY trimmer.cs trimmer.csproj trimmer.txt ./
 
 RUN dotnet run
 

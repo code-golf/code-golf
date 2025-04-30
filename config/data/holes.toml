@@ -215,7 +215,7 @@ preamble = '''
 <p>
     An arithmetic number is a number for which the average of its divisors is
     an integer. For example, number <b>6</b> is arithmetic because its divisors
-    (<b>1</b>, <b>2</b>, <b>3</b> and <b>6</b>) average <b>3</b>.
+    (<b>1</b>, <b>2</b>, <b>3</b>, and <b>6</b>) average <b>3</b>.
 
 <p>
     Print all the arithmetic numbers from <b>1</b> to <b>10,000</b> inclusive,
@@ -1794,7 +1794,7 @@ experiment = 1449
 category   = 'Sequence'
 links = [
     { name = 'OEIS A002182', url = '//oeis.org/A002182' },
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Highly_composite_number' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Highly_composite_number' },
 ]
 synopsis = 'Print all the highly composite numbers from 1 to 250,000,000.'
 preamble = '''
@@ -1816,7 +1816,8 @@ preamble = '''
 experiment = 1448
 category   = 'Art'
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Hilbert_curve' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Hilbert_curve' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Hilbert_curve' },
 ]
 synopsis = 'Print five iterations of the Hilbert curve.'
 preamble = '''
@@ -2589,7 +2590,7 @@ preamble = '''
 category = 'Gaming'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/N-queens_problem' },
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Eight_queens_puzzle' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Eight_queens_puzzle' },
 ]
 multiset-item-delimiter = "\n"
 released = 2024-05-01
@@ -3035,10 +3036,10 @@ links = [
 ]
 preamble = '''
 <p>
-    A polyomino is a shape formed by joining a certain amount of squares
-    together, where each square must be linked together. Output each possible
-    polyomino (including every rotation), up to a size of 6, in any order.
-    Separate each polyomino by an empty line.
+    A polyomino is a 2D shape formed by joining squares along common edges, such
+    that all squares are connected. Output each possible polyomino (including
+    every rotation), up to a size of 6, in any order. Separate each polyomino by
+    an empty line.
 
 <p>
     There should be a total of 1 monomino, 2 dominoes, 6 trominoes,
@@ -3570,7 +3571,7 @@ experiment = 1154
 category = 'Sequence'
 links = [
     { name = 'OEIS A001358', url = '//oeis.org/A001358' },
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Semiprime' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Semiprime' },
 ]
 synopsis = 'Print all the semiprime numbers from 1 to 10,000.'
 preamble = '''
@@ -3583,18 +3584,18 @@ preamble = '''
     each on their own line.
 '''
 
-['Set']
-experiment = 1058
+[Set]
 category = 'Gaming'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Set,_the_card_game' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Set_(card_game)' },
 ]
+released = 2025-04-01
 synopsis = 'Identify sets in the card game Set.'
 preamble = '''
 <p>
     Set is a card game played with a deck of 81 unique cards that vary in four
-    features, each of which take on three values:
+    features, each of which takes on three values:
 
 <ul>
     <li>Number of shapes: each card contains either <b>1</b>, <b>2</b>, or
@@ -3608,19 +3609,21 @@ preamble = '''
 </ul>
 
 <p>
+    A card is represented by the values of its features, with each value encoded
+    by its first character. For example, <code>2RSW</code> means <b>2</b>
+    <b>R</b>ed <b>S</b>olid <b>W</b>aves.
+
+<p>
     The goal of the game is to find a <i>set</i> of three cards, such that for
     each of the four features, either all three cards have different values or
-    all three cards have the same value.
+    all three cards have the same value. For example, <code>2RSW</code>,
+    <code>2PHW</code>, and <code>2GEW</code> form a set because they all have
+    the same number and shape, and none of them have the same color or shading.
 
 <p>
-    Each card is represented by the values of its features, with each value
-    encoded by the first character. For example, <code>2RSW</code> means
-    <b>2</b> <b>R</b>ed <b>S</b>olid <b>W</b>aves.
-
-<p>
-    Each argument represents twelve cards that are laid out. In order of
-    appearance, print the three cards that make up each set per argument
-    on the same line, separated by spaces.
+    Arguments consist of twelve cards that are guaranteed to contain exactly one
+    set. For each argument, print the contained set with the cards in order of
+    their appearance separated by spaces, one set per line.
 '''
 
 ['Seven Segment']
@@ -3969,7 +3972,7 @@ experiment = 1154
 category = 'Sequence'
 links = [
     { name = 'OEIS A007304', url = '//oeis.org/A007304' },
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Sphenic_number' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Sphenic_number' },
 ]
 synopsis = 'Print all the sphenic numbers from 1 to 10,000.'
 preamble = '''
