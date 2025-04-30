@@ -53,7 +53,7 @@ func solveSWGPT(corpusSanitized string, promptWords map[string]bool) map[string]
 var _ = answerFunc("star-wars-gpt", func() []Answer {
 	corpora := shuffle(slices.Clone(crawls))
 
-	tests := make([]test, 11)
+	tests := make([]test, 13)
 	testWordCount := 12
 
 	for i := 0; i < 10; i += 2 {
@@ -101,12 +101,18 @@ var _ = answerFunc("star-wars-gpt", func() []Answer {
 	staticResult5 := "order\nhis\nseveral\nluke\nbrave\nand\nthe\nof\nabsence\nknights\non\nsenate"
 	staticTest6 := crawls[1] + " " + crawls[2] + "\nchancellor\ntheir\na\nreturning\nthe\nthousand\nassist\ngalactic\nin\nqueen\non\nsolar"
 	staticResult6 := "palpatine\nintentions\nstunning\nto\nrepublic\nsolar\nthe\nsenate\nthe\nof\nthe\nsystems"
+	staticTest7 := crawls[3] + " " + crawls[8] + "\nintelligence\nthe\nultimate\nevil\nfor\nthreat\njedi\nwon\nempire\npower\ndead\nrebel"
+	staticResult7 := "while\nempire's\nweapon\ngalactic\nbattle\nof\ntrains\ntheir\nduring\nto\nspeak\nspaceships"
+	staticTest8 := crawls[6] + " " + crawls[3] + "\nthe\nstolen\nspace\nbattle\nvictory\nweapon\njustice\nto\nresistance\nin\nof\njedi"
+	staticResult8 := "galaxy\nplans\nstation\nrebel\nagainst\nthe\nto\nthe\nshe\nhis\nthe\nhas"
 	tests[5] = test{staticTest1, staticResult1}
 	tests[6] = test{staticTest2, staticResult2}
 	tests[7] = test{staticTest3, staticResult3}
 	tests[8] = test{staticTest4, staticResult4}
 	tests[9] = test{staticTest5, staticResult5}
 	tests[10] = test{staticTest6, staticResult6}
+	tests[11] = test{staticTest7, staticResult7}
+	tests[12] = test{staticTest8, staticResult8}
 
 	return outputTests(shuffle(tests))
 })
