@@ -70,6 +70,9 @@ func channel(hole *config.Hole, lang *config.Lang) string {
 	if hole.Experiment != 0 || lang.Experiment != 0 {
 		return chanWildID
 	}
+	if hole.ID == "star-wars-gpt" {
+		return chanFreshID
+	}
 	return chanSourID
 }
 

@@ -3874,7 +3874,6 @@ preamble = '''
 '''
 
 ['Star Wars GPT']
-experiment = 1463
 category = 'Transform'
 links = [
     { name = 'Wookieepedia', url = '//starwars.fandom.com/wiki/Opening_crawl' },
