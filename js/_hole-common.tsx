@@ -776,31 +776,27 @@ export async function populateScores(editor: any) {
                     <span>{r.golfer.name}</span>
                 </a>
             </td>
-            <td data-tooltip={tooltip(r, 'Bytes')}>
+            <td title={tooltip(r, 'Bytes')}>
                 {scoringID != 'bytes' ? comma(r.bytes) :
                     <a href={`/golfers/${r.golfer.name}/${hole}/${lang}/bytes`}>
                         <span>{comma(r.bytes)}</span>
                     </a>}
             </td>
-            {lang == 'assembly' ? '' : <td data-tooltip={tooltip(r, 'Chars')}>
+            {lang == 'assembly' ? '' : <td title={tooltip(r, 'Chars')}>
                 {scoringID != 'chars' ? comma(r.chars) :
                     <a href={`/golfers/${r.golfer.name}/${hole}/${lang}/chars`}>
                         <span>{comma(r.chars)}</span>
                     </a>}
             </td>}
         </tr>): <tr><td colspan={colspan}>(Empty)</td></tr>
-    }{
-        // Padding.
-        tabLayout ? [] : [...Array(7 - rows.length).keys()].map(() =>
-            <tr><td colspan={colspan}>&nbsp;</td></tr>)
     }</tbody>);
 
-    if (tabLayout) {
-        if (view === 'me')
-            $('.me')?.scrollIntoView({block: 'center'});
-        else
-            $('#scores-wrapper').scrollTop = 0;
-    }
+    // Scroll the rankings to the top or the "me" row if applicable.
+    const me            = $('.me');
+    const scoresWrapper = $('#scores-wrapper');
+    scoresWrapper.scrollTop = (view === 'me' && me)
+        ? me.offsetTop + (me.offsetHeight / 2) - (scoresWrapper.offsetHeight / 2)
+        : 0;
 
     $$<HTMLAnchorElement>('#scoringTabs a').forEach((tab, i) => {
         if (tab.innerText == scorings[scoring]) {

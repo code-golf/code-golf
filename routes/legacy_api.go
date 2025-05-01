@@ -340,7 +340,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 
 // GET /mini-rankings/{hole}/{lang}/{scoring:bytes|chars}/{view:top|me|following}
 func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
-	limit := 7
+	limit := 50
 	if r.FormValue("long") == "1" {
 		limit = 99
 	}
