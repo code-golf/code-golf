@@ -51,7 +51,7 @@ var _ = answerFunc("calendar", func() []Answer {
 		if i < 12 {
 			// Enforce at least one calendar for every month of the year in random non-leap years.
 			month = i
-			
+
 			if isLeap(year) {
 				continue
 			}
