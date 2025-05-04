@@ -40,7 +40,7 @@
     "@types/diff": "",
     "@typescript-eslint/eslint-plugin": "",
     "@typescript-eslint/parser": "",
-    "eslint": "^9.25.1",
+    "eslint": "~9.25.1",
     "svgo": ""
   }
 }
