@@ -1029,6 +1029,26 @@ example    = '''
     (print arg))
 '''
 
+[Idris]
+args       = [ '/usr/bin/idris', '-' ]
+experiment = -1
+size       = '24.8 MiB'
+TOREMOVE   = 'https://tio.run/##PYs9C8IwGAb3/orH4tCCDa4KDm4KBQUHBxEJSaiBfJk3wZ8fgxXH4@60jJpKsVw7bHE8oeubL@wgfQMMA85Ru6TdVCnkdElxdGgPyhi/wtVHIxdtM5ej92EOSb2yckI9sITlAd3/ZKCnf/e4rRnb3H/jXghFVFfwOGWrXKIqSvkA'
+version    = 'Idris 2 0.7.0'
+website    = 'https://www.idris-lang.org'
+example    = '''
+main : IO ()
+main = do
+  -- Printing
+  putStrLn "Hello, World!"
+
+  -- Looping
+  sequence_ $ map (putStrLn . show) [0..9]
+
+  -- Accessing arguments
+  
+'''
+
 [iogii]
 args       = [ '/usr/bin/iogii', '-' ]
 experiment = 1770

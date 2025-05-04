@@ -2,6 +2,7 @@ FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache build-base curl
 
+# Also rebuild Idris.
 ENV VER=10.1.0
 
 RUN curl -#L https://github.com/cisco/ChezScheme/releases/download/v$VER/csv$VER.tar.gz \
