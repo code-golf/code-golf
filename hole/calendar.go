@@ -37,7 +37,7 @@ func generate(s string) string {
 }
 
 func isLeap(year int) bool {
-	return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)
+	return year%4 == 0 && (year%100 != 0 || year%400 == 0)
 }
 
 var _ = answerFunc("calendar", func() []Answer {
