@@ -72,6 +72,18 @@ func init() {
 	}); err != nil {
 		panic(err)
 	}
+
+	for _, hole := range config.AllHoleList {
+		// Use multiset judge for holes that have configured `MultisetItemDelimiter`
+		if holeJudges[hole.ID] == nil && hole.MultisetItemDelimiter != "" {
+			holeJudges[hole.ID] = multisetJudge(hole.CaseFold)
+		}
+
+		// All other holes use the default judge which compares by equality (trimming the line endings)
+		if holeJudges[hole.ID] == nil {
+			holeJudges[hole.ID] = defaultJudge
+		}
+	}
 }
 
 // Return a copy so holes are free to append, shuffle, etc.

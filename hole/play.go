@@ -62,16 +62,6 @@ func Play(
 ) []Run {
 	var answers []Answer
 
-	// Use multiset judge for holes that have configured `MultisetItemDelimiter`
-	if holeJudges[hole.ID] == nil && hole.MultisetItemDelimiter != "" {
-		holeJudges[hole.ID] = multisetJudge(hole.CaseFold)
-	}
-
-	// All other holes use the default judge which compares by equality (trimming the line endings)
-	if holeJudges[hole.ID] == nil {
-		holeJudges[hole.ID] = defaultJudge
-	}
-
 	switch hole.ID {
 
 	// Holes with fixed test cases.

@@ -1,27 +1,27 @@
 package hole
 
-var _ = answerFunc("css-colors-inverse", func() []Answer {
-	nameInCodeOutTests := fixedTests("css-colors")
-	codeToNames := make(map[string][]string)
-	for _, nameInCodeOut := range nameInCodeOutTests {
-		codeToNames[nameInCodeOut.out] = append(codeToNames[nameInCodeOut.out], nameInCodeOut.in)
+var cssFixedTests []test
+var cssCodesToNames = make(map[string][]string)
+
+func initCSS() {
+	if len(cssCodesToNames) < 1 {
+		cssFixedTests = fixedTests("css-colors")
+		for _, nameInCodeOut := range cssFixedTests {
+			cssCodesToNames[nameInCodeOut.out] = append(cssCodesToNames[nameInCodeOut.out], nameInCodeOut.in)
+		}
 	}
+}
+
+var _ = answerFunc("css-colors-inverse", func() []Answer {
+	initCSS()
 	var tests = []test{}
-	for code := range codeToNames {
+	for code := range cssCodesToNames {
 		tests = append(tests, test{code, ""})
 	}
 	return outputMultirunTests(tests)
 })
 
-func getCSSColorsInverseJudge() Judge {
-	nameInCodeOutTests := fixedTests("css-colors")
-	codeToNames := make(map[string][]string)
-	for _, nameInCodeOut := range nameInCodeOutTests {
-		codeToNames[nameInCodeOut.out] = append(codeToNames[nameInCodeOut.out], nameInCodeOut.in)
-	}
-	return oneOfPerOutputJudge(func(code string) []string {
-		return codeToNames[code]
-	}, true)
-}
-
-var _ = judge("css-colors-inverse", getCSSColorsInverseJudge())
+var _ = judge("css-colors-inverse", oneOfPerOutputJudge(func(code string) []string {
+	initCSS()
+	return cssCodesToNames[code]
+}, true))
