@@ -59,12 +59,13 @@ main .info {
     > div {
         display: flex;
         flex-direction: column;
+        overflow: auto;
 
         > div {
             border: 1px solid var(--color);
             border-top-width: 2px;
             flex: 1;
-            overflow: hidden auto;
+            overflow: auto;
         }
 
         > header {
