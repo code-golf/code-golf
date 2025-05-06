@@ -90,7 +90,7 @@ function updateReadonlyPanel(name: string) {
         break;
     case 'diff':
         const ignoreCase = JSON.parse($('#case-fold').innerText);
-        const diff = diffView(hole, subRes.Exp, subRes.Out, subRes.Argv, ignoreCase, subRes.MultisetDelimiter, subRes.ItemDelimiter);
+        const diff = diffView(hole, subRes.Exp, subRes.Out, subRes.Argv, ignoreCase, subRes.OutputDelimiter, subRes.MultisetItemDelimiter);
         output.replaceChildren(diff);
     }
 }
