@@ -5,9 +5,9 @@ RUN apk add --no-cache gcc musl-dev
 # Precompile the standard library.
 RUN GOCACHE=/cache go install std
 
-COPY gowrapper.c /
+COPY go.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/gowrapper -s -static /gowrapper.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/gowrapper -s -static /go.c
 
 FROM codegolf/lang-base
 
