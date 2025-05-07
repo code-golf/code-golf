@@ -14,9 +14,9 @@ RUN rm -r /tmp/lib/libc/darwin \
           /tmp/lib/libc/wasi   \
  && strip /tmp/zig
 
-COPY zigwrapper.c /
+COPY zig.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/zigwrapper -s -static zigwrapper.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/zigwrapper -s -static zig.c
 
 FROM codegolf/lang-base
 

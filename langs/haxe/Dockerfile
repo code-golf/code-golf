@@ -11,9 +11,9 @@ WORKDIR /haxe
 RUN curl -#L https://github.com/HaxeFoundation/haxe/releases/download/$VER/haxe-$VER-linux64.tar.gz \
   | tar xz --strip-components 1
 
-COPY haxewrapper.c /
+COPY haxe.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/haxewrapper -s /haxewrapper.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/haxewrapper -s /haxe.c
 
 FROM codegolf/lang-base
 
