@@ -1014,7 +1014,7 @@ end
 args       = [ '/usr/bin/hy', '-' ]
 experiment = 586
 size       = '42.0 MiB'
-version    = '1.0.0'
+version    = '1.1.0'
 website    = 'https://hylang.org'
 example    = '''
 ; Printing
