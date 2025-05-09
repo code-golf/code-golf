@@ -198,7 +198,7 @@ export function setState(code: string, editor: EditorView) {
                 extensions[lang as keyof typeof extensions] ?? [],
                 // These languages shouldn't match brackets.
                 ['fish', 'hexagony'].includes(lang)
-                    ? [] : extensions.bracketMatching,
+                    ? [extensions.zeroIndexedLineNumbers] : [extensions.lineNumbers, extensions.bracketMatching],
                 // These languages shouldn't wrap lines.
                 ['assembly', 'fish', 'hexagony'].includes(lang)
                     ? [] : EditorView.lineWrapping,
