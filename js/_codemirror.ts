@@ -119,15 +119,15 @@ export const extensions : { [key: string]: any } = {
             { key: 'Tab',   run: insertTab, shift: indentLess },
             { key: 'Mod-/', run: toggleComment },
         ]),
-        highlightWhitespace()
+        highlightWhitespace(),
     ],
     'lineNumbers': lineNumbers(),
     'zeroIndexedLineNumbers': lineNumbers(
         {
             formatNumber(num: number) {
-                return `${num - 1}`
-            }
-        }
+                return `${num - 1}`;
+            },
+        },
     ),
     'bracketMatching': bracketMatching(),
     'vim': vim({ status: true }),
