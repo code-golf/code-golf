@@ -942,8 +942,8 @@ main = do
 args       = [ '/usr/bin/haxewrapper', '-' ]
 env        = [ 'HAXE_STD_PATH=/usr/lib/std' ]
 experiment = 1366
-size       = '39.9 MiB'
-version    = '4.3.6'
+size       = '41.1 MiB'
+version    = '4.3.7'
 website    = 'https://haxe.org'
 example    = '''
 class Main {

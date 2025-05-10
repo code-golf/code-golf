@@ -4,7 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl gcc
 
-ENV VER=4.3.6
+ENV VER=4.3.7
 
 WORKDIR /haxe
 
