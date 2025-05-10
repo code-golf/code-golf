@@ -2,7 +2,7 @@ FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache bison build-base bzip2-dev curl flex gmp-dev linux-headers mpfr-dev openssl-dev pcre2-dev zlib-dev
 
-ENV VER=2.1.0
+ENV VER=2.1.1
 
 RUN curl -#L https://github.com/qorelanguage/qore/releases/download/release-$VER/qore-$VER.tar.bz2 \
   | tar xj --strip-components 1
