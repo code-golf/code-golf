@@ -2,11 +2,25 @@ name: Lint & Test
 on:
   pull_request:
   push:
-    branches: [master]
+    branches: [master, downgrade-docker]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+
+      - run: which docker
+      - run: docker version
+
+      # FIXME Downgrade Docker to prevent "failed to compute cache key" errors.
+      - run: |
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu  $(lsb_release -cs)  stable"
+          sudo apt-get update
+          sudo apt-get install --allow-downgrades docker-ce=5:27.0.3*
+
+      - run: which docker
+      - run: docker version
+
       - uses: actions/checkout@v4
 
       - uses: actions/setup-go@v5
