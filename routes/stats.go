@@ -49,6 +49,30 @@ func statsGET(w http.ResponseWriter, r *http.Request) {
 	render(w, r, "stats", data, "Statistics")
 }
 
+// GET /stats/{page:cheevos}
+func statsCheevosGET(w http.ResponseWriter, r *http.Request) {
+	type row struct {
+		Cheevo        *config.Cheevo
+		Golfers, Rank int
+		Percent       string
+	}
+
+	var data []row
+	if err := session.Database(r).Select(
+		&data,
+		` SELECT RANK() OVER (ORDER BY COUNT(*) DESC)             rank,
+		         trophy                                           cheevo,
+		         COUNT(*)                                         golfers,
+		         ROUND(COUNT(*) / SUM(COUNT(*)) OVER () * 100, 2) percent
+		    FROM trophies
+		GROUP BY trophy`,
+	); err != nil {
+		panic(err)
+	}
+
+	render(w, r, "stats", data, "Statistics: Achievements")
+}
+
 // GET /stats/{page:countries}
 func statsCountriesGET(w http.ResponseWriter, r *http.Request) {
 	type row struct {
