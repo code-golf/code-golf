@@ -312,10 +312,10 @@ func play(
 		run.Stdout = trimPerLine(stdoutBytes)
 	}
 
+	run.Answer = holeJudges[hole.ID](*run)
+
 	// Timeouts and whitespace only output never pass.
 	if !run.Timeout && len(strings.TrimSpace(run.Stdout)) != 0 {
-		run.Answer = holeJudges[hole.ID](*run)
-
 		if hole.CaseFold {
 			run.Pass = strings.EqualFold(run.Answer, run.Stdout)
 		} else {
