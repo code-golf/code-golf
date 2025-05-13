@@ -101,10 +101,31 @@ func Play(
 func play(
 	ctx context.Context, hole *config.Hole, lang *config.Lang, code string, run *Run,
 ) error {
+	err := runCode(ctx, hole, lang, code, run)
+	if err != nil {
+		return err
+	}
+
 	run.Code = code
 	run.OutputDelimiter = hole.OutputDelimiter
 	run.MultisetItemDelimiter = hole.MultisetItemDelimiter
+	run.Answer = holeJudges[hole.ID](*run)
 
+	// Timeouts and whitespace only output never pass.
+	if !run.Timeout && len(strings.TrimSpace(run.Stdout)) != 0 {
+		if hole.CaseFold {
+			run.Pass = strings.EqualFold(run.Answer, run.Stdout)
+		} else {
+			run.Pass = run.Answer == run.Stdout
+		}
+	}
+
+	return nil
+}
+
+func runCode(
+	ctx context.Context, hole *config.Hole, lang *config.Lang, code string, run *Run,
+) error {
 	// Preprocess code.
 	switch lang.ID {
 	case "05ab1e":
@@ -310,17 +331,6 @@ func play(
 		run.Stdout = string(stdoutBytes)
 	} else {
 		run.Stdout = trimPerLine(stdoutBytes)
-	}
-
-	run.Answer = holeJudges[hole.ID](*run)
-
-	// Timeouts and whitespace only output never pass.
-	if !run.Timeout && len(strings.TrimSpace(run.Stdout)) != 0 {
-		if hole.CaseFold {
-			run.Pass = strings.EqualFold(run.Answer, run.Stdout)
-		} else {
-			run.Pass = run.Answer == run.Stdout
-		}
 	}
 
 	return nil
