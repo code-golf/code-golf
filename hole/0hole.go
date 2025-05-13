@@ -29,6 +29,7 @@ var words = strings.Fields(wordsTxt)
 
 var holeJudges = make(map[string]Judge)
 
+// Other init blocks in this package rely on the fact that this init runs first, hence the file name.
 func init() {
 	if err := fs.WalkDir(fixedTestsFS, ".", func(path string, d fs.DirEntry, err error) error {
 		if d.IsDir() || err != nil {
