@@ -360,8 +360,8 @@ export interface RankUpdate {
 
 export interface Run {
     answer: string,
-    multiset_delimiter: string,
-    item_delimiter: string,
+    output_delimiter: string,
+    multiset_item_delimiter: string,
     args: string[],
     exit_code: number,
     pass: boolean,
@@ -377,8 +377,8 @@ export interface ReadonlyPanelsData {
     Exp: string,
     Err: string,
     Argv: string[],
-    MultisetDelimiter: string,
-    ItemDelimiter: string
+    OutputDelimiter: string,
+    MultisetItemDelimiter: string
 }
 
 export interface SubmitResponse {
@@ -629,8 +629,8 @@ export async function submit(
             Exp: run.answer,
             Err: run.stderr,
             Out: run.stdout,
-            MultisetDelimiter: run.multiset_delimiter,
-            ItemDelimiter: run.item_delimiter,
+            OutputDelimiter: run.output_delimiter,
+            MultisetItemDelimiter: run.multiset_item_delimiter,
         });
 
         const ms = Math.round(run.time_ns / 10**6);
