@@ -702,7 +702,7 @@ preamble = '''
 '''
 
 [['CSS Colors'.variants]]
-name             = 'CSS Colors Inverse'
+name             = 'CSS Colors (Inverse)'
 experiment       = 1353
 output-delimiter = "\n"
 synopsis         = 'Convert color hex values to their CSS keywords.'
