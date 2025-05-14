@@ -669,8 +669,13 @@ released = 2020-06-21
 synopsis = 'Convert CSS color keywords to their hex values.'
 preamble = '''
 <p>
+{{ if eq .Name "CSS Colors" }}
     Given a list of all the CSS color keywords print the hex values in the
     corresponding order. The full mapping is as follows:
+{{ else }}
+    For each given color hex code print one of the corresponding css keywords.
+    The full mapping is as follows:
+{{ end }}
 
 <div id=colors class="tables-4col">
 {{ range .DataMap }}
@@ -696,117 +701,11 @@ preamble = '''
 </div>
 '''
 
-
-['CSS Colors Inverse']
-case-fold = true
-category = 'Transform'
-data = '''
-{
-    "IndianRed":            "#cd5c5c", "LightCoral":      "#f08080",
-    "Salmon":               "#fa8072", "DarkSalmon":      "#e9967a",
-    "LightSalmon":          "#ffa07a", "Red":             "#ff0000",
-    "Crimson":              "#dc143c", "FireBrick":       "#b22222",
-    "DarkRed":              "#8b0000", "Pink":            "#ffc0cb",
-    "LightPink":            "#ffb6c1", "HotPink":         "#ff69b4",
-    "DeepPink":             "#ff1493", "MediumVioletRed": "#c71585",
-    "PaleVioletRed":        "#db7093", "Coral":           "#ff7f50",
-    "Tomato":               "#ff6347", "OrangeRed":       "#ff4500",
-    "DarkOrange":           "#ff8c00", "Orange":          "#ffa500",
-    "Gold":                 "#ffd700", "Yellow":          "#ffff00",
-    "LightYellow":          "#ffffe0", "LemonChiffon":    "#fffacd",
-    "LightGoldenRodYellow": "#fafad2", "PapayaWhip":      "#ffefd5",
-    "Moccasin":             "#ffe4b5", "PeachPuff":       "#ffdab9",
-    "PaleGoldenRod":        "#eee8aa", "Khaki":           "#f0e68c",
-    "DarkKhaki":            "#bdb76b", "Lavender":        "#e6e6fa",
-    "Thistle":              "#d8bfd8", "Plum":            "#dda0dd",
-    "Violet":               "#ee82ee", "Orchid":          "#da70d6",
-    "Fuchsia":              "#ff00ff", "Magenta":         "#ff00ff",
-    "MediumOrchid":         "#ba55d3", "MediumPurple":    "#9370db",
-    "BlueViolet":           "#8a2be2", "DarkViolet":      "#9400d3",
-    "DarkOrchid":           "#9932cc", "DarkMagenta":     "#8b008b",
-    "Purple":               "#800080", "Indigo":          "#4b0082",
-    "DarkSlateBlue":        "#483d8b", "SlateBlue":       "#6a5acd",
-    "MediumSlateBlue":      "#7b68ee", "RebeccaPurple":   "#663399",
-    "GreenYellow":          "#adff2f", "Chartreuse":      "#7fff00",
-    "LawnGreen":            "#7cfc00", "Lime":            "#00ff00",
-    "LimeGreen":            "#32cd32", "PaleGreen":       "#98fb98",
-    "LightGreen":           "#90ee90", "SpringGreen":     "#00ff7f",
-    "MediumSpringGreen":    "#00fa9a", "MediumSeaGreen":  "#3cb371",
-    "SeaGreen":             "#2e8b57", "ForestGreen":     "#228b22",
-    "Green":                "#008000", "DarkGreen":       "#006400",
-    "YellowGreen":          "#9acd32", "OliveDrab":       "#6b8e23",
-    "Olive":                "#808000", "DarkOliveGreen":  "#556b2f",
-    "MediumAquamarine":     "#66cdaa", "DarkSeaGreen":    "#8fbc8f",
-    "LightSeaGreen":        "#20b2aa", "DarkCyan":        "#008b8b",
-    "Teal":                 "#008080", "Aqua":            "#00ffff",
-    "Cyan":                 "#00ffff", "LightCyan":       "#e0ffff",
-    "PaleTurquoise":        "#afeeee", "Aquamarine":      "#7fffd4",
-    "Turquoise":            "#40e0d0", "MediumTurquoise": "#48d1cc",
-    "DarkTurquoise":        "#00ced1", "CadetBlue":       "#5f9ea0",
-    "SteelBlue":            "#4682b4", "LightSteelBlue":  "#b0c4de",
-    "PowderBlue":           "#b0e0e6", "LightBlue":       "#add8e6",
-    "SkyBlue":              "#87ceeb", "LightSkyBlue":    "#87cefa",
-    "DeepSkyBlue":          "#00bfff", "DodgerBlue":      "#1e90ff",
-    "CornflowerBlue":       "#6495ed", "RoyalBlue":       "#4169e1",
-    "Blue":                 "#0000ff", "MediumBlue":      "#0000cd",
-    "DarkBlue":             "#00008b", "Navy":            "#000080",
-    "MidnightBlue":         "#191970", "Cornsilk":        "#fff8dc",
-    "BlanchedAlmond":       "#ffebcd", "Bisque":          "#ffe4c4",
-    "NavajoWhite":          "#ffdead", "Wheat":           "#f5deb3",
-    "Burlywood":            "#deb887", "Tan":             "#d2b48c",
-    "RosyBrown":            "#bc8f8f", "SandyBrown":      "#f4a460",
-    "GoldenRod":            "#daa520", "DarkGoldenRod":   "#b8860b",
-    "Peru":                 "#cd853f", "Chocolate":       "#d2691e",
-    "SaddleBrown":          "#8b4513", "Sienna":          "#a0522d",
-    "Brown":                "#a52a2a", "Maroon":          "#800000",
-    "White":                "#ffffff", "Snow":            "#fffafa",
-    "Honeydew":             "#f0fff0", "MintCream":       "#f5fffa",
-    "Azure":                "#f0ffff", "AliceBlue":       "#f0f8ff",
-    "GhostWhite":           "#f8f8ff", "WhiteSmoke":      "#f5f5f5",
-    "SeaShell":             "#fff5ee", "Beige":           "#f5f5dc",
-    "OldLace":              "#fdf5e6", "FloralWhite":     "#fffaf0",
-    "Ivory":                "#fffff0", "AntiqueWhite":    "#faebd7",
-    "Linen":                "#faf0e6", "LavenderBlush":   "#fff0f5",
-    "MistyRose":            "#ffe4e1", "Gainsboro":       "#dcdcdc",
-    "LightGray":            "#d3d3d3", "LightGrey":       "#d3d3d3",
-    "Silver":               "#c0c0c0", "DarkGray":        "#a9a9a9",
-    "DarkGrey":             "#a9a9a9", "Gray":            "#808080",
-    "Grey":                 "#808080", "DimGray":         "#696969",
-    "DimGrey":              "#696969", "LightSlateGray":  "#778899",
-    "LightSlateGrey":       "#778899", "SlateGray":       "#708090",
-    "SlateGrey":            "#708090", "DarkSlateGray":   "#2f4f4f",
-    "DarkSlateGrey":        "#2f4f4f", "Black":           "#000000"
-}'''
-experiment = 1353
+[['CSS Colors'.variants]]
+name             = 'CSS Colors Inverse'
+experiment       = 1353
 output-delimiter = "\n"
-synopsis = 'Convert color hex values to their CSS keywords.'
-preamble = '''
-<svg class=hide>
-    <svg id="color" viewBox="0 0 1 1">
-        <rect width="1" height="1"/>
-    </svg>
-</svg>
-
-<p>
-    For each given color hex code print one of the corresponding css keywords. The full mapping is as follows:
-
-<div id=colors class="tables-4col">
-{{ range .DataMap }}
-    {{ if or (eq .Key "IndianRed") (eq .Key "Magenta")
-             (eq .Key "Cyan"     ) (eq .Key "Sienna" ) }}
-        <table><thead><tr><th>Hex<th>Keyword<tbody>
-    {{ end }}
-
-    <tr><td>{{ .Value }}
-        <td><svg><use fill="{{ .Value }}" href="#color"/></svg>{{ .Key }}
-
-    {{ if or (eq .Key "Fuchsia"    ) (eq .Key "Aqua" )
-             (eq .Key "SaddleBrown") (eq .Key "Black") }}
-        </table>
-    {{ end }}
-{{ end }}
-</div>
-'''
+synopsis         = 'Convert color hex values to their CSS keywords.'
 
 ['CSS Grid']
 category = 'Art'
