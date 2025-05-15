@@ -14,15 +14,12 @@ if my $unknown = @langs ∖ %langs {
 }
 
 # Build (and maybe push) lang-base.
-for 'lang-base', 'lang-base-no-proc' {
-    run <docker buildx build>,
-        '--file',   'docker/lang-base.Dockerfile',
-        '--pull',
-      ( '--push' unless $no-push ),
-        '--tag',    "codegolf/$_",
-        '--target', $_,
-        '.';
-}
+run <docker buildx build>,
+    '--file',   'docker/lang-base.Dockerfile',
+    '--pull',
+    ( '--push' unless $no-push ),
+    '--tag',    'codegolf/lang-base',
+    '.';
 
 for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
     my $id  = id($name);
@@ -38,19 +35,27 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
 
     $proc.sink;
 
+    # Format the size consistently so everything lines up.
     with %lang<size> = $proc.out.slurp(:close).chomp {
-        s/(.)B$/ {$0.uc}iB/;          # "XB" → " XiB"
-        s/^ ( \d  \d ) ' ' /{$0}.0 /; #   99 → 99.0
-        s/^ ( \d\.\d ) ' ' /{$0}0 /;  #  9.9 → 9.90
+        s/(.)B$/ {$0.uc}iB/;           # "XB" → " XiB"
+        s/^ ( \d  \d ) ' ' /{$0}.0 /;  #   99 → 99.0
+        s/^ ( \d\.\d ) ' ' /{$0}0 /;   #  9.9 → 9.90
+        s/^ ( \d     ) ' ' /{$0}.00 /; #    9 → 9.00
     }
 
     # Version.
-    if $id ~~ any <assembly brainfuck fish golfscript hare hexagony k> {
-        "langs/$id/Dockerfile".IO.slurp ~~ / ' VERSION=' (\S+) /;
-        %lang<version> = $id eq 'assembly' ?? "DefAssembler $0" !! $0;
+    if $id ~~ any <05ab1e apl arturo assembly befunge brainfuck cjam erlang fish golfscript hare hexagony j k qore scala stax vyxal> {
+        "langs/$id/Dockerfile".IO.slurp ~~ / ' VER=' (\S+) | ' VERSION=' (\S+) /;
+
+        %lang<version> = do given $id {
+            when 'apl'      { "Dyalog APL $0" }
+            when 'assembly' { "DefAssembler $0" }
+            when 'erlang'   { "OTP $0" }
+            default         { $0 }
+        }
     }
     else {
-        # Forth outputs it's version number over stderr.
+        # Some langs output their version number over stderr so merge out/err.
         my $proc = run «docker run -i --rm --tmpfs '/tmp:exec' $img»,
             :in, :out, :merge(so $id eq 'forth' | 'scheme');
 
@@ -63,39 +68,38 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
             # Dotted decimal or hyphenated date.
             my $digits = $ver ~~ / \d+ ( <[.-]> \d+ )+ /;
 
+            when 'ALGOL 68'    { $ver = "Algol 68 Genie $digits" }
             when 'AWK'
                | 'Forth'
                | 'Fortran'
-               | 'sed'        { $ver = "GNU $name $digits" }
-            when 'BASIC'      { $ver = "FreeBASIC $digits" }
-            when 'C'          { $ver = "Tiny C Compiler $digits" }
+               | 'sed'         { $ver = "GNU $name $digits" }
+            when 'BASIC'       { $ver = "FreeBASIC $digits" }
+            when 'BQN'         { $ver = "CBQN $digits" }
+            when 'C'           { $ver = "TCC $digits" }
             when 'C#'
                | 'F#'
-               | 'PowerShell' { }
-            when 'C++'        { $ver = "Clang $digits" }
-            when 'Clojure'    { $ver = "Babashka $digits" }
-            when 'COBOL'      { $ver = "GnuCOBOL $digits" }
-            when 'D'          {
-                $ver ~~ m/ v (\S+) /;
-                $ver = "D $0 on LDC $digits";
-            }
-            when 'Haskell'    { $ver = "Glasgow Haskell Compiler $digits" }
-            when 'Java'       { $ver = "OpenJDK $digits" }
-            when 'JavaScript' { $ver = "V8 $digits" }
-            when 'Lisp'       { $ver = "GNU CLISP $digits" }
-            when 'Pascal'     { $ver = "Free Pascal $digits" }
-            when 'Prolog'     { $ver = "SWI-Prolog $digits" }
-            when 'Raku'       {
+               | 'PowerShell'  { }
+            when 'C++'         { $ver = "Clang $digits" }
+            when 'Clojure'     { $ver = "Babashka $digits" }
+            when 'COBOL'       { $ver = "GnuCOBOL $digits" }
+            when 'Common Lisp' { $ver = "GNU CLISP $digits" }
+            when 'D'           { $ver = "DMD $digits" }
+            when 'Haskell'     { $ver = "GHC $digits" }
+            when 'Java'        { $ver = "OpenJDK $digits" }
+            when 'JavaScript'  { $ver = "V8 $digits" }
+            when 'Pascal'      { $ver = "FPC $digits" }
+            when 'Prolog'      { $ver = "SWI-Prolog $digits" }
+            when 'Raku'        {
                 $ver ~~ m:g/ v (\S+) '.' /;
                 $ver = "Raku $1[0] on Rakudo $0[0]";
             }
-            when 'Rexx'       { $ver = "Regina $digits" }
-            when 'Rockstar'   { $ver = "Rocky $digits" }
-            when 'Scheme'     { $ver = "Chez Scheme $digits" }
-            when 'SQL'        { $ver = "SQLite $digits" }
-            default           { $ver = $digits }
+            when 'Rexx'        { $ver = "Regina $digits" }
+            when 'Scheme'      { $ver = "Chez Scheme $digits" }
+            when 'SQL'         { $ver = "SQLite $digits" }
+            default            { $ver = $digits }
         }
 
+        die "Couldn't get version string for $id." unless $ver;
         %lang<version> = $ver;
     }
 

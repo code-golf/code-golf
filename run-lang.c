@@ -60,26 +60,28 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ERR_AND_EXIT("umount2");
 
     // Not every lang has /proc.
-    if (mount("proc", "/proc", "proc", MS_NODEV|MS_NOEXEC|MS_NOSUID, NULL) == 0) {
-        // Clobber /proc/meminfo. It can be used to inject state.
+    if (mount("proc", "/proc", "proc", MS_NODEV|MS_NOEXEC|MS_NOSUID, NULL) < 0)
+        ERR_AND_EXIT("mount proc");
+
+    // Clobber /proc/meminfo. It can be used to inject state. Kotlin doesn't like this.
+    if (strcmp(argv[0], "/usr/bin/kotlin") != 0)
         if (mount("/dev/null", "/proc/meminfo", NULL, MS_BIND, NULL) < 0)
             ERR_AND_EXIT("mount /proc/meminfo");
 
-        // Clobber /proc/stat. It can be used to inject state. V panics :-(
-        if (strcmp(argv[0], "/usr/bin/v") != 0)
-            if (mount("/dev/null", "/proc/stat", NULL, MS_BIND, NULL) < 0)
-                ERR_AND_EXIT("mount /proc/stat");
+    // Clobber /proc/stat. It can be used to inject state. Kotlin, Raku, & V don't like this.
+    if (strcmp(argv[0], "/usr/bin/kotlin") != 0
+     && strcmp(argv[0], "/usr/bin/raku")   != 0
+     && strcmp(argv[0], "/usr/bin/V")      != 0)
+        if (mount("/dev/null", "/proc/stat", NULL, MS_BIND, NULL) < 0)
+            ERR_AND_EXIT("mount /proc/stat");
 
-        // Clobber /proc/sys. It can be used to inject state.
-        if (mount("tmpfs", "/proc/sys", "tmpfs", MS_NODEV|MS_NOEXEC|MS_NOSUID|MS_RDONLY, NULL) < 0)
-            ERR_AND_EXIT("mount /proc/sys");
+    // Clobber /proc/sys. It can be used to inject state.
+    if (mount("tmpfs", "/proc/sys", "tmpfs", MS_NODEV|MS_NOEXEC|MS_NOSUID|MS_RDONLY, NULL) < 0)
+        ERR_AND_EXIT("mount /proc/sys");
 
-        // Allow /proc/self/fd/0 to be read by the lang after we change user.
-        if (chown("/proc/self/fd/0", NOBODY, NOBODY) < 0)
-            ERR_AND_EXIT("chown /proc/self/fd/0");
-    }
-    else if (errno != ENOENT)
-        ERR_AND_EXIT("mount proc");
+    // Allow /proc/self/fd/0 to be read by the lang after we change user.
+    if (chown("/proc/self/fd/0", NOBODY, NOBODY) < 0)
+        ERR_AND_EXIT("chown /proc/self/fd/0");
 
     if (mount("tmpfs", "/tmp", "tmpfs", MS_NODEV|MS_NOSUID, NULL) < 0)
         ERR_AND_EXIT("mount tmp");
@@ -185,7 +187,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         // ALLOW(fsetxattr),    // 190
         // ALLOW(getxattr),     // 191
         // ALLOW(lgetxattr),    // 192
-        // ALLOW(listxattr),    // 194
+        ALLOW(listxattr),       // 194
         // ALLOW(llistxattr),   // 195
         // ALLOW(lremovexattr), // 198
         // ALLOW(lsetxattr),    // 189

@@ -22,12 +22,18 @@
 {{ if .Data.Hole.CaseFold }}
     <div class=info>The output will be checked case-insensitively.</div>
 {{ end }}
-{{ if .Data.Hole.ItemDelimiter }}
+{{ if .Data.Hole.MultisetItemDelimiter }}
     <div class=info>The output judge is order agnostic. The expected output shown is one of many valid outputs.</div>
 {{ end }}
-{{ if .Data.Hole.Data }}
+{{ with .Data.Hole.Data }}
     <div>
-        <button class="btn orange" id=copy>Copy as JSON</button>
+        <button class="btn orange" data-copy="{{ . }}">Copy as JSON</button>
+        <span>Copied</span>
+    </div>
+{{ end }}
+{{ with .Data.Hole.Answer }}
+    <div>
+        <button class="btn orange" data-copy="{{ . }}">Copy Answer</button>
         <span>Copied</span>
     </div>
 {{ end }}

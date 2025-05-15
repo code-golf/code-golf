@@ -1,4 +1,4 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache curl gcc make musl-dev python3 readline-dev
 
@@ -9,11 +9,11 @@ COPY berry.c berry/default/
 
 RUN make -C berry
 
-FROM codegolf/lang-base-no-proc
+FROM codegolf/lang-base
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
 COPY --from=0 /berry/berry             /usr/bin/
 
 ENTRYPOINT ["berry"]
 
-CMD ["-v"]
+CMD ["--version"]

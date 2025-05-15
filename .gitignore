@@ -1,11 +1,12 @@
 /.vagrant/
+/.vscode/
 /config/data/assets.json
 /dist/
 /docker/.env
-/localhost-key.pem
 /localhost.pem
+/localhost-key.pem
 /node_modules/
-/sql/
+/sql/*.gz
 /t/.precomp/
 .DS_Store
 

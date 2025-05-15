@@ -2,8 +2,12 @@ package config
 
 import (
 	"cmp"
+	"encoding/hex"
+	"encoding/json"
+	"os"
 	"slices"
 	"strings"
+	"testing"
 )
 
 var (
@@ -18,29 +22,64 @@ var (
 	// All languages.
 	AllLangByID = map[string]*Lang{}
 	AllLangList []*Lang
+
+	// Redirects.
+	LangRedirects = map[string]string{}
 )
 
 type Lang struct {
-	Args       []string `json:"-"`
-	ArgsQuine  []string `json:"-" toml:"args-quine"`
-	Env        []string `json:"-"`
-	Example    string   `json:"example"`
-	Experiment int      `json:"experiment,omitempty"`
-	ID         string   `json:"id"`
-	Name       string   `json:"name"`
-	Size       string   `json:"size"`
-	Version    string   `json:"version"`
-	Website    string   `json:"website"`
+	Args, Redirects, Env []string `json:"-"`
+	ArgsQuine            []string `json:"-" toml:"args-quine"`
+	Digest               string   `json:"digest"`
+	DigestTrunc          []byte   `json:"-"`
+	Example              string   `json:"example"`
+	Experiment           int      `json:"experiment,omitempty"`
+	ID                   string   `json:"id"`
+	LogoURL              string   `json:"logo-url"`
+	Name                 string   `json:"name"`
+	Size                 string   `json:"size"`
+	Version              string   `json:"version"`
+	Website              string   `json:"website"`
 }
 
 func init() {
+	// Digests.
+	var digests map[string]string
+	if !testing.Testing() {
+		digestFile, err := os.Open("/lang-digests.json")
+		if err != nil {
+			panic(err)
+		}
+		defer digestFile.Close()
+
+		if err := json.NewDecoder(digestFile).Decode(&digests); err != nil {
+			panic(err)
+		}
+	}
+
 	var langs map[string]*Lang
 	unmarshal("data/langs.toml", &langs)
 
 	for name, lang := range langs {
 		lang.Example = strings.TrimSuffix(lang.Example, "\n")
 		lang.ID = ID(name)
+		lang.LogoURL = Assets["svg/"+lang.ID+".svg"]
 		lang.Name = name
+
+		// Digest & DigestTrunc (48-bit, 12 char trunc, like docker images).
+		if lang.Digest = digests[lang.ID]; lang.Digest != "" {
+			var err error
+			if lang.DigestTrunc, err = hex.DecodeString(
+				strings.TrimPrefix(lang.Digest, "sha256:")[:12],
+			); err != nil {
+				panic(err)
+			}
+		}
+
+		// Redirects.
+		for _, redirect := range lang.Redirects {
+			LangRedirects[redirect] = lang.ID
+		}
 
 		AllLangByID[lang.ID] = lang
 		AllLangList = append(AllLangList, lang)

@@ -1,13 +1,14 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache build-base curl
 
-RUN curl -L https://php.net/distributions/php-8.3.11.tar.xz | tar xJ
+ENV CFLAGS='-O2 -flto' LDFLAGS='-O2 -flto -all-static' VER=8.4.7
 
-ENV CFLAGS='-O2 -flto' LDFLAGS='-O2 -flto -all-static'
+RUN curl -#L https://php.net/distributions/php-$VER.tar.xz | tar xJ
 
-RUN cd php-*                   \
- && LDFLAGS= ./configure       \
+WORKDIR /php-$VER
+
+RUN LDFLAGS= ./configure       \
     --disable-all              \
     --disable-gcc-global-regs  \
     --disable-ipv6             \
@@ -18,11 +19,11 @@ RUN cd php-*                   \
 
 RUN echo display_errors=stderr > /usr/lib/php.ini
 
-FROM codegolf/lang-base-no-proc
+FROM codegolf/lang-base
 
 COPY --from=0 /usr/bin/php     /usr/bin/
 COPY --from=0 /usr/lib/php.ini /usr/lib/
 
 ENTRYPOINT ["php"]
 
-CMD ["-r", "echo phpversion();"]
+CMD ["--version"]

@@ -5,12 +5,13 @@ import {
     init, langs, hole, setSolution,
     setCode, refreshScores, submit, updateRestoreLinkVisibility,
     ReadonlyPanelsData, setCodeForLangAndSolution, getCurrentSolutionCode,
-    initDeleteBtn, initCopyJSONBtn, initOutputDiv, getScorings, replaceUnprintablesInOutput,
+    initDeleteBtn, initCopyButtons, getScorings,
     getArgs, serializeArgs,
     updateLocalStorage,
     ctrlEnter,
     getLastSubmittedCode,
 } from './_hole-common';
+import UnprintableElement from './_unprintable';
 
 const editor = new EditorView({
     dispatch: tr => {
@@ -44,7 +45,6 @@ const editor = new EditorView({
 editor.contentDOM.setAttribute('data-gramm', 'false');  // Disable Grammarly.
 
 init(false, setSolution, setCodeForLangAndSolution, updateReadonlyPanels, () => editor);
-initOutputDiv($('#out div'));
 
 // Set/clear the hide-details cookie on details toggling.
 $('#details').ontoggle = (e: Event) => document.cookie =
@@ -64,7 +64,7 @@ $('#takeToSandboxBtn').onclick = () => {
     location.href = '/sandbox';
 };
 
-initCopyJSONBtn($('#copy'));
+initCopyButtons($$('[data-copy]'));
 initDeleteBtn($('#deleteBtn'), langs);
 
 $$('#rankingsView a').forEach(a => a.onclick = e => {
@@ -90,11 +90,10 @@ function updateReadonlyPanels(data: ReadonlyPanelsData) {
 
     // Always show exp & out.
     $('#exp div').innerText = data.Exp;
-    $('#out div').innerText = data.Out;
-    $('#out div').innerHTML = replaceUnprintablesInOutput($('#out div').innerHTML);
+    $('#out div').replaceChildren(UnprintableElement.escape(data.Out));
 
     const ignoreCase = JSON.parse($('#case-fold').innerText);
-    const diff = diffView(hole, data.Exp, data.Out, data.Argv, ignoreCase, data.MultisetDelimiter, data.ItemDelimiter);
+    const diff = diffView(hole, data.Exp, data.Out, data.Argv, ignoreCase, data.OutputDelimiter, data.MultisetItemDelimiter);
     $('#diff-content').replaceChildren(diff);
     $('#diff').classList.toggle('hide', !diff);
 }

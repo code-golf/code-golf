@@ -1,8 +1,10 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.21 AS builder
 
 ENV VER=9.8.2
 
-RUN apk add --no-cache build-base ghc=$VER-r1
+RUN apk add --no-cache build-base ghc=$VER-r2
+
+RUN echo "#define VERSION \"$VER\"" > haskell.h
 
 COPY haskell.c .
 
@@ -19,9 +21,11 @@ RUN find /usr/lib -not \(                    \
         -or -path '/usr/lib/libncursesw.so*' \
     \) -delete
 
-# Delete all the GHC binaries except ghc, runghc
-RUN rm -r /usr/lib/ghc-$VER/lib/bin    \
- && find /usr/lib/ghc-$VER/bin -type f \
+# Delete unused libs and binaries.
+RUN rm -r /usr/lib/ghc-$VER/lib/bin                           \
+          /usr/lib/ghc-$VER/lib/x86_64-linux-ghc-$VER/Cabal-* \
+          /usr/lib/ghc-$VER/lib/x86_64-linux-ghc-$VER/ghci-*  \
+ && find /usr/lib/ghc-$VER/bin -type f                        \
     -not \( -name ghc-$VER -or -name runghc-$VER \) -delete
 
 FROM codegolf/lang-base

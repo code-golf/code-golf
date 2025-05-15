@@ -1,13 +1,20 @@
-FROM rust:1.81.0-alpine3.20 AS builder
+FROM rust:1.86.0-alpine3.21 AS builder
 
 RUN apk add --no-cache build-base linux-headers
 
-RUN cargo install uiua --version 0.12.3
+ENV VER=0.15.1
+
+RUN cargo install uiua    \
+    --features binary     \
+    --no-default-features \
+    --root /usr           \
+    --version $VER        \
+ && strip /usr/bin/uiua
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1  /lib/
-COPY --from=0 /usr/local/cargo/bin/uiua /usr/bin/
+COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
+COPY --from=0 /usr/bin/uiua            /usr/bin/
 
 ENTRYPOINT ["uiua"]
 

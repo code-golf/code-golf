@@ -61,7 +61,6 @@ func hasGroupCounts(tileCounts map[rune]int, pairCount int, meldCount int) bool 
 				tileCounts[tile+2]++
 			}
 		}
-
 	}
 	return false
 }
@@ -197,35 +196,7 @@ func isHandValid(tileCounts map[rune]int) bool {
 	return hasPair
 }
 
-func mahjong() []Run {
-	runs := make([]Run, 2)
-
-	args := make([]string, 100)
-	var answer strings.Builder
-
-	for i := range args {
-		hand := genValidHand()
-		mutCount := rand.IntN(4)
-		if mutCount > 0 {
-			hand = genInvalidHand(mutCount)
-		}
-		runes := []rune(hand)
-		rand.Shuffle(len(runes), func(i, j int) {
-			runes[i], runes[j] = runes[j], runes[i]
-		})
-		args[i] = string(runes)
-
-		if mutCount == 0 {
-			if answer.Len() > 0 {
-				answer.WriteByte('\n')
-			}
-			answer.WriteString(string(runes))
-		}
-	}
-
-	runs[0] = Run{Args: args, Answer: answer.String()}
-
-	// For the last run, use a set of static test cases
+var _ = answerFunc("mahjong", func() []Answer {
 	completeHands := []string{
 		"🀀🀁🀂🀃🀄🀅🀆🀆🀇🀏🀐🀘🀙🀡",
 		"🀀🀀🀁🀂🀃🀄🀅🀆🀇🀏🀐🀘🀙🀡",
@@ -329,47 +300,44 @@ func mahjong() []Run {
 		"🀃🀀🀁🀂🀃🀄🀅🀇🀏🀐🀘🀙🀡🀔",
 		"🀙🀀🀁🀂🀃🀄🀅🀆🀇🀏🀘🀙🀡🀛",
 		"🀅🀀🀁🀂🀃🀄🀅🀆🀇🀏🀐🀙🀡🀐",
+		"🀆🀄🀀🀂🀃🀏🀁🀡🀡🀡🀐🀙🀘🀄",
+		"🀆🀘🀆🀄🀁🀙🀏🀇🀆🀐🀏🀃🀡🀂",
+		"🀘🀅🀐🀂🀆🀃🀃🀀🀂🀙🀄🀂🀇🀏",
 		"🀀🀀🀇🀈🀈🀈🀉🀊🀊🀌🀌🀐🀐🀐", // Integer wrapping exploit (1, 3, 1, 2, 0, 2)
 	}
 
-	tests := append(completeHands, incompleteHands...)
-	testValidity := make([]bool, len(tests))
+	const argc = 100 // Preserve original argc
 
-	for i := range completeHands {
-		testValidity[i] = true
+	var tests []test
+
+	// Start with some hardcoded complete hands.
+	for _, hand := range completeHands {
+		hand = string(shuffle([]rune(hand)))
+		tests = append(tests, test{in: hand, out: hand})
 	}
 
-	for i := len(completeHands); i < len(testValidity); i++ {
-		testValidity[i] = false
+	// Append some hardcoded incomplete hands.
+	for _, hand := range incompleteHands {
+		hand = string(shuffle([]rune(hand)))
+		tests = append(tests, test{in: hand})
 	}
 
-	// Shuffle complete and incomplete hands
-	rand.Shuffle(len(tests), func(i, j int) {
-		tests[i], tests[j] = tests[j], tests[i]
-		testValidity[i], testValidity[j] = testValidity[j], testValidity[i]
-	})
-
-	args2 := make([]string, len(tests))
-	var answer2 strings.Builder
-
-	for i, t := range tests {
-		// Shuffle tiles within each hand
-		runes := []rune(t)
-		rand.Shuffle(len(runes), func(i, j int) {
-			runes[i], runes[j] = runes[j], runes[i]
-		})
-		args2[i] = string(runes)
-
-		// Add hand to answer, if complete
-		if testValidity[i] {
-			if answer2.Len() > 0 {
-				answer2.WriteByte('\n')
-			}
-			answer2.WriteString(string(runes))
+	// Fill-in the remaining with random hands.
+	for range 2*argc - len(tests) {
+		hand := genValidHand()
+		mutCount := rand.IntN(4)
+		if mutCount > 0 {
+			hand = genInvalidHand(mutCount)
 		}
+
+		test := test{in: string(shuffle([]rune(hand)))}
+		if mutCount == 0 {
+			test.out = test.in
+		}
+
+		tests = append(tests, test)
 	}
 
-	runs[1] = Run{Args: args2, Answer: answer2.String()}
-
-	return runs
-}
+	shuffle(tests)
+	return outputTests(tests[:argc], tests[argc:])
+})

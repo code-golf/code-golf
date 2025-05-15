@@ -33,13 +33,14 @@
     "luxon": "",
     "lz-string": "",
     "mathjax": "",
-    "nim-codemirror-mode": ""
+    "nim-codemirror-mode": "",
+    "style-mod": ""
   },
   "devDependencies": {
     "@types/diff": "",
     "@typescript-eslint/eslint-plugin": "",
     "@typescript-eslint/parser": "",
-    "eslint": "",
+    "eslint": "~9.25.1",
     "svgo": ""
   }
 }

@@ -17,8 +17,12 @@
     {{ if gt (len .Options) 3 }}
         <select name="{{ .ID }}">
         {{ range .Options }}
-            <option value="{{ .ID }}" {{ if eq $value .ID }} selected {{ end }}>
-                {{ .Name }}
+            {{ if .Group }}
+                <optgroup label="{{ .Name }}">
+            {{ else }}
+                <option value="{{ .ID }}" {{ if eq $value .ID }} selected {{ end }}>
+                    {{ .Name }}
+            {{ end }}
         {{ end }}
         </select>
     {{ else if eq (len .Options) 0 }}

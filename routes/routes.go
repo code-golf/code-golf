@@ -28,7 +28,7 @@ func Router(db *sqlx.DB) http.Handler {
 
 	// Simple routes that don't need middleware.Golfer.
 	r.Get("/callback/dev", callbackDevGET)
-	r.Get("/feeds/{feed:atom|json|rss}", feedGET)
+	r.Get("/feeds/{feed:(?:atom|json|rss)}", feedGET)
 	r.Get("/golfers/{name}/avatar", golferAvatarGET)
 	r.Get(`/golfers/{name}/avatar/{size:\d+}`, golferAvatarGET)
 	r.Get("/healthz", healthzGET)
@@ -49,6 +49,7 @@ func Router(db *sqlx.DB) http.Handler {
 			r.Post("/banners/{banner}", adminBannerPOST)
 			r.Get("/solutions", adminSolutionsGET)
 			r.Get("/solutions/run", adminSolutionsRunGET)
+			r.Get("/solutions/{hole}/{lang}/{golferID}", adminSolutionGET)
 		})
 		r.With(middleware.API).Route("/api", func(r chi.Router) {
 			r.Get("/", apiGET)
@@ -66,11 +67,8 @@ func Router(db *sqlx.DB) http.Handler {
 			r.With(middleware.RedirHolesLangs).Group(func(r chi.Router) {
 				r.Get("/holes/{hole}", apiHoleGET)
 				r.Get("/langs/{lang}", apiLangGET)
-				r.Get(
-					"/mini-rankings/{hole}/{lang}/{scoring:bytes|chars}"+
-						"/{view:top|me|following}",
-					apiMiniRankingsGET,
-				)
+				r.Get("/mini-rankings/{hole}/{lang}/{scoring:(?:bytes|chars)}"+
+					"/{view:(?:top|me|following)}", apiMiniRankingsGET)
 
 				// API routes that require a logged-in golfer.
 				r.With(middleware.GolferArea).Group(func(r chi.Router) {
@@ -78,6 +76,7 @@ func Router(db *sqlx.DB) http.Handler {
 					r.Delete("/notes/{hole}/{lang}", apiNoteDELETE)
 					r.Get("/notes/{hole}/{lang}", apiNoteGET)
 					r.Put("/notes/{hole}/{lang}", apiNotePUT)
+					r.Get("/solutions-search", apiSolutionsSearchGET)
 				})
 			})
 		})
@@ -91,6 +90,7 @@ func Router(db *sqlx.DB) http.Handler {
 			r.Get("/disconnect/{connection}", golferDisconnectGET)
 			r.Get("/export", golferExportGET)
 			r.Post("/hide-banner", golferHideBannerPOST)
+			r.Get("/code-search", golferSearchGET)
 			r.Get("/settings", golferSettingsGET)
 			r.Post("/settings", golferSettingsPOST)
 			r.Get("/settings/{page:delete-account}", golferSettingsDeleteAccountGET)
@@ -100,13 +100,14 @@ func Router(db *sqlx.DB) http.Handler {
 		})
 		r.With(middleware.GolferInfo).Route("/golfers/{name}", func(r chi.Router) {
 			r.Get("/", golferGET)
-			r.Post("/{action:follow|unfollow}", golferActionPOST)
+			r.Post("/{action:(?:follow|unfollow)}", golferActionPOST)
 			r.Get("/cheevos", golferCheevosGET)
 			r.Get("/holes", redir("holes/rankings/lang/bytes"))
-			r.Get("/holes/{scoring:bytes|chars}", redir("rankings/lang/{scoring}"))
-			r.Get("/holes/{display:rankings|points}/{scope:lang|overall}/{scoring:bytes|chars}", golferHolesGET)
+			r.Get("/holes/{scoring:(?:bytes|chars)}", redir("rankings/lang/{scoring}"))
+			r.Get("/holes/{display:(?:rankings|points)}/{scope:(?:lang|overall)}"+
+				"/{scoring:(?:bytes|chars)}", golferHolesGET)
 			r.Get("/{hole}/{lang}/{scoring}", golferSolutionGET)
-			// r.Post("/{hole}/{lang}/{scoring}", golferSolutionPOST)
+			r.Post("/{hole}/{lang}/{scoring}", golferSolutionPOST)
 		})
 		r.Get("/ideas", ideasGET)
 		r.Route("/rankings", func(r chi.Router) {
@@ -146,9 +147,10 @@ func Router(db *sqlx.DB) http.Handler {
 		r.Get("/scores/{hole}/{lang}/{scoring}/{page}", scoresGET)
 		r.Post("/solution", solutionPOST)
 		r.Get("/stats", statsGET)
+		r.Get("/stats/{page:cheevos}", statsCheevosGET)
 		r.Get("/stats/{page:countries}", statsCountriesGET)
 		r.Get("/stats/{page:golfers}", statsGolfersGET)
-		r.Get("/stats/{page:holes|langs}", statsTableGET)
+		r.Get("/stats/{page:(?:holes|langs)}", statsTableGET)
 		r.Get("/stats/{page:unsolved-holes}", statsUnsolvedHolesGET)
 		r.Get("/wiki", wikiGET)
 		r.Get("/wiki/*", wikiGET)
