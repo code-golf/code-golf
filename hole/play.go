@@ -140,13 +140,13 @@ func runCode(
 	switch lang.ID {
 	case "05ab1e":
 		// Prevent trivial quines. Error out and return early.
-		if hole.ID == "quine" && len(code) > 0 && !strings.Contains(code, `"`) && !strings.Contains(code, "”") {
+		if holeID == "quine" && len(code) > 0 && !strings.Contains(code, `"`) && !strings.Contains(code, "”") {
 			run.Stderr = `Quine in 05AB1E must have at least one '"' or '”' character.`
 			return nil
 		}
 	case "cjam":
 		// Prevent trivial quines. Error out and return early.
-		if hole.ID == "quine" && !strings.Contains(code, "`") {
+		if holeID == "quine" && !strings.Contains(code, "`") {
 			run.Stderr = "Quine in CJam must have at least one '`' character."
 			return nil
 		}
@@ -160,19 +160,19 @@ func runCode(
 		code += "\n(print)(print)"
 	case "go":
 		// Prevent trivial quines. Error out and return early.
-		if hole.ID == "quine" && strings.Contains(code, "//go:embed") {
+		if holeID == "quine" && strings.Contains(code, "//go:embed") {
 			run.Stderr = `Quine in Go must not use "embed".`
 			return nil
 		}
 	case "iogii", "stax":
 		// Prevent trivial quines. Error out and return early.
-		if hole.ID == "quine" && len(code) > 0 && regexp.MustCompile(`^\d+\n?$`).MatchString(code) {
+		if holeID == "quine" && len(code) > 0 && regexp.MustCompile(`^\d+\n?$`).MatchString(code) {
 			run.Stderr = "Quine in " + lang.Name + " must not consist solely of numeric characters."
 			return nil
 		}
 	case "jq":
 		// Prevent trivial quines. Error out and return early.
-		if hole.ID == "quine" && json.Valid([]byte(code)) {
+		if holeID == "quine" && json.Valid([]byte(code)) {
 			run.Stderr = "Quine in jq must not be valid JSON."
 			return nil
 		}
@@ -197,7 +197,7 @@ func runCode(
 			code += "\n"
 		}
 	case "kotlin":
-		if hole.ID == "quine" {
+		if holeID == "quine" {
 			// Appending `Unit` on a newline suppresses implicit output of expressions
 			// in Kotlin. The '\n' guarantees we're not appending a ';' to another ';'.
 			code += "\nUnit"
@@ -205,20 +205,20 @@ func runCode(
 	case "php":
 		code = "<?php " + code + " ;"
 	case "racket":
-		if hole.ID == "quine" {
+		if holeID == "quine" {
 			// Inserting `(current-print (λ (x) (void)))` before the code in the editor
 			// suppresses the implicit output of expressions in Racket.
 			code = "(current-print (λ (x) (void)))" + code
 		}
 	case "tex":
 		// Prevent trivial quines. Error out and return early.
-		if hole.ID == "quine" && !strings.Contains(code, `\`) {
+		if holeID == "quine" && !strings.Contains(code, `\`) {
 			run.Stderr = `Quine in TeX must have at least one '\' character.`
 			return nil
 		}
 	case "uiua":
 		// Prevent trivial quines. Error out and return early.
-		if hole.ID == "quine" && len(code) > 0 && (!strings.Contains(code, "&p") || strings.Contains(code, `"`)) {
+		if holeID == "quine" && len(code) > 0 && (!strings.Contains(code, "&p") || strings.Contains(code, `"`)) {
 			run.Stderr = "Quine in Uiua must use `&p` (without backticks) and cannot contain double quotes."
 			return nil
 		}
@@ -252,7 +252,7 @@ func runCode(
 	}
 
 	// Language arguments. Clone because we intend to mutate.
-	if hole.ID == "quine" && lang.ArgsQuine != nil {
+	if holeID == "quine" && lang.ArgsQuine != nil {
 		cmd.Args = slices.Clone(lang.ArgsQuine)
 	} else {
 		cmd.Args = slices.Clone(lang.Args)
@@ -349,8 +349,8 @@ func runCode(
 func PlaySandbox(ctx context.Context, lang *config.Lang, code string, args []string) *Run {
 	run := Run{Args: args, Answer: ""}
 
-	if err := playRun(ctx, nil, lang, code, &run); err != nil {
-		log.Println(err)
+	if err := runCode(ctx, nil, lang, code, &run); err != nil {
+		panic(err)
 	}
 
 	run.Pass = !run.Timeout
