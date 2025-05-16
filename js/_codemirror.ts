@@ -1,4 +1,4 @@
-import { EditorState }                                    from '@codemirror/state';
+import { EditorState, Extension }                         from '@codemirror/state';
 import { EditorView, keymap, lineNumbers, drawSelection,
     highlightWhitespace } from '@codemirror/view';
 import { $ }                                              from './_util';
@@ -250,3 +250,6 @@ if (matchMedia(JSON.parse($('#dark-mode-media-query').innerText)).matches)
         oneDarkTheme,
         syntaxHighlighting(oneDarkHighlightStyle),
     );
+
+export const asyncExtensions : { [key: string]: () => Promise<Extension> } = {
+};
