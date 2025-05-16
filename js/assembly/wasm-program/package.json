@@ -1,0 +1,13 @@
+{
+  "name": "wasm-program",
+  "version": "0.1.0",
+  "description": "Simple interface for running programs compiled to WebAssembly by Emscripten or WASI SDK",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+        "build": "tsc"
+    },
+    "devDependencies": {
+        "typescript": "^5.0.0"
+    }
+}

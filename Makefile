@@ -37,6 +37,7 @@ db-dump:
 
 dev:
 	@touch docker/.env
+	@mkdir -p wasm && cp -a "$(docker mount codegolf/binutils-wasm)"/wasm/* ./wasm/ && cp -a "$(docker mount codegolf/aspp-wasm)"/wasm/* ./wasm/
 	@docker compose rm -f
 	@docker compose up --build
 

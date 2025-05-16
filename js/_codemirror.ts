@@ -18,6 +18,7 @@ import { oneDarkTheme, oneDarkHighlightStyle }   from '@codemirror/theme-one-dar
 import { vim }                                   from '@replit/codemirror-vim';
 
 import { AssemblyState as DefAsmState }             from '@defasm/core';
+import { AssemblyState as ExtAsmState }             from './assembly/extasm';
 
 // Languages.
 import { apl }                                      from '@codemirror/legacy-modes/mode/apl';
@@ -71,6 +72,7 @@ import { tcl }                                      from '@codemirror/legacy-mod
 import { stex }                                     from '@codemirror/legacy-modes/mode/stex';
 import { wrenLanguage }                             from '@exercism/codemirror-lang-wren';
 import { zig }                                      from 'codemirror-lang-zig';
+import { createAssembler, PreprocessedAssembler, ToolchainAssembler } from './assembly/assemble';
 
 // Bypass default constructors so we only get highlighters and not extensions.
 const elixir     = new LanguageSupport(elixirLanguage);
@@ -145,6 +147,7 @@ export const extensions : { [key: string]: any } = {
     // TODO algol-68
     'apl':           StreamLanguage.define(apl),
     // TODO arturo
+    'arm64':      assemblyLanguage(),
     'assembly':      x86Assembly(),
     'assembly-wiki': x86Assembly(false),
     // TODO awk
@@ -213,6 +216,8 @@ export const extensions : { [key: string]: any } = {
     'r':             StreamLanguage.define(r),
     'racket':        StreamLanguage.define(scheme),
     'raku':          StreamLanguage.define(raku),
+    'risc-v':      assemblyLanguage(),
+
     // TODO rebol
     // TODO rexx
     // TODO rockstar
@@ -256,5 +261,129 @@ if (matchMedia(JSON.parse($('#dark-mode-media-query').innerText)).matches)
         syntaxHighlighting(oneDarkHighlightStyle),
     );
 
+import aspp from '../wasm/aspp.wasm';
+import risc_v_as from '../wasm/riscv64-linux-gnu-as.wasm';
+import risc_v_ld from '../wasm/riscv64-linux-gnu-ld.wasm';
+import risc_v_objdump from '../wasm/riscv64-linux-gnu-objdump.wasm';
+import arm64_as from '../wasm/aarch64-linux-gnu-as.wasm';
+import arm64_ld from '../wasm/aarch64-linux-gnu-ld.wasm';
+import arm64_objdump from '../wasm/aarch64-linux-gnu-objdump.wasm';
+import { wasmCompileUrl } from './assembly/wasm-program';
+
+const linkerScript = `
+ENTRY(_start)
+
+SECTIONS
+{
+	. = 0x400000;
+
+	.text : ALIGN(0x1000) {
+		*(.text)
+	} :text
+
+    .debug          0 : { *(.debug) }
+    .line           0 : { *(.line) }
+    .debug_srcinfo  0 : { *(.debug_srcinfo) }
+    .debug_sfnames  0 : { *(.debug_sfnames) }
+    .debug_aranges  0 : { *(.debug_aranges) }
+    .debug_pubnames 0 : { *(.debug_pubnames) }
+    .debug_info     0 : { *(.debug_info .gnu.linkonce.wi.*) }
+    .debug_abbrev   0 : { *(.debug_abbrev) }
+    .debug_line     0 : { *(.debug_line .debug_line.* .debug_line_end) }
+    .debug_frame    0 : { *(.debug_frame) }
+    .debug_str      0 : { *(.debug_str) }
+    .debug_loc      0 : { *(.debug_loc) }
+    .debug_macinfo  0 : { *(.debug_macinfo) }
+    .debug_weaknames 0 : { *(.debug_weaknames) }
+    .debug_funcnames 0 : { *(.debug_funcnames) }
+    .debug_typenames 0 : { *(.debug_typenames) }
+    .debug_varnames  0 : { *(.debug_varnames) }
+    .debug_pubtypes 0 : { *(.debug_pubtypes) }
+    .debug_ranges   0 : { *(.debug_ranges) }
+    .debug_addr     0 : { *(.debug_addr) }
+    .debug_line_str 0 : { *(.debug_line_str) }
+    .debug_loclists 0 : { *(.debug_loclists) }
+    .debug_macro    0 : { *(.debug_macro) }
+    .debug_names    0 : { *(.debug_names) }
+    .debug_rnglists 0 : { *(.debug_rnglists) }
+    .debug_str_offsets 0 : { *(.debug_str_offsets) }
+    .debug_sup      0 : { *(.debug_sup) }
+
+	.data : ALIGN(0x1000) {
+		*(.data)
+		*(.rodata*)
+		*(.*)
+	} :data
+
+	.bss : ALIGN(0x1000) {
+		*(.bss)
+	} :bss
+}
+
+PHDRS
+{
+	text PT_LOAD FLAGS(7) AT(0x400000);
+	data PT_LOAD FLAGS(7);
+	bss PT_LOAD FLAGS(7);
+};
+`
+
+function riscvAsArgs(src: string) {
+    let arch;
+    let archLine = false;
+    if(src.startsWith("#32")) {
+        archLine = true;
+        arch = "rv32";
+    } else {
+        if(src.startsWith("#64")) {
+            archLine = true;
+        }
+        arch = "rv64";
+    }
+    arch += "gmafdqcbvh_zic64b_ziccamoa_ziccif_zicclsm_ziccrse_zicbom_zicbop_zicboz_zicond_zicntr_zicsr_zifencei_zihintntl_zihintpause_zihpm_zimop_zicfiss_zicfilp_zmmul_za64rs_za128rs_zaamo_zabha_zacas_zalrsc_zawrs_zfbfmin_zfa_zfh_zfhmin_zbb_zba_zbc_zbs_zbkb_zbkc_zbkx_zk_zkn_zknd_zkne_zknh_zkr_zks_zksed_zksh_zkt_zve32x_zve32f_zve64x_zve64f_zve64d_zvbb_zvbc_zvfbfmin_zvfbfwma_zvfh_zvfhmin_zvkb_zvkg_zvkn_zvkng_zvknc_zvkned_zvknha_zvknhb_zvksed_zvksh_zvks_zvksg_zvksc_zvkt_zvl32b_zvl64b_zvl128b_zvl256b_zvl512b_zvl1024b_zvl2048b_zvl4096b_zvl8192b_zvl16384b_zvl32768b_zvl65536b_ztso_zca_zcb_zcmop_xtheadba_xtheadbb_xtheadbs_xtheadcmo_xtheadcondmov_xtheadfmemidx_xtheadfmv_xtheadmac_xtheadmemidx_xtheadmempair_xtheadsync_xventanacondops";
+    let preferM = false;
+    if(archLine) {
+        for(let i = 1; i < src.length; ++i) {
+            const c = src[i];
+            if(c == '\n') {
+                break;
+            }
+            if(c == 'M') {
+                preferM = true;
+            }
+        }
+    }
+    if(preferM) {
+        arch += "_zcmp_zcmt";
+    } else {
+        arch += "_zcd";
+    }
+    return ["-march", arch, "-mno-arch"];
+}
+
+function riscvLdArgs(src: string) {
+    const machine = src.startsWith("#32") ? "elf32lriscv" : "elf64lriscv";
+    return ["-m", machine];
+}
+
+function arm64AsArgs(src: string) {
+    return ["-march=armv9.5-a+fp+bf16+crypto+crc+f32mm+f64mm+fp16+fp16fml+memtag+rng+sb+simd+sme+sme-f64f64+sme-i16i64+sve+sve2"];
+}
+
+function arm64LdArgs(src: string) {
+    return [];
+}
+
+function assemblyIdeFactory(as: string, ld: string, objdump: string, asArgs: (src: string) => string[], ldArgs: (src: string) => string[]) {
+    const ldArgs2 = (src: string) => {const args = ldArgs(src); args.push("--no-warn-rwx"); return args;};
+    return async () => assemblyIde(new ExtAsmState(await PreprocessedAssembler.create(wasmCompileUrl(aspp),
+        ToolchainAssembler.create(wasmCompileUrl(as), wasmCompileUrl(ld), wasmCompileUrl(objdump)).then(x =>
+            x.withLinkerScript(linkerScript).withAsArgs(asArgs).withLdArgs(ldArgs2)
+        )
+    )));
+}
+
 export const asyncExtensions : { [key: string]: () => Promise<Extension> } = {
+    'arm64': assemblyIdeFactory(arm64_as, arm64_ld, arm64_objdump, arm64AsArgs, arm64LdArgs),
+    'risc-v': assemblyIdeFactory(risc_v_as, risc_v_ld, risc_v_objdump, riscvAsArgs, riscvLdArgs),
 };

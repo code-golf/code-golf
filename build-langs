@@ -32,6 +32,7 @@ my $qemu_targets = "$binutils_targets riscv32-linux-user"
 if 'ARM64' ∈ @langs || 'RISC-V' ∈ @langs {
     run «docker buildx build -t "codegolf/qemu" --pull $push --build-arg=VER=$qemu_ver "--build-arg=TARGETS=$qemu_targets" --build-context asm=lib/asm "docker/qemu"»;
     run «docker buildx build -t "codegolf/binutils" --pull $push --build-arg=VER=$binutils_ver "--build-arg=TARGETS=$binutils_targets" "docker/binutils/native"»;
+    run «docker buildx build -t "codegolf/binutils-wasm" --pull $push --build-arg=VER=$binutils_ver "--build-arg=TARGETS=$binutils_targets" "docker/binutils/wasm"»;
 }
 
 # Build all languages if no arguments are specified.
