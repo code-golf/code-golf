@@ -12,7 +12,8 @@ import {
     setCode, refreshScores, getHideDeleteBtn, submit, ReadonlyPanelsData,
     updateRestoreLinkVisibility, setCodeForLangAndSolution,
     populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyButtons,
-    getScorings,
+    getScorings, getArgs, serializeArgs,
+    deserializeArgs,
     updateLocalStorage,
     getLang,
     setState,
@@ -45,6 +46,7 @@ const hasNotes  = JSON.parse($('#has-notes').innerText);
  */
 let isMobile = false;
 let applyingDefault = false;
+const isSandbox = $('#hole-sandbox') != null;
 
 let subRes: ReadonlyPanelsData | null = null;
 let langWikiContent = '';
@@ -56,7 +58,7 @@ let holeLangNotesEditor: EditorView | null = null;
 
 let substitutions: {pattern: RegExp, replacement: string}[] = [];
 
-init(true, setSolution, setCodeForLangAndSolution, updateReadonlyPanels, () => editor);
+init(true, setSolution, setCodeForLangAndSolution, updateReadonlyPanels, () => editor, getArgs);
 
 const goldenContainer = $('#golden-container');
 
@@ -125,7 +127,7 @@ function updateReadonlyPanels(data: ReadonlyPanelsData | {langWiki: string}| {ho
     }
 }
 
-for (const name of ['exp', 'out', 'err', 'arg', 'diff']) {
+for (const name of isSandbox ? ['out', 'err'] : ['exp', 'out', 'err', 'diff']) {
     layout.registerComponentFactoryFunction(name, container => {
         container.setTitle(getTitle(name));
         autoFocus(container);
@@ -135,6 +137,56 @@ for (const name of ['exp', 'out', 'err', 'arg', 'diff']) {
         updateReadonlyPanel(name);
     });
 }
+
+layout.registerComponentFactoryFunction('arg', async container => {
+    container.setTitle(getTitle('arg'));
+    autoFocus(container);
+    const items = <div id='arg' class='readonly-output'></div>;
+    if (isSandbox)
+        container.element.replaceChildren(
+            <button id='addArgBtn'>+</button>,
+            <button id='removeArgBtn'>-</button>,
+            <button id='pasteArgsBtn'>Paste</button>,
+            <button id='copyArgsBtn'>Copy</button>,
+        );
+    else container.element.replaceChildren(
+        <button id='takeToSandboxBtn'>Take to sandbox</button>,
+    );
+    container.element.append(
+        items,
+    );
+
+    await afterDOM();
+    if (isSandbox) {
+        $('#addArgBtn').onclick = () => {
+            items.append(<span contenteditable></span>);
+        };
+        $('#removeArgBtn').onclick = () => {
+            if (items.lastElementChild) items.removeChild(items.lastElementChild);
+        };
+        $('#pasteArgsBtn').onclick = async () => {
+            const args = deserializeArgs(await navigator.clipboard.readText());
+            items.replaceChildren(...args.map(a => <span contenteditable>{a}</span>));
+        };
+        $('#copyArgsBtn').onclick = () => {
+            navigator.clipboard.writeText(serializeArgs(getArgs()));
+        };
+    }
+    else {
+        $('#takeToSandboxBtn').onclick = () => {
+            sessionStorage.setItem('args', serializeArgs(getArgs()));
+            location.href = '/sandbox';
+        };
+    }
+    readonlyOutputs['arg'] = items;
+    updateReadonlyPanel('arg');
+
+    const args = sessionStorage.getItem('args');
+    if (args) {
+        items.replaceChildren(...deserializeArgs(args).map(a => <span contenteditable>{a}</span>));
+        sessionStorage.removeItem('arg');
+    }
+});
 
 layout.registerComponentFactoryFunction('langWiki', async container => {
     container.setTitle(getTitle('langWiki'));
@@ -197,7 +249,7 @@ function makeHoleLangNotesEditor(parent: HTMLDivElement) {
             if (!holeLangNotesEditor) return;
             const result = holeLangNotesEditor.update([tr]) as unknown;
             const content = tr.state.doc.toString();
-            $<HTMLButtonElement>('#upsert-notes-btn').disabled = content === holeLangNotesContent || (!!content && !isSponsor);
+            $<HTMLButtonElement>('#upsert-notes-btn').disabled = content === holeLangNotesContent || (!!content && !isSponsor) || isSandbox;
             return result;
         },
         parent,
@@ -230,13 +282,15 @@ layout.registerComponentFactoryFunction('code', async container => {
 
     await afterDOM();
 
-    $('#restoreLink').onclick = (e: MouseEvent) => {
-        e.preventDefault();
-        setCode(getCurrentSolutionCode(), editor);
-    };
+    if ($('#restoreLink')) {
+        $('#restoreLink').onclick = (e: MouseEvent) => {
+            e.preventDefault();
+            setCode(getCurrentSolutionCode(), editor);
+        };
+    }
 
     // Wire submit to clicking a button and a keyboard shortcut.
-    const closuredSubmit = () => submit(editor, updateReadonlyPanels);
+    const closuredSubmit = () => submit(editor, updateReadonlyPanels, getArgs);
     $('#runBtn').onclick = closuredSubmit;
     $('#editor').onkeydown = ctrlEnter(closuredSubmit);
 
@@ -337,26 +391,28 @@ function delinkRankingsView() {
     });
 }
 
-layout.registerComponentFactoryFunction('scoreboard', async container => {
-    container.setTitle(getTitle('scoreboard'));
-    autoFocus(container);
-    container.element.append(
-        $<HTMLTemplateElement>('#template-scoreboard').content.cloneNode(true),
-    );
-    container.element.id = 'scoreboard-section';
-    await afterDOM();
-    populateScores(editor);
-    delinkRankingsView();
-});
+if (!isSandbox) {
+    layout.registerComponentFactoryFunction('scoreboard', async container => {
+        container.setTitle(getTitle('scoreboard'));
+        autoFocus(container);
+        container.element.append(
+            $<HTMLTemplateElement>('#template-scoreboard').content.cloneNode(true),
+        );
+        container.element.id = 'scoreboard-section';
+        await afterDOM();
+        populateScores(editor);
+        delinkRankingsView();
+    });
 
-layout.registerComponentFactoryFunction('details', container => {
-    container.setTitle(getTitle('details'));
-    autoFocus(container);
-    const details = $<HTMLTemplateElement>('#template-details').content.cloneNode(true) as HTMLDetailsElement;
-    container.element.append(details);
-    container.element.id = 'details-content';
-    initCopyButtons(container.element.querySelectorAll('[data-copy]'));
-});
+    layout.registerComponentFactoryFunction('details', container => {
+        container.setTitle(getTitle('details'));
+        autoFocus(container);
+        const details = $<HTMLTemplateElement>('#template-details').content.cloneNode(true) as HTMLDetailsElement;
+        container.element.append(details);
+        container.element.id = 'details-content';
+        initCopyButtons(container.element.querySelectorAll('[data-copy]'));
+    });
+}
 
 const titles: Record<string, string | undefined> = {
     details: 'Details',
@@ -395,7 +451,12 @@ const defaultLayout: LayoutConfig = {
         content: [
             {
                 type: 'row',
-                content: [
+                content: isSandbox ? [
+                    {
+                        ...plainComponent('code'),
+                        width: 100,
+                    },
+                ] : [
                     {
                         ...plainComponent('code'),
                         width: 75,
@@ -412,14 +473,14 @@ const defaultLayout: LayoutConfig = {
                         type: 'stack',
                         content: [
                             plainComponent('arg'),
-                            plainComponent('exp'),
+                            ...(isSandbox ? [] : [plainComponent('exp')]),
                         ],
                     }, {
                         type: 'stack',
                         content: [
                             plainComponent('out'),
                             plainComponent('err'),
-                            plainComponent('diff'),
+                            ...(isSandbox ? [] : [plainComponent('diff')]),
                         ],
                     },
                 ],
@@ -429,7 +490,8 @@ const defaultLayout: LayoutConfig = {
 };
 
 function getPoolFromLayoutConfig(config: LayoutConfig) {
-    const allComponents = ['code', 'scoreboard', 'arg', 'exp', 'out', 'err', 'diff', 'details', 'langWiki'];
+    const allComponents = ['code', 'scoreboard', 'arg', 'exp', 'out', 'err', 'diff', 'langWiki'];
+    if (!isSandbox) allComponents.push('details');
     if (isSponsor || hasNotes) allComponents.push('holeLangNotes');
     const activeComponents = getComponentNamesRecursive(config.root!);
     return allComponents.filter(x => !activeComponents.includes(x));
@@ -465,12 +527,12 @@ function getViewState(): ViewState {
 const saveLayout = throttle(() => {
     const state = getViewState();
     if (!state.config.root) return;
-    localStorage.setItem('lastViewState', JSON.stringify(state));
+    localStorage.setItem('lastViewState' + (isSandbox ? 'Sandbox' : ''), JSON.stringify(state));
 }, 2000);
 
 
 async function applyInitialLayout() {
-    const saved = localStorage.getItem('lastViewState');
+    const saved = localStorage.getItem('lastViewState' + (isSandbox ? 'Sandbox' : ''));
     const viewState = saved
         ? JSON.parse(saved) as ViewState
         : defaultViewState;
@@ -592,7 +654,7 @@ async function checkShowAddRow() {
     $('#add-row').classList.toggle(
         'hide',
         Object.keys(poolElements).length === 0
-            || layout.rootItem === undefined,
+        || layout.rootItem === undefined,
     );
 }
 
