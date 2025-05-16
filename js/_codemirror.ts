@@ -17,9 +17,11 @@ import { bracketMatching, defaultHighlightStyle,
 import { oneDarkTheme, oneDarkHighlightStyle }   from '@codemirror/theme-one-dark';
 import { vim }                                   from '@replit/codemirror-vim';
 
+import { AssemblyState as DefAsmState }             from '@defasm/core';
+
 // Languages.
 import { apl }                                      from '@codemirror/legacy-modes/mode/apl';
-import { assembly }                                 from '@defasm/codemirror';
+import { assemblyLanguage, assemblyIde }            from './assembly/codemirror';
 import { brainfuck }                                from 'codemirror-lang-brainfuck';
 import { c, csharp, dart, kotlin, scala, squirrel } from './vendor/codemirror-clike';
 import { clojure }                                  from '@codemirror/legacy-modes/mode/clojure';
@@ -93,6 +95,11 @@ const fontFamily = "'Source Code Pro', monospace";
 // This was disabled in the upstream due to the old Safari issue (codemirror/dev#524).
 const lineWrapping: any = CSS.supports('overflow-wrap', 'anywhere') ? { wordBreak: 'break-all' } : {};
 
+function x86Assembly(byteDumps: boolean = true) {
+    const state = new DefAsmState();
+    return [assemblyLanguage({bitness: state.bitness, defaultSyntax: state.defaultSyntax}), assemblyIde(state, {byteDumps})];
+}
+
 export const extensions : { [key: string]: any } = {
     // Extensions.
     'base': [
@@ -138,8 +145,8 @@ export const extensions : { [key: string]: any } = {
     // TODO algol-68
     'apl':           StreamLanguage.define(apl),
     // TODO arturo
-    'assembly':      assembly(),
-    'assembly-wiki': assembly({ byteDumps: false }),
+    'assembly':      x86Assembly(),
+    'assembly-wiki': x86Assembly(false),
     // TODO awk
     'bash':          StreamLanguage.define(shell),
     // TODO basic

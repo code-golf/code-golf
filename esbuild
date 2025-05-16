@@ -20,4 +20,4 @@ node_modules/.bin/esbuild "$@"         \
     --public-path=/dist                \
     --sourcemap                        \
     --target=es2020,chrome88           \
-    `find css js svg -type f -not -name '_*' -not -path '*/vendor/*'`
+    `find css js svg -type f -not -name '_*' -not -path '*/vendor/*' -not -path 'js/assembly/*'`

@@ -1,0 +1,82 @@
+@top Program { statement ((';' | '\n') statement)*  }
+
+@external tokens tokenizer from "./tokenizer" {
+  Register,
+  Directive,
+  Comment,
+  Opcode, IOpcode,
+  RelOpcode, IRelOpcode,
+  Prefix,
+  word,
+  Ptr,
+  Offset,
+  symEquals,
+  SymbolName,
+  VEXRound,
+  number,
+  immPrefix,
+  SpecialWord,
+  None
+}
+
+@skip {Space}
+
+@tokens {
+  Space { std.whitespace }
+  charString { "'" (![\\'] | "\\" _)* "'"? }
+  FullString { '"' (![\\"] | "\\" _)* '"'? }
+  unary { '+' | '-' | '~' | '!' }
+  operator { $[+\-/*%|&^<>!] | '||' | '&&' | '>>' | '<<' | '<>' | '==' | '!=' | '>=' | '<='}
+  @precedence { '\n', Space }
+}
+
+statement {
+  (
+  Prefix |
+  LabelDefinition |
+  InstructionStatement |
+  DirectiveStatement |
+  SymbolDefinition |
+  None)* Comment?
+}
+
+LabelDefinition { SymbolName ':' }
+SymbolDefinition { SymbolName symEquals Expression }
+
+
+InstructionStatement {
+  (Opcode VEXRound? commaSep<(Register | Immediate | Relative | Memory) VEXRound? VEXMask? VEXRound?>)
+  |
+  (IOpcode commaSep<Ptr? (Register | (Offset Expression) | IImmediate | IMemory) VEXRound? VEXMask? VEXRound?>)
+  |
+  (RelOpcode (('*' (Register | Relative | Memory)) | Register | Expression | Memory))
+  |
+  (IRelOpcode (Register | Expression | IMemory))
+}
+
+DirectiveStatement {
+  SymbolName? Directive commaSep<Expression | FullString | SpecialWord>
+}
+
+Immediate {
+  immPrefix Expression
+}
+
+Memory {
+  Relative? '(' ("" | Register ("," (Register | number)?)*) ')'
+}
+
+IMemory {
+  Relative? '[' iMemExpr ']'
+}
+
+VEXMask { '{' Register '}' }
+
+IImmediate[@dynamicPrecedence=1] { (unary | '(')* (number | charString) ')'* (operator IImmediate)? ~immSplit }
+Relative { (unary | '(')* (number | charString | word) ')'* (operator Relative)? ~immSplit }
+Expression { (unary | '(')* (number | charString | word) ')'* (operator Expression)? }
+iMemExpr { (unary | '(')* (Register | number | charString | word) ')'* (operator iMemExpr)? }
+
+commaSep<content> {
+  "" | content (',' content?)*
+}
