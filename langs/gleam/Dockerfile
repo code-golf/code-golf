@@ -1,4 +1,4 @@
-FROM rust:1.86.0-slim-bookworm AS builder
+FROM rust:1.87.0-slim-bookworm AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \

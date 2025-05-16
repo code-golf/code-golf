@@ -780,7 +780,7 @@ end
 [Gleam]
 args    = [ '/usr/bin/gleam', '-', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '91.8 MiB'
+size    = '91.7 MiB'
 version = '1.10.0'
 website = 'https://gleam.run'
 example = '''
@@ -992,7 +992,7 @@ example = '''
 [Hush]
 args       = [ '/usr/bin/hush', '-' ]
 experiment = 656
-size       = '3.37 MiB'
+size       = '3.40 MiB'
 version    = '0.1.4'
 website    = 'https://hush-shell.github.io'
 example    = '''
@@ -1591,8 +1591,8 @@ end
 
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
-size    = '379 MiB'
-version = '1.86.0'
+size    = '389 MiB'
+version = '1.87.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
