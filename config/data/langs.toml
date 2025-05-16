@@ -78,6 +78,66 @@ example    = '''
 ⎕←¨1↓2⎕NQ#'GetCommandLineArgs'
 '''
 
+[ARM64]
+redirects = ['aarch64']
+args    = [ '/usr/bin/as-ld-qemu', 'arm64' ]
+size    = '100 MiB'
+version = 'QEMU 10.0.0'
+website = 'https://www.qemu.org/'
+assembly = true
+example = '''
+SYS_WRITE = 64
+STDOUT_FILENO = 1
+
+.data
+buffer: .ascii "Hello, World!\n"
+bufferLen = . - buffer
+
+.text
+.globl _start
+_start:
+mov x8, SYS_WRITE
+mov x0, STDOUT_FILENO
+adr x1, buffer
+mov x2, bufferLen
+svc 0
+
+add x1, x1, (bufferLen - 2)
+mov w3, '0'
+
+number_loop:
+strb w3, [x1]
+add w3, w3, 1
+
+mov x0, STDOUT_FILENO
+mov x2, 2
+svc 0
+
+cmp w3, '9' + 1
+b.ne number_loop
+
+arg_loop:
+ldr x1, [sp, 16]
+add sp, sp, 8
+
+mov x3, x1
+
+len_loop:
+ldrb w4, [x3], 1
+cbnz w4, len_loop
+
+mov w4, '\n'
+strb w4, [x3, -1]
+
+mov x0, STDOUT_FILENO
+sub x2, x3, x1
+svc 0
+
+b arg_loop
+
+end_arg_loop:
+'''
+
 [Arturo]
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
@@ -1586,6 +1646,77 @@ end
 do i = 1 to arg()
     say arg(i)
 end
+'''
+
+[RISC-V]
+redirects = ['riscv']
+args    = [ '/usr/bin/as-ld-qemu', 'risc-v' ]
+size    = '100 MiB'
+version = 'QEMU 10.0.0'
+website = 'https://www.qemu.org'
+assembly = true
+example = '''
+#64
+# Syntax of the optional first line: #(32|64)M?
+# 32 or 64 selects RV32 or RV64
+# M selects Zcmp+Zcmt instead of Zcd
+SYS_WRITE = 64
+STDOUT_FILENO = 1
+
+buffer: .ascii "Hello, World!\n"
+bufferLen = . - buffer
+
+.globl _start
+_start:
+li a7, 64
+c.li a0, STDOUT_FILENO
+
+pcbase:
+auipc a1, 0
+bufferOff = buffer - pcbase
+c.addi a1, bufferOff
+
+c.li a2, bufferLen
+ecall
+
+# Looping
+c.addi a1, bufferLen - 2
+li a3, '0'
+
+number_loop:
+c.sb a3, (a1)
+c.addi a3, 1
+
+c.li a0, STDOUT_FILENO
+c.li a2, 2
+ecall
+
+addi a4, a3, -'9'-1
+c.bnez a4, number_loop
+
+arg_loop:
+c.ldsp a1, 16(sp)
+c.addi sp, 8
+
+#c.beqz a0, end_arg_loop
+
+c.mv a3, a1
+
+len_loop:
+# crash here to terminate the loop
+c.lbu a4, (a3)
+c.addi a3, 1
+c.bnez a4, len_loop
+
+c.li a4, '\n'
+sb a4, -1(a3)
+
+c.li a0, STDOUT_FILENO
+sub a2, a3, a1
+ecall
+
+c.j arg_loop
+end_arg_loop:
 '''
 
 [Rockstar]

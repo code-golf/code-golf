@@ -76,7 +76,7 @@ CREATE TYPE hole AS ENUM (
 CREATE TYPE idea_category AS ENUM ('cheevo', 'hole', 'lang', 'other');
 
 CREATE TYPE lang AS ENUM (
-    '05ab1e', 'algol-68', 'apl', 'arturo', 'assembly', 'awk', 'bash', 'basic',
+    '05ab1e', 'algol-68', 'apl', 'arm64', 'arturo', 'assembly', 'awk', 'bash', 'basic',
     'befunge', 'berry', 'bqn', 'brainfuck', 'c', 'c-sharp', 'civet', 'cjam',
     'clojure', 'cobol', 'coconut', 'coffeescript', 'common-lisp', 'cpp',
     'crystal', 'd', 'dart', 'egel', 'elixir', 'erlang', 'f-sharp', 'factor',
@@ -85,7 +85,7 @@ CREATE TYPE lang AS ENUM (
     'iogii', 'j', 'janet', 'java', 'javascript', 'jq', 'julia', 'k', 'knight',
     'kotlin', 'lua', 'luau', 'nim', 'ocaml', 'odin', 'pascal', 'perl', 'php',
     'picat', 'powershell', 'prolog', 'python', 'qore', 'r', 'racket', 'raku',
-    'rebol', 'rexx', 'rockstar', 'ruby', 'rust', 'scala', 'scheme', 'sed',
+    'rebol', 'rexx', 'risc-v', 'rockstar', 'ruby', 'rust', 'scala', 'scheme', 'sed',
     'sql', 'squirrel', 'stax', 'swift', 'tcl', 'tex', 'uiua', 'umka', 'v',
     'vala', 'viml', 'vyxal', 'wren', 'zig'
 );

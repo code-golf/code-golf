@@ -1,0 +1,14 @@
+--- linux-user/signal.c.orig    2025-03-09 23:42:27.028914925 +0000
++++ linux-user/signal.c 2025-03-09 23:42:35.884914872 +0000
+@@ -827,7 +827,11 @@
+         setrlimit(RLIMIT_CORE, &nodump);
+         (void) fprintf(stderr, "qemu: uncaught target signal %d (%s) - %s\n",
+             target_sig, strsignal(host_sig), "core dumped" );
++    } else {
++        (void) fprintf(stderr, "qemu: uncaught target signal %d (%s)\n",
++            target_sig, strsignal(host_sig) );
+     }
++    cpu_dump_state(cpu, stderr, CPU_DUMP_CODE | CPU_DUMP_FPU | CPU_DUMP_CCOP | CPU_DUMP_VPU);
+ 
+     preexit_cleanup(env, 128 + target_sig);
+     die_with_signal(host_sig);

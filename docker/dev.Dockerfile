@@ -99,6 +99,8 @@ COPY --from=codegolf/lang-lua          / /langs/lua/rootfs/
 COPY --from=codegolf/lang-befunge      / /langs/befunge/rootfs/
 COPY --from=codegolf/lang-sed          / /langs/sed/rootfs/
 COPY --from=codegolf/lang-brainfuck    / /langs/brainfuck/rootfs/
+COPY --from=codegolf/lang-risc-v       / /langs/risc-v/rootfs
+COPY --from=codegolf/lang-arm64        / /langs/arm64/rootfs/
 
 COPY cmd/hash-langs ./cmd/hash-langs
 
