@@ -13,6 +13,7 @@ node_modules/.bin/esbuild "$@"         \
     --jsx-factory=createElement        \
     --loader:.svg=copy                 \
     --loader:.woff2=file               \
+    --loader:.wasm=file                \
     --metafile=config/data/assets.json \
     --minify                           \
     --outbase=.                        \
@@ -20,4 +21,4 @@ node_modules/.bin/esbuild "$@"         \
     --public-path=/dist                \
     --sourcemap                        \
     --target=es2020,chrome88           \
-    `find css js svg -type f -not -name '_*' -not -path '*/vendor/*' -not -path 'js/assembly/*'`
+    `find css js wasm svg -type f -not -name '_*' -not -path '*/vendor/*' -not -path 'js/assembly/*'`
