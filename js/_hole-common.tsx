@@ -1,4 +1,4 @@
-import { ASMStateField }                       from '@defasm/codemirror';
+import { ASMStateField }                       from './assembly/codemirror';
 import { $, $$, byteLen, charLen, comma, ord } from './_util';
 import { Vim }                                 from '@replit/codemirror-vim';
 import { EditorState, EditorView, extensions } from './_codemirror';
