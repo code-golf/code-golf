@@ -1,0 +1,21 @@
+diff -ur binutils-2.44.dbg-all.orig/gas/dwarf2dbg.c binutils-2.44.dbg-all/gas/dwarf2dbg.c
+--- binutils-2.44.dbg-all.orig/gas/dwarf2dbg.c	2025-03-13 02:56:51.832977931 +0000
++++ binutils-2.44.dbg-all/gas/dwarf2dbg.c	2025-05-13 19:37:22.033963673 +0000
+@@ -502,7 +502,7 @@
+ {
+   struct line_subseg *lss;
+   struct line_entry *e;
+-  flagword need_flags = SEC_LOAD | SEC_CODE;
++  flagword need_flags = SEC_LOAD;
+ 
+   /* PR 26850: Do not record LOCs in non-executable or non-loaded
+      sections.  SEC_ALLOC isn't tested for non-ELF because obj-coff.c
+@@ -1133,8 +1133,6 @@
+     return;
+   if (S_GET_SEGMENT (label) != now_seg)
+     return;
+-  if (!(bfd_section_flags (now_seg) & SEC_CODE))
+-    return;
+   if (files_in_use == 0 && debug_type != DEBUG_DWARF2)
+     return;
+ 

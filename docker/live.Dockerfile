@@ -15,6 +15,8 @@ COPY fonts        ./fonts
 COPY css          ./css
 COPY js           ./js
 COPY svg          ./svg
+COPY --from=codegolf/aspp-wasm /wasm/* ./wasm/
+COPY --from=codegolf/binutils-wasm /wasm/* ./wasm/
 
 COPY esbuild package-lock.json package.json ./
 

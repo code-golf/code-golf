@@ -1,0 +1,16 @@
+{
+    "name": "assemble",
+    "version": "0.1.0",
+    "description": "Wasm-based assembler-interface implementation",
+    "main": "index.js",
+    "types": "index.d.ts",
+    "scripts": {
+        "build": "tsc"
+    },
+    "dependencies": {
+        "assembler-interface": "^0.1.0"
+    },
+    "devDependencies": {
+        "typescript": "^5.0.0"
+    }
+}
