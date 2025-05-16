@@ -108,7 +108,7 @@ func play(
 	run.Answer = holeJudges[hole.ID](*run)
 
 	// Timeouts and whitespace only output never pass.
-	if !run.Timeout && len(strings.TrimSpace(run.Stdout)) != 0 {
+	if !run.Timeout && (!lang.Assembly || run.ASMBytes > 0) && len(strings.TrimSpace(run.Stdout)) != 0 {
 		if hole.CaseFold {
 			run.Pass = strings.EqualFold(run.Answer, run.Stdout)
 		} else {
@@ -122,6 +122,8 @@ func play(
 func runCode(
 	ctx context.Context, hole *config.Hole, lang *config.Lang, code string, run *Run,
 ) error {
+	run.ASMBytes = -1
+
 	// Preprocess code.
 	if strings.Contains(code, "\x00") {
 		run.Stderr = "Solutions must not contain a literal null byte."
@@ -233,7 +235,7 @@ func runCode(
 
 	// Assembly bytes pipe.
 	var asmBytesRead, asmBytesWrite *os.File
-	if lang.ID == "assembly" {
+	if lang.Assembly {
 		var err error
 		if asmBytesRead, asmBytesWrite, err = os.Pipe(); err != nil {
 			return err
@@ -294,13 +296,13 @@ func runCode(
 	}
 
 	// Actual byte count is printed by the assembler.
-	if lang.ID == "assembly" {
+	if lang.Assembly {
 		// Explicitly close the writer in case defasm died before it could.
 		// This prevents a very long wait in the upcoming fscanf.
 		asmBytesWrite.Close()
 
 		if _, err := fmt.Fscanf(asmBytesRead, "%d", &run.ASMBytes); err != nil {
-			return err
+			run.ASMBytes = -1
 		}
 		asmBytesRead.Close()
 	}

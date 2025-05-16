@@ -40,6 +40,7 @@ type Lang struct {
 	Size                 string   `json:"size"`
 	Version              string   `json:"version"`
 	Website              string   `json:"website"`
+	Assembly             bool     `json:"assembly"`
 }
 
 func initLangs() {
