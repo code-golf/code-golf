@@ -6,7 +6,7 @@ import LZString                                from 'lz-string';
 import { Compartment }                         from '@codemirror/state';
 
 function isAssembly(lang: string): boolean {
-    return lang == 'assembly';
+    return lang == 'assembly' || lang == 'arm64' || lang == 'risc-v';
 }
 
 let tabLayout: boolean = false;
