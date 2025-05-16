@@ -6,7 +6,11 @@ RUN apt-get update                   \
 
 ENV PATH=/depot_tools:$PATH VER=13.6.233.10
 
+# FIXME Pin to 3b73c8d, df1785b or later seems to fail with:
+# lockfile.LockError: Error locking /depot_tools/external_bin/gsutil/gsutil_4.68
+# (err: [Errno 11] Resource temporarily unavailable)
 RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git \
+ && (cd depot_tools && git reset --hard 3b73c8d) \
  && fetch v8
 
 WORKDIR /v8
