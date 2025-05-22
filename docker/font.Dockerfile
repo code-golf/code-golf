@@ -1,4 +1,4 @@
-FROM node:24.0.2-bookworm-slim
+FROM node:24.1.0-bookworm-slim
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
     ca-certificates curl fontforge fonttools make python3-fontforge unzip woff2 zip
