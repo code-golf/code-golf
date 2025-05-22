@@ -1,0 +1,21 @@
+diff -ur binutils-2.44.dbg-multi-line.orig/gas/dwarf2dbg.c binutils-2.44.dbg-multi-line/gas/dwarf2dbg.c
+--- binutils-2.44.dbg-multi-line.orig/gas/dwarf2dbg.c	2025-03-13 02:56:51.832977931 +0000
++++ binutils-2.44.dbg-multi-line/gas/dwarf2dbg.c	2025-05-13 20:03:45.063954246 +0000
+@@ -562,17 +562,6 @@
+      uses them to determine the end of the prologue.  */
+   if (debug_type == DEBUG_DWARF2)
+     {
+-      if (dw2_line == loc->line)
+-	{
+-	  if (dw2_filename == loc->u.filename)
+-	    return;
+-	  if (filename_cmp (dw2_filename, loc->u.filename) == 0)
+-	    {
+-	      dw2_filename = loc->u.filename;
+-	      return;
+-	    }
+-	}
+-
+       dw2_line = loc->line;
+       dw2_filename = loc->u.filename;
+     }

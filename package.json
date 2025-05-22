@@ -11,7 +11,7 @@
     "@codemirror/lang-sql": "",
     "@codemirror/legacy-modes": "",
     "@codemirror/theme-one-dark": "",
-    "@defasm/codemirror": "",
+    "@defasm/core": "",
     "@exercism/codemirror-lang-gleam": "",
     "@exercism/codemirror-lang-wren": "github:exercism/codemirror-lang-wren#3bde996",
     "@replit/codemirror-vim": "",
