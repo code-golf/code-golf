@@ -1903,7 +1903,7 @@ for (a in Process.arguments) System.print(a)
 [Zig]
 args    = [ '/usr/bin/zigwrapper', '-' ]
 size    = '301 MiB'
-version = '0.14.0'
+version = '0.14.1'
 website = 'https://ziglang.org'
 example = '''
 const std = @import("std");
