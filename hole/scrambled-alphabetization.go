@@ -7,14 +7,14 @@ import (
 )
 
 func alphabetizeWords(alphabet string, words []string) string {
-	order := map[rune]int{}
-	for i, ch := range alphabet {
-		order[ch] = i
+	order := map[byte]int{}
+	for i := range alphabet {
+		order[alphabet[i]] = i
 	}
 
 	slices.SortFunc(words, func(a, b string) int {
 		for i := range min(len(a), len(b)) {
-			if c := cmp.Compare(order[rune(a[i])], order[rune(b[i])]); c != 0 {
+			if c := cmp.Compare(order[a[i]], order[b[i]]); c != 0 {
 				return c
 			}
 		}
