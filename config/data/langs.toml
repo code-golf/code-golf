@@ -591,8 +591,8 @@ void main(string[] argv) {
 
 [Dart]
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
-size    = '246 MiB'
-version = '3.7.3'
+size    = '168 MiB'
+version = '3.8.0'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -638,8 +638,8 @@ def main =
 [Elixir]
 args    = [ '/usr/local/bin/elixir', '--color', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '74.3 MiB'
-version = '1.18.3'
+size    = '81.5 MiB'
+version = '1.18.4'
 website = 'https://elixir-lang.org'
 example = '''
 # Printing
@@ -655,8 +655,8 @@ for arg <- System.argv, do: IO.puts arg
 [Erlang]
 args       = [ '/usr/bin/erlang', '-' ]
 experiment = 181
-size       = '68.6 MiB'
-version    = 'OTP 27.3.4'
+size       = '75.5 MiB'
+version    = 'OTP 28.0'
 website    = 'https://www.erlang.org'
 example    = '''
 main(Args) ->
@@ -780,7 +780,7 @@ end
 [Gleam]
 args    = [ '/usr/bin/gleam', '-', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '91.7 MiB'
+size    = '98.6 MiB'
 version = '1.10.0'
 website = 'https://gleam.run'
 example = '''
@@ -1740,7 +1740,7 @@ Lm
 [Swift]
 args    = [ '/usr/bin/swift', '-color-diagnostics', '-module-cache-path', '/tmp', '-' ]
 size    = '543 MiB'
-version = '6.1'
+version = '6.1.1'
 website = 'https://swift.org'
 example = '''
 // Printing
@@ -1903,7 +1903,7 @@ for (a in Process.arguments) System.print(a)
 [Zig]
 args    = [ '/usr/bin/zigwrapper', '-' ]
 size    = '301 MiB'
-version = '0.14.0'
+version = '0.14.1'
 website = 'https://ziglang.org'
 example = '''
 const std = @import("std");
