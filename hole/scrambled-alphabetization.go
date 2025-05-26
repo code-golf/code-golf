@@ -1,7 +1,6 @@
 package hole
 
 import (
-	"math/rand/v2"
 	"sort"
 	"strings"
 )
@@ -32,7 +31,8 @@ func alphabetizeWords(s string) string {
 func generateArgument() string {
 	var argument strings.Builder
 
-	argument.WriteString(scrambleAlphabet())
+	alphabet := string(shuffle([]byte("abcdefghijklmnopqrstuvwxyz")))
+	argument.WriteString(alphabet)
 
 	for range randInt(3, 9) {
 		argument.WriteByte(' ')
@@ -40,16 +40,6 @@ func generateArgument() string {
 	}
 
 	return argument.String()
-}
-
-func scrambleAlphabet() string {
-	alphabet := strings.Split("abcdefghijklmnopqrstuvwxyz", "")
-
-	rand.Shuffle(len(alphabet), func(i, j int) {
-		alphabet[i], alphabet[j] = alphabet[j], alphabet[i]
-	})
-
-	return strings.Join(alphabet, "")
 }
 
 var _ = answerFunc("scrambled-alphabetization", func() []Answer {
