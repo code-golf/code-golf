@@ -12,7 +12,7 @@ func alphabetizeWords(alphabet string, words []string) string {
 	}
 
 	sort.Slice(words, func(i, j int) bool {
-		for k := 0; k < len(words[i]) && k < len(words[j]); k++ {
+		for k := range min(len(words[i]), len(words[j])) {
 			if order[rune(words[i][k])] < order[rune(words[j][k])] {
 				return true
 			} else if order[rune(words[i][k])] > order[rune(words[j][k])] {
