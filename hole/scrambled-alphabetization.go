@@ -43,5 +43,5 @@ var _ = answerFunc("scrambled-alphabetization", func() []Answer {
 		}
 	}
 
-	return outputTests(shuffle(tests))
+	return outputTests(tests)
 })
