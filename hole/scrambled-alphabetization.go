@@ -53,15 +53,12 @@ func scrambleAlphabet() string {
 }
 
 var _ = answerFunc("scrambled-alphabetization", func() []Answer {
-	tests := make([]test, 0, 100)
+	tests := make([]test, 100)
 
-	for range 100 {
+	for i := range tests {
 		argument := generateArgument()
 
-		tests = append(tests, test{
-			argument,
-			alphabetizeWords(argument),
-		})
+		tests[i] = test{argument, alphabetizeWords(argument)}
 	}
 
 	return outputTests(shuffle(tests))
