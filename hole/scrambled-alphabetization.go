@@ -26,22 +26,16 @@ func alphabetizeWords(alphabet string, words []string) string {
 	return strings.Join(words, " ")
 }
 
-func generateArgument() (string, []string) {
-	alphabet := string(shuffle([]byte("abcdefghijklmnopqrstuvwxyz")))
-
-	words := make([]string, randInt(3, 9))
-	for i := range words {
-		words[i] = randWord()
-	}
-
-	return alphabet, words
-}
-
 var _ = answerFunc("scrambled-alphabetization", func() []Answer {
 	tests := make([]test, 100)
 
 	for i := range tests {
-		alphabet, words := generateArgument()
+		alphabet := string(shuffle([]byte("abcdefghijklmnopqrstuvwxyz")))
+
+		words := make([]string, randInt(3, 9))
+		for i := range words {
+			words[i] = randWord()
+		}
 
 		tests[i] = test{
 			in:  alphabet + " " + strings.Join(words, " "),
