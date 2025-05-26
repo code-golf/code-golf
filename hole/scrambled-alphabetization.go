@@ -5,11 +5,9 @@ import (
 	"strings"
 )
 
-func alphabetizeWords(s string) string {
-	fields := strings.Fields(s)
-	order, words := make(map[rune]int), fields[1:]
-
-	for i, ch := range fields[0] {
+func alphabetizeWords(alphabet string, words []string) string {
+	order := map[rune]int{}
+	for i, ch := range alphabet {
 		order[ch] = i
 	}
 
@@ -28,27 +26,27 @@ func alphabetizeWords(s string) string {
 	return strings.Join(words, " ")
 }
 
-func generateArgument() string {
-	var argument strings.Builder
-
+func generateArgument() (string, []string) {
 	alphabet := string(shuffle([]byte("abcdefghijklmnopqrstuvwxyz")))
-	argument.WriteString(alphabet)
 
-	for range randInt(3, 9) {
-		argument.WriteByte(' ')
-		argument.WriteString(randWord())
+	words := make([]string, randInt(3, 9))
+	for i := range words {
+		words[i] = randWord()
 	}
 
-	return argument.String()
+	return alphabet, words
 }
 
 var _ = answerFunc("scrambled-alphabetization", func() []Answer {
 	tests := make([]test, 100)
 
 	for i := range tests {
-		argument := generateArgument()
+		alphabet, words := generateArgument()
 
-		tests[i] = test{argument, alphabetizeWords(argument)}
+		tests[i] = test{
+			in:  alphabet + " " + strings.Join(words, " "),
+			out: alphabetizeWords(alphabet, words),
+		}
 	}
 
 	return outputTests(shuffle(tests))
