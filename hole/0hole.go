@@ -134,6 +134,9 @@ func outputMultirunTests(tests []test) []Answer {
 	return outputTests(tests, tests[:mid], tests[mid:])
 }
 
+// Return a random bool.
+func randBool() bool { return rand.IntN(2) == 0 }
+
 // Return a random element from the given slice. Panics on empty slice.
 func randChoice[E any](x []E) E { return x[rand.IntN(len(x))] }
 
