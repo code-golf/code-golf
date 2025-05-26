@@ -1,7 +1,8 @@
 package hole
 
 import (
-	"sort"
+	"cmp"
+	"slices"
 	"strings"
 )
 
@@ -11,16 +12,14 @@ func alphabetizeWords(alphabet string, words []string) string {
 		order[ch] = i
 	}
 
-	sort.Slice(words, func(i, j int) bool {
-		for k := range min(len(words[i]), len(words[j])) {
-			if order[rune(words[i][k])] < order[rune(words[j][k])] {
-				return true
-			} else if order[rune(words[i][k])] > order[rune(words[j][k])] {
-				return false
+	slices.SortFunc(words, func(a, b string) int {
+		for i := range min(len(a), len(b)) {
+			if c := cmp.Compare(order[rune(a[i])], order[rune(b[i])]); c != 0 {
+				return c
 			}
 		}
 
-		return len(words[i]) < len(words[j])
+		return cmp.Compare(len(a), len(b))
 	})
 
 	return strings.Join(words, " ")
