@@ -369,7 +369,7 @@ foreach (String arg in args)
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
 size    = '152 MiB'
-version = 'Clang 20.1.5'
+version = 'Clang 20.1.6'
 website = 'https://clang.llvm.org'
 example = '''
 #include <iostream>
@@ -592,7 +592,7 @@ void main(string[] argv) {
 [Dart]
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
 size    = '168 MiB'
-version = '3.8.0'
+version = '3.8.1'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -855,7 +855,7 @@ args       = [ '/usr/bin/groovy', '-e', '$code' ]
 env        = [ 'JAVA_HOME=/opt/java' ]
 experiment = 1145
 size       = '148 MiB'
-version    = '4.0.26'
+version    = '4.0.27'
 website    = 'https://groovy-lang.org'
 example    = '''
 // Printing
@@ -1740,7 +1740,7 @@ Lm
 [Swift]
 args    = [ '/usr/bin/swift', '-color-diagnostics', '-module-cache-path', '/tmp', '-' ]
 size    = '543 MiB'
-version = '6.1.1'
+version = '6.1.2'
 website = 'https://swift.org'
 example = '''
 // Printing
