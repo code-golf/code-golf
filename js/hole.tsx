@@ -6,6 +6,7 @@ import {
     setCode, refreshScores, submit, updateRestoreLinkVisibility,
     ReadonlyPanelsData, setCodeForLangAndSolution, getCurrentSolutionCode,
     initDeleteBtn, initCopyButtons, getScorings,
+    getArgs, serializeArgs,
     updateLocalStorage,
     ctrlEnter,
     getLastSubmittedCode,
@@ -58,6 +59,10 @@ $('#restoreLink').onclick = e => {
 const closuredSubmit = () => submit(editor, updateReadonlyPanels);
 $('#runBtn').onclick = closuredSubmit;
 window.onkeydown = ctrlEnter(closuredSubmit);
+$('#takeToSandboxBtn').onclick = () => {
+    sessionStorage.setItem('args', serializeArgs(getArgs()));
+    location.href = '/sandbox';
+};
 
 initCopyButtons($$('[data-copy]'));
 initDeleteBtn($('#deleteBtn'), langs);
@@ -76,7 +81,7 @@ $$('#rankingsView a').forEach(a => a.onclick = e => {
 
 function updateReadonlyPanels(data: ReadonlyPanelsData) {
     // Hide arguments unless we have some.
-    $('#arg div').replaceChildren(...data.Argv.map(a => <span>{a}</span>));
+    $('#arg div div').replaceChildren(...data.Argv.map(a => <span>{a}</span>));
     $('#arg').classList.toggle('hide', !data.Argv.length);
 
     // Hide stderr if we're passing or have no stderr output.
