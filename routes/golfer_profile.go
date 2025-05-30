@@ -172,7 +172,10 @@ rows:
 		      FROM rankings
 		     WHERE NOT experimental
 		  GROUP BY user_id, scoring, lang
-		) SELECT lang, scoring, rank FROM ranks WHERE user_id = $1`,
+		) SELECT lang, scoring, rank
+		FROM ranks
+		WHERE user_id = $1
+		ORDER BY scoring DESC`,
 		golfer.ID,
 	)
 	if err != nil {
