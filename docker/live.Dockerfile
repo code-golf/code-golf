@@ -15,11 +15,13 @@ COPY fonts        ./fonts
 COPY css          ./css
 COPY js           ./js
 COPY svg          ./svg
+COPY --from=codegolf/aspp-wasm /wasm/* ./wasm/
+COPY --from=codegolf/binutils-wasm /wasm/* ./wasm/
 
 COPY esbuild package-lock.json package.json ./
 
 RUN ./esbuild \
- && find dist \( -name '*.css' -or  -name '*.js' -or -name '*.map' -or -name '*.svg' \) \
+ && find dist \( -name '*.css' -or  -name '*.js' -or -name '*.map' -or -name '*.svg' -or -name '*.wasm' \) \
   | xargs -i -n1 -P`nproc` sh -c 'brotli {} && zopfli {}'
 
 # Build lang hasher.
