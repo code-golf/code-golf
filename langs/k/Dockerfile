@@ -9,7 +9,7 @@ WORKDIR /usr/bin
 RUN curl -#L https://codeberg.org/ngn/k/archive/$VER.tar.gz \
   | tar xz --strip-components 1
 
-RUN sed -i s/march=native/march=x86-64-v3 makefile | make
+RUN sed -i s/march=native/march=x86-64-v3/ makefile | make
 
 FROM codegolf/lang-base
 
