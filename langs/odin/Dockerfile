@@ -1,4 +1,4 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache clang curl dash llvm-dev make
 
@@ -32,10 +32,10 @@ COPY --from=0 /usr/bin/clang                   \
 COPY --from=0 /usr/lib/crt1.o                  \
               /usr/lib/crti.o                  \
               /usr/lib/crtn.o                  \
-              /usr/lib/libLLVM.so.19.1         \
-              /usr/lib/libbfd-2.43.1.so        \
+              /usr/lib/libLLVM.so.20.1         \
+              /usr/lib/libbfd-2.44.so          \
               /usr/lib/libc.so                 \
-              /usr/lib/libclang-cpp.so.19.1    \
+              /usr/lib/libclang-cpp.so.20.1    \
               /usr/lib/libctf.so.0             \
               /usr/lib/libffi.so.8             \
               /usr/lib/libgcc_s.so             \
