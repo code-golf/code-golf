@@ -54,7 +54,7 @@ CREATE TYPE hole AS ENUM (
     'odious-numbers', 'odious-numbers-long', 'ordinal-numbers',
     'p-adic-expansion', 'palindromemordnilap', 'pangram-grep',
     'partition-numbers', 'pascals-triangle', 'pernicious-numbers',
-    'pernicious-numbers-long', 'poker', 'polyominoes', 'prime-numbers',
+    'pernicious-numbers-long', 'poker', 'polygon-triangulations', 'polyominoes', 'prime-numbers',
     'prime-numbers-long', 'proximity-grid', 'qr-decoder', 'qr-encoder',
     'quadratic-formula', 'quine', 'recamán', 'repeating-decimals',
     'reverse-polish-notation', 'reversi', 'rijndael-s-box',
