@@ -1,4 +1,4 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache build-base bzip2-dev curl-dev gettext-dev gfortran \
                        pcre2-dev perl tzdata xz-dev zlib-dev
