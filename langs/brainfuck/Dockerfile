@@ -1,16 +1,16 @@
-FROM alpine:3.21 AS builder
-
-ENV VERSION=077cc7f
+FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache curl gcc musl-dev
 
-RUN curl -L https://github.com/primo-ppcg/bfci/tarball/$VERSION | tar xz \
- && mv primo-ppcg-bfci-* bfci
+ENV VER=077cc7f
 
-RUN cd bfci && cc --std=c99 -static -O3 -s -o bfci bfci.c src/*.c
+RUN curl -#L https://github.com/primo-ppcg/bfci/tarball/$VER \
+  | tar xz --strip-components 1
+
+RUN cc --std=c99 -O3 -o /usr/bin/brainfuck -s -static bfci.c src/*.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bfci/bfci /usr/bin/brainfuck
+COPY --from=0 /usr/bin/brainfuck /usr/bin/
 
 ENTRYPOINT ["brainfuck"]
