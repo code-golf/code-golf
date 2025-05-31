@@ -3458,6 +3458,7 @@ preamble = '''
 experiment = 1324
 category  = 'Transform'
 redirects = ['scrambled-alphabetization']
+released  = 2025-06-01
 synopsis  = 'Sort words according to scrambled alphabets.'
 preamble  = '''
 <p>
