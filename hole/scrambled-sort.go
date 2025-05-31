@@ -29,7 +29,7 @@ var _ = answerFunc("scrambled-sort", func() []Answer {
 		tests[i] = scrambledSortTest(t.alphabet, t.words)
 	}
 
-	for i := len(tests); i < 100; i++ {
+	for i := len(fixedTests); i < len(tests); i++ {
 		// Generate a random alphabet and words.
 		alphabet := shuffle([]byte("abcdefghijklmnopqrstuvwxyz"))
 
@@ -41,7 +41,7 @@ var _ = answerFunc("scrambled-sort", func() []Answer {
 		tests[i] = scrambledSortTest(alphabet, words)
 	}
 
-	return outputTests(tests)
+	return outputTests(shuffle(tests))
 })
 
 func scrambledSortTest(alphabet []byte, words []string) test {
