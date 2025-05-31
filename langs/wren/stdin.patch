@@ -1,7 +1,7 @@
---- wren/src/cli/vm.c
-+++ wren/src/cli/vm.c
+--- src/cli/vm.c
++++ src/cli/vm.c
 @@ -303,11 +303,35 @@ static void freeVM()
- 
+
  WrenInterpretResult runFile(const char* path)
  {
 -  char* source = readFile(path);
@@ -38,5 +38,5 @@
 +      exit(66);
 +    }
    }
- 
+
    // If it looks like a relative path, make it explicitly relative so that we
