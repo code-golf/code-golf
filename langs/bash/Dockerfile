@@ -1,32 +1,33 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache build-base curl ncurses-dev
+RUN apk add --no-cache build-base curl ncurses-static
 
-WORKDIR /bash
+ENV VER=5.2
 
-RUN curl -#L https://ftp.gnu.org/gnu/bash/bash-5.2.tar.gz \
+RUN curl -#L https://ftp.gnu.org/gnu/bash/bash-$VER.tar.gz \
   | tar xz --strip-components 1
 
-RUN curl https://ftp.gnu.org/gnu/bash/bash-5.2-patches/bash52-0[01-37] | patch -p0
+RUN curl -# https://ftp.gnu.org/gnu/bash/bash-$VER-patches/bash52-0[01-37] | patch -p0
 
-RUN ./configure                \
-    --disable-command-timing   \
-    --disable-debugger         \
-    --disable-directory-stack  \
-    --disable-help-builtin     \
-    --disable-net-redirections \
-    --disable-progcomp         \
-    --disable-select           \
-    --prefix=/usr              \
-    --without-bash-malloc      \
- && make install               \
+RUN ./configure                      \
+    --disable-command-timing         \
+    --disable-debugger               \
+    --disable-directory-stack        \
+    --disable-help-builtin           \
+    --disable-job-control            \
+    --disable-net-redirections       \
+    --disable-progcomp               \
+    --disable-prompt-string-decoding \
+    --disable-select                 \
+    --enable-static-link             \
+    --prefix=/usr                    \
+    --without-bash-malloc            \
+ && make install                     \
  && strip /usr/bin/bash
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1  /lib/
-COPY --from=0 /usr/bin/bash             /usr/bin/
-COPY --from=0 /usr/lib/libncursesw.so.6 /usr/lib/
+COPY --from=0 /usr/bin/bash /usr/bin/
 
 ENTRYPOINT ["bash"]
 
