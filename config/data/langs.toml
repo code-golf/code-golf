@@ -396,7 +396,7 @@ int main(int argc, char* argv[]) {
 [Civet]
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
-size    = '72.1 MiB'
+size    = '81.3 MiB'
 version = '0.10.4'
 website = 'https://civet.dev'
 example = '''
