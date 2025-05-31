@@ -321,7 +321,7 @@ with 65536 cells; and cells are 8 bit with wrapping;
 '''
 
 [C]
-args    = [ '/usr/bin/tcc', '-run', '-' ]
+args    = [ '/usr/bin/c', '-run', '-' ]
 size    = '1.73 MiB'
 version = 'TCC 0.9.27'
 website = 'https://bellard.org/tcc/'
