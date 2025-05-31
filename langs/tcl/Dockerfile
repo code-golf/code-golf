@@ -1,23 +1,27 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache bsd-compat-headers build-base curl zlib-dev
 
-RUN curl -L https://github.com/tcltk/tcl/archive/refs/tags/core-9-0-1.tar.gz | tar xz
+ENV LDFLAGS='-static' VER=9-0-1
 
-ENV LDFLAGS=-static
+RUN curl -#L https://github.com/tcltk/tcl/archive/refs/tags/core-$VER.tar.gz \
+  | tar xz --strip-components 1
 
-RUN mv /tcl-* /tcl   \
- && cd tcl/unix      \
- && ./configure      \
+WORKDIR /unix
+
+RUN ./configure      \
     --disable-load   \
     --disable-shared \
     --enable-64-bit  \
- && make             \
- && strip tclsh
+    --prefix=/usr    \
+ && make install     \
+ && strip /usr/bin/tcl*
 
 FROM codegolf/lang-base
 
-COPY --from=0 /tcl/library/   /library/
-COPY --from=0 /tcl/unix/tclsh /usr/bin/tcl
+COPY --from=0 /library      /library
+COPY --from=0 /usr/bin/tcl* /usr/bin/tcl
 
 ENTRYPOINT ["tcl"]
+
+CMD ["--version"]
