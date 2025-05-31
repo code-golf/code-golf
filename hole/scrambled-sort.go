@@ -15,7 +15,7 @@ var _ = answerFunc("scrambled-sort", func() []Answer {
 	}{
 		// One word, "eerie", sorts before the alphabet itself
 		{
-			[]byte("ejqnducstkmgyvlzrxobwfpai"),
+			[]byte("eyxmrgjbiunlwczqpsdtkhavfo"),
 			shuffle([]string{"eerie", randWord(), randWord(), randWord(), randWord()}),
 		},
 		// One word is a prefix of another
