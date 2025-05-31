@@ -1434,7 +1434,7 @@ for arg in sys.argv[1:]:
 [Qore]
 args       = [ '/usr/bin/qore', '--allow-bare-refs', '-K', '--mit', '-pno-external-access', '-e', '$code', '--' ]
 experiment = 1928
-size       = '16.8 MiB'
+size       = '17.3 MiB'
 version    = '2.1.2'
 website    = 'https://qore.org'
 example    = '''
