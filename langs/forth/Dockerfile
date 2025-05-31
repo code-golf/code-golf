@@ -1,21 +1,25 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache build-base curl m4
 
-RUN curl https://ftp.gnu.org/gnu/gforth/gforth-0.7.3.tar.gz | tar xz
+ENV VER=0.7.3
 
-RUN cd gforth-* \
- && ./configure --prefix=/usr --without-check \
- && make \
+RUN curl -#L https://ftp.gnu.org/gnu/gforth/gforth-$VER.tar.gz \
+  | tar xz --strip-components 1
+
+RUN ./configure     \
+    --prefix=/usr   \
+    --without-check \
+ && make            \
  && make install
 
 FROM codegolf/lang-base
 
-COPY --from=builder /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=builder /usr/bin/gforth          /usr/bin/forth
-COPY --from=builder /usr/include/gforth      /usr/include/gforth
-COPY --from=builder /usr/lib/gforth          /usr/lib/gforth
-COPY --from=builder /usr/share/gforth        /usr/share/gforth
+COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
+COPY --from=0 /usr/bin/gforth          /usr/bin/forth
+COPY --from=0 /usr/include/gforth      /usr/include/gforth
+COPY --from=0 /usr/lib/gforth          /usr/lib/gforth
+COPY --from=0 /usr/share/gforth        /usr/share/gforth
 
 ENTRYPOINT ["forth"]
 
