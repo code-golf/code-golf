@@ -1,4 +1,4 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache autoconf build-base cmake curl gfortran linux-headers python3
 
@@ -6,8 +6,12 @@ ENV CXXFLAGS='-flto' LDFLAGS='-flto' VER=1.11.5
 
 RUN curl -#L https://github.com/JuliaLang/julia/releases/download/v$VER/julia-$VER.tar.gz | tar xz
 
-RUN make -C julia-$VER -j`nproc` prefix=/usr MARCH=x86-64-v3 install \
- && strip -s /usr/bin/julia /usr/lib/julia/*.so
+WORKDIR /julia-$VER
+
+RUN make -j`nproc` prefix=/usr MARCH=x86-64-v3 install
+
+RUN strip -s /usr/bin/julia \
+             /usr/lib/julia/*.so
 
 WORKDIR /usr/lib/julia
 # Delete unused libraries.
