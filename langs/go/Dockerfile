@@ -1,13 +1,13 @@
-FROM golang:1.23.5-alpine3.21 AS builder
+FROM golang:1.24.3-alpine3.22 AS builder
 
 RUN apk add --no-cache gcc musl-dev
 
 # Precompile the standard library.
 RUN GOCACHE=/cache go install std
 
-COPY gowrapper.c /
+COPY go.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/gowrapper -s -static /gowrapper.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/gowrapper -s -static /go.c
 
 FROM codegolf/lang-base
 

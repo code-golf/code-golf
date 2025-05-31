@@ -2,7 +2,11 @@ package config
 
 import "slices"
 
-type Option struct{ ID, Name string }
+// TODO These structures are very similar to config/nav, consider sharing?
+type Option struct {
+	Group    bool
+	ID, Name string
+}
 
 type Setting struct {
 	Checkbox bool
@@ -40,8 +44,24 @@ func init() {
 					setting.Options = append(setting.Options,
 						&Option{ID: hole.ID, Name: hole.Name})
 				}
+
+				setting.Options = append(setting.Options,
+					&Option{Group: true, Name: "Experimental Holes"})
+
+				for _, hole := range ExpHoleList {
+					setting.Options = append(setting.Options,
+						&Option{ID: hole.ID, Name: hole.Name})
+				}
 			case "All Languages":
 				for _, lang := range LangList {
+					setting.Options = append(setting.Options,
+						&Option{ID: lang.ID, Name: lang.Name})
+				}
+
+				setting.Options = append(setting.Options,
+					&Option{Group: true, Name: "Experimental Languages"})
+
+				for _, lang := range ExpLangList {
 					setting.Options = append(setting.Options,
 						&Option{ID: lang.ID, Name: lang.Name})
 				}
@@ -57,7 +77,9 @@ func (s *Setting) FromFormValue(value string) any {
 	}
 
 	// TODO Consider something more effecient like a hash?
-	if slices.ContainsFunc(s.Options, func(o *Option) bool { return o.ID == value }) {
+	if slices.ContainsFunc(s.Options, func(o *Option) bool {
+		return o.ID == value && !o.Group
+	}) {
 		return value
 	}
 

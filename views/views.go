@@ -7,6 +7,7 @@ import (
 	"io/fs"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 
 	"github.com/code-golf/code-golf/config"
@@ -19,6 +20,7 @@ import (
 var views embed.FS
 
 var tmpl = template.New("").Funcs(template.FuncMap{
+	"atoi":      func(s string) int { i, _ := strconv.Atoi(s); return i },
 	"bytes":     pretty.Bytes,
 	"comma":     pretty.Comma,
 	"dec":       func(i int) int { return i - 1 },

@@ -16,9 +16,9 @@ RUN cd hare-$VER                  \
  && mv configs/linux.mk config.mk \
  && make && make install
 
-COPY harewrapper.c /
+COPY hare.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/harewrapper -s -static harewrapper.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/harewrapper -s -static hare.c
 
 FROM codegolf/lang-base
 

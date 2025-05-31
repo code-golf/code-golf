@@ -29,7 +29,7 @@ func adminBannersGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Use a dummy golfer to generate a list of live banners.
-	for _, banner := range banners(nil, &golfer.Golfer{}, time.Now().UTC()) {
+	for _, banner := range banners(&golfer.Golfer{}, time.Now().UTC()) {
 		data.LiveBanners[banner.HideKey] = true
 	}
 

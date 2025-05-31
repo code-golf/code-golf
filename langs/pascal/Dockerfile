@@ -31,7 +31,6 @@ COPY --from=0 /usr/lib/libbfd-2.43.1.so                        \
 COPY --from=0 /usr/lib/fpc/$VER/units/x86_64-linux/fcl-base    \
               /usr/lib/fpc/$VER/units/x86_64-linux/rtl         \
               /usr/lib/fpc/$VER/units/x86_64-linux/rtl-objpas  /usr/lib/fpc/$VER/units/x86_64-linux/rtl/
-#COPY --from=0 /usr/lib/fpc/$VER/units/x86_64-linux/rtl-console /usr/lib/fpc/$VER/units/x86_64-linux/rtl-console
 
 ENTRYPOINT ["pascal"]
 

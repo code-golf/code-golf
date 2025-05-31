@@ -2,7 +2,7 @@ FROM alpine:3.21 AS builder
 
 RUN apk add --no-cache build-base dash gc-dev git
 
-ENV VER=0.4.9
+ENV VER=0.4.10
 
 WORKDIR /usr/local
 

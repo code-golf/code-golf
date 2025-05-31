@@ -296,6 +296,44 @@ paths:
                 items:
                   $ref: '#/components/schemas/SolutionsLog'
 
+  /solutions-search:
+    get:
+      operationId: solutionsSearch
+      parameters:
+        - name: pattern
+          description: Regex pattern to search for
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: hole
+          description: Hole ID
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: lang
+          description: Lang ID
+          in: query
+          required: false
+          schema:
+            type: string
+      tags: [misc]
+      security:
+        - cookieAuth: []
+      summary: Search all current golfer's solutions
+      responses:
+        '200':
+          description: A JSON array of matches
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SolutionsSearchMatch'
+        '403':
+          description: Solutions search access requires authentication
+
   /wiki/{slug}:
     get:
       operationId: getWikiPage
@@ -429,6 +467,24 @@ components:
         submitted:
           type: string
           format: date-time
+
+    SolutionsSearchMatch:
+      type: object
+      properties:
+        before:
+          type: string
+        match:
+          type: string
+        after:
+          type: string
+        count:
+          type: integer
+        hole:
+          type: string
+        lang:
+          type: string
+        scoring:
+          type: string
 
     WikiPage:
       type: object

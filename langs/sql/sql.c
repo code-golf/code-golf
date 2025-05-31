@@ -50,9 +50,15 @@ int main(int argc, char *argv[]) {
             return 1;
         }
 
-        while (sqlite3_step(res) == SQLITE_ROW)
+        int ret;
+        while ((ret = sqlite3_step(res)) == SQLITE_ROW)
             if (sqlite3_column_type(res, 0) != SQLITE_NULL)
                 puts(sqlite3_column_text(res, 0));
+        if (ret == SQLITE_ERROR) {
+            fprintf(stderr, "%s\n", sqlite3_errmsg(db));
+            sqlite3_close(db);
+            return 1;
+        }
 
         sqlite3_finalize(res);
     }
