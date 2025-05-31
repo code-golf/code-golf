@@ -836,7 +836,7 @@ func main() {
 [GolfScript]
 args       = [ '/usr/bin/golfscript', '-n', '-e', '$code', '--' ]
 args-quine = [ '/usr/bin/golfscript', '-n', '-e', '$code', '-q', '--' ]
-size       = '33.3 MiB'
+size       = '33.2 MiB'
 version    = '6155e9f'
 website    = 'https://golfscript.com/golfscript/'
 example    = '''
