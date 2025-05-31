@@ -1,21 +1,23 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache build-base curl
 
-# Also rebuild Fennel.
-RUN curl https://www.lua.org/ftp/lua-5.4.7.tar.gz | tar xz
+ENV VER=5.4.7
 
-RUN cd lua-*          \
- && make generic      \
-    AR='gcc-ar rcu'   \
-    MYCFLAGS=-flto    \
-    MYLDFLAGS=-static \
-    RANLIB=gcc-ranlib \
- && strip src/lua
+# Also rebuild Fennel.
+RUN curl -#L https://www.lua.org/ftp/lua-$VER.tar.gz \
+  | tar xz --strip-components 1
+
+RUN make generic install \
+    AR='gcc-ar rcu'      \
+    MYCFLAGS='-flto'     \
+    MYLDFLAGS='-static'  \
+    RANLIB='gcc-ranlib'  \
+ && strip /usr/local/bin/lua
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lua-*/src/lua /usr/bin/
+COPY --from=0 /usr/local/bin/lua /usr/bin/
 
 ENTRYPOINT ["lua"]
 
