@@ -1,4 +1,4 @@
-FROM eclipse-temurin:24.0.1_9-jdk-alpine-3.21 AS builder
+FROM eclipse-temurin:24.0.1_9-jdk-alpine-3.22 AS builder
 
 RUN apk add --no-cache bash curl git
 
@@ -6,7 +6,7 @@ ENV SBTVER=1.10.7 VER=2.13.16
 
 RUN curl -#L https://github.com/sbt/sbt/releases/download/v$SBTVER/sbt-$SBTVER.tgz | tar xz
 
-RUN git clone https://github.com/scala/scala.git --branch v$VER
+RUN git clone --branch v$VER https://github.com/scala/scala.git
 
 WORKDIR /scala
 
