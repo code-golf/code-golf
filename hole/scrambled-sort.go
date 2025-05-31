@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-var _ = answerFunc("scrambled-alphabetization", func() []Answer {
+var _ = answerFunc("scrambled-sort", func() []Answer {
 	tests := make([]test, 100)
 
 	for i := range tests {

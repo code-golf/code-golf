@@ -3454,11 +3454,12 @@ preamble = '''
 </pre>
 '''
 
-['Scrambled Alphabetization']
+['Scrambled Sort']
 experiment = 1324
-category = 'Transform'
-synopsis = 'Alphabetize words according to scrambled alphabets.'
-preamble = '''
+category  = 'Transform'
+redirects = ['scrambled-alphabetization']
+synopsis  = 'Sort words according to scrambled alphabets.'
+preamble  = '''
 <p>
     Given a scrambled alphabet and a set of words, print the words in
     alphabetical order according to the given alphabet. Separate the
