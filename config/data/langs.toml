@@ -321,7 +321,7 @@ with 65536 cells; and cells are 8 bit with wrapping;
 '''
 
 [C]
-args    = [ '/usr/bin/tcc', '-run', '-' ]
+args    = [ '/usr/bin/c', '-run', '-' ]
 size    = '1.73 MiB'
 version = 'TCC 0.9.27'
 website = 'https://bellard.org/tcc/'
@@ -1158,7 +1158,7 @@ end
 
 [K]
 args    = [ '/usr/bin/k', '/proc/self/fd/0' ]
-size    = '605 KiB'
+size    = '642 KiB'
 version = '544d014afd'
 website = 'https://codeberg.org/ngn/k'
 example = '''
@@ -1677,8 +1677,8 @@ G
 
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
-size    = '1.21 MiB'
-version = 'SQLite 3.49.2'
+size    = '1.22 MiB'
+version = 'SQLite 3.50.0'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
