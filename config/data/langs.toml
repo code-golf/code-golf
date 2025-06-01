@@ -321,7 +321,7 @@ with 65536 cells; and cells are 8 bit with wrapping;
 '''
 
 [C]
-args    = [ '/usr/bin/tcc', '-run', '-' ]
+args    = [ '/usr/bin/c', '-run', '-' ]
 size    = '1.73 MiB'
 version = 'TCC 0.9.27'
 website = 'https://bellard.org/tcc/'
@@ -1677,8 +1677,8 @@ G
 
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
-size    = '1.21 MiB'
-version = 'SQLite 3.49.2'
+size    = '1.22 MiB'
+version = 'SQLite 3.50.0'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
@@ -1804,7 +1804,7 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '20.2 MiB'
+size       = '20.3 MiB'
 version    = '0.16.0'
 website    = 'https://www.uiua.org'
 example    = '''
