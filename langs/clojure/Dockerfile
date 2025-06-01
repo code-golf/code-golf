@@ -1,6 +1,6 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
-ENV VER=1.12.197
+ENV VER=1.12.200
 
 RUN wget -O- https://github.com/babashka/babashka/releases/download/v$VER/babashka-$VER-linux-amd64-static.tar.gz | tar xz
 

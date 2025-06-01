@@ -1,8 +1,8 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache build-base git perl
 
-ENV VER=2025.03
+ENV VER=2025.05
 
 RUN git clone --branch $VER https://github.com/rakudo/rakudo.git
 

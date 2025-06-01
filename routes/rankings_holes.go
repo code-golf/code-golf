@@ -25,12 +25,12 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		Pager                                 *pager.Pager
 		Recent                                bool
 		Rows                                  []struct {
-			Country                             *config.Country
-			Holes, Rank, Points, Strokes, Total int
-			Lang                                *config.Lang
-			Name                                string
-			OtherStrokes                        *int
-			Submitted                           time.Time
+			Country                                  *config.Country
+			Holes, Points, Rank, Row, Strokes, Total int
+			Lang                                     *config.Lang
+			Name                                     string
+			OtherStrokes                             *int
+			Submitted                                time.Time
 		}
 	}{
 		HoleID:  param(r, "hole"),
@@ -133,12 +133,13 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			          other_strokes    other_strokes,
 			          points           points,
 			          rank_overall     rank,
+			          row_overall      row,
 			          strokes          strokes,
 			          submitted        submitted,
 			          COUNT(*) OVER()  total
 			     FROM rankings
 			     JOIN users ON user_id = id
-			    WHERE hole = $1 AND scoring = $2 AND NOT experimental_lang
+			    WHERE hole = $1 AND scoring = $2
 			 ORDER BY rank_overall, submitted
 			    LIMIT $3 OFFSET $4`
 
@@ -150,6 +151,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			          other_strokes    other_strokes,
 			          points_for_lang  points,
 			          rank             rank,
+			          row              row,
 			          strokes          strokes,
 			          submitted        submitted,
 			          COUNT(*) OVER()  total

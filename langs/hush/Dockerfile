@@ -1,8 +1,12 @@
-FROM rust:1.86.0-alpine3.21 AS builder
+FROM rust:1.87.0-alpine3.22 AS builder
 
 RUN apk add --no-cache musl-dev
 
-RUN cargo install hush --root /usr --version 0.1.4
+ENV VER=0.1.4
+
+RUN cargo install hush \
+    --root /usr        \
+    --version $VER
 
 FROM codegolf/lang-base
 

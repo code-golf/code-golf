@@ -4,39 +4,45 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-int main (int argc, char *argv[]) {
-    if (argc > 1 && strcmp(argv[1], "--version") == 0) {
-        execv("/usr/bin/cobc", argv);
-        perror("execv");
-        return 0;
+#define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
+
+const char* cobol = "/usr/bin/cobc", *C = "/usr/bin/tcc", *code = "code.c";
+
+int main(int argc, char* argv[]) {
+    if (!strcmp(argv[1], "--version")) {
+        execv(cobol, argv);
+        ERR_AND_EXIT("execv");
     }
 
-    pid_t pid = fork();
-    if (!pid) {
-        execl("/usr/bin/cobc", "/usr/bin/cobc", "-CFxo", "/tmp/code.c", "-", NULL);
-        perror("execl");
-        return 1;
+    if (chdir("/tmp"))
+        ERR_AND_EXIT("chdir");
+
+    pid_t pid;
+
+    if (!(pid = fork())) {
+        execl(cobol, cobol, "-CFxo", code, "-", NULL);
+        ERR_AND_EXIT("execl");
     }
 
     int status;
+
     waitpid(pid, &status, 0); 
 
     if (!WIFEXITED(status))
-        return 2;
+        exit(EXIT_FAILURE);
 
     if (WEXITSTATUS(status))
         return WEXITSTATUS(status);
 
-    int ntcc = argc + 3;
-    char **tcc = malloc(ntcc * sizeof(char*));
-    tcc[0] = "/usr/bin/tcc";
-    tcc[1] = "-lcob";
-    tcc[2] = "-run";
-    tcc[3] = "/tmp/code.c";
-    memcpy(&tcc[4], &argv[2], (argc - 2) * sizeof(char*));
-    tcc[ntcc - 1] = NULL;
+    int cargc = argc + 3;
+    char** cargv = malloc(cargc * sizeof(char*));
+    cargv[0] = (char*) C;
+    cargv[1] = "-lcob";
+    cargv[2] = "-run";
+    cargv[3] = (char*) code;
+    memcpy(&cargv[4], &argv[2], (argc - 2) * sizeof(char*));
+    cargv[cargc - 1] = NULL;
 
-    execv("/usr/bin/tcc", tcc);
-    perror("execv");
-    return 6;
+    execv(C, cargv);
+    ERR_AND_EXIT("execv");
 }

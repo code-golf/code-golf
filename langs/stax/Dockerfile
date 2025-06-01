@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0.200-alpine3.21 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:9.0.203-alpine3.21 AS builder
 
 RUN apk add --no-cache gcc musl-dev
 
@@ -13,9 +13,9 @@ COPY stax.csproj StaxLang.CLI.csproj
 
 RUN dotnet publish -c Release -o /out
 
-COPY staxwrapper.c /
+COPY stax.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/staxwrapper -s -static /staxwrapper.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/staxwrapper -s -static /stax.c
 
 FROM codegolf/lang-base
 
