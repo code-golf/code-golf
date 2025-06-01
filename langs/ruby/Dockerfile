@@ -1,4 +1,4 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache bison clang curl git gmp-dev make mpfr-dev texinfo
 
