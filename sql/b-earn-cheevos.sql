@@ -51,7 +51,7 @@ BEGIN
 
     -- 🥣 Alphabet Soup
     SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs_for_hole)
-     WHERE unnest IN ('c', 'd', 'j', 'r', 'v');
+     WHERE unnest IN ('c', 'd', 'j', 'k', 'r', 'v');
     IF hole = 'scrambled-sort' AND found THEN
         earned := earn(earned, 'alphabet-soup', user_id); END IF;
 

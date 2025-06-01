@@ -3472,7 +3472,6 @@ preamble = '''
 '''
 
 ['Scrambled Sort']
-experiment = 1324
 category  = 'Transform'
 redirects = ['scrambled-alphabetization']
 released  = 2025-06-01
