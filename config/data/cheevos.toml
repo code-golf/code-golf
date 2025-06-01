@@ -76,7 +76,8 @@ description = 'Solve <a href=/game-of-life#elixir>Game of Life in Elixir</a>.'
 [['Hole/Lang Specific']]
 name        = 'Alphabet Soup'
 emoji       = '🥣'
-description = 'Solve <a href=/scrambled-sort>Scrambled Sort</a> in any three of <a href=/scrambled-sort#c>C</a>, <a href=/scrambled-sort#d>D</a>, <a href=/scrambled-sort#j>J</a>, <a href=/scrambled-sort#r>R</a>, or <a href=/scrambled-sort#v>V</a>.'
+description = 'Solve <a href=/scrambled-sort>Scrambled Sort</a> in any three of <a href=/scrambled-sort#c>C</a>, <a href=/scrambled-sort#d>D</a>, <a href=/scrambled-sort#j>J</a>, <a href=/scrambled-sort#k>K</a>, <a href=/scrambled-sort#r>R</a>, or <a href=/scrambled-sort#v>V</a>.'
+target      = 3
 
 [['Hole/Lang Specific']]
 name        = 'Archivist'
