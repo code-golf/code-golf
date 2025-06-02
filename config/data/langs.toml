@@ -752,7 +752,7 @@ bye
 
 [Fortran]
 args    = [ '/usr/bin/fortran', '-' ]
-size    = '101 MiB'
+size    = '102 MiB'
 version = 'GNU Fortran 15.1.0'
 website = 'https://gcc.gnu.org/fortran/'
 example = '''
@@ -1138,7 +1138,7 @@ $ARGS.positional[]
 
 [Julia]
 args    = [ '/usr/bin/julia', '--color=yes', '--eval', '$code', '--' ]
-size    = '300 MiB'
+size    = '301 MiB'
 version = '1.11.5'
 website = 'https://julialang.org'
 example = '''
@@ -1233,7 +1233,7 @@ for arg in commandLineParams():
 
 [OCaml]
 args    = [ '/usr/bin/ocaml', '-color=always', '/proc/self/fd/0' ]
-size    = '84.5 MiB'
+size    = '84.4 MiB'
 version = '5.3.0'
 website = 'https://ocaml.org'
 example = '''
@@ -1282,7 +1282,7 @@ main :: proc() {
 
 [Pascal]
 args    = [ '/usr/bin/pascal', '-' ]
-size    = '26.6 MiB'
+size    = '26.8 MiB'
 version = 'FPC 3.2.2'
 website = 'https://freepascal.org'
 example = '''
@@ -1453,7 +1453,7 @@ foreach string arg in (ARGV)
 [R]
 args       = [ '/usr/bin/Rscript', '-' ]
 args-quine = [ '/usr/bin/Rscript', '-e', "source('stdin')" ]
-size       = '30.5 MiB'
+size       = '30.6 MiB'
 version    = '4.5.0'
 website    = 'https://www.r-project.org'
 example    = '''
