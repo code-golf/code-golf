@@ -2927,7 +2927,7 @@ preamble = '''
 
 ['Polygon Triangulations']
 category       = 'Computing'
-multiset-item-delimiter = '\n'
+multiset-item-delimiter = "\n"
 synopsis       = 'Print all triangulations of polygons with 3...10 sides.'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Polygon_triangulation' },
