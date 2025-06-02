@@ -2935,7 +2935,7 @@ links = [
 experiment = 2181
 preamble = '''
 <p>
-    Print all possible triangulations of a polygon with 3...10 sides.
+    Print all possible triangulations of a regular polygon with 3...10 sides.
     The vertices of the polygon are labeled alphabetically, starting with A and going clockwise.
     Each triangle should have its vertices listed in order.
     The triangles in a triangulation should be listed lexicographically and separated by spaces.
