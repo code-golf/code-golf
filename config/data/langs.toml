@@ -1282,7 +1282,7 @@ main :: proc() {
 
 [Pascal]
 args    = [ '/usr/bin/pascal', '-' ]
-size    = '26.6 MiB'
+size    = '26.8 MiB'
 version = 'FPC 3.2.2'
 website = 'https://freepascal.org'
 example = '''
