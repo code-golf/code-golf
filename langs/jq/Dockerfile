@@ -1,17 +1,9 @@
 FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache build-base curl
+ENV BIN='/usr/bin/jq' VER=1.8.0
 
-ENV VER=1.7.1
-
-RUN curl -#L https://github.com/jqlang/jq/releases/download/jq-$VER/jq-$VER.tar.gz \
-  | tar xz --strip-components 1
-
-RUN ./configure                        \
-    --prefix=/usr                      \
-    --with-oniguruma=builtin           \
- && make LDFLAGS='-all-static' install \
- && strip /usr/bin/jq
+RUN wget -qO $BIN https://github.com/jqlang/jq/releases/download/jq-$VER/jq-linux64 \
+ && chmod +x $BIN
 
 FROM codegolf/lang-base
 
