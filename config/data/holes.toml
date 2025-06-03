@@ -2928,14 +2928,14 @@ preamble = '''
 ['Polygon Triangulations']
 category       = 'Computing'
 multiset-item-delimiter = "\n"
-synopsis       = 'Print all triangulations of polygons with 3...10 sides.'
+synopsis       = 'Print all triangulations of polygons with 3-8 sides.'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Polygon_triangulation' },
 ]
 experiment = 2181
 preamble = '''
 <p>
-    Print all possible triangulations of a regular polygon with 3...10 sides.
+    Print all possible triangulations of a regular polygon with 3-8 sides.
     The vertices of the polygon are labeled alphabetically, starting with A and going clockwise.
     Each triangle should have its vertices listed in order.
     The triangles in a triangulation should be listed lexicographically and separated by spaces.
