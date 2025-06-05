@@ -19,7 +19,7 @@ RUN cmake .. \
 RUN strip /usr/local/lib/libsqstdlib.so.0 \
           /usr/local/lib/libsquirrel.so.0
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/squirrel -s -static /squirrel.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/squirrel -s /squirrel.c
 
 FROM codegolf/lang-base
 

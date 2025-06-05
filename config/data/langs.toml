@@ -1703,7 +1703,7 @@ SELECT arg FROM argv;
 [Squirrel]
 args       = [ '/usr/bin/squirrel', '-' ]
 experiment = 1598
-size       = '4.08 MiB'
+size       = '4.06 MiB'
 version    = '3.2'
 website    = 'http://squirrel-lang.org'
 example    = '''
