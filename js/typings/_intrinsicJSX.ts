@@ -30,6 +30,7 @@ declare global {
       img:      any;
       input:    any;
       label:    any;
+      li:       any;
       optgroup: any;
       option:   any;
       p:        any;
