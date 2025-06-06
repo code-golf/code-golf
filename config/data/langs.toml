@@ -1013,7 +1013,7 @@ end
 [Hy]
 args       = [ '/usr/bin/hy', '-' ]
 experiment = 586
-size       = '42.0 MiB'
+size       = '41.9 MiB'
 version    = '1.1.0'
 website    = 'https://hylang.org'
 example    = '''
@@ -1414,7 +1414,7 @@ example = '''
 args    = [ '/usr/bin/python', '-u', '-' ]
 env     = [ 'PYTHON_COLORS=1' ]
 size    = '29.3 MiB'
-version = '3.13.3'
+version = '3.13.4'
 website = 'https://www.python.org'
 example = '''
 import sys
