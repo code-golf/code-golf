@@ -1,20 +1,24 @@
-FROM rust:1.87.0-alpine3.22 AS builder
+FROM rust:1.87.0-slim-bookworm AS builder
 
-RUN apk add --no-cache build-base linux-headers
+RUN apt-get update                   \
+ && DEBIAN_FRONTEND='noninteractive' \
+    apt-get install --yes gcc make
 
-ENV VER=0.16.0
+ENV VER=0.16.2
 
-RUN cargo install uiua    \
-    --features binary     \
-    --no-default-features \
-    --root /usr           \
-    --version $VER        \
+RUN RUSTFLAGS='-C target-feature=+crt-static' \
+    cargo install uiua                        \
+    --features binary                         \
+    --git https://github.com/uiua-lang/uiua   \
+    --no-default-features                     \
+    --root /usr                               \
+    --tag $VER                                \
+    --target x86_64-unknown-linux-gnu         \
  && strip /usr/bin/uiua
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /usr/bin/uiua            /usr/bin/
+COPY --from=0 /usr/bin/uiua /usr/bin/
 
 ENTRYPOINT ["uiua"]
 
