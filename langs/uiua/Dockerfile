@@ -6,16 +6,15 @@ RUN apt-get update                   \
 
 ENV VER=0.16.2
 
-RUN RUSTFLAGS='-C target-feature=+crt-static'   \
-    cargo install uiua                          \
-    --features binary                           \
-    --git https://github.com/uiua-lang/uiua.git \
-    --no-default-features                       \
-    --root /usr                                 \
-    --tag $VER                                  \
-    --target x86_64-unknown-linux-gnu
-
-RUN strip /usr/bin/uiua
+RUN RUSTFLAGS='-C target-feature=+crt-static' \
+    cargo install uiua                        \
+    --features binary                         \
+    --git https://github.com/uiua-lang/uiua   \
+    --no-default-features                     \
+    --root /usr                               \
+    --tag $VER                                \
+    --target x86_64-unknown-linux-gnu         \
+ && strip /usr/bin/uiua
 
 FROM codegolf/lang-base
 
