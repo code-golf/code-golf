@@ -894,10 +894,10 @@ NEXT
 '''
 
 [Hare]
-args       = [ '/usr/bin/harewrapper', '-' ]
+args       = [ '/usr/bin/hare', '-' ]
 env        = [ 'PATH=/usr/local/bin:/usr/bin' ]
 experiment = 1323
-size       = '11.4 MiB'
+size       = '11.5 MiB'
 version    = '0.24.2'
 website    = 'https://harelang.org'
 example    = '''
