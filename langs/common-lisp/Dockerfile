@@ -1,23 +1,30 @@
-FROM alpine:3.21 AS builder
+ARG VER=2.49.92
 
-ENV FORCE_UNSAFE_CONFIGURE=1
+FROM alpine:3.22 AS builder
+
+ARG VER
 
 RUN apk add --no-cache build-base curl
 
-RUN curl https://haible.de/bruno/gnu/clisp-2.49.92.tar.bz2 | tar xj
+RUN curl -#L https://haible.de/bruno/gnu/clisp-$VER.tar.bz2 \
+  | tar xj --strip-components 1
 
-RUN cd clisp-2.49.92/src                                      \
- && ../configure --ignore-absence-of-libsigsegv --prefix=/usr \
- && ./makemake --prefix=/usr > Makefile                       \
- && make                                                      \
+WORKDIR /src
+
+RUN FORCE_UNSAFE_CONFIGURE=1       \
+    ../configure                   \
+    --ignore-absence-of-libsigsegv \
+    --prefix=/usr                  \
  && make install
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /usr/bin/clisp           /usr/bin/lisp
-COPY --from=0 /usr/lib/clisp-2.49.92   /usr/lib/clisp-2.49.92
+ARG VER
 
-ENTRYPOINT ["lisp"]
+COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
+COPY --from=0 /usr/bin/clisp           /usr/bin/common-lisp
+COPY --from=0 /usr/lib/clisp-$VER      /usr/lib/clisp-$VER
+
+ENTRYPOINT ["common-lisp"]
 
 CMD ["--version"]
