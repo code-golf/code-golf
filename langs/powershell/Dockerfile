@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0.203-alpine3.21 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:9.0.300-alpine3.21-amd64 AS builder
 
 WORKDIR /powershell
 
