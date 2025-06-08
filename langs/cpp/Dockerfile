@@ -1,4 +1,4 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache build-base cmake curl linux-headers ninja python3
 
@@ -44,7 +44,7 @@ COPY --from=0 /usr/lib/Scrt1.o                  \
               /usr/lib/crti.o                   \
               /usr/lib/crtn.o                   \
               /usr/lib/libLLVM-20.so            \
-              /usr/lib/libbfd-2.43.1.so         \
+              /usr/lib/libbfd-2.44.so           \
               /usr/lib/libc.so                  \
               /usr/lib/libctf.so.0              \
               /usr/lib/libgcc_s.so              \

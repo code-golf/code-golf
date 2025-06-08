@@ -1,4 +1,4 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache build-base curl m4
 
@@ -78,12 +78,12 @@ COPY --from=0 /usr/bin/as                     \
 COPY --from=0 /usr/lib/crt1.o                 \
               /usr/lib/crti.o                 \
               /usr/lib/crtn.o                 \
-              /usr/lib/libbfd-2.43.1.so       \
+              /usr/lib/libbfd-2.44.so         \
               /usr/lib/libc.so                \
               /usr/lib/libctf.so.0            \
               /usr/lib/libjansson.so.4        \
               /usr/lib/libm.a                 \
-              /usr/lib/libopcodes-2.43.1.so   \
+              /usr/lib/libopcodes-2.44.so     \
               /usr/lib/libsframe.so.1         \
               /usr/lib/libz.so.1              \
               /usr/lib/libzstd.so.1           /usr/lib/
