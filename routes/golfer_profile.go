@@ -38,7 +38,7 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		Followers        []string
 		Following        []struct {
 			Bytes, Chars, Rank int
-			Country            config.NullCountry
+			Country            *config.Country
 			Name               string
 		}
 		Langs          []*config.Lang

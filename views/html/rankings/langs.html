@@ -40,6 +40,7 @@
                 <td>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
                 <td>
                     <a href="/rankings/langs/{{ .Lang.ID }}/{{ $.Data.Scoring }}">
+                        {{ svg .Lang.ID }}
                         <span>{{ .Lang.Name }}</span>
                     </a>
                 <td class=right>{{ with .Golds   }}{{ . }}🥇{{ end }}

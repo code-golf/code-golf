@@ -21,10 +21,10 @@ func computeZeckendorf(n int32) string {
 		out = append(out, f)
 	}
 
-	return strings.Trim(strings.Replace(fmt.Sprint(out), " ", " + ", -1), "[]")
+	return strings.Trim(strings.ReplaceAll(fmt.Sprint(out), " ", " + "), "[]")
 }
 
-func zeckendorfRepresentation() []Run {
+var _ = answerFunc("zeckendorf-representation", func() []Answer {
 	fixedCases := []test{
 		{"64", "55 + 8 + 1"},
 		{"89", "89"},
@@ -52,4 +52,4 @@ func zeckendorfRepresentation() []Run {
 	tests = append(fixedCases, tests...)
 
 	return outputTests(shuffle(tests))
-}
+})
