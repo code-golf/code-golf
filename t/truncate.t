@@ -1,6 +1,6 @@
 use t;
 
-my $res = run 'say "a" x 1024 and say STDERR "b" x 1024 for 0..128';
+my $res = run 'say "a" x 128 and say STDERR "b" x 128 for 0..1024';
 is $res<runs>[0]<stderr>.chars, 128 * 1024, 'Stderr is limited to 128 KiB';
 is $res<runs>[0]<stdout>.chars, 128 * 1024, 'Stdout is limited to 128 KiB';
 

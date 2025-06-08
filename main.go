@@ -193,8 +193,8 @@ func populateHolesLangsTables(db *sqlx.DB) error {
 	}
 
 	insertLang, err := tx.PrepareNamed(
-		`INSERT INTO langs ( id,  experiment)
-		      VALUES       (:id, :experiment)`,
+		`INSERT INTO langs ( id,  experiment,  digest_trunc)
+		      VALUES       (:id, :experiment, :digest_trunc)`,
 	)
 	if err != nil {
 		return err
@@ -204,8 +204,7 @@ func populateHolesLangsTables(db *sqlx.DB) error {
 		return err
 	}
 
-	// TODO Expand enum and add experimental langs.
-	for _, lang := range config.LangList {
+	for _, lang := range config.AllLangList {
 		if _, err := insertLang.Exec(lang); err != nil {
 			return err
 		}
