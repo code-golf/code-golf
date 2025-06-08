@@ -105,6 +105,7 @@ RUN echo [] > extras/ligatures.json                      \
     '*/1f948.svg'       `# 2nd Place Medal`              \
     '*/1f949.svg'       `# 3rd Place Medal`              \
     '*/1f961.svg'       `# Takeout Box`                  \
+    '*/1f963.svg'       `# Bowl with Spoon`              \
     '*/1f967.svg'       `# Pie`                          \
     '*/1f96a.svg'       `# Sandwich`                     \
     '*/1f970.svg'       `# Smiling Face with Hearts`     \
