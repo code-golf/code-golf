@@ -807,7 +807,7 @@ pub fn main() {
 args    = [ '/usr/bin/gowrapper', '-' ]
 env     = [ 'GOCACHE=/tmp/cache' ]
 size    = '418 MiB'
-version = '1.24.3'
+version = '1.24.4'
 website = 'https://go.dev'
 example = '''
 package main
@@ -1323,7 +1323,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '8.40 MiB'
-version = '8.4.7'
+version = '8.4.8'
 website = 'https://www.php.net'
 example = '''
 # Printing
