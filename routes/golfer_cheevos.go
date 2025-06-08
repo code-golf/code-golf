@@ -92,6 +92,11 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 		holes, langs []any
 	}{
 		{
+			cheevo: "alphabet-soup",
+			holes:  []any{"scrambled-sort"},
+			langs:  []any{"c", "d", "j", "k", "r", "v"},
+		},
+		{
 			cheevo: "archivist",
 			holes:  []any{"isbn"},
 			langs:  []any{"basic", "cobol", "common-lisp", "forth", "fortran"},
