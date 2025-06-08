@@ -92,13 +92,13 @@ constant %paths = (
     'Scala'        => 'github.com/scala/scala/releases/latest',
     'Scheme'       => 'github.com/cisco/ChezScheme/releases/latest',
     'sed'          => 'ftp.gnu.org/gnu/sed/?C=M;O=D',
-    'SQL'          => 'en.wikipedia.org/wiki/SQLite',
+    'SQL'          => 'sqlite.org/index.html',
     'Squirrel'     => 'github.com/albertodemichelis/squirrel/releases/latest',
     'Stax'         => 'github.com/tomtheisen/stax/releases/latest',
     'Swift'        => 'github.com/swiftlang/swift/releases/latest',
     'Tcl'          => 'en.wikipedia.org/wiki/Tcl',
     'TeX'          => 'en.wikipedia.org/wiki/TeX',
-    'Uiua'         => 'crates.io/api/v1/crates/uiua',
+    'Uiua'         => 'github.com/uiua-lang/uiua/releases/latest',
     'V'            => 'en.wikipedia.org/wiki/V_(programming_language)',
     'VimL'         => 'en.wikipedia.org/wiki/Vim_(text_editor)',
     'Vyxal'        => 'github.com/Vyxal/Vyxal/releases/latest',
@@ -136,6 +136,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'picat-lang.org' / { $res ~~ / 'Version ' <(<ver>)> / }
         when / 'pypi.org'       / { $res.&from-json<info><version> }
         when / 'sourceforge'    / { $res ~~ / 'Latest' .+? <(<ver>)> / }
+        when / 'sqlite.org'     / { $res ~~ / 'Version' .+? <(<ver>)> / }
         when / 'swi-prolog'     / { $res ~~ / 'stable' .+? <(<ver>)> / }
         when / 'api.github.com' / {
             $res.&from-json.grep(!*<prerelease>).map({ .<name> ~~ / <ver> / })
