@@ -4,7 +4,7 @@ RUN apk add --no-cache build-base curl
 
 ENV VER=5.4.7
 
-# Also rebuild Fennel.
+# Also rebuild Fennel, YueScript.
 RUN curl -#L https://www.lua.org/ftp/lua-$VER.tar.gz \
   | tar xz --strip-components 1
 
