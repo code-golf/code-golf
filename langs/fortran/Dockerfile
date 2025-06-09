@@ -56,7 +56,6 @@ RUN ./configure                   \
     --disable-shared              \
     --enable-languages=fortran    \
     --enable-static               \
-    --prefix=/usr/local           \
     --with-gmp=/tmp/gmp           \
     --with-mpc=/tmp/mpc           \
     --with-mpfr=/tmp/mpfr         \
@@ -71,26 +70,30 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/fortran -s -static /fortran.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1        /lib/
-COPY --from=0 /usr/bin/as                     \
-              /usr/bin/fortran                \
-              /usr/bin/ld                     /usr/bin/
-COPY --from=0 /usr/lib/crt1.o                 \
-              /usr/lib/crti.o                 \
-              /usr/lib/crtn.o                 \
-              /usr/lib/libbfd-2.44.so         \
-              /usr/lib/libc.so                \
-              /usr/lib/libctf.so.0            \
-              /usr/lib/libjansson.so.4        \
-              /usr/lib/libm.a                 \
-              /usr/lib/libopcodes-2.44.so     \
-              /usr/lib/libsframe.so.1         \
-              /usr/lib/libz.so.1              \
-              /usr/lib/libzstd.so.1           /usr/lib/
-COPY --from=0 /usr/local/bin/gfortran         /usr/local/bin/
-COPY --from=0 /usr/local/lib                  /usr/local/lib
-COPY --from=0 /usr/local/lib64                /usr/local/lib64
-COPY --from=0 /usr/local/libexec/gcc/*/*/f951 /usr/local/libexec/gcc/x86_64-pc-linux-musl/
+COPY --from=0 /lib/ld-musl-x86_64.so.1          /lib/
+COPY --from=0 /usr/bin/as                       \
+              /usr/bin/fortran                  \
+              /usr/bin/ld                       /usr/bin/
+COPY --from=0 /usr/lib/crt1.o                   \
+              /usr/lib/crti.o                   \
+              /usr/lib/crtn.o                   \
+              /usr/lib/libbfd-2.44.so           \
+              /usr/lib/libc.so                  \
+              /usr/lib/libctf.so.0              \
+              /usr/lib/libjansson.so.4          \
+              /usr/lib/libm.a                   \
+              /usr/lib/libopcodes-2.44.so       \
+              /usr/lib/libsframe.so.1           \
+              /usr/lib/libz.so.1                \
+              /usr/lib/libzstd.so.1             /usr/lib/
+COPY --from=0 /usr/local/bin/gfortran           /usr/local/bin/
+COPY --from=0 /usr/local/lib/gcc/*/*/crtbegin.o \
+              /usr/local/lib/gcc/*/*/crtend.o   \
+              /usr/local/lib/gcc/*/*/libgcc.a   /usr/local/lib/gcc/x86_64-pc-linux-musl/15.1.0/
+COPY --from=0 /usr/local/lib64/libgfortran.a    \
+              /usr/local/lib64/libgfortran.spec \
+              /usr/local/lib64/libquadmath.a    /usr/local/lib64/
+COPY --from=0 /usr/local/libexec/gcc/*/*/f951   /usr/local/libexec/gcc/x86_64-pc-linux-musl/
 
 ENTRYPOINT ["fortran"]
 
