@@ -6,7 +6,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* zig = "/usr/local/bin/zig", *code = "code.zig";
+const char* zig = "/usr/local/zig", *code = "code.zig";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
