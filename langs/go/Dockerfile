@@ -1,4 +1,4 @@
-FROM golang:1.24.3-alpine3.21 AS builder
+FROM golang:1.24.4-alpine3.22 AS builder
 
 RUN apk add --no-cache gcc musl-dev
 
@@ -11,10 +11,14 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/gowrapper -s -static /go.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /cache                   /cache
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /usr/bin/gowrapper       /usr/bin/
-COPY --from=0 /usr/local/go            /usr/local/
+COPY --from=0 /cache                                     /cache
+COPY --from=0 /lib/ld-musl-x86_64.so.1                   /lib/
+COPY --from=0 /usr/bin/gowrapper                         /usr/bin/
+COPY --from=0 /usr/local/go/bin/go                       /usr/local/bin/
+COPY --from=0 /usr/local/go/pkg/tool/linux_amd64/asm     \
+              /usr/local/go/pkg/tool/linux_amd64/compile \
+              /usr/local/go/pkg/tool/linux_amd64/link    /usr/local/pkg/tool/linux_amd64/
+COPY --from=0 /usr/local/go/src                          /usr/local/src
 
 ENTRYPOINT ["gowrapper"]
 
