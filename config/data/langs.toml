@@ -780,8 +780,8 @@ end
 [Gleam]
 args    = [ '/usr/bin/gleam', '-', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '99.1 MiB'
-version = '1.11.0'
+size    = '99.2 MiB'
+version = '1.11.1'
 website = 'https://gleam.run'
 example = '''
 import argv
@@ -1105,7 +1105,7 @@ class Main {
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
 size    = '43.5 MiB'
-version = 'V8 13.7.152.10'
+version = 'V8 13.7.152.13'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1901,8 +1901,8 @@ for (a in Process.arguments) System.print(a)
 '''
 
 [Zig]
-args    = [ '/usr/bin/zigwrapper', '-' ]
-size    = '301 MiB'
+args    = [ '/usr/bin/zig', '-' ]
+size    = '181 MiB'
 version = '0.14.1'
 website = 'https://ziglang.org'
 example = '''
