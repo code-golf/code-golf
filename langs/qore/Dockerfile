@@ -1,4 +1,4 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache bison build-base bzip2-dev curl flex gmp-dev linux-headers mpfr-dev openssl-dev pcre2-dev zlib-dev
 
