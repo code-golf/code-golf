@@ -1901,8 +1901,8 @@ for (a in Process.arguments) System.print(a)
 '''
 
 [Zig]
-args    = [ '/usr/bin/zigwrapper', '-' ]
-size    = '301 MiB'
+args    = [ '/usr/bin/zig', '-' ]
+size    = '181 MiB'
 version = '0.14.1'
 website = 'https://ziglang.org'
 example = '''
