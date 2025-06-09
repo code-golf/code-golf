@@ -1,10 +1,9 @@
 FROM alpine:3.22 AS builder
 
-RUN echo @edge https://dl-cdn.alpinelinux.org/alpine/edge/testing \
- >> /etc/apk/repositories                                         \
- && apk add --no-cache build-base curl libffi-dev linux-headers pypy@edge
+RUN apk add -X https://dl-cdn.alpinelinux.org/alpine/edge/testing \
+    --no-cache build-base curl libffi-dev linux-headers pypy
 
-ENV LDFLAGS='-static' PYVER=3.10-v7.3.17 VER=96b1cfc
+ENV LDFLAGS='-static' PYVER=3.11-v7.3.19 VER=96b1cfc
 
 RUN curl -#L https://downloads.python.org/pypy/pypy$PYVER-src.tar.bz2 \
   | tar xj --strip-components 1
