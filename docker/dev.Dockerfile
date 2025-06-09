@@ -7,9 +7,9 @@ RUN apk add --no-cache build-base curl git linux-headers tzdata \
  && GOBIN=/bin go install github.com/cespare/reflex@latest
 
 COPY --from=codegolf/lang-swift        ["/", "/langs/swift/rootfs/"       ] #  543 MiB
-COPY --from=codegolf/lang-go           ["/", "/langs/go/rootfs/"          ] #  418 MiB
 COPY --from=codegolf/lang-rust         ["/", "/langs/rust/rootfs/"        ] #  389 MiB
 COPY --from=codegolf/lang-haskell      ["/", "/langs/haskell/rootfs/"     ] #  339 MiB
+COPY --from=codegolf/lang-go           ["/", "/langs/go/rootfs/"          ] #  324 MiB
 COPY --from=codegolf/lang-julia        ["/", "/langs/julia/rootfs/"       ] #  300 MiB
 COPY --from=codegolf/lang-odin         ["/", "/langs/odin/rootfs/"        ] #  281 MiB
 COPY --from=codegolf/lang-crystal      ["/", "/langs/crystal/rootfs/"     ] #  270 MiB
