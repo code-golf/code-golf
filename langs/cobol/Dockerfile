@@ -16,26 +16,24 @@ RUN ./configure            \
     --without-db           \
  && make -j`nproc` install \
  && strip /usr/bin/cobc    \
-          /usr/lib/libcob.so.4.2.0
+          /usr/lib/libcob.so
 
 RUN gcc -Wall -Werror -Wextra -o /usr/bin/cobol -s cobol.c
 
+# Docker can only copy symlinks by copying the whole folder.
+# See https://github.com/moby/moby/issues/40449
+WORKDIR /usr/lib
+RUN mkdir /usr-lib && cp -P libcob.so* libgmp.so* /usr-lib
+
 FROM codegolf/lang-c
 
-COPY --from=0 /usr/bin/cobc            \
-              /usr/bin/cobol           /usr/bin/
-COPY --from=0 /usr/include/gmp.h       \
-              /usr/include/libcob.h    /usr/include/
-COPY --from=0 /usr/include/libcob      /usr/include/libcob
-COPY --from=0 /usr/lib/libcob.so       \
-              /usr/lib/libcob.so.4     \
-              /usr/lib/libcob.so.4.2.0 \
-              /usr/lib/libgmp.so.10    /usr/lib/
-COPY --from=0 /usr/share/gnucobol      /usr/share/gnucobol
-
-FROM codegolf/lang-base
-
-COPY --from=1 . /
+COPY --from=0 /usr/bin/cobc         \
+              /usr/bin/cobol        /usr/bin/
+COPY --from=0 /usr/include/gmp.h    \
+              /usr/include/libcob.h /usr/include/
+COPY --from=0 /usr/include/libcob   /usr/include/libcob
+COPY --from=0 /usr-lib              /usr/lib
+COPY --from=0 /usr/share/gnucobol   /usr/share/gnucobol
 
 ENTRYPOINT ["cobol"]
 
