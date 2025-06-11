@@ -1,12 +1,11 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache build-base curl libffi-dev openssl-dev zlib-dev
 
-ENV PYVER=3.13.3 VER=3.1.2
+ENV PYVER=3.13.4 VER=3.1.2
 
-RUN curl -# https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz | tar xJ
-
-WORKDIR /Python-$PYVER
+RUN curl -#L https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz \
+  | tar xJ --strip-components 1
 
 RUN ./configure                \
     --disable-test-modules     \
