@@ -1373,8 +1373,8 @@ main(Args) =>
 args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
-size       = '135 MiB'
-version    = 'PowerShell 7.5.1 on .NET 9.0.5'
+size       = '136 MiB'
+version    = 'PowerShell 7.5.1 on .NET 9.0.6'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
