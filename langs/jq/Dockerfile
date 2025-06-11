@@ -1,20 +1,26 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
-ENV VER=1.7.1
+RUN apk add --no-cache autoconf automake build-base git libtool
 
-RUN apk add --no-cache build-base curl
+# Three commits past 1.8.0 to fix https://github.com/jqlang/jq/issues/3339
+ENV VER=023f274
 
-RUN curl -L https://github.com/jqlang/jq/releases/download/jq-$VER/jq-$VER.tar.gz \
-  | tar xz --strip-components 1
+RUN git clone https://github.com/jqlang/jq.git
 
-RUN ./configure              \
-    --with-oniguruma=builtin \
- && make LDFLAGS=-all-static \
- && strip jq
+WORKDIR /jq
+
+RUN git reset --hard $VER              \
+ && git submodule update --init        \
+ && autoreconf -i                      \
+ && ./configure                        \
+    --prefix=/usr                      \
+    --with-oniguruma=builtin           \
+ && make LDFLAGS='-all-static' install \
+ && strip /usr/bin/jq
 
 FROM codegolf/lang-base
 
-COPY --from=0 ./jq /usr/bin/
+COPY --from=0 /usr/bin/jq /usr/bin/
 
 ENTRYPOINT ["jq"]
 
