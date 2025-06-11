@@ -1,13 +1,14 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache bash build-base clang git
 
 ENV VER=0.7.0
 
-RUN git clone https://github.com/dzaima/CBQN.git --branch v$VER
+RUN git clone --branch v$VER https://github.com/dzaima/CBQN.git
 
-RUN cd CBQN       \
- && make          \
+WORKDIR /CBQN
+
+RUN make          \
     REPLXX=0      \
     singeli=0     \
     static-bin    \
