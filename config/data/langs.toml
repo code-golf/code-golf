@@ -17,7 +17,7 @@ example    = '''
 
 ['><>']
 args    = [ '/usr/bin/fish', '--no-prng', '-c', '$code', '-u' ]
-size    = '4.85 MiB'
+size    = '557 KiB'
 version = '96b1cfc'
 website = 'https://github.com/primo-ppcg/fish-jit'
 example = '''
@@ -396,7 +396,7 @@ int main(int argc, char* argv[]) {
 [Civet]
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
-size    = '72.1 MiB'
+size    = '81.3 MiB'
 version = '0.10.4'
 website = 'https://civet.dev'
 example = '''
@@ -484,7 +484,7 @@ end-program.
 [Coconut]
 args    = [ '/usr/bin/coconut', '--quiet', '--target', 'sys', '--keep-lines', '--argv' ]
 env     = [ 'PYTHON_COLORS=1' ]
-size    = '88.0 MiB'
+size    = '84.9 MiB'
 version = '3.1.2'
 website = 'https://coconut-lang.org'
 example = '''
@@ -523,7 +523,7 @@ for arg in process.argv[2..]
 '''
 
 ['Common Lisp']
-args      = [ '/usr/bin/lisp', '-' ]
+args      = [ '/usr/bin/common-lisp', '-' ]
 redirects = [ 'lisp' ]
 size      = '31.1 MiB'
 version   = 'GNU CLISP 2.49.92'
@@ -836,7 +836,7 @@ func main() {
 [GolfScript]
 args       = [ '/usr/bin/golfscript', '-n', '-e', '$code', '--' ]
 args-quine = [ '/usr/bin/golfscript', '-n', '-e', '$code', '-q', '--' ]
-size       = '33.3 MiB'
+size       = '33.2 MiB'
 version    = '6155e9f'
 website    = 'https://golfscript.com/golfscript/'
 example    = '''
@@ -894,10 +894,10 @@ NEXT
 '''
 
 [Hare]
-args       = [ '/usr/bin/harewrapper', '-' ]
+args       = [ '/usr/bin/hare', '-' ]
 env        = [ 'PATH=/usr/local/bin:/usr/bin' ]
 experiment = 1323
-size       = '11.4 MiB'
+size       = '11.5 MiB'
 version    = '0.24.2'
 website    = 'https://harelang.org'
 example    = '''
@@ -992,7 +992,7 @@ example = '''
 [Hush]
 args       = [ '/usr/bin/hush', '-' ]
 experiment = 656
-size       = '3.40 MiB'
+size       = '2.32 MiB'
 version    = '0.1.4'
 website    = 'https://hush-shell.github.io'
 example    = '''
@@ -1255,8 +1255,8 @@ Sys.argv
 [Odin]
 args       = [ '/usr/bin/odinwrapper', '-', '--' ]
 experiment = 766
-size       = '281 MiB'
-version    = '2025-04'
+size       = '299 MiB'
+version    = '2025-06'
 website    = 'https://odin-lang.org'
 example    = '''
 package main
