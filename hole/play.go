@@ -59,7 +59,7 @@ type Run struct {
 // Play a given hole, in a given lang, with given code and return the runs.
 func Play(
 	ctx context.Context, hole *config.Hole, lang *config.Lang, code string,
-) []Run {
+) ([]Run, error) {
 	var answers []Answer
 
 	switch hole.ID {
@@ -91,11 +91,7 @@ func Play(
 		g.Go(func() error { return play(ctx, hole, lang, code, &runs[i]) })
 	}
 
-	if err := g.Wait(); err != nil {
-		panic(err)
-	}
-
-	return runs
+	return runs, g.Wait()
 }
 
 func play(
