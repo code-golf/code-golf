@@ -238,6 +238,8 @@ func runCode(
 		if asmBytesRead, asmBytesWrite, err = os.Pipe(); err != nil {
 			return err
 		}
+		defer asmBytesRead.Close()
+		defer asmBytesWrite.Close()
 
 		cmd.ExtraFiles = []*os.File{asmBytesWrite}
 	}
@@ -293,6 +295,10 @@ func runCode(
 
 	// Actual byte count is printed by the assembler.
 	if lang.ID == "assembly" {
+		// Explicitly close the writer in case defasm died before it could.
+		// This prevents a very long wait in the upcoming fscanf.
+		asmBytesWrite.Close()
+
 		if _, err := fmt.Fscanf(asmBytesRead, "%d", &run.ASMBytes); err != nil {
 			return err
 		}
