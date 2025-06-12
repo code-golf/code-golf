@@ -166,7 +166,7 @@ rows:
 
 	rows, err = db.Query(
 		`WITH ranks AS (
-		    SELECT user_id, scoring, lang, SUM(points_for_lang) as total_score
+		    SELECT user_id, scoring, lang, SUM(points_for_lang) as total_score,
 		           RANK() OVER (PARTITION BY scoring, lang
 		                            ORDER BY SUM(points_for_lang) DESC)
 		      FROM rankings
