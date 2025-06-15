@@ -347,8 +347,8 @@ int main(int argc, char* argv[]) {
 ['C#']
 args    = [ '/usr/bin/c-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
-size    = '107 MiB'
-version = 'C# 13.0 on .NET 9.0.5'
+size    = '108 MiB'
+version = 'C# 13.0 on .NET 9.0.6'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -506,7 +506,7 @@ for arg in sys.argv[1:]:
 args       = [ '/usr/bin/coffee', '/proc/self/fd/0' ]
 env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 450
-size       = '71.5 MiB'
+size       = '80.7 MiB'
 version    = '2.7.0'
 website    = 'https://coffeescript.org'
 example    = '''
@@ -673,8 +673,8 @@ main(Args) ->
 ['F#']
 args    = [ '/usr/bin/f-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
-size    = '109 MiB'
-version = 'F# 9.0 on .NET 9.0.5'
+size    = '110 MiB'
+version = 'F# 9.0 on .NET 9.0.6'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -1373,8 +1373,8 @@ main(Args) =>
 args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
-size       = '135 MiB'
-version    = 'PowerShell 7.5.1 on .NET 9.0.5'
+size       = '136 MiB'
+version    = 'PowerShell 7.5.1 on .NET 9.0.6'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing

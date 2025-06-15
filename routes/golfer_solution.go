@@ -116,7 +116,10 @@ func golferSolutionPOST(w http.ResponseWriter, r *http.Request) {
 		Timeout bool          `json:"timeout"`
 	}
 
-	runs := h.Play(ctx, hole, lang, code)
+	runs, err := h.Play(ctx, hole, lang, code)
+	if err != nil {
+		panic(err)
+	}
 	subsetRuns := make([]SubsetRun, len(runs))
 
 	overallPass := true
