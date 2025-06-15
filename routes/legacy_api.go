@@ -96,7 +96,10 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	runs := hole.Play(r.Context(), holeObj, langObj, in.Code)
+	runs, err := hole.Play(r.Context(), holeObj, langObj, in.Code)
+	if err != nil {
+		panic(err)
+	}
 
 	out := struct {
 		Cheevos     []config.Cheevo     `json:"cheevos"`
