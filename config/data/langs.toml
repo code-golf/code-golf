@@ -484,7 +484,7 @@ end-program.
 [Coconut]
 args    = [ '/usr/bin/coconut', '--quiet', '--target', 'sys', '--keep-lines', '--argv' ]
 env     = [ 'PYTHON_COLORS=1' ]
-size    = '84.9 MiB'
+size    = '84.7 MiB'
 version = '3.1.2'
 website = 'https://coconut-lang.org'
 example = '''
@@ -1013,7 +1013,7 @@ end
 [Hy]
 args       = [ '/usr/bin/hy', '-' ]
 experiment = 586
-size       = '41.9 MiB'
+size       = '41.7 MiB'
 version    = '1.1.0'
 website    = 'https://hylang.org'
 example    = '''
@@ -1413,8 +1413,8 @@ example = '''
 [Python]
 args    = [ '/usr/bin/python', '-u', '-' ]
 env     = [ 'PYTHON_COLORS=1' ]
-size    = '29.3 MiB'
-version = '3.13.4'
+size    = '29.1 MiB'
+version = '3.13.5'
 website = 'https://www.python.org'
 example = '''
 import sys
