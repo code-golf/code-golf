@@ -15,24 +15,31 @@ ENV PATH=/root/.ghcup/bin:$PATH
 RUN curl -#L https://downloads.haskell.org/~ghc/$VER/ghc-$VER-src.tar.xz \
   | tar xJ --strip-components 1
 
-RUN ./configure        \
- && hadrian/build      \
-    -j`nproc`          \
-    --docs=none        \
-    --flavour=quickest \
+RUN ./configure       \
+ && hadrian/build     \
+    -j`nproc`         \
+    --docs=none       \
+    --flavour=release \
     --freeze1
 
-WORKDIR /_build/stage1
+WORKDIR /_build/stage1/lib
 
-RUN strip bin/ghc \
-          bin/runghc
+# Delete all archive files.
+RUN find . -name '*.a' -delete
 
-# Delete static libraries.
-RUN find lib -name '*.a' -delete
+# Delete useless shared object files.
+RUN find . \( -name '*debug*.so' -or -name '*p-ghc*.so' \) -delete
 
-# Delete unused libraries.
-RUN rm -r lib/x86_64-linux-ghc-$VER-inplace/Cabal-* \
-          lib/x86_64-linux-ghc-$VER-inplace/ghci-*
+WORKDIR /_build/stage1/lib/x86_64-linux-ghc-$VER-inplace
+
+# Delete all files not matching a pattern.
+RUN find . -type f -not \( -name '*Constants.h' -or -name '*.dyn_hi' -or -name '*ghc*.so' -or -name 'settings' \) -delete
+
+# Delete unused package directories.
+RUN rm -r Cabal* ghc-compact* ghc-experimental* ghc-toolchain* ghci* haddock* parsec* text* xhtml*
+
+# Delete unused packages' shared object files, except GHCi's.
+RUN rm *Cabal*.so *ghc-compact*.so *ghc-experimental*.so *ghc-toolchain*.so *haddock*.so *parsec*.so *text*.so *xhtml*.so
 
 COPY haskell.c /
 
