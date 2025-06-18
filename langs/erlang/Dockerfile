@@ -7,9 +7,10 @@ RUN apt-get update                   \
 # Also bump Elixir, Gleam.
 ENV VER=28.0.1
 
-RUN curl -#L https://github.com/erlang/otp/releases/download/OTP-$VER/otp_src_$VER.tar.gz | tar xz
+WORKDIR /erlang
 
-WORKDIR /otp_src_$VER
+RUN curl -#L https://github.com/erlang/otp/releases/download/OTP-$VER/otp_src_$VER.tar.gz \
+  | tar xz --strip-components 1
 
 RUN ./configure            \
     --prefix=/usr          \

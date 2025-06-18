@@ -6,15 +6,16 @@ RUN apt-get update                   \
 
 ENV ERLVER=28.0.1 VER=1.18.4
 
-RUN curl -#L https://github.com/erlang/otp/releases/download/OTP-$ERLVER/otp_src_$ERLVER.tar.gz | tar xz
+WORKDIR /erlang
 
-WORKDIR /otp_src_$ERLVER
+RUN curl -#L https://github.com/erlang/otp/releases/download/OTP-$ERLVER/otp_src_$ERLVER.tar.gz \
+  | tar xz --strip-components 1
 
 RUN ./configure   \
     --prefix=/usr \
  && make -j`nproc` install
 
-WORKDIR /usr/src
+WORKDIR /elixir
 
 RUN curl -#L https://github.com/elixir-lang/elixir/archive/v$VER.tar.gz \
   | tar xz --strip-components 1
@@ -46,8 +47,8 @@ COPY --from=0 /usr/bin/basename                    \
 COPY --from=0 /usr/local                           /usr/lib/erlang
 COPY --from=0 /usr/lib/erlang/bin/start.boot       /usr/lib/erlang/bin/
 COPY --from=0 /usr/lib/locale                      /usr/lib/locale
-COPY --from=0 /usr/src/bin/elixir                  /usr/local/bin/
-COPY --from=0 /usr/src/lib/elixir/ebin             /usr/local/lib/elixir/ebin
+COPY --from=0 /elixir/bin/elixir                   /usr/local/bin/
+COPY --from=0 /elixir/lib/elixir/ebin              /usr/local/lib/elixir/ebin
 
 ENTRYPOINT ["elixir"]
 

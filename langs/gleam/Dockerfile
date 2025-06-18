@@ -6,9 +6,10 @@ RUN apt-get update                   \
 
 ENV ERLVER=28.0.1 VER=1.11.1
 
-RUN curl -#L https://github.com/erlang/otp/releases/download/OTP-$ERLVER/otp_src_$ERLVER.tar.gz | tar xz
+WORKDIR /erlang
 
-WORKDIR /otp_src_$ERLVER
+RUN curl -#L https://github.com/erlang/otp/releases/download/OTP-$ERLVER/otp_src_$ERLVER.tar.gz \
+  | tar xz --strip-components 1
 
 RUN ./configure            \
     --prefix=/usr          \
