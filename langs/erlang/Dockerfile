@@ -26,10 +26,16 @@ RUN mv erts* /usr/local             \
     -name 'erlexec'         -or     \
     -name 'inet_gethost' \) -delete
 
-RUN mv lib/compiler* lib/kernel* lib/parsetools* lib/stdlib* lib/tools* /usr/local/lib \
- && find /usr/local/lib -type f                             \
-    -not \( -name '*.*a*' -or -name 'file.hrl' \
-    -or -name 'make.beam' -or -name 'yecc*' \) -delete
+RUN mv lib/compiler*                    \
+       lib/kernel*                      \
+       lib/parsetools*                  \
+       lib/stdlib*                      \
+       lib/tools* /usr/local/lib        \
+ && find /usr/local/lib -type f -not \( \
+    -name '*.*a*'     -or               \
+    -name 'file.hrl'  -or               \
+    -name 'make.beam' -or               \
+    -name 'yecc*' \) -delete
 
 COPY erlang.c /
 
