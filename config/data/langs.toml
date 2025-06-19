@@ -638,7 +638,7 @@ def main =
 [Elixir]
 args    = [ '/usr/local/bin/elixir', '--color', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '57.7 MiB'
+size    = '58.7 MiB'
 version = '1.18.4'
 website = 'https://elixir-lang.org'
 example = '''
@@ -655,7 +655,7 @@ for arg <- System.argv, do: IO.puts arg
 [Erlang]
 args       = [ '/usr/bin/erlang', '-' ]
 experiment = 181
-size       = '50.8 MiB'
+size       = '51.8 MiB'
 version    = 'OTP 28.0.1'
 website    = 'https://www.erlang.org'
 example    = '''
@@ -780,7 +780,7 @@ end
 [Gleam]
 args    = [ '/usr/bin/gleam', '-', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '75.3 MiB'
+size    = '76.3 MiB'
 version = '1.11.1'
 website = 'https://gleam.run'
 example = '''
@@ -1804,8 +1804,8 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '20.3 MiB'
-version    = '0.16.0'
+size       = '19.4 MiB'
+version    = '0.16.2'
 website    = 'https://www.uiua.org'
 example    = '''
 # Printing
@@ -1820,8 +1820,8 @@ example    = '''
 
 [V]
 args    = [ '/usr/bin/V', '-' ]
-size    = '50.6 MiB'
-version = '0.4.10'
+size    = '51.4 MiB'
+version = '0.4.11'
 website = 'https://vlang.io'
 example = '''
 import os
