@@ -655,7 +655,7 @@ for arg <- System.argv, do: IO.puts arg
 [Erlang]
 args       = [ '/usr/bin/erlang', '-' ]
 experiment = 181
-size       = '51.8 MiB'
+size       = '19.5 MiB'
 version    = 'OTP 28.0.1'
 website    = 'https://www.erlang.org'
 example    = '''
@@ -780,7 +780,7 @@ end
 [Gleam]
 args    = [ '/usr/bin/gleam', '-', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '76.3 MiB'
+size    = '44.0 MiB'
 version = '1.11.1'
 website = 'https://gleam.run'
 example = '''
