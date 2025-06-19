@@ -2,18 +2,22 @@ FROM rust:1.87.0-slim-bookworm AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
-    apt-get install --yes gcc make
+    apt-get install --yes curl
 
-ENV VER=0.16.2
+ENV CRT='x86_64-unknown-linux-musl' VER=0.16.2
 
-RUN RUSTFLAGS='-C target-feature=+crt-static' \
-    cargo install uiua                        \
-    --features binary                         \
-    --git https://github.com/uiua-lang/uiua   \
-    --no-default-features                     \
-    --root /usr                               \
-    --tag $VER                                \
-    --target x86_64-unknown-linux-gnu         \
+RUN curl -#L https://github.com/uiua-lang/uiua/archive/refs/tags/$VER.tar.gz \
+  | tar xz --strip-components 1
+
+RUN rustup target add $CRT \
+ && cargo add ffi
+
+RUN cargo install         \
+    --features binary     \
+    --no-default-features \
+    --path /              \
+    --root /usr           \
+    --target $CRT         \
  && strip /usr/bin/uiua
 
 FROM codegolf/lang-base
