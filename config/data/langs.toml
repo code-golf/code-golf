@@ -638,7 +638,7 @@ def main =
 [Elixir]
 args    = [ '/usr/local/bin/elixir', '--color', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '81.5 MiB'
+size    = '57.7 MiB'
 version = '1.18.4'
 website = 'https://elixir-lang.org'
 example = '''
@@ -655,7 +655,7 @@ for arg <- System.argv, do: IO.puts arg
 [Erlang]
 args       = [ '/usr/bin/erlang', '-' ]
 experiment = 181
-size       = '75.5 MiB'
+size       = '50.8 MiB'
 version    = 'OTP 28.0.1'
 website    = 'https://www.erlang.org'
 example    = '''
