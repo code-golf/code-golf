@@ -778,9 +778,9 @@ end
 '''
 
 [Gleam]
-args    = [ '/usr/bin/gleamwrapper', '-', '--' ]
+args    = [ '/usr/bin/gleam', '-', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '99.2 MiB'
+size    = '75.3 MiB'
 version = '1.11.1'
 website = 'https://gleam.run'
 example = '''

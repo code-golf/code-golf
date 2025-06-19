@@ -17,14 +17,6 @@ RUN ./configure            \
  && make -j`nproc` install \
  && strip /usr/bin/escript
 
-#WORKDIR /usr/lib/erlang
-#
-#RUN mv erts* /usr/local && find /usr/local -type f          \
-#    -not \( -name 'beam.smp' -or -name 'erl_child_setup'    \
-#    -or -name 'erlexec' -or -name 'inet_gethost' \) -delete \
-# && mv lib/compiler* lib/kernel* lib/stdlib* /usr/local/lib \
-# && find /usr/local/lib -type f -not -name '*.beam' -delete
-
 COPY erlang.c /
 
 RUN gcc -Wall -Werror -Wextra -o /usr/bin/erlang -s /erlang.c
