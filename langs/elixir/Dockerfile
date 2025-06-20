@@ -1,6 +1,6 @@
-FROM codegolf/lang-erlang AS builder
+FROM codegolf/lang-erlang
 
-FROM debian:bookworm-slim
+FROM debian:bookworm-slim AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
