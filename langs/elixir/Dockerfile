@@ -2,13 +2,13 @@ FROM codegolf/lang-erlang AS builder
 
 FROM debian:bookworm-slim
 
-COPY --from=0 /usr /usr
-
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl make
 
 ENV LANG='C.UTF-8' VER=1.18.4
+
+COPY --from=0 /usr /usr
 
 WORKDIR /usr/local
 

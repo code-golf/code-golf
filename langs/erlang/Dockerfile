@@ -12,7 +12,8 @@ WORKDIR /erlang
 RUN curl -#L https://github.com/erlang/otp/releases/download/OTP-$VER/otp_src_$VER.tar.gz \
   | tar xz --strip-components 1
 
-RUN find lib -name 'Makefile' -exec sed -i 's/-$(.*VSN)//' {} +
+RUN find . \( -name 'Make*' -or -name 'Inst*' \) \
+    -exec sed -i 's/-$(.*VSN)//;s/-%I_VSN%//' {} +
 
 RUN ./configure            \
     --prefix=/usr          \
@@ -41,10 +42,10 @@ COPY --from=0 /usr/bin/basename                                   \
               /usr/bin/escript                                    /usr/bin/
 COPY --from=0 /usr/lib/erlang/bin/no_dot_erlang.boot              \
               /usr/lib/erlang/bin/start.boot                      /usr/lib/erlang/bin/
-# COPY --from=0 /usr/lib/erlang/erts/bin/beam.smp                   \
-#               /usr/lib/erlang/erts/bin/erl_child_setup            \
-#               /usr/lib/erlang/erts/bin/erlexec                    \
-#               /usr/lib/erlang/erts/bin/inet_gethost               /usr/lib/erlang/erts/bin/
+COPY --from=0 /usr/lib/erlang/erts/bin/beam.smp                   \
+              /usr/lib/erlang/erts/bin/erl_child_setup            \
+              /usr/lib/erlang/erts/bin/erlexec                    \
+              /usr/lib/erlang/erts/bin/inet_gethost               /usr/lib/erlang/erts/bin/
 COPY --from=0 /usr/lib/erlang/lib/compiler/ebin                   /usr/lib/erlang/lib/compiler/ebin
 COPY --from=0 /usr/lib/erlang/lib/kernel/ebin                     /usr/lib/erlang/lib/kernel/ebin
 COPY --from=0 /usr/lib/erlang/lib/kernel/include/file.hrl         /usr/lib/erlang/lib/kernel/include/
