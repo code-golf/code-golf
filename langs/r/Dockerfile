@@ -1,13 +1,12 @@
 FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache build-base bzip2-dev curl-dev gettext-dev gfortran \
-                       pcre2-dev perl tzdata xz-dev zlib-dev
+RUN apk add --no-cache build-base bzip2-dev curl curl-dev gettext-dev \
+                       gfortran pcre2-dev perl tzdata xz-dev zlib-dev
 
-ENV VER=4.5.0
+ENV VER=4.5.1
 
-RUN wget -O- https://cran.r-project.org/src/base/R-4/R-$VER.tar.xz | tar xJ
-
-WORKDIR /R-$VER
+RUN curl -#L https://cran.r-project.org/src/base/R-4/R-$VER.tar.xz \
+  | tar xJ --strip-components 1
 
 RUN ./configure                      \
     --disable-byte-compiled-packages \
@@ -27,7 +26,7 @@ RUN strip /usr/lib/R/lib/libR.so     \
 
 WORKDIR /busybox
 
-RUN wget -O- https://busybox.net/downloads/busybox-1.36.1.tar.bz2 \
+RUN curl -#L https://busybox.net/downloads/busybox-1.36.1.tar.bz2 \
   | tar xj --strip-components 1
 
 COPY busybox-config .config
@@ -39,8 +38,8 @@ FROM codegolf/lang-base
 COPY --from=0 /busybox/_install/bin        /bin
 COPY --from=0 /lib/ld-musl-x86_64.so.1     /lib/
 COPY --from=0 /busybox/_install/usr/bin    /usr/bin
-COPY --from=0 /usr/bin/Rscript             \
-              /usr/bin/printf              /usr/bin/
+COPY --from=0 /usr/bin/printf              /usr/bin/
+COPY --from=0 /usr/bin/Rscript             /usr/bin/R
 COPY --from=0 /usr/lib/libbz2.so.1         \
               /usr/lib/libgcc_s.so.1       \
               /usr/lib/libgfortran.so.5    \
@@ -69,6 +68,6 @@ COPY --from=0 /usr/lib/R/library/methods   /usr/lib/R/library/methods
 COPY --from=0 /usr/lib/R/library/stats     /usr/lib/R/library/stats
 COPY --from=0 /usr/lib/R/library/utils     /usr/lib/R/library/utils
 
-ENTRYPOINT ["Rscript"]
+ENTRYPOINT ["R"]
 
 CMD ["--version"]

@@ -368,8 +368,8 @@ foreach (String arg in args)
 
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
-size    = '153 MiB'
-version = 'Clang 20.1.6'
+size    = '151 MiB'
+version = 'Clang 20.1.7'
 website = 'https://clang.llvm.org'
 example = '''
 #include <iostream>
@@ -431,8 +431,8 @@ eaN*
 
 [Clojure]
 args    = [ '/usr/bin/clojure', '-e', '$code' ]
-size    = '67.6 MiB'
-version = 'Babashka 1.12.201'
+size    = '67.3 MiB'
+version = 'Babashka 1.12.203'
 website = 'https://babashka.org'
 example = '''
 ; Printing
@@ -1451,10 +1451,10 @@ foreach string arg in (ARGV)
 '''
 
 [R]
-args       = [ '/usr/bin/Rscript', '-' ]
-args-quine = [ '/usr/bin/Rscript', '-e', "source('stdin')" ]
-size       = '30.6 MiB'
-version    = '4.5.0'
+args       = [ '/usr/bin/R', '-' ]
+args-quine = [ '/usr/bin/R', '-e', "source('stdin')" ]
+size       = '30.5 MiB'
+version    = '4.5.1'
 website    = 'https://www.r-project.org'
 example    = '''
 # Printing
