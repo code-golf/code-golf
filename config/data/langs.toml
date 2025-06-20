@@ -638,7 +638,7 @@ def main =
 [Elixir]
 args    = [ '/usr/local/bin/elixir', '--color', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '81.5 MiB'
+size    = '58.7 MiB'
 version = '1.18.4'
 website = 'https://elixir-lang.org'
 example = '''
@@ -655,8 +655,8 @@ for arg <- System.argv, do: IO.puts arg
 [Erlang]
 args       = [ '/usr/bin/erlang', '-' ]
 experiment = 181
-size       = '75.5 MiB'
-version    = 'OTP 28.0'
+size       = '51.8 MiB'
+version    = 'OTP 28.0.1'
 website    = 'https://www.erlang.org'
 example    = '''
 main(Args) ->
@@ -780,7 +780,7 @@ end
 [Gleam]
 args    = [ '/usr/bin/gleam', '-', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '99.2 MiB'
+size    = '76.3 MiB'
 version = '1.11.1'
 website = 'https://gleam.run'
 example = '''
