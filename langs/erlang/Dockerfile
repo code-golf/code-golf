@@ -2,35 +2,67 @@ FROM debian:bookworm-slim AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
-    apt-get install --yes curl gcc make ncurses-dev perl
+    apt-get install --yes gcc git make
 
 # Also rebuild Elixir, Gleam.
 ENV VER=28.0.1
 
-WORKDIR /erlang
+RUN git clone --branch OTP-$VER \
+    https://github.com/erlang/otp
 
-RUN curl -#L https://github.com/erlang/otp/releases/download/OTP-$VER/otp_src_$VER.tar.gz \
-  | tar xz --strip-components 1
+WORKDIR /otp
 
-RUN ./configure            \
-    --prefix=/usr          \
- && make -j`nproc` install \
+RUN ./configure             \
+    --enable-m64-build      \
+    --prefix=/usr           \
+    --without-asn1          \
+    --without-common_test   \
+    --without-crypto        \
+    --without-debugger      \
+    --without-dialyzer      \
+    --without-diameter      \
+    --without-edoc          \
+    --without-eldap         \
+    --without-et            \
+    --without-eunit         \
+    --without-ftp           \
+    --without-inets         \
+    --without-javac         \
+    --without-jinterface    \
+    --without-megaco        \
+    --without-mnesia        \
+    --without-observer      \
+    --without-odbc          \
+    --without-os_mon        \
+    --without-public_key    \
+    --without-reltool       \
+    --without-runtime_tools \
+    --without-snmp          \
+    --without-ssh           \
+    --without-ssl           \
+    --without-syntax_tools  \
+    --without-termcap       \
+    --without-tftp          \
+    --without-wx            \
+    --without-xmerl         \
+ && make -j`nproc` release  \
+ && make install            \
  && strip /usr/bin/escript
 
-WORKDIR /usr/lib/erlang
+WORKDIR /usr/lib/erlang/lib
 
-RUN mv erts* /usr/local             \
+RUN mv ../erts* /usr/local          \
  && find /usr/local -type f -not \( \
     -name 'beam.smp'        -or     \
     -name 'erl_child_setup' -or     \
     -name 'erlexec'         -or     \
     -name 'inet_gethost' \) -delete
 
-RUN mv lib/compiler*                    \
-       lib/kernel*                      \
-       lib/parsetools*                  \
-       lib/stdlib*                      \
-       lib/tools* /usr/local/lib        \
+RUN mv compiler*                        \
+       kernel*                          \
+       parsetools*                      \
+       stdlib*                          \
+       tools* /usr/local/lib            \
  && find /usr/local/lib -type f -not \( \
     -name '*.*a*'     -or               \
     -name 'file.hrl'  -or               \
@@ -45,11 +77,7 @@ FROM codegolf/lang-base
 
 COPY --from=0 /bin/dash                              /bin/sh
 COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6        \
-              /lib/x86_64-linux-gnu/libgcc_s.so.1    \
-              /lib/x86_64-linux-gnu/libm.so.6        \
-              /lib/x86_64-linux-gnu/libncursesw.so.6 \
-              /lib/x86_64-linux-gnu/libstdc++.so.6   \
-              /lib/x86_64-linux-gnu/libtinfo.so.6    /lib/
+              /lib/x86_64-linux-gnu/libm.so.6        /lib/
 COPY --from=0 /lib64/ld-linux-x86-64.so.2            /lib64/
 COPY --from=0 /usr/bin/basename                      \
               /usr/bin/dirname                       \
