@@ -1,13 +1,18 @@
-FROM rust:1.86.0-alpine3.21 AS builder
+FROM rust:1.87.0-slim-bookworm AS builder
 
-RUN apk add --no-cache musl-dev
+ENV CRT='x86_64-unknown-linux-musl' VER=0.1.4
 
-RUN cargo install hush --root /usr --version 0.1.4
+RUN rustup target add $CRT
+
+RUN cargo install hush \
+    --root /usr        \
+    --target $CRT      \
+    --version $VER     \
+ && strip /usr/bin/hush
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /usr/bin/hush            /usr/bin/
+COPY --from=0 /usr/bin/hush /usr/bin/
 
 ENTRYPOINT ["hush"]
 

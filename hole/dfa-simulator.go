@@ -82,7 +82,7 @@ func generateDFA() string {
 			inputDFA.WriteByte(' ')
 		}
 
-		if rand.IntN(2) == 0 {
+		if randBool() {
 			inputDFA.WriteByte('F')
 		} else {
 			inputDFA.WriteByte(' ')

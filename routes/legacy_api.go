@@ -96,7 +96,10 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	runs := hole.Play(r.Context(), holeObj, langObj, in.Code)
+	runs, err := hole.Play(r.Context(), holeObj, langObj, in.Code)
+	if err != nil {
+		panic(err)
+	}
 
 	out := struct {
 		Cheevos     []config.Cheevo     `json:"cheevos"`
@@ -191,11 +194,6 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
-		// For now don't show any popups for experimental solutions.
-		if experimental {
-			out.RankUpdates = []Golfer.RankUpdate{}
-		}
-
 		recordUpdates := make([]Golfer.RankUpdate, 0, 2)
 
 		for _, rank := range out.RankUpdates {
@@ -215,6 +213,11 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		// If any of the updates are record breakers, announce them on Discord
 		if len(recordUpdates) > 0 {
 			go discord.LogNewRecord(golfer, holeObj, langObj, recordUpdates, db)
+		}
+
+		// For now don't show any popups for experimental solutions.
+		if experimental {
+			out.RankUpdates = []Golfer.RankUpdate{}
 		}
 
 		// Cheevos.
@@ -251,7 +254,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 						out.Cheevos = append(out.Cheevos, *c)
 					}
 				}
-			case "star-wars-opening-crawl":
+			case "star-wars-gpt", "star-wars-opening-crawl":
 				if month == time.May && day == 4 {
 					if c := golfer.Earn(db, "may-the-4ᵗʰ-be-with-you"); c != nil {
 						out.Cheevos = append(out.Cheevos, *c)
@@ -340,7 +343,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 
 // GET /mini-rankings/{hole}/{lang}/{scoring:bytes|chars}/{view:top|me|following}
 func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
-	limit := 7
+	limit := 50
 	if r.FormValue("long") == "1" {
 		limit = 99
 	}

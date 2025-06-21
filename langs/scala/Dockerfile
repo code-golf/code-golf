@@ -1,4 +1,4 @@
-FROM eclipse-temurin:24_36-jdk-alpine-3.21 AS builder
+FROM eclipse-temurin:24.0.1_9-jdk-alpine-3.21 AS builder
 
 RUN apk add --no-cache bash curl git
 

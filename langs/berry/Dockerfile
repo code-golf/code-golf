@@ -1,18 +1,20 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache curl gcc make musl-dev python3 readline-dev
+RUN apk add --no-cache build-base curl python3 readline-dev
 
-RUN curl -L https://github.com/berry-lang/berry/archive/97e0fca.tar.gz \
-  | tar xz && mv berry-* berry
+ENV VER=97e0fca
 
-COPY berry.c berry/default/
+RUN curl -#L https://github.com/berry-lang/berry/archive/$VER.tar.gz \
+  | tar xz --strip-components 1
 
-RUN make -C berry
+COPY berry.c /default/
+
+RUN make && make install
 
 FROM codegolf/lang-base
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /berry/berry             /usr/bin/
+COPY --from=0 /usr/local/bin/berry     /usr/bin/
 
 ENTRYPOINT ["berry"]
 

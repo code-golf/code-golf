@@ -8,8 +8,8 @@ interface DiffPos {
     isLastDiff: boolean;
 }
 
-export default (hole: string, exp: string, out: string, argv: string[], ignoreCase: boolean, multisetDelimiter: string, itemDelimiter: string) => {
-    const provideItemwiseDiff = !multisetDelimiter && itemDelimiter;
+export default (hole: string, exp: string, out: string, argv: string[], ignoreCase: boolean, outputDelimiter: string, multisetItemDelimiter: string) => {
+    const provideItemwiseDiff = !outputDelimiter && multisetItemDelimiter;
     const isLinesDiffChecked = Boolean($('#diffKindSettings input[value="lines"]:checked'));
     return provideItemwiseDiff ?
         <div>
@@ -18,17 +18,17 @@ export default (hole: string, exp: string, out: string, argv: string[], ignoreCa
                 <label><input type="radio" name="diff_kind" value="lines" checked={isLinesDiffChecked ? true : undefined}></input> Lines</label>
             </div>
             {linesDiff(hole, exp, out, argv, ignoreCase)}
-            {itemsDiff(exp, out, itemDelimiter)}
+            {itemsDiff(exp, out, multisetItemDelimiter)}
         </div>
         : linesDiff(hole, exp, out, argv, ignoreCase);
 };
 
-function itemsDiff(exp: string, out: string, itemDelimiter: string) {
+function itemsDiff(exp: string, out: string, multisetItemDelimiter: string) {
     const diff = new Map<string, number>();
-    for (const x of exp.split(itemDelimiter)){
+    for (const x of exp.split(multisetItemDelimiter)){
         diff.set(x, (diff.get(x) ?? 0) - 1);
     }
-    for (const x of out.split(itemDelimiter)){
+    for (const x of out.split(multisetItemDelimiter)){
         diff.set(x, (diff.get(x) ?? 0) + 1);
     }
     const diffItems = [...diff.entries()].map(([x, count]) => ({x, count, absCount: Math.abs(count)}));

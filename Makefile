@@ -79,7 +79,7 @@ mathjax-fonts:
 
 lint:
 	@docker run --rm -v $(CURDIR):/app -w /app \
-	    golangci/golangci-lint:v2.1.2 golangci-lint run
+	    golangci/golangci-lint:v2.1.6 golangci-lint run
 
 	@node_modules/.bin/eslint js
 

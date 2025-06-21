@@ -1,12 +1,11 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache build-base curl
 
-ENV CFLAGS='-O2 -flto' LDFLAGS='-O2 -flto -all-static' VER=8.4.6
+ENV CFLAGS='-O2 -flto' LDFLAGS='-O2 -flto -all-static' VER=8.4.8
 
-RUN curl -#L https://php.net/distributions/php-$VER.tar.xz | tar xJ
-
-WORKDIR /php-$VER
+RUN curl -#L https://php.net/distributions/php-$VER.tar.xz \
+  | tar xJ --strip-components 1
 
 RUN LDFLAGS= ./configure       \
     --disable-all              \
