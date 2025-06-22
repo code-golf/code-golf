@@ -12,41 +12,12 @@ RUN git clone --branch OTP-$VER \
 
 WORKDIR /otp
 
-RUN ./configure             \
-    --enable-m64-build      \
-    --prefix=/usr           \
-    --without-asn1          \
-    --without-common_test   \
-    --without-crypto        \
-    --without-debugger      \
-    --without-dialyzer      \
-    --without-diameter      \
-    --without-edoc          \
-    --without-eldap         \
-    --without-et            \
-    --without-eunit         \
-    --without-ftp           \
-    --without-inets         \
-    --without-javac         \
-    --without-jinterface    \
-    --without-megaco        \
-    --without-mnesia        \
-    --without-observer      \
-    --without-odbc          \
-    --without-os_mon        \
-    --without-public_key    \
-    --without-reltool       \
-    --without-runtime_tools \
-    --without-snmp          \
-    --without-ssh           \
-    --without-ssl           \
-    --without-syntax_tools  \
-    --without-termcap       \
-    --without-tftp          \
-    --without-wx            \
-    --without-xmerl         \
- && make -j`nproc` release  \
- && make install            \
+RUN ./configure            \
+    --enable-m64-build     \
+    --prefix=/usr          \
+    --without-termcap      \
+ && make -j`nproc` release \
+ && make install           \
  && strip /usr/bin/escript
 
 WORKDIR /usr/lib/erlang/lib
