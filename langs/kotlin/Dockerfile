@@ -2,16 +2,17 @@ FROM eclipse-temurin:24.0.1_9-jre-alpine-3.21 AS builder
 
 RUN apk add --no-cache bash curl
 
-ENV VER=2.1.21
+ENV VER=2.2.0
 
-RUN curl -#Lo kotlin.zip https://github.com/JetBrains/kotlin/releases/download/v$VER/kotlin-compiler-$VER.zip
+RUN curl -#Lo kotlin.zip https://github.com/JetBrains/kotlin/releases/download/v$VER/kotlin-compiler-$VER.zip \
+ && unzip kotlin
 
-RUN unzip kotlin.zip && cp -r /kotlinc/* /usr/
-
+WORKDIR /kotlinc
 # Remove some unneeded libraries.
-RUN rm -f /usr/lib/android*.jar \
-          /usr/lib/*sources.jar \
-          /usr/lib/*test*.jar
+RUN rm -f lib/android*.* \
+          lib/*sources.* \
+          lib/*test*.*   \
+ && cp -r . /usr/
 
 FROM codegolf/lang-base
 
@@ -24,6 +25,8 @@ COPY --from=0 /opt/java/openjdk/lib/jrt-fs.jar              \
               /opt/java/openjdk/lib/libjava.so              \
               /opt/java/openjdk/lib/libjimage.so            \
               /opt/java/openjdk/lib/libjli.so               \
+              /opt/java/openjdk/lib/libmanagement.so        \
+              /opt/java/openjdk/lib/libmanagement_ext.so    \
               /opt/java/openjdk/lib/libnet.so               \
               /opt/java/openjdk/lib/libnio.so               \
               /opt/java/openjdk/lib/libverify.so            \
