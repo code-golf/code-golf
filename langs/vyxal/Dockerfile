@@ -2,7 +2,7 @@ FROM alpine:3.22 AS builder
 
 ENV VER=3.7.0
 
-RUN wget -O vyxal.jar https://github.com/Vyxal/Vyxal/releases/download/v$VER/vyxal-$VER.jar
+RUN wget -qO vyxal.jar https://github.com/Vyxal/Vyxal/releases/download/v$VER/vyxal-$VER.jar
 
 FROM codegolf/lang-java
 

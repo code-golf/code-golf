@@ -21,10 +21,14 @@ RUN bash configure                     \
     --with-jvm-variants=minimal        \
  && make jdk-image
 
-RUN /build/release/images/jdk/bin/jlink                          \
-    --add-modules java.base,java.se,jdk.compiler,jdk.unsupported \
-    --compress zip-9                                             \
-    --module-path /build/release/images/jdk/jmods                \
+RUN /build/release/images/jdk/bin/jlink           \
+    --add-modules java.base                       \
+    --add-modules java.se                         \
+    --add-modules jdk.compiler                    \
+    --add-modules jdk.management                  \
+    --add-modules jdk.unsupported                 \
+    --compress zip-9                              \
+    --module-path /build/release/images/jdk/jmods \
     --output /opt/java
 
 COPY java.c /
@@ -42,6 +46,8 @@ COPY --from=0 /opt/java/lib/jrt-fs.jar              \
               /opt/java/lib/libjava.so              \
               /opt/java/lib/libjimage.so            \
               /opt/java/lib/libjli.so               \
+              /opt/java/lib/libmanagement.so        \
+              /opt/java/lib/libmanagement_ext.so    \
               /opt/java/lib/libnet.so               \
               /opt/java/lib/libnio.so               \
               /opt/java/lib/libverify.so            \

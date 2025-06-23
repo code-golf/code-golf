@@ -1,5 +1,5 @@
---- wren/src/cli/vm.c
-+++ wren/src/cli/vm.c
+--- src/cli/vm.c
++++ src/cli/vm.c
 @@ -303,11 +303,35 @@ static void freeVM()
  
  WrenInterpretResult runFile(const char* path)

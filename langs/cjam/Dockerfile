@@ -4,7 +4,7 @@ RUN apk add --no-cache coreutils
 
 ENV VER=0.6.5
 
-RUN wget -O cjam.jar https://sourceforge.net/projects/cjam/files/cjam-$VER/cjam-$VER.jar/download
+RUN wget -qO cjam.jar https://sourceforge.net/projects/cjam/files/cjam-$VER/cjam-$VER.jar/download
 
 FROM codegolf/lang-java
 
