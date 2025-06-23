@@ -2,15 +2,15 @@ FROM debian:bookworm-slim AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
-    apt-get install --yes gcc git make
+    apt-get install --yes curl gcc make perl
 
 # Also rebuild Elixir, Gleam.
 ENV VER=28.0.1
 
-RUN git clone --branch OTP-$VER \
-    https://github.com/erlang/otp
+WORKDIR /erlang
 
-WORKDIR /otp
+RUN curl -#L https://github.com/erlang/otp/releases/download/OTP-$VER/otp_src_$VER.tar.gz \
+  | tar xz --strip-components 1
 
 RUN ./configure            \
     --enable-m64-build     \
