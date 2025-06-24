@@ -31,10 +31,6 @@ COPY --from=0 /groovy-$VER.jar            \
               /usr/lib/libskarnet.so.2.14 \
               /usr/lib/libutmps.so.0.1    /usr/lib/
 
-FROM codegolf/lang-base
-
-COPY --from=1 . /
-
 ENV JAVA_HOME='/opt/java'
 
 ENTRYPOINT ["groovy"]

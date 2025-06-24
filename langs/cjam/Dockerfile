@@ -15,10 +15,6 @@ COPY --from=0 /usr/lib/libacl.so.1        \
               /usr/lib/libskarnet.so.2.14 \
               /usr/lib/libutmps.so.0.1    /usr/lib/
 
-FROM codegolf/lang-base
-
-COPY --from=1 . /
-
 ENTRYPOINT ["cjam"]
 
 CMD ["--version"]

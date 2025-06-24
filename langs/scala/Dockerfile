@@ -23,10 +23,6 @@ COPY --from=0 /usr/local/lib/scala-compiler.jar \
               /usr/local/lib/scala-library.jar  \
               /usr/local/lib/scala-reflect.jar  /usr/local/lib/
 
-FROM codegolf/lang-base
-
-COPY --from=1 . /
-
 ENTRYPOINT ["scala"]
 
 CMD ["--version"]

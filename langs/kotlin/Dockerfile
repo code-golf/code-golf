@@ -26,10 +26,6 @@ COPY --from=0 /usr/lib/*.jar            \
               /usr/lib/libncursesw.so.6 \
               /usr/lib/libreadline.so.8 /usr/lib/
 
-FROM codegolf/lang-base
-
-COPY --from=1 . /
-
 ENV JAVA_HOME='/opt/java'
 
 ENTRYPOINT ["kotlin"]

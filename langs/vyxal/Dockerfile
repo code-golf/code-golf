@@ -8,8 +8,4 @@ FROM codegolf/lang-java
 
 COPY --from=0 /vyxal.jar /
 
-FROM codegolf/lang-base
-
-COPY --from=1 . /
-
 CMD ["/opt/java/bin/java", "-jar", "vyxal.jar", "-h"]
