@@ -30,14 +30,15 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/gleam -s /gleam.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /                          /
-COPY --from=1 /usr/bin/gleam             /usr/bin/
-COPY --from=1 /usr/lib/locale            /usr/lib/locale
-COPY --from=1 /usr/local/gleam.toml      \
-              /usr/local/manifest.toml   /usr/local/
-COPY --from=1 /usr/local/cargo/bin/gleam /usr/local/bin/
-COPY --from=1 /usr/local/build/packages  /usr/local/build/packages
-COPY --from=1 /usr/local/src             /usr/local/src
+COPY --from=0 /                                   /
+COPY --from=1 /lib/x86_64-linux-gnu/libgcc_s.so.1 /lib/
+COPY --from=1 /usr/bin/gleam                      /usr/bin/
+COPY --from=1 /usr/lib/locale                     /usr/lib/locale
+COPY --from=1 /usr/local/gleam.toml               \
+              /usr/local/manifest.toml            /usr/local/
+COPY --from=1 /usr/local/cargo/bin/gleam          /usr/local/bin/
+COPY --from=1 /usr/local/build/packages           /usr/local/build/packages
+COPY --from=1 /usr/local/src                      /usr/local/src
 
 ENTRYPOINT ["gleam"]
 
