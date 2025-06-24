@@ -88,11 +88,11 @@ COPY --from=codegolf/lang-bash         ["/", "/langs/bash/rootfs/"        ] # 1.
 COPY --from=codegolf/lang-jq           ["/", "/langs/jq/rootfs/"          ] #  989 KiB
 COPY --from=codegolf/lang-berry        ["/", "/langs/berry/rootfs/"       ] #  986 KiB
 COPY --from=codegolf/lang-janet        ["/", "/langs/janet/rootfs/"       ] #  906 KiB
-COPY --from=codegolf/lang-fennel       ["/", "/langs/fennel/rootfs/"      ] #  681 KiB
+COPY --from=codegolf/lang-fennel       ["/", "/langs/fennel/rootfs/"      ] #  685 KiB
 COPY --from=codegolf/lang-k            ["/", "/langs/k/rootfs/"           ] #  605 KiB
 COPY --from=codegolf/lang-fish         ["/", "/langs/fish/rootfs/"        ] #  557 KiB
 COPY --from=codegolf/lang-wren         ["/", "/langs/wren/rootfs/"        ] #  505 KiB
-COPY --from=codegolf/lang-lua          ["/", "/langs/lua/rootfs/"         ] #  362 KiB
+COPY --from=codegolf/lang-lua          ["/", "/langs/lua/rootfs/"         ] #  367 KiB
 COPY --from=codegolf/lang-sed          ["/", "/langs/sed/rootfs/"         ] #  244 KiB
 COPY --from=codegolf/lang-brainfuck    ["/", "/langs/brainfuck/rootfs/"   ] # 51.1 KiB
 
