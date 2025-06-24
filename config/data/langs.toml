@@ -1552,7 +1552,7 @@ end
 args      = [ '/usr/bin/rockstarwrapper', '-' ]
 redirects = [ 'rockstar-2' ]
 size      = '4.26 MiB'
-version   = '2.0.30'
+version   = '2.0.31'
 website   = 'https://codewithrockstar.com'
 example   = '''
 (Printing)
