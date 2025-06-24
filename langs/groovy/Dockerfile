@@ -7,7 +7,7 @@ ARG VER
 RUN apk add --no-cache coreutils
 
 RUN wget -qO groovy.zip https://groovy.jfrog.io/artifactory/dist-release-local/groovy-zips/apache-groovy-binary-$VER.zip \
- && unzip -j groovy.zip
+ && unzip -j groovy
 
 FROM codegolf/lang-java
 

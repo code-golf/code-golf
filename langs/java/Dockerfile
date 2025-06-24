@@ -1,18 +1,20 @@
 FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache alsa-lib-dev autoconf bash build-base cups-dev curl fontconfig-dev libxrandr-dev libxrender-dev libxt-dev libxtst-dev zip
+RUN apk add --no-cache alsa-lib-dev autoconf bash build-base cups-dev curl fontconfig-dev libxrandr-dev libxrender-dev libxt-dev libxtst-dev musl-locales zip
 
 # Also rebuild CJam, Groovy, Kotlin, Scala, Vyxal.
 ENV VER=24.0.1
 
-RUN curl -#L https://github.com/adoptium/temurin23-binaries/releases/download/jdk-23.0.2+7/OpenJDK23U-jdk_x64_alpine-linux_hotspot_23.0.2_7.tar.gz \
+RUN curl -#L https://github.com/adoptium/temurin24-binaries/releases/download/jdk-$VER+9/OpenJDK24U-jdk_x64_alpine-linux_hotspot_${VER}_9.tar.gz \
   | tar xz --directory /tmp --strip-components 1
 
 RUN curl -#L https://github.com/adoptium/temurin24-binaries/releases/download/jdk-$VER+9/OpenJDK24U-jdk-sources_${VER}_9.tar.gz \
   | tar xz --strip-components 1
 
 RUN bash configure                     \
+    --enable-headless-only             \
     --enable-jvm-feature-link-time-opt \
+    --enable-jvm-feature-management    \
     --enable-jvm-feature-minimal       \
     --enable-jvm-feature-opt-size      \
     --with-boot-jdk=/tmp               \
@@ -22,11 +24,8 @@ RUN bash configure                     \
  && make jdk-image
 
 RUN /build/release/images/jdk/bin/jlink           \
-    --add-modules java.base                       \
-    --add-modules java.se                         \
-    --add-modules jdk.compiler                    \
-    --add-modules jdk.management                  \
-    --add-modules jdk.unsupported                 \
+    --add-modules java.base,java.se               \
+    --add-modules jdk.compiler,jdk.unsupported    \
     --compress zip-9                              \
     --module-path /build/release/images/jdk/jmods \
     --output /opt/java
@@ -47,7 +46,6 @@ COPY --from=0 /opt/java/lib/jrt-fs.jar              \
               /opt/java/lib/libjimage.so            \
               /opt/java/lib/libjli.so               \
               /opt/java/lib/libmanagement.so        \
-              /opt/java/lib/libmanagement_ext.so    \
               /opt/java/lib/libnet.so               \
               /opt/java/lib/libnio.so               \
               /opt/java/lib/libverify.so            \
