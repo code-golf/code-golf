@@ -4,7 +4,7 @@ FROM alpine:3.22 AS builder
 
 ARG VER
 
-RUN apk add --no-cache coreutils
+RUN apk add --no-cache coreutils dash
 
 RUN wget -qO groovy.zip https://groovy.jfrog.io/artifactory/dist-release-local/groovy-zips/apache-groovy-binary-$VER.zip \
  && unzip -j groovy
@@ -13,7 +13,8 @@ FROM codegolf/lang-java
 
 ARG VER
 
-COPY --from=0 /bin/sh /bin/uname          /bin/
+COPY --from=0 /bin/uname                  /bin/
+COPY --from=0 /usr/bin/dash               /bin/sh
 COPY --from=0 /groovy                     \
               /startGroovy                \
               /usr/bin/awk                \

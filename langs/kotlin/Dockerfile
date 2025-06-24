@@ -2,16 +2,17 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache bash curl
 
-ENV VER=2.1.21
+ENV VER=2.2.0
 
-RUN curl -#Lo kotlin.zip https://github.com/JetBrains/kotlin/releases/download/v$VER/kotlin-compiler-$VER.zip
+RUN curl -#Lo kotlin.zip https://github.com/JetBrains/kotlin/releases/download/v$VER/kotlin-compiler-$VER.zip \
+ && unzip kotlin
 
-RUN unzip kotlin.zip && cp -r /kotlinc/* /usr/
-
+WORKDIR /kotlinc
 # Remove some unneeded libraries.
-RUN rm -f /usr/lib/android*.jar \
-          /usr/lib/*sources.jar \
-          /usr/lib/*test*.jar
+RUN rm -f lib/android*.* \
+          lib/*sources.* \
+          lib/*test*.*   \
+ && cp -r . /usr/
 
 FROM codegolf/lang-java
 

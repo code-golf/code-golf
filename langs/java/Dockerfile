@@ -1,6 +1,7 @@
 FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache alsa-lib-dev autoconf bash build-base cups-dev curl fontconfig-dev libxrandr-dev libxrender-dev libxt-dev libxtst-dev musl-locales zip
+RUN apk add --no-cache alsa-lib-dev autoconf bash build-base cups-dev curl fontconfig-dev \
+                       libxrandr-dev libxrender-dev libxt-dev libxtst-dev musl-locales zip
 
 # Also rebuild CJam, Groovy, Kotlin, Scala, Vyxal.
 ENV VER=24.0.1

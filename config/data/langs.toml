@@ -638,7 +638,7 @@ def main =
 [Elixir]
 args    = [ '/usr/local/bin/elixir', '--color', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '58.7 MiB'
+size    = '55.9 MiB'
 version = '1.18.4'
 website = 'https://elixir-lang.org'
 example = '''
@@ -655,7 +655,7 @@ for arg <- System.argv, do: IO.puts arg
 [Erlang]
 args       = [ '/usr/bin/erlang', '-' ]
 experiment = 181
-size       = '51.8 MiB'
+size       = '49.0 MiB'
 version    = 'OTP 28.0.1'
 website    = 'https://www.erlang.org'
 example    = '''
@@ -712,7 +712,7 @@ command-line get-global [ print ] each
 [Fennel]
 args       = [ '/usr/bin/fennel', '/proc/self/fd/0' ]
 experiment = 1144
-size       = '681 KiB'
+size       = '685 KiB'
 version    = '1.5.3'
 website    = 'https://fennel-lang.org'
 example    = '''
@@ -780,7 +780,7 @@ end
 [Gleam]
 args    = [ '/usr/bin/gleam', '-', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '76.3 MiB'
+size    = '73.6 MiB'
 version = '1.11.1'
 website = 'https://gleam.run'
 example = '''
@@ -854,7 +854,7 @@ n*
 args       = [ '/usr/bin/groovy', '-e', '$code' ]
 env        = [ 'JAVA_HOME=/opt/java' ]
 experiment = 1145
-size       = '63.5 MiB'
+size       = '62.8 MiB'
 version    = '4.0.27'
 website    = 'https://groovy-lang.org'
 example    = '''
@@ -1175,8 +1175,8 @@ example = '''
 [Kotlin]
 args    = [ '/usr/bin/kotlin', '-Xuse-fast-jar-file-system', '-e', '$code' ]
 env     = [ 'JAVA_HOME=/opt/java' ]
-size    = '136 MiB'
-version = '2.1.21'
+size    = '127 MiB'
+version = '2.2.0'
 website = 'https://kotlinlang.org'
 example = '''
 // Printing
@@ -1193,8 +1193,8 @@ for (arg in args)
 
 [Lua]
 args    = [ '/usr/bin/lua', '-' ]
-size    = '362 KiB'
-version = '5.4.7'
+size    = '367 KiB'
+version = '5.4.8'
 website = 'https://www.lua.org'
 example = '''
 -- Printing
