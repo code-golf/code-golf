@@ -22,6 +22,12 @@ dates       = [2000-05-04, 2000-05-05]
 description = 'Solve <a href=/star-wars-gpt>Star Wars GPT</a> or <a href=/star-wars-opening-crawl>Star Wars Opening Crawl</a> on <a href=//www.wikipedia.org/wiki/Star_Wars_Day>4 May</a>.'
 
 [['Date Specific']]
+name        = 'How about Second Pi?'
+emoji       = '🍕'
+dates       = [2000-06-28, 2000-06-29]
+description = 'Solve <a href=/τ>τ</a> on <a href=//www.wikipedia.org/wiki/Pi_Day#Alternative_dates>28 Jun</a>.'
+
+[['Date Specific']]
 name        = 'Independence Day'
 emoji       = '🇺🇸'
 dates       = [2000-07-04, 2000-07-05]

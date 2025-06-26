@@ -17,6 +17,7 @@ RUN echo [] > extras/ligatures.json                      \
     '*/1f308.svg'       `# Rainbow`                      \
     '*/1f30c.svg'       `# Milky Way`                    \
     '*/1f340.svg'       `# Four Leaf Clover`             \
+    '*/1f355.svg'       `# Pizza`                        \
     '*/1f356.svg'       `# Meat on Bone`                 \
     '*/1f35e.svg'       `# Bread`                        \
     '*/1f36f.svg'       `# Honey Pot`                    \
