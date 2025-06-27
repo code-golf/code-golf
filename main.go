@@ -193,8 +193,8 @@ func populateHolesLangsTables(db *sqlx.DB) error {
 	}
 
 	insertLang, err := tx.PrepareNamed(
-		`INSERT INTO langs ( id,  experiment,  digest_trunc)
-		      VALUES       (:id, :experiment, :digest_trunc)`,
+		`INSERT INTO langs ( id,  experiment,  digest_trunc,  name)
+		      VALUES       (:id, :experiment, :digest_trunc, :name)`,
 	)
 	if err != nil {
 		return err
