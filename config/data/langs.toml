@@ -238,7 +238,7 @@ Next
 [Befunge]
 args       = [ '/usr/bin/befunge', '-' ]
 experiment = 428
-size       = '3.95 MiB'
+size       = '2.48 MiB'
 version    = 'b7bf640'
 website    = 'https://github.com/VorpalBlade/cfunge'
 example    = '''
