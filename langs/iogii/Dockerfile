@@ -1,11 +1,11 @@
 FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache gcc musl-dev
+RUN apk add --no-cache g++
 
-ENV BIN='/usr/local/bin/iogii' VER=1.0.1
+ENV VER=1.0.1
 
-RUN wget -cO $BIN https://golfscript.com/iogii/iogii-$VER \
- && chmod +x $BIN
+RUN wget -O- https://www.golfscript.com/iogii/iogii-$VER.tgz \
+  | tar xz --strip-components 2
 
 COPY iogii.c /
 
@@ -13,13 +13,8 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/iogii -s -static iogii.c
 
 FROM codegolf/lang-ruby
 
-COPY --from=0 /usr/bin/env         \
-              /usr/bin/iogii       /usr/bin/
-COPY --from=0 /usr/local/bin/iogii /usr/local/bin/
-
-FROM codegolf/lang-base
-
-COPY --from=1 . /
+COPY --from=0 /*.rb          /
+COPY --from=0 /usr/bin/iogii /usr/bin/
 
 ENTRYPOINT ["iogii"]
 
