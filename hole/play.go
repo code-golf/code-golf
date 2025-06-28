@@ -59,7 +59,7 @@ type Run struct {
 // Play a given hole, in a given lang, with given code and return the runs.
 func Play(
 	ctx context.Context, hole *config.Hole, lang *config.Lang, code string,
-) []Run {
+) ([]Run, error) {
 	var answers []Answer
 
 	switch hole.ID {
@@ -91,11 +91,7 @@ func Play(
 		g.Go(func() error { return play(ctx, hole, lang, code, &runs[i]) })
 	}
 
-	if err := g.Wait(); err != nil {
-		panic(err)
-	}
-
-	return runs
+	return runs, g.Wait()
 }
 
 func play(
@@ -242,6 +238,8 @@ func runCode(
 		if asmBytesRead, asmBytesWrite, err = os.Pipe(); err != nil {
 			return err
 		}
+		defer asmBytesRead.Close()
+		defer asmBytesWrite.Close()
 
 		cmd.ExtraFiles = []*os.File{asmBytesWrite}
 	}
@@ -297,6 +295,10 @@ func runCode(
 
 	// Actual byte count is printed by the assembler.
 	if lang.ID == "assembly" {
+		// Explicitly close the writer in case defasm died before it could.
+		// This prevents a very long wait in the upcoming fscanf.
+		asmBytesWrite.Close()
+
 		if _, err := fmt.Fscanf(asmBytesRead, "%d", &run.ASMBytes); err != nil {
 			return err
 		}

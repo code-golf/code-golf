@@ -49,7 +49,6 @@ int main(int argc, char* argv[]) {
         if (close(fd[1]))
             ERR_AND_EXIT("close");
 
-        // Compile to .lua file.
         execl(yuescript, yuescript, code, NULL);
         ERR_AND_EXIT("execl");
     }

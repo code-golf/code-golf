@@ -823,6 +823,9 @@ preamble = '''
 ['Day of Week']
 category = 'Transform'
 released = 2023-04-16
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Determination_of_the_day_of_the_week' },
+]
 synopsis = 'Given a date, output the day of the week.'
 preamble = '''
 <p>

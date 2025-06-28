@@ -96,7 +96,10 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	runs := hole.Play(r.Context(), holeObj, langObj, in.Code)
+	runs, err := hole.Play(r.Context(), holeObj, langObj, in.Code)
+	if err != nil {
+		panic(err)
+	}
 
 	out := struct {
 		Cheevos     []config.Cheevo     `json:"cheevos"`
@@ -278,6 +281,12 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			case "π":
 				if month == time.March && day == 14 {
 					if c := golfer.Earn(db, "pi-day"); c != nil {
+						out.Cheevos = append(out.Cheevos, *c)
+					}
+				}
+			case "τ":
+				if month == time.June && day == 28 {
+					if c := golfer.Earn(db, "how-about-second-pi"); c != nil {
 						out.Cheevos = append(out.Cheevos, *c)
 					}
 				}
