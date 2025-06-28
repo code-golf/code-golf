@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-var deck = []string{
+var deck = [...]string{
 	"1GED", "1GEO", "1GEW", "1GHD", "1GHO", "1GHW", "1GSD", "1GSO", "1GSW",
 	"1PED", "1PEO", "1PEW", "1PHD", "1PHO", "1PHW", "1PSD", "1PSO", "1PSW",
 	"1RED", "1REO", "1REW", "1RHD", "1RHO", "1RHW", "1RSD", "1RSO", "1RSW",
@@ -30,63 +30,41 @@ func isSet(a, b, c string) bool {
 	return true
 }
 
-func shuffleUpAndDeal() string {
-	var hand strings.Builder
+var _ = answerFunc("set", func() []Answer {
+	tests := make([]test, 100)
 
-	rand.Shuffle(len(deck), func(i, j int) {
-		deck[i], deck[j] = deck[j], deck[i]
-	})
+outer:
+	for i := 0; i < 100; {
 
-	cards := make(map[string]struct{})
-
-	for i := 0; i < 12; {
-		card := deck[rand.IntN(len(deck))]
-
-		if _, dealt := cards[card]; dealt {
-			continue
+		// Pick 12 random cards from deck to form a hand.
+		cards := make([]string, 12)
+		for j, k := range rand.Perm(len(deck))[:len(cards)] {
+			cards[j] = deck[k]
 		}
 
-		hand.WriteString(fmt.Sprintf("%s ", card))
-
-		cards[card] = struct{}{}
-
-		i++
-	}
-
-	return hand.String()
-}
-
-func set() []Run {
-	tests := make([]test, 0, 100)
-
-	for i := 0; i < 100; {
-		var expected strings.Builder
-
-		cards, count := strings.Fields(shuffleUpAndDeal()), 0
-
-		for j := range len(cards) {
+		// Use this hand if it contains exactly one set.
+		var expected string
+		for j := range cards {
 			for k := j + 1; k < len(cards); k++ {
 				for l := k + 1; l < len(cards); l++ {
 					if isSet(cards[j], cards[k], cards[l]) {
-						expected.WriteString(fmt.Sprintf("%s %s %s", cards[j], cards[k], cards[l]))
+						// Bail early if we've already found a set.
+						if expected != "" {
+							continue outer
+						}
 
-						count++
+						expected = fmt.Sprintf("%s %s %s", cards[j], cards[k], cards[l])
 					}
 				}
 			}
 		}
 
-		if count != 1 {
-			continue
+		// Only use this hand if we found a set.
+		if expected != "" {
+			tests[i] = test{strings.Join(cards, " "), expected}
+			i++
 		}
-
-		i++
-
-		tests = append(tests, test{
-			strings.Join(cards, " "),
-			expected.String(),
-		})
 	}
 
-	return outputTests(shuffle(tests))
-}
+	return outputTests(tests)
+})

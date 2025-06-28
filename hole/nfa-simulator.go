@@ -166,7 +166,7 @@ func generateNFA() string {
 			inputNFA.WriteByte(' ')
 		}
 
-		if rand.IntN(2) == 0 {
+		if randBool() {
 			inputNFA.WriteByte('F')
 		} else {
 			inputNFA.WriteByte(' ')
@@ -214,7 +214,7 @@ func generateNFA() string {
 	return inputNFA.String()
 }
 
-func nfaSimulator() []Run {
+var _ = answerFunc("nfa-simulator", func() []Answer {
 	args := []string{
 		"    | a | b | c |\n→ 0 |{0}|{0}|{0,1}| \n  1 |{2}| ∅ |  ∅ |\n  2 | ∅ |{3}|  ∅ |\n F3 | ∅ | ∅ | ∅ |\nacbcab\nε\nacbca",
 		"    | a | b | c |\n→ 0 |{0}|{0}|{0,1}| \n  1 |{2}| ∅ |  ∅ |\n  2 | ∅ |{3}|  ∅ |\n F3 |{3}|{3}|{3}|\nacbcababc",
@@ -248,4 +248,4 @@ func nfaSimulator() []Run {
 	}
 
 	return outputTestsWithSep("\n\n", shuffle(tests))
-}
+})

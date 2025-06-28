@@ -1,4 +1,4 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
 ENV VER=1.2.0
 
@@ -7,10 +7,8 @@ RUN wget -O- https://github.com/dloscutoff/pip/archive/refs/tags/v$VER.tar.gz \
 
 FROM codegolf/lang-python
 
-COPY --from=0 *.py /
+COPY --from=0 /*.py /
 
-FROM codegolf/lang-base
+ENTRYPOINT ["python"]
 
-COPY --from=1 . /
-
-CMD ["python", "pip.py", "--version"]
+CMD ["pip.py", "--version"]
