@@ -22,9 +22,9 @@ WORKDIR /egel/build
 
 RUN cmake -G Ninja .. && ninja install
 
-COPY egelwrapper.c /
+COPY egel.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/egelwrapper -s /egelwrapper.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/egelwrapper -s /egel.c
 
 FROM codegolf/lang-base
 

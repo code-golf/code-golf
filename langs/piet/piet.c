@@ -7,7 +7,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* piet = "/usr/local/bin/npiet", *code = "code.txt", *image = "code.ppm", *input = "argv.txt";
+const char* piet = "/usr/local/bin/npiet", *ascii = "/usr/bin/ascii-piet", *code = "code.txt", *image = "code.ppm", *input = "argv.txt";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version"))
@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
     pid_t pid;
 
     if (!(pid = fork())) {
-        execl("/usr/bin/ascii-piet", "ascii-piet", code, image, NULL);
+        execl(ascii, ascii, code, image, NULL);
         ERR_AND_EXIT("execl");
     }
 
