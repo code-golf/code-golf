@@ -1,19 +1,18 @@
-FROM node:23.6.0-alpine3.21 AS builder
-
-ENV VERSION=2.4.4
+FROM node:24.2.0-alpine3.22 AS builder
 
 RUN apk add --no-cache binutils
 
-RUN npm install -g @defasm/cli@1.2.3 @defasm/core@$VERSION
+ENV VER=2.4.5
 
-# Strip node.
+RUN npm install --global @defasm/cli@1.2.3 @defasm/core@$VER
+
 RUN strip /usr/local/bin/node
 
 # Rewrite shebang to bypass /usr/bin/env and go directly to /usr/bin/node.
 RUN sed -i '1c#!/usr/bin/node' /usr/local/lib/node_modules/@defasm/cli/cli.js
 
-# Put the symlink in a folder to avoid docker COPY resolving it.
-RUN mkdir /symlink \
+# Put the symlink in a folder to avoid Docker COPY resolving it.
+RUN mkdir symlink \
  && ln -s /usr/lib/node_modules/@defasm/cli/cli.js /symlink/defasm
 
 FROM codegolf/lang-base

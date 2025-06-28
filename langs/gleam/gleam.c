@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
         ERR_AND_EXIT("execv");
     }
 
-    copy_folder("/gleam", "/tmp");
+    copy_folder("/usr/local", "/tmp");
 
     if (chdir("/tmp"))
         ERR_AND_EXIT("chdir");
@@ -42,7 +42,6 @@ int main(int argc, char* argv[]) {
     pid_t pid;
 
     if (!(pid = fork())) {
-        // Print errors and/or warnings on STDERR.
         if (!dup2(STDERR_FILENO, STDOUT_FILENO))
             ERR_AND_EXIT("dup2");
 

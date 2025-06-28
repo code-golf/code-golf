@@ -120,8 +120,15 @@ export const extensions : { [key: string]: any } = {
             { key: 'Mod-/', run: toggleComment },
         ]),
         highlightWhitespace(),
-        lineNumbers(),
     ],
+    'lineNumbers': lineNumbers(),
+    'zeroIndexedLineNumbers': lineNumbers(
+        {
+            formatNumber(num: number) {
+                return `${num - 1}`;
+            },
+        },
+    ),
     'bracketMatching': bracketMatching(),
     'vim': vim({ status: true }),
 
@@ -132,9 +139,11 @@ export const extensions : { [key: string]: any } = {
     // TODO arturo
     'assembly':      assembly(),
     'assembly-wiki': assembly({ byteDumps: false }),
+    // TODO awk
     'bash':          StreamLanguage.define(shell),
     // TODO basic
     // TODO befunge
+    // TODO berry
     // TODO bqn
     'brainfuck':     brainfuck(),
     'c':             StreamLanguage.define(c),
@@ -156,6 +165,7 @@ export const extensions : { [key: string]: any } = {
     'erlang':        StreamLanguage.define(erlang),
     'f-sharp':       StreamLanguage.define(fSharp),
     'factor':        StreamLanguage.define(factor),
+    // TODO fennel
     // TODO fish
     'forth':         StreamLanguage.define({ ...forth, languageData: { commentTokens: { line: '\\' } } }),
     'fortran':       StreamLanguage.define({ ...fortran, languageData: { commentTokens: { line: '!' } } }),
@@ -190,6 +200,7 @@ export const extensions : { [key: string]: any } = {
     'powershell':    StreamLanguage.define(powerShell),
     'prolog':        prolog(),
     'python':        python,
+    // TODO qore
     'r':             StreamLanguage.define(r),
     'racket':        StreamLanguage.define(scheme),
     'raku':          StreamLanguage.define(raku),
