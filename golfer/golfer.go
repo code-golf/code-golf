@@ -22,11 +22,11 @@ const (
 // TODO Some of this stuff isn't needed on every request but is needed to
 // populate golfer settings, that should be fixed.
 type Golfer struct {
-	About, Keymap, Name, Referrer, Theme  string
+	About, Name, Referrer, Theme          string
 	Admin, HasNotes, ShowCountry, Sponsor bool
 	BytesPoints, CharsPoints, ID          int
 	Cheevos, Holes                        pq.StringArray
-	Country                               config.NullCountry
+	Country                               *config.Country
 	Delete                                null.Time
 	FailingSolutions                      FailingSolutions
 	Following                             pq.Int64Array

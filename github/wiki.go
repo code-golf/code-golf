@@ -66,10 +66,14 @@ func Wiki(db *sqlx.DB) error {
 			name = "Constraint Specifications"
 		} else if slug == "hole-specific-tips" {
 			name = "Hole Specific Tips"
+		} else if slug == "home" {
+			slug = ""
 		} else if slug == "other-sites" {
 			name = "Other Sites"
 		} else if slug == "spigot-algorithms" {
 			name = "Spigot Algorithms"
+		} else if slug == "tutorial" {
+			name = "Tutorial"
 		} else {
 			continue
 		}

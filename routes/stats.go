@@ -33,7 +33,7 @@ func statsGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := db.QueryRow(
-		"SELECT COUNT(DISTINCT country) FROM users WHERE LENGTH(country) > 0",
+		"SELECT COUNT(DISTINCT country) FROM users WHERE country IS NOT NULL",
 	).Scan(&data.Countries); err != nil {
 		panic(err)
 	}
@@ -49,10 +49,10 @@ func statsGET(w http.ResponseWriter, r *http.Request) {
 	render(w, r, "stats", data, "Statistics")
 }
 
-// GET /stats/{page:countries}
-func statsCountriesGET(w http.ResponseWriter, r *http.Request) {
+// GET /stats/{page:cheevos}
+func statsCheevosGET(w http.ResponseWriter, r *http.Request) {
 	type row struct {
-		Country       config.NullCountry
+		Cheevo        *config.Cheevo
 		Golfers, Rank int
 		Percent       string
 	}
@@ -61,11 +61,35 @@ func statsCountriesGET(w http.ResponseWriter, r *http.Request) {
 	if err := session.Database(r).Select(
 		&data,
 		` SELECT RANK() OVER (ORDER BY COUNT(*) DESC)             rank,
-		         COALESCE(country, '')                            country,
+		         trophy                                           cheevo,
+		         COUNT(*)                                         golfers,
+		         ROUND(COUNT(*) / SUM(COUNT(*)) OVER () * 100, 2) percent
+		    FROM trophies
+		GROUP BY trophy`,
+	); err != nil {
+		panic(err)
+	}
+
+	render(w, r, "stats", data, "Statistics: Achievements")
+}
+
+// GET /stats/{page:countries}
+func statsCountriesGET(w http.ResponseWriter, r *http.Request) {
+	type row struct {
+		Country       *config.Country
+		Golfers, Rank int
+		Percent       string
+	}
+
+	var data []row
+	if err := session.Database(r).Select(
+		&data,
+		` SELECT RANK() OVER (ORDER BY COUNT(*) DESC)             rank,
+		         country                                          country,
 		         COUNT(*)                                         golfers,
 		         ROUND(COUNT(*) / SUM(COUNT(*)) OVER () * 100, 2) percent
 		    FROM users
-		GROUP BY COALESCE(country, '')`,
+		GROUP BY country`,
 	); err != nil {
 		panic(err)
 	}
@@ -77,11 +101,11 @@ func statsCountriesGET(w http.ResponseWriter, r *http.Request) {
 		}
 
 		var aName, bName string
-		if a.Country.Valid {
-			aName = a.Country.Country.Name
+		if a.Country != nil {
+			aName = a.Country.Name
 		}
-		if b.Country.Valid {
-			bName = b.Country.Country.Name
+		if b.Country != nil {
+			bName = b.Country.Name
 		}
 		return cmp.Compare(aName, bName)
 	})
@@ -94,6 +118,7 @@ func statsGolfersGET(w http.ResponseWriter, r *http.Request) {
 	var data []struct {
 		Count, Sum int
 		Date       time.Time
+		PerDay     string
 	}
 
 	if err := session.Database(r).Select(
@@ -115,9 +140,11 @@ func statsGolfersGET(w http.ResponseWriter, r *http.Request) {
 		           COUNT(*)
 		      FROM earnt_golfers
 		  GROUP BY date
-		) SELECT * FROM first_golfer
+		) SELECT *, 0 per_day FROM first_golfer
 		   UNION ALL
-		  SELECT *, SUM(count) OVER (ORDER BY date) FROM counts`,
+		  SELECT *, SUM(count) OVER (ORDER BY date),
+		         ROUND(count / EXTRACT(doy FROM date), 2) per_day
+		    FROM counts`,
 	); err != nil {
 		panic(err)
 	}
@@ -175,10 +202,10 @@ func statsUnsolvedHolesGET(w http.ResponseWriter, r *http.Request) {
 	if err := session.Database(r).Select(
 		&data,
 		`WITH solves AS (
-		    SELECT DISTINCT hole, lang FROM solutions WHERE NOT failing
+		    SELECT DISTINCT hole, lang FROM stable_passing_solutions
 		),
-		holes AS (SELECT unnest(enum_range(null::hole)) hole),
-		langs AS (SELECT unnest(enum_range(null::lang)) lang),
+		holes AS (SELECT id hole FROM holes WHERE experiment = 0),
+		langs AS (SELECT id lang FROM langs WHERE experiment = 0),
 		combo AS (SELECT hole, lang FROM holes CROSS JOIN langs)
 		   SELECT hole, lang
 		     FROM combo

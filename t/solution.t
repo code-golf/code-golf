@@ -1,6 +1,6 @@
 use t;
 
-constant $answer           = slurp("hole/answers/fizz-buzz.txt").chomp;
+constant $answer           = slurp("config/hole-answers/fizz-buzz.txt").chomp;
 constant $code-long        = 'say "Fizz" x $_ %% 3 ~ "Buzz" x $_ %% 5 || $_ for 1 .. 100';
 constant $code-short       = 'say "Fizz"x$_%%3~"Buzz"x$_%%5||$_ for 1..100';
 constant $code-short-chars = 'say "Fizz"x$_%%3~"Buzz"x$_%%5||$_ for 1…100';

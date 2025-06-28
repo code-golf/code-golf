@@ -1,24 +1,25 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache build-base curl
 
-RUN curl -L https://github.com/ocaml/ocaml/archive/refs/tags/5.2.0.tar.gz | tar xz
+ENV VER=5.3.0
 
-RUN cd ocaml-*               \
- && ./configure              \
-    --bindir /usr/bin        \
-    --libdir /usr/lib/ocaml  \
-    --mandir /usr/share/man  \
-    --prefix /usr            \
+RUN curl -#L https://github.com/ocaml/ocaml/archive/refs/tags/$VER.tar.gz | tar xz
+
+WORKDIR /ocaml-$VER
+
+RUN ./configure              \
+    --prefix=/usr            \
  && make -j`nproc` world.opt \
  && make install             \
  && strip /usr/bin/ocamlc    \
           /usr/bin/ocamlrun
 
-# Remove some crap we don't need.
-RUN rm -rf /usr/lib/ocaml/compiler-libs /usr/lib/ocaml/ocamldoc \
- && find /usr/lib/ocaml \
-    \( -name '*.cmt' -o -name '*.cmti' -o -name '*.ml' \) -a -delete
+WORKDIR /usr/lib/ocaml
+
+# Remove some stuff we don't need.
+RUN rm -rf compiler-libs ocamldoc \
+ && find . \( -name '*.cmt*' -o -name '*.ml' \) -a -delete
 
 FROM codegolf/lang-base
 

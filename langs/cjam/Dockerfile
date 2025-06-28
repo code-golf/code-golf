@@ -1,30 +1,20 @@
-FROM eclipse-temurin:23.0.1_11-jre-alpine AS builder
+FROM alpine:3.22 AS builder
 
-ENV VERSION=0.6.5
+RUN apk add --no-cache coreutils
 
-RUN wget -O cjam.jar https://sourceforge.net/projects/cjam/files/cjam-$VERSION/cjam-$VERSION.jar/download
+ENV VER=0.6.5
 
-FROM codegolf/lang-base
+RUN wget -qO cjam.jar https://sourceforge.net/projects/cjam/files/cjam-$VER/cjam-$VER.jar/download
 
-COPY --from=0 /bin/cat /bin/sh                       /bin/
-COPY --from=0 /lib/ld-musl-x86_64.so.1               \
-              /lib/libacl.so.1                       \
-              /lib/libattr.so.1                      \
-              /lib/libcrypto.so.3                    \
-              /lib/libskarnet.so.2.14                \
-              /lib/libutmps.so.0.1                   /lib/
-COPY --from=0 /opt/java/openjdk/bin/java             /opt/jdk/bin/
-COPY --from=0 /opt/java/openjdk/lib/jvm.cfg          \
-              /opt/java/openjdk/lib/libjava.so       \
-              /opt/java/openjdk/lib/libjimage.so     \
-              /opt/java/openjdk/lib/libjli.so        \
-              /opt/java/openjdk/lib/libnet.so        \
-              /opt/java/openjdk/lib/libnio.so        \
-              /opt/java/openjdk/lib/libzip.so        \
-              /opt/java/openjdk/lib/modules          /opt/jdk/lib/
-COPY --from=0 /opt/java/openjdk/lib/server/libjvm.so /opt/jdk/lib/server/
-COPY --from=0 /cjam.jar                              /usr/bin/
+FROM codegolf/lang-java
 
-COPY /cjam /usr/bin/
+COPY --from=0 /cjam.jar                   /
+COPY --from=0 /usr/lib/libacl.so.1        \
+              /usr/lib/libattr.so.1       \
+              /usr/lib/libcrypto.so.3     \
+              /usr/lib/libskarnet.so.2.14 \
+              /usr/lib/libutmps.so.0.1    /usr/lib/
 
 ENTRYPOINT ["cjam"]
+
+CMD ["--version"]
