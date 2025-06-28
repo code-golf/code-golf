@@ -11,17 +11,18 @@ CREATE TYPE cheevo AS ENUM (
     'elephpant-in-the-room', 'emergency-room', 'evil-scheme', 'fish-n-chips',
     'fore', 'forty-winks', 'go-forth', 'gone-in-60-holes',
     'happy-birthday-code-golf', 'happy-go-lucky', 'hello-world',
-    'hextreme-agony', 'hugs-and-kisses', 'inception', 'independence-day',
-    'interview-ready', 'its-over-9000', 'jeweler', 'just-kidding',
-    'like-comment-subscribe', 'marathon-runner', 'mary-had-a-little-lambda',
-    'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars',
-    'neunundneunzig-luftballons', 'off-the-grid', 'omniglot', 'omniglutton',
-    'ouroboros', 'pangramglot', 'patches-welcome', 'phileas-fogg', 'pi-day',
-    'polyglot', 'polyglutton', 'real-programmers', 'right-on', 'rm-rf',
-    'rtfm', 'rule-34', 's-box-360', 'slowcoach', 'smörgåsbord', 'solve-quine',
-    'sounds-quite-nice', 'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr',
-    'twelvetide', 'twenty-kiloleagues', 'under-pressure', 'up-to-eleven',
-    'vampire-byte', 'x-factor', 'x86'
+    'hextreme-agony', 'how-about-second-pi', 'hugs-and-kisses', 'inception',
+    'independence-day', 'interview-ready', 'into-space', 'its-over-9000',
+    'jeweler', 'just-kidding', 'like-comment-subscribe', 'marathon-runner',
+    'mary-had-a-little-lambda', 'may-the-4ᵗʰ-be-with-you',
+    'my-god-its-full-of-stars', 'neunundneunzig-luftballons', 'off-the-grid',
+    'omniglot', 'omniglutton', 'ouroboros', 'overflowing', 'pangramglot',
+    'patches-welcome', 'phileas-fogg', 'pi-day', 'polyglot', 'polyglutton',
+    'real-programmers', 'right-on', 'rm-rf', 'rtfm', 'rule-34', 's-box-360',
+    'slowcoach', 'smörgåsbord', 'solve-quine', 'sounds-quite-nice', 'takeout',
+    'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
+    'twenty-kiloleagues', 'under-pressure', 'up-to-eleven', 'vampire-byte',
+    'x-factor', 'x86'
 );
 
 CREATE TYPE connection AS ENUM (
@@ -173,9 +174,10 @@ CREATE UNLOGGED TABLE holes (
 
 -- Ditto for config/data/langs.toml.
 CREATE UNLOGGED TABLE langs (
-    id           lang  NOT NULL PRIMARY KEY,
-    experiment   int   NOT NULL,
-    digest_trunc bytea NOT NULL
+    id           lang   NOT NULL PRIMARY KEY,
+    experiment   int    NOT NULL,
+    digest_trunc bytea  NOT NULL,
+    name         citext NOT NULL
 );
 
 CREATE TABLE notes (

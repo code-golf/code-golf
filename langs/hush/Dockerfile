@@ -1,4 +1,4 @@
-FROM rust:1.87.0-slim-bookworm AS builder
+FROM rust:1.88.0-slim-bookworm AS builder
 
 ENV CRT='x86_64-unknown-linux-musl' VER=0.1.4
 

@@ -284,6 +284,12 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 						out.Cheevos = append(out.Cheevos, *c)
 					}
 				}
+			case "τ":
+				if month == time.June && day == 28 {
+					if c := golfer.Earn(db, "how-about-second-pi"); c != nil {
+						out.Cheevos = append(out.Cheevos, *c)
+					}
+				}
 			}
 
 			if in.Lang == "viml" && golfer.Settings["hole"]["editor-keymap"] == "vim" {

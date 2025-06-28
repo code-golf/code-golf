@@ -1,12 +1,7 @@
 # Categories in alpha order, cheevos in difficulty then alpha order.
+# Date specific cheevos are in order of starting date.
 
 # Date Specific
-
-[['Date Specific']]
-name        = 'Happy Birthday, Code Golf'
-emoji       = '🎂'
-dates       = [2000-10-02, 2000-10-03]
-description = 'Solve any hole on <a href=//github.com/code-golf/code-golf/commit/4b44>2 Oct</a>.'
 
 [['Date Specific']]
 name        = 'Hugs and Kisses'
@@ -15,10 +10,10 @@ dates       = [2000-02-14, 2000-02-15]
 description = 'Solve <a href=/tic-tac-toe>Tic-tac-toe</a> on <a href=//www.wikipedia.org/wiki/Valentine%27s_Day>14 Feb</a>.'
 
 [['Date Specific']]
-name        = 'Independence Day'
-emoji       = '🇺🇸'
-dates       = [2000-07-04, 2000-07-05]
-description = 'Solve <a href=/united-states>United States</a> on <a href=//www.wikipedia.org/wiki/Independence_Day_(United_States)>4 Jul</a>.'
+name        = 'Pi Day'
+emoji       = '🥧'
+dates       = [2000-03-14, 2000-03-15]
+description = 'Solve <a href=/π>π</a> on <a href=//www.wikipedia.org/wiki/Pi_Day>14 Mar</a>.'
 
 [['Date Specific']]
 name        = 'May the 4ᵗʰ Be with You'
@@ -27,22 +22,34 @@ dates       = [2000-05-04, 2000-05-05]
 description = 'Solve <a href=/star-wars-gpt>Star Wars GPT</a> or <a href=/star-wars-opening-crawl>Star Wars Opening Crawl</a> on <a href=//www.wikipedia.org/wiki/Star_Wars_Day>4 May</a>.'
 
 [['Date Specific']]
-name        = 'Pi Day'
-emoji       = '🥧'
-dates       = [2000-03-14, 2000-03-15]
-description = 'Solve <a href=/π>π</a> on <a href=//www.wikipedia.org/wiki/Pi_Day>14 Mar</a>.'
+name        = 'How about Second Pi?'
+emoji       = '🍕'
+dates       = [2000-06-28, 2000-06-29]
+description = 'Solve <a href=/τ>τ</a> on <a href=//www.wikipedia.org/wiki/Pi_Day#Alternative_dates>28 Jun</a>.'
 
 [['Date Specific']]
-name        = 'Twelvetide'
-emoji       = '🎅'
-dates       = [1999-12-25, 2000-01-06, 2000-12-25, 2001-01-06]
-description = 'Solve <a href=/12-days-of-christmas>12 Days of Christmas</a> during <a href=//www.wikipedia.org/wiki/Twelvetide>25 Dec – 5 Jan</a>.'
+name        = 'Independence Day'
+emoji       = '🇺🇸'
+dates       = [2000-07-04, 2000-07-05]
+description = 'Solve <a href=/united-states>United States</a> on <a href=//www.wikipedia.org/wiki/Independence_Day_(United_States)>4 Jul</a>.'
+
+[['Date Specific']]
+name        = 'Happy Birthday, Code Golf'
+emoji       = '🎂'
+dates       = [2000-10-02, 2000-10-03]
+description = 'Solve any hole on <a href=//github.com/code-golf/code-golf/commit/4b44>2 Oct</a>.'
 
 [['Date Specific']]
 name        = 'Vampire Byte'
 emoji       = '🧛'
 dates       = [2000-10-31, 2000-11-01]
 description = 'Solve <a href=/vampire-numbers>Vampire Numbers</a> on <a href=//www.wikipedia.org/wiki/Halloween>31 Oct</a>.'
+
+[['Date Specific']]
+name        = 'Twelvetide'
+emoji       = '🎅'
+dates       = [1999-12-25, 2000-01-06, 2000-12-25, 2001-01-06]
+description = 'Solve <a href=/12-days-of-christmas>12 Days of Christmas</a> during <a href=//www.wikipedia.org/wiki/Twelvetide>25 Dec – 5 Jan</a>.'
 
 # GitHub
 
@@ -437,7 +444,7 @@ target      = 1984
 [['Total Points']]
 name        = 'It’s Over 9000!'
 emoji       = '🐉'
-description = 'Earn over 9,000 total points in either bytes or chars scoring.'
+description = 'Earn 9,001 total points in either bytes or chars scoring.'
 target      = 9001
 
 [['Total Points']]
@@ -457,3 +464,15 @@ name        = '0xDEAD'
 emoji       = '🪦'
 description = 'Earn 57,005 total points in either bytes or chars scoring.'
 target      = 57005
+
+[['Total Points']]
+name        = 'Overflowing'
+emoji       = '⛲'
+description = 'Earn 65,536 total points in either bytes or chars scoring.'
+target      = 65536
+
+[['Total Points']]
+name        = 'Into Space!'
+emoji       = '🚀'
+description = 'Earn <a href=//en.wikipedia.org/wiki/Kármán_line>100,000</a> total points in either bytes or chars scoring.'
+target      = 100000

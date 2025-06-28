@@ -1,8 +1,8 @@
 FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache build-base curl m4
+RUN apk add --no-cache curl g++ m4 make
 
-ENV VER=15.1.0
+ENV LDFLAGS='-static' VER=15.1.0
 
 WORKDIR /gmp
 
@@ -11,7 +11,6 @@ RUN curl -#L ftp://gcc.gnu.org/pub/gcc/infrastructure/gmp-6.2.1.tar.bz2 \
 
 RUN ./configure       \
     --disable-shared  \
-    --enable-static   \
     --prefix=/tmp/gmp \
  && make -j`nproc` install
 
@@ -22,7 +21,6 @@ RUN curl -#L ftp://gcc.gnu.org/pub/gcc/infrastructure/mpfr-4.1.0.tar.bz2 \
 
 RUN ./configure         \
     --disable-shared    \
-    --enable-static     \
     --prefix=/tmp/mpfr  \
     --with-gmp=/tmp/gmp \
  && make -j`nproc` install
@@ -34,7 +32,6 @@ RUN curl -#L ftp://gcc.gnu.org/pub/gcc/infrastructure/mpc-1.2.1.tar.gz \
 
 RUN ./configure           \
     --disable-shared      \
-    --enable-static       \
     --prefix=/tmp/mpc     \
     --with-gmp=/tmp/gmp   \
     --with-mpfr=/tmp/mpfr \
@@ -45,23 +42,23 @@ WORKDIR /fortran
 RUN curl -#L ftp://ftp.gnu.org/gnu/gcc/gcc-$VER/gcc-$VER.tar.xz \
   | tar xJ --strip-components 1
 
-RUN ./configure                   \
-    --disable-bootstrap           \
-    --disable-gcov                \
-    --disable-libgomp             \
-    --disable-libstdcxx-pch       \
-    --disable-lto                 \
-    --disable-multilib            \
-    --disable-nls                 \
-    --disable-shared              \
-    --enable-languages=fortran    \
-    --enable-static               \
-    --with-gmp=/tmp/gmp           \
-    --with-mpc=/tmp/mpc           \
-    --with-mpfr=/tmp/mpfr         \
- && make -j`nproc`                \
- && make install                  \
- && strip /usr/local/bin/gfortran \
+RUN ./configure                      \
+    --disable-bootstrap              \
+    --disable-gcov                   \
+    --disable-libgomp                \
+    --disable-libstdcxx-pch          \
+    --disable-lto                    \
+    --disable-multilib               \
+    --disable-nls                    \
+    --disable-shared                 \
+    --enable-languages=fortran       \
+    --with-gmp=/tmp/gmp              \
+    --with-mpc=/tmp/mpc              \
+    --with-mpfr=/tmp/mpfr            \
+    --with-static-standard-libraries \
+ && make -j`nproc`                   \
+ && make install                     \
+ && strip /usr/local/bin/gfortran    \
           /usr/local/libexec/gcc/x86_64-pc-linux-musl/$VER/f951
 
 COPY fortran.c /
@@ -82,7 +79,6 @@ COPY --from=0 /usr/lib/crt1.o                   \
               /usr/lib/libctf.so.0              \
               /usr/lib/libjansson.so.4          \
               /usr/lib/libm.a                   \
-              /usr/lib/libopcodes-2.44.so       \
               /usr/lib/libsframe.so.1           \
               /usr/lib/libz.so.1                \
               /usr/lib/libzstd.so.1             /usr/lib/
