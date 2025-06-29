@@ -1,12 +1,12 @@
 ARG VER=0.56
 
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
 ARG VER
 
 RUN apk add --no-cache bison curl flex g++ gobject-introspection-dev make
 
-RUN curl -#L https://download.gnome.org/sources/vala/$VER/vala-$VER.17.tar.xz \
+RUN curl -#L https://download.gnome.org/sources/vala/$VER/vala-$VER.18.tar.xz \
   | tar xJ --strip-components 1
 
 RUN ./configure                      \
@@ -36,7 +36,7 @@ COPY --from=0 /usr/include                               /usr/include
 COPY --from=0 /usr/lib/Scrt1.o                           \
               /usr/lib/crti.o                            \
               /usr/lib/crtn.o                            \
-              /usr/lib/libbfd-2.43.1.so                  \
+              /usr/lib/libbfd-2.44.so                    \
               /usr/lib/libc.so                           \
               /usr/lib/libctf.so.0                       \
               /usr/lib/libffi.so.8                       \
@@ -55,7 +55,7 @@ COPY --from=0 /usr/lib/Scrt1.o                           \
               /usr/lib/libmpc.so.3                       \
               /usr/lib/libmpfr.so.6                      \
               /usr/lib/libpcre2-8.so.0                   \
-              /usr/lib/libpkgconf.so.5                   \
+              /usr/lib/libpkgconf.so.6                   \
               /usr/lib/libsframe.so.1                    \
               /usr/lib/libssp_nonshared.a                \
               /usr/lib/libvala-$VER.so.0                 \
