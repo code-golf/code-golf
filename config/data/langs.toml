@@ -1840,6 +1840,30 @@ for arg in os.args[1..] {
 }
 '''
 
+[Vala]
+args       = [ '/usr/bin/vala', '-' ]
+env        = [ 'PATH=/usr/bin' ]
+experiment = 1354
+size       = '99.6 MiB'
+version    = '0.56.18'
+website    = 'https://vala.dev'
+example    = '''
+int main(string[] args) {
+    // Printing
+    print("Hello, World!\n");
+
+    // Looping
+    for (int i = 0; i < 10; i++)
+        print("%d\n", i);
+
+    // Accessing arguments
+    foreach (string arg in args[1:])
+        stdout.printf("%s\n", arg);
+
+    return 0;
+}
+'''
+
 [VimL]
 args    = [ '/usr/bin/viml', '-' ]
 size    = '24.1 MiB'
