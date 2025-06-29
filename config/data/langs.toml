@@ -612,9 +612,9 @@ void main(List<String> argv) {
 '''
 
 [Egel]
-args       = [ '/usr/bin/egelwrapper', '-' ]
+args       = [ '/usr/bin/egel', '-' ]
 experiment = 1434
-size       = '49.7 MiB'
+size       = '11.6 MiB'
 version    = '0.1.14'
 website    = 'https://egel-lang.github.io'
 example    = '''
