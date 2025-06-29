@@ -1492,8 +1492,8 @@ example    = '''
 [Raku]
 args      = [ '/usr/bin/raku', '-' ]
 redirects = [ 'perl6' ]
-size      = '75.6 MiB'
-version   = 'Raku 6.d on Rakudo 2025.05'
+size      = '75.8 MiB'
+version   = 'Raku 6.d on Rakudo 2025.06'
 website   = 'https://raku.org'
 example   = '''
 # Printing
@@ -1678,7 +1678,7 @@ G
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
 size    = '1.22 MiB'
-version = 'SQLite 3.50.1'
+version = 'SQLite 3.50.2'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
