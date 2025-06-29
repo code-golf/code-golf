@@ -2146,6 +2146,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Mandelbrot_set' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Mandelbrot_set' },
 ]
+released = 2025-07-01
 synopsis = 'Draw the Mandelbrot set.'
 preamble = '''
 <p>
