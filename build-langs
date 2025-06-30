@@ -31,7 +31,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
     }
 
     run <docker buildx build>,
-         ( '--no-cache' when $no-cache ),
+         ( '--no-cache' if $no-cache ),
          '--tag', $img,
          "langs/$id";
 
