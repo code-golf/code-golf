@@ -38,7 +38,7 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 			           RANK() OVER (PARTITION BY hole
 			                            ORDER BY points DESC, strokes)
 			      FROM rankings
-			     WHERE scoring = $1
+			     WHERE scoring = $1 AND NOT experimental
 			) SELECT DISTINCT hole, rank
 			    FROM ranks
 			   WHERE lang = $2 AND rank < 4
@@ -58,7 +58,7 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 			           ROW_NUMBER() OVER (PARTITION BY hole, lang
 			                                  ORDER BY points DESC, strokes)
 			      FROM rankings
-			     WHERE scoring = $1
+			     WHERE scoring = $1 AND NOT experimental
 			), medals AS (
 			    SELECT DISTINCT hole, lang, rank FROM ranks WHERE rank < 4
 			) SELECT lang,

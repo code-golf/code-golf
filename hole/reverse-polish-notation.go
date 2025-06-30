@@ -40,7 +40,7 @@ func expand(node *Node) {
 			left = randChoice(factors)
 			right = val / left
 		}
-		if rand.IntN(2) == 1 {
+		if randBool() {
 			left, right = right, left
 		}
 	case '/':
@@ -102,7 +102,7 @@ func genExpr(init int, expander func(*Node, int), expandCount int) *Node {
 	return node
 }
 
-func reversePolishNotation() []Run {
+var _ = answerFunc("reverse-polish-notation", func() []Answer {
 	const count = 20
 
 	exprs := [count]*Node{
@@ -125,4 +125,4 @@ func reversePolishNotation() []Run {
 	}
 
 	return outputTests(shuffle(tests))
-}
+})
