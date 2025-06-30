@@ -84,7 +84,7 @@ CREATE TYPE lang AS ENUM (
     'powershell', 'prolog', 'python', 'qore', 'r', 'racket', 'raku', 'rebol',
     'rexx', 'rockstar', 'ruby', 'rust', 'scala', 'scheme', 'sed', 'sql',
     'squirrel', 'stax', 'swift', 'tcl', 'tex', 'uiua', 'v', 'vala', 'viml',
-    'vyxal', 'wren', 'zig'
+    'vyxal', 'wren', 'yuescript', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('unicorn', 'diamond', 'gold', 'silver', 'bronze');
