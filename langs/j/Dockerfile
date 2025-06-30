@@ -1,19 +1,23 @@
+ARG VER=9.6
+
 FROM debian:bookworm-slim AS builder
 
-RUN apt-get update && apt-get install -y curl gcc
+ARG VER
 
-RUN curl https://www.jsoftware.com/download/j9.6/install/j9.6.1_linux64.tar.gz \
+RUN apt-get update                   \
+ && DEBIAN_FRONTEND='noninteractive' \
+    apt-get install --yes curl
+
+RUN curl -# https://www.jsoftware.com/download/j$VER/install/j$VER.3_linux64.tar.gz \
   | tar xz
 
 # FIXME Don't run updatejs.sh as it tries to update to AVX512 because my build
 # laptop supports it. But prod servers do not. Is there an override flag?
-# RUN cd j9.6 && ./updateje.sh
-
-COPY j.c /
-
-RUN gcc -s -o j j.c
+# RUN cd j$VER && ./updateje.sh
 
 FROM codegolf/lang-base
+
+ARG VER
 
 COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
               /lib/x86_64-linux-gnu/libdl.so.2      \
@@ -21,14 +25,11 @@ COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
               /lib/x86_64-linux-gnu/libm.so.6       \
               /lib/x86_64-linux-gnu/libpthread.so.0 /lib/
 COPY --from=0 /lib64/ld-linux-x86-64.so.2           /lib64/
-COPY --from=0 /j                                    /usr/bin/
-COPY --from=0 /j9.6/addons/dev                      /opt/j/addons/dev
-COPY --from=0 /j9.6/bin/jconsole                    \
-              /j9.6/bin/libgmp.so                   \
-              /j9.6/bin/libj.so                     \
-              /j9.6/bin/profile.ijs                 /opt/j/bin/
-COPY --from=0 /j9.6/system                          /opt/j/system
+COPY --from=0 /j$VER/addons/dev                     /opt/j/addons/dev
+COPY --from=0 /j$VER/bin/jconsole                   \
+              /j$VER/bin/libgmp.so                  \
+              /j$VER/bin/libj.so                    \
+              /j$VER/bin/profile.ijs                /opt/j/bin/
+COPY --from=0 /j$VER/system                         /opt/j/system
 
-ENTRYPOINT ["j"]
-
-CMD ["-v"]
+ENTRYPOINT ["/opt/j/bin/jconsole"]

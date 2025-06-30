@@ -28,6 +28,7 @@ var (
 	botToken      = os.Getenv("DISCORD_BOT_TOKEN")       // Caddie
 	chanFreshID   = os.Getenv("DISCORD_CHAN_FRESH_ID")   // 🍇・fresh-grapes
 	chanSourID    = os.Getenv("DISCORD_CHAN_SOUR_ID")    // 🍇・sour-grapes
+	chanWildID    = os.Getenv("DISCORD_CHAN_WILD_ID")    // 🍇・wild-grapes
 	guildID       = os.Getenv("DISCORD_GUILD_ID")        // Code Golf
 	roleContribID = os.Getenv("DISCORD_ROLE_CONTRIB_ID") // Contributor
 	roleSponsorID = os.Getenv("DISCORD_ROLE_SPONSOR_ID") // Sponsor
@@ -47,7 +48,8 @@ type RecAnnouncement struct {
 func init() {
 	// Ensure we have all our config.
 	switch "" {
-	case botToken, chanFreshID, chanSourID, guildID, roleContribID, roleSponsorID:
+	case botToken, chanFreshID, chanSourID, chanWildID, guildID,
+		roleContribID, roleSponsorID:
 		return
 	}
 
@@ -64,7 +66,13 @@ func init() {
 }
 
 // TODO Make this dynamic based on hole/lang age.
-func channel(_ *config.Hole, _ *config.Lang) string {
+func channel(hole *config.Hole, lang *config.Lang) string {
+	if hole.Experiment != 0 || lang.Experiment != 0 {
+		return chanWildID
+	}
+	if hole.ID == "scrambled-sort" {
+		return chanFreshID
+	}
 	return chanSourID
 }
 

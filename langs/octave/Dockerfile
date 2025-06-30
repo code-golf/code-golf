@@ -1,6 +1,6 @@
-ARG VER=9.4.0
+ARG VER=10.2.0
 
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
 ARG VER
 
@@ -15,10 +15,13 @@ RUN ./configure        \
     --disable-readline \
  && make -j`nproc` install
 
+RUN strip /usr/local/bin/octave-cli-$VER
+
 WORKDIR /usr/local/lib/octave/$VER
 
-RUN strip liboctave.so.11 \
-          liboctinterp.so.12
+RUN strip liboctave.so.*    \
+          liboctinterp.so.* \
+          liboctmex.so.*
 
 COPY octave.c /
 
@@ -41,8 +44,9 @@ COPY --from=0 /usr/lib/libblas.so.3                         \
               /usr/lib/libz.so.1                            /usr/lib/
 COPY --from=0 /usr/local/bin/octave                         \
               /usr/local/bin/octave-cli-$VER                /usr/local/bin/
-COPY --from=0 /usr/local/lib/octave/$VER/liboctave.so.11    \
-              /usr/local/lib/octave/$VER/liboctinterp.so.12 /usr/local/lib/octave/$VER/
+COPY --from=0 /usr/local/lib/octave/$VER/liboctave.so.12    \
+              /usr/local/lib/octave/$VER/liboctinterp.so.13 \
+              /usr/local/lib/octave/$VER/liboctmex.so.1     /usr/local/lib/octave/$VER/
 COPY --from=0 /usr/local/share/octave                       /usr/local/share/octave
 
 ENTRYPOINT ["octave"]

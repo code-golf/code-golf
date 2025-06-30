@@ -215,7 +215,7 @@ preamble = '''
 <p>
     An arithmetic number is a number for which the average of its divisors is
     an integer. For example, number <b>6</b> is arithmetic because its divisors
-    (<b>1</b>, <b>2</b>, <b>3</b> and <b>6</b>) average <b>3</b>.
+    (<b>1</b>, <b>2</b>, <b>3</b>, and <b>6</b>) average <b>3</b>.
 
 <p>
     Print all the arithmetic numbers from <b>1</b> to <b>10,000</b> inclusive,
@@ -669,8 +669,13 @@ released = 2020-06-21
 synopsis = 'Convert CSS color keywords to their hex values.'
 preamble = '''
 <p>
+{{ if eq .Name "CSS Colors" }}
     Given a list of all the CSS color keywords print the hex values in the
     corresponding order. The full mapping is as follows:
+{{ else }}
+    For each given color hex code print one of the corresponding css keywords.
+    The full mapping is as follows:
+{{ end }}
 
 <div id=colors class="tables-4col">
 {{ range .DataMap }}
@@ -695,6 +700,12 @@ preamble = '''
 {{ end }}
 </div>
 '''
+
+[['CSS Colors'.variants]]
+name             = 'CSS Colors (Inverse)'
+experiment       = 1353
+output-delimiter = "\n"
+synopsis         = 'Convert color hex values to their CSS keywords.'
 
 ['CSS Grid']
 category = 'Art'
@@ -812,6 +823,9 @@ preamble = '''
 ['Day of Week']
 category = 'Transform'
 released = 2023-04-16
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Determination_of_the_day_of_the_week' },
+]
 synopsis = 'Given a date, output the day of the week.'
 preamble = '''
 <p>
@@ -1682,7 +1696,7 @@ experiment = 1449
 category   = 'Sequence'
 links = [
     { name = 'OEIS A002182', url = '//oeis.org/A002182' },
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Highly_composite_number' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Highly_composite_number' },
 ]
 synopsis = 'Print all the highly composite numbers from 1 to 250,000,000.'
 preamble = '''
@@ -1704,7 +1718,8 @@ preamble = '''
 experiment = 1448
 category   = 'Art'
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Hilbert_curve' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Hilbert_curve' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Hilbert_curve' },
 ]
 synopsis = 'Print five iterations of the Hilbert curve.'
 preamble = '''
@@ -2131,6 +2146,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Mandelbrot_set' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Mandelbrot_set' },
 ]
+released = 2025-07-01
 synopsis = 'Draw the Mandelbrot set.'
 preamble = '''
 <p>
@@ -2477,9 +2493,9 @@ preamble = '''
 category = 'Gaming'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/N-queens_problem' },
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Eight_queens_puzzle' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Eight_queens_puzzle' },
 ]
-item-delimiter = "\n"
+multiset-item-delimiter = "\n"
 released = 2024-05-01
 synopsis = 'Print all solutions to the N queens problem.'
 preamble = '''
@@ -2913,9 +2929,26 @@ preamble = '''
 </div>
 '''
 
+['Polygon Triangulations']
+category       = 'Computing'
+multiset-item-delimiter = "\n"
+synopsis       = 'Print all triangulations of polygons with 3-8 sides.'
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Polygon_triangulation' },
+]
+experiment = 2181
+preamble = '''
+<p>
+    Print all possible triangulations of a regular polygon with 3-8 sides.
+    The vertices of the polygon are labeled alphabetically, starting with A and going clockwise.
+    Each triangle should have its vertices listed in order.
+    The triangles in a triangulation should be listed lexicographically and separated by spaces.
+    The triangulations may be printed in any order.
+'''
+
 [Polyominoes]
 category       = 'Computing'
-item-delimiter = "\n\n"
+multiset-item-delimiter = "\n\n"
 released       = 2024-08-01
 synopsis       = 'Print all polyominoes of sizes 1 to 6.'
 links = [
@@ -2923,10 +2956,10 @@ links = [
 ]
 preamble = '''
 <p>
-    A polyomino is a shape formed by joining a certain amount of squares
-    together, where each square must be linked together. Output each possible
-    polyomino (including every rotation), up to a size of 6, in any order.
-    Separate each polyomino by an empty line.
+    A polyomino is a 2D shape formed by joining squares along common edges, such
+    that all squares are connected. Output each possible polyomino (including
+    every rotation), up to a size of 6, in any order. Separate each polyomino by
+    an empty line.
 
 <p>
     There should be a total of 1 monomino, 2 dominoes, 6 trominoes,
@@ -3442,11 +3475,12 @@ preamble = '''
 </pre>
 '''
 
-['Scrambled Alphabetization']
-experiment = 1324
-category = 'Transform'
-synopsis = 'Alphabetize words according to scrambled alphabets.'
-preamble = '''
+['Scrambled Sort']
+category  = 'Transform'
+redirects = ['scrambled-alphabetization']
+released  = 2025-06-01
+synopsis  = 'Sort words according to scrambled alphabets.'
+preamble  = '''
 <p>
     Given a scrambled alphabet and a set of words, print the words in
     alphabetical order according to the given alphabet. Separate the
@@ -3458,7 +3492,7 @@ experiment = 1154
 category = 'Sequence'
 links = [
     { name = 'OEIS A001358', url = '//oeis.org/A001358' },
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Semiprime' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Semiprime' },
 ]
 synopsis = 'Print all the semiprime numbers from 1 to 10,000.'
 preamble = '''
@@ -3471,18 +3505,18 @@ preamble = '''
     each on their own line.
 '''
 
-['Set']
-experiment = 1058
+[Set]
 category = 'Gaming'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Set,_the_card_game' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Set_(card_game)' },
 ]
+released = 2025-04-01
 synopsis = 'Identify sets in the card game Set.'
 preamble = '''
 <p>
     Set is a card game played with a deck of 81 unique cards that vary in four
-    features, each of which take on three values:
+    features, each of which takes on three values:
 
 <ul>
     <li>Number of shapes: each card contains either <b>1</b>, <b>2</b>, or
@@ -3496,19 +3530,21 @@ preamble = '''
 </ul>
 
 <p>
+    A card is represented by the values of its features, with each value encoded
+    by its first character. For example, <code>2RSW</code> means <b>2</b>
+    <b>R</b>ed <b>S</b>olid <b>W</b>aves.
+
+<p>
     The goal of the game is to find a <i>set</i> of three cards, such that for
     each of the four features, either all three cards have different values or
-    all three cards have the same value.
+    all three cards have the same value. For example, <code>2RSW</code>,
+    <code>2PHW</code>, and <code>2GEW</code> form a set because they all have
+    the same number and shape, and none of them have the same color or shading.
 
 <p>
-    Each card is represented by the values of its features, with each value
-    encoded by the first character. For example, <code>2RSW</code> means
-    <b>2</b> <b>R</b>ed <b>S</b>olid <b>W</b>aves.
-
-<p>
-    Each argument represents twelve cards that are laid out. In order of
-    appearance, print the three cards that make up each set per argument
-    on the same line, separated by spaces.
+    Arguments consist of twelve cards that are guaranteed to contain exactly one
+    set. For each argument, print the contained set with the cards in order of
+    their appearance separated by spaces, one set per line.
 '''
 
 ['Seven Segment']
@@ -3857,7 +3893,7 @@ experiment = 1154
 category = 'Sequence'
 links = [
     { name = 'OEIS A007304', url = '//oeis.org/A007304' },
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Sphenic_number' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Sphenic_number' },
 ]
 synopsis = 'Print all the sphenic numbers from 1 to 10,000.'
 preamble = '''
@@ -3871,19 +3907,20 @@ preamble = '''
 '''
 
 ['Star Wars GPT']
-experiment = 1463
 category = 'Transform'
 links = [
     { name = 'Wookieepedia', url = '//starwars.fandom.com/wiki/Opening_crawl' },
 ]
-synopsis = 'Output the most likely next word to occur given word frequency in the Star Wars opening crawl.'
+released = 2025-05-01
+synopsis = 'Print the next most likely word in the Star Wars opening crawls.'
 preamble = '''
 <p>
-    You are given input of a text *corpus* and several *prompts* on subsequent
-    lines. For each prompt, output the most likely next word in the corpus by
-    frequency (aka *mode*). If there is more than one mode, output the first
-    encountered in the corpus. In this problem, the corpus is fixed to be the
-    Star Wars opening crawl texts.
+    You are given a series of inputs. Each input contains a text <b>corpus</b>
+    and a dozen <b>prompts</b> on subsequent lines. For each prompt, output the
+    most likely next word in the corpus by frequency (aka <b>mode</b>). If
+    there is more than one mode, output the first encountered in the corpus. In
+    this problem, the corpus is fixed to be the
+    <a href=star-wars-opening-crawl>Star Wars Opening Crawl</a> texts.
 '''
 
 ['Star Wars Opening Crawl']
