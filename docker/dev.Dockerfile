@@ -36,6 +36,7 @@ COPY --from=codegolf/lang-gleam        ["/", "/langs/gleam/rootfs/"       ] # 73
 COPY --from=codegolf/lang-fortran      ["/", "/langs/fortran/rootfs/"     ] # 72.8 MiB
 COPY --from=codegolf/lang-vyxal        ["/", "/langs/vyxal/rootfs/"       ] # 69.3 MiB
 COPY --from=codegolf/lang-clojure      ["/", "/langs/clojure/rootfs/"     ] # 67.3 MiB
+COPY --from=codegolf/lang-kamilalisp   ["/", "/langs/kamilalisp/rootfs/"  ] # 64.9 MiB
 COPY --from=codegolf/lang-groovy       ["/", "/langs/groovy/rootfs/"      ] # 62.8 MiB
 COPY --from=codegolf/lang-elixir       ["/", "/langs/elixir/rootfs/"      ] # 55.9 MiB
 COPY --from=codegolf/lang-v            ["/", "/langs/v/rootfs/"           ] # 51.4 MiB
