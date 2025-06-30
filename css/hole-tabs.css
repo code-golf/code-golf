@@ -54,6 +54,10 @@ section header {
     gap: .375rem;
 }
 
+:has(#arg) button {
+    min-width: 2rem;
+}
+
 #editor-section, #holeLangNotesEditor-section {
     height: 100%;
     overflow: hidden;
@@ -205,6 +209,9 @@ main {
 }
 .full-height #make-short { display: flex }
 
+:has(#arg) button {
+    margin: 3px;
+}
 #langWiki {
     padding: .75rem;
 }
