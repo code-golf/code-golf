@@ -637,9 +637,9 @@ void main(List<String> argv) {
 '''
 
 [Egel]
-args       = [ '/usr/bin/egelwrapper', '-' ]
+args       = [ '/usr/bin/egel', '-' ]
 experiment = 1434
-size       = '49.7 MiB'
+size       = '11.6 MiB'
 version    = '0.1.14'
 website    = 'https://egel-lang.github.io'
 example    = '''
@@ -777,7 +777,7 @@ bye
 
 [Fortran]
 args    = [ '/usr/bin/fortran', '-' ]
-size    = '102 MiB'
+size    = '72.8 MiB'
 version = 'GNU Fortran 15.1.0'
 website = 'https://gcc.gnu.org/fortran/'
 example = '''
@@ -1517,8 +1517,8 @@ example    = '''
 [Raku]
 args      = [ '/usr/bin/raku', '-' ]
 redirects = [ 'perl6' ]
-size      = '75.6 MiB'
-version   = 'Raku 6.d on Rakudo 2025.05'
+size      = '75.8 MiB'
+version   = 'Raku 6.d on Rakudo 2025.06'
 website   = 'https://raku.org'
 example   = '''
 # Printing
@@ -1703,7 +1703,7 @@ G
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
 size    = '1.22 MiB'
-version = 'SQLite 3.50.1'
+version = 'SQLite 3.50.2'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
@@ -1862,6 +1862,30 @@ for i in 0..10 {
 // Accessing arguments
 for arg in os.args[1..] {
     println(arg)
+}
+'''
+
+[Vala]
+args       = [ '/usr/bin/vala', '-' ]
+env        = [ 'PATH=/usr/bin' ]
+experiment = 1354
+size       = '99.6 MiB'
+version    = '0.56.18'
+website    = 'https://vala.dev'
+example    = '''
+int main(string[] args) {
+    // Printing
+    print("Hello, World!\n");
+
+    // Looping
+    for (int i = 0; i < 10; i++)
+        print("%d\n", i);
+
+    // Accessing arguments
+    foreach (string arg in args[1:])
+        stdout.printf("%s\n", arg);
+
+    return 0;
 }
 '''
 

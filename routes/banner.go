@@ -12,7 +12,7 @@ import (
 	"github.com/code-golf/code-golf/pretty"
 )
 
-var nextHole = config.ExpHoleByID["scrambled-sort"]
+var nextHole = config.ExpHoleByID["mandelbrot"]
 
 type banner struct {
 	Body          template.HTML
