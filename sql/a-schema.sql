@@ -84,7 +84,7 @@ CREATE TYPE lang AS ENUM (
     'php', 'picat', 'powershell', 'prolog', 'python', 'qore', 'r', 'racket',
     'raku', 'rebol', 'rexx', 'rockstar', 'ruby', 'rust', 'scala', 'scheme',
     'sed', 'sql', 'squirrel', 'stax', 'swift', 'tcl', 'tex', 'uiua', 'v',
-    'viml', 'vyxal', 'wren', 'zig'
+    'vala', 'viml', 'vyxal', 'wren', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('unicorn', 'diamond', 'gold', 'silver', 'bronze');
