@@ -22,9 +22,9 @@ run <docker buildx build>,
     '.';
 
 # Build all languages if no arguments are specified.
-@langs = %langs.keys.sort(*.fc) if !@langs;
+@langs ||= %langs.keys.sort: *.fc;
 
-for @langs Z %langs{ @langs } -> ($name, %lang) {
+for %langs{@langs}:p -> (:key($name), :value(%lang)) {
     my $id  = id($name);
     my $img = "codegolf/lang-$id";
 
