@@ -21,6 +21,9 @@ run <docker buildx build>,
     '--tag',    'codegolf/lang-base',
     '.';
 
+# Build all languages if no arguments are specified.
+@langs = %langs.keys.sort(*.fc) if !@langs;
+
 for @langs Z %langs{ @langs } -> ($name, %lang) {
     my $id  = id($name);
     my $img = "codegolf/lang-$id";
