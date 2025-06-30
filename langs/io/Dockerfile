@@ -11,12 +11,12 @@ RUN curl -#L https://github.com/IoLanguage/io/tarball/$VER \
 
 WORKDIR /deps
 
-RUN git clone https://github.com/kgabis/parson.git
+RUN git clone https://github.com/kgabis/parson
 
 WORKDIR /build
 
-RUN cmake ..                     \
-    -DCMAKE_BUILD_TYPE='Release' \
+RUN cmake ..                        \
+    -DCMAKE_BUILD_TYPE='MinSizeRel' \
  && make -j`nproc` && make install
 
 RUN strip /usr/local/lib/libbasekit.so \

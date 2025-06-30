@@ -6,7 +6,7 @@ import (
 	"slices"
 )
 
-func medalTally() []Run {
+var _ = answerFunc("medal-tally", func() []Answer {
 	var tests []test
 
 	for size := 3; size <= 10; size++ {
@@ -39,7 +39,7 @@ func medalTally() []Run {
 	tests = append(tests, medalTallyTest(1, 1, 0, 0, 0))
 
 	return outputTests(shuffle(tests))
-}
+})
 
 func medalTallyTest(size, g, s, b, tie int) test {
 	uniqueScores := rand.Perm(99)[:size+4]
