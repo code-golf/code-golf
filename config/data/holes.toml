@@ -2141,7 +2141,6 @@ preamble = '''
 
 [Mandelbrot]
 category = 'Art'
-experiment = 813
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Mandelbrot_set' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Mandelbrot_set' },
