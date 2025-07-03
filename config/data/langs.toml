@@ -1304,8 +1304,8 @@ end.
 
 [Perl]
 args    = [ '/usr/bin/perl', '-E', '$code', '--' ]
-size    = '5.54 MiB'
-version = '5.40.2'
+size    = '5.67 MiB'
+version = '5.42.0'
 website = 'https://www.perl.org'
 example = '''
 # Printing
