@@ -3,7 +3,7 @@ FROM alpine:3.22 AS builder
 RUN apk add --no-cache alsa-lib-dev autoconf bash build-base cups-dev curl fontconfig-dev \
                        libxrandr-dev libxrender-dev libxt-dev libxtst-dev musl-locales zip
 
-# Also rebuild CJam, Groovy, Kotlin, Scala, Vyxal.
+# Also rebuild CJam, Groovy, KamilaLisp, Kotlin, Scala, Vyxal.
 ENV VER=24.0.1
 
 RUN curl -#L https://github.com/adoptium/temurin24-binaries/releases/download/jdk-$VER+9/OpenJDK24U-jdk_x64_alpine-linux_hotspot_${VER}_9.tar.gz \
