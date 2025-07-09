@@ -4193,7 +4193,7 @@ preamble = '''
 <pre>{{ .Answer }}</pre>
 '''
 
-[Topological Sort]
+['Topological Sort']
 experiment = -1
 category = 'Computing'
 synopsis = 'Perform topological sort.'
