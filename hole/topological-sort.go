@@ -46,14 +46,14 @@ func generateTsortTest(length, additional int) string {
 		seq  []int
 		rows int
 	)
-	arc_choices := rand.Perm((length-2)*(length-1)/2 + length)
+	arc_choices := rand.Perm((length - 2) * (length - 1) / 2)
 	for i, x := range init {
-		for j, y := range init[i:] {
-			if j == 1 || arc_choices[len(arc_choices)-1] < additional {
+		for j, y := range init[i+1:] {
+			if j == 0 || arc_choices[len(arc_choices)-1] < additional {
 				seq = append(seq, x, y)
 				rows++
 			}
-			if j != 1 {
+			if j != 0 {
 				arc_choices = slices.Delete(arc_choices, len(arc_choices)-1, len(arc_choices))
 			}
 		}
@@ -73,7 +73,7 @@ var _ = answerFunc("topological-sort", func() []Answer {
 	var tests []test
 	for n := range 10 - 2 + 1 {
 		n += 2
-		for a := range (n-2)*(n-1)/2 + n + 1 {
+		for a := range (n-2)*(n-1)/2 + 1 {
 			for range 3 {
 				tcase := generateTsortTest(n, a)
 				tests = append(tests, test{tcase, tsort(tcase)})
