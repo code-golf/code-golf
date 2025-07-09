@@ -10,16 +10,18 @@ import (
 // does not support isolated nodes
 // cycles are insurmountable obstructions
 func tsort(in string) string {
-	children, in_degrees := make(map[string][]string), make(map[string]int)
+	children, inDegrees := make(map[string][]string), make(map[string]int)
 	for pair := range slices.Chunk(strings.Fields(in), 2) {
 		children[pair[0]] = append(children[pair[0]], pair[1])
-		in_degrees[pair[0]] = in_degrees[pair[0]] // include zero-in-degree nodes
+		if _, ok := inDegrees[pair[0]]; !ok {
+			inDegrees[pair[0]] = 0
+		}
 		if pair[0] != pair[1] {
-			in_degrees[pair[1]]++
+			inDegrees[pair[1]]++
 		}
 	}
 	var stack []string
-	for node, deg := range in_degrees {
+	for node, deg := range inDegrees {
 		if deg == 0 {
 			stack = append(stack, node)
 		}
@@ -30,8 +32,8 @@ func tsort(in string) string {
 		stack = slices.Delete(stack, len(stack)-1, len(stack))
 		result = append(result, next)
 		for _, child := range children[next] {
-			in_degrees[child]--
-			if in_degrees[child] == 0 {
+			inDegrees[child]--
+			if inDegrees[child] == 0 {
 				stack = append(stack, child)
 			}
 		}
@@ -46,15 +48,15 @@ func generateTsortTest(length, additional int) string {
 		seq  []int
 		rows int
 	)
-	arc_choices := rand.Perm((length - 2) * (length - 1) / 2)
+	arcChoices := rand.Perm((length - 2) * (length - 1) / 2)
 	for i, x := range init {
 		for j, y := range init[i+1:] {
-			if j == 0 || arc_choices[len(arc_choices)-1] < additional {
+			if j == 0 || arcChoices[len(arcChoices)-1] < additional {
 				seq = append(seq, x, y)
 				rows++
 			}
 			if j != 0 {
-				arc_choices = slices.Delete(arc_choices, len(arc_choices)-1, len(arc_choices))
+				arcChoices = slices.Delete(arcChoices, len(arcChoices)-1, len(arcChoices))
 			}
 		}
 	}
