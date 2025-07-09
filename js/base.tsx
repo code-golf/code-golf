@@ -1,3 +1,4 @@
+import { requestResults, SearchNavResult } from './_search-nav';
 import { $, $$ } from './_util';
 
 const { timeZone } = Intl.DateTimeFormat().resolvedOptions();
@@ -52,3 +53,60 @@ for (const btn of $$<HTMLElement>('[data-dialog]'))
         dialog.querySelector('form')?.reset();
         dialog.showModal();
     };
+
+// Search navigation dialog
+document.addEventListener('keydown', e => {
+    if (e.ctrlKey && e.key === 'p') {
+        const dialog = $<HTMLDialogElement>('#search-nav-dialog');
+        if (!dialog) return;
+
+        if (dialog.open) {
+            dialog.close();
+        }
+        else {
+            dialog.showModal();
+            e.preventDefault();
+        }
+    }
+});
+
+window.addEventListener('hashchange', () => {
+    const dialog = $<HTMLDialogElement>('#search-nav-dialog');
+    dialog?.close();
+});
+
+$('#search-nav-input').onkeyup = () => requestResults($<HTMLInputElement>('#search-nav-input').value, updateResults);
+
+$('#search-nav-form').onsubmit = e => {
+    $<HTMLAnchorElement>('li.current-result a')?.click();
+    e.preventDefault();
+};
+
+let currentIndex = 0;
+let currentResults: SearchNavResult[] = [];
+
+$<HTMLDialogElement>('#search-nav-dialog').onkeydown = (e: KeyboardEvent) => {
+    if (e.key === 'ArrowDown') {
+        currentIndex++;
+        renderResults();
+        e.preventDefault();
+    }
+    else if (e.key === 'ArrowUp') {
+        currentIndex--;
+        renderResults();
+        e.preventDefault();
+    }
+};
+
+function updateResults(results: SearchNavResult[]) {
+    currentResults = results;
+    currentIndex = 0;
+    renderResults();
+}
+
+const mod = (x: number, modulus: number) => (x % modulus + modulus) % modulus;
+
+function renderResults() {
+    const resultNodes = currentResults.map((r,i) => (<li class={i === mod(currentIndex, currentResults.length) ? 'current-result' : ''}><a href={r.path}><span class='result-description'>{r.description}</span> <span class='result-path'>{r.path}</span></a></li>));
+    $('#search-nav-results').replaceChildren(...resultNodes);
+}
