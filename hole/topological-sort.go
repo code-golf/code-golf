@@ -48,15 +48,15 @@ func generateTsortTest(length, additional int) string {
 		seq  []int
 		rows int
 	)
-	arcChoices := rand.Perm((length - 2) * (length - 1) / 2)
+	arcChoices, arc := rand.Perm((length - 2) * (length - 1) / 2), 0
 	for i, x := range init {
 		for j, y := range init[i+1:] {
-			if j == 0 || arcChoices[len(arcChoices)-1] < additional {
+			if j == 0 || arcChoices[arc] < additional {
 				seq = append(seq, x, y)
 				rows++
 			}
-			if j != 0 {
-				arcChoices = slices.Delete(arcChoices, len(arcChoices)-1, len(arcChoices))
+			if j > 0 {
+				arc++
 			}
 		}
 	}
