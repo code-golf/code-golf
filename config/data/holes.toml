@@ -4193,6 +4193,19 @@ preamble = '''
 <pre>{{ .Answer }}</pre>
 '''
 
+[Topological Sort]
+experiment = -1
+category = 'Computing'
+synopsis = 'Perform topological sort.'
+preamble = '''
+<p>
+    Given the set of edges of a directed graph, print the linear order of its
+    nodes. The graph is guaranteed to be acyclic and the order is always
+    unique. Each edge is given on a separate line; an edge from node <b>u</b>
+    to node <b>v</b> is given as <code>u v</code>. The nodes are numbered from
+    <b>0</b> to <b>N - 1</b>, where <b>N</b> is the number of nodes in the graph.
+'''
+
 ['Transpose Sentence']
 category = 'Transform'
 released = 2024-07-25
