@@ -82,5 +82,7 @@ var _ = answerFunc("topological-sort", func() []Answer {
 			}
 		}
 	}
-	return outputTests(shuffle(tests))
+	shuffle(tests)
+	mid := len(tests) / 2
+	return outputTests(tests[:mid], tests[mid:])
 })
