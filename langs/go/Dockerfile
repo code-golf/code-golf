@@ -2,7 +2,7 @@ ARG VER=1.24.5
 
 FROM golang:$VER-alpine3.22 AS builder
 
-RUN apk add --no-cache g++
+RUN apk add --no-cache gcc musl-dev
 
 # Precompile the standard library.
 RUN GOCACHE=/cache go install std
