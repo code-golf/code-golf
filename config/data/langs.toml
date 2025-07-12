@@ -1256,7 +1256,7 @@ Sys.argv
 args       = [ '/usr/bin/odinwrapper', '-', '--' ]
 experiment = 766
 size       = '299 MiB'
-version    = '2025-06'
+version    = '2025-07'
 website    = 'https://odin-lang.org'
 example    = '''
 package main
