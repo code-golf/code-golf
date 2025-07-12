@@ -369,7 +369,7 @@ foreach (String arg in args)
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
 size    = '151 MiB'
-version = 'Clang 20.1.7'
+version = 'Clang 20.1.8'
 website = 'https://clang.llvm.org'
 example = '''
 #include <iostream>
