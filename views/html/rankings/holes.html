@@ -33,8 +33,10 @@
     {{ $name := "" }}
     {{ with .Golfer }}{{ $name = .Name }}{{ end }}
 
+    {{ $row := atoi (.Request.FormValue "row") }}
+
     {{ range .Data.Rows }}
-        <tr {{ if eq $name .Name }} class=me {{ end }}>
+        <tr {{ if or (eq $name .Name) (and $row (eq $row .Row)) }} class=me {{ end }}>
             <td>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup>
             <td>{{ template "golfer-link" . }}
             {{ if eq $.Data.HoleID "all" }}<td class=right>{{ .Holes }}{{ end }}

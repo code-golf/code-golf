@@ -1,5 +1,5 @@
---- /src/vm/errors.nim
-+++ /src/vm/errors.nim
+--- src/vm/errors.nim
++++ src/vm/errors.nim
 @@ -140,7 +140,7 @@
 
      if errMsgParts.len > 1:

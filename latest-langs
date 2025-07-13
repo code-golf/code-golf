@@ -21,14 +21,14 @@ constant %paths = (
     'Assembly'     => 'registry.npmjs.org/@defasm/core/latest',
     'AWK'          => 'ftp.gnu.org/gnu/gawk/?C=M;O=D',
     'Bash'         => 'en.wikipedia.org/wiki/Bash_(Unix_shell)',
-    'BASIC'        => 'en.wikipedia.org/wiki/FreeBASIC',
+    'BASIC'        => 'github.com/freebasic/fbc/releases/latest',
     'Befunge'      => 'github.com/VorpalBlade/cfunge',
     'Berry'        => 'github.com/berry-lang/berry/releases/latest',
     'BQN'          => 'aplwiki.com/wiki/BQN',
     'brainfuck'    => 'github.com/primo-ppcg/bfci',
     'C'            => 'en.wikipedia.org/wiki/Tiny_C_Compiler',
     'C#'           => 'en.wikipedia.org/wiki/C_Sharp_(programming_language)',
-    'C++'          => 'en.wikipedia.org/wiki/Clang',
+    'C++'          => 'github.com/llvm/llvm-project/releases/latest',
     'Civet'        => 'registry.npmjs.org/@danielx/civet/latest',
     'CJam'         => 'sourceforge.net/projects/cjam/files',
     'Clojure'      => 'github.com/babashka/babashka/releases/latest',
@@ -69,9 +69,9 @@ constant %paths = (
     'Julia'        => 'api.github.com/repos/JuliaLang/julia/releases',
     'K'            => 'codeberg.org/ngn/k',
     'Kotlin'       => 'github.com/JetBrains/kotlin/releases/latest',
-    'Lua'          => 'en.wikipedia.org/wiki/Lua_(programming_language)',
+    'Lua'          => 'github.com/lua/lua/releases/latest',
     'Nim'          => 'en.wikipedia.org/wiki/Nim_(programming_language)',
-    'OCaml'        => 'en.wikipedia.org/wiki/OCaml',
+    'OCaml'        => 'github.com/ocaml/ocaml/releases/latest',
     'Odin'         => 'api.github.com/repos/odin-lang/Odin/releases',
     'Pascal'       => 'en.wikipedia.org/wiki/Free_Pascal',
     'Perl'         => 'endoflife.date/api/perl.json',
@@ -85,14 +85,14 @@ constant %paths = (
     'Racket'       => 'github.com/racket/racket/releases/latest',
     'Raku'         => 'github.com/rakudo/rakudo/releases/latest',
     'Rebol'        => 'en.wikipedia.org/wiki/Rebol',
-    'Rexx'         => 'sourceforge.net/projects/regina-rexx/files',
-    'Rockstar 2'   => 'github.com/RockstarLang/rockstar/releases/latest',
+    'Rexx'         => 'packages.gentoo.org/packages/dev-lang/regina-rexx',
+    'Rockstar'     => 'github.com/RockstarLang/rockstar/releases/latest',
     'Ruby'         => 'endoflife.date/api/ruby.json',
-    'Rust'         => 'en.wikipedia.org/wiki/Rust_(programming_language)',
+    'Rust'         => 'github.com/rust-lang/rust/releases/latest',
     'Scala'        => 'github.com/scala/scala/releases/latest',
-    'Scheme'       => 'en.wikipedia.org/wiki/Chez_Scheme',
+    'Scheme'       => 'github.com/cisco/ChezScheme/releases/latest',
     'sed'          => 'ftp.gnu.org/gnu/sed/?C=M;O=D',
-    'SQL'          => 'en.wikipedia.org/wiki/SQLite',
+    'SQL'          => 'sqlite.org/index.html',
     'Squirrel'     => 'github.com/albertodemichelis/squirrel/releases/latest',
     'Stax'         => 'github.com/tomtheisen/stax/releases/latest',
     'Swift'        => 'github.com/swiftlang/swift/releases/latest',
@@ -100,6 +100,7 @@ constant %paths = (
     'TeX'          => 'en.wikipedia.org/wiki/TeX',
     'Uiua'         => 'crates.io/api/v1/crates/uiua',
     'V'            => 'en.wikipedia.org/wiki/V_(programming_language)',
+    'Vala'         => 'gitlab.gnome.org/GNOME/vala/-/tags',
     'VimL'         => 'en.wikipedia.org/wiki/Vim_(text_editor)',
     'Vyxal'        => 'github.com/Vyxal/Vyxal/releases/latest',
     'Wren'         => 'github.com/wren-lang/wren/releases/latest',
@@ -112,6 +113,9 @@ my %langs = from-toml 'config/data/langs.toml'.IO;
 my regex ver { \d+ ( <[.-]> \d+ )+ | <xdigit> ** 7..* }
 
 for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
+    # Catch exceptions and carry on to the next lang.
+    CATCH { default { note "$name: $_" } }
+
     my $old = %lang<version> ~~ / <ver> /;
     my $new = do with %paths{$name} {
         my $res = get($_);
@@ -125,13 +129,16 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'endoflife'      / { $res.&from-json[0]<latest> }
         when / 'fennel-lang'    / { $res ~~ / 'fennel-' <(<ver>)> / }
         when / 'ftp.gnu.org'    / { $res ~~ / '-' <(<ver>)> '.tar.gz' / }
-        when / 'golfscript.com' / { $res ~~ / '(Alpha)' .+? <(<ver>)> / }
+        when / 'gentoo.org'     / { $res ~~ / 'Version' .+? <(<ver>)> / }
+        when / 'gnome.org'      / { $res ~~ / 'Release ' <(<ver>)> / }
+        when / 'golfscript.com' / { $res ~~ / 'iogii-' <(<ver>)> / }
         when / 'jmvdveer'       / { $res ~~ / 'algol68g-' <(<ver>)> / }
         when / 'lists.sr.ht'    / { $res ~~ / 'Hare ' <(<ver>)> ' release' / }
         when / 'npmjs.org'      / { $res.&from-json[0]<version> }
         when / 'picat-lang.org' / { $res ~~ / 'Version ' <(<ver>)> / }
         when / 'pypi.org'       / { $res.&from-json<info><version> }
         when / 'sourceforge'    / { $res ~~ / 'Latest' .+? <(<ver>)> / }
+        when / 'sqlite.org'     / { $res ~~ / 'Version' .+? <(<ver>)> / }
         when / 'swi-prolog'     / { $res ~~ / 'stable' .+? <(<ver>)> / }
         when / 'api.github.com' / {
             $res.&from-json.grep(!*<prerelease>).map({ .<name> ~~ / <ver> / })

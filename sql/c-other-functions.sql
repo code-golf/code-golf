@@ -260,10 +260,13 @@ BEGIN
            AND solutions.scoring = 'chars';
     END IF;
 
-    -- Only earn cheevos if the hole isn't experimental.
+    -- Only earn cheevos if the hole and lang aren't experimental.
     SELECT experiment = 0 INTO found FROM holes WHERE id = hole;
     IF found THEN
-        ret.earned := earn_cheevos(hole, lang, user_id);
+        SELECT experiment = 0 INTO found FROM langs WHERE id = lang;
+        IF found THEN
+            ret.earned := earn_cheevos(hole, lang, user_id);
+        END IF;
     END IF;
 
     RETURN ret;
