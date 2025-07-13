@@ -39,6 +39,7 @@ COPY --from=0 /usr/local/bin/idris2                           /usr/local/bin/idr
 COPY --from=0 /usr/local/bin/idris2_app/idris2.so             \
               /usr/local/bin/idris2_app/libidris2_support.so  /usr/local/bin/idris2_app/
 COPY --from=0 /usr/local/idris2-$VER/lib/libidris2_support.so /usr/local/idris2-$VER/lib/
+COPY --from=0 /usr/local/idris2-$VER/base-$VER                /usr/local/idris2-$VER/base-$VER
 COPY --from=0 /usr/local/idris2-$VER/prelude-$VER             /usr/local/idris2-$VER/prelude-$VER
 COPY --from=0 /usr/local/idris2-$VER/support/chez/support.ss  /usr/local/idris2-$VER/support/chez/
 

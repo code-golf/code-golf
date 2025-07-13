@@ -122,6 +122,10 @@
         </a>
 
     {{ if $me }}
+        <a {{ if ne $.Path "/golfer/code-search" }} href=/golfer/code-search {{ end }}>
+            Code Search
+        </a>
+        
         <a {{ if not (hasPrefix $.Path "/golfer/settings") }} href=/golfer/settings {{ end }}>
             Site Settings
         </a>
@@ -131,7 +135,7 @@
     {{ with .HolesAuthored }}
         <dialog id=holes-authored-dialog>
             <div>
-                <h1>Holes Authored</h1>
+                <h1>{{ len . }} Hole{{ if gt (len .) 1 }}s{{ end }} Authored</h1>
                 <ul>
                 {{ range . }}
                     <li>
@@ -148,7 +152,7 @@
     {{ with .Referrals }}
         <dialog id=referrals-dialog>
             <div>
-                <h1>Referrals</h1>
+                <h1>{{ len . }} Referral{{ if gt (len .) 1 }}s{{ end }}</h1>
                 <ul>
                 {{ range . }}
                     <li>

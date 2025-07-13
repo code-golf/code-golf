@@ -72,6 +72,8 @@ func Wiki(db *sqlx.DB) error {
 			name = "Other Sites"
 		} else if slug == "spigot-algorithms" {
 			name = "Spigot Algorithms"
+		} else if slug == "tutorial" {
+			name = "Tutorial"
 		} else {
 			continue
 		}

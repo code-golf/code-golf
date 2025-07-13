@@ -1,9 +1,9 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache build-base curl
+RUN apk add --no-cache curl gcc make musl-dev
 
 # Also rebuild Idris.
-ENV VER=10.1.0
+ENV VER=10.2.0
 
 RUN curl -#L https://github.com/cisco/ChezScheme/releases/download/v$VER/csv$VER.tar.gz \
   | tar xz --strip-components 1
@@ -16,9 +16,9 @@ RUN ./configure      \
 
 RUN strip /usr/bin/scheme
 
-COPY schemewrapper.c /
+COPY scheme.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/schemewrapper -s schemewrapper.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/schemewrapper -s scheme.c
 
 FROM codegolf/lang-base
 

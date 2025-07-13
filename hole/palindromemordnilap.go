@@ -28,7 +28,7 @@ var _ = answerFunc("palindromemordnilap", func() []Answer {
 		"123456", "8989a",
 
 		"a", "aA", "aa", "aaaaaaa", "ab", "aba", "abaaaba", "abb", "abc",
-		"abca", "abcdc", "abcdcc",
+		"abca", "abcdc", "abcdcc", "sesphase",
 
 		"better", "mississippi", "Palindrome",
 
