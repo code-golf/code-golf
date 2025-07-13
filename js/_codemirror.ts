@@ -120,8 +120,15 @@ export const extensions : { [key: string]: any } = {
             { key: 'Mod-/', run: toggleComment },
         ]),
         highlightWhitespace(),
-        lineNumbers(),
     ],
+    'lineNumbers': lineNumbers(),
+    'zeroIndexedLineNumbers': lineNumbers(
+        {
+            formatNumber(num: number) {
+                return `${num - 1}`;
+            },
+        },
+    ),
     'bracketMatching': bracketMatching(),
     'vim': vim({ status: true }),
 
@@ -213,6 +220,7 @@ export const extensions : { [key: string]: any } = {
     // TODO uiua
     // TODO umka
     // TODO v
+    'vala':          StreamLanguage.define(csharp),
     // TODO viml
     // TODO vyxal
     'wren':          wren,

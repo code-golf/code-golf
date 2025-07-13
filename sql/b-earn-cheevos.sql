@@ -49,17 +49,23 @@ BEGIN
     IF hole = 'game-of-life' AND lang = 'elixir' THEN
         earned := earn(earned, 'alchemist', user_id); END IF;
 
+    -- 🥣 Alphabet Soup
+    SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs_for_hole)
+     WHERE unnest IN ('c', 'd', 'j', 'k', 'r', 'v');
+    IF hole = 'scrambled-sort' AND found THEN
+        earned := earn(earned, 'alphabet-soup', user_id); END IF;
+
     -- 📚 Archivist
     SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs_for_hole)
      WHERE unnest IN ('basic', 'cobol', 'common-lisp', 'forth', 'fortran');
     IF hole = 'isbn' AND found THEN
         earned := earn(earned, 'archivist', user_id); END IF;
 
-    -- 🪛 Assembly Required.
+    -- 🪛 Assembly Required
     IF hole = 'seven-segment' AND lang = 'assembly' THEN
         earned := earn(earned, 'assembly-required', user_id); END IF;
 
-    -- 🐦 Bird Is the Word.
+    -- 🐦 Bird Is the Word
     SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs_for_hole)
      WHERE unnest IN ('awk', 'prolog', 'sql', 'swift', 'tcl', 'wren');
     IF hole = 'levenshtein-distance' AND found THEN
