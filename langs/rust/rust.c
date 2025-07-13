@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
     pid_t pid;
 
     if (!(pid = fork())) {
-        execl(rust, rust, "--color=always", "--edition=2021", "-C", "linker=/usr/bin/ld", "-O", "-o", "code", code, NULL);
+        execl(rust, rust, "--color=always", "--edition=2024", "-C", "linker=/usr/bin/ld", "-O", "-o", "code", code, NULL);
         ERR_AND_EXIT("execl");
     }
 

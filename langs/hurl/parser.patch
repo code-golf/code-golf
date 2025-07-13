@@ -1,13 +1,5 @@
---- /src/lib.rs
-+++ /src/lib.rs
-@@ -1,5 +1,3 @@
--#![feature(let_chains)]
--
- pub mod callable;
- pub mod cmd;
- pub mod cst;
---- /src/parser.rs
-+++ /src/parser.rs
+--- src/parser.rs
++++ src/parser.rs
 @@ -51,8 +51,7 @@
  pub fn parse_leading_comments(pairs: &mut Pairs<Rule>) -> Result<Vec<Comment>, ParseError> {
      let mut comments = vec![];

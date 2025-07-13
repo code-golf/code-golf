@@ -1,35 +1,38 @@
-ARG VER=0bcafce7
+FROM rust:1.88.0-slim-bookworm AS builder
 
-FROM rust:1.84.0-alpine3.21 AS builder
+RUN apt-get update                   \
+ && DEBIAN_FRONTEND='noninteractive' \
+    apt-get install --yes curl patch
 
-ARG VER
+ENV CRT='x86_64-unknown-linux-musl' VER=0bcafce
 
-RUN apk add --no-cache build-base curl
+WORKDIR /hurl
 
-RUN curl -# https://git.sr.ht/~ntietz/hurl-lang/archive/$VER.tar.gz | tar xz
+RUN curl -#L https://git.sr.ht/~ntietz/hurl-lang/archive/$VER.tar.gz \
+  | tar xz --strip-components 1
 
-WORKDIR /hurl-lang-$VER
+COPY parser.patch .
 
-COPY lib_parser.patch /
+RUN rustup target add $CRT \
+ && sed -i '1d' src/lib.rs \
+ && patch -p0 < parser.patch
 
-RUN patch -p1 < /lib_parser.patch
-
-RUN cargo install --path . \
- && strip /usr/local/cargo/bin/hurl
+RUN cargo install \
+    --path .      \
+    --root /usr   \
+    --target $CRT \
+ && strip /usr/bin/hurl
 
 COPY hurl.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/hurl -s /hurl.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/hurlwrapper -s -static /hurl.c
 
 FROM codegolf/lang-base
 
-ARG VER
+COPY --from=0 /hurl/lib            /
+COPY --from=0 /usr/bin/hurl        \
+              /usr/bin/hurlwrapper /usr/bin/
 
-COPY --from=0 /hurl-lang-$VER/lib       /
-COPY --from=0 /lib/ld-musl-x86_64.so.1  /lib/
-COPY --from=0 /usr/bin/hurl             /usr/bin/
-COPY --from=0 /usr/local/cargo/bin/hurl /usr/local/bin/
-
-ENTRYPOINT ["hurl"]
+ENTRYPOINT ["hurlwrapper"]
 
 CMD ["--version"]

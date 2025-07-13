@@ -6,12 +6,12 @@ import (
 	"strings"
 )
 
-func pangramGrep() []Run {
+var _ = answerFunc("pangram-grep", func() []Answer {
 	return outputTests(
 		pangramGrepTests(2, 5),
 		pangramGrepTests(0, 0),
 	)
-}
+})
 
 func pangramGrepTests(l, r int) []test {
 	// They all start lowercase and valid.

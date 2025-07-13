@@ -5,7 +5,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* hurl = "/usr/local/bin/hurl", *code = "code.hurl", *input = "argv.txt";
+const char* hurl = "/usr/bin/hurl", *code = "code.hurl", *input = "argv.txt";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
@@ -51,7 +51,7 @@ int main(int argc, char* argv[]) {
     if (!(fp = fopen(input, "w")))
         ERR_AND_EXIT("fopen");
 
-    if (fputs(args, fp)) {
+    if (!fputs(args, fp)) {
         if (fclose(fp))
             ERR_AND_EXIT("fclose");
 

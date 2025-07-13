@@ -5,7 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/SeerUK/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestRandomGET(t *testing.T) {
