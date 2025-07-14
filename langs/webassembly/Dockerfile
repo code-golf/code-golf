@@ -1,20 +1,27 @@
-FROM rust:1.86.0-alpine3.21 AS builder
+FROM rust:1.88.0-slim-bookworm AS builder
 
-RUN apk add --no-cache musl-dev
+RUN apt-get update                   \
+ && DEBIAN_FRONTEND='noninteractive' \
+    apt-get install --yes curl musl-dev
 
-ENV VER=31.0.0
+ENV CRT='x86_64-unknown-linux-musl' VER=34.0.1
 
-RUN wget -O- https://github.com/bytecodealliance/wasmtime/archive/refs/tags/v$VER.tar.gz | tar xz
+WORKDIR /webassembly
 
-RUN cargo install         \
-    --path /wasmtime-$VER \
-    --root /usr           \
+RUN curl -#L https://github.com/bytecodealliance/wasmtime/archive/refs/tags/v$VER.tar.gz \
+  | tar xz --strip-components 1
+
+RUN rustup target add $CRT
+
+RUN cargo install \
+    --path .      \
+    --root /usr   \
+    --target $CRT \
  && strip /usr/bin/wasmtime
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /usr/bin/wasmtime        /usr/bin/webassembly
+COPY --from=0 /usr/bin/wasmtime /usr/bin/webassembly
 
 ENTRYPOINT ["webassembly"]
 

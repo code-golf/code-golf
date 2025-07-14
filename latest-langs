@@ -85,14 +85,14 @@ constant %paths = (
     'Racket'       => 'github.com/racket/racket/releases/latest',
     'Raku'         => 'github.com/rakudo/rakudo/releases/latest',
     'Rebol'        => 'en.wikipedia.org/wiki/Rebol',
-    'Rexx'         => 'regina-rexx.sourceforge.io',
+    'Rexx'         => 'packages.gentoo.org/packages/dev-lang/regina-rexx',
     'Rockstar'     => 'github.com/RockstarLang/rockstar/releases/latest',
     'Ruby'         => 'endoflife.date/api/ruby.json',
     'Rust'         => 'github.com/rust-lang/rust/releases/latest',
     'Scala'        => 'github.com/scala/scala/releases/latest',
     'Scheme'       => 'github.com/cisco/ChezScheme/releases/latest',
     'sed'          => 'ftp.gnu.org/gnu/sed/?C=M;O=D',
-    'SQL'          => 'en.wikipedia.org/wiki/SQLite',
+    'SQL'          => 'sqlite.org/index.html',
     'Squirrel'     => 'github.com/albertodemichelis/squirrel/releases/latest',
     'Stax'         => 'github.com/tomtheisen/stax/releases/latest',
     'Swift'        => 'github.com/swiftlang/swift/releases/latest',
@@ -100,6 +100,7 @@ constant %paths = (
     'TeX'          => 'en.wikipedia.org/wiki/TeX',
     'Uiua'         => 'crates.io/api/v1/crates/uiua',
     'V'            => 'en.wikipedia.org/wiki/V_(programming_language)',
+    'Vala'         => 'gitlab.gnome.org/GNOME/vala/-/tags',
     'VimL'         => 'en.wikipedia.org/wiki/Vim_(text_editor)',
     'Vyxal'        => 'github.com/Vyxal/Vyxal/releases/latest',
     'WebAssembly'  => 'github.com/bytecodealliance/wasmtime/releases/latest',
@@ -113,6 +114,9 @@ my %langs = from-toml 'config/data/langs.toml'.IO;
 my regex ver { \d+ ( <[.-]> \d+ )+ | <xdigit> ** 7..* }
 
 for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
+    # Catch exceptions and carry on to the next lang.
+    CATCH { default { note "$name: $_" } }
+
     my $old = %lang<version> ~~ / <ver> /;
     my $new = do with %paths{$name} {
         my $res = get($_);
@@ -126,14 +130,16 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'endoflife'      / { $res.&from-json[0]<latest> }
         when / 'fennel-lang'    / { $res ~~ / 'fennel-' <(<ver>)> / }
         when / 'ftp.gnu.org'    / { $res ~~ / '-' <(<ver>)> '.tar.gz' / }
-        when / 'golfscript.com' / { $res ~~ / '(Alpha)' .+? <(<ver>)> / }
+        when / 'gentoo.org'     / { $res ~~ / 'Version' .+? <(<ver>)> / }
+        when / 'gnome.org'      / { $res ~~ / 'Release ' <(<ver>)> / }
+        when / 'golfscript.com' / { $res ~~ / 'iogii-' <(<ver>)> / }
         when / 'jmvdveer'       / { $res ~~ / 'algol68g-' <(<ver>)> / }
         when / 'lists.sr.ht'    / { $res ~~ / 'Hare ' <(<ver>)> ' release' / }
         when / 'npmjs.org'      / { $res.&from-json[0]<version> }
         when / 'picat-lang.org' / { $res ~~ / 'Version ' <(<ver>)> / }
         when / 'pypi.org'       / { $res.&from-json<info><version> }
-        when / 'regina-rexx'    / { $res ~~ / 'Current' .+? <(<ver>)> / }
         when / 'sourceforge'    / { $res ~~ / 'Latest' .+? <(<ver>)> / }
+        when / 'sqlite.org'     / { $res ~~ / 'Version' .+? <(<ver>)> / }
         when / 'swi-prolog'     / { $res ~~ / 'stable' .+? <(<ver>)> / }
         when / 'api.github.com' / {
             $res.&from-json.grep(!*<prerelease>).map({ .<name> ~~ / <ver> / })

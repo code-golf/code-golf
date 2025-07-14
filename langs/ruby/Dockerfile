@@ -1,9 +1,9 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache bison clang curl git gmp-dev make mpfr-dev texinfo
 
 # Also rebuild GolfScript, iogii.
-ENV VER=3.4.3
+ENV VER=3.4.4
 
 RUN git clone --depth 1 --progress git://sourceware.org/git/binutils-gdb.git binutils
 
