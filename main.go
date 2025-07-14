@@ -61,23 +61,31 @@ func main() {
 				`INSERT INTO trophies(user_id, trophy)
 				      SELECT user_id, 'big-brother'::cheevo
 				        FROM points
-				       WHERE points >= 1984
+				       WHERE points >= 1_984
 				   UNION ALL
 				      SELECT user_id, 'its-over-9000'
 				        FROM points
-				       WHERE points > 9000
+				       WHERE points > 9_000
 				   UNION ALL
 				      SELECT user_id, 'twenty-kiloleagues'
 				        FROM points
-				       WHERE points >= 20000
+				       WHERE points >= 20_000
 				   UNION ALL
 				      SELECT user_id, 'marathon-runner'
 				        FROM points
-				       WHERE points >= 42195
+				       WHERE points >= 42_195
 				   UNION ALL
 				      SELECT user_id, '0xdead'
 				        FROM points
-				       WHERE points >= 57005
+				       WHERE points >= 57_005
+				   UNION ALL
+				      SELECT user_id, 'overflowing'
+				        FROM points
+				       WHERE points >= 65_536
+				   UNION ALL
+				      SELECT user_id, 'into-space'
+				        FROM points
+				       WHERE points >= 100_000
 				 ON CONFLICT DO NOTHING`,
 			); err != nil {
 				log.Println(err)
@@ -193,8 +201,8 @@ func populateHolesLangsTables(db *sqlx.DB) error {
 	}
 
 	insertLang, err := tx.PrepareNamed(
-		`INSERT INTO langs ( id,  experiment,  digest_trunc)
-		      VALUES       (:id, :experiment, :digest_trunc)`,
+		`INSERT INTO langs ( id,  experiment,  digest_trunc,  name)
+		      VALUES       (:id, :experiment, :digest_trunc, :name)`,
 	)
 	if err != nil {
 		return err

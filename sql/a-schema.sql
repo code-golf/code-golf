@@ -11,17 +11,18 @@ CREATE TYPE cheevo AS ENUM (
     'elephpant-in-the-room', 'emergency-room', 'evil-scheme', 'fish-n-chips',
     'fore', 'forty-winks', 'go-forth', 'gone-in-60-holes',
     'happy-birthday-code-golf', 'happy-go-lucky', 'hello-world',
-    'hextreme-agony', 'hugs-and-kisses', 'inception', 'independence-day',
-    'interview-ready', 'its-over-9000', 'jeweler', 'just-kidding',
-    'like-comment-subscribe', 'marathon-runner', 'mary-had-a-little-lambda',
-    'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars',
-    'neunundneunzig-luftballons', 'off-the-grid', 'omniglot', 'omniglutton',
-    'ouroboros', 'pangramglot', 'patches-welcome', 'phileas-fogg', 'pi-day',
-    'polyglot', 'polyglutton', 'real-programmers', 'right-on', 'rm-rf',
-    'rtfm', 'rule-34', 's-box-360', 'slowcoach', 'smörgåsbord', 'solve-quine',
-    'sounds-quite-nice', 'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr',
-    'twelvetide', 'twenty-kiloleagues', 'under-pressure', 'up-to-eleven',
-    'vampire-byte', 'x-factor', 'x86'
+    'hextreme-agony', 'how-about-second-pi', 'hugs-and-kisses', 'inception',
+    'independence-day', 'interview-ready', 'into-space', 'its-over-9000',
+    'jeweler', 'just-kidding', 'like-comment-subscribe', 'marathon-runner',
+    'mary-had-a-little-lambda', 'may-the-4ᵗʰ-be-with-you',
+    'my-god-its-full-of-stars', 'neunundneunzig-luftballons', 'off-the-grid',
+    'omniglot', 'omniglutton', 'ouroboros', 'overflowing', 'pangramglot',
+    'patches-welcome', 'phileas-fogg', 'pi-day', 'polyglot', 'polyglutton',
+    'real-programmers', 'right-on', 'rm-rf', 'rtfm', 'rule-34', 's-box-360',
+    'slowcoach', 'smörgåsbord', 'solve-quine', 'sounds-quite-nice', 'takeout',
+    'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
+    'twenty-kiloleagues', 'under-pressure', 'up-to-eleven', 'vampire-byte',
+    'x-factor', 'x86'
 );
 
 CREATE TYPE connection AS ENUM (
@@ -63,10 +64,11 @@ CREATE TYPE hole AS ENUM (
     'seven-segment', 'si-units', 'sierpiński-triangle', 'smith-numbers',
     'snake', 'spelling-numbers', 'sphenic-numbers', 'star-wars-gpt',
     'star-wars-opening-crawl', 'sudoku', 'sudoku-fill-in', 'ten-pin-bowling',
-    'tic-tac-toe', 'time-distance', 'tongue-twisters', 'transpose-sentence',
-    'trinomial-triangle', 'turtle', 'tutorial', 'united-states',
-    'vampire-numbers', 'van-eck-sequence', 'zeckendorf-representation',
-    'zodiac-signs', 'γ', 'λ', 'π', 'τ', 'φ', '√2', '𝑒'
+    'tic-tac-toe', 'time-distance', 'tongue-twisters', 'topological-sort',
+    'transpose-sentence', 'trinomial-triangle', 'turtle', 'tutorial',
+    'united-states', 'vampire-numbers', 'van-eck-sequence',
+    'zeckendorf-representation', 'zodiac-signs', 'γ', 'λ', 'π', 'τ', 'φ',
+    '√2', '𝑒'
 );
 
 CREATE TYPE idea_category AS ENUM ('cheevo', 'hole', 'lang', 'other');
@@ -82,8 +84,8 @@ CREATE TYPE lang AS ENUM (
     'lua', 'nim', 'ocaml', 'odin', 'pascal', 'perl', 'php', 'picat',
     'powershell', 'prolog', 'python', 'qore', 'r', 'racket', 'raku', 'rebol',
     'rexx', 'rockstar', 'ruby', 'rust', 'scala', 'scheme', 'sed', 'sql',
-    'squirrel', 'stax', 'swift', 'tcl', 'tex', 'uiua', 'v', 'viml', 'vyxal',
-    'wren', 'zig'
+    'squirrel', 'stax', 'swift', 'tcl', 'tex', 'uiua', 'v', 'vala', 'viml',
+    'vyxal', 'wren', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('unicorn', 'diamond', 'gold', 'silver', 'bronze');
@@ -173,9 +175,10 @@ CREATE UNLOGGED TABLE holes (
 
 -- Ditto for config/data/langs.toml.
 CREATE UNLOGGED TABLE langs (
-    id           lang  NOT NULL PRIMARY KEY,
-    experiment   int   NOT NULL,
-    digest_trunc bytea NOT NULL
+    id           lang   NOT NULL PRIMARY KEY,
+    experiment   int    NOT NULL,
+    digest_trunc bytea  NOT NULL,
+    name         citext NOT NULL
 );
 
 CREATE TABLE notes (

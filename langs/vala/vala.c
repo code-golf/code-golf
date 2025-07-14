@@ -6,11 +6,13 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* erlang = "/usr/bin/escript", *erlc = "/usr/bin/erlc", *code = "main.erl";
+const char* vala = "/usr/bin/valac", *code = "code.vala";
 
 int main(int argc, char* argv[]) {
-    if (!strcmp(argv[1], "--version"))
-        exit(EXIT_SUCCESS);
+    if (!strcmp(argv[1], "--version")) {
+        execv(vala, argv);
+        ERR_AND_EXIT("execv");
+    }
 
     if (chdir("/tmp"))
         ERR_AND_EXIT("chdir");
@@ -19,9 +21,6 @@ int main(int argc, char* argv[]) {
 
     if (!(fp = fopen(code, "w")))
         ERR_AND_EXIT("fopen");
-
-    if (!fputs("-module(main).\n-export([main/1]).\n", fp))
-        ERR_AND_EXIT("fputs");
 
     char buffer[4096];
     ssize_t nbytes;
@@ -36,10 +35,7 @@ int main(int argc, char* argv[]) {
     pid_t pid;
 
     if (!(pid = fork())) {
-        if (!dup2(STDERR_FILENO, STDOUT_FILENO))
-            ERR_AND_EXIT("dup2");
-
-        execl(erlc, erlc, code, NULL);
+        execl(vala, vala, "--color=always", "--quiet", code, NULL);
         ERR_AND_EXIT("execl");
     }
 
@@ -56,13 +52,12 @@ int main(int argc, char* argv[]) {
     if (remove(code))
         ERR_AND_EXIT("remove");
 
-    int eargc = argc + 1;
-    char** eargv = malloc(eargc * sizeof(char*));
-    eargv[0] = (char*) erlang;
-    eargv[1] = "main.beam";
-    memcpy(&eargv[2], &argv[2], (argc - 2) * sizeof(char*));
-    eargv[eargc - 1] = NULL;
+    int vargc = argc;
+    char** vargv = malloc(vargc * sizeof(char*));
+    vargv[0] = "code";
+    memcpy(&vargv[1], &argv[2], (argc - 2) * sizeof(char*));
+    vargv[vargc - 1] = NULL;
 
-    execv(erlang, eargv);
+    execv("code", vargv);
     ERR_AND_EXIT("execv");
 }

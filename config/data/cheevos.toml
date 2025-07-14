@@ -22,6 +22,12 @@ dates       = [2000-05-04, 2000-05-05]
 description = 'Solve <a href=/star-wars-gpt>Star Wars GPT</a> or <a href=/star-wars-opening-crawl>Star Wars Opening Crawl</a> on <a href=//www.wikipedia.org/wiki/Star_Wars_Day>4 May</a>.'
 
 [['Date Specific']]
+name        = 'How about Second Pi?'
+emoji       = '🍕'
+dates       = [2000-06-28, 2000-06-29]
+description = 'Solve <a href=/τ>τ</a> on <a href=//www.wikipedia.org/wiki/Pi_Day#Alternative_dates>28 Jun</a>.'
+
+[['Date Specific']]
 name        = 'Independence Day'
 emoji       = '🇺🇸'
 dates       = [2000-07-04, 2000-07-05]
@@ -438,7 +444,7 @@ target      = 1984
 [['Total Points']]
 name        = 'It’s Over 9000!'
 emoji       = '🐉'
-description = 'Earn over 9,000 total points in either bytes or chars scoring.'
+description = 'Earn 9,001 total points in either bytes or chars scoring.'
 target      = 9001
 
 [['Total Points']]
@@ -458,3 +464,15 @@ name        = '0xDEAD'
 emoji       = '🪦'
 description = 'Earn 57,005 total points in either bytes or chars scoring.'
 target      = 57005
+
+[['Total Points']]
+name        = 'Overflowing'
+emoji       = '⛲'
+description = 'Earn 65,536 total points in either bytes or chars scoring.'
+target      = 65536
+
+[['Total Points']]
+name        = 'Into Space!'
+emoji       = '🚀'
+description = 'Earn <a href=//en.wikipedia.org/wiki/Kármán_line>100,000</a> total points in either bytes or chars scoring.'
+target      = 100000
