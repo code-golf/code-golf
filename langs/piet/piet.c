@@ -7,7 +7,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* piet = "/usr/local/bin/npiet", *ascii = "/usr/bin/ascii-piet", *code = "code.txt", *image = "code.ppm", *input = "argv.txt";
+const char* piet = "/usr/local/bin/npiet", *ascii = "/usr/bin/ascii-piet", *code[] = {"code.txt", "code.ppm"}, *input = "argv.txt";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version"))
@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
 
     FILE* fp;
 
-    if (!(fp = fopen(code, "w")))
+    if (!(fp = fopen(code[0], "w")))
         ERR_AND_EXIT("fopen");
 
     char buffer[4096];
@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
     pid_t pid;
 
     if (!(pid = fork())) {
-        execl(ascii, ascii, code, image, NULL);
+        execl(ascii, ascii, code[0], code[1], NULL);
         ERR_AND_EXIT("execl");
     }
 
@@ -48,7 +48,7 @@ int main(int argc, char* argv[]) {
     if (WEXITSTATUS(status))
         return WEXITSTATUS(status);
 
-    if (remove(code))
+    if (remove(code[0]))
         ERR_AND_EXIT("remove");
 
     int fd;
@@ -71,7 +71,7 @@ int main(int argc, char* argv[]) {
         if (dup2(open(input, O_RDONLY), STDIN_FILENO))
             ERR_AND_EXIT("dup2");
 
-        execl(piet, piet, "-q", "-v11", image, NULL);
+        execl(piet, piet, "-q", "-v11", code[1], NULL);
         ERR_AND_EXIT("execl");
     }
 

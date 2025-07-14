@@ -1,18 +1,13 @@
 FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache autoconf automake build-base git libtool
+RUN apk add --no-cache build-base curl
 
-# Three commits past 1.8.0 to fix https://github.com/jqlang/jq/issues/3339
-ENV VER=023f274
+ENV VER=1.8.1
 
-RUN git clone https://github.com/jqlang/jq.git
+RUN curl -#L https://github.com/jqlang/jq/releases/download/jq-$VER/jq-$VER.tar.gz \
+  | tar xz --strip-components 1
 
-WORKDIR /jq
-
-RUN git reset --hard $VER              \
- && git submodule update --init        \
- && autoreconf -i                      \
- && ./configure                        \
+RUN ./configure                        \
     --prefix=/usr                      \
     --with-oniguruma=builtin           \
  && make LDFLAGS='-all-static' install \
