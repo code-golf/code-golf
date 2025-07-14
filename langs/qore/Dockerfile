@@ -1,10 +1,10 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache bison build-base bzip2-dev curl flex gmp-dev linux-headers mpfr-dev openssl-dev pcre2-dev zlib-dev
 
-ENV VER=2.0.0
+ENV VER=2.1.2
 
-RUN curl -#L https://github.com/qorelanguage/qore/releases/download/release-2.0/qore-$VER.tar.bz2 \
+RUN curl -#L https://github.com/qorelanguage/qore/releases/download/release-$VER/qore-$VER.tar.bz2 \
   | tar xj --strip-components 1
 
 RUN ./configure            \

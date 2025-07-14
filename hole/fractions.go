@@ -38,7 +38,7 @@ func largeFracGen() fraction {
 	// larger number.
 	if f.numerator <= 15 && f.denominator <= 15 {
 		newVal := rand.IntN(235) + 16
-		if rand.IntN(2) == 0 {
+		if randBool() {
 			f.numerator = newVal
 		} else {
 			f.denominator = newVal

@@ -27,9 +27,10 @@ import (
 
 // Create a string containing the given number of characters and UTF-8 encoded bytes.
 func makeCode(chars *int, bytes int) (result string) {
+	// Support assembly solutions without chars, just return empty string as
+	// the source byte length isn't the same as the DB byte length.
 	if chars == nil {
-		// Support assembly solutions without chars.
-		return strings.Repeat("a", bytes)
+		return ""
 	}
 
 	delta := bytes - *chars
@@ -187,9 +188,9 @@ func main() {
 
 		if _, err := tx.Exec(
 			`INSERT INTO solutions (  bytes,     chars,    code, hole, lang,
-			                        scoring, submitted, user_id)
+			                        scoring, submitted, user_id, lang_digest)
 			                VALUES (     $1,        $2,      $3,   $4,   $5,
-			                             $6,        $7,      $8)
+			                             $6,        $7,      $8,   '')
 			ON CONFLICT            (user_id, hole, lang, scoring)
 			  DO UPDATE SET bytes = excluded.bytes,
 			                chars = excluded.chars,
