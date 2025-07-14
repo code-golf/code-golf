@@ -1,15 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* coffeescript = "/usr/bin/coffee", *code = "code.coffee";
+const char* vala = "/usr/bin/valac", *code = "code.vala";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
-        execv(coffeescript, argv);
+        execv(vala, argv);
         ERR_AND_EXIT("execv");
     }
 
@@ -31,13 +32,32 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int cargc = argc + 1;
-    char** cargv = malloc(cargc * sizeof(char*));
-    cargv[0] = (char*) coffeescript;
-    cargv[1] = (char*) code;
-    memcpy(&cargv[2], &argv[2], (argc - 2) * sizeof(char*));
-    cargv[cargc - 1] = NULL;
+    pid_t pid;
 
-    execv(coffeescript, cargv);
+    if (!(pid = fork())) {
+        execl(vala, vala, "--color=always", "--quiet", code, NULL);
+        ERR_AND_EXIT("execl");
+    }
+
+    int status;
+
+    waitpid(pid, &status, 0);
+
+    if (!WIFEXITED(status))
+        exit(EXIT_FAILURE);
+
+    if (WEXITSTATUS(status))
+        return WEXITSTATUS(status);
+
+    if (remove(code))
+        ERR_AND_EXIT("remove");
+
+    int vargc = argc;
+    char** vargv = malloc(vargc * sizeof(char*));
+    vargv[0] = "code";
+    memcpy(&vargv[1], &argv[2], (argc - 2) * sizeof(char*));
+    vargv[vargc - 1] = NULL;
+
+    execv("code", vargv);
     ERR_AND_EXIT("execv");
 }

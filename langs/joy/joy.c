@@ -5,13 +5,16 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* dart = "/usr/bin/dart", *code = "/tmp/code.dart";
+const char* joy = "/usr/bin/joy", *code = "code.joy";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
-        execv(dart, argv);
-        ERR_AND_EXIT("execv");
+        execl(joy, joy, "-h", NULL);
+        ERR_AND_EXIT("execl");
     }
+
+    if (chdir("/tmp"))
+        ERR_AND_EXIT("chdir");
 
     FILE* fp;
 
@@ -28,13 +31,14 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int dargc = argc + 1;
-    char** dargv = malloc(dargc * sizeof(char*));
-    dargv[0] = (char*) dart;
-    dargv[1] = (char*) code;
-    memcpy(&dargv[2], &argv[2], (argc - 2) * sizeof(char*));
-    dargv[dargc - 1] = NULL;
+    int jargc = argc + 2;
+    char** jargv = malloc(jargc * sizeof(char*));
+    jargv[0] = (char*) joy;
+    jargv[1] = "-w";
+    jargv[2] = (char*) code;
+    memcpy(&jargv[3], &argv[2], (argc - 2) * sizeof(char*));
+    jargv[jargc - 1] = NULL;
 
-    execv(dart, dargv);
+    execv(joy, jargv);
     ERR_AND_EXIT("execv");
 }

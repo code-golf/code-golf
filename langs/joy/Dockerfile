@@ -1,10 +1,10 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache bison cmake flex g++ gc-dev make
+RUN apk add --no-cache bison cmake curl flex g++ gc-dev gc-static make
 
-ENV VER=4faf069
+ENV LDFLAGS='-static' VER=a68b339
 
-RUN wget -O- https://github.com/Wodan58/Moy/tarball/$VER \
+RUN curl -#L https://github.com/Wodan58/Moy/tarball/$VER \
   | tar xz --strip-components 1
 
 WORKDIR /build
@@ -13,16 +13,13 @@ RUN cmake ..        \
  && cmake --build . \
  && strip joy
 
-COPY joywrapper.c /
+COPY joy.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/joywrapper -s /joywrapper.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/joywrapper -s -static /joy.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /build/joy               \
-              /usr/bin/joywrapper      /usr/bin/
-COPY --from=0 /usr/lib/libgc.so.1      /usr/lib/
+COPY --from=0 /build/joy /usr/bin/joywrapper /usr/bin/
 
 ENTRYPOINT ["joywrapper"]
 

@@ -1,26 +1,27 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache build-base curl
 
-RUN curl -L https://download.savannah.nongnu.org/releases/tinycc/tcc-0.9.27.tar.bz2 \
-  | tar xj
+ENV VER=0.9.27
+
+RUN curl -#L https://download.savannah.nongnu.org/releases/tinycc/tcc-$VER.tar.bz2 \
+  | tar xj --strip-components 1
 
 COPY setvbuf.patch /
 
-RUN mv tcc-* tcc             \
- && patch -p0 <setvbuf.patch \
- && cd tcc                   \
- && ./configure              \
-    --config-musl            \
-    --prefix=/usr            \
-    --strip-binaries         \
- && make                     \
+RUN patch -p0 < setvbuf.patch
+
+RUN ./configure      \
+    --config-musl    \
+    --prefix=/usr    \
+    --strip-binaries \
+ && make             \
  && make install
 
 FROM codegolf/lang-base
 
 COPY --from=0 /lib/ld-musl-x86_64.so.1   /lib/
-COPY --from=0 /usr/bin/tcc               /usr/bin/
+COPY --from=0 /usr/bin/tcc               /usr/bin/c
 COPY --from=0 /usr/include/alloca.h      \
               /usr/include/assert.h      \
               /usr/include/complex.h     \
@@ -52,10 +53,10 @@ COPY --from=0 /usr/include/alloca.h      \
               /usr/include/uchar.h       \
               /usr/include/wchar.h       \
               /usr/include/wctype.h      /usr/include/
-COPY --from=0 /usr/include/bits          /usr/include/bits/
+COPY --from=0 /usr/include/bits          /usr/include/bits
 COPY --from=0 /usr/lib/libc.so           /usr/lib/
 COPY --from=0 /usr/lib/tcc/libtcc1.a     /usr/lib/tcc/
 
-ENTRYPOINT ["tcc"]
+ENTRYPOINT ["c"]
 
 CMD ["-v"]
