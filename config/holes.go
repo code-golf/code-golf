@@ -52,6 +52,7 @@ type Link struct {
 type Hole struct {
 	Aliases, Redirects          []string       `json:"-"`
 	Answer                      string         `json:"-"`
+	AnswerFunc                  HoleAnswerFunc `json:"-"`
 	CaseFold                    bool           `json:"-" toml:"case-fold"`
 	Category                    string         `json:"category"`
 	CategoryColor, CategoryIcon string         `json:"-"`
@@ -59,8 +60,8 @@ type Hole struct {
 	DataMap                     ordered.Map    `json:"-"`
 	Experiment                  int            `json:"-"`
 	ID                          string         `json:"id"`
-	ItemDelimiter               string         `json:"-" toml:"item-delimiter"`
-	MultisetDelimiter           string         `json:"-" toml:"multiset-delimiter"`
+	MultisetItemDelimiter       string         `json:"-" toml:"multiset-item-delimiter"`
+	OutputDelimiter             string         `json:"-" toml:"output-delimiter"`
 	Links                       []Link         `json:"links"`
 	Name                        string         `json:"name"`
 	Preamble                    template.HTML  `json:"preamble"`
@@ -68,6 +69,13 @@ type Hole struct {
 	Synopsis                    string         `json:"synopsis"`
 	Variants                    []*Hole        `json:"-"`
 }
+
+type HoleAnswer struct {
+	Args   []string
+	Answer string
+}
+
+type HoleAnswerFunc func() []HoleAnswer
 
 func init() {
 	var holes map[string]*Hole

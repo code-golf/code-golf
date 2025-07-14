@@ -6,7 +6,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* erlang = "/usr/bin/escript", *code = "main.erl";
+const char* erlang = "/usr/bin/escript", *erlc = "/usr/bin/erlc", *code = "main.erl";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version"))
@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
         ERR_AND_EXIT("fopen");
 
     if (!fputs("-module(main).\n-export([main/1]).\n", fp))
-        ERR_AND_EXIT("fprintf");
+        ERR_AND_EXIT("fputs");
 
     char buffer[4096];
     ssize_t nbytes;
@@ -36,11 +36,10 @@ int main(int argc, char* argv[]) {
     pid_t pid;
 
     if (!(pid = fork())) {
-        // Print errors and/or warnings on STDERR.
         if (!dup2(STDERR_FILENO, STDOUT_FILENO))
             ERR_AND_EXIT("dup2");
 
-        execl("/usr/bin/erlc", "erlc", code, NULL);
+        execl(erlc, erlc, code, NULL);
         ERR_AND_EXIT("execl");
     }
 

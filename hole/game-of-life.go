@@ -87,8 +87,8 @@ func (grid grid) toString() string {
 	return strings.Join(grid, "\n")
 }
 
-func gameOfLife() []Run {
+var _ = answerFunc("game-of-life", func() []Answer {
 	grid := randGrid()
 
 	return outputTests([]test{{grid.toString(), grid.step().toString()}})
-}
+})

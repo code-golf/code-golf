@@ -9,9 +9,7 @@ import (
 	"github.com/code-golf/code-golf/db"
 	"github.com/code-golf/code-golf/null"
 	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/github"
-	"golang.org/x/oauth2/gitlab"
-	"golang.org/x/oauth2/stackoverflow"
+	"golang.org/x/oauth2/endpoints"
 )
 
 type Config struct {
@@ -32,19 +30,15 @@ var Providers = map[string]*Config{
 		Name:         "Discord",
 		UserEndpoint: discordgo.EndpointUser("@me"),
 		Config: oauth2.Config{
-			Scopes: []string{"identify"},
-			Endpoint: oauth2.Endpoint{
-				AuthStyle: oauth2.AuthStyleInParams,
-				AuthURL:   discordgo.EndpointOauth2 + "authorize",
-				TokenURL:  discordgo.EndpointOauth2 + "token",
-			},
+			Endpoint: endpoints.Discord,
+			Scopes:   []string{"identify"},
 		},
 	},
 
 	// https://github.com/settings/developers
 	"github": {
 		Name:   "GitHub",
-		Config: oauth2.Config{Endpoint: github.Endpoint},
+		Config: oauth2.Config{Endpoint: endpoints.GitHub},
 	},
 
 	// https://gitlab.com/-/profile/applications
@@ -52,7 +46,7 @@ var Providers = map[string]*Config{
 		Name:         "GitLab",
 		UserEndpoint: "https://gitlab.com/oauth/userinfo",
 		Config: oauth2.Config{
-			Endpoint: gitlab.Endpoint,
+			Endpoint: endpoints.GitLab,
 			Scopes:   []string{"openid"},
 		},
 	},
@@ -60,7 +54,7 @@ var Providers = map[string]*Config{
 	// https://stackapps.com/apps/oauth
 	"stack-overflow": {
 		Name:         "Stack Overflow",
-		Config:       oauth2.Config{Endpoint: stackoverflow.Endpoint},
+		Config:       oauth2.Config{Endpoint: endpoints.StackOverflow},
 		UserEndpoint: "https://api.stackexchange.com/me?site=stackoverflow",
 	},
 }

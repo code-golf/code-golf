@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func billiards() []Run {
+var _ = answerFunc("billiards", func() []Answer {
 	tests := []test{}
 	addTest := func(height, width int) {
 		common := gcd(height, width)
@@ -45,4 +45,4 @@ func billiards() []Run {
 	}
 
 	return outputTestsWithSep("\n\n", shuffle(tests))
-}
+})
