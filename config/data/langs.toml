@@ -1213,9 +1213,9 @@ end
 
 [Mojo]
 args       = [ '/usr/bin/mojo', '-' ]
-experiment = -1
-size       = '0 KiB'
-version    = '25.1.0'
+experiment = 1780
+size       = '274 MiB'
+version    = '25.4.0'
 website    = 'https://www.modular.com/mojo'
 example    = '''
 import sys
