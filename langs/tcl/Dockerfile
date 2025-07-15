@@ -2,7 +2,7 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache bsd-compat-headers build-base curl zlib-dev
 
-ENV LDFLAGS='-static' VER=9-0-1
+ENV LDFLAGS='-static' VER=9-0-2
 
 RUN curl -#L https://github.com/tcltk/tcl/archive/refs/tags/core-$VER.tar.gz \
   | tar xz --strip-components 1

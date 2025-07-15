@@ -444,7 +444,7 @@ target      = 1984
 [['Total Points']]
 name        = 'It’s Over 9000!'
 emoji       = '🐉'
-description = 'Earn over 9,000 total points in either bytes or chars scoring.'
+description = 'Earn 9,001 total points in either bytes or chars scoring.'
 target      = 9001
 
 [['Total Points']]
@@ -464,3 +464,15 @@ name        = '0xDEAD'
 emoji       = '🪦'
 description = 'Earn 57,005 total points in either bytes or chars scoring.'
 target      = 57005
+
+[['Total Points']]
+name        = 'Overflowing'
+emoji       = '⛲'
+description = 'Earn 65,536 total points in either bytes or chars scoring.'
+target      = 65536
+
+[['Total Points']]
+name        = 'Into Space!'
+emoji       = '🚀'
+description = 'Earn <a href=//en.wikipedia.org/wiki/Kármán_line>100,000</a> total points in either bytes or chars scoring.'
+target      = 100000
